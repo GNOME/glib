@@ -48,6 +48,7 @@ g_hook_list_init (GHookList *hook_list,
 					      hook_size * G_HOOKS_PREALLOC,
 					      G_ALLOC_AND_FREE);
   hook_list->hook_free = NULL;
+  hook_list->hook_destroy = NULL;
 }
 
 void
@@ -129,7 +130,12 @@ g_hook_destroy_link (GHookList *hook_list,
     {
       hook->hook_id = 0;
       hook->flags &= ~G_HOOK_FLAG_ACTIVE;
-      if (hook->destroy)
+      if (hook_list->hook_destroy)
+	{
+	  hook_list->hook_destroy (hook_list, hook);
+	  hook->destroy = NULL;
+	}
+      else if (hook->destroy)
 	{
 	  GDestroyNotify destroy;
 	  

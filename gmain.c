@@ -31,30 +31,29 @@
 #include <time.h>
 #ifdef HAVE_SYS_TIME_H
 #include <sys/time.h>
-#endif
-#ifdef	GLIB_HAVE_SYS_POLL_H
+#endif /* HAVE_SYS_TIME_H */
+#ifdef GLIB_HAVE_SYS_POLL_H
 #  include <sys/poll.h>
 #  undef events	 /* AIX 4.1.5 & 4.3.2 define this for SVR3,4 compatibility */
 #  undef revents /* AIX 4.1.5 & 4.3.2 define this for SVR3,4 compatibility */
-#endif	/* GLIB_HAVE_SYS_POLL_H */
+#endif /* GLIB_HAVE_SYS_POLL_H */
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
-#endif
+#endif /* HAVE_UNISTD_H */
 #include <errno.h>
 
 #ifdef NATIVE_WIN32
 #define STRICT
 #include <windows.h>
-#endif
+#endif /* NATIVE_WIN32 */
 
 #ifdef _MSC_VER
 #include <fcntl.h>
 #include <io.h>
-#endif
+#endif /* _MSC_VER */
 
 /* Types */
 
-typedef struct _GIdleData GIdleData;
 typedef struct _GTimeoutData GTimeoutData;
 typedef struct _GSource GSource;
 typedef struct _GPollRec GPollRec;
@@ -77,11 +76,6 @@ struct _GMainLoop
   gboolean is_running;
 };
 
-struct _GIdleData
-{
-  GSourceFunc callback;
-};
-
 struct _GTimeoutData
 {
   GTimeVal    expiration;
@@ -100,7 +94,7 @@ struct _GPollRec
 
 static gint     g_source_compare          (GHook      *a,
 					   GHook      *b);
-static void     g_source_free_func        (GHookList  *hook_list,
+static void     g_source_destroy_func     (GHookList  *hook_list,
 					   GHook      *hook);
 static void     g_main_poll               (gint      timeout,
 					   gboolean  use_priority, 
@@ -129,24 +123,27 @@ static gboolean g_idle_dispatch        (gpointer  source_data,
 
 static GSList *pending_dispatches = NULL;
 static GHookList source_list = { 0 };
+static gint in_check_or_prepare = 0;
 
 /* The following lock is used for both the list of sources
  * and the list of poll records
  */
 G_LOCK_DECLARE_STATIC (main_loop);
 
-static GSourceFuncs timeout_funcs = {
+static GSourceFuncs timeout_funcs =
+{
   g_timeout_prepare,
   g_timeout_check,
   g_timeout_dispatch,
-  (GDestroyNotify)g_free
+  g_free,
 };
 
-static GSourceFuncs idle_funcs = {
+static GSourceFuncs idle_funcs =
+{
   g_idle_prepare,
   g_idle_check,
   g_idle_dispatch,
-  (GDestroyNotify)g_free
+  NULL,
 };
 
 static GPollRec *poll_records = NULL;
@@ -159,12 +156,12 @@ static guint n_poll_records = 0;
 /* this pipe is used to wake up the main loop when a source is added.
  */
 static gint wake_up_pipe[2] = { -1, -1 };
-#else
+#else /* NATIVE_WIN32 */
 static HANDLE wake_up_semaphore = NULL;
-#endif
+#endif /* NATIVE_WIN32 */
 static GPollFD wake_up_rec;
 static gboolean poll_waiting = FALSE;
-#endif
+#endif /* G_THREADS_ENABLED */
 
 #ifdef HAVE_POLL
 static GPollFunc poll_func = (GPollFunc) poll;
@@ -321,19 +318,21 @@ g_poll (GPollFD *fds, guint nfds, gint timeout)
 
 #ifndef NO_FD_SET
 #  define SELECT_MASK fd_set
-#else	/* !NO_FD_SET */
+#else /* !NO_FD_SET */
 #  ifndef _AIX
 typedef long fd_mask;
-#  endif
-#  if defined(_IBMR2)
+#  endif /* _AIX */
+#  ifdef _IBMR2
 #    define SELECT_MASK void
-#  else
+#  else /* !_IBMR2 */
 #    define SELECT_MASK int
-#  endif
-#endif	/* !NO_FD_SET */
+#  endif /* !_IBMR2 */
+#endif /* !NO_FD_SET */
 
 static gint 
-g_poll (GPollFD *fds, guint nfds, gint timeout)
+g_poll (GPollFD *fds,
+	guint    nfds,
+	gint     timeout)
 {
   struct timeval tv;
   SELECT_MASK rset, wset, xset;
@@ -380,6 +379,7 @@ g_poll (GPollFD *fds, guint nfds, gint timeout)
 
   return ready;
 }
+
 #endif /* !NATIVE_WIN32 */
 
 static GPollFunc poll_func = g_poll;
@@ -400,13 +400,25 @@ g_source_compare (GHook *a,
   return (source_a->priority < source_b->priority) ? -1 : 1;
 }
 
+/* HOLDS: main_loop_lock */
 static void
-g_source_free_func (GHookList      *hook_list,
-		    GHook          *hook)
+g_source_destroy_func (GHookList *hook_list,
+		       GHook     *hook)
 {
-  GSource *source = (GSource *)hook;
+  GSource *source = (GSource*) hook;
+  GDestroyNotify destroy;
 
-  ((GSourceFuncs *) hook->func)->destroy (source->source_data);
+  G_UNLOCK (main_loop);
+
+  destroy = hook->destroy;
+  if (destroy)
+    destroy (hook->data);
+
+  destroy = ((GSourceFuncs*) hook->func)->destroy;
+  if (destroy)
+    destroy (source->source_data);
+
+  G_LOCK (main_loop);
 }
 
 guint 
@@ -425,7 +437,7 @@ g_source_add (gint           priority,
   if (!source_list.is_setup)
     g_hook_list_init (&source_list, sizeof(GSource));
 
-  source_list.hook_free = g_source_free_func;
+  source_list.hook_destroy = g_source_destroy_func;
 
   source = (GSource *)g_hook_alloc (&source_list);
   source->priority = priority;
@@ -461,10 +473,12 @@ g_source_add (gint           priority,
   return return_val;
 }
 
-void 
+gboolean
 g_source_remove (guint tag)
 {
   GHook *hook;
+
+  g_return_val_if_fail (tag > 0, FALSE);
 
   G_LOCK (main_loop);
 
@@ -473,9 +487,11 @@ g_source_remove (guint tag)
     g_hook_destroy_link (&source_list, hook);
 
   G_UNLOCK (main_loop);
+
+  return hook != NULL;
 }
 
-void 
+gboolean
 g_source_remove_by_user_data (gpointer user_data)
 {
   GHook *hook;
@@ -487,6 +503,8 @@ g_source_remove_by_user_data (gpointer user_data)
     g_hook_destroy_link (&source_list, hook);
 
   G_UNLOCK (main_loop);
+
+  return hook != NULL;
 }
 
 static gboolean
@@ -498,7 +516,7 @@ g_source_find_source_data (GHook	*hook,
   return (source->source_data == data);
 }
 
-void 
+gboolean
 g_source_remove_by_source_data (gpointer source_data)
 {
   GHook *hook;
@@ -511,6 +529,41 @@ g_source_remove_by_source_data (gpointer source_data)
     g_hook_destroy_link (&source_list, hook);
 
   G_UNLOCK (main_loop);
+
+  return hook != NULL;
+}
+
+static gboolean
+g_source_find_funcs_user_data (GHook   *hook,
+			       gpointer data)
+{
+  gpointer *d = data;
+
+  return hook->func == d[0] && hook->data == d[1];
+}
+
+gboolean
+g_source_remove_by_funcs_user_data (GSourceFuncs *funcs,
+				    gpointer      user_data)
+{
+  gpointer d[2];
+  GHook *hook;
+
+  g_return_val_if_fail (funcs != NULL, FALSE);
+
+  G_LOCK (main_loop);
+
+  d[0] = funcs;
+  d[1] = user_data;
+
+  hook = g_hook_find (&source_list, TRUE,
+		      g_source_find_funcs_user_data, d);
+  if (hook)
+    g_hook_destroy_link (&source_list, hook);
+
+  G_UNLOCK (main_loop);
+
+  return hook != NULL;
 }
 
 void
@@ -676,11 +729,13 @@ g_main_iterate (gboolean block,
 	  continue;
 	}
 
+      in_check_or_prepare++;
       if (hook->flags & G_SOURCE_READY ||
 	  ((GSourceFuncs *) hook->func)->prepare (source->source_data,
 						  &current_time,
 						  &source_timeout))
 	{
+	  in_check_or_prepare--;
 	  if (!dispatch)
 	    {
 	      hook->flags |= G_SOURCE_READY;
@@ -697,6 +752,8 @@ g_main_iterate (gboolean block,
 	      timeout = 0;
 	    }
 	}
+      else
+	in_check_or_prepare--;
       
       if (source_timeout >= 0)
 	{
@@ -733,10 +790,12 @@ g_main_iterate (gboolean block,
 	  continue;
 	}
 
+      in_check_or_prepare++;
       if (hook->flags & G_SOURCE_READY ||
 	  ((GSourceFuncs *) hook->func)->check (source->source_data,
 						&current_time))
 	{
+	  in_check_or_prepare--;
 	  if (dispatch)
 	    {
 	      hook->flags &= ~G_SOURCE_READY;
@@ -753,6 +812,8 @@ g_main_iterate (gboolean block,
 	      return TRUE;
 	    }
 	}
+      else
+	in_check_or_prepare--;
       
       hook = g_hook_next_valid (&source_list, hook, TRUE);
     }
@@ -774,9 +835,9 @@ g_main_iterate (gboolean block,
 /* See if any events are pending
  */
 gboolean 
-g_main_pending ()
+g_main_pending (void)
 {
-  return g_main_iterate (FALSE, FALSE);
+  return in_check_or_prepare ? FALSE : g_main_iterate (FALSE, FALSE);
 }
 
 /* Run a single iteration of the mainloop. If block is FALSE,
@@ -785,7 +846,14 @@ g_main_pending ()
 gboolean
 g_main_iteration (gboolean block)
 {
-  return g_main_iterate (block, TRUE);
+  if (in_check_or_prepare)
+    {
+      g_warning ("g_main_iteration(): called recursively from within a source's check() or "
+		 "prepare() member, iteration not possible");
+      return FALSE;
+    }
+  else
+    return g_main_iterate (block, TRUE);
 }
 
 GMainLoop*
@@ -803,6 +871,13 @@ void
 g_main_run (GMainLoop *loop)
 {
   g_return_if_fail (loop != NULL);
+
+  if (in_check_or_prepare)
+    {
+      g_warning ("g_main_run(): called recursively from within a source's check() or "
+		 "prepare() member, iteration not possible");
+      return;
+    }
 
   loop->is_running = TRUE;
   while (loop->is_running)
@@ -999,9 +1074,9 @@ g_main_set_poll_func (GPollFunc func)
     poll_func = func;
   else
 #ifdef HAVE_POLL
-    poll_func = (GPollFunc)poll;
+    poll_func = (GPollFunc) poll;
 #else
-    poll_func = (GPollFunc)g_poll;
+    poll_func = (GPollFunc) g_poll;
 #endif
 }
 
@@ -1120,22 +1195,20 @@ g_idle_dispatch (gpointer source_data,
 		 GTimeVal *current_time,
 		 gpointer user_data)
 {
-  GIdleData *data = source_data;
+  GSourceFunc func = source_data;
 
-  return (*data->callback)(user_data);
+  return func (user_data);
 }
 
 guint 
-g_idle_add_full (gint          priority,
+g_idle_add_full (gint           priority,
 		 GSourceFunc    function,
 		 gpointer       data,
 		 GDestroyNotify notify)
 {
-  GIdleData *idle_data = g_new (GIdleData, 1);
+  g_return_val_if_fail (function != NULL, 0);
 
-  idle_data->callback = function;
-
-  return g_source_add (priority, FALSE, &idle_funcs, idle_data, data, notify);
+  return g_source_add (priority, FALSE, &idle_funcs, function, data, notify);
 }
 
 guint 
@@ -1143,4 +1216,10 @@ g_idle_add (GSourceFunc    function,
 	    gpointer       data)
 {
   return g_idle_add_full (G_PRIORITY_DEFAULT_IDLE, function, data, NULL);
+}
+
+gboolean
+g_idle_remove_by_data (gpointer data)
+{
+  return g_source_remove_by_funcs_user_data (&idle_funcs, data);
 }

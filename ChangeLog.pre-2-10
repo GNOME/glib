@@ -1,3 +1,35 @@
+Sun Jan 17 05:12:17 1999  Tim Janik  <timj@gtk.org>
+
+	* configure.in: incremented version number to 1.1.13, bin age 0,
+	interface age 0.
+
+	* glib.h: added hook_destroy member to struct _GHookList.
+
+	* ghook.c (g_hook_destroy_link): if the hook_list defines a hook_destroy
+	function, use that to marshal hook destruction notifiers.
+
+	* gmain.c: removed g_source_free_func and added g_source_destroy_func,
+	which marshalls the user_data and source_data destructors of sources
+	outside of the main_loop lock.
+	removed GIdleData struct since its single member callback can be passed
+	as source_data directly.
+	added a gboolean return value to all g_source_remove* functions,
+	indicating whether the source could be removed, because these functions
+	don't issue warnings upon unseccessful removals themselves. this way at
+	least the caller gets a chance to warn upon failing removals.
+	(g_main_iterate): set in_check_or_prepare around calls to check() or
+	prepare().
+	(g_main_pending): simply return FALSE if called from within check() or
+	prepare().
+	(g_main_iteration): issue a warning if called from within check() or
+	prepare() and bail out with FALSE.
+	(g_main_run): likewise.
+	(g_source_remove_by_funcs_user_data): new function to remove sources by
+	user data and function table.
+	(g_idle_remove_by_data): new function to really remove idles only, since
+	g_source_remove_by_user_data would remove timeouts or other sources as
+	well.
+
 1999-01-16  Tor Lillqvist  <tml@iki.fi>
 
 	* Merge in current Win32 version:

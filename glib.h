@@ -1120,6 +1120,7 @@ struct _GHookList
   GHook		*hooks;
   GMemChunk	*hook_memchunk;
   GHookFreeFunc	 hook_free; /* virtual function */
+  GHookFreeFunc	 hook_destroy; /* virtual function */
 };
 
 struct _GHook
@@ -2402,15 +2403,17 @@ struct _GSourceFuncs
 typedef gboolean (*GSourceFunc) (gpointer data);
 
 /* Hooks for adding to the main loop */
-guint g_source_add                  (gint           priority, 
-				     gboolean       can_recurse,
-				     GSourceFuncs  *funcs,
-				     gpointer       source_data, 
-				     gpointer       user_data,
-				     GDestroyNotify notify);
-void g_source_remove                (guint          tag);
-void g_source_remove_by_user_data   (gpointer       user_data);
-void g_source_remove_by_source_data (gpointer       source_data);
+guint    g_source_add                        (gint           priority, 
+					      gboolean       can_recurse,
+					      GSourceFuncs  *funcs,
+					      gpointer       source_data, 
+					      gpointer       user_data,
+					      GDestroyNotify notify);
+gboolean g_source_remove                     (guint          tag);
+gboolean g_source_remove_by_user_data        (gpointer       user_data);
+gboolean g_source_remove_by_source_data      (gpointer       source_data);
+gboolean g_source_remove_by_funcs_user_data  (GSourceFuncs  *funcs,
+					      gpointer       user_data);
 
 void g_get_current_time		    (GTimeVal	   *result);
 
@@ -2444,6 +2447,7 @@ guint	   	g_idle_add_full		(gint   	priority,
 					 GSourceFunc	function,
 					 gpointer	data,
 					 GDestroyNotify destroy);
+gboolean	g_idle_remove_by_data	(gpointer	data);
 
 /* GPollFD
  *
