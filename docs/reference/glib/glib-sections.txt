@@ -569,58 +569,74 @@ GTimeVal
 g_get_current_time
 
 <SUBSECTION>
-GTime
 GDate
+GTime
 GDateDMY
 GDateDay
 GDateMonth
-GDateWeekday
 GDateYear
+GDateWeekday
+
+<SUBSECTION>
 G_DATE_BAD_DAY
 G_DATE_BAD_JULIAN
 G_DATE_BAD_YEAR
-g_date_add_days
-g_date_add_months
-g_date_add_years
-g_date_clear
-g_date_compare
-g_date_day
-g_date_day_of_year
-g_date_days_in_month
-g_date_free
-g_date_is_first_of_month
-g_date_is_last_of_month
-g_date_is_leap_year
-g_date_julian
-g_date_monday_week_of_year
-g_date_monday_weeks_in_year
-g_date_month
+
+<SUBSECTION>
 g_date_new
 g_date_new_dmy
 g_date_new_julian
+g_date_clear
+g_date_free
+
+<SUBSECTION>
 g_date_set_day
+g_date_set_month
+g_date_set_year
 g_date_set_dmy
 g_date_set_julian
-g_date_set_month
-g_date_set_parse
 g_date_set_time
-g_date_set_year
-g_date_strftime
+g_date_set_parse
+
+<SUBSECTION>
+g_date_add_days
 g_date_subtract_days
+g_date_add_months
 g_date_subtract_months
+g_date_add_years
 g_date_subtract_years
+g_date_compare
+
+<SUBSECTION>
+g_date_day
+g_date_month
+g_date_year
+g_date_julian
+g_date_weekday
+g_date_day_of_year
+
+<SUBSECTION>
+g_date_days_in_month
+g_date_is_first_of_month
+g_date_is_last_of_month
+g_date_is_leap_year
+g_date_monday_week_of_year
+g_date_monday_weeks_in_year
 g_date_sunday_week_of_year
 g_date_sunday_weeks_in_year
+
+<SUBSECTION>
+g_date_strftime
 g_date_to_struct_tm
+
+<SUBSECTION>
 g_date_valid
 g_date_valid_day
+g_date_valid_month
+g_date_valid_year
 g_date_valid_dmy
 g_date_valid_julian
-g_date_valid_month
 g_date_valid_weekday
-g_date_valid_year
-g_date_weekday
-g_date_year
 </SECTION>
 
 <SECTION>
@@ -924,8 +940,8 @@ g_list_position
 g_list_index
 
 <SUBSECTION>
-g_list_pop_allocator
 g_list_push_allocator
+g_list_pop_allocator
 </SECTION>
 
 <SECTION>
@@ -965,8 +981,8 @@ g_slist_position
 g_slist_index
 
 <SUBSECTION>
-g_slist_pop_allocator
 g_slist_push_allocator
+g_slist_pop_allocator
 </SECTION>
 
 <SECTION>
@@ -1155,8 +1171,8 @@ g_node_unlink
 g_node_destroy
 
 <SUBSECTION>
-g_node_pop_allocator
 g_node_push_allocator
+g_node_pop_allocator
 </SECTION>
 
 

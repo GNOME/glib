@@ -51,15 +51,12 @@ To free a GByteArray, use g_byte_array_free().
 
 <!-- ##### STRUCT GByteArray ##### -->
 <para>
-The GByteArray struct allows access to the public fields of a GByteArray.
-The <structfield>data</structfield> field points to the element data.
-It may change as elements are added to the array.
-The <structfield>len</structfield> field contains the number of elements
-in the array.
+The #GByteArray struct allows access to the public fields of a #GByteArray.
 </para>
 
-@data: 
-@len: 
+@data: a pointer to the element data. The data may be moved as elements are
+added to the #GByteArray.
+@len: the number of elements in the #GByteArray.
 
 <!-- ##### FUNCTION g_byte_array_new ##### -->
 <para>
@@ -95,22 +92,26 @@ The array will grow in size automatically if necessary.
 
 <!-- ##### FUNCTION g_byte_array_remove_index ##### -->
 <para>
-
+Removes the byte at the given index from a #GByteArray.
+The following bytes are moved down one place.
 </para>
 
-@array: 
-@index: 
-@Returns: 
+@array: a #GByteArray.
+@index: the index of the byte to remove.
+@Returns: the #GByteArray.
 
 
 <!-- ##### FUNCTION g_byte_array_remove_index_fast ##### -->
 <para>
-
+Removes the byte at the given index from a #GByteArray.
+The last element in the array is used to fill in the space, so this function
+does not preserve the order of the #GByteArray. But it is faster than
+g_byte_array_remove_index().
 </para>
 
-@array: 
-@index: 
-@Returns: 
+@array: a #GByteArray.
+@index: the index of the byte to remove.
+@Returns: the #GByteArray.
 
 
 <!-- ##### FUNCTION g_byte_array_set_size ##### -->

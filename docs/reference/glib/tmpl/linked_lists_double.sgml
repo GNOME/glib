@@ -224,11 +224,15 @@ Gets the number of elements in a #GList.
 
 <!-- ##### FUNCTION g_list_copy ##### -->
 <para>
-
+Copies a #GList.
+</para>
+<para>
+Note that this is a "shallow" copy. If the list elements consist of pointers
+to data, the pointers are copied but the actual data isn't.
 </para>
 
-@list: 
-@Returns: 
+@list: a #GList.
+@Returns: a copy of @list.
 
 
 <!-- ##### FUNCTION g_list_reverse ##### -->
@@ -243,12 +247,15 @@ It simply switches the next and prev pointers of each element.
 
 <!-- ##### FUNCTION g_list_sort ##### -->
 <para>
-
+Sorts a #GList using the given comparison function.
 </para>
 
-@list: 
-@compare_func: 
-@Returns: 
+@list: a #GList.
+@compare_func: the comparison function used to sort the #GList. This function
+is passed 2 elements of the #GList and should return 0 if they are equal,
+a negative value if the first element comes before the second, or a positive
+value if the first element comes after the second.
+@Returns: the start of the sorted #GList.
 
 
 <!-- ##### FUNCTION g_list_concat ##### -->
@@ -392,16 +399,17 @@ is not found.
 
 <!-- ##### FUNCTION g_list_pop_allocator ##### -->
 <para>
-
+Restores the previous #GAllocator, used when allocating #GList elements.
 </para>
 
 
 
 <!-- ##### FUNCTION g_list_push_allocator ##### -->
 <para>
-
+Sets the allocator to use to allocate #GList elements.
+Use g_list_pop_allocator() to restore the previous allocator.
 </para>
 
-@allocator: 
+@allocator: the #GAllocator to use when allocating #GList elements.
 
 

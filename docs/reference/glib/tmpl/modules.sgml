@@ -58,12 +58,29 @@ Checks if modules are supported on the current platform.
 
 <!-- ##### FUNCTION g_module_build_path ##### -->
 <para>
-
+A portable way to build the filename of a module. The platform-specific
+prefix and suffix are added to the filename, if needed, and the result is
+added to the directory, using the correct separator character.
+</para>
+<para>
+The directory should specify the directory where the module can be found.
+It can be NULL or an empty string to indicate that the module is in a standard
+operating-system specific directory, though this is not recommended since the
+wrong module may be found.
+</para>
+<para>
+For example, calling g_module_build_path() on a Linux system with a directory
+of "/lib" and a module_name of "mylibrary" will return "/lib/libmylibrary.so".
+On a Windows system, using "\Windows" as the directory it will return
+"\Windows\mylibrary.dll".
 </para>
 
-@directory: 
-@module_name: 
-@Returns: 
+@directory: the directory where the module is. This can be NULL or the empty
+string to indicate that the standard operating system-specific directories
+will be used, though that is not recommended.
+@module_name: the name of the module.
+@Returns: the complete path of the module, including the standard library
+prefix and suffix. This should be freed when no longer needed.
 
 
 <!-- ##### FUNCTION g_module_open ##### -->

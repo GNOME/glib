@@ -217,11 +217,15 @@ Gets the number of elements in a #GSList.
 
 <!-- ##### FUNCTION g_slist_copy ##### -->
 <para>
-
+Copies a #GSList.
+</para>
+<para>
+Note that this is a "shallow" copy. If the list elements consist of pointers
+to data, the pointers are copied but the actual data isn't.
 </para>
 
-@list: 
-@Returns: 
+@list: a #GSList.
+@Returns: a copy of @list.
 
 
 <!-- ##### FUNCTION g_slist_reverse ##### -->
@@ -235,12 +239,15 @@ Reverses a #GSList.
 
 <!-- ##### FUNCTION g_slist_sort ##### -->
 <para>
-
+Sorts a #GSList using the given comparison function.
 </para>
 
-@list: 
-@compare_func: 
-@Returns: 
+@list: a #GSList.
+@compare_func: the comparison function used to sort the #GSList. This function
+is passed 2 elements of the #GSList and should return 0 if they are equal,
+a negative value if the first element comes before the second, or a positive
+value if the first element comes after the second.
+@Returns: the start of the sorted #GList.
 
 
 <!-- ##### FUNCTION g_slist_concat ##### -->
@@ -356,16 +363,16 @@ is not found.
 
 <!-- ##### FUNCTION g_slist_pop_allocator ##### -->
 <para>
-
+Restores the previous #GAllocator, used when allocating #GSList elements.
 </para>
-
 
 
 <!-- ##### FUNCTION g_slist_push_allocator ##### -->
 <para>
-
+Sets the allocator to use to allocate #GSList elements.
+Use g_slist_pop_allocator() to restore the previous allocator.
 </para>
 
-@allocator: 
+@allocator: the #GAllocator to use when allocating #GSList elements.
 
 

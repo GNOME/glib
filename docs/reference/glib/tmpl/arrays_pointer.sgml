@@ -25,8 +25,8 @@ To create a pointer array, use g_ptr_array_new().
 To add elements to a pointer array, use g_ptr_array_add().
 </para>
 <para>
-To remove elements from a pointer array, use g_ptr_array_remove(), and
-g_ptr_array_remove_index().
+To remove elements from a pointer array, use g_ptr_array_remove(),
+g_ptr_array_remove_index() or g_ptr_array_remove_index_fast().
 </para>
 <para>
 To access an element of a pointer array, use g_ptr_array_index().
@@ -92,19 +92,13 @@ The array will grow in size automatically if necessary.
 
 <!-- ##### FUNCTION g_ptr_array_remove ##### -->
 <para>
-Removes the first occurrence of given pointer from the pointer array.
+Removes the first occurrence of the given pointer from the pointer array.
+The following elements are moved down one place.
+</para>
+<para>
 It returns TRUE if the pointer was removed, or FALSE if the pointer
 was not found.
 </para>
-<note>
-<para>
-If you remove elements from the array, elements at the end of the array
-are moved into the space previously occupied by the removed element.
-This means that you should not rely on the index of particular elements
-remaining the same. You should also be careful when deleting elements while
-iterating over the array.
-</para>
-</note>
 
 @array: a #GPtrArray.
 @data: the pointer to remove.
@@ -115,16 +109,8 @@ in the array.
 <!-- ##### FUNCTION g_ptr_array_remove_index ##### -->
 <para>
 Removes the pointer at the given index from the pointer array.
+The following elements are moved down one place.
 </para>
-<note>
-<para>
-If you remove elements from the array, elements at the end of the array
-are moved into the space previously occupied by the removed element.
-This means that you should not rely on the index of particular elements
-remaining the same. You should also be careful when deleting elements while
-iterating over the array.
-</para>
-</note>
 
 @array: a #GPtrArray.
 @index: the index of the pointer to remove.
@@ -133,22 +119,32 @@ iterating over the array.
 
 <!-- ##### FUNCTION g_ptr_array_remove_fast ##### -->
 <para>
-
+Removes the first occurrence of the given pointer from the pointer array.
+The last element in the array is used to fill in the space, so this function
+does not preserve the order of the array. But it is faster than
+g_ptr_array_remove().
+</para>
+<para>
+It returns TRUE if the pointer was removed, or FALSE if the pointer
+was not found.
 </para>
 
-@array: 
-@data: 
-@Returns: 
+@array: a #GPtrArray.
+@data: the pointer to remove.
+@Returns: TRUE if the pointer was found in the array.
 
 
 <!-- ##### FUNCTION g_ptr_array_remove_index_fast ##### -->
 <para>
-
+Removes the pointer at the given index from the pointer array.
+The last element in the array is used to fill in the space, so this function
+does not preserve the order of the array. But it is faster than
+g_ptr_array_remove_index().
 </para>
 
-@array: 
-@index: 
-@Returns: 
+@array: a #GPtrArray.
+@index: the index of the pointer to remove.
+@Returns: the pointer which was removed.
 
 
 <!-- ##### FUNCTION g_ptr_array_set_size ##### -->

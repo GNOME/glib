@@ -478,16 +478,17 @@ allocated.
 
 <!-- ##### FUNCTION g_node_pop_allocator ##### -->
 <para>
-
+Restores the previous #GAllocator, used when allocating #GNode elements.
 </para>
 
 
 
 <!-- ##### FUNCTION g_node_push_allocator ##### -->
 <para>
-
+Sets the allocator to use to allocate #GNode elements.
+Use g_node_pop_allocator() to restore the previous allocator.
 </para>
 
-@allocator: 
+@allocator: the #GAllocator to use when allocating #GNode elements.
 
 

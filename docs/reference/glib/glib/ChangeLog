@@ -1,3 +1,19 @@
+2000-04-16  Damon Chaplin  <damon@helixcode.com>
+
+	* tmpl/linked_lists_single.sgml: 
+	* tmpl/linked_lists_double.sgml: 
+	* tmpl/trees-nary.sgml: updated.
+
+	* tmpl/modules.sgml: described g_module_build_path().
+
+	* tmpl/date.sgml: made short description lower case and end in a '.'.
+
+	* glib-sections.txt: rearranged GDate section.
+
+	* tmpl/arrays.sgml: 
+	* tmpl/arrays_byte.sgml: 
+	* tmpl/arrays_pointer.sgml: updated.
+
 2000-02-21  Damon Chaplin  <damon@helixcode.com>
 
 	* tmpl/main.sgml: updated the g_source_remove_by_XXX() descriptions
