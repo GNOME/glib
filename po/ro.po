@@ -1,15 +1,16 @@
-# glib2
-# Copyright (C) 2001 Free Software Foundation, Inc.
+# Romanian translation for glib2
+# Copyright (C) 2001 - 2004 Free Software Foundation, Inc.
 # Marius Andreiana <mandreiana@yahoo.com>, 2001.
+# Mişu Moldovan <dumol@go.ro>, 2004.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: glib 1.3.10\n"
+"Project-Id-Version: glib 2.3.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-03-09 09:32-0500\n"
-"PO-Revision-Date: 2001-10-22 09:35-0400\n"
-"Last-Translator: Marius Andreiana <mandreiana@yahoo.com>\n"
-"Language-Team: Română <ro@li.org>\n"
+"POT-Creation-Date: 2004-03-15 21:52+0200\n"
+"PO-Revision-Date: 2004-03-14 19:59+0200\n"
+"Last-Translator: Mişu Moldovan <dumol@go.ro>\n"
+"Language-Team: Română <gnomero-list@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -17,18 +18,18 @@ msgstr ""
 #: glib/gconvert.c:402
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
-msgstr "Conversia de la setul de caractere '%s' la '%s' nu este suportată"
+msgstr "Conversia de la setul de caractere „%s” la „%s” nu este suportată"
 
 #: glib/gconvert.c:406
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
-msgstr "Nu s-a putut deschide convertorul de la '%s' la '%s': %s"
+msgstr "Nu s-a putut iniţia conversia de la „%s” la „%s”: %s"
 
 #: glib/gconvert.c:604 glib/gconvert.c:891 glib/giochannel.c:1315
 #: glib/giochannel.c:1357 glib/giochannel.c:2199 glib/gutf8.c:910
 #: glib/gutf8.c:1355
 msgid "Invalid byte sequence in conversion input"
-msgstr "Secvenţă de octeţi invalidă în intrarea de conversie"
+msgstr "Secvenţă de octeţi invalidă în intrarea conversiei"
 
 #: glib/gconvert.c:609 glib/gconvert.c:824 glib/giochannel.c:1322
 #: glib/giochannel.c:2211
@@ -44,144 +45,143 @@ msgstr "Secvenţă parţială de caractere la sfârşitul intrării"
 #: glib/gconvert.c:800
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
-msgstr "Nu pot converti rezerva '%s' la setul de caractere '%s'"
+msgstr "Nu pot converti rezerva „%s” la setul de caractere „%s”"
 
 #: glib/gconvert.c:1497
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
-msgstr "URI-ul '%s' nu este un URI absolut folosind schema fişierului"
+msgstr "URI-ul „%s” nu este un URI absolut folosind schema fişierului"
 
 #: glib/gconvert.c:1507
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
-msgstr "URI-ul fişierului local '%s' nu poate include un '#'"
+msgstr "URI-ul fişierului local „%s” nu poate include un '#'"
 
 #: glib/gconvert.c:1524
 #, c-format
 msgid "The URI '%s' is invalid"
-msgstr "URI-ul '%s' este invalid"
+msgstr "URI-ul „%s” este invalid"
 
 #: glib/gconvert.c:1536
-#, fuzzy, c-format
+#, c-format
 msgid "The hostname of the URI '%s' is invalid"
-msgstr "Hostname-ul URI-ului '%s' conţine caractere escaped invalide"
+msgstr "Gazda URI-ului „%s” este invalidă"
 
 #: glib/gconvert.c:1552
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
-msgstr "URI-ul '%s' conţine caractere escaped invalide"
+msgstr "URI-ul „%s” conţine caractere „escaped” invalide"
 
 #: glib/gconvert.c:1623
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
-msgstr "Numele căii '%s' nu este o cale absolută"
+msgstr "Calea „%s” nu este o cale absolută"
 
 #: glib/gconvert.c:1633
-#, fuzzy
 msgid "Invalid hostname"
-msgstr "Secvenţă de octeţi invalidă în hostname"
+msgstr "Nume gazdă invalid"
 
 #: glib/gdir.c:80
-#, fuzzy, c-format
+#, c-format
 msgid "Error opening directory '%s': %s"
-msgstr "Eroare la citirea fişierului '%s': %s"
+msgstr "Eroare la deschiderea directorului „%s”: %s"
 
 #: glib/gfileutils.c:393 glib/gfileutils.c:458
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
-msgstr ""
+msgstr "Nu am putut alocat %lu octeţi pentru a citi fişierul „%s”"
 
 #: glib/gfileutils.c:404
 #, c-format
 msgid "Error reading file '%s': %s"
-msgstr "Eroare la citirea fişierului '%s': %s"
+msgstr "Eroare la citirea fişierului „%s”: %s"
 
 #: glib/gfileutils.c:480
 #, c-format
 msgid "Failed to read from file '%s': %s"
-msgstr "Eşuare la citirea din fişierul '%s': %s"
+msgstr "Nu am reuşit să citesc din fişierul „%s”: %s"
 
 #: glib/gfileutils.c:527 glib/gfileutils.c:595
 #, c-format
 msgid "Failed to open file '%s': %s"
-msgstr "Eşuare la deschiderea fişierului '%s': %s"
+msgstr "Nu am reuşit să deschid fişierul „%s”: %s"
 
 #: glib/gfileutils.c:541
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
-msgstr "Eşuare la obtinerea atributelor fişierului '%s': fstat() a eşuat: %s"
+msgstr "Nu am reuşit să obţin atributele fişierului „%s”: fstat() a eşuat: %s"
 
 #: glib/gfileutils.c:567
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
-msgstr "Eşuare la deschiderea fişierului '%s': fdopen() a eşuat: %s"
+msgstr "Nu am reuşit să deschid fişierul „%s”: fdopen() a eşuat: %s"
 
 #: glib/gfileutils.c:779
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
-msgstr "Şablonul '%s' este invalid, n-ar trebui să conţină un '%s'"
+msgstr "Şablonul „%s” este invalid, n-ar trebui să conţină un „%s”"
 
 #: glib/gfileutils.c:791
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
-msgstr "Şablonul '%s' nu se termină cu XXXXXX"
+msgstr "Şablonul „%s” nu se termină cu XXXXXX"
 
 #: glib/gfileutils.c:812
 #, c-format
 msgid "Failed to create file '%s': %s"
-msgstr "Eşuare la crearea fişierului '%s': %s"
+msgstr "Nu am reuşit să creez fişierul „%s”: %s"
 
 #: glib/gfileutils.c:1153
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to read the symbolic link '%s': %s"
-msgstr "Eşuare la crearea fişierului '%s': %s"
+msgstr "Nu am reuşit să citesc legătura simbolică „%s”: %s"
 
 #: glib/gfileutils.c:1172
 msgid "Symbolic links not supported"
-msgstr ""
+msgstr "Legăturile simbolice nu sunt suportate"
 
 #: glib/giochannel.c:1143
 #, c-format
 msgid "Conversion from character set `%s' to `%s' is not supported"
-msgstr "Conversia din setul de caractere '%s' la '%s' nu este suportată"
+msgstr "Conversia de la setul de caractere „%s” la „%s” nu este suportată"
 
 #: glib/giochannel.c:1147
 #, c-format
 msgid "Could not open converter from `%s' to `%s': %s"
-msgstr "Nu s-a putut deschide convertorul de la '%s' la '%s': %s"
+msgstr "Nu s-a putut iniţializa conversia de la „%s” la „%s”: %s"
 
 #: glib/giochannel.c:1492
 msgid "Can't do a raw read in g_io_channel_read_line_string"
-msgstr "Nu pot face o citire brută în g_io_channel_read_line_string"
+msgstr "Nu am reuşit să citesc datele brute din g_io_channel_read_line_string"
 
 #: glib/giochannel.c:1539 glib/giochannel.c:1796 glib/giochannel.c:1882
 msgid "Leftover unconverted data in read buffer"
-msgstr "Date neconvertite rămase în memoria tampon pentru citire"
+msgstr "Date neconvertite rămase în memoria tampon la citire"
 
 #: glib/giochannel.c:1619 glib/giochannel.c:1696
 msgid "Channel terminates in a partial character"
-msgstr "Canalul se termină într-un caracter parţial"
+msgstr "Canalul se termină cu un caracter parţial"
 
 #: glib/giochannel.c:1682
 msgid "Can't do a raw read in g_io_channel_read_to_end"
-msgstr "Nu pot face o citire brută în g_io_channel_read_to_end"
+msgstr "Nu am reuşit să citesc datele brute din g_io_channel_read_to_end"
 
 #: glib/gmarkup.c:223
 #, c-format
 msgid "Error on line %d char %d: %s"
-msgstr "Eroare la linia %d caracterul %d: %s"
+msgstr "Eroare în linia %d, caracterul %d: %s"
 
 #: glib/gmarkup.c:307
 #, c-format
 msgid "Error on line %d: %s"
-msgstr "Eroare la linia %d: %s"
+msgstr "Eroare în linia %d: %s"
 
 #: glib/gmarkup.c:412
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
-"Entitate goală '&;' văzută; entităţile valide sunt: &amp; &quot; &lt; &gt; "
-"&apos;"
+"S-a depistat o entitate goală „&;”. Entităţile valide sunt: &amp; &quot; "
+"&lt; &gt; &apos;"
 
 #: glib/gmarkup.c:422
 #, c-format
@@ -190,27 +190,27 @@ msgid ""
 "begins an entity; if this ampersand isn't supposed to be an entity, escape "
 "it as &amp;"
 msgstr ""
-"Caracterul '%s' nu este valid la începutul numelui entităţii; caracterul '&' "
-"începe o entitate; dacă acest ampersand nu ar trebui să fie o entitate "
-"folosiţi &amp;"
+"Caracterul „%s” nu este valid la începutul numelui unei entităţi. Caracterul "
+"„&” începe o entitate, iar dacă acest ampersand nu ar trebui să fie într-o "
+"entitate utilizaţi &amp;"
 
 #: glib/gmarkup.c:458
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
-msgstr "Caracterul '%s' nu este valid înăuntrul unui nume de entitate"
+msgstr "Caracterul „%s” nu este valid în cadrul unui nume de entitate"
 
 #: glib/gmarkup.c:502
 #, c-format
 msgid "Entity name '%s' is not known"
-msgstr "Numele entităţii '%s' nu este cunoscut"
+msgstr "Numele entităţii „%s” nu este cunoscut"
 
 #: glib/gmarkup.c:512
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
 msgstr ""
-"Entitatea nu s-a terminat cu punct şi virgulă; probabil că aţi folosit un "
-"caracter ampersand fără intenţia de a începe o entitate - folosiţi &amp;"
+"Entitatea nu s-a terminat cu punct şi virgul. Probabil că aţi folosit un "
+"caracter ampersand fără intenţia de a începe o entitate, utilizaţi &amp;"
 
 #: glib/gmarkup.c:558
 #, c-format
@@ -218,17 +218,17 @@ msgid ""
 "Failed to parse '%s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
 msgstr ""
-"Eşuare la parsarea '%s', care ar fi trebui să fie o cifră într-un referinţă "
-"caracter (de exemplu &#234;) - poate cifra este prea mare"
+"Eşuare la procesarea „%s”, care ar fi trebui să fie o cifră într-un caracter "
+"referinţă caracter (de exemplu &#234;). Poate cifra este prea mare"
 
 #: glib/gmarkup.c:583
 #, c-format
 msgid "Character reference '%s' does not encode a permitted character"
-msgstr "Referinţa caracter '%s' nu codează un caracter permis"
+msgstr "Referinţa caracterului „%s” nu codează un caracter permis"
 
 #: glib/gmarkup.c:600
 msgid "Empty character reference; should include a digit such as &#454;"
-msgstr "Referinţă caracter goală; ar trebui să includă o cifra precum &#454;"
+msgstr "Referinţă caracter goală. Ar trebui să includă o cifră precum &#454;"
 
 #: glib/gmarkup.c:610
 msgid ""
@@ -236,17 +236,16 @@ msgid ""
 "ampersand character without intending to start an entity - escape ampersand "
 "as &amp;"
 msgstr ""
-"Referinţa caracter nu s-a terminat cu punct şi virgulă; probabil că aţi "
-"folosit un caracter ampersand fără intenţia de a începe o entitate - "
-"folosiţi &amp;"
+"Referinţa caracter nu s-a terminat cu punct şi virgulă. Probabil aţi folosit "
+"un caracter ampersand fără intenţia de a începe o entitate. Utilizaţi &amp;"
 
 #: glib/gmarkup.c:636
 msgid "Unfinished entity reference"
-msgstr ""
+msgstr "Referinţă neterminată la o entitate"
 
 #: glib/gmarkup.c:642
 msgid "Unfinished character reference"
-msgstr ""
+msgstr "Referinţă caracter neterminată"
 
 #: glib/gmarkup.c:888 glib/gmarkup.c:916 glib/gmarkup.c:947
 msgid "Invalid UTF-8 encoded text"
@@ -262,8 +261,8 @@ msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
 msgstr ""
-"'%s' nu este un caracter valid care urmează dupa caracterul '<'; nu poate să "
-"înceapă un nume element"
+"„%s” nu este un caracter valid după caracterul „<”. Nu poate începe cu "
+"numele unui element"
 
 #: glib/gmarkup.c:1085
 #, c-format
@@ -271,16 +270,16 @@ msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
 "'%s'"
 msgstr ""
-"Caracter '%s' ciudat, aşteptam un '>' pentru a termina tagul de început al "
-"elementului '%s'"
+"Caracter neobişnuit „%s”, se aştepta un „>” pentru a termina eticheta de "
+"început a elementului „%s”"
 
 #: glib/gmarkup.c:1172
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
-"Caracter '%s' ciudat, aşteptam un '=' după numele atributului '%s' al "
-"elementului '%s'"
+"Caracter neobişnuit „%s”, se aştepta un „=” după numele atributului „%s” al "
+"elementului „%s”"
 
 #: glib/gmarkup.c:1213
 #, c-format
@@ -289,9 +288,9 @@ msgid ""
 "element '%s', or optionally an attribute; perhaps you used an invalid "
 "character in an attribute name"
 msgstr ""
-"Caracter '%s' ciudat, aşteptam un '>' sau '/' pentru a termina tagul de "
-"început al elementului '%s', sau opţional un atribut; poate aţi folosit un "
-"caracter invalid în numele atributului"
+"Caracter neobişnuit „%s”, se aştepta un „>” sau „/” pentru a termina "
+"eticheta de început a elementului „%s” sau opţional un atribut. Poate aţi "
+"utilizat un caracter invalid în numele atributului"
 
 #: glib/gmarkup.c:1296
 #, c-format
@@ -299,8 +298,8 @@ msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
 "giving value for attribute '%s' of element '%s'"
 msgstr ""
-"Caracter '%s' ciudat, aşteptam ghilimele de început după semnul egal pentru "
-"a da valoarea atributului '%s' al elementului '%s'"
+"Caracter neobişnuit „%s”, se aşteptau ghilimele de început după semnul egal "
+"pentru a da valoarea atributului „%s” al elementului „%s”"
 
 #: glib/gmarkup.c:1436
 #, c-format
@@ -308,8 +307,8 @@ msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 msgstr ""
-"'%s' nu este un caracter valid urmând caracterelor '</'; '%s' nu poate să "
-"înceapă un nume de element"
+"„%s” nu este un caracter valid după caracterele „</”. „%s” nu poate începe "
+"un nume de element"
 
 #: glib/gmarkup.c:1474
 #, c-format
@@ -317,18 +316,18 @@ msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 msgstr ""
-"'%s' nu este un caracter valid urmând închiderea elementului '%s'; "
-"caracterul permis este '>'"
+"„%s” nu este un caracter valid după numele elementului de închidere „%s”. "
+"Caracterul permis este „>”"
 
 #: glib/gmarkup.c:1485
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
-msgstr "Elementul '%s' a fost închis, nici un element nu este curent deschis"
+msgstr "Elementul „%s” a fost închis, nici un element nu este curent deschis"
 
 #: glib/gmarkup.c:1494
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
-msgstr "Elementul '%s' a fost închis, dar elementul deschis curent este '%s'"
+msgstr "Elementul „%s” a fost închis, dar elementul deschis curent este „%s”"
 
 #: glib/gmarkup.c:1641
 msgid "Document was empty or contained only whitespace"
@@ -336,7 +335,7 @@ msgstr "Documentul era gol sau conţinea doar spaţiu alb"
 
 #: glib/gmarkup.c:1655
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
-msgstr "Documentul s-a terminat neaşteptat imediat dupa un caracter '<'"
+msgstr "Documentul s-a terminat neaşteptat imediat după un caracter „<”"
 
 #: glib/gmarkup.c:1663 glib/gmarkup.c:1707
 #, c-format
@@ -344,8 +343,8 @@ msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
 "element opened"
 msgstr ""
-"Documentul s-a terminat neaşteptat cu elemente încă deschise - '%s' a fost "
-"ultimul element deschis"
+"Documentul s-a terminat neaşteptat cu unele elemente încă deschise. „%s” a "
+"fost ultimul element deschis"
 
 #: glib/gmarkup.c:1671
 #, c-format
@@ -353,171 +352,167 @@ msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
 "the tag <%s/>"
 msgstr ""
-"Documentul s-a terminat neaşteptat, mă aşteptat să vad un caracter '>' care "
-"să termine tagul <%s/>"
+"Documentul s-a terminat neaşteptat, se aştepta un caracter „>” care să "
+"încheie eticheta <%s/>"
 
 #: glib/gmarkup.c:1677
 msgid "Document ended unexpectedly inside an element name"
-msgstr "Documentul s-a terminat neaşteptat în numele unui element"
+msgstr "Documentul s-a terminat neaşteptat în cadrul numelui unui element"
 
 #: glib/gmarkup.c:1682
 msgid "Document ended unexpectedly inside an attribute name"
-msgstr "Documentul s-a terminat neaşteptat în numele unui atribut"
+msgstr "Documentul s-a terminat neaşteptat în cadrul numele unui atribut"
 
 #: glib/gmarkup.c:1687
 msgid "Document ended unexpectedly inside an element-opening tag."
-msgstr "Documentul s-a terminat neaşteptat într-un tag deschidere element"
+msgstr ""
+"Documentul s-a terminat neaşteptat în cadul unei etichete ce deschidea un "
+"element"
 
 #: glib/gmarkup.c:1693
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
 msgstr ""
-"Documentul s-a terminat neaşteptat după semnul egal ce urma un nume atribut; "
-"nici o valoare pentru atribut"
+"Documentul s-a terminat neaşteptat după semnul egal ce urma unui nume "
+"atribut. Nici o valoare pentru atribut"
 
 #: glib/gmarkup.c:1700
 msgid "Document ended unexpectedly while inside an attribute value"
-msgstr "Documentul s-a terminat neaşteptat în valoarea unui atribut"
+msgstr "Documentul s-a terminat neaşteptat în cadrul valorii unui atribut"
 
 #: glib/gmarkup.c:1715
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr ""
-"Documentul s-a terminat neaşteptat în tagul închidere pentru elementul '%s'"
+"Documentul s-a terminat neaşteptat în cadrul etichetei de închidere a "
+"elementului „%s”"
 
 #: glib/gmarkup.c:1721
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
-"Documentul s-a terminat neaşteptat într-un comentariu sau instrucţiune de "
-"procesare"
+"Documentul s-a terminat neaşteptat în cadrul unui comentariu sau a unei "
+"instrucţiuni de procesare"
 
 #: glib/gshell.c:72
 msgid "Quoted text doesn't begin with a quotation mark"
-msgstr "Textul citat nu începe cu semnul de citare"
+msgstr "Textul citat nu începe cu un semn de citare"
 
 #: glib/gshell.c:162
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
-msgstr ""
-"Semn de întrebare nepotrivit în linia de comandă sau alt text citat de shell"
+msgstr "Semn de citare nepereche în linia de comandă sau text „shell-quoted”"
 
 #: glib/gshell.c:530
-#, fuzzy, c-format
+#, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
-msgstr "Textul s-a terminal imediat după un caracter '' (textul era '%s')"
+msgstr "Textul s-a terminal imediat după un caracter „\\” (textul era „%s”)"
 
 #: glib/gshell.c:537
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr ""
-"Textul s-a terminal înainte de găsirea ghilimelei pentru %c (textul era '%s')"
+"Textul s-a terminal înainte de semnul de citare pereche pentru %c (textul "
+"era „%s”)"
 
 #: glib/gshell.c:549
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Textul era gol (sau conţinea doar spaţiu alb)"
 
-#: glib/gspawn-win32.c:297
+#: glib/gspawn-win32.c:295
 msgid "Failed to read data from child process"
-msgstr "Eşuare la citirea datelor de la procesul copil"
+msgstr "Nu am reuşit să citesc datele de la procesul copil"
 
-#: glib/gspawn-win32.c:426
+#: glib/gspawn-win32.c:424
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
 msgstr ""
-"Eroare neaşteptată în g_io_channel_win32_poll() la citirea datelor din "
+"Eroare neaşteptată în g_io_channel_win32_poll() la citirea datelor de la "
 "procesul copil"
 
-#: glib/gspawn-win32.c:844 glib/gspawn.c:1001
+#: glib/gspawn-win32.c:850 glib/gspawn.c:1012
 #, c-format
 msgid "Failed to read from child pipe (%s)"
-msgstr "Eşuare la citirea datelor din conectorul pipe copil (%s)"
+msgstr "Nu am reuşit să citiesc datele din conectorul „pipe” copil (%s)"
 
-#: glib/gspawn-win32.c:924
-#, fuzzy
+#: glib/gspawn-win32.c:930
 msgid "Failed to execute helper program"
-msgstr "Eşuare la execuţia procesului copil (%s)"
+msgstr "Nu am reuşit lansarea în execuţie a programului asociat"
 
-#: glib/gspawn-win32.c:945 glib/gspawn-win32.c:989
+#: glib/gspawn-win32.c:951 glib/gspawn-win32.c:995
 #, c-format
 msgid "Failed to execute child process (%s)"
-msgstr "Eşuare la execuţia procesului copil (%s)"
+msgstr "Nu am reuşit să lansez în execuţie procesul copil (%s)"
 
-#: glib/gspawn-win32.c:980 glib/gspawn.c:1206
+#: glib/gspawn-win32.c:986 glib/gspawn.c:1217
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
-msgstr "Eşuare la schimbarea directorului '%s' (%s)"
+msgstr "Nu am reuşit să schimb în directorul „%s” (%s)"
 
-#: glib/gspawn-win32.c:1034 glib/gspawn.c:1337
+#: glib/gspawn-win32.c:1040 glib/gspawn.c:1348
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr ""
-"Eşuare la crearea conectorului pipe pentru comunicare cu procesul copil (%s)"
+"Nu am reuşit să creez conectorul „pipe” pentru a comunica cu procesul copil "
+"(%s)"
 
-#: glib/gspawn.c:167
+#: glib/gspawn.c:178
 #, c-format
 msgid "Failed to read data from child process (%s)"
-msgstr "Eşuare la citirea datelor din procesul copil (%s)"
+msgstr "Nu am reuşit să citesc datele din procesul copil (%s)"
 
-#: glib/gspawn.c:298
+#: glib/gspawn.c:309
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr ""
 "Eroare neaşteptată în select() la citirea datelor din  procesul copil (%s)"
 
-#: glib/gspawn.c:381
+#: glib/gspawn.c:392
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Eroare neaşteptată în waitpid() (%s)"
 
-#: glib/gspawn.c:1066
+#: glib/gspawn.c:1077
 #, c-format
 msgid "Failed to fork (%s)"
-msgstr "Eşuare la fork (%s)"
+msgstr "Nu am reuşit să clonez procesul (%s)"
 
-#: glib/gspawn.c:1216
-#, fuzzy, c-format
+#: glib/gspawn.c:1227
+#, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
-msgstr "Eşuare la execuţia procesului copil (%s)"
+msgstr "Nu am reuşit să lansez în execuţie procesul „%s” (%s)"
 
-#: glib/gspawn.c:1226
+#: glib/gspawn.c:1237
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
-msgstr "Eşuare la redirectarea ieşirii sau intrării a procesului copil (%s)"
+msgstr "Eşuare la redirectarea ieşirii sau intrării procesului copil (%s)"
 
-#: glib/gspawn.c:1235
+#: glib/gspawn.c:1246
 #, c-format
 msgid "Failed to fork child process (%s)"
-msgstr "Eşuare la fork a procesului copil (%s)"
+msgstr "Eşuare la clonarea procesului copil (%s)"
 
-#: glib/gspawn.c:1243
-#, fuzzy, c-format
+#: glib/gspawn.c:1254
+#, c-format
 msgid "Unknown error executing child process \"%s\""
-msgstr "Eroare necunoscută la executarea  procesului copil"
+msgstr "Eroare necunoscută la lansarea în execuţie a procesului copil „%s”"
 
-#: glib/gspawn.c:1265
+#: glib/gspawn.c:1276
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
-msgstr "Eşuare la citire date suficiente din PID-ul conectorul pipe copil (%s)"
+msgstr ""
+"Nu am reuşit să citisc date suficiente din PID-ul conectorului „pipe” copil "
+"(%s)"
 
 #: glib/gutf8.c:985
 msgid "Character out of range for UTF-8"
-msgstr "Caracterul în afara domeniului UTF-8"
+msgstr "Caracter în afara standardului UTF-8"
 
 #: glib/gutf8.c:1074 glib/gutf8.c:1083 glib/gutf8.c:1215 glib/gutf8.c:1224
 #: glib/gutf8.c:1365 glib/gutf8.c:1461
 msgid "Invalid sequence in conversion input"
-msgstr "Secvenţă invalidă în conversia intrării"
+msgstr "Secvenţă invalidă în intrarea conversiei"
 
 #: glib/gutf8.c:1376 glib/gutf8.c:1472
 msgid "Character out of range for UTF-16"
-msgstr "Caracterul în afara domeniului UTF-16"
-
-#~ msgid "Incorrect message size"
-#~ msgstr "Marime mesaj incorectă"
-
-#~ msgid "Socket error"
-#~ msgstr "Eroare socket"
-
-#~ msgid "Channel set flags unsupported"
-#~ msgstr "Setare flaguri canal nesuportată"
+msgstr "Caracter în afara standardului UTF-16"
