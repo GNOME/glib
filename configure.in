@@ -1644,16 +1644,16 @@ $glib_inline
 #endif	/* !__cplusplus */
 _______EOF
 
-	if test x$g_have_iso_varargs ; then
+	if test x$g_have_iso_varargs = xyes ; then
 		cat >>$outfile <<_______EOF
 
-#define G_HAVE_ISO_VARARGS
+#define G_HAVE_ISO_VARARGS 1
 _______EOF
 	fi
-	if test x$g_have_gnuc_varargs ; then
+	if test x$g_have_gnuc_varargs = xyes ; then
 		cat >>$outfile <<_______EOF
 
-#define G_HAVE_GNUC_VARARGS
+#define G_HAVE_GNUC_VARARGS 1
 _______EOF
 	fi
 

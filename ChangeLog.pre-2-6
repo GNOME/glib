@@ -1,3 +1,8 @@
+Sun May 20 10:47:47 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* configure.in: Fix some problems in writing out varargs
+	tests in configure.in
+
 Fri May 18 10:52:23 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* configure.in gmessages.h: Use compile checks for ISO C99 and GNU
