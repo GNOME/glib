@@ -1,3 +1,9 @@
+Sat Mar  2 14:46:17 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* gmodule-beos.c (_g_module_build_path) * gmodule-dyld.c (_g_module_build_path) 
+	  gmodule-dl.c (_g_module_build_path): Use G_MODULE_SUFFIX rather than
+	a hardcoded ".so". (#72803)
+
 Sun Feb 17 18:15:22 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* gmodule.c (g_module_open): Fix typo when checking
