@@ -8,7 +8,7 @@
 #define TEST_PRIVATE_ROUNDS 5
 
 void
-test_mutexes ()
+test_mutexes (void)
 {
   GMutex *mutex = NULL;
   GCond *cond = NULL;
@@ -128,7 +128,7 @@ wait_thread (double seconds)
 }
 
 gpointer
-private_constructor ()
+private_constructor (void)
 {
   gpointer *result = g_new (gpointer, 2);
   result[0] = 0;
@@ -169,7 +169,7 @@ test_private_func (void *data)
 }
 
 void
-test_private ()
+test_private (void)
 {
   int i;
   gpointer threads[TEST_PRIVATE_THREADS];
@@ -185,7 +185,7 @@ test_private ()
 }
 
 int
-main ()
+main (void)
 {
   test_mutexes ();
 

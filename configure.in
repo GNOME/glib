@@ -742,8 +742,9 @@ GLIB_IF_VAR_EQ(mutex_has_default, yes,
 dnl ****************************************
 dnl *** GLib POLL* compatibility defines ***
 dnl ****************************************
-GLIB_SYSDEFS([#include <sys/types.h>
-	#include <sys/poll.h>],
+GLIB_SYSDEFS(
+[#include <sys/types.h>
+#include <sys/poll.h>],
 	POLLIN:1 POLLOUT:4 POLLPRI:2 POLLERR:8 POLLHUP:16 POLLNVAL:32,
 	glibconfig-sysdefs.h,
 	=)

@@ -18,8 +18,17 @@
  */
 #undef G_LOG_DOMAIN
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include <stdio.h>
 #include <string.h>
+
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
+
 #include "glib.h"
 
 int array[10000];
