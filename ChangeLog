@@ -1,3 +1,7 @@
+2001-05-30  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gthread-2.0.pc.in: Add @G_THREAD_CFLAGS@ to Cflags.
+
 Tue May 29 18:17:11 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* autogen.sh (have_libtool): Fix GNU sedism
