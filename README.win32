@@ -1,3 +1,6 @@
+General
+=======
+
 For more information about the port or GLib, GTk+ and the GIMP to
 native Windows, and pre-built binary packages, see
 http://www.iki.fi/tml/gimp/win32/ . "Native" means that we use the
@@ -8,16 +11,75 @@ library is used.
 To build GLib on Win32, you can use either the Microsoft compiler and
 tools, or gcc. Both the compiler from MSVC 5.0 and from MSVC 6.0 have
 been used successfully. With gcc I mean egcs-1.1.2 (as distributed by
-Mumit Khan), running under cygwin-b20.1.
+Mumit Khan), running under cygwin-b20.1. To successfully use gcc,
+follow the instructions below. I use gcc -mno-cygwin, i.e. the
+produced executables (.exe and .dll files) do *not* require the cygwin
+runtime library.
 
-If you build with gcc, note that the produced executables and DLLs do
-*not* require the cygwin dll (gcc -mno-cygwin). That's the whole point
-of this porting effort, more or less.
+To test the GLib functions, go to the tests subdirectory and enter
+`nmake -f makefile.msc check` or `make -f makefile.cygwin check`.
 
-The egcs support was added quite recently, but seems to
-work. Debugging with gdb works. I prefer to use the msvcrt runtime and
-not the default crtdll. This can be achieved by applying the following
-diff to the specs file, which typically is installed as
+If you would want to use the cygwin tools to generate executables that
+*do* use the cygwin runtime, the normal Unix configuration method
+should work as if on Unix. But it won't produce DLLs. At least I
+haven't succeeded in that.
+
+With a little work, it might be possible to use the ./configure
+mechanism also with a "mingw32" configuration.
+
+The following preprocessor macros are used for conditional compilation 
+related to Win32:
+
+- WIN32 is defined when compiling for the Win32 platform, regardless
+  if using the X11 or Win32 windowing API (in the case of GLib, this
+  dimension isn't significant), regardless whether using a more or
+  less complete POSIX emulation runtime layer (like Cygwin) or not.
+
+- NATIVE_WIN32 is defined when compiling for Win32, *and* without
+  any POSIX emulation, other that to the extent provided by the
+  bundled Microsoft C library (msvcrt.dll) and the pthreads-win32
+  library. For instance, pathnames are in the native Windows syntax.
+
+The Win32 port uses the combination with both of those on.
+
+Additionally, there are the compiler-specific macros:
+- _MSC_VER is defined when using the Microsoft compiler
+- __GNUC__ is defined when using GCC (i.e. egcs)
+
+Some of the usage of these macros was a bit mixed up, and had to be
+straightened out when adding the gcc support. In particular, I used to
+check for _MSC_VER in some places where I really wanted to check for
+the Microsoft C library, and those checks has now been changed to
+NATIVE_WIN32. NATIVE_WIN32 should maybe be renamed to USE_MSVCRT.
+
+Pthreads library
+================
+
+Before building you must get the pthreads library for Win32 from
+http://sourceware.cygnus.com/pthreads-win32/. The pthreads-win32
+snapshot from 1999-04-07 is the one that should be used. Edit the
+location of the pthreads library and include files in makefile.msc or
+makefile.cygwin. The ptreads distribution includes the precompiled dll
+and import libraries both for MSVC and gcc.
+
+The pthreads for Win32 package that the thread support uses supposedly
+isn't quite ready yet, and thus threads stuff should not be relied
+upon for anything serious.
+
+Building with MSVC
+==================
+
+If using the Microsoft toolchain, build with `nmake -f
+makefile.msc`. Install with `nmake -f makefile.msc install`. 
+Building with gcc
+=================
+
+The gcc support was added quite recently, but seems to work. Debugging
+with gdb works. I prefer to use the msvcrt runtime and not the default
+crtdll. Especially, as the pthread library also uses msvcrt, using
+crtdll would probably not be a good idea at all. Using msvcrt can be
+achieved by applying the following diff to the specs file, which
+typically is installed as
 C:/cygnus/cygwin-b20/H-i586-cygwin32/lib/gcc-lib/i586-cygwin32/egcs-2.91.66/specs.
 
 Sorry for the illegibility of this diff, but the specs file is like
@@ -36,55 +98,29 @@ crt2, and defines __MSVCRT__.
 --Di386 -D_WIN32   -DWINNT  -D_X86_=1 -D__STDC__=1  -D__stdcall=__attribute__((__stdcall__))   -D__cdecl=__attribute__((__cdecl__))   -D__declspec(x)=__attribute__((x))   -Asystem(winnt) -Acpu(i386) -Amachine(i386)
 +-Di386 -D_WIN32 %{mno-cygwin:-D__MSVCRT__ } -DWINNT  -D_X86_=1 -D__STDC__=1  -D__stdcall=__attribute__((__stdcall__))   -D__cdecl=__attribute__((__cdecl__))   -D__declspec(x)=__attribute__((x))   -Asystem(winnt) -Acpu(i386) -Amachine(i386) 
 
-Note: If you build with gcc, you should also fix the definition of
-_dev_t in the header mingw32/sys/types.h to correspond to what it
-actually is used by msvcrt.dll. It should be unsigned int, not
-short. Otherwise stat() calls will fail.
+You should also fix the definition of _dev_t in the header
+mingw32/sys/types.h to correspond to what it actually is used by
+msvcrt.dll. It should be unsigned int, not short. Otherwise stat()
+calls will fail.
 
-Before building you must get the pthreads library for Win32 from
-http://sourceware.cygnus.com/pthreads-win32/. The pthreads-win32
-snapshot from 1999-04-07 is the one that should be used. Edit the
-location of the pthreads library and include files in makefile.msc or
-makefile.cygwin.
+You also will have to get the mingw32 source snapshot from
+http://www.geocities.com/Tokyo/Towers/6162/mingw32_980701_tar.gz (this
+is the source to the "mingw32" part of what's included with Mumit
+Khan's egcs-1.1.2. Unpack it and fix the prototype and call to
+__getmainargs() in init.c to include one more parameter, an int *,
+which should be passed the address of a zero int. Remake dllcrt2.o
+(which is the file which gets linked into dlls when using msvcrt, as
+per the specs file above). Code snippets below:
 
-If using the Microsoft toolchain, build with `nmake -f
-makefile.msc`. Install with `nmake -f makefile.msc install`.  If using
-egcs, build using `make -f makefile.cygwin`.
+...
+#ifdef __MSVCRT__
+extern void __getmainargs(int *, char***, char***, int, int *);
+#else
+...
+#ifdef __MSVCRT__
+	int newmode = 0;
+	(void) __getmainargs(&_argc, &_argv, &dummy_environ, _CRT_glob, &newmode);
+#else
+...
 
-To test the GLib functions, go to the tests subdirectory and enter
-`nmake -f makefile.msc check` or `make -f makefile.cygwin check`.
-
-If you would want to use the cygwin tools to generate executables that
-*do* use the cygwin runtime, the normal Unix configuration method
-should work as if on Unix (knock on wood).
-
-With a little work, it might be possible to use the ./configure
-mechanism also with a "mingw32" configuration.
-
-The following preprocessor macros are used for conditional compilation 
-related to Win32:
-
-- WIN32 is defined when compiling for the Win32 platform, regardless
-  if using the X11 or Win32 windowing API (in the case of GLib, this
-  dimension isn't significant), regardless whether using a more or
-  less complete POSIX emulation runtime layer (like Cygwin) or not.
-
-- NATIVE_WIN32 is defined when compiling for Win32, *and* without
-  any POSIX emulation, other that to the extent provided by the
-  bundled Microsoft C library and the pthreads-win32 library. For
-  instance, pathnames are in the native Windows syntax.
-
-The Win32 port uses the combination with both of those on.
-
-Additionally, there are the compiler-specific macros:
-- _MSC_VER is defined when using the Microsoft compiler
-- __GNUC__ is defined when using GCC (i.e. egcs)
-
-Some of the usage of these macros was a bit mixed up, and had to be
-straightened out when adding the gcc support. In particular, I used to
-check for _MSC_VER in some places where I really wanted to check for
-the Microsoft C library, and those checks has now been changed to
-NATIVE_WIN32. NATIVE_WIN32 should maybe be renamed to USE_MSVCRT.
-
-The pthreads for Win32 package that the thread support uses isn't
-quite ready yet, and thus threads really should not be relied upon.
+Next, build using `make -f makefile.cygwin`.
