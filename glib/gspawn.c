@@ -1202,7 +1202,9 @@ fork_exec_with_pipes (gboolean              intermediate_child,
         }
       
       /* Success against all odds! return the information */
-      
+      close_and_invalidate (&child_err_report_pipe[0]);
+      close_and_invalidate (&child_pid_report_pipe[0]);
+ 
       if (child_pid)
         *child_pid = pid;
 
