@@ -217,14 +217,14 @@ of g_signal_new().
 
 <!-- ##### MACRO G_SIGNAL_MATCH_MASK ##### -->
 <para>
-
+A mask for all #GSignalMatchType bits.
 </para>
 
 
 
 <!-- ##### MACRO G_SIGNAL_FLAGS_MASK ##### -->
 <para>
-
+A mask for all #GSignalFlags bits.
 </para>
 
 

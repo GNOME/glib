@@ -1,5 +1,8 @@
 2003-09-30  Matthias Clasen  <maclas@gmx.de>
 
+	* gobject/tmpl/gparamspec.sgml: 
+	* gobject/tmpl/signals.sgml: Additions.
+
 	* glib/glib-sections.txt: Add g_unichar_get_mirror_char and
 	g_static_mutex_get_mutex_impl_shortcut.
 

@@ -250,70 +250,88 @@ if @value1 is found to be less than, equal to or greater than @value2, respectiv
 
 <!-- ##### FUNCTION g_param_spec_get_name ##### -->
 <para>
-
+Returns the name of a #GParamSpec.
 </para>
 
-@pspec: 
-@Returns: 
+@pspec: a valid #GParamSpec
+@Returns: the name of @pspec.
 
 
 <!-- ##### FUNCTION g_param_spec_get_nick ##### -->
 <para>
-
+Returns the nickname of a #GParamSpec.
 </para>
 
-@pspec: 
-@Returns: 
+@pspec: a valid #GParamSpec
+@Returns: the nickname of @pspec.
 
 
 <!-- ##### FUNCTION g_param_spec_get_blurb ##### -->
 <para>
-
+Returns the short description of a #GParamSpec.
 </para>
 
-@pspec: 
-@Returns: 
+@pspec: a valid #GParamSpec
+@Returns: the short description of @pspec.
 
 
 <!-- ##### FUNCTION g_param_spec_get_qdata ##### -->
 <para>
-
+This function gets back user data pointers stored via
+g_param_spec_set_qdata().
 </para>
 
-@pspec: 
-@quark: 
-@Returns: 
+@pspec: a valid #GParamSpec
+@quark: a #GQuark, naming the user data pointer
+@Returns: the user data pointer set, or %NULL
 
 
 <!-- ##### FUNCTION g_param_spec_set_qdata ##### -->
 <para>
-
+This sets an opaque, named pointer on a #GParamSpec.
+The name is specified through a #GQuark (retrived e.g. via
+g_quark_from_static_string()), and the pointer
+can be gotten back from the @pspec with g_param_spec_get_qdata().
+Setting a previously set user data pointer, overrides (frees)
+the old pointer set, using #NULL as pointer essentially
+removes the data stored.
 </para>
 
-@pspec: 
-@quark: 
-@data: 
+@pspec: the #GParamSpec to set store a user data pointer
+@quark: a #GQuark, naming the user data pointer
+@data: an opaque user data pointer
 
 
 <!-- ##### FUNCTION g_param_spec_set_qdata_full ##### -->
 <para>
-
+This function works like g_param_spec_set_qdata(), but in addition,
+a <literal>void (*destroy) (gpointer)</literal> function may be 
+specified which is called with @data as argument when the @pspec is 
+finalized, or
+the data is being overwritten by a call to g_param_spec_set_qdata()
+with the same @quark.
 </para>
 
-@pspec: 
-@quark: 
-@data: 
-@destroy: 
+@pspec:   the #GParamSpec to set store a user data pointer
+@quark:   a #GQuark, naming the user data pointer
+@data:    an opaque user data pointer
+@destroy: function to invoke with @data as argument, when @data needs to
+          be freed
 
 
 <!-- ##### FUNCTION g_param_spec_steal_qdata ##### -->
 <para>
-
+This function gets back user data pointers stored via
+g_param_spec_set_qdata() and removes the @data from @pspec
+without invoking it's destroy() function (if any was
+set).
+Usually, calling this function is only required to update
+user data pointers with a destroy notifier.
 </para>
 
-@pspec: 
-@quark: 
-@Returns: 
+@pspec: the #GParamSpec to get a stored user data pointer from
+@quark: a #GQuark, naming the user data pointer
+@Returns: the user data pointer set, or %NULL
 
 
 <!-- ##### FUNCTION g_param_spec_internal ##### -->
