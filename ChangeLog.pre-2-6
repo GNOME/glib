@@ -1,3 +1,9 @@
+Fri Mar 19 11:07:06 2004  Owen Taylor  <otaylor@redhat.com>
+
+	* tests/atomic-test.c (main): Make computation
+	of "biggest_pointer" vaguely more portable.
+	(#137498, Jonas Jonsson)
+
 2004-03-16  Tor Lillqvist  <tml@iki.fi>
 
 	* configure.in: Define HAVE_INT64_AND_I64 also in the mingw (gcc

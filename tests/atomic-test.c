@@ -13,7 +13,7 @@ main (int   argc,
   gint i;
   gint atomic = -5;
   gpointer atomic_pointer = NULL;
-  gpointer biggest_pointer = atomic_pointer - 1;
+  gpointer biggest_pointer = (gpointer)((gsize)atomic_pointer - 1);
 
   for (i = 0; i < 15; i++)
     g_atomic_int_inc (&atomic);
