@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-07-30 15:30-0400\n"
+"POT-Creation-Date: 2004-08-13 10:10-0400\n"
 "PO-Revision-Date: 2004-03-18 09:16+0100\n"
 "Last-Translator: Stanislav Visnovsky <visnovsky@kde.org>\n"
 "Language-Team: Slovak <sk-i18n@linux.sk>\n"
@@ -395,18 +395,18 @@ msgstr "Text v úvodzovkách nezačína úvodzovkami"
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr "Prebytočné úvodzovky v príkazovom riadku alebo v inom texte shellu"
 
-#: glib/gshell.c:530
+#: glib/gshell.c:540
 #, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
 msgstr "Text skončil hneď po znaku '\\'.  (Text bol '%s')"
 
-#: glib/gshell.c:537
+#: glib/gshell.c:547
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr ""
 "Text skončil pred nájdením zodpovedajúcej úvodzovky pre %c. (Text bol '%s')"
 
-#: glib/gshell.c:549
+#: glib/gshell.c:559
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Text bol prázdny (alebo obsahoval iba medzery)"
 

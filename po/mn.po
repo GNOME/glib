@@ -9,7 +9,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
-"POT-Creation-Date: 2004-08-08 11:32+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2004-08-13 10:10-0400\n"
 "PO-Revision-Date: 2004-08-08 16:55+0100\n"
 "Last-Translator: Sanlig Badral <badral@users.sf.net>\n"
 "Language-Team: Mongolian <openmn-core@lists.sf.net>\n"
@@ -27,28 +28,19 @@ msgstr "Тэмдэгт олонлог »%s« ээс »%s« рүү хөрвүүл
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "Хөрвүүлэгч »%s« ээс »%s« рүү нээгдсэнгүй"
 
-#: glib/gconvert.c:604
-#: glib/gconvert.c:891
-#: glib/giochannel.c:1315
-#: glib/giochannel.c:1357
-#: glib/giochannel.c:2199
-#: glib/gutf8.c:910
+#: glib/gconvert.c:604 glib/gconvert.c:891 glib/giochannel.c:1315
+#: glib/giochannel.c:1357 glib/giochannel.c:2199 glib/gutf8.c:910
 #: glib/gutf8.c:1355
 msgid "Invalid byte sequence in conversion input"
 msgstr "Хөрвүүлэлтийн оролтод хүчингүй байт дараалал байна"
 
-#: glib/gconvert.c:609
-#: glib/gconvert.c:824
-#: glib/giochannel.c:1322
+#: glib/gconvert.c:609 glib/gconvert.c:824 glib/giochannel.c:1322
 #: glib/giochannel.c:2211
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Хөрвүүлж байхад алдаа: %s"
 
-#: glib/gconvert.c:627
-#: glib/gutf8.c:906
-#: glib/gutf8.c:1106
-#: glib/gutf8.c:1247
+#: glib/gconvert.c:627 glib/gutf8.c:906 glib/gutf8.c:1106 glib/gutf8.c:1247
 #: glib/gutf8.c:1351
 msgid "Partial character sequence at end of input"
 msgstr "Оролтын төгсгөлд хагас тэмдэгтийн дараалал"
@@ -99,8 +91,7 @@ msgstr "Хүчингүй хостын нэр"
 msgid "Error opening directory '%s': %s"
 msgstr "»%s« лавлахыг нээхэд алдаа: %s"
 
-#: glib/gfileutils.c:393
-#: glib/gfileutils.c:458
+#: glib/gfileutils.c:393 glib/gfileutils.c:458
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "%lu байтуудыг »%s« файлыг уншихдаа байрлуулж чадсангүй"
@@ -115,8 +106,7 @@ msgstr "Файл »%s« -ыг уншиж байхад алдаа: %s"
 msgid "Failed to read from file '%s': %s"
 msgstr "»%s« файлаас уншиж болохгүй байна: %s"
 
-#: glib/gfileutils.c:527
-#: glib/gfileutils.c:595
+#: glib/gfileutils.c:527 glib/gfileutils.c:595
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "»%s« файл нээгдэхгүй байна: %s"
@@ -169,14 +159,11 @@ msgstr "»%s« -ээс »%s« рүү хөрвүүлэгч нээгдсэнгүй
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "Raw-read in g_io_channel_read_line_string боломжгүй"
 
-#: glib/giochannel.c:1539
-#: glib/giochannel.c:1796
-#: glib/giochannel.c:1882
+#: glib/giochannel.c:1539 glib/giochannel.c:1796 glib/giochannel.c:1882
 msgid "Leftover unconverted data in read buffer"
 msgstr "Унших буфэрт хөрвүүлээгүй файл байна"
 
-#: glib/giochannel.c:1619
-#: glib/giochannel.c:1696
+#: glib/giochannel.c:1619 glib/giochannel.c:1696
 msgid "Channel terminates in a partial character"
 msgstr "Суваг тал тэмдэгтээр төгслөө"
 
@@ -195,13 +182,21 @@ msgid "Error on line %d: %s"
 msgstr "%d мөрөнд алдаа: %s"
 
 #: glib/gmarkup.c:414
-msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
-msgstr "Хоосон абт »&;« олдлоо; хүчинтэй абтууд &amp; &quot; &lt; &gt; &apos; юм. (абт=аский биш тэмдэгт)"
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgstr ""
+"Хоосон абт »&;« олдлоо; хүчинтэй абтууд &amp; &quot; &lt; &gt; &apos; юм. "
+"(абт=аский биш тэмдэгт)"
 
 #: glib/gmarkup.c:424
 #, c-format
-msgid "Character '%s' is not valid at the start of an entity name; the & character begins an entity; if this ampersand isn't supposed to be an entity, escape it as &amp;"
-msgstr "Абтын нэрийн эхлэлийн »%s« тэмдэгт хүчингүй; Абт & тэмдэгтээр эхэлдэг; Хэрвээ энэ амперсаныг абт бишээр авах хэрэгтэй бол &amp; гэж бичнэ үү"
+msgid ""
+"Character '%s' is not valid at the start of an entity name; the & character "
+"begins an entity; if this ampersand isn't supposed to be an entity, escape "
+"it as &amp;"
+msgstr ""
+"Абтын нэрийн эхлэлийн »%s« тэмдэгт хүчингүй; Абт & тэмдэгтээр эхэлдэг; "
+"Хэрвээ энэ амперсаныг абт бишээр авах хэрэгтэй бол &amp; гэж бичнэ үү"
 
 #: glib/gmarkup.c:460
 #, c-format
@@ -215,13 +210,21 @@ msgstr "Абтын нэр »%s« тодорхойгүй"
 
 # CHECK
 #: glib/gmarkup.c:514
-msgid "Entity did not end with a semicolon; most likely you used an ampersand character without intending to start an entity - escape ampersand as &amp;"
-msgstr "Абт цэг таслалаар төгсөөгүй байна; Та магад амперсандыг абтын эхлэл бусаар хэрэглэхийг хүссэн байх - Та &amp; гэж бичнэ үү"
+msgid ""
+"Entity did not end with a semicolon; most likely you used an ampersand "
+"character without intending to start an entity - escape ampersand as &amp;"
+msgstr ""
+"Абт цэг таслалаар төгсөөгүй байна; Та магад амперсандыг абтын эхлэл бусаар "
+"хэрэглэхийг хүссэн байх - Та &amp; гэж бичнэ үү"
 
 #: glib/gmarkup.c:560
 #, c-format
-msgid "Failed to parse '%s', which should have been a digit inside a character reference (&#234; for example) - perhaps the digit is too large"
-msgstr "»%s« тэмдэгтийн дотор тоо байх ёстой (&#234; шиг) , задлан ялгалд танигдсангүй - магадгүй хэтэрхий том тоо байна уу"
+msgid ""
+"Failed to parse '%s', which should have been a digit inside a character "
+"reference (&#234; for example) - perhaps the digit is too large"
+msgstr ""
+"»%s« тэмдэгтийн дотор тоо байх ёстой (&#234; шиг) , задлан ялгалд "
+"танигдсангүй - магадгүй хэтэрхий том тоо байна уу"
 
 #: glib/gmarkup.c:585
 #, c-format
@@ -233,8 +236,13 @@ msgid "Empty character reference; should include a digit such as &#454;"
 msgstr "Хоосон тэмдэгтийн холбоос; &#454; гэх мэт тоо агуулах ёстой"
 
 #: glib/gmarkup.c:612
-msgid "Character reference did not end with a semicolon; most likely you used an ampersand character without intending to start an entity - escape ampersand as &amp;"
-msgstr "Тэмдэгт холбоос цэг таслалаар төгсөөгүй байна; Та магад амперсандыг абтын эхлэл бусаар хэрэглэхийг хүссэн байх - Та &amp; гэж бичнэ үү"
+msgid ""
+"Character reference did not end with a semicolon; most likely you used an "
+"ampersand character without intending to start an entity - escape ampersand "
+"as &amp;"
+msgstr ""
+"Тэмдэгт холбоос цэг таслалаар төгсөөгүй байна; Та магад амперсандыг абтын "
+"эхлэл бусаар хэрэглэхийг хүссэн байх - Та &amp; гэж бичнэ үү"
 
 #: glib/gmarkup.c:638
 msgid "Unfinished entity reference"
@@ -244,9 +252,7 @@ msgstr "Төгсгөлгүй абт холбоос"
 msgid "Unfinished character reference"
 msgstr "Төгсгөлгүй тэмдэгт холбоос"
 
-#: glib/gmarkup.c:895
-#: glib/gmarkup.c:923
-#: glib/gmarkup.c:954
+#: glib/gmarkup.c:895 glib/gmarkup.c:923 glib/gmarkup.c:954
 msgid "Invalid UTF-8 encoded text"
 msgstr "Хүчингүй UTF-8-р кодлогдсон текст"
 
@@ -256,38 +262,67 @@ msgstr "Баримт ямар нэгэн элементээр эхлэх ёст�
 
 #: glib/gmarkup.c:1029
 #, c-format
-msgid "'%s' is not a valid character following a '<' character; it may not begin an element name"
-msgstr "»%s« нь »<«-тэмдэгтийн арын хүчингүй тэмдэгт; Энэ нь элементийн нэрээр эхэлж болохгүй."
+msgid ""
+"'%s' is not a valid character following a '<' character; it may not begin an "
+"element name"
+msgstr ""
+"»%s« нь »<«-тэмдэгтийн арын хүчингүй тэмдэгт; Энэ нь элементийн нэрээр эхэлж "
+"болохгүй."
 
 #: glib/gmarkup.c:1092
 #, c-format
-msgid "Odd character '%s', expected a '>' character to end the start tag of element '%s'"
-msgstr "Сонин тэмдэгт »%s«, »%s« элементийн эхлэлийн тагийг хаахад »>« тэмдэгт дутуу байна"
+msgid ""
+"Odd character '%s', expected a '>' character to end the start tag of element "
+"'%s'"
+msgstr ""
+"Сонин тэмдэгт »%s«, »%s« элементийн эхлэлийн тагийг хаахад »>« тэмдэгт дутуу "
+"байна"
 
 #: glib/gmarkup.c:1180
 #, c-format
-msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
-msgstr "Сонин тэмдэгт »%s«, »%s« элементийн »%s« аттрибутын нэрийн дараа »=« хүлээгдэж байна"
+msgid ""
+"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgstr ""
+"Сонин тэмдэгт »%s«, »%s« элементийн »%s« аттрибутын нэрийн дараа »=« "
+"хүлээгдэж байна"
 
 #: glib/gmarkup.c:1221
 #, c-format
-msgid "Odd character '%s', expected a '>' or '/' character to end the start tag of element '%s', or optionally an attribute; perhaps you used an invalid character in an attribute name"
-msgstr "Сонин тэмдэгт »%s«, »%s« элементийн эхлэлийн тагийг хаахын тулд аттрибутын нэр эсвэл харин »>« эсвэл »/« тэмдэгт хүлээгдэж байна; Магадгүй та аттрибутын нэрэндээ хүчингүй тэмдэгт хэрэглэжээ"
+msgid ""
+"Odd character '%s', expected a '>' or '/' character to end the start tag of "
+"element '%s', or optionally an attribute; perhaps you used an invalid "
+"character in an attribute name"
+msgstr ""
+"Сонин тэмдэгт »%s«, »%s« элементийн эхлэлийн тагийг хаахын тулд аттрибутын "
+"нэр эсвэл харин »>« эсвэл »/« тэмдэгт хүлээгдэж байна; Магадгүй та "
+"аттрибутын нэрэндээ хүчингүй тэмдэгт хэрэглэжээ"
 
 #: glib/gmarkup.c:1309
 #, c-format
-msgid "Odd character '%s', expected an open quote mark after the equals sign when giving value for attribute '%s' of element '%s'"
-msgstr "Сонин тэмдэгт »%s«; »%s« элементийн »%s« аттрибутын хувьд өгсөн утга тэнцүүгийн тэмдэгийн дараах хашилтыг хүлээж байна"
+msgid ""
+"Odd character '%s', expected an open quote mark after the equals sign when "
+"giving value for attribute '%s' of element '%s'"
+msgstr ""
+"Сонин тэмдэгт »%s«; »%s« элементийн »%s« аттрибутын хувьд өгсөн утга "
+"тэнцүүгийн тэмдэгийн дараах хашилтыг хүлээж байна"
 
 #: glib/gmarkup.c:1450
 #, c-format
-msgid "'%s' is not a valid character following the characters '</'; '%s' may not begin an element name"
-msgstr "»%s« хүчингүй тэмдэгт, хэрвээ энэ нь »</« тэмдэгтийн ард орвол; »%s« ньэлементийн нэрээр эхэлж болохгүй"
+msgid ""
+"'%s' is not a valid character following the characters '</'; '%s' may not "
+"begin an element name"
+msgstr ""
+"»%s« хүчингүй тэмдэгт, хэрвээ энэ нь »</« тэмдэгтийн ард орвол; »%s« "
+"ньэлементийн нэрээр эхэлж болохгүй"
 
 #: glib/gmarkup.c:1489
 #, c-format
-msgid "'%s' is not a valid character following the close element name '%s'; the allowed character is '>'"
-msgstr "»%s« хүчингүй тэмдэгт, хэрвээ энэ нь хааж буй »%s« элементийн нэрийн ард байгаа бол; »>« тэмдэгт хүчинтэй"
+msgid ""
+"'%s' is not a valid character following the close element name '%s'; the "
+"allowed character is '>'"
+msgstr ""
+"»%s« хүчингүй тэмдэгт, хэрвээ энэ нь хааж буй »%s« элементийн нэрийн ард "
+"байгаа бол; »>« тэмдэгт хүчинтэй"
 
 #: glib/gmarkup.c:1500
 #, c-format
@@ -307,16 +342,23 @@ msgstr "Баримт хоосон эсвэл зүгээр цагаан зай а
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "Баримт нээлттэй өнцөгтэй хаалт »<« -н дараа гэнэт төгсөв"
 
-#: glib/gmarkup.c:1678
-#: glib/gmarkup.c:1722
+#: glib/gmarkup.c:1678 glib/gmarkup.c:1722
 #, c-format
-msgid "Document ended unexpectedly with elements still open - '%s' was the last element opened"
-msgstr "Баримт нээлттэй элементүүдтэйгээр гэнэтийн байдлаар төгсөв - »%s« сүүлчийн нээлттэй элемент нь"
+msgid ""
+"Document ended unexpectedly with elements still open - '%s' was the last "
+"element opened"
+msgstr ""
+"Баримт нээлттэй элементүүдтэйгээр гэнэтийн байдлаар төгсөв - »%s« сүүлчийн "
+"нээлттэй элемент нь"
 
 #: glib/gmarkup.c:1686
 #, c-format
-msgid "Document ended unexpectedly, expected to see a close angle bracket ending the tag <%s/>"
-msgstr "Баримт гэнэтийн байдлаар төгсөв, таг <%s/> -г хаах өнцөгтэй хаалт »>«хүлээгдэж байна"
+msgid ""
+"Document ended unexpectedly, expected to see a close angle bracket ending "
+"the tag <%s/>"
+msgstr ""
+"Баримт гэнэтийн байдлаар төгсөв, таг <%s/> -г хаах өнцөгтэй хаалт "
+"»>«хүлээгдэж байна"
 
 #: glib/gmarkup.c:1692
 msgid "Document ended unexpectedly inside an element name"
@@ -328,11 +370,17 @@ msgstr "Баримт нэгэн аттрибут нэрийн дотор гэн�
 
 #: glib/gmarkup.c:1702
 msgid "Document ended unexpectedly inside an element-opening tag."
-msgstr "Баримт нээгдэж буй тагийн нэгэн элементийн нэрийн дотор гэнэтийн байдлаар төгсөв."
+msgstr ""
+"Баримт нээгдэж буй тагийн нэгэн элементийн нэрийн дотор гэнэтийн байдлаар "
+"төгсөв."
 
 #: glib/gmarkup.c:1708
-msgid "Document ended unexpectedly after the equals sign following an attribute name; no attribute value"
-msgstr "Баримт аттрибут нэрийн дараах тэнцүүгийн тэмдэгийн дараа гэнэтийн байдлаар төгсөв; аттрибутын утга алга"
+msgid ""
+"Document ended unexpectedly after the equals sign following an attribute "
+"name; no attribute value"
+msgstr ""
+"Баримт аттрибут нэрийн дараах тэнцүүгийн тэмдэгийн дараа гэнэтийн байдлаар "
+"төгсөв; аттрибутын утга алга"
 
 #: glib/gmarkup.c:1715
 msgid "Document ended unexpectedly while inside an attribute value"
@@ -341,11 +389,14 @@ msgstr "Баримт нэгэн аттрибутын утгын дотор гэ�
 #: glib/gmarkup.c:1730
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
-msgstr "Баримт гэнэтийн байдлаар нэгэн хаагдаж буй »%s« элементийн тагийн дотор төгсөв"
+msgstr ""
+"Баримт гэнэтийн байдлаар нэгэн хаагдаж буй »%s« элементийн тагийн дотор "
+"төгсөв"
 
 #: glib/gmarkup.c:1736
 msgid "Document ended unexpectedly inside a comment or processing instruction"
-msgstr "Баримт тайлбар эсвэл заавар боловсруулалтын дотор гэнэтийн байдлаар төгсөв"
+msgstr ""
+"Баримт тайлбар эсвэл заавар боловсруулалтын дотор гэнэтийн байдлаар төгсөв"
 
 #: glib/gshell.c:72
 msgid "Quoted text doesn't begin with a quotation mark"
@@ -353,7 +404,9 @@ msgstr "Хашилтан доторхи текст хашилтаар эхлэх
 
 #: glib/gshell.c:162
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
-msgstr "Тушаалын мөр дэх эсвэл өөр shell-quoted текст доторхи хашилтын тоо балансжаагүй байна"
+msgstr ""
+"Тушаалын мөр дэх эсвэл өөр shell-quoted текст доторхи хашилтын тоо "
+"балансжаагүй байна"
 
 #: glib/gshell.c:540
 #, c-format
@@ -374,11 +427,14 @@ msgid "Failed to read data from child process"
 msgstr "Өгөгдөл хүү процессоор уншигдсангүй"
 
 #: glib/gspawn-win32.c:424
-msgid "Unexpected error in g_io_channel_win32_poll() reading data from a child process"
-msgstr "Хүү процессоос өгөгдөл уншиж байхад g_io_channel_win32_poll() дотор санамсаргүй алдаа гарлаа"
+msgid ""
+"Unexpected error in g_io_channel_win32_poll() reading data from a child "
+"process"
+msgstr ""
+"Хүү процессоос өгөгдөл уншиж байхад g_io_channel_win32_poll() дотор "
+"санамсаргүй алдаа гарлаа"
 
-#: glib/gspawn-win32.c:850
-#: glib/gspawn.c:1012
+#: glib/gspawn-win32.c:850 glib/gspawn.c:1012
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Хүү процессын (%s) шугамаас унших бүтэлгүйтлээ"
@@ -387,20 +443,17 @@ msgstr "Хүү процессын (%s) шугамаас унших бүтэлг�
 msgid "Failed to execute helper program"
 msgstr "Тусламж программ ажиллахгүй байна"
 
-#: glib/gspawn-win32.c:951
-#: glib/gspawn-win32.c:995
+#: glib/gspawn-win32.c:951 glib/gspawn-win32.c:995
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Хүү процесс ажилласангүй (%s)"
 
-#: glib/gspawn-win32.c:986
-#: glib/gspawn.c:1217
+#: glib/gspawn-win32.c:986 glib/gspawn.c:1217
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "»%s« (%s) лавлах солигдсонгүй"
 
-#: glib/gspawn-win32.c:1040
-#: glib/gspawn.c:1348
+#: glib/gspawn-win32.c:1040 glib/gspawn.c:1348
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Хүү процесстой (%s) холбогдох шугам үүсгэж чадсангүй"
@@ -413,7 +466,9 @@ msgstr "Хүү процессын  (%s) өгөгдөл уншигдсаж чад
 #: glib/gspawn.c:309
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
-msgstr "Хүү процессоос (%s) өгөгдөл уншиж байхад select() дотор санамсаргүй алдаа гарлаа"
+msgstr ""
+"Хүү процессоос (%s) өгөгдөл уншиж байхад select() дотор санамсаргүй алдаа "
+"гарлаа"
 
 #: glib/gspawn.c:392
 #, c-format
@@ -448,23 +503,19 @@ msgstr "»%s« хүү процессыг ажиллуулж байхад тод�
 #: glib/gspawn.c:1276
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
-msgstr "Хүү процессын процессын дугаарын шугамаас (%s) хангалттай өгөгдөл уншиж чадсангүй"
+msgstr ""
+"Хүү процессын процессын дугаарын шугамаас (%s) хангалттай өгөгдөл уншиж "
+"чадсангүй"
 
 #: glib/gutf8.c:985
 msgid "Character out of range for UTF-8"
 msgstr "UTF-8 хязгаараас гаднах тэмдэгт"
 
-#: glib/gutf8.c:1074
-#: glib/gutf8.c:1083
-#: glib/gutf8.c:1215
-#: glib/gutf8.c:1224
-#: glib/gutf8.c:1365
-#: glib/gutf8.c:1461
+#: glib/gutf8.c:1074 glib/gutf8.c:1083 glib/gutf8.c:1215 glib/gutf8.c:1224
+#: glib/gutf8.c:1365 glib/gutf8.c:1461
 msgid "Invalid sequence in conversion input"
 msgstr "Хөрвүүлэлтийн оролтод хүчингүй дараалал"
 
-#: glib/gutf8.c:1376
-#: glib/gutf8.c:1472
+#: glib/gutf8.c:1376 glib/gutf8.c:1472
 msgid "Character out of range for UTF-16"
 msgstr "UTF-16 хязгаараас гаднах тэмдэгт"
-

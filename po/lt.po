@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-07-30 15:30-0400\n"
+"POT-Creation-Date: 2004-08-13 10:10-0400\n"
 "PO-Revision-Date: 2003-09-22 20:54+0200\n"
 "Last-Translator: Tomas Kuliavas <tokul@users.sourceforge.net>\n"
 "Language-Team: Lithuanian <komp_lt@konferencijos.lt>\n"
@@ -402,19 +402,19 @@ msgstr ""
 "Nesutampantis citavimo simbolis komandinėje eilutėje arba kitame terpės "
 "cituotame tekste"
 
-#: glib/gshell.c:530
+#: glib/gshell.c:540
 #, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
 msgstr "Tekstas pasibaigė tuoj po '\\' simbolio. (Tekste buvo įrašyta '%s')"
 
-#: glib/gshell.c:537
+#: glib/gshell.c:547
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr ""
 "Tekstas pasibaigė nesulaukus %c atitinkančio citatos ženklo. (Tekste buvo "
 "įvesta '%s')"
 
-#: glib/gshell.c:549
+#: glib/gshell.c:559
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Tekstas buvo tuščias arba turėjo vien tik tarpo simbolius)"
 

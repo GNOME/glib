@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-07-30 15:30-0400\n"
+"POT-Creation-Date: 2004-08-13 10:10-0400\n"
 "PO-Revision-Date: 2002-12-15 09:35-0800\n"
 "Last-Translator: Taneem Ahmed <taneem@eyetap.org>\n"
 "Language-Team: Bengali <gnome-translation@bengalinux.org>\n"
@@ -371,17 +371,17 @@ msgstr "কোওটেড টেক্সট কোওটেসন মার্
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr "কমান্ড লাইন অথবা শেল-কোওটেড টেক্সট এর মাঝে কোওটেসন মার্ক মিলেনি "
 
-#: glib/gshell.c:530
+#: glib/gshell.c:540
 #, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
 msgstr "একটি '\\' অক্ষরের ঠিক পরেই টেক্সট শেষ হয়েছে (টেক্সটি ছিল '%s')"
 
-#: glib/gshell.c:537
+#: glib/gshell.c:547
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr "%c এর জন্য মিলানো কোওট পাবার আগে টেক্সট শেষ হয়েছে (টেক্সটি ছিল '%s')"
 
-#: glib/gshell.c:549
+#: glib/gshell.c:559
 msgid "Text was empty (or contained only whitespace)"
 msgstr "টেক্সট শূণ্য ছিল (অথবা সুধু ওয়াইটস্পেইস ছিল)"
 

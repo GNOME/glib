@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-07-30 15:30-0400\n"
+"POT-Creation-Date: 2004-08-13 10:10-0400\n"
 "PO-Revision-Date: 2004-06-25 05:12+0700\n"
 "Last-Translator: T.M.Thanh <tmthanhmd@fptnet.com ; tmthanh@yahoo.com>\n"
 "Language-Team: Gnome-Vi Team <gnomevi-list@lists.sourceforge.net>\n"
@@ -402,18 +402,18 @@ msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr ""
 "Dấu ngoặc kép không ăn khớp trong dòng lệnh hay một shell-quoted text khác"
 
-#: glib/gshell.c:530
+#: glib/gshell.c:540
 #, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
 msgstr "Văn bản được kết thúc ngay sau ký tự '\\'. (văn bản đã là '%s')"
 
-#: glib/gshell.c:537
+#: glib/gshell.c:547
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr ""
 "Text đã kết thúc trước khi làm khớp dấu ngoặc kép cho %c. (text là '%s')"
 
-#: glib/gshell.c:549
+#: glib/gshell.c:559
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Văn bản trống (hay chỉ gồm các ký tự trắng)"
 

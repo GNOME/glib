@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-07-30 15:30-0400\n"
+"POT-Creation-Date: 2004-08-13 10:10-0400\n"
 "PO-Revision-Date: 2003-12-19 01:22+0100\n"
 "Last-Translator: Arafat Medini <lumina@silverpen.de>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
@@ -384,17 +384,17 @@ msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr ""
 "علامة اقتباس غير مطابقة في سطر الأوامر أو نص منقول من الغلاف (سطر الأوامر)"
 
-#: glib/gshell.c:530
+#: glib/gshell.c:540
 #, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
 msgstr "انتهى النص بعد الرمز '\\' (النص كان '%s')"
 
-#: glib/gshell.c:537
+#: glib/gshell.c:547
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr "انتهى النص قبل ايجاد المُقتَبَس لـ%c (النص كان '%s')"
 
-#: glib/gshell.c:549
+#: glib/gshell.c:559
 msgid "Text was empty (or contained only whitespace)"
 msgstr "النص كان فارغا (أو كان يحتوي على فراغ أبيض)"
 

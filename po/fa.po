@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.3.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-07-30 15:30-0400\n"
+"POT-Creation-Date: 2004-08-13 10:10-0400\n"
 "PO-Revision-Date: 2004-01-01 18:36+0330\n"
 "Last-Translator: Roozbeh Pournader <roozbeh@sharif.edu>\n"
 "Language-Team: Persian <farsi@lists.sharif.edu>\n"
@@ -396,18 +396,18 @@ msgstr "متن نقل شده با علامت نقل قول شروع نمی‌ش�
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr "علامت نقل قول تکی در سطر دستور یا متون داخل پوسته‌ی دیگر"
 
-#: glib/gshell.c:530
+#: glib/gshell.c:540
 #, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
 msgstr "متن دقیقاً پس از یک نویسه‌ی '\\' پایان یافت. (متن '%s' بود)"
 
-#: glib/gshell.c:537
+#: glib/gshell.c:547
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr ""
 "متن قبل از این که علامت نقل قول متناظر %c یافت شود پایان یافت. (متن '%s' بود)"
 
-#: glib/gshell.c:549
+#: glib/gshell.c:559
 msgid "Text was empty (or contained only whitespace)"
 msgstr "متن خالی بود (یا فقط فاصله داشت)"
 

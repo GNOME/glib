@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: punlinux\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-07-30 15:30-0400\n"
+"POT-Creation-Date: 2004-08-13 10:10-0400\n"
 "PO-Revision-Date: 2004-02-16 14:05+0530\n"
 "Last-Translator: Amanpreet Singh Alam <amanlinux@netscape.net>\n"
 "Language-Team: KBST Punjab <kbstpunjab@netscape.net>\n"
@@ -388,17 +388,17 @@ msgstr "ਹਵਾਲਾ ਅਖਰ ਇਕ ਹਵਾਲਾ ਨਿਸ਼ਾਨ ਨਾ�
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr "ਕਮਾਂਡ ਸਤਰ ਜਾਂ ਸੈਲ ਅਖਰ ਵਿਚ ਬੇਮੇਲ ਹਵਾਲਾ ਨਿਸ਼ਾਨ ਹੈ ।"
 
-#: glib/gshell.c:530
+#: glib/gshell.c:540
 #, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
 msgstr "ਇਸ '\\' ਅਖਰ ਮਗਰੋ ਅਖਰ ਖਤਮ ਹੋਣੇ ਹਨ ।.(ਅਖਰ ਹਨ '%s')"
 
-#: glib/gshell.c:537
+#: glib/gshell.c:547
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr "ਇਸ %c ਲਈ ਹਵਾਲਾ ਲਭ ਤੋ ਪਹਿਲਾਂ ਅਖਰ ਖਤਮ ਕਰੋ. (ਅਖਰ ਸਨ '%s')"
 
-#: glib/gshell.c:549
+#: glib/gshell.c:559
 msgid "Text was empty (or contained only whitespace)"
 msgstr "ਅਖਰੀ ਪਾਠ ਖਾਲੀ ਸੀ (ਜਾਂ ਸਾਫ ਥਾਂ ਹੀ ਹੈ)"
 
