@@ -1,3 +1,14 @@
+2004-12-07  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gutils.c (g_get_language_names): Update the returned
+	value after locale changes.  (#160271, Christian Persch)
+	(_g_utils_thread_init): Initialize the language name cache
+	before going threaded.
+
+	* glib/gthread.c (g_thread_init_glib): Call _g_utils_thread_init().
+
+	* glib/gthreadinit.h: Add _g_utils_thread_init().
+
 2004-12-06  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/giowin32.c (g_io_win32_finalize): Fix a write to freed

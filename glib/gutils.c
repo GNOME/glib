@@ -54,6 +54,7 @@
 #include "galias.h"
 #include "glib.h"
 #include "gprintfint.h"
+#include "gthreadinit.h"
 
 #ifdef	MAXPATHLEN
 #define	G_PATH_LENGTH	MAXPATHLEN
@@ -1919,7 +1920,21 @@ guess_category_value (const gchar *category_name)
   return NULL;
 }
 
-static gchar **languages = NULL;
+typedef struct _GLanguageNamesCache GLanguageNamesCache;
+
+struct _GLanguageNamesCache {
+  gchar *languages;
+  gchar **language_names;
+};
+
+static void
+language_names_cache_free (gpointer data)
+{
+  GLanguageNamesCache *cache = data;
+  g_free (cache->languages);
+  g_strfreev (cache->language_names);
+  g_free (cache);
+}
 
 /**
  * g_get_language_names:
@@ -1944,18 +1959,30 @@ static gchar **languages = NULL;
 G_CONST_RETURN gchar * G_CONST_RETURN * 
 g_get_language_names (void)
 {
-  G_LOCK (g_utils_global);
+  static GStaticPrivate cache_private = G_STATIC_PRIVATE_INIT;
+  GLanguageNamesCache *cache = g_static_private_get (&cache_private);
+  const gchar *value;
 
-  if (!languages)
+  if (!cache)
     {
-      const gchar *value;
+      cache = g_new0 (GLanguageNamesCache, 1);
+      g_static_private_set (&cache_private, cache, language_names_cache_free);
+    }
+
+  value = guess_category_value ("LC_MESSAGES");
+  if (!value)
+    value = "C";
+
+  if (!(cache->languages && strcmp (cache->languages, value) == 0))
+    {
+      gchar **languages;
       gchar **alist, **a;
       GSList *list, *l;
       gint i;
 
-      value = guess_category_value ("LC_MESSAGES");
-      if (!value)
-	value = "C";
+      g_free (cache->languages);
+      g_strfreev (cache->language_names);
+      cache->languages = g_strdup (value);
 
       alist = g_strsplit (value, ":", 0);
       list = NULL;
@@ -1965,9 +1992,9 @@ g_get_language_names (void)
 	  list = g_slist_concat (list, _g_compute_locale_variants (b));
 	}
       g_strfreev (alist);
-      list = g_slist_append (list, "C");
+      list = g_slist_append (list, g_strdup ("C"));
 
-      languages = g_new (gchar *, g_slist_length (list) + 1);
+      cache->language_names = languages = g_new (gchar *, g_slist_length (list) + 1);
       for (l = list, i = 0; l; l = l->next, i++)
 	languages[i] = l->data;
       languages[i] = NULL;
@@ -1975,9 +2002,7 @@ g_get_language_names (void)
       g_slist_free (list);
     }
 
-  G_UNLOCK (g_utils_global);
-
-  return (G_CONST_RETURN gchar * G_CONST_RETURN *) languages;
+  return (G_CONST_RETURN gchar * G_CONST_RETURN *) cache->language_names;
 }
 
 guint
@@ -2036,6 +2061,15 @@ g_get_codeset (void)
   g_get_charset (&charset);
 
   return g_strdup (charset);
+}
+
+/* This is called from g_thread_init(). It's used to
+ * initialize some static data in a threadsafe way.
+ */
+void
+_g_utils_thread_init (void)
+{
+  g_get_language_names ();
 }
 
 #ifdef ENABLE_NLS
