@@ -54,6 +54,7 @@ static gulong g_thread_min_stack_size = 0;
 #define G_MUTEX_SIZE (sizeof (mutex_t))
 
 #define PRIORITY_LOW_VALUE 0
+#define PRIORITY_NORMAL_VALUE 50
 #define PRIORITY_URGENT_VALUE 127
 
 #define HAVE_G_THREAD_IMPL_INIT
@@ -61,6 +62,8 @@ static void
 g_thread_impl_init()
 {
   g_thread_min_stack_size = thr_min_stack();
+  /* The default priority on Solaris is 0. Set it to something sane */
+  solaris_check_for_error (thr_setprio (thr_self (), PRIORITY_NORMAL_VALUE));
 }
 
 static GMutex *

@@ -1,3 +1,14 @@
+2002-08-06  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* glib/gthread.c: Set the normal PID surrogate priority according
+	to getpid() to avoid errors for niced processes. (#86116)
+
+	* gthread/gthread-impl.c, gthread/gthread-posix.c,
+	gthread/gthread-solaris.c: Do the same for the posix/dce
+	implementation. Solaris still needs to set priority of the main
+	thread, because all unbound threads will schedule according to
+	that value and it defaults to 0 (the minimal value). 
+
 Thu Jul 25 14:23:15 2002  Owen Taylor  <otaylor@redhat.com>
 
  	* glib/gfileutils.c: Clarify the behavior of g_build_path()

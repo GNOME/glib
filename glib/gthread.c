@@ -88,7 +88,7 @@ struct  _GRealThread
 };
 
 #ifdef G_THREAD_USE_PID_SURROGATE
-static gint priority_map[] = { 15, 0, -15, -20 };
+static gint priority_map[4];
 static gboolean prio_warned = FALSE;
 # define SET_PRIO(pid, prio) G_STMT_START{				\
   gint error = setpriority (PRIO_PROCESS, (pid), priority_map[prio]);	\
@@ -171,6 +171,17 @@ g_mutex_init (void)
   G_THREAD_UF (thread_self, (&main_thread->system_thread));
 
   g_mutex_protect_static_mutex_allocation = g_mutex_new ();
+
+#ifdef G_THREAD_USE_PID_SURROGATE
+  priority_map[G_THREAD_PRIORITY_NORMAL] = 
+    getpriority (PRIO_PROCESS, (getpid ()));
+  priority_map[G_THREAD_PRIORITY_LOW] = 
+    MIN (20, priority_map[G_THREAD_PRIORITY_NORMAL] + 10);
+  priority_map[G_THREAD_PRIORITY_HIGH] = 
+    MAX (-20, priority_map[G_THREAD_PRIORITY_NORMAL] - 10);
+  priority_map[G_THREAD_PRIORITY_URGENT] = 
+    MAX (-20, priority_map[G_THREAD_PRIORITY_NORMAL] - 15);
+#endif /* G_THREAD_USE_PID_SURROGATE */
 }
 
 void 

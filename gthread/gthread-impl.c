@@ -53,13 +53,13 @@ static gint g_thread_priority_map [G_THREAD_PRIORITY_URGENT + 1];
 #endif
 
 #ifndef PRIORITY_NORMAL_VALUE
-# define PRIORITY_NORMAL_VALUE 						\
-  (PRIORITY_LOW_VALUE + (PRIORITY_URGENT_VALUE - PRIORITY_LOW_VALUE) * 4 / 10)
+# define PRIORITY_NORMAL_VALUE						\
+  ((PRIORITY_LOW_VALUE * 6 + PRIORITY_URGENT_VALUE * 4) / 10)
 #endif /* PRIORITY_NORMAL_VALUE */
 
 #ifndef PRIORITY_HIGH_VALUE
-# define PRIORITY_HIGH_VALUE 						\
-  (PRIORITY_LOW_VALUE + (PRIORITY_URGENT_VALUE - PRIORITY_LOW_VALUE) * 8 / 10) 
+# define PRIORITY_HIGH_VALUE						\
+  ((PRIORITY_NORMAL_VALUE + PRIORITY_URGENT_VALUE * 2) / 3)
 #endif /* PRIORITY_HIGH_VALUE */
 
 void g_mutex_init (void);
@@ -386,9 +386,6 @@ g_thread_init (GThreadFunctions* init)
    * all the thread functions
    */
   g_threads_got_initialized = TRUE;
-
-  /* we want the main thread to run with normal priority */
-  g_thread_set_priority (g_thread_self(), G_THREAD_PRIORITY_NORMAL);
 }
 
 #else /* !G_THREADS_ENABLED */

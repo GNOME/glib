@@ -97,6 +97,7 @@ static gboolean posix_check_cmd_prio_warned = FALSE;
 
 #if defined (POSIX_MIN_PRIORITY) && defined (POSIX_MAX_PRIORITY)
 # define HAVE_PRIORITIES 1
+static gint priority_normal_value;
 # ifdef __FreeBSD__
    /* FreeBSD threads use different priority values from the POSIX_
     * defines so we just set them here. The corresponding macros
@@ -106,23 +107,41 @@ static gboolean posix_check_cmd_prio_warned = FALSE;
 #  define PRIORITY_LOW_VALUE      0
 #  define PRIORITY_URGENT_VALUE   31
 # else /* !__FreeBSD__ */
-#  define PRIORITY_LOW_VALUE POSIX_MIN_PRIORITY
-#  define PRIORITY_URGENT_VALUE POSIX_MAX_PRIORITY
+#  define PRIORITY_LOW_VALUE      POSIX_MIN_PRIORITY
+#  define PRIORITY_URGENT_VALUE   POSIX_MAX_PRIORITY
 # endif /* !__FreeBSD__ */
+# define PRIORITY_NORMAL_VALUE    priority_normal_value
 #endif /* POSIX_MIN_PRIORITY && POSIX_MAX_PRIORITY */
 
 static gulong g_thread_min_stack_size = 0;
 
 #define G_MUTEX_SIZE (sizeof (pthread_mutex_t))
 
-#ifdef _SC_THREAD_STACK_MIN
+#if defined(_SC_THREAD_STACK_MIN) || defined (HAVE_PRIORITIES)
 #define HAVE_G_THREAD_IMPL_INIT
 static void 
 g_thread_impl_init()
 {
+#ifdef _SC_THREAD_STACK_MIN
   g_thread_min_stack_size = MAX (sysconf (_SC_THREAD_STACK_MIN), 0);
-}
 #endif /* _SC_THREAD_STACK_MIN */
+#ifdef HAVE_PRIORITIES
+# ifdef G_THREADS_IMPL_POSIX
+  {
+    struct sched_param sched;
+    int policy;
+    posix_check_cmd (pthread_getschedparam (pthread_self(), &policy, &sched));
+    priority_normal_value = sched.sched_priority;
+  }
+# else /* G_THREADS_IMPL_DCE */
+  posix_check_cmd (priority_normal_value = 
+		   pthread_getprio (*(pthread_t*)thread, 
+				    g_thread_priority_map [priority]));
+# endif
+#endif /* HAVE_PRIORITIES */
+
+}
+#endif /* _SC_THREAD_STACK_MIN || HAVE_PRIORITIES */
 
 static GMutex *
 g_mutex_new_posix_impl (void)
