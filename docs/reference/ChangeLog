@@ -1,3 +1,14 @@
+Thu Nov 22 12:56:57 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* gobject/gobject-sections.txt: Update.
+
+	* glib/tmpl/{spawn.sgml,patterns.sgml}: SGML fixes.
+
+	* glib/glib-sections.txt: Updated.
+
+	* glib/Makefile.am (IGNORE_HFILES): Don't scan
+	headers in build/
+
 Sat Nov 17 17:24:19 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/glib-sections.txt: Remove g_log_domain_glib

@@ -64,6 +64,14 @@ of the #GTypeValueTable functions required for a type to create a #GValue of.
 @Returns: Whether @type is suitable as a #GValue type.
 
 
+<!-- ##### MACRO G_TYPE_IS_VALUE_ABSTRACT ##### -->
+<para>
+
+</para>
+
+@type: 
+
+
 <!-- ##### MACRO G_IS_VALUE ##### -->
 <para>
 Returns #TRUE if @value is a valid and initialized #GValue structure.
@@ -88,6 +96,20 @@ the data within the structure has protected scope: it is accessible only
 to functions within a #GTypeValueTable structure, or implementations of
 the g_value_*() API.
 </para>
+
+
+<!-- ##### MACRO G_TYPE_VALUE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO G_TYPE_VALUE_ARRAY ##### -->
+<para>
+
+</para>
+
 
 
 <!-- ##### FUNCTION g_value_init ##### -->
@@ -198,5 +220,14 @@ This is an internal function introduced mainly for C marshallers.
 @src_type: 
 @dest_type: 
 @transform_func: 
+
+
+<!-- ##### FUNCTION g_strdup_value_contents ##### -->
+<para>
+
+</para>
+
+@value: 
+@Returns: 
 
 

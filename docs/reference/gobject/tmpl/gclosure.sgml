@@ -22,6 +22,14 @@ Closures
 @closure: 
 
 
+<!-- ##### MACRO G_CLOSURE_N_NOTIFIERS ##### -->
+<para>
+
+</para>
+
+@cl: 
+
+
 <!-- ##### MACRO G_CCLOSURE_SWAP_DATA ##### -->
 <para>
 
@@ -51,6 +59,13 @@ Closures
 </para>
 
 @is_invalid: 
+
+<!-- ##### MACRO G_TYPE_CLOSURE ##### -->
+<para>
+
+</para>
+
+
 
 <!-- ##### STRUCT GCClosure ##### -->
 <para>
@@ -266,5 +281,28 @@ Closures
 @closure: 
 @marshal_data: 
 @meta_marshal: 
+
+
+<!-- ##### FUNCTION g_source_set_closure ##### -->
+<para>
+
+</para>
+
+@source: 
+@closure: 
+
+
+<!-- ##### MACRO G_TYPE_IO_CHANNEL ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO G_TYPE_IO_CONDITION ##### -->
+<para>
+
+</para>
+
 
 

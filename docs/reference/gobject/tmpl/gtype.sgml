@@ -63,24 +63,7 @@ for types that are assigned at compile-time.
 
 
 
-<!-- ##### MACRO G_TYPE_DERIVE_ID ##### -->
-<para>
-
-</para>
-
-@ptype: 
-@branch_seqno: 
-
-
-<!-- ##### MACRO G_TYPE_BRANCH_SEQNO ##### -->
-<para>
-
-</para>
-
-@type: 
-
-
-<!-- ##### MACRO G_TYPE_FUNDAMENTAL_LAST ##### -->
+<!-- ##### MACRO G_TYPE_FUNDAMENTAL_SHIFT ##### -->
 <para>
 
 </para>
@@ -121,6 +104,14 @@ Returns #TRUE if @type is a fundamental type.
 </para>
 
 @type: A #GType value.
+
+
+<!-- ##### MACRO G_TYPE_HAS_VALUE_TABLE ##### -->
+<para>
+
+</para>
+
+@type: 
 
 
 <!-- ##### MACRO G_TYPE_IS_CLASSED ##### -->
@@ -571,6 +562,16 @@ type implementations or the signal system).
 @debug_flags: Bitwise combination of #GTypeDebugFlags values for debugging purposes.
 
 
+<!-- ##### ENUM GTypeDebugFlags ##### -->
+<para>
+
+</para>
+
+@G_TYPE_DEBUG_NONE: 
+@G_TYPE_DEBUG_OBJECTS: 
+@G_TYPE_DEBUG_SIGNALS: 
+@G_TYPE_DEBUG_MASK: 
+
 <!-- ##### FUNCTION g_type_init_with_debug_flags ##### -->
 <para>
 
@@ -650,15 +651,6 @@ Check whether @type is a descendant of @is_a_type.
 @type:      Type to check anchestry for.
 @is_a_type: Possible anchestor of @type.
 @Returns:   %TRUE if @type is_a @is_a_type holds true.
-
-
-<!-- ##### FUNCTION g_type_fundamental_branch_last ##### -->
-<para>
-
-</para>
-
-@type: 
-@Returns: 
 
 
 <!-- ##### FUNCTION g_type_class_ref ##### -->
@@ -785,6 +777,16 @@ g_free()ed after use.
 @type: 
 @query: 
 
+
+<!-- ##### STRUCT GTypeQuery ##### -->
+<para>
+
+</para>
+
+@type: 
+@type_name: 
+@class_size: 
+@instance_size: 
 
 <!-- ##### USER_FUNCTION GBaseInitFunc ##### -->
 <para>

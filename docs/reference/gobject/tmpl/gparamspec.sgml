@@ -241,6 +241,33 @@ if @value1 is found to be less than, equal to or greater than @value2, respectiv
 @Returns: -1, 0 or +1, for a less than, equal to or greater than result
 
 
+<!-- ##### FUNCTION g_param_spec_get_name ##### -->
+<para>
+
+</para>
+
+@pspec: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_param_spec_get_nick ##### -->
+<para>
+
+</para>
+
+@pspec: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_param_spec_get_blurb ##### -->
+<para>
+
+</para>
+
+@pspec: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_param_spec_get_qdata ##### -->
 <para>
 
@@ -375,6 +402,16 @@ if @value1 is found to be less than, equal to or greater than @value2, respectiv
 @pool: 
 @owner_type: 
 @n_pspecs_p: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_param_spec_pool_list_owned ##### -->
+<para>
+
+</para>
+
+@pool: 
+@owner_type: 
 @Returns: 
 
 

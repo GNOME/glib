@@ -60,6 +60,12 @@ Parameter Specifications
 
 @pspec: 
 
+<!-- ##### MACRO G_TYPE_FUNDAMENTAL_LAST ##### -->
+<para>
+
+</para>
+
+
 <!-- ##### FUNCTION g_closure_add_fnotify ##### -->
 <para>
 

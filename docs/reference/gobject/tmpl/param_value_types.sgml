@@ -43,6 +43,13 @@ Return whether the given #GValue can hold values of type %G_TYPE_BOOLEAN.
 @value: a valid #GValue structure
 
 
+<!-- ##### MACRO G_TYPE_PARAM_BOOLEAN ##### -->
+<para>
+
+</para>
+
+
+
 <!-- ##### STRUCT GParamSpecBoolean ##### -->
 <para>
 A #GParamSpec derived structure that contains the meta data for boolean properties.
@@ -104,6 +111,13 @@ Return whether the given #GValue can hold values of type %G_TYPE_CHAR.
 </para>
 
 @value: a valid #GValue structure
+
+
+<!-- ##### MACRO G_TYPE_PARAM_CHAR ##### -->
+<para>
+
+</para>
+
 
 
 <!-- ##### STRUCT GParamSpecChar ##### -->
@@ -173,6 +187,13 @@ Return whether the given #GValue can hold values of type %G_TYPE_UCHAR.
 @value: a valid #GValue structure
 
 
+<!-- ##### MACRO G_TYPE_PARAM_UCHAR ##### -->
+<para>
+
+</para>
+
+
+
 <!-- ##### STRUCT GParamSpecUChar ##### -->
 <para>
 A #GParamSpec derived structure that contains the meta data for unsigned character properties.
@@ -238,6 +259,13 @@ Return whether the given #GValue can hold values of type %G_TYPE_INT.
 </para>
 
 @value: a valid #GValue structure
+
+
+<!-- ##### MACRO G_TYPE_PARAM_INT ##### -->
+<para>
+
+</para>
+
 
 
 <!-- ##### STRUCT GParamSpecInt ##### -->
@@ -307,6 +335,13 @@ Return whether the given #GValue can hold values of type %G_TYPE_UINT.
 @value: a valid #GValue structure
 
 
+<!-- ##### MACRO G_TYPE_PARAM_UINT ##### -->
+<para>
+
+</para>
+
+
+
 <!-- ##### STRUCT GParamSpecUInt ##### -->
 <para>
 A #GParamSpec derived structure that contains the meta data for unsigned integer properties.
@@ -372,6 +407,13 @@ Return whether the given #GValue can hold values of type %G_TYPE_LONG.
 </para>
 
 @value: a valid #GValue structure
+
+
+<!-- ##### MACRO G_TYPE_PARAM_LONG ##### -->
+<para>
+
+</para>
+
 
 
 <!-- ##### STRUCT GParamSpecLong ##### -->
@@ -441,6 +483,13 @@ Return whether the given #GValue can hold values of type %G_TYPE_ULONG.
 @value: a valid #GValue structure
 
 
+<!-- ##### MACRO G_TYPE_PARAM_ULONG ##### -->
+<para>
+
+</para>
+
+
+
 <!-- ##### STRUCT GParamSpecULong ##### -->
 <para>
 A #GParamSpec derived structure that contains the meta data for unsigned long integer properties.
@@ -506,6 +555,13 @@ Return whether the given #GValue can hold values of type %G_TYPE_INT64.
 </para>
 
 @value: a valid #GValue structure
+
+
+<!-- ##### MACRO G_TYPE_PARAM_INT64 ##### -->
+<para>
+
+</para>
+
 
 
 <!-- ##### STRUCT GParamSpecInt64 ##### -->
@@ -575,6 +631,13 @@ Return whether the given #GValue can hold values of type %G_TYPE_UINT64.
 @value: a valid #GValue structure
 
 
+<!-- ##### MACRO G_TYPE_PARAM_UINT64 ##### -->
+<para>
+
+</para>
+
+
+
 <!-- ##### STRUCT GParamSpecUInt64 ##### -->
 <para>
 A #GParamSpec derived structure that contains the meta data for unsigned 64bit integer properties.
@@ -640,6 +703,13 @@ Return whether the given #GValue can hold values of type %G_TYPE_FLOAT.
 </para>
 
 @value: a valid #GValue structure
+
+
+<!-- ##### MACRO G_TYPE_PARAM_FLOAT ##### -->
+<para>
+
+</para>
+
 
 
 <!-- ##### STRUCT GParamSpecFloat ##### -->
@@ -710,6 +780,13 @@ Return whether the given #GValue can hold values of type %G_TYPE_DOUBLE.
 @value: a valid #GValue structure
 
 
+<!-- ##### MACRO G_TYPE_PARAM_DOUBLE ##### -->
+<para>
+
+</para>
+
+
+
 <!-- ##### STRUCT GParamSpecDouble ##### -->
 <para>
 A #GParamSpec derived structure that contains the meta data for double properties.
@@ -778,6 +855,13 @@ Get the contents of a %G_TYPE_DOUBLE #GValue.
 @value: 
 
 
+<!-- ##### MACRO G_TYPE_PARAM_ENUM ##### -->
+<para>
+
+</para>
+
+
+
 <!-- ##### STRUCT GParamSpecEnum ##### -->
 <para>
 
@@ -841,6 +925,13 @@ Get the contents of a %G_TYPE_DOUBLE #GValue.
 </para>
 
 @value: 
+
+
+<!-- ##### MACRO G_TYPE_PARAM_FLAGS ##### -->
+<para>
+
+</para>
+
 
 
 <!-- ##### STRUCT GParamSpecFlags ##### -->
@@ -908,6 +999,13 @@ Get the contents of a %G_TYPE_DOUBLE #GValue.
 @value: 
 
 
+<!-- ##### MACRO G_TYPE_PARAM_STRING ##### -->
+<para>
+
+</para>
+
+
+
 <!-- ##### STRUCT GParamSpecString ##### -->
 <para>
 
@@ -920,6 +1018,12 @@ Get the contents of a %G_TYPE_DOUBLE #GValue.
 @substitutor: 
 @null_fold_if_empty: 
 @ensure_non_null: 
+
+<!-- ##### TYPEDEF gchararray ##### -->
+<para>
+
+</para>
+
 
 <!-- ##### FUNCTION g_param_spec_string ##### -->
 <para>
@@ -1003,6 +1107,13 @@ Get the contents of a %G_TYPE_DOUBLE #GValue.
 @value: 
 
 
+<!-- ##### MACRO G_TYPE_PARAM_PARAM ##### -->
+<para>
+
+</para>
+
+
+
 <!-- ##### STRUCT GParamSpecParam ##### -->
 <para>
 
@@ -1072,6 +1183,13 @@ Return whether the given #GValue can hold values derived from type %G_TYPE_BOXED
 </para>
 
 @value: a valid #GValue structure
+
+
+<!-- ##### MACRO G_TYPE_PARAM_BOXED ##### -->
+<para>
+
+</para>
+
 
 
 <!-- ##### STRUCT GParamSpecBoxed ##### -->
@@ -1167,6 +1285,13 @@ later freed with g_boxed_free(), e.g. like: g_boxed_free (G_VALUE_TYPE (@value),
 @value: 
 
 
+<!-- ##### MACRO G_TYPE_PARAM_POINTER ##### -->
+<para>
+
+</para>
+
+
+
 <!-- ##### STRUCT GParamSpecPointer ##### -->
 <para>
 
@@ -1226,6 +1351,13 @@ later freed with g_boxed_free(), e.g. like: g_boxed_free (G_VALUE_TYPE (@value),
 </para>
 
 @value: 
+
+
+<!-- ##### MACRO G_TYPE_PARAM_OBJECT ##### -->
+<para>
+
+</para>
+
 
 
 <!-- ##### STRUCT GParamSpecObject ##### -->
@@ -1291,6 +1423,13 @@ Cast a #GParamSpec instance into a #GParamSpecUnichar.
 @pspec: a valid #GParamSpec instance
 
 
+<!-- ##### MACRO G_TYPE_PARAM_UNICHAR ##### -->
+<para>
+
+</para>
+
+
+
 <!-- ##### STRUCT GParamSpecUnichar ##### -->
 <para>
 A #GParamSpec derived structure that contains the meta data for unichar (unsigned integer) properties.
@@ -1328,6 +1467,13 @@ Cast a #GParamSpec instance into a #GParamSpecValueArray.
 </para>
 
 @pspec: a valid #GParamSpec instance
+
+
+<!-- ##### MACRO G_TYPE_PARAM_VALUE_ARRAY ##### -->
+<para>
+
+</para>
+
 
 
 <!-- ##### STRUCT GParamSpecValueArray ##### -->

@@ -24,6 +24,7 @@ CFILE_GLOB=$(top_srcdir)/glib/*.c $(top_srcdir)/gmodule/*.c
 
 # Headers to ignore
 IGNORE_HFILES=			\
+	build			\
 	gobject 		\
 	config.h 		\
 	glibintl.h		\

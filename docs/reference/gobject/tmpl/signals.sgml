@@ -664,6 +664,26 @@ otherwise.
 @detailed_signal: 
 
 
+<!-- ##### FUNCTION g_signal_override_class_closure ##### -->
+<para>
+
+</para>
+
+@signal_id: 
+@instance_type: 
+@class_closure: 
+
+
+<!-- ##### FUNCTION g_signal_chain_from_overridden ##### -->
+<para>
+
+</para>
+
+@instance_and_params: 
+@signal_id: 
+@return_value: 
+
+
 <!-- ##### FUNCTION g_signal_add_emission_hook ##### -->
 <para>
 

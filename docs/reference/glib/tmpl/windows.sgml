@@ -48,35 +48,6 @@ in any UNIX manual.
 @size: 
 
 
-<!-- ##### FUNCTION opendir ##### -->
-<para>
-Provided for UNIX emulation on Windows; see documentation for <function>opendir()</function>
-in any UNIX manual.
-</para>
-
-@Param1: 
-@Returns: 
-
-
-<!-- ##### FUNCTION rewinddir ##### -->
-<para>
-Provided for UNIX emulation on Windows; see documentation for <function>rewinddir()</function>
-in any UNIX manual.
-</para>
-
-@Param1: 
-
-
-<!-- ##### FUNCTION closedir ##### -->
-<para>
-Provided for UNIX emulation on Windows; see documentation for <function>closedir()</function>
-in any UNIX manual.
-</para>
-
-@Param1: 
-@Returns: 
-
-
 <!-- ##### FUNCTION g_win32_error_message ##### -->
 <para>
 
@@ -113,5 +84,14 @@ in any UNIX manual.
 @dll_name: 
 @subdir: 
 @Returns: 
+
+
+<!-- ##### MACRO G_WIN32_DLLMAIN_FOR_DLL_NAME ##### -->
+<para>
+
+</para>
+
+@static: 
+@dll_name: 
 
 

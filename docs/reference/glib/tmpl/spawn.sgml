@@ -61,7 +61,7 @@ Flags passed to g_spawn_sync(), g_spawn_async() and g_spawn_async_with_pipes().
   must call <function>waitpid()</function> or handle <literal>SIGCHLD</literal> 
   yourself, or the child will become a zombie.
 @G_SPAWN_SEARCH_PATH: <literal>argv[0]</literal> need not be an absolute path, 
-  it will be looked for in the user's <envvar>PATH</envvar>.
+  it will be looked for in the user's <envar>PATH</envar>.
 @G_SPAWN_STDOUT_TO_DEV_NULL: the child's standad output will be discarded, 
   instead of going to the same location as the parent's standard output.
 @G_SPAWN_STDERR_TO_DEV_NULL: the child's standard error will be discarded.

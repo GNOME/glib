@@ -169,3 +169,45 @@ A test to perform an a file using g_file_test().
 @Returns: 
 
 
+<!-- ##### STRUCT GDir ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION g_dir_open ##### -->
+<para>
+
+</para>
+
+@path: 
+@flags: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_dir_read_name ##### -->
+<para>
+
+</para>
+
+@dir: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_dir_rewind ##### -->
+<para>
+
+</para>
+
+@dir: 
+
+
+<!-- ##### FUNCTION g_dir_close ##### -->
+<para>
+
+</para>
+
+@dir: 
+
+

@@ -63,6 +63,11 @@ G_MAXLONG
 G_MAXULONG
 
 <SUBSECTION>
+G_MININT64
+G_MAXINT64
+G_MAXUINT64
+
+<SUBSECTION>
 G_MINFLOAT
 G_MAXFLOAT
 
@@ -745,7 +750,6 @@ G_BREAKPOINT
 <SECTION>
 <TITLE>Glob-style pattern matching</TITLE>
 <FILE>patterns</FILE>
-GMatchType
 GPatternSpec
 g_pattern_spec_new
 g_pattern_spec_free
@@ -851,6 +855,14 @@ g_file_get_contents
 g_file_test
 g_mkstemp
 g_file_open_tmp
+
+<SUBSECTION>
+GDir
+g_dir_open
+g_dir_read_name
+g_dir_rewind
+g_dir_close
+
 <SUBSECTION Private>
 g_file_error_quark
 </SECTION>
@@ -1267,25 +1279,19 @@ g_completion_free
 <TITLE>Windows Compatability Functions</TITLE>
 <FILE>windows</FILE>
 MAXPATHLEN
-NAME_MAX
 pid_t
 pipe
 ftruncate
-opendir
-readdir
-rewinddir
-closedir
 
 g_win32_error_message
 g_win32_getlocale
 g_win32_get_package_installation_directory
 g_win32_get_package_installation_subdirectory
 
+G_WIN32_DLLMAIN_FOR_DLL_NAME
+
 <SUBSECTION Private>
 g_win32_ftruncate
-g_win32_closedir
-g_win32_opendir
-g_win32_rewinddir
 
 </SECTION>
 

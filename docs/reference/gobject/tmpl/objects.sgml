@@ -201,6 +201,14 @@ Return the type id of an object.
 @Returns: 
 
 
+<!-- ##### STRUCT GParameter ##### -->
+<para>
+
+</para>
+
+@name: 
+@value: 
+
 <!-- ##### FUNCTION g_object_ref ##### -->
 <para>
 
@@ -488,6 +496,17 @@ to match the one used with g_object_add_weak_pointer().
 </para>
 
 @object: 
+
+
+<!-- ##### MACRO G_OBJECT_WARN_INVALID_PSPEC ##### -->
+<para>
+
+</para>
+
+@object: 
+@pname: 
+@property_id: 
+@pspec: 
 
 
 <!-- ##### MACRO G_OBJECT_WARN_INVALID_PROPERTY_ID ##### -->

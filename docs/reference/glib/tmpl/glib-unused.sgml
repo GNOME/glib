@@ -165,6 +165,15 @@ i.e. just the <filename>foo</filename> in <filename>/usr/bin/foo</filename>.
 </para>
 
 
+<!-- ##### FUNCTION closedir ##### -->
+<para>
+Provided for UNIX emulation on Windows; see documentation for <function>closedir()</function>
+in any UNIX manual.
+</para>
+
+@Param1: 
+@Returns: 
+
 <!-- ##### MACRO fdopen ##### -->
 <para>
 
@@ -395,6 +404,15 @@ Turns the argument into a string literal by using the '#' stringizing operator.
 </para>
 
 
+<!-- ##### FUNCTION opendir ##### -->
+<para>
+Provided for UNIX emulation on Windows; see documentation for <function>opendir()</function>
+in any UNIX manual.
+</para>
+
+@Param1: 
+@Returns: 
+
 <!-- ##### MACRO pclose ##### -->
 <para>
 
@@ -419,6 +437,14 @@ Provided for UNIX emulation on Windows; see documentation for <function>readdir(
 in any UNIX manual.
 </para>
 
+
+<!-- ##### FUNCTION rewinddir ##### -->
+<para>
+Provided for UNIX emulation on Windows; see documentation for <function>rewinddir()</function>
+in any UNIX manual.
+</para>
+
+@Param1: 
 
 <!-- ##### MACRO write ##### -->
 <para>

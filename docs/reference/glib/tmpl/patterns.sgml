@@ -24,12 +24,12 @@ is better to compile the pattern to a #GPatternSpec using
 g_pattern_spec_new() and use g_pattern_match_string() instead of 
 g_pattern_match_simple().  This avoids the overhead of repeated 
 pattern compilation.
+</para>
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
-
 
 <!-- ##### STRUCT GPatternSpec ##### -->
 <para>
