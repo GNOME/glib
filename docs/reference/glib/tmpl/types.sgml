@@ -1,216 +1,761 @@
 <!-- ##### SECTION Title ##### -->
-Basic Types
+GType
 
 <!-- ##### SECTION Short_Description ##### -->
-standard GLib types, defined for ease-of-use and portability.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-GLib defines a number of commonly used types, which can be divided into
-4 groups:
-
-<itemizedlist>
-<listitem><para>
-New types which are not part of standard C - #gboolean, #gsize, #gssize.
-</para></listitem>
-
-<listitem><para>
-Integer types which are guaranteed to be the same size across all platforms -
-#gint8, #guint8, #gint16, #guint16, #gint32, #guint32, #gint64, #guint64.
-</para></listitem>
-
-<listitem><para>
-Types which are easier to use than their standard C counterparts -
-#gpointer, #gconstpointer, #guchar, #guint, #gushort, #gulong.
-</para></listitem>
-
-<listitem><para>
-Types which correspond exactly to standard C types, but are included
-for completeness - #gchar, #gint, #gshort, #glong, #gfloat, #gdouble.
-</para></listitem>
-</itemizedlist>
 
 </para>
+
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
 
-<!-- ##### TYPEDEF gboolean ##### -->
+
+<!-- ##### TYPEDEF GType ##### -->
 <para>
-A standard <type>boolean</type> type.
-Variables of this type should only contain the value #TRUE or #FALSE.
+
 </para>
 
 
-<!-- ##### TYPEDEF gpointer ##### -->
+<!-- ##### MACRO G_TYPE_FUNDAMENTAL ##### -->
 <para>
-An untyped pointer.
-#gpointer looks better and is easier to use than <type>void*</type>.
+
 </para>
 
+@type: 
 
-<!-- ##### TYPEDEF gconstpointer ##### -->
+
+<!-- ##### MACRO G_TYPE_FUNDAMENTAL_MAX ##### -->
 <para>
-An untyped pointer to constant data.
-The data pointed to should not be changed.
-</para>
-<para>
-This is typically used in function prototypes to indicate that the
-data pointed to will not be altered by the function.
-</para>
 
-
-<!-- ##### TYPEDEF gchar ##### -->
-<para>
-Corresponds to the standard C <type>char</type> type.
-</para>
-
-
-<!-- ##### TYPEDEF guchar ##### -->
-<para>
-Corresponds to the standard C <type>unsigned char</type> type.
-</para>
-
-
-<!-- ##### TYPEDEF gint ##### -->
-<para>
-Corresponds to the standard C <type>int</type> type.
-Values of this type can range from #G_MININT to #G_MAXINT.
-</para>
-
-
-<!-- ##### TYPEDEF guint ##### -->
-<para>
-Corresponds to the standard C <type>unsigned int</type> type.
-</para>
-
-
-<!-- ##### TYPEDEF gshort ##### -->
-<para>
-Corresponds to the standard C <type>short</type> type.
-Values of this type can range from #G_MINSHORT to #G_MAXSHORT.
-</para>
-
-
-<!-- ##### TYPEDEF gushort ##### -->
-<para>
-Corresponds to the standard C <type>unsigned short</type> type.
-</para>
-
-
-<!-- ##### TYPEDEF glong ##### -->
-<para>
-Corresponds to the standard C <type>long</type> type.
-Values of this type can range from #G_MINLONG to #G_MAXLONG.
-</para>
-
-
-<!-- ##### TYPEDEF gulong ##### -->
-<para>
-Corresponds to the standard C <type>unsigned long</type> type.
-</para>
-
-
-<!-- ##### TYPEDEF gint8 ##### -->
-<para>
-A signed integer guaranteed to be 8 bits on all platforms.
-Values of this type can range from -128 to 127.
-</para>
-
-
-<!-- ##### TYPEDEF guint8 ##### -->
-<para>
-An unsigned integer guaranteed to be 8 bits on all platforms.
-Values of this type can range from 0 to 255.
-</para>
-
-
-<!-- ##### TYPEDEF gint16 ##### -->
-<para>
-A signed integer guaranteed to be 16 bits on all platforms.
-Values of this type can range from -32,768 to 32,767.
-</para>
-
-
-<!-- ##### TYPEDEF guint16 ##### -->
-<para>
-An unsigned integer guaranteed to be 16 bits on all platforms.
-Values of this type can range from 0 to 65,535.
-</para>
-
-
-<!-- ##### TYPEDEF gint32 ##### -->
-<para>
-A signed integer guaranteed to be 32 bits on all platforms.
-Values of this type can range from -2,147,483,648 to 2,147,483,647.
-</para>
-
-
-<!-- ##### TYPEDEF guint32 ##### -->
-<para>
-An unsigned integer guaranteed to be 32 bits on all platforms.
-Values of this type can range from 0 to 4,294,967,295.
-</para>
-
-
-<!-- ##### MACRO G_HAVE_GINT64 ##### -->
-<para>
-This macro is defined if 64-bit signed and unsigned integers are available
-on the platform.
 </para>
 
 
 
-<!-- ##### TYPEDEF gint64 ##### -->
+<!-- ##### MACRO G_TYPE_DERIVE_ID ##### -->
 <para>
-A signed integer guaranteed to be 64 bits on all platforms on which it is
-available (see #G_HAVE_GINT64).
-Values of this type can range from -9,223,372,036,854,775,808 to
-9,223,372,036,854,775,807.
+
+</para>
+
+@ptype: 
+@branch_seqno: 
+
+
+<!-- ##### MACRO G_TYPE_BRANCH_SEQNO ##### -->
+<para>
+
+</para>
+
+@type: 
+
+
+<!-- ##### MACRO G_TYPE_FUNDAMENTAL_LAST ##### -->
+<para>
+
 </para>
 
 
-<!-- ##### TYPEDEF guint64 ##### -->
+
+<!-- ##### ENUM GTypeFundamentals ##### -->
 <para>
-An unsigned integer guaranteed to be 64 bits on all platforms on which it is
-available (see #G_HAVE_GINT64).
-Values of this type can range from 0 to 18,446,744,073,709,551,615.
+
+</para>
+
+@G_TYPE_INVALID: 
+@G_TYPE_NONE: 
+@G_TYPE_INTERFACE: 
+@G_TYPE_CHAR: 
+@G_TYPE_UCHAR: 
+@G_TYPE_BOOLEAN: 
+@G_TYPE_INT: 
+@G_TYPE_UINT: 
+@G_TYPE_LONG: 
+@G_TYPE_ULONG: 
+@G_TYPE_ENUM: 
+@G_TYPE_FLAGS: 
+@G_TYPE_FLOAT: 
+@G_TYPE_DOUBLE: 
+@G_TYPE_STRING: 
+@G_TYPE_PARAM: 
+@G_TYPE_OBJECT: 
+@G_TYPE_GTK_BOXED: 
+@G_TYPE_GTK_POINTER: 
+@G_TYPE_GTK_SIGNAL: 
+@G_TYPE_BSE_PROCEDURE: 
+@G_TYPE_BSE_TIME: 
+@G_TYPE_BSE_NOTE: 
+@G_TYPE_BSE_DOTS: 
+@G_TYPE_GLE_GOBJECT: 
+@G_TYPE_LAST_RESERVED_FUNDAMENTAL: 
+@G_TYPE_PARAM_CHAR: 
+@G_TYPE_PARAM_UCHAR: 
+@G_TYPE_PARAM_BOOLEAN: 
+@G_TYPE_PARAM_INT: 
+@G_TYPE_PARAM_UINT: 
+@G_TYPE_PARAM_LONG: 
+@G_TYPE_PARAM_ULONG: 
+@G_TYPE_PARAM_ENUM: 
+@G_TYPE_PARAM_FLAGS: 
+@G_TYPE_PARAM_FLOAT: 
+@G_TYPE_PARAM_DOUBLE: 
+@G_TYPE_PARAM_STRING: 
+@G_TYPE_PARAM_OBJECT: 
+
+<!-- ##### MACRO G_TYPE_IS_CLASSED ##### -->
+<para>
+
+</para>
+
+@type: 
+
+
+<!-- ##### MACRO G_TYPE_IS_INSTANTIATABLE ##### -->
+<para>
+
+</para>
+
+@type: 
+
+
+<!-- ##### MACRO G_TYPE_IS_DERIVABLE ##### -->
+<para>
+
+</para>
+
+@type: 
+
+
+<!-- ##### MACRO G_TYPE_IS_DEEP_DERIVABLE ##### -->
+<para>
+
+</para>
+
+@type: 
+
+
+<!-- ##### MACRO G_TYPE_IS_PARAM ##### -->
+<para>
+
+</para>
+
+@type: 
+
+
+<!-- ##### MACRO G_TYPE_IS_INTERFACE ##### -->
+<para>
+
+</para>
+
+@type: 
+
+
+<!-- ##### STRUCT GTypePlugin ##### -->
+<para>
+
+</para>
+
+@vtable: 
+
+<!-- ##### STRUCT GTypePluginVTable ##### -->
+<para>
+
+</para>
+
+@plugin_ref: 
+@plugin_unref: 
+@complete_type_info: 
+@complete_interface_info: 
+
+<!-- ##### STRUCT GTypeInterface ##### -->
+<para>
+
 </para>
 
 
-<!-- ##### MACRO G_GINT64_CONSTANT ##### -->
+<!-- ##### STRUCT GTypeInstance ##### -->
 <para>
-This macro is used to insert 64-bit integer literals into the source code.
-</para>
 
-@val: a literal integer value, e.g. 0x1d636b02300a7aa7U.
-
-
-<!-- ##### TYPEDEF gfloat ##### -->
-<para>
-Corresponds to the standard C <type>float</type> type.
-Values of this type can range from #G_MINFLOAT to #G_MAXFLOAT.
 </para>
 
 
-<!-- ##### TYPEDEF gdouble ##### -->
+<!-- ##### STRUCT GTypeInfo ##### -->
 <para>
-Corresponds to the standard C <type>double</type> type.
-Values of this type can range from #G_MINDOUBLE to #G_MAXDOUBLE.
+
+</para>
+
+@class_size: 
+@base_init: 
+@base_finalize: 
+@class_init: 
+@class_finalize: 
+@class_data: 
+@instance_size: 
+@n_preallocs: 
+@instance_init: 
+@value_table: 
+
+<!-- ##### STRUCT GTypeFundamentalInfo ##### -->
+<para>
+
+</para>
+
+@type_flags: 
+
+<!-- ##### STRUCT GInterfaceInfo ##### -->
+<para>
+
+</para>
+
+@interface_init: 
+@interface_finalize: 
+@interface_data: 
+
+<!-- ##### STRUCT GTypeValueTable ##### -->
+<para>
+
+</para>
+
+@value_init: 
+@value_free: 
+@value_copy: 
+@collect_type: 
+@collect_value: 
+@lcopy_type: 
+@lcopy_value: 
+
+<!-- ##### MACRO G_TYPE_CHECK_INSTANCE_CAST ##### -->
+<para>
+
+</para>
+
+@instance: 
+@g_type: 
+@c_type: 
+
+
+<!-- ##### MACRO G_TYPE_CHECK_CLASS_CAST ##### -->
+<para>
+
+</para>
+
+@g_class: 
+@g_type: 
+@c_type: 
+
+
+<!-- ##### MACRO G_TYPE_CHECK_INSTANCE_TYPE ##### -->
+<para>
+
+</para>
+
+@instance: 
+@g_type: 
+
+
+<!-- ##### MACRO G_TYPE_CHECK_CLASS_TYPE ##### -->
+<para>
+
+</para>
+
+@g_class: 
+@g_type: 
+
+
+<!-- ##### MACRO G_TYPE_INSTANCE_GET_CLASS ##### -->
+<para>
+
+</para>
+
+@instance: 
+@g_type: 
+@c_type: 
+
+
+<!-- ##### MACRO G_TYPE_FROM_INSTANCE ##### -->
+<para>
+
+</para>
+
+@instance: 
+
+
+<!-- ##### MACRO G_TYPE_FROM_CLASS ##### -->
+<para>
+
+</para>
+
+@g_class: 
+
+
+<!-- ##### MACRO G_TYPE_FROM_INTERFACE ##### -->
+<para>
+
+</para>
+
+@g_iface: 
+
+
+<!-- ##### FUNCTION g_type_init ##### -->
+<para>
+
 </para>
 
 
-<!-- ##### TYPEDEF gsize ##### -->
+
+<!-- ##### FUNCTION g_type_name ##### -->
 <para>
-An unsigned 32-bit integer intended to represent sizes of data structures.
+
 </para>
 
+@type: 
+@Returns: 
 
-<!-- ##### TYPEDEF gssize ##### -->
+
+<!-- ##### FUNCTION g_type_qname ##### -->
 <para>
-A signed 32-bit integer intended to represent sizes of data structures.
+
 </para>
+
+@type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_type_from_name ##### -->
+<para>
+
+</para>
+
+@name: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_type_parent ##### -->
+<para>
+
+</para>
+
+@type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_type_next_base ##### -->
+<para>
+
+</para>
+
+@type: 
+@base_type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_type_is_a ##### -->
+<para>
+
+</para>
+
+@type: 
+@is_a_type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_type_conforms_to ##### -->
+<para>
+
+</para>
+
+@type: 
+@iface_type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_type_fundamental_branch_last ##### -->
+<para>
+
+</para>
+
+@type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_type_class_ref ##### -->
+<para>
+
+</para>
+
+@type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_type_class_peek ##### -->
+<para>
+
+</para>
+
+@type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_type_class_unref ##### -->
+<para>
+
+</para>
+
+@g_class: 
+
+
+<!-- ##### FUNCTION g_type_class_peek_parent ##### -->
+<para>
+
+</para>
+
+@g_class: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_type_interface_peek ##### -->
+<para>
+
+</para>
+
+@instance_class: 
+@iface_type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_type_children ##### -->
+<para>
+
+</para>
+
+@type: 
+@n_children: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_type_interfaces ##### -->
+<para>
+
+</para>
+
+@type: 
+@n_interfaces: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_type_set_qdata ##### -->
+<para>
+
+</para>
+
+@type: 
+@quark: 
+@data: 
+
+
+<!-- ##### FUNCTION g_type_get_qdata ##### -->
+<para>
+
+</para>
+
+@type: 
+@quark: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION GBaseInitFunc ##### -->
+<para>
+
+</para>
+
+@g_class: 
+
+
+<!-- ##### USER_FUNCTION GBaseFinalizeFunc ##### -->
+<para>
+
+</para>
+
+@g_class: 
+
+
+<!-- ##### USER_FUNCTION GClassInitFunc ##### -->
+<para>
+
+</para>
+
+@g_class: 
+@class_data: 
+
+
+<!-- ##### USER_FUNCTION GClassFinalizeFunc ##### -->
+<para>
+
+</para>
+
+@g_class: 
+@class_data: 
+
+
+<!-- ##### USER_FUNCTION GInstanceInitFunc ##### -->
+<para>
+
+</para>
+
+@instance: 
+@g_class: 
+
+
+<!-- ##### USER_FUNCTION GInterfaceInitFunc ##### -->
+<para>
+
+</para>
+
+@g_iface: 
+@iface_data: 
+
+
+<!-- ##### USER_FUNCTION GInterfaceFinalizeFunc ##### -->
+<para>
+
+</para>
+
+@g_iface: 
+@iface_data: 
+
+
+<!-- ##### USER_FUNCTION GTypePluginRef ##### -->
+<para>
+
+</para>
+
+@plugin: 
+
+
+<!-- ##### USER_FUNCTION GTypePluginUnRef ##### -->
+<para>
+
+</para>
+
+@plugin: 
+
+
+<!-- ##### USER_FUNCTION GTypePluginFillTypeInfo ##### -->
+<para>
+
+</para>
+
+@plugin: 
+@g_type: 
+@info: 
+@value_table: 
+
+
+<!-- ##### USER_FUNCTION GTypePluginFillInterfaceInfo ##### -->
+<para>
+
+</para>
+
+@plugin: 
+@interface_type: 
+@instance_type: 
+@info: 
+
+
+<!-- ##### USER_FUNCTION GTypeClassCacheFunc ##### -->
+<para>
+
+</para>
+
+@cache_data: 
+@g_class: 
+@Returns: 
+
+
+<!-- ##### ENUM GTypeFlags ##### -->
+<para>
+
+</para>
+
+@G_TYPE_FLAG_CLASSED: 
+@G_TYPE_FLAG_INSTANTIATABLE: 
+@G_TYPE_FLAG_DERIVABLE: 
+@G_TYPE_FLAG_DEEP_DERIVABLE: 
+
+<!-- ##### FUNCTION g_type_register_static ##### -->
+<para>
+
+</para>
+
+@parent_type: 
+@type_name: 
+@info: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_type_register_dynamic ##### -->
+<para>
+
+</para>
+
+@parent_type: 
+@type_name: 
+@plugin: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_type_register_fundamental ##### -->
+<para>
+
+</para>
+
+@type_id: 
+@type_name: 
+@info: 
+@finfo: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_type_add_interface_static ##### -->
+<para>
+
+</para>
+
+@instance_type: 
+@interface_type: 
+@info: 
+
+
+<!-- ##### FUNCTION g_type_add_interface_dynamic ##### -->
+<para>
+
+</para>
+
+@instance_type: 
+@interface_type: 
+@plugin: 
+
+
+<!-- ##### FUNCTION g_type_class_is_a ##### -->
+<para>
+
+</para>
+
+@g_class: 
+@is_a_type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_type_check_class_cast ##### -->
+<para>
+
+</para>
+
+@g_class: 
+@is_a_type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_type_check_instance_cast ##### -->
+<para>
+
+</para>
+
+@instance: 
+@iface_type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_type_instance_conforms_to ##### -->
+<para>
+
+</para>
+
+@instance: 
+@iface_type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_type_check_flags ##### -->
+<para>
+
+</para>
+
+@type: 
+@flags: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_type_create_instance ##### -->
+<para>
+
+</para>
+
+@type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_type_free_instance ##### -->
+<para>
+
+</para>
+
+@instance: 
+
+
+<!-- ##### FUNCTION g_type_value_table_peek ##### -->
+<para>
+
+</para>
+
+@type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_type_add_class_cache_func ##### -->
+<para>
+
+</para>
+
+@cache_data: 
+@cache_func: 
+
+
+<!-- ##### FUNCTION g_type_remove_class_cache_func ##### -->
+<para>
+
+</para>
+
+@cache_data: 
+@cache_func: 
+
+
+<!-- ##### FUNCTION g_type_class_unref_uncached ##### -->
+<para>
+
+</para>
+
+@g_class: 
+
+
+<!-- ##### FUNCTION g_type_get_plugin ##### -->
+<para>
+
+</para>
+
+@type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_type_fundamental_last ##### -->
+<para>
+
+</para>
+
+@Returns: 
 
 

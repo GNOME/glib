@@ -2,29 +2,19 @@
 Windows Compatability Functions
 
 <!-- ##### SECTION Short_Description ##### -->
-functions to support portability to the Windows environment.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-These functions and macros are provided in the GLib library when compiled
-on the Windows platform.
+
 </para>
-<para>
-Many of the macros simply rename available windows functions
-so that they use the same name as the standard Unix functions.
-This means that code written for the Unix platform will work without change
-under Windows.
-</para>
-<para>
-A few additional constants, types, and functions are also provided,
-to provide a common base set of functions across both the Unix and Windows
-environments.
-</para>
+
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
+
 
 <!-- ##### MACRO MAXPATHLEN ##### -->
 <para>
@@ -40,66 +30,10 @@ environments.
 
 
 
-<!-- ##### MACRO getcwd ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO getpid ##### -->
-<para>
-
-</para>
-
-
-
 <!-- ##### TYPEDEF pid_t ##### -->
 <para>
 
 </para>
-
-
-<!-- ##### MACRO access ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO open ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO read ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO write ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO lseek ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO close ##### -->
-<para>
-
-</para>
-
 
 
 <!-- ##### MACRO pipe ##### -->
@@ -108,27 +42,6 @@ environments.
 </para>
 
 @phandles: 
-
-
-<!-- ##### MACRO popen ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO pclose ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO fdopen ##### -->
-<para>
-
-</para>
-
 
 
 <!-- ##### MACRO ftruncate ##### -->
@@ -166,5 +79,22 @@ environments.
 
 </para>
 
+
+
+<!-- ##### FUNCTION g_win32_error_message ##### -->
+<para>
+
+</para>
+
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_win32_getlocale ##### -->
+<para>
+
+</para>
+
+@Returns: 
 
 

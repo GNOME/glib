@@ -187,5 +187,19 @@ GPrivate *private_key, gpointer data
 #define G_STATIC_PRIVATE_INIT 
 </MACRO>
 
+# Definitions for different operating systems
 
+<MACRO>
+<NAME>G_OS_UNIX</NAME>
+#define G_OS_UNIX
+</MACRO>
 
+<MACRO>
+<NAME>G_OS_WIN32</NAME>
+#define G_OS_WIN32
+</MACRO>
+
+<MACRO>
+<NAME>G_OS_BEOS</NAME>
+#define G_OS_BEOS
+</MACRO>

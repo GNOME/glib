@@ -1,4 +1,3 @@
-
 <INCLUDE>glib.h</INCLUDE>
 
 <SECTION>
@@ -40,13 +39,11 @@ gdouble
 gsize
 gssize
 
+<SUBSECTION>
+gstring
+
 <SUBSECTION Private>
 gldouble
-
-# I don't really know where to put these.
-G_HAVE_WCHAR_H
-G_HAVE_WCTYPE_H
-GUTILS_C_VAR
 </SECTION>
 
 <SECTION>
@@ -54,14 +51,17 @@ GUTILS_C_VAR
 <FILE>limits</FILE>
 G_MININT
 G_MAXINT
+G_MAXUINT
 
 <SUBSECTION>
 G_MINSHORT
 G_MAXSHORT
+G_MAXUSHORT
 
 <SUBSECTION>
 G_MINLONG
 G_MAXLONG
+G_MAXULONG
 
 <SUBSECTION>
 G_MINFLOAT
@@ -78,6 +78,11 @@ G_MAXDOUBLE
 GLIB_MAJOR_VERSION
 GLIB_MINOR_VERSION
 GLIB_MICRO_VERSION
+
+<SUBSECTION>
+G_OS_WIN32
+G_OS_BEOS
+G_OS_UNIX
 
 <SUBSECTION>
 GLIB_CHECK_VERSION
@@ -217,6 +222,26 @@ GUINT64_SWAP_LE_BE_X86
 </SECTION>
 
 <SECTION>
+<TITLE>Numerical Definitions</TITLE>
+<FILE>numerical</FILE>
+G_IEEE754_FLOAT_BIAS
+G_IEEE754_DOUBLE_BIAS
+GFloatIEEE754
+GDoubleIEEE754
+
+<SUBSECTION>
+<SUBSECTION>
+G_E
+G_LN2
+G_LN10
+G_PI
+G_PI_2
+G_PI_4
+G_SQRT2
+G_LOG_2_BASE_10
+</SECTION>
+
+<SECTION>
 <TITLE>Miscellaneous Macros</TITLE>
 <FILE>macros_misc</FILE>
 G_INLINE_FUNC
@@ -226,7 +251,13 @@ G_STMT_START
 G_STMT_END
 
 <SUBSECTION>
+G_N_ELEMENTS
+
+<SUBSECTION>
 G_VA_COPY
+
+<SUBSECTION>
+G_STRINGIFY
 
 <SUBSECTION>
 G_GNUC_EXTENSION
@@ -240,14 +271,44 @@ G_GNUC_FUNCTION
 G_GNUC_PRETTY_FUNCTION
 
 <SUBSECTION>
-g_string
+G_STRLOC
+
+<SUBSECTION>
+G_GSHORT_FORMAT
+G_GUSHORT_FORMAT
+G_GINT_FORMAT
+G_GUINT_FORMAT
+G_GLONG_FORMAT
+G_GULONG_FORMAT
+G_GINT16_FORMAT
+G_GUINT16_FORMAT
+G_GINT32_FORMAT
+G_GUINT32_FORMAT
+G_GINT64_FORMAT
+G_GUINT64_FORMAT
 
 <SUBSECTION Private>
+GLIB_VAR
+G_STRINGIFY_ARG
 G_HAVE_INLINE
 G_CAN_INLINE
 inline
 G_HAVE___INLINE
 G_HAVE___INLINE__
+</SECTION>
+
+<SECTION>
+<TITLE>Error Reporting</TITLE>
+<FILE>error_reporting</FILE>
+GError
+g_error_new
+g_error_new_literal
+g_error_free
+g_error_copy
+g_error_matches
+g_set_error
+g_propagate_error
+g_clear_error
 </SECTION>
 
 <SECTION>
@@ -286,6 +347,7 @@ g_main_remove_poll
 
 <SUBSECTION>
 g_main_set_poll_func
+g_main_win32_get_poll_func
 GPollFunc
 
 <SUBSECTION>
@@ -318,9 +380,24 @@ G_THREADS_IMPL_SOLARIS
 G_THREADS_IMPL_NONE
 
 <SUBSECTION>
+G_THREAD_ERROR
+GThreadError
+
+<SUBSECTION>
 GThreadFunctions
 g_thread_init
 g_thread_supported
+
+<SUBSECTION>
+GThreadFunc
+GThreadPriority
+GThread
+g_thread_create
+g_thread_self
+g_thread_join
+g_thread_set_priority
+g_thread_yield
+g_thread_exit
 
 <SUBSECTION>
 GMutex
@@ -347,6 +424,26 @@ G_TRYLOCK
 G_UNLOCK
 
 <SUBSECTION>
+GStaticRecMutex
+G_STATIC_REC_MUTEX_INIT
+g_static_rec_mutex_lock
+g_static_rec_mutex_trylock
+g_static_rec_mutex_unlock
+g_static_rec_mutex_lock_full
+g_static_rec_mutex_unlock_full
+
+<SUBSECTION>
+GStaticRWLock
+G_STATIC_RW_LOCK_INIT
+g_static_rw_lock_reader_lock
+g_static_rw_lock_reader_trylock
+g_static_rw_lock_reader_unlock
+g_static_rw_lock_writer_lock
+g_static_rw_lock_writer_trylock
+g_static_rw_lock_writer_unlock
+g_static_rw_lock_free
+
+<SUBSECTION>
 GCond
 g_cond_new
 g_cond_signal
@@ -365,7 +462,9 @@ g_private_set
 GStaticPrivate
 G_STATIC_PRIVATE_INIT
 g_static_private_get
+g_static_private_get_for_thread
 g_static_private_set
+g_static_private_set_for_thread
 
 <SUBSECTION Private>
 G_THREAD_CF
@@ -373,6 +472,48 @@ G_THREAD_UF
 g_static_mutex_get_mutex_impl
 G_LOCK_NAME
 glib_dummy_decl
+GSystemThread
+g_thread_error_quark
+</SECTION>
+
+<SECTION>
+<TITLE>Thread Pools</TITLE>
+<FILE>thread_pools</FILE>
+GThreadPool
+g_thread_pool_new
+g_thread_pool_push
+g_thread_pool_set_max_threads
+g_thread_pool_get_max_threads
+g_thread_pool_get_num_threads
+g_thread_pool_unprocessed
+g_thread_pool_free
+g_thread_pool_set_max_unused_threads
+g_thread_pool_get_max_unused_threads
+g_thread_pool_get_num_unused_threads
+g_thread_pool_stop_unused_threads
+</SECTION>
+
+<SECTION>
+<TITLE>Asynchronous Queues</TITLE>
+<FILE>async_queues</FILE>
+GAsyncQueue
+g_async_queue_new
+g_async_queue_lock
+g_async_queue_unlock
+g_async_queue_ref
+g_async_queue_ref_unlocked
+g_async_queue_unref
+g_async_queue_unref_and_unlock
+g_async_queue_push
+g_async_queue_push_unlocked
+g_async_queue_pop
+g_async_queue_pop_unlocked
+g_async_queue_try_pop
+g_async_queue_try_pop_unlocked
+g_async_queue_timed_pop
+g_async_queue_timed_pop_unlocked
+g_async_queue_length
+g_async_queue_length_unlocked
 </SECTION>
 
 <SECTION>
@@ -409,14 +550,12 @@ GIOFunc
 GIOFuncs
 
 <SUBSECTION Private>
+g_io_channel_win32_new_fd
 g_io_channel_win32_new_messages
-g_io_channel_win32_new_pipe
-g_io_channel_win32_new_pipe_with_wakeups
 g_io_channel_win32_new_stream_socket
-
+g_io_channel_win32_poll
+g_io_channel_win32_make_pollfd
 g_io_channel_win32_get_fd
-g_io_channel_win32_pipe_readable
-g_io_channel_win32_pipe_request_wakeups
 </SECTION>
 
 <SECTION>
@@ -458,6 +597,8 @@ g_set_printerr_handler
 <SUBSECTION>
 g_return_if_fail
 g_return_val_if_fail
+g_return_if_reached
+g_return_val_if_reached
 
 <SUBSECTION>
 g_assert
@@ -487,6 +628,7 @@ g_log
 g_logv
 g_message
 g_warning
+g_critical
 g_error
 
 <SUBSECTION>
@@ -524,6 +666,10 @@ g_strndup
 g_strnfill
 
 <SUBSECTION>
+g_strlcpy
+g_strlcat
+
+<SUBSECTION>
 g_strdup_printf
 g_strdup_vprintf
 g_snprintf
@@ -551,6 +697,8 @@ g_strstrip
 g_strdelimit
 G_STR_DELIMITERS
 g_strescape
+g_strcompress
+g_strcanon
 g_strsplit
 g_strfreev
 g_strconcat
@@ -565,8 +713,10 @@ g_strsignal
 <SECTION>
 <TITLE>Date and Time Functions</TITLE>
 <FILE>date</FILE>
+G_MICROSEC
 GTimeVal
 g_get_current_time
+g_usleep
 
 <SUBSECTION>
 GDate
@@ -715,6 +865,10 @@ g_basename
 g_dirname
 g_path_is_absolute
 g_path_skip_root
+g_path_get_dirname
+g_path_get_basename
+g_filename_to_utf8
+g_filename_from_utf8
 
 <SUBSECTION>
 g_bit_nth_lsf
@@ -791,6 +945,7 @@ GTokenValue
 GErrorType
 G_CSET_a_2_z
 G_CSET_A_2_Z
+G_CSET_DIGITS
 G_CSET_LATINC
 G_CSET_LATINS
 
@@ -838,30 +993,22 @@ g_completion_free
 <FILE>windows</FILE>
 MAXPATHLEN
 NAME_MAX
-getcwd
-getpid
 pid_t
-access
-open
-read
-write
-lseek
-close
 pipe
-popen
-pclose
-fdopen
 ftruncate
 opendir
 readdir
 rewinddir
 closedir
 
+g_win32_error_message
+g_win32_getlocale
+
 <SUBSECTION Private>
-gwin_ftruncate
-gwin_closedir
-gwin_opendir
-gwin_rewinddir
+g_win32_ftruncate
+g_win32_closedir
+g_win32_opendir
+g_win32_rewinddir
 
 </SECTION>
 
@@ -910,6 +1057,7 @@ g_list_insert
 g_list_insert_sorted
 g_list_remove
 g_list_remove_link
+g_list_delete_link
 g_list_free
 
 <SUBSECTION>
@@ -954,9 +1102,11 @@ g_slist_alloc
 g_slist_append
 g_slist_prepend
 g_slist_insert
+g_slist_insert_before
 g_slist_insert_sorted
 g_slist_remove
 g_slist_remove_link
+g_slist_delete_link
 g_slist_free
 g_slist_free_1
 
@@ -983,6 +1133,37 @@ g_slist_index
 <SUBSECTION>
 g_slist_push_allocator
 g_slist_pop_allocator
+</SECTION>
+
+<SECTION>
+<TITLE>Doubly-ended Queues</TITLE>
+<FILE>queue</FILE>
+
+GQueue
+g_queue_new
+g_queue_free
+g_queue_push_head
+g_queue_push_tail
+g_queue_pop_head
+g_queue_pop_tail
+g_queue_is_empty
+g_queue_peek_head
+g_queue_peek_tail
+g_queue_push_head_link
+g_queue_push_tail_link
+g_queue_pop_head_link
+g_queue_pop_tail_link
+</SECTION>
+
+<SECTION>
+<TITLE>Trash Stacks</TITLE>
+<FILE>trash_stack</FILE>
+GTrashStack
+
+g_trash_stack_push
+g_trash_stack_pop
+g_trash_stack_peek
+g_trash_stack_height
 </SECTION>
 
 <SECTION>
@@ -1026,10 +1207,13 @@ g_string_sprintf
 g_string_sprintfa
 g_string_append
 g_string_append_c
+g_string_append_len
 g_string_prepend
 g_string_prepend_c
+g_string_prepend_len
 g_string_insert
 g_string_insert_c
+g_string_insert_len
 g_string_erase
 g_string_truncate
 g_string_free
@@ -1037,6 +1221,10 @@ g_string_free
 <SUBSECTION>
 g_string_up
 g_string_down
+
+<SUBSECTION>
+g_string_hash
+g_string_equal
 
 </SECTION>
 
@@ -1056,6 +1244,7 @@ g_string_chunk_free
 <FILE>arrays</FILE>
 GArray
 g_array_new
+g_array_sized_new
 g_array_append_val
 g_array_append_vals
 g_array_prepend_val
@@ -1074,6 +1263,7 @@ g_array_free
 <FILE>arrays_pointer</FILE>
 GPtrArray
 g_ptr_array_new
+g_ptr_array_sized_new
 g_ptr_array_add
 g_ptr_array_remove
 g_ptr_array_remove_index
@@ -1090,6 +1280,7 @@ g_ptr_array_free
 <FILE>arrays_byte</FILE>
 GByteArray
 g_byte_array_new
+g_byte_array_sized_new
 g_byte_array_append
 g_byte_array_prepend
 g_byte_array_remove_index
@@ -1109,7 +1300,6 @@ g_tree_nnodes
 g_tree_height
 g_tree_lookup
 g_tree_search
-GSearchFunc
 g_tree_traverse
 GTraverseFunc
 GTraverseType
@@ -1122,6 +1312,7 @@ g_tree_destroy
 <FILE>trees-nary</FILE>
 GNode
 g_node_new
+g_node_copy
 
 <SUBSECTION>
 g_node_insert
@@ -1290,3 +1481,400 @@ G_ALLOCATOR_LIST
 G_ALLOCATOR_NODE
 G_ALLOCATOR_SLIST
 </SECTION>
+
+<SECTION>
+<TITLE>Random Numbers</TITLE>
+<FILE>random_numbers</FILE>
+GRand
+g_rand_new_with_seed
+g_rand_new
+g_rand_free
+g_rand_set_seed
+g_rand_int
+g_rand_int_range
+g_rand_double
+g_rand_double_range
+g_random_set_seed
+g_random_int
+g_random_int_range
+g_random_double
+g_random_double_range
+</SECTION>
+
+<SECTION>
+<TITLE>Unicode Manipulation</TITLE>
+<FILE>unicode</FILE>
+
+<SECTION>
+<FILE>gunicode</FILE>
+gunichar
+gunichar2
+
+<SUBSECTION>
+g_get_charset
+
+<SUBSECTION>
+g_unichar_isalnum
+g_unichar_isalpha
+g_unichar_iscntrl
+g_unichar_isdigit
+g_unichar_isgraph
+g_unichar_islower
+g_unichar_isprint
+g_unichar_ispunct
+g_unichar_isspace
+g_unichar_isupper
+g_unichar_isxdigit
+g_unichar_istitle
+g_unichar_isdefined
+g_unichar_iswide
+g_unichar_toupper
+g_unichar_tolower
+g_unichar_totitle
+g_unichar_digit_value
+g_unichar_xdigit_value
+GUnicodeType
+g_unichar_type
+g_unicode_canonical_ordering
+g_unicode_canonical_decomposition
+
+<SUBSECTION>
+g_utf8_next_char
+g_utf8_get_char
+g_utf8_offset_to_pointer
+g_utf8_pointer_to_offset
+g_utf8_prev_char
+g_utf8_find_next_char
+g_utf8_find_prev_char
+g_utf8_strlen
+g_utf8_strncpy
+g_utf8_strchr
+g_utf8_strrchr
+
+<SUBSECTION>
+g_utf8_to_utf16
+g_utf8_to_ucs4
+g_utf16_to_ucs4
+g_utf16_to_utf8
+g_ucs4_to_utf16
+g_ucs4_to_utf8
+g_unichar_to_utf8
+</SECTION>
+
+<SECTION>
+<TITLE>Type Information</TITLE>
+<FILE>types</FILE>
+GType
+G_TYPE_FUNDAMENTAL
+G_TYPE_FUNDAMENTAL_MAX
+G_TYPE_DERIVE_ID
+G_TYPE_BRANCH_SEQNO
+G_TYPE_FUNDAMENTAL_LAST
+GTypeFundamentals
+G_TYPE_IS_CLASSED
+G_TYPE_IS_INSTANTIATABLE
+G_TYPE_IS_DERIVABLE
+G_TYPE_IS_DEEP_DERIVABLE
+G_TYPE_IS_PARAM
+G_TYPE_IS_INTERFACE
+GTypePlugin
+GTypePluginVTable
+GTypeInterface
+GTypeInstance
+GTypeInfo
+GTypeFundamentalInfo
+GInterfaceInfo
+GTypeValueTable
+<TITLE>GType</TITLE>
+G_TYPE_CHECK_INSTANCE_CAST
+G_TYPE_CHECK_CLASS_CAST
+G_TYPE_CHECK_INSTANCE_TYPE
+G_TYPE_CHECK_CLASS_TYPE
+G_TYPE_INSTANCE_GET_CLASS
+G_TYPE_FROM_INSTANCE
+G_TYPE_FROM_CLASS
+G_TYPE_FROM_INTERFACE
+g_type_init
+g_type_name
+g_type_qname
+g_type_from_name
+g_type_parent
+g_type_next_base
+g_type_is_a
+g_type_conforms_to
+g_type_fundamental_branch_last
+g_type_class_ref
+g_type_class_peek
+g_type_class_unref
+g_type_class_peek_parent
+g_type_interface_peek
+g_type_children
+g_type_interfaces
+g_type_set_qdata
+g_type_get_qdata
+GBaseInitFunc
+GBaseFinalizeFunc
+GClassInitFunc
+GClassFinalizeFunc
+GInstanceInitFunc
+GInterfaceInitFunc
+GInterfaceFinalizeFunc
+GTypePluginRef
+GTypePluginUnRef
+GTypePluginFillTypeInfo
+GTypePluginFillInterfaceInfo
+GTypeClassCacheFunc
+GTypeFlags
+g_type_register_static
+g_type_register_dynamic
+g_type_register_fundamental
+g_type_add_interface_static
+g_type_add_interface_dynamic
+g_type_class_is_a
+g_type_check_class_cast
+g_type_check_instance_cast
+g_type_instance_conforms_to
+g_type_check_flags
+g_type_create_instance
+g_type_free_instance
+g_type_value_table_peek
+g_type_add_class_cache_func
+g_type_remove_class_cache_func
+g_type_class_unref_uncached
+g_type_get_plugin
+g_type_fundamental_last
+
+<SUBSECTION Private>
+g_log_domain_gobject
+</SECTION>
+
+<SECTION>
+<TITLE>The Base Object Type</TITLE>
+<FILE>objects</FILE>
+GObject
+GObjectClass
+G_OBJECT
+G_OBJECT_GET_CLASS
+G_OBJECT_TYPE
+G_OBJECT_TYPE_NAME
+G_OBJECT_CLASS_TYPE
+G_OBJECT_CLASS_NAME
+G_IS_VALUE_OBJECT
+G_TYPE_IS_OBJECT
+G_IS_OBJECT
+G_OBJECT_CLASS
+G_IS_OBJECT_CLASS
+G_NOTIFY_PRIORITY
+GObjectGetParamFunc
+GObjectSetParamFunc
+GObjectFinalizeFunc
+g_object_class_install_param
+g_object_class_find_param_spec
+g_object_new
+g_object_new_valist
+g_object_set
+g_object_get
+g_object_set_valist
+g_object_get_valist
+g_object_set_param
+g_object_get_param
+g_object_queue_param_changed
+g_object_ref
+g_object_unref
+g_object_get_qdata
+g_object_set_qdata
+g_object_set_qdata_full
+g_object_steal_qdata
+g_value_set_object
+g_value_get_object
+g_value_dup_object
+G_WARN_INVALID_PARAM_ID
+</SECTION>
+
+<SECTION>
+<TITLE>Enumeration and Flag Types</TITLE>
+<FILE>enumerations_flags</FILE>
+GEnumClass
+GFlagsClass
+G_ENUM_CLASS_TYPE
+G_ENUM_CLASS_TYPE_NAME
+G_TYPE_IS_ENUM
+G_ENUM_CLASS
+G_IS_ENUM_CLASS
+G_TYPE_IS_FLAGS
+G_FLAGS_CLASS
+G_IS_FLAGS_CLASS
+G_FLAGS_CLASS_TYPE
+G_FLAGS_CLASS_TYPE_NAME
+G_IS_VALUE_ENUM
+G_IS_VALUE_FLAGS
+GEnumValue
+GFlagsValue
+g_enum_get_value
+g_enum_get_value_by_name
+g_enum_get_value_by_nick
+g_flags_get_first_value
+g_flags_get_value_by_name
+g_flags_get_value_by_nick
+g_value_set_enum
+g_value_get_enum
+g_value_set_flags
+g_value_get_flags
+g_enum_register_static
+g_flags_register_static
+g_enum_complete_type_info
+g_flags_complete_type_info
+</SECTION>
+
+<SECTION>
+<TITLE>Generic values</TITLE>
+<FILE>generic_values</FILE>
+G_VALUE_TYPE
+G_VALUE_TYPE_NAME
+G_TYPE_IS_VALUE
+G_IS_VALUE
+GValueExchange
+GValue
+g_value_init
+g_value_copy
+g_value_convert
+g_value_reset
+g_value_unset
+g_values_exchange
+g_value_types_exchangable
+g_value_register_exchange_func
+</SECTION>
+
+<SECTION>
+<TITLE>Standard value types</TITLE>
+<FILE>value_types</FILE>
+G_IS_VALUE_CHAR
+G_IS_VALUE_UCHAR
+G_IS_VALUE_BOOLEAN
+G_IS_VALUE_INT
+G_IS_VALUE_UINT
+G_IS_VALUE_LONG
+G_IS_VALUE_ULONG
+G_IS_VALUE_FLOAT
+G_IS_VALUE_DOUBLE
+G_IS_VALUE_STRING
+g_value_set_char
+g_value_get_char
+g_value_set_uchar
+g_value_get_uchar
+g_value_set_boolean
+g_value_get_boolean
+g_value_set_int
+g_value_get_int
+g_value_set_uint
+g_value_get_uint
+g_value_set_long
+g_value_get_long
+g_value_set_ulong
+g_value_get_ulong
+g_value_set_float
+g_value_get_float
+g_value_set_double
+g_value_get_double
+g_value_set_string
+g_value_get_string
+g_value_dup_string
+</SECTION>
+
+<SECTION>
+<TITLE>Object Parameter Specifications</TITLE>
+<FILE>param_specs</FILE>
+GParamSpec
+GParamSpecClass
+G_PARAM_SPEC_TYPE
+G_PARAM_SPEC_TYPE_NAME
+G_PARAM_SPEC
+G_IS_PARAM_SPEC
+G_PARAM_SPEC_GET_CLASS
+G_IS_PARAM_VALUE
+G_PARAM_SPEC_VALUE_TYPE
+G_TYPE_IS_PARAM
+GParamFlags
+g_param_spec_ref
+g_param_spec_unref
+g_param_spec_get_qdata
+g_param_spec_set_qdata
+g_param_spec_set_qdata_full
+g_param_spec_steal_qdata
+g_param_value_set_default
+g_param_value_defaults
+g_param_value_validate
+g_param_values_cmp
+g_param_spec_internal
+g_param_spec_hash_table_new
+g_param_spec_hash_table_insert
+g_param_spec_hash_table_remove
+g_param_spec_hash_table_lookup
+</SECTION>
+
+<SECTION>
+<TITLE>Standard Parameter Types</TITLE>
+<FILE>standard_params</FILE>
+G_IS_PARAM_SPEC_CHAR
+G_PARAM_SPEC_CHAR
+G_IS_PARAM_SPEC_UCHAR
+G_PARAM_SPEC_UCHAR
+G_IS_PARAM_SPEC_BOOLEAN
+G_PARAM_SPEC_BOOLEAN
+G_IS_PARAM_SPEC_INT
+G_PARAM_SPEC_INT
+G_IS_PARAM_SPEC_UINT
+G_PARAM_SPEC_UINT
+G_IS_PARAM_SPEC_LONG
+G_PARAM_SPEC_LONG
+G_IS_PARAM_SPEC_ULONG
+G_PARAM_SPEC_ULONG
+G_IS_PARAM_SPEC_ENUM
+G_PARAM_SPEC_ENUM
+G_IS_PARAM_SPEC_FLAGS
+G_PARAM_SPEC_FLAGS
+G_IS_PARAM_SPEC_FLOAT
+G_PARAM_SPEC_FLOAT
+G_IS_PARAM_SPEC_DOUBLE
+G_PARAM_SPEC_DOUBLE
+G_IS_PARAM_SPEC_STRING
+G_PARAM_SPEC_STRING
+G_IS_PARAM_SPEC_OBJECT
+G_PARAM_SPEC_OBJECT
+GParamSpecChar
+GParamSpecUChar
+GParamSpecBoolean
+GParamSpecInt
+GParamSpecUInt
+GParamSpecLong
+GParamSpecULong
+GParamSpecEnum
+GParamSpecFlags
+GParamSpecFloat
+GParamSpecDouble
+GParamSpecString
+GParamSpecObject
+g_param_spec_char
+g_param_spec_uchar
+g_param_spec_boolean
+g_param_spec_int
+g_param_spec_uint
+g_param_spec_long
+g_param_spec_ulong
+g_param_spec_enum
+g_param_spec_flags
+g_param_spec_float
+g_param_spec_double
+g_param_spec_string
+g_param_spec_string_c
+g_param_spec_object
+</SECTION>
+
+<SECTION>
+<TITLE>Varargs Value Collection</TITLE>
+<FILE>value_collection</FILE>
+GTypeCValue
+G_VALUE_COLLECT
+G_VALUE_LCOPY
+</SECTION>
+

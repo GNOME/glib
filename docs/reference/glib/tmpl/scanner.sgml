@@ -2,41 +2,23 @@
 Lexical Scanner
 
 <!-- ##### SECTION Short_Description ##### -->
-a general purpose lexical scanner.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-The #GScanner and its associated functions provide a general purpose
-lexical scanner.
+
 </para>
-<para>
-FIXME: really needs an example and more detail, but I don't completely
-understand it myself. Look at gtkrc.c for some code using the scanner.
-</para>
+
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
 
+
 <!-- ##### STRUCT GScanner ##### -->
 <para>
-The data structure representing a lexical scanner.
-</para>
-<para>
-You should set input_name after creating the scanner, since it is used
-by the default message handler when displaying warnings and errors.
-If you are scanning a file, the file name would be a good choice.
-</para>
-<para>
-The <structfield>user_data</structfield> and
-<structfield>derived_data</structfield> fields are not used.
-If you need to associate extra data with the scanner you can place them here.
-</para>
-<para>
-If you want to use your own message handler you can set the
-<structfield>msg_handler</structfield> field. The type of the message
-handler function is declared by #GScannerMsgFunc.
+
 </para>
 
 @user_data: 
@@ -63,50 +45,16 @@ handler function is declared by #GScannerMsgFunc.
 
 <!-- ##### FUNCTION g_scanner_new ##### -->
 <para>
-Creates a new #GScanner.
-The @config_templ structure specifies the initial settings of the scanner,
-which are copied into the #GScanner <structfield>config</structfield> field.
-If you pass NULL then the default settings are used.
-(See g_scanner_config_template in gscanner.c for the defaults.)
+
 </para>
 
-@config_templ: the initial scanner settings.
-@Returns: the new #GScanner.
+@config_templ: 
+@Returns: 
 
 
 <!-- ##### STRUCT GScannerConfig ##### -->
 <para>
-Specifies the #GScanner settings.
-</para>
-<para>
-<structfield>cset_skip_characters</structfield> specifies which characters
-should be skipped by the scanner (the default is the whitespace characters:
-space, tab, carriage-return and line-feed).
-</para>
-<para>
-<structfield>cset_identifier_first</structfield> specifies the characters
-which can start identifiers.
-(the default is #G_CSET_a_2_z, "_", and #G_CSET_A_2_Z).
-</para>
-<para>
-<structfield>cset_identifier_nth</structfield> specifies the characters
-which can be used in identifiers, after the first character.
-The default is #G_CSET_a_2_z, "_0123456789", #G_CSET_A_2_Z, #G_CSET_LATINS,
-#G_CSET_LATINC.
-</para>
-<para>
-<structfield>cpair_comment_single</structfield> specifies the characters
-at the start and end of single-line comments. The default is "#\n" which
-means that single-line comments start with a '#' and continue until a '\n'
-(end of line).
-</para>
-<para>
-<structfield>case_sensitive</structfield> specifies if symbols are
-case sensitive.
-</para>
-<para>
-The rest of the fields are flags which turn features on or off.
-FIXME: should describe these.
+
 </para>
 
 @cset_skip_characters: 
@@ -137,11 +85,11 @@ FIXME: should describe these.
 
 <!-- ##### FUNCTION g_scanner_input_file ##### -->
 <para>
-Prepares to scan a file.
+
 </para>
 
-@scanner: a #GScanner.
-@input_fd: a file descriptor.
+@scanner: 
+@input_fd: 
 
 
 <!-- ##### FUNCTION g_scanner_sync_file_offset ##### -->
@@ -154,122 +102,105 @@ Prepares to scan a file.
 
 <!-- ##### FUNCTION g_scanner_stat_mode ##### -->
 <para>
-Gets the file attributes.
-This is the <structfield>st_mode</structfield> field from the
-<structname>stat</structname> structure. See the <function>stat()</function>
-documentation.
+
 </para>
 
-@filename: the file name.
-@Returns: the file attributes.
+@filename: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_scanner_input_text ##### -->
 <para>
-Prepares to scan a text buffer.
+
 </para>
 
-@scanner: a #GScanner.
-@text: the text buffer to scan.
-@text_len: the length of the text buffer.
+@scanner: 
+@text: 
+@text_len: 
 
 
 <!-- ##### FUNCTION g_scanner_peek_next_token ##### -->
 <para>
-Gets the next token, without removing it from the input stream.
-The token data is placed in the
-<structfield>next_token</structfield>,
-<structfield>next_value</structfield>,
-<structfield>next_line</structfield>, and
-<structfield>next_position</structfield> fields of the #GScanner structure.
+
 </para>
 
-@scanner: a #GScanner.
-@Returns: the type of the token.
+@scanner: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_scanner_get_next_token ##### -->
 <para>
-Gets the next token, removing it from the input stream.
-The token data is placed in the
-<structfield>token</structfield>,
-<structfield>value</structfield>,
-<structfield>line</structfield>, and
-<structfield>position</structfield> fields of the #GScanner structure.
+
 </para>
 
-@scanner: a #GScanner.
-@Returns: the type of the token.
+@scanner: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_scanner_cur_line ##### -->
 <para>
-Gets the current line in the input stream (counting from 1).
+
 </para>
 
-@scanner: a #GScanner.
-@Returns: the current line.
+@scanner: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_scanner_cur_position ##### -->
 <para>
-Gets the current position in the current line (counting from 0).
+
 </para>
 
-@scanner: a #GScanner.
-@Returns: the current position on the line.
+@scanner: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_scanner_cur_token ##### -->
 <para>
-Gets the current token type.
-This is simply the <structfield>token</structfield> field in the #GScanner
-structure.
+
 </para>
 
-@scanner: a #GScanner.
-@Returns: the current token type.
+@scanner: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_scanner_cur_value ##### -->
 <para>
-Gets the current token value.
-This is simply the <structfield>value</structfield> field in the #GScanner
-structure.
+
 </para>
 
-@scanner: a #GScanner.
-@Returns: the current token value.
+@scanner: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_scanner_eof ##### -->
 <para>
-Returns TRUE if the scanner has reached the end of the file or text buffer.
+
 </para>
 
-@scanner: a #GScanner.
-@Returns: TRUE if the scanner has reached the end of the file or text buffer.
+@scanner: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_scanner_set_scope ##### -->
 <para>
-Sets the current scope.
+
 </para>
 
-@scanner: a #GScanner.
-@scope_id: the new scope id.
-@Returns: the old scope id.
+@scanner: 
+@scope_id: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_scanner_scope_add_symbol ##### -->
 <para>
-Adds a symbol to the given scope.
+
 </para>
 
-@scanner: a #GScanner.
-@scope_id: the scope id.
-@symbol: the symbol to add.
-@value: the value of the symbol.
+@scanner: 
+@scope_id: 
+@symbol: 
+@value: 
 
 
 <!-- ##### FUNCTION g_scanner_scope_foreach_symbol ##### -->
@@ -281,8 +212,6 @@ Adds a symbol to the given scope.
 @scope_id: 
 @func: 
 @user_data: 
-<!-- # Unused Parameters # -->
-@func_data: 
 
 
 <!-- ##### FUNCTION g_scanner_scope_lookup_symbol ##### -->
@@ -334,42 +263,36 @@ Adds a symbol to the given scope.
 
 <!-- ##### FUNCTION g_scanner_warn ##### -->
 <para>
-Outputs a warning message, via the #GScanner message handler.
+
 </para>
 
-@scanner: a #GScanner.
-@format: the message format. See the <function>printf()</function>
-documentation.
-@Varargs: the parameters to insert into the format string.
+@scanner: 
+@format: 
+@Varargs: 
 
 
 <!-- ##### FUNCTION g_scanner_error ##### -->
 <para>
-Outputs an error message, via the #GScanner message handler.
+
 </para>
 
-@scanner: a #GScanner.
-@format: the message format. See the <function>printf()</function>
-documentation.
-@Varargs: the parameters to insert into the format string.
+@scanner: 
+@format: 
+@Varargs: 
 
 
 <!-- ##### FUNCTION g_scanner_unexp_token ##### -->
 <para>
-Outputs a message resulting from an unexpected token in the input stream.
-FIXME: I don't understand the arguments here.
+
 </para>
 
-@scanner: a #GScanner.
-@expected_token: the expected token.
-@identifier_spec: a string describing the expected type of identifier,
-or NULL to use the default "identifier" string.
-@symbol_spec: a string describing the expected type of identifier,
-or NULL to use the default "symbol" string.
+@scanner: 
+@expected_token: 
+@identifier_spec: 
+@symbol_spec: 
 @symbol_name: 
-@message: a message string to output at the end of the warning/error, or NULL.
-@is_error: if TRUE it is output as an error. If False it is output as a
-warning.
+@message: 
+@is_error: 
 
 
 <!-- ##### USER_FUNCTION GScannerMsgFunc ##### -->
@@ -384,33 +307,31 @@ warning.
 
 <!-- ##### FUNCTION g_scanner_destroy ##### -->
 <para>
-Frees all memory used by the #GScanner.
+
 </para>
 
-@scanner: a #GScanner.
+@scanner: 
 
 
 <!-- ##### ENUM GTokenType ##### -->
 <para>
-The possible types of token returned from each g_scanner_get_next_token() call.
+
 </para>
 
 @G_TOKEN_EOF: 
 @G_TOKEN_LEFT_PAREN: 
-@G_TOKEN_RIGHT_PAREN: 
 @G_TOKEN_LEFT_CURLY: 
 @G_TOKEN_RIGHT_CURLY: 
 
 <!-- ##### UNION GTokenValue ##### -->
 <para>
-A union holding the value of the token.
+
 </para>
 
 
 <!-- ##### ENUM GErrorType ##### -->
 <para>
-The possible errors, used in the <structfield>v_error</structfield> field
-of #GTokenValue, when the token is a G_TOKEN_ERROR.
+
 </para>
 
 @G_ERR_UNKNOWN: 
@@ -424,67 +345,65 @@ of #GTokenValue, when the token is a G_TOKEN_ERROR.
 
 <!-- ##### MACRO G_CSET_a_2_z ##### -->
 <para>
-The set of lower-case ASCII alphabet characters.
-Used for specifying valid identifier characters in #GScannerConfig.
+
 </para>
 
 
 
 <!-- ##### MACRO G_CSET_A_2_Z ##### -->
 <para>
-The set of upper-case ASCII alphabet characters.
-Used for specifying valid identifier characters in #GScannerConfig.
+
+</para>
+
+
+
+<!-- ##### MACRO G_CSET_DIGITS ##### -->
+<para>
+
 </para>
 
 
 
 <!-- ##### MACRO G_CSET_LATINC ##### -->
 <para>
-Part of the set of extended characters in the Latin character sets.
-FIXME: lower case?
-Used for specifying valid identifier characters in #GScannerConfig.
+
 </para>
 
 
 
 <!-- ##### MACRO G_CSET_LATINS ##### -->
 <para>
-Part of the set of extended characters in the Latin character sets.
-FIXME: upper case?
-Used for specifying valid identifier characters in #GScannerConfig.
+
 </para>
 
 
 
 <!-- ##### MACRO g_scanner_add_symbol ##### -->
 <para>
-Adds a symbol to the default scope.
-Deprecated in favour of g_scanner_scope_add_symbol().
+
 </para>
 
-@scanner: a #GScanner.
-@symbol: the symbol to add.
-@value: the value of the symbol.
+@scanner: 
+@symbol: 
+@value: 
 
 
 <!-- ##### MACRO g_scanner_remove_symbol ##### -->
 <para>
-Removes a symbol from the default scope.
-Deprecated in favour of g_scanner_scope_remove_symbol().
+
 </para>
 
-@scanner: a #GScanner.
-@symbol: the symbol to remove.
+@scanner: 
+@symbol: 
 
 
 <!-- ##### MACRO g_scanner_foreach_symbol ##### -->
 <para>
-Calls a function for each symbol in the default scope.
-Deprecated in favour of g_scanner_scope_foreach_symbol().
+
 </para>
 
-@scanner: a #GScanner.
-@func: the function to call with each symbol.
-@data: data to pass to the function.
+@scanner: 
+@func: 
+@data: 
 
 

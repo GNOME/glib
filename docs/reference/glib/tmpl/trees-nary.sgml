@@ -2,66 +2,23 @@
 N-ary Trees
 
 <!-- ##### SECTION Short_Description ##### -->
-trees of data with any number of branches.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-The #GNode struct and its associated functions provide a N-ary tree data
-structure, where nodes in the tree can contain arbitrary data.
+
 </para>
-<para>
-To create a new tree use g_node_new().
-</para>
-<para>
-To insert a node into a tree use g_node_insert(), g_node_insert_before(),
-g_node_append() and g_node_prepend().
-</para>
-<para>
-To create a new node and insert it into a tree use g_node_insert_data(), 
-g_node_insert_data_before(), g_node_append_data() and g_node_prepend_data().
-</para>
-<para>
-To reverse the children of a node use g_node_reverse_children().
-</para>
-<para>
-To find a node use g_node_get_root(), g_node_find(), g_node_find_child(),
-g_node_child_index(), g_node_child_position(), 
-g_node_first_child(), g_node_last_child(),
-g_node_nth_child(), g_node_first_sibling(), g_node_prev_sibling(),
-g_node_next_sibling() or g_node_last_sibling().
-</para>
-<para>
-To get information about a node or tree use G_NODE_IS_LEAF(),
-G_NODE_IS_ROOT(), g_node_depth(), g_node_n_nodes(), g_node_n_children(),
-g_node_is_ancestor() or g_node_max_height().
-</para>
-<para>
-To traverse a tree, calling a function for each node visited in the
-traversal, use g_node_traverse() or g_node_children_foreach().
-</para>
-<para>
-To remove a node or subtree from a tree use g_node_unlink() or
-g_node_destroy().
-</para>
+
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
 
+
 <!-- ##### STRUCT GNode ##### -->
 <para>
-The #GNode struct represents one node in a
-<link linkend="glib-N-ary-Trees">N-ary Tree</link>.
-The <structfield>data</structfield> field contains the actual data of the node.
-The <structfield>next</structfield> and <structfield>prev</structfield>
-fields point to the node's siblings (a sibling is another #GNode with the
-same parent).
-The <structfield>parent</structfield> field points to the parent of the #GNode,
-or is NULL if the #GNode is the root of the tree.
-The <structfield>children</structfield> field points to the first child of the
-#GNode. The other children are accessed by using the
-<structfield>next</structfield> pointer of each child.
+
 </para>
 
 @data: 
@@ -72,145 +29,125 @@ The <structfield>children</structfield> field points to the first child of the
 
 <!-- ##### FUNCTION g_node_new ##### -->
 <para>
-Creates a new #GNode containing the given data.
-Used to create the first node in a tree.
+
 </para>
 
-@data: the data of the new node.
-@Returns: a new #GNode.
+@data: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_node_copy ##### -->
+<para>
+
+</para>
+
+@node: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_node_insert ##### -->
 <para>
-Inserts a #GNode beneath the parent at the given position.
+
 </para>
 
-@parent: the #GNode to place @node under.
-@position: the position to place @node at, with respect to its siblings.
-If position is -1, @node is inserted as the last child of @parent.
-@node: the #GNode to insert.
-@Returns: the inserted #GNode.
+@parent: 
+@position: 
+@node: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_node_insert_before ##### -->
 <para>
-Inserts a #GNode beneath the parent before the given sibling.
+
 </para>
 
-@parent: the #GNode to place @node under.
-@sibling: the sibling #GNode to place @node before. If sibling is NULL,
-the node is inserted as the last child of @parent.
-@node: the #GNode to insert.
-@Returns: the inserted #GNode.
+@parent: 
+@sibling: 
+@node: 
+@Returns: 
 
 
 <!-- ##### MACRO g_node_append ##### -->
 <para>
-Inserts a #GNode as the last child of the given parent.
+
 </para>
 
-@parent: the #GNode to place the new #GNode under.
-@node: the #GNode to insert.
-@Returns: the inserted #GNode.
+@parent: 
+@node: 
 
 
 <!-- ##### FUNCTION g_node_prepend ##### -->
 <para>
-Inserts a #GNode as the first child of the given parent.
+
 </para>
 
-@parent: the #GNode to place the new #GNode under.
-@node: the #GNode to insert.
-@Returns: the inserted #GNode.
+@parent: 
+@node: 
+@Returns: 
 
 
 <!-- ##### MACRO g_node_insert_data ##### -->
 <para>
-Inserts a new #GNode at the given position.
+
 </para>
 
-@parent: the #GNode to place the new #GNode under.
-@position: the position to place the new #GNode at.
-If position is -1, the new #GNode is inserted as the last child of @parent.
-@data: the data for the new #GNode.
-@Returns: the new #GNode.
+@parent: 
+@position: 
+@data: 
 
 
 <!-- ##### MACRO g_node_insert_data_before ##### -->
 <para>
-Inserts a new #GNode before the given sibling.
+
 </para>
 
-@parent: the #GNode to place the new #GNode under.
-@sibling: the sibling #GNode to place the new #GNode before.
-@data: the data for the new #GNode.
-@Returns: the new #GNode.
+@parent: 
+@sibling: 
+@data: 
 
 
 <!-- ##### MACRO g_node_append_data ##### -->
 <para>
-Inserts a new #GNode as the last child of the given parent.
+
 </para>
 
-@parent: the #GNode to place the new #GNode under.
-@data: the data for the new #GNode.
-@Returns: the new #GNode.
+@parent: 
+@data: 
 
 
 <!-- ##### MACRO g_node_prepend_data ##### -->
 <para>
-Inserts a new #GNode as the first child of the given parent.
+
 </para>
 
-@parent: the #GNode to place the new #GNode under.
-@data: the data for the new #GNode.
-@Returns: the new #GNode.
+@parent: 
+@data: 
 
 
 <!-- ##### FUNCTION g_node_reverse_children ##### -->
 <para>
-Reverses the order of the children of a #GNode.
-(It doesn't change the order of the grandchildren.)
+
 </para>
 
-@node: a #GNode.
+@node: 
 
 
 <!-- ##### FUNCTION g_node_traverse ##### -->
 <para>
-Traverses a tree starting at the given root #GNode.
-It calls the given function for each node visited.
-The traversal can be halted at any point by returning TRUE from @func.
+
 </para>
 
-@root: the root #GNode of the tree to traverse.
-@order: the order in which nodes are visited - %G_IN_ORDER, %G_PRE_ORDER,
-%G_POST_ORDER, or %G_LEVEL_ORDER.
-@flags: which types of children are to be visited, one of %G_TRAVERSE_ALL,
-%G_TRAVERSE_LEAFS and %G_TRAVERSE_NON_LEAFS.
-@max_depth: the maximum depth of the traversal. Nodes below this
-depth will not be visited. If max_depth is -1 all nodes in the tree are
-visited. If depth is 1, only the root is visited. If depth is 2, the root
-and its children are visited. And so on.
-@func: the function to call for each visited #GNode.
-@data: user data to pass to the function.
+@root: 
+@order: 
+@flags: 
+@max_depth: 
+@func: 
+@data: 
 
 
 <!-- ##### ENUM GTraverseFlags ##### -->
 <para>
-Specifies which nodes are visited during several of the tree functions,
-including g_node_traverse() and g_node_find().
-<itemizedlist>
-<listitem><para>
-%G_TRAVERSE_LEAFS specifies that only leaf nodes should be visited.
-</para></listitem>
-<listitem><para>
-%G_TRAVERSE_NON_LEAFS specifies that only non-leaf nodes should be visited.
-</para></listitem>
-<listitem><para>
-%G_TRAVERSE_ALL specifies that all nodes should be visited.
-</para></listitem>
-</itemizedlist>
+
 </para>
 
 @G_TRAVERSE_LEAFS: 
@@ -220,275 +157,238 @@ including g_node_traverse() and g_node_find().
 
 <!-- ##### USER_FUNCTION GNodeTraverseFunc ##### -->
 <para>
-Specifies the type of function passed to g_node_traverse().
-The function is called with each of the nodes visited, together with the
-user data passed to g_node_traverse().
-If the function returns TRUE, then the traversal is stopped.
+
 </para>
 
-@node: a #GNode.
-@data: user data passed to g_node_traverse().
-@Returns: TRUE to stop the traversal.
+@node: 
+@data: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_node_children_foreach ##### -->
 <para>
-Calls a function for each of the children of a #GNode.
-Note that it doesn't descend beneath the child nodes.
+
 </para>
 
-@node: a #GNode.
-@flags: which types of children are to be visited, one of %G_TRAVERSE_ALL,
-%G_TRAVERSE_LEAFS and %G_TRAVERSE_NON_LEAFS.
-@func: the function to call for each visited node.
-@data: user data to pass to the function.
+@node: 
+@flags: 
+@func: 
+@data: 
 
 
 <!-- ##### USER_FUNCTION GNodeForeachFunc ##### -->
 <para>
-Specifies the type of function passed to g_node_children_foreach().
-The function is called with each child node, together with the user data
-passed to g_node_children_foreach().
+
 </para>
 
-@node: a #GNode.
-@data: user data passed to g_node_children_foreach().
+@node: 
+@data: 
 
 
 <!-- ##### FUNCTION g_node_get_root ##### -->
 <para>
-Gets the root of a tree.
+
 </para>
 
-@node: a #GNode.
-@Returns: the root of the tree.
+@node: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_node_find ##### -->
 <para>
-Finds a #GNode in a tree.
+
 </para>
 
-@root: the root #GNode of the tree to search.
-@order: the order in which nodes are visited - %G_IN_ORDER, %G_PRE_ORDER,
-%G_POST_ORDER, or %G_LEVEL_ORDER.
-@flags: which types of children are to be searched, one of %G_TRAVERSE_ALL,
-%G_TRAVERSE_LEAFS and %G_TRAVERSE_NON_LEAFS.
-@data: the data to find.
-@Returns: the found #GNode, or NULL if the data is not found.
+@root: 
+@order: 
+@flags: 
+@data: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_node_find_child ##### -->
 <para>
-Finds the first child of a #GNode with the given data.
+
 </para>
 
-@node: a #GNode.
-@flags: which types of children are to be searched, one of %G_TRAVERSE_ALL,
-%G_TRAVERSE_LEAFS and %G_TRAVERSE_NON_LEAFS.
-@data: the data to find.
-@Returns: the found child #GNode, or NULL if the data is not found.
+@node: 
+@flags: 
+@data: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_node_child_index ##### -->
 <para>
-Gets the position of the first child of a #GNode which contains the given data.
+
 </para>
 
-@node: a #GNode.
-@data: the data to find.
-@Returns: the index of the child of @node which contains @data, or -1
-if the data is not found.
+@node: 
+@data: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_node_child_position ##### -->
 <para>
-Gets the position of a #GNode with respect to its siblings.
-@child must be a child of @node.
-The first child is numbered 0, the second 1, and so on.
+
 </para>
 
-@node: a #GNode.
-@child: a child of @node.
-@Returns: the position of @child with respect to its siblings.
+@node: 
+@child: 
+@Returns: 
 
 
 <!-- ##### MACRO g_node_first_child ##### -->
 <para>
-Gets the first child of a #GNode.
+
 </para>
 
-@node: a #GNode.
-@Returns: the last child of @node, or NULL if @node is NULL or has no children.
+@node: 
 
 
 <!-- ##### FUNCTION g_node_last_child ##### -->
 <para>
-Gets the last child of a #GNode.
+
 </para>
 
-@node: a #GNode (must not be NULL).
-@Returns: the last child of @node, or NULL if @node has no children.
+@node: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_node_nth_child ##### -->
 <para>
-Gets a child of a #GNode, using the given index.
-The first child is at index 0. If the index is too big, NULL is returned.
+
 </para>
 
-@node: a #GNode.
-@n: the index of the desired child.
-@Returns: the child of @node at index @n.
+@node: 
+@n: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_node_first_sibling ##### -->
 <para>
-Gets the first sibling of a #GNode.
-This could possibly be the node itself.
+
 </para>
 
-@node: a #GNode.
-@Returns: the first sibling of @node.
+@node: 
+@Returns: 
 
 
 <!-- ##### MACRO g_node_next_sibling ##### -->
 <para>
-Gets the next sibling of a #GNode.
+
 </para>
 
-@node: a #GNode.
-@Returns: the next sibling of @node, or NULL if @node is NULL.
+@node: 
 
 
 <!-- ##### MACRO g_node_prev_sibling ##### -->
 <para>
-Gets the previous sibling of a #GNode.
+
 </para>
 
-@node: a #GNode.
-@Returns: the previous sibling of @node, or NULL if @node is NULL.
+@node: 
 
 
 <!-- ##### FUNCTION g_node_last_sibling ##### -->
 <para>
-Gets the last sibling of a #GNode.
-This could possibly be the node itself.
+
 </para>
 
-@node: a #GNode.
-@Returns: the last sibling of @node.
+@node: 
+@Returns: 
 
 
 <!-- ##### MACRO G_NODE_IS_LEAF ##### -->
 <para>
-Returns TRUE if a #GNode is a leaf node.
+
 </para>
 
-@node: a #GNode.
-@Returns: TRUE if the #GNode is a leaf node (i.e. it has no children).
+@node: 
 
 
 <!-- ##### MACRO G_NODE_IS_ROOT ##### -->
 <para>
-Returns TRUE if a #GNode is the root of a tree.
+
 </para>
 
-@node: a #GNode.
-@Returns: TRUE if the #GNode is the root of a tree (i.e. it has no parent
-or siblings).
+@node: 
 
 
 <!-- ##### FUNCTION g_node_depth ##### -->
 <para>
-Gets the depth of a #GNode.
-</para>
-<para>
-If @node is NULL the depth is 0.
-The root node has a depth of 1.
-For the children of the root node the depth is 2. And so on.
+
 </para>
 
-@node: a #GNode.
-@Returns: the depth of the #GNode.
+@node: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_node_n_nodes ##### -->
 <para>
-Gets the number of nodes in a tree.
+
 </para>
 
-@root: a #GNode.
-@flags: which types of children are to be counted, one of %G_TRAVERSE_ALL,
-%G_TRAVERSE_LEAFS and %G_TRAVERSE_NON_LEAFS.
-@Returns: the number of nodes in the tree.
+@root: 
+@flags: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_node_n_children ##### -->
 <para>
-Gets the number of children of a #GNode.
+
 </para>
 
-@node: a #GNode.
-@Returns: the number of children of @node.
+@node: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_node_is_ancestor ##### -->
 <para>
-Returns TRUE if @node is an ancestor of @descendant.
-This is true if node is the parent of descendant, or if node is the
-grandparent of descendant etc.
+
 </para>
 
-@node: a #GNode.
-@descendant: a #GNode.
-@Returns: TRUE if @node is an ancestor of @descendant.
+@node: 
+@descendant: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_node_max_height ##### -->
 <para>
-Gets the maximum height of all branches beneath a #GNode.
-This is the maximum distance from the #GNode to all leaf nodes.
-</para>
-<para>
-If @root is NULL, 0 is returned. If @root has no children, 1 is returned.
-If @root has children, 2 is returned. And so on.
+
 </para>
 
-@root: a #GNode.
-@Returns: the maximum height of the tree beneath @root.
+@root: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_node_unlink ##### -->
 <para>
-Unlinks a #GNode from a tree, resulting in two separate trees.
+
 </para>
 
-@node: the #GNode to unlink, which becomes the root of a new tree.
+@node: 
 
 
 <!-- ##### FUNCTION g_node_destroy ##### -->
 <para>
-Removes the #GNode and its children from the tree, freeing any memory
-allocated.
+
 </para>
 
-@root: the root of the tree/subtree to destroy.
-
-
-<!-- ##### FUNCTION g_node_pop_allocator ##### -->
-<para>
-Restores the previous #GAllocator, used when allocating #GNode elements.
-</para>
-
+@root: 
 
 
 <!-- ##### FUNCTION g_node_push_allocator ##### -->
 <para>
-Sets the allocator to use to allocate #GNode elements.
-Use g_node_pop_allocator() to restore the previous allocator.
+
 </para>
 
-@allocator: the #GAllocator to use when allocating #GNode elements.
+@allocator: 
+
+
+<!-- ##### FUNCTION g_node_pop_allocator ##### -->
+<para>
+
+</para>
+
 
 

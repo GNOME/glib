@@ -2,38 +2,23 @@
 Message Logging
 
 <!-- ##### SECTION Short_Description ##### -->
-versatile support for logging messages with different levels of importance.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-These functions provide support for logging error messages or messages
-used for debugging.
+
 </para>
 
-<para>
-There are several built-in levels of messages, defined in #GLogLevelFlags.
-These can be extended with user-defined levels.
-</para>
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
 
+
 <!-- ##### MACRO G_LOG_DOMAIN ##### -->
 <para>
-Defines the log domain.
-For applications, this is typically left as the default NULL (or "") domain.
-Libraries should define this so that any messages which they log can
-be differentiated from messages from other libraries and application code.
-But be careful not to define it in any public header files.
-</para>
-<para>
-For example, GTK uses this in its Makefile.am:
-<informalexample><programlisting>
-INCLUDES = \
-	-DG_LOG_DOMAIN=\"Gtk\"
-</programlisting></informalexample>
+
 </para>
 
 
@@ -52,33 +37,32 @@ INCLUDES = \
 
 <!-- ##### MACRO G_LOG_FATAL_MASK ##### -->
 <para>
-GLib log levels that are considered fatal by default.
+
 </para>
 
 
 
 <!-- ##### MACRO G_LOG_LEVEL_USER_SHIFT ##### -->
 <para>
-Log level shift offset for user defined log levels (0-7 are used by GLib).
+
 </para>
 
 
 
 <!-- ##### USER_FUNCTION GLogFunc ##### -->
 <para>
-Specifies the prototype of log handler functions.
+
 </para>
 
-@log_domain: the log domain of the message.
-@log_level: the log level of the message (including the fatal and recursion
-flags).
-@message: the message to process.
-@user_data: user data, set in g_log_set_handler().
+@log_domain: 
+@log_level: 
+@message: 
+@user_data: 
 
 
 <!-- ##### ENUM GLogLevelFlags ##### -->
 <para>
-Flags specifying the level of log messages.
+
 </para>
 
 @G_LOG_FLAG_RECURSION: 
@@ -93,188 +77,149 @@ Flags specifying the level of log messages.
 
 <!-- ##### FUNCTION g_log ##### -->
 <para>
-Logs an error or debugging message.
-If the log level has been set as fatal, the <function>abort()</function>
-function is called to terminate the program.
+
 </para>
 
-@log_domain: the log domain, usually #G_LOG_DOMAIN.
-@log_level: the log level, either from #GLogLevelFlags or a user-defined level.
-@format: the message format. See the <function>printf()</function>
-documentation.
-@Varargs: the parameters to insert into the format string.
+@log_domain: 
+@log_level: 
+@format: 
+@Varargs: 
 
 
 <!-- ##### FUNCTION g_logv ##### -->
 <para>
-Logs an error or debugging message.
-If the log level has been set as fatal, the <function>abort()</function>
-function is called to terminate the program.
+
 </para>
 
-@log_domain: the log domain.
-@log_level: the log level.
-@format: the message format. See the <function>printf()</function>
-documentation.
-@args: the parameters to insert into the format string.
+@log_domain: 
+@log_level: 
+@format: 
+@args: 
 
 
 <!-- ##### MACRO g_message ##### -->
 <para>
-A convenience function/macro to log a normal message.
+
 </para>
 
-@format: the message format. See the <function>printf()</function>
-documentation.
-@args...: the parameters to insert into the format string.
+@...: 
 
 
 <!-- ##### MACRO g_warning ##### -->
 <para>
-A convenience function/macro to log a warning message.
+
 </para>
 
-@format: the message format. See the <function>printf()</function>
-documentation.
-@args...: the parameters to insert into the format string.
+@...: 
+
+
+<!-- ##### MACRO g_critical ##### -->
+<para>
+
+</para>
+
+@...: 
 
 
 <!-- ##### MACRO g_error ##### -->
 <para>
-A convenience function/macro to log an error message.
-Error messages are always fatal, resulting in a call to
-<function>abort()</function> to terminate the application.
+
 </para>
 
-@format: the message format. See the <function>printf()</function>
-documentation.
-@args...: the parameters to insert into the format string.
+@...: 
 
 
 <!-- ##### FUNCTION g_log_set_handler ##### -->
 <para>
-Sets the log handler for a domain and a set of log levels.
-To handle fatal and recursive messages the @log_levels parameter
-must be combined with the G_LOG_FLAG_FATAL and G_LOG_FLAG_RECURSIVE bit flags.
-</para>
-<para>
-Note that since the G_LOG_LEVEL_ERROR log level is always fatal, if you want
-to set a handler for this log level you must combine it with G_LOG_FLAG_FATAL.
+
 </para>
 
-<example>
-<title>Adding a log handler for all warning messages</title>
-<programlisting>
-  g_log_set_handler (NULL, G_LOG_LEVEL_WARNING | G_LOG_FLAG_FATAL
-                     | G_LOG_FLAG_RECURSIVE, my_log_handler, NULL);
-</programlisting>
-</example>
-</para>
-
-@log_domain: the log domain, or NULL for the default "" application domain.
-@log_levels: the log levels to apply the log handler for. To handle fatal
-and recursive messages as well, combine the log levels with the
-G_LOG_FLAG_FATAL and G_LOG_FLAG_RECURSIVE bit flags.
-@log_func: the log handler function.
-@user_data: data passed to the log handler.
-@Returns: the id of the new handler.
+@log_domain: 
+@log_levels: 
+@log_func: 
+@user_data: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_log_remove_handler ##### -->
 <para>
-Removes the log handler.
+
 </para>
 
-@log_domain: the log domain.
-@handler_id: the id of the handler, which was returned in g_log_set_handler().
+@log_domain: 
+@handler_id: 
 
 
 <!-- ##### FUNCTION g_log_set_always_fatal ##### -->
 <para>
-Sets the message levels which are always fatal, in any log domain.
-When a message with any of these levels is logged the program terminates.
-You can only set the levels defined by GLib to be fatal.
-%G_LOG_LEVEL_ERROR is always fatal.
+
 </para>
 
-@fatal_mask: the mask containing bits set for each level of error which is
-to be fatal.
-@Returns: the old fatal mask.
+@fatal_mask: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_log_set_fatal_mask ##### -->
 <para>
-Sets the log levels which are fatal in the given domain.
-%G_LOG_LEVEL_ERROR is always fatal.
+
 </para>
 
-@log_domain: the log domain.
-@fatal_mask: the new fatal mask.
-@Returns: the old fatal mask for the log domain.
+@log_domain: 
+@fatal_mask: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_log_default_handler ##### -->
 <para>
-The default log handler.
-This is used if no log handler has been set for the particular log domain
-and log level combination. It outputs the message to stderr or stdout
-and if the log level is fatal it calls <function>abort()</function>.
-</para>
-<para>
-stderr is used for levels %G_LOG_LEVEL_ERROR, %G_LOG_LEVEL_CRITICAL, and
-%G_LOG_LEVEL_WARNING. stdout is used for the rest.
-(On the Windows platform, stdout is always used.)
+
 </para>
 
-@log_domain: the log domain of the message.
-@log_level: the level of the message.
-@message: the message.
-@unused_data: data passed from g_log which is unused.
+@log_domain: 
+@log_level: 
+@message: 
+@unused_data: 
 
 
 <!-- ##### FUNCTION g_set_error_handler ##### -->
 <para>
-Sets the function to be called to handle error messages.
-This function is deprecated in favour of the new logging facilities.
+
 </para>
 
-@func: the function to be called to handle error messages.
-@Returns: the old error handler.
+@func: 
+@Returns: 
 
 
 <!-- ##### USER_FUNCTION GErrorFunc ##### -->
 <para>
-Specifies the type of function passed to g_set_error_handler().
+
 </para>
 
-@str: the error message.
+@str: 
 
 
 <!-- ##### FUNCTION g_set_warning_handler ##### -->
 <para>
-Sets the function to be called to handle warning messages.
-This function is deprecated in favour of the new logging facilities.
+
 </para>
 
-@func: the function to be called to handle warning messages.
-@Returns: the old warning handler.
+@func: 
+@Returns: 
 
 
 <!-- ##### USER_FUNCTION GWarningFunc ##### -->
 <para>
-Specifies the type of function passed to g_set_warning_handler().
+
 </para>
 
-@str: the warning message.
+@str: 
 
 
 <!-- ##### FUNCTION g_set_message_handler ##### -->
 <para>
-Sets the function to be called to handle messages.
-This function is deprecated in favour of the new logging facilities.
+
 </para>
 
-@func: the function to be called to handle normal messages.
-@Returns: the old message handler.
+@func: 
+@Returns: 
 
 

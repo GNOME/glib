@@ -1,186 +1,131 @@
 <!-- ##### SECTION Title ##### -->
-Message Output and Debugging Functions
+Warnings and Assertions
 
 <!-- ##### SECTION Short_Description ##### -->
-functions to output messages and help debug applications.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-These functions provide support for outputting messages.
+
 </para>
+
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
 
+
 <!-- ##### FUNCTION g_print ##### -->
 <para>
-Outputs a formatted message via the print handler.
-The default print handler simply outputs the message to stdout.
-</para>
-<para>
-g_print() should not be used from within libraries for debugging messages,
-since it may be redirected by applications to special purpose message
-windows or even files.
-Instead, libraries should use g_log(), or the convenience functions
-g_message(), g_warning() and g_error().
+
 </para>
 
-@format: the message format. See the <function>printf()</function>
-documentation.
-@Varargs: the parameters to insert into the format string.
+@format: 
+@Varargs: 
 
 
 <!-- ##### FUNCTION g_set_print_handler ##### -->
 <para>
-Sets the print handler.
-Any messages passed to g_print() will be output via the new handler.
-The default handler simply outputs the message to stdout.
-By providing your own handler you can redirect the output, to a GTK
-widget or a log file for example.
+
 </para>
 
-@func: the new print handler.
-@Returns: the old print handler.
+@func: 
+@Returns: 
 
 
 <!-- ##### USER_FUNCTION GPrintFunc ##### -->
 <para>
-Specifies the type of the print handler functions.
-These are called with the complete formatted string to output.
+
 </para>
 
-@string: the message to be output.
+@string: 
 
 
 <!-- ##### FUNCTION g_printerr ##### -->
 <para>
-Outputs a formatted message via the error message handler.
-The default handler simply outputs the message to stderr.
-</para>
-<para>
-g_printerr() should not be used from within libraries. Instead g_log() should
-be used, or the convenience functions g_message(), g_warning() and g_error().
+
 </para>
 
-@format: the message format. See the <function>printf()</function>
-documentation.
-@Varargs: the parameters to insert into the format string.
+@format: 
+@Varargs: 
 
 
 <!-- ##### FUNCTION g_set_printerr_handler ##### -->
 <para>
-Sets the handler for printing error messages.
-Any messages passed to g_printerr() will be output via the new handler.
-The default handler simply outputs the message to stderr.
-By providing your own handler you can redirect the output, to a GTK
-widget or a log file for example.
+
 </para>
 
-@func: the new error message handler.
-@Returns: the old error message handler.
+@func: 
+@Returns: 
 
 
 <!-- ##### MACRO g_return_if_fail ##### -->
 <para>
-Returns from the current function if the expression is not true.
-If the expression evaluates to FALSE, a critical message is logged and
-the function returns. This can only be used in functions which do not return
-a value.
+
 </para>
 
-@expr: the expression to check.
+@expr: 
 
 
 <!-- ##### MACRO g_return_val_if_fail ##### -->
 <para>
-Returns from the current function, returning the value @val, if the expression
-is not true.
-If the expression evaluates to FALSE, a critical message is logged and
-@val is returned.
+
 </para>
 
-@expr: the expression to check.
-@val: the value to return from the current function if the expression is not
-true.
+@expr: 
+@val: 
+
+
+<!-- ##### MACRO g_return_if_reached ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO g_return_val_if_reached ##### -->
+<para>
+
+</para>
+
+@val: 
 
 
 <!-- ##### MACRO g_assert ##### -->
 <para>
-Debugging macro to terminate the application if the assertion fails.
-If the assertion fails (i.e. the expression is not true), an error message
-is logged and the application is terminated.
-</para>
-<para>
-The macro can be turned off in final releases of code by defining
-G_DISABLE_ASSERT when compiling the application.
+
 </para>
 
-@expr: the expression to check.
+@expr: 
 
 
 <!-- ##### MACRO g_assert_not_reached ##### -->
 <para>
-Debugging macro to terminate the application if it is ever reached.
-If it is reached, an error message is logged and the application is terminated.
-</para>
-<para>
-The macro can be turned off in final releases of code by defining
-G_DISABLE_ASSERT when compiling the application.
+
 </para>
 
 
 
 <!-- ##### FUNCTION g_on_error_query ##### -->
 <para>
-Prompts the user with "[E]xit, [H]alt, show [S]tack trace or [P]roceed".
-This function is intended to be used for debugging use only.
-FIXME: How do you set it up?
-</para>
-<para>
-If Exit is selected, the application terminates with a call to
-<function>_exit(0)</function>.
-</para>
-<para>
-If Halt is selected, the application enters an infinite loop.
-The infinite loop can only be stopped by killing the application,
-or by setting glib_on_error_halt to FALSE (possibly via a debugger).
-</para>
-<para>
-If Stack trace is selected, g_on_error_stack_trace() is called. This
-invokes gdb, which attaches to the current process and shows a stack trace.
-The prompt is then shown again.
-</para>
-<para>
-If Proceed is selected, the function returns.
-</para>
-<para>
-This function may cause different actions on non-unix platforms.
+
 </para>
 
-@prg_name: the program name, needed by gdb for the [S]tack trace option.
-If @prg_name is NULL, g_get_prgname() is called to get the program name
-(which will work correctly if gdk_init() or gtk_init() has been called).
+@prg_name: 
 
 
 <!-- ##### FUNCTION g_on_error_stack_trace ##### -->
 <para>
-Invokes gdb, which attaches to the current process and shows a stack trace.
-Called by g_on_error_query() when the [S]tack trace option is selected.
-</para>
-<para>
-This function may cause different actions on non-unix platforms.
+
 </para>
 
-@prg_name: the program name, needed by gdb for the [S]tack trace option.
-If @prg_name is NULL, g_get_prgname() is called to get the program name
-(which will work correctly if gdk_init() or gtk_init() has been called).
+@prg_name: 
 
 
 <!-- ##### MACRO G_BREAKPOINT ##### -->
 <para>
-Inserts a breakpoint instruction into the code (on x86 machines only).
+
 </para>
 
 

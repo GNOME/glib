@@ -2,77 +2,49 @@
 Type Conversion Macros
 
 <!-- ##### SECTION Short_Description ##### -->
-a portable method for storing #gint &amp; #guint values in #gpointer variables.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-These macros provide a portable method of storing #gint and #guint values in
-#gpointer variables.
+
 </para>
-<para>
-Many of the GLib data types are based on storing #gpointer values,
-e.g. #GHashTable, #GList, #GSList, #GTree, and #GNode.
-By using the type conversion macros described below you can store #gint and
-#guint values inside a #gpointer. So you can, for example, create
-a hash table of #gint values, or a linked list of #guint values.
-</para>
-<para>
-The type conversion macros are necessary because the size of a #gpointer can
-vary across different platforms. So the type conversion has to be done
-carefully.
-</para>
-<para>
-Note that the reverse operation, storing #gpointer values in
-integer variables, is not supported, since an integer is not guaranteed to
-be large enough to store #gpointer values across all platforms.
-</para>
-<para>
-To convert an integer value, a #gint, to a #gpointer, use #GINT_TO_POINTER.
-To convert it back to a #gint, use #GPOINTER_TO_INT.
-</para>
-<para>
-To convert an unsigned integer, a #guint, to a #gpointer, use
-#GUINT_TO_POINTER. To convert it back to a #guint, use #GPOINTER_TO_UINT.
-</para>
+
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
 
+
 <!-- ##### MACRO GINT_TO_POINTER ##### -->
 <para>
-Converts a #gint to a #gpointer.
+
 </para>
 
-@i: a #gint value.
-@Returns: the value converted to a #gpointer.
+@i: 
 
 
 <!-- ##### MACRO GPOINTER_TO_INT ##### -->
 <para>
-Converts a #gpointer to a #gint.
+
 </para>
 
-@p: a #gpointer value.
-@Returns: the value converted to a #gint.
+@p: 
 
 
 <!-- ##### MACRO GUINT_TO_POINTER ##### -->
 <para>
-Converts a #guint to a #gpointer.
+
 </para>
 
-@u: a #guint value.
-@Returns: the value converted to a #gpointer.
+@u: 
 
 
 <!-- ##### MACRO GPOINTER_TO_UINT ##### -->
 <para>
-Converts a #gpointer to a #guint.
+
 </para>
 
-@p: a #gpointer value.
-@Returns: the value converted to a #guint.
+@p: 
 
 

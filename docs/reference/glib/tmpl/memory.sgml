@@ -2,155 +2,116 @@
 Memory Allocation
 
 <!-- ##### SECTION Short_Description ##### -->
-general memory-handling.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-These functions provide support for allocating and freeing memory.
+
 </para>
-<note>
-<para>
-If any call to allocate memory fails, the application is terminated.
-This also means that there is no need to check if the call succeeded.
-</para>
-</note>
+
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
 
+
 <!-- ##### MACRO g_new ##### -->
 <para>
-Allocates @count elements of type @type.
-The returned pointer is cast to a pointer to the given type.
-If @count is 0 it returns NULL.
+
 </para>
 
-@type: the type of the elements to allocate.
-@count: the number of elements to allocate.
-@Returns: a pointer to the allocated memory, cast to a pointer to @type.
+@type: 
+@count: 
 
 
 <!-- ##### MACRO g_new0 ##### -->
 <para>
-Allocates @count elements of type @type, initialized to 0's.
-The returned pointer is cast to a pointer to the given type.
-If @count is 0 it returns NULL.
+
 </para>
 
-@type: the type of the elements to allocate.
-@count: the number of elements to allocate.
-@Returns: a pointer to the allocated memory, cast to a pointer to @type.
+@type: 
+@count: 
 
 
 <!-- ##### MACRO g_renew ##### -->
 <para>
-Reallocates the memory pointed to by @mem, so that it now has space for
-@count elements of type @type. It returns the new address of the memory,
-which may have been moved.
+
 </para>
 
-@type: the type of the elements to allocate.
-@mem: the currently allocated memory.
-@count: the number of elements to allocate.
-@Returns: a pointer to the new allocated memory, cast to a pointer to @type.
+@type: 
+@mem: 
+@count: 
 
 
 <!-- ##### FUNCTION g_malloc ##### -->
 <para>
-Allocates @size bytes of memory.
-If @size is 0 it returns NULL.
+
 </para>
 
-@size: the number of bytes to allocate.
-@Returns: a pointer to the allocated memory.
+@size: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_malloc0 ##### -->
 <para>
-Allocates @size bytes of memory, initialized to 0's.
-If @size is 0 it returns NULL.
+
 </para>
 
-@size: the number of bytes to allocate.
-@Returns: a pointer to the allocated memory.
+@size: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_realloc ##### -->
 <para>
-Reallocates the memory pointed to by @mem, so that it now has space for
-@size bytes of memory. It returns the new address of the memory, which may
-have been moved.
+
 </para>
 
-@mem: the memory to reallocate.
-@size: the new size of the allocated memory, in bytes.
-@Returns: the new address of the allocated memory.
+@mem: 
+@size: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_free ##### -->
 <para>
-Frees the memory pointed to by @mem.
-If @mem is NULL it simply returns.
+
 </para>
 
-@mem: the memory to free.
+@mem: 
 
 
 <!-- ##### MACRO g_memmove ##### -->
 <para>
-Copies a block of memory @n bytes long, from @s to @d.
-The source and destination areas may overlap.
-</para>
-<note>
-<para>
-On architectures where memmove() is not available, this function is implemented
-using bcopy(), which may not be able to handle overlapping areas.
-</para>
-</note>
 
-@d: the destination address to copy the bytes to.
-@s: the source address to copy the bytes from.
-@n: the number of bytes to copy.
+</para>
+
+@d: 
+@s: 
+@n: 
 
 
 <!-- ##### FUNCTION g_memdup ##### -->
 <para>
-Allocates @byte_size bytes of memory, and copies @byte_size bytes into it
-from @mem. If @mem is NULL it returns NULL.
+
 </para>
 
-@mem: the memory to copy.
-@byte_size: the number of bytes to copy.
-@Returns: a pointer to the newly allocated copy of the memory, or NULL if @mem
-is NULL.
+@mem: 
+@byte_size: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_mem_profile ##### -->
 <para>
-Outputs a summary of memory usage.
-To use this function you must configure glib with the flag
-'--enable-mem-profile=yes' before compiling.
-</para>
-<para>
-It outputs the frequency of allocations of different sizes,
-the total number of bytes which have been allocated,
-the total number of bytes which have been freed,
-and the difference between the previous two values, i.e. the number of bytes
-still in use.
+
 </para>
 
 
 
 <!-- ##### FUNCTION g_mem_check ##### -->
 <para>
-Checks if the given memory has already been freed. If it has it outputs
-a warning message.
-To use this function you must configure glib with the flag
-'--enable-mem-check=yes' before compiling.
+
 </para>
 
-@mem: the memory to check.
+@mem: 
 
 

@@ -1,101 +1,67 @@
 <!-- ##### SECTION Title ##### -->
-
 Threads
 
 <!-- ##### SECTION Short_Description ##### -->
 
-thread abstraction; including mutexes, conditions and thread private data.
 
 <!-- ##### SECTION Long_Description ##### -->
-
 <para>
-Threads act almost like processes, but unlike processes all threads of
-one process share the same memory. This is good, as it provides easy
-communication between the involved threads via this shared memory, and
-it is bad, because strange things (so called Heisenbugs) might happen,
-when the program is not carefully designed. Especially bad is, that due
-to the concurrent nature of threads no assumptions on the order of
-execution of different threads can be done unless explictly forced by
-the programmer through synchronization primitives.
+
 </para>
 
-<para>
-The aim of the thread related functions in GLib is to provide a
-portable means for writing multithread safe software. There are
-primitives for mutexes to protect the access to portions of memory
-(#GMutex, #GStaticMutex, #G_LOCK_DEFINE and friends), there are
-primitives for condition variables to allow synchronization of threads
-(#GCond) and finally there are primitives for thread-private data,
-that every thread has a private instance of (#GPrivate,
-#GStaticPrivate).
-</para>
-
-<para>
-Currently there is only as much thread support included in GLib as is
-necessary to make GLib itself multithread safe. Version 1.4 of GLib
-will contain full thread support. For now the most portable way to
-create threads is to require the macro #G_THREADS_IMPL_POSIX to be
-defined and use POSIX threads then. This will work on almost all
-platforms (except most notably Solaris and DCE threads.).
-</para>
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
 
-<!-- ##### MACRO G_THREADS_ENABLED ##### -->
 
+<!-- ##### MACRO G_THREADS_ENABLED ##### -->
 <para>
-This macro is defined, if GLib was compiled with thread support. This
-does not necessarily mean, that there is a thread implementation
-available, but the infrastructure is in place and once you provide a
-thread implementation to g_thread_init(), GLib will be multithread
-safe. It isn't and can't be, if #G_THREADS_ENABLED is not defined.
+
 </para>
 
 
 
 <!-- ##### MACRO G_THREADS_IMPL_POSIX ##### -->
-
 <para>
-This macro is defined, if POSIX style threads are used.
+
 </para>
 
 
 
 <!-- ##### MACRO G_THREADS_IMPL_SOLARIS ##### -->
-
 <para>
-This macro is defined, if the SOLARIS thread system is used.
+
 </para>
 
 
 
 <!-- ##### MACRO G_THREADS_IMPL_NONE ##### -->
-
 <para>
-This macro is defined, if no thread implementation is used. You can
-however provide one to g_thread_init() to make GLib multithread safe.
+
 </para>
 
 
+
+<!-- ##### MACRO G_THREAD_ERROR ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### ENUM GThreadError ##### -->
+<para>
+
+</para>
+
+@G_THREAD_ERROR_AGAIN: 
 
 <!-- ##### STRUCT GThreadFunctions ##### -->
-
 <para>
-This function table is used by g_thread_init() to initialize the
-thread system. The functions in that table are directly used by their
-g_* prepended counterparts, that are described here, e.g. if you call
-g_mutex_new() then mutex_new() from the table provided to
-g_thread_init() will be called.
-</para>
 
-<note>
-<para>
-This struct should only be used, if you know, what you are doing.
 </para>
-</note>
 
 @mutex_new: 
 @mutex_lock: 
@@ -111,818 +77,530 @@ This struct should only be used, if you know, what you are doing.
 @private_new: 
 @private_get: 
 @private_set: 
+@thread_create: 
+@thread_yield: 
+@thread_join: 
+@thread_exit: 
+@thread_set_priority: 
+@thread_self: 
 
 <!-- ##### FUNCTION g_thread_init ##### -->
-
 <para>
-Before you use a thread related function in GLib, you should
-initialize the thread system. This is done by calling
-g_thread_init(). Most of the time you will only have to call
-g_thread_init(NULL). 
+
 </para>
 
-<note>
-<para>
-You should only call g_thread_init() with a non-NULL parameter, if you
-really know, what you are doing.
-</para>
-</note>
+@vtable: 
 
-<note>
-<para>
-g_thread_init() must not be called directly or indirectly as a
-callback from GLib.
-</para>
-</note>
 
+<!-- ##### FUNCTION g_thread_supported ##### -->
 <para>
-g_thread_init() might only be called once. On the second call
-it will abort with an error. If you want to make sure, that the thread
-system is initialized, you can do that too:
+
 </para>
 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION GThreadFunc ##### -->
 <para>
-<informalexample>
-<programlisting>
-if (!g_thread_supported ()) g_thread_init (NULL);
-</programlisting>
-</informalexample>
+
 </para>
 
+@value: 
+
+
+<!-- ##### ENUM GThreadPriority ##### -->
 <para>
-After that line either the thread system is initialized or the program
-will abort, if no thread system is available in GLib, i.e. either
-#G_THREADS_ENABLED is not defined or #G_THREADS_IMPL_NONE is defined.
+
 </para>
 
+@G_THREAD_PRIORITY_LOW: 
+@G_THREAD_PRIORITY_NORMAL: 
+@G_THREAD_PRIORITY_HIGH: 
+@G_THREAD_PRIORITY_URGENT: 
+
+<!-- ##### STRUCT GThread ##### -->
 <para>
-If no thread system is available and @vtable is NULL or if not all
-elements of @vtable are non-NULL, then g_thread_init() will abort.
+
 </para>
 
-<note>
+@priority: 
+@bound: 
+@joinable: 
+
+<!-- ##### FUNCTION g_thread_create ##### -->
 <para>
-To use g_thread_init() in your program, you have to link with the
-libraries, that the command "glib-config --libs gthread" outputs. This
-is not the case for all the other thread related functions of
-GLib. Those can be used without having to link with the thread
-libraries.
-</para>
-</note>
 
-@vtable: a function table of type #GThreadFunctions, that provides the
-entry points to the thread system to be used.
-
-
-<!-- ##### MACRO g_thread_supported ##### -->
-<para>
-This function returns, whether the thread system is initialized or
-not.
 </para>
 
-<note>
-<para>
-This function is actually a macro. Apart from taking the address of it
-you can however use it as if it was a function.
-</para>
-</note>
+@thread_func: 
+@arg: 
+@stack_size: 
+@joinable: 
+@bound: 
+@priority: 
+@error: 
+@Returns: 
 
-@Returns: TRUE, if the thread system is initialized.
+
+<!-- ##### FUNCTION g_thread_self ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION g_thread_join ##### -->
+<para>
+
+</para>
+
+@thread: 
+
+
+<!-- ##### FUNCTION g_thread_set_priority ##### -->
+<para>
+
+</para>
+
+@thread: 
+@priority: 
+
+
+<!-- ##### MACRO g_thread_yield ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO g_thread_exit ##### -->
+<para>
+
+</para>
+
 
 
 <!-- ##### STRUCT GMutex ##### -->
-
 <para>
-The #GMutex struct is an opaque data structure to represent a mutex
-(mutual exclusion). It can be used to protect data against shared
-access. Take for example the following function:
 
-<example>
-<title>A function which will not work in a threaded environment</title>
-<programlisting>
-  int give_me_next_number ()
-  {
-    static int current_number = 0;
-
-    /* now do a very complicated calculation to calculate the new number,
-       this might for example be a random number generator */
-    current_number = calc_next_number (current_number); 
-    return current_number;
-  }
-</programlisting>
-</example>
 </para>
 
+
+<!-- ##### FUNCTION g_mutex_new ##### -->
 <para>
-It is easy to see, that this won't work in a multithreaded
-application. There current_number must be protected against shared
-access. A first naive implementation would be:
+
 </para>
 
-<para>
-<example>
-<title>The wrong way to write a thread-safe function</title>
-<programlisting>
-  int give_me_next_number ()
-  {
-    static int current_number = 0;
-    int ret_val;
-    static GMutex * mutex = NULL;
+@Returns: 
 
-    if (!mutex)
-      mutex = g_mutex_new ();
-    g_mutex_lock (mutex);
-    ret_val = current_number = calc_next_number (current_number); 
-    g_mutex_unlock (mutex);
-    return ret_val;
-  }
-</programlisting>
-</example>
+
+<!-- ##### FUNCTION g_mutex_lock ##### -->
+<para>
+
 </para>
 
+@mutex: 
+
+
+<!-- ##### FUNCTION g_mutex_trylock ##### -->
 <para>
-This looks like it would work, but there is a race condition while
-constructing the mutex and this code can't work reliable. So please do
-not use such constructs in your own programs. One working solution is:
+
 </para>
 
+@mutex: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_mutex_unlock ##### -->
 <para>
-<example>
-<title>A correct thread-safe function</title>
-<programlisting>
-  static GMutex *give_me_next_number_mutex = NULL;
 
-  /* this function must be called before any call to give_me_next_number ()
-     it must be called exactly once. */
-  void init_give_me_next_number () 
-  {
-    g_assert (give_me_next_number_mutex == NULL);
-    give_me_next_number_mutex = g_mutex_new ();
-  }
-
-  int give_me_next_number ()
-  {
-    static int current_number = 0;
-    int ret_val;
-
-    g_mutex_lock (give_me_next_number_mutex);
-    ret_val = current_number = calc_next_number (current_number); 
-    g_mutex_unlock (give_me_next_number_mutex);
-    return ret_val;
-  }
-</programlisting>
-</example>
 </para>
 
+@mutex: 
+
+
+<!-- ##### FUNCTION g_mutex_free ##### -->
 <para>
-#GStaticMutex provides a simpler and safer way of doing this.
+
 </para>
 
-<para>
-A #GMutex should only be accessed via the following functions.
-</para>
-
-<note>
-<para>
-All of the g_mutex_* functions are actually macros. Apart from taking
-the addresses of them, you can however use them as if they were functions.
-</para>
-</note>
-
-
-<!-- ##### MACRO g_mutex_new ##### -->
-
-<para>
-Creates a new #GMutex. 
-</para>
-
-<note>
-<para>
-This function will abort, if g_thread_init() has not been called yet.
-</para>
-</note>
-
-@Returns: a new #GMutex.
-
-
-<!-- ##### MACRO g_mutex_lock ##### -->
-
-<para>
-Locks the #GMutex. If the #GMutex is already locked by another thread,
-the current thread will block until the #GMutex is unlocked by the
-other thread.
-</para>
-
-<para>
-This function can also be used, if g_thread_init() has not yet been
-called and will do nothing then.
-</para>
-
-<note>
-<para>
-#GMutex is not guaranteed to be recursive, i.e. a thread might block,
-if it already has locked the #GMutex. It will deadlock then, of
-course.
-</para>
-</note>
-
-@mutex: a #GMutex.
-
-
-<!-- ##### MACRO g_mutex_trylock ##### -->
-
-<para>
-Tries to lock the #GMutex. If the #GMutex is already locked by another
-thread, it immediately returns FALSE. Otherwise it locks the #GMutex
-and returns TRUE.
-</para>
-
-<para>
-This function can also be used, if g_thread_init() has not yet been
-called and will immediately return TRUE then.
-</para>
-
-@mutex: a #GMutex.
-@Returns: TRUE, if the #GMutex could be locked.
-
-
-<!-- ##### MACRO g_mutex_unlock ##### -->
-
-<para>
-Unlocks the #GMutex. If another thread is blocked in a g_mutex_lock()
-call, it will be woken and can lock the #GMutex itself. This function
-can also be used, if g_thread_init() has not yet been called and will
-do nothing then.
-</para>
-
-@mutex: a #GMutex.
-
-
-<!-- ##### MACRO g_mutex_free ##### -->
-
-<para>
-Destroys the #GMutex.
-</para>
-
-@mutex: a #GMutex.
+@mutex: 
 
 
 <!-- ##### STRUCT GStaticMutex ##### -->
-
 <para>
-A #GStaticMutex works like a #GMutex, but it has one significant
-advantage. It doesn't need to be created at run-time like a #GMutex,
-but can be defined at compile-time. Here is a shorter, easier and
-safer version of our give_me_next_number() example:
+
 </para>
 
-<para>
-<example>
-<title>Using GStaticMutex to simplify thread-safe programming</title>
-<programlisting>
-  int give_me_next_number ()
-  {
-    static int current_number = 0;
-    int ret_val;
-    static GStaticMutex mutex = G_STATIC_MUTEX_INIT;
-
-    g_static_mutex_lock (&amp;mutex);
-    ret_val = current_number = calc_next_number (current_number); 
-    g_static_mutex_unlock (&amp;mutex);
-    return ret_val;
-  }
-</programlisting>
-</example>
-</para>
-
-<para>
-Even though #GStaticMutex is not opaque, it should only be used with
-the following functions, as it is defined differently on different
-platforms.
-</para>
-
-<para>All of the g_static_mutex_* functions can also be used, if
-g_thread_init() has not yet.
-</para>
-
-<note>
-<para>
-All of the g_static_mutex_* functions are actually macros. Apart from
-taking the addresses of them, you can however use them as if they were
-functions.
-</para>
-</note>
-
-@runtime_mutex: 
 
 <!-- ##### MACRO G_STATIC_MUTEX_INIT ##### -->
-
 <para>
-Every #GStaticMutex must be initialized with this macro, before it can
-be used.
-</para>
 
-<para>
-<example>
-<title>Initializing a GStaticMutext</title>
-<programlisting>
-GStaticMutex my_mutex = G_STATIC_MUTEX_INIT;
-</programlisting>
-</example>
 </para>
 
 
 
-<!-- ##### MACRO g_static_mutex_lock ##### -->
+<!-- ##### FUNCTION g_static_mutex_lock ##### -->
 <para>
-works like g_mutex_lock(), but for a #GStaticMutex.
+
 </para>
 
-@mutex: a #GStaticMutex.
+@mutex: 
 
 
-<!-- ##### MACRO g_static_mutex_trylock ##### -->
-
+<!-- ##### FUNCTION g_static_mutex_trylock ##### -->
 <para>
-works like g_mutex_trylock(), but for a #GStaticMutex.
+
 </para>
 
-@mutex: a #GStaticMutex.
-@Returns: TRUE, if the #GStaticMutex could be locked.
+@mutex: 
+@Returns: 
 
 
-<!-- ##### MACRO g_static_mutex_unlock ##### -->
-
+<!-- ##### FUNCTION g_static_mutex_unlock ##### -->
 <para>
-works like g_mutex_unlock(), but for a #GStaticMutex.
+
 </para>
 
-@mutex: a #GStaticMutex.
+@mutex: 
 
 
-<!-- ##### MACRO g_static_mutex_get_mutex ##### -->
-
+<!-- ##### FUNCTION g_static_mutex_get_mutex ##### -->
 <para>
-For some operations (like g_cond_wait()) you must have a #GMutex
-instead of a #GStaticMutex. This function will return the
-corresponding #GMutex for every #GStaticMutex.
+
 </para>
 
-@mutex: a #GStaticMutex.
-@Returns: the corresponding #GMutex.
+@mutex: 
+@Returns: 
 
 
 <!-- ##### MACRO G_LOCK_DEFINE ##### -->
-
 <para>
-The G_LOCK_* macros provide a convenient interface to #GStaticMutex
-with the advantage that they will expand to nothing in programs
-compiled against a thread-disabled GLib, saving code and memory
-there. #G_LOCK_DEFINE defines a lock. It can occur, where variable
-definitions may occur in programs, i.e. in the first block of a
-function or outside of functions. The @name parameter will be mangled
-to get the name of the #GStaticMutex. This means, that you can use
-names of existing variables as the parameter, e.g. the name of the
-variable you intent to protect with the lock. Look at our
-give_me_next_number() example using the G_LOCK_* macros:
+
 </para>
 
-<para>
-<example>
-<title>Using the G_LOCK_* convenience macros</title>
-<programlisting>
-G_LOCK_DEFINE (current_number);
-
-int give_me_next_number ()
-  {
-    static int current_number = 0;
-    int ret_val;
-
-    G_LOCK (current_number);
-    ret_val = current_number = calc_next_number (current_number); 
-    G_UNLOCK (current_number);
-    return ret_val;
-  }
-</programlisting>
-</example>
-</para>
-
-@name: the name of the lock.
+@name: 
 
 
 <!-- ##### MACRO G_LOCK_DEFINE_STATIC ##### -->
-
 <para>
-This works like #G_LOCK_DEFINE, but it creates a static object.
+
 </para>
 
-@name: the name of the lock.
+@name: 
 
 
 <!-- ##### MACRO G_LOCK_EXTERN ##### -->
-
 <para>
-This declares a lock, that is defined with #G_LOCK_DEFINE in another module.
+
 </para>
 
-@name: the name of the lock.
+@name: 
 
 
 <!-- ##### MACRO G_LOCK ##### -->
-
 <para>
-works like g_mutex_lock(), but for a lock defined with #G_LOCK_DEFINE.
+
 </para>
 
-@name: the name of the lock.
+@name: 
 
 
 <!-- ##### MACRO G_TRYLOCK ##### -->
-
 <para>
-works like g_mutex_trylock(), but for a lock defined with #G_LOCK_DEFINE.
+
 </para>
 
-@name: the name of the lock.
-@Returns: TRUE, if the lock could be locked.
+@name: 
 
 
 <!-- ##### MACRO G_UNLOCK ##### -->
-
 <para>
-works like g_mutex_unlock(), but for a lock defined with #G_LOCK_DEFINE.
+
 </para>
 
-@name: the name of the lock.
+@name: 
+
+
+<!-- ##### STRUCT GStaticRecMutex ##### -->
+<para>
+
+</para>
+
+@mutex: 
+@depth: 
+@owner: 
+
+<!-- ##### MACRO G_STATIC_REC_MUTEX_INIT ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION g_static_rec_mutex_lock ##### -->
+<para>
+
+</para>
+
+@mutex: 
+
+
+<!-- ##### FUNCTION g_static_rec_mutex_trylock ##### -->
+<para>
+
+</para>
+
+@mutex: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_static_rec_mutex_unlock ##### -->
+<para>
+
+</para>
+
+@mutex: 
+
+
+<!-- ##### FUNCTION g_static_rec_mutex_lock_full ##### -->
+<para>
+
+</para>
+
+@mutex: 
+@depth: 
+
+
+<!-- ##### FUNCTION g_static_rec_mutex_unlock_full ##### -->
+<para>
+
+</para>
+
+@mutex: 
+@Returns: 
+
+
+<!-- ##### STRUCT GStaticRWLock ##### -->
+<para>
+
+</para>
+
+@mutex: 
+@read_cond: 
+@write_cond: 
+@read_counter: 
+@write: 
+@want_to_write: 
+
+<!-- ##### MACRO G_STATIC_RW_LOCK_INIT ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION g_static_rw_lock_reader_lock ##### -->
+<para>
+
+</para>
+
+@lock: 
+
+
+<!-- ##### FUNCTION g_static_rw_lock_reader_trylock ##### -->
+<para>
+
+</para>
+
+@lock: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_static_rw_lock_reader_unlock ##### -->
+<para>
+
+</para>
+
+@lock: 
+
+
+<!-- ##### FUNCTION g_static_rw_lock_writer_lock ##### -->
+<para>
+
+</para>
+
+@lock: 
+
+
+<!-- ##### FUNCTION g_static_rw_lock_writer_trylock ##### -->
+<para>
+
+</para>
+
+@lock: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_static_rw_lock_writer_unlock ##### -->
+<para>
+
+</para>
+
+@lock: 
+
+
+<!-- ##### FUNCTION g_static_rw_lock_free ##### -->
+<para>
+
+</para>
+
+@lock: 
 
 
 <!-- ##### STRUCT GCond ##### -->
-
 <para>
-The #GCond struct is an opaque data structure to represent a
-condition. A #GCond is an object, that threads can block on, if they
-find a certain condition to be false. If other threads change the
-state of this condition they can signal the #GCond, such that the
-waiting thread is woken up. 
+
 </para>
 
+
+<!-- ##### FUNCTION g_cond_new ##### -->
 <para>
-<example>
-<title>Using GCond to block a thread until a condition is satisfied</title>
-<programlisting>
-GCond* data_cond = NULL;   /* Must be initialized somewhere */
-GMutex* data_mutex = NULL; /* Must be initialized somewhere */
-gpointer current_data = NULL;
 
-void push_data (gpointer data)
-{
-  g_mutex_lock (data_mutex);
-  current_data = data;
-  g_cond_signal (data_cond);
-  g_mutex_unlock (data_mutex);
-}
-
-gpointer pop_data ()
-{
-  gpointer data;
-
-  g_mutex_lock (data_mutex);
-  while (!current_data)
-      g_cond_wait (data_cond, data_mutex);
-  data = current_data;
-  current_data = NULL;
-  g_mutex_unlock (data_mutex);
-  return data;
-}
-</programlisting>
-</example>
 </para>
 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_cond_signal ##### -->
 <para>
-Whenever a thread calls pop_data() now, it will wait until
-current_data is non-NULL, i.e. until some other thread has called
-push_data().
+
 </para>
 
-<note>
-<para>
-It is important to use the g_cond_wait() and g_cond_timed_wait()
-functions only inside a loop, which checks for the condition to be
-true as it is not guaranteed that the waiting thread will find it
-fulfilled, even if the signaling thread left the condition
-in that state. This is because another thread can have altered the
-condition, before the waiting thread got the chance to be woken up,
-even if the condition itself is protected by a #GMutex, like above.
-</para>
-</note>
+@cond: 
 
+
+<!-- ##### FUNCTION g_cond_broadcast ##### -->
 <para>
-A #GCond should only be accessed via the following functions.
+
 </para>
 
-<note>
+@cond: 
+
+
+<!-- ##### FUNCTION g_cond_wait ##### -->
 <para>
-All of the g_cond_* functions are actually macros. Apart from taking
-the addresses of them, you can however use them as if they were functions.
-</para>
-</note>
 
-
-<!-- ##### MACRO g_cond_new ##### -->
-
-<para>
-Creates a new #GCond. This function will abort, if g_thread_init()
-has not been called yet.
 </para>
 
-@Returns: a new #GCond.
+@cond: 
+@mutex: 
 
 
-<!-- ##### MACRO g_cond_signal ##### -->
+<!-- ##### FUNCTION g_cond_timed_wait ##### -->
 <para>
-If threads are waiting for @cond, exactly one of them is woken up. It
-is good practice to hold the same lock as the waiting thread, while
-calling this function, though not required.
+
 </para>
 
+@cond: 
+@mutex: 
+@abs_time: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_cond_free ##### -->
 <para>
-This function can also be used, if g_thread_init() has
-not yet been called and will do nothing then.
+
 </para>
 
-@cond: a #GCond.
-
-
-<!-- ##### MACRO g_cond_broadcast ##### -->
-
-<para>
-If threads are waiting for @cond, all of them are woken up. It is good
-practice to lock the same mutex as the waiting threads, while calling
-this function, though not required.
-</para>
-
-<para>
-This function can also be used, if g_thread_init() has
-not yet been called and will do nothing then.
-</para>
-
-@cond: a #GCond.
-
-
-<!-- ##### MACRO g_cond_wait ##### -->
-
-<para>
-Waits until this thread is woken up on the #GCond. The #GMutex is
-unlocked before falling asleep and locked again before resuming.
-</para>
-
-<para>
-This function can also be used, if g_thread_init() has not yet been
-called and will immediately return then.
-</para>
-
-@cond: a #GCond.
-@mutex: the #GMutex, that is currently locked.
-
-
-<!-- ##### MACRO g_cond_timed_wait ##### -->
-
-<para>
-Waits until this thread is woken up on the #GCond, but not longer than
-until the time, that is specified by @abs_time. The #GMutex is
-unlocked before falling asleep and locked again before resuming.
-</para>
-
-<para>
-If @abs_time is NULL, g_cond_timed_wait() acts like g_cond_wait().
-</para>
-
-<para>
-This function can also be used, if g_thread_init() has not yet been
-called and will immediately return TRUE then.
-</para>
-
-@cond: a #GCond.
-@mutex: the #GMutex, that is currently locked.
-@abs_time: a #GTimeVal, determining the final time.
-@Returns: TRUE, if the thread is woken up in time.
-
-
-<!-- ##### MACRO g_cond_free ##### -->
-
-<para>
-Destroys the #GCond.
-</para>
-
-@cond: a #GCond.
+@cond: 
 
 
 <!-- ##### STRUCT GPrivate ##### -->
 <para>
-The #GPrivate struct is an opaque data structure to represent a thread
-private data key. Threads can thereby obtain and set a pointer, which
-is private to the current thread. Take our give_me_next_number()
-example from above.  Now we don't want current_number to be shared
-between the threads, but to be private to each thread. This can be
-done as follows:
 
-<example>
-<title>Using GPrivate for per-thread data</title>
-<programlisting>
-  GPrivate* current_number_key = NULL; /* Must be initialized somewhere */
-                                       /* with g_private_new (g_free); */
-
-  int give_me_next_number ()
-  {
-    int *current_number = g_private_get (current_number_key);
-
-    if (!current_number)
-    {
-      current_number = g_new (int,1);
-      *current_number = 0;
-      g_private_set (current_number_key, current_number);
-    }
-    *current_number = calc_next_number (*current_number); 
-    return *current_number;
-  }
-</programlisting>
-</example>
 </para>
 
+
+<!-- ##### FUNCTION g_private_new ##### -->
 <para>
-Here the pointer belonging to the key current_number_key is read. If
-it is NULL, it has not been set yet. Then get memory for an integer
-value, assign this memory to the pointer and write the pointer
-back. Now we have an integer value, that is private to the current
-thread.
+
 </para>
 
+@destructor: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_private_get ##### -->
 <para>
-The #GPrivate struct should only be accessed via the following functions.
+
 </para>
 
-<note>
+@private_key: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_private_set ##### -->
 <para>
-All of the g_private_* functions are actually macros. Apart from taking
-the addresses of them, you can however use them as if they were functions.
-</para>
-</note>
 
-
-<!-- ##### MACRO g_private_new ##### -->
-
-<para>
-Creates a new #GPrivate. If @destructor is non-NULL, it is a pointer
-to a destructor function. Whenever a thread ends and the corresponding
-pointer keyed to this instance of #GPrivate is non-NULL, the
-destructor is called with this pointer as the argument.
 </para>
 
-<note>
-<para>
-The @destructor is working quite differently from @notify in
-g_static_private_set().
-</para>
-</note>
-
-<note>
-<para>
-A #GPrivate can not be destroyed. Reuse it instead, if you can to
-avoid shortage.
-</para>
-</note>
-
-<note>
-<para>
-This function will abort, if g_thread_init() has not been called yet.
-</para>
-</note>
-
-@destructor: a function to handle the data keyed to #GPrivate, when a
-thread ends.
-
-
-<!-- ##### MACRO g_private_get ##### -->
-
-<para>
-Returns the pointer keyed to @private_key for the current thread. This
-pointer is NULL, when g_private_set() hasn't been called for the
-current @private_key and thread yet.
-</para>
-
-<para>
-This function can also be used, if g_thread_init() has not yet been
-called and will return the value of @private_key casted to #gpointer then.
-</para>
-
-@private_key: a #GPrivate.
-@Returns: the corresponding pointer.
-
-
-<!-- ##### MACRO g_private_set ##### -->
-
-<para>
-Sets the pointer keyed to @private_key for the current thread.
-</para>
-
-<para>
-This function can also be used, if g_thread_init() has not yet been
-called and will set @private_key to @data casted to #GPrivate* then.
-</para>
-
-@private_key: a #GPrivate.
-@value: 
-<!-- # Unused Parameters # -->
-@data: the new pointer.
+@private_key: 
+@data: 
 
 
 <!-- ##### STRUCT GStaticPrivate ##### -->
-
 <para>
-A #GStaticPrivate works almost like a #GPrivate, but it has one
-significant advantage. It doesn't need to be created at run-time like
-a #GPrivate, but can be defined at compile-time. This is similar to
-the difference between #GMutex and #GStaticMutex. Now look at our
-give_me_next_number() example with #GStaticPrivate:
-</para>
 
-<para>
-<example>
-<title>Using GStaticPrivate for per-thread data</title>
-<programlisting>
-  int give_me_next_number ()
-  {
-    static GStaticPrivate current_number_key = G_STATIC_PRIVATE_INIT;
-    int *current_number = g_static_private_get (&amp;current_number_key);
-
-    if (!current_number)
-    {
-      current_number = g_new (int,1);
-      *current_number = 0;
-      g_static_private_set (&amp;current_number_key, current_number, g_free);
-    }
-    *current_number = calc_next_number (*current_number); 
-    return *current_number;
-  }
-</programlisting>
-</example>
 </para>
 
 @index: 
 
 <!-- ##### MACRO G_STATIC_PRIVATE_INIT ##### -->
 <para>
-Every #GStaticPrivate must be initialized with this macro, before it can
-be used.
-</para>
 
-<para>
-<informalexample>
-<programlisting>
-GStaticPrivate my_private = G_STATIC_PRIVATE_INIT;
-</programlisting>
-</informalexample>
 </para>
 
 
 
 <!-- ##### FUNCTION g_static_private_get ##### -->
 <para>
-Works like g_private_get() only for a #GStaticPrivate.
+
 </para>
 
+@private_key: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_static_private_get_for_thread ##### -->
 <para>
-This function also works, if g_thread_init() has not yet been called.
+
 </para>
 
-@private_key: a #GStaticPrivate.
-@Returns: the corresponding pointer.
+@private_key: 
+@thread: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_static_private_set ##### -->
 <para>
-Sets the pointer keyed to @private_key for the current thread and the
-function @notify to be called with that pointer (NULL or non-NULL),
-whenever the pointer is set again or whenever the current thread ends.
+
 </para>
 
+@private_key: 
+@data: 
+@notify: 
+
+
+<!-- ##### FUNCTION g_static_private_set_for_thread ##### -->
 <para>
-This function also works, if g_thread_init() has not yet been
-called. If g_thread_init() is called later, the @data keyed to
-@private_key will be inherited only by the main thread, i.e. the one that
-called g_thread_init().
+
 </para>
 
-<note>
-<para>
-The @notify is working quite differently from @destructor in
-g_private_new().
-</para>
-</note>
-
-@private_key: a #GStaticPrivate.
-@data: the new pointer.
-@notify: a function to be called with the pointer, whenever the
-current thread ends or sets this pointer again.
+@private_key: 
+@thread: 
+@data: 
+@notify: 
 
 

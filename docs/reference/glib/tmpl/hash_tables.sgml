@@ -2,357 +2,225 @@
 Hash Tables
 
 <!-- ##### SECTION Short_Description ##### -->
-associations between keys and values so that given a key the value
-can be found quickly.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-A #GHashTable provides associations between keys and values which
-is optimized so that given a key, the associated value can be found
-very quickly.
+
 </para>
-<para>
-Note that neither keys nor values are copied when inserted into the
-#GHashTable, so they must exist for the lifetime of the #GHashTable.
-This means that the use of static strings is OK, but temporary
-strings (i.e. those created in buffers and those returned by GTK widgets)
-should be copied with g_strdup() before being inserted.
-</para>
-<para>
-If keys or values are dynamically allocated, you must be careful to ensure
-that they are freed when they are removed from the #GHashTable, and also
-when they are overwritten by new insertions into the #GHashTable.
-It is also not advisable to mix static strings and dynamically-allocated
-strings in a #GHashTable, because it then becomes difficult to determine
-whether the string should be freed.
-</para>
-<para>
-To create a #GHashTable, use g_hash_table_new().
-</para>
-<para>
-To insert a key and value into a #GHashTable, use g_hash_table_insert().
-</para>
-<para>
-To lookup a value corresponding to a given key, use g_hash_table_lookup()
-and g_hash_table_lookup_extended().
-</para>
-<para>
-To remove a key and value, use g_hash_table_remove().
-</para>
-<para>
-To call a function for each key and value pair use g_hash_table_foreach().
-</para>
-<para>
-To destroy a #GHashTable use g_hash_table_destroy().
-</para>
+
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
 
+
 <!-- ##### STRUCT GHashTable ##### -->
 <para>
-The #GHashTable struct is an opaque data structure to represent a
-<link linkend="glib-Hash-Tables">Hash Table</link>.
-It should only be accessed via the following functions.
+
 </para>
 
 
 <!-- ##### FUNCTION g_hash_table_new ##### -->
 <para>
-Creates a new #GHashTable.
+
 </para>
 
-@hash_func: a function to create a hash value from a key.
-Hash values are used to determine where keys are stored within the
-#GHashTable data structure.
-The g_direct_hash(), g_int_hash() and g_str_hash() functions are provided for
-some common types of keys. If hash_func is NULL, g_direct_hash() is used.
-@key_compare_func: a function to compare two keys to see if they are equal.
-This is used when looking up keys in the #GHashTable.
-The g_direct_equal(), g_int_equal() and g_str_equal() functions are provided
-for the most common types of keys. If compare_func is NULL, keys are compared
-directly in a similar fashion to g_direct_equal(), but without the overhead
-of a function call.
-@Returns: a new #GHashTable.
+@hash_func: 
+@key_compare_func: 
+@Returns: 
 
 
 <!-- ##### USER_FUNCTION GHashFunc ##### -->
 <para>
-Specifies the type of the hash function which is passed to
-g_hash_table_new() when a #GHashTable is created.
-</para>
-<para>
-The function is passed a key and should return a guint hash value.
-The functions g_direct_hash(), g_int_hash() and g_str_hash() provide
-hash functions which can be used when the key is a #gpointer, #gint, and 
-#gchar* respectively.
-</para>
-<para>
-FIXME: Need more here.
-The hash values should be evenly distributed over a fairly large range?
-The modulus is taken with the hash table size (a prime number)
-to find the 'bucket' to place each key into.
-The function should also be very fast, since it is called for each key
-lookup.
+
 </para>
 
-@key: a key.
-@Returns: the hash value corresponding to the key.
+@key: 
+@Returns: 
 
 
 <!-- ##### USER_FUNCTION GCompareFunc ##### -->
 <para>
-Specifies the type of a comparison function used to compare two values.
-The value which should be returned depends on the context in which the
-#GCompareFunc is used.
-</para>
-<para>
-In g_hash_table_new(), g_cache_new(), and g_relation_index() the function
-should return TRUE if the two parameters are equal, or FALSE if they are not.
-</para>
-<para>
-In g_list_find_custom() and g_slist_find_custom() the function should return
-0 if the two parameters are equal.
-</para>
-<para>
-In g_list_insert_sorted(), g_list_sort(), g_slist_insert_sorted(),
-g_slist_sort() and g_tree_new()  the function should return a negative integer
-if the first value comes before the second, 0 if they are equal, or a positive
-integer if the first value comes after the second.
+
 </para>
 
-@a: a value.
-@b: a value to compare with.
-@Returns: TRUE if the two values are equivalent.
+@a: 
+@b: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_hash_table_insert ##### -->
 <para>
-Inserts a new key and value into a #GHashTable.
-If the key already exists in the #GHashTable its current value is replaced
-with the new value.
-</para>
-<note>
-<para>
-If the keys or values use dynamically allocated memory, then you should
-first check if the key already exists in the GHashTable. If it does,
-you should free the existing key and/or value before inserting the
-new key and value.
-</para>
-</note>
 
-@hash_table: a #GHashTable.
-@key: a key to insert.
-@value: the value to associate with the key.
+</para>
+
+@hash_table: 
+@key: 
+@value: 
 
 
 <!-- ##### FUNCTION g_hash_table_size ##### -->
 <para>
-Returns the number of key/value pairs in a #GHashTable.
+
 </para>
 
-@hash_table: a #GHashTable.
-@Returns: the number of key/value pairs in the #GHashTable.
+@hash_table: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_hash_table_lookup ##### -->
 <para>
-Looks up a key in the #GHashTable, returning the associated value or NULL
-if the key is not found.
+
 </para>
 
-@hash_table: a #GHashTable.
-@key: the key to look up.
-@Returns: the associated value, or NULL if the key is not found.
+@hash_table: 
+@key: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_hash_table_lookup_extended ##### -->
 <para>
-Looks up a key in the #GHashTable, returning the original key and the
-associated value and a gboolean which is TRUE if the key was found.
-This is useful if you need to free the memory allocated for the
-original key, for example before calling g_hash_table_remove().
+
 </para>
 
-@hash_table: a #GHashTable.
-@lookup_key: the key to look up.
-@orig_key: returns the original key.
-@value: returns the value associated with the key.
-@Returns: TRUE if the key was found in the #GHashTable.
+@hash_table: 
+@lookup_key: 
+@orig_key: 
+@value: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_hash_table_foreach ##### -->
 <para>
-Calls the given function for each of the key/value pairs in the #GHashTable.
-The function is passed the key and value of each pair, and the given
-@user_data parameter.
+
 </para>
 
-@hash_table: a #GHashTable.
-@func: the function to call for each key/value pair.
-@user_data: use data to pass to the function.
+@hash_table: 
+@func: 
+@user_data: 
 
 
 <!-- ##### USER_FUNCTION GHFunc ##### -->
 <para>
-Specifies the type of the function passed to g_hash_table_foreach().
-It is called with each key/value pair, together with the @user_data parameter
-which is passed to g_hash_table_foreach().
+
 </para>
 
-@key: a key.
-@value: the value corresponding to the key.
-@user_data: user data passed to g_hash_table_foreach().
+@key: 
+@value: 
+@user_data: 
 
 
 <!-- ##### FUNCTION g_hash_table_remove ##### -->
 <para>
-Removes a key and its associated value from a #GHashTable.
-</para>
-<note>
-<para>
-As with g_hash_table_insert(), you should make sure that any dynamically
-allocated values are freed yourself.
-</para>
-</note>
 
-@hash_table: a #GHashTable.
-@key: the key to remove.
+</para>
+
+@hash_table: 
+@key: 
 
 
 <!-- ##### FUNCTION g_hash_table_foreach_remove ##### -->
 <para>
-Calls the given function for each key/value pair in the #GHashTable.
-If the function returns TRUE, then the key/value pair is removed from the
-#GHashTable.
+
 </para>
 
-@hash_table: a #GHashTable.
-@func: the function to call for each key/value pair.
-@user_data: user data to pass to the function.
-@Returns: the number of key/value paris removed.
+@hash_table: 
+@func: 
+@user_data: 
+@Returns: 
 
 
 <!-- ##### USER_FUNCTION GHRFunc ##### -->
 <para>
-Specifies the type of the function passed to g_hash_table_foreach_remove().
-It is called with each key/value pair, together with the @user_data parameter
-passed to g_hash_table_foreach_remove().
-It should return TRUE if the key/value pair should be removed from the
-#GHashTable.
+
 </para>
 
-@key: a key.
-@value: the value associated with the key.
-@user_data: user data passed to g_hash_table_remove().
-@Returns: TRUE if the key/value pair should be removed from the #GHashTable.
+@key: 
+@value: 
+@user_data: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_hash_table_freeze ##### -->
 <para>
-Disable resizing of a #GHashTable.
-</para>
-<para>
-This should be used if you need to make a lot of changes to a #GHashTable
-at once, as it reduces the number of times that the #GHashTable is rebuilt.
-You should call g_hash_table_thaw() after updating the #GHashTable to
-enable resizing again.
+
 </para>
 
-@hash_table: a #GHashTable.
+@hash_table: 
 
 
 <!-- ##### FUNCTION g_hash_table_thaw ##### -->
 <para>
-Enables resizing of a #GHashTable.
+
 </para>
 
-@hash_table: a #GHashTable.
+@hash_table: 
 
 
 <!-- ##### FUNCTION g_hash_table_destroy ##### -->
 <para>
-Destroys the #GHashTable.
-</para>
-<note>
-<para>
-If keys and/or values are dynamically allocated, you should free them
-first.
-</para>
-</note>
 
-@hash_table: a #GHashTable.
+</para>
+
+@hash_table: 
 
 
 <!-- ##### FUNCTION g_direct_equal ##### -->
 <para>
-Compares two #gpointer arguments and returns TRUE if they are equal.
-It can be passed to g_hash_table_new() as the @key_compare_func
-parameter, when using pointers as keys in a #GHashTable.
+
 </para>
 
-@v: a key.
-@v2: a key to compare with @v.
-@Returns: TRUE if the two keys match.
+@v: 
+@v2: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_direct_hash ##### -->
 <para>
-Converts a gpointer to a hash value.
-It can be passed to g_hash_table_new() as the @hash_func parameter, when
-using gpointer values as keys in a #GHashTable.
+
 </para>
 
-@v: a gpointer key.
-@Returns: a hash value corresponding to the key.
+@v: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_int_equal ##### -->
 <para>
-Compares the two #gint values being pointed to and returns TRUE if they are
-equal.
-It can be passed to g_hash_table_new() as the @key_compare_func
-parameter, when using pointers to integers as keys in a #GHashTable.
+
 </para>
 
-@v: a pointer to a #gint key.
-@v2: a pointer to a #gint key to compare with @v.
-@Returns: TRUE if the two keys match.
+@v: 
+@v2: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_int_hash ##### -->
 <para>
-Converts a pointer to a #gint to a hash value.
-It can be passed to g_hash_table_new() as the @hash_func parameter, when
-using pointers to gint values as keys in a #GHashTable.
+
 </para>
 
-@v: a pointer to a #gint key.
-@Returns: a hash value corresponding to the key.
+@v: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_str_equal ##### -->
 <para>
-Compares two strings and returns TRUE if they are equal.
-It can be passed to g_hash_table_new() as the @key_compare_func
-parameter, when using strings as keys in a #GHashTable.
+
 </para>
 
-@v: a key.
-@v2: a key to compare with @v.
-@Returns: TRUE if the two keys match.
+@v: 
+@v2: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_str_hash ##### -->
 <para>
-Converts a string to a hash value.
-It can be passed to g_hash_table_new() as the @hash_func parameter, when
-using strings as keys in a #GHashTable.
+
 </para>
 
-@v: a string key.
-@Returns: a hash value corresponding to the key.
+@v: 
+@Returns: 
 
 
