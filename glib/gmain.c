@@ -1859,7 +1859,7 @@ g_main_depth (void)
  * we don't continually spin in the poll()
  */
 /* HOLDS: source->context's lock */
-void
+static void
 block_source (GSource *source)
 {
   GSList *tmp_list;
@@ -1875,7 +1875,7 @@ block_source (GSource *source)
 }
 
 /* HOLDS: source->context's lock */
-void
+static void
 unblock_source (GSource *source)
 {
   GSList *tmp_list;
