@@ -1,3 +1,21 @@
+Overview of Changes from GLib 2.1.3 to GLib-2.1.4
+=================================================
+
+* autoconf changes to make it possible to cross compile
+  GLib. [Owen Taylor, Dan Kegel, Amy Lin, Dimi Shahbaz, 
+  Johannes Stezenbach]
+* Use libintl when it has bind_textdomain_codeset() and
+  GLib doesn't. [Owen]
+* Improve generation of pseudo-random integers [Morten Welinder, 
+  Sebastian Wilhelmi]
+* Avoid literal UTF-8 in favor of octal escapes [Owen, Tomas Ogren]
+* Cleanup include order [Sven Neumann]
+* autoconf cleanups and bug fixes [Daniel, Matthias Clasen, Owen]
+* Doc fixes and additions [Matthias]
+
+Other contributors: James M. Cape, Frederic Crozat, Martin Gansser,
+  Phuc LeHong, Manish Singh, Joshua Weage, Morten Welinder
+
 Overview of Changes from GLib 2.0.x to GLib-2.1.x
 =================================================
 

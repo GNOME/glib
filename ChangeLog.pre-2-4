@@ -1,3 +1,18 @@
+Wed Dec 11 17:53:34 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* === Release 2.1.4 ===
+
+	* NEWS: Updates.
+
+Wed Dec 11 17:49:15 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* m4macros/glib-gettext.m4: Unset 
+	ac_cv_func_bind_textdomain_codeset before calling
+	AC_CHECK_FUNCS(bind_textdomain_codeset) again.
+
+	* configure.in: Remove duplicate call to
+	AC_CHECK_FUNCS(bind_textdomain_codeset)
+
 2002-12-11  Pauli Virtanen <pauli.virtanen@hut.fi>
 
 	* configure.in: Added "fi" to ALL_LINGUAS.
@@ -135,7 +150,7 @@ Thu Dec  5 15:43:46 2002  Owen Taylor  <otaylor@redhat.com>
 Thu Dec  5 15:24:14 2002  Owen Taylor  <otaylor@redhat.com>
 
 	Start of fixes for cross-compilation. Based on
-	patches from Dimi Shahbaz, Dan Kegel, Johannes Stenzenbach,
+	patches from Dimi Shahbaz, Dan Kegel, Johannes Stezenbach,
 	Amy Lin. (#58786)
 
 	* configure.in: Don't run the Digital-Unix 4 -std1 check

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
-"POT-Creation-Date: 2002-12-02 16:56-0500\n"
+"POT-Creation-Date: 2002-12-11 18:06-0500\n"
 "PO-Revision-Date: 2002-11-04 23:48+0800\n"
 "Last-Translator: Hasbullah Bin Pit <sebol@ikhlas.com>\n"
 "Language-Team: Projek Gabai <gabai-penyumbang@lists.sourceforge.org>\n"
@@ -23,14 +23,14 @@ msgstr "Penukaran set aksara daripada '%s' ke '%s' tidak disokong"
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "tak dapat membuka penukar daripada '%s' kepada '%s': %s"
 
-#: glib/gconvert.c:603 glib/gconvert.c:893 glib/giochannel.c:1294
-#: glib/giochannel.c:1336 glib/giochannel.c:2178 glib/gutf8.c:875
+#: glib/gconvert.c:603 glib/gconvert.c:893 glib/giochannel.c:1295
+#: glib/giochannel.c:1337 glib/giochannel.c:2179 glib/gutf8.c:875
 #: glib/gutf8.c:1320
 msgid "Invalid byte sequence in conversion input"
 msgstr "Turutan byte tidak sah pada penukaran iput"
 
-#: glib/gconvert.c:608 glib/gconvert.c:824 glib/giochannel.c:1301
-#: glib/giochannel.c:2190
+#: glib/gconvert.c:608 glib/gconvert.c:824 glib/giochannel.c:1302
+#: glib/giochannel.c:2191
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Ralat semasa penukaran: %s"
@@ -84,74 +84,74 @@ msgstr "Namahos tidak sah"
 msgid "Error opening directory '%s': %s"
 msgstr "Ralat membuka direktori %s': %s"
 
-#: glib/gfileutils.c:337 glib/gfileutils.c:402
+#: glib/gfileutils.c:382 glib/gfileutils.c:447
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Tak dapat memperuntukkan  %lu byte untuk membaca fail \"%s\""
 
-#: glib/gfileutils.c:348
+#: glib/gfileutils.c:393
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Ralat membaca fail '%s': %s"
 
-#: glib/gfileutils.c:424
+#: glib/gfileutils.c:469
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Gagal membaca fail  '%s': %s"
 
-#: glib/gfileutils.c:471 glib/gfileutils.c:539
+#: glib/gfileutils.c:516 glib/gfileutils.c:584
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Gagal membuka fail '%s': %s"
 
-#: glib/gfileutils.c:485
+#: glib/gfileutils.c:530
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Gagal mendapatkan atribut fail  '%s': fstat() gagal: %s"
 
-#: glib/gfileutils.c:511
+#: glib/gfileutils.c:556
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Gagal membuka fail '%s': fdopen() gagal: %s"
 
-#: glib/gfileutils.c:718
+#: glib/gfileutils.c:763
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Templet '%s' tidak sah, sepatutnya tidak mengandungi '%s'"
 
-#: glib/gfileutils.c:730
+#: glib/gfileutils.c:775
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Templet '%s' tidak berakhir dengan XXXXXX"
 
-#: glib/gfileutils.c:751
+#: glib/gfileutils.c:796
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Gagal mencipta fail %s': %s"
 
-#: glib/giochannel.c:1122
+#: glib/giochannel.c:1123
 #, c-format
 msgid "Conversion from character set `%s' to `%s' is not supported"
 msgstr "Penukaran set aksara daripada '%s' kepada '%s' tidak disokong"
 
-#: glib/giochannel.c:1126
+#: glib/giochannel.c:1127
 #, c-format
 msgid "Could not open converter from `%s' to `%s': %s"
 msgstr "Tak dapat membuka penukar daripada `%s' kepada `%s': %s"
 
-#: glib/giochannel.c:1471
+#: glib/giochannel.c:1472
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "Tak dapat membuat bacaan rawak pada g_io_channel_read_line_string"
 
-#: glib/giochannel.c:1518 glib/giochannel.c:1775 glib/giochannel.c:1861
+#: glib/giochannel.c:1519 glib/giochannel.c:1776 glib/giochannel.c:1862
 msgid "Leftover unconverted data in read buffer"
 msgstr "Data tak boleh ditukar Leftover pada buffer bacaan"
 
-#: glib/giochannel.c:1598 glib/giochannel.c:1675
+#: glib/giochannel.c:1599 glib/giochannel.c:1676
 msgid "Channel terminates in a partial character"
 msgstr "Saluran terhenti pada sebahagian aksara"
 
-#: glib/giochannel.c:1661
+#: glib/giochannel.c:1662
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Tak dapat membuat bacaan rawak pada g_io_channel_read_to_end"
 
@@ -386,34 +386,34 @@ msgstr "Dokumen berakhir tanpa diduga di dalam tag tertutup untuk unsur '%s'"
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "Dokumen berakhir tanpa diduga di dalam komen atau memproses arahan"
 
-#: glib/gshell.c:71
+#: glib/gshell.c:72
 msgid "Quoted text doesn't begin with a quotation mark"
 msgstr "Teks dipetik tidak bermula dengan tanda petikan"
 
-#: glib/gshell.c:161
+#: glib/gshell.c:162
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr ""
 "Tanda petikan tidak sepadan pada arahan baris atau teks shell-quoted lain"
 
-#: glib/gshell.c:529
+#: glib/gshell.c:530
 #, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
 msgstr "Teks berakhir selepas aksara '\\'. (Teks terdahulu ialah '%s')"
 
-#: glib/gshell.c:536
+#: glib/gshell.c:537
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr "Teks berakhir sebelum quot sepadan dijumpai untuk %c (Teks ialah '%s')"
 
-#: glib/gshell.c:548
+#: glib/gshell.c:549
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Teks telah kosong (atau mengandungi hanya ruangputih)"
 
-#: glib/gspawn-win32.c:206
+#: glib/gspawn-win32.c:208
 msgid "Failed to read data from child process"
 msgstr "Gagal membaca data daripada proses anak"
 
-#: glib/gspawn-win32.c:334
+#: glib/gspawn-win32.c:336
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -421,72 +421,72 @@ msgstr ""
 "Ralat tidak diduga bila g_io_channel_win32_poll()membaca data daripada "
 "proses anak"
 
-#: glib/gspawn-win32.c:703 glib/gspawn.c:960
+#: glib/gspawn-win32.c:705 glib/gspawn.c:961
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Gagal membaca daripada paip anak (%s)"
 
-#: glib/gspawn-win32.c:781
+#: glib/gspawn-win32.c:783
 msgid "Failed to execute helper program"
 msgstr "Gagal melaksanakan program pembantu"
 
-#: glib/gspawn-win32.c:814 glib/gspawn.c:1165
+#: glib/gspawn-win32.c:816 glib/gspawn.c:1166
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Gagal menukar direktori '%s' (%s)"
 
-#: glib/gspawn-win32.c:823
+#: glib/gspawn-win32.c:825
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Gagal melaksanakan proses anak (%s)"
 
-#: glib/gspawn-win32.c:866 glib/gspawn.c:1296
+#: glib/gspawn-win32.c:868 glib/gspawn.c:1297
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Gagal mencipta paip untuk berkomunikasi dengan proses anak (%s)"
 
-#: glib/gspawn.c:166
+#: glib/gspawn.c:167
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "Gagal membaca data daripada proses anak (%s)"
 
-#: glib/gspawn.c:298
+#: glib/gspawn.c:299
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr ""
 "Ralat tanpa diduga bila select() membaca data daripada proses anak (%s)"
 
-#: glib/gspawn.c:381
+#: glib/gspawn.c:382
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Ralat tanpa diduga pada waitpid() (%s)"
 
-#: glib/gspawn.c:1025
+#: glib/gspawn.c:1026
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Gagal untuk sepit (%s)"
 
-#: glib/gspawn.c:1175
+#: glib/gspawn.c:1176
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Gagal melaksanakan proses anak \"%s\" (%s)"
 
-#: glib/gspawn.c:1185
+#: glib/gspawn.c:1186
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Gagal melencongkan output atau input proses anak (%s)"
 
-#: glib/gspawn.c:1194
+#: glib/gspawn.c:1195
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Gagal menyepit proses anak (%s)"
 
-#: glib/gspawn.c:1202
+#: glib/gspawn.c:1203
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Ralat misteri ketika melaksanakan proses anak  \"%s\""
 
-#: glib/gspawn.c:1224
+#: glib/gspawn.c:1225
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Gagal membaca data yang cukup daripada paip pid anaki(%s)"

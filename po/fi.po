@@ -5,77 +5,78 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib VERSION\n"
-"POT-Creation-Date: 2002-11-02 15:11+0200\n"
+"POT-Creation-Date: 2002-12-11 18:06-0500\n"
 "PO-Revision-Date: 2002-12-12 00:20+0200\n"
 "Last-Translator: Lauri Nurmi <lanurmi@iki.fi>\n"
-"Language-Team: Gnome Finnish Translation Team <gnome-fi-laatu@lists.sourceforge.net>\n"
+"Language-Team: Gnome Finnish Translation Team <gnome-fi-laatu@lists."
+"sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: glib/gconvert.c:400
+#: glib/gconvert.c:401
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Muunnos merkistöstä \"%s\" merkistöön \"%s\" ei ole tuettu"
 
-#: glib/gconvert.c:404
+#: glib/gconvert.c:405
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Muunninta merkistöstä \"%s\" merkistöön \"%s\" ei voitu avata: %s"
 
-#: glib/gconvert.c:602 glib/gconvert.c:892 glib/giochannel.c:1291
-#: glib/giochannel.c:1333 glib/giochannel.c:2175 glib/gutf8.c:875
+#: glib/gconvert.c:603 glib/gconvert.c:893 glib/giochannel.c:1295
+#: glib/giochannel.c:1337 glib/giochannel.c:2179 glib/gutf8.c:875
 #: glib/gutf8.c:1320
 msgid "Invalid byte sequence in conversion input"
 msgstr "Virheellinen tavusarja muunnettavassa syötteessä"
 
-#: glib/gconvert.c:607 glib/gconvert.c:823 glib/giochannel.c:1298
-#: glib/giochannel.c:2187
+#: glib/gconvert.c:608 glib/gconvert.c:824 glib/giochannel.c:1302
+#: glib/giochannel.c:2191
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Virhe muunnoksen aikana: %s"
 
-#: glib/gconvert.c:625 glib/gutf8.c:871 glib/gutf8.c:1071 glib/gutf8.c:1212
+#: glib/gconvert.c:626 glib/gutf8.c:871 glib/gutf8.c:1071 glib/gutf8.c:1212
 #: glib/gutf8.c:1316
 msgid "Partial character sequence at end of input"
 msgstr "Osittainen tavusarja syötteen lopussa"
 
-#: glib/gconvert.c:798
+#: glib/gconvert.c:799
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Koodausmerkkijonoa \"%s\" ei voi muuntaa merkistöön \"%s\""
 
-#: glib/gconvert.c:1632
+#: glib/gconvert.c:1633
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
 msgstr "URI \"%s\" ei ole absoluuttinen tiedostomuotoinen URI"
 
-#: glib/gconvert.c:1642
+#: glib/gconvert.c:1643
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Paikallinen tiedosto-URI \"%s\" ei saa sisältää merkkiä \"#\""
 
-#: glib/gconvert.c:1659
+#: glib/gconvert.c:1660
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI \"%s\" on virheellinen"
 
-#: glib/gconvert.c:1671
+#: glib/gconvert.c:1672
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "URI:n \"%s\" isäntänimi on virheellinen"
 
-#: glib/gconvert.c:1687
+#: glib/gconvert.c:1688
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI \"%s\" sisältää virheellisesti suojattuja merkkejä"
 
-#: glib/gconvert.c:1758
+#: glib/gconvert.c:1759
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Polku \"%s\" ei ole absoluuttinen"
 
-#: glib/gconvert.c:1768
+#: glib/gconvert.c:1769
 msgid "Invalid hostname"
 msgstr "Virheellinen isäntänimi"
 
@@ -84,74 +85,77 @@ msgstr "Virheellinen isäntänimi"
 msgid "Error opening directory '%s': %s"
 msgstr "Virhe hakemiston \"%s\" avaamisessa: %s"
 
-#: glib/gfileutils.c:337 glib/gfileutils.c:402
+#: glib/gfileutils.c:382 glib/gfileutils.c:447
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Ei voitu varata %lu tavua muistia tiedoston \"%s\" lukemiseksi"
 
-#: glib/gfileutils.c:348
+#: glib/gfileutils.c:393
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Virhe tiedoston \"%s\" lukemisessa: %s"
 
-#: glib/gfileutils.c:424
+#: glib/gfileutils.c:469
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Lukeminen tiedostosta \"%s\" epäonnistui: %s"
 
-#: glib/gfileutils.c:471 glib/gfileutils.c:539
+#: glib/gfileutils.c:516 glib/gfileutils.c:584
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Tiedoston \"%s\" avaaminen epäonnistui: %s"
 
-#: glib/gfileutils.c:485
+#: glib/gfileutils.c:530
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
-msgstr "Tiedoston \"%s\" ominaisuuksien lukeminen epäonnistui: fstat() epäonnistui: %s"
+msgstr ""
+"Tiedoston \"%s\" ominaisuuksien lukeminen epäonnistui: fstat() epäonnistui: %"
+"s"
 
-#: glib/gfileutils.c:511
+#: glib/gfileutils.c:556
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Tiedoston \"%s\" avaaminen epäonnistui: fdopen() epäonnistui: %s"
 
-#: glib/gfileutils.c:718
+#: glib/gfileutils.c:763
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Malli \"%s\" on virheellinen, se ei saa sisältää merkkijonoa \"%s\""
 
-#: glib/gfileutils.c:730
+#: glib/gfileutils.c:775
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Malli \"%s\" ei pääty merkkijonoon XXXXXX"
 
-#: glib/gfileutils.c:751
+#: glib/gfileutils.c:796
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Tiedoston \"%s\" luominen epäonnistui: %s"
 
-#: glib/giochannel.c:1119
+#: glib/giochannel.c:1123
 #, c-format
 msgid "Conversion from character set `%s' to `%s' is not supported"
 msgstr "Muunnos merkistöstä \"%s\" merkistöön \"%s\" ei ole tuettu"
 
-#: glib/giochannel.c:1123
+#: glib/giochannel.c:1127
 #, c-format
 msgid "Could not open converter from `%s' to `%s': %s"
 msgstr "Muunninta merkistöstä \"%s\" merkistöön \"%s\" ei voitu avata: %s"
 
-#: glib/giochannel.c:1468
+#: glib/giochannel.c:1472
 msgid "Can't do a raw read in g_io_channel_read_line_string"
-msgstr "Funktiossa g_io_channel_read_line_string ei voi suorittaa raakalukemista"
+msgstr ""
+"Funktiossa g_io_channel_read_line_string ei voi suorittaa raakalukemista"
 
-#: glib/giochannel.c:1515 glib/giochannel.c:1772 glib/giochannel.c:1858
+#: glib/giochannel.c:1519 glib/giochannel.c:1776 glib/giochannel.c:1862
 msgid "Leftover unconverted data in read buffer"
 msgstr "Jäljelle jäänyt muuntamaton data lukupuskurissa"
 
-#: glib/giochannel.c:1595 glib/giochannel.c:1672
+#: glib/giochannel.c:1599 glib/giochannel.c:1676
 msgid "Channel terminates in a partial character"
 msgstr "Kanava päättyy osittaiseen merkkiin"
 
-#: glib/giochannel.c:1658
+#: glib/giochannel.c:1662
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Funktiossa g_io_channel_read_to_end ei voi suorittaa raakalukemista"
 
@@ -181,7 +185,8 @@ msgstr "Virhe rivillä %d: %s"
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
-"Havaittu tyhjä entiteetti \"&;\"; kelvolliset ovat: &amp; &quot; &lt; &gt; &apos;"
+"Havaittu tyhjä entiteetti \"&;\"; kelvolliset ovat: &amp; &quot; &lt; &gt; "
+"&apos;"
 
 #: glib/gmarkup.c:395
 #, c-format
@@ -190,9 +195,9 @@ msgid ""
 "begins an entity; if this ampersand isn't supposed to be an entity, escape "
 "it as &amp;"
 msgstr ""
-"Merkki \"%s\" ei ole kelvollinen entiteetin nimen alussa; &-merkki "
-"aloittaa entiteetin. Jos tämän &-merkin ei ole tarkoitus olla entiteetti, "
-"käytä merkintää &amp;"
+"Merkki \"%s\" ei ole kelvollinen entiteetin nimen alussa; &-merkki aloittaa "
+"entiteetin. Jos tämän &-merkin ei ole tarkoitus olla entiteetti, käytä "
+"merkintää &amp;"
 
 #: glib/gmarkup.c:431
 #, c-format
@@ -278,8 +283,8 @@ msgstr ""
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
-"Pariton merkki \"%1$s\", odotettiin \"=\"-merkkiä elementin \"%3$s\" ominaisuuden "
-"\"%2$s\" jälkeen"
+"Pariton merkki \"%1$s\", odotettiin \"=\"-merkkiä elementin \"%3$s\" "
+"ominaisuuden \"%2$s\" jälkeen"
 
 #: glib/gmarkup.c:1185
 #, c-format
@@ -288,9 +293,9 @@ msgid ""
 "element '%s', or optionally an attribute; perhaps you used an invalid "
 "character in an attribute name"
 msgstr ""
-"Pariton merkki \"%s\", odotettiin merkkiä \">\" tai \"/\" päättämään elementin "
-"\"%s\" aloituslippu, tai mahdollista ominaisuutta; käytit ehkä ominaisuuden nimessä "
-"siihen kelpaamatonta merkkiä"
+"Pariton merkki \"%s\", odotettiin merkkiä \">\" tai \"/\" päättämään "
+"elementin \"%s\" aloituslippu, tai mahdollista ominaisuutta; käytit ehkä "
+"ominaisuuden nimessä siihen kelpaamatonta merkkiä"
 
 #: glib/gmarkup.c:1268
 #, c-format
@@ -327,7 +332,9 @@ msgstr "Elementti \"%s\" on suljettu, ei avoimia elementtejä"
 #: glib/gmarkup.c:1466
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
-msgstr "Elementti \"%s\" on suljettu, mutta tällä hetkellä on avoinna elementti \"%s\""
+msgstr ""
+"Elementti \"%s\" on suljettu, mutta tällä hetkellä on avoinna elementti \"%s"
+"\""
 
 #: glib/gmarkup.c:1613
 msgid "Document was empty or contained only whitespace"
@@ -335,7 +342,8 @@ msgstr "Asiakirja oli tyhjä tai sisälsi vain tyhjiä merkkejä"
 
 #: glib/gmarkup.c:1627
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
-msgstr "Asiakirja loppui odottamattomasti heti avoimen kulmasulkeen \"<\" jälkeen"
+msgstr ""
+"Asiakirja loppui odottamattomasti heti avoimen kulmasulkeen \"<\" jälkeen"
 
 #: glib/gmarkup.c:1635 glib/gmarkup.c:1679
 #, c-format
@@ -343,8 +351,8 @@ msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
 "element opened"
 msgstr ""
-"Asiakirja loppui odottamattomasti elementtien ollessa sulkematta - \"%s\" oli "
-"viimeinen avattu elementti"
+"Asiakirja loppui odottamattomasti elementtien ollessa sulkematta - \"%s\" "
+"oli viimeinen avattu elementti"
 
 #: glib/gmarkup.c:1643
 #, c-format
@@ -371,7 +379,8 @@ msgstr "Asiakirja loppui odottamattomasti elementin avauslipun kohdalla"
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
-msgstr "Asiakirja loppui odottamattomasti ominaisuuden nimen jälkeisen "
+msgstr ""
+"Asiakirja loppui odottamattomasti ominaisuuden nimen jälkeisen "
 "yhtäsuuruusmerkin jälkeen; ominaisuudella ei ole arvoa"
 
 #: glib/gmarkup.c:1672
@@ -385,37 +394,39 @@ msgstr "Asiakirja loppui odottamattomasti elementin \"%s\" sulkulipun kohdalla"
 
 #: glib/gmarkup.c:1693
 msgid "Document ended unexpectedly inside a comment or processing instruction"
-msgstr "Asiakirja loppui odottamattomasti kommentin tai käsittelykomennon kohdalla"
+msgstr ""
+"Asiakirja loppui odottamattomasti kommentin tai käsittelykomennon kohdalla"
 
-#: glib/gshell.c:71
+#: glib/gshell.c:72
 msgid "Quoted text doesn't begin with a quotation mark"
 msgstr "Lainattu teksti ei ala lainausmerkillä"
 
-#: glib/gshell.c:161
+#: glib/gshell.c:162
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
-msgstr "Pariton lainausmerkki komentorivillä tai muussa kuorisuojatussa tekstissä"
+msgstr ""
+"Pariton lainausmerkki komentorivillä tai muussa kuorisuojatussa tekstissä"
 
-#: glib/gshell.c:529
+#: glib/gshell.c:530
 #, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
 msgstr "Teksti loppui aivan merkin \"\\\" jälkeen. (Teksti oli \"%s\")"
 
-#: glib/gshell.c:536
+#: glib/gshell.c:537
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr ""
-"Teksti loppui ennen kuin löytyi merkkiä %c vastaava lainausmerkki. "
-"(Teksti oli \"%s\")"
+"Teksti loppui ennen kuin löytyi merkkiä %c vastaava lainausmerkki. (Teksti "
+"oli \"%s\")"
 
-#: glib/gshell.c:548
+#: glib/gshell.c:549
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Teksti oli tyhjä (tai sisälsi vain tyhjiä merkkejä)"
 
-#: glib/gspawn-win32.c:198
+#: glib/gspawn-win32.c:208
 msgid "Failed to read data from child process"
 msgstr "Datan lukeminen lapsiprosessilta epäonnistui"
 
-#: glib/gspawn-win32.c:323
+#: glib/gspawn-win32.c:336
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -423,67 +434,74 @@ msgstr ""
 "Odottamaton virhe funktiossa g_io_channel_win32_poll() luettaessa dataa "
 "lapsiprosessilta"
 
-#: glib/gspawn-win32.c:690 glib/gspawn.c:940
+#: glib/gspawn-win32.c:705 glib/gspawn.c:961
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Lukeminen lapsiprosessin putkesta epäonnistui (%s)"
 
-#: glib/gspawn-win32.c:778 glib/gspawn.c:1145
+#: glib/gspawn-win32.c:783
+#, fuzzy
+msgid "Failed to execute helper program"
+msgstr "Lapsiprosessin käynnistys epäonnistui (%s)"
+
+#: glib/gspawn-win32.c:816 glib/gspawn.c:1166
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Hakemistoon \"%s\" siirtyminen epäonnistui (%s)"
 
-#: glib/gspawn-win32.c:787
+#: glib/gspawn-win32.c:825
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Lapsiprosessin käynnistys epäonnistui (%s)"
 
-#: glib/gspawn-win32.c:828 glib/gspawn.c:1276
+#: glib/gspawn-win32.c:868 glib/gspawn.c:1297
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
-msgstr "Putken luominen lapsiprosessin kanssa viestintää varten epäonnistui (%s)"
+msgstr ""
+"Putken luominen lapsiprosessin kanssa viestintää varten epäonnistui (%s)"
 
-#: glib/gspawn.c:166
+#: glib/gspawn.c:167
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "Datan lukeminen lapsiprosessilta epäonnistui (%s)"
 
-#: glib/gspawn.c:298
+#: glib/gspawn.c:299
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
-msgstr "Odottamaton virhe funktiossa select() lapsiprosessilta dataa luettaessa (%s)"
+msgstr ""
+"Odottamaton virhe funktiossa select() lapsiprosessilta dataa luettaessa (%s)"
 
-#: glib/gspawn.c:381
+#: glib/gspawn.c:382
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Odottamaton virhe funktiossa waitpid() (%s)"
 
-#: glib/gspawn.c:1005
+#: glib/gspawn.c:1026
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Haarauttaminen epäonnistui (%s)"
 
-#: glib/gspawn.c:1155
+#: glib/gspawn.c:1176
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Lapsiprosessin \"%s\" käynnistäminen epäonnistui (%s)"
 
-#: glib/gspawn.c:1165
+#: glib/gspawn.c:1186
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Lapsiprosessin tulosteen tai syötteen uudelleenohjaus epäonnistui (%s)"
 
-#: glib/gspawn.c:1174
+#: glib/gspawn.c:1195
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Lapsiprosessin haarauttaminen epäonnistui (%s)"
 
-#: glib/gspawn.c:1182
+#: glib/gspawn.c:1203
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Tuntematon virhe käynnistettäessä lapsiprosessia \"%s\""
 
-#: glib/gspawn.c:1204
+#: glib/gspawn.c:1225
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Lapsiprosessin pid-putkesta ei voitu lukea riittävästi dataa (%s)"

@@ -68,6 +68,7 @@ out parameter is essentially useless.
 @Returns: seconds elapsed as a floating point value, including 
   any fractional part.
 
+
 <!-- ##### FUNCTION g_timer_reset ##### -->
 <para>
 This function is useless; it's fine to call g_timer_start() on an

@@ -121,3 +121,11 @@ m4_ifvaln([$3],[$3])dnl])dnl
 ac_compile="$glib_ac_compile_save"
 rm -f conftest.$ac_objext conftest.err m4_ifval([$1], [conftest.$ac_ext])[]dnl
 ])# GLIB_CHECK_COMPILE_WARNINGS
+
+# GLIB_ASSERT_SET(VARIABLE)
+# -------------------------
+AC_DEFUN([GLIB_ASSERT_SET],
+[if test "x${$1+set}" != "xset" ; then
+  AC_MSG_ERROR($1 [must be set in cache file when cross-compiling.])
+fi
+])dnl

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.1.3\n"
-"POT-Creation-Date: 2002-12-05 01:49+0900\n"
+"POT-Creation-Date: 2002-12-11 18:06-0500\n"
 "PO-Revision-Date: 2002-12-05 01:51+0900\n"
 "Last-Translator: Takayuki KUSANO <AE5T-KSN@asahi-net.or.jp>\n"
 "Language-Team: Japanese <translation@gnome.gr.jp>\n"
@@ -84,47 +84,47 @@ msgstr "おかしなホスト名"
 msgid "Error opening directory '%s': %s"
 msgstr "ディレクトリ '%s' を開く時にエラー: %s"
 
-#: glib/gfileutils.c:337 glib/gfileutils.c:402
+#: glib/gfileutils.c:382 glib/gfileutils.c:447
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "%lu バイトを確保できませんでした (ファイル \"%s\" の読みこみに必要)"
 
-#: glib/gfileutils.c:348
+#: glib/gfileutils.c:393
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "ファイル '%s' の読み出し中にエラー: %s"
 
-#: glib/gfileutils.c:424
+#: glib/gfileutils.c:469
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "ファイル '%s' を読めません: %s"
 
-#: glib/gfileutils.c:471 glib/gfileutils.c:539
+#: glib/gfileutils.c:516 glib/gfileutils.c:584
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "ファイル '%s' を開けません: %s"
 
-#: glib/gfileutils.c:485
+#: glib/gfileutils.c:530
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "ファイル '%s' の属性の取得できません: fstat() 失敗: %s"
 
-#: glib/gfileutils.c:511
+#: glib/gfileutils.c:556
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "ファイル '%s' を開けません: fdopen() 失敗: %s"
 
-#: glib/gfileutils.c:718
+#: glib/gfileutils.c:763
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "テンプレート '%s' が正しくありません。'%s' を含んではいけません"
 
-#: glib/gfileutils.c:730
+#: glib/gfileutils.c:775
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "テンプレート '%s' が XXXXXX で終わっていません"
 
-#: glib/gfileutils.c:751
+#: glib/gfileutils.c:796
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "ファイル '%s' を作成できません: %s"

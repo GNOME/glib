@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib/2.0\n"
-"POT-Creation-Date: 2002-12-09 21:11+0100\n"
+"POT-Creation-Date: 2002-12-11 18:06-0500\n"
 "PO-Revision-Date: 2002-12-09 21:10+0100\n"
 "Last-Translator: Roy-Magne Mo <rmo@sunnmore.net>\n"
 "Language-Team: nynorsk <nn@li.org>\n"

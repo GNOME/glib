@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.3.8\n"
-"POT-Creation-Date: 2002-12-02 16:56-0500\n"
+"POT-Creation-Date: 2002-12-11 18:06-0500\n"
 "PO-Revision-Date: 2002-02-27 14:53+0100\n"
 "Last-Translator: Stanislav Višňovský <visnovsky@nenya.ms.mff.cuni.cz>\n"
 "Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
@@ -24,14 +24,14 @@ msgstr "Prevod zo znakovej sady '%s' do '%s' nie je podporovaný"
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Nepodarilo sa otvoriť program pre prevod '%s' do '%s': %s"
 
-#: glib/gconvert.c:603 glib/gconvert.c:893 glib/giochannel.c:1294
-#: glib/giochannel.c:1336 glib/giochannel.c:2178 glib/gutf8.c:875
+#: glib/gconvert.c:603 glib/gconvert.c:893 glib/giochannel.c:1295
+#: glib/giochannel.c:1337 glib/giochannel.c:2179 glib/gutf8.c:875
 #: glib/gutf8.c:1320
 msgid "Invalid byte sequence in conversion input"
 msgstr "Neplatná sekvencia bajtov na vstupe prevodu"
 
-#: glib/gconvert.c:608 glib/gconvert.c:824 glib/giochannel.c:1301
-#: glib/giochannel.c:2190
+#: glib/gconvert.c:608 glib/gconvert.c:824 glib/giochannel.c:1302
+#: glib/giochannel.c:2191
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Chyba počas prevodu: %s"
@@ -85,74 +85,74 @@ msgstr "Neplatné meno hostiteľa"
 msgid "Error opening directory '%s': %s"
 msgstr "Chyba pri otváraní priečinku'%s': %s"
 
-#: glib/gfileutils.c:337 glib/gfileutils.c:402
+#: glib/gfileutils.c:382 glib/gfileutils.c:447
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Nepodarilo sa alokovať %lu bajtov pre načítanie súboru \"%s\""
 
-#: glib/gfileutils.c:348
+#: glib/gfileutils.c:393
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Chyba pri čítaní súboru '%s': %s"
 
-#: glib/gfileutils.c:424
+#: glib/gfileutils.c:469
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Nepodarilo sa čítanie súboru '%s': %s"
 
-#: glib/gfileutils.c:471 glib/gfileutils.c:539
+#: glib/gfileutils.c:516 glib/gfileutils.c:584
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Nepodarilo sa otvoriť súbor '%s': %s"
 
-#: glib/gfileutils.c:485
+#: glib/gfileutils.c:530
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Nepodarilo sa získať atribúty súboru '%s': fstat() zlyhala: %s"
 
-#: glib/gfileutils.c:511
+#: glib/gfileutils.c:556
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Nepodarilo sa otvoriť súbor '%s': fdopen() zlyhala: %s"
 
-#: glib/gfileutils.c:718
+#: glib/gfileutils.c:763
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Šablóna '%s' je neplatná, nesmie obsahovať '%s'"
 
-#: glib/gfileutils.c:730
+#: glib/gfileutils.c:775
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Šablóna '%s' nekončí XXXXXX"
 
-#: glib/gfileutils.c:751
+#: glib/gfileutils.c:796
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Nepodarilo sa vytvoriť súbor '%s': %s"
 
-#: glib/giochannel.c:1122
+#: glib/giochannel.c:1123
 #, c-format
 msgid "Conversion from character set `%s' to `%s' is not supported"
 msgstr "Prevod zo znakovej sady `%s' do `%s' nie je podporovaný"
 
-#: glib/giochannel.c:1126
+#: glib/giochannel.c:1127
 #, c-format
 msgid "Could not open converter from `%s' to `%s': %s"
 msgstr "Nepodarilo sa otvoriť program pre prevod `%s' do `%s': %s"
 
-#: glib/giochannel.c:1471
+#: glib/giochannel.c:1472
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "Nepodarilo sa 'raw' čítanie v g_io_channel_read_line_string"
 
-#: glib/giochannel.c:1518 glib/giochannel.c:1775 glib/giochannel.c:1861
+#: glib/giochannel.c:1519 glib/giochannel.c:1776 glib/giochannel.c:1862
 msgid "Leftover unconverted data in read buffer"
 msgstr "Zanechané neprevedené dáta vo vstupnom bufferi"
 
-#: glib/giochannel.c:1598 glib/giochannel.c:1675
+#: glib/giochannel.c:1599 glib/giochannel.c:1676
 msgid "Channel terminates in a partial character"
 msgstr "Kanál končí čiastočným znakom"
 
-#: glib/giochannel.c:1661
+#: glib/giochannel.c:1662
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Nepodarilo sa 'raw' čítanie v g_io_channel_read_to_end"
 
@@ -384,34 +384,34 @@ msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Dokument neočakávane skončil v komentári alebo inštrukcii pre spracovanie"
 
-#: glib/gshell.c:71
+#: glib/gshell.c:72
 msgid "Quoted text doesn't begin with a quotation mark"
 msgstr "Text v úvodzovkách nezačína úvodzovkami"
 
-#: glib/gshell.c:161
+#: glib/gshell.c:162
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr "Prebytočné úvodzovky v príkazovom riadku alebo v inom texte shellu"
 
-#: glib/gshell.c:529
+#: glib/gshell.c:530
 #, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
 msgstr "Text skončil hneď po znaku '\\'.  (Text bol '%s')"
 
-#: glib/gshell.c:536
+#: glib/gshell.c:537
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr ""
 "Text skončil pred nájdením zodpovedajúcej úvodzovky pre %c. (Text bol '%s')"
 
-#: glib/gshell.c:548
+#: glib/gshell.c:549
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Text bol prázdny (alebo obsahoval iba medzery)"
 
-#: glib/gspawn-win32.c:206
+#: glib/gspawn-win32.c:208
 msgid "Failed to read data from child process"
 msgstr "Nepodarilo sa čítať dáta z procesu potomka"
 
-#: glib/gspawn-win32.c:334
+#: glib/gspawn-win32.c:336
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -419,72 +419,72 @@ msgstr ""
 "Neočakávaná chyba v g_io_channel_win32_poll() pri čítaní dát z procesu "
 "potomka"
 
-#: glib/gspawn-win32.c:703 glib/gspawn.c:960
+#: glib/gspawn-win32.c:705 glib/gspawn.c:961
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Nepodarilo sa čítať z rúry potomka (%s)"
 
-#: glib/gspawn-win32.c:781
+#: glib/gspawn-win32.c:783
 #, fuzzy
 msgid "Failed to execute helper program"
 msgstr "Nepodarilo sa spustiť proces potomka (%s)"
 
-#: glib/gspawn-win32.c:814 glib/gspawn.c:1165
+#: glib/gspawn-win32.c:816 glib/gspawn.c:1166
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Nepodarilo sa zmeniť priečinok na '%s' (%s)"
 
-#: glib/gspawn-win32.c:823
+#: glib/gspawn-win32.c:825
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Nepodarilo sa spustiť proces potomka (%s)"
 
-#: glib/gspawn-win32.c:866 glib/gspawn.c:1296
+#: glib/gspawn-win32.c:868 glib/gspawn.c:1297
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Nepodarilo sa vytvoriť rúru pre komunikáciu s procesom potomka (%s)"
 
-#: glib/gspawn.c:166
+#: glib/gspawn.c:167
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "Nepodarilo sa čítať dáta z procesu potomka (%s)"
 
-#: glib/gspawn.c:298
+#: glib/gspawn.c:299
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr "Neočakávaná chyba v select() pri čítaní dát z procesu potomka (%s)"
 
-#: glib/gspawn.c:381
+#: glib/gspawn.c:382
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Neočakávaná chyba vo waitpid() (%s)"
 
-#: glib/gspawn.c:1025
+#: glib/gspawn.c:1026
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Nepodarilo sa zavolať fork (%s)"
 
-#: glib/gspawn.c:1175
+#: glib/gspawn.c:1176
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Nepodarilo sa spustiť proces potomka \"%s\" (%s)"
 
-#: glib/gspawn.c:1185
+#: glib/gspawn.c:1186
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Nepodarilo sa presmerovať vstup alebo výstup procesu potomka (%s)"
 
-#: glib/gspawn.c:1194
+#: glib/gspawn.c:1195
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Nepodarilo sa spustiť proces potomka (%s)"
 
-#: glib/gspawn.c:1202
+#: glib/gspawn.c:1203
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Neznáma chyba počas behu procesu potomka \"%s\""
 
-#: glib/gspawn.c:1224
+#: glib/gspawn.c:1225
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Nepodarilo sa prečítať dostatok dát z rúry potomka (%s)"

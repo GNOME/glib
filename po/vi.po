@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.2\n"
-"POT-Creation-Date: 2002-12-02 16:56-0500\n"
+"POT-Creation-Date: 2002-12-11 18:06-0500\n"
 "PO-Revision-Date: 2002-05-06 16:33GMT\n"
 "Last-Translator: T.M.Thanh <tmthanhmd@fptnet.com ; tmthanh@yahoo.com>\n"
 "Language-Team: Gnome-Vi Team <gnomevi-list@lists.sourceforge.net>\n"
@@ -25,14 +25,14 @@ msgstr "Không hỗ trợ  việc chuyển từ đặt ký tự '%s' thành '%s'
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Không thể mở trình chuyển đổi từ '%s' thành '%s': %s"
 
-#: glib/gconvert.c:603 glib/gconvert.c:893 glib/giochannel.c:1294
-#: glib/giochannel.c:1336 glib/giochannel.c:2178 glib/gutf8.c:875
+#: glib/gconvert.c:603 glib/gconvert.c:893 glib/giochannel.c:1295
+#: glib/giochannel.c:1337 glib/giochannel.c:2179 glib/gutf8.c:875
 #: glib/gutf8.c:1320
 msgid "Invalid byte sequence in conversion input"
 msgstr "Byte sequence không hợp lệ trong phần nhập chuyển đổi"
 
-#: glib/gconvert.c:608 glib/gconvert.c:824 glib/giochannel.c:1301
-#: glib/giochannel.c:2190
+#: glib/gconvert.c:608 glib/gconvert.c:824 glib/giochannel.c:1302
+#: glib/giochannel.c:2191
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Lỗi khi chuyển đổi: %s"
@@ -86,74 +86,74 @@ msgstr "Tên chủ không hợp lệ"
 msgid "Error opening directory '%s': %s"
 msgstr "Lỗi khi mở thư mục '%s': %s"
 
-#: glib/gfileutils.c:337 glib/gfileutils.c:402
+#: glib/gfileutils.c:382 glib/gfileutils.c:447
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Không thẻ cấp phát %lu bytes để đọc tập tin \"%s\""
 
-#: glib/gfileutils.c:348
+#: glib/gfileutils.c:393
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Lỗi khi đọc tập tin '%s': %s"
 
-#: glib/gfileutils.c:424
+#: glib/gfileutils.c:469
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Không đọc được từ tập tin '%s': %s"
 
-#: glib/gfileutils.c:471 glib/gfileutils.c:539
+#: glib/gfileutils.c:516 glib/gfileutils.c:584
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Không mở được tập tin '%s': %s"
 
-#: glib/gfileutils.c:485
+#: glib/gfileutils.c:530
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Không lấy được các thuộc tính của tập tin '%s': fstat() không được: %s"
 
-#: glib/gfileutils.c:511
+#: glib/gfileutils.c:556
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Không mở được tập tin '%s': fdopen() không được: %s"
 
-#: glib/gfileutils.c:718
+#: glib/gfileutils.c:763
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Template '%s' không hợp lệ, không nên chứa '%s'"
 
-#: glib/gfileutils.c:730
+#: glib/gfileutils.c:775
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Template '%s' không kết thúc bằng XXXXXX"
 
-#: glib/gfileutils.c:751
+#: glib/gfileutils.c:796
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Không tạo được tập tin '%s': %s"
 
-#: glib/giochannel.c:1122
+#: glib/giochannel.c:1123
 #, c-format
 msgid "Conversion from character set `%s' to `%s' is not supported"
 msgstr "Không hỗ trợ việc chuyển đổi từ bộ ký tự `%s' thành `%s'"
 
-#: glib/giochannel.c:1126
+#: glib/giochannel.c:1127
 #, c-format
 msgid "Could not open converter from `%s' to `%s': %s"
 msgstr "Không thể mở trình chuyển đổi từ `%s' thành `%s': %s"
 
-#: glib/giochannel.c:1471
+#: glib/giochannel.c:1472
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "Không thể thực hiện đọc thô trong g_io_channel_read_line_string"
 
-#: glib/giochannel.c:1518 glib/giochannel.c:1775 glib/giochannel.c:1861
+#: glib/giochannel.c:1519 glib/giochannel.c:1776 glib/giochannel.c:1862
 msgid "Leftover unconverted data in read buffer"
 msgstr "Để lại dữ liệu chưa được chuyển đổi trong buffer đọc"
 
-#: glib/giochannel.c:1598 glib/giochannel.c:1675
+#: glib/giochannel.c:1599 glib/giochannel.c:1676
 msgid "Channel terminates in a partial character"
 msgstr "Kênh tận hết trong ký tự riêng phần"
 
-#: glib/giochannel.c:1661
+#: glib/giochannel.c:1662
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Không thể thực hiện đọc thô trong g_io_channel_read_to_end"
 
@@ -395,35 +395,35 @@ msgstr ""
 "Tài liệu được kết thúc không mong muốn bên trong một ghi chú hay hướng dẫn "
 "tiến trình"
 
-#: glib/gshell.c:71
+#: glib/gshell.c:72
 msgid "Quoted text doesn't begin with a quotation mark"
 msgstr "Văn bản trích dẫn không bắt đầu bằng một dấu trích dẫn"
 
-#: glib/gshell.c:161
+#: glib/gshell.c:162
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr ""
 "Dấu ngoặc kép không ăn khớp trong dòng lệnh hay một shell-quoted text khác"
 
-#: glib/gshell.c:529
+#: glib/gshell.c:530
 #, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
 msgstr "Văn bản được kết thúc ngay sau ký tự '\\'. (văn bản đã là '%s')"
 
-#: glib/gshell.c:536
+#: glib/gshell.c:537
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr ""
 "Text đã kết thúc trước khi làm khớp dấu ngoặc kép cho %c. (text là '%s')"
 
-#: glib/gshell.c:548
+#: glib/gshell.c:549
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Văn bản trống (hay chỉ gồm các ký tự trắng)"
 
-#: glib/gspawn-win32.c:206
+#: glib/gspawn-win32.c:208
 msgid "Failed to read data from child process"
 msgstr "Không đọc được dữ liệu từ tiến trình con"
 
-#: glib/gspawn-win32.c:334
+#: glib/gspawn-win32.c:336
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -431,72 +431,72 @@ msgstr ""
 "Lỗi không mong muốn trong g_io_channel_win32_poll() đọc dữ liệu từ tiến "
 "trình con"
 
-#: glib/gspawn-win32.c:703 glib/gspawn.c:960
+#: glib/gspawn-win32.c:705 glib/gspawn.c:961
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Không đọc được từ pipe con (%s)"
 
-#: glib/gspawn-win32.c:781
+#: glib/gspawn-win32.c:783
 #, fuzzy
 msgid "Failed to execute helper program"
 msgstr "Không thực thi được tiến trình con (%s)"
 
-#: glib/gspawn-win32.c:814 glib/gspawn.c:1165
+#: glib/gspawn-win32.c:816 glib/gspawn.c:1166
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Không thay đổi được thư mục '%s' (%s)"
 
-#: glib/gspawn-win32.c:823
+#: glib/gspawn-win32.c:825
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Không thực thi được tiến trình con (%s)"
 
-#: glib/gspawn-win32.c:866 glib/gspawn.c:1296
+#: glib/gspawn-win32.c:868 glib/gspawn.c:1297
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Không tạo được pipe để liên lạc với tiến trình con (%s)"
 
-#: glib/gspawn.c:166
+#: glib/gspawn.c:167
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "Không đọc được dữ liệu từ tiến trình con (%s)"
 
-#: glib/gspawn.c:298
+#: glib/gspawn.c:299
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr "Lỗi không mong muốn trong select() đọc dữ liệu từ tiến trình con (%s)"
 
-#: glib/gspawn.c:381
+#: glib/gspawn.c:382
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Lỗi không mong muốn trong waitpid() (%s)"
 
-#: glib/gspawn.c:1025
+#: glib/gspawn.c:1026
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Không rẽ nhánh được (%s)"
 
-#: glib/gspawn.c:1175
+#: glib/gspawn.c:1176
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Không thự thi được tiến trình con \"%s\" (%s)"
 
-#: glib/gspawn.c:1185
+#: glib/gspawn.c:1186
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Không gửi được lần nữa đầu ra hay đầu vào của tiến trình con (%s)"
 
-#: glib/gspawn.c:1194
+#: glib/gspawn.c:1195
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Không rẽ nhánh được tiến trình con (%s)"
 
-#: glib/gspawn.c:1202
+#: glib/gspawn.c:1203
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Lỗi không xác định khi thực thi tiến trình con \"%s\""
 
-#: glib/gspawn.c:1224
+#: glib/gspawn.c:1225
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Không đọc được đủ dữ liệu từ pid pipe con(%s)"
