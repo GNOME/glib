@@ -1,3 +1,25 @@
+Fri Jun 12 00:39:28 1998  Josh MacDonald  <jmacd@icw.EECS.Berkeley.EDU>
+
+	* glib.h: add new hash and equal functions g_int_*.  complement
+	g_direct_hash with g_direct_equal.
+
+	* grel.c: new file, GRelations implement tuples of N-N mappings.
+	A comment in glib.h briefly describes the interface.
+
+	* ghash.c: new function, g_hash_table_size
+
+	* glib.h: new typedefs, gsize, gssize, gtime.
+
+	* garray.c: new functions implementing a simplified GArray.  This
+	GPtrArray is an array of gpointers and has functions to add and
+	remove elements, much like java.lang.Vector.
+
+	* garray.c: new functions for the single-byte special case of
+	GArray.  The functions g_byte_array* operate on arrays of bytes.
+	Internally, a GArray is used.
+
+	* testglib.c: tests for g_ptr_array, g_byte_array, and g_relation...
+
 1998-06-11  Federico Mena Quintero  <federico@nuclecu.unam.mx>
 
 	* gdataset.c: #include <string.h>

@@ -104,9 +104,14 @@ main (int   argc,
   gchar *mem[10000], *tmp_string, *tmp_string_2;
   gint i, j;
   GArray *garray;
+  GPtrArray *gparray;
+  GByteArray *gbarray;
   GString *string1, *string2;
   GTree *tree;
   char chars[62];
+  GRelation *relation;
+  GTuples *tuples;
+  gint data [1024];
 
   g_print ("checking size of gint8...%ld (should be 1)\n", (glong)sizeof (gint8));
   g_print ("checking size of gint16...%ld (should be 2)\n", (glong)sizeof (gint16));
@@ -396,6 +401,110 @@ main (int   argc,
 
   /* g_debug (argv[0]); */
 
+  /* Relation tests */
+
+  g_print ("checking relations...");
+
+  relation = g_relation_new (2);
+
+  g_relation_index (relation, 0, g_int_hash, g_int_equal);
+  g_relation_index (relation, 1, g_int_hash, g_int_equal);
+
+  for (i = 0; i < 1024; i += 1)
+    data[i] = i;
+
+  for (i = 1; i < 1023; i += 1)
+    {
+      g_relation_insert (relation, data + i, data + i + 1);
+      g_relation_insert (relation, data + i, data + i - 1);
+    }
+
+  for (i = 2; i < 1022; i += 1)
+    {
+      g_assert (! g_relation_exists (relation, data + i, data + i));
+      g_assert (! g_relation_exists (relation, data + i, data + i + 2));
+      g_assert (! g_relation_exists (relation, data + i, data + i - 2));
+    }
+
+  for (i = 1; i < 1023; i += 1)
+    {
+      g_assert (g_relation_exists (relation, data + i, data + i + 1));
+      g_assert (g_relation_exists (relation, data + i, data + i - 1));
+    }
+
+  for (i = 2; i < 1022; i += 1)
+    {
+      g_assert (g_relation_count (relation, data + i, 0) == 2);
+      g_assert (g_relation_count (relation, data + i, 1) == 2);
+    }
+
+  g_assert (g_relation_count (relation, data, 0) == 0);
+
+  g_assert (g_relation_count (relation, data + 42, 0) == 2);
+  g_assert (g_relation_count (relation, data + 43, 1) == 2);
+  g_assert (g_relation_count (relation, data + 41, 1) == 2);
+  g_relation_delete (relation, data + 42, 0);
+  g_assert (g_relation_count (relation, data + 42, 0) == 0);
+  g_assert (g_relation_count (relation, data + 43, 1) == 1);
+  g_assert (g_relation_count (relation, data + 41, 1) == 1);
+
+  tuples = g_relation_select (relation, data + 200, 0);
+
+  g_assert (tuples->len == 2);
+
+#if 0
+  for (i = 0; i < tuples->len; i += 1)
+    {
+      printf ("%d %d\n",
+	      *(gint*) g_tuples_index (tuples, i, 0),
+	      *(gint*) g_tuples_index (tuples, i, 1));
+    }
+#endif
+
+  g_assert (g_relation_exists (relation, data + 300, data + 301));
+  g_relation_delete (relation, data + 300, 0);
+  g_assert (!g_relation_exists (relation, data + 300, data + 301));
+
+  g_tuples_destroy (tuples);
+
+  g_relation_destroy (relation);
+
+  relation = NULL;
+
+  g_print ("ok\n");
+
+  g_print ("checking pointer arrays...");
+
+  gparray = g_ptr_array_new ();
+  for (i = 0; i < 10000; i++)
+    g_ptr_array_add (gparray, (void*)i);
+
+  for (i = 0; i < 10000; i++)
+    if (g_ptr_array_index (gparray, i) != (void*)i)
+      g_print ("array fails: %p ( %p )\n", g_ptr_array_index (gparray, i), (void*)i);
+
+  g_ptr_array_free (gparray, TRUE);
+
+  g_print ("ok\n");
+
+
+  g_print ("checking byte arrays...");
+
+  gbarray = g_byte_array_new ();
+  for (i = 0; i < 10000; i++)
+    g_byte_array_append (gbarray, "abcd", 4);
+
+  for (i = 0; i < 10000; i++)
+    {
+      g_assert (gbarray->data[4*i] == 'a');
+      g_assert (gbarray->data[4*i+1] == 'b');
+      g_assert (gbarray->data[4*i+2] == 'c');
+      g_assert (gbarray->data[4*i+3] == 'd');
+    }
+
+  g_byte_array_free (gbarray, TRUE);
+
+  g_print ("ok\n");
 
   return 0;
 }

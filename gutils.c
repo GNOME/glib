@@ -851,8 +851,25 @@ g_parse_debug_string  (const gchar *string,
 }
 
 guint
-g_direct_hash(gconstpointer key)
+g_direct_hash(gconstpointer v)
 {
-  return GPOINTER_TO_UINT (key);
+  return GPOINTER_TO_UINT (v);
 }
 
+gint
+g_direct_equal(gconstpointer v, gconstpointer v2)
+{
+  return GPOINTER_TO_UINT (v) == GPOINTER_TO_UINT (v2);
+}
+
+gint
+g_int_equal (gconstpointer v, gconstpointer v2)
+{
+  return *((const gint*) v) == *((const gint*) v2);
+}
+
+guint
+g_int_hash (gconstpointer v)
+{
+  return *(const gint*) v;
+}

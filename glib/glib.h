@@ -433,6 +433,10 @@ typedef unsigned long	guint32;
 /* This should never happen */
 #endif
 
+typedef gint32  gssize;
+typedef guint32 gsize;
+typedef gint32  gtime;
+
 
 typedef struct _GList		GList;
 typedef struct _GSList		GSList;
@@ -445,10 +449,14 @@ typedef struct _GListAllocator	GListAllocator;
 typedef struct _GStringChunk	GStringChunk;
 typedef struct _GString		GString;
 typedef struct _GArray		GArray;
+typedef struct _GPtrArray	GPtrArray;
+typedef struct _GByteArray	GByteArray;
 typedef struct _GDebugKey	GDebugKey;
 typedef struct _GScannerConfig	GScannerConfig;
 typedef struct _GScanner	GScanner;
 typedef union  _GValue		GValue;
+typedef struct _GRelation      GRelation;
+typedef struct _GTuples        GTuples;
 
 
 typedef void		(*GFunc)		(gpointer  data,
@@ -498,6 +506,23 @@ struct _GString
 struct _GArray
 {
   gchar *data;
+  guint len;
+};
+
+struct _GByteArray
+{
+  guint8 *data;
+  guint   len;
+};
+
+struct _GPtrArray
+{
+  gpointer *pdata;
+  guint     len;
+};
+
+struct _GTuples
+{
   guint len;
 };
 
@@ -635,6 +660,7 @@ void	    g_hash_table_thaw	 (GHashTable	 *hash_table);
 void	    g_hash_table_foreach (GHashTable	 *hash_table,
 				  GHFunc	  func,
 				  gpointer	  user_data);
+gint	    g_hash_table_size    (GHashTable	 *hash_table);
 
 
 /* Caches
@@ -891,17 +917,63 @@ GArray* g_rarray_truncate (GArray   *array,
 			   gint	     length,
 			   gint	     size);
 
+/* Resizable pointer array.  This interface is much less complicated
+ * than the above.  Add appends appends a pointer.  Remove fills any
+ * cleared spot and shortens the array.
+ */
+
+#define     g_ptr_array_index(array,index) (array->pdata)[index]
+
+GPtrArray*  g_ptr_array_new	           (void);
+void   	    g_ptr_array_free	           (GPtrArray   *array,
+					    gboolean     free_seg);
+void        g_ptr_array_set_size           (GPtrArray   *array,
+					    gint	 length);
+void        g_ptr_array_remove_index       (GPtrArray   *array,
+					    gint         index);
+gboolean    g_ptr_array_remove             (GPtrArray   *array,
+					    gpointer     data);
+void        g_ptr_array_add                (GPtrArray   *array,
+					    gpointer     data);
+
+/* Byte arrays, an array of guint8.  Implemented as a GArray,
+ * but type-safe.
+ */
+
+GByteArray* g_byte_array_new      (void);
+void	    g_byte_array_free     (GByteArray *array,
+			           gint	       free_segment);
+
+GByteArray* g_byte_array_append   (GByteArray   *array,
+				   const guint8 *data,
+				   guint         len);
+
+GByteArray* g_byte_array_prepend  (GByteArray   *array,
+				   const guint8 *data,
+				   guint         len);
+
+GByteArray* g_byte_array_truncate (GByteArray *array,
+				   gint	       length);
+
+
 /* Hash Functions
  */
 gint  g_str_equal (gconstpointer   v,
 		   gconstpointer   v2);
 guint g_str_hash  (gconstpointer v);
 
+gint  g_int_equal (gconstpointer v,
+		   gconstpointer v2);
+guint g_int_hash  (gconstpointer v);
+
 /* This "hash" function will just return the key's adress as an
  * unsigned integer. Useful for hashing on plain adresses or
  * simple integer values.
  */
-guint g_direct_hash (gconstpointer key);
+guint g_direct_hash  (gconstpointer v);
+gint  g_direct_equal (gconstpointer v,
+		      gconstpointer v2);
+
 
 
 /* Location Associated Data
@@ -1140,6 +1212,54 @@ GList*       g_completion_complete     (GCompletion* cmp,
                                         gchar* prefix,
                                         gchar** new_prefix);
 void         g_completion_free         (GCompletion* cmp);
+
+/* GRelation: Indexed Relations.  Imagine a really simple table in a
+ * database.  Relations are not ordered.  This data type is meant for
+ * maintaining a N-way mapping.
+ *
+ * g_relation_new() creates a relation with FIELDS fields
+ *
+ * g_relation_destroy() frees all resources
+ * g_tuples_destroy() frees the result of g_relation_select()
+ *
+ * g_relation_index() indexes relation FIELD with the provided
+ *   equality and hash functions.  this must be done before any
+ *   calls to insert are made.
+ *
+ * g_relation_insert() inserts a new tuple.  you are expected to
+ *   provide the right number of fields.
+ *
+ * g_relation_delete() deletes all relations with KEY in FIELD
+ * g_relation_select() returns ...
+ * g_relation_count() counts ...
+ */
+
+GRelation* g_relation_new     (gint         fields);
+void       g_relation_destroy (GRelation   *relation);
+void       g_relation_index   (GRelation   *relation,
+			       gint         field,
+			       GHashFunc    hash_func,
+			       GCompareFunc key_compare_func);
+void       g_relation_insert  (GRelation   *relation,
+			       ...);
+gint       g_relation_delete  (GRelation   *relation,
+			       gconstpointer  key,
+			       gint         field);
+GTuples*   g_relation_select  (GRelation   *relation,
+			       gconstpointer  key,
+			       gint         field);
+gint       g_relation_count   (GRelation   *relation,
+			       gconstpointer  key,
+			       gint         field);
+gboolean   g_relation_exists  (GRelation   *relation,
+			       ...);
+void       g_relation_print   (GRelation   *relation);
+
+void       g_tuples_destroy   (GTuples     *tuples);
+gpointer   g_tuples_index     (GTuples     *tuples,
+			       gint         index,
+			       gint         field);
+
 
 /* Glib version.
  */

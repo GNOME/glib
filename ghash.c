@@ -424,3 +424,11 @@ g_hash_nodes_destroy (GHashNode *hash_node)
       node_free_list = hash_node;
     }
 }
+
+/* Returns the number of elements contained in the hash table. */
+gint g_hash_table_size (GHashTable *hash_table)
+{
+  g_return_val_if_fail (hash_table, 0);
+
+  return ((GRealHashTable *) hash_table)->nnodes;
+}

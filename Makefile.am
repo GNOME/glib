@@ -23,6 +23,7 @@ libglib_1_1_la_SOURCES = \
 		gslist.c	\
 		gtimer.c	\
 		gtree.c		\
+		grel.c		\
 		gstring.c	\
 		gscanner.c	\
 		gutils.c
