@@ -23,7 +23,7 @@ DIE=0
 (libtool --version) < /dev/null > /dev/null 2>&1 || {
 	echo
 	echo "You must have libtool installed to compile $PROJECT."
-	echo "Get ftp://alpha.gnu.org/gnu/libtool-1.2b.tar.gz"
+	echo "Get ftp://alpha.gnu.org/gnu/libtool-1.2d.tar.gz"
 	echo "(or a newer version if it is available)"
 	DIE=1
 }
@@ -31,7 +31,7 @@ DIE=0
 (automake --version) < /dev/null > /dev/null 2>&1 || {
 	echo
 	echo "You must have automake installed to compile $PROJECT."
-	echo "Get ftp://ftp.cygnus.com/pub/home/tromey/automake-1.2d.tar.gz"
+	echo "Get ftp://sourceware.cygnus.com/pub/automake/automake-1.4.tar.gz"
 	echo "(or a newer version if it is available)"
 	DIE=1
 }

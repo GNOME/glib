@@ -1,3 +1,8 @@
+Wed Jan 20 20:33:14 EST 1999 Mandrake <mandrake@mandrake.net>
+
+	* autogen.sh: automake 1.4 and libtool 1.2d notices.
+	(maybe I'll write an actual test for automake 1.4 later)
+
 Wed Jan 20 15:05:25 PST 1999 Manish Singh <yosh@gimp.org>
 
 	* HACKING: new file
