@@ -481,8 +481,7 @@ g_poll (GPollFD *fds,
   else if (ready >= WAIT_OBJECT_0 && ready < WAIT_OBJECT_0 + nhandles)
     for (f = fds; f < &fds[nfds]; ++f)
       {
-	if ((f->events & (G_IO_IN | G_IO_OUT))
-	    && f->fd == (gint) handles[ready - WAIT_OBJECT_0])
+	if (f->fd == (gint) handles[ready - WAIT_OBJECT_0])
 	  {
 	    f->revents = f->events;
 #ifdef G_MAIN_POLL_DEBUG
