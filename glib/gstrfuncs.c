@@ -588,7 +588,7 @@ g_ascii_formatd (gchar       *buffer,
  * @base:    to be used for the conversion, 2..36 or 0
  *
  * Converts a string to a #guint64 value.
- * This function behaves like the standard strtull() function
+ * This function behaves like the standard strtoull() function
  * does in the C locale. It does this without actually
  * changing the current locale, since that would not be
  * thread-safe.
@@ -608,8 +608,11 @@ g_ascii_strtoull (const gchar *nptr,
 		  gchar      **endptr,
 		  guint        base)
 {
-  /* this code is based on on the strtol(3) code from GLibC released under
+  /* this code is based on on the strtol(3) code from GNU libc released under
    * the GNU Lesser General Public License.
+   *
+   * Copyright (C) 1991,92,94,95,96,97,98,99,2000,01,02
+   *        Free Software Foundation, Inc.
    */
 #define ISSPACE(c)		((c) == ' ' || (c) == '\f' || (c) == '\n' || \
 				 (c) == '\r' || (c) == '\t' || (c) == '\v')

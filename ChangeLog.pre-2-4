@@ -1,3 +1,10 @@
+Tue Nov 19 14:38:18 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gstrfuncs.c (g_ascii_strtoull): Fix 
+	strtull/strtoull type in docs (#99012, Morten
+	Welinder.) Add copyright information for code
+	taken from GNU libc.
+
 2002-11-18  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/gspawn-win32.c (do_spawn_with_pipes): Do handle
