@@ -34,7 +34,6 @@
 
 #include "config.h"
 
-#include <alloca.h>
 #include <limits.h>
 #include <stdlib.h>
 #include <string.h>

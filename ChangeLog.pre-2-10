@@ -1,5 +1,8 @@
 2005-01-18  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gqsort.c: Don't include alloca.h. It is not needed,
+	and does not exist on win32.  (#164468, Kazuki IWAMOTO)
+
 	* glib/gkeyfile.c (g_key_file_get_boolean_list): Fix a
 	sparse warning.  (#164467, Kjartan Maraas)
 
