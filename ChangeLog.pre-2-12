@@ -1,3 +1,8 @@
+Mon Feb 15 06:18:58 1999  Tim Janik  <timj@gtk.org>
+
+	* glib.h: return guints instead of gints for g_hash_table_size
+	and g_hash_table_foreach_remove.
+
 Wed Feb 10 12:01:42 1999  Tim Janik  <timj@gtk.org>
 
 	* configure.in: don't reset G_MODULE_IMPL, so it can be overridden

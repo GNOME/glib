@@ -229,14 +229,14 @@ g_hash_table_thaw (GHashTable *hash_table)
       g_hash_table_resize (hash_table);
 }
 
-gint
+guint
 g_hash_table_foreach_remove (GHashTable	*hash_table,
 			     GHRFunc	 func,
 			     gpointer	 user_data)
 {
   GHashNode *node, *prev;
   guint i;
-  gint deleted = 0;
+  guint deleted = 0;
   
   g_return_val_if_fail (hash_table != NULL, 0);
   g_return_val_if_fail (func != NULL, 0);
@@ -294,7 +294,7 @@ g_hash_table_foreach (GHashTable *hash_table,
 }
 
 /* Returns the number of elements contained in the hash table. */
-gint
+guint
 g_hash_table_size (GHashTable *hash_table)
 {
   g_return_val_if_fail (hash_table != NULL, 0);

@@ -952,10 +952,10 @@ void	    g_hash_table_thaw		(GHashTable	*hash_table);
 void	    g_hash_table_foreach	(GHashTable	*hash_table,
 					 GHFunc		 func,
 					 gpointer	 user_data);
-gint	    g_hash_table_foreach_remove	(GHashTable	*hash_table,
+guint	    g_hash_table_foreach_remove	(GHashTable	*hash_table,
 					 GHRFunc	 func,
 					 gpointer	 user_data);
-gint	    g_hash_table_size		(GHashTable	*hash_table);
+guint	    g_hash_table_size		(GHashTable	*hash_table);
 
 
 /* Caches
