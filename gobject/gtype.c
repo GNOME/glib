@@ -2510,8 +2510,8 @@ g_type_query (GType       type,
 
 /* --- implementation details --- */
 gboolean
-g_type_check_flags (GType type,
-		    guint flags)
+g_type_test_flags (GType type,
+		   guint flags)
 {
   TypeNode *node;
   gboolean result = FALSE;
@@ -2603,8 +2603,8 @@ g_type_fundamental_last (void)
 }
 
 gboolean
-g_type_instance_is_a (GTypeInstance *type_instance,
-		      GType          iface_type)
+g_type_check_instance_is_a (GTypeInstance *type_instance,
+			    GType          iface_type)
 {
   TypeNode *node, *iface;
   gboolean check;
@@ -2622,8 +2622,8 @@ g_type_instance_is_a (GTypeInstance *type_instance,
 }
 
 gboolean
-g_type_class_is_a (GTypeClass *type_class,
-		   GType       is_a_type)
+g_type_check_class_is_a (GTypeClass *type_class,
+			 GType       is_a_type)
 {
   TypeNode *node, *iface;
   gboolean check;

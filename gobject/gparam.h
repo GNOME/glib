@@ -124,7 +124,7 @@ gboolean	g_param_value_defaults		(GParamSpec    *pspec,
 						 GValue	       *value);
 gboolean	g_param_value_validate		(GParamSpec    *pspec,
 						 GValue	       *value);
-gboolean	g_param_value_convert		(GParamSpec    *dest_value_spec,
+gboolean	g_param_value_convert		(GParamSpec    *pspec,
 						 const GValue  *src_value,
 						 GValue	       *dest_value,
 						 gboolean	strict_validation);

@@ -104,12 +104,12 @@ typedef enum    /*< skip >*/
 #define G_TYPE_IS_FUNDAMENTAL(type)             (G_TYPE_BRANCH_SEQNO (type) == 0)
 #define G_TYPE_IS_DERIVED(type)                 (G_TYPE_BRANCH_SEQNO (type) > 0)
 #define G_TYPE_IS_INTERFACE(type)               (G_TYPE_FUNDAMENTAL (type) == G_TYPE_INTERFACE)
-#define G_TYPE_IS_CLASSED(type)                 (g_type_check_flags ((type), G_TYPE_FLAG_CLASSED))
-#define G_TYPE_IS_INSTANTIATABLE(type)          (g_type_check_flags ((type), G_TYPE_FLAG_INSTANTIATABLE))
-#define G_TYPE_IS_DERIVABLE(type)               (g_type_check_flags ((type), G_TYPE_FLAG_DERIVABLE))
-#define G_TYPE_IS_DEEP_DERIVABLE(type)          (g_type_check_flags ((type), G_TYPE_FLAG_DEEP_DERIVABLE))
-#define G_TYPE_IS_ABSTRACT(type)                (g_type_check_flags ((type), G_TYPE_FLAG_ABSTRACT))
-#define G_TYPE_IS_VALUE_ABSTRACT(type)          (g_type_check_flags ((type), G_TYPE_FLAG_VALUE_ABSTRACT))
+#define G_TYPE_IS_CLASSED(type)                 (g_type_test_flags ((type), G_TYPE_FLAG_CLASSED))
+#define G_TYPE_IS_INSTANTIATABLE(type)          (g_type_test_flags ((type), G_TYPE_FLAG_INSTANTIATABLE))
+#define G_TYPE_IS_DERIVABLE(type)               (g_type_test_flags ((type), G_TYPE_FLAG_DERIVABLE))
+#define G_TYPE_IS_DEEP_DERIVABLE(type)          (g_type_test_flags ((type), G_TYPE_FLAG_DEEP_DERIVABLE))
+#define G_TYPE_IS_ABSTRACT(type)                (g_type_test_flags ((type), G_TYPE_FLAG_ABSTRACT))
+#define G_TYPE_IS_VALUE_ABSTRACT(type)          (g_type_test_flags ((type), G_TYPE_FLAG_VALUE_ABSTRACT))
 #define G_TYPE_IS_PARAM(type)                   (G_TYPE_FUNDAMENTAL (type) == G_TYPE_PARAM)
 #define G_TYPE_IS_VALUE_TYPE(type)              (g_type_check_is_value_type (type))
 #define G_TYPE_HAS_VALUE_TABLE(type)            (g_type_value_table_peek (type) != NULL)
@@ -329,8 +329,6 @@ GTypePlugin*	 g_type_interface_get_plugin	(GType		     instance_type,
 						 GType               implementation_type);
 
 GType		 g_type_fundamental_last	(void);
-gboolean         g_type_check_flags             (GType               type,
-						 guint               flags);
 GTypeInstance*   g_type_create_instance         (GType               type);
 void             g_type_free_instance           (GTypeInstance      *instance);
 void		 g_type_add_class_cache_func    (gpointer	     cache_data,
@@ -338,23 +336,25 @@ void		 g_type_add_class_cache_func    (gpointer	     cache_data,
 void		 g_type_remove_class_cache_func (gpointer	     cache_data,
 						 GTypeClassCacheFunc cache_func);
 void             g_type_class_unref_uncached    (gpointer            g_class);
+GTypeValueTable* g_type_value_table_peek        (GType		     type);
 
 
 /*< private >*/
 gboolean	 g_type_check_instance          (GTypeInstance      *instance);
 GTypeInstance*   g_type_check_instance_cast     (GTypeInstance      *instance,
 						 GType               iface_type);
-gboolean         g_type_instance_is_a		(GTypeInstance      *instance,
+gboolean         g_type_check_instance_is_a	(GTypeInstance      *instance,
 						 GType               iface_type);
 GTypeClass*      g_type_check_class_cast        (GTypeClass         *g_class,
 						 GType               is_a_type);
-gboolean         g_type_class_is_a              (GTypeClass         *g_class,
+gboolean         g_type_check_class_is_a        (GTypeClass         *g_class,
 						 GType               is_a_type);
 gboolean	 g_type_check_is_value_type     (GType		     type);
 gboolean	 g_type_check_value             (GValue		    *value);
 gboolean	 g_type_check_value_holds	(GValue		    *value,
 						 GType		     type);
-GTypeValueTable* g_type_value_table_peek        (GType		     type);
+gboolean         g_type_test_flags              (GType               type,
+						 guint               flags);
 
 
 /* --- debugging functions --- */
@@ -383,7 +383,7 @@ G_CONST_RETURN gchar* g_type_name_from_class	(GTypeClass	*g_class);
   if (__inst && __inst->g_class && __inst->g_class->g_type == __t) \
     __r = TRUE; \
   else \
-    __r = g_type_instance_is_a (__inst, __t); \
+    __r = g_type_check_instance_is_a (__inst, __t); \
   __r; \
 })
 #  define _G_TYPE_CCT(cp, gt)             ({ \
@@ -391,12 +391,12 @@ G_CONST_RETURN gchar* g_type_name_from_class	(GTypeClass	*g_class);
   if (__class && __class->g_type == __t) \
     __r = TRUE; \
   else \
-    __r = g_type_class_is_a (__class, __t); \
+    __r = g_type_check_class_is_a (__class, __t); \
   __r; \
 })
 #else  /* !__GNUC__ */
-#  define _G_TYPE_CIT(ip, gt)             (g_type_instance_is_a ((GTypeInstance*) ip, gt))
-#  define _G_TYPE_CCT(cp, gt)             (g_type_class_is_a ((GTypeClass*) cp, gt))
+#  define _G_TYPE_CIT(ip, gt)             (g_type_check_instance_is_a ((GTypeInstance*) ip, gt))
+#  define _G_TYPE_CCT(cp, gt)             (g_type_check_class_is_a ((GTypeClass*) cp, gt))
 #endif /* !__GNUC__ */
 #define	G_TYPE_FLAG_RESERVED_ID_BIT	(1 << 30)
 extern GTypeDebugFlags			_g_type_debug_flags;

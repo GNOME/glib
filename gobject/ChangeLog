@@ -1,3 +1,11 @@
+Tue Nov 13 22:16:41 2001  Tim Janik  <timj@gtk.org>
+
+	* gtype.[hc]: API cleanups.
+	remove g_type_check_flags(), provide g_type_test_flags() as
+	a *private* function.
+	s/g_type_check_is_a/g_type_check_class_is_a/, private function.
+	s/g_type_instance_is_a/g_type_check_instance_is_a/, also private.
+
 Tue Nov 13 20:02:47 2001  Tim Janik  <timj@gtk.org>
 
 	* gparam.h: fix standard type macros.
