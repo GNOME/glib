@@ -152,9 +152,9 @@ AC_SUBST(GOBJECT_DEF)
 AC_SUBST(GTHREAD_DEF)
 AC_SUBST(TESTGMODULE_EXP)
 
-ms_linker_available=no
+ms_librarian=no
 if test $os_win32 = yes; then
-	AC_CHECK_PROG(ms_librarian, lib.exe, yes, no)
+  AC_CHECK_PROG(ms_librarian, lib.exe, yes, no)
 fi
 AM_CONDITIONAL(MS_LIB_AVAILABLE, test $ms_librarian = yes)
 
