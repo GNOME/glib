@@ -604,7 +604,7 @@ g_ascii_formatd (gchar       *buffer,
  *
  * Return value: the #guint64 value.
  *
- * Since: 2.0.7
+ * Since: 2.2
  **/
 guint64
 g_ascii_strtoull (const gchar *nptr,

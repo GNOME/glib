@@ -1,5 +1,7 @@
 2002-11-29  Matthias Clasen  <maclas@gmx.de>
 
+	* glib/gstrfuncs.c (g_ascii_strtoull): It is a 2.2 addition.
+
 	* glib/gtimer.c (g_time_val_add): Adjust to changed parameter names.
 
 	* glib/gutils.c (g_get_application_name): Mark as 2.2. addition.
