@@ -1,13 +1,14 @@
 # glib translation to Catalan.
-# Copyright (C) 2001, 2002 Free Software Foundation, Inc.
+# Copyright © 2001, 2002, 2003 Free Software Foundation, Inc.
 # Softcatalà <info@softcatala.org>, 2001.
-# Jordi Mallach <jordi@sindominio.net>, 2002.
+# Jordi Mallach <jordi@sindominio.net>, 2002, 2003.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: glib 2.1.5.2\n"
-"POT-Creation-Date: 2003-11-12 15:18-0500\n"
-"PO-Revision-Date: 2002-12-19 15:57+0100\n"
+"Project-Id-Version: glib 2.3.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2003-11-13 15:03+0100\n"
+"PO-Revision-Date: 2003-11-13 15:04+0100\n"
 "Last-Translator: Jordi Mallach <jordi@sindominio.net>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
 "MIME-Version: 1.0\n"
@@ -93,28 +94,28 @@ msgstr "No s'ha pogut assignar %lu bytes per a llegir el fitxer \"%s\""
 #: glib/gfileutils.c:401
 #, c-format
 msgid "Error reading file '%s': %s"
-msgstr "S'ha produït un error en llegir el fitxer '%s': %s"
+msgstr "S'ha produït un error en llegir el fitxer «%s»: %s"
 
 #: glib/gfileutils.c:477
 #, c-format
 msgid "Failed to read from file '%s': %s"
-msgstr "És impossible llegir des del fitxer '%s': %s"
+msgstr "No s'ha pogut llegir des del fitxer «%s»: %s"
 
 #: glib/gfileutils.c:524 glib/gfileutils.c:592
 #, c-format
 msgid "Failed to open file '%s': %s"
-msgstr "És impossible obrir el fitxer '%s': %s"
+msgstr "No s'ha pogut obrir el fitxer «%s»: %s"
 
 #: glib/gfileutils.c:538
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr ""
-"És impossible obtenir els atributs del fitxer '%s': fstat() ha fallat: %s"
+"No s'ha pogut obtenir els atributs del fitxer «%s»: fstat() ha fallat: %s"
 
 #: glib/gfileutils.c:564
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
-msgstr "És impossible obrir el fitxer '%s': fdopen() ha fallat: %s"
+msgstr "No s'ha pogut obrir el fitxer «%s»: fdopen() ha fallat: %s"
 
 #: glib/gfileutils.c:776
 #, c-format
@@ -129,21 +130,21 @@ msgstr "La plantilla '%s' no acaba en XXXXXX"
 #: glib/gfileutils.c:809
 #, c-format
 msgid "Failed to create file '%s': %s"
-msgstr "És impossible crear el fitxer '%s': %s"
+msgstr "No s'ha pogut crear el fitxer «%s»: %s"
 
 #: glib/gfileutils.c:1150
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to read the symbolic link '%s': %s"
-msgstr "És impossible crear el fitxer '%s': %s"
+msgstr "No s'ha pogut llegir l'enllaç simbòlic «%s»: %s"
 
 #: glib/gfileutils.c:1169
 msgid "Symbolic links not supported"
-msgstr ""
+msgstr "No se suporten els enllaços simbòlics"
 
 #: glib/giochannel.c:1143
 #, c-format
 msgid "Conversion from character set `%s' to `%s' is not supported"
-msgstr "No es suporta la conversió des del joc de caràcters '%s' fins al '%s'"
+msgstr "No se suporta la conversió des del joc de caràcters «%s» fins al «%s»"
 
 #: glib/giochannel.c:1147
 #, c-format
@@ -428,7 +429,7 @@ msgstr "El text era buit (o només contenia espais en blanc)"
 
 #: glib/gspawn-win32.c:297
 msgid "Failed to read data from child process"
-msgstr "És impossible llegir dades del procés fill"
+msgstr "No s'ha pogut llegir dades del procés fill"
 
 #: glib/gspawn-win32.c:426
 msgid ""
@@ -441,31 +442,31 @@ msgstr ""
 #: glib/gspawn-win32.c:842 glib/gspawn.c:998
 #, c-format
 msgid "Failed to read from child pipe (%s)"
-msgstr "És impossible llegir des del conducte fill (%s)"
+msgstr "No s'ha pogut llegir des del conducte fill (%s)"
 
 #: glib/gspawn-win32.c:922
 msgid "Failed to execute helper program"
-msgstr "És impossible executar el programa auxiliar"
+msgstr "No s'ha pogut executar el programa auxiliar"
 
 #: glib/gspawn-win32.c:943 glib/gspawn-win32.c:987
 #, c-format
 msgid "Failed to execute child process (%s)"
-msgstr "És impossible executar el procés fill (%s)"
+msgstr "No s'ha pogut e executar el procés fill (%s)"
 
 #: glib/gspawn-win32.c:978 glib/gspawn.c:1203
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
-msgstr "És impossible canviar al directori '%s' (%s)"
+msgstr "No s'ha pogut canviar al directori «%s» (%s)"
 
 #: glib/gspawn-win32.c:1032 glib/gspawn.c:1334
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
-msgstr "És impossible crear el conducte per comunicar amb el procés fill (%s)"
+msgstr "No s'ha pogut crear el conducte per comunicar amb el procés fill (%s)"
 
 #: glib/gspawn.c:167
 #, c-format
 msgid "Failed to read data from child process (%s)"
-msgstr "És impossible llegir dades des del procés fill (%s)"
+msgstr "No s'ha pogut llegir dades des del procés fill (%s)"
 
 #: glib/gspawn.c:298
 #, c-format
@@ -477,27 +478,27 @@ msgstr ""
 #: glib/gspawn.c:381
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
-msgstr "S'ha produiït un error inesperat en waitpid() (%s)"
+msgstr "S'ha produït un error inesperat en waitpid() (%s)"
 
 #: glib/gspawn.c:1063
 #, c-format
 msgid "Failed to fork (%s)"
-msgstr "És impossible bifurcar-se (%s)"
+msgstr "No s'ha pogut bifurcar-se (%s)"
 
 #: glib/gspawn.c:1213
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
-msgstr "És impossible executar el procés fill \"%s\" (%s)"
+msgstr "No s'ha pogut executar el procés fill «%s» (%s)"
 
 #: glib/gspawn.c:1223
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
-msgstr "És impossible redirigir la sortida o l'entrada del procés fill (%s)"
+msgstr "No s'ha pogut redirigir la sortida o l'entrada del procés fill (%s)"
 
 #: glib/gspawn.c:1232
 #, c-format
 msgid "Failed to fork child process (%s)"
-msgstr "És impossible bifurcar el procés fill (%s)"
+msgstr "No s'ha pogut bifurcar el procés fill (%s)"
 
 #: glib/gspawn.c:1240
 #, c-format
@@ -508,12 +509,12 @@ msgstr "S'ha produït un error desconegut en executar el procés fill \"%s\""
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr ""
-"És impossible llegir prou dades del conducte de l'identificador del procés "
+"No s'ha pogut llegir prou dades del conducte de l'identificador del procés "
 "fill (%s)"
 
 #: glib/gutf8.c:985
 msgid "Character out of range for UTF-8"
-msgstr "Caràcter fora d'abast per a UTF-8"
+msgstr "El caràcter és fora de rang per a UTF-8"
 
 #: glib/gutf8.c:1074 glib/gutf8.c:1083 glib/gutf8.c:1215 glib/gutf8.c:1224
 #: glib/gutf8.c:1365 glib/gutf8.c:1461
@@ -522,7 +523,7 @@ msgstr "Seqüència invàlida a l'entrada de la conversió"
 
 #: glib/gutf8.c:1376 glib/gutf8.c:1472
 msgid "Character out of range for UTF-16"
-msgstr "Caràcter fora d'abast per a UTF-16"
+msgstr "El caràcter és fora de rang per a UTF-16"
 
 #~ msgid "Incorrect message size"
 #~ msgstr "Mida incorrecta del missatge"
