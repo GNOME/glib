@@ -35,17 +35,24 @@
 
 struct _GDir
 {
-  /*< private >*/
   DIR *dir;
 };
 
 /**
  * g_dir_open:
  * @path: the path to the directory you are interested in
- * @flags: for future binary compatible extensions 
- * @error: return location for a #GError
+ * @flags: Currently must be set to 0. Reserved for future use.
+ * @error: return location for a #GError, or %NULL.
+ *         If non-%NULL, an error will be set if and only if
+ *         g_dir_open_fails.
  *
- * Return value: a #GDir* on success, NULL if error is set
+ * Opens a directory for reading. The names of the files
+ * in the directory can then be retrieved using
+ * g_dir_get_name().
+ *
+ * Return value: a newly allocated #GDir on success, %NULL on failure.
+ *   If non-%NULL, you must free the result with g_dir_close()
+ *   when you are finished with it.
  **/
 GDir *
 g_dir_open (const gchar  *path,
@@ -63,8 +70,8 @@ g_dir_open (const gchar  *path,
   g_set_error (error,
                G_FILE_ERROR,
                g_file_error_from_errno (errno),
-               _("Error opening dir '%s': %s"),
-                 path, strerror (errno));
+               _("Error opening directory '%s': %s"),
+	       path, strerror (errno));
 
   g_free (dir);
   return NULL;
@@ -74,17 +81,15 @@ g_dir_open (const gchar  *path,
  * g_dir_read_name:
  * @dir: a #GDir* created by g_dir_open()
  *
- * Iterator which delivers the next directory entries name
- * with each call. The '.' and '..' entries are omitted.
+ * Retrieves the name of the next entry in the directory.
+ * The '.' and '..' entries are omitted.
  *
- * BTW: using these functions will simplify porting of
- * your app, at least to Windows.
- *
- * Return value: The entries name or NULL if there are no 
- * more entries. Don't free this value!
+ * Return value: The entries name or %NULL if there are no 
+ *   more entries. The return value is owned by GLib and
+ *   must not be modified or freed.
  **/
 G_CONST_RETURN gchar*
-g_dir_read_name (GDir    *dir)
+g_dir_read_name (GDir *dir)
 {
   struct dirent *entry;
 
@@ -92,8 +97,8 @@ g_dir_read_name (GDir    *dir)
 
   entry = readdir (dir->dir);
   while (entry 
-         && (   0 == strcmp (entry->d_name, ".") 
-             || 0 == strcmp (entry->d_name, "..")))
+         && (0 == strcmp (entry->d_name, ".") ||
+             0 == strcmp (entry->d_name, "..")))
     entry = readdir (dir->dir);
 
   return entry->d_name;
@@ -119,18 +124,14 @@ g_dir_rewind (GDir *dir)
  * @dir: a #GDir* created by g_dir_open()
  *
  * Closes the directory and deallocates all related resources.
- *
- * Return value: TRUE on success, FALSE otherwise.
  **/
-gboolean
+void
 g_dir_close (GDir *dir)
 {
   int ret = 0;
 
   g_return_val_if_fail (dir != NULL, FALSE);
 
-  ret = closedir (dir->dir);
+  closedir (dir->dir);
   g_free (dir);
-
-  return !ret; 
 }

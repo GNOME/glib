@@ -1,3 +1,13 @@
+Sun Nov  4 20:29:31 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gdir.[ch]: Indentation fixes, some rewriting of docs to
+	conform to gtk-doc standard.
+
+	* glib/gdir.[ch] (g_dir_close): Remove the boolean 
+	return value. What would you do if closing failed?
+	What would the user do if you printed a warning
+	message "closing directory %d failed"?
+
 2001-11-04  Hans Breuer  <hans@breuer.org>
 
 	* glib/gdir.[hc] : (new files) simplified wrapper around dirent 
