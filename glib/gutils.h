@@ -101,7 +101,7 @@ G_BEGIN_DECLS
 #  endif
 #endif
 #ifndef G_INLINE_FUNC
-#  if defined (__GNUC__) && (__OPTIMIZE__)
+#  if defined (__GNUC__) && defined (__OPTIMIZE__)
 #    define G_INLINE_FUNC extern inline
 #  elif defined (G_CAN_INLINE) && !defined (__GNUC__)
 #    define G_INLINE_FUNC static inline
