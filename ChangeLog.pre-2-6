@@ -1,5 +1,9 @@
 2003-07-31  Noah Levitt  <nlevitt@columbia.edu>
 
+	* tests/file-test.c: s/g_read_link/g_file_read_link/ (#118727)
+
+2003-07-31  Noah Levitt  <nlevitt@columbia.edu>
+
 	* tests/unicode-encoding.c: Return nonzero exit status if the test fails. (#118729)
 
 2003-07-31  Noah Levitt  <nlevitt@columbia.edu>

@@ -99,24 +99,24 @@ test_readlink (void)
   g_assert (result == 0 && "symlink() failed");
   
   error = NULL;
-  data = g_read_link (link1, &error);
+  data = g_file_read_link (link1, &error);
   g_assert (data != NULL && "couldn't read link1");
   g_assert (strcmp (data, filename) == 0 && "link1 contains wrong data");
   g_free (data);
   
   error = NULL;
-  data = g_read_link (link2, &error);
+  data = g_file_read_link (link2, &error);
   g_assert (data != NULL && "couldn't read link2");
   g_assert (strcmp (data, link1) == 0 && "link2 contains wrong data");
   g_free (data);
   
   error = NULL;
-  data = g_read_link (link3, &error);
+  data = g_file_read_link (link3, &error);
   g_assert (data == NULL && "could read link3");
   g_assert (error != NULL && "error not set");
 
   error = NULL;
-  data = g_read_link (filename, &error);
+  data = g_file_read_link (filename, &error);
   g_assert (data == NULL && "could read regular file as link");
   g_assert (error != NULL && "error not set");
   
