@@ -1,5 +1,10 @@
 Sat Dec 19 16:56:02 1998  Owen Taylor  <otaylor@redhat.com>
 
+	* glib.h gmain.c (G_PRIORITY_LOW): Add #defines defining
+	scale of priorities.
+
+Sat Dec 19 16:56:02 1998  Owen Taylor  <otaylor@redhat.com>
+
 	* gmain.c (g_main_poll): Allocate space for pollfd's
 	_after_ adding poll wake-up-pipe record.
 

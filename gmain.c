@@ -287,7 +287,7 @@ g_source_remove (guint tag)
   if (hook)
     {
       GSource *source = (GSource *)hook;
-      
+
       ((GSourceFuncs *) source->hook.func)->destroy (source->source_data);
       g_hook_destroy_link (&source_list, hook);
     }
@@ -888,7 +888,8 @@ g_timeout_add (guint32        interval,
 	       GSourceFunc    function,
 	       gpointer       data)
 {
-  return g_timeout_add_full (0, interval, function, data, NULL);
+  return g_timeout_add_full (G_PRIORITY_DEFAULT, 
+			     interval, function, data, NULL);
 }
 
 /* Idle functions */
@@ -936,5 +937,5 @@ guint
 g_idle_add (GSourceFunc    function,
 	    gpointer       data)
 {
-  return g_idle_add_full (0, function, data, NULL);
+  return g_idle_add_full (G_PRIORITY_DEFAULT_IDLE, function, data, NULL);
 }

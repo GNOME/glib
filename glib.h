@@ -2386,6 +2386,14 @@ struct _GSourceFuncs
   GDestroyNotify destroy;
 };
 
+/* Standard priorities */
+
+#define G_PRIORITY_HIGH            -100
+#define G_PRIORITY_DEFAULT          0
+#define G_PRIORITY_HIGH_IDLE        100
+#define G_PRIORITY_DEFAULT_IDLE     200
+#define G_PRIORITY_LOW	            300
+
 typedef gboolean (*GSourceFunc) (gpointer data);
 
 /* Hooks for adding to the main loop */
