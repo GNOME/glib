@@ -82,7 +82,7 @@ g_bsearch_array_lookup (GBSearchArray *barray,
       GBSearchCompareFunc cmp_func = barray->cmp_func;
       gint sizeof_node = barray->sizeof_node;
       guint n_nodes = barray->n_nodes;
-      guint8 *nodes = barray->nodes;
+      guint8 *nodes = (guint8 *) barray->nodes;
       
       nodes -= sizeof_node;
       do
@@ -115,7 +115,7 @@ g_bsearch_array_get_nth (GBSearchArray *barray,
 {
   if (n < barray->n_nodes)
     {
-      guint8 *nodes = barray->nodes;
+      guint8 *nodes = (guint8 *) barray->nodes;
 
       return nodes + n * barray->sizeof_node;
     }

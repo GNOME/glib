@@ -1,3 +1,9 @@
+Wed Oct 25 19:11:03 2000  Owen Taylor  <otaylor@redhat.com>
+
+	* gbsearcharray.h (g_bsearch_array_get_nth): Don't use implicit
+	casts from void * since this will get included from C++ too
+	at times.
+	
 Thu Oct 26 00:30:27 2000  Tim Janik  <timj@gtk.org>
 
 	* gvaluetypes.[hc]: added g_value_set_static_string().
