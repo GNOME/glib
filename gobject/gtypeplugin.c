@@ -83,8 +83,8 @@ g_type_plugin_complete_type_info (GTypePlugin     *plugin,
 
 void
 g_type_plugin_complete_interface_info (GTypePlugin    *plugin,
-				       GType           interface_type,
 				       GType           instance_type,
+				       GType           interface_type,
 				       GInterfaceInfo *info)
 {
   GTypePluginClass *iface;
@@ -94,7 +94,7 @@ g_type_plugin_complete_interface_info (GTypePlugin    *plugin,
   
   iface = G_TYPE_PLUGIN_GET_CLASS (plugin);
   iface->complete_interface_info (plugin,
-				  interface_type,
 				  instance_type,
+				  interface_type,
 				  info);
 }

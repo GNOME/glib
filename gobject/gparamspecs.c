@@ -279,6 +279,48 @@ param_ulong_values_cmp (GParamSpec   *pspec,
 }
 
 static void
+param_unichar_init (GParamSpec *pspec)
+{
+  GParamSpecUnichar *uspec = G_PARAM_SPEC_UNICHAR (pspec);
+  
+  uspec->default_value = 0;
+}
+
+static void
+param_unichar_set_default (GParamSpec *pspec,
+			 GValue     *value)
+{
+  value->data[0].v_uint = G_PARAM_SPEC_UNICHAR (pspec)->default_value;
+}
+
+static gboolean
+param_unichar_validate (GParamSpec *pspec,
+		        GValue     *value)
+{
+  gunichar oval = value->data[0].v_uint;
+  gboolean changed = FALSE;
+
+  if (!g_unichar_validate (oval))
+    {
+      value->data[0].v_uint = 0;
+      changed = TRUE;
+    }
+
+  return changed;
+}
+
+static gint
+param_unichar_values_cmp (GParamSpec   *pspec,
+			const GValue *value1,
+			const GValue *value2)
+{
+  if (value1->data[0].v_uint < value2->data[0].v_uint)
+    return -1;
+  else
+    return value1->data[0].v_uint > value2->data[0].v_uint;
+}
+
+static void
 param_enum_init (GParamSpec *pspec)
 {
   GParamSpecEnum *espec = G_PARAM_SPEC_ENUM (pspec);
@@ -999,8 +1041,25 @@ g_param_spec_types_init (void)	/* sync with gtype.c */
     type = g_param_type_register_static ("GParamULong", &pspec_info);
     g_assert (type == G_TYPE_PARAM_ULONG);
   }
-  
-  /* G_TYPE_PARAM_ENUM
+
+  /* G_TYPE_PARAM_UNICHAR
+   */
+  {
+    static const GParamSpecTypeInfo pspec_info = {
+      sizeof (GParamSpecUnichar), /* instance_size */
+      16,                        /* n_preallocs */
+      param_unichar_init,	 /* instance_init */
+      G_TYPE_UINT,		 /* value_type */
+      NULL,			 /* finalize */
+      param_unichar_set_default, /* value_set_default */
+      param_unichar_validate,	 /* value_validate */
+      param_unichar_values_cmp,	 /* values_cmp */
+    };
+    type = g_param_type_register_static ("GParamUnichar", &pspec_info);
+    g_assert (type == G_TYPE_PARAM_UNICHAR);
+  }
+
+ /* G_TYPE_PARAM_ENUM
    */
   {
     static const GParamSpecTypeInfo pspec_info = {
@@ -1363,6 +1422,26 @@ g_param_spec_ulong (const gchar *name,
   
   uspec->minimum = minimum;
   uspec->maximum = maximum;
+  uspec->default_value = default_value;
+  
+  return G_PARAM_SPEC (uspec);
+}
+
+GParamSpec*
+g_param_spec_unichar (const gchar *name,
+		      const gchar *nick,
+		      const gchar *blurb,
+		      gunichar	   default_value,
+		      GParamFlags  flags)
+{
+  GParamSpecUnichar *uspec;
+
+  uspec = g_param_spec_internal (G_TYPE_PARAM_UNICHAR,
+				 name,
+				 nick,
+				 blurb,
+				 flags);
+  
   uspec->default_value = default_value;
   
   return G_PARAM_SPEC (uspec);

@@ -47,8 +47,8 @@ static void g_type_module_complete_type_info      (GTypePlugin     *plugin,
 						   GTypeInfo       *info,
 						   GTypeValueTable *value_table);
 static void g_type_module_complete_interface_info (GTypePlugin     *plugin,
+						   GType            instance_type,
 						   GType            interface_type,
-						   GType            instance_info,
 						   GInterfaceInfo  *info);
  
 static GObjectClass *parent_class;
@@ -293,8 +293,8 @@ g_type_module_complete_type_info (GTypePlugin     *plugin,
 
 static void 
 g_type_module_complete_interface_info (GTypePlugin    *plugin,
-				       GType           interface_type,
 				       GType           instance_type,
+				       GType           interface_type,
 				       GInterfaceInfo *info)
 {
   GTypeModule *module = G_TYPE_MODULE (plugin);

@@ -162,7 +162,7 @@ struct _TypeNode
 #define	MAX_N_PREREQUISITES			(MAX_N_IFACES)
 #define NODE_TYPE(node)				(node->supers[0])
 #define NODE_PARENT_TYPE(node)			(node->supers[1])
-#define NODE_NAME(node)				((gchar*)g_quark_to_string (node->qname))
+#define NODE_NAME(node)				(g_quark_to_string (node->qname))
 #define	NODE_IS_IFACE(node)			(G_TYPE_IS_INTERFACE (NODE_TYPE (node)))
 #define	CLASSED_NODE_N_IFACES(node)		((node)->_prot_n_ifaces_prerequisites)
 #define	CLASSED_NODE_IFACES_ENTRIES(node)	((node)->_prot.iface_entries)
@@ -1225,7 +1225,7 @@ type_iface_retrive_holder_info_Wm (TypeNode *iface,
       
       G_WRITE_UNLOCK (&type_rw_lock);
       g_type_plugin_use (iholder->plugin);
-      g_type_plugin_complete_interface_info (iholder->plugin, NODE_TYPE (iface), instance_type, &tmp_info);
+      g_type_plugin_complete_interface_info (iholder->plugin, instance_type, NODE_TYPE (iface), &tmp_info);
       G_WRITE_LOCK (&type_rw_lock);
       if (iholder->info)
         INVALID_RECURSION ("g_type_plugin_*", iholder->plugin, NODE_NAME (iface));
@@ -2352,6 +2352,33 @@ type_add_flags_W (TypeNode  *node,
   dflags = GPOINTER_TO_UINT (type_get_qdata_L (node, static_quark_type_flags));
   dflags |= flags;
   type_set_qdata_W (node, static_quark_type_flags, GUINT_TO_POINTER (dflags));
+}
+
+void
+g_type_query (GType       type,
+	      GTypeQuery *query)
+{
+  TypeNode *node;
+
+  g_return_if_fail (query != NULL);
+  
+  G_READ_LOCK (&type_rw_lock);
+  node = lookup_type_node_L (type);
+  if (node && node->is_classed && !node->plugin && node->data)
+    {
+      /* type is classed and static, probably even instantiatable */
+
+      query->type = NODE_TYPE (node);
+      query->type_name = NODE_NAME (node);
+      query->class_size = node->data->class.class_size;
+      query->instance_size = node->is_instantiatable ? node->data->instance.instance_size : 0;
+    }
+  else
+    {
+      /* node is not static and classed, won't allow query */
+      query->type = 0;
+    }
+  G_READ_UNLOCK (&type_rw_lock);
 }
 
 

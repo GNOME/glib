@@ -1,3 +1,26 @@
+Sat Mar 31 23:55:58 2001  Tim Janik  <timj@gtk.org>
+
+	* gtype.h:
+	* gparamspecs.[hc]: applied patch from owen to implement
+	GParamSpecUnichar.
+
+Fri Mar 30 07:34:02 2001  Tim Janik  <timj@gtk.org>
+
+	* gtype.c (type_iface_retrive_holder_info_Wm): 
+	* gtypeplugin.c (g_type_plugin_complete_interface_info): 
+	* gtypemodule.c (g_type_module_complete_interface_info): 
+	change order of instance_type and interface_type so they match
+	the g_type_add_interface_*() API.
+
+	* gsignal.c (g_signal_emit_valist): always assign C return value
+	location, people depending on unaltered return values after emissions
+	that had no handlers to run need to use g_signal_emitv().
+
+	* gtype.[hc] (g_type_query): new function to allow querying of
+	class and object size (semantics like g_signal_query()).
+	currently the implementation is better held conservative so as to
+	only support types that are classed and static.
+
 2001-03-29  Tor Lillqvist  <tml@iki.fi>
 
 	* gobject.def: Updates.

@@ -79,17 +79,18 @@ typedef enum    /*< skip >*/
   G_TYPE_PARAM_UINT		= G_TYPE_DERIVE_ID (G_TYPE_PARAM, 5),
   G_TYPE_PARAM_LONG		= G_TYPE_DERIVE_ID (G_TYPE_PARAM, 6),
   G_TYPE_PARAM_ULONG		= G_TYPE_DERIVE_ID (G_TYPE_PARAM, 7),
-  G_TYPE_PARAM_ENUM		= G_TYPE_DERIVE_ID (G_TYPE_PARAM, 8),
-  G_TYPE_PARAM_FLAGS		= G_TYPE_DERIVE_ID (G_TYPE_PARAM, 9),
-  G_TYPE_PARAM_FLOAT		= G_TYPE_DERIVE_ID (G_TYPE_PARAM, 10),
-  G_TYPE_PARAM_DOUBLE		= G_TYPE_DERIVE_ID (G_TYPE_PARAM, 11),
-  G_TYPE_PARAM_STRING		= G_TYPE_DERIVE_ID (G_TYPE_PARAM, 12),
-  G_TYPE_PARAM_PARAM		= G_TYPE_DERIVE_ID (G_TYPE_PARAM, 13),
-  G_TYPE_PARAM_BOXED		= G_TYPE_DERIVE_ID (G_TYPE_PARAM, 14),
-  G_TYPE_PARAM_POINTER		= G_TYPE_DERIVE_ID (G_TYPE_PARAM, 15),
-  G_TYPE_PARAM_VALUE_ARRAY	= G_TYPE_DERIVE_ID (G_TYPE_PARAM, 16),
-  G_TYPE_PARAM_CLOSURE		= G_TYPE_DERIVE_ID (G_TYPE_PARAM, 17),
-  G_TYPE_PARAM_OBJECT		= G_TYPE_DERIVE_ID (G_TYPE_PARAM, 18)
+  G_TYPE_PARAM_UNICHAR		= G_TYPE_DERIVE_ID (G_TYPE_PARAM, 8),
+  G_TYPE_PARAM_ENUM		= G_TYPE_DERIVE_ID (G_TYPE_PARAM, 9),
+  G_TYPE_PARAM_FLAGS		= G_TYPE_DERIVE_ID (G_TYPE_PARAM, 10),
+  G_TYPE_PARAM_FLOAT		= G_TYPE_DERIVE_ID (G_TYPE_PARAM, 11),
+  G_TYPE_PARAM_DOUBLE		= G_TYPE_DERIVE_ID (G_TYPE_PARAM, 12),
+  G_TYPE_PARAM_STRING		= G_TYPE_DERIVE_ID (G_TYPE_PARAM, 13),
+  G_TYPE_PARAM_PARAM		= G_TYPE_DERIVE_ID (G_TYPE_PARAM, 14),
+  G_TYPE_PARAM_BOXED		= G_TYPE_DERIVE_ID (G_TYPE_PARAM, 15),
+  G_TYPE_PARAM_POINTER		= G_TYPE_DERIVE_ID (G_TYPE_PARAM, 16),
+  G_TYPE_PARAM_VALUE_ARRAY	= G_TYPE_DERIVE_ID (G_TYPE_PARAM, 17),
+  G_TYPE_PARAM_CLOSURE		= G_TYPE_DERIVE_ID (G_TYPE_PARAM, 18),
+  G_TYPE_PARAM_OBJECT		= G_TYPE_DERIVE_ID (G_TYPE_PARAM, 19)
 } GTypeFundamentals;
 
 
@@ -122,6 +123,7 @@ typedef struct _GTypeInfo               GTypeInfo;
 typedef struct _GTypeFundamentalInfo    GTypeFundamentalInfo;
 typedef struct _GInterfaceInfo          GInterfaceInfo;
 typedef struct _GTypeValueTable         GTypeValueTable;
+typedef struct _GTypeQuery		GTypeQuery;
 
 
 /* Basic Type Structures
@@ -141,6 +143,13 @@ struct _GTypeInterface
   /*< private >*/
   GType g_type;         /* iface type */
   GType g_instance_type;
+};
+struct _GTypeQuery
+{
+  GType		type;
+  const gchar  *type_name;
+  guint		class_size;
+  guint		instance_size;
 };
 
 
@@ -202,6 +211,8 @@ void                  g_type_set_qdata               (GType            type,
 						      gpointer         data);
 gpointer              g_type_get_qdata               (GType            type,
 						      GQuark           quark);
+void		      g_type_query		     (GType	       type,
+						      GTypeQuery      *query);
 
 
 /* --- type registration --- */

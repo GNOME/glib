@@ -1783,11 +1783,11 @@ g_signal_emit_valist (gpointer instance,
       gchar *error = NULL;
 
       g_value_init (&return_value, node->return_type & ~G_SIGNAL_TYPE_STATIC_SCOPE);
-      if (signal_emit_R (node, detail, instance, &return_value, instance_and_params))
-	G_VALUE_LCOPY (&return_value,
-		       var_args,
-		       node->return_type & G_SIGNAL_TYPE_STATIC_SCOPE ? G_VALUE_NOCOPY_CONTENTS : 0,
-		       &error);
+      signal_emit_R (node, detail, instance, &return_value, instance_and_params);
+      G_VALUE_LCOPY (&return_value,
+		     var_args,
+		     node->return_type & G_SIGNAL_TYPE_STATIC_SCOPE ? G_VALUE_NOCOPY_CONTENTS : 0,
+		     &error);
       if (!error)
 	g_value_unset (&return_value);
       else

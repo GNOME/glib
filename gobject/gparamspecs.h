@@ -43,6 +43,8 @@ G_BEGIN_DECLS
 #define G_IS_PARAM_SPEC_LONG(pspec)        (G_TYPE_CHECK_INSTANCE_TYPE ((pspec), G_TYPE_PARAM_LONG))
 #define G_PARAM_SPEC_LONG(pspec)           (G_TYPE_CHECK_INSTANCE_CAST ((pspec), G_TYPE_PARAM_LONG, GParamSpecLong))
 #define G_IS_PARAM_SPEC_ULONG(pspec)       (G_TYPE_CHECK_INSTANCE_TYPE ((pspec), G_TYPE_PARAM_ULONG))
+#define G_PARAM_SPEC_UNICHAR(pspec)        (G_TYPE_CHECK_INSTANCE_CAST ((pspec), G_TYPE_PARAM_UNICHAR, GParamSpecUnichar))
+#define G_IS_PARAM_SPEC_UNICHAR(pspec)     (G_TYPE_CHECK_INSTANCE_TYPE ((pspec), G_TYPE_PARAM_UNICHAR))
 #define G_PARAM_SPEC_ULONG(pspec)          (G_TYPE_CHECK_INSTANCE_CAST ((pspec), G_TYPE_PARAM_ULONG, GParamSpecULong))
 #define G_IS_PARAM_SPEC_ENUM(pspec)        (G_TYPE_CHECK_INSTANCE_TYPE ((pspec), G_TYPE_PARAM_ENUM))
 #define G_PARAM_SPEC_ENUM(pspec)           (G_TYPE_CHECK_INSTANCE_CAST ((pspec), G_TYPE_PARAM_ENUM, GParamSpecEnum))
@@ -76,6 +78,7 @@ typedef struct _GParamSpecInt        GParamSpecInt;
 typedef struct _GParamSpecUInt       GParamSpecUInt;
 typedef struct _GParamSpecLong       GParamSpecLong;
 typedef struct _GParamSpecULong      GParamSpecULong;
+typedef struct _GParamSpecUnichar    GParamSpecUnichar;
 typedef struct _GParamSpecEnum       GParamSpecEnum;
 typedef struct _GParamSpecFlags      GParamSpecFlags;
 typedef struct _GParamSpecFloat      GParamSpecFloat;
@@ -140,6 +143,12 @@ struct _GParamSpecULong
   gulong        minimum;
   gulong        maximum;
   gulong        default_value;
+};
+struct _GParamSpecUnichar
+{
+  GParamSpec    parent_instance;
+  
+  gunichar      default_value;
 };
 struct _GParamSpecEnum
 {
@@ -260,6 +269,11 @@ GParamSpec*	g_param_spec_ulong	 (const gchar	 *name,
 					  gulong	  maximum,
 					  gulong	  default_value,
 					  GParamFlags	  flags);
+GParamSpec*    g_param_spec_unichar      (const gchar    *name,
+				          const gchar    *nick,
+				          const gchar    *blurb,
+				          gunichar	  default_value,
+				          GParamFlags     flags);
 GParamSpec*	g_param_spec_enum	 (const gchar	 *name,
 					  const gchar	 *nick,
 					  const gchar	 *blurb,
