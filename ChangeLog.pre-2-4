@@ -1,3 +1,19 @@
+Thu Dec 12 14:58:55 2002  Manish Singh  <yosh@gimp.org>
+
+	* configure.in: pull in trio if host printf doesn't have a known
+	way of printing 64-bit ints.
+
+	* glib/gmacros.h: remove extra whitespace at the end
+
+	* glib/gscanner.c (g_scanner_unexp_token): use G_GUINT64_FORMAT
+	instead of hardcoding "%llu"
+
+	* tests/testglib.c: remove obsolete conditionals using G_HAVE_GINT64,
+	we always have it now.
+
+	* tests/type-test.c: same as above, and for G_G[U]INT64_FORMAT as
+	well.
+
 Thu Dec 12 13:52:58 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* m4macros/glib-gettext.m4: AC_PREREQ(2.53) here; convinces

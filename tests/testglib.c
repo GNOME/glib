@@ -391,10 +391,8 @@ main (int   argc,
 #ifndef G_DISABLE_ASSERT
   guint16 gu16t1 = 0x44afU, gu16t2 = 0xaf44U;
   guint32 gu32t1 = 0x02a7f109U, gu32t2 = 0x09f1a702U;
-#ifdef G_HAVE_GINT64
   guint64 gu64t1 = G_GINT64_CONSTANT(0x1d636b02300a7aa7U),
 	  gu64t2 = G_GINT64_CONSTANT(0xa77a0a30026b631dU);
-#endif
 #endif
   const char hello[] = "Hello, World";
   const int hellolen = sizeof (hello) - 1;
@@ -438,10 +436,8 @@ main (int   argc,
   g_print ("\nchecking size of gint32: %d", (int)sizeof (gint32));
   TEST (NULL, sizeof (gint32) == 4);
   g_print ("\nchecking size of gsize: %d", (int)sizeof (gsize));
-#ifdef	G_HAVE_GINT64
   g_print ("\nchecking size of gint64: %d", (int)sizeof (gint64));
   TEST (NULL, sizeof (gint64) == 8);
-#endif	/* G_HAVE_GINT64 */
   g_print ("\n");
 
   g_print ("checking g_path_get_basename()...");
@@ -1171,9 +1167,7 @@ main (int   argc,
 #endif
   g_assert (GUINT16_SWAP_LE_BE (gu16t1) == gu16t2);  
   g_assert (GUINT32_SWAP_LE_BE (gu32t1) == gu32t2);  
-#ifdef G_HAVE_GINT64
   g_assert (GUINT64_SWAP_LE_BE (gu64t1) == gu64t2);  
-#endif
 
   g_print ("ok\n");
 

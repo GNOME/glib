@@ -50,28 +50,20 @@ main (int   argc,
   gint32 gi32t2;
   guint16 gu16t1 = 0x44afU, gu16t2 = 0xaf44U;
   guint32 gu32t1 = 0x02a7f109U, gu32t2 = 0x09f1a702U;
-#ifdef G_HAVE_GINT64
   guint64 gu64t1 = G_GINT64_CONSTANT(0x1d636b02300a7aa7U),
 	  gu64t2 = G_GINT64_CONSTANT(0xa77a0a30026b631dU);
-#ifdef G_GINT64_FORMAT
   gint64 gi64t1;
   gint64 gi64t2;
-#endif /* G_GINT64_FORMAT */
-#endif /* G_HAVE_GINT64 */
 
   /* type sizes */
   g_assert (sizeof (gint8) == 1);
   g_assert (sizeof (gint16) == 2);
   g_assert (sizeof (gint32) == 4);
-#ifdef	G_HAVE_GINT64
   g_assert (sizeof (gint64) == 8);
-#endif	/* G_HAVE_GINT64 */
 
   g_assert (GUINT16_SWAP_LE_BE (gu16t1) == gu16t2);
   g_assert (GUINT32_SWAP_LE_BE (gu32t1) == gu32t2);
-#ifdef G_HAVE_GINT64
   g_assert (GUINT64_SWAP_LE_BE (gu64t1) == gu64t2);
-#endif
 
   /* Test the G_(MIN|MAX|MAXU)(SHORT|INT|LONG) macros */
 
@@ -116,16 +108,15 @@ main (int   argc,
   g_assert (gu16t1 == gu16t2);
   g_assert (gu32t1 == gu32t2);
 
-#if defined (G_HAVE_GINT64) && defined (G_GINT64_FORMAT)
   gi64t1 = G_GINT64_CONSTANT (-0x3AFAFAFAFAFAFAFA);
   gu64t1 = G_GINT64_CONSTANT (0xFAFAFAFAFAFAFAFA); 
+
 #define FORMAT64 "%" G_GINT64_FORMAT " %" G_GUINT64_FORMAT "\n"
   string = g_strdup_printf (FORMAT64, gi64t1, gu64t1);
   sscanf (string, FORMAT64, &gi64t2, &gu64t2);
   g_free (string);
   g_assert (gi64t1 == gi64t2);
   g_assert (gu64t1 == gu64t2);
-#endif
   
   return 0;
 }

@@ -708,6 +708,11 @@ if test "$enable_trio" != "no" ; then
   if test "$ac_cv_func_printf_unix98" != "yes" ; then
     enable_trio=yes
   fi
+  if test "x$ac_cv_sizeof_long_long" = "x8" &&
+     test -z "$glib_cv_long_long_format"; then
+    enable_trio=yes
+    glib_cv_long_long_format="ll"
+  fi
 fi
 
 AM_CONDITIONAL(HAVE_GOOD_PRINTF, test "$enable_trio" != "yes")
