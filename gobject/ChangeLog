@@ -1,3 +1,7 @@
+Sun Jul 18 18:03:08 2004  Soeren Sandmann  <sandmann@daimi.au.dk>
+
+	* === Released 2.5.0 ===
+
 2004-07-12  Matthias Clasen  <mclasen@redhat.com>
 
 	* gsignal.c (g_signal_handler_is_connected): Don't

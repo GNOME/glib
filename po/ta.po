@@ -5,14 +5,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.0\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-04-30 09:07-0400\n"
+"POT-Creation-Date: 2004-07-18 18:16+0200\n"
 "PO-Revision-Date: 2004-02-16 20:30-0600\n"
 "Last-Translator: Dinesh Nadarajah <dinesh_list@sbcglobal.net>\n"
 "Language-Team: Tamil <tamilinix@yahoogroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Report-Msgid-Bugs-To: \n"
 
 #: glib/gconvert.c:402
 #, c-format
@@ -47,8 +47,8 @@ msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "பின்னடைப்பு '%s', '%s' குறிக் கணமிற்கு மாற்ற முடியவில்லை"
 
 #: glib/gconvert.c:1497
-#, c-format
-msgid "The URI '%s' is not an absolute URI using the file scheme"
+#, fuzzy, c-format
+msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "வலை முகவரி `%s' கோப்புத் திட்டமுறைப்படி ஓர் தனி வலை முகவரி அல்ல"
 
 #: glib/gconvert.c:1507
@@ -71,16 +71,16 @@ msgstr "`%s' வலை முகவரியின் விருந்தோ�
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "வலை முகவரி `%s' இல் செல்லுபடியாகாத 'விடுபடு' வரியுருகள்"
 
-#: glib/gconvert.c:1623
+#: glib/gconvert.c:1622
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "'%s' பாதைப்-பெயர் ஓர் தனிப் பாதை அல்ல"
 
-#: glib/gconvert.c:1633
+#: glib/gconvert.c:1632
 msgid "Invalid hostname"
 msgstr "பிழையான விருந்தோம்புப்-பெயர்"
 
-#: glib/gdir.c:80
+#: glib/gdir.c:83
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "'%s' அடைவு திறக்கும்போது பிழை: %s"
@@ -245,15 +245,15 @@ msgstr "முடிவடையாத உள்ளீட்பு மேற்�
 msgid "Unfinished character reference"
 msgstr "முடிவடையாத வரியுரு மேற்கோள்"
 
-#: glib/gmarkup.c:888 glib/gmarkup.c:916 glib/gmarkup.c:947
+#: glib/gmarkup.c:893 glib/gmarkup.c:921 glib/gmarkup.c:952
 msgid "Invalid UTF-8 encoded text"
 msgstr "பிழையான UTF-8 குறியீடு செய்யப்பட்ட உரை"
 
-#: glib/gmarkup.c:983
+#: glib/gmarkup.c:988
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "ஆவணம் ஓர் உறுப்புடன் (உதாரணம்: <book>) தொடங்க வேண்டும்"
 
-#: glib/gmarkup.c:1022
+#: glib/gmarkup.c:1027
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -262,7 +262,7 @@ msgstr ""
 "'<' வரியுருவை தொடர்ந்து '%s' வர முடியாது; அதைப் பயன்படுத்தி ஓர் உறுப்படியின் பெயரைத் "
 "தொடங்க முடியாது"
 
-#: glib/gmarkup.c:1085
+#: glib/gmarkup.c:1090
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
@@ -271,7 +271,7 @@ msgstr ""
 "ஒற்றை வரியுரு '%s', '%s' உறுப்படி தொடங்கல் ஒட்டை ஓர் '>' வரியுரு முடிவு செய்யும் "
 "என்று எதிர்பார்த்தது"
 
-#: glib/gmarkup.c:1172
+#: glib/gmarkup.c:1177
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -279,7 +279,7 @@ msgstr ""
 "'%s' ஓர் ஒற்றை வரியுரு, பண்பின் பெயர் '%s' பின் ('%s' உறுப்பின்) எதிர்பார்த்தது ஓர் '=' "
 "வரியுரு"
 
-#: glib/gmarkup.c:1213
+#: glib/gmarkup.c:1218
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -290,7 +290,7 @@ msgstr ""
 "element '%s', or optionally an attribute; perhaps you used an invalid "
 "character in an attribute name"
 
-#: glib/gmarkup.c:1296
+#: glib/gmarkup.c:1301
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -299,7 +299,7 @@ msgstr ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
 "giving value for attribute '%s' of element '%s'"
 
-#: glib/gmarkup.c:1436
+#: glib/gmarkup.c:1441
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -308,7 +308,7 @@ msgstr ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 
-#: glib/gmarkup.c:1474
+#: glib/gmarkup.c:1479
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -317,25 +317,25 @@ msgstr ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 
-#: glib/gmarkup.c:1485
+#: glib/gmarkup.c:1490
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "'%s' உறுப்பு மூடப்பட்டுல்லது, தற்பொது ஒரு உறுப்பும் திறந்து இல்லை"
 
-#: glib/gmarkup.c:1494
+#: glib/gmarkup.c:1499
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "'%s' உறுப்பு மூடப்பட்டுல்லது, அனால் தற்பொது திறந்திறுக்கும் உறுப்பு '%s'"
 
-#: glib/gmarkup.c:1641
+#: glib/gmarkup.c:1646
 msgid "Document was empty or contained only whitespace"
 msgstr "வெற்றான ஆவணம் அல்லது ஆவணத்தில் இறுப்பது அனைத்தும் வெண்வெளி"
 
-#: glib/gmarkup.c:1655
+#: glib/gmarkup.c:1660
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "'<' பிறகு ஆவணம் திடீரென முடிவடைந்தது"
 
-#: glib/gmarkup.c:1663 glib/gmarkup.c:1707
+#: glib/gmarkup.c:1668 glib/gmarkup.c:1712
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -344,7 +344,7 @@ msgstr ""
 "உறுப்புகள் திறந்திறுக்கும்போது ஆவணம் திடீரென முடிவடைந்தது - கடைசியாகத் திறக்கப்பட்ட "
 "உறுப்பு '%s'"
 
-#: glib/gmarkup.c:1671
+#: glib/gmarkup.c:1676
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -353,19 +353,19 @@ msgstr ""
 "ஆவணம் திடீரென முடிவடைந்தது, அடையாள ஒட்டு <%s/> முடிவில் ஓர் '}' இருக்கும் என "
 "எதிர்பார்த்தது"
 
-#: glib/gmarkup.c:1677
+#: glib/gmarkup.c:1682
 msgid "Document ended unexpectedly inside an element name"
 msgstr "உறுப்பு பெயர் உள்ளே ஆவணம் திடீரென முடிவடைந்தது"
 
-#: glib/gmarkup.c:1682
+#: glib/gmarkup.c:1687
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "பண்பு பெயர் உள்ளே ஆவணம் திடீரென முடிவடைந்தது"
 
-#: glib/gmarkup.c:1687
+#: glib/gmarkup.c:1692
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "உறுப்பு-தொடங்களின் அடையாள ஒட்டு  உள்ளே ஆவணம் திடீரென முடிவடைந்தது"
 
-#: glib/gmarkup.c:1693
+#: glib/gmarkup.c:1698
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -373,16 +373,16 @@ msgstr ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
 
-#: glib/gmarkup.c:1700
+#: glib/gmarkup.c:1705
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "பண்பு பெயர் உள்ளிறுக்கும் போது ஆவணம் திடீரென முடிவடைந்தது"
 
-#: glib/gmarkup.c:1715
+#: glib/gmarkup.c:1720
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "'%s' என்னும் மூடு-அடையாள ஒட்டு உள்ளே ஆவணம் திடீரென முடிவடைந்தது"
 
-#: glib/gmarkup.c:1721
+#: glib/gmarkup.c:1726
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "ஆவணம் திடீரென குறிப்புரையுல் அல்லது செயலாக்கம் ஆணையுல் முடிவடைந்தது"
 

@@ -7,14 +7,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-04-30 09:07-0400\n"
+"POT-Creation-Date: 2004-07-18 18:16+0200\n"
 "PO-Revision-Date: 2004-04-23 22:33+0200\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Report-Msgid-Bugs-To: \n"
 
 #: glib/gconvert.c:402
 #, c-format
@@ -50,8 +50,8 @@ msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Kan inte konvertera reservsträngen \"%s\" till kodningen \"%s\""
 
 #: glib/gconvert.c:1497
-#, c-format
-msgid "The URI '%s' is not an absolute URI using the file scheme"
+#, fuzzy, c-format
+msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "URI:n \"%s\" är ingen absolut URI som använder filschemat"
 
 #: glib/gconvert.c:1507
@@ -74,16 +74,16 @@ msgstr "Värdnamnet i URI:n \"%s\" är ogiltigt"
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI:n \"%s\" innehåller ogiltigt kodade tecken"
 
-#: glib/gconvert.c:1623
+#: glib/gconvert.c:1622
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Sökvägen \"%s\" är ingen absolut sökväg"
 
-#: glib/gconvert.c:1633
+#: glib/gconvert.c:1632
 msgid "Invalid hostname"
 msgstr "Ogiltigt värdnamn"
 
-#: glib/gdir.c:80
+#: glib/gdir.c:83
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "Fel vid öppning av katalogen \"%s\": %s"
@@ -251,15 +251,15 @@ msgstr "Oavslutad entitetsreferens"
 msgid "Unfinished character reference"
 msgstr "Oavslutad teckenreferens"
 
-#: glib/gmarkup.c:888 glib/gmarkup.c:916 glib/gmarkup.c:947
+#: glib/gmarkup.c:893 glib/gmarkup.c:921 glib/gmarkup.c:952
 msgid "Invalid UTF-8 encoded text"
 msgstr "Ogiltigt UTF-8-kodad text"
 
-#: glib/gmarkup.c:983
+#: glib/gmarkup.c:988
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Dokumentet måste börja med ett element (exempelvis <book>)"
 
-#: glib/gmarkup.c:1022
+#: glib/gmarkup.c:1027
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -268,7 +268,7 @@ msgstr ""
 "\"%s\" är inte ett giltigt tecken efter ett \"<\"-tecken. Det får inte "
 "inleda ett elementnamn"
 
-#: glib/gmarkup.c:1085
+#: glib/gmarkup.c:1090
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
@@ -277,7 +277,7 @@ msgstr ""
 "Konstigt tecken \"%s\", ett \">\"-tecken förväntades för att avsluta "
 "starttaggen för elementet \"%s\""
 
-#: glib/gmarkup.c:1172
+#: glib/gmarkup.c:1177
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -285,7 +285,7 @@ msgstr ""
 "Konstigt tecken \"%s\", ett \"=\" förväntades efter attributnamnet \"%s\" "
 "till elementet \"%s\""
 
-#: glib/gmarkup.c:1213
+#: glib/gmarkup.c:1218
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -296,7 +296,7 @@ msgstr ""
 "avsluta starttaggen för elementet \"%s\", eller möjligtvis ett attribut. Du "
 "kanske använde ett ogiltigt tecken i ett attributnamn"
 
-#: glib/gmarkup.c:1296
+#: glib/gmarkup.c:1301
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -306,7 +306,7 @@ msgstr ""
 "likhetstecknet när värdet av attributet \"%s\" till elementet \"%s\" "
 "tilldelades"
 
-#: glib/gmarkup.c:1436
+#: glib/gmarkup.c:1441
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -315,7 +315,7 @@ msgstr ""
 "\"%s\" är inte ett giltigt tecken efter tecknen \"</\". \"%s\" får inte "
 "inleda ett elementnamn"
 
-#: glib/gmarkup.c:1474
+#: glib/gmarkup.c:1479
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -324,27 +324,27 @@ msgstr ""
 "\"%s\" är inte ett giltigt tecken efter stängelementnamnet \"%s\". Det "
 "tillåtna tecknet är \">\""
 
-#: glib/gmarkup.c:1485
+#: glib/gmarkup.c:1490
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "Elementet \"%s\" stängdes, inget element är öppet för tillfället"
 
-#: glib/gmarkup.c:1494
+#: glib/gmarkup.c:1499
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr ""
 "Elementet \"%s\" stängdes, men det element som är öppet för tillfället är \"%"
 "s\""
 
-#: glib/gmarkup.c:1641
+#: glib/gmarkup.c:1646
 msgid "Document was empty or contained only whitespace"
 msgstr "Dokumentet var tomt eller innehöll endast tomrum"
 
-#: glib/gmarkup.c:1655
+#: glib/gmarkup.c:1660
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "Dokumentet tog oväntat slut efter ett öppningsklammer \"<\""
 
-#: glib/gmarkup.c:1663 glib/gmarkup.c:1707
+#: glib/gmarkup.c:1668 glib/gmarkup.c:1712
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -353,7 +353,7 @@ msgstr ""
 "Dokumentet tog oväntat slut då element fortfarande var öppna. \"%s\" var det "
 "senast öppnade elementet"
 
-#: glib/gmarkup.c:1671
+#: glib/gmarkup.c:1676
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -362,19 +362,19 @@ msgstr ""
 "Dokumentet tog oväntat slut, en stängningsklammer föräntades för att avsluta "
 "taggen <%s/>"
 
-#: glib/gmarkup.c:1677
+#: glib/gmarkup.c:1682
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Dokumentet tog oväntat slut inuti ett elementnamn"
 
-#: glib/gmarkup.c:1682
+#: glib/gmarkup.c:1687
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Dokumentet tog oväntat slut inuti ett attributnamn"
 
-#: glib/gmarkup.c:1687
+#: glib/gmarkup.c:1692
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Dokumentet tog oväntat slut inuti en elementöppnande tagg."
 
-#: glib/gmarkup.c:1693
+#: glib/gmarkup.c:1698
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -382,17 +382,17 @@ msgstr ""
 "Dokumentet tog oväntat slut efter likhetstecknet som följde ett "
 "attributnamn. Inget attributvärde"
 
-#: glib/gmarkup.c:1700
+#: glib/gmarkup.c:1705
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Dokumentet tog oväntat slut inuti ett attributvärde"
 
-#: glib/gmarkup.c:1715
+#: glib/gmarkup.c:1720
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr ""
 "Dokumentet tog oväntat slut inuti stängningstaggen för elementet \"%s\""
 
-#: glib/gmarkup.c:1721
+#: glib/gmarkup.c:1726
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Dokumentet tog oväntat slut inuti en kommentar eller behandlingsinstruktion"

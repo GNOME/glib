@@ -6,14 +6,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib (HEAD)\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-04-30 09:07-0400\n"
+"POT-Creation-Date: 2004-07-18 18:16+0200\n"
 "PO-Revision-Date: 2004-04-26 22:40+0200\n"
 "Last-Translator: Tino Meinen <a.t.meinen@chello.nl>\n"
 "Language-Team: Dutch <vertaling@nl.linux.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Report-Msgid-Bugs-To: \n"
 
 #: glib/gconvert.c:402
 #, c-format
@@ -49,8 +49,8 @@ msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Kan vanaf codeverzameling '%s' niet terugvallen op '%s'"
 
 #: glib/gconvert.c:1497
-#, c-format
-msgid "The URI '%s' is not an absolute URI using the file scheme"
+#, fuzzy, c-format
+msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "De URI '%s' is geen absolute URI binnen het bestandsschema"
 
 #: glib/gconvert.c:1507
@@ -73,16 +73,16 @@ msgstr "De machinenaam van de URI '%s' is ongeldig"
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "De URI '%s' bevat ongeldige ontsnappingstekens"
 
-#: glib/gconvert.c:1623
+#: glib/gconvert.c:1622
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Het pad '%s' is geen absoluut pad"
 
-#: glib/gconvert.c:1633
+#: glib/gconvert.c:1632
 msgid "Invalid hostname"
 msgstr "Ongeldige hostnaam"
 
-#: glib/gdir.c:80
+#: glib/gdir.c:83
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "Fout bij het openen van map '%s': %s"
@@ -252,15 +252,15 @@ msgstr "Onbeëindigde entiteitreferentie"
 msgid "Unfinished character reference"
 msgstr "Onbeëindigde tekenreferentie"
 
-#: glib/gmarkup.c:888 glib/gmarkup.c:916 glib/gmarkup.c:947
+#: glib/gmarkup.c:893 glib/gmarkup.c:921 glib/gmarkup.c:952
 msgid "Invalid UTF-8 encoded text"
 msgstr "Ongeldige UTF-8-geëncodeerde tekst"
 
-#: glib/gmarkup.c:983
+#: glib/gmarkup.c:988
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Document moet beginnen met een element (bijv. <book>)"
 
-#: glib/gmarkup.c:1022
+#: glib/gmarkup.c:1027
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -269,7 +269,7 @@ msgstr ""
 "'%s' is geen geldig teken na een '<'-teken; het mag niet beginnen met een "
 "elementnaam"
 
-#: glib/gmarkup.c:1085
+#: glib/gmarkup.c:1090
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
@@ -278,7 +278,7 @@ msgstr ""
 "Onverwacht teken '%s', er werd een '>'-teken verwacht om het start-tag van "
 "het element '%s' af te sluiten"
 
-#: glib/gmarkup.c:1172
+#: glib/gmarkup.c:1177
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -286,7 +286,7 @@ msgstr ""
 "Onverwacht teken '%s', er werd een '=' verwacht na de attribuutnaam '%s' van "
 "element '%s'"
 
-#: glib/gmarkup.c:1213
+#: glib/gmarkup.c:1218
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -297,7 +297,7 @@ msgstr ""
 "start-tag van element '%s' af te sluiten, of eventueel een attribuut; "
 "misschien heeft u ongeldige tekens gebruikt in een attribuutnaam"
 
-#: glib/gmarkup.c:1296
+#: glib/gmarkup.c:1301
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -306,7 +306,7 @@ msgstr ""
 "Onverwacht teken '%s', er werd een '\"'-teken verwacht na het '='-teken bij "
 "de attribuutwaarde van '%s' in element '%s'"
 
-#: glib/gmarkup.c:1436
+#: glib/gmarkup.c:1441
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -314,7 +314,7 @@ msgid ""
 msgstr ""
 "'%s' is geen geldig teken na '</'; '%s' mag niet beginnen met een elementnaam"
 
-#: glib/gmarkup.c:1474
+#: glib/gmarkup.c:1479
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -323,25 +323,25 @@ msgstr ""
 "'%s' is geen geldig teken na de elementnaam '%s' in het afluitings-tag; het "
 "toegestane teken is '>' "
 
-#: glib/gmarkup.c:1485
+#: glib/gmarkup.c:1490
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "Element '%s' is gesloten, er is nu geen enkel element open"
 
-#: glib/gmarkup.c:1494
+#: glib/gmarkup.c:1499
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "Element '%s' is gesloten, maar op dit moment is element '%s' open"
 
-#: glib/gmarkup.c:1641
+#: glib/gmarkup.c:1646
 msgid "Document was empty or contained only whitespace"
 msgstr "Het document was leeg of bevatte slechts lege ruimte"
 
-#: glib/gmarkup.c:1655
+#: glib/gmarkup.c:1660
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "Het document eindigde onverwacht na een openings-'<'"
 
-#: glib/gmarkup.c:1663 glib/gmarkup.c:1707
+#: glib/gmarkup.c:1668 glib/gmarkup.c:1712
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -350,7 +350,7 @@ msgstr ""
 "Het document eindigde onverwacht met niet-afgesloten elementen - '%s' is het "
 "laatstgeopende element"
 
-#: glib/gmarkup.c:1671
+#: glib/gmarkup.c:1676
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -359,19 +359,19 @@ msgstr ""
 "Het document eindigde onverwacht, er werd een afsluitings-'>' verwacht voor "
 "de tag <%s/>"
 
-#: glib/gmarkup.c:1677
+#: glib/gmarkup.c:1682
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Het document eindigde onverwacht in een elementnaam"
 
-#: glib/gmarkup.c:1682
+#: glib/gmarkup.c:1687
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Het document eindige onverwacht in een attribuutnaam"
 
-#: glib/gmarkup.c:1687
+#: glib/gmarkup.c:1692
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Het document eindige onverwacht in een element-openings-tag"
 
-#: glib/gmarkup.c:1693
+#: glib/gmarkup.c:1698
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -379,17 +379,17 @@ msgstr ""
 "Het document eindigde onverwacht na een '='-teken dat op een attribuutnaam "
 "volgde; geen attribuutwaarde"
 
-#: glib/gmarkup.c:1700
+#: glib/gmarkup.c:1705
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Het document eindigde onverwacht in een attribuutwaarde"
 
-#: glib/gmarkup.c:1715
+#: glib/gmarkup.c:1720
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr ""
 "Het document eindige onverwacht in een een afsluitings-tag voor element '%s'"
 
-#: glib/gmarkup.c:1721
+#: glib/gmarkup.c:1726
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Het document eindigde onverwacht in commentaar of een bewerkingsinstructie"

@@ -8,14 +8,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: eu\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-04-30 09:07-0400\n"
+"POT-Creation-Date: 2004-07-18 18:16+0200\n"
 "PO-Revision-Date: 2004-04-07 12:09+0200\n"
 "Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>\n"
 "Language-Team: Basque <itzulpena@euskalgnu.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Report-Msgid-Bugs-To: \n"
 "X-Generator: KBabel 1.0.2\n"
 
 #: glib/gconvert.c:402
@@ -51,8 +51,8 @@ msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Ezin da '%s' atzerapena '%s' kode-multzo bihurtu"
 
 #: glib/gconvert.c:1497
-#, c-format
-msgid "The URI '%s' is not an absolute URI using the file scheme"
+#, fuzzy, c-format
+msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "'%s' URI ez da fitxategi-eskema erabiltzen duen URI absolutua "
 
 #: glib/gconvert.c:1507
@@ -75,17 +75,17 @@ msgstr "'%s' URIaren ostalari-izena baliogabea da"
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "'%s' URIak ihes-karaktere baliogabeak ditu"
 
-#: glib/gconvert.c:1623
+#: glib/gconvert.c:1622
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "'%s' bide-izena ez da bide-izen absolutua"
 
 #
-#: glib/gconvert.c:1633
+#: glib/gconvert.c:1632
 msgid "Invalid hostname"
 msgstr "Ostalari-izen baliogabea"
 
-#: glib/gdir.c:80
+#: glib/gdir.c:83
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "Errorea '%s' direktorioa irekitzean: %s "
@@ -256,15 +256,15 @@ msgstr "Amaitu gabeko entitate-erreferentzia"
 msgid "Unfinished character reference"
 msgstr "Amaitu gabeko karaktere-erreferentzia"
 
-#: glib/gmarkup.c:888 glib/gmarkup.c:916 glib/gmarkup.c:947
+#: glib/gmarkup.c:893 glib/gmarkup.c:921 glib/gmarkup.c:952
 msgid "Invalid UTF-8 encoded text"
 msgstr "UTF-8 gisa kodetutako testu baliogabea"
 
-#: glib/gmarkup.c:983
+#: glib/gmarkup.c:988
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Dokumentuak elementu batez hasi behar du (adibidez, <book>)"
 
-#: glib/gmarkup.c:1022
+#: glib/gmarkup.c:1027
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -273,7 +273,7 @@ msgstr ""
 "'%s' ez da karaktere balioduna '<' karakterearen atzetik; baliteke elementu "
 "baten izena ez hastea"
 
-#: glib/gmarkup.c:1085
+#: glib/gmarkup.c:1090
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
@@ -282,7 +282,7 @@ msgstr ""
 "'%s' karaktere bitxia, '>' karakterea espero zen '%s' elementuaren hasiera-"
 "etiketa amaitzeko"
 
-#: glib/gmarkup.c:1172
+#: glib/gmarkup.c:1177
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -290,7 +290,7 @@ msgstr ""
 "'%s' karaktere bitxia, '=' espero zen '$2%s' elementuaren '$1%s' "
 "atributuaren ondoren"
 
-#: glib/gmarkup.c:1213
+#: glib/gmarkup.c:1218
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -301,7 +301,7 @@ msgstr ""
 "hasiera-etiketa bukatzeko, edo bestela atributu bat. Agian karaktere  "
 "baliogabea erabili duzu atributu-izen batean"
 
-#: glib/gmarkup.c:1296
+#: glib/gmarkup.c:1301
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -310,7 +310,7 @@ msgstr ""
 "'%s' karaktere bitxia, komatxo irekia espero zen berdin ikurraren ondoren "
 "'$2%s' elementuaren '$1%s' atributuari balioa ematean"
 
-#: glib/gmarkup.c:1436
+#: glib/gmarkup.c:1441
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -319,7 +319,7 @@ msgstr ""
 "'%s' ez da karaktere balioduna '</'; karaktereen atzetik; baliteke '%s'e(k) "
 "elementu baten izena ez hastea"
 
-#: glib/gmarkup.c:1474
+#: glib/gmarkup.c:1479
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -328,25 +328,25 @@ msgstr ""
 "'%s' karaktere baliogabea da '%s' itxiera-elementuaren izenaren atzetik; "
 "baimendutako karakterea '>' da"
 
-#: glib/gmarkup.c:1485
+#: glib/gmarkup.c:1490
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "'%s' elementua itxi egin da, unean ez dago elementurik irekita"
 
-#: glib/gmarkup.c:1494
+#: glib/gmarkup.c:1499
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "'%s' elementua itxi egin da, baina unean '%s' elementua dago irekita"
 
-#: glib/gmarkup.c:1641
+#: glib/gmarkup.c:1646
 msgid "Document was empty or contained only whitespace"
 msgstr "Dokumentua hutsik dago edo zuriuneak bakarrik ditu"
 
-#: glib/gmarkup.c:1655
+#: glib/gmarkup.c:1660
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "Dokumentua ustekabean itxi da angelu-parentesi ireki baten ondoren '<'"
 
-#: glib/gmarkup.c:1663 glib/gmarkup.c:1707
+#: glib/gmarkup.c:1668 glib/gmarkup.c:1712
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -355,7 +355,7 @@ msgstr ""
 "Dokumentua ustekabean amaitu da oraindik irekita zeuden elementuekin. '%s' "
 "irekitako azken elementua da"
 
-#: glib/gmarkup.c:1671
+#: glib/gmarkup.c:1676
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -364,20 +364,20 @@ msgstr ""
 "Dokumentua ustekabean amaitu da, angelu-parentesi itxia ikustea espero nuen  "
 "<%s/> etiketa amaitzen"
 
-#: glib/gmarkup.c:1677
+#: glib/gmarkup.c:1682
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Dokumentua ustekabean amaitu da elementu-izen baten barruan"
 
-#: glib/gmarkup.c:1682
+#: glib/gmarkup.c:1687
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Dokumentua ustekabean amaitu da atributu-izen baten barruan"
 
-#: glib/gmarkup.c:1687
+#: glib/gmarkup.c:1692
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr ""
 "Dokumentua ustekabean amaitu da elementua irekitzeko etiketa baten barruan."
 
-#: glib/gmarkup.c:1693
+#: glib/gmarkup.c:1698
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -385,17 +385,17 @@ msgstr ""
 "Dokumentua ustekabean amaitu da atributu-izen baten ondorengo berdin "
 "ikurraren atzetik; ez dago atributu-baliorik"
 
-#: glib/gmarkup.c:1700
+#: glib/gmarkup.c:1705
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Dokumentua ustekabean amaitu da atributu-balio baten barruan"
 
-#: glib/gmarkup.c:1715
+#: glib/gmarkup.c:1720
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr ""
 "Dokumentua ustekabean amaitu da '%s' elementuaren itxiera-etiketaren barruan"
 
-#: glib/gmarkup.c:1721
+#: glib/gmarkup.c:1726
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Dokumentua ustekabean amaitu da iruzkin baten barruan edo prozesatzen ari "

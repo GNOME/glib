@@ -1,3 +1,9 @@
+Sun Jul 18 19:40:30 2004  Soeren Sandmann  <sandmann@daimi.au.dk>
+
+	* === Released 2.5.0 ===
+
+	* Makefile.am (BUILT_EXTRA_DIST): move gtk-doc.make here.
+
 Sun Jul 18 01:40:28 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* NEWS: Updates for 2.5.0

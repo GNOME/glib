@@ -7,14 +7,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-05-01 11:17+0900\n"
+"POT-Creation-Date: 2004-07-18 18:16+0200\n"
 "PO-Revision-Date: 2004-05-01 11:16+0900\n"
 "Last-Translator: Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Report-Msgid-Bugs-To: \n"
 
 #: glib/gconvert.c:402
 #, c-format
@@ -49,8 +49,8 @@ msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "フォールバック '%s' を文字セット '%s' に変換できません"
 
 #: glib/gconvert.c:1497
-#, c-format
-msgid "The URI '%s' is not an absolute URI using the file scheme"
+#, fuzzy, c-format
+msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "URI '%s' は file スキームの絶対 URI ではありません"
 
 #: glib/gconvert.c:1507
@@ -73,16 +73,16 @@ msgstr "URI 中のホスト名 '%s' がおかしいです"
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI %s' に無効なエスケープ文字が含まれています"
 
-#: glib/gconvert.c:1623
+#: glib/gconvert.c:1622
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "パス名 '%s' が絶対パスではありません"
 
-#: glib/gconvert.c:1633
+#: glib/gconvert.c:1632
 msgid "Invalid hostname"
 msgstr "無効なホスト名です"
 
-#: glib/gdir.c:80
+#: glib/gdir.c:83
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "ディレクトリ '%s' を開く時にエラー: %s"
@@ -250,15 +250,15 @@ msgstr "中途半端な実体参照です"
 msgid "Unfinished character reference"
 msgstr "中途半端な文字参照です"
 
-#: glib/gmarkup.c:888 glib/gmarkup.c:916 glib/gmarkup.c:947
+#: glib/gmarkup.c:893 glib/gmarkup.c:921 glib/gmarkup.c:952
 msgid "Invalid UTF-8 encoded text"
 msgstr "UTF-8 として正しくないテキストです"
 
-#: glib/gmarkup.c:983
+#: glib/gmarkup.c:988
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "ドキュメントはエレメントで始まってなくてはなりません (例 <book>)"
 
-#: glib/gmarkup.c:1022
+#: glib/gmarkup.c:1027
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -267,7 +267,7 @@ msgstr ""
 "'%s' は文字 '<' に続く文字としては正しくありません。おそらくエレメント名の開"
 "始になっていません"
 
-#: glib/gmarkup.c:1085
+#: glib/gmarkup.c:1090
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
@@ -276,14 +276,14 @@ msgstr ""
 "おかしな文字 '%s' があります。エレメント '%s' の開始タグの最後は文字 '>' でな"
 "くてはなりません"
 
-#: glib/gmarkup.c:1172
+#: glib/gmarkup.c:1177
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "おかしな文字 '%s' です。属性名'%s' (エレメント '%s') の後には '=' が必要です"
 
-#: glib/gmarkup.c:1213
+#: glib/gmarkup.c:1218
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -294,7 +294,7 @@ msgstr ""
 "なくてはなりません。あるいは属性になります。おかしな文字を属性名に使ったのか"
 "もしれません"
 
-#: glib/gmarkup.c:1296
+#: glib/gmarkup.c:1301
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -303,7 +303,7 @@ msgstr ""
 "おかしな文字 '%s' です。属性 '%s' (エレメント '%s') の値を設定するには等号記"
 "号の後は引用記号で始まってなくてはなりません"
 
-#: glib/gmarkup.c:1436
+#: glib/gmarkup.c:1441
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -312,7 +312,7 @@ msgstr ""
 "'%s' は '</' に続く文字としては正しくありません。'%s' ではエレメント名は始"
 "まってません"
 
-#: glib/gmarkup.c:1474
+#: glib/gmarkup.c:1479
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -321,25 +321,25 @@ msgstr ""
 "'%s' は閉じエレメント名 '%s' に続く文字としては正しくありあません。'>' のみが"
 "使用できます"
 
-#: glib/gmarkup.c:1485
+#: glib/gmarkup.c:1490
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "エレメント '%s' は閉じています。エレメントは何も開かれてません"
 
-#: glib/gmarkup.c:1494
+#: glib/gmarkup.c:1499
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "エレメント '%s' が閉ました。しかし現在開いているエレメントは '%s' です"
 
-#: glib/gmarkup.c:1641
+#: glib/gmarkup.c:1646
 msgid "Document was empty or contained only whitespace"
 msgstr "ドキュメントが空か、空白だけが含まれています"
 
-#: glib/gmarkup.c:1655
+#: glib/gmarkup.c:1660
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "ドキュメントが開きカギカッコ '<' の直後で突然終わっています"
 
-#: glib/gmarkup.c:1663 glib/gmarkup.c:1707
+#: glib/gmarkup.c:1668 glib/gmarkup.c:1712
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -348,7 +348,7 @@ msgstr ""
 "ドキュメントが突然終わっています。エレメントが開きっぱなしです。最後に開いた"
 "エレメントは '%s' です。"
 
-#: glib/gmarkup.c:1671
+#: glib/gmarkup.c:1676
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -357,19 +357,19 @@ msgstr ""
 "ドキュメントが突然終わっています。閉じカギカッコでタグ <%s/> が終わっていませ"
 "ん"
 
-#: glib/gmarkup.c:1677
+#: glib/gmarkup.c:1682
 msgid "Document ended unexpectedly inside an element name"
 msgstr "エレメント名の途中でドキュメントが突然終わっています"
 
-#: glib/gmarkup.c:1682
+#: glib/gmarkup.c:1687
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "属性名の途中でドキュメントが突然終わっています"
 
-#: glib/gmarkup.c:1687
+#: glib/gmarkup.c:1692
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "エレメントの開始タグの途中でドキュメントが突然終わっています"
 
-#: glib/gmarkup.c:1693
+#: glib/gmarkup.c:1698
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -377,16 +377,16 @@ msgstr ""
 "属性名の後の等号記号の後でドキュメントが突然終わっています: 属性値がありませ"
 "ん"
 
-#: glib/gmarkup.c:1700
+#: glib/gmarkup.c:1705
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "ドキュメントが属性値の途中で突然終わっています"
 
-#: glib/gmarkup.c:1715
+#: glib/gmarkup.c:1720
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "ドキュメントがエレメント '%s' の閉じタグの途中で突然終わっています"
 
-#: glib/gmarkup.c:1721
+#: glib/gmarkup.c:1726
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "ドキュメントがコメントあるいはプロセシング指示子の途中で突然終わっています"

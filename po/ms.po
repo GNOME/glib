@@ -5,14 +5,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-04-30 09:07-0400\n"
+"POT-Creation-Date: 2004-07-18 18:16+0200\n"
 "PO-Revision-Date: 2004-02-03 02:11+0730\n"
 "Last-Translator: Hasbullah Bin Pit <sebol@my-penguin.org>\n"
 "Language-Team: Projek Gabai <gabai-penyumbang@lists.sourceforge.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Report-Msgid-Bugs-To: \n"
 
 #: glib/gconvert.c:402
 #, c-format
@@ -47,8 +47,8 @@ msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Tak dapat tukar unduran '%s' ke set kod '%s'"
 
 #: glib/gconvert.c:1497
-#, c-format
-msgid "The URI '%s' is not an absolute URI using the file scheme"
+#, fuzzy, c-format
+msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "URI '%s' adalah bukan URI mutlak menggunakan skema fail"
 
 #: glib/gconvert.c:1507
@@ -71,16 +71,16 @@ msgstr "Namahos URI '%s' tidak sah"
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI '%s' mengandungi aksara escaped yang tidak sah"
 
-#: glib/gconvert.c:1623
+#: glib/gconvert.c:1622
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Nama laluan '%s' adalah bukan laluan mutlak"
 
-#: glib/gconvert.c:1633
+#: glib/gconvert.c:1632
 msgid "Invalid hostname"
 msgstr "Namahos tidak sah"
 
-#: glib/gdir.c:80
+#: glib/gdir.c:83
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "Ralat membuka direktori %s': %s"
@@ -246,15 +246,15 @@ msgstr "Rujukan entiti tidak tamat"
 msgid "Unfinished character reference"
 msgstr "Rujukan aksara tidak tamat"
 
-#: glib/gmarkup.c:888 glib/gmarkup.c:916 glib/gmarkup.c:947
+#: glib/gmarkup.c:893 glib/gmarkup.c:921 glib/gmarkup.c:952
 msgid "Invalid UTF-8 encoded text"
 msgstr "Teks terenkod UTF-8 tidak sah"
 
-#: glib/gmarkup.c:983
+#: glib/gmarkup.c:988
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Dokumen mesti dimulakan dengan unsur  (e.g. <buku>)"
 
-#: glib/gmarkup.c:1022
+#: glib/gmarkup.c:1027
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -263,7 +263,7 @@ msgstr ""
 "'%s' adalah bukan aksara sah diikuti sengan aksara '<'; ia tidak sepatutnya "
 "bermula dengan nama unsur"
 
-#: glib/gmarkup.c:1085
+#: glib/gmarkup.c:1090
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
@@ -272,14 +272,14 @@ msgstr ""
 "Aksara ganjil  '%s', dijangkakan aksara '>' untuk mengakhiri tag permulaan "
 "unsur '%s'"
 
-#: glib/gmarkup.c:1172
+#: glib/gmarkup.c:1177
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "Aksara ganjil  '%s', dijangkakan '=' selepas nama atribut  '%s' unsur  '%s'"
 
-#: glib/gmarkup.c:1213
+#: glib/gmarkup.c:1218
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -290,7 +290,7 @@ msgstr ""
 "permulaan unsur '%s', atau atribut; meungkin anda gunakan aksara tidak sah "
 "pada nama atribut"
 
-#: glib/gmarkup.c:1296
+#: glib/gmarkup.c:1301
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -299,7 +299,7 @@ msgstr ""
 "Aksara ganjil  '%s', menjangka tanda petikan membuka selepas tanda = bila "
 "memberi nilai atribut untuk '%s' unsur '%s' "
 
-#: glib/gmarkup.c:1436
+#: glib/gmarkup.c:1441
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -308,7 +308,7 @@ msgstr ""
 "'%s' adalah bukan aksara sah diikuti aksara '</'; '%s' tak boleh memulakan "
 "nama unsur"
 
-#: glib/gmarkup.c:1474
+#: glib/gmarkup.c:1479
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -317,25 +317,25 @@ msgstr ""
 "'%s' adalah bukan aksara sah diikuti dengan nama unsur penutup  '%s'; aksara "
 "yang diizinkan ialah  '>'"
 
-#: glib/gmarkup.c:1485
+#: glib/gmarkup.c:1490
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "Unsur '%s' telah ditutup, tiada unsur yang dibuka"
 
-#: glib/gmarkup.c:1494
+#: glib/gmarkup.c:1499
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "Unsur '%s' telah ditutup, tetapi unsur yang dibuka adalah '%s'"
 
-#: glib/gmarkup.c:1641
+#: glib/gmarkup.c:1646
 msgid "Document was empty or contained only whitespace"
 msgstr "Dokumen kosong atau hanya menandungi ruangputih"
 
-#: glib/gmarkup.c:1655
+#: glib/gmarkup.c:1660
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "Dokumen berakhir tanpa diduga sebaik selepas membuka '<'"
 
-#: glib/gmarkup.c:1663 glib/gmarkup.c:1707
+#: glib/gmarkup.c:1668 glib/gmarkup.c:1712
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -344,26 +344,26 @@ msgstr ""
 "Dokumen berakhir tanpa diduga dengan unsur yang masih dibuka - '%s' adalah "
 "unsur dibuka"
 
-#: glib/gmarkup.c:1671
+#: glib/gmarkup.c:1676
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
 "the tag <%s/>"
 msgstr "Dokumen berakhir tanpa diduga, menjangkai tag <%s/> pada hujungnya"
 
-#: glib/gmarkup.c:1677
+#: glib/gmarkup.c:1682
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Dokumen berakhir tanpa diduga di dalam nama unsur"
 
-#: glib/gmarkup.c:1682
+#: glib/gmarkup.c:1687
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Dokumen berakhir tanpa diduga di dalam nama atribut"
 
-#: glib/gmarkup.c:1687
+#: glib/gmarkup.c:1692
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Dokumen berakhir tanpa diduga di dalam tag element-opening"
 
-#: glib/gmarkup.c:1693
+#: glib/gmarkup.c:1698
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -371,16 +371,16 @@ msgstr ""
 "Dokumen berakhir tanpa diduga selepas tanda '=' diikuti dengan nama atribut; "
 "tiana nilai atribut"
 
-#: glib/gmarkup.c:1700
+#: glib/gmarkup.c:1705
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Dokumen  berakhir tanpa diduga semasa di dalam nilai atribut"
 
-#: glib/gmarkup.c:1715
+#: glib/gmarkup.c:1720
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "Dokumen berakhir tanpa diduga di dalam tag tertutup untuk unsur '%s'"
 
-#: glib/gmarkup.c:1721
+#: glib/gmarkup.c:1726
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "Dokumen berakhir tanpa diduga di dalam komen atau memproses arahan"
 

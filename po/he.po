@@ -11,14 +11,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.he\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-04-30 09:07-0400\n"
+"POT-Creation-Date: 2004-07-18 18:16+0200\n"
 "PO-Revision-Date: 2004-03-25 23:13+0000\n"
 "Last-Translator: Gil Osher <dolfin@rpg.org.il>\n"
 "Language-Team: Hebrew <he@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Report-Msgid-Bugs-To: \n"
 "X-Generator: KBabel 1.3.1\n"
 "Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 
@@ -55,8 +55,8 @@ msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "לא ניתן להמיר ברירת מחדל '%s' למערך תווים '%s'"
 
 #: glib/gconvert.c:1497
-#, c-format
-msgid "The URI '%s' is not an absolute URI using the file scheme"
+#, fuzzy, c-format
+msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "הכתובת '%s' היא לא אבסולוטית בשימוש בתור מזהה קובץ"
 
 #: glib/gconvert.c:1507
@@ -79,16 +79,16 @@ msgstr "שם המארח של הכתובת '%s' אינו תקף"
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "הכתובת '%s' מכילה תווים ללא תוי חילוף תקפים"
 
-#: glib/gconvert.c:1623
+#: glib/gconvert.c:1622
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "שם הנתיב '%s' אינו נתיב מוחלט"
 
-#: glib/gconvert.c:1633
+#: glib/gconvert.c:1632
 msgid "Invalid hostname"
 msgstr "שם מחשב מארח לא תקף"
 
-#: glib/gdir.c:80
+#: glib/gdir.c:83
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "שגיאה בפתיחת סיפרייה '%s': %s"
@@ -251,35 +251,35 @@ msgstr "יחוס ישות לא גמור"
 msgid "Unfinished character reference"
 msgstr "יחוס תו לא גמור"
 
-#: glib/gmarkup.c:888 glib/gmarkup.c:916 glib/gmarkup.c:947
+#: glib/gmarkup.c:893 glib/gmarkup.c:921 glib/gmarkup.c:952
 msgid "Invalid UTF-8 encoded text"
 msgstr "קידוד מלל לא תקף ב-UTF-8"
 
-#: glib/gmarkup.c:983
+#: glib/gmarkup.c:988
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "מסמך חייב להתחיל באלמנט (כגון: <book>)"
 
-#: glib/gmarkup.c:1022
+#: glib/gmarkup.c:1027
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
 msgstr "'%s' אינו תו תקף אחרי תו '<'; הוא אינו יכול להתחיל שם אלמנט"
 
-#: glib/gmarkup.c:1085
+#: glib/gmarkup.c:1090
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
 "'%s'"
 msgstr "תו מוזר '%s', מצפה לתו '>' כדי לסיים את התחלת אלמנט '%s'"
 
-#: glib/gmarkup.c:1172
+#: glib/gmarkup.c:1177
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr "תו מוזר '%s', מצפה ל-'=' לאחר שם מאפיין '%s' של אלמנט '%s'"
 
-#: glib/gmarkup.c:1213
+#: glib/gmarkup.c:1218
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -289,7 +289,7 @@ msgstr ""
 "תו מוזר '%s', מצפה לתו '>' או '/' כדי לסיים את תחילת אלמנט '%s', או מאפיין "
 "אופצינלי; כנראה השתמשת בתו לא תקף בשם המאפיין"
 
-#: glib/gmarkup.c:1296
+#: glib/gmarkup.c:1301
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -298,81 +298,81 @@ msgstr ""
 "תו מוזר '%s', מצפה לפתיחת גרשיים לאחר סימן השווה בעת מתן ערך למאפיין '%s'  "
 "של אלמנט '%s'"
 
-#: glib/gmarkup.c:1436
+#: glib/gmarkup.c:1441
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 msgstr "'%s' אינו תו תקף לאחר התווים '</'; '%s' אינו יכול להתחיל שם אלמנט"
 
-#: glib/gmarkup.c:1474
+#: glib/gmarkup.c:1479
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 msgstr "'%s' אינו תו תקף לאחר סגירת שם אלמנט '%s'; התו החוקי הוא '>'"
 
-#: glib/gmarkup.c:1485
+#: glib/gmarkup.c:1490
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "אלמנט '%s' נסגר, אין אלמנט פתוח כרגע"
 
-#: glib/gmarkup.c:1494
+#: glib/gmarkup.c:1499
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "אלמנט '%s' נסגר, אך האלמנט הפתוח כרגע הוא '%s'"
 
-#: glib/gmarkup.c:1641
+#: glib/gmarkup.c:1646
 msgid "Document was empty or contained only whitespace"
 msgstr "המסמך היה ריק או הכיל שטח לבן בלבד"
 
-#: glib/gmarkup.c:1655
+#: glib/gmarkup.c:1660
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "המסמך הסתיים בצורה לא צפויה לאחר פתיחת '<'"
 
-#: glib/gmarkup.c:1663 glib/gmarkup.c:1707
+#: glib/gmarkup.c:1668 glib/gmarkup.c:1712
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
 "element opened"
 msgstr "המסמך הסתיים בצורה לא צפויה כאשר אלמנט '%s' היה האלמנט הפתוח האחרון"
 
-#: glib/gmarkup.c:1671
+#: glib/gmarkup.c:1676
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
 "the tag <%s/>"
 msgstr "המסמך הסתיים בצורה לא צפויה, מצפה לתו 'גדול מ' לסגירת תג <%s/>"
 
-#: glib/gmarkup.c:1677
+#: glib/gmarkup.c:1682
 msgid "Document ended unexpectedly inside an element name"
 msgstr "המסמך הסתיים בצורה לא צפויה בתוך שם אלמנט"
 
-#: glib/gmarkup.c:1682
+#: glib/gmarkup.c:1687
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "המסמך הסתיים בצורה לא צפויה בתוך שם מאפיין"
 
-#: glib/gmarkup.c:1687
+#: glib/gmarkup.c:1692
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "המסמך הסתיים בצורה לא צפויה בתוך תג פתיחת אלמנט"
 
-#: glib/gmarkup.c:1693
+#: glib/gmarkup.c:1698
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
 msgstr ""
 "המסמך הסתיים בצורה לא צפויה לאחר תו השווה שבא לאחר שם מאפיין; אין ערך למאפיין"
 
-#: glib/gmarkup.c:1700
+#: glib/gmarkup.c:1705
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "המסמך הסתיים בצורה לא צפויה בתוך ערך מאפיין"
 
-#: glib/gmarkup.c:1715
+#: glib/gmarkup.c:1720
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "המסמך הסתיים בצורה לא צפויה בתוך תג סגירה לאלמנט '%s'"
 
-#: glib/gmarkup.c:1721
+#: glib/gmarkup.c:1726
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "המסמך הסתיים בצורה לא צפויה בתוך הערה או הוראת עיבוד"
 

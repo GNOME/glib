@@ -32,16 +32,15 @@ EXTRA_DIST = 			\
 	glib-2.0-uninstalled.pc.in 	\
 	gobject-2.0-uninstalled.pc.in 	\
 	gmodule-2.0-uninstalled.pc.in	\
-	gthread-2.0-uninstalled.pc.in	\
-	gtk-doc.make
+	gthread-2.0-uninstalled.pc.in
 
 # These may be in the builddir too
 BUILT_EXTRA_DIST = 		\
 	README			\
 	INSTALL			\
 	glibconfig.h.win32	\
-	config.h.win32
-
+	config.h.win32		\
+	gtk-doc.make
 
 configexecincludedir = $(libdir)/glib-2.0/include
 #configexecinclude_DATA = glibconfig.h

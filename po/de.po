@@ -6,14 +6,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.3.1\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-04-30 09:07-0400\n"
+"POT-Creation-Date: 2004-07-18 18:16+0200\n"
 "PO-Revision-Date: 2004-01-06 14:58+0100\n"
 "Last-Translator: Christian Neumair <chris@gnome-de.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Report-Msgid-Bugs-To: \n"
 
 #: glib/gconvert.c:402
 #, c-format
@@ -49,8 +49,8 @@ msgstr "Notnagel »%s« kann nicht in Kodierung »%s« umgewandelt werden"
 
 # CHECK
 #: glib/gconvert.c:1497
-#, c-format
-msgid "The URI '%s' is not an absolute URI using the file scheme"
+#, fuzzy, c-format
+msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "Der URI »%s« ist kein absoluter URI, der das Dateischema verwendet"
 
 #: glib/gconvert.c:1507
@@ -74,16 +74,16 @@ msgstr "Der Rechnername der URI »%s« ist ungültig"
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "Der URI »%s« enthält ungültige Escape-Zeichen"
 
-#: glib/gconvert.c:1623
+#: glib/gconvert.c:1622
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Der Pfadname »%s« ist kein absoluter Pfad"
 
-#: glib/gconvert.c:1633
+#: glib/gconvert.c:1632
 msgid "Invalid hostname"
 msgstr "Ungültiger Rechnername"
 
-#: glib/gdir.c:80
+#: glib/gdir.c:83
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "Fehler beim Öffnen des Verzeichnisses »%s«: %s"
@@ -254,15 +254,15 @@ msgstr "Unvollendete Entitätsreferenz"
 msgid "Unfinished character reference"
 msgstr "Unvollendete Zeichenreferenz"
 
-#: glib/gmarkup.c:888 glib/gmarkup.c:916 glib/gmarkup.c:947
+#: glib/gmarkup.c:893 glib/gmarkup.c:921 glib/gmarkup.c:952
 msgid "Invalid UTF-8 encoded text"
 msgstr "Ungültiger UTF-8-kodierter Text"
 
-#: glib/gmarkup.c:983
+#: glib/gmarkup.c:988
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Dokument muss mit einem Element beginnen (e.g. <book>)"
 
-#: glib/gmarkup.c:1022
+#: glib/gmarkup.c:1027
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -271,7 +271,7 @@ msgstr ""
 "»%s« ist kein gültiges Zeichen nach einem »<«-Zeichen; es darf keinen "
 "Elementnamen beginnen"
 
-#: glib/gmarkup.c:1085
+#: glib/gmarkup.c:1090
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
@@ -280,14 +280,14 @@ msgstr ""
 "Seltsames Zeichen »%s«, »>« erwartet um Start-Tag des Elements »%s« "
 "abzuschließen"
 
-#: glib/gmarkup.c:1172
+#: glib/gmarkup.c:1177
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "Seltsames Zeichen »%s«, »=« erwartet nach Attributname »%s« des Elements »%s«"
 
-#: glib/gmarkup.c:1213
+#: glib/gmarkup.c:1218
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -298,7 +298,7 @@ msgstr ""
 "»/« erwartet, um das Start-Tag des Elements »%s« abzuschließen; vielleicht "
 "haben Sie ein ungültiges Zeichen in einem Attributnamen benutzt"
 
-#: glib/gmarkup.c:1296
+#: glib/gmarkup.c:1301
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -308,7 +308,7 @@ msgstr ""
 "Elemente »%s« wurde ein Anführungszeichen nach dem Gleichheitszeichen "
 "erwartet"
 
-#: glib/gmarkup.c:1436
+#: glib/gmarkup.c:1441
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -317,7 +317,7 @@ msgstr ""
 "»%s« ist kein gültiges Zeichen, wenn es auf die Zeichen »</« folgt; »%s« "
 "darf keinen Elementnamen beginnen"
 
-#: glib/gmarkup.c:1474
+#: glib/gmarkup.c:1479
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -326,26 +326,26 @@ msgstr ""
 "»%s« ist kein gültiges Zeichen, wenn es auf den schließenden Elementnamen »%"
 "s« folgt; das erlaubte Zeichen ist »>«"
 
-#: glib/gmarkup.c:1485
+#: glib/gmarkup.c:1490
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "Element »%s« wurde geschlossen, kein Element ist derzeit offen"
 
-#: glib/gmarkup.c:1494
+#: glib/gmarkup.c:1499
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr ""
 "Element »%s« wurde geschlossen, aber das derzeit offene Element ist »%s«"
 
-#: glib/gmarkup.c:1641
+#: glib/gmarkup.c:1646
 msgid "Document was empty or contained only whitespace"
 msgstr "Dokument ist leer oder enthält nur Leerraum"
 
-#: glib/gmarkup.c:1655
+#: glib/gmarkup.c:1660
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "Dokument endete unerwartet nach einer offenen spitzen Klammer »<«"
 
-#: glib/gmarkup.c:1663 glib/gmarkup.c:1707
+#: glib/gmarkup.c:1668 glib/gmarkup.c:1712
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -354,7 +354,7 @@ msgstr ""
 "Dokument endete unerwartet mit noch offenen Elementen - »%s« war das letzte "
 "offene Element"
 
-#: glib/gmarkup.c:1671
+#: glib/gmarkup.c:1676
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -363,19 +363,19 @@ msgstr ""
 "Dokument endete unerwartet, es wurde eine spitze Klammer »>«, die das Tag <%"
 "s/> schließt, erwartet"
 
-#: glib/gmarkup.c:1677
+#: glib/gmarkup.c:1682
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Dokument endete unerwartet innerhalb eines Elementnamens"
 
-#: glib/gmarkup.c:1682
+#: glib/gmarkup.c:1687
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Dokument endete unerwartet innerhalb eines Attributnamens"
 
-#: glib/gmarkup.c:1687
+#: glib/gmarkup.c:1692
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Dokument endete unerwartet innerhalb eines Element-öffnenden Tags."
 
-#: glib/gmarkup.c:1693
+#: glib/gmarkup.c:1698
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -383,18 +383,18 @@ msgstr ""
 "Dokument endete unerwartet nach dem Gleichheitszeichen, das einem "
 "Attributnamen folgt; kein Attributwert"
 
-#: glib/gmarkup.c:1700
+#: glib/gmarkup.c:1705
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Dokument endete unerwartet innerhalb eines Attributwertes"
 
-#: glib/gmarkup.c:1715
+#: glib/gmarkup.c:1720
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr ""
 "Dokument endete unerwartet innerhalb eines schließenden Tags für das Element "
 "»%s«"
 
-#: glib/gmarkup.c:1721
+#: glib/gmarkup.c:1726
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Dokument endete unerwartet innerhalb eines Kommentars oder "

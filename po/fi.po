@@ -6,8 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-04-30 09:07-0400\n"
+"POT-Creation-Date: 2004-07-18 18:16+0200\n"
 "PO-Revision-Date: 2004-04-25 01:44+0300\n"
 "Last-Translator: Sami Pesonen <sampeson@iki.fi>\n"
 "Language-Team: Gnome Finnish Translation Team <gnome-fi-laatu@lists."
@@ -15,6 +14,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Report-Msgid-Bugs-To: \n"
 
 #: glib/gconvert.c:402
 #, c-format
@@ -49,8 +49,8 @@ msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Koodausmerkkijonoa \"%s\" ei voi muuntaa merkistöön \"%s\""
 
 #: glib/gconvert.c:1497
-#, c-format
-msgid "The URI '%s' is not an absolute URI using the file scheme"
+#, fuzzy, c-format
+msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "URI \"%s\" ei ole absoluuttinen tiedostomuotoinen URI"
 
 #: glib/gconvert.c:1507
@@ -73,16 +73,16 @@ msgstr "URI:n \"%s\" isäntänimi on virheellinen"
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI \"%s\" sisältää virheellisesti suojattuja merkkejä"
 
-#: glib/gconvert.c:1623
+#: glib/gconvert.c:1622
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Polku \"%s\" ei ole absoluuttinen"
 
-#: glib/gconvert.c:1633
+#: glib/gconvert.c:1632
 msgid "Invalid hostname"
 msgstr "Virheellinen isäntänimi"
 
-#: glib/gdir.c:80
+#: glib/gdir.c:83
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "Virhe hakemiston \"%s\" avaamisessa: %s"
@@ -251,15 +251,15 @@ msgstr "Päättämätön entiteettiviite"
 msgid "Unfinished character reference"
 msgstr "Päättämätön merkkiviite"
 
-#: glib/gmarkup.c:888 glib/gmarkup.c:916 glib/gmarkup.c:947
+#: glib/gmarkup.c:893 glib/gmarkup.c:921 glib/gmarkup.c:952
 msgid "Invalid UTF-8 encoded text"
 msgstr "Virheellinen UTF-8-merkistöinen teksti"
 
-#: glib/gmarkup.c:983
+#: glib/gmarkup.c:988
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Asiakirjan on alettava elementillä (esim. <kirja>)"
 
-#: glib/gmarkup.c:1022
+#: glib/gmarkup.c:1027
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -268,7 +268,7 @@ msgstr ""
 "\"%s\" ei ole kelvollinen merkki \"<\"-merkin jälkeen; se ei voi aloittaa "
 "elementin nimeä"
 
-#: glib/gmarkup.c:1085
+#: glib/gmarkup.c:1090
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
@@ -277,7 +277,7 @@ msgstr ""
 "Pariton merkki \"%s\", odotettiin \">\"-merkkiä päättämään elementin \"%s\" "
 "alkulippu"
 
-#: glib/gmarkup.c:1172
+#: glib/gmarkup.c:1177
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -285,7 +285,7 @@ msgstr ""
 "Pariton merkki \"%1$s\", odotettiin \"=\"-merkkiä elementin \"%3$s\" "
 "ominaisuuden \"%2$s\" jälkeen"
 
-#: glib/gmarkup.c:1213
+#: glib/gmarkup.c:1218
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -296,7 +296,7 @@ msgstr ""
 "elementin \"%s\" aloituslippu, tai mahdollista ominaisuutta; käytit ehkä "
 "ominaisuuden nimessä siihen kelpaamatonta merkkiä"
 
-#: glib/gmarkup.c:1296
+#: glib/gmarkup.c:1301
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -305,7 +305,7 @@ msgstr ""
 "Pariton merkki \"%1$s\", odotettiin avaavaa lainausmerkkiä yhtäsuuruusmerkin "
 "jälkeen annettaessa elementin \"%3$s\" ominaisuuden \"%2$s\" arvoa"
 
-#: glib/gmarkup.c:1436
+#: glib/gmarkup.c:1441
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -314,7 +314,7 @@ msgstr ""
 "\"%s\" ei ole kelvollinen merkki merkkien \"</\" jälkeen; \"%s\" ei voi olla "
 "elementin nimen alussa"
 
-#: glib/gmarkup.c:1474
+#: glib/gmarkup.c:1479
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -323,28 +323,28 @@ msgstr ""
 "\"%s\" ei ole kelvollinen merkki sulkuelementin \"%s\" jälkeen; sallittu "
 "merkki on \">\""
 
-#: glib/gmarkup.c:1485
+#: glib/gmarkup.c:1490
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "Elementti \"%s\" on suljettu, ei avoimia elementtejä"
 
-#: glib/gmarkup.c:1494
+#: glib/gmarkup.c:1499
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr ""
 "Elementti \"%s\" on suljettu, mutta tällä hetkellä on avoinna elementti \"%s"
 "\""
 
-#: glib/gmarkup.c:1641
+#: glib/gmarkup.c:1646
 msgid "Document was empty or contained only whitespace"
 msgstr "Asiakirja oli tyhjä tai sisälsi vain tyhjiä merkkejä"
 
-#: glib/gmarkup.c:1655
+#: glib/gmarkup.c:1660
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr ""
 "Asiakirja loppui odottamattomasti heti avoimen kulmasulkeen \"<\" jälkeen"
 
-#: glib/gmarkup.c:1663 glib/gmarkup.c:1707
+#: glib/gmarkup.c:1668 glib/gmarkup.c:1712
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -353,7 +353,7 @@ msgstr ""
 "Asiakirja loppui odottamattomasti elementtien ollessa sulkematta - \"%s\" "
 "oli viimeinen avattu elementti"
 
-#: glib/gmarkup.c:1671
+#: glib/gmarkup.c:1676
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -362,19 +362,19 @@ msgstr ""
 "Asiakirja loppui odottamattomasti, odotettiin lipun <%s/> sulkevaa "
 "kulmasuljetta"
 
-#: glib/gmarkup.c:1677
+#: glib/gmarkup.c:1682
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Asiakirja loppui odottamattomasti elementin nimen kohdalla"
 
-#: glib/gmarkup.c:1682
+#: glib/gmarkup.c:1687
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Asiakirja loppui odottamattomasti ominaisuuden nimen kohdalla"
 
-#: glib/gmarkup.c:1687
+#: glib/gmarkup.c:1692
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Asiakirja loppui odottamattomasti elementin avauslipun kohdalla"
 
-#: glib/gmarkup.c:1693
+#: glib/gmarkup.c:1698
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -382,16 +382,16 @@ msgstr ""
 "Asiakirja loppui odottamattomasti ominaisuuden nimen jälkeisen "
 "yhtäsuuruusmerkin jälkeen; ominaisuudella ei ole arvoa"
 
-#: glib/gmarkup.c:1700
+#: glib/gmarkup.c:1705
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Asiakirja loppui odottamattomasti ominaisuuden arvon kohdalla"
 
-#: glib/gmarkup.c:1715
+#: glib/gmarkup.c:1720
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "Asiakirja loppui odottamattomasti elementin \"%s\" sulkulipun kohdalla"
 
-#: glib/gmarkup.c:1721
+#: glib/gmarkup.c:1726
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Asiakirja loppui odottamattomasti kommentin tai käsittelykomennon kohdalla"

@@ -6,14 +6,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.3.0\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-04-30 09:07-0400\n"
+"POT-Creation-Date: 2004-07-18 18:16+0200\n"
 "PO-Revision-Date: 2004-04-27 13:49+0200\n"
 "Last-Translator: Jordi Mallach <jordi@sindominio.net>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Report-Msgid-Bugs-To: \n"
 
 #: glib/gconvert.c:402
 #, c-format
@@ -48,8 +48,8 @@ msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "No es pot convertir el 'fallback' '%s' al joc de codis '%s'"
 
 #: glib/gconvert.c:1497
-#, c-format
-msgid "The URI '%s' is not an absolute URI using the file scheme"
+#, fuzzy, c-format
+msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "L'URI '%s' no és un URI absolut que utilitzi l'esquema de fitxers"
 
 #: glib/gconvert.c:1507
@@ -72,16 +72,16 @@ msgstr "El nom de l'ordinador central de l'URI '%s' no és vàlid"
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "L'URI '%s' conté caràcters d'escapada invàlids"
 
-#: glib/gconvert.c:1623
+#: glib/gconvert.c:1622
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "El nom de camí '%s' no és un camí absolut"
 
-#: glib/gconvert.c:1633
+#: glib/gconvert.c:1632
 msgid "Invalid hostname"
 msgstr "Nom de l'ordinador central invàlid"
 
-#: glib/gdir.c:80
+#: glib/gdir.c:83
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "S'ha produït un error en obrir el directori '%s': %s"
@@ -251,15 +251,15 @@ msgstr "Referència a una entitat no acabada"
 msgid "Unfinished character reference"
 msgstr "Referència a un caràcter no acabada"
 
-#: glib/gmarkup.c:888 glib/gmarkup.c:916 glib/gmarkup.c:947
+#: glib/gmarkup.c:893 glib/gmarkup.c:921 glib/gmarkup.c:952
 msgid "Invalid UTF-8 encoded text"
 msgstr "El text codificat UTF-8 no és vàlid"
 
-#: glib/gmarkup.c:983
+#: glib/gmarkup.c:988
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "El document ha de començar amb un element (p.ex. <llibre>)"
 
-#: glib/gmarkup.c:1022
+#: glib/gmarkup.c:1027
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -268,7 +268,7 @@ msgstr ""
 "'%s' no és un caràcter vàlid després d'un caràcter '<'; no pot començar un "
 "nom d'element"
 
-#: glib/gmarkup.c:1085
+#: glib/gmarkup.c:1090
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
@@ -277,7 +277,7 @@ msgstr ""
 "S'ha trobat un caràcter estrany '%s', s'esperava un '>' per acabar "
 "l'etiqueta d'inici de l'element '%s'"
 
-#: glib/gmarkup.c:1172
+#: glib/gmarkup.c:1177
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -285,7 +285,7 @@ msgstr ""
 "S'ha trobat un caràcter estrany '%s', s'esperava un '=' després del nom "
 "d'atribut '%s' de l'element '%s'"
 
-#: glib/gmarkup.c:1213
+#: glib/gmarkup.c:1218
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -296,7 +296,7 @@ msgstr ""
 "finalitzar l'etiqueta d'inici de l'element '%s', o opcionalment un atribut; "
 "potser heu usat un caràcter no vàlid en un nom d'atribut"
 
-#: glib/gmarkup.c:1296
+#: glib/gmarkup.c:1301
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -306,7 +306,7 @@ msgstr ""
 "després del signe 'igual que' en donar valor a l'atribut '%s' de l'element '%"
 "s'"
 
-#: glib/gmarkup.c:1436
+#: glib/gmarkup.c:1441
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -315,7 +315,7 @@ msgstr ""
 "'%s' no és un caràcter vàlid quan segueix els caracters '</'; un nom "
 "d'element no pot començar per '%s'"
 
-#: glib/gmarkup.c:1474
+#: glib/gmarkup.c:1479
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -324,27 +324,27 @@ msgstr ""
 "'%s' no és un caràcter vàlid quan segueix el nom d'element proper '%s'; el "
 "caràcter permès és '>'"
 
-#: glib/gmarkup.c:1485
+#: glib/gmarkup.c:1490
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "L'element '%s' era tancat. Actualment no hi ha cap element obert"
 
-#: glib/gmarkup.c:1494
+#: glib/gmarkup.c:1499
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "L'element '%s' era tancat, però l'element obert actualment és '%s'"
 
-#: glib/gmarkup.c:1641
+#: glib/gmarkup.c:1646
 msgid "Document was empty or contained only whitespace"
 msgstr "El document era buit o només contenia espais en blanc"
 
-#: glib/gmarkup.c:1655
+#: glib/gmarkup.c:1660
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr ""
 "El document ha acabat de manera inesperada immediatament després d'un "
 "parèntesi d'angle obert '<'"
 
-#: glib/gmarkup.c:1663 glib/gmarkup.c:1707
+#: glib/gmarkup.c:1668 glib/gmarkup.c:1712
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -353,7 +353,7 @@ msgstr ""
 "El document ha acabat de manera inesperada amb elements encara oberts. '%"
 "s'era l'últim element obert"
 
-#: glib/gmarkup.c:1671
+#: glib/gmarkup.c:1676
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -362,21 +362,21 @@ msgstr ""
 "El document ha acabat de manera inesperada, s'esperava trobar un parèntesi "
 "d'angle tancat acabant l'etiqueta <%s/>"
 
-#: glib/gmarkup.c:1677
+#: glib/gmarkup.c:1682
 msgid "Document ended unexpectedly inside an element name"
 msgstr "El document ha acabat de manera inesperada enmig d'un nom d'element"
 
-#: glib/gmarkup.c:1682
+#: glib/gmarkup.c:1687
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "El document ha acabat de manera inesperada enmig d'un nom d'atribut"
 
-#: glib/gmarkup.c:1687
+#: glib/gmarkup.c:1692
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr ""
 "El document ha acabat de manera inesperada enmig d'una etiqueta d'obertura "
 "d'un element"
 
-#: glib/gmarkup.c:1693
+#: glib/gmarkup.c:1698
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -384,18 +384,18 @@ msgstr ""
 "El document ha acabat de manera inesperada després d'un signe 'igual' que "
 "sewgueix un nom d'atribut; no hi ha cap valor d'atribut"
 
-#: glib/gmarkup.c:1700
+#: glib/gmarkup.c:1705
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "El document ha acabat de manera inesperada enmig d'un valor d'atribut"
 
-#: glib/gmarkup.c:1715
+#: glib/gmarkup.c:1720
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr ""
 "El document ha acabat de manera inesperada dins l'etiqueta de tancament de "
 "l'element '%s'"
 
-#: glib/gmarkup.c:1721
+#: glib/gmarkup.c:1726
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "El document ha acabat de manera inesperada enmig d'un comentari o una "

@@ -4,8 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib-2.6\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-04-30 09:07-0400\n"
+"POT-Creation-Date: 2004-07-18 18:16+0200\n"
 "PO-Revision-Date: 2004-02-29 20:47+0530\n"
 "Last-Translator: Nirav, Ankit, Ankur, Atit, Bhavin, Kartik, Khushbu, Sweta. "
 "<magnet@magnet-i.com>\n"
@@ -13,6 +12,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Report-Msgid-Bugs-To: \n"
 
 #: glib/gconvert.c:402
 #, c-format
@@ -47,8 +47,8 @@ msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "ફૈલબેક '%s' ને '%s' કોડના સમૂહમાં પરીવર્તિત કરી શકાતું નથી "
 
 #: glib/gconvert.c:1497
-#, c-format
-msgid "The URI '%s' is not an absolute URI using the file scheme"
+#, fuzzy, c-format
+msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "'%s' URI  એ ફાઈલ યોજના દ્વારા ઉપયોગમાં લેવાયેલ ચોક્કસ URI નથી"
 
 #: glib/gconvert.c:1507
@@ -71,16 +71,16 @@ msgstr "'%s' URIનું યજમાનનુ નામ અયોગ્ય છ
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "'%s' URI અયોગ્ય બહાર નીકળવાના અક્ષરો ધરાવે છે "
 
-#: glib/gconvert.c:1623
+#: glib/gconvert.c:1622
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "'%s' પથ નામ એ ચોક્કસ પથ નથી"
 
-#: glib/gconvert.c:1633
+#: glib/gconvert.c:1632
 msgid "Invalid hostname"
 msgstr "અયોગ્ય યજમાન નામ"
 
-#: glib/gdir.c:80
+#: glib/gdir.c:83
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "'%s' ડિરેક્ટરી ખોલતા ભૂલ: %s"
@@ -244,35 +244,35 @@ msgstr "અપુર્ણ વસ્તુ સંદર્ભ "
 msgid "Unfinished character reference"
 msgstr "અપુર્ણ અક્ષર સંદર્ભ "
 
-#: glib/gmarkup.c:888 glib/gmarkup.c:916 glib/gmarkup.c:947
+#: glib/gmarkup.c:893 glib/gmarkup.c:921 glib/gmarkup.c:952
 msgid "Invalid UTF-8 encoded text"
 msgstr "અયોગ્ય યુટીએફ-૮ સંગ્રહ-પધ્ધતિવાળુ લખાણ"
 
-#: glib/gmarkup.c:983
+#: glib/gmarkup.c:988
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "દસ્તાવેજ કોઈ વસ્તુ સાથે શરુ થાય તે જરુરી છે(ઉદાહરણ <book>)"
 
-#: glib/gmarkup.c:1022
+#: glib/gmarkup.c:1027
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
 msgstr "'%s' એ '<' અક્ષર પછી આવતો યોગ્ય અક્ષર નથી; તે કોઈ વસ્તુના નામથી શરુ થતુ નથી"
 
-#: glib/gmarkup.c:1085
+#: glib/gmarkup.c:1090
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
 "'%s'"
 msgstr "અસંગત અક્ષર '%s', વસ્તુ '%s' ની શરુઆત ટેગ ને સમાપ્ત કરવા '>' અક્ષર ની આશા છે"
 
-#: glib/gmarkup.c:1172
+#: glib/gmarkup.c:1177
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr "અસંગત અક્ષર '%s', '%s' વસ્તુના '%s' લાક્ષણિકતા નામ પછી '=' જરુરી છે"
 
-#: glib/gmarkup.c:1213
+#: glib/gmarkup.c:1218
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -282,7 +282,7 @@ msgstr ""
 "અસંગત અક્ષર '%s': '%s' વસ્તુના અંતમાં '>' અથવા '/' અથવા પરીમાણનો વિકલ્પ જરુરી છે; તમે "
 "કદાય અયોગ્ય અક્ષર લાક્ષણિકતાના નામો વાપર્યો છે"
 
-#: glib/gmarkup.c:1296
+#: glib/gmarkup.c:1301
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -291,46 +291,46 @@ msgstr ""
 "અસંગત અક્ષર '%s,  '%s' વસ્તુ માટે '%s' લાક્ષણિકતાના મુલ્ય આપતી વખતે બરાબરની નિશાની "
 "પછી શરુ થતો અવતરણ ચિહ્ન જરુરી છે"
 
-#: glib/gmarkup.c:1436
+#: glib/gmarkup.c:1441
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 msgstr "'%s' એ '<' અક્ષર પછીનો યોગ્ય અક્ષર નથી ; '%s' ક્દાચ વસ્તુ નામ સાથે શરુ થતુ નથી"
 
-#: glib/gmarkup.c:1474
+#: glib/gmarkup.c:1479
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 msgstr "'%s' એ '%s' વસ્તુનામ પછીનો બંધ કરવાનો યોગ્ય અક્ષર નથી; '>' એ યોગ્ય અક્ષર છે. "
 
-#: glib/gmarkup.c:1485
+#: glib/gmarkup.c:1490
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "'%s' વસ્તુ બંધ હતી, અત્યારે એક પણ વસ્તુ ખુલ્લી નથી"
 
-#: glib/gmarkup.c:1494
+#: glib/gmarkup.c:1499
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "'%s' વસ્તુ બંધ હતી, પણ અત્યારે '%s'એ ખુલ્લી વસ્તુ છે"
 
-#: glib/gmarkup.c:1641
+#: glib/gmarkup.c:1646
 msgid "Document was empty or contained only whitespace"
 msgstr "દસ્તાવેજ ખાલી છે અથવા ફક્ત ખાલી જ્ગ્યા ધરાવે છે"
 
-#: glib/gmarkup.c:1655
+#: glib/gmarkup.c:1660
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "'<' ચિન્હ વાપરતા પછી દસ્તાવેજનો અણધારી રીતે અંત આવે છે"
 
-#: glib/gmarkup.c:1663 glib/gmarkup.c:1707
+#: glib/gmarkup.c:1668 glib/gmarkup.c:1712
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
 "element opened"
 msgstr "વસ્તુ ખુલ્લી હોવા છતાં દસ્તાવેજનો અણધારી રીતે અંત આવે છે- છેલ્લે ખોલેલ વસ્તુ '%s' છે"
 
-#: glib/gmarkup.c:1671
+#: glib/gmarkup.c:1676
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -339,19 +339,19 @@ msgstr ""
 "દસ્તાવેજનો અણધારી રીતે અંત થાય છે, તે  અંતિમ ટેગ  <%s/> માં કૌંસને બંધ કરતુ ખૂણાનુ ચિન્હ "
 "જોવા માગે છે"
 
-#: glib/gmarkup.c:1677
+#: glib/gmarkup.c:1682
 msgid "Document ended unexpectedly inside an element name"
 msgstr "વસ્તુ નામની અંદર દસ્તાવેજનો અણધારી રીતે અંત થાય છે"
 
-#: glib/gmarkup.c:1682
+#: glib/gmarkup.c:1687
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "લાક્ષણિકતાના નામની અંદર દસ્તાવેજનો અણધારી રીતે અંત થાય છે"
 
-#: glib/gmarkup.c:1687
+#: glib/gmarkup.c:1692
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "વસ્તુની શરુઆતની ટેગમા દસ્તાવેજનો અણધારી રીતે અંત થાય છે"
 
-#: glib/gmarkup.c:1693
+#: glib/gmarkup.c:1698
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -359,16 +359,16 @@ msgstr ""
 "લાક્ષણિકતા નામ પછીની બરાબરની નિશાની પછી દસ્તાવેજ નો અણધારી રીતે અંત થાય છે. "
 "લાક્ષણિકતાના મુલ્ય નથી"
 
-#: glib/gmarkup.c:1700
+#: glib/gmarkup.c:1705
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "લાક્ષણિકતા મુલ્ય અંદર હોવા છતાં દસ્તાવેજ નો અણધારી રીતે અંત થાય છે"
 
-#: glib/gmarkup.c:1715
+#: glib/gmarkup.c:1720
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "'%s' વસ્તુના બંદ ટેગની અંદર દસ્તાવેજનો અણધારી રીતે અંત થાય છે"
 
-#: glib/gmarkup.c:1721
+#: glib/gmarkup.c:1726
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "ટિપ્પણી અથવા પ્રક્રિયા સુચનાની અંદર અણધારી રીતે દસ્તાવેજનો અંત થાય છે"
 

@@ -2,19 +2,17 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the glib package.
 # Laxmi Pd. Khatiwada  <laxmi@mpp.org.np>, 2004.
-
-
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.8 \n"
-"Report-Msgid-Bugs-To: <pawan@nplinux.org>\n"
-"POT-Creation-Date: 2004-03-11 03:46+0100\n"
+"POT-Creation-Date: 2004-07-18 18:16+0200\n"
 "PO-Revision-Date: 2004-06-06 12:45 + 0545\n"
 "Last-Translator: Pawan Chitrakar <pawan@nplinux.org>\n"
 "Language-Team: Nepali <info@mpp.org.np>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Report-Msgid-Bugs-To: <pawan@nplinux.org>\n"
 
 #: glib/gconvert.c:402
 #, c-format
@@ -49,8 +47,8 @@ msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "कोड सेट '%s'पछाडिको '%s'मा परिवर्तन गर्न सकिएन"
 
 #: glib/gconvert.c:1497
-#, c-format
-msgid "The URI '%s' is not an absolute URI using the file scheme"
+#, fuzzy, c-format
+msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "युआरआइ '%s'नमुना फाइल बमोजिम वास्तविक युआरआइ होइन"
 
 #: glib/gconvert.c:1507
@@ -73,16 +71,16 @@ msgstr "युआरआइ '%s'को मुख्य नाम  अबैध �
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "युआरआइ '%s'मा अबैध स्वन देखिन्छ"
 
-#: glib/gconvert.c:1623
+#: glib/gconvert.c:1622
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "मार्ग-नाम  '%s' वास्तबिक मार्ग होइन"
 
-#: glib/gconvert.c:1633
+#: glib/gconvert.c:1632
 msgid "Invalid hostname"
 msgstr "मुख्य नाम  अबैध छ"
 
-#: glib/gdir.c:80
+#: glib/gdir.c:83
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "निर्देशिका खोल्ने क्रम्मा '%s': %s गल्ती"
@@ -180,7 +178,8 @@ msgstr "लाइन %d: %s मा गल्ती"
 #: glib/gmarkup.c:412
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
-msgstr "सम्पूर्ण '&;'खाली देखिन्छ; सम्पूर्ण बैध  प्रविष्टिहरु : &amp; &quot; &lt; &gt; &apos; हुन्"
+msgstr ""
+"सम्पूर्ण '&;'खाली देखिन्छ; सम्पूर्ण बैध  प्रविष्टिहरु : &amp; &quot; &lt; &gt; &apos; हुन्"
 
 #: glib/gmarkup.c:422
 #, c-format
@@ -188,7 +187,9 @@ msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
 "begins an entity; if this ampersand isn't supposed to be an entity, escape "
 "it as &amp;"
-msgstr "समस्त नामको शुरुमा स्वन '%s' बैध हुँदैन ; & स्वनले स‌पूर्णता शुरु गर्छ ; अविभाज्य संपूर्णता भेटिएन भने ,छाडिदेऊ"
+msgstr ""
+"समस्त नामको शुरुमा स्वन '%s' बैध हुँदैन ; & स्वनले स‌पूर्णता शुरु गर्छ ; अविभाज्य संपूर्णता "
+"भेटिएन भने ,छाडिदेऊ"
 
 #: glib/gmarkup.c:458
 #, c-format
@@ -204,14 +205,18 @@ msgstr "समस्त नाम '%s' a'बुझिएन"
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
-msgstr "समस्त प्रविष्टि अर्धविराममा सकिएन;समस्त प्रविष्टिका सट्टा तपाईंले अविभाज्य स्वनबाट शुरु गर्नुभयो - &amp अविभाज्य भेटिँदैन"
+msgstr ""
+"समस्त प्रविष्टि अर्धविराममा सकिएन;समस्त प्रविष्टिका सट्टा तपाईंले अविभाज्य स्वनबाट शुरु "
+"गर्नुभयो - &amp अविभाज्य भेटिँदैन"
 
 #: glib/gmarkup.c:558
 #, c-format
 msgid ""
 "Failed to parse '%s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
-msgstr " स्वन सन्दर्भमा हुनुपर्ने अंकले'%s'क्रममिलान गर्न सकेन,(उदाहरणका लागि &#234;)-संभवत अंक ज्यादै ठूलो छ"
+msgstr ""
+" स्वन सन्दर्भमा हुनुपर्ने अंकले'%s'क्रममिलान गर्न सकेन,(उदाहरणका लागि &#234;)-संभवत अंक "
+"ज्यादै ठूलो छ"
 
 #: glib/gmarkup.c:583
 #, c-format
@@ -227,7 +232,9 @@ msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
 "as &amp;"
-msgstr "समस्त प्रविष्टि अर्धविराममा सकिएन;समस्त प्रविष्टिका सट्टा तपाईंले अविभाज्य स्वनबाट शुरु गर्नुभयो - &amp अविभाज्य भेटिँदैन"
+msgstr ""
+"समस्त प्रविष्टि अर्धविराममा सकिएन;समस्त प्रविष्टिका सट्टा तपाईंले अविभाज्य स्वनबाट शुरु "
+"गर्नुभयो - &amp अविभाज्य भेटिँदैन"
 
 #: glib/gmarkup.c:636
 msgid "Unfinished entity reference"
@@ -237,124 +244,127 @@ msgstr "अधुरो समस्त संदर्भ"
 msgid "Unfinished character reference"
 msgstr "अधुरो स्वन संदर्भ"
 
-#: glib/gmarkup.c:888 glib/gmarkup.c:916 glib/gmarkup.c:947
+#: glib/gmarkup.c:893 glib/gmarkup.c:921 glib/gmarkup.c:952
 msgid "Invalid UTF-8 encoded text"
 msgstr "संकेतित पाठमा युटिएफ-८ अबैध छ"
 
-#: glib/gmarkup.c:983
+#: glib/gmarkup.c:988
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "लिखत कुनै बस्तुबाटै शुरु हुनरपर्छ (जस्तै <पुस्तक>)"
 
-#: glib/gmarkup.c:1022
+#: glib/gmarkup.c:1027
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
 msgstr "स्वन '<'पछि आउने स्वन '%s'बैधानिक स्वन होइन;यस्तोमा बस्तुको नामबाट शुरु हुँदैन"
 
-#: glib/gmarkup.c:1085
+#: glib/gmarkup.c:1090
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
 "'%s'"
 msgstr "'%s' कुनै बस्तुको शुरु ट्यागको अन्त्यमा बिजोर स्वन '%s',का सट्टा स्वन '>'खोज्छ"
 
-#: glib/gmarkup.c:1172
+#: glib/gmarkup.c:1177
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr "'%s' कुनै बस्तु '%s'को प्रारुपको नामपछि बिजोर स्वन'%s'ले '='को आशा राख्दछ"
 
-#: glib/gmarkup.c:1213
+#: glib/gmarkup.c:1218
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
 "element '%s', or optionally an attribute; perhaps you used an invalid "
 "character in an attribute name"
-msgstr "कुनै बस्तु '%s'वा ऐच्छिक प्रारुपको को शुरु ट्यागको अन्त्यमा बिजोर स्वन'%s'ले '>' वा '/'खोज्छ; सं‌भवत तपाईंले गलत चाहिँ प्रयोग गर्नुभयो"
+msgstr ""
+"कुनै बस्तु '%s'वा ऐच्छिक प्रारुपको को शुरु ट्यागको अन्त्यमा बिजोर स्वन'%s'ले '>' वा "
+"'/'खोज्छ; सं‌भवत तपाईंले गलत चाहिँ प्रयोग गर्नुभयो"
 
-#: glib/gmarkup.c:1296
+#: glib/gmarkup.c:1301
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
 "giving value for attribute '%s' of element '%s'"
-msgstr "कुनै बस्तु '%s'को प्रारुप '%s'लाई मूल्य दिने क्रममा  बराबरको संकेत पछि बिजोर स्वन'%s'ले खुला उद्धरण चिन्ह खोज्छ;"
+msgstr ""
+"कुनै बस्तु '%s'को प्रारुप '%s'लाई मूल्य दिने क्रममा  बराबरको संकेत पछि बिजोर स्वन'%s'ले "
+"खुला उद्धरण चिन्ह खोज्छ;"
 
-#: glib/gmarkup.c:1436
+#: glib/gmarkup.c:1441
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 msgstr "'</'स्वन पछि '%s'स्वन बैध  होइन; '%s'ले कुनै बस्तुको नाम शुरु गर्दैन"
 
-#: glib/gmarkup.c:1474
+#: glib/gmarkup.c:1479
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 msgstr "नजिकको बस्तुको नाम '%s'पछि  '%s'स्वन बैध  होइन;आबस्यक स्वन '>'हो "
 
-#: glib/gmarkup.c:1485
+#: glib/gmarkup.c:1490
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "तत्काल कुनै बस्तु खुला छैन, बस्तु '%s'बन्द भयो"
 
-#: glib/gmarkup.c:1494
+#: glib/gmarkup.c:1499
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "बस्तु '%s'बन्द भयो,तर भर्खरै खुलेको बस्तु '%s'हो"
 
-#: glib/gmarkup.c:1641
+#: glib/gmarkup.c:1646
 msgid "Document was empty or contained only whitespace"
 msgstr "लिखत खाली छ अथवा सेतो खाली ठाउँमात्र छ "
 
-#: glib/gmarkup.c:1655
+#: glib/gmarkup.c:1660
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "खुला कोष्ठ-कोण '<'को लगत्तै आशातीत रुपमा लिखत बन्द भयो"
 
-#: glib/gmarkup.c:1663 glib/gmarkup.c:1707
+#: glib/gmarkup.c:1668 glib/gmarkup.c:1712
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
 "element opened"
 msgstr " अन्तिममा खलेको -'%s'लिखतसँगै  आशातीत रुपमा लिखत बन्द भयो"
 
-#: glib/gmarkup.c:1671
+#: glib/gmarkup.c:1676
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
 "the tag <%s/>"
 msgstr "बन्द कोष्ठ-कोणमा समाप्त हुने ट्याग <%s/>हेर्ने क्रममा  आशातीत रुपमा लिखत बन्द भयो"
 
-#: glib/gmarkup.c:1677
+#: glib/gmarkup.c:1682
 msgid "Document ended unexpectedly inside an element name"
 msgstr "कुनै बस्तुको नामभित्रै  आशातीत रुपमा लिखत बन्द भयो"
 
-#: glib/gmarkup.c:1682
+#: glib/gmarkup.c:1687
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "कुनै प्रारुपको नामभित्रै  आशातीत रुपमा लिखत बन्द भयो"
 
-#: glib/gmarkup.c:1687
+#: glib/gmarkup.c:1692
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "कुनै बस्तु खोल्ने ट्यागभित्रै  आशातीत रुपमा लिखत बन्द भयो"
 
-#: glib/gmarkup.c:1693
+#: glib/gmarkup.c:1698
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
 msgstr "प्रारुपको मूल्य छैन; प्रारुप-नामको  बराबरको संकेतसँगै आशातीत रुपमा लिखत बन्द भयो"
 
-
-#: glib/gmarkup.c:1700
+#: glib/gmarkup.c:1705
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "प्रारुपको मूल्यसँगै आशातीत रुपमा लिखत बन्द भयो"
 
-#: glib/gmarkup.c:1715
+#: glib/gmarkup.c:1720
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "कुनै बस्तु '%s'को बन्द ट्यागभित्रै आशातीत रुपमा लिखत बन्द भयो"
 
-#: glib/gmarkup.c:1721
+#: glib/gmarkup.c:1726
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "आलोचना वा संचालन निर्देशजभित्रै आशातीत रुपमा लिखत बन्द भयो"
 
@@ -390,7 +400,7 @@ msgid ""
 "process"
 msgstr "द्वितीयक्रमको तथ्याङ्क पढ्ने सिलसिलामा  जी_यो_मार्ग_विन३२_चयन()मा आशातीत गल्ती"
 
-#: glib/gspawn-win32.c:850 glib/gspawn.c:1001
+#: glib/gspawn-win32.c:850 glib/gspawn.c:1012
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "द्वितीयक्रम (%s)बाट पढ्न सकिएन"
@@ -404,57 +414,57 @@ msgstr "सहयोगी कार्यक्रम संचालन गर
 msgid "Failed to execute child process (%s)"
 msgstr "द्वितीयक्रम (%s) संचालन गर्न सकिएन"
 
-#: glib/gspawn-win32.c:986 glib/gspawn.c:1206
+#: glib/gspawn-win32.c:986 glib/gspawn.c:1217
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "निर्देशिका '%s'(%s) परिवर्तन गर्न सकिएन"
 
-#: glib/gspawn-win32.c:1040 glib/gspawn.c:1337
+#: glib/gspawn-win32.c:1040 glib/gspawn.c:1348
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "द्वितीयक्रम (%s)संचारणका लागि पाइप निर्माण गर्न असफल"
 
-#: glib/gspawn.c:167
+#: glib/gspawn.c:178
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "द्वितीयक्रम (%s)बाट तथ्याङ्क पढ्न असफल "
 
-#: glib/gspawn.c:298
+#: glib/gspawn.c:309
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr "द्वितीयक्रम (%s)पढ्ने सिलसिलामा ()को चयनमा  आशातीत गल्ती"
 
-#: glib/gspawn.c:381
+#: glib/gspawn.c:392
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "वेटपिड() (%s) मा आशातीत गल्ती"
 
-#: glib/gspawn.c:1066
+#: glib/gspawn.c:1077
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "टुक्र्याउने क्रममा असफल (%s)"
 
-#: glib/gspawn.c:1216
+#: glib/gspawn.c:1227
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "द्वितीयक्रम  \"%s\"(%s) संचालनमा असफल"
 
-#: glib/gspawn.c:1226
+#: glib/gspawn.c:1237
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "द्वितीयक्रम (%s)को इनपुट वा आउटपुट पुनर्निदेशित गर्न असफल"
 
-#: glib/gspawn.c:1235
+#: glib/gspawn.c:1246
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "द्वितीयक्रम  \"%s\" टुक्र्याउने क्रममा असफल"
 
-#: glib/gspawn.c:1243
+#: glib/gspawn.c:1254
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "द्वितीयक्रम  \"%s\" संचालनमा अज्ञात गल्ती"
 
-#: glib/gspawn.c:1265
+#: glib/gspawn.c:1276
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "द्वितीय पिड पाइप  (%s)बाट आवस्यक तथ्याङ्क पढ्न असफल"

@@ -5,14 +5,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-04-30 09:07-0400\n"
+"POT-Creation-Date: 2004-07-18 18:16+0200\n"
 "PO-Revision-Date: 2004-07-13 16:25+0530\n"
 "Last-Translator: Amanpreet Singh Alam <amanlinux@netscape.net>\n"
 "Language-Team: Punjabi <punlinux-i18n@lists.sourceforge.>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit"
+"Content-Transfer-Encoding: 8bit\n"
+"Report-Msgid-Bugs-To: \n"
 
 #: glib/gconvert.c:402
 #, c-format
@@ -47,8 +47,8 @@ msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "ਤਬਦੀਲੀ ਸੰਭਵ ਨਹੀ। ਕੋਡ ਸਮੂਹ %s ਤੋ %s ਵਿਚ ਤਬਦੀਲੀ"
 
 #: glib/gconvert.c:1497
-#, c-format
-msgid "The URI '%s' is not an absolute URI using the file scheme"
+#, fuzzy, c-format
+msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "ਯੂ ਆਰ ਐਲ %s ਫਾਇਲ ਸਕੀਮ ਨਾਲ ਅਸਲੀ ਯੂ ਆਰ ਐਲ ਨਹੀ ਹੈ ।"
 
 #: glib/gconvert.c:1507
@@ -71,16 +71,16 @@ msgstr "ਯੂਆਰ ਆਈ %s ਦੇ ਮੇਜਬਾਨ ਦਾ ਨਾਉ ਜਾ
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "ਯੂਆਰਆਈ %s ਕੋਲ ਗਲਤ ਅੱਖਰ ਹਨ "
 
-#: glib/gconvert.c:1623
+#: glib/gconvert.c:1622
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "ਰਾਹ %s ਇਕ ਠੀਕ (absolute) ਰਾਹ ਨਹੀ ਹੈ"
 
-#: glib/gconvert.c:1633
+#: glib/gconvert.c:1632
 msgid "Invalid hostname"
 msgstr "ਗਲਤ ਮੇਜਬਾਨ ਨਾਉ"
 
-#: glib/gdir.c:80
+#: glib/gdir.c:83
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "ਗਲਤੀ %s ਡਾਇਕਰੈਕਟਰੀ ਖੋਲਣ ਲਈ %s"
@@ -243,15 +243,15 @@ msgstr "ਅਪੂਰਨ ਤੱਤ ਹਵਾਲਾ"
 msgid "Unfinished character reference"
 msgstr "ਅਪੂਰਨ ਅੱਖਰੀ ਹਵਾਲਾ"
 
-#: glib/gmarkup.c:888 glib/gmarkup.c:916 glib/gmarkup.c:947
+#: glib/gmarkup.c:893 glib/gmarkup.c:921 glib/gmarkup.c:952
 msgid "Invalid UTF-8 encoded text"
 msgstr "ਗਲਤ UTF-8 ਇੰਨਕੋਡ ਅੱਖਰ"
 
-#: glib/gmarkup.c:983
+#: glib/gmarkup.c:988
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "ਦਸਤਾਵੇਜ ਇਕ ਭਾਗ ਨਾਲ ਆਰੰਭ ਹੋਣਾ ਜਰੂਰੀ ਹੈ (ਜਿਵੇ ਕਿ. <book>)"
 
-#: glib/gmarkup.c:1022
+#: glib/gmarkup.c:1027
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -260,7 +260,7 @@ msgstr ""
 "ਇਹ '%s' ਜਾਇਜ ਅੱਖਰ ਨਹੀ ਹੈ ਜੋ ਕਿ '<' ਅੱਖਰ ਤੋ ਮਗਰ ਹੈ । ਇਹ ਕਿਸੇ ਭਾਗ ਦੇ ਨਾਉ ਨਾਲ ਆਰੰਭ ਨਹੀ "
 "ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ"
 
-#: glib/gmarkup.c:1085
+#: glib/gmarkup.c:1090
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
@@ -269,13 +269,13 @@ msgstr ""
 "ਅਨਿਸ਼ਚਿਤ ਅੱਖਰ '%s', ਇਹ '>' ਅੱਖਰ ਦੀ ਉਮੀਦ ਸੀ ਤਾਂਕਿ ਹਿੱਸੇ ਦੀ ਸੁਰੂ ਕੀਤੀ ਪੱਟੀ ਖਤਮ ਕੀਤੀ ਜਾ "
 "ਸਕੇ'%s'"
 
-#: glib/gmarkup.c:1172
+#: glib/gmarkup.c:1177
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr "ਅਨਿਸ਼ਚਿਤ ਅੱਖਰ %s ਹੈ । ਇਸ %s ਭਾਗ ਦੇ ਇਸ ਵਿਸ਼ੇਸਤਾ ਨਾਉ %s  ਮਗਰੋ  = ਨਿਸ਼ਚਿਤ ਹੈ"
 
-#: glib/gmarkup.c:1213
+#: glib/gmarkup.c:1218
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -285,7 +285,7 @@ msgstr ""
 "ਅਨਿਸ਼ਚਿਤ ਅੱਖਰ '%s' ਹੈ, ਇਕ ਅੱਖਰ '>'ਜਾਂ '/'  ਨਿਸ਼ਚਿਤ ਅੱਖਰ ਹੈ ਤਾਂਕਿ ਹਿੱਸੇ ਦੀ ਸੁਰੂ ਕੀਤੀ ਪੱਟੀ "
 "ਖਤਮ ਕੀਤੀ ਜਾ ਸਕੇ '%s', ਜਾਂ ਚੁਣਿਆ ਪ੍ਤੀਕ ਜਿਸ ਲ਼ਈ ਤੁਸੀ ਗਲਤ ਨਾ ਉਭਰਿਆ ਹੈ"
 
-#: glib/gmarkup.c:1296
+#: glib/gmarkup.c:1301
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -294,7 +294,7 @@ msgstr ""
 "ਅਨਿਸ਼ਚਿਤ ਅੱਖਰ '%s', ਬਰਾਬਰ ਦੇ ਨਿਸ਼ਾਨ ਮਗਰੋ ਇਕ ਖੁੱਲਾ ਹਵਾਲਾ ਨਿਸ਼ਾਨ ਜਰੂਰੀ ਹੈ, ਜਦੋ ਕਿ ਤੁਸੀ ਇਕ "
 "ਭਾਗ '%s' ਦੇ ਪ੍ਤੀਕ '%s' ਲਈ ਮੁੱਲ ਦੇ ਰਹੇ ਹੋ"
 
-#: glib/gmarkup.c:1436
+#: glib/gmarkup.c:1441
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -303,7 +303,7 @@ msgstr ""
 "ਇਸ '</' ਅੱਖਰ ਮਗਰੇ ਇਹ %s'  ਅੱਖਰ ਜਾਇਜ ਨਹੀ ਹੈ। '%s' ਇਕ ਭਾਗ ਦੇ ਨਾਉ ਨਾਲ ਆਰੰਭ ਨਹੀ ਹੋ ਸਕਦਾ "
 "ਹੈ"
 
-#: glib/gmarkup.c:1474
+#: glib/gmarkup.c:1479
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -311,32 +311,32 @@ msgid ""
 msgstr ""
 "ਇਹ '%s' ਅੱਖਰ ਬੰਦ ਭਾਗ ਦੇ ਨਾਉ ਮਗਰੋ ਜਾਇਜ ਨਹੀ ਹੈ ।'%s'; ਸਿਰਫ '>' ਅੱਖਰ ਹੀ ਨਿਸ਼ਚਿਤ ਹੈ "
 
-#: glib/gmarkup.c:1485
+#: glib/gmarkup.c:1490
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "ਇਹ ਭਾਗ '%s' ਬੰਦ ਸੀ, ਕੋਈ ਭਾਗ ਖੁੱਲਾ ਨਹੀ ਹੈ ।"
 
-#: glib/gmarkup.c:1494
+#: glib/gmarkup.c:1499
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "ਇਹ ਭਾਗ '%s' ਬੰਦ ਸੀ, '%s' ਭਾਗ ਖੁੱਲਾ ਹੈ ।"
 
-#: glib/gmarkup.c:1641
+#: glib/gmarkup.c:1646
 msgid "Document was empty or contained only whitespace"
 msgstr "ਦਸਤਾਵੇਜ ਖਾਲੀ ਹੈ ਜਾਂ ਕੇਵਲ ਸਾਫ ਹੀ ਹੈ "
 
-#: glib/gmarkup.c:1655
+#: glib/gmarkup.c:1660
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "ਦਸਤਾਵੇਜ ਬੇਉਮੀਦ ਬੰਦ ਹੋ ਗਿਆ ਹੈ, ਇਕ ਖੁਲੀ ਬਰੈਕਟ '<' ਪਾਉਣ ਮਗਰੋ ।"
 
-#: glib/gmarkup.c:1663 glib/gmarkup.c:1707
+#: glib/gmarkup.c:1668 glib/gmarkup.c:1712
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
 "element opened"
 msgstr "ਦਸਤਾਵੇਜ ਬੇਉਮੀਦ ਬੰਦ ਹੋ ਗਿਆ ਹੈ, ਜਦੋ ਕਿ-ਇਹ '%s' ਅਖੀਰੀ ਖੁੱਲਾ ਭਾਗ ਹੈ ।"
 
-#: glib/gmarkup.c:1671
+#: glib/gmarkup.c:1676
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -345,19 +345,19 @@ msgstr ""
 "ਦਸਤਾਵੇਜ ਬੇਉਮੀਦ ਬੰਦ ਹੋ ਗਿਆ ਹੈ,,  ਇਕ ਬੰਦ ਬਰੈਕਟ <%s/> ਜੋ ਕਿ ਪਟੀ ਨੂੰ ਬੰਦ ਕਰਦੀ ਹੈ, ਦੀ ਉਮੀਦ ਸੀ "
 "।"
 
-#: glib/gmarkup.c:1677
+#: glib/gmarkup.c:1682
 msgid "Document ended unexpectedly inside an element name"
 msgstr "ਇਕ ਹਿੱਸੇ ਦੇ ਨਾਉ ਕਰਕੇ ਦਸਤਾਵੇਜ ਬੇਉਮੀਦ ਬੰਦ ਹੋ ਗਿਆ ਹੈ,"
 
-#: glib/gmarkup.c:1682
+#: glib/gmarkup.c:1687
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "ਇਕ ਗੁਣ ਦੇ ਨਾਉ ਕਰਕੇ ਦਸਤਾਵੇਜ ਬੇਉਮੀਦ ਬੰਦ ਹੋ ਗਿਆ ਹੈ,"
 
-#: glib/gmarkup.c:1687
+#: glib/gmarkup.c:1692
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "ਇਕ ਹਿੱਸੇ ਦੀ ਖੁੱਲੀ ਪਟੀ ਕਰਕੇ ਦਸਤਾਵੇਜ ਬੇਉਮੀਦ ਬੰਦ ਹੋ ਗਿਆ ਹੈ,"
 
-#: glib/gmarkup.c:1693
+#: glib/gmarkup.c:1698
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -365,16 +365,16 @@ msgstr ""
 "ਇਕ ਗੁਣ ਦੇ ਨਾਉ ਤੋ ਪਹਿਲਾਂ ਬਰਾਬਰ ਦੇ ਨਿਸ਼ਾਨ ਕਰਕੇ ਦਸਤਾਵੇਜ ਬੇਉਮੀਦ ਬੰਦ ਹੋ ਗਿਆ ਹੈ । ਗੁਣ ਦਾ ਕੋਈ ਮੁੱਲ "
 "ਨਹੀ ਹੈ ।"
 
-#: glib/gmarkup.c:1700
+#: glib/gmarkup.c:1705
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "ਇਕ ਗੁਣ ਦੇ ਮੁੱਲ ਕਰਕੇ ਦਸਤਾਵੇਜ ਬੇਉਮੀਦ ਬੰਦ ਹੋ ਗਿਆ ਹੈ"
 
-#: glib/gmarkup.c:1715
+#: glib/gmarkup.c:1720
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "ਇਕ ਹਿੱਸੇ  '%s' ਦੀ ਪਟੀ ਕਰਕੇ ਦਸਤਾਵੇਜ ਬੇਉਮੀਦ ਬੰਦ ਹੋ ਗਿਆ ਹੈ।"
 
-#: glib/gmarkup.c:1721
+#: glib/gmarkup.c:1726
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "ਇਕ ਟਿੱਪਣੀ ਜਾਂ ਹਦਾਇਤ ਚਲਾਉਣ ਦੌਰਾਨ ਦਸਤਾਵੇਜ ਬੇਉਮੀਦ ਬੰਦ ਹੋ ਗਿਆ ਹੈ।"
 
@@ -493,4 +493,3 @@ msgstr "ਬਦਲਾਉ ਲਈ ਨਿਵੇਸ਼ ਵਿਚ ਤਰਤੀਬ ਜ�
 #: glib/gutf8.c:1376 glib/gutf8.c:1472
 msgid "Character out of range for UTF-16"
 msgstr "UTF-16 ਲਈ ਅੱਖਰ ਨਿਸ਼ਚਿਤ ਸੀਮਾ ਤੋ ਬਾਹਰ ਹਨ ।"
-
