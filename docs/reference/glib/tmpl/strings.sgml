@@ -308,7 +308,7 @@ If @free_segment is %TRUE it also frees the character data.
 
 @string: a #GString.
 @free_segment: if %TRUE the actual character data is freed as well.
-@Returns: 
+@Returns: the character data of @string (i.e. %NULL if @free_segment is %TRUE)
 
 
 <!-- ##### FUNCTION g_string_up ##### -->
