@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.3.7\n"
-"POT-Creation-Date: 2001-09-25 10:54-0400\n"
+"POT-Creation-Date: 2001-10-22 09:35-0400\n"
 "PO-Revision-Date: 2001-08-03 07:31+0800\n"
 "Last-Translator: Abel Cheung <maddog@linux.org.hk>\n"
 "Language-Team: Traditional Chinese <zh-l10n@linux.org.tw>\n"
@@ -13,66 +13,69 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: glib/gconvert.c:143
-#, c-format
-msgid "Conversion from character set `%s' to `%s' is not supported"
+#: glib/gconvert.c:202
+#, fuzzy, c-format
+msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "不支援將字元集 `%s' 轉換到 `%s'"
 
-#: glib/gconvert.c:147
-#, c-format
-msgid "Could not open converter from `%s' to `%s': %s"
+#: glib/gconvert.c:206
+#, fuzzy, c-format
+msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "無法開啟由 `%s' 至 `%s' 的轉換器：%s"
 
-#: glib/gconvert.c:297 glib/gconvert.c:580 glib/gutf8.c:828 glib/gutf8.c:1274
+#: glib/gconvert.c:356 glib/gconvert.c:639 glib/giochannel.c:1282
+#: glib/giochannel.c:1324 glib/giochannel.c:2164 glib/gutf8.c:875
+#: glib/gutf8.c:1321
 msgid "Invalid byte sequence in conversion input"
 msgstr "轉換輸入時遇到不正確的位元組次序"
 
-#: glib/gconvert.c:302 glib/gconvert.c:513
+#: glib/gconvert.c:361 glib/gconvert.c:572 glib/giochannel.c:1289
+#: glib/giochannel.c:2176
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "轉換時發生錯誤：%s"
 
-#: glib/gconvert.c:320 glib/gutf8.c:824 glib/gutf8.c:1024 glib/gutf8.c:1165
-#: glib/gutf8.c:1270
+#: glib/gconvert.c:379 glib/gutf8.c:871 glib/gutf8.c:1071 glib/gutf8.c:1212
+#: glib/gutf8.c:1317
 msgid "Partial character sequence at end of input"
 msgstr "輸入完結時有未完的字元次序"
 
-#: glib/gconvert.c:488
+#: glib/gconvert.c:547
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr ""
 
-#: glib/gconvert.c:1202
+#: glib/gconvert.c:1261
 #, c-format
-msgid "The URI `%s' is not an absolute URI using the file scheme"
+msgid "The URI '%s' is not an absolute URI using the file scheme"
 msgstr ""
 
-#: glib/gconvert.c:1212
+#: glib/gconvert.c:1271
 #, c-format
-msgid "The local file URI `%s' may not include a `#'"
+msgid "The local file URI '%s' may not include a '#'"
 msgstr ""
 
-#: glib/gconvert.c:1229
+#: glib/gconvert.c:1288
 #, c-format
-msgid "The URI `%s' is invalid"
-msgstr ""
-
-#: glib/gconvert.c:1238
-#, c-format
-msgid "The hostname of the URI `%s' contains invalidly escaped characters"
-msgstr ""
-
-#: glib/gconvert.c:1254
-#, c-format
-msgid "The URI `%s' contains invalidly escaped characters"
+msgid "The URI '%s' is invalid"
 msgstr ""
 
 #: glib/gconvert.c:1297
 #, c-format
+msgid "The hostname of the URI '%s' contains invalidly escaped characters"
+msgstr ""
+
+#: glib/gconvert.c:1313
+#, c-format
+msgid "The URI '%s' contains invalidly escaped characters"
+msgstr ""
+
+#: glib/gconvert.c:1356
+#, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr ""
 
-#: glib/gconvert.c:1311
+#: glib/gconvert.c:1370
 #, fuzzy
 msgid "Invalid byte sequence in hostname"
 msgstr "轉換輸入時遇到不正確的位元組次序"
@@ -116,6 +119,44 @@ msgstr ""
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "無法建立檔案 '%s'：%s"
+
+#: glib/giochannel.c:1110
+#, c-format
+msgid "Conversion from character set `%s' to `%s' is not supported"
+msgstr "不支援將字元集 `%s' 轉換到 `%s'"
+
+#: glib/giochannel.c:1114
+#, c-format
+msgid "Could not open converter from `%s' to `%s': %s"
+msgstr "無法開啟由 `%s' 至 `%s' 的轉換器：%s"
+
+#: glib/giochannel.c:1461
+msgid "Can't do a raw read in g_io_channel_read_line_string"
+msgstr ""
+
+#: glib/giochannel.c:1508 glib/giochannel.c:1762 glib/giochannel.c:1848
+msgid "Leftover unconverted data in read buffer"
+msgstr ""
+
+#: glib/giochannel.c:1588 glib/giochannel.c:1662
+msgid "Channel terminates in a partial character"
+msgstr ""
+
+#: glib/giochannel.c:1648
+msgid "Can't do a raw read in g_io_channel_read_to_end"
+msgstr ""
+
+#: glib/giowin32.c:701 glib/giowin32.c:730
+msgid "Incorrect message size"
+msgstr ""
+
+#: glib/giowin32.c:1024 glib/giowin32.c:1077
+msgid "Socket error"
+msgstr ""
+
+#: glib/giowin32.c:1277
+msgid "Channel set flags unsupported"
+msgstr ""
 
 #: glib/gmarkup.c:216
 #, c-format
@@ -336,17 +377,17 @@ msgstr "當 g_io_channel_win32_poll() 由副程序讀入資料時發生未預期
 msgid "Failed to read from child pipe (%s)"
 msgstr "無法由副管道讀入資料（%s）"
 
-#: glib/gspawn-win32.c:926 glib/gspawn.c:1112
+#: glib/gspawn-win32.c:925 glib/gspawn.c:1112
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "無法進入目錄 '%s'（%s）"
 
-#: glib/gspawn-win32.c:935 glib/gspawn.c:1122
+#: glib/gspawn-win32.c:934 glib/gspawn.c:1122
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "無法執行副程序（%s）"
 
-#: glib/gspawn-win32.c:976 glib/gspawn.c:1219
+#: glib/gspawn-win32.c:975 glib/gspawn.c:1219
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "無法建立管道來和副程序溝通（%s）"
@@ -390,15 +431,15 @@ msgstr "執行副程序時發生不明的錯誤"
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr ""
 
-#: glib/gutf8.c:903
+#: glib/gutf8.c:950
 msgid "Character out of range for UTF-8"
 msgstr "字元不在 UTF-8 範圍之內"
 
-#: glib/gutf8.c:992 glib/gutf8.c:1001 glib/gutf8.c:1133 glib/gutf8.c:1142
-#: glib/gutf8.c:1284 glib/gutf8.c:1380
+#: glib/gutf8.c:1039 glib/gutf8.c:1048 glib/gutf8.c:1180 glib/gutf8.c:1189
+#: glib/gutf8.c:1331 glib/gutf8.c:1427
 msgid "Invalid sequence in conversion input"
 msgstr "轉換輸入時遇到不正確的次序"
 
-#: glib/gutf8.c:1295 glib/gutf8.c:1391
+#: glib/gutf8.c:1342 glib/gutf8.c:1438
 msgid "Character out of range for UTF-16"
 msgstr "字元不在 UTF-16 範圍之內"

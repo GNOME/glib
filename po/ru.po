@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"POT-Creation-Date: 2001-10-13 15:42+0400\n"
+"POT-Creation-Date: 2001-10-22 09:35-0400\n"
 "PO-Revision-Date: 2001-10-13 15:46+0400\n"
 "Last-Translator: Valek Filippov <frob@df.ru>\n"
 "Language-Team: Russian <ru@li.org>\n"
@@ -131,7 +131,8 @@ msgstr "Не удалось открыть преобразователь из \"%s\" в \"%s\": %s"
 
 #: glib/giochannel.c:1461
 msgid "Can't do a raw read in g_io_channel_read_line_string"
-msgstr "Невозможно выполнить непосредственное чтение в g_io_channel_read_line_string"
+msgstr ""
+"Невозможно выполнить непосредственное чтение в g_io_channel_read_line_string"
 
 #: glib/giochannel.c:1508 glib/giochannel.c:1762 glib/giochannel.c:1848
 msgid "Leftover unconverted data in read buffer"
@@ -143,7 +144,8 @@ msgstr ""
 
 #: glib/giochannel.c:1648
 msgid "Can't do a raw read in g_io_channel_read_to_end"
-msgstr "Невозможно выполнить непосредственное чтение в g_io_channel_read_to_end"
+msgstr ""
+"Невозможно выполнить непосредственное чтение в g_io_channel_read_to_end"
 
 #: glib/giowin32.c:701 glib/giowin32.c:730
 msgid "Incorrect message size"

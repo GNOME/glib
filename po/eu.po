@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.3.9\n"
-"POT-Creation-Date: 2001-10-05 16:31+0200\n"
+"POT-Creation-Date: 2001-10-22 09:35-0400\n"
 "PO-Revision-Date: 2001-07-06 14:23+0200\n"
 "Last-Translator: Joseba Bidaurrazaga van Dierdonck <jbv@euskalnet.net>\n"
 "Language-Team: euskare <linux-eu@chanae.alphanet.ch>\n"
@@ -379,9 +379,6 @@ msgstr ""
 
 #: glib/gshell.c:526
 #, c-format
-msgid "Text ended just after a '%s' character. (The text was '%s')"
-msgstr "Textua bukatzen da  '%s' batez. (Textua '%s' zen)"
-
 msgid "Text ended just after a '' character. (The text was '%s')"
 msgstr "Textua bukatzen da  '' batez. (Textua '%s' zen)"
 
@@ -479,3 +476,6 @@ msgstr "Ezinezko segida itzulpen sarreran"
 #: glib/gutf8.c:1342 glib/gutf8.c:1438
 msgid "Character out of range for UTF-16"
 msgstr "Hizkia ildotik at UTF-16-en"
+
+#~ msgid "Text ended just after a '%s' character. (The text was '%s')"
+#~ msgstr "Textua bukatzen da  '%s' batez. (Textua '%s' zen)"

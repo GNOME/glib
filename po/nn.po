@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: KDEADMIN/kcron\n"
-"POT-Creation-Date: 2001-09-25 10:54-0400\n"
+"POT-Creation-Date: 2001-10-22 09:35-0400\n"
 "PO-Revision-Date: 2001-09-06 00:24GMT\n"
 "Last-Translator: Roy-Magne Mo <rmo@sunnmore.net>\n"
 "Language-Team: nynorsk <nn@li.org>\n"
@@ -14,66 +14,69 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 0.9.5\n"
 
-#: glib/gconvert.c:143
-#, c-format
-msgid "Conversion from character set `%s' to `%s' is not supported"
+#: glib/gconvert.c:202
+#, fuzzy, c-format
+msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Konvertering frå teiknsett %s' til '%s' er ikkje støtta"
 
-#: glib/gconvert.c:147
-#, c-format
-msgid "Could not open converter from `%s' to `%s': %s"
+#: glib/gconvert.c:206
+#, fuzzy, c-format
+msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Kunne ikkje opne konverterar frå '%s' til '%s': %s"
 
-#: glib/gconvert.c:297 glib/gconvert.c:580 glib/gutf8.c:828 glib/gutf8.c:1274
+#: glib/gconvert.c:356 glib/gconvert.c:639 glib/giochannel.c:1282
+#: glib/giochannel.c:1324 glib/giochannel.c:2164 glib/gutf8.c:875
+#: glib/gutf8.c:1321
 msgid "Invalid byte sequence in conversion input"
 msgstr "Ugyldig bytesekvens i inndata for konvertering"
 
-#: glib/gconvert.c:302 glib/gconvert.c:513
+#: glib/gconvert.c:361 glib/gconvert.c:572 glib/giochannel.c:1289
+#: glib/giochannel.c:2176
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Feil under konvertering: %s"
 
-#: glib/gconvert.c:320 glib/gutf8.c:824 glib/gutf8.c:1024 glib/gutf8.c:1165
-#: glib/gutf8.c:1270
+#: glib/gconvert.c:379 glib/gutf8.c:871 glib/gutf8.c:1071 glib/gutf8.c:1212
+#: glib/gutf8.c:1317
 msgid "Partial character sequence at end of input"
 msgstr "Delvis teiknsekvens på slutten av inndata"
 
-#: glib/gconvert.c:488
+#: glib/gconvert.c:547
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Kan ikkje konvertere 'fallback' '%s' til kodesett '%s'"
 
-#: glib/gconvert.c:1202
-#, c-format
-msgid "The URI `%s' is not an absolute URI using the file scheme"
+#: glib/gconvert.c:1261
+#, fuzzy, c-format
+msgid "The URI '%s' is not an absolute URI using the file scheme"
 msgstr "URIen '%s' er ikkje ein absolutt URI som brukar file måten"
 
-#: glib/gconvert.c:1212
-#, c-format
-msgid "The local file URI `%s' may not include a `#'"
+#: glib/gconvert.c:1271
+#, fuzzy, c-format
+msgid "The local file URI '%s' may not include a '#'"
 msgstr "Lokal fil URIen '%s' kan ikkje innehalde ein #"
 
-#: glib/gconvert.c:1229
-#, c-format
-msgid "The URI `%s' is invalid"
-msgstr "URIen '%s' er ugyldig"
-
-#: glib/gconvert.c:1238
-#, c-format
-msgid "The hostname of the URI `%s' contains invalidly escaped characters"
-msgstr ""
-
-#: glib/gconvert.c:1254
+#: glib/gconvert.c:1288
 #, fuzzy, c-format
-msgid "The URI `%s' contains invalidly escaped characters"
+msgid "The URI '%s' is invalid"
 msgstr "URIen '%s' er ugyldig"
 
 #: glib/gconvert.c:1297
+#, fuzzy, c-format
+msgid "The hostname of the URI '%s' contains invalidly escaped characters"
+msgstr "URIen '%s' er ugyldig"
+
+#: glib/gconvert.c:1313
+#, fuzzy, c-format
+msgid "The URI '%s' contains invalidly escaped characters"
+msgstr "URIen '%s' er ugyldig"
+
+#: glib/gconvert.c:1356
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Filstien '%s' er ikkje ein absolutt sti"
 
-#: glib/gconvert.c:1311
+#: glib/gconvert.c:1370
 msgid "Invalid byte sequence in hostname"
 msgstr "Ugyldig bytesekvens i maskinnamn"
 
@@ -116,6 +119,44 @@ msgstr "Malfila '%s' er ikkje avslutta med XXXXXX"
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Klarte ikkje å opprette fila '%s': %s"
+
+#: glib/giochannel.c:1110
+#, c-format
+msgid "Conversion from character set `%s' to `%s' is not supported"
+msgstr "Konvertering frå teiknsett %s' til '%s' er ikkje støtta"
+
+#: glib/giochannel.c:1114
+#, c-format
+msgid "Could not open converter from `%s' to `%s': %s"
+msgstr "Kunne ikkje opne konverterar frå '%s' til '%s': %s"
+
+#: glib/giochannel.c:1461
+msgid "Can't do a raw read in g_io_channel_read_line_string"
+msgstr ""
+
+#: glib/giochannel.c:1508 glib/giochannel.c:1762 glib/giochannel.c:1848
+msgid "Leftover unconverted data in read buffer"
+msgstr ""
+
+#: glib/giochannel.c:1588 glib/giochannel.c:1662
+msgid "Channel terminates in a partial character"
+msgstr ""
+
+#: glib/giochannel.c:1648
+msgid "Can't do a raw read in g_io_channel_read_to_end"
+msgstr ""
+
+#: glib/giowin32.c:701 glib/giowin32.c:730
+msgid "Incorrect message size"
+msgstr ""
+
+#: glib/giowin32.c:1024 glib/giowin32.c:1077
+msgid "Socket error"
+msgstr ""
+
+#: glib/giowin32.c:1277
+msgid "Channel set flags unsupported"
+msgstr ""
 
 #: glib/gmarkup.c:216
 #, c-format
@@ -338,17 +379,17 @@ msgstr ""
 msgid "Failed to read from child pipe (%s)"
 msgstr "Klarte ikkje å lese frå røyr frå barn (%s)"
 
-#: glib/gspawn-win32.c:926 glib/gspawn.c:1112
+#: glib/gspawn-win32.c:925 glib/gspawn.c:1112
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Klarte ikkje å skifte katalog '%s' (%s)"
 
-#: glib/gspawn-win32.c:935 glib/gspawn.c:1122
+#: glib/gspawn-win32.c:934 glib/gspawn.c:1122
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Klarte ikkje å utføre barnproess (%s)"
 
-#: glib/gspawn-win32.c:976 glib/gspawn.c:1219
+#: glib/gspawn-win32.c:975 glib/gspawn.c:1219
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Klarte ikkje å opprette røyr for å kommuniksere med barneprosess (%s)"
@@ -392,15 +433,15 @@ msgstr "Ukjend feil ved køyring av barneprosess"
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Klarte ikkje å lese nok data frå pid røyr frå barn (%s)"
 
-#: glib/gutf8.c:903
+#: glib/gutf8.c:950
 msgid "Character out of range for UTF-8"
 msgstr "Teikn ikkje gyldig for UTF-8"
 
-#: glib/gutf8.c:992 glib/gutf8.c:1001 glib/gutf8.c:1133 glib/gutf8.c:1142
-#: glib/gutf8.c:1284 glib/gutf8.c:1380
+#: glib/gutf8.c:1039 glib/gutf8.c:1048 glib/gutf8.c:1180 glib/gutf8.c:1189
+#: glib/gutf8.c:1331 glib/gutf8.c:1427
 msgid "Invalid sequence in conversion input"
 msgstr "Ugyldig sekvens i inndata konvertering"
 
-#: glib/gutf8.c:1295 glib/gutf8.c:1391
+#: glib/gutf8.c:1342 glib/gutf8.c:1438
 msgid "Character out of range for UTF-16"
 msgstr "Teikn ikkje gyldig for UTF-16"

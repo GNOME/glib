@@ -1,3 +1,22 @@
+Overview of Changes in GLib 1.3.10:
+===================================
+
+* Many Win32 fixes and improvements [Tor Lillqvist]
+* Documentation improvements [Matthias Clasen]
+* g_string_printfa() renamed to g_string_append_printf()
+* Use libcharset from libiconv to implement charset detection
+  more portably. [Owen Taylor, Hidetoshi Tajima]
+* Add 64 bit type support to GObject [Joshua Pritikin, Mathieu Lacage, Owen]
+* Make support for 64 bit integers a requirement [Joshua]
+* GPattern improvements [Tim Janik, Matthias]
+* Locale independent g_ascii_strtod / g_ascii_dtostr [Alex Larsson]
+* Many bug fixes and minor tweaks.
+
+Other Contributors: Darin Adler, Jakub Jelinek, James Antill, Andrew Taylor,
+  Ben Gertzfield, Elliot Lee, Manish Singh, Abel Cheung, Laszlo Peter,
+  Sven Neumann, George Lebl, Raja Harinath, Sebastian Wilhelmi,
+  Jacob Berkman
+
 Overview of Changes in GLib 1.3.9:
 ==================================
 

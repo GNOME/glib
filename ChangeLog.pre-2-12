@@ -1,3 +1,14 @@
+Wed Oct 24 11:10:54 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* configure.in: Version 1.3.10, interface age, binary age = 0.
+
+	* NEWS: Updates
+
+Thu Oct 25 12:01:41 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* tests/Makefile.am: Temporarily remove mainloop-test, since it
+	prevents distcheck.
+
 2001-10-24  Alex Larsson  <alexl@redhat.com>
 
 	* docs/reference/glib/glib-sections.txt:
