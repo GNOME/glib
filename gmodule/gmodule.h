@@ -40,7 +40,7 @@ extern const char      *g_log_domain_gmodule;
  * to feature Windows dll stubs.
  */
 #define	G_MODULE_IMPORT		extern
-#if defined (G_OS_WIN32) && defined (__GNUC__)
+#if defined (G_OS_WIN32)
 #  define	G_MODULE_EXPORT		__declspec(dllexport)
 #else /* !G_OS_WIN32 */
 #  define	G_MODULE_EXPORT

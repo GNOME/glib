@@ -348,6 +348,7 @@ EXPORTS
 	g_source_remove
 	g_source_remove_by_source_data
 	g_source_remove_by_user_data
+        g_spaced_primes_closest
 	g_static_mutex_get_mutex_impl
 	g_static_private_get
 	g_static_private_set
@@ -440,7 +441,7 @@ EXPORTS
 	glib_minor_version
 	gwin_closedir
 	gwin_ftruncate
+	gwin_getlocale
 	gwin_opendir
 	gwin_readdir
 	gwin_rewinddir
-        g_spaced_primes_closest

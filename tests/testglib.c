@@ -914,7 +914,12 @@ main (int   argc,
 #ifdef G_HAVE_GINT64
   g_assert (GUINT64_SWAP_LE_BE (gu64t1) == gu64t2);  
 #endif
+
   g_print ("ok\n");
+
+#ifdef G_OS_WIN32
+  g_print ("current locale: %s\n", gwin_getlocale ());
+#endif
 
   return 0;
 }

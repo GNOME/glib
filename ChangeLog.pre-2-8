@@ -1,3 +1,21 @@
+1999-10-31  Tor Lillqvist  <tml@iki.fi>
+
+	* gcache.c (g_cache_remove): Don't crash if removing a nonexistent
+	value.
+
+	* gutils.c (gwin_getlocale): New Win32-specific function, returns
+	a Unixish current locale string (en, zh_TW etc).
+
+	* glib.h: Declare it.
+
+	* glib.def: Export it.
+
+	* testglib.c: Test it.
+
+	* gmessages.c (Win32: ensure_stdout_valid): Some improvements,
+	make sure we don't call AllocConsole several times, which I think
+	has happened.
+
 Sun Oct 17 18:11:40 1999  Tim Janik  <timj@gtk.org>
 
         * gdataset.c (g_data_set_internal): remove g_dataset_global_lock around

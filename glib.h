@@ -2875,6 +2875,15 @@ DIR*		gwin_opendir	(const gchar	*dirname);
 struct dirent*	gwin_readdir  	(DIR		*dir);
 void		gwin_rewinddir 	(DIR		*dir);
 gint		gwin_closedir  	(DIR		*dir);
+
+/* The MS setlocale uses locale names of the form "English_United
+ * States.1252" etc. We want the Unixish standard form "en", "zh_TW"
+ * etc. This function gets the current thread locale from Windows and
+ * returns it as a string of the above form for use in forming file
+ * names etc. The returned string should be deallocated with g_free().
+ */
+gchar *		gwin_getlocale  (void);
+
 #endif	 /* G_OS_WIN32 */
 
 

@@ -92,6 +92,9 @@ static GPrivate* g_log_depth = NULL;
 #  define STRICT
 #  include <windows.h>
 #  include <process.h>          /* For _getpid() */
+
+static gboolean alloc_console_called = FALSE;
+
 /* Just use stdio. If we're out of memory, we're hosed anyway. */
 #undef write
 static inline int
@@ -100,6 +103,7 @@ write (FILE       *fd,
        int         len)
 {
   fwrite (buf, len, 1, fd);
+  fflush (fd);
 
   return len;
 }
@@ -108,12 +112,16 @@ ensure_stdout_valid (void)
 {
   HANDLE handle;
 
-  handle = GetStdHandle (STD_OUTPUT_HANDLE);
-  
-  if (handle == INVALID_HANDLE_VALUE)
+  if (!alloc_console_called)
     {
-      AllocConsole ();
-      freopen ("CONOUT$", "w", stdout);
+      handle = GetStdHandle (STD_OUTPUT_HANDLE);
+  
+      if (handle == INVALID_HANDLE_VALUE)
+	{
+	  AllocConsole ();
+	  alloc_console_called = TRUE;
+	  freopen ("CONOUT$", "w", stdout);
+	}
     }
 }
 #else
