@@ -532,7 +532,6 @@ struct _GDebugKey
   guint  value;
 };
 
-struct _GHashTable { gint dummy; };
 struct _GCache { gint dummy; };
 struct _GTree { gint dummy; };
 struct _GTimer { gint dummy; };
@@ -645,22 +644,26 @@ GListAllocator* g_list_set_allocator  (GListAllocator* allocator);
 
 /* Hash tables
  */
-GHashTable* g_hash_table_new	 (GHashFunc	  hash_func,
-				  GCompareFunc	  key_compare_func);
-void	    g_hash_table_destroy (GHashTable	 *hash_table);
-void	    g_hash_table_insert	 (GHashTable	 *hash_table,
-				  gpointer        key,
-				  gpointer        value);
-void	    g_hash_table_remove	 (GHashTable	 *hash_table,
-				  gconstpointer   key);
-gpointer    g_hash_table_lookup	 (GHashTable	 *hash_table,
-				  gconstpointer    key);
-void	    g_hash_table_freeze	 (GHashTable	 *hash_table);
-void	    g_hash_table_thaw	 (GHashTable	 *hash_table);
-void	    g_hash_table_foreach (GHashTable	 *hash_table,
-				  GHFunc	  func,
-				  gpointer	  user_data);
-gint	    g_hash_table_size    (GHashTable	 *hash_table);
+GHashTable* g_hash_table_new		(GHashFunc	 hash_func,
+					 GCompareFunc	 key_compare_func);
+void	    g_hash_table_destroy	(GHashTable	*hash_table);
+void	    g_hash_table_insert		(GHashTable	*hash_table,
+					 gpointer	 key,
+					 gpointer	 value);
+void	    g_hash_table_remove		(GHashTable     *hash_table,
+					 gconstpointer	 key);
+gpointer    g_hash_table_lookup		(GHashTable     *hash_table,
+					 gconstpointer   key);
+gboolean    g_hash_table_lookup_full	(GHashTable	*hash_table,
+					 gconstpointer	 lookup_key,
+					 gpointer	*orig_key,
+					 gpointer	*value);
+void	    g_hash_table_freeze		(GHashTable	*hash_table);
+void	    g_hash_table_thaw		(GHashTable	*hash_table);
+void	    g_hash_table_foreach	(GHashTable	*hash_table,
+					 GHFunc		 func,
+					 gpointer	 user_data);
+gint	    g_hash_table_size		(GHashTable	*hash_table);
 
 
 /* Caches

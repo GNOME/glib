@@ -1,3 +1,12 @@
+Tue Jul  7 03:18:58 EEST 1998 Lauri Alanko <nether@gimp.org>
+
+	* glib.h:
+	* ghash.c: Generic cleanup, added a function:
+	(g_hash_table_lookup_full): Return whether the lookup succeeded,
+	and also retrieve the key and value. This allows one to
+	distinguish between failed lookup and finding a NULL, and also
+	allows one to free a key in the hash.
+
 Mon Jul  6 10:12:05 PDT 1998 Manish Singh <yosh@gimp.org>
 
 	* ltconfig: fix for properly detecting shared lib support on
