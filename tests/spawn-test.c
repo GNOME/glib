@@ -34,6 +34,7 @@
 
 #ifdef G_OS_WIN32
 #include <fcntl.h>
+#include <io.h>
 #endif
 
 

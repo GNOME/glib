@@ -41,12 +41,13 @@
 #ifdef HAVE_UNISTD_H
 #include	<unistd.h>
 #endif
-#ifdef G_OS_WIN32
-#include	<io.h>		/* For _read() */
-#endif
 
 #include	"glib.h"
 #include	"gprintfint.h"
+
+#ifdef G_OS_WIN32
+#include	<io.h>		/* For _read() */
+#endif
 
 /* --- defines --- */
 #define	to_lower(c)				( \
@@ -1194,7 +1195,14 @@ g_scanner_get_token_i (GScanner	*scanner,
     {
       *token_p = G_TOKEN_FLOAT;
       if (scanner->config->store_int64)
-	value_p->v_float = value_p->v_int64;
+        {
+#ifdef _MSC_VER
+          /* work around error C2520, see gvaluetransform.c */
+          value_p->v_float = (__int64)value_p->v_int64;
+#else
+          value_p->v_float = value_p->v_int64;
+#endif
+        }
       else
 	value_p->v_float = value_p->v_int;
     }

@@ -14,9 +14,16 @@ DEPCFLAGS = -Zm400 $(INTL_CFLAGS) $(LIBICONV_CFLAGS) $(DIRENT_CFLAGS)
 all :				\
 	..\config.h		\
 	..\glibconfig.h	\
+	trio\trio.lib	\
 	libglib-2.0-@LT_CURRENT_MINUS_AGE@.dll \
 	glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@s.lib \
 	gspawn-win32-helper.exe	\
+
+
+trio\trio.lib :
+	cd trio
+	nmake -f makefile.msc
+	cd ..
 
 glib_OBJECTS =			\
 	garray.obj		\
@@ -42,9 +49,11 @@ glib_OBJECTS =			\
 	gmessages.obj		\
 	gnode.obj		\
 	gprimes.obj		\
+	gprintf.obj	\
 	gqsort.obj		\
 	gqueue.obj		\
 	gpattern.obj	\
+	gprintf.obj	\
 	grand.obj		\
 	grel.obj		\
 	gscanner.obj		\
@@ -79,11 +88,12 @@ localcharset.c : libcharset/localcharset.c
 
 # create a static libary
 # static library can well have the real version number in the name
-glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@s.lib : $(glib_OBJECTS)
-	lib /out:glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@s.lib $(glib_OBJECTS)
+glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@s.lib : $(glib_OBJECTS) trio\trio.lib
+	lib /out:glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@s.lib $(glib_OBJECTS) trio\trio.lib
 
 libglib-2.0-@LT_CURRENT_MINUS_AGE@.dll : $(glib_OBJECTS) glib.def
-	$(CC) $(CFLAGS) -LD -Fe$@ $(glib_OBJECTS) $(LIBICONV_LIBS) $(INTL_LIBS) $(DIRENT_LIBS) user32.lib advapi32.lib wsock32.lib $(LDFLAGS) /implib:glib-2.0.lib /def:glib.def
+	$(CC) $(CFLAGS) -LD -Fe$@ $(glib_OBJECTS) $(LIBICONV_LIBS) $(INTL_LIBS) \
+	trio\trio.lib $(DIRENT_LIBS) user32.lib advapi32.lib shell32.lib wsock32.lib $(LDFLAGS) /implib:glib-2.0.lib /def:glib.def
 
 gspawn-win32-helper.exe : gspawn-win32-helper.c libglib-2.0-@LT_CURRENT_MINUS_AGE@.dll
 	$(CC) $(CFLAGS) -Fe$@ -DG_LOG_DOMAIN=\"gspawn-win32-helper\" gspawn-win32-helper.c glib-2.0.lib $(LDFLAGS) /subsystem:windows user32.lib

@@ -1,3 +1,20 @@
+2003-07-20  Hans Breuer  <hans@breuer.org>
+
+	* glib/trio/makefile.msc : (new file) for msvc build
+
+	* glib/glib.def : removed some duplicated entries
+
+	* glib/gscanner.c : add same workaround for MSVC(5.0)
+	which does not allow to cast an uint64 to float.
+	Same as in gvaluetransform.c
+	Also move #include <io.h> behind inclusion of "glib.h"
+	which defines the needed G_OS_WIN32
+
+	* glib/makefile.msc.in : added gprintf.obj, trio\trio.lib
+	as well as shell32.lib
+
+	* tests/spawn-test.c : include <io.h> on win32
+
 2003-07-12  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/gprintf.c: Doc additions.

@@ -516,7 +516,6 @@ EXPORTS
 	g_slist_sort
 	g_slist_sort_with_data
 	g_snprintf
-	g_snprintf
 	g_source_add_poll
 	g_source_attach
 	g_source_destroy
@@ -745,7 +744,6 @@ EXPORTS
 	g_utf8_validate
 	g_vfprintf
 	g_vprintf
-	g_vsnprintf
 	g_vsnprintf
 	g_vsprintf
 	g_win32_error_message
