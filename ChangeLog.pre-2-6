@@ -1,3 +1,7 @@
+2004-09-09  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gutils.c (g_get_home_dir): Remove a misleading comment.
+
 Thu Sep  9 00:10:40 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/gstrfuncs.h: 

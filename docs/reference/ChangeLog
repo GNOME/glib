@@ -1,3 +1,8 @@
+2004-09-09  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/tmpl/misc_utils.sgml: Add a hint about $HOME to the
+	docs of g_get_home_dir().
+
 Thu Sep  9 00:11:19 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/glib-sections.txt: Add g_strv_length().

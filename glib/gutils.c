@@ -1165,12 +1165,6 @@ g_get_real_name (void)
   return g_real_name;
 }
 
-/* Return the home directory of the user. If there is a HOME
- * environment variable, its value is returned, otherwise use some
- * system-dependent way of finding it out. If no home directory can be
- * deduced, return NULL.
- */
-
 G_CONST_RETURN gchar*
 g_get_home_dir (void)
 {
