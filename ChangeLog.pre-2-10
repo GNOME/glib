@@ -1,3 +1,8 @@
+2003-05-19  Noah Levitt  <nlevitt@columbia.edu>
+
+	* glib/gunidecomp.c: Fix off-by-one error in
+	g_unicode_canonical_ordering (bug #113260).
+
 2003-05-19 Arafat Medini <lumina@silverpen.de>
 
 	* ar.po: Added ar to ALL_LINGUAS

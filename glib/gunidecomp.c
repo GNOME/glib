@@ -65,14 +65,14 @@ g_unicode_canonical_ordering (gunichar *string,
 	    {
 	      gsize j;
 	      /* Percolate item leftward through string.  */
-	      for (j = i; j > 0; --j)
+	      for (j = i + 1; j > 0; --j)
 		{
 		  gunichar t;
-		  if (COMBINING_CLASS (string[j]) <= next)
+		  if (COMBINING_CLASS (string[j - 1]) <= next)
 		    break;
-		  t = string[j + 1];
-		  string[j + 1] = string[j];
-		  string[j] = t;
+		  t = string[j];
+		  string[j] = string[j - 1];
+		  string[j - 1] = t;
 		  swap = 1;
 		}
 	      /* We're re-entering the loop looking at the old
