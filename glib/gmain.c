@@ -1892,7 +1892,10 @@ g_main_context_prepare (GMainContext *context,
   /* If recursing, clear list of pending dispatches */
 
   for (i = 0; i < context->pending_dispatches->len; i++)
-    SOURCE_UNREF ((GSource *)context->pending_dispatches->pdata[i], context);
+    {
+      if (context->pending_dispatches->pdata[i])
+	SOURCE_UNREF ((GSource *)context->pending_dispatches->pdata[i], context);
+    }
   g_ptr_array_set_size (context->pending_dispatches, 0);
   
   /* Prepare all sources */
