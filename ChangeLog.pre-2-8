@@ -1,3 +1,8 @@
+2000-11-21  Havoc Pennington  <hp@pobox.com>
+
+	* gmacros.h: Provide G_CONST_RETURN which is 'const' by default,
+	and nothing when G_DISABLE_CONST_RETURNS is defined.
+
 2000-11-29  Havoc Pennington  <hp@redhat.com>
 
 	* gunidecomp.c (COMBINING_CLASS): s/UNICODE_LAST_CHAR/G_UNICODE_LAST_CHAR/
@@ -54,8 +59,8 @@
 	* gthread.h: Do only show the location of the locking/unlocking
 	for -DG_ERRORCHECK_MUTEXES and not the name of the mutex. Add the
 	errorcheck capability for g_cond_wait and g_cond_timed_wait as
-	well.
-	
+	well.	
+
 2000-11-27  Havoc Pennington  <hp@redhat.com>
 
 	* gthread.h: Add void in empty function arg list
