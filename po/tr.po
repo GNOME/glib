@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-08-13 10:10-0400\n"
+"POT-Creation-Date: 2004-09-09 23:52+0300\n"
 "PO-Revision-Date: 2004-03-12 02:28+0200\n"
 "Last-Translator: Onur Can ÇAKMAK <onur@uzem.itu.edu.tr>\n"
 "Language-Team: Turkish <gnome-turk@gnome.org>\n"
@@ -22,9 +22,9 @@ msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "`%s' karakter kümesinden `%s' karakter kümesine dönüşüm desteklenmiyor"
 
 #: glib/gconvert.c:406
-#, fuzzy, c-format
+#, c-format
 msgid "Could not open converter from '%s' to '%s'"
-msgstr "'%s' den '%s' e dönüştürücü açılamıyor: %s"
+msgstr "'%s' den '%s' e dönüştürücü açılamıyor"
 
 #: glib/gconvert.c:604 glib/gconvert.c:891 glib/giochannel.c:1315
 #: glib/giochannel.c:1357 glib/giochannel.c:2199 glib/gutf8.c:910
@@ -70,9 +70,9 @@ msgid "The hostname of the URI '%s' is invalid"
 msgstr "URI makine adı '%s' geçersiz"
 
 #: glib/gconvert.c:1552
-#, fuzzy, c-format
+#, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
-msgstr "%s adresi geçersiz şekilde escape edilmiş karakter içeriyor"
+msgstr "'%s' URI'si geçersiz çıkış (escape) karakterleri içeriyor"
 
 #: glib/gconvert.c:1622
 #, c-format
@@ -150,7 +150,7 @@ msgid "Conversion from character set `%s' to `%s' is not supported"
 msgstr "`%s' karakter kümesinden `%s' karakter kümesine dönüşüm desteklenmiyor"
 
 #: glib/giochannel.c:1147
-#, fuzzy, c-format
+#, c-format
 msgid "Could not open converter from `%s' to `%s': %s"
 msgstr "`%s' den `%s' e dönüştürücü açılamıyor: %s"
 
@@ -159,7 +159,6 @@ msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "g_io_channel_read_line_st içinde okuma yapılamıyor"
 
 #: glib/giochannel.c:1539 glib/giochannel.c:1796 glib/giochannel.c:1882
-#, fuzzy
 msgid "Leftover unconverted data in read buffer"
 msgstr "Okuma tampon belleğinde kalıntı çevrilmemiş veri"
 
