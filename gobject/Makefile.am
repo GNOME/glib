@@ -39,6 +39,14 @@ if OS_WIN32
 export_symbols = -export-symbols $(srcdir)/gobject.def
 
 install-libtool-import-lib:
+# 	Don't put the bug compatibility entries in the import lib!
+#	(Unfortunately the GNU linker doesn't yet understand the PRIVATE
+#	directive in .def files.)
+#
+	for entry in `grep PRIVATE gobject.def | sed -e 's/PRIVATE//'`; do \
+	  file=`nm -A .libs/libgobject-2.0.dll.a | grep -m 1 $$entry | cut -d: -f2`; \
+	  ar d .libs/libgobject-2.0.dll.a $$file; \
+	done
 	$(INSTALL) .libs/libgobject-2.0.dll.a $(DESTDIR)$(libdir)
 	$(INSTALL) $(srcdir)/gobject.def $(DESTDIR)$(libdir)/gobject-2.0.def
 
