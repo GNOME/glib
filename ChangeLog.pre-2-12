@@ -1,3 +1,10 @@
+1999-03-01  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gutils.c (g_get_any_init): Fixed yet another bloody
+	implementation of getpwuid_r on AIX. Thanks to Olaf Dietsche
+	<olaf.dietsche+list.gtk@netcologne.de>. I would like a configure
+	test better than that, but have no idea, how to do that easily.
+
 Sat Feb 27 01:18:47 1999  Tim Janik  <timj@gtk.org>
 
 	* ChangeLog: moved old ChangeLog to ChangeLog.pre-1-2, and started
