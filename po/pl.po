@@ -4,15 +4,15 @@
 # (:pserver:anonymous@cvs.gnome.pl:/gnomepl, puste hasło)
 # Jeśli masz jakiekolwiek uwagi odnoszące się do tłumaczenia lub chcesz
 # pomóc w jego rozwijaniu i pielęgnowaniu, napisz do nas na adres:
-# translators@gnome.pl
+# translators@gnomepl.org
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-07 11:51-0500\n"
+"POT-Creation-Date: 2005-01-10 15:18+0100\n"
 "PO-Revision-Date: 2003-01-02 01:22+0100\n"
-"Last-Translator: GNOME PL Team <translators@gnome.pl>\n"
+"Last-Translator: GNOME PL Team <translators@gnomepl.org>\n"
 "Language-Team: Polish <translation-team-pl@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -53,9 +53,10 @@ msgstr ""
 "Nie można przekonwertować napisu zastępczego \"%s\" na zestaw znaków \"%s\""
 
 #: glib/gconvert.c:1601
-#, fuzzy, c-format
+#, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
-msgstr "URI \"%s\" nie jest bezwzględnym URI, używającym schematu plikowego"
+msgstr ""
+"URI \"%s\" nie jest bezwzględnym URI, używającym schematu \"plikowego\""
 
 #: glib/gconvert.c:1611
 #, c-format
@@ -91,58 +92,58 @@ msgstr "Niepoprawna nazwa komputera"
 msgid "Error opening directory '%s': %s"
 msgstr "Wystąpił błąd przy otwieraniu katalogu \"%s\": %s"
 
-#: glib/gfileutils.c:490 glib/gfileutils.c:558
+#: glib/gfileutils.c:498 glib/gfileutils.c:566
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Nie można zaalokować %lu bajtów do odczytu pliku \"%s\""
 
-#: glib/gfileutils.c:503
+#: glib/gfileutils.c:511
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Wystąpił błąd przy odczycie pliku \"%s\": %s"
 
-#: glib/gfileutils.c:580
+#: glib/gfileutils.c:588
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Nie można odczytać z pliku \"%s\": %s"
 
-#: glib/gfileutils.c:629 glib/gfileutils.c:712
+#: glib/gfileutils.c:637 glib/gfileutils.c:720
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Nie można otworzyć pliku \"%s\": %s"
 
-#: glib/gfileutils.c:644
+#: glib/gfileutils.c:652
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr ""
 "Nie można uzyskać atrybutów pliku \"%s\": funkcja fstat() zwróciła błąd: %s"
 
-#: glib/gfileutils.c:676
+#: glib/gfileutils.c:684
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Nie można otworzyć pliku \"%s\": funkcja fdopen() zwróciła błąd: %s"
 
-#: glib/gfileutils.c:1003
+#: glib/gfileutils.c:1011
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Szablon \"%s\" jest niepoprawny, nie powinien on zawierać \"%s\""
 
-#: glib/gfileutils.c:1017
+#: glib/gfileutils.c:1025
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Szablon \"%s\" nie jest zakończony znakami XXXXXX"
 
-#: glib/gfileutils.c:1040
+#: glib/gfileutils.c:1048
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Nie można utworzyć pliku \"%s\": %s"
 
-#: glib/gfileutils.c:1416
+#: glib/gfileutils.c:1424
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Niepowodzenie podczas odczytu dowiązania symbolicznego \"%s\": %s"
 
-#: glib/gfileutils.c:1437
+#: glib/gfileutils.c:1445
 msgid "Symbolic links not supported"
 msgstr "Dowiązania symboliczne nie są obsługiwane"
 
@@ -220,19 +221,19 @@ msgstr ""
 "znak &, który nie miał oznaczać jednostki - należy go zapisać jako &amp;"
 
 #: glib/gmarkup.c:584
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
 msgstr ""
-"Nie można odczytać znaczenia \"%s\", w miejscu którego powinna wystąpić "
-"liczba, będąca częścią odniesienia do znaku (np. &#234;) - być może liczba "
-"jest zbyt duża"
+"Nie można przetworzyć \"%-.*s\", w miejscu którego powinna wystąpić liczba, "
+"będąca częścią odniesienia do znaku (np. &#234;) - być może liczba jest zbyt "
+"duża"
 
 #: glib/gmarkup.c:609
-#, fuzzy, c-format
+#, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
-msgstr "Odniesienie do znaku \"%s\" nie jest zapisem dozwolonego znaku"
+msgstr "Odniesienie do znaku \"%-.*s\" nie jest zapisem dozwolonego znaku"
 
 #: glib/gmarkup.c:624
 msgid "Empty character reference; should include a digit such as &#454;"
@@ -534,91 +535,97 @@ msgstr "Znak jest poza zakresem dopuszczalnym dla UTF-8"
 
 #: glib/goption.c:405
 msgid "Usage:"
-msgstr ""
+msgstr "Użycie:"
 
 #: glib/goption.c:405
 msgid "[OPTION...]"
-msgstr ""
+msgstr "[OPCJA...]"
 
 #: glib/goption.c:494
 msgid "Help Options:"
-msgstr ""
+msgstr "Opcje pomocy:"
 
 #: glib/goption.c:494
 msgid "Show help options"
-msgstr ""
+msgstr "Wyświetlenie opcji pomocy"
 
 #: glib/goption.c:498
 msgid "Show all help options"
-msgstr ""
+msgstr "Wyświetlenie wszystkich opcji pomocy"
 
 #: glib/goption.c:547
 msgid "Application Options:"
-msgstr ""
+msgstr "Opcje aplikacji:"
 
 #: glib/goption.c:586
 #, c-format
 msgid "Cannot parse integer value '%s' for --%s"
-msgstr ""
+msgstr "Nie można przetworzyć wartości liczbowej \"%s\" dla --%s"
 
 #: glib/goption.c:596
 #, c-format
 msgid "Integer value '%s' for %s out of range"
-msgstr ""
+msgstr "Wartość liczbowa \"%s\" dla %s jest z poza dopuszczalnego zakresu"
 
 #: glib/goption.c:1323
 #, c-format
 msgid "Unknown option %s"
-msgstr ""
+msgstr "Nieznana opcja %s"
 
 #: glib/gkeyfile.c:338
 msgid "Valid key file could not be found in data dirs"
-msgstr ""
+msgstr "Nie można odnaleźć poprawnego pliku klucza w katalogach danych"
 
 #: glib/gkeyfile.c:371
 msgid "Not a regular file"
-msgstr ""
+msgstr "To nie jest zwykły plik"
 
 #: glib/gkeyfile.c:379
 msgid "File is empty"
-msgstr ""
+msgstr "Plik jest pusty"
 
 #: glib/gkeyfile.c:685
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr ""
+"Plik klucza zawiera linię \"%s\", która nie jest parą klucz-wartość, grupą "
+"lub komentarzem"
 
 #: glib/gkeyfile.c:753
 msgid "Key file does not start with a group"
-msgstr ""
+msgstr "Plik klucza nie rozpoczyna się od grupy"
 
 #: glib/gkeyfile.c:796
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
-msgstr ""
+msgstr "Plik klucza zawiera nieobsługiwane kodowanie \"%s\""
 
 #: glib/gkeyfile.c:1000 glib/gkeyfile.c:1146 glib/gkeyfile.c:2151
 #: glib/gkeyfile.c:2216 glib/gkeyfile.c:2334 glib/gkeyfile.c:2402
 #: glib/gkeyfile.c:2587 glib/gkeyfile.c:2760 glib/gkeyfile.c:2815
 #, c-format
 msgid "Key file does not have group '%s'"
-msgstr ""
+msgstr "Plik klucza nie zawiera grupy \"%s\""
 
 #: glib/gkeyfile.c:1158
 #, c-format
 msgid "Key file does not have key '%s'"
-msgstr ""
+msgstr "Plik klucza nie zawiera klucza \"%s\""
 
 #: glib/gkeyfile.c:1259 glib/gkeyfile.c:1368
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr ""
+"Plik klucza zawiera klucz \"%s\" o wartości \"%s\", która nie jest zapisana "
+"w UTF-8"
 
 #: glib/gkeyfile.c:1277 glib/gkeyfile.c:1386 glib/gkeyfile.c:1759
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr ""
+"Plik klucza zawiera klucz \"%s\", który ma wartość niemożliwą do "
+"zinterpretowania."
 
 #: glib/gkeyfile.c:1976
 #, c-format
@@ -626,30 +633,32 @@ msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
 "interpreted."
 msgstr ""
+"Plik klucza zawiera klucz \"%s\" w grupie \"%s\", który ma wartość "
+"niemożliwą do zinterpretowania."
 
 #: glib/gkeyfile.c:2166 glib/gkeyfile.c:2349 glib/gkeyfile.c:2827
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
-msgstr ""
+msgstr "Plik klucza nie zawiera klucza \"%s\" w grupie \"%s\""
 
 #: glib/gkeyfile.c:3023
-#, fuzzy, c-format
+#, c-format
 msgid "Key file contains invalid escape sequence '%s'"
-msgstr "URI \"%s\" zawiera niewłaściwie zacytowane znaki"
+msgstr "Plik klucza zawiera niepoprawną sekwencję sterującą \"%s\""
 
 #: glib/gkeyfile.c:3047
 msgid "Key file contains escape character at end of line"
-msgstr ""
+msgstr "Plik klucza zawiera znak sterujący na końcu linii"
 
 #: glib/gkeyfile.c:3163
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
-msgstr ""
+msgstr "Nie można zinterpretować \"%s\" jako wartości liczbowej."
 
 #: glib/gkeyfile.c:3191
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
-msgstr ""
+msgstr "Nie można zinterpretować \"%s\" jako wartości logicznej."
 
 #~ msgid "Incorrect message size"
 #~ msgstr "Niepoprawny rozmiar danych"
