@@ -1,3 +1,9 @@
+2005-02-03  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/tmpl/quarks.sgml: Add a warning against
+	using g_quark_from_static_string() in dynamically
+	loaded modules. 
+
 2005-02-02  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/tmpl/misc_utils.sgml: 
