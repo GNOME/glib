@@ -1082,7 +1082,8 @@ fork_exec_with_pipes (gboolean              intermediate_child,
               else if (errno == ECHILD)
                 ; /* do nothing, child already reaped */
               else
-                g_warning ("waitpid() should not fail in %s", __FUNCTION__);
+                g_warning ("waitpid() should not fail in "
+			   "'fork_exec_with_pipes'");
             }
         }
       

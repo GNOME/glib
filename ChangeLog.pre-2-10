@@ -1,7 +1,10 @@
 2000-11-02  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gspawn.c: Include sys/select.h (some platforms need it for
-	select).
+	select). 
+
+	* gspawn.c: Changed unportable __FUNCTION__ to the verbatim
+	function name.
 
 2000-10-31  Tor Lillqvist  <tml@iki.fi>
 
