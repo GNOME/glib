@@ -27,11 +27,12 @@ in order to use the printf() functions.
 <!-- ##### FUNCTION g_strdup ##### -->
 <para>
 Duplicates a string.
+If @str is %NULL it returns %NULL.
 The returned string should be freed when no longer needed.
 </para>
 
 @str: the string to duplicate.
-@Returns: a newly-allocated copy of @str.
+@Returns: a newly-allocated copy of @str. 
 
 
 <!-- ##### FUNCTION g_strndup ##### -->
@@ -39,6 +40,7 @@ The returned string should be freed when no longer needed.
 Duplicates the first @n characters of a string, returning a newly-allocated
 buffer @n + 1 characters long which will always be nul-terminated.
 If @str is less than @n characters long the buffer is padded with nuls.
+If @str is %NULL it returns %NULL.
 The returned value should be freed when no longer needed.
 </para>
 

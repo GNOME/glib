@@ -1,3 +1,8 @@
+2003-05-28  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/tmpl/string_utils.sgml: Document that g_strdup() and
+	g_strndup() accept NULL.  (#106987, Christian Biere)
+
 2003-05-12  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/cross.sgml: Fix a duplicate id left by copy-and-paste.
