@@ -107,6 +107,8 @@ static GQuark	            quark_weak_refs = 0;
 static GParamSpecPool      *pspec_pool = NULL;
 static GObjectNotifyContext property_notify_context = { 0, };
 static gulong	            gobject_signals[LAST_SIGNAL] = { 0, };
+G_LOCK_DEFINE_STATIC (construct_objects_lock);
+static GSList *construct_objects = NULL;
 
 
 /* --- functions --- */
@@ -467,6 +469,11 @@ g_object_init (GObject *object)
   
   /* freeze object's notification queue, g_object_newv() preserves pairedness */
   g_object_notify_queue_freeze (object, &property_notify_context);
+
+  /* allow construct-only properties to be set */
+  G_LOCK (construct_objects_lock);
+  construct_objects = g_slist_prepend (construct_objects, object);
+  G_UNLOCK (construct_objects_lock);
   
 #ifdef	G_ENABLE_DEBUG
   IF_DEBUG (OBJECTS)
@@ -818,6 +825,16 @@ g_object_new (GType	   object_type,
   return object;
 }
 
+static gboolean
+object_in_construction (GObject *object)
+{
+  gboolean in_construction;
+  G_LOCK (construct_objects_lock);
+  in_construction = g_slist_find (construct_objects, object) != NULL;
+  G_UNLOCK (construct_objects_lock);
+  return in_construction;
+}
+
 gpointer
 g_object_newv (GType       object_type,
 	       guint       n_parameters,
@@ -922,6 +939,9 @@ g_object_newv (GType       object_type,
 
   /* construct object from construction parameters */
   object = class->constructor (object_type, n_total_cparams, cparams);
+  G_LOCK (construct_objects_lock);
+  construct_objects = g_slist_remove (construct_objects, object);
+  G_UNLOCK (construct_objects_lock);
 
   /* free construction values */
   g_free (cparams);
@@ -1022,7 +1042,7 @@ g_object_constructor (GType                  type,
 
   /* create object */
   object = (GObject*) g_type_create_instance (type);
-
+  
   /* set construction parameters */
   if (n_construct_properties)
     {
@@ -1087,7 +1107,7 @@ g_object_set_valist (GObject	 *object,
 		     G_OBJECT_TYPE_NAME (object));
 	  break;
 	}
-      if (pspec->flags & G_PARAM_CONSTRUCT_ONLY)
+      if ((pspec->flags & G_PARAM_CONSTRUCT_ONLY) && !object_in_construction (object))
         {
           g_warning ("%s: construct property \"%s\" for object `%s' can't be set after construction",
                      G_STRFUNC, pspec->name, G_OBJECT_TYPE_NAME (object));
@@ -1235,7 +1255,7 @@ g_object_set_property (GObject	    *object,
                G_STRFUNC,
                pspec->name,
                G_OBJECT_TYPE_NAME (object));
-  else if (pspec->flags & G_PARAM_CONSTRUCT_ONLY)
+  else if ((pspec->flags & G_PARAM_CONSTRUCT_ONLY) && !object_in_construction (object))
     g_warning ("%s: construct property \"%s\" for object `%s' can't be set after construction",
                G_STRFUNC, pspec->name, G_OBJECT_TYPE_NAME (object));
   else
