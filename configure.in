@@ -1261,6 +1261,13 @@ if test "x$want_threads" = xyes || test "x$want_threads" = xposix \
                          pthread_mutex_init (&m, pthread_mutexattr_default);],
 			have_threads=dce)
         fi
+	# Tru64Unix requires -pthread to find pthread.h. See #103020
+	CPPFLAGS="$CPPFLAGS -pthread"
+	if test "x$have_threads" = xno; then
+	AC_TRY_COMPILE([#include <pthread.h>],
+		       [pthread_mutex_t m = PTHREAD_MUTEX_INITIALIZER;],
+		       have_threads=posix)
+        fi
 	CPPFLAGS="$glib_save_CPPFLAGS"
 fi
 if test "x$want_threads" = xyes || test "x$want_threads" = xwin32; then
