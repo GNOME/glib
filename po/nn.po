@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-03-16 13:10-0500\n"
+"POT-Creation-Date: 2004-04-30 09:07-0400\n"
 "PO-Revision-Date: 2003-12-28 12:44+0100\n"
 "Last-Translator: Åsmund Skjæveland <aasmunds@fys.uio.no>\n"
 "Language-Team: Norwegian Nynorsk <i18n-nn@lister.ping.uio.no>\n"
@@ -23,8 +23,8 @@ msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Konvertering frå teiknsettet «%s» til «%s» er ikkje støtta"
 
 #: glib/gconvert.c:406
-#, c-format
-msgid "Could not open converter from '%s' to '%s': %s"
+#, fuzzy, c-format
+msgid "Could not open converter from '%s' to '%s'"
 msgstr "Kunne ikkje opna konverterar frå «%s» til «%s»: %s"
 
 #: glib/gconvert.c:604 glib/gconvert.c:891 glib/giochannel.c:1315

@@ -1,7 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 
 INCLUDES = 			\
-	-DLIBDIR=\"$(libdir)\"
+	-DLIBDIR=\"$(libdir)\" -I$(top_srcdir)
 
 noinst_LTLIBRARIES = libcharset.la
 

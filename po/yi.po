@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-03-16 13:10-0500\n"
+"POT-Creation-Date: 2004-04-30 09:07-0400\n"
 "PO-Revision-Date: 2003-03-19\n"
 "Last-Translator: Raphael Finkel <raphael@cs.uky.edu>\n"
 "Language-Team: Yiddish <raphael@cs.uky.edu>\n"
@@ -20,8 +20,8 @@ msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "פֿאַרװאַנדלונג פֿון קאָדירונג %s צו %s ניט געשטיצט"
 
 #: glib/gconvert.c:406
-#, c-format
-msgid "Could not open converter from '%s' to '%s': %s"
+#, fuzzy, c-format
+msgid "Could not open converter from '%s' to '%s'"
 msgstr "ניט געקענט עפֿענען פֿאַרװאַנדלער פֿון %s צו %s: %s"
 
 #: glib/gconvert.c:604 glib/gconvert.c:891 glib/giochannel.c:1315

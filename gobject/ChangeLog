@@ -1,3 +1,7 @@
+2004-04-30  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.4.1 ===
+
 2004-04-22  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib-mkenums.in: Actually convert escape chars in 

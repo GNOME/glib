@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-03-16 13:10-0500\n"
+"POT-Creation-Date: 2004-04-30 09:07-0400\n"
 "PO-Revision-Date: 2004-02-16 20:30-0600\n"
 "Last-Translator: Dinesh Nadarajah <dinesh_list@sbcglobal.net>\n"
 "Language-Team: Tamil <tamilinix@yahoogroups.com>\n"
@@ -20,8 +20,8 @@ msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "வரியுரு வகை `%s' இலிருந்து `%s' க்கு மாற்றுவதற்கு ஆதரவளிப்பு கிடையாது"
 
 #: glib/gconvert.c:406
-#, c-format
-msgid "Could not open converter from '%s' to '%s': %s"
+#, fuzzy, c-format
+msgid "Could not open converter from '%s' to '%s'"
 msgstr "`%s' இலிருந்து `%s' க்கு மாற்றும் நிலை மாற்றியைத் திறக்க முடியவில்லை: %s"
 
 #: glib/gconvert.c:604 glib/gconvert.c:891 glib/giochannel.c:1315

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-03-16 13:10-0500\n"
+"POT-Creation-Date: 2004-04-30 09:07-0400\n"
 "PO-Revision-Date: 2002-12-19 01:04+0200\n"
 "Last-Translator: Artis Trops <hornet@navigator.lv>\n"
 "Language-Team: Latvian <ll10nt@os.lv>\n"
@@ -20,8 +20,8 @@ msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Konversija no rakstzīmju kopas '%s' uz '%s' nav atbalstīta"
 
 #: glib/gconvert.c:406
-#, c-format
-msgid "Could not open converter from '%s' to '%s': %s"
+#, fuzzy, c-format
+msgid "Could not open converter from '%s' to '%s'"
 msgstr "Nevarēju atvērt konvertātoru no '%s' uz '%s': %s"
 
 #: glib/gconvert.c:604 glib/gconvert.c:891 glib/giochannel.c:1315

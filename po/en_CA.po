@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-04-24 01:01-0400\n"
+"POT-Creation-Date: 2004-04-30 09:07-0400\n"
 "PO-Revision-Date: 2004-04-24 16:20-0500\n"
 "Last-Translator: Adam Weinberger <adamw@gnome.org>\n"
 "Language-Team: English/Canada <adamw@gnome.org>\n"
@@ -502,4 +502,3 @@ msgstr "Invalid sequence in conversion input"
 #: glib/gutf8.c:1376 glib/gutf8.c:1472
 msgid "Character out of range for UTF-16"
 msgstr "Character out of range for UTF-16"
-

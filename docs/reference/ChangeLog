@@ -1,3 +1,7 @@
+2004-04-30  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.4.1 ===
+
 2004-04-23  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/running.sgml: Document LIBCHARSET_ALIAS_DIR.

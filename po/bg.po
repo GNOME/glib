@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-03-16 13:10-0500\n"
+"POT-Creation-Date: 2004-04-30 09:07-0400\n"
 "PO-Revision-Date: 2003-01-14 12:38+0200\n"
 "Last-Translator: Alexander Shopov <al_shopov@yahoo.com>\n"
 "Language-Team: Bulgarian <dict@linux.zonebg.com>\n"
@@ -22,8 +22,8 @@ msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Превръщането от набора символи \"%s\" към \"%s\" не се поддържа"
 
 #: glib/gconvert.c:406
-#, c-format
-msgid "Could not open converter from '%s' to '%s': %s"
+#, fuzzy, c-format
+msgid "Could not open converter from '%s' to '%s'"
 msgstr "Не мога да отворя конвертор от \"%s\" към \"%s\": %s"
 
 #: glib/gconvert.c:604 glib/gconvert.c:891 glib/giochannel.c:1315

@@ -1,7 +1,7 @@
 General Information
 ===================
 
-This is GLib version 2.4.0. GLib is the low-level core
+This is GLib version 2.4.1. GLib is the low-level core
 library that forms the basis for projects such as GTK+ and GNOME. It
 provides data structure handling for C, portability wrappers, and
 interfaces for such runtime functionality as an event loop, threads,

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib (HEAD)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-04-26 14:45+0200\n"
+"POT-Creation-Date: 2004-04-30 09:07-0400\n"
 "PO-Revision-Date: 2004-04-26 22:40+0200\n"
 "Last-Translator: Tino Meinen <a.t.meinen@chello.nl>\n"
 "Language-Team: Dutch <vertaling@nl.linux.org>\n"
@@ -486,7 +486,8 @@ msgstr "Uitvoeren van dochterproces \"%s\" mislukt (%s)"
 #: glib/gspawn.c:1237
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
-msgstr "Doorsluizen van invoer of uitvoer van een dochterproces is mislukt (%s)"
+msgstr ""
+"Doorsluizen van invoer of uitvoer van een dochterproces is mislukt (%s)"
 
 #: glib/gspawn.c:1246
 #, c-format

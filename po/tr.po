@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-03-16 13:10-0500\n"
+"POT-Creation-Date: 2004-04-30 09:07-0400\n"
 "PO-Revision-Date: 2004-03-12 02:28+0200\n"
 "Last-Translator: Onur Can ÇAKMAK <onur@uzem.itu.edu.tr>\n"
 "Language-Team: Turkish <gnome-turk@gnome.org>\n"
@@ -22,8 +22,8 @@ msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "`%s' karakter kümesinden `%s' karakter kümesine dönüşüm desteklenmiyor"
 
 #: glib/gconvert.c:406
-#, c-format
-msgid "Could not open converter from '%s' to '%s': %s"
+#, fuzzy, c-format
+msgid "Could not open converter from '%s' to '%s'"
 msgstr "'%s' den '%s' e dönüştürücü açılamıyor: %s"
 
 #: glib/gconvert.c:604 glib/gconvert.c:891 glib/giochannel.c:1315

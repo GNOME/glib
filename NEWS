@@ -1,3 +1,15 @@
+Overview of Changes from GLib 2.4.0 to GLib 2.4.1
+=================================================
+
+* Win32 bug fixes [Tor Lillqvist, Roger Leigh, John Ehresman]
+* Miscellaneous bug and portability fixes [Owen Taylor,
+  Matthias Clasen, Jonas Jonsson, Christian Krause,
+  Nickolay V. Shmyrev, Christophe Saout, Philippe Blain,
+  Piotr Klaban]
+* Documentation updates [Matthias]
+* New and updated translations (ca,cs,cy,el,en_CA,en_GB,es,eu,fi,
+  fr,gu,he,id,nl,pt,pl,ru,sr,sr@ije,sr@Latn,sv,uk)
+
 Overview of Changes from GLib 2.3.6 to GLib 2.4.0
 =================================================
 

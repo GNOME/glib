@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-03-18 03:42+0100\n"
+"POT-Creation-Date: 2004-04-30 09:07-0400\n"
 "PO-Revision-Date: 2004-03-18 09:16+0100\n"
 "Last-Translator: Stanislav Visnovsky <visnovsky@kde.org>\n"
 "Language-Team: Slovak <sk-i18n@linux.sk>\n"
@@ -17,7 +17,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.3.1\n"
-"Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
+"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: glib/gconvert.c:402
 #, c-format
@@ -25,8 +26,8 @@ msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Prevod zo znakovej sady '%s' do '%s' nie je podporovaný"
 
 #: glib/gconvert.c:406
-#, c-format
-msgid "Could not open converter from '%s' to '%s': %s"
+#, fuzzy, c-format
+msgid "Could not open converter from '%s' to '%s'"
 msgstr "Nepodarilo sa otvoriť program pre prevod '%s' do '%s': %s"
 
 #: glib/gconvert.c:604 glib/gconvert.c:891 glib/giochannel.c:1315
@@ -181,8 +182,10 @@ msgid "Error on line %d: %s"
 msgstr "Chyba na riadku %d: %s"
 
 #: glib/gmarkup.c:412
-msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
-msgstr "Nájdená prázdna entita '&;', platné entity sú: &amp; &quot; &lt; &gt; &apos;"
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgstr ""
+"Nájdená prázdna entita '&;', platné entity sú: &amp; &quot; &lt; &gt; &apos;"
 
 #: glib/gmarkup.c:422
 #, c-format
@@ -228,7 +231,8 @@ msgstr "Odkaz na znak '%s' nie je kódom povoleného znaku"
 
 #: glib/gmarkup.c:600
 msgid "Empty character reference; should include a digit such as &#454;"
-msgstr "Prázdny odkaz na znak. Odkaz by mal obsahovať číslice, napríklad &#434;"
+msgstr ""
+"Prázdny odkaz na znak. Odkaz by mal obsahovať číslice, napríklad &#434;"
 
 #: glib/gmarkup.c:610
 msgid ""
@@ -273,7 +277,8 @@ msgstr ""
 
 #: glib/gmarkup.c:1172
 #, c-format
-msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgid ""
+"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "Prebytočný znak '%s'. Bol očakávaný znak '=' za menom atribútu '%s' elementu "
 "'%s'"
@@ -303,14 +308,16 @@ msgstr ""
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
-msgstr "'%s' nie je platný znak po znakoch '</'. '%s' nesmie začínať meno elementu"
+msgstr ""
+"'%s' nie je platný znak po znakoch '</'. '%s' nesmie začínať meno elementu"
 
 #: glib/gmarkup.c:1474
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
-msgstr "'%s' nie je platný znak po koncovom mene elementu '%s'. Povolený znak je '>'"
+msgstr ""
+"'%s' nie je platný znak po koncovom mene elementu '%s'. Povolený znak je '>'"
 
 #: glib/gmarkup.c:1485
 #, c-format
@@ -344,7 +351,8 @@ msgstr ""
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
 "the tag <%s/>"
-msgstr "Dokument neočakávane skončil, očakával sa znak '>' pre ukončenie značky <%s>"
+msgstr ""
+"Dokument neočakávane skončil, očakával sa znak '>' pre ukončenie značky <%s>"
 
 #: glib/gmarkup.c:1677
 msgid "Document ended unexpectedly inside an element name"
@@ -362,7 +370,8 @@ msgstr "Dokument neočakávane skončil v začiatočnej značke elementu."
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
-msgstr "Dokument neočakávane skončil po '=' za menom atribútu, chýba hodnota atribútu"
+msgstr ""
+"Dokument neočakávane skončil po '=' za menom atribútu, chýba hodnota atribútu"
 
 #: glib/gmarkup.c:1700
 msgid "Document ended unexpectedly while inside an attribute value"
@@ -375,7 +384,8 @@ msgstr "Dokument neočakávane skončil v koncovej značke pre element '%s'"
 
 #: glib/gmarkup.c:1721
 msgid "Document ended unexpectedly inside a comment or processing instruction"
-msgstr "Dokument neočakávane skončil v komentári alebo inštrukcii pre spracovanie"
+msgstr ""
+"Dokument neočakávane skončil v komentári alebo inštrukcii pre spracovanie"
 
 #: glib/gshell.c:72
 msgid "Quoted text doesn't begin with a quotation mark"
@@ -393,7 +403,8 @@ msgstr "Text skončil hneď po znaku '\\'.  (Text bol '%s')"
 #: glib/gshell.c:537
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
-msgstr "Text skončil pred nájdením zodpovedajúcej úvodzovky pre %c. (Text bol '%s')"
+msgstr ""
+"Text skončil pred nájdením zodpovedajúcej úvodzovky pre %c. (Text bol '%s')"
 
 #: glib/gshell.c:549
 msgid "Text was empty (or contained only whitespace)"
@@ -492,4 +503,3 @@ msgstr "Neplatná sekvencia na vstupe prevodu"
 #: glib/gutf8.c:1376 glib/gutf8.c:1472
 msgid "Character out of range for UTF-16"
 msgstr "Znak mimo rozsah UTF-16"
-

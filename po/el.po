@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: el\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-04-25 12:00+0300\n"
+"POT-Creation-Date: 2004-04-30 09:07-0400\n"
 "PO-Revision-Date: 2004-04-25 12:01+0300\n"
 "Last-Translator: Kostas Papadimas <pkst@gnome.org>\n"
 "Language-Team: Greek <nls@tux.hellug.gr>\n"
@@ -58,7 +58,8 @@ msgstr "Αδυναμία μετατροπής fallback '%s' σε codeset '%s'"
 #: glib/gconvert.c:1497
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
-msgstr "Το URI '%s' δεν είναι ένα απόλυτο URI με την χρήση του σχήματος αρχείου"
+msgstr ""
+"Το URI '%s' δεν είναι ένα απόλυτο URI με την χρήση του σχήματος αρχείου"
 
 #: glib/gconvert.c:1507
 #, c-format
@@ -196,7 +197,8 @@ msgid "Error on line %d: %s"
 msgstr "Σφάλμα στη γραμμή %d: %s"
 
 #: glib/gmarkup.c:412
-msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "Κενή καταχώρηση  '&;' , έγκυρες οντότητες είναι: &amp; &quot; &lt; &gt; "
 "&apos; "
@@ -296,7 +298,8 @@ msgstr ""
 
 #: glib/gmarkup.c:1172
 #, c-format
-msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgid ""
+"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "Περίεργος χαρακτήρας  '%s',  αναμενόταν ένα  '=' μετά το όνομα γνωρίσματος '%"
 "s' του στοιχείου  '%s'"
@@ -404,7 +407,8 @@ msgstr "Το έγγραφο τερματίστηκε απρόσμενα μέσα
 #: glib/gmarkup.c:1715
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
-msgstr "Το έγγραφο τερματίστηκε απρόσμενα μέσα σε tag κλεισίματος για στοιχείο '%s'"
+msgstr ""
+"Το έγγραφο τερματίστηκε απρόσμενα μέσα σε tag κλεισίματος για στοιχείο '%s'"
 
 #: glib/gmarkup.c:1721
 msgid "Document ended unexpectedly inside a comment or processing instruction"
@@ -511,7 +515,8 @@ msgstr "Αποτυχία εκτέλεσης θυγατρικής διεργασ�
 #: glib/gspawn.c:1237
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
-msgstr "Αποτυχία προώθησης αποτελέσματος ή εισόδου της θυγατρικής διεργασίας (%s)"
+msgstr ""
+"Αποτυχία προώθησης αποτελέσματος ή εισόδου της θυγατρικής διεργασίας (%s)"
 
 #: glib/gspawn.c:1246
 #, c-format
@@ -550,4 +555,3 @@ msgstr "Ο χαρακτήρας είναι έξω από την εμβέλεια
 
 #~ msgid "Channel set flags unsupported"
 #~ msgstr "Channel set flags δεν υποστηρίζεται"
-

@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.he\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-03-23 03:41+0100\n"
+"POT-Creation-Date: 2004-04-30 09:07-0400\n"
 "PO-Revision-Date: 2004-03-25 23:13+0000\n"
 "Last-Translator: Gil Osher <dolfin@rpg.org.il>\n"
 "Language-Team: Hebrew <he@li.org>\n"
@@ -28,8 +28,8 @@ msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "אין תמיכה בהמרה ממערך תוים '%s' ל '%s'"
 
 #: glib/gconvert.c:406
-#, c-format
-msgid "Could not open converter from '%s' to '%s': %s"
+#, fuzzy, c-format
+msgid "Could not open converter from '%s' to '%s'"
 msgstr "לא ניתן לפתוח ממיר מ-'%s' ל-'%s': %s"
 
 #: glib/gconvert.c:604 glib/gconvert.c:891 glib/giochannel.c:1315
@@ -184,7 +184,8 @@ msgid "Error on line %d: %s"
 msgstr "שגיאה בשורה %d: %s"
 
 #: glib/gmarkup.c:412
-msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr "ישות '&;' ריקה נמצאה; ישויות חוקיות הן: &amp; &quot; &lt; &gt; &apos;"
 
 #: glib/gmarkup.c:422
@@ -274,7 +275,8 @@ msgstr "תו מוזר '%s', מצפה לתו '>' כדי לסיים את התחל�
 
 #: glib/gmarkup.c:1172
 #, c-format
-msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgid ""
+"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr "תו מוזר '%s', מצפה ל-'=' לאחר שם מאפיין '%s' של אלמנט '%s'"
 
 #: glib/gmarkup.c:1213
@@ -358,7 +360,8 @@ msgstr "המסמך הסתיים בצורה לא צפויה בתוך תג פתי�
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
-msgstr "המסמך הסתיים בצורה לא צפויה לאחר תו השווה שבא לאחר שם מאפיין; אין ערך למאפיין"
+msgstr ""
+"המסמך הסתיים בצורה לא צפויה לאחר תו השווה שבא לאחר שם מאפיין; אין ערך למאפיין"
 
 #: glib/gmarkup.c:1700
 msgid "Document ended unexpectedly while inside an attribute value"
@@ -486,4 +489,3 @@ msgstr "רצף לא תקף בקלט המרה"
 #: glib/gutf8.c:1376 glib/gutf8.c:1472
 msgid "Character out of range for UTF-16"
 msgstr "מערך התווים מחוץ לתחום UTF-16"
-
