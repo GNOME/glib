@@ -193,7 +193,7 @@ gboolean              g_setenv             (const gchar *variable,
 					    const gchar *value,
 					    gboolean     overwrite);
 void                  g_unsetenv           (const gchar *variable);
-
+gchar**               g_listenv            (void);
 
 /* we try to provide a usefull equivalent for ATEXIT if it is
  * not defined, but use is actually abandoned. people should

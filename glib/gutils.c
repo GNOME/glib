@@ -1215,12 +1215,12 @@ g_setenv (const gchar *variable,
 }
 
 #ifndef G_OS_WIN32
-#ifndef HAVE_UNSETENV     
+
 /* According to the Single Unix Specification, environ is not in 
  * any system header, although unistd.h often declares it.
  */
 extern char **environ;
-#endif
+
 #endif
            
 /**
@@ -1310,6 +1310,36 @@ g_unsetenv (const gchar *variable)
     }
 
 #endif /* G_OS_WIN32 */
+}
+
+/**
+ * g_listenv:
+ *
+ * Gets the names of all variables set in the environment.
+ * 
+ * Return: a NUL-terminated list of strings which must be freed
+ * with g_strfreev().
+ *
+ * Since: 2.8
+ */
+gchar **
+g_listenv (void)
+{
+  gchar **result, *eq;
+  gint len, i;
+
+  len = g_strv_length (environ);
+  result = g_new0 (gchar *, len + 1);
+  
+  for (i = 0; i < len; i++)
+    {
+      eq = strchr (environ[i], '=');
+      result[i] = g_strndup (environ[i], eq - environ[i]);
+    }
+
+  result[len] = NULL;
+
+  return result;
 }
 
 G_LOCK_DEFINE_STATIC (g_utils_global);

@@ -372,6 +372,7 @@ g_key_file_set_string_list
 g_key_file_set_value
 g_key_file_to_data G_GNUC_MALLOC
 glib_check_version
+g_listenv
 g_list_alloc
 g_list_append
 g_list_concat

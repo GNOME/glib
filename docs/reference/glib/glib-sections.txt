@@ -1283,6 +1283,7 @@ g_set_prgname
 g_getenv
 g_setenv
 g_unsetenv
+g_listenv
 g_get_user_name
 g_get_real_name
 g_get_user_cache_dir

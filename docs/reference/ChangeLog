@@ -1,3 +1,7 @@
+2005-02-07  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/glib-sections.txt: Add g_listenv.
+
 2005-02-04  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/tmpl/linked_lists_double.sgml: 

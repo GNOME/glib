@@ -1,3 +1,10 @@
+2005-02-07  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/glib.symbols: 
+	* glib/gutils.h: 
+	* glib/gutils.c (g_listenv): New function to list all 
+	environment variables.  (#166327, Hans Petter Jansson)
+
 2005-02-07  Tor Lillqvist  <tml@novell.com>
 
 	* glib-zip.in: Add gmodule-no-export-2.0.pc.
