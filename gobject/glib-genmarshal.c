@@ -144,6 +144,8 @@ complete_in_arg (InArgument *iarg)
     { "UINT",		"UINT",		"guint",	"g_value_get_uint",	},
     { "LONG",		"LONG",		"glong",	"g_value_get_long",	},
     { "ULONG",		"ULONG",	"gulong",	"g_value_get_ulong",	},
+    { "INT64",		"INT64",	"gint64",       "g_value_get_int64",	},
+    { "UINT64",		"UINT64",	"guint64",	"g_value_get_uint64",	},
     { "ENUM",		"ENUM",		"gint",		"g_value_get_enum",	},
     { "FLAGS",		"FLAGS",	"guint",	"g_value_get_flags",	},
     { "FLOAT",		"FLOAT",	"gfloat",	"g_value_get_float",	},
@@ -153,10 +155,6 @@ complete_in_arg (InArgument *iarg)
     { "BOXED",		"BOXED",	"gpointer",	"g_value_get_boxed",	},
     { "POINTER",	"POINTER",	"gpointer",	"g_value_get_pointer",	},
     { "OBJECT",		"OBJECT",	"gpointer",	"g_value_get_object",	},
-#ifdef G_HAVE_GINT64
-    { "INT64",		"INT64",	"gint64",       "g_value_get_int64",	},
-    { "UINT64",		"UINT64",	"guint64",	"g_value_get_uint64",	},
-#endif /* G_HAVE_GINT64 */
     /* deprecated: */
     { "NONE",		"VOID",		"void",		NULL,			},
     { "BOOL",		"BOOLEAN",	"gboolean",	"g_value_get_boolean",	},
@@ -191,6 +189,8 @@ complete_out_arg (OutArgument *oarg)
     { "UINT",		"UINT",		"guint",	"g_value_set_uint",	NULL,			NULL          },
     { "LONG",		"LONG",		"glong",	"g_value_set_long",	NULL,			NULL          },
     { "ULONG",		"ULONG",	"gulong",	"g_value_set_ulong",	NULL,			NULL          },
+    { "INT64",		"INT64",	"gint64",	"g_value_set_int64",	NULL,			NULL          },
+    { "UINT64",		"UINT64",	"guint64",	"g_value_set_uint64",	NULL,			NULL          },
     { "ENUM",		"ENUM",		"gint",		"g_value_set_enum",	NULL,			NULL          },
     { "FLAGS",		"FLAGS",	"guint",	"g_value_set_flags",	NULL,			NULL          },
     { "FLOAT",		"FLOAT",	"gfloat",	"g_value_set_float",	NULL,			NULL          },
@@ -200,10 +200,6 @@ complete_out_arg (OutArgument *oarg)
     { "BOXED",		"BOXED",	"gpointer",	"g_value_set_boxed_take_ownership", NULL,	NULL          },
     { "POINTER",	"POINTER",	"gpointer",	"g_value_set_pointer",	NULL,			NULL          },
     { "OBJECT",		"OBJECT",	"GObject*",	"g_value_set_object",	"g_object_unref",	"NULL !="     },
-#ifdef G_HAVE_GINT64
-    { "INT64",		"INT64",	"gint64",	"g_value_set_int64",	NULL,			NULL          },
-    { "UINT64",		"UINT64",	"guint64",	"g_value_set_uint64",	NULL,			NULL          },
-#endif /* G_HAVE_GINT64 */
     /* deprecated: */
     { "NONE",		"VOID",		"void",		NULL,			NULL,			NULL          },
     { "BOOL",		"BOOLEAN",	"gboolean",	"g_value_set_boolean",	NULL,			NULL          }

@@ -129,6 +129,46 @@ value_lcopy_long (const GValue *value,
 }
 
 static void
+value_init_int64 (GValue *value)
+{
+  value->data[0].v_int64 = 0;
+}
+
+static void
+value_copy_int64 (const GValue *src_value,
+		 GValue       *dest_value)
+{
+  dest_value->data[0].v_int64 = src_value->data[0].v_int64;
+}
+
+static gchar*
+value_collect_int64 (GValue      *value,
+		    guint        n_collect_values,
+		    GTypeCValue *collect_values,
+		    guint        collect_flags)
+{
+  value->data[0].v_int64 = collect_values[0].v_int64;
+  
+  return NULL;
+}
+
+static gchar*
+value_lcopy_int64 (const GValue *value,
+		  guint         n_collect_values,
+		  GTypeCValue  *collect_values,
+		  guint         collect_flags)
+{
+  gint64 *int64_p = collect_values[0].v_pointer;
+  
+  if (!int64_p)
+    return g_strdup_printf ("value location for `%s' passed as NULL", G_VALUE_TYPE_NAME (value));
+  
+  *int64_p = value->data[0].v_int64;
+  
+  return NULL;
+}
+
+static void
 value_init_float (GValue *value)
 {
   value->data[0].v_float = 0.0;
@@ -412,6 +452,26 @@ g_value_types_init (void)  /* sync with gtype.c */
     g_assert (type == G_TYPE_ULONG);
   }
   
+  /* G_TYPE_INT64 / G_TYPE_UINT64
+   */
+  {
+    static const GTypeValueTable value_table = {
+      value_init_int64,		/* value_init */
+      NULL,			/* value_free */
+      value_copy_int64,		/* value_copy */
+      NULL,                     /* value_peek_pointer */
+      "q",			/* collect_format */
+      value_collect_int64,	/* collect_value */
+      "p",			/* lcopy_format */
+      value_lcopy_int64,		/* lcopy_value */
+    };
+    info.value_table = &value_table;
+    type = g_type_register_fundamental (G_TYPE_INT64, "gint64", &info, &finfo, 0);
+    g_assert (type == G_TYPE_INT64);
+    type = g_type_register_fundamental (G_TYPE_UINT64, "guint64", &info, &finfo, 0);
+    g_assert (type == G_TYPE_UINT64);
+  }
+  
   /* G_TYPE_FLOAT
    */
   {
@@ -607,6 +667,40 @@ g_value_get_ulong (const GValue *value)
 }
 
 void
+g_value_set_int64 (GValue *value,
+		  gint64	  v_int64)
+{
+  g_return_if_fail (G_VALUE_HOLDS_INT64 (value));
+  
+  value->data[0].v_int64 = v_int64;
+}
+
+gint64
+g_value_get_int64 (const GValue *value)
+{
+  g_return_val_if_fail (G_VALUE_HOLDS_INT64 (value), 0);
+  
+  return value->data[0].v_int64;
+}
+
+void
+g_value_set_uint64 (GValue *value,
+		   guint64  v_uint64)
+{
+  g_return_if_fail (G_VALUE_HOLDS_UINT64 (value));
+  
+  value->data[0].v_uint64 = v_uint64;
+}
+
+guint64
+g_value_get_uint64 (const GValue *value)
+{
+  g_return_val_if_fail (G_VALUE_HOLDS_UINT64 (value), 0);
+  
+  return value->data[0].v_uint64;
+}
+
+void
 g_value_set_float (GValue *value,
 		   gfloat  v_float)
 {
@@ -710,42 +804,6 @@ g_value_get_pointer (const GValue *value)
 
   return value->data[0].v_pointer;
 }
-
-#ifdef G_HAVE_GINT64
-void
-g_value_set_int64 (GValue *value,
-		  gint64 v_int64)
-{
-  g_return_if_fail (G_VALUE_HOLDS_INT64 (value));
-
-  value->data[0].v_int64 = v_int64;
-}
-
-gint64
-g_value_get_int64 (const GValue *value)
-{
-  g_return_val_if_fail (G_VALUE_HOLDS_INT64 (value), 0);
-
-  return value->data[0].v_int64;
-}
-
-void
-g_value_set_uint64 (GValue *value,
-		   guint64 v_uint64)
-{
-  g_return_if_fail (G_VALUE_HOLDS_UINT64 (value));
-
-  value->data[0].v_uint64 = v_uint64;
-}
-
-guint64
-g_value_get_uint64 (const GValue *value)
-{
-  g_return_val_if_fail (G_VALUE_HOLDS_UINT64 (value), 0);
-
-  return value->data[0].v_uint64;
-}
-#endif /* G_HAVE_GINT64 */
 
 /* need extra includes for g_strdup_value_contents() ;( */
 #include "gobject.h"

@@ -44,6 +44,10 @@ G_BEGIN_DECLS
 #define G_PARAM_SPEC_LONG(pspec)           (G_TYPE_CHECK_INSTANCE_CAST ((pspec), G_TYPE_PARAM_LONG, GParamSpecLong))
 #define G_IS_PARAM_SPEC_ULONG(pspec)       (G_TYPE_CHECK_INSTANCE_TYPE ((pspec), G_TYPE_PARAM_ULONG))
 #define G_PARAM_SPEC_ULONG(pspec)          (G_TYPE_CHECK_INSTANCE_CAST ((pspec), G_TYPE_PARAM_ULONG, GParamSpecULong))
+#define G_IS_PARAM_SPEC_INT64(pspec)        (G_TYPE_CHECK_INSTANCE_TYPE ((pspec), G_TYPE_PARAM_INT64))
+#define G_PARAM_SPEC_INT64(pspec)           (G_TYPE_CHECK_INSTANCE_CAST ((pspec), G_TYPE_PARAM_INT64, GParamSpecInt64))
+#define G_IS_PARAM_SPEC_UINT64(pspec)       (G_TYPE_CHECK_INSTANCE_TYPE ((pspec), G_TYPE_PARAM_UINT64))
+#define G_PARAM_SPEC_UINT64(pspec)          (G_TYPE_CHECK_INSTANCE_CAST ((pspec), G_TYPE_PARAM_UINT64, GParamSpecUInt64))
 #define G_PARAM_SPEC_UNICHAR(pspec)        (G_TYPE_CHECK_INSTANCE_CAST ((pspec), G_TYPE_PARAM_UNICHAR, GParamSpecUnichar))
 #define G_IS_PARAM_SPEC_UNICHAR(pspec)     (G_TYPE_CHECK_INSTANCE_TYPE ((pspec), G_TYPE_PARAM_UNICHAR))
 #define G_IS_PARAM_SPEC_ENUM(pspec)        (G_TYPE_CHECK_INSTANCE_TYPE ((pspec), G_TYPE_PARAM_ENUM))
@@ -78,6 +82,8 @@ typedef struct _GParamSpecInt        GParamSpecInt;
 typedef struct _GParamSpecUInt       GParamSpecUInt;
 typedef struct _GParamSpecLong       GParamSpecLong;
 typedef struct _GParamSpecULong      GParamSpecULong;
+typedef struct _GParamSpecInt64      GParamSpecInt64;
+typedef struct _GParamSpecUInt64     GParamSpecUInt64;
 typedef struct _GParamSpecUnichar    GParamSpecUnichar;
 typedef struct _GParamSpecEnum       GParamSpecEnum;
 typedef struct _GParamSpecFlags      GParamSpecFlags;
@@ -90,10 +96,6 @@ typedef struct _GParamSpecPointer    GParamSpecPointer;
 typedef struct _GParamSpecValueArray GParamSpecValueArray;
 typedef struct _GParamSpecClosure    GParamSpecClosure;
 typedef struct _GParamSpecObject     GParamSpecObject;
-#ifdef G_HAVE_GINT64
-typedef struct _GParamSpecInt64      GParamSpecInt64;
-typedef struct _GParamSpecUInt64     GParamSpecUInt64;
-#endif /* G_HAVE_GINT64 */
 
 struct _GParamSpecChar
 {
@@ -148,6 +150,22 @@ struct _GParamSpecULong
   gulong        minimum;
   gulong        maximum;
   gulong        default_value;
+};
+struct _GParamSpecInt64
+{
+  GParamSpec    parent_instance;
+  
+  gint64        minimum;
+  gint64        maximum;
+  gint64        default_value;
+};
+struct _GParamSpecUInt64
+{
+  GParamSpec    parent_instance;
+  
+  guint64       minimum;
+  guint64       maximum;
+  guint64       default_value;
 };
 struct _GParamSpecUnichar
 {
@@ -224,24 +242,6 @@ struct _GParamSpecObject
 {
   GParamSpec    parent_instance;
 };
-#ifdef G_HAVE_GINT64
-struct _GParamSpecInt64
-{
-  GParamSpec    parent_instance;
-  
-  gint64        minimum;
-  gint64        maximum;
-  gint64        default_value;
-};
-struct _GParamSpecUInt64
-{
-  GParamSpec    parent_instance;
-  
-  guint64       minimum;
-  guint64       maximum;
-  guint64       default_value;
-};
-#endif /* G_HAVE_GINT64 */
 
 /* --- GParamSpec prototypes --- */
 GParamSpec*	g_param_spec_char	 (const gchar	 *name,
@@ -290,6 +290,20 @@ GParamSpec*	g_param_spec_ulong	 (const gchar	 *name,
 					  gulong	  minimum,
 					  gulong	  maximum,
 					  gulong	  default_value,
+					  GParamFlags	  flags);
+GParamSpec*	g_param_spec_int64	 (const gchar	 *name,
+					  const gchar	 *nick,
+					  const gchar	 *blurb,
+					  gint64       	  minimum,
+					  gint64       	  maximum,
+					  gint64       	  default_value,
+					  GParamFlags	  flags);
+GParamSpec*	g_param_spec_uint64	 (const gchar	 *name,
+					  const gchar	 *nick,
+					  const gchar	 *blurb,
+					  guint64	  minimum,
+					  guint64	  maximum,
+					  guint64	  default_value,
 					  GParamFlags	  flags);
 GParamSpec*    g_param_spec_unichar      (const gchar    *name,
 				          const gchar    *nick,
@@ -355,23 +369,6 @@ GParamSpec*	g_param_spec_object	 (const gchar	 *name,
 					  const gchar	 *blurb,
 					  GType		  object_type,
 					  GParamFlags	  flags);
-
-#ifdef G_HAVE_GINT64
-GParamSpec*	g_param_spec_int64	 (const gchar	 *name,
-					  const gchar	 *nick,
-					  const gchar	 *blurb,
-					  gint64       	  minimum,
-					  gint64       	  maximum,
-					  gint64       	  default_value,
-					  GParamFlags	  flags);
-GParamSpec*	g_param_spec_uint64	 (const gchar	 *name,
-					  const gchar	 *nick,
-					  const gchar	 *blurb,
-					  guint64	  minimum,
-					  guint64	  maximum,
-					  guint64	  default_value,
-					  GParamFlags	  flags);
-#endif /* G_HAVE_GINT64 */
 
 G_END_DECLS
 

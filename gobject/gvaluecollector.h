@@ -32,6 +32,7 @@ enum	/*< skip >*/
 {
   G_VALUE_COLLECT_INT		= 'i',
   G_VALUE_COLLECT_LONG		= 'l',
+  G_VALUE_COLLECT_INT64         = 'q',
   G_VALUE_COLLECT_DOUBLE	= 'd',
   G_VALUE_COLLECT_POINTER	= 'p'
 };
@@ -43,6 +44,7 @@ union _GTypeCValue
 {
   gint     v_int;
   glong    v_long;
+  gint64   v_int64;
   gdouble  v_double;
   gpointer v_pointer;
 };
@@ -83,6 +85,9 @@ G_STMT_START {										\
 	  break;									\
 	case G_VALUE_COLLECT_LONG:							\
 	  _cvalue->v_long = va_arg ((var_args), glong);					\
+	  break;									\
+	case G_VALUE_COLLECT_INT64:							\
+	  _cvalue->v_int64 = va_arg ((var_args), gint64);					\
 	  break;									\
 	case G_VALUE_COLLECT_DOUBLE:							\
 	  _cvalue->v_double = va_arg ((var_args), gdouble);				\
@@ -125,6 +130,9 @@ G_STMT_START {										\
 	  break;									\
 	case G_VALUE_COLLECT_LONG:							\
 	  _cvalue->v_long = va_arg ((var_args), glong);					\
+	  break;									\
+	case G_VALUE_COLLECT_INT64:							\
+	  _cvalue->v_int64 = va_arg ((var_args), gint64);					\
 	  break;									\
 	case G_VALUE_COLLECT_DOUBLE:							\
 	  _cvalue->v_double = va_arg ((var_args), gdouble);				\

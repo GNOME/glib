@@ -1,3 +1,11 @@
+Wed Oct 10 17:25:22 2001  Joshua N Pritikin  <vishnu@pobox.com>
+
+	* glib-genmarshal.c gparamspecs.[ch] gtype.[ch] gvalue.h
+	gvaluecollector.h gvaluetypes.[ch]: Fill in missing support for
+	gint64 & guint64 (#59254).
+	
+	* Unconditionalize same (compile with or without G_HAVE_INT64).
+
 Wed Oct 10 15:38:58 2001  Joshua N Pritikin  <vishnu@pobox.com>
 
 	* gparamspecs.h (G_IS_PARAM_SPEC_FLAGS): Fix order of

@@ -629,8 +629,8 @@ check_collect_format_I (const gchar *collect_format)
 {
   const gchar *p = collect_format;
   gchar valid_format[] = { G_VALUE_COLLECT_INT, G_VALUE_COLLECT_LONG,
-			   G_VALUE_COLLECT_DOUBLE, G_VALUE_COLLECT_POINTER,
-			   0 };
+			   G_VALUE_COLLECT_INT64, G_VALUE_COLLECT_DOUBLE,
+			   G_VALUE_COLLECT_POINTER, 0 };
 
   while (*p)
     if (!strchr (valid_format, *p++))

@@ -279,6 +279,86 @@ param_ulong_values_cmp (GParamSpec   *pspec,
 }
 
 static void
+param_int64_init (GParamSpec *pspec)
+{
+  GParamSpecInt64 *lspec = G_PARAM_SPEC_INT64 (pspec);
+  
+  lspec->minimum = G_MININT64;
+  lspec->maximum = G_MAXINT64;
+  lspec->default_value = 0;
+}
+
+static void
+param_int64_set_default (GParamSpec *pspec,
+			GValue     *value)
+{
+  value->data[0].v_int64 = G_PARAM_SPEC_INT64 (pspec)->default_value;
+}
+
+static gboolean
+param_int64_validate (GParamSpec *pspec,
+		     GValue     *value)
+{
+  GParamSpecInt64 *lspec = G_PARAM_SPEC_INT64 (pspec);
+  gint64 oval = value->data[0].v_int64;
+  
+  value->data[0].v_int64 = CLAMP (value->data[0].v_int64, lspec->minimum, lspec->maximum);
+  
+  return value->data[0].v_int64 != oval;
+}
+
+static gint
+param_int64_values_cmp (GParamSpec   *pspec,
+		       const GValue *value1,
+		       const GValue *value2)
+{
+  if (value1->data[0].v_int64 < value2->data[0].v_int64)
+    return -1;
+  else
+    return value1->data[0].v_int64 > value2->data[0].v_int64;
+}
+
+static void
+param_uint64_init (GParamSpec *pspec)
+{
+  GParamSpecUInt64 *uspec = G_PARAM_SPEC_UINT64 (pspec);
+  
+  uspec->minimum = 0;
+  uspec->maximum = G_MAXUINT64;
+  uspec->default_value = 0;
+}
+
+static void
+param_uint64_set_default (GParamSpec *pspec,
+			 GValue     *value)
+{
+  value->data[0].v_uint64 = G_PARAM_SPEC_UINT64 (pspec)->default_value;
+}
+
+static gboolean
+param_uint64_validate (GParamSpec *pspec,
+		      GValue     *value)
+{
+  GParamSpecUInt64 *uspec = G_PARAM_SPEC_UINT64 (pspec);
+  guint64 oval = value->data[0].v_uint64;
+  
+  value->data[0].v_uint64 = CLAMP (value->data[0].v_uint64, uspec->minimum, uspec->maximum);
+  
+  return value->data[0].v_uint64 != oval;
+}
+
+static gint
+param_uint64_values_cmp (GParamSpec   *pspec,
+			const GValue *value1,
+			const GValue *value2)
+{
+  if (value1->data[0].v_uint64 < value2->data[0].v_uint64)
+    return -1;
+  else
+    return value1->data[0].v_uint64 > value2->data[0].v_uint64;
+}
+
+static void
 param_unichar_init (GParamSpec *pspec)
 {
   GParamSpecUnichar *uspec = G_PARAM_SPEC_UNICHAR (pspec);
@@ -1042,6 +1122,40 @@ g_param_spec_types_init (void)	/* sync with gtype.c */
     g_assert (type == G_TYPE_PARAM_ULONG);
   }
 
+  /* G_TYPE_PARAM_INT64
+   */
+  {
+    static const GParamSpecTypeInfo pspec_info = {
+      sizeof (GParamSpecInt64),  /* instance_size */
+      16,                       /* n_preallocs */
+      param_int64_init,         /* instance_init */
+      G_TYPE_INT64,		/* value_type */
+      NULL,			/* finalize */
+      param_int64_set_default,	/* value_set_default */
+      param_int64_validate,	/* value_validate */
+      param_int64_values_cmp,	/* values_cmp */
+    };
+    type = g_param_type_register_static ("GParamInt64", &pspec_info);
+    g_assert (type == G_TYPE_PARAM_INT64);
+  }
+  
+  /* G_TYPE_PARAM_UINT64
+   */
+  {
+    static const GParamSpecTypeInfo pspec_info = {
+      sizeof (GParamSpecUInt64), /* instance_size */
+      16,                       /* n_preallocs */
+      param_uint64_init,        /* instance_init */
+      G_TYPE_UINT64,		/* value_type */
+      NULL,			/* finalize */
+      param_uint64_set_default,	/* value_set_default */
+      param_uint64_validate,	/* value_validate */
+      param_uint64_values_cmp,	/* values_cmp */
+    };
+    type = g_param_type_register_static ("GParamUInt64", &pspec_info);
+    g_assert (type == G_TYPE_PARAM_UINT64);
+  }
+
   /* G_TYPE_PARAM_UNICHAR
    */
   {
@@ -1428,6 +1542,58 @@ g_param_spec_ulong (const gchar *name,
 }
 
 GParamSpec*
+g_param_spec_int64 (const gchar *name,
+		   const gchar *nick,
+		   const gchar *blurb,
+		   gint64	minimum,
+		   gint64	maximum,
+		   gint64	default_value,
+		   GParamFlags	flags)
+{
+  GParamSpecInt64 *lspec;
+
+  g_return_val_if_fail (default_value >= minimum && default_value <= maximum, NULL);
+
+  lspec = g_param_spec_internal (G_TYPE_PARAM_INT64,
+				 name,
+				 nick,
+				 blurb,
+				 flags);
+  
+  lspec->minimum = minimum;
+  lspec->maximum = maximum;
+  lspec->default_value = default_value;
+  
+  return G_PARAM_SPEC (lspec);
+}
+
+GParamSpec*
+g_param_spec_uint64 (const gchar *name,
+		    const gchar *nick,
+		    const gchar *blurb,
+		    guint64	 minimum,
+		    guint64	 maximum,
+		    guint64	 default_value,
+		    GParamFlags	 flags)
+{
+  GParamSpecUInt64 *uspec;
+
+  g_return_val_if_fail (default_value >= minimum && default_value <= maximum, NULL);
+
+  uspec = g_param_spec_internal (G_TYPE_PARAM_UINT64,
+				 name,
+				 nick,
+				 blurb,
+				 flags);
+  
+  uspec->minimum = minimum;
+  uspec->maximum = maximum;
+  uspec->default_value = default_value;
+  
+  return G_PARAM_SPEC (uspec);
+}
+
+GParamSpec*
 g_param_spec_unichar (const gchar *name,
 		      const gchar *nick,
 		      const gchar *blurb,
@@ -1698,59 +1864,3 @@ g_param_spec_object (const gchar *name,
   
   return G_PARAM_SPEC (ospec);
 }
-
-#ifdef G_HAVE_GINT64
-
-GParamSpec*
-g_param_spec_int64 (const gchar *name,
-		   const gchar *nick,
-		   const gchar *blurb,
-		   gint64        minimum,
-		   gint64	maximum,
-		   gint64	default_value,
-		   GParamFlags	flags)
-{
-  GParamSpecInt64 *ispec;
-
-  g_return_val_if_fail (default_value >= minimum && default_value <= maximum, NULL);
-
-  ispec = g_param_spec_internal (G_TYPE_PARAM_INT64,
-				 name,
-				 nick,
-				 blurb,
-				 flags);
-  
-  ispec->minimum = minimum;
-  ispec->maximum = maximum;
-  ispec->default_value = default_value;
-  
-  return G_PARAM_SPEC (ispec);
-}
-
-GParamSpec*
-g_param_spec_uint64 (const gchar *name,
-		   const gchar *nick,
-		   const gchar *blurb,
-		   guint64        minimum,
-		   guint64	maximum,
-		   guint64	default_value,
-		   GParamFlags	flags)
-{
-  GParamSpecUInt64 *ispec;
-
-  g_return_val_if_fail (default_value >= minimum && default_value <= maximum, NULL);
-
-  ispec = g_param_spec_internal (G_TYPE_PARAM_UINT64,
-				 name,
-				 nick,
-				 blurb,
-				 flags);
-  
-  ispec->minimum = minimum;
-  ispec->maximum = maximum;
-  ispec->default_value = default_value;
-  
-  return G_PARAM_SPEC (ispec);
-}
-
-#endif /* G_HAVE_GINT64 */
