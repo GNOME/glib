@@ -3,7 +3,6 @@
 
 ## Use: make -f makefile.mingw
 
-
 TOP = ../..
 
 include ../build/win32/make.mingw
@@ -16,13 +15,13 @@ GLIB_VER = @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
 # Nothing much configurable below
 
 INCLUDES = -I .. -I .
-DEFINES = -DHAVE_CONFIG_H -DGOBJECT_COMPILATION -DG_LOG_DOMAIN=g_log_domain_gruntime
+DEFINES = -DHAVE_CONFIG_H -DGOBJECT_COMPILATION -DG_LOG_DOMAIN=g_log_domain_gruntime -DG_ENABLE_DEBUG
 
 srcdir=.
 
 BUILD_DLL = ../build-dll
 
-all :				\
+all : \
 	gobject-$(GLIB_VER).dll	\
 	glib-genmarshal.exe
 

@@ -1,3 +1,11 @@
+2000-12-29  Tor Lillqvist  <tml@iki.fi>
+
+	* glibconfig.h.win32.in: Add GLIB_SIZEOF_VOID_P and GLIB_SIZEOF_LONG.
+
+	* glib.def: Update.
+
+	* {.,*}/makefile.{mingw,msc}.in: Add -DG_ENABLE_DEBUG.
+	
 Fri Dec 29 14:53:18 2000  Tim Janik  <timj@gtk.org>
 
 	* configure.in: we can't grow _cv_ variables by using a backticked

@@ -245,7 +245,6 @@ EXPORTS
 	g_markup_parse_context_get_position
 	g_markup_parse_context_new
 	g_markup_parse_context_parse
-	g_mem_check
 	g_mem_chunk_alloc
 	g_mem_chunk_alloc0
 	g_mem_chunk_clean
@@ -257,6 +256,7 @@ EXPORTS
 	g_mem_chunk_reset
 	g_mem_init
 	g_mem_profile
+	g_mem_set_vtable
 	g_memdup
 	g_messages_init
 	g_mkstemp

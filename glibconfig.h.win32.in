@@ -82,6 +82,9 @@ typedef unsigned long long guint64;
 #define G_GINT64_FORMAT "I64i"
 #define G_GUINT64_FORMAT "I64u"
 
+#define GLIB_SIZEOF_VOID_P 4
+#define GLIB_SIZEOF_LONG   4
+
 typedef gint32 gssize;
 typedef guint32 gsize;
 
