@@ -1,3 +1,9 @@
+2003-11-15  Tor Lillqvist  <tml@iki.fi>
+
+	* tests/makefile.msc.in: Fix for MSVC build: Skip strtod-test, use
+	correct glib libraries, with 2.0 in the names. (#126906, John
+	Ehresman)
+
 2003-10-24  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/glib.def: Add some missing entries.

@@ -39,7 +39,8 @@ TESTS = \
 # strfunc-test doesn't compile with MSVC
 #	strfunc-test.exe\
 	string-test.exe	\
-	strtod-test.exe \
+# strtod-test doesn't either
+#	strtod-test.exe \
 	thread-test.exe	\
 	threadpool-test.exe\
 	tree-test.exe	\
@@ -56,13 +57,13 @@ all :	$(TESTS) $(NONAUTOMATIC_TESTS) $(DLLS)
 
 .c.exe :
 	$(CC) $(CFLAGS) -c $<
-	$(CC) $(CFLAGS) -Fe$@ $< ..\glib\glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.lib ..\gmodule\gmodule-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.lib ..\gthread\gthread-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.lib $(LDFLAGS) user32.lib /subsystem:console
+	$(CC) $(CFLAGS) -Fe$@ $< ..\glib\glib-2.0.lib ..\gmodule\gmodule-2.0.lib ..\gthread\gthread-2.0.lib $(LDFLAGS) user32.lib /subsystem:console
 
 libmoduletestplugin_a.dll : libmoduletestplugin_a.obj
-	$(CC) $(CFLAGS) -LD libmoduletestplugin_a.obj ..\gmodule\gmodule-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.lib ..\glib\glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.lib $(LDFLAGS)
+	$(CC) $(CFLAGS) -LD libmoduletestplugin_a.obj ..\gmodule\gmodule-2.0.lib ..\glib\glib-2.0.lib $(LDFLAGS)
 
 libmoduletestplugin_b.dll : libmoduletestplugin_b.obj
-	$(CC) $(CFLAGS) -LD libmoduletestplugin_b.obj ..\gmodule\gmodule-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.lib ..\glib\glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.lib $(LDFLAGS)
+	$(CC) $(CFLAGS) -LD libmoduletestplugin_b.obj ..\gmodule\gmodule-2.0.lib ..\glib\glib-2.0.lib $(LDFLAGS)
 
 check:	all
 	for %p in ($(TESTS)) do set PATH=..\glib;..\gmodule;..\gobject;..\gthread;%PATH% && %p
