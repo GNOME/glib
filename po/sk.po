@@ -1,24 +1,24 @@
 # translation of glib.HEAD.po to Slovak
 # translation of sk.po to Slovak
 # glib Slovak translation.
-# Copyright (C) 2001,2002, 2004 Free Software Foundation, Inc.
+# Copyright (C) 2001, 2002, 2004, 2005 Free Software Foundation, Inc.
 # Stanislav Visnovsky <visnovsky@nenya.ms.mff.cuni.cz>, 2001,2002.
 # Stanislav Visnovsky <visnovsky@kde.org>, 2004.
+# Marcel Telka <marcel@telka.sk>, 2005.
+#
+# $Id$
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: glib.HEAD\n"
+"Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-07 11:51-0500\n"
-"PO-Revision-Date: 2004-03-18 09:16+0100\n"
-"Last-Translator: Stanislav Visnovsky <visnovsky@kde.org>\n"
-"Language-Team: Slovak <sk-i18n@linux.sk>\n"
+"POT-Creation-Date: 2005-01-14 07:14+0100\n"
+"PO-Revision-Date: 2005-01-14 07:12+0100\n"
+"Last-Translator: Marcel Telka <marcel@telka.sk>\n"
+"Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.3.1\n"
-"Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
-"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: glib/gconvert.c:403
 #, c-format
@@ -26,9 +26,9 @@ msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Prevod zo znakovej sady '%s' do '%s' nie je podporovaný"
 
 #: glib/gconvert.c:407
-#, fuzzy, c-format
+#, c-format
 msgid "Could not open converter from '%s' to '%s'"
-msgstr "Nepodarilo sa otvoriť program pre prevod '%s' do '%s': %s"
+msgstr "Nepodarilo sa otvoriť program na prevod z '%s' do '%s'"
 
 #: glib/gconvert.c:605 glib/gconvert.c:892 glib/giochannel.c:1318
 #: glib/giochannel.c:1360 glib/giochannel.c:2202 glib/gutf8.c:911
@@ -53,9 +53,9 @@ msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Nepodarilo sa previesť náhradné `%s' do kódovej stránky `%s'"
 
 #: glib/gconvert.c:1601
-#, fuzzy, c-format
+#, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
-msgstr "URI '%s' nie je absolútne URI súborovej schémy"
+msgstr "URI '%s' nie je absolútne URI, používajúce schému \"file\""
 
 #: glib/gconvert.c:1611
 #, c-format
@@ -75,7 +75,7 @@ msgstr "URI hostiteľa '%s' je neplatné."
 #: glib/gconvert.c:1656
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
-msgstr "URI '%s' obsahuje neplatné zadané znaky"
+msgstr "URI '%s' obsahuje neplatne zadané znaky"
 
 #: glib/gconvert.c:1750
 #, c-format
@@ -91,57 +91,57 @@ msgstr "Neplatné meno hostiteľa"
 msgid "Error opening directory '%s': %s"
 msgstr "Chyba pri otváraní priečinku'%s': %s"
 
-#: glib/gfileutils.c:490 glib/gfileutils.c:558
+#: glib/gfileutils.c:498 glib/gfileutils.c:566
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Nepodarilo sa alokovať %lu bajtov pre načítanie súboru \"%s\""
 
-#: glib/gfileutils.c:503
+#: glib/gfileutils.c:511
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Chyba pri čítaní súboru '%s': %s"
 
-#: glib/gfileutils.c:580
+#: glib/gfileutils.c:588
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Nepodarilo sa čítanie súboru '%s': %s"
 
-#: glib/gfileutils.c:629 glib/gfileutils.c:712
+#: glib/gfileutils.c:637 glib/gfileutils.c:720
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Nepodarilo sa otvoriť súbor '%s': %s"
 
-#: glib/gfileutils.c:644
+#: glib/gfileutils.c:652
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Nepodarilo sa získať atribúty súboru '%s': fstat() zlyhala: %s"
 
-#: glib/gfileutils.c:676
+#: glib/gfileutils.c:684
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Nepodarilo sa otvoriť súbor '%s': fdopen() zlyhala: %s"
 
-#: glib/gfileutils.c:1003
+#: glib/gfileutils.c:1011
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Šablóna '%s' je neplatná, nesmie obsahovať '%s'"
 
-#: glib/gfileutils.c:1017
+#: glib/gfileutils.c:1025
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Šablóna '%s' nekončí XXXXXX"
 
-#: glib/gfileutils.c:1040
+#: glib/gfileutils.c:1048
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Nepodarilo sa vytvoriť súbor '%s': %s"
 
-#: glib/gfileutils.c:1416
+#: glib/gfileutils.c:1424
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Nepodarilo sa prečítať symbolický odkaz '%s': %s"
 
-#: glib/gfileutils.c:1437
+#: glib/gfileutils.c:1445
 msgid "Symbolic links not supported"
 msgstr "Symbolické odkazy nepodporované"
 
@@ -153,7 +153,7 @@ msgstr "Prevod zo znakovej sady `%s' do `%s' nie je podporovaný"
 #: glib/giochannel.c:1150
 #, c-format
 msgid "Could not open converter from `%s' to `%s': %s"
-msgstr "Nepodarilo sa otvoriť program pre prevod `%s' do `%s': %s"
+msgstr "Nepodarilo sa otvoriť program na prevod z `%s' do `%s': %s"
 
 #: glib/giochannel.c:1495
 msgid "Can't do a raw read in g_io_channel_read_line_string"
@@ -216,18 +216,18 @@ msgstr ""
 "zapísali ako &amp;"
 
 #: glib/gmarkup.c:584
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
 msgstr ""
-"Nepodarilo sa spracovať '%s', čo by mala byť číslica v odkaze na znak "
-"(napríklad &#234;). Možno je číslo príliš veľké."
+"Nepodarilo sa spracovať '%-.*s', čo by mala byť číslica v odkaze na znak "
+"(napríklad &#234;) - možno je číslica príliš veľká"
 
 #: glib/gmarkup.c:609
-#, fuzzy, c-format
+#, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
-msgstr "Odkaz na znak '%s' nie je kódom povoleného znaku"
+msgstr "Odkaz na znak '%-.*s' nie je kódom povoleného znaku"
 
 #: glib/gmarkup.c:624
 msgid "Empty character reference; should include a digit such as &#454;"
@@ -506,91 +506,95 @@ msgstr "Znak mimo rozsah UTF-16"
 
 #: glib/goption.c:405
 msgid "Usage:"
-msgstr ""
+msgstr "Použitie:"
 
 #: glib/goption.c:405
 msgid "[OPTION...]"
-msgstr ""
+msgstr "[VOĽBA...]"
 
 #: glib/goption.c:494
 msgid "Help Options:"
-msgstr ""
+msgstr "Voľby pomocníka:"
 
 #: glib/goption.c:494
 msgid "Show help options"
-msgstr ""
+msgstr "Zobraziť voľby pomocníka"
 
 #: glib/goption.c:498
 msgid "Show all help options"
-msgstr ""
+msgstr "Zobraziť všetky voľby pomocníka"
 
 #: glib/goption.c:547
 msgid "Application Options:"
-msgstr ""
+msgstr "Voľby aplikácie:"
 
 #: glib/goption.c:586
 #, c-format
 msgid "Cannot parse integer value '%s' for --%s"
-msgstr ""
+msgstr "Nepodarilo sa spracovať celočíselnú hodnotu '%s' pre --%s"
 
 #: glib/goption.c:596
 #, c-format
 msgid "Integer value '%s' for %s out of range"
-msgstr ""
+msgstr "Celočíselná hodnota '%s' pre %s je mimo rozsah"
 
 #: glib/goption.c:1323
 #, c-format
 msgid "Unknown option %s"
-msgstr ""
+msgstr "Neznáma voľby %s"
 
 #: glib/gkeyfile.c:338
 msgid "Valid key file could not be found in data dirs"
-msgstr ""
+msgstr "Nepodarilo sa nájsť platný súbor kľúčov v dátových adresároch"
 
 #: glib/gkeyfile.c:371
 msgid "Not a regular file"
-msgstr ""
+msgstr "Nie je obyčajný súbor"
 
 #: glib/gkeyfile.c:379
 msgid "File is empty"
-msgstr ""
+msgstr "Súbor je prázdny"
 
 #: glib/gkeyfile.c:685
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr ""
+"Súbor kľúčov obsahuje riadok '%s', ktorý nie je pár kľúč-hodnota, skupinou, "
+"ani komentárom"
 
 #: glib/gkeyfile.c:753
 msgid "Key file does not start with a group"
-msgstr ""
+msgstr "Súbor kľúčov nezačína skupinou"
 
 #: glib/gkeyfile.c:796
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
-msgstr ""
+msgstr "Súbor kľúčov obsahuje nepodporované kódovane '%s'"
 
 #: glib/gkeyfile.c:1000 glib/gkeyfile.c:1146 glib/gkeyfile.c:2151
 #: glib/gkeyfile.c:2216 glib/gkeyfile.c:2334 glib/gkeyfile.c:2402
 #: glib/gkeyfile.c:2587 glib/gkeyfile.c:2760 glib/gkeyfile.c:2815
 #, c-format
 msgid "Key file does not have group '%s'"
-msgstr ""
+msgstr "Súbor kľúčov nemá skupinu '%s'"
 
 #: glib/gkeyfile.c:1158
 #, c-format
 msgid "Key file does not have key '%s'"
-msgstr ""
+msgstr "Súbor kľúčov nemá kľúč '%s'"
 
 #: glib/gkeyfile.c:1259 glib/gkeyfile.c:1368
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
-msgstr ""
+msgstr "Súbor kľúčov obsahuje kľúč '%s' s hodnotou '%s', ktorá nie je UTF-8"
 
 #: glib/gkeyfile.c:1277 glib/gkeyfile.c:1386 glib/gkeyfile.c:1759
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr ""
+"Súbor kľúčov obsahuje kľúč '%s', ktorý má hodnotu, ktorá nemohla byť "
+"interpretovaná."
 
 #: glib/gkeyfile.c:1976
 #, c-format
@@ -598,27 +602,29 @@ msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
 "interpreted."
 msgstr ""
+"Súbor kľúčov obsahuje kľúč '%s', v skupine '%s', ktorý má hodnotu, ktorá "
+"nemohla byť interpretovaná."
 
 #: glib/gkeyfile.c:2166 glib/gkeyfile.c:2349 glib/gkeyfile.c:2827
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
-msgstr ""
+msgstr "Súbor kľúčov nemá kľúč '%s' v skupine '%s'"
 
 #: glib/gkeyfile.c:3023
-#, fuzzy, c-format
+#, c-format
 msgid "Key file contains invalid escape sequence '%s'"
-msgstr "URI '%s' obsahuje neplatné zadané znaky"
+msgstr "Súbor kľúčov obsahuje neplatne zadanú sekvenciu '%s'"
 
 #: glib/gkeyfile.c:3047
 msgid "Key file contains escape character at end of line"
-msgstr ""
+msgstr "Súbor kľúčov obsahuje znak escape na konci riadku"
 
 #: glib/gkeyfile.c:3163
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
-msgstr ""
+msgstr "Hodnota '%s' nemohla byť interpretovaná ako číslo."
 
 #: glib/gkeyfile.c:3191
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
-msgstr ""
+msgstr "Hodnota '%s' nemohla byť interpretovaná ako boolovská."
