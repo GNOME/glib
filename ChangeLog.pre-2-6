@@ -1,3 +1,14 @@
+2000-05-04  Tor Lillqvist  <tml@iki.fi>
+
+	* makefile.cygwin.in
+	* tests/makefile.cygwin.in: Include the common makefile snippet
+	from ../build/win32.
+
+	Maybe CVSROOT/modules should be changed so that the 'build' module
+	is included within the glib module (and gtk+, and gimp, and maybe
+	others later), in the same way as the 'macros' module is included
+	in lots of GNOME CVS modules?
+
 2000-05-02  Tor Lillqvist  <tml@iki.fi>
 
 	* glib.def: Add new functions.

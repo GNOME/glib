@@ -1,5 +1,5 @@
 ## Makefile for building the GLib, gmodule and gthread DLLs with
-## gcc on cygwin or mingw32.
+## gcc on mingw or cygwin.
 ## Use: make -f makefile.cygwin install
 
 # Change this to wherever you want to install the DLLs. This directory
@@ -15,23 +15,21 @@ PTHREAD_INC = -I $(PTHREADS)
 
 OPTIMIZE = -g -O
 
+GLIB_VER = @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
+
+TOP = ..
+
+include $(TOP)/build/win32/make.mingw
+
 ################################################################
 
 # Nothing much configurable below
 
-CC = gcc -mno-cygwin -mpentium -fnative-struct
-
 DLLTOOL = dlltool
 INSTALL = install
 
-GLIB_VER = @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
-
-CFLAGS = $(OPTIMIZE) -I. -DHAVE_CONFIG_H
-
-# Kludge to get the path to the win32 headers. Should work for both
-# gcc running on cygwin, and bare mingw gcc, even if the make is
-# running on cygwin (whew).
-WIN32APIHEADERS = $(shell echo "\#include <winver.h>" | $(CC) -M -E - | tail -1 | sed -e 's![\\/]winver.h!!' | tr -d '\015')
+INCLUDES = -I .
+DEFINES = -DHAVE_CONFIG_H -DGLIB_COMPILATION -DG_LOG_DOMAIN=g_log_domain_glib
 
 all : \
 	config.h	\
@@ -179,9 +177,6 @@ gthread-impl.o : gthread/gthread-impl.c gthread/gthread-posix.c
 testglib.exe : glib-$(GLIB_VER).dll testglib.o
 	$(CC) $(CFLAGS) -o testglib testglib.o -L. -lglib-$(GLIB_VER) $(LDFLAGS)
 
-testglib.o : testglib.c
-	$(CC) -c $(CFLAGS) testglib.c
-
 testgdate.exe : glib-$(GLIB_VER).dll testgdate.o
 	$(CC) $(CFLAGS) -o testgdate.exe testgdate.o -L. -lglib-$(GLIB_VER) $(LDFLAGS)
 
@@ -221,15 +216,5 @@ libgplugin_b.o : gmodule/libgplugin_b.c
 
 ################ other stuff
 
-clean:
+clean::
 	-rm config.h glibconfig.h gmodule/gmoduleconf.h
-	-rm *.exe *.o *.dll *.a *.base *.exp
-
-.SUFFIXES: .c .o .i
-
-.c.o :
-	$(CC) $(CFLAGS) -c -DGLIB_COMPILATION -DG_LOG_DOMAIN=g_log_domain_glib $<
-
-.c.i :
-	$(CC) $(CFLAGS) -E -DGLIB_COMPILATION -DG_LOG_DOMAIN=g_log_domain_glib $< >$@
-

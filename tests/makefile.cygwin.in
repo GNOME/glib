@@ -1,17 +1,20 @@
-## Makefile for building the GLib test programs with egcs on cygwin.
+## Makefile for building the GLib test programs with gcc on mingw or cygwin.
 ## Use: make -f makefile.cygwin check
 
 OPTIMIZE = -g -O
+
+GLIB_VER = @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
+
+TOP = ../..
+
+include $(TOP)/build/win32/make.mingw
 
 ################################################################
 
 # Nothing much configurable below
 
-CC = gcc -mno-cygwin -mpentium -fnative-struct
-
-GLIB_VER = @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
-
-CFLAGS = $(OPTIMIZE) -I.. -DHAVE_CONFIG_H
+INCLUDES = -I .. 
+DEFINES = -DHAVE_CONFIG_H
 
 TESTS = \
 	array-test.exe	\
@@ -31,16 +34,16 @@ TESTS = \
 	tree-test.exe	\
 	type-test.exe
 
-all :	$(TESTS)
+all:	$(TESTS)
 
 .SUFFIXES: .c .exe
 
-.c.exe :
+.c.exe:
 	$(CC) $(CFLAGS) -c $<
 	$(CC) $(CFLAGS) -o $@ $< -L.. -lglib-$(GLIB_VER) -lgthread-$(GLIB_VER)
 
 check:	all
 	@for P in $(TESTS) ; do echo $$P; ./$$P; done
 
-clean:
+clean::
 	-rm *.exe *.o
