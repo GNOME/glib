@@ -39,8 +39,7 @@ EXTRA_DIST = 			\
 BUILT_EXTRA_DIST = 		\
 	glibconfig.h.win32	\
 	config.h.win32		\
-	glib.spec		\
-	glib-zip
+	glib.spec
 
 configexecincludedir = $(libdir)/glib-2.0/include
 #configexecinclude_DATA = glibconfig.h
