@@ -1,13 +1,13 @@
-# glib fr.po.
+# French translation of glib.
 # Copyright (C) 2001-2002 Free Software Foundation, Inc.
-# maintainer: Christophe Merlet (RedFox) <christophe@merlet.net>, 2001-2002.
+# maintainer: Christophe Merlet (RedFox) <redfox@redfoxcenter.org>, 2001-2002.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: glib 2.0.3\n"
-"POT-Creation-Date: 2002-11-04 15:31-0500\n"
-"PO-Revision-Date: 2002-06-05 13:31+0200\n"
-"Last-Translator: Christophe Merlet (RedFox) <christophe@merlet.net>\n"
+"Project-Id-Version: glib 2.0.7\n"
+"POT-Creation-Date: 2002-11-24 11:04+0100\n"
+"PO-Revision-Date: 2002-11-24 11:02+0100\n"
+"Last-Translator: Christophe Merlet (RedFox) <redfox@redfoxcenter.org>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -430,11 +430,11 @@ msgstr ""
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Le texte était vide (ou ne contenait que des espaces)"
 
-#: glib/gspawn-win32.c:198
+#: glib/gspawn-win32.c:205
 msgid "Failed to read data from child process"
 msgstr "Échec de la lecture des données depuis le processus fils"
 
-#: glib/gspawn-win32.c:323
+#: glib/gspawn-win32.c:333
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -442,22 +442,26 @@ msgstr ""
 "Erreur innatendu dans g_io_channel_win32_poll() durand la lecture des "
 "données depuis un processus fils"
 
-#: glib/gspawn-win32.c:690 glib/gspawn.c:929
+#: glib/gspawn-win32.c:702 glib/gspawn.c:949
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Échec de lecture depuis un tube fils (%s)"
 
-#: glib/gspawn-win32.c:778 glib/gspawn.c:1134
+#: glib/gspawn-win32.c:780
+msgid "Failed to execute helper program"
+msgstr "Échec à l'exécution du programme d'aide"
+
+#: glib/gspawn-win32.c:813 glib/gspawn.c:1154
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Échec au changement de répertoire « %s » (%s)"
 
-#: glib/gspawn-win32.c:787
+#: glib/gspawn-win32.c:822
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Échec à l'exécution du processus fils (%s)"
 
-#: glib/gspawn-win32.c:828 glib/gspawn.c:1265
+#: glib/gspawn-win32.c:865 glib/gspawn.c:1285
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr ""
@@ -480,33 +484,33 @@ msgstr ""
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Erreur innatendue dans waitpid() (%s)"
 
-#: glib/gspawn.c:994
+#: glib/gspawn.c:1014
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Échec au fork (%s)"
 
-#: glib/gspawn.c:1144
+#: glib/gspawn.c:1164
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Échec à l'exécution du processus fils « %s » (%s)"
 
-#: glib/gspawn.c:1154
+#: glib/gspawn.c:1174
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr ""
 "Échec lors de la redirection de l'entrée ou la sortie du processus fils (%s)"
 
-#: glib/gspawn.c:1163
+#: glib/gspawn.c:1183
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Échec au fork du processus fils (%s)"
 
-#: glib/gspawn.c:1171
+#: glib/gspawn.c:1191
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Erreur inconnue à l'exécution du processus fils « %s »"
 
-#: glib/gspawn.c:1193
+#: glib/gspawn.c:1213
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr ""
