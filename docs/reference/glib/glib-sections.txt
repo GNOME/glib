@@ -547,10 +547,12 @@ g_thread_init_with_errorcheck_mutexes
 G_LOCK_NAME
 glib_dummy_decl
 GSystemThread
-g_thread_error_quark
 g_thread_use_default_impl
 g_threads_got_initialized
 g_thread_functions_for_glib_use
+<SUBSECTION Private>
+g_thread_error_quark
+</SUBSECTION>
 </SECTION>
 
 <SECTION>
@@ -625,7 +627,6 @@ g_io_channel_shutdown
 GIOStatus
 GIOChannelError
 G_IO_CHANNEL_ERROR
-g_io_channel_error_quark
 g_io_channel_error_from_errno
 
 <SUBSECTION>
@@ -674,6 +675,7 @@ g_io_channel_seek
 g_io_channel_close
 
 <SUBSECTION Private>
+g_io_channel_error_quark
 g_io_watch_funcs
 </SECTION>
 

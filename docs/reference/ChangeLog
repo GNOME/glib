@@ -1,5 +1,10 @@
 2001-10-01  Matthias Clasen  <matthiasc@poet.de>
 
+	* glib/glib-sections.txt: Move all *_error_quark()
+	functions to the 'Private' sections. (#61472)
+
+2001-10-01  Matthias Clasen  <matthiasc@poet.de>
+
 	* glib/tmpl/macros.sgml (G_CONST_RETURN): document
 	allowed uses for 'out' parameters.
 
