@@ -1,3 +1,10 @@
+2000-10-13  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* glib/glib-sections.txt: Added misc items.
+
+	* glib/tmpl/random_numbers.sgml: Documentation for the random
+	number generator.
+
 2000-10-09  Raja R Harinath  <harinath@cs.umn.edu>
 
 	* gobject/Makefile.am (DOC_SOURCE_DIR): Don't set to 

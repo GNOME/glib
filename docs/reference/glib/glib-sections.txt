@@ -256,6 +256,10 @@ G_STMT_START
 G_STMT_END
 
 <SUBSECTION>
+G_BEGIN_DECLS
+G_END_DECLS
+
+<SUBSECTION>
 G_N_ELEMENTS
 
 <SUBSECTION>
@@ -269,6 +273,7 @@ G_GNUC_EXTENSION
 G_GNUC_CONST
 G_GNUC_NORETURN
 G_GNUC_UNUSED
+G_GNUC_PURE
 G_GNUC_PRINTF
 G_GNUC_SCANF
 G_GNUC_FORMAT
@@ -359,6 +364,8 @@ g_source_remove_by_user_data
 
 <SUBSECTION Private>
 GLIB_HAVE_SYS_POLL_H
+GLIB_HAVE_ALLOCA_H
+alloca
 GLIB_SYSDEF_POLLERR
 GLIB_SYSDEF_POLLHUP
 GLIB_SYSDEF_POLLIN
@@ -466,9 +473,15 @@ g_static_private_set
 g_static_private_set_for_thread
 
 <SUBSECTION Private>
+G_THREAD_ECF
 G_THREAD_CF
 G_THREAD_UF
 g_static_mutex_get_mutex_impl
+g_mutex_lock_with_debug_name
+g_mutex_trylock_with_debug_name
+g_mutex_unlock_with_debug_name
+G_MUTEX_DEBUG_MAGIC
+g_thread_init_with_errorcheck_mutexes
 G_LOCK_NAME
 glib_dummy_decl
 GSystemThread
@@ -574,6 +587,9 @@ g_realloc
 
 <SUBSECTION>
 g_free
+
+<SUBSECTION>
+g_alloca
 
 <SUBSECTION>
 g_memmove

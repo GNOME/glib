@@ -2,139 +2,60 @@
 Random Numbers
 
 <!-- ##### SECTION Short_Description ##### -->
-
+pseudo random number generator.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-
+The following functions allow you to use a portable, fast and good
+pseudo random number generator (PRNG). It uses the Mersenne Twister
+PRNG, which was originally developed by Makoto Matsumoto and Takuji
+Nishimura. Further information can be found at <ulink
+url="http://www.math.keio.ac.jp/~matumoto/emt.html"
+>www.math.keio.ac.jp/~matumoto/emt.html</ulink>.
 </para>
 
-<!-- ##### SECTION See_Also ##### -->
 <para>
+If you just need a random number, you simply call the g_random_*
+functions, which will create a globally used #GRand and use the
+according g_rand_* function internally. Whenever you need a stream of
+reproducible random numbers, you better create a #GRand yourself and
+use the g_rand_* functions directly, which will also be slightly
+faster. Initializing a GRand with a certain seed will produce exactly
+the same series of random numbers on all platforms. This can thus be
+used as a seed for e.g. games.
+</para>
 
+<para>
+The g_rand*_range functions will return high quality equally
+distributed random numbers, whereas for example the
+<literal>(g_random_int()%%max)</literal> approach often doesn't
+yield equally distributed numbers.
+</para>
+
+<para>
+A random binary decision is best implemented by using
+<literal>if(g_random_int()&amp;(1<<@a))</literal>, where @a can be every
+integer constant from 0 to 31. The Mersenne Twister PRNG is said to
+produce highly random lower bits too, but it is common not to rely on
+that, so choosing @a to be from 4 to 31 might be wise.
 </para>
 
 <!-- ##### STRUCT GRand ##### -->
 <para>
-
+The #GRand struct is an opaque data structure. It should only be
+accessed through the g_rand_* functions.
 </para>
-
 
 <!-- ##### FUNCTION g_rand_new_with_seed ##### -->
-<para>
-
-</para>
-
-@seed: 
-@Returns: 
-
-
 <!-- ##### FUNCTION g_rand_new ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
 <!-- ##### FUNCTION g_rand_free ##### -->
-<para>
-
-</para>
-
-@rand: 
-
-
 <!-- ##### FUNCTION g_rand_set_seed ##### -->
-<para>
-
-</para>
-
-@rand: 
-@seed: 
-
-
 <!-- ##### FUNCTION g_rand_int ##### -->
-<para>
-
-</para>
-
-@rand: 
-@Returns: 
-
-
 <!-- ##### FUNCTION g_rand_int_range ##### -->
-<para>
-
-</para>
-
-@rand: 
-@min: 
-@max: 
-@Returns: 
-
-
 <!-- ##### FUNCTION g_rand_double ##### -->
-<para>
-
-</para>
-
-@rand: 
-@Returns: 
-
-
 <!-- ##### FUNCTION g_rand_double_range ##### -->
-<para>
-
-</para>
-
-@rand: 
-@min: 
-@max: 
-@Returns: 
-
-
 <!-- ##### FUNCTION g_random_set_seed ##### -->
-<para>
-
-</para>
-
-@seed: 
-
-
 <!-- ##### FUNCTION g_random_int ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
 <!-- ##### FUNCTION g_random_int_range ##### -->
-<para>
-
-</para>
-
-@min: 
-@max: 
-@Returns: 
-
-
 <!-- ##### FUNCTION g_random_double ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
 <!-- ##### FUNCTION g_random_double_range ##### -->
-<para>
-
-</para>
-
-@min: 
-@max: 
-@Returns: 
-
-

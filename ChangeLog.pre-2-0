@@ -1,5 +1,7 @@
 2000-10-13  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
+	* grand.c: Added inline documentation. 
+
 	* gtypes.h, gnode.h, gutils.h: Readded GFreeFunc,
 	g_node_insert_after and g_find_program_in_path resp., which
 	mysteriously disappeared during the glib.h dissection.

@@ -64,6 +64,14 @@ struct _GRand
   guint mti; 
 };
 
+/**
+ * g_rand_new_with_seed:
+ * @seed: a value to initialize the random number generator.
+ * 
+ * Creates a new random number generator initialized with @seed.
+ * 
+ * Return value: the new #GRand.
+ **/
 GRand*
 g_rand_new_with_seed (guint32 seed)
 {
@@ -72,6 +80,15 @@ g_rand_new_with_seed (guint32 seed)
   return rand;
 }
 
+/**
+ * g_rand_new:
+ * 
+ * Creates a new random number generator initialized with a seed taken
+ * either from /dev/urandom (if existing) or from the current time (as
+ * a fallback).
+ * 
+ * Return value: the new #GRand.
+ **/
 GRand* 
 g_rand_new (void)
 {
@@ -100,6 +117,12 @@ g_rand_new (void)
   return g_rand_new_with_seed (seed);
 }
 
+/**
+ * g_rand_free:
+ * @rand: a #GRand.
+ *
+ * Frees the memory allocated for the #GRand.
+ **/
 void
 g_rand_free (GRand* rand)
 {
@@ -108,6 +131,13 @@ g_rand_free (GRand* rand)
   g_free (rand);
 }
 
+/**
+ * g_rand_set_seed:
+ * @rand: a #GRand.
+ * @seed: a value to reinitialize the random number generator.
+ *
+ * Sets the seed for the random number generator #GRand to @seed.
+ **/
 void
 g_rand_set_seed (GRand* rand, guint32 seed)
 {
@@ -126,6 +156,15 @@ g_rand_set_seed (GRand* rand, guint32 seed)
     rand->mt[rand->mti] = (69069 * rand->mt[rand->mti-1]) & 0xffffffff;
 }
 
+/**
+ * g_rand_int:
+ * @rand: a #GRand.
+ *
+ * Return the next random #guint32 from @rand equaly distributed over
+ * the range [0..2^32-1].
+ *
+ * Return value: A random number.
+ **/
 guint32
 g_rand_int (GRand* rand)
 {
@@ -161,6 +200,17 @@ g_rand_int (GRand* rand)
   return y; 
 }
 
+/**
+ * g_rand_int_range:
+ * @rand: a #GRand.
+ * @min: lower closed bound of the interval.
+ * @max: upper open bound of the interval.
+ *
+ * Return the next random #gint32 from @rand equaly distributed over
+ * the range [@min..@max-1].
+ *
+ * Return value: A random number.
+ **/
 gint32 
 g_rand_int_range (GRand* rand, gint32 min, gint32 max)
 {
@@ -215,18 +265,46 @@ g_rand_int_range (GRand* rand, gint32 min, gint32 max)
 /* transform [0..2^32-1] -> [0..1) */
 #define G_RAND_DOUBLE_TRANSFORM 2.3283064365386963e-10
 
+/**
+ * g_rand_double:
+ * @rand: a #GRand.
+ *
+ * Return the next random #gdouble from @rand equaly distributed over
+ * the range [0..1).
+ *
+ * Return value: A random number.
+ **/
 gdouble 
 g_rand_double (GRand* rand)
 {                            
   return g_rand_int (rand) * G_RAND_DOUBLE_TRANSFORM;
 }
 
+/**
+ * g_rand_double_range:
+ * @rand: a #GRand.
+ * @min: lower closed bound of the interval.
+ * @max: upper open bound of the interval.
+ *
+ * Return the next random #gdouble from @rand equaly distributed over
+ * the range [@min..@max).
+ *
+ * Return value: A random number.
+ **/
 gdouble 
 g_rand_double_range (GRand* rand, gdouble min, gdouble max)
 {
   return g_rand_int (rand) * ((max - min) * G_RAND_DOUBLE_TRANSFORM)  + min;
 }
 
+/**
+ * g_random_int:
+ *
+ * Return a random #guint32 equaly distributed over the range
+ * [0..2^32-1].
+ *
+ * Return value: A random number.
+ **/
 guint32
 g_random_int (void)
 {
@@ -240,6 +318,16 @@ g_random_int (void)
   return result;
 }
 
+/**
+ * g_random_int_range:
+ * @min: lower closed bound of the interval.
+ * @max: upper open bound of the interval.
+ *
+ * Return a random #gint32 equaly distributed over the range
+ * [@min..@max-1].
+ *
+ * Return value: A random number.
+ **/
 gint32 
 g_random_int_range (gint32 min, gint32 max)
 {
@@ -253,6 +341,13 @@ g_random_int_range (gint32 min, gint32 max)
   return result;
 }
 
+/**
+ * g_random_double:
+ *
+ * Return a random #gdouble equaly distributed over the range [0..1).
+ *
+ * Return value: A random number.
+ **/
 gdouble 
 g_random_double (void)
 {
@@ -266,6 +361,15 @@ g_random_double (void)
   return result;
 }
 
+/**
+ * g_random_double_range:
+ * @min: lower closed bound of the interval.
+ * @max: upper open bound of the interval.
+ *
+ * Return a random #gdouble equaly distributed over the range [@min..@max).
+ *
+ * Return value: A random number.
+ **/
 gdouble 
 g_random_double_range (gdouble min, gdouble max)
 {
@@ -279,6 +383,13 @@ g_random_double_range (gdouble min, gdouble max)
   return result;
 }
 
+/**
+ * g_random_set_seed:
+ * @seed: a value to reinitialize the global random number generator.
+ * 
+ * Sets the seed for the global random number generator, which is used
+ * by te g_random_* functions, to @seed.
+ **/
 void
 g_random_set_seed (guint32 seed)
 {
