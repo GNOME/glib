@@ -1,5 +1,9 @@
 2003-05-19  Noah Levitt  <nlevitt@columbia.edu>
 
+	* glib/glist.c: Remove unused function g_list_sort2 (bug #113203).
+
+2003-05-19  Noah Levitt  <nlevitt@columbia.edu>
+
 	* glib/gunidecomp.c: Fix off-by-one error in
 	g_unicode_canonical_ordering (bug #113260).
 
