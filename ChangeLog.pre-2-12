@@ -1,3 +1,9 @@
+Mon Jun  4 16:02:57 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* gstrfuncs.c (g_strup/strdown): to match g_strcasecmp,
+	check if it is lower/upper before converting to upper/lower
+	[ not required by ISO... ] (#55682, Jon Trowbridge)
+
 Mon Jun  4 15:59:15 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* gunicode.h: Make a bit more standalone by adding include

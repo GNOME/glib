@@ -974,7 +974,8 @@ g_strdown (gchar *string)
   
   while (*s)
     {
-      *s = tolower (*s);
+      if (isupper (*s))
+	*s = tolower (*s);
       s++;
     }
   
@@ -992,7 +993,8 @@ g_strup (gchar *string)
 
   while (*s)
     {
-      *s = toupper (*s);
+      if (islower (*s))
+	*s = toupper (*s);
       s++;
     }
 
