@@ -1088,6 +1088,7 @@ g_list_length
 g_list_copy
 g_list_reverse
 g_list_sort
+GCompareFunc
 g_list_concat
 g_list_foreach
 GFunc
@@ -1191,7 +1192,7 @@ g_trash_stack_height
 GHashTable
 g_hash_table_new
 GHashFunc
-GCompareFunc
+GEqualFunc
 g_hash_table_insert
 g_hash_table_size
 g_hash_table_lookup

@@ -1,3 +1,16 @@
+2000-10-30  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* glib/glib-sections.txt, glib/tmpl/linked_lists_double.sgml,
+	glib/tmpl/caches.sgml: Move GCompareFunc to GList and introduce
+	and document GEqualFunc in GHashTable.
+
+	* glib/tmpl/caches.sgml, glib/tmpl/hash_tables.sgml,
+	glib/tmpl/relations.sgml : Changed to reflect the changed API
+	(GCompareFunc -> GEqualFunc).
+
+	* glib/tmpl/linked_lists_single.sgml, glib/tmpl/threads.sgml: Typo
+	fixes.
+	
 Mon Oct 30 11:13:12 2000  Tim Janik  <timj@gtk.org>
 
 	* gobject/tmpl/signals.sgml: start at general description.
