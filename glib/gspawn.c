@@ -148,7 +148,7 @@ read_data (GString *str,
 
  again:
   
-  bytes = read (fd, &buf, 4096);
+  bytes = read (fd, buf, 4096);
 
   if (bytes == 0)
     return READ_EOF;
@@ -793,13 +793,36 @@ exec_err_to_g_error (gint en)
     }
 }
 
+static gssize
+write_all (gint fd, gconstpointer vbuf, gsize to_write)
+{
+  gchar *buf = (gchar *) vbuf;
+  
+  while (to_write > 0)
+    {
+      gssize count = write (fd, buf, to_write);
+      if (count < 0)
+        {
+          if (errno != EINTR)
+            return FALSE;
+        }
+      else
+        {
+          to_write -= count;
+          buf += count;
+        }
+    }
+  
+  return TRUE;
+}
+
 static void
 write_err_and_exit (gint fd, gint msg)
 {
   gint en = errno;
   
-  write (fd, &msg, sizeof(msg));
-  write (fd, &en, sizeof(en));
+  write_all (fd, &msg, sizeof(msg));
+  write_all (fd, &en, sizeof(en));
   
   _exit (1);
 }
@@ -1081,8 +1104,8 @@ fork_exec_with_pipes (gboolean              intermediate_child,
           if (grandchild_pid < 0)
             {
               /* report -1 as child PID */
-              write (child_pid_report_pipe[1], &grandchild_pid,
-                     sizeof(grandchild_pid));
+              write_all (child_pid_report_pipe[1], &grandchild_pid,
+                         sizeof(grandchild_pid));
               
               write_err_and_exit (child_err_report_pipe[1],
                                   CHILD_FORK_FAILED);              
@@ -1107,7 +1130,7 @@ fork_exec_with_pipes (gboolean              intermediate_child,
             }
           else
             {
-              write (child_pid_report_pipe[1], &grandchild_pid, sizeof(grandchild_pid));
+              write_all (child_pid_report_pipe[1], &grandchild_pid, sizeof(grandchild_pid));
               close_and_invalidate (&child_pid_report_pipe[1]);
               
               _exit (0);
