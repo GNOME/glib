@@ -1,3 +1,8 @@
+Fri Jul 20 19:16:24 (UTC) 2001  Ron Steinke  <rsteinke@w-link.net>
+
+	* gobject/glib-genmarshal.c: modified to create header files
+	using G_[BEGIN,END]_DECLS instead of #ifdef __cplusplus ...
+
 Fri Jul 20 14:11:29 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gutf8.c glib/gunidecomp.c: s/size_t/gsize/ to match
