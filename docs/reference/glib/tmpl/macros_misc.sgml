@@ -103,11 +103,10 @@ when compiling with the <option>-pedantic</option> option.
 
 <!-- ##### MACRO G_GNUC_CONST ##### -->
 <para>
-Expands to the GNU C <literal>const</literal> function attribute if the compiler is <command>gcc</command>.
-Declaring a function as const enables better optimization of the function.
-A const function doesn't examine any values except its parameters,
-and has no effects except its return value.
-See the GNU C documentation for details. 
+Expands to the GNU C <literal>const</literal> function attribute if the compiler is 
+<command>gcc</command>. Declaring a function as const enables better optimization of calls 
+to the function. A const function doesn't examine any values except its parameters, and has no 
+effects except its return value. See the GNU C documentation for details. 
 </para>
 <note><para>
 A function that has pointer arguments and examines the data pointed to 
@@ -116,6 +115,30 @@ calls a non-const function usually must not be const. It doesn't make sense
 for a const function to return void.
 </para></note>
 
+
+
+<!-- ##### MACRO G_GNUC_PURE ##### -->
+<para>
+Expands to the GNU C <literal>pure</literal> function attribute if the compiler is 
+<command>gcc</command>. Declaring a function as pure enables better optimization of 
+calls to the function. A pure function has no effects except its return value and the 
+return value depends only on the parameters and/or global variables.
+See the GNU C documentation for details. 
+</para>
+
+
+
+<!-- ##### MACRO G_GNUC_MALLOC ##### -->
+<para>
+Expands to the GNU C <literal>malloc</literal> function attribute if the compiler is 
+<command>gcc</command>. Declaring a function as malloc enables better optimization of the 
+function. A function can have the malloc attribute if it returns a pointer which is guaranteed
+to not alias with any other pointer when the function returns (in practice, this means newly 
+allocated memory).  
+See the GNU C documentation for details. 
+</para>
+
+@Since: 2.6
 
 
 <!-- ##### MACRO G_GNUC_DEPRECATED ##### -->
@@ -134,8 +157,7 @@ See the GNU C documentation for details.
 <!-- ##### MACRO G_GNUC_NORETURN ##### -->
 <para>
 Expands to the GNU C <literal>noreturn</literal> function attribute if the 
-compiler is <command>gcc</command>.
-It is used for declaring functions which never return.
+compiler is <command>gcc</command>. It is used for declaring functions which never return.
 It enables optimization of the function, and avoids possible compiler
 warnings. See the GNU C documentation for details. 
 </para>
@@ -144,28 +166,17 @@ warnings. See the GNU C documentation for details.
 
 <!-- ##### MACRO G_GNUC_UNUSED ##### -->
 <para>
-Expands to the GNU C <literal>unused</literal> function attribute if the compiler is <command>gcc</command>.
-It is used for declaring functions which may never be used.
+Expands to the GNU C <literal>unused</literal> function attribute if the compiler is 
+<command>gcc</command>. It is used for declaring functions which may never be used.
 It avoids possible compiler warnings. See the GNU C documentation for details. 
-</para>
-
-
-
-<!-- ##### MACRO G_GNUC_PURE ##### -->
-<para>
-Expands to the GNU C <literal>pure</literal> function attribute if the compiler is <command>gcc</command>.
-Declaring a function as pure enables better optimization of the function.
-A pure function has no effects except its return value and the return 
-value depends only on the parameters and/or global variables.
-See the GNU C documentation for details. 
 </para>
 
 
 
 <!-- ##### MACRO G_GNUC_PRINTF ##### -->
 <para>
-Expands to the GNU C <literal>format</literal> function attribute if the compiler is <command>gcc</command>.
-This is used for declaring functions which take a variable number of
+Expands to the GNU C <literal>format</literal> function attribute if the compiler is 
+<command>gcc</command>. This is used for declaring functions which take a variable number of
 arguments, with the same syntax as <function>printf()</function>.
 It allows the compiler to type-check the arguments passed to the function.
 See the GNU C documentation for details. 

@@ -1,3 +1,9 @@
+2004-11-28  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/tmpl/macros_misc.sgml: Document G_GNUC_MALLOC.
+
+	* glib/glib-sections.txt: Add G_GNUC_MALLOC
+
 2004-11-12  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.5.6 ===
