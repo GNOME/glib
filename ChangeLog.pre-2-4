@@ -1,3 +1,9 @@
+2000-02-18  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* configure.in: Changed GCC version test to also accept major
+	versions > 2. Thanks to Ben Gertzfield <che@debian.org> for
+	pointing this out.
+
 Thu Feb 17 12:53:44 2000  Tim Janik  <timj@gtk.org>
 
         * gstring.c: changed g_str_hash() to a 31 bit version based on
