@@ -433,7 +433,7 @@ handlers_find (gpointer         instance,
 						      handler->closure->meta_marshal == 0 &&
 						      ((GCClosure*) handler->closure)->callback == func)))
 		  {
-		    mlist = handler_match_prepend (mlist, handler, signal_id);
+		    mlist = handler_match_prepend (mlist, handler, hlist->signal_id);
 		    if (one_and_only)
 		      return mlist;
 		  }

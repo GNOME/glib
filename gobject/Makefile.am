@@ -33,6 +33,7 @@ gobject_public_h_sources = @STRIP_BEGIN@ \
 	gsignal.h \
 	gtype.h \
 	gtypeplugin.h \
+	gtypepluginsimple.h \
 	gvalue.h \
 	gvaluecollector.h \
 	gvaluetypes.h \
@@ -53,6 +54,7 @@ gobject_c_sources = @STRIP_BEGIN@ \
 	gsignal.c \
 	gtype.c \
 	gtypeplugin.c \
+	gtypepluginsimple.c \
 	gvalue.c \
 	gvaluetypes.c \
 @STRIP_END@

@@ -1,3 +1,10 @@
+Sun Nov  5 10:25:40 2000  Owen Taylor  <otaylor@redhat.com>
+
+	* gsignal.c (handlers_find): When appending handlers and
+	not matching on signal_id, use hlist->signal_id instead of 
+	signal_id. Having the correct signal_id when unreffing
+	the handlers makes things work a lot better.
+
 2000-11-05  Tor Lillqvist  <tml@iki.fi>
 
 	* makefile.{mingw,msc}.in (gobject_OBJECTS): Add gtypeplugin.
