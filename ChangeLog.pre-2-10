@@ -1,3 +1,8 @@
+Sat Dec 12 19:08:59 1998  Tim Janik  <timj@gtk.org>
+
+	* configure.in: always define G_HAVE_INLINE if __cplusplus is
+ 	defined, reported by Wan-Teh Chang <wtc@netscape.com>.
+
 Thu Dec 10 21:49:39 CST 1998 Shawn T. Amundson <amundson@gtk.org>
 
 	* Released GLib 1.1.7

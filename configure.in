@@ -619,7 +619,11 @@ $glib_defines
 
 $glib_vacopy
 
+#ifdef	__cplusplus
+#define	G_HAVE_INLINE	1
+#else	/* !__cplusplus */
 $glib_inline
+#endif	/* !__cplusplus */
 
 #define G_BYTE_ORDER $g_byte_order
 outfile_EOF
