@@ -1061,7 +1061,10 @@ g_get_any_init (void)
         do
           {
             g_free (buffer);
-            buffer = g_malloc (bufsize);
+	    /* we allocate 6 extra bytes to work around a bug in 
+	     * Mac OS < 10.3. See #156446
+             */
+	    buffer = g_malloc (bufsize + 6);
 	    errno = 0;
 	    
 #    ifdef HAVE_POSIX_GETPWUID_R

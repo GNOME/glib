@@ -1,3 +1,8 @@
+2004-11-07  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gutils.c (g_get_any_init): Work around an bug
+	in Mac OS < 10.3.  (#156446, Dave MacLachlan)
+
 2004-11-06  Tor Lillqvist  <tml@iki.fi>
 
 	* glibconfig.h.win32.in: Cosmetics: move the G_GNUC_INTERNAL
