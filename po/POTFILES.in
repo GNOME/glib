@@ -9,3 +9,4 @@ glib/gspawn-win32.c
 glib/gspawn.c
 glib/gutf8.c
 glib/goption.c
+glib/gkeyfile.c

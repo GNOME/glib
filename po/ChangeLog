@@ -1,3 +1,7 @@
+2004-11-17  Matthias Clasen  <mclasen@redhat.com>
+
+	* POTFILES.in: Add gkeyfile.c
+
 2004-11-15  Hendrik Richter  <hendrik@gnome-de.org>
 
 	* de.po: Updated German translation.
