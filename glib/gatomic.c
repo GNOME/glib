@@ -266,6 +266,9 @@ g_atomic_pointer_compare_and_exchange (gpointer *atomic,
  * and CVS version 1.3 of glibc's sysdeps/powerpc/powerpc32/bits/atomic.h 
  * and CVS version 1.2 of glibc's sysdeps/powerpc/powerpc64/bits/atomic.h 
  */
+#   ifdef __OPTIMIZE__
+/* Non-optimizing compile bails on the following two asm statements
+ * for reasons unknown to the author */
 gint
 g_atomic_int_exchange_and_add (gint *atomic, 
 			       gint val)
@@ -295,6 +298,29 @@ g_atomic_int_add (gint *atomic,
 		    : "b" (atomic), "r" (val), "2" (*atomic)
 		    : "cr0", "memory");
 }
+#   else /* !__OPTIMIZE__ */
+gint
+g_atomic_int_exchange_and_add (gint *atomic, 
+			       gint val)
+{
+  gint result;
+  do
+    result = *atomic;
+  while (!g_atomic_int_compare_and_exchange (atomic, result, result + val));
+
+  return result;
+}
+ 
+void
+g_atomic_int_add (gint *atomic, 
+		  gint val)
+{
+  gint result;
+  do
+    result = *atomic;
+  while (!g_atomic_int_compare_and_exchange (atomic, result, result + val));
+}
+#   endif /* !__OPTIMIZE__ */
 
 #   if GLIB_SIZEOF_VOID_P == 4 /* 32-bit system */
 gboolean

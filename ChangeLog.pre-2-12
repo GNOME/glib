@@ -1,3 +1,11 @@
+Fri Mar 12 15:21:22 2004  Manish Singh  <yosh@gimp.org>
+
+	* glib/gatomic.c: Non-optimizing compile fails for two asm
+	statements on PowerPC. Use generic implementaton for those
+	cases. Spotted by Christof Petig <christof@petig-baender.de>,
+	fix by Sebastian Wilhelmi. Bug #137006 has a possible alternate
+	solution, but we'll be conservative for now.
+
 Thu Mar 11 02:05:13 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/gmain.c (g_main_depth): Remove an extra semicolon.
