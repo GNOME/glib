@@ -1,3 +1,28 @@
+2003-10-24  Tor Lillqvist  <tml@iki.fi>
+
+	* configure.in: Force shared library (DLL) only on Windows.
+	(I don't think that is controversial?) Remove unnecessary
+	AC_LIBTOOL_WIN32_DLL. Don't use -D_REENTRANT on
+	Win32, it is not used by mingw or MSVC headers.
+
+	* config.h.win32.in
+	* glibconfig.h.win32.in: Match what configure produces.
+	
+	* glib/gconvert.c
+	* glib/gutils.c: Mark a couple of functions and variables that
+	aren't public as static.
+
+	* glib/gnulib/g-gnulib.h: Undef HAVE_SNPRINTF before (re)defining
+	it potentially differently, to silence compiler.
+
+	* glib/glib.def: Add some missing entries.
+	
+	* tests/gobject/Makefile.am (LDADD): Reorder, put libgobject after
+	libtestgobject.
+
+	* tests/gobject/ifaceproperties.c (main): NULL-terminate arg list
+	to g_object_set() and _get().
+
 Thu Oct 23 12:38:24 2003  Owen Taylor  <otaylor@redhat.com>
 
 	* === Released 2.3.0 ===

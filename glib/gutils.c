@@ -173,7 +173,7 @@ my_strchrnul (const gchar *str, gchar c)
 
 #ifdef G_OS_WIN32
 
-gchar *inner_find_program_in_path (const gchar *program);
+static gchar *inner_find_program_in_path (const gchar *program);
 
 gchar*
 g_find_program_in_path (const gchar *program)
@@ -240,6 +240,9 @@ g_find_program_in_path (const gchar *program)
  *
  * Return value: absolute path, or NULL
  **/
+#ifdef G_OS_WIN32
+static
+#endif
 gchar*
 g_find_program_in_path (const gchar *program)
 {
@@ -1064,7 +1067,7 @@ g_get_tmp_dir (void)
   return g_tmp_dir;
 }
 
-G_LOCK_DEFINE (g_prgname);
+G_LOCK_DEFINE_STATIC (g_prgname);
 static gchar *g_prgname = NULL;
 
 gchar*
@@ -1088,7 +1091,7 @@ g_set_prgname (const gchar *prgname)
   G_UNLOCK (g_prgname);
 }
 
-G_LOCK_DEFINE (g_application_name);
+G_LOCK_DEFINE_STATIC (g_application_name);
 static gchar *g_application_name = NULL;
 
 /**

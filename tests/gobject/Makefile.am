@@ -43,7 +43,7 @@ CLEANFILES = stamp-testmarshal.h
 
 ########################################################################
 
-LDADD = $(libgobject) libtestgobject.la
+LDADD = libtestgobject.la $(libgobject) 
 
 test_programs =					\
 	accumulator				\

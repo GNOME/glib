@@ -28,18 +28,20 @@ G_BEGIN_DECLS
 #define G_MAXLONG	LONG_MAX
 #define G_MAXULONG	ULONG_MAX
 
-#define G_MININT64	((gint64)  0x8000000000000000)
-#define G_MAXINT64	((gint64)  0x7fffffffffffffff)
-#define G_MAXUINT64	((guint64) 0xffffffffffffffff)
+#define G_MININT64	G_GINT64_CONSTANT(0x8000000000000000)
+#define G_MAXINT64	G_GINT64_CONSTANT(0x7fffffffffffffff)
+#define G_MAXUINT64	G_GINT64_CONSTANT(0xffffffffffffffffU)
 
 typedef signed char gint8;
 typedef unsigned char guint8;
 typedef signed short gint16;
 typedef unsigned short guint16;
+#define G_GINT16_MODIFIER "h"
 #define G_GINT16_FORMAT "hi"
 #define G_GUINT16_FORMAT "hu"
 typedef signed int gint32;
 typedef unsigned int guint32;
+#define G_GINT32_MODIFIER ""
 #define G_GINT32_FORMAT "i"
 #define G_GUINT32_FORMAT "u"
 #define G_HAVE_GINT64 1          /* deprecated, always true */
@@ -57,8 +59,9 @@ typedef unsigned __int64 guint64;
 #else /* _MSC_VER */
 #define G_GINT64_CONSTANT(val)	(val##i64)
 #endif /* _MSC_VER */
-#define G_GINT64_FORMAT "I64i"
-#define G_GUINT64_FORMAT "I64u"
+#define G_GINT64_MODIFIER "ll"
+#define G_GINT64_FORMAT "lli"
+#define G_GUINT64_FORMAT "llu"
 
 #define GLIB_SIZEOF_VOID_P 4
 #define GLIB_SIZEOF_LONG   4
@@ -72,6 +75,7 @@ typedef unsigned int gsize;
 
 #define GINT_TO_POINTER(i)	((gpointer)  (i))
 #define GUINT_TO_POINTER(u)	((gpointer)  (u))
+
 #ifdef NeXT /* @#%@! NeXTStep */
 # define g_ATEXIT(proc)	(!atexit (proc))
 #else
@@ -130,7 +134,14 @@ typedef unsigned int gsize;
 #define G_THREADS_IMPL_WIN32
 typedef struct _GMutex* GStaticMutex;
 #define G_STATIC_MUTEX_INIT NULL
-#define g_static_mutex_get_mutex(mutex) (g_static_mutex_get_mutex_impl (mutex))
+#define g_static_mutex_get_mutex(mutex) \
+  (g_static_mutex_get_mutex_impl_shortcut (mutex))
+/* double checked locking can be used on this platform */
+#define g_once(once, func, arg) \
+  ((once)->status == G_ONCE_STATUS_READY ? (once)->retval : \
+   g_once_impl (once, func, arg));
+#define g_static_mutex_get_mutex_impl_shortcut(mutex) \
+  (*(mutex) ? *(mutex) : g_static_mutex_get_mutex_impl (mutex))
 /* This represents a system thread as used by the implementation. An
  * alien implementaion, as loaded by g_thread_init can only count on
  * "sizeof (gpointer)" bytes to store their info. We however need more

@@ -215,6 +215,17 @@ else
   AC_MSG_RESULT([yes])
 fi
 
+if test "$glib_native_win32" = "yes"; then
+  if test x$enable_static = xyes -o x$enable_static = x; then
+    AC_MSG_WARN([Disabling static library build, must build as DLL on Windows.])
+    enable_static=no
+  fi
+  if test x$enable_shared = xno; then
+    AC_MSG_WARN([Enabling shared library build, must build as DLL on Windows.])
+  fi
+  enable_shared=yes
+fi
+
 dnl Checks for programs.
 AC_PROG_CC
 
@@ -410,7 +421,6 @@ esac
 
 dnl Initialize libtool
 AM_DISABLE_STATIC
-AC_LIBTOOL_WIN32_DLL
 AM_PROG_LIBTOOL
 
 if test "x$GCC" = "xyes"; then
@@ -1465,6 +1475,10 @@ if test x"$have_threads" != xno; then
 		# We are not using gcc with -pthread. Catched above.
 		G_THREAD_CFLAGS="-Kthread"
 		G_THREAD_LIBS=$G_THREAD_CFLAGS
+		;;
+	*-mingw*)
+		# No flag needed when using MSVCRT.DLL
+		G_THREAD_CFLAGS=""
 		;;
 	*)
 		G_THREAD_CFLAGS="-D_REENTRANT" # good default guess otherwise

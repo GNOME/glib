@@ -236,7 +236,7 @@ iconv_cache_init (void)
  *
  * Returns a pointer to the newly allocated cache bucket.
  **/
-struct _iconv_cache_bucket *
+static struct _iconv_cache_bucket *
 iconv_cache_bucket_new (const gchar *key, GIConv cd)
 {
   struct _iconv_cache_bucket *bucket;

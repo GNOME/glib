@@ -442,12 +442,14 @@ main (gint   argc,
 		"prop1", 0x0101,
 		"prop2", 0x0202,
 		"prop3", 0x0303,
-		"prop4", 0x0404);
+		"prop4", 0x0404,
+		NULL);
   g_object_get (object,
 		"prop1", &val1,
 		"prop2", &val2,
 		"prop3", &val3,
-		"prop4", &val4);
+		"prop4", &val4,
+		NULL);
 
   g_assert (val1 == 0x0101);
   g_assert (val2 == 0x0202);
