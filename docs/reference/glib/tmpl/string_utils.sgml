@@ -162,7 +162,8 @@ an even better idea.
 
 <!-- ##### FUNCTION g_strlcat ##### -->
 <para>
-Portability wrapper that calls strlcat() on systems which have it, and emulates it otherwise. Appends nul-terminated @src string to @dest, guaranteeing
+Portability wrapper that calls strlcat() on systems which have it, and emulates it otherwise. 
+Appends nul-terminated @src string to @dest, guaranteeing
 nul-termination for @dest. The total size of @dest won't exceed
 @dest_size. Caveat: this is supposedly a more secure alternative to strcat() or
 strncat(), but for real security g_strconcat() is harder to mess up.
@@ -555,8 +556,6 @@ possibly non-ASCII character in.
 @str: 
 @len: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@string: 
 
 
 <!-- ##### FUNCTION g_ascii_tolower ##### -->
@@ -636,7 +635,8 @@ Reverses all of the bytes in a string.
 For example, <literal>g_strreverse ("abcdef")</literal> will result in "fedcba".
 </para>
 <para>
-Note that g_strreverse() doesn't work on UTF-8 strings containing multibyte characters. For that purpose, use g_utf8_strreverse().
+Note that g_strreverse() doesn't work on UTF-8 strings containing multibyte characters. 
+For that purpose, use g_utf8_strreverse().
 </para>
 
 @string: the string to reverse.
@@ -690,8 +690,6 @@ The typical usage would be something like:
 @buf_len: 
 @d: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@format: 
 
 
 <!-- ##### FUNCTION g_ascii_formatd ##### -->
@@ -754,7 +752,7 @@ to the @new_delimiter character.
 @delimiters: a string containing the current delimiters, or %NULL to use the
 standard delimiters defined in #G_STR_DELIMITERS.
 @new_delimiter: the new delimiter character.
-@Returns: 
+@Returns: @string.
 
 
 <!-- ##### MACRO G_STR_DELIMITERS ##### -->
@@ -830,10 +828,14 @@ nesting such as <literal>g_ascii_strup (g_strcanon (str, "abc", '?'))</literal>.
 <!-- ##### FUNCTION g_strconcat ##### -->
 <para>
 Concatenates all of the given strings into one long string.  The returned string
-should be freed when no longer needed.  WARNING: THE VARIABLE ARGUMENT LIST MUST
-END WITH %NULL. If you forget the %NULL, g_strconcat() will start appending
-random memory junk to your string.
+should be freed when no longer needed.  
 </para>
+
+<warning><para>
+The variable argument list <emphasis>must</emphasis> end with %NULL. 
+If you forget the %NULL, g_strconcat() will start appending
+random memory junk to your string.
+</para></warning>
 
 @string1: The first string to add, which must not be %NULL.
 @Varargs: a %NULL-terminated list of strings to append to the string.
@@ -875,7 +877,7 @@ strerror() function.
 documentation.
 @Returns: a string describing the error code.
 If the error code is unknown, it returns "unknown error (&lt;code&gt;)".
-The string can only be used until the next call to g_strerror.
+The string can only be used until the next call to g_strerror().
 
 
 <!-- ##### FUNCTION g_strsignal ##### -->
@@ -889,6 +891,6 @@ strsignal() function.
 documentation.
 @Returns: a string describing the signal.
 If the signal is unknown, it returns "unknown signal (&lt;signum&gt;)".
-The string can only be used until the next call to g_strsignal.
+The string can only be used until the next call to g_strsignal().
 
 

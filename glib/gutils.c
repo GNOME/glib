@@ -726,7 +726,7 @@ g_setenv (const gchar *variable,
                 
 /**
  * g_unsetenv:
- * @name: the environment variable to remove.
+ * @variable: the environment variable to remove.
  * 
  * Removes an environment variable from the environment.
  *

@@ -1,5 +1,7 @@
 2003-07-30  Matthias Clasen  <maclas@gmx.de>
 
+	* glib/tmpl/string_utils.sgml: Small fixes.
+
 	* glib/glib-docs.sgml: Add paragraph about multi-threading policy.
 
 	* glib/glib-sections.txt: Rename g_read_link to g_file_read_link.
