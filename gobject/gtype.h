@@ -42,7 +42,7 @@ typedef enum    /*< skip >*/
   G_TYPE_INVALID		=  0 << G_TYPE_FUNDAMENTAL_SHIFT,
   G_TYPE_NONE			=  1 << G_TYPE_FUNDAMENTAL_SHIFT,
   G_TYPE_INTERFACE		=  2 << G_TYPE_FUNDAMENTAL_SHIFT,
-
+  
   /* GLib type IDs */
   G_TYPE_CHAR			=  3 << G_TYPE_FUNDAMENTAL_SHIFT,
   G_TYPE_UCHAR			=  4 << G_TYPE_FUNDAMENTAL_SHIFT,
@@ -62,7 +62,7 @@ typedef enum    /*< skip >*/
   G_TYPE_BOXED			= 18 << G_TYPE_FUNDAMENTAL_SHIFT,
   G_TYPE_PARAM			= 19 << G_TYPE_FUNDAMENTAL_SHIFT,
   G_TYPE_OBJECT			= 20 << G_TYPE_FUNDAMENTAL_SHIFT,
-
+  
   /* reserved fundamental type ids,
    * mail gtk-devel-list@redhat.com for reservations
    */
@@ -227,20 +227,20 @@ struct _GTypeInfo
 {
   /* interface types, classed types, instantiated types */
   guint16                class_size;
-
+  
   GBaseInitFunc          base_init;
   GBaseFinalizeFunc      base_finalize;
-
+  
   /* classed types, instantiated types */
   GClassInitFunc         class_init;
   GClassFinalizeFunc     class_finalize;
   gconstpointer          class_data;
-
+  
   /* instantiated types */
   guint16                instance_size;
   guint16                n_preallocs;
   GInstanceInitFunc      instance_init;
-
+  
   /* value handling */
   const GTypeValueTable	*value_table;
 };

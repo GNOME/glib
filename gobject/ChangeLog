@@ -1,3 +1,14 @@
+Thu Nov 22 03:30:57 2001  Tim Janik  <timj@gtk.org>
+
+	* gvalue.h (G_TYPE_IS_VALUE): use g_type_check_is_value_type()
+	instead of g_type_value_table_peek().
+
+	* gtype.[hc] (type_check_is_value_type_U): speed up check
+	LOCK-less by caching lookups in node->mutatable_has_value_table.
+
+	* gtype.[hc]: removed locks where possible. partly based on
+	patches from owen and alex.
+
 Thu Nov 22 00:26:26 2001  Tim Janik  <timj@gtk.org>
 
 	* gtype.[hc]: provide G_TYPE_FUNDAMENTAL_SHIFT and

@@ -110,7 +110,7 @@ help (gchar *arg)
   fprintf (stderr, "       -s       specify line spacing\n");
   fprintf (stderr, "qualifiers:\n");
   fprintf (stderr, "       froots   iterate over fundamental roots\n");
-  fprintf (stderr, "       tree     print BSE type tree\n");
+  fprintf (stderr, "       tree     print type tree\n");
   
   return arg != NULL;
 }

@@ -1,3 +1,7 @@
+Thu Nov 22 02:50:18 2001  Tim Janik  <timj@gtk.org>
+
+	* NEWS: merged with gobject/NEWS.
+
 2001-11-21  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/makefile.mingw.in (DEFINES): Set G_LOG_DOMAIN as in

@@ -38,10 +38,6 @@
  * TODO:
  * - g_type_from_name() should do an ordered array lookup after fetching the
  *   the quark, instead of a second hashtable lookup.
- * - speedup checks for virtual types, steal a bit somewhere
- *
- * FIXME:
- * - force interface initialization for already existing classes
  *
  * LOCKING:
  * lock handling issues when calling static functions are indicated by
@@ -63,10 +59,17 @@
  */
 
 static GStaticRWLock            type_rw_lock = G_STATIC_RW_LOCK_INIT;
+#ifdef LOCK_DEBUG
+#define G_READ_LOCK(rw_lock)    do { g_printerr (G_STRLOC ": readL++\n"); g_static_rw_lock_reader_lock (rw_lock); } while (0)
+#define G_READ_UNLOCK(rw_lock)  do { g_printerr (G_STRLOC ": readL--\n"); g_static_rw_lock_reader_unlock (rw_lock); } while (0)
+#define G_WRITE_LOCK(rw_lock)   do { g_printerr (G_STRLOC ": writeL++\n"); g_static_rw_lock_writer_lock (rw_lock); } while (0)
+#define G_WRITE_UNLOCK(rw_lock) do { g_printerr (G_STRLOC ": writeL--\n"); g_static_rw_lock_writer_unlock (rw_lock); } while (0)
+#else
 #define G_READ_LOCK(rw_lock)    g_static_rw_lock_reader_lock (rw_lock)
 #define G_READ_UNLOCK(rw_lock)  g_static_rw_lock_reader_unlock (rw_lock)
 #define G_WRITE_LOCK(rw_lock)   g_static_rw_lock_writer_lock (rw_lock)
 #define G_WRITE_UNLOCK(rw_lock) g_static_rw_lock_writer_unlock (rw_lock)
+#endif
 #define	INVALID_RECURSION(func, arg, type_name) G_STMT_START{ \
     static const gchar *_action = " invalidly modified type "; \
     gpointer _arg = (gpointer) (arg); const gchar *_tname = (type_name), *_fname = (func); \
@@ -116,7 +119,7 @@ typedef struct _IFaceHolder	IFaceHolder;
 
 
 /* --- prototypes --- */
-static inline GTypeFundamentalInfo*	type_node_fundamental_info_L	(TypeNode		*node);
+static inline GTypeFundamentalInfo*	type_node_fundamental_info_I	(TypeNode		*node);
 static	      void			type_add_flags_W		(TypeNode		*node,
 									 GTypeFlags		 flags);
 static	      void			type_data_make_W		(TypeNode		*node,
@@ -125,7 +128,7 @@ static	      void			type_data_make_W		(TypeNode		*node,
 static inline void			type_data_ref_Wm		(TypeNode		*node);
 static inline void			type_data_unref_Wm		(TypeNode		*node,
 									 gboolean		 uncached);
-static	      void			type_data_last_unref_Wm		(GType			 type,
+static void				type_data_last_unref_Wm		(GType			 type,
 									 gboolean		 uncached);
 static inline gpointer			type_get_qdata_L		(TypeNode		*node,
 									 GQuark			 quark);
@@ -145,9 +148,9 @@ struct _TypeNode
   guint        _prot_n_ifaces_prerequisites : 9;
   guint        is_classed : 1;
   guint        is_instantiatable : 1;
-  guint        free_flag : 1;
+  guint        mutatable_check_cache : 1;	/* combines some common path checks */
   GType       *children;
-  TypeData    *data;
+  TypeData * volatile data;
   GQuark       qname;
   GData       *global_gdata;
   union {
@@ -174,7 +177,8 @@ struct _TypeNode
 #define	iface_node_set_holders_W(node, holders)	(type_set_qdata_W ((node), static_quark_iface_holder, (holders)))
 #define	iface_node_get_dependants_array_L(n)	((GType*) type_get_qdata_L ((n), static_quark_dependants_array))
 #define	iface_node_set_dependants_array_W(n,d)	(type_set_qdata_W ((n), static_quark_dependants_array, (d)))
-#define	FUNDAMENTAL_FLAG_MASK			((1 << G_TYPE_FUNDAMENTAL_SHIFT) - 1)
+#define	TYPE_ID_MASK				((GType) ((1 << G_TYPE_FUNDAMENTAL_SHIFT) - 1))
+
 
 struct _IFaceHolder
 {
@@ -250,16 +254,16 @@ GTypeDebugFlags	       _g_type_debug_flags = 0;
 
 /* --- type nodes --- */
 static GHashTable       *static_type_nodes_ht = NULL;
-static TypeNode		*static_fundamental_type_nodes[(G_TYPE_FUNDAMENTAL_MAX >> 1) + 1] = { 0, };
+static TypeNode		*static_fundamental_type_nodes[(G_TYPE_FUNDAMENTAL_MAX >> G_TYPE_FUNDAMENTAL_SHIFT) + 1] = { 0, };
 static GType		 static_fundamental_next = G_TYPE_RESERVED_USER_FIRST;
 
 static inline TypeNode*
-lookup_type_node_L (register GType utype)
+lookup_type_node_I (register GType utype)
 {
-  if (utype <= G_TYPE_FUNDAMENTAL_MAX)
-    return static_fundamental_type_nodes[utype >> 1];
+  if (utype > G_TYPE_FUNDAMENTAL_MAX)
+    return (TypeNode*) (utype & ~TYPE_ID_MASK);
   else
-    return (TypeNode*) (utype & ~FUNDAMENTAL_FLAG_MASK);
+    return static_fundamental_type_nodes[utype >> G_TYPE_FUNDAMENTAL_SHIFT];
 }
 
 static TypeNode*
@@ -284,14 +288,14 @@ type_node_any_new_W (TypeNode             *pnode,
   if (!pnode)					      /* offset fundamental types */
     {
       node = G_STRUCT_MEMBER_P (node, SIZEOF_FUNDAMENTAL_INFO);
-      static_fundamental_type_nodes[ftype >> 1] = node;
+      static_fundamental_type_nodes[ftype >> G_TYPE_FUNDAMENTAL_SHIFT] = node;
       type = ftype;
     }
   else
     type = (GType) node;
   
-  g_assert ((type & FUNDAMENTAL_FLAG_MASK) == 0);
-
+  g_assert ((type & TYPE_ID_MASK) == 0);
+  
   node->n_supers = n_supers;
   if (!pnode)
     {
@@ -328,7 +332,7 @@ type_node_any_new_W (TypeNode             *pnode,
       else
 	{
 	  guint j;
-
+	  
 	  CLASSED_NODE_N_IFACES (node) = CLASSED_NODE_N_IFACES (pnode);
 	  CLASSED_NODE_IFACES_ENTRIES (node) = g_memdup (CLASSED_NODE_IFACES_ENTRIES (pnode),
 							 sizeof (CLASSED_NODE_IFACES_ENTRIES (pnode)[0]) *
@@ -356,12 +360,12 @@ type_node_any_new_W (TypeNode             *pnode,
 }
 
 static inline GTypeFundamentalInfo*
-type_node_fundamental_info_L (TypeNode *node)
+type_node_fundamental_info_I (TypeNode *node)
 {
   GType ftype = NODE_FUNDAMENTAL_TYPE (node);
   
   if (ftype != NODE_TYPE (node))
-    node = lookup_type_node_L (ftype);
+    node = lookup_type_node_I (ftype);
   
   return node ? G_STRUCT_MEMBER_P (node, -SIZEOF_FUNDAMENTAL_INFO) : NULL;
 }
@@ -373,10 +377,10 @@ type_node_fundamental_new_W (GType                 ftype,
 {
   GTypeFundamentalInfo *finfo;
   TypeNode *node;
-
-  g_assert ((ftype & FUNDAMENTAL_FLAG_MASK) == 0);
+  
+  g_assert ((ftype & TYPE_ID_MASK) == 0);
   g_assert (ftype <= G_TYPE_FUNDAMENTAL_MAX);
-
+  
   if (ftype == static_fundamental_next)
     static_fundamental_next += 1 << G_TYPE_FUNDAMENTAL_SHIFT;
   
@@ -384,7 +388,7 @@ type_node_fundamental_new_W (GType                 ftype,
   
   node = type_node_any_new_W (NULL, ftype, name, NULL, type_flags);
   
-  finfo = type_node_fundamental_info_L (node);
+  finfo = type_node_fundamental_info_I (node);
   finfo->type_flags = type_flags;
   
   return node;
@@ -444,7 +448,7 @@ type_lookup_prerequisite_L (TypeNode *iface,
     {
       GType *prerequisites = IFACE_NODE_PREREQUISITES (iface) - 1;
       guint n_prerequisites = IFACE_NODE_N_PREREQUISITES (iface);
-
+      
       do
 	{
 	  guint i;
@@ -468,28 +472,16 @@ type_lookup_prerequisite_L (TypeNode *iface,
 }
 
 static inline gchar*
-type_descriptive_name_L (GType type)
+type_descriptive_name_I (GType type)
 {
   if (type)
     {
-      TypeNode *node = lookup_type_node_L (type);
+      TypeNode *node = lookup_type_node_I (type);
       
       return node ? NODE_NAME (node) : "<unknown>";
     }
   else
     return "<invalid>";
-}
-
-static inline gchar*
-type_descriptive_name_U (GType type)
-{
-  const gchar *name;
-  
-  G_READ_LOCK (&type_rw_lock);
-  name = type_descriptive_name_L (type);
-  G_READ_UNLOCK (&type_rw_lock);
-  
-  return (gchar *)name;
 }
 
 
@@ -530,7 +522,7 @@ check_plugin_U (GTypePlugin *plugin,
 }
 
 static gboolean
-check_type_name_U (const gchar *type_name)
+check_type_name_I (const gchar *type_name)
 {
   static const gchar *extra_chars = "-_+";
   const gchar *p = type_name;
@@ -563,27 +555,24 @@ check_type_name_U (const gchar *type_name)
 }
 
 static gboolean
-check_derivation_U (GType        parent_type,
+check_derivation_I (GType        parent_type,
 		    const gchar *type_name)
 {
   TypeNode *pnode;
   GTypeFundamentalInfo* finfo;
   
-  G_READ_LOCK (&type_rw_lock);
-  pnode = lookup_type_node_L (parent_type);
+  pnode = lookup_type_node_I (parent_type);
   if (!pnode)
     {
-      G_READ_UNLOCK (&type_rw_lock);
       g_warning ("cannot derive type `%s' from invalid parent type `%s'",
 		 type_name,
-		 type_descriptive_name_U (parent_type));
+		 type_descriptive_name_I (parent_type));
       return FALSE;
     }
-  finfo = type_node_fundamental_info_L (pnode);
+  finfo = type_node_fundamental_info_I (pnode);
   /* ensure flat derivability */
   if (!(finfo->type_flags & G_TYPE_FLAG_DERIVABLE))
     {
-      G_READ_UNLOCK (&type_rw_lock);
       g_warning ("cannot derive `%s' from non-derivable parent type `%s'",
 		 type_name,
 		 NODE_NAME (pnode));
@@ -593,13 +582,11 @@ check_derivation_U (GType        parent_type,
   if (parent_type != NODE_FUNDAMENTAL_TYPE (pnode) &&
       !(finfo->type_flags & G_TYPE_FLAG_DEEP_DERIVABLE))
     {
-      G_READ_UNLOCK (&type_rw_lock);
       g_warning ("cannot derive `%s' from non-fundamental parent type `%s'",
 		 type_name,
 		 NODE_NAME (pnode));
       return FALSE;
     }
-  G_READ_UNLOCK (&type_rw_lock);
   
   return TRUE;
 }
@@ -611,7 +598,7 @@ check_collect_format_I (const gchar *collect_format)
   gchar valid_format[] = { G_VALUE_COLLECT_INT, G_VALUE_COLLECT_LONG,
 			   G_VALUE_COLLECT_INT64, G_VALUE_COLLECT_DOUBLE,
 			   G_VALUE_COLLECT_POINTER, 0 };
-
+  
   while (*p)
     if (!strchr (valid_format, *p++))
       return FALSE;
@@ -681,15 +668,15 @@ check_value_table_I (const gchar           *type_name,
 }
 
 static gboolean
-check_type_info_L (TypeNode        *pnode,
+check_type_info_I (TypeNode        *pnode,
 		   GType            ftype,
 		   const gchar     *type_name,
 		   const GTypeInfo *info)
 {
-  GTypeFundamentalInfo *finfo = type_node_fundamental_info_L (lookup_type_node_L (ftype));
+  GTypeFundamentalInfo *finfo = type_node_fundamental_info_I (lookup_type_node_I (ftype));
   gboolean is_interface = ftype == G_TYPE_INTERFACE;
-
-  g_assert (ftype <= G_TYPE_FUNDAMENTAL_MAX && !(ftype & FUNDAMENTAL_FLAG_MASK));
+  
+  g_assert (ftype <= G_TYPE_FUNDAMENTAL_MAX && !(ftype & TYPE_ID_MASK));
   
   /* check instance members */
   if (!(finfo->type_flags & G_TYPE_FLAG_INSTANTIATABLE) &&
@@ -776,7 +763,7 @@ find_conforming_child_type_L (TypeNode *pnode,
     return pnode;
   
   for (i = 0; i < pnode->n_children && !node; i++)
-    node = find_conforming_child_type_L (lookup_type_node_L (pnode->children[i]), iface);
+    node = find_conforming_child_type_L (lookup_type_node_I (pnode->children[i]), iface);
   
   return node;
 }
@@ -785,25 +772,25 @@ static gboolean
 check_add_interface_L (GType instance_type,
 		       GType iface_type)
 {
-  TypeNode *node = lookup_type_node_L (instance_type);
-  TypeNode *iface = lookup_type_node_L (iface_type);
+  TypeNode *node = lookup_type_node_I (instance_type);
+  TypeNode *iface = lookup_type_node_I (iface_type);
   IFaceEntry *entry;
   TypeNode *tnode;
   
   if (!node || !node->is_instantiatable)
     {
       g_warning ("cannot add interfaces to invalid (non-instantiatable) type `%s'",
-		 type_descriptive_name_L (instance_type));
+		 type_descriptive_name_I (instance_type));
       return FALSE;
     }
   if (!iface || !NODE_IS_IFACE (iface))
     {
       g_warning ("cannot add invalid (non-interface) type `%s' to type `%s'",
-		 type_descriptive_name_L (iface_type),
+		 type_descriptive_name_I (iface_type),
 		 NODE_NAME (node));
       return FALSE;
     }
-  tnode = lookup_type_node_L (NODE_PARENT_TYPE (iface));
+  tnode = lookup_type_node_I (NODE_PARENT_TYPE (iface));
   if (NODE_PARENT_TYPE (tnode) && !type_lookup_iface_entry_L (node, tnode))
     {
       /* 2001/7/31:timj: erk, i guess this warning is junk as interface derivation is flat */
@@ -839,7 +826,7 @@ check_add_interface_L (GType instance_type,
 }
 
 static gboolean
-check_interface_info_L (TypeNode             *iface,
+check_interface_info_I (TypeNode             *iface,
 			GType                 instance_type,
 			const GInterfaceInfo *info)
 {
@@ -847,7 +834,7 @@ check_interface_info_L (TypeNode             *iface,
     {
       g_warning ("interface type `%s' for type `%s' comes without initializer",
 		 NODE_NAME (iface),
-		 type_descriptive_name_L (instance_type));
+		 type_descriptive_name_I (instance_type));
       return FALSE;
     }
   
@@ -868,7 +855,7 @@ type_data_make_W (TypeNode              *node,
   
   if (!value_table)
     {
-      TypeNode *pnode = lookup_type_node_L (NODE_PARENT_TYPE (node));
+      TypeNode *pnode = lookup_type_node_I (NODE_PARENT_TYPE (node));
       
       if (pnode)
 	vtable = pnode->data->common.value_table;
@@ -946,7 +933,7 @@ type_data_make_W (TypeNode              *node,
   if (vtable_size)
     {
       gchar *p;
-
+      
       /* we allocate the vtable and its strings together with the type data, so
        * children can take over their parent's vtable pointer, and we don't
        * need to worry freeing it or not when the child data is destroyed
@@ -967,6 +954,9 @@ type_data_make_W (TypeNode              *node,
 	strcat  (p, value_table->lcopy_format);
     }
   node->data->common.value_table = vtable;
+  node->mutatable_check_cache = (node->data->common.value_table->value_init != NULL &&
+				 !((G_TYPE_FLAG_VALUE_ABSTRACT | G_TYPE_FLAG_ABSTRACT) &
+				   GPOINTER_TO_UINT (type_get_qdata_L (node, static_quark_type_flags))));
   
   g_assert (node->data->common.value_table != NULL); /* paranoid */
 }
@@ -976,7 +966,7 @@ type_data_ref_Wm (TypeNode *node)
 {
   if (!node->data)
     {
-      TypeNode *pnode = lookup_type_node_L (NODE_PARENT_TYPE (node));
+      TypeNode *pnode = lookup_type_node_I (NODE_PARENT_TYPE (node));
       GTypeInfo tmp_info;
       GTypeValueTable tmp_value_table;
       
@@ -999,7 +989,7 @@ type_data_ref_Wm (TypeNode *node)
       if (node->data)
 	INVALID_RECURSION ("g_type_plugin_*", node->plugin, NODE_NAME (node));
       
-      check_type_info_L (pnode, NODE_FUNDAMENTAL_TYPE (node), NODE_NAME (node), &tmp_info);
+      check_type_info_I (pnode, NODE_FUNDAMENTAL_TYPE (node), NODE_NAME (node), &tmp_info);
       type_data_make_W (node, &tmp_info,
 			check_value_table_I (NODE_NAME (node),
 					     &tmp_value_table) ? &tmp_value_table : NULL);
@@ -1066,7 +1056,7 @@ type_node_add_iface_entry_W (TypeNode *node,
   entries[i].vtable = NULL;
   
   for (i = 0; i < node->n_children; i++)
-    type_node_add_iface_entry_W (lookup_type_node_L (node->children[i]), iface_type);
+    type_node_add_iface_entry_W (lookup_type_node_I (node->children[i]), iface_type);
 }
 
 static void
@@ -1098,11 +1088,11 @@ type_iface_add_prerequisite_W (TypeNode *iface,
   GType prerequisite_type = NODE_TYPE (prerequisite_node);
   GType *prerequisites, *dependants;
   guint n_dependants, i;
-
+  
   g_assert (NODE_IS_IFACE (iface) &&
 	    IFACE_NODE_N_PREREQUISITES (iface) < MAX_N_PREREQUISITES &&
 	    (prerequisite_node->is_instantiatable || NODE_IS_IFACE (prerequisite_node)));
-
+  
   prerequisites = IFACE_NODE_PREREQUISITES (iface);
   for (i = 0; i < IFACE_NODE_N_PREREQUISITES (iface); i++)
     if (prerequisites[i] == prerequisite_type)
@@ -1117,7 +1107,7 @@ type_iface_add_prerequisite_W (TypeNode *iface,
   g_memmove (prerequisites + i + 1, prerequisites + i,
 	     sizeof (prerequisites[0]) * (IFACE_NODE_N_PREREQUISITES (iface) - i - 1));
   prerequisites[i] = prerequisite_type;
-
+  
   /* we want to get notified when prerequisites get added to prerequisite_node */
   if (NODE_IS_IFACE (prerequisite_node))
     {
@@ -1129,12 +1119,12 @@ type_iface_add_prerequisite_W (TypeNode *iface,
       dependants[0] = n_dependants;
       iface_node_set_dependants_array_W (prerequisite_node, dependants);
     }
-
+  
   /* we need to notify all dependants */
   dependants = iface_node_get_dependants_array_L (iface);
   n_dependants = dependants ? dependants[0] : 0;
   for (i = 1; i <= n_dependants; i++)
-    type_iface_add_prerequisite_W (lookup_type_node_L (dependants[i]), prerequisite_node);
+    type_iface_add_prerequisite_W (lookup_type_node_I (dependants[i]), prerequisite_node);
 }
 
 void
@@ -1143,71 +1133,74 @@ g_type_interface_add_prerequisite (GType interface_type,
 {
   TypeNode *iface, *prerequisite_node;
   IFaceHolder *holders;
-
+  
   g_return_if_fail (G_TYPE_IS_INTERFACE (interface_type));	/* G_TYPE_IS_INTERFACE() is an external call: _U */
   g_return_if_fail (!g_type_is_a (interface_type, prerequisite_type));
   g_return_if_fail (!g_type_is_a (prerequisite_type, interface_type));
-
-  G_WRITE_LOCK (&type_rw_lock);
-  iface = lookup_type_node_L (interface_type);
-  prerequisite_node = lookup_type_node_L (prerequisite_type);
+  
+  iface = lookup_type_node_I (interface_type);
+  prerequisite_node = lookup_type_node_I (prerequisite_type);
   if (!iface || !prerequisite_node || !NODE_IS_IFACE (iface))
     {
       g_warning ("interface type `%s' or prerequisite type `%s' invalid",
-		 type_descriptive_name_L (interface_type),
-		 type_descriptive_name_L (prerequisite_type));
-      G_WRITE_UNLOCK (&type_rw_lock);
+		 type_descriptive_name_I (interface_type),
+		 type_descriptive_name_I (prerequisite_type));
       return;
     }
+  G_WRITE_LOCK (&type_rw_lock);
   holders = iface_node_get_holders_L (iface);
   if (holders)
     {
-      g_warning ("unable to add prerequisite `%s' to interface `%s' which is already in use for `%s'",
-		 type_descriptive_name_L (prerequisite_type),
-		 type_descriptive_name_L (interface_type),
-		 type_descriptive_name_L (holders->instance_type));
       G_WRITE_UNLOCK (&type_rw_lock);
+      g_warning ("unable to add prerequisite `%s' to interface `%s' which is already in use for `%s'",
+		 type_descriptive_name_I (prerequisite_type),
+		 type_descriptive_name_I (interface_type),
+		 type_descriptive_name_I (holders->instance_type));
       return;
     }
   if (prerequisite_node->is_instantiatable)
     {
       guint i;
-
+      
       /* can have at most one publically installable instantiatable prerequisite */
       for (i = 0; i < IFACE_NODE_N_PREREQUISITES (iface); i++)
 	{
-	  TypeNode *prnode = lookup_type_node_L (IFACE_NODE_PREREQUISITES (iface)[i]);
-
+	  TypeNode *prnode = lookup_type_node_I (IFACE_NODE_PREREQUISITES (iface)[i]);
+	  
 	  if (prnode->is_instantiatable)
 	    {
-	      g_warning ("adding prerequisite `%s' to interface `%s' conflicts with existing prerequisite `%s'",
-			 type_descriptive_name_L (prerequisite_type),
-			 type_descriptive_name_L (interface_type),
-			 type_descriptive_name_L (NODE_TYPE (prnode)));
 	      G_WRITE_UNLOCK (&type_rw_lock);
+	      g_warning ("adding prerequisite `%s' to interface `%s' conflicts with existing prerequisite `%s'",
+			 type_descriptive_name_I (prerequisite_type),
+			 type_descriptive_name_I (interface_type),
+			 type_descriptive_name_I (NODE_TYPE (prnode)));
 	      return;
 	    }
 	}
-
+      
       for (i = 0; i < prerequisite_node->n_supers + 1; i++)
-	type_iface_add_prerequisite_W (iface, lookup_type_node_L (prerequisite_node->supers[i]));
+	type_iface_add_prerequisite_W (iface, lookup_type_node_I (prerequisite_node->supers[i]));
+      G_WRITE_UNLOCK (&type_rw_lock);
     }
   else if (NODE_IS_IFACE (prerequisite_node))
     {
       GType *dependants;
       guint n_dependants, i;
-
+      
       dependants = iface_node_get_dependants_array_L (prerequisite_node);
       n_dependants = dependants ? dependants[0] : 0;
       for (i = 1; i <= n_dependants; i++)
-	type_iface_add_prerequisite_W (iface, lookup_type_node_L (dependants[i]));
+	type_iface_add_prerequisite_W (iface, lookup_type_node_I (dependants[i]));
       type_iface_add_prerequisite_W (iface, prerequisite_node);
+      G_WRITE_UNLOCK (&type_rw_lock);
     }
   else
-    g_warning ("prerequisite `%s' for interface `%s' is neither instantiatable nor interface",
-	       type_descriptive_name_L (prerequisite_type),
-	       type_descriptive_name_L (interface_type));
-  G_WRITE_UNLOCK (&type_rw_lock);
+    {
+      G_WRITE_UNLOCK (&type_rw_lock);
+      g_warning ("prerequisite `%s' for interface `%s' is neither instantiatable nor interface",
+		 type_descriptive_name_I (prerequisite_type),
+		 type_descriptive_name_I (interface_type));
+    }
 }
 
 static IFaceHolder*
@@ -1215,9 +1208,9 @@ type_iface_peek_holder_L (TypeNode *iface,
 			  GType     instance_type)
 {
   IFaceHolder *iholder;
-
+  
   g_assert (NODE_IS_IFACE (iface));
-
+  
   iholder = iface_node_get_holders_L (iface);
   while (iholder && iholder->instance_type != instance_type)
     iholder = iholder->next;
@@ -1226,11 +1219,11 @@ type_iface_peek_holder_L (TypeNode *iface,
 
 static IFaceHolder*
 type_iface_retrieve_holder_info_Wm (TypeNode *iface,
-				   GType     instance_type,
-				   gboolean  need_info)
+				    GType     instance_type,
+				    gboolean  need_info)
 {
   IFaceHolder *iholder = type_iface_peek_holder_L (iface, instance_type);
-
+  
   if (iholder && !iholder->info && need_info)
     {
       GInterfaceInfo tmp_info;
@@ -1250,7 +1243,7 @@ type_iface_retrieve_holder_info_Wm (TypeNode *iface,
       if (iholder->info)
         INVALID_RECURSION ("g_type_plugin_*", iholder->plugin, NODE_NAME (iface));
       
-      check_interface_info_L (iface, instance_type, &tmp_info);
+      check_interface_info_I (iface, instance_type, &tmp_info);
       iholder->info = g_memdup (&tmp_info, sizeof (tmp_info));
     }
   
@@ -1291,20 +1284,18 @@ g_type_create_instance (GType type)
   GTypeClass *class;
   guint i;
   
-  G_READ_LOCK (&type_rw_lock);
-  node = lookup_type_node_L (type);
-  G_READ_UNLOCK (&type_rw_lock);
+  node = lookup_type_node_I (type);
   if (!node || !node->is_instantiatable)
     {
       g_warning ("cannot create new instance of invalid (non-instantiatable) type `%s'",
-		 type_descriptive_name_U (type));
+		 type_descriptive_name_I (type));
       return NULL;
     }
   /* G_TYPE_IS_ABSTRACT() is an external call: _U */
-  if (G_TYPE_IS_ABSTRACT (type))
+  if (!node->mutatable_check_cache && G_TYPE_IS_ABSTRACT (type))
     {
       g_warning ("cannot create instance of abstract (non-instantiatable) type `%s'",
-		 type_descriptive_name_U (type));
+		 type_descriptive_name_I (type));
       return NULL;
     }
   
@@ -1328,10 +1319,7 @@ g_type_create_instance (GType type)
     {
       TypeNode *pnode;
       
-      G_READ_LOCK (&type_rw_lock);
-      pnode = lookup_type_node_L (node->supers[i]);
-      G_READ_UNLOCK (&type_rw_lock);
-      
+      pnode = lookup_type_node_I (node->supers[i]);
       if (pnode->data->instance.instance_init)
 	{
 	  instance->g_class = pnode->data->instance.class;
@@ -1354,19 +1342,16 @@ g_type_free_instance (GTypeInstance *instance)
   
   g_return_if_fail (instance != NULL && instance->g_class != NULL);
   
-  G_READ_LOCK (&type_rw_lock);
   class = instance->g_class;
-  node = lookup_type_node_L (class->g_type);
+  node = lookup_type_node_I (class->g_type);
   if (!node || !node->is_instantiatable || !node->data || node->data->class.class != (gpointer) class)
     {
       g_warning ("cannot free instance of invalid (non-instantiatable) type `%s'",
-		 type_descriptive_name_L (class->g_type));
-      G_READ_UNLOCK (&type_rw_lock);
+		 type_descriptive_name_I (class->g_type));
       return;
     }
-  G_READ_UNLOCK (&type_rw_lock);
   /* G_TYPE_IS_ABSTRACT() is an external call: _U */
-  if (G_TYPE_IS_ABSTRACT (NODE_TYPE (node)))
+  if (!node->mutatable_check_cache && G_TYPE_IS_ABSTRACT (NODE_TYPE (node)))
     {
       g_warning ("cannot free instance of abstract (non-instantiatable) type `%s'",
 		 NODE_NAME (node));
@@ -1395,7 +1380,7 @@ type_iface_vtable_init_Wm (TypeNode *iface,
   IFaceHolder *iholder;
   GTypeInterface *vtable = NULL;
   TypeNode *pnode;
-
+  
   /* type_iface_retrieve_holder_info_Wm() doesn't modify write lock for returning NULL */
   iholder = type_iface_retrieve_holder_info_Wm (iface, NODE_TYPE (node), TRUE);
   if (!iholder)
@@ -1403,11 +1388,11 @@ type_iface_vtable_init_Wm (TypeNode *iface,
   
   g_assert (iface->data && entry && entry->vtable == NULL && iholder && iholder->info);
   
-  pnode = lookup_type_node_L (NODE_PARENT_TYPE (node));
+  pnode = lookup_type_node_I (NODE_PARENT_TYPE (node));
   if (pnode)	/* want to copy over parent iface contents */
     {
       IFaceEntry *pentry = type_lookup_iface_entry_L (pnode, iface);
-
+      
       if (pentry)
 	vtable = g_memdup (pentry->vtable, iface->data->iface.vtable_size);
     }
@@ -1436,7 +1421,7 @@ type_iface_vtable_finalize_Wm (TypeNode       *iface,
 {
   IFaceEntry *entry = type_lookup_iface_entry_L (node, iface);
   IFaceHolder *iholder;
-
+  
   /* type_iface_retrieve_holder_info_Wm() doesn't modify write lock for returning NULL */
   iholder = type_iface_retrieve_holder_info_Wm (iface, NODE_TYPE (node), FALSE);
   if (!iholder)
@@ -1459,7 +1444,7 @@ type_iface_vtable_finalize_Wm (TypeNode       *iface,
   g_free (vtable);
   
   type_iface_blow_holder_info_Wm (iface, NODE_TYPE (node));
-
+  
   return TRUE;	/* write lock modified */
 }
 
@@ -1482,7 +1467,7 @@ type_class_init_Wm (TypeNode   *node,
   
   if (pclass)
     {
-      TypeNode *pnode = lookup_type_node_L (pclass->g_type);
+      TypeNode *pnode = lookup_type_node_I (pclass->g_type);
       
       memcpy (class, pclass, pnode->data->class.class_size);
     }
@@ -1493,11 +1478,9 @@ type_class_init_Wm (TypeNode   *node,
   /* stack all base class initialization functions, so we
    * call them in ascending order.
    */
-  G_READ_LOCK (&type_rw_lock);
-  for (bnode = node; bnode; bnode = lookup_type_node_L (NODE_PARENT_TYPE (bnode)))
+  for (bnode = node; bnode; bnode = lookup_type_node_I (NODE_PARENT_TYPE (bnode)))
     if (bnode->data->class.class_init_base)
       init_slist = g_slist_prepend (init_slist, (gpointer) bnode->data->class.class_init_base);
-  G_READ_UNLOCK (&type_rw_lock);
   for (slist = init_slist; slist; slist = slist->next)
     {
       GBaseInitFunc class_init_base = (GBaseInitFunc) slist->data;
@@ -1514,25 +1497,25 @@ type_class_init_Wm (TypeNode   *node,
   /* ok, we got the class done, now initialize all interfaces, either
    * from parent, or through our holder info
    */
-  pnode = lookup_type_node_L (NODE_PARENT_TYPE (node));
+  pnode = lookup_type_node_I (NODE_PARENT_TYPE (node));
   entry = CLASSED_NODE_IFACES_ENTRIES (node) + 0;
   while (entry)
     {
       g_assert (entry->vtable == NULL);
       
-      if (!type_iface_vtable_init_Wm (lookup_type_node_L (entry->iface_type), node))
+      if (!type_iface_vtable_init_Wm (lookup_type_node_I (entry->iface_type), node))
 	{
 	  guint j;
-
+	  
 	  /* type_iface_vtable_init_Wm() doesn't modify write lock upon FALSE,
 	   * need to get this interface from parent
 	   */
 	  g_assert (pnode != NULL);
-
+	  
 	  for (j = 0; j < CLASSED_NODE_N_IFACES (pnode); j++)
 	    {
 	      IFaceEntry *pentry = CLASSED_NODE_IFACES_ENTRIES (pnode) + j;
-
+	      
 	      if (pentry->iface_type == entry->iface_type)
 		{
 		  entry->vtable = pentry->vtable;
@@ -1541,7 +1524,7 @@ type_class_init_Wm (TypeNode   *node,
 	    }
 	  g_assert (entry->vtable != NULL);
 	}
-
+      
       /* refetch entry, IFACES_ENTRIES might be modified */
       for (entry = NULL, i = 0; i < CLASSED_NODE_N_IFACES (node); i++)
 	if (!CLASSED_NODE_IFACES_ENTRIES (node)[i].vtable)
@@ -1558,8 +1541,8 @@ type_data_finalize_class_ifaces_Wm (TypeNode *node)
   g_assert (node->is_instantiatable && node->data && node->data->class.class && node->data->common.ref_count == 0);
   
   g_message ("finalizing interfaces for %sClass `%s'",
-	     type_descriptive_name_L (NODE_FUNDAMENTAL_TYPE (node)),
-	     type_descriptive_name_L (NODE_TYPE (node)));
+	     type_descriptive_name_I (NODE_FUNDAMENTAL_TYPE (node)),
+	     type_descriptive_name_I (NODE_TYPE (node)));
   
   for (entry = NULL, i = 0; i < CLASSED_NODE_N_IFACES (node); i++)
     if (CLASSED_NODE_IFACES_ENTRIES (node)[i].vtable &&
@@ -1567,7 +1550,7 @@ type_data_finalize_class_ifaces_Wm (TypeNode *node)
       entry = CLASSED_NODE_IFACES_ENTRIES (node) + i;
   while (entry)
     {
-      if (!type_iface_vtable_finalize_Wm (lookup_type_node_L (entry->iface_type), node, entry->vtable))
+      if (!type_iface_vtable_finalize_Wm (lookup_type_node_I (entry->iface_type), node, entry->vtable))
 	{
 	  /* type_iface_vtable_finalize_Wm() doesn't modify write lock upon FALSE,
 	   * iface vtable came from parent
@@ -1599,15 +1582,9 @@ type_data_finalize_class_U (TypeNode  *node,
    */
   if (cdata->class_finalize_base)
     cdata->class_finalize_base (class);
-  G_READ_LOCK (&type_rw_lock);
-  for (bnode = lookup_type_node_L (NODE_PARENT_TYPE (node)); bnode; bnode = lookup_type_node_L (NODE_PARENT_TYPE (bnode)))
+  for (bnode = lookup_type_node_I (NODE_PARENT_TYPE (node)); bnode; bnode = lookup_type_node_I (NODE_PARENT_TYPE (bnode)))
     if (bnode->data->class.class_finalize_base)
-      {
-	G_READ_UNLOCK (&type_rw_lock);
-	bnode->data->class.class_finalize_base (class);
-	G_READ_LOCK (&type_rw_lock);
-      }
-  G_READ_UNLOCK (&type_rw_lock);
+      bnode->data->class.class_finalize_base (class);
   
   class->g_type = 0;
   g_free (cdata->class);
@@ -1617,14 +1594,14 @@ static void
 type_data_last_unref_Wm (GType    type,
 			 gboolean uncached)
 {
-  TypeNode *node = lookup_type_node_L (type);
+  TypeNode *node = lookup_type_node_I (type);
   
   g_return_if_fail (node != NULL && node->plugin != NULL);
   
   if (!node->data || node->data->common.ref_count == 0)
     {
       g_warning ("cannot drop last reference to unreferenced type `%s'",
-		 type_descriptive_name_U (type));
+		 type_descriptive_name_I (type));
       return;
     }
   
@@ -1672,21 +1649,25 @@ type_data_last_unref_Wm (GType    type,
 	{
 	  if (CLASSED_NODE_N_IFACES (node))
 	    type_data_finalize_class_ifaces_Wm (node);
+	  node->mutatable_check_cache = FALSE;
 	  node->data = NULL;
 	  G_WRITE_UNLOCK (&type_rw_lock);
 	  type_data_finalize_class_U (node, &tdata->class);
 	  G_WRITE_LOCK (&type_rw_lock);
 	}
       else
-	node->data = NULL;
-
+	{
+	  node->mutatable_check_cache = FALSE;
+	  node->data = NULL;
+	}
+      
       /* freeing tdata->common.value_table and its contents is taking care of
        * by allocating it in one chunk with tdata
        */
       g_free (tdata);
       
       if (ptype)
-	type_data_unref_Wm (lookup_type_node_L (ptype), FALSE);
+	type_data_unref_Wm (lookup_type_node_I (ptype), FALSE);
       G_WRITE_UNLOCK (&type_rw_lock);
       g_type_plugin_unuse (node->plugin);
       G_WRITE_LOCK (&type_rw_lock);
@@ -1756,9 +1737,9 @@ g_type_register_fundamental (GType                       type_id,
   g_return_val_if_fail (info != NULL, 0);
   g_return_val_if_fail (finfo != NULL, 0);
   
-  if (!check_type_name_U (type_name))
+  if (!check_type_name_I (type_name))
     return 0;
-  if ((type_id & FUNDAMENTAL_FLAG_MASK) ||
+  if ((type_id & TYPE_ID_MASK) ||
       type_id > G_TYPE_FUNDAMENTAL_MAX)
     {
       g_warning ("attempt to register fundamental type `%s' with invalid type id (%u)",
@@ -1773,21 +1754,20 @@ g_type_register_fundamental (GType                       type_id,
 		 type_name);
       return 0;
     }
-  G_WRITE_LOCK (&type_rw_lock);
-  if (lookup_type_node_L (type_id))
+  if (lookup_type_node_I (type_id))
     {
-      G_WRITE_UNLOCK (&type_rw_lock);
       g_warning ("cannot register existing fundamental type `%s' (as `%s')",
-		 type_descriptive_name_U (type_id),
+		 type_descriptive_name_I (type_id),
 		 type_name);
       return 0;
     }
   
+  G_WRITE_LOCK (&type_rw_lock);
   node = type_node_fundamental_new_W (type_id, type_name, finfo->type_flags);
-  node_finfo = type_node_fundamental_info_L (node);
+  node_finfo = type_node_fundamental_info_I (node);
   type_add_flags_W (node, flags);
   
-  if (check_type_info_L (NULL, NODE_FUNDAMENTAL_TYPE (node), type_name, info))
+  if (check_type_info_I (NULL, NODE_FUNDAMENTAL_TYPE (node), type_name, info))
     type_data_make_W (node, info,
 		      check_value_table_I (type_name, info->value_table) ? info->value_table : NULL);
   G_WRITE_UNLOCK (&type_rw_lock);
@@ -1809,8 +1789,8 @@ g_type_register_static (GType            parent_type,
   g_return_val_if_fail (type_name != NULL, 0);
   g_return_val_if_fail (info != NULL, 0);
   
-  if (!check_type_name_U (type_name) ||
-      !check_derivation_U (parent_type, type_name))
+  if (!check_type_name_I (type_name) ||
+      !check_derivation_I (parent_type, type_name))
     return 0;
   if (info->class_finalize)
     {
@@ -1819,10 +1799,10 @@ g_type_register_static (GType            parent_type,
       return 0;
     }
   
+  pnode = lookup_type_node_I (parent_type);
   G_WRITE_LOCK (&type_rw_lock);
-  pnode = lookup_type_node_L (parent_type);
   type_data_ref_Wm (pnode);
-  if (check_type_info_L (pnode, NODE_FUNDAMENTAL_TYPE (pnode), type_name, info))
+  if (check_type_info_I (pnode, NODE_FUNDAMENTAL_TYPE (pnode), type_name, info))
     {
       node = type_node_new_W (pnode, type_name, NULL);
       type_add_flags_W (node, flags);
@@ -1849,13 +1829,13 @@ g_type_register_dynamic (GType        parent_type,
   g_return_val_if_fail (type_name != NULL, 0);
   g_return_val_if_fail (plugin != NULL, 0);
   
-  if (!check_type_name_U (type_name) ||
-      !check_derivation_U (parent_type, type_name) ||
+  if (!check_type_name_I (type_name) ||
+      !check_derivation_I (parent_type, type_name) ||
       !check_plugin_U (plugin, TRUE, FALSE, type_name))
     return 0;
   
   G_WRITE_LOCK (&type_rw_lock);
-  pnode = lookup_type_node_L (parent_type);
+  pnode = lookup_type_node_I (parent_type);
   node = type_node_new_W (pnode, type_name, plugin);
   type_add_flags_W (node, flags);
   type = NODE_TYPE (node);
@@ -1876,10 +1856,10 @@ g_type_add_interface_static (GType                 instance_type,
   G_WRITE_LOCK (&type_rw_lock);
   if (check_add_interface_L (instance_type, interface_type))
     {
-      TypeNode *node = lookup_type_node_L (instance_type);
-      TypeNode *iface = lookup_type_node_L (interface_type);
+      TypeNode *node = lookup_type_node_I (instance_type);
+      TypeNode *iface = lookup_type_node_I (interface_type);
       
-      if (check_interface_info_L (iface, NODE_TYPE (node), info))
+      if (check_interface_info_I (iface, NODE_TYPE (node), info))
 	{
 	  type_add_interface_W (node, iface, info, NULL);
 	  /* if we have a class already, the interface vtable needs to
@@ -1903,16 +1883,14 @@ g_type_add_interface_dynamic (GType        instance_type,
   g_return_if_fail (G_TYPE_IS_INSTANTIATABLE (instance_type));
   g_return_if_fail (g_type_parent (interface_type) == G_TYPE_INTERFACE);
   
-  G_READ_LOCK (&type_rw_lock);
-  node = lookup_type_node_L (instance_type);
-  G_READ_UNLOCK (&type_rw_lock);
+  node = lookup_type_node_I (instance_type);
   if (!check_plugin_U (plugin, FALSE, TRUE, NODE_NAME (node)))
     return;
   
   G_WRITE_LOCK (&type_rw_lock);
   if (check_add_interface_L (instance_type, interface_type))
     {
-      TypeNode *iface = lookup_type_node_L (interface_type);
+      TypeNode *iface = lookup_type_node_I (interface_type);
       
       type_add_interface_W (node, iface, NULL, plugin);
       /* if we have a class already, the interface vtable needs to
@@ -1934,7 +1912,7 @@ g_type_class_ref (GType type)
   /* optimize for common code path
    */
   G_WRITE_LOCK (&type_rw_lock);
-  node = lookup_type_node_L (type);
+  node = lookup_type_node_I (type);
   if (node && node->is_classed && node->data &&
       node->data->class.class && node->data->common.ref_count > 0)
     {
@@ -1949,7 +1927,7 @@ g_type_class_ref (GType type)
     {
       G_WRITE_UNLOCK (&type_rw_lock);
       g_warning ("cannot retrieve class for invalid (unclassed) type `%s'",
-		 type_descriptive_name_U (type));
+		 type_descriptive_name_I (type));
       return NULL;
     }
   
@@ -1984,14 +1962,14 @@ g_type_class_unref (gpointer g_class)
   
   g_return_if_fail (g_class != NULL);
   
+  node = lookup_type_node_I (class->g_type);
   G_WRITE_LOCK (&type_rw_lock);
-  node = lookup_type_node_L (class->g_type);
   if (node && node->is_classed && node->data &&
       node->data->class.class == class && node->data->common.ref_count > 0)
     type_data_unref_Wm (node, FALSE);
   else
     g_warning ("cannot unreference class of invalid (unclassed) type `%s'",
-	       type_descriptive_name_L (class->g_type));
+	       type_descriptive_name_I (class->g_type));
   G_WRITE_UNLOCK (&type_rw_lock);
 }
 
@@ -2004,13 +1982,13 @@ g_type_class_unref_uncached (gpointer g_class)
   g_return_if_fail (g_class != NULL);
   
   G_WRITE_LOCK (&type_rw_lock);
-  node = lookup_type_node_L (class->g_type);
+  node = lookup_type_node_I (class->g_type);
   if (node && node->is_classed && node->data &&
       node->data->class.class == class && node->data->common.ref_count > 0)
     type_data_unref_Wm (node, TRUE);
   else
     g_warning ("cannot unreference class of invalid (unclassed) type `%s'",
-	       type_descriptive_name_L (class->g_type));
+	       type_descriptive_name_I (class->g_type));
   G_WRITE_UNLOCK (&type_rw_lock);
 }
 
@@ -2020,8 +1998,8 @@ g_type_class_peek (GType type)
   TypeNode *node;
   gpointer class;
   
+  node = lookup_type_node_I (type);
   G_READ_LOCK (&type_rw_lock);
-  node = lookup_type_node_L (type);
   if (node && node->is_classed && node->data && node->data->class.class) /* common.ref_count _may_ be 0 */
     class = node->data->class.class;
   else
@@ -2039,11 +2017,11 @@ g_type_class_peek_parent (gpointer g_class)
   
   g_return_val_if_fail (g_class != NULL, NULL);
   
+  node = lookup_type_node_I (G_TYPE_FROM_CLASS (g_class));
   G_READ_LOCK (&type_rw_lock);
-  node = lookup_type_node_L (G_TYPE_FROM_CLASS (g_class));
   if (node && node->is_classed && node->data && NODE_PARENT_TYPE (node))
     {
-      node = lookup_type_node_L (NODE_PARENT_TYPE (node));
+      node = lookup_type_node_I (NODE_PARENT_TYPE (node));
       class = node->data->class.class;
     }
   else if (NODE_PARENT_TYPE (node))
@@ -2064,19 +2042,22 @@ g_type_interface_peek (gpointer instance_class,
   
   g_return_val_if_fail (instance_class != NULL, NULL);
   
-  G_READ_LOCK (&type_rw_lock);
-  node = lookup_type_node_L (class->g_type);
-  iface = lookup_type_node_L (iface_type);
+  node = lookup_type_node_I (class->g_type);
+  iface = lookup_type_node_I (iface_type);
   if (node && node->is_instantiatable && iface)
     {
-      IFaceEntry *entry = type_lookup_iface_entry_L (node, iface);
+      IFaceEntry *entry;
       
-      if (entry && entry->vtable)
+      G_READ_LOCK (&type_rw_lock);
+      
+      entry = type_lookup_iface_entry_L (node, iface);
+      if (entry && entry->vtable)	/* entry is relocatable */
 	vtable = entry->vtable;
+      
+      G_READ_UNLOCK (&type_rw_lock);
     }
   else
     g_warning (G_STRLOC ": invalid class pointer `%p'", class);
-  G_READ_UNLOCK (&type_rw_lock);
   
   return vtable;
 }
@@ -2088,25 +2069,28 @@ g_type_interface_peek_parent (gpointer g_iface)
   TypeNode *iface;
   gpointer vtable = NULL;
   GTypeInterface *iface_class = g_iface;
-
+  
   g_return_val_if_fail (g_iface != NULL, NULL);
-
-  G_READ_LOCK (&type_rw_lock);
-  iface = lookup_type_node_L (iface_class->g_type);
-  node = lookup_type_node_L (iface_class->g_instance_type);
+  
+  iface = lookup_type_node_I (iface_class->g_type);
+  node = lookup_type_node_I (iface_class->g_instance_type);
   if (node)
-    node = lookup_type_node_L (NODE_PARENT_TYPE (node));
+    node = lookup_type_node_I (NODE_PARENT_TYPE (node));
   if (node && node->is_instantiatable && iface)
     {
-      IFaceEntry *entry = type_lookup_iface_entry_L (node, iface);
-
-      if (entry && entry->vtable)
+      IFaceEntry *entry;
+      
+      G_READ_LOCK (&type_rw_lock);
+      
+      entry = type_lookup_iface_entry_L (node, iface);
+      if (entry && entry->vtable)	/* entry is relocatable */
 	vtable = entry->vtable;
+      
+      G_READ_UNLOCK (&type_rw_lock);
     }
   else if (node)
     g_warning (G_STRLOC ": invalid interface pointer `%p'", g_iface);
-  G_READ_UNLOCK (&type_rw_lock);
-
+  
   return vtable;
 }
 
@@ -2116,10 +2100,8 @@ g_type_name (GType type)
   TypeNode *node;
   
   g_return_val_if_uninitialized (static_quark_type_flags, g_type_init, NULL);
-
-  G_READ_LOCK (&type_rw_lock);
-  node = lookup_type_node_L (type);
-  G_READ_UNLOCK (&type_rw_lock);
+  
+  node = lookup_type_node_I (type);
   
   return node ? NODE_NAME (node) : NULL;
 }
@@ -2129,9 +2111,7 @@ g_type_qname (GType type)
 {
   TypeNode *node;
   
-  G_READ_LOCK (&type_rw_lock);
-  node = lookup_type_node_L (type);
-  G_READ_UNLOCK (&type_rw_lock);
+  node = lookup_type_node_I (type);
   
   return node ? node->qname : 0;
 }
@@ -2160,9 +2140,7 @@ g_type_parent (GType type)
 {
   TypeNode *node;
   
-  G_READ_LOCK (&type_rw_lock);
-  node = lookup_type_node_L (type);
-  G_READ_UNLOCK (&type_rw_lock);
+  node = lookup_type_node_I (type);
   
   return node ? NODE_PARENT_TYPE (node) : 0;
 }
@@ -2172,9 +2150,7 @@ g_type_depth (GType type)
 {
   TypeNode *node;
   
-  G_READ_LOCK (&type_rw_lock);
-  node = lookup_type_node_L (type);
-  G_READ_UNLOCK (&type_rw_lock);
+  node = lookup_type_node_I (type);
   
   return node ? node->n_supers + 1 : 0;
 }
@@ -2186,11 +2162,10 @@ g_type_next_base (GType type,
   GType atype = 0;
   TypeNode *node;
   
-  G_READ_LOCK (&type_rw_lock);
-  node = lookup_type_node_L (type);
+  node = lookup_type_node_I (type);
   if (node)
     {
-      TypeNode *base_node = lookup_type_node_L (base_type);
+      TypeNode *base_node = lookup_type_node_I (base_type);
       
       if (base_node && base_node->n_supers < node->n_supers)
 	{
@@ -2200,32 +2175,37 @@ g_type_next_base (GType type,
 	    atype = node->supers[n - 1];
 	}
     }
-  G_READ_UNLOCK (&type_rw_lock);
   
   return atype;
 }
 
 static inline gboolean
-type_node_is_a_L (TypeNode *node,
+type_node_is_a_U (TypeNode *node,
 		  TypeNode *iface_node,
 		  /*        support_inheritance */
 		  gboolean  support_interfaces,
 		  gboolean  support_prerequisites)
 {
-  if (support_interfaces &&
-      node->is_instantiatable && NODE_IS_IFACE (iface_node) &&
-      type_lookup_iface_entry_L (node, iface_node) != NULL)
+  gboolean match;
+  
+  if (/* support_inheritance && */
+      iface_node->n_supers <= node->n_supers &&
+      node->supers[node->n_supers - iface_node->n_supers] == NODE_TYPE (iface_node))
     return TRUE;
-  else if (/* support_inheritance && */
-	   iface_node->n_supers <= node->n_supers &&
-	   node->supers[node->n_supers - iface_node->n_supers] == NODE_TYPE (iface_node))
-    return TRUE;
-  else if (support_prerequisites &&
-	   NODE_IS_IFACE (node) &&
-	   type_lookup_prerequisite_L (node, NODE_TYPE (iface_node)))
-    return TRUE;
-  else
-    return FALSE;
+  
+  support_interfaces = support_interfaces && node->is_instantiatable && NODE_IS_IFACE (iface_node);
+  support_prerequisites = support_prerequisites && NODE_IS_IFACE (node);
+  match = FALSE;
+  if (support_interfaces || support_prerequisites)
+    {
+      G_READ_LOCK (&type_rw_lock);
+      if (support_interfaces && type_lookup_iface_entry_L (node, iface_node))
+	match = TRUE;
+      else if (support_prerequisites && type_lookup_prerequisite_L (node, NODE_TYPE (iface_node)))
+	match = TRUE;
+      G_READ_UNLOCK (&type_rw_lock);
+    }
+  return match;
 }
 
 gboolean
@@ -2234,13 +2214,11 @@ g_type_is_a (GType type,
 {
   TypeNode *node, *iface_node;
   gboolean is_a;
-
-  G_READ_LOCK (&type_rw_lock);
-  node = lookup_type_node_L (type);
-  iface_node = lookup_type_node_L (iface_type);
-  is_a = node && iface_node && type_node_is_a_L (node, iface_node, TRUE, TRUE);
-  G_READ_UNLOCK (&type_rw_lock);
-
+  
+  node = lookup_type_node_I (type);
+  iface_node = lookup_type_node_I (iface_type);
+  is_a = node && iface_node && type_node_is_a_U (node, iface_node, TRUE, TRUE);
+  
   return is_a;
 }
 
@@ -2250,12 +2228,13 @@ g_type_children (GType  type,
 {
   TypeNode *node;
   
-  G_READ_LOCK (&type_rw_lock);
-  node = lookup_type_node_L (type);
+  node = lookup_type_node_I (type);
   if (node)
     {
-      GType *children = g_new (GType, node->n_children + 1);
+      GType *children;
       
+      G_READ_LOCK (&type_rw_lock);	/* ->children is relocatable */
+      children = g_new (GType, node->n_children + 1);
       memcpy (children, node->children, sizeof (GType) * node->n_children);
       children[node->n_children] = 0;
       
@@ -2267,7 +2246,6 @@ g_type_children (GType  type,
     }
   else
     {
-      G_READ_UNLOCK (&type_rw_lock);
       if (n_children)
 	*n_children = 0;
       
@@ -2281,13 +2259,14 @@ g_type_interfaces (GType  type,
 {
   TypeNode *node;
   
-  G_READ_LOCK (&type_rw_lock);
-  node = lookup_type_node_L (type);
+  node = lookup_type_node_I (type);
   if (node && node->is_instantiatable)
     {
-      GType *ifaces = g_new (GType, CLASSED_NODE_N_IFACES (node) + 1);
+      GType *ifaces;
       guint i;
       
+      G_READ_LOCK (&type_rw_lock);
+      ifaces = g_new (GType, CLASSED_NODE_N_IFACES (node) + 1);
       for (i = 0; i < CLASSED_NODE_N_IFACES (node); i++)
 	ifaces[i] = CLASSED_NODE_IFACES_ENTRIES (node)[i].iface_type;
       ifaces[i] = 0;
@@ -2300,7 +2279,6 @@ g_type_interfaces (GType  type,
     }
   else
     {
-      G_READ_UNLOCK (&type_rw_lock);
       if (n_interfaces)
 	*n_interfaces = 0;
       
@@ -2360,16 +2338,15 @@ g_type_get_qdata (GType  type,
   TypeNode *node;
   gpointer data;
   
-  G_READ_LOCK (&type_rw_lock);
-  node = lookup_type_node_L (type);
+  node = lookup_type_node_I (type);
   if (node)
     {
+      G_READ_LOCK (&type_rw_lock);
       data = type_get_qdata_L (node, quark);
       G_READ_UNLOCK (&type_rw_lock);
     }
   else
     {
-      G_READ_UNLOCK (&type_rw_lock);
       g_return_val_if_fail (node != NULL, NULL);
       data = NULL;
     }
@@ -2420,18 +2397,15 @@ g_type_set_qdata (GType    type,
   
   g_return_if_fail (quark != 0);
   
-  G_WRITE_LOCK (&type_rw_lock);
-  node = lookup_type_node_L (type);
+  node = lookup_type_node_I (type);
   if (node)
     {
+      G_WRITE_LOCK (&type_rw_lock);
       type_set_qdata_W (node, quark, data);
       G_WRITE_UNLOCK (&type_rw_lock);
     }
   else
-    {
-      G_WRITE_UNLOCK (&type_rw_lock);
-      g_return_if_fail (node != NULL);
-    }
+    g_return_if_fail (node != NULL);
 }
 
 static void
@@ -2455,26 +2429,25 @@ g_type_query (GType       type,
 	      GTypeQuery *query)
 {
   TypeNode *node;
-
+  
   g_return_if_fail (query != NULL);
   
-  G_READ_LOCK (&type_rw_lock);
-  node = lookup_type_node_L (type);
-  if (node && node->is_classed && !node->plugin && node->data)
+  /* if node is not static and classed, we won't allow query */
+  query->type = 0;
+  node = lookup_type_node_I (type);
+  if (node && node->is_classed && !node->plugin)
     {
-      /* type is classed and static, probably even instantiatable */
-
-      query->type = NODE_TYPE (node);
-      query->type_name = NODE_NAME (node);
-      query->class_size = node->data->class.class_size;
-      query->instance_size = node->is_instantiatable ? node->data->instance.instance_size : 0;
+      /* type is classed and probably even instantiatable */
+      G_READ_LOCK (&type_rw_lock);
+      if (node->data)	/* type is static or referenced */
+	{
+	  query->type = NODE_TYPE (node);
+	  query->type_name = NODE_NAME (node);
+	  query->class_size = node->data->class.class_size;
+	  query->instance_size = node->is_instantiatable ? node->data->instance.instance_size : 0;
+	}
+      G_READ_UNLOCK (&type_rw_lock);
     }
-  else
-    {
-      /* node is not static and classed, won't allow query */
-      query->type = 0;
-    }
-  G_READ_UNLOCK (&type_rw_lock);
 }
 
 
@@ -2486,8 +2459,7 @@ g_type_test_flags (GType type,
   TypeNode *node;
   gboolean result = FALSE;
   
-  G_READ_LOCK (&type_rw_lock);
-  node = lookup_type_node_L (type);
+  node = lookup_type_node_I (type);
   if (node)
     {
       guint fflags = flags & TYPE_FUNDAMENTAL_FLAG_MASK;
@@ -2495,7 +2467,7 @@ g_type_test_flags (GType type,
       
       if (fflags)
 	{
-	  GTypeFundamentalInfo *finfo = type_node_fundamental_info_L (node);
+	  GTypeFundamentalInfo *finfo = type_node_fundamental_info_I (node);
 	  
 	  fflags = (finfo->type_flags & fflags) == fflags;
 	}
@@ -2503,13 +2475,16 @@ g_type_test_flags (GType type,
 	fflags = TRUE;
       
       if (tflags)
-	tflags = (tflags & GPOINTER_TO_UINT (type_get_qdata_L (node, static_quark_type_flags))) == tflags;
+	{
+	  G_READ_LOCK (&type_rw_lock);
+	  tflags = (tflags & GPOINTER_TO_UINT (type_get_qdata_L (node, static_quark_type_flags))) == tflags;
+	  G_READ_UNLOCK (&type_rw_lock);
+	}
       else
 	tflags = TRUE;
       
       result = tflags && fflags;
     }
-  G_READ_UNLOCK (&type_rw_lock);
   
   return result;
 }
@@ -2519,9 +2494,7 @@ g_type_get_plugin (GType type)
 {
   TypeNode *node;
   
-  G_READ_LOCK (&type_rw_lock);
-  node = lookup_type_node_L (type);
-  G_READ_UNLOCK (&type_rw_lock);
+  node = lookup_type_node_I (type);
   
   return node ? node->plugin : NULL;
 }
@@ -2535,22 +2508,24 @@ g_type_interface_get_plugin (GType instance_type,
   
   g_return_val_if_fail (G_TYPE_IS_INTERFACE (interface_type), NULL);	/* G_TYPE_IS_INTERFACE() is an external call: _U */
   
-  G_READ_LOCK (&type_rw_lock);
-  node = lookup_type_node_L (instance_type);  
-  iface = lookup_type_node_L (interface_type);
+  node = lookup_type_node_I (instance_type);  
+  iface = lookup_type_node_I (interface_type);
   if (node && iface)
     {
-      IFaceHolder *iholder = iface_node_get_holders_L (iface);
+      IFaceHolder *iholder;
+      GTypePlugin *plugin;
       
+      G_READ_LOCK (&type_rw_lock);
+      
+      iholder = iface_node_get_holders_L (iface);
       while (iholder && iholder->instance_type != instance_type)
 	iholder = iholder->next;
+      plugin = iholder ? iholder->plugin : NULL;
+      
       G_READ_UNLOCK (&type_rw_lock);
       
-      if (iholder)
-	return iholder->plugin;
+      return plugin;
     }
-  else
-    G_READ_UNLOCK (&type_rw_lock);
   
   g_return_val_if_fail (node == NULL, NULL);
   g_return_val_if_fail (iface == NULL, NULL);
@@ -2575,12 +2550,8 @@ g_type_fundamental_next (void)
 GType
 g_type_fundamental (GType type_id)
 {
-  TypeNode *node;
-
-  G_READ_LOCK (&type_rw_lock);
-  node = lookup_type_node_L (type_id);
-  G_READ_UNLOCK (&type_rw_lock);
-
+  TypeNode *node = lookup_type_node_I (type_id);
+  
   return node ? NODE_FUNDAMENTAL_TYPE (node) : 0;
 }
 
@@ -2590,16 +2561,14 @@ g_type_check_instance_is_a (GTypeInstance *type_instance,
 {
   TypeNode *node, *iface;
   gboolean check;
-
+  
   if (!type_instance || !type_instance->g_class)
     return FALSE;
-
-  G_READ_LOCK (&type_rw_lock);
-  node = lookup_type_node_L (type_instance->g_class->g_type);
-  iface = lookup_type_node_L (iface_type);
-  check = node && node->is_instantiatable && iface && type_node_is_a_L (node, iface, TRUE, FALSE);
-  G_READ_UNLOCK (&type_rw_lock);
-
+  
+  node = lookup_type_node_I (type_instance->g_class->g_type);
+  iface = lookup_type_node_I (iface_type);
+  check = node && node->is_instantiatable && iface && type_node_is_a_U (node, iface, TRUE, FALSE);
+  
   return check;
 }
 
@@ -2609,16 +2578,14 @@ g_type_check_class_is_a (GTypeClass *type_class,
 {
   TypeNode *node, *iface;
   gboolean check;
-
+  
   if (!type_class)
     return FALSE;
-
-  G_READ_LOCK (&type_rw_lock);
-  node = lookup_type_node_L (type_class->g_type);
-  iface = lookup_type_node_L (is_a_type);
-  check = node && node->is_classed && iface && type_node_is_a_L (node, iface, FALSE, FALSE);
-  G_READ_UNLOCK (&type_rw_lock);
-
+  
+  node = lookup_type_node_I (type_class->g_type);
+  iface = lookup_type_node_I (is_a_type);
+  check = node && node->is_classed && iface && type_node_is_a_U (node, iface, FALSE, FALSE);
+  
   return check;
 }
 
@@ -2632,32 +2599,30 @@ g_type_check_instance_cast (GTypeInstance *type_instance,
 	{
 	  TypeNode *node, *iface;
 	  gboolean is_instantiatable, check;
-
-	  G_READ_LOCK (&type_rw_lock);
-	  node = lookup_type_node_L (type_instance->g_class->g_type);
+	  
+	  node = lookup_type_node_I (type_instance->g_class->g_type);
 	  is_instantiatable = node && node->is_instantiatable;
-	  iface = lookup_type_node_L (iface_type);
-	  check = is_instantiatable && iface && type_node_is_a_L (node, iface, TRUE, FALSE);
-	  G_READ_UNLOCK (&type_rw_lock);
+	  iface = lookup_type_node_I (iface_type);
+	  check = is_instantiatable && iface && type_node_is_a_U (node, iface, TRUE, FALSE);
 	  if (check)
 	    return type_instance;
-
+	  
 	  if (is_instantiatable)
 	    g_warning ("invalid cast from `%s' to `%s'",
-		       type_descriptive_name_U (type_instance->g_class->g_type),
-		       type_descriptive_name_U (iface_type));
+		       type_descriptive_name_I (type_instance->g_class->g_type),
+		       type_descriptive_name_I (iface_type));
 	  else
 	    g_warning ("invalid uninstantiatable type `%s' in cast to `%s'",
-		       type_descriptive_name_U (type_instance->g_class->g_type),
-		       type_descriptive_name_U (iface_type));
+		       type_descriptive_name_I (type_instance->g_class->g_type),
+		       type_descriptive_name_I (iface_type));
 	}
       else
 	g_warning ("invalid unclassed pointer in cast to `%s'",
-		   type_descriptive_name_U (iface_type));
+		   type_descriptive_name_I (iface_type));
     }
   else
     g_warning ("invalid cast from (NULL) pointer to `%s'",
-	       type_descriptive_name_U (iface_type));
+	       type_descriptive_name_I (iface_type));
   
   return type_instance;
 }
@@ -2671,27 +2636,25 @@ g_type_check_class_cast (GTypeClass *type_class,
       TypeNode *node, *iface;
       gboolean is_classed, check;
       
-      G_READ_LOCK (&type_rw_lock);
-      node = lookup_type_node_L (type_class->g_type);
+      node = lookup_type_node_I (type_class->g_type);
       is_classed = node && node->is_classed;
-      iface = lookup_type_node_L (is_a_type);
-      check = is_classed && iface && type_node_is_a_L (node, iface, FALSE, FALSE);
-      G_READ_UNLOCK (&type_rw_lock);
+      iface = lookup_type_node_I (is_a_type);
+      check = is_classed && iface && type_node_is_a_U (node, iface, FALSE, FALSE);
       if (check)
 	return type_class;
-
+      
       if (is_classed)
 	g_warning ("invalid class cast from `%s' to `%s'",
-		   type_descriptive_name_U (type_class->g_type),
-		   type_descriptive_name_U (is_a_type));
+		   type_descriptive_name_I (type_class->g_type),
+		   type_descriptive_name_I (is_a_type));
       else
 	g_warning ("invalid unclassed type `%s' in class cast to `%s'",
-		   type_descriptive_name_U (type_class->g_type),
-		   type_descriptive_name_U (is_a_type));
+		   type_descriptive_name_I (type_class->g_type),
+		   type_descriptive_name_I (is_a_type));
     }
   else
     g_warning ("invalid class cast from (NULL) pointer to `%s'",
-	       type_descriptive_name_U (is_a_type));
+	       type_descriptive_name_I (is_a_type));
   return type_class;
 }
 
@@ -2705,25 +2668,20 @@ g_type_check_instance (GTypeInstance *type_instance)
     {
       if (type_instance->g_class)
 	{
-	  TypeNode *node;
-	  gboolean is_instantiatable;
+	  TypeNode *node = lookup_type_node_I (type_instance->g_class->g_type);
 	  
-	  G_READ_LOCK (&type_rw_lock);
-	  node = lookup_type_node_L (type_instance->g_class->g_type);
-	  is_instantiatable = node && node->is_instantiatable;
-	  G_READ_UNLOCK (&type_rw_lock);
-	  if (is_instantiatable)
+	  if (node && node->is_instantiatable)
 	    return TRUE;
-
+	  
 	  g_warning ("instance of invalid non-instantiatable type `%s'",
-		     type_descriptive_name_U (type_instance->g_class->g_type));
+		     type_descriptive_name_I (type_instance->g_class->g_type));
 	}
       else
 	g_warning ("instance with invalid (NULL) class pointer");
     }
   else
     g_warning ("invalid (NULL) pointer instance");
-
+  
   return FALSE;
 }
 
@@ -2732,10 +2690,14 @@ type_check_is_value_type_U (GType type)
 {
   GTypeFlags tflags = G_TYPE_FLAG_VALUE_ABSTRACT;
   TypeNode *node;
-
+  
+  /* common path speed up */
+  node = lookup_type_node_I (type);
+  if (node && node->mutatable_check_cache)
+    return TRUE;
+  
   G_READ_LOCK (&type_rw_lock);
  restart_check:
-  node = lookup_type_node_L (type);
   if (node)
     {
       if (node->data && node->data->common.ref_count > 0 &&
@@ -2744,22 +2706,23 @@ type_check_is_value_type_U (GType type)
       else if (NODE_IS_IFACE (node))
 	{
 	  guint i;
-
+	  
 	  for (i = 0; i < IFACE_NODE_N_PREREQUISITES (node); i++)
 	    {
 	      GType prtype = IFACE_NODE_PREREQUISITES (node)[i];
-	      TypeNode *prnode = lookup_type_node_L (prtype);
-
+	      TypeNode *prnode = lookup_type_node_I (prtype);
+	      
 	      if (prnode->is_instantiatable)
 		{
 		  type = prtype;
+		  node = lookup_type_node_I (type);
 		  goto restart_check;
 		}
 	    }
 	}
     }
   G_READ_UNLOCK (&type_rw_lock);
-
+  
   return !(tflags & G_TYPE_FLAG_VALUE_ABSTRACT);
 }
 
@@ -2785,49 +2748,58 @@ g_type_check_value_holds (GValue *value,
 GTypeValueTable*
 g_type_value_table_peek (GType type)
 {
-  TypeNode *node;
-  GTypeValueTable *vtable;
-  
+  GTypeValueTable *vtable = NULL;
+  TypeNode *node = lookup_type_node_I (type);
+  gboolean has_refed_data, has_table;
+  TypeData *data;
+
+  /* speed up common code path, we're not 100% safe here,
+   * but we should only get called with referenced types anyway
+   */
+  data = node ? node->data : NULL;
+  if (node->mutatable_check_cache)
+    return data->common.value_table;
+
   G_READ_LOCK (&type_rw_lock);
+  
  restart_table_peek:
-  node = lookup_type_node_L (type);
-  if (!node)
+  has_refed_data = node && node->data && node->data->common.ref_count;
+  has_table = has_refed_data && node->data->common.value_table->value_init;
+  if (has_refed_data)
     {
-      g_warning (G_STRLOC ": type id `%u' is invalid", type);
-      G_READ_UNLOCK (&type_rw_lock);
-      return NULL;
-    }
-  if (!node->data || node->data->common.ref_count < 1)
-    {
-      g_warning ("can't peek value table for type `%s' which is not currently referenced",
-		 type_descriptive_name_L (type));
-      G_READ_UNLOCK (&type_rw_lock);
-      return NULL;
-    }
-  if (node->data->common.value_table->value_init)
-    vtable = node->data->common.value_table;
-  else if (NODE_IS_IFACE (node))
-    {
-      guint i;
-
-      for (i = 0; i < IFACE_NODE_N_PREREQUISITES (node); i++)
+      if (has_table)
+	vtable = node->data->common.value_table;
+      else if (NODE_IS_IFACE (node))
 	{
-	  GType prtype = IFACE_NODE_PREREQUISITES (node)[i];
-	  TypeNode *prnode = lookup_type_node_L (prtype);
-
-	  if (prnode->is_instantiatable)
+	  guint i;
+	  
+	  for (i = 0; i < IFACE_NODE_N_PREREQUISITES (node); i++)
 	    {
-	      type = prtype;
-	      goto restart_table_peek;
+	      GType prtype = IFACE_NODE_PREREQUISITES (node)[i];
+	      TypeNode *prnode = lookup_type_node_I (prtype);
+	      
+	      if (prnode->is_instantiatable)
+		{
+		  type = prtype;
+		  node = lookup_type_node_I (type);
+		  goto restart_table_peek;
+		}
 	    }
 	}
-      vtable = NULL;
     }
-  else
-    vtable = NULL;
+  
   G_READ_UNLOCK (&type_rw_lock);
   
-  return vtable;
+  if (vtable)
+    return vtable;
+  
+  if (!node)
+    g_warning (G_STRLOC ": type id `%u' is invalid", type);
+  if (!has_refed_data)
+    g_warning ("can't peek value table for type `%s' which is not currently referenced",
+	       type_descriptive_name_I (type));
+  
+  return NULL;
 }
 
 G_CONST_RETURN gchar*
@@ -2880,7 +2852,7 @@ g_type_init_with_debug_flags (GTypeDebugFlags debug_flags)
       G_UNLOCK (type_init_lock);
       return;
     }
-
+  
   /* setup GRuntime wide debugging flags */
   _g_type_debug_flags = debug_flags & G_TYPE_DEBUG_MASK;
   env_string = g_getenv ("GRUNTIME_DEBUG");
@@ -2890,7 +2862,7 @@ g_type_init_with_debug_flags (GTypeDebugFlags debug_flags)
 	{ "objects", G_TYPE_DEBUG_OBJECTS },
 	{ "signals", G_TYPE_DEBUG_SIGNALS },
       };
-
+      
       _g_type_debug_flags |= g_parse_debug_string (env_string,
 						   debug_keys,
 						   sizeof (debug_keys) / sizeof (debug_keys[0]));
@@ -2908,7 +2880,7 @@ g_type_init_with_debug_flags (GTypeDebugFlags debug_flags)
   /* invalid type G_TYPE_INVALID (0)
    */
   static_fundamental_type_nodes[0] = NULL;
-
+  
   /* void type G_TYPE_NONE
    */
   node = type_node_fundamental_new_W (G_TYPE_NONE, "void", 0);
@@ -2956,7 +2928,7 @@ g_type_init_with_debug_flags (GTypeDebugFlags debug_flags)
   /* Value Transformations
    */
   g_value_transforms_init ();
-
+  
   /* Signal system
    */
   g_signal_init ();

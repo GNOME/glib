@@ -17,6 +17,7 @@ Other Contributors: Darin Adler, Jakub Jelinek, James Antill, Andrew Taylor,
   Sven Neumann, George Lebl, Raja Harinath, Sebastian Wilhelmi,
   Jacob Berkman
 
+
 Overview of Changes in GLib 1.3.9:
 ==================================
 
@@ -28,6 +29,7 @@ Overview of Changes in GLib 1.3.9:
 
 Other Contributors: Darin Adler, Katsuhiro Okuno, Joshua N. Pritikin
 
+
 Overview of Changes in GLib 1.3.8:
 ==================================
 
@@ -38,6 +40,7 @@ Overview of Changes in GLib 1.3.8:
 
 Other contributors:
   Darin Adler, Matthias Clasen, Ron Steinke, Hans Breuer, Alex Larsson
+
 
 Overview of Changes in GLib 1.3.7:
 ==================================
@@ -64,6 +67,7 @@ Other contributors:
   Michael Meeks, Laszlo Peter,  Martin Baulig, Kjartan Maraas, Andrew Lanoix,
   Peter Williams
 
+
 Overview of Changes in GLib 1.3.6:
 ==================================
 
@@ -79,6 +83,7 @@ Overview of Changes in GLib 1.3.6:
 * Add length argument to g_utf8_strchr and g_utf8_strrchr.
 * Misc bug fixes
 
+
 Overview of Changes in GLib 1.3.5:
 ==================================
 
@@ -86,6 +91,7 @@ Overview of Changes in GLib 1.3.5:
   declarations from header files.
 * Mark some additional deprecated functions.
 * Bug and Portability fixes
+
 
 Overview of Changes in GLib 1.3.4:
 ==================================
@@ -95,8 +101,11 @@ Overview of Changes in GLib 1.3.4:
 * Build fixes
 * Documentation improvements
 
+
 Overview of Changes in GLib 1.3.3:
 ==================================
+
+GLib:
 
 * More user_data support in various functions.
 * Main loop API revamps to support per-thread main loops.
@@ -117,6 +126,33 @@ Overview of Changes in GLib 1.3.3:
 * Hashtable API additions.
 * New GPatternSpec for shell-style pattern matching (from GtkPatternSpec).
 * Optimizations, cleanups, bug fixes.
+
+GObject:
+
+* Added many convenience functions.
+* GClosure and GParamSpec use float/sink ref-counting scheme now.
+* Reworked property change notification.
+* Binary searchable array cleanups, so it's widely usable now.
+* Added static content keeping for some GValue types.
+* Support for statically scoped signal parameters.
+* Extinguished property trailer args in set/get interface.
+* Added support for abstract types.
+* G_CONST_RETURN specification all over the place.
+* Split parameter exchange functionality into value transforms
+  and parameter conversions.
+* Added signal emission hooks and signal accumulators.
+* Added interface prerequisites to support is_a (interface, object)
+  relations.
+* Implemented GValueArray.
+* New types, boxed: G_TYPE_VALUE, G_TYPE_CLOSURE, G_TYPE_GSTRING
+  GParamSpecs: G_TYPE_PARAM_PARAM, G_TYPE_PARAM_POINTER, G_TYPE_PARAM_CLOSURE,
+  G_TYPE_VALUE_ARRAY, G_TYPE_PARAM_UNICHAR, G_TYPE_PARAM_VALUE_ARRAY.
+* Varrags value collection improvements.
+* Implemented debugging traps.
+* Made things thread-safe.
+* Many documentation improvements.
+* Many cleanups, optimizations and bug fixes.
+
 
 Overview of Changes in GLib 1.3.2:
 ==================================
@@ -156,6 +192,7 @@ GObject:
 * Make GTypePlugin an interface  [Tim]
 * Added GTypeModule - a simple GTypePlugin instantiation  [Owen]
 * Bug fixes.
+
 
 What's new in GLib 1.3.1:
 =========================
