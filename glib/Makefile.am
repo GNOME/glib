@@ -5,7 +5,8 @@ configincludedir = $(pkglibdir)/include
 bin_SCRIPTS=glib-config
 
 EXTRA_DIST =	\
-		glib.m4
+		glib.m4 \
+		glib.spec
 
 lib_LTLIBRARIES = libglib-1.1.la
 
