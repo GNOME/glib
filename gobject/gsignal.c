@@ -24,6 +24,8 @@
  * MT safe
  */
 
+#include <config.h>
+
 #include        "gsignal.h"
 #include        "gbsearcharray.h"
 #include        "gvaluecollector.h"
@@ -248,7 +250,9 @@ static GBSearchConfig g_class_closure_bconfig = G_STATIC_BCONFIG (sizeof (ClassC
 static GHashTable    *g_handler_list_bsa_ht = NULL;
 static Emission      *g_recursive_emissions = NULL;
 static Emission      *g_restart_emissions = NULL;
+#ifndef DISABLE_MEM_POOLS
 static GTrashStack   *g_handler_ts = NULL;
+#endif
 static gulong         g_handler_sequential_number = 1;
 G_LOCK_DEFINE_STATIC (g_signal_mutex);
 #define	SIGNAL_LOCK()		G_LOCK (g_signal_mutex)

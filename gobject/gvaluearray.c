@@ -21,6 +21,8 @@
  * MT safe
  */
 
+#include <config.h>
+
 #include	"gvaluearray.h"
 #include	<string.h>
 #include	<stdlib.h>	/* qsort() */

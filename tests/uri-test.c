@@ -27,6 +27,8 @@
 #undef G_DISABLE_ASSERT
 #undef G_LOG_DOMAIN
 
+#include <config.h>
+
 #include <glib.h>
 #include <stdio.h>
 #include <string.h>
