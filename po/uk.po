@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.3.2\n"
 "POT-Creation-Date: 2002-06-14 09:56+0300\n"
-"PO-Revision-Date: 2002-06-14 10:15+0200\n"
+"PO-Revision-Date: 2002-06-14 10:21+0200\n"
 "Last-Translator: Yuriy Syrota <yuri@renome.rovno.ua>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -214,21 +214,21 @@ msgstr "Сутність з назвою \"%s\" не відома"
 
 #: glib/gmarkup.c:523
 msgid "Entity did not end with a semicolon; most likely you used an ampersand character without intending to start an entity - escape ampersand as &amp;"
-msgstr ""
+msgstr "Сутність не закінчується крапкою з комою; схоже, що символ & було використано не для позначення початку сутності - екрануйте його як &amp;"
 
 #: glib/gmarkup.c:569
 #, c-format
 msgid "Failed to parse '%s', which should have been a digit inside a character reference (&#234; for example) - perhaps the digit is too large"
-msgstr ""
+msgstr "Збій на аналізі \"%s\" на місці числа в посиланні на символ (наприклад, &#234) - можливо, число надто велике"
 
 #: glib/gmarkup.c:594
 #, c-format
 msgid "Character reference '%s' does not encode a permitted character"
-msgstr ""
+msgstr "Посилання на символ \"%s\" не визначає дозволений символ"
 
 #: glib/gmarkup.c:611
 msgid "Empty character reference; should include a digit such as &#454;"
-msgstr ""
+msgstr "Порожнє посилання на символ: воно має включати число, наприклад, &#454;"
 
 #: glib/gmarkup.c:621
 msgid "Character reference did not end with a semicolon; most likely you used an ampersand character without intending to start an entity - escape ampersand as &amp;"
