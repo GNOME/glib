@@ -180,11 +180,11 @@ filled in by the g_signal_query() function.
 @n_params: 	The number of parameters that user callbacks take.
 @param_types: 	The individual parameter types for user callbacks, note that the
 		effective callback signature is:
-<msgtext><programlisting>
+<programlisting>
 @return_type callback (#gpointer     data1,
                       [#param_types param_names,]
                        #gpointer     data2);
-</programlisting></msgtext>
+</programlisting>
 
 <!-- ##### MACRO G_SIGNAL_TYPE_STATIC_SCOPE ##### -->
 <para>

@@ -555,7 +555,7 @@ g_string_insert_c (GString *string,
 
 /**
  * g_string_insert_unichar:
- * @string: a #Gstring
+ * @string: a #GString
  * @pos: the position at which to insert character, or -1 to
  *       append at the end of the string.
  * @wc: a Unicode character

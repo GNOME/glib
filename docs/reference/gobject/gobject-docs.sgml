@@ -1,17 +1,20 @@
-<!doctype book PUBLIC "-//Davenport//DTD DocBook V3.0//EN" [
-<!entity gobject-GType SYSTEM "sgml/gtype.sgml">
-<!entity gobject-GTypePlugin SYSTEM "sgml/gtypeplugin.sgml">
-<!entity gobject-GTypeModule SYSTEM "sgml/gtypemodule.sgml">
-<!entity gobject-The-Base-Object-Type SYSTEM "sgml/objects.sgml">
-<!entity gobject-Enumeration-and-Flag-Types SYSTEM "sgml/enumerations_flags.sgml">
-<!entity gobject-Boxed-Types SYSTEM "sgml/gboxed.sgml">
-<!entity gobject-Generic-values SYSTEM "sgml/generic_values.sgml">
-<!entity gobject-param-value-types SYSTEM "sgml/param_value_types.sgml">
-<!entity gobject-GParamSpec SYSTEM "sgml/gparamspec.sgml">
-<!entity gobject-Varargs-Value-Collection SYSTEM "sgml/value_collection.sgml">
-<!entity gobject-Signals SYSTEM "sgml/signals.sgml">
-<!entity gobject-Closures SYSTEM "sgml/gclosure.sgml">
-<!entity gobject-Value-Arrays SYSTEM "sgml/value_arrays.sgml">
+<?xml version="1.0"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
+<!ENTITY nbsp "&#x00a0;">
+<!ENTITY gobject-GType SYSTEM "xml/gtype.xml">
+<!ENTITY gobject-GTypePlugin SYSTEM "xml/gtypeplugin.xml">
+<!ENTITY gobject-GTypeModule SYSTEM "xml/gtypemodule.xml">
+<!ENTITY gobject-The-Base-Object-Type SYSTEM "xml/objects.xml">
+<!ENTITY gobject-Enumeration-and-Flag-Types SYSTEM "xml/enumerations_flags.xml">
+<!ENTITY gobject-Boxed-Types SYSTEM "xml/gboxed.xml">
+<!ENTITY gobject-Generic-values SYSTEM "xml/generic_values.xml">
+<!ENTITY gobject-param-value-types SYSTEM "xml/param_value_types.xml">
+<!ENTITY gobject-GParamSpec SYSTEM "xml/gparamspec.xml">
+<!ENTITY gobject-Varargs-Value-Collection SYSTEM "xml/value_collection.xml">
+<!ENTITY gobject-Signals SYSTEM "xml/signals.xml">
+<!ENTITY gobject-Closures SYSTEM "xml/gclosure.xml">
+<!ENTITY gobject-Value-Arrays SYSTEM "xml/value_arrays.xml">
 ]>
 <book id="index">
   <bookinfo>

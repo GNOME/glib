@@ -632,8 +632,8 @@ get_package_directory_from_module (gchar *module_name)
  * is the same identifier as used for
  * <literal>GETTEXT_PACKAGE</literal> in software configured according
  * to GNU standards. The function first looks in the Windows Registry
- * for the value <literal>#InstallationDirectory</literal> in the key
- * <literal>#HKLM\Software\@package</literal>, and if that value
+ * for the value <literal>&hash;InstallationDirectory</literal> in the key
+ * <literal>&hash;HKLM\Software\@package</literal>, and if that value
  * exists and is a string, returns that.
  *
  * If @package is %NULL, or the above value isn't found in the

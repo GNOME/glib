@@ -440,7 +440,7 @@ without invoking it's destroy() function (if any was
 set).
 Usually, calling this function is only required to update
 user data pointers with a destroy notifier, for example:
-<msgtext><programlisting>
+<programlisting>
 void
 object_add_to_user_list (GObject     *object,
                          const gchar *new_string)
@@ -464,7 +464,7 @@ free_string_list (gpointer data)
     g_free (node->data);
   g_list_free (list);
 }
-</programlisting></msgtext>
+</programlisting>
 Using g_object_get_qdata() in the above example, instead of g_object_steal_qdata()
 would have left the destroy function set, and thus the partial string list would
 have been freed upon g_object_set_qdata_full().

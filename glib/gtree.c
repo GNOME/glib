@@ -271,7 +271,7 @@ g_tree_destroy (GTree *tree)
 
 /**
  * g_tree_insert:
- * @tree: a #Gtree.
+ * @tree: a #GTree.
  * @key: the key to insert.
  * @value: the value corresponding to the key.
  * 
@@ -302,7 +302,7 @@ g_tree_insert (GTree    *tree,
 
 /**
  * g_tree_replace:
- * @tree: a #Gtree.
+ * @tree: a #GTree.
  * @key: the key to insert.
  * @value: the value corresponding to the key.
  * 
@@ -334,7 +334,7 @@ g_tree_replace (GTree    *tree,
 
 /**
  * g_tree_remove:
- * @tree: a #Gtree.
+ * @tree: a #GTree.
  * @key: the key to remove.
  * 
  * Removes a key/value pair from a #GTree.
@@ -354,7 +354,7 @@ g_tree_remove (GTree         *tree,
 
 /**
  * g_tree_steal:
- * @tree: a #Gtree.
+ * @tree: a #GTree.
  * @key: the key to remove.
  * 
  * Removes a key and its associated value from a #GTree without calling 

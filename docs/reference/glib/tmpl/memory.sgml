@@ -127,7 +127,7 @@ Allocates @size bytes on the stack; these bytes will be freed when the current
 stack frame is cleaned up. This macro essentially just wraps the 
 <function>alloca()</function> function present on most UNIX variants. 
 Thus it provides the same advantages and pitfalls as <function>alloca()</function>:
-<msgtext><variablelist>
+<variablelist>
   <varlistentry><term></term><listitem><para>
     + <function>alloca()</function> is very fast, as on most systems it's implemented by just adjusting
     the stack pointer register.
@@ -153,7 +153,7 @@ Thus it provides the same advantages and pitfalls as <function>alloca()</functio
       will be freed together with the variable sized array upon exit of that scope, and
       not upon exit of the enclosing function scope.
   </para></listitem></varlistentry>
-</variablelist></msgtext>
+</variablelist>
 
 </para>
 

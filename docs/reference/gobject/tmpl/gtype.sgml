@@ -235,22 +235,22 @@ to serve as a container for values of a type.
 			old contents. E.g. for the implementation of a string
 			value that may never be %NULL, the implementation might
 			look like:
-<msgtext><programlisting>
+<programlisting>
 {
   value-&gt;data[0].v_pointer = g_strdup ("");
 }
-</programlisting></msgtext>
+</programlisting>
 @value_free: 		Free any old contents that might be left in the
 			data array of the passed in @value. No resources may
 			remain allocated through the #GValue contents after
 			this function returns. E.g. for our above string type:
-<msgtext><programlisting>
+<programlisting>
 {
   /* only free strings without a specific flag for static storage */
-  if (!(value-&gt;data[1].v_uint & G_VALUE_NOCOPY_CONTENTS))
+  if (!(value-&gt;data[1].v_uint &amp; G_VALUE_NOCOPY_CONTENTS))
     g_free (value-&gt;data[0].v_pointer);
 }
-</programlisting></msgtext>
+</programlisting>
 @value_copy: 		@dest_value is a #GValue with zero-filled data section
 			and @src_value is a properly setup #GValue of same or
 			derived type.
@@ -258,24 +258,24 @@ to serve as a container for values of a type.
 			@src_value into @dest_value in a way, that even after
 			@src_value has been freed, the contents of @dest_value
 			remain valid. String type example:
-<msgtext><programlisting>
+<programlisting>
 {
   dest_value-&gt;data[0].v_pointer = g_strdup (src_value-&gt;data[0].v_pointer);
 }
-</programlisting></msgtext>
+</programlisting>
 @value_peek_pointer: 	If the value contents fit into a pointer, such as objects
 			or strings, return this pointer, so the caller can peek at
 			the current contents. To extend on our above string example:
-<msgtext><programlisting>
+<programlisting>
 {
   return value-&gt;data[0].v_pointer;
 }
-</programlisting></msgtext>
+</programlisting>
 @collect_format: 	A string format describing how to collect the contents of
 			this value, bit-by-bit. Each character in the format represents
 			an argument to be collected, the characters themselves indicate
 			the type of the argument. Currently supported arguments are:
-<msgtext><variablelist>
+<variablelist>
   <varlistentry><term></term><listitem><para>
         'i' - Integers. passed as collect_values[].v_int.
   </para></listitem></varlistentry>
@@ -288,7 +288,7 @@ to serve as a container for values of a type.
   <varlistentry><term></term><listitem><para>
         'p' - Pointers. passed as collect_values[].v_pointer.
   </para></listitem></varlistentry>
-</variablelist></msgtext>
+</variablelist>
 			It should be noted, that for variable argument list construction,
 			ANSI C promotes every type smaller than an integer to an int, and
 			floats to doubles. So for collection of short int or char, 'i'
@@ -313,11 +313,11 @@ to serve as a container for values of a type.
 			Thus an extra copy of the contents stored in @collect_values is
 			not required for assignment to @value.
 			For our above string example, we continue with:
-<msgtext><programlisting>
+<programlisting>
 {
   if (!collect_values[0].v_pointer)
     value->data[0].v_pointer = g_strdup ("");
-  else if (collect_flags & G_VALUE_NOCOPY_CONTENTS)
+  else if (collect_flags &amp; G_VALUE_NOCOPY_CONTENTS)
     {
       value-&gt;data[0].v_pointer = collect_values[0].v_pointer;
       /* keep a flag for the value_free() implementation to not free this string */
@@ -328,7 +328,7 @@ to serve as a container for values of a type.
 
   return NULL;
 }
-</programlisting></msgtext>
+</programlisting>
 			It should be noted, that it is generally a bad idea to follow the
 			#G_VALUE_NOCOPY_CONTENTS hint for reference counted types. Due to
 			reentrancy requirements and reference count assertions performed
@@ -336,7 +336,7 @@ to serve as a container for values of a type.
 			for reference counted contents stored in the value-&gt;data array.
 			To deviate from our string example for a moment, and taking a look
 			at an exemplary implementation for collect_value() of #GObject:
-<msgtext><programlisting>
+<programlisting>
 {
   if (collect_values[0].v_pointer)
     {
@@ -349,7 +349,7 @@ to serve as a container for values of a type.
   else
     return g_strdup_printf ("Object passed as invalid NULL pointer");
 }
-</programlisting></msgtext>
+</programlisting>
 			The reference count for valid objects is always incremented,
 			regardless of @collect_flags. For invalid objects, the example
 			returns a newly allocated string without altering @value.
@@ -378,23 +378,23 @@ to serve as a container for values of a type.
 			Similar to collect_value() the function may prematurely abort
 			by returning a newly allocated string describing an error condition.
 			To complete the string example:
-<msgtext><programlisting>
+<programlisting>
 {
   gchar **string_p = collect_values[0].v_pointer;
 
   if (!string_p)
     return g_strdup_printf ("string location passed as NULL");
 
-  if (collect_flags & G_VALUE_NOCOPY_CONTENTS)
+  if (collect_flags &amp; G_VALUE_NOCOPY_CONTENTS)
     *string_p = value-&gt;data[0].v_pointer;
   else
     *string_p = g_strdup (value-&gt;data[0].v_pointer);
 
 }
-</programlisting></msgtext>
+</programlisting>
 			And an exemplary version of lcopy_value() for
 			reference-counted types:
-<msgtext><programlisting>
+<programlisting>
 {
   GObject **object_p = collect_values[0].v_pointer;
 
@@ -402,13 +402,13 @@ to serve as a container for values of a type.
     return g_strdup_printf ("object location passed as NULL");
   if (!value-&gt;data[0].v_pointer)
     *object_p = NULL;
-  else if (collect_flags & G_VALUE_NOCOPY_CONTENTS) /* always honour */
+  else if (collect_flags &amp; G_VALUE_NOCOPY_CONTENTS) /* always honour */
     *object_p = value-&gt;data[0].v_pointer;
   else
     *object_p = g_object_ref (value-&gt;data[0].v_pointer);
   return NULL;
 }
-</programlisting></msgtext>
+</programlisting>
 
 <!-- ##### MACRO G_TYPE_FROM_INSTANCE ##### -->
 <para>
@@ -676,9 +676,9 @@ a reference count on their parent classes as long as they are instantiated,
 the returned class will always exist. This function is essentially
 equivalent to:
 
-<msgtext><programlisting>
+<programlisting>
 g_type_class_peek (g_type_parent (G_TYPE_FROM_CLASS (g_class)));
-</programlisting></msgtext>
+</programlisting>
 
 </para>
 
@@ -832,7 +832,7 @@ is performed for class initialization of derived types as well.
 An example may help to correspond the intend of the different class
 initializers:
 
-<msgtext><programlisting>
+<programlisting>
 typedef struct {
   GObjectClass parent_class;
   gint         static_integer;
@@ -874,7 +874,7 @@ type_b_class_init (TypeBClass *class)
 {
   class->static_float = 3.14159265358979323846;
 }
-</programlisting></msgtext>
+</programlisting>
 Initialization of TypeBClass will first cause initialization of
 TypeAClass (derived classes reference their parent classes, see
 g_type_class_ref() on this).

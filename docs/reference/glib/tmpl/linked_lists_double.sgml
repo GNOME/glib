@@ -25,7 +25,7 @@ of the
 or simply pointers to any type of data.
 </para>
 <para>
-List elements are allocated in blocks using a #GListAllocator, which is
+List elements are allocated in blocks using a #GAllocator, which is
 more efficient than allocating elements individually.
 </para>
 <para>
@@ -216,7 +216,7 @@ the first node matching the given data.
 <!-- ##### FUNCTION g_list_free ##### -->
 <para>
 Frees all of the memory used by a #GList.
-The freed elements are added to the #GListAllocator free list.
+The freed elements are added to the #GAllocator free list.
 </para>
 <note>
 <para>
@@ -302,7 +302,7 @@ integer if the first value comes after the second.
 
 @a: a value.
 @b: a value to compare with.
-@Returns: negative value if @a < @b; zero if @a = @b; positive value
+@Returns: negative value if @a &lt; @b; zero if @a = @b; positive value
 if @a > @b.
 
 
@@ -328,7 +328,7 @@ integer if the first value comes after the second.
 @a: a value.
 @b: a value to compare with.
 @user_data: user data to pass to comparison function.
-@Returns: negative value if @a < @b; zero if @a = @b; positive value
+@Returns: negative value if @a &lt; @b; zero if @a = @b; positive value
 if @a > @b.
 
 

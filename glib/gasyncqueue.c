@@ -97,7 +97,7 @@ g_async_queue_ref_unlocked (GAsyncQueue *queue)
  * destroyed and the memory allocated will be freed. So you are not
  * allowed to use the @queue afterwards, as it might have disappeared.
  * The obvious asymmetry (it is not named
- * g_async_queue_unref_unlocked()) is because the queue can't be
+ * g_async_queue_unref_unlocked(<!-- -->)) is because the queue can't be
  * unlocked after unreffing it, as it might already have disappeared.
  **/
 void 
@@ -146,7 +146,7 @@ g_async_queue_unref (GAsyncQueue *queue)
  * @queue: a #GAsyncQueue.
  * 
  * Acquires the @queue's lock. After that you can only call the
- * <function>g_async_queue_*_unlocked()</function> function variants on that
+ * <function>g_async_queue_*_unlocked(<!-- -->)</function> function variants on that
  * @queue. Otherwise it will deadlock.
  **/
 void

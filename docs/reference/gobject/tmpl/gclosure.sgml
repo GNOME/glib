@@ -175,7 +175,7 @@ When closures are newly created, they get an initial reference count
 of 1, eventhough no caller has yet invoked g_closure_ref() on the @closure.
 Code entities that store closures for notification purposes are supposed
 to call this function, for example like this:
-<msgtext><programlisting>
+<informalexample><programlisting>
 static GClosure *notify_closure = NULL;
 void
 foo_notify_set_closure (GClosure *closure)
@@ -189,7 +189,7 @@ foo_notify_set_closure (GClosure *closure)
       g_closure_sink (notify_closure);
     }
 }
-</programlisting></msgtext>
+</programlisting></informalexample>
 Because g_closure_sink() may decrement the reference count of a closure
 (if it hasn't been called on @closure yet) just like g_closure_unref(),
 g_closure_ref() should be called prior to this function.

@@ -25,7 +25,7 @@ of the
 or simply pointers to any type of data.
 </para>
 <para>
-List elements are allocated in blocks using a #GListAllocator, which is
+List elements are allocated in blocks using a #GAllocator, which is
 more efficient than allocating elements individually.
 </para>
 <para>
@@ -224,7 +224,7 @@ the first node matching the given data.
 <!-- ##### FUNCTION g_slist_free ##### -->
 <para>
 Frees all of the memory used by a #GSList.
-The freed elements are added to the #GListAllocator free list.
+The freed elements are added to the #GAllocator free list.
 </para>
 
 @list: a #GSList.

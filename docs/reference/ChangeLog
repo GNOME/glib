@@ -1,3 +1,26 @@
+2002-05-26  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/tmpl/conversions.sgml: Add GIConv.
+
+	* glib/tmpl/main.sgml: Fix references to nonexisting functions
+	g_main_loop_destroy(), g_source_add(), g_source_connect().
+	
+
+	* glib/glib-sections.txt: Add GIConv, g_str_has_prefix, g_str_has_suffix.
+
+	* glib/tmpl/linked_lists_single.sgml: 
+	* glib/tmpl/linked_lists_double.sgml: GListAllocator doesn't exist.
+
+	* glib/glib-docs.sgml: Declare hash entity.
+
+	* glib/tmpl/macros.sgml: Escape # in #ifdef to suppress erroneous links.
+
+2002-05-25  Matthias Clasen  <maclas@gmx.de>
+
+	* gobject/Makefile.am, gobject/gobject-docs.sgml, gobject/tmpl/*:
+	* glib/Makefile.am, glib/glib-docs.sgml, glib/tmpl/*: Produce XML,
+	not SGML.
+
 2002-05-21  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/tmpl/markup.sgml: Updates.

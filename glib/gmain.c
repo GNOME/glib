@@ -695,7 +695,7 @@ g_main_context_default (void)
  * <literal>sizeof (GSource)</literal>.
  * 
  * The source will not initially be associated with any #GMainContext
- * and must be added to one with g_source_add() before it will be
+ * and must be added to one with g_source_attach() before it will be
  * executed.
  * 
  * Return value: the newly-created #GSource.
@@ -965,7 +965,7 @@ g_source_add_poll (GSource *source,
 /**
  * g_source_remove_poll:
  * @source:a #GSource 
- * @fd: a #GPollFD structure previously passed to g_source_poll().
+ * @fd: a #GPollFD structure previously passed to g_source_add_poll().
  * 
  * Removes a file descriptor from the set of file descriptors polled for
  * this source. 
@@ -1002,8 +1002,8 @@ g_source_remove_poll (GSource *source,
  *                  and getting the callback and data
  * 
  * Sets the callback function storing the data as a refcounted callback
- * "object". This is used to implement g_source_set_callback_closure()
- * and internally. Note that calling g_source_set_callback_indirect() assumes
+ * "object". This is used internally. Note that calling 
+ * g_source_set_callback_indirect() assumes
  * an initial reference count on @callback_data, and thus
  * @callback_funcs->unref will eventually be called once more
  * than @callback_funcs->ref.

@@ -104,6 +104,26 @@ The returned string should be freed when no longer needed.
 @Returns: 
 
 
+<!-- ##### FUNCTION g_str_has_prefix ##### -->
+<para>
+
+</para>
+
+@str: 
+@prefix: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_str_has_suffix ##### -->
+<para>
+
+</para>
+
+@str: 
+@suffix: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_strlcpy ##### -->
 <para>
 Portability wrapper that calls strlcpy() on systems which have it, and emulates
@@ -562,8 +582,8 @@ how to replace it.
 
 @s1: a string.
 @s2: a string to compare with @s1.
-@Returns: 0 if the strings match, a negative value if @s1 < @s2, or a positive
-value if @s1 > @s2.
+@Returns: 0 if the strings match, a negative value if @s1 &lt; @s2, or a positive
+value if @s1 &gt; @s2.
 
 
 <!-- ##### FUNCTION g_strncasecmp ##### -->
@@ -595,8 +615,8 @@ UTF-8.
 @s1: a string.
 @s2: a string to compare with @s1.
 @n: the maximum number of characters to compare.
-@Returns: 0 if the strings match, a negative value if @s1 < @s2, or a positive
-value if @s1 > @s2.
+@Returns: 0 if the strings match, a negative value if @s1 &lt; @s2, or a positive
+value if @s1 &gt; @s2.
 
 
 <!-- ##### FUNCTION g_strreverse ##### -->

@@ -881,6 +881,8 @@ g_stpcpy
 g_strstr_len
 g_strrstr
 g_strrstr_len
+g_str_has_prefix
+g_str_has_suffix
 
 <SUBSECTION>
 g_strlcpy
@@ -1825,6 +1827,7 @@ g_random_double_range
 <FILE>conversions</FILE>
 g_convert
 g_convert_with_fallback
+GIConv
 g_convert_with_iconv
 G_CONVERT_ERROR
 g_iconv_open

@@ -68,18 +68,18 @@ To help debug memory chunks, use g_mem_chunk_info() and g_mem_chunk_print().
   mem_chunk = g_mem_chunk_new ("test mem chunk", 50, 100, G_ALLOC_AND_FREE);
 
   /* Now allocate 10000 atoms. */
-  for (i = 0; i < 10000; i++)
+  for (i = 0; i &lt; 10000; i++)
     {
       mem[i] = g_chunk_new (gchar, mem_chunk);
 
       /* Fill in the atom memory with some junk. */
-      for (j = 0; j < 50; j++)
+      for (j = 0; j &lt; 50; j++)
 	mem[i][j] = i * j;
     }
 
   /* Now free all of the atoms. Note that since we are going to destroy the
      GMemChunk, this wouldn't normally be used. */
-  for (i = 0; i < 10000; i++)
+  for (i = 0; i &lt; 10000; i++)
     {
       g_mem_chunk_free (mem_chunk, mem[i]);
     }

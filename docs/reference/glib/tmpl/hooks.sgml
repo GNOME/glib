@@ -218,7 +218,7 @@ g_hook_insert_sorted().
 
 @new_hook: the #GHook being inserted.
 @sibling: the #GHook to compare with @new_hook.
-@Returns: a value <= 0 if @new_hook should be before @sibling.
+@Returns: a value &lt;= 0 if @new_hook should be before @sibling.
 
 
 <!-- ##### FUNCTION g_hook_compare_ids ##### -->
@@ -229,7 +229,7 @@ if the second id is greater than the first.
 
 @new_hook: a #GHook.
 @sibling: a #GHook to compare with @new_hook.
-@Returns: a value <= 0 if the id of @sibling is >= the id of @new_hook.
+@Returns: a value &lt;= 0 if the id of @sibling is >= the id of @new_hook.
 
 
 <!-- ##### FUNCTION g_hook_get ##### -->
@@ -357,7 +357,7 @@ Returns the flags of a hook.
 <para>
 The position of the first bit which is not reserved for internal
 use be the #GHook implementation, i.e. 
-<literal>1 << G_HOOK_FLAG_USER_SHIFT</literal> is the first bit
+<literal>1 &lt;&lt; G_HOOK_FLAG_USER_SHIFT</literal> is the first bit
 which can be used for application-defined flags.
 </para>
 

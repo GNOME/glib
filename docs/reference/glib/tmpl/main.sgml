@@ -10,7 +10,7 @@ manages all available sources of events.
     GLib and GTK+ applications. These events can come from any number of
     different types of sources such as file descriptors (plain files,
     pipes or sockets) and timeouts.  New types of event sources can also
-    be added using g_source_add().
+    be added using g_source_attach().
   </para>
   <para>
     To allow multiple independent sets of sources to be handled in
@@ -89,11 +89,11 @@ manages all available sources of events.
     </para>
     <para>
       The operation of these functions can best be seen in terms
-      of a state diagram, as shown in <xref linkend="mainloop-states">.
+      of a state diagram, as shown in <xref linkend="mainloop-states"/>.
     </para>
     <figure id="mainloop-states">
       <title>States of a Main Context</title>
-      <graphic fileref="mainloop-states.gif" format="gif"></graphic>
+      <graphic fileref="mainloop-states.gif" format="GIF"></graphic>
     </figure>
   </refsect2>
 
@@ -184,7 +184,7 @@ very important since calling g_main_run() will set this to %TRUE anyway.
 <!-- ##### MACRO g_main_destroy ##### -->
 <para>
 Frees the memory allocated for the #GMainLoop. A compatibility macro, see
-g_main_loop_destroy().
+g_main_loop_unref().
 </para>
 
 @loop: a #GMainLoop.
@@ -587,8 +587,8 @@ g_main_context_set_poll_func() for full details.
 <!-- ##### STRUCT GPollFD ##### -->
 <para>
 
-<informaltable pgwide=1 frame="none" role="struct">
-<tgroup cols="2"><colspec colwidth="2*"><colspec colwidth="8*">
+<informaltable pgwide="1" frame="none" role="struct">
+<tgroup cols="2"><colspec colwidth="2*"/><colspec colwidth="8*"/>
 <tbody>
 
 <row>
@@ -631,8 +631,8 @@ an event source.
 The #GSourceFuncs struct contains a table of functions used to handle
 event sources in a generic manner.
 
-<informaltable pgwide=1 frame="none" role="struct">
-<tgroup cols="2"><colspec colwidth="2*"><colspec colwidth="8*">
+<informaltable pgwide="1" frame="none" role="struct">
+<tgroup cols="2"><colspec colwidth="2*"/><colspec colwidth="8*"/>
 <tbody>
 
 <row>
@@ -664,7 +664,7 @@ called, so the source should be checked again here.
 Called to dispatch the event source, after it has returned %TRUE in
 either its @prepare or its @check function. The @dispatch function is
 passed in a callback function and data. The callback function may be
-%NULL if the source was never connected using g_source_connect(). The
+%NULL if the source was never connected using g_source_attach(). The
 @dispatch function should call the callback function with data and
 whatever additional parameters are needed for this type of event source.
 </entry>

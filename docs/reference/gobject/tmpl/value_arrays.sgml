@@ -88,7 +88,7 @@ Insert a copy of @value at specified position into @value_array.
 </para>
 
 @value_array: #GValueArray to add an element to
-@index:       insertion position, must be <= value_array->n_values
+@index:       insertion position, must be &lt;= value_array-&gt;n_values
 @value:       #GValue to copy into #GValueArray
 @Returns:     the #GValueArray passed in as @value_array
 
@@ -99,7 +99,7 @@ Remove the value at position @index from @value_array.
 </para>
 
 @value_array: #GValueArray to remove an element from
-@index:       position of value to remove, must be < value_array->n_values
+@index:       position of value to remove, must be &lt; value_array->n_values
 @Returns:     the #GValueArray passed in as @value_array
 
 

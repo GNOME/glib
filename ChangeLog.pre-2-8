@@ -1,3 +1,21 @@
+2002-05-26  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gmain.c: Remove references to nonexisting functions 
+	g_source_set_callback_closure(), g_source_poll(), g_source_add()
+	from docs.
+
+	* glib/gdir.c (g_dir_open): Typo fix in docs.
+
+	* glib/gasyncqueue.c (g_async_queue_lock):
+	(g_async_queue_unref_and_unlock): Fix markup to avoid erroneous 
+	<link>s in docs.
+
+	* glib/gwin32.c: Escape #'s leading to erroneous <link>s in docs.
+
+	* glib/gtree.c: Replace some occurances of Gtree by GTree in docs.
+
+	* glib/gstring.c (g_string_insert_unichar): Typo fix in docs.
+
 2002-05-23  Havoc Pennington  <hp@redhat.com>
 
 	* glib/gspawn.c (fork_exec_with_pipes): on success, close the

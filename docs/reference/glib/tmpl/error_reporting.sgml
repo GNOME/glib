@@ -47,7 +47,7 @@ point to a location where an error can be placed. For example:
 gchar *contents;
 GError *err = NULL;
 contents = g_file_get_contents ("foo.txt", &amp;err);
-g_assert ((contents == NULL && err != NULL) || (contents != NULL && err == NULL));
+g_assert ((contents == NULL &amp;&amp; err != NULL) || (contents != NULL &amp;&amp; err == NULL));
 if (err != NULL)
   {
     /* Report error to user, and free error */
@@ -110,7 +110,7 @@ foo_open_file (GError **error)
 
   fd = open ("file.txt", O_RDONLY);
 
-  if (fd < 0)
+  if (fd &lt; 0)
     {
       g_set_error (error,
                    FOO_ERROR,                 /* error domain */

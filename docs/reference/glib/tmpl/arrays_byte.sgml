@@ -30,10 +30,10 @@ To free a #GByteArray, use g_byte_array_free().
   gint i;
 
   gbarray = g_byte_array_new (<!-- -->);
-  for (i = 0; i < 10000; i++)
+  for (i = 0; i &lt; 10000; i++)
     g_byte_array_append (gbarray, (guint8*) "abcd", 4);
 
-  for (i = 0; i < 10000; i++)
+  for (i = 0; i &lt; 10000; i++)
     {
       g_assert (gbarray->data[4*i] == 'a');
       g_assert (gbarray->data[4*i+1] == 'b');

@@ -38,7 +38,7 @@ The micro version number of the GLib library.
 <!-- ##### MACRO G_OS_WIN32 ##### -->
 <para>
 This macro is defined only on Windows. So you can bracket
-Windows-specific code in "#ifdef G_OS_WIN32".
+Windows-specific code in "&hash;ifdef G_OS_WIN32".
 </para>
 
 
@@ -46,7 +46,7 @@ Windows-specific code in "#ifdef G_OS_WIN32".
 <!-- ##### MACRO G_OS_BEOS ##### -->
 <para>
 This macro is defined only on BeOS. So you can bracket
-BeOS-specific code in "#ifdef G_OS_BEOS".
+BeOS-specific code in "&hash;ifdef G_OS_BEOS".
 </para>
 
 
@@ -54,7 +54,7 @@ BeOS-specific code in "#ifdef G_OS_BEOS".
 <!-- ##### MACRO G_OS_UNIX ##### -->
 <para>
 This macro is defined only on UNIX. So you can bracket
-UNIX-specific code in "#ifdef G_OS_UNIX".
+UNIX-specific code in "&hash;ifdef G_OS_UNIX".
 </para>
 
 

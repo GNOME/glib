@@ -1022,7 +1022,7 @@ example:
 
     g_static_rw_lock_reader_lock (&amp;rwlock);
 
-    if (index < array->len)
+    if (index &lt; array->len)
       retval = g_ptr_array_index (array, index);
 
     g_static_rw_lock_reader_unlock (&amp;rwlock);

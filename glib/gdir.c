@@ -51,7 +51,7 @@ struct _GDir
  *
  * Opens a directory for reading. The names of the files
  * in the directory can then be retrieved using
- * g_dir_get_name().
+ * g_dir_read_name().
  *
  * Return value: a newly allocated #GDir on success, %NULL on failure.
  *   If non-%NULL, you must free the result with g_dir_close()
