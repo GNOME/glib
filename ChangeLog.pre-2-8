@@ -1,3 +1,10 @@
+2000-10-26  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gstrfuncs.c (g_strsplit): When the string is ended by a
+	delimiter, return an extra empty string just like for a delimiter
+	at the start of the string. This makes the function behave more
+	consitent and also fixes Bug #15026.
+
 Tue Oct 24 22:09:14 2000  Tim Janik  <timj@gtk.org>
 
 	* glib-object.h: added newly added gobject/ headers.

@@ -1487,7 +1487,7 @@ g_strsplit (const gchar *string,
 {
   GSList *string_list = NULL, *slist;
   gchar **str_array, *s;
-  guint i, n = 1;
+  guint n = 1;
 
   g_return_val_if_fail (string != NULL, NULL);
   g_return_val_if_fail (delimiter != NULL, NULL);
@@ -1516,19 +1516,13 @@ g_strsplit (const gchar *string,
 	}
       while (--max_tokens && s);
     }
-  if (*string)
-    {
-      n++;
-      string_list = g_slist_prepend (string_list, g_strdup (string));
-    }
+  string_list = g_slist_prepend (string_list, g_strdup (string));
 
-  str_array = g_new (gchar*, n);
+  str_array = g_new (gchar*, n + 1);
 
-  i = n - 1;
-
-  str_array[i--] = NULL;
+  str_array[n--] = NULL;
   for (slist = string_list; slist; slist = slist->next)
-    str_array[i--] = slist->data;
+    str_array[n--] = slist->data;
 
   g_slist_free (string_list);
 
