@@ -134,7 +134,7 @@ input_callback (GIOChannel   *source,
 }
 
 static void
-create_child ()
+create_child (void)
 {
   int pid;
   GIOChannel *in_channels[2];

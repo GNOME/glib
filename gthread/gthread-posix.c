@@ -122,7 +122,7 @@ static gulong g_thread_min_stack_size = 0;
 #if defined(_SC_THREAD_STACK_MIN) || defined (HAVE_PRIORITIES)
 #define HAVE_G_THREAD_IMPL_INIT
 static void 
-g_thread_impl_init()
+g_thread_impl_init(void)
 {
 #ifdef _SC_THREAD_STACK_MIN
   g_thread_min_stack_size = MAX (sysconf (_SC_THREAD_STACK_MIN), 0);

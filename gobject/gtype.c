@@ -310,7 +310,7 @@ GTypeDebugFlags	       _g_type_debug_flags = 0;
 
 /* --- type nodes --- */
 static GHashTable       *static_type_nodes_ht = NULL;
-static TypeNode		*static_fundamental_type_nodes[(G_TYPE_FUNDAMENTAL_MAX >> G_TYPE_FUNDAMENTAL_SHIFT) + 1] = { 0, };
+static TypeNode		*static_fundamental_type_nodes[(G_TYPE_FUNDAMENTAL_MAX >> G_TYPE_FUNDAMENTAL_SHIFT) + 1] = { NULL, };
 static GType		 static_fundamental_next = G_TYPE_RESERVED_USER_FIRST;
 
 static inline TypeNode*

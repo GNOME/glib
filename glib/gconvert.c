@@ -1784,7 +1784,7 @@ g_uri_list_extract_uris (const gchar *uri_list)
 
   result = g_new (gchar *, n_uris + 1);
 
-  result[n_uris--] = 0;
+  result[n_uris--] = NULL;
   for (u = uris; u; u = u->next)
     result[n_uris--] = u->data;
 

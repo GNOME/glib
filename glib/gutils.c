@@ -1846,7 +1846,7 @@ static gchar **languages = NULL;
  * Since: 2.6
  **/
 G_CONST_RETURN gchar * G_CONST_RETURN * 
-g_get_language_names ()
+g_get_language_names (void)
 {
   G_LOCK (g_utils_global);
 

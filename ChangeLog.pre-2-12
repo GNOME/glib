@@ -1,5 +1,15 @@
 2004-11-01  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gconvert.c:
+	* glib/gdebug.h
+	* glib/gutils.c
+	* gobject/gtype.c
+	* gthread/gthread-posix.c
+	* tests/timeloop-closure.c
+	* tests/timeloop.c: Fix sparse warnings.  (#157014, Kjartan Maraas)
+
+2004-11-01  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/goption.c: Documentation updates.
 
 	Handle conflicts between options in different groups. (#156808)
