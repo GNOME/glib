@@ -44,9 +44,11 @@ libglib_la_SOURCES = \
 	gmutex.c	\
 	gnode.c		\
 	gprimes.c	\
+	gqueue.c	\
 	grel.c		\
 	gscanner.c	\
 	gslist.c	\
+	gstack.c	\
 	gstrfuncs.c	\
 	gstring.c	\
 	gtimer.c	\

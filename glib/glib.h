@@ -677,6 +677,7 @@ typedef struct _GList		GList;
 typedef struct _GMemChunk	GMemChunk;
 typedef struct _GNode		GNode;
 typedef struct _GPtrArray	GPtrArray;
+typedef struct _GQueue		GQueue;
 typedef struct _GRelation	GRelation;
 typedef struct _GScanner	GScanner;
 typedef struct _GScannerConfig	GScannerConfig;
@@ -801,6 +802,13 @@ struct _GSList
 struct _GStack
 {
   GList *list;
+};
+
+struct _GQueue
+{
+  GList *list;
+  GList *list_end;
+  guint list_size;
 };
 
 struct _GString
@@ -942,28 +950,39 @@ gpointer g_slist_nth_data	(GSList		*list,
 /* Stacks
  */
 GStack * g_stack_new	(void);
-#ifndef G_STACK_MACROIZE
 void	 g_stack_free	(GStack *stack);
-void	 g_stack_push	(GStack *stack, gpointer data);
-#endif
+void	 _g_stack_push	(GStack *stack, gpointer data);
 gpointer g_stack_pop	(GStack *stack);
 
 #if G_STACK_MACROIZE
-#define g_stack_free(stack) G_STMT_START {		\
-	  if ((GStack *)(stack)) {			\
-	    if ((GStack *)(stack)->list)		\
-	      g_list_free ((GStack *)(stack)->list);	\
-	    g_free (stack);				\
-	  }						\
-	} G_STMT_END
-
-#define g_stack_push(stack) G_STMT_START {			\
-	  if ((GStack *)(stack))				\
-	    (GStack *)(stack)->list =				\
-	    	g_list_prepend ((GStack *)(stack)->list, data);	\
-	} G_STMT_END
-
+#  define g_stack_push(stack) G_STMT_START {				\
+	    if ((GStack *)(stack))					\
+	      ((GStack *)(stack))->list =				\
+	    	  g_list_prepend (((GStack *)(stack))->list, data);	\
+	  } G_STMT_END
+#else
+#  define  g_stack_push _g_stack_push
 #endif
+
+
+
+/* Queues
+ */
+
+GQueue *	g_queue_new		(void);
+void		g_queue_free		(GQueue *q);
+guint		g_queue_get_size	(GQueue *q);
+void		g_queue_push_front	(GQueue *q, gpointer data);
+void		g_queue_push_back	(GQueue *q, gpointer data);
+gpointer	g_queue_pop_front	(GQueue *q);
+gpointer	g_queue_pop_back	(GQueue *q);
+
+#define		q_queue_push		q_queue_push_back
+#define		q_queue_pop		q_queue_pop_front
+
+
+
+
 
 
 

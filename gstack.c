@@ -30,9 +30,6 @@ g_stack_new (void)
 }
 
 
-#ifndef G_STACK_MACROIZE
-
-
 void
 g_stack_free (GStack *stack)
 {
@@ -46,13 +43,11 @@ g_stack_free (GStack *stack)
 
 
 void
-g_stack_push (GStack *stack, gpointer data)
+_g_stack_push (GStack *stack, gpointer data)
 {
   if (stack)
     stack->list = g_list_prepend (stack->list, data);
 }
-
-#endif /* G_STACK_MACROIZE */
 
 
 gpointer
