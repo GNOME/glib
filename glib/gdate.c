@@ -454,6 +454,10 @@ static GDateYear twodigit_start_year = 1930;
  */
 static gboolean using_twodigit_years = FALSE;
 
+/* Adjustment of locale era to AD, non-zero means using locale era
+ */
+static gint locale_era_adjust = 0;
+
 struct _GDateParseTokens {
   gint num_ints;
   gint n[3];
@@ -626,7 +630,9 @@ g_date_prepare_to_parse (const gchar *str, GDateParseTokens *pt)
               dmy_order[i] = G_DATE_YEAR;
               break;
             default:
-              /* leave it unchanged */
+              /* assume locale era */
+              locale_era_adjust = 1976 - testpt.n[i];
+              dmy_order[i] = G_DATE_YEAR;
               break;
             }
           ++i;
@@ -737,7 +743,11 @@ g_date_set_parse (GDate       *d,
 	    {
 	      y  = pt.n[i];
 	      
-	      if (using_twodigit_years && y < 100)
+	      if (locale_era_adjust != 0)
+	        {
+		  y += locale_era_adjust;
+	        }
+	      else if (using_twodigit_years && y < 100)
 		{
 		  guint two     =  twodigit_start_year % 100;
 		  guint century = (twodigit_start_year / 100) * 100;

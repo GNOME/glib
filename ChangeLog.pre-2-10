@@ -1,3 +1,8 @@
+Fri Feb 27 01:44:41 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gdate.c: Translate from locale era to AD in 
+	g_date_set_parse().  (#133400, Theppitak Karoonboonyanan)
+
 Fri Feb 27 00:46:29 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/gstrfuncs.c (g_strerror): Don't modify errno.  (#116617, 
