@@ -198,7 +198,7 @@ struct	_GScanner
   GScannerMsgFunc	msg_handler;
 };
 
-GScanner*	g_scanner_new			(GScannerConfig *config_templ);
+GScanner*	g_scanner_new			(const GScannerConfig *config_templ);
 void		g_scanner_destroy		(GScanner	*scanner);
 void		g_scanner_input_file		(GScanner	*scanner,
 						 gint		input_fd);

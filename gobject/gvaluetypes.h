@@ -79,6 +79,10 @@ void		      g_value_set_pointer	(GValue	      *value,
 gpointer	      g_value_get_pointer	(const GValue *value);
 
 
+/* debugging aid, describe value contents as string */
+gchar*                g_strdup_value_contents   (const GValue *value);
+
+
 /* --- marshaller specific --- */
 void g_value_set_string_take_ownership		(GValue		   *value,
 						 gchar		   *v_string);

@@ -171,7 +171,7 @@ g_scanner_char_2_num (guchar	c,
 }
 
 GScanner*
-g_scanner_new (GScannerConfig	*config_templ)
+g_scanner_new (const GScannerConfig *config_templ)
 {
   GScanner *scanner;
   
@@ -188,33 +188,33 @@ g_scanner_new (GScannerConfig	*config_templ)
   
   scanner->config = g_new0 (GScannerConfig, 1);
   
-  scanner->config->case_sensitive	= config_templ->case_sensitive;
-  scanner->config->cset_skip_characters	= config_templ->cset_skip_characters;
+  scanner->config->case_sensitive	 = config_templ->case_sensitive;
+  scanner->config->cset_skip_characters	 = config_templ->cset_skip_characters;
   if (!scanner->config->cset_skip_characters)
     scanner->config->cset_skip_characters = "";
-  scanner->config->cset_identifier_first= config_templ->cset_identifier_first;
-  scanner->config->cset_identifier_nth	= config_templ->cset_identifier_nth;
-  scanner->config->cpair_comment_single	= config_templ->cpair_comment_single;
-  scanner->config->skip_comment_multi	= config_templ->skip_comment_multi;
-  scanner->config->skip_comment_single	= config_templ->skip_comment_single;
-  scanner->config->scan_comment_multi	= config_templ->scan_comment_multi;
-  scanner->config->scan_identifier	= config_templ->scan_identifier;
-  scanner->config->scan_identifier_1char= config_templ->scan_identifier_1char;
-  scanner->config->scan_identifier_NULL	= config_templ->scan_identifier_NULL;
-  scanner->config->scan_symbols		= config_templ->scan_symbols;
-  scanner->config->scan_binary		= config_templ->scan_binary;
-  scanner->config->scan_octal		= config_templ->scan_octal;
-  scanner->config->scan_float		= config_templ->scan_float;
-  scanner->config->scan_hex		= config_templ->scan_hex;
-  scanner->config->scan_hex_dollar	= config_templ->scan_hex_dollar;
-  scanner->config->scan_string_sq	= config_templ->scan_string_sq;
-  scanner->config->scan_string_dq	= config_templ->scan_string_dq;
-  scanner->config->numbers_2_int	= config_templ->numbers_2_int;
-  scanner->config->int_2_float		= config_templ->int_2_float;
-  scanner->config->identifier_2_string	= config_templ->identifier_2_string;
-  scanner->config->char_2_token		= config_templ->char_2_token;
-  scanner->config->symbol_2_token	= config_templ->symbol_2_token;
-  scanner->config->scope_0_fallback	= config_templ->scope_0_fallback;
+  scanner->config->cset_identifier_first = config_templ->cset_identifier_first;
+  scanner->config->cset_identifier_nth	 = config_templ->cset_identifier_nth;
+  scanner->config->cpair_comment_single	 = config_templ->cpair_comment_single;
+  scanner->config->skip_comment_multi	 = config_templ->skip_comment_multi;
+  scanner->config->skip_comment_single	 = config_templ->skip_comment_single;
+  scanner->config->scan_comment_multi	 = config_templ->scan_comment_multi;
+  scanner->config->scan_identifier	 = config_templ->scan_identifier;
+  scanner->config->scan_identifier_1char = config_templ->scan_identifier_1char;
+  scanner->config->scan_identifier_NULL	 = config_templ->scan_identifier_NULL;
+  scanner->config->scan_symbols		 = config_templ->scan_symbols;
+  scanner->config->scan_binary		 = config_templ->scan_binary;
+  scanner->config->scan_octal		 = config_templ->scan_octal;
+  scanner->config->scan_float		 = config_templ->scan_float;
+  scanner->config->scan_hex		 = config_templ->scan_hex;
+  scanner->config->scan_hex_dollar	 = config_templ->scan_hex_dollar;
+  scanner->config->scan_string_sq	 = config_templ->scan_string_sq;
+  scanner->config->scan_string_dq	 = config_templ->scan_string_dq;
+  scanner->config->numbers_2_int	 = config_templ->numbers_2_int;
+  scanner->config->int_2_float		 = config_templ->int_2_float;
+  scanner->config->identifier_2_string	 = config_templ->identifier_2_string;
+  scanner->config->char_2_token		 = config_templ->char_2_token;
+  scanner->config->symbol_2_token	 = config_templ->symbol_2_token;
+  scanner->config->scope_0_fallback	 = config_templ->scope_0_fallback;
   
   scanner->token = G_TOKEN_NONE;
   scanner->value.v_int = 0;

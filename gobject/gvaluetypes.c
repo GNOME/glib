@@ -710,3 +710,72 @@ g_value_get_pointer (const GValue *value)
 
   return value->data[0].v_pointer;
 }
+
+
+/* need extra includes for g_strdup_value_contents() ;( */
+#include "gobject.h"
+#include "gparam.h"
+#include "gboxed.h"
+#include "genums.h"
+
+gchar*
+g_strdup_value_contents (const GValue *value)
+{
+  const gchar *src;
+  gchar *contents;
+
+  g_return_val_if_fail (G_IS_VALUE (value), NULL);
+  
+  if (G_VALUE_HOLDS_STRING (value))
+    {
+      src = g_value_get_string (value);
+      
+      if (!src)
+	contents = g_strdup ("NULL");
+      else
+	{
+	  gchar *s = g_strescape (src, NULL);
+
+	  contents = g_strdup_printf ("\"%s\"", s);
+	  g_free (s);
+	}
+    }
+  else if (g_value_type_transformable (G_VALUE_TYPE (value), G_TYPE_STRING))
+    {
+      GValue tmp_value = { 0, };
+      
+      g_value_init (&tmp_value, G_TYPE_STRING);
+      g_value_transform (value, &tmp_value);
+      if (G_VALUE_HOLDS_ENUM (value) || G_VALUE_HOLDS_FLAGS (value))
+	contents = g_strdup_printf ("((%s) %s)",
+				    g_type_name (G_VALUE_TYPE (value)),
+				    g_value_get_string (&tmp_value));
+      else
+	{
+	  src = g_value_get_string (&tmp_value);
+	  contents = g_strdup (src ? src : "NULL");
+	}
+      g_value_unset (&tmp_value);
+    }
+  else if (g_value_fits_pointer (value))
+    {
+      gpointer p = g_value_peek_pointer (value);
+
+      if (!p)
+	contents = g_strdup ("NULL");
+      else if (G_VALUE_HOLDS_OBJECT (value))
+	contents = g_strdup_printf ("((%s*) %p)", G_OBJECT_TYPE_NAME (p), p);
+      else if (G_VALUE_HOLDS_PARAM (value))
+	contents = g_strdup_printf ("((%s*) %p)", G_PARAM_SPEC_TYPE_NAME (p), p);
+      else if (G_VALUE_HOLDS_BOXED (value))
+	contents = g_strdup_printf ("((%s*) %p)", g_type_name (G_VALUE_TYPE (value)), p);
+      else if (G_VALUE_HOLDS_POINTER (value))
+	contents = g_strdup_printf ("((gpointer) %p)", p);
+      else
+	contents = g_strdup ("???");
+    }
+  else
+    contents = g_strdup ("???");
+
+  return contents;
+}

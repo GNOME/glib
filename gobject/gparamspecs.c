@@ -1199,11 +1199,15 @@ g_param_spec_char (const gchar *name,
 		   gint8	default_value,
 		   GParamFlags	flags)
 {
-  GParamSpecChar *cspec = g_param_spec_internal (G_TYPE_PARAM_CHAR,
-						 name,
-						 nick,
-						 blurb,
-						 flags);
+  GParamSpecChar *cspec;
+
+  g_return_val_if_fail (default_value >= minimum && default_value <= maximum, NULL);
+
+  cspec = g_param_spec_internal (G_TYPE_PARAM_CHAR,
+				 name,
+				 nick,
+				 blurb,
+				 flags);
   
   cspec->minimum = minimum;
   cspec->maximum = maximum;
@@ -1221,11 +1225,15 @@ g_param_spec_uchar (const gchar *name,
 		    guint8	 default_value,
 		    GParamFlags	 flags)
 {
-  GParamSpecUChar *uspec = g_param_spec_internal (G_TYPE_PARAM_UCHAR,
-						  name,
-						  nick,
-						  blurb,
-						  flags);
+  GParamSpecUChar *uspec;
+
+  g_return_val_if_fail (default_value >= minimum && default_value <= maximum, NULL);
+
+  uspec = g_param_spec_internal (G_TYPE_PARAM_UCHAR,
+				 name,
+				 nick,
+				 blurb,
+				 flags);
   
   uspec->minimum = minimum;
   uspec->maximum = maximum;
@@ -1241,11 +1249,15 @@ g_param_spec_boolean (const gchar *name,
 		      gboolean	   default_value,
 		      GParamFlags  flags)
 {
-  GParamSpecBoolean *bspec = g_param_spec_internal (G_TYPE_PARAM_BOOLEAN,
-						    name,
-						    nick,
-						    blurb,
-						    flags);
+  GParamSpecBoolean *bspec;
+
+  g_return_val_if_fail (default_value == TRUE || default_value == FALSE, NULL);
+
+  bspec = g_param_spec_internal (G_TYPE_PARAM_BOOLEAN,
+				 name,
+				 nick,
+				 blurb,
+				 flags);
   
   bspec->default_value = default_value;
   
@@ -1261,11 +1273,15 @@ g_param_spec_int (const gchar *name,
 		  gint	       default_value,
 		  GParamFlags  flags)
 {
-  GParamSpecInt *ispec = g_param_spec_internal (G_TYPE_PARAM_INT,
-						name,
-						nick,
-						blurb,
-						flags);
+  GParamSpecInt *ispec;
+
+  g_return_val_if_fail (default_value >= minimum && default_value <= maximum, NULL);
+
+  ispec = g_param_spec_internal (G_TYPE_PARAM_INT,
+				 name,
+				 nick,
+				 blurb,
+				 flags);
   
   ispec->minimum = minimum;
   ispec->maximum = maximum;
@@ -1283,11 +1299,15 @@ g_param_spec_uint (const gchar *name,
 		   guint	default_value,
 		   GParamFlags	flags)
 {
-  GParamSpecUInt *uspec = g_param_spec_internal (G_TYPE_PARAM_UINT,
-						 name,
-						 nick,
-						 blurb,
-						 flags);
+  GParamSpecUInt *uspec;
+
+  g_return_val_if_fail (default_value >= minimum && default_value <= maximum, NULL);
+
+  uspec = g_param_spec_internal (G_TYPE_PARAM_UINT,
+				 name,
+				 nick,
+				 blurb,
+				 flags);
   
   uspec->minimum = minimum;
   uspec->maximum = maximum;
@@ -1305,11 +1325,15 @@ g_param_spec_long (const gchar *name,
 		   glong	default_value,
 		   GParamFlags	flags)
 {
-  GParamSpecLong *lspec = g_param_spec_internal (G_TYPE_PARAM_LONG,
-						 name,
-						 nick,
-						 blurb,
-						 flags);
+  GParamSpecLong *lspec;
+
+  g_return_val_if_fail (default_value >= minimum && default_value <= maximum, NULL);
+
+  lspec = g_param_spec_internal (G_TYPE_PARAM_LONG,
+				 name,
+				 nick,
+				 blurb,
+				 flags);
   
   lspec->minimum = minimum;
   lspec->maximum = maximum;
@@ -1327,11 +1351,15 @@ g_param_spec_ulong (const gchar *name,
 		    gulong	 default_value,
 		    GParamFlags	 flags)
 {
-  GParamSpecULong *uspec = g_param_spec_internal (G_TYPE_PARAM_ULONG,
-						  name,
-						  nick,
-						  blurb,
-						  flags);
+  GParamSpecULong *uspec;
+
+  g_return_val_if_fail (default_value >= minimum && default_value <= maximum, NULL);
+
+  uspec = g_param_spec_internal (G_TYPE_PARAM_ULONG,
+				 name,
+				 nick,
+				 blurb,
+				 flags);
   
   uspec->minimum = minimum;
   uspec->maximum = maximum;
@@ -1349,8 +1377,13 @@ g_param_spec_enum (const gchar *name,
 		   GParamFlags	flags)
 {
   GParamSpecEnum *espec;
+  GEnumClass *enum_class;
   
   g_return_val_if_fail (G_TYPE_IS_ENUM (enum_type), NULL);
+
+  enum_class = g_type_class_ref (enum_type);
+
+  g_return_val_if_fail (g_enum_get_value (enum_class, default_value) != NULL, NULL);
   
   espec = g_param_spec_internal (G_TYPE_PARAM_ENUM,
 				 name,
@@ -1358,7 +1391,7 @@ g_param_spec_enum (const gchar *name,
 				 blurb,
 				 flags);
   
-  espec->enum_class = g_type_class_ref (enum_type);
+  espec->enum_class = enum_class;
   espec->default_value = default_value;
   G_PARAM_SPEC (espec)->value_type = enum_type;
   
@@ -1374,8 +1407,13 @@ g_param_spec_flags (const gchar *name,
 		    GParamFlags	 flags)
 {
   GParamSpecFlags *fspec;
+  GFlagsClass *flags_class;
   
   g_return_val_if_fail (G_TYPE_IS_FLAGS (flags_type), NULL);
+
+  flags_class = g_type_class_ref (flags_type);
+
+  g_return_val_if_fail ((default_value & flags_class->mask) == default_value, NULL);
   
   fspec = g_param_spec_internal (G_TYPE_PARAM_FLAGS,
 				 name,
@@ -1383,7 +1421,7 @@ g_param_spec_flags (const gchar *name,
 				 blurb,
 				 flags);
   
-  fspec->flags_class = g_type_class_ref (flags_type);
+  fspec->flags_class = flags_class;
   fspec->default_value = default_value;
   G_PARAM_SPEC (fspec)->value_type = flags_type;
   
@@ -1399,11 +1437,15 @@ g_param_spec_float (const gchar *name,
 		    gfloat	 default_value,
 		    GParamFlags	 flags)
 {
-  GParamSpecFloat *fspec = g_param_spec_internal (G_TYPE_PARAM_FLOAT,
-						  name,
-						  nick,
-						  blurb,
-						  flags);
+  GParamSpecFloat *fspec;
+
+  g_return_val_if_fail (default_value >= minimum && default_value <= maximum, NULL);
+
+  fspec = g_param_spec_internal (G_TYPE_PARAM_FLOAT,
+				 name,
+				 nick,
+				 blurb,
+				 flags);
   
   fspec->minimum = minimum;
   fspec->maximum = maximum;
@@ -1421,11 +1463,15 @@ g_param_spec_double (const gchar *name,
 		     gdouble	  default_value,
 		     GParamFlags  flags)
 {
-  GParamSpecDouble *dspec = g_param_spec_internal (G_TYPE_PARAM_DOUBLE,
-						   name,
-						   nick,
-						   blurb,
-						   flags);
+  GParamSpecDouble *dspec;
+
+  g_return_val_if_fail (default_value >= minimum && default_value <= maximum, NULL);
+
+  dspec = g_param_spec_internal (G_TYPE_PARAM_DOUBLE,
+				 name,
+				 nick,
+				 blurb,
+				 flags);
   
   dspec->minimum = minimum;
   dspec->maximum = maximum;
@@ -1508,7 +1554,7 @@ g_param_spec_boxed (const gchar *name,
   GParamSpecBoxed *bspec;
   
   g_return_val_if_fail (G_TYPE_IS_BOXED (boxed_type), NULL);
-  g_return_val_if_fail (G_TYPE_IS_DERIVED (boxed_type), NULL);
+  g_return_val_if_fail (G_TYPE_IS_VALUE_TYPE (boxed_type), NULL);
   
   bspec = g_param_spec_internal (G_TYPE_PARAM_BOXED,
 				 name,
