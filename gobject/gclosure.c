@@ -161,16 +161,16 @@ g_closure_set_meta_marshal (GClosure       *closure,
   n = CLOSURE_N_NOTIFIERS (closure);
   notifiers = closure->notifiers;
   closure->notifiers = g_renew (GClosureNotifyData, NULL, CLOSURE_N_NOTIFIERS (closure) + 1);
-  closure->notifiers[0].data = marshal_data;
-  closure->notifiers[0].notify = (GClosureNotify) meta_marshal;
   if (notifiers)
     {
       /* usually the meta marshal will be setup right after creation, so the
-       * memcpy() should be rare-case scenario
+       * g_memmove() should be rare-case scenario
        */
-      memcpy (closure->notifiers + 1, notifiers, CLOSURE_N_NOTIFIERS (closure) * sizeof (notifiers[0]));
+      g_memmove (closure->notifiers + 1, notifiers, CLOSURE_N_NOTIFIERS (closure) * sizeof (notifiers[0]));
       g_free (notifiers);
     }
+  closure->notifiers[0].data = marshal_data;
+  closure->notifiers[0].notify = (GClosureNotify) meta_marshal;
   closure->meta_marshal = 1;
 }
 

@@ -209,14 +209,23 @@ static inline guint
 signal_id_lookup (GQuark quark,
 		  GType  itype)
 {
-  SignalKey key, *signal_key;
+  do
+    {
+      SignalKey key, *signal_key;
+      
+      key.itype = itype;
+      key.quark = quark;
+      
+      signal_key = g_bsearch_array_lookup (&g_signal_key_bsa, &key);
+      
+      if (signal_key)
+	return signal_key->signal_id;
+      
+      itype = g_type_parent (itype);
+    }
+  while (itype);
   
-  key.itype = itype;
-  key.quark = quark;
-  
-  signal_key = g_bsearch_array_lookup (&g_signal_key_bsa, &key);
-  
-  return signal_key ? signal_key->signal_id : 0;
+  return 0;
 }
 
 static gint
@@ -601,27 +610,16 @@ guint
 g_signal_lookup (const gchar *name,
                  GType        itype)
 {
-  GQuark quark;
-
+  guint signal_id;
+  
   g_return_val_if_fail (name != NULL, 0);
   g_return_val_if_fail (G_TYPE_IS_INSTANTIATABLE (itype) || G_TYPE_IS_INTERFACE (itype), 0);
   
   G_LOCK (g_signal_mutex);
-  quark = g_quark_try_string (name);
-  if (quark)
-    do
-      {
-	guint signal_id = signal_id_lookup (quark, itype);
-
-	if (signal_id)
-	  return signal_id;
-
-	itype = g_type_parent (itype);
-      }
-    while (itype);
+  signal_id = signal_id_lookup (g_quark_try_string (name), itype);
   G_UNLOCK (g_signal_mutex);
   
-  return 0;
+  return signal_id;
 }
 
 gchar*
@@ -690,7 +688,7 @@ g_signal_newv (const gchar       *signal_name,
   
   G_LOCK (g_signal_mutex);
   
-  signal_id = g_signal_lookup (name, itype);
+  signal_id = signal_id_lookup (g_quark_try_string (name), itype);
   node = LOOKUP_SIGNAL_NODE (signal_id);
   if (node && !node->destroyed)
     {

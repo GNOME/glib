@@ -1,3 +1,12 @@
+Fri Oct 27 05:35:14 2000  Tim Janik  <timj@gtk.org>
+
+	* gsignal.c (g_signal_newv): fixed deadlock scenarion where
+	g_signal_lookup() would be called with the signal lock being
+	held. reported by james henstridge.
+
+	* gclosure.c (g_closure_set_meta_marshal): fixed memcpy/overwrite bug
+	reported by owen.
+
 2000-10-26  Tor Lillqvist  <tml@iki.fi>
 
 	* gbsearcharray.c (bsearch_array_insert): Fix gccisms (pointer
