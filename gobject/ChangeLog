@@ -1,3 +1,8 @@
+Wed Nov 29 13:30:05 2000  Tim Janik  <timj@gtk.org>
+
+	* gsignal.c (handlers_find): fix elliots "logic fix" that dereferences
+	NULL nodes if C handlers are searched for specific signals.
+
 2000-11-28  Elliot Lee  <sopwith@redhat.com>
 
 	* gsignal.c: Fix warnings about possible use of uninitialized

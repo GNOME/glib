@@ -378,7 +378,7 @@ handlers_find (gpointer         instance,
       Handler *handler;
       SignalNode *node = NULL;
       
-      if (!(mask & G_SIGNAL_MATCH_FUNC))
+      if (mask & G_SIGNAL_MATCH_FUNC)
 	{
 	  node = LOOKUP_SIGNAL_NODE (signal_id);
 	  if (!node || !node->c_marshaller)
