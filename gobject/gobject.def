@@ -93,7 +93,6 @@ EXPORTS
 	g_param_spec_sink
 	g_param_spec_steal_qdata
 	g_param_spec_string
-	g_param_spec_stringc
 	g_param_spec_uchar
 	g_param_spec_unichar
 	g_param_spec_uint

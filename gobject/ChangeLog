@@ -1,3 +1,7 @@
+2001-05-22  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gobject.def: Removed g_param_spec_stringc.
+
 Tue May 22 02:46:13 2001  Tim Janik  <timj@gtk.org>
 
 	* gobject.c (g_value_set_object): make g_value_set_object()
