@@ -1,5 +1,9 @@
 2005-03-13  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gatomic.c: Include galias.h last.
+
+2005-03-13  Matthias Clasen  <mclasen@redhat.com>
+
 	Make PLT-reduction work with gcc4, and don't include
 	everything in galias.h:
 	
