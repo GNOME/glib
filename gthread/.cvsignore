@@ -1,5 +1,6 @@
 Makefile.in
 makefile.mingw
+*-build.stamp
 makefile.msc
 Makefile
 .deps
@@ -8,6 +9,10 @@ Makefile
 *.obj
 *.lib
 *.dll
+*.exp
+*.res
+*.ilk
+*.pdb
 .libs
 *.la
 so_locations

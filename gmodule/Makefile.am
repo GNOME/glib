@@ -82,9 +82,6 @@ endif
 gmodule-1.3.lib: libgmodule-1.3.la gmodule.def
 	lib -name:libgmodule-1.3-@LT_CURRENT_MINUS_AGE@.dll -def:gmodule.def -out:$@
 
-testgmodule.exp: testgmodule.o
-	dlltool --output-exp testgmodule.exp testgmodule.o
-
 gmodule.rc: $(top_builddir)/config.status $(top_srcdir)/gmodule/gmodule.rc.in
 	cd $(top_builddir) && CONFIG_FILES=gmodule/$@ CONFIG_HEADERS= $(SHELL) ./config.status
 

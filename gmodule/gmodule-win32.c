@@ -34,36 +34,10 @@
 #include <stdio.h>
 #include <windows.h>
 
-#ifdef __MSVC__
 #include <tlhelp32.h>
-#else
 
 #ifdef G_WITH_CYGWIN
 #include <sys/cygwin.h>
-#endif
-
-/* The w32api headers supplied with the mingw gcc don't have
- * tlhelp32.h. We really only need the MODULEENTRY32 struct and the
- * TH32CS_SNAPMODULE value, so provide them here.
- */
-
-#define MAX_MODULE_NAME32 255
-
-typedef struct
-{
-  DWORD dwSize;
-  DWORD th32ModuleID;
-  DWORD th32ProcessID;
-  DWORD GlblcntUsage;
-  DWORD ProccntUsage;
-  BYTE  *modBaseAddr; 
-  DWORD modBaseSize; 
-  HMODULE hModule;     
-  char szModule[MAX_MODULE_NAME32 + 1];
-  char szExePath[MAX_PATH];
-} MODULEENTRY32;
-#define TH32CS_SNAPMODULE 8
-
 #endif
 
 static void

@@ -2,11 +2,16 @@
 *.obj
 *.lib
 *.dll
+*.exp
+*.ilk
+*.pdb
 *.exe
+*.res
 Makefile
 Makefile.in
 makefile.msc
 makefile.mingw
+*-build.stamp
 .deps
 _libs
 .libs

@@ -1,3 +1,12 @@
+2001-11-24  Tor Lillqvist  <tml@iki.fi>
+
+	* Makefile.am: Remove rule for testgmodule.exp, too.
+
+2001-11-22  Tor Lillqvist  <tml@iki.fi>
+
+	* gmodule-win32.c: Current w32api headers do include tlhelp32.h,
+	so no need to have an extract from it here.
+
 Mon Nov 19 16:12:12 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* Makefile.am makefile.msc.in makefile.mingw.in: Remove
