@@ -43,7 +43,7 @@ typedef enum
   G_THREAD_ERROR_AGAIN /* Resource temporarily unavailable */
 } GThreadError;
 
-typedef gpointer (*GThreadFunc) (gpointer value);
+typedef gpointer (*GThreadFunc) (gpointer data);
 
 typedef enum
 {
@@ -56,11 +56,11 @@ typedef enum
 typedef struct _GThread         GThread;
 struct  _GThread
 {
+  GThreadFunc func;
+  gpointer data;
   gboolean joinable;
   gboolean bound;
   GThreadPriority priority;
-  GThreadFunc func;
-  gpointer arg;
 };
 
 typedef struct _GMutex          GMutex;
@@ -89,8 +89,8 @@ struct _GThreadFunctions
   gpointer  (*private_get)        (GPrivate             *private_key);
   void      (*private_set)        (GPrivate             *private_key,
                                    gpointer              data);
-  void      (*thread_create)      (GThreadFunc           thread_func,
-                                   gpointer              arg,
+  void      (*thread_create)      (GThreadFunc           func,
+                                   gpointer              data,
                                    gulong                stack_size,
                                    gboolean              joinable,
                                    gboolean              bound,
@@ -194,8 +194,8 @@ GMutex* g_static_mutex_get_mutex_impl   (GMutex **mutex);
                                                        (private_key, value))
 #define g_thread_yield()              G_THREAD_CF (thread_yield, (void)0, ())
 
-GThread* g_thread_create       (GThreadFunc            thread_func,
-                                gpointer               arg,
+GThread* g_thread_create       (GThreadFunc            func,
+                                gpointer               data,
                                 gulong                 stack_size,
                                 gboolean               joinable,
                                 gboolean               bound,

@@ -31,6 +31,7 @@ typedef struct _GRealThreadPool GRealThreadPool;
 struct _GRealThreadPool
 {
   GThreadPool pool;
+  gulong stack_size;
   GAsyncQueue* queue;
   gint max_threads;
   gint num_threads;
@@ -73,7 +74,7 @@ g_thread_pool_thread_proxy (gpointer data)
     {
       gpointer task; 
       gboolean goto_global_pool = 
-	!pool->pool.exclusive && pool->pool.stack_size == 0;
+	!pool->pool.exclusive && pool->stack_size == 0;
       gint len = g_async_queue_length_unlocked (pool->queue);
       
       if (g_thread_should_run (pool, len))
@@ -116,7 +117,7 @@ g_thread_pool_thread_proxy (gpointer data)
 	      else if (pool->running || !pool->immediate)
 		{
 		  g_async_queue_unlock (pool->queue);
-		  pool->pool.thread_func (task, pool->pool.user_data);
+		  pool->pool.func (task, pool->pool.user_data);
 		  g_async_queue_lock (pool->queue);
 		}
 	    }
@@ -170,7 +171,7 @@ g_thread_pool_thread_proxy (gpointer data)
 
 	  G_LOCK (unused_threads);
 	  if ((unused_threads >= max_unused_threads && 
-	       max_unused_threads != -1) || pool->pool.stack_size != 0)
+	       max_unused_threads != -1) || pool->stack_size != 0)
 	    {
 	      G_UNLOCK (unused_threads);
 	      g_async_queue_unlock (unused_queue);
@@ -234,7 +235,7 @@ g_thread_pool_start_thread (GRealThreadPool  *pool,
       GError *local_error = NULL;
       /* No thread was found, we have to start a new one */
       g_thread_create (g_thread_pool_thread_proxy, pool, 
-		       pool->pool.stack_size, FALSE, 
+		       pool->stack_size, FALSE, 
 		       bound, priority, &local_error);
       
       if (local_error)
@@ -251,7 +252,9 @@ g_thread_pool_start_thread (GRealThreadPool  *pool,
 
 /**
  * g_thread_pool_new: 
- * @thread_func: a function to execute in the threads of the new thread pool
+ * @func: a function to execute in the threads of the new thread pool
+ * @user_data: user data that is handed over to @func every time it 
+ *   is called
  * @max_threads: the maximal number of threads to execute concurrently in 
  *   the new thread pool, -1 means no limit
  * @stack_size: the stack size for the threads of the new thread pool,
@@ -259,8 +262,6 @@ g_thread_pool_start_thread (GRealThreadPool  *pool,
  * @bound: should the threads of the new thread pool be bound?
  * @priority: a priority for the threads of the new thread pool
  * @exclusive: should this thread pool be exclusive?
- * @user_data: user data that is handed over to @thread_func every time it 
- *   is called
  * @error: return location for error
  *
  * This function creates a new thread pool. All threads created within
@@ -272,9 +273,9 @@ g_thread_pool_start_thread (GRealThreadPool  *pool,
  * created or an unused one is reused. At most @max_threads threads
  * are running concurrently for this thread pool. @max_threads = -1
  * allows unlimited threads to be created for this thread pool. The
- * newly created or reused thread now executes the function
- * @thread_func with the two arguments. The first one is the parameter
- * to g_thread_pool_push() and the second one is @user_data.
+ * newly created or reused thread now executes the function @func with
+ * the two arguments. The first one is the parameter to
+ * g_thread_pool_push() and the second one is @user_data.
  *
  * The parameter @exclusive determines, whether the thread pool owns
  * all threads exclusive or whether the threads are shared
@@ -298,31 +299,31 @@ g_thread_pool_start_thread (GRealThreadPool  *pool,
  * Return value: the new #GThreadPool
  **/
 GThreadPool* 
-g_thread_pool_new (GFunc            thread_func,
+g_thread_pool_new (GFunc            func,
+		   gpointer         user_data,
 		   gint             max_threads,
 		   gulong           stack_size,
 		   gboolean         bound,
 		   GThreadPriority  priority,
 		   gboolean         exclusive,
-		   gpointer         user_data,
 		   GError         **error)
 {
   GRealThreadPool *retval;
   G_LOCK_DEFINE_STATIC (init);
 
-  g_return_val_if_fail (thread_func, NULL);
+  g_return_val_if_fail (func, NULL);
   g_return_val_if_fail (!exclusive || max_threads != -1, NULL);
   g_return_val_if_fail (max_threads >= -1, NULL);
   g_return_val_if_fail (g_thread_supported (), NULL);
 
   retval = g_new (GRealThreadPool, 1);
 
-  retval->pool.thread_func = thread_func;
-  retval->pool.stack_size = stack_size;
+  retval->pool.func = func;
+  retval->pool.user_data = user_data;
   retval->pool.bound = bound;
   retval->pool.priority = priority;
   retval->pool.exclusive = exclusive;
-  retval->pool.user_data = user_data;
+  retval->stack_size = stack_size;
   retval->queue = g_async_queue_new ();
   retval->max_threads = max_threads;
   retval->num_threads = 0;
@@ -421,12 +422,11 @@ g_thread_pool_push (GThreadPool     *pool,
  * effectively frozen until @max_threads is set to a non-zero value
  * again.
  * 
- * A thread is never terminated while calling @thread_func, as
- * supplied by g_thread_pool_new (). Instead the maximal number of
- * threads only has effect for the allocation of new threads in
- * g_thread_pool_push (). A new thread is allocated, whenever the
- * number of currently running threads in @pool is smaller than the
- * maximal number.
+ * A thread is never terminated while calling @func, as supplied by
+ * g_thread_pool_new (). Instead the maximal number of threads only
+ * has effect for the allocation of new threads in g_thread_pool_push
+ * (). A new thread is allocated, whenever the number of currently
+ * running threads in @pool is smaller than the maximal number.
  *
  * @error can be NULL to ignore errors, or non-NULL to report
  * errors. An error can only occur, when a new thread couldn't be

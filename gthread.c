@@ -535,14 +535,14 @@ g_thread_create_proxy (gpointer data)
     SET_PRIO (thread->pid, thread->thread.priority);
 #endif /* G_THREAD_USE_PID_SURROGATE */
 
-  thread->retval = thread->thread.func (thread->thread.arg);
+  thread->retval = thread->thread.func (thread->thread.data);
 
   return NULL;
 }
 
 GThread* 
-g_thread_create (GThreadFunc 		 thread_func,
-		 gpointer 		 arg,
+g_thread_create (GThreadFunc 		 func,
+		 gpointer 		 data,
 		 gulong 		 stack_size,
 		 gboolean 		 joinable,
 		 gboolean 		 bound,
@@ -551,15 +551,15 @@ g_thread_create (GThreadFunc 		 thread_func,
 {
   GRealThread* result = g_new (GRealThread, 1);
   GError *local_error = NULL;
-  g_return_val_if_fail (thread_func, NULL);
+  g_return_val_if_fail (func, NULL);
   g_return_val_if_fail (priority >= G_THREAD_PRIORITY_LOW, NULL);
   g_return_val_if_fail (priority <= G_THREAD_PRIORITY_URGENT, NULL);
   
   result->thread.joinable = joinable;
   result->thread.bound = bound;
   result->thread.priority = priority;
-  result->thread.func = thread_func;
-  result->thread.arg = arg;
+  result->thread.func = func;
+  result->thread.data = data;
   result->private_data = NULL; 
   result->context = NULL;
   G_LOCK (g_thread);
@@ -657,7 +657,7 @@ g_thread_self (void)
       thread->thread.priority = G_THREAD_PRIORITY_NORMAL; /* This is
 							     just a guess */
       thread->thread.func = NULL;
-      thread->thread.arg = NULL;
+      thread->thread.data = NULL;
       thread->private_data = NULL;
       thread->context = NULL;
 

@@ -40,26 +40,25 @@ typedef struct _GThreadPool     GThreadPool;
  * pool with the constructor function */
 struct _GThreadPool
 {
-  GFunc thread_func;
-  gulong stack_size;
+  GFunc func;
+  gpointer user_data;
   gboolean bound;
   GThreadPriority priority;
   gboolean exclusive;
-  gpointer user_data;
 };
 
-/* Get a thread pool with the function thread_func, at most max_threads may
+/* Get a thread pool with the function func, at most max_threads may
  * run at a time (max_threads == -1 means no limit), stack_size, bound,
  * priority like in g_thread_create, exclusive == TRUE means, that the threads
  * shouldn't be shared and that they will be prestarted (otherwise they are
- * started, as needed) user_data is the 2nd argument to the thread_func */
-GThreadPool*    g_thread_pool_new             (GFunc            thread_func,
+ * started as needed) user_data is the 2nd argument to the func */
+GThreadPool*    g_thread_pool_new             (GFunc            func,
+                                               gpointer         user_data,
                                                gint             max_threads,
                                                gulong           stack_size,
                                                gboolean         bound,
                                                GThreadPriority  priority,
                                                gboolean         exclusive,
-                                               gpointer         user_data,
                                                GError         **error);
 
 /* Push new data into the thread pool. This task is assigned to a thread later

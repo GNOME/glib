@@ -1,3 +1,14 @@
+2001-05-09  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gthread.c, gthread.h: Renamed 'value' and 'arg' to 'data' and
+	'thread_func' to 'func' to make it more consistent with the rest
+	of GLib.
+
+	* gthreadpool.c, gthreadpool.h: Moved 'stack_size' from the public
+	members of GThreadPool to the private ones. Renamed 'thread_func'
+	to 'func' as above. Moved up 'user_data' in g_thead_pool_new
+	argument list and in GThreadPool struct.
+	
 Tue May  8 15:33:31 2001  Tim Janik  <timj@gtk.org>
 
 	* gcompletion.h: removed #include <unistd.h> sneaked in by
