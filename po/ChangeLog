@@ -1,3 +1,7 @@
+Tue Dec  3 20:40:56 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* Makefile.in.in: Use datadir, not $(prefix)/share. (#89339)
+
 2002-12-03  Kostas Papadimas <pkst@gmx.net>
 
 	* el.po: updated Greek translation
