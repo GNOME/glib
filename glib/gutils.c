@@ -718,6 +718,44 @@ g_path_get_dirname (const gchar	   *file_name)
 gchar*
 g_get_current_dir (void)
 {
+#ifdef G_OS_WIN32
+
+  gchar *dir = NULL;
+
+  if (G_WIN32_HAVE_WIDECHAR_API ())
+    {
+      wchar_t dummy[2], *wdir;
+      int len;
+
+      len = GetCurrentDirectoryW (2, dummy);
+      wdir = g_new (wchar_t, len);
+
+      if (GetCurrentDirectoryW (len, wdir) == len - 1)
+	dir = g_utf16_to_utf8 (wdir, -1, NULL, NULL, NULL);
+
+      g_free (wdir);
+    }
+  else
+    {
+      gchar dummy[2], *cpdir;
+      int len;
+
+      len = GetCurrentDirectoryA (2, dummy);
+      cpdir = g_new (gchar, len);
+
+      if (GetCurrentDirectoryA (len, cpdir) == len - 1)
+	dir = g_locale_to_utf8 (cpdir, -1, NULL, NULL, NULL);
+
+      g_free (cpdir);
+    }
+
+  if (dir == NULL)
+    dir = g_strdup ("\\");
+
+  return dir;
+
+#else
+
   gchar *buffer = NULL;
   gchar *dir = NULL;
   static gulong max_len = 0;
@@ -725,28 +763,6 @@ g_get_current_dir (void)
   if (max_len == 0) 
     max_len = (G_PATH_LENGTH == -1) ? 2048 : G_PATH_LENGTH;
   
-#ifdef G_OS_WIN32
-  if (G_WIN32_HAVE_WIDECHAR_API ())
-    {
-      wchar_t *wdir = _wgetcwd (NULL, max_len);
-      if (wdir)
-	dir = g_utf16_to_utf8 (wdir, -1, NULL, NULL, NULL);
-      else
-	dir = g_strdup (G_DIR_SEPARATOR_S);
-      free (wdir);
-    }
-  else
-    {
-      char *cpdir = getcwd (NULL, max_len);
-      if (cpdir)
-	dir = g_locale_to_utf8 (cpdir, -1, NULL, NULL, NULL);
-      else
-	dir = g_strdup (G_DIR_SEPARATOR_S);
-      free (cpdir);
-    }
-
-  return dir;
-#else
   /* We don't use getcwd(3) on SUNOS, because, it does a popen("pwd")
    * and, if that wasn't bad enough, hangs in doing so.
    */

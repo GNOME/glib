@@ -1,3 +1,9 @@
+2004-12-30  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/gutils.c (g_get_current_dir): Use GetCurrentDirectory()
+	directly for simpler buffer length management. I don't trust
+	getcwd() getting it right all the time.
+
 2004-12-30  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gfileutils.c (g_file_test): Typo fix.
