@@ -1,3 +1,9 @@
+Mon Feb 17 20:59:47 2003  Tim Janik  <timj@gtk.org>
+
+	* gvalue.c (g_value_register_transform_func): don't assert the types
+	passed in to have value tables. this prevents dynamic types from
+	registering transform functions.
+
 Sun Feb  9 13:44:01 2003  Soeren Sandmann  <sandmann@daimi.au.dk>
 
 	* gboxed.c (boxed_proxy_value_init): remove lookup of unused

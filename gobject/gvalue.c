@@ -277,8 +277,10 @@ g_value_register_transform_func (GType           src_type,
 {
   TransformEntry entry;
 
-  g_return_if_fail (G_TYPE_HAS_VALUE_TABLE (src_type));
-  g_return_if_fail (G_TYPE_HAS_VALUE_TABLE (dest_type));
+  /* these checks won't pass for dynamic types.
+   * g_return_if_fail (G_TYPE_HAS_VALUE_TABLE (src_type));
+   * g_return_if_fail (G_TYPE_HAS_VALUE_TABLE (dest_type));
+   */
   g_return_if_fail (transform_func != NULL);
 
   entry.src_type = src_type;
