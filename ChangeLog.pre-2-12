@@ -1,3 +1,16 @@
+Sat Nov 15 00:46:14 2003  Matthias Clasen  <maclas@gmx.de>
+
+	* configure.in: Don't blindly set glib_cv_long_long_format to
+	"ll" when using the included printf. As long as the native 
+	printf supports 64bit printing, use the native format.  
+	(#119525, Tor Lillquist)
+
+Fri Nov 14 00:28:46 2003  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gi18n.h:
+	* glib/gi18n-lib.h: Also define bind_textdomain_codeset() in
+	the #ifndef ENABLE_NLS case.
+
 Wed Nov 12 15:06:27 2003  Owen Taylor  <otaylor@redhat.com>
 
 	* configure.in: Version 2.3.1, interface age 0.
