@@ -1,3 +1,11 @@
+Sat Sep  5 18:03:36 1998  Tom Tromey  <tromey@cygnus.com>
+
+	* gutils.c (GLIB_INLINE): Define.
+	* glib.h (GLIB_INLINE): New define.
+	(g_bit_nth_msf): Use it.  Also, add prototype.
+	(g_bit_storage): Likewise.
+	(g_bit_storage): Likewise.
+
 Sat Sep  5 04:40:02 1998  Tim Janik  <timj@gtk.org>
 
 	* glib.h: 

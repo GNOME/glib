@@ -191,6 +191,19 @@
 #  endif /* !__GNUC__ */
 #endif /* __STRICT_ANSI__ */
 
+/* When using gcc we want to use `extern inline' to avoid random
+ * warnings with -Wall.  */
+#ifdef __GNUC__
+/* We want to also have a non-inlined version of the function
+ * available.  We implement this by redefining GLIB_INLINE in a glib
+ * implementation file.  */
+#  ifndef GLIB_INLINE
+#    define GLIB_INLINE extern inline
+#  endif
+#else
+#  undef GLIB_INLINE
+#  define GLIB_INLINE inline
+#endif
 
 /* Provide macros to feature the GCC function attribute.
  */
@@ -1195,9 +1208,17 @@ gchar*	g_get_current_dir	(void);
 #endif
 
 
+
 /* Bit tests
  */
-static inline gint
+
+/* Prototypes are required for inline functions to pacify gcc when
+ * some warnings are enabled.  */
+gint g_bit_nth_lsf (guint32 mask, gint nth_bit);
+gint g_bit_nth_msf (guint32 mask, gint nth_bit);
+guint g_bit_storage (guint number);
+
+GLIB_INLINE gint
 g_bit_nth_lsf (guint32 mask,
 	       gint    nth_bit)
 {
@@ -1210,7 +1231,7 @@ g_bit_nth_lsf (guint32 mask,
   while (nth_bit < 32);
   return -1;
 }
-static inline gint
+GLIB_INLINE gint
 g_bit_nth_msf (guint32 mask,
 	       gint    nth_bit)
 {
@@ -1225,7 +1246,7 @@ g_bit_nth_msf (guint32 mask,
   while (nth_bit > 0);
   return -1;
 }
-static inline guint
+GLIB_INLINE guint
 g_bit_storage (guint number)
 {
   register guint n_bits = 0;

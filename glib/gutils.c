@@ -1,5 +1,5 @@
 /* GLIB - Library of useful routines for C programming
- * Copyright (C) 1995-1997  Peter Mattis, Spencer Kimball and Josh MacDonald
+ * Copyright (C) 1995-1998  Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -24,6 +24,11 @@
 #include <pwd.h>
 #include <sys/types.h>
 #include <sys/param.h>
+
+/* When using gcc, we want to have a non-inlined version of the
+ * `extern inline'd functions in glib.h.  We do this here.  */
+#define GLIB_INLINE
+
 #include "glib.h"
 
 const guint glib_major_version = GLIB_MAJOR_VERSION;
