@@ -1,3 +1,9 @@
+Sun Feb  7 21:56:00 1999  Owen Taylor  <otaylor@redhat.com>
+
+	* gmem.c (g_mem_profile): Copy all elements
+	of the allocations[] array, including the last.
+	(Pointed out by "Matthew W. Samsonoff" <mws7323@osfmail.isc.rit.edu>)
+	
 1999-02-05  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* configure.in: Make the error message in case of a broken thread

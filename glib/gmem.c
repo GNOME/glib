@@ -409,7 +409,7 @@ g_mem_profile (void)
   gulong local_freed_mem;  
 
   g_mutex_lock (mem_profile_lock);
-  for (i = 0; i < (MEM_PROFILE_TABLE_SIZE - 1); i++)
+  for (i = 0; i < MEM_PROFILE_TABLE_SIZE; i++)
     local_allocations[i] = allocations[i];
   local_allocated_mem = allocated_mem;
   local_freed_mem = freed_mem;
