@@ -1,3 +1,7 @@
+Mon Mar  1 00:26:11 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* NEWS: Update for 2.3.4
+
 2003-02-29  Hans Breuer  <hans@breuer.org>
 
 	* glib/gatomic.c : added win32 api based implementation

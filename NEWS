@@ -1,3 +1,15 @@
+Overview of Changes from GLib 2.3.3 to GLib 2.3.4
+=================================================
+
+* Make glib-mkenums parse initializers with macros. [Matthias Clasen, muppet]
+* Respect locale era in g_date_set_parse(). [Theppitak Karoonboonyanan] 
+* Add atomic operations and use it for the async queue and
+  gonce implementation. [Sebastian Wilhelmi]
+* Documentation improvements [Sebastian, Matthias, Sven Herzberg]
+* Win32 fixes. [Hans Breuer, J. Ali Harlow]
+* Misc bugfixes [Sebastian, Matthias, Balazs Scheidler]
+* Updated translations (cy,ga,et)
+
 Overview of Changes from GLib 2.3.2 to GLib 2.3.3
 =================================================
 
