@@ -112,7 +112,7 @@ sanity:
 snapshot:
 	$(MAKE) dist distdir=$(PACKAGE)`date +"%y%m%d"`
 
-dist-hook:
+dist-hook: glib.spec
 	if test -e $(srcdir)/INSTALL.in && test -e $(srcdir)/README.in ; then \
 	     CONFIG_FILES="INSTALL:$(srcdir)/INSTALL.in README:$(srcdir)/README.in" \
 	     CONFIG_HEADERS= \
