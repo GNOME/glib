@@ -1,3 +1,8 @@
+Wed Jun  2 00:57:16 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gtypes.h: Use higher precision for the mathematical
+	constants.  (#141941, Morten Welinder)
+
 Tue Jun  1 22:01:40 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/gmarkup.c (advance_char): Fix an off-by-one error 
