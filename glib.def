@@ -216,6 +216,7 @@ EXPORTS
 	g_node_child_index
 	g_node_child_position
 	g_node_children_foreach
+	g_node_copy
 	g_node_depth
 	g_node_destroy
 	g_node_find
@@ -441,6 +442,7 @@ EXPORTS
 	g_usleep
 	g_vsnprintf
 	g_win32_closedir
+	g_win32_error_message
 	g_win32_ftruncate
 	g_win32_getlocale
 	g_win32_opendir
