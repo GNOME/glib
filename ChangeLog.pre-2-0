@@ -1,3 +1,11 @@
+1999-02-15  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* glib.h, glibconfig.h.win32, configure.in: Changed signature of
+	all g_static_mutex_* functions to take a pointer rather than the
+	struct itself. This is not an issue at the moment, because those
+	funcs are really macros, but is it un'G'ish and might fall on our
+	feet in the future.
+
 Mon Feb 15 07:45:54 1999  Tim Janik  <timj@gtk.org>
 
 	* configure.in (--enable-debug): default to yes for development trees.

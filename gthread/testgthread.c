@@ -26,8 +26,8 @@ test_mutexes (void)
   g_mutex_lock (mutex);
   g_mutex_unlock (mutex);
 
-  g_static_mutex_lock (static_mutex);
-  g_static_mutex_unlock (static_mutex);
+  g_static_mutex_lock (&static_mutex);
+  g_static_mutex_unlock (&static_mutex);
 
   g_cond_signal (cond);
   g_cond_broadcast (cond);

@@ -995,8 +995,8 @@ struct _GStaticMutex
 };
 #define	G_STATIC_MUTEX_INIT	{ NULL, { { $g_mutex_contents} } }
 #define	g_static_mutex_get_mutex(mutex) \
-  (g_thread_use_default_impl ? ((GMutex*) &(mutex).aligned_pad_u) : \
-   g_static_mutex_get_mutex_impl (&(mutex).runtime_mutex))
+  (g_thread_use_default_impl ? ((GMutex*) &((mutex)->aligned_pad_u)) : \
+   g_static_mutex_get_mutex_impl (&((mutex)->runtime_mutex)))
 _______EOF
 	else
 		cat >>$outfile <<_______EOF
@@ -1004,7 +1004,7 @@ $g_enable_threads_def G_THREADS_ENABLED
 #define G_THREADS_IMPL_$g_threads_impl_def
 typedef struct _GMutex* GStaticMutex;
 #define G_STATIC_MUTEX_INIT NULL
-#define g_static_mutex_get_mutex(mutex) (g_static_mutex_get_mutex_impl (&(mutex)))
+#define g_static_mutex_get_mutex(mutex) (g_static_mutex_get_mutex_impl (mutex))
 _______EOF
 	fi
 

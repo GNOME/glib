@@ -120,8 +120,8 @@ struct _GStaticMutex
 /* This should be NULL followed by the bytes in PTHREAD_MUTEX_INITIALIZER */
 #define	G_STATIC_MUTEX_INIT	{ NULL, { { 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } } }
 #define	g_static_mutex_get_mutex(mutex) \
-  (g_thread_use_default_impl ? ((GMutex*) &(mutex).aligned_pad_u) : \
-   g_static_mutex_get_mutex_impl (&(mutex).runtime_mutex))
+  (g_thread_use_default_impl ? ((GMutex*) &((mutex)->aligned_pad_u)) : \
+   g_static_mutex_get_mutex_impl (&((mutex)->runtime_mutex)))
 
 #define G_BYTE_ORDER G_LITTLE_ENDIAN
 
