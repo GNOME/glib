@@ -50,7 +50,7 @@ g_async_queue_new ()
 {
   GAsyncQueue* retval = g_new (GAsyncQueue, 1);
   retval->mutex = g_mutex_new ();
-  retval->cond = g_cond_new ();
+  retval->cond = NULL;
   retval->queue = g_queue_new ();
   retval->waiting_threads = 0;
   retval->ref_count = 1;
@@ -119,7 +119,8 @@ g_async_queue_unref_and_unlock (GAsyncQueue *queue)
     {
       g_return_if_fail (queue->waiting_threads == 0);
       g_mutex_free (queue->mutex);
-      g_cond_free (queue->cond);
+      if (queue->cond)
+	g_cond_free (queue->cond);
       g_queue_free (queue->queue);
       g_free (queue);
     }
@@ -211,7 +212,8 @@ g_async_queue_push_unlocked (GAsyncQueue* queue, gpointer data)
   g_return_if_fail (data);
 
   g_queue_push_head (queue->queue, data);
-  g_cond_signal (queue->cond);
+  if (queue->waiting_threads > 0)
+    g_cond_signal (queue->cond);
 }
 
 static gpointer
@@ -224,6 +226,10 @@ g_async_queue_pop_intern_unlocked (GAsyncQueue* queue, gboolean try,
     {
       if (try)
 	return NULL;
+      
+      if (!queue->cond)
+	queue->cond = g_cond_new ();
+
       if (!end_time)
         {
           queue->waiting_threads++;
