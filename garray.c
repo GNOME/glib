@@ -67,6 +67,14 @@ g_array_new (gboolean zero_terminated,
 	     gboolean clear,
 	     guint    elt_size)
 {
+  return (GArray*) g_array_sized_new (zero_terminated, clear, elt_size, 0);
+}
+
+GArray* g_array_sized_new (gboolean zero_terminated,
+			   gboolean clear,
+			   guint    elt_size,
+			   guint    reserved_size)
+{
   GRealArray *array;
 
   G_LOCK (array_mem_chunk);
@@ -85,10 +93,10 @@ g_array_new (gboolean zero_terminated,
   array->clear           = (clear ? 1 : 0);
   array->elt_size        = elt_size;
 
-  if (array->zero_terminated)
+  if (array->zero_terminated || reserved_size != 0)
     {
-      g_array_maybe_expand (array, 0);
-      g_array_elt_zero (array, 0, 1);
+      g_array_maybe_expand (array, reserved_size);
+      g_array_zero_terminate(array);
     }
 
   return (GArray*) array;
@@ -283,6 +291,12 @@ G_LOCK_DEFINE_STATIC (ptr_array_mem_chunk);
 GPtrArray*
 g_ptr_array_new (void)
 {
+  return g_ptr_array_sized_new (0);
+}
+
+GPtrArray*  
+g_ptr_array_sized_new (guint reserved_size)
+{
   GRealPtrArray *array;
 
   G_LOCK (ptr_array_mem_chunk);
@@ -298,7 +312,10 @@ g_ptr_array_new (void)
   array->len = 0;
   array->alloc = 0;
 
-  return (GPtrArray*) array;
+  if (reserved_size != 0)
+    g_ptr_array_maybe_expand (array, reserved_size);
+
+  return (GPtrArray*) array;  
 }
 
 void
@@ -455,7 +472,12 @@ g_ptr_array_add (GPtrArray* farray,
 
 GByteArray* g_byte_array_new      (void)
 {
-  return (GByteArray*) g_array_new (FALSE, FALSE, 1);
+  return (GByteArray*) g_array_sized_new (FALSE, FALSE, 1, 0);
+}
+
+GByteArray* g_byte_array_sized_new (guint reserved_size)
+{
+  return (GByteArray*) g_array_sized_new (FALSE, FALSE, 1, reserved_size);
 }
 
 void	    g_byte_array_free     (GByteArray *array,

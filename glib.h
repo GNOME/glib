@@ -1891,6 +1891,10 @@ void         g_string_sprintfa          (GString	 *string,
 GArray* g_array_new	          (gboolean	    zero_terminated,
 				   gboolean	    clear,
 				   guint	    element_size);
+GArray* g_array_sized_new         (gboolean	    zero_terminated,
+				   gboolean	    clear,
+				   guint	    element_size,
+				   guint            reserved_size);
 void	g_array_free	          (GArray	   *array,
 				   gboolean	    free_segment);
 GArray* g_array_append_vals       (GArray	   *array,
@@ -1917,6 +1921,7 @@ GArray* g_array_remove_index_fast (GArray	   *array,
  */
 #define	    g_ptr_array_index(array,index) (array->pdata)[index]
 GPtrArray*  g_ptr_array_new		   (void);
+GPtrArray*  g_ptr_array_sized_new	   (guint        reserved_size);
 void	    g_ptr_array_free		   (GPtrArray	*array,
 					    gboolean	 free_seg);
 void	    g_ptr_array_set_size	   (GPtrArray	*array,
@@ -1937,6 +1942,7 @@ void	    g_ptr_array_add		   (GPtrArray	*array,
  */
 
 GByteArray* g_byte_array_new	           (void);
+GByteArray* g_byte_array_sized_new	   (guint        reserved_size);
 void	    g_byte_array_free	           (GByteArray	 *array,
 					    gboolean	  free_segment);
 GByteArray* g_byte_array_append	           (GByteArray	 *array,
