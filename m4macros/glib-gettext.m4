@@ -225,7 +225,7 @@ glib_DEFUN([GLIB_WITH_NLS],
     dnl Make all variables we use known to autoconf.
     AC_SUBST(CATALOGS)
     AC_SUBST(CATOBJEXT)
-    AC_SUBST(DATADIR)
+    AC_SUBST(DATADIRNAME)
     AC_SUBST(GMOFILES)
     AC_SUBST(INSTOBJEXT)
     AC_SUBST(INTLLIBS)
