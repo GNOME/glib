@@ -1,3 +1,7 @@
+1999-01-17  Christopher Blizzard  <blizzard@appliedtheory.com>
+
+	* glib.spec: increment version number to 1.1.13
+
 Sun Jan 17 16:14:03 1999  Tim Janik  <timj@gtk.org>
 
 	* glib.h (g_error): if !defined (G_LOG_DOMAIN) define G_LOG_DOMAIN as
