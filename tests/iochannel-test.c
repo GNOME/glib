@@ -13,37 +13,41 @@ gint main (gint argc, gchar * argv[])
     GIOChannel *gio_r, *gio_w ;
     GError *gerr = NULL;
     GString *buffer;
+    char *filename;
+    char *srcdir = getenv ("srcdir");
     gint rlength = 0, wlength = 0, length_out, line_term_len;
     gboolean block;
     const gchar encoding[] = "EUC-JP", line_term[] = "\n";
     GIOStatus status;
     GIOFlags flags;
 
+    if (!srcdir)
+      srcdir = ".";
+    filename = g_strconcat (srcdir, G_DIR_SEPARATOR_S, "iochannel-test-infile", NULL);
+  
     setbuf(stdout, NULL); /* For debugging */
 
-    gio_r = g_io_channel_new_file ("iochannel-test-infile", "r", &gerr);
+    gio_r = g_io_channel_new_file (filename, "r", &gerr);
     if (gerr)
       {
-        g_warning(gerr->message);
-        g_warning("Unable to open file %s", "iochannel-test-infile");
-        g_free(gerr);
-        return 0;
+        g_warning("Unable to open file %s: %s", filename, gerr->message);
+        g_error_free(gerr);
+        return 1;
       }
     gio_w = g_io_channel_new_file( "iochannel-test-outfile", "w", &gerr);
     if (gerr)
       {
-        g_warning(gerr->message);
-        g_warning("Unable to open file %s", "iochannel-test-outfile");
-        g_free(gerr);
-        return 0;
+        g_warning("Unable to open file %s: %s", "iochannel-test-outfile", gerr->message);
+        g_error_free(gerr);
+        return 1;
       }
 
     g_io_channel_set_encoding (gio_r, encoding, &gerr);
     if (gerr)
       {
         g_warning(gerr->message);
-        g_free(gerr);
-        return 0;
+        g_error_free(gerr);
+        return 1;
       }
     
     g_io_channel_set_buffer_size (gio_r, BUFFER_SIZE);

@@ -13,14 +13,19 @@ libadd_libglib = $(libglib)
 no_undefined = -no-undefined
 endif
 
-EXTRA_DIST = \
-	$(test_scripts)		\
-	makefile.msc.in		\
-	makefile.mingw.in	\
+EXTRA_DIST =					\
+	$(test_scripts)				\
+	makefile.msc.in				\
+	makefile.mingw.in			\
+	casefold.txt				\
+	casemap.txt				\
+	gen-casefold-txt.pl			\
+	gen-casemap-txt.pl			\
+	iochannel-test-infile			\
 	utf8.txt
 
-BUILT_EXTRA_DIST = \
-	makefile.mingw	\
+BUILT_EXTRA_DIST =				\
+	makefile.mingw				\
 	makefile.msc
 
 if HAVE_CXX

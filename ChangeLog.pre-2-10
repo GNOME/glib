@@ -1,3 +1,14 @@
+Sun Aug 12 10:09:00 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* tests/iochannel-test.c (main): Find test case for
+	srcdir != builddir, miscellaneous cleanups.
+
+	* tests/Makefile.am (EXTRA_DIST): Distribute casefold.txt,
+	casemap.txt iochannel-test-infile.
+
+	* glib-2.0-uninstalled.pc.in: Fix for move of glib files
+	into subdir. (Pointed out by Steve Baker)
+
 Sat Aug  4 01:04:08 2001  Tim Janik  <timj@gtk.org>
 
 	* glib/gscanner.c (g_scanner_unexp_token): fix INT and FLOAT warnings
