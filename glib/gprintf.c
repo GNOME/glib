@@ -302,14 +302,16 @@ g_vasprintf (gchar      **string,
       *string = string1;
     }
 #else
-  va_list args2;
+  {
+    va_list args2;
 
-  G_VA_COPY (args2, args);
+    G_VA_COPY (args2, args);
 
-  *string = g_new (gchar, g_printf_string_upper_bound (format, args));
+    *string = g_new (gchar, g_printf_string_upper_bound (format, args));
 
-  len = _g_vsprintf (*string, format, args2);
-  va_end (args2);
+    len = _g_vsprintf (*string, format, args2);
+    va_end (args2);
+  }
 #endif
 
   return len;

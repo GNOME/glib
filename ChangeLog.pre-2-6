@@ -1,3 +1,8 @@
+2003-07-09  Morten Welinder  <terra@gnome.org>
+
+	* glib/gprintf.c (g_vasprintf): Avoid var declaration after
+	statement.
+
 2003-07-09  Matthias Clasen  <maclas@gmx.de>
 
 	Support for one-time initialization functions.  (#69668, Sebastian Wilhelmi)
