@@ -29,8 +29,7 @@ EXTRA_DIST = 			\
 	glib-2.0-uninstalled.pc.in 	\
 	gobject-2.0-uninstalled.pc.in 	\
 	gmodule-2.0-uninstalled.pc.in	\
-	gthread-2.0-uninstalled.pc.in	\
-	gen-unicode-tables.pl
+	gthread-2.0-uninstalled.pc.in
 
 # These may be in the builddir too
 BUILT_EXTRA_DIST = 		\
@@ -78,10 +77,6 @@ makefile.mingw: $(top_builddir)/config.status $(top_srcdir)/makefile.mingw.in
 
 glib.rc: $(top_builddir)/config.status $(top_srcdir)/glib.rc.in
 	cd $(top_builddir) && CONFIG_FILES=$@ CONFIG_HEADERS= $(SHELL) ./config.status
-
-bin_SCRIPTS=glib-config-2.0
-BUILT_SOURCES=glib-config-2.0
-glib-config-2.0: glib-config-2.0.in
 
 .PHONY: files release sanity snapshot
 

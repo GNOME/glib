@@ -1,7 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 
-INCLUDES = -DG_LOG_DOMAIN=g_log_domain_glib @GLIB_DEBUG_FLAGS@ \
-	-DG_DISABLE_DEPRECATED -DGLIB_COMPILATION
+INCLUDES = -I$(top_srcdir) -DG_LOG_DOMAIN=g_log_domain_glib \
+	@GLIB_DEBUG_FLAGS@ -DG_DISABLE_DEPRECATED -DGLIB_COMPILATION 
 
 EXTRA_DIST = 			\
 	gen-unicode-tables.pl

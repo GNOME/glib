@@ -1,3 +1,12 @@
+2001-06-27  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* Makefile.am, configure.in: Removed glib-config-2.0, as we have
+	pkg-config now.
+
+	* glib/Makefile.am: Added -I$(top_srcdir) for builddir != srcdir.
+
+	* Makefile.am: Removed gen-unicode-tables.pl from EXTRA_DIST.
+
 Tue Jun 26 11:43:46 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* configure.in Makefile.am *.[ch] glib/*.[ch] glib/Makefile.am:

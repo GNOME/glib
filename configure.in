@@ -2034,7 +2034,6 @@ gthread-2.0.pc
 gthread-2.0-uninstalled.pc
 gobject-2.0.pc
 gobject-2.0-uninstalled.pc
-glib-config-2.0
 glib.spec
 Makefile
 build/Makefile
@@ -2051,10 +2050,7 @@ docs/reference/glib/Makefile
 docs/reference/gobject/Makefile
 tests/Makefile
 m4macros/Makefile
-],[case "$CONFIG_FILES" in
-*glib-config-2.0*)chmod +x glib-config-2.0;;
-esac
-echo ""
+],[echo ""
 echo " *** IMPORTANT *** "
 echo ""
 echo "This is a development version of GLib.  You should be using a stable"
