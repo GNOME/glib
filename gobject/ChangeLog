@@ -1,3 +1,11 @@
+Mon May 20 15:57:47 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* gsignal.c: When printing errors, handle NULL
+	returns from g_type_debug(). (#73559, Laszlo Peter)
+
+	* gtype.c (type_descriptive_name_I): De-inline,
+	since it's only used for debugging.
+
 Tue May  7 15:03:02 2002  Owen Taylor  <otaylor@redhat.com>
 
         * glib-genmarshal.c: Fix include order for config.h (#71704,
