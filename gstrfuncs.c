@@ -1026,8 +1026,8 @@ g_str_array_split (const gchar *string,
 		   gint         max_tokens)
 {
   GSList *string_list = NULL, *slist;
-  gchar **str_array, **as, *s;
-  guint n = 1;
+  gchar **str_array, *s;
+  guint i, n = 1;
 
   g_return_val_if_fail (string != NULL, NULL);
   g_return_val_if_fail (delimiter != NULL, NULL);
@@ -1063,10 +1063,13 @@ g_str_array_split (const gchar *string,
     }
   
   str_array = g_new (gchar*, n);
-  as = str_array + n - 1;
-  *(as--) = NULL;
+
+  i = n - 1;
+
+  str_array[i--] = NULL;
   for (slist = string_list; slist; slist = slist->next)
-    *(as--) = slist->data;
+    str_array[i--] = slist->data;
+
   g_slist_free (string_list);
 
   return str_array;
@@ -1077,45 +1080,96 @@ g_str_array_free (gchar **str_array)
 {
   if (str_array)
     {
-      gchar **as;
+      int i;
 
-      for (as = str_array; *as; as++)
-	g_free (*as);
+      for(i = 0; str_array[i] != NULL; i++)
+	g_free(str_array[i]);
+
       g_free (str_array);
     }
 }
 
 gchar*
-g_str_array_join (gchar       **str_array,
-		  const gchar  *separator)
+g_str_array_joinv (const gchar  *separator,
+		   const gchar **str_array)
 {
   gchar *string;
   
   g_return_val_if_fail (str_array != NULL, NULL);
-  g_return_val_if_fail (separator != NULL, NULL);
+
+  if(separator == NULL)
+    separator = "";
 
   if (*str_array)
     {
-      guint len;
-      guint seperator_len;
-      gchar **as;
+      guint i, len;
+      guint separator_len;
 
-      seperator_len = strlen (separator);
-      len = 1 + strlen (*str_array);
-      for (as = str_array + 1; *as; as++)
-	len += seperator_len + strlen (*as);
+      separator_len = strlen (separator);
+      len = 1 + strlen (str_array[0]);
+      for(i = 1; str_array[i] != NULL; i++)
+	len += separator_len + strlen(str_array[i]);
       
       string = g_new (gchar, len);
       *string = 0;
       strcat (string, *str_array);
-      for (as = str_array + 1; *as; as++)
+      for (i = 1; str_array[i] != NULL; i++)
 	{
 	  strcat (string, separator);
-	  strcat (string, *as);
+	  strcat (string, str_array[i]);
 	}
       }
   else
     string = g_strdup ("");
+
+  return string;
+}
+
+gchar*
+g_str_array_join (const gchar  *separator,
+		  ...)
+{
+  gchar *string, *s;
+  va_list args;
+  guint len;
+  guint separator_len;
+
+  if(separator == NULL)
+    separator = "";
+
+  separator_len = strlen (separator);
+
+  va_start(args, separator);
+
+  s = va_arg(args, gchar *);
+
+  if(s) {
+    len = strlen(s) + 1;
+
+    while((s = va_arg(args, gchar*)))
+      {
+	len += separator_len + strlen(s);
+      }
+    va_end(args);
+
+    string = g_new (gchar, len);
+
+    va_start(args, separator);
+
+    *string = 0;
+    s = va_arg(args, gchar*);
+    strcat (string, s);
+
+    while((s = va_arg(args, gchar*)))
+      {
+	strcat(string, separator);
+	strcat(string, s);
+      }
+
+  } else
+    string = g_strdup("");
+
+  va_end(args);
 
   return string;
 }
