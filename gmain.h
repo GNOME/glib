@@ -233,6 +233,8 @@ void g_get_current_time		        (GTimeVal	*result);
 
 /* ============== Compat main loop stuff ================== */
 
+#ifndef G_DISABLE_DEPRECATED
+
 /* Legacy names for GMainLoop functions
  */
 #define 	g_main_new(is_running)	g_main_loop_new (NULL, is_running);
@@ -241,12 +243,6 @@ void g_get_current_time		        (GTimeVal	*result);
 #define         g_main_destroy(loop)    g_main_loop_unref(loop)
 #define         g_main_is_running(loop) g_main_loop_is_running(loop)
 
-/* Source manipulation by ID */
-gboolean g_source_remove                     (guint          tag);
-gboolean g_source_remove_by_user_data        (gpointer       user_data);
-gboolean g_source_remove_by_funcs_user_data  (GSourceFuncs  *funcs,
-					      gpointer       user_data);
-
 /* Functions to manipulate the default main loop
  */
 
@@ -254,6 +250,14 @@ gboolean g_source_remove_by_funcs_user_data  (GSourceFuncs  *funcs,
 #define g_main_pending()            g_main_context_pending        (NULL)
 
 #define g_main_set_poll_func(func)   g_main_context_set_poll_func (NULL, func)
+
+#endif /* G_DISABLE_DEPRECATED */
+
+/* Source manipulation by ID */
+gboolean g_source_remove                     (guint          tag);
+gboolean g_source_remove_by_user_data        (gpointer       user_data);
+gboolean g_source_remove_by_funcs_user_data  (GSourceFuncs  *funcs,
+					      gpointer       user_data);
 
 /* Idles and timeouts */
 guint		g_timeout_add_full	(gint           priority,

@@ -1,3 +1,14 @@
+Mon Mar 26 14:14:53 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* Makefile.am (INCLUDES): -DG_DISABLE_DEPRECATED
+
+	* gmain.h timeloop.c: Surround the cruftiest stuff with
+	#ifndef G_DISABLE_DEPRECATED.
+
+	* gcompat.h gdate.h: Move compat defines back to 
+	gdate.h, surround with #ifndef G_DISABLE_DEPRECATED. 
+	Remove gcompat.h.
+
 Mon Mar 26 13:34:50 2001  Owen Taylor  <otaylor@redhat.com>
 
 	[ Patch from DindinX  <David.Odin@bigfoot.com>, added docs ]

@@ -32,7 +32,6 @@
 #include <gasyncqueue.h>
 #include <gbacktrace.h>
 #include <gcache.h>
-#include <gcompat.h>
 #include <gcompletion.h>
 #include <gconvert.h>
 #include <gdataset.h>

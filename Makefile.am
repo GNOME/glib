@@ -5,7 +5,7 @@ AUTOMAKE_OPTIONS = 1.4
 SUBDIRS = . gobject gmodule gthread docs tests build
 
 INCLUDES = -DG_LOG_DOMAIN=g_log_domain_glib @GLIB_DEBUG_FLAGS@ \
-	-DG_DISABLE_COMPAT_H -DGLIB_COMPILATION
+	-DG_DISABLE_DEPRECATED -DGLIB_COMPILATION
 
 EXTRA_DIST = 			\
 	ChangeLog.pre-1-2	\
@@ -97,7 +97,6 @@ glibinclude_HEADERS =   \
 	gasyncqueue.h	\
 	gbacktrace.h	\
 	gcache.h	\
-	gcompat.h	\
 	gcompletion.h	\
 	gconvert.h	\
 	gdataset.h	\

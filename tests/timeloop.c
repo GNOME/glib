@@ -124,7 +124,7 @@ input_callback (GIOChannel   *source,
 
       n_active_children--;
       if (n_active_children == 0)
-	g_main_quit (loop);
+	g_main_loop_quit (loop);
       
       return FALSE;
     }
@@ -193,8 +193,8 @@ main (int argc, char **argv)
     create_child ();
 
   getrusage (RUSAGE_SELF, &old_usage);
-  loop = g_main_new (FALSE);
-  g_main_run (loop);
+  loop = g_main_loop_new (NULL, FALSE);
+  g_main_loop_run (loop);
   getrusage (RUSAGE_SELF, &new_usage);
 
   printf ("Elapsed user: %g\n",
