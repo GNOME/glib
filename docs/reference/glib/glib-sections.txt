@@ -323,6 +323,7 @@ G_GNUC_FORMAT
 G_GNUC_FUNCTION
 G_GNUC_PRETTY_FUNCTION
 G_GNUC_NO_INSTRUMENT
+G_HAVE_GNUC_VISIBILITY
 G_GNUC_INTERNAL
 
 <SUBSECTION>
@@ -815,6 +816,9 @@ g_on_error_stack_trace
 
 <SUBSECTION>
 G_BREAKPOINT
+
+<SUBSECTION Private>
+g_return_if_fail_warning
 </SECTION>
 
 <SECTION>
@@ -1426,8 +1430,10 @@ g_win32_error_message
 g_win32_getlocale
 g_win32_get_package_installation_directory
 g_win32_get_package_installation_subdirectory
-
+g_win32_get_windows_version
 G_WIN32_DLLMAIN_FOR_DLL_NAME
+G_WIN32_HAVE_WIDECHAR_API
+G_WIN32_IS_NT_BASED
 
 <SUBSECTION Private>
 g_win32_ftruncate

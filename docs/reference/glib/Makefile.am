@@ -32,6 +32,7 @@ IGNORE_HFILES=			\
 	glibconfig-sysdefs.h	\
 	gdebug.h		\
 	gprintfint.h		\
+	galias.h		\
 	gnulib
 
 # Extra options to supply to gtkdoc-mkdb
