@@ -1,3 +1,10 @@
+2001-01-02  Dan Winship  <danw@helixcode.com>
+
+	* garray.h (g_array_append_val, g_array_prepend_val,
+	g_array_insert_val): Use parentheses around an argument to make
+	these cause an error if you pass a non-lvalue for the value,
+	rather than silently doing the wrong thing.
+
 Sat Dec  2 09:24:35 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* gmain.c (g_main_add_poll_unlocked): Initial fd->revents
