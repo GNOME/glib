@@ -277,9 +277,7 @@ find_file_in_data_dirs (const gchar   *file,
 {
   gchar **data_dirs, *data_dir, *path;
   gint fd;
-  GError *file_error;
 
-  file_error = NULL;
   path = NULL;
   fd = -1;
 
@@ -303,16 +301,11 @@ find_file_in_data_dirs (const gchar   *file,
 
           fd = g_open (path, O_RDONLY, 0);
 
-          if (output_file != NULL)
-            *output_file = g_strdup (path);
-
-          g_free (path);
-
-          if (fd < 0 && file_error == NULL)
-            file_error = g_error_new (G_KEY_FILE_ERROR,
-                                      G_KEY_FILE_ERROR_NOT_FOUND,
-                                      _("Valid key file could not be "
-                                        "found in data dirs")); 
+          if (fd < 0)
+            {
+              g_free (path);
+              path = NULL;
+            }
 
           candidate_file = strchr (candidate_file, '-');
 
@@ -336,19 +329,16 @@ find_file_in_data_dirs (const gchar   *file,
 
   *dirs = data_dirs;
 
-  if (file_error)
+  if (fd < 0)
     {
-      if (fd >= 0)
-        g_error_free (file_error);
-      else
-        g_propagate_error (error, file_error);
+      g_set_error (error, G_KEY_FILE_ERROR,
+                   G_KEY_FILE_ERROR_NOT_FOUND,
+                   _("Valid key file could not be "
+                     "found in data dirs")); 
     }
 
-  if (output_file && fd < 0)
-    {
-      g_free (*output_file);
-      *output_file = NULL;
-    }
+  if (output_file != NULL && fd > 0)
+    *output_file = g_strdup (path);
 
   return fd;
 }
@@ -363,9 +353,16 @@ g_key_file_load_from_fd (GKeyFile       *key_file,
   gsize bytes_read;
   struct stat stat_buf;
   gchar read_buf[4096];
+  
+  if (fstat (fd, &stat_buf) < 0)
+    {
+      g_set_error (error, G_FILE_ERROR,
+                   g_file_error_from_errno (errno),
+                   "%s", g_strerror (errno));
+      return FALSE;
+    }
 
-  fstat (fd, &stat_buf);
-  if ((stat_buf.st_mode & S_IFMT) == S_IFREG)
+  if ((stat_buf.st_mode & S_IFMT) != S_IFREG)
     {
       g_set_error (error, G_KEY_FILE_ERROR,
                    G_KEY_FILE_ERROR_PARSE,
@@ -398,7 +395,7 @@ g_key_file_load_from_fd (GKeyFile       *key_file,
 
       if (bytes_read < 0)
         {
-          if (errno == EINTR)
+          if (errno == EINTR || errno == EAGAIN)
             continue;
 
           g_set_error (error, G_FILE_ERROR,
@@ -570,7 +567,7 @@ g_key_file_load_from_data_dirs (GKeyFile       *key_file,
 
   user_data_dir = g_get_user_data_dir ();
   system_data_dirs = g_get_system_data_dirs ();
-  all_data_dirs = g_new0 (gchar *, g_strv_length ((gchar **)system_data_dirs) + 1);
+  all_data_dirs = g_new0 (gchar *, g_strv_length ((gchar **)system_data_dirs) + 2);
 
   i = 0;
   all_data_dirs[i++] = g_strdup (user_data_dir);
