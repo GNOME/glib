@@ -31,7 +31,11 @@ EXTRA_DIST = 			\
 	config.h.win32.in	\
 	build-dll		\
 	glib.rc			\
-	glib.rc.in
+	glib.rc.in		\
+	glib-2.0.pc.in 		\
+	gobject-2.0.pc.in 	\
+	gmodule-2.0.pc.in	\
+	gthread-2.0.pc.in
 
 lib_LTLIBRARIES = libglib-1.3.la
 
