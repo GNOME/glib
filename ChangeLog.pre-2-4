@@ -1,3 +1,9 @@
+2001-08-24  Darin Adler  <darin@bentspoon.com>
+
+	* tests/shell-test.c: (check_string_result): Fix bad indenting.
+	I figured I should fix this since I just pointed Alex here to
+	look at this as an example.
+
 2001-08-24  Ron Steinke  <rsteinke@w-link.net>
 
 	* glib/giochannel.c: Matthias Clasen's fix for

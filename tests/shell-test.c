@@ -190,27 +190,27 @@ check_string_result (const char *expression,
 		     char *result,
 		     const char *expected)
 {
-	gboolean match;
-	
-	if (expected == NULL)
-	  match = result == NULL;
-	else
-	  match = result != NULL && strcmp (result, expected) == 0;
-
-	if (!match)
-	  {
-	    if (!any_test_failed)
-	      fprintf (stderr, "\n");
-	  
-	    fprintf (stderr, "FAIL: check failed in %s, line %d\n", file_name, line_number);
-	    fprintf (stderr, "      evaluated: %s\n", expression);
-	    fprintf (stderr, "       expected: %s\n", expected == NULL ? "NULL" : expected);
-	    fprintf (stderr, "            got: %s\n", result == NULL ? "NULL" : result);
-	    
-	    any_test_failed = TRUE;
-	  }
-
-	g_free (result);
+  gboolean match;
+  
+  if (expected == NULL)
+    match = result == NULL;
+  else
+    match = result != NULL && strcmp (result, expected) == 0;
+  
+  if (!match)
+    {
+      if (!any_test_failed)
+	fprintf (stderr, "\n");
+      
+      fprintf (stderr, "FAIL: check failed in %s, line %d\n", file_name, line_number);
+      fprintf (stderr, "      evaluated: %s\n", expression);
+      fprintf (stderr, "       expected: %s\n", expected == NULL ? "NULL" : expected);
+      fprintf (stderr, "            got: %s\n", result == NULL ? "NULL" : result);
+      
+      any_test_failed = TRUE;
+    }
+  
+  g_free (result);
 }
 
 static char *
@@ -224,7 +224,9 @@ test_shell_unquote (const char *str)
   if (error == NULL)
     return result;
 
-  /* Leaks the error, which is no big deal. */
+  /* Leaks the error, which is no big deal and easy to fix if we
+   * decide it matters.
+   */
 
   if (error->domain != G_SHELL_ERROR)
     return g_strdup ("error in domain other than G_SHELL_ERROR");
