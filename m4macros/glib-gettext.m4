@@ -26,7 +26,7 @@ dnl
 
 # GLIB_LC_MESSAGES
 #--------------------
-glib_DEFUN([glib_LC_MESSAGES],
+glib_DEFUN([GLIB_LC_MESSAGES],
   [AC_CHECK_HEADERS([locale.h])
     if test $ac_cv_header_locale_h = yes; then
     AC_CACHE_CHECK([for LC_MESSAGES], am_cv_val_LC_MESSAGES,

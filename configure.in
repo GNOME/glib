@@ -1269,6 +1269,21 @@ G_THREAD_LIBS=
 G_THREAD_LIBS_EXTRA=
 G_THREAD_CFLAGS=
 
+dnl
+dnl Test program for basic POSIX threads functionality
+dnl
+m4_define([glib_thread_test],[
+#include <pthread.h> 
+int check_me = 0;
+void* func(void* data) {return check_me = 42;}
+main()
+ { pthread_t t; 
+   void *ret;
+   pthread_create (&t, 0, func, 0);
+   pthread_join (t, &ret);
+   exit (check_me != 42 || ret != 42);
+ }])
+
 if test x"$have_threads" != xno; then
 
   if test x"$have_threads" = xposix; then
@@ -1279,19 +1294,17 @@ if test x"$have_threads" != xno; then
     for flag in pthread pthreads; do
       glib_save_CFLAGS="$CFLAGS"
       CFLAGS="$CFLAGS -$flag"
-      AC_TRY_RUN([#include <pthread.h> 
-	          int check_me = 0;
-		  void* func(void* data) {return check_me = 42;}
-		  main()
-		  { pthread_t t; 
-		    void *ret;
-		    pthread_create (&t, 0, func, 0);
-		    pthread_join (t, &ret);
-		    exit (check_me != 42 || ret != 42);
-		   }],
-		   [G_THREAD_CFLAGS=-$flag
-		    G_THREAD_LIBS=-$flag])
+      AC_TRY_RUN(glib_thread_test,
+                 glib_flag_works=yes,
+                 glib_flag_works=no,
+                 AC_LINK_IFELSE(glib_thread_test,
+                                glib_flag_works=yes,
+                                glib_flag_works=no))
       CFLAGS="$glib_save_CFLAGS"
+      if test $glib_flag_works = yes ; then
+         G_THREAD_CFLAGS=-$flag
+	 G_THREAD_LIBS=-$flag
+      fi
     done
   fi
 
@@ -1408,16 +1421,7 @@ case $have_threads in
 			LIBS="$glib_save_LIBS $add_thread_lib"
 			
 			AC_MSG_CHECKING(for pthread_create/pthread_join$IN)
-			AC_TRY_RUN([#include <pthread.h> 
-				int check_me = 0;
-				void* func(void* data) {check_me = 42;}
-                                main()
-				{ pthread_t t; 
-				  void *ret;
-				  pthread_create (&t, $defattr, func, 0);
-				  pthread_join (t, &ret);
-				  exit (check_me != 42);
-				}],
+			AC_TRY_RUN(glib_thread_test,
 				[AC_MSG_RESULT(yes)
 				G_THREAD_LIBS="$add_thread_lib"
 				break],

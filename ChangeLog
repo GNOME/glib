@@ -1,3 +1,12 @@
+Wed Dec 11 15:10:25 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* configure.in: Factor out repeated thread test into
+	a m4_define(); when cross-compiling, assume that 
+	AC_LINK_IFELSE() is good enough for thinking that
+	-pthread[s] is OK. (More of #58786)
+
+	* m4macros/glib-gettext.m4: Fix typo. (Manish Singh)
+
 Wed Dec 11 14:28:50 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* configure.in: Version 2.1.4, interface age 1.
