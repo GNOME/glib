@@ -1,12 +1,12 @@
 # glib20's Portuguese Translation
 # Copyright (C) 2001 Free Software Foundation, Inc.
-# Duarte Loreto <happyguy_pt@hotmail.com>, 2001, 2002
+# Duarte Loreto <happyguy_pt@hotmail.com>, 2001, 2002, 2003
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: 2.0\n"
-"POT-Creation-Date: 2003-01-28 17:15-0500\n"
-"PO-Revision-Date: 2002-05-16 01:38+0000\n"
+"POT-Creation-Date: 2003-01-31 00:16+0000\n"
+"PO-Revision-Date: 2003-01-31 00:18+0000\n"
 "Last-Translator: Duarte Loreto <happyguy_pt@hotmail.com>\n"
 "Language-Team: Portuguese <gnome_pt@yahoogroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -436,9 +436,8 @@ msgid "Failed to read from child pipe (%s)"
 msgstr "Falha ao ler de canal filho (%s)"
 
 #: glib/gspawn-win32.c:871
-#, fuzzy
 msgid "Failed to execute helper program"
-msgstr "Falha ao executar processo filho (%s)"
+msgstr "Falha ao executar aplicação de ajuda"
 
 #: glib/gspawn-win32.c:904 glib/gspawn.c:1184
 #, c-format
