@@ -78,6 +78,15 @@
       </para>
 
       <para>
+        When you need some private (internal) declarations in several (sub)classes,
+        you can define them in a private header file which is often named by
+        appending the <emphasis>private</emphasis> keyword to the public header name.
+        For example, one could use <filename>maman-bar-private.h</filename>, 
+        <filename>maman_bar_private.h</filename> or <filename>mamanbarprivate.h</filename>.
+        Typically, such private header files are not installed.
+      </para>
+
+      <para>
         The basic conventions for any header which exposes a GType are described in 
         <xref linkend="gtype-conventions"/>. Most GObject-based code also obeys onf of the following
         conventions: pick one and stick to it.
@@ -143,8 +152,10 @@ struct _MamanBar {
             </para></listitem>
           <listitem><para>
               All of Nautilus code and a lot of Gnome libraries use private indirection members, as described
-              by Herb Sutter in his Pimpl articles (see <ulink>http://www.gotw.ca/publications/mill04.htm</ulink>: Herb summarizes the different
-              issues better than I will):
+              by Herb Sutter in his Pimpl articles
+              (see <ulink url="http://www.gotw.ca/gotw/024.htm">Compilation Firewalls</ulink>
+              and <ulink url="http://www.gotw.ca/gotw/028.htm">The Fast Pimpl Idiom</ulink>
+              : he summarizes the different issues better than I will).
 <programlisting>
 typedef struct _MamanBarPrivate MamanBarPrivate;
 struct _MamanBar {
@@ -154,6 +165,7 @@ struct _MamanBar {
   MamanBarPrivate *priv;
 };
 </programlisting>
+              <note>Do not call this <code>private</code>, as that is a registered c++ keyword.</note>
               The private structure is then defined in the .c file, instantiated in the object's
               <function>init</function> function and destroyed in the object's <function>finalize</function> function.
 <programlisting>
@@ -436,7 +448,7 @@ if (self->private->dispose_has_run) {
         Just as with C++, there are many different ways to define object
         methods and extend them: the following list and sections draw on C++ vocabulary.
         (Readers are expected to know basic C++ buzzwords. Those who have not had to
-        write C++ code recently can refer to <ulink>http://www.cplusplus.com/doc/tutorial/</ulink> to refresh their 
+        write C++ code recently can refer to e.g. <ulink>http://www.cplusplus.com/doc/tutorial/</ulink> to refresh their 
         memories.)
         <itemizedlist>
           <listitem><para>
@@ -931,8 +943,6 @@ baz_instance_init (GTypeInstance   *instance,
 <sect2>
   <title>Interface definition prerequisites</title>
 
-
-
   <para>To specify that an interface requires the presence of other interfaces when implemented, 
   GObject introduces the concept of <emphasis>prerequisites</emphasis>: it is possible to associate
   a list of prerequisite interfaces to an interface. For example, if object A wishes to implement interface
@@ -1039,6 +1049,172 @@ maman_bar_get_type (void)
 
 </sect2>
 
+<sect2 id="howto-interface-properties">
+  <title>Interface Properties</title>
+
+  <para>Starting from version 2.4 of glib, gobject interfaces can also have properties. 
+  Declaration of the interface properties is similar to declaring the properties of 
+  ordinary gobject types as explained in <xref linkend="gobject-properties"/>, 
+  except that <function>g_object_interface_install_property</function> is used to 
+  declare the properties instead of <function>g_object_class_install_property</function>.
+  </para>
+
+  <para>To include a property named 'name' of type <type>string</type> in the 
+  <type>maman_ibaz</type> interface example code above, we only need to add one 
+	<footnote>
+  	  <para>That really is one line extended to six for the sake of clarity
+  	  </para>
+	</footnote>  
+  line in the <function>maman_ibaz_base_init</function>
+	<footnote>
+  	  <para>The gobject_install_property can also be called from <function>class_init</function> but it must not be called after that point.
+  	  </para>
+	</footnote>
+  as shown below:
+<programlisting>
+static void
+maman_ibaz_base_init (gpointer g_class)
+{
+  static gboolean initialized = FALSE;
+
+  if (!initialized) {
+    /* create interface signals here. */
+
+    g_object_interface_install_property (g_class,
+    			g_param_spec_string ("name",
+			    	"maman_ibaz_name",
+			    	"Name of the MamanIbaz",
+			    	"maman",
+			    	G_PARAM_READWRITE));
+    initialized = TRUE;
+  }
+}
+</programlisting>
+  </para>
+
+  <para>One point worth noting is that the declared property wasn't assigned an 
+  integer ID. The reason being that integer IDs of properities are utilized only 
+  inside the get and set methods and since interfaces do not implement properties,
+  there is no need to assign integer IDs to interface properties.
+  </para>
+  
+  <para>The story for the implementers of the interface is also quite trivial. 
+  An implementer shall declare and define it's properties in the usual way as 
+  explained in <xref linkend="gobject-properties"/>, except for one small
+  change: it shall declare the properties of the interface it implements using 
+  <function>g_object_class_override_property</function> instead of 
+  <function>g_object_class_install_property</function>. The following code snipet 
+  shows the modifications needed in the <type>MamanBaz</type> declaration and 
+  implementation above:
+<programlisting>
+
+struct _MamanBaz {
+  GObject parent;
+  gint instance_member;
+  gchar *name;		/* placeholder for property */
+};
+
+enum
+{
+  ARG_0,
+  ARG_NAME
+};
+
+GType 
+maman_baz_get_type (void)
+{
+  static GType type = 0;
+  if (type == 0) {
+    static const GTypeInfo info = {
+      sizeof (MamanBazClass),
+      NULL,   /* base_init */
+      NULL,   /* base_finalize */
+      baz_class_init, /* class_init */
+      NULL,   /* class_finalize */
+      NULL,   /* class_data */
+      sizeof (MamanBaz),
+      0,      /* n_preallocs */
+      baz_instance_init    /* instance_init */
+    };
+    static const GInterfaceInfo ibaz_info = {
+      (GInterfaceInitFunc) baz_interface_init,    /* interface_init */
+      NULL,               /* interface_finalize */
+      NULL                /* interface_data */
+    };
+    type = g_type_register_static (G_TYPE_OBJECT,
+                                   "MamanBazType",
+                                   &amp;info, 0);
+    g_type_add_interface_static (type,
+                                 MAMAN_TYPE_IBAZ,
+                                 &amp;ibaz_info);
+  }
+  return type;
+}
+
+static void
+maman_baz_class_init (MamanBazClass * klass)
+{
+  GObjectClass *gobject_class;
+
+  gobject_class = (GObjectClass *) klass;
+
+  parent_class = g_type_class_ref (G_TYPE_OBJECT);
+
+  gobject_class->set_property = maman_baz_set_property;
+  gobject_class->get_property = maman_baz_get_property;
+
+  g_object_class_override_property (gobject_class, ARG_NAME, "name");
+}
+
+static void
+maman_baz_set_property (GObject * object, guint prop_id,
+                        const GValue * value, GParamSpec * pspec)
+{
+  MamanBaz *baz;
+  GObject *obj;
+
+  /* it's not null if we got it, but it might not be ours */
+  g_return_if_fail (G_IS_MAMAN_BAZ (object));
+
+  baz = MAMAN_BAZ (object);
+
+  switch (prop_id) {
+    case ARG_NAME:
+      baz->name = g_value_get_string (value);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+  }
+}
+
+static void
+maman_baz_get_property (GObject * object, guint prop_id,
+                        GValue * value, GParamSpec * pspec)
+{
+  MamanBaz *baz;
+
+  /* it's not null if we got it, but it might not be ours */
+  g_return_if_fail (G_IS_TEXT_PLUGIN (object));
+
+  baz = MAMAN_BAZ (object);
+
+  switch (prop_id) {
+    case ARG_NAME:
+      g_value_set_string (value, baz->name);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+  }
+}
+
+</programlisting>
+  </para>
+
+</sect2>
+
+
   </sect1>
 
 <!--
@@ -1068,7 +1244,7 @@ maman_bar_get_type (void)
         just emit events which can be received by numerous clients. 
       </para>
 
-<sect2>
+<sect2 id="howto-simple-signals">
 <title>Simple use of signals</title>
 
 <para>The most basic use of signals is to implement simple event notification: for example, if we have a 
@@ -1117,8 +1293,16 @@ As shown above, you can safely set the details parameter to zero if you do not k
 For a discussion of what you could used it for, see <xref linkend="signal-detail"/>
 </para>
 
-<para>
-</para>
+ <para>
+The signature of the signal handler in the above example is defined as
+<function>g_cclosure_marshal_VOID__VOID</function>. Its name follows
+a simple convention which encodes the function parameter and return value
+types in the function name. Specifically, the value infront of the double 
+underscore is the type of the return value, while the value(s) after the 
+double underscore denote the parameter types.
+The header <filename>gobject/gmarshal.h</filename> defines a set of commonly
+needed closures that one can use.
+ </para>
 
 </sect2>
 

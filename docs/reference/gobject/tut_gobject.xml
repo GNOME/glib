@@ -28,16 +28,18 @@
       <para>
 	The <function>g_object_new</function> family of functions can be used to instantiate any
 	GType which inherits from the GObject base type. All these functions make sure the class
-	has been correctly initialized by glib's type system and then invoke at one
-	point or another the constructor class method which is used to:
+	and instance structures have been correctly initialized by glib's type system and
+        then invoke at one point or another the constructor class method which is used to:
 	<itemizedlist>
 	  <listitem><para>
-	      Allocate memory through <function>g_type_create_instance</function>,
+	      Allocate and clear memory through <function>g_type_create_instance</function>,
 	    </para></listitem>
 	  <listitem><para>
 	      Initialize the object' instance with the construction properties.
 	    </para></listitem>
 	</itemizedlist>
+       Although one can expect all class and instance members (except the fields
+       pointing to the parents) to be set to zero, some consider it good practice to explicitly set them.
       </para>
 
       <para>
@@ -56,7 +58,7 @@
 #define MAMAN_TYPE_BAR		  (maman_bar_get_type ())
 #define MAMAN_BAR(obj)		  (G_TYPE_CHECK_INSTANCE_CAST ((obj), MAMAN_TYPE_BAR, MamanBar))
 #define MAMAN_BAR_CLASS(klass)	  (G_TYPE_CHECK_CLASS_CAST ((klass), MAMAN_TYPE_BAR, MamanBarClass))
-#define MAMAN_IS_BAR(obj)	  (G_TYPE_CHECK_TYPE ((obj), MAMAN_TYPE_BAR))
+#define MAMAN_IS_BAR(obj)	  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), MAMAN_TYPE_BAR))
 #define MAMAN_IS_BAR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), MAMAN_TYPE_BAR))
 #define MAMAN_BAR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), MAMAN_TYPE_BAR, MamanBarClass))
 
@@ -285,7 +287,8 @@ MamanBar *bar = g_object_new (MAMAN_TYPE_BAR, NULL);
 	The memory-management API for GObjects is a bit complicated but the idea behind it
 	is pretty simple: the goal is to provide a flexible model based on reference counting
 	which can be integrated in applications which use or require different memory management
-	models (such as garbage collection, aso...)
+	models (such as garbage collection, aso...). The methods which are used to
+	manipulate this reference count are described below.
 <programlisting>
 /*
   Refcounting
@@ -319,10 +322,12 @@ void        g_object_run_dispose	      (GObject	      *object);
 	<title>Reference count</title>
 
 	<para>
-	  <function>g_object_ref</function>/<function>g_object_unref</function> respectively 
+	  The functions <function>g_object_ref</function>/<function>g_object_unref</function> respectively 
 	  increase and decrease the reference count. None of these function is thread-safe.
 	  The reference count is, unsurprisingly, initialized to one by 
-	  <function>g_object_new</function>. When the reference count reaches zero, that is, 
+	  <function>g_object_new</function> which means that the caller
+          is currenly the sole owner of the newly-created reference.
+          When the reference count reaches zero, that is, 
 	  when <function>g_object_unref</function> is called by the last client holding
 	  a reference to the object, the <emphasis>dispose</emphasis> and the 
 	  <emphasis>finalize</emphasis> class methods are invoked.
@@ -334,8 +339,8 @@ void        g_object_run_dispose	      (GObject	      *object);
 	  one of the <function>g_type_register_*</function> functions), the object's instance 
 	  memory will be freed or returned to the object pool for this type.
 	  Once the object has been freed, if it was the last instance of the type, the type's class
-	  will be destroyed as described in <xref linkend="gtype-instantiable-classed"></xref> and 
-	    <xref linkend="gtype-non-instantiable-classed"></xref>.
+	  will be destroyed as described in <xref linkend="gtype-instantiable-classed"/> and 
+	    <xref linkend="gtype-non-instantiable-classed"/>.
 	</para>
 
 	<para>
@@ -383,7 +388,7 @@ void        g_object_run_dispose	      (GObject	      *object);
 		  finalize should chain up to its parent implementation just before returning
 		  to the caller.
 		    The reason why the destruction process is split is two different phases is
-		    explained in <xref linkend="gobject-memory-cycles"></xref>.
+		    explained in <xref linkend="gobject-memory-cycles"/>.
 		  </entry>
 		</row>
 		<row>
@@ -521,7 +526,7 @@ void        g_object_run_dispose	      (GObject	      *object);
 
 enum {
   MAMAN_BAR_CONSTRUCT_NAME = 1,
-  MAMAN_BAR_PAPA_NUMBER = 2,
+  MAMAN_BAR_PAPA_NUMBER,
 };
 
 static void
@@ -554,7 +559,7 @@ maman_bar_set_property (GObject      *object,
     break;
   default:
     /* We don't have any other property... */
-    g_assert (FALSE);
+    G_OBJECT_WARN_INVALID_PROPERTY_ID(object,property_id,pspec);
     break;
   }
 }
@@ -578,7 +583,7 @@ maman_bar_get_property (GObject      *object,
     break;
   default:
     /* We don't have any other property... */
-    g_assert (FALSE);
+    G_OBJECT_WARN_INVALID_PROPERTY_ID(object,property_id,pspec);
     break;
   }
 }

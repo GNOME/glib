@@ -282,10 +282,11 @@ struct _GTypeValueTable
 #define MAMAN_BAR_TYPE		  (maman_bar_get_type ())
 #define MAMAN_BAR(obj)		  (G_TYPE_CHECK_INSTANCE_CAST ((obj), MAMAN_BAR_TYPE, MamanBar))
 #define MAMAN_BAR_CLASS(klass)	  (G_TYPE_CHECK_CLASS_CAST ((klass), MAMAN_BAR_TYPE, MamanBarClass))
-#define MAMAN_IS_BAR(obj)	  (G_TYPE_CHECK_TYPE ((obj), MAMAN_BAR_TYPE))
+#define MAMAN_IS_BAR(obj)	  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), MAMAN_BAR_TYPE))
 #define MAMAN_IS_BAR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), MAMAN_BAR_TYPE))
 #define MAMAN_BAR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), MAMAN_BAR_TYPE, MamanBarClass))
 </programlisting>
+        <note>Stick to the naming <code>klass</code> as <code>class</code> is a registered c++ keyword.</note>
       </para>
 
       <para>
@@ -609,7 +610,7 @@ The class initialization process is entirely implemented in
 	      <row>
 		<entry>First call to <function>g_type_create_instance</function> for target type</entry>
 		<entry colspan="2">interface initialization, see 
-		  <xref linkend="gtype-non-instantiable-classed-init"></xref></entry>
+		  <xref linkend="gtype-non-instantiable-classed-init"/></entry>
 	      </row>
 	      <row>
 		<entry>Each call to <function>g_type_create_instance</function> for target type</entry>
@@ -619,7 +620,7 @@ The class initialization process is entirely implemented in
 	      <row>
 		<entry>Last call to <function>g_type_free_instance</function> for target type</entry>
 		<entry colspan="2">interface destruction, see
-		  <xref linkend="gtype-non-instantiable-classed-dest"></xref></entry>
+		  <xref linkend="gtype-non-instantiable-classed-dest"/></entry>
 		<entry></entry>
 	      </row>
 	      <row>
@@ -646,7 +647,7 @@ The class initialization process is entirely implemented in
 	<para>
 	  GType's Interfaces are very similar to Java's interfaces. To declare one of these
 	  you have to register a non-instantiable classed type which derives from 
-	  GTypeInterface. The following piece of code declares such an interface.
+	  <type>GTypeInterface</type>. The following piece of code declares such an interface.
 <programlisting>
 #define MAMAN_IBAZ_TYPE             (maman_ibaz_get_type ())
 #define MAMAN_IBAZ(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), MAMAN_IBAZ_TYPE, MamanIbaz))
@@ -765,7 +766,7 @@ struct _GInterfaceInfo
 	  <para>
 	    When an instantiable classed type which registered an interface implementation
 	    is created for the first time, its class structure is initialized following the process
-	    described in <xref linkend="gtype-instantiable-classed"></xref>. Once the class structure is 
+	    described in <xref linkend="gtype-instantiable-classed"/>. Once the class structure is 
 	      initialized,the function <function>type_class_init_Wm</function> (implemented in <filename>
 	      gtype.c</filename>) initializes the interface implementations associated with
 	      that type by calling <function>type_iface_vtable_init_Wm</function> for each
@@ -857,7 +858,7 @@ maman_ibaz_base_init (gpointer g_class)
 	  </table>
 	  It is highly unlikely (ie: I do not know of <emphasis>anyone</emphasis> who actually 
 	  used it) you will ever need other more fancy things such as the ones described in the
-	  following section (<xref linkend="gtype-non-instantiable-classed-dest"></xref>).
+	  following section (<xref linkend="gtype-non-instantiable-classed-dest"/>).
 	</para>
 	
 	</sect2>
@@ -879,7 +880,7 @@ maman_ibaz_base_init (gpointer g_class)
 
 	  <para>
 	    Again, it is important to understand, as in 
-	    <xref linkend="gtype-non-instantiable-classed-init"></xref>,
+	    <xref linkend="gtype-non-instantiable-classed-init"/>,
 	      that both <function>interface_finalize</function> and <function>base_finalize</function>
 	      are invoked exactly once for the destruction of each implementation of an interface. Thus,
 	      if you were to use one of these functions, you would need to use a static integer variable
