@@ -455,6 +455,54 @@ extern "C" {
 #endif /* !G_DISABLE_CHECKS */
 
 
+/* Portable endian checks and conversions
+ */
+
+#define G_LITTLE_ENDIAN 1234
+#define G_BIG_ENDIAN    4321
+#define G_PDP_ENDIAN    3412	/	/* unused, need specific PDP check */	
+
+#ifdef WORDS_BIGENDIAN
+#define G_BYTE_ORDER G_BIG_ENDIAN
+#else
+#define G_BYTE_ORDER G_LITTLE_ENDIAN
+#endif
+
+#define GULONG_SWAP_LE_BE(long_val)     (((gulong) \
+    (((gulong) (long_val)) & 0x000000ffU) << 24) | \
+    (((gulong) (long_val)) & 0x0000ff00U) <<  8) | \
+    (((gulong) (long_val)) & 0x00ff0000U) >>  8) | \
+    (((gulong) (long_val)) & 0xff000000U) >> 24)))
+#define GULONG_SWAP_LE_PDP(long_val)    (((gulong) \
+    (((gulong) (long_val)) & 0x0000ffffU) << 16) | \
+    (((gulong) (long_val)) & 0xffff0000U) >> 16)))
+#define GULONG_SWAP_BE_PDP(long_val)    (((gulong) \
+    (((gulong) (long_val)) & 0x000000ffU) << 8) | \
+    (((gulong) (long_val)) & 0x0000ff00U) >> 8) | \
+    (((gulong) (long_val)) & 0x00ff0000U) << 8) | \
+    (((gulong) (long_val)) & 0xff000000U) >> 8)))
+
+#if     G_BYTE_ORDER == G_LITTLE_ENDIAN
+#  define GLONG_TO_LE(long_val)         ((glong) (long_val))
+#  define GULONG_TO_LE(long_val)        ((gulong) (long_val))
+#  define GLONG_TO_BE(long_val)         ((glong) GULONG_SWAP_LE_BE (long_val))
+#  define GULONG_TO_BE(long_val)        (GULONG_SWAP_LE_BE (long_val))
+#  define GLONG_FROM_LE(long_val)       ((glong) (long_val))
+#  define GULONG_FROM_LE(long_val)      ((gulong) (long_val))
+#  define GLONG_FROM_BE(long_val)       ((glong) GULONG_SWAP_LE_BE (long_val))
+#  define GULONG_FROM_BE(long_val)      (GULONG_SWAP_LE_BE (long_val))
+#elif   G_BYTE_ORDER == G_BIG_ENDIAN
+#  define GLONG_TO_LE(long_val)         ((glong) GULONG_SWAP_LE_BE (long_val))
+#  define GULONG_TO_LE(long_val)        (GULONG_SWAP_LE_BE (long_val))
+#  define GLONG_TO_BE(long_val)         ((glong) (long_val))
+#  define GULONG_TO_BE(long_val)        ((gulong) (long_val))
+#  define GLONG_FROM_LE(long_val)       ((glong) GULONG_SWAP_LE_BE (long_val))
+#  define GULONG_FROM_LE(long_val)      (GULONG_SWAP_LE_BE (long_val))
+#  define GLONG_FROM_BE(long_val)       ((glong) (long_val))
+#  define GULONG_FROM_BE(long_val)      ((gulong) (long_val))
+#endif
+
+
 /* Provide type definitions for commonly used types.
  *  These are useful because a "gint8" can be adjusted
  *  to be 1 byte (8 bits) on all platforms. Similarly and

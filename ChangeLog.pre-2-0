@@ -1,3 +1,11 @@
+Tue Oct 20 03:32:58 PDT 1998 Manish Singh <yosh@gimp.org>
+
+	* configure.in
+	* acconfig.h: added test for endianness
+
+	* glib.h: #define endian macros for system and some conversions
+	between byte order
+
 Thu Oct  8 06:47:27 1998  Tim Janik  <timj@gtk.org>
 
 	* glib.h:

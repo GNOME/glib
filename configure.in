@@ -213,6 +213,8 @@ case x$glib_cv_hasinline in
 xyes) AC_DEFINE(G_HAVE_INLINE)
 esac
 
+dnl for bytesex stuff
+AC_C_BIGENDIAN
 
 dnl header file checks
 AC_CHECK_HEADERS(float.h, AC_DEFINE(HAVE_FLOAT_H))
