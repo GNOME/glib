@@ -739,7 +739,7 @@ param_spec_ht_lookup (GHashTable  *hash_table,
   else
     pspec = g_hash_table_lookup (hash_table, &key);
 
-  if (!pspec)
+  if (!pspec && !is_canonical (param_name))
     {
       /* try canonicalized form */
       key.name = g_strdup (param_name);

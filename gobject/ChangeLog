@@ -1,3 +1,9 @@
+2005-03-25  Matthias Clasen  <mclasen@redhat.com>
+
+	* gparam.c (param_spec_ht_lookup): Don't do the second
+	lookup if the name was already canonical.  (#171502, Morten
+	Welinder)
+
 Tue Mar 22 14:15:23 2005  Manish Singh <yosh@gimp.org>
 
 	* gparam.c (g_param_spec_internal): cast away any constness on
