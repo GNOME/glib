@@ -1411,15 +1411,15 @@ g_unescape_uri_string (const char *escaped,
 }
 
 static gboolean
-is_escalphanum (gunichar c)
+is_asciialphanum (gunichar c)
 {
-  return c > 0x7F || g_ascii_isalnum (c);
+  return c <= 0x7F && g_ascii_isalnum (c);
 }
 
 static gboolean
-is_escalpha (gunichar c)
+is_asciialpha (gunichar c)
 {
-  return c > 0x7F || g_ascii_isalpha (c);
+  return c <= 0x7F && g_ascii_isalpha (c);
 }
 
 /* allows an empty string */
@@ -1437,7 +1437,7 @@ hostname_validate (const char *hostname)
       /* read in a label */
       c = g_utf8_get_char (p);
       p = g_utf8_next_char (p);
-      if (!is_escalphanum (c))
+      if (!is_asciialphanum (c))
 	return FALSE;
       first_char = c;
       do
@@ -1446,13 +1446,13 @@ hostname_validate (const char *hostname)
 	  c = g_utf8_get_char (p);
 	  p = g_utf8_next_char (p);
 	}
-      while (is_escalphanum (c) || c == '-');
+      while (is_asciialphanum (c) || c == '-');
       if (last_char == '-')
 	return FALSE;
       
       /* if that was the last label, check that it was a toplabel */
       if (c == '\0' || (c == '.' && *p == '\0'))
-	return is_escalpha (first_char);
+	return is_asciialpha (first_char);
     }
   while (c == '.');
   return FALSE;
@@ -1460,14 +1460,14 @@ hostname_validate (const char *hostname)
 
 /**
  * g_filename_from_uri:
- * @uri: a uri describing a filename (escaped, encoded in UTF-8).
+ * @uri: a uri describing a filename (escaped, encoded in ASCII).
  * @hostname: Location to store hostname for the URI, or %NULL.
  *            If there is no hostname in the URI, %NULL will be
  *            stored in this location.
  * @error: location to store the error occuring, or %NULL to ignore
  *         errors. Any of the errors in #GConvertError may occur.
  * 
- * Converts an escaped UTF-8 encoded URI to a local filename in the
+ * Converts an escaped ASCII-encoded URI to a local filename in the
  * encoding used for filenames. 
  * 
  * Return value: a newly-allocated string holding the resulting
@@ -1587,10 +1587,10 @@ g_filename_from_uri (const gchar *uri,
 	}
     }
 #endif
-  
-  result = g_filename_from_utf8 (filename + offs, -1, NULL, NULL, error);
+
+  result = g_strdup (filename + offs);
   g_free (filename);
-  
+
   return result;
 }
 
@@ -1602,7 +1602,7 @@ g_filename_from_uri (const gchar *uri,
  * @error: location to store the error occuring, or %NULL to ignore
  *         errors. Any of the errors in #GConvertError may occur.
  * 
- * Converts an absolute filename to an escaped UTF-8 encoded URI.
+ * Converts an absolute filename to an escaped ASCII-encoded URI.
  * 
  * Return value: a newly-allocated string holding the resulting
  *               URI, or %NULL on an error.
@@ -1613,7 +1613,6 @@ g_filename_to_uri   (const gchar *filename,
 		     GError     **error)
 {
   char *escaped_uri;
-  char *utf8_filename;
 
   g_return_val_if_fail (filename != NULL, NULL);
 
@@ -1634,20 +1633,13 @@ g_filename_to_uri   (const gchar *filename,
       return NULL;
     }
   
-  utf8_filename = g_filename_to_utf8 (filename, -1, NULL, NULL, error);
-  if (utf8_filename == NULL)
-    return NULL;
-  
 #ifdef G_OS_WIN32
   /* Don't use localhost unnecessarily */
   if (hostname && g_ascii_strcasecmp (hostname, "localhost") == 0)
     hostname = NULL;
 #endif
 
-  escaped_uri = g_escape_file_uri (hostname,
-				   utf8_filename);
-  g_free (utf8_filename);
-  
+  escaped_uri = g_escape_file_uri (hostname, filename);
+
   return escaped_uri;
 }
-

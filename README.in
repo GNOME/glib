@@ -27,6 +27,16 @@ See the file 'INSTALL'
 Notes about GLib-2.4.0
 ======================
 
+* g_filename_to_uri() used to operate like this:
+
+	1. convert the filename from G_FILENAME_ENCODING to UTF-8
+	2. encode the UTF-8 into hexadecimal escapes for URIs
+
+  This was incorrect, and now the filename is simply escaped for
+  conversion into URIs.  g_filename_from_uri() is fixed in the same
+  fashion.  Programs which store the converted URIs or filenames may
+  need manual conversion.
+
 * GObject now enforces CONSTRUCT_ONLY properties; due to an oversight
   in previous versions, it was possible to set CONSTRUCT_ONLY properties
   after construct time.
