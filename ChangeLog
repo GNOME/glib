@@ -1,3 +1,13 @@
+2002-02-24  Tor Lillqvist  <tml@iki.fi>
+
+	* README.win32: Edits.
+
+	* config.h.win32.in: Add (as undefined) HAVE_UNSETENV,
+	_FILE_OFFSET_BITS and _LARGE_FILES, just for completeness.
+
+	* glibconfig.h.win32.in: Add the gcc-2.95.x undef of
+	G_HAVE_ISO_VARARGS.
+
 Sat Feb 23 21:36:51 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* configure.in: 1.3.15, binary, interface age 0.

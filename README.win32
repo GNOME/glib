@@ -1,24 +1,29 @@
 General
 =======
 
-For more information about the port or GLib, GTK+ and the GIMP to
-native Windows, and pre-built binaries (DLLs), surf to
-http://www.gimp.org/win32/ . "Native" means that we use the Win32 API
-only, and no POSIX (Unix) emulation layer except that provided by the
-Microsoft runtime C library.
+For prebuilt binaries (DLLs and EXEs) and developer packages (headers,
+import libraries) of GLib, GTK+, GIMP etc for Windows, surf to
+http://www.gimp.org/win32/ . They are for "native" Windows meaning
+they use the Win32 API and Microsoft C runtime library only, no POSIX
+(Unix) emulation layer (like Cygwin). 
 
 To build GLib on Win32, you can use either gcc or the Microsoft
 compiler and tools. Both the compiler from MSVC 5.0 and from MSVC 6.0
 have been used successfully.
 
 But note that to just *use* GLib on Windows, there is no need to build
-it, prebuilt DLLs are available from the webiste above.
+it yourself. Prepackaged runtime and developer packages are available
+from the webiste above. On Unix, it is quite normal that system admins
+build and install libraries like GLib themselves. But on Windows
+setting up a correct build environment can be quite a task, especially
+if you are used to on Unix just type ./configure; make, and expect
+things to work as smoothly on Windows.
 
-The following preprocessor macros are used for conditional compilation
-related to Win32:
+The following preprocessor macros can be used for conditional
+compilation related to Win32 in GLib-using code:
 
-- G_OS_WIN32 is defined when compiling for Win32, *and* without
-  any POSIX emulation, other that to the extent provided by the
+- G_OS_WIN32 is defined when compiling for native Win32, without
+  any POSIX emulation, other than to the extent provided by the
   bundled Microsoft C library (msvcrt.dll).
 
 - G_WITH_CYGWIN is defined if compiling for the Cygwin
@@ -29,27 +34,36 @@ related to Win32:
 - G_PLATFORM_WIN32 is defined when either G_OS_WIN32 or G_WITH_CYGWIN
   is defined.
 
-The Win32 port of GLib and related software uses only G_OS_WIN32. As
-G_OS_WIN32 is defined in glibconfig.h, it is available to all source
-files that use GLib (or GTK+, which uses GLib).
+These macros are defined in glibconfig.h, and are thus (indirectly)
+available in all source files that include <glib.h> or GTK+ headers.
 
 Additionally, there are the compiler-specific macros:
-- __GNUC__ is defined when using GCC
+- __GNUC__ is defined when using gcc
 - _MSC_VER is defined when using the Microsoft compiler
 
 G_OS_WIN32 implies using the Microsoft C runtime MSVCRT.DLL. GLib is
 not known to work with the older CRTDLL.DLL runtime, or the static
-Microsoft C runtime libraries LIBC.LIB and LIBCMT.LIB. 
+Microsoft C runtime libraries LIBC.LIB and LIBCMT.LIB. It apparently
+does work with the debugging version of MSVCRT.DLL, MSVCRTD.DLL.
 
 Building software that use GLib or GTK+
 =======================================
 
-Even building software that just *use* GLib or GTK+ also require to
+Even building software that just *uses* GLib or GTK+ also require to
 have the right compiler set up the right way, so if you intend to use
 gcc, follow the relevant instructions below in that case, too.
 
-Dependent libraries
-===================
+I use gcc with the -fnative-struct flag, which means that in order to
+use the prebuilt DLLs (especially of GTK+), you *must* also use that
+flag. (This flag means that the struct layout rules are identical to
+those used by MSVC. This is essential if the same DLLs are to be
+usable both from gcc- and MSVC-compiled code. This definitely is
+something one wants.)
+
+Building GLib
+=============
+
+Again, first decide whether you really want to do this.
 
 Before building GLib you must also have the libiconv library, either
 from the same website mentioned above, or from it's homepage at
@@ -67,12 +81,14 @@ Where are the makefiles?
 ========================
 
 If you are building from a CVS snapshot, you will not have any
-makefile.mingw or makefile.msc file. You should copy the corresponding
-makefile.mingw.in or makefile.msc.in file to that name, and replace
-any @...@ strings with the correct value.
+makefile.mingw or makefile.msc files. You should copy the
+corresponding makefile.mingw.in or makefile.msc.in file to that name,
+and replace any @...@ strings with the correct value.
 
 This is done automatically when an official GLib source distribution
-package is built.
+package is built, so if you get GLib from a source distribution
+package, there should be makefile.mingw and makefile.msc files ready
+to use (after some editing).
 
 Building GLib with gcc
 ======================
@@ -93,19 +109,16 @@ gcc, you still want to have Cygwin to run make in.
 Then run make -f makefile.mingw. Install the resulting DLLs somewhere
 in your PATH. You can either keep the headers and import libraries
 where they are, or install them somewhere else. There are no rules in
-the makefile.mingws for installing, it is up to you where to put
-stuff.
+the makefile.mingws for installing, it is up to you where to put them.
 
-I use the -fnative-struct flag, which means that in order to use the
-prebuilt DLLs (especially of GTK+), you *must* also use that flag.
-(This flag means that the struct layout is identical to that used by
-MSVC. This is essential if the same DLLs are to be usable both from
-gcc- and MSVC-compiled code, which definitely is a good thing.)
+Autoconfiscated build
+=====================
 
 It is also possible to use the auto*, ./configure and libtool
-mechanism when building for mingw. You should be running Cygwin, or
+mechanism when building with gcc. You should be running Cygwin, or
 maybe cross-compiling from real Unix, for the configure script to
-work, obviously. You most probably should have very new auto* and
+work, obviously. (It might also be possible to use "MSYS", but I
+haven't checked.) You most probably should have very new auto* and
 libtool. Personally, I invoke configure using:
 
 CC='gcc -mpentium -fnative-struct'
@@ -117,38 +130,35 @@ CC='gcc -mpentium -fnative-struct'
 (on a single line)
 
 But please note that the ./configure mechanism should not blindly be
-used to build a GLib to be distributed to potential developers because
-it produces a compiler-dependent glibconfig.h (and config.h, but that
+used to build a GLib to be distributed to other developers because it
+produces a compiler-dependent glibconfig.h (and config.h, but that
 shouldn't matter, as it isn't seen by GLib-using applications). For
 instance, the typedef for gint64 is long long with gcc, but __int64
 with MSVC.
 
 Except for this and a few other minor issues, there really shouldn't
-be any reason to distribute separate GLib DLLs for gcc and MSVC users,
-as both compiler+tools generate code that uses the same C runtime
-library. Thus one either has to manually edit glibconfig.h afterwards,
-or use the supplied config.h.win32 and glibconfig.h.win32. These have
-been produced by running configure twice, once using gcc and once
-using MSVC, and merging the resulting files with diff -D.
+be any reason to distribute separate GLib headers and DLLs for gcc and
+MSVC users, as both compilers generate code that uses the same C
+runtime library. Thus one either has to manually edit glibconfig.h
+afterwards, or use the supplied config.h.win32 and
+glibconfig.h.win32. These have been produced by running configure
+twice, once using gcc and once using MSVC, and merging the resulting
+files with diff -D.
 
-There are probably also other hickups when using auto* and configure
-to build for mingw, sigh. Every now and then I try to get rid of the
-hand-written makefiles and configuration headers for Win32, and start
-fooling around with auto* etc, but after a while give up and fall
-back. At least, it used to be like that. Lately I have again been
-working on using auto*/configure/libtool on Win32, and it now seems to
-work well enough (with some patches applied to the current CVS
-libtool...).
+There might be other hickups when using auto* and configure to build
+with gcc. Lately I have used auto*/configure/libtool exclusively when
+building GLib, GTK+, GIMP etc on Win32, and it seems to work well
+(with some patches applied to the current CVS libtool...).
 
 The hand-written makefile.{mingw,msc} files, and the stuff in the
-"build" subdirectory, has been updated to produce DLLs and import
-libraries that match what Makefile.am and libtool produces. For GLib,
-the DLL is called libglib-1.3-10.dll (at GLib 1.3.10), and the import
-libraries libglib-1.3.a and glib-1.3.lib. Note that the "1.3" is part
-of the "basename" of the library, it is not something that libtool
-would tuck on. The -10 suffix is the value of "LT_CURRENT -
-LT_AGE". The 10 is *not* the micro version number of GLib, although,
-for GLib 1.3.10, it happens to be the same. For the gory details, see
+"build" subdirectory, produce DLLs and import libraries that match
+what Makefile.am and libtool produces. For GLib, the DLL is called
+libglib-1.3-15.dll (at GLib 1.3.15), and the import libraries
+libglib-1.3.dll.a and glib-1.3.lib. Note that the "1.3" is part of the
+"basename" of the library, it is not something that libtool have
+tucked on. The -15 suffix is the value of "LT_CURRENT - LT_AGE". The
+15 is *not* simply the micro version number of GLib, although, for
+GLib 1.3.15, it happens to be the same. For the gory details, see
 configure.in and libtool documentation.
 
 If you want to run the Cygwin-hosted gcc, and still want to produce

@@ -348,6 +348,9 @@
 /* #undef HAVE_UNISTD_H */
 #endif /* _MSC_VER */
 
+/* Define if you have the `unsetenv' function. */
+/* #undef HAVE_UNSETENV */
+
 /* Define if you have the <values.h> header file. */
 #ifndef _MSC_VER
 #define HAVE_VALUES_H 1
@@ -439,6 +442,12 @@
 /* Define if your processor stores words with the most significant byte first
    (like Motorola and SPARC, unlike Intel and VAX). */
 /* #undef WORDS_BIGENDIAN */
+
+/* Number of bits in a file offset, on hosts where this is settable. */
+/* #undef _FILE_OFFSET_BITS */
+
+/* Define for large files, on AIX-style hosts. */
+/* #undef _LARGE_FILES */
 
 /* Define to empty if `const' does not conform to ANSI C. */
 /* #undef const */
