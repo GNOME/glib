@@ -1,3 +1,7 @@
+2004-10-26  Matthias Clasen  <mclasen@redhat.com>
+
+	* tests/strtod-test.c (test_string): Improve error reporting.
+
 Mon Oct 25 15:05:18 2004  Manish Singh  <yosh@gimp.org>
 
 	* autogen.sh: rm autom4te.cache, since it might interfere with

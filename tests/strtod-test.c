@@ -27,11 +27,11 @@ test_string (char *number, double res, gboolean check_end, int correct_len)
       setlocale (LC_NUMERIC, locales[l]);
       d = g_ascii_strtod (number, &end);
       if (d != res)
-	g_print ("g_ascii_strtod for locale %s failed\n", locales[l]);
+	g_print ("g_ascii_strtod on \"%s\" for locale %s failed\n", number, locales[l]);
       if (check_end && end - number != correct_len)
-	g_print ("g_ascii_strtod for locale %s endptr was wrong\n", locales[l]);
+	g_print ("g_ascii_strtod on \"%s\" for locale %s endptr was wrong, leftover: %s\n", number, locales[l], end);
       if (!check_end && end - number != strlen (number))
-	g_print ("g_ascii_strtod for locale %s endptr was wrong\n", locales[l]);
+	g_print ("g_ascii_strtod on \"%s\" for locale %s endptr was wrong, leftover: %s\n", number, locales[l], end);
     }
   
   g_free (number);
@@ -50,6 +50,7 @@ main ()
   test_string ("-123.123", -123.123, FALSE, 0);
   test_string ("-123.123e2", -123.123e2, FALSE, 0);
   test_string ("-123.123e-2", -123.123e-2, FALSE, 0);
+  test_string ("1e1", 1e1, FALSE, 0);
   test_string ("5.4", 5.4, TRUE, 3);
   test_string ("5.4,5.5", 5.4, TRUE, 3);
   test_string ("5,4", 5.0, TRUE, 1);
