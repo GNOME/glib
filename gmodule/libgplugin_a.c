@@ -16,6 +16,14 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+
+/*
+ * Modified by the GLib Team and others 1997-1999.  See the AUTHORS
+ * file for a list of people on the GLib Team.  See the ChangeLog
+ * files for a list of changes.  These files are distributed with
+ * GLib at ftp://ftp.gtk.org/pub/gtk/. 
+ */
+
 #include	<gmodule.h>
 #include	<stdlib.h>
 

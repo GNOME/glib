@@ -18,6 +18,13 @@
  */
 
 /*
+ * Modified by the GLib Team and others 1997-1999.  See the AUTHORS
+ * file for a list of people on the GLib Team.  See the ChangeLog
+ * files for a list of changes.  These files are distributed with
+ * GLib at ftp://ftp.gtk.org/pub/gtk/. 
+ */
+
+/*
  * MT safe
  */
 
@@ -644,13 +651,14 @@ g_strerror (gint errnum)
 #endif /* NO_SYS_ERRLIST */
 
   msg = g_static_private_get (&msg_private);
-  if( !msg )
+  if (!msg)
     {
-      msg = g_new( gchar, 64 );
+      msg = g_new (gchar, 64);
       g_static_private_set (&msg_private, msg, g_free);
     }
 
   sprintf (msg, "unknown error (%d)", errnum);
+
   return msg;
 }
 
@@ -770,13 +778,14 @@ g_strsignal (gint signum)
 #endif /* NO_SYS_SIGLIST */
 
   msg = g_static_private_get (&msg_private);
-  if( !msg )
+  if (!msg)
     {
-      msg = g_new( gchar, 64 );
+      msg = g_new (gchar, 64);
       g_static_private_set (&msg_private, msg, g_free);
     }
 
   sprintf (msg, "unknown signal (%d)", signum);
+
   return msg;
 }
 

@@ -15,6 +15,10 @@ cflags_set=${CFLAGS+set}
 # we rewrite this file
 rm -f glibconfig-sysdefs.h
 
+dnl we to AC_DIVERT_PUSH/AC_DIVERT_POP these variable definitions so they
+dnl are available for $ac_help expansion (don't we all *love* autoconf?)
+AC_DIVERT_PUSH(AC_DIVERSION_NOTICE)dnl
+#
 # The following version number definitions apply to GLib and GModule
 # as a whole, so if changes occoured in either of them, they are both
 # treated with the same interface and binary age.
@@ -28,11 +32,14 @@ rm -f glibconfig-sysdefs.h
 # set GLIB_BINARY_AGE and GLIB_INTERFACE_AGE to 0.
 #
 GLIB_MAJOR_VERSION=1
-GLIB_MINOR_VERSION=1
-GLIB_MICRO_VERSION=15
-GLIB_INTERFACE_AGE=2
-GLIB_BINARY_AGE=2
+GLIB_MINOR_VERSION=3
+GLIB_MICRO_VERSION=0
+GLIB_INTERFACE_AGE=0
+GLIB_BINARY_AGE=0
 GLIB_VERSION=$GLIB_MAJOR_VERSION.$GLIB_MINOR_VERSION.$GLIB_MICRO_VERSION
+dnl
+AC_DIVERT_POP()dnl
+
 AC_SUBST(GLIB_VERSION)
 
 # libtool versioning
@@ -67,7 +74,18 @@ AM_MAINTAINER_MODE
 
 AC_CANONICAL_HOST
 
-AC_ARG_ENABLE(debug, [  --enable-debug=[no/minimum/yes] turn on debugging [default=minimum]],,enable_debug=minimum)
+dnl figure debugging default, prior to $ac_help setup
+dnl
+AC_DIVERT_PUSH(AC_DIVERSION_NOTICE)dnl
+if test `expr $GLIB_MINOR_VERSION \% 2` = 1 ; then
+	debug_default=yes
+else
+	debug_default=minimum
+fi
+AC_DIVERT_POP()dnl
+
+dnl declare --enable-* args and collect ac_help strings
+AC_ARG_ENABLE(debug, [  --enable-debug=[no/minimum/yes] turn on debugging [default=$debug_default]],,enable_debug=$debug_default)
 AC_ARG_ENABLE(mem_check, [  --enable-mem-check      turn on malloc/free sanity checking [default=no]],,enable_mem_check=no)
 AC_ARG_ENABLE(mem_profile, [  --enable-mem-profile    turn on malloc profiling atexit [default=no]],,enable_mem_profile=no)
 AC_ARG_ENABLE(ansi, [  --enable-ansi           turn on strict ansi [default=no]],
@@ -447,7 +465,7 @@ dnl *** g_module checks ***
 dnl ***********************
 G_MODULE_LIBS=
 G_MODULE_LDFLAGS=
-G_MODULE_IMPL=
+dnl G_MODULE_IMPL= don't reset, so cmd-line can override
 G_MODULE_NEED_USCORE=0
 G_MODULE_HAVE_DLERROR=0
 dnl *** dlopen() and dlsym() in system libraries
@@ -579,11 +597,13 @@ LIBS_NOT_FOUND_1="I can't find the libraries for the thread implementation
 		"
 
 LIBS_NOT_FOUND_2=". Please choose another thread implementation or
-		provide information on your thread implementation."
+		provide information on your thread implementation.
+		You can also run 'configure --disable-threads' 
+		to compile without thread support."
 
 FUNC_NO_GETPWUID_R="the 'g_get_(user_name|real_name|home_dir|tmp_dir)'
 		functions will not be MT-safe during their first call because
-		there is no 'getpwuid_r' on your system."
+		there is no working 'getpwuid_r' on your system."
 
 FUNC_NO_LOCALTIME_R="the 'g_date_set_time' function will not be MT-safe
 		because there is no 'localtime_r' on your system."
@@ -739,7 +759,24 @@ if test x"$have_threads" != xnone; then
 	CFLAGS="$CFLAGS $G_THREAD_CFLAGS"
 	AC_CHECK_FUNCS(localtime_r rand_r)
 	if test "$ac_cv_header_pwd_h" = "yes"; then
-	 	AC_CHECK_FUNCS(getpwuid_r)
+		AC_MSG_CHECKING([for getpwuid_r])
+	 	AC_CACHE_VAL(ac_cv_func_getpwuid_r,
+			[AC_TRY_RUN([#include <errno.h>
+				int main () { char buffer[10000], *pointer; 
+				char getpwuid_r (long, void*, void*,
+					int, void*);
+				errno = 0;
+				getpwuid_r (0, &buffer, &buffer, 
+					sizeof (buffer), &pointer);
+				return errno == ENOSYS;}],
+				[ac_cv_func_getpwuid_r=yes],
+				[ac_cv_func_getpwuid_r=no])])
+		if test "$ac_cv_func_getpwuid_r" = yes; then
+			AC_MSG_RESULT(yes)
+			AC_DEFINE(HAVE_GETPWUID_R)
+		else
+			AC_MSG_RESULT(no)
+		fi
 		if test "$ac_cv_func_getpwuid_r" = "yes"; then
 			AC_MSG_CHECKING(whether getpwuid_r is posix like)
 			# getpwuid_r(0, NULL, NULL, 0) is the signature on
@@ -752,6 +789,15 @@ if test x"$have_threads" != xnone; then
 				[AC_MSG_RESULT(yes)
 				AC_DEFINE(HAVE_GETPWUID_R_POSIX)])
 		fi
+	fi
+	if test x"$have_threads" = xposix; then
+		AC_MSG_CHECKING(whether pthread_getspecific is posix like)
+		# PCThreads has pthread_getspecific(pthread_key_t, void **);
+		AC_TRY_COMPILE([#include <pthread.h>],
+			[pthread_getspecific(0,NULL);],
+			[AC_MSG_RESULT(no)],
+			[AC_MSG_RESULT(yes)
+			AC_DEFINE(HAVE_PTHREAD_GETSPECIFIC_POSIX)])
 	fi
 	LIBS="$glib_save_LIBS"
 	CFLAGS="$glib_save_CFLAGS"
@@ -957,8 +1003,8 @@ struct _GStaticMutex
 };
 #define	G_STATIC_MUTEX_INIT	{ NULL, { { $g_mutex_contents} } }
 #define	g_static_mutex_get_mutex(mutex) \
-  (g_thread_use_default_impl ? ((GMutex*) &(mutex).aligned_pad_u) : \
-   g_static_mutex_get_mutex_impl (&(mutex).runtime_mutex))
+  (g_thread_use_default_impl ? ((GMutex*) &((mutex)->aligned_pad_u)) : \
+   g_static_mutex_get_mutex_impl (&((mutex)->runtime_mutex)))
 _______EOF
 	else
 		cat >>$outfile <<_______EOF
@@ -966,7 +1012,7 @@ $g_enable_threads_def G_THREADS_ENABLED
 #define G_THREADS_IMPL_$g_threads_impl_def
 typedef struct _GMutex* GStaticMutex;
 #define G_STATIC_MUTEX_INIT NULL
-#define g_static_mutex_get_mutex(mutex) (g_static_mutex_get_mutex_impl (&(mutex)))
+#define g_static_mutex_get_mutex(mutex) (g_static_mutex_get_mutex_impl (mutex))
 _______EOF
 	fi
 
@@ -1245,6 +1291,7 @@ g_mutex_contents="$glib_cv_byte_contents_gmutex"
 ])
 
 AC_OUTPUT([
+glib.spec
 Makefile
 glib-config
 gmodule/gmoduleconf.h

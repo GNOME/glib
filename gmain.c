@@ -20,6 +20,13 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/*
+ * Modified by the GLib Team and others 1997-1999.  See the AUTHORS
+ * file for a list of people on the GLib Team.  See the ChangeLog
+ * files for a list of changes.  These files are distributed with
+ * GLib at ftp://ftp.gtk.org/pub/gtk/. 
+ */
+
 /* 
  * MT safe
  */
@@ -128,7 +135,7 @@ static gint in_check_or_prepare = 0;
 /* The following lock is used for both the list of sources
  * and the list of poll records
  */
-G_LOCK_DECLARE_STATIC (main_loop);
+G_LOCK_DEFINE_STATIC (main_loop);
 
 static GSourceFuncs timeout_funcs =
 {

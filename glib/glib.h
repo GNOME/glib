@@ -16,6 +16,14 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+
+/*
+ * Modified by the GLib Team and others 1997-1999.  See the AUTHORS
+ * file for a list of people on the GLib Team.  See the ChangeLog
+ * files for a list of changes.  These files are distributed with
+ * GLib at ftp://ftp.gtk.org/pub/gtk/. 
+ */
+
 #ifndef __G_LIB_H__
 #define __G_LIB_H__
 
@@ -1025,10 +1033,10 @@ void	    g_hash_table_thaw		(GHashTable	*hash_table);
 void	    g_hash_table_foreach	(GHashTable	*hash_table,
 					 GHFunc		 func,
 					 gpointer	 user_data);
-gint	    g_hash_table_foreach_remove	(GHashTable	*hash_table,
+guint	    g_hash_table_foreach_remove	(GHashTable	*hash_table,
 					 GHRFunc	 func,
 					 gpointer	 user_data);
-gint	    g_hash_table_size		(GHashTable	*hash_table);
+guint	    g_hash_table_size		(GHashTable	*hash_table);
 
 
 /* Caches
@@ -1705,10 +1713,10 @@ void	 g_string_sprintfa  (GString	 *string,
  * order by moving the last element to the position of the removed 
  */
 
-#define g_array_append_val(a,v) g_array_append_vals(a,&v,1)
-#define g_array_prepend_val(a,v) g_array_prepend_vals(a,&v,1)
-#define g_array_insert_val(a,i,v) g_array_insert_vals(a,i,&v,1)
-#define g_array_index(a,t,i) (((t*)a->data)[i])
+#define g_array_append_val(a,v)	  g_array_append_vals (a, &v, 1)
+#define g_array_prepend_val(a,v)  g_array_prepend_vals (a, &v, 1)
+#define g_array_insert_val(a,i,v) g_array_insert_vals (a, i, &v, 1)
+#define g_array_index(a,t,i)      (((t*) (a)->data) [(i)])
 
 GArray* g_array_new	          (gboolean	    zero_terminated,
 				   gboolean	    clear,
@@ -1788,6 +1796,8 @@ guint g_int_hash  (gconstpointer   v);
 /* This "hash" function will just return the key's adress as an
  * unsigned integer. Useful for hashing on plain adresses or
  * simple integer values.
+ * passing NULL into g_hash_table_new() as GHashFunc has the
+ * same effect as passing g_direct_hash().
  */
 guint g_direct_hash  (gconstpointer v);
 gint  g_direct_equal (gconstpointer v,
@@ -2789,20 +2799,22 @@ void     g_static_private_set (GStaticPrivate	*private_key,
 			       gpointer        	 data,
 			       GDestroyNotify    notify);
 
-/* these are some convenience macros that expand to nothing if GLib was
- * configured with --deisable-threads. for using StaticMutexes, you
- * declare them with G_LOCK_DECLARE_STATIC (name) or G_LOCK_DECLARE (name)
- * if you need to export the mutex. name is a unique identifier for the
- * protected varibale or code portion. locking, testing and unlocking of
- * such mutexes can be done with G_LOCK(), G_UNLOCK() and G_TRYLOCK()
- * respectively.
+/* these are some convenience macros that expand to nothing if GLib
+ * was configured with --disable-threads. for using StaticMutexes,
+ * you define them with G_LOCK_DEFINE_STATIC (name) or G_LOCK_DEFINE (name)
+ * if you need to export the mutex. With G_LOCK_EXTERN (name) you can
+ * declare such an globally defined lock. name is a unique identifier
+ * for the protected varibale or code portion. locking, testing and
+ * unlocking of such mutexes can be done with G_LOCK(), G_UNLOCK() and
+ * G_TRYLOCK() respectively.  
  */
 extern void glib_dummy_decl (void);
 #define G_LOCK_NAME(name)		(g__ ## name ## _lock)
 #ifdef	G_THREADS_ENABLED
-#  define G_LOCK_DECLARE_STATIC(name)	static G_LOCK_DECLARE (name)
-#  define G_LOCK_DECLARE(name)		\
+#  define G_LOCK_DEFINE_STATIC(name)	static G_LOCK_DEFINE (name)
+#  define G_LOCK_DEFINE(name)		\
     GStaticMutex G_LOCK_NAME (name) = G_STATIC_MUTEX_INIT 
+#  define G_LOCK_EXTERN(name)		extern GStaticMutex G_LOCK_NAME (name)
 
 #  ifdef G_DEBUG_LOCKS
 #    define G_LOCK(name)		G_STMT_START{		  \
@@ -2810,29 +2822,30 @@ extern void glib_dummy_decl (void);
 	       "file %s: line %d (%s): locking: %s ",	          \
 	       __FILE__,	__LINE__, G_GNUC_PRETTY_FUNCTION, \
                #name);                                            \
-        g_static_mutex_lock (G_LOCK_NAME (name));                 \
+        g_static_mutex_lock (&G_LOCK_NAME (name));                \
      }G_STMT_END
 #    define G_UNLOCK(name)		G_STMT_START{		  \
         g_log (G_LOG_DOMAIN, G_LOG_LEVEL_DEBUG,			  \
 	       "file %s: line %d (%s): unlocking: %s ",	          \
 	       __FILE__,	__LINE__, G_GNUC_PRETTY_FUNCTION, \
                #name);                                            \
-       g_static_mutex_unlock (G_LOCK_NAME (name));                \
+       g_static_mutex_unlock (&G_LOCK_NAME (name));               \
      }G_STMT_END
 #    define G_TRYLOCK(name)		G_STMT_START{		  \
         g_log (G_LOG_DOMAIN, G_LOG_LEVEL_DEBUG,			  \
 	       "file %s: line %d (%s): try locking: %s ",         \
 	       __FILE__,	__LINE__, G_GNUC_PRETTY_FUNCTION, \
                #name);                                            \
-     }G_STMT_END,	g_static_mutex_trylock (G_LOCK_NAME (name))
+     }G_STMT_END,	g_static_mutex_trylock (&G_LOCK_NAME (name))
 #  else	 /* !G_DEBUG_LOCKS */
-#    define G_LOCK(name) g_static_mutex_lock	   (G_LOCK_NAME (name)) 
-#    define G_UNLOCK(name) g_static_mutex_unlock   (G_LOCK_NAME (name))
-#    define G_TRYLOCK(name) g_static_mutex_trylock (G_LOCK_NAME (name))
+#    define G_LOCK(name) g_static_mutex_lock	   (&G_LOCK_NAME (name)) 
+#    define G_UNLOCK(name) g_static_mutex_unlock   (&G_LOCK_NAME (name))
+#    define G_TRYLOCK(name) g_static_mutex_trylock (&G_LOCK_NAME (name))
 #  endif /* !G_DEBUG_LOCKS */
 #else	/* !G_THREADS_ENABLED */
-#  define G_LOCK_DECLARE_STATIC(name)	extern void glib_dummy_decl (void)
-#  define G_LOCK_DECLARE(name)		extern void glib_dummy_decl (void)
+#  define G_LOCK_DEFINE_STATIC(name)	extern void glib_dummy_decl (void)
+#  define G_LOCK_DEFINE(name)		extern void glib_dummy_decl (void)
+#  define G_LOCK_EXTERN(name)		extern void glib_dummy_decl (void)
 #  define G_LOCK(name)
 #  define G_UNLOCK(name)
 #  define G_TRYLOCK(name)		(FALSE)

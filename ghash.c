@@ -17,6 +17,13 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/*
+ * Modified by the GLib Team and others 1997-1999.  See the AUTHORS
+ * file for a list of people on the GLib Team.  See the ChangeLog
+ * files for a list of changes.  These files are distributed with
+ * GLib at ftp://ftp.gtk.org/pub/gtk/. 
+ */
+
 /* 
  * MT safe
  */
@@ -57,7 +64,7 @@ static void		g_hash_node_destroy	 (GHashNode	*hash_node);
 static void		g_hash_nodes_destroy	 (GHashNode	*hash_node);
 
 
-G_LOCK_DECLARE_STATIC (g_hash_global);
+G_LOCK_DEFINE_STATIC (g_hash_global);
 
 static GMemChunk *node_mem_chunk = NULL;
 static GHashNode *node_free_list = NULL;
@@ -229,14 +236,14 @@ g_hash_table_thaw (GHashTable *hash_table)
       g_hash_table_resize (hash_table);
 }
 
-gint
+guint
 g_hash_table_foreach_remove (GHashTable	*hash_table,
 			     GHRFunc	 func,
 			     gpointer	 user_data)
 {
   GHashNode *node, *prev;
   guint i;
-  gint deleted = 0;
+  guint deleted = 0;
   
   g_return_val_if_fail (hash_table != NULL, 0);
   g_return_val_if_fail (func != NULL, 0);
@@ -294,7 +301,7 @@ g_hash_table_foreach (GHashTable *hash_table,
 }
 
 /* Returns the number of elements contained in the hash table. */
-gint
+guint
 g_hash_table_size (GHashTable *hash_table)
 {
   g_return_val_if_fail (hash_table != NULL, 0);

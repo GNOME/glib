@@ -17,6 +17,13 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/*
+ * Modified by the GLib Team and others 1997-1999.  See the AUTHORS
+ * file for a list of people on the GLib Team.  See the ChangeLog
+ * files for a list of changes.  These files are distributed with
+ * GLib at ftp://ftp.gtk.org/pub/gtk/. 
+ */
+
 /* 
  * MT safe
  */
@@ -392,7 +399,7 @@ g_date_clear (GDate       *d, guint ndates)
   memset (d, 0x0, ndates*sizeof (GDate)); 
 }
 
-G_LOCK_DECLARE_STATIC (g_date_global);
+G_LOCK_DEFINE_STATIC (g_date_global);
 
 /* These are for the parser, output to the user should use *
  * g_date_strftime () - this creates more never-freed memory to annoy

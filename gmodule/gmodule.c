@@ -17,6 +17,13 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/*
+ * Modified by the GLib Team and others 1997-1999.  See the AUTHORS
+ * file for a list of people on the GLib Team.  See the ChangeLog
+ * files for a list of changes.  These files are distributed with
+ * GLib at ftp://ftp.gtk.org/pub/gtk/. 
+ */
+
 /* 
  * MT safe
  */
@@ -64,7 +71,7 @@ static inline GModule*	g_module_find_by_name	(const gchar	*name);
 
 
 /* --- variables --- */
-G_LOCK_DECLARE_STATIC (GModule);
+G_LOCK_DEFINE_STATIC (GModule);
 const char           *g_log_domain_gmodule = "GModule";
 static GModule	     *modules = NULL;
 static GModule	     *main_module = NULL;
@@ -114,15 +121,8 @@ g_module_find_by_name (const gchar *name)
 static inline void
 g_module_set_error (const gchar *error)
 {
-  gchar* module_error = g_static_private_get (&module_error_private);
-  if (module_error)
-    g_free (module_error);
-  if (error)
-    module_error = g_strdup (error);
-  else
-    module_error = NULL;
+  g_static_private_set (&module_error_private, g_strdup (error), g_free);
   errno = 0;
-  g_static_private_set (&module_error_private, module_error, g_free);
 }
 
 
@@ -136,7 +136,8 @@ g_module_set_error (const gchar *error)
 #include "gmodule-win32.c"
 #else
 #undef	CHECK_ERROR
-#define	CHECK_ERROR(rv)	{ g_module_set_error ("unsupported"); return rv; }
+#define	CHECK_ERROR(rv)	{ g_module_set_error ("dynamic modules are " \
+                                              "not supported by this system"); return rv; }
 static gpointer
 _g_module_open (const gchar	*file_name,
 		gboolean	 bind_lazy)
@@ -246,8 +247,7 @@ g_module_open (const gchar    *file_name,
 	  return module;
 	}
       
-      saved_error = g_module_error();
-      g_static_private_set (&module_error_private, NULL, NULL);
+      saved_error = g_strdup (g_module_error ());
       g_module_set_error (NULL);
       
       module = g_new (GModule, 1);
@@ -281,6 +281,7 @@ g_module_open (const gchar    *file_name,
 	}
       else
 	g_module_set_error (saved_error);
+
       g_free (saved_error);
     }
   

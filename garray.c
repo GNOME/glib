@@ -17,6 +17,13 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/*
+ * Modified by the GLib Team and others 1997-1999.  See the AUTHORS
+ * file for a list of people on the GLib Team.  See the ChangeLog
+ * files for a list of changes.  These files are distributed with
+ * GLib at ftp://ftp.gtk.org/pub/gtk/. 
+ */
+
 /* 
  * MT safe
  */
@@ -46,7 +53,7 @@ static void g_array_maybe_expand (GRealArray *array,
 				  gint        len);
 
 static GMemChunk *array_mem_chunk = NULL;
-G_LOCK_DECLARE_STATIC (array_mem_chunk);
+G_LOCK_DEFINE_STATIC (array_mem_chunk);
 
 GArray*
 g_array_new (gboolean zero_terminated,
@@ -250,7 +257,7 @@ static void g_ptr_array_maybe_expand (GRealPtrArray *array,
 				      gint           len);
 
 static GMemChunk *ptr_array_mem_chunk = NULL;
-G_LOCK_DECLARE_STATIC (ptr_array_mem_chunk);
+G_LOCK_DEFINE_STATIC (ptr_array_mem_chunk);
 
 
 GPtrArray*

@@ -55,13 +55,14 @@
 #define G_HAVE___INLINE 1
 
 #define GLIB_MAJOR_VERSION 1
-#define GLIB_MINOR_VERSION 1
-#define GLIB_MICRO_VERSION 15
+#define GLIB_MINOR_VERSION 2
+#define GLIB_MICRO_VERSION 0
 #define GLIB_INTERFACE_AGE 0
 #define GLIB_BINARY_AGE 0
 
 #define G_THREAD_SOURCE "gthread-posix.c"
 #define G_THREADS_IMPL_POSIX
+#define HAVE_PTHREAD_GETSPECIFIC_POSIX 1
 
 /* The number of bytes in a char.  */
 #define SIZEOF_CHAR 1

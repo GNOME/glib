@@ -17,6 +17,13 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/*
+ * Modified by the GLib Team and others 1997-1999.  See the AUTHORS
+ * file for a list of people on the GLib Team.  See the ChangeLog
+ * files for a list of changes.  These files are distributed with
+ * GLib at ftp://ftp.gtk.org/pub/gtk/. 
+ */
+
 /* 
  * MT safe
  */
@@ -83,7 +90,7 @@ static GTreeNode* g_tree_node_rotate_right          (GTreeNode      *node);
 static void       g_tree_node_check                 (GTreeNode      *node);
 
 
-G_LOCK_DECLARE_STATIC (g_tree_global);
+G_LOCK_DEFINE_STATIC (g_tree_global);
 static GMemChunk *node_mem_chunk = NULL;
 static GTreeNode *node_free_list = NULL;
 

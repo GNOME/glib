@@ -17,6 +17,13 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/*
+ * Modified by the GLib Team and others 1997-1999.  See the AUTHORS
+ * file for a list of people on the GLib Team.  See the ChangeLog
+ * files for a list of changes.  These files are distributed with
+ * GLib at ftp://ftp.gtk.org/pub/gtk/. 
+ */
+
 /* 
  * MT safe
  */
@@ -285,7 +292,11 @@ g_realloc (gpointer mem,
   
   
   if (size == 0)
-    return NULL;
+    {
+      g_free (mem);
+    
+      return NULL;
+    }
   
   
 #if defined(ENABLE_MEM_PROFILE) || defined(ENABLE_MEM_CHECK)
@@ -298,7 +309,7 @@ g_realloc (gpointer mem,
   
   
   if (!mem)
-    p = (gpointer) malloc (size);
+    p = (gpointer) realloc (NULL, size);
   else
     {
 #if defined(ENABLE_MEM_PROFILE) || defined(ENABLE_MEM_CHECK)
@@ -409,7 +420,7 @@ g_mem_profile (void)
   gulong local_freed_mem;  
 
   g_mutex_lock (mem_profile_lock);
-  for (i = 0; i < (MEM_PROFILE_TABLE_SIZE - 1); i++)
+  for (i = 0; i < MEM_PROFILE_TABLE_SIZE; i++)
     local_allocations[i] = allocations[i];
   local_allocated_mem = allocated_mem;
   local_freed_mem = freed_mem;

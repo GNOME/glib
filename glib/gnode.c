@@ -20,6 +20,13 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/*
+ * Modified by the GLib Team and others 1997-1999.  See the AUTHORS
+ * file for a list of people on the GLib Team.  See the ChangeLog
+ * files for a list of changes.  These files are distributed with
+ * GLib at ftp://ftp.gtk.org/pub/gtk/. 
+ */
+
 /* 
  * MT safe
  */
@@ -39,7 +46,7 @@ struct _GAllocator /* from gmem.c */
   GNode         *free_nodes; /* implementation specific */
 };
 
-G_LOCK_DECLARE_STATIC (current_allocator);
+G_LOCK_DEFINE_STATIC (current_allocator);
 static GAllocator *current_allocator = NULL;
 
 /* HOLDS: current_allocator_lock */
@@ -108,7 +115,7 @@ g_node_new (gpointer data)
   if (!current_allocator)
     {
        GAllocator *allocator = g_allocator_new ("GLib default GNode allocator",
-						1024);
+						128);
        g_node_validate_allocator (allocator);
        allocator->last = NULL;
        current_allocator = allocator;
