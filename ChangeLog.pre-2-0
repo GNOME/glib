@@ -1,3 +1,7 @@
+2001-11-28  Tor Lillqvist  <tml@iki.fi>
+
+	* glibconfig.h.win32.in: Add GLIB_SIZEOF_SIZE_T here, too.
+
 2001-11-27  Dan Winship  <danw@ximian.com>
 
 	* configure.in (G_MODULE_LDFLAGS): Set this from libtool rather
