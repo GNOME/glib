@@ -1,3 +1,8 @@
+2002-01-09  Takayuki KUSANO  <AE5T-KSN@asahi-net.or.jp>
+
+	* ja.po: Remove %m$ notation that can't be used with
+	g_set_error().
+
 2002-01-07  Zbigniew Chyla  <cyba@gnome.pl>
 
 	* pl.po: Updated Polish translation by
