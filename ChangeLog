@@ -1,3 +1,9 @@
+2000-09-21  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* configure.in: The last released automake (1.4) still requires
+	AM_PROG_LIBTOOL instead of AC_PROG_LIBTOOL, so use that for the
+	time being.
+
 2000-09-19  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* acconfig.h, configure.in, gutils.c: Test for the existence of
