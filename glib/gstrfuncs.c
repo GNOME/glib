@@ -2172,6 +2172,106 @@ g_strsplit (const gchar *string,
 }
 
 /**
+ * g_strsplit_set:
+ * @string: The string to be tokenized
+ * @delimiters: A nul-terminated string containing bytes that are used
+ *              to split the string.
+ * @max_tokens: The maximum number of tokens to split @string into. 
+ *              If this is less than 1, the string is split completely
+ * 
+ * Splits @string into a number of tokens not containing any of the characters
+ * in @delimiter. A token is the (possibly empty) longest string that does not
+ * contain any of the characters in @delimiters. If @max_tokens is reached, the
+ * remainder is appended to the last token.
+ *
+ * For example the result of g_strtokenize ("abc:def/ghi", ":/", -1) is a
+ * %NULL-terminated vector containing the three strings "abc", "def", 
+ * and "ghi".
+ *
+ * The result if g_strtokenize (":def/ghi:", ":/", -1) is a %NULL-terminated
+ * vector containing the four strings "", "def", "ghi", and "".
+ * 
+ * As a special case, the result of splitting the empty string "" is an empty
+ * vector, not a vector containing a single string. The reason for this
+ * special case is that being able to represent a empty vector is typically
+ * more useful than consistent handling of empty elements. If you do need
+ * to represent empty elements, you'll need to check for the empty string
+ * before calling g_strsplit().
+ *
+ * Note that this function works on bytes not characters, so it can't be used 
+ * to delimit UTF-8 strings for anything but ASCII characters.
+ * 
+ * Return value: a newly-allocated %NULL-terminated array of strings. Use 
+ *    g_strfreev() to free it.
+ * 
+ * Since: 2.4
+ **/
+gchar **
+g_strsplit_set (const gchar *string,
+	        const gchar *delimiters,
+	        gint         max_tokens)
+{
+  gboolean delim_table[256];
+  GSList *tokens, *list;
+  gint n_tokens;
+  const gchar *s;
+  const gchar *current;
+  gchar *token;
+  gchar **result;
+  
+  g_return_val_if_fail (string != NULL, NULL);
+  g_return_val_if_fail (delimiters != NULL, NULL);
+
+  if (max_tokens < 1)
+    max_tokens = G_MAXINT;
+
+  if (*string == '\0')
+    {
+      result = g_new (char *, 1);
+      result[0] = NULL;
+      return result;
+    }
+  
+  memset (delim_table, FALSE, sizeof (delim_table));
+  for (s = delimiters; *s != '\0'; ++s)
+    delim_table[*(guchar *)s] = TRUE;
+
+  tokens = NULL;
+  n_tokens = 0;
+
+  s = current = string;
+  while (*s != '\0')
+    {
+      if (delim_table[*(guchar *)s] && n_tokens + 1 < max_tokens)
+	{
+	  gchar *token;
+
+	  token = g_strndup (current, s - current);
+	  tokens = g_slist_prepend (tokens, token);
+	  ++n_tokens;
+
+	  current = s + 1;
+	}
+      
+      ++s;
+    }
+
+  token = g_strndup (current, s - current);
+  tokens = g_slist_prepend (tokens, token);
+  ++n_tokens;
+
+  result = g_new (gchar *, n_tokens + 1);
+
+  result[n_tokens] = NULL;
+  for (list = tokens; list != NULL; list = list->next)
+    result[--n_tokens] = list->data;
+
+  g_slist_free (tokens);
+  
+  return result;
+}
+
+/**
  * g_strfreev:
  * @str_array: a %NULL-terminated array of strings to free.
 

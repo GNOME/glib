@@ -1,3 +1,7 @@
+Wed Jan 28 01:39:59 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/glib-sections.txt: Add g_strsplit_set. (Soeren Sandmann)
+
 Thu Jan 22 14:51:19 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/glib-sections.txt glib/tmpl/timers.sgml: Document

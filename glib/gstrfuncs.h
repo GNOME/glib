@@ -213,8 +213,8 @@ gpointer              g_memdup	       (gconstpointer mem,
 					guint	       byte_size);
 
 /* NULL terminated string arrays.
- * g_strsplit() splits up string into max_tokens tokens at delim and
- * returns a newly allocated string array.
+ * g_strsplit(), g_strsplit_set() split up string into max_tokens tokens
+ * at delim and return a newly allocated string array.
  * g_strjoinv() concatenates all of str_array's strings, sliding in an
  * optional separator, the returned string is newly allocated.
  * g_strfreev() frees the array itself and all of its strings.
@@ -223,6 +223,9 @@ gpointer              g_memdup	       (gconstpointer mem,
 gchar**	              g_strsplit       (const gchar  *string,
 					const gchar  *delimiter,
 					gint          max_tokens);
+gchar **	      g_strsplit_set   (const gchar *string,
+					const gchar *delimiters,
+					gint         max_tokens);
 gchar*                g_strjoinv       (const gchar  *separator,
 					gchar       **str_array);
 void                  g_strfreev       (gchar       **str_array);

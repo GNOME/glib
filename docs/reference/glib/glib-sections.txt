@@ -1008,6 +1008,7 @@ g_strescape
 g_strcompress
 g_strcanon
 g_strsplit
+g_strsplit_set
 g_strfreev
 g_strconcat
 g_strjoin

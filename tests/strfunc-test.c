@@ -286,6 +286,7 @@ main (int   argc,
   TEST (NULL, strcmp (g_strrstr_len ("FooBarFooBarFoo", 14, "BarFoo"),
 		      "BarFooBarFoo") == 0);
 
+  /* Test g_strsplit() */
   TEST (NULL, strv_check (g_strsplit ("", ",", 0), NULL));
   TEST (NULL, strv_check (g_strsplit ("x", ",", 0), "x", NULL));
   TEST (NULL, strv_check (g_strsplit ("x,y", ",", 0), "x", "y", NULL));
@@ -325,6 +326,70 @@ main (int   argc,
   TEST (NULL, strv_check (g_strsplit (",,x,,y,,z,,", ",", 2), "", ",x,,y,,z,,", NULL));
   TEST (NULL, strv_check (g_strsplit (",,x,,y,,z,,", ",,", 2), "", "x,,y,,z,,", NULL));
 
+  /* Test g_strsplit_set() */
+  TEST (NULL, strv_check (g_strsplit_set ("", ",/", 0), NULL));
+  TEST (NULL, strv_check (g_strsplit_set (":def/ghi:", ":/", -1), "", "def", "ghi", "", NULL));
+  TEST (NULL, strv_check (g_strsplit_set ("abc:def/ghi", ":/", -1), "abc", "def", "ghi", NULL));
+  TEST (NULL, strv_check (g_strsplit_set (",;,;,;,;", ",;", -1), "", "", "", "", "", "", "", "", "", NULL));
+  TEST (NULL, strv_check (g_strsplit_set (",,abc.def", ".,", -1), "", "", "abc", "def", NULL));
+
+  TEST (NULL, strv_check (g_strsplit_set (",x.y", ",.", 0), "", "x", "y", NULL));
+  TEST (NULL, strv_check (g_strsplit_set (".x,y,", ",.", 0), "", "x", "y", "", NULL));
+  TEST (NULL, strv_check (g_strsplit_set ("x,y.z", ",.", 0), "x", "y", "z", NULL));
+  TEST (NULL, strv_check (g_strsplit_set ("x.y,z,", ",.", 0), "x", "y", "z", "", NULL));
+  TEST (NULL, strv_check (g_strsplit_set (",x.y,z", ",.", 0), "", "x", "y", "z", NULL));
+  TEST (NULL, strv_check (g_strsplit_set (",x,y,z,", ",.", 0), "", "x", "y", "z", "", NULL));
+  TEST (NULL, strv_check (g_strsplit_set (",.x,,y,;z..", ".,;", 0), "", "", "x", "", "y", "", "z", "", "", NULL));
+  TEST (NULL, strv_check (g_strsplit_set (",,x,,y,,z,,", ",,", 0), "", "", "x", "", "y", "", "z", "", "", NULL));
+
+  TEST (NULL, strv_check (g_strsplit_set ("x,y.z", ",.", 1), "x,y.z", NULL));
+  TEST (NULL, strv_check (g_strsplit_set ("x.y,z,", ",.", 1), "x.y,z,", NULL));
+  TEST (NULL, strv_check (g_strsplit_set (",x,y,z", ",.", 1), ",x,y,z", NULL));
+  TEST (NULL, strv_check (g_strsplit_set (",x,y.z,", ",.", 1), ",x,y.z,", NULL));
+  TEST (NULL, strv_check (g_strsplit_set (",,x,.y,,z,,", ",.", 1), ",,x,.y,,z,,", NULL));
+  TEST (NULL, strv_check (g_strsplit_set (",.x,,y,,z,,", ",,..", 1), ",.x,,y,,z,,", NULL));
+   
+  TEST (NULL, strv_check (g_strsplit_set ("", ",", 0), NULL));
+  TEST (NULL, strv_check (g_strsplit_set ("x", ",", 0), "x", NULL));
+  TEST (NULL, strv_check (g_strsplit_set ("x,y", ",", 0), "x", "y", NULL));
+  TEST (NULL, strv_check (g_strsplit_set ("x,y,", ",", 0), "x", "y", "", NULL));
+  TEST (NULL, strv_check (g_strsplit_set (",x,y", ",", 0), "", "x", "y", NULL));
+  TEST (NULL, strv_check (g_strsplit_set (",x,y,", ",", 0), "", "x", "y", "", NULL));
+  TEST (NULL, strv_check (g_strsplit_set ("x,y,z", ",", 0), "x", "y", "z", NULL));
+  TEST (NULL, strv_check (g_strsplit_set ("x,y,z,", ",", 0), "x", "y", "z", "", NULL));
+  TEST (NULL, strv_check (g_strsplit_set (",x,y,z", ",", 0), "", "x", "y", "z", NULL));
+  TEST (NULL, strv_check (g_strsplit_set (",x,y,z,", ",", 0), "", "x", "y", "z", "", NULL));
+  TEST (NULL, strv_check (g_strsplit_set (",,x,,y,,z,,", ",", 0), "", "", "x", "", "y", "", "z", "", "", NULL));
+
+  TEST (NULL, strv_check (g_strsplit_set ("", ",", 1), NULL));
+  TEST (NULL, strv_check (g_strsplit_set ("x", ",", 1), "x", NULL));
+  TEST (NULL, strv_check (g_strsplit_set ("x,y", ",", 1), "x,y", NULL));
+  TEST (NULL, strv_check (g_strsplit_set ("x,y,", ",", 1), "x,y,", NULL));
+  TEST (NULL, strv_check (g_strsplit_set (",x,y", ",", 1), ",x,y", NULL));
+  TEST (NULL, strv_check (g_strsplit_set (",x,y,", ",", 1), ",x,y,", NULL));
+  TEST (NULL, strv_check (g_strsplit_set ("x,y,z", ",", 1), "x,y,z", NULL));
+  TEST (NULL, strv_check (g_strsplit_set ("x,y,z,", ",", 1), "x,y,z,", NULL));
+  TEST (NULL, strv_check (g_strsplit_set (",x,y,z", ",", 1), ",x,y,z", NULL));
+  TEST (NULL, strv_check (g_strsplit_set (",x,y,z,", ",", 1), ",x,y,z,", NULL));
+  TEST (NULL, strv_check (g_strsplit_set (",,x,,y,,z,,", ",", 1), ",,x,,y,,z,,", NULL));
+  TEST (NULL, strv_check (g_strsplit_set (",,x,,y,,z,,", ",,", 1), ",,x,,y,,z,,", NULL));
+
+  TEST (NULL, strv_check (g_strsplit_set ("", ",", 2), NULL));
+  TEST (NULL, strv_check (g_strsplit_set ("x", ",", 2), "x", NULL));
+  TEST (NULL, strv_check (g_strsplit_set ("x,y", ",", 2), "x", "y", NULL));
+  TEST (NULL, strv_check (g_strsplit_set ("x,y,", ",", 2), "x", "y,", NULL));
+  TEST (NULL, strv_check (g_strsplit_set (",x,y", ",", 2), "", "x,y", NULL));
+  TEST (NULL, strv_check (g_strsplit_set (",x,y,", ",", 2), "", "x,y,", NULL));
+  TEST (NULL, strv_check (g_strsplit_set ("x,y,z", ",", 2), "x", "y,z", NULL));
+  TEST (NULL, strv_check (g_strsplit_set ("x,y,z,", ",", 2), "x", "y,z,", NULL));
+  TEST (NULL, strv_check (g_strsplit_set (",x,y,z", ",", 2), "", "x,y,z", NULL));
+  TEST (NULL, strv_check (g_strsplit_set (",x,y,z,", ",", 2), "", "x,y,z,", NULL));
+  TEST (NULL, strv_check (g_strsplit_set (",,x,,y,,z,,", ",", 2), "", ",x,,y,,z,,", NULL));
+  
+  TEST (NULL, strv_check (g_strsplit_set (",,x,.y,..z,,", ",.", 3), "", "", "x,.y,..z,,", NULL));
+
+  
+  
   #define TEST_IS(name) test_is_function (#name, call_g_ascii_##name, call_##name, g_unichar_##name);
 
   FOR_ALL_CTYPE(TEST_IS)
