@@ -95,8 +95,9 @@ EXPORTS
 	g_signal_handlers_unblock_matched
 	g_signal_lookup
 	g_signal_name
-	g_signal_new
+	g_signal_newc
 	g_signal_newv
+	g_signal_new_valist
 	g_signal_query
 	g_signal_stop_emission
 	g_signal_type_cclosure_new

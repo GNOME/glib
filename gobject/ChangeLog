@@ -1,3 +1,7 @@
+2000-12-15  Tor Lillqvist  <tml@iki.fi>
+
+	* gobject.def: Update.
+
 2000-12-15  Havoc Pennington  <hp@pobox.com>
 
 	* gobject.c (g_object_do_class_init): use g_signal_newc
