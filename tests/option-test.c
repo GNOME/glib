@@ -13,6 +13,7 @@ gchar **array_test1_array;
 
 gboolean ignore_test1_boolean;
 gboolean ignore_test2_boolean;
+gchar *ignore_test3_string;
 
 gchar **
 split_string (const char *str, int *argc)
@@ -360,6 +361,61 @@ ignore_test2 (void)
 }
 
 void
+ignore_test3 (void)
+{
+  GOptionContext *context;
+  gboolean retval;
+  GError *error = NULL;
+  gchar **argv, **argv_copy;
+  int argc;
+  gchar *arg;
+  GOptionEntry entries [] =
+    { { "test", 0, 0, G_OPTION_ARG_STRING, &ignore_test3_string, NULL, NULL },
+      { NULL } };
+
+  context = g_option_context_new (NULL);
+  g_option_context_set_ignore_unknown_options (context, TRUE);
+  g_option_context_add_main_entries (context, entries, NULL);
+
+  /* Now try parsing */
+  argv = split_string ("program --test foo --hello", &argc);
+  argv_copy = copy_stringv (argv, argc);
+  
+  retval = g_option_context_parse (context, &argc, &argv, &error);
+  g_assert (retval);
+
+  /* Check array */
+  arg = join_stringv (argc, argv);
+  g_assert (strcmp (arg, "program --hello") == 0);
+
+  g_assert (strcmp (ignore_test3_string, "foo") == 0);
+  g_free (ignore_test3_string);
+
+  g_free (arg);
+  g_strfreev (argv_copy);
+  g_free (argv);
+
+  /* Try again */
+  argv = split_string ("program --test=foo --hello", &argc);
+  argv_copy = copy_stringv (argv, argc);
+  
+  retval = g_option_context_parse (context, &argc, &argv, &error);
+  g_assert (retval);
+
+  /* Check array */
+  arg = join_stringv (argc, argv);
+  g_assert (strcmp (arg, "program --hello") == 0);
+
+  g_assert (strcmp (ignore_test3_string, "foo") == 0);
+  g_free (ignore_test3_string);
+
+  g_free (arg);
+  g_strfreev (argv_copy);
+  g_free (argv);
+  g_option_context_free (context);
+}
+
+void
 array_test1 (void)
 {
   GOptionContext *context;
@@ -460,6 +516,7 @@ main (int argc, char **argv)
   /* Test ignoring options */
   ignore_test1 ();
   ignore_test2 ();
+  ignore_test3 ();
 
   add_test1 ();
 

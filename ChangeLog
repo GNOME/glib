@@ -1,3 +1,12 @@
+Mon Sep 20 00:13:48 2004  Matthias Clasen  <maclas@gmx.de>
+
+	Make GOption remove long options completely. (#153113, Robert Ögren)
+
+	* glib/goption.c (parse_long_option): Fix a wrong index.
+
+	* tests/option-test.c (ignore_test3): Test handling of unknown
+	options some more.
+
 Sun Sep 19 23:56:15 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/goption.c (g_option_context_parse): Call error_func

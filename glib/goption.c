@@ -711,7 +711,7 @@ parse_long_option (GOptionContext *context,
 	      gchar *value = NULL;
 	      gchar *option_name;
 
-	      add_pending_null (context, &((*argv)[*index + 1]), NULL);
+	      add_pending_null (context, &((*argv)[*index]), NULL);
 	      
 	      if (arg[len] == '=')
 		value = arg + len + 1;
