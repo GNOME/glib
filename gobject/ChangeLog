@@ -1,3 +1,7 @@
+2004-11-12  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.5.6 ===
+	
 Mon Nov  8 10:47:41 2004  Manish Singh  <yosh@gimp.org>
 
 	* gobject/gsourceclosure.c: removed wrap_g_io_channel_ref() hack,

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-11-02 17:54-0500\n"
+"POT-Creation-Date: 2004-11-12 11:58-0500\n"
 "PO-Revision-Date: 2002-12-15 09:35-0800\n"
 "Last-Translator: Taneem Ahmed <taneem@eyetap.org>\n"
 "Language-Team: Bengali <gnome-translation@bengalinux.org>\n"
@@ -25,14 +25,14 @@ msgstr "'%s' থেকে '%s' এ অক্ষর সমূহ পরিবর�
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "'%s' থেকে '%s' পরিবর্তক খোলা যাইনি: %s"
 
-#: glib/gconvert.c:605 glib/gconvert.c:892 glib/giochannel.c:1316
-#: glib/giochannel.c:1358 glib/giochannel.c:2200 glib/gutf8.c:911
+#: glib/gconvert.c:605 glib/gconvert.c:892 glib/giochannel.c:1318
+#: glib/giochannel.c:1360 glib/giochannel.c:2202 glib/gutf8.c:911
 #: glib/gutf8.c:1361
 msgid "Invalid byte sequence in conversion input"
 msgstr "পরিবর্তন করার জন্য দেয়া বাইট সমুহ সঠিক নয়"
 
-#: glib/gconvert.c:610 glib/gconvert.c:825 glib/giochannel.c:1323
-#: glib/giochannel.c:2212
+#: glib/gconvert.c:610 glib/gconvert.c:825 glib/giochannel.c:1325
+#: glib/giochannel.c:2214
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "পরিবর্তন সময়কালীন ভুল: %s"
@@ -101,7 +101,7 @@ msgstr "ফাইল \"%s\" পড়ার সময়কালীন ভুল: %s"
 msgid "Failed to read from file '%s': %s"
 msgstr "ফাইল \"%s\" থেকে পড়াতে ব্যর্থ: %s"
 
-#: glib/gfileutils.c:641 glib/gfileutils.c:726
+#: glib/gfileutils.c:641 glib/gfileutils.c:724
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "ফাইল \"%s\" খুলতে ব্যর্থ: %s"
@@ -116,53 +116,53 @@ msgstr "ফাইল \"%s\" এর বৈশিষ্ট্য পেতে ব�
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "ফাইল \"%s\" খুলতে ব্যর্থ: fdopen() ব্যর্থ: %s"
 
-#: glib/gfileutils.c:1009
+#: glib/gfileutils.c:1012
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "নমুনা '%s' সঠিক নয়, '%s' থাকা উচিত্‌ নয়"
 
-#: glib/gfileutils.c:1021
+#: glib/gfileutils.c:1026
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "নমুনা '%s' এর শেষে XXXXXX নাই"
 
-#: glib/gfileutils.c:1042
+#: glib/gfileutils.c:1049
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "ফাইল \"%s\" সৃষ্টি করতে ব্যর্থ: %s"
 
-#: glib/gfileutils.c:1418
+#: glib/gfileutils.c:1425
 #, fuzzy, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "ফাইল \"%s\" সৃষ্টি করতে ব্যর্থ: %s"
 
-#: glib/gfileutils.c:1439
+#: glib/gfileutils.c:1446
 msgid "Symbolic links not supported"
 msgstr ""
 
-#: glib/giochannel.c:1144
+#: glib/giochannel.c:1146
 #, c-format
 msgid "Conversion from character set `%s' to `%s' is not supported"
 msgstr "ক্যরেকটার সেট `%s' থেকে `%s' পরিবর্তন করার সামর্থ নেই"
 
-#: glib/giochannel.c:1148
+#: glib/giochannel.c:1150
 #, c-format
 msgid "Could not open converter from `%s' to `%s': %s"
 msgstr "'%s' থেকে '%s' পরিবর্তক খোলা যাইনি: %s"
 
-#: glib/giochannel.c:1493
+#: glib/giochannel.c:1495
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "g_io_channel_read_line_string এ সরাসরি পড়া যায়নি"
 
-#: glib/giochannel.c:1540 glib/giochannel.c:1797 glib/giochannel.c:1883
+#: glib/giochannel.c:1542 glib/giochannel.c:1799 glib/giochannel.c:1885
 msgid "Leftover unconverted data in read buffer"
 msgstr "পড়ার বাফারে অপরিবর্তিত তথ্য"
 
-#: glib/giochannel.c:1620 glib/giochannel.c:1697
+#: glib/giochannel.c:1622 glib/giochannel.c:1699
 msgid "Channel terminates in a partial character"
 msgstr "চ্যানেল আংশিক অ"
 
-#: glib/giochannel.c:1683
+#: glib/giochannel.c:1685
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "g_io_channel_read_to_end এ সরাসরি পড়া যায়নি"
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.3.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-11-02 17:54-0500\n"
+"POT-Creation-Date: 2004-11-12 11:58-0500\n"
 "PO-Revision-Date: 2004-01-01 18:36+0330\n"
 "Last-Translator: Roozbeh Pournader <roozbeh@sharif.edu>\n"
 "Language-Team: Persian <farsi@lists.sharif.edu>\n"
@@ -25,14 +25,14 @@ msgstr "تبدیل از مجموعه‌نویسه‌ی '%s' به '%s' پشتیب
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "نمی‌توان مبدل '%s' به '%s' را باز کرد: %s"
 
-#: glib/gconvert.c:605 glib/gconvert.c:892 glib/giochannel.c:1316
-#: glib/giochannel.c:1358 glib/giochannel.c:2200 glib/gutf8.c:911
+#: glib/gconvert.c:605 glib/gconvert.c:892 glib/giochannel.c:1318
+#: glib/giochannel.c:1360 glib/giochannel.c:2202 glib/gutf8.c:911
 #: glib/gutf8.c:1361
 msgid "Invalid byte sequence in conversion input"
 msgstr "دنباله‌ی بایتی نامعتبر در ورودی تبدیل"
 
-#: glib/gconvert.c:610 glib/gconvert.c:825 glib/giochannel.c:1323
-#: glib/giochannel.c:2212
+#: glib/gconvert.c:610 glib/gconvert.c:825 glib/giochannel.c:1325
+#: glib/giochannel.c:2214
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "خطا هنگام تبدیل: %s"
@@ -101,7 +101,7 @@ msgstr "خطا در خواندن پرونده‌ی '%s'‏: %s"
 msgid "Failed to read from file '%s': %s"
 msgstr "خواندن از پرونده‌ی '%s' شکست خورد: %s"
 
-#: glib/gfileutils.c:641 glib/gfileutils.c:726
+#: glib/gfileutils.c:641 glib/gfileutils.c:724
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "باز کردن پرونده‌ی '%s' شکست خورد: %s"
@@ -116,53 +116,53 @@ msgstr "گرفتن مشخصه‌های پرونده‌ی '%s' شکست خورد:
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "باز کردن پرونده‌ی '%s' شکست خورد: fdopen()‎ شکست خورد: %s"
 
-#: glib/gfileutils.c:1009
+#: glib/gfileutils.c:1012
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "قالب '%s' نامعتبر است، نباید '%s' داشته باشد"
 
-#: glib/gfileutils.c:1021
+#: glib/gfileutils.c:1026
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "قالب '%s' با XXXXXX ختم نمی‌شود"
 
-#: glib/gfileutils.c:1042
+#: glib/gfileutils.c:1049
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "ایجاد پرونده‌ی '%s' شکست خورد: %s"
 
-#: glib/gfileutils.c:1418
+#: glib/gfileutils.c:1425
 #, fuzzy, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "ایجاد پرونده‌ی '%s' شکست خورد: %s"
 
-#: glib/gfileutils.c:1439
+#: glib/gfileutils.c:1446
 msgid "Symbolic links not supported"
 msgstr "پیوند‌های نمادی پشتیبانی نمی‌شود"
 
-#: glib/giochannel.c:1144
+#: glib/giochannel.c:1146
 #, c-format
 msgid "Conversion from character set `%s' to `%s' is not supported"
 msgstr "تبدیل از مجموعه‌نویسه‌ی '%s' به '%s' پشتیبانی نمی‌شود"
 
-#: glib/giochannel.c:1148
+#: glib/giochannel.c:1150
 #, c-format
 msgid "Could not open converter from `%s' to `%s': %s"
 msgstr "نمی‌توان مبدل از '%s' به '%s' را باز کرد: %s"
 
-#: glib/giochannel.c:1493
+#: glib/giochannel.c:1495
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "نمی‌توان در g_io_channel_read_line_string خواندن خام انجام داد"
 
-#: glib/giochannel.c:1540 glib/giochannel.c:1797 glib/giochannel.c:1883
+#: glib/giochannel.c:1542 glib/giochannel.c:1799 glib/giochannel.c:1885
 msgid "Leftover unconverted data in read buffer"
 msgstr "داده‌ی تبدیل‌نشده در میان‌گیر خواندن باقی مانده است"
 
-#: glib/giochannel.c:1620 glib/giochannel.c:1697
+#: glib/giochannel.c:1622 glib/giochannel.c:1699
 msgid "Channel terminates in a partial character"
 msgstr "کانال با یک نویسه‌ی ناتمام پایان می‌یابد"
 
-#: glib/giochannel.c:1683
+#: glib/giochannel.c:1685
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "نمی‌توان در g_io_channel_read_to_end خواندن خام انجام داد"
 

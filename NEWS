@@ -4,14 +4,13 @@ Overview of Changes from GLib 2.5.5 to GLib 2.5.6
   - Add G_OPTION_FLAG_REVERSE to allow options 
     which unset a  boolean variable [Tor Lillqvist]
 * GChildWatch
-  - Use sigaction instead of signal [Jonas Jonnson,
-    Archana Shah]
+  - Use sigaction instead of signal [Jonas Jonnson, 
+  Archana Shah]
   - Make the very first SIGCHLD work [Gustavo Carneiro]
 * Bug fixes [Morten Welinder, Tor, David MacLachlan,
-  Manish Singh]
+  Manish Singh, J. Ali Harlow]
 * Documentation improvements [Matthias Clasen, Tor]
 * Updated translations (da,ja,tr,zh_CN)
-Bugs fixed:  156421,157453,156446,136867,154827,151663,138853
 
 Overview of Changes from GLib 2.5.4 to GLib 2.5.5
 =================================================

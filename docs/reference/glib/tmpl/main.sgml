@@ -284,6 +284,7 @@ representing a set of sources to be handled in a main loop.
 </para>
 
 @context: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_main_context_unref ##### -->

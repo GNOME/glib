@@ -1,3 +1,7 @@
+2004-11-12  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.5.6 ===
+	
 2004-11-08  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/tmpl/trees-nary.sgml: Document G_TRAVERSE_LEAVES and

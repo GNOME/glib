@@ -81,6 +81,7 @@ an asynchronous queue. It should only be accessed through the
 
 
 @queue: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_async_queue_unref ##### -->

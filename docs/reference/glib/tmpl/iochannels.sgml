@@ -303,6 +303,7 @@ Increments the reference count of a #GIOChannel.
 @channel: a #GIOChannel.
 @Returns:  the @channel that was passed in (since 2.6)
 
+
 <!-- ##### FUNCTION g_io_channel_unref ##### -->
 <para>
 Decrements the reference count of a #GIOChannel.
