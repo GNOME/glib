@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 2.0\n"
-"POT-Creation-Date: 2003-06-08 12:16-0400\n"
+"POT-Creation-Date: 2003-08-25 20:40-0400\n"
 "PO-Revision-Date: 2003-01-17 01:44-0200\n"
 "Last-Translator: Gustavo Noronha Silva <kov@debian.org>\n"
 "Language-Team: Gnome-BR <gnome-l10n-br@listas.cipsga.org.br>\n"
@@ -23,7 +23,7 @@ msgstr "Conversão do conjunto de caracteres '%s' para '%s' não é suportada"
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Não foi possível abrir conversor de '%s' para '%s': %s"
 
-#: glib/gconvert.c:603 glib/gconvert.c:893 glib/giochannel.c:1306
+#: glib/gconvert.c:603 glib/gconvert.c:891 glib/giochannel.c:1306
 #: glib/giochannel.c:1348 glib/giochannel.c:2190 glib/gutf8.c:909
 #: glib/gutf8.c:1354
 msgid "Invalid byte sequence in conversion input"
@@ -45,37 +45,37 @@ msgstr "Sequência de caracteres parcial no final da entrada"
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Não foi possível converter recurso '%s' para conjunto caracteres '%s'"
 
-#: glib/gconvert.c:1631
+#: glib/gconvert.c:1422
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
 msgstr "O URI '%s' não é um URI absoluto que utilize o esquema de arquivos"
 
-#: glib/gconvert.c:1641
+#: glib/gconvert.c:1432
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "O URI de arquivo local '%s' não pode incluir um '#'"
 
-#: glib/gconvert.c:1658
+#: glib/gconvert.c:1449
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "O URI '%s' é inválido"
 
-#: glib/gconvert.c:1670
+#: glib/gconvert.c:1461
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "O nome de servidor do URI '%s' é inválido"
 
-#: glib/gconvert.c:1686
+#: glib/gconvert.c:1477
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "O URI '%s' contém caracteres mascarados inválidos"
 
-#: glib/gconvert.c:1757
+#: glib/gconvert.c:1548
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "O nome de caminho '%s' não é um caminho absoluto"
 
-#: glib/gconvert.c:1767
+#: glib/gconvert.c:1558
 msgid "Invalid hostname"
 msgstr "Nome de servidor inválido"
 
@@ -84,47 +84,47 @@ msgstr "Nome de servidor inválido"
 msgid "Error opening directory '%s': %s"
 msgstr "Erro ao abrir o diretório '%s': %s"
 
-#: glib/gfileutils.c:384 glib/gfileutils.c:449
+#: glib/gfileutils.c:390 glib/gfileutils.c:455
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Não foi possível alocar %lu bytes para ler arquivo \"%s\""
 
-#: glib/gfileutils.c:395
+#: glib/gfileutils.c:401
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Erro ao ler arquivo '%s': %s"
 
-#: glib/gfileutils.c:471
+#: glib/gfileutils.c:477
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Falha ao ler do arquivo '%s': %s"
 
-#: glib/gfileutils.c:518 glib/gfileutils.c:586
+#: glib/gfileutils.c:524 glib/gfileutils.c:592
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Falha ao abrir arquivo '%s': %s"
 
-#: glib/gfileutils.c:532
+#: glib/gfileutils.c:538
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Falha ao obter atributos do arquivo '%s': fstat() falhou: %s"
 
-#: glib/gfileutils.c:558
+#: glib/gfileutils.c:564
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Falha ao abrir arquivo '%s': fdopen() falhou: %s"
 
-#: glib/gfileutils.c:765
+#: glib/gfileutils.c:776
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Modelo '%s' inválido, não deveria conter um '%s'"
 
-#: glib/gfileutils.c:777
+#: glib/gfileutils.c:788
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Modelo '%s' não termina com XXXXXX"
 
-#: glib/gfileutils.c:798
+#: glib/gfileutils.c:809
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Falha ao criar arquivo '%s': %s"
@@ -156,14 +156,6 @@ msgstr "Canal termina num caracter parcial"
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr ""
 "Não foi possível fazer uma leitura em bruto de g_io_channel_read_to_end"
-
-#: glib/giowin32.c:712 glib/giowin32.c:741
-msgid "Incorrect message size"
-msgstr "Tamanho de mensagem incorreto"
-
-#: glib/giowin32.c:1034 glib/giowin32.c:1087
-msgid "Socket error"
-msgstr "Erro de socket"
 
 #: glib/gmarkup.c:222
 #, c-format
@@ -420,11 +412,11 @@ msgstr ""
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Texto estava vazio (ou apenas continha espaços)"
 
-#: glib/gspawn-win32.c:286
+#: glib/gspawn-win32.c:297
 msgid "Failed to read data from child process"
 msgstr "Falha ao ler dados de processo filho"
 
-#: glib/gspawn-win32.c:414
+#: glib/gspawn-win32.c:426
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -432,26 +424,26 @@ msgstr ""
 "Erro inesperado no g_io_channel_win32_poll() ao ler dados de um processo "
 "filho"
 
-#: glib/gspawn-win32.c:784 glib/gspawn.c:1002
+#: glib/gspawn-win32.c:834 glib/gspawn.c:1002
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Falha ao ler de canal filho (%s)"
 
-#: glib/gspawn-win32.c:871
+#: glib/gspawn-win32.c:923
 msgid "Failed to execute helper program"
 msgstr "Falha ao executar programa ajudante"
 
-#: glib/gspawn-win32.c:904 glib/gspawn.c:1207
-#, c-format
-msgid "Failed to change to directory '%s' (%s)"
-msgstr "Falha ao ir para diretório '%s' (%s)"
-
-#: glib/gspawn-win32.c:913
+#: glib/gspawn-win32.c:944 glib/gspawn-win32.c:988
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Falha ao executar processo filho (%s)"
 
-#: glib/gspawn-win32.c:956 glib/gspawn.c:1338
+#: glib/gspawn-win32.c:979 glib/gspawn.c:1207
+#, c-format
+msgid "Failed to change to directory '%s' (%s)"
+msgstr "Falha ao ir para diretório '%s' (%s)"
+
+#: glib/gspawn-win32.c:1033 glib/gspawn.c:1338
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Falha ao criar canal para comunicar com com processo filho (%s)"
@@ -513,6 +505,12 @@ msgstr "Sequência inválida na conversão da entrada"
 #: glib/gutf8.c:1375 glib/gutf8.c:1471
 msgid "Character out of range for UTF-16"
 msgstr "Caracter fora do limite para UTF-16"
+
+#~ msgid "Incorrect message size"
+#~ msgstr "Tamanho de mensagem incorreto"
+
+#~ msgid "Socket error"
+#~ msgstr "Erro de socket"
 
 #~ msgid "Channel set flags unsupported"
 #~ msgstr "Canal definiu flags não suportadas"

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 0.1\n"
-"POT-Creation-Date: 2003-06-08 12:16-0400\n"
+"POT-Creation-Date: 2003-08-25 20:40-0400\n"
 "PO-Revision-Date: 2002-12-15 09:35-0800\n"
 "Last-Translator: Taneem Ahmed <taneem@eyetap.org>\n"
 "Language-Team: Bengali <gnome-translation@bengalinux.org>\n"
@@ -24,7 +24,7 @@ msgstr "'%s' থেকে '%s' এ অক্ষর সমূহ পরিবর�
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "'%s' থেকে '%s' পরিবর্তক খোলা যাইনি: %s"
 
-#: glib/gconvert.c:603 glib/gconvert.c:893 glib/giochannel.c:1306
+#: glib/gconvert.c:603 glib/gconvert.c:891 glib/giochannel.c:1306
 #: glib/giochannel.c:1348 glib/giochannel.c:2190 glib/gutf8.c:909
 #: glib/gutf8.c:1354
 msgid "Invalid byte sequence in conversion input"
@@ -46,37 +46,37 @@ msgstr "প্রদত্ত তথ্যের শেষে আংশিক �
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "শেষ পন্থা '%s' থেকে কোডসেট '%s' এ পরিবর্তন করা যায়নি"
 
-#: glib/gconvert.c:1631
+#: glib/gconvert.c:1422
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
 msgstr "ফাইলের ধারা অনুযায়ী ইউআরআই '%s' একটি আপেক্ষিক পথ"
 
-#: glib/gconvert.c:1641
+#: glib/gconvert.c:1432
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "স্থানীয় ফাইল ইউআরআই '%s' এর মধ্যে সম্ভবত '#' নেই"
 
-#: glib/gconvert.c:1658
+#: glib/gconvert.c:1449
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "ইউআরআই '%s' গ্রহনযোগ্য নয়"
 
-#: glib/gconvert.c:1670
+#: glib/gconvert.c:1461
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "ইউআরআই '%s' এর হোস্ট নাম গ্রহনযোগ্য নয়"
 
-#: glib/gconvert.c:1686
+#: glib/gconvert.c:1477
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "ইউআরআই '%s' এর মধ্যে অগ্রহণীয় escape অক্ষর আছে"
 
-#: glib/gconvert.c:1757
+#: glib/gconvert.c:1548
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "পথনাম '%s' একটি আপেক্ষিক পথ"
 
-#: glib/gconvert.c:1767
+#: glib/gconvert.c:1558
 msgid "Invalid hostname"
 msgstr "ভুল হোস্ট নাম"
 
@@ -85,47 +85,47 @@ msgstr "ভুল হোস্ট নাম"
 msgid "Error opening directory '%s': %s"
 msgstr "ডাইরেক্টরি '%s' খুলতে ব্যর্থ: %s"
 
-#: glib/gfileutils.c:384 glib/gfileutils.c:449
+#: glib/gfileutils.c:390 glib/gfileutils.c:455
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "%lu বাইট্স ফাইল \"%s\" পড়ার জন্য বরাদ্দ করা যাইনি"
 
-#: glib/gfileutils.c:395
+#: glib/gfileutils.c:401
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "ফাইল \"%s\" পড়ার সময়কালীন ভুল: %s"
 
-#: glib/gfileutils.c:471
+#: glib/gfileutils.c:477
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "ফাইল \"%s\" থেকে পড়াতে ব্যর্থ: %s"
 
-#: glib/gfileutils.c:518 glib/gfileutils.c:586
+#: glib/gfileutils.c:524 glib/gfileutils.c:592
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "ফাইল \"%s\" খুলতে ব্যর্থ: %s"
 
-#: glib/gfileutils.c:532
+#: glib/gfileutils.c:538
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "ফাইল \"%s\" এর বৈশিষ্ট্য পেতে ব্যর্থ: fstat() ব্যর্থ: %s"
 
-#: glib/gfileutils.c:558
+#: glib/gfileutils.c:564
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "ফাইল \"%s\" খুলতে ব্যর্থ: fdopen() ব্যর্থ: %s"
 
-#: glib/gfileutils.c:765
+#: glib/gfileutils.c:776
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "নমুনা '%s' সঠিক নয়, '%s' থাকা উচিত্‌ নয়"
 
-#: glib/gfileutils.c:777
+#: glib/gfileutils.c:788
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "নমুনা '%s' এর শেষে XXXXXX নাই"
 
-#: glib/gfileutils.c:798
+#: glib/gfileutils.c:809
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "ফাইল \"%s\" সৃষ্টি করতে ব্যর্থ: %s"
@@ -155,14 +155,6 @@ msgstr "চ্যানেল আংশিক অ"
 #: glib/giochannel.c:1673
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "g_io_channel_read_to_end এ সরাসরি পড়া যায়নি"
-
-#: glib/giowin32.c:712 glib/giowin32.c:741
-msgid "Incorrect message size"
-msgstr "বেঠিক সাইজের তথ্য"
-
-#: glib/giowin32.c:1034 glib/giowin32.c:1087
-msgid "Socket error"
-msgstr "সকেেট ভুল"
 
 #: glib/gmarkup.c:222
 #, c-format
@@ -383,11 +375,11 @@ msgstr "%c এর জন্য মিলানো কোওট পাবার �
 msgid "Text was empty (or contained only whitespace)"
 msgstr "টেক্সট শূণ্য ছিল (অথবা সুধু ওয়াইটস্পেইস ছিল)"
 
-#: glib/gspawn-win32.c:286
+#: glib/gspawn-win32.c:297
 msgid "Failed to read data from child process"
 msgstr "চাইল্ড প্রসেস থেকে তথ্য পড়তে ব্যর্থ"
 
-#: glib/gspawn-win32.c:414
+#: glib/gspawn-win32.c:426
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -395,26 +387,26 @@ msgstr ""
 "চাইল্ড প্রসেস (%s) থেকে তথ্য পড়াকালীন সময় g_io_channel_win32_poll() এ "
 "অনাকাঙ্ক্ষিত ভুল"
 
-#: glib/gspawn-win32.c:784 glib/gspawn.c:1002
+#: glib/gspawn-win32.c:834 glib/gspawn.c:1002
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "চাইল্ড পাইপ (%s) থেকে পড়তে ব্যর্থ"
 
-#: glib/gspawn-win32.c:871
+#: glib/gspawn-win32.c:923
 msgid "Failed to execute helper program"
 msgstr "সাহায্যকারি প্রোগরাম চলাতে ব্যর্থ"
 
-#: glib/gspawn-win32.c:904 glib/gspawn.c:1207
-#, c-format
-msgid "Failed to change to directory '%s' (%s)"
-msgstr "ডাইরেক্টরি '%s' (%s) তে বদলাতে ব্যর্থ"
-
-#: glib/gspawn-win32.c:913
+#: glib/gspawn-win32.c:944 glib/gspawn-win32.c:988
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "চাইল্ড প্রসেস (%s) কার্যকর করতে ব্যর্থ"
 
-#: glib/gspawn-win32.c:956 glib/gspawn.c:1338
+#: glib/gspawn-win32.c:979 glib/gspawn.c:1207
+#, c-format
+msgid "Failed to change to directory '%s' (%s)"
+msgstr "ডাইরেক্টরি '%s' (%s) তে বদলাতে ব্যর্থ"
+
+#: glib/gspawn-win32.c:1033 glib/gspawn.c:1338
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "চাইল্ড প্রসেস (%s) এর সাথে যোগাযোগ করার জন্য পাইপ সৃষ্টি করতে ব্যর্থ"
@@ -476,3 +468,9 @@ msgstr "পরিবর্তন করার জন্য দেয়া তথ�
 #: glib/gutf8.c:1375 glib/gutf8.c:1471
 msgid "Character out of range for UTF-16"
 msgstr "অক্ষর ইউটিএফ-১৬ আয়তার বাইরে"
+
+#~ msgid "Incorrect message size"
+#~ msgstr "বেঠিক সাইজের তথ্য"
+
+#~ msgid "Socket error"
+#~ msgstr "সকেেট ভুল"

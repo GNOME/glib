@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib (HEAD)\n"
-"POT-Creation-Date: 2003-06-08 12:16-0400\n"
+"POT-Creation-Date: 2003-08-25 20:40-0400\n"
 "PO-Revision-Date: 2003-06-04 09:32+0100\n"
 "Last-Translator: Mathieu van Woerkom <mathieu@brabants.org>\n"
 "Language-Team: Limburgish\n"
@@ -23,7 +23,7 @@ msgstr "Konversie van teikeset '%s' nao '%s' weurt neet gesjtiep"
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Äöpene van konverteerder van '%s' nao '%s' mislök: %s"
 
-#: glib/gconvert.c:603 glib/gconvert.c:893 glib/giochannel.c:1306
+#: glib/gconvert.c:603 glib/gconvert.c:891 glib/giochannel.c:1306
 #: glib/giochannel.c:1348 glib/giochannel.c:2190 glib/gutf8.c:909
 #: glib/gutf8.c:1354
 msgid "Invalid byte sequence in conversion input"
@@ -45,37 +45,37 @@ msgstr "Ónvolsjtendige teikereeks aan 't ènj van de inveur"
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Kan vanaaf koodzameling '%s' neet trökvalle op '%s'"
 
-#: glib/gconvert.c:1631
+#: glib/gconvert.c:1422
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
 msgstr "De URI '%s' is gein absolute URI bènne 't besjtandjsjema"
 
-#: glib/gconvert.c:1641
+#: glib/gconvert.c:1432
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "De lokale besjtandj-URI '%s' maog gein '#' höbbe"
 
-#: glib/gconvert.c:1658
+#: glib/gconvert.c:1449
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "De URI '%s' is óngeljig"
 
-#: glib/gconvert.c:1670
+#: glib/gconvert.c:1461
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "De mesjiennaam van de URI '%s' is óngeljig"
 
-#: glib/gconvert.c:1686
+#: glib/gconvert.c:1477
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "De URI '%s' haet óngeljige óntsjnappingsteikes"
 
-#: glib/gconvert.c:1757
+#: glib/gconvert.c:1548
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "'t paad '%s' is gein absoluut paad"
 
-#: glib/gconvert.c:1767
+#: glib/gconvert.c:1558
 msgid "Invalid hostname"
 msgstr "Óngeljige mesjiennaam"
 
@@ -84,47 +84,47 @@ msgstr "Óngeljige mesjiennaam"
 msgid "Error opening directory '%s': %s"
 msgstr "Faeler bie 't äöpene van map '%s': %s"
 
-#: glib/gfileutils.c:384 glib/gfileutils.c:449
+#: glib/gfileutils.c:390 glib/gfileutils.c:455
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Allokasie van %lu bytes veur besjtandj \"%s\" te laeze is mislök"
 
-#: glib/gfileutils.c:395
+#: glib/gfileutils.c:401
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Faeler bie laeze van besjtandj '%s': %s"
 
-#: glib/gfileutils.c:471
+#: glib/gfileutils.c:477
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Laeze van besjtandj '%s' mislök: %s"
 
-#: glib/gfileutils.c:518 glib/gfileutils.c:586
+#: glib/gfileutils.c:524 glib/gfileutils.c:592
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Äöpene van besjtandj '%s' mislök: %s"
 
-#: glib/gfileutils.c:532
+#: glib/gfileutils.c:538
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Opvraoge gegaeves van besjtandj '%s' mislök: fstat() mislökde: %s"
 
-#: glib/gfileutils.c:558
+#: glib/gfileutils.c:564
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Äöpene van besjtandj '%s' mislök: fdopen() mislökde: %s"
 
-#: glib/gfileutils.c:765
+#: glib/gfileutils.c:776
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Sjabloon '%s' is óngeljig, 't zouw gein '%s' mote höbbe"
 
-#: glib/gfileutils.c:777
+#: glib/gfileutils.c:788
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Sjabloon '%s' èndig neet op XXXXXX"
 
-#: glib/gfileutils.c:798
+#: glib/gfileutils.c:809
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Aanmake van besjtandj '%s' mislök: %s"
@@ -157,14 +157,6 @@ msgstr "Kenaal èndig in ein gedeiltelik teike"
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr ""
 "Ein kaal ('raw') laesoperasie is neet mäögelik in g_io_channel_read_to_end"
-
-#: glib/giowin32.c:712 glib/giowin32.c:741
-msgid "Incorrect message size"
-msgstr "Óngeljige berichlengde"
-
-#: glib/giowin32.c:1034 glib/giowin32.c:1087
-msgid "Socket error"
-msgstr "Socket-faeler"
 
 #: glib/gmarkup.c:222
 #, c-format
@@ -416,11 +408,11 @@ msgstr ""
 msgid "Text was empty (or contained only whitespace)"
 msgstr "De teks waor laeg (of hauw slechs laeg ruumde)"
 
-#: glib/gspawn-win32.c:286
+#: glib/gspawn-win32.c:297
 msgid "Failed to read data from child process"
 msgstr "Laeze van data van dochterprosesse mislök"
 
-#: glib/gspawn-win32.c:414
+#: glib/gspawn-win32.c:426
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -428,26 +420,26 @@ msgstr ""
 "Ónverwachde faeler in g_io_channel_win32_poll() bie 't laeze van data van "
 "ein dochterproses"
 
-#: glib/gspawn-win32.c:784 glib/gspawn.c:1002
+#: glib/gspawn-win32.c:834 glib/gspawn.c:1002
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Laeze van piep nao dochter (%s) mislök"
 
-#: glib/gspawn-win32.c:871
+#: glib/gspawn-win32.c:923
 msgid "Failed to execute helper program"
 msgstr "Oetveure van 't hulpprogram is mislök"
 
-#: glib/gspawn-win32.c:904 glib/gspawn.c:1207
-#, c-format
-msgid "Failed to change to directory '%s' (%s)"
-msgstr "Verangere nao map '%s' is mislök (%s)"
-
-#: glib/gspawn-win32.c:913
+#: glib/gspawn-win32.c:944 glib/gspawn-win32.c:988
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Oetveure van dochterproses mislök (%s)"
 
-#: glib/gspawn-win32.c:956 glib/gspawn.c:1338
+#: glib/gspawn-win32.c:979 glib/gspawn.c:1207
+#, c-format
+msgid "Failed to change to directory '%s' (%s)"
+msgstr "Verangere nao map '%s' is mislök (%s)"
+
+#: glib/gspawn-win32.c:1033 glib/gspawn.c:1338
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Aanmake van piep veur 't kommunisere mit dochterproses mislök (%s)"
@@ -511,3 +503,9 @@ msgstr "Óngeljige riej in konversie-inveur"
 #: glib/gutf8.c:1375 glib/gutf8.c:1471
 msgid "Character out of range for UTF-16"
 msgstr "Teike vilt boete bereik van UTF-16"
+
+#~ msgid "Incorrect message size"
+#~ msgstr "Óngeljige berichlengde"
+
+#~ msgid "Socket error"
+#~ msgstr "Socket-faeler"

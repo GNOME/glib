@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.2\n"
-"POT-Creation-Date: 2003-06-08 12:16-0400\n"
+"POT-Creation-Date: 2003-08-25 20:40-0400\n"
 "PO-Revision-Date: 2002-05-06 16:33GMT\n"
 "Last-Translator: T.M.Thanh <tmthanhmd@fptnet.com ; tmthanh@yahoo.com>\n"
 "Language-Team: Gnome-Vi Team <gnomevi-list@lists.sourceforge.net>\n"
@@ -25,7 +25,7 @@ msgstr "Không hỗ trợ  việc chuyển từ đặt ký tự '%s' thành '%s'
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Không thể mở trình chuyển đổi từ '%s' thành '%s': %s"
 
-#: glib/gconvert.c:603 glib/gconvert.c:893 glib/giochannel.c:1306
+#: glib/gconvert.c:603 glib/gconvert.c:891 glib/giochannel.c:1306
 #: glib/giochannel.c:1348 glib/giochannel.c:2190 glib/gutf8.c:909
 #: glib/gutf8.c:1354
 msgid "Invalid byte sequence in conversion input"
@@ -47,37 +47,37 @@ msgstr "Character sequence riêng phần ở cuối đầu vào"
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Không thể chuyển đổi fallback '%s' thành codeset '%s'"
 
-#: glib/gconvert.c:1631
+#: glib/gconvert.c:1422
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
 msgstr "URI '%s' không phải URI tuyệt đối sử dụng lược đồ tập tin"
 
-#: glib/gconvert.c:1641
+#: glib/gconvert.c:1432
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "URI tập tin cục bộ '%s' có thể không bao gồm '#'"
 
-#: glib/gconvert.c:1658
+#: glib/gconvert.c:1449
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI '%s' không hợp lệ"
 
-#: glib/gconvert.c:1670
+#: glib/gconvert.c:1461
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Tên chủ của URI '%s' không hợp lệ"
 
-#: glib/gconvert.c:1686
+#: glib/gconvert.c:1477
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI '%s' chứa không hợp lệ các ký tự thoát"
 
-#: glib/gconvert.c:1757
+#: glib/gconvert.c:1548
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Tên đường dẫn '%s' không phải một đường dẫn tuyệt đối"
 
-#: glib/gconvert.c:1767
+#: glib/gconvert.c:1558
 msgid "Invalid hostname"
 msgstr "Tên chủ không hợp lệ"
 
@@ -86,47 +86,47 @@ msgstr "Tên chủ không hợp lệ"
 msgid "Error opening directory '%s': %s"
 msgstr "Lỗi khi mở thư mục '%s': %s"
 
-#: glib/gfileutils.c:384 glib/gfileutils.c:449
+#: glib/gfileutils.c:390 glib/gfileutils.c:455
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Không thẻ cấp phát %lu bytes để đọc tập tin \"%s\""
 
-#: glib/gfileutils.c:395
+#: glib/gfileutils.c:401
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Lỗi khi đọc tập tin '%s': %s"
 
-#: glib/gfileutils.c:471
+#: glib/gfileutils.c:477
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Không đọc được từ tập tin '%s': %s"
 
-#: glib/gfileutils.c:518 glib/gfileutils.c:586
+#: glib/gfileutils.c:524 glib/gfileutils.c:592
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Không mở được tập tin '%s': %s"
 
-#: glib/gfileutils.c:532
+#: glib/gfileutils.c:538
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Không lấy được các thuộc tính của tập tin '%s': fstat() không được: %s"
 
-#: glib/gfileutils.c:558
+#: glib/gfileutils.c:564
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Không mở được tập tin '%s': fdopen() không được: %s"
 
-#: glib/gfileutils.c:765
+#: glib/gfileutils.c:776
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Template '%s' không hợp lệ, không nên chứa '%s'"
 
-#: glib/gfileutils.c:777
+#: glib/gfileutils.c:788
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Template '%s' không kết thúc bằng XXXXXX"
 
-#: glib/gfileutils.c:798
+#: glib/gfileutils.c:809
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Không tạo được tập tin '%s': %s"
@@ -156,14 +156,6 @@ msgstr "Kênh tận hết trong ký tự riêng phần"
 #: glib/giochannel.c:1673
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Không thể thực hiện đọc thô trong g_io_channel_read_to_end"
-
-#: glib/giowin32.c:712 glib/giowin32.c:741
-msgid "Incorrect message size"
-msgstr "Kích thước thông điệp sai"
-
-#: glib/giowin32.c:1034 glib/giowin32.c:1087
-msgid "Socket error"
-msgstr "Lỗi Socket"
 
 #: glib/gmarkup.c:222
 #, c-format
@@ -415,11 +407,11 @@ msgstr ""
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Văn bản trống (hay chỉ gồm các ký tự trắng)"
 
-#: glib/gspawn-win32.c:286
+#: glib/gspawn-win32.c:297
 msgid "Failed to read data from child process"
 msgstr "Không đọc được dữ liệu từ tiến trình con"
 
-#: glib/gspawn-win32.c:414
+#: glib/gspawn-win32.c:426
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -427,27 +419,27 @@ msgstr ""
 "Lỗi không mong muốn trong g_io_channel_win32_poll() đọc dữ liệu từ tiến "
 "trình con"
 
-#: glib/gspawn-win32.c:784 glib/gspawn.c:1002
+#: glib/gspawn-win32.c:834 glib/gspawn.c:1002
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Không đọc được từ pipe con (%s)"
 
-#: glib/gspawn-win32.c:871
+#: glib/gspawn-win32.c:923
 #, fuzzy
 msgid "Failed to execute helper program"
 msgstr "Không thực thi được tiến trình con (%s)"
 
-#: glib/gspawn-win32.c:904 glib/gspawn.c:1207
-#, c-format
-msgid "Failed to change to directory '%s' (%s)"
-msgstr "Không thay đổi được thư mục '%s' (%s)"
-
-#: glib/gspawn-win32.c:913
+#: glib/gspawn-win32.c:944 glib/gspawn-win32.c:988
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Không thực thi được tiến trình con (%s)"
 
-#: glib/gspawn-win32.c:956 glib/gspawn.c:1338
+#: glib/gspawn-win32.c:979 glib/gspawn.c:1207
+#, c-format
+msgid "Failed to change to directory '%s' (%s)"
+msgstr "Không thay đổi được thư mục '%s' (%s)"
+
+#: glib/gspawn-win32.c:1033 glib/gspawn.c:1338
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Không tạo được pipe để liên lạc với tiến trình con (%s)"
@@ -509,6 +501,12 @@ msgstr "Sequence bất hợp lệ trong đầu vào chuyển đổi"
 #: glib/gutf8.c:1375 glib/gutf8.c:1471
 msgid "Character out of range for UTF-16"
 msgstr "Ký tự nằm ngoài vùng UTF-16"
+
+#~ msgid "Incorrect message size"
+#~ msgstr "Kích thước thông điệp sai"
+
+#~ msgid "Socket error"
+#~ msgstr "Lỗi Socket"
 
 #~ msgid "Channel set flags unsupported"
 #~ msgstr "Kênh đặt các flag không được hỗ trợ"

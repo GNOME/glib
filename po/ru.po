@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.2\n"
-"POT-Creation-Date: 2003-06-08 12:16-0400\n"
+"POT-Creation-Date: 2003-08-25 20:40-0400\n"
 "PO-Revision-Date: 2003-01-06 15:06+0300\n"
 "Last-Translator: Dmitry G. Mastrukov <dmitry@taurussoft.org>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
@@ -28,7 +28,7 @@ msgstr "Не удалось открыть преобразователь из \
 # glib/gconvert.c:592 glib/gconvert.c:882 glib/giochannel.c:1282
 # glib/giochannel.c:1324 glib/giochannel.c:2163 glib/gutf8.c:875
 # glib/gutf8.c:1320
-#: glib/gconvert.c:603 glib/gconvert.c:893 glib/giochannel.c:1306
+#: glib/gconvert.c:603 glib/gconvert.c:891 glib/giochannel.c:1306
 #: glib/giochannel.c:1348 glib/giochannel.c:2190 glib/gutf8.c:909
 #: glib/gutf8.c:1354
 msgid "Invalid byte sequence in conversion input"
@@ -59,7 +59,7 @@ msgstr ""
 "Невозможно корректно преобразовать символ \"%s\" в символ из набора \"%s\""
 
 # glib/gconvert.c:1593
-#: glib/gconvert.c:1631
+#: glib/gconvert.c:1422
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
 msgstr ""
@@ -67,38 +67,38 @@ msgstr ""
 "использовании файловой схемы"
 
 # glib/gconvert.c:1603
-#: glib/gconvert.c:1641
+#: glib/gconvert.c:1432
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr ""
 "Идентификатор URI локального файла \"%s\" не может включать символ \"#\""
 
 # glib/gconvert.c:1620
-#: glib/gconvert.c:1658
+#: glib/gconvert.c:1449
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "Идентификатор URI \"%s\" недопустим"
 
 # glib/gconvert.c:1632
-#: glib/gconvert.c:1670
+#: glib/gconvert.c:1461
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Имя узла недопустимо в идентификаторе URI \"%s\""
 
 # glib/gconvert.c:1648
-#: glib/gconvert.c:1686
+#: glib/gconvert.c:1477
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "Идентификатор URI \"%s\" содержит недопустимо экранированный символ"
 
 # glib/gconvert.c:1719
-#: glib/gconvert.c:1757
+#: glib/gconvert.c:1548
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Путь \"%s\" не является абсолютным"
 
 # glib/gconvert.c:1729
-#: glib/gconvert.c:1767
+#: glib/gconvert.c:1558
 msgid "Invalid hostname"
 msgstr "Имя узла недопустимо"
 
@@ -109,31 +109,31 @@ msgid "Error opening directory '%s': %s"
 msgstr "Произошла ошибка при открытии каталога \"%s\": %s"
 
 # glib/gfileutils.c:337 glib/gfileutils.c:402
-#: glib/gfileutils.c:384 glib/gfileutils.c:449
+#: glib/gfileutils.c:390 glib/gfileutils.c:455
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Не удалось распределить %lu байтов для прочтения файла \"%s\""
 
 # glib/gfileutils.c:348
-#: glib/gfileutils.c:395
+#: glib/gfileutils.c:401
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Произошла ошибка при чтении файла \"%s\": %s"
 
 # glib/gfileutils.c:426
-#: glib/gfileutils.c:471
+#: glib/gfileutils.c:477
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Произошёл сбой при чтении из файла \"%s\": %s"
 
 # glib/gfileutils.c:465 glib/gfileutils.c:533
-#: glib/gfileutils.c:518 glib/gfileutils.c:586
+#: glib/gfileutils.c:524 glib/gfileutils.c:592
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Произошёл сбой при открытии файла \"%s\": %s"
 
 # glib/gfileutils.c:479
-#: glib/gfileutils.c:532
+#: glib/gfileutils.c:538
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr ""
@@ -141,25 +141,25 @@ msgstr ""
 "(): %s"
 
 # glib/gfileutils.c:505
-#: glib/gfileutils.c:558
+#: glib/gfileutils.c:564
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Произошёл сбой при открытии файла \"%s\": сбой в функции fdopen(): %s"
 
 # glib/gfileutils.c:712
-#: glib/gfileutils.c:765
+#: glib/gfileutils.c:776
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Шаблон \"%s\" недопустим: он не должен содержать \"%s\""
 
 # glib/gfileutils.c:724
-#: glib/gfileutils.c:777
+#: glib/gfileutils.c:788
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Шаблон \"%s\" не заканчивается на XXXXXX"
 
 # glib/gfileutils.c:745
-#: glib/gfileutils.c:798
+#: glib/gfileutils.c:809
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Произошёл сбой при создании файла \"%s\": %s"
@@ -199,16 +199,6 @@ msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr ""
 "Невозможно выполнить непосредственное чтение в функции "
 "g_io_channel_read_to_end"
-
-# glib/giowin32.c:704 glib/giowin32.c:733
-#: glib/giowin32.c:712 glib/giowin32.c:741
-msgid "Incorrect message size"
-msgstr "Размер сообщения не является правильным"
-
-# glib/giowin32.c:1037 glib/giowin32.c:1090
-#: glib/giowin32.c:1034 glib/giowin32.c:1087
-msgid "Socket error"
-msgstr "Произошла ошибка сокета"
 
 # glib/gmarkup.c:219
 #: glib/gmarkup.c:222
@@ -504,12 +494,12 @@ msgid "Text was empty (or contained only whitespace)"
 msgstr "Текст был пуст (или содержал только пробелы)"
 
 # glib/gspawn-win32.c:214
-#: glib/gspawn-win32.c:286
+#: glib/gspawn-win32.c:297
 msgid "Failed to read data from child process"
 msgstr "Произошёл сбой при чтении данных из процесса-потомка"
 
 # glib/gspawn-win32.c:365
-#: glib/gspawn-win32.c:414
+#: glib/gspawn-win32.c:426
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -518,30 +508,30 @@ msgstr ""
 "чтении данных из процесса-потомка"
 
 # glib/gspawn-win32.c:843 glib/gspawn.c:914
-#: glib/gspawn-win32.c:784 glib/gspawn.c:1002
+#: glib/gspawn-win32.c:834 glib/gspawn.c:1002
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Произошёл сбой при чтении данных из канала потомка (%s)"
 
 # glib/gspawn-win32.c:940
-#: glib/gspawn-win32.c:871
+#: glib/gspawn-win32.c:923
 msgid "Failed to execute helper program"
 msgstr "Произошёл сбой при выполнении вспомогательной программы"
 
-# glib/gspawn-win32.c:931 glib/gspawn.c:1119
-#: glib/gspawn-win32.c:904 glib/gspawn.c:1207
-#, c-format
-msgid "Failed to change to directory '%s' (%s)"
-msgstr "Произошёл сбой при смене каталога \"%s\" (%s)"
-
 # glib/gspawn-win32.c:940
-#: glib/gspawn-win32.c:913
+#: glib/gspawn-win32.c:944 glib/gspawn-win32.c:988
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Произошёл сбой при выполнении процесса-потомка (%s)"
 
+# glib/gspawn-win32.c:931 glib/gspawn.c:1119
+#: glib/gspawn-win32.c:979 glib/gspawn.c:1207
+#, c-format
+msgid "Failed to change to directory '%s' (%s)"
+msgstr "Произошёл сбой при смене каталога \"%s\" (%s)"
+
 # glib/gspawn-win32.c:981 glib/gspawn.c:1228
-#: glib/gspawn-win32.c:956 glib/gspawn.c:1338
+#: glib/gspawn-win32.c:1033 glib/gspawn.c:1338
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr ""
@@ -624,6 +614,14 @@ msgstr ""
 #: glib/gutf8.c:1375 glib/gutf8.c:1471
 msgid "Character out of range for UTF-16"
 msgstr "Символ находится вне диапазона для UTF-16"
+
+# glib/giowin32.c:704 glib/giowin32.c:733
+#~ msgid "Incorrect message size"
+#~ msgstr "Размер сообщения не является правильным"
+
+# glib/giowin32.c:1037 glib/giowin32.c:1090
+#~ msgid "Socket error"
+#~ msgstr "Произошла ошибка сокета"
 
 # glib/giowin32.c:1290
 #~ msgid "Channel set flags unsupported"

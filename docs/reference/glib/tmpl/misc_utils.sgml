@@ -157,8 +157,8 @@ path it returns %NULL.
 
 </para>
 
-@file_name:
-@Returns:
+@file_name: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_path_get_dirname ##### -->

@@ -10,7 +10,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.0\n"
-"POT-Creation-Date: 2003-06-08 12:16-0400\n"
+"POT-Creation-Date: 2003-08-25 20:40-0400\n"
 "PO-Revision-Date: 2002-12-03 20:09+0200\n"
 "Last-Translator: Kostas Papadimas <pkst@gmx.net>\n"
 "Language-Team: Greek <nls@tux.hellug.gr>\n"
@@ -29,7 +29,7 @@ msgstr "Η μετατροπή από την ομάδα χαρακτήρων %s' 
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Δεν ήταν δυνατό το άνοιγμα μετατροπέα από  `%s' σε `%s': %s"
 
-#: glib/gconvert.c:603 glib/gconvert.c:893 glib/giochannel.c:1306
+#: glib/gconvert.c:603 glib/gconvert.c:891 glib/giochannel.c:1306
 #: glib/giochannel.c:1348 glib/giochannel.c:2190 glib/gutf8.c:909
 #: glib/gutf8.c:1354
 msgid "Invalid byte sequence in conversion input"
@@ -52,38 +52,38 @@ msgstr "Ημιτελής σειρά χαρακτήρα στο τέλος της 
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Αδυναμία μετατροπής fallback '%s' σε codeset '%s'"
 
-#: glib/gconvert.c:1631
+#: glib/gconvert.c:1422
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
 msgstr ""
 "Το URI '%s' δεν είναι ένα απόλυτο URI με την χρήση του σχήματος αρχείου"
 
-#: glib/gconvert.c:1641
+#: glib/gconvert.c:1432
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Το URI τοπικού αρχείου '%s'  μπορεί να μην περιέχει ένα '#'"
 
-#: glib/gconvert.c:1658
+#: glib/gconvert.c:1449
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "Το URI '%s' δεν είναι έγκυρο"
 
-#: glib/gconvert.c:1670
+#: glib/gconvert.c:1461
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Το όνομα συστήματος του  URI '%s' δεν είναι έγκυρο"
 
-#: glib/gconvert.c:1686
+#: glib/gconvert.c:1477
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "Το URI '%s'  περιέχει χαρακτήρες μή έγκυρα escaped "
 
-#: glib/gconvert.c:1757
+#: glib/gconvert.c:1548
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Η όνομα διαδρομής '%s' δεν είναι μια απόλυτη διαδρομή"
 
-#: glib/gconvert.c:1767
+#: glib/gconvert.c:1558
 msgid "Invalid hostname"
 msgstr "Ακατάλληλο όνομα συστήματος"
 
@@ -94,53 +94,53 @@ msgid "Error opening directory '%s': %s"
 msgstr "Σφάλμα ανοίγματος καταλόγου '%s': %s"
 
 #
-#: glib/gfileutils.c:384 glib/gfileutils.c:449
+#: glib/gfileutils.c:390 glib/gfileutils.c:455
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Αδύνατη η διάθεση %lu bytes στην ανάγνωση αρχείου \"%s\""
 
 #
-#: glib/gfileutils.c:395
+#: glib/gfileutils.c:401
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Σφάλμα ανάγνωσης αρχείου '%s': %s"
 
 # gconf/gconf-internals.c:2416
-#: glib/gfileutils.c:471
+#: glib/gfileutils.c:477
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Αποτυχία ανάγνωσης από το αρχείο '%s': %s"
 
 # gconf/gconf-internals.c:2416
-#: glib/gfileutils.c:518 glib/gfileutils.c:586
+#: glib/gfileutils.c:524 glib/gfileutils.c:592
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Αποτυχία ανοίγματος αρχείου `%s': %s"
 
 # gconf/gconfd.c:1701
-#: glib/gfileutils.c:532
+#: glib/gfileutils.c:538
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Αποτυχία λήψης ιδιοτήτων του αρχείου '%s': fstat() απέτυχε: %s"
 
 # gconf/gconf-internals.c:2416
-#: glib/gfileutils.c:558
+#: glib/gfileutils.c:564
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Αδυναμία ανοίγματος αρχείου '%s': fdopen() απέτυχε: %s"
 
-#: glib/gfileutils.c:765
+#: glib/gfileutils.c:776
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Το πρότυπο '%s' δεν είναι έγκυρο, θα πρέπει να περιέχει ένα '%s'"
 
-#: glib/gfileutils.c:777
+#: glib/gfileutils.c:788
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Το πρότυπο '%s' δεν τελειώνει με XXXXXX"
 
 # gconf/gconf-internals.c:2416
-#: glib/gfileutils.c:798
+#: glib/gfileutils.c:809
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Αποτυχία δημιουργίας αρχείου '%s': %s"
@@ -170,15 +170,6 @@ msgstr "Το κανάλι τερματίζει σε ημιτελή χαρακτ�
 #: glib/giochannel.c:1673
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Δεν είναι δυνατή η raw ανάγνωση σε  g_io_channel_read_to_end"
-
-#
-#: glib/giowin32.c:712 glib/giowin32.c:741
-msgid "Incorrect message size"
-msgstr "Εσφαλμένο μέγεθος μηνύματος"
-
-#: glib/giowin32.c:1034 glib/giowin32.c:1087
-msgid "Socket error"
-msgstr "Σφάλμα υποδοχέα (socket)"
 
 # gconf/gconfd.c:1676
 #: glib/gmarkup.c:222
@@ -439,11 +430,11 @@ msgstr ""
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Το κείμενο ήταν κενό (ή περιέχει μόνο λευκό κενό)"
 
-#: glib/gspawn-win32.c:286
+#: glib/gspawn-win32.c:297
 msgid "Failed to read data from child process"
 msgstr "Αποτυχία ανάγνωσης δεδομένων από θυγατρική διεργασία"
 
-#: glib/gspawn-win32.c:414
+#: glib/gspawn-win32.c:426
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -452,26 +443,26 @@ msgstr ""
 "θυγατρική διεργασία"
 
 # gconf/gconftool.c:881
-#: glib/gspawn-win32.c:784 glib/gspawn.c:1002
+#: glib/gspawn-win32.c:834 glib/gspawn.c:1002
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Αποτυχία ανάγνωσης από θυγατρική σωλήνωση (%s)"
 
-#: glib/gspawn-win32.c:871
+#: glib/gspawn-win32.c:923
 msgid "Failed to execute helper program"
 msgstr "Αποτυχία εκτέλεσης βοηθητικού προγράμματος"
 
-#: glib/gspawn-win32.c:904 glib/gspawn.c:1207
-#, c-format
-msgid "Failed to change to directory '%s' (%s)"
-msgstr "Αποτυχία αλλαγής καταλόγου '%s' (%s)"
-
-#: glib/gspawn-win32.c:913
+#: glib/gspawn-win32.c:944 glib/gspawn-win32.c:988
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Αποτυχία εκτέλεσης θυγατρικής διεργασίας (%s)"
 
-#: glib/gspawn-win32.c:956 glib/gspawn.c:1338
+#: glib/gspawn-win32.c:979 glib/gspawn.c:1207
+#, c-format
+msgid "Failed to change to directory '%s' (%s)"
+msgstr "Αποτυχία αλλαγής καταλόγου '%s' (%s)"
+
+#: glib/gspawn-win32.c:1033 glib/gspawn.c:1338
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr ""
@@ -541,6 +532,13 @@ msgstr "Μή έγκυρη σειρά στην είσοδο μεταροπής"
 #: glib/gutf8.c:1375 glib/gutf8.c:1471
 msgid "Character out of range for UTF-16"
 msgstr "Ο χαρακτήρας είναι έξω από την εμβέλεια για UTF-16"
+
+#
+#~ msgid "Incorrect message size"
+#~ msgstr "Εσφαλμένο μέγεθος μηνύματος"
+
+#~ msgid "Socket error"
+#~ msgstr "Σφάλμα υποδοχέα (socket)"
 
 #~ msgid "Channel set flags unsupported"
 #~ msgstr "Channel set flags δεν υποστηρίζεται"

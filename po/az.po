@@ -5,14 +5,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.3.9\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-08-11 11:53+0200\n"
+"POT-Creation-Date: 2003-08-25 20:40-0400\n"
 "PO-Revision-Date: 2003-06-22 18:32+0200\n"
 "Last-Translator: Mətin Əmirov <metin@karegen.com>\n"
 "Language-Team: Azerbaijani Turkic <gnome@azitt.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Report-Msgid-Bugs-To: \n"
 
 #: glib/gconvert.c:401
 #, c-format
@@ -24,7 +24,7 @@ msgstr "`%s' hərf dəstəsindən `%s' hərf dəstəsinə dönüşdürmə dəst�
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "`%s' dən `%s' ə dönüşdürücü açıla bilmir: %s"
 
-#: glib/gconvert.c:603 glib/gconvert.c:893 glib/giochannel.c:1306
+#: glib/gconvert.c:603 glib/gconvert.c:891 glib/giochannel.c:1306
 #: glib/giochannel.c:1348 glib/giochannel.c:2190 glib/gutf8.c:909
 #: glib/gutf8.c:1354
 msgid "Invalid byte sequence in conversion input"
@@ -46,37 +46,37 @@ msgstr "Girişin sonunda parçalı hərf qatarı"
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "fallback '%s' hərf dəstəsi '%s' ə dönüşdürülə bilmir"
 
-#: glib/gconvert.c:1631
+#: glib/gconvert.c:1422
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
 msgstr "`%s' URI-si fayl sxemini işlədən mütləq URI deyildir"
 
-#: glib/gconvert.c:1641
+#: glib/gconvert.c:1432
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Yerli fayl uRI-si `%s' `#' daxil edə bilməz"
 
-#: glib/gconvert.c:1658
+#: glib/gconvert.c:1449
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "`%s' URI-si səhvdir"
 
-#: glib/gconvert.c:1670
+#: glib/gconvert.c:1461
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "`%s' URI-sinin qovşaq adı səhv qaçırılmış"
 
-#: glib/gconvert.c:1686
+#: glib/gconvert.c:1477
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "`%s'in URİ-si səhv qaçırılmış xarakterlər daxil edir"
 
-#: glib/gconvert.c:1757
+#: glib/gconvert.c:1548
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "`%s'in cığır adı mütləq cığır deyildir"
 
-#: glib/gconvert.c:1767
+#: glib/gconvert.c:1558
 msgid "Invalid hostname"
 msgstr "Hökmsüz qovşaq adı"
 
@@ -85,47 +85,47 @@ msgstr "Hökmsüz qovşaq adı"
 msgid "Error opening directory '%s': %s"
 msgstr "Cərgə açma xətası: '%s': %s"
 
-#: glib/gfileutils.c:384 glib/gfileutils.c:449
+#: glib/gfileutils.c:390 glib/gfileutils.c:455
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "\"%2$s\" faylını oxumaq üçün %1$lu bayt ayrıla bilmir"
 
-#: glib/gfileutils.c:395
+#: glib/gfileutils.c:401
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Fayl oxuma xətası: '%s': %s"
 
-#: glib/gfileutils.c:471
+#: glib/gfileutils.c:477
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Fayldan oxuma iflası '%s': %s"
 
-#: glib/gfileutils.c:518 glib/gfileutils.c:586
+#: glib/gfileutils.c:524 glib/gfileutils.c:592
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Fayl açma iflası '%s': %s"
 
-#: glib/gfileutils.c:532
+#: glib/gfileutils.c:538
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Faylın xüsusiyyətlərini əldə etmə iflası '%s': fstat() iflası: %s"
 
-#: glib/gfileutils.c:558
+#: glib/gfileutils.c:564
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Fayl açma iflası '%s': fdopen() iflası: %s"
 
-#: glib/gfileutils.c:765
+#: glib/gfileutils.c:776
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Nümunə '%s' hökmsüzdür, '%s' daxil etməməlidir"
 
-#: glib/gfileutils.c:777
+#: glib/gfileutils.c:788
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Şablon '%s' XXXXXX ilə qurtarmır"
 
-#: glib/gfileutils.c:798
+#: glib/gfileutils.c:809
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Fayl yaratma iflası '%s': %s"

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version:glib.glib-2-2\n"
-"POT-Creation-Date: 2003-06-06 04:13+0200\n"
+"POT-Creation-Date: 2003-08-25 20:40-0400\n"
 "PO-Revision-Date: 2003-07-05 10:29+0530\n"
 "Last-Translator: FSF-India <locale@gnu.org.in>\n"
 "Language-Team: Malayalam <locale@gnu.org.in>\n"
@@ -26,7 +26,7 @@ msgstr ""
 "%s ന്റെ ഉള്ളടക്കം നീക്കം ചെയ്യാന് കഴിയുന്നില്ല:\n"
 "%s"
 
-#: glib/gconvert.c:603 glib/gconvert.c:893 glib/giochannel.c:1306
+#: glib/gconvert.c:603 glib/gconvert.c:891 glib/giochannel.c:1306
 #: glib/giochannel.c:1348 glib/giochannel.c:2190 glib/gutf8.c:909
 #: glib/gutf8.c:1354
 msgid "Invalid byte sequence in conversion input"
@@ -48,37 +48,37 @@ msgstr ""
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr ""
 
-#: glib/gconvert.c:1631
+#: glib/gconvert.c:1422
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
 msgstr ""
 
-#: glib/gconvert.c:1641
+#: glib/gconvert.c:1432
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr ""
 
-#: glib/gconvert.c:1658
+#: glib/gconvert.c:1449
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr ""
 
-#: glib/gconvert.c:1670
+#: glib/gconvert.c:1461
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr ""
 
-#: glib/gconvert.c:1686
+#: glib/gconvert.c:1477
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr ""
 
-#: glib/gconvert.c:1757
+#: glib/gconvert.c:1548
 #, fuzzy, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "\"%s\" വഴിയിലുള്ള രചന ഒരു കൂട് അല്ല."
 
-#: glib/gconvert.c:1767
+#: glib/gconvert.c:1558
 #, fuzzy
 msgid "Invalid hostname"
 msgstr "സാധുതയില്ലാത്ത രചന നാമം"
@@ -90,47 +90,47 @@ msgstr ""
 "മേല്‌വിലാസ പുസ്തകം തുറക്കുന്നതില്‌‌ പരാജയം '%s'\n"
 "%s"
 
-#: glib/gfileutils.c:384 glib/gfileutils.c:449
+#: glib/gfileutils.c:390 glib/gfileutils.c:455
 #, fuzzy, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "രചന %s ഉണ്ടാക്കാന്‌ കഴിഞ്ഞില്ല."
 
-#: glib/gfileutils.c:395
+#: glib/gfileutils.c:401
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "%s വായിക്കുന്നതില്‌ പരാജയം : %s"
 
-#: glib/gfileutils.c:471
+#: glib/gfileutils.c:477
 #, fuzzy, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "രചന %sലെ പ്രമേയം വായിക്കുന്നതില്‌ പരാജയപ്പെട്ടു: %s\n"
 
-#: glib/gfileutils.c:518 glib/gfileutils.c:586
+#: glib/gfileutils.c:524 glib/gfileutils.c:592
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "%s തുറക്കുന്നതില്‌ പരാജയം : %s"
 
-#: glib/gfileutils.c:532
+#: glib/gfileutils.c:538
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr ""
 
-#: glib/gfileutils.c:558
+#: glib/gfileutils.c:564
 #, fuzzy, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "%s തുറക്കുന്നതില്‌ പരാജയം : %s"
 
-#: glib/gfileutils.c:765
+#: glib/gfileutils.c:776
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr ""
 
-#: glib/gfileutils.c:777
+#: glib/gfileutils.c:788
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr ""
 
-#: glib/gfileutils.c:798
+#: glib/gfileutils.c:809
 #, fuzzy, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "%s തുറക്കുന്നതില്‌ പരാജയം : %s"
@@ -162,16 +162,6 @@ msgstr ""
 #: glib/giochannel.c:1673
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr ""
-
-#: glib/giowin32.c:712 glib/giowin32.c:741
-#, fuzzy
-msgid "Incorrect message size"
-msgstr "ഇപ്പോഴുള്ള സന്ദേശം അച്ചടിക്കുക"
-
-#: glib/giowin32.c:1034 glib/giowin32.c:1087
-#, fuzzy
-msgid "Socket error"
-msgstr "പ്രശ്നം ഇല്ല"
 
 #: glib/gmarkup.c:222
 #, fuzzy, c-format
@@ -387,38 +377,38 @@ msgstr ""
 msgid "Text was empty (or contained only whitespace)"
 msgstr ""
 
-#: glib/gspawn-win32.c:286
+#: glib/gspawn-win32.c:297
 #, fuzzy
 msgid "Failed to read data from child process"
 msgstr "രചന %sലെ പ്രമേയം വായിക്കുന്നതില്‌ പരാജയപ്പെട്ടു: %s\n"
 
-#: glib/gspawn-win32.c:414
+#: glib/gspawn-win32.c:426
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
 msgstr ""
 
-#: glib/gspawn-win32.c:784 glib/gspawn.c:1002
+#: glib/gspawn-win32.c:834 glib/gspawn.c:1002
 #, fuzzy, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "രചന %sലെ പ്രമേയം വായിക്കുന്നതില്‌ പരാജയപ്പെട്ടു: %s\n"
 
-#: glib/gspawn-win32.c:871
+#: glib/gspawn-win32.c:923
 #, fuzzy
 msgid "Failed to execute helper program"
 msgstr "ഇറക്കുമതി നിര്‍ദ്ദേശങ്ങള്‌ നിര്‍വ്വഹിക്കുന്നതില്‌ പരാജയപ്പെട്ടു."
 
-#: glib/gspawn-win32.c:904 glib/gspawn.c:1207
-#, fuzzy, c-format
-msgid "Failed to change to directory '%s' (%s)"
-msgstr "'%s'എന്ന കൂട് ഉണ്ടാക്കാന്‌ കഴിയുന്നില്ല: %s\n"
-
-#: glib/gspawn-win32.c:913
+#: glib/gspawn-win32.c:944 glib/gspawn-win32.c:988
 #, fuzzy, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "ഇറക്കുമതി നിര്‍ദ്ദേശങ്ങള്‌ നിര്‍വ്വഹിക്കുന്നതില്‌ പരാജയപ്പെട്ടു."
 
-#: glib/gspawn-win32.c:956 glib/gspawn.c:1338
+#: glib/gspawn-win32.c:979 glib/gspawn.c:1207
+#, fuzzy, c-format
+msgid "Failed to change to directory '%s' (%s)"
+msgstr "'%s'എന്ന കൂട് ഉണ്ടാക്കാന്‌ കഴിയുന്നില്ല: %s\n"
+
+#: glib/gspawn-win32.c:1033 glib/gspawn.c:1338
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr ""
@@ -482,3 +472,11 @@ msgstr ""
 #, fuzzy
 msgid "Character out of range for UTF-16"
 msgstr "ഇടേണ്ട അക്ഷരങ്ങള്"
+
+#, fuzzy
+#~ msgid "Incorrect message size"
+#~ msgstr "ഇപ്പോഴുള്ള സന്ദേശം അച്ചടിക്കുക"
+
+#, fuzzy
+#~ msgid "Socket error"
+#~ msgstr "പ്രശ്നം ഇല്ല"

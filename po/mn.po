@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.mn\n"
-"POT-Creation-Date: 2003-06-08 12:16-0400\n"
+"POT-Creation-Date: 2003-08-25 20:40-0400\n"
 "PO-Revision-Date: 2003-01-20 11:28+0100\n"
 "Last-Translator: Sanlig Badral <badral@chinggis.com>\n"
 "Language-Team: Mongolian <mn@li.org>\n"
@@ -26,7 +26,7 @@ msgstr "Тэмдэгт олонлог »%s« ээс »%s« рүү хөрвүүл
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "»%s« ээс »%s« рүү хөрвүүлэгч нээгдсэнгүй: %s"
 
-#: glib/gconvert.c:603 glib/gconvert.c:893 glib/giochannel.c:1306
+#: glib/gconvert.c:603 glib/gconvert.c:891 glib/giochannel.c:1306
 #: glib/giochannel.c:1348 glib/giochannel.c:2190 glib/gutf8.c:909
 #: glib/gutf8.c:1354
 msgid "Invalid byte sequence in conversion input"
@@ -49,38 +49,38 @@ msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "»%s« ухарч »%s« кодчилол руу хөрвөхгүй байна"
 
 # CHECK
-#: glib/gconvert.c:1631
+#: glib/gconvert.c:1422
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
 msgstr "URI »%s« нь файлын схемд хэрэглэгддэг үнэмлэхүй хаяг биш"
 
-#: glib/gconvert.c:1641
+#: glib/gconvert.c:1432
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Дотоод URI »%s« нь »#« -г агуулж болохгүй"
 
-#: glib/gconvert.c:1658
+#: glib/gconvert.c:1449
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "»%s« URI хүчингүй"
 
-#: glib/gconvert.c:1670
+#: glib/gconvert.c:1461
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "URI »%s« -н хостын нэр хүчингүй"
 
 # CHECK
-#: glib/gconvert.c:1686
+#: glib/gconvert.c:1477
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "»%s« URI хүчингүй Escape-тэмдэгт агуулж байна"
 
-#: glib/gconvert.c:1757
+#: glib/gconvert.c:1548
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "»%s« замын нэр үнэмлэхүй зам биш"
 
-#: glib/gconvert.c:1767
+#: glib/gconvert.c:1558
 msgid "Invalid hostname"
 msgstr "Хүчингүй хостын нэр"
 
@@ -89,47 +89,47 @@ msgstr "Хүчингүй хостын нэр"
 msgid "Error opening directory '%s': %s"
 msgstr "»%s« лавлахыг нээхэд алдаа: %s"
 
-#: glib/gfileutils.c:384 glib/gfileutils.c:449
+#: glib/gfileutils.c:390 glib/gfileutils.c:455
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "%lu байтуудыг »%s« файлыг уншихдаа байрлуулж чадсангүй"
 
-#: glib/gfileutils.c:395
+#: glib/gfileutils.c:401
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Файл »%s« -ыг уншиж байхад алдаа: %s"
 
-#: glib/gfileutils.c:471
+#: glib/gfileutils.c:477
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "»%s« файлаас уншиж болохгүй байна: %s"
 
-#: glib/gfileutils.c:518 glib/gfileutils.c:586
+#: glib/gfileutils.c:524 glib/gfileutils.c:592
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "»%s« файл нээгдэхгүй байна: %s"
 
-#: glib/gfileutils.c:532
+#: glib/gfileutils.c:538
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "»%s« файлын аттрибут тодорхойлогдсонгүй: fstat() нурлаа: %s"
 
-#: glib/gfileutils.c:558
+#: glib/gfileutils.c:564
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "»%s« файл нээгдэхгүй байна: fdopen() нурлаа: %s"
 
-#: glib/gfileutils.c:765
+#: glib/gfileutils.c:776
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "»%s« хэв хүчингүй, »%s« -г агуулах хэрэггүй"
 
-#: glib/gfileutils.c:777
+#: glib/gfileutils.c:788
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "»%s« хэв XXXXXX -р төгсөхгүй байна"
 
-#: glib/gfileutils.c:798
+#: glib/gfileutils.c:809
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "»%s« файл үүсгэгдсэнгүй: %s"
@@ -159,14 +159,6 @@ msgstr "Суваг тал тэмдэгтээр төгслөө"
 #: glib/giochannel.c:1673
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Raw-read in g_io_channel_read_to_end боломжгүй"
-
-#: glib/giowin32.c:712 glib/giowin32.c:741
-msgid "Incorrect message size"
-msgstr "Буруу мэдээний хэмжээ"
-
-#: glib/giowin32.c:1034 glib/giowin32.c:1087
-msgid "Socket error"
-msgstr "Сокет алдаа"
 
 #: glib/gmarkup.c:222
 #, c-format
@@ -419,11 +411,11 @@ msgstr "Текст %c -н тохирох хашилт олдохоос өмнө 
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Текст хоосон байв (эсвэл зөвхөн цагаан зай агуулсан)"
 
-#: glib/gspawn-win32.c:286
+#: glib/gspawn-win32.c:297
 msgid "Failed to read data from child process"
 msgstr "Өгөгдөл хүү процессоор уншигдсангүй"
 
-#: glib/gspawn-win32.c:414
+#: glib/gspawn-win32.c:426
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -431,26 +423,26 @@ msgstr ""
 "Хүү процессоос өгөгдөл уншиж байхад g_io_channel_win32_poll() дотор "
 "санамсаргүй алдаа гарлаа"
 
-#: glib/gspawn-win32.c:784 glib/gspawn.c:1002
+#: glib/gspawn-win32.c:834 glib/gspawn.c:1002
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Хүү процессын (%s) шугамаас унших бүтэлгүйтлээ"
 
-#: glib/gspawn-win32.c:871
+#: glib/gspawn-win32.c:923
 msgid "Failed to execute helper program"
 msgstr "Тусламж программ ажиллахгүй байна"
 
-#: glib/gspawn-win32.c:904 glib/gspawn.c:1207
-#, c-format
-msgid "Failed to change to directory '%s' (%s)"
-msgstr "»%s« (%s) лавлах солигдсонгүй"
-
-#: glib/gspawn-win32.c:913
+#: glib/gspawn-win32.c:944 glib/gspawn-win32.c:988
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Хүү процесс ажилласангүй (%s)"
 
-#: glib/gspawn-win32.c:956 glib/gspawn.c:1338
+#: glib/gspawn-win32.c:979 glib/gspawn.c:1207
+#, c-format
+msgid "Failed to change to directory '%s' (%s)"
+msgstr "»%s« (%s) лавлах солигдсонгүй"
+
+#: glib/gspawn-win32.c:1033 glib/gspawn.c:1338
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Хүү процесстой (%s) холбогдох шугам үүсгэж чадсангүй"
@@ -516,3 +508,9 @@ msgstr "Хөрвүүлэлтийн оролтод хүчингүй дараал�
 #: glib/gutf8.c:1375 glib/gutf8.c:1471
 msgid "Character out of range for UTF-16"
 msgstr "UTF-16 хязгаараас гаднах тэмдэгт"
+
+#~ msgid "Incorrect message size"
+#~ msgstr "Буруу мэдээний хэмжээ"
+
+#~ msgid "Socket error"
+#~ msgstr "Сокет алдаа"

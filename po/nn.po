@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib/2.0\n"
-"POT-Creation-Date: 2003-06-08 12:16-0400\n"
+"POT-Creation-Date: 2003-08-25 20:40-0400\n"
 "PO-Revision-Date: 2002-12-09 21:10+0100\n"
 "Last-Translator: Roy-Magne Mo <rmo@sunnmore.net>\n"
 "Language-Team: nynorsk <nn@li.org>\n"
@@ -23,7 +23,7 @@ msgstr "Konvertering frå teiknsett «%s» til «%s» er ikkje støtta"
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Kunne ikkje opne konverterar frå «%s» til «%s»: %s"
 
-#: glib/gconvert.c:603 glib/gconvert.c:893 glib/giochannel.c:1306
+#: glib/gconvert.c:603 glib/gconvert.c:891 glib/giochannel.c:1306
 #: glib/giochannel.c:1348 glib/giochannel.c:2190 glib/gutf8.c:909
 #: glib/gutf8.c:1354
 msgid "Invalid byte sequence in conversion input"
@@ -45,37 +45,37 @@ msgstr "Delvis teiknsekvens på slutten av inndata"
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Kan ikkje konvertere tilbakefall «%s» til kodesett «%s»"
 
-#: glib/gconvert.c:1631
+#: glib/gconvert.c:1422
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
 msgstr "URIen «%s» er ikkje ein absolutt URI som brukar «file» måten"
 
-#: glib/gconvert.c:1641
+#: glib/gconvert.c:1432
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "file URIen «%s» kan ikkje innehalde ein «#»"
 
-#: glib/gconvert.c:1658
+#: glib/gconvert.c:1449
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URIen «%s» er ugyldig"
 
-#: glib/gconvert.c:1670
+#: glib/gconvert.c:1461
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Vertsnamnet i URIen «%s» inneheld feil koda teikn"
 
-#: glib/gconvert.c:1686
+#: glib/gconvert.c:1477
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URIen «%s» inneheld feil koda teikn"
 
-#: glib/gconvert.c:1757
+#: glib/gconvert.c:1548
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Filstien «%s» er ikkje ein absolutt sti"
 
-#: glib/gconvert.c:1767
+#: glib/gconvert.c:1558
 msgid "Invalid hostname"
 msgstr "Ugyldig vertsnamn"
 
@@ -84,47 +84,47 @@ msgstr "Ugyldig vertsnamn"
 msgid "Error opening directory '%s': %s"
 msgstr "Feil ved opning av katalog «%s»: %s"
 
-#: glib/gfileutils.c:384 glib/gfileutils.c:449
+#: glib/gfileutils.c:390 glib/gfileutils.c:455
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Klarte ikkje allokere %lu byte for å lese «%s»"
 
-#: glib/gfileutils.c:395
+#: glib/gfileutils.c:401
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Feil ved lesing a fil «%s»: %s"
 
-#: glib/gfileutils.c:471
+#: glib/gfileutils.c:477
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Klarte ikkje å lese frå fila «%s»: %s"
 
-#: glib/gfileutils.c:518 glib/gfileutils.c:586
+#: glib/gfileutils.c:524 glib/gfileutils.c:592
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Klarte ikkje å opne fil: «%s»: %s"
 
-#: glib/gfileutils.c:532
+#: glib/gfileutils.c:538
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Klarte ikkje å få tak i eigenskapar for fila «%s» fstat() feila: %s"
 
-#: glib/gfileutils.c:558
+#: glib/gfileutils.c:564
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Kunne ikkje opne fila «%s»: fdopen() feila: %s"
 
-#: glib/gfileutils.c:765
+#: glib/gfileutils.c:776
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Mal «%s» er ugyldig, kan ikkje ikkje innehalde ein «%s»"
 
-#: glib/gfileutils.c:777
+#: glib/gfileutils.c:788
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Malfila «%s» er ikkje avslutta med XXXXXX"
 
-#: glib/gfileutils.c:798
+#: glib/gfileutils.c:809
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Klarte ikkje å opprette fila «%s»: %s"
@@ -154,14 +154,6 @@ msgstr "Kanalen avsluttar på eit delvis teikn"
 #: glib/giochannel.c:1673
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Kan ikkje lese rått i g_io_channel_read_to_end"
-
-#: glib/giowin32.c:712 glib/giowin32.c:741
-msgid "Incorrect message size"
-msgstr "Feil meldingsstorleik"
-
-#: glib/giowin32.c:1034 glib/giowin32.c:1087
-msgid "Socket error"
-msgstr "Sokkelfeil"
 
 #: glib/gmarkup.c:222
 #, c-format
@@ -406,37 +398,37 @@ msgstr ""
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Teksta var tom (eller innehdlt kun tome teikn)"
 
-#: glib/gspawn-win32.c:286
+#: glib/gspawn-win32.c:297
 msgid "Failed to read data from child process"
 msgstr "Failed to read data from child process"
 
-#: glib/gspawn-win32.c:414
+#: glib/gspawn-win32.c:426
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
 msgstr ""
 "Uventa feil i g_io_channel_win32_poll() ved lesing av data frå barneprosess"
 
-#: glib/gspawn-win32.c:784 glib/gspawn.c:1002
+#: glib/gspawn-win32.c:834 glib/gspawn.c:1002
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Klarte ikkje å lese frå røyr frå barn (%s)"
 
-#: glib/gspawn-win32.c:871
+#: glib/gspawn-win32.c:923
 msgid "Failed to execute helper program"
 msgstr "Klarte ikkje å kjøra hjelpeprogram"
 
-#: glib/gspawn-win32.c:904 glib/gspawn.c:1207
-#, c-format
-msgid "Failed to change to directory '%s' (%s)"
-msgstr "Klarte ikkje å skifte til katalog «%s» (%s)"
-
-#: glib/gspawn-win32.c:913
+#: glib/gspawn-win32.c:944 glib/gspawn-win32.c:988
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Klarte ikkje å utføre barnproess (%s)"
 
-#: glib/gspawn-win32.c:956 glib/gspawn.c:1338
+#: glib/gspawn-win32.c:979 glib/gspawn.c:1207
+#, c-format
+msgid "Failed to change to directory '%s' (%s)"
+msgstr "Klarte ikkje å skifte til katalog «%s» (%s)"
+
+#: glib/gspawn-win32.c:1033 glib/gspawn.c:1338
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Klarte ikkje å opprette røyr for å kommuniksere med barneprosess (%s)"
@@ -498,6 +490,12 @@ msgstr "Ugyldig sekvens i inndata konvertering"
 #: glib/gutf8.c:1375 glib/gutf8.c:1471
 msgid "Character out of range for UTF-16"
 msgstr "Teikn ikkje gyldig for UTF-16"
+
+#~ msgid "Incorrect message size"
+#~ msgstr "Feil meldingsstorleik"
+
+#~ msgid "Socket error"
+#~ msgstr "Sokkelfeil"
 
 #~ msgid "Channel set flags unsupported"
 #~ msgstr "Kanalen set flag ustøtta"

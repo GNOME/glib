@@ -131,7 +131,6 @@ See the GNU C documentation for details.
 @Since: 2.2
 
 
-
 <!-- ##### MACRO G_GNUC_NORETURN ##### -->
 <para>
 Expands to the GNU C <literal>noreturn</literal> function attribute if the compiler is <command>gcc</command>.

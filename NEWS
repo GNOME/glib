@@ -1,3 +1,20 @@
+Overview of Changes from GLib 2.2.2 to GLib-2.2.3
+=================================================
+* Win32 [Tor Lillqvist]
+  - Fix socket handling for giochannel [Andrew Lanoix]
+  - Omit helper process for GSpawn when possible
+  - Accept / as well as \ as a pathname separators in
+    path handling functions.
+  - Fix g_strdup_printf to be locale sensitive [Ernst Lippe]
+  - Build fixes [Jeff Bonggren]
+  - Misc bug fixes
+* Documentation improvements [Matthias Clasen]
+* glib-gettext.m4 fixes [Tim Mooney, Owen Taylor, James Henstridge]
+* Improve configure checks for sprintf [Matthias]
+* Misc bug fixes [Albert Chin, Noah Levitt, Manish Singh, Owen, 
+  Morten Welinder, Daniel Yacob]
+* New and updated translations (ar,az,cy,eo,is,sr,sr@Latn,zh_CN)
+
 Overview of Changes from GLib 2.2.1 to GLib-2.2.2
 =================================================
 * Fix busy wait when main loop was recursed out of an IO watch or 

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.3.9\n"
-"POT-Creation-Date: 2003-06-08 12:16-0400\n"
+"POT-Creation-Date: 2003-08-25 20:40-0400\n"
 "PO-Revision-Date: 2001-07-06 14:23+0200\n"
 "Last-Translator: Joseba Bidaurrazaga van Dierdonck <jbv@euskalnet.net>\n"
 "Language-Team: euskare <linux-eu@chanae.alphanet.ch>\n"
@@ -23,7 +23,7 @@ msgstr "Aldaketa karaktere talde `%s'-tik `%s'-ra ez dago gaitua"
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Ezin ireki `%s'-tik `%s'-rako itzultzailea: %s"
 
-#: glib/gconvert.c:603 glib/gconvert.c:893 glib/giochannel.c:1306
+#: glib/gconvert.c:603 glib/gconvert.c:891 glib/giochannel.c:1306
 #: glib/giochannel.c:1348 glib/giochannel.c:2190 glib/gutf8.c:909
 #: glib/gutf8.c:1354
 msgid "Invalid byte sequence in conversion input"
@@ -45,37 +45,37 @@ msgstr "Zatia besterik ez dan karaktere segida sarreraren bukaeran"
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Ezin itzuli fallback '%s'tik '%s' kodera"
 
-#: glib/gconvert.c:1631
+#: glib/gconvert.c:1422
 #, fuzzy, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
 msgstr "URI `%s' ez da URI osoa, fitxategien eskema jarraitzen duena"
 
-#: glib/gconvert.c:1641
+#: glib/gconvert.c:1432
 #, fuzzy, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Bertoko fitxategi URI `%s' ezin du `#'-rik izan"
 
-#: glib/gconvert.c:1658
+#: glib/gconvert.c:1449
 #, fuzzy, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI `%s' baliogabe da"
 
-#: glib/gconvert.c:1670
+#: glib/gconvert.c:1461
 #, fuzzy, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Ostalari izena URI `%s'-rena baliorikgabeko karakterez "
 
-#: glib/gconvert.c:1686
+#: glib/gconvert.c:1477
 #, fuzzy, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI `%s'-k baliogabeko karakterez "
 
-#: glib/gconvert.c:1757
+#: glib/gconvert.c:1548
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Bideizena '%s' ez da bide osoarena"
 
-#: glib/gconvert.c:1767
+#: glib/gconvert.c:1558
 #, fuzzy
 msgid "Invalid hostname"
 msgstr "Baliogabeko byte segida ostalari izenean"
@@ -85,47 +85,47 @@ msgstr "Baliogabeko byte segida ostalari izenean"
 msgid "Error opening directory '%s': %s"
 msgstr "Errore fitxategia irakurtzerakoan'%s': %s"
 
-#: glib/gfileutils.c:384 glib/gfileutils.c:449
+#: glib/gfileutils.c:390 glib/gfileutils.c:455
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr ""
 
-#: glib/gfileutils.c:395
+#: glib/gfileutils.c:401
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Errore fitxategia irakurtzerakoan'%s': %s"
 
-#: glib/gfileutils.c:471
+#: glib/gfileutils.c:477
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Ezin irakurri fitxategi '%s'-tik: %s"
 
-#: glib/gfileutils.c:518 glib/gfileutils.c:586
+#: glib/gfileutils.c:524 glib/gfileutils.c:592
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Ezin ireki fitxategi '%s'-a: %s"
 
-#: glib/gfileutils.c:532
+#: glib/gfileutils.c:538
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Ezin lortu atributuak fitxategitik '%s': fstat() failed: %s"
 
-#: glib/gfileutils.c:558
+#: glib/gfileutils.c:564
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Ezin ireki fitzategia '%s': fdopen() failed: %s"
 
-#: glib/gfileutils.c:765
+#: glib/gfileutils.c:776
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Eredu '%s'-a ezlegezkoa, ezin du '%s'-rik izan"
 
-#: glib/gfileutils.c:777
+#: glib/gfileutils.c:788
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Eredu '%s'-ak ez du amaierako XXXXXX"
 
-#: glib/gfileutils.c:798
+#: glib/gfileutils.c:809
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Ezin eratu fitxategia '%s': %s"
@@ -154,14 +154,6 @@ msgstr ""
 
 #: glib/giochannel.c:1673
 msgid "Can't do a raw read in g_io_channel_read_to_end"
-msgstr ""
-
-#: glib/giowin32.c:712 glib/giowin32.c:741
-msgid "Incorrect message size"
-msgstr ""
-
-#: glib/giowin32.c:1034 glib/giowin32.c:1087
-msgid "Socket error"
 msgstr ""
 
 #: glib/gmarkup.c:222
@@ -407,11 +399,11 @@ msgstr ""
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Textua hutzik (edo zuriz)"
 
-#: glib/gspawn-win32.c:286
+#: glib/gspawn-win32.c:297
 msgid "Failed to read data from child process"
 msgstr "Ezin irakurri daturik child prozeduran"
 
-#: glib/gspawn-win32.c:414
+#: glib/gspawn-win32.c:426
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -419,27 +411,27 @@ msgstr ""
 "Ezusteko errora g_io_channel_win32_poll()-n child prozedurako datuak "
 "irakurtzekoan"
 
-#: glib/gspawn-win32.c:784 glib/gspawn.c:1002
+#: glib/gspawn-win32.c:834 glib/gspawn.c:1002
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Ezin irakurri child hodian (%s)"
 
-#: glib/gspawn-win32.c:871
+#: glib/gspawn-win32.c:923
 #, fuzzy
 msgid "Failed to execute helper program"
 msgstr "Ezin abiarazi chil prozedura (%s)"
 
-#: glib/gspawn-win32.c:904 glib/gspawn.c:1207
-#, c-format
-msgid "Failed to change to directory '%s' (%s)"
-msgstr "Ezin aldatu  '%s' direktoriora (%s)"
-
-#: glib/gspawn-win32.c:913
+#: glib/gspawn-win32.c:944 glib/gspawn-win32.c:988
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Ezin abiarazi chil prozedura (%s)"
 
-#: glib/gspawn-win32.c:956 glib/gspawn.c:1338
+#: glib/gspawn-win32.c:979 glib/gspawn.c:1207
+#, c-format
+msgid "Failed to change to directory '%s' (%s)"
+msgstr "Ezin aldatu  '%s' direktoriora (%s)"
+
+#: glib/gspawn-win32.c:1033 glib/gspawn.c:1338
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Ezin eratu hodirik child prozedurarekin bat egiteko (%s)"

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
-"POT-Creation-Date: 2003-06-08 12:16-0400\n"
+"POT-Creation-Date: 2003-08-25 20:40-0400\n"
 "PO-Revision-Date: 2003-03-19\n"
 "Last-Translator: Raphael Finkel <raphael@cs.uky.edu>\n"
 "Language-Team: Yiddish <raphael@cs.uky.edu>\n"
@@ -23,7 +23,7 @@ msgstr "פֿאַרװאַנדלונג פֿון קאָדירונג %s צו %s ני
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "ניט געקענט עפֿענען פֿאַרװאַנדלער פֿון %s צו %s: %s"
 
-#: glib/gconvert.c:603 glib/gconvert.c:893 glib/giochannel.c:1306
+#: glib/gconvert.c:603 glib/gconvert.c:891 glib/giochannel.c:1306
 #: glib/giochannel.c:1348 glib/giochannel.c:2190 glib/gutf8.c:909
 #: glib/gutf8.c:1354
 msgid "Invalid byte sequence in conversion input"
@@ -45,37 +45,37 @@ msgstr "האַלבע כאַראַקטער־סעקװענץ צום סוף פֿון
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "ניט געקענט פֿאַרװאַנדלען גרונטבאַטרעף %s צו קאָדירונג %s"
 
-#: glib/gconvert.c:1631
+#: glib/gconvert.c:1422
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
 msgstr "דער URI %s איז ניט אַבסאָלוט לױט דער טעקע־סכעמע"
 
-#: glib/gconvert.c:1641
+#: glib/gconvert.c:1432
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "דער לאָקאַלער טעקע־URI %s טאָר ניט כּולל זײַן אַ '#'"
 
-#: glib/gconvert.c:1658
+#: glib/gconvert.c:1449
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "דער URI %s איז אומלעקסיק"
 
-#: glib/gconvert.c:1670
+#: glib/gconvert.c:1461
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "דער מאַשין־נאָמען פֿונעם URI %s איז אומלעקסיק"
 
-#: glib/gconvert.c:1686
+#: glib/gconvert.c:1477
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "דער URI %s איז כּולל אומלעקסיקע פּליטה־כאַראַקטערס"
 
-#: glib/gconvert.c:1757
+#: glib/gconvert.c:1548
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "די פּאַפּקע־רשימה %s איז ניט אַבסאָלוט"
 
-#: glib/gconvert.c:1767
+#: glib/gconvert.c:1558
 msgid "Invalid hostname"
 msgstr "אומלעקסיקער מאַשין־נאָמען"
 
@@ -84,47 +84,47 @@ msgstr "אומלעקסיקער מאַשין־נאָמען"
 msgid "Error opening directory '%s': %s"
 msgstr "דורכפֿאַל אין עפֿענען פּאַפּקע %s: %s"
 
-#: glib/gfileutils.c:384 glib/gfileutils.c:449
+#: glib/gfileutils.c:390 glib/gfileutils.c:455
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "ניט געקענט אױסטײלן %lu אַכטעלעך צו לײענען טעקע %s"
 
-#: glib/gfileutils.c:395
+#: glib/gfileutils.c:401
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "דורכפֿאַל אין לײענען טעקע %s: %s"
 
-#: glib/gfileutils.c:471
+#: glib/gfileutils.c:477
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "ניט געקענט לײענען טעקע %s: %s"
 
-#: glib/gfileutils.c:518 glib/gfileutils.c:586
+#: glib/gfileutils.c:524 glib/gfileutils.c:592
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "ניט געקענט עפֿענען טעקע '%s': %s"
 
-#: glib/gfileutils.c:532
+#: glib/gfileutils.c:538
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "ניט געקענט באַקומען אַטריבוטן פֿון טעקע %s: fstat() איז דורכגעפֿאַלן: %s"
 
-#: glib/gfileutils.c:558
+#: glib/gfileutils.c:564
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "ניט געקענט עפֿענען טעקע %s: fdopen() איז דורכגעפֿאַלן: %s"
 
-#: glib/gfileutils.c:765
+#: glib/gfileutils.c:776
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "מוסטער %s אומלעקסיק, טאָר ניט כּולל זײַן %s"
 
-#: glib/gfileutils.c:777
+#: glib/gfileutils.c:788
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "מוסטער %s ענדיקט זיך ניט מיט XXXXXX"
 
-#: glib/gfileutils.c:798
+#: glib/gfileutils.c:809
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "ניט געקענט שאַפֿן טעקע %s: %s"
@@ -154,14 +154,6 @@ msgstr "קאַנאַל ענדיקט זיך מיט אַ האַלבן שריפֿט
 #: glib/giochannel.c:1673
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "ניט געקענט מאַכן אַ רױ־לײען אין g_io_channel_read_to_end"
-
-#: glib/giowin32.c:712 glib/giowin32.c:741
-msgid "Incorrect message size"
-msgstr "ניט־ריכטיקע אָנזאָגגרײס"
-
-#: glib/giowin32.c:1034 glib/giowin32.c:1087
-msgid "Socket error"
-msgstr "סאָקעט־דורכפֿאַל"
 
 #: glib/gmarkup.c:222
 #, c-format
@@ -410,11 +402,11 @@ msgstr ""
 msgid "Text was empty (or contained only whitespace)"
 msgstr "טעקסט איז געװען פּוסט (אָדער איז כּולל בלױס לײדיק אָרט)"
 
-#: glib/gspawn-win32.c:286
+#: glib/gspawn-win32.c:297
 msgid "Failed to read data from child process"
 msgstr "ניט געקענט לײענען דאַטן פֿון קינדפּראָצעס"
 
-#: glib/gspawn-win32.c:414
+#: glib/gspawn-win32.c:426
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -422,26 +414,26 @@ msgstr ""
 "אומדערװאַרטער דורכפֿאַל אין g_io_channel_win32_poll() בשעת לײענען דאַטן פֿון אַ "
 "קינדפּראָצעס"
 
-#: glib/gspawn-win32.c:784 glib/gspawn.c:1002
+#: glib/gspawn-win32.c:834 glib/gspawn.c:1002
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "דורכפֿאַל אין לײענע פֿון אַ ינדרער (%s)"
 
-#: glib/gspawn-win32.c:871
+#: glib/gspawn-win32.c:923
 msgid "Failed to execute helper program"
 msgstr "דורכפֿאַל אין באַאַרבעטן הילף־פּראָגראַם"
 
-#: glib/gspawn-win32.c:904 glib/gspawn.c:1207
-#, c-format
-msgid "Failed to change to directory '%s' (%s)"
-msgstr "דורכפֿאַל אין זיך קערן צו פּאַפּקע '%s' (%s)"
-
-#: glib/gspawn-win32.c:913
+#: glib/gspawn-win32.c:944 glib/gspawn-win32.c:988
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "דורכפֿאַל אין באַאַרבעטן קינדפּראָצעס (%s)"
 
-#: glib/gspawn-win32.c:956 glib/gspawn.c:1338
+#: glib/gspawn-win32.c:979 glib/gspawn.c:1207
+#, c-format
+msgid "Failed to change to directory '%s' (%s)"
+msgstr "דורכפֿאַל אין זיך קערן צו פּאַפּקע '%s' (%s)"
+
+#: glib/gspawn-win32.c:1033 glib/gspawn.c:1338
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "דורכפֿאַל אין שאַפֿן רער צוליב קאָמוניקירן מיט קינדפּראָצעס (%s)"
@@ -503,3 +495,9 @@ msgstr "אומלעקסיקער סעקװענץ אין פֿאַרװאַנדל־א�
 #: glib/gutf8.c:1375 glib/gutf8.c:1471
 msgid "Character out of range for UTF-16"
 msgstr "שריפֿטצײכן ניט אין דער UTF־16 גאַמע"
+
+#~ msgid "Incorrect message size"
+#~ msgstr "ניט־ריכטיקע אָנזאָגגרײס"
+
+#~ msgid "Socket error"
+#~ msgstr "סאָקעט־דורכפֿאַל"
