@@ -84,7 +84,6 @@ EXPORTS
 	g_completion_remove_items
 	g_convert
 	g_convert_error_quark
-	g_convert_init
 	g_convert_with_fallback
 	g_convert_with_iconv
 	g_datalist_clear
@@ -336,7 +335,6 @@ EXPORTS
 	g_main_loop_ref
 	g_main_loop_run
 	g_main_loop_unref
-	g_main_thread_init
 	g_malloc
 	g_malloc0
 	g_markup_error_quark
@@ -356,14 +354,11 @@ EXPORTS
 	g_mem_chunk_new
 	g_mem_chunk_print
 	g_mem_chunk_reset
-	g_mem_init
 	g_mem_is_system_malloc
 	g_mem_profile
 	g_mem_set_vtable
 	g_memdup
-	g_messages_init
 	g_mkstemp
-	g_mutex_init
 	g_node_child_index
 	g_node_child_position
 	g_node_children_foreach
@@ -442,7 +437,6 @@ EXPORTS
 	g_rand_double
 	g_rand_double_range
 	g_rand_free
-	g_rand_init
 	g_rand_int
 	g_rand_int_range
 	g_rand_new
@@ -644,15 +638,18 @@ EXPORTS
 	g_thread_exit
 	g_thread_exit
 	g_thread_functions_for_glib_use
+	g_thread_init_glib
 	g_thread_join
 	g_thread_pool_free
 	g_thread_pool_get_max_threads
 	g_thread_pool_get_max_unused_threads
 	g_thread_pool_get_num_threads
+	g_thread_pool_get_num_unused_threads
 	g_thread_pool_new
 	g_thread_pool_push
 	g_thread_pool_set_max_threads
 	g_thread_pool_set_max_unused_threads
+	g_thread_pool_stop_unused_threads
 	g_thread_pool_unprocessed
 	g_thread_self
 	g_thread_set_priority
