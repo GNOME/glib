@@ -1,3 +1,7 @@
+Thu Feb 04 20:42:24 1999  Tor Lillqvist  <tml@iki.fi>
+
+	* glibconfig.h.win32 config.h.win32: Update GLIB_MICRO_VERSION.
+
 1999-02-04  Christopher Blizzard  <blizzard@redhat.com>
 
 	* glib.spec (Packager): Change my email address
