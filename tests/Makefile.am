@@ -1,7 +1,15 @@
+if PLATFORM_WIN32
+no_undefined = -no-undefined
+endif
 
 INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/gmodule @GLIB_DEBUG_FLAGS@
 
 EFENCE=
+
+libglib = $(top_builddir)/libglib-1.3.la
+libgthread = $(top_builddir)/gthread/libgthread-1.3.la
+libgmodule = $(top_builddir)/gmodule/libgmodule-1.3.la
+libgobject = $(top_builddir)/gobject/libgobject-1.3.la
 
 EXTRA_DIST = \
 	$(test_scripts)		\
@@ -9,8 +17,8 @@ EXTRA_DIST = \
 	makefile.mingw.in
 
 BUILT_EXTRA_DIST = \
-	makefile.msc	\
-	makefile.mingw
+	makefile.mingw	\
+	makefile.msc
 
 test_programs = \
 	array-test	\
@@ -45,9 +53,9 @@ check_PROGRAMS = $(test_programs) $(test_script_support_programs)
 TESTS = $(test_programs) $(test_scripts)
 TESTS_ENVIRONMENT = srcdir=$(srcdir)
 
-progs_LDADD = $(EFENCE) $(top_builddir)/libglib-1.3.la $(EFENCE)
-thread_LDADD = $(top_builddir)/gthread/libgthread-1.3.la @G_THREAD_LIBS@ $(progs_LDADD)
-module_LDADD = $(top_builddir)/gmodule/libgmodule-1.3.la @G_MODULE_LIBS@ $(progs_LDADD)
+progs_LDADD = $(EFENCE) $(libglib) $(EFENCE)
+thread_LDADD = $(libgthread) @G_THREAD_LIBS@ $(progs_LDADD)
+module_LDADD = $(libgmodule) @G_MODULE_LIBS@ $(progs_LDADD)
 
 array_test_LDADD = $(progs_LDADD)
 date_test_LDADD = $(progs_LDADD)
@@ -81,17 +89,17 @@ install-libLTLIBRARIES:
 	:
 
 libmoduletestplugin_a_la_SOURCES = libmoduletestplugin_a.c
-libmoduletestplugin_a_la_LDFLAGS = @G_MODULE_LDFLAGS@ -avoid-version -module
-libmoduletestplugin_a_la_LIBADD = @G_MODULE_LIBS@ 
+libmoduletestplugin_a_la_LDFLAGS = @G_MODULE_LDFLAGS@ -avoid-version -module $(no_undefined)
+libmoduletestplugin_a_la_LIBADD = @G_MODULE_LIBS@ $(libgmodule) $(libglib)
 
 libmoduletestplugin_b_la_SOURCES = libmoduletestplugin_b.c
-libmoduletestplugin_b_la_LDFLAGS = @G_MODULE_LDFLAGS@ -avoid-version -module
-libmoduletestplugin_b_la_LIBADD = @G_MODULE_LIBS@  
-
-makefile.msc: $(top_builddir)/config.status $(top_srcdir)/tests/makefile.msc.in
-	cd $(top_builddir) && CONFIG_FILES=tests/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+libmoduletestplugin_b_la_LDFLAGS = @G_MODULE_LDFLAGS@ -avoid-version -module $(no_undefined)
+libmoduletestplugin_b_la_LIBADD = @G_MODULE_LIBS@ $(libgmodule) $(libglib)
 
 makefile.mingw: $(top_builddir)/config.status $(top_srcdir)/tests/makefile.mingw.in
+	cd $(top_builddir) && CONFIG_FILES=tests/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+
+makefile.msc: $(top_builddir)/config.status $(top_srcdir)/tests/makefile.msc.in
 	cd $(top_builddir) && CONFIG_FILES=tests/$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
 dist-hook: $(BUILT_EXTRA_DIST)
