@@ -82,7 +82,10 @@ reasons this function can only be called once.
 
 <!-- ##### FUNCTION g_get_user_name ##### -->
 <para>
-Gets the user name of the current user.
+Gets the user name of the current user. The encoding of the returned
+string is system defined. On Unix, it might be the preferred file name
+encoding, or something else, and there is no guarantee that it is even
+consistent on a machine. On Windows, it is always UTF-8.
 </para>
 
 @Returns: the user name of the current user.
@@ -92,8 +95,8 @@ Gets the user name of the current user.
 <para>
 Gets the real name of the user. This usually comes from the user's entry in the
 <filename>passwd</filename> file. The encoding of the returned string is system
-defined. If the real user name cannot be determined, the string "Unknown" is 
-returned.
+defined. (On Windows, it is, however, always UTF-8.) If the real user name
+cannot be determined, the string "Unknown" is returned.
 </para>
 
 @Returns: the user's real name.
@@ -158,7 +161,8 @@ Gets the directory to use for temporary files.
 This is found from inspecting the environment variables <envar>TMPDIR</envar>, 
 <envar>TMP</envar>, and <envar>TEMP</envar>
 in that order. If none of those are defined "/tmp" is returned on UNIX and 
-"C:\" on Windows.
+"C:\" on Windows. The encoding of the returned string is system defined. On 
+Windows, it is always UTF-8. The return value is never NULL.
 </para>
 
 @Returns: the directory to use for temporary files.
@@ -167,7 +171,8 @@ in that order. If none of those are defined "/tmp" is returned on UNIX and
 <!-- ##### FUNCTION g_get_current_dir ##### -->
 <para>
 Gets the current directory.
-The returned string should be freed when no longer needed.
+The returned string should be freed when no longer needed. The encoding of the
+returned string is system defined. On Windows, it is always UTF-8.
 </para>
 
 @Returns: the current directory.
