@@ -1,5 +1,12 @@
 2001-07-21  Hans Breuer  <hans@breuer.org>
 
+	* glib/giowin32.c (g_io_channel_new_file) : set the
+	corresponding p(ermission)mode of the file when creating,
+	otherwise a wronly file couldn't be overwritten (at least
+	not on Win9x).
+
+2001-07-21  Hans Breuer  <hans@breuer.org>
+
 	* glib/giowin32.c : intial implementation of new API functions.
 	Not sure if it behaves as intended ...
 

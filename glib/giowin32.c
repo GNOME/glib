@@ -1075,7 +1075,7 @@ g_io_channel_new_file (const gchar  *filename,
                        const gchar  *mode,
                        GError      **error)
 {
-  int fid, flags;
+  int fid, flags, pmode;
   GIOChannel *channel;
 
   enum { /* Cheesy hack */
@@ -1125,29 +1125,36 @@ g_io_channel_new_file (const gchar  *filename,
     {
       case MODE_R:
         flags = O_RDONLY;
+        pmode = _S_IREAD;
         break;
       case MODE_W:
         flags = O_WRONLY | O_TRUNC | O_CREAT;
+        pmode = _S_IWRITE;
         break;
       case MODE_A:
         flags = O_WRONLY | O_APPEND | O_CREAT;
+        pmode = _S_IWRITE;
         break;
       case MODE_R | MODE_PLUS:
         flags = O_RDWR;
+        pmode = _S_IREAD | _S_IWRITE;
         break;
       case MODE_W | MODE_PLUS:
         flags = O_RDWR | O_TRUNC | O_CREAT;
+        pmode = _S_IREAD | _S_IWRITE;
         break;
       case MODE_A | MODE_PLUS:
         flags = O_RDWR | O_APPEND | O_CREAT;
+        pmode = _S_IREAD | _S_IWRITE;
         break;
       default:
         g_assert_not_reached ();
         flags = 0;
+        pmode = 0;
     }
 
 
-  fid = open (filename, flags);
+  fid = open (filename, flags, pmode);
   if (fid < 0)
     {
       g_set_error (error, G_FILE_ERROR,
