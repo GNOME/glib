@@ -285,34 +285,62 @@ g_rand_int_range (GRand* rand, gint32 begin, gint32 end)
   g_return_val_if_fail (rand != NULL, begin);
   g_return_val_if_fail (end > begin, begin);
 
-  /* All tricks doing modulo calculations do not have a perfect
-   * distribution -> We must use the slower way through gdouble for
-   * maximal quality. */
-   
-  if (dist <= 0x10000L) /* 2^16 */
+  switch (get_random_version ())
     {
-      /* This method, which only calls g_rand_int once is only good
-       * for (end - begin) <= 2^16, because we only have 32 bits set
-       * from the one call to g_rand_int (). */
-
-      /* we are using (trans + trans * trans), because g_rand_int only
-       * covers [0..2^32-1] and thus g_rand_int * trans only covers
-       * [0..1-2^-32], but the biggest double < 1 is 1-2^-52. 
-       */
-
-      gdouble double_rand = g_rand_int (rand) * 
-	(G_RAND_DOUBLE_TRANSFORM +
-	 G_RAND_DOUBLE_TRANSFORM * G_RAND_DOUBLE_TRANSFORM);
-      
-      random = (gint32) (double_rand * dist);
-    }
-  else
-    {
-      /* Now we use g_rand_double_range (), which will set 52 bits for
-         us, so that it is safe to round and still get a decent
-         distribution */
-       random = (gint32) g_rand_double_range (rand, 0, dist);
-    }
+    case 20:
+      if (dist <= 0x10000L) /* 2^16 */
+	{
+	  /* This method, which only calls g_rand_int once is only good
+	   * for (end - begin) <= 2^16, because we only have 32 bits set
+	   * from the one call to g_rand_int (). */
+	  
+	  /* we are using (trans + trans * trans), because g_rand_int only
+	   * covers [0..2^32-1] and thus g_rand_int * trans only covers
+	   * [0..1-2^-32], but the biggest double < 1 is 1-2^-52. 
+	   */
+	  
+	  gdouble double_rand = g_rand_int (rand) * 
+	    (G_RAND_DOUBLE_TRANSFORM +
+	     G_RAND_DOUBLE_TRANSFORM * G_RAND_DOUBLE_TRANSFORM);
+	  
+	  random = (gint32) (double_rand * dist);
+	}
+      else
+	{
+	  /* Now we use g_rand_double_range (), which will set 52 bits for
+	     us, so that it is safe to round and still get a decent
+	     distribution */
+	  random = (gint32) g_rand_double_range (rand, 0, dist);
+	}
+      break;
+    case 22:
+      if (dist == 0)
+	random = 0;
+      else 
+	{
+	  /* maxvalue is set to the predecessor of the greatest
+	   * multiple of dist less or equal 2^32. */
+	  guint32 maxvalue;
+	  if (dist <= 0x80000000u) /* 2^31 */
+	    {
+	      /* maxvalue = 2^32 - 1 - (2^32 % dist) */
+	      guint32 leftover = (0x80000000u % dist) * 2;
+	      if (leftover >= dist) leftover -= dist;
+	      maxvalue = 0xffffffffu - leftover;
+	    }
+	  else
+	    maxvalue = dist - 1;
+	  
+	  do
+	    random = g_rand_int (rand);
+	  while (random > maxvalue);
+	  
+	  random %= dist;
+	}
+      break;
+    default:
+      g_assert_not_reached ();
+    }      
  
   return begin + random;
 }
