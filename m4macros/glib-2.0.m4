@@ -9,7 +9,7 @@ AC_DEFUN(AM_PATH_GLIB_2_0,
 [dnl 
 dnl Get the cflags and libraries from pkg-config
 dnl
-AC_ARG_ENABLE(glibtest, [  --disable-glibtest       Do not try to compile and run a test GLIB program],
+AC_ARG_ENABLE(glibtest, [  --disable-glibtest      do not try to compile and run a test GLIB program],
 		    , enable_glibtest=yes)
 
   pkg_config_args=glib-2.0
