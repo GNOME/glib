@@ -29,7 +29,8 @@ libgmodule_la_SOURCES = gmodule.c
 libgmodule_la_LDFLAGS = \
 	@G_MODULE_LDFLAGS@ \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
-	-release $(LT_RELEASE)
+	-release $(LT_RELEASE) \
+	-export-dynamic
 
 libgmodule_la_LIBADD = @G_MODULE_LIBS_EXTRA@ @G_MODULE_LIBS@ # $(libglib)
 # we should really depend on $(libglib) for libgmodule.la, but libtool has a
