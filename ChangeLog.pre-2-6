@@ -1,3 +1,9 @@
+Sun Mar  3 02:30:05 2002  Tim Janik  <timj@gtk.org>
+
+	* glib/gscanner.h (_GScannerConfig): added padding.
+
+	* glib/ghook.h (struct _GHook): add two padding pointers.
+
 Thu Feb 28 11:13:49 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gshell.c (g_shell_unquote): Fix memory leak.

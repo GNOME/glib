@@ -154,6 +154,7 @@ struct	_GScannerConfig
   guint		char_2_token : 1;		/* return G_TOKEN_CHAR? */
   guint		symbol_2_token : 1;
   guint		scope_0_fallback : 1;		/* try scope 0 on lookups? */
+  guint		padding_dummy;
 };
 
 struct	_GScanner

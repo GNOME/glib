@@ -66,6 +66,7 @@ struct _GHookList
   GHook		   *hooks;
   GMemChunk	   *hook_memchunk;
   GHookFinalizeFunc finalize_hook;
+  gpointer	    dummy[2];
 };
 struct _GHook
 {

@@ -69,6 +69,8 @@ g_hook_list_init (GHookList *hook_list,
 					      hook_size * G_HOOKS_PREALLOC,
 					      G_ALLOC_AND_FREE);
   hook_list->finalize_hook = default_finalize_hook;
+  hook_list->dummy[0] = NULL;
+  hook_list->dummy[1] = NULL;
 }
 
 void
