@@ -1,3 +1,19 @@
+2003-02-26  Hans Breuer  <hans@breuer.org>
+
+	* glib/glib.def : added g_hash_table_find and a
+	bunch of g_queue_*
+
+	* glib/gmain.c : make it compile on win32, 
+	child_wake_up_pipe replaced by semaphore like it is done
+	for the other wake_up_pipe
+
+	* config.h.win32.in : added HAVE_INT64_AND_I64
+	* glibconfig.h.win32.in : G_MAXSIZE .. G_M??INT64,
+	and typedef for GPid
+
+	* test/env-test.c : don't let the local log function
+	collide in namespace with standard C
+
 2004-02-25  Sebastian Wilhelmi  <seppi@seppi.de>
 
 	* configure.in, glib/gthread.c: For the PID thread priorities

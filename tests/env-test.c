@@ -44,7 +44,7 @@
 #endif
 
 static void 
-log (const gchar   *log_domain,
+_log (const gchar   *log_domain,
      GLogLevelFlags log_level,
      const gchar   *message,
      gpointer       user_data)
@@ -62,7 +62,7 @@ main (int argc, char *argv[])
   gchar *value1 = "works";
   gchar *value2 = "again";
 
-  g_log_set_handler ("GLib", G_LOG_LEVEL_CRITICAL, log, NULL);
+  g_log_set_handler ("GLib", G_LOG_LEVEL_CRITICAL, _log, NULL);
 
   data = g_getenv (variable);
   g_assert (data == NULL && "TEST_G_SETENV already set");

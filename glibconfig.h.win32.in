@@ -27,6 +27,11 @@ G_BEGIN_DECLS
 #define G_MINLONG	LONG_MIN
 #define G_MAXLONG	LONG_MAX
 #define G_MAXULONG	ULONG_MAX
+#define G_MAXSIZE	UINT_MAX
+
+#define G_MININT64	G_GINT64_CONSTANT(0x8000000000000000)
+#define G_MAXINT64	G_GINT64_CONSTANT(0x7fffffffffffffff)
+#define G_MAXUINT64	G_GINT64_CONSTANT(0xffffffffffffffffU)
 
 typedef signed char gint8;
 typedef unsigned char guint8;
@@ -186,6 +191,8 @@ union _GSystemThread
 #define GLIB_SYSDEF_POLLNVAL =32
 
 #define G_MODULE_SUFFIX "dll"
+
+typedef int GPid;
 
 G_END_DECLS
 

@@ -251,7 +251,11 @@ enum {
 };
 static gint child_watch_init_state = CHILD_WATCH_UNINITIALIZED;
 static gint child_watch_count = 0;
+#ifndef G_OS_WIN32
 static gint child_watch_wake_up_pipe[2] = {0, 0};
+#else
+static HANDLE child_watch_wake_up_semaphore = NULL;
+#endif
 G_LOCK_DEFINE_STATIC (main_context_list);
 static GSList *main_context_list = NULL;
 
@@ -692,9 +696,9 @@ g_main_context_unref (GMainContext *context)
 static void 
 g_main_context_init_pipe (GMainContext *context)
 {
+# ifndef G_OS_WIN32
   if (context->wake_up_pipe[0] != -1)
     return;
-# ifndef G_OS_WIN32
   if (pipe (context->wake_up_pipe) < 0)
     g_error ("Cannot create pipe main loop wake-up: %s\n",
 	     g_strerror (errno));
@@ -702,6 +706,8 @@ g_main_context_init_pipe (GMainContext *context)
   context->wake_up_rec.fd = context->wake_up_pipe[0];
   context->wake_up_rec.events = G_IO_IN;
 # else
+  if (context->wake_up_semaphore != NULL)
+    return;
   context->wake_up_semaphore = CreateSemaphore (NULL, 0, 100, NULL);
   if (context->wake_up_semaphore == NULL)
     g_error ("Cannot create wake-up semaphore: %s",
@@ -747,8 +753,12 @@ g_main_context_new ()
   context->owner = NULL;
   context->waiters = NULL;
 
+# ifndef G_OS_WIN32
   context->wake_up_pipe[0] = -1;
   context->wake_up_pipe[1] = -1;
+# else
+  context->wake_up_semaphore = NULL;
+# endif
 #endif
 
   context->ref_count = 1;
@@ -3253,9 +3263,15 @@ check_for_child_exited (GSource *source)
 
   if (child_watch_source->count < count)
     {
+#ifndef G_OS_WIN32
       gint child_status;
 
       if (waitpid (child_watch_source->pid, &child_status, WNOHANG) > 0)
+#else
+      DWORD child_status;
+      if (GetExitCodeProcess (child_watch_source->pid, &child_status) &&
+          child_status != STILL_ACTIVE)
+#endif
 	{
 	  child_watch_source->child_status = child_status;
 	  child_watch_source->child_exited = TRUE;
@@ -3319,7 +3335,11 @@ g_child_watch_signal_handler (int signum)
 
   if (child_watch_init_state == CHILD_WATCH_INITIALIZED_THREADED)
     {
+#ifndef G_OS_WIN32
       write (child_watch_wake_up_pipe[1], "B", 1);
+#else
+      ReleaseSemaphore(child_watch_wake_up_semaphore, 1, NULL);
+#endif
     }
   else
     {
@@ -3336,7 +3356,11 @@ g_child_watch_source_init_single (void)
 
   child_watch_init_state = CHILD_WATCH_INITIALIZED_SINGLE;
 
+#ifndef G_OS_WIN32
   signal (SIGCHLD, g_child_watch_signal_handler);
+#else
+  /* FIXME: really nothing to be done ? --hb */
+#endif
 }
 
 static gpointer
@@ -3351,15 +3375,21 @@ child_watch_helper_thread (gpointer data)
       poll_func = g_poll;
 #endif
 
+#ifndef G_OS_WIN32
   fds.fd = child_watch_wake_up_pipe[0];
   fds.events = G_IO_IN;
+#endif
 
   while (1)
     {
       gchar b[20];
       GSList *list;
 
+#ifndef G_OS_WIN32
       read (child_watch_wake_up_pipe[0], b, 20);
+#else
+      WaitForSingleObject(child_watch_wake_up_semaphore, INFINITE);
+#endif
 
       /* We were woken up.  Wake up all other contexts in all other threads */
       G_UNLOCK (main_context_list);
@@ -3382,16 +3412,24 @@ g_child_watch_source_init_multi_threaded (void)
 
   g_assert (g_thread_supported());
 
+#ifndef G_OS_WIN32
   if (pipe (child_watch_wake_up_pipe) < 0)
     g_error ("Cannot create wake up pipe: %s\n", g_strerror (errno));
   fcntl (child_watch_wake_up_pipe[1], F_SETFL, O_NONBLOCK | fcntl (child_watch_wake_up_pipe[1], F_GETFL));
+#else
+  child_watch_wake_up_semaphore = CreateSemaphore (NULL, 0, G_MAXINT, NULL);
+#endif
 
   /* We create a helper thread that polls on the wakeup pipe indefinitely */
   /* FIXME: Think this through for races */
   if (g_thread_create (child_watch_helper_thread, NULL, FALSE, &error) == NULL)
     g_error ("Cannot create a thread to monitor child exit status: %s\n", error->message);
   child_watch_init_state = CHILD_WATCH_INITIALIZED_THREADED;
+#ifndef G_OS_WIN32
   signal (SIGCHLD, g_child_watch_signal_handler);
+#else
+  /* FIXME: really nothing to be done ? --hb */
+#endif
 }
 
 static void

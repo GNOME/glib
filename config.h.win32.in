@@ -178,6 +178,7 @@
 #else /* _MSC_VER */
 /* #undef HAVE_LONG_LONG */
 #endif /* _MSC_VER */
+#define HAVE_INT64_AND_I64 1
 
 /* define if system printf can print long long */
 #define HAVE_LONG_LONG_FORMAT 1
