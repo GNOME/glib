@@ -63,11 +63,9 @@ contents. It is rather like the standard strcpy() function, except that
 you do not have to worry about having enough space to copy the string.
 </para>
 
-@string: 
+@string: the destination #GString. Its current contents are destroyed.
 @rval: the source #GString.
 @Returns: the destination #GString.
-<!-- # Unused Parameters # -->
-@lval: the destination #GString. Its current contents are destroyed.
 
 
 <!-- ##### FUNCTION g_string_sprintf ##### -->

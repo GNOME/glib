@@ -282,24 +282,33 @@ The standard delimiters, used in #g_strdelimit.
 
 <!-- ##### FUNCTION g_strescape ##### -->
 <para>
-Escapes all backslash characters, '\' in a string, by inserting a second '\'.
+Escapes the special characters '\b', '\f', '\n', '\r', '\t', '\' and
+'&quot;' in the string @source by inserting a '\' before
+them. Additionally all characters in the range 0x01-0x1F (everything
+below SPACE) and in the range 0x80-0xFF (all non-ASCII chars) are
+replaced with a '\' followed by their octal representation. Characters
+supplied in @exceptions are not escaped.
 </para>
 
-@source: 
-@exceptions: 
-@Returns: a newly allocated copy of @string, with all backslash characters
-escaped using a second backslash.
-<!-- # Unused Parameters # -->
-@string: a string to escape the backslashes in.
+<para>
+g_strcompress() does the reverse conversion.
+</para>
+
+@source: a string to escape.
+@exceptions: a string of characters not to escape in @source.
+@Returns: a newly allocated copy of @source with certain
+characters escaped. See above.
 
 
 <!-- ##### FUNCTION g_strcompress ##### -->
 <para>
-
+Replaces all escaped characters with their one byte equivalent. It
+does the reverse conversion of g_strescape(). 
 </para>
 
-@source: 
-@Returns: 
+@source: a string to compress.
+@Returns: a newly allocated copy of @source with all escaped 
+character compressed.
 
 
 <!-- ##### FUNCTION g_strcanon ##### -->

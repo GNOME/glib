@@ -281,8 +281,6 @@ Adds a symbol to the given scope.
 @scope_id: 
 @func: 
 @user_data: 
-<!-- # Unused Parameters # -->
-@func_data: 
 
 
 <!-- ##### FUNCTION g_scanner_scope_lookup_symbol ##### -->

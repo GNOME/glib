@@ -195,7 +195,7 @@ self-contained list with one element.
 </para>
 
 @list: a #GSList.
-@llink: an element in the #GSList.
+@link: an element in the #GSList.
 @Returns: the new start of the #GSList, without the element.
 
 
