@@ -1,3 +1,7 @@
+2001-06-08  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gthread-2.0-uninstalled.pc.in (Cflags): Add @G_THREAD_CFLAGS@.
+
 2001-06-07  Havoc Pennington  <hp@redhat.com>
 
 	* m4macros/glib-2.0.m4: subst GLIB_GENMARSHAL, GOBJECT_QUERY, 
