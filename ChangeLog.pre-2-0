@@ -1,3 +1,14 @@
+2000-07-31  Tor Lillqvist  <tml@iki.fi>
+
+	* giowin32.c (buffer_read): The code didn't compile (must
+	have been sleepy when committing). "return" instead of "break"
+
+	(g_io_win32_fd_add_watch): Cannot check if the file descriptor is
+	readable by calling ReadFile to read zero bytes. ReadFile blocks
+	on NT even if trying to read nothing at all. So, don't check if
+	file descriptor is readable; assume this function isn't called
+	otherwise.
+
 Sun Jul 30 10:44:16 2000  Tim Janik  <timj@gtk.org>
 
 	* gmain.c (g_get_current_time): fix tor's recent changes which

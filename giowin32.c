@@ -273,7 +273,10 @@ buffer_read (GIOWin32Channel *channel,
       WaitForSingleObject (channel->data_avail_event, INFINITE);
       LOCK (channel->mutex);
       if (channel->rdp == channel->wrp && !channel->running)
-	break;
+	{
+	  UNLOCK (channel->mutex);
+	  return 0;
+	}
     }
   
   if (channel->rdp < channel->wrp)
@@ -635,10 +638,7 @@ g_io_win32_fd_add_watch (GIOChannel    *channel,
     g_print ("g_io_win32_fd_add_watch: fd:%d handle:%#x\n",
 	     win32_channel->fd, watch->pollfd.fd);
   
-  /* Is it readable? (Would be strange to watch it otherwise, but... */
-  if (ReadFile ((HANDLE) _get_osfhandle (win32_channel->fd),
-		dummy, 0, &nbytes, NULL))
-    create_reader_thread (win32_channel, fd_reader);
+  create_reader_thread (win32_channel, fd_reader);
 
   g_main_add_poll (&watch->pollfd, priority);
   
