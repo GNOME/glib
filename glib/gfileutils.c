@@ -348,7 +348,13 @@ g_file_error_from_errno (gint err_no)
       return G_FILE_ERROR_PERM;
       break;
 #endif
-      
+
+#ifdef ENOSYS
+    case ENOSYS:
+      return G_FILE_ERROR_NOSYS;
+      break;
+#endif
+
     default:
       return G_FILE_ERROR_FAILED;
       break;

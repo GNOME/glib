@@ -1,3 +1,7 @@
+2004-08-27  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/tmpl/fileutils.sgml: Add G_FILE_ERROR_NOSYS.
+
 2004-08-25 Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.5.2 ===
