@@ -75,7 +75,8 @@ libglib_1_3_la_SOURCES = 	\
 	gunichartables.h	\
 	gunidecomp.h		\
 	gunidecomp.c		\
-	gutils.c
+	gutils.c		\
+	@ALLOCA@
 
 glibincludedir=$(includedir)/glib-2.0
 glibinclude_HEADERS =   \
