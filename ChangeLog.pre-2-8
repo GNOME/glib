@@ -1,3 +1,19 @@
+Thu Nov  1 21:48:43 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* tests/mainloop-test.c (recurser_idle): Recurse
+	with may_block = FALSE, so we don't get into
+	the pathology where the recurser_idle recurses
+	for 10 iterations, and the only thing that is
+	running is the recurser idle, which adds
+	another recursion for each of those 10 iterations
+	and....
+
+	* tests/mainloop-test.c (create_crawler): Fix race
+	condition where a crawler source could be destroyed
+	before it was added to the crawler array.
+
+	* test/Makefile.am: Add mainloop-test back.
+	
 2001-11-01  Marius Andreiana  <mandreiana@yahoo.com>
 
 	* configure.in: Added ro (Romanian) to ALL_LINGUAS

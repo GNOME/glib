@@ -18,6 +18,10 @@
 #define CRAWLER_TIMEOUT_RANGE 40
 #define RECURSER_TIMEOUT 50
 
+/* The partial ordering between the context array mutex and
+ * crawler array mutex is that the crawler array mutex cannot
+ * be locked while the context array mutex is locked
+ */
 GPtrArray *context_array;
 GMutex *context_array_mutex;
 GCond *context_array_cond;
@@ -327,13 +331,14 @@ create_crawler (void)
   GSource *source = g_timeout_source_new (g_random_int_range (0, CRAWLER_TIMEOUT_RANGE));
   g_source_set_callback (source, (GSourceFunc)crawler_callback, source, NULL);
 
+  G_LOCK (crawler_array_lock);
+  g_ptr_array_add (crawler_array, source);
+  
   g_mutex_lock (context_array_mutex);
   g_source_attach (source, context_array->pdata[g_random_int_range (0, context_array->len)]);
   g_source_unref (source);
   g_mutex_unlock (context_array_mutex);
 
-  G_LOCK (crawler_array_lock);
-  g_ptr_array_add (crawler_array, source);
   G_UNLOCK (crawler_array_lock);
 }
 
@@ -361,7 +366,7 @@ recurser_idle (gpointer data)
   gint i;
 
   for (i = 0; i < 10; i++)
-    g_main_context_iteration (context, TRUE);
+    g_main_context_iteration (context, FALSE);
 
   return FALSE;
 }
