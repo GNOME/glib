@@ -1,3 +1,11 @@
+2001-01-09  Tor Lillqvist  <tml@iki.fi>
+
+	* gutils.c (g_basename, g_dirname): Don't warn about deprecation
+	on Win32. Code written for GLib 1.2 doesn't have much choice but
+	to use GLib >= 1.3 on Win32.
+
+	* glib.def: Update.
+
 2001-01-09  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gmem.c: Made g_profile_mutex a GMutex* instead of

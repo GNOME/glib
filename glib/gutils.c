@@ -378,7 +378,7 @@ gchar*
 g_basename (const gchar	   *file_name)
 {
   register gchar *base;
-#ifdef G_ENABLE_DEBUG
+#if defined(G_ENABLE_DEBUG) && !defined(G_OS_WIN32)
   static gboolean first_call = TRUE;
 
   if (first_call)
@@ -538,7 +538,7 @@ g_path_get_dirname (const gchar	   *file_name)
 gchar*
 g_dirname (const gchar	   *file_name)
 {
-#ifdef G_ENABLE_DEBUG
+#if defined(G_ENABLE_DEBUG) && !defined(G_OS_WIN32)
   static gboolean first_call = TRUE;
 
   if (first_call)

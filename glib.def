@@ -1,4 +1,6 @@
 EXPORTS
+	g_allocator_free
+	g_allocator_new
 	g_array_append_vals
 	g_array_free
 	g_array_insert_vals
@@ -8,6 +10,8 @@ EXPORTS
 	g_array_remove_index_fast
 	g_array_set_size
 	g_array_sized_new
+	g_array_sort
+	g_array_sort_with_data
 	g_atexit
 	g_basename
 	g_bit_nth_lsf
@@ -22,6 +26,8 @@ EXPORTS
 	g_byte_array_remove_index_fast
 	g_byte_array_set_size
 	g_byte_array_sized_new
+	g_byte_array_sort
+	g_byte_array_sort_with_data
 	g_cache_destroy
 	g_cache_insert
 	g_cache_key_foreach
@@ -309,6 +315,8 @@ EXPORTS
 	g_ptr_array_remove_index_fast
 	g_ptr_array_set_size
 	g_ptr_array_sized_new
+	g_ptr_array_sort
+	g_ptr_array_sort_with_data
 	g_qsort_with_data
 	g_quark_from_static_string
 	g_quark_from_string
