@@ -1,3 +1,7 @@
+2002-04-08  Stanislav Brabec  <utx@penguin.cz> 
+
+        * cs.po: Added Czech (cs) to ALL_LINGUAS.
+
 2002-03-31  Hasbullah Bin Pit <sebol@ikhlas.com>
 
 	* configure.in: Added Malay (ms)to ALL_LINGUAS.
