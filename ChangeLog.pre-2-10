@@ -1,3 +1,16 @@
+1999-03-15  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* configure.in: Added the macros G_(U)?INT_(8|16|32|64)_FORMAT to
+	use for printf and (much more important) scanf format strings for
+	the corresponding GLib types. 
+
+	* glib.h Added G_(U)?(SHORT|INT|LONG)_FORMAT for consistency. It
+	however makes no sense to also provide G_(FLOAT|DOUBLE)_FORMAT, as
+	they are different for printf (f for both) and scanf (f for float,
+	lf for double). Defining G_INT_FORMAT makes sense however, as we
+	might want to define gint to something different than int someday
+	in the future. Idea from Sascha Brawer <sb@adasys.ch>.
+	
 1999-03-14  Jeff Garzik  <jgarzik@pobox.com>
 
 	* gdate.c:

@@ -866,6 +866,8 @@ _______EOF
 	cat >>$outfile <<_______EOF
 typedef signed char gint8;
 typedef unsigned char guint8;
+#define G_GINT8_FORMAT "hi"
+#define G_GUINT8_FORMAT "hu"
 _______EOF
 
 
@@ -873,6 +875,8 @@ _______EOF
 	  cat >>$outfile <<_______EOF
 typedef signed $gint16 gint16;
 typedef unsigned $gint16 guint16;
+#define G_GINT16_FORMAT $gint16_format
+#define G_GUINT16_FORMAT $guint16_format
 _______EOF
 	fi
 
@@ -881,6 +885,8 @@ _______EOF
 	  cat >>$outfile <<_______EOF
 typedef signed $gint32 gint32;
 typedef unsigned $gint32 guint32;
+#define G_GINT32_FORMAT $gint32_format
+#define G_GUINT32_FORMAT $guint32_format
 _______EOF
 	fi
 
@@ -892,6 +898,8 @@ ${glib_warning_guard}#define G_HAVE_GINT64 1
 ${glib_extension}typedef signed $gint64 gint64;
 ${glib_extension}typedef unsigned $gint64 guint64;
 
+#define G_GINT64_FORMAT $gint64_format
+#define G_GUINT64_FORMAT $guint64_format
 #define G_GINT64_CONSTANT(val)	$gint64_constant
 _______EOF
 	fi
@@ -1044,29 +1052,55 @@ if test x$ac_cv_header_sys_poll_h = xyes ; then
 fi
 
 case 2 in
-$ac_cv_sizeof_short)		gint16=short;;
-$ac_cv_sizeof_int)		gint16=int;;
+$ac_cv_sizeof_short)		
+  gint16=short
+  gint16_format='"hi"'
+  guint16_format='"hu"'
+  ;;
+$ac_cv_sizeof_int)		
+  gint16=int
+  gint16_format='"i"'
+  guint16_format='"u"'
+  ;;
 esac
 case 4 in
-$ac_cv_sizeof_short)		gint32=short;;
-$ac_cv_sizeof_int)		gint32=int;;
-$ac_cv_sizeof_long)		gint32=long;;
+$ac_cv_sizeof_short)		
+  gint32=short
+  gint32_format='"hi"'
+  guint32_format='"hu"'
+  ;;
+$ac_cv_sizeof_int)		
+  gint32=int
+  gint32_format='"i"'
+  guint32_format='"u"'
+  ;;
+$ac_cv_sizeof_long)		
+  gint32=long
+  gint32_format='"li"'
+  guint32_format='"lu"'
+  ;;
 esac
 case 8 in
 $ac_cv_sizeof_int)
   gint64=int
+  gint64_format='"i"'
+  guint64_format='"u"'
   glib_extension=
   glib_warning_guard=
   gint64_constant='(val)'
   ;;
 $ac_cv_sizeof_long)
   gint64=long
+  gint64_format='"li"'
+  guint64_format='"lu"'
   glib_extension=
   glib_warning_guard=
   gint64_constant='(val##L)'
   ;;
 $ac_cv_sizeof_long_long)
   gint64='long long'
+  gint64_format='"lli"'
+  guint64_format='"llu"'
   glib_extension='G_GNUC_EXTENSION '
   glib_warning_guard="
 #if defined (__GNUC__) && __GNUC__ >= 2 && __GNUC_MINOR__ >= 8
