@@ -1,3 +1,16 @@
+Sat Oct 25 01:09:17 2003  Matthias Clasen  <maclas@gmx.de>
+
+	* gparam.h (struct _GParamSpecClass): Add /*< private >*/ 
+	marker for documentation purposes.
+
+Tue Oct 21 23:17:06 2003  Matthias Clasen  <maclas@gmx.de>
+
+	* genums.h (struct _GEnumClass): 
+	* genums.h (struct _GFlagsClass): 
+	* gtypemodule.h (struct _GTypeModuleClass):
+	* gtypemodule.h (struct _GTypeModule): Add /*< public >*/ 
+	and /*< private >*/ markers for documentation purposes.
+
 Tue Oct 14 17:40:19 2003  Owen Taylor  <otaylor@redhat.com>
 
 	* gparamspecs.[ch]: Add a new GParamSpecOverride type

@@ -50,7 +50,8 @@ typedef struct _GFlagsValue GFlagsValue;
 struct	_GEnumClass
 {
   GTypeClass  g_type_class;
-  
+
+  /*< public >*/  
   gint	      minimum;
   gint	      maximum;
   guint	      n_values;
@@ -60,6 +61,7 @@ struct	_GFlagsClass
 {
   GTypeClass   g_type_class;
   
+  /*< public >*/  
   guint	       mask;
   guint	       n_values;
   GFlagsValue *values;

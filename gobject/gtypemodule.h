@@ -44,6 +44,8 @@ struct _GTypeModule
   guint use_count;
   GSList *type_infos;
   GSList *interface_infos;
+
+  /*< public >*/
   gchar *name;
 };
 
@@ -51,9 +53,11 @@ struct _GTypeModuleClass
 {
   GObjectClass parent_class;
 
+  /*< public >*/
   gboolean (* load)   (GTypeModule *module);
   void     (* unload) (GTypeModule *module);
 
+  /*< private >*/
   /* Padding for future expansion */
   void (*reserved1) (void);
   void (*reserved2) (void);
