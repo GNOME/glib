@@ -1,3 +1,9 @@
+2000-07-19  Tor Lillqvist  <tml@iki.fi>
+
+	* gmodule-win32.c: Don't #include <tlhelp32.h> when compiling with
+	gcc, as it isn't provided. Declaration of a needed struct (from
+	www.microsoft.com) inserted instead.
+
 2000-05-13  Tor Lillqvist  <tml@iki.fi>
 
 	* makefile.mingw.in: New file, with gmodule stuff

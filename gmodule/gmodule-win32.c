@@ -33,7 +33,34 @@
 
 #include <stdio.h>
 #include <windows.h>
+
+#ifdef __MSVC__
 #include <tlhelp32.h>
+#else
+
+/* The w32api headers supplied with the mingw gcc don't have
+ * tlhelp32.h. We really only need the MODULEENTRY32 struct and the
+ * TH32CS_SNAPMODULE value, so provide them here.
+ */
+
+#define MAX_MODULE_NAME32 255
+
+typedef struct
+{
+  DWORD dwSize;
+  DWORD th32ModuleID;
+  DWORD th32ProcessID;
+  DWORD GlblcntUsage;
+  DWORD ProccntUsage;
+  BYTE  *modBaseAddr; 
+  DWORD modBaseSize; 
+  HMODULE hModule;     
+  char szModule[MAX_MODULE_NAME32 + 1];
+  char szExePath[MAX_PATH];
+} MODULEENTRY32;
+#define TH32CS_SNAPMODULE 8
+
+#endif
 
 static void
 set_error (void)
@@ -82,10 +109,10 @@ find_in_any_module_using_toolhelp (const gchar *symbol_name)
   typedef HANDLE (WINAPI *PFNCREATETOOLHELP32SNAPSHOT)(DWORD, DWORD);
   static PFNCREATETOOLHELP32SNAPSHOT pfnCreateToolhelp32Snapshot = NULL;
 
-  typedef BOOL (WINAPI *PFNMODULE32FIRST)(HANDLE, LPMODULEENTRY32);
+  typedef BOOL (WINAPI *PFNMODULE32FIRST)(HANDLE, MODULEENTRY32*);
   static PFNMODULE32FIRST pfnModule32First= NULL;
 
-  typedef BOOL (WINAPI *PFNMODULE32NEXT)(HANDLE, LPMODULEENTRY32);
+  typedef BOOL (WINAPI *PFNMODULE32NEXT)(HANDLE, MODULEENTRY32*);
   static PFNMODULE32NEXT pfnModule32Next = NULL;
 
   static HMODULE kernel32;
