@@ -451,8 +451,8 @@ type_lookup_iface_entry_L (TypeNode *node,
 }
 
 static inline gboolean
-type_lookup_prerequisite (TypeNode *iface,
-			  GType     prerequisite_type)
+type_lookup_prerequisite_L (TypeNode *iface,
+			    GType     prerequisite_type)
 {
   if (NODE_IS_IFACE (iface) && IFACE_NODE_N_PREREQUISITES (iface))
     {
@@ -817,13 +817,14 @@ check_add_interface_L (GType instance_type,
   tnode = lookup_type_node_L (NODE_PARENT_TYPE (iface));
   if (NODE_PARENT_TYPE (tnode) && !type_lookup_iface_entry_L (node, tnode))
     {
+      /* 2001/7/31:timj: erk, i guess this warning is junk as interface derivation is flat */
       g_warning ("cannot add sub-interface `%s' to type `%s' which does not conform to super-interface `%s'",
 		 NODE_NAME (iface),
 		 NODE_NAME (node),
 		 NODE_NAME (tnode));
       return FALSE;
     }
-  tnode = find_conforming_type_L (node, iface);
+  tnode = find_conforming_type_L (node, iface);  // FIXME: iface overriding
   if (tnode)
     {
       g_warning ("cannot add interface type `%s' to type `%s', since type `%s' already conforms to interface",
@@ -1166,7 +1167,8 @@ g_type_interface_add_prerequisite (GType interface_type,
   if (prerequisite_node->is_instantiatable)
     {
       guint i;
-      
+
+      /* can have at most one publically installable instantiatable prerequisite */
       for (i = 0; i < IFACE_NODE_N_PREREQUISITES (iface); i++)
 	{
 	  TypeNode *prnode = lookup_type_node_L (IFACE_NODE_PREREQUISITES (iface)[i]);
@@ -1197,7 +1199,7 @@ g_type_interface_add_prerequisite (GType interface_type,
       type_iface_add_prerequisite_W (iface, prerequisite_node);
     }
   else
-    g_warning ("prerequisite `%s' for interface `%s' is not instantiatable or interface",
+    g_warning ("prerequisite `%s' for interface `%s' is neither instantiatable nor interface",
 	       type_descriptive_name_L (prerequisite_type),
 	       type_descriptive_name_L (interface_type));
   G_WRITE_UNLOCK (&type_rw_lock);
@@ -2132,7 +2134,7 @@ type_node_is_a_L (TypeNode *node,
     return TRUE;
   else if (support_prerequisites &&
 	   NODE_IS_IFACE (node) &&
-	   type_lookup_prerequisite (node, NODE_TYPE (iface_node)))
+	   type_lookup_prerequisite_L (node, NODE_TYPE (iface_node)))
     return TRUE;
   else
     return FALSE;
@@ -2704,7 +2706,7 @@ g_type_value_table_peek (GType type)
   node = lookup_type_node_L (type);
   if (!node)
     {
-      g_warning ("type id `%u' is invalid", type);
+      g_warning (G_STRLOC ": type id `%u' is invalid", type);
       G_READ_UNLOCK (&type_rw_lock);
       return NULL;
     }
