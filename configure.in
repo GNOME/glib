@@ -710,7 +710,8 @@ if test x"$enable_threads" = xyes; then
     # not using the proper multithread flag
     old_CPPFLAGS=$CPPFLAGS
     CPPFLAGS="$CPPFLAGS $G_THREAD_CFLAGS"
-    AC_EGREP_HEADER([[^a-zA-Z_]ctime_r[^a-zA-Z_]], time.h, ,
+    # Note: Digital UNIX 4.0d #defines ctime_r to _Pctime_r for gcc.
+    AC_EGREP_HEADER([[^a-zA-Z_](_P)?ctime_r[^a-zA-Z_]], time.h, ,
     G_THREAD_CFLAGS=
     AC_MSG_WARN($FLAG_DOES_NOT_WORK))
     CPPFLAGS=$old_CPPFLAGS
@@ -1065,9 +1066,9 @@ x$ac_cv_header_limits_h)
   ;;
 x$ac_cv_header_values_h)
   glib_values_h=yes
-  glib_ms=MINSHORT glib_Ms=MAXSHORT glib_Mus=unknown  # Please insert the right
-  glib_mi=MININT   glib_Mi=MAXINT   glib_Mui=unknown  # values from
-  glib_ml=MINLONG  glib_Ml=MAXLONG  glib_Mul=unknown  # /usr/include/values.h
+  glib_ms=MINSHORT glib_Ms=MAXSHORT glib_Mus="(((gushort)G_MAXSHORT)*2+1)"
+  glib_mi=MININT   glib_Mi=MAXINT   glib_Mui="(((guint)G_MAXINT)*2+1)"
+  glib_ml=MINLONG  glib_Ml=MAXLONG  glib_Mul="(((gulong)G_MAXLONG)*2+1)"
   ;;
 esac
 

@@ -1,3 +1,18 @@
+1999-03-17  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* configure.in: Added missing values for G_MAXU(SHORT|INT|LONG) on
+	platforms with only /usr/include/values.h.
+
+	* acconfig.h: Removed unnecessary macros.
+
+        * glibconfig.h.win32, config.h.win32: Moved G_THREADS_IMPL_POSIX
+	from config.h.win32 to glibconfig.h.win32. Taken from glib 1.2
+	branch.
+
+	* configure.in: Also accept _Pctime_r instead of ctime_r, while
+	seraching for the right `_REENTRANT' flag. This is for Digital
+	UNIX 4.0d. Taken from glib 1.2 branch.
+
 Wed Mar 17 03:14:56 1999  Tim Janik  <timj@gtk.org>
 
 	* glib.h: added GLIB_CHECK_VERSION() macro similar to

@@ -104,6 +104,7 @@ typedef unsigned __int64 guint64;
  * }
  */
 
+#define G_THREADS_IMPL_POSIX
 typedef struct _GStaticMutex GStaticMutex;
 struct _GStaticMutex
 {
