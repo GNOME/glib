@@ -149,13 +149,13 @@ gboolean	      g_signal_parse_name   (const gchar	*detailed_signal,
 void	g_signal_stop_emission		    (gpointer		  instance,
 					     guint		  signal_id,
 					     GQuark		  detail);
-guint	g_signal_add_emission_hook	    (guint		  signal_id,
+gulong	g_signal_add_emission_hook	    (guint		  signal_id,
 					     GQuark		  quark,
 					     GSignalEmissionHook  hook_func,
 					     gpointer	       	  hook_data,
 					     GDestroyNotify	  data_destroy);
 void	g_signal_remove_emission_hook	    (guint		  signal_id,
-					     guint		  hook_id);
+					     gulong		  hook_id);
 
 
 /* --- signal handlers --- */
@@ -163,16 +163,16 @@ gboolean g_signal_has_handler_pending	      (gpointer		  instance,
 					       guint		  signal_id,
 					       GQuark		  detail,
 					       gboolean		  may_be_blocked);
-guint	 g_signal_connect_closure_by_id	      (gpointer		  instance,
+gulong	 g_signal_connect_closure_by_id	      (gpointer		  instance,
 					       guint		  signal_id,
 					       GQuark		  detail,
 					       GClosure		 *closure,
 					       gboolean		  after);
-guint	 g_signal_connect_closure	      (gpointer		  instance,
+gulong	 g_signal_connect_closure	      (gpointer		  instance,
 					       const gchar       *detailed_signal,
 					       GClosure		 *closure,
 					       gboolean		  after);
-guint	 g_signal_connect_data		      (gpointer		  instance,
+gulong	 g_signal_connect_data		      (gpointer		  instance,
 					       const gchar	 *detailed_signal,
 					       GCallback	  c_handler,
 					       gpointer		  data,
@@ -180,12 +180,12 @@ guint	 g_signal_connect_data		      (gpointer		  instance,
 					       gboolean		  swapped,
 					       gboolean		  after);
 void	 g_signal_handler_block		      (gpointer		  instance,
-					       guint		  handler_id);
+					       gulong		  handler_id);
 void	 g_signal_handler_unblock	      (gpointer		  instance,
-					       guint		  handler_id);
+					       gulong		  handler_id);
 void	 g_signal_handler_disconnect	      (gpointer		  instance,
-					       guint		  handler_id);
-guint	 g_signal_handler_find		      (gpointer		  instance,
+					       gulong		  handler_id);
+gulong	 g_signal_handler_find		      (gpointer		  instance,
 					       GSignalMatchType	  mask,
 					       guint		  signal_id,
 					       GQuark		  detail,

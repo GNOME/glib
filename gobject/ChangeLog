@@ -1,3 +1,15 @@
+Sat Apr 28 23:39:42 2001  Tim Janik  <timj@gtk.org>
+
+	* gsignal.[hc]: made signal handler and emission hook ids gulongs.
+	(signal_handlers_foreach_matched_R): only invoke callback for handlers
+	that are not disconnected (id>0).
+	(signal_emit_R): prevent invocation of signal handlers during the
+	emission they were connected within.
+	
+	* glib-mkenums: publically installed perl-script to parse C code
+	enums and generate descriptions thereof.
+	* glib-mkenums.1: assorted man page.
+	
 2001-04-19  Havoc Pennington  <hp@redhat.com>
 
 	* gobject.c (g_object_get_valist): We were returning junk memory

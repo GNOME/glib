@@ -157,7 +157,7 @@ g_hook_destroy_link (GHookList *hook_list,
 
 gboolean
 g_hook_destroy (GHookList   *hook_list,
-		guint	     hook_id)
+		gulong	     hook_id)
 {
   GHook *hook;
   
@@ -451,7 +451,7 @@ g_hook_next_valid (GHookList *hook_list,
 
 GHook*
 g_hook_get (GHookList *hook_list,
-	    guint      hook_id)
+	    gulong     hook_id)
 {
   GHook *hook;
   

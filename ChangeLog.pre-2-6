@@ -1,3 +1,7 @@
+Sun Apr 29 00:37:34 2001  Tim Janik  <timj@gtk.org>
+
+	* ghook.[hc]: made hook ids a gulong.
+
 2001-04-20  Dan Winship  <danw@ximian.com>
 
 	* configure.in: Add a check for the Darwin dynamic linker. Use

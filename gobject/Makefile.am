@@ -155,10 +155,12 @@ libgobject_1_3_la_SOURCES = $(gruntime_target_sources)
 #
 # programs to compile and install
 #
-bin_PROGRAMS = gobject-query glib-genmarshal testgruntime
+bin_PROGRAMS = gobject-query glib-genmarshal glib-mkenums
+noinst_PROGRAMS =  testgruntime
 # source files
 gobject_query_SOURCES = gobject-query.c
 glib_genmarshal_SOURCES = glib-genmarshal.c
+glib_mkenums_SOURCES = glib-mkenums
 testgruntime_SOURCES = testgruntime.c
 # link programs against libgobject
 progs_LDADD = libgobject-1.3.la $(libglib)
@@ -169,7 +171,7 @@ testgruntime_LDADD = $(progs_LDADD)
 #
 # manual pages to install
 #
-man_MANS = glib-genmarshal.1
+man_MANS = glib-genmarshal.1 glib-mkenums.1
 
 #
 # auxillary files
@@ -179,7 +181,8 @@ EXTRA_DIST += 			\
 	makefile.msc.in 	\
 	gobject.def		\
 	gobject.rc.in		\
-	glib-genmarshal.1
+	glib-genmarshal.1	\
+	glib-mkenums.1
 
 BUILT_EXTRA_DIST = \
 	makefile.mingw		\

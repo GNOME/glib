@@ -110,7 +110,7 @@ static	      void		handler_insert		(guint		  signal_id,
 							 gpointer	  instance,
 							 Handler	 *handler);
 static	      Handler*		handler_lookup		(gpointer	  instance,
-							 guint		  handler_id,
+							 gulong		  handler_id,
 							 guint		 *signal_id_p);
 static inline HandlerMatch*	handler_match_prepend	(HandlerMatch	 *list,
 							 Handler	 *handler,
@@ -204,7 +204,7 @@ struct _HandlerList
 };
 struct _Handler
 {
-  guint         id;
+  gulong        sequential_number;
   Handler      *next;
   Handler      *prev;
   GQuark	detail;
@@ -235,6 +235,7 @@ static Emission      *g_recursive_emissions = NULL;
 static Emission      *g_restart_emissions = NULL;
 static GTrashStack   *g_handler_ts = NULL;
 static GTrashStack   *g_emission_ts = NULL;
+static gulong         g_handler_sequential_number = 1;
 G_LOCK_DEFINE_STATIC (g_signal_mutex);
 
 
@@ -339,7 +340,7 @@ handler_list_lookup (guint    signal_id,
 
 static Handler*
 handler_lookup (gpointer instance,
-		guint    handler_id,
+		gulong   handler_id,
 		guint   *signal_id_p)
 {
   GBSearchArray *hlbsa = g_hash_table_lookup (g_handler_list_bsa_ht, instance);
@@ -354,7 +355,7 @@ handler_lookup (gpointer instance,
           Handler *handler;
           
           for (handler = hlist->handlers; handler; handler = handler->next)
-            if (handler->id == handler_id)
+            if (handler->sequential_number == handler_id)
               {
                 if (signal_id_p)
                   *signal_id_p = hlist->signal_id;
@@ -426,7 +427,7 @@ handlers_find (gpointer         instance,
       
       mask = ~mask;
       for (handler = hlist ? hlist->handlers : NULL; handler; handler = handler->next)
-        if (handler->id &&
+        if (handler->sequential_number &&
 	    ((mask & G_SIGNAL_MATCH_DETAIL) || handler->detail == detail) &&
 	    ((mask & G_SIGNAL_MATCH_CLOSURE) || handler->closure == closure) &&
             ((mask & G_SIGNAL_MATCH_DATA) || handler->closure->data == data) &&
@@ -463,7 +464,7 @@ handlers_find (gpointer         instance,
 		}
 	      
               for (handler = hlist->handlers; handler; handler = handler->next)
-		if (handler->id &&
+		if (handler->sequential_number &&
 		    ((mask & G_SIGNAL_MATCH_DETAIL) || handler->detail == detail) &&
                     ((mask & G_SIGNAL_MATCH_CLOSURE) || handler->closure == closure) &&
                     ((mask & G_SIGNAL_MATCH_DATA) || handler->closure->data == data) &&
@@ -486,16 +487,15 @@ handlers_find (gpointer         instance,
 static inline Handler*
 handler_new (gboolean after)
 {
-  static guint handler_id = 1;
   Handler *handler = g_generic_node_alloc (&g_handler_ts,
                                            sizeof (Handler),
                                            HANDLER_PRE_ALLOC);
 #ifndef G_DISABLE_CHECKS
-  if (handler_id == 0)
+  if (g_handler_sequential_number < 1)
     g_error (G_STRLOC ": handler id overflow, %s", REPORT_BUG);
 #endif
   
-  handler->id = handler_id++;
+  handler->sequential_number = g_handler_sequential_number++;
   handler->prev = NULL;
   handler->next = NULL;
   handler->detail = 0;
@@ -742,14 +742,14 @@ signal_finalize_hook (GHookList *hook_list,
     }
 }
 
-guint
+gulong
 g_signal_add_emission_hook (guint               signal_id,
 			    GQuark              detail,
 			    GSignalEmissionHook hook_func,
 			    gpointer            hook_data,
 			    GDestroyNotify      data_destroy)
 {
-  static guint seq_hook_id = 1;
+  static gulong seq_hook_id = 1;
   SignalNode *node;
   GHook *hook;
   SignalHook *signal_hook;
@@ -792,8 +792,8 @@ g_signal_add_emission_hook (guint               signal_id,
 }
 
 void
-g_signal_remove_emission_hook (guint signal_id,
-			       guint hook_id)
+g_signal_remove_emission_hook (guint  signal_id,
+			       gulong hook_id)
 {
   SignalNode *node;
 
@@ -805,7 +805,7 @@ g_signal_remove_emission_hook (guint signal_id,
   if (!node || node->destroyed)
     g_warning ("%s: invalid signal id `%u'", G_STRLOC, signal_id);
   else if (!node->emission_hooks || !g_hook_destroy (node->emission_hooks, hook_id))
-    g_warning ("%s: signal \"%s\" had no hook (%u) to remove", G_STRLOC, node->name, hook_id);
+    g_warning ("%s: signal \"%s\" had no hook (%lu) to remove", G_STRLOC, node->name, hook_id);
   G_UNLOCK (g_signal_mutex);
 }
 
@@ -1209,7 +1209,7 @@ signal_destroy_R (SignalNode *signal_node)
   G_LOCK (g_signal_mutex);
 }
 
-guint
+gulong
 g_signal_connect_closure_by_id (gpointer  instance,
 				guint     signal_id,
 				GQuark    detail,
@@ -1217,7 +1217,7 @@ g_signal_connect_closure_by_id (gpointer  instance,
 				gboolean  after)
 {
   SignalNode *node;
-  guint handler_id = 0;
+  gulong handler_seq_no = 0;
   
   g_return_val_if_fail (G_TYPE_CHECK_INSTANCE (instance), 0);
   g_return_val_if_fail (signal_id > 0, 0);
@@ -1235,7 +1235,7 @@ g_signal_connect_closure_by_id (gpointer  instance,
 	{
 	  Handler *handler = handler_new (after);
 	  
-	  handler_id = handler->id;
+	  handler_seq_no = handler->sequential_number;
 	  handler->detail = detail;
 	  handler->closure = g_closure_ref (closure);
 	  g_closure_sink (closure);
@@ -1248,16 +1248,17 @@ g_signal_connect_closure_by_id (gpointer  instance,
     g_warning ("%s: signal id `%u' is invalid for instance `%p'", G_STRLOC, signal_id, instance);
   G_UNLOCK (g_signal_mutex);
   
-  return handler_id;
+  return handler_seq_no;
 }
 
-guint
+gulong
 g_signal_connect_closure (gpointer     instance,
 			  const gchar *detailed_signal,
 			  GClosure    *closure,
 			  gboolean     after)
 {
-  guint signal_id, handler_id = 0;
+  guint signal_id;
+  gulong handler_seq_no = 0;
   GQuark detail = 0;
   GType itype;
 
@@ -1280,7 +1281,7 @@ g_signal_connect_closure (gpointer     instance,
 	{
 	  Handler *handler = handler_new (after);
 
-	  handler_id = handler->id;
+	  handler_seq_no = handler->sequential_number;
 	  handler->detail = detail;
 	  handler->closure = g_closure_ref (closure);
 	  g_closure_sink (closure);
@@ -1293,10 +1294,10 @@ g_signal_connect_closure (gpointer     instance,
     g_warning ("%s: signal `%s' is invalid for instance `%p'", G_STRLOC, detailed_signal, instance);
   G_UNLOCK (g_signal_mutex);
 
-  return handler_id;
+  return handler_seq_no;
 }
 
-guint
+gulong
 g_signal_connect_data (gpointer       instance,
 		       const gchar   *detailed_signal,
 		       GCallback      c_handler,
@@ -1305,7 +1306,8 @@ g_signal_connect_data (gpointer       instance,
 		       gboolean       swapped,
 		       gboolean       after)
 {
-  guint signal_id, handler_id = 0;
+  guint signal_id;
+  gulong handler_seq_no = 0;
   GQuark detail = 0;
   GType itype;
 
@@ -1328,7 +1330,7 @@ g_signal_connect_data (gpointer       instance,
 	{
 	  Handler *handler = handler_new (after);
 
-	  handler_id = handler->id;
+	  handler_seq_no = handler->sequential_number;
 	  handler->detail = detail;
 	  handler->closure = g_closure_ref ((swapped ? g_cclosure_new_swap : g_cclosure_new) (c_handler, data, destroy_data));
 	  g_closure_sink (handler->closure);
@@ -1341,12 +1343,12 @@ g_signal_connect_data (gpointer       instance,
     g_warning ("%s: signal `%s' is invalid for instance `%p'", G_STRLOC, detailed_signal, instance);
   G_UNLOCK (g_signal_mutex);
 
-  return handler_id;
+  return handler_seq_no;
 }
 
 void
 g_signal_handler_block (gpointer instance,
-                        guint    handler_id)
+                        gulong   handler_id)
 {
   Handler *handler;
   
@@ -1361,17 +1363,16 @@ g_signal_handler_block (gpointer instance,
       if (handler->block_count >= HANDLER_MAX_BLOCK_COUNT - 1)
         g_error (G_STRLOC ": handler block_count overflow, %s", REPORT_BUG);
 #endif
-      
       handler->block_count += 1;
     }
   else
-    g_warning ("%s: instance `%p' has no handler with id `%u'", G_STRLOC, instance, handler_id);
+    g_warning ("%s: instance `%p' has no handler with id `%lu'", G_STRLOC, instance, handler_id);
   G_UNLOCK (g_signal_mutex);
 }
 
 void
 g_signal_handler_unblock (gpointer instance,
-                          guint    handler_id)
+                          gulong   handler_id)
 {
   Handler *handler;
   
@@ -1385,16 +1386,16 @@ g_signal_handler_unblock (gpointer instance,
       if (handler->block_count)
         handler->block_count -= 1;
       else
-        g_warning (G_STRLOC ": handler `%u' of instance `%p' is not blocked", handler_id, instance);
+        g_warning (G_STRLOC ": handler `%lu' of instance `%p' is not blocked", handler_id, instance);
     }
   else
-    g_warning ("%s: instance `%p' has no handler with id `%u'", G_STRLOC, instance, handler_id);
+    g_warning ("%s: instance `%p' has no handler with id `%lu'", G_STRLOC, instance, handler_id);
   G_UNLOCK (g_signal_mutex);
 }
 
 void
 g_signal_handler_disconnect (gpointer instance,
-                             guint    handler_id)
+                             gulong   handler_id)
 {
   Handler *handler;
   guint signal_id;
@@ -1406,12 +1407,12 @@ g_signal_handler_disconnect (gpointer instance,
   handler = handler_lookup (instance, handler_id, &signal_id);
   if (handler)
     {
-      handler->id = 0;
+      handler->sequential_number = 0;
       handler->block_count = 1;
       handler_unref_R (signal_id, instance, handler);
     }
   else
-    g_warning ("%s: instance `%p' has no handler with id `%u'", G_STRLOC, instance, handler_id);
+    g_warning ("%s: instance `%p' has no handler with id `%lu'", G_STRLOC, instance, handler_id);
   G_UNLOCK (g_signal_mutex);
 }
 
@@ -1445,9 +1446,9 @@ g_signal_handlers_destroy (gpointer instance)
               /* cruel unlink, this works because _all_ handlers vanish */
               tmp->next = NULL;
               tmp->prev = tmp;
-              if (tmp->id)
+              if (tmp->sequential_number)
 		{
-		  tmp->id = 0;
+		  tmp->sequential_number = 0;
 		  handler_unref_R (0, NULL, tmp);
 		}
             }
@@ -1457,7 +1458,7 @@ g_signal_handlers_destroy (gpointer instance)
   G_UNLOCK (g_signal_mutex);
 }
 
-guint
+gulong
 g_signal_handler_find (gpointer         instance,
                        GSignalMatchType mask,
                        guint            signal_id,
@@ -1466,7 +1467,7 @@ g_signal_handler_find (gpointer         instance,
                        gpointer         func,
                        gpointer         data)
 {
-  guint handler_id = 0;
+  gulong handler_seq_no = 0;
   
   g_return_val_if_fail (G_TYPE_CHECK_INSTANCE (instance), 0);
   g_return_val_if_fail ((mask & ~G_SIGNAL_MATCH_MASK) == 0, 0);
@@ -1479,13 +1480,13 @@ g_signal_handler_find (gpointer         instance,
       mlist = handlers_find (instance, mask, signal_id, detail, closure, func, data, TRUE);
       if (mlist)
 	{
-	  handler_id = mlist->handler->id;
+	  handler_seq_no = mlist->handler->sequential_number;
 	  handler_match_free1_R (mlist, instance);
 	}
       G_UNLOCK (g_signal_mutex);
     }
   
-  return handler_id;
+  return handler_seq_no;
 }
 
 static guint
@@ -1497,7 +1498,7 @@ signal_handlers_foreach_matched_R (gpointer         instance,
 				   gpointer         func,
 				   gpointer         data,
 				   void		  (*callback) (gpointer instance,
-							       guint    handler_id))
+							       gulong   handler_seq_no))
 {
   HandlerMatch *mlist;
   guint n_handlers = 0;
@@ -1506,9 +1507,12 @@ signal_handlers_foreach_matched_R (gpointer         instance,
   while (mlist)
     {
       n_handlers++;
-      G_UNLOCK (g_signal_mutex);
-      callback (instance, mlist->handler->id);
-      G_LOCK (g_signal_mutex);
+      if (mlist->handler->sequential_number)
+	{
+	  G_UNLOCK (g_signal_mutex);
+	  callback (instance, mlist->handler->sequential_number);
+	  G_LOCK (g_signal_mutex);
+	}
       mlist = handler_match_free1_R (mlist, instance);
     }
   
@@ -1880,6 +1884,7 @@ signal_emit_R (SignalNode   *node,
   Handler *handler_list = NULL;
   GValue *return_accu, accu = { 0, };
   guint signal_id = node->signal_id;
+  gulong max_sequential_handler_number;
   gboolean return_value_altered = FALSE;
   
 #ifdef	G_ENABLE_DEBUG
@@ -1922,6 +1927,7 @@ signal_emit_R (SignalNode   *node,
   
   if (handler_list)
     handler_unref_R (signal_id, instance, handler_list);
+  max_sequential_handler_number = g_handler_sequential_number;
   hlist = handler_list_lookup (signal_id, instance);
   handler_list = hlist ? hlist->handlers : NULL;
   if (handler_list)
@@ -1999,7 +2005,8 @@ signal_emit_R (SignalNode   *node,
 	      handler_list = handler;
 	      break;
 	    }
-	  else if (!handler->block_count && (!handler->detail || handler->detail == detail))
+	  else if (!handler->block_count && (!handler->detail || handler->detail == detail) &&
+		   handler->sequential_number < max_sequential_handler_number)
 	    {
 	      G_UNLOCK (g_signal_mutex);
 	      g_closure_invoke (handler->closure,
@@ -2066,7 +2073,8 @@ signal_emit_R (SignalNode   *node,
 	{
 	  Handler *tmp;
 	  
-	  if (handler->after && !handler->block_count && (!handler->detail || handler->detail == detail))
+	  if (handler->after && !handler->block_count && (!handler->detail || handler->detail == detail) &&
+	      handler->sequential_number < max_sequential_handler_number)
 	    {
 	      G_UNLOCK (g_signal_mutex);
 	      g_closure_invoke (handler->closure,
