@@ -1,3 +1,9 @@
+Fri Jun  4 19:26:47 2004  Manish Singh  <yosh@gimp.org>
+
+        * glib/galloca.h: cpp #directives should always have the "#" in the
+        first column of the the line. Do that for "#pragma alloca". Fixes
+        bug #143744.
+
 Wed Jun  2 00:57:16 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/gtypes.h: Use higher precision for the mathematical
