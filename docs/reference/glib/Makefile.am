@@ -39,6 +39,7 @@ MKDB_OPTIONS=--sgml-mode --output-format=xml --ignore-files=trio
 
 # Images to copy into HTML directory
 HTML_IMAGES =  				\
+	file-name-encodings.png		\
 	mainloop-states.gif
 
 # Extra SGML files that are included by $(DOC_MAIN_SGML_FILE)
@@ -60,6 +61,8 @@ include $(top_srcdir)/gtk-doc.make
 
 # Other files to distribute
 EXTRA_DIST +=				\
+	file-name-encodings.png		\
+	file-name-encodings.sxd		\
 	mainloop-states.fig		\
 	mainloop-states.png		\
 	mainloop-states.eps		\

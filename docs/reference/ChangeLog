@@ -1,3 +1,20 @@
+2004-06-15  Federico Mena Quintero  <federico@ximian.com>
+
+	* glib/tmpl/conversions.sgml: New section on file name encodings.
+
+	* glib/file-name-encodings.sxd: New diagram of how file name
+	encodings work.
+
+	* glib/file-name-encodings.png: Same as above, for inclusion in
+	the generated docs.
+
+	* glib/Makefile.am (HTML_IMAGES): Add file-name-encodings.png.
+	(EXTRA_DIST): Add the new images.
+
+	* glib/running.sgml: Add ids to the corresponding paragraphs that
+	describe G_FILENAME_ENCODING and G_BROKEN_FILENAMES, to be able to
+	reference them from elsewhere.
+
 Thu Jun 10 21:29:55 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/tmpl/modules.sgml: Add an example for GModule
