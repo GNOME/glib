@@ -1,3 +1,18 @@
+Sat Jan 10 01:36:01 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* gobject/tmpl/gtype.sgml: Document g_type_class_peek_static.
+
+Sat Jan 10 01:23:58 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* gobject/gobject-sections.txt: Add g_type_class_peek_static,
+	G_DEFINE_TYPE, G_DEFINE_TYPE_WITH_CODE, G_DEFINE_ABSTRACT_TYPE,
+	G_DEFINE_ABSTRACT_TYPE_WITH_CODE, G_IMPLEMENT_INTERFACE.
+
+
+Sat Jan 10 01:23:01 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* gobject/tmpl/objects.sgml: Update docs of g_object_connect.
+
 Fri Jan  9 23:40:23 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* gobject/tmpl/gboxed.sgml: 

@@ -730,6 +730,18 @@ exist (hasn't been referenced before).
 		if the class does not currently exist.
 
 
+<!-- ##### FUNCTION g_type_class_peek_static ##### -->
+<para>
+A more efficient version of g_type_class_peek() which works only for
+static types.
+</para>
+
+@type: Type ID of a classed type.
+@Returns: The #GTypeClass structure for the given type ID or %NULL
+   if the class does not currently exist or is dynamically loaded.
+@Since: 2.4
+
+
 <!-- ##### FUNCTION g_type_class_unref ##### -->
 <para>
 Decrements the reference count of the class structure being passed in.
@@ -1446,6 +1458,58 @@ that implements or has internal knowledge of the implementation of
 @type:    A #GType value.
 @Returns: Location of the #GTypeValueTable associated with @type or
           %NULL if there is no #GTypeValueTable associated with @type.
+
+
+<!-- ##### MACRO G_DEFINE_TYPE ##### -->
+<para>
+A convenience macro for type implementations.
+</para>
+
+@TypeName: The name of the new type, in Camel case.
+@type_name: The name of the new type, in lowercase, with words 
+  separated by '_'.
+@TYPE_PARENT: The #GType of the parent type.
+
+
+<!-- ##### MACRO G_DEFINE_TYPE_WITH_CODE ##### -->
+<para>
+
+</para>
+
+@TN: 
+@t_n: 
+@T_P: 
+@_C_: 
+
+
+<!-- ##### MACRO G_DEFINE_ABSTRACT_TYPE ##### -->
+<para>
+
+</para>
+
+@TN: 
+@t_n: 
+@T_P: 
+
+
+<!-- ##### MACRO G_DEFINE_ABSTRACT_TYPE_WITH_CODE ##### -->
+<para>
+
+</para>
+
+@TN: 
+@t_n: 
+@T_P: 
+@_C_: 
+
+
+<!-- ##### MACRO G_IMPLEMENT_INTERFACE ##### -->
+<para>
+
+</para>
+
+@TYPE_IFACE: 
+@iface_init: 
 
 
 <!-- ##### MACRO G_TYPE_INVALID ##### -->

@@ -113,8 +113,10 @@ g_strfreev (writers);
 
 @Since: 2.4
 
+
 <!-- ##### TYPEDEF GStrv ##### -->
 <para>
 A C representable type name for #G_TYPE_STRV.
 </para>
+
 

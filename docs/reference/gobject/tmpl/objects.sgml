@@ -21,6 +21,17 @@ to the #GObject implementation and should never be accessed directly.
 </para>
 
 
+<!-- ##### SIGNAL GObject::notify ##### -->
+<para>
+The notify signal is emitted on an object when one of its properties 
+has been changed. Note that getting this signal doesn't guarantee that the
+value of the property has actually changed, it may also be emitted when
+the setter for the property is called to reinstate the previous value.
+</para>
+
+@gobject: the object which received the signal.
+@pspec: the #GParamSpec of the property which changed
+
 <!-- ##### STRUCT GObjectClass ##### -->
 <para>
 The class structure for the <structname>GObject</structname> type.
@@ -437,42 +448,49 @@ equivalent to <literal>g_signal_connect_data (...)</literal>
 </varlistentry>
 <varlistentry>
 <term>object_signal</term>
+<term>object-signal</term>
 <listitem><para>
 equivalent to <literal>g_signal_connect_object (...)</literal>
 </para></listitem>
 </varlistentry>
 <varlistentry>
 <term>swapped_signal</term>
+<term>swapped-signal</term>
 <listitem><para>
 equivalent to <literal>g_signal_connect_data (..., G_CONNECT_SWAPPED)</literal>
 </para></listitem>
 </varlistentry>
 <varlistentry>
 <term>swapped_object_signal</term>
+<term>swapped-object-signal</term>
 <listitem><para>
 equivalent to <literal>g_signal_connect_object (..., G_CONNECT_SWAPPED)</literal>
 </para></listitem>
 </varlistentry>
 <varlistentry>
 <term>signal_after</term>
+<term>signal-after</term>
 <listitem><para>
 equivalent to <literal>g_signal_connect_data (..., G_CONNECT_AFTER)</literal>
 </para></listitem>
 </varlistentry>
 <varlistentry>
 <term>object_signal_after</term>
+<term>object-signal-after</term>
 <listitem><para>
 equivalent to <literal>g_signal_connect_object (..., G_CONNECT_AFTER)</literal>
 </para></listitem>
 </varlistentry>
 <varlistentry>
 <term>swapped_signal_after</term>
+<term>swapped-signal-after</term>
 <listitem><para>
 equivalent to <literal>g_signal_connect_data (..., G_CONNECT_SWAPPED | G_CONNECT_AFTER)</literal>
 </para></listitem>
 </varlistentry>
 <varlistentry>
 <term>swapped_object_signal_after</term>
+<term>swapped-object-signal-after</term>
 <listitem><para>
 equivalent to <literal>g_signal_connect_object (..., G_CONNECT_SWAPPED | G_CONNECT_AFTER)</literal>
 </para></listitem>
@@ -847,15 +865,4 @@ properties in set_property() and get_property() implementations.
 @property_id: the numeric id of the property
 @pspec: the #GParamSpec of the property
 
-
-<!-- ##### SIGNAL GObject::notify ##### -->
-<para>
-The notify signal is emitted on an object when one of its properties 
-has been changed. Note that getting this signal doesn't guarantee that the
-value of the property has actually changed, it may also be emitted when
-the setter for the property is called to reinstate the previous value.
-</para>
-
-@gobject: the object which received the signal.
-@pspec: the #GParamSpec of the property which changed
 

@@ -24,7 +24,6 @@ GTypeInfo
 GTypeFundamentalInfo
 GInterfaceInfo
 GTypeValueTable
-<TITLE>GType</TITLE>
 G_TYPE_FROM_INSTANCE
 G_TYPE_FROM_CLASS
 G_TYPE_FROM_INTERFACE
@@ -51,6 +50,7 @@ g_type_next_base
 g_type_is_a
 g_type_class_ref
 g_type_class_peek
+g_type_class_peek_static
 g_type_class_unref
 g_type_class_peek_parent
 g_type_class_add_private
@@ -95,6 +95,12 @@ g_type_add_interface_check
 g_type_remove_interface_check
 GTypeInterfaceCheckFunc
 g_type_value_table_peek
+
+G_DEFINE_TYPE
+G_DEFINE_TYPE_WITH_CODE
+G_DEFINE_ABSTRACT_TYPE
+G_DEFINE_ABSTRACT_TYPE_WITH_CODE
+G_IMPLEMENT_INTERFACE
 <SUBSECTION Private>
 G_TYPE_FUNDAMENTAL_SHIFT
 g_type_check_instance
@@ -109,6 +115,7 @@ g_type_instance_get_private
 g_type_test_flags
 g_type_name_from_instance
 g_type_name_from_class
+G_DEFINE_TYPE_INTERNAL
 
 <SUBSECTION>
 G_TYPE_INVALID
