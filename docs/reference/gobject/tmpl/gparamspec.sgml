@@ -224,7 +224,7 @@ g_param_value_validate().
 @pspec:             a valid #GParamSpec
 @src_value:         souce #GValue
 @dest_value:        destination #GValue of correct type for @pspec
-@strict_validation: $TRUE requires @dest_value to conform to @pspec without modifications
+@strict_validation: %TRUE requires @dest_value to conform to @pspec without modifications
 @Returns:           %TRUE if transformation and validation were successfull,
                     %FALSE otherwise and @dest_value is left untouched.
 

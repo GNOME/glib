@@ -1,3 +1,7 @@
+2002-12-06  Matthias Clasen  <maclas@gmx.de>
+
+	* gobject/tmpl/gparamspec.sgml: Typo fix.
+
 2002-12-05  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/tmpl/strings.sgml: 
