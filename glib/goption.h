@@ -26,10 +26,6 @@
 
 G_BEGIN_DECLS
 
-/* Should go into gtypes.h */
-typedef const gchar * (*GTranslateFunc) (const gchar *str,
-					 gpointer     data);
-
 typedef struct _GOptionContext GOptionContext;
 typedef struct _GOptionGroup   GOptionGroup;
 typedef struct _GOptionEntry   GOptionEntry;
