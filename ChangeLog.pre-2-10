@@ -1,3 +1,8 @@
+2002-05-19  Jacob Berkman  <jacob@ximian.com>
+
+	* glib/gmarkup.c (g_markup_parse_context_parse): revert previous
+	commit - uses APIs from glib 2.1
+
 2002-05-19  Matthias Clasen  <maclas@gmx.de>
 
 	* tests/markups/fail-36.gmarkup: 

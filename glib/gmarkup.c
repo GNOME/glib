@@ -97,7 +97,6 @@ struct _GMarkupParseContext
 
   guint document_empty : 1;
   guint parsing : 1;
-  gint balance;
 };
 
 /**
@@ -154,8 +153,6 @@ g_markup_parse_context_new (const GMarkupParser *parser,
 
   context->document_empty = TRUE;
   context->parsing = FALSE;
-
-  context->balance = 0;
 
   return context;
 }
@@ -725,10 +722,8 @@ find_current_text_end (GMarkupParseContext *context)
   p = context->current_text;
   next = g_utf8_find_next_char (p, end);
 
-  while (next && *next)
+  while (next)
     {
-      if (p == next)
-	next++;
       p = next;
       next = g_utf8_find_next_char (p, end);
     }
@@ -968,7 +963,6 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
               const gchar *openangle = "<";
               add_to_partial (context, openangle, openangle + 1);
               context->start = context->iter;
-	      context->balance = 1;
               context->state = STATE_INSIDE_PASSTHROUGH;
             }
           else if (*context->iter == '/')
@@ -1504,23 +1498,8 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
           /* Possible next state: AFTER_CLOSE_ANGLE */
           do
             {
-	      if (*context->iter == '<') 
-		context->balance++;
               if (*context->iter == '>')
-		{
-		  context->balance--;
-		  add_to_partial (context, context->start, context->iter);
-		  context->start = context->iter;
-		  if ((g_str_has_prefix (context->partial_chunk->str, "<?")
-		       && g_str_has_suffix (context->partial_chunk->str, "?")) ||
-		      (g_str_has_prefix (context->partial_chunk->str, "<!--")
-		       && g_str_has_suffix (context->partial_chunk->str, "--")) ||
-		      (g_str_has_prefix (context->partial_chunk->str, "<![CDATA[") 
-		       && g_str_has_suffix (context->partial_chunk->str, "]]")) ||
-		      (g_str_has_prefix (context->partial_chunk->str, "<!DOCTYPE")
-		       && context->balance == 0)) 
                 break;
-		}
             }
           while (advance_char (context));
 
