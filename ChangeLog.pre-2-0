@@ -1,3 +1,7 @@
+2000-07-05  Tor Lillqvist  <tml@iki.fi>
+
+	* README.win32: Update.
+
 Mon Jul  3 17:58:02 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* gutf8.c (g_utf8_get_charset_internal): Fix up
