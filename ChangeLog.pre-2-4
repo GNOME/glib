@@ -1,3 +1,8 @@
+2004-04-23  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gconvert.c (open_converter): Don't call g_strerror() here, 
+	since it can lead to infinite recursion.  (#139133, Piotr Klaban)
+
 2004-04-22  Matthias Clasen  <mclasen@redhat.com>
 
 	* tests/testglib.c (main): Trivial warning fix.  (#140345)

@@ -403,8 +403,8 @@ open_converter (const gchar *to_codeset,
 		 from_codeset, to_codeset);
   else
     g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_FAILED,
-		 _("Could not open converter from '%s' to '%s': %s"),
-		 from_codeset, to_codeset, g_strerror (errno));
+		 _("Could not open converter from '%s' to '%s'"),
+		 from_codeset, to_codeset);
   
   return cd;
 }
