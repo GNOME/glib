@@ -1,3 +1,7 @@
+2003-03-19  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/giochannel.c (g_io_channel_read_to_end): Fix docs.
+
 2003-03-19  Anders Carlsson  <andersca@codefactory.se>
 
 	* configure.in: Bump version to 2.3.0

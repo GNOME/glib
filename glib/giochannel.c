@@ -1644,8 +1644,8 @@ done:
  *
  * Reads all the remaining data from the file.
  *
- * Return value: %G_IO_STATUS_NORMAL on success. This function never
- *               returns %G_IO_STATUS_EOF.
+ * Return value: %G_IO_STATUS_NORMAL on success. 
+ * This function never returns %G_IO_STATUS_EOF.
  **/
 GIOStatus
 g_io_channel_read_to_end (GIOChannel	*channel,
