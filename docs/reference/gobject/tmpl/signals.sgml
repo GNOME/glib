@@ -76,9 +76,9 @@ The @GSignalInvocationHint structure is used to pass on additional information
 to callbacks during a signal emission.
 </para>
 
-@signal_id: The signal id of the signal invoking the callback
-@detail: The detail passed on for this emission
-@run_type: The stage the signal emission is currently in, this
+@signal_id: 	The signal id of the signal invoking the callback
+@detail: 	The detail passed on for this emission
+@run_type: 	The stage the signal emission is currently in, this
 		field will contain one of @G_SIGNAL_RUN_FIRST,
 		@G_SIGNAL_RUN_LAST or @G_SIGNAL_RUN_CLEANUP.
 
@@ -92,11 +92,11 @@ values is perfomed. The return value of signal emissions is then the
 value returned by the last callback.
 </para>
 
-@ihint: Signal invokation hint, see @GSignalInvocationHint
-@return_accu: Accumulator to collect callback return values in, this
+@ihint: 	Signal invokation hint, see @GSignalInvocationHint
+@return_accu: 	Accumulator to collect callback return values in, this
 		is the return value of the current signal emission
-@return_value: The return value of the most recent callback function
-@Returns: The accumulator function returns whether the signal emission
+@return_value: 	The return value of the most recent callback function
+@Returns: 	The accumulator function returns whether the signal emission
 		should be aborted. Returning @FALSE means to abort the
 		current emission and @TRUE is returned for continuation.
 
@@ -153,14 +153,14 @@ A structure holding in-depth information for a specific signal. It is
 filled in by the g_signal_query() function.
 </para>
 
-@signal_id: The signal id of the signal being querried, or 0 if the
+@signal_id: 	The signal id of the signal being querried, or 0 if the
 		signal to be querried was unknown
-@signal_name: The signal name
-@itype: The interface/instance type that this signal can be emitted for
-@signal_flags: The signal flags as passed in to @g_signal_new()
-@return_type: The return type for user callbacks
-@n_params: The number of parameters that user callbacks take
-@param_types: The individual parameter types for user callbacks, note that the
+@signal_name: 	The signal name
+@itype: 	The interface/instance type that this signal can be emitted for
+@signal_flags: 	The signal flags as passed in to @g_signal_new()
+@return_type: 	The return type for user callbacks
+@n_params: 	The number of parameters that user callbacks take
+@param_types: 	The individual parameter types for user callbacks, note that the
 		effective callback signature is:
 <msgtext><programlisting>
 @return_type callback (@gpointer     data1,
@@ -225,8 +225,8 @@ is 0. All members filled into the @GSignalQuery structure should
 be considered constant and have to be left untouched.
 </para>
 
-@signal_id: The signal id of the signal to query information for
-@query: A user provided structure that is filled in with constant
+@signal_id: 	The signal id of the signal to query information for
+@query: 	A user provided structure that is filled in with constant
 		values upon success.
 
 
@@ -237,9 +237,9 @@ created. Further information about the signals can be aquired through
 g_signal_query().
 </para>
 
-@itype: Instance or interface type
-@n_ids: Location to store the number of signal ids for @itype
-@Returns: Newly allocated array of signal ids
+@itype: 	Instance or interface type
+@n_ids: 	Location to store the number of signal ids for @itype
+@Returns: 	Newly allocated array of signal ids
 
 
 <!-- ##### FUNCTION g_signal_connect_closure_by_id ##### -->
@@ -268,8 +268,8 @@ to be a valid signal handler id, connected to a signal of
 @instance.
 </para>
 
-@instance: The instance to block the signal handler of
-@handler_id: Handler id of the handler to be blocked
+@instance: 	The instance to block the signal handler of
+@handler_id: 	Handler id of the handler to be blocked
 
 
 <!-- ##### FUNCTION g_signal_handler_unblock ##### -->
@@ -290,8 +290,8 @@ to be a valid id of a signal handler that is connected to a
 signal of @instance and is currently blocked.
 </para>
 
-@instance: The instance to unblock the signal handler of
-@handler_id: Handler id of the handler to be unblocked
+@instance: 	The instance to unblock the signal handler of
+@handler_id: 	Handler id of the handler to be unblocked
 
 
 <!-- ##### FUNCTION g_signal_handler_disconnect ##### -->
@@ -305,8 +305,8 @@ to be a valid signal handler id, connected to a signal of
 @instance.
 </para>
 
-@instance: The instance to remove the signal handler from
-@handler_id: Handler id of the handler to be disconnected
+@instance: 	The instance to remove the signal handler from
+@handler_id: 	Handler id of the handler to be disconnected
 
 
 <!-- ##### FUNCTION g_signal_handler_find ##### -->
@@ -318,15 +318,15 @@ The match @mask has to be non-0 for successfull matches.
 If no handler was found, 0 is returned.
 </para>
 
-@instance: The instance owning the signal handler to be found
-@mask: Mask indicating which of @signal_id, @detail,
+@instance: 	The instance owning the signal handler to be found
+@mask: 		Mask indicating which of @signal_id, @detail,
 		@closure, @func and/or @data the handler has to match
-@signal_id: Signal the handler has to be connected to
-@detail: Signal detail the handler has to be connected to
-@closure: The closure the handler will invoke
-@func: The C closure callback of the handler (useless for non-C closures)
-@data: The closure data of the handler's closure
-@Returns: A valid non-0 signal handler id for a successfull match
+@signal_id: 	Signal the handler has to be connected to
+@detail: 	Signal detail the handler has to be connected to
+@closure: 	The closure the handler will invoke
+@func: 		The C closure callback of the handler (useless for non-C closures)
+@data: 		The closure data of the handler's closure
+@Returns: 	A valid non-0 signal handler id for a successfull match
 
 
 <!-- ##### FUNCTION g_signal_handlers_block_matched ##### -->
@@ -340,15 +340,15 @@ If no handlers were found, 0 is returned, the number of blocked handlers
 otherwise.
 </para>
 
-@instance: The instance to block handlers from
-@mask: Mask indicating which of @signal_id, @detail,
+@instance: 	The instance to block handlers from
+@mask: 		Mask indicating which of @signal_id, @detail,
 		@closure, @func and/or @data the handlers have to match
-@signal_id: Signal the handlers have to be connected to
-@detail: Signal detail the handlers have to be connected to
-@closure: The closure the handlers will invoke
-@func: The C closure callback of the handlers (useless for non-C closures)
-@data: The closure data of the handlers' closures
-@Returns: The amount of handlers that got blocked
+@signal_id: 	Signal the handlers have to be connected to
+@detail: 	Signal detail the handlers have to be connected to
+@closure: 	The closure the handlers will invoke
+@func: 		The C closure callback of the handlers (useless for non-C closures)
+@data: 		The closure data of the handlers' closures
+@Returns: 	The amount of handlers that got blocked
 
 
 <!-- ##### FUNCTION g_signal_handlers_unblock_matched ##### -->
@@ -363,15 +363,15 @@ otherwise. The match criteria should not apply to any handlers that are
 not currently blocked.
 </para>
 
-@instance: The instance to unblock handlers from
-@mask: Mask indicating which of @signal_id, @detail,
+@instance: 	The instance to unblock handlers from
+@mask: 		Mask indicating which of @signal_id, @detail,
 		@closure, @func and/or @data the handlers have to match
-@signal_id: Signal the handlers have to be connected to
-@detail: Signal detail the handlers have to be connected to
-@closure: The closure the handlers will invoke
-@func: The C closure callback of the handlers (useless for non-C closures)
-@data: The closure data of the handlers' closures
-@Returns: The amount of handlers that got unblocked
+@signal_id: 	Signal the handlers have to be connected to
+@detail: 	Signal detail the handlers have to be connected to
+@closure: 	The closure the handlers will invoke
+@func: 		The C closure callback of the handlers (useless for non-C closures)
+@data: 		The closure data of the handlers' closures
+@Returns: 	The amount of handlers that got unblocked
 
 
 <!-- ##### FUNCTION g_signal_handlers_disconnect_matched ##### -->
@@ -385,15 +385,15 @@ If no handlers were found, 0 is returned, the number of disconnected handlers
 otherwise.
 </para>
 
-@instance: The instance to remove handlers from
-@mask: Mask indicating which of @signal_id, @detail,
+@instance: 	The instance to remove handlers from
+@mask: 		Mask indicating which of @signal_id, @detail,
 		@closure, @func and/or @data the handlers have to match
-@signal_id: Signal the handlers have to be connected to
-@detail: Signal detail the handlers have to be connected to
-@closure: The closure the handlers will invoke
-@func: The C closure callback of the handlers (useless for non-C closures)
-@data: The closure data of the handlers' closures
-@Returns: The amount of handlers that got disconnected
+@signal_id: 	Signal the handlers have to be connected to
+@detail: 	Signal detail the handlers have to be connected to
+@closure: 	The closure the handlers will invoke
+@func: 		The C closure callback of the handlers (useless for non-C closures)
+@data: 		The closure data of the handlers' closures
+@Returns: 	The amount of handlers that got disconnected
 
 
 <!-- ##### FUNCTION g_signal_has_handler_pending ##### -->
@@ -453,12 +453,12 @@ Internal function to parse a signal names into its @signal_id
 and @detail quark.
 </para>
 
-@detailed_signal: A string of the form "signal-name::detail"
-@itype: The interface/instance type taht introduced "signal-name"
-@signal_id_p: Location to store the signal id
-@detail_p: Location to stroe the detail quark
-@force_detail_quark: %TRUE forces creation of a GQuark for the detail
-@Returns: Whether the signal name could successfully be parsed and
+@detailed_signal: 	A string of the form "signal-name::detail"
+@itype: 		The interface/instance type taht introduced "signal-name"
+@signal_id_p: 		Location to store the signal id
+@detail_p: 		Location to stroe the detail quark
+@force_detail_quark: 	%TRUE forces creation of a GQuark for the detail
+@Returns: 		Whether the signal name could successfully be parsed and
 			@signal_id_p and @detail_p contain valid return values.
 
 
