@@ -1,51 +1,4 @@
-<!-- ##### MACRO popen ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### MACRO pclose ##### -->
-<para>
-
-</para>
-
-
 <!-- ##### MACRO lseek ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### FUNCTION g_node_insert_after ##### -->
-<para>
-Inserts a #GNode beneath the parent after the given sibling.
-</para>
-
-@parent: the #GNode to place @node under.
-@sibling: the sibling #GNode to place @node after. If sibling is NULL,
-the node is inserted as the first child of @parent.
-@node: the #GNode to insert.
-@Returns: the inserted #GNode.
-
-<!-- ##### MACRO getpid ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### MACRO close ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### MACRO fdopen ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### MACRO getcwd ##### -->
 <para>
 
 </para>
@@ -68,7 +21,7 @@ value if the desired key comes after @key.
 </para>
 
 
-<!-- ##### MACRO access ##### -->
+<!-- ##### MACRO pclose ##### -->
 <para>
 
 </para>
@@ -81,7 +34,13 @@ Turns the argument into a string literal by using the '#' stringizing operator.
 
 @x: text to convert to a literal string.
 
-<!-- ##### MACRO read ##### -->
+<!-- ##### MACRO popen ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO access ##### -->
 <para>
 
 </para>
@@ -93,11 +52,33 @@ Turns the argument into a string literal by using the '#' stringizing operator.
 </para>
 
 
-<!-- ##### USER_FUNCTION GFreeFunc ##### -->
+<!-- ##### MACRO getpid ##### -->
 <para>
-Declares a type of function which takes an arbitrary data pointer argument
-and has no return value. It is not currently used in GLib or GTK+.
+
 </para>
 
-@data: 
+
+<!-- ##### MACRO fdopen ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO close ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO getcwd ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO read ##### -->
+<para>
+
+</para>
+
 

@@ -258,3 +258,12 @@ It is used to specify the type function passed to g_atexit().
 
 
 
+<!-- ##### USER_FUNCTION GFreeFunc ##### -->
+<para>
+Declares a type of function which takes an arbitrary data pointer argument
+and has no return value. It is not currently used in GLib or GTK+.
+</para>
+
+@data: 
+
+
