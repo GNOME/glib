@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-12-02 16:01-0500\n"
-"PO-Revision-Date: 2004-11-03 23:09+0900\n"
+"POT-Creation-Date: 2004-12-04 00:51+0900\n"
+"PO-Revision-Date: 2004-12-04 00:45+0900\n"
 "Last-Translator: Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "MIME-Version: 1.0\n"
@@ -216,18 +216,18 @@ msgstr ""
 "ださい"
 
 #: glib/gmarkup.c:584
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
 msgstr ""
-"'%s' をパースできません。文字参照中には数字がなくてはなりません (例: &#234;) "
-"おそらく数字が大きすぎます"
+"'%-.*s' をパースできません。文字参照には数字が含まれなくてはなりません (例: "
+"&#234;) おそらく数字が大きすぎます"
 
 #: glib/gmarkup.c:609
-#, fuzzy, c-format
+#, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
-msgstr "文字参照 '%s' が使用可能な文字をエンコードしていません"
+msgstr "文字参照 '%-.*s' が使用可能な文字をエンコードしていません"
 
 #: glib/gmarkup.c:624
 msgid "Empty character reference; should include a digit such as &#454;"
@@ -552,51 +552,54 @@ msgstr "不明なオプション %s です"
 #: glib/gkeyfile.c:338
 msgid "Valid key file could not be found in data dirs"
 msgstr ""
+"データのディレクトリで妥当なキー・ファイルを見つけることができませんでした"
 
 #: glib/gkeyfile.c:371
 msgid "Not a regular file"
-msgstr ""
+msgstr "通常のファイルではありません"
 
 #: glib/gkeyfile.c:379
 msgid "File is empty"
-msgstr ""
+msgstr "ファイルが空です"
 
 #: glib/gkeyfile.c:685
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr ""
+"キー・ファイルの行 '%s' がキー/値のペア、グループ、またはコメントではありませ"
+"ん"
 
 #: glib/gkeyfile.c:753
 msgid "Key file does not start with a group"
-msgstr ""
+msgstr "キー・ファイルがグループで始まっていません"
 
 #: glib/gkeyfile.c:796
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
-msgstr ""
+msgstr "キー・ファイルにサポートしてないエンコーディング '%s' があります"
 
 #: glib/gkeyfile.c:1000 glib/gkeyfile.c:1146 glib/gkeyfile.c:2151
 #: glib/gkeyfile.c:2216 glib/gkeyfile.c:2334 glib/gkeyfile.c:2402
 #: glib/gkeyfile.c:2587 glib/gkeyfile.c:2760 glib/gkeyfile.c:2815
 #, c-format
 msgid "Key file does not have group '%s'"
-msgstr ""
+msgstr "キー・ファイルにグループ '%s' がありません"
 
 #: glib/gkeyfile.c:1158
 #, c-format
 msgid "Key file does not have key '%s'"
-msgstr ""
+msgstr "キー・ファイルにキー '%s' がありません"
 
 #: glib/gkeyfile.c:1259 glib/gkeyfile.c:1368
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
-msgstr ""
+msgstr "キー・ファイルのキー '%s' の値 '%s' が UTF-8 ではありません"
 
 #: glib/gkeyfile.c:1277 glib/gkeyfile.c:1386 glib/gkeyfile.c:1759
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
-msgstr ""
+msgstr "キー・ファイルのキー '%s' の値を解釈できませんでした"
 
 #: glib/gkeyfile.c:1976
 #, c-format
@@ -604,27 +607,28 @@ msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
 "interpreted."
 msgstr ""
+"キー・ファイルのグループ '%2$s' にあるキー '%1$s' の値を解釈できませんでした"
 
 #: glib/gkeyfile.c:2166 glib/gkeyfile.c:2349 glib/gkeyfile.c:2827
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
-msgstr ""
+msgstr "キー・ファイルにはグループ '%2$s' のキー '%1$s' がありません"
 
 #: glib/gkeyfile.c:3023
-#, fuzzy, c-format
+#, c-format
 msgid "Key file contains invalid escape sequence '%s'"
-msgstr "URI %s' に無効なエスケープ文字が含まれています"
+msgstr "キー・ファイルに無効なエスケープ・シーケンス '%s' が含まれています"
 
 #: glib/gkeyfile.c:3047
 msgid "Key file contains escape character at end of line"
-msgstr ""
+msgstr "キー・ファイルの行末にエスケープ文字が含まれています"
 
 #: glib/gkeyfile.c:3163
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
-msgstr ""
+msgstr "値 '%s' を数値として解釈できません"
 
 #: glib/gkeyfile.c:3191
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
-msgstr ""
+msgstr "値 '%s' を論理値として解釈できません"
