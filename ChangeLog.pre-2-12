@@ -1,3 +1,8 @@
+2002-08-26  Tor Lillqvist  <tml@iki.fi>
+
+	* configure.in (G_LIBS_EXTRA): Don't link with -lwsock32 on
+	Cygwin (#91696, Masahiro Sakai).
+
 Tue Aug 20 16:01:03 2002  HideToshi Tajima  <hidetoshi.tajima@sun.com>
 
 	* glib/gconvert.c (strdup_len): validate 'len' argument properly

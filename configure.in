@@ -1670,7 +1670,7 @@ dnl **********************
 
 case $host in
   *-*-cygwin*)
-	G_LIBS_EXTRA="-luser32 -lwsock32 -lkernel32"
+	G_LIBS_EXTRA="-luser32 -lkernel32"
     ;;
   *-*-mingw*)
 	G_LIBS_EXTRA="-lwsock32"
