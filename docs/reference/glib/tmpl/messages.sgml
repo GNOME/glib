@@ -246,8 +246,8 @@ and log level combination. It outputs the message to stderr or stdout
 and if the log level is fatal it calls abort().
 </para>
 <para>
-stderr is used for levels %G_LOG_LEVEL_ERROR, %G_LOG_LEVEL_CRITICAL, and
-%G_LOG_LEVEL_WARNING. stdout is used for the rest.
+stderr is used for levels %G_LOG_LEVEL_ERROR, %G_LOG_LEVEL_CRITICAL,
+%G_LOG_LEVEL_WARNING and %G_LOG_LEVEL_MESSAGE. stdout is used for the rest.
 </para>
 
 @log_domain: the log domain of the message.
