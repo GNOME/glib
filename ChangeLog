@@ -1,3 +1,8 @@
+2004-11-01  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gutils.h: Make gtkdoc-scan happy by removing spaces
+	between gchar and *.
+
 2004-11-01  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/gstdio.c (g_lstat): Implement correctly also on Unix
