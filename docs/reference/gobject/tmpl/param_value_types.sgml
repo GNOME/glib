@@ -840,7 +840,7 @@ See g_param_spec_internal() for details on property names.
 @maximum:       maximum value for the property specified
 @default_value: default value for the property specified
 @flags:         flags for the property specified
-@Returns:  a newly created parameter specification 
+@Returns:  a newly created parameter specification
 
 
 <!-- ##### FUNCTION g_value_set_double ##### -->
@@ -1557,6 +1557,6 @@ See g_param_spec_internal() for details on property names.
 @element_spec:  a #GParamSpec describing the elements contained in 
                 arrays of this property, may be %NULL
 @flags:         flags for the property specified
-@Returns: a newly created parameter specification 
+@Returns: a newly created parameter specification
 
 

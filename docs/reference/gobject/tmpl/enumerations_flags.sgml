@@ -18,12 +18,21 @@ Enumeration and flags types
 
 </para>
 
+@g_type_class: 
+@minimum: 
+@maximum: 
+@n_values: 
+@values: 
 
 <!-- ##### STRUCT GFlagsClass ##### -->
 <para>
 
 </para>
 
+@g_type_class: 
+@mask: 
+@n_values: 
+@values: 
 
 <!-- ##### MACRO G_ENUM_CLASS_TYPE ##### -->
 <para>

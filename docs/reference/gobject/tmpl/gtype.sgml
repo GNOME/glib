@@ -462,6 +462,17 @@ Returns the interface structure for interface @g_type of a given @instance.
 @c_type: The corresponding C type of @g_type.
 
 
+<!-- ##### MACRO G_TYPE_INSTANCE_GET_PRIVATE ##### -->
+<para>
+Gets the private structure for a particular type.
+The private structure must have been registered in the
+class_init function with g_type_class_add_private().
+</para>
+
+@instance: the instance of a type deriving from @private_type.
+@g_type: the type identifying which private data to retrieve.
+@c_type: The C type for the private structure.
+
 <!-- ##### MACRO G_TYPE_CHECK_INSTANCE ##### -->
 <para>
 
@@ -693,6 +704,48 @@ g_type_class_peek (g_type_parent (G_TYPE_FROM_CLASS (g_class)));
 @Returns: The parent class of @g_class.
 
 
+<!-- ##### FUNCTION g_type_class_add_private ##### -->
+<para>
+Registers a private structure for a instantiatable type;
+when an object is allocated, the private structures for
+the type and and all of its parent types are allocated
+sequentially in the same memory block as the public
+structures. This function should be called in the
+type's class_init() function. The private structure can
+be retrieved using the G_TYPE_INSTANCE_GET_PRIVATE() macro.
+The following example shows attaching a private structure
+<structname>MyObjectPrivate</structname> to an object
+<structname>MyObject</structname> defined in the standard GObject
+fashion.
+</para>
+<programlisting>
+typedef struct _MyObjectPrivate MyObjectPrivate;
+
+struct _MyObjectPrivate {
+  int some_field;
+};
+
+&num;define MY_OBJECT_GET_PRIVATE(o)  \
+   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MY_TYPE_OBJECT, MyObjectPrivate))
+
+static void
+my_object_class_init (MyObjectClass *klass)
+{
+  g_type_class_add_private (klass, sizeof (MyObjectPrivate));
+}
+
+static int
+my_object_get_some_field (MyObject *my_object)
+{
+  MyObjectPrivate *priv = MY_OBJECT_GET_PRIVATE (my_object);
+
+  return priv->some_field;
+}
+</programlisting>
+
+@g_class: class structure for an instantiatable type
+@private_size: size of private structure.
+
 <!-- ##### FUNCTION g_type_interface_peek ##### -->
 <para>
 Returns the #GTypeInterface structure of an interface to which the passed in 
@@ -751,7 +804,6 @@ Returns the prerequisites of an interfaces type.
 @n_prerequisites: location to return the number of prerequisites, or %NULL
 @Returns: a newly-allocated zero-terminated array of #GType containing 
    the prerequisites of @interface_type
-<!-- # Unused Parameters # -->
 @Since: 2.2
 
 
@@ -1411,5 +1463,9 @@ The fundamental type for #GObject.
 
 </para>
 
-
-
+<!--
+Local variables:
+mode: sgml
+sgml-parent-document: ("../gobject-docs.sgml" "book" "refsect2" "")
+End:
+-->

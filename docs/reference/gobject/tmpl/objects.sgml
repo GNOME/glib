@@ -27,6 +27,7 @@ to the #GObject implementation and should never be accessed directly.
 
 </para>
 
+@g_type_class: 
 
 <!-- ##### USER_FUNCTION GObjectGetPropertyFunc ##### -->
 <para>

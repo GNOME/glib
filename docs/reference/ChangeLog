@@ -1,3 +1,8 @@
+Mon Mar 10 11:33:10 2003  Owen Taylor  <otaylor@redhat.com>
+
+	* gobject/tmpl/gtype.sgml gobject/gobject-sections.txt: 
+	Document private instance data.
+
 2003-02-11  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/tmpl/string_utils.sgml: Fix an off-by-one error in the

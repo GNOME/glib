@@ -68,6 +68,13 @@ in #GTypeModuleClass.
 
 </para>
 
+@parent_class: 
+@load: 
+@unload: 
+@reserved1: 
+@reserved2: 
+@reserved3: 
+@reserved4: 
 
 <!-- ##### FUNCTION g_type_module_use ##### -->
 <para>
