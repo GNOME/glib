@@ -1,3 +1,8 @@
+Fri Dec 18 12:51:39 1998  Owen Taylor  <otaylor@redhat.com>
+
+	* gmain.c: Fix errors in computation of timeout
+	expiration times > 1sec.
+
 1998-12-18  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* configure.in (have_threads): Changed the last pthread_cond_init

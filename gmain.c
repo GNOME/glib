@@ -832,8 +832,11 @@ g_timeout_dispatch (gpointer source_data,
 
   if (data->callback(user_data))
     {
-      data->expiration.tv_sec = current_time->tv_sec;
-      data->expiration.tv_usec = current_time->tv_usec + data->interval * 1000;
+      guint seconds = data->interval / 1000;
+      guint msecs = data->interval - seconds * 1000;
+
+      data->expiration.tv_sec = current_time->tv_sec + seconds;
+      data->expiration.tv_usec = current_time->tv_usec + msecs * 1000;
       if (data->expiration.tv_usec >= 1000000)
 	{
 	  data->expiration.tv_usec -= 1000000;
@@ -852,13 +855,19 @@ g_timeout_add_full (gint           priority,
 		    gpointer       data,
 		    GDestroyNotify notify)
 {
+  guint seconds;
+  guint msecs;
   GTimeoutData *timeout_data = g_new (GTimeoutData, 1);
 
   timeout_data->interval = interval;
   timeout_data->callback = function;
   g_get_current_time (&timeout_data->expiration);
 
-  timeout_data->expiration.tv_usec += timeout_data->interval * 1000;
+  seconds = timeout_data->interval / 1000;
+  msecs = timeout_data->interval - seconds * 1000;
+
+  timeout_data->expiration.tv_sec += seconds;
+  timeout_data->expiration.tv_usec += msecs * 1000;
   if (timeout_data->expiration.tv_usec >= 1000000)
     {
       timeout_data->expiration.tv_usec -= 1000000;
