@@ -27,6 +27,7 @@ IGNORE_HFILES=			\
 	gobject 		\
 	config.h 		\
 	glibintl.h		\
+	gbsearcharray.h		\
 	gmoduleconf.h		\
 	gunibreak.h		\
 	gunidecomp.h		\

@@ -23,8 +23,7 @@ HFILE_GLOB=$(top_srcdir)/gobject/*.h
 CFILE_GLOB=$(top_srcdir)/gobject/*.c
 
 # Headers to ignore
-IGNORE_HFILES=				\
-	gbsearcharray.h
+IGNORE_HFILES=
 
 # Extra files to add when scanning
 EXTRA_HFILES=

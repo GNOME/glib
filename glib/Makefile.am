@@ -19,6 +19,8 @@ libglib_1_3_la_SOURCES = 	\
 	garray.c		\
 	gasyncqueue.c		\
 	gbacktrace.c		\
+	gbsearcharray.c		\
+	gbsearcharray.h		\
 	gcache.c		\
 	gcompletion.c		\
 	gconvert.c		\

@@ -39,7 +39,6 @@ libgobject_1_3_la_LIBADD = $(libglib)
 # GRuntime header files for public installation (non-generated)
 gruntime_public_h_sources = @STRIP_BEGIN@ \
 	gboxed.h		\
-	gbsearcharray.h		\
 	gclosure.h		\
 	genums.h		\
 	gobject.h		\
@@ -62,7 +61,6 @@ gruntime_private_h_sources = @STRIP_BEGIN@ \
 # GRuntime C sources to build the library from
 gruntime_c_sources = @STRIP_BEGIN@ \
 	gboxed.c		\
-	gbsearcharray.c		\
 	gclosure.c		\
 	genums.c		\
 	gobject.c		\

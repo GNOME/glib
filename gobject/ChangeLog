@@ -1,3 +1,8 @@
+Sat Sep  8 14:13:57 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* gobject/Makefile.am: Move gbsearcharray.[ch] to glib
+	as a private ininstalled header.
+
 Tue Sep  4 22:24:48 2001  Matthias Clasen  <matthiasc@poet.de>
 
 	* gobject.c (g_object_base_class_finalize): typo fix.

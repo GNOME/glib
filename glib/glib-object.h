@@ -21,7 +21,6 @@
 
 /* topmost include file for GObject header files */
 #include	<gobject/gboxed.h>
-#include	<gobject/gbsearcharray.h>
 #include	<gobject/genums.h>
 #include	<gobject/gobject.h>
 #include	<gobject/gparam.h>
