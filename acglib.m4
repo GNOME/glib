@@ -116,7 +116,6 @@ $1
 int main (int c, char **v) {
   FILE *f = fopen ("$glib_sysdefso", "a");
   if (!f) return 1;
-}
 _______EOF
 for glib_sysdef_input in $2 ; do
 	glib_sysdef=`echo $glib_sysdef_input | sed 's/^\([[^:]]*\):.*$/\1/'`
