@@ -1,3 +1,9 @@
+Tue Dec 10 11:55:28 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/tmpl/timers.sgml: Improve docs for return value
+	and @microseconds out parameter. (Reported by
+	Dennis Haney, #100841)
+
 2002-12-10  Matthias Clasen  <maclas@gmx.de>
 
 	* gobject/tmpl/generic_values.sgml: 
