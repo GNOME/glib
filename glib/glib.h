@@ -134,6 +134,11 @@ extern "C" {
 #define G_STRINGIFY(macro_or_string)	G_STRINGIFY_ARG (macro_or_string)
 #define	G_STRINGIFY_ARG(contents)	#contents
 
+/* Count the number of elements in an array. The array must be defined
+ * as such; using this with a dynamically allocated array will give
+ * incorrect results.
+ */
+#define G_N_ELEMENTS(arr)		(sizeof(arr) / sizeof((arr)[0]))
 
 /* Define G_VA_COPY() to do the right thing for copying va_list variables.
  * glibconfig.h may have already defined G_VA_COPY as va_copy or __va_copy.

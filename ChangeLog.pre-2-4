@@ -1,3 +1,8 @@
+Fri Jan 21 10:18:24 2000  Owen Taylor  <otaylor@redhat.com>
+
+	* glib.h (G_N_ELEMENTS): Added G_N_ELEMENTS macro to determine
+	the number of elements in an array.
+
 Sun Jan  9 13:28:36 2000  Tim Janik  <timj@gtk.org>
 
 	* gstrfuncs.c (g_strtod): correctly fetch the current locale,
