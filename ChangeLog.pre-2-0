@@ -1,3 +1,9 @@
+2001-11-28  Daniel Elstner  <daniel.elstner@gmx.net>
+
+	* glib/gutf8.c (utf8_skip_data): In order to avoid infinite loops
+	on invalid UTF-8 strings, change the skip count for 0xfe and 0xff
+	from 0 to 1.
+
 2001-11-28  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* configure.in: Always call GLIB_SIZEOF(..., system_thread). Fixes
