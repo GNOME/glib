@@ -1,3 +1,15 @@
+2001-06-08  Alex Larsson  <alexl@redhat.com>
+
+	* gstrfuncs.[ch]:
+	Added new functions g_strstr_len, g_strrstr and g_strrstr_len
+	
+	* tests/strfunc-test.c:
+	Add some tests for the new functions.
+	
+	* gunicode.h:
+	* gutf8.c:
+	Add length argument to g_utf8_strchr and g_utf8_strrchr.
+	
 2001-06-08  Havoc Pennington  <hp@redhat.com>
 
 	* gspawn.c: support G_SPAWN_FILE_AND_ARGV_ZERO specifying that 

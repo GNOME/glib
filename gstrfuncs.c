@@ -1497,3 +1497,149 @@ g_strjoin (const gchar  *separator,
 
   return string;
 }
+
+
+/**
+ * g_strstr_len:
+ * @haystack: a string
+ * @haystack_len: The maximum length of haystack
+ * @needle: The string to search for.
+ *
+ * Searches the string haystack for the first occurrence
+ * of the string needle, limiting the length of the search
+ * to haystack_len. 
+ *
+ * Return value: A pointer to the found occurrence, or
+ * NULL if not found.
+ **/
+gchar *
+g_strstr_len (const gchar *haystack,
+	      gint         haystack_len,
+	      const gchar *needle)
+{
+  int i;
+
+  g_return_val_if_fail (haystack != NULL, NULL);
+  g_return_val_if_fail (needle != NULL, NULL);
+  
+  if (haystack_len < 0)
+    return strstr (haystack, needle);
+  else
+    {
+      const char *p = haystack;
+      int needle_len = strlen (needle);
+      const char *end = haystack + haystack_len - needle_len;
+      
+      if (needle_len == 0)
+	return (char *)haystack;
+
+      while (*p && p <= end)
+	{
+	  for (i = 0; i < needle_len; i++)
+	    if (p[i] != needle[i])
+	      goto next;
+	  
+	  return (char *)p;
+	  
+	next:
+	  p++;
+	}
+    }
+  
+  return NULL;
+}
+
+/**
+ * g_strrstr_len:
+ * @haystack: a nul-terminated string
+ * @needle: The nul-terminated string to search for.
+ *
+ * Searches the string haystack for the last occurrence
+ * of the string needle.
+ *
+ * Return value: A pointer to the found occurrence, or
+ * NULL if not found.
+ **/
+gchar *
+g_strrstr (const gchar *haystack,
+	   const gchar *needle)
+{
+  int i;
+  int needle_len = strlen (needle);
+  int haystack_len = strlen (haystack);
+  const char *p = haystack + haystack_len - needle_len;
+      
+  g_return_val_if_fail (haystack != NULL, NULL);
+  g_return_val_if_fail (needle != NULL, NULL);
+  
+  if (needle_len == 0)
+    return (char *)p;
+  
+  while (p >= haystack)
+    {
+      for (i = 0; i < needle_len; i++)
+	if (p[i] != needle[i])
+	  goto next;
+      
+      return (char *)p;
+      
+    next:
+      p--;
+    }
+  
+  return NULL;
+}
+
+/**
+ * g_strrstr_len:
+ * @haystack: a nul-terminated string
+ * @haystack_len: The maximum length of haystack
+ * @needle: The nul-terminated string to search for.
+ *
+ * Searches the string haystack for the last occurrence
+ * of the string needle, limiting the length of the search
+ * to haystack_len. 
+ *
+ * Return value: A pointer to the found occurrence, or
+ * NULL if not found.
+ **/
+gchar *
+g_strrstr_len (const gchar *haystack,
+	       gint         haystack_len,
+	       const gchar *needle)
+{
+  int i;
+      
+  g_return_val_if_fail (haystack != NULL, NULL);
+  g_return_val_if_fail (needle != NULL, NULL);
+  
+  if (haystack_len < 0)
+    return g_strrstr (haystack, needle);
+  else
+    {
+      int needle_len = strlen (needle);
+      const char *haystack_max = haystack + haystack_len;
+      const char *p = haystack;
+
+      while (p < haystack_max && *p)
+	p++;
+
+      p -= needle_len;
+
+      while (p >= haystack)
+	{
+	  for (i = 0; i < needle_len; i++)
+	    if (p[i] != needle[i])
+	      goto next;
+	  
+	  return (char *)p;
+	  
+	next:
+	  p--;
+	}
+    }
+
+  return NULL;
+}
+
+

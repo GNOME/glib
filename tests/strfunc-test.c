@@ -116,7 +116,13 @@ main (int   argc,
   g_assert (strcmp (copy[1], "Bar") == 0);
   g_assert (copy[2] == NULL);
   g_strfreev (copy);
-  
+
+  g_assert (strcmp (g_strstr_len ("FooBarFooBarFoo", 6, "Bar"),
+		    "BarFooBarFoo") == 0);
+  g_assert (strcmp (g_strrstr ("FooBarFooBarFoo", "Bar"),
+		    "BarFoo") == 0);
+  g_assert (strcmp (g_strrstr_len ("FooBarFooBarFoo", 14, "BarFoo"),
+		    "BarFooBarFoo") == 0);
   return 0;
 }
 

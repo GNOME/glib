@@ -60,6 +60,15 @@ gsize	              g_strlcpy	       (gchar	     *dest,
 gsize	              g_strlcat        (gchar	     *dest,
 					const gchar  *src,
 					gsize         dest_size);
+gchar *               g_strstr_len     (const gchar  *haystack,
+					gint          haystack_len,
+					const gchar  *needle);
+gchar *               g_strrstr        (const gchar  *haystack,
+					const gchar  *needle);
+gchar *               g_strrstr_len    (const gchar  *haystack,
+					gint          haystack_len,
+					const gchar  *needle);
+
 /* removes leading spaces */
 gchar*                g_strchug        (gchar        *string);
 /* removes trailing spaces */

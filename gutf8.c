@@ -494,51 +494,55 @@ g_unichar_to_utf8 (gunichar c, gchar *outbuf)
 /**
  * g_utf8_strchr:
  * @p: a nul-terminated utf-8 string
+ * @p_len: the maximum length of p
  * @c: a iso-10646 character
  * 
  * Find the leftmost occurence of the given iso-10646 character
- * in a UTF-8 string.
+ * in a UTF-8 string, while limiting the search to p_len bytes.
+ * If len is -1, allow unbounded search.
  * 
  * Return value: NULL if the string does not contain the character, otherwise, a
  *               a pointer to the start of the leftmost of the character in the string.
  **/
 gchar *
-g_utf8_strchr (const char *p, gunichar c)
+g_utf8_strchr (const char *p,
+	       gint        p_len,
+	       gunichar    c)
 {
   gchar ch[10];
 
   gint len = g_unichar_to_utf8 (c, ch);
   ch[len] = '\0';
   
-  return strstr(p, ch);
+  return g_strstr_len (p, p_len, ch);
 }
 
-#if 0
+
 /**
  * g_utf8_strrchr:
  * @p: a nul-terminated utf-8 string
+ * @p_len: the maximum length of p
  * @c: a iso-10646 character/
  * 
  * Find the rightmost occurence of the given iso-10646 character
- * in a UTF-8 string.
+ * in a UTF-8 string, while limiting the search to p_len bytes.
+ * If len is -1, allow unbounded search.
  * 
  * Return value: NULL if the string does not contain the character, otherwise, a
  *               a pointer to the start of the rightmost of the character in the string.
  **/
-
-/* This is ifdefed out atm as there is no strrstr function in libc.
- */
 gchar *
-unicode_strrchr (const char *p, gunichar c)
+g_utf8_strrchr (const char *p,
+		gint        p_len,
+		gunichar    c)
 {
   gchar ch[10];
 
-  len = g_unichar_to_utf8 (c, ch);
+  gint len = g_unichar_to_utf8 (c, ch);
   ch[len] = '\0';
   
-  return strrstr(p, ch);
+  return g_strrstr_len (p, p_len, ch);
 }
-#endif
 
 
 /* Like g_utf8_get_char, but take a maximum length

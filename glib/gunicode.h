@@ -188,10 +188,11 @@ gchar* g_utf8_strncpy (gchar       *dest,
 
 /* Find the UTF-8 character corresponding to ch, in string p. These
    functions are equivalants to strchr and strrchr */
-
 gchar* g_utf8_strchr  (const gchar *p,
+		       gint         len,
 		       gunichar     c);
 gchar* g_utf8_strrchr (const gchar *p,
+		       gint         len,
 		       gunichar     c);
 
 gunichar2 *g_utf8_to_utf16     (const gchar      *str,
