@@ -588,7 +588,7 @@ main (int   argc,
     {
       if (std_includes)
 	fprintf (fout, "#include\t<gobject/gmarshal.h>\n\n");
-      fprintf (fout, "#ifdef __cplusplus\nextern \"C\" {\n#endif /* __cplusplus */\n");
+      fprintf (fout, "G_BEGIN_DECLS\n");
     }
 
   /* process input files */
@@ -671,7 +671,7 @@ main (int   argc,
   /* put out trailer */
   if (gen_cheader)
     {
-      fprintf (fout, "\n#ifdef __cplusplus\n}\n#endif /* __cplusplus */\n");
+      fprintf (fout, "\nG_END_DECLS\n");
     }
   fprintf (fout, "\n");
 
