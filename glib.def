@@ -327,6 +327,7 @@ EXPORTS
 	g_slist_append
 	g_slist_concat
 	g_slist_copy
+	g_slist_delete_link
 	g_slist_find
 	g_slist_find_custom
 	g_slist_foreach

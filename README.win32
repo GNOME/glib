@@ -314,6 +314,7 @@ diff -ru2 ./w32api/include/wingdi.h ../../src/mingw-runtime-19991107/w32api/incl
    cd lib
    mkdir //g/gcc-2.95.2/H-i586-cygwin32/lib/mingw32
    cp *.a //g/gcc-2.95.2/H-i586-cygwin32/lib/mingw32
+   cp crt2.o crtdll2.o //g/gcc-2.95.2/H-i586-cygwin32/lib/mingw32
    cd ../include
    mkdir //g/gcc-2.95.2/H-i586-cygwin32/i586-cygwin32/include/mingw32
    cp *.h //g/gcc-2.95.2/H-i586-cygwin32/i586-cygwin32/include/mingw32
