@@ -22,6 +22,7 @@
 
 #include <iconv.h>
 #include <errno.h>
+#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 
@@ -187,29 +188,263 @@ g_iconv_close (GIConv converter)
   return iconv_close (cd);
 }
 
+
+#define ICONV_CACHE_SIZE   (16)
+
+struct _iconv_cache_bucket {
+  gchar *key;
+  guint32 refcount;
+  gboolean used;
+  iconv_t cd;
+};
+
+static GList *iconv_cache_list;
+static GHashTable *iconv_cache;
+static GHashTable *iconv_open_hash;
+static guint iconv_cache_size = 0;
+G_LOCK_DEFINE_STATIC (iconv_cache_lock);
+
+/* caller *must* hold the iconv_cache_lock */
+static void
+iconv_cache_init (void)
+{
+  static gboolean initialized = FALSE;
+  
+  if (initialized)
+    return;
+  
+  iconv_cache_list = NULL;
+  iconv_cache = g_hash_table_new (g_str_hash, g_str_equal);
+  iconv_open_hash = g_hash_table_new (g_direct_hash, g_direct_equal);
+  
+  initialized = TRUE;
+}
+
+
+/**
+ * iconv_cache_bucket_new:
+ * @key: cache key
+ * @cd: iconv descriptor
+ *
+ * Creates a new cache bucket, inserts it into the cache and
+ * increments the cache size.
+ *
+ * Returns a pointer to the newly allocated cache bucket.
+ **/
+struct _iconv_cache_bucket *
+iconv_cache_bucket_new (const gchar *key, iconv_t cd)
+{
+  struct _iconv_cache_bucket *bucket;
+  
+  bucket = g_new (struct _iconv_cache_bucket, 1);
+  bucket->key = g_strdup (key);
+  bucket->refcount = 1;
+  bucket->used = TRUE;
+  bucket->cd = cd;
+  
+  g_hash_table_insert (iconv_cache, bucket->key, bucket);
+  
+  /* FIXME: if we sorted the list so items with few refcounts were
+     first, then we could expire them faster in iconv_cache_expire_unused () */
+  iconv_cache_list = g_list_prepend (iconv_cache_list, bucket);
+  
+  iconv_cache_size++;
+  
+  return bucket;
+}
+
+
+/**
+ * iconv_cache_bucket_expire:
+ * @node: cache bucket's node
+ * @bucket: cache bucket
+ *
+ * Expires a single cache bucket @bucket. This should only ever be
+ * called on a bucket that currently has no used iconv descriptors
+ * open.
+ *
+ * @node is not a required argument. If @node is not supplied, we
+ * search for it ourselves.
+ **/
+static void
+iconv_cache_bucket_expire (GList *node, struct _iconv_cache_bucket *bucket)
+{
+  g_hash_table_remove (iconv_cache, bucket->key);
+  
+  if (node == NULL)
+    node = g_list_find (iconv_cache_list, bucket);
+  
+  g_assert (node != NULL);
+  
+  if (node->prev)
+    {
+      node->prev->next = node->next;
+      if (node->next)
+        node->next->prev = node->prev;
+    }
+  else
+    {
+      iconv_cache_list = node->next;
+      if (node->next)
+        node->next->prev = NULL;
+    }
+  
+  g_list_free_1 (node);
+  
+  g_free (bucket->key);
+  g_iconv_close (bucket->cd);
+  g_free (bucket);
+  
+  iconv_cache_size--;
+}
+
+
+/**
+ * iconv_cache_expire_unused:
+ *
+ * Expires as many unused cache buckets as it needs to in order to get
+ * the total number of buckets < ICONV_CACHE_SIZE.
+ **/
+static void
+iconv_cache_expire_unused (void)
+{
+  struct _iconv_cache_bucket *bucket;
+  GList *node, *next;
+  
+  node = iconv_cache_list;
+  while (node && iconv_cache_size >= ICONV_CACHE_SIZE)
+    {
+      next = node->next;
+      
+      bucket = node->data;
+      if (bucket->refcount == 0)
+        iconv_cache_bucket_expire (node, bucket);
+      
+      node = next;
+    }
+}
+
 static GIConv
 open_converter (const gchar *to_codeset,
-                const gchar *from_codeset,
+		const gchar *from_codeset,
 		GError     **error)
 {
-  GIConv cd = g_iconv_open (to_codeset, from_codeset);
-
-  if (cd == (iconv_t) -1)
+  struct _iconv_cache_bucket *bucket;
+  gchar *key;
+  GIConv cd;
+  
+  /* create our key */
+  key = g_alloca (strlen (from_codeset) + strlen (to_codeset) + 2);
+  sprintf (key, "%s:%s", from_codeset, to_codeset);
+  
+  G_LOCK (iconv_cache_lock);
+  
+  /* make sure the cache has been initialized */
+  iconv_cache_init ();
+  
+  bucket = g_hash_table_lookup (iconv_cache, key);
+  if (bucket)
     {
-      /* Something went wrong.  */
-      if (errno == EINVAL)
-        g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_NO_CONVERSION,
-                     _("Conversion from character set '%s' to '%s' is not supported"),
-                     from_codeset, to_codeset);
+      if (bucket->used)
+        {
+          cd = g_iconv_open (to_codeset, from_codeset);
+          if (cd == (iconv_t) -1)
+            goto error;
+        }
       else
-        g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_FAILED,
-                     _("Could not open converter from '%s' to '%s': %s"),
-                     from_codeset, to_codeset, strerror (errno));
+        {
+          cd = bucket->cd;
+          bucket->used = TRUE;
+          
+          /* reset the descriptor */
+          g_iconv (cd, NULL, NULL, NULL, NULL);
+        }
+      
+      bucket->refcount++;
     }
-
+  else
+    {
+      cd = g_iconv_open (to_codeset, from_codeset);
+      if (cd == (iconv_t) -1)
+        goto error;
+      
+      iconv_cache_expire_unused ();
+      
+      bucket = iconv_cache_bucket_new (key, cd);
+    }
+  
+  g_hash_table_insert (iconv_open_hash, cd, bucket->key);
+  
+  G_UNLOCK (iconv_cache_lock);
+  
   return cd;
-
+  
+ error:
+  
+  G_UNLOCK (iconv_cache_lock);
+  
+  /* Something went wrong.  */
+  if (errno == EINVAL)
+    g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_NO_CONVERSION,
+		 _("Conversion from character set '%s' to '%s' is not supported"),
+		 from_codeset, to_codeset);
+  else
+    g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_FAILED,
+		 _("Could not open converter from '%s' to '%s': %s"),
+		 from_codeset, to_codeset, strerror (errno));
+  
+  return cd;
 }
+
+static int
+close_converter (GIConv converter)
+{
+  struct _iconv_cache_bucket *bucket;
+  const gchar *key;
+  iconv_t cd;
+  
+  cd = (iconv_t) converter;
+  
+  if (cd == (iconv_t) -1)
+    return 0;
+  
+  G_LOCK (iconv_cache_lock);
+  
+  key = g_hash_table_lookup (iconv_open_hash, cd);
+  if (key)
+    {
+      g_hash_table_remove (iconv_open_hash, cd);
+      
+      bucket = g_hash_table_lookup (iconv_cache, key);
+      g_assert (bucket);
+      
+      bucket->refcount--;
+      
+      if (cd == bucket->cd)
+        bucket->used = FALSE;
+      else
+        g_iconv_close (cd);
+      
+      if (!bucket->refcount && iconv_cache_size > ICONV_CACHE_SIZE)
+        {
+          /* expire this cache bucket */
+          iconv_cache_bucket_expire (NULL, bucket);
+        }
+    }
+  else
+    {
+      G_UNLOCK (iconv_cache_lock);
+      
+      g_warning ("This iconv context wasn't opened using open_converter");
+      
+      return g_iconv_close (converter);
+    }
+  
+  G_UNLOCK (iconv_cache_lock);
+  
+  return 0;
+}
+
 
 /**
  * g_convert:
@@ -251,7 +486,7 @@ g_convert (const gchar *str,
   g_return_val_if_fail (str != NULL, NULL);
   g_return_val_if_fail (to_codeset != NULL, NULL);
   g_return_val_if_fail (from_codeset != NULL, NULL);
-     
+  
   cd = open_converter (to_codeset, from_codeset, error);
 
   if (cd == (GIConv) -1)
@@ -269,7 +504,7 @@ g_convert (const gchar *str,
 			      bytes_read, bytes_written,
 			      error);
   
-  g_iconv_close (cd);
+  close_converter (cd);
 
   return res;
 }
@@ -498,7 +733,7 @@ g_convert_with_fallback (const gchar *str,
 		    bytes_read, &inbytes_remaining, error);
   if (!utf8)
     {
-      g_iconv_close (cd);
+      close_converter (cd);
       if (bytes_written)
         *bytes_written = 0;
       return NULL;
@@ -599,7 +834,7 @@ g_convert_with_fallback (const gchar *str,
    */
   *outp = '\0';
   
-  g_iconv_close (cd);
+  close_converter (cd);
 
   if (bytes_written)
     *bytes_written = outp - dest;	/* Doesn't include '\0' */
