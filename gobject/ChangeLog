@@ -1,3 +1,8 @@
+Mon Apr 30 20:03:56 2001  Tim Janik  <timj@gtk.org>
+
+	* glib-mkenums (usage): removed \v escaping, newer perl versions don't
+	support this, and it'S probably useless anyways.
+
 Sat Apr 28 23:39:42 2001  Tim Janik  <timj@gtk.org>
 
 	* gsignal.[hc]: made signal handler and emission hook ids gulongs.
