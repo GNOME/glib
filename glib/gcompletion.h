@@ -39,7 +39,6 @@ typedef gchar*          (*GCompletionFunc)      (gpointer);
 /* GCompletion
  */
 
-typedef int (*GCompletionStrcmpFunc)(const char *s1, const char *s2);
 typedef int (*GCompletionStrncmpFunc)(const char *s1, const char *s2, size_t n);
 
 struct _GCompletion
