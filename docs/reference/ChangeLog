@@ -1,3 +1,7 @@
+2001-12-06  Havoc Pennington  <hp@redhat.com>
+
+	* glib/tmpl/messages.sgml: improve g_log_set_handler docs
+
 Wed Nov 28 18:50:19 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/glib-sections.txt: Update.

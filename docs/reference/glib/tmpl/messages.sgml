@@ -166,11 +166,28 @@ must be combined with the G_LOG_FLAG_FATAL and G_LOG_FLAG_RECURSIVE bit flags.
 Note that since the G_LOG_LEVEL_ERROR log level is always fatal, if you want
 to set a handler for this log level you must combine it with G_LOG_FLAG_FATAL.
 </para>
+<para>
 
 <example>
-<title>Adding a log handler for all warning messages</title>
+<title>Adding a log handler for all warning messages in the default (application) domain</title>
 <programlisting>
   g_log_set_handler (NULL, G_LOG_LEVEL_WARNING | G_LOG_FLAG_FATAL
+                     | G_LOG_FLAG_RECURSIVE, my_log_handler, NULL);
+</programlisting>
+</example>
+
+<example>
+<title>Adding a log handler for all critical messages from GTK+</title>
+<programlisting>
+  g_log_set_handler ("Gtk", G_LOG_LEVEL_CRITICAL | G_LOG_FLAG_FATAL
+                     | G_LOG_FLAG_RECURSIVE, my_log_handler, NULL);
+</programlisting>
+</example>
+
+<example>
+<title>Adding a log handler for <emphasis>all</emphasis> messages from GLib</title>
+<programlisting>
+  g_log_set_handler ("GLib", G_LOG_LEVEL_MASK | G_LOG_FLAG_FATAL
                      | G_LOG_FLAG_RECURSIVE, my_log_handler, NULL);
 </programlisting>
 </example>
