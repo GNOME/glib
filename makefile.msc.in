@@ -5,149 +5,22 @@ TOP = ..
 
 !INCLUDE $(TOP)\build\win32\make.msc
 
-# Possibly override GLib version in build\win32\module.defs
-GLIB_VER = @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
+PARTS = glib gmodule gthread gobject tests
 
-################################################################
+all : \
+	config.h \
+	sub-all
 
-# Nothing much configurable below
+sub-all: 
+	for %d in ($(PARTS)) do nmake -nologo -f makefile.msc sub-one THIS=%d
 
-INCLUDES = -I .
-DEFINES = -DHAVE_CONFIG_H -DGLIB_COMPILATION -DG_LOG_DOMAIN=g_log_domain_glib -DG_ENABLE_DEBUG
-DEPCFLAGS = $(INTL_CFLAGS) $(LIBICONV_CFLAGS)
-
-DLLS_TO_BUILD =			\
-	glib-$(GLIB_VER).dll	\
-	sub-gmodule		\
-	sub-gthread		\
-	sub-gobject
-
-all :				\
-	config.h		\
-	glibconfig.h		\
-	glib-$(GLIB_VER)s.lib \
-	$(DLLS_TO_BUILD)	\
-	gspawn-win32-helper.exe	\
-	testglib.exe		\
-	testgdate.exe		\
-	testgdateparser.exe
-
-glib_OBJECTS =			\
-	garray.obj		\
-	gasyncqueue.obj		\
-	gbacktrace.obj		\
-	gcache.obj		\
-	gcompletion.obj		\
-	gconvert.obj		\
-	gdataset.obj		\
-	gdate.obj		\
-	gerror.obj		\
-	gfileutils.obj		\
-	ghash.obj		\
-	ghook.obj		\
-	giochannel.obj		\
-	giowin32.obj		\
-	glist.obj		\
-	gmain.obj		\
-	gmarkup.obj		\
-	gmem.obj		\
-	gmessages.obj		\
-	gnode.obj		\
-	gprimes.obj		\
-	gqsort.obj		\
-	gqueue.obj		\
-	gpattern.obj	\
-	grand.obj		\
-	grel.obj		\
-	gscanner.obj		\
-	gshell.obj		\
-	gslist.obj		\
-	gspawn-win32.obj	\
-	gstrfuncs.obj		\
-	gstring.obj		\
-	gthread.obj		\
-	gthreadpool.obj		\
-	gtimer.obj		\
-	gtree.obj		\
-	gunibreak.obj		\
-	gunidecomp.obj		\
-	guniprop.obj		\
-	gutf8.obj		\
-	gutils.obj		\
-	gwin32.obj
-
-glibconfig.h: glibconfig.h.win32
-	copy glibconfig.h.win32 glibconfig.h
+sub-one:
+	@cd $(THIS)
+	@nmake -nologo -f makefile.msc
+	@cd ..
 
 config.h: config.h.win32
 	copy config.h.win32 config.h
 
-makefile.msc: makefile.msc.in
-	$(SED) -e s,@GLIB[_]MAJOR_VERSION@,@GLIB_MAJOR_VERSION@, \
-	       -e s,@GLIB[_]MINOR_VERSION@,@GLIB_MINOR_VERSION@, <makefile.msc.in >$@
-
-################ glib
-
-# create a static libary
-glib-$(GLIB_VER)s.lib : $(glib_OBJECTS)
-	lib /out:glib-$(GLIB_VER)s.lib $(glib_OBJECTS)
-
-# $(LIBICONV_LIBS) is a runtime dependency now
-
-glib-$(GLIB_VER).dll : $(glib_OBJECTS) glib.def
-	$(CC) $(CFLAGS) -LD -Feglib-$(GLIB_VER).dll $(glib_OBJECTS) $(INTL_LIBS) user32.lib advapi32.lib wsock32.lib $(LDFLAGS) /def:glib.def
-
-gspawn-win32-helper.exe : gspawn-win32-helper.c glib-$(GLIB_VER).dll
-	$(CC) $(CFLAGS) -Fe$@ -DG_LOG_DOMAIN=\"gspawn-win32-helper\" gspawn-win32-helper.c glib-$(GLIB_VER).lib $(LDFLAGS) /subsystem:windows user32.lib
-
-################ subdirectories
-
-sub-gmodule :
-	cd gmodule
-	-$(MAKE) -f makefile.msc all
-	cd ..
-
-sub-gthread :
-	cd gthread
-	-$(MAKE) -f makefile.msc all
-	cd ..
-
-sub-gobject :
-	cd gobject
-	-$(MAKE) -f makefile.msc all
-	cd ..
-
-################ test progs
-
-testglib.obj : testglib.c
-	$(CC) -c $(CFLAGS) -DG_LOG_DOMAIN=\"testglib\" testglib.c
-
-testglib.exe : glib-$(GLIB_VER).dll testglib.obj
-	$(CC) $(CFLAGS) -Fetestglib.exe testglib.obj glib-$(GLIB_VER).lib $(LDFLAGS) /subsystem:console
-
-testgdate.obj : testgdate.c
-	$(CC) -c $(CFLAGS) -DG_LOG_DOMAIN=\"testgdate\" testgdate.c
-
-testgdate.exe : glib-$(GLIB_VER).dll testgdate.obj
-	$(CC) $(CFLAGS) -Fetestgdate.exe testgdate.obj glib-$(GLIB_VER).lib $(LDFLAGS) /subsystem:console
-
-testgdateparser.obj : testgdateparser.c
-	$(CC) -c $(CFLAGS) -DG_LOG_DOMAIN=\"testgdateparser\" testgdateparser.c
-
-testgdateparser.exe : glib-$(GLIB_VER).dll testgdateparser.obj
-	$(CC) $(CFLAGS) -Fetestgdateparser.exe testgdateparser.obj glib-$(GLIB_VER).lib $(LDFLAGS) /subsystem:console
-
-################ other stuff
-
-clean::
-	del config.h
-	del glibconfig.h
-	cd gmodule
-	$(MAKE) -f makefile.msc clean
-	cd ..
-	cd gthread
-	$(MAKE) -f makefile.msc clean
-	cd ..
-	cd gobject
-	$(MAKE) -f makefile.msc clean
-	cd ..
+glibconfig.h: glibconfig.h.win32
+	copy glibconfig.h.win32 glibconfig.h

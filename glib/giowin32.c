@@ -952,8 +952,10 @@ g_io_win32_sock_read (GIOChannel *channel,
           break;
 	case WSAEWOULDBLOCK:
           return G_IO_STATUS_AGAIN;
+#ifdef WE_NEED_TO_HANDLE_WSAEINTR /* not anymore with wsock2 ? */
 	case WSAEINTR:
           return G_IO_STATUS_INTR;
+#endif
 	default:
 	  error = G_IO_CHANNEL_ERROR_FAILED;
           break;
@@ -1001,8 +1003,10 @@ g_io_win32_sock_write (GIOChannel  *channel,
           break;
 	case WSAEWOULDBLOCK:
           return G_IO_STATUS_AGAIN;
+#ifdef WE_NEED_TO_HANDLE_WSAEINTR /* not anymore with wsock2 ? */
 	case WSAEINTR:
 	  return G_IO_STATUS_INTR;
+#endif
 	default:
 	  error = G_IO_CHANNEL_ERROR_FAILED;
           break;

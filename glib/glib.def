@@ -12,6 +12,10 @@ EXPORTS
 	g_array_sized_new
 	g_array_sort
 	g_array_sort_with_data
+	g_ascii_strcasecmp
+	g_ascii_strncasecmp
+	g_ascii_strdown
+	g_ascii_strup
 	g_async_queue_length
 	g_async_queue_length_unlocked
 	g_async_queue_lock
@@ -233,6 +237,7 @@ EXPORTS
 	g_list_free_1
 	g_list_index
 	g_list_insert
+	g_list_insert_before
 	g_list_insert_sorted
 	g_list_last
 	g_list_length
@@ -263,7 +268,7 @@ EXPORTS
 	g_main_context_find_source_by_funcs_user_data
 	g_main_context_find_source_by_id
 	g_main_context_find_source_by_user_data
-	g_main_context_get
+	g_main_context_new
 	g_main_context_get_poll_func
 	g_main_context_iteration
 	g_main_context_pending
@@ -438,6 +443,7 @@ EXPORTS
 	g_slist_free_1
 	g_slist_index
 	g_slist_insert
+	g_slist_insert_before
 	g_slist_insert_sorted
 	g_slist_last
 	g_slist_length
@@ -516,6 +522,7 @@ EXPORTS
 	g_string_append
 	g_string_append_c
 	g_string_append_len
+	g_string_append_unichar
 	g_string_assign
 	g_string_chunk_free
 	g_string_chunk_insert
@@ -528,11 +535,13 @@ EXPORTS
 	g_string_insert
 	g_string_insert_c
 	g_string_insert_len
+	g_string_insert_unichar
 	g_string_new
 	g_string_new_len
 	g_string_prepend
 	g_string_prepend_c
 	g_string_prepend_len
+	g_string_prepend_unichar
 	g_string_printf
 	g_string_printfa
 	g_string_sized_new
@@ -618,16 +627,22 @@ EXPORTS
 	g_usleep
 	g_utf16_to_ucs4
 	g_utf16_to_utf8
+	g_utf8_casefold
+	g_utf8_collate
+	g_utf8_collate_key
 	g_utf8_find_next_char
 	g_utf8_find_prev_char
 	g_utf8_get_char
+	g_utf8_get_char_validated
 	g_utf8_offset_to_pointer
 	g_utf8_pointer_to_offset
 	g_utf8_prev_char
 	g_utf8_skip
 	g_utf8_strchr
+	g_utf8_strdown
 	g_utf8_strlen
 	g_utf8_strncpy
+	g_utf8_strup
 	g_utf8_to_ucs4
 	g_utf8_to_ucs4_fast
 	g_utf8_to_utf16

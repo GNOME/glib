@@ -301,7 +301,7 @@ main (int    argc,
 	  exit (1);
 	}
 
-      hwnd = CreateWindow (klass, "gio-test", 0, 0, 0, 10, 10,
+      hwnd = CreateWindow (MAKEINTATOM(klass), "gio-test", 0, 0, 0, 10, 10,
 			   NULL, NULL, wcl.hInstance, NULL);
       if (!hwnd)
 	{
@@ -309,7 +309,7 @@ main (int    argc,
 	  exit (1);
 	}
 
-      windows_messages_channel = g_io_channel_win32_new_messages (hwnd);
+      windows_messages_channel = g_io_channel_win32_new_messages ((guint)hwnd);
       g_io_add_watch (windows_messages_channel, G_IO_IN, recv_windows_message, 0);
 #endif
 

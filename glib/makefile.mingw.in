@@ -3,9 +3,9 @@
 
 ## Use: make -f makefile.mingw
 
-TOP = ..
+TOP = ../..
 
-include build/win32/make.mingw
+include $(TOP)/build/win32/make.mingw
 
 # Possibly override GLib version in build/win32/module.defs
 GLIB_VER = @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
@@ -14,24 +14,15 @@ GLIB_VER = @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
 
 # Nothing much configurable below
 
-INCLUDES = -I .
+INCLUDES = -I . -I .. 
 DEFINES = -DHAVE_CONFIG_H -DGLIB_COMPILATION -DG_LOG_DOMAIN=g_log_domain_glib -DG_ENABLE_DEBUG -DDLL_EXPORT
 DEPCFLAGS = $(INTL_CFLAGS) $(LIBICONV_CFLAGS)
 
-DLLS_TO_BUILD =				\
-	glib-$(GLIB_VER).dll		\
-	sub-gmodule			\
-	sub-gthread			\
-	sub-gobject
-
 all :				\
-	config.h		\
-	glibconfig.h		\
-	$(DLLS_TO_BUILD)	\
-	gspawn-win32-helper.exe	\
-	testglib.exe		\
-	testgdate.exe		\
-	testgdateparser.exe
+	../config.h		\
+	../glibconfig.h		\
+	glib-$(GLIB_VER).dll \
+	gspawn-win32-helper.exe
 
 glib_OBJECTS =			\
 	garray.o		\
@@ -71,16 +62,17 @@ glib_OBJECTS =			\
 	gtimer.o		\
 	gtree.o			\
 	gunibreak.o		\
+	gunicollate.o		\
 	gunidecomp.o		\
 	guniprop.o		\
 	gutf8.o			\
 	gutils.o		\
 	gwin32.o
 
-glibconfig.h: glibconfig.h.win32
+../glibconfig.h: ../glibconfig.h.win32
 	cp $< $@
 
-config.h: config.h.win32
+../config.h: ../config.h.win32
 	cp $< $@
 
 ifeq ($(wildcard makefile.mingw.in),makefile.mingw.in)
@@ -91,8 +83,11 @@ endif
 
 ################ glib
 
+#glib-$(GLIB_VER).dll : $(glib_OBJECTS) glib.def
+#	./build-dll glib $(GLIB_VER) glib.def $(glib_OBJECTS) $(INTL_LIBS) $(LIBICONV_LIBS) -luser32 -lwsock32
+
 glib-$(GLIB_VER).dll : $(glib_OBJECTS) glib.def
-	./build-dll glib $(GLIB_VER) glib.def $(glib_OBJECTS) $(INTL_LIBS) $(LIBICONV_LIBS) -luser32 -lwsock32
+	dllwrap --mno-cygwin --dllname glib-$(GLIB_VER).dll --implib glib-$(GLIB_VER).lib --def glib.def $(glib_OBJECTS) $(INTL_LIBS) $(LIBICONV_LIBS) -luser32 -lwsock32
 
 gspawn-win32-helper.exe : gspawn-win32-helper.c
 	$(CC) $(CFLAGS) -mwindows -DG_LOG_DOMAIN=\"gspawn-win32-helper\" -o $@ $< -L . -lglib-$(GLIB_VER)

@@ -1,3 +1,21 @@
+2001-07-20  Hans Breuer  <hans@breuer.org>
+
+	* glib/glib/giowin32.c : make it compile again
+
+	* glib/glib.def : updated exports
+
+	* glib/makefile.msc.in :
+	* glib/makefile.mingw.in : 
+	* tests/makefile.msc.in : reflect glib move
+
+	* tests/mainloop-test.c : #include <io.h> for _pipe()
+
+	* tests/gio-test.c : casts for strict compiler settings
+
+	* makefile.msc.in : new master makefile reflecting the glib
+	move. The '.in' isn't really needed anymore, because there
+	is no version number in it
+
 2001-07-19  Darin Adler  <darin@bentspoon.com>
 
 	* glib/gstrfuncs.c: (g_ascii_strdown), (g_ascii_strup): Add
@@ -109,6 +127,7 @@ Fri Jul  6 22:34:32 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* configure.in: added Basque (eu) to ALL_LINGUAS
 
+>>>>>>> 1.757
 Mon Jul  2 19:48:52  2001 Andrew Lanoix <alanoix@umich.edu>
 
 	*giowin32.c: g_source_remove()ing an socket iochannel closes

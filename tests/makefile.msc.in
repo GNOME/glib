@@ -3,7 +3,7 @@
 
 TOP = ..\..
 
-!INCLUDE ..\build\win32\make.msc
+!INCLUDE $(TOP)\build\win32\make.msc
 
 # Possibly override GLib version in build\win32\module.defs
 GLIB_VER = @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
@@ -12,10 +12,13 @@ GLIB_VER = @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
 
 # Nothing much configurable below
 
-INCLUDES = -I .. -I ../gmodule
+INCLUDES = -I .. -I ..\glib -I ..\gmodule
 DEFINES = -DHAVE_CONFIG_H
 
 TESTS = \
+	testglib.exe \
+	testgdate.exe \
+	testgdateparser.exe \
 	array-test.exe	\
 	date-test.exe	\
 	dirname-test.exe\
@@ -51,13 +54,13 @@ makefile.msc: makefile.msc.in
 
 .c.exe :
 	$(CC) $(CFLAGS) -c $<
-	$(CC) $(CFLAGS) -Fe$@ $< ..\glib-$(GLIB_VER).lib ..\gmodule\gmodule-$(GLIB_VER).lib ..\gthread\gthread-$(GLIB_VER).lib $(LDFLAGS) /subsystem:console
+	$(CC) $(CFLAGS) -Fe$@ $< ..\glib\glib-$(GLIB_VER).lib ..\gmodule\gmodule-$(GLIB_VER).lib ..\gthread\gthread-$(GLIB_VER).lib $(LDFLAGS) user32.lib /subsystem:console
 
 libmoduletestplugin_a.dll : libmoduletestplugin_a.obj
-	$(CC) $(CFLAGS) -LD libmoduletestplugin_a.obj ..\gmodule\gmodule-$(GLIB_VER).lib ..\glib-$(GLIB_VER).lib $(LDFLAGS)
+	$(CC) $(CFLAGS) -LD libmoduletestplugin_a.obj ..\gmodule\gmodule-$(GLIB_VER).lib ..\glib\glib-$(GLIB_VER).lib $(LDFLAGS)
 
 libmoduletestplugin_b.dll : libmoduletestplugin_b.obj
-	$(CC) $(CFLAGS) -LD libmoduletestplugin_b.obj ..\gmodule\gmodule-$(GLIB_VER).lib ..\glib-$(GLIB_VER).lib $(LDFLAGS)
+	$(CC) $(CFLAGS) -LD libmoduletestplugin_b.obj ..\gmodule\gmodule-$(GLIB_VER).lib ..\glib\glib-$(GLIB_VER).lib $(LDFLAGS)
 
 check:	all
 	for %p in ($(TESTS)) do %p
