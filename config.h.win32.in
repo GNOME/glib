@@ -144,3 +144,4 @@
 /* Define if you have the w library (-lw).  */
 /* #undef HAVE_LIBW */
 
+#define USE_LIBICONV 1

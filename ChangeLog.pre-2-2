@@ -1,3 +1,11 @@
+2000-11-13  Tor Lillqvist  <tml@iki.fi>
+
+	* config.h.win32.in: Add USE_LIBICONV.
+
+	* gconvert.c: Check G_OS_WIN32 only after including glib.h. 
+
+	* glib.def: Update.
+
 2000-11-13  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gthread.c (g_static_rec_mutex_*): Made recursive mutexes also

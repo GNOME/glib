@@ -151,6 +151,9 @@ EXPORTS
 	g_hook_prepend
 	g_hook_ref
 	g_hook_unref
+	g_iconv
+	g_iconv_close
+	g_iconv_open
 	g_idle_add
 	g_idle_add_full
 	g_idle_remove_by_data
@@ -202,6 +205,8 @@ EXPORTS
 	g_list_remove_link
 	g_list_reverse
 	g_list_sort
+	g_locale_from_utf8
+	g_locale_to_utf8
 	g_log
 	g_log_default_handler
 	g_log_remove_handler

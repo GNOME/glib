@@ -25,12 +25,12 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include "glib.h"
+#include "config.h"
+
 #ifdef G_OS_WIN32
 #include <windows.h>
 #endif
-
-#include "glib.h"
-#include "config.h"
 
 #define _(s) (s)
 
@@ -692,6 +692,7 @@ g_locale_from_utf8 (const gchar *utf8string, GError **error)
 
 gchar*
 g_filename_to_utf8 (const gchar *string, GError **error)
+
 {
 #ifdef G_OS_WIN32
   return g_locale_to_utf8 (string, error);
