@@ -225,6 +225,120 @@ g_win32_closedir (DIR *dir)
 }
 #endif
 
+/* msvc 5.0 headers don't have latest language and sublanguage codes */
+#ifndef LANG_ARMENIAN
+#define LANG_ARMENIAN 0x2b
+#endif
+#ifndef LANG_ASSAMESE
+#define LANG_ASSAMESE 0x4d
+#endif
+#ifndef LANG_AZERI
+#define LANG_AZERI 0x2c
+#endif
+#ifndef LANG_BENGALI
+#define LANG_BENGALI 0x45
+#endif
+#ifndef LANG_GEORGIAN
+#define LANG_GEORGIAN 0x37
+#endif
+#ifndef LANG_GUJARATI
+#define LANG_GUJARATI 0x47
+#endif
+#ifndef LANG_HINDI
+#define LANG_HINDI 0x39
+#endif
+#ifndef LANG_KANNADA
+#define LANG_KANNADA 0x4b
+#endif
+#ifndef LANG_KASHMIRI
+#define LANG_KASHMIRI 0x60
+#endif
+#ifndef LANG_KAZAK
+#define LANG_KAZAK 0x3f
+#endif
+#ifndef LANG_KONKANI
+#define LANG_KONKANI 0x57
+#endif
+#ifndef LANG_MACEDONIAN
+#define LANG_MACEDONIAN 0x2f
+#endif
+#ifndef LANG_MALAY
+#define LANG_MALAY 0x3e
+#endif
+#ifndef LANG_MALAYALAM
+#define LANG_MALAYALAM 0x4c
+#endif
+#ifndef LANG_MANIPURI
+#define LANG_MANIPURI 0x58
+#endif
+#ifndef LANG_MARATHI
+#define LANG_MARATHI 0x4e
+#endif
+#ifndef LANG_NEPALI
+#define LANG_NEPALI 0x61
+#endif
+#ifndef LANG_ORIYA
+#define LANG_ORIYA 0x48
+#endif
+#ifndef LANG_PUNJABI
+#define LANG_PUNJABI 0x46
+#endif
+#ifndef LANG_SANSKRIT
+#define LANG_SANSKRIT 0x4f
+#endif
+#ifndef LANG_SINDHI
+#define LANG_SINDHI 0x59
+#endif
+#ifndef LANG_SWAHILI
+#define LANG_SWAHILI 0x41
+#endif
+#ifndef LANG_TAMIL
+#define LANG_TAMIL 0x49
+#endif
+#ifndef LANG_TATAR
+#define LANG_TATAR 0x44
+#endif
+#ifndef LANG_TELUGU
+#define LANG_TELUGU 0x4a
+#endif
+#ifndef LANG_URDU
+#define LANG_URDU 0x20
+#endif
+#ifndef LANG_UZBEK
+#define LANG_UZBEK 0x43
+#endif
+
+#ifndef SUBLANG_CHINESE_MACAU
+#define SUBLANG_CHINESE_MACAU 0x05
+#endif
+#ifndef SUBLANG_ENGLISH_ZIMBABWE
+#define SUBLANG_ENGLISH_ZIMBABWE 0x0c
+#endif
+#ifndef SUBLANG_ENGLISH_PHILIPPINES
+#define SUBLANG_ENGLISH_PHILIPPINES 0x0d
+#endif
+#ifndef SUBLANG_FRENCH_MONACO
+#define SUBLANG_FRENCH_MONACO 0x06
+#endif
+#ifndef SUBLANG_KASHMIRI_INDIA
+#define SUBLANG_KASHMIRI_INDIA 0x02
+#endif
+#ifndef SUBLANG_MALAY_BRUNEI_DARUSSALAM
+#define SUBLANG_MALAY_BRUNEI_DARUSSALAM 0x02
+#endif
+#ifndef SUBLANG_NEPALI_INDIA
+#define SUBLANG_NEPALI_INDIA 0x02
+#endif
+#ifndef SUBLANG_URDU_PAKISTAN
+#define SUBLANG_URDU_PAKISTAN 0x01
+#endif
+#ifndef SUBLANG_URDU_INDIA
+#define SUBLANG_URDU_INDIA 0x02
+#endif
+#ifndef SUBLANG_UZBEK_CYRILLIC
+#define SUBLANG_UZBEK_CYRILLIC 0x02
+#endif
+
 /**
  * g_win32_getlocale:
  *

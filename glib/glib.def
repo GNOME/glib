@@ -52,6 +52,8 @@ EXPORTS
 	g_bsearch_array_lookup
 	g_bsearch_array_remove
 	g_bsearch_array_remove_node
+	g_build_filename
+	g_build_path
 	g_byte_array_append
 	g_byte_array_free
 	g_byte_array_new
@@ -166,6 +168,7 @@ EXPORTS
 	g_hash_table_lookup
 	g_hash_table_lookup_extended
 	g_hash_table_new
+	g_hash_table_new_full
 	g_hash_table_remove
 	g_hash_table_size
 	g_hook_alloc
@@ -544,6 +547,7 @@ EXPORTS
 	g_string_append_c
 	g_string_append_len
 	g_string_append_unichar
+	g_string_ascii_down
 	g_string_assign
 	g_string_chunk_free
 	g_string_chunk_insert

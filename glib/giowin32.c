@@ -1161,7 +1161,8 @@ g_io_channel_new_file (const gchar  *filename,
     }
 
 
-  fid = open (filename, flags, pmode);
+  /* always open 'untranslated' */
+  fid = open (filename, flags | _O_BINARY, pmode);
   if (fid < 0)
     {
       g_set_error (error, G_FILE_ERROR,

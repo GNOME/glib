@@ -1,3 +1,17 @@
+2001-09-21  Hans Breuer  <hans@breuer.org>
+
+	* makefile.msc : added rule for glibconfig.h
+
+	* glib/giowin32.c (g_io_channel_new_file) : always open
+	in binary mode
+
+	* glib/glib.def : updated externals
+
+	* glib/gwin32.c : re-added LANG_* and SUBLANG_* definitions,
+	which are missing from the msvc 5.0 win32 sdk
+
+	* glib/makefile.msc.in : added gbsearcharry
+
 Thu Sep 20 20:33:45 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* Rename g_mem_vtable_is_set() to g_mem_is_system_malloc().

@@ -5,6 +5,7 @@ PARTS = glib gmodule gthread gobject tests
 
 all : \
 	config.h \
+	glibconfig.h \
 	sub-all
 
 sub-all: 
@@ -22,3 +23,6 @@ sub-one:
 
 config.h: config.h.win32
 	copy config.h.win32 config.h
+
+glibconfig.h: glibconfig.h.win32
+	copy glibconfig.h.win32 glibconfig.h
