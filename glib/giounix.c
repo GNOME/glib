@@ -33,6 +33,8 @@
 
 #include "config.h"
 
+#define _POSIX_SOURCE		/* for SSIZE_MAX */
+
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <stdio.h>
