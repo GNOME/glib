@@ -1,3 +1,10 @@
+1999-01-26  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gdate.c (g_date_set_time): Removed the #warning about MT
+	unsafety without localtime_r.
+
+	* configure.in: Moved it here.
+
 Mon Jan 25 10:07:53 1999  Raph Levien  <raph@gimp.org>
 
 	* configure.in: (#define G_THREADS_IMPL...) Changed the #define,

@@ -574,6 +574,9 @@ FUNC_NO_GETPWUID_R="the 'g_get_(user_name|real_name|home_dir|tmp_dir)'
 		functions will not be MT-safe during their first call because
 		there is no 'getpwuid_r' on your system."
 
+FUNC_NO_LOCALTIME_R="the `g_date_set_time' function will not be MT-safe
+		because there is no `localtime_r' on your system."
+
 dnl determination of thread implementation
 dnl ***************************************
 
@@ -715,6 +718,9 @@ fi
 if test "x$enable_threads" = "xyes"; then
 	if test "$ac_cv_func_getpwuid_r" != "yes"; then
 		AC_MSG_WARN($FUNC_NO_GETPWUID_R)
+	fi
+	if test "$ac_cv_func_localtime_r" != "yes"; then
+		AC_MSG_WARN($FUNC_NO_LOCALTIME_R)
 	fi
 fi
 
