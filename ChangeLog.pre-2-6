@@ -1,3 +1,9 @@
+Tue Nov 20 20:54:25 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gunidecomp.[ch] glib/gen-unicode-tables.pl: Patch
+	from Andrew Taylor to optimize the decomposition table
+	to eliminate relocations and save space. (#64982)
+
 2001-11-18  Hans Breuer  <hans@breuer.org>
 
 	* glib/glib.def : 

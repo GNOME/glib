@@ -707,12 +707,14 @@ sub print_decomp
     print OUT "  unsigned short ch;\n";
     print OUT "  unsigned char canon_offset;\n";
     print OUT "  unsigned char compat_offset;\n";
-    print OUT "  unsigned char *expansion;\n";
+    print OUT "  unsigned short expansion_offset;\n";
     print OUT "} decomposition;\n\n";
 
     print OUT "static const decomposition decomp_table[] =\n{\n";
     my ($iter);
     my ($first) = 1;
+    my ($decomp_string) = "";
+    my ($decomp_string_offset) = 0;
     for ($count = 0; $count <= $last; ++$count)
     {
 	if (defined $decompositions[$count])
@@ -749,17 +751,24 @@ sub print_decomp
 		$string .= $compat_decomp;
 	    }
 
-	    $bytes_out += (length $string) / 4; # "\x20"
+            if (!defined($decomp_offsets{$string})) {
+                $decomp_offsets{$string} = $decomp_string_offset;
+                $decomp_string .= "\n  \"".$string."\\0\\0\" /* offset ".
+                    $decomp_string_offset." */";
+                $decomp_string_offset += ((length $string) / 4) + 2;
 	    
-	    # Only a single terminator because one is implied in the string.
-	    printf OUT qq(  { 0x%04x, %u, %u, "%s\\0" }), 
-                $count, $canon_offset, $compat_offset, $string;
-   	        
+                $bytes_out += (length $string) / 4 + 2; # "\x20"
+            }
 	    
+            printf OUT qq(  { 0x%04x, %u, %u, %d }), 
+                $count, $canon_offset, $compat_offset, $decomp_offsets{$string};
 	    $bytes_out += 6;
+
 	}
     }
     print OUT "\n};\n\n";
+
+    printf OUT "static const char decomp_expansion_string[] = %s;\n\n", $decomp_string;
 
     print OUT "#endif /* DECOMP_H */\n";
 

@@ -83,7 +83,7 @@ g_unicode_canonical_ordering (gunichar *string,
     }
 }
 
-static guchar *
+static const guchar *
 find_decomposition (gunichar ch,
 		    gboolean compat)
 {
@@ -113,7 +113,7 @@ find_decomposition (gunichar ch,
 		    return NULL;
 		}
 	      
-	      return decomp_table[half].expansion + offset;
+	      return &(decomp_expansion_string[decomp_table[half].expansion_offset + offset]);
 	    }
 	  else if (half == start)
 	    break;
@@ -141,7 +141,7 @@ gunichar *
 g_unicode_canonical_decomposition (gunichar ch,
 				   gsize   *result_len)
 {
-  guchar *decomp = find_decomposition (ch, FALSE);
+  const guchar *decomp = find_decomposition (ch, FALSE);
   gunichar *r;
 
   if (decomp)
@@ -251,7 +251,7 @@ _g_utf8_normalize_wc (const gchar    *str,
     {
       gunichar wc = g_utf8_get_char (p);
 
-      guchar *decomp = find_decomposition (wc, do_compat);
+      const guchar *decomp = find_decomposition (wc, do_compat);
 
       if (decomp)
 	{
@@ -276,7 +276,7 @@ _g_utf8_normalize_wc (const gchar    *str,
   while ((max_len < 0 || p < str + max_len) && *p)
     {
       gunichar wc = g_utf8_get_char (p);
-      guchar *decomp;
+      const guchar *decomp;
       int cc;
       gsize old_n_wc = n_wc;
 	  
