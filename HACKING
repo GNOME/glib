@@ -1,7 +1,7 @@
 If you want to hack on the GLib project, you'll need to have the
 following packages installed:
 
-	- GNU autoconf 2.13
+	- GNU autoconf 2.52
 	- GNU automake 1.4
 	- GNU libtool 1.4
         - GNU gettext 0.10.40
