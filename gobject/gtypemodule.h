@@ -53,6 +53,12 @@ struct _GTypeModuleClass
 
   gboolean (* load)   (GTypeModule *module);
   void     (* unload) (GTypeModule *module);
+
+  /* Padding for future expansion */
+  void (*reserved1) (void);
+  void (*reserved2) (void);
+  void (*reserved3) (void);
+  void (*reserved4) (void);
 };
 
 GType    g_type_module_get_type      (void);

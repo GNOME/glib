@@ -66,7 +66,7 @@ struct _GClosure
   /*< private >*/	guint	 in_inotify : 1;
   /*< private >*/	guint	 floating : 1;
   /*< protected >*/	guint	 derivative_flag : 1;
-  /*< puplic >*/	guint	 in_marshal : 1;
+  /*< public >*/	guint	 in_marshal : 1;
   /*< public >*/	guint	 is_invalid : 1;
 
   /*< private >*/	void   (*marshal)  (GClosure       *closure,

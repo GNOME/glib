@@ -1,3 +1,10 @@
+Sat Feb 23 13:28:56 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* gtypeplugin.h (struct _GTypePluginClass): Add some
+	padding to the class.
+
+	* gclosure.h (struct _GClosure): Fix typo in comment.
+
 2002-02-20  Tor Lillqvist  <tml@iki.fi>
 
 	* gobject.def: Add g_value_set_object_take_ownership and
