@@ -31,9 +31,6 @@
 
 #ifdef G_PLATFORM_WIN32
 
-/* Windows emulation stubs for common Unix functions
- */
-
 G_BEGIN_DECLS
 
 #ifndef MAXPATHLEN
