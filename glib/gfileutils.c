@@ -984,9 +984,7 @@ g_file_replace (const gchar *filename,
 		gssize	     length,
 		GError	   **error)
 {
-  char *tmp_filename = NULL;
-  char *display_filename = NULL;
-  char *display_tmpname = NULL;
+  gchar *tmp_filename;
   gboolean retval;
   GError *rename_error = NULL;
   
@@ -1004,9 +1002,6 @@ g_file_replace (const gchar *filename,
       retval = FALSE;
       goto out;
     }
-
-  display_tmpname = g_filename_display_name (tmp_filename);
-  display_filename = g_filename_display_name (filename);
 
   if (!rename_file (tmp_filename, filename, &rename_error))
     {
@@ -1035,13 +1030,16 @@ g_file_replace (const gchar *filename,
       
       if (g_unlink (filename) == -1)
 	{
+          gchar *display_filename = g_filename_display_name (filename);
+
 	  g_set_error (error,
 		       G_FILE_ERROR,
 		       g_file_error_from_errno (errno),
 		       _("Existing file '%s' could not be removed: g_unlink() failed: %s"),
 		       display_filename,
 		       g_strerror (errno));
-	  
+
+	  g_free (display_filename);
 	  g_unlink (tmp_filename);
 	  retval = FALSE;
 	  goto out;
@@ -1060,8 +1058,6 @@ g_file_replace (const gchar *filename,
   retval = TRUE;
   
  out:
-  g_free (display_tmpname);
-  g_free (display_filename);
   g_free (tmp_filename);
   return retval;
 }

@@ -1,3 +1,8 @@
+2005-03-09  Sven Neumann  <sven@gimp.org>
+
+	* glib/gfileutils.c (g_file_replace): avoid unnecessary filename
+	conversions.
+
 2005-03-09  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gutils.c (g_get_user_data_dir, g_get_user_config_dir,
