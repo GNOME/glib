@@ -1,3 +1,10 @@
+2000-12-08  Havoc Pennington  <hp@pobox.com>
+
+	* tests/Makefile.am (TESTS): move markup-test to noinst_PROGRAMS;
+	it isn't a proper test, the proper test would be 
+	run-markup-tests.sh, but that can't go in tests, so we need 
+	a manual make check rule. Didn't do that yet.
+
 2000-12-07  Raja R Harinath  <harinath@cs.umn.edu>
 
 	* gmain.h: Don't put anything after an #endif.

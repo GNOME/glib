@@ -20,7 +20,6 @@ TESTS = \
 	hash-test	\
 	list-test	\
 	mainloop-test	\
-	markup-test	\
 	node-test	\
 	queue-test	\
 	rand-test	\
@@ -35,7 +34,7 @@ TESTS = \
 	tree-test	\
 	type-test
 
-noinst_PROGRAMS = $(TESTS)
+noinst_PROGRAMS = $(TESTS) markup-test
 
 progs_LDADD = $(EFENCE) $(top_builddir)/libglib-1.3.la $(EFENCE)
 thread_LDADD = $(progs_LDADD) $(top_builddir)/gthread/libgthread-1.3.la @G_THREAD_LIBS@
