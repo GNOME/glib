@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-18 16:02-0400\n"
+"POT-Creation-Date: 2004-10-27 13:43-0400\n"
 "PO-Revision-Date: 2003-01-27 11:56--500\n"
 "Last-Translator: Yuriy Syrota <rasta@cvs.gnome.org>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
@@ -27,7 +27,7 @@ msgstr "Не вдалось відкрити перетворювач з \"%s\" 
 
 #: glib/gconvert.c:605 glib/gconvert.c:892 glib/giochannel.c:1316
 #: glib/giochannel.c:1358 glib/giochannel.c:2200 glib/gutf8.c:911
-#: glib/gutf8.c:1356
+#: glib/gutf8.c:1361
 msgid "Invalid byte sequence in conversion input"
 msgstr "Неправильна послідовність байтів у перетворюваному вводі"
 
@@ -37,8 +37,8 @@ msgstr "Неправильна послідовність байтів у пер
 msgid "Error during conversion: %s"
 msgstr "Помилка під час перетворення: %s"
 
-#: glib/gconvert.c:628 glib/gutf8.c:907 glib/gutf8.c:1107 glib/gutf8.c:1248
-#: glib/gutf8.c:1352
+#: glib/gconvert.c:628 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
+#: glib/gutf8.c:1357
 msgid "Partial character sequence at end of input"
 msgstr "Незавершена символьна послідовність на кінці вводу"
 
@@ -47,98 +47,98 @@ msgstr "Незавершена символьна послідовність н�
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Неможливо коректно перетворити символ \"%s\" у символ з набору \"%s\""
 
-#: glib/gconvert.c:1498
+#: glib/gconvert.c:1573
 #, fuzzy, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr ""
 "Ідентифікатор URI \"%s\" не є абсолютним ідентифікатором при використанні "
 "файлової схеми"
 
-#: glib/gconvert.c:1508
+#: glib/gconvert.c:1583
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Ідентифікатор URI \"%s\" локального файла не може містити символ \"#\""
 
-#: glib/gconvert.c:1525
+#: glib/gconvert.c:1600
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI \"%s\" неправильний"
 
-#: glib/gconvert.c:1537
+#: glib/gconvert.c:1612
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Неправильна назва вузла в URI \"%s\""
 
-#: glib/gconvert.c:1553
+#: glib/gconvert.c:1628
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "Ідентифікатор URI \"%s\" містить неправильно екранований символ"
 
-#: glib/gconvert.c:1623
+#: glib/gconvert.c:1698
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Шлях \"%s\" не є абсолютним"
 
-#: glib/gconvert.c:1633
+#: glib/gconvert.c:1708
 msgid "Invalid hostname"
 msgstr "Неправильна назва вузла"
 
-#: glib/gdir.c:84
+#: glib/gdir.c:120 glib/gdir.c:140
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "Помилка відкриття каталогу \"%s\": %s"
 
-#: glib/gfileutils.c:400 glib/gfileutils.c:465
+#: glib/gfileutils.c:502 glib/gfileutils.c:570
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Не вдалось виділити %lu байтів для зчитування файла \"%s\""
 
-#: glib/gfileutils.c:411
+#: glib/gfileutils.c:515
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Помилка зчитування файлу \"%s\": %s"
 
-#: glib/gfileutils.c:487
+#: glib/gfileutils.c:592
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Помилка зчитування з файлу \"%s\": %s"
 
-#: glib/gfileutils.c:534 glib/gfileutils.c:602
+#: glib/gfileutils.c:641 glib/gfileutils.c:726
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Помилка відкриття файлу \"%s\": %s"
 
-#: glib/gfileutils.c:548
+#: glib/gfileutils.c:656
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "помилка отримання ознаки файлу \"%s\": помилка fstat(): %s"
 
-#: glib/gfileutils.c:574
+#: glib/gfileutils.c:688
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Помилка відкривання файлу \"%s\": помилка fdopen(): %s"
 
-#: glib/gfileutils.c:786
+#: glib/gfileutils.c:1009
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Шаблон \"%s\" неправильний, бо не може містити \"%s\""
 
-#: glib/gfileutils.c:798
+#: glib/gfileutils.c:1021
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Шаблон \"%s\" не закінчується на XXXXXX"
 
-#: glib/gfileutils.c:819
+#: glib/gfileutils.c:1042
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Помилка створення файлу \"%s\": %s"
 
-#: glib/gfileutils.c:1160
+#: glib/gfileutils.c:1418
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Помилка читання символічного посилання \"%s\": %s"
 
-#: glib/gfileutils.c:1179
+#: glib/gfileutils.c:1439
 msgid "Symbolic links not supported"
 msgstr "Символічні посилання не підтримуються"
 
@@ -505,12 +505,12 @@ msgstr "Не вдалось зчитати достатню кількість �
 msgid "Character out of range for UTF-8"
 msgstr "Символ не входить в набір UTF-8"
 
-#: glib/gutf8.c:1075 glib/gutf8.c:1084 glib/gutf8.c:1216 glib/gutf8.c:1225
-#: glib/gutf8.c:1366 glib/gutf8.c:1462
+#: glib/gutf8.c:1080 glib/gutf8.c:1089 glib/gutf8.c:1221 glib/gutf8.c:1230
+#: glib/gutf8.c:1371 glib/gutf8.c:1467
 msgid "Invalid sequence in conversion input"
 msgstr "Неправильна послідовність у перетворюваному вводі"
 
-#: glib/gutf8.c:1377 glib/gutf8.c:1473
+#: glib/gutf8.c:1382 glib/gutf8.c:1478
 msgid "Character out of range for UTF-16"
 msgstr "Символ не входить в набір UTF-16"
 
@@ -548,7 +548,7 @@ msgstr ""
 msgid "Integer value '%s' for %s out of range"
 msgstr ""
 
-#: glib/goption.c:1028
+#: glib/goption.c:1024
 #, c-format
 msgid "Unknown option %s"
 msgstr ""

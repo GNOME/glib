@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-18 16:02-0400\n"
+"POT-Creation-Date: 2004-10-27 13:43-0400\n"
 "PO-Revision-Date: 2004-08-05 21:51+0545\n"
 "Last-Translator: Laxmi Prasad Khatiwada <laxmi@mpp.org.np>\n"
 "Language-Team: Nepali <info@mpp.org.np>\n"
@@ -25,7 +25,7 @@ msgstr "'%s' बाट '%s'मा अनुवादक खुलेन "
 
 #: glib/gconvert.c:605 glib/gconvert.c:892 glib/giochannel.c:1316
 #: glib/giochannel.c:1358 glib/giochannel.c:2200 glib/gutf8.c:911
-#: glib/gutf8.c:1356
+#: glib/gutf8.c:1361
 msgid "Invalid byte sequence in conversion input"
 msgstr "अनुवादन निवेशमा बाइट शृङ्खला अस्वीकृत"
 
@@ -35,8 +35,8 @@ msgstr "अनुवादन निवेशमा बाइट शृङ्ख
 msgid "Error during conversion: %s"
 msgstr " %s अनुवाद क्रममा गल्ती:"
 
-#: glib/gconvert.c:628 glib/gutf8.c:907 glib/gutf8.c:1107 glib/gutf8.c:1248
-#: glib/gutf8.c:1352
+#: glib/gconvert.c:628 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
+#: glib/gutf8.c:1357
 msgid "Partial character sequence at end of input"
 msgstr "निवेशको अन्त्यमा अर्धवर्ण शृङ्खला"
 
@@ -45,96 +45,96 @@ msgstr "निवेशको अन्त्यमा अर्धवर्ण 
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "कोड सेट '%s'पछाडिको '%s'मा परिवर्तन गर्न सकिएन"
 
-#: glib/gconvert.c:1498
+#: glib/gconvert.c:1573
 #, fuzzy, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "युआरआइ '%s'नमुना फाइल बमोजिम वास्तविक युआरआइ होइन"
 
-#: glib/gconvert.c:1508
+#: glib/gconvert.c:1583
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr " स्थानीय युआरआइ '%s'फाइल '#'मा समावेश छैन"
 
-#: glib/gconvert.c:1525
+#: glib/gconvert.c:1600
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "युआरआइ '%s'अबैध छ "
 
-#: glib/gconvert.c:1537
+#: glib/gconvert.c:1612
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "युआरआइ '%s'को मुख्य नाम  अबैध छ"
 
-#: glib/gconvert.c:1553
+#: glib/gconvert.c:1628
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "युआरआइ '%s'मा अबैध वर्ण देखिन्छ"
 
-#: glib/gconvert.c:1623
+#: glib/gconvert.c:1698
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "मार्ग-नाम  '%s' वास्तबिक मार्ग होइन"
 
-#: glib/gconvert.c:1633
+#: glib/gconvert.c:1708
 msgid "Invalid hostname"
 msgstr "मुख्य नाम  अबैध छ"
 
-#: glib/gdir.c:84
+#: glib/gdir.c:120 glib/gdir.c:140
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "निर्देशिका खोल्ने क्रममा '%s': %s गल्ती"
 
-#: glib/gfileutils.c:400 glib/gfileutils.c:465
+#: glib/gfileutils.c:502 glib/gfileutils.c:570
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "पढ्नलाई  %lu bytes, फाइल \"%s\"  छुट्याउन सकिएन"
 
-#: glib/gfileutils.c:411
+#: glib/gfileutils.c:515
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "'%s' फाइल पढ्नेक्रममा त्रुटी : %s"
 
-#: glib/gfileutils.c:487
+#: glib/gfileutils.c:592
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "'%s'फाइलबाट पढ्न असफल : %s"
 
-#: glib/gfileutils.c:534 glib/gfileutils.c:602
+#: glib/gfileutils.c:641 glib/gfileutils.c:726
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "'%s'फाइल खोल्न असफल : %s"
 
-#: glib/gfileutils.c:548
+#: glib/gfileutils.c:656
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "'%s'फाइलको खाका भेटिएन : एफस्टाट() असफल: %s"
 
-#: glib/gfileutils.c:574
+#: glib/gfileutils.c:688
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "'%s'फाइल खोल्न असफल : एफडीखोल्न() असफल: %s"
 
-#: glib/gfileutils.c:786
+#: glib/gfileutils.c:1009
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "'%s'ढाँचा अबैध, '%s'पाइएन"
 
-#: glib/gfileutils.c:798
+#: glib/gfileutils.c:1021
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "'%s'ढाँचा  XXXXXX मा समाप्त हुँदैन"
 
-#: glib/gfileutils.c:819
+#: glib/gfileutils.c:1042
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "'%s': %s फाइल निर्माण हुन सकेन"
 
-#: glib/gfileutils.c:1160
+#: glib/gfileutils.c:1418
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "'%s': %s सांकेतिक सम्बन्ध पढ्न असफल"
 
-#: glib/gfileutils.c:1179
+#: glib/gfileutils.c:1439
 msgid "Symbolic links not supported"
 msgstr "सांकेतिक सम्बन्धलाई स्वीकारिएन "
 
@@ -469,13 +469,13 @@ msgstr "'%s'फाइलबाट पढ्न असफल : %s"
 msgid "Character out of range for UTF-8"
 msgstr ""
 
-#: glib/gutf8.c:1075 glib/gutf8.c:1084 glib/gutf8.c:1216 glib/gutf8.c:1225
-#: glib/gutf8.c:1366 glib/gutf8.c:1462
+#: glib/gutf8.c:1080 glib/gutf8.c:1089 glib/gutf8.c:1221 glib/gutf8.c:1230
+#: glib/gutf8.c:1371 glib/gutf8.c:1467
 #, fuzzy
 msgid "Invalid sequence in conversion input"
 msgstr "अनुवादन निवेशमा बाइट शृङ्खला अस्वीकृत"
 
-#: glib/gutf8.c:1377 glib/gutf8.c:1473
+#: glib/gutf8.c:1382 glib/gutf8.c:1478
 msgid "Character out of range for UTF-16"
 msgstr ""
 
@@ -513,7 +513,7 @@ msgstr ""
 msgid "Integer value '%s' for %s out of range"
 msgstr ""
 
-#: glib/goption.c:1028
+#: glib/goption.c:1024
 #, c-format
 msgid "Unknown option %s"
 msgstr ""

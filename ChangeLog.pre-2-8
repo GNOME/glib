@@ -1,5 +1,9 @@
 2004-10-27  Matthias Clasen  <mclasen@redhat.com>
 
+	* === Released 2.5.4 ===
+
+2004-10-27  Matthias Clasen  <mclasen@redhat.com>
+
 	Introduce the idea of a filename encoding, which is 
 	*literally* the filename encoding on Unix. On windows, 
 	use the Unicode name converted to UTF-8. (#156325,

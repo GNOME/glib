@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-10-15 22:26+0200\n"
+"POT-Creation-Date: 2004-10-27 13:43-0400\n"
 "PO-Revision-Date: 2004-10-15 22:27+0200\n"
 "Last-Translator: Danilo Šegan <danilo@prevod.org>\n"
 "Language-Team: Serbian (sr) <serbiagnome-lista@nongnu.org>\n"
@@ -51,97 +51,97 @@ msgstr "Nepotpun niz znakova na kraju ulaza"
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Ne može pretvoriti rezervu „%s“ u zapis „%s“"
 
-#: glib/gconvert.c:1498
+#: glib/gconvert.c:1573
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "Adresa „%s“ nije apsolutna adresa pomoću „file“ šeme"
 
-#: glib/gconvert.c:1508
+#: glib/gconvert.c:1583
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Adresa lokalne datoteke „%s“ ne sme sadržati „#“"
 
-#: glib/gconvert.c:1525
+#: glib/gconvert.c:1600
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "Adresa „%s“ je neispravna"
 
-#: glib/gconvert.c:1537
+#: glib/gconvert.c:1612
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Ime domaćina iz adrese „%s“ je neispravno"
 
-#: glib/gconvert.c:1553
+#: glib/gconvert.c:1628
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "Adresa „%s“ sadrži neispravno naznačene znake"
 
-#: glib/gconvert.c:1623
+#: glib/gconvert.c:1698
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Putanja „%s“ nije apsolutna putanja"
 
-#: glib/gconvert.c:1633
+#: glib/gconvert.c:1708
 msgid "Invalid hostname"
 msgstr "Neispravno ime domaćina"
 
-#: glib/gdir.c:84
+#: glib/gdir.c:120 glib/gdir.c:140
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "Greška pri otvaranju direktorijuma „%s“: %s"
 
 # bug: plural-forms
-#: glib/gfileutils.c:402 glib/gfileutils.c:476
+#: glib/gfileutils.c:502 glib/gfileutils.c:570
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Ne mogu da obezbedim %lu bajtova za čitanje datoteke „%s“"
 
-#: glib/gfileutils.c:418
+#: glib/gfileutils.c:515
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Greška pri čitanju datoteke „%s“: %s"
 
-#: glib/gfileutils.c:501
+#: glib/gfileutils.c:592
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Ne mogu da pročitam iz datoteke „%s“: %s"
 
-#: glib/gfileutils.c:552 glib/gfileutils.c:633
+#: glib/gfileutils.c:641 glib/gfileutils.c:726
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Ne mogu da otvorim datoteku „%s“: %s"
 
-#: glib/gfileutils.c:569
+#: glib/gfileutils.c:656
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Ne mogu da saznam osobine datoteke „%s“: neuspešan fstat(): %s"
 
-#: glib/gfileutils.c:600
+#: glib/gfileutils.c:688
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Ne mogu da otvorim datoteku „%s“: neuspešan fdopen(): %s"
 
-#: glib/gfileutils.c:819
+#: glib/gfileutils.c:1009
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Neispravan šablon „%s“, ne sme sadržati „%s“"
 
-#: glib/gfileutils.c:831
+#: glib/gfileutils.c:1021
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Šablon „%s“ se ne završava sa XXXXXX"
 
-#: glib/gfileutils.c:852
+#: glib/gfileutils.c:1042
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Ne mogu da napravim datoteku „%s“: %s"
 
-#: glib/gfileutils.c:1195
+#: glib/gfileutils.c:1418
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Ne mogu da pročitam simboličku vezu „%s“: %s"
 
-#: glib/gfileutils.c:1216
+#: glib/gfileutils.c:1439
 msgid "Symbolic links not supported"
 msgstr "Simboličke veze nisu podržane"
 
@@ -268,8 +268,8 @@ msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
 msgstr ""
-"„%s“ ne predstavlja ispravan znak nakon znaka „<“; ime elementa ne može njime "
-"početi"
+"„%s“ ne predstavlja ispravan znak nakon znaka „<“; ime elementa ne može "
+"njime početi"
 
 #: glib/gmarkup.c:1093
 #, c-format
@@ -320,8 +320,8 @@ msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 msgstr ""
-"„%s“ nije ispravan znak nakon imena zatvorenog elementa „%s“; dozvoljeni znak "
-"je „>“"
+"„%s“ nije ispravan znak nakon imena zatvorenog elementa „%s“; dozvoljeni "
+"znak je „>“"
 
 #: glib/gmarkup.c:1501
 #, c-format
@@ -549,7 +549,7 @@ msgstr "Ne mogu da rašlanim celobrojnun vrednost „%s“ za --%s"
 msgid "Integer value '%s' for %s out of range"
 msgstr "Celobrojna vrednost „%s“ za %s je izvan opsega"
 
-#: glib/goption.c:1025
+#: glib/goption.c:1024
 #, c-format
 msgid "Unknown option %s"
 msgstr "Nepoznata opcija %s"

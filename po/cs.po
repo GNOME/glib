@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-10-02 19:20+0200\n"
+"POT-Creation-Date: 2004-10-27 13:43-0400\n"
 "PO-Revision-Date: 2004-10-03 01:57+0200\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
@@ -49,96 +49,96 @@ msgstr "Částečná sekvence znaků na konci vstupu"
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Nemohu převést ukončení '%s' do znakové sady '%s'"
 
-#: glib/gconvert.c:1498
+#: glib/gconvert.c:1573
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "URI '%s' není absolutní URI používající schéma \"file\""
 
-#: glib/gconvert.c:1508
+#: glib/gconvert.c:1583
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "URI '%s' místního souboru nesmí obsahovat '#'"
 
-#: glib/gconvert.c:1525
+#: glib/gconvert.c:1600
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI '%s' je neplatné"
 
-#: glib/gconvert.c:1537
+#: glib/gconvert.c:1612
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Jméno počítače v URI '%s' je neplatné"
 
-#: glib/gconvert.c:1553
+#: glib/gconvert.c:1628
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI '%s' obsahuje nesprávně escapované znaky"
 
-#: glib/gconvert.c:1623
+#: glib/gconvert.c:1698
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "'%s' není absolutní cesta"
 
-#: glib/gconvert.c:1633
+#: glib/gconvert.c:1708
 msgid "Invalid hostname"
 msgstr "Neplatné jméno počítače"
 
-#: glib/gdir.c:84
+#: glib/gdir.c:120 glib/gdir.c:140
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "Chyba při otevírání adresáře '%s': %s"
 
-#: glib/gfileutils.c:402 glib/gfileutils.c:476
+#: glib/gfileutils.c:502 glib/gfileutils.c:570
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Nemohu se alokovat %lu bytů pro přečtení souboru \"%s\""
 
-#: glib/gfileutils.c:418
+#: glib/gfileutils.c:515
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Chyba čtení souboru '%s': %s"
 
-#: glib/gfileutils.c:501
+#: glib/gfileutils.c:592
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Chyba při čtení ze souboru '%s': %s"
 
-#: glib/gfileutils.c:552 glib/gfileutils.c:634
+#: glib/gfileutils.c:641 glib/gfileutils.c:726
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Nemohu otevřít soubor '%s': %s"
 
-#: glib/gfileutils.c:570
+#: glib/gfileutils.c:656
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Nemohu získat atributy souboru '%s': fstat() selhalo: %s"
 
-#: glib/gfileutils.c:601
+#: glib/gfileutils.c:688
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Nemohu otevřít soubor '%s': fdopen() selhalo: %s"
 
-#: glib/gfileutils.c:820
+#: glib/gfileutils.c:1009
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Šablona '%s' je neplatná, neměla by obsahovat '%s'"
 
-#: glib/gfileutils.c:832
+#: glib/gfileutils.c:1021
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Šablona '%s' nekončí XXXXXX"
 
-#: glib/gfileutils.c:853
+#: glib/gfileutils.c:1042
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Nemohu vytvořit soubor '%s': %s"
 
-#: glib/gfileutils.c:1197
+#: glib/gfileutils.c:1418
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Nemohu přečíst symbolický odkaz '%s': %s"
 
-#: glib/gfileutils.c:1218
+#: glib/gfileutils.c:1439
 msgid "Symbolic links not supported"
 msgstr "Symbolické odkazy nejsou podporovány"
 

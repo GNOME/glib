@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib (HEAD)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-10-03 11:15+0200\n"
+"POT-Creation-Date: 2004-10-27 13:43-0400\n"
 "PO-Revision-Date: 2004-10-03 17:23+0200\n"
 "Last-Translator: Tino Meinen <a.t.meinen@chello.nl>\n"
 "Language-Team: Dutch <vertaling@nl.linux.org>\n"
@@ -50,97 +50,98 @@ msgstr "Onvolledige tekenreeks aan het eind van de invoer"
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Kan vanaf codeverzameling '%s' niet terugvallen op '%s'"
 
-#: glib/gconvert.c:1498
+#: glib/gconvert.c:1573
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
-msgstr "De URI '%s' is geen absolute URI die gebruik maakt van het \"bestand\" schema"
+msgstr ""
+"De URI '%s' is geen absolute URI die gebruik maakt van het \"bestand\" schema"
 
-#: glib/gconvert.c:1508
+#: glib/gconvert.c:1583
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "De lokale bestands-URI '%s' mag geen '#' bevatten"
 
-#: glib/gconvert.c:1525
+#: glib/gconvert.c:1600
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "De URI '%s' is ongeldig"
 
-#: glib/gconvert.c:1537
+#: glib/gconvert.c:1612
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "De hostnaam van de URI '%s' is ongeldig"
 
-#: glib/gconvert.c:1553
+#: glib/gconvert.c:1628
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "De URI '%s' bevat ongeldige ontsnappingstekens"
 
-#: glib/gconvert.c:1623
+#: glib/gconvert.c:1698
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Het pad '%s' is geen absoluut pad"
 
-#: glib/gconvert.c:1633
+#: glib/gconvert.c:1708
 msgid "Invalid hostname"
 msgstr "Ongeldige hostnaam"
 
-#: glib/gdir.c:84
+#: glib/gdir.c:120 glib/gdir.c:140
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "Fout bij het openen van map '%s': %s"
 
 # Allocatie van %lu bytes om bestand "%s" te lezen is mislukt<
-#: glib/gfileutils.c:402 glib/gfileutils.c:476
+#: glib/gfileutils.c:502 glib/gfileutils.c:570
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Kon geen %lu byte geheugenruimte reserveren om bestand \"%s\" te lezen"
 
-#: glib/gfileutils.c:418
+#: glib/gfileutils.c:515
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Fout bij lezen van bestand '%s': %s"
 
-#: glib/gfileutils.c:501
+#: glib/gfileutils.c:592
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Lezen van bestand '%s' mislukt: %s"
 
-#: glib/gfileutils.c:552 glib/gfileutils.c:634
+#: glib/gfileutils.c:641 glib/gfileutils.c:726
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Openen van bestand '%s' mislukt: %s"
 
-#: glib/gfileutils.c:570
+#: glib/gfileutils.c:656
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Opvragen gegevens van bestand '%s' mislukt: fstat() mislukte: %s"
 
-#: glib/gfileutils.c:601
+#: glib/gfileutils.c:688
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Openen van bestand '%s' mislukt: fdopen() mislukte: %s"
 
-#: glib/gfileutils.c:820
+#: glib/gfileutils.c:1009
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Sjabloon '%s' is ongeldig, het zou geen '%s' moeten bevatten"
 
-#: glib/gfileutils.c:832
+#: glib/gfileutils.c:1021
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Sjabloon '%s' eindigt niet op XXXXXX"
 
-#: glib/gfileutils.c:853
+#: glib/gfileutils.c:1042
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Aanmaken van bestand '%s' mislukt: %s"
 
-#: glib/gfileutils.c:1197
+#: glib/gfileutils.c:1418
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Lezen van symbolische link '%s' mislukt: %s"
 
-#: glib/gfileutils.c:1218
+#: glib/gfileutils.c:1439
 msgid "Symbolic links not supported"
 msgstr "Symbolische links niet ondersteund"
 
@@ -154,7 +155,8 @@ msgstr "Conversie van tekenset '%s' naar '%s' wordt niet ondersteund"
 #: glib/giochannel.c:1148
 #, c-format
 msgid "Could not open converter from `%s' to `%s': %s"
-msgstr "Kon conversieprogramma voor omzetten van '%s' naar '%s' niet openen: %s"
+msgstr ""
+"Kon conversieprogramma voor omzetten van '%s' naar '%s' niet openen: %s"
 
 #: glib/giochannel.c:1493
 msgid "Can't do a raw read in g_io_channel_read_line_string"
@@ -188,7 +190,9 @@ msgstr "Fout in regel %d: %s"
 #: glib/gmarkup.c:415
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
-msgstr "Lege entiteit '&;' gevonden;  geldige entiteiten zijn: &amp; &quot; &lt; &gt; &apos;"
+msgstr ""
+"Lege entiteit '&;' gevonden;  geldige entiteiten zijn: &amp; &quot; &lt; "
+"&gt; &apos;"
 
 #: glib/gmarkup.c:425
 #, c-format
@@ -224,7 +228,9 @@ msgstr ""
 msgid ""
 "Failed to parse '%s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
-msgstr "Verwerken van '%s' mislukt, hetgeen een getal in een tekenreferentie zou moeten zijn (bijvoorbeel &#234;) - misschien is het getal te groot"
+msgstr ""
+"Verwerken van '%s' mislukt, hetgeen een getal in een tekenreferentie zou "
+"moeten zijn (bijvoorbeel &#234;) - misschien is het getal te groot"
 
 #: glib/gmarkup.c:586
 #, c-format
@@ -387,7 +393,8 @@ msgstr "Het document eindigde onverwacht in een attribuutwaarde"
 #: glib/gmarkup.c:1731
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
-msgstr "Het document eindigde onverwacht in een een afsluitings-tag voor element '%s'"
+msgstr ""
+"Het document eindigde onverwacht in een een afsluitings-tag voor element '%s'"
 
 #: glib/gmarkup.c:1737
 msgid "Document ended unexpectedly inside a comment or processing instruction"
@@ -411,7 +418,9 @@ msgstr "Tekst eindigde na een '\\'-teken (de tekst was '%s')."
 #: glib/gshell.c:548
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
-msgstr "De tekst eindigde voordat een afsluitend aanhalingsteken was gevonden voor %c (de tekst was '%s')"
+msgstr ""
+"De tekst eindigde voordat een afsluitend aanhalingsteken was gevonden voor %"
+"c (de tekst was '%s')"
 
 #: glib/gshell.c:560
 msgid "Text was empty (or contained only whitespace)"

@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: es\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-18 16:02-0400\n"
+"POT-Creation-Date: 2004-10-27 13:43-0400\n"
 "PO-Revision-Date: 2004-08-31 23:35+0200\n"
 "Last-Translator: Francisco Javier F. Serrador <serrador@cvs.gnome.org>\n"
 "Language-Team: Spanish <traductores@es.gnome.org>\n"
@@ -32,7 +32,7 @@ msgstr "No se pudo abrir el conversor de «%s»·a·«%s»"
 
 #: glib/gconvert.c:605 glib/gconvert.c:892 glib/giochannel.c:1316
 #: glib/giochannel.c:1358 glib/giochannel.c:2200 glib/gutf8.c:911
-#: glib/gutf8.c:1356
+#: glib/gutf8.c:1361
 msgid "Invalid byte sequence in conversion input"
 msgstr "La secuencia de bytes no es válida en la entrada de conversión"
 
@@ -42,8 +42,8 @@ msgstr "La secuencia de bytes no es válida en la entrada de conversión"
 msgid "Error during conversion: %s"
 msgstr "Ha ocurrido un error·durante la·conversión:·%s"
 
-#: glib/gconvert.c:628 glib/gutf8.c:907 glib/gutf8.c:1107 glib/gutf8.c:1248
-#: glib/gutf8.c:1352
+#: glib/gconvert.c:628 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
+#: glib/gutf8.c:1357
 msgid "Partial character sequence at end of input"
 msgstr "La secuencia parcial de caracteres en el final de la entrada"
 
@@ -52,98 +52,98 @@ msgstr "La secuencia parcial de caracteres en el final de la entrada"
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "No se puede convertir el fallback «%s»·al conjunto de códigos·«%s»"
 
-#: glib/gconvert.c:1498
+#: glib/gconvert.c:1573
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "La URI·«%s»·no es una URI·absoluta utilizando el esquema «file»"
 
-#: glib/gconvert.c:1508
+#: glib/gconvert.c:1583
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "El archivo local·en la URI «%s»·no debe incluir un·«#»"
 
-#: glib/gconvert.c:1525
+#: glib/gconvert.c:1600
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "La URI·«%s»·es inválida"
 
-#: glib/gconvert.c:1537
+#: glib/gconvert.c:1612
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "El nombre del host de la·URI·«%s»·es inválido"
 
-#: glib/gconvert.c:1553
+#: glib/gconvert.c:1628
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "La·URI·«%s»·contiene caracteres de escape inválidos"
 
-#: glib/gconvert.c:1623
+#: glib/gconvert.c:1698
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "El nombre de la ruta «%s» no es una ruta absoluta"
 
-#: glib/gconvert.c:1633
+#: glib/gconvert.c:1708
 msgid "Invalid hostname"
 msgstr "Nombre del host inválido"
 
-#: glib/gdir.c:84
+#: glib/gdir.c:120 glib/gdir.c:140
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "Ha ocurrido un error al abrir el directorio «%s»:·%s"
 
-#: glib/gfileutils.c:400 glib/gfileutils.c:465
+#: glib/gfileutils.c:502 glib/gfileutils.c:570
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "No se pueden asignar %lu bytes para leer el archivo «%s»"
 
-#: glib/gfileutils.c:411
+#: glib/gfileutils.c:515
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Ha ocurrido un error al leer el archivo «%s»:·%s"
 
-#: glib/gfileutils.c:487
+#: glib/gfileutils.c:592
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Ha ocurrido un error en la lectura desde el archivo «%s»:·%s"
 
-#: glib/gfileutils.c:534 glib/gfileutils.c:602
+#: glib/gfileutils.c:641 glib/gfileutils.c:726
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Ha ocurrido un error al abrir el archivo «%s»:·%s"
 
-#: glib/gfileutils.c:548
+#: glib/gfileutils.c:656
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr ""
 "Ha ocurrido un error al obtener los atributos del archivo %s':·fstat()·falló:"
 "·%s"
 
-#: glib/gfileutils.c:574
+#: glib/gfileutils.c:688
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Ha ocurrido un error al abrir el archivo «%s»:·fdopen()·falló:·%s"
 
-#: glib/gfileutils.c:786
+#: glib/gfileutils.c:1009
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "La plantilla «%s» es inválida, no debería contener un «%s»"
 
-#: glib/gfileutils.c:798
+#: glib/gfileutils.c:1021
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "La plantilla ·«%s»· no termina con XXXXXX"
 
-#: glib/gfileutils.c:819
+#: glib/gfileutils.c:1042
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Ha ocurrido un error al crear el archivo «%s»:·%s"
 
-#: glib/gfileutils.c:1160
+#: glib/gfileutils.c:1418
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Ha ocurrido un error al leer el enlace simbólico «%s»:·%s"
 
-#: glib/gfileutils.c:1179
+#: glib/gfileutils.c:1439
 msgid "Symbolic links not supported"
 msgstr "Enlaces simbólicos no soportados"
 
@@ -531,12 +531,12 @@ msgstr ""
 msgid "Character out of range for UTF-8"
 msgstr "El carácter se encuentra fuera del rango para UTF-8"
 
-#: glib/gutf8.c:1075 glib/gutf8.c:1084 glib/gutf8.c:1216 glib/gutf8.c:1225
-#: glib/gutf8.c:1366 glib/gutf8.c:1462
+#: glib/gutf8.c:1080 glib/gutf8.c:1089 glib/gutf8.c:1221 glib/gutf8.c:1230
+#: glib/gutf8.c:1371 glib/gutf8.c:1467
 msgid "Invalid sequence in conversion input"
 msgstr "La secuencia en la conversión de entrada no es válida"
 
-#: glib/gutf8.c:1377 glib/gutf8.c:1473
+#: glib/gutf8.c:1382 glib/gutf8.c:1478
 msgid "Character out of range for UTF-16"
 msgstr "El carácter se encuentra fuera del rango para UTF-16"
 
@@ -574,7 +574,7 @@ msgstr "No se puede parsear el valor entero «%s» para --%s"
 msgid "Integer value '%s' for %s out of range"
 msgstr "El valor entero «%s» para %s está fuera de rango"
 
-#: glib/goption.c:1028
+#: glib/goption.c:1024
 #, c-format
 msgid "Unknown option %s"
 msgstr "Opción desconocida %s"

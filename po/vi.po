@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-18 16:02-0400\n"
+"POT-Creation-Date: 2004-10-27 13:43-0400\n"
 "PO-Revision-Date: 2003-01-19 20:08+0700\n"
 "Last-Translator: T.M.Thanh <tmthanhmd@fptnet.com ; tmthanh@yahoo.com>\n"
 "Language-Team: Gnome-Vi Team <gnomevi-list@lists.sourceforge.net>\n"
@@ -28,7 +28,7 @@ msgstr "Không thể mở trình chuyển đổi từ '%s' thành '%s': %s"
 
 #: glib/gconvert.c:605 glib/gconvert.c:892 glib/giochannel.c:1316
 #: glib/giochannel.c:1358 glib/giochannel.c:2200 glib/gutf8.c:911
-#: glib/gutf8.c:1356
+#: glib/gutf8.c:1361
 msgid "Invalid byte sequence in conversion input"
 msgstr "Byte sequence không hợp lệ trong phần nhập chuyển đổi"
 
@@ -38,8 +38,8 @@ msgstr "Byte sequence không hợp lệ trong phần nhập chuyển đổi"
 msgid "Error during conversion: %s"
 msgstr "Lỗi khi chuyển đổi: %s"
 
-#: glib/gconvert.c:628 glib/gutf8.c:907 glib/gutf8.c:1107 glib/gutf8.c:1248
-#: glib/gutf8.c:1352
+#: glib/gconvert.c:628 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
+#: glib/gutf8.c:1357
 msgid "Partial character sequence at end of input"
 msgstr "Character sequence riêng phần ở cuối đầu vào"
 
@@ -48,96 +48,96 @@ msgstr "Character sequence riêng phần ở cuối đầu vào"
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Không thể chuyển đổi fallback '%s' thành codeset '%s'"
 
-#: glib/gconvert.c:1498
+#: glib/gconvert.c:1573
 #, fuzzy, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "URI '%s' không phải URI tuyệt đối sử dụng lược đồ tập tin"
 
-#: glib/gconvert.c:1508
+#: glib/gconvert.c:1583
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "URI tập tin cục bộ '%s' có thể không bao gồm '#'"
 
-#: glib/gconvert.c:1525
+#: glib/gconvert.c:1600
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI '%s' không hợp lệ"
 
-#: glib/gconvert.c:1537
+#: glib/gconvert.c:1612
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Tên chủ của URI '%s' không hợp lệ"
 
-#: glib/gconvert.c:1553
+#: glib/gconvert.c:1628
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI '%s' chứa không hợp lệ các ký tự thoát"
 
-#: glib/gconvert.c:1623
+#: glib/gconvert.c:1698
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Tên đường dẫn '%s' không phải một đường dẫn tuyệt đối"
 
-#: glib/gconvert.c:1633
+#: glib/gconvert.c:1708
 msgid "Invalid hostname"
 msgstr "Tên chủ không hợp lệ"
 
-#: glib/gdir.c:84
+#: glib/gdir.c:120 glib/gdir.c:140
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "Lỗi khi mở thư mục '%s': %s"
 
-#: glib/gfileutils.c:400 glib/gfileutils.c:465
+#: glib/gfileutils.c:502 glib/gfileutils.c:570
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Không thẻ cấp phát %lu bytes để đọc tập tin \"%s\""
 
-#: glib/gfileutils.c:411
+#: glib/gfileutils.c:515
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Lỗi khi đọc tập tin '%s': %s"
 
-#: glib/gfileutils.c:487
+#: glib/gfileutils.c:592
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Không đọc được từ tập tin '%s': %s"
 
-#: glib/gfileutils.c:534 glib/gfileutils.c:602
+#: glib/gfileutils.c:641 glib/gfileutils.c:726
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Không mở được tập tin '%s': %s"
 
-#: glib/gfileutils.c:548
+#: glib/gfileutils.c:656
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Không lấy được các thuộc tính của tập tin '%s': fstat() không được: %s"
 
-#: glib/gfileutils.c:574
+#: glib/gfileutils.c:688
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Không mở được tập tin '%s': fdopen() không được: %s"
 
-#: glib/gfileutils.c:786
+#: glib/gfileutils.c:1009
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Template '%s' không hợp lệ, không nên chứa '%s'"
 
-#: glib/gfileutils.c:798
+#: glib/gfileutils.c:1021
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Template '%s' không kết thúc bằng XXXXXX"
 
-#: glib/gfileutils.c:819
+#: glib/gfileutils.c:1042
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Không tạo được tập tin '%s': %s"
 
-#: glib/gfileutils.c:1160
+#: glib/gfileutils.c:1418
 #, fuzzy, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Không tạo được tập tin '%s': %s"
 
-#: glib/gfileutils.c:1179
+#: glib/gfileutils.c:1439
 msgid "Symbolic links not supported"
 msgstr ""
 
@@ -502,12 +502,12 @@ msgstr "Không đọc được đủ dữ liệu từ pid pipe con(%s)"
 msgid "Character out of range for UTF-8"
 msgstr "Ký tự nằm ngoài vùng UTF-8"
 
-#: glib/gutf8.c:1075 glib/gutf8.c:1084 glib/gutf8.c:1216 glib/gutf8.c:1225
-#: glib/gutf8.c:1366 glib/gutf8.c:1462
+#: glib/gutf8.c:1080 glib/gutf8.c:1089 glib/gutf8.c:1221 glib/gutf8.c:1230
+#: glib/gutf8.c:1371 glib/gutf8.c:1467
 msgid "Invalid sequence in conversion input"
 msgstr "Sequence bất hợp lệ trong đầu vào chuyển đổi"
 
-#: glib/gutf8.c:1377 glib/gutf8.c:1473
+#: glib/gutf8.c:1382 glib/gutf8.c:1478
 msgid "Character out of range for UTF-16"
 msgstr "Ký tự nằm ngoài vùng UTF-16"
 
@@ -545,7 +545,7 @@ msgstr ""
 msgid "Integer value '%s' for %s out of range"
 msgstr ""
 
-#: glib/goption.c:1028
+#: glib/goption.c:1024
 #, c-format
 msgid "Unknown option %s"
 msgstr ""

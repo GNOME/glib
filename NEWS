@@ -1,19 +1,27 @@
 Overview of Changes from GLib 2.5.3 to GLib 2.5.4
 =================================================
+Add GKeyFile, a parser/editor for the .ini like files used in various
+   freedesktop.org specifications. [Ray Strode]
+Make the handling of filename encodings consistent across all
+   GLib functions, introduce wrappers for common POSIX 
+   functions which accept the same filename encoding. [Tor Lillqvist, 
+   Owen Taylor]
 GOption
  - Rename g_context_option_error_quark() to a more language-binding
    friendly name [Murray Cumming]
  - Accept backslashes in filenames on Win32 [Tor Lillqvist]
 * Strip the internal aliasing prefix IA__ from function names in 
   assertions [Matthias Clasen]
+* Add a function to split uri lists. [Matthias]
 * Win32 bug fixes 
  - Don't open console windows [Tor]
 * Other bug fixes [Philippe Blain, Robert Ögren, Hidetaka Iwai, Matthias,
- Morten Welinder, Mats-Ola Persson, Tor, Nickolay V. Shmyrev]
+ Morten Welinder, Mats-Ola Persson, Tor, Nickolay V. Shmyrev, Kjartan Maraas,
+  Anders Carlsson, Tim-Philipp Müller, Lucas Rocha, Andrea Campi, Manish
+  Singh, Thomas Fitzsimmons, Kazuki IWAMOTO]
 * Documentation improvements [Matthias, Linus Walleij, Nickolay, Philippe, 
- Adam Hooper]
-* New and updated translations (cs,en_CA,en_GB,ja,nl)
-* Bugs fixed: 153042,153107,153113,153103,152954,141102,151175,153649,154078,154352,134813,154299,153091,153041
+ Adam Hooper, Gustavo Carneiro]
+* New and updated translations (cs,en_CA,en_GB,ja,nb,nl,or,sr,sr@Latn,sq)
 
 Overview of Changes from GLib 2.5.2 to GLib 2.5.3
 =================================================

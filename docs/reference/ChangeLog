@@ -1,3 +1,7 @@
+2004-10-27 Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.5.4 ===
+
 2004-10-27  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/tmpl/fileutils.sgml: Add some intro.

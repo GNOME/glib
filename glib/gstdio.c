@@ -53,21 +53,6 @@
  *
  * See the C library manual for more details about open().
  *
- * The point of these wrappers is to make it possible to handle file
- * names with any Unicode characters in them on Windows without having
- * to use ifdefs and the wide character API in the application code.
- *
- * The pathname argument should be in the GLib file name encoding. On
- * POSIX this is the actual on-disk encoding which might correspond to
- * the locale settings of the process (or the 
- * <envar>G_FILENAME_ENCODING</envar> environment variable), or not.
- *
- * On Windows the GLib file name encoding is UTF-8. Note that the
- * Microsoft C library does not use UTF-8, but has separate APIs for
- * current system code page and wide characters (UTF-16). The GLib
- * wrappers call the wide character API if present (on modern Windows
- * systems), otherwise convert to/from the system code page.
- * 
  * Returns: a new file descriptor, or -1 if an error occurred
  * 
  * Since: 2.6

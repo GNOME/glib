@@ -1,11 +1,15 @@
+2004-10-27 Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.5.4 ===
+
 2004-10-27  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* nb.po: Update Norwegian bokmål translation.
 
 2004-10-26  Gora Mohanty  <gmohanty@cvs.gnome.org>
-                                                                                
-        * or.po: Updated Oriya translation.
-   
+
+	* or.po: Updated Oriya translation.
+
 2004-10-25  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* nb.po: Update.
@@ -23,9 +27,9 @@
 	* nl.po: Translation updated by Tino Meinen.
 
 2004-10-03  David Lodge <dave@cirt.net>
-                                                                                
-        * en_GB.po: Updated British English translation.
-                                                                                
+
+	* en_GB.po: Updated British English translation.
+
 2004-10-03  Miloslav Trmac  <mitr@volny.cz>
 
 	* cs.po: Updated Czech translation.
@@ -48,7 +52,7 @@
 
 2004-09-05  Marius Andreiana <marius galuna.ro>
 
-        * ro.po: updated by Misu Moldovan
+	* ro.po: updated by Misu Moldovan
 
 2004-08-31  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>
 

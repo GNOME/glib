@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-18 16:02-0400\n"
+"POT-Creation-Date: 2004-10-27 13:43-0400\n"
 "PO-Revision-Date: 2003-03-19\n"
 "Last-Translator: Raphael Finkel <raphael@cs.uky.edu>\n"
 "Language-Team: Yiddish <raphael@cs.uky.edu>\n"
@@ -26,7 +26,7 @@ msgstr "ניט געקענט עפֿענען פֿאַרװאַנדלער פֿון %
 
 #: glib/gconvert.c:605 glib/gconvert.c:892 glib/giochannel.c:1316
 #: glib/giochannel.c:1358 glib/giochannel.c:2200 glib/gutf8.c:911
-#: glib/gutf8.c:1356
+#: glib/gutf8.c:1361
 msgid "Invalid byte sequence in conversion input"
 msgstr "אומלעקסיק אַכטעלע־סעײַװענץ אין פֿאַרװאַנדלונג אַרױסשרײַב"
 
@@ -36,8 +36,8 @@ msgstr "אומלעקסיק אַכטעלע־סעײַװענץ אין פֿאַרװ�
 msgid "Error during conversion: %s"
 msgstr "דורכפֿאַל בשעת פֿאַרװאַנדלונג: %s"
 
-#: glib/gconvert.c:628 glib/gutf8.c:907 glib/gutf8.c:1107 glib/gutf8.c:1248
-#: glib/gutf8.c:1352
+#: glib/gconvert.c:628 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
+#: glib/gutf8.c:1357
 msgid "Partial character sequence at end of input"
 msgstr "האַלבע כאַראַקטער־סעקװענץ צום סוף פֿון אַרײַנשרײַב"
 
@@ -46,96 +46,96 @@ msgstr "האַלבע כאַראַקטער־סעקװענץ צום סוף פֿון
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "ניט געקענט פֿאַרװאַנדלען גרונטבאַטרעף %s צו קאָדירונג %s"
 
-#: glib/gconvert.c:1498
+#: glib/gconvert.c:1573
 #, fuzzy, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "דער URI %s איז ניט אַבסאָלוט לױט דער טעקע־סכעמע"
 
-#: glib/gconvert.c:1508
+#: glib/gconvert.c:1583
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "דער לאָקאַלער טעקע־URI %s טאָר ניט כּולל זײַן אַ '#'"
 
-#: glib/gconvert.c:1525
+#: glib/gconvert.c:1600
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "דער URI %s איז אומלעקסיק"
 
-#: glib/gconvert.c:1537
+#: glib/gconvert.c:1612
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "דער מאַשין־נאָמען פֿונעם URI %s איז אומלעקסיק"
 
-#: glib/gconvert.c:1553
+#: glib/gconvert.c:1628
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "דער URI %s איז כּולל אומלעקסיקע פּליטה־כאַראַקטערס"
 
-#: glib/gconvert.c:1623
+#: glib/gconvert.c:1698
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "די פּאַפּקע־רשימה %s איז ניט אַבסאָלוט"
 
-#: glib/gconvert.c:1633
+#: glib/gconvert.c:1708
 msgid "Invalid hostname"
 msgstr "אומלעקסיקער מאַשין־נאָמען"
 
-#: glib/gdir.c:84
+#: glib/gdir.c:120 glib/gdir.c:140
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "דורכפֿאַל אין עפֿענען פּאַפּקע %s: %s"
 
-#: glib/gfileutils.c:400 glib/gfileutils.c:465
+#: glib/gfileutils.c:502 glib/gfileutils.c:570
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "ניט געקענט אױסטײלן %lu אַכטעלעך צו לײענען טעקע %s"
 
-#: glib/gfileutils.c:411
+#: glib/gfileutils.c:515
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "דורכפֿאַל אין לײענען טעקע %s: %s"
 
-#: glib/gfileutils.c:487
+#: glib/gfileutils.c:592
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "ניט געקענט לײענען טעקע %s: %s"
 
-#: glib/gfileutils.c:534 glib/gfileutils.c:602
+#: glib/gfileutils.c:641 glib/gfileutils.c:726
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "ניט געקענט עפֿענען טעקע '%s': %s"
 
-#: glib/gfileutils.c:548
+#: glib/gfileutils.c:656
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "ניט געקענט באַקומען אַטריבוטן פֿון טעקע %s: fstat() איז דורכגעפֿאַלן: %s"
 
-#: glib/gfileutils.c:574
+#: glib/gfileutils.c:688
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "ניט געקענט עפֿענען טעקע %s: fdopen() איז דורכגעפֿאַלן: %s"
 
-#: glib/gfileutils.c:786
+#: glib/gfileutils.c:1009
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "מוסטער %s אומלעקסיק, טאָר ניט כּולל זײַן %s"
 
-#: glib/gfileutils.c:798
+#: glib/gfileutils.c:1021
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "מוסטער %s ענדיקט זיך ניט מיט XXXXXX"
 
-#: glib/gfileutils.c:819
+#: glib/gfileutils.c:1042
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "ניט געקענט שאַפֿן טעקע %s: %s"
 
-#: glib/gfileutils.c:1160
+#: glib/gfileutils.c:1418
 #, fuzzy, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "ניט געקענט שאַפֿן טעקע %s: %s"
 
-#: glib/gfileutils.c:1179
+#: glib/gfileutils.c:1439
 msgid "Symbolic links not supported"
 msgstr ""
 
@@ -499,12 +499,12 @@ msgstr "דורכפֿאַל אין לײענען גענוג דאַטן פֿון ק
 msgid "Character out of range for UTF-8"
 msgstr "שריפֿטצײכן ניט אין דער UTF־8 גאַמע"
 
-#: glib/gutf8.c:1075 glib/gutf8.c:1084 glib/gutf8.c:1216 glib/gutf8.c:1225
-#: glib/gutf8.c:1366 glib/gutf8.c:1462
+#: glib/gutf8.c:1080 glib/gutf8.c:1089 glib/gutf8.c:1221 glib/gutf8.c:1230
+#: glib/gutf8.c:1371 glib/gutf8.c:1467
 msgid "Invalid sequence in conversion input"
 msgstr "אומלעקסיקער סעקװענץ אין פֿאַרװאַנדל־אַרײַנשרײַב"
 
-#: glib/gutf8.c:1377 glib/gutf8.c:1473
+#: glib/gutf8.c:1382 glib/gutf8.c:1478
 msgid "Character out of range for UTF-16"
 msgstr "שריפֿטצײכן ניט אין דער UTF־16 גאַמע"
 
@@ -542,7 +542,7 @@ msgstr ""
 msgid "Integer value '%s' for %s out of range"
 msgstr ""
 
-#: glib/goption.c:1028
+#: glib/goption.c:1024
 #, c-format
 msgid "Unknown option %s"
 msgstr ""
