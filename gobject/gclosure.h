@@ -143,7 +143,6 @@ void	  g_closure_invoke			(GClosure 	*closure,
 						 const GValue	*param_values,
 						 gpointer	 invocation_hint);
 
-
 /* FIXME:
    OK:  data_object::destroy		-> closure_invalidate();
    MIS:	closure_invalidate()		-> disconnect(closure);

@@ -19,7 +19,6 @@
 #ifndef __G_TYPE_H__
 #define __G_TYPE_H__
 
-extern const char *g_log_domain_gruntime;
 #include        <glib.h>
 
 G_BEGIN_DECLS
@@ -93,8 +92,7 @@ typedef enum    /*< skip >*/
   G_TYPE_PARAM_BOXED		= G_TYPE_DERIVE_ID (G_TYPE_PARAM, 17),
   G_TYPE_PARAM_POINTER		= G_TYPE_DERIVE_ID (G_TYPE_PARAM, 18),
   G_TYPE_PARAM_VALUE_ARRAY	= G_TYPE_DERIVE_ID (G_TYPE_PARAM, 19),
-  G_TYPE_PARAM_CLOSURE		= G_TYPE_DERIVE_ID (G_TYPE_PARAM, 20),
-  G_TYPE_PARAM_OBJECT		= G_TYPE_DERIVE_ID (G_TYPE_PARAM, 21)
+  G_TYPE_PARAM_OBJECT		= G_TYPE_DERIVE_ID (G_TYPE_PARAM, 20)
 
 } GTypeFundamentals;
 

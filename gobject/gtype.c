@@ -251,10 +251,6 @@ static GQuark          static_quark_dependants_array = 0;
 GTypeDebugFlags	       _g_type_debug_flags = 0;
 
 
-/* --- externs --- */
-const char  *g_log_domain_gruntime = "GRuntime";
-
-
 /* --- type nodes --- */
 static GHashTable       *static_type_nodes_ht = NULL;
 static GType            *static_branch_seqnos = NULL;

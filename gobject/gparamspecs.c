@@ -774,45 +774,6 @@ param_pointer_values_cmp (GParamSpec   *pspec,
 }
 
 static void
-param_closure_init (GParamSpec *pspec)
-{
-  /* GParamSpecClosure *cspec = G_PARAM_SPEC_CLOSURE (pspec); */
-}
-
-static void
-param_closure_set_default (GParamSpec *pspec,
-			   GValue     *value)
-{
-  value->data[0].v_pointer = NULL;
-}
-
-static gboolean
-param_closure_validate (GParamSpec *pspec,
-			GValue     *value)
-{
-  /* GParamSpecClosure *cspec = G_PARAM_SPEC_CLOSURE (pspec); */
-  /* GClosure *closure = value->data[0].v_pointer; */
-  guint changed = 0;
-
-  /* we don't actually have necessary means to ensure closure validity */
-
-  return changed;
-}
-
-static gint
-param_closure_values_cmp (GParamSpec   *pspec,
-			  const GValue *value1,
-			  const GValue *value2)
-{
-  guint8 *p1 = value1->data[0].v_pointer;
-  guint8 *p2 = value2->data[0].v_pointer;
-
-  /* not much to compare here, try to at least provide stable lesser/greater result */
-
-  return p1 < p2 ? -1 : p1 > p2;
-}
-
-static void
 param_value_array_init (GParamSpec *pspec)
 {
   GParamSpecValueArray *aspec = G_PARAM_SPEC_VALUE_ARRAY (pspec);
@@ -1326,23 +1287,6 @@ g_param_spec_types_init (void)	/* sync with gtype.c */
     g_assert (type == G_TYPE_PARAM_VALUE_ARRAY);
   }
 
-  /* G_TYPE_PARAM_CLOSURE
-   */
-  {
-    static const GParamSpecTypeInfo pspec_info = {
-      sizeof (GParamSpecClosure),   /* instance_size */
-      0,                            /* n_preallocs */
-      param_closure_init,	    /* instance_init */
-      G_TYPE_CLOSURE,		    /* value_type */
-      NULL,			    /* finalize */
-      param_closure_set_default,    /* value_set_default */
-      param_closure_validate,	    /* value_validate */
-      param_closure_values_cmp,     /* values_cmp */
-    };
-    type = g_param_type_register_static ("GParamClosure", &pspec_info);
-    g_assert (type == G_TYPE_PARAM_CLOSURE);
-  }
-  
   /* G_TYPE_PARAM_OBJECT
    */
   {
@@ -1826,22 +1770,6 @@ g_param_spec_value_array (const gchar *name,
     }
 
   return G_PARAM_SPEC (aspec);
-}
-
-GParamSpec*
-g_param_spec_closure (const gchar *name,
-		      const gchar *nick,
-		      const gchar *blurb,
-		      GParamFlags  flags)
-{
-  GParamSpecClosure *cspec;
-  
-  cspec = g_param_spec_internal (G_TYPE_PARAM_CLOSURE,
-				 name,
-				 nick,
-				 blurb,
-				 flags);
-  return G_PARAM_SPEC (cspec);
 }
 
 GParamSpec*

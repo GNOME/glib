@@ -4,7 +4,7 @@
 ## Process this file with automake to produce Makefile.in
 
 INCLUDES = @STRIP_BEGIN@ \
-	-DG_LOG_DOMAIN=g_log_domain_gruntime	\
+	-DG_LOG_DOMAIN=\"GLib-GObject\"		\
 	-I$(top_srcdir)				\
 	-I$(top_srcdir)/glib			\
 	-I$(top_builddir)			\

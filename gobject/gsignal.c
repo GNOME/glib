@@ -1279,6 +1279,20 @@ signal_destroy_R (SignalNode *signal_node)
   SIGNAL_LOCK ();
 }
 
+void
+g_signal_override_class_closure (guint     signal_id,
+				 GType     instance_type,
+				 GClosure *class_closure)
+{
+}
+
+void
+g_signal_chain_from_overridden (const GValue *instance_and_params,
+				guint         signal_id,
+				GValue       *return_value)
+{
+}
+
 gulong
 g_signal_connect_closure_by_id (gpointer  instance,
 				guint     signal_id,

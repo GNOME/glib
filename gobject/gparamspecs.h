@@ -68,8 +68,6 @@ G_BEGIN_DECLS
 #define G_PARAM_SPEC_POINTER(pspec)        (G_TYPE_CHECK_INSTANCE_CAST ((pspec), G_TYPE_PARAM_POINTER, GParamSpecPointer))
 #define G_IS_PARAM_SPEC_VALUE_ARRAY(pspec) (G_TYPE_CHECK_INSTANCE_TYPE ((pspec), G_TYPE_PARAM_VALUE_ARRAY))
 #define G_PARAM_SPEC_VALUE_ARRAY(pspec)    (G_TYPE_CHECK_INSTANCE_CAST ((pspec), G_TYPE_PARAM_VALUE_ARRAY, GParamSpecValueArray))
-#define G_IS_PARAM_SPEC_CLOSURE(pspec)     (G_TYPE_CHECK_INSTANCE_TYPE ((pspec), G_TYPE_PARAM_CLOSURE))
-#define G_PARAM_SPEC_CLOSURE(pspec)        (G_TYPE_CHECK_INSTANCE_CAST ((pspec), G_TYPE_PARAM_CLOSURE, GParamSpecClosure))
 #define G_IS_PARAM_SPEC_OBJECT(pspec)      (G_TYPE_CHECK_INSTANCE_TYPE ((pspec), G_TYPE_PARAM_OBJECT))
 #define G_PARAM_SPEC_OBJECT(pspec)         (G_TYPE_CHECK_INSTANCE_CAST ((pspec), G_TYPE_PARAM_OBJECT, GParamSpecObject))
 
@@ -94,7 +92,6 @@ typedef struct _GParamSpecParam      GParamSpecParam;
 typedef struct _GParamSpecBoxed      GParamSpecBoxed;
 typedef struct _GParamSpecPointer    GParamSpecPointer;
 typedef struct _GParamSpecValueArray GParamSpecValueArray;
-typedef struct _GParamSpecClosure    GParamSpecClosure;
 typedef struct _GParamSpecObject     GParamSpecObject;
 
 struct _GParamSpecChar
@@ -234,10 +231,6 @@ struct _GParamSpecValueArray
   GParamSpec   *element_spec;
   guint		fixed_n_elements;
 };
-struct _GParamSpecClosure
-{
-  GParamSpec    parent_instance;
-};
 struct _GParamSpecObject
 {
   GParamSpec    parent_instance;
@@ -359,10 +352,6 @@ GParamSpec*	g_param_spec_value_array (const gchar	 *name,
 					  const gchar	 *nick,
 					  const gchar	 *blurb,
 					  GParamSpec	 *element_spec,
-					  GParamFlags	  flags);
-GParamSpec*	g_param_spec_closure	 (const gchar	 *name,
-					  const gchar	 *nick,
-					  const gchar	 *blurb,
 					  GParamFlags	  flags);
 GParamSpec*	g_param_spec_object	 (const gchar	 *name,
 					  const gchar	 *nick,

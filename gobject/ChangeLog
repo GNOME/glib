@@ -1,3 +1,18 @@
+Tue Nov 13 23:18:10 2001  Tim Janik  <timj@gtk.org>
+
+	* gsignal.[hc]: add API for chaining:
+	g_signal_chain_from_overridden() and g_signal_override_class_closure(),
+	implementation yet to come.
+
+	* gtype.[hc], Makefile.am: provide G_LOG_DOMAIN as compile flag.
+	
+	* gparam.[hc]: s/g_param_get/g_param_spec_get/ for get_nick,
+	get_name and get_blurb, to be consistent with the rest of the
+	g_param_spec_*() functions.
+	
+	* gparamspecs.[hc]: got rid of bogus GClosure paramspec.
+	G_TYPE_CLOSURE is a boxed type already.
+	
 Tue Nov 13 22:16:41 2001  Tim Janik  <timj@gtk.org>
 
 	* gtype.[hc]: API cleanups.

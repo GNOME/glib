@@ -39,9 +39,9 @@ gpointer	g_boxed_copy			(GType		 boxed_type,
 void		g_boxed_free			(GType		 boxed_type,
 						 gpointer	 boxed);
 void		g_value_set_boxed		(GValue		*value,
-						 gconstpointer	 boxed);
+						 gconstpointer	 v_boxed);
 void		g_value_set_static_boxed	(GValue		*value,
-						 gconstpointer	 boxed);
+						 gconstpointer	 v_boxed);
 gpointer	g_value_get_boxed		(const GValue	*value);
 gpointer	g_value_dup_boxed		(const GValue	*value);
 
@@ -54,7 +54,7 @@ GType	g_boxed_type_register_static		(const gchar	*name,
 
 /* --- marshaller specific --- */
 void	g_value_set_boxed_take_ownership	(GValue		*value,
-						 gconstpointer	 boxed);
+						 gconstpointer	 v_boxed);
 
 
 

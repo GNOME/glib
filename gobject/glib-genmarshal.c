@@ -16,15 +16,10 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
-#include	"config.h"
-
-
-/* ok, this is a bit hackish, have to provide gruntime log domain as
- * we don't link against -lgruntime
- */
-char *g_log_domain_gruntime = "GLib-Genmarshal";
-
+#undef G_LOG_DOMAIN
+#define G_LOG_DOMAIN "GLib-Genmarshal"
 #include	<glib.h>
+#include	"config.h"
 
 #include	<stdio.h>
 #include	<stdlib.h>

@@ -235,7 +235,7 @@ g_param_spec_sink (GParamSpec *pspec)
 }
 
 G_CONST_RETURN gchar*
-g_param_get_name (GParamSpec *pspec)
+g_param_spec_get_name (GParamSpec *pspec)
 {
   g_return_val_if_fail (G_IS_PARAM_SPEC (pspec), NULL);
 
@@ -243,7 +243,7 @@ g_param_get_name (GParamSpec *pspec)
 }
 
 G_CONST_RETURN gchar*
-g_param_get_nick (GParamSpec *pspec)
+g_param_spec_get_nick (GParamSpec *pspec)
 {
   g_return_val_if_fail (G_IS_PARAM_SPEC (pspec), NULL);
 
@@ -251,7 +251,7 @@ g_param_get_nick (GParamSpec *pspec)
 }
 
 G_CONST_RETURN gchar*
-g_param_get_blurb (GParamSpec *pspec)
+g_param_spec_get_blurb (GParamSpec *pspec)
 {
   g_return_val_if_fail (G_IS_PARAM_SPEC (pspec), NULL);
 

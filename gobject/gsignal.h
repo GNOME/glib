@@ -224,6 +224,15 @@ guint	 g_signal_handlers_disconnect_matched (gpointer		  instance,
 					       gpointer		  data);
 
 
+/* --- chaining for language bindings --- */
+void	g_signal_override_class_closure	      (guint		  signal_id,
+					       GType		  instance_type,
+					       GClosure		 *class_closure);
+void	g_signal_chain_from_overridden	      (const GValue      *instance_and_params,
+					       guint              signal_id,
+					       GValue            *return_value);
+
+
 /* --- convenience --- */
 #define g_signal_connect(instance, detailed_signal, c_handler, data) \
     g_signal_connect_data ((instance), (detailed_signal), (c_handler), (data), NULL, 0)

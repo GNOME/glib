@@ -131,9 +131,9 @@ gboolean	g_param_value_convert		(GParamSpec    *pspec,
 gint		g_param_values_cmp		(GParamSpec    *pspec,
 						 const GValue  *value1,
 						 const GValue  *value2);
-G_CONST_RETURN gchar*	g_param_get_name	(GParamSpec    *pspec);
-G_CONST_RETURN gchar*	g_param_get_nick	(GParamSpec    *pspec);
-G_CONST_RETURN gchar*	g_param_get_blurb	(GParamSpec    *pspec);
+G_CONST_RETURN gchar*	g_param_spec_get_name	(GParamSpec    *pspec);
+G_CONST_RETURN gchar*	g_param_spec_get_nick	(GParamSpec    *pspec);
+G_CONST_RETURN gchar*	g_param_spec_get_blurb	(GParamSpec    *pspec);
 void            g_value_set_param               (GValue	       *value,
 						 GParamSpec    *param);
 GParamSpec*     g_value_get_param               (const GValue  *value);
