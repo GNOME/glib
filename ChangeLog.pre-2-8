@@ -1,3 +1,11 @@
+2000-07-22  Tor Lillqvist  <tml@iki.fi>
+
+	* build-dll: Fix resource handling, the resource file got left out
+	from the DLL after all... Remove the WIN32APIHEADERS, not needed
+	with current windres.
+
+	* glib.def: Add new functions.
+
 2000-07-20  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gutils.c, glib.h: Mark the functions g_basename and g_dirname

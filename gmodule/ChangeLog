@@ -1,3 +1,8 @@
+2000-07-22  Tor Lillqvist  <tml@iki.fi>
+
+	* makefile.mingw.in: Remove leftover gmodule-win32res.o stuff. The
+	build-dll script automagically handles resources.
+
 2000-07-20  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* libgplugin_a.c, testgmodule.c: Use g_path_get_basename instead

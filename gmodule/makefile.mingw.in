@@ -33,11 +33,8 @@ gmodule_OBJECTS = \
 gmoduleconf.h: gmoduleconf.h.win32
 	cp $< $@
 
-
-gmodule-win32res.o : gmodule.rc gmodule-build.tmp
-
 gmodule-$(GLIB_VER).dll : $(gmodule_OBJECTS) gmodule.def
-	$(BUILD_DLL) gmodule $(GLIB_VER) gmodule.def $(gmodule_OBJECTS) gmodule-win32res.o -L .. -lglib-$(GLIB_VER)
+	$(BUILD_DLL) gmodule $(GLIB_VER) gmodule.def $(gmodule_OBJECTS) -L .. -lglib-$(GLIB_VER)
 
 ################ test prog
 

@@ -251,6 +251,8 @@ EXPORTS
 	g_on_error_query
 	g_on_error_stack_trace
 	g_parse_debug_string
+	g_path_get_basename
+	g_path_get_dirname
 	g_path_is_absolute
 	g_path_skip_root
 	g_pipe_readable_msg
