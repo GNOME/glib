@@ -22,7 +22,7 @@
  * code from this file in your own programs or libraries.
  * Further information on the Mersenne Twister can be found at
  * http://www.math.keio.ac.jp/~matumoto/emt.html
- * This code was adapted to glib by Sebastian Wilhelmi <wilhelmi@ira.uka.de>.
+ * This code was adapted to glib by Sebastian Wilhelmi.
  */
 
 /*

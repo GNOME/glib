@@ -1,3 +1,8 @@
+2003-02-11  Sebastian Wilhelmi  <seppi@seppi.de>
+
+	* AUTHORS: Changed my e-mail address.
+	* glib/grand.c: Removed my e-mail address.
+
 2003-02-10  Mohammad DAMT  <mdamt@bisnisweb.com>
 
 	* po/id.po: Added Indonesian translation
