@@ -256,7 +256,8 @@ g_module_open (const gchar    *file_name,
       
       /* check initialization */
       if (g_module_symbol (module, "g_module_check_init", (gpointer) &check_init))
-	check_failed = check_init (module);
+        if (check_init)
+          check_failed = check_init (module);
       
       /* we don't call unload() if the initialization check failed. */
       if (!check_failed)

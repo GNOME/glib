@@ -1,3 +1,8 @@
+2000-01-13  Martin Baulig  <martin@home-of-linux.org>
+
+	* gmodule.c (g_module_open): Check whether `check_init' is not NULL
+	before we attempt to call it.
+
 Sun Oct  3 19:30:52 PDT 1999 Manish Singh <yosh@gimp.org>
 
 	* gmodule.h
