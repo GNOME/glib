@@ -1,6 +1,10 @@
+2003-06-19  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/tmpl/misc_utils.sgml: Move g_path_get_basename() docs inline.
+
 2003-06-18  Matthias Clasen  <maclas@gmx.de>
 
-	* glib/glib-sections.txt: Add g_thread_init_glib to silence gtk-doc.
+o	* glib/glib-sections.txt: Add g_thread_init_glib to silence gtk-doc.
 
 	* gobject/Makefile.am: Add rule to regenerate man pages from 
 	Docbook.

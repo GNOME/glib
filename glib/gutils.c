@@ -390,7 +390,9 @@ g_parse_debug_string  (const gchar     *string,
  * 
  * Return value: the name of the file without any leading directory components.
  *
- * Deprecated: Use g_path_get_basename() instead. 
+ * Deprecated: Use g_path_get_basename() instead, but notice that
+ * g_path_get_basename() allocates new memory for the returned string, unlike
+ * this function which returns a pointer into the argument.
  **/
 G_CONST_RETURN gchar*
 g_basename (const gchar	   *file_name)
@@ -411,6 +413,19 @@ g_basename (const gchar	   *file_name)
   return (gchar*) file_name;
 }
 
+/**
+ * g_path_get_basename:
+ * @file_name: the name of the file.
+ *
+ * Gets the last component of the filename. If @file_name ends with a 
+ * directory separator it gets the component before the last slash. If 
+ * @file_name consists only of directory separators (and on Windows, 
+ * possibly a drive letter), a single separator is returned. If
+ * @file_name is empty, it gets ".".
+ *
+ * Return value: a newly allocated string containing the last component of 
+ *   the filename.
+ */
 gchar*
 g_path_get_basename (const gchar   *file_name)
 {
