@@ -231,6 +231,14 @@ g_utf8_collate_key (const gchar *str,
       if (str_locale)
 	{
 	  xfrm_len = strxfrm (NULL, str_locale, 0);
+	  if (xfrm_len < 0 || xfrm_len >= G_MAXINT - 2)
+	    {
+	      g_free (str_locale);
+	      str_locale = NULL;
+	    }
+	}
+      if (str_locale)
+	{
 	  result = g_malloc (xfrm_len + 2);
 	  result[0] = 'A';
 	  strxfrm (result + 1, str_locale, xfrm_len + 1);
