@@ -104,9 +104,8 @@ guint	g_signal_lookup			(const gchar		*name,
 gchar*	g_signal_name			(guint			 signal_id);
 void	g_signal_query			(guint			 signal_id,
 					 GSignalQuery		*query);
-
-guint * g_type_signals                  (GType                   itype,
-					 guint                  *n_ids);
+guint*	g_signal_list_ids		(GType			 itype,
+					 guint			*n_ids);
 
 /* --- signal handlers --- */
 guint	 g_signal_connect_closure	(gpointer		 instance,

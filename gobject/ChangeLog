@@ -1,3 +1,8 @@
+Mon Oct 30 03:00:07 2000  Tim Janik  <timj@gtk.org>
+
+	* gsignal.[hc] (g_signal_list_ids): renamed owen's g_type_signals(),
+	added required mutex locks.
+
 Sun Oct 29 02:31:03 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* gsignal.c (g_type_signals): Fix problem where signals

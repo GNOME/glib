@@ -693,45 +693,48 @@ g_signal_query (guint         signal_id,
 }
 
 /**
- * gtk_signals_list:
+ * g_signal_list_ids:
  * @itype: an  
- * @n_ids: location to store number of ids in @itype
+ * @n_ids: location to store number of signal ids for @itype
  * 
  * List all signals for a given type.
  *
- * Return value: Array 
+ * Return value: Newly allocated array of signal ids.
  **/
-guint *
-g_type_signals (GType    itype,
-	        guint   *n_ids)
+guint*
+g_signal_list_ids (GType  itype,
+		   guint *n_ids)
 {
-  guint i;
   SignalKey *keys;
-  guint n_nodes;
   GArray *result;
+  guint n_nodes;
+  guint i;
 
-  g_return_val_if_fail (n_ids != NULL, NULL);
   g_return_val_if_fail (G_TYPE_IS_INSTANTIATABLE (itype) || G_TYPE_IS_INTERFACE (itype), NULL);
+  g_return_val_if_fail (n_ids != NULL, NULL);
+
+  G_LOCK (g_signal_mutex);
 
   keys = g_signal_key_bsa.nodes;
   n_nodes  = g_signal_key_bsa.n_nodes;
   result = g_array_new (FALSE, FALSE, sizeof (guint));
   
   for (i = 0; i < n_nodes; i++)
-    {
-      if (keys[i].itype == itype)
-	{
-	  gchar *name = g_quark_to_string (keys[i].quark);
-	  /* Signal names with "_" in them are aliases to the same
-	   * name with "-" instead of "_".
-	   */
-	  if (!strchr (name, '_'))
-	    g_array_append_val (result, keys[i].signal_id);
-	}
-    }
+    if (keys[i].itype == itype)
+      {
+	gchar *name = g_quark_to_string (keys[i].quark);
+
+	/* Signal names with "_" in them are aliases to the same
+	 * name with "-" instead of "_".
+	 */
+	if (!strchr (name, '_'))
+	  g_array_append_val (result, keys[i].signal_id);
+      }
 
   *n_ids = result->len;
 
+  G_UNLOCK (g_signal_mutex);
+  
   return (guint *) g_array_free (result, FALSE);
 }
 
