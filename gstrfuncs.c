@@ -1039,12 +1039,11 @@ g_str_split(const gchar *string, const gchar *delim, gint max_tokens)
 gchar *
 g_str_chug(gchar *astring, gboolean in_place)
 {
-  int i;
   gchar *retval, *start;
 
   g_return_val_if_fail(astring != NULL, NULL);
 
-  for(start = retval; *start && isspace(*start); start++)
+  for(start = astring; *start && isspace(*start); start++)
     /* */;
 
   if(in_place) {
@@ -1094,25 +1093,30 @@ g_str_array_free(gchar **strarray)
   g_free(strarray);
 }
 
-gchar*
-g_strconcatv (const gchar **strarray)
+gchar*	 g_strconcatv		(const gchar *separator,
+				 const gchar **strarray)
 {
-  guint	  l;
-  va_list args;
-  gchar	  *s;
+  guint	  l, sepl;
   gchar	  *concat;
   int i;
   
   g_return_val_if_fail (strarray != NULL, NULL);
 
-  for(i = 0, l = 1; strarray[i]; i++)
+  l = strlen(strarray[0]) + 1;
+  sepl = strlen(separator);
+  for(i = 1; strarray[i]; i++) {
+    l += sepl;
     l += strlen(strarray[i]);
+  }
   
   concat = g_new (gchar, l);
   *concat = '\0';
 
-  for(i = 0; strarray[i]; i++)
+  strcat (concat, strarray[0]);
+  for(i = 1; strarray[i]; i++) {
+    strcat (concat, separator);
     strcat (concat, strarray[i]);
+  }
 
   return concat;
 }

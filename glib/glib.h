@@ -1379,7 +1379,8 @@ gchar *  g_str_chomp            (gchar *astring,
 gchar ** g_str_split            (const gchar *string,
 				 const gchar *delim,
 				 gint max_tokens);
-gchar*	 g_strconcatv		(const gchar **strarray);
+gchar*	 g_strconcatv		(const gchar *separator,
+				 const gchar **strarray);
 #define  g_str_joinv g_strconcatv
 void     g_str_array_free       (gchar **strarray);
 
