@@ -1,3 +1,9 @@
+Fri May 30 18:46:05 2003  Owen Taylor  <otaylor@redhat.com>
+
+	* m4macros/glib-gettext.m4: expand $exec_prefix as
+	well as $prefix. (#107290, reported by Morten Welinder,
+	patch from Raja Harinath)
+
 Fri May 30 17:24:23 2003  Owen Taylor  <otaylor@redhat.com>
 
 	* glib-gettextize.in: Quote $srcdir to handle $srcdir
