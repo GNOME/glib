@@ -1,5 +1,6 @@
-Overview of Changes in GLib 1.1.10:
+Overview of Changes in GLib 1.1.11:
 
+* provide defaults for POLL sysdefs
 * g_main_is_running: new function to check whether a main loop has been quitted
 * a few other enhancement/fixes
 

@@ -1,3 +1,13 @@
+Wed Dec 30 18:24:57 CST 1998 Shawn T. Amundson <amundson@gtk.org>
+
+        * Released GLib 1.1.11 
+
+        * INSTALL:
+          NEWS:
+          README:
+          configure.in:
+          docs/glib-config.1: version=1.1.11
+
 1998-12-30  Raja R Harinath  <harinath@cs.umn.edu>
 
 	* glib.h (G[U]INT64_FROM_{LE,BE}): 
@@ -11,8 +21,6 @@ Fri Dec 25 19:56:33 PST 1998 Manish Singh <yosh@gimp.org>
 	<0rfelyus@atrey.karlin.mff.cuni.cz>
 
 Wed Dec 23 00:43:25 CST 1998 Shawn T. Amundson <amundson@gtk.org>
-
-	* Released GLib 1.1.10
 
 	* INSTALL:
 	  NEWS:
