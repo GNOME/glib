@@ -1,3 +1,8 @@
+Mon Jan  4 15:35:29 PST 1999 Manish Singh <yosh@gimp.org>
+
+	* acglib.m4: some echos interpret \n's and some don't. Deal with
+	accordingly.
+
 Mon Jan  4 20:58:50 1999  Tim Janik  <timj@gtk.org>
 
 	* gscanner.c: eliminated extraneous "register" qualifiers in variable

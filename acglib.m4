@@ -84,6 +84,11 @@ dnl GLIB_SYSDEFS (INCLUDES, DEFS_LIST, OFILE [, PREFIX])
 AC_DEFUN(GLIB_SYSDEFS,
 [glib_sysdefso="translit($3, [-_a-zA-Z0-9 *], [-_a-zA-Z0-9])"
 glib_sysdef_msg=`echo $2 | sed 's/:[[^ 	]]*//g'`
+if test "x`(echo '\n') 2>/dev/null`" != 'x\n'; then
+  glib_nl='\\n'
+else
+  glib_nl='\n'
+fi
 AC_MSG_CHECKING(system definitions for $glib_sysdef_msg)
 cat >confrun.c <<_______EOF
 #include <stdio.h>
@@ -96,12 +101,12 @@ for glib_sysdef_input in $2 ; do
 	glib_sysdef=`echo $glib_sysdef_input | sed 's/^\([[^:]]*\):.*$/\1/'`
 	glib_default=`echo $glib_sysdef_input | sed 's/^[[^:]]*:\(.*\)$/\1/'`
 	echo "#ifdef $glib_sysdef" >>confrun.c
-	echo "  fprintf (f, \"#define GLIB_SYSDEF_%s %s%d\\n\", \"$glib_sysdef\", \"$4\", $glib_sysdef);" >>confrun.c
+	echo "  fprintf (f, \"#define GLIB_SYSDEF_%s %s%d${glib_nl}\", \"$glib_sysdef\", \"$4\", $glib_sysdef);" >>confrun.c
 	echo "#else" >>confrun.c
 	if test $glib_sysdef != $glib_default; then
-		echo "  fprintf (f, \"#define GLIB_SYSDEF_%s %s%d\\n\", \"$glib_sysdef\", \"$4\", $glib_default);" >>confrun.c
+		echo "  fprintf (f, \"#define GLIB_SYSDEF_%s %s%d${glib_nl}\", \"$glib_sysdef\", \"$4\", $glib_default);" >>confrun.c
 	else
-		echo "  fprintf (f, \"#define GLIB_SYSDEF_%s\\n\", \"$glib_sysdef\");" >>confrun.c
+		echo "  fprintf (f, \"#define GLIB_SYSDEF_%s${glib_nl}\", \"$glib_sysdef\");" >>confrun.c
 	fi
 	echo "#endif" >>confrun.c
 done
