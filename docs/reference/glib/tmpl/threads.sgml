@@ -1078,7 +1078,7 @@ g_thread_init() has not been called.
 <para>
 A read-write lock has a higher overhead as a mutex. For example both
 g_static_rw_lock_reader_lock() and g_static_rw_lock_reader_unlock()
-has to lock and unlock a #GStaticMutex, so it takes at least twice the
+have to lock and unlock a #GStaticMutex, so it takes at least twice the
 time to lock and unlock a #GStaticRWLock than to lock and unlock a
 #GStaticMutex. So only data structures, that are accessed by multiple
 readers, which keep the lock for a considerable time justify a
@@ -1134,11 +1134,9 @@ g_static_rw_lock_reader_unlock().
 </para>
 
 <para>
-#GStaticRWLock in general is not recursive, but as there may be
-unlimited concurrent locks for reading, it effectively is for
-recursive for reading, but for reading only. Locking for writing after
-locking for reading will deadlock, the same holds true for the
-opposite order.
+#GStaticRWLock is not recursive. It might seem to be possible to
+recursivly lock for reading, but that can result in a deadlock as
+well, due to writer preference.
 </para>
 
 @lock: a #GStaticRWLock to lock for reading
