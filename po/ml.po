@@ -1,0 +1,498 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FSF-India <locale@gnu.org.in>, 2003.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version:glib.glib-2-2\n"
+"POT-Creation-Date: 2003-06-06 04:13+0200\n"
+"PO-Revision-Date: 2003-07-05 10:29+0530\n"
+"Last-Translator: FSF-India <locale@gnu.org.in>\n"
+"Language-Team: Malayalam <locale@gnu.org.in>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: glib/gconvert.c:401
+#, fuzzy, c-format
+msgid "Conversion from character set '%s' to '%s' is not supported"
+msgstr "അക്ഷരക്കൂട്ടം'%s'ല് നിന്നും '%s'ലേക്കുളള മാറ്റം സാദ്ധ്യമല്ല"
+
+#: glib/gconvert.c:405
+#, fuzzy, c-format
+msgid "Could not open converter from '%s' to '%s': %s"
+msgstr ""
+"%s ന്റെ ഉള്ളടക്കം നീക്കം ചെയ്യാന് കഴിയുന്നില്ല:\n"
+"%s"
+
+#: glib/gconvert.c:603 glib/gconvert.c:893 glib/giochannel.c:1306
+#: glib/giochannel.c:1348 glib/giochannel.c:2190 glib/gutf8.c:909
+#: glib/gutf8.c:1354
+#, fuzzy
+msgid "Invalid byte sequence in conversion input"
+msgstr "നിവേശത്തില് അസാധു ബൈറ്റ് ശ്രേണി"
+
+#: glib/gconvert.c:608 glib/gconvert.c:824 glib/giochannel.c:1313
+#: glib/giochannel.c:2202
+#, fuzzy, c-format
+msgid "Error during conversion: %s"
+msgstr "സൂചകം നിറയ‌്ക്കുന്നതില്‌ പരാജയം : %s"
+
+#: glib/gconvert.c:626 glib/gutf8.c:905 glib/gutf8.c:1105 glib/gutf8.c:1246
+#: glib/gutf8.c:1350
+msgid "Partial character sequence at end of input"
+msgstr "നിവേശത്തിന്റെ അന്ത്യത്തില് ഭാഗികമായ അക്ഷരശ്രേണി"
+
+#: glib/gconvert.c:799
+#, c-format
+msgid "Cannot convert fallback '%s' to codeset '%s'"
+msgstr ""
+
+#: glib/gconvert.c:1631
+#, fuzzy, c-format
+msgid "The URI '%s' is not an absolute URI using the file scheme"
+msgstr "URI \"%s\" പൂര്ണ്ണമായ URI അല്ല"
+
+#: glib/gconvert.c:1641
+#, fuzzy, c-format
+msgid "The local file URI '%s' may not include a '#'"
+msgstr "കംപ്യൂട്ടറില് ഉളള URI \"%s\"ല് '#' പാടില്ല "
+
+#: glib/gconvert.c:1658
+#, c-format
+msgid "The URI '%s' is invalid"
+msgstr "URI \"%s\" അസാധുവാണു്"
+
+#: glib/gconvert.c:1670
+#, fuzzy, c-format
+msgid "The hostname of the URI '%s' is invalid"
+msgstr "URI \"%s\" അസാധുവാണു്"
+
+#: glib/gconvert.c:1686
+#, fuzzy, c-format
+msgid "The URI '%s' contains invalidly escaped characters"
+msgstr "URI \"%s\" അസാധുവാണു്"
+
+#: glib/gconvert.c:1757
+#, fuzzy, c-format
+msgid "The pathname '%s' is not an absolute path"
+msgstr "\"%s\" വഴിയിലുള്ള രചന ഒരു കൂട് അല്ല."
+
+#: glib/gconvert.c:1767
+#, fuzzy
+msgid "Invalid hostname"
+msgstr "സാധുതയില്ലാത്ത രചന നാമം"
+
+#: glib/gdir.c:80
+#, fuzzy, c-format
+msgid "Error opening directory '%s': %s"
+msgstr ""
+"മേല്‌വിലാസ പുസ്തകം തുറക്കുന്നതില്‌‌ പരാജയം '%s'\n"
+"%s"
+
+#: glib/gfileutils.c:384 glib/gfileutils.c:449
+#, fuzzy, c-format
+msgid "Could not allocate %lu bytes to read file \"%s\""
+msgstr "രചന %s ഉണ്ടാക്കാന്‌ കഴിഞ്ഞില്ല."
+
+#: glib/gfileutils.c:395
+#, c-format
+msgid "Error reading file '%s': %s"
+msgstr "%s വായിക്കുന്നതില്‌ പരാജയം : %s"
+
+#: glib/gfileutils.c:471
+#, fuzzy, c-format
+msgid "Failed to read from file '%s': %s"
+msgstr "രചന %sലെ പ്രമേയം വായിക്കുന്നതില്‌ പരാജയപ്പെട്ടു: %s\n"
+
+#: glib/gfileutils.c:518 glib/gfileutils.c:586
+#, c-format
+msgid "Failed to open file '%s': %s"
+msgstr "%s തുറക്കുന്നതില്‌ പരാജയം : %s"
+
+#: glib/gfileutils.c:532
+#, fuzzy, c-format
+msgid "Failed to get attributes of file '%s': fstat() failed: %s"
+msgstr "%sന്റെ വിശേഷതകള് കണ്ടെത്തുന്നതില് പരാജയം: fstat() പരാജയപ്പെട്ടു"
+
+#: glib/gfileutils.c:558
+#, fuzzy, c-format
+msgid "Failed to open file '%s': fdopen() failed: %s"
+msgstr "%s തുറക്കുന്നതില്‌ പരാജയം : %s"
+
+#: glib/gfileutils.c:765
+#, c-format
+msgid "Template '%s' invalid, should not contain a '%s'"
+msgstr "ഉരു \"%s\" അസാധു, \"%s\" ഉള്ക്കൊളളാന് പാടില്ല"
+
+#: glib/gfileutils.c:777
+#, c-format
+msgid "Template '%s' doesn't end with XXXXXX"
+msgstr "ഉരു \"%s\" XXXXXXല് അവസാനിക്കുന്നില്ല"
+
+#: glib/gfileutils.c:798
+#, fuzzy, c-format
+msgid "Failed to create file '%s': %s"
+msgstr "%s തുറക്കുന്നതില്‌ പരാജയം : %s"
+
+#: glib/giochannel.c:1134
+#, c-format
+msgid "Conversion from character set `%s' to `%s' is not supported"
+msgstr "%sല് നിന്നും %sലേക്ക് പരിവറ്ത്തനം ചെയ്യാന് കഴിയുന്നില്ല"
+
+#: glib/giochannel.c:1138
+#, fuzzy, c-format
+msgid "Could not open converter from `%s' to `%s': %s"
+msgstr ""
+"%s ന്റെ ഉള്ളടക്കം നീക്കം ചെയ്യാന് കഴിയുന്നില്ല:\n"
+"%s"
+
+#: glib/giochannel.c:1483
+msgid "Can't do a raw read in g_io_channel_read_line_string"
+msgstr ""
+
+#: glib/giochannel.c:1530 glib/giochannel.c:1787 glib/giochannel.c:1873
+msgid "Leftover unconverted data in read buffer"
+msgstr ""
+
+#: glib/giochannel.c:1610 glib/giochannel.c:1687
+msgid "Channel terminates in a partial character"
+msgstr ""
+
+#: glib/giochannel.c:1673
+msgid "Can't do a raw read in g_io_channel_read_to_end"
+msgstr ""
+
+#: glib/giowin32.c:712 glib/giowin32.c:741
+#, fuzzy
+msgid "Incorrect message size"
+msgstr "ഇപ്പോഴുള്ള സന്ദേശം അച്ചടിക്കുക"
+
+#: glib/giowin32.c:1034 glib/giowin32.c:1087
+#, fuzzy
+msgid "Socket error"
+msgstr "പ്രശ്നം ഇല്ല"
+
+#: glib/gmarkup.c:222
+#, fuzzy, c-format
+msgid "Error on line %d char %d: %s"
+msgstr "%s നിറയ്‌ക്കുന്നതില്‌ പരാജയം: %s\n"
+
+#: glib/gmarkup.c:306
+#, fuzzy, c-format
+msgid "Error on line %d: %s"
+msgstr "%s നിറയ്‌ക്കുന്നതില്‌ പരാജയം: %s\n"
+
+#: glib/gmarkup.c:385
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgstr "ഒഴി‌‌‍‌‌‌ഞ്ഞ '&;' കണ്ടു. അനുവദനീയമായവ ഇവയാണു്: &amp; &quot; &lt; &gt; &apos;"
+
+#: glib/gmarkup.c:395
+#, c-format
+msgid ""
+"Character '%s' is not valid at the start of an entity name; the & character "
+"begins an entity; if this ampersand isn't supposed to be an entity, escape "
+"it as &amp;"
+msgstr ""
+"%sല് ഒരു സത്ത തു‌ടങ്ങാവുന്നതല്ല. & എന്ന അക്ഷരം ഒരു സത്തയുടെ തുടക്കം കുറിക്കുന്നു. & ഒരു  സത്ത "
+"അല്ലെങ്കില് &amp; എന്ന് പ്രത്യേകം സൂചിപ്പിക്കുക"
+
+#: glib/gmarkup.c:431
+#, fuzzy, c-format
+msgid "Character '%s' is not valid inside an entity name"
+msgstr "%s സാധുവായ ഒരു സത്താനാമം അല്ല"
+
+#: glib/gmarkup.c:475
+#, c-format
+msgid "Entity name '%s' is not known"
+msgstr "സത്താനാമം \"%s\" അറിയില്ല"
+
+#: glib/gmarkup.c:485
+#, fuzzy
+msgid ""
+"Entity did not end with a semicolon; most likely you used an ampersand "
+"character without intending to start an entity - escape ampersand as &amp;"
+msgstr ""
+"സത്ത ഒരു അര്ദ്ധവിരാമത്തില് അവസാനിക്കുന്നില്ല.  & എന്ന അക്ഷരം അറിയാതെ ഉള്ക്കൊളളാന് ഇടയായോ? & "
+"ഒരു  സത്ത അല്ലെങ്കില് &amp; എന്ന് പ്രത്യേകം സൂചിപ്പിക്കുക"
+
+#: glib/gmarkup.c:531
+#, fuzzy, c-format
+msgid ""
+"Failed to parse '%s', which should have been a digit inside a character "
+"reference (&#234; for example) - perhaps the digit is too large"
+msgstr "\"%s\" തിരിച്ചറിയുന്നതില് പരാജയം. "
+
+#: glib/gmarkup.c:556
+#, c-format
+msgid "Character reference '%s' does not encode a permitted character"
+msgstr "%s അനുവദനീയമായ ഒരു അക്ഷരത്തെ കുറിക്കുന്നില്ല."
+
+#: glib/gmarkup.c:573
+#, fuzzy
+msgid "Empty character reference; should include a digit such as &#454;"
+msgstr "&# ഒരു അക്ഷരത്തെയും കുറിക്കുന്നില്ല"
+
+#: glib/gmarkup.c:583
+msgid ""
+"Character reference did not end with a semicolon; most likely you used an "
+"ampersand character without intending to start an entity - escape ampersand "
+"as &amp;"
+msgstr ""
+"അക്ഷരസൂചകം ഒരു അര്ദ്ധവിരാമത്തില് അവസാനിക്കുന്നില്ല.  & എന്ന അക്ഷരം അറിയാതെ ഉള്ക്കൊളളാന് "
+"ഇടയായോ? & ഒരു  സത്ത അല്ലെങ്കില് &amp; എന്ന് പ്രത്യേകം സൂചിപ്പിക്കുക"
+
+#: glib/gmarkup.c:609
+#, fuzzy
+msgid "Unfinished entity reference"
+msgstr "ജാലക നാമാവലി മുന്ഗണനകള്"
+
+#: glib/gmarkup.c:615
+msgid "Unfinished character reference"
+msgstr ""
+
+#: glib/gmarkup.c:866 glib/gmarkup.c:894 glib/gmarkup.c:925
+#, fuzzy
+msgid "Invalid UTF-8 encoded text"
+msgstr "സാധുതയില്ലാത്ത UTF-8 വസ്തുത"
+
+#: glib/gmarkup.c:961
+msgid "Document must begin with an element (e.g. <book>)"
+msgstr "പത്രിക ഒരു ധാതുവില് തുടങ്ങണം. ഉദാഹരണത്തിന‍ു്, <book>"
+
+#: glib/gmarkup.c:1000
+#, fuzzy, c-format
+msgid ""
+"'%s' is not a valid character following a '<' character; it may not begin an "
+"element name"
+msgstr "\"%s\" അപ്രതീക്ഷിതം."
+
+#: glib/gmarkup.c:1063
+#, fuzzy, c-format
+msgid ""
+"Odd character '%s', expected a '>' character to end the start tag of element "
+"'%s'"
+msgstr ""
+"\"%s\" അപ്രതീക്ഷിതം. \"%s\" കഴിഞ്ഞ് ഒരു \">\" ചിഹ്നമാണു് ധാതു-നാമത്തില് പ്രതീക്ഷിച്ചത്"
+
+#: glib/gmarkup.c:1150
+#, fuzzy, c-format
+msgid ""
+"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgstr ""
+"\"%s\" അപ്രതീക്ഷിതം. വിശേഷത %s കഴിഞ്ഞ് ഒരു സമചിഹ്നമാണു് ധാതു-നാമം %sല് പ്രതീക്ഷിച്ചത്"
+
+#: glib/gmarkup.c:1191
+#, c-format
+msgid ""
+"Odd character '%s', expected a '>' or '/' character to end the start tag of "
+"element '%s', or optionally an attribute; perhaps you used an invalid "
+"character in an attribute name"
+msgstr ""
+
+#: glib/gmarkup.c:1274
+#, c-format
+msgid ""
+"Odd character '%s', expected an open quote mark after the equals sign when "
+"giving value for attribute '%s' of element '%s'"
+msgstr ""
+
+#: glib/gmarkup.c:1414
+#, c-format
+msgid ""
+"'%s' is not a valid character following the characters '</'; '%s' may not "
+"begin an element name"
+msgstr "'%s' ധാതു-നാമം '</' കഴിഞ്ഞ് വരാവുന്ന ഒന്നല്ല;'%s'വരാവുന്ന ഒന്നല്ല"
+
+#: glib/gmarkup.c:1452
+#, c-format
+msgid ""
+"'%s' is not a valid character following the close element name '%s'; the "
+"allowed character is '>'"
+msgstr "\"%s\" ധാതു-നാമം \"%s\" കഴിഞ്ഞ് വരാവുന്ന ഒന്നല്ല: അനുവദനീയമായത് \">\" ആണു്"
+
+#: glib/gmarkup.c:1463
+#, fuzzy, c-format
+msgid "Element '%s' was closed, no element is currently open"
+msgstr "ധാതു \"%s\" പൂര്ത്തിയായി;"
+
+#: glib/gmarkup.c:1472
+#, fuzzy, c-format
+msgid "Element '%s' was closed, but the currently open element is '%s'"
+msgstr "ധാതു \"%s\" പൂര്ത്തിയായി; ധാതു \"%s\" ആണ‌ു് തുറന്നിരിക്കുന്നത്"
+
+#: glib/gmarkup.c:1619
+msgid "Document was empty or contained only whitespace"
+msgstr "പത്രിക ശൂന്യം"
+
+#: glib/gmarkup.c:1633
+msgid "Document ended unexpectedly just after an open angle bracket '<'"
+msgstr "പത്രിക അപ്രതീക്ഷിതമായി അവസാനിച്ചു"
+
+#: glib/gmarkup.c:1641 glib/gmarkup.c:1685
+#, c-format
+msgid ""
+"Document ended unexpectedly with elements still open - '%s' was the last "
+"element opened"
+msgstr "പത്രിക അപ്രതീക്ഷിതമായി അവസാനിച്ചു %s"
+
+#: glib/gmarkup.c:1649
+#, c-format
+msgid ""
+"Document ended unexpectedly, expected to see a close angle bracket ending "
+"the tag <%s/>"
+msgstr "പത്രിക അപ്രതീക്ഷിതമായി അവസാനിച്ചു <%s/>"
+
+#: glib/gmarkup.c:1655
+msgid "Document ended unexpectedly inside an element name"
+msgstr "പത്രിക അപ്രതീക്ഷിതമായി അവസാനിച്ചു"
+
+#: glib/gmarkup.c:1660
+msgid "Document ended unexpectedly inside an attribute name"
+msgstr "പത്രിക അപ്രതീക്ഷിതമായി അവസാനിച്ചു"
+
+#: glib/gmarkup.c:1665
+msgid "Document ended unexpectedly inside an element-opening tag."
+msgstr "പത്രിക അപ്രതീക്ഷിതമായി അവസാനിച്ചു"
+
+#: glib/gmarkup.c:1671
+msgid ""
+"Document ended unexpectedly after the equals sign following an attribute "
+"name; no attribute value"
+msgstr ""
+
+#: glib/gmarkup.c:1678
+msgid "Document ended unexpectedly while inside an attribute value"
+msgstr "പത്രിക അപ്രതീക്ഷിതമായി അവസാനിച്ചു"
+
+#: glib/gmarkup.c:1693
+#, c-format
+msgid "Document ended unexpectedly inside the close tag for element '%s'"
+msgstr "പത്രിക അപ്രതീക്ഷിതമായി അവസാനിച്ചു %s"
+
+#: glib/gmarkup.c:1699
+#, fuzzy
+msgid "Document ended unexpectedly inside a comment or processing instruction"
+msgstr "പത്രിക അപ്രതീക്ഷിതമായി അവസാനിച്ചു"
+
+#: glib/gshell.c:72
+#, fuzzy
+msgid "Quoted text doesn't begin with a quotation mark"
+msgstr "ഉദ്ധരണി ഉദ്ധരണി-ചിഹ്നം ഇല്ലാതെ തുട‌ങ്ങി"
+
+#: glib/gshell.c:162
+#, fuzzy
+msgid "Unmatched quotation mark in command line or other shell-quoted text"
+msgstr "തുണയില്ലാത്ത ഉദ്ധരണി-ചിഹ്നം"
+
+#: glib/gshell.c:530
+#, c-format
+msgid "Text ended just after a '\\' character. (The text was '%s')"
+msgstr "%s '\\' കഴി‌ഞ്ഞ ഉടന് അപ്രതീക്ഷിതമായി അവസാനിച്ചു"
+
+#: glib/gshell.c:537
+#, fuzzy, c-format
+msgid "Text ended before matching quote was found for %c. (The text was '%s')"
+msgstr "%cക്ക് തുണയായി %sല് ഉദ്ധരണി-ചിഹ്നം ഇല്ല"
+
+#: glib/gshell.c:549
+msgid "Text was empty (or contained only whitespace)"
+msgstr "ടെക്സ്റ്റ് ശൂന്യം"
+
+#: glib/gspawn-win32.c:286
+#, fuzzy
+msgid "Failed to read data from child process"
+msgstr "രചന %sലെ പ്രമേയം വായിക്കുന്നതില്‌ പരാജയപ്പെട്ടു: %s\n"
+
+#: glib/gspawn-win32.c:414
+msgid ""
+"Unexpected error in g_io_channel_win32_poll() reading data from a child "
+"process"
+msgstr ""
+
+#: glib/gspawn-win32.c:784 glib/gspawn.c:1002
+#, fuzzy, c-format
+msgid "Failed to read from child pipe (%s)"
+msgstr "രചന %sലെ പ്രമേയം വായിക്കുന്നതില്‌ പരാജയപ്പെട്ടു: %s\n"
+
+#: glib/gspawn-win32.c:871
+#, fuzzy
+msgid "Failed to execute helper program"
+msgstr "ഇറക്കുമതി നിര്‍ദ്ദേശങ്ങള്‌ നിര്‍വ്വഹിക്കുന്നതില്‌ പരാജയപ്പെട്ടു."
+
+#: glib/gspawn-win32.c:904 glib/gspawn.c:1207
+#, fuzzy, c-format
+msgid "Failed to change to directory '%s' (%s)"
+msgstr "'%s'എന്ന കൂട് ഉണ്ടാക്കാന്‌ കഴിയുന്നില്ല: %s\n"
+
+#: glib/gspawn-win32.c:913
+#, fuzzy, c-format
+msgid "Failed to execute child process (%s)"
+msgstr "ഇറക്കുമതി നിര്‍ദ്ദേശങ്ങള്‌ നിര്‍വ്വഹിക്കുന്നതില്‌ പരാജയപ്പെട്ടു."
+
+#: glib/gspawn-win32.c:956 glib/gspawn.c:1338
+#, fuzzy, c-format
+msgid "Failed to create pipe for communicating with child process (%s)"
+msgstr "പ്രമേയം %sുമായി സംവദിക്കുന്നതില് പരാജയം"
+
+#: glib/gspawn.c:167
+#, fuzzy, c-format
+msgid "Failed to read data from child process (%s)"
+msgstr "രചന %sലെ പ്രമേയം വായിക്കുന്നതില്‌ പരാജയപ്പെട്ടു: %s\n"
+
+#: glib/gspawn.c:299
+#, c-format
+msgid "Unexpected error in select() reading data from a child process (%s)"
+msgstr ""
+
+#: glib/gspawn.c:382
+#, c-format
+msgid "Unexpected error in waitpid() (%s)"
+msgstr ""
+
+#: glib/gspawn.c:1067
+#, fuzzy, c-format
+msgid "Failed to fork (%s)"
+msgstr "%s കൊണ്ട് വരാന് കഴിഞ്ഞില്ല: %s\n"
+
+#: glib/gspawn.c:1217
+#, fuzzy, c-format
+msgid "Failed to execute child process \"%s\" (%s)"
+msgstr "പ്രമേയം %s കൊണ്ട് വരാന് കഴിഞ്ഞില്ല: %s\n"
+
+#: glib/gspawn.c:1227
+#, fuzzy, c-format
+msgid "Failed to redirect output or input of child process (%s)"
+msgstr "പ്രമേയം %sുമായി സംവദിക്കുന്നതില് പരാജയം"
+
+#: glib/gspawn.c:1236
+#, fuzzy, c-format
+msgid "Failed to fork child process (%s)"
+msgstr "%s തുറക്കുന്നതില്‌ പരാജയം : %s"
+
+#: glib/gspawn.c:1244
+#, fuzzy, c-format
+msgid "Unknown error executing child process \"%s\""
+msgstr "'%s' പ്രയോഗം പ്ര‍വ‍ര്ത്തിപ്പിക്കുന്നതില് പരാജയം : %s"
+
+#: glib/gspawn.c:1266
+#, fuzzy, c-format
+msgid "Failed to read enough data from child pid pipe (%s)"
+msgstr "രചന %sലെ പ്രമേയം വായിക്കുന്നതില്‌ പരാജയപ്പെട്ടു: %s\n"
+
+#: glib/gutf8.c:984
+#, fuzzy
+msgid "Character out of range for UTF-8"
+msgstr "ഇടേണ്ട അക്ഷരങ്ങള്"
+
+#: glib/gutf8.c:1073 glib/gutf8.c:1082 glib/gutf8.c:1214 glib/gutf8.c:1223
+#: glib/gutf8.c:1364 glib/gutf8.c:1460
+msgid "Invalid sequence in conversion input"
+msgstr "അസാധു ശ്രേണി"
+
+#: glib/gutf8.c:1375 glib/gutf8.c:1471
+#, fuzzy
+msgid "Character out of range for UTF-16"
+msgstr "ഇടേണ്ട അക്ഷരങ്ങള്"
