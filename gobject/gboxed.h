@@ -56,12 +56,21 @@ GType	g_boxed_type_register_static		(const gchar	*name,
 						 GBoxedFreeFunc	 boxed_free);
 
 
-/* --- marshaller specific --- */
+/* --- GLib boxed types --- */
+#define	G_TYPE_CLOSURE		(g_closure_get_type ())
+#define	G_TYPE_VALUE		(g_value_get_type ())
+#define	G_TYPE_VALUE_ARRAY	(g_value_array_get_type ())
+#define	G_TYPE_GSTRING		(g_gstring_get_type ())
+
+
+/* --- internal (marshaller specific) --- */
 void	g_value_set_boxed_take_ownership	(GValue		*value,
 						 gconstpointer	 v_boxed);
-
-
-
+GType	g_closure_get_type	(void)	G_GNUC_CONST;
+GType	g_value_get_type	(void)	G_GNUC_CONST;
+GType	g_value_array_get_type	(void)	G_GNUC_CONST;
+GType	g_gstring_get_type	(void)	G_GNUC_CONST;
+     
 G_END_DECLS
 
 #endif	/* __G_BOXED_H__ */

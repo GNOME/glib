@@ -31,8 +31,6 @@ G_BEGIN_DECLS
  */
 #define G_TYPE_FUNDAMENTAL(type)                ((type) & 0xff)
 #define	G_TYPE_FUNDAMENTAL_MAX			(0xff)
-#define G_TYPE_DERIVE_ID(ptype, branch_seqno)   (G_TYPE_FUNDAMENTAL (ptype) | ((branch_seqno) << 8))
-#define G_TYPE_BRANCH_SEQNO(type)               ((type) >> 8)
 #define G_TYPE_FUNDAMENTAL_LAST                 ((GType) g_type_fundamental_last ())
 
 
@@ -71,40 +69,13 @@ typedef enum    /*< skip >*/
   G_TYPE_RESERVED_BSE_FIRST,
   G_TYPE_RESERVED_BSE_LAST	= G_TYPE_RESERVED_BSE_FIRST + 15,
   G_TYPE_RESERVED_LAST_FUNDAMENTAL,
-
-  /* derived type ids */
-  G_TYPE_CLOSURE		= G_TYPE_DERIVE_ID (G_TYPE_BOXED, 1),
-  G_TYPE_VALUE			= G_TYPE_DERIVE_ID (G_TYPE_BOXED, 2),
-  G_TYPE_VALUE_ARRAY		= G_TYPE_DERIVE_ID (G_TYPE_BOXED, 3),
-  G_TYPE_GSTRING		= G_TYPE_DERIVE_ID (G_TYPE_BOXED, 4),
-  G_TYPE_PARAM_CHAR		= G_TYPE_DERIVE_ID (G_TYPE_PARAM, 1),
-  G_TYPE_PARAM_UCHAR		= G_TYPE_DERIVE_ID (G_TYPE_PARAM, 2),
-  G_TYPE_PARAM_BOOLEAN		= G_TYPE_DERIVE_ID (G_TYPE_PARAM, 3),
-  G_TYPE_PARAM_INT		= G_TYPE_DERIVE_ID (G_TYPE_PARAM, 4),
-  G_TYPE_PARAM_UINT		= G_TYPE_DERIVE_ID (G_TYPE_PARAM, 5),
-  G_TYPE_PARAM_LONG		= G_TYPE_DERIVE_ID (G_TYPE_PARAM, 6),
-  G_TYPE_PARAM_ULONG		= G_TYPE_DERIVE_ID (G_TYPE_PARAM, 7),
-  G_TYPE_PARAM_INT64		= G_TYPE_DERIVE_ID (G_TYPE_PARAM, 8),
-  G_TYPE_PARAM_UINT64		= G_TYPE_DERIVE_ID (G_TYPE_PARAM, 9),
-  G_TYPE_PARAM_UNICHAR		= G_TYPE_DERIVE_ID (G_TYPE_PARAM, 10),
-  G_TYPE_PARAM_ENUM		= G_TYPE_DERIVE_ID (G_TYPE_PARAM, 11),
-  G_TYPE_PARAM_FLAGS		= G_TYPE_DERIVE_ID (G_TYPE_PARAM, 12),
-  G_TYPE_PARAM_FLOAT		= G_TYPE_DERIVE_ID (G_TYPE_PARAM, 13),
-  G_TYPE_PARAM_DOUBLE		= G_TYPE_DERIVE_ID (G_TYPE_PARAM, 14),
-  G_TYPE_PARAM_STRING		= G_TYPE_DERIVE_ID (G_TYPE_PARAM, 15),
-  G_TYPE_PARAM_PARAM		= G_TYPE_DERIVE_ID (G_TYPE_PARAM, 16),
-  G_TYPE_PARAM_BOXED		= G_TYPE_DERIVE_ID (G_TYPE_PARAM, 17),
-  G_TYPE_PARAM_POINTER		= G_TYPE_DERIVE_ID (G_TYPE_PARAM, 18),
-  G_TYPE_PARAM_VALUE_ARRAY	= G_TYPE_DERIVE_ID (G_TYPE_PARAM, 19),
-  G_TYPE_PARAM_OBJECT		= G_TYPE_DERIVE_ID (G_TYPE_PARAM, 20)
-
 } GTypeFundamentals;
 
 
 /* Type Checking Macros
  */
-#define G_TYPE_IS_FUNDAMENTAL(type)             (G_TYPE_BRANCH_SEQNO (type) == 0)
-#define G_TYPE_IS_DERIVED(type)                 (G_TYPE_BRANCH_SEQNO (type) > 0)
+#define G_TYPE_IS_FUNDAMENTAL(type)             ((type) <= G_TYPE_FUNDAMENTAL_MAX)
+#define G_TYPE_IS_DERIVED(type)                 ((type) > G_TYPE_FUNDAMENTAL_MAX)
 #define G_TYPE_IS_INTERFACE(type)               (G_TYPE_FUNDAMENTAL (type) == G_TYPE_INTERFACE)
 #define G_TYPE_IS_CLASSED(type)                 (g_type_test_flags ((type), G_TYPE_FLAG_CLASSED))
 #define G_TYPE_IS_INSTANTIATABLE(type)          (g_type_test_flags ((type), G_TYPE_FLAG_INSTANTIATABLE))
@@ -119,7 +90,7 @@ typedef enum    /*< skip >*/
 
 /* Typedefs
  */
-typedef guint32                         GType;
+typedef gsize                           GType;
 typedef struct _GValue                  GValue;
 typedef union  _GTypeCValue             GTypeCValue;
 typedef struct _GTypePlugin             GTypePlugin;
@@ -200,7 +171,7 @@ GType                 g_type_next_base               (GType            leaf_type
 						      GType            root_type);
 gboolean              g_type_is_a                    (GType            type,
 						      GType            is_a_type);
-guint                 g_type_fundamental_branch_last (GType            type);
+//FIXME: guint                 g_type_fundamental_branch_last (GType            type);
 gpointer              g_type_class_ref               (GType            type);
 gpointer              g_type_class_peek              (GType            type);
 void                  g_type_class_unref             (gpointer         g_class);

@@ -449,10 +449,10 @@ g_io_channel_set_flags().
 </para>
 
 @G_IO_FLAG_APPEND: turns on append mode, corresponds to %O_APPEND (see the 
-   documentation of the Unix <function>open()</function> syscall). 
+   documentation of the Unix <function>open()</function> syscall).
 @G_IO_FLAG_NONBLOCK: turns on nonblocking mode, corresponds to 
    %O_NONBLOCK/%O_NDELAY (see the documentation of the Unix 
-   <function>open()</function> syscall). 
+   <function>open()</function> syscall).
 @G_IO_FLAG_IS_READABLE: indicates that the io channel is readable. This flag 
    can not be changed.
 @G_IO_FLAG_IS_WRITEABLE: indicates that the io channel is writable. This flag 

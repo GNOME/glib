@@ -255,6 +255,7 @@ static TypeNode       ***static_type_nodes = NULL;
 static inline TypeNode*
 lookup_type_node_L (register GType utype)
 {
+#define G_TYPE_BRANCH_SEQNO(type)               ((type) >> 8)
   register GType ftype = G_TYPE_FUNDAMENTAL (utype);
   register GType b_seqno = G_TYPE_BRANCH_SEQNO (utype);
   
@@ -278,7 +279,7 @@ type_node_any_new_W (TypeNode             *pnode,
   
   n_supers = pnode ? pnode->n_supers + 1 : 0;
   branch_last = static_branch_seqnos[ftype]++;
-  type = G_TYPE_DERIVE_ID (ftype, branch_last);
+  type = ftype | (branch_last << 8);	// FIXME: G_TYPE_DERIVE_ID (ftype, branch_last);
   g_assert ((type & G_TYPE_FLAG_RESERVED_ID_BIT) == 0);
   if (!branch_last || g_bit_storage (branch_last - 1) < g_bit_storage (static_branch_seqnos[ftype] - 1))
     static_type_nodes[ftype] = g_renew (TypeNode*, static_type_nodes[ftype], 1 << g_bit_storage (static_branch_seqnos[ftype] - 1));
@@ -2254,7 +2255,7 @@ g_type_is_a (GType type,
 }
 
 guint
-g_type_fundamental_branch_last (GType type)
+_g_type_fundamental_branch_last (GType type)
 {
   GType ftype = G_TYPE_FUNDAMENTAL (type);
   guint last_type;

@@ -125,35 +125,54 @@ g_boxed_type_init (void)  /* sync with gtype.c */
   type = g_type_register_fundamental (G_TYPE_BOXED, "GBoxed", &info, &finfo,
 				      G_TYPE_FLAG_ABSTRACT | G_TYPE_FLAG_VALUE_ABSTRACT);
   g_assert (type == G_TYPE_BOXED);
+}
 
-  /* boxed: G_TYPE_CLOSURE
-   */
-  type = g_boxed_type_register_static ("GClosure",
-				       (GBoxedCopyFunc) g_closure_ref,
-				       (GBoxedFreeFunc) g_closure_unref);
-  g_assert (type == G_TYPE_CLOSURE);
+GType
+g_closure_get_type (void)
+{
+  static GType type_id = 0;
 
-  /* boxed: G_TYPE_VALUE
-   */
-  type = g_boxed_type_register_static ("GValue",
-				       value_copy,
-				       value_free);
-  g_assert (type == G_TYPE_VALUE);
+  if (!type_id)
+    type_id = g_boxed_type_register_static ("GClosure",
+					    (GBoxedCopyFunc) g_closure_ref,
+					    (GBoxedFreeFunc) g_closure_unref);
+  return type_id;
+}
 
-  /* boxed: G_TYPE_VALUE_ARRAY
-   */
-  type = g_boxed_type_register_static ("GValueArray",
-				       (GBoxedCopyFunc) g_value_array_copy,
-				       (GBoxedFreeFunc) g_value_array_free);
-  g_assert (type == G_TYPE_VALUE_ARRAY);
+GType
+g_value_get_type (void)
+{
+  static GType type_id = 0;
 
-  /* boxed: G_TYPE_GSTRING
-   * yes, the naming is a bit odd, but GString is obviously not G_TYPE_STRING
-   */
-  type = g_boxed_type_register_static ("GString",
-				       gstring_copy,
-				       gstring_free);
-  g_assert (type == G_TYPE_GSTRING);
+  if (!type_id)
+    type_id = g_boxed_type_register_static ("GValue",
+					    value_copy,
+					    value_free);
+  return type_id;
+}
+
+GType
+g_value_array_get_type (void)
+{
+  static GType type_id = 0;
+
+  if (!type_id)
+    type_id = g_boxed_type_register_static ("GValueArray",
+					    (GBoxedCopyFunc) g_value_array_copy,
+					    (GBoxedFreeFunc) g_value_array_free);
+  return type_id;
+}
+
+GType
+g_gstring_get_type (void)
+{
+  static GType type_id = 0;
+
+  if (!type_id)
+    type_id = g_boxed_type_register_static ("GString",	/* the naming is a bit odd, but GString is obviously not G_TYPE_STRING */
+					    gstring_copy,
+					    gstring_free);
+  return type_id;
 }
 
 static void

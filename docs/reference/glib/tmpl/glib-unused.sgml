@@ -200,6 +200,12 @@ i.e. just the <filename>foo</filename> in <filename>/usr/bin/foo</filename>.
 
 @Returns: 
 
+<!-- ##### VARIABLE g_log_domain_glib ##### -->
+<para>
+The log domain used for messages logged by GLib itself.
+</para>
+
+
 <!-- ##### FUNCTION g_main_add_poll ##### -->
 <para>
 Adds a file descriptor to be polled.

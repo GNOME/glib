@@ -1,3 +1,15 @@
+Wed Nov 21 17:23:33 2001  Tim Janik  <timj@gtk.org>
+
+	* gparamspecs.[hc]: put newly created param spec types into a
+	global array.
+
+	* gboxed.[hc]: moved boxed types with _get_type() function here,
+	for: G_TYPE_CLOSURE, G_TYPE_VALUE, G_TYPE_VALUE_ARRAY,
+	G_TYPE_GSTRING.
+
+	* gtype.h: removed fundamental branch APIs and derived enum
+	values.
+
 2001-11-19  jacob berkman  <jacob@ximian.com>
 
 	* gobjectnotifyqueue.c: include glib-object.h rather than

@@ -202,30 +202,6 @@ The predefined identifiers of the reserved fundamental types.
 @G_TYPE_RESERVED_BSE_FIRST: 	First fundamental type ID reserved for BSE.
 @G_TYPE_RESERVED_BSE_LAST: 	Last fundamental type ID reserved for BSE.
 @G_TYPE_RESERVED_LAST_FUNDAMENTAL: Last reserved fundamental type ID.
-@G_TYPE_CLOSURE: 
-@G_TYPE_VALUE: 
-@G_TYPE_VALUE_ARRAY: 
-@G_TYPE_GSTRING: 
-@G_TYPE_PARAM_CHAR: 		Identifier for the "#GParamSpecChar" type.
-@G_TYPE_PARAM_UCHAR: 		Identifier for the "#GParamSpecUChar" type.
-@G_TYPE_PARAM_BOOLEAN: 		Identifier for the "#GParamSpecBoolean" type.
-@G_TYPE_PARAM_INT: 		Identifier for the "#GParamSpecInt" type.
-@G_TYPE_PARAM_UINT: 		Identifier for the "#GParamSpecUInt" type.
-@G_TYPE_PARAM_LONG: 		Identifier for the "#GParamSpecLong" type.
-@G_TYPE_PARAM_ULONG: 		Identifier for the "#GParamSpecULong" type.
-@G_TYPE_PARAM_INT64: 
-@G_TYPE_PARAM_UINT64: 
-@G_TYPE_PARAM_UNICHAR: 
-@G_TYPE_PARAM_ENUM: 		Identifier for the "#GParamSpecEnum" type.
-@G_TYPE_PARAM_FLAGS: 		Identifier for the "#GParamSpecFlags" type.
-@G_TYPE_PARAM_FLOAT: 		Identifier for the "#GParamSpecFloat" type.
-@G_TYPE_PARAM_DOUBLE: 		Identifier for the "#GParamSpecDouble" type.
-@G_TYPE_PARAM_STRING: 		Identifier for the "#GParamSpecString" type.
-@G_TYPE_PARAM_PARAM: 		Identifier for the "#GParamSpecParam" type.
-@G_TYPE_PARAM_BOXED: 		Identifier for the "#GParamSpecBoxed" type.
-@G_TYPE_PARAM_POINTER: 		Identifier for the "#GParamSpecPointer" type.
-@G_TYPE_PARAM_VALUE_ARRAY: 	Identifier for the "#GParamSpecValueArray" type.
-@G_TYPE_PARAM_OBJECT: 	 	Identifier for the "#GParamSpecObject" type.
 
 <!-- ##### STRUCT GTypeInterface ##### -->
 <para>
