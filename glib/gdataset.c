@@ -23,9 +23,9 @@
 
 
 /* --- defines --- */
-#define	G_DATASET_ID_BLOCK_SIZE			(1024)
-#define	G_DATASET_MEM_CHUNK_PREALLOC		(512)
-#define	G_DATASET_DATA_MEM_CHUNK_PREALLOC	(1024)
+#define	G_DATASET_BLOCK_SIZE			(512)
+#define	G_DATASET_MEM_CHUNK_PREALLOC		(64)
+#define	G_DATASET_DATA_MEM_CHUNK_PREALLOC	(128)
 
 
 /* --- structures --- */
@@ -50,8 +50,10 @@ struct _GDataset
 static inline GDataset*	g_dataset_lookup	(gconstpointer dataset_location);
 static inline void	g_dataset_destroy_i	(GDataset     *dataset);
 static void		g_dataset_initialize	(void);
-static guint*		g_dataset_id_new	(void);
-
+static void		g_dataset_alloc_key	(const gchar	*string,
+						 guint      	**id,
+						 gchar      	**key);
+     
 
 /* --- variables --- */
 static GHashTable *g_dataset_location_ht = NULL;
@@ -59,8 +61,9 @@ static GHashTable *g_dataset_key_ht = NULL;
 static GDataset *g_dataset_cached = NULL;
 static GMemChunk *g_dataset_mem_chunk = NULL;
 static GMemChunk *g_dataset_data_mem_chunk = NULL;
-static guint *g_dataset_id_block = NULL;
-static guint g_dataset_id_index = G_DATASET_ID_BLOCK_SIZE + 1;
+static gchar   **g_dataset_key_array = NULL;
+static guint     g_dataset_seq_id = 0;
+
 
 
 /* --- functions --- */
@@ -285,7 +288,7 @@ g_dataset_try_key (const gchar    *key)
 guint
 g_dataset_force_id (const gchar    *key)
 {
-  register guint *id;
+  guint *id;
   
   g_return_val_if_fail (key != NULL, 0);
   
@@ -295,8 +298,10 @@ g_dataset_force_id (const gchar    *key)
   id = g_hash_table_lookup (g_dataset_key_ht, (gpointer) key);
   if (!id)
     {
-      id = g_dataset_id_new ();
-      g_hash_table_insert (g_dataset_key_ht, g_strdup (key), id);
+      gchar *new_key;
+
+      g_dataset_alloc_key (key, &id, &new_key);
+      g_hash_table_insert (g_dataset_key_ht, new_key, id);
     }
   
   return *id;
@@ -323,20 +328,28 @@ g_dataset_initialize (void)
     }
 }
 
-static guint*
-g_dataset_id_new (void)
+gchar*
+g_dataset_retrive_key (guint id)
 {
-  static guint seq_id = 1;
-  register guint *id;
+  if (id > 0 && id <= g_dataset_seq_id)
+    return g_dataset_key_array[id - 1];
+  return NULL;
+}
+
+static void
+g_dataset_alloc_key (const gchar *string,
+		     guint	**id,
+		     gchar	**key)
+{
+  if (g_dataset_seq_id % G_DATASET_BLOCK_SIZE == 0)
+    g_dataset_key_array = g_realloc (g_dataset_key_array,
+				     (g_dataset_seq_id + G_DATASET_BLOCK_SIZE) * sizeof (gchar*));
   
-  if (g_dataset_id_index >= G_DATASET_ID_BLOCK_SIZE)
-    {
-      g_dataset_id_block = g_new (guint, G_DATASET_ID_BLOCK_SIZE);
-      g_dataset_id_index = 0;
-    }
-  
-  id = &g_dataset_id_block[g_dataset_id_index++];
-  *id = seq_id++;
-  
-  return id;
+  *key = g_new (gchar, sizeof (guint) + strlen (string) + 1);
+  *id = (guint*) *key;
+  *key += sizeof (guint);
+  strcpy (*key, string);
+  g_dataset_key_array[g_dataset_seq_id] = *key;
+  g_dataset_seq_id++;
+  **id = g_dataset_seq_id;
 }

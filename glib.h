@@ -909,6 +909,7 @@ guint g_direct_hash (gconstpointer key);
 void	  g_dataset_destroy		(gconstpointer   dataset_location);
 guint	  g_dataset_try_key		(const gchar    *key);
 guint	  g_dataset_force_id		(const gchar    *key);
+gchar*	  g_dataset_retrive_key		(guint           key_id);
 gpointer  g_dataset_id_get_data		(gconstpointer   dataset_location,
 					 guint		 key_id);
 void	  g_dataset_id_set_data_full	(gconstpointer   dataset_location,

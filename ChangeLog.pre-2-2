@@ -1,3 +1,9 @@
+Thu Jun 11 04:15:31 1998  Tim Janik  <timj@gtk.org>
+
+        * glib.h:
+        * gdataset.c: new function g_dataset_retrive_key. adjusted prealloc
+        sizes, to take up less space on initial allocation.
+
 1998-06-10  Raja R Harinath  <harinath@cs.umn.edu>
 
 	* acinclude.m4: New file.  Contains `libtool.m4' from libtool-1.2,
