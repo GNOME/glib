@@ -1,3 +1,7 @@
+2003-01-22  Pablo Saratxaga  <pablo@mandrakesoft.com>
+
+	* configure.in: Added Bengali (bn) to ALL_LINGUAS
+
 2003-01-21  Christian Rose  <menthos@menthos.com>
 
 	* configure.in: Added "mn" to ALL_LINGUAS.
