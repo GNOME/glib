@@ -1432,7 +1432,7 @@ g_type_add_interface_check().
 </para>
 
 @check_data: callback data passed to g_type_add_interface_check()
-@chec_func: callback function passed to g_type_add_interface_check()
+@check_func: callback function passed to g_type_add_interface_check()
 @Since: 2.4
 
 
