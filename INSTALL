@@ -40,6 +40,12 @@ search path (for instance, in /usr/local/), but don't enable
 it, you will get an error while compiling GTK+ because the
 iconv.h that libiconv installs hides the system iconv.
 
+The native iconv on Compaq Tru64 doesn't contain support for
+UTF-8, so you'll need to use GNU libiconv instead. (When
+using GNU libiconv for GTK+, you'll need to use GNU libiconv
+for GNU gettext as well.) This probably applies to related
+operating systems as well.
+
 Finally, for message catalog handling, GTK+ requires an implementation
 of gettext(). If your system doesn't provide this functionality,
 you should use the libintl library from the GNU gettext package,

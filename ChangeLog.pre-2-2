@@ -1,3 +1,8 @@
+Thu Jun 13 15:57:46 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* INSTALL.in: Add a note about the deficiency
+	of Tru64 iconv. (#81699, Manuel Op de Coul)
+
 Tue Jun 11 17:03:39 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* tests/patterntest.c (test_compilation)
