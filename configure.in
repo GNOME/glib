@@ -564,7 +564,10 @@ if test "x$want_threads" = xyes || test "x$want_threads" = xposix; then
      	        AC_CHECK_LIB(pthreads, pthread_cond_init, have_threads=posix)
 	fi
         if test "x$have_threads" = xnone; then
-		AC_CHECK_FUNC(pthread_cond_init, have_threads=posix)
+		# dont let us be fooled by a defined pthread_cond_init
+		# function in the standard c-lib, that doesn't have too mean, 
+		# there is full thread support, it might be a weak symbol.
+		AC_CHECK_FUNC(pthread_attr_init, have_threads=posix)
 	fi
 fi
 if test "x$want_threads" = xyes || test "x$want_threads" = xnspr; then
@@ -575,7 +578,7 @@ fi
 
 AC_MSG_CHECKING(for thread implementation)
 
-if test "x$have_threads" = xnone; then
+if test "x$have_threads" = xnone && test "x$want_threads" != xno; then
 	AC_MSG_RESULT(none available)
         AC_MSG_WARN($THREAD_NO_IMPLEMENTATION)
 else
@@ -679,6 +682,8 @@ fi
 AC_DEFINE_UNQUOTED(G_THREAD_SOURCE,"gthread-$have_threads.c")
 AC_SUBST(G_THREAD_CFLAGS)
 AC_SUBST(G_THREAD_LIBS)
+
+CFLAGS="$CFLAGS $G_THREAD_CFLAGS"
 
 dnl ******************************
 dnl *** output the whole stuff ***

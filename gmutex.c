@@ -104,7 +104,7 @@ g_static_mutex_get_mutex_impl (GMutex** mutex)
 }
 
 gpointer
-g_static_private_get (GStaticPrivate *private)
+g_static_private_get (GStaticPrivate *private_key)
 {
   GArray *array;
 
@@ -112,16 +112,16 @@ g_static_private_get (GStaticPrivate *private)
   if (!array)
     return NULL;
 
-  if (!private->index)
+  if (!private_key->index)
     return NULL;
-  else if (private->index <= array->len)
-    return g_array_index (array, GStaticPrivateNode, (private->index - 1)).data;
+  else if (private_key->index <= array->len)
+    return g_array_index (array, GStaticPrivateNode, (private_key->index - 1)).data;
   else
     return NULL;
 }
 
 void
-g_static_private_set (GStaticPrivate *private, 
+g_static_private_set (GStaticPrivate *private_key, 
 		      gpointer        data,
 		      GDestroyNotify  notify)
 {
@@ -135,21 +135,21 @@ g_static_private_set (GStaticPrivate *private,
       g_private_set (g_thread_specific_private, array);
     }
 
-  if (!private->index)
+  if (!private_key->index)
     {
       g_mutex_lock (g_thread_specific_mutex);
 
-      if (!private->index)
-	private->index = ++next_index;
+      if (!private_key->index)
+	private_key->index = ++next_index;
 
       g_mutex_unlock (g_thread_specific_mutex);
     }
 
-  if (private->index > array->len)
-    g_array_set_size (array, private->index);
+  if (private_key->index > array->len)
+    g_array_set_size (array, private_key->index);
 
-  g_array_index (array, GStaticPrivateNode, (private->index - 1)).data = data;
-  g_array_index (array, GStaticPrivateNode, (private->index - 1)).destroy = notify;
+  g_array_index (array, GStaticPrivateNode, (private_key->index - 1)).data = data;
+  g_array_index (array, GStaticPrivateNode, (private_key->index - 1)).destroy = notify;
 }
 
 static void

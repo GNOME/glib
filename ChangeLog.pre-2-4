@@ -1,3 +1,14 @@
+1998-12-15  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* configure.in: Dont complain, if --without-threads or
+	--with-threads=none is supplied; Test for pthread_attr_init
+	instead of pthread_cond_init, if threads seems to be supported by
+	standard glib. (CFLAGS): Use G_THREAD_CFLAGS for compiling of glib
+	as well.
+
+	* glib.h, gmutex.c: Changed private to private_key to avoid
+	problems when compiling with under C++.
+
 1998-12-15  Jeff Garzik  <jgarzik@Pobox.com>
 
 	* configure.in:

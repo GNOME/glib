@@ -2620,8 +2620,8 @@ struct _GThreadFunctions
 			       GTimeVal *end_time);
   void      (*cond_free)      (GCond* cond);
   GPrivate* (*private_new)    (GDestroyNotify destructor);
-  gpointer  (*private_get)    (GPrivate* private);
-  void      (*private_set)    (GPrivate* private, gpointer value);
+  gpointer  (*private_get)    (GPrivate* private_key);
+  void      (*private_set)    (GPrivate* private_key, gpointer value);
 };
 
 GUTILS_C_VAR GThreadFunctions g_thread_functions_for_glib_use;
@@ -2660,11 +2660,11 @@ GMutex* g_static_mutex_get_mutex_impl(GMutex** mutex);
 
 #define g_private_new(destructor) \
       G_USE_THREAD_FUNC_UNCOND(private_new,(destructor))
-#define g_private_get(private) \
-      G_USE_THREAD_FUNC(private_get,((gpointer)private),(private))
-#define g_private_set(private,value) \
-      G_USE_THREAD_FUNC(private_set,(void)(private=(GPrivate *)(value)), \
-		     (private,value))
+#define g_private_get(private_key) \
+      G_USE_THREAD_FUNC(private_get,((gpointer)private_key),(private_key))
+#define g_private_set(private_key,value) \
+      G_USE_THREAD_FUNC(private_set,(void)(private_key=(GPrivate *)(value)), \
+		     (private_key,value))
 
 /* GStaticMutex'es can be statically initialized with the value
  * G_STATIC_MUTEX_INIT, and then they can directly be used, that is
@@ -2684,8 +2684,8 @@ struct _GStaticPrivate
 
 #define G_STATIC_PRIVATE_INIT { 0 }
 
-gpointer g_static_private_get (GStaticPrivate* private);
-void     g_static_private_set (GStaticPrivate *private, 
+gpointer g_static_private_get (GStaticPrivate* private_key);
+void     g_static_private_set (GStaticPrivate *private_key, 
 			       gpointer        data,
 			       GDestroyNotify  notify);
 
