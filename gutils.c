@@ -450,14 +450,35 @@ g_get_any_init (void)
 	buffer = g_malloc (bufsize);
 	
 #    ifdef HAVE_GETPWUID_R_POSIX
+	/* There appears to be some confusion about what the return
+           value should be, and whether errno is set or not.
+	   So, we are careful about it.  */
+	errno = 0;
 	error = getpwuid_r (getuid (), &pwd, buffer, bufsize, &pw);
-	if (!error)
+
+	if (error == 0)
 	  goto pw_out;
-	error = errno;
+
+	/* Some kind of error.
+	   
+	   SUSv2 says returned value is an error code; says nothing
+	   about `errno'.  GNU Libc says some non-null (sic) value and
+	   errno is set.  Either way, this code path is chosen.
+
+	   If `errno' isn't changed, the return value contains the
+	   error code (like ERANGE).
+
+	   If `errno' is changed, then it must be right, irrespective
+	   of whether the return value follows SUSv2 or not.  */
+	if (errno != 0)
+	  error = errno;
+	
 #    else /* !HAVE_GETPWUID_R_POSIX */
 	pw = getpwuid_r (getuid (), &pwd, buffer, bufsize);
-	if (pw == NULL)
+	if (pw != NULL)
 	  goto pw_out;
+	/* If it got here, there is an error.  The `uid' should be
+           valid, so there must be something else wrong.  */
 	error = errno;
 #    endif /* !HAVE_GETPWUID_R_POSIX */
 

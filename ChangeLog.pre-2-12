@@ -1,3 +1,11 @@
+1999-01-24  Raja R Harinath  <harinath@cs.umn.edu>
+
+	* gutils.c 
+	(g_get_any_init) [HAVE_GETPWUID_R && HAVE_GETPWUID_R_POSIX]: 
+	Hopefully got the error handling for `getpwuid_r' right.
+	(g_get_any_init) [HAVE_GETPWUID_R && !HAVE_GETPWUID_R_POSIX]:
+	Fix typo (change `pw == NULL' to `pw != NULL').
+	
 Sun Jan 24 00:36:22 EST 1999  Jeff Garzik  <jgarzik@pobox.com>
 
 	* ghash.c:
