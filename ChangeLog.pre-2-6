@@ -1,3 +1,9 @@
+2004-08-19  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/gunicollate.c (g_utf8_collate, g_utf8_collate_key): Correct
+	source and destination charset parameter order in g_convert()
+	call. (#150394, possibly also #141124)
+
 2004-08-20  Jon K Hellan  <hellan@acm.org>
 
 	* glib/goption.h: Remove trailing commas.
