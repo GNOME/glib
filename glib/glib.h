@@ -685,10 +685,12 @@ typedef struct _GList		GList;
 typedef struct _GMemChunk	GMemChunk;
 typedef struct _GNode		GNode;
 typedef struct _GPtrArray	GPtrArray;
+typedef struct _GQueue		GQueue;
 typedef struct _GRelation	GRelation;
 typedef struct _GScanner	GScanner;
 typedef struct _GScannerConfig	GScannerConfig;
 typedef struct _GSList		GSList;
+typedef struct _GStack		GStack;
 typedef struct _GString		GString;
 typedef struct _GStringChunk	GStringChunk;
 typedef struct _GTimer		GTimer;
@@ -805,6 +807,18 @@ struct _GSList
   GSList *next;
 };
 
+struct _GStack
+{
+  GList *list;
+};
+
+struct _GQueue
+{
+  GList *list;
+  GList *list_end;
+  guint list_size;
+};
+
 struct _GString
 {
   gchar *str;
@@ -860,6 +874,8 @@ GList* g_list_insert_sorted	(GList		*list,
 				 GCompareFunc	 func);
 GList* g_list_concat		(GList		*list1,
 				 GList		*list2);
+GList* g_list_delete     	(GList		*list,
+				 GList		*link);
 GList* g_list_remove		(GList		*list,
 				 gpointer	 data);
 GList* g_list_remove_link	(GList		*list,
@@ -937,6 +953,66 @@ GSList*  g_slist_sort           (GSList          *list,
 gpointer g_slist_nth_data	(GSList		*list,
 				 guint		 n);
 #define g_slist_next(slist)	((slist) ? (((GSList *)(slist))->next) : NULL)
+
+
+/* Stacks
+ */
+
+GStack * g_stack_new	(void);
+void	 g_stack_free	(GStack *stack);
+gpointer g_stack_pop	(GStack *stack);
+
+#define g_stack_empty(stack) \
+	((((GStack *)(stack)) && ((GStack *)(stack))->list) ? FALSE : TRUE)
+
+#define g_stack_peek(stack) \
+	((((GStack *)(stack)) && ((GStack *)(stack))->list) ? \
+		((GStack *)(stack))->list->data : NULL)
+
+#define g_stack_index(stack,ptr) \
+	((((GStack *)(stack)) && ((GStack *)(stack))->list) ? \
+		g_list_index (((GStack *)(stack))->list, (ptr)) : -1)
+
+#define g_stack_push(stack,data) G_STMT_START {				\
+	    if ((GStack *)(stack))					\
+	      ((GStack *)(stack))->list =				\
+	    	  g_list_prepend (((GStack *)(stack))->list, (data));	\
+	  } G_STMT_END
+
+
+
+/* Queues
+ */
+
+GQueue *	g_queue_new		(void);
+void		g_queue_free		(GQueue *q);
+guint		g_queue_get_size	(GQueue *q);
+void		g_queue_push_front	(GQueue *q, gpointer data);
+void		g_queue_push_back	(GQueue *q, gpointer data);
+gpointer	g_queue_pop_front	(GQueue *q);
+gpointer	g_queue_pop_back	(GQueue *q);
+
+#define g_queue_empty(queue) \
+	((((GQueue *)(queue)) && ((GQueue *)(queue))->list) ? FALSE : TRUE)
+
+#define g_queue_peek_front(queue) \
+	((((GQueue *)(queue)) && ((GQueue *)(queue))->list) ? \
+		((GQueue *)(queue))->list->data : NULL)
+
+#define g_queue_peek_back(queue) \
+	((((GQueue *)(queue)) && ((GQueue *)(queue))->list_end) ? \
+		((GQueue *)(queue))->list_end->data : NULL)
+
+#define g_queue_index(queue,ptr) \
+	((((GQueue *)(queue)) && ((GQueue *)(queue))->list) ? \
+		g_list_index (((GQueue *)(queue))->list, (ptr)) : -1)
+
+#define		g_queue_push		g_queue_push_back
+#define		g_queue_pop		g_queue_pop_front
+#define		g_queue_peek		g_queue_peek_front
+
+
+
 
 
 /* Hash tables

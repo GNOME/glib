@@ -314,6 +314,17 @@ g_list_remove_link (GList *list,
   return list;
 }
 
+
+GList*
+g_list_delete (GList *list, GList *link)
+{
+  list = g_list_remove_link (list, link);
+  g_list_free_1 (link);
+
+  return list;
+}
+
+
 GList*
 g_list_copy (GList *list)
 {

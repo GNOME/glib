@@ -33,3 +33,5 @@ tree-test
 dirname-test
 type-test
 strfunc-test
+queue-test
+stack-test

@@ -7,8 +7,10 @@ TESTS = \
 	hash-test	\
 	list-test	\
 	node-test	\
+	queue-test	\
 	relation-test	\
 	slist-test	\
+	stack-test	\
 	string-test	\
 	strfunc-test	\
 	tree-test	\
@@ -21,8 +23,10 @@ dirname_test_LDADD = $(top_builddir)/libglib.la
 hash_test_LDADD = $(top_builddir)/libglib.la
 list_test_LDADD = $(top_builddir)/libglib.la
 node_test_LDADD = $(top_builddir)/libglib.la
+queue_test_LDADD = $(top_builddir)/libglib.la
 relation_test_LDADD = $(top_builddir)/libglib.la
 slist_test_LDADD = $(top_builddir)/libglib.la
+stack_test_LDADD = $(top_builddir)/libglib.la
 string_test_LDADD = $(top_builddir)/libglib.la
 strfunc_test_LDADD = $(top_builddir)/libglib.la
 tree_test_LDADD = $(top_builddir)/libglib.la
