@@ -1,3 +1,10 @@
+1999-01-12  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+        * gdate.c: Include config.h to get HAVE_LOCALTIME_R macro.
+
+        * configure.in: Moved function check back to the place, they've
+        been before.	
+
 1999-01-11  Jeff Garzik  <jgarzik@pobox.com>
 
 	* gstrfuncs.c:
