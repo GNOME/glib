@@ -1,3 +1,17 @@
+Sun Mar 14 17:50:35 1999  Tim Janik  <timj@gtk.org>
+
+	* gmem.c (g_mem_chunk_*): changed a bunch of g_assert() statements
+	to g_return_if_fail().
+	(g_mem_profile): 
+	(g_mem_chunk_print): 
+	(g_mem_chunk_info): removed some extraneous "\n"s at the end of the log
+	messages.
+
+	* gtimer.c (g_timer_*):	changed a bunch of g_assert() statements
+	to g_return_if_fail().
+	* grel.c (g_*): changed a bunch of g_assert() statements to
+	g_return_if_fail() and added some extra ones to check relation != NULL.
+
 1999-03-12  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* configure.in: Also accept _Pctime_r instead of ctime_r, while
