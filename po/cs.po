@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-18 16:02-0400\n"
-"PO-Revision-Date: 2004-04-26 15:06+0200\n"
+"POT-Creation-Date: 2004-10-02 19:20+0200\n"
+"PO-Revision-Date: 2004-10-03 01:57+0200\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -29,7 +29,7 @@ msgstr "Nemohu otevřít převaděč z '%s' do '%s'"
 
 #: glib/gconvert.c:605 glib/gconvert.c:892 glib/giochannel.c:1316
 #: glib/giochannel.c:1358 glib/giochannel.c:2200 glib/gutf8.c:911
-#: glib/gutf8.c:1356
+#: glib/gutf8.c:1361
 msgid "Invalid byte sequence in conversion input"
 msgstr "Neplatná posloupnost bajtů na vstupu převodu"
 
@@ -39,8 +39,8 @@ msgstr "Neplatná posloupnost bajtů na vstupu převodu"
 msgid "Error during conversion: %s"
 msgstr "Chyba při převodu: %s"
 
-#: glib/gconvert.c:628 glib/gutf8.c:907 glib/gutf8.c:1107 glib/gutf8.c:1248
-#: glib/gutf8.c:1352
+#: glib/gconvert.c:628 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
+#: glib/gutf8.c:1357
 msgid "Partial character sequence at end of input"
 msgstr "Částečná sekvence znaků na konci vstupu"
 
@@ -50,9 +50,9 @@ msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Nemohu převést ukončení '%s' do znakové sady '%s'"
 
 #: glib/gconvert.c:1498
-#, fuzzy, c-format
+#, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
-msgstr "URI '%s' není absolutní URI používající schéma file"
+msgstr "URI '%s' není absolutní URI používající schéma \"file\""
 
 #: glib/gconvert.c:1508
 #, c-format
@@ -88,57 +88,57 @@ msgstr "Neplatné jméno počítače"
 msgid "Error opening directory '%s': %s"
 msgstr "Chyba při otevírání adresáře '%s': %s"
 
-#: glib/gfileutils.c:400 glib/gfileutils.c:465
+#: glib/gfileutils.c:402 glib/gfileutils.c:476
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Nemohu se alokovat %lu bytů pro přečtení souboru \"%s\""
 
-#: glib/gfileutils.c:411
+#: glib/gfileutils.c:418
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Chyba čtení souboru '%s': %s"
 
-#: glib/gfileutils.c:487
+#: glib/gfileutils.c:501
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Chyba při čtení ze souboru '%s': %s"
 
-#: glib/gfileutils.c:534 glib/gfileutils.c:602
+#: glib/gfileutils.c:552 glib/gfileutils.c:634
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Nemohu otevřít soubor '%s': %s"
 
-#: glib/gfileutils.c:548
+#: glib/gfileutils.c:570
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Nemohu získat atributy souboru '%s': fstat() selhalo: %s"
 
-#: glib/gfileutils.c:574
+#: glib/gfileutils.c:601
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Nemohu otevřít soubor '%s': fdopen() selhalo: %s"
 
-#: glib/gfileutils.c:786
+#: glib/gfileutils.c:820
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Šablona '%s' je neplatná, neměla by obsahovat '%s'"
 
-#: glib/gfileutils.c:798
+#: glib/gfileutils.c:832
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Šablona '%s' nekončí XXXXXX"
 
-#: glib/gfileutils.c:819
+#: glib/gfileutils.c:853
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Nemohu vytvořit soubor '%s': %s"
 
-#: glib/gfileutils.c:1160
+#: glib/gfileutils.c:1197
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Nemohu přečíst symbolický odkaz '%s': %s"
 
-#: glib/gfileutils.c:1179
+#: glib/gfileutils.c:1218
 msgid "Symbolic links not supported"
 msgstr "Symbolické odkazy nejsou podporovány"
 
@@ -497,53 +497,53 @@ msgstr "Nemohu přečíst dostatek dat z roury pid potomka (%s)"
 msgid "Character out of range for UTF-8"
 msgstr "Znak je mimo rozsah UTF-8"
 
-#: glib/gutf8.c:1075 glib/gutf8.c:1084 glib/gutf8.c:1216 glib/gutf8.c:1225
-#: glib/gutf8.c:1366 glib/gutf8.c:1462
+#: glib/gutf8.c:1080 glib/gutf8.c:1089 glib/gutf8.c:1221 glib/gutf8.c:1230
+#: glib/gutf8.c:1371 glib/gutf8.c:1467
 msgid "Invalid sequence in conversion input"
 msgstr "Neplatná posloupnost na vstupu převodu"
 
-#: glib/gutf8.c:1377 glib/gutf8.c:1473
+#: glib/gutf8.c:1382 glib/gutf8.c:1478
 msgid "Character out of range for UTF-16"
 msgstr "Znak je mimo rozsah UTF-16"
 
 #: glib/goption.c:263
 msgid "Usage:"
-msgstr ""
+msgstr "Použití:"
 
 #: glib/goption.c:263
 msgid "[OPTION...]"
-msgstr ""
+msgstr "[PŘEPÍNAČ...]"
 
 #: glib/goption.c:308
 msgid "Help Options:"
-msgstr ""
+msgstr "Přepínače nápovědy:"
 
 #: glib/goption.c:308
 msgid "Show help options"
-msgstr ""
+msgstr "Zobrazit přepínače nápovědy"
 
 #: glib/goption.c:312
 msgid "Show all help options"
-msgstr ""
+msgstr "Zobrazit všechny přepínače nápovědy"
 
 #: glib/goption.c:360
 msgid "Application Options:"
-msgstr ""
+msgstr "Přepínače aplikace:"
 
 #: glib/goption.c:400
 #, c-format
 msgid "Cannot parse integer value '%s' for --%s"
-msgstr ""
+msgstr "Nemohu zpracovat celočíselnou hodnotu '%s' pro --%s"
 
 #: glib/goption.c:410
 #, c-format
 msgid "Integer value '%s' for %s out of range"
-msgstr ""
+msgstr "Celočíselná hodnota '%s' pro %s mimo rozsah"
 
-#: glib/goption.c:1028
+#: glib/goption.c:1024
 #, c-format
 msgid "Unknown option %s"
-msgstr ""
+msgstr "Neznámý přepínač %s"
 
 #~ msgid "Socket error"
 #~ msgstr "Chyba socketu"
