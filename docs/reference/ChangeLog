@@ -1,3 +1,8 @@
+2005-03-29  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/tmpl/arrays_pointer.sgml: Clarify the docs for
+	g_ptr_array_free.  (#170149, Jared Lash)
+
 2005-03-29  Tor Lillqvist  <tml@novell.com>
 
 	* glib/tmpl/spawn.sgml: Add Win32 warnings regarding the child

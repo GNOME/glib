@@ -222,8 +222,9 @@ Frees all of the memory allocated for the pointer array.
 </para>
 
 @array: a #GPtrArray.
-@free_seg: if %TRUE the actual element data is freed as well.
-@Returns: 
+@free_seg: if %TRUE the array of pointers (@pdata) is freed.
+@Returns: %NULL if @free_seg is %TRUE, otherwise the array of 
+pointers (@pdata) is returned.
 
 
 <!-- ##### FUNCTION g_ptr_array_foreach ##### -->
