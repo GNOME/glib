@@ -30,7 +30,6 @@
 
 
 /* --- defines --- */
-#define G_PARAM_SPEC_CLASS(class)		(G_TYPE_CHECK_CLASS_CAST ((class), G_TYPE_PARAM, GParamSpecClass))
 #define	G_PARAM_USER_MASK			(~0 << G_PARAM_USER_SHIFT)
 #define PSPEC_APPLIES_TO_VALUE(pspec, value)	(G_TYPE_CHECK_VALUE_TYPE ((value), G_PARAM_SPEC_VALUE_TYPE (pspec)))
 #define	G_SLOCK(mutex)				g_static_mutex_lock (mutex)

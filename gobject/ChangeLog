@@ -1,3 +1,7 @@
+Wed Feb 13 06:53:50 2002  Tim Janik  <timj@gtk.org>
+
+	* gparam.c: remove extraneous redefinition of G_PARAM_SPEC_CLASS().
+
 Wed Feb 13 06:29:51 2002  Tim Janik  <timj@gtk.org>
 
 	* gvaluetransform.c: cosmetic cleanups, fixed [u]int64->string
