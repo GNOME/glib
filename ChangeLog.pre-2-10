@@ -1,3 +1,8 @@
+2005-03-23  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gutils.c (g_getenv): [Win32] Fix corner case bug when
+	environment variable value is exactly one character.
+
 2005-03-21  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/glib.symbols: Add g_try_malloc0
