@@ -4,6 +4,8 @@ AUTOMAKE_OPTIONS = 1.4
 
 SUBDIRS = . m4macros glib gobject gmodule gthread docs tests build po
 
+bin_SCRIPTS = glib-gettextize
+
 INCLUDES = -DG_LOG_DOMAIN=g_log_domain_glib @GLIB_DEBUG_FLAGS@ \
 	-DG_DISABLE_DEPRECATED -DGLIB_COMPILATION
 

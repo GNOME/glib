@@ -9,8 +9,11 @@
 # - Modified by Owen Taylor <otaylor@redhat.com> to use GETTEXT_PACKAGE
 #   instead of PACKAGE and to look for po2tbl in ./ not in intl/
 #
+# - Modified by jacob berkman <jacob@ximian.com> to install
+#   Makefile.in.in and po2tbl.sed.in for use with glib-gettextize
 
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
+PACKAGE = @PACKAGE@
 VERSION = @VERSION@
 
 SHELL = /bin/sh
@@ -25,7 +28,7 @@ exec_prefix = @exec_prefix@
 datadir = $(prefix)/@DATADIRNAME@
 localedir = $(datadir)/locale
 gnulocaledir = $(prefix)/share/locale
-gettextsrcdir = $(prefix)/share/gettext/po
+gettextsrcdir = $(prefix)/share/glib-2.0/gettext/po
 subdir = po
 
 INSTALL = @INSTALL@
@@ -155,7 +158,7 @@ install-data-yes: all
 	    fi; \
 	  fi; \
 	done
-	if test "$(GETTEXT_PACKAGE)" = "gettext"; then \
+	if test "$(PACKAGE)" = "glib"; then \
 	  if test -r "$(MKINSTALLDIRS)"; then \
 	    $(MKINSTALLDIRS) $(DESTDIR)$(gettextsrcdir); \
 	  else \
@@ -163,6 +166,8 @@ install-data-yes: all
 	  fi; \
 	  $(INSTALL_DATA) $(srcdir)/Makefile.in.in \
 			  $(DESTDIR)$(gettextsrcdir)/Makefile.in.in; \
+	  $(INSTALL_DATA) $(srcdir)/po2tbl.sed.in \
+			  $(DESTDIR)$(gettextsrcdir)/po2tbl.sed.in; \
 	else \
 	  : ; \
 	fi

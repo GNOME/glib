@@ -2136,6 +2136,7 @@ gthread-2.0-uninstalled.pc
 gobject-2.0.pc
 gobject-2.0-uninstalled.pc
 glib.spec
+glib-gettextize
 Makefile
 build/Makefile
 build/win32/Makefile

@@ -1,3 +1,8 @@
+2001-10-28  jacob berkman  <jacob@ximian.com>
+
+	* Makefile.in.in: install Makefile.in.in and po2tbl.sed.in for use
+	with glib-gettextize by other packages
+
 2001-10-13  Stanislav Visnovsky  <visnovsky@nenya.ms.mff.cuni.cz>
 
 	* sk.po: More updates.
