@@ -104,7 +104,10 @@ On non-Windows platforms, expands to nothing.
 <!-- ##### MACRO G_WIN32_HAVE_WIDECHAR_API ##### -->
 <para>
 On Windows, this macro defines an expression which evaluates to %TRUE
-if functions like _wopen(), _wrename(), etc., are available.
+if the code is running on a version of Windows where the wide
+character versions of the Win32 API functions, and the wide chaacter
+versions of the C library functions work. (They are always present in
+the DLLs, but don't work on Windows 9x and Me.)
 </para>
 <para>
 On non-Windows platforms, it is not defined.

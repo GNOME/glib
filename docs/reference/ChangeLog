@@ -1,3 +1,10 @@
+2004-11-04  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/tmpl/windows.sgml: Improve G_WIN32_HAVE_WIDECHAR_API
+	documentation.
+
+	* glib/tmpl/option.sgml: Document G_OPTION_FLAG_REVERSE.
+
 2004-11-02  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.5.5 ===
