@@ -660,17 +660,17 @@ if test x"$have_threads" != xnone; then
         	AC_MSG_WARN($FLAG_DOES_NOT_WORK))
 	CPPFLAGS=$old_CPPFLAGS
                 
-	if test x"$GCC" = xyes; then 	
-		# older gcc's do not know the -fstack-check option and will
-		# stop compiling, so just check this here 
-		old_CPPFLAGS="$CPPFLAGS"
-		CPPFLAGS="$CPPFLAGS -fstack-check"
-		AC_TRY_COMPILE(,,
-			G_THREAD_CFLAGS="$G_THREAD_CFLAGS -fstack-check")
-		CPPFLAGS=$old_CPPFLAGS
-	else
-        	AC_MSG_WARN($THREAD_UNKNOWN_COMPILER)
-	fi
+#	if test x"$GCC" = xyes; then 	
+#		# older gcc's do not know the -fstack-check option and will
+#		# stop compiling, so just check this here 
+#		old_CPPFLAGS="$CPPFLAGS"
+#		CPPFLAGS="$CPPFLAGS -fstack-check"
+#		AC_TRY_COMPILE(,,
+#			G_THREAD_CFLAGS="$G_THREAD_CFLAGS -fstack-check")
+#		CPPFLAGS=$old_CPPFLAGS
+#	else
+#       	AC_MSG_WARN($THREAD_UNKNOWN_COMPILER)
+#	fi
 
 	AC_MSG_CHECKING(necessary compiler options)
 
