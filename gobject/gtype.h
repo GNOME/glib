@@ -373,7 +373,7 @@ type_name##_get_type (void) \
         0,      /* n_preallocs */ \
         (GInstanceInitFunc) type_name##_init, \
       }; \
-      g_define_type_id = g_type_register_static (TYPE_PARENT, #TypeName, &g_define_type_info, flags); \
+      g_define_type_id = g_type_register_static (TYPE_PARENT, #TypeName, &g_define_type_info, (GTypeFlags) flags); \
       { CODE ; } \
     } \
   return g_define_type_id; \

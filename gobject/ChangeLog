@@ -1,3 +1,7 @@
+Fri Feb 20 02:44:54 2004  Tim Janik  <timj@gtk.org>
+
+	* gtype.h (G_DEFINE_TYPE_EXTENDED): added (GTypeFlags) cast needed by C++.
+
 Tue Feb  3 21:24:01 2004  Tim Janik  <timj@gtk.org>
 
 	* gtype.h (_G_TYPE_CVH): provide a short-cut version for
