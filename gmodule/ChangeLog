@@ -1,3 +1,13 @@
+2004-11-04  Tor Lillqvist  <tml@iki.fi>
+
+	* gmodule-win32.c (_g_module_open): Argument is in UTF-8. Use wide
+	character Win32 API if present.
+
+	* gmodule.c (parse_libtool_archive, g_module_open): Convert file
+	name to UTF-8 before storing in the error message string.
+
+	* gmodule.c (parse_libtool_archive): Use g_open().
+
 2004-11-02  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.5.5 ===

@@ -31,6 +31,7 @@
 #ifdef HAVE_CONFIG_H
 # include <config.h>
 #endif
+#include	"gstdio.h"
 #include	"gmodule.h"
 #include	"gmoduleconf.h"
 #include	<errno.h>
@@ -207,10 +208,12 @@ parse_libtool_archive (const gchar* libtool_name)
   GTokenType token;
   GScanner *scanner;
   
-  int fd = open (libtool_name, O_RDONLY, 0);
+  int fd = g_open (libtool_name, O_RDONLY, 0);
   if (fd < 0)
     {
-      g_module_set_error_unduped (g_strdup_printf ("failed to open libtool archive \"%s\"", libtool_name));   
+      gchar *display_libtool_name = g_filename_display_name (libtool_name);
+      g_module_set_error_unduped (g_strdup_printf ("failed to open libtool archive \"%s\"", display_libtool_name));
+      g_free (display_libtool_name);
       return NULL;
     }
   /* search libtool's dlname specification  */
@@ -234,7 +237,9 @@ parse_libtool_archive (const gchar* libtool_name)
 	      (token == TOKEN_INSTALLED ? 
 	       G_TOKEN_IDENTIFIER : G_TOKEN_STRING))
 	    {
-	      g_module_set_error_unduped (g_strdup_printf ("unable to parse libtool archive \"%s\"", libtool_name));
+	      gchar *display_libtool_name = g_filename_display_name (libtool_name);
+	      g_module_set_error_unduped (g_strdup_printf ("unable to parse libtool archive \"%s\"", display_libtool_name));
+	      g_free (display_libtool_name);
 
 	      g_free (lt_dlname);
 	      g_free (lt_libdir);
@@ -392,7 +397,11 @@ g_module_open (const gchar    *file_name,
 			(flags & G_MODULE_BIND_LOCAL) != 0);
     }
   else
-    g_module_set_error_unduped (g_strdup_printf ("unable to access file \"%s\"", file_name));
+    {
+      gchar *display_file_name = g_filename_display_name (file_name);
+      g_module_set_error_unduped (g_strdup_printf ("unable to access file \"%s\"", display_file_name));
+      g_free (display_file_name);
+    }
   g_free (name);
 
   if (handle)

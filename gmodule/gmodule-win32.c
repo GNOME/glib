@@ -62,8 +62,21 @@ _g_module_open (const gchar *file_name,
   cygwin_conv_to_win32_path(file_name, tmp);
   file_name = tmp;
 #endif
+  if (G_WIN32_HAVE_WIDECHAR_API ())
+    {
+      wchar_t *wfilename = g_utf8_to_utf16 (file_name, -1, NULL, NULL, NULL);
   
-  handle = LoadLibrary (file_name);
+      handle = LoadLibraryW (wfilename);
+      g_free (wfilename);
+    }
+  else
+    {
+      gchar *cp_filename = g_locale_from_utf8 (file_name, -1, NULL, NULL, NULL);
+
+      handle = LoadLibraryA (cp_filename);
+      g_free (cp_filename);
+    }
+      
   if (!handle)
     set_error ();
 
