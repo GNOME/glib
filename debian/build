@@ -54,7 +54,7 @@ close NEWCHANGELOG;
 unlink('debian/changelog.old') or die "Couldn't unlink debian/changelog.old: $!\n";
 
 open(NEWVERSION, '>debian/version') or die "Couldn't open debian/version for writing: $!\n";
-print NEWVERSION $new_version;
+print NEWVERSION "$new_version\n";
 close NEWVERSION;
 
 system('dpkg-buildpackage -rfakeroot -us -uc');
