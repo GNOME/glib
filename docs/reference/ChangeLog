@@ -1,3 +1,8 @@
+2003-01-01  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/tmpl/messages.sgml: Remove comment that only stdout would
+	be used on Windows, no longer true.
+
 2002-12-15  Matthias Clasen  <maclas@gmx.de>
 
 	* gobject/tmpl/param_value_types.sgml: Move some docs inline.
