@@ -112,6 +112,8 @@ static GPollFunc poll_func = (GPollFunc)poll;
  * Copyright (C) 1994, 1996, 1997 Free Software Foundation, Inc.
  */
 
+#include <string.h> /* for bzero on BSD systems */
+
 #ifdef HAVE_SYS_SELECT_H
 #include <sys/select.h>
 #endif /* HAVE_SYS_SELECT_H_ */
@@ -151,7 +153,7 @@ g_poll (GPollFD *fds, guint nfds, gint timeout)
 	  FD_SET (f->fd, &wset);
 	if (f->events & G_IO_PRI)
 	  FD_SET (f->fd, &xset);
-	if (f->fd > maxfd && (f->events & (POLLIN|POLLOUT|POLLPRI)))
+	if (f->fd > maxfd && (f->events & (G_IO_IN|G_IO_OUT|G_IO_PRI)))
 	  maxfd = f->fd;
       }
 
@@ -597,7 +599,11 @@ g_main_set_poll_func (GPollFunc func)
   if (func)
     poll_func = func;
   else
+#ifdef HAVE_POLL
     poll_func = (GPollFunc)poll;
+#else
+    poll_func = (GPollFunc)g_poll;
+#endif
 }
 
 /* Timeouts */
