@@ -1,7 +1,14 @@
+Sun Nov 25 22:33:32 2001  Tim Janik  <timj@gtk.org>
+
+	* gtype.h: removed enum GTypeFundamentals. use macros
+	to provide the constant fundamental type IDs, so they
+	all return numbers of type GType, and not int.
+	sizeof(GTypeFundamentals) < sizeof(GType) problem reported
+	and fix sugegsted by Havoc.
+
 2001-11-23  Hans Breuer  <hans@breuer.org>
 
 	* gobject.def : updated externals
-
 
 Mon Nov 19 14:35:56 2001  Owen Taylor  <otaylor@redhat.com>
  
