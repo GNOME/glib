@@ -782,7 +782,8 @@ g_get_any_init (void)
 	    error = getpwuid_r (getuid (), &pwd, buffer, bufsize, &pw);
             error = error < 0 ? errno : error;
 #    else /* HAVE_NONPOSIX_GETPWUID_R */
-#      ifdef _AIX
+       /* HPUX 11 falls into the HAVE_POSIX_GETPWUID_R case */
+#      if defined(_AIX) || defined(__hpux)
 	    error = getpwuid_r (getuid (), &pwd, buffer, bufsize);
 	    pw = error == 0 ? &pwd : NULL;
 #      else /* !_AIX */

@@ -1,3 +1,9 @@
+Sat Dec 14 21:24:04 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gutils.c (g_get_any_init): HP-UX 10 xshares the
+	same non-posix getpwuid_r signature as AIX. 
+	(#100756, Kai Poitschke)
+
 Sat Dec 14 21:10:57 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gthread.h: Mark the contents of the strucures
