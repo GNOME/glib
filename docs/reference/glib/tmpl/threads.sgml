@@ -219,11 +219,11 @@ you can however use it as if it was a function.
 
 <!-- ##### USER_FUNCTION GThreadFunc ##### -->
 <para>
-Specifies the type of the @thread_func functions passed to
+Specifies the type of the @func functions passed to
 g_thread_create().
 </para>
 
-@value: data supplied to the thread
+@data: data passed to the thread
 @Returns: the return value of the thread, which will be returned by
 g_thread_join()
 
@@ -262,11 +262,11 @@ g_thread_join() is called for that thread.
 </para>
 </note>
 
+@func: the function executing in that thread
+@data: the argument to the function
 @joinable: is this thread joinable?
 @bound: is this thread bound to a system thread?
 @priority: the priority of the thread
-@func: the function executing in that thread
-@arg: the argument to the function
 
 <!-- ##### FUNCTION g_thread_create ##### -->
 <para>
@@ -285,8 +285,8 @@ generally faster. On some systems (e.g. Linux) all threads are bound.
 </para>
 
 <para>
-The new thread executes the function @thread_func with the argument
-@arg. If the thread was created successfully, it is returned.
+The new thread executes the function @func with the argument
+@data. If the thread was created successfully, it is returned.
 </para>
 
 <para>
@@ -305,8 +305,8 @@ default.
 </para>
 </note>
 
-@thread_func: a function to execute in the new thread
-@arg: an argument to supply to the new thread
+@func: a function to execute in the new thread
+@data: an argument to supply to the new thread
 @stack_size: a stack size for the new thread
 @joinable: should this thread be joinable?
 @bound: should this thread be bound to a system thread?
@@ -325,11 +325,11 @@ This functions returns the #GThread corresponding to the calling thread.
 
 <!-- ##### FUNCTION g_thread_join ##### -->
 <para>
-Waits until @thread finishes, i.e. the function @thread_func, as given
+Waits until @thread finishes, i.e. the function @func, as given
 to g_thread_create, returns or g_thread_exit() is called by
 @thread. All resources of @thread including the #GThread struct are
 released. @thread must have been created with @joinable=#TRUE in
-g_thread_create(). The value returned by @thread_func or given to
+g_thread_create(). The value returned by @func or given to
 g_thread_exit() by @thread is returned by this function.
 </para>
 
@@ -399,7 +399,7 @@ return retval;
 </para>
 
 <para>
-in the function @thread_func, as given to g_thread_create().
+in the function @func, as given to g_thread_create().
 </para>
 
 <note>
