@@ -14,10 +14,10 @@ Overview of Changes from GLib 2.6.0 to GLib 2.6.1
    when check for executables [Tor]
  - Build and cross-compilation fixes [J. Ali Harlow]
 * Other bug fixes [Jens Hatlak, Morten Welinder, 
-  Tor, Kalpesh Shah, Adrian Bunk
+  Tor, Kalpesh Shah, Adrian Bunk]
 * Documentation improvements [Marcin Krzyzanowski, Tor, Crispin
   Flowerday, Mariano Suárez-Alvarez, Christian Biere, Danny Milo,
-  Vincent Untz, Bastien Nocera
+  Vincent Untz, Bastien Nocera]
 * New and updated translations (cy,de,nl,ru,sq,sv)
 
 Overview of Changes from GLib 2.4.x to GLib 2.6.0

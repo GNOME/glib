@@ -1,5 +1,7 @@
 2005-01-07  Matthias Clasen  <mclasen@redhat.com>
 
+	* NEWS: Typo fixes.
+
 	* configure.in: Bump version
 
 	* === Released 2.6.1 ===
