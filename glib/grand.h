@@ -43,10 +43,16 @@ typedef struct _GRand           GRand;
  */
 
 GRand*  g_rand_new_with_seed  (guint32  seed);
+GRand*  g_rand_new_with_seed_array (const guint32 *seed,
+				    guint seed_length);
 GRand*  g_rand_new            (void);
 void    g_rand_free           (GRand   *rand_);
+GRand*  g_rand_copy           (GRand   *rand_);
 void    g_rand_set_seed       (GRand   *rand_,
 			       guint32  seed);
+void	g_rand_set_seed_array (GRand   *rand_,
+			       const guint32 *seed,
+			       guint    seed_length);
 
 #define g_rand_boolean(rand_) ((g_rand_int (rand_) & (1 << 15)) != 0)
 

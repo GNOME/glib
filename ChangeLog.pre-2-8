@@ -1,3 +1,33 @@
+Fri Dec 19 11:49:21 2003  George Lebl <jirka@5z.com>
+
+        * glib/grand.c
+          glib/grand.h (g_rand_new) (g_rand_new_with_seed)
+          (g_rand_new_with_seed_array) (g_rand_set_seed_array):  Add
+          the init_by_array functionality from the reference implementation
+          of the mersenne twister (mt19937ar.c) and change the naming
+          to fit with the rest of the grand API.  New functions are
+          g_rand_new_with_seed_array, g_rand_set_seed_array.  This is only
+          reliable/tested for the 2.2 version of the seeding as that's what
+          the reference implementation uses.  Also modify g_rand_new to
+          get 4 longs from /dev/urandom since that will always be available
+          anyway and we get more entropy and if /dev/urandom is unavailable
+          use also 4 longs for seeding using secs, usecs, getpid and getppid.
+          For version 2.0 use only a simple seed again but be more careful
+          about seeding with secs/usecs in this case.
+
+        * glib/grand.c
+          glib/grand.h (g_rand_copy):  Add g_rand_copy function to copy the
+          current state of the random number generator.
+
+        * glib/grand.c (g_rand_new):  Add testing for EINTR when reading
+          from /dev/urandom
+
+        * tests/rand-test.c: add testing of the array seeding stuff against
+          the reference implementation, plus add statistical sanity check
+          to see that the values outputted are truly kind of random.  And
+          check that g_rand_copy truly copies the state by checking a few
+          terms.
+
 Tue Jan  6 15:38:30 2004  Owen Taylor  <otaylor@redhat.com>
  
  	* glib/gutils.h: Check defined (__OPTIMIZE__) not

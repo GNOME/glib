@@ -39,8 +39,11 @@
 #include "config.h"
 
 #include <math.h>
+#include <errno.h>
 #include <stdio.h>
 #include <string.h>
+#include <sys/types.h>
+#include <unistd.h>
 
 #include "glib.h"
 #include "gthreadinit.h"
@@ -121,6 +124,23 @@ g_rand_new_with_seed (guint32 seed)
 }
 
 /**
+ * g_rand_new_with_seed_array:
+ * @seed: an array of seeds to initialize the random number generator.
+ * @seed_length: an array of seeds to initialize the random number generator.
+ * 
+ * Creates a new random number generator initialized with @seed.
+ * 
+ * Return value: the new #GRand.
+ **/
+GRand*
+g_rand_new_with_seed_array (const guint32 *seed, guint seed_length)
+{
+  GRand *rand = g_new0 (GRand, 1);
+  g_rand_set_seed_array (rand, seed, seed_length);
+  return rand;
+}
+
+/**
  * g_rand_new:
  * 
  * Creates a new random number generator initialized with a seed taken
@@ -132,19 +152,42 @@ g_rand_new_with_seed (guint32 seed)
 GRand* 
 g_rand_new (void)
 {
-  guint32 seed;
+  guint32 seed[4];
   GTimeVal now;
 #ifdef G_OS_UNIX
   static gboolean dev_urandom_exists = TRUE;
 
   if (dev_urandom_exists)
     {
-      FILE* dev_urandom = fopen("/dev/urandom", "rb");
+      FILE* dev_urandom;
+
+      do
+        {
+	  errno = 0;
+	  dev_urandom = fopen("/dev/urandom", "rb");
+	}
+      while G_UNLIKELY (errno == EINTR);
+
       if (dev_urandom)
 	{
-	  if (fread (&seed, sizeof (seed), 1, dev_urandom) != 1)
+	  int r;
+
+	  do
+	    {
+	      errno = 0;
+	      r = fread (seed, sizeof (seed), 1, dev_urandom);
+	    }
+	  while G_UNLIKELY (errno == EINTR);
+
+	  if (r != 1)
 	    dev_urandom_exists = FALSE;
-	  fclose (dev_urandom);
+
+	  do
+	    {
+	      errno = 0;
+	      fclose (dev_urandom);
+	    }
+	  while G_UNLIKELY (errno == EINTR);
 	}	
       else
 	dev_urandom_exists = FALSE;
@@ -156,10 +199,13 @@ g_rand_new (void)
   if (!dev_urandom_exists)
     {  
       g_get_current_time (&now);
-      seed = now.tv_sec ^ now.tv_usec;
+      seed[0] = now.tv_sec;
+      seed[1] = now.tv_usec;
+      seed[2] = getpid ();
+      seed[3] = getppid ();
     }
 
-  return g_rand_new_with_seed (seed);
+  return g_rand_new_with_seed_array (seed, 4);
 }
 
 /**
@@ -174,6 +220,29 @@ g_rand_free (GRand* rand)
   g_return_if_fail (rand != NULL);
 
   g_free (rand);
+}
+
+/**
+ * g_rand_copy:
+ * @rand_: a #GRand.
+ *
+ * Copies a #GRand into a new one with the same exact state as before.
+ * This way you can take a snapshot of the random number generator for
+ * replaying later.
+ *
+ * Return value: the new #GRand.
+ **/
+GRand *
+g_rand_copy (GRand* rand)
+{
+  GRand* new_rand;
+
+  g_return_val_if_fail (rand != NULL, NULL);
+
+  new_rand = g_new0 (GRand, 1);
+  memcpy (new_rand, rand, sizeof (GRand));
+
+  return new_rand;
 }
 
 /**
@@ -217,6 +286,62 @@ g_rand_set_seed (GRand* rand, guint32 seed)
     default:
       g_assert_not_reached ();
     }
+}
+
+/**
+ * g_rand_set_seed_array:
+ * @rand_: a #GRand.
+ * @seed: array to initialize with
+ * @seed_length: length of array
+ *
+ * Initializes the random number generator by an array of
+ * longs.  Array can be of arbitrary size, though only the
+ * first 624 values are taken.  This function is useful
+ * if you have many low entropy seeds, or if you require more then
+ * 32bits of actual entropy for your application.
+ **/
+void
+g_rand_set_seed_array (GRand* rand, const guint32 *seed, guint seed_length)
+{
+  int i, j, k;
+
+  g_return_if_fail (rand != NULL);
+  g_return_if_fail (seed_length >= 1);
+
+  g_rand_set_seed (rand, 19650218UL);
+
+  i=1; j=0;
+  k = (N>seed_length ? N : seed_length);
+  for (; k; k--)
+    {
+      rand->mt[i] = (rand->mt[i] ^
+		     ((rand->mt[i-1] ^ (rand->mt[i-1] >> 30)) * 1664525UL))
+	      + seed[j] + j; /* non linear */
+      rand->mt[i] &= 0xffffffffUL; /* for WORDSIZE > 32 machines */
+      i++; j++;
+      if (i>=N)
+        {
+	  rand->mt[0] = rand->mt[N-1];
+	  i=1;
+	}
+      if (j>=seed_length)
+	j=0;
+    }
+  for (k=N-1; k; k--)
+    {
+      rand->mt[i] = (rand->mt[i] ^
+		     ((rand->mt[i-1] ^ (rand->mt[i-1] >> 30)) * 1566083941UL))
+	      - i; /* non linear */
+      rand->mt[i] &= 0xffffffffUL; /* for WORDSIZE > 32 machines */
+      i++;
+      if (i>=N)
+        {
+	  rand->mt[0] = rand->mt[N-1];
+	  i=1;
+	}
+    }
+
+  rand->mt[0] = 0x80000000UL; /* MSB is 1; assuring non-zero initial array */ 
 }
 
 /**
