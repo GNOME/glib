@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"POT-Creation-Date: 2002-11-26 20:54+0100\n"
+"POT-Creation-Date: 2002-12-02 16:56-0500\n"
 "PO-Revision-Date: 2002-11-26 20:54+0100\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
@@ -25,14 +25,14 @@ msgstr "Konvertering från teckentabellen \"%s\" till \"%s\" stöds inte"
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Kunde inte öppna konverteraren från \"%s\" till \"%s\": %s"
 
-#: glib/gconvert.c:603 glib/gconvert.c:893 glib/giochannel.c:1291
-#: glib/giochannel.c:1333 glib/giochannel.c:2175 glib/gutf8.c:875
+#: glib/gconvert.c:603 glib/gconvert.c:893 glib/giochannel.c:1294
+#: glib/giochannel.c:1336 glib/giochannel.c:2178 glib/gutf8.c:875
 #: glib/gutf8.c:1320
 msgid "Invalid byte sequence in conversion input"
 msgstr "Ogiltig bytesekvens i konverteringsindata"
 
-#: glib/gconvert.c:608 glib/gconvert.c:824 glib/giochannel.c:1298
-#: glib/giochannel.c:2187
+#: glib/gconvert.c:608 glib/gconvert.c:824 glib/giochannel.c:1301
+#: glib/giochannel.c:2190
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Fel vid konvertering: %s"
@@ -134,29 +134,29 @@ msgstr "Mallen \"%s\" slutar inte med XXXXXX"
 msgid "Failed to create file '%s': %s"
 msgstr "Misslyckades med att skapa filen \"%s\": %s"
 
-#: glib/giochannel.c:1119
+#: glib/giochannel.c:1122
 #, c-format
 msgid "Conversion from character set `%s' to `%s' is not supported"
 msgstr "Konvertering från teckentabellen \"%s\" till \"%s\" stöds inte"
 
-#: glib/giochannel.c:1123
+#: glib/giochannel.c:1126
 #, c-format
 msgid "Could not open converter from `%s' to `%s': %s"
 msgstr "Kunde inte öppna konverteraren från \"%s\" till \"%s\": %s"
 
-#: glib/giochannel.c:1468
+#: glib/giochannel.c:1471
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "Kan inte göra en rå läsning i g_io_channel_read_line_string"
 
-#: glib/giochannel.c:1515 glib/giochannel.c:1772 glib/giochannel.c:1858
+#: glib/giochannel.c:1518 glib/giochannel.c:1775 glib/giochannel.c:1861
 msgid "Leftover unconverted data in read buffer"
 msgstr "Överbliven okonverterad data i läsbufferten"
 
-#: glib/giochannel.c:1595 glib/giochannel.c:1672
+#: glib/giochannel.c:1598 glib/giochannel.c:1675
 msgid "Channel terminates in a partial character"
 msgstr "Kanalen slutar med ett ofullständigt tecken"
 
-#: glib/giochannel.c:1658
+#: glib/giochannel.c:1661
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Kan inte göra en rå läsning i g_io_channel_read_to_end"
 

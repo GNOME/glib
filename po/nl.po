@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib (HEAD)\n"
-"POT-Creation-Date: 2002-11-25 05:28+0100\n"
+"POT-Creation-Date: 2002-12-02 16:56-0500\n"
 "PO-Revision-Date: 2002-06-07 03:25+0200\n"
 "Last-Translator: Dirk-Jan C. Binnema <djcb@djcbsoftware.nl>\n"
 "Language-Team: Dutch <vertaling@nl.linux.org>\n"
@@ -14,69 +14,69 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: glib/gconvert.c:400
+#: glib/gconvert.c:401
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Conversie van karakterset '%s' naar '%s' wordt niet ondersteund"
 
-#: glib/gconvert.c:404
+#: glib/gconvert.c:405
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Openen van converteerder van '%s' naar '%s' mislukt: %s"
 
-#: glib/gconvert.c:602 glib/gconvert.c:892 glib/giochannel.c:1291
-#: glib/giochannel.c:1333 glib/giochannel.c:2175 glib/gutf8.c:875
+#: glib/gconvert.c:603 glib/gconvert.c:893 glib/giochannel.c:1294
+#: glib/giochannel.c:1336 glib/giochannel.c:2178 glib/gutf8.c:875
 #: glib/gutf8.c:1320
 msgid "Invalid byte sequence in conversion input"
 msgstr "Ongeldige bytereeks in conversie-invoer"
 
-#: glib/gconvert.c:607 glib/gconvert.c:823 glib/giochannel.c:1298
-#: glib/giochannel.c:2187
+#: glib/gconvert.c:608 glib/gconvert.c:824 glib/giochannel.c:1301
+#: glib/giochannel.c:2190
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Fout tijdens conversie: %s"
 
-#: glib/gconvert.c:625 glib/gutf8.c:871 glib/gutf8.c:1071 glib/gutf8.c:1212
+#: glib/gconvert.c:626 glib/gutf8.c:871 glib/gutf8.c:1071 glib/gutf8.c:1212
 #: glib/gutf8.c:1316
 msgid "Partial character sequence at end of input"
 msgstr "Onvolledige karakterreeks aan het eind van de invoer"
 
-#: glib/gconvert.c:798
+#: glib/gconvert.c:799
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Kan vanaf codeverzameling '%s' niet terugvallen op '%s'"
 
-#: glib/gconvert.c:1632
+#: glib/gconvert.c:1633
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
 msgstr "De URI '%s' is geen absolute URI binnen het bestandsschema"
 
-#: glib/gconvert.c:1642
+#: glib/gconvert.c:1643
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "De lokale bestands-URI '%s' mag geen '#' bevatten"
 
-#: glib/gconvert.c:1659
+#: glib/gconvert.c:1660
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "De URI '%s' is ongeldig"
 
-#: glib/gconvert.c:1671
+#: glib/gconvert.c:1672
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "De machinenaam van de URI '%s' is ongeldig"
 
-#: glib/gconvert.c:1687
+#: glib/gconvert.c:1688
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "De URI '%s' bevat ongeldige ontsnappingskarakters"
 
-#: glib/gconvert.c:1758
+#: glib/gconvert.c:1759
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Het pad '%s' is geen absoluut pad"
 
-#: glib/gconvert.c:1768
+#: glib/gconvert.c:1769
 msgid "Invalid hostname"
 msgstr "Ongeldige machinenaam"
 
@@ -130,31 +130,31 @@ msgstr "Sjabloon '%s' eindigt niet op XXXXXX"
 msgid "Failed to create file '%s': %s"
 msgstr "Creëren van bestand '%s' mislukt: %s"
 
-#: glib/giochannel.c:1119
+#: glib/giochannel.c:1122
 #, c-format
 msgid "Conversion from character set `%s' to `%s' is not supported"
 msgstr "Conversie van karakterset '%s' naar '%s' wordt niet ondersteund"
 
-#: glib/giochannel.c:1123
+#: glib/giochannel.c:1126
 #, c-format
 msgid "Could not open converter from `%s' to `%s': %s"
 msgstr "Openen van converteerder van '%s' naar '%s' mislukt: %s"
 
-#: glib/giochannel.c:1468
+#: glib/giochannel.c:1471
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr ""
 "Een kale ('raw') leesoperatie is niet mogelijk in "
 "g_io_channel_read_line_string"
 
-#: glib/giochannel.c:1515 glib/giochannel.c:1772 glib/giochannel.c:1858
+#: glib/giochannel.c:1518 glib/giochannel.c:1775 glib/giochannel.c:1861
 msgid "Leftover unconverted data in read buffer"
 msgstr "Restant aan ongeconverteerde data in de leesbuffer"
 
-#: glib/giochannel.c:1595 glib/giochannel.c:1672
+#: glib/giochannel.c:1598 glib/giochannel.c:1675
 msgid "Channel terminates in a partial character"
 msgstr "Kanaal eindigt met een deelkarakter"
 
-#: glib/giochannel.c:1658
+#: glib/giochannel.c:1661
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr ""
 "Een kale ('raw') leesoperatie is niet mogelijk in g_io_channel_read_to_end"
@@ -176,19 +176,19 @@ msgstr "Kanaalsetvlaggen worden niet ondersteund"
 msgid "Error on line %d char %d: %s"
 msgstr "Fout op regel %d kar %d: %s"
 
-#: glib/gmarkup.c:344
+#: glib/gmarkup.c:306
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "Fout op regel %d: %s"
 
-#: glib/gmarkup.c:422
+#: glib/gmarkup.c:385
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "Lege entiteit '&;' geconstateerd: geldige entiteiten zijn: &amp; &quot; &lt; "
 "&gt; &apos;"
 
-#: glib/gmarkup.c:432
+#: glib/gmarkup.c:395
 #, c-format
 msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
@@ -199,17 +199,17 @@ msgstr ""
 "karakter begint een entiteit; indien dat niet de bedoeling is, gebruik dan "
 "&amp;"
 
-#: glib/gmarkup.c:463
+#: glib/gmarkup.c:431
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
 msgstr "Karakter '%s' is niet geldig in een entiteitnaam"
 
-#: glib/gmarkup.c:498
+#: glib/gmarkup.c:475
 #, c-format
 msgid "Entity name '%s' is not known"
 msgstr "Entiteitnaam '%s' is niet bekend"
 
-#: glib/gmarkup.c:509
+#: glib/gmarkup.c:485
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
@@ -218,7 +218,7 @@ msgstr ""
 "ampersandkarakter gebruikt zonder daarmee een entiteit te willen beginnen - "
 "gebruik in plaats daarvan &amp;"
 
-#: glib/gmarkup.c:555
+#: glib/gmarkup.c:531
 #, c-format
 msgid ""
 "Failed to parse '%s', which should have been a digit inside a character "
@@ -227,17 +227,17 @@ msgstr ""
 "Parsen van '%s' mislukt, hetgeen een getal in een karakterreferentie zou "
 "moeten zijn (bijvoorbeel &#234;) - misschien is het te groot"
 
-#: glib/gmarkup.c:580
+#: glib/gmarkup.c:556
 #, c-format
 msgid "Character reference '%s' does not encode a permitted character"
 msgstr "Karakterreferentie '%s' verwijst niet naar een toegestaan karakter"
 
-#: glib/gmarkup.c:597
+#: glib/gmarkup.c:573
 msgid "Empty character reference; should include a digit such as &#454;"
 msgstr ""
 "Lege karakterreferentie; ze zou een getal moeten bevatten, zoals &#454;"
 
-#: glib/gmarkup.c:607
+#: glib/gmarkup.c:583
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -247,23 +247,23 @@ msgstr ""
 "ampersandkarakter gebruikt zonder daarmee een entiteit te willen beginnen - "
 "gebruik in plaats daarvan &amp;a"
 
-#: glib/gmarkup.c:633
+#: glib/gmarkup.c:609
 msgid "Unfinished entity reference"
 msgstr "Onbeëindigde entiteitreferentie"
 
-#: glib/gmarkup.c:639
+#: glib/gmarkup.c:615
 msgid "Unfinished character reference"
 msgstr "Onbeëindigde karakterreferentie"
 
-#: glib/gmarkup.c:880 glib/gmarkup.c:908 glib/gmarkup.c:939
+#: glib/gmarkup.c:860 glib/gmarkup.c:888 glib/gmarkup.c:919
 msgid "Invalid UTF-8 encoded text"
 msgstr "Ongeldige UTF-8-geëncodeerde tekst"
 
-#: glib/gmarkup.c:975
+#: glib/gmarkup.c:955
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Document moet beginnen met een element (bijv. <book>)"
 
-#: glib/gmarkup.c:1014
+#: glib/gmarkup.c:994
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -272,7 +272,7 @@ msgstr ""
 "'%s' is geen geldig karakter na een '<'-karakter; het mag niet beginnen met "
 "een elementnaam"
 
-#: glib/gmarkup.c:1077
+#: glib/gmarkup.c:1057
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
@@ -281,7 +281,7 @@ msgstr ""
 "Onverwacht karakter '%s', er werd een '>'-karakter verwacht om het start-tag "
 "van het element '%s' af te sluiten "
 
-#: glib/gmarkup.c:1164
+#: glib/gmarkup.c:1144
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -289,7 +289,7 @@ msgstr ""
 "Onverwacht karakter '%s', er werd een '=' verwacht na de attribuutnaam '%s' "
 "van element '%s'"
 
-#: glib/gmarkup.c:1205
+#: glib/gmarkup.c:1185
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -300,7 +300,7 @@ msgstr ""
 "het start-tag van element '%s' af te sluiten, of eventueel een attribuut; "
 "misschien heeft u ongeldige karakters gebruikt in een attribuutnaam"
 
-#: glib/gmarkup.c:1288
+#: glib/gmarkup.c:1268
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -309,7 +309,7 @@ msgstr ""
 "Onverwacht karakter '%s', er werd een '\"'-karakter verwacht na het '='-"
 "teken bij de attribuutwaarde van '%s' in element '%s'"
 
-#: glib/gmarkup.c:1428
+#: glib/gmarkup.c:1408
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -318,7 +318,7 @@ msgstr ""
 "'%s' is geen geldig karakter na '</'; '%s' mag niet beginnen met een "
 "elementnaam"
 
-#: glib/gmarkup.c:1466
+#: glib/gmarkup.c:1446
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -327,25 +327,25 @@ msgstr ""
 "'%s' is geen geldig karakter na de elementnaam '%s' in het afluitings-tag; "
 "het toegestane karakter is '>' "
 
-#: glib/gmarkup.c:1477
+#: glib/gmarkup.c:1457
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "Element '%s' is gesloten, er is nu geen enkel element open"
 
-#: glib/gmarkup.c:1486
+#: glib/gmarkup.c:1466
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "Element '%s' is gesloten, maar op dit moment is element '%s' open"
 
-#: glib/gmarkup.c:1645
+#: glib/gmarkup.c:1613
 msgid "Document was empty or contained only whitespace"
 msgstr "Het document was leeg of bevatte slechts witregels"
 
-#: glib/gmarkup.c:1659
+#: glib/gmarkup.c:1627
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "Het document eindigde onverwacht na een openings-'<'"
 
-#: glib/gmarkup.c:1667 glib/gmarkup.c:1711
+#: glib/gmarkup.c:1635 glib/gmarkup.c:1679
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -354,7 +354,7 @@ msgstr ""
 "Het document eindigde onverwacht met niet-afgesloten elementen - '%s' is het "
 "laatstgeopende element"
 
-#: glib/gmarkup.c:1675
+#: glib/gmarkup.c:1643
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -363,19 +363,19 @@ msgstr ""
 "Het document eindigde onverwacht, er werd een afsluitings-'>' verwacht voor "
 "de tag <%s/>"
 
-#: glib/gmarkup.c:1681
+#: glib/gmarkup.c:1649
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Het document eindigde onverwacht in een elementnaam"
 
-#: glib/gmarkup.c:1686
+#: glib/gmarkup.c:1654
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Het document eindige onverwacht in een attribuutnaam"
 
-#: glib/gmarkup.c:1691
+#: glib/gmarkup.c:1659
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Het document eindige onverwacht in een element-openings-tag"
 
-#: glib/gmarkup.c:1697
+#: glib/gmarkup.c:1665
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -383,17 +383,17 @@ msgstr ""
 "Het document eindigde onverwacht na een '='-teken dat op een attribuutnaam "
 "volgde; geen attribuutwaarde"
 
-#: glib/gmarkup.c:1704
+#: glib/gmarkup.c:1672
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Het document eindigde onverwacht in een attribuutwaarde"
 
-#: glib/gmarkup.c:1719
+#: glib/gmarkup.c:1687
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr ""
 "Het document eindige onverwacht in een een afsluitings-tag voor element '%s'"
 
-#: glib/gmarkup.c:1725
+#: glib/gmarkup.c:1693
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Het document eindigde onverwacht in commentaar of een bewerkingsinstructie"
@@ -423,11 +423,11 @@ msgstr ""
 msgid "Text was empty (or contained only whitespace)"
 msgstr "De tekst was leeg (of bevatte slechts witte ruimte)"
 
-#: glib/gspawn-win32.c:205
+#: glib/gspawn-win32.c:206
 msgid "Failed to read data from child process"
 msgstr "Lezen van data van kindprocessen mislukt"
 
-#: glib/gspawn-win32.c:333
+#: glib/gspawn-win32.c:334
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -435,27 +435,27 @@ msgstr ""
 "Onverwachte fout in g_io_channel_win32_poll() bij het lezen van data van een "
 "kindproces"
 
-#: glib/gspawn-win32.c:702 glib/gspawn.c:949
+#: glib/gspawn-win32.c:703 glib/gspawn.c:960
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Lezen van pijp naar kind (%s) mislukt"
 
-#: glib/gspawn-win32.c:780
+#: glib/gspawn-win32.c:781
 #, fuzzy
 msgid "Failed to execute helper program"
 msgstr "Uitvoeren van kindproces mislukt (%s)"
 
-#: glib/gspawn-win32.c:813 glib/gspawn.c:1154
+#: glib/gspawn-win32.c:814 glib/gspawn.c:1165
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Veranderen naar directory '%s' mislukt (%s)"
 
-#: glib/gspawn-win32.c:822
+#: glib/gspawn-win32.c:823
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Uitvoeren van kindproces mislukt (%s)"
 
-#: glib/gspawn-win32.c:865 glib/gspawn.c:1285
+#: glib/gspawn-win32.c:866 glib/gspawn.c:1296
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Creëren van pijp voor het communiceren met kindproces mislukt (%s)"
@@ -476,32 +476,32 @@ msgstr ""
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Onverwachte fout in waitpid() (%s)"
 
-#: glib/gspawn.c:1014
+#: glib/gspawn.c:1025
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "fork mislukt (%s)"
 
-#: glib/gspawn.c:1164
+#: glib/gspawn.c:1175
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Uitvoeren van kindproces \\\"%s\\\" mislukt (%s)"
 
-#: glib/gspawn.c:1174
+#: glib/gspawn.c:1185
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Herleiden van van invoer of uitvoer van een kindproces is mislukt (%s)"
 
-#: glib/gspawn.c:1183
+#: glib/gspawn.c:1194
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Het forken van een kindproces is mislukt (%s)"
 
-#: glib/gspawn.c:1191
+#: glib/gspawn.c:1202
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Onbekende fout bij het uitvoeren van kindproces \"%s\""
 
-#: glib/gspawn.c:1213
+#: glib/gspawn.c:1224
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Lezen van voldoende dat van kind-pid pijp mislukt (%s)"

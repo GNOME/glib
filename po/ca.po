@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.0.3\n"
-"POT-Creation-Date: 2002-06-04 00:48+0200\n"
+"POT-Creation-Date: 2002-12-02 16:56-0500\n"
 "PO-Revision-Date: 2002-06-04 01:23+0200\n"
 "Last-Translator: Jordi Mallach <jordi@sindominio.net>\n"
 "Language-Team: Catalan <gnome@softcatala.net>\n"
@@ -14,69 +14,69 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: glib/gconvert.c:398
+#: glib/gconvert.c:401
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "No es permet la conversió del joc de caràcters de '%s' a '%s'"
 
-#: glib/gconvert.c:402
+#: glib/gconvert.c:405
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "No s'ha pogut obrir el convertidor de '%s' a '%s': %s"
 
-#: glib/gconvert.c:600 glib/gconvert.c:890 glib/giochannel.c:1290
-#: glib/giochannel.c:1332 glib/giochannel.c:2171 glib/gutf8.c:875
+#: glib/gconvert.c:603 glib/gconvert.c:893 glib/giochannel.c:1294
+#: glib/giochannel.c:1336 glib/giochannel.c:2178 glib/gutf8.c:875
 #: glib/gutf8.c:1320
 msgid "Invalid byte sequence in conversion input"
 msgstr "Seqüència de bytes invàlida en l'entrada de conversió"
 
-#: glib/gconvert.c:605 glib/gconvert.c:821 glib/giochannel.c:1297
-#: glib/giochannel.c:2183
+#: glib/gconvert.c:608 glib/gconvert.c:824 glib/giochannel.c:1301
+#: glib/giochannel.c:2190
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "S'ha produït un error durant la conversió: %s"
 
-#: glib/gconvert.c:623 glib/gutf8.c:871 glib/gutf8.c:1071 glib/gutf8.c:1212
+#: glib/gconvert.c:626 glib/gutf8.c:871 glib/gutf8.c:1071 glib/gutf8.c:1212
 #: glib/gutf8.c:1316
 msgid "Partial character sequence at end of input"
 msgstr "Seqüència de caràcters parcial al final de l'entrada"
 
-#: glib/gconvert.c:796
+#: glib/gconvert.c:799
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "No es pot convertir el 'fallback' '%s' al joc de codis '%s'"
 
-#: glib/gconvert.c:1630
+#: glib/gconvert.c:1633
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
 msgstr "L'URI '%s' no és un URI absolut que utilitzi l'esquema de fitxers"
 
-#: glib/gconvert.c:1640
+#: glib/gconvert.c:1643
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Pot ser que l'URI del fitxer local '%s' no inclogui cap '#'"
 
-#: glib/gconvert.c:1657
+#: glib/gconvert.c:1660
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "L'URI '%s' no és vàlid"
 
-#: glib/gconvert.c:1669
+#: glib/gconvert.c:1672
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "El nom de l'ordinador central de l'URI '%s' no és vàlid"
 
-#: glib/gconvert.c:1685
+#: glib/gconvert.c:1688
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "L'URI '%s' conté caràcters d'escapada invàlids"
 
-#: glib/gconvert.c:1756
+#: glib/gconvert.c:1759
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "El nom de camí '%s' no és un camí absolut"
 
-#: glib/gconvert.c:1766
+#: glib/gconvert.c:1769
 msgid "Invalid hostname"
 msgstr "Nom de l'ordinador central invàlid"
 
@@ -131,29 +131,29 @@ msgstr "La plantilla '%s' no acaba en XXXXXX"
 msgid "Failed to create file '%s': %s"
 msgstr "És impossible crear el fitxer '%s': %s"
 
-#: glib/giochannel.c:1118
+#: glib/giochannel.c:1122
 #, c-format
 msgid "Conversion from character set `%s' to `%s' is not supported"
 msgstr "No es suporta la conversió des del joc de caràcters '%s' fins al '%s'"
 
-#: glib/giochannel.c:1122
+#: glib/giochannel.c:1126
 #, c-format
 msgid "Could not open converter from `%s' to `%s': %s"
 msgstr "No s'ha pogut obrir el convertidor des de '%s' fins a '%s': %s"
 
-#: glib/giochannel.c:1468
+#: glib/giochannel.c:1471
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "No es pot fer una lectura bàsica a g_io_channel_read_line_string"
 
-#: glib/giochannel.c:1515 glib/giochannel.c:1769 glib/giochannel.c:1855
+#: glib/giochannel.c:1518 glib/giochannel.c:1775 glib/giochannel.c:1861
 msgid "Leftover unconverted data in read buffer"
 msgstr "A la memòria intermèdia de lectura hi ha dades sobrants no convertides"
 
-#: glib/giochannel.c:1595 glib/giochannel.c:1669
+#: glib/giochannel.c:1598 glib/giochannel.c:1675
 msgid "Channel terminates in a partial character"
 msgstr "El canal acaba en un caràcter parcial"
 
-#: glib/giochannel.c:1655
+#: glib/giochannel.c:1661
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "No es pot fer una lectura bàsica a g_io_channel_read_to_end"
 
@@ -429,11 +429,11 @@ msgstr ""
 msgid "Text was empty (or contained only whitespace)"
 msgstr "El text era buit (o només contenia espais en blanc)"
 
-#: glib/gspawn-win32.c:198
+#: glib/gspawn-win32.c:206
 msgid "Failed to read data from child process"
 msgstr "És impossible llegir dades del procés fill"
 
-#: glib/gspawn-win32.c:323
+#: glib/gspawn-win32.c:334
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -441,22 +441,27 @@ msgstr ""
 "S'ha produït un error inesperat a g_io_chanel_win32_poll() en llegir dades "
 "d'un procés fill"
 
-#: glib/gspawn-win32.c:690 glib/gspawn.c:929
+#: glib/gspawn-win32.c:703 glib/gspawn.c:960
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "És impossible llegir des del conducte fill (%s)"
 
-#: glib/gspawn-win32.c:778 glib/gspawn.c:1134
+#: glib/gspawn-win32.c:781
+#, fuzzy
+msgid "Failed to execute helper program"
+msgstr "És impossible executar el procés fill (%s)"
+
+#: glib/gspawn-win32.c:814 glib/gspawn.c:1165
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "És impossible canviar al directori '%s' (%s)"
 
-#: glib/gspawn-win32.c:787
+#: glib/gspawn-win32.c:823
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "És impossible executar el procés fill (%s)"
 
-#: glib/gspawn-win32.c:828 glib/gspawn.c:1245
+#: glib/gspawn-win32.c:866 glib/gspawn.c:1296
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "És impossible crear el conducte per comunicar amb el procés fill (%s)"
@@ -478,32 +483,32 @@ msgstr ""
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "S'ha produiït un error inesperat en waitpid() (%s)"
 
-#: glib/gspawn.c:994
+#: glib/gspawn.c:1025
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "És impossible bifurcar-se (%s)"
 
-#: glib/gspawn.c:1144
+#: glib/gspawn.c:1175
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "És impossible executar el procés fill \"%s\" (%s)"
 
-#: glib/gspawn.c:1154
+#: glib/gspawn.c:1185
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "És impossible redirigir la sortida o l'entrada del procés fill (%s)"
 
-#: glib/gspawn.c:1163
+#: glib/gspawn.c:1194
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "És impossible bifurcar el procés fill (%s)"
 
-#: glib/gspawn.c:1171
+#: glib/gspawn.c:1202
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "S'ha produït un error desconegut en executar el procés fill \"%s\""
 
-#: glib/gspawn.c:1193
+#: glib/gspawn.c:1224
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr ""

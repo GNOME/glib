@@ -1,3 +1,101 @@
+Overview of Changes from GLib 2.0.x to GLib-2.1.x
+=================================================
+
+* Add copy of the Trio library to build and use for printf() when 
+  system printf isn't good enough. Add g_printf()/etc. [Matthias Clasen]
+* Add g_str_has_suffix()/g_str_has_prefix() [Alex Larsson]
+* Add g_markup_parse_context_get_element() [Matthias]
+* Add g_utf8_strreverse [Matthias]
+* Add g_ascii_strtoull() [Tim Janik]
+* Support scanning of 64-bit values with GScanner [Tim]
+* Add g_set/get_application_name() [Havoc Pennington]
+* Add G_LIKELY()/G_UNLIKELY() macros for hinting branch probabilities. 
+  Use for g_return_if_fail(). [Matthias Clasen]
+* Add G_GNUC_DEPRECATED macro [Tom Tromey]
+* Improve the seeding algorithm of GRandom to avoid problems
+  with certain pathological seeds. Support G_RANDOM_VERSION=2.0
+  environment variable. [Sebastian Wilhelmi]
+* Improve thread configure checks, use -pthread where applicable
+  [Sebastian]
+* Improve handlng of thread priorities [Sebastian]
+* Fix up parameter names that might shadow functions from
+  system headers [Soeren Sandmann]
+* Clean up usage of deprecated functions [Manish Singh]
+* Docs fixes and improvements. In particular, include "Since" information.
+  [Matthias, Soeren, Martin Schulze, Daryll Strauss, Bill Janssen, 
+  Owen Taylor, Morten Welinder]. 
+
+Overview of Changes in GLib 2.0.7
+=================================
+
+* Fix C++ warnings in gtype.h [Dom Lachowicz]
+* Fix g_type_fundamental_next() [Tim Janik]
+* Fix various missing includes of config.h [Morten Welinder]
+* Handle main loop initialization before g_thread_init [Sebastian Wilhelmi]
+* Various 64-bit fixes [Manish Singh]
+* Fix GPoll on Win32 [Tor Lillqvist, Herman Bloggs]
+* Fix bug with buffering on UTF-8 IOChannels [Daniel Elstner]
+* Misc bug and build fixes [Soren Andersen, Gustavo Carneiro, Tor,
+     Tim, Havoc Pennington,  Matthias Clasen, Sebastian Rittau,
+     Masahiro Sakai, Arvind Samptur, HideToshi Tajima, Owen Taylor]
+* Updated and new translations (be,cs,de,*fa,it,lv,pt_BR,tr)
+
+Overview of Changes in GLib 2.0.6
+=================================
+
+* Fix problem with interface prerequisites [Jon Trowbridge, Dave Camp]
+* Clean up debug spew from GObject [Anders Carlsson]
+* Compiler warning fixes [David L. Cooper II]
+* Fix some problems with g_build_path() [Guillaume Chazarain, Owen Taylor]
+* Fixes for --disable-debug [Sebastian Wilhelmi]
+* Threading fixes [Sebastian Wilhelmi, Miroslaw Dobrzanski-Neumann, 
+  Rajkumar Sivasamy, Laurent Vivier]
+* Documentation fixes [Jacob Berkman, Manuel Clos, Jared Dukat, 
+  Sebastian Rittau, Linus Welleij]
+* Misc bug fixes [Anders Carlsson, Sam Couter, Morten Welinder, Owen]
+* Updated translations (bg,ko,vi)
+
+Overview of Changes in GLib 2.0.5
+=================================
+
+* Fix problem with interface prerequisites [Jon Trowbridge, Dave Camp]
+* Clean up debug spew from GObject [Anders Carlsson]
+* Compiler warning fixes [David L. Cooper II]
+* Fix some problems with g_build_path() [Guillaume Chazarain, Owen Taylor]
+* Fixes for --disable-debug [Sebastian Wilhelmi]
+* Threading fixes [Sebastian Wilhelmi, Miroslaw Dobrzanski-Neumann, 
+  Rajkumar Sivasamy, Laurent Vivier]
+* Documentation fixes [Jacob Berkman, Manuel Clos, Jared Dukat, 
+  Sebastian Rittau, Linus Welleij]
+* Misc bug fixes [Anders Carlsson, Sam Couter, Morten Welinder, Owen]
+* Updated translations (bg,ko,vi)
+
+Overview of Changes in GLib 2.0.4
+=================================
+
+* Fix some 64-bit problems. (George Lebl, David L. Cooper II)
+* Add note about Tru64 iconv to INSTALL. (Manuel Op de Coul)
+* Fix problem with timouts > MAXINT. (Tim Janik, Owen Taylor)
+* Updated translations (ca,es,fr,ja,gl,ms,nl,pl,pt,ru)
+
+Overview of Changes in GLib 2.0.3
+=================================
+
+* Handle sorting 0-length arrays (Ron Arts)
+* Threading fixes (Sebastian Wilhelmi)
+* Portability fixes (Miroslaw Dobrzanski-Neumann, Jacob Berkman, Gareth Pierce, 
+  Sebastian, Qingjiang Yuan)
+* Various fixes for glib-2.0.m4. (Jim Gettys, others.)
+* Locate right glib-genmarshal when cross-compiling. (Mitch Natterer)
+* Win32 fixes (Tor Lillqvist)
+* Try to fix g_get_charset() related segfaults. (Owen)
+* Fixes for gettext detection. (Dan Winship, HideToshi Tajima, Boyd Lynn Gerber,
+  Andrew P. Lentvorski, Jr.)
+* Fix g_scanner_unexp_token() (Tim Janik, Sven Neumann)
+* g_markup fixes. (Matthias Clasen.)
+* Bug fixes and cleanups (Daniel Elstner, Matthias, Laszlo Peter, Morten Welinder,
+  Wayne Schuller)
+
 Overview of Changes in GLib 2.0.1
 =================================
 

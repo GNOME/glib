@@ -1,7 +1,7 @@
 General Information
 ===================
 
-This is GLib version 2.0.1. GLib is the low-level core
+This is GLib version 2.1.3. GLib is the low-level core
 library that forms the basis for projects such as GTK+ and GNOME. It
 provides data structure handling for C, portability wrappers, and
 interfaces for such runtime functionality as an event loop, threads,
@@ -24,22 +24,21 @@ Installation
 
 See the file 'INSTALL'
 
-Notes about GLib-2.0.0
+Notes about GLib-2.2.0
 ======================
 
-* On systems without the libintl from GNU gettext() or a recent version
-  of the GNU C library, the encoding of translated error messages will be 
-  incorrect (they should be in UTF-8). A workaround for this is to install 
-  GNU gettext and use that libintl. This is expected to be fixed in GLib-2.0.1.
-  Application programmers should not call g_locale_to_utf8() on these
-  strings.
+* GLib changed the seeding algorithm for the pseudo-random number
+  generator Mersenne Twister, as used by GRand and GRandom. This was
+  necessary, because some seeds would yield very bad pseudo-random
+  streams. Further information can be found at:
 
-* Similarly, the GLib error logging functions such as g_print(), g_warning(),
-  g_error(), currently do not convert the strings they are passed from
-  UTF-8 to the encoding of the locale, or check that the strings they
-  are passed are valid UTF-8. They should, despite this, be assumed to take
-  UTF-8 arguments.
+          http://www.math.keio.ac.jp/~matumoto/emt.html
 
+  The original seeding algorithm, as found in GLib-2.0.x, can be used
+  instead of the new one by setting the environment variable
+  G_RANDOM_VERSION to the value of "2.0". Use the GLib-2.0 algorithm 
+  only if you have sequences of numbers generated with Glib-2.0 that 
+  you need to reproduce exactly.
 
 How to report bugs
 ==================

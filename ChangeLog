@@ -1,3 +1,15 @@
+Mon Dec  2 16:34:13 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* === Released 2.1.3 ===
+
+	* NEWS: Updated.
+
+	[ Unmerged change from stable from May 16 ]
+
+	* autogen.sh: Remove check for GNU gettext, since it
+	was causing problems for Solaris CVS builds.
+	(#81885, Hidetoshi Tajima.)
+
 Tue Nov 26 09:51:43 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gstrfuncs.c (g_strchomp): Avoid non-ANSI pointer

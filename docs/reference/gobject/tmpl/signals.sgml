@@ -163,8 +163,8 @@ g_signal_handlers_unblock_matched() and g_signal_handlers_disconnect_matched()
 match signals by.
 </para>
 
-@G_SIGNAL_MATCH_ID: The signal id must be equal. 
-@G_SIGNAL_MATCH_DETAIL: The signal detail be equal.  
+@G_SIGNAL_MATCH_ID: The signal id must be equal.
+@G_SIGNAL_MATCH_DETAIL: The signal detail be equal.
 @G_SIGNAL_MATCH_CLOSURE: The closure must be the same.
 @G_SIGNAL_MATCH_FUNC: The C closure callback must be the same.
 @G_SIGNAL_MATCH_DATA: The closure data must be the same.
@@ -214,6 +214,7 @@ of g_signal_new().
 		  GTK_TYPE_REQUISITION | G_SIGNAL_TYPE_STATIC_SCOPE);
 </programlisting>
 </informalexample>
+
 
 
 <!-- ##### MACRO G_SIGNAL_MATCH_MASK ##### -->
@@ -369,13 +370,13 @@ Connects a #GCallback function to a signal for a particular object.
 </para>
 <para>
 The handler will be called before the default handler of the signal.
-</para>                  
+</para>
 
 @instance: the instance to connect to.
 @detailed_signal: a string of the form "signal-name::detail".
 @c_handler: the #GCallback to connect.
-@data: data to pass to @c_handler calls. 
-@Returns: the handler id 
+@data: data to pass to @c_handler calls.
+@Returns: the handler id
 
 
 <!-- ##### MACRO g_signal_connect_after ##### -->
@@ -384,13 +385,13 @@ Connects a #GCallback function to a signal for a particular object.
 </para>
 <para>
 The handler will be called after the default handler of the signal.
-</para>                  
+</para>
 
 @instance: the instance to connect to.
 @detailed_signal: a string of the form "signal-name::detail".
 @c_handler: the #GCallback to connect.
-@data: data to pass to @c_handler calls. 
-@Returns: the handler id 
+@data: data to pass to @c_handler calls.
+@Returns: the handler id
 
 
 <!-- ##### MACRO g_signal_connect_swapped ##### -->
@@ -405,8 +406,8 @@ calling the handler.
 @instance: the instance to connect to.
 @detailed_signal: a string of the form "signal-name::detail".
 @c_handler: the #GCallback to connect.
-@data: data to pass to @c_handler calls. 
-@Returns: the handler id 
+@data: data to pass to @c_handler calls.
+@Returns: the handler id
 
 
 <!-- ##### FUNCTION g_signal_connect_object ##### -->
@@ -567,17 +568,18 @@ connection.
 Blocks all handlers on an instance that match @func and @data.
 </para>
 
-@instance: The instance to block handlers from. 
+@instance: The instance to block handlers from.
 @func: The C closure callback of the handlers (useless for non-C closures).
 @data: The closure data of the handlers' closures.
 @Returns: The number of handlers that got blocked.
+
 
 <!-- ##### MACRO g_signal_handlers_unblock_by_func ##### -->
 <para>
 Unblocks all handlers on an instance that match @func and @data.
 </para>
 
-@instance: The instance to unblock handlers from. 
+@instance: The instance to unblock handlers from.
 @func: The C closure callback of the handlers (useless for non-C closures).
 @data: The closure data of the handlers' closures.
 @Returns: The number of handlers that got unblocked.
@@ -588,11 +590,10 @@ Unblocks all handlers on an instance that match @func and @data.
 Disconnects all handlers on an instance that match @func and @data.
 </para>
 
-@instance: The instance to remove handlers from. 
+@instance: The instance to remove handlers from.
 @func: The C closure callback of the handlers (useless for non-C closures).
 @data: The closure data of the handlers' closures.
 @Returns: The number of handlers that got disconnected.
-
 
 
 <!-- ##### FUNCTION g_signal_has_handler_pending ##### -->
@@ -651,11 +652,13 @@ Disconnects all handlers on an instance that match @func and @data.
 </para>
 
 @signal_id: 
-@detail: 
+@quark: 
 @hook_func: 
 @hook_data: 
 @data_destroy: 
 @Returns: 
+<!-- # Unused Parameters # -->
+@detail: 
 
 
 <!-- ##### FUNCTION g_signal_remove_emission_hook ##### -->
