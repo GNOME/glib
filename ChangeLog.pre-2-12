@@ -1,3 +1,7 @@
+2003-07-25  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gutf8.c (g_utf8_get_char_validated): Work around gtk-doc stupidity.
+
 2003-07-20  Hans Breuer  <hans@breuer.org>
 
 	* glib/trio/makefile.msc : (new file) for msvc build

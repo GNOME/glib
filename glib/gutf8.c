@@ -730,9 +730,9 @@ g_utf8_get_char_extended (const  gchar *p,
  * overlong encodings of valid characters.
  * 
  * Return value: the resulting character. If @p points to a partial
- *    sequence at the end of a string that could begin a valid character,
- *    returns (gunichar)-2; otherwise, if @p does not point to a valid
- *    UTF-8 encoded Unicode character, returns (gunichar)-1.
+ *    sequence at the end of a string that could begin a valid 
+ *    character, returns (gunichar)-2; otherwise, if @p does not point 
+ *    to a valid UTF-8 encoded Unicode character, returns (gunichar)-1.
  **/
 gunichar
 g_utf8_get_char_validated (const  gchar *p,
