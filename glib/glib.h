@@ -68,7 +68,7 @@
 #include <gtypes.h>
 #include <gunicode.h>
 #include <gutils.h>
-#ifdef G_OS_WIN32
+#ifdef G_PLATFORM_WIN32
 #include <gwin32.h>
 #endif
 

@@ -23,10 +23,7 @@
 
 #include <gerror.h>
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
+G_BEGIN_DECLS
 
 typedef enum
 {
@@ -120,10 +117,7 @@ void                 g_markup_parse_context_get_position (GMarkupParseContext *c
 gchar* g_markup_escape_text (const gchar *text,
                              gint         length);
 
-
-#ifdef __cplusplus
-}
-#endif
+G_END_DECLS
 
 #endif /* __G_MARKUP_H__ */
 

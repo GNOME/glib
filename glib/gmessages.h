@@ -71,7 +71,7 @@ typedef void            (*GLogFunc)             (const gchar   *log_domain,
 
 /* Logging mechanism
  */
-extern          const gchar             *g_log_domain_glib;
+GLIB_VAR        const gchar             *g_log_domain_glib;
 guint           g_log_set_handler       (const gchar    *log_domain,
                                          GLogLevelFlags  log_levels,
                                          GLogFunc        log_func,

@@ -46,7 +46,7 @@ g_shell_error_quark (void)
  * Otherwise double quotes preserve things literally.
  */
 
-gboolean 
+static gboolean 
 unquote_string_inplace (gchar* str, gchar** end, GError** err)
 {
   gchar* dest;

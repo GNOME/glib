@@ -233,6 +233,7 @@ EXPORTS
 	g_locale_to_utf8
 	g_log
 	g_log_default_handler
+	g_log_domain_glib
 	g_log_remove_handler
 	g_log_set_always_fatal
 	g_log_set_fatal_mask

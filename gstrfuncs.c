@@ -677,11 +677,11 @@ g_strsignal (gint signum)
 
 #ifdef HAVE_STRSIGNAL
 #if defined(G_OS_BEOS) || defined(G_WITH_CYGWIN)
-extern const char * strsignal(int);
-#else /* !G_OS_BEOS */
+extern const char *strsignal(int);
+#else
   /* this is declared differently (const) in string.h on BeOS */
   extern char *strsignal (int sig);
-#endif /* !G_OS_BEOS */
+#endif /* !G_OS_BEOS && !G_WITH_CYGWIN */
   return strsignal (signum);
 #elif NO_SYS_SIGLIST
   switch (signum)

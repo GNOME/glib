@@ -91,6 +91,7 @@ static GPrivate* g_log_depth = NULL;
 #ifdef G_OS_WIN32
 #  define STRICT
 #  include <windows.h>
+#  undef STRICT
 #  include <process.h>          /* For _getpid() */
 
 static gboolean alloc_console_called = FALSE;
