@@ -6,13 +6,12 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "POT-Creation-Date: 2002-08-22 05:01+0200\n"
-"PO-Revision-Date: 2002-08-23 12:38+0300\n"
-"Last-Translator: Peteris Krisjanis <peteris.krisjanis@os.lv>\n"
+"PO-Revision-Date: 2002-08-31 08:55+0200\n"
+"Last-Translator: Artis Trops <hornet@navigators.lv>\n"
 "Language-Team: Latvian <ll10nt@os.lv>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 0.9.6\n"
 
 #: glib/gconvert.c:400
 #, c-format
@@ -370,17 +369,17 @@ msgstr "Teksts bija tukšs (vai saturēja tikai tukšumus)"
 
 #: glib/gspawn-win32.c:198
 msgid "Failed to read data from child process"
-msgstr "Nevarēju nolasīt datus no atvasinātā procesa"
+msgstr "Nevarēju nolasīt datus no bērnprocesa"
 
 #: glib/gspawn-win32.c:323
 msgid "Unexpected error in g_io_channel_win32_poll() reading data from a child process"
-msgstr "Negaidīta kļūda iekš g_io_channel_win32_poll(), lasot datus no atvasinātā procesa"
+msgstr "Negaidīta kļūda iekš g_io_channel_win32_poll(), lasot datus no bērnprocesa"
 
 #: glib/gspawn-win32.c:690
 #: glib/gspawn.c:929
 #, c-format
 msgid "Failed to read from child pipe (%s)"
-msgstr "Nevarēju nolasīt no atvasinātā programkanāla (%s)"
+msgstr "Nevarēju nolasīt no bērna programkanāla (%s)"
 
 #: glib/gspawn-win32.c:778
 #: glib/gspawn.c:1134
@@ -391,23 +390,23 @@ msgstr "Nevarēju pāriet uz direktoriju '%s' (%s)"
 #: glib/gspawn-win32.c:787
 #, c-format
 msgid "Failed to execute child process (%s)"
-msgstr "Nevarēju izpildīt atvasināto procesu (%s)"
+msgstr "Nevarēju izpildīt bērnprocesu (%s)"
 
 #: glib/gspawn-win32.c:828
 #: glib/gspawn.c:1245
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
-msgstr "Nevarēju izveidot programkanālu komunikācijai ar atvasināto procesu (%s)"
+msgstr "Nevarēju izveidot programkanālu komunikācijai ar bērnprocesu (%s)"
 
 #: glib/gspawn.c:166
 #, c-format
 msgid "Failed to read data from child process (%s)"
-msgstr "Nevarēju nolasīt datus no atvasinātā procesa (%s)"
+msgstr "Nevarēju nolasīt datus no bērnprocesa (%s)"
 
 #: glib/gspawn.c:298
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
-msgstr "Negaidīta kļūda iekš select(), lasot datus no atvasinātā procesa (%s)"
+msgstr "Negaidīta kļūda iekš select(), lasot datus no bērnprocesa (%s)"
 
 #: glib/gspawn.c:381
 #, c-format
@@ -422,27 +421,27 @@ msgstr "Neizdevās sadalīt (%s)"
 #: glib/gspawn.c:1144
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
-msgstr "Nevarēju izpildīt atvasināto procesu \"%s\" (%s)"
+msgstr "Nevarēju izpildīt bērnprocesu \"%s\" (%s)"
 
 #: glib/gspawn.c:1154
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
-msgstr "Nevarēju novadīt atvasinātā procesa (%s) izvadi vai ievadi"
+msgstr "Nevarēju novadīt bērnprocesa (%s) izvadi vai ievadi"
 
 #: glib/gspawn.c:1163
 #, c-format
 msgid "Failed to fork child process (%s)"
-msgstr "Nevarēju sazarot atvasināto procesu (%s)"
+msgstr "Nevarēju sazarot bērnprocesu (%s)"
 
 #: glib/gspawn.c:1171
 #, c-format
 msgid "Unknown error executing child process \"%s\""
-msgstr "Nezināma kļūda, izpildot atvasināto procesu \"%s\""
+msgstr "Nezināma kļūda, izpildot bērnprocesu \"%s\""
 
 #: glib/gspawn.c:1193
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
-msgstr "Nevarēju nolasīt pietiekami daudz datus no atvasinātā pid programkanāla (%s)"
+msgstr "Nevarēju nolasīt pietiekami daudz datus no bērna pid programkanāla (%s)"
 
 #: glib/gutf8.c:950
 msgid "Character out of range for UTF-8"
