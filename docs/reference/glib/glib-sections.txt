@@ -443,6 +443,7 @@ GThreadFunc
 GThreadPriority
 GThread
 g_thread_create
+g_thread_create_full
 g_thread_self
 g_thread_join
 g_thread_set_priority

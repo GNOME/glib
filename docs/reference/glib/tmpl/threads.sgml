@@ -220,7 +220,7 @@ you can however use it as if it was a function.
 <!-- ##### USER_FUNCTION GThreadFunc ##### -->
 <para>
 Specifies the type of the @func functions passed to
-g_thread_create().
+g_thread_create() or g_thread_create_full().
 </para>
 
 @data: data passed to the thread
@@ -265,10 +265,37 @@ g_thread_join() is called for that thread.
 @func: the function executing in that thread
 @data: the argument to the function
 @joinable: is this thread joinable?
-@bound: is this thread bound to a system thread?
 @priority: the priority of the thread
 
 <!-- ##### FUNCTION g_thread_create ##### -->
+<para>
+This function creates a new thread with the priority @priority.
+</para>
+
+<para>
+If @joinable is #TRUE, you can wait for this threads termination
+calling g_thread_wait(). Otherwise the thread will just disappear, when
+ready. 
+</para>
+
+<para>
+The new thread executes the function @func with the argument
+@data. If the thread was created successfully, it is returned.
+</para>
+
+<para>
+@error can be NULL to ignore errors, or non-NULL to report errors. The
+error is set, if and only if the function returns #NULL.
+</para>
+
+@func: a function to execute in the new thread
+@data: an argument to supply to the new thread
+@joinable: should this thread be joinable?
+@error: return location for error.
+@Returns: the new #GThread on success
+
+
+<!-- ##### FUNCTION g_thread_create_full ##### -->
 <para>
 This function creates a new thread with the priority @priority. The
 stack gets the size @stack_size or the default value for the current
@@ -302,6 +329,15 @@ priorities. On other systems (e.g. Solaris) there doesn't seem to be
 different scheduling for different priorities. All in all try to avoid
 being dependent on priorities. Use %G_THREAD_PRIORITY_NORMAL here as a
 default.
+</para>
+</note>
+
+<note>
+<para>
+Only use g_thread_create_full(), when you really can't use
+g_thread_create() instead. g_thread_create() does not take
+@stack_size, @bound and @priority as arguments, as they should only be
+used for cases, where it is inevitable. 
 </para>
 </note>
 

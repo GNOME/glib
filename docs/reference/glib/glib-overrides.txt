@@ -98,6 +98,15 @@ GStaticMutex* mutex
 <RETURNS>void</RETURNS>
 </FUNCTION>
 
+<FUNCTION>
+<NAME>g_thread_create</NAME>
+<RETURNS>GThread *</RETURNS>
+GThreadFunc func
+gpointer data,
+gboolean joinable,
+GError **error
+</FUNCTION>
+
 # G_LOCK_* macros
 
 <MACRO>

@@ -68,8 +68,6 @@ this struct.
 
 @func: the function to execute in the threads of this pool
 @user_data: the user data for the threads of this pool
-@bound: are the threads of this pool bound?
-@priority: the priority of the threads of this pool
 @exclusive: are all threads exclusive to this pool
 
 <!-- ##### FUNCTION g_thread_pool_new ##### -->
@@ -80,14 +78,9 @@ this struct.
 @func: 
 @user_data: 
 @max_threads: 
-@stack_size: 
-@bound: 
-@priority: 
 @exclusive: 
 @error: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@thread_func: 
 
 
 <!-- ##### FUNCTION g_thread_pool_push ##### -->
