@@ -6,10 +6,11 @@ Overview of Changes from GLib 2.4.6 to GLib 2.4.7
  - Fix build with newer mingw headers [Tor]
  - Convert messages to UTF-8 [Kazuki Iwamoto]
  - Don't open console windows [Tor]
-* Other bug fixes [Manish Singh, Matthias Clasen, Morten Welinder, Tor]
-* Documentation improvements [Morten, Stephan Kasal, Philippe Blain, Nickolay V. Shmyrev]
+* Other bug fixes [Manish Singh, Matthias Clasen, Morten Welinder,
+ Tim Janik, Tor]
+* Documentation improvements [Morten, Stephan Kasal, Philippe Blain, 
+ Nickolay V. Shmyrev, Gustavo Carneiro, Kjartan Maraas, Stefan Kost]
 * New and updated translations (bs,da,es,gl,ne,nn,or,ro,sq,tr)
-* Bugs fixed: 150394,141124,147392,150960,152618,141102,151175,154078,151109,153041,154299
 
 Overview of Changes from GLib 2.4.5 to GLib 2.4.6
 =================================================

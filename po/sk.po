@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-08-13 10:10-0400\n"
+"POT-Creation-Date: 2004-10-08 14:13-0400\n"
 "PO-Revision-Date: 2004-03-18 09:16+0100\n"
 "Last-Translator: Stanislav Visnovsky <visnovsky@kde.org>\n"
 "Language-Team: Slovak <sk-i18n@linux.sk>\n"
@@ -91,57 +91,57 @@ msgstr "Neplatné meno hostiteľa"
 msgid "Error opening directory '%s': %s"
 msgstr "Chyba pri otváraní priečinku'%s': %s"
 
-#: glib/gfileutils.c:393 glib/gfileutils.c:458
+#: glib/gfileutils.c:395 glib/gfileutils.c:469
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Nepodarilo sa alokovať %lu bajtov pre načítanie súboru \"%s\""
 
-#: glib/gfileutils.c:404
+#: glib/gfileutils.c:411
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Chyba pri čítaní súboru '%s': %s"
 
-#: glib/gfileutils.c:480
+#: glib/gfileutils.c:494
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Nepodarilo sa čítanie súboru '%s': %s"
 
-#: glib/gfileutils.c:527 glib/gfileutils.c:595
+#: glib/gfileutils.c:545 glib/gfileutils.c:626
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Nepodarilo sa otvoriť súbor '%s': %s"
 
-#: glib/gfileutils.c:541
+#: glib/gfileutils.c:562
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Nepodarilo sa získať atribúty súboru '%s': fstat() zlyhala: %s"
 
-#: glib/gfileutils.c:567
+#: glib/gfileutils.c:593
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Nepodarilo sa otvoriť súbor '%s': fdopen() zlyhala: %s"
 
-#: glib/gfileutils.c:779
+#: glib/gfileutils.c:812
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Šablóna '%s' je neplatná, nesmie obsahovať '%s'"
 
-#: glib/gfileutils.c:791
+#: glib/gfileutils.c:824
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Šablóna '%s' nekončí XXXXXX"
 
-#: glib/gfileutils.c:812
+#: glib/gfileutils.c:845
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Nepodarilo sa vytvoriť súbor '%s': %s"
 
-#: glib/gfileutils.c:1153
+#: glib/gfileutils.c:1188
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Nepodarilo sa prečítať symbolický odkaz '%s': %s"
 
-#: glib/gfileutils.c:1172
+#: glib/gfileutils.c:1209
 msgid "Symbolic links not supported"
 msgstr "Symbolické odkazy nepodporované"
 

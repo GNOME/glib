@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-14 03:41+0200\n"
+"POT-Creation-Date: 2004-10-08 14:13-0400\n"
 "PO-Revision-Date: 2004-06-15 12:58+0200\n"
 "Last-Translator: Jesús Bravo Álvarez <suso@trasno.net>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
@@ -86,62 +86,62 @@ msgstr "O camiño '%s' non é un camiño absoluto"
 msgid "Invalid hostname"
 msgstr "Nome de servidor non válido"
 
-#: glib/gdir.c:80
+#: glib/gdir.c:83
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "Erro abrindo o directorio '%s': %s"
 
-#: glib/gfileutils.c:393 glib/gfileutils.c:458
+#: glib/gfileutils.c:395 glib/gfileutils.c:469
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Non se puideron asignar %lu bytes para ler o ficheiro \"%s\""
 
-#: glib/gfileutils.c:404
+#: glib/gfileutils.c:411
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Erro lendo o ficheiro '%s': %s"
 
-#: glib/gfileutils.c:480
+#: glib/gfileutils.c:494
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Falla ao ler desde o ficheiro '%s': %s"
 
-#: glib/gfileutils.c:527 glib/gfileutils.c:595
+#: glib/gfileutils.c:545 glib/gfileutils.c:626
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Falla ao abrir o ficheiro '%s': %s"
 
-#: glib/gfileutils.c:541
+#: glib/gfileutils.c:562
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Falla ao obter os atributos do ficheiro '%s': fstat() fallou: %s"
 
-#: glib/gfileutils.c:567
+#: glib/gfileutils.c:593
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Falla ao abrir o ficheiro '%s': fdopen() fallou: %s"
 
-#: glib/gfileutils.c:779
+#: glib/gfileutils.c:812
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "O modelo '%s' non é válido, non debería conter '%s'"
 
-#: glib/gfileutils.c:791
+#: glib/gfileutils.c:824
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "O modelo '%s' non remata con XXXXXX"
 
-#: glib/gfileutils.c:812
+#: glib/gfileutils.c:845
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Falla ao crear o ficheiro '%s': %s"
 
-#: glib/gfileutils.c:1153
+#: glib/gfileutils.c:1188
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Falla ao ler a ligazón simbólica '%s': %s"
 
-#: glib/gfileutils.c:1172
+#: glib/gfileutils.c:1209
 msgid "Symbolic links not supported"
 msgstr "Ligazóns simbólicas non soportadas"
 
@@ -171,24 +171,24 @@ msgstr "A canle remata nun carácter parcial"
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Non se pode facer unha lectura crúa en g_io_channel_read_to_end"
 
-#: glib/gmarkup.c:223
+#: glib/gmarkup.c:225
 #, c-format
 msgid "Error on line %d char %d: %s"
 msgstr "Erro na liña %d carácter %d: %s"
 
-#: glib/gmarkup.c:307
+#: glib/gmarkup.c:309
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "Erro na liña %d: %s"
 
-#: glib/gmarkup.c:412
+#: glib/gmarkup.c:414
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "Leuse unha entidade baleira '&;'; as entidades válidas son: &amp; &quot; "
 "&lt; &gt; &apos;"
 
-#: glib/gmarkup.c:422
+#: glib/gmarkup.c:424
 #, c-format
 msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
@@ -199,17 +199,17 @@ msgstr ""
 "comeza unha entidade; se ese carácter non é supostamente unha entidade, debe "
 "ser escrito &amp;"
 
-#: glib/gmarkup.c:458
+#: glib/gmarkup.c:460
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
 msgstr "O carácter '%s' non é válido no nome dunha entidade"
 
-#: glib/gmarkup.c:502
+#: glib/gmarkup.c:504
 #, c-format
 msgid "Entity name '%s' is not known"
 msgstr "Non se coñece o nome de entidade '%s'"
 
-#: glib/gmarkup.c:512
+#: glib/gmarkup.c:514
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
@@ -217,7 +217,7 @@ msgstr ""
 "A entidade non remata cun punto e coma; o máis probable é que usase o "
 "carácter & sen intención de comezar unha entidade, se é así escríbao &amp;"
 
-#: glib/gmarkup.c:558
+#: glib/gmarkup.c:560
 #, c-format
 msgid ""
 "Failed to parse '%s', which should have been a digit inside a character "
@@ -226,43 +226,43 @@ msgstr ""
 "Falla ao interpretar '%s', que debería ser un díxito dentro dunha referencia "
 "de carácter (p.ex &#234;) - talvez o díxito é longo de máis"
 
-#: glib/gmarkup.c:583
+#: glib/gmarkup.c:585
 #, c-format
 msgid "Character reference '%s' does not encode a permitted character"
 msgstr "A referencia de carácter '%s' non codifica un carácter permitido"
 
-#: glib/gmarkup.c:600
+#: glib/gmarkup.c:602
 msgid "Empty character reference; should include a digit such as &#454;"
 msgstr ""
 "Referencia de carácter baleira; debería incluír un díxito tal como &#454;"
 
-#: glib/gmarkup.c:610
+#: glib/gmarkup.c:612
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
 "as &amp;"
 msgstr ""
-"A referencia de carácter non remata con punto e coma; o máis probable é "
-"que usase un carácter & sen intención de comezar unha entidade, se é así "
+"A referencia de carácter non remata con punto e coma; o máis probable é que "
+"usase un carácter & sen intención de comezar unha entidade, se é así "
 "escríbao como &amp;"
 
-#: glib/gmarkup.c:636
+#: glib/gmarkup.c:638
 msgid "Unfinished entity reference"
 msgstr "Referencia a entidade non rematada"
 
-#: glib/gmarkup.c:642
+#: glib/gmarkup.c:644
 msgid "Unfinished character reference"
 msgstr "Referencia a carácter non rematada"
 
-#: glib/gmarkup.c:893 glib/gmarkup.c:921 glib/gmarkup.c:952
+#: glib/gmarkup.c:895 glib/gmarkup.c:923 glib/gmarkup.c:954
 msgid "Invalid UTF-8 encoded text"
 msgstr "Texto codificado en UTF-8 non válido"
 
-#: glib/gmarkup.c:988
+#: glib/gmarkup.c:990
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "O documento debe comezar cun elemento (p.ex <book>)"
 
-#: glib/gmarkup.c:1027
+#: glib/gmarkup.c:1029
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -271,7 +271,7 @@ msgstr ""
 "'%s' non é un carácter válido seguindo ao carácter  '<'; non pode estar ao "
 "comezo dun nome de elemento"
 
-#: glib/gmarkup.c:1090
+#: glib/gmarkup.c:1092
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
@@ -280,7 +280,7 @@ msgstr ""
 "Carácter sobrante '%s', agardábase un carácter '>' para pechar a etiqueta de "
 "comezo do elemento '%s'"
 
-#: glib/gmarkup.c:1177
+#: glib/gmarkup.c:1180
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -288,7 +288,7 @@ msgstr ""
 "Carácter sobrante '%s', agardábase un '=' despois do nome do atributo '%s' "
 "do elemento '%s'"
 
-#: glib/gmarkup.c:1218
+#: glib/gmarkup.c:1221
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -299,7 +299,7 @@ msgstr ""
 "comezo do elemento '%s', ou opcionalmente un atributo; talvez usou un "
 "carácter non válido no nome dun atributo"
 
-#: glib/gmarkup.c:1301
+#: glib/gmarkup.c:1309
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -308,7 +308,7 @@ msgstr ""
 "Carácter sobrante '%s', agardábase unha marca de quote aberta despois do "
 "signo igual para dar un valor ao atributo '%s' do elemento '%s'"
 
-#: glib/gmarkup.c:1441
+#: glib/gmarkup.c:1450
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -317,7 +317,7 @@ msgstr ""
 "'%s' non é un carácter válido seguindo aos caracteres '</'; '%s' non pode "
 "comezar o nome dun elemento"
 
-#: glib/gmarkup.c:1479
+#: glib/gmarkup.c:1489
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -326,25 +326,25 @@ msgstr ""
 "'%s' non é un carácter válido seguindo o nome de elemento de peche '%s'; o "
 "carácter permitido é '>'"
 
-#: glib/gmarkup.c:1490
+#: glib/gmarkup.c:1500
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "Pechouse o elemento '%s', actualmente non hai ningún elemento aberto"
 
-#: glib/gmarkup.c:1499
+#: glib/gmarkup.c:1509
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "Pechouse o elemento '%s', pero o elemento aberto actualmente é '%s'"
 
-#: glib/gmarkup.c:1646
+#: glib/gmarkup.c:1656
 msgid "Document was empty or contained only whitespace"
 msgstr "O documento estaba baleiro ou contiña só espazos en branco"
 
-#: glib/gmarkup.c:1660
+#: glib/gmarkup.c:1670
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "O documento rematou inesperadamente despois dun símbolo '<'"
 
-#: glib/gmarkup.c:1668 glib/gmarkup.c:1712
+#: glib/gmarkup.c:1678 glib/gmarkup.c:1722
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -353,7 +353,7 @@ msgstr ""
 "O documento rematou inesperadamente con elementos aínda abertos - '%s' era o "
 "último elemento aberto"
 
-#: glib/gmarkup.c:1676
+#: glib/gmarkup.c:1686
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -362,21 +362,21 @@ msgstr ""
 "O documento rematou inesperadamente, agardábase ver un símbolo '>' pechando "
 "a etiqueta <%s/>"
 
-#: glib/gmarkup.c:1682
+#: glib/gmarkup.c:1692
 msgid "Document ended unexpectedly inside an element name"
 msgstr "O documento rematou inesperadamente dentro dun nome de elemento"
 
-#: glib/gmarkup.c:1687
+#: glib/gmarkup.c:1697
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "O documento rematou inesperadamente dentro dun nome de atributo"
 
-#: glib/gmarkup.c:1692
+#: glib/gmarkup.c:1702
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr ""
 "O documento rematou inesperadamente dentro dunha etiqueta de comezo de "
 "elemento"
 
-#: glib/gmarkup.c:1698
+#: glib/gmarkup.c:1708
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -384,19 +384,19 @@ msgstr ""
 "O documento rematou inesperadamente despois do signo igual tras un nome de "
 "atributo; non hai valor para o atributo"
 
-#: glib/gmarkup.c:1705
+#: glib/gmarkup.c:1715
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr ""
 "O documento rematou inesperadamente estando dentro dun valor de atributo"
 
-#: glib/gmarkup.c:1720
+#: glib/gmarkup.c:1730
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr ""
 "O documento rematou inesperadamente dentro da etiqueta que pechaba o "
 "elemento '%s'"
 
-#: glib/gmarkup.c:1726
+#: glib/gmarkup.c:1736
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "O documento rematou inesperadamente dentro dun comentario ou instrucción de "
@@ -411,18 +411,18 @@ msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr ""
 "Marca de quote sen parella na liña de comandos ou outro texto con quotes"
 
-#: glib/gshell.c:530
+#: glib/gshell.c:540
 #, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
 msgstr "O texto rematou despois dun carácter '\\'. (O texto era '%s')"
 
-#: glib/gshell.c:537
+#: glib/gshell.c:547
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr ""
 "O texto rematou antes de atopar o remate do quote para %c. (O texto era '%s')"
 
-#: glib/gshell.c:549
+#: glib/gshell.c:559
 msgid "Text was empty (or contained only whitespace)"
 msgstr "O texto estaba baleiro (ou contiña espazos en branco namais)"
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib glib-2-2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-08-13 10:10-0400\n"
+"POT-Creation-Date: 2004-10-08 14:13-0400\n"
 "PO-Revision-Date: 2003-03-30 22:38+0700\n"
 "Last-Translator: Mohammad DAMT <mdamt@bisnisweb.com>\n"
 "Language-Team: Indonesia <sukarelawan@gnome.linux.or.id>\n"
@@ -86,59 +86,59 @@ msgstr "Nama host salah"
 msgid "Error opening directory '%s': %s"
 msgstr "Error saat membuka direktori '%s': %s"
 
-#: glib/gfileutils.c:393 glib/gfileutils.c:458
+#: glib/gfileutils.c:395 glib/gfileutils.c:469
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Tidak dapat mengalokasikan %lu byte untuk membaca file '%s'"
 
-#: glib/gfileutils.c:404
+#: glib/gfileutils.c:411
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Error saat membaca file '%s': %s"
 
-#: glib/gfileutils.c:480
+#: glib/gfileutils.c:494
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Gagal saat membaca file '%s': %s"
 
-#: glib/gfileutils.c:527 glib/gfileutils.c:595
+#: glib/gfileutils.c:545 glib/gfileutils.c:626
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Gagal saat membuka file '%s': %s"
 
-#: glib/gfileutils.c:541
+#: glib/gfileutils.c:562
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr ""
 "Gagal saat mengambil atribut file '%s': Fungsi fstat() mengalami kegagalan: %"
 "s"
 
-#: glib/gfileutils.c:567
+#: glib/gfileutils.c:593
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Gagal saat membuka file '%s': fungsi fdopen() mengalami kegagalan: %s"
 
-#: glib/gfileutils.c:779
+#: glib/gfileutils.c:812
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Template '%s' salah, seharusnya tidak boleh berisi '%s'"
 
-#: glib/gfileutils.c:791
+#: glib/gfileutils.c:824
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Template '%s' tidak boleh diakhiri dengan XXXXXX"
 
-#: glib/gfileutils.c:812
+#: glib/gfileutils.c:845
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Gagal saat membuat file '%s': %s"
 
-#: glib/gfileutils.c:1153
+#: glib/gfileutils.c:1188
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Gagal saat membaca link simbolik '%s': %s"
 
-#: glib/gfileutils.c:1172
+#: glib/gfileutils.c:1209
 msgid "Symbolic links not supported"
 msgstr "Link simbolik tidak didukung oleh sistem"
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib-2-4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-08-28 11:37+0200\n"
+"POT-Creation-Date: 2004-10-08 14:13-0400\n"
 "PO-Revision-Date: 2004-08-28 14:42+0300\n"
 "Last-Translator: Mişu Moldovan <dumol@go.ro>\n"
 "Language-Team: Română <gnomero-list@lists.sourceforge.net>\n"
@@ -86,57 +86,57 @@ msgstr "Nume gazdă invalid"
 msgid "Error opening directory '%s': %s"
 msgstr "Eroare la deschiderea directorului „%s”: %s"
 
-#: glib/gfileutils.c:393 glib/gfileutils.c:458
+#: glib/gfileutils.c:395 glib/gfileutils.c:469
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Nu am putut aloca %lu octeţi pentru a citi fişierul „%s”"
 
-#: glib/gfileutils.c:404
+#: glib/gfileutils.c:411
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Eroare la citirea fişierului „%s”: %s"
 
-#: glib/gfileutils.c:480
+#: glib/gfileutils.c:494
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Nu am reuşit să citesc din fişierul „%s”: %s"
 
-#: glib/gfileutils.c:527 glib/gfileutils.c:595
+#: glib/gfileutils.c:545 glib/gfileutils.c:626
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Nu am reuşit să deschid fişierul „%s”: %s"
 
-#: glib/gfileutils.c:541
+#: glib/gfileutils.c:562
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Nu am reuşit să obţin atributele fişierului „%s”: fstat() a eşuat: %s"
 
-#: glib/gfileutils.c:567
+#: glib/gfileutils.c:593
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Nu am reuşit să deschid fişierul „%s”: fdopen() a eşuat: %s"
 
-#: glib/gfileutils.c:779
+#: glib/gfileutils.c:812
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Şablonul „%s” este invalid, n-ar trebui să conţină un „%s”"
 
-#: glib/gfileutils.c:791
+#: glib/gfileutils.c:824
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Şablonul „%s” nu se termină cu XXXXXX"
 
-#: glib/gfileutils.c:812
+#: glib/gfileutils.c:845
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Nu am reuşit să creez fişierul „%s”: %s"
 
-#: glib/gfileutils.c:1153
+#: glib/gfileutils.c:1188
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Nu am reuşit să citesc legătura simbolică „%s”: %s"
 
-#: glib/gfileutils.c:1172
+#: glib/gfileutils.c:1209
 msgid "Symbolic links not supported"
 msgstr "Legăturile simbolice nu sunt suportate"
 
@@ -180,8 +180,8 @@ msgstr "Eroare în linia %d: %s"
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
-"S-a depistat o entitate nulă „&;”. Entităţile valide sunt: &amp; &quot; "
-"&lt; &gt; &apos;"
+"S-a depistat o entitate nulă „&;”. Entităţile valide sunt: &amp; &quot; &lt; "
+"&gt; &apos;"
 
 #: glib/gmarkup.c:424
 #, c-format
@@ -365,8 +365,9 @@ msgstr "Documentul s-a terminat neaşteptat în cadrul numele unui atribut"
 
 #: glib/gmarkup.c:1702
 msgid "Document ended unexpectedly inside an element-opening tag."
-msgstr "Documentul s-a terminat neaşteptat în cadul unei etichete ce deschidea"
-" un element"
+msgstr ""
+"Documentul s-a terminat neaşteptat în cadul unei etichete ce deschidea un "
+"element"
 
 #: glib/gmarkup.c:1708
 msgid ""
@@ -383,13 +384,15 @@ msgstr "Documentul s-a terminat neaşteptat în cadrul valorii unui atribut"
 #: glib/gmarkup.c:1730
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
-msgstr "Documentul s-a terminat neaşteptat în cadrul etichetei de închidere a"
-" elementului „%s”"
+msgstr ""
+"Documentul s-a terminat neaşteptat în cadrul etichetei de închidere a "
+"elementului „%s”"
 
 #: glib/gmarkup.c:1736
 msgid "Document ended unexpectedly inside a comment or processing instruction"
-msgstr "Documentul s-a terminat neaşteptat în cadrul unui comentariu sau a "
-"unei instrucţiuni de procesare"
+msgstr ""
+"Documentul s-a terminat neaşteptat în cadrul unui comentariu sau a unei "
+"instrucţiuni de procesare"
 
 #: glib/gshell.c:72
 msgid "Quoted text doesn't begin with a quotation mark"
@@ -407,8 +410,9 @@ msgstr "Textul s-a terminal imediat după un caracter „\\” (textul era „%s
 #: glib/gshell.c:547
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
-msgstr "Textul s-a terminal înainte de semnul de citare pereche pentru %c "
-"(textul era „%s”)"
+msgstr ""
+"Textul s-a terminal înainte de semnul de citare pereche pentru %c (textul "
+"era „%s”)"
 
 #: glib/gshell.c:559
 msgid "Text was empty (or contained only whitespace)"
@@ -448,8 +452,9 @@ msgstr "Nu am reuşit să schimb în directorul „%s” (%s)"
 #: glib/gspawn-win32.c:1040 glib/gspawn.c:1348
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
-msgstr "Nu am reuşit să creez conectorul „pipe” pentru a comunica cu procesul "
-"copil (%s)"
+msgstr ""
+"Nu am reuşit să creez conectorul „pipe” pentru a comunica cu procesul copil "
+"(%s)"
 
 #: glib/gspawn.c:178
 #, c-format
@@ -459,8 +464,8 @@ msgstr "Nu am reuşit să citesc datele din procesul copil (%s)"
 #: glib/gspawn.c:309
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
-msgstr "Eroare neaşteptată în select() la citirea datelor din  procesul copil "
-"(%s)"
+msgstr ""
+"Eroare neaşteptată în select() la citirea datelor din  procesul copil (%s)"
 
 #: glib/gspawn.c:392
 #, c-format
@@ -495,8 +500,9 @@ msgstr "Eroare necunoscută la lansarea în execuţie a procesului copil „%s�
 #: glib/gspawn.c:1276
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
-msgstr "Nu am reuşit să citesc date suficiente din PID-ul conectorului "
-"„pipe” copil (%s)"
+msgstr ""
+"Nu am reuşit să citesc date suficiente din PID-ul conectorului „pipe” copil "
+"(%s)"
 
 #: glib/gutf8.c:985
 msgid "Character out of range for UTF-8"
@@ -510,4 +516,3 @@ msgstr "Secvenţă invalidă în intrarea conversiei"
 #: glib/gutf8.c:1376 glib/gutf8.c:1472
 msgid "Character out of range for UTF-16"
 msgstr "Caracter în afara standardului UTF-16"
-

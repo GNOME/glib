@@ -1,3 +1,7 @@
+2004-10-08  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.4.7 ===
+
 2004-10-05  Matthias Clasen  <mclasen@redhat.com>
 
 	* gobject/tmpl/objects.sgml: Improve the docs for
@@ -19,7 +23,7 @@ Sun Aug 29 23:50:45 2004  Matthias Clasen  <maclas@gmx.de>
 
 2004-08-13  Matthias Clasen  <clasen@redhat.com>
 
-        * === Released 2.4.6 ===
+	* === Released 2.4.6 ===
 
 2004-08-12  Matthias Clasen  <mclasen@redhat.com>
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-06 21:39+0000\n"
+"POT-Creation-Date: 2004-10-08 14:13-0400\n"
 "PO-Revision-Date: 2004-09-06 21:40+0000\n"
 "Last-Translator: Åsmund Skjæveland <aasmunds@fys.uio.no>\n"
 "Language-Team: Norwegian Nynorsk <i18n-nn@lister.ping.uio.no>\n"
@@ -89,57 +89,57 @@ msgstr "Ugyldig vertsnamn"
 msgid "Error opening directory '%s': %s"
 msgstr "Feil ved opning av katalog «%s»: %s"
 
-#: glib/gfileutils.c:393 glib/gfileutils.c:458
+#: glib/gfileutils.c:395 glib/gfileutils.c:469
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Klarte ikkje allokera %lu byte for å lesa «%s»"
 
-#: glib/gfileutils.c:404
+#: glib/gfileutils.c:411
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Feil ved lesing av fil «%s»: %s"
 
-#: glib/gfileutils.c:480
+#: glib/gfileutils.c:494
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Klarte ikkje å lesa frå fila «%s»: %s"
 
-#: glib/gfileutils.c:527 glib/gfileutils.c:595
+#: glib/gfileutils.c:545 glib/gfileutils.c:626
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Klarte ikkje å opna fila «%s»: %s"
 
-#: glib/gfileutils.c:541
+#: glib/gfileutils.c:562
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Klarte ikkje å få tak i eigenskapar for fila «%s»: fstat() feila: %s"
 
-#: glib/gfileutils.c:567
+#: glib/gfileutils.c:593
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Kunne ikkje opna fila «%s»: fdopen() feila: %s"
 
-#: glib/gfileutils.c:779
+#: glib/gfileutils.c:812
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Malen «%s» er ugyldig, kan ikkje ikkje innehalda ein «%s»"
 
-#: glib/gfileutils.c:791
+#: glib/gfileutils.c:824
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Malfila «%s» er ikkje avslutta med XXXXXX"
 
-#: glib/gfileutils.c:812
+#: glib/gfileutils.c:845
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Klarte ikkje å oppretta fila «%s»: %s"
 
-#: glib/gfileutils.c:1153
+#: glib/gfileutils.c:1188
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Klarte ikkje å lesa den symolske lenkja «%s»: %s"
 
-#: glib/gfileutils.c:1172
+#: glib/gfileutils.c:1209
 msgid "Symbolic links not supported"
 msgstr "Symbolske lenkjer er ikkje støtta"
 
@@ -180,7 +180,8 @@ msgid "Error on line %d: %s"
 msgstr "Feil på linje %d: %s"
 
 #: glib/gmarkup.c:414
-msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr "Fann tom entitet «&;»; gyldige entitetar er: &amp; &quot; &lt; &apos;"
 
 #: glib/gmarkup.c:424
@@ -275,7 +276,8 @@ msgstr ""
 
 #: glib/gmarkup.c:1180
 #, c-format
-msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgid ""
+"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "Merkeleg teikn «%s», venta ein «=» etter attributtnamnet «%s» av elementet «%"
 "s»"
@@ -364,7 +366,8 @@ msgstr "Dokumentet tok uventa slutt inni eit attributtnamn"
 
 #: glib/gmarkup.c:1702
 msgid "Document ended unexpectedly inside an element-opening tag."
-msgstr "Dokumentet vart uventa avslutta inne i eit merke som opnar eit element."
+msgstr ""
+"Dokumentet vart uventa avslutta inne i eit merke som opnar eit element."
 
 #: glib/gmarkup.c:1708
 msgid ""
@@ -385,7 +388,8 @@ msgstr "Dokumentet avslutta uventa i eit lukkemerke for elementet «%s»"
 
 #: glib/gmarkup.c:1736
 msgid "Document ended unexpectedly inside a comment or processing instruction"
-msgstr "Dokumentet avslutta uventa inne i ein merknad eller prosseseringsinstruksjon"
+msgstr ""
+"Dokumentet avslutta uventa inne i ein merknad eller prosseseringsinstruksjon"
 
 #: glib/gshell.c:72
 msgid "Quoted text doesn't begin with a quotation mark"
@@ -419,7 +423,8 @@ msgstr "Klarte ikkje å lesa data frå barneprosess"
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
-msgstr "Uventa feil i g_io_channel_win32_poll() ved lesing av data frå barneprosess"
+msgstr ""
+"Uventa feil i g_io_channel_win32_poll() ved lesing av data frå barneprosess"
 
 #: glib/gspawn-win32.c:850 glib/gspawn.c:1012
 #, c-format
@@ -502,4 +507,3 @@ msgstr "Ugyldig sekvens i inndata-konvertering"
 #: glib/gutf8.c:1376 glib/gutf8.c:1472
 msgid "Character out of range for UTF-16"
 msgstr "Teikn ikkje gyldig for UTF-16"
-

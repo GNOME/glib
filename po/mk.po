@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.glib-2-4.mk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-08 11:39+0200\n"
+"POT-Creation-Date: 2004-10-08 14:13-0400\n"
 "PO-Revision-Date: 2004-09-11 19:20+0200\n"
 "Last-Translator: Arangel Angov <ufo@linux.net.mk>\n"
 "Language-Team: Macedonian <ossm-members@hedona.on.net.mk>\n"
@@ -89,57 +89,58 @@ msgstr "Невалидно име на хост"
 msgid "Error opening directory '%s': %s"
 msgstr "Грешка при отворање на директориумот '%s': %s"
 
-#: glib/gfileutils.c:393 glib/gfileutils.c:458
+#: glib/gfileutils.c:395 glib/gfileutils.c:469
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Не можам да алоцирам %lu бајти за да ја прочитам датотеката \"%s\""
 
-#: glib/gfileutils.c:404
+#: glib/gfileutils.c:411
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Грешка при читањето на датотеката '%s': %s"
 
-#: glib/gfileutils.c:480
+#: glib/gfileutils.c:494
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Не успеав да прочитам од датотеката '%s': %s"
 
-#: glib/gfileutils.c:527 glib/gfileutils.c:595
+#: glib/gfileutils.c:545 glib/gfileutils.c:626
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Не успеав да ја отворам датотеката '%s': %s"
 
-#: glib/gfileutils.c:541
+#: glib/gfileutils.c:562
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
-msgstr "Не успеав да ги добијам атрибутите на датотеката '%s': fstat() failed: %s"
+msgstr ""
+"Не успеав да ги добијам атрибутите на датотеката '%s': fstat() failed: %s"
 
-#: glib/gfileutils.c:567
+#: glib/gfileutils.c:593
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Не успеав да ја отворам датотеката '%s': fdopen() failed: %s"
 
-#: glib/gfileutils.c:779
+#: glib/gfileutils.c:812
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Мострата '%s' е невалидна, не треба да содржи '%s'"
 
-#: glib/gfileutils.c:791
+#: glib/gfileutils.c:824
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Мострата '%s' не завршува со XXXXXX"
 
-#: glib/gfileutils.c:812
+#: glib/gfileutils.c:845
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Не успеав да ја креирам датотеката '%s': %s"
 
-#: glib/gfileutils.c:1153
+#: glib/gfileutils.c:1188
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Не успеав да ја прочитам симболичката врска '%s': %s"
 
-#: glib/gfileutils.c:1172
+#: glib/gfileutils.c:1209
 msgid "Symbolic links not supported"
 msgstr "Симболичките врски не се поддржани"
 
@@ -180,8 +181,11 @@ msgid "Error on line %d: %s"
 msgstr "Грешка на линија %d: %s"
 
 #: glib/gmarkup.c:414
-msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
-msgstr "Празен ентитет '&;' видени; валидни ентитети се: &amp; &quot; &lt; &gt; &apos;"
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgstr ""
+"Празен ентитет '&;' видени; валидни ентитети се: &amp; &quot; &lt; &gt; "
+"&apos;"
 
 #: glib/gmarkup.c:424
 #, c-format
@@ -189,7 +193,9 @@ msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
 "begins an entity; if this ampersand isn't supposed to be an entity, escape "
 "it as &amp;"
-msgstr "Карактерот '%s' претставува невалиден почеток на име на ентитет, карактерот & го започнува ентитетот;"
+msgstr ""
+"Карактерот '%s' претставува невалиден почеток на име на ентитет, карактерот "
+"& го започнува ентитетот;"
 
 #: glib/gmarkup.c:460
 #, c-format
@@ -212,7 +218,9 @@ msgstr ""
 msgid ""
 "Failed to parse '%s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
-msgstr "Не успеав да парасирам '%s', кое што требаше да биде параметар за внатрешен дигитален карактер (на пример, &#234) - најверојатно бројот е преголем"
+msgstr ""
+"Не успеав да парасирам '%s', кое што требаше да биде параметар за внатрешен "
+"дигитален карактер (на пример, &#234) - најверојатно бројот е преголем"
 
 #: glib/gmarkup.c:585
 #, c-format
@@ -251,7 +259,8 @@ msgstr "Документите мора да започнуваат со еле�
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
-msgstr "'%s' не е валиден карактер по '<' карактер; не може да започне име на елемент"
+msgstr ""
+"'%s' не е валиден карактер по '<' карактер; не може да започне име на елемент"
 
 #: glib/gmarkup.c:1092
 #, c-format
@@ -259,13 +268,16 @@ msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
 "'%s'"
 msgstr ""
-"Чуден карактер '%s', очекував '>' карактер да го заврши почетниот таг на елементот "
-"'%s'"
+"Чуден карактер '%s', очекував '>' карактер да го заврши почетниот таг на "
+"елементот '%s'"
 
 #: glib/gmarkup.c:1180
 #, c-format
-msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
-msgstr "Чуден карактер '%s', очекував '=' по името на атрибутот '%s' од елементот '%s'"
+msgid ""
+"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgstr ""
+"Чуден карактер '%s', очекував '=' по името на атрибутот '%s' од елементот '%"
+"s'"
 
 #: glib/gmarkup.c:1221
 #, c-format
@@ -312,21 +324,26 @@ msgstr "Документот е празен или содржи само пра
 
 #: glib/gmarkup.c:1670
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
-msgstr "Документот заврши неочекувано веднаш по заградата за отворениот агол '<'"
+msgstr ""
+"Документот заврши неочекувано веднаш по заградата за отворениот агол '<'"
 
 #: glib/gmarkup.c:1678 glib/gmarkup.c:1722
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
 "element opened"
-msgstr "Документот заврши неочекувано со сеуште отворени елементи - '%s' беше последниот отворен елемент"
+msgstr ""
+"Документот заврши неочекувано со сеуште отворени елементи - '%s' беше "
+"последниот отворен елемент"
 
 #: glib/gmarkup.c:1686
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
 "the tag <%s/>"
-msgstr "Документот заврши неочекувано, очекував да видам го видам аголот на заградата за затворање на тагот <%s/>"
+msgstr ""
+"Документот заврши неочекувано, очекував да видам го видам аголот на "
+"заградата за затворање на тагот <%s/>"
 
 #: glib/gmarkup.c:1692
 msgid "Document ended unexpectedly inside an element name"
@@ -348,16 +365,20 @@ msgstr ""
 
 #: glib/gmarkup.c:1715
 msgid "Document ended unexpectedly while inside an attribute value"
-msgstr "Документот заврши неочекувано додека беше внатре во вредноста на атрибутот"
+msgstr ""
+"Документот заврши неочекувано додека беше внатре во вредноста на атрибутот"
 
 #: glib/gmarkup.c:1730
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
-msgstr "Документот заврши неочекувано внатре во тагот за затворање на елементи '%s'"
+msgstr ""
+"Документот заврши неочекувано внатре во тагот за затворање на елементи '%s'"
 
 #: glib/gmarkup.c:1736
 msgid "Document ended unexpectedly inside a comment or processing instruction"
-msgstr "Документот заврши неочекувано внатре во коментар или инструкција за процесирање"
+msgstr ""
+"Документот заврши неочекувано внатре во коментар или инструкција за "
+"процесирање"
 
 #: glib/gshell.c:72
 msgid "Quoted text doesn't begin with a quotation mark"
@@ -365,7 +386,9 @@ msgstr "Цитираниот текст не започнува со знако�
 
 #: glib/gshell.c:162
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
-msgstr "Несовпаѓачки знак за цитирање на командната линија или друг текст цитиран во школка"
+msgstr ""
+"Несовпаѓачки знак за цитирање на командната линија или друг текст цитиран во "
+"школка"
 
 #: glib/gshell.c:540
 #, c-format
@@ -375,7 +398,9 @@ msgstr "Текстот заврши веднаш по '\\' карактер. (Т
 #: glib/gshell.c:547
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
-msgstr "Текстот заврши пред да биде пронајден совпаѓачки цитат за %c. (Текстот беше '%s')"
+msgstr ""
+"Текстот заврши пред да биде пронајден совпаѓачки цитат за %c. (Текстот беше "
+"'%s')"
 
 #: glib/gshell.c:559
 msgid "Text was empty (or contained only whitespace)"
@@ -423,7 +448,8 @@ msgstr "Не успеав да ги прочитам податоците од �
 #: glib/gspawn.c:309
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
-msgstr "Неочекувана грешка во select() при читањето на податоци од подпроцесот (%s)"
+msgstr ""
+"Неочекувана грешка во select() при читањето на податоци од подпроцесот (%s)"
 
 #: glib/gspawn.c:392
 #, c-format
@@ -472,4 +498,3 @@ msgstr "Невалидна секвенца во излезот од конве�
 #: glib/gutf8.c:1376 glib/gutf8.c:1472
 msgid "Character out of range for UTF-16"
 msgstr "Карактерот е надвор од опсег за UTF-16"
-
