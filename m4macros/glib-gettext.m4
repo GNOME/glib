@@ -181,8 +181,6 @@ glib_DEFUN([GLIB_WITH_NLS],
 	  INSTOBJEXT=.mo
 	fi
       fi
-
-      LIBS="$glib_save_LIBS"
     ])
 
     if test "$gt_cv_have_gettext" = "yes" ; then
