@@ -1,3 +1,11 @@
+2000-07-14  Tor Lillqvist  <tml@iki.fi>
+
+	* glib.def: Add g_error functions.
+
+	* makefile.mingw.in: Add gbacktrace.o.
+
+	* gbacktrace.c: No need to include <process.h>.
+
 2000-07-12  Havoc Pennington  <hp@redhat.com>
 
 	* glib.h: #include <gerror.h>

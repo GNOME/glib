@@ -41,6 +41,7 @@ install : all
 glib_OBJECTS = \
 	garray.o \
 	gasyncqueue.o \
+	gbacktrace.o \
 	gcache.o \
 	gcompletion.o \
 	gdataset.o \

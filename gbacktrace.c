@@ -62,7 +62,6 @@
 #ifdef G_OS_WIN32
 #  define STRICT		/* Strict typing, please */
 #  include <windows.h>
-#  include <process.h>		/* For _getpid() */
 #endif
 
 #ifndef NO_FD_SET

@@ -28,6 +28,7 @@ EXPORTS
 	g_cache_new
 	g_cache_remove
 	g_cache_value_foreach
+	g_clear_error
 	g_completion_add_items
 	g_completion_clear_items
 	g_completion_complete
@@ -90,6 +91,11 @@ EXPORTS
 	g_direct_equal
 	g_direct_hash
 	g_dirname
+	g_error_copy
+	g_error_free
+	g_error_matches
+	g_error_new
+	g_error_new_literal
 	g_filename_from_utf8
 	g_filename_to_utf8
 	g_free
@@ -324,6 +330,7 @@ EXPORTS
 	g_scanner_thaw_symbol_table
 	g_scanner_unexp_token
 	g_scanner_warn
+	g_set_error
 	g_set_error_handler
 	g_set_message_handler
 	g_set_prgname
