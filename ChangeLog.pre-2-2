@@ -1,3 +1,8 @@
+Sun Oct 31 18:55:01 1999  ape@spacetec.no  (Asbjorn Pettersen)
+
+	* gcache.c (g_cache_remove): Test if node is NULL.
+	If not tested, GIMP's script-fu will crash. 
+
 Sun Oct 17 18:11:40 1999  Tim Janik  <timj@gtk.org>
 
 	* gdataset.c (g_data_set_internal): remove g_dataset_global_lock around

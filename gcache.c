@@ -157,6 +157,8 @@ g_cache_remove (GCache   *cache,
   key = g_hash_table_lookup (rcache->value_table, value);
   node = g_hash_table_lookup (rcache->key_table, key);
 
+  g_return_if_fail (node != NULL);
+
   node->ref_count -= 1;
   if (node->ref_count == 0)
     {
