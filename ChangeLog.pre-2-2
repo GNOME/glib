@@ -1,3 +1,7 @@
+Wed Feb 28 16:59:05 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* configure.in (mem_warn): Add discouraging message if
+	--enable-mem-profile or --enable-mem-check is given.
 
 Mon Feb 26 21:06:17 CST 2001  Shawn T. Amundson <amundson@gtk.org>
 

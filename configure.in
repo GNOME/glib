@@ -91,8 +91,8 @@ AC_DIVERT_POP()dnl
 
 dnl declare --enable-* args and collect ac_help strings
 AC_ARG_ENABLE(debug, [  --enable-debug=[no/minimum/yes] turn on debugging [default=$debug_default]],,enable_debug=$debug_default)
-AC_ARG_ENABLE(mem_check, [  --enable-mem-check      turn on malloc/free sanity checking [default=no]],,enable_mem_check=no)
-AC_ARG_ENABLE(mem_profile, [  --enable-mem-profile    turn on malloc profiling atexit [default=no]],,enable_mem_profile=no)
+AC_ARG_ENABLE(mem_check, [  --enable-mem-check      turn on malloc/free sanity checking (not recommended) [default=no]],,enable_mem_check=no)
+AC_ARG_ENABLE(mem_profile, [  --enable-mem-profile    turn on malloc profiling atexit (not recommended) [default=no]],,enable_mem_profile=no)
 AC_ARG_ENABLE(ansi, [  --enable-ansi           turn on strict ansi [default=no]],
 		    , enable_ansi=no)
 AC_ARG_ENABLE(threads, [  --enable-threads        turn on basic thread support [default=yes]
@@ -102,11 +102,14 @@ if test "x$enable_threads" != "xyes"; then
   enable_threads=no
 fi
 
+mem_warn=false
+
 AC_MSG_CHECKING(whether to enable memory checking)
 if test "x$enable_mem_check" = "xyes"; then
   AC_DEFINE(ENABLE_MEM_CHECK, 1)
   AC_SUBST(ENABLE_MEM_CHECK)
   AC_MSG_RESULT(yes)
+  mem_warn=true
 else
   AC_MSG_RESULT(no)
 fi
@@ -116,8 +119,26 @@ if test "x$enable_mem_profile" = "xyes"; then
   AC_DEFINE(ENABLE_MEM_PROFILE, 1)
   AC_SUBST(ENABLE_MEM_PROFILE)
   AC_MSG_RESULT(yes)
+  mem_warn=true
 else
   AC_MSG_RESULT(no)
+fi
+
+
+
+if $mem_warn ; then
+  AC_MSG_WARN([
+**********************************************************************
+ You have specified --enable-mem-profile or --enable-mem-check. 
+ These options are not recommended; they have not been thoroughly 
+ tested, and may cause unwanted side-effects. If --enable-mem-check is 
+ specified, NO MEMORY WILL BE FREED, EVER.
+
+ References to better memory debugging tools can be found at:
+
+  http://people.redhat.com/otaylor/memprof/memtools.html
+
+**********************************************************************])
 fi
 
 if test "x$enable_debug" = "xyes"; then
