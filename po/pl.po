@@ -1,4 +1,4 @@
-# Copyright (C) 2001-2002 Free Software Foundation, Inc.
+# Copyright (C) 2001-2003 Free Software Foundation, Inc.
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 # Aktualną wersję tego pliku możesz odnaleźć w repozytorium cvs.gnome.pl
 # (:pserver:anonymous@cvs.gnome.pl:/home/cvs, puste hasło)
@@ -9,8 +9,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"POT-Creation-Date: 2002-05-10 19:22+0200\n"
-"PO-Revision-Date: 2002-07-05 00:12+0200\n"
+"POT-Creation-Date: 2003-01-02 01:16+0100\n"
+"PO-Revision-Date: 2003-01-02 01:22+0100\n"
 "Last-Translator: GNOME PL Team <translators@gnome.pl>\n"
 "Language-Team: Polish <pl@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -170,10 +170,6 @@ msgstr "Niepoprawny rozmiar danych"
 #: glib/giowin32.c:1 glib/giowin32.c:1
 msgid "Socket error"
 msgstr "Błąd przy operacji na gnieździe"
-
-#: glib/giowin32.c:1
-msgid "Channel set flags unsupported"
-msgstr "Ustawianie znaczników kanału nie jest obsługiwane"
 
 #: glib/gmarkup.c:1
 #, c-format
@@ -453,6 +449,10 @@ msgstr ""
 msgid "Failed to read from child pipe (%s)"
 msgstr "Nie można odczytać danych z potoku łączącego z procesem potomnym (%s)"
 
+#: glib/gspawn-win32.c:1
+msgid "Failed to execute helper program"
+msgstr "Nie można uruchomić programu pomocniczego"
+
 #: glib/gspawn-win32.c:1 glib/gspawn.c:1
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
@@ -529,3 +529,6 @@ msgstr "Niepoprawna sekwencja na wejściu konwersji"
 #: glib/gutf8.c:1 glib/gutf8.c:1
 msgid "Character out of range for UTF-16"
 msgstr "Znak jest poza zakresem dopuszczalnym dla UTF-8"
+
+#~ msgid "Channel set flags unsupported"
+#~ msgstr "Ustawianie znaczników kanału nie jest obsługiwane"
