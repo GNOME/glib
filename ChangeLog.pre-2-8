@@ -1,3 +1,7 @@
+Sun Mar 13 21:28:47 2005  Manish Singh  <yosh@gimp.org>
+
+	* glib/gdataset.c: remove spurious IA prefix from g_quark_try_string.
+
 2005-03-13  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gatomic.c:

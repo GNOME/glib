@@ -545,7 +545,7 @@ g_data_initialize (void)
 }
 
 GQuark
-IA__g_quark_try_string (const gchar *string)
+g_quark_try_string (const gchar *string)
 {
   GQuark quark = 0;
   g_return_val_if_fail (string != NULL, 0);
