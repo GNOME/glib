@@ -1,3 +1,8 @@
+2001-07-27  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* glib.h: Use G_GNUC_EXTENSION instead of __extension__. Patch
+	from Pavel Roskin <proski@gnu.org>.
+
 Thu Mar 15 10:37:49 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* Released 1.2.10
