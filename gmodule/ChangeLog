@@ -1,3 +1,8 @@
+Tue May 11 23:23:21 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* gmodule-ar.c (_g_module_open): Make it compile on AIX.  
+	(#141159, Michael Wilson)
+
 2004-03-31  Tor Lillqvist  <tml@iki.fi>
 
 	* gmodule-win32.c (_g_module_build_path): On Cygwin, use the "cyg"

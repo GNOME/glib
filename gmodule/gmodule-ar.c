@@ -97,7 +97,8 @@ exit:
 
 static gpointer
 _g_module_open (const gchar *file_name,
-		gboolean     bind_lazy)
+		gboolean     bind_lazy,
+		gboolean     bind_local)
 {
   gpointer handle;
   gchar* member;
@@ -105,18 +106,19 @@ _g_module_open (const gchar *file_name,
 
   /* extract name of first member of archive */
 
-  member = _g_module_get_member(file_name);
+  member = _g_module_get_member (file_name);
   if (member != NULL)
     {
-      full_name = g_strconcat(file_name, "(", member, ")", NULL);
-      g_free(member);
+      full_name = g_strconcat (file_name, "(", member, ")", NULL);
+      g_free (member);
     }
   else
-    full_name = g_strdup(file_name);
+    full_name = g_strdup (file_name);
   
-  handle = dlopen (full_name, RTLD_GLOBAL | RTLD_MEMBER | (bind_lazy ? RTLD_LAZY : RTLD_NOW));
+  handle = dlopen (full_name, 
+		   (bind_local ? RTLD_LOCAL : RTLD_GLOBAL) | RTLD_MEMBER | (bind_lazy ? RTLD_LAZY : RTLD_NOW));
 
-  g_free(full_name);
+  g_free (full_name);
 
   if (!handle)
     g_module_set_error (fetch_dlerror (TRUE));
