@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"POT-Creation-Date: 2002-11-04 15:31-0500\n"
-"PO-Revision-Date: 2002-06-26 11:10+0200\n"
+"POT-Creation-Date: 2002-11-21 16:38+0200\n"
+"PO-Revision-Date: 2002-11-21 17:40+0200\n"
 "Last-Translator: Borislav Aleksandrov <B.Aleksandrov@cnsys.bg>\n"
 "Language-Team: Bulgarian <dict@linux.zonebg.com>\n"
 "MIME-Version: 1.0\n"
@@ -405,11 +405,11 @@ msgstr "Текста завърва преди съответните кавич
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Текста е празен (или съдържа само шпации)"
 
-#: glib/gspawn-win32.c:198
+#: glib/gspawn-win32.c:205
 msgid "Failed to read data from child process"
 msgstr "Неуспех при четене на данни от синовен процес"
 
-#: glib/gspawn-win32.c:323
+#: glib/gspawn-win32.c:333
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -417,22 +417,26 @@ msgstr ""
 "Неочаквана грешка в g_io_channel_win32_poll() при четене на данни от синовен "
 "процес"
 
-#: glib/gspawn-win32.c:690 glib/gspawn.c:929
+#: glib/gspawn-win32.c:702 glib/gspawn.c:949
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Неуспех за четене от синовен канал (%s)"
 
-#: glib/gspawn-win32.c:778 glib/gspawn.c:1134
+#: glib/gspawn-win32.c:780
+msgid "Failed to execute helper program"
+msgstr "Неуспех при изпълнение на помощна програма"
+
+#: glib/gspawn-win32.c:813 glib/gspawn.c:1154
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Неуспех при промяна на директория '%s' (%s)"
 
-#: glib/gspawn-win32.c:787
+#: glib/gspawn-win32.c:822
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Неуспех при изпълнение на синовен процес (%s)"
 
-#: glib/gspawn-win32.c:828 glib/gspawn.c:1265
+#: glib/gspawn-win32.c:865 glib/gspawn.c:1285
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Неуспех за създаване на канал за комуникация със синовен процес (%s)"
@@ -453,32 +457,32 @@ msgstr ""
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Неочаквана грешка в waitpid() (%s)"
 
-#: glib/gspawn.c:994
+#: glib/gspawn.c:1014
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Неуспешен fork (%s)"
 
-#: glib/gspawn.c:1144
+#: glib/gspawn.c:1164
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Неуспех при изпълнение на синовен процес \"%s\" (%s)"
 
-#: glib/gspawn.c:1154
+#: glib/gspawn.c:1174
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Неуспех при пренасочване изхода или входа на синовен процес (%s)"
 
-#: glib/gspawn.c:1163
+#: glib/gspawn.c:1183
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Неуспех при 'fork' за синовен процес (%s)"
 
-#: glib/gspawn.c:1171
+#: glib/gspawn.c:1191
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Неизвестна грешка при изпълнение на синовен процес \"%s\""
 
-#: glib/gspawn.c:1193
+#: glib/gspawn.c:1213
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr ""
