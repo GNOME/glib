@@ -1,3 +1,8 @@
+Thu Jan 24 07:39:56 2002  Tim Janik  <timj@gtk.org>
+
+	* gobject.c (g_signal_connect_object): return gulong instead
+	of guint.
+
 Fri Jan 11 12:26:36 2002  Tim Janik  <timj@gtk.org>
 
 	* gparamspecs.c: fixed param_value_array_values_cmp(),

@@ -1542,7 +1542,7 @@ g_value_dup_object (const GValue *value)
   return value->data[0].v_pointer ? g_object_ref (value->data[0].v_pointer) : NULL;
 }
 
-guint
+gulong
 g_signal_connect_object (gpointer      instance,
 			 const gchar  *detailed_signal,
 			 GCallback     c_handler,
