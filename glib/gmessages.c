@@ -81,7 +81,8 @@ static GPrintFunc     glib_print_func = NULL;
 static GPrintFunc     glib_printerr_func = NULL;
 static GPrivate	     *g_log_depth = NULL;
 static GLogLevelFlags g_log_msg_prefix = G_LOG_LEVEL_ERROR | G_LOG_LEVEL_WARNING | G_LOG_LEVEL_CRITICAL | G_LOG_LEVEL_DEBUG;
-
+static GLogFunc       default_log_func = g_log_default_handler;
+static gpointer       default_log_data = NULL;
 
 /* --- functions --- */
 #ifdef G_OS_WIN32
@@ -284,7 +285,9 @@ g_log_domain_get_handler_L (GLogDomain	*domain,
 	  handler = handler->next;
 	}
     }
-  return g_log_default_handler;
+
+  *data = default_log_data;
+  return default_log_func;
 }
 
 GLogLevelFlags
@@ -373,6 +376,21 @@ g_log_set_handler (const gchar	 *log_domain,
   g_mutex_unlock (g_messages_lock);
   
   return handler_id;
+}
+
+GLogFunc
+g_log_set_default_handler (GLogFunc log_func,
+			   gpointer user_data)
+{
+  GLogFunc old_log_func;
+  
+  g_mutex_lock (g_messages_lock);
+  old_log_func = default_log_func;
+  default_log_func = log_func;
+  default_log_data = user_data;
+  g_mutex_unlock (g_messages_lock);
+  
+  return old_log_func;
 }
 
 void

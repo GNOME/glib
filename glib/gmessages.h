@@ -88,6 +88,8 @@ void            g_log_default_handler   (const gchar    *log_domain,
                                          GLogLevelFlags  log_level,
                                          const gchar    *message,
                                          gpointer        unused_data);
+GLogFunc        g_log_set_default_handler (GLogFunc      log_func,
+					   gpointer      user_data);
 void            g_log                   (const gchar    *log_domain,
                                          GLogLevelFlags  log_level,
                                          const gchar    *format,

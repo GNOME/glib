@@ -1,3 +1,11 @@
+Sun Sep  5 01:46:11 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/glib.def: 
+	* glib/gmessages.h: 
+	* glib/gmessages.c (g_log_set_default_handler): New
+	function to install an alternate default log 
+	handler.  (#66387, Darin Adler)
+
 2004-09-03  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/glib.def: Update.

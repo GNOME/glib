@@ -6,7 +6,8 @@ versatile support for logging messages with different levels of importance.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-These functions provide support for logging error messages or messages used for debugging. 
+These functions provide support for logging error messages or messages 
+used for debugging. 
 </para>
 
 <para>
@@ -159,15 +160,18 @@ A convenience function/macro to log a debug message.
 <para>
 Sets the log handler for a domain and a set of log levels.
 To handle fatal and recursive messages the @log_levels parameter
-must be combined with the #G_LOG_FLAG_FATAL and #G_LOG_FLAG_RECURSION bit flags.
+must be combined with the #G_LOG_FLAG_FATAL and #G_LOG_FLAG_RECURSION 
+bit flags.
 </para>
 <para>
-Note that since the #G_LOG_LEVEL_ERROR log level is always fatal, if you want
-to set a handler for this log level you must combine it with #G_LOG_FLAG_FATAL.
+Note that since the #G_LOG_LEVEL_ERROR log level is always fatal, if 
+you want to set a handler for this log level you must combine it with 
+#G_LOG_FLAG_FATAL.
 </para>
 
 <example>
-<title>Adding a log handler for all warning messages in the default (application) domain</title>
+<title>Adding a log handler for all warning messages in the default 
+(application) domain</title>
 <programlisting>
   g_log_set_handler (NULL, G_LOG_LEVEL_WARNING | G_LOG_FLAG_FATAL
                      | G_LOG_FLAG_RECURSION, my_log_handler, NULL);
@@ -183,7 +187,8 @@ to set a handler for this log level you must combine it with #G_LOG_FLAG_FATAL.
 </example>
 
 <example>
-<title>Adding a log handler for <emphasis>all</emphasis> messages from GLib</title>
+<title>Adding a log handler for <emphasis>all</emphasis> messages from 
+GLib</title>
 <programlisting>
   g_log_set_handler ("GLib", G_LOG_LEVEL_MASK | G_LOG_FLAG_FATAL
                      | G_LOG_FLAG_RECURSION, my_log_handler, NULL);
@@ -234,7 +239,8 @@ Sets the log levels which are fatal in the given domain.
 
 <!-- ##### FUNCTION g_log_default_handler ##### -->
 <para>
-The default log handler.
+The default log handler set up by GLib; g_log_set_default_handler() 
+allows to install an alternate default log handler.
 This is used if no log handler has been set for the particular log domain
 and log level combination. It outputs the message to stderr or stdout
 and if the log level is fatal it calls <function>abort()</function>.
@@ -243,10 +249,22 @@ and if the log level is fatal it calls <function>abort()</function>.
 stderr is used for levels %G_LOG_LEVEL_ERROR, %G_LOG_LEVEL_CRITICAL, and
 %G_LOG_LEVEL_WARNING. stdout is used for the rest.
 </para>
+<para>
 
 @log_domain: the log domain of the message.
 @log_level: the level of the message.
 @message: the message.
 @unused_data: data passed from g_log() which is unused.
 
+<!-- ##### FUNCTION g_log_set_default_handler ##### -->
+<para>
+Installs a default log handler which is used is used if no 
+log handler has been set for the particular log domain
+and log level combination. By default, GLib uses 
+g_log_default_handler() as default log handler.
+</para>
 
+@log_func: the log handler function.
+@user_data: data passed to the log handler.
+@Returns: the previous default log handler
+@Since: 2.6

@@ -1,3 +1,8 @@
+Sun Sep  5 01:44:23 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/glib-sections.txt: 
+	* glib/tmpl/messages.sgml: Document g_log_set_default_handler().
+
 Wed Sep  1 20:27:59 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/glib-sections.txt: Add g_date_get_iso8601_week_of_year.

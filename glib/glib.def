@@ -317,6 +317,7 @@ EXPORTS
 	g_log_default_handler
 	g_log_remove_handler
 	g_log_set_always_fatal
+	g_log_set_default_handler
 	g_log_set_fatal_mask
 	g_log_set_handler
 	g_logv
