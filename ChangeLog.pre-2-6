@@ -1,3 +1,11 @@
+Sun Feb  4 07:38:32 2001  Tim Janik  <timj@gtk.org>
+
+	* docs/debugging.txt: s/glib_trap_/g_trap_/. add comments on
+	g_trap_instance_signals, g_trace_instance_signals and
+	GRUNTIME_DEBUG.
+
+	* gmem.c: s/glib_trap_/g_trap_/.
+	
 2001-02-04  Tor Lillqvist  <tml@iki.fi>
 
 	* tests/Makefile.am (thread_LDADD): Change order of libs,

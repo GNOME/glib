@@ -1,3 +1,17 @@
+Sun Feb  4 07:30:53 2001  Tim Janik  <timj@gtk.org>
+
+	* gtype.[hc]: changed g_type_init() to take debugging flags
+	initially, a combination of G_TYPE_DEBUG_OBJECTS and
+	G_TYPE_DEBUG_SIGNALS. using the G_TYPE_ prefix is a bit odd
+	here, but basically g_type_int() serves as initialization
+	fucntion for all of GType, GObject, GSignal, so what the heck.
+
+	* gobject.c: special case debugging code properly.
+	changed glib_trap_object_ref to g_trap_object_ref.
+
+	* gsignal.c: add signal emission debugging abilities, along with
+	a new trap object g_trap_instance_signals.
+
 2001-02-04  Tor Lillqvist  <tml@iki.fi>
 
 	* Makefile.am (progs_LDADD): Change order of libs to libgobject

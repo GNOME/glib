@@ -38,6 +38,11 @@
 #define EMISSION_PRE_ALLOC      (16)
 
 #define REPORT_BUG      "please report occourance circumstances to gtk-devel-list@gnome.org"
+#ifdef	G_ENABLE_DEBUG
+#define IF_DEBUG(debug_type, cond)	if ((_g_type_debug_flags & G_TYPE_DEBUG_ ## debug_type) || cond)
+static volatile gpointer *g_trace_instance_signals = NULL;
+static volatile gpointer *g_trap_instance_signals = NULL;
+#endif	/* G_ENABLE_DEBUG */
 
 
 /* --- generic allocation --- */
@@ -1742,6 +1747,18 @@ signal_emit_R (SignalNode   *node,
   gboolean accu_used = FALSE;
   guint signal_id = node->signal_id;
   gboolean return_value_altered = FALSE;
+  
+#ifdef	G_ENABLE_DEBUG
+  IF_DEBUG (SIGNALS, g_trace_instance_signals == instance || g_trap_instance_signals == instance)
+    {
+      g_message ("%s::%s(%u) emitted (instance=%p signal-node=%p)\n",
+		 g_type_name (G_TYPE_FROM_INSTANCE (instance)),
+		 node->name, detail,
+		 instance, node);
+      if (g_trap_instance_signals == instance)
+	G_BREAKPOINT ();
+    }
+#endif	/* G_ENABLE_DEBUG */
   
   if (node->flags & G_SIGNAL_NO_RECURSE)
     {

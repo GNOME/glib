@@ -168,8 +168,17 @@ struct _GTypeInterface
 #define G_TYPE_FROM_INTERFACE(g_iface)                          (((GTypeInterface*) (g_iface))->g_type)
 
 
+/* debug flags for g_type_init() */
+typedef enum	/*< skip >*/
+{
+  G_TYPE_DEBUG_OBJECTS	= 1 << 0,
+  G_TYPE_DEBUG_SIGNALS	= 1 << 1,
+  G_TYPE_DEBUG_MASK	= 0x03
+} GTypeDebugFlags;
+
+
 /* --- prototypes --- */
-void     g_type_init                    (void);
+void     g_type_init                    (GTypeDebugFlags	 debug_flags);
 gchar*   g_type_name                    (GType                   type);
 GQuark   g_type_qname                   (GType                   type);
 GType    g_type_from_name               (const gchar            *name);
@@ -328,6 +337,7 @@ gboolean	 g_type_value_is_a		(GValue		    *value,
 GTypeValueTable* g_type_value_table_peek        (GType		     type);
 
 
+/* --- implementation bits --- */
 #ifndef G_DISABLE_CAST_CHECKS
 #  define _G_TYPE_CIC(ip, gt, ct) \
     ((ct*) g_type_check_instance_cast ((GTypeInstance*) ip, gt))
@@ -345,6 +355,7 @@ GTypeValueTable* g_type_value_table_peek        (GType		     type);
 #define _G_TYPE_IGC(ip, gt, ct)         ((ct*) (((GTypeInstance*) ip)->g_class))
 #define _G_TYPE_IGI(ip, gt, ct)         ((ct*) g_type_interface_peek (((GTypeInstance*) ip)->g_class, gt))
 #define	G_TYPE_FLAG_RESERVED_ID_BIT	(1 << 30)
+extern GTypeDebugFlags			_g_type_debug_flags;
 
 
 #ifdef __cplusplus

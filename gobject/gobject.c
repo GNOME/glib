@@ -138,15 +138,10 @@ static gulong	         gobject_signals[LAST_SIGNAL] = { 0, };
 
 
 /* --- functions --- */
-/* We need an actual method for handling debug keys in GLib.
- * For now, we'll simply use, as a method
- * 'extern gboolean glib_debug_objects'
- */
-gboolean glib_debug_objects = FALSE;
-
 #ifdef	G_ENABLE_DEBUG
+#define	IF_DEBUG(debug_type)	if (_g_type_debug_flags & G_TYPE_DEBUG_ ## debug_type)
 G_LOCK_DEFINE_STATIC     (debug_objects);
-static volatile GObject *glib_trap_object_ref = NULL;
+static volatile GObject *g_trap_object_ref = NULL;
 static guint		 debug_objects_count = 0;
 static GHashTable	*debug_objects_ht = NULL;
 static void
@@ -155,7 +150,7 @@ debug_objects_foreach (gpointer key,
 		       gpointer user_data)
 {
   GObject *object = value;
-  
+
   g_message ("[%p] stale %s\tref_count=%u",
 	     object,
 	     G_OBJECT_TYPE_NAME (object),
@@ -164,18 +159,18 @@ debug_objects_foreach (gpointer key,
 static void
 debug_objects_atexit (void)
 {
-  G_LOCK (debug_objects);
-  if (glib_debug_objects)
+  IF_DEBUG (OBJECTS)
     {
+      G_LOCK (debug_objects);
       if (debug_objects_ht)
 	{
 	  g_message ("stale GObjects: %u", debug_objects_count);
 	  g_hash_table_foreach (debug_objects_ht, debug_objects_foreach, NULL);
 	}
+      G_UNLOCK (debug_objects);
     }
-  G_UNLOCK (debug_objects);
 }
-#endif /* G_ENABLE_DEBUG */
+#endif	/* G_ENABLE_DEBUG */
 
 void
 g_object_type_init (void)	/* sync with gtype.c */
@@ -218,7 +213,8 @@ g_object_type_init (void)	/* sync with gtype.c */
   g_assert (type == G_TYPE_OBJECT);
   
 #ifdef	G_ENABLE_DEBUG
-  g_atexit (debug_objects_atexit);
+  IF_DEBUG (OBJECTS)
+    g_atexit (debug_objects_atexit);
 #endif	/* G_ENABLE_DEBUG */
 }
 
@@ -439,17 +435,17 @@ g_object_init (GObject *object)
   
   /* freeze object's notification queue, g_object_new_valist() takes care of that */
   object_freeze_notifies (object);
-
+  
 #ifdef	G_ENABLE_DEBUG
-  G_LOCK (debug_objects);
-  if (glib_debug_objects)
+  IF_DEBUG (OBJECTS)
     {
+      G_LOCK (debug_objects);
       if (!debug_objects_ht)
 	debug_objects_ht = g_hash_table_new (g_direct_hash, NULL);
       debug_objects_count++;
       g_hash_table_insert (debug_objects_ht, object, object);
+      G_UNLOCK (debug_objects);
     }
-  G_UNLOCK (debug_objects);
 #endif	/* G_ENABLE_DEBUG */
 }
 
@@ -522,7 +518,7 @@ g_object_last_unref (GObject *object)
     G_OBJECT_GET_CLASS (object)->shutdown (object);
   
 #ifdef	G_ENABLE_DEBUG
-  if (glib_trap_object_ref == object)
+  if (g_trap_object_ref == object)
     G_BREAKPOINT ();
 #endif	/* G_ENABLE_DEBUG */
 
@@ -532,10 +528,13 @@ g_object_last_unref (GObject *object)
     {
       G_OBJECT_GET_CLASS (object)->finalize (object);
 #ifdef	G_ENABLE_DEBUG
-      G_LOCK (debug_objects);
-      if (glib_debug_objects && debug_objects_ht)
-	g_assert (g_hash_table_lookup (debug_objects_ht, object) == NULL);
-      G_UNLOCK (debug_objects);
+      IF_DEBUG (OBJECTS)
+	{
+	  G_LOCK (debug_objects);
+	  if (debug_objects_ht)
+	    g_assert (g_hash_table_lookup (debug_objects_ht, object) == NULL);
+	  G_UNLOCK (debug_objects);
+	}
 #endif	/* G_ENABLE_DEBUG */
       g_type_free_instance ((GTypeInstance*) object);
     }
@@ -557,15 +556,14 @@ g_object_finalize (GObject *object)
   g_datalist_clear (&object->qdata);
   
 #ifdef	G_ENABLE_DEBUG
-  G_LOCK (debug_objects);
-  if (glib_debug_objects)
+  IF_DEBUG (OBJECTS)
     {
+      G_LOCK (debug_objects);
       g_assert (g_hash_table_lookup (debug_objects_ht, object) == object);
-      
       g_hash_table_remove (debug_objects_ht, object);
       debug_objects_count--;
+      G_UNLOCK (debug_objects);
     }
-  G_UNLOCK (debug_objects);
 #endif	/* G_ENABLE_DEBUG */
 }
 
@@ -1243,7 +1241,7 @@ g_object_ref (gpointer _object)
   g_return_val_if_fail (object->ref_count > 0, NULL);
   
 #ifdef  G_ENABLE_DEBUG
-  if (glib_trap_object_ref == object)
+  if (g_trap_object_ref == object)
     G_BREAKPOINT ();
 #endif  /* G_ENABLE_DEBUG */
 
@@ -1261,7 +1259,7 @@ g_object_unref (gpointer _object)
   g_return_if_fail (object->ref_count > 0);
   
 #ifdef  G_ENABLE_DEBUG
-  if (glib_trap_object_ref == object)
+  if (g_trap_object_ref == object)
     G_BREAKPOINT ();
 #endif  /* G_ENABLE_DEBUG */
 

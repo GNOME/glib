@@ -69,6 +69,14 @@ static GStaticRWLock            type_rw_lock = G_STATIC_RW_LOCK_INIT;
     else \
       g_error ("%s()%s`%s'", _fname, _action, _tname); \
 }G_STMT_END
+#ifdef  G_ENABLE_DEBUG
+#define DEBUG_CODE(debug_type, code_block)  G_STMT_START {    \
+    if (_g_type_debug_flags & G_TYPE_DEBUG_ ## debug_type) \
+      { code_block; }                                     \
+} G_STMT_END
+#else /* !G_ENABLE_DEBUG */
+#define DEBUG_CODE(debug_type, code_block)  /* code_block */
+#endif  /* G_ENABLE_DEBUG */
 
 #define TYPE_FUNDAMENTAL_FLAG_MASK (G_TYPE_FLAG_CLASSED | \
 				    G_TYPE_FLAG_INSTANTIATABLE | \
@@ -202,6 +210,7 @@ static guint           static_n_class_cache_funcs = 0;
 static ClassCacheFunc *static_class_cache_funcs = NULL;
 static GType           static_last_fundamental_id = 0;
 static GQuark          static_quark_type_flags = 0;
+GTypeDebugFlags	       _g_type_debug_flags = 0;
 
 
 /* --- externs --- */
@@ -2354,10 +2363,11 @@ extern void	g_signal_init		(void);	/* sync with gsignal.c */
 
 /* --- initialization --- */
 void
-g_type_init (void)
+g_type_init (GTypeDebugFlags debug_flags)
 {
   G_LOCK_DEFINE_STATIC (type_init_lock);
   static TypeNode *type0_node = NULL;
+  gchar *env_string;
   GTypeInfo info;
   TypeNode *node;
   GType type;
@@ -2371,6 +2381,22 @@ g_type_init (void)
       G_WRITE_UNLOCK (&type_rw_lock);
       G_UNLOCK (type_init_lock);
       return;
+    }
+
+  /* setup GRuntime wide debugging flags */
+  _g_type_debug_flags = debug_flags & G_TYPE_DEBUG_MASK;
+  env_string = g_getenv ("GRUNTIME_DEBUG");
+  if (env_string != NULL)
+    {
+      static GDebugKey debug_keys[] = {
+	{ "objects", G_TYPE_DEBUG_OBJECTS },
+	{ "signals", G_TYPE_DEBUG_SIGNALS },
+      };
+
+      _g_type_debug_flags |= g_parse_debug_string (env_string,
+						   debug_keys,
+						   sizeof (debug_keys) / sizeof (debug_keys[0]));
+      env_string = NULL;
     }
   
   /* quarks */

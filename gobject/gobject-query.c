@@ -126,7 +126,7 @@ main (gint   argc,
   
   f_out = stdout;
   
-  g_type_init ();
+  g_type_init (0);
   
   root = G_TYPE_OBJECT;
   

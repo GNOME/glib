@@ -16,6 +16,12 @@
 @param_id: 
 @pspec: 
 
+<!-- ##### SECTION ./tmpl/gtypemodule.sgml.sgml:See_Also ##### -->
+<para>
+
+</para>
+
+
 <!-- ##### FUNCTION g_param_spec_hash_table_insert ##### -->
 <para>
 
@@ -24,12 +30,6 @@
 @hash_table: 
 @pspec: 
 @owner_type: 
-
-<!-- ##### SECTION ./tmpl/gtypemodule.sgml.sgml:See_Also ##### -->
-<para>
-
-</para>
-
 
 <!-- ##### MACRO G_IS_PARAM_VALUE ##### -->
 <para>
@@ -84,6 +84,12 @@
 @pspec: 
 @trailer: 
 
+<!-- ##### SECTION ./tmpl/gtypemodule.sgml.sgml:Long_Description ##### -->
+<para>
+
+</para>
+
+
 <!-- ##### ENUM GSignalType ##### -->
 <para>
 
@@ -95,12 +101,6 @@
 @G_SIGNAL_NO_RECURSE: 
 @G_SIGNAL_ACTION: 
 @G_SIGNAL_NO_HOOKS: 
-
-<!-- ##### SECTION ./tmpl/gtypemodule.sgml.sgml:Long_Description ##### -->
-<para>
-
-</para>
-
 
 <!-- ##### FUNCTION g_signal_type_closure_new ##### -->
 <para>

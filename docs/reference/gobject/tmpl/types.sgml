@@ -398,6 +398,7 @@ the type system and assorted other code portions (such as the various fundamenta
 type implementations or the signal system).
 </para>
 
+@debug_flags: 
 
 
 <!-- ##### FUNCTION g_type_name ##### -->

@@ -268,9 +268,9 @@ static gulong profile_frees = 0;
 static gulong profile_mc_frees = 0;
 static GMutex *g_profile_mutex = NULL;
 #ifdef  G_ENABLE_DEBUG
-static volatile gulong glib_trap_free_size = 0;
-static volatile gulong glib_trap_realloc_size = 0;
-static volatile gulong glib_trap_malloc_size = 0;
+static volatile gulong g_trap_free_size = 0;
+static volatile gulong g_trap_realloc_size = 0;
+static volatile gulong g_trap_malloc_size = 0;
 #endif  /* G_ENABLE_DEBUG */
 
 #define	PROFILE_TABLE(f1,f2,f3)   ( ( ((f3) << 2) | ((f2) << 1) | (f1) ) * (MEM_PROFILE_TABLE_SIZE + 1))
@@ -404,7 +404,7 @@ profiler_try_malloc (gsize n_bytes)
   gulong *p;
 
 #ifdef  G_ENABLE_DEBUG
-  if (glib_trap_malloc_size == n_bytes)
+  if (g_trap_malloc_size == n_bytes)
     G_BREAKPOINT ();
 #endif  /* G_ENABLE_DEBUG */
 
@@ -442,7 +442,7 @@ profiler_calloc (gsize n_blocks,
   gulong *p;
 
 #ifdef  G_ENABLE_DEBUG
-  if (glib_trap_malloc_size == l)
+  if (g_trap_malloc_size == l)
     G_BREAKPOINT ();
 #endif  /* G_ENABLE_DEBUG */
   
@@ -480,7 +480,7 @@ profiler_free (gpointer mem)
   else
     {
 #ifdef  G_ENABLE_DEBUG
-      if (glib_trap_free_size == p[1])
+      if (g_trap_free_size == p[1])
 	G_BREAKPOINT ();
 #endif  /* G_ENABLE_DEBUG */
 
@@ -506,7 +506,7 @@ profiler_try_realloc (gpointer mem,
   p -= 2;
 
 #ifdef  G_ENABLE_DEBUG
-  if (glib_trap_realloc_size == n_bytes)
+  if (g_trap_realloc_size == n_bytes)
     G_BREAKPOINT ();
 #endif  /* G_ENABLE_DEBUG */
   
