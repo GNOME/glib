@@ -108,10 +108,15 @@ void	_g_log_fallback_handler	(const gchar   *log_domain,
 				 const gchar   *message,
 				 gpointer       unused_data) G_GNUC_INTERNAL;
 
-/* Internal function, used to implement the following macros */
+/* Internal functions, used to implement the following macros */
 void g_return_if_fail_warning (const char *log_domain,
 			       const char *pretty_function,
 			       const char *expression);
+void g_assert_warning         (const char *log_domain,
+			       const char *file,
+			       const int   line,
+		               const char *pretty_function,
+		               const char *expression);
 
 
 #ifndef G_LOG_DOMAIN
@@ -224,21 +229,18 @@ GPrintFunc      g_set_printerr_handler  (GPrintFunc      func);
 
 #define g_assert(expr)			G_STMT_START{		\
      if G_LIKELY(expr) { } else 				\
-        g_log (G_LOG_DOMAIN,					\
-	      G_LOG_LEVEL_ERROR,				\
-	      "file %s: line %d (%s): assertion failed: (%s)",	\
-	      __FILE__,						\
-	      __LINE__,						\
-	      __PRETTY_FUNCTION__,				\
-	      #expr);			}G_STMT_END
+        g_assert_warning (G_LOG_DOMAIN,				\
+	                  __FILE__,    				\
+	                  __LINE__,	      			\
+	                  __PRETTY_FUNCTION__,	      		\
+	                  #expr);		  }G_STMT_END
 
 #define g_assert_not_reached()		G_STMT_START{		\
-     g_log (G_LOG_DOMAIN,					\
-	    G_LOG_LEVEL_ERROR,					\
-	    "file %s: line %d (%s): should not be reached",	\
-	    __FILE__,						\
-	    __LINE__,						\
-	    __PRETTY_FUNCTION__);	}G_STMT_END
+        g_assert_warning (G_LOG_DOMAIN,				\
+	                  __FILE__,    				\
+	                  __LINE__,	      			\
+	                  __PRETTY_FUNCTION__,	      		\
+	                  NULL);		  }G_STMT_END
 
 #else /* !__GNUC__ */
 

@@ -526,6 +526,30 @@ g_return_if_fail_warning (const char *log_domain,
 	 expression);
 }
 
+void
+g_assert_warning (const char *log_domain,
+		  const char *file,
+		  const int   line,
+		  const char *pretty_function,
+		  const char *expression)
+{
+  /*
+   * Omit the prefix used by the PLT-reduction
+   * technique used in GTK+. 
+   */
+  if (g_str_has_prefix (pretty_function, "IA__"))
+    pretty_function += 4;
+  g_log (log_domain,
+	 G_LOG_LEVEL_ERROR,
+	 expression 
+	 ? "file %s: line %d (%s): assertion failed: (%s)"
+	 : "file %s: line %d (%s): should not be reached",
+	 file, 
+	 line, 
+	 pretty_function,
+	 expression);
+}
+
 #define CHAR_IS_SAFE(wc) (!((wc < 0x20 && wc != '\t' && wc != '\n' && wc != '\r') || \
 			    (wc == 0x7f) || \
 			    (wc >= 0x80 && wc < 0xa0)))

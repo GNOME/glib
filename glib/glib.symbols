@@ -24,6 +24,7 @@ g_ascii_strup
 g_ascii_tolower
 g_ascii_toupper
 g_ascii_xdigit_value
+g_assert_warning
 g_async_queue_length
 g_async_queue_length_unlocked
 g_async_queue_lock
