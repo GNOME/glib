@@ -414,7 +414,7 @@ g_date_get_iso8601_week_of_year (const GDate *d)
    * Julian Period which starts on 1 January 4713 BC, so we add
    * 1,721,425 to the number of days before doing the formula. 
    */
-  j  = d->julian + 1721425;
+  j  = d->julian_days + 1721425;
   d4 = (j + 31741 - (j % 7)) % 146097 % 36524 % 1461;
   L  = d4 / 1460;
   d1 = ((d4 - L) % 365) + L;

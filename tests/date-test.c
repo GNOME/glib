@@ -159,6 +159,7 @@ int main(int argc, char** argv)
       guint   sunday_weeks_in_year = g_date_get_sunday_weeks_in_year(y);
       guint   monday_week_of_year = 0;
       guint   monday_weeks_in_year = g_date_get_monday_weeks_in_year(y);
+      guint   iso8601_week_of_year = 0;
 
       if (discontinuity)
         g_print(" (Break in sequence of requested years to check)\n");
@@ -257,15 +258,28 @@ int main(int argc, char** argv)
 		  
 		  TEST("Monday week of year on Monday 1 more than previous day's week of year",
 		       (g_date_get_monday_week_of_year(d) - monday_week_of_year) == 1);
+		  if ((m == G_DATE_JANUARY && day <= 4) ||
+		      (m == G_DATE_DECEMBER && day >= 29)) {
+		    TEST("ISO 8601 week of year on Monday Dec 29 - Jan 4 is 1",
+			 (g_date_get_iso8601_week_of_year(d) == 1));
+		  } else {
+		    TEST("ISO 8601 week of year on Monday 1 more than previous day's week of year",
+			 (g_date_get_iso8601_week_of_year(d) - iso8601_week_of_year) == 1);
+		  }
 		}
 	      else 
 		{
 		  TEST("Monday week of year on non-Monday 0 more than previous day's week of year",
 		       (g_date_get_monday_week_of_year(d) - monday_week_of_year) == 0);
+		  if (!(day == 1 && m == G_DATE_JANUARY)) {
+		    TEST("ISO 8601 week of year on non-Monday 0 more than previous day's week of year (",
+			 (g_date_get_iso8601_week_of_year(d) - iso8601_week_of_year) == 0);
+		  }
 		}
 
 
 	      monday_week_of_year = g_date_get_monday_week_of_year(d);
+	      iso8601_week_of_year = g_date_get_iso8601_week_of_year(d);
 
 
 	      TEST("Sunday week of year is not more than number of weeks in the year",
