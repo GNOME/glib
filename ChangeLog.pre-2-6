@@ -1,3 +1,7 @@
+Wed Dec 16 07:49:16 PST 1998 Shawn T. Amundson <amundson@gtk.org>
+
+	* Released GLib 1.1.8  (CVS tag is GLIB_1_1_8a)
+
 1998-12-16  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* giounix.c (g_io_channel_unix_get_fd): Fixed small bug.
@@ -58,8 +62,6 @@ Wed Dec 16 03:16:58 1998  Tim Janik  <timj@gtk.org>
  	s/static G_LOCK_DEFINE/G_LOCK_DECLARE_STATIC/.
 
 Tue Dec 15 23:16:05 CST 1998 Shawn T. Amundson <amundson@gtk.org>
-
-	* Released GLib 1.1.8
 
 	* INSTALL:
 	  NEWS:
