@@ -1,3 +1,7 @@
+2001-08-01  Sven Neumann  <sven@gimp.org>
+
+	* gsignal.h: added convenience macro g_signal_connect_after().
+
 2001-07-29  Hans Breuer  <hans@breuer.org>
 
 	* gobject.def : updated externals
