@@ -12,6 +12,9 @@ EXTRA_DIST =	\
 		glib.m4 \
 		glib.spec
 
+# build . first, then SUBDIRS
+all-recursive-am: all-am
+
 lib_LTLIBRARIES = libglib-1.1.la
 
 libglib_1_1_la_SOURCES = \

@@ -1,3 +1,8 @@
+Mon Aug 10 02:17:19 1998  Tim Janik  <timj@gtk.org>
+
+	* Makefile.am: minor hack to cause SUBDIRS (gmodule) to be build
+	last. we do this by making all-recursive-am depend on all-am.
+
 Sun Aug  9 15:56:11 1998  Tim Janik  <timj@gtk.org>
 
 	* configure.in: added GModule checks. generate files in gmodule/.

@@ -11,23 +11,27 @@ gmoduleconf.h:	gmoduleconf.h.in
 include_HEADERS = \
 		gmodule.h
 
+libglib = $(top_builddir)/libglib-@LT_RELEASE@.la # -lglib-@LT_RELEASE@
+
 lib_LTLIBRARIES = libgmodule-1.1.la libgplugin_a.la libgplugin_b.la
 
 libgmodule_1_1_la_SOURCES = gmodule.c
 libgmodule_1_1_la_LDFLAGS = @G_MODULE_LDFLAGS@ -version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE)
-libgmodule_1_1_la_LIBADD = @G_MODULE_LIBS@ -lglib-@LT_RELEASE@
+libgmodule_1_1_la_LIBADD = @G_MODULE_LIBS@ # $(libglib)
+# we should really depend on $(libglib) for libgmodule-1.1.la, but libtool has a
+# problem with this ;(
 
 libgplugin_a_la_SOURCES = libgplugin_a.c
 libgplugin_a_la_LDFLAGS = @G_MODULE_LDFLAGS@
-libgplugin_a_la_LIBADD = @G_MODULE_LIBS@ -lglib-@LT_RELEASE@
+libgplugin_a_la_LIBADD = @G_MODULE_LIBS@ # $(libglib)
 
 libgplugin_b_la_SOURCES = libgplugin_b.c
 libgplugin_b_la_LDFLAGS = @G_MODULE_LDFLAGS@
-libgplugin_b_la_LIBADD = @G_MODULE_LIBS@ -lglib-@LT_RELEASE@
+libgplugin_b_la_LIBADD = @G_MODULE_LIBS@ # $(libglib)
 
 noinst_PROGRAMS = testgmodule
 testgmodule_LDFLAGS += @G_MODULE_LDFLAGS@
-testgmodule_LDADD = libgmodule-@LT_RELEASE@.la -lglib-@LT_RELEASE@ @G_MODULE_LIBS@
+testgmodule_LDADD = libgmodule-@LT_RELEASE@.la $(libglib) @G_MODULE_LIBS@
 
 .PHONY: files release
 

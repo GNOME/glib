@@ -189,12 +189,12 @@ g_module_open (const gchar    *file_name,
       modules = module;
 
       /* check initialization */
-      if (g_module_symbol (module, "g_module_check_init", &check_init))
+      if (g_module_symbol (module, "g_module_check_init", (gpointer) &check_init))
 	check_failed = check_init (module);
 
       /* we don't call de_init() if the initialization check failed. */
       if (!check_failed)
-	g_module_symbol (module, "g_module_de_init", &module->de_init);
+	g_module_symbol (module, "g_module_de_init", (gpointer) &module->de_init);
 
       if (check_failed)
 	{

@@ -1,3 +1,11 @@
+Mon Aug 10 02:18:31 1998  Tim Janik  <timj@gtk.org>
+
+	* Makefile.am (lib_LTLIBRARIES): for now, skip the dependency on
+	-lglib for libgmodule-1.1.la, libgplugin_a.la and libgplugin_b.la
+	since this clashes with inter-library-dependencies for not installed
+	libraries. glib-config takes care of this for the usuall case, but
+	there needs to be a better way...
+
 Sun Aug  9 15:57:38 1998  Tim Janik  <timj@gtk.org>
 
 	* testgmodule.c: test program for GModule.
