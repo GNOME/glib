@@ -1281,7 +1281,8 @@ g_object_set_qdata_full (GObject       *object,
   g_return_if_fail (G_IS_OBJECT (object));
   g_return_if_fail (quark > 0);
   
-  g_datalist_id_set_data_full (&object->qdata, quark, data, data ? destroy : NULL);
+  g_datalist_id_set_data_full (&object->qdata, quark, data,
+			       data ? destroy : (GDestroyNotify) NULL);
 }
 
 gpointer
@@ -1328,7 +1329,8 @@ g_object_set_data_full (GObject       *object,
   g_return_if_fail (G_IS_OBJECT (object));
   g_return_if_fail (key != NULL);
 
-  g_datalist_id_set_data_full (&object->qdata, g_quark_from_string (key), data, data ? destroy : NULL);
+  g_datalist_id_set_data_full (&object->qdata, g_quark_from_string (key), data,
+			       data ? destroy : (GDestroyNotify) NULL);
 }
 
 gpointer

@@ -1,3 +1,9 @@
+Thu May  3 06:10:23 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* gobject.c (g_object_set_[q]data_full): Make types of ternary
+	operator correspond. (Fixes compilation errors with Sun CC,
+	#52230)
+
 Mon Apr 30 20:03:56 2001  Tim Janik  <timj@gtk.org>
 
 	* glib-mkenums (usage): removed \v escaping, newer perl versions don't
