@@ -172,7 +172,7 @@ system is initialized, you can do that too:
 <para>
 <informalexample>
 <programlisting>
-if (!g_thread_supported (<!>)) g_thread_init (NULL);
+if (!g_thread_supported (<!-- -->)) g_thread_init (NULL);
 </programlisting>
 </informalexample>
 </para>
@@ -458,7 +458,7 @@ access. Take for example the following function:
 <example>
 <title>A function which will not work in a threaded environment</title>
 <programlisting>
-  int give_me_next_number (<!>)
+  int give_me_next_number (<!-- -->)
   {
     static int current_number = 0;
 
@@ -481,7 +481,7 @@ access. A first naive implementation would be:
 <example>
 <title>The wrong way to write a thread-safe function</title>
 <programlisting>
-  int give_me_next_number (<!>)
+  int give_me_next_number (<!-- -->)
   {
     static int current_number = 0;
     int ret_val;
@@ -510,15 +510,15 @@ not use such constructs in your own programs. One working solution is:
 <programlisting>
   static GMutex *give_me_next_number_mutex = NULL;
 
-  /* this function must be called before any call to give_me_next_number (<!>)
+  /* this function must be called before any call to give_me_next_number (<!-- -->)
      it must be called exactly once. */
-  void init_give_me_next_number (<!>) 
+  void init_give_me_next_number (<!-- -->) 
   {
     g_assert (give_me_next_number_mutex == NULL);
-    give_me_next_number_mutex = g_mutex_new (<!>);
+    give_me_next_number_mutex = g_mutex_new (<!-- -->);
   }
 
-  int give_me_next_number (<!>)
+  int give_me_next_number (<!-- -->)
   {
     static int current_number = 0;
     int ret_val;
@@ -656,7 +656,7 @@ safer version of our <function>give_me_next_number()</function> example:
 <example>
 <title>Using <structname>GStaticMutex</structname> to simplify thread-safe programming</title>
 <programlisting>
-  int give_me_next_number (<!>)
+  int give_me_next_number (<!-- -->)
   {
     static int current_number = 0;
     int ret_val;
@@ -805,7 +805,7 @@ variable you intent to protect with the lock. Look at our
 <programlisting>
 G_LOCK_DEFINE (current_number);
 
-int give_me_next_number (<!>)
+int give_me_next_number (<!-- -->)
   {
     static int current_number = 0;
     int ret_val;
@@ -1033,7 +1033,7 @@ example:
     g_static_rw_lock_writer_lock (&amp;rwlock);
 
     if (!array)
-      array = g_ptr_array_new ();
+      array = g_ptr_array_new (<!-- -->);
 
     if (index >= array->len)
       g_ptr_array_set_size (array, index+1);
@@ -1245,7 +1245,7 @@ void push_data (gpointer data)
   g_mutex_unlock (data_mutex);
 }
 
-gpointer pop_data ()
+gpointer pop_data (<!-- -->)
 {
   gpointer data;
 
@@ -1402,7 +1402,7 @@ done as follows:
   GPrivate* current_number_key = NULL; /* Must be initialized somewhere */
                                        /* with g_private_new (g_free); */
 
-  int give_me_next_number ()
+  int give_me_next_number (<!-- -->)
   {
     int *current_number = g_private_get (current_number_key);
 
@@ -1519,7 +1519,7 @@ the difference between #GMutex and #GStaticMutex. Now look at our
 <example>
 <title>Using GStaticPrivate for per-thread data</title>
 <programlisting>
-  int give_me_next_number ()
+  int give_me_next_number (<!-- -->)
   {
     static GStaticPrivate current_number_key = G_STATIC_PRIVATE_INIT;
     int *current_number = g_static_private_get (&amp;current_number_key);

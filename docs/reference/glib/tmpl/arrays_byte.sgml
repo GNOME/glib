@@ -29,7 +29,7 @@ To free a #GByteArray, use g_byte_array_free().
   GByteArray *gbarray;
   gint i;
 
-  gbarray = g_byte_array_new (<!>);
+  gbarray = g_byte_array_new (<!-- -->);
   for (i = 0; i < 10000; i++)
     g_byte_array_append (gbarray, (guint8*) "abcd", 4);
 

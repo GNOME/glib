@@ -1,3 +1,12 @@
+2002-04-18  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/tmpl/error_reporting.sgml:
+	* glib/tmpl/threads.sgml:
+	* glib/tmpl/arrays_pointer.sgml:
+	* glib/tmpl/arrays_byte.sgml:
+	* glib/tmpl/memory_chunks.sgml: s/<!>/<!-- -->/g throughout the
+	documentation to bring the produced Docbook closer to XML.
+
 2002-03-25  Sven Neumann  <sven@gimp.org>
 
 	* glib/tmpl/scanner.sgml: Fixed documentation about unused struct 

@@ -167,7 +167,7 @@ my_function_that_can_fail (GError **err)
   if (tmp_error != NULL)
     {
        /* store tmp_error in err, if err != NULL,
-        * otherwise call g_error_free(<!>) on tmp_error 
+        * otherwise call g_error_free(<!-- -->) on tmp_error 
         */
        g_propagate_error (err, tmp_error);
        return FALSE;

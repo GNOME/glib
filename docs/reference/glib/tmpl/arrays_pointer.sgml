@@ -43,7 +43,7 @@ To free a pointer array, use g_ptr_array_free().
   GPtrArray *gparray;
   gchar *string1 = "one", *string2 = "two", *string3 = "three";
 
-  gparray = g_ptr_array_new (<!>);
+  gparray = g_ptr_array_new (<!-- -->);
   g_ptr_array_add (gparray, (gpointer) string1);
   g_ptr_array_add (gparray, (gpointer) string2);
   g_ptr_array_add (gparray, (gpointer) string3);
