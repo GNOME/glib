@@ -1,3 +1,19 @@
+2001-08-03  Ron Steinke  <rsteinke@w-link.net>
+
+	* glib/giochannel.c: Fixed g_io_channel_seek_position()
+	so that G_SEEK_CUR can be used with UTF-8 encoding
+
+	* glib/giochannel.c: Changed test to decide whether
+	use_buf is encoded_read_buf or read_buf from
+	"if (channel->do_encode)" to "if (channel->encoding)" to
+	fix bug 58472
+
+	* tests/iochannel-test.c: Fixed so it doesn't output
+	double newlines
+
+        * glib/giochannel.c: Fixed g_io_channel_fill_buffer()
+	so that encoded_read_buf is created for UTF-8 encoding
+
 2001-08-03  Darin Adler  <darin@bentspoon.com>
 
 	* tests/strfunc-test.c: (strv_check), (main):

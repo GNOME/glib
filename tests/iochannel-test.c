@@ -87,17 +87,7 @@ gint main (gint argc, gchar * argv[])
         if (length_out < buffer->len)
           g_warning ("Only wrote part of the line.");
 
-        do
-          status = g_io_channel_write_chars (gio_w, line_term,
-            line_term_len, &length_out, &gerr);
-        while (status == G_IO_STATUS_AGAIN);
-        if (status != G_IO_STATUS_NORMAL)
-          break;
-
-        if (length_out < line_term_len)
-          g_warning ("Only wrote part of the line term.");
-
-        g_print (": %s\n", buffer->str);
+        g_print ("%s", buffer->str);
         g_string_truncate (buffer, 0);
     }
 

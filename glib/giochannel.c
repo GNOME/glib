@@ -94,7 +94,7 @@ g_io_channel_unref (GIOChannel *channel)
   if (channel->ref_count == 0)
     {
       if (channel->close_on_unref)
-        g_io_channel_close (channel);
+        g_io_channel_shutdown (channel, TRUE, NULL);
       else
         g_io_channel_purge (channel);
       g_free (channel->encoding);
@@ -408,7 +408,7 @@ g_io_channel_purge (GIOChannel *channel)
     g_string_truncate (channel->read_buf, 0);
   if (channel->write_buf)
     g_string_truncate (channel->write_buf, 0);
-  if (channel->do_encode)
+  if (channel->encoding)
     {
       if (channel->encoded_read_buf)
         g_string_truncate (channel->encoded_read_buf, 0);
@@ -931,7 +931,7 @@ g_io_channel_set_encoding (GIOChannel	*channel,
 
   /* Make sure the encoded buffers are empty */
 
-  g_return_val_if_fail (!channel->encoded_read_buf ||
+  g_return_val_if_fail (!channel->do_encode || !channel->encoded_read_buf ||
 			channel->encoded_read_buf->len == 0, G_IO_STATUS_ERROR);
   g_return_val_if_fail (channel->partial_write_buf[0] == '\0', G_IO_STATUS_ERROR);
 
@@ -1015,6 +1015,19 @@ g_io_channel_set_encoding (GIOChannel	*channel,
   if (channel->write_cd != (GIConv) -1)
     g_iconv_close (channel->write_cd);
 
+  if (channel->encoded_read_buf && channel->encoded_read_buf->len > 0)
+    {
+      g_assert (!did_encode); /* Encoding UTF-8, NULL doesn't use encoded_read_buf */
+
+      /* This is just validated UTF-8, so we can copy it back into read_buf
+       * so it can be encoded in whatever the new encoding is.
+       */
+
+      g_string_prepend_len (channel->read_buf, channel->encoded_read_buf->str,
+                            channel->encoded_read_buf->len);
+      g_string_truncate (channel->encoded_read_buf, 0);
+    }
+
   channel->read_cd = read_cd;
   channel->write_cd = write_cd;
 
@@ -1087,15 +1100,15 @@ g_io_channel_fill_buffer (GIOChannel *channel,
   if (channel->encoded_read_buf)
     oldlen = channel->encoded_read_buf->len;
   else
-    oldlen = 0;
+    {
+      oldlen = 0;
+      channel->encoded_read_buf = g_string_sized_new (channel->buf_size);
+    }
 
   if (channel->do_encode)
     {
       size_t errnum, inbytes_left, outbytes_left;
       gchar *inbuf, *outbuf;
-
-      if (!channel->encoded_read_buf)
-        channel->encoded_read_buf = g_string_sized_new (channel->buf_size);
 
 reencode:
 
@@ -1247,7 +1260,7 @@ g_io_channel_read_line (GIOChannel *channel,
     {
       GString *use_buf;
 
-      if (channel->do_encode)
+      if (channel->encoding)
         use_buf = channel->encoded_read_buf;
       else
         use_buf = channel->read_buf;
@@ -1301,7 +1314,7 @@ g_io_channel_read_line_string (GIOChannel *channel,
     {
       GString *use_buf;
 
-      if (channel->do_encode)
+      if (channel->encoding)
         use_buf = channel->encoded_read_buf;
       else
         use_buf = channel->read_buf;
@@ -1385,8 +1398,7 @@ read_again:
                   {
                     *length = 0;
 
-                    if (channel->do_encode && channel->read_buf->len != 0)
-                      /* using GIConv conversion, unconverted chars */
+                    if (channel->encoding && channel->read_buf->len != 0)
                       {
                         g_set_error (error, G_CONVERT_ERROR,
                                      G_CONVERT_ERROR_PARTIAL_INPUT,
