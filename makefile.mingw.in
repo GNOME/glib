@@ -20,7 +20,7 @@ GLIB_VER = @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
 
 INCLUDES = -I .
 DEFINES = -DHAVE_CONFIG_H -DGLIB_COMPILATION -DG_LOG_DOMAIN=g_log_domain_glib -DG_ENABLE_DEBUG
-DEPCFLAGS = $(LIBICONV_CFLAGS)
+DEPCFLAGS = $(INTL_CFLAGS) $(LIBICONV_CFLAGS)
 
 DLLS_TO_BUILD =				\
  	glib-$(GLIB_VER).dll		\
@@ -96,7 +96,7 @@ makefile.mingw: makefile.mingw.in
 ################ glib
 
 glib-$(GLIB_VER).dll : $(glib_OBJECTS) glib.def
-	./build-dll glib $(GLIB_VER) glib.def $(glib_OBJECTS) $(LIBICONV_LIBS) -luser32 -lwsock32
+	./build-dll glib $(GLIB_VER) glib.def $(glib_OBJECTS) $(INTL_LIBS) $(LIBICONV_LIBS) -luser32 -lwsock32
 
 gspawn-win32-helper.exe : gspawn-win32-helper.c
 	$(CC) $(CFLAGS) -mwindows -DG_LOG_DOMAIN=\"gspawn-win32-helper\" -o $@ $< -L . -lglib-$(GLIB_VER)

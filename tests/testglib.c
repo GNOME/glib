@@ -1144,6 +1144,11 @@ main (int   argc,
 
 #ifdef G_OS_WIN32
   g_print ("current locale: %s\n", g_win32_getlocale ());
+
+  g_print ("GLib installation directory (used for message catalogs): %s\n",
+	   g_win32_get_package_installation_directory (GETTEXT_PACKAGE));
+  g_print ("GTK+ 2.0 installation directory, if available: %s\n",
+	   g_win32_get_package_installation_directory ("gtk20"));
 #endif
 
   g_print ("checking file functions...\n");

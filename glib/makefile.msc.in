@@ -1,5 +1,5 @@
 ## Makefile for building the GLib dlls with Microsoft C
-## Use: nmake -f makefile.msc install
+## Use: nmake -f makefile.msc
 
 # Change this to wherever you want to install the DLLs. This directory
 # should be in your PATH.
@@ -18,7 +18,7 @@ GLIB_VER = @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
 
 INCLUDES = -I .
 DEFINES = -DHAVE_CONFIG_H -DGLIB_COMPILATION -DG_LOG_DOMAIN=g_log_domain_glib -DG_ENABLE_DEBUG
-DEPCFLAGS = $(LIBICONV_CFLAGS)
+DEPCFLAGS = $(INTL_CFLAGS) $(LIBICONV_CFLAGS)
 
 DLLS_TO_BUILD =			\
  	glib-$(GLIB_VER).dll	\
@@ -94,7 +94,7 @@ makefile.msc: makefile.msc.in
 ################ glib
 
 glib-$(GLIB_VER).dll : $(glib_OBJECTS) glib.def
-	$(CC) $(CFLAGS) -LD -Feglib-$(GLIB_VER).dll $(glib_OBJECTS) $(LIBICONV_LIBS) user32.lib advapi32.lib wsock32.lib $(LDFLAGS) /def:glib.def
+	$(CC) $(CFLAGS) -LD -Feglib-$(GLIB_VER).dll $(glib_OBJECTS) $(INTL_LIBS) $(LIBICONV_LIBS) user32.lib advapi32.lib wsock32.lib $(LDFLAGS) /def:glib.def
 
 gspawn-win32-helper.exe : gspawn-win32-helper.c glib-$(GLIB_VER).dll
 	$(CC) $(CFLAGS) -Fe$@ -DG_LOG_DOMAIN=\"gspawn-win32-helper\" gspawn-win32-helper.c glib-$(GLIB_VER).lib $(LDFLAGS) /subsystem:windows user32.lib

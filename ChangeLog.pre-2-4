@@ -1,3 +1,24 @@
+2001-01-17  Tor Lillqvist  <tml@iki.fi>
+
+	* config.h.win32.in: Define ENABLE_NLS and GETTEXT_PACKAGE.
+
+	* makefile.mingw.in
+	* makefile.msc.in: Use the GNU intl library.
+
+	* gwin32.c (g_win32_get_package_installation_directory): New
+	function. To be used by various GLib-using packages to get their
+	installation directory, which should be stored in the Registry by
+	some installer.
+
+	* gwin32.h: Declare it.
+
+	* testglib.c (main): Test it.
+
+	* gutils.c: On Win32, define GLIB_LOCALE_DIR using
+	g_win32_get_package_installation_directory().
+
+	* glib.def: Update.
+
 Mon Jan 15 21:39:06 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* glib-2.0.pc.in (Libs) glib-config-2.0.in: Add @INTLLIBS@.

@@ -145,3 +145,8 @@
 /* #undef HAVE_LIBW */
 
 #define USE_LIBICONV 1
+
+#define ENABLE_NLS 1
+
+/* Dunno if this will expand correctly: */
+#define GETTEXT_PACKAGE "@GETTEXT_PACKAGE@"

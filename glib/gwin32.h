@@ -110,6 +110,8 @@ gchar *		g_win32_getlocale  (void);
  */
 gchar *         g_win32_error_message (gint error);
 
+gchar *         g_win32_get_package_installation_directory (gchar *package);
+
 G_END_DECLS
 
 #endif	 /* G_OS_WIN32 */

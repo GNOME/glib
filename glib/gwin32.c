@@ -822,3 +822,55 @@ g_win32_error_message (gint error)
 
   return retval;
 }
+
+gchar *
+g_win32_get_package_installation_directory (gchar *package)
+{
+  static GHashTable *installation_dirs = NULL;
+  gchar *result;
+  gchar *key;
+  char win_dir[MAX_PATH];
+  gchar *sep;
+  HKEY reg_key = NULL;
+  DWORD type;
+  DWORD nbytes;
+
+  if (installation_dirs == NULL)
+    installation_dirs = g_hash_table_new (g_str_hash, g_str_equal);
+
+  result = g_hash_table_lookup (installation_dirs, package);
+
+  if (result && result[0])
+    return result;
+
+  key = g_strconcat ("Software\\", package, NULL);
+
+  nbytes = 0;
+  if (RegOpenKeyEx (HKEY_LOCAL_MACHINE, key, 0,
+		    KEY_QUERY_VALUE, &reg_key) != ERROR_SUCCESS
+      || RegQueryValueEx (reg_key, "InstallationDirectory", 0,
+			  &type, NULL, &nbytes) != ERROR_SUCCESS
+      || type != REG_SZ)
+    {
+      /* Uh oh. Use a default %WinDir%\package value */
+      if (GetWindowsDirectory (win_dir, sizeof (win_dir)) == 0)
+	strcpy (win_dir, (GetVersion () >= 0x80000000 ? "C:\\windows" : "C:\\winnt"));
+      sep = (win_dir[strlen (win_dir) - 1] == '\\' ? "" : "\\");
+      result = g_strconcat (win_dir, sep, package, NULL);
+    }
+  else
+    {
+      result = g_malloc (nbytes + 1);
+      RegQueryValueEx (reg_key, "InstallationDirectory", 0,
+		       &type, result, &nbytes);
+      result[nbytes] = '\0';
+    }
+  g_hash_table_insert (installation_dirs, package, result);
+
+  if (reg_key != NULL)
+    RegCloseKey (reg_key);
+
+  g_free (key);
+
+  return result;
+}
