@@ -1152,11 +1152,16 @@ gchar *
 g_strescape (const gchar *source,
 	     const gchar *exceptions)
 {
-  const guchar *p = (guchar *) source;
-  /* Each source byte needs maximally four destination chars (\777) */
-  gchar *dest = g_malloc (strlen (source) * 4 + 1);
-  gchar *q = dest;
+  const guchar *p;
+  gchar *dest;
+  gchar *q;
   guchar excmap[256];
+  
+  g_return_val_if_fail (source != NULL, NULL);
+
+  p = (guchar *) source;
+  /* Each source byte needs maximally four destination chars (\777) */
+  q = dest = g_malloc (strlen (source) * 4 + 1);
 
   memset (excmap, 0, 256);
   if (exceptions)

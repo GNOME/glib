@@ -1,3 +1,7 @@
+Sat Sep  9 18:50:42 2000  Owen Taylor  <otaylor@redhat.com>
+
+	* gstrfuncs.c (g_strescape): Add a missing g_return_if_fail().
+
 Mon Aug 21 03:57:46 2000  Tim Janik  <timj@gtk.org>
 
 	* glib.h (G_BREAKPOINT): for non-i386 and non-alpha, or non gcc,
