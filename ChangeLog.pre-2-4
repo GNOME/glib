@@ -1,3 +1,7 @@
+Wed Dec 19 23:09:07 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gconvert.c (g_iconv_open): SGML doc fix.
+
 Tue Dec 18 21:11:10 2001  Tim Janik  <timj@gtk.org>
 
 	* configure.in: add configure check to determine G_HAVE_GROWING_STACK.

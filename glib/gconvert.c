@@ -97,7 +97,7 @@ extern const char **_g_charset_get_aliases (const char *canonical_name);
  * may be implemented via libiconv on UNIX flavors that lack
  * a native implementation.
  * 
- * &GLib; provides g_convert() and g_locale_to_utf8() which are likely
+ * GLib provides g_convert() and g_locale_to_utf8() which are likely
  * more convenient than the raw iconv wrappers.
  * 
  * Return value: a "conversion descriptor"
@@ -147,7 +147,7 @@ g_iconv_open (const gchar  *to_codeset,
  * may be implemented via libiconv on UNIX flavors that lack
  * a native implementation.
  *
- * &GLib; provides g_convert() and g_locale_to_utf8() which are likely
+ * GLib provides g_convert() and g_locale_to_utf8() which are likely
  * more convenient than the raw iconv wrappers.
  * 
  * Return value: count of non-reversible conversions, or -1 on error
@@ -174,7 +174,7 @@ g_iconv (GIConv   converter,
  * the conversion descriptor from g_iconv_open() when
  * you are done converting things.
  *
- * &GLib; provides g_convert() and g_locale_to_utf8() which are likely
+ * GLib provides g_convert() and g_locale_to_utf8() which are likely
  * more convenient than the raw iconv wrappers.
  * 
  * Return value: -1 on error, 0 on success
@@ -421,7 +421,7 @@ g_convert_with_iconv (const gchar *str,
  * for the fallback sequences in @fallback will be honored. Some
  * systems may do a approximate conversion from @from_codeset
  * to @to_codeset in their <function>iconv()</function> functions, 
- * in which case &GLib; will simply return that approximate conversion.
+ * in which case GLib will simply return that approximate conversion.
  *
  * Return value: If the conversion was successful, a newly allocated
  *               nul-terminated string, which must be freed with
