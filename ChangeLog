@@ -1,3 +1,7 @@
+2003-02-24  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gdir.c (g_dir_read_name): Clarify documentation.
+
 2003-02-18  Sebastian Wilhelmi  <seppi@seppi.de>
 
 	* configure.in: Make glib_thread_test not unnecessarily convert

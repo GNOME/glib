@@ -89,7 +89,9 @@ g_dir_open (const gchar  *path,
  * @dir: a #GDir* created by g_dir_open()
  *
  * Retrieves the name of the next entry in the directory.
- * The '.' and '..' entries are omitted.
+ * The '.' and '..' entries are omitted. The returned name is in 
+ * the encoding used for filenames. Use g_filename_to_utf8() to 
+ * convert it to UTF-8.
  *
  * Return value: The entries name or %NULL if there are no 
  *   more entries. The return value is owned by GLib and
