@@ -1,5 +1,11 @@
 2004-04-22  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gstrfuncs.c (g_ascii_strtod): Fix problems when a 
+	locale-specific decimal separator directly follows a 
+	number.  (#138424, Nickolay V. Shmyrev)
+
+	* tests/strtod-test.c (main): Add some more testcases.
+
 	* glib/gmain.c (g_main_context_query): Only set time_is_current to 
 	FALSE if context->timeout is not zero.  (#137795, Christian Krause)
 

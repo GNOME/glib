@@ -346,7 +346,7 @@ g_ascii_strtod (const gchar *nptr,
   g_assert (decimal_point_len != 0);
   
   decimal_point_pos = NULL;
-  if (decimal_point[0] != '.' ||
+  if (decimal_point[0] != '.' || 
       decimal_point[1] != 0)
     {
       p = nptr;
@@ -358,7 +358,7 @@ g_ascii_strtod (const gchar *nptr,
       if (*p == '+' || *p == '-')
 	p++;
       
-      if (p[0] == '0' &&
+      if (p[0] == '0' && 
 	  (p[1] == 'x' || p[1] == 'X'))
 	{
 	  p += 2;
@@ -380,7 +380,6 @@ g_ascii_strtod (const gchar *nptr,
 		p++;
 	      while (g_ascii_isdigit (*p))
 		p++;
-	      end = p;
 	    }
 	}
       else
@@ -401,10 +400,10 @@ g_ascii_strtod (const gchar *nptr,
 		p++;
 	      while (g_ascii_isdigit (*p))
 		p++;
-	      end = p;
 	    }
 	}
       /* For the other cases, we need not convert the decimal point */
+      end = p;
     }
 
   /* Set errno to zero, so that we can distinguish zero results
@@ -440,8 +439,28 @@ g_ascii_strtod (const gchar *nptr,
       g_free (copy);
 	  
     }
+  else if (decimal_point[0] != '.' ||
+	   decimal_point[1] != 0)
+    {
+      char *copy;
+      
+      copy = g_malloc (end - (char *)nptr + 1);
+      memcpy (copy, nptr, end - nptr);
+      *(copy + (end - (char *)nptr)) = 0;
+      
+      val = strtod (copy, &fail_pos);
+      
+      if (fail_pos)
+	{
+	  fail_pos = (char *)nptr + (fail_pos - copy);
+	}
+      
+      g_free (copy);
+    }
   else
-    val = strtod (nptr, &fail_pos);
+    {
+      val = strtod (nptr, &fail_pos);
+    }
 
   if (endptr)
     *endptr = fail_pos;

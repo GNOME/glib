@@ -7,10 +7,10 @@
 #include <math.h>
 
 void
-test_string (char *number, double res)
+test_string (char *number, double res, gboolean check_end, int correct_len)
 {
   gdouble d;
-  char *locales[] = {"sv_SE", "en_US", "fa_IR", "C"};
+  char *locales[] = {"sv_SE", "en_US", "fa_IR", "C", "ru_RU"};
   int l;
   char *end;
   char *dummy;
@@ -28,7 +28,9 @@ test_string (char *number, double res)
       d = g_ascii_strtod (number, &end);
       if (d != res)
 	g_print ("g_ascii_strtod for locale %s failed\n", locales[l]);
-      if (end - number != strlen(number))
+      if (check_end && end - number != correct_len)
+	g_print ("g_ascii_strtod for locale %s endptr was wrong\n", locales[l]);
+      if (!check_end && end - number != strlen (number))
 	g_print ("g_ascii_strtod for locale %s endptr was wrong\n", locales[l]);
     }
   
@@ -42,12 +44,15 @@ main ()
   gdouble d;
   char buffer[G_ASCII_DTOSTR_BUF_SIZE];
 
-  test_string ("123.123", 123.123);
-  test_string ("123.123e2", 123.123e2);
-  test_string ("123.123e-2", 123.123e-2);
-  test_string ("-123.123", -123.123);
-  test_string ("-123.123e2", -123.123e2);
-  test_string ("-123.123e-2", -123.123e-2);
+  test_string ("123.123", 123.123, FALSE, 0);
+  test_string ("123.123e2", 123.123e2, FALSE, 0);
+  test_string ("123.123e-2", 123.123e-2, FALSE, 0);
+  test_string ("-123.123", -123.123, FALSE, 0);
+  test_string ("-123.123e2", -123.123e2, FALSE, 0);
+  test_string ("-123.123e-2", -123.123e-2, FALSE, 0);
+  test_string ("5.4", 5.4, TRUE, 3);
+  test_string ("5.4,5.5", 5.4, TRUE, 3);
+  test_string ("5,4", 5.0, TRUE, 1);
   
   d = 179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.0;
   g_assert (d == g_ascii_strtod (g_ascii_dtostr (buffer, sizeof (buffer), d), NULL));
