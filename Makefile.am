@@ -4,7 +4,7 @@
 SUBDIRS = gmodule gthread docs 
 all-recursive-am: all-am
 # alpha `automake' supports this better
-#SUBDIRS = . gmodule docs
+#SUBDIRS = . gmodule gthread docs
 
 configincludedir = $(pkglibdir)/include
 
@@ -15,50 +15,50 @@ glib-config: glib-config.in
 INCLUDES = -DG_LOG_DOMAIN=g_log_domain_glib @GLIB_DEBUG_FLAGS@
 
 EXTRA_DIST = \
-	glib.m4		\
-	glib.spec	\
-	acglib.m4	\
-	sanity_check	\
-	README.win32	\
-	glib.def	\
-	makefile.lcc	\
-	makefile.msc	\
+	glib.m4			\
+	glib.spec		\
+	acglib.m4		\
+	sanity_check		\
+	README.win32		\
+	glib.def		\
+	makefile.lcc		\
+	makefile.msc		\
 	glibconfig.h.win32
 
 lib_LTLIBRARIES = libglib.la
 
 libglib_la_SOURCES = \
-		garray.c	\
-		gcache.c	\
-		gcompletion.c	\
-		gdataset.c	\
-                gdate.c         \
-		gerror.c	\
-		ghash.c		\
-		ghook.c		\
-		glist.c		\
-		gmain.c         \
-		giochannel.c    \
-		giounix.c       \
-		gmem.c		\
-		gmessages.c	\
-		gnode.c		\
-		gprimes.c	\
-		gslist.c	\
-		gtimer.c	\
-		gtree.c		\
-		grel.c		\
-		gstring.c	\
-		gstrfuncs.c	\
-		gscanner.c	\
-		gutils.c	\
-		gmutex.c
+	garray.c	\
+	gcache.c	\
+	gcompletion.c	\
+	gdataset.c	\
+	gdate.c         \
+	gerror.c	\
+	ghash.c		\
+	ghook.c		\
+	giochannel.c    \
+	giounix.c       \
+	glist.c		\
+	gmain.c         \
+	gmem.c		\
+	gmessages.c	\
+	gmutex.c	\
+	gnode.c		\
+	gprimes.c	\
+	grel.c		\
+	gscanner.c	\
+	gslist.c	\
+	gstrfuncs.c	\
+	gstring.c	\
+	gtimer.c	\
+	gtree.c		\
+	gutils.c
 
 include_HEADERS = \
-		glib.h
+	glib.h
 
 configinclude_DATA = \
-		glibconfig.h
+	glibconfig.h
 
 configure: configure.in acglib.m4		
 
@@ -70,7 +70,8 @@ stamp-gc-h: config.status
 	echo timestamp > stamp-gc-h
 
 libglib_la_LDFLAGS = \
-	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) -release $(LT_RELEASE)
+	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
+	-release $(LT_RELEASE)
 
 noinst_PROGRAMS = testglib testgdate testgdateparser
 testglib_LDADD = libglib.la

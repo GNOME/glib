@@ -860,20 +860,22 @@ main (int   argc,
   string = NULL;
   g_print (string);
 
-  g_print ("endian macro tests...");
+  g_print ("checking endian macros (host is ");
 #if G_BYTE_ORDER == G_BIG_ENDIAN
-  g_print ("big endian...\n");
+  g_print ("big endian)...");
 #else
-  g_print ("little endian...\n");
+  g_print ("little endian)...");
 #endif
   g_assert (GUINT16_SWAP_LE_BE (gu16t1) == gu16t2);  
   g_assert (GUINT32_SWAP_LE_BE (gu32t1) == gu32t2);  
 #ifdef G_HAVE_GINT64
   g_assert (GUINT64_SWAP_LE_BE (gu64t1) == gu64t2);  
 #endif
+  g_print ("ok\n");
 
 #ifdef G_HAVE_ALLOCA
-  /* test alloca()-based string duplication routines */
+  g_print ("checking alloca()-based string duplication routines...");
+
   g_strdup_a(string, GLIB_TEST_STRING);
   g_assert(string != NULL);
   g_assert(strcmp(string, GLIB_TEST_STRING) == 0);
@@ -887,9 +889,9 @@ main (int   argc,
   g_assert(string != NULL);
   g_assert(strcmp(string, GLIB_TEST_STRING GLIB_TEST_STRING
   			  GLIB_TEST_STRING) == 0);
-#endif
 
   g_print ("ok\n");
+#endif
 
   return 0;
 }

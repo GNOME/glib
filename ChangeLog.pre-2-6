@@ -1,3 +1,9 @@
+Fri Jan  1 18:30:41 PST 1999 Manish Singh <yosh@gimp.org>
+
+	* testglib.c: made the alloca tests follow the testglib style
+
+	* Makefile.am: minor cleanups, mostly cosmetic
+
 Fri Jan  1 20:43:19 EST 1999  Jeff Garzik  <jgarzik@pobox.com>
 
 	* glib.h: added g_strndup_a macro
