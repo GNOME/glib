@@ -913,7 +913,8 @@ strdup_len (const gchar *string,
 
 /**
  * g_locale_to_utf8:
- * @opsysstring:   a string in the encoding of the current locale
+ * @opsysstring:   a string in the encoding of the current locale. On Windows
+ *                 this means the system codepage.
  * @len:           the length of the string, or -1 if the string is
  *                 nul-terminated.
  * @bytes_read:    location to store the number of bytes in the
@@ -1722,8 +1723,9 @@ g_filename_from_uri (const gchar *uri,
 
 /**
  * g_filename_to_uri:
- * @filename: an absolute filename specified in the encoding
- *            used for filenames by the operating system.
+ * @filename: an absolute filename specified in the GLib file name encoding,
+ *            which is the on-disk file name bytes on Unix, and UTF-8 on 
+ *            Windows
  * @hostname: A UTF-8 encoded hostname, or %NULL for none.
  * @error: location to store the error occuring, or %NULL to ignore
  *         errors. Any of the errors in #GConvertError may occur.

@@ -1,3 +1,8 @@
+2004-12-20  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/gconvert.c (g_locale_to_utf8, g_filename_to_uri): Improve
+	docs.
+
 2004-12-20  Matthias Clasen  <mclasen@redhat.com>
 
 	* tests/option-test.c: Add some tests for '--' 
