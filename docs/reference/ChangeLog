@@ -1,5 +1,10 @@
 2003-07-26  Matthias Clasen  <maclas@gmx.de>
 
+	* glib/tmpl/arrays.sgml: 
+	* glib/tmpl/arrays_byte.sgml: 
+	* glib/tmpl/arrays_pointer.sgml: 
+	* glib/glib-sections.txt: Add g_{,byte,pointer}_array_remove_range.  (#94879, Nalin Dahyabhai)
+
 	* glib/tmpl/messages.sgml: Remove the note about the message length restriction.
 
 2003-07-24  Matthias Clasen  <maclas@gmx.de>

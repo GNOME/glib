@@ -125,9 +125,22 @@ g_byte_array_remove_index().
 @Returns: the #GByteArray.
 
 
+<!-- ##### FUNCTION g_byte_array_remove_range ##### -->
+<para>
+Removes the given number of bytes starting at the given index from a
+#GByteArray.  The following elements are moved to close the gap.
+</para>
+
+@array: a @GByteArray.
+@index_: the index of the first byte to remove.
+@length: the number of bytes to remove.
+@Returns: the #GByteArray.
+@Since: 2.4
+
+
 <!-- ##### FUNCTION g_byte_array_sort ##### -->
 <para>
-Sorts a byte array, using @compare_func which should be a <function>qsort()</function>-style
+Sorts a byte array, using @compare_func which should be a qsort()-style
 comparison function (returns -1 for first arg is less than second arg, 0 for
 equal, 1 if first arg is greater than second arg).
 </para>

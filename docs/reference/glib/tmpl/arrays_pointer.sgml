@@ -155,9 +155,21 @@ g_ptr_array_remove_index().
 @Returns: the pointer which was removed.
 
 
+<!-- ##### FUNCTION g_ptr_array_remove_range ##### -->
+<para>
+Removes the given number of bytes starting at the given index from a
+#GPtrArray.  The following elements are moved to close the gap.
+</para>
+
+@array: a @GPtrArray.
+@index_: the index of the first pointer to remove.
+@length: the number of pointers to remove.
+@Since: 2.4
+
+
 <!-- ##### FUNCTION g_ptr_array_sort ##### -->
 <para>
-Sorts the array, using @compare_func which should be a <function>qsort()</function>-style comparison
+Sorts the array, using @compare_func which should be a qsort()-style comparison
 function (returns -1 for first arg is less than second arg, 0 for equal, 1 if
 first arg is greater than second arg).
 </para>

@@ -1,5 +1,9 @@
 2003-07-26  Matthias Clasen  <maclas@gmx.de>
 
+	* glib/garray.h: 
+	* glib/garray.c (g_{,byte,pointer}_remove_range): New functions to remove a range of elements
+	from an array.  (#94879, Nalin Dahyabhai)
+
 	* glib/gmessages.c (g_logv): Remove the 1024 char limit in the common (non-recursive)
 	case.
 

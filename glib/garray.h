@@ -88,6 +88,9 @@ GArray* g_array_remove_index      (GArray           *array,
 				   guint             index_);
 GArray* g_array_remove_index_fast (GArray           *array,
 				   guint             index_);
+GArray* g_array_remove_range      (GArray           *array,
+				   guint             index_,
+				   guint             length);
 void    g_array_sort              (GArray           *array,
 				   GCompareFunc      compare_func);
 void    g_array_sort_with_data    (GArray           *array,
@@ -113,6 +116,9 @@ gboolean   g_ptr_array_remove             (GPtrArray        *array,
 					   gpointer          data);
 gboolean   g_ptr_array_remove_fast        (GPtrArray        *array,
 					   gpointer          data);
+void       g_ptr_array_remove_range       (GPtrArray        *array,
+					   guint             index_,
+					   guint             length);
 void       g_ptr_array_add                (GPtrArray        *array,
 					   gpointer          data);
 void       g_ptr_array_sort               (GPtrArray        *array,
@@ -142,6 +148,9 @@ GByteArray* g_byte_array_remove_index      (GByteArray       *array,
 					    guint             index_);
 GByteArray* g_byte_array_remove_index_fast (GByteArray       *array,
 					    guint             index_);
+GByteArray* g_byte_array_remove_range      (GByteArray       *array,
+					    guint             index_,
+					    guint             length);
 void        g_byte_array_sort              (GByteArray       *array,
 					    GCompareFunc      compare_func);
 void        g_byte_array_sort_with_data    (GByteArray       *array,

@@ -212,9 +212,22 @@ g_array_remove_index().
 @Returns: the #GArray.
 
 
+<!-- ##### FUNCTION g_array_remove_range ##### -->
+<para>
+Removes the given number of elements starting at the given index from a
+#GArray.  The following elements are moved to close the gap.
+</para>
+
+@array: a @GArray.
+@index_: the index of the first element to remove.
+@length: the number of elements to remove. 
+@Returns: the #GArray.
+@Since: 2.4
+
+
 <!-- ##### FUNCTION g_array_sort ##### -->
 <para>
-Sorts a #GArray using @compare_func which should be a <function>qsort()</function>-style comparison
+Sorts a #GArray using @compare_func which should be a qsort()-style comparison
 function (returns -1 for first arg is less than second arg, 0 for equal, 1 if
 first arg is greater than second arg).
 </para>
