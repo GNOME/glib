@@ -1,3 +1,8 @@
+Thu Sep  9 13:52:26 2004  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gmessages.c (g_return_if_fail_warning): 
+	Include implementation of g_return_if_fail_internal().
+
 Thu Sep  9 10:37:41 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gmessages.h (g_return_[val_]if_fail): Use

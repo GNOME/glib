@@ -560,6 +560,18 @@ g_log (const gchar   *log_domain,
   va_end (args);
 }
 
+void
+g_return_if_fail_warning (const char *log_domain,
+			  const char *pretty_function,
+			  const char *expression)
+{
+  g_log (log_domain,
+	 G_LOG_LEVEL_CRITICAL,
+	 "%s: assertion `%s' failed",
+	 pretty_function,
+	 expression);
+}
+
 #define CHAR_IS_SAFE(wc) (!((wc < 0x20 && wc != '\t' && wc != '\n' && wc != '\r') || \
 			    (wc == 0x7f) || \
 			    (wc >= 0x80 && wc < 0xa0)))
