@@ -372,7 +372,7 @@ G_CONST_RETURN gchar* g_type_name_from_class	(GTypeClass	*g_class);
 #  define _G_TYPE_CIT(ip, gt)             (g_type_check_instance_is_a ((GTypeInstance*) ip, gt))
 #  define _G_TYPE_CCT(cp, gt)             (g_type_check_class_is_a ((GTypeClass*) cp, gt))
 #endif /* !__GNUC__ */
-#define	G_TYPE_FLAG_RESERVED_ID_BIT	(1 << 0)
+#define	G_TYPE_FLAG_RESERVED_ID_BIT	((GType) (1 << 0))
 extern GTypeDebugFlags			_g_type_debug_flags;
 
 G_END_DECLS

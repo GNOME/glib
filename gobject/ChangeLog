@@ -1,3 +1,8 @@
+Fri Jan  4 04:36:46 2002  Tim Janik  <timj@gtk.org>
+
+	* gtype.h (G_TYPE_FLAG_RESERVED_ID_BIT): turn this into a GType,
+	so negating it works on 64bit platforms.
+
 2001-12-21  Tor Lillqvist  <tml@iki.fi>
 
 	* gobject.def: Add g_signal_get_invocation_hint.
