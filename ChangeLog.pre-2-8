@@ -1,3 +1,7 @@
+2005-02-16  Adi Attar  <aattar@cvs.gnome.org>
+
+	* configure.in: Added "xh" to ALL_LINGUAS.
+
 2005-02-11  Tor Lillqvist  <tml@novell.com>
 
 	* glib/giowin32.c: Include winsock2.h before windows.h, to avoid

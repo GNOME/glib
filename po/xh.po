@@ -1,0 +1,659 @@
+# Xhosa translation of glib
+# Copyright (C) 2005 Canonical Ltd.
+# This file is distributed under the same license as the glib package.
+# Translation by Canonical Ltd <translations@canonical.com> with thanks to
+# Translation World CC in South Africa, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: glib\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-02-16 18:38+0200\n"
+"PO-Revision-Date: 2005-02-08 12:31+0200\n"
+"Last-Translator: Canonical Ltd <translations@canonical.com>\n"
+"Language-Team: Xhosa <xh-translate@ubuntu.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../glib/gconvert.c:403
+#, c-format
+msgid "Conversion from character set '%s' to '%s' is not supported"
+msgstr ""
+"Uguqulo ukusuka kwingqokelela yeempawu '%s' ukuya kwi '%s' ayixhaswanga"
+
+#: ../glib/gconvert.c:407
+#, c-format
+msgid "Could not open converter from '%s' to '%s'"
+msgstr "Akukwazekanga ukuvula isiguquli ukusuka ku '%s' ukuya ku '%s'"
+
+#: ../glib/gconvert.c:605 ../glib/gconvert.c:892 ../glib/giochannel.c:1318
+#: ../glib/giochannel.c:1360 ../glib/giochannel.c:2202 ../glib/gutf8.c:911
+#: ../glib/gutf8.c:1361
+msgid "Invalid byte sequence in conversion input"
+msgstr "Ulandelelwano olungasebenziyo lwe-byte kungeniso-lwazi yenguqulo"
+
+#: ../glib/gconvert.c:610 ../glib/gconvert.c:825 ../glib/giochannel.c:1325
+#: ../glib/giochannel.c:2214
+#, c-format
+msgid "Error during conversion: %s"
+msgstr "Impazamo ngelixa lenguqulo: %s"
+
+#: ../glib/gconvert.c:628 ../glib/gutf8.c:907 ../glib/gutf8.c:1112
+#: ../glib/gutf8.c:1253 ../glib/gutf8.c:1357
+msgid "Partial character sequence at end of input"
+msgstr "Inxalenye yophawu lolandelelwano ekupheleni kongeniso-lwazi"
+
+#: ../glib/gconvert.c:801
+#, c-format
+msgid "Cannot convert fallback '%s' to codeset '%s'"
+msgstr "Akukwazeki ukuguqula i-fallback '%s' kwiseti yekhowudi '%s'"
+
+#: ../glib/gconvert.c:1601
+#, c-format
+msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
+msgstr "I-URI '%s' asiyiyo i-URI ngokupheleleyo esebenzisa indlela ye \"file\""
+
+#: ../glib/gconvert.c:1611
+#, c-format
+msgid "The local file URI '%s' may not include a '#'"
+msgstr "I-URI yefayili yendawo '%s' kunokwenzeka ingaquki i-'#'"
+
+#: ../glib/gconvert.c:1628
+#, c-format
+msgid "The URI '%s' is invalid"
+msgstr "Ayisebenzi i-'%s' yeURI"
+
+#: ../glib/gconvert.c:1640
+#, c-format
+msgid "The hostname of the URI '%s' is invalid"
+msgstr "Igama lomququzeleli weURI '%s' alisebenzi"
+
+#: ../glib/gconvert.c:1656
+#, c-format
+msgid "The URI '%s' contains invalidly escaped characters"
+msgstr "I-URI '%s' iqulethe iimpawu ezisindileyo ezingasebenziyo"
+
+#: ../glib/gconvert.c:1750
+#, c-format
+msgid "The pathname '%s' is not an absolute path"
+msgstr "Igama lendlela yothungelwano '%s' akuyiyo kuphela indlela"
+
+#: ../glib/gconvert.c:1760
+msgid "Invalid hostname"
+msgstr "Igama lomququzeleli elingasebenziyo"
+
+#: ../glib/gdir.c:120 ../glib/gdir.c:140
+#, c-format
+msgid "Error opening directory '%s': %s"
+msgstr "Impazamo yokuvula uvimba weefayili '%s': %s"
+
+#: ../glib/gfileutils.c:501 ../glib/gfileutils.c:569
+#, c-format
+msgid "Could not allocate %lu bytes to read file \"%s\""
+msgstr "Akwazekanga ukwaba %lu ii-byte ukufunda ifayili \"%s\""
+
+#: ../glib/gfileutils.c:514
+#, c-format
+msgid "Error reading file '%s': %s"
+msgstr "Impazamo yokufunda ifayili '%s': %s"
+
+#: ../glib/gfileutils.c:593
+#, c-format
+msgid "Failed to read from file '%s': %s"
+msgstr "Akuphumelelekanga ukufunda ifayili '%s': %s"
+
+#: ../glib/gfileutils.c:644 ../glib/gfileutils.c:733
+#, c-format
+msgid "Failed to open file '%s': %s"
+msgstr "Akuphumelelekanga ukuvula ifayili '%s': %s"
+
+#: ../glib/gfileutils.c:661
+#, c-format
+msgid "Failed to get attributes of file '%s': fstat() failed: %s"
+msgstr ""
+"Akuphumelelekanga ukufumana iimpawu zefayili '%s': fstat() "
+"akuphumelelekanga: %s"
+
+#: ../glib/gfileutils.c:695
+#, c-format
+msgid "Failed to open file '%s': fdopen() failed: %s"
+msgstr "Akuphumelelekanga ukuvula ifayili '%s': fdopen() akuphumelelekanga: %s"
+
+#: ../glib/gfileutils.c:1032
+#, c-format
+msgid "Template '%s' invalid, should not contain a '%s'"
+msgstr "I-Template '%s' ayisebenzi, kufuneka ingaqulathi i '%s'"
+
+#: ../glib/gfileutils.c:1046
+#, c-format
+msgid "Template '%s' doesn't end with XXXXXX"
+msgstr "I-Template '%s' ayipheli ngo XXXXXX"
+
+#: ../glib/gfileutils.c:1071
+#, c-format
+msgid "Failed to create file '%s': %s"
+msgstr "Akuphumelelekanga ukudala ifayili '%s': %s"
+
+#: ../glib/gfileutils.c:1449
+#, c-format
+msgid "Failed to read the symbolic link '%s': %s"
+msgstr "Akuphumelelanga ukufunda ikhonkco elingumfuziselo '%s': %s"
+
+#: ../glib/gfileutils.c:1470
+msgid "Symbolic links not supported"
+msgstr "Ikhonkco elingumfuziselo alixhaswanga"
+
+#: ../glib/giochannel.c:1146
+#, c-format
+msgid "Conversion from character set `%s' to `%s' is not supported"
+msgstr ""
+"Inguqulo ukusuka kwingqokelela yeempawu `%s' ukuya ku `%s' ayixhaswanga"
+
+#: ../glib/giochannel.c:1150
+#, c-format
+msgid "Could not open converter from `%s' to `%s': %s"
+msgstr "Akukwazekanga ukuvula isiguquli ukusuka ku `%s' ukuya ku `%s': %s"
+
+#: ../glib/giochannel.c:1495
+msgid "Can't do a raw read in g_io_channel_read_line_string"
+msgstr ""
+"Akukwazeki ukwenza ukufunda okungalungiswanga kwi "
+"g_io_channel_read_line_string"
+
+#: ../glib/giochannel.c:1542 ../glib/giochannel.c:1799
+#: ../glib/giochannel.c:1885
+msgid "Leftover unconverted data in read buffer"
+msgstr "Intsalela yedata engaguqulwanga kwisigcini sethutyana sokufunda"
+
+#: ../glib/giochannel.c:1622 ../glib/giochannel.c:1699
+msgid "Channel terminates in a partial character"
+msgstr "Isiqhagamshelanisi siphelela inxalenye yophawu"
+
+#: ../glib/giochannel.c:1685
+msgid "Can't do a raw read in g_io_channel_read_to_end"
+msgstr ""
+"Akukwazeki ukwenza ukufunda okungalungiswanga kwi g_io_channel_read_to_end"
+
+#: ../glib/gmarkup.c:226
+#, c-format
+msgid "Error on line %d char %d: %s"
+msgstr "Impazamo emgceni %d uphawu %d: %s"
+
+#: ../glib/gmarkup.c:324
+#, c-format
+msgid "Error on line %d: %s"
+msgstr "Impazamo emgceni %d: %s"
+
+#: ../glib/gmarkup.c:428
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgstr ""
+"Into ezimeleyo eze '&;' ebonwayo; izinto ezizimeleyo ezisebenzayo: &amp; "
+"&quot; &lt; &gt; &apos;"
+
+#: ../glib/gmarkup.c:438
+#, c-format
+msgid ""
+"Character '%s' is not valid at the start of an entity name; the & character "
+"begins an entity; if this ampersand isn't supposed to be an entity, escape "
+"it as &amp;"
+msgstr ""
+"Uphawu '%s' alusebenzi ekuqaleni kwegama lento ezimeleyo; u-& uphawu uqala "
+"into ezimeleyo; ukuba le ampersand ayifanelanga ukuba yinto ezimeleyo, "
+"yiphephise njenge &amp;"
+
+#: ../glib/gmarkup.c:472
+#, c-format
+msgid "Character '%s' is not valid inside an entity name"
+msgstr "Uphawu '%s' alusebenzi ngaphakathi kwegama lento ezimeleyo"
+
+#: ../glib/gmarkup.c:509
+#, c-format
+msgid "Entity name '%s' is not known"
+msgstr "Igama lento ezimeleyo '%s' alaziwa"
+
+#: ../glib/gmarkup.c:520
+msgid ""
+"Entity did not end with a semicolon; most likely you used an ampersand "
+"character without intending to start an entity - escape ampersand as &amp;"
+msgstr ""
+"Into ezimeleyo ayiphelelanga ngechaphaza-msila; mhlawumbi usebenzise uphawu "
+"lwe- ampersand ungazimiselanga ukuqala into ezimeleyo - phepha i- ampersand "
+"njenge &amp;"
+
+#: ../glib/gmarkup.c:573
+#, c-format
+msgid ""
+"Failed to parse '%-.*s', which should have been a digit inside a character "
+"reference (&#234; for example) - perhaps the digit is too large"
+msgstr ""
+"Akuphumelelanga ukwahlula ngezijungqe '%-.*s', obekufanele ukuba ngumvo "
+"ngaphakathi kophawu lokuthumela (&#234; umzekelo) - mhlawumbi umvo mkhulu "
+"kakhulu"
+
+#: ../glib/gmarkup.c:598
+#, c-format
+msgid "Character reference '%-.*s' does not encode a permitted character"
+msgstr "Uphawu lokuthumela '%-.*s' alulunxulumanisi uphawu olunemvume"
+
+#: ../glib/gmarkup.c:613
+msgid "Empty character reference; should include a digit such as &#454;"
+msgstr "Uphawu lokuthumela oluze; kufuneka luquke umvo ofana nalo &#454;"
+
+#: ../glib/gmarkup.c:623
+msgid ""
+"Character reference did not end with a semicolon; most likely you used an "
+"ampersand character without intending to start an entity - escape ampersand "
+"as &amp;"
+msgstr ""
+"Uphawu lokuthumela aluphelelanga ngechaphaza-msila; mhlawumbi usebenzise "
+"uphawu lwe- ampersand ungenanjongo yokuqala into ezimeleyo - phepha i- "
+"ampersand njenge &amp;"
+
+#: ../glib/gmarkup.c:709
+msgid "Unfinished entity reference"
+msgstr "Into ezimeleyo yokuthumela engagqitywanga"
+
+#: ../glib/gmarkup.c:715
+msgid "Unfinished character reference"
+msgstr "Uphawu lokuthumela olungagqitywanga"
+
+#: ../glib/gmarkup.c:958 ../glib/gmarkup.c:986 ../glib/gmarkup.c:1017
+msgid "Invalid UTF-8 encoded text"
+msgstr "Umbhalo onxulumanisayo ongasebenziyo we- UTF-8"
+
+#: ../glib/gmarkup.c:1053
+msgid "Document must begin with an element (e.g. <book>)"
+msgstr "Uxwebhu kufuneka luqale ngesiqalelo (umzkl. <book>)"
+
+#: ../glib/gmarkup.c:1093
+#, c-format
+msgid ""
+"'%s' is not a valid character following a '<' character; it may not begin an "
+"element name"
+msgstr ""
+"'%s' asilophawu elisebenzayo elilandela u '<' uphawu; linokungaqali igama "
+"lesiqalelo"
+
+#: ../glib/gmarkup.c:1157
+#, c-format
+msgid ""
+"Odd character '%s', expected a '>' character to end the start tag of element "
+"'%s'"
+msgstr ""
+"Uphawu olutenxileyo '%s', lulindele '>' uphawu lokuphelisa ilebhile "
+"yokuqalisa isiqalelo '%s'"
+
+#: ../glib/gmarkup.c:1246
+#, c-format
+msgid ""
+"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgstr ""
+"Uphawu olutenxileyo '%s', lulindele '=' emva kwegama lophawu '%s' "
+"lwesiqalelo '%s'"
+
+#: ../glib/gmarkup.c:1288
+#, c-format
+msgid ""
+"Odd character '%s', expected a '>' or '/' character to end the start tag of "
+"element '%s', or optionally an attribute; perhaps you used an invalid "
+"character in an attribute name"
+msgstr ""
+"Uphawu olutenxileyo '%s', lulindele '>' okanye '/' uphawu lokuphelisa "
+"ilebhile yokuqala isiqalelo '%s', okanye ngokhetho lophawu; mhlawumbi "
+"usebenzise uphawu olungasebenziyo kwigama lophawu"
+
+#: ../glib/gmarkup.c:1377
+#, c-format
+msgid ""
+"Odd character '%s', expected an open quote mark after the equals sign when "
+"giving value for attribute '%s' of element '%s'"
+msgstr ""
+"Uphawu olutenxileyo '%s', lulindele uphawu locaphulo oluvulekileyo emva "
+"kweempawu zokulingana xa kunikwa ixabiso lophawu '%s' lwesiqalelo '%s'"
+
+#: ../glib/gmarkup.c:1522
+#, c-format
+msgid ""
+"'%s' is not a valid character following the characters '</'; '%s' may not "
+"begin an element name"
+msgstr ""
+"'%s' asilophawu olusebenzayo ukulandela iimpawu '</'; '%s' linokungaqali "
+"igama lesiqalelo"
+
+#: ../glib/gmarkup.c:1562
+#, c-format
+msgid ""
+"'%s' is not a valid character following the close element name '%s'; the "
+"allowed character is '>'"
+msgstr ""
+"'%s' asilophawu olusebenzayo ukulandela igama lesiqalelo elikufuphi '%s'; "
+"uphawu oluvunyelweyo lolu '>'"
+
+#: ../glib/gmarkup.c:1573
+#, c-format
+msgid "Element '%s' was closed, no element is currently open"
+msgstr "Isiqalelo '%s' besivaliwe, akukho siqalelo sivuliweyo njengangoku"
+
+#: ../glib/gmarkup.c:1582
+#, c-format
+msgid "Element '%s' was closed, but the currently open element is '%s'"
+msgstr ""
+"Isiqalelo '%s' besivaliwe, kodwa isiqalelo esivuliweyo njengangoku sesi '%s'"
+
+#: ../glib/gmarkup.c:1729
+msgid "Document was empty or contained only whitespace"
+msgstr "Uxwebhu beluze okanye luqulathe isikhewu esimhlophe kuphela"
+
+#: ../glib/gmarkup.c:1743
+msgid "Document ended unexpectedly just after an open angle bracket '<'"
+msgstr ""
+"Uxwebhu luphele ngesiquphe kanye emva kwesibiyeli sedolo elivulekileyo '<'"
+
+#: ../glib/gmarkup.c:1751 ../glib/gmarkup.c:1795
+#, c-format
+msgid ""
+"Document ended unexpectedly with elements still open - '%s' was the last "
+"element opened"
+msgstr ""
+"Uxwebhu luphele ngesiquphe xeshikweni iziqalelo bezisavulile - '%s' "
+"isiqalelo sokugqibela besivuliwe"
+
+#: ../glib/gmarkup.c:1759
+#, c-format
+msgid ""
+"Document ended unexpectedly, expected to see a close angle bracket ending "
+"the tag <%s/>"
+msgstr ""
+"Uxwebhu luphele ngesiquphe, kulindelwe ukubona isibiyeli sedolo elivaliweyo "
+"esiphelisa ilebhile <%s/>"
+
+#: ../glib/gmarkup.c:1765
+msgid "Document ended unexpectedly inside an element name"
+msgstr "Uxwebhu luphele ngesiquphe ngaphakathi kwegama lesiqalelo"
+
+#: ../glib/gmarkup.c:1770
+msgid "Document ended unexpectedly inside an attribute name"
+msgstr "Uxwebhu luphele ngesiquphe ngaphakathi kwegama lophawu"
+
+#: ../glib/gmarkup.c:1775
+msgid "Document ended unexpectedly inside an element-opening tag."
+msgstr "Uxwebhu luphele ngesiquphe ngaphakathi kwelebhile evula isiqalelo."
+
+#: ../glib/gmarkup.c:1781
+msgid ""
+"Document ended unexpectedly after the equals sign following an attribute "
+"name; no attribute value"
+msgstr ""
+"Uxwebhu luphele ngesiquphe emva kokuba uphawu lokulingana lulandele igama "
+"lophawu; kungekho xabiso lophawu"
+
+#: ../glib/gmarkup.c:1788
+msgid "Document ended unexpectedly while inside an attribute value"
+msgstr "Uxwebhu luphele ngesiquphe xeshikweni lungaphakathi kwexabiso lophawu"
+
+#: ../glib/gmarkup.c:1803
+#, c-format
+msgid "Document ended unexpectedly inside the close tag for element '%s'"
+msgstr ""
+"Uxwebhu luphele ngesiquphe ngaphakathi kwelebhile evaliweyo yesiqalelo '%s'"
+
+#: ../glib/gmarkup.c:1809
+msgid "Document ended unexpectedly inside a comment or processing instruction"
+msgstr ""
+"Uxwebhu luphele ngesiquphe ngaphaikathi komyalelo wezimvo okanye inkqubo"
+
+#: ../glib/gshell.c:73
+msgid "Quoted text doesn't begin with a quotation mark"
+msgstr "Umbhalo ocatshuliweyo awuqali ngophawu locaphulo"
+
+#: ../glib/gshell.c:163
+msgid "Unmatched quotation mark in command line or other shell-quoted text"
+msgstr ""
+"Uphawu locaphulo olungangqinelaniyo kumgca womyalelo okanye omnye umbhalo "
+"ocatshuliweyo"
+
+#: ../glib/gshell.c:541
+#, c-format
+msgid "Text ended just after a '\\' character. (The text was '%s')"
+msgstr "Umbhalo uphele nje emva kophawu '\\'. (Umbhalo ubu '%s')"
+
+#: ../glib/gshell.c:548
+#, c-format
+msgid "Text ended before matching quote was found for %c. (The text was '%s')"
+msgstr ""
+"Umbhalo uphele phambi kokuba ucaphulo olungqinelanayo lufunyanwe malunga %c. "
+"(Umbhalo ubu '%s')"
+
+#: ../glib/gshell.c:560
+msgid "Text was empty (or contained only whitespace)"
+msgstr "Umbhalo ubuze (okanye uqulethe isithuba esimhlophe kuphela)"
+
+#: ../glib/gspawn-win32.c:264
+msgid "Failed to read data from child process"
+msgstr "Akuphumelelekanga ukufunda idata kwinkqubo yomntwana"
+
+#: ../glib/gspawn-win32.c:281 ../glib/gspawn.c:1350
+#, c-format
+msgid "Failed to create pipe for communicating with child process (%s)"
+msgstr ""
+"Akuphumelelekanga ukudala uthungelwano lokunxibelelana nenkqubo yomntwana (%"
+"s)"
+
+#: ../glib/gspawn-win32.c:321 ../glib/gspawn.c:1014
+#, c-format
+msgid "Failed to read from child pipe (%s)"
+msgstr "Akuphumelelekanga ukufunda kuthungelwano lomntwana (%s)"
+
+#: ../glib/gspawn-win32.c:349 ../glib/gspawn.c:1219
+#, c-format
+msgid "Failed to change to directory '%s' (%s)"
+msgstr "Akuphumelelekanga ukuguqukela kuvimba weefayili '%s' (%s)"
+
+#: ../glib/gspawn-win32.c:357 ../glib/gspawn-win32.c:442
+#, c-format
+msgid "Failed to execute child process (%s)"
+msgstr "Akuphumelelekanga ukuphumeza inkqubo yomntwana (%s)"
+
+#: ../glib/gspawn-win32.c:590
+msgid "Failed to execute helper program"
+msgstr "Akuphumelelekanga ukuphumeza inkqubo yomncedi"
+
+#: ../glib/gspawn-win32.c:789
+msgid ""
+"Unexpected error in g_io_channel_win32_poll() reading data from a child "
+"process"
+msgstr ""
+"Impazamo engalindelekanga kwi g_io_channel_win32_poll() yokufunda idata "
+"kwinkqubo yomntwana"
+
+#: ../glib/gspawn.c:179
+#, c-format
+msgid "Failed to read data from child process (%s)"
+msgstr "Akuphumelelekanga ukufunda idata kwinkqubo yomntwana (%s)"
+
+#: ../glib/gspawn.c:310
+#, c-format
+msgid "Unexpected error in select() reading data from a child process (%s)"
+msgstr ""
+"Impazamo engalindelekanga select() lokufunda idata kwinkqubo yomntwana (%s)"
+
+#: ../glib/gspawn.c:393
+#, c-format
+msgid "Unexpected error in waitpid() (%s)"
+msgstr "Impazamo engalindelekanga kwi-waitpid() (%s)"
+
+#: ../glib/gspawn.c:1079
+#, c-format
+msgid "Failed to fork (%s)"
+msgstr "Akuphumelelekanga ukudala inkqubo entsha (%s)"
+
+#: ../glib/gspawn.c:1229
+#, c-format
+msgid "Failed to execute child process \"%s\" (%s)"
+msgstr "Akuphumelelekanga ukuphumeza inkqubo yomntwana \"%s\" (%s)"
+
+#: ../glib/gspawn.c:1239
+#, c-format
+msgid "Failed to redirect output or input of child process (%s)"
+msgstr ""
+"Akuphumelelekanga ukuyalela kwakhona ungeniso nophumezo lolwazi kwinkqubo "
+"yomntwana (%s)"
+
+#: ../glib/gspawn.c:1248
+#, c-format
+msgid "Failed to fork child process (%s)"
+msgstr "Akuphumelelekanga ukudala inkqubo entsha yomntwana (%s)"
+
+#: ../glib/gspawn.c:1256
+#, c-format
+msgid "Unknown error executing child process \"%s\""
+msgstr "Impazamo engaziwayo yokuphumeza inkqubo yomntwana \"%s\""
+
+#: ../glib/gspawn.c:1278
+#, c-format
+msgid "Failed to read enough data from child pid pipe (%s)"
+msgstr ""
+"Akuphumelelekanga ukufunda ngokwaneleyo idata evela kuthungelwano nomntwana "
+"(%s)"
+
+#: ../glib/gutf8.c:986
+msgid "Character out of range for UTF-8"
+msgstr "Uphawu lungaphandle kwesigaba se-UTF-8"
+
+#: ../glib/gutf8.c:1080 ../glib/gutf8.c:1089 ../glib/gutf8.c:1221
+#: ../glib/gutf8.c:1230 ../glib/gutf8.c:1371 ../glib/gutf8.c:1467
+msgid "Invalid sequence in conversion input"
+msgstr "Ulandelelwano olungasebenziyo kwinguqulo yongeniso-lwazi"
+
+#: ../glib/gutf8.c:1382 ../glib/gutf8.c:1478
+msgid "Character out of range for UTF-16"
+msgstr "Uphawu lungaphandle kwesigaba se-UTF-16"
+
+#: ../glib/goption.c:435
+msgid "Usage:"
+msgstr "Ukusetyenziswa:"
+
+#: ../glib/goption.c:435
+msgid "[OPTION...]"
+msgstr "[OPTION...]"
+
+#: ../glib/goption.c:518
+msgid "Help Options:"
+msgstr "Uncedo lokunokukhethwa:"
+
+#: ../glib/goption.c:519
+msgid "Show help options"
+msgstr "Bonisa amancedo anokukhethwa"
+
+#: ../glib/goption.c:524
+msgid "Show all help options"
+msgstr "Bonisa onke amancedo anokukhethwa"
+
+#: ../glib/goption.c:574
+msgid "Application Options:"
+msgstr "Iindlela zokusebenza ezinokukhethwa:"
+
+#: ../glib/goption.c:614
+#, c-format
+msgid "Cannot parse integer value '%s' for --%s"
+msgstr "Akukwazeki ukwahlula ngezijungqe ixabiso lanani elimbaxa '%s' for --%s"
+
+#: ../glib/goption.c:624
+#, c-format
+msgid "Integer value '%s' for %s out of range"
+msgstr "Ixabiso lenani elimbaxa '%s' le %s lingaphaya kwesigaba"
+
+#: ../glib/goption.c:1354
+#, c-format
+msgid "Unknown option %s"
+msgstr "Ukhetho olungaziwayo %s"
+
+#: ../glib/gkeyfile.c:338
+msgid "Valid key file could not be found in data dirs"
+msgstr ""
+"Iqhosha elisebenzayo lefayili alifumanekanga kwidata yoovimba beefayili"
+
+#: ../glib/gkeyfile.c:373
+msgid "Not a regular file"
+msgstr "Asiyofayili esebenza rhoqo"
+
+#: ../glib/gkeyfile.c:381
+msgid "File is empty"
+msgstr "Ifayili ize"
+
+#: ../glib/gkeyfile.c:691
+#, c-format
+msgid ""
+"Key file contains line '%s' which is not a key-value pair, group, or comment"
+msgstr ""
+"Ifayili engundoqo iqulethe umgca '%s' ongesiso isibini sexabiso okanye "
+"isindululo"
+
+#: ../glib/gkeyfile.c:759
+msgid "Key file does not start with a group"
+msgstr "Ifayili engundoqo ayiqali ngeqela"
+
+#: ../glib/gkeyfile.c:802
+#, c-format
+msgid "Key file contains unsupported encoding '%s'"
+msgstr "Ifayili engundoqo iqulethe unxulumano olungaxhaswanga '%s'"
+
+#: ../glib/gkeyfile.c:1011 ../glib/gkeyfile.c:1157 ../glib/gkeyfile.c:2163
+#: ../glib/gkeyfile.c:2228 ../glib/gkeyfile.c:2346 ../glib/gkeyfile.c:2414
+#: ../glib/gkeyfile.c:2599 ../glib/gkeyfile.c:2773 ../glib/gkeyfile.c:2830
+#, c-format
+msgid "Key file does not have group '%s'"
+msgstr "Ifayili engundoqo ayinalo iqela '%s'"
+
+#: ../glib/gkeyfile.c:1169
+#, c-format
+msgid "Key file does not have key '%s'"
+msgstr "Ifayili engundoqo ayinalo iqhosha '%s'"
+
+#: ../glib/gkeyfile.c:1270 ../glib/gkeyfile.c:1379
+#, c-format
+msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
+msgstr ""
+"Ifayili engundoqo iqulethe iqhosa '%s' elinexabiso '%s' elingeyiyo UTF-8"
+
+#: ../glib/gkeyfile.c:1288 ../glib/gkeyfile.c:1397 ../glib/gkeyfile.c:1771
+#, c-format
+msgid "Key file contains key '%s' which has value that cannot be interpreted."
+msgstr ""
+"Ifayili engundoqo iqulethe iqhosha '%s' elinexabiso elingekhe lichazwe."
+
+#: ../glib/gkeyfile.c:1988
+#, c-format
+msgid ""
+"Key file contains key '%s' in group '%s' which has value that cannot be "
+"interpreted."
+msgstr ""
+"Ifayili engundoqo iqulethe iqhosha '%s' kwiqela '%s' elinexabiso elingekhe "
+"lichazwe."
+
+#: ../glib/gkeyfile.c:2178 ../glib/gkeyfile.c:2361 ../glib/gkeyfile.c:2841
+#, c-format
+msgid "Key file does not have key '%s' in group '%s'"
+msgstr "Ifayili engundoqo ayinalo iqhosha '%s' eqeleni '%s'"
+
+#: ../glib/gkeyfile.c:3022
+msgid "Key file contains escape character at end of line"
+msgstr "Ifayili engundoqo iqulethe uphawu lokuphepha ekupheleni komgca"
+
+#: ../glib/gkeyfile.c:3044
+#, c-format
+msgid "Key file contains invalid escape sequence '%s'"
+msgstr ""
+"Ifayili engundoqo iqulethe ulandelelwano olungasebenziyo lokuphepha '%s'"
+
+#: ../glib/gkeyfile.c:3182
+#, c-format
+msgid "Value '%s' cannot be interpreted as a number."
+msgstr "Ixabiso '%s' alinakho ukuchazwa njengenani."
+
+#: ../glib/gkeyfile.c:3210
+#, c-format
+msgid "Value '%s' cannot be interpreted as a boolean."
+msgstr "Ixabiso '%s' alinakho ukuchazwa njenge-boolean."
