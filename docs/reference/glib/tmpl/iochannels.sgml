@@ -9,11 +9,11 @@ portable support for using files, pipes and sockets.
 The #GIOChannel data type aims to provide a portable method for using file
 descriptors, pipes, and sockets, and integrating them into the
 <link linkend="glib-The-Main-Event-Loop">main event loop</link>.
-Currently full support is available on Unix platforms, support for
+Currently full support is available on UNIX platforms, support for
 Windows is only partially complete.
 </para>
 <para>
-To create a new #GIOChannel on Unix systems use g_io_channel_unix_new().
+To create a new #GIOChannel on UNIX systems use g_io_channel_unix_new().
 This works for plain file descriptors, pipes and sockets.
 Alternatively, a channel can be created for a file in a system independent
 manner using g_io_channel_new_file().
@@ -81,7 +81,7 @@ private and should only be accessed with the following functions.
 <!-- ##### FUNCTION g_io_channel_unix_new ##### -->
 <para>
 Creates a new #GIOChannel given a file descriptor.
-On Unix systems this works for plain files, pipes, and sockets.
+On UNIX systems this works for plain files, pipes, and sockets.
 </para>
 <para>
 The returned #GIOChannel has a reference count of 1.
@@ -93,7 +93,7 @@ The returned #GIOChannel has a reference count of 1.
 
 <!-- ##### FUNCTION g_io_channel_unix_get_fd ##### -->
 <para>
-Returns the file descriptor of the Unix #GIOChannel.
+Returns the file descriptor of the UNIX #GIOChannel.
 </para>
 
 @channel: a #GIOChannel, created with g_io_channel_unix_new().
@@ -449,9 +449,9 @@ g_io_channel_set_flags().
 </para>
 
 @G_IO_FLAG_APPEND: turns on append mode, corresponds to %O_APPEND (see the 
-   documentation of the Unix <function>open()</function> syscall).
+   documentation of the UNIX <function>open()</function> syscall).
 @G_IO_FLAG_NONBLOCK: turns on nonblocking mode, corresponds to 
-   %O_NONBLOCK/%O_NDELAY (see the documentation of the Unix 
+   %O_NONBLOCK/%O_NDELAY (see the documentation of the UNIX 
    <function>open()</function> syscall).
 @G_IO_FLAG_IS_READABLE: indicates that the io channel is readable. This flag 
    can not be changed.

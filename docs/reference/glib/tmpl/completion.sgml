@@ -8,7 +8,7 @@ support for automatic completion using a group of target strings.
 <para>
 #GCompletion provides support for automatic completion of a string using
 any group of target strings. It is typically used for file name completion
-as is common in many Unix shells.
+as is common in many UNIX shells.
 </para>
 <para>
 A #GCompletion is created using g_completion_new().

@@ -1,3 +1,8 @@
+2001-12-13  Matthias Clasen  <matthiasc@poet.de>
+
+	* glib/gconvert.c, glib/giochannel.c, glib/gmain.c,
+	glib/gwin32.c: Revert mistaken change: it is UNIX, not Unix.
+
 Thu Dec 13 05:37:51 2001  Tim Janik  <timj@gtk.org>
 
 	* glib/gbsearcharray.[hc]: API revamp to shorten GValueArray

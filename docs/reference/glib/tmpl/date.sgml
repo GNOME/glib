@@ -75,7 +75,7 @@ code readability.
 <para>
 Represents a precise time, with seconds and microseconds. Same as the
 <structname>struct timeval</structname> returned by the
-<function>gettimeofday()</function> Unix call.
+<function>gettimeofday()</function> UNIX call.
 </para>
 
 @tv_sec: seconds.
@@ -329,7 +329,7 @@ Sets the value of a #GDate from a Julian day number.
 Sets the value of a date from a #GTime (<type>time_t</type>) value. 
 To set the value of a date to the current day, you could write:
 <informalexample><programlisting>
-g_date_set_time(date, time(NULL));
+g_date_set_time (date, time (NULL));
 </programlisting></informalexample>
 </para>
 

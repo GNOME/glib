@@ -73,7 +73,7 @@ Gets the current user's home directory.
 Gets the directory to use for temporary files.
 This is found from inspecting the environment variables <envar>TMPDIR</envar>, 
 <envar>TMP</envar>, and <envar>TEMP</envar>
-in that order. If none of those are defined "/tmp" is returned on Unix and 
+in that order. If none of those are defined "/tmp" is returned on UNIX and 
 "C:\" on Windows.
 </para>
 
@@ -124,7 +124,7 @@ The returned string should be freed when no longer needed.
 <para>
 Returns %TRUE if the given @file_name is an absolute file name,
 i.e. it contains a full path from the root directory such as '/usr/local'
-on Unix or 'C:\windows' on Windows systems.
+on UNIX or 'C:\windows' on Windows systems.
 </para>
 
 @file_name: a file name.
@@ -134,7 +134,7 @@ on Unix or 'C:\windows' on Windows systems.
 <!-- ##### FUNCTION g_path_skip_root ##### -->
 <para>
 Returns a pointer into @file_name after the root component, i.e. after
-the '/' in Unix or 'C:\' under Windows. If @file_name is not an absolute
+the '/' in UNIX or 'C:\' under Windows. If @file_name is not an absolute
 path it returns %NULL.
 </para>
 

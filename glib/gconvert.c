@@ -93,8 +93,8 @@ extern const char **_g_charset_get_aliases (const char *canonical_name);
  * @to_codeset: destination codeset
  * @from_codeset: source codeset
  * 
- * Same as the standard Unix routine <function>iconv_open()</function>, but
- * may be implemented via libiconv on Unix flavors that lack
+ * Same as the standard UNIX routine <function>iconv_open()</function>, but
+ * may be implemented via libiconv on UNIX flavors that lack
  * a native implementation.
  * 
  * &GLib; provides g_convert() and g_locale_to_utf8() which are likely
@@ -143,8 +143,8 @@ g_iconv_open (const gchar  *to_codeset,
  * @outbuf: converted output bytes
  * @outbytes_left: inout parameter, bytes available to fill in @outbuf
  * 
- * Same as the standard Unix routine <function>iconv()</function>, but
- * may be implemented via libiconv on Unix flavors that lack
+ * Same as the standard UNIX routine <function>iconv()</function>, but
+ * may be implemented via libiconv on UNIX flavors that lack
  * a native implementation.
  *
  * &GLib; provides g_convert() and g_locale_to_utf8() which are likely
@@ -168,8 +168,8 @@ g_iconv (GIConv   converter,
  * g_iconv_close:
  * @converter: a conversion descriptor from g_iconv_open()
  *
- * Same as the standard Unix routine <function>iconv_close()</function>, but
- * may be implemented via libiconv on Unix flavors that lack
+ * Same as the standard UNIX routine <function>iconv_close()</function>, but
+ * may be implemented via libiconv on UNIX flavors that lack
  * a native implementation. Should be called to clean up
  * the conversion descriptor from g_iconv_open() when
  * you are done converting things.

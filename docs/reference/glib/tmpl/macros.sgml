@@ -53,8 +53,8 @@ BeOS-specific code in "#ifdef G_OS_BEOS".
 
 <!-- ##### MACRO G_OS_UNIX ##### -->
 <para>
-This macro is defined only on Unix. So you can bracket
-Unix-specific code in "#ifdef G_OS_UNIX".
+This macro is defined only on UNIX. So you can bracket
+UNIX-specific code in "#ifdef G_OS_UNIX".
 </para>
 
 
@@ -82,7 +82,7 @@ version.
 <!-- ##### MACRO G_DIR_SEPARATOR ##### -->
 <para>
 The directory separator character.
-This is '/' on Unix machines and '\' under Windows.
+This is '/' on UNIX machines and '\' under Windows.
 </para>
 
 
@@ -90,7 +90,7 @@ This is '/' on Unix machines and '\' under Windows.
 <!-- ##### MACRO G_DIR_SEPARATOR_S ##### -->
 <para>
 The directory separator as a string.
-This is "/" on Unix machines and "\" under Windows.
+This is "/" on UNIX machines and "\" under Windows.
 </para>
 
 
@@ -98,7 +98,7 @@ This is "/" on Unix machines and "\" under Windows.
 <!-- ##### MACRO G_SEARCHPATH_SEPARATOR ##### -->
 <para>
 The search path separator character.
-This is ':' on Unix machines and ';' under Windows.
+This is ':' on UNIX machines and ';' under Windows.
 </para>
 
 
@@ -106,7 +106,7 @@ This is ':' on Unix machines and ';' under Windows.
 <!-- ##### MACRO G_SEARCHPATH_SEPARATOR_S ##### -->
 <para>
 The search path separator as a string.
-This is ":" on Unix machines and ";" under Windows.
+This is ":" on UNIX machines and ";" under Windows.
 </para>
 
 

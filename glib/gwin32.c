@@ -99,7 +99,7 @@ g_win32_ftruncate (gint  fd,
  * g_win32_getlocale:
  *
  * The setlocale in the Microsoft C library uses locale names of the
- * form "English_United States.1252" etc. We want the Unixish standard
+ * form "English_United States.1252" etc. We want the UNIXish standard
  * form "en_US", "zh_TW" etc. This function gets the current thread
  * locale from Windows - without any encoding info - and returns it as
  * a string of the above form for use in forming file names etc. The

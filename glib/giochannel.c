@@ -716,7 +716,7 @@ g_io_channel_set_flags (GIOChannel *channel,
  * The values of the flags %G_IO_FLAG_IS_READABLE and %G_IO_FLAG_IS_WRITEABLE
  * are cached for internal use by the channel when it is created.
  * If they should change at some later point (e.g. partial shutdown
- * of a socket with the Unix <function>shutdown()</function> function), the user
+ * of a socket with the UNIX <function>shutdown()</function> function), the user
  * should immediately call g_io_channel_get_flags () to update
  * the internal values of these flags.
  *

@@ -172,7 +172,7 @@ The prompt is then shown again.
 If [P]roceed is selected, the function returns.
 </para>
 <para>
-This function may cause different actions on non-Unix platforms.
+This function may cause different actions on non-UNIX platforms.
 </para>
 
 @prg_name: the program name, needed by <command>gdb</command> for the [S]tack trace option.
@@ -186,7 +186,7 @@ Invokes <command>gdb</command>, which attaches to the current process and shows 
 Called by g_on_error_query() when the [S]tack trace option is selected.
 </para>
 <para>
-This function may cause different actions on non-Unix platforms.
+This function may cause different actions on non-UNIX platforms.
 </para>
 
 @prg_name: the program name, needed by <command>gdb</command> for the [S]tack trace option.

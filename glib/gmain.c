@@ -1529,7 +1529,7 @@ g_source_remove_by_funcs_user_data (GSourceFuncs *funcs,
  * g_get_current_time:
  * @result: #GTimeVal structure in which to store current time.
  * 
- * Equivalent to Unix's <function>gettimeofday()</function>, but portable
+ * Equivalent to the UNIX <function>gettimeofday()</function> function, but portable.
  **/
 void
 g_get_current_time (GTimeVal *result)

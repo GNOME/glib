@@ -510,12 +510,12 @@ not use such constructs in your own programs. One working solution is:
 <programlisting>
   static GMutex *give_me_next_number_mutex = NULL;
 
-  /* this function must be called before any call to give_me_next_number ()
+  /* this function must be called before any call to give_me_next_number (<!>)
      it must be called exactly once. */
   void init_give_me_next_number (<!>) 
   {
     g_assert (give_me_next_number_mutex == NULL);
-    give_me_next_number_mutex = g_mutex_new ();
+    give_me_next_number_mutex = g_mutex_new (<!>);
   }
 
   int give_me_next_number (<!>)

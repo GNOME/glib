@@ -1,3 +1,15 @@
+2001-12-13  Matthias Clasen  <matthiasc@poet.de>
+
+        * glib/tmpl/completion.sgml, glib/tmpl/date.sgml,
+	glib/tmpl/fileutils.sgml, glib/tmpl/iochannels.sgml,
+	glib/tmpl/macros.sgml, glib/tmpl/memory.sgml,
+	glib/tmpl/misc_utils.sgml, glib/tmpl/warnings.sgml,
+	glib/tmpl/windows.sgml: Revert mistaken change: it is UNIX, not Unix.
+
+	* glib/tmpl/memory_chunks.sgml,
+	glib/tmpl/date.sgml, glib/tmpl/threads.sgml,
+	glib/tmpl/gtype.sgml: Trivial markup fixes.
+
 2001-12-12  Matthias Clasen  <matthiasc@poet.de>
 
 	* glib/tmpl/string_utils.sgml: Correct docs for g_[v]snprintf.
