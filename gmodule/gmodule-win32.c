@@ -43,7 +43,8 @@ _g_module_open (const gchar    *file_name,
   if (!handle)
     {
       char error[100];
-      sprintf (error, "Error code %d", GetLastError ());
+      FormatMessage (FORMAT_MESSAGE_FROM_SYSTEM, NULL, GetLastError (),
+		     0, error, sizeof (error), NULL);
       g_module_set_error (error);
     }
   
@@ -59,7 +60,8 @@ _g_module_self (void)
   if (!handle)
     {
       char error[100];
-      sprintf (error, "Error code %d", GetLastError ());
+      FormatMessage (FORMAT_MESSAGE_FROM_SYSTEM, NULL, GetLastError (),
+		     0, error, sizeof (error), NULL);
       g_module_set_error (error);
     }
   
@@ -73,7 +75,8 @@ _g_module_close (gpointer	  handle,
   if (!FreeLibrary (handle))
     {
       char error[100];
-      sprintf (error, "Error code %d", GetLastError ());
+      FormatMessage (FORMAT_MESSAGE_FROM_SYSTEM, NULL, GetLastError (),
+		     0, error, sizeof (error), NULL);
       g_module_set_error (error);
     }
 }
@@ -88,7 +91,8 @@ _g_module_symbol (gpointer	  handle,
   if (!p)
     {
       char error[100];
-      sprintf (error, "Error code %d", GetLastError ());
+      FormatMessage (FORMAT_MESSAGE_FROM_SYSTEM, NULL, GetLastError (),
+		     0, error, sizeof (error), NULL);
       g_module_set_error (error);
     }
   return p;

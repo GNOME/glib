@@ -1,3 +1,8 @@
+1999-12-16  Tor Lillqvist  <tml@iki.fi>
+
+	* gmodule/gmodule-win32.c: Use FormatMessage to translate system
+	error codes into textual messages.
+
 1999-11-25  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* glib.h (G_TRYLOCK): This of course should return TRUE in a
