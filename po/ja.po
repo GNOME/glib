@@ -2,15 +2,16 @@
 # Copyright (C) 2001-2002,2003 Free Software Foundation, Inc.
 # Takayuki KUSANO <AE5T-KSN@asahi-net.or.jp>, 2001-2002.
 # KAMAGASAKO Masatoshi <emerald@gnome.gr.jp>, 2003.
+# Takeshi AIHANA <aihana@gnome.gr.jp>, 2004.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-04-30 09:07-0400\n"
-"PO-Revision-Date: 2003-10-28 00:23+0900\n"
-"Last-Translator: KAMAGASAKO Masatoshi <emerald@gnome.gr.jp>\n"
-"Language-Team: Japanese <translation@gnome.gr.jp>\n"
+"POT-Creation-Date: 2004-05-01 11:17+0900\n"
+"PO-Revision-Date: 2004-05-01 11:16+0900\n"
+"Last-Translator: Takeshi AIHANA <aihana@gnome.gr.jp>\n"
+"Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -18,18 +19,18 @@ msgstr ""
 #: glib/gconvert.c:402
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
-msgstr "文字セット '%s' から '%s' への変換はサポートされていません"
+msgstr "文字セット '%s' から '%s' への変換はサポートしていません"
 
 #: glib/gconvert.c:406
-#, fuzzy, c-format
+#, c-format
 msgid "Could not open converter from '%s' to '%s'"
-msgstr "'%s' から '%s' へのコンバータを開けません: %s"
+msgstr "'%s' から '%s' へのコンバータを開けませんでした"
 
 #: glib/gconvert.c:604 glib/gconvert.c:891 glib/giochannel.c:1315
 #: glib/giochannel.c:1357 glib/giochannel.c:2199 glib/gutf8.c:910
 #: glib/gutf8.c:1355
 msgid "Invalid byte sequence in conversion input"
-msgstr "変換への入力に正しくないバイトの並びがあります"
+msgstr "変換する入力に無効なバイトの並びがあります"
 
 #: glib/gconvert.c:609 glib/gconvert.c:824 glib/giochannel.c:1322
 #: glib/giochannel.c:2211
@@ -70,7 +71,7 @@ msgstr "URI 中のホスト名 '%s' がおかしいです"
 #: glib/gconvert.c:1552
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
-msgstr "URI %s' におかしなエスケープ文字が含まれています"
+msgstr "URI %s' に無効なエスケープ文字が含まれています"
 
 #: glib/gconvert.c:1623
 #, c-format
@@ -79,7 +80,7 @@ msgstr "パス名 '%s' が絶対パスではありません"
 
 #: glib/gconvert.c:1633
 msgid "Invalid hostname"
-msgstr "おかしなホスト名"
+msgstr "無効なホスト名です"
 
 #: glib/gdir.c:80
 #, c-format
@@ -497,22 +498,13 @@ msgstr "子 pid パイプから十分なデータを読めません (%s)"
 
 #: glib/gutf8.c:985
 msgid "Character out of range for UTF-8"
-msgstr "UTF-8 の範囲外の文字"
+msgstr "UTF-8 の範囲外の文字です"
 
 #: glib/gutf8.c:1074 glib/gutf8.c:1083 glib/gutf8.c:1215 glib/gutf8.c:1224
 #: glib/gutf8.c:1365 glib/gutf8.c:1461
 msgid "Invalid sequence in conversion input"
-msgstr "変換への入力でおかしなシーケンス"
+msgstr "変換する入力で無効なシーケンスがあります"
 
 #: glib/gutf8.c:1376 glib/gutf8.c:1472
 msgid "Character out of range for UTF-16"
-msgstr "UTF-16 の範囲外の文字"
-
-#~ msgid "Incorrect message size"
-#~ msgstr "メッセージの大きさが変です"
-
-#~ msgid "Socket error"
-#~ msgstr "Socket のエラー"
-
-#~ msgid "Channel set flags unsupported"
-#~ msgstr "フラグの設定がサポートされていません"
+msgstr "UTF-16 の範囲外の文字です"
