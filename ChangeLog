@@ -1,3 +1,11 @@
+1999-07-02  Tor Lillqvist  <tml@iki.fi>
+
+	* README.win32: Note about need to fix another bug in the mingw32
+ 	headers.
+
+	* makefile.msc.in: Debugging turned on via an nmake variable,
+	no need to edit the makefile.
+
 1999-07-01  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* configure.in, acconfig.h, gutils.c: Added a g_memmove
