@@ -1,3 +1,7 @@
+2002-11-28  Matthias Clasen  <maclas@gmx.de>
+
+	* configure.in: Fix the gtk-doc version check.
+
 2002-11-27  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/gmessages.h: Use G_LIKELY without surrounding parentheses 

@@ -843,13 +843,16 @@ dnl ****************************************
 dnl *** strlcpy/strlcat                  ***
 dnl ****************************************
 # Check for strlcpy
-AC_MSG_CHECKING(for strlcpy/strlcat)
-AC_TRY_LINK([#include <stdlib.h>
-#include <string.h>], [
-char *p = malloc(10);
-(void) strlcpy(p, "hi", 10);
-(void) strlcat(p, "bye", 10);
-], glib_ok=yes, glib_ok=no)
+AC_MSG_CHECKING(for OpenBSD strlcpy/strlcat)
+AC_TRY_RUN([
+#include <string.h>
+int main() {
+  char *p = malloc (10);
+  (void) strlcpy (p, "hi", 10);
+  if (strlcat (p, "bye", 0) != 3) 
+    exit (1);
+  return 0;
+}], glib_ok=yes, glib_ok=no)
 AC_MSG_RESULT($glib_ok)
 if test "$glib_ok" = "yes"; then
     AC_DEFINE(HAVE_STRLCPY,1,[Have functions strlcpy and strlcat])
@@ -1778,19 +1781,29 @@ AC_SUBST(HTML_DIR)
 
 AC_CHECK_PROG(GTKDOC, gtkdoc-mkdb, true, false)
 
-gtk_doc_min_version=0.6
-if $GTKDOC ; then 
+AC_CHECK_PROG(GTKDOC, gtkdoc-mkdb, true, false)
+
+gtk_doc_min_version=0.10
+if $GTKDOC ; then
     gtk_doc_version=`gtkdoc-mkdb --version`
     AC_MSG_CHECKING([gtk-doc version ($gtk_doc_version) >= $gtk_doc_min_version])
-    if perl <<EOF ; then
-      exit (("$gtk_doc_version" =~ /^[[0-9]]+\.[[0-9]]+$/) &&
-            ("$gtk_doc_version" >= "$gtk_doc_min_version") ? 0 : 1);
-EOF
+
+    IFS="${IFS= 	}"; gtk_save_IFS="$IFS"; IFS="."
+    set $gtk_doc_version
+    for min in $gtk_doc_min_version ; do
+        cur=$1; shift
+        if test -z $min ; then break; fi
+        if test -z $cur ; then GTKDOC=false; break; fi
+        if test $cur -gt $min ; then break ; fi
+        if test $cur -lt $min ; then GTKDOC=false; break ; fi
+    done
+    IFS="$gtk_save_IFS"
+
+    if $GTKDOC ; then
       AC_MSG_RESULT(yes)
-   else
+    else
       AC_MSG_RESULT(no)
-      GTKDOC=false
-   fi
+    fi
 fi
 
 AM_CONDITIONAL(HAVE_GTK_DOC, $GTKDOC)
