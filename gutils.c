@@ -371,7 +371,7 @@ g_getenv (const gchar *variable)
 #endif
 }
 
-static G_LOCK_DEFINE(g_utils_global);
+G_LOCK_DECLARE_STATIC (g_utils_global);
 
 static	gchar	*g_tmp_dir = NULL;
 static	gchar	*g_user_name = NULL;
@@ -455,10 +455,10 @@ g_get_any_init (void)
 gchar*
 g_get_user_name (void)
 {
-  g_lock (g_utils_global);
+  G_LOCK (g_utils_global);
   if (!g_tmp_dir)
     g_get_any_init ();
-  g_unlock (g_utils_global);
+  G_UNLOCK (g_utils_global);
   
   return g_user_name;
 }
@@ -466,10 +466,10 @@ g_get_user_name (void)
 gchar*
 g_get_real_name (void)
 {
-  g_lock (g_utils_global);
+  G_LOCK (g_utils_global);
   if (!g_tmp_dir)
     g_get_any_init ();
-  g_unlock (g_utils_global);
+  G_UNLOCK (g_utils_global);
  
   return g_real_name;
 }
@@ -483,10 +483,10 @@ g_get_real_name (void)
 gchar*
 g_get_home_dir (void)
 {
-  g_lock (g_utils_global);
+  G_LOCK (g_utils_global);
   if (!g_tmp_dir)
     g_get_any_init ();
-  g_unlock (g_utils_global);
+  G_UNLOCK (g_utils_global);
   
   return g_home_dir;
 }
@@ -501,10 +501,10 @@ g_get_home_dir (void)
 gchar*
 g_get_tmp_dir (void)
 {
-  g_lock (g_utils_global);
+  G_LOCK (g_utils_global);
   if (!g_tmp_dir)
     g_get_any_init ();
-  g_unlock (g_utils_global);
+  G_UNLOCK (g_utils_global);
   
   return g_tmp_dir;
 }
@@ -516,9 +516,9 @@ g_get_prgname (void)
 {
   gchar* retval;
 
-  g_lock (g_utils_global);
+  G_LOCK (g_utils_global);
   retval = g_prgname;
-  g_unlock (g_utils_global);
+  G_UNLOCK (g_utils_global);
 
   return retval;
 }
@@ -528,11 +528,11 @@ g_set_prgname (const gchar *prgname)
 {
   gchar *c;
     
-  g_lock (g_utils_global);
+  G_LOCK (g_utils_global);
   c = g_prgname;
   g_prgname = g_strdup (prgname);
   g_free (c);
-  g_unlock (g_utils_global);
+  G_UNLOCK (g_utils_global);
 }
 
 guint

@@ -40,12 +40,16 @@ void g_mem_init (void);
 void g_messages_init (void);
 
 void
-g_thread_init(GThreadFunctions* init)
+g_thread_init (GThreadFunctions* init)
 {
   gboolean supported;
 
+#ifndef	G_THREADS_ENABLED
+  g_error ("GLib thread support is disabled.");
+#endif	/* !G_THREADS_ENABLED */
+
   if (thread_system_already_initialized)
-    g_error ("the glib thread system may only be initialized once.");
+    g_error ("GThread system may only be initialized once.");
     
   thread_system_already_initialized = TRUE;
 
@@ -56,29 +60,28 @@ g_thread_init(GThreadFunctions* init)
 
   g_thread_functions_for_glib_use = *init;
 
-  /* It is important, that g_thread_supported is not set before the
-     thread initialization functions of the different modules are
-     called */
+  /* It is important, that g_threads_got_initialized is not set before the
+   * thread initialization functions of the different modules are called
+   */
 
-  supported = 
-    init->mutex_new &&  
-    init->mutex_lock && 
-    init->mutex_trylock && 
-    init->mutex_unlock && 
-    init->mutex_free && 
-    init->cond_new && 
-    init->cond_signal && 
-    init->cond_broadcast && 
-    init->cond_wait && 
-    init->cond_timed_wait &&
-    init->cond_free &&
-    init->private_new &&
-    init->private_get &&
-    init->private_get;
+  supported = (init->mutex_new &&  
+	       init->mutex_lock && 
+	       init->mutex_trylock && 
+	       init->mutex_unlock && 
+	       init->mutex_free && 
+	       init->cond_new && 
+	       init->cond_signal && 
+	       init->cond_broadcast && 
+	       init->cond_wait && 
+	       init->cond_timed_wait &&
+	       init->cond_free &&
+	       init->private_new &&
+	       init->private_get &&
+	       init->private_get);
 
   /* if somebody is calling g_thread_init (), it means that he wants to
-     have thread support, so check this */
-
+   * have thread support, so check this
+   */
   if (!supported)
     {
       if (g_thread_use_default_impl)
@@ -88,14 +91,14 @@ g_thread_init(GThreadFunctions* init)
     }
 
   /* now call the thread initialization functions of the different
-     glib modules. BTW: order does matter, g_mutex_init MUST be first */
-
+   * glib modules. order does matter, g_mutex_init MUST come first.
+   */
   g_mutex_init ();
   g_mem_init ();
   g_messages_init ();
 
-  /* now we can set g_thread_supported and thus enable all the thread
-     functions */
-
-  g_thread_supported = TRUE;
+  /* now we can set g_threads_got_initialized and thus enable
+   * all the thread functions
+   */
+  g_threads_got_initialized = TRUE;
 }

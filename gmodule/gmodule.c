@@ -64,7 +64,7 @@ static inline GModule*	g_module_find_by_name	(const gchar	*name);
 
 
 /* --- variables --- */
-static G_LOCK_DEFINE (g_module_global);
+G_LOCK_DECLARE_STATIC (GModule);
 const char           *g_log_domain_gmodule = "GModule";
 static GModule	     *modules = NULL;
 static GModule	     *main_module = NULL;
@@ -78,7 +78,7 @@ g_module_find_by_handle (gpointer handle)
   GModule *module;
   GModule *retval = NULL;
   
-  g_lock (g_module_global);
+  G_LOCK (GModule);
   if (main_module && main_module->handle == handle)
     retval = main_module;
   else
@@ -88,7 +88,7 @@ g_module_find_by_handle (gpointer handle)
 	  retval = module;
 	  break;
 	}
-  g_unlock (g_module_global);
+  G_UNLOCK (GModule);
 
   return retval;
 }
@@ -99,14 +99,14 @@ g_module_find_by_name (const gchar *name)
   GModule *module;
   GModule *retval = NULL;
   
-  g_lock (g_module_global);
+  G_LOCK (GModule);
   for (module = modules; module; module = module->next)
     if (strcmp (name, module->file_name) == 0)
 	{
 	  retval = module;
 	  break;
 	}
-  g_unlock (g_module_global);
+  G_UNLOCK (GModule);
 
   return retval;
 }
@@ -198,7 +198,7 @@ g_module_open (const gchar    *file_name,
   
   if (!file_name)
     {      
-      g_lock (g_module_global);
+      G_LOCK (GModule);
       if (!main_module)
 	{
 	  handle = _g_module_self ();
@@ -213,7 +213,7 @@ g_module_open (const gchar    *file_name,
 	      main_module->next = NULL;
 	    }
 	}
-      g_unlock (g_module_global);
+      G_UNLOCK (GModule);
 
       return main_module;
     }
@@ -256,10 +256,10 @@ g_module_open (const gchar    *file_name,
       module->ref_count = 1;
       module->is_resident = FALSE;
       module->unload = NULL;
-      g_lock (g_module_global);
+      G_LOCK (GModule);
       module->next = modules;
       modules = module;
-      g_unlock (g_module_global);
+      G_UNLOCK (GModule);
       
       /* check initialization */
       if (g_module_symbol (module, "g_module_check_init", (gpointer) &check_init))
@@ -313,7 +313,7 @@ g_module_close (GModule	       *module)
       
       last = NULL;
       
-      g_lock (g_module_global);
+      G_LOCK (GModule);
       node = modules;
       while (node)
 	{
@@ -329,7 +329,7 @@ g_module_close (GModule	       *module)
 	  node = last->next;
 	}
       module->next = NULL;
-      g_unlock (g_module_global);
+      G_UNLOCK (GModule);
       
       _g_module_close (module->handle, FALSE);
       g_free (module->file_name);

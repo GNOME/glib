@@ -39,7 +39,7 @@ struct _GAllocator /* from gmem.c */
   GNode         *free_nodes; /* implementation specific */
 };
 
-static G_LOCK_DEFINE(current_allocator);
+G_LOCK_DECLARE_STATIC (current_allocator);
 static GAllocator *current_allocator = NULL;
 
 /* HOLDS: current_allocator_lock */
@@ -74,17 +74,17 @@ g_node_validate_allocator (GAllocator *allocator)
 void
 g_node_push_allocator (GAllocator *allocator)
 {
-  g_lock (current_allocator);
+  G_LOCK (current_allocator);
   g_node_validate_allocator ( allocator );
   allocator->last = current_allocator;
   current_allocator = allocator;
-  g_unlock (current_allocator);
+  G_UNLOCK (current_allocator);
 }
 
 void
 g_node_pop_allocator (void)
 {
-  g_lock (current_allocator);
+  G_LOCK (current_allocator);
   if (current_allocator)
     {
       GAllocator *allocator;
@@ -94,7 +94,7 @@ g_node_pop_allocator (void)
       allocator->last = NULL;
       allocator->is_unused = TRUE;
     }
-  g_unlock (current_allocator);
+  G_UNLOCK (current_allocator);
 }
 
 
@@ -104,7 +104,7 @@ g_node_new (gpointer data)
 {
   GNode *node;
 
-  g_lock (current_allocator);
+  G_LOCK (current_allocator);
   if (!current_allocator)
     {
        GAllocator *allocator = g_allocator_new ("GLib default GNode allocator",
@@ -120,7 +120,7 @@ g_node_new (gpointer data)
       node = current_allocator->free_nodes;
       current_allocator->free_nodes = node->next;
     }
-  g_unlock (current_allocator);
+  G_UNLOCK (current_allocator);
   
   node->data = data;
   node->next = NULL;
@@ -147,10 +147,10 @@ g_nodes_free (GNode *node)
 	break;
     }
   
-  g_lock (current_allocator);
+  G_LOCK (current_allocator);
   parent->next = current_allocator->free_nodes;
   current_allocator->free_nodes = node;
-  g_unlock (current_allocator);
+  G_UNLOCK (current_allocator);
 }
 
 void

@@ -2007,7 +2007,8 @@ gint		g_scanner_stat_mode		(const gchar	*filename);
 } G_STMT_END
 
 
-/* Completion */
+/* GCompletion
+ */
 
 struct _GCompletion
 {
@@ -2030,28 +2031,32 @@ GList*	     g_completion_complete     (GCompletion*	cmp,
 void	     g_completion_free	       (GCompletion*	cmp);
 
 
-
-
-/* Date calculations (not time for now, to be resolved). These are a
+/* GDate
+ *
+ * Date calculations (not time for now, to be resolved). These are a
  * mutant combination of Steffen Beyer's DateCalc routines
  * (http://www.perl.com/CPAN/authors/id/STBEY/) and Jon Trowbridge's
  * date routines (written for in-house software).  Written by Havoc
  * Pennington <hp@pobox.com> 
  */
 
-/* this enum is used to specify order of appearance in parsed date
- *  strings
- */
+typedef guint16 GDateYear;
+typedef guint8  GDateDay;   /* day of the month */
+typedef struct _GDate GDate;
+/* make struct tm known without having to include time.h */
+struct tm;
 
-typedef enum {
+/* enum used to specify order of appearance in parsed date strings */
+typedef enum
+{
   G_DATE_DAY   = 0,
   G_DATE_MONTH = 1,
   G_DATE_YEAR  = 2
 } GDateDMY;
 
-/* These other types specify the actual values. */
-
-typedef enum {
+/* actual week and month values */
+typedef enum
+{
   G_DATE_BAD_WEEKDAY  = 0,
   G_DATE_MONDAY       = 1,
   G_DATE_TUESDAY      = 2,
@@ -2061,8 +2066,8 @@ typedef enum {
   G_DATE_SATURDAY     = 6,
   G_DATE_SUNDAY       = 7
 } GDateWeekday;
-
-typedef enum {
+typedef enum
+{
   G_DATE_BAD_MONTH = 0,
   G_DATE_JANUARY   = 1,
   G_DATE_FEBRUARY  = 2,
@@ -2078,22 +2083,17 @@ typedef enum {
   G_DATE_DECEMBER  = 12
 } GDateMonth;
 
-typedef guint16 GDateYear;
-typedef guint8  GDateDay;   /* day of the month */
-
 #define G_DATE_BAD_JULIAN 0U
 #define G_DATE_BAD_DAY    0U
 #define G_DATE_BAD_YEAR   0U
-
-typedef struct _GDate GDate;
 
 /* Note: directly manipulating structs is generally a bad idea, but
  * in this case it's an *incredibly* bad idea, because all or part
  * of this struct can be invalid at any given time. Use the functions,
  * or you will get hosed, I promise.
  */
-
-struct _GDate { 
+struct _GDate
+{ 
   guint julian_days : 32; /* julian days representation - we use a
                            *  bitfield hoping that 64 bit platforms
                            *  will pack this whole struct in one big
@@ -2109,105 +2109,95 @@ struct _GDate {
   guint year   : 16; 
 };
 
-/* _new with no args returns an invalid date, you then have to _set() stuff 
+/* g_date_new() returns an invalid date, you then have to _set() stuff 
  * to get a usable object. You can also allocate a GDate statically,
  * then call g_date_clear() to initialize.
  */
-
 GDate*       g_date_new                   (void);
-GDate*       g_date_new_dmy               (GDateDay     d, 
-                                           GDateMonth   m, 
-                                           GDateYear    y);
+GDate*       g_date_new_dmy               (GDateDay     day, 
+                                           GDateMonth   month, 
+                                           GDateYear    year);
 GDate*       g_date_new_julian            (guint32      julian_day);
-void         g_date_free                  (GDate       *d);
+void         g_date_free                  (GDate       *date);
 
 /* check g_date_valid() after doing an operation that might fail, like
  * _parse.  Almost all g_date operations are undefined on invalid
  * dates (the exceptions are the mutators, since you need those to
  * return to validity).  
  */
+gboolean     g_date_valid                 (GDate       *date);
+gboolean     g_date_valid_day             (GDateDay     day);
+gboolean     g_date_valid_month           (GDateMonth   month);
+gboolean     g_date_valid_year            (GDateYear    year);
+gboolean     g_date_valid_weekday         (GDateWeekday weekday);
+gboolean     g_date_valid_julian          (guint32      julian_date);
+gboolean     g_date_valid_dmy             (GDateDay     day,
+                                           GDateMonth   month,
+                                           GDateYear    year);
 
-gboolean     g_date_valid                 (GDate       *d);
-gboolean     g_date_valid_day             (GDateDay     d);
-gboolean     g_date_valid_month           (GDateMonth   m);
-gboolean     g_date_valid_year            (GDateYear    y);
-gboolean     g_date_valid_weekday         (GDateWeekday w);
-gboolean     g_date_valid_julian          (guint32      j);
-gboolean     g_date_valid_dmy             (GDateDay     d,
-                                           GDateMonth   m,
-                                           GDateYear    y);
-
-GDateWeekday g_date_weekday               (GDate       *d);
-GDateMonth   g_date_month                 (GDate       *d);
-GDateYear    g_date_year                  (GDate       *d);
-GDateDay     g_date_day                   (GDate       *d);
-guint32      g_date_julian                (GDate       *d);
-
-guint        g_date_day_of_year           (GDate       *d);
+GDateWeekday g_date_weekday               (GDate       *date);
+GDateMonth   g_date_month                 (GDate       *date);
+GDateYear    g_date_year                  (GDate       *date);
+GDateDay     g_date_day                   (GDate       *date);
+guint32      g_date_julian                (GDate       *date);
+guint        g_date_day_of_year           (GDate       *date);
 
 /* First monday/sunday is the start of week 1; if we haven't reached
- *  that day, return 0. These are not ISO weeks of the year; that
- *  routine should be added.
+ * that day, return 0. These are not ISO weeks of the year; that
+ * routine needs to be added.
+ * these functions return the number of weeks, starting on the
+ * corrsponding day
  */
-
-guint        g_date_monday_week_of_year   (GDate      *d); /* # weeks, starting on Monday */
-guint        g_date_sunday_week_of_year   (GDate      *d); /* # weeks, starting on Sunday */
+guint        g_date_monday_week_of_year   (GDate      *date);
+guint        g_date_sunday_week_of_year   (GDate      *date);
 
 /* If you create a static date struct you need to clear it to get it
  * in a sane state before use. You can clear a whole array at
  * once with the ndates argument.
  */
-
-void         g_date_clear                 (GDate       *d, 
-                                           guint        ndates);
+void         g_date_clear                 (GDate       *date, 
+                                           guint        n_dates);
 
 /* The parse routine is meant for dates typed in by a user, so it
  * permits many formats but tries to catch common typos. If your data
  * needs to be strictly validated, it is not an appropriate function.
  */
-
-void         g_date_set_parse             (GDate       *d,
+void         g_date_set_parse             (GDate       *date,
                                            const gchar *str);
-
-void         g_date_set_time              (GDate       *d, 
+void         g_date_set_time              (GDate       *date, 
                                            GTime        time);
-
-void         g_date_set_month             (GDate       *d, 
-                                           GDateMonth   m);
-void         g_date_set_day               (GDate       *d, 
+void         g_date_set_month             (GDate       *date, 
+                                           GDateMonth   month);
+void         g_date_set_day               (GDate       *date, 
                                            GDateDay     day);
-void         g_date_set_year              (GDate       *d,
-                                           GDateYear    y);
-void         g_date_set_dmy               (GDate       *d,
+void         g_date_set_year              (GDate       *date,
+                                           GDateYear    year);
+void         g_date_set_dmy               (GDate       *date,
                                            GDateDay     day,
-                                           GDateMonth   m,
+                                           GDateMonth   month,
                                            GDateYear    y);
-
-void         g_date_set_julian            (GDate       *d,
-                                           guint32      j);
-
-gboolean     g_date_is_first_of_month     (GDate       *d);
-gboolean     g_date_is_last_of_month      (GDate       *d);
-
+void         g_date_set_julian            (GDate       *date,
+                                           guint32      julian_date);
+gboolean     g_date_is_first_of_month     (GDate       *date);
+gboolean     g_date_is_last_of_month      (GDate       *date);
 
 /* To go forward by some number of weeks just go forward weeks*7 days */
-void         g_date_add_days              (GDate       *d, 
-                                           guint        ndays);
-void         g_date_subtract_days         (GDate       *d, 
-                                           guint        ndays);
+void         g_date_add_days              (GDate       *date, 
+                                           guint        n_days);
+void         g_date_subtract_days         (GDate       *date, 
+                                           guint        n_days);
 
 /* If you add/sub months while day > 28, the day might change */
-void         g_date_add_months            (GDate       *d,
-                                           guint        nmonths);
-void         g_date_subtract_months       (GDate       *d,
-                                           guint        nmonths);
+void         g_date_add_months            (GDate       *date,
+                                           guint        n_months);
+void         g_date_subtract_months       (GDate       *date,
+                                           guint        n_months);
 
 /* If it's feb 29, changing years can move you to the 28th */
-void         g_date_add_years             (GDate       *d,
-                                           guint        nyears);
-void         g_date_subtract_years        (GDate       *d,
-                                           guint        nyears);
-
+void         g_date_add_years             (GDate       *date,
+                                           guint        n_years);
+void         g_date_subtract_years        (GDate       *date,
+                                           guint        n_years);
 gboolean     g_date_is_leap_year          (GDateYear    year);
 guint8       g_date_days_in_month         (GDateMonth   month, 
                                            GDateYear    year);
@@ -2217,11 +2207,7 @@ guint8       g_date_sunday_weeks_in_year  (GDateYear    year);
 /* qsort-friendly (with a cast...) */
 gint         g_date_compare               (GDate       *lhs,
                                            GDate       *rhs);
-
-/* make struct tm known without having to include time.h */
-struct tm;
-
-void         g_date_to_struct_tm          (GDate       *d,
+void         g_date_to_struct_tm          (GDate       *date,
                                            struct tm   *tm);
 
 /* Just like strftime() except you can only use date-related formats.
@@ -2230,12 +2216,12 @@ void         g_date_to_struct_tm          (GDate       *d,
 gsize        g_date_strftime              (gchar       *s,
                                            gsize        slen,
                                            const gchar *format,
-                                           GDate       *d);
+                                           GDate       *date);
 
 
-
-
-/* GRelation: Indexed Relations.  Imagine a really simple table in a
+/* GRelation
+ *
+ * Indexed Relations.  Imagine a really simple table in a
  * database.  Relations are not ordered.  This data type is meant for
  * maintaining a N-way mapping.
  *
@@ -2295,47 +2281,47 @@ gpointer   g_tuples_index     (GTuples	   *tuples,
 guint	   g_spaced_primes_closest (guint num);
 
 
-/* IO Channels
+/* GIOChannel
  */
 
 typedef struct _GIOFuncs GIOFuncs;
-
-typedef enum {
+typedef enum
+{
   G_IO_ERROR_NONE,
   G_IO_ERROR_AGAIN,
   G_IO_ERROR_INVAL,
   G_IO_ERROR_UNKNOWN
 } GIOError;
-
-typedef enum {
+typedef enum
+{
   G_SEEK_CUR,
   G_SEEK_SET,
   G_SEEK_END
 } GSeekType;
-
-typedef enum {
+typedef enum
+{
   G_IO_IN  
 #ifdef POLLIN
             = POLLIN
 #endif
-  ,G_IO_OUT  
+  , G_IO_OUT  
 #ifdef POLLOUT
             = POLLOUT
 #endif
-  ,G_IO_PRI  
+  , G_IO_PRI  
 #ifdef POLLPRI
             = POLLPRI
 #endif
 
-  ,G_IO_ERR  
+  , G_IO_ERR  
 #ifdef POLLERR
            = POLLERR
 #endif
-  ,G_IO_HUP  
+  , G_IO_HUP  
 #ifdef POLLHUP
            = POLLHUP
 #endif
-  ,G_IO_NVAL  
+  , G_IO_NVAL  
 #ifdef POLLNVAL
            = POLLNVAL
 #endif
@@ -2351,27 +2337,27 @@ struct _GIOChannel
 typedef gboolean (*GIOFunc) (GIOChannel   *source,
 			     GIOCondition  condition,
 			     gpointer      data);
-
-struct _GIOFuncs {
-  GIOError (*io_read)   (GIOChannel *channel, 
-		         gchar      *buf, 
-		         guint       count,
-			 guint      *bytes_read);
-  GIOError (*io_write)  (GIOChannel *channel, 
-		 	 gchar      *buf, 
-			 guint       count,
-			 guint      *bytes_written);
-  GIOError (*io_seek)   (GIOChannel   *channel, 
-		 	 gint        offset, 
-		  	 GSeekType   type);
-  void (*io_close)      (GIOChannel *channel);
-  guint (*io_add_watch) (GIOChannel      *channel,
-			 gint           priority,
-			 GIOCondition   condition,
-			 GIOFunc        func,
-			 gpointer       user_data,
-			 GDestroyNotify notify);
-  void (*io_free)       (GIOChannel *channel);
+struct _GIOFuncs
+{
+  GIOError (*io_read)   (GIOChannel 	*channel, 
+		         gchar      	*buf, 
+		         guint      	 count,
+			 guint      	*bytes_read);
+  GIOError (*io_write)  (GIOChannel 	*channel, 
+		 	 gchar      	*buf, 
+			 guint      	 count,
+			 guint      	*bytes_written);
+  GIOError (*io_seek)   (GIOChannel   	*channel, 
+		 	 gint       	 offset, 
+		  	 GSeekType  	 type);
+  void (*io_close)      (GIOChannel	*channel);
+  guint (*io_add_watch) (GIOChannel     *channel,
+			 gint            priority,
+			 GIOCondition    condition,
+			 GIOFunc         func,
+			 gpointer        user_data,
+			 GDestroyNotify  notify);
+  void (*io_free)       (GIOChannel	*channel);
 };
 
 void        g_io_channel_init   (GIOChannel    *channel);
@@ -2400,19 +2386,20 @@ guint    g_io_add_watch         (GIOChannel    *channel,
 			         GIOFunc        func,
 			         gpointer       user_data);
 
-/* Main loop */
 
-typedef struct _GTimeVal GTimeVal;
-typedef struct _GSourceFuncs GSourceFuncs;
+/* Main loop
+ */
+typedef struct _GTimeVal	GTimeVal;
+typedef struct _GSourceFuncs	GSourceFuncs;
+typedef struct _GMainLoop	GMainLoop;	/* Opaque */
 
-typedef struct _GMainLoop GMainLoop; /* Opaque */
-
-struct _GTimeVal {
+struct _GTimeVal
+{
   glong tv_sec;
   glong tv_usec;
 };
-
-struct _GSourceFuncs {
+struct _GSourceFuncs
+{
   gboolean (*prepare)  (gpointer  source_data, 
 			GTimeVal *current_time,
 			gint     *timeout);
@@ -2424,10 +2411,9 @@ struct _GSourceFuncs {
   GDestroyNotify destroy;
 };
 
-typedef gboolean (*GSourceFunc) (gpointer        data);
+typedef gboolean (*GSourceFunc) (gpointer data);
 
 /* Hooks for adding to the main loop */
-
 guint g_source_add                  (gint           priority, 
 				     gboolean       can_recurse,
 				     GSourceFuncs  *funcs,
@@ -2438,67 +2424,65 @@ void g_source_remove                (guint          tag);
 void g_source_remove_by_user_data   (gpointer       user_data);
 void g_source_remove_by_source_data (gpointer       source_data);
 
-
-void g_get_current_time (GTimeVal *result);
+void g_get_current_time		    (GTimeVal	   *result);
 
 /* Running the main loop */
-
-GMainLoop *g_main_new (void);
-void g_main_run (GMainLoop *loop);
-void g_main_quit (GMainLoop *loop);
-void g_main_destroy (GMainLoop *loop);
+GMainLoop*	g_main_new		(void);
+void		g_main_run		(GMainLoop	*loop);
+void		g_main_quit		(GMainLoop	*loop);
+void		g_main_destroy		(GMainLoop	*loop);
 
 /* Run a single iteration of the mainloop. If block is FALSE,
  * will never block
  */
-gboolean g_main_iteration (gboolean block);
+gboolean	g_main_iteration	(gboolean	may_block);
 
-/* See if any events are pending
- */
-gboolean g_main_pending ();
+/* See if any events are pending */
+gboolean	g_main_pending		(void);
 
 /* Idles and timeouts */
+guint		g_timeout_add_full	(gint           priority,
+					 guint          interval, 
+					 GSourceFunc    function,
+					 gpointer       data,
+					 GDestroyNotify notify);
+guint		g_timeout_add		(guint          interval,
+					 GSourceFunc    function,
+					 gpointer       data);
+guint		g_idle_add	   	(GSourceFunc	function,
+					 gpointer	data);
+guint	   	g_idle_add_full		(gint   	priority,
+					 GSourceFunc	function,
+					 gpointer	data,
+					 GDestroyNotify destroy);
 
-guint g_timeout_add_full  (gint           priority,
-			   guint          interval, 
-			   GSourceFunc    function,
-			   gpointer       data,
-			   GDestroyNotify notify);
-guint g_timeout_add       (guint          interval,
-			   GSourceFunc    function,
-			   gpointer       data);
-
-guint	   g_idle_add	   (GSourceFunc        function,
-			    gpointer	       data);
-guint	   g_idle_add_full (gint   	       priority,
-			    GSourceFunc	       function,
-			    gpointer	       data,
-			    GDestroyNotify     destroy);
-
-/* Unix-specific IO and main loop calls */
+/* GPollFD
+ *
+ * Unix-specific IO and main loop calls
+ */
 
 typedef struct _GPollFD GPollFD;
-
-struct _GPollFD {
-   gint fd;
-   gushort events;
-   gushort revents;
+typedef gint	(*GPollFunc)	(GPollFD *ufds,
+				 guint	  nfsd,
+				 gint     timeout);
+struct _GPollFD
+{
+  gint		fd;
+  gushort 	events;
+  gushort 	revents;
 };
-
-typedef gint (*GPollFunc) (GPollFD *ufds, guint nfsd, gint timeout);
 
 void        g_main_poll_add          (gint        priority,
 				      GPollFD    *fd);
 void        g_main_poll_remove       (GPollFD    *fd);
-
 void        g_main_set_poll_func     (GPollFunc   func);
 
-
-GIOChannel *g_io_channel_unix_new    (int         fd);
+GIOChannel* g_io_channel_unix_new    (int         fd);
 gint        g_io_channel_unix_get_fd (GIOChannel *channel);
 
-#if 0 /* old IO Channels */
 
+/* old IO Channels */
+#if 0
 /* IO Channels.
  * These are used for plug-in communication in the GIMP, for instance.
  * On Unix, it's simply an encapsulated file descriptor (a pipe).
@@ -2521,7 +2505,6 @@ struct _GIOChannel
 				 */
 #endif
 };
-
 GIOChannel *g_iochannel_new            (gint        fd);
 void        g_iochannel_free           (GIOChannel *channel);
 void        g_iochannel_close_and_free (GIOChannel *channel);
@@ -2529,16 +2512,14 @@ void        g_iochannel_wakeup_peer    (GIOChannel *channel);
 #ifndef NATIVE_WIN32
 #  define   g_iochannel_wakeup_peer(channel) G_STMT_START { } G_STMT_END
 #endif
+#endif	/* old IO Channels */
 
-#endif /* old IO Channels */
 
 /* Windows emulation stubs for common unix functions
  */
 #ifdef NATIVE_WIN32
-
-#define MAXPATHLEN 1024
-
-#ifdef _MSC_VER
+#  define MAXPATHLEN 1024
+#  ifdef _MSC_VER
 typedef int pid_t;
 
 /* These POSIXish functions are available in the Microsoft C library
@@ -2553,30 +2534,27 @@ typedef int pid_t;
  * For some functions, we provide emulators in glib, which are prefixed
  * with gwin_.
  */
-#define getcwd			_getcwd
-#define getpid			_getpid
-#define access			_access
-#define open			_open
-#define read			_read
-#define write			_write
-#define lseek			_lseek
-#define close			_close
-#define pipe(phandles)		_pipe (phandles, 4096, _O_BINARY)
-#define popen			_popen
-#define pclose			_pclose
-#define fdopen			_fdopen
-#define ftruncate(fd, size)	gwin_ftruncate (fd, size)
-#define opendir			gwin_opendir
-#define readdir			gwin_readdir
-#define rewinddir		gwin_rewinddir
-#define closedir		gwin_closedir
-
-#define NAME_MAX 255
-
+#    define getcwd		_getcwd
+#    define getpid		_getpid
+#    define access		_access
+#    define open		_open
+#    define read		_read
+#    define write		_write
+#    define lseek		_lseek
+#    define close		_close
+#    define pipe(phandles)	_pipe (phandles, 4096, _O_BINARY)
+#    define popen		_popen
+#    define pclose		_pclose
+#    define fdopen		_fdopen
+#    define ftruncate(fd, size)	gwin_ftruncate (fd, size)
+#    define opendir		gwin_opendir
+#    define readdir		gwin_readdir
+#    define rewinddir		gwin_rewinddir
+#    define closedir		gwin_closedir
+#    define NAME_MAX 255
 struct DIR
 {
   gchar    *dir_name;
-
   gboolean  just_opened;
   guint     find_file_handle;
   gpointer  find_file_data;
@@ -2586,7 +2564,6 @@ struct dirent
 {
   gchar  d_name[NAME_MAX + 1];
 };
-
 /* emulation functions */
 extern int	gwin_ftruncate	(gint		 f,
 				 guint		 size);
@@ -2594,145 +2571,153 @@ DIR*		gwin_opendir	(const gchar	*dirname);
 struct dirent*	gwin_readdir  	(DIR		*dir);
 void		gwin_rewinddir 	(DIR		*dir);
 gint		gwin_closedir  	(DIR		*dir);
+#  endif /* _MSC_VER */
+#endif	 /* NATIVE_WIN32 */
 
-#endif /* _MSC_VER */
 
-#endif /* NATIVE_WIN32 */
-
-/* functions for thread support for glib. */
-
-typedef struct _GMutex GMutex;
-typedef struct _GCond GCond;
-typedef struct _GPrivate GPrivate;
-typedef struct _GStaticPrivate GStaticPrivate;
-
+/* GLib Thread support
+ */
+typedef struct _GMutex		GMutex;
+typedef struct _GCond		GCond;
+typedef struct _GPrivate	GPrivate;
+typedef struct _GStaticPrivate	GStaticPrivate;
 typedef struct _GThreadFunctions GThreadFunctions;
 struct _GThreadFunctions
 {
   GMutex*  (*mutex_new)       (void);
-  void     (*mutex_lock)      (GMutex* mutex);
-  gboolean (*mutex_trylock)   (GMutex* mutex);
-  void     (*mutex_unlock)    (GMutex* mutex);
-  void     (*mutex_free)      (GMutex* mutex);
+  void     (*mutex_lock)      (GMutex		*mutex);
+  gboolean (*mutex_trylock)   (GMutex		*mutex);
+  void     (*mutex_unlock)    (GMutex		*mutex);
+  void     (*mutex_free)      (GMutex		*mutex);
   GCond*   (*cond_new)        (void);
-  void     (*cond_signal)     (GCond* cond);
-  void     (*cond_broadcast)  (GCond* cond);
-  void     (*cond_wait)       (GCond* cond, GMutex* mutex);
-  gboolean (*cond_timed_wait) (GCond* cond, GMutex* mutex, 
-			       GTimeVal *end_time);
-  void      (*cond_free)      (GCond* cond);
-  GPrivate* (*private_new)    (GDestroyNotify destructor);
-  gpointer  (*private_get)    (GPrivate* private_key);
-  void      (*private_set)    (GPrivate* private_key, gpointer value);
+  void     (*cond_signal)     (GCond		*cond);
+  void     (*cond_broadcast)  (GCond		*cond);
+  void     (*cond_wait)       (GCond		*cond,
+			       GMutex		*mutex);
+  gboolean (*cond_timed_wait) (GCond		*cond,
+			       GMutex		*mutex, 
+			       GTimeVal 	*end_time);
+  void      (*cond_free)      (GCond		*cond);
+  GPrivate* (*private_new)    (GDestroyNotify	 destructor);
+  gpointer  (*private_get)    (GPrivate		*private_key);
+  void      (*private_set)    (GPrivate		*private_key,
+			       gpointer		 data);
 };
 
-GUTILS_C_VAR GThreadFunctions g_thread_functions_for_glib_use;
-GUTILS_C_VAR gboolean g_thread_use_default_impl;
-GUTILS_C_VAR gboolean g_thread_supported;
+GUTILS_C_VAR GThreadFunctions	g_thread_functions_for_glib_use;
+GUTILS_C_VAR gboolean		g_thread_use_default_impl;
+GUTILS_C_VAR gboolean		g_threads_got_initialized;
 
 /* initializes the mutex/cond/private implementation for glib, might
  * only be called once, and must not be called directly or indirectly
- * from another glib-function, e.g. as a callback.  */
-void g_thread_init(GThreadFunctions* init); 
-
-/* Internal functions for fallback static mutex implementation
- * Please don't use it directly 
+ * from another glib-function, e.g. as a callback.
  */
-GMutex* g_static_mutex_get_mutex_impl(GMutex** mutex);
+void	g_thread_init	(GThreadFunctions	*vtable);
 
-#define G_USE_THREAD_FUNC_UNCOND(name,arg) \
-  (*g_thread_functions_for_glib_use.name)arg
-#define G_USE_THREAD_FUNC(name,fail,arg) \
-  (g_thread_supported ? G_USE_THREAD_FUNC_UNCOND(name,arg) : (fail))
+/* internal function for fallback static mutex implementation */
+GMutex*	g_static_mutex_get_mutex_impl	(GMutex	**mutex);
 
+/* shorthands for conditional and unconditional function calls */
+#define G_THREAD_UF(name, arglist) \
+    (*g_thread_functions_for_glib_use . name) arglist
+#define G_THREAD_CF(name, fail, arg) \
+    (g_thread_supported () ? G_THREAD_UF (name, arg) : (fail))
 /* keep in mind, all those mutexes and static mutexes are not 
- * recursive in general, don't rely on that */
-#define g_mutex_new()           G_USE_THREAD_FUNC_UNCOND(mutex_new,())
-#define g_mutex_lock(mutex)     G_USE_THREAD_FUNC(mutex_lock,(void)0,(mutex))
-#define g_mutex_trylock(mutex)  G_USE_THREAD_FUNC(mutex_trylock,TRUE,(mutex))
-#define g_mutex_unlock(mutex)   G_USE_THREAD_FUNC(mutex_unlock,(void)0,(mutex))
-#define g_mutex_free(mutex)     G_USE_THREAD_FUNC(mutex_free,(void)0,(mutex))
-#define g_cond_new()            G_USE_THREAD_FUNC_UNCOND(cond_new,())
-#define g_cond_signal(cond)     G_USE_THREAD_FUNC(cond_signal,(void)0,(cond))
-#define g_cond_broadcast(cond)  G_USE_THREAD_FUNC(cond_broadcast,(void)0,(cond))
-#define g_cond_wait(cond,mutex) G_USE_THREAD_FUNC(cond_wait,(void)0,(cond,mutex))
-#define g_cond_timed_wait(cond,mutex,abs_time) \
-      G_USE_THREAD_FUNC(cond_timed_wait,TRUE,(cond,mutex,abs_time))
-#define g_cond_free(cond)       G_USE_THREAD_FUNC(cond_free,(void)0,(cond))
-
-#define g_private_new(destructor) \
-      G_USE_THREAD_FUNC_UNCOND(private_new,(destructor))
-#define g_private_get(private_key) \
-      G_USE_THREAD_FUNC(private_get,((gpointer)private_key),(private_key))
-#define g_private_set(private_key,value) \
-      G_USE_THREAD_FUNC(private_set,(void)(private_key=(GPrivate *)(value)), \
-		     (private_key,value))
-
-/* GStaticMutex'es can be statically initialized with the value
+ * recursive in general, don't rely on that
+ */
+#define	g_thread_supported()	(g_threads_got_initialized)
+#define g_mutex_new()            G_THREAD_UF (mutex_new,      ())
+#define g_mutex_lock(mutex)      G_THREAD_CF (mutex_lock,     (void)0, (mutex))
+#define g_mutex_trylock(mutex)   G_THREAD_CF (mutex_trylock,  TRUE,    (mutex))
+#define g_mutex_unlock(mutex)    G_THREAD_CF (mutex_unlock,   (void)0, (mutex))
+#define g_mutex_free(mutex)      G_THREAD_CF (mutex_free,     (void)0, (mutex))
+#define g_cond_new()             G_THREAD_UF (cond_new,       ())
+#define g_cond_signal(cond)      G_THREAD_CF (cond_signal,    (void)0, (cond))
+#define g_cond_broadcast(cond)   G_THREAD_CF (cond_broadcast, (void)0, (cond))
+#define g_cond_wait(cond, mutex) G_THREAD_CF (cond_wait,      (void)0, (cond, \
+                                                                        mutex))
+#define g_cond_free(cond)        G_THREAD_CF (cond_free,      (void)0, (cond))
+#define g_cond_timed_wait(cond, mutex, abs_time) G_THREAD_CF (cond_timed_wait, \
+                                                              TRUE, \
+                                                              (cond, mutex, \
+							       abs_time))
+#define g_private_new(destructor)	  G_THREAD_UF (private_new, (destructor))
+#define g_private_get(private_key)	  G_THREAD_CF (private_get, \
+                                                       ((gpointer)private_key), \
+                                                       (private_key))
+#define g_private_set(private_key, value) G_THREAD_CF (private_set, \
+                                                       (void) (private_key = \
+                                                        (GPrivate*) (value)), \
+                                                       (private_key, value))
+/* GStaticMutexes can be statically initialized with the value
  * G_STATIC_MUTEX_INIT, and then they can directly be used, that is
  * much easier, than having to explicitly allocate the mutex before
- * use */
+ * use
+ */
 #define g_static_mutex_lock(mutex) \
-  g_mutex_lock( g_static_mutex_get_mutex(mutex) )
+    g_mutex_lock (g_static_mutex_get_mutex (mutex))
 #define g_static_mutex_trylock(mutex) \
-  g_mutex_trylock( g_static_mutex_get_mutex(mutex) )
+    g_mutex_trylock (g_static_mutex_get_mutex (mutex))
 #define g_static_mutex_unlock(mutex) \
-  g_mutex_unlock( g_static_mutex_get_mutex(mutex) ) 
-
+    g_mutex_unlock (g_static_mutex_get_mutex (mutex)) 
 struct _GStaticPrivate
 {
   guint index;
 };
-
 #define G_STATIC_PRIVATE_INIT { 0 }
+gpointer g_static_private_get (GStaticPrivate	*private_key);
+void     g_static_private_set (GStaticPrivate	*private_key, 
+			       gpointer        	 data,
+			       GDestroyNotify    notify);
 
-gpointer g_static_private_get (GStaticPrivate* private_key);
-void     g_static_private_set (GStaticPrivate *private_key, 
-			       gpointer        data,
-			       GDestroyNotify  notify);
+/* these are some convenience macros that expand to nothing if GLib was
+ * configured with --deisable-threads. for using StaticMutexes, you
+ * declare them with G_LOCK_DECLARE_STATIC (name) or G_LOCK_DECLARE (name)
+ * if you need to export the mutex. name is a unique identifier for the
+ * protected varibale or code portion. locking, testing and unlocking of
+ * such mutexes can be done with G_LOCK(), G_UNLOCK() and G_TRYLOCK()
+ * respectively.
+ */
+extern gboolean glib_dummy_decl;
+#define G_LOCK_NAME(name)		(g__ ## name ## _lock)
+#ifdef	G_THREADS_ENABLED
+#  define G_LOCK_DECLARE_STATIC(name)	static G_LOCK_DECLARE (name)
+#  define G_LOCK_DECLARE(name)		\
+    GStaticMutex G_LOCK_NAME (name) = G_STATIC_MUTEX_INIT 
 
-/* these are some convenience macros, for using StaticMutex'es, you
- * define them by G_LOCK_DEFINE(name), where name could for example be the
- * name of the protected varibale, and you (un)lock them with
- * g_(un)lock(name) */
-#define g_lock_name(name) (name ## _lock)
-#define G_LOCK_DEFINE(name) GStaticMutex g_lock_name(name)=G_STATIC_MUTEX_INIT 
-
-#ifdef G_DEBUG_LOCKS
-#define g_lock(name)			G_STMT_START{		\
-       g_log (G_LOG_DOMAIN,					\
-	      G_LOG_LEVEL_MESSAGE,				\
-	      "file %s: line %d (%s): locking: %s ",	        \
-	      __FILE__,						\
-	      __LINE__,						\
-	      __PRETTY_FUNCTION__,                              \
-              #name);                                           \
-       g_static_mutex_lock(g_lock_name(name));                  \
+#  ifdef G_DEBUG_LOCKS
+#    define G_LOCK(name)		G_STMT_START{		  \
+        g_log (G_LOG_DOMAIN, G_LOG_LEVEL_DEBUG,			  \
+	       "file %s: line %d (%s): locking: %s ",	          \
+	       __FILE__,	__LINE__, G_GNUC_PRETTY_FUNCTION, \
+               #name);                                            \
+        g_static_mutex_lock (G_LOCK_NAME (name));                 \
      }G_STMT_END
-#define g_unlock(name)			G_STMT_START{		\
-       g_log (G_LOG_DOMAIN,					\
-	      G_LOG_LEVEL_MESSAGE,				\
-	      "file %s: line %d (%s): unlocking: %s ",	        \
-	      __FILE__,						\
-	      __LINE__,						\
-	      __PRETTY_FUNCTION__,                              \
-              #name);                                           \
-       g_static_mutex_unlock(g_lock_name(name));                \
+#    define G_UNLOCK(name)		G_STMT_START{		  \
+        g_log (G_LOG_DOMAIN, G_LOG_LEVEL_DEBUG,			  \
+	       "file %s: line %d (%s): unlocking: %s ",	          \
+	       __FILE__,	__LINE__, G_GNUC_PRETTY_FUNCTION, \
+               #name);                                            \
+       g_static_mutex_unlock (G_LOCK_NAME (name));                \
      }G_STMT_END
-#define g_trylock(name)			G_STMT_START{		\
-       g_log (G_LOG_DOMAIN,					\
-	      G_LOG_LEVEL_MESSAGE,				\
-	      "file %s: line %d (%s): try locking: %s ",        \
-	      __FILE__,						\
-	      __LINE__,						\
-	      __PRETTY_FUNCTION__,                              \
-              #name);                                           \
-     }G_STMT_END, g_static_mutex_trylock(g_lock_name(name))
-#else /* !G_DEBUG_LOCKS */
-#define g_lock(name) g_static_mutex_lock(g_lock_name(name)) 
-#define g_unlock(name) g_static_mutex_unlock(g_lock_name(name))
-#define g_trylock(name) g_static_mutex_trylock(g_lock_name(name))
-#endif
+#    define G_TRYLOCK(name)		G_STMT_START{		  \
+        g_log (G_LOG_DOMAIN, G_LOG_LEVEL_DEBUG,			  \
+	       "file %s: line %d (%s): try locking: %s ",         \
+	       __FILE__,	__LINE__, G_GNUC_PRETTY_FUNCTION, \
+               #name);                                            \
+     }G_STMT_END,	g_static_mutex_trylock (G_LOCK_NAME (name))
+#  else	 /* !G_DEBUG_LOCKS */
+#    define G_LOCK(name) g_static_mutex_lock	   (G_LOCK_NAME (name)) 
+#    define G_UNLOCK(name) g_static_mutex_unlock   (G_LOCK_NAME (name))
+#    define G_TRYLOCK(name) g_static_mutex_trylock (G_LOCK_NAME (name))
+#  endif /* !G_DEBUG_LOCKS */
+#else	/* !G_THREADS_ENABLED */
+#  define G_LOCK_DECLARE_STATIC(name)	extern gboolean glib_dummy_decl
+#  define G_LOCK_DECLARE(name)		extern gboolean glib_dummy_decl
+#  define G_LOCK(name)
+#  define G_UNLOCK(name)
+#  define G_TRYLOCK(name)		(FALSE)
+#endif	/* !G_THREADS_ENABLED */
 
 #ifdef __cplusplus
 }

@@ -40,7 +40,7 @@ static void g_thread_fail (void);
 /* Global variables */
 
 gboolean g_thread_use_default_impl = TRUE;
-gboolean g_thread_supported = FALSE;
+gboolean g_threads_got_initialized = FALSE;
 
 GThreadFunctions g_thread_functions_for_glib_use = {
   (GMutex*(*)())g_thread_fail,                 /* mutex_new */
@@ -76,7 +76,7 @@ g_mutex_init (void)
   gpointer private_old = g_thread_specific_private;
   g_thread_specific_private = g_private_new (g_static_private_free_data);
 
-  /* we can not use g_private_set here, as g_thread_supported is not
+  /* we can not use g_private_set here, as g_threads_got_initialized is not
      yet set TRUE, whereas the private_set function is already set. */
   g_thread_functions_for_glib_use.private_set (g_thread_specific_private, 
 					       private_old);
@@ -88,7 +88,7 @@ g_mutex_init (void)
 GMutex *
 g_static_mutex_get_mutex_impl (GMutex** mutex)
 {
-  if (!g_thread_supported)
+  if (!g_thread_supported ())
     return NULL;
 
   g_assert (g_mutex_protect_static_mutex_allocation);

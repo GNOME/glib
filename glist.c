@@ -36,7 +36,7 @@ struct _GAllocator /* from gmem.c */
 };
 
 static GAllocator	*current_allocator = NULL;
-static G_LOCK_DEFINE(current_allocator);
+G_LOCK_DECLARE_STATIC (current_allocator);
 
 /* HOLDS: current_allocator_lock */
 static void
@@ -70,17 +70,17 @@ g_list_validate_allocator (GAllocator *allocator)
 void
 g_list_push_allocator(GAllocator *allocator)
 {
-  g_lock (current_allocator);
+  G_LOCK (current_allocator);
   g_list_validate_allocator ( allocator );
   allocator->last = current_allocator;
   current_allocator = allocator;
-  g_unlock (current_allocator);
+  G_UNLOCK (current_allocator);
 }
 
 void
 g_list_pop_allocator (void)
 {
-  g_lock (current_allocator);
+  G_LOCK (current_allocator);
   if (current_allocator)
     {
       GAllocator *allocator;
@@ -90,7 +90,7 @@ g_list_pop_allocator (void)
       allocator->last = NULL;
       allocator->is_unused = TRUE;
     }
-  g_unlock (current_allocator);
+  G_UNLOCK (current_allocator);
 }
 
 GList*
@@ -98,7 +98,7 @@ g_list_alloc (void)
 {
   GList *list;
 
-  g_lock (current_allocator);
+  G_LOCK (current_allocator);
   if (!current_allocator)
     {
       GAllocator *allocator = g_allocator_new ("GLib default GList allocator",
@@ -126,7 +126,7 @@ g_list_alloc (void)
 	  current_allocator->free_lists = list->next;
 	}
     }
-  g_unlock (current_allocator);
+  G_UNLOCK (current_allocator);
   list->next = NULL;
   list->prev = NULL;
   
@@ -139,10 +139,10 @@ g_list_free (GList *list)
   if (list)
     {
       list->data = list->next;  
-      g_lock (current_allocator);
+      G_LOCK (current_allocator);
       list->next = current_allocator->free_lists;
       current_allocator->free_lists = list;
-      g_unlock (current_allocator);
+      G_UNLOCK (current_allocator);
     }
 }
 
@@ -152,10 +152,10 @@ g_list_free_1 (GList *list)
   if (list)
     {
       list->data = NULL;  
-      g_lock (current_allocator);
+      G_LOCK (current_allocator);
       list->next = current_allocator->free_lists;
       current_allocator->free_lists = list;
-      g_unlock (current_allocator);
+      G_UNLOCK (current_allocator);
     }
 }
 

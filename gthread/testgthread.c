@@ -13,9 +13,9 @@ test_mutexes ()
   GMutex *mutex = NULL;
   GCond *cond = NULL;
   GStaticMutex static_mutex = G_STATIC_MUTEX_INIT;
-  G_LOCK_DEFINE (test_me);
+  G_LOCK_DECLARE (test_me);
 
-  if (g_thread_supported)
+  if (g_thread_supported ())
     {
       mutex = g_mutex_new ();
       cond = g_cond_new ();
@@ -30,10 +30,10 @@ test_mutexes ()
   g_cond_signal (cond);
   g_cond_broadcast (cond);
 
-  g_lock (test_me);
-  g_unlock (test_me);
+  G_LOCK (test_me);
+  G_UNLOCK (test_me);
 
-  if (g_thread_supported)
+  if (g_thread_supported ())
     {
       g_cond_free (cond);
       g_mutex_free (mutex);

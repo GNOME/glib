@@ -1,3 +1,9 @@
+Wed Dec 16 03:16:16 1998  Tim Janik  <timj@gtk.org>
+
+	* testgthread.c: s/g_thread_supported/g_thread_supported ()/
+	* gthread.c: s/g_thread_supported/g_threads_got_initialized/
+	(g_thread_init): bail out if G_THREADS_ENABLED is not defined.
+
 1998-12-15  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* Makefile.am (EXTRA_DIST): updated.

@@ -57,11 +57,16 @@ AM_MAINTAINER_MODE
 AC_CANONICAL_HOST
 
 AC_ARG_ENABLE(debug, [  --enable-debug=[no/minimum/yes] turn on debugging [default=minimum]],,enable_debug=minimum)
-AC_ARG_ENABLE(mem_check, [  --enable-mem-check=[no/yes] turn on malloc/free sanity checking [default=no]],,enable_mem_check=no)
-AC_ARG_ENABLE(mem_profile, [  --enable-mem-profile=[no/yes] turn on malloc profiling atexit [default=no]],,enable_mem_profile=no)
-
+AC_ARG_ENABLE(mem_check, [  --enable-mem-check      turn on malloc/free sanity checking [default=no]],,enable_mem_check=no)
+AC_ARG_ENABLE(mem_profile, [  --enable-mem-profile    turn on malloc profiling atexit [default=no]],,enable_mem_profile=no)
 AC_ARG_ENABLE(ansi, [  --enable-ansi           turn on strict ansi [default=no]],
 		    , enable_ansi=no)
+AC_ARG_ENABLE(threads, [  --enable-threads        turn on basic thread support [default=yes]
+                          ([=no] will override --with-threads)],,enable_threads=yes)
+
+if test "x$enable_threads" != "xyes"; then
+  enable_threads=no
+fi
 
 AC_MSG_CHECKING(whether to enable memory checking)
 if test "x$enable_mem_check" = "xyes"; then
@@ -513,13 +518,16 @@ dnl ***********************
 dnl *** g_thread checks ***
 dnl ***********************
 
-AC_ARG_WITH(threads, [  --with-threads=[none/posix/solaris/nspr] specify a thread implementation to use.],
+AC_ARG_WITH(threads, [  --with-threads=[none/posix/solaris/nspr] specify a thread implementation to use],
 	if test "x$with_threads" = x; then
 		want_threads=yes
 	else
 		want_threads=$with_threads
 	fi,
 	want_threads=yes)
+if test "x$enable_threads" = "xno"; then
+        want_threads=no
+fi
 if test "x$want_threads" = "xnone"; then
 	want_threads=no
 fi
@@ -813,6 +821,8 @@ outfile_EOF
 
 cat >>$outfile <<outfile_EOF                                               
 
+$g_enable_threads_def G_THREADS_ENABLED
+
 /* definitions for the default mutex implementation */
 outfile_EOF
 
@@ -1052,6 +1062,11 @@ if test x$glib_working_wctype = xno; then
   glib_wc="\$glib_wc
 #define G_HAVE_BROKEN_WCTYPE 1"
 fi
+
+case x$enable_threads in
+xyes)	g_enable_threads_def="#define";;
+*)	g_enable_threads_def="#undef ";;
+esac
 
 case $have_threads in
 	posix)

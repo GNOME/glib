@@ -1,3 +1,39 @@
+Wed Dec 16 03:16:58 1998  Tim Janik  <timj@gtk.org>
+
+        * configure.in: version bump to 1.1.8, binary age 0, interface age 0.
+
+	* glib.h: changed g_lock() to G_LOCK(), g_unlock() to G_UNLOCK() and
+	g_trylock() to G_TRYLOCK(), since these are macros that expand to
+	nothing with --disable-threads.
+	changed G_LOCK_DEFINE() to G_LOCK_DECLARE() and introduced
+ 	G_LOCK_DECLARE_STATIC() to achive the results of static G_LOCK_DECLARE().
+	changed semantics of g_thread_supported to g_thread_supported() so it
+	can be used as a function like g_module_supported(). the actuall
+	definition is still a macro that expands into a variable for
+ 	performance reasons though.
+	various indentation and coding style cleanups.
+
+	* configure.in: added --enable-threads that defaults to yes.
+
+	* gmutex.c: changed tests g_thread_supported to g_thread_supported (),
+	changed variable settings of g_thread_supported
+ 	to g_threads_got_initialized.
+
+	garray.c:
+	gcache.c:
+	gdataset.c:
+	gdate.c:
+	ghash.c:
+	glist.c:
+	gmain.c:
+	gnode.c:
+	gslist.c:
+	gstring.c:
+	gtree.c:
+	gutils.c:
+	changed s/g_lock/G_LOCK/, s/g_unlock/G_UNLOCK/,
+ 	s/static G_LOCK_DEFINE/G_LOCK_DECLARE_STATIC/.
+
 Tue Dec 15 23:16:05 CST 1998 Shawn T. Amundson <amundson@gtk.org>
 
 	* Released GLib 1.1.8

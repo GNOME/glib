@@ -46,7 +46,7 @@ static void g_array_maybe_expand (GRealArray *array,
 				  gint        len);
 
 static GMemChunk *array_mem_chunk = NULL;
-static G_LOCK_DEFINE(array_mem_chunk);
+G_LOCK_DECLARE_STATIC (array_mem_chunk);
 
 GArray*
 g_array_new (gboolean zero_terminated,
@@ -55,14 +55,14 @@ g_array_new (gboolean zero_terminated,
 {
   GRealArray *array;
 
-  g_lock (array_mem_chunk);
+  G_LOCK (array_mem_chunk);
   if (!array_mem_chunk)
     array_mem_chunk = g_mem_chunk_new ("array mem chunk",
 				       sizeof (GRealArray),
 				       1024, G_ALLOC_AND_FREE);
 
   array = g_chunk_new (GRealArray, array_mem_chunk);
-  g_unlock (array_mem_chunk);
+  G_UNLOCK (array_mem_chunk);
 
   array->data            = NULL;
   array->len             = 0;
@@ -81,9 +81,9 @@ g_array_free (GArray  *array,
   if (free_segment)
     g_free (array->data);
 
-  g_lock (array_mem_chunk);
+  G_LOCK (array_mem_chunk);
   g_mem_chunk_free (array_mem_chunk, array);
-  g_unlock (array_mem_chunk);
+  G_UNLOCK (array_mem_chunk);
 }
 
 GArray*
@@ -250,7 +250,7 @@ static void g_ptr_array_maybe_expand (GRealPtrArray *array,
 				      gint           len);
 
 static GMemChunk *ptr_array_mem_chunk = NULL;
-static G_LOCK_DEFINE(ptr_array_mem_chunk);
+G_LOCK_DECLARE_STATIC (ptr_array_mem_chunk);
 
 
 GPtrArray*
@@ -258,14 +258,14 @@ g_ptr_array_new (void)
 {
   GRealPtrArray *array;
 
-  g_lock (ptr_array_mem_chunk);
+  G_LOCK (ptr_array_mem_chunk);
   if (!ptr_array_mem_chunk)
     ptr_array_mem_chunk = g_mem_chunk_new ("array mem chunk",
 					   sizeof (GRealPtrArray),
 					   1024, G_ALLOC_AND_FREE);
 
   array = g_chunk_new (GRealPtrArray, ptr_array_mem_chunk);
-  g_unlock (ptr_array_mem_chunk);
+  G_UNLOCK (ptr_array_mem_chunk);
 
   array->pdata = NULL;
   array->len = 0;
@@ -283,9 +283,9 @@ g_ptr_array_free (GPtrArray   *array,
   if (free_segment)
     g_free (array->pdata);
 
-  g_lock (ptr_array_mem_chunk);
+  G_LOCK (ptr_array_mem_chunk);
   g_mem_chunk_free (ptr_array_mem_chunk, array);
-  g_unlock (ptr_array_mem_chunk);
+  G_UNLOCK (ptr_array_mem_chunk);
 }
 
 static void

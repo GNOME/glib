@@ -48,7 +48,7 @@ struct _GRealString
   gint   alloc;
 };
 
-static G_LOCK_DEFINE(string_mem_chunk);
+G_LOCK_DECLARE_STATIC (string_mem_chunk);
 static GMemChunk *string_mem_chunk = NULL;
 
 /* Hash Functions.
@@ -207,14 +207,14 @@ g_string_sized_new (guint dfl_size)
 {
   GRealString *string;
 
-  g_lock (string_mem_chunk);
+  G_LOCK (string_mem_chunk);
   if (!string_mem_chunk)
     string_mem_chunk = g_mem_chunk_new ("string mem chunk",
 					sizeof (GRealString),
 					1024, G_ALLOC_AND_FREE);
 
   string = g_chunk_new (GRealString, string_mem_chunk);
-  g_unlock (string_mem_chunk);
+  G_UNLOCK (string_mem_chunk);
 
   string->alloc = 0;
   string->len   = 0;
@@ -248,9 +248,9 @@ g_string_free (GString *string,
   if (free_segment)
     g_free (string->str);
 
-  g_lock (string_mem_chunk);
+  G_LOCK (string_mem_chunk);
   g_mem_chunk_free (string_mem_chunk, string);
-  g_unlock (string_mem_chunk);
+  G_UNLOCK (string_mem_chunk);
 }
 
 GString*

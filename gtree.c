@@ -83,7 +83,7 @@ static GTreeNode* g_tree_node_rotate_right          (GTreeNode      *node);
 static void       g_tree_node_check                 (GTreeNode      *node);
 
 
-static G_LOCK_DEFINE(g_tree_global);
+G_LOCK_DECLARE_STATIC (g_tree_global);
 static GMemChunk *node_mem_chunk = NULL;
 static GTreeNode *node_free_list = NULL;
 
@@ -94,7 +94,7 @@ g_tree_node_new (gpointer key,
 {
   GTreeNode *node;
 
-  g_lock (g_tree_global);
+  G_LOCK (g_tree_global);
   if (node_free_list)
     {
       node = node_free_list;
@@ -110,7 +110,7 @@ g_tree_node_new (gpointer key,
 
       node = g_chunk_new (GTreeNode, node_mem_chunk);
    }
-  g_unlock (g_tree_global);
+  G_UNLOCK (g_tree_global);
 
   node->balance = 0;
   node->left = NULL;
@@ -128,10 +128,10 @@ g_tree_node_destroy (GTreeNode *node)
     {
       g_tree_node_destroy (node->right);
       g_tree_node_destroy (node->left);
-      g_lock (g_tree_global);
+      G_LOCK (g_tree_global);
       node->right = node_free_list;
       node_free_list = node;
-      g_unlock (g_tree_global);
+      G_UNLOCK (g_tree_global);
    }
 }
 
@@ -385,10 +385,10 @@ g_tree_node_remove (GTreeNode    *node,
 	  node = g_tree_node_restore_right_balance (new_root, old_balance);
 	}
 
-      g_lock (g_tree_global);
+      G_LOCK (g_tree_global);
       garbage->right = node_free_list;
       node_free_list = garbage;
-      g_unlock (g_tree_global);
+      G_UNLOCK (g_tree_global);
    }
   else if (cmp < 0)
     {

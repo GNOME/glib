@@ -388,7 +388,7 @@ g_date_clear (GDate       *d, guint ndates)
   memset (d, 0x0, ndates*sizeof (GDate)); 
 }
 
-static G_LOCK_DEFINE(g_date_global);
+G_LOCK_DECLARE_STATIC (g_date_global);
 
 /* These are for the parser, output to the user should use *
  * g_date_strftime () - this creates more never-freed memory to annoy
@@ -652,7 +652,7 @@ g_date_set_parse (GDate       *d,
   /* set invalid */
   g_date_clear (d, 1);
   
-  g_lock (g_date_global);
+  G_LOCK (g_date_global);
 
   g_date_prepare_to_parse (str, &pt);
   
@@ -664,7 +664,7 @@ g_date_set_parse (GDate       *d,
   
   if (pt.num_ints == 4) 
     {
-      g_unlock (g_date_global);
+      G_UNLOCK (g_date_global);
       return; /* presumably a typo; bail out. */
     }
   
@@ -782,7 +782,7 @@ g_date_set_parse (GDate       *d,
   else 
     g_message ("Rejected DMY %u %u %u", day, m, y);
 #endif
-  g_unlock (g_date_global);
+  G_UNLOCK (g_date_global);
 }
 
 void         

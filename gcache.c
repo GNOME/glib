@@ -61,7 +61,7 @@ static void        g_cache_node_destroy (GCacheNode *node);
 
 
 static GMemChunk *node_mem_chunk = NULL;
-static G_LOCK_DEFINE(node_mem_chunk);
+G_LOCK_DECLARE_STATIC (node_mem_chunk);
 
 GCache*
 g_cache_new (GCacheNewFunc      value_new_func,
@@ -198,13 +198,13 @@ g_cache_node_new (gpointer value)
 {
   GCacheNode *node;
 
-  g_lock (node_mem_chunk);
+  G_LOCK (node_mem_chunk);
   if (!node_mem_chunk)
     node_mem_chunk = g_mem_chunk_new ("cache node mem chunk", sizeof (GCacheNode),
 				      1024, G_ALLOC_AND_FREE);
 
   node = g_chunk_new (GCacheNode, node_mem_chunk);
-  g_unlock (node_mem_chunk);
+  G_UNLOCK (node_mem_chunk);
 
   node->value = value;
   node->ref_count = 1;
@@ -215,7 +215,7 @@ g_cache_node_new (gpointer value)
 static void
 g_cache_node_destroy (GCacheNode *node)
 {
-  g_lock (node_mem_chunk);
+  G_LOCK (node_mem_chunk);
   g_mem_chunk_free (node_mem_chunk, node);
-  g_unlock (node_mem_chunk);
+  G_UNLOCK (node_mem_chunk);
 }
