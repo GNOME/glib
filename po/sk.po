@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.3.8\n"
-"POT-Creation-Date: 2001-12-11 13:37+0100\n"
+"POT-Creation-Date: 2001-12-23 17:50-0500\n"
 "PO-Revision-Date: 2001-12-11 13:37CET\n"
 "Last-Translator: Stanislav Višňovský <visnovsky@nenya.ms.mff.cuni.cz>\n"
 "Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
@@ -85,42 +85,47 @@ msgstr "Neplatná sekvencia znakov v mene hostiteľa"
 msgid "Error opening directory '%s': %s"
 msgstr "Chyba pri otváraní priečinku'%s': %s"
 
-#: glib/gfileutils.c:309
+#: glib/gfileutils.c:320 glib/gfileutils.c:385
+#, c-format
+msgid "Could not allocate %lu bytes to read file \"%s\""
+msgstr ""
+
+#: glib/gfileutils.c:331
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Chyba pri čítaní súboru '%s': %s"
 
-#: glib/gfileutils.c:367
+#: glib/gfileutils.c:409
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Nepodarilo sa čítanie súboru '%s': %s"
 
-#: glib/gfileutils.c:406 glib/gfileutils.c:474
+#: glib/gfileutils.c:448 glib/gfileutils.c:516
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Nepodarilo sa otvoriť súbor '%s': %s"
 
-#: glib/gfileutils.c:420
+#: glib/gfileutils.c:462
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Nepodarilo sa získať atribúty súboru '%s': fstat() zlyhala: %s"
 
-#: glib/gfileutils.c:446
+#: glib/gfileutils.c:488
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Nepodarilo sa otvoriť súbor '%s': fdopen() zlyhala: %s"
 
-#: glib/gfileutils.c:655
+#: glib/gfileutils.c:695
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Šablóna '%s' je neplatná, nesmie obsahovať '%s'"
 
-#: glib/gfileutils.c:667
+#: glib/gfileutils.c:707
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Šablóna '%s' nekončí XXXXXX"
 
-#: glib/gfileutils.c:688
+#: glib/gfileutils.c:728
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Nepodarilo sa vytvoriť súbor '%s': %s"
@@ -151,15 +156,15 @@ msgstr "Kanál končí čiastočným znakom"
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Nepodarilo sa 'raw' čítanie v g_io_channel_read_to_end"
 
-#: glib/giowin32.c:701 glib/giowin32.c:730
+#: glib/giowin32.c:700 glib/giowin32.c:729
 msgid "Incorrect message size"
 msgstr "Nesprávna veľkosť správy"
 
-#: glib/giowin32.c:1024 glib/giowin32.c:1077
+#: glib/giowin32.c:1023 glib/giowin32.c:1076
 msgid "Socket error"
 msgstr "Chyba soketu"
 
-#: glib/giowin32.c:1277
+#: glib/giowin32.c:1276
 msgid "Channel set flags unsupported"
 msgstr "Nepodporované nastavovanie príznakov kanálu"
 
@@ -406,22 +411,22 @@ msgstr ""
 "Neočakávaná chyba v g_io_channel_win32_poll() pri čítaní dát z procesu "
 "potomka"
 
-#: glib/gspawn-win32.c:837 glib/gspawn.c:907
+#: glib/gspawn-win32.c:839 glib/gspawn.c:912
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Nepodarilo sa čítať z rúry potomka (%s)"
 
-#: glib/gspawn-win32.c:925 glib/gspawn.c:1112
+#: glib/gspawn-win32.c:927 glib/gspawn.c:1117
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Nepodarilo sa zmeniť priečinok na '%s' (%s)"
 
-#: glib/gspawn-win32.c:934 glib/gspawn.c:1122
+#: glib/gspawn-win32.c:936
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Nepodarilo sa spustiť proces potomka (%s)"
 
-#: glib/gspawn-win32.c:975 glib/gspawn.c:1219
+#: glib/gspawn-win32.c:977 glib/gspawn.c:1226
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Nepodarilo sa vytvoriť rúru pre komunikáciu s procesom potomka (%s)"
@@ -431,36 +436,42 @@ msgstr "Nepodarilo sa vytvoriť rúru pre komunikáciu s procesom potomka (%s)"
 msgid "Failed to read data from child process (%s)"
 msgstr "Nepodarilo sa čítať dáta z procesu potomka (%s)"
 
-#: glib/gspawn.c:290
+#: glib/gspawn.c:291
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr "Neočakávaná chyba v select() pri čítaní dát z procesu potomka (%s)"
 
-#: glib/gspawn.c:373
+#: glib/gspawn.c:374
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Neočakávaná chyba vo waitpid() (%s)"
 
-#: glib/gspawn.c:972
+#: glib/gspawn.c:977
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Nepodarilo sa zavolať fork (%s)"
 
-#: glib/gspawn.c:1131
+#: glib/gspawn.c:1127
+#, fuzzy, c-format
+msgid "Failed to execute child process \"%s\" (%s)"
+msgstr "Nepodarilo sa spustiť proces potomka (%s)"
+
+#: glib/gspawn.c:1137
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Nepodarilo sa presmerovať vstup alebo výstup procesu potomka (%s)"
 
-#: glib/gspawn.c:1140
+#: glib/gspawn.c:1146
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Nepodarilo sa spustiť proces potomka (%s)"
 
-#: glib/gspawn.c:1148
-msgid "Unknown error executing child process"
+#: glib/gspawn.c:1154
+#, fuzzy, c-format
+msgid "Unknown error executing child process \"%s\""
 msgstr "Neznáma chyba počas behu procesu potomka"
 
-#: glib/gspawn.c:1169
+#: glib/gspawn.c:1176
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Nepodarilo sa prečítať dostatok dát z rúry potomka (%s)"
