@@ -16,6 +16,8 @@
  * Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+#include        <string.h>
+
 #include	"gvalue.h"
 #include	"genums.h"
 
@@ -43,8 +45,8 @@ value_transform_memcpy_data0 (const GValue *src_value,
     value_transform_##func_name (const GValue *src_value,			\
 			         GValue       *dest_value)			\
     {										\
-      ctype c_value = src_value->data[0].##from_member;				\
-      dest_value->data[0].##to_member = c_value;				\
+      ctype c_value = src_value->data[0].from_member;				\
+      dest_value->data[0].to_member = c_value;					\
     }
 DEFINE_CAST (int_s8,		v_int,    gint8,   v_int);
 DEFINE_CAST (int_u8,		v_int,    guint8,  v_uint);
@@ -97,7 +99,7 @@ DEFINE_CAST (double_float,	v_double, gfloat,  v_float);
     value_transform_##func_name (const GValue *src_value,			\
 			         GValue       *dest_value)			\
     {										\
-      dest_value->data[0].v_int = src_value->data[0].##from_member != 0;	\
+      dest_value->data[0].v_int = src_value->data[0].from_member != 0;	\
     }
 DEFINE_BOOL_CHECK (int_bool,	v_int);
 DEFINE_BOOL_CHECK (uint_bool,	v_uint);
@@ -113,7 +115,7 @@ DEFINE_BOOL_CHECK (ulong_bool,	v_uint);
 			         GValue       *dest_value)			\
     {										\
       dest_value->data[0].v_pointer =						\
-        g_strdup_printf ((format), src_value->data[0].##from_member);		\
+        g_strdup_printf ((format), src_value->data[0].from_member);		\
     }
 DEFINE_SPRINTF (int_string,	v_int,	  "%d");
 DEFINE_SPRINTF (uint_string,	v_uint,	  "%u");

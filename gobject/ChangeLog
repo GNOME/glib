@@ -1,3 +1,10 @@
+Thu Mar  8 16:34:22 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* gvaluetransform.c: Include <string.h> for memcpy.
+
+	* gvaluetransform.c (DEFINE_SPRINTF): Remove unnecessary
+	and ANSI-illegal ## token pasting.
+
 Thu Mar  8 18:11:52 2001  Tim Janik  <timj@gtk.org>
 
 	* gsignal.c: eek, fixed old hook detail storage code.
