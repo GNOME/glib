@@ -1,3 +1,8 @@
+Tue Oct 15 15:28:47 2002  Manish Singh  <yosh@gimp.org>
+
+	* tests/iochannel-test.c: use gsize instead of int where appropriate
+        (64-bit cleanliness fix). Removed leftover line_term cruft.
+
 Tue Oct 15 15:07:45 2002  Manish Singh  <yosh@gimp.org>
 
 	* gmodule/Makefile.am gobject/Makefile.am gthread/Makefile.am:
