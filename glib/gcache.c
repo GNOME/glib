@@ -1,5 +1,11 @@
-/* GLIB - Library of useful routines for C programming
- * Copyright (C) 1995-1997  Peter Mattis, Spencer Kimball and Josh MacDonald
+/*
+ * gcache.c - Share data structures in order to save resources
+ *
+ * MT-Level: Safe
+ *
+ * GLIB - Library of useful routines for C programming
+ * Copyright 1995-1997  Peter Mattis, Spencer Kimball and Josh MacDonald
+ * Copyright 1998  Free Software Foundation, Inc.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -56,6 +62,7 @@ static void        g_cache_node_destroy (GCacheNode *node);
 
 
 static GMemChunk *node_mem_chunk = NULL;
+G_THREAD_SPROTECT(node_mem_chunk)
 
 
 GCache*
@@ -193,11 +200,15 @@ g_cache_node_new (gpointer value)
 {
   GCacheNode *node;
 
+  g_thread_lock(node_mem_chunk);
+
   if (!node_mem_chunk)
     node_mem_chunk = g_mem_chunk_new ("cache node mem chunk", sizeof (GCacheNode),
 				      1024, G_ALLOC_AND_FREE);
 
   node = g_chunk_new (GCacheNode, node_mem_chunk);
+
+  g_thread_unlock(node_mem_chunk);
 
   node->value = value;
   node->ref_count = 1;
@@ -208,5 +219,10 @@ g_cache_node_new (gpointer value)
 static void
 g_cache_node_destroy (GCacheNode *node)
 {
+  g_thread_lock(node_mem_chunk);
+
   g_mem_chunk_free (node_mem_chunk, node);
+
+  g_thread_unlock(node_mem_chunk);
 }
+

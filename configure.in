@@ -246,6 +246,13 @@ AC_CHECK_HEADERS(sys/times.h, AC_DEFINE(HAVE_SYS_TIMES_H))
 AC_CHECK_HEADERS(unistd.h, AC_DEFINE(HAVE_UNISTD_H))
 AC_CHECK_HEADERS(values.h, AC_DEFINE(HAVE_VALUES_H))
 
+if test "x$glib_use_threads" = "xyes"; then
+    AC_CHECK_HEADERS(pthread.h, have_pthreads_h=yes, have_pthreads_h=no)
+    if test "x$have_pthreads_h" = "xno"; then
+    	AC_MSG_ERROR(pthread.h required for thread support)
+    fi
+fi
+
 # Check for some functions
 AC_CHECK_FUNCS(lstat strerror strsignal memmove vsnprintf strcasecmp strncasecmp)
 
@@ -845,10 +852,18 @@ if test x$glib_working_wctype = xno; then
 fi
 if test x$glib_use_threads = xyes; then
   glib_threads='
-#define G_THREAD_SAFE 1'
+#define G_THREAD_SAFE 1
+#define G_THREAD_PROTECT(var) pthread_mutex_t var##_mutex = PTHREAD_MUTEX_INITIALIZER;
+#define G_THREAD_SPROTECT(var) static pthread_mutex_t var##_mutex = PTHREAD_MUTEX_INITIALIZER;
+#define g_thread_lock(var) pthread_mutex_lock(&var##_mutex)
+#define g_thread_unlock(var) pthread_mutex_unlock(&var##_mutex)'
 else
   glib_threads='
-#undef G_THREAD_SAFE'
+#undef G_THREAD_SAFE
+#define G_THREAD_PROTECT(var)
+#define G_THREAD_SPROTECT(var)
+#define g_thread_lock(var)
+#define g_thread_unlock(var)'
 fi
 
 ])

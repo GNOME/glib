@@ -67,6 +67,13 @@
 #include "dmalloc.h"
 #endif
 
+/* optionally yank in the pthreads info we need.
+ * Note that G_THREAD_SAFE implies HAVE_PTHREAD_H.
+ */
+#if G_THREAD_SAFE
+#  include <pthread.h>
+#endif
+
 
 #ifdef NATIVE_WIN32
 

@@ -1,5 +1,11 @@
-/* GLIB - Library of useful routines for C programming
- * Copyright (C) 1995-1997  Peter Mattis, Spencer Kimball and Josh MacDonald
+/*
+ * garray.c - Dynamically-growing arrays for fast index-based access
+ *
+ * MT-Level: Safe
+ *
+ * GLIB - Library of useful routines for C programming
+ * Copyright 1995-1997  Peter Mattis, Spencer Kimball and Josh MacDonald
+ * Copyright 1998  Free Software Foundation, Inc.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -16,6 +22,11 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+
+#ifdef HAVE_CONFIG_H
+#  include <config.h>
+#endif
+
 #include <string.h>
 #include "glib.h"
 
@@ -42,6 +53,7 @@ static void g_array_maybe_expand (GRealArray *array,
 
 
 static GMemChunk *array_mem_chunk = NULL;
+G_THREAD_SPROTECT(array_mem_chunk)
 
 
 GArray*
@@ -51,12 +63,16 @@ g_array_new (gboolean zero_terminated,
 {
   GRealArray *array;
 
+  g_thread_lock(array_mem_chunk);
+
   if (!array_mem_chunk)
     array_mem_chunk = g_mem_chunk_new ("array mem chunk",
 				       sizeof (GRealArray),
 				       1024, G_ALLOC_AND_FREE);
 
   array = g_chunk_new (GRealArray, array_mem_chunk);
+
+  g_thread_unlock(array_mem_chunk);
 
   array->data            = NULL;
   array->len             = 0;
@@ -75,7 +91,11 @@ g_array_free (GArray  *array,
   if (free_segment)
     g_free (array->data);
 
+  g_thread_lock(array_mem_chunk);
+
   g_mem_chunk_free (array_mem_chunk, array);
+
+  g_thread_unlock(array_mem_chunk);
 }
 
 GArray*
@@ -222,6 +242,7 @@ static void g_ptr_array_maybe_expand (GRealPtrArray *array,
 
 
 static GMemChunk *ptr_array_mem_chunk = NULL;
+G_THREAD_SPROTECT(ptr_array_mem_chunk)
 
 
 
@@ -230,12 +251,16 @@ g_ptr_array_new (void)
 {
   GRealPtrArray *array;
 
+  g_thread_lock(ptr_array_mem_chunk);
+
   if (!ptr_array_mem_chunk)
     ptr_array_mem_chunk = g_mem_chunk_new ("array mem chunk",
 					   sizeof (GRealPtrArray),
 					   1024, G_ALLOC_AND_FREE);
 
   array = g_chunk_new (GRealPtrArray, ptr_array_mem_chunk);
+
+  g_thread_unlock(ptr_array_mem_chunk);
 
   array->pdata = NULL;
   array->len = 0;
@@ -253,7 +278,11 @@ g_ptr_array_free (GPtrArray   *array,
   if (free_segment)
     g_free (array->pdata);
 
+  g_thread_lock(ptr_array_mem_chunk);
+
   g_mem_chunk_free (ptr_array_mem_chunk, array);
+
+  g_thread_unlock(ptr_array_mem_chunk);
 }
 
 static void

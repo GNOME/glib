@@ -12,7 +12,7 @@ bin_SCRIPTS=glib-config
 BUILT_SOURCES=glib-config
 glib-config: glib-config.in
 
-DEFS += -DG_LOG_DOMAIN=g_log_domain_glib
+INCLUDES = -DG_LOG_DOMAIN=g_log_domain_glib
 
 EXTRA_DIST = \
 	glib.m4		\
@@ -63,7 +63,6 @@ stamp-gc-h: config.status
 
 libglib_la_LDFLAGS = \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) -release $(LT_RELEASE)
-INCLUDES = -I$(top_srcdir)
 
 noinst_PROGRAMS = testglib
 testglib_LDADD = libglib.la
