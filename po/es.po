@@ -1,19 +1,23 @@
+# translation of glib.glib-2-2.po to Spanish
 # Spanish/Spain translation of glib.
-# Copyright (C) 2001 Free Software Foundation, Inc.
+# Copyright (C) 2001, 2003 Free Software Foundation, Inc.
 # José Antonio Salgueiro <joseantsa@eresmas.net>, 2001.
 # Germán Poo Caamaño <gpoo@ubiobio.cl>, 2002.
 # Germán Poo Caamaño <gpoo@ubiobio.cl>, 2002.
+# Francisco Javier F. Serrador <serrador@arrakis.es>, 2003.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: glib 1.3\n"
-"POT-Creation-Date: 2003-08-25 20:40-0400\n"
-"PO-Revision-Date: 2002-03-06 01:31-0300\n"
-"Last-Translator: German Poo Caaman~o <gpoo@ubiobio.cl>\n"
+"Project-Id-Version: glib.glib-2-2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2003-08-28 12:05+0200\n"
+"PO-Revision-Date: 2003-08-28 13:55+0200\n"
+"Last-Translator: Francisco Javier F. Serrador <serrador@arrakis.es>\n"
 "Language-Team: Spanish <traductores@es.gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.0.2\n"
 
 #: glib/gconvert.c:401
 #, c-format
@@ -81,7 +85,7 @@ msgstr "El nombre de la ruta '%s' no es una ruta absoluta"
 
 #: glib/gconvert.c:1558
 msgid "Invalid hostname"
-msgstr "El nombrel del host no es válido"
+msgstr "El nombre del host no es válido"
 
 #: glib/gdir.c:80
 #, c-format
@@ -138,8 +142,7 @@ msgstr "Ha ocurrido un error al crear el archivo '%s':·%s"
 #: glib/giochannel.c:1134
 #, c-format
 msgid "Conversion from character set `%s' to `%s' is not supported"
-msgstr ""
-"La conversión desde el conjunto de caracteres `%s'·a·`%s'·no es soportada"
+msgstr "La conversión desde el conjunto de caracteres `%s'·a·`%s'·no es soportada"
 
 #: glib/giochannel.c:1138
 #, c-format
@@ -173,8 +176,7 @@ msgid "Error on line %d: %s"
 msgstr "Error·en la línea·%d:·%s"
 
 #: glib/gmarkup.c:385
-msgid ""
-"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "La entidad '&;' está vacía; las entidades válidas son:·&amp;·&quot;·&lt;·&gt;"
 "·&apos;"
@@ -276,8 +278,7 @@ msgstr ""
 
 #: glib/gmarkup.c:1150
 #, c-format
-msgid ""
-"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "Caracter impropio '%s',·se esperaba el caracter '='·después del nombre de "
 "atributo·'%s'·del elemento·'%s'"
@@ -309,7 +310,7 @@ msgid ""
 "begin an element name"
 msgstr ""
 "'%s' no es un caracter válido a continuación de los caracteres '</';·'%s'· "
-"no debe inicar el nombre de un elemento"
+"no debe iniciar el nombre de un elemento"
 
 #: glib/gmarkup.c:1452
 #, c-format
@@ -410,8 +411,7 @@ msgstr ""
 #: glib/gshell.c:530
 #, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
-msgstr ""
-"El texto termina justo después de un carácter '\\'. (El texto era '%s')"
+msgstr "El texto termina justo después de un carácter '\\'. (El texto era '%s')"
 
 #: glib/gshell.c:537
 #, c-format
@@ -459,7 +459,7 @@ msgstr "Ha ocurrido un error al cambiar al directorio '%s'·(%s)"
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr ""
-"Ha ocurrido un error enla creación de un pipe para la comunicación con el "
+"Ha ocurrido un error en la creación de un pipe para la comunicación con el "
 "proceso hijo (%s)"
 
 #: glib/gspawn.c:167
@@ -531,3 +531,4 @@ msgstr "El caracter se encuentra fuera de los márgenes de UTF 16"
 
 #~ msgid "Socket error"
 #~ msgstr "Error de socket"
+
