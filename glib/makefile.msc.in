@@ -14,6 +14,7 @@ DEPCFLAGS = -Zm400 $(INTL_CFLAGS) $(LIBICONV_CFLAGS) $(DIRENT_CFLAGS)
 all :				\
 	..\config.h		\
 	..\glibconfig.h	\
+	galias.h		\
 	gnulib\gnulib.lib	\
 	libglib-2.0-@LT_CURRENT_MINUS_AGE@.dll \
 	glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@s.lib \

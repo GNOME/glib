@@ -1,3 +1,7 @@
+2004-11-21  Hans Breuer  <hans@breuer.org>
+
+	* **/makefile.msc : updated
+
 2004-11-16  Matthias Clasen  <mclasen@redhat.com>
 
 	* m4macros/glib-2.0.m4 (AM_PATH_GLIB_2_0): Support gmodule-no-export.

@@ -17,6 +17,7 @@ all :				\
 	glib-genmarshal.exe     \
 	gmarshal.h              \
 	gmarshal.c              \
+	gobjectalias.h	\
 	gmarshal.strings \
 	gobject-query.exe \
 	libgobject-2.0-@LT_CURRENT_MINUS_AGE@.dll	\
