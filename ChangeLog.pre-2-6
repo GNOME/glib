@@ -1,3 +1,7 @@
+2003-01-21  Christian Rose  <menthos@menthos.com>
+
+	* configure.in: Added "mn" to ALL_LINGUAS.
+
 2003-01-12  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/glib.def: Add some missing entries. Thanks to Kenichi SUTO.
