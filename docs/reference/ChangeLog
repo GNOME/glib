@@ -1,3 +1,7 @@
+2003-06-11  Matthias Clasen  <maclas@gmx.de>
+
+	* gobject/tmpl/objects.sgml: A small addition.
+
 Sun Jun  8 12:28:39 2003  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/tmpl/error_reporting.sgml: XML fix.

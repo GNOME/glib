@@ -456,6 +456,10 @@ Emits a "notify" signal for the property @property_name on @object.
 Stops emission of "notify" signals on @object. The signals are
 queued until g_object_thaw_notify() is called on @object. 
 </para>
+<para>
+This is necessary for accessors that modify multiple properties to prevent
+premature notification while the object is still being modified.
+</para>
 
 @object: a #GObject
 
