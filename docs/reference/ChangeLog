@@ -1,3 +1,7 @@
+2002-10-15  Matthias Clasen  <maclas@gmx.de>
+
+	* gobject/gobject-sections.txt: Add g_type_interface_prerequisites.
+
 2002-10-14  Matthias Clasen  <maclas@gmx.de>
 
 	* gobject/Makefile.am (dist-hook): 

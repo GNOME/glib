@@ -295,6 +295,8 @@ void  g_type_add_interface_dynamic	(GType			     instance_type,
 					 GTypePlugin		    *plugin);
 void  g_type_interface_add_prerequisite (GType			     interface_type,
 					 GType			     prerequisite_type);
+GType *g_type_interface_prerequisites   (GType                       interface_type,
+					 guint                       *n_prerequisites);
 
 
 /* --- protected (for fundamental type implementations) --- */

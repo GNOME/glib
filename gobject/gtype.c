@@ -1220,6 +1220,52 @@ g_type_interface_add_prerequisite (GType interface_type,
     }
 }
 
+/**
+ * g_type_interface_prerequisites:
+ * @interface_type: an interface type
+ * @n_prerequisites: location to return the number of prerequisites, or %NULL
+ * 
+ * Returns the prerequisites of an interfaces type.
+ * 
+ * Return value: a newly-allocated zero-terminated array of #GType containing 
+ * the prerequisites of @interface_type
+ **/
+GType* /* free result */
+g_type_interface_prerequisites (GType  interface_type,
+				guint *n_prerequisites)
+{
+  TypeNode *iface;
+  
+  g_return_val_if_fail (G_TYPE_IS_INTERFACE (interface_type), NULL);
+
+  iface = lookup_type_node_I (interface_type);
+  if (iface)
+    {
+      GType *prerequisites;
+      guint i;
+      
+      G_READ_LOCK (&type_rw_lock);
+      prerequisites = g_new (GType, IFACE_NODE_N_PREREQUISITES (iface) + 1);
+      for (i = 0; i < IFACE_NODE_N_PREREQUISITES (iface); i++)
+	prerequisites[i] = IFACE_NODE_PREREQUISITES (iface)[i];
+      prerequisites[i] = 0;
+      
+      if (n_prerequisites)
+	*n_prerequisites = IFACE_NODE_N_PREREQUISITES (iface);
+      G_READ_UNLOCK (&type_rw_lock);
+      
+      return prerequisites;
+    }
+  else
+    {
+      if (n_prerequisites)
+	*n_prerequisites = 0;
+      
+      return NULL;
+    }
+}
+
+
 static IFaceHolder*
 type_iface_peek_holder_L (TypeNode *iface,
 			  GType     instance_type)

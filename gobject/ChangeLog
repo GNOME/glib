@@ -1,3 +1,8 @@
+2002-10-15  Matthias Clasen  <maclas@gmx.de>
+
+	* gtype.c (g_type_interface_prerequisites): New function to obtain
+	the prerequisites of an interface type.
+
 Sat Oct 12 22:02:32 2002  Tim Janik  <timj@gtk.org>
 
 	* merged up from 2.0:
