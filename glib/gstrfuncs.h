@@ -189,9 +189,10 @@ gchar*	              g_strndup	       (const gchar *str,
 gchar*	              g_strnfill       (gsize        length,  
 					gchar        fill_char) G_GNUC_MALLOC;
 gchar*	              g_strconcat      (const gchar *string1,
-					...) G_GNUC_MALLOC; /* NULL terminated */
+					...) G_GNUC_MALLOC G_GNUC_NULL_TERMINATED;
 gchar*                g_strjoin	       (const gchar  *separator,
-					...) G_GNUC_MALLOC; /* NULL terminated */
+					...) G_GNUC_MALLOC G_GNUC_NULL_TERMINATED;
+
 /* Make a copy of a string interpreting C string -style escape
  * sequences. Inverse of g_strescape. The recognized sequences are \b
  * \f \n \r \t \\ \" and the octal format.

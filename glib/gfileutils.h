@@ -99,9 +99,9 @@ gint    g_file_open_tmp      (const gchar  *tmpl,
 
 gchar *g_build_path     (const gchar *separator,
 			 const gchar *first_element,
-			 ...);
+			 ...) G_GNUC_NULL_TERMINATED;
 gchar *g_build_filename (const gchar *first_element,
-			 ...);
+			 ...) G_GNUC_NULL_TERMINATED;
 
 G_END_DECLS
 

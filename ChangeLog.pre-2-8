@@ -1,5 +1,12 @@
 2005-03-08  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gmacros.h: Define G_GNUC_NULL_TERMINATED.
+	(#164706, Marc Meissner)
+
+	* glib/gstrfuncs.h: 
+	* glib/gfileutils.h: Use G_GNUC_NULL_TERMINATED where
+	appropriate.
+
 	* glib/goption.c (parse_int): Fix an error message.  
 	(#168751, Hazael Maldonado Torres)
 

@@ -1,5 +1,8 @@
 2005-03-08  Matthias Clasen  <mclasen@redhat.com>
 
+	* gobject.h: Use G_GNUC_NULL_TERMINATED where
+	appropriate.  (#164706, Marc Meissner)
+
 	* gvaluearray.h: Small cleanup (use G_BEGIN/END_DECLS).
 	(#168474, Fabricio Barros Cabral)
 

@@ -227,6 +227,17 @@ gchar *g_dgettext (gchar *domain_name, gchar *msgid) G_GNUC_FORMAT (2);
 @arg_idx: the index of the argument.
 
 
+<!-- ##### MACRO G_GNUC_NULL_TERMINATED ##### -->
+<para>
+Expands to the GNU C <literal>sentinel</literal> function attribute if the 
+compiler is <command>gcc</command>, or "" if it isn't. This function attribute
+only applies to variadic functions and instructs the compiler to check that 
+the argument list is terminated with an explicit %NULL.
+See the GNU C documentation for details. 
+</para>
+
+Since: 2.8
+
 <!-- ##### MACRO G_GNUC_FUNCTION ##### -->
 <para>
 Expands to the GNU C <literal>__FUNCTION__</literal> variable if the 

@@ -1,3 +1,8 @@
+2005-03-08  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/glib-sections.txt: 
+	* glib/tmpl/macros_misc.sgml: Document G_GNUC_NULL_TERMINATED.
+
 2005-03-07  Matthias Clasen  <mclasen@redhat.com>
 
 	* gobject/tmpl/gtype.sgml:
