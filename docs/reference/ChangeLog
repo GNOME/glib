@@ -1,3 +1,8 @@
+2002-01-28  Ron Steinke  <rsteinke@w-link.net>
+
+	* glib/iochannel.sgml: Changed #IOChannelError to
+	#GIOChannelError in one place
+
 2002-01-16  Matthias Clasen  <matthiasc@poet.de>
 
 	* glib/building.sgml, glib/compiling.sgml, 

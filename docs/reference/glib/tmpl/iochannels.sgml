@@ -276,7 +276,7 @@ Error codes returned by #GIOChannel operations.
 <!-- ##### MACRO G_IO_CHANNEL_ERROR ##### -->
 <para>
 Error domain for #GIOChannel operations. Errors in this domain will
-be from the #IOChannelError enumeration. See #GError for information on
+be from the #GIOChannelError enumeration. See #GError for information on
 error domains.
 </para>
 

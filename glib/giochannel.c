@@ -279,7 +279,7 @@ g_io_channel_seek  (GIOChannel   *channel,
  * @filename: A string containing the name of a file.
  * @mode: One of "r", "w", "a", "r+", "w+", "a+". These have
  *        the same meaning as in <function>fopen()</function>.
- * @error: A location to return an error of type %G_IO_FILE_ERROR.
+ * @error: A location to return an error of type %G_FILE_ERROR.
  *
  * Open a file @filename as a #GIOChannel using mode @mode. This
  * channel will be closed when the last reference to it is dropped,
@@ -688,7 +688,7 @@ g_io_channel_get_line_term (GIOChannel	*channel,
  * @flags: the flags to set on the IO channel.
  * @error: A location to return an error of type #GIOChannelError.
  *
- * Sets flags on the IO channel.
+ * Sets the (writeable) flags in @channel to (@flags & %G_IO_CHANNEL_SET_MASK).
  *
  * Return value: the status of the operation. 
  **/
@@ -767,13 +767,13 @@ g_io_channel_set_close_on_unref	(GIOChannel *channel,
  * g_io_channel_get_close_on_unref:
  * @channel: a #GIOChannel.
  *
- * Returns whether the channel will be closed on the final unref of the 
- * #GIOChannel data structure. The default value of this is %TRUE for 
- * channels created by g_io_channel_new_file(), and %FALSE for all other 
- * channels.
- * 
- * Return value: %TRUE if the channel will be closed on the final unref of
- *               the #GIOChannel data structure. 
+ * Returns whether the file/socket/whatever associated with @channel
+ * will be closed when @channel receives its final unref and is
+ * destroyed. The default value of this is %TRUE for channels created
+ * by g_io_channel_new_file (), and %FALSE for all other channels.
+ *
+ * Return value: Whether the channel will be closed on the final unref of
+ *               the GIOChannel data structure.
  **/
 gboolean
 g_io_channel_get_close_on_unref	(GIOChannel *channel)
@@ -975,7 +975,7 @@ g_io_channel_set_buffered	(GIOChannel *channel,
  * g_io_channel_get_buffered:
  * @channel: a #GIOChannel.
  *
- * Returns the buffering state of the channel.
+ * Returns whether @channel is buffered.
  *
  * Return Value: %TRUE if the @channel is buffered. 
  **/
