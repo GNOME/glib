@@ -116,7 +116,7 @@ void g_assert_warning         (const char *log_domain,
 			       const char *file,
 			       const int   line,
 		               const char *pretty_function,
-		               const char *expression);
+		               const char *expression) G_GNUC_NORETURN;
 
 
 #ifndef G_LOG_DOMAIN

@@ -1,3 +1,8 @@
+2004-10-28  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gmessages.h: Mark g_assert_warning as G_GNUC_NORETURN,
+	to avoid compiler warnings.  (#156767, Owen Taylor)
+
 2004-10-29  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/gstdio.c: Include also <direct.h> for mkdir() prototype
