@@ -1,3 +1,7 @@
+2001-08-19  Fatih Demir <kabalak@gtranslator.org>
+
+	* configure.in: Added "ta" to the languages list.
+
 2001-08-19  Havoc Pennington  <hp@pobox.com>
 
 	* glib/gshell.c (g_shell_unquote): add comment about shell quoting
