@@ -24,41 +24,6 @@
 
 
 /* --- structures --- */
-GBSearchArray*
-g_bsearch_array_new (guint16             sizeof_node,
-		     GBSearchCompareFunc node_cmp_func,
-		     GBSearchArrayFlags  flags)
-{
-  GBSearchArray *barray;
-
-  g_return_val_if_fail (sizeof_node > 0, NULL);
-  g_return_val_if_fail (node_cmp_func != NULL, NULL);
-
-  barray = g_new0 (GBSearchArray, 1);
-  barray->sizeof_node = sizeof_node;
-  barray->cmp_nodes = node_cmp_func;
-  barray->flags = flags;
-
-  return barray;
-}
-
-void
-g_bsearch_array_destroy (GBSearchArray *barray)
-{
-  g_return_if_fail (barray != NULL);
-
-#if 0
-  if (barray->destroy_node)
-    while (barray->n_nodes)
-      {
-	barray->destroy_node (((guint8*) barray->nodes) + (barray->n_nodes - 1) * barray->sizeof_node);
-	barray->n_nodes--;
-      }
-#endif
-  g_free (barray->nodes);
-  g_free (barray);
-}
-
 static inline guint
 upper_power2 (guint number)
 {
@@ -69,30 +34,57 @@ upper_power2 (guint number)
 #endif	/* !DISABLE_MEM_POOLS */
 }
 
-static inline gpointer
-bsearch_array_insert (GBSearchArray *barray,
-		      gconstpointer  key_node,
-		      gboolean       replace)
+GBSearchArray*
+g_bsearch_array_new (GBSearchConfig *bconfig)
+{
+  GBSearchArray *barray;
+  guint size;
+
+  g_return_val_if_fail (bconfig != NULL, NULL);
+
+  size = sizeof (GBSearchArray) + bconfig->sizeof_node;
+  if (bconfig->flags & G_BSEARCH_ARRAY_ALIGN_POWER2)
+    size = upper_power2 (size);
+  barray = g_malloc0 (size);
+  barray->n_nodes = 0;
+
+  return barray;
+}
+
+void
+g_bsearch_array_destroy (GBSearchArray  *barray,
+			 GBSearchConfig *bconfig)
+{
+  g_return_if_fail (barray != NULL);
+
+  g_free (barray);
+}
+
+static inline GBSearchArray*
+bsearch_array_insert (GBSearchArray  *barray,
+		      GBSearchConfig *bconfig,
+		      gconstpointer   key_node,
+		      gboolean        replace)
 {
   gint sizeof_node;
   guint8 *check;
   
-  sizeof_node = barray->sizeof_node;
+  sizeof_node = bconfig->sizeof_node;
   if (barray->n_nodes == 0)
     {
-      guint new_size = barray->sizeof_node;
+      guint new_size = sizeof (GBSearchArray) + sizeof_node;
       
-      if (barray->flags & G_BSEARCH_ARRAY_ALIGN_POWER2)
+      if (bconfig->flags & G_BSEARCH_ARRAY_ALIGN_POWER2)
 	new_size = upper_power2 (new_size);
-      barray->nodes = g_realloc (barray->nodes, new_size);
+      barray = g_realloc (barray, new_size);
       barray->n_nodes = 1;
-      check = barray->nodes;
+      check = G_BSEARCH_ARRAY_NODES (barray);
     }
   else
     {
-      GBSearchCompareFunc cmp_nodes = barray->cmp_nodes;
+      GBSearchCompareFunc cmp_nodes = bconfig->cmp_nodes;
       guint n_nodes = barray->n_nodes;
-      guint8 *nodes = barray->nodes;
+      guint8 *nodes = G_BSEARCH_ARRAY_NODES (barray);
       gint cmp;
       guint i;
       
@@ -112,102 +104,102 @@ bsearch_array_insert (GBSearchArray *barray,
 	  else /* if (cmp == 0) */
 	    {
 	      if (replace)
-		{
-#if 0
-		  if (barray->destroy_node)
-		    barray->destroy_node (check);
-#endif
-		  memcpy (check, key_node, sizeof_node);
-		}
-	      return check;
+		memcpy (check, key_node, sizeof_node);
+	      return barray;
 	    }
 	}
       while (n_nodes);
       /* grow */
       if (cmp > 0)
 	check += sizeof_node;
-      i = (check - ((guint8*) barray->nodes)) / sizeof_node;
+      i = (check - ((guint8*) G_BSEARCH_ARRAY_NODES (barray))) / sizeof_node;
       n_nodes = barray->n_nodes++;
-      if (barray->flags & G_BSEARCH_ARRAY_ALIGN_POWER2)
+      if (bconfig->flags & G_BSEARCH_ARRAY_ALIGN_POWER2)
 	{
-	  guint new_size = upper_power2 (barray->n_nodes * sizeof_node);
-	  guint old_size = upper_power2 (n_nodes * sizeof_node);
+	  guint new_size = upper_power2 (sizeof (GBSearchArray) + barray->n_nodes * sizeof_node);
+	  guint old_size = upper_power2 (sizeof (GBSearchArray) + n_nodes * sizeof_node);
 	  
 	  if (new_size != old_size)
-	    barray->nodes = g_realloc (barray->nodes, new_size);
+	    barray = g_realloc (barray, new_size);
 	}
       else
-	barray->nodes = g_realloc (barray->nodes, barray->n_nodes * sizeof_node);
-      check = ((guint8*) barray->nodes) + i * sizeof_node;
+	barray = g_realloc (barray, sizeof (GBSearchArray) + barray->n_nodes * sizeof_node);
+      check = ((guint8*) G_BSEARCH_ARRAY_NODES (barray)) + i * sizeof_node;
       g_memmove (check + sizeof_node, check, (n_nodes - i) * sizeof_node);
     }
   memcpy (check, key_node, sizeof_node);
   
-  return check;
+  return barray;
 }
 
-gpointer
-g_bsearch_array_insert (GBSearchArray *barray,
-			gconstpointer  key_node,
-			gboolean       replace_existing)
+GBSearchArray*
+g_bsearch_array_insert (GBSearchArray  *barray,
+			GBSearchConfig *bconfig,
+			gconstpointer   key_node,
+			gboolean        replace_existing)
 {
   g_return_val_if_fail (barray != NULL, NULL);
-  g_return_val_if_fail (key_node != NULL, NULL);
+  g_return_val_if_fail (bconfig != NULL, barray);
+  g_return_val_if_fail (key_node != NULL, barray);
   
-  return bsearch_array_insert (barray, key_node, replace_existing);
+  return bsearch_array_insert (barray, bconfig, key_node, replace_existing);
 }
 
-void
-g_bsearch_array_remove_node (GBSearchArray *barray,
+GBSearchArray*
+g_bsearch_array_remove_node (GBSearchArray  *barray,
+			     GBSearchConfig *bconfig,
 			     gpointer       _node_in_array)
 {
   guint8 *nodes, *bound, *node_in_array = _node_in_array;
   guint old_size;
   
-  g_return_if_fail (barray != NULL);
+  g_return_val_if_fail (barray != NULL, NULL);
+  g_return_val_if_fail (bconfig != NULL, barray);
   
-  nodes = barray->nodes;
-  old_size = barray->sizeof_node;
+  nodes = G_BSEARCH_ARRAY_NODES (barray);
+  old_size = bconfig->sizeof_node;
   old_size *= barray->n_nodes;  /* beware of int widths */
   bound = nodes + old_size;
   
-  g_return_if_fail (node_in_array >= nodes && node_in_array < bound);
+  g_return_val_if_fail (node_in_array >= nodes && node_in_array < bound, barray);
 
-#if 0
-  if (barray->destroy_node)
-    barray->destroy_node (node_in_array);
-#endif
-  bound -= barray->sizeof_node;
+  bound -= bconfig->sizeof_node;
   barray->n_nodes -= 1;
-  g_memmove (node_in_array, node_in_array + barray->sizeof_node, (bound - node_in_array) / barray->sizeof_node);
+  g_memmove (node_in_array, node_in_array + bconfig->sizeof_node, (bound - node_in_array) / bconfig->sizeof_node);
   
-  if ((barray->flags & G_BSEARCH_ARRAY_DEFER_SHRINK) == 0)
+  if ((bconfig->flags & G_BSEARCH_ARRAY_DEFER_SHRINK) == 0)
     {
-      guint new_size = bound - nodes;   /* old_size - barray->sizeof_node */
+      guint new_size = bound - nodes;   /* old_size - bconfig->sizeof_node */
       
-      if (barray->flags & G_BSEARCH_ARRAY_ALIGN_POWER2)
+      if (bconfig->flags & G_BSEARCH_ARRAY_ALIGN_POWER2)
 	{
-	  new_size = upper_power2 (new_size);
-	  old_size = upper_power2 (old_size);
+	  new_size = upper_power2 (sizeof (GBSearchArray) + new_size);
+	  old_size = upper_power2 (sizeof (GBSearchArray) + old_size);
 	  if (old_size != new_size)
-	    barray->nodes = g_realloc (barray->nodes, new_size);
+	    barray = g_realloc (barray, new_size);
 	}
       else
-	barray->nodes = g_realloc (barray->nodes, new_size);
+	barray = g_realloc (barray, sizeof (GBSearchArray) + new_size);
     }
+  return barray;
 }
 
-void
-g_bsearch_array_remove (GBSearchArray *barray,
-			gconstpointer  key_node)
+GBSearchArray*
+g_bsearch_array_remove (GBSearchArray  *barray,
+			GBSearchConfig *bconfig,
+			gconstpointer   key_node)
 {
   gpointer node_in_array;
   
-  g_return_if_fail (barray != NULL);
+  g_return_val_if_fail (barray != NULL, NULL);
+  g_return_val_if_fail (bconfig != NULL, barray);
   
-  node_in_array = g_bsearch_array_lookup (barray, key_node);
+  node_in_array = g_bsearch_array_lookup (barray, bconfig, key_node);
   if (!node_in_array)
-    g_warning (G_STRLOC ": unable to remove unexistant node");
+    {
+      g_warning (G_STRLOC ": unable to remove unexistant node");
+      return barray;
+    }
   else
-    g_bsearch_array_remove_node (barray, node_in_array);
+    return g_bsearch_array_remove_node (barray, bconfig, node_in_array);
 }

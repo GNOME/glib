@@ -33,7 +33,8 @@ G_BEGIN_DECLS
 
 
 /* --- typedefs --- */
-typedef struct _GBSearchArray         GBSearchArray;
+typedef union  _GBSearchArray         GBSearchArray;
+typedef struct _GBSearchConfig        GBSearchConfig;
 typedef gint  (*GBSearchCompareFunc) (gconstpointer bsearch_node1,
 				      gconstpointer bsearch_node2);
 typedef enum
@@ -44,57 +45,69 @@ typedef enum
 
 
 /* --- structures --- */
-struct _GBSearchArray
+struct _GBSearchConfig
 {
+  guint16             sizeof_node;
   GBSearchCompareFunc cmp_nodes;
   guint16	      flags;
-  guint16             sizeof_node;
-  guint               n_nodes;
-  gpointer            nodes;
+};
+union _GBSearchArray
+{
+  guint    n_nodes;
+  gpointer alignment_dummy1;
+  glong    alignment_dummy2;
+  gdouble  alignment_dummy3;
 };
 
 
 /* --- prototypes --- */
-GBSearchArray*	g_bsearch_array_new		(guint16	     sizeof_node,
-						 GBSearchCompareFunc node_cmp_func,
-						 GBSearchArrayFlags  flags);
-void		g_bsearch_array_destroy		(GBSearchArray	*barray);
-gpointer	g_bsearch_array_insert		(GBSearchArray	*barray,
+GBSearchArray*	g_bsearch_array_new		(GBSearchConfig *bconfig);
+void		g_bsearch_array_destroy		(GBSearchArray	*barray,
+						 GBSearchConfig *bconfig);
+GBSearchArray*	g_bsearch_array_insert		(GBSearchArray	*barray,
+						 GBSearchConfig *bconfig,
 						 gconstpointer	 key_node,
 						 gboolean	 replace_existing);
-void		g_bsearch_array_remove		(GBSearchArray	*barray,
+GBSearchArray*	g_bsearch_array_remove		(GBSearchArray	*barray,
+						 GBSearchConfig	*bconfig,
 						 gconstpointer	 key_node);
-void		g_bsearch_array_remove_node	(GBSearchArray	*barray,
+GBSearchArray*	g_bsearch_array_remove_node	(GBSearchArray	*barray,
+						 GBSearchConfig *bconfig,
 						 gpointer	 node_in_array);
 G_INLINE_FUNC
 gpointer	g_bsearch_array_lookup		(GBSearchArray	*barray,
+						 GBSearchConfig *bconfig,
 						 gconstpointer	 key_node);
 G_INLINE_FUNC
 gpointer	g_bsearch_array_get_nth		(GBSearchArray	*barray,
+                                                 GBSearchConfig *bconfig,
 						 guint		 n);
 G_INLINE_FUNC
 guint		g_bsearch_array_get_index	(GBSearchArray	*barray,
+						 GBSearchConfig *bconfig,
 						 gpointer	 node_in_array);
 
 
 /* initialization of static arrays */
-#define	G_STATIC_BSEARCH_ARRAY_INIT(sizeof_node, cmp_nodes, flags) \
-  { (cmp_nodes), (flags), (sizeof_node), 0, NULL }
+#define	G_STATIC_BCONFIG(sizeof_node, cmp_nodes, flags) \
+  { (sizeof_node), (cmp_nodes), (flags), }
 
 
 /* --- implementation details --- */
+#define G_BSEARCH_ARRAY_NODES(barray)    ((gpointer) (((guint8*) (barray)) + sizeof (GBSearchArray)))
 #if defined (G_CAN_INLINE) || defined (__G_BSEARCHARRAY_C__)
 G_INLINE_FUNC gpointer
-g_bsearch_array_lookup (GBSearchArray *barray,
-			gconstpointer  key_node)
+g_bsearch_array_lookup (GBSearchArray  *barray,
+			GBSearchConfig *bconfig,
+			gconstpointer   key_node)
 {
   if (barray->n_nodes > 0)
     {
-      GBSearchCompareFunc cmp_nodes = barray->cmp_nodes;
-      gint sizeof_node = barray->sizeof_node;
+      GBSearchCompareFunc cmp_nodes = bconfig->cmp_nodes;
+      gint sizeof_node = bconfig->sizeof_node;
       guint n_nodes = barray->n_nodes;
-      guint8 *nodes = (guint8 *) barray->nodes;
-      
+      guint8 *nodes = G_BSEARCH_ARRAY_NODES (barray);
+
       nodes -= sizeof_node;
       do
 	{
@@ -121,26 +134,28 @@ g_bsearch_array_lookup (GBSearchArray *barray,
   return NULL;
 }
 G_INLINE_FUNC gpointer
-g_bsearch_array_get_nth (GBSearchArray *barray,
-			 guint		n)
+g_bsearch_array_get_nth (GBSearchArray  *barray,
+			 GBSearchConfig *bconfig,
+			 guint		 n)
 {
   if (n < barray->n_nodes)
     {
-      guint8 *nodes = (guint8*) barray->nodes;
+      guint8 *nodes = (guint8*) G_BSEARCH_ARRAY_NODES (barray);
 
-      return nodes + n * barray->sizeof_node;
+      return nodes + n * bconfig->sizeof_node;
     }
   else
     return NULL;
 }
 G_INLINE_FUNC
 guint
-g_bsearch_array_get_index (GBSearchArray *barray,
-			   gpointer       node_in_array)
+g_bsearch_array_get_index (GBSearchArray  *barray,
+			   GBSearchConfig *bconfig,
+			   gpointer        node_in_array)
 {
-  guint distance = ((guint8*) node_in_array) - ((guint8*) barray->nodes);
+  guint distance = ((guint8*) node_in_array) - ((guint8*) G_BSEARCH_ARRAY_NODES (barray));
 
-  distance /= barray->sizeof_node;
+  distance /= bconfig->sizeof_node;
 
   return MIN (distance, barray->n_nodes);
 }

@@ -1,3 +1,8 @@
+Thu Dec 13 05:37:51 2001  Tim Janik  <timj@gtk.org>
+
+	* glib/gbsearcharray.[hc]: API revamp to shorten GValueArray
+	structure.
+
 2001-12-12  Matthias Clasen  <matthiasc@poet.de>
 
 	This fixes #60543:
