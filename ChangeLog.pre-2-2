@@ -1,3 +1,13 @@
+2000-12-08  Raja R Harinath  <harinath@cs.umn.edu>
+
+	* tests/Makefile.am (TESTS): Rearrange into other veriables, and
+	include run-markup-tests.sh.
+	(TESTS_ENVIRONMENT): New.  Pass $srcdir to tests.
+	(noinst_PROGRAMS): Rename to ...
+	(check_PROGRAMS): ... this.  'automake' ensures that these are
+	built before running the tests.
+	* tests/run-markup-tests.sh: Support $srcdir != $builddir.
+
 2000-12-08  Havoc Pennington  <hp@pobox.com>
 
 	* tests/Makefile.am (TESTS): move markup-test to noinst_PROGRAMS;

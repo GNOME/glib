@@ -3,16 +3,16 @@ INCLUDES = -I$(top_srcdir) @GLIB_DEBUG_FLAGS@
 
 EFENCE=
 
-EXTRA_DIST = 			\
+EXTRA_DIST = \
+	$(test_scripts)		\
 	makefile.msc.in		\
-	makefile.mingw.in	\
-	run-markup-tests.sh
+	makefile.mingw.in
 
 BUILT_EXTRA_DIST = \
 	makefile.msc	\
 	makefile.mingw
 
-TESTS = \
+test_programs = \
 	array-test	\
 	date-test	\
 	dirname-test	\
@@ -34,7 +34,14 @@ TESTS = \
 	tree-test	\
 	type-test
 
-noinst_PROGRAMS = $(TESTS) markup-test
+test_scripts = run-markup-tests.sh
+
+test_script_support_programs = markup-test
+
+check_PROGRAMS = $(test_programs) $(test_script_support_programs)
+
+TESTS = $(test_programs) $(test_scripts)
+TESTS_ENVIRONMENT = srcdir=$(srcdir)
 
 progs_LDADD = $(EFENCE) $(top_builddir)/libglib-1.3.la $(EFENCE)
 thread_LDADD = $(progs_LDADD) $(top_builddir)/gthread/libgthread-1.3.la @G_THREAD_LIBS@
@@ -75,4 +82,4 @@ dist-hook: $(BUILT_EXTRA_DIST)
 	mkdir $(distdir)/markups;          \
 	for f in $(srcdir)/markups/* ; do  \
 	  cp $$f $(distdir)/markups;       \
-        done
+	done
