@@ -680,6 +680,12 @@ param_spec_object_init (GParamSpec *pspec)
 }
 
 static void
+param_spec_interface_init (GParamSpec *pspec)
+{
+  /* GParamSpecObject *ospec = G_PARAM_SPEC_OBJECT (pspec); */
+}
+
+static void
 param_object_set_default (GParamSpec *pspec,
 			  GValue     *value)
 {
@@ -708,6 +714,33 @@ static gint
 param_object_values_cmp (GParamSpec   *pspec,
 			 const GValue *value1,
 			 const GValue *value2)
+{
+  return value1->data[0].v_pointer != value2->data[0].v_pointer;
+}
+
+static void
+param_interface_set_default (GParamSpec *pspec,
+			     GValue     *value)
+{
+  value->data[0].v_pointer = NULL;
+}
+
+static gboolean
+param_interface_validate (GParamSpec *pspec,
+			  GValue     *value)
+{
+  guint changed = 0;
+  
+  if (value->data[0].v_pointer == NULL)
+    changed++;
+
+  return changed;
+}
+
+static gint
+param_interface_values_cmp (GParamSpec   *pspec,
+			    const GValue *value1,
+			    const GValue *value2)
 {
   return value1->data[0].v_pointer != value2->data[0].v_pointer;
 }
@@ -1133,6 +1166,23 @@ g_param_spec_types_init (void)	/* sync with gtype.c */
     };
     type = g_param_type_register_static ("GParamObject", &pspec_info);
     g_assert (type == G_TYPE_PARAM_OBJECT);
+  }
+
+  /* G_TYPE_PARAM_INTERFACE
+   */
+  {
+    static const GParamSpecTypeInfo pspec_info = {
+      sizeof (GParamSpecInterface),	/* instance_size */
+      4,                         	/* n_preallocs */
+      param_spec_interface_init, 	/* instance_init */
+      G_TYPE_INTERFACE,		 	/* value_type */
+      NULL,			 	/* finalize */
+      param_interface_set_default,	/* value_set_default */
+      param_interface_validate,		/* value_validate */
+      param_interface_values_cmp,	/* values_cmp */
+    };
+    type = g_param_type_register_static ("GParamInterface", &pspec_info);
+    g_assert (type == G_TYPE_PARAM_INTERFACE);
   }
   
   g_value_register_exchange_func (G_TYPE_CHAR,    G_TYPE_UCHAR,   value_exch_memcpy);
@@ -1576,3 +1626,25 @@ g_param_spec_object (const gchar *name,
   
   return G_PARAM_SPEC (ospec);
 }
+
+GParamSpec*
+g_param_spec_interface (const gchar *name,
+			const gchar *nick,
+			const gchar *blurb,
+			GType	     interface_type,
+			GParamFlags  flags)
+{
+  GParamSpecInterface *ispec;
+  
+  g_return_val_if_fail (G_TYPE_IS_INTERFACE (interface_type), NULL);
+  
+  ispec = g_param_spec_internal (G_TYPE_PARAM_INTERFACE,
+				 name,
+				 nick,
+				 blurb,
+				 flags);
+  G_PARAM_SPEC (ispec)->value_type = interface_type;
+  
+  return G_PARAM_SPEC (ispec);
+}
+

@@ -68,6 +68,8 @@ extern "C" {
 #define G_PARAM_SPEC_BOXED(pspec)        (G_TYPE_CHECK_INSTANCE_CAST ((pspec), G_TYPE_PARAM_BOXED, GParamSpecBoxed))
 #define G_IS_PARAM_SPEC_OBJECT(pspec)    (G_TYPE_CHECK_INSTANCE_TYPE ((pspec), G_TYPE_PARAM_OBJECT))
 #define G_PARAM_SPEC_OBJECT(pspec)       (G_TYPE_CHECK_INSTANCE_CAST ((pspec), G_TYPE_PARAM_OBJECT, GParamSpecObject))
+#define G_IS_PARAM_SPEC_INTERFACE(pspec) (G_TYPE_CHECK_INSTANCE_TYPE ((pspec), G_TYPE_PARAM_INTERFACE))
+#define G_PARAM_SPEC_INTERFACE(pspec)    (G_TYPE_CHECK_INSTANCE_CAST ((pspec), G_TYPE_PARAM_INTERFACE, GParamSpecInterface))
 
 
 /* --- typedefs & structures --- */
@@ -88,6 +90,7 @@ typedef struct _GParamSpecPointer   GParamSpecPointer;
 typedef struct _GParamSpecCCallback GParamSpecCCallback;
 typedef struct _GParamSpecBoxed     GParamSpecBoxed;
 typedef struct _GParamSpecObject    GParamSpecObject;
+typedef struct _GParamSpecInterface GParamSpecInterface;
 struct _GParamSpecChar
 {
   GParamSpec    parent_instance;
@@ -205,6 +208,10 @@ struct _GParamSpecObject
 {
   GParamSpec    parent_instance;
 };
+struct _GParamSpecInterface
+{
+  GParamSpec    parent_instance;
+};
 
 
 /* --- GParamSpec prototypes --- */
@@ -310,6 +317,11 @@ GParamSpec*     g_param_spec_boxed      (const gchar    *name,
                                          GType           boxed_type,
                                          GParamFlags     flags);
 GParamSpec*     g_param_spec_object     (const gchar    *name,
+                                         const gchar    *nick,
+                                         const gchar    *blurb,
+                                         GType           object_type,
+                                         GParamFlags     flags);
+GParamSpec*     g_param_spec_interface  (const gchar    *name,
                                          const gchar    *nick,
                                          const gchar    *blurb,
                                          GType           object_type,

@@ -1,3 +1,8 @@
+Mon Mar  5 15:26:30 2001  Jonathan Blandford  <jrb@redhat.com>
+
+	* gparamspecs.c (g_param_spec_interface): add a new param spec to
+	handle interfaces.
+
 Wed Feb 21 18:31:46 2001  Jonathan Blandford  <jrb@redhat.com>
 
 	* gsignal.h (g_signal_connect): Add g_signal_connect define to
