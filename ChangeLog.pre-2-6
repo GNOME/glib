@@ -1,3 +1,8 @@
+2001-08-19  Havoc Pennington  <hp@pobox.com>
+
+	* glib/gshell.c (g_shell_unquote): add comment about shell quoting
+	rules to the docs.
+
 2001-08-16  Ron Steinke  <rsteinke@w-link.net>
 
 	* glib/giounix.c: fixed an error in setting close_on_unref

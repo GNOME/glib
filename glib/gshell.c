@@ -231,6 +231,13 @@ g_shell_quote (const gchar *unquoted_string)
  * newlines. The return value must be freed with g_free(). Possible
  * errors are in the #G_SHELL_ERROR domain.
  * 
+ * Shell quoting rules are a bit strange. Single quotes preserve the
+ * literal string exactly. escape sequences are not allowed; not even
+ * \' - if you want a ' in the quoted text, you have to do something
+ * like 'foo'\''bar'.  Double quotes allow $, `, ", \, and newline to
+ * be escaped with backslash. Otherwise double quotes preserve things
+ * literally.
+ *
  * Return value: an unquoted string
  **/
 gchar*
