@@ -1,0 +1,450 @@
+# Spanish/Spain translation of glib.
+# Copyright (C) 2001 Free Software Foundation, Inc.
+# José Antonio Salgueiro <joseantsa@eresmas.net>, 2001.
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: glib VERSION\n"
+"POT-Creation-Date: 2001-09-02 08:44+0200\n"
+"PO-Revision-Date: 2001-09-02 09:00+0200\n"
+"Last-Translator: José Antonio Salgueiro <joseantsa@eresmas.net>\n"
+"Language-Team: Spanish/Spain <es@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: glib/gconvert.c:143
+#, c-format
+msgid "Conversion from character set `%s' to `%s' is not supported"
+msgstr "Conversión desde el conjunto de caracteres `%s'·a·`%s'·no soportada"
+
+#: glib/gconvert.c:147
+#, c-format
+msgid "Could not open converter from `%s' to `%s': %s"
+msgstr "No se pudo abrir el conversor de `%s'·a·`%s':·%s"
+
+#: glib/gconvert.c:297 glib/gconvert.c:580 glib/gutf8.c:821 glib/gutf8.c:1267
+msgid "Invalid byte sequence in conversion input"
+msgstr "Secuencia de byte no válida en la entrada de conversión"
+
+#: glib/gconvert.c:302 glib/gconvert.c:513
+#, c-format
+msgid "Error during conversion: %s"
+msgstr "Error·durante la·conversión:·%s"
+
+#: glib/gconvert.c:320 glib/gutf8.c:817 glib/gutf8.c:1017 glib/gutf8.c:1158
+#: glib/gutf8.c:1263
+msgid "Partial character sequence at end of input"
+msgstr "Secuencia parcial de caracteres en el final de la entrada"
+
+#: glib/gconvert.c:488
+#, c-format
+msgid "Cannot convert fallback '%s' to codeset '%s'"
+msgstr "No puedo convertir el retraso '%s'·al conjunto de códigos·'%s'"
+
+#: glib/gconvert.c:1202
+#, c-format
+msgid "The URI `%s' is not an absolute URI using the file scheme"
+msgstr "La URI·`%s'·no es una URI·absoluta utilizando el esquema de fichero"
+
+#: glib/gconvert.c:1212
+#, c-format
+msgid "The local file URI `%s' may not include a `#'"
+msgstr "El fichero local·URI·`%s'·no debe incluir un·`#'"
+
+#: glib/gconvert.c:1229
+#, c-format
+msgid "The URI `%s' is invalid"
+msgstr "La URI·`%s'·no es válida"
+
+#: glib/gconvert.c:1238
+#, c-format
+msgid "The hostname of the URI `%s' is contains invalidly escaped characters"
+msgstr ""
+"El nombre del huésped de la·URI·`%s'·contiene caracteres de escape no válidos"
+
+#: glib/gconvert.c:1254
+#, c-format
+msgid "The URI `%s' is contains invalidly escaped characters"
+msgstr "La·URI·`%s'·contiene caracteres de escape no válidos"
+
+#: glib/gconvert.c:1297
+#, c-format
+msgid "The pathname '%s' is not an absolute path"
+msgstr "El nombre de la trayectoria '%s' no es una trayectoria absoluta"
+
+#: glib/gconvert.c:1311
+msgid "Invalid byte sequence in hostname"
+msgstr "Secuencia de byte no válida en el nombre del huésped"
+
+#: glib/gfileutils.c:308
+#, c-format
+msgid "Error reading file '%s': %s"
+msgstr "Error leyendo fichero '%s':·%s"
+
+#: glib/gfileutils.c:366
+#, c-format
+msgid "Failed to read from file '%s': %s"
+msgstr "Falló la lectura desde el fichero '%s':·%s"
+
+#: glib/gfileutils.c:405 glib/gfileutils.c:473
+#, c-format
+msgid "Failed to open file '%s': %s"
+msgstr "Falló al abrir el fichero '%s':·%s"
+
+#: glib/gfileutils.c:419
+#, c-format
+msgid "Failed to get attributes of file '%s': fstat() failed: %s"
+msgstr "Falló la adquisición de atributos del fichero '%s':·fstat()·fallo:·%s"
+
+#: glib/gfileutils.c:445
+#, c-format
+msgid "Failed to open file '%s': fdopen() failed: %s"
+msgstr "Falló al abrir el archivo '%s':·fdopen()·falló:·%s"
+
+#: glib/gfileutils.c:654
+#, c-format
+msgid "Template '%s' illegal, should not contain a '%s'"
+msgstr "Plantilla ilegal '%s'·no debería contener un '%s'"
+
+#: glib/gfileutils.c:666
+#, c-format
+msgid "Template '%s' doesn't end with XXXXXX"
+msgstr "La plantilla ·'%s'· no termina con XXXXXX"
+
+#: glib/gfileutils.c:687
+#, c-format
+msgid "Failed to create file '%s': %s"
+msgstr "Falló al crear el archivo '%s':·%s"
+
+#: glib/gmarkup.c:216
+#, c-format
+msgid "Error on line %d char %d: %s"
+msgstr "Error en la línea %d·carácter·%d:·%s"
+
+#: glib/gmarkup.c:300
+#, c-format
+msgid "Error on line %d: %s"
+msgstr "Error·en la línea·%d:·%s"
+
+#: glib/gmarkup.c:379
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgstr ""
+"Vista entidad vacía '&;'; las entidades válidas son:·&amp;·&quot;·&lt;·&gt;"
+"·&apos;"
+
+#: glib/gmarkup.c:389
+#, c-format
+msgid ""
+"Character '%s' is not valid at the start of an entity name; the & character "
+"begins an entity; if this ampersand isn't supposed to be an entity, escape "
+"it as &amp;"
+msgstr ""
+"No es válido el carácter '%s'·al inicio del nombre de la entidad; el "
+"carácter & empieza una entidad: si este signo \"&\" no se supone que sea una "
+"entidad, nómbrela como &amp;"
+
+#: glib/gmarkup.c:425
+#, c-format
+msgid "Character '%s' is not valid inside an entity name"
+msgstr "El carácter '%s'·no es válido dentro del nombre de una entidad"
+
+#: glib/gmarkup.c:469
+#, c-format
+msgid "Entity name '%s' is not known"
+msgstr "Nombre de entidad '%s'·desconocido"
+
+#: glib/gmarkup.c:479
+msgid ""
+"Entity did not end with a semicolon; most likely you used an ampersand "
+"character without intending to start an entity - escape ampersand as &amp;"
+msgstr ""
+"La entidad no termina con un punto y coma; muy probablemente Vd. utilizó una "
+"carácter \"&\" sin la intención de empezar una entidad - utilice el carácter "
+"\"&\" como &amp;"
+
+#: glib/gmarkup.c:525
+#, c-format
+msgid ""
+"Failed to parse '%s', which should have been a digit inside a character "
+"reference (&#234; for example) - perhaps the digit is too large"
+msgstr ""
+"Falló al analizar '%s',·que debería tener un dígito dentro de un carácter de "
+"referencia·( por ejemplo &#234;·)·-·tal vez el dígito es demasiado grande"
+
+#: glib/gmarkup.c:550
+#, c-format
+msgid "Character reference '%s' does not encode a permitted character"
+msgstr "Carácter de referencia '%s' no codifica un carácter permitido"
+
+#: glib/gmarkup.c:567
+msgid "Empty character reference; should include a digit such as &#454;"
+msgstr ""
+"Carácter de referencia vacío; debería incluir un dígito tal como &#454;"
+
+#: glib/gmarkup.c:577
+msgid ""
+"Character reference did not end with a semicolon; most likely you used an "
+"ampersand character without intending to start an entity - escape ampersand "
+"as &amp;"
+msgstr ""
+"El carácter de referencia no termina con punto y coma; muy probablemente Vd. "
+"utilizó un carácter \"&\" sin pretender iniciar una entidad - "
+"utilice·el·carácter·\"&\"·como·&amp;"
+
+#: glib/gmarkup.c:827 glib/gmarkup.c:855 glib/gmarkup.c:886
+msgid "Invalid UTF-8 encoded text"
+msgstr "Texto codificado bajo UTF 8 no válido"
+
+#: glib/gmarkup.c:922
+msgid "Document must begin with an element (e.g. <book>)"
+msgstr "El documento debe empezar con un elemento (esto es <book>)"
+
+#: glib/gmarkup.c:960
+#, c-format
+msgid ""
+"'%s' is not a valid character following a '<' character; it may not begin an "
+"element name"
+msgstr ""
+"'%s' no es carácter válido a continuación del carácter '<': no debe empezar "
+"el nombre de un elemento"
+
+#: glib/gmarkup.c:1023
+#, c-format
+msgid ""
+"Odd character '%s', expected a '>' character to end the start tag of element "
+"'%s'"
+msgstr ""
+"Carácter impropio '%s', se esperaba un carácter '>' para terminar la "
+"etiqueta del elemento '%s'"
+
+#: glib/gmarkup.c:1110
+#, c-format
+msgid ""
+"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgstr ""
+"Carácter impropio '%s',·se esperaba  un '='·después del nombre de atributo·'%"
+"s'·del elemento·'%s'"
+
+#: glib/gmarkup.c:1151
+#, c-format
+msgid ""
+"Odd character '%s', expected a '>' or '/' character to end the start tag of "
+"element '%s', or optionally an attribute; perhaps you used an invalid "
+"character in an attribute name"
+msgstr ""
+"Carácter impropio '%s',·se esperaba un carácter '>'·o·'/'·para finalizar el "
+"inicio de la etiqueta del elemento '%s',·u opcionalmente un atributo;·tal "
+"vez utilizó un carácter no válido en un nombre de atributo"
+
+#: glib/gmarkup.c:1224
+#, c-format
+msgid ""
+"Odd character '%s', expected an open quote mark after the equals sign when "
+"giving value for attribute '%s' of element '%s'"
+msgstr ""
+"Carácter impropio '%s', se esperaba un marca de cita abierta después del "
+"signo igual cuando se da el valor del atributo '%s' del elemento '%s'"
+
+#: glib/gmarkup.c:1351
+#, c-format
+msgid ""
+"'%s' is not a valid character following the characters '</'; '%s' may not "
+"begin an element name"
+msgstr ""
+"'%s' no es un carácter válido a continuación de los caracteres '</';·'%s'· "
+"no debe empezar el nombre de un elemento"
+
+#: glib/gmarkup.c:1388
+#, c-format
+msgid "Element '%s' was closed, no element is currently open"
+msgstr "Se cerró el elemento '%s', no existe ningún elemento abierto"
+
+#: glib/gmarkup.c:1397
+#, c-format
+msgid "Element '%s' was closed, but the currently open element is '%s'"
+msgstr ""
+"Se·cerró·el·elemento·'%s',·pero el elemento que está abierto actualmente es "
+"'%s'"
+
+#: glib/gmarkup.c:1408
+#, c-format
+msgid ""
+"'%s' is not a valid character following the close element name '%s'; the "
+"allowed character is '>'"
+msgstr ""
+"'%s'·no es un carácter válido a continuación del nombre del elemento de "
+"cierre '%s'; el carácter permitido es '>'"
+
+#: glib/gmarkup.c:1541
+msgid "Document was empty or contained only whitespace"
+msgstr "Documento vacío o sólo contiene espacios en blanco"
+
+#: glib/gmarkup.c:1555
+msgid "Document ended unexpectedly just after an open angle bracket '<'"
+msgstr "Documento finalizó inesperadamente justo después de un '<'"
+
+#: glib/gmarkup.c:1563 glib/gmarkup.c:1606
+#, c-format
+msgid ""
+"Document ended unexpectedly with elements still open - '%s' was the last "
+"element opened"
+msgstr ""
+"Documento finalizó inesperadamente con elementos todavía abiertos - '%s' era "
+"el último elemento abierto"
+
+#: glib/gmarkup.c:1571
+#, c-format
+msgid ""
+"Document ended unexpectedly, expected to see a close angle bracket ending "
+"the tag <%s/>"
+msgstr ""
+"Documento finalizó inesperadamente, se esperada un '>' finalizando la "
+"etiqueta <%s/>"
+
+#: glib/gmarkup.c:1577
+msgid "Document ended unexpectedly inside an element name"
+msgstr "Documento finalizó inesperadamente dentro del nombre de un elemento"
+
+#: glib/gmarkup.c:1582
+msgid "Document ended unexpectedly inside an attribute name"
+msgstr "Documento finalizó inesperadamente dentro del nombre de atributo"
+
+#: glib/gmarkup.c:1587
+msgid "Document ended unexpectedly inside an element-opening tag."
+msgstr ""
+"Documento finalizó inesperadamente dentro de una etiqueta de elemento abierto"
+
+#: glib/gmarkup.c:1593
+msgid ""
+"Document ended unexpectedly after the equals sign following an attribute "
+"name; no attribute value"
+msgstr ""
+"Documento finalizó inesperadamente después de los signos igual que siguen el "
+"nombre de atributo; sin valor de atributo"
+
+#: glib/gmarkup.c:1599
+msgid "Document ended unexpectedly while inside an attribute value"
+msgstr "Documento finalizó inesperadamente dentro del valor de un atributo"
+
+#: glib/gmarkup.c:1614
+#, c-format
+msgid "Document ended unexpectedly inside the close tag for element '%s'"
+msgstr ""
+"Documento finalizó inesperadamente dentro de la etiqueta cierre del elemento "
+"'%s'"
+
+#: glib/gmarkup.c:1620
+msgid "Document ended unexpectedly inside a comment or processing instruction"
+msgstr ""
+"Documento finalizó inesperadamente dentro de un comentario o procesando una "
+"instrucción"
+
+#: glib/gshell.c:69
+msgid "Quoted text doesn't begin with a quotation mark"
+msgstr "Texto citado no empieza con una marca de cita"
+
+#: glib/gshell.c:159
+msgid "Unmatched quotation mark in command line or other shell-quoted text"
+msgstr "Marca no emparejada en la línea de comandos o en otro texto citado"
+
+#: glib/gshell.c:526
+#, c-format
+msgid "Text ended just after a '' character. (The text was '%s')"
+msgstr "Texto termina justo después de un carácter ''. (El texto era '%s')"
+
+#: glib/gshell.c:533
+#, c-format
+msgid "Text ended before matching quote was found for %c. (The text was '%s')"
+msgstr ""
+"Texto termina antes de que se encontrasen las citas correspondientes para %c "
+"(El texto era '%s')"
+
+#: glib/gshell.c:545
+msgid "Text was empty (or contained only whitespace)"
+msgstr "Texto vacío (o sólo contiene espacios en blanco)"
+
+#: glib/gspawn-win32.c:212
+msgid "Failed to read data from child process"
+msgstr "Falló al leer datos desde el proceso hijo"
+
+#: glib/gspawn-win32.c:361
+msgid ""
+"Unexpected error in g_io_channel_win32_poll() reading data from a child "
+"process"
+msgstr ""
+"Error inesperado en g_io_channel_win32_poll() al leer datos desde el proceso "
+"hijo"
+
+#: glib/gspawn-win32.c:837 glib/gspawn.c:907
+#, c-format
+msgid "Failed to read from child pipe (%s)"
+msgstr "Falló al leer desde el pipe hijo (%s)"
+
+#: glib/gspawn-win32.c:926 glib/gspawn.c:1112
+#, c-format
+msgid "Failed to change to directory '%s' (%s)"
+msgstr "Falló al cambiar al directorio '%s'·(%s)"
+
+#: glib/gspawn-win32.c:935 glib/gspawn.c:1122
+#, c-format
+msgid "Failed to execute child process (%s)"
+msgstr "Falló al ejecutar el proceso hijo (%s)"
+
+#: glib/gspawn-win32.c:976 glib/gspawn.c:1219
+#, c-format
+msgid "Failed to create pipe for communicating with child process (%s)"
+msgstr "Falló la creación de un pipe para comunicar con el proceso hijo (%s)"
+
+#: glib/gspawn.c:159
+#, c-format
+msgid "Failed to read data from child process (%s)"
+msgstr "Falló la lectura de datos desde el proceso hijo (%s)"
+
+#: glib/gspawn.c:290
+#, c-format
+msgid "Unexpected error in select() reading data from a child process (%s)"
+msgstr "Error inesperado en select()·leyendo datos desde el proceso hijo (%s)"
+
+#: glib/gspawn.c:373
+#, c-format
+msgid "Unexpected error in waitpid() (%s)"
+msgstr "Error inesperado en waitpid()·(%s)"
+
+#: glib/gspawn.c:972
+#, c-format
+msgid "Failed to fork (%s)"
+msgstr "Falló al bifurcar (%s)"
+
+#: glib/gspawn.c:1131
+#, c-format
+msgid "Failed to redirect output or input of child process (%s)"
+msgstr "Falló al redireccionar la salida a la entrada del proceso hijo (%s)"
+
+#: glib/gspawn.c:1140
+#, c-format
+msgid "Failed to fork child process (%s)"
+msgstr "Falló al bifurcar el proceso hijo·(%s)"
+
+#: glib/gspawn.c:1148
+msgid "Unknown error executing child process"
+msgstr "Error desconocido al ejecutar el proceso hijo"
+
+#: glib/gspawn.c:1169
+#, c-format
+msgid "Failed to read enough data from child pid pipe (%s)"
+msgstr "Falló al leer los suficientes datos desde el pipe hijo (%s)"
+
+#: glib/gutf8.c:896
+msgid "Character out of range for UTF-8"
+msgstr "Carácter fuera de márgenes para UTF 8"
+
+#: glib/gutf8.c:985 glib/gutf8.c:994 glib/gutf8.c:1126 glib/gutf8.c:1135
+#: glib/gutf8.c:1277 glib/gutf8.c:1373
+msgid "Invalid sequence in conversion input"
+msgstr "Secuencia no válida en la entrada de conversión"
+
+#: glib/gutf8.c:1288 glib/gutf8.c:1384
+msgid "Character out of range for UTF-16"
+msgstr "Carácter fuera de márgenes para UTF 16"
