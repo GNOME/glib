@@ -1,3 +1,20 @@
+Overview of Changes in GLib 1.3.12:
+===================================
+
+* Implement closure chaining, fixing up API (Tim Janik)
+* Closure chaining test case (James Henstridge)
+* Make GType long not int where both are equal width (Tim)
+* Win32 fixes and improvements (Hans Breuer, Tor Lillqvist)
+* Fixes for NetBSD. (Dan Winship)
+* Use snprintf() for g_printf_string_upper_bound() where possible. (Matthias Clasen)
+* Save space for GBSearchArray (Tim Janik)
+* Documentation improvements. (Matthias, Sven Neumann, Havoc Pennington)
+
+Other contributors: Darin Adler, Chris Blizzard, Anders Carlson, Daniel Elstner, Michael Meeks, 
+  Mark McLoughlin, Dave Neary, Manish Singh, Owen Taylor, HideToshi Tajima, 
+  Sebastian Wilhelmi.
+
+
 Overview of Changes in GLib 1.3.11:
 ===================================
 

@@ -41,15 +41,6 @@ A type which can hold any UTF-16 character code.
 </para>
 
 
-<!-- ##### FUNCTION g_get_charset ##### -->
-<para>
-
-</para>
-
-@charset: 
-@Returns: 
-
-
 <!-- ##### FUNCTION g_unichar_validate ##### -->
 <para>
 

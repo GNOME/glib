@@ -187,3 +187,12 @@ is not supported.
 @G_CONVERT_ERROR_BAD_URI: URI is invalid.
 @G_CONVERT_ERROR_NOT_ABSOLUTE_PATH: Pathname is not an absolute path.
 
+<!-- ##### FUNCTION g_get_charset ##### -->
+<para>
+
+</para>
+
+@charset: 
+@Returns: 
+
+
