@@ -39,22 +39,22 @@ msgstr "Villa við umbreytingu: %s"
 #: glib/gconvert.c:626 glib/gutf8.c:905 glib/gutf8.c:1105 glib/gutf8.c:1246
 #: glib/gutf8.c:1350
 msgid "Partial character sequence at end of input"
-msgstr ""
+msgstr "Ókláruð stafaruna í enda ílags"
 
 #: glib/gconvert.c:799
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
-msgstr ""
+msgstr "Gat ekki umbreytt '%s' í stafatöflu '%s'"
 
 #: glib/gconvert.c:1422
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
-msgstr ""
+msgstr "URI '%s' er ekki fullt URI sem notar 'file' skemuna"
 
 #: glib/gconvert.c:1432
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
-msgstr ""
+msgstr "Skráar-URI '%s' má ekki innihalda '#'"
 
 #: glib/gconvert.c:1449
 #, c-format
@@ -69,107 +69,108 @@ msgstr "Vélarheitið í URI '%s' er ógilt"
 #: glib/gconvert.c:1477
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
-msgstr ""
+msgstr "URI '%s' inniheldur ógild sértákn"
 
 #: glib/gconvert.c:1548
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
-msgstr ""
+msgstr "Slóðin '%s' er ekki full slóð"
 
 #: glib/gconvert.c:1558
 msgid "Invalid hostname"
-msgstr ""
+msgstr "Ógilt vélarheiti"
 
 #: glib/gdir.c:80
 #, c-format
 msgid "Error opening directory '%s': %s"
-msgstr ""
+msgstr "Villa við að opna möppuna '%s': %s"
 
 #: glib/gfileutils.c:390 glib/gfileutils.c:455
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
-msgstr ""
+msgstr "Gat ekki frátekið %lu bæti til að lesa skrána \"%s\""
 
 #: glib/gfileutils.c:401
 #, c-format
 msgid "Error reading file '%s': %s"
-msgstr ""
+msgstr "Villa við lestur skráarinnar '%s': %s"
 
 #: glib/gfileutils.c:477
 #, c-format
 msgid "Failed to read from file '%s': %s"
-msgstr ""
+msgstr "Gat ekki lesið úr skránni '%s': %s"
 
 #: glib/gfileutils.c:524 glib/gfileutils.c:592
 #, c-format
 msgid "Failed to open file '%s': %s"
-msgstr ""
+msgstr "Gat ekki opnað skrána '%s': %s"
 
 #: glib/gfileutils.c:538
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
-msgstr ""
+msgstr "gat ekki lesið eiginleika skráarinnar '%s': fstat() brást: %s"
 
 #: glib/gfileutils.c:564
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
-msgstr ""
+msgstr "Gat ekki opnað skrána '%s': fdopen() brást: %s"
 
 #: glib/gfileutils.c:776
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
-msgstr ""
+msgstr "Sniðmátið '%s' er ógilt og ætti ekki að innihalda '%s'"
 
 #: glib/gfileutils.c:788
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
-msgstr ""
+msgstr "Sniðmátið '%s' endar ekki á XXXXXX"
 
 #: glib/gfileutils.c:809
 #, c-format
 msgid "Failed to create file '%s': %s"
-msgstr ""
+msgstr "gat ekki búið til skrána '%s': %s"
 
 #: glib/giochannel.c:1134
 #, c-format
 msgid "Conversion from character set `%s' to `%s' is not supported"
-msgstr ""
+msgstr "Umbreyting úr stafatöflunni `%s' í `%s' er ekki stutt"
 
 #: glib/giochannel.c:1138
 #, c-format
 msgid "Could not open converter from `%s' to `%s': %s"
-msgstr ""
+msgstr "Gat ekki opnað umbreyti úr `%s' í `%s': %s"
 
 #: glib/giochannel.c:1483
 msgid "Can't do a raw read in g_io_channel_read_line_string"
-msgstr ""
+msgstr "Gat ekki lesið í g_io_channel_read_line_string"
 
 #: glib/giochannel.c:1530 glib/giochannel.c:1787 glib/giochannel.c:1873
 msgid "Leftover unconverted data in read buffer"
-msgstr ""
+msgstr "Það eru eftir óumbreytt gögn í lesminninu"
 
 #: glib/giochannel.c:1610 glib/giochannel.c:1687
 msgid "Channel terminates in a partial character"
-msgstr ""
+msgstr "Rásin endar á hluta úr tákni"
 
 #: glib/giochannel.c:1673
 msgid "Can't do a raw read in g_io_channel_read_to_end"
-msgstr ""
+msgstr "Gat ekki lesið í g_io_channel_read_to_end"
 
 #: glib/gmarkup.c:222
 #, c-format
 msgid "Error on line %d char %d: %s"
-msgstr ""
+msgstr "Villa á línu %d tákn %d: %s"
 
 #: glib/gmarkup.c:306
 #, c-format
 msgid "Error on line %d: %s"
-msgstr ""
+msgstr "Villa á línu %d: %s"
 
 #: glib/gmarkup.c:385
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
+"Tómt viðfang '&;' fannst; gild viðföng eru: &amp; &quot; &lt; &gt; &apos;"
 
 #: glib/gmarkup.c:395
 #, c-format
@@ -178,22 +179,26 @@ msgid ""
 "begins an entity; if this ampersand isn't supposed to be an entity, escape "
 "it as &amp;"
 msgstr ""
+"Táknið '%s' er ógilt í upphafi heiti viðfanga; & táknið byrjar viðfang; ef "
+"Þetta og-merki á ekki að vera byrjun viðfangs ættir þú að rita það sem &amp;"
 
 #: glib/gmarkup.c:431
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
-msgstr ""
+msgstr "Táknið '%s' er ekki gilt í heitum viðfanga"
 
 #: glib/gmarkup.c:475
 #, c-format
 msgid "Entity name '%s' is not known"
-msgstr ""
+msgstr "Viðfangið '%s' er óþekkt"
 
 #: glib/gmarkup.c:485
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
 msgstr ""
+"Viðfangið endar ekki á semikommu; líklega notaðir þú og-merkið án þess "
+"að ætla að byrja viðfang. Ritaðu það sem &amp;"
 
 #: glib/gmarkup.c:531
 #, c-format
@@ -201,15 +206,17 @@ msgid ""
 "Failed to parse '%s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
 msgstr ""
+"Gat ekki þáttað '%s' sem ætti að vera tölustafur innan í tilvísun í "
+"tákn (til dæmis &#234;). Ef til vill er talan of stór"
 
 #: glib/gmarkup.c:556
 #, c-format
 msgid "Character reference '%s' does not encode a permitted character"
-msgstr ""
+msgstr "Tákntilvísunin '%s' vísar ekki í leyfilegt tákn"
 
 #: glib/gmarkup.c:573
 msgid "Empty character reference; should include a digit such as &#454;"
-msgstr ""
+msgstr "Tóm tákntilvísun; hún ætti að innihalda tölur eins og &#454;"
 
 #: glib/gmarkup.c:583
 msgid ""
@@ -217,22 +224,24 @@ msgid ""
 "ampersand character without intending to start an entity - escape ampersand "
 "as &amp;"
 msgstr ""
+"Viðfangið endar ekki á semikommu; líklega notaðir þú og-merkið án þess "
+"að ætla að byrja viðfang. Ritaðu það sem &amp;"
 
 #: glib/gmarkup.c:609
 msgid "Unfinished entity reference"
-msgstr ""
+msgstr "Hálfkláruð viðfangatilvísun"
 
 #: glib/gmarkup.c:615
 msgid "Unfinished character reference"
-msgstr ""
+msgstr "Hálfkláruð tákntilvísun"
 
 #: glib/gmarkup.c:866 glib/gmarkup.c:894 glib/gmarkup.c:925
 msgid "Invalid UTF-8 encoded text"
-msgstr ""
+msgstr "Ógildur UTF-8 þýddur texti"
 
 #: glib/gmarkup.c:961
 msgid "Document must begin with an element (e.g. <book>)"
-msgstr ""
+msgstr "Skjalið verður að byrja á viðfangi (t.d. <book>)"
 
 #: glib/gmarkup.c:1000
 #, c-format
@@ -240,6 +249,8 @@ msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
 msgstr ""
+"'%s' er ekki gilt tákn strax á eftir '<' tákninu; það má ekki byrja á heiti "
+"viðfangs"
 
 #: glib/gmarkup.c:1063
 #, c-format
@@ -247,12 +258,13 @@ msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
 "'%s'"
 msgstr ""
+"Underlegt tákn '%s', átti von á '>' tákninu til að enda viðfangið '%s'"
 
 #: glib/gmarkup.c:1150
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
-msgstr ""
+msgstr ""o"Underlegt tákn '%s', átti von á '=' eftir heiti eiginleika '%s' af mengi '%s'"
 
 #: glib/gmarkup.c:1191
 #, c-format
