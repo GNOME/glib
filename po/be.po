@@ -1,19 +1,20 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) 2002 Free Software Foundation, Inc.
+# Беларускі пераклад glib.HEAD.
+# Copyright (C) 2002, 2004 Free Software Foundation, Inc.
 # Vital Khilko <dojlid@mova.org>, 2002.
+# Ales Nyakhaychyk <nab@mail.by>, 2004.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: glib\n"
+"Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-03-01 17:05-0500\n"
-"PO-Revision-Date: 2002-11-20 17:52+0200\n"
-"Last-Translator: Ales Nyakhaychyk <i18n@infonet.by>\n"
+"POT-Creation-Date: 2004-03-08 03:40+0100\n"
+"PO-Revision-Date: 2004-03-08 15:46+0200\n"
+"Last-Translator: Ales Nyakhaychyk <nab@mail.by>\n"
 "Language-Team: Belarusian <i18n@mova.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 0.9.6\n"
+"X-Generator: KBabel 1.0.2\n"
 
 # glib/gconvert.c:390
 #: glib/gconvert.c:402
@@ -34,8 +35,7 @@ msgstr "Ня атрымалася адчыніць пераўтваральні�
 #: glib/giochannel.c:1357 glib/giochannel.c:2199 glib/gutf8.c:910
 #: glib/gutf8.c:1355
 msgid "Invalid byte sequence in conversion input"
-msgstr ""
-"Недапушчальная пасьлядоўнасьць байтаў для пераўтварэньня ў уваходным радку"
+msgstr "Недапушчальная пасьлядоўнасьць байтаў для пераўтварэньня ў уваходным радку"
 
 # glib/gconvert.c:597 glib/gconvert.c:813 glib/giochannel.c:1289
 # glib/giochannel.c:2175
@@ -62,8 +62,7 @@ msgstr "Немагчыма пераўтвараць знак \"%s\" у знак 
 #: glib/gconvert.c:1497
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
-msgstr ""
-"URI \"%s\" не зьяўляюцца абсалютным URI пад час выкарыстаньня файлавай схемы"
+msgstr "URI \"%s\" не зьяўляюцца абсалютным URI пад час выкарыстаньня файлавай схемы"
 
 # glib/gconvert.c:1603
 #: glib/gconvert.c:1507
@@ -162,13 +161,13 @@ msgstr "Збой пад час стварэньня файлу \"%s\": %s"
 
 # glib/gfileutils.c:745
 #: glib/gfileutils.c:1153
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to read the symbolic link '%s': %s"
-msgstr "Збой пад час стварэньня файлу \"%s\": %s"
+msgstr "Немагчыма прачытаць знакавую спасылку \"%s\": %s"
 
 #: glib/gfileutils.c:1172
 msgid "Symbolic links not supported"
-msgstr ""
+msgstr "Знакавыя спасылкі не падтрымліваюцца"
 
 # glib/giochannel.c:1110
 #: glib/giochannel.c:1143
@@ -202,8 +201,7 @@ msgstr "Канал зачыняецца на няпоўным сымбалі"
 # glib/giochannel.c:1647
 #: glib/giochannel.c:1682
 msgid "Can't do a raw read in g_io_channel_read_to_end"
-msgstr ""
-"Немагчыма выканаць непасрэднае чытаньне ў функцыі g_io_channel_read_to_end"
+msgstr "Немагчыма выканаць непасрэднае чытаньне ў функцыі g_io_channel_read_to_end"
 
 # glib/gmarkup.c:219
 #: glib/gmarkup.c:223
@@ -219,10 +217,8 @@ msgstr "Памылка ў радку %d: %s"
 
 # glib/gmarkup.c:382
 #: glib/gmarkup.c:412
-msgid ""
-"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
-msgstr ""
-"Пусты запіс \"&;\" адшуканы; дапушчальна: &amp; &quot; &lt; &gt; &apos;"
+msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgstr "Пусты запіс \"&;\" адшуканы; дапушчальна: &amp; &quot; &lt; &gt; &apos;"
 
 # glib/gmarkup.c:392
 #: glib/gmarkup.c:422
@@ -329,8 +325,7 @@ msgstr ""
 # glib/gmarkup.c:1120
 #: glib/gmarkup.c:1172
 #, c-format
-msgid ""
-"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "Дзіўны сымбаль \"%s\", чакаўся сымбаль \"=\" пасьля імя атрыбута \"%s\" "
 "элемэнту \"%s\""
@@ -381,8 +376,7 @@ msgstr ""
 #: glib/gmarkup.c:1485
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
-msgstr ""
-"Элемэнт \"%s\" быў зачынены, ані водны элемэнт у бягучы момант ня адчынены"
+msgstr "Элемэнт \"%s\" быў зачынены, ані водны элемэнт у бягучы момант ня адчынены"
 
 # glib/gmarkup.c:1442
 #: glib/gmarkup.c:1494
@@ -416,8 +410,7 @@ msgstr ""
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
 "the tag <%s/>"
-msgstr ""
-"Дакумэнт нечакана скончыўся, чакаецца углавая дужка якая зачыняе тэг <%s/>"
+msgstr "Дакумэнт нечакана скончыўся, чакаецца углавая дужка якая зачыняе тэг <%s/>"
 
 # glib/gmarkup.c:1610
 #: glib/gmarkup.c:1677
@@ -583,8 +576,7 @@ msgstr "Невядомая памылка пад час выкананьня п�
 #: glib/gspawn.c:1265
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
-msgstr ""
-"Збой пад час чытаньня патрэбнае колькасьці даньняў з канала нашчадку (%s)"
+msgstr "Збой пад час чытаньня патрэбнае колькасьці даньняў з канала нашчадку (%s)"
 
 # glib/gutf8.c:950
 #: glib/gutf8.c:985
@@ -614,3 +606,4 @@ msgstr "Сымбаль па-за дыяпазонам UTF-16"
 # glib/giowin32.c:1290
 #~ msgid "Channel set flags unsupported"
 #~ msgstr "Набор сьцягоў каналу ня падтрымліваецца"
+
