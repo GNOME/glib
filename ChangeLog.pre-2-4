@@ -1,3 +1,8 @@
+2000-10-12  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* configure.in: define GLIB_HAVE_ALLOCA_H instead of including
+	alloca.h in glibconfig.h, GLIB_HAVE_ALLOCA_H is used in glib.h.
+
 2000-10-09  Raja R Harinath  <harinath@cs.umn.edu>
 
 	Work with beta autoconf 2.50.

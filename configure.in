@@ -1193,7 +1193,7 @@ _______EOF
 	  echo '#include <'"$g_mutex_header_file"'>' >> $outfile
 	fi
 	if test "$glib_header_alloca_h" = "yes"; then
-	  echo  '#include <alloca.h>' >> $outfile
+	  echo '#define GLIB_HAVE_ALLOCA_H' >> $outfile
 	fi
 	if test x$glib_sys_poll_h = xyes; then
 	  echo '#define GLIB_HAVE_SYS_POLL_H' >> $outfile
