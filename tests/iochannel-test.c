@@ -1,3 +1,6 @@
+#undef G_DISABLE_ASSERT
+#undef G_LOG_DOMAIN
+
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>

@@ -24,6 +24,9 @@
  * GLib at ftp://ftp.gtk.org/pub/gtk/. 
  */
 
+#undef G_DISABLE_ASSERT
+#undef G_LOG_DOMAIN
+
 #include        <gmodule.h>
 
 G_MODULE_EXPORT gchar* gplugin_b_state;

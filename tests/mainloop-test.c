@@ -1,3 +1,6 @@
+#undef G_DISABLE_ASSERT
+#undef G_LOG_DOMAIN
+
 #include <errno.h>
 #include <glib.h>
 #ifdef G_OS_UNIX

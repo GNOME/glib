@@ -1,3 +1,9 @@
+2002-07-04  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* tests/*.c: Added #undef G_DISABLE_ASSERT and #undef G_LOG_DOMAIN
+	throughout the files, which didn't already have
+	them. (#87312). Merged from HEAD.
+
 2002-07-03  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* configure.in: Fixed bugs in posix thread priority

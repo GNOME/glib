@@ -1,3 +1,6 @@
+#undef G_DISABLE_ASSERT
+#undef G_LOG_DOMAIN
+
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
