@@ -1,8 +1,5 @@
 Thu Jan 21 12:40:11 EST 1999  Jeff Garzik  <jgarzik@pobox.com>
 
-	* gmodule/gmodule-dl.c (_g_module_build_path):
-	Add braces to eliminate an ambiguous else warning.
-
 	* tests/{Makefile.am, string-test.c, strfunc-test.c}:
 	Separate string and strfunc tests, working towards goal of
 	having separate test for each of the GLib modules.

@@ -1,3 +1,8 @@
+Thu Jan 21 12:40:11 EST 1999  Jeff Garzik  <jgarzik@pobox.com>
+
+        * gmodule-dl.c (_g_module_build_path):
+        Add braces to eliminate an ambiguous else warning.
+
 1999-01-16  Tor Lillqvist  <tml@iki.fi>
 
 	* gmodule-dl.c gmodule-dld.c: In
