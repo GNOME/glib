@@ -37,3 +37,4 @@ queue-test
 stack-test
 date-test
 rand-test
+thread-test
