@@ -133,14 +133,11 @@ gchar*
 g_strnfill (gsize length,     
 	    gchar fill_char)
 {
-  register gchar *str, *s, *end;
+  gchar *str;
 
   str = g_new (gchar, length + 1);
-  s = str;
-  end = str + length;
-  while (s < end)
-    *(s++) = fill_char;
-  *s = 0;
+  memset (str, (guchar)fill_char, length);
+  str[length] = '\0';
 
   return str;
 }
