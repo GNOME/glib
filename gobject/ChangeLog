@@ -1,3 +1,13 @@
+Tue Aug 19 05:21:04 2003  Tim Janik  <timj@gtk.org>
+
+	* testgobject.c (main): check private instance data after
+	initialization.
+
+	* gtype.c: for instances with private data, store the real class
+	pointer in a bsearch array during class initialization.
+	(g_type_instance_get_private): fetch the real class of
+	an instance from the bsearch array if necessary.
+
 Tue Aug 19 04:08:14 2003  Tim Janik  <timj@gtk.org>
 
 	* gvalue.c: adapt to new gbsearcharray.h code.

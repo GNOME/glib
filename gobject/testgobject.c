@@ -222,6 +222,7 @@ test_object_check_private_init (TestObject *tobject)
 
   priv = TEST_OBJECT_GET_PRIVATE (tobject);
 
+  g_print ("private data during initialization: %u == %u\n", priv->dummy1, 54321);
   g_assert (priv->dummy1 == 54321);
 }
 static gboolean
@@ -379,6 +380,7 @@ main (int   argc,
   GType type;
   TestObject *sigarg;
   DerivedObject *dobject;
+  TestObjectPrivate *priv;
   gchar *string = NULL;
 
   g_log_set_always_fatal (g_log_set_always_fatal (G_LOG_FATAL_MASK) |
@@ -412,6 +414,10 @@ main (int   argc,
   g_print ("MAIN: call iface print-string on test and derived object:\n");
   iface_print_string (TEST_IFACE (sigarg), "iface-string-from-test-type");
   iface_print_string (TEST_IFACE (dobject), "iface-string-from-derived-type");
+
+  priv = TEST_OBJECT_GET_PRIVATE (dobject);
+  g_print ("private data after initialization: %u == %u\n", priv->dummy1, 54321);
+  g_assert (priv->dummy1 == 54321);
   
   g_object_unref (sigarg);
   g_object_unref (dobject);

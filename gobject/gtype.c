@@ -25,6 +25,7 @@
 
 #include	"gtypeplugin.h"
 #include	"gvaluecollector.h"
+#include	"gbsearcharray.h"
 #include	<string.h>
 
 
@@ -1374,6 +1375,68 @@ type_total_instance_size_I (TypeNode *node)
 }
 
 /* --- type structure creation/destruction --- */
+typedef struct {
+  gpointer instance;
+  gpointer class;
+} InstanceRealClass;
+static gint
+instance_real_class_cmp (gconstpointer p1,
+                         gconstpointer p2)
+{
+  const InstanceRealClass *irc1 = p1;
+  const InstanceRealClass *irc2 = p2;
+  guint8 *i1 = irc1->instance;
+  guint8 *i2 = irc2->instance;
+  return G_BSEARCH_ARRAY_CMP (i1, i2);
+}
+G_LOCK_DEFINE_STATIC (instance_real_class);
+static GBSearchArray *instance_real_class_bsa = NULL;
+static GBSearchConfig instance_real_class_bconfig = {
+  sizeof (InstanceRealClass),
+  instance_real_class_cmp,
+  0,
+};
+static inline void
+instance_real_class_set (gpointer    instance,
+                         GTypeClass *class)
+{
+  InstanceRealClass key;
+  key.instance = instance;
+  key.class = class;
+  G_LOCK (instance_real_class);
+  if (!instance_real_class_bsa)
+    instance_real_class_bsa = g_bsearch_array_create (&instance_real_class_bconfig);
+  instance_real_class_bsa = g_bsearch_array_replace (instance_real_class_bsa, &instance_real_class_bconfig, &key);
+  G_UNLOCK (instance_real_class);
+}
+static inline void
+instance_real_class_remove (gpointer instance)
+{
+  InstanceRealClass key, *node;
+  guint index;
+  key.instance = instance;
+  G_LOCK (instance_real_class);
+  node = g_bsearch_array_lookup (instance_real_class_bsa, &instance_real_class_bconfig, &key);
+  index = g_bsearch_array_get_index (instance_real_class_bsa, &instance_real_class_bconfig, node);
+  instance_real_class_bsa = g_bsearch_array_remove (instance_real_class_bsa, &instance_real_class_bconfig, index);
+  if (!g_bsearch_array_get_n_nodes (instance_real_class_bsa))
+    {
+      g_bsearch_array_free (instance_real_class_bsa, &instance_real_class_bconfig);
+      instance_real_class_bsa = NULL;
+    }
+  G_UNLOCK (instance_real_class);
+}
+static inline GTypeClass*
+instance_real_class_get (gpointer instance)
+{
+  InstanceRealClass key, *node;
+  key.instance = instance;
+  G_LOCK (instance_real_class);
+  node = g_bsearch_array_lookup (instance_real_class_bsa, &instance_real_class_bconfig, &key);
+  G_UNLOCK (instance_real_class);
+  return node ? node->class : NULL;
+}
+
 GTypeInstance*
 g_type_create_instance (GType type)
 {
@@ -1428,6 +1491,9 @@ g_type_create_instance (GType type)
     }
   else
     instance = g_malloc0 (total_instance_size);	/* fine without read lock */
+
+  if (node->data->instance.private_size)
+    instance_real_class_set (instance, class);
   for (i = node->n_supers; i > 0; i--)
     {
       TypeNode *pnode;
@@ -1439,8 +1505,10 @@ g_type_create_instance (GType type)
 	  pnode->data->instance.instance_init (instance, class);
 	}
     }
+  if (node->data->instance.private_size)
+    instance_real_class_remove (instance);
+
   instance->g_class = class;
-  
   if (node->data->instance.instance_init)
     node->data->instance.instance_init (instance, class);
   
@@ -3119,11 +3187,20 @@ g_type_instance_get_private (GTypeInstance *instance,
   TypeNode *instance_node;
   TypeNode *private_node;
   TypeNode *parent_node;
+  GTypeClass *class;
   gsize offset;
 
   g_return_val_if_fail (instance != NULL && instance->g_class != NULL, NULL);
-  
-  instance_node = lookup_type_node_I (instance->g_class->g_type);
+
+  /* while instances are initialized, their class pointers change,
+   * so figure the instances real class first
+   */
+  if (instance_real_class_bsa)
+    class = instance_real_class_get (instance);
+  else
+    class = instance->g_class;
+
+  instance_node = lookup_type_node_I (class->g_type);
   if (G_UNLIKELY (!instance_node || !instance_node->is_instantiatable))
     {
       g_warning ("instance of invalid non-instantiatable type `%s'",
