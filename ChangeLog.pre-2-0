@@ -1,3 +1,9 @@
+Wed Aug 05 01:15:36 1998  George Lebl  <jirka@5z.com>
+
+	* testglib.c: fix 64-bitness in g_prints, sizeof doesn't
+	  seem to return int so I cast it for printing, probably
+	  just cosmetic
+
 Tue Aug  4 19:54:06 PDT 1998 Shawn T. Amundson <amundson@gkt.org>
 
 	* Released GLib 1.1.1

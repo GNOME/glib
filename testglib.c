@@ -296,14 +296,14 @@ main (int   argc,
   g_free (string);
 
   /* type sizes */
-  g_print ("checking size of gint8: %d", sizeof (gint8));
+  g_print ("checking size of gint8: %d", (int)sizeof (gint8));
   TEST (NULL, sizeof (gint8) == 1);
-  g_print ("\nchecking size of gint16: %d", sizeof (gint16));
+  g_print ("\nchecking size of gint16: %d", (int)sizeof (gint16));
   TEST (NULL, sizeof (gint16) == 2);
-  g_print ("\nchecking size of gint32: %d", sizeof (gint32));
+  g_print ("\nchecking size of gint32: %d", (int)sizeof (gint32));
   TEST (NULL, sizeof (gint32) == 4);
 #ifdef	HAVE_GINT64
-  g_print ("\nchecking size of gint64: %d", sizeof (gint64));
+  g_print ("\nchecking size of gint64: %d", (int)sizeof (gint64));
   TEST (NULL, sizeof (gint64) == 8);
 #endif	/* HAVE_GINT64 */
   g_print ("\n");
