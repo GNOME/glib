@@ -94,6 +94,7 @@ G_BEGIN_DECLS
 #endif
 #ifdef G_IMPLEMENT_INLINES
 #  define G_INLINE_FUNC
+#  undef  G_CAN_INLINE
 #elif defined (__GNUC__) 
 #  define G_INLINE_FUNC extern inline
 #elif defined (G_CAN_INLINE) 
@@ -102,7 +103,7 @@ G_BEGIN_DECLS
 #  define G_INLINE_FUNC
 #endif /* !G_INLINE_FUNC */
 
-/* Retrive static string info
+/* Retrieve static string info
  */
 #ifdef G_OS_WIN32
 #define g_get_user_name g_get_user_name_utf8

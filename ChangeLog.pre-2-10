@@ -1,3 +1,10 @@
+2005-04-03  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gutils.h: Undef G_CAN_INLINE if G_IMPLEMENT_INLINES is 
+	defined. This was the pre-2.6 behaviour, and without it,
+	G_IMPLEMENT_INLINES cannot be used in multiple .c files
+	at all.  (#165852, Dave Benson)
+
 2005-04-01  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gmain.c (g_child_watch_source_new): Add a note regarding
