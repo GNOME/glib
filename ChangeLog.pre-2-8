@@ -1,3 +1,8 @@
+Wed Sep  2 19:13:28 1998  Owen Taylor  <otaylor@redhat.com>
+
+	* garray.c glib.h (g_array_[ap/pr]epend_vals): make
+	data argument const.
+
 Wed Aug 26 06:32:40 1998  Tim Janik  <timj@gtk.org>
 
 	* glib.h:

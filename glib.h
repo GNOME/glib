@@ -1292,19 +1292,19 @@ void	 g_string_sprintfa  (GString	 *string,
 #define g_array_prepend_val(a,v) g_array_prepend_vals(a,&v,1)
 #define g_array_index(a,t,i) (((t*)a->data)[i])
 
-GArray* g_array_new  	     (gboolean zero_terminated,
-			      gboolean clear,
-			      guint    element_size);
-void	g_array_free  	     (GArray   *array,
-			      gboolean  free_segment);
-GArray* g_array_append_vals  (GArray   *array,
-			      gpointer  data,
-			      guint     len);
-GArray* g_array_prepend_vals (GArray   *array,
-			      gpointer  data,
-			      guint     len);
-GArray* g_array_set_size     (GArray   *array,
-			      guint	length);
+GArray* g_array_new  	     (gboolean      zero_terminated,
+			      gboolean      clear,
+			      guint         element_size);
+void	g_array_free  	     (GArray       *array,
+			      gboolean      free_segment);
+GArray* g_array_append_vals  (GArray       *array,
+			      gconstpointer data,
+			      guint         len);
+GArray* g_array_prepend_vals (GArray       *array,
+			      gconstpointer data,
+			      guint         len);
+GArray* g_array_set_size     (GArray       *array,
+			      guint	    length);
 
 /* Resizable pointer array.  This interface is much less complicated
  * than the above.  Add appends appends a pointer.  Remove fills any

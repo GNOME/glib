@@ -79,9 +79,9 @@ g_array_free (GArray  *array,
 }
 
 GArray*
-g_array_append_vals (GArray   *farray,
-		     gpointer  data,
-		     guint     len)
+g_array_append_vals (GArray       *farray,
+		     gconstpointer data,
+		     guint         len)
 {
   GRealArray *array = (GRealArray*) farray;
 
@@ -95,9 +95,9 @@ g_array_append_vals (GArray   *farray,
 }
 
 GArray*
-g_array_prepend_vals (GArray   *farray,
-		      gpointer  data,
-		      guint     len)
+g_array_prepend_vals (GArray        *farray,
+		      gconstpointer  data,
+		      guint          len)
 {
   GRealArray *array = (GRealArray*) farray;
 
