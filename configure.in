@@ -741,6 +741,8 @@ if test "$ac_cv_func_memmove" != "yes"; then
         }
         return(0);
       }],glib_cv_working_bcopy=yes,glib_cv_working_bcopy=no)])
+
+  GLIB_ASSERT_SET(glib_cv_working_bcopy)
   if test "$glib_cv_working_bcopy" = "yes"; then
     AC_DEFINE(HAVE_WORKING_BCOPY,1,[Have a working bcopy])
   fi
@@ -1031,6 +1033,7 @@ dnl *** check whether we need preceeding underscores
 			[])
 		rm -f plugin.c plugin.$ac_objext plugin.lo
 	])
+        GLIB_ASSERT_SET(glib_cv_uscore)
 	if test "x$glib_cv_uscore" = "xyes"; then
   		G_MODULE_NEED_USCORE=1
 	else
@@ -1557,6 +1560,7 @@ int main () {
 }                               ],
 				[ac_cv_func_posix_getpwuid_r=yes],
 				[ac_cv_func_posix_getpwuid_r=no])])
+		GLIB_ASSERT_SET(ac_cv_func_posix_getpwuid_r)
 		if test "$ac_cv_func_posix_getpwuid_r" = yes; then
 			AC_DEFINE(HAVE_POSIX_GETPWUID_R,1,
 				[Have POSIX function getpwuid_r])
@@ -1570,6 +1574,7 @@ int main () {
                                         		sizeof (buffer));],
 					[ac_cv_func_nonposix_getpwuid_r=yes],
 					[ac_cv_func_nonposix_getpwuid_r=no])])
+			GLIB_ASSERT_SET(ac_cv_func_nonposix_getpwuid_r)
 			if test "$ac_cv_func_nonposix_getpwuid_r" = yes; then
 				AC_DEFINE(HAVE_NONPOSIX_GETPWUID_R,1,
 					[Have non-POSIX function getpwuid_r])
@@ -1661,6 +1666,7 @@ main()
 		[glib_cv_use_pid_surrogate=yes],
                 [glib_cv_use_pid_surrogate=no],
                 [])])
+	  GLIB_ASSERT_SET(glib_cv_use_pid_surrogate)
           if test "$glib_cv_use_pid_surrogate" = "yes" ; then
 	    AC_DEFINE(G_THREAD_USE_PID_SURROGATE, 1, 
                       [whether to use the PID niceness surrogate for thread priorities])

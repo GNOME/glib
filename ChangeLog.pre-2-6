@@ -1,3 +1,12 @@
+Wed Dec 11 17:00:20 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* acglib.m4 (ac_compile): Add GLIB_ASSERT_SET() as
+	a helper for adding "must be set when cross-compiling"
+	errors.
+
+	* configure.in: For all cached variables without defaults,
+	error out if they aren't set.
+
 Wed Dec 11 15:52:01 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* configure.in: Also assume AC_LINK_IFELSE() is
