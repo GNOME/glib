@@ -6,11 +6,12 @@ by the Microsoft runtime C library. Additionally the pthreads
 emulation library is used.
 
 As for now, to build GLib on Win32, you need the Microsoft compiler
-and tools. Both the compiler from MSVC 5.0 and MSVC 6.0 have been used
-successfully.
+and tools. Both the compiler from MSVC 5.0 and from MSVC 6.0 have been
+used successfully.
 
 Before building you must get the pthreads library for Windows from
-http://sourceware.cygnus.com/pthreads-win32/. Edit the location of the
+http://sourceware.cygnus.com/pthreads-win32/. The pthreads-win32
+snapshot from 1999-03-16 is mostly OK. Edit the location of the
 pthreads library and include files in makefile.msc. Also edit the BIN
 definition in makefile.msc.
 
@@ -44,11 +45,11 @@ related to Win32:
 - _MSC_VER is defined when using the Microsoft compiler.
 
 Currently the Win32 port uses the combination with all three of those
-on, but eventually the cygwin compiler and tools will be supported
-also, and in that case _MSC_VER wouldn't be defined.
+on, but eventually "gcc -mno-cygwin" will be supported also, and in
+that case _MSC_VER wouldn't be defined.
 
 Some of the usage of these macros is probably a bit mixed up, and will
 have to be straightened out when actually trying other combinations.
 
 The pthreads for Win32 package that the thread support uses isn't
-released yet, and thus threads really should not be relied upon.
+quite ready yet, and thus threads really should not be relied upon.

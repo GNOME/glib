@@ -77,7 +77,7 @@ typedef unsigned __int64 guint64;
 #define alloca _alloca
 
 #define GLIB_MAJOR_VERSION 1
-#define GLIB_MINOR_VERSION 2
+#define GLIB_MINOR_VERSION 3
 #define GLIB_MICRO_VERSION 0
 
 #ifdef	__cplusplus
@@ -111,15 +111,15 @@ struct _GStaticMutex
   struct _GMutex *runtime_mutex;
   union {
     /* The size of the pad array should be sizeof (pthread_mutext_t) */
-    /* This value corresponds to the 1999-01-24 version of pthreads-win32 */
-    char   pad[36];
+    /* This value corresponds to the 1999-03-16 version of pthreads-win32 */
+    char   pad[4];
     double dummy_double;
     void  *dummy_pointer;
     long   dummy_long;
   } aligned_pad_u;
 };
 /* This should be NULL followed by the bytes in PTHREAD_MUTEX_INITIALIZER */
-#define	G_STATIC_MUTEX_INIT	{ NULL, { { 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } } }
+#define	G_STATIC_MUTEX_INIT	{ NULL, { { 1, 0, 0, 0 } } }
 #define	g_static_mutex_get_mutex(mutex) \
   (g_thread_use_default_impl ? ((GMutex*) &((mutex)->aligned_pad_u)) : \
    g_static_mutex_get_mutex_impl (&((mutex)->runtime_mutex)))

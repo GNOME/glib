@@ -1,3 +1,14 @@
+Thu Mar 25 22:45:47 1999  Tor Lillqvist  <tml@iki.fi>
+
+	* config.h.win32: Update version numbers.
+
+	* glibconfig.h.win32: Update version numbers and pthreads-win32-
+ 	related magic values.
+
+	* README.win32: Some improvements.
+
+	* makefile.msc: Add gqueue and gstack. Correct version number.
+
 Fri Mar 19 16:29:50 PST 1999 Manish Singh <yosh@gimp.org>
 
 	* acinclude.m4
