@@ -129,7 +129,7 @@ Contains the public fields of a <link linkend="glib-queues">Queue</link>.
 </para>
 
 @queue: 
-@link: 
+@link_: 
 
 
 <!-- ##### FUNCTION g_queue_push_tail_link ##### -->
@@ -138,7 +138,7 @@ Contains the public fields of a <link linkend="glib-queues">Queue</link>.
 </para>
 
 @queue: 
-@link: 
+@link_: 
 
 
 <!-- ##### FUNCTION g_queue_pop_head_link ##### -->

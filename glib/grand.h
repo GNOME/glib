@@ -42,34 +42,33 @@ typedef struct _GRand           GRand;
  * double_range -> [begin..end)
  */
 
-GRand*  g_rand_new_with_seed   (guint32     seed);
-GRand*  g_rand_new             (void);
-void    g_rand_free            (GRand      *rand);
+GRand*  g_rand_new_with_seed  (guint32  seed);
+GRand*  g_rand_new            (void);
+void    g_rand_free           (GRand   *rand_);
+void    g_rand_set_seed       (GRand   *rand_,
+			       guint32  seed);
 
-void    g_rand_set_seed        (GRand      *rand,
-                                guint32     seed);
+#define g_rand_boolean(rand_) ((g_rand_int (rand_) & (1 << 15)) != 0)
 
-#define g_rand_boolean(rand) ((g_rand_int (rand) & (1 << 15)) != 0)
-
-guint32 g_rand_int             (GRand      *rand);
-gint32  g_rand_int_range       (GRand      *rand,
-                                gint32      begin,
-                                gint32      end);
-gdouble g_rand_double          (GRand      *rand);
-gdouble g_rand_double_range    (GRand      *rand,
-                                gdouble     begin,
-                                gdouble     end);
-
-void    g_random_set_seed      (guint32     seed);
+guint32 g_rand_int            (GRand   *rand_);
+gint32  g_rand_int_range      (GRand   *rand_,
+			       gint32   begin,
+			       gint32   end);
+gdouble g_rand_double         (GRand   *rand_);
+gdouble g_rand_double_range   (GRand   *rand_,
+			       gdouble  begin,
+			       gdouble  end);
+void    g_random_set_seed     (guint32  seed);
 
 #define g_random_boolean() ((g_random_int () & (1 << 15)) != 0)
 
-guint32 g_random_int           (void);
-gint32  g_random_int_range     (gint32      begin,
-                                gint32      end);
-gdouble g_random_double        (void);
-gdouble g_random_double_range  (gdouble     begin,
-                                gdouble     end);
+guint32 g_random_int          (void);
+gint32  g_random_int_range    (gint32   begin,
+			       gint32   end);
+gdouble g_random_double       (void);
+gdouble g_random_double_range (gdouble  begin,
+			       gdouble  end);
+
 
 G_END_DECLS
 

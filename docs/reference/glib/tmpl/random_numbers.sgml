@@ -60,37 +60,37 @@ accessed through the <function>g_rand_*</function> functions.
 <!-- ##### FUNCTION g_rand_free ##### -->
 
 
-@rand: 
+@rand_: 
 
 
 <!-- ##### FUNCTION g_rand_set_seed ##### -->
 
 
-@rand: 
+@rand_: 
 @seed: 
 
 
 <!-- ##### MACRO g_rand_boolean ##### -->
 <para>
-Returns a random #gboolean from @rand. This corresponds to a unbiased
+Returns a random #gboolean from @rand_. This corresponds to a unbiased
 coin toss.
 </para>
 
-@rand: a #GRand.
+@rand_: a #GRand.
 @Returns: a random #gboolean.
 
 
 <!-- ##### FUNCTION g_rand_int ##### -->
 
 
-@rand: 
+@rand_: 
 @Returns: 
 
 
 <!-- ##### FUNCTION g_rand_int_range ##### -->
 
 
-@rand: 
+@rand_: 
 @begin: 
 @end: 
 @Returns: 
@@ -99,14 +99,14 @@ coin toss.
 <!-- ##### FUNCTION g_rand_double ##### -->
 
 
-@rand: 
+@rand_: 
 @Returns: 
 
 
 <!-- ##### FUNCTION g_rand_double_range ##### -->
 
 
-@rand: 
+@rand_: 
 @begin: 
 @end: 
 @Returns: 

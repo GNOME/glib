@@ -66,9 +66,9 @@ GSList*  g_slist_remove         (GSList           *list,
 GSList*  g_slist_remove_all     (GSList           *list,
 				 gconstpointer     data);
 GSList*  g_slist_remove_link    (GSList           *list,
-				 GSList           *link);
+				 GSList           *link_);
 GSList*  g_slist_delete_link    (GSList           *list,
-				 GSList           *link);
+				 GSList           *link_);
 GSList*  g_slist_reverse        (GSList           *list);
 GSList*  g_slist_copy           (GSList           *list);
 GSList*  g_slist_nth            (GSList           *list,

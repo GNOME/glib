@@ -194,7 +194,7 @@ The returned value should not be changed.
 </para>
 
 @tuples: the tuple data, returned by g_relation_select().
-@index: the index of the record.
+@index_: the index of the record.
 @field: the field to return.
 @Returns: the field of the record.
 

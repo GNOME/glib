@@ -85,7 +85,7 @@ void       g_relation_print   (GRelation   *relation);
 
 void       g_tuples_destroy   (GTuples     *tuples);
 gpointer   g_tuples_index     (GTuples     *tuples,
-                               gint         index,
+                               gint         index_,
                                gint         field);
 
 G_END_DECLS

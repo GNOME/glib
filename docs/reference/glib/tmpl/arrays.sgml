@@ -71,7 +71,7 @@ Creates a new #GArray.
 
 @zero_terminated: %TRUE if the array should have an extra element at the end
 which is set to 0.
-@clear: %TRUE if #GArray elements should be automatically cleared to 0
+@clear_: %TRUE if #GArray elements should be automatically cleared to 0
 when they are allocated.
 @element_size: the size of each element in bytes.
 @Returns: the new #GArray.
@@ -86,7 +86,7 @@ array is still 0.
 </para>
 
 @zero_terminated: %TRUE if the array should have an extra element at the end with all bits cleared.
-@clear: %TRUE if all bits in the array should be cleared to 0 on allocation.
+@clear_: %TRUE if all bits in the array should be cleared to 0 on allocation.
 @element_size: size of each element in the array.
 @reserved_size: number of elements preallocated.
 @Returns: the new #GArray.
@@ -182,7 +182,7 @@ Inserts @len elements into a #GArray at the given index.
 </para>
 
 @array: a #GArray.
-@index: the index to place the elements at.
+@index_: the index to place the elements at.
 @data: a pointer to the elements to insert.
 @len: the number of elements to insert.
 @Returns: the #GArray.
@@ -195,7 +195,7 @@ The following elements are moved down one place.
 </para>
 
 @array: a #GArray.
-@index: the index of the element to remove.
+@index_: the index of the element to remove.
 @Returns: the #GArray.
 
 
@@ -208,7 +208,7 @@ g_array_remove_index().
 </para>
 
 @array: a @GArray.
-@index: the index of the element to remove.
+@index_: the index of the element to remove.
 @Returns: the #GArray.
 
 
@@ -260,7 +260,7 @@ The return value is cast to the given type.
 <!-- ##### FUNCTION g_array_set_size ##### -->
 <para>
 Sets the size of the array, expanding it if necessary.
-If the array was created with @clear set to %TRUE, the new elements are set to 0.
+If the array was created with @clear_ set to %TRUE, the new elements are set to 0.
 </para>
 
 @array: a #GArray.

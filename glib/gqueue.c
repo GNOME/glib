@@ -113,7 +113,7 @@ g_queue_push_head (GQueue  *queue,
 /**
  * g_queue_push_head_link:
  * @queue: a #GQueue.
- * @link: a single #GList element, <emphasis>not</emphasis> a list with
+ * @link_: a single #GList element, <emphasis>not</emphasis> a list with
  *   more than one element.
  *
  * Adds a new element at the head of the queue.
@@ -160,7 +160,7 @@ g_queue_push_tail (GQueue  *queue,
 /**
  * g_queue_push_tail_link:
  * @queue: a #GQueue.
- * @link: a single #GList element, <emphasis>not</emphasis> a list with
+ * @link_: a single #GList element, <emphasis>not</emphasis> a list with
  *   more than one element.
  *
  * Adds a new element at the tail of the queue.

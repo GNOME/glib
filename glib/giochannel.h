@@ -313,7 +313,7 @@ void        g_io_channel_win32_make_pollfd (GIOChannel   *channel,
  */
 gint        g_io_channel_win32_poll   (GPollFD    *fds,
 				       gint        n_fds,
-				       gint        timeout);
+				       gint        timeout_);
 
 /* This is used to add polling for Windows messages. GDK (GTk+) programs
  * should *not* use this.

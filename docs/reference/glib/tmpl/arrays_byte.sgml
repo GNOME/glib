@@ -108,7 +108,7 @@ The following bytes are moved down one place.
 </para>
 
 @array: a #GByteArray.
-@index: the index of the byte to remove.
+@index_: the index of the byte to remove.
 @Returns: the #GByteArray.
 
 
@@ -121,7 +121,7 @@ g_byte_array_remove_index().
 </para>
 
 @array: a #GByteArray.
-@index: the index of the byte to remove.
+@index_: the index of the byte to remove.
 @Returns: the #GByteArray.
 
 

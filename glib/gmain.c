@@ -2002,7 +2002,7 @@ g_main_context_prepare (GMainContext *context,
  * g_main_context_query:
  * @context: a #GMainContext
  * @max_priority: maximum priority source to check
- * @timeout: location to store timeout to be used in polling
+ * @timeout_: location to store timeout to be used in polling
  * @fds: location to store #GPollFD records that need to be polled.
  * @n_fds: length of @fds.
  * 

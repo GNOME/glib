@@ -47,7 +47,7 @@ struct _GValueArray
 
 /* --- prototypes --- */
 GValue*		g_value_array_get_nth	     (GValueArray	*value_array,
-					      guint		 index);
+					      guint		 index_);
 GValueArray*	g_value_array_new	     (guint		 n_prealloced);
 void		g_value_array_free	     (GValueArray	*value_array);
 GValueArray*	g_value_array_copy	     (const GValueArray *value_array);
@@ -56,10 +56,10 @@ GValueArray*	g_value_array_prepend	     (GValueArray	*value_array,
 GValueArray*	g_value_array_append	     (GValueArray	*value_array,
 					      const GValue	*value);
 GValueArray*	g_value_array_insert	     (GValueArray	*value_array,
-					      guint		 index,
+					      guint		 index_,
 					      const GValue	*value);
 GValueArray*	g_value_array_remove	     (GValueArray	*value_array,
-					      guint		 index);
+					      guint		 index_);
 GValueArray*	g_value_array_sort	     (GValueArray	*value_array,
 					      GCompareFunc	 compare_func);
 GValueArray*	g_value_array_sort_with_data (GValueArray	*value_array,

@@ -25,12 +25,12 @@ in order for it to be used as a boxed type through %G_TYPE_VALUE_ARRAY.
 
 <!-- ##### FUNCTION g_value_array_get_nth ##### -->
 <para>
-Return a pointer to the value at @index containd in @value_array.
+Return a pointer to the value at @index_ containd in @value_array.
 </para>
 
 @value_array: #GValueArray to get a value from
-@index:       index of the value of interest
-@Returns:     pointer to a value at @index in @value_array
+@index_:      index of the value of interest
+@Returns:     pointer to a value at @index_ in @value_array
 
 
 <!-- ##### FUNCTION g_value_array_new ##### -->
@@ -88,18 +88,18 @@ Insert a copy of @value at specified position into @value_array.
 </para>
 
 @value_array: #GValueArray to add an element to
-@index:       insertion position, must be &lt;= value_array-&gt;n_values
+@index_:      insertion position, must be &lt;= value_array-&gt;n_values
 @value:       #GValue to copy into #GValueArray
 @Returns:     the #GValueArray passed in as @value_array
 
 
 <!-- ##### FUNCTION g_value_array_remove ##### -->
 <para>
-Remove the value at position @index from @value_array.
+Remove the value at position @index_ from @value_array.
 </para>
 
 @value_array: #GValueArray to remove an element from
-@index:       position of value to remove, must be &lt; value_array->n_values
+@index_:      position of value to remove, must be &lt; value_array->n_values
 @Returns:     the #GValueArray passed in as @value_array
 
 

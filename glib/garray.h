@@ -64,10 +64,10 @@ struct _GPtrArray
 #define g_array_index(a,t,i)      (((t*) (a)->data) [(i)])
 
 GArray* g_array_new               (gboolean          zero_terminated,
-				   gboolean          clear,
+				   gboolean          clear_,
 				   guint             element_size);
 GArray* g_array_sized_new         (gboolean          zero_terminated,
-				   gboolean          clear,
+				   gboolean          clear_,
 				   guint             element_size,
 				   guint             reserved_size);
 gchar*  g_array_free              (GArray           *array,
@@ -79,15 +79,15 @@ GArray* g_array_prepend_vals      (GArray           *array,
 				   gconstpointer     data,
 				   guint             len);
 GArray* g_array_insert_vals       (GArray           *array,
-				   guint             index,
+				   guint             index_,
 				   gconstpointer     data,
 				   guint             len);
 GArray* g_array_set_size          (GArray           *array,
 				   guint             length);
 GArray* g_array_remove_index      (GArray           *array,
-				   guint             index);
+				   guint             index_);
 GArray* g_array_remove_index_fast (GArray           *array,
-				   guint             index);
+				   guint             index_);
 void    g_array_sort              (GArray           *array,
 				   GCompareFunc      compare_func);
 void    g_array_sort_with_data    (GArray           *array,
@@ -99,7 +99,7 @@ void    g_array_sort_with_data    (GArray           *array,
  * cleared spot and shortens the array. remove_fast will again distort
  * order.  
  */
-#define    g_ptr_array_index(array,index) ((array)->pdata)[index]
+#define    g_ptr_array_index(array,index_) ((array)->pdata)[index_]
 GPtrArray* g_ptr_array_new                (void);
 GPtrArray* g_ptr_array_sized_new          (guint             reserved_size);
 gpointer*  g_ptr_array_free               (GPtrArray        *array,
@@ -107,9 +107,9 @@ gpointer*  g_ptr_array_free               (GPtrArray        *array,
 void       g_ptr_array_set_size           (GPtrArray        *array,
 					   gint              length);
 gpointer   g_ptr_array_remove_index       (GPtrArray        *array,
-					   guint             index);
+					   guint             index_);
 gpointer   g_ptr_array_remove_index_fast  (GPtrArray        *array,
-					   guint             index);
+					   guint             index_);
 gboolean   g_ptr_array_remove             (GPtrArray        *array,
 					   gpointer          data);
 gboolean   g_ptr_array_remove_fast        (GPtrArray        *array,
@@ -140,9 +140,9 @@ GByteArray* g_byte_array_prepend           (GByteArray       *array,
 GByteArray* g_byte_array_set_size          (GByteArray       *array,
 					    guint             length);
 GByteArray* g_byte_array_remove_index      (GByteArray       *array,
-					    guint             index);
+					    guint             index_);
 GByteArray* g_byte_array_remove_index_fast (GByteArray       *array,
-					    guint             index);
+					    guint             index_);
 void        g_byte_array_sort              (GByteArray       *array,
 					    GCompareFunc      compare_func);
 void        g_byte_array_sort_with_data    (GByteArray       *array,

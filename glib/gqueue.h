@@ -54,9 +54,9 @@ gboolean g_queue_is_empty       (GQueue  *queue);
 gpointer g_queue_peek_head      (GQueue  *queue);
 gpointer g_queue_peek_tail      (GQueue  *queue);
 void     g_queue_push_head_link (GQueue  *queue,
-				 GList   *link);
+				 GList   *link_);
 void     g_queue_push_tail_link (GQueue  *queue,
-				 GList   *link);
+				 GList   *link_);
 GList*   g_queue_pop_head_link  (GQueue  *queue);
 GList*   g_queue_pop_tail_link  (GQueue  *queue);
 

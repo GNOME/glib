@@ -107,7 +107,7 @@ length of the sleep.
 
 </para>
 
-@time: 
+@time_: 
 @microseconds: 
 
 
@@ -334,7 +334,7 @@ g_date_set_time (date, time (NULL));
 </para>
 
 @date: a #GDate.
-@time: #GTime value to set.
+@time_: #GTime value to set.
 
 
 <!-- ##### FUNCTION g_date_set_parse ##### -->

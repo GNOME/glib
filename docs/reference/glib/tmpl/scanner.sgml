@@ -214,6 +214,7 @@ is searched for in the default scope in addition to the current scope
 @char_2_token: 
 @symbol_2_token: 
 @scope_0_fallback: 
+@store_int64: 
 @padding_dummy: 
 
 <!-- ##### FUNCTION g_scanner_input_file ##### -->

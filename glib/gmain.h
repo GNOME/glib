@@ -72,7 +72,7 @@ typedef void (*GSourceDummyMarshal) (void);
 struct _GSourceFuncs
 {
   gboolean (*prepare)  (GSource    *source,
-			gint       *timeout);
+			gint       *timeout_);
   gboolean (*check)    (GSource    *source);
   gboolean (*dispatch) (GSource    *source,
 			GSourceFunc callback,
@@ -115,7 +115,7 @@ struct _GSourceFuncs
 typedef struct _GPollFD GPollFD;
 typedef gint	(*GPollFunc)	(GPollFD *ufds,
 				 guint	  nfsd,
-				 gint     timeout);
+				 gint     timeout_);
 
 struct _GPollFD
 {
@@ -166,7 +166,7 @@ gboolean g_main_context_prepare  (GMainContext *context,
 				  gint         *priority);
 gint     g_main_context_query    (GMainContext *context,
 				  gint          max_priority,
-				  gint         *timeout,
+				  gint         *timeout_,
 				  GPollFD      *fds,
 				  gint          n_fds);
 gint     g_main_context_check    (GMainContext *context,

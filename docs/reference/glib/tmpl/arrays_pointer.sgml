@@ -121,7 +121,7 @@ The following elements are moved down one place.
 </para>
 
 @array: a #GPtrArray.
-@index: the index of the pointer to remove.
+@index_: the index of the pointer to remove.
 @Returns: the pointer which was removed.
 
 
@@ -151,7 +151,7 @@ g_ptr_array_remove_index().
 </para>
 
 @array: a #GPtrArray.
-@index: the index of the pointer to remove.
+@index_: the index of the pointer to remove.
 @Returns: the pointer which was removed.
 
 
@@ -192,7 +192,7 @@ Returns the pointer at the given index of the pointer array.
 </para>
 
 @array: a #GPtrArray.
-@index: the index of the pointer to return.
+@index_: the index of the pointer to return.
 @Returns: the pointer at the given index.
 
 

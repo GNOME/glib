@@ -165,7 +165,7 @@ void         g_date_clear                 (GDate       *date,
 void         g_date_set_parse             (GDate       *date,
                                            const gchar *str);
 void         g_date_set_time              (GDate       *date,
-                                           GTime        time);
+                                           GTime        time_);
 void         g_date_set_month             (GDate       *date,
                                            GDateMonth   month);
 void         g_date_set_day               (GDate       *date,

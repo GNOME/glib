@@ -193,11 +193,11 @@ self-contained list with one element.
 
 <!-- ##### FUNCTION g_list_delete_link ##### -->
 <para>
-Deletes the node @link from @list.
+Deletes the node @link_ from @list.
 </para>
 
 @list: a #GList.
-@link: node to delete from @list.
+@link_: node to delete from @list.
 @Returns: the new head of @list.
 
 

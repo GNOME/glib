@@ -124,7 +124,7 @@ g_rand_new (void)
 
 /**
  * g_rand_free:
- * @rand: a #GRand.
+ * @rand_: a #GRand.
  *
  * Frees the memory allocated for the #GRand.
  **/
@@ -138,7 +138,7 @@ g_rand_free (GRand* rand)
 
 /**
  * g_rand_set_seed:
- * @rand: a #GRand.
+ * @rand_: a #GRand.
  * @seed: a value to reinitialize the random number generator.
  *
  * Sets the seed for the random number generator #GRand to @seed.
@@ -163,9 +163,9 @@ g_rand_set_seed (GRand* rand, guint32 seed)
 
 /**
  * g_rand_int:
- * @rand: a #GRand.
+ * @rand_: a #GRand.
  *
- * Returns the next random #guint32 from @rand equally distributed over
+ * Returns the next random #guint32 from @rand_ equally distributed over
  * the range [0..2^32-1].
  *
  * Return value: A random number.
@@ -210,11 +210,11 @@ g_rand_int (GRand* rand)
 
 /**
  * g_rand_int_range:
- * @rand: a #GRand.
+ * @rand_: a #GRand.
  * @begin: lower closed bound of the interval.
  * @end: upper open bound of the interval.
  *
- * Returns the next random #gint32 from @rand equally distributed over
+ * Returns the next random #gint32 from @rand_ equally distributed over
  * the range [@begin..@end-1].
  *
  * Return value: A random number.
@@ -262,9 +262,9 @@ g_rand_int_range (GRand* rand, gint32 begin, gint32 end)
 
 /**
  * g_rand_double:
- * @rand: a #GRand.
+ * @rand_: a #GRand.
  *
- * Returns the next random #gdouble from @rand equally distributed over
+ * Returns the next random #gdouble from @rand_ equally distributed over
  * the range [0..1).
  *
  * Return value: A random number.
@@ -287,11 +287,11 @@ g_rand_double (GRand* rand)
 
 /**
  * g_rand_double_range:
- * @rand: a #GRand.
+ * @rand_: a #GRand.
  * @begin: lower closed bound of the interval.
  * @end: upper open bound of the interval.
  *
- * Returns the next random #gdouble from @rand equally distributed over
+ * Returns the next random #gdouble from @rand_ equally distributed over
  * the range [@begin..@end).
  *
  * Return value: A random number.

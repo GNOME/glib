@@ -69,7 +69,7 @@ GList*   g_list_remove_all     (GList            *list,
 GList*   g_list_remove_link    (GList            *list,
 				GList            *llink);
 GList*   g_list_delete_link    (GList            *list,
-				GList            *link);
+				GList            *link_);
 GList*   g_list_reverse        (GList            *list);
 GList*   g_list_copy           (GList            *list);
 GList*   g_list_nth            (GList            *list,

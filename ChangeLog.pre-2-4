@@ -1,3 +1,25 @@
+Fri Nov  8 19:44:20 2002  Soeren Sandmann  <sandmann@daimi.au.dk>
+
+	* docs/reference/glib/tmpl/arrays.sgml:
+	* docs/reference/glib/tmpl/arrays_byte.sgml:
+	* docs/reference/glib/tmpl/arrays_pointer.sgml:
+	* docs/reference/glib/tmpl/date.sgml:
+	* docs/reference/glib/tmpl/linked_lists_double.sgml:
+	* docs/reference/glib/tmpl/linked_lists_single.sgml:
+	* docs/reference/glib/tmpl/main.sgml:
+	* docs/reference/glib/tmpl/queue.sgml:
+	* docs/reference/glib/tmpl/random_numbers.sgml:
+	* docs/reference/glib/tmpl/relations.sgml:
+	* docs/reference/glib/tmpl/scanner.sgml:
+	* docs/reference/gobject/tmpl/gtype.sgml:
+	* docs/reference/gobject/tmpl/value_arrays.sgml glib/garray.h:
+	* glib/gdate.h glib/giochannel.h glib/glist.h glib/gmain.c:
+	* glib/gmain.h glib/gqueue.c glib/gqueue.h glib/grand.c glib/grand.h:
+	* glib/grel.h glib/gslist.h glib/gtimer.h gobject/gvaluearray.h:
+
+	Trivial s/foo/foo_/ fixes to make <glib.h> includable with
+	-Wshadow without warnings (#91680)
+
 Thu Nov  7 19:32:26 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gutils.[ch] (g_set/get_application_name): 

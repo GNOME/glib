@@ -49,7 +49,7 @@ gdouble g_timer_elapsed (GTimer	  *timer,
 
 void    g_usleep        (gulong    microseconds);
 
-void    g_time_val_add  (GTimeVal *time, 
+void    g_time_val_add  (GTimeVal *time_, 
                          glong     microseconds);
 
 G_END_DECLS
