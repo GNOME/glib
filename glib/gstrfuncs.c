@@ -214,7 +214,8 @@ g_strconcat (const gchar *string1, ...)
   gchar	  *concat;
   gchar   *ptr;
 
-  g_return_val_if_fail (string1 != NULL, NULL);
+  if (!string1)
+    return NULL;
 
   l = 1 + strlen (string1);
   va_start (args, string1);

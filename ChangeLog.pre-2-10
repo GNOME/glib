@@ -1,3 +1,12 @@
+Thu Nov 27 17:04:08 2003  Tim Janik  <timj@gtk.org>
+
+	* glib/gstrfuncs.c (g_strconcat): handle NULL arguments
+	gracefully.
+
+	* glib/gmacros.h: defined G_STRFUNC, which (pretty) prints the
+	current function (since G_STRLOC and G_GNUC_*FUNCTION became
+	unusable with gcc-3.0).
+
 Wed Nov 26 16:45:16 2003  Roozbeh Pournader  <roozbeh@sharif.edu>
 
 	* glib/gstrfuncs.c: Fixed a bad pointer comparison in

@@ -88,6 +88,7 @@
 
 /* Wrap the gcc __PRETTY_FUNCTION__ and __FUNCTION__ variables with
  * macros, so we can refer to them as strings unconditionally.
+ * usage not-recommended since gcc-3.0
  */
 #if defined (__GNUC__) && (__GNUC__ < 3)
 #define G_GNUC_FUNCTION         __FUNCTION__
@@ -105,6 +106,15 @@
 #  define G_STRLOC	__FILE__ ":" G_STRINGIFY (__LINE__) ":" __PRETTY_FUNCTION__ "()"
 #else
 #  define G_STRLOC	__FILE__ ":" G_STRINGIFY (__LINE__)
+#endif
+
+/* Provide a string identifying the current function, non-concatenatable */
+#if defined (__GNUC__)
+#  define G_STRFUNC     ((const char*) (__PRETTY_FUNCTION__))
+#elif defined (G_HAVE_ISO_VARARGS)
+#  define G_STRFUNC     ((const char*) (__func__))
+#elif
+#  define G_STRFUNC     ((const char*) ("???"))
 #endif
 
 /* Guard C code in headers, while including them from C++ */
