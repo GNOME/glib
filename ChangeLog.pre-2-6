@@ -1,4 +1,8 @@
-1999-01-17  Christopher Blizzard  <blizzard@appliedtheory.com>
+Sun Jan 17 11:17:19 1999 Christopher Blizzard  <blizzard@appliedtheory.com>
+
+	* glib.spec: add packager address
+
+Sun Jan 17 11:10:05 1999 Christopher Blizzard  <blizzard@appliedtheory.com>
 
 	* glib.spec: increment version number to 1.1.13
 
