@@ -1,3 +1,8 @@
+2002-02-11  jacob berkman  <jacob@ximian.com>
+
+	* glib/gmarkup.h (g_markup_error_quark): match the signature in
+	the implementation
+
 2002-02-10  Hans Breuer  <hans@breuer.org>
 
 	* glib/gfileutils.c : no sym links on win32, no lstat in msvcrt

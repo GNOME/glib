@@ -40,7 +40,7 @@ typedef enum
 
 #define G_MARKUP_ERROR g_markup_error_quark ()
 
-GQuark g_markup_error_quark ();
+GQuark g_markup_error_quark (void);
 
 typedef enum
 {
