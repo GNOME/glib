@@ -544,13 +544,13 @@ get_locale_type (void)
   return LOCALE_NORMAL;
 }
 
-static int
+static gint
 output_marks (const char **p_inout,
 	      char        *out_buffer,
-	      int          len,
 	      gboolean     remove_dot)
 {
   const char *p = *p_inout;
+  gint len = 0;
   
   while (*p)
     {
@@ -560,7 +560,7 @@ output_marks (const char **p_inout,
       if (ISMARK(t))
 	{
 	  if (!remove_dot || c != 0x307 /* COMBINING DOT ABOVE */)
-	    len += g_unichar_to_utf8 (c, out_buffer ? out_buffer + len : NULL);
+	    len += g_unichar_to_utf8 (c, out_buffer);
 	  p = g_utf8_next_char (p);
 	}
       else
@@ -571,14 +571,14 @@ output_marks (const char **p_inout,
   return len;
 }
 
-static gsize
+static gint
 output_special_case (gchar *out_buffer,
-		     gsize  len,
 		     int    offset,
 		     int    type,
 		     int    which)
 {
   const guchar *p = special_case_table + offset;
+  gint len;
 
   if (type != G_UNICODE_TITLECASE_LETTER)
     p = g_utf8_next_char (p);
@@ -636,7 +636,7 @@ real_toupper (const gchar *str,
 		    }
 		  g_free (decomp);
 		  
-		  len = output_marks (&p, out_buffer, len, TRUE);
+		  len += output_marks (&p, out_buffer ? out_buffer + len : NULL, TRUE);
 
 		  continue;
 		}
@@ -656,7 +656,7 @@ real_toupper (const gchar *str,
 	  /* Nasty, need to move it after other combining marks .. this would go away if
 	   * we normalized first.
 	   */
-	  len = output_marks (&p, out_buffer, len, FALSE);
+	  len += output_marks (&p, out_buffer ? out_buffer + len : NULL, FALSE);
 
 	  /* And output as GREEK CAPITAL LETTER IOTA */
 	  len += g_unichar_to_utf8 (0x399, out_buffer ? out_buffer + len : NULL); 	  
@@ -667,7 +667,7 @@ real_toupper (const gchar *str,
 
 	  if (val >= 0x1000000)
 	    {
-	      len += output_special_case (out_buffer, len, val - 0x1000000, t,
+	      len += output_special_case (out_buffer ? out_buffer + len : NULL, val - 0x1000000, t,
 					  t == G_UNICODE_LOWERCASE_LETTER ? 0 : 1);
 	    }
 	  else
@@ -790,7 +790,7 @@ real_tolower (const gchar *str,
 
 	  if (val >= 0x1000000)
 	    {
-	      len += output_special_case (out_buffer, len, val - 0x1000000, t, 0);
+	      len += output_special_case (out_buffer ? out_buffer + len : NULL, val - 0x1000000, t, 0);
 	    }
 	  else
 	    {

@@ -1,3 +1,9 @@
+2003-08-05  Noah Levitt  <nlevitt@columbia.edu>
+
+	* glib/guniprop.c: Get rid of "len" parameter to output_special_case
+	and output_marks, and make them work more like g_unichar_to_utf8,
+	fixing a bug in the process. (#118957)
+
 2003-08-05  Hans Breuer  <hans@breuer.org>
 
 	* glib/gnulib/makefile.msc : (new file) for msvc build
