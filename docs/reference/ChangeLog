@@ -1,3 +1,15 @@
+2001-02-23  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* glib/tmpl/threads.sgml: Big update. Almost ready.
+
+	* glib/tmpl/async_queues.sgml: Typo.
+
+	* glib/glib-sections.txt: Added g_static_rec_mutex_init,
+	g_static_rec_mutex_free, g_static_rw_lock_init,
+	g_static_private_init and g_static_private_free.
+
+	* glib/glib-overrides.txt: Added g_thread_yield and g_thread_exit.
+
 Fri Feb 16 06:52:20 2001  Tim Janik  <timj@gtk.org>
 
 	* gobject/tmpl/types.sgml: incorporated huge docu patch from Eric

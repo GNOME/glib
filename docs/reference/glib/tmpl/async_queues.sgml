@@ -55,7 +55,7 @@ g_async_queue_unlock()) over multiple queue accessing
 instructions. This can be necessary to ensure the integrity of the
 queue, but should only be used, when really necessary as it can make
 your life harder if used unwisely. Normally you should only use the
-locking function variants (those without the suffix _unlocking)
+locking function variants (those without the suffix _unlocked)
 </para>
 
 <!-- ##### SECTION See_Also ##### -->

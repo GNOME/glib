@@ -1,3 +1,12 @@
+2001-02-23  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gthread.h (struct _GThread): Change the order to match the order
+	in g_thread_create().
+
+	* gthread.c (g_static_rec_mutex_lock_full): Also do the right
+	thing (behave like 'depth' calls to g_static_rec_mutex_lock) for a
+	mutex, that is already locked.
+
 Thu Feb 22 10:31:36 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* gmain.c (g_source_remove_poll): Add missing implementation

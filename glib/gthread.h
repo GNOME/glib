@@ -56,9 +56,9 @@ typedef enum
 typedef struct _GThread         GThread;
 struct  _GThread
 {
-  GThreadPriority priority;
-  gboolean bound;
   gboolean joinable;
+  gboolean bound;
+  GThreadPriority priority;
 };
 
 typedef struct _GMutex          GMutex;

@@ -292,13 +292,21 @@ void
 g_static_rec_mutex_lock_full   (GStaticRecMutex *mutex,
 				guint            depth)
 {
+  GSystemThread self;
   g_return_if_fail (mutex);
 
   if (!g_thread_supported ())
     return;
 
+  G_THREAD_UF (thread_self, (&self));
+
+  if (g_system_thread_equal (self, mutex->owner))
+    {
+      mutex->depth += depth;
+      return;
+    }
   g_static_mutex_lock (&mutex->mutex);
-  G_THREAD_UF (thread_self, (&mutex->owner));
+  g_system_thread_assign (mutex->owner, self);
   mutex->depth = depth;
 }
 
