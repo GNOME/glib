@@ -112,6 +112,7 @@ EXPORTS
 	g_date_get_day
 	g_date_get_day_of_year
 	g_date_get_days_in_month
+	g_date_get_iso8601_week_of_year
 	g_date_get_julian
 	g_date_get_monday_week_of_year
 	g_date_get_monday_weeks_in_year
@@ -822,6 +823,7 @@ EXPORTS
 	g_win32_ftruncate
 	g_win32_get_package_installation_directory
 	g_win32_get_package_installation_subdirectory
+	g_win32_get_windows_version
 	g_win32_getlocale
 	glib_binary_age
 	glib_check_version

@@ -1,3 +1,7 @@
+2004-09-03  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/glib.def: Update.
+
 Wed Sep  1 20:22:39 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/gdate.h:
