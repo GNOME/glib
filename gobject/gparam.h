@@ -73,7 +73,7 @@ struct _GParamSpec
   gchar         *name;
   GParamFlags    flags;
   GType		 value_type;
-  GType		 owner_type;	/* class using this property */
+  GType		 owner_type;	/* class or interface using this property */
 
   /*< private >*/
   gchar         *_nick;
@@ -122,6 +122,8 @@ void            g_param_spec_set_qdata_full	(GParamSpec    *pspec,
 						 GDestroyNotify destroy);
 gpointer        g_param_spec_steal_qdata	(GParamSpec    *pspec,
 						 GQuark         quark);
+GParamSpec*     g_param_spec_get_redirect_target (GParamSpec   *pspec);
+
 void		g_param_value_set_default	(GParamSpec    *pspec,
 						 GValue	       *value);
 gboolean	g_param_value_defaults		(GParamSpec    *pspec,

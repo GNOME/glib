@@ -1,3 +1,22 @@
+Tue Oct 14 17:40:19 2003  Owen Taylor  <otaylor@redhat.com>
+
+	* gparamspecs.[ch]: Add a new GParamSpecOverride type
+	that is a pointer to a different paramspec in a parent
+	class or interface.
+
+	* gparam.[ch]: Add g_paramspec_get_redirect_target()
+	which follows GParamSpecOverride to the real property.
+	Make g_param_spec_pool_list() hand redirections, 
+	properties on interfaces.
+
+	* gobject.[ch] gobjectnotifyqueue.c: Add
+	g_object_interface_install_property,
+	g_object_interface_find_property,
+	g_object_interface_list_properties(). Redirect virtually all
+	publically exposed GParamSpec's to the redirect target if
+	any. (->constructor is the exception.)
+	(#105894)
+
 Mon Oct 20 22:06:12 2003  Matthias Clasen  <maclas@gmx.de>
 
 	* gobject.h (struct  _GObjectClass): Add /*< public >*/

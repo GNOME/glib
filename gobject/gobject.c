@@ -97,6 +97,9 @@ static inline void	   object_set_property		(GObject        *object,
 							 const GValue   *value,
 							 GObjectNotifyQueue *nqueue);
 
+static void object_interface_check_properties           (gpointer        func_data,
+							 gpointer        g_iface);
+
 
 /* --- variables --- */
 static GQuark	            quark_closure_array = 0;
@@ -256,6 +259,30 @@ g_object_do_class_init (GObjectClass *class)
 		  g_cclosure_marshal_VOID__PARAM,
 		  G_TYPE_NONE,
 		  1, G_TYPE_PARAM);
+
+  /* Install a check function that we'll use to verify that classes that
+   * implement an interface implement all properties for that interface
+   */
+  g_type_add_interface_check (NULL, object_interface_check_properties);
+}
+
+static void
+install_property_internal (GType       g_type,
+			   guint       property_id,
+			   GParamSpec *pspec)
+{
+  if (g_param_spec_pool_lookup (pspec_pool, pspec->name, g_type, FALSE))
+    {
+      g_warning ("When installing property: type `%s' already has a property named `%s'",
+		 g_type_name (g_type),
+		 pspec->name);
+      return;
+    }
+
+  g_param_spec_ref (pspec);
+  g_param_spec_sink (pspec);
+  PARAM_SPEC_SET_PARAM_ID (pspec, property_id);
+  g_param_spec_pool_insert (pspec_pool, pspec, g_type);
 }
 
 void
@@ -276,18 +303,8 @@ g_object_class_install_property (GObjectClass *class,
   if (pspec->flags & (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY))
     g_return_if_fail (pspec->flags & G_PARAM_WRITABLE);
 
-  if (g_param_spec_pool_lookup (pspec_pool, pspec->name, G_OBJECT_CLASS_TYPE (class), FALSE))
-    {
-      g_warning (G_STRLOC ": class `%s' already contains a property named `%s'",
-		 G_OBJECT_CLASS_NAME (class),
-		 pspec->name);
-      return;
-    }
+  install_property_internal (G_OBJECT_CLASS_TYPE (class), property_id, pspec);
 
-  g_param_spec_ref (pspec);
-  g_param_spec_sink (pspec);
-  PARAM_SPEC_SET_PARAM_ID (pspec, property_id);
-  g_param_spec_pool_insert (pspec_pool, pspec, G_OBJECT_CLASS_TYPE (class));
   if (pspec->flags & (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY))
     class->construct_properties = g_slist_prepend (class->construct_properties, pspec);
 
@@ -299,17 +316,110 @@ g_object_class_install_property (GObjectClass *class,
     class->construct_properties = g_slist_remove (class->construct_properties, pspec);
 }
 
+void
+g_object_interface_install_property (gpointer      g_iface,
+				     GParamSpec   *pspec)
+{
+  GTypeInterface *iface_class = g_iface;
+	
+  g_return_if_fail (G_TYPE_IS_INTERFACE (iface_class->g_type));
+  g_return_if_fail (G_IS_PARAM_SPEC (pspec));
+  g_return_if_fail (!G_IS_PARAM_SPEC_OVERRIDE (pspec)); /* paranoid */
+  g_return_if_fail (PARAM_SPEC_PARAM_ID (pspec) == 0);	/* paranoid */
+		    
+  install_property_internal (iface_class->g_type, 0, pspec);
+}
+
 GParamSpec*
 g_object_class_find_property (GObjectClass *class,
 			      const gchar  *property_name)
 {
+  GParamSpec *pspec;
+  GParamSpec *redirect;
+	
   g_return_val_if_fail (G_IS_OBJECT_CLASS (class), NULL);
+  g_return_val_if_fail (property_name != NULL, NULL);
+  
+  pspec = g_param_spec_pool_lookup (pspec_pool,
+				    property_name,
+				    G_OBJECT_CLASS_TYPE (class),
+				    TRUE);
+  if (pspec)
+    {
+      redirect = g_param_spec_get_redirect_target (pspec);
+      if (redirect)
+	return redirect;
+      else
+	return pspec;
+    }
+  else
+    return NULL;
+}
+
+GParamSpec*
+g_object_interface_find_property (gpointer      g_iface,
+				  const gchar  *property_name)
+{
+  GTypeInterface *iface_class = g_iface;
+	
+  g_return_val_if_fail (G_TYPE_IS_INTERFACE (iface_class->g_type), NULL);
   g_return_val_if_fail (property_name != NULL, NULL);
   
   return g_param_spec_pool_lookup (pspec_pool,
 				   property_name,
-				   G_OBJECT_CLASS_TYPE (class),
-				   TRUE);
+				   iface_class->g_type,
+				   FALSE);
+}
+
+void
+g_object_class_override_property (GObjectClass *oclass,
+				  guint         property_id,
+				  const gchar  *name)
+{
+  GParamSpec *overridden = NULL;
+  GParamSpec *new;
+  GType parent_type;
+  
+  g_return_if_fail (G_IS_OBJECT_CLASS (oclass));
+  g_return_if_fail (property_id > 0);
+  g_return_if_fail (name != NULL);
+
+  /* Find the overridden property; first check parent types
+   */
+  parent_type = g_type_parent (G_OBJECT_CLASS_TYPE (oclass));
+  if (parent_type != G_TYPE_NONE)
+    overridden = g_param_spec_pool_lookup (pspec_pool,
+					   name,
+					   parent_type,
+					   TRUE);
+  if (!overridden)
+    {
+      GType *ifaces;
+      guint n_ifaces;
+      
+      /* Now check interfaces
+       */
+      ifaces = g_type_interfaces (G_OBJECT_CLASS_TYPE (oclass), &n_ifaces);
+      while (n_ifaces-- && !overridden)
+	{
+	  overridden = g_param_spec_pool_lookup (pspec_pool,
+						 name,
+						 ifaces[n_ifaces],
+						 FALSE);
+	}
+      
+      g_free (ifaces);
+    }
+
+  if (!overridden)
+    {
+      g_warning ("%s: Can't find property to override for '%s::%s'",
+		 G_STRLOC, G_OBJECT_CLASS_NAME (oclass), name);
+      return;
+    }
+
+  new = g_param_spec_override (name, overridden);
+  g_object_class_install_property (oclass, property_id, new);
 }
 
 GParamSpec** /* free result */
@@ -323,6 +433,25 @@ g_object_class_list_properties (GObjectClass *class,
 
   pspecs = g_param_spec_pool_list (pspec_pool,
 				   G_OBJECT_CLASS_TYPE (class),
+				   &n);
+  if (n_properties_p)
+    *n_properties_p = n;
+
+  return pspecs;
+}
+
+GParamSpec** /* free result */
+g_object_interface_list_properties (gpointer      g_iface,
+				    guint        *n_properties_p)
+{
+  GTypeInterface *iface_class = g_iface;
+  GParamSpec **pspecs;
+  guint n;
+
+  g_return_val_if_fail (G_TYPE_IS_INTERFACE (iface_class->g_type), NULL);
+
+  pspecs = g_param_spec_pool_list (pspec_pool,
+				   iface_class->g_type,
 				   &n);
   if (n_properties_p)
     *n_properties_p = n;
@@ -491,10 +620,15 @@ g_object_notify (GObject     *object,
     return;
   
   g_object_ref (object);
+  /* We don't need to get the redirect target
+   * (by, e.g. calling g_object_class_find_property())
+   * because g_object_notify_queue_add() does that
+   */
   pspec = g_param_spec_pool_lookup (pspec_pool,
 				    property_name,
 				    G_OBJECT_TYPE (object),
 				    TRUE);
+
   if (!pspec)
     g_warning ("%s: object class `%s' has no property named `%s'",
 	       G_STRLOC,
@@ -535,8 +669,14 @@ object_get_property (GObject     *object,
 		     GValue      *value)
 {
   GObjectClass *class = g_type_class_peek (pspec->owner_type);
+  guint param_id = PARAM_SPEC_PARAM_ID (pspec);
+  GParamSpec *redirect;
+
+  redirect = g_param_spec_get_redirect_target (pspec);
+  if (redirect)
+    pspec = redirect;    
   
-  class->get_property (object, PARAM_SPEC_PARAM_ID (pspec), value, pspec);
+  class->get_property (object, param_id, value, pspec);
 }
 
 static inline void
@@ -547,6 +687,12 @@ object_set_property (GObject             *object,
 {
   GValue tmp_value = { 0, };
   GObjectClass *class = g_type_class_peek (pspec->owner_type);
+  guint param_id = PARAM_SPEC_PARAM_ID (pspec);
+  GParamSpec *redirect;
+
+  redirect = g_param_spec_get_redirect_target (pspec);
+  if (redirect)
+    pspec = redirect;
 
   /* provide a copy to work from, convert (if necessary) and validate */
   g_value_init (&tmp_value, G_PARAM_SPEC_VALUE_TYPE (pspec));
@@ -568,10 +714,91 @@ object_set_property (GObject             *object,
     }
   else
     {
-      class->set_property (object, PARAM_SPEC_PARAM_ID (pspec), &tmp_value, pspec);
+      class->set_property (object, param_id, &tmp_value, pspec);
       g_object_notify_queue_add (object, nqueue, pspec);
     }
   g_value_unset (&tmp_value);
+}
+
+static void
+object_interface_check_properties (gpointer func_data,
+				   gpointer g_iface)
+{
+  GTypeInterface *iface_class = g_iface;
+  GObjectClass *class = g_type_class_peek (iface_class->g_instance_type);
+  GType iface_type = iface_class->g_type;
+  GParamSpec **pspecs;
+  guint n;
+
+  if (!G_IS_OBJECT_CLASS (class))
+    return;
+
+  pspecs = g_param_spec_pool_list (pspec_pool, iface_type, &n);
+
+  while (n--)
+    {
+      GParamSpec *class_pspec = g_param_spec_pool_lookup (pspec_pool,
+							  pspecs[n]->name,
+							  G_OBJECT_CLASS_TYPE (class),
+							  TRUE);
+      
+      if (!class_pspec)
+	{
+	  g_critical ("Object class %s doesn't implement property "
+		      "'%s' from interface '%s'",
+		      g_type_name (G_OBJECT_CLASS_TYPE (class)),
+		      pspecs[n]->name,
+		      g_type_name (iface_type));
+
+	  continue;
+	}
+
+      /* The implementation paramspec must have a less restrictive
+       * type than the interface parameter spec for set() and a
+       * more restrictive type for get(). We just require equality,
+       * rather than doing something more complicated checking
+       * the READABLE and WRITABLE flags. We also simplify here
+       * by only checking the value type, not the G_PARAM_SPEC_TYPE.
+       */
+      if (class_pspec &&
+	  !g_type_is_a (G_PARAM_SPEC_VALUE_TYPE (pspecs[n]),
+			G_PARAM_SPEC_VALUE_TYPE (class_pspec)))
+	{
+	  g_critical ("Property '%s' on class '%s' has type '%s' "
+		      "which is different from the type '%s', "
+		      "of the property on interface '%s'\n",
+		      pspecs[n]->name,
+		      g_type_name (G_OBJECT_CLASS_TYPE (class)),
+		      g_type_name (G_PARAM_SPEC_VALUE_TYPE (class_pspec)),
+		      g_type_name (G_PARAM_SPEC_VALUE_TYPE (pspecs[n])),
+		      g_type_name (iface_type));
+	}
+      
+#define SUBSET(a,b,mask) (((a) & ~(b) & (mask)) == 0)
+      
+      /* CONSTRUCT and CONSTRUCT_ONLY add restrictions.
+       * READABLE and WRITABLE remove restrictions. The implementation
+       * paramspec must have less restrictive flags.
+       */
+      if (class_pspec &&
+	  (!SUBSET (class_pspec->flags,
+		    pspecs[n]->flags,
+		    G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY) ||
+	   !SUBSET (pspecs[n]->flags,
+		    class_pspec->flags,
+		    G_PARAM_READABLE | G_PARAM_WRITABLE)))
+	{
+	  g_critical ("Flags for property '%s' on class '%s' "
+		      "are not compatible with the property on"
+		      "interface '%s'\n",
+		      pspecs[n]->name,
+		      g_type_name (G_OBJECT_CLASS_TYPE (class)),
+		      g_type_name (iface_type));
+	}
+#undef SUBSET	  
+    }
+  
+  g_free (pspecs);
 }
 
 gpointer

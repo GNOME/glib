@@ -966,6 +966,54 @@ param_object_values_cmp (GParamSpec   *pspec,
   return p1 < p2 ? -1 : p1 > p2;
 }
 
+static void
+param_override_init (GParamSpec *pspec)
+{
+  /* GParamSpecOverride *ospec = G_PARAM_SPEC_OVERRIDE (pspec); */
+}
+
+static void
+param_override_finalize (GParamSpec *pspec)
+{
+  GParamSpecOverride *ospec = G_PARAM_SPEC_OVERRIDE (pspec);
+  GParamSpecClass *parent_class = g_type_class_peek (g_type_parent (G_TYPE_PARAM_OVERRIDE));
+  
+  if (ospec->overridden)
+    {
+      g_param_spec_unref (ospec->overridden);
+      ospec->overridden = NULL;
+    }
+  
+  parent_class->finalize (pspec);
+}
+
+static void
+param_override_set_default (GParamSpec *pspec,
+			    GValue     *value)
+{
+  GParamSpecOverride *ospec = G_PARAM_SPEC_OVERRIDE (pspec);
+
+  g_param_value_set_default (ospec->overridden, value);
+}
+
+static gboolean
+param_override_validate (GParamSpec *pspec,
+			 GValue     *value)
+{
+  GParamSpecOverride *ospec = G_PARAM_SPEC_OVERRIDE (pspec);
+  
+  return g_param_value_validate (ospec->overridden, value);
+}
+
+static gint
+param_override_values_cmp (GParamSpec   *pspec,
+			   const GValue *value1,
+			   const GValue *value2)
+{
+  GParamSpecOverride *ospec = G_PARAM_SPEC_OVERRIDE (pspec);
+
+  return g_param_values_cmp (ospec->overridden, value1, value2);
+}
 
 /* --- type initialization --- */
 GType *g_param_spec_types = NULL;
@@ -973,7 +1021,7 @@ GType *g_param_spec_types = NULL;
 void
 g_param_spec_types_init (void)	/* sync with gtype.c */
 {
-  const guint n_types = 20;
+  const guint n_types = 21;
   GType type, *spec_types, *spec_types_bound;
 
   g_param_spec_types = g_new0 (GType, n_types);
@@ -1339,6 +1387,24 @@ g_param_spec_types_init (void)	/* sync with gtype.c */
     type = g_param_type_register_static ("GParamObject", &pspec_info);
     *spec_types++ = type;
     g_assert (type == G_TYPE_PARAM_OBJECT);
+  }
+
+  /* G_TYPE_PARAM_OVERRIDE
+   */
+  {
+    static const GParamSpecTypeInfo pspec_info = {
+      sizeof (GParamSpecOverride), /* instance_size */
+      16,                        /* n_preallocs */
+      param_override_init,	 /* instance_init */
+      G_TYPE_NONE,		 /* value_type */
+      param_override_finalize,	 /* finalize */
+      param_override_set_default, /* value_set_default */
+      param_override_validate,	  /* value_validate */
+      param_override_values_cmp,  /* values_cmp */
+    };
+    type = g_param_type_register_static ("GParamOverride", &pspec_info);
+    *spec_types++ = type;
+    g_assert (type == G_TYPE_PARAM_OVERRIDE);
   }
 
   g_assert (spec_types == spec_types_bound);
@@ -1830,4 +1896,34 @@ g_param_spec_object (const gchar *name,
   G_PARAM_SPEC (ospec)->value_type = object_type;
   
   return G_PARAM_SPEC (ospec);
+}
+
+GParamSpec*
+g_param_spec_override (const gchar *name,
+		       GParamSpec  *overridden)
+{
+  GParamSpec *pspec;
+  
+  g_return_val_if_fail (name != NULL, NULL);
+  g_return_val_if_fail (G_IS_PARAM_SPEC (overridden), NULL);
+  
+  /* Dereference further redirections for property that was passed in
+   */
+  while (TRUE)
+    {
+      GParamSpec *indirect = g_param_spec_get_redirect_target (overridden);
+      if (indirect)
+	overridden = indirect;
+      else
+	break;
+    }
+
+  pspec = g_param_spec_internal (G_TYPE_PARAM_OVERRIDE,
+				 name, NULL, NULL,
+				 overridden->flags);
+  
+  pspec->value_type = G_PARAM_SPEC_VALUE_TYPE (overridden);
+  G_PARAM_SPEC_OVERRIDE (pspec)->overridden = g_param_spec_ref (overridden);
+
+  return pspec;
 }

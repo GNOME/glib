@@ -118,6 +118,17 @@ GParamSpec* g_object_class_find_property      (GObjectClass   *oclass,
 					       const gchar    *property_name);
 GParamSpec**g_object_class_list_properties    (GObjectClass   *oclass,
 					       guint	      *n_properties);
+void        g_object_class_override_property  (GObjectClass   *oclass,
+					       guint           property_id,
+					       const gchar    *name);
+
+void        g_object_interface_install_property (gpointer     g_iface,
+						 GParamSpec  *pspec);
+GParamSpec* g_object_interface_find_property    (gpointer     g_iface,
+						 const gchar *property_name);
+GParamSpec**g_object_interface_list_properties  (gpointer     g_iface,
+						 guint       *n_properties_p);
+
 gpointer    g_object_new                      (GType           object_type,
 					       const gchar    *first_property_name,
 					       ...);

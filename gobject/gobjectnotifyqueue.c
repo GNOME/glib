@@ -142,8 +142,14 @@ g_object_notify_queue_add (GObject            *object,
 {
   if (pspec->flags & G_PARAM_READABLE)
     {
+      GParamSpec *redirect;
+
       g_return_if_fail (nqueue->n_pspecs < 65535);
-      
+
+      redirect = g_param_spec_get_redirect_target (pspec);
+      if (redirect)
+	pspec = redirect;
+	    
       /* we do the deduping in _thaw */
       nqueue->pspecs = g_slist_prepend (nqueue->pspecs, pspec);
       nqueue->n_pspecs++;

@@ -93,6 +93,9 @@ G_BEGIN_DECLS
 #define	G_TYPE_PARAM_OBJECT		   (g_param_spec_types[19])
 #define G_IS_PARAM_SPEC_OBJECT(pspec)      (G_TYPE_CHECK_INSTANCE_TYPE ((pspec), G_TYPE_PARAM_OBJECT))
 #define G_PARAM_SPEC_OBJECT(pspec)         (G_TYPE_CHECK_INSTANCE_CAST ((pspec), G_TYPE_PARAM_OBJECT, GParamSpecObject))
+#define	G_TYPE_PARAM_OVERRIDE		   (g_param_spec_types[20])
+#define G_IS_PARAM_SPEC_OVERRIDE(pspec)    (G_TYPE_CHECK_INSTANCE_TYPE ((pspec), G_TYPE_PARAM_OVERRIDE))
+#define G_PARAM_SPEC_OVERRIDE(pspec)       (G_TYPE_CHECK_INSTANCE_CAST ((pspec), G_TYPE_PARAM_OVERRIDE, GParamSpecOverride))
 
 
 /* --- typedefs & structures --- */
@@ -116,6 +119,7 @@ typedef struct _GParamSpecBoxed      GParamSpecBoxed;
 typedef struct _GParamSpecPointer    GParamSpecPointer;
 typedef struct _GParamSpecValueArray GParamSpecValueArray;
 typedef struct _GParamSpecObject     GParamSpecObject;
+typedef struct _GParamSpecOverride   GParamSpecOverride;
 
 struct _GParamSpecChar
 {
@@ -258,6 +262,12 @@ struct _GParamSpecObject
 {
   GParamSpec    parent_instance;
 };
+struct _GParamSpecOverride
+{
+  /*< private >*/
+  GParamSpec    parent_instance;
+  GParamSpec   *overridden;
+};
 
 /* --- GParamSpec prototypes --- */
 GParamSpec*	g_param_spec_char	 (const gchar	 *name,
@@ -382,6 +392,8 @@ GParamSpec*	g_param_spec_object	 (const gchar	 *name,
 					  GType		  object_type,
 					  GParamFlags	  flags);
 
+GParamSpec*     g_param_spec_override    (const gchar    *name,
+					  GParamSpec     *overridden);
 
 /* --- internal --- */
 /* We prefix variable declarations so they can
