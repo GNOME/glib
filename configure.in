@@ -707,9 +707,9 @@ case $have_threads in
 			
 			LIBS="$glib_save_LIBS $add_thread_lib"
 			
-			AC_MSG_CHECKING(for pthread_create$IN)
+			AC_MSG_CHECKING(for pthread_join$IN)
 			AC_TRY_LINK([#include <pthread.h>],
-				[pthread_create(NULL,NULL,NULL,NULL)],
+				[pthread_join(NULL,NULL)],
 				[AC_MSG_RESULT(yes)
 				G_THREAD_LIBS="$add_thread_lib"
 				break],

@@ -1,3 +1,10 @@
+1999-07-07  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* configure.in: Test for pthread_join rather than for
+	pthread_create to determine the right thread-lib. Makes it work on
+	mips-sgi-irix6.5. Hitn from to Jari Vuoksenranta
+	<javu@piano.ux.phys.jyu.fi>.
+
 1999-07-02  Tor Lillqvist  <tml@iki.fi>
 
 	* README.win32: Note about need to fix another bug in the mingw32
