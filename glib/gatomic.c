@@ -530,6 +530,7 @@ g_atomic_pointer_compare_and_exchange (gpointer *atomic,
   return result;
 }
 
+#ifdef G_ATOMIC_OP_MEMORY_BARRIER_NEEDED
 gint
 g_atomic_int_get (gint *atomic)
 {
@@ -552,7 +553,8 @@ g_atomic_pointer_get (gpointer *atomic)
   G_UNLOCK (g_atomic_lock);
 
   return result;
-}   
+}
+#endif /* G_ATOMIC_OP_MEMORY_BARRIER_NEEDED */   
 #elif defined (G_ATOMIC_OP_MEMORY_BARRIER_NEEDED)
 gint
 g_atomic_int_get (gint *atomic)

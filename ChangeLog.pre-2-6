@@ -1,3 +1,8 @@
+2004-03-01  Sebastian Wilhelmi  <seppi@seppi.de>
+
+	* glib/gatomic.c: Define g_atomic_(int|pointer)_get only for
+	G_ATOMIC_OP_MEMORY_BARRIER_NEEDED. Spotted by Hans Breuer.
+
 Sun Feb 29 21:42:47 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gmain.c: Fix leftover references to 
