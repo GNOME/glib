@@ -662,16 +662,21 @@ unescape_text (GMarkupParseContext *context,
 static gboolean
 advance_char (GMarkupParseContext *context)
 {
+  g_return_val_if_fail (context->iter != context->current_text_end, FALSE);
 
   context->iter = g_utf8_next_char (context->iter);
   context->char_number += 1;
+
+  if (context->iter == context->current_text_end)
+    return FALSE;
+
   if (*context->iter == '\n')
     {
       context->line_number += 1;
       context->char_number = 1;
     }
 
-  return context->iter != context->current_text_end;
+  return TRUE;
 }
 
 static gboolean
