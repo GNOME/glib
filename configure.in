@@ -450,6 +450,7 @@ esac
 
 dnl Initialize libtool
 AM_DISABLE_STATIC
+AC_LIBTOOL_WIN32_DLL
 AM_PROG_LIBTOOL
 
 if test "x$GCC" = "xyes"; then
