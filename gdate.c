@@ -802,7 +802,8 @@ g_date_set_month (GDate     *d,
 {
   g_return_if_fail (d != NULL);
   g_return_if_fail (g_date_valid_month (m));
-  
+
+  if (d->julian && !d->dmy) g_date_update_dmy(d);
   d->julian = FALSE;
   
   d->month = m;
@@ -820,6 +821,7 @@ g_date_set_day (GDate     *d,
   g_return_if_fail (d != NULL);
   g_return_if_fail (g_date_valid_day (day));
   
+  if (d->julian && !d->dmy) g_date_update_dmy(d);
   d->julian = FALSE;
   
   d->day = day;
@@ -837,6 +839,7 @@ g_date_set_year (GDate     *d,
   g_return_if_fail (d != NULL);
   g_return_if_fail (g_date_valid_year (y));
   
+  if (d->julian && !d->dmy) g_date_update_dmy(d);
   d->julian = FALSE;
   
   d->year = y;

@@ -1,5 +1,13 @@
 1998-12-02  Havoc Pennington  <hp@pobox.com>
 
+	* gdate.c (g_date_set_month): If Julian is valid, we have to 
+	update the dmy representation before setting the components
+	of it.
+	(g_date_set_day): Same.
+	(g_date_set_year): Same.
+
+1998-12-02  Havoc Pennington  <hp@pobox.com>
+
 	* testgdate.c, testgdateparser.c: Two new files. This is kind of 
 	ugly code, but I want to go ahead and make the tests available. 
 	It isn't contaminating any other code. :-) Since one of these 
