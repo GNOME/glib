@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.glib-2-4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-05-08 10:11+0200\n"
+"POT-Creation-Date: 2004-06-04 09:50-0400\n"
 "PO-Revision-Date: 2004-05-08 10:11+0200\n"
 "Last-Translator: Laurent Dhima <laurenti@alblinux.net>\n"
 "Language-Team: Albanian <gnome-albanian-perkthyesit@lists.sourceforge.net>\n"
@@ -165,7 +165,8 @@ msgstr "Kanali përfundon me një simbol të pjesëshëm"
 
 #: glib/giochannel.c:1682
 msgid "Can't do a raw read in g_io_channel_read_to_end"
-msgstr "I pamundur leximi i të dhënave të papërpunuara tek g_io_channel_read_to_end"
+msgstr ""
+"I pamundur leximi i të dhënave të papërpunuara tek g_io_channel_read_to_end"
 
 #: glib/gmarkup.c:223
 #, c-format
@@ -178,7 +179,8 @@ msgid "Error on line %d: %s"
 msgstr "Gabim tek rreshti %d: %s"
 
 #: glib/gmarkup.c:412
-msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "U gjet një entitet bosh '&;'; entitetet e vlefshme janë: &amp; &quot; &lt; "
 "&gt; &apos;"
@@ -247,15 +249,15 @@ msgstr "Riferim entiteti i papërfunduar"
 msgid "Unfinished character reference"
 msgstr "Referim i papërfunduar i simbolit"
 
-#: glib/gmarkup.c:888 glib/gmarkup.c:916 glib/gmarkup.c:947
+#: glib/gmarkup.c:893 glib/gmarkup.c:921 glib/gmarkup.c:952
 msgid "Invalid UTF-8 encoded text"
 msgstr "Tekst i kodifikuar UTF-8 i pavlefshëm"
 
-#: glib/gmarkup.c:983
+#: glib/gmarkup.c:988
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Dokumenti duhet të fillojë me një element (p.sh. <book>)"
 
-#: glib/gmarkup.c:1022
+#: glib/gmarkup.c:1027
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -264,7 +266,7 @@ msgstr ""
 "'%s' nuk është një simbol i vlefshëm mbas simbolit '<', nuk mund të fillojë "
 "me emrin e një elementi"
 
-#: glib/gmarkup.c:1085
+#: glib/gmarkup.c:1090
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
@@ -273,14 +275,15 @@ msgstr ""
 "U gjet simboli '%s', në pritje të një simboli '>' për të përfunduar tag-un e "
 "fillimit të elementit '%s'"
 
-#: glib/gmarkup.c:1172
+#: glib/gmarkup.c:1177
 #, c-format
-msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgid ""
+"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "U gjet simboli '%s', përkundrazi pritej një '=' mbas emrit të atributit '%s' "
 "të elementit '%s'"
 
-#: glib/gmarkup.c:1213
+#: glib/gmarkup.c:1218
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -292,7 +295,7 @@ msgstr ""
 "shumë mundësi të keni përdorur një simbol të pavlefshëm tek emri i një "
 "atributi"
 
-#: glib/gmarkup.c:1296
+#: glib/gmarkup.c:1301
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -301,7 +304,7 @@ msgstr ""
 "U gjet simboli '%s', pritet simboli i kuotës së hapur mbas shenjës së "
 "barazimit për t'i caktuar një vlerë atributit '%s' të elementit '%s'"
 
-#: glib/gmarkup.c:1436
+#: glib/gmarkup.c:1441
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -310,7 +313,7 @@ msgstr ""
 "'%s' nuk është një simbol i vlefshëm mbrapa simboleve '</'; '%s' nuk mund të "
 "nisë emrin e një elementi"
 
-#: glib/gmarkup.c:1474
+#: glib/gmarkup.c:1479
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -319,25 +322,27 @@ msgstr ""
 "'%s' nuk është një simbol i vlefshëm për të vazhduar mbylljen e emrit të "
 "elementit '%s'; simboli i lejuar është '>'"
 
-#: glib/gmarkup.c:1485
+#: glib/gmarkup.c:1490
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "Elementi '%s' është mbyllur, asnjë element aktualisht është i hapur"
 
-#: glib/gmarkup.c:1494
+#: glib/gmarkup.c:1499
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
-msgstr "Elementi '%s' është mbyllur, por elementi aktualisht i hapur është '%s'"
+msgstr ""
+"Elementi '%s' është mbyllur, por elementi aktualisht i hapur është '%s'"
 
-#: glib/gmarkup.c:1641
+#: glib/gmarkup.c:1646
 msgid "Document was empty or contained only whitespace"
 msgstr "Dokumenti ishte bosh apo përmbante vetëm hapësira të bardha"
 
-#: glib/gmarkup.c:1655
+#: glib/gmarkup.c:1660
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
-msgstr "Dokumenti u mbyll papritur, menjëherë pas hapjes së kllapës këndore '<'"
+msgstr ""
+"Dokumenti u mbyll papritur, menjëherë pas hapjes së kllapës këndore '<'"
 
-#: glib/gmarkup.c:1663 glib/gmarkup.c:1707
+#: glib/gmarkup.c:1668 glib/gmarkup.c:1712
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -346,26 +351,26 @@ msgstr ""
 "Dokumenti u mbyll papritur me elementë akoma të hapur - '%s' ishte elementi "
 "i fundit i hapur"
 
-#: glib/gmarkup.c:1671
+#: glib/gmarkup.c:1676
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
 "the tag <%s/>"
 msgstr "Dokumenti u mbyll papritur, pritet simboli i mbylljes për tag-un <%s/>"
 
-#: glib/gmarkup.c:1677
+#: glib/gmarkup.c:1682
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Dokumenti përfundoi papritur në brendësi të emrit të një elementi"
 
-#: glib/gmarkup.c:1682
+#: glib/gmarkup.c:1687
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Dokumenti u mbyll papritur në brendësi të emrit të një atributi"
 
-#: glib/gmarkup.c:1687
+#: glib/gmarkup.c:1692
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Dokumenti u mbyll papritur brënda një tag-u hapës të elementit"
 
-#: glib/gmarkup.c:1693
+#: glib/gmarkup.c:1698
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -373,16 +378,17 @@ msgstr ""
 "Dokumenti u mbyll papritur mbas shenjës së barazimit që vjen mbas emrit të "
 "një atributi; atributi nuk ka vlerë"
 
-#: glib/gmarkup.c:1700
+#: glib/gmarkup.c:1705
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Dokumenti u mbyll papritur në brendësi të vlerës së një atributi"
 
-#: glib/gmarkup.c:1715
+#: glib/gmarkup.c:1720
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
-msgstr "Dokumenti u mbyll papritur në brendësi të tag-ut mbyllës të elementit '%s'"
+msgstr ""
+"Dokumenti u mbyll papritur në brendësi të tag-ut mbyllës të elementit '%s'"
 
-#: glib/gmarkup.c:1721
+#: glib/gmarkup.c:1726
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Dokumenti u mbyll papritur në brendësi të një komenti apo instruksioni "
@@ -480,7 +486,8 @@ msgstr "I pamundur zbatimi i proçesit bir \"%s\" (%s)"
 #: glib/gspawn.c:1237
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
-msgstr "I pamundur ridrejtimi i të dhënave në hyrje apo dalje të proçesit bir (%s)"
+msgstr ""
+"I pamundur ridrejtimi i të dhënave në hyrje apo dalje të proçesit bir (%s)"
 
 #: glib/gspawn.c:1246
 #, c-format
@@ -495,7 +502,8 @@ msgstr "Gabim i panjohur gjatë ekzekutimit të proçesit bir \"%s\""
 #: glib/gspawn.c:1276
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
-msgstr "I pamundur leximi i një sasie të dhënash të mjaftueshme nga pid pipe bir (%s)"
+msgstr ""
+"I pamundur leximi i një sasie të dhënash të mjaftueshme nga pid pipe bir (%s)"
 
 #: glib/gutf8.c:985
 msgid "Character out of range for UTF-8"
@@ -509,4 +517,3 @@ msgstr "Sekuencë e pavlefshme në hyrje për konvertimin"
 #: glib/gutf8.c:1376 glib/gutf8.c:1472
 msgid "Character out of range for UTF-16"
 msgstr "Simboli nuk ekziston në UTF-16"
-

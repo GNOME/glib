@@ -1,3 +1,9 @@
+2004-06-04  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.4.2 ===
+
+	* NEWS: Updates
+
 Tue Jun  1 21:56:31 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/gmarkup.c (advance_char): Fix an off-by-one error 
@@ -64,6 +70,14 @@ Sun May  2 03:51:59 2004  Manish Singh  <yosh@gimp.org>
 	* glib/gnulib/Makefile.am : added makefile.msc to EXTRA_DIST
 	fixes #141563, Steve Lhomme
 
+2004-04-30  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.4.1 ===
+
+	* configure.in: Version 2.4.1, interface age 1. 
+
+	* NEWS: Updates
+	
 2004-04-25  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/gwin32.c (g_win32_get_package_installation_subdirectory):

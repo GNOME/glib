@@ -1,3 +1,14 @@
+Overview of Changes from GLib 2.4.1 to GLib 2.4.2
+=================================================
+
+* Win32 bug fixes 
+ - make printf accept ll format modifier [Tor Lillqvist]
+ - only believe HOME if it is an absolute path an exists [Tor]
+* Other bug fixes (Steve Lhomme, Tor, Hans Breuer, Manish Singh, 
+  Owen Taylor, Matthias Clasen, Nikolai Weibull, Benoît Carpentier, 
+  Morten Welinder)
+* New and updated translations (de,it,ja,ko,no,pt_BR,sq,wa,zh_CN)
+
 Overview of Changes from GLib 2.4.0 to GLib 2.4.1
 =================================================
 
