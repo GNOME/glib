@@ -41,33 +41,56 @@
 #include <unistd.h>
 #endif
 
-#define posix_print_error( name, num )					\
-  g_error( "file %s: line %d (%s): error %s during %s",			\
+#define posix_check_err(err, name) G_STMT_START{			\
+  int error = (err); 							\
+  if (error)	 		 		 			\
+    g_error ("file %s: line %d (%s): error %s during %s",		\
            __FILE__, __LINE__, G_GNUC_PRETTY_FUNCTION,			\
-           g_strerror((num)), #name )
+           g_strerror (error), name);					\
+  }G_STMT_END
+
+#define posix_check_cmd(cmd) posix_check_err (posix_error (cmd), #cmd)
+
+#ifdef G_ENABLE_DEBUG
+static gboolean posix_check_cmd_prio_warned = FALSE;
+# define posix_check_cmd_prio(cmd) G_STMT_START{			\
+    int err = posix_error (cmd);					\
+    if (err == EPERM)		 		 			\
+      { 	 			 				\
+        if (!posix_check_cmd_prio_warned) 		 		\
+          { 	 				 			\
+            posix_check_cmd_prio_warned = TRUE;		 		\
+            g_warning ("Priorities can only be changed by root."); 	\
+          }			 					\
+      }			 						\
+    else  		 						\
+      posix_check_err (err, #cmd);					\
+     }G_STMT_END
+#else /* G_ENABLE_DEBUG */
+# define posix_check_cmd_prio(cmd) G_STMT_START{			\
+    int err = posix_error (cmd);					\
+    if (err != EPERM)		 		 			\
+      posix_check_err (err, #cmd);					\
+     }G_STMT_END
+#endif /* G_ENABLE_DEBUG */
 
 #if defined(G_THREADS_IMPL_POSIX)
-# define posix_check_for_error( what ) G_STMT_START{			\
-    int error = (what);							\
-    if( error ) { posix_print_error( what, error ); }			\
-    }G_STMT_END
+# define posix_error(what) (what)
 # define mutexattr_default NULL
 # define condattr_default NULL
 #elif defined(G_THREADS_IMPL_DCE)
-# define posix_check_for_error( what ) G_STMT_START{			\
-    if( (what) == -1 ) { posix_print_error( what, errno ); }		\
-    }G_STMT_END
+# define posix_error(what) ((what) == -1 ? errno : 0)
 # define pthread_key_create(a, b) pthread_keycreate (a, b)
 # define pthread_attr_init(a) pthread_attr_create (a)
 # define pthread_attr_destroy(a) pthread_attr_delete (a)
-# define pthread_create(a, b, c, d) pthread_create(a, *b, c, d) 
+# define pthread_create(a, b, c, d) pthread_create (a, *b, c, d) 
 # define mutexattr_default (pthread_mutexattr_default)
 # define condattr_default (pthread_condattr_default)
 #else /* neither G_THREADS_IMPL_POSIX nor G_THREADS_IMPL_DCE are defined */
 # error This should not happen. Contact the GLib team.
 #endif
 
-#if defined(POSIX_MIN_PRIORITY) && defined(POSIX_MAX_PRIORITY)
+#if defined (POSIX_MIN_PRIORITY) && defined (POSIX_MAX_PRIORITY)
 #  define HAVE_PRIORITIES 1
 #endif
 
@@ -92,15 +115,15 @@ static GMutex *
 g_mutex_new_posix_impl (void)
 {
   GMutex *result = (GMutex *) g_new (pthread_mutex_t, 1);
-  posix_check_for_error (pthread_mutex_init ((pthread_mutex_t *) result, 
-					     mutexattr_default));
+  posix_check_cmd (pthread_mutex_init ((pthread_mutex_t *) result, 
+				       mutexattr_default));
   return result;
 }
 
 static void
 g_mutex_free_posix_impl (GMutex * mutex)
 {
-  posix_check_for_error (pthread_mutex_destroy ((pthread_mutex_t *) mutex));
+  posix_check_cmd (pthread_mutex_destroy ((pthread_mutex_t *) mutex));
   g_free (mutex);
 }
 
@@ -126,7 +149,7 @@ g_mutex_trylock_posix_impl (GMutex * mutex)
     return FALSE;
 #endif
 
-  posix_check_for_error (result);
+  posix_check_err (posix_error (result), "pthread_mutex_trylock");
   return TRUE;
 }
 
@@ -134,8 +157,8 @@ static GCond *
 g_cond_new_posix_impl (void)
 {
   GCond *result = (GCond *) g_new (pthread_cond_t, 1);
-  posix_check_for_error (pthread_cond_init ((pthread_cond_t *) result, 
-					    condattr_default));
+  posix_check_cmd (pthread_cond_init ((pthread_cond_t *) result, 
+				      condattr_default));
   return result;
 }
 
@@ -178,14 +201,14 @@ g_cond_timed_wait_posix_impl (GCond * cond,
 #endif
 
   if (!timed_out)
-    posix_check_for_error (result);
+    posix_check_err (posix_error (result), "pthread_cond_timedwait");
   return !timed_out;
 }
 
 static void
 g_cond_free_posix_impl (GCond * cond)
 {
-  posix_check_for_error (pthread_cond_destroy ((pthread_cond_t *) cond));
+  posix_check_cmd (pthread_cond_destroy ((pthread_cond_t *) cond));
   g_free (cond);
 }
 
@@ -193,8 +216,7 @@ static GPrivate *
 g_private_new_posix_impl (GDestroyNotify destructor)
 {
   GPrivate *result = (GPrivate *) g_new (pthread_key_t, 1);
-  posix_check_for_error (pthread_key_create ((pthread_key_t *) result,
-					     destructor));
+  posix_check_cmd (pthread_key_create ((pthread_key_t *) result, destructor));
   return result;
 }
 
@@ -219,8 +241,8 @@ g_private_get_posix_impl (GPrivate * private_key)
 #else /* G_THREADS_IMPL_DCE */
   {
     void* data;
-    posix_check_for_error (pthread_getspecific (*(pthread_key_t *) 
-						private_key, &data));
+    posix_check_cmd (pthread_getspecific (*(pthread_key_t *) private_key, 
+					  &data));
     return data;
   }
 #endif
@@ -241,13 +263,13 @@ g_thread_create_posix_impl (GThreadFunc thread_func,
 
   g_return_if_fail (thread_func);
 
-  posix_check_for_error (pthread_attr_init (&attr));
+  posix_check_cmd (pthread_attr_init (&attr));
   
 #ifdef HAVE_PTHREAD_ATTR_SETSTACKSIZE
   if (stack_size)
     {
       stack_size = MAX (g_thread_min_stack_size, stack_size);
-      posix_check_for_error (pthread_attr_setstacksize (&attr, stack_size));
+      posix_check_cmd (pthread_attr_setstacksize (&attr, stack_size));
     }
 #endif /* HAVE_PTHREAD_ATTR_SETSTACKSIZE */
 
@@ -259,7 +281,7 @@ g_thread_create_posix_impl (GThreadFunc thread_func,
 #endif /* PTHREAD_SCOPE_SYSTEM */
 
 #ifdef G_THREADS_IMPL_POSIX
-  posix_check_for_error (pthread_attr_setdetachstate (&attr,
+  posix_check_cmd (pthread_attr_setdetachstate (&attr,
           joinable ? PTHREAD_CREATE_JOINABLE : PTHREAD_CREATE_DETACHED));
 #endif /* G_THREADS_IMPL_POSIX */
   
@@ -267,26 +289,20 @@ g_thread_create_posix_impl (GThreadFunc thread_func,
 # ifdef G_THREADS_IMPL_POSIX
   {
     struct sched_param sched;
-    posix_check_for_error (pthread_attr_getschedparam (&attr, &sched));
+    posix_check_cmd (pthread_attr_getschedparam (&attr, &sched));
     sched.sched_priority = g_thread_map_priority (priority);
-    posix_check_for_error (pthread_attr_setschedparam (&attr, &sched));
+    posix_check_cmd_prio (pthread_attr_setschedparam (&attr, &sched));
   }
 # else /* G_THREADS_IMPL_DCE */
-  posix_check_for_error 
+  posix_check_cmd_prio 
     (pthread_attr_setprio (&attr, g_thread_map_priority (priority)));
 # endif /* G_THREADS_IMPL_DCE */
 #endif /* HAVE_PRIORITIES */
 
-  ret = pthread_create (thread, &attr, (void* (*)(void*))thread_func, arg);
+  ret = posix_error (pthread_create (thread, &attr, 
+				     (void* (*)(void*))thread_func, arg));
   
-#ifdef G_THREADS_IMPL_DCE
-  if (ret == -1) 
-    ret = errno;
-  else
-    ret = 0;
-#endif /* G_THREADS_IMPL_DCE */
-
-  posix_check_for_error (pthread_attr_destroy (&attr));
+  posix_check_cmd (pthread_attr_destroy (&attr));
 
   if (ret == EAGAIN)
     {
@@ -295,11 +311,11 @@ g_thread_create_posix_impl (GThreadFunc thread_func,
       return;
     }
 
-  posix_check_for_error (ret);
+  posix_check_err (ret, "pthread_create");
 
 #ifdef G_THREADS_IMPL_DCE
   if (!joinable)
-    posix_check_for_error (pthread_detach (thread));
+    posix_check_cmd (pthread_detach (thread));
 #endif /* G_THREADS_IMPL_DCE */
 }
 
@@ -313,8 +329,7 @@ static void
 g_thread_join_posix_impl (gpointer thread)
 {     
   gpointer ignore;
-  posix_check_for_error (pthread_join (*(pthread_t*)thread, 
-				       &ignore));
+  posix_check_cmd (pthread_join (*(pthread_t*)thread, &ignore));
 }
 
 static void 
@@ -330,14 +345,14 @@ g_thread_set_priority_posix_impl (gpointer thread, GThreadPriority priority)
 # ifdef G_THREADS_IMPL_POSIX
   struct sched_param sched;
   int policy;
-  posix_check_for_error (pthread_getschedparam (*(pthread_t*)thread, 
-						&policy, &sched));
+  posix_check_cmd (pthread_getschedparam (*(pthread_t*)thread, &policy, 
+					  &sched));
   sched.sched_priority = g_thread_map_priority (priority);
-  posix_check_for_error (pthread_setschedparam (*(pthread_t*)thread, 
-						policy, &sched));
+  posix_check_cmd_prio (pthread_setschedparam (*(pthread_t*)thread, policy, 
+					       &sched));
 # else /* G_THREADS_IMPL_DCE */
-  posix_check_for_error (pthread_setprio (*(pthread_t*)thread, 
-					  g_thread_map_priority (priority)));
+  posix_check_cmd_prio (pthread_setprio (*(pthread_t*)thread, 
+					 g_thread_map_priority (priority)));
 # endif
 #endif /* HAVE_PRIORITIES */
 }
