@@ -1,8 +1,11 @@
+Fri Jan 16 21:45:56 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gstring.c (g_string_ascii_up): Forgot to fix this one.
+
 Thu Jan 15 22:35:04 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/gstring.c (g_string_up): 
 	* glib/gstring.c (g_string_down): 
-	* glib/gstring.c (g_string_ascii_up): 
 	* glib/gstring.c (g_string_ascii_down): Move initialization of
 	variables after g_return_val_if_fail.  (#131564, Olivier Poncet)
 

@@ -733,10 +733,11 @@ GString*
 g_string_ascii_up (GString *string)
 {
   gchar *s;
-  gint n = string->len;
+  gint n;
 
   g_return_val_if_fail (string != NULL, NULL);
 
+  n = string->len;
   s = string->str;
 
   while (n)
