@@ -8,7 +8,7 @@
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the GNU
  * Library General Public License for more details.
  *
  * You should have received a copy of the GNU Library General Public
@@ -61,7 +61,7 @@ gchar*		g_module_error		   (void);
 /* retrive a symbol pointer from `module', returns TRUE on success */
 gboolean	g_module_symbol		   (GModule		*module,
 					    const gchar		*symbol_name,
-					    gconstpointer       *symbol);
+					    gconstpointer	*symbol);
 
 /* retrive the file name from an existing module */
 gchar*		g_module_name		   (GModule		*module);

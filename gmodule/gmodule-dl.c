@@ -8,7 +8,7 @@
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the GNU
  * Library General Public License for more details.
  *
  * You should have received a copy of the GNU Library General Public
@@ -36,6 +36,15 @@
  * harmless defaults.
  * The Perl sources say, RTLD_LAZY needs to be defined as (1),
  * at least for Solaris 1.
+ *
+ * Mandatory:
+ * RTLD_LAZY   - resolve undefined symbols as code from the dynamic library
+ *		 is executed.
+ * RTLD_NOW    - resolve all undefined symbols before dlopen returns, and fail
+ *		 if this cannot be done.
+ * Optionally:
+ * RTLD_GLOBAL - the external symbols defined in the library will be made
+ *		 available to subsequently loaded libraries.
  */
 #ifndef	RTLD_GLOBAL
 #define	RTLD_GLOBAL	0
@@ -51,14 +60,14 @@
 /* --- functions --- */
 static gpointer
 _g_module_open (const gchar    *file_name,
-		gboolean        bind_lazy)
+		gboolean	bind_lazy)
 {
   gpointer handle;
-
+  
   handle = dlopen (file_name, RTLD_GLOBAL | (bind_lazy ? RTLD_LAZY : RTLD_NOW));
   if (!handle)
     g_module_set_error (dlerror ());
-
+  
   return handle;
 }
 
@@ -66,43 +75,43 @@ static gpointer
 _g_module_self (void)
 {
   gpointer handle;
-
+  
   /* to query symbols from the program itself, special link options
    * are required on some systems.
    */
-
+  
   handle = dlopen (NULL, RTLD_GLOBAL | RTLD_LAZY);
   if (!handle)
     g_module_set_error (dlerror ());
-
+  
   return handle;
 }
 
 static void
-_g_module_close (gpointer        *handle_p,
-		 gboolean         is_unref)
+_g_module_close (gpointer	  handle,
+		 gboolean	  is_unref)
 {
   /* are there any systems out there that have dlopen()/dlclose()
    * without a reference count implementation?
    */
   is_unref |= 1;
-
+  
   if (is_unref)
     {
-      if (dlclose (*handle_p) != 0)
+      if (dlclose (handle) != 0)
 	g_module_set_error (dlerror ());
     }
 }
 
 static gpointer
-_g_module_symbol (gpointer       *handle_p,
-		  const gchar    *symbol_name)
+_g_module_symbol (gpointer	  handle,
+		  const gchar	 *symbol_name)
 {
   gpointer p;
-
-  p = dlsym (*handle_p, symbol_name);
+  
+  p = dlsym (handle, symbol_name);
   if (!p)
     g_module_set_error (dlerror ());
-
+  
   return p;
 }

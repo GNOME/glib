@@ -8,7 +8,7 @@
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the GNU
  * Library General Public License for more details.
  *
  * You should have received a copy of the GNU Library General Public
@@ -24,9 +24,10 @@
 
 /* We maintain a list of modules, so we can reference count them.
  * That's needed because some platforms don't support refernce counts on
- * modules (http://www.stat.umn.edu/~luke/xls/projects/dlbasics/dlbasics.html).
+ * modules e.g. the shl_* implementation of HP-UX
+ * (http://www.stat.umn.edu/~luke/xls/projects/dlbasics/dlbasics.html).
  * Also, the module for the program itself is kept seperatedly for
- * faster access.
+ * faster access and because it has special semantics.
  */
 
 
@@ -44,10 +45,10 @@ struct _GModule
 /* --- prototypes --- */
 static gpointer		_g_module_open		(const gchar	*file_name,
 						 gboolean	 bind_lazy);
-static void		_g_module_close		(gpointer	*handle_p,
+static void		_g_module_close		(gpointer	 handle,
 						 gboolean	 is_unref);
 static gpointer		_g_module_self		(void);
-static gpointer		_g_module_symbol	(gpointer	*handle_p,
+static gpointer		_g_module_symbol	(gpointer	 handle,
 						 const gchar	*symbol_name);
 static inline void	g_module_set_error	(const gchar	*error);
 static inline GModule*	g_module_find_by_handle (gpointer	 handle);
@@ -65,10 +66,10 @@ static inline GModule*
 g_module_find_by_handle (gpointer handle)
 {
   GModule *module;
-
+  
   if (main_module && main_module->handle == handle)
     return main_module;
-
+  
   for (module = modules; module; module = module->next)
     if (handle == module->handle)
       return module;
@@ -79,7 +80,7 @@ static inline GModule*
 g_module_find_by_name (const gchar *name)
 {
   GModule *module;
-
+  
   for (module = modules; module; module = module->next)
     if (strcmp (name, module->file_name) == 0)
       return module;
@@ -116,7 +117,7 @@ gboolean
 g_module_supported (void)
 {
   CHECK_ERROR (FALSE);
-
+  
   return TRUE;
 }
 
@@ -126,9 +127,9 @@ g_module_open (const gchar    *file_name,
 {
   GModule *module;
   gpointer handle;
-
+  
   CHECK_ERROR (NULL);
-
+  
   if (!file_name)
     {
       if (!main_module)
@@ -144,19 +145,19 @@ g_module_open (const gchar    *file_name,
 	      main_module->next = NULL;
 	    }
 	}
-
+      
       return main_module;
     }
-
+  
   /* we first search the module list by name */
   module = g_module_find_by_name (file_name);
   if (module)
     {
       module->ref_count++;
-
+      
       return module;
     }
-
+  
   /* open the module */
   handle = _g_module_open (file_name, (flags & G_MODULE_BIND_LAZY) != 0);
   if (handle)
@@ -164,22 +165,22 @@ g_module_open (const gchar    *file_name,
       gchar *saved_error;
       GModuleCheckInit check_init;
       gboolean check_failed = FALSE;
-
+      
       /* search the module list by handle, since file names are not unique */
       module = g_module_find_by_handle (handle);
       if (module)
 	{
-	  _g_module_close (&module->handle, TRUE);
+	  _g_module_close (module->handle, TRUE);
 	  module->ref_count++;
 	  g_module_set_error (NULL);
-
+	  
 	  return module;
 	}
-
+      
       saved_error = module_error;
       module_error = NULL;
       g_module_set_error (NULL);
-
+      
       module = g_new (GModule, 1);
       module->file_name = g_strdup (file_name);
       module->handle = handle;
@@ -187,15 +188,15 @@ g_module_open (const gchar    *file_name,
       module->de_init = NULL;
       module->next = modules;
       modules = module;
-
+      
       /* check initialization */
       if (g_module_symbol (module, "g_module_check_init", (gpointer) &check_init))
 	check_failed = check_init (module);
-
+      
       /* we don't call de_init() if the initialization check failed. */
       if (!check_failed)
 	g_module_symbol (module, "g_module_de_init", (gpointer) &module->de_init);
-
+      
       if (check_failed)
 	{
 	  g_module_close (module);
@@ -206,12 +207,12 @@ g_module_open (const gchar    *file_name,
 	g_module_set_error (saved_error);
       g_free (saved_error);
     }
-
+  
   return module;
 }
 
 gboolean
-g_module_close (GModule        *module)
+g_module_close (GModule	       *module)
 {
   CHECK_ERROR (FALSE);
   
@@ -227,7 +228,7 @@ g_module_close (GModule        *module)
     {
       GModule *last;
       GModule *node;
-
+      
       last = NULL;
       node = modules;
       while (node)
@@ -244,13 +245,13 @@ g_module_close (GModule        *module)
 	  node = last->next;
 	}
       module->next = NULL;
-
-      _g_module_close (&module->handle, FALSE);
+      
+      _g_module_close (module->handle, FALSE);
       g_free (module->file_name);
-
+      
       g_free (module);
     }
-
+  
   return module_error == NULL;
 }
 
@@ -261,32 +262,32 @@ g_module_error (void)
 }
 
 gboolean
-g_module_symbol (GModule        *module,
-		 const gchar    *symbol_name,
-		 gconstpointer  *symbol)
+g_module_symbol (GModule	*module,
+		 const gchar	*symbol_name,
+		 gconstpointer	*symbol)
 {
   if (symbol)
     *symbol = NULL;
   CHECK_ERROR (FALSE);
-
+  
   g_return_val_if_fail (module != NULL, FALSE);
   g_return_val_if_fail (symbol_name != NULL, FALSE);
   g_return_val_if_fail (symbol != NULL, FALSE);
-
+  
 #ifdef	G_MODULE_NEED_USCORE
   symbol_name = g_strconcat ("_", symbol_name, NULL);
-  *symbol = _g_module_symbol (&module->handle, symbol_name);
+  *symbol = _g_module_symbol (module->handle, symbol_name);
   g_free (symbol_name);
 #else	/* !G_MODULE_NEED_USCORE */
-  *symbol = _g_module_symbol (&module->handle, symbol_name);
+  *symbol = _g_module_symbol (module->handle, symbol_name);
 #endif	/* !G_MODULE_NEED_USCORE */
-
+  
   if (module_error)
     {
       *symbol = NULL;
       return FALSE;
     }
-
+  
   return TRUE;
 }
 
@@ -294,9 +295,9 @@ gchar*
 g_module_name (GModule *module)
 {
   g_return_val_if_fail (module != NULL, NULL);
-
+  
   if (module == main_module)
     return "main";
-
+  
   return module->file_name;
 }
