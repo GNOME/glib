@@ -23,7 +23,9 @@
 
 #include "config.h"
 
+#include <errno.h>
 #include <string.h> /* strerror, strcmp */
+
 #ifdef HAVE_DIRENT_H
 #include <dirent.h>
 #endif
@@ -128,9 +130,7 @@ g_dir_rewind (GDir *dir)
 void
 g_dir_close (GDir *dir)
 {
-  int ret = 0;
-
-  g_return_val_if_fail (dir != NULL, FALSE);
+  g_return_if_fail (dir != NULL);
 
   closedir (dir->dir);
   g_free (dir);

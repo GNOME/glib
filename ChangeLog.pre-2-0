@@ -1,3 +1,12 @@
+Sun Nov  4 20:45:21 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* configure.in (CFLAGS): Add check for dirent.h
+
+	* glib/glib.h glib/Makefile.am: Add gdir.
+
+	* glib/gdir.c (g_dir_close): Couple of small tweaks
+	now that it is actually compiling...
+
 Sun Nov  4 20:29:31 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gdir.[ch]: Indentation fixes, some rewriting of docs to
@@ -6,7 +15,7 @@ Sun Nov  4 20:29:31 2001  Owen Taylor  <otaylor@redhat.com>
 	* glib/gdir.[ch] (g_dir_close): Remove the boolean 
 	return value. What would you do if closing failed?
 	What would the user do if you printed a warning
-	message "closing directory %d failed"?
+	message "closing directory %s failed"?
 
 2001-11-04  Hans Breuer  <hans@breuer.org>
 

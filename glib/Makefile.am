@@ -41,6 +41,7 @@ libglib_1_3_la_SOURCES = 	\
 	gconvert.c		\
 	gdataset.c		\
 	gdate.c         	\
+	gdir.c			\
 	gerror.c		\
 	gfileutils.c		\
 	ghash.c			\
@@ -102,6 +103,7 @@ glibsubinclude_HEADERS =   \
 	gconvert.h	\
 	gdataset.h	\
 	gdate.h		\
+	gdir.h		\
 	gerror.h	\
 	gfileutils.h	\
 	ghash.h		\
