@@ -305,11 +305,6 @@ GParamSpec*	g_param_spec_string	 (const gchar	 *name,
 					  const gchar	 *blurb,
 					  const gchar	 *default_value,
 					  GParamFlags	  flags);
-GParamSpec*	g_param_spec_stringc	 (const gchar	 *name,
-					  const gchar	 *nick,
-					  const gchar	 *blurb,
-					  const gchar	 *default_value,
-					  GParamFlags	  flags);
 GParamSpec*	g_param_spec_param	 (const gchar	 *name,
 					  const gchar	 *nick,
 					  const gchar	 *blurb,

@@ -99,6 +99,9 @@ static GStaticRWLock            type_rw_lock = G_STATIC_RW_LOCK_INIT;
 				    G_TYPE_FLAG_DERIVABLE | \
 				    G_TYPE_FLAG_DEEP_DERIVABLE)
 #define	TYPE_FLAG_MASK		   (G_TYPE_FLAG_ABSTRACT | G_TYPE_FLAG_VALUE_ABSTRACT)
+#define	SIZEOF_FUNDAMENTAL_INFO	   ((gssize) MAX (MAX (sizeof (GTypeFundamentalInfo), \
+						       sizeof (gpointer)), \
+                                                  sizeof (glong)))
 
 
 /* --- typedefs --- */
@@ -287,12 +290,12 @@ type_node_any_new_W (TypeNode             *pnode,
     static_type_nodes[ftype] = g_renew (TypeNode*, static_type_nodes[ftype], 1 << g_bit_storage (static_branch_seqnos[ftype] - 1));
   
   if (!pnode)
-    node_size += sizeof (GTypeFundamentalInfo);	      /* fundamental type info */
+    node_size += SIZEOF_FUNDAMENTAL_INFO;	      /* fundamental type info */
   node_size += SIZEOF_BASE_TYPE_NODE ();	      /* TypeNode structure */
   node_size += (sizeof (GType) * (1 + n_supers + 1)); /* self + ancestors + 0 for ->supers[] */
   node = g_malloc0 (node_size);
   if (!pnode)					      /* offset fundamental types */
-    node = G_STRUCT_MEMBER_P (node, sizeof (GTypeFundamentalInfo));
+    node = G_STRUCT_MEMBER_P (node, SIZEOF_FUNDAMENTAL_INFO);
   static_type_nodes[ftype][branch_last] = node;
   
   node->n_supers = n_supers;
@@ -362,7 +365,7 @@ type_node_fundamental_info_L (TypeNode *node)
   if (ftype != NODE_TYPE (node))
     node = lookup_type_node_L (ftype);
   
-  return node ? G_STRUCT_MEMBER_P (node, - (gssize) sizeof (GTypeFundamentalInfo)) : NULL;
+  return node ? G_STRUCT_MEMBER_P (node, - SIZEOF_FUNDAMENTAL_INFO) : NULL;
 }
 
 static TypeNode*

@@ -101,7 +101,7 @@ standard_realloc (gpointer mem,
 static void
 standard_free (gpointer mem)
 {
-  return free (mem);
+  free (mem);
 }
 static gpointer
 standard_calloc (gsize n_blocks,

@@ -1578,31 +1578,6 @@ g_param_spec_string (const gchar *name,
 }
 
 GParamSpec*
-g_param_spec_stringc (const gchar *name,
-		      const gchar *nick,
-		      const gchar *blurb,
-		      const gchar *default_value,
-		      GParamFlags  flags)
-{
-  GParamSpecString *sspec = g_param_spec_internal (G_TYPE_PARAM_STRING,
-						   name,
-						   nick,
-						   blurb,
-						   flags);
-  g_free (sspec->default_value);
-  sspec->default_value = g_strdup (default_value);
-  g_free (sspec->cset_first);
-  sspec->cset_first = g_strdup (G_CSET_a_2_z "_" G_CSET_A_2_Z);
-  g_free (sspec->cset_nth);
-  sspec->cset_nth = g_strdup (G_CSET_a_2_z
-			      "_0123456789"
-			      /* G_CSET_LATINS G_CSET_LATINC */
-			      G_CSET_A_2_Z);
-  
-  return G_PARAM_SPEC (sspec);
-}
-
-GParamSpec*
 g_param_spec_param (const gchar *name,
 		    const gchar *nick,
 		    const gchar *blurb,

@@ -1,3 +1,15 @@
+Thu May 10 14:00:48 2001  Tim Janik  <timj@gtk.org>
+
+	* gparamspecs.[hc]: removed g_param_spec_stringc() in lack of
+	evidence of public need.
+
+	* gsignal.h: added g_signal_disconnect_by_func(),
+	g_signal_block_by_func() and g_signal_unblock_by_func() convenience
+	macros as per owen's request.
+
+	* gtype.c (SIZEOF_FUNDAMENTAL_INFO): align sizeof (GTypeFundamentalInfo)
+	to size of longs and pointers.
+
 2001-05-05  James Henstridge  <james@daa.com.au>
 
 	* Makefile.am: glib-mkenums is not a compiled program, so shouldn't

@@ -366,17 +366,7 @@ g_scanner_key_hash (gconstpointer v)
   
   h = key->scope_id;
   for (c = key->symbol; *c; c++)
-    {
-      guint g;
-      
-      h = (h << 4) + *c;
-      g = h & 0xf0000000;
-      if (g)
-	{
-	  h = h ^ (g >> 24);
-	  h = h ^ g;
-	}
-    }
+    h = (h << 5) - h + *c;
   
   return h;
 }
