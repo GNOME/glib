@@ -1,5 +1,8 @@
 2003-02-26  Matthias Clasen  <maclas@gmx.de>
 
+	* glib/gstrfuncs.c (g_strdup_vprintf): Use g_strndup, not
+	g_strdup, since we know the length in advance.
+
 	* glib/gunidecomp.c (g_unicode_canonical_decomposition): Use
 	g_malloc instead of directly using malloc.
 

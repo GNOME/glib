@@ -51,7 +51,7 @@
 #endif
 
 /* do not include <unistd.h> in this place since it
- * inteferes with g_strsignal() on some OSes
+ * interferes with g_strsignal() on some OSes
  */
 
 static const guint16 ascii_table_data[256] = {
@@ -183,11 +183,13 @@ g_strdup_vprintf (const gchar *format,
 {
   gchar *buffer;
 #ifdef HAVE_VASPRINTF
-  if (_g_vasprintf (&buffer, format, args1) < 0)
+  gint len;
+  len = _g_vasprintf (&buffer, format, args1);
+  if (len < 0)
     buffer = NULL;
   else if (!g_mem_is_system_malloc ()) 
     {
-      gchar *buffer1 = g_strdup (buffer);
+      gchar *buffer1 = g_strndup (buffer, len);
       free (buffer);
       buffer = buffer1;
     }
