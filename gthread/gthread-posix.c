@@ -188,7 +188,7 @@ g_private_get_posix_impl (GPrivate * private_key)
   {
     void* data;
     posix_check_for_error (pthread_getspecific (*(pthread_key_t *) 
-						private_key, &data);
+						private_key, &data));
     return data;
   }
 #endif 

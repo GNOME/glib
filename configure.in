@@ -615,14 +615,14 @@ fi
 if test "x$want_threads" = xyes || test "x$want_threads" = xposix \
 				|| test "x$want_threads" = xdce; then
         if test "x$have_threads" = xnone; then
-                AC_EGREP_HEADER([[^a-zA-Z_]pthread_attr_create[^a-zA-Z_]],
-			pthread.h,
-			have_threads=dce)
-        fi
-        if test "x$have_threads" = xnone; then
                 AC_EGREP_HEADER([[^a-zA-Z_]pthread_attr_init[^a-zA-Z_]],
 			pthread.h,
 			have_threads=posix)
+        fi
+        if test "x$have_threads" = xnone; then
+                AC_EGREP_HEADER([[^a-zA-Z_]pthread_attr_create[^a-zA-Z_]],
+			pthread.h,
+			have_threads=dce)
         fi
 fi
 if test "x$want_threads" = xyes || test "x$want_threads" = xnspr; then

@@ -1,3 +1,7 @@
+1999-03-12  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* configure.in: Test for posix threads first, then for dce threads.
+
 1999-03-11  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* configure.in: Revamped the thread configure stuff. Now dce
