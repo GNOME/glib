@@ -1,3 +1,8 @@
+2005-03-29  Tor Lillqvist  <tml@novell.com>
+
+	* glib/tmpl/spawn.sgml: Add Win32 warnings regarding the child
+	setup function.
+
 2005-03-21  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/glib-sections.txt: 

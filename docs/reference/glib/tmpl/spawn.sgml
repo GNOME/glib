@@ -77,10 +77,19 @@ Flags passed to g_spawn_sync(), g_spawn_async() and g_spawn_async_with_pipes().
 <!-- ##### USER_FUNCTION GSpawnChildSetupFunc ##### -->
 <para>
 Specifies the type of the setup function passed to g_spawn_async(),
-g_spawn_sync() and g_spawn_async_with_pipes(). It is called in the 
-child after GLib has performed all the setup it plans to perform 
-but before calling <function>exec()</function>. Obviously, actions 
-taken in this function will only affect the child, not the parent.
+g_spawn_sync() and g_spawn_async_with_pipes(). On POSIX platforms it
+is called in the child after GLib has performed all the setup it plans
+to perform but before calling <function>exec()</function>. On POSIX
+actions taken in this function will thus only affect the child, not
+the parent.
+</para>
+
+<para>
+On Windows the function is called in the parent. Its usefulness on
+Windows is thus questionable. In many cases executing the child setup
+function in the parent can have ill effects, and you should be very
+careful when porting software to Windows that uses child setup
+functions.
 </para>
 
 @user_data: user data to pass to the function.
