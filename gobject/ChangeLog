@@ -1,3 +1,8 @@
+Wed Dec 17 23:29:17 2003  Matthias Clasen  <maclas@gmx.de>
+
+	* gvalue.c (g_value_peek_pointer): Use g_assert() instead of
+	g_return_val_if_fail(), suggested by Sheldon Simms.
+
 2003-12-13  Hans Breuer  <hans@breuer.org>
 
 	gobject.def : update externals
