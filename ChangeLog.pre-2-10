@@ -1,3 +1,14 @@
+2005-01-19  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gkeyfile.c (g_key_file_parse_data): Accept \r\n as 
+	line end.  (#163030, Bastian Nocera)
+	(g_key_file_load_from_data): Make -1 work as a size.
+	
+	* tests/keyfile-test.c: Some unit tests for the keyfile
+	parser.  
+
+	* tests/Makefile.am (test_programs): Add keyfile-test.
+
 2005-01-19  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gbacktrace.c (g_on_error_stack_trace): On Win32 call
