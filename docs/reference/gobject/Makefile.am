@@ -168,8 +168,9 @@ dist-hook: dist-check-gtkdoc dist-hook-local
 	-cp $(srcdir)/sgml/*.bottom $(srcdir)/sgml/*.top $(distdir)/sgml
 	-cp $(srcdir)/html/index.sgml $(distdir)/html
 	-cp $(srcdir)/html/*.html $(srcdir)/html/*.css $(distdir)/html
-	for i in $(HTML_IMAGES) ; do          \
-	  cp $(srcdir)/$$i $(distdir)/html ;  \
-        done
+
+#	for i in $(HTML_IMAGES) ; do          \
+#	  cp $(srcdir)/$$i $(distdir)/html ;  \
+#        done
 
 .PHONY : dist-hook-local

@@ -1,3 +1,8 @@
+Wed Apr  4 00:56:00 2001  Tim Janik  <timj@gtk.org>
+
+	* gobject/Makefile.am: disabled "for i in $(HTML_IMAGES) ;"
+	dist-hook because $(HTML_IMAGES) is empty.
+
 Tue Apr  3 11:51:02 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* {glib,gobject}/Makefile.am (sgml-build.stamp): Add
