@@ -550,7 +550,11 @@ g_ptr_array_remove_range (GPtrArray* farray,
 
   array->len -= length;
 #ifdef ENABLE_GC_FRIENDLY
-  g_array_elt_zero (array->pdata, array->len, length);
+  {
+    guint i;
+    for (i = 0; i < length; i++)
+      array->pdata[array->len + i] = NULL;
+  }
 #endif /* ENABLE_GC_FRIENDLY */
 }
 

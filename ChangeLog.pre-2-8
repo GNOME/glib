@@ -1,5 +1,8 @@
 2003-11-05  Morten Welinder  <terra@gnome.org>
 
+	* glib/garray.c (g_ptr_array_remove_range): Make it compile.
+	(#119337, self.)
+
 	* glib/gstring.c (g_string_insert_len): Handle the case where the
 	to-be-inserted string is a substring of the target string.
 	(g_string_assign): Handle "s = s;".
