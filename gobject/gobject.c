@@ -387,9 +387,12 @@ object_queue_property (GObject     *object,
 		       GParamSpec  *pspec,
 		       NotifyQueue *nqueue)
 {
-  /* we will dedup later */
-  nqueue->pspecs = g_slist_prepend (nqueue->pspecs, pspec);
-  nqueue->n_pspecs++;
+  if (pspec->flags & G_PARAM_READABLE)
+    {
+      /* we will dedup later */
+      nqueue->pspecs = g_slist_prepend (nqueue->pspecs, pspec);
+      nqueue->n_pspecs++;
+    }
 }
 
 static void

@@ -1,3 +1,8 @@
+Wed Mar 28 17:04:06 2001  Tim Janik  <timj@gtk.org>
+
+	* gobject.c (object_queue_property): only queue readable properties
+	for notification changes.
+
 Thu Mar 22 13:36:50 2001  Tim Janik  <timj@gtk.org>
 
 	* gsignal.c (g_signal_newv): catch G_SIGNAL_RUN_FIRST with a return value.
