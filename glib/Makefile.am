@@ -72,6 +72,7 @@ libglib_2_0_la_SOURCES = 	\
 	ghash.c			\
 	ghook.c			\
 	giochannel.c    	\
+	gkeyfile.c        	\
 	glibintl.h		\
 	glist.c			\
 	gmain.c         	\
@@ -143,6 +144,7 @@ glibsubinclude_HEADERS =   \
 	gi18n.h		\
 	gi18n-lib.h	\
 	giochannel.h	\
+	gkeyfile.h 	\
 	glist.h		\
 	gmacros.h	\
 	gmain.h		\

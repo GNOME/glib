@@ -1,3 +1,17 @@
+2004-10-23  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gkeyfile.h: 
+	* glib/gkeyfile.c: Add a parser for desktop entries and
+	similar files with a .ini-like syntax.  (#139974, Ray Strode)
+
+	* glib/glib.h: Include gkeyfile.h
+
+	* glib/Makefile.am (libglib_2_0_la_SOURCES): Add gkeyfile.c
+	(glibsubinclude_HEADERS): Add gkeyfile.h
+
+	* glib/gutils.c (_g_compute_locale_variants): Make this 
+	non-static and use it in gkeyfile.c
+
 2004-10-22  Matthias Clasen  <mclasen@redhat.com>
 
 	* tests/uri-test.c (run_uri_list_tests): Add some

@@ -43,6 +43,7 @@
 #include <glib/ghash.h>
 #include <glib/ghook.h>
 #include <glib/giochannel.h>
+#include <glib/gkeyfile.h>
 #include <glib/glist.h>
 #include <glib/gmacros.h>
 #include <glib/gmain.h>

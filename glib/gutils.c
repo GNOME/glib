@@ -1660,8 +1660,8 @@ explode_locale (const gchar *locale,
  *       but it is big, ugly, and complicated, so I'm reluctant
  *       to do so when this should handle 99% of the time...
  */
-static GSList *
-compute_locale_variants (const gchar *locale)
+GSList *
+_g_compute_locale_variants (const gchar *locale)
 {
   GSList *retval = NULL;
 
@@ -1793,7 +1793,7 @@ g_get_language_names ()
       for (a = alist; *a; a++)
 	{
 	  gchar *b = unalias_lang (*a);
-	  list = g_slist_concat (list, compute_locale_variants (b));
+	  list = g_slist_concat (list, _g_compute_locale_variants (b));
 	}
       g_strfreev (alist);
       list = g_slist_append (list, "C");
