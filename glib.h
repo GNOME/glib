@@ -2843,17 +2843,17 @@ typedef int pid_t;
 #define pipe(phandles)	_pipe (phandles, 4096, _O_BINARY)
 
 /* For some POSIX functions that are not provided by the MS runtime,
- * we provide emulators in glib, which are prefixed with gwin_.
+ * we provide emulators in glib, which are prefixed with g_win32_.
  */
-#    define ftruncate(fd, size)	gwin_ftruncate (fd, size)
+#    define ftruncate(fd, size)	g_win32_ftruncate (fd, size)
 
 /* -lmingw32 also has emulations for these, but we need our own
  * for MSVC anyhow, so we might aswell use them always.
  */
-#    define opendir		gwin_opendir
-#    define readdir		gwin_readdir
-#    define rewinddir		gwin_rewinddir
-#    define closedir		gwin_closedir
+#    define opendir		g_win32_opendir
+#    define readdir		g_win32_readdir
+#    define rewinddir		g_win32_rewinddir
+#    define closedir		g_win32_closedir
 #    define NAME_MAX 255
 
 struct DIR
@@ -2869,12 +2869,12 @@ struct dirent
   gchar  d_name[NAME_MAX + 1];
 };
 /* emulation functions */
-extern int	gwin_ftruncate	(gint		 f,
-				 guint		 size);
-DIR*		gwin_opendir	(const gchar	*dirname);
-struct dirent*	gwin_readdir  	(DIR		*dir);
-void		gwin_rewinddir 	(DIR		*dir);
-gint		gwin_closedir  	(DIR		*dir);
+extern int	g_win32_ftruncate	(gint		 f,
+					 guint		 size);
+DIR*		g_win32_opendir		(const gchar	*dirname);
+struct dirent*	g_win32_readdir  	(DIR		*dir);
+void		g_win32_rewinddir 	(DIR		*dir);
+gint		g_win32_closedir  	(DIR		*dir);
 
 /* The MS setlocale uses locale names of the form "English_United
  * States.1252" etc. We want the Unixish standard form "en", "zh_TW"
@@ -2882,7 +2882,7 @@ gint		gwin_closedir  	(DIR		*dir);
  * returns it as a string of the above form for use in forming file
  * names etc. The returned string should be deallocated with g_free().
  */
-gchar *		gwin_getlocale  (void);
+gchar *		g_win32_getlocale  (void);
 
 #endif	 /* G_OS_WIN32 */
 

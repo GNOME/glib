@@ -1,3 +1,15 @@
+1999-11-01  Tor Lillqvist  <tml@iki.fi>
+
+	* glib.h
+	* glib.def: Rename Win32-only functions from gwin_* to g_win32_*
+	to match the GLib naming conventions.
+
+	* gutils.c
+	* gwin32.c
+	* testglib.c
+	* makefile.{cygwin,msc}: Move the Win32-only functions to the new
+	file gwin32.c
+
 1999-10-31  Tor Lillqvist  <tml@iki.fi>
 
 	* gutils.c (gwin_getlocale): New Win32-specific function, returns

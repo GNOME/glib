@@ -918,7 +918,7 @@ main (int   argc,
   g_print ("ok\n");
 
 #ifdef G_OS_WIN32
-  g_print ("current locale: %s\n", gwin_getlocale ());
+  g_print ("current locale: %s\n", g_win32_getlocale ());
 #endif
 
   return 0;

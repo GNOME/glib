@@ -434,14 +434,14 @@ EXPORTS
 	g_tuples_index
 	g_usleep
 	g_vsnprintf
+	g_win32_closedir
+	g_win32_ftruncate
+	g_win32_getlocale
+	g_win32_opendir
+	g_win32_readdir
+	g_win32_rewinddir
 	glib_binary_age
 	glib_interface_age
 	glib_major_version
 	glib_micro_version
 	glib_minor_version
-	gwin_closedir
-	gwin_ftruncate
-	gwin_getlocale
-	gwin_opendir
-	gwin_readdir
-	gwin_rewinddir
