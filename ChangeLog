@@ -1,3 +1,11 @@
+Tue Sep 30 15:31:16 2003  Soeren Sandmann  <sandmann@daimi.au.dk>
+
+	* glib/guniprop.c (has_more_above): make the argument const to
+	get rid of warning
+
+	* glib/garray.c (g_byte_array_remove_range): insert cast to get
+	rid of warning
+
 2003-09-29  Tor Lillqvist  <tml@iki.fi>
 
 	* tests/testglib.c (main): Use hardcoded name for DLL, as there is

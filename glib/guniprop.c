@@ -741,9 +741,9 @@ g_utf8_strup (const gchar *str,
 /* traverses the string checking for characters with combining class == 230
  * until a base character is found */
 static gboolean
-has_more_above (gchar *str)
+has_more_above (const gchar *str)
 {
-  gchar *p = str;
+  const gchar *p = str;
   gint combining_class;
 
   while (*p)

@@ -705,7 +705,7 @@ g_byte_array_remove_range (GByteArray *array,
   g_return_val_if_fail (index_ < array->len, FALSE);
   g_return_val_if_fail (index_ + length <= array->len, FALSE);
 
-  return g_array_remove_range ((GArray*) array, index_, length);
+  return (GByteArray *)g_array_remove_range ((GArray*) array, index_, length);
 }
 
 void
