@@ -1,3 +1,8 @@
+2001-03-21  Martin Baulig  <baulig@suse.de>
+
+	* gboxed.[ch] (g_value_dup_boxed): This takes a `const GValue *'
+	argument.
+
 2001-03-18  Tor Lillqvist  <tml@iki.fi>
 
 	* gobject.def: Correct some renamed functions.

@@ -45,7 +45,7 @@ void		g_value_set_boxed		(GValue		*value,
 void		g_value_set_static_boxed	(GValue		*value,
 						 gconstpointer	 boxed);
 gpointer	g_value_get_boxed		(const GValue	*value);
-gpointer	g_value_dup_boxed		(GValue		*value);
+gpointer	g_value_dup_boxed		(const GValue	*value);
 
 
 /* --- convenience --- */

@@ -437,7 +437,7 @@ g_value_get_boxed (const GValue *value)
 }
 
 gpointer
-g_value_dup_boxed (GValue *value)
+g_value_dup_boxed (const GValue *value)
 {
   g_return_val_if_fail (G_VALUE_HOLDS_BOXED (value), NULL);
   g_return_val_if_fail (G_TYPE_IS_VALUE (G_VALUE_TYPE (value)), NULL);
