@@ -1,3 +1,7 @@
+2002-04-21  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/tmpl/strings.sgml: Fix the description of g_string_assign. (#78728)
+
 2002-04-18  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/tmpl/error_reporting.sgml:
