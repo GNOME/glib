@@ -114,4 +114,4 @@ G_END_DECLS
 
 #endif	 /* G_OS_WIN32 */
 
-#endif /* __G_IOCHANNEL_H__ */
+#endif /* __G_WIN32_H__ */

@@ -1,3 +1,7 @@
+2000-11-14  Tor Lillqvist  <tml@iki.fi>
+
+	* gwin32.h: Make #endif comment match #ifdef.
+
 Mon Nov 13 14:00:20 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* configure.in: Up version to 1.3.2
