@@ -1,3 +1,8 @@
+Sat Oct 24 22:23:04 PDT 1998 Manish Singh <yosh@gimp.org>
+
+	* gnode.c: small fix to g_node_children_foreach to make it work right.
+	From Paco Moya <paco@cadnotebk17.eecs.berkeley.edu>
+
 Wed Oct 21 19:22:58 1998  Tim Janik  <timj@gtk.org>
 
 	* configure.in (G_MODULE_HAVE_DLERROR): reverted part of the changes

@@ -875,7 +875,7 @@ g_node_children_foreach (GNode		 *node,
       
       current = node;
       node = current->next;
-      if (G_NODE_IS_LEAF (node))
+      if (G_NODE_IS_LEAF (current))
 	{
 	  if (flags & G_TRAVERSE_LEAFS)
 	    func (current, data);
