@@ -172,7 +172,7 @@ g_utf8_find_next_char (const gchar *p,
  * g_utf8_prev_char:
  * @p: a pointer to a position within a UTF-8 encoded string
  *
- * Find the previous UTF-8 character in the string before @p
+ * Find the previous UTF-8 character in the string before @p.
  *
  * @p does not have to be at the beginning of a UTF-8 character. No check
  * is made to see if the character found is actually valid other than
@@ -202,7 +202,8 @@ g_utf8_prev_char (const gchar *p)
  * Return value: the length of the string in characters
  **/
 gint
-g_utf8_strlen (const gchar *p, gint max)
+g_utf8_strlen (const gchar *p,
+               gint         max)
 {
   int len = 0;
   const gchar *start = p;

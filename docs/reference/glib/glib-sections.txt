@@ -589,6 +589,7 @@ GIOChannel
 g_io_channel_unix_new
 g_io_channel_unix_get_fd
 
+
 <SUBSECTION>
 g_io_channel_init
 
@@ -617,6 +618,7 @@ GIOFuncs
 <SUBSECTION Private>
 g_io_channel_win32_new_fd
 g_io_channel_win32_new_messages
+g_io_channel_win32_new_socket
 g_io_channel_win32_poll
 g_io_channel_win32_make_pollfd
 g_io_channel_win32_get_fd
@@ -949,6 +951,7 @@ GHookFunc
 GHookCheckFunc
 GHookMarshaller
 GHookCheckMarshaller
+GHookFinalizeFunc
 
 <SUBSECTION>
 g_hook_list_init
@@ -1160,6 +1163,8 @@ closedir
 
 g_win32_error_message
 g_win32_getlocale
+g_win32_get_package_installation_directory
+g_win32_get_package_installation_subdirectory
 
 <SUBSECTION Private>
 g_win32_ftruncate
@@ -1373,6 +1378,8 @@ g_string_sized_new
 g_string_assign
 g_string_sprintf
 g_string_sprintfa
+g_string_printf
+g_string_printfa
 g_string_append
 g_string_append_c
 g_string_append_len
@@ -1713,6 +1720,7 @@ gunichar2
 g_get_charset
 
 <SUBSECTION>
+g_unichar_validate
 g_unichar_isalnum
 g_unichar_isalpha
 g_unichar_iscntrl

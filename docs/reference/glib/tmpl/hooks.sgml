@@ -169,6 +169,15 @@ and the list of hook functions can be invoked.
 @data: 
 
 
+<!-- ##### USER_FUNCTION GHookFinalizeFunc ##### -->
+<para>
+
+</para>
+
+@hook_list: 
+@hook: 
+
+
 <!-- ##### FUNCTION g_hook_list_init ##### -->
 <para>
 Initializes a #GHookList.

@@ -105,6 +105,26 @@ documentation.
 @Varargs: the parameters to insert into the format string.
 
 
+<!-- ##### FUNCTION g_string_printf ##### -->
+<para>
+
+</para>
+
+@string: 
+@format: 
+@Varargs: 
+
+
+<!-- ##### FUNCTION g_string_printfa ##### -->
+<para>
+
+</para>
+
+@string: 
+@format: 
+@Varargs: 
+
+
 <!-- ##### FUNCTION g_string_append ##### -->
 <para>
 Adds a string onto the end of a #GString, expanding it if necessary.

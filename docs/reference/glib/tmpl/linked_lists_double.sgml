@@ -191,12 +191,14 @@ Deletes the node @link from @list.
 
 <!-- ##### FUNCTION g_list_remove_all ##### -->
 <para>
-
+Removes all list nodes with data equal to @data. Returns the new
+head of the list. Contrast with g_list_remove() which removes only 
+the first node matching the given data.
 </para>
 
-@list: 
-@data: 
-@Returns: 
+@list: a #GList
+@data: data to remove
+@Returns: new head of @list
 
 
 <!-- ##### FUNCTION g_list_free ##### -->

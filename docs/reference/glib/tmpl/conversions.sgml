@@ -47,7 +47,9 @@ Character Set Conversion
 
 <!-- ##### MACRO G_CONVERT_ERROR ##### -->
 <para>
-
+Error domain for character set conversions. Errors in this domain will
+be from the #GConvertError enumeration. See #GError for information on 
+error domains.
 </para>
 
 

@@ -41,24 +41,29 @@ only one statement is expected by the compiler.
 
 <!-- ##### MACRO G_BEGIN_DECLS ##### -->
 <para>
-
+Used (along with #G_END_DECLS) to bracket header files. If the
+compiler in use is a C++ compiler, adds 'extern "C"' around the header.
 </para>
 
 
 
 <!-- ##### MACRO G_END_DECLS ##### -->
 <para>
-
+Used (along with #G_BEGIN_DECLS) to bracket header files. If the
+compiler in use is a C++ compiler, adds 'extern "C"' around the header.
 </para>
 
 
 
 <!-- ##### MACRO G_N_ELEMENTS ##### -->
 <para>
-
+Determines the number of elements in an array. The array must be
+declared so the compiler knows its size at compile-time; this 
+macro will not work on an array allocated on the heap, only static
+arrays or arrays on the stack.
 </para>
 
-@arr: 
+@arr: the array
 
 
 <!-- ##### MACRO G_VA_COPY ##### -->

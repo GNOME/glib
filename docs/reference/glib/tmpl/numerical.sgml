@@ -3,95 +3,114 @@ Numerical Definitions
 
 <!-- ##### SECTION Short_Description ##### -->
 
+Mathematical constants, and floating point decomposition.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
+GLib offers mathematical constants such as #G_PI for the value of pi;
+many platforms have these in the C library, but some don't, the GLib
+versions always exist.
+</para>
 
+<para>
+The #GFloatIEEE754 and #GDoubleIEEE754 unions are used to access the
+	sign, mantissa and exponent of IEEE floats and doubles. These
+	unions are defined as appropriate for a given platform. 
+ IEEE floats and doubles are supported (used for
+	storage) by at least intel, ppc and sparc, for reference: http://twister.ou.edu/workshop.docs/common-tools/numerical_comp_guide/ncg_math.doc.html
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
-
+http://twister.ou.edu/workshop.docs/common-tools/numerical_comp_guide/ncg_math.doc.html
 </para>
 
 <!-- ##### MACRO G_IEEE754_FLOAT_BIAS ##### -->
 <para>
-
+See http://twister.ou.edu/workshop.docs/common-tools/numerical_comp_guide/ncg_math.doc.html
 </para>
 
 
 
 <!-- ##### MACRO G_IEEE754_DOUBLE_BIAS ##### -->
 <para>
-
+See http://twister.ou.edu/workshop.docs/common-tools/numerical_comp_guide/ncg_math.doc.html
 </para>
 
 
 
 <!-- ##### UNION GFloatIEEE754 ##### -->
 <para>
-
+The #GFloatIEEE754 and #GDoubleIEEE754 unions are used to access the
+	sign, mantissa and exponent of IEEE floats and doubles. These
+	unions are defined as appropriate for a given platform. 
+ IEEE floats and doubles are supported (used for
+	storage) by at least intel, ppc and sparc, for reference: http://twister.ou.edu/workshop.docs/common-tools/numerical_comp_guide/ncg_math.doc.html
 </para>
 
 
 <!-- ##### UNION GDoubleIEEE754 ##### -->
 <para>
-
+The #GFloatIEEE754 and #GDoubleIEEE754 unions are used to access the
+	sign, mantissa and exponent of IEEE floats and doubles. These
+	unions are defined as appropriate for a given platform. 
+ IEEE floats and doubles are supported (used for
+	storage) by at least intel, ppc and sparc, for reference: http://twister.ou.edu/workshop.docs/common-tools/numerical_comp_guide/ncg_math.doc.html
 </para>
 
 
 <!-- ##### MACRO G_E ##### -->
 <para>
-
+The base of natural logarithms.
 </para>
 
 
 
 <!-- ##### MACRO G_LN2 ##### -->
 <para>
-
+The natural logarithm of 2.
 </para>
 
 
 
 <!-- ##### MACRO G_LN10 ##### -->
 <para>
-
+The natural logarithm of 10.
 </para>
 
 
 
 <!-- ##### MACRO G_PI ##### -->
 <para>
-
+The value of pi (ratio of circle's circumference to its diameter).
 </para>
 
 
 
 <!-- ##### MACRO G_PI_2 ##### -->
 <para>
-
+Pi divided by 2.
 </para>
 
 
 
 <!-- ##### MACRO G_PI_4 ##### -->
 <para>
-
+Pi divided by 4.
 </para>
 
 
 
 <!-- ##### MACRO G_SQRT2 ##### -->
 <para>
-
+The square root of two.
 </para>
 
 
 
 <!-- ##### MACRO G_LOG_2_BASE_10 ##### -->
 <para>
-
+Used for fooling around with float formats, see http://twister.ou.edu/workshop.docs/common-tools/numerical_comp_guide/ncg_math.doc.html
 </para>
 
 

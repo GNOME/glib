@@ -130,19 +130,19 @@ documentation.
 A convenience function/macro to log a warning message.
 </para>
 
-@...: 
-<!-- # Unused Parameters # -->
-@format: the message format. See the <function>printf()</function>
-documentation.
-@args...: the parameters to insert into the format string.
+@...: format string, followed by parameters to insert into the format string (as with printf())
 
 
 <!-- ##### MACRO g_critical ##### -->
 <para>
-
+Logs a "critical warning" (#G_LOG_LEVEL_CRITICAL). It's more or less
+application-defined what constitutes a critical vs. a regular
+warning. You could call g_log_set_always_fatal() to make critical
+warnings exit the program, then use g_critical() for fatal errors, for
+example.
 </para>
 
-@...: 
+@...: format string, followed by parameters to insert into the format string (as with printf())
 
 
 <!-- ##### MACRO g_error ##### -->
@@ -150,6 +150,9 @@ documentation.
 A convenience function/macro to log an error message.
 Error messages are always fatal, resulting in a call to
 <function>abort()</function> to terminate the application.
+This function will result in a core dump; don't use it for errors you
+expect. Using this function indicates a bug in your program, i.e. an
+assertion failure.
 </para>
 
 @...: 

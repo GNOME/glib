@@ -211,12 +211,14 @@ Deletes a node of @list. Returns the new list head.
 
 <!-- ##### FUNCTION g_slist_remove_all ##### -->
 <para>
-
+Removes all list nodes with data equal to @data. Returns the new
+head of the list. Contrast with g_slist_remove() which removes only 
+the first node matching the given data.
 </para>
 
-@list: 
-@data: 
-@Returns: 
+@list: a #GSList
+@data: data to remove
+@Returns: new head of @list
 
 
 <!-- ##### FUNCTION g_slist_free ##### -->

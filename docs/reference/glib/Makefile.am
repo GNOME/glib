@@ -26,6 +26,7 @@ CFILE_GLOB=$(top_srcdir)/*.c $(top_srcdir)/gmodule/*.c
 IGNORE_HFILES=			\
 	gobject 		\
 	config.h 		\
+	glibintl.h		\
 	gmoduleconf.h		\
 	gunibreak.h		\
 	gunidecomp.h		\

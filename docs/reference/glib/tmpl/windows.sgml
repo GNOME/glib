@@ -16,27 +16,32 @@ Windows Compatability Functions
 
 <!-- ##### MACRO MAXPATHLEN ##### -->
 <para>
-
+Provided for UNIX emulation on Windows; equivalent to UNIX 
+macro MAXPATHLEN, which is the maximum length of a filename
+(including full path).
 </para>
 
 
 
 <!-- ##### MACRO NAME_MAX ##### -->
 <para>
-
+Provided for UNIX emulation on Windows; equivalent to UNIX macro 
+NAME_MAX, which is the maximum length of a single path component.
+i.e. just the "foo" in "/usr/bin/foo".
 </para>
 
 
 
 <!-- ##### TYPEDEF pid_t ##### -->
 <para>
-
+Provided for UNIX emulation on Windows; process ID type.
 </para>
 
 
 <!-- ##### MACRO pipe ##### -->
 <para>
-
+Provided for UNIX emulation on Windows; see documentation for pipe()
+in any UNIX manual.
 </para>
 
 @phandles: 
@@ -44,7 +49,8 @@ Windows Compatability Functions
 
 <!-- ##### MACRO ftruncate ##### -->
 <para>
-
+Provided for UNIX emulation on Windows; see documentation for ftruncate()
+in any UNIX manual.
 </para>
 
 @fd: 
@@ -53,28 +59,32 @@ Windows Compatability Functions
 
 <!-- ##### MACRO opendir ##### -->
 <para>
-
+Provided for UNIX emulation on Windows; see documentation for opendir()
+in any UNIX manual.
 </para>
 
 
 
 <!-- ##### MACRO readdir ##### -->
 <para>
-
+Provided for UNIX emulation on Windows; see documentation for readdir()
+in any UNIX manual.
 </para>
 
 
 
 <!-- ##### MACRO rewinddir ##### -->
 <para>
-
+Provided for UNIX emulation on Windows; see documentation for rewinddir()
+in any UNIX manual.
 </para>
 
 
 
 <!-- ##### MACRO closedir ##### -->
 <para>
-
+Provided for UNIX emulation on Windows; see documentation for closedir()
+in any UNIX manual.
 </para>
 
 
@@ -93,6 +103,27 @@ Windows Compatability Functions
 
 </para>
 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_win32_get_package_installation_directory ##### -->
+<para>
+
+</para>
+
+@package: 
+@dll_name: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_win32_get_package_installation_subdirectory ##### -->
+<para>
+
+</para>
+
+@package: 
+@dll_name: 
+@subdir: 
 @Returns: 
 
 

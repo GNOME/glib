@@ -168,11 +168,11 @@ The data element's destroy function is called if it has been set.
 
 <!-- ##### MACRO g_datalist_remove_no_notify ##### -->
 <para>
-
+Removes an element, without calling its destroy notifier.
 </para>
 
-@dl: 
-@k: 
+@dl: a datalist.
+@k: the string identifying the data element.
 
 
 <!-- ##### FUNCTION g_datalist_foreach ##### -->

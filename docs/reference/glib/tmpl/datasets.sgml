@@ -165,11 +165,11 @@ Its destroy function is called if it has been set.
 
 <!-- ##### MACRO g_dataset_remove_no_notify ##### -->
 <para>
-
+Removes an element, without calling its destroy notifier.
 </para>
 
-@l: 
-@k: 
+@l: the location identifying the dataset.
+@k: the string identifying the data element.
 
 
 <!-- ##### FUNCTION g_dataset_foreach ##### -->

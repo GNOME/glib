@@ -35,6 +35,15 @@ Unicode Manipulation
 @Returns: 
 
 
+<!-- ##### FUNCTION g_unichar_validate ##### -->
+<para>
+
+</para>
+
+@ch: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_unichar_isalnum ##### -->
 <para>
 
@@ -316,10 +325,15 @@ Unicode Manipulation
 
 <!-- ##### MACRO g_utf8_next_char ##### -->
 <para>
-
+Skips to the next character in a UTF-8 string. The string must be
+valid; this macro is as fast as possible, and has zero error-checking.
+You would use this macro to iterate over a string character by
+character. The macro returns the start of the next UTF-8 character.
+Before using this macro, use g_utf8_validate() to validate strings
+that may contain invalid UTF-8.
 </para>
 
-@p: 
+@p: Pointer to the start of a valid UTF-8 character.
 
 
 <!-- ##### FUNCTION g_utf8_get_char ##### -->
