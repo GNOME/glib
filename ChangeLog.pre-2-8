@@ -1,3 +1,8 @@
+Sun Sep 29 12:15:44 2002  Manish Singh  <yosh@gimp.org>
+
+	* tests/mainloop-test.c: use gsize instead of int where appropriate
+	(64-bit cleanliness fix)
+
 2002-09-29  Tor Lillqvist  <tml@iki.fi>
 
 	* configure.in: Instead of forcing -fnative-struct into CFLAGS
