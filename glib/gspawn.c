@@ -119,8 +119,13 @@ close_and_invalidate (gint *fd)
 {
   gint ret;
 
-  ret = close (*fd);
-  *fd = -1;
+  if (*fd < 0)
+    return -1;
+  else
+    {
+      ret = close (*fd);
+      *fd = -1;
+    }
 
   return ret;
 }
