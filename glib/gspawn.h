@@ -77,7 +77,7 @@ gboolean g_spawn_async (const gchar           *working_directory,
                         GSpawnFlags            flags,
                         GSpawnChildSetupFunc   child_setup,
                         gpointer               user_data,
-                        gint                  *child_pid,
+                        GPid                  *child_pid,
                         GError               **error);
 
 
@@ -90,7 +90,7 @@ gboolean g_spawn_async_with_pipes (const gchar          *working_directory,
                                    GSpawnFlags           flags,
                                    GSpawnChildSetupFunc  child_setup,
                                    gpointer              user_data,
-                                   gint                 *child_pid,
+                                   GPid                 *child_pid,
                                    gint                 *standard_input,
                                    gint                 *standard_output,
                                    gint                 *standard_error,
@@ -119,6 +119,8 @@ gboolean g_spawn_command_line_sync  (const gchar          *command_line,
                                      GError              **error);
 gboolean g_spawn_command_line_async (const gchar          *command_line,
                                      GError              **error);
+
+void g_spawn_close_pid (GPid pid);
 
 
 G_END_DECLS

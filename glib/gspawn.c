@@ -58,7 +58,7 @@ static gboolean fork_exec_with_pipes (gboolean              intermediate_child,
                                       gboolean              file_and_argv_zero,
                                       GSpawnChildSetupFunc  child_setup,
                                       gpointer              user_data,
-                                      gint                 *child_pid,
+                                      GPid                 *child_pid,
                                       gint                 *standard_input,
                                       gint                 *standard_output,
                                       gint                 *standard_error,
@@ -96,7 +96,7 @@ g_spawn_async (const gchar          *working_directory,
                GSpawnFlags           flags,
                GSpawnChildSetupFunc  child_setup,
                gpointer              user_data,
-               gint                 *child_pid,
+               GPid                 *child_pid,
                GError              **error)
 {
   g_return_val_if_fail (argv != NULL, FALSE);
@@ -213,7 +213,7 @@ g_spawn_sync (const gchar          *working_directory,
 {
   gint outpipe = -1;
   gint errpipe = -1;
-  gint pid;
+  GPid pid;
   fd_set fds;
   gint ret;
   GString *outstr = NULL;
@@ -535,6 +535,9 @@ g_spawn_sync (const gchar          *working_directory,
  *
  * If an error occurs, @child_pid, @standard_input, @standard_output,
  * and @standard_error will not be filled with valid values.
+ *
+ * If @child_pid is not %NULL and an error does not occur then the returned
+ * pid must be closed using g_spawn_close_pid().
  * 
  * Return value: %TRUE on success, %FALSE if an error was set
  **/
@@ -545,7 +548,7 @@ g_spawn_async_with_pipes (const gchar          *working_directory,
                           GSpawnFlags           flags,
                           GSpawnChildSetupFunc  child_setup,
                           gpointer              user_data,
-                          gint                 *child_pid,
+                          GPid                 *child_pid,
                           gint                 *standard_input,
                           gint                 *standard_output,
                           gint                 *standard_error,
@@ -1024,13 +1027,13 @@ fork_exec_with_pipes (gboolean              intermediate_child,
                       gboolean              file_and_argv_zero,
                       GSpawnChildSetupFunc  child_setup,
                       gpointer              user_data,
-                      gint                 *child_pid,
+                      GPid                 *child_pid,
                       gint                 *standard_input,
                       gint                 *standard_output,
                       gint                 *standard_error,
                       GError              **error)     
 {
-  gint pid = -1;
+  GPid pid = -1;
   gint stdin_pipe[2] = { -1, -1 };
   gint stdout_pipe[2] = { -1, -1 };
   gint stderr_pipe[2] = { -1, -1 };
@@ -1093,7 +1096,7 @@ fork_exec_with_pipes (gboolean              intermediate_child,
            * is to exit, so we can waitpid() it immediately.
            * Then the grandchild will not become a zombie.
            */
-          gint grandchild_pid;
+          GPid grandchild_pid;
 
           grandchild_pid = fork ();
 
@@ -1516,4 +1519,18 @@ g_execute (const gchar *file,
 
   /* Return the error from the last attempt (probably ENOENT).  */
   return -1;
+}
+
+/**
+ * g_spawn_close_pid:
+ * @pid: The process identifier to close
+ *
+ * On some platforms, notably WIN32, the #GPid type represents a resource
+ * which must be closed to prevent resource leaking. g_spawn_close_pid()
+ * is provided for this purpose. It should be used on all platforms, even
+ * though it doesn't do anything under UNIX.
+ **/
+void
+g_spawn_close_pid (GPid pid)
+{
 }

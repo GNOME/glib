@@ -202,7 +202,7 @@ static gboolean do_spawn_with_pipes  (gboolean              dont_wait,
 				      gboolean		    file_and_argv_zero,
                                       GSpawnChildSetupFunc  child_setup,
                                       gpointer              user_data,
-                                      gint                 *child_handle,
+                                      GPid                 *child_handle,
                                       gint                 *standard_input,
                                       gint                 *standard_output,
                                       gint                 *standard_error,
@@ -225,7 +225,7 @@ g_spawn_async (const gchar          *working_directory,
                GSpawnFlags           flags,
                GSpawnChildSetupFunc  child_setup,
                gpointer              user_data,
-               gint                 *child_handle,
+               GPid                 *child_handle,
                GError              **error)
 {
   g_return_val_if_fail (argv != NULL, FALSE);
@@ -316,7 +316,7 @@ g_spawn_sync (const gchar          *working_directory,
 {
   gint outpipe = -1;
   gint errpipe = -1;
-  gint pid;
+  GPid pid;
   GIOChannel *outchannel = NULL;
   GIOChannel *errchannel = NULL;
   GPollFD outfd, errfd;
@@ -492,6 +492,8 @@ g_spawn_sync (const gchar          *working_directory,
   if (errpipe >= 0)
     close_and_invalidate (&errpipe);
   
+  g_spawn_close_pid(pid);
+
   if (failed)
     {
       if (outstr)
@@ -523,7 +525,7 @@ g_spawn_async_with_pipes (const gchar          *working_directory,
                           GSpawnFlags           flags,
                           GSpawnChildSetupFunc  child_setup,
                           gpointer              user_data,
-                          gint                 *child_handle,
+                          GPid                 *child_handle,
                           gint                 *standard_input,
                           gint                 *standard_output,
                           gint                 *standard_error,
@@ -869,7 +871,7 @@ do_spawn_with_pipes (gboolean              dont_wait,
 		     gboolean		   file_and_argv_zero,
 		     GSpawnChildSetupFunc  child_setup,
 		     gpointer              user_data,
-		     gint                 *child_handle,
+		     GPid                 *child_handle,
 		     gint                 *standard_input,
 		     gint                 *standard_output,
 		     gint                 *standard_error,
@@ -1036,5 +1038,10 @@ make_pipe (gint     p[2],
   else
     return TRUE;
 }
-
 #endif /* !GSPAWN_HELPER */
+
+void
+g_spawn_close_pid (GPid pid)
+{
+    CloseHandle (pid);
+}

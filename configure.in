@@ -131,7 +131,7 @@ case "$host" in
     GOBJECT_DEF=gobject.def
     GTHREAD_DEF=gthread.def
     TESTGMODULE_EXP=testgmodule.exp
-    glib_pid_type=HANDLE
+    glib_pid_type='void *'
     ;;
   *)
     glib_native_win32=no

@@ -86,12 +86,12 @@ get_a_child (gint ttl)
 gboolean
 child_watch_callback (GPid pid, gint status, gpointer data)
 {
-#ifndef G_OS_WIN32
-  g_print ("child %d exited, status %d\n", pid, status);
-#else
-  g_print ("child %p exited, status %d\n", pid, status);
+  gint ttl = GPOINTER_TO_INT (data);
 
-  CloseHandle(pid);
+#ifndef G_OS_WIN32
+  g_print ("child %d (ttl %d) exited, status %d\n", pid, ttl, status);
+#else
+  g_print ("child %p (ttl %d) exited, status %d\n", pid, ttl, status);
 #endif
 
   if (--alive == 0)
@@ -112,14 +112,15 @@ test_thread (gpointer data)
 
   pid = get_a_child (ttl);
   source = g_child_watch_source_new (pid);
-  g_source_set_callback (source, (GSourceFunc) child_watch_callback, NULL, NULL);
+  g_source_set_callback (source, (GSourceFunc) child_watch_callback, data, NULL);
   g_source_attach (source, g_main_loop_get_context (new_main_loop));
   g_source_unref (source);
 
 #ifdef G_OS_WIN32
-  g_print ("whee! created pid: %p\n", pid);
+  g_print ("whee! created pid: %p (ttl %d)\n", pid, ttl);
+  CloseHandle(pid);
 #else
-  g_print ("whee! created pid: %d\n", pid);
+  g_print ("whee! created pid: %d (ttl %d)\n", pid, ttl);
 #endif
 
   g_main_loop_run (new_main_loop);

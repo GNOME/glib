@@ -1,3 +1,22 @@
+Mon Mar  1 15:39:57 2004  Owen Taylor  <otaylor@redhat.com>
+
+       Patch from J. Ali Harlow
+
+	* configure.in: Use void * not HANDLE for GPid on win32.
+
+	* glib/gspawn.[ch] glib/gspawn-win32.[ch] glib/glib.def: 
+	Add g_spawn_close_pid().
+	
+	* glib/gspawn.[ch]: Make g_spawn functions take
+	GPid * instead if int * (GPid == int on unix, will
+	produce compile warnings until fixed on Win32.)
+
+	* tests/child-test.c: Make the test a little more
+	inappropriately verbose.
+
+        * glib/gmain.c: Add some documentation warnings about
+	not closing @pid while the source is active.
+
 Mon Mar  1 20:32:06 2004  Tim Janik  <timj@gtk.org>
 
 	* autogen.sh:

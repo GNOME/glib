@@ -3634,6 +3634,11 @@ g_child_watch_source_init (void)
  * and must be added to one with g_source_attach() before it will be
  * executed.
  * 
+ * Note that on platforms where #GPid must be explicitely closed
+ * (see g_spawn_close_pid()) @pid must not be closed while the
+ * source is still active. Typically, you will want to call
+ * g_spawn_close_pid() in the callback function for the source.
+ * 
  * Return value: the newly-created child watch source
  *
  * Since: 2.4
@@ -3669,6 +3674,11 @@ g_child_watch_source_new (GPid pid)
  * 
  * Sets a function to be called when the child indicated by @pid exits, at a
  * default priority, #G_PRIORITY_DEFAULT.
+ * 
+ * Note that on platforms where #GPid must be explicitely closed
+ * (see g_spawn_close_pid()) @pid must not be closed while the
+ * source is still active. Typically, you will want to call
+ * g_spawn_close_pid() in the callback function for the source.
  * 
  * Return value: the id of event source.
  *
@@ -3707,6 +3717,11 @@ g_child_watch_add_full (gint            priority,
  * Sets a function to be called when the child indicated by @pid exits, at a
  * default priority, #G_PRIORITY_DEFAULT.
  * 
+ * Note that on platforms where #GPid must be explicitely closed
+ * (see g_spawn_close_pid()) @pid must not be closed while the
+ * source is still active. Typically, you will want to call
+ * g_spawn_close_pid() in the callback function for the source.
+ *
  * Return value: the id of event source.
  *
  * Since: 2.4
