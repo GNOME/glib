@@ -763,6 +763,9 @@ g_io_watch_funcs
 g_new
 g_new0
 g_renew
+g_try_new
+g_try_new0
+g_try_renew
 
 <SUBSECTION>
 g_malloc

@@ -24,7 +24,7 @@ This also means that there is no need to check if the call succeeded.
 <para>
 Allocates @n_structs elements of type @struct_type.
 The returned pointer is cast to a pointer to the given type.
-If @count is 0 it returns %NULL.
+If @n_structs is 0 it returns %NULL.
 </para>
 
 @struct_type: the type of the elements to allocate.
@@ -36,7 +36,7 @@ If @count is 0 it returns %NULL.
 <para>
 Allocates @n_structs elements of type @struct_type, initialized to 0's.
 The returned pointer is cast to a pointer to the given type.
-If @count is 0 it returns %NULL.
+If @n_structs is 0 it returns %NULL.
 </para>
 
 @struct_type: the type of the elements to allocate.
@@ -47,7 +47,7 @@ If @count is 0 it returns %NULL.
 <!-- ##### MACRO g_renew ##### -->
 <para>
 Reallocates the memory pointed to by @mem, so that it now has space for
-@n_struct elements of type @struct_type. It returns the new address of 
+@n_structs elements of type @struct_type. It returns the new address of 
 the memory, which may have been moved.
 </para>
 
@@ -55,6 +55,50 @@ the memory, which may have been moved.
 @mem: the currently allocated memory.
 @n_structs: the number of elements to allocate.
 @Returns: a pointer to the new allocated memory, cast to a pointer to @struct_type.
+
+
+<!-- ##### MACRO g_try_new ##### -->
+<para>
+Attempts to allocate @n_structs elements of type @struct_type, and returns 
+%NULL on failure. Contrast with g_new(), which aborts the program on failure.
+The returned pointer is cast to a pointer to the given type. 
+If @n_structs is 0 it returns %NULL.
+</para>
+
+@struct_type: the type of the elements to allocate.
+@n_structs: the number of elements to allocate.
+@Returns: a pointer to the allocated memory, cast to a pointer to @struct_type.
+@Since: 2.8
+
+
+<!-- ##### MACRO g_try_new0 ##### -->
+<para>
+Attempts to allocate @n_structs elements of type @struct_type, initialized 
+to 0's, and returns %NULL on failure. Contrast with g_new0(), which aborts 
+the program on failure.
+The returned pointer is cast to a pointer to the given type.
+If @n_counts is 0 it returns %NULL.
+</para>
+
+@struct_type: the type of the elements to allocate.
+@n_structs: the number of elements to allocate.
+@Returns: a pointer to the allocated memory, cast to a pointer to @struct_type.
+@Since: 2.8
+
+
+<!-- ##### MACRO g_try_renew ##### -->
+<para>
+Attempts to reallocate the memory pointed to by @mem, so that it now has 
+space for @n_structs elements of type @struct_type, and returns %NULL on 
+failure. Contrast with g_renew(), which aborts the program on failure.
+It returns the new address of the memory, which may have been moved.
+</para>
+
+@struct_type: the type of the elements to allocate.
+@mem: the currently allocated memory.
+@n_structs: the number of elements to allocate.
+@Returns: a pointer to the new allocated memory, cast to a pointer to @struct_type.
+@Since: 2.8
 
 
 <!-- ##### FUNCTION g_malloc ##### -->

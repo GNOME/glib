@@ -1,3 +1,8 @@
+2005-03-21  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gmem.h: Add g_try_new, g_try_new0 and 
+	g_try_renew.  (#169611, Stefan Kost)
+
 2005-03-20  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gspawn-win32.c (do_spawn_with_pipes): Close the process

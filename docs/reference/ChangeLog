@@ -1,3 +1,9 @@
+2005-03-21  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/glib-sections.txt: 
+	* glib/tmpl/memory.sgml: Document g_try_new, g_try_new0 
+	and g_try_renew.
+
 2005-03-20  Matthias Clasen  <mclasen@redhat.com>
 
 	* gobject/tmpl/gparamspec.sgml: Document G_PARAM_SPEC_STATIC_

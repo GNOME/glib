@@ -64,6 +64,13 @@ gpointer g_try_realloc    (gpointer	 mem,
 #define g_renew(struct_type, mem, n_structs)	\
     ((struct_type *) g_realloc ((mem), ((gsize) sizeof (struct_type)) * ((gsize) (n_structs))))
 
+#define g_try_new(struct_type, n_structs)		\
+    ((struct_type *) g_try_malloc (((gsize) sizeof (struct_type)) * ((gsize) (n_structs))))
+#define g_try_new0(struct_type, n_structs)		\
+    ((struct_type *) g_try_malloc0 (((gsize) sizeof (struct_type)) * ((gsize) (n_structs))))
+#define g_try_renew(struct_type, mem, n_structs)	\
+    ((struct_type *) g_try_realloc ((mem), ((gsize) sizeof (struct_type)) * ((gsize) (n_structs))))
+
 
 /* Memory allocation virtualization for debugging purposes
  * g_mem_set_vtable() has to be the very first GLib function called
