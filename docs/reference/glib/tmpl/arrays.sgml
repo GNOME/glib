@@ -44,7 +44,7 @@ To free an array, use g_array_free().
 
   for (i = 0; i &lt; 10000; i++)
     if (g_array_index (garray, gint, i) != i)
-      g_print ("ERROR: got %d instead of %d\n",
+      g_print ("ERROR: got &percnt;d instead of &percnt;d\n",
                g_array_index (garray, gint, i), i);
 
   g_array_free (garray, TRUE);

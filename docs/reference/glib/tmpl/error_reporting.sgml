@@ -52,7 +52,7 @@ if (err != NULL)
   {
     /* Report error to user, and free error */
     g_assert (contents == NULL);
-    fprintf (stderr, "Unable to read file: %s\n", err->message);
+    fprintf (stderr, "Unable to read file: &percnt;s\n", err->message);
     g_error_free (err);
   } 
 else
@@ -115,7 +115,7 @@ foo_open_file (GError **error)
       g_set_error (error,
                    FOO_ERROR,                 /* error domain */
                    FOO_ERROR_BLAH,            /* error code */
-                   "Failed to open file: %s", /* error message format string */
+                   "Failed to open file: &percnt;s", /* error message format string */
                    g_strerror (errno));
       return -1;
     }

@@ -28,7 +28,7 @@ on all platforms. This can thus be used as a seed for e.g. games.
 <para>
 The <function>g_rand*_range</function> functions will return high quality
 equally distributed random numbers, whereas for example the
-<literal>(g_random_int()%%max)</literal> approach often doesn't
+<literal>(g_random_int()&percnt;max)</literal> approach often doesn't
 yield equally distributed numbers.
 </para>
 
