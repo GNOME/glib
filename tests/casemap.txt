@@ -16,6 +16,8 @@ tr_TR	I	ı	I	I	# I => LATIN SMALL LETTER DOTLESS I
 # about the titlecase part here
 lt_LT	iė	iė	Ie	IE	
 lt_LT	iė	iė	Ie	IE	
+# Special case not at initial position
+	aﬄ	aﬄ	Affl	AFFL	# FB04
 #
 # Now the automatic tests
 #

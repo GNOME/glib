@@ -159,6 +159,8 @@ tr_TR\tI\t\x{0131}\tI\tI\t# I => LATIN SMALL LETTER DOTLESS I
 # about the titlecase part here
 lt_LT\ti\x{117}\ti\x{117}\tIe\tIE\t
 lt_LT\tie\x{307}\tie\x{307}\tIe\tIE\t
+# Special case not at initial position
+\ta\x{fb04}\ta\x{fb04}\tAffl\tAFFL\t# FB04
 #
 # Now the automatic tests
 #

@@ -1,3 +1,9 @@
+2003-08-06  Noah Levitt  <nlevitt@columbia.edu>
+
+	* tests/casemap.txt:
+	* tests/gen-casemap-txt.pl: Add test for special case not at inital
+	position in the string, the bug just fixed. (#118957)
+
 2003-08-05  Noah Levitt  <nlevitt@columbia.edu>
 
 	* glib/guniprop.c: Get rid of "len" parameter to output_special_case
