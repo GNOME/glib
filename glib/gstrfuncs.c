@@ -1876,7 +1876,7 @@ g_strcasecmp (const gchar *s1,
 gint
 g_strncasecmp (const gchar *s1,
 	       const gchar *s2,
-	       gsize n)     
+	       guint n)     
 {
 #ifdef HAVE_STRNCASECMP
   return strncasecmp (s1, s2, n);
