@@ -121,7 +121,6 @@ Tue Aug 19 09:42:06 2003  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/glib.def: Remove two dups.
 
->>>>>>> 1.1255.2.96
 2003-08-08  Matthias Clasen  <maclas@gmx.de>
 
 	* configure.in: Forgot to actually switch to trio if snprintf() isn't good enough.
