@@ -765,6 +765,8 @@ typedef gboolean	(*GHookFindFunc)	(GHook		*hook,
 						 gpointer	 data);
 typedef void		(*GHookMarshaller)	(GHook		*hook,
 						 gpointer	 data);
+typedef gboolean	(*GHookCheckMarshaller)	(GHook		*hook,
+						 gpointer	 data);
 typedef void		(*GHookFunc)		(gpointer	 data);
 typedef gboolean	(*GHookCheckFunc)	(gpointer	 data);
 typedef void		(*GHookFreeFunc)	(GHookList      *hook_list,
@@ -1214,6 +1216,10 @@ void	 g_hook_list_invoke_check	(GHookList		*hook_list,
 void	 g_hook_list_marshal		(GHookList		*hook_list,
 					 gboolean		 may_recurse,
 					 GHookMarshaller	 marshaller,
+					 gpointer		 data);
+void	 g_hook_list_marshal_check	(GHookList		*hook_list,
+					 gboolean		 may_recurse,
+					 GHookCheckMarshaller	 marshaller,
 					 gpointer		 data);
 
 

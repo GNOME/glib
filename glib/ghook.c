@@ -324,6 +324,42 @@ g_hook_list_invoke_check (GHookList *hook_list,
 }
 
 void
+g_hook_list_marshal_check (GHookList	       *hook_list,
+			   gboolean		may_recurse,
+			   GHookCheckMarshaller marshaller,
+			   gpointer		data)
+{
+  GHook *hook;
+  
+  g_return_if_fail (hook_list != NULL);
+  g_return_if_fail (hook_list->is_setup);
+  g_return_if_fail (marshaller != NULL);
+  
+  hook = g_hook_first_valid (hook_list, may_recurse);
+  while (hook)
+    {
+      GHook *tmp;
+      gboolean was_in_call;
+      gboolean need_destroy;
+      
+      g_hook_ref (hook_list, hook);
+      
+      was_in_call = G_HOOK_IN_CALL (hook);
+      hook->flags |= G_HOOK_FLAG_IN_CALL;
+      need_destroy = !marshaller (hook, data);
+      if (!was_in_call)
+	hook->flags &= ~G_HOOK_FLAG_IN_CALL;
+      if (need_destroy)
+	g_hook_destroy_link (hook_list, hook);
+      
+      tmp = g_hook_next_valid (hook, may_recurse);
+      
+      g_hook_unref (hook_list, hook);
+      hook = tmp;
+    }
+}
+
+void
 g_hook_list_marshal (GHookList		     *hook_list,
 		     gboolean		      may_recurse,
 		     GHookMarshaller	      marshaller,
