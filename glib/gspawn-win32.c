@@ -124,22 +124,6 @@ g_spawn_error_quark (void)
   return quark;
 }
 
-/**
- * g_spawn_async:
- * @working_directory: child's current working directory, or %NULL to inherit parent's
- * @argv: child's argument vector
- * @envp: child's environment, or %NULL to inherit parent's
- * @flags: flags from #GSpawnFlags
- * @child_setup: function to run in the child just before <function>exec()</function>
- * @user_data: user data for @child_setup
- * @child_pid: return location for child process ID, or %NULL
- * @error: return location for error
- * 
- * See g_spawn_async_with_pipes() for a full description; this function
- * simply calls the g_spawn_async_with_pipes() without any pipes.
- * 
- * Return value: %TRUE on success, %FALSE if error is set
- **/
 gboolean
 g_spawn_async (const gchar          *working_directory,
                gchar               **argv,
@@ -219,32 +203,6 @@ read_data (GString     *str,
     return READ_OK;
 }
 
-/**
- * g_spawn_sync:
- * @working_directory: child's current working directory, or %NULL to inherit parent's
- * @argv: child's argument vector
- * @envp: child's environment, or %NULL to inherit parent's
- * @flags: flags from #GSpawnFlags
- * @child_setup: function to run in the child just before <function>exec()</function>
- * @user_data: user data for @child_setup
- * @standard_output: return location for child output 
- * @standard_error: return location for child error messages
- * @exit_status: child exit status, as returned by <function>waitpid()</function>
- * @error: return location for error
- *
- * Executes a child synchronously (waits for the child to exit before returning).
- * All output from the child is stored in @standard_output and @standard_error,
- * if those parameters are non-%NULL. If @exit_status is non-%NULL, the exit status
- * of the child is stored there as it would be returned by <function>waitpid()</function>; standard UNIX
- * macros such as <function>WIFEXITED()</function> and <function>WEXITSTATUS()</function> must be used to evaluate the
- * exit status. If an error occurs, no data is returned in @standard_output,
- * @standard_error, or @exit_status.
- * 
- * This function calls g_spawn_async_with_pipes() internally; see that function
- * for full details on the other parameters.
- * 
- * Return value: %TRUE on success, %FALSE if an error was set.
- **/
 gboolean
 g_spawn_sync (const gchar          *working_directory,
               gchar               **argv,
@@ -455,83 +413,6 @@ g_spawn_sync (const gchar          *working_directory,
     }
 }
 
-/**
- * g_spawn_async_with_pipes:
- * @working_directory: child's current working directory, or %NULL to inherit parent's
- * @argv: child's argument vector
- * @envp: child's environment, or %NULL to inherit parent's
- * @flags: flags from #GSpawnFlags
- * @child_setup: function to run in the child just before <function>exec()</function>
- * @user_data: user data for @child_setup
- * @child_pid: return location for child process ID, or %NULL
- * @standard_input: return location for file descriptor to write to child's stdin, or %NULL
- * @standard_output: return location for file descriptor to read child's stdout, or %NULL
- * @standard_error: return location for file descriptor to read child's stderr, or %NULL
- * @error: return location for error
- *
- * Executes a child program asynchronously (your program will not
- * block waiting for the child to exit). The child program is
- * specified by the only argument that must be provided, @argv. @argv
- * should be a %NULL-terminated array of strings, to be passed as the
- * argument vector for the child. The first string in @argv is of
- * course the name of the program to execute. By default, the name of
- * the program must be a full path; the <envar>PATH</envar> shell variable will only
- * be searched if you pass the %G_SPAWN_SEARCH_PATH flag.
- *
- * @envp is a %NULL-terminated array of strings, where each string
- * has the form <literal>KEY=VALUE</literal>. This will become
- * the child's environment. If @envp is %NULL, the child inherits its
- * parent's environment.
- *
- * @flags should be the bitwise OR of any flags you want to affect the
- * function's behavior. The %G_SPAWN_DO_NOT_REAP_CHILD means that the
- * child will not be automatically reaped; you must call 
- * <function>waitpid()</function> or handle %SIGCHLD yourself, or the 
- * child will become a zombie. %G_SPAWN_LEAVE_DESCRIPTORS_OPEN means 
- * that the parent's open file descriptors will be inherited by the child; 
- * otherwise all descriptors except stdin/stdout/stderr will be closed before
- * calling <function>exec()</function> in the child. %G_SPAWN_SEARCH_PATH 
- * means that <literal>argv[0]</literal> need not be an absolute path, it
- * will be looked for in the user's <envar>PATH</envar>. 
- * %G_SPAWN_STDOUT_TO_DEV_NULL means that the child's standard output 
- * will be discarded, instead of going to the same location as the parent's 
- * standard output. %G_SPAWN_STDERR_TO_DEV_NULL means that the child's 
- * standard error will be discarded. %G_SPAWN_CHILD_INHERITS_STDIN means that
- * the child will inherit the parent's standard input (by default,
- * the child's standard input is attached to /dev/null).
- *
- * @child_setup and @user_data are a function and user data to be
- * called in the child after GLib has performed all the setup it plans
- * to perform (including creating pipes, closing file descriptors,
- * etc.) but before calling <function>exec()</function>. That is, @child_setup 
- * is called just before calling <function>exec()</function> in the child. 
- * Obviously actions taken in this function will only affect the child, not 
- * the parent. 
- *
- * If non-%NULL, @child_pid will be filled with the child's process
- * ID. You can use the process ID to send signals to the child, or
- * to <function>waitpid()</function> if you specified the 
- * %G_SPAWN_DO_NOT_REAP_CHILD flag.
- *
- * If non-%NULL, the @standard_input, @standard_output, @standard_error
- * locations will be filled with file descriptors for writing to the child's
- * standard input or reading from its standard output or standard error.
- * The caller of g_spawn_async_with_pipes() must close these file descriptors
- * when they are no longer in use. If these parameters are %NULL, the
- * corresponding pipe won't be created.
- *
- * @error can be %NULL to ignore errors, or non-%NULL to report errors.
- * If an error is set, the function returns %FALSE. Errors
- * are reported even if they occur in the child (for example if the
- * executable in <literal>argv[0]</literal> is not found). Typically
- * the <literal>message</literal> field of returned errors should be displayed
- * to users. Possible errors are those from the #G_SPAWN_ERROR domain.
- *
- * If an error occurs, @child_pid, @standard_input, @standard_output,
- * and @standard_error will not be filled with valid values.
- * 
- * Return value: %TRUE on success, %FALSE if an error was set
- **/
 gboolean
 g_spawn_async_with_pipes (const gchar          *working_directory,
                           gchar               **argv,
@@ -572,25 +453,6 @@ g_spawn_async_with_pipes (const gchar          *working_directory,
                                error);
 }
 
-/**
- * g_spawn_command_line_sync:
- * @command_line: a command line 
- * @standard_output: return location for child output
- * @standard_error: return location for child errors
- * @exit_status: return location for child exit status
- * @error: return location for errors
- *
- * A simple version of g_spawn_sync() with little-used parameters
- * removed, taking a command line instead of an argument vector.  See
- * g_spawn_sync() for full details. @command_line will be parsed by
- * g_shell_parse_argv(). Unlike g_spawn_sync(), the %G_SPAWN_SEARCH_PATH flag
- * is enabled. Note that %G_SPAWN_SEARCH_PATH can have security
- * implications, so consider using g_spawn_sync() directly if
- * appropriate. Possible errors are those from g_spawn_sync() and those
- * from g_shell_parse_argv().
- * 
- * Return value: %TRUE on success, %FALSE if an error was set
- **/
 gboolean
 g_spawn_command_line_sync (const gchar  *command_line,
                            gchar       **standard_output,
@@ -623,21 +485,6 @@ g_spawn_command_line_sync (const gchar  *command_line,
   return retval;
 }
 
-/**
- * g_spawn_command_line_async:
- * @command_line: a command line
- * @error: return location for errors
- * 
- * A simple version of g_spawn_async() that parses a command line with
- * g_shell_parse_argv() and passes it to g_spawn_async(). Runs a
- * command line in the background. Unlike g_spawn_async(), the
- * %G_SPAWN_SEARCH_PATH flag is enabled, other flags are not. Note
- * that %G_SPAWN_SEARCH_PATH can have security implications, so
- * consider using g_spawn_async() directly if appropriate. Possible
- * errors are those from g_shell_parse_argv() and g_spawn_async().
- * 
- * Return value: %TRUE on success, %FALSE if error is set.
- **/
 gboolean
 g_spawn_command_line_async (const gchar *command_line,
                             GError     **error)
