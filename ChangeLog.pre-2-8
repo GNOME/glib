@@ -1,3 +1,10 @@
+Sat Jun  6 16:18:10 2003  Andrew Lanoix  <alanoix@umich.edu>
+
+	* glib/giowin32.c: Resolved thread deadlocks in socket 
+	ichannel code to support Add-Cancel-Add watch functionality 
+	on windows. Also cleaned up socket error handling to not 
+	segfault and do the right thing.
+	
 Fri Jun  6 10:24:23 2003  Hidetoshi Tajima  <hidetoshi.tajima@sun.com>
 
 	* m4macros/glib-gettext.m4: Test for Solaris native gettext 
