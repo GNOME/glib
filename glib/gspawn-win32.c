@@ -99,6 +99,7 @@ enum {
 static gboolean make_pipe            (gint                  p[2],
                                       GError              **error);
 static gboolean do_spawn_with_pipes  (gboolean              dont_wait,
+				      gboolean		    dont_return_handle,
 				      const gchar          *working_directory,
                                       gchar               **argv,
                                       gchar               **envp,
@@ -254,6 +255,7 @@ g_spawn_sync (const gchar          *working_directory,
     *standard_error = NULL;
   
   if (!do_spawn_with_pipes (FALSE,
+			    TRUE,
 			    working_directory,
 			    argv,
 			    envp,
@@ -444,6 +446,7 @@ g_spawn_async_with_pipes (const gchar          *working_directory,
                         !(flags & G_SPAWN_CHILD_INHERITS_STDIN), FALSE);
   
   return do_spawn_with_pipes (TRUE,
+			      !(flags & G_SPAWN_DO_NOT_REAP_CHILD),
 			      working_directory,
 			      argv,
 			      envp,
@@ -714,6 +717,7 @@ read_ints (int      fd,
 
 static gboolean
 do_spawn_with_pipes (gboolean              dont_wait,
+		     gboolean		   dont_return_handle,
 		     const gchar          *working_directory,
 		     gchar               **argv,
 		     gchar               **envp,
@@ -787,7 +791,7 @@ do_spawn_with_pipes (gboolean              dont_wait,
   switch (buf[0])
     {
     case CHILD_NO_ERROR:
-      if (child_pid && dont_wait)
+      if (child_pid && dont_wait && !dont_return_handle)
 	{
 	  /* helper is our HANDLE for gspawn-win32-helper. It has
 	   * told us the HANDLE of its child. Duplicate that into
@@ -830,6 +834,7 @@ do_spawn_with_pipes (gboolean              dont_wait,
     *standard_error = stderr_pipe[0];
   if (exit_status)
     *exit_status = buf[1];
+  CloseHandle ((HANDLE) helper);
   
   return TRUE;
 
