@@ -1,3 +1,8 @@
+2003-04-18  Matthias Clasen  <maclas@gmx.de>
+
+	* gobject/tmpl/signals.sgml: Correct the documentation
+	GSignalEmissionHook (#110906) and some cleanups.
+
 2003-04-11  Matthias Clasen  <maclas@gmx.de>
 
 	* gobject/tmpl/gparamspec.sgml: Fix a few typos.

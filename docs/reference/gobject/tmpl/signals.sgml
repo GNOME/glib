@@ -46,7 +46,7 @@ A signal emission consists of five stages, unless prematurely stopped:
 	5 - Invocation of the object method handler for %G_SIGNAL_RUN_CLEANUP signals
   </para></listitem></varlistentry>
 </variablelist>
-The user provided signal handlers are called in the order they were
+The user-provided signal handlers are called in the order they were
 connected in.
 All handlers may prematurely stop a signal emission, and any number of
 handlers may be connected, disconnected, blocked or unblocked during
@@ -87,7 +87,7 @@ to callbacks during a signal emission.
 The signal accumulator is a special callback function that can be used
 to collect return values of the various callbacks that are called
 during a signal emission. The signal accumulator is specified at signal
-creation time, if it is left NULL, no accumulation of callback return
+creation time, if it is left %NULL, no accumulation of callback return
 values is performed. The return value of signal emissions is then the
 value returned by the last callback.
 </para>
@@ -100,8 +100,6 @@ value returned by the last callback.
 @Returns: 	The accumulator function returns whether the signal emission
 		should be aborted. Returning %FALSE means to abort the
 		current emission and %TRUE is returned for continuation.
-<!-- # Unused Parameters # -->
-@return_value: 	The return value of the most recent callback function.
 
 
 <!-- ##### TYPEDEF GSignalCMarshaller ##### -->
@@ -130,7 +128,7 @@ You may not attach these to signals created with the #G_SIGNAL_NO_HOOKS flag.
 @param_values: the instance on which the signal was emitted, followed by the 
                parameters of the emission.
 @data: user data associated with the hook.
-@Returns: whether it wished to be removed. If it returns %TRUE, the signal 
+@Returns: whether it wants to stay connected. If it returns %FALSE, the signal 
           hook is disconnected (and destroyed).
 
 
@@ -490,21 +488,15 @@ calling the handler.
 
 <!-- ##### FUNCTION g_signal_connect_object ##### -->
 <para>
- * This is similar to g_signal_connect_data(), but uses a closure which
- * ensures that the object stays alive during the call to @c_handler.
+ This is similar to g_signal_connect_data(), but uses a closure which
+ ensures that the object stays alive during the call to @c_handler.
 </para>
 
- * @instance: the instance to connect to.
- * @detailed_signal: a string of the form "signal-name::detail".
- * @c_handler: the #GCallback to connect.
- * @gobject: the object to pass as data to @c_handler.
- * @connect_flags: a combination of #GConnnectFlags.
-
-@instance: 
-@detailed_signal: 
-@c_handler: 
-@gobject: 
-@connect_flags: 
+@instance: the instance to connect to.
+@detailed_signal: a string of the form "signal-name::detail".
+@c_handler: the #GCallback to connect.
+@gobject: the object to pass as data to @c_handler.
+@connect_flags: a combination of #GConnnectFlags.
 @Returns: the handler id.
 
 
