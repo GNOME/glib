@@ -1,3 +1,9 @@
+Sat May 18 00:44:35 2002  Tim Janik  <timj@gtk.org>
+
+	[merged from stable]
+
+        * glib/tmpl/scanner.sgml: fix documentation for g_scanner_unexp_token().
+
 2002-05-01  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* glib/tmpl/threads.sgml: Clarify recursion issues with

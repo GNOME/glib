@@ -434,25 +434,30 @@ documentation.
 
 <!-- ##### FUNCTION g_scanner_unexp_token ##### -->
 <para>
-Outputs a message resulting from an unexpected token in the input stream.
+Outputs a message through the scanner's msg_handler, resulting from an
+unexpected token in the input stream.
 Note that you should not call g_scanner_peek_next_token() followed by
 g_scanner_unexp_token() without an intermediate call to
-g_scanner_get_next_token().
+g_scanner_get_next_token(), as g_scanner_unexp_token() evaluates the
+scanner's current token (not the peeked token) to construct part
+of the message.
 </para>
 
 @scanner: a #GScanner.
 @expected_token: the expected token.
-@identifier_spec: a string describing the expected type of identifier,
-  or %NULL to use the default "identifier" string. This is used if
-  @expected_token is #G_TOKEN_IDENTIFIER or #G_TOKEN_IDENTIFIER_NULL.
-@symbol_spec: a string describing the expected type of symbol,
-  or %NULL to use the default "symbol" string. This is used if
-  @expected_token is #G_TOKEN_SYMBOL.
-@symbol_name: the name of the expected symbol. This is used if 
-  @expected_token is #G_TOKEN_SYMBOL.
+@identifier_spec: a string describing how the scanner's user refers to
+                  identifiers (%NULL defaults to "identifier").
+                  This is used if @expected_token is #G_TOKEN_IDENTIFIER
+                  or #G_TOKEN_IDENTIFIER_NULL.
+@symbol_spec: a string describing how the scanner's user refers to
+              symbols (%NULL defaults to "symbol").
+              This is used if @expected_token is #G_TOKEN_SYMBOL or
+              any token value greater than #G_TOKEN_LAST.
+@symbol_name: the name of the symbol, if the scanner's current token
+              is a symbol.
 @message: a message string to output at the end of the warning/error, or %NULL.
 @is_error: if %TRUE it is output as an error. If %FALSE it is output as a
-warning.
+           warning.
 
 
 <!-- ##### USER_FUNCTION GScannerMsgFunc ##### -->
