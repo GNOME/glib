@@ -7,7 +7,7 @@ Sun Mar  3 02:30:05 2002  Tim Janik  <timj@gtk.org>
 Thu Feb 28 11:13:49 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gshell.c (g_shell_unquote): Fix memory leak.
-	(#72990, Paoloo Maggi)
+	(#72990, Paolo Maggi)
 
 2002-02-28  Sven Neumann  <sven@gimp.org>
 
