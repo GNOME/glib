@@ -175,6 +175,7 @@ struct _SignalNode
   guint              destroyed : 1;
   
   /* reinitializable portion */
+  guint		     test_class_offset : 12;
   guint              flags : 8;
   guint              n_params : 8;
   GType		    *param_types; /* mangled with G_SIGNAL_TYPE_STATIC_SCOPE flag */
@@ -184,6 +185,8 @@ struct _SignalNode
   GSignalCMarshaller c_marshaller;
   GHookList         *emission_hooks;
 };
+#define	MAX_TEST_CLASS_OFFSET	(4096)	/* 2^12, 12 bits for test_class_offset */
+#define	TEST_CLASS_MAGIC	(1)	/* indicates NULL class closure, candidate for NOP optimization */
 
 struct _SignalKey
 {
@@ -1124,6 +1127,18 @@ g_signal_new (const gchar	 *signal_name,
                                    return_type, n_params, args);
 
   va_end (args);
+
+  /* optimize NOP emissions with NULL class handlers */
+  if (signal_id && G_TYPE_IS_INSTANTIATABLE (itype) && return_type == G_TYPE_NONE &&
+      class_offset && class_offset < MAX_TEST_CLASS_OFFSET)
+    {
+      SignalNode *node;
+
+      SIGNAL_LOCK ();
+      node = LOOKUP_SIGNAL_NODE (signal_id);
+      node->test_class_offset = class_offset;
+      SIGNAL_UNLOCK ();
+    }
  
   return signal_id;
 }
@@ -1173,6 +1188,9 @@ signal_add_class_closure (SignalNode *node,
 			  GClosure   *closure)
 {
   ClassClosure key;
+
+  /* can't optimize NOP emissions with overridden class closures */
+  node->test_class_offset = 0;
 
   if (!node->class_closure_bsa)
     node->class_closure_bsa = g_bsearch_array_new (&g_class_closure_bconfig);
@@ -1288,7 +1306,8 @@ g_signal_newv (const gchar       *signal_name,
       g_signal_key_bsa = g_bsearch_array_insert (g_signal_key_bsa, &g_signal_key_bconfig, &key, FALSE);
     }
   node->destroyed = FALSE;
-  
+  node->test_class_offset = 0;
+
   /* setup reinitializable portion */
   node->flags = signal_flags & G_SIGNAL_FLAGS_MASK;
   node->n_params = n_params;
@@ -1307,6 +1326,11 @@ g_signal_newv (const gchar       *signal_name,
   node->emission_hooks = NULL;
   if (class_closure)
     signal_add_class_closure (node, 0, class_closure);
+  else if (G_TYPE_IS_INSTANTIATABLE (itype) && return_type == G_TYPE_NONE)
+    {
+      /* optimize NOP emissions */
+      node->test_class_offset = TEST_CLASS_MAGIC;
+    }
   SIGNAL_UNLOCK ();
 
   return signal_id;
@@ -1354,6 +1378,7 @@ signal_destroy_R (SignalNode *signal_node)
   signal_node->destroyed = TRUE;
   
   /* reentrancy caution, zero out real contents first */
+  signal_node->test_class_offset = 0;
   signal_node->n_params = 0;
   signal_node->param_types = NULL;
   signal_node->return_type = 0;
@@ -1947,6 +1972,50 @@ g_signal_has_handler_pending (gpointer instance,
   return has_pending;
 }
 
+static inline gboolean
+signal_check_skip_emission (SignalNode *node,
+			    gpointer    instance,
+			    GQuark      detail)
+{
+  HandlerList *hlist;
+
+  /* are we able to check for NULL class handlers? */
+  if (!node->test_class_offset)
+    return FALSE;
+
+  /* are there emission hooks pending? */
+  if (node->emission_hooks && node->emission_hooks->hooks)
+    return FALSE;
+
+  /* is there a non-NULL class handler? */
+  if (node->test_class_offset != TEST_CLASS_MAGIC)
+    {
+      GTypeClass *class = G_TYPE_INSTANCE_GET_CLASS (instance, G_TYPE_FROM_INSTANCE (instance), GTypeClass);
+
+      if (G_STRUCT_MEMBER (gpointer, class, node->test_class_offset))
+	return FALSE;
+    }
+
+  /* are signals being debugged? */
+#ifdef  G_ENABLE_DEBUG
+  IF_DEBUG (SIGNALS, g_trace_instance_signals || g_trap_instance_signals)
+    return FALSE;
+#endif /* G_ENABLE_DEBUG */
+
+  /* is this a no-recurse signal already in emission? */
+  if (node->flags & G_SIGNAL_NO_RECURSE &&
+      emission_find (g_restart_emissions, node->signal_id, detail, instance))
+    return FALSE;
+
+  /* do we have pending handlers? */
+  hlist = handler_list_lookup (node->signal_id, instance);
+  if (hlist && hlist->handlers)
+    return FALSE;
+
+  /* none of the above, no emission required */
+  return TRUE;
+}
+
 void
 g_signal_emitv (const GValue *instance_and_params,
 		guint         signal_id,
@@ -2020,6 +2089,15 @@ g_signal_emitv (const GValue *instance_and_params,
     return_value = NULL;
 #endif	/* G_ENABLE_DEBUG */
 
+  /* optimize NOP emissions */
+  if (signal_check_skip_emission (node, instance, detail))
+    {
+      /* nothing to do to emit this signal */
+      SIGNAL_UNLOCK ();
+      /* g_printerr ("omitting emission of \"%s\"\n", node->name); */
+      return;
+    }
+
   SIGNAL_UNLOCK ();
   signal_emit_unlocked_R (node, detail, instance, return_value, instance_and_params);
 }
@@ -2055,6 +2133,15 @@ g_signal_emit_valist (gpointer instance,
       return;
     }
 #endif  /* !G_DISABLE_CHECKS */
+
+  /* optimize NOP emissions */
+  if (signal_check_skip_emission (node, instance, detail))
+    {
+      /* nothing to do to emit this signal */
+      SIGNAL_UNLOCK ();
+      /* g_printerr ("omitting emission of \"%s\"\n", node->name); */
+      return;
+    }
 
   n_params = node->n_params;
   signal_return_type = node->return_type;
