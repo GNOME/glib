@@ -18,7 +18,7 @@ srcdir=.
 
 all : \
 	libgobject-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.a \
-	testgruntime.exe \
+	testgobject.exe \
 	glib-genmarshal.exe
 
 gobject_OBJECTS =		\
@@ -44,8 +44,8 @@ libgobject-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.a : $(srcdir)/stamp-gmarsha
 glib-genmarshal.exe : glib-genmarshal.c
 	$(CC) -o $@ $(CFLAGS) -UGOBJECT_COMPILATION $< -L ../glib -lglib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
 
-testgruntime.exe: libgobject-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.a testgruntime.o
-	$(CC) $(CFLAGS) -o testgruntime.exe testgruntime.o -L ../glib -lglib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@ -L . -lgobject-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@ $(LFLAGS)
+testgobject.exe: libgobject-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.a testgobject.o
+	$(CC) $(CFLAGS) -o testgobject.exe testgobject.o -L ../glib -lglib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@ -L . -lgobject-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@ $(LFLAGS)
 
 # Copied from Makefile.am:
 # initial creation of the real stamp-* files

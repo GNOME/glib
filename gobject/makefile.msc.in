@@ -26,7 +26,7 @@ all :				\
 	gobject-query.exe \
 	libgobject-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@-@LT_CURRENT_MINUS_AGE@.dll	\
 	gobject-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@s.lib \
-	testgruntime.exe	\
+	testgobject.exe	\
 	testoverride.exe
 
 gobject_OBJECTS =		\

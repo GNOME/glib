@@ -1,3 +1,8 @@
+2002-03-03  Tor Lillqvist  <tml@iki.fi>
+
+	* makefile.msc.in
+	* makefile.mingw.in: Rename testgruntime to testgobject here, too.
+
 Sun Mar  3 04:11:58 2002  Tim Janik  <timj@gtk.org>
 
 	* gobject.c: placed a comment about not changing CArray until we have
