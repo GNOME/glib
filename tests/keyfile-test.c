@@ -519,6 +519,8 @@ test_boolean (void)
 
   g_key_file_get_boolean (keyfile, "invalid", "key4", &error);
   check_error (&error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_INVALID_VALUE);
+
+  g_key_file_free (keyfile);
 }
 
 /* check parsing of integer values */
@@ -562,6 +564,73 @@ test_integer (void)
 
   g_key_file_get_integer (keyfile, "invalid", "key4", &error);
   check_error (&error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_INVALID_VALUE);
+
+  g_key_file_free (keyfile);
+}
+
+/* http://bugzilla.gnome.org/show_bug.cgi?id=165887 */
+static void 
+test_group_remove (void)
+{
+  GKeyFile *keyfile;
+  gchar **names;
+  gsize len;
+  GError *error = NULL;
+
+  const gchar *data = 
+    "[group1]\n"
+    "[group2]\n"
+    "key1=bla\n"
+    "key2=bla\n"
+    "[group3]\n"
+    "key1=bla\n"
+    "key2=bla\n";
+  
+  keyfile = load_data (data, 0);
+  
+  names = g_key_file_get_groups (keyfile, &len);
+  if (names == NULL)
+    {
+      g_print ("Error listing groups\n");
+      exit (1);
+    }
+
+  check_length ("groups", g_strv_length (names), len, 3);
+  check_name ("group name", names[0], "group1", 0);
+  check_name ("group name", names[1], "group2", 1);
+  check_name ("group name", names[2], "group3", 2);
+
+  g_key_file_remove_group (keyfile, "group1", &error);
+  check_no_error (&error);
+  
+  names = g_key_file_get_groups (keyfile, &len);
+  if (names == NULL)
+    {
+      g_print ("Error listing groups\n");
+      exit (1);
+    }
+
+  check_length ("groups", g_strv_length (names), len, 2);
+  check_name ("group name", names[0], "group2", 0);
+  check_name ("group name", names[1], "group3", 1);
+
+  g_key_file_remove_group (keyfile, "group2", &error);
+  check_no_error (&error);
+  
+  names = g_key_file_get_groups (keyfile, &len);
+  if (names == NULL)
+    {
+      g_print ("Error listing groups\n");
+      exit (1);
+    }
+
+  check_length ("groups", g_strv_length (names), len, 1);
+  check_name ("group name", names[0], "group3", 0);
+
+  g_key_file_remove_group (keyfile, "no such group", &error);
+  check_error (&error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_GROUP_NOT_FOUND);
+
+  g_key_file_free (keyfile);
 }
 
 /* check handling of translated strings */
@@ -680,6 +749,7 @@ main (int argc, char *argv[])
   test_integer ();
   test_locale_string ();
   test_lists ();
+  test_group_remove ();
   
   return 0;
 }

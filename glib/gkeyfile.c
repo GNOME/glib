@@ -2768,8 +2768,8 @@ g_key_file_remove_group (GKeyFile     *key_file,
 		 G_KEY_FILE_ERROR_GROUP_NOT_FOUND,
 		 _("Key file does not have group '%s'"),
 		 group_name);
-
-  g_key_file_remove_group_node (key_file, group_node);
+  else
+    g_key_file_remove_group_node (key_file, group_node);
 }
 
 static void
