@@ -30,7 +30,6 @@
 
 #include <glib.h>
 
-static const char *g_log_domain_gthread = "GThread";
 static gboolean thread_system_already_initialized = FALSE;
 
 #include G_THREAD_SOURCE

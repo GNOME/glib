@@ -1,3 +1,8 @@
+Thu Dec 17 03:38:57 1998  Tim Janik  <timj@gtk.org>
+
+	* Makefile.am: -DG_LOG_DOMAIN="GThread", we don't need an extern
+	variable for that (noticed by Joel Becker <jlbec@ocala.cs.miami.edu>)
+
 Wed Dec 16 03:16:16 1998  Tim Janik  <timj@gtk.org>
 
 	* testgthread.c: s/g_thread_supported/g_thread_supported ()/
