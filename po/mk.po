@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: glib.glib-2-4.mk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-01-07 11:51-0500\n"
-"PO-Revision-Date: 2005-01-14 23:20+0100\n"
+"PO-Revision-Date: 2005-02-26 14:59+0100\n"
 "Last-Translator: Arangel Angov <ufo@linux.net.mk>\n"
 "Language-Team: Macedonian <ossm-members@hedona.on.net.mk>\n"
 "MIME-Version: 1.0\n"
@@ -167,7 +167,7 @@ msgstr "Каналот се терминира во парцијален кар�
 
 #: glib/giochannel.c:1685
 msgid "Can't do a raw read in g_io_channel_read_to_end"
-msgstr ""
+msgstr "Неможам да читам во g_io_channel_read_to_end"
 
 #: glib/gmarkup.c:226
 #, c-format
@@ -210,7 +210,7 @@ msgstr "Името на ентитетот '%s' е познато"
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
-msgstr ""
+msgstr "Ентитетот не заврши со полуколоната; најверојатно сте користеле симбол без намера да започнете ентитет - избегнете го симболот со &amp;"
 
 #: glib/gmarkup.c:584
 #, c-format
@@ -235,7 +235,7 @@ msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
 "as &amp;"
-msgstr ""
+msgstr "Референцата за карактерите не заврши со полуколона; најверојатно сте користеле симбол без намера да започнете ентитет - одбегнете го симболот со &amp;"
 
 #: glib/gmarkup.c:720
 msgid "Unfinished entity reference"
@@ -285,6 +285,9 @@ msgid ""
 "element '%s', or optionally an attribute; perhaps you used an invalid "
 "character in an attribute name"
 msgstr ""
+"Чуден карактер '%s', очекував '>' или '/' за да го затворам почетниот таг "
+"на елементот '%s'; можеби сте користеле невалиден карактер во името "
+"на атрибутот"
 
 #: glib/gmarkup.c:1388
 #, c-format
@@ -441,6 +444,8 @@ msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
 msgstr ""
+"Неочекувана грешка во g_io_channel_win32_poll() при читање на податоци"
+"од подпроцесот"
 
 #: glib/gspawn.c:179
 #, c-format
@@ -461,7 +466,7 @@ msgstr "Неочекувана грешка во waitpid() (%s)"
 #: glib/gspawn.c:1079
 #, c-format
 msgid "Failed to fork (%s)"
-msgstr ""
+msgstr "Не успеав да форкувам (%s)"
 
 #: glib/gspawn.c:1229
 #, c-format
@@ -476,7 +481,7 @@ msgstr "Не успеав да го пренасочам излезот или �
 #: glib/gspawn.c:1248
 #, c-format
 msgid "Failed to fork child process (%s)"
-msgstr ""
+msgstr "Не успеав да го форкувам подпроцесот (%s)"
 
 #: glib/gspawn.c:1256
 #, c-format
