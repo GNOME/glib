@@ -1017,7 +1017,7 @@ filename_charset_cache_free (gpointer data)
  * Determines the preferred character sets used for filenames.
  * The first character set from the @charsets is the filename encoding, the
  * subsequent character sets are used when trying to generate a displayable
- * representation of a filename, see g_filename_get_display_name().
+ * representation of a filename, see g_filename_display_name().
  *
  * The character sets are determined by consulting the environment variables 
  * <envar>G_FILENAME_ENCODING</envar> and <envar>G_BROKEN_FILENAMES</envar>.
