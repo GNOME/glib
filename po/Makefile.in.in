@@ -26,7 +26,8 @@ VPATH = @srcdir@
 prefix = @prefix@
 exec_prefix = @exec_prefix@
 datadir = @datadir@
-localedir = $(datadir)/locale
+libdir = @libdir@
+localedir = $(libdir)/locale
 gnulocaledir = $(datadir)/locale
 gettextsrcdir = $(datadir)/glib-2.0/gettext/po
 subdir = po
@@ -37,10 +38,10 @@ MKINSTALLDIRS = $(top_srcdir)/@MKINSTALLDIRS@
 
 CC = @CC@
 GENCAT = @GENCAT@
-GMSGFMT = PATH=../src:$$PATH @GMSGFMT@
+GMSGFMT = @GMSGFMT@
 MSGFMT = @MSGFMT@
-XGETTEXT = PATH=../src:$$PATH @XGETTEXT@
-MSGMERGE = PATH=../src:$$PATH msgmerge
+XGETTEXT = @XGETTEXT@
+MSGMERGE = msgmerge
 
 DEFS = @DEFS@
 CFLAGS = @CFLAGS@
@@ -198,7 +199,6 @@ dist distdir: update-po $(DISTFILES)
 
 update-po: Makefile
 	$(MAKE) $(GETTEXT_PACKAGE).pot
-	PATH=`pwd`/../src:$$PATH; \
 	cd $(srcdir); \
 	catalogs='$(CATALOGS)'; \
 	for cat in $$catalogs; do \

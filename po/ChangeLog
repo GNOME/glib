@@ -1,3 +1,9 @@
+Wed Dec 11 14:06:50 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* po/Makefile.in.in: Fix problem from recent commit where
+	non GNU-format message catalogs would be installed in
+	datadir. Remove some leftover setting of PATH=../src:$PATH.
+
 2002-12-11  Gil Osher  <dolfin@rpg.org.il>
 
 	* he.po: Added Hebrew translation.
