@@ -1,3 +1,9 @@
+Fri Feb  8 12:32:14 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* tests/hash-test.c (second_hash_test): Fix access to
+	freed memory in test case (Miroslaw Dobrzanski-Neumann).
+	Re-enable and debug some commented out code.
+
 2002-02-08  Michael Natterer  <mitch@gimp.org>
 
 	* glib/gdir.c: g_dir_open: added g_return_val_if_fail() to prevent

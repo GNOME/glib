@@ -189,7 +189,6 @@ static void not_even_foreach (gpointer       key,
   g_assert (*_value != 0);
 
   i = atoi (_key);
-  g_assert (atoi (_key) > 0);
 
   sprintf (val, "%d value", i);
   g_assert (strcmp (_value, val) == 0);
@@ -214,7 +213,6 @@ static gboolean remove_even_foreach (gpointer       key,
   g_assert (*_value != 0);
 
   i = atoi (_key);
-  g_assert (i > 0);
 
   sprintf (val, "%d value", i);
   g_assert (strcmp (_value, val) == 0);
@@ -262,17 +260,15 @@ static void second_hash_test (gboolean simple_hash)
 	  g_assert (atoi (v) == i);
           }
 
-     /**** future test stuff, yet to be debugged 
      sprintf (key, "%d", 3);
      g_hash_table_remove (h, key);
      g_hash_table_foreach_remove (h, remove_even_foreach, NULL);
      g_hash_table_foreach (h, not_even_foreach, NULL);
-     */
 
      for (i=0; i<20; i++)
           {
-	  if (((i % 2) == 0) || (i == 3))
-	    i++;
+	  if ((i % 2) == 0 || i == 3)
+  	      continue;
 
           sprintf (key, "%d", i);
 	  g_assert (atoi(key) == i);
@@ -285,6 +281,8 @@ static void second_hash_test (gboolean simple_hash)
 	  					(gpointer)&orig_key,
 						(gpointer)&orig_val);
 	  g_assert (found);
+
+	  g_hash_table_remove (h, key);
 
 	  g_assert (orig_key != NULL);
 	  g_assert (strcmp (key, orig_key) == 0);
