@@ -1,3 +1,7 @@
+2001-12-24  Vasif Ismailogu MD  <azerb_linux@hotmail.com>
+
+	* az:po updating Azerbaijani translation file
+
 2001-12-21  Takayuki KUSANO  <AE5T-KSN@asahi-net.or.jp>
 
 	* ja.po: Updated Japanese translation.
@@ -20,7 +24,7 @@
 
 2001-12-13  Kjartan Maraas  <kmaraas@gnome.org>
 
-	* no.po: Updated Norwegian (bokmål) translation.
+	* no.po: Updated Norwegian (bokmï¿½) translation.
 
 2001-12-11  Stanislav Visnovsky  <visnovsky@nenya.ms.mff.cuni.cz>
 
@@ -40,7 +44,7 @@
 
 2001-12-04  Kjartan Maraas  <kmaraas@gnome.org>
 
-	* no.po: Updated Norwegian (bokmål) translation.
+	* no.po: Updated Norwegian (bokmï¿½) translation.
 	* POTFILES.in: Added glib/gdir.c.
 	
 2001-12-03  Christian Rose  <menthos@menthos.com>
@@ -50,7 +54,7 @@
 2001-11-26  Jesus Bravo Alvarez  <jba@pobox.com>
 
 	* gl.po: Added Galician translation from
-	  Manuel A. Fernández Montecelo <manuel@sindominio.net>
+	  Manuel A. Fernï¿½dez Montecelo <manuel@sindominio.net>
 
 2001-11-23 Dirk-Jan C. Binnema <djcb@djcbsoftware.nl>
 	
@@ -66,7 +70,7 @@
 
 2001-11-14  Kjartan Maraas  <kmaraas@gnome.org>
 
-	* no.po: Updated Norwegian (bokmål) translation.
+	* no.po: Updated Norwegian (bokmï¿½) translation.
 	
 2001-11-07  Wang Jian  <lark@linux.net.cn>
 
@@ -140,7 +144,7 @@
 
 2001-09-19  Kjartan Maraas  <kmaraas@gnome.org>
 
-	* no.po: Updated Norwegian (bokmål) translation.
+	* no.po: Updated Norwegian (bokmï¿½) translation.
 	
 2001-09-11  Christian Rose  <menthos@menthos.com>
 
@@ -164,9 +168,9 @@ Wed Sep  5 09:27:34 2001  Owen Taylor  <otaylor@redhat.com>
 	* Makefile.in.in: Updated from more recent gettext to fix
 	  problem with DESTDIR.
 
-2001-09-02  Carlos Perelló Marín <carlos@gnome-db.org>
+2001-09-02  Carlos Perell Marï¿½ <carlos@gnome-db.org>
 
-	* es.po: Added Spanish translation by josé antonio salgueiro
+	* es.po: Added Spanish translation by josï¿½antonio salgueiro
 	<joseantsa@retemail.es>
 
 2001-08-21  Abel Cheung  <maddog@linux.org.hk>
@@ -212,18 +216,18 @@ Wed Sep  5 09:27:34 2001  Owen Taylor  <otaylor@redhat.com>
 
 2001-04-05  Christian Rose  <menthos@menthos.com>
 
-	* sv.po: And other fixes. Thanks to Göran Uddeborg
+	* sv.po: And other fixes. Thanks to Gran Uddeborg
 	<goeran@uddeborg.pp.se>.
 
 2001-04-05  Christian Rose  <menthos@menthos.com>
 
 	* sv.po: Fixed another message in the Swedish translation. Thanks to
-	Jörgen Tegnér <teg@post.utfors.se>.
+	Jrgen Tegnï¿½ <teg@post.utfors.se>.
 
 2001-04-05  Christian Rose  <menthos@menthos.com>
 
 	* sv.po: Fixed Swedish translation, thanks to Veronica Loell
-	<info@nakawe.se> and Martin Norbäck <d95mback@dtek.chalmers.se>.
+	<info@nakawe.se> and Martin Norbï¿½k <d95mback@dtek.chalmers.se>.
 
 2001-04-05  Christian Rose  <menthos@menthos.com>
 
