@@ -243,7 +243,8 @@ g_pattern_spec_new (const gchar *pattern)
 	  pspec->pattern[pspec->pattern_length] = 0;
 	  return pspec;
 	}
-      if (pspec->pattern[pspec->pattern_length - 1] == '*')
+      if (pspec->pattern_length > 0 &&
+	  pspec->pattern[pspec->pattern_length - 1] == '*')
 	{
 	  pspec->match_type = G_MATCH_HEAD;
 	  pspec->pattern[--pspec->pattern_length] = 0;

@@ -273,6 +273,8 @@ main (int argc, char** argv)
   TEST_MATCH("ab*", "ab\xc3\xa4\xc3\xb6", TRUE);
   TEST_MATCH("ab*\xc3\xb6", "ab\xc3\xa4\xc3\xb6", TRUE);
   TEST_MATCH("ab*\xc3\xb6", "aba\xc3\xb6x\xc3\xb6", TRUE);
+  TEST_MATCH("", "", TRUE);
+  TEST_MATCH("", "abc", FALSE);
   
   verbose ("\n%u tests passed, %u failed\n", passed, failed);
 

@@ -1,3 +1,11 @@
+2004-04-15  Matthias Clasen  <mclasen@redhat.com>
+
+	* tests/patterntest.c (main): Add tests for the empty pattern.
+
+	* glib/gpattern.c (g_pattern_spec_new): Don't read and write out 
+	of bounds when the pattern is empty.  (#140032, Stanislav Brabec,
+	Stefan Fent)
+
 2004-04-10  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/gwin32.c (g_win32_getlocale): Add new language and
