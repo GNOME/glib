@@ -276,6 +276,27 @@ extern "C" {
 #endif	/* !__GNUC__ */
 
 
+/* we try to provide a usefull equivalent for ATEXIT if it is
+ * not defined, but use is actually abandoned. people should
+ * use g_atexit() instead.
+ * keep this in sync with gutils.c.
+ */
+#ifndef ATEXIT
+#  ifdef HAVE_ATEXIT
+#    ifdef NeXT /* @#%@! NeXTStep */
+#      define ATEXIT(proc)   (!atexit (proc))
+#    else /* !NeXT */
+#      define ATEXIT(proc)   (atexit (proc))
+#    endif /* !NeXT */
+#  elif defined (HAVE_ON_EXIT)
+#    define ATEXIT(proc)   (on_exit ((void (*)(int, void *))(proc), NULL))
+#  else
+#  error Could not determine proper atexit() implementation
+#  endif
+#else
+#  define G_NATIVE_ATEXIT
+#endif /* ATEXIT */
+
 /* Hacker macro to place breakpoints for x86 machines.
  * Actual use is strongly deprecated of course ;)
  */
@@ -284,19 +305,6 @@ extern "C" {
 #else	/* !__i386__ */
 #define	G_BREAKPOINT()
 #endif	/* __i386__ */
-
-
-#ifndef ATEXIT
-#  ifdef HAVE_ATEXIT
-#    ifdef NeXT /* @#%@! NeXTStep */
-#      define ATEXIT(proc)   (!atexit (proc))
-#    else
-#      define ATEXIT(proc)   (atexit (proc))
-#    endif /* NeXT */
-#  elif defined (HAVE_ON_EXIT)
-#    define ATEXIT(proc)   (on_exit ((void (*)(int, void *))(proc), NULL))
-#  endif
-#endif /* ATEXIT */
 
 
 /* Provide macros for easily allocating memory. The macros
@@ -663,6 +671,7 @@ typedef void		(*GScannerMsgFunc)	(GScanner      *scanner,
 typedef gint		(*GTraverseFunc)	(gpointer	key,
 						 gpointer	value,
 						 gpointer	data);
+typedef	void		(*GVoidFunc)		(void);
 
 
 struct _GList
@@ -1236,6 +1245,13 @@ gchar*	g_get_current_dir	(void);
      bcopy ((src), (dest), (size));			\
 } G_STMT_END
 #endif
+
+/* we use a GLib function as a replacement for ATEXIT, so
+ * the programmer is not required to check the return value
+ * (if there is any in the implementation) and doesn't encounter
+ * missing include files.
+ */
+void	g_atexit		(GVoidFunc    func);
 
 
 /* Bit tests
