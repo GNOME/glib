@@ -16,16 +16,24 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+#include	"config.h"
+
 #include	<glib-object.h>
 
 #include	<stdio.h>
+#include	<stdlib.h>
 #include	<fcntl.h>
 #include	<string.h>
 #include	<errno.h>
+#ifdef HAVE_UNISTD_H
 #include	<unistd.h>
+#endif
 #include	<sys/types.h>
 #include	<sys/stat.h>
 
+#ifdef G_OS_WIN32
+#include <io.h>
+#endif
 
 /* --- defines --- */
 #define	PRG_NAME	"glib-genmarshal"

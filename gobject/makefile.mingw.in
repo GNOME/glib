@@ -20,8 +20,9 @@ DEFINES = -DHAVE_CONFIG_H -DGOBJECT_COMPILATION -DG_LOG_DOMAIN=g_log_domain_gobj
 
 BUILD_DLL = ../build-dll
 
-all : \
-	gobject-$(GLIB_VER).dll
+all :				\
+	gobject-$(GLIB_VER).dll	\
+	glib-genmarshal.exe
 
 makefile.mingw: makefile.mingw.in
 	sed -e 's,@GLIB[_]MAJOR_VERSION@,@GLIB_MAJOR_VERSION@,' \
@@ -42,3 +43,6 @@ gobject_OBJECTS =		\
 
 gobject-$(GLIB_VER).dll : $(gobject_OBJECTS) gobject.def
 	$(BUILD_DLL) gobject $(GLIB_VER) gobject.def $(gobject_OBJECTS) -L .. -lglib-$(GLIB_VER)
+
+glib-genmarshal.exe : glib-genmarshal.c
+	$(CC) -o $@ $(CFLAGS) -UGOBJECT_COMPILATION -DG_LOG_DOMAIN=\"glib-genmarshal\" $< -L .. -lglib-$(GLIB_VER) -L . -lgobject-$(GLIB_VER)

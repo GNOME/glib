@@ -6,6 +6,8 @@ EXPORTS
 	g_bsearch_array_remove
 	g_bsearch_array_remove_node
 	g_cclosure_new
+	g_cclosure_new_object
+	g_cclosure_new_object_swap
 	g_cclosure_new_swap
 	g_closure_add_fnotify
 	g_closure_add_inotify
@@ -46,6 +48,7 @@ EXPORTS
 	g_object_set_valist
 	g_object_steal_qdata
 	g_object_unref
+	g_object_watch_closure
 	g_param_spec_boolean
 	g_param_spec_char
 	g_param_spec_double
@@ -121,6 +124,7 @@ EXPORTS
 	g_value_dup_boxed
 	g_value_dup_object
 	g_value_dup_string
+	g_value_get_as_pointer
 	g_value_get_boolean
 	g_value_get_boxed
 	g_value_get_char
@@ -131,6 +135,7 @@ EXPORTS
 	g_value_get_int
 	g_value_get_long
 	g_value_get_object
+	g_value_get_pointer
 	g_value_get_string
 	g_value_get_uchar
 	g_value_get_uint
@@ -147,7 +152,9 @@ EXPORTS
 	g_value_set_int
 	g_value_set_long
 	g_value_set_object
+	g_value_set_pointer
 	g_value_set_static_boxed
+	g_value_set_static_string
 	g_value_set_string
 	g_value_set_uchar
 	g_value_set_uint

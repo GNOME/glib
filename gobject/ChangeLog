@@ -1,3 +1,12 @@
+2000-10-28  Tor Lillqvist  <tml@iki.fi>
+
+	* makefile.{mingw,msc}.in: Make glib-genmarshal.exe.
+
+	* glib-genmarshal.c: Conditionalise include of unistd.h.
+	Include <io.h> on Win32.
+
+	* gobject.def: Add some missing entry points.
+
 Fri Oct 27 16:33:41 2000  Tim Janik  <timj@gtk.org>
 
 	* gsignal.[hc]: publically define GSignalInvocationHint structure

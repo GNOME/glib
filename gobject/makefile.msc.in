@@ -15,8 +15,9 @@ GLIB_VER = @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
 INCLUDES = -I .. -I .
 DEFINES = -DHAVE_CONFIG_H -DGOBJECT_COMPILATION -DG_LOG_DOMAIN=g_log_domain_gobject
 
-all : \
-	gobject-$(GLIB_VER).dll
+all :				\
+	gobject-$(GLIB_VER).dll	\
+	glib-genmarshal.exe
 
 gobject_OBJECTS =		\
 	gboxed.obj		\
@@ -37,3 +38,6 @@ makefile.msc: makefile.msc.in
 
 gobject-$(GLIB_VER).dll : $(gobject_OBJECTS) gobject.def
 	$(CC) $(CFLAGS) -LD -Fegobject-$(GLIB_VER).dll $(gobject_OBJECTS) ..\glib-$(GLIB_VER).lib $(LDFLAGS) /def:gobject.def
+
+glib-genmarshal.exe : glib-genmarshal.c
+	$(CC) -Fe$@ $(CFLAGS) -UGOBJECT_COMPILATION -DG_LOG_DOMAIN=\"glib-genmarshal\" glib-genmarshal.c ..\glib-$(GLIB_VER).lib gobject-$(GLIB_VER).lib
