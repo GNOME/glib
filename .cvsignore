@@ -19,3 +19,5 @@ libglib.la
 config.h.in
 config.h
 stamp-gc-h
+testgdate
+testgdateparser
