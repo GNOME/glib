@@ -33,12 +33,60 @@
 G_BEGIN_DECLS
 
 /* Functions like the ones in <ctype.h> that are not affected by locale. */
-gboolean              g_ascii_isalpha  (gchar        c) G_GNUC_CONST;
-gboolean              g_ascii_isalnum  (gchar        c) G_GNUC_CONST;
-gboolean              g_ascii_islower  (gchar        c) G_GNUC_CONST;
-gboolean              g_ascii_isupper  (gchar        c) G_GNUC_CONST;
+typedef enum {
+  G_ASCII_ALNUM  = 1 << 0,
+  G_ASCII_ALPHA  = 1 << 1,
+  G_ASCII_CNTRL  = 1 << 2,
+  G_ASCII_DIGIT  = 1 << 3,
+  G_ASCII_GRAPH  = 1 << 4,
+  G_ASCII_LOWER  = 1 << 5,
+  G_ASCII_PRINT  = 1 << 6,
+  G_ASCII_PUNCT  = 1 << 7,
+  G_ASCII_SPACE  = 1 << 8,
+  G_ASCII_UPPER  = 1 << 9,
+  G_ASCII_XDIGIT = 1 << 10
+} GAsciiType;
+
+extern const guint16 g_ascii_table[256];
+
+#define g_ascii_isalnum(c) \
+  ((g_ascii_table[(guchar) (c)] & G_ASCII_ALNUM) != 0)
+
+#define g_ascii_isalpha(c) \
+  ((g_ascii_table[(guchar) (c)] & G_ASCII_ALPHA) != 0)
+
+#define g_ascii_iscntrl(c) \
+  ((g_ascii_table[(guchar) (c)] & G_ASCII_CNTRL) != 0)
+
+#define g_ascii_isdigit(c) \
+  ((g_ascii_table[(guchar) (c)] & G_ASCII_DIGIT) != 0)
+
+#define g_ascii_isgraph(c) \
+  ((g_ascii_table[(guchar) (c)] & G_ASCII_GRAPH) != 0)
+
+#define g_ascii_islower(c) \
+  ((g_ascii_table[(guchar) (c)] & G_ASCII_LOWER) != 0)
+
+#define g_ascii_isprint(c) \
+  ((g_ascii_table[(guchar) (c)] & G_ASCII_PRINT) != 0)
+
+#define g_ascii_ispunct(c) \
+  ((g_ascii_table[(guchar) (c)] & G_ASCII_PUNCT) != 0)
+
+#define g_ascii_isspace(c) \
+  ((g_ascii_table[(guchar) (c)] & G_ASCII_SPACE) != 0)
+
+#define g_ascii_isupper(c) \
+  ((g_ascii_table[(guchar) (c)] & G_ASCII_UPPER) != 0)
+
+#define g_ascii_isxdigit(c) \
+  ((g_ascii_table[(guchar) (c)] & G_ASCII_XDIGIT) != 0)
+
 gchar                 g_ascii_tolower  (gchar        c) G_GNUC_CONST;
 gchar                 g_ascii_toupper  (gchar        c) G_GNUC_CONST;
+
+gint                  g_ascii_digit_value  (gchar    c) G_GNUC_CONST;
+gint                  g_ascii_xdigit_value (gchar    c) G_GNUC_CONST;
 
 /* String utility functions that modify a string argument or
  * return a constant string that must not be freed.

@@ -219,3 +219,71 @@ GPrivate *private_key, gpointer data
 <NAME>G_OS_BEOS</NAME>
 #define G_OS_BEOS
 </MACRO>
+
+# g_ascii_isxxx
+
+<FUNCTION>
+<NAME>g_ascii_isalnum</NAME>
+<RETURNS>gboolean</RETURNS>
+gchar c
+</FUNCTION>
+
+<FUNCTION>
+<NAME>g_ascii_isalpha</NAME>
+<RETURNS>gboolean</RETURNS>
+gchar c
+</FUNCTION>
+
+<FUNCTION>
+<NAME>g_ascii_iscntrl</NAME>
+<RETURNS>gboolean</RETURNS>
+gchar c
+</FUNCTION>
+
+<FUNCTION>
+<NAME>g_ascii_isdigit</NAME>
+<RETURNS>gboolean</RETURNS>
+gchar c
+</FUNCTION>
+
+<FUNCTION>
+<NAME>g_ascii_isgraph</NAME>
+<RETURNS>gboolean</RETURNS>
+gchar c
+</FUNCTION>
+
+<FUNCTION>
+<NAME>g_ascii_islower</NAME>
+<RETURNS>gboolean</RETURNS>
+gchar c
+</FUNCTION>
+
+<FUNCTION>
+<NAME>g_ascii_isprint</NAME>
+<RETURNS>gboolean</RETURNS>
+gchar c
+</FUNCTION>
+
+<FUNCTION>
+<NAME>g_ascii_ispunct</NAME>
+<RETURNS>gboolean</RETURNS>
+gchar c
+</FUNCTION>
+
+<FUNCTION>
+<NAME>g_ascii_isspace</NAME>
+<RETURNS>gboolean</RETURNS>
+gchar c
+</FUNCTION>
+
+<FUNCTION>
+<NAME>g_ascii_isupper</NAME>
+<RETURNS>gboolean</RETURNS>
+gchar c
+</FUNCTION>
+
+<FUNCTION>
+<NAME>g_ascii_isxdigit</NAME>
+<RETURNS>gboolean</RETURNS>
+gchar c
+</FUNCTION>

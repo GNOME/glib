@@ -95,25 +95,23 @@ print_test (const gchar *cmdline, gint argc, gchar **argv,
 {
   gint i;
   
-  printf ("\nCommand line was: '%s'\n", cmdline);
+  fprintf (stderr, "Command line was: '%s'\n", cmdline);
 
-  printf ("Expected result (%d args):\n", result->argc);
+  fprintf (stderr, "Expected result (%d args):\n", result->argc);
   
   i = 0;
   while (result->argv[i])
     {
-      printf (" %3d '%s'\n", i, result->argv[i]);
-
+      fprintf (stderr, " %3d '%s'\n", i, result->argv[i]);
       ++i;
     }  
 
-  printf ("Actual result (%d args):\n", argc);
+  fprintf (stderr, "Actual result (%d args):\n", argc);
   
   i = 0;
   while (argv[i])
     {
-      printf (" %3d '%s'\n", i, argv[i]);
-
+      fprintf (stderr, " %3d '%s'\n", i, argv[i]);
       ++i;
     }
 }
@@ -170,10 +168,7 @@ run_tests (void)
   i = 0;
   while (test_command_lines[i])
     {
-      printf ("g_shell_parse_argv() test %d - ", i);
       do_argv_test (test_command_lines[i], &correct_results[i]);
-      printf ("ok (%s)\n", test_command_lines[i]);
-      
       ++i;
     }
 }

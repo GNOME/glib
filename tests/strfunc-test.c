@@ -30,6 +30,7 @@
 #include <string.h>
 #include "glib.h"
 #include <stdarg.h>
+#include <ctype.h>
 
 static gboolean any_failed = FALSE;
 static gboolean failed = FALSE;
@@ -37,14 +38,16 @@ static gboolean failed = FALSE;
 #define	TEST(m,cond)	G_STMT_START { failed = !(cond); \
 if (failed) \
   { if (!m) \
-      g_print ("\n(%s:%d) failed for: %s\n", __FILE__, __LINE__, ( # cond )); \
+      g_print ("(%s:%d) failed for: %s\n", __FILE__, __LINE__, ( # cond )); \
     else \
-      g_print ("\n(%s:%d) failed for: %s: (%s)\n", __FILE__, __LINE__, ( # cond ), (gchar*)m); \
-      any_failed = TRUE; \
+      g_print ("(%s:%d) failed for: %s: (%s)\n", __FILE__, __LINE__, ( # cond ), (gchar*)m); \
+    fflush (stdout); \
+    any_failed = TRUE; \
   } \
-else \
-  g_print ("."); fflush (stdout); \
 } G_STMT_END
+
+#define TEST_FAILED(message) \
+  G_STMT_START { g_print ("Error: "); g_print message; g_print ("\n"); any_failed = TRUE; } G_STMT_END
 
 #define GLIB_TEST_STRING "el dorado "
 
@@ -75,6 +78,156 @@ strv_check (gchar **strv, ...)
   g_strfreev (strv);
 
   return ok;
+}
+
+static gboolean
+test_isalnum (gchar c)
+{
+  return g_ascii_isalnum (c);
+}
+
+static gboolean
+test_isalpha (gchar c)
+{
+  return g_ascii_isalpha (c);
+}
+
+static gboolean
+test_iscntrl (gchar c)
+{
+  return g_ascii_iscntrl (c);
+}
+
+static gboolean
+test_isdigit (gchar c)
+{
+  return g_ascii_isdigit (c);
+}
+
+static gboolean
+test_isgraph (gchar c)
+{
+  return g_ascii_isgraph (c);
+}
+
+static gboolean
+test_islower (gchar c)
+{
+  return g_ascii_islower (c);
+}
+
+static gboolean
+test_isprint (gchar c)
+{
+  return g_ascii_isprint (c);
+}
+
+static gboolean
+test_ispunct (gchar c)
+{
+  return g_ascii_ispunct (c);
+}
+
+static gboolean
+test_isspace (gchar c)
+{
+  return g_ascii_isspace (c);
+}
+
+static gboolean
+test_isupper (gchar c)
+{
+  return g_ascii_isupper (c);
+}
+
+static gboolean
+test_isxdigit (gchar c)
+{
+  return g_ascii_isxdigit (c);
+}
+
+
+
+static void
+test_is_function (const char *name,
+		  gboolean (* ascii_function) (gchar),
+		  int (* c_library_function) (int),
+		  gboolean (* unicode_function) (gunichar))
+{
+  int c;
+
+  for (c = 0; c <= 0x7F; c++)
+    {
+      gboolean ascii_result = ascii_function ((gchar)c);
+      gboolean c_library_result = c_library_function (c) != 0;
+      gboolean unicode_result = unicode_function ((gunichar) c);
+      if (ascii_result != c_library_result && c != '\v')
+	TEST_FAILED (("g_ascii_%s returned %d and %s returned %d for 0x%X",
+		      name, ascii_result, name, c_library_result, c));
+      if (ascii_result != unicode_result)
+	TEST_FAILED (("g_ascii_%s returned %d and g_unichar_%s returned %d for 0x%X",
+		      name, ascii_result, name, unicode_result, c));
+    }
+  for (c = 0x80; c <= 0xFF; c++)
+    {
+      gboolean ascii_result = ascii_function ((gchar)c);
+      if (ascii_result)
+	TEST_FAILED (("g_ascii_%s returned TRUE for 0x%X",
+		      name, c));
+    }
+}
+
+static void
+test_to_function (const char *name,
+		  gchar (* ascii_function) (gchar),
+		  int (* c_library_function) (int),
+		  gunichar (* unicode_function) (gunichar))
+{
+  int c;
+
+  for (c = 0; c <= 0x7F; c++)
+    {
+      int ascii_result = (guchar) ascii_function ((gchar) c);
+      int c_library_result = c_library_function (c);
+      int unicode_result = unicode_function ((gunichar) c);
+      if (ascii_result != c_library_result)
+	TEST_FAILED (("g_ascii_%s returned 0x%X and %s returned 0x%X for 0x%X",
+		      name, ascii_result, name, c_library_result, c));
+      if (ascii_result != unicode_result)
+	TEST_FAILED (("g_ascii_%s returned 0x%X and g_unichar_%s returned 0x%X for 0x%X",
+		      name, ascii_result, name, unicode_result, c));
+    }
+  for (c = 0x80; c <= 0xFF; c++)
+    {
+      int ascii_result = (guchar) ascii_function ((gchar) c);
+      if (ascii_result != c)
+	TEST_FAILED (("g_ascii_%s returned 0x%X for 0x%X",
+		      name, ascii_result, c));
+    }
+}
+
+static void
+test_digit_function (const char *name,
+		     int (* ascii_function) (gchar),
+		     int (* unicode_function) (gunichar))
+{
+  int c;
+
+  for (c = 0; c <= 0x7F; c++)
+    {
+      int ascii_result = ascii_function ((gchar) c);
+      int unicode_result = unicode_function ((gunichar) c);
+      if (ascii_result != unicode_result)
+	TEST_FAILED (("g_ascii_%s_value returned %d and g_unichar_%s_value returned %d for 0x%X",
+		      name, ascii_result, name, unicode_result, c));
+    }
+  for (c = 0x80; c <= 0xFF; c++)
+    {
+      int ascii_result = ascii_function ((gchar) c);
+      if (ascii_result != -1)
+	TEST_FAILED (("g_ascii_%s_value returned %d for 0x%X",
+		      name, ascii_result, c));
+    }
 }
 
 int
@@ -171,7 +324,35 @@ main (int   argc,
   TEST (NULL, strv_check (g_strsplit (",,x,,y,,z,,", ",", 2), "", ",x,,y,,z,,", NULL));
   TEST (NULL, strv_check (g_strsplit (",,x,,y,,z,,", ",,", 2), "", "x,,y,,z,,", NULL));
 
-  g_print ("\n");
+  #define TEST_IS(name) test_is_function (#name, test_##name, name, g_unichar_##name)
+
+  TEST_IS (isalnum);
+  TEST_IS (isalpha);
+  TEST_IS (iscntrl);
+  TEST_IS (isdigit);
+  TEST_IS (isgraph);
+  TEST_IS (islower);
+  TEST_IS (isprint);
+  TEST_IS (ispunct);
+  TEST_IS (isspace);
+  TEST_IS (isupper);
+  TEST_IS (isxdigit);
+
+  #undef TEST_IS
+
+  #define TEST_TO(name) test_to_function (#name, g_ascii_##name, name, g_unichar_##name)
+
+  TEST_TO (tolower);
+  TEST_TO (toupper);
+
+  #undef TEST_TO
+
+  #define TEST_DIGIT(name) test_digit_function (#name, g_ascii_##name##_value, g_unichar_##name##_value)
+
+  TEST_DIGIT (digit);
+  TEST_DIGIT (xdigit);
+
+  #undef TEST_DIGIT
 
   return any_failed;
 }

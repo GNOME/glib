@@ -53,6 +53,26 @@
  * inteferes with g_strsignal() on some OSes
  */
 
+const guint16 g_ascii_table[256] = {
+  0x004, 0x004, 0x004, 0x004, 0x004, 0x004, 0x004, 0x004,
+  0x004, 0x104, 0x104, 0x004, 0x104, 0x104, 0x004, 0x004,
+  0x004, 0x004, 0x004, 0x004, 0x004, 0x004, 0x004, 0x004,
+  0x004, 0x004, 0x004, 0x004, 0x004, 0x004, 0x004, 0x004,
+  0x140, 0x0d0, 0x0d0, 0x0d0, 0x0d0, 0x0d0, 0x0d0, 0x0d0,
+  0x0d0, 0x0d0, 0x0d0, 0x0d0, 0x0d0, 0x0d0, 0x0d0, 0x0d0,
+  0x459, 0x459, 0x459, 0x459, 0x459, 0x459, 0x459, 0x459,
+  0x459, 0x459, 0x0d0, 0x0d0, 0x0d0, 0x0d0, 0x0d0, 0x0d0,
+  0x0d0, 0x653, 0x653, 0x653, 0x653, 0x653, 0x653, 0x253,
+  0x253, 0x253, 0x253, 0x253, 0x253, 0x253, 0x253, 0x253,
+  0x253, 0x253, 0x253, 0x253, 0x253, 0x253, 0x253, 0x253,
+  0x253, 0x253, 0x253, 0x0d0, 0x0d0, 0x0d0, 0x0d0, 0x0d0,
+  0x0d0, 0x473, 0x473, 0x473, 0x473, 0x473, 0x473, 0x073,
+  0x073, 0x073, 0x073, 0x073, 0x073, 0x073, 0x073, 0x073,
+  0x073, 0x073, 0x073, 0x073, 0x073, 0x073, 0x073, 0x073,
+  0x073, 0x073, 0x073, 0x0d0, 0x0d0, 0x0d0, 0x0d0, 0x004
+  /* the upper 128 are all zeroes */
+};
+
 gchar*
 g_strdup (const gchar *str)
 {
@@ -1081,91 +1101,6 @@ g_strreverse (gchar *string)
 }
 
 /**
- * g_ascii_isalpha:
- * @c: any character
- * 
- * Determines whether a character is alphabetic (i.e. a letter).
- *
- * Unlike the standard C library isalpha function, this only
- * recognizes standard ASCII letters and ignores the locale, returning
- * %FALSE for all non-ASCII characters. Also unlike the standard
- * library function, this takes a char, not an int, so don't call it
- * on EOF but no need to cast to guchar before passing a possibly
- * non-ASCII character in.
- * 
- * Return value: %TRUE if @c is an ASCII alphabetic character
- **/
-gboolean
-g_ascii_isalpha (gchar c)
-{
-  return g_ascii_islower (c) || g_ascii_isupper (c);
-}
-
-/**
- * g_ascii_isalnum:
- * @c: any character
- * 
- * Determines whether a character is alphanumeric.
- *
- * Unlike the standard C library isalnum function, this only
- * recognizes standard ASCII letters and ignores the locale, returning
- * %FALSE for all non-ASCII characters. Also unlike the standard
- * library function, this takes a char, not an int, so don't call it
- * on EOF but no need to cast to guchar before passing a possibly
- * non-ASCII character in.
- * 
- * Return value: %TRUE if @c is an ASCII alphanumeric character
- **/
-gboolean
-g_ascii_isalnum (gchar c)
-{
-  return g_ascii_isalpha (c) || isdigit (c);
-}
-
-
-/**
- * g_ascii_islower:
- * @c: any character
- * 
- * Determines whether a character is an ASCII lower case letter.
- *
- * Unlike the standard C library islower function, this only
- * recognizes standard ASCII letters and ignores the locale, returning
- * %FALSE for all non-ASCII characters. Also unlike the standard
- * library function, this takes a char, not an int, so don't call it
- * on EOF but no need to worry about casting to guchar before passing
- * a possibly non-ASCII character in.
- * 
- * Return value: %TRUE if @c is an ASCII lower case letter
- **/
-gboolean
-g_ascii_islower (gchar c)
-{
-  return c >= 'a' && c <= 'z';
-}
-
-/**
- * g_ascii_isupper:
- * @c: any character
- * 
- * Determines whether a character is an ASCII upper case letter.
- *
- * Unlike the standard C library isupper function, this only
- * recognizes standard ASCII letters and ignores the locale, returning
- * %FALSE for all non-ASCII characters. Also unlike the standard
- * library function, this takes a char, not an int, so don't call it
- * on EOF but no need to worry about casting to guchar before passing
- * a possibly non-ASCII character in.
- * 
- * Return value: %TRUE if @c is an ASCII upper case letter
- **/
-gboolean
-g_ascii_isupper (gchar c)
-{
-  return c >= 'A' && c <= 'Z';
-}
-
-/**
  * g_ascii_tolower:
  * @c: any character
  * 
@@ -1211,6 +1146,48 @@ gchar
 g_ascii_toupper (gchar c)
 {
   return g_ascii_islower (c) ? c - 'a' + 'A' : c;
+}
+
+/**
+ * g_ascii_digit_value:
+ * @c: an ASCII character
+ *
+ * Determines the numeric value of a character as a decimal
+ * digit. Differs from g_unichar_digit_value because it takes
+ * a char, so there's no worry about sign extension if characters
+ * are signed.
+ *
+ * Return value: If @c is a decimal digit (according to
+ * `g_ascii_isdigit'), its numeric value. Otherwise, -1.
+ **/
+int
+g_ascii_digit_value (gchar c)
+{
+  if (g_ascii_isdigit (c))
+    return c - '0';
+  return -1;
+}
+
+/**
+ * g_ascii_xdigit_value:
+ * @c: an ASCII character
+ *
+ * Determines the numeric value of a character as a hexidecimal
+ * digit. Differs from g_unichar_xdigit_value because it takes
+ * a char, so there's no worry about sign extension if characters
+ * are signed.
+ *
+ * Return value: If @c is a hex digit (according to
+ * `g_ascii_isxdigit'), its numeric value. Otherwise, -1.
+ **/
+int
+g_ascii_xdigit_value (gchar c)
+{
+  if (c >= 'A' && c <= 'F')
+    return c - 'A' + 10;
+  if (c >= 'a' && c <= 'f')
+    return c - 'a' + 10;
+  return g_ascii_digit_value (c);
 }
 
 /**

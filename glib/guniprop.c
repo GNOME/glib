@@ -190,11 +190,11 @@ g_unichar_isprint (gunichar c)
  * g_unichar_ispunct:
  * @c: a Unicode character
  * 
- * Determines whether a character is punctuation.
+ * Determines whether a character is punctuation or a symbol.
  * Given some UTF-8 text, obtain a character value with
  * g_utf8_get_char().
  * 
- * Return value: %TRUE if @c is a punctuation character
+ * Return value: %TRUE if @c is a punctuation or symbol character
  **/
 gboolean
 g_unichar_ispunct (gunichar c)
@@ -203,7 +203,9 @@ g_unichar_ispunct (gunichar c)
   return (t == G_UNICODE_CONNECT_PUNCTUATION || t == G_UNICODE_DASH_PUNCTUATION
 	  || t == G_UNICODE_CLOSE_PUNCTUATION || t == G_UNICODE_FINAL_PUNCTUATION
 	  || t == G_UNICODE_INITIAL_PUNCTUATION || t == G_UNICODE_OTHER_PUNCTUATION
-	  || t == G_UNICODE_OPEN_PUNCTUATION);
+	  || t == G_UNICODE_OPEN_PUNCTUATION || t == G_UNICODE_CURRENCY_SYMBOL
+	  || t == G_UNICODE_MODIFIER_SYMBOL || t == G_UNICODE_MATH_SYMBOL
+	  || t == G_UNICODE_OTHER_SYMBOL);
 }
 
 /**
@@ -230,7 +232,6 @@ g_unichar_isspace (gunichar c)
     case '\n':
     case '\r':
     case '\f':
-    case '\v': /* vertical tab - as if anyone has ever used this... */
       return TRUE;
       break;
       
@@ -444,7 +445,7 @@ g_unichar_totitle (gunichar c)
  * @c: a unicode character
  *
  * Determines the numeric value of a character as a decimal
- * degital.
+ * digit.
  *
  * Return value: If @c is a decimal digit (according to
  * `g_unichar_isdigit'), its numeric value. Otherwise, -1.
@@ -462,7 +463,7 @@ g_unichar_digit_value (gunichar c)
  * @c: a unicode character
  *
  * Determines the numeric value of a character as a hexidecimal
- * degital.
+ * digit.
  *
  * Return value: If @c is a hex digit (according to
  * `g_unichar_isxdigit'), its numeric value. Otherwise, -1.

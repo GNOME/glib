@@ -193,6 +193,286 @@ documentation.
 @Returns: the maximum space needed to store the formatted string.
 
 
+<!-- ##### FUNCTION g_ascii_isalnum ##### -->
+<para>
+Determines whether a character is alphanumeric.
+</para>
+<para>
+Unlike the standard C library isalnum function, this only
+recognizes standard ASCII letters and ignores the locale, returning
+%FALSE for all non-ASCII characters. Also unlike the standard
+library function, this takes a char, not an int, so don't call it
+on EOF but no need to cast to guchar before passing a possibly
+non-ASCII character in.
+</para>
+
+@c: any characted
+@Returns: %TRUE if @c is an ASCII alphanumeric character
+
+
+<!-- ##### FUNCTION g_ascii_isalpha ##### -->
+<para>
+Determines whether a character is alphabetic (i.e. a letter).
+</para>
+<para>
+Unlike the standard C library isalpha function, this only
+recognizes standard ASCII letters and ignores the locale, returning
+%FALSE for all non-ASCII characters. Also unlike the standard
+library function, this takes a char, not an int, so don't call it
+on EOF but no need to cast to guchar before passing a possibly
+non-ASCII character in.
+</para>
+
+@c: any characted
+@Returns: %TRUE if @c is an ASCII alphabetic character
+
+
+<!-- ##### FUNCTION g_ascii_iscntrl ##### -->
+<para>
+Determines whether a character is a control character.
+</para>
+<para>
+Unlike the standard C library iscntrl function, this only
+recognizes standard ASCII control characters and ignores the locale,
+returning%FALSE for all non-ASCII characters. Also unlike the standard
+library function, this takes a char, not an int, so don't call it
+on EOF but no need to cast to guchar before passing a possibly
+non-ASCII character in.
+</para>
+
+@c: any characted
+@Returns: %TRUE if @c is an ASCII control character.
+
+
+<!-- ##### FUNCTION g_ascii_isdigit ##### -->
+<para>
+Determines whether a character is digit (0-9).
+</para>
+<para>
+Unlike the standard C library isdigit function, this only
+recognizes standard ASCII digits and ignores the locale, returning
+%FALSE for all non-ASCII characters. Also unlike the standard
+library function, this takes a char, not an int, so don't call it
+on EOF but no need to cast to guchar before passing a possibly
+non-ASCII character in.
+</para>
+
+@c: any characted
+@Returns: %TRUE if @c is an ASCII digit.
+
+
+<!-- ##### FUNCTION g_ascii_isgraph ##### -->
+<para>
+Determines whether a character is a printing character and not a space.
+</para>
+<para>
+Unlike the standard C library isgraph function, this only
+recognizes standard ASCII characters and ignores the locale, returning
+%FALSE for all non-ASCII characters. Also unlike the standard
+library function, this takes a char, not an int, so don't call it
+on EOF but no need to cast to guchar before passing a possibly
+non-ASCII character in.
+</para>
+
+@c: any characted
+@Returns: %TRUE if @c is an ASCII printing character other than space.
+
+
+<!-- ##### FUNCTION g_ascii_islower ##### -->
+<para>
+Determines whether a character is an ASCII lower case letter.
+</para>
+<para>
+Unlike the standard C library islower function, this only
+recognizes standard ASCII letters and ignores the locale, returning
+%FALSE for all non-ASCII characters. Also unlike the standard
+library function, this takes a char, not an int, so don't call it
+on EOF but no need to worry about casting to guchar before passing
+a possibly non-ASCII character in.
+</para>
+
+@c: any characted
+@Returns: %TRUE if @c is an ASCII lower case letter
+
+
+<!-- ##### FUNCTION g_ascii_isprint ##### -->
+<para>
+Determines whether a character is a printing character.
+</para>
+<para>
+Unlike the standard C library isprint function, this only
+recognizes standard ASCII characters and ignores the locale, returning
+%FALSE for all non-ASCII characters. Also unlike the standard
+library function, this takes a char, not an int, so don't call it
+on EOF but no need to cast to guchar before passing a possibly
+non-ASCII character in.
+</para>
+
+@c: any characted
+@Returns: %TRUE if @c is an ASCII printing character.
+
+
+<!-- ##### FUNCTION g_ascii_ispunct ##### -->
+<para>
+Determines whether a character is a punctuation character.
+</para>
+<para>
+Unlike the standard C library ispunct function, this only
+recognizes standard ASCII letters and ignores the locale, returning
+%FALSE for all non-ASCII characters. Also unlike the standard
+library function, this takes a char, not an int, so don't call it
+on EOF but no need to cast to guchar before passing a possibly
+non-ASCII character in.
+</para>
+
+@c: any characted
+@Returns: %TRUE if @c is an ASCII punctuation character.
+
+
+<!-- ##### FUNCTION g_ascii_isspace ##### -->
+<para>
+Determines whether a character is a white-space character.
+</para>
+<para>
+Unlike the standard C library isspace function, this only
+recognizes standard ASCII white-space and ignores the locale, returning
+%FALSE for all non-ASCII characters. Also unlike the standard
+library function, this takes a char, not an int, so don't call it
+on EOF but no need to cast to guchar before passing a possibly
+non-ASCII character in.
+</para>
+
+@c: any characted
+@Returns: %TRUE if @c is an ASCII white-space character
+
+
+<!-- ##### FUNCTION g_ascii_isupper ##### -->
+<para>
+Determines whether a character is an ASCII upper case letter.
+</para>
+<para>
+Unlike the standard C library isupper function, this only
+recognizes standard ASCII letters and ignores the locale, returning
+%FALSE for all non-ASCII characters. Also unlike the standard
+library function, this takes a char, not an int, so don't call it
+on EOF but no need to worry about casting to guchar before passing
+a possibly non-ASCII character in.
+</para>
+
+@c: any characted
+@Returns: %TRUE if @c is an ASCII upper case letter
+
+
+<!-- ##### FUNCTION g_ascii_isxdigit ##### -->
+<para>
+Determines whether a character is a hexadecimal-digit character.
+</para>
+<para>
+Unlike the standard C library isxdigit function, this only
+recognizes standard ASCII hexadecimal digits and ignores the
+locale, returning %FALSE for all non-ASCII characters. Also unlike
+the standard library function, this takes a char, not an int, so
+don't call it on EOF but no need to cast to guchar before passing a
+possibly non-ASCII character in.
+</para>
+
+@c: any characted
+@Returns: %TRUE if @c is an ASCII hexadecimal-digit character.
+
+
+<!-- ##### FUNCTION g_ascii_digit_value ##### -->
+<para>
+
+</para>
+
+@c: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_ascii_xdigit_value ##### -->
+<para>
+
+</para>
+
+@c: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_ascii_strcasecmp ##### -->
+<para>
+
+</para>
+
+@s1: 
+@s2: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_ascii_strncasecmp ##### -->
+<para>
+
+</para>
+
+@s1: 
+@s2: 
+@n: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_ascii_strup ##### -->
+<para>
+
+</para>
+
+@string: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_ascii_strdown ##### -->
+<para>
+
+</para>
+
+@string: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_ascii_tolower ##### -->
+<para>
+
+</para>
+
+@c: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_ascii_toupper ##### -->
+<para>
+
+</para>
+
+@c: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_string_ascii_up ##### -->
+<para>
+
+</para>
+
+@string: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_string_ascii_down ##### -->
+<para>
+
+</para>
+
+@string: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_strup ##### -->
 <para>
 Converts a string to upper case.
