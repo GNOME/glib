@@ -539,13 +539,13 @@ LIBS_NOT_FOUND_2=". Please choose another thread implementation or
 dnl determination of thread implementation
 dnl ***************************************
 
-if test x"$with_threads" = x; then
+if test "x$with_threads" != xno; then
         case $host in
                 *-*-solaris*)
                         AC_CHECK_LIB(thread,cond_init,with_threads=solaris)
                         ;;
         esac
-        if test x"$with_threads" = x; then
+        if test "x$with_threads" != xsolaris; then
                 AC_CHECK_LIB(pthread,pthread_cond_init,with_threads=posix)
      	        AC_CHECK_LIB(pthreads,pthread_attr_init,with_threads=posix)
 		AC_CHECK_LIB(nspr21,PRP_NewNakedCondVar,with_threads=nspr)
@@ -556,10 +556,12 @@ AC_MSG_CHECKING(for thread implementation)
 
 if test x"$with_threads" = x; then
         with_threads=none
+	AC_MSG_RESULT(none available)
         AC_MSG_WARN($THREAD_NO_IMPLEMENTATION)
+else
+	AC_MSG_RESULT($with_threads)
 fi
 
-AC_MSG_RESULT($with_threads)
 
 dnl determination of G_THREAD_LIBS
 dnl ******************************

@@ -173,7 +173,7 @@ test_private ()
   gpointer threads[TEST_PRIVATE_THREADS];
   for (i = 0; i < TEST_PRIVATE_THREADS; i++)
     {
-      threads[i] = new_thread (test_private_func, (gpointer) i);
+      threads[i] = new_thread (test_private_func, GINT_TO_POINTER(i));
     }
   for (i = 0; i < TEST_PRIVATE_THREADS; i++)
     {

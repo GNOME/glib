@@ -1,3 +1,9 @@
+1998-12-15  Jeff Garzik  <jgarzik@Pobox.com>
+
+	* configure.in: correctly support --without-threads and friends
+
+	* gthread/testgthread.c: corrected 64-bitness problem
+
 Tue Dec 15 10:40:09 1998  Owen Taylor  <otaylor@redhat.com>
 
 	* gnode.c glist.c gslist.c: Make sure all
