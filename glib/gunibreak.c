@@ -31,7 +31,7 @@
    ? (break_property_table[Page] - G_UNICODE_MAX_TABLE_INDEX) \
    : (break_property_data[break_property_table[Page]][Char]))
 
-#define PROP(Char) (((Char) > (G_UNICODE_LAST_CHAR)) ? G_UNICODE_UNASSIGNED : TPROP ((Char) >> 8, (Char) & 0xff))
+#define PROP(Char) (((Char) > (G_UNICODE_LAST_CHAR)) ? G_UNICODE_BREAK_UNKNOWN : TPROP ((Char) >> 8, (Char) & 0xff))
 
 /**
  * g_unichar_break_type:
