@@ -310,7 +310,6 @@ if test x"$glib_native_win32" = xyes; then
   fi
 fi
 
-AC_CYGWIN
 AC_EXEEXT
 
 # define a MAINT-like variable REBUILD which is set if Perl
@@ -1394,21 +1393,28 @@ if test x"$have_threads" != xno; then
     # both CPPFLAG and LIBS. 
     # One of them does for most gcc versions and some other platforms/compilers
     # too and could be considered as the canonical way to go. 
-    for flag in pthread pthreads; do
-      glib_save_CFLAGS="$CFLAGS"
-      CFLAGS="$CFLAGS -$flag"
-      AC_TRY_RUN(glib_thread_test(0),
-                 glib_flag_works=yes,
-                 glib_flag_works=no,
-                 [AC_LINK_IFELSE(glib_thread_test(0),
-                                 glib_flag_works=yes,
-                                 glib_flag_works=no)])
-      CFLAGS="$glib_save_CFLAGS"
-      if test $glib_flag_works = yes ; then
-         G_THREAD_CFLAGS=-$flag
-	 G_THREAD_LIBS=-$flag
-      fi
-    done
+    case $host in
+      *-*-cygwin*)
+         # skip cygwin -pthread or -pthreads test
+         ;;
+      *)
+        for flag in pthread pthreads; do
+          glib_save_CFLAGS="$CFLAGS"
+          CFLAGS="$CFLAGS -$flag"
+          AC_TRY_RUN(glib_thread_test(0),
+                     glib_flag_works=yes,
+                     glib_flag_works=no,
+                     [AC_LINK_IFELSE(glib_thread_test(0),
+                                     glib_flag_works=yes,
+                                     glib_flag_works=no)])
+          CFLAGS="$glib_save_CFLAGS"
+          if test $glib_flag_works = yes ; then
+             G_THREAD_CFLAGS=-$flag
+	     G_THREAD_LIBS=-$flag
+          fi
+        done
+         ;;
+    esac 
   fi
 
   if test x"$G_THREAD_CFLAGS" = x; then
