@@ -99,6 +99,13 @@ GLogLevelFlags  g_log_set_fatal_mask    (const gchar    *log_domain,
                                          GLogLevelFlags  fatal_mask);
 GLogLevelFlags  g_log_set_always_fatal  (GLogLevelFlags  fatal_mask);
 
+/* internal */
+void	_g_log_fallback_handler	(const gchar   *log_domain,
+				 GLogLevelFlags log_level,
+				 const gchar   *message,
+				 gpointer       unused_data);
+
+
 #ifndef G_LOG_DOMAIN
 #define G_LOG_DOMAIN    ((gchar*) 0)
 #endif  /* G_LOG_DOMAIN */

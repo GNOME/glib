@@ -1,3 +1,19 @@
+Wed Mar 27 18:42:22 2002  Tim Janik  <timj@gtk.org>
+
+	* gmessages.[hc]:
+	major cleanups. introduced _g_log_fallback_handler() to handle
+	recursive messages which really doesn't call any GLib functions.
+	this allowes the default handler to use normal GLib functions and
+	also fixes user supplied log level handlers.
+	fixed locking issues, based on a patch from Sebastian Willhelmi,
+	attached to #74356. translate log messages from UTF-8, based
+	on the same patch. save fatal and recursion flags across flag
+	loop. use new integer format code from above patch.
+	move GLib functions out of locked mutex state to avoid deadlocks.
+	move the level prefix and filedescriptor logic into mklevel_prefix().
+	move _g_debug_init() into a place where we can figure and handle
+	recursion.
+
 Mon Mar 25 18:13:06 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gtypes.h (GUINT*_SWAP_LE_BE_X86): Remove __const__

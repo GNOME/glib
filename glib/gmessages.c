@@ -80,15 +80,14 @@ static gsize printf_string_upper_bound (const gchar *format,
 
 
 /* --- variables --- */
-
-static GMutex* g_messages_lock = NULL;
-
+static GMutex        *g_messages_lock = NULL;
 static GLogDomain    *g_log_domains = NULL;
 static GLogLevelFlags g_log_always_fatal = G_LOG_FATAL_MASK;
 static GPrintFunc     glib_print_func = NULL;
 static GPrintFunc     glib_printerr_func = NULL;
+static GPrivate	     *g_log_depth = NULL;
+static GLogLevelFlags g_log_msg_prefix = G_LOG_LEVEL_ERROR | G_LOG_LEVEL_WARNING | G_LOG_LEVEL_CRITICAL | G_LOG_LEVEL_DEBUG;
 
-static GPrivate* g_log_depth = NULL;
 
 /* --- functions --- */
 #ifdef G_OS_WIN32
@@ -96,16 +95,15 @@ static GPrivate* g_log_depth = NULL;
 #  include <windows.h>
 #  undef STRICT
 #  include <process.h>          /* For _getpid() */
-
 static gboolean alloc_console_called = FALSE;
-
-static gboolean gonna_abort = FALSE;
+static gboolean win32_keep_fatal_message = FALSE;
 
 /* This default message will usually be overwritten. */
 /* Yes, a fixed size buffer is bad. So sue me. But g_error is never
- * with huge strings, is it? */
-static char fatal_msg_buf[1000] = "Unspecified fatal error encountered, aborting.";
-static char *fatal_msg_ptr = fatal_msg_buf;
+ * with huge strings, is it?
+ */
+static gchar  fatal_msg_buf[1000] = "Unspecified fatal error encountered, aborting.";
+static gchar *fatal_msg_ptr = fatal_msg_buf;
 
 /* Just use stdio. If we're out of memory, we're hosed anyway. */
 #undef write
@@ -114,7 +112,7 @@ dowrite (GFileDescriptor fd,
 	 const void  *buf,
 	 unsigned int len)
 {
-  if (gonna_abort)
+  if (win32_keep_fatal_message)
     {
       memcpy (fatal_msg_ptr, buf, len);
       fatal_msg_ptr += len;
@@ -127,7 +125,6 @@ dowrite (GFileDescriptor fd,
 
   return len;
 }
-
 #define write(fd, buf, len) dowrite(fd, buf, len)
 
 static void
@@ -135,7 +132,7 @@ ensure_stdout_valid (void)
 {
   HANDLE handle;
 
-  if (gonna_abort)
+  if (win32_keep_fatal_message)
     return;
 
   if (!alloc_console_called)
@@ -155,115 +152,42 @@ ensure_stdout_valid (void)
 #endif
 
 static void
-write_unsigned (GFileDescriptor fd,
-		gulong          num,
-		guint           radix)
-{
-  char buffer[64];
-  gulong tmp;
-  char c;
-  int i, n;
-
-  g_return_if_fail (radix >= 2 && radix <= 36);
-  
-  if (!num)
-    {
-      write (fd, "0", 1);
-      return;
-    } 
-  
-  if (radix == 16)
-    write (fd, "0x", 2);
-  else if (radix == 8)
-    write (fd, "0", 1);
-	
-  n = 0;
-  tmp = num;
-  while (tmp)
-    {
-      tmp /= radix;
-      n++;
-    }
-
-  i = n;
-  while (num)
-    {
-      i--;
-      c = (num % radix);
-      if (c < 10)
-	buffer[i] = c + '0';
-      else
-	buffer[i] = c + 'a' - 10;
-      num /= radix;
-    }
-  
-  write (fd, buffer, n);
-}
-
-static void
 write_string (GFileDescriptor fd,
-	      gchar *string)
+	      const gchar    *string)
 {
   write (fd, string, strlen (string));
 }
 
-static GLogLevelFlags g_log_msg_prefix = G_LOG_LEVEL_ERROR | G_LOG_LEVEL_WARNING | G_LOG_LEVEL_CRITICAL | G_LOG_LEVEL_DEBUG;
-
-static inline void
-g_log_msg_prefix_init ()
+static void
+g_messages_prefixed_init (void)
 {
   static gboolean initialized = FALSE;
-  const gchar *val;
 
-  if (!initialized) {
-
-    initialized = TRUE;
-    val = g_getenv ("G_MESSAGES_PREFIXED");
-
-    if (val)
-      {
-	static const GDebugKey keys[] = {
-	  { "error", G_LOG_LEVEL_ERROR },
-	  { "critical", G_LOG_LEVEL_CRITICAL },
-	  { "warning", G_LOG_LEVEL_WARNING },
-	  { "message", G_LOG_LEVEL_MESSAGE },
-	  { "info", G_LOG_LEVEL_INFO },
-	  { "debug", G_LOG_LEVEL_DEBUG }
-	};
-	
-	g_log_msg_prefix = g_parse_debug_string (val, keys, G_N_ELEMENTS (keys));
-      }
-  }
-}
-
-static void
-g_log_write_prefix (GFileDescriptor fd,
-                    GLogLevelFlags mask)
-{
-  g_log_msg_prefix_init ();
-  
-  if ((g_log_msg_prefix & mask) == mask)
+  if (!initialized)
     {
-      gchar *prg_name;
+      const gchar *val;
 
-      prg_name = g_get_prgname ();
-
-      if (!prg_name)
-	write_string (fd, "(process:");
-      else
+      initialized = TRUE;
+      val = g_getenv ("G_MESSAGES_PREFIXED");
+      
+      if (val)
 	{
-	  write_string (fd, prg_name);
-	  write_string (fd, " (pid:");
+	  static const GDebugKey keys[] = {
+	    { "error", G_LOG_LEVEL_ERROR },
+	    { "critical", G_LOG_LEVEL_CRITICAL },
+	    { "warning", G_LOG_LEVEL_WARNING },
+	    { "message", G_LOG_LEVEL_MESSAGE },
+	    { "info", G_LOG_LEVEL_INFO },
+	    { "debug", G_LOG_LEVEL_DEBUG }
+	  };
+	  
+	  g_log_msg_prefix = g_parse_debug_string (val, keys, G_N_ELEMENTS (keys));
 	}
-
-      write_unsigned (fd, getpid (), 10);
-      write_string (fd, "): ");
     }
 }
 
-/* HOLDS g_messages_lock */
-static inline GLogDomain*
-g_log_find_domain (const gchar *log_domain)
+static GLogDomain*
+g_log_find_domain_L (const gchar *log_domain)
 {
   register GLogDomain *domain;
   
@@ -277,9 +201,8 @@ g_log_find_domain (const gchar *log_domain)
   return NULL;
 }
 
-/* HOLDS g_messages_lock */
-static inline GLogDomain*
-g_log_domain_new (const gchar *log_domain)
+static GLogDomain*
+g_log_domain_new_L (const gchar *log_domain)
 {
   register GLogDomain *domain;
 
@@ -294,9 +217,8 @@ g_log_domain_new (const gchar *log_domain)
   return domain;
 }
 
-/* HOLDS g_messages_lock */
-static inline void
-g_log_domain_check_free (GLogDomain *domain)
+static void
+g_log_domain_check_free_L (GLogDomain *domain)
 {
   if (domain->fatal_mask == G_LOG_FATAL_MASK &&
       domain->handlers == NULL)
@@ -324,11 +246,10 @@ g_log_domain_check_free (GLogDomain *domain)
     }
 }
 
-/* HOLDS g_messages_lock */
-static inline GLogFunc
-g_log_domain_get_handler (GLogDomain	*domain,
-			  GLogLevelFlags log_level,
-			  gpointer	*data)
+static GLogFunc
+g_log_domain_get_handler_L (GLogDomain	*domain,
+			    GLogLevelFlags log_level,
+			    gpointer	*data)
 {
   if (domain && log_level)
     {
@@ -353,7 +274,9 @@ g_log_set_always_fatal (GLogLevelFlags fatal_mask)
 {
   GLogLevelFlags old_mask;
 
-  /* restrict the global mask to levels that are known to glib */
+  /* restrict the global mask to levels that are known to glib
+   * since this setting applies to all domains
+   */
   fatal_mask &= (1 << G_LOG_LEVEL_USER_SHIFT) - 1;
   /* force errors to be fatal */
   fatal_mask |= G_LOG_LEVEL_ERROR;
@@ -369,8 +292,8 @@ g_log_set_always_fatal (GLogLevelFlags fatal_mask)
 }
 
 GLogLevelFlags
-g_log_set_fatal_mask (const gchar    *log_domain,
-		      GLogLevelFlags  fatal_mask)
+g_log_set_fatal_mask (const gchar   *log_domain,
+		      GLogLevelFlags fatal_mask)
 {
   GLogLevelFlags old_flags;
   register GLogDomain *domain;
@@ -385,13 +308,13 @@ g_log_set_fatal_mask (const gchar    *log_domain,
   
   g_mutex_lock (g_messages_lock);
 
-  domain = g_log_find_domain (log_domain);
+  domain = g_log_find_domain_L (log_domain);
   if (!domain)
-    domain = g_log_domain_new (log_domain);
+    domain = g_log_domain_new_L (log_domain);
   old_flags = domain->fatal_mask;
   
   domain->fatal_mask = fatal_mask;
-  g_log_domain_check_free (domain);
+  g_log_domain_check_free_L (domain);
 
   g_mutex_unlock (g_messages_lock);
 
@@ -399,28 +322,29 @@ g_log_set_fatal_mask (const gchar    *log_domain,
 }
 
 guint
-g_log_set_handler (const gchar	  *log_domain,
-		   GLogLevelFlags  log_levels,
-		   GLogFunc	   log_func,
-		   gpointer	   user_data)
+g_log_set_handler (const gchar	 *log_domain,
+		   GLogLevelFlags log_levels,
+		   GLogFunc	  log_func,
+		   gpointer	  user_data)
 {
-  register GLogDomain *domain;
-  register GLogHandler *handler;
   static guint handler_id = 0;
+  GLogDomain *domain;
+  GLogHandler *handler;
   
   g_return_val_if_fail ((log_levels & G_LOG_LEVEL_MASK) != 0, 0);
   g_return_val_if_fail (log_func != NULL, 0);
   
   if (!log_domain)
     log_domain = "";
-  
+
+  handler = g_new (GLogHandler, 1);
+
   g_mutex_lock (g_messages_lock);
 
-  domain = g_log_find_domain (log_domain);
+  domain = g_log_find_domain_L (log_domain);
   if (!domain)
-    domain = g_log_domain_new (log_domain);
+    domain = g_log_domain_new_L (log_domain);
   
-  handler = g_new (GLogHandler, 1);
   handler->id = ++handler_id;
   handler->log_level = log_levels;
   handler->log_func = log_func;
@@ -445,11 +369,10 @@ g_log_remove_handler (const gchar *log_domain,
     log_domain = "";
   
   g_mutex_lock (g_messages_lock);
-
-  domain = g_log_find_domain (log_domain);
+  domain = g_log_find_domain_L (log_domain);
   if (domain)
     {
-      register GLogHandler *work, *last;
+      GLogHandler *work, *last;
       
       last = NULL;
       work = domain->handlers;
@@ -461,21 +384,18 @@ g_log_remove_handler (const gchar *log_domain,
 		last->next = work->next;
 	      else
 		domain->handlers = work->next;
-	      g_free (work);
-	      g_log_domain_check_free (domain); 
-
+	      g_log_domain_check_free_L (domain); 
 	      g_mutex_unlock (g_messages_lock);
+	      g_free (work);
 	      return;
 	    }
 	  last = work;
 	  work = last->next;
 	}
     } 
-  
   g_mutex_unlock (g_messages_lock);
-  g_warning ("g_log_remove_handler(): could not find handler with id `%d' for domain \"%s\"",
-	     handler_id,
-	     log_domain);
+  g_warning ("%s: could not find handler with id `%d' for domain \"%s\"",
+	     G_STRLOC, handler_id, log_domain);
 }
 
 void
@@ -485,7 +405,9 @@ g_logv (const gchar   *log_domain,
 	va_list	       args1)
 {
   gchar buffer[1025];
-  register gint i;
+  gboolean was_fatal = (log_level & G_LOG_FLAG_FATAL) != 0;
+  gboolean was_recursion = (log_level & G_LOG_FLAG_RECURSION) != 0;
+  gint i;
 
 #ifndef  HAVE_VSNPRINTF
   va_list args2;
@@ -514,9 +436,6 @@ g_logv (const gchar   *log_domain,
   va_end (args2);
 #endif	/* !HAVE_VSNPRINTF */
   
-  if (!_g_debug_initialized) 
-    _g_debug_init ();
-
   for (i = g_bit_nth_msf (log_level, -1); i >= 0; i = g_bit_nth_msf (log_level, i))
     {
       register GLogLevelFlags test_level;
@@ -527,29 +446,53 @@ g_logv (const gchar   *log_domain,
 	  guint depth = GPOINTER_TO_UINT (g_private_get (g_log_depth));
 	  GLogDomain *domain;
 	  GLogFunc log_func;
+	  guint domain_fatal_mask;
 	  gpointer data = NULL;
-	  
-	  g_mutex_lock (g_messages_lock);
 
-	  domain = g_log_find_domain (log_domain ? log_domain : "");
-	  
+	  if (was_fatal)
+	    test_level |= G_LOG_FLAG_FATAL;
+	  if (was_recursion)
+	    test_level |= G_LOG_FLAG_RECURSION;
+
+	  /* check recursion and lookup handler */
+	  g_mutex_lock (g_messages_lock);
+	  domain = g_log_find_domain_L (log_domain ? log_domain : "");
 	  if (depth)
 	    test_level |= G_LOG_FLAG_RECURSION;
-	  
 	  depth++;
-	  g_private_set (g_log_depth, GUINT_TO_POINTER (depth));
-	  
-	  if ((((domain ? domain->fatal_mask : G_LOG_FATAL_MASK) | 
-		g_log_always_fatal) & test_level) != 0)
-	    test_level |= G_LOG_FLAG_FATAL;  
-
-	  log_func = g_log_domain_get_handler (domain, test_level, &data);
+	  domain_fatal_mask = domain ? domain->fatal_mask : G_LOG_FATAL_MASK;
+	  if ((domain_fatal_mask | g_log_always_fatal) & test_level)
+	    test_level |= G_LOG_FLAG_FATAL;
+	  if (test_level & G_LOG_FLAG_RECURSION)
+	    log_func = _g_log_fallback_handler;
+	  else
+	    log_func = g_log_domain_get_handler_L (domain, test_level, &data);
+	  domain = NULL;
 	  g_mutex_unlock (g_messages_lock);
 
+	  g_private_set (g_log_depth, GUINT_TO_POINTER (depth));
+
+	  /* had to defer debug initialization until we can keep track of recursion */
+	  if (!(test_level & G_LOG_FLAG_RECURSION) && !_g_debug_initialized)
+	    {
+	      guint orig_test_level = test_level;
+
+	      _g_debug_init ();
+	      if ((domain_fatal_mask | g_log_always_fatal) & test_level)
+		test_level |= G_LOG_FLAG_FATAL;
+	      if (test_level != orig_test_level)
+		{
+		  /* need a relookup, not nice, but not too bad either */
+		  g_mutex_lock (g_messages_lock);
+		  domain = g_log_find_domain_L (log_domain ? log_domain : "");
+		  log_func = g_log_domain_get_handler_L (domain, test_level, &data);
+		  domain = NULL;
+		  g_mutex_unlock (g_messages_lock);
+		}
+	    }
+
 	  log_func (log_domain, test_level, buffer, data);
-	  
-	  /* *domain can be cluttered now */
-	  
+
 	  if (test_level & G_LOG_FLAG_FATAL)
 	    {
 #ifdef G_OS_WIN32
@@ -572,9 +515,9 @@ g_logv (const gchar   *log_domain,
 }
 
 void
-g_log (const gchar    *log_domain,
-       GLogLevelFlags  log_level,
-       const gchar    *format,
+g_log (const gchar   *log_domain,
+       GLogLevelFlags log_level,
+       const gchar   *format,
        ...)
 {
   va_list args;
@@ -584,206 +527,262 @@ g_log (const gchar    *log_domain,
   va_end (args);
 }
 
-void
-g_log_default_handler (const gchar    *log_domain,
-		       GLogLevelFlags  log_level,
-		       const gchar    *message,
-		       gpointer	       unused_data)
+/* For a radix of 8 we need at most 3 output bytes for 1 input
+ * byte. Additionally we might need up to 2 output bytes for the
+ * readix prefix and 1 byte for the trailing NULL.
+ */
+#define FORMAT_UNSIGNED_BUFSIZE ((GLIB_SIZEOF_LONG * 3) + 3)
+
+static void
+format_unsigned (gchar  *buf,
+		 gulong  num,
+		 guint   radix)
 {
-  GFileDescriptor fd;
-  gboolean in_recursion;
-  gboolean is_fatal;  
+  gulong tmp;
+  gchar c;
+  gint i, n;
+
+  /* we may not call _any_ GLib functions here (or macros like g_return_if_fail()) */
+
+  if (radix != 8 && radix != 10 && radix != 16)
+    {
+      *buf = '\000';
+      return;
+    }
   
-  in_recursion = (log_level & G_LOG_FLAG_RECURSION) != 0;
-  is_fatal = (log_level & G_LOG_FLAG_FATAL) != 0;
-  log_level &= G_LOG_LEVEL_MASK;
+  if (!num)
+    {
+      *buf++ = '0';
+      *buf = '\000';
+      return;
+    } 
   
-  if (!message)
-    message = "g_log_default_handler(): (NULL) message";
+  if (radix == 16)
+    {
+      *buf++ = '0';
+      *buf++ = 'x';
+    }
+  else if (radix == 8)
+    {
+      *buf++ = '0';
+    }
+	
+  n = 0;
+  tmp = num;
+  while (tmp)
+    {
+      tmp /= radix;
+      n++;
+    }
+
+  i = n;
+
+  /* Again we can't use g_assert; actually this check should _never_ fail. */
+  if (n > FORMAT_UNSIGNED_BUFSIZE - 3)
+    {
+      *buf = '\000';
+      return;
+    }
+
+  while (num)
+    {
+      i--;
+      c = (num % radix);
+      if (c < 10)
+	buf[i] = c + '0';
+      else
+	buf[i] = c + 'a' - 10;
+      num /= radix;
+    }
   
-#ifdef G_OS_WIN32
-  /* Use just stdout as stderr is hard to get redirected from the
-   * DOS prompt.
-   */
-  fd = stdout;
-  gonna_abort = is_fatal;
-#else
-  fd = (log_level > G_LOG_LEVEL_MESSAGE) ? 1 : 2;
-#endif
-  
-  switch (log_level)
+  buf[n] = '\000';
+}
+
+/* string size big enough to hold level prefix */
+#define	STRING_BUFFER_SIZE	(FORMAT_UNSIGNED_BUFSIZE + 32)
+
+#define	ALERT_LEVELS		(G_LOG_LEVEL_ERROR | G_LOG_LEVEL_CRITICAL | G_LOG_LEVEL_WARNING)
+
+static GFileDescriptor
+mklevel_prefix (gchar level_prefix[STRING_BUFFER_SIZE],
+		guint log_level)
+{
+  gboolean to_stdout = TRUE;
+
+  /* we may not call _any_ GLib functions here */
+
+  switch (log_level & G_LOG_LEVEL_MASK)
     {
     case G_LOG_LEVEL_ERROR:
-      /* use write(2) for output, in case we are out of memeory */
-      ensure_stdout_valid ();
-      write (fd, "\n", 1);
-      g_log_write_prefix (fd, log_level);
-
-      if (log_domain)
-	{
-	  write (fd, log_domain, strlen (log_domain));
-	  write (fd, "-", 1);
-	}
-      else
-	write (fd, "** ", 3);
-      if (in_recursion)
-	write (fd, "ERROR (recursed) **: ", 21);
-      else
-	write (fd, "ERROR **: ", 10);
-      write (fd, message, strlen (message));
-      if (is_fatal)
-	write (fd, "\naborting...\n", 13);
-      else
-	write (fd, "\n", 1);
+      strcpy (level_prefix, "ERROR");
+      to_stdout = FALSE;
       break;
     case G_LOG_LEVEL_CRITICAL:
-      ensure_stdout_valid ();
-      write (fd, "\n", 1);
-      g_log_write_prefix (fd, log_level);
-
-      if (log_domain)
-	{
-	  write (fd, log_domain, strlen (log_domain));
-	  write (fd, "-", 1);
-	}
-      else
-	write (fd, "** ", 3);
-      if (in_recursion)
-	write (fd, "CRITICAL (recursed) **: ", 24);
-      else
-	write (fd, "CRITICAL **: ", 13);
-      write (fd, message, strlen (message));
-      if (is_fatal)
-	write (fd, "\naborting...\n", 13);
-      else
-	write (fd, "\n", 1);
+      strcpy (level_prefix, "CRITICAL");
+      to_stdout = FALSE;
       break;
     case G_LOG_LEVEL_WARNING:
-      ensure_stdout_valid ();
-      write (fd, "\n", 1);
-      g_log_write_prefix (fd, log_level);
-
-      if (log_domain)
-	{
-	  write (fd, log_domain, strlen (log_domain));
-	  write (fd, "-", 1);
-	}
-      else
-	write (fd, "** ", 3);
-      if (in_recursion)
-	write (fd, "WARNING (recursed) **: ", 23);
-      else
-	write (fd, "WARNING **: ", 12);
-      write (fd, message, strlen (message));
-      if (is_fatal)
-	write (fd, "\naborting...\n", 13);
-      else
-	write (fd, "\n", 1);
+      strcpy (level_prefix, "WARNING");
+      to_stdout = FALSE;
       break;
     case G_LOG_LEVEL_MESSAGE:
-      ensure_stdout_valid ();
-
-      g_log_write_prefix (fd, log_level);
-
-      if (log_domain)
-	{
-	  write (fd, log_domain, strlen (log_domain));
-	  write (fd, "-", 1);
-	}
-      if (in_recursion)
-	write (fd, "Message (recursed): ", 20);
-      else
-	write (fd, "Message: ", 9);
-      write (fd, message, strlen (message));
-      if (is_fatal)
-	write (fd, "\naborting...\n", 13);
-      else
-	write (fd, "\n", 1);
+      strcpy (level_prefix, "Message");
+      to_stdout = FALSE;
       break;
     case G_LOG_LEVEL_INFO:
-      ensure_stdout_valid ();
-
-      g_log_write_prefix (fd, log_level);
-
-      if (log_domain)
-	{
-	  write (fd, log_domain, strlen (log_domain));
-	  write (fd, "-", 1);
-	}
-      if (in_recursion)
-	write (fd, "INFO (recursed): ", 17);
-      else
-	write (fd, "INFO: ", 6);
-      write (fd, message, strlen (message));
-      if (is_fatal)
-	write (fd, "\naborting...\n", 13);
-      else
-	write (fd, "\n", 1);
+      strcpy (level_prefix, "INFO");
       break;
     case G_LOG_LEVEL_DEBUG:
-      ensure_stdout_valid ();
-
-      g_log_write_prefix (fd, log_level);
-
-      if (log_domain)
-	{
-	  write (fd, log_domain, strlen (log_domain));
-	  write (fd, "-", 1);
-	}
-      if (in_recursion)
-	write (fd, "DEBUG (recursed): ", 18);
-      else
-	write (fd, "DEBUG: ", 7);
-      write (fd, message, strlen (message));
-      if (is_fatal)
-	write (fd, "\naborting...\n", 13);
-      else
-	write (fd, "\n", 1);
+      strcpy (level_prefix, "DEBUG");
       break;
     default:
-      /* we are used for a log level that is not defined by GLib itself,
-       * try to make the best out of it.
-       */
-      ensure_stdout_valid ();
-
-      g_log_write_prefix (fd, log_level);
-
-      if (log_domain)
-	{
-	  write (fd, log_domain, strlen (log_domain));
-	  if (in_recursion)
-	    write (fd, "-LOG (recursed:", 15);
-	  else
-	    write (fd, "-LOG (", 6);
-	}
-      else if (in_recursion)
-	write (fd, "LOG (recursed:", 14);
-      else
-	write (fd, "LOG (", 5);
       if (log_level)
 	{
-	  gchar string[] = "0x00): ";
-	  gchar *p = string + 2;
-	  guint i;
-	  
-	  i = g_bit_nth_msf (log_level, -1);
-	  *p = i >> 4;
-	  p++;
-	  *p = '0' + (i & 0xf);
-	  if (*p > '9')
-	    *p += 'A' - '9' - 1;
-	  
-	  write (fd, string, 7);
+	  strcpy (level_prefix, "LOG-");
+	  format_unsigned (level_prefix + 4, log_level & G_LOG_LEVEL_MASK, 16);
 	}
       else
-	write (fd, "): ", 3);
-      write (fd, message, strlen (message));
-      if (is_fatal)
-	write (fd, "\naborting...\n", 13);
-      else
-	write (fd, "\n", 1);
+	strcpy (level_prefix, "LOG");
       break;
     }
+  if (log_level & G_LOG_FLAG_RECURSION)
+    strcat (level_prefix, " (recursed)");
+  if (log_level & ALERT_LEVELS)
+    strcat (level_prefix, " **");
+
+  ensure_stdout_valid ();
+#ifdef G_OS_WIN32
+  win32_keep_fatal_message = (log_level & G_LOG_FLAG_FATAL) != 0;
+  /* Use just stdout as stderr is hard to get redirected from the DOS prompt. */
+  return stdout;
+#else
+  return to_stdout ? 1 : 2;
+#endif
+}
+
+void
+_g_log_fallback_handler (const gchar   *log_domain,
+			 GLogLevelFlags log_level,
+			 const gchar   *message,
+			 gpointer       unused_data)
+{
+  gchar level_prefix[STRING_BUFFER_SIZE], pid_string[FORMAT_UNSIGNED_BUFSIZE];
+  gboolean is_fatal = (log_level & G_LOG_FLAG_FATAL) != 0;
+  GFileDescriptor fd;
+
+  /* we can not call _any_ GLib functions in this fallback handler,
+   * which is why we skip UTF-8 conversion, etc.
+   * since we either recursed or ran out of memory, we're in a pretty
+   * pathologic situation anyways, what we can do is giving the
+   * the process ID unconditionally however.
+   */
+
+  fd = mklevel_prefix (level_prefix, log_level);
+  if (!message)
+    message = "(NULL) message";
+
+  format_unsigned (pid_string, getpid (), 10);
+
+  if (log_domain)
+    write_string (fd, "\n");
+  else
+    write_string (fd, "\n** ");
+  write_string (fd, "(process:");
+  write_string (fd, pid_string);
+  write_string (fd, "): ");
+  if (log_domain)
+    {
+      write_string (fd, log_domain);
+      write_string (fd, "-");
+    }
+  write_string (fd, level_prefix);
+  write_string (fd, ": ");
+  write_string (fd, message);
+  if (is_fatal)
+    write_string (fd, "\naborting...\n");
+  else
+    write_string (fd, "\n");
+}
+
+void
+g_log_default_handler (const gchar   *log_domain,
+		       GLogLevelFlags log_level,
+		       const gchar   *message,
+		       gpointer	      unused_data)
+{
+  gboolean is_fatal = (log_level & G_LOG_FLAG_FATAL) != 0;
+  gchar level_prefix[STRING_BUFFER_SIZE], *string;
+  GString *gstring;
+  GFileDescriptor fd;
+
+  /* we can be called externally with recursion for whatever reason */
+  if (log_level & G_LOG_FLAG_RECURSION)
+    {
+      _g_log_fallback_handler (log_domain, log_level, message, unused_data);
+      return;
+    }
+
+  g_messages_prefixed_init ();
+
+  fd = mklevel_prefix (level_prefix, log_level);
+
+  gstring = g_string_new ("");
+  if (log_level & ALERT_LEVELS)
+    g_string_append (gstring, "\n");
+  if (!log_domain)
+    g_string_append (gstring, "** ");
+
+  if ((g_log_msg_prefix & log_level) == log_level)
+    {
+      const gchar *prg_name = g_get_prgname ();
+      
+      if (!prg_name)
+	g_string_append_printf (gstring, "(process:%u): ", getpid ());
+      else
+	g_string_append_printf (gstring, "(%s:%u): ", prg_name, getpid ());
+    }
+
+  if (log_domain)
+    {
+      g_string_append (gstring, log_domain);
+      g_string_append_c (gstring, '-');
+    }
+  g_string_append (gstring, level_prefix);
+
+  g_string_append (gstring, ": ");
+  if (!message)
+    g_string_append (gstring, "(NULL) message");
+  else
+    {
+      const gchar *charset;
+
+      if (g_get_charset (&charset))
+	g_string_append (gstring, message);	/* charset is UTF-8 already */
+      else
+	{
+	  if (!g_utf8_validate (message, -1, NULL))
+	    {
+	      g_string_append (gstring, "[Invalid UTF-8] ");
+	      g_string_append (gstring, message);
+	    }
+	  else
+	    {
+	      string = g_convert_with_fallback (message, -1, charset, "UTF-8",
+						".", NULL, NULL, NULL);
+	      g_string_append (gstring, string);
+	      g_free (string);
+	    }
+	}
+    }
+  if (is_fatal)
+    g_string_append (gstring, "\naborting...\n");
+  else
+    g_string_append (gstring, "\n");
+
+  string = g_string_free (gstring, FALSE);
+
+  write_string (fd, string);
+  g_free (string);
 }
 
 GPrintFunc
@@ -816,7 +815,7 @@ g_print (const gchar *format,
   g_mutex_lock (g_messages_lock);
   local_glib_print_func = glib_print_func;
   g_mutex_unlock (g_messages_lock);
-
+  
   if (local_glib_print_func)
     local_glib_print_func (string);
   else
@@ -858,7 +857,7 @@ g_printerr (const gchar *format,
   g_mutex_lock (g_messages_lock);
   local_glib_printerr_func = glib_printerr_func;
   g_mutex_unlock (g_messages_lock);
-
+  
   if (local_glib_printerr_func)
     local_glib_printerr_func (string);
   else
@@ -891,14 +890,14 @@ printf_string_upper_bound (const gchar *format,
 {
   static const gboolean honour_longs = SIZEOF_LONG > 4 || SIZEOF_VOID_P > 4;
   gsize len = 1;
-
+  
   if (!format)
     return len;
-
+  
   while (*format)
     {
       register gchar c = *format++;
-
+      
       if (c != '%')
 	len += 1;
       else /* (c == '%') */
@@ -907,7 +906,7 @@ printf_string_upper_bound (const gchar *format,
 	  gboolean seen_l = FALSE, conv_done = FALSE;
 	  gsize conv_len = 0;
 	  const gchar *spec_start = format;
-
+	  
 	  do
 	    {
 	      c = *format++;
@@ -917,7 +916,7 @@ printf_string_upper_bound (const gchar *format,
 		  guint v_uint;
 		  gint v_int;
 		  const gchar *v_string;
-
+		  
 		  /* beware of positional parameters
 		   */
 		case '$':
@@ -927,7 +926,7 @@ printf_string_upper_bound (const gchar *format,
 		  len += 1024; /* try adding some safety padding */
 		  conv_done = TRUE;
 		  break;
-
+		  
 		  /* parse flags
 		   */
 		case '#':
@@ -948,7 +947,7 @@ printf_string_upper_bound (const gchar *format,
 		case '\'':
 		  spec.locale_grouping = TRUE;
 		  break;
-
+		  
 		  /* parse output size specifications
 		   */
 		case '.':
@@ -994,7 +993,7 @@ printf_string_upper_bound (const gchar *format,
 		      spec.min_width = MAX (spec.min_width, v_int);
 		    }
 		  break;
-
+		  
 		  /* parse type modifiers
 		   */
 		case 'h':
@@ -1032,7 +1031,7 @@ printf_string_upper_bound (const gchar *format,
 		  spec.mod_extra_long = TRUE;
 #endif /* GLIB_SIZEOF_INTMAX_T > 4 */
 		  break;
-
+		  
 		  /* parse output conversions
 		   */
 		case '%':
@@ -1097,7 +1096,7 @@ printf_string_upper_bound (const gchar *format,
 		      u_double.mpn.biased_exponent > 0 && u_double.mpn.biased_exponent < 2047)
 		    {
 		      gint exp = u_double.mpn.biased_exponent;
-
+		      
 		      exp -= G_IEEE754_DOUBLE_BIAS;
 		      exp = exp * G_LOG_2_BASE_10 + 1;
 		      conv_len += ABS (exp);	/* exp can be <0 */
@@ -1153,7 +1152,7 @@ printf_string_upper_bound (const gchar *format,
 		  v_uint = v_string ? strlen (v_string) : 0;
 		  conv_len += MAX (256, v_uint);
 		  break;
-
+		  
 		  /* handle invalid cases
 		   */
 		case '\000':
@@ -1179,7 +1178,7 @@ printf_string_upper_bound (const gchar *format,
 	  len += conv_len;
 	} /* else (c == '%') */
     } /* while (*format) */
-
+  
   return len;
 }
 
@@ -1203,29 +1202,30 @@ g_messages_init (void)
 {
   g_messages_lock = g_mutex_new ();
   g_log_depth = g_private_new (NULL);
-  g_log_msg_prefix_init ();
+  g_messages_prefixed_init ();
   _g_debug_init ();
 }
 
 gboolean _g_debug_initialized = FALSE;
 guint _g_debug_flags = 0;
 
-void _g_debug_init () 
+void
+_g_debug_init (void) 
 {
   const gchar *val;
   
   _g_debug_initialized = TRUE;
-
+  
   val = g_getenv ("G_DEBUG");
   if (val != NULL)
     {
       static const GDebugKey keys[] = {
 	{"fatal_warnings", G_DEBUG_FATAL_WARNINGS}
       };
-
+      
       _g_debug_flags = g_parse_debug_string (val, keys, G_N_ELEMENTS (keys));
     }
-
+  
   if (_g_debug_flags & G_DEBUG_FATAL_WARNINGS) 
     {
       GLogLevelFlags fatal_mask;
