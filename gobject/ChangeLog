@@ -1,3 +1,24 @@
+Mon Jun 11 17:07:06 2001  Tim Janik  <timj@gtk.org>
+
+	* gboxed.[hc]: remove left-over usages of an anonymous GBoxed typedef.
+
+	* gobjectnotifyqueue.c: moved property notify queue implementation
+	bits into this function.
+
+	* gparam.[hc]: added g_param_spec_pool_belongings(), completed
+	g_param_spec_pool_list(). added GParameter for _setv() functions.
+
+	* gobject.[hc]: use gobjectnotifyqueue.h implementation now.
+	got rid of properties_changed signal.
+	new functions g_object_newv(), g_object_class_list_properties().
+	removed "properties_changed" signal.
+
+	* gtype.[hc]: added g_type_depth() to figure number of parent
+	types + 1 for a type.
+
+	* gsignal.h: add g_signal_connect() (as per owen's request) and
+	g_signal_connect_swapped().
+
 2001-06-13  Havoc Pennington  <hp@redhat.com>
 
 	* Makefile.am (progs_LDADD): link to ./libgobject-1.3.la

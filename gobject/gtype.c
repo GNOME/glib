@@ -2073,6 +2073,18 @@ g_type_parent (GType type)
   return node ? NODE_PARENT_TYPE (node) : 0;
 }
 
+guint
+g_type_depth (GType type)
+{
+  TypeNode *node;
+  
+  G_READ_LOCK (&type_rw_lock);
+  node = lookup_type_node_L (type);
+  G_READ_UNLOCK (&type_rw_lock);
+  
+  return node ? node->n_supers + 1 : 0;
+}
+
 GType
 g_type_next_base (GType type,
 		  GType base_type)

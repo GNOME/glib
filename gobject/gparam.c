@@ -144,6 +144,7 @@ g_param_spec_init (GParamSpec      *pspec,
   pspec->owner_type = 0;
   pspec->qdata = NULL;
   pspec->ref_count = 1;
+  pspec->param_id = 0;
   g_datalist_id_set_data (&pspec->qdata, quark_floating, GUINT_TO_POINTER (TRUE));
 }
 
@@ -725,8 +726,8 @@ pool_list (gpointer key,
 }
 
 GList*
-g_param_spec_pool_list (GParamSpecPool *pool,
-			GType           owner_type)
+g_param_spec_pool_belongings (GParamSpecPool *pool,
+			      GType           owner_type)
 {
   gpointer data[2];
 
@@ -740,6 +741,99 @@ g_param_spec_pool_list (GParamSpecPool *pool,
   G_SUNLOCK (&pool->smutex);
 
   return data[0];
+}
+
+static gint
+pspec_compare_id (gconstpointer a,
+		  gconstpointer b)
+{
+  const GParamSpec *pspec1 = a, *pspec2 = b;
+
+  return pspec1->param_id < pspec2->param_id ? -1 : pspec1->param_id > pspec2->param_id;
+}
+
+static inline GSList*
+pspec_list_remove_overridden (GSList     *plist,
+			      GHashTable *ht,
+			      GType       owner_type,
+			      guint      *n_p)
+{
+  GSList *rlist = NULL;
+
+  while (plist)
+    {
+      GSList *tmp = plist->next;
+      GParamSpec *pspec = plist->data;
+
+      if (param_spec_ht_lookup (ht, pspec->name, owner_type, TRUE) != pspec)
+	g_slist_free_1 (plist);
+      else
+	{
+	  plist->next = rlist;
+	  rlist = plist;
+	  *n_p += 1;
+	}
+      plist = tmp;
+    }
+  return rlist;
+}
+
+static void
+pool_depth_list (gpointer key,
+		 gpointer value,
+		 gpointer user_data)
+{
+  GParamSpec *pspec = value;
+  gpointer *data = user_data;
+  GSList **slists = data[0];
+  GType owner_type = GPOINTER_TO_UINT (data[1]);
+
+  if (g_type_is_a (owner_type, pspec->owner_type))
+    {
+      guint d = g_type_depth (pspec->owner_type);
+
+      slists[d - 1] = g_slist_prepend (slists[d - 1], pspec);
+    }
+}
+
+GParamSpec** /* free result */
+g_param_spec_pool_list (GParamSpecPool *pool,
+			GType           owner_type,
+			guint          *n_pspecs_p)
+{
+  GParamSpec **pspecs, **p;
+  GSList **slists, *node;
+  gpointer data[2];
+  guint d, i;
+
+  g_return_val_if_fail (pool != NULL, NULL);
+  g_return_val_if_fail (owner_type > 0, NULL);
+  g_return_val_if_fail (n_pspecs_p != NULL, NULL);
+  
+  G_SLOCK (&pool->smutex);
+  *n_pspecs_p = 0;
+  d = g_type_depth (owner_type);
+  slists = g_new0 (GSList*, d);
+  data[0] = slists;
+  data[1] = GUINT_TO_POINTER (owner_type);
+  g_hash_table_foreach (pool->hash_table, pool_depth_list, &data);
+  for (i = 0; i < d - 1; i++)
+    slists[i] = pspec_list_remove_overridden (slists[i], pool->hash_table, owner_type, n_pspecs_p);
+  *n_pspecs_p += g_slist_length (slists[i]);
+  pspecs = g_new (GParamSpec*, *n_pspecs_p + 1);
+  p = pspecs;
+  for (i = 0; i < d; i++)
+    {
+      slists[i] = g_slist_sort (slists[i], pspec_compare_id);
+      for (node = slists[i]; node; node = node->next)
+	*p++ = node->data;
+      g_slist_free (slists[i]);
+    }
+  *p++ = NULL;
+  g_free (slists);
+  G_SUNLOCK (&pool->smutex);
+
+  return pspecs;
 }
 
 

@@ -26,7 +26,7 @@
 G_BEGIN_DECLS
 
 /* helper macro to avoid signed overflow for value comparisions */
-#define	G_BSEARCH_ARRAY_CMP(v1,v2) ((v1) < (v2) ? -1 : (v1) > (v2) ? 1 : 0)
+#define	G_BSEARCH_ARRAY_CMP(v1,v2) ((v1) < (v2) ? -1 : (v1) > (v2))
 
 
 /* --- typedefs --- */

@@ -65,9 +65,7 @@ struct  _GObjectClass
 {
   GTypeClass   g_type_class;
 
-  /* private, these fields might vanish */
-  guint        n_property_specs;
-  GParamSpec **property_specs;
+  /*< private >*/
   GSList      *construct_properties;
 
   /* public overridable methods */
@@ -85,22 +83,19 @@ struct  _GObjectClass
   void       (*shutdown)                (GObject        *object);
   void       (*finalize)                (GObject        *object);
 
-  /*< private >*/
+  /* seldomly overidden */
   void       (*dispatch_properties_changed) (GObject      *object,
 					     guint	   n_pspecs,
 					     GParamSpec  **pspecs);
 
   /* signals */
-  void	     (*properties_changed)	(GObject	*object,
-					 guint		 n_pspecs,
-					 GParamSpec    **pspecs);
   void	     (*notify)			(GObject	*object,
 					 GParamSpec	*pspec);
 };
 struct _GObjectConstructParam
 {
-  GParamSpec  *pspec;
-  GValue      *value;
+  GParamSpec *pspec;
+  GValue     *value;
 };
 
 
@@ -110,9 +105,14 @@ void        g_object_class_install_property   (GObjectClass   *oclass,
 					       GParamSpec     *pspec);
 GParamSpec* g_object_class_find_property      (GObjectClass   *oclass,
 					       const gchar    *property_name);
+GParamSpec**g_object_class_list_properties    (GObjectClass   *oclass,
+					       guint	      *n_properties);
 gpointer    g_object_new                      (GType           object_type,
 					       const gchar    *first_property_name,
 					       ...);
+gpointer    g_object_newv		      (GType           object_type,
+					       guint	       n_parameters,
+					       GParameter     *parameters);
 gpointer    g_object_new_valist               (GType           object_type,
 					       const gchar    *first_property_name,
 					       va_list         var_args);
@@ -189,18 +189,21 @@ guint	    g_signal_connect_object           (gpointer	       instance,
 
 
 /* --- implementation macros --- */
-#define G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec) \
+#define G_OBJECT_WARN_INVALID_PSPEC(object, pname, property_id, pspec) \
 G_STMT_START { \
   GObject *_object = (GObject*) (object); \
   GParamSpec *_pspec = (GParamSpec*) (pspec); \
   guint _property_id = (property_id); \
-  g_warning ("%s: invalid property id %u for \"%s\" of type `%s' in `%s'", \
+  g_warning ("%s: invalid %s id %u for \"%s\" of type `%s' in `%s'", \
              G_STRLOC, \
+             (pname), \
              _property_id, \
              _pspec->name, \
              g_type_name (G_PARAM_SPEC_TYPE (_pspec)), \
              G_OBJECT_TYPE_NAME (_object)); \
 } G_STMT_END
+#define G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec) \
+    G_OBJECT_WARN_INVALID_PSPEC ((object), "property id", (property_id), (pspec))
 
 G_END_DECLS
 

@@ -29,14 +29,13 @@ G_BEGIN_DECLS
 
 
 /* --- typedefs --- */
-typedef struct _GBoxed	GBoxed;
 typedef gpointer (*GBoxedInitFunc)	(void);
 typedef gpointer (*GBoxedCopyFunc)	(gpointer	 boxed);
 typedef void     (*GBoxedFreeFunc)	(gpointer	 boxed);
 
 
 /* --- prototypes --- */
-GBoxed*		g_boxed_copy			(GType		 boxed_type,
+gpointer	g_boxed_copy			(GType		 boxed_type,
 						 gconstpointer	 src_boxed);
 void		g_boxed_free			(GType		 boxed_type,
 						 gpointer	 boxed);

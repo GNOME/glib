@@ -25,6 +25,7 @@ Parameter Specifications
 @blurb: 
 @flags: 
 @value_type: 
+@owner_type: 
 
 <!-- ##### STRUCT GParamSpecClass ##### -->
 <para>

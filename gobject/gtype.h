@@ -187,6 +187,7 @@ G_CONST_RETURN gchar* g_type_name                    (GType            type);
 GQuark                g_type_qname                   (GType            type);
 GType                 g_type_from_name               (const gchar     *name);
 GType                 g_type_parent                  (GType            type);
+guint                 g_type_depth                   (GType            type);
 GType                 g_type_next_base               (GType            leaf_type,
 						      GType            root_type);
 gboolean              g_type_is_a                    (GType            type,

@@ -52,9 +52,11 @@ gruntime_public_h_sources = @STRIP_BEGIN@ \
 	gvaluearray.h		\
 	gvaluecollector.h	\
 	gvaluetypes.h		\
+	gobjectnotifyqueue.c	\
 @STRIP_END@
 # GRuntime header files that don't get installed
-gruntime_private_h_sources = 
+gruntime_private_h_sources = @STRIP_BEGIN@ \
+@STRIP_END@
 # GRuntime C sources to build the library from
 gruntime_c_sources = @STRIP_BEGIN@ \
 	gboxed.c		\

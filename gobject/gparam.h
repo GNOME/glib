@@ -56,6 +56,7 @@ typedef enum
 /* --- typedefs & structures --- */
 typedef struct _GParamSpec      GParamSpec;
 typedef struct _GParamSpecClass GParamSpecClass;
+typedef struct _GParameter	GParameter;
 typedef struct _GParamSpecPool  GParamSpecPool;
 struct _GParamSpec
 {
@@ -66,11 +67,12 @@ struct _GParamSpec
   gchar         *blurb;
   GParamFlags    flags;
   GType		 value_type;
+  GType		 owner_type;	/* class using this property */
 
   /*< private >*/
-  GType		 owner_type;
   GData		*qdata;
   guint          ref_count;
+  guint		 param_id;	/* sort-criteria */
 };
 struct _GParamSpecClass
 {
@@ -88,6 +90,11 @@ struct _GParamSpecClass
   gint          (*values_cmp)           (GParamSpec   *pspec,
 					 const GValue *value1,
 					 const GValue *value2);
+};
+struct _GParameter /* auxillary structure for _setv() variants */
+{
+  const gchar *name;
+  GValue       value;
 };
 
 
@@ -165,8 +172,11 @@ GParamSpec*	g_param_spec_pool_lookup	(GParamSpecPool	*pool,
 						 const gchar	*param_name,
 						 GType		 owner_type,
 						 gboolean	 walk_ancestors);
-GList*		g_param_spec_pool_list		(GParamSpecPool	*pool,
+GList*		g_param_spec_pool_belongings	(GParamSpecPool	*pool,
 						 GType		 owner_type);
+GParamSpec**	g_param_spec_pool_list		(GParamSpecPool	*pool,
+						 GType		 owner_type,
+						 guint		*n_pspecs_p);
 
 
 

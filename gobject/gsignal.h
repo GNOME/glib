@@ -222,6 +222,10 @@ guint	 g_signal_handlers_disconnect_matched (gpointer		  instance,
 /* --- convenience --- */
 #define g_signal_connectc(instance, detailed_signal, c_handler, data, swapped) \
     g_signal_connect_data ((instance), (detailed_signal), (c_handler), (data), NULL, (swapped), FALSE)
+#define g_signal_connect(instance, detailed_signal, c_handler, data) \
+    g_signal_connect_data ((instance), (detailed_signal), (c_handler), (data), NULL, FALSE, FALSE)
+#define g_signal_connect_swapped(instance, detailed_signal, c_handler, data) \
+    g_signal_connect_data ((instance), (detailed_signal), (c_handler), (data), NULL, TRUE, FALSE)
 #define	g_signal_disconnect_by_func(instance, func, data) \
     g_signal_handlers_disconnect_matched ((instance), G_SIGNAL_MATCH_FUNC | G_SIGNAL_MATCH_DATA, \
 					  0, 0, NULL, (func), (data))

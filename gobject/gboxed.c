@@ -333,7 +333,7 @@ g_boxed_type_register_static (const gchar   *name,
   return type;
 }
 
-GBoxed*
+gpointer
 g_boxed_copy (GType         boxed_type,
 	      gconstpointer src_boxed)
 {
