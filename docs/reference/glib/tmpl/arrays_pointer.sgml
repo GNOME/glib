@@ -157,7 +157,7 @@ g_ptr_array_remove_index().
 
 <!-- ##### FUNCTION g_ptr_array_remove_range ##### -->
 <para>
-Removes the given number of bytes starting at the given index from a
+Removes the given number of pointers starting at the given index from a
 #GPtrArray.  The following elements are moved to close the gap.
 </para>
 
