@@ -1,3 +1,9 @@
+2005-03-30  Tor Lillqvist  <tml@novell.com>
+
+	* glib/giowin32.c (g_io_win32_fd_get_flags_internal): Always claim
+	file descriptors open to devices are readable, since we can't
+	know. fstat() doesn't gve any useful information.
+
 2005-03-29  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gmain.c (g_poll): [Win32] If the event fired, assign
