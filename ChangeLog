@@ -1,3 +1,7 @@
+Tue Nov  2 17:21:29 1999  ape@spacetec.no  (Asbjorn Pettersen)
+
+	* glib.h (G_DIR_SEPARATOR): Add defines for EMX/OS2.
+
 Sun Oct 31 18:55:01 1999  ape@spacetec.no  (Asbjorn Pettersen)
 
 	* gcache.c (g_cache_remove): Test if node is NULL.

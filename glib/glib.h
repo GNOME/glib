@@ -88,12 +88,23 @@
 
 #else  /* !NATIVE_WIN32 */
 
+#ifndef __EMX__
 /* Unix */
 
 #define G_DIR_SEPARATOR '/'
 #define G_DIR_SEPARATOR_S "/"
 #define G_SEARCHPATH_SEPARATOR ':'
 #define G_SEARCHPATH_SEPARATOR_S ":"
+
+#else
+/* EMX/OS2 */
+
+#define G_DIR_SEPARATOR '/'
+#define G_DIR_SEPARATOR_S "/"
+#define G_SEARCHPATH_SEPARATOR ';'
+#define G_SEARCHPATH_SEPARATOR_S ";"
+
+#endif
 
 #endif /* !NATIVE_WIN32 */
 
