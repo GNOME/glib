@@ -274,7 +274,7 @@ This function creates a new thread with the priority @priority.
 
 <para>
 If @joinable is %TRUE, you can wait for this threads termination
-calling g_thread_wait(). Otherwise the thread will just disappear, when
+calling g_thread_join(). Otherwise the thread will just disappear, when
 ready. 
 </para>
 
@@ -304,7 +304,7 @@ platform, if @stack_size is 0.
 
 <para>
 If @joinable is %TRUE, you can wait for this threads termination
-calling g_thread_wait(). Otherwise the thread will just disappear, when
+calling g_thread_join(). Otherwise the thread will just disappear, when
 ready. If @bound is %TRUE, this thread will be scheduled in the system
 scope, otherwise the implementation is free to do scheduling in the
 process scope. The first variant is more expensive resource-wise, but

@@ -34,7 +34,8 @@ IGNORE_HFILES=			\
 	gunicomp.h		\
 	gunidecomp.h		\
 	gunichartables.h	\
-	glibconfig-sysdefs.h
+	glibconfig-sysdefs.h	\
+	gdebug.h
 
 # Extra files to add when scanning
 EXTRA_HFILES=

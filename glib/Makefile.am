@@ -81,7 +81,8 @@ libglib_1_3_la_SOURCES = 	\
 	gunicomp.h		\
 	gunidecomp.h		\
 	gunidecomp.c		\
-	gutils.c
+	gutils.c		\
+	gdebug.h
 
 EXTRA_libglib_1_3_la_SOURCES = \
 	giounix.c	\

@@ -38,7 +38,27 @@ variables like <envar>LANG</envar>, <envar>PATH</envar> or <envar>HOME</envar>.
   <para>
     A list of log levels for which messages should be prefixed by the 
     program name and PID of the application. The default is to prefix
-    everything except %G_LOG_LEVEL_MESSAGE and %G_LOG_LEVEL_INFO. 
+    everything except <literal>G_LOG_LEVEL_MESSAGE</literal> and <literal>G_LOG_LEVEL_INFO</literal>. 
+  </para>
+</formalpara>
+
+<formalpara>
+  <title><envar>G_DEBUG</envar></title>
+
+  <para>
+    If GLib has been configured with <option>--enable-debug=yes</option>,
+    this variable can be set to a list of debug options, which cause GLib
+    to print out different types of debugging information.
+    <variablelist>
+      <varlistentry>
+        <term>fatal_warnings</term>
+        <listitem><para>Causes GLib to abort the program at the first call
+           to <link linkend="g-warning">g_warning</link>(). This option is 
+           special in that it doesn't require GLib to be configured with 
+           debugging support.</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
   </para>
 </formalpara>
 
@@ -61,9 +81,9 @@ static volatile gulong g_trap_free_size;
 static volatile gulong g_trap_realloc_size;
 static volatile gulong g_trap_malloc_size;
 </programlisting>
-If set to a size > 0, <link linkend="g-free">g_free()</link>, 
-<link linkend="g-realloc">g_realloc()</link> and 
-<link linkend="g-malloc">g_malloc()</link> will be intercepted if the size 
+If set to a size > 0, <link linkend="g-free">g_free</link>(), 
+<link linkend="g-realloc">g_realloc</link>() and 
+<link linkend="g-malloc">g_malloc</link>() will be intercepted if the size 
 matches the size of the corresponding memory block. This will only work with 
 <literal>g_mem_set_vtable (glib_mem_profiler_table)</literal> upon startup 
 though, because memory profiling is required to match on the memory block sizes.

@@ -1,3 +1,12 @@
+2002-02-21  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/Makefile.am (IGNORE_HFILES): Add gdebug.h.
+
+	* glib/running.sgml: Document the G_DEBUG environment variable.
+
+	* glib/tmpl/threads.sgml: Replace g_thread_wait() by
+	g_thread_join() in two places.
+
 2002-02-20  Sven Neumann  <sven@gimp.org>
 
 	* gobject/gobject-sections.txt

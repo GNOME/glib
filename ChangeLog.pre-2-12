@@ -1,3 +1,16 @@
+2002-02-21  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gdebug.h: New header containing GTK_DEBUG-style debugging
+	support for GLib. Currently only the fatal_warnings debug option exists. 
+
+	* glib/gmessages.c (g_log_msg_prefix_init): New one-shot function
+	for parsing G_MESSAGES_PREFIXED.
+	(_g_debug_init): New one-shot function for parsing G_DEBUG.
+	(g_log_write_prefix): Use g_log_msg_prefix_init().
+	(g_messages_init): Use g_log_msg_prefix_init() and _g_debug_init().
+
+	* glib/Makefile.am (libglib_1_3_la_SOURCES): Add gdebug.h.
+
 Wed Feb 20 22:35:42 2002  Owen Taylor  <otaylor@redhat.com>
 
 	Fixes from Miroslaw Dobrzanski-Neumann (#71963)
