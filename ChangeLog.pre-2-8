@@ -1,3 +1,8 @@
+Thu Feb 18 08:24:12 1999  Tim Janik  <timj@gtk.org>
+
+	* gmem.c (g_realloc): plugged a memory leak, reported by Koen D'Hondt
+	<ripley@xs4all.nl> on 15 Oct 1998. allocate inital block from realloc.
+
 1999-02-17  Elliot Lee  <sopwith@redhat.com>
 
 	* glib.spec: Do --enable-debug=no for the .rpm's.

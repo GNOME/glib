@@ -285,7 +285,11 @@ g_realloc (gpointer mem,
   
   
   if (size == 0)
-    return NULL;
+    {
+      g_free (mem);
+    
+      return NULL;
+    }
   
   
 #if defined(ENABLE_MEM_PROFILE) || defined(ENABLE_MEM_CHECK)
@@ -298,7 +302,7 @@ g_realloc (gpointer mem,
   
   
   if (!mem)
-    p = (gpointer) malloc (size);
+    p = (gpointer) realloc (NULL, size);
   else
     {
 #if defined(ENABLE_MEM_PROFILE) || defined(ENABLE_MEM_CHECK)
