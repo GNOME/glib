@@ -1,3 +1,12 @@
+2004-09-26  Matthias Clasen  <mclasen@redhat.com>
+
+	Fix #153649, Hidetaka Iwai:
+	
+	* glib/goption.c (parse_long_option): Don't forget to set parsed
+	to TRUE when parsing a long ARG_NONE option. 
+	(free_changes_list): Fix the memory management for string
+	and filename arrays.
+
 2004-09-22  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/gmessages.c: [Win32] Don't ever open a console

@@ -587,8 +587,8 @@ parse_arg (GOptionContext *context,
 			     entry->arg_data);
 	change->prev.integer = *(gint *)entry->arg_data;
 	*(gint *)entry->arg_data = data;
+	break;
       }
-      break;
     case G_OPTION_ARG_CALLBACK:
       {
 	gchar *tmp;
@@ -700,6 +700,7 @@ parse_long_option (GOptionContext *context,
 		     NULL, NULL, error);
 	  
 	  add_pending_null (context, &((*argv)[*index]), NULL);
+	  *parsed = TRUE;
 	}
       else
 	{
@@ -753,10 +754,6 @@ free_changes_list (GOptionContext *context,
 
       if (revert)
 	{
-	  /* Free any allocated data */
-	  g_free (change->allocated.str);
-	  g_strfreev (change->allocated.array.data);
-	  
 	  switch (change->arg_type)
 	    {
 	    case G_OPTION_ARG_NONE:
@@ -767,11 +764,14 @@ free_changes_list (GOptionContext *context,
 	      break;
 	    case G_OPTION_ARG_STRING:
 	    case G_OPTION_ARG_FILENAME:
+              g_free (change->allocated.str);
 	      *(gchar **)change->arg_data = change->prev.str;
 	      break;
 	    case G_OPTION_ARG_STRING_ARRAY:
 	    case G_OPTION_ARG_FILENAME_ARRAY:
+	      g_strfreev (change->allocated.array.data);
 	      *(gchar ***)change->arg_data = change->prev.array;
+	      break;
 	    default:
 	      g_assert_not_reached ();
 	    }
