@@ -24,11 +24,7 @@
 
 #include	<gobject/gvalue.h>
 
-
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
+G_BEGIN_DECLS
 
 /* --- type macros --- */
 #define G_TYPE_IS_PARAM(type)		(G_TYPE_FUNDAMENTAL (type) == G_TYPE_PARAM)
@@ -187,8 +183,6 @@ GParamSpec*	g_param_spec_pool_lookup	(GParamSpecPool	*pool,
  *	>0 if value1 > value2, and 0 otherwise (they are equal)
  */
 
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */
+G_END_DECLS
 
 #endif /* __G_PARAM_H__ */

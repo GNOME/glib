@@ -11,16 +11,25 @@ INCLUDES = @STRIP_BEGIN@ \
 	-DG_DISABLE_CONST_RETURNS		\
 @STRIP_END@
 
+libglib = $(top_builddir)/libglib-1.3.la
+
 # libraries to compile and install
 lib_LTLIBRARIES = libgobject-1.3.la
+
+if PLATFORM_WIN32
+no_undefined = -no-undefined
+endif
+if OS_WIN32
+export_symbols = -export-symbols gobject.def
+endif
 
 # libtool stuff: set version and export symbols for resolving
 libgobjectincludedir = $(includedir)/glib-2.0/gobject
 libgobject_1_3_la_LDFLAGS = @STRIP_BEGIN@ \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE)	\
-	-export-dynamic						\
+	-export-dynamic $(no_undefined) $(export_symbols)	\
 @STRIP_END@
-libgobject_1_3_la_LIBADD = # $(libglib)
+libgobject_1_3_la_LIBADD = $(libglib)
 
 #
 # setup source file variables
@@ -116,7 +125,7 @@ gmarshal.h:	# never add deps here
 # versions in the build dir. thus a development setup requires
 # srcdir to be writable, passing --disable-rebuilds to
 # ../configure will supress all autogeneration rules.
-$(srcdir)/stamp-gmarshal.h: @REBUILD@ gmarshal.list gmarshal.h glib-genmarshal
+$(srcdir)/stamp-gmarshal.h: @REBUILD@ gmarshal.list gmarshal.h glib-genmarshal$(EXEEXT)
 	echo "#ifndef __G_MARSHAL_H__" > xgen-gmh \
 	&& echo "#define __G_MARSHAL_H__" >> xgen-gmh \
 	&& ./glib-genmarshal --nostdinc --prefix=g_cclosure_marshal $(srcdir)/gmarshal.list --header >> xgen-gmh \
@@ -149,8 +158,8 @@ gobject_query_SOURCES = gobject-query.c
 glib_genmarshal_SOURCES = glib-genmarshal.c
 testgruntime_SOURCES = testgruntime.c
 # link programs against libgobject
-progs_LDADD = libgobject-1.3.la ../libglib-1.3.la
-glib_genmarshal_LDADD = ../libglib-1.3.la # can't have libgobject here
+progs_LDADD = libgobject-1.3.la $(libglib)
+glib_genmarshal_LDADD = $(libglib)
 gobject_query_LDADD = $(progs_LDADD)
 testgruntime_LDADD = $(progs_LDADD)
 

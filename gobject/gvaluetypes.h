@@ -24,11 +24,7 @@
 
 #include	<gobject/gvalue.h>
 
-
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
+G_BEGIN_DECLS
 
 /* --- type macros --- */
 #define G_VALUE_HOLDS_CHAR(value)	 (G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_CHAR))
@@ -89,8 +85,6 @@ void g_value_set_string_take_ownership		(GValue		   *value,
 
 
 
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */
+G_END_DECLS
 
 #endif /* __G_VALUETYPES_H__ */

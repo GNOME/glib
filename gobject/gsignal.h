@@ -25,11 +25,7 @@
 #include	<gobject/gparam.h>
 #include	<gobject/gmarshal.h>
 
-
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
+G_BEGIN_DECLS
 
 /* --- typedefs --- */
 typedef struct _GSignalQuery		 GSignalQuery;
@@ -227,9 +223,6 @@ guint	 g_signal_handlers_disconnect_matched (gpointer		  instance,
 void	 g_signal_handlers_destroy	      (gpointer		  instance);
 void	 _g_signals_destroy		      (GType		  itype);
 
-
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */
+G_END_DECLS
 
 #endif /* __G_SIGNAL_H__ */

@@ -22,12 +22,7 @@
 
 #include	<gobject/gtype.h>
 
-
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
-
+G_BEGIN_DECLS
 
 /* --- type macros --- */
 #define G_TYPE_TYPE_PLUGIN		(g_type_plugin_get_type ())
@@ -74,12 +69,6 @@ void	g_type_plugin_complete_interface_info	(GTypePlugin     *plugin,
 						 GType            instance_type,
 						 GInterfaceInfo  *info);
 
-
-
-
-
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */
+G_END_DECLS
 
 #endif /* __G_TYPE_PLUGIN_H__ */

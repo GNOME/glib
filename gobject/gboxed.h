@@ -21,11 +21,7 @@
 
 #include        <gobject/gtype.h>
 
-
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
+G_BEGIN_DECLS
 
 /* --- type macros --- */
 #define G_TYPE_IS_BOXED(type)	   (G_TYPE_FUNDAMENTAL (type) == G_TYPE_BOXED)
@@ -66,8 +62,6 @@ void	g_value_set_boxed_take_ownership	(GValue		*value,
 
 
 
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */
+G_END_DECLS
 
 #endif	/* __G_BOXED_H__ */

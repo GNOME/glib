@@ -27,11 +27,7 @@
 #include        <gobject/gboxed.h>
 #include        <gobject/gobject.h>
 
-
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
+G_BEGIN_DECLS
 
 /* --- type macros --- */
 #define G_IS_PARAM_SPEC_CHAR(pspec)        (G_TYPE_CHECK_INSTANCE_TYPE ((pspec), G_TYPE_PARAM_CHAR))
@@ -330,8 +326,6 @@ GParamSpec*	g_param_spec_object	 (const gchar	 *name,
 					  GParamFlags	  flags);
 
 
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */
+G_END_DECLS
 
 #endif /* __G_PARAMSPECS_H__ */

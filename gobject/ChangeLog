@@ -156,6 +156,13 @@ Tue Feb 27 18:35:15 2001  Tim Janik  <timj@gtk.org>
 	* gvalue.[hc]: marked g_value_fits_pointer() and g_value_peek_pointer()
 	as private (the latter got renamed from g_value_get_as_pointer()).
 
+2001-02-21  Tor Lillqvist  <tml@iki.fi>
+
+	* *.h: Use G_BEGIN_DECLS and G_END_DECLS.
+
+	* Makefile.am: Use libglib-1.3.la from top_builddir. Invoke
+	libtool with -no-undefined for Win32 and Cygwin.
+
 Wed Feb 21 18:31:46 2001  Jonathan Blandford  <jrb@redhat.com>
 
 	* gsignal.h (g_signal_connect): Add g_signal_connect define to

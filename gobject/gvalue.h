@@ -24,10 +24,7 @@
 
 #include	<gobject/gtype.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
+G_BEGIN_DECLS
 
 /* --- type macros --- */
 #define	G_TYPE_IS_VALUE(type)		(g_type_value_table_peek (type) != NULL)
@@ -89,8 +86,6 @@ void	g_value_register_transform_func	(GType		 src_type,
 #define G_VALUE_NOCOPY_CONTENTS		(1 << 27)
 
 
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */
+G_END_DECLS
 
 #endif /* __G_VALUE_H__ */

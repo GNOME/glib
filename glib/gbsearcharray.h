@@ -23,11 +23,7 @@
 
 #include        <gobject/gtype.h>
 
-
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
+G_BEGIN_DECLS
 
 /* helper macro to avoid signed overflow for value comparisions */
 #define	G_BSEARCH_ARRAY_CMP(v1,v2) ((v1) < (v2) ? -1 : (v1) > (v2) ? 1 : 0)
@@ -138,11 +134,6 @@ g_bsearch_array_get_index (GBSearchArray *barray,
 }
 #endif  /* G_CAN_INLINE || __G_BSEARCHARRAY_C__ */
 
-
-
-
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */
+G_END_DECLS
 
 #endif /* __G_BSEARCH_ARRAY_H__ */

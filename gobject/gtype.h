@@ -22,11 +22,7 @@
 extern const char *g_log_domain_gruntime;
 #include        <glib.h>
 
-
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
+G_BEGIN_DECLS
 
 /* Basic Type Macros
  */
@@ -361,9 +357,6 @@ GTypeValueTable* g_type_value_table_peek        (GType		     type);
 #define	G_TYPE_FLAG_RESERVED_ID_BIT	(1 << 30)
 extern GTypeDebugFlags			_g_type_debug_flags;
 
-
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */
+G_END_DECLS
 
 #endif /* __G_TYPE_H__ */

@@ -21,11 +21,7 @@
 
 #include <gobject/gtype.h>
 
-
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
+G_BEGIN_DECLS
 
 /* --- type macros --- */
 #define G_TYPE_IS_ENUM(type)	       (G_TYPE_FUNDAMENTAL (type) == G_TYPE_ENUM)
@@ -118,10 +114,6 @@ void	g_flags_complete_type_info (GType	       g_flags_type,
 				    GTypeInfo	      *info,
 				    const GFlagsValue *const_values);
 
-
-
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */
+G_END_DECLS
 
 #endif /* __G_ENUMS_H__ */

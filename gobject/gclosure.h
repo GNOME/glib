@@ -22,12 +22,7 @@
 
 #include        <gobject/gtype.h>
 
-
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
-
+G_BEGIN_DECLS
 
 /* --- defines --- */
 #define	G_CLOSURE_NEEDS_MARSHAL(closure) (((GClosure*) (closure))->marshal == NULL)
@@ -158,9 +153,6 @@ void		g_closure_invoke		(GClosure 	*closure,
    - provide marshaller collection, virtually covering anything out there
 */
 
-
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */
+G_END_DECLS
 
 #endif /* __G_CLOSURE_H__ */

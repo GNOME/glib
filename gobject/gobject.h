@@ -24,11 +24,7 @@
 #include        <gobject/gparam.h>
 #include        <gobject/gclosure.h>
 
-
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
+G_BEGIN_DECLS
 
 /* --- type macros --- */
 #define G_TYPE_IS_OBJECT(type)      (G_TYPE_FUNDAMENTAL (type) == G_TYPE_OBJECT)
@@ -206,10 +202,6 @@ G_STMT_START { \
              G_OBJECT_TYPE_NAME (_object)); \
 } G_STMT_END
 
-
-
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */
+G_END_DECLS
 
 #endif /* __G_OBJECT_H__ */
