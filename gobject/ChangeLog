@@ -1,3 +1,8 @@
+2004-10-27  Matthias Clasen  <mclasen@redhat.com>
+
+	* Makefile.am (gobjectalias.h): Fix srcdir != builddir 
+	builds.  (#156447, Thomas Fitzsimmons)
+
 2004-10-26  Matthias Clasen  <mclasen@redhat.com>
 
 	* abicheck.sh: Don't include symbols which are just in the 

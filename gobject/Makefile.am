@@ -17,7 +17,7 @@ gobject.def: gobject.symbols
 	(echo -e EXPORTS; cpp -P -DINCLUDE_VARIABLES -DINCLUDE_INTERNAL_SYMBOLS -DG_OS_WIN32 $(srcdir)/gobject.symbols | sed -e '/^$$/d' -e 's/^/\t/' | sort) > gobject.def
 
 gobjectalias.h: gobject.symbols
-	./makegobjectalias.pl < $(srcdir)/gobject.symbols > gobjectalias.h
+	$(srcdir)/makegobjectalias.pl < $(srcdir)/gobject.symbols > gobjectalias.h
 
 if OS_UNIX
 TESTS = abicheck.sh

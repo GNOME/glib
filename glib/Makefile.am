@@ -17,7 +17,7 @@ glib.def: glib.symbols
 	(echo -e EXPORTS; cpp -P -DINCLUDE_VARIABLES -DINCLUDE_INTERNAL_SYMBOLS -DG_OS_WIN32 $(srcdir)/glib.symbols | sed -e '/^$$/d' -e 's/^/\t/') > glib.def
 
 galias.h: glib.symbols
-	  ./makegalias.pl < $(srcdir)/glib.symbols > galias.h
+	  $(srcdir)/makegalias.pl < $(srcdir)/glib.symbols > galias.h
 
 if OS_UNIX
 TESTS = abicheck.sh
