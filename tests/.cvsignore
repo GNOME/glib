@@ -36,3 +36,4 @@ strfunc-test
 queue-test
 stack-test
 date-test
+rand-test
