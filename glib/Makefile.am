@@ -165,10 +165,11 @@ libglib_1_3_la_LDFLAGS = \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
 	-export-dynamic
 
-noinst_PROGRAMS = testglib testgdate testgdateparser
+noinst_PROGRAMS = testglib testgdate testgdateparser timeloop
 testglib_LDADD = libglib-1.3.la
 testgdate_LDADD = libglib-1.3.la
 testgdateparser_LDADD = libglib-1.3.la
+timeloop_LDADD = libglib-1.3.la
 
 m4datadir = $(datadir)/aclocal
 m4data_DATA = glib-2.0.m4

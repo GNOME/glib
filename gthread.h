@@ -28,7 +28,6 @@
 #define __G_THREAD_H__
 
 #include <gerror.h>
-#include <gmain.h>
 
 G_BEGIN_DECLS
 

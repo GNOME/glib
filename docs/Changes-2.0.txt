@@ -1,0 +1,24 @@
+* The event loop functionality GMain has extensively been revised to 
+  support multiple separate main loops in separate threads. All sources
+  (timeouts, idle functions, etc.) are associated with a GMainContext.
+
+  Compatibility functions exist so that most application code dealing with
+  the main loop will continue to work. However, code that creates
+  new custom types of sources will require modification.
+
+  The main changes here are:
+
+   - Sources are now exposed as GSource *, rather than simply as numeric
+     IDS.
+
+   - New types of sources are created by structure "derivation" from GSource,
+     so the source_data parameter to the GSource vfuncs has been
+     replaced with a GSource *.
+
+   - Sources are first created, then later added to a specific GMainContext
+
+   - Dispatching has been modified so both the callback and data are passed
+     in to the ->dispatch() vfunc.
+
+  To go along with this change, the vtable for GIOChannel has changed and
+  add_watch() has been replaced by create_watch().

@@ -1,3 +1,35 @@
+Tue Dec  5 12:23:04 2000  Owen Taylor  <otaylor@redhat.com>
+
+        * gmain.[hc]: Major change in API for creating sources
+	to handle multiple main loops (GMainContext *). 
+
+	GSources are now exposed as GSource * and implemented
+	with structure derivation.
+
+	* giochannel.[ch]: Changed vtable for GIOChannel to correspond
+	to the new mainloop API, add g_io_channel_create_watch().
+	 
+	* gtypes.h: Move GTimeVal here.
+
+	* gthread.h: Remove gmain.h include to avoid circularity.
+	
+        * giounix.c: Update for new GMain API.
+	 
+	* giowin32.c: Update for new GMain API. (No check for
+	proper compilation or working.)
+
+	* timeloop.c timeloop-basic.c: A benchmarking program for
+	the main loop comparing the main loop against a 
+	hand-written (timeloop-basic.c) variant. 
+
+	* tests/mainloop-test.c: New torture test of mainloop.
+	
+	* docs/Changes-2.0.txt: Started. Added text about
+	changes to GMain.
+
+	* gmain.c (g_main_add_poll_unlocked): Initial fd->revents
+	to zero. (#8482, Benjamin Kahn)
+
 2000-12-01  Tor Lillqvist  <tml@iki.fi>
 
 	* {.,*}/makefile.msc.in: Include make.msc from GLib's build subdir.

@@ -28,6 +28,8 @@ stamp-h.in
 testgdate
 testgdateparser
 testglib
+timeloop
+timeloop-basic
 annotations
 logs
 glib.rc

@@ -19,6 +19,7 @@ TESTS = \
 	gio-test	\
 	hash-test	\
 	list-test	\
+	mainloop-test	\
 	markup-test	\
 	node-test	\
 	queue-test	\
@@ -45,6 +46,7 @@ dirname_test_LDADD = $(progs_LDADD)
 gio_test_LDADD = $(progs_LDADD)
 hash_test_LDADD = $(progs_LDADD)
 list_test_LDADD = $(progs_LDADD)
+mainloop_test_LDADD = $(thread_LDADD)
 markup_test_LDADD = $(progs_LDADD)
 node_test_LDADD = $(progs_LDADD)
 queue_test_LDADD = $(progs_LDADD)

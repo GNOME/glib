@@ -314,6 +314,14 @@ union _GDoubleIEEE754
 #error unknown ENDIAN type
 #endif /* !G_LITTLE_ENDIAN && !G_BIG_ENDIAN */
 
+typedef struct _GTimeVal                GTimeVal;
+
+struct _GTimeVal
+{
+  glong tv_sec;
+  glong tv_usec;
+};
+
 G_END_DECLS
 
 #endif /* __G_TYPES_H__ */

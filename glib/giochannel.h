@@ -27,6 +27,7 @@
 #ifndef __G_IOCHANNEL_H__
 #define __G_IOCHANNEL_H__
 
+#include <gmain.h>
 #include <gtypes.h>
 
 G_BEGIN_DECLS
@@ -71,25 +72,21 @@ typedef gboolean (*GIOFunc) (GIOChannel   *source,
 			     gpointer      data);
 struct _GIOFuncs
 {
-  GIOError (*io_read)   (GIOChannel 	*channel, 
-		         gchar      	*buf, 
-		         guint      	 count,
-			 guint      	*bytes_read);
-  GIOError (*io_write)  (GIOChannel 	*channel, 
-		 	 gchar      	*buf, 
-			 guint      	 count,
-			 guint      	*bytes_written);
-  GIOError (*io_seek)   (GIOChannel   	*channel, 
-		 	 gint       	 offset, 
-		  	 GSeekType  	 type);
-  void (*io_close)      (GIOChannel	*channel);
-  guint (*io_add_watch) (GIOChannel     *channel,
-			 gint            priority,
-			 GIOCondition    condition,
-			 GIOFunc         func,
-			 gpointer        user_data,
-			 GDestroyNotify  notify);
-  void (*io_free)       (GIOChannel	*channel);
+  GIOError  (*io_read)         (GIOChannel   *channel, 
+				gchar        *buf, 
+				guint         count,
+				guint        *bytes_read);
+  GIOError  (*io_write)        (GIOChannel   *channel, 
+				gchar        *buf, 
+				guint         count,
+				guint        *bytes_written);
+  GIOError  (*io_seek)         (GIOChannel   *channel, 
+				gint          offset, 
+				GSeekType     type);
+  void      (*io_close)        (GIOChannel   *channel);
+  GSource * (*io_create_watch) (GIOChannel   *channel,
+				GIOCondition  condition);
+  void      (*io_free)         (GIOChannel   *channel);
 };
 
 void        g_io_channel_init   (GIOChannel    *channel);
@@ -113,6 +110,8 @@ guint     g_io_add_watch_full   (GIOChannel    *channel,
 			         GIOFunc        func,
 			         gpointer       user_data,
 			         GDestroyNotify notify);
+GSource *g_io_create_watch      (GIOChannel   *channel,
+			         GIOCondition  condition);
 guint    g_io_add_watch         (GIOChannel    *channel,
 			         GIOCondition   condition,
 			         GIOFunc        func,

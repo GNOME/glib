@@ -43,12 +43,15 @@
 typedef struct _GIOUnixChannel GIOUnixChannel;
 typedef struct _GIOUnixWatch GIOUnixWatch;
 
-struct _GIOUnixChannel {
+struct _GIOUnixChannel
+{
   GIOChannel channel;
   gint fd;
 };
 
-struct _GIOUnixWatch {
+struct _GIOUnixWatch
+{
+  GSource       source;
   GPollFD       pollfd;
   GIOChannel   *channel;
   GIOCondition  condition;
@@ -56,37 +59,29 @@ struct _GIOUnixWatch {
 };
 
 
-static GIOError g_io_unix_read (GIOChannel *channel, 
-		       gchar     *buf, 
-		       guint      count,
-		       guint     *bytes_written);
-		       
-static GIOError g_io_unix_write(GIOChannel *channel, 
-				gchar     *buf, 
-				guint      count,
-				guint     *bytes_written);
-static GIOError g_io_unix_seek (GIOChannel *channel,
-				gint      offset, 
-				GSeekType type);
-static void g_io_unix_close    (GIOChannel *channel);
-static void g_io_unix_free     (GIOChannel *channel);
-static guint  g_io_unix_add_watch (GIOChannel      *channel,
-				   gint           priority,
-				   GIOCondition   condition,
-				   GIOFunc        func,
-				   gpointer       user_data,
-				   GDestroyNotify notify);
-static gboolean g_io_unix_prepare  (gpointer source_data, 
-				    GTimeVal *current_time,
-				    gint *timeout,
-				    gpointer user_data);
-static gboolean g_io_unix_check    (gpointer source_data,
-				    GTimeVal *current_time,
-				    gpointer user_data);
-static gboolean g_io_unix_dispatch (gpointer source_data,
-				    GTimeVal *current_time,
-				    gpointer user_data);
-static void g_io_unix_destroy  (gpointer source_data);
+static GIOError g_io_unix_read         (GIOChannel   *channel,
+					gchar        *buf,
+					guint         count,
+					guint        *bytes_written);
+static GIOError g_io_unix_write        (GIOChannel   *channel,
+					gchar        *buf,
+					guint         count,
+					guint        *bytes_written);
+static GIOError g_io_unix_seek         (GIOChannel   *channel,
+					gint          offset,
+					GSeekType     type);
+static void     g_io_unix_close        (GIOChannel   *channel);
+static void     g_io_unix_free         (GIOChannel   *channel);
+static GSource *g_io_unix_create_watch (GIOChannel   *channel,
+					GIOCondition  condition);
+
+static gboolean g_io_unix_prepare  (GSource     *source,
+				    gint        *timeout);
+static gboolean g_io_unix_check    (GSource     *source);
+static gboolean g_io_unix_dispatch (GSource     *source,
+				    GSourceFunc  callback,
+				    gpointer     user_data);
+static void     g_io_unix_destroy  (GSource     *source);
 
 GSourceFuncs unix_watch_funcs = {
   g_io_unix_prepare,
@@ -100,51 +95,53 @@ GIOFuncs unix_channel_funcs = {
   g_io_unix_write,
   g_io_unix_seek,
   g_io_unix_close,
-  g_io_unix_add_watch,
+  g_io_unix_create_watch,
   g_io_unix_free,
 };
 
 static gboolean 
-g_io_unix_prepare  (gpointer source_data, 
-		    GTimeVal *current_time,
-		    gint     *timeout,
-		    gpointer user_data)
+g_io_unix_prepare (GSource  *source,
+		   gint     *timeout)
 {
   *timeout = -1;
   return FALSE;
 }
 
 static gboolean 
-g_io_unix_check    (gpointer source_data,
-		    GTimeVal *current_time,
-		    gpointer user_data)
+g_io_unix_check (GSource  *source)
 {
-  GIOUnixWatch *data = source_data;
+  GIOUnixWatch *watch = (GIOUnixWatch *)source;
 
-  return (data->pollfd.revents & data->condition);
+  return (watch->pollfd.revents & watch->condition);
 }
 
 static gboolean
-g_io_unix_dispatch (gpointer source_data, 
-		    GTimeVal *current_time,
-		    gpointer user_data)
+g_io_unix_dispatch (GSource     *source,
+		    GSourceFunc  callback,
+		    gpointer     user_data)
 
 {
-  GIOUnixWatch *data = source_data;
+  GIOFunc func = (GIOFunc)callback;
+  GIOUnixWatch *watch = (GIOUnixWatch *)source;
 
-  return (*data->callback)(data->channel,
-			   data->pollfd.revents & data->condition,
-			   user_data);
+  if (!func)
+    {
+      g_warning ("IO watch dispatched without callback\n"
+		 "You must call g_source_connect().");
+      return FALSE;
+    }
+  
+  return (*func) (watch->channel,
+		  watch->pollfd.revents & watch->condition,
+		  user_data);
 }
 
 static void 
-g_io_unix_destroy (gpointer source_data)
+g_io_unix_destroy (GSource *source)
 {
-  GIOUnixWatch *data = source_data;
+  GIOUnixWatch *watch = (GIOUnixWatch *)source;
 
-  g_main_remove_poll (&data->pollfd);
-  g_io_channel_unref (data->channel);
-  g_free (data);
+  g_io_channel_unref (watch->channel);
 }
 
 static GIOError 
@@ -269,29 +266,29 @@ g_io_unix_free (GIOChannel *channel)
   g_free (unix_channel);
 }
 
-static guint 
-g_io_unix_add_watch (GIOChannel    *channel,
-		     gint           priority,
-		     GIOCondition   condition,
-		     GIOFunc        func,
-		     gpointer       user_data,
-		     GDestroyNotify notify)
+static GSource *
+g_io_unix_create_watch (GIOChannel   *channel,
+			GIOCondition  condition)
 {
-  GIOUnixWatch *watch = g_new (GIOUnixWatch, 1);
   GIOUnixChannel *unix_channel = (GIOUnixChannel *)channel;
+  GSource *source;
+  GIOUnixWatch *watch;
+
+
+  source = g_source_new (&unix_watch_funcs, sizeof (GIOUnixWatch));
+  watch = (GIOUnixWatch *)source;
   
   watch->channel = channel;
   g_io_channel_ref (channel);
-
-  watch->callback = func;
+  
   watch->condition = condition;
 
   watch->pollfd.fd = unix_channel->fd;
   watch->pollfd.events = condition;
 
-  g_main_add_poll (&watch->pollfd, priority);
+  g_source_add_poll (source, &watch->pollfd);
 
-  return g_source_add (priority, TRUE, &unix_watch_funcs, watch, user_data, notify);
+  return source;
 }
 
 GIOChannel *

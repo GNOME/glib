@@ -104,6 +104,15 @@ g_io_channel_close (GIOChannel *channel)
   channel->funcs->io_close (channel);
 }
 
+GSource *
+g_io_create_watch (GIOChannel  *channel,
+		   GIOCondition condition)
+{
+  g_return_val_if_fail (channel != NULL, NULL);
+
+  return channel->funcs->io_create_watch (channel, condition);
+}
+
 guint 
 g_io_add_watch_full (GIOChannel    *channel,
 		     gint           priority,
@@ -112,10 +121,17 @@ g_io_add_watch_full (GIOChannel    *channel,
 		     gpointer       user_data,
 		     GDestroyNotify notify)
 {
+  GSource *source;
+  
   g_return_val_if_fail (channel != NULL, 0);
 
-  return channel->funcs->io_add_watch (channel, priority, condition,
-				       func, user_data, notify);
+  source = g_io_create_watch (channel, condition);
+
+  if (priority != G_PRIORITY_DEFAULT)
+    g_source_set_priority (source, priority);
+  g_source_set_callback (source, (GSourceFunc)func, user_data, notify);
+
+  return g_source_attach (source, NULL);
 }
 
 guint 
@@ -124,5 +140,5 @@ g_io_add_watch (GIOChannel    *channel,
 		GIOFunc        func,
 		gpointer       user_data)
 {
-  return g_io_add_watch_full (channel, 0, condition, func, user_data, NULL);
+  return g_io_add_watch_full (channel, G_PRIORITY_DEFAULT, condition, func, user_data, NULL);
 }
