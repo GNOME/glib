@@ -1,3 +1,9 @@
+1999-11-08  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* Make the test for getpwuid_r work on newer AIX versions,
+	too. Still works on Solaris and Linux. Patch from Craig Rodrigues
+	<rodrigc@mediaone.net>.
+
 Tue Nov  2 17:21:29 1999  ape@spacetec.no  (Asbjorn Pettersen)
 
 	* glib.h (G_DIR_SEPARATOR): Add defines for EMX/OS2.
