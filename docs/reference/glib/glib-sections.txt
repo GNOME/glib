@@ -402,9 +402,9 @@ GPollFD
 
 <SUBSECTION>
 GSource
+GSourceDummyMarshal
 GSourceFuncs
 GSourceCallbackFuncs
-GSourceDummyMarshal
 g_source_new
 g_source_ref
 g_source_unref
@@ -826,6 +826,7 @@ g_markup_escape_text
 g_markup_parse_context_end_parse
 g_markup_parse_context_free
 g_markup_parse_context_get_position
+g_markup_parse_context_get_element
 g_markup_parse_context_new
 g_markup_parse_context_parse
 <SUBSECTION Private>
@@ -1895,6 +1896,7 @@ g_utf8_strlen
 g_utf8_strncpy
 g_utf8_strchr
 g_utf8_strrchr
+g_utf8_strreverse
 g_utf8_validate
 
 <SUBSECTION>
