@@ -148,7 +148,7 @@ main ()
           CFLAGS="$CFLAGS $GLIB_CFLAGS"
           LIBS="$LIBS $GLIB_LIBS"
           AC_TRY_LINK([
-#include <glib/glib.h>
+#include <glib.h>
 #include <stdio.h>
 ],      [ return ((glib_major_version) || (glib_minor_version) || (glib_micro_version)); ],
         [ echo "*** The test program compiled, but did not run. This usually means"
