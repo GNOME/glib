@@ -1,3 +1,40 @@
+2002-01-23  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/gconvert.c: (strdup_len): Not used on Windows, don't even
+	compile it then.
+
+	(acceptable): Improve comments for the _acceptable_ table: put
+	each ASCII char above the hex number for it.
+
+	(g_escape_file_uri): On Windows, turn backslashes in the file name
+	into plain ("forward") slashes.
+
+	(g_filename_from_uri): On Windows, don't return the hostname
+	"localhost", because we can not be 100% sure it will be recognized
+	in all cases anyway, so simpler to turn it into a null
+	hostname. 
+
+	Change slashes in the filename into backslashes, as that is the
+	more canonical separator.
+
+	Recognize drive letters (either followed by a colon or a vertical
+	bar, as used by some browsers), and if the filename part starts
+	with a such, don't include any (back)slash.
+
+	Don't drop any extra leading slash in the filename on Unix.
+
+	(g_filename_to_uri): On Windows, if the hostname is "localhost",
+	don't use it, for consistency with g_filename_from_uri().
+	
+	tests/uri-test.c: Change accordingly, so that all tests pass on
+	Windows. Unix, too, I hope, though I couldn't check that now.
+
+	(main): Unset the G_BROKEN_FILENAMES environment variable on Unix,
+	as some tests require that filenames are in UTF-8. Is unsetenv()
+	portable?
+
+	These changes should fix bugs #59387, #59652, #59657 and #59658.
+	
 2002-01-22  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* configure.in: Get the right multithread option for GCC 3.0 and

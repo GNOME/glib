@@ -44,20 +44,28 @@ ToUriTest
 to_uri_tests[] = {
   { "/etc", NULL, "file:///etc"},
   { "/etc", "", "file:///etc"},
-  { "/etc", "localhost", "file://localhost/etc"},
   { "/etc", "otherhost", "file://otherhost/etc"},
 #ifdef G_OS_WIN32
-  { "c:\\windows", NULL, "file:///c:\\windows"}, /* these 3 tests almost certainly fail */
-  { "c:\\windows", "localhost", "file://localhost/c:\\windows"},
-  { "c:\\windows", "otherhost", "file://otherhost/c:\\windows"},
+  { "/etc", "localhost", "file:///etc"},
+  { "c:\\windows", NULL, "file:///c:/windows"},
+  { "c:\\windows", "localhost", "file:///c:/windows"},
+  { "c:\\windows", "otherhost", "file://otherhost/c:/windows"},
+  { "\\\\server\\share\\dir", NULL, "file:////server/share/dir"},
+  { "\\\\server\\share\\dir", "localhost", "file:////server/share/dir"},
 #else
+  { "/etc", "localhost", "file://localhost/etc"},
   { "c:\\windows", NULL, NULL, G_CONVERT_ERROR_NOT_ABSOLUTE_PATH}, /* it's important to get this error on Unix */
   { "c:\\windows", "localhost", NULL, G_CONVERT_ERROR_NOT_ABSOLUTE_PATH},
   { "c:\\windows", "otherhost", NULL, G_CONVERT_ERROR_NOT_ABSOLUTE_PATH},
 #endif
   { "etc", "localhost", NULL, G_CONVERT_ERROR_NOT_ABSOLUTE_PATH},
+#ifndef G_OS_WIN32
+  /* g_filename_to_utf8 uses current code page on Win32, these tests assume that
+   * local filenames *are* in UTF-8.
+   */
   { "/etc/öäå", NULL, NULL, G_CONVERT_ERROR_ILLEGAL_SEQUENCE},
   { "/etc/Ã¶Ã¤Ã¥", NULL, "file:///etc/%C3%B6%C3%A4%C3%A5"},
+#endif
   { "/etc", "Ã¶Ã¤Ã¥", "file://%C3%B6%C3%A4%C3%A5/etc"},
   { "/etc", "åäö", NULL, G_CONVERT_ERROR_ILLEGAL_SEQUENCE},
   { "/etc/file with #%", NULL, "file:///etc/file%20with%20%23%25"},
@@ -69,9 +77,18 @@ to_uri_tests[] = {
   { "/ABCDEFGHIJKLMNOPQRSTUVWXYZ", NULL, "file:///ABCDEFGHIJKLMNOPQRSTUVWXYZ"},
   { "/abcdefghijklmnopqrstuvwxyz", NULL, "file:///abcdefghijklmnopqrstuvwxyz"},
   { "/-_.!~*'()", NULL, "file:///-_.!~*'()"},
+#ifdef G_OS_WIN32
+  /* As '\\' is a path separator on Win32, it gets turned into '/' in the URI */
+  { "/\"#%<>[\\]^`{|}\x7F", NULL, "file:///%22%23%25%3C%3E%5B/%5D%5E%60%7B%7C%7D%7F"},
+#else
+  /* On Unix, '\\' is a normal character in the file name */
   { "/\"#%<>[\\]^`{|}\x7F", NULL, "file:///%22%23%25%3C%3E%5B%5C%5D%5E%60%7B%7C%7D%7F"},
+#endif
   { "/;@+$,", NULL, "file:///%3B%40%2B%24%2C"},
-  { "/:", NULL, "file:///:"}, /* not escaped even though reserved as side effect of DOS support -- is that really what we want on Unix? */
+  /* This and some of the following are of course as such illegal file names on Windows,
+   * and would not occur in real life.
+   */
+  { "/:", NULL, "file:///:"},
   { "/?&=", NULL, "file:///?&="}, /* these are not escaped and other reserved characters are -- is that really what we want? */
   { "/", "0123456789", "file://0123456789/"},
   { "/", "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "file://ABCDEFGHIJKLMNOPQRSTUVWXYZ/"},
@@ -98,8 +115,16 @@ FromUriTest
 from_uri_tests[] = {
   { "file:///etc", "/etc"},
   { "file:/etc", "/etc"},
+#ifdef G_OS_WIN32
+  /* On Win32 we don't return "localhost" hostames, just in case
+   * it isn't recognized anyway.
+   */
+  { "file://localhost/etc", "/etc", NULL},
+  { "file://localhost/etc/%23%25%20file", "/etc/#% file", NULL},
+#else
   { "file://localhost/etc", "/etc", "localhost"},
   { "file://localhost/etc/%23%25%20file", "/etc/#% file", "localhost"},
+#endif
   { "file://otherhost/etc", "/etc", "otherhost"},
   { "file://otherhost/etc/%23%25%20file", "/etc/#% file", "otherhost"},
   { "file://%C3%B6%C3%A4%C3%A5/etc", "/etc", "Ã¶Ã¤Ã¥"},
@@ -111,11 +136,22 @@ from_uri_tests[] = {
   { "", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
   { "file:test", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
   { "http://www.yahoo.com/", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
-  { "file:////etc", "/etc"}, /* should be "//etc" -- mistake in code for DOS results in dropped slash */
-  { "file://///etc", "//etc"}, /* should be "///etc" -- mistake in code for DOS results in dropped slash */
-  { "file:///c:\\foo", "/c:\\foo"}, /* should be "c:\\foo" on DOS perhaps, but that would be bad for Unix */
-  { "file:///c:/foo", "/c:/foo"}, /* should be "c:/foo" on DOS perhaps, but that would be bad for Unix */
-  { "file:////c:/foo", "/c:/foo"}, /* should be "//c:/foo" on Unix */
+  { "file:////etc", "//etc"},
+  { "file://///etc", "///etc"},
+#ifdef G_OS_WIN32
+  /* URIs with backslashes come from some nonstandard application, but accept them anyhow */
+  { "file:///c:\\foo", "c:\\foo"},
+  { "file:///c:/foo\\bar", "c:\\foo\\bar"},
+  /* Accept also the old Netscape drive-letter-and-vertical bar convention */
+  { "file:///c|/foo", "c:\\foo"},
+  { "file:////server/share/dir", "\\\\server\\share\\dir"},
+  { "file://localhost//server/share/foo", "\\\\server\\share\\foo"},
+  { "file://otherhost//server/share/foo", "\\\\server\\share\\foo", "otherhost"},
+#else
+  { "file:///c:\\foo", "/c:\\foo"},
+  { "file:///c:/foo", "/c:/foo"},
+  { "file:////c:/foo", "//c:/foo"},
+#endif
   { "file://0123456789/", "/", "0123456789"},
   { "file://ABCDEFGHIJKLMNOPQRSTUVWXYZ/", "/", "ABCDEFGHIJKLMNOPQRSTUVWXYZ"},
   { "file://abcdefghijklmnopqrstuvwxyz/", "/", "abcdefghijklmnopqrstuvwxyz"},
@@ -232,6 +268,16 @@ run_from_uri_tests (void)
 	}
       else
 	{
+#ifdef G_OS_WIN32
+	  gchar *slash, *p;
+
+	  p = from_uri_tests[i].expected_filename = g_strdup (from_uri_tests[i].expected_filename);
+	  while ((slash = strchr (p, '/')) != NULL)
+	    {
+	      *slash = '\\';
+	      p = slash + 1;
+	    }
+#endif
 	  if (res == NULL || strcmp (res, from_uri_tests[i].expected_filename) != 0)
 	    {
 	      g_print ("\ng_filename_from_uri() test %d failed, expected result: %s, actual result: %s\n",
@@ -267,6 +313,10 @@ int
 main (int   argc,
       char *argv[])
 {
+#ifdef G_OS_UNIX
+  unsetenv ("G_BROKEN_FILENAMES");
+#endif
+
   run_to_uri_tests ();
   run_from_uri_tests ();
 

@@ -623,6 +623,8 @@ g_convert_with_fallback (const gchar *str,
  * 
  */
 
+#ifndef G_PLATFORM_WIN32
+
 static gchar *
 strdup_len (const gchar *string,
 	    gssize       len,
@@ -662,6 +664,8 @@ strdup_len (const gchar *string,
 
   return g_strndup (string, real_len);
 }
+
+#endif
 
 /**
  * g_locale_to_utf8:
@@ -1069,13 +1073,19 @@ typedef enum {
 } UnsafeCharacterSet;
 
 static const guchar acceptable[96] = {
- /* X0   X1   X2   X3   X4   X5   X6   X7   X8   X9   XA   XB   XC   XD   XE   XF */
-  0x00,0x3F,0x20,0x20,0x20,0x00,0x2C,0x3F,0x3F,0x3F,0x3F,0x22,0x20,0x3F,0x3F,0x1C, /* 2X  !"#$%&'()*+,-./   */
-  0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x38,0x20,0x20,0x2C,0x20,0x2C, /* 3X 0123456789:;<=>?   */
-  0x30,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F, /* 4X @ABCDEFGHIJKLMNO   */
-  0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x20,0x20,0x20,0x20,0x3F, /* 5X PQRSTUVWXYZ[\]^_   */
-  0x20,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F, /* 6X `abcdefghijklmno   */
-  0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x20,0x20,0x20,0x3F,0x20  /* 7X pqrstuvwxyz{|}~DEL */
+  /* A table of the ASCII chars from space (32) to DEL (127) */
+  /*      !    "    #    $    %    &    '    (    )    *    +    ,    -    .    / */ 
+  0x00,0x3F,0x20,0x20,0x20,0x00,0x2C,0x3F,0x3F,0x3F,0x3F,0x22,0x20,0x3F,0x3F,0x1C,
+  /* 0    1    2    3    4    5    6    7    8    9    :    ;    <    =    >    ? */
+  0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x38,0x20,0x20,0x2C,0x20,0x2C,
+  /* @    A    B    C    D    E    F    G    H    I    J    K    L    M    N    O */
+  0x30,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,
+  /* P    Q    R    S    T    U    V    W    X    Y    Z    [    \    ]    ^    _ */
+  0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x20,0x20,0x20,0x20,0x3F,
+  /* `    a    b    c    d    e    f    g    h    i    j    k    l    m    n    o */
+  0x20,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,
+  /* p    q    r    s    t    u    v    w    x    y    z    {    |    }    ~  DEL */
+  0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x20,0x20,0x20,0x3F,0x20
 };
 
 static const gchar hex[16] = "0123456789ABCDEF";
@@ -1106,7 +1116,7 @@ g_escape_uri_string (const gchar *string,
   use_mask = mask;
   for (p = string; *p != '\0'; p++)
     {
-      c = *p;
+      c = (guchar) *p;
       if (!ACCEPTABLE (c)) 
 	unacceptable++;
     }
@@ -1116,7 +1126,7 @@ g_escape_uri_string (const gchar *string,
   use_mask = mask;
   for (q = result, p = string; *p != '\0'; p++)
     {
-      c = (unsigned char)*p;
+      c = (guchar) *p;
       
       if (!ACCEPTABLE (c))
 	{
@@ -1142,6 +1152,23 @@ g_escape_file_uri (const gchar *hostname,
   char *escaped_path;
   char *res;
 
+#ifdef G_OS_WIN32
+  char *p, *backslash;
+
+  /* Turn backslashes into forward slashes. That's what Netscape
+   * does, and they are actually more or less equivalent in Windows.
+   */
+  
+  pathname = g_strdup (pathname);
+  p = (char *) pathname;
+  
+  while ((backslash = strchr (p, '\\')) != NULL)
+    {
+      *backslash = '/';
+      p = backslash + 1;
+    }
+#endif
+
   if (hostname && *hostname != '\0')
     {
       escaped_hostname = g_escape_uri_string (hostname, UNSAFE_HOST);
@@ -1154,6 +1181,10 @@ g_escape_file_uri (const gchar *hostname,
 		     (*escaped_path != '/') ? "/" : "",
 		     escaped_path,
 		     NULL);
+
+#ifdef G_OS_WIN32
+  g_free ((char *) pathname);
+#endif
 
   g_free (escaped_hostname);
   g_free (escaped_path);
@@ -1256,6 +1287,9 @@ g_filename_from_uri (const char *uri,
   char *result;
   char *filename;
   int offs;
+#ifdef G_OS_WIN32
+  char *p, *slash;
+#endif
 
   if (hostname)
     *hostname = NULL;
@@ -1320,11 +1354,39 @@ g_filename_from_uri (const char *uri,
       return NULL;
     }
 
-  /* DOS uri's are like "file://host/c:\foo", so we need to check if we need to
-   * drop the initial slash */
   offs = 0;
-  if (g_path_is_absolute (filename+1))
-    offs = 1;
+#ifdef G_OS_WIN32
+  /* Drop localhost */
+  if (hostname && *hostname != NULL &&
+      g_ascii_strcasecmp (*hostname, "localhost") == 0)
+    {
+      g_free (*hostname);
+      *hostname = NULL;
+    }
+
+  /* Turn slashes into backslashes, because that's the canonical spelling */
+  p = filename;
+  while ((slash = strchr (p, '/')) != NULL)
+    {
+      *slash = '\\';
+      p = slash + 1;
+    }
+
+  /* Windows URIs with a drive letter can be like "file://host/c:/foo"
+   * or "file://host/c|/foo" (some Netscape versions). In those cases, start
+   * the filename from the drive letter.
+   */
+  if (g_ascii_isalpha (filename[1]))
+    {
+      if (filename[2] == ':')
+	offs = 1;
+      else if (filename[2] == '|')
+	{
+	  filename[2] = ':';
+	  offs = 1;
+	}
+    }
+#endif
   
   result = g_filename_from_utf8 (filename + offs, -1, NULL, NULL, error);
   g_free (filename);
@@ -1376,6 +1438,12 @@ g_filename_to_uri   (const char *filename,
       return NULL;
     }
   
+#ifdef G_OS_WIN32
+  /* Don't use localhost unnecessarily */
+  if (hostname && g_ascii_strcasecmp (hostname, "localhost") == 0)
+    hostname = NULL;
+#endif
+
   escaped_uri = g_escape_file_uri (hostname,
 				   utf8_filename);
   g_free (utf8_filename);
