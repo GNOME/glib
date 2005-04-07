@@ -1,3 +1,8 @@
+2005-04-08  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gutils.h (G_WIN32_DLLMAIN_FOR_DLL_NAME): Use wide char API
+	if available, and store dll name in UTF-8.
+
 2005-04-05  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gfileutils.c (get_contents_stdio): Avoid memory 
