@@ -1,3 +1,9 @@
+2005-04-08  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gutils.c (read_aliases): Not used on Windows.
+	(unalias_lang): Don't do anything on Windows, there is no
+	/usr/share/locale/locale.alias file..
+	
 Thu Apr  7 22:51:15 2005  <yosh@gimp.org>
 
 	* glib/gutils.c (g_get_system_data_dirs): Declare glib_top_share_dir

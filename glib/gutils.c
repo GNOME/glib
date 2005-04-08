@@ -2202,6 +2202,8 @@ g_get_system_config_dirs (void)
   return (G_CONST_RETURN gchar * G_CONST_RETURN *) conf_dir_vector;
 }
 
+#ifndef G_OS_WIN32
+
 static GHashTable *alias_table = NULL;
 
 /* read an alias file for the locales */
@@ -2257,9 +2259,12 @@ read_aliases (gchar *file)
   fclose (fp);
 }
 
+#endif
+
 static char *
 unalias_lang (char *lang)
 {
+#ifndef G_OS_WIN32
   char *p;
   int i;
 
@@ -2280,6 +2285,7 @@ unalias_lang (char *lang)
 	  return lang;
 	}
     }
+#endif
   return lang;
 }
 
