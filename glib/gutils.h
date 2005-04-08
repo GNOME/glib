@@ -125,6 +125,17 @@ G_CONST_RETURN gchar*    g_get_user_data_dir      (void);
 G_CONST_RETURN gchar*    g_get_user_config_dir    (void);
 G_CONST_RETURN gchar*    g_get_user_cache_dir     (void);
 G_CONST_RETURN gchar* G_CONST_RETURN * g_get_system_data_dirs   (void);
+
+#ifdef G_OS_WIN32
+G_CONST_RETURN gchar* G_CONST_RETURN * g_win32_get_system_data_dirs_for_module (gconstpointer address);
+static G_CONST_RETURN gchar * G_CONST_RETURN *
+g_win32_get_system_data_dirs (void)
+{
+  return g_win32_get_system_data_dirs_for_module (&g_win32_get_system_data_dirs);
+}
+#define g_get_system_data_dirs g_win32_get_system_data_dirs
+#endif
+
 G_CONST_RETURN gchar* G_CONST_RETURN * g_get_system_config_dirs (void);
 
 G_CONST_RETURN gchar* G_CONST_RETURN * g_get_language_names (void);

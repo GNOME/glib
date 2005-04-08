@@ -70,6 +70,10 @@
 #  define STRICT		/* Strict typing, please */
 #  include <windows.h>
 #  undef STRICT
+#  ifndef GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS
+#    define GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT 2
+#    define GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS 4
+#  endif
 #  include <lmcons.h>		/* For UNLEN */
 #endif /* G_PLATFORM_WIN32 */
 
@@ -2043,6 +2047,174 @@ g_get_user_cache_dir (void)
   return cache_dir;
 }
 
+#ifdef G_OS_WIN32
+
+#undef g_get_system_data_dirs
+
+static HMODULE
+get_module_for_address (gconstpointer address)
+{
+  /* Holds the g_utils_global lock */
+
+  static gboolean beenhere = FALSE;
+  typedef BOOL (WINAPI *t_GetModuleHandleExA) (DWORD, LPCTSTR, HMODULE *);
+  static t_GetModuleHandleExA p_GetModuleHandleExA = NULL;
+  HMODULE hmodule;
+
+  if (!address)
+    return NULL;
+
+  if (!beenhere)
+    {
+      p_GetModuleHandleExA =
+	(t_GetModuleHandleExA) GetProcAddress (LoadLibrary ("kernel32.dll"),
+					       "GetModuleHandleExA");
+      beenhere = TRUE;
+    }
+
+  if (p_GetModuleHandleExA == NULL ||
+      !(*p_GetModuleHandleExA) (GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT |
+				GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS,
+				address, &hmodule))
+    {
+      MEMORY_BASIC_INFORMATION mbi;
+      VirtualQuery (address, &mbi, sizeof (mbi));
+      hmodule = (HMODULE) mbi.AllocationBase;
+    }
+
+  return hmodule;
+}
+
+static gchar *
+get_module_share_dir (gconstpointer address)
+{
+  HMODULE hmodule;
+  gchar *filename = NULL;
+  gchar *p, *retval;
+
+  hmodule = get_module_for_address (address);
+  if (hmodule == NULL)
+    return NULL;
+
+  if (G_WIN32_IS_NT_BASED ())
+    {
+      wchar_t wfilename[MAX_PATH];
+      if (GetModuleFileNameW (hmodule, wfilename, G_N_ELEMENTS (wfilename)))
+	filename = g_utf16_to_utf8 (wfilename, -1, NULL, NULL, NULL);
+    }
+  else
+    {
+      char cpfilename[MAX_PATH];
+      if (GetModuleFileNameA (hmodule, cpfilename, G_N_ELEMENTS (cpfilename)))
+	filename = g_locale_to_utf8 (cpfilename, -1, NULL, NULL, NULL);
+    }
+
+  if (filename == NULL)
+    return NULL;
+
+  if ((p = strrchr (filename, G_DIR_SEPARATOR)) != NULL)
+    *p = '\0';
+
+  p = strrchr (filename, G_DIR_SEPARATOR);
+  if (p && (g_ascii_strcasecmp (p + 1, "bin") == 0))
+    *p = '\0';
+
+  retval = g_build_filename (filename, "share", NULL);
+  g_free (filename);
+
+  return retval;
+}
+
+G_CONST_RETURN gchar * G_CONST_RETURN *
+g_win32_get_system_data_dirs_for_module (gconstpointer address)
+{
+  GArray *data_dirs;
+  HMODULE hmodule;
+  static GHashTable *per_module_data_dirs = NULL;
+  gchar **retval;
+  gchar *p;
+      
+  if (address)
+    {
+      G_LOCK (g_utils_global);
+      hmodule = get_module_for_address (address);
+      if (hmodule != NULL)
+	{
+	  if (per_module_data_dirs == NULL)
+	    per_module_data_dirs = g_hash_table_new (NULL, NULL);
+	  else
+	    {
+	      retval = g_hash_table_lookup (per_module_data_dirs, hmodule);
+	      
+	      if (retval != NULL)
+		{
+		  G_UNLOCK (g_utils_global);
+		  return (G_CONST_RETURN gchar * G_CONST_RETURN *) retval;
+		}
+	    }
+	}
+    }
+
+  data_dirs = g_array_new (TRUE, TRUE, sizeof (char *));
+
+  /* Documents and Settings\All Users\Application Data */
+  p = get_special_folder (CSIDL_COMMON_APPDATA);
+  if (p)
+    g_array_append_val (data_dirs, p);
+  
+  /* Documents and Settings\All Users\Documents */
+  p = get_special_folder (CSIDL_COMMON_DOCUMENTS);
+  if (p)
+    g_array_append_val (data_dirs, p);
+	
+  /* Using the above subfolders of Documents and Settings perhaps
+   * makes sense from a Windows perspective.
+   *
+   * But looking at the actual use cases of this function in GTK+
+   * and GNOME software, what we really want is the "share"
+   * subdirectory of the installation directory for the package
+   * our caller is a part of.
+   *
+   * The address parameter, if non-NULL, points to a function in the
+   * calling module. Use that to determine that module's installation
+   * folder, and use its "share" subfolder.
+   *
+   * Additionally, also use the "share" subfolder of the installation
+   * locations of GLib and the .exe file being run.
+   *
+   * To guard against none of the above being what is really wanted,
+   * callers of this function should have Win32-specific code to look
+   * up their installation folder themselves, and handle a subfolder
+   * "share" of it in the same way as the folders returned from this
+   * function.
+   */
+
+  p = get_module_share_dir (address);
+  if (p)
+    g_array_append_val (data_dirs, p);
+    
+  p = g_win32_get_package_installation_subdirectory (NULL, dll_name, "share");
+  if (p)
+    g_array_append_val (data_dirs, p);
+  
+  p = g_win32_get_package_installation_subdirectory (NULL, NULL, "share");
+  if (p)
+    g_array_append_val (data_dirs, p);
+
+  retval = (gchar **) g_array_free (data_dirs, FALSE);
+
+  if (address)
+    {
+      if (hmodule != NULL)
+	g_hash_table_insert (per_module_data_dirs, hmodule, retval);
+      G_UNLOCK (g_utils_global);
+    }
+
+  return (G_CONST_RETURN gchar * G_CONST_RETURN *) retval;
+}
+
+#endif
+
 /**
  * g_get_system_data_dirs:
  * 
@@ -2053,6 +2225,28 @@ g_get_user_cache_dir (void)
  * the <ulink url="http://www.freedesktop.org/Standards/basedir-spec">
  * XDG Base Directory Specification</ulink>
  * 
+ * On Windows the first elements in the list are the Application Data
+ * and Documents folders for All Users. (These can be determined only
+ * on Windows 2000 or later and are not present in the list on other
+ * Windows versions.) See documentation for CSIDL_COMMON_APPDATA and
+ * CSIDL_COMMON_DOCUMENTS.
+ *
+ * Then follows the "share" subfolder in the installation folder for
+ * the package containing the DLL that calls this function, if it can
+ * be determined.
+ * 
+ * Finally the list contains the "share" subfolder in the installation
+ * folder for GLib, and in the installation folder for the package the
+ * application's .exe file belongs to.
+ *
+ * The installation folders above are determined by looking up the
+ * folder where the module (DLL or EXE) in question is located. If the
+ * folder's name is "bin", its parent is used, otherwise the folder
+ * itself.
+ *
+ * Note that on Windows the returned list can vary depending on where
+ * this function is called.
+ *
  * Return value: a %NULL-terminated array of strings owned by GLib that must 
  *               not be modified or freed.
  * Since: 2.6
@@ -2060,78 +2254,16 @@ g_get_user_cache_dir (void)
 G_CONST_RETURN gchar * G_CONST_RETURN * 
 g_get_system_data_dirs (void)
 {
-  gchar *data_dirs, **data_dir_vector;
+  gchar **data_dir_vector;
 
   G_LOCK (g_utils_global);
 
   if (!g_system_data_dirs)
     {
 #ifdef G_OS_WIN32
-      gchar *glib_top_share_dir, *exe_top_share_dir;
-
-      /* Documents and Settings\All Users\Application Data */
-      char *appdata = get_special_folder (CSIDL_COMMON_APPDATA);
-      /* Documents and Settings\All Users\Documents */
-      char *docs = get_special_folder (CSIDL_COMMON_DOCUMENTS);
-      
-      if (appdata && docs)
-	{
-	  data_dirs = g_strconcat (appdata,
-				   G_SEARCHPATH_SEPARATOR_S,
-				   docs,
-				   NULL);
-	  g_free (appdata);
-	  g_free (docs);
-	}
-      else if (appdata)
-	data_dirs = appdata;
-      else if (docs)
-	data_dirs = docs;
-      else
-	data_dirs = g_strdup ("");
-
-      /* Using the above subfolders of Documents and Settings perhaps
-       * makes sense from a Windows perspective.
-       *
-       * But looking at the actual use cases of this function in GTK+
-       * and GNOME software, what we really want is the "share"
-       * subdirectory of the installation directory for the package
-       * our caller is a part of.
-       *
-       * As we don't know who calls us, punt, and use the installation
-       * location of GLib, and of the .exe file being run. To guard
-       * against neither of those being what we really want, callers
-       * of this function should have Win32-specific code to look up
-       * their installation folder themselves, and handle a subfolder
-       * "share" of it in the same way as the folders returned from
-       * this function.
-       */
-      glib_top_share_dir = g_win32_get_package_installation_subdirectory (NULL, dll_name, "share");
-
-      if (glib_top_share_dir)
-	{
-	  gchar *tem = data_dirs;
-	  data_dirs = g_strconcat (data_dirs, G_SEARCHPATH_SEPARATOR_S,
-				   glib_top_share_dir, NULL);
-	  g_free (tem);
-	  g_free (glib_top_share_dir);
-	}
-
-      exe_top_share_dir = g_win32_get_package_installation_subdirectory (NULL, NULL, "share");
-
-      if (exe_top_share_dir)
-	{
-	  gchar *tem = data_dirs;
-	  data_dirs = g_strconcat (data_dirs, G_SEARCHPATH_SEPARATOR_S,
-				   exe_top_share_dir, NULL);
-	  g_free (tem);
-	  g_free (exe_top_share_dir);
-	}
-
-      data_dir_vector = g_strsplit (data_dirs, G_SEARCHPATH_SEPARATOR_S, 0);
-      g_free (data_dirs);
+      data_dir_vector = (gchar **) g_win32_get_system_data_dirs_for_module (NULL);
 #else
-      data_dirs = (gchar *) g_getenv ("XDG_DATA_DIRS");
+      gchar *data_dirs = (gchar *) g_getenv ("XDG_DATA_DIRS");
 
       if (!data_dirs || !data_dirs[0])
           data_dirs = "/usr/local/share/:/usr/share/";

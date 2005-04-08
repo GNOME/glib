@@ -1,5 +1,25 @@
 2005-04-08  Tor Lillqvist  <tml@novell.com>
 
+	Improve g_get_system_data_dirs() on Windows. A library that calls
+	g_get_system_data_dirs() might be installed in a different
+	top-level prefix than GLib or the application being run.
+
+	* glib/gutils.h (g_win32_get_system_data_dirs): New static
+	function defined in this header. Calls
+	g_win32_get_system_data_dirs_for_module() passing the address of
+	itself as parameter. g_get_system_data_dirs() is #defined as this
+	function.
+
+	* glib/gutils.c (g_win32_get_system_data_dirs_for_module): New
+	function. If the address parameter is non-NULL, the corresponding
+	module's installation location is used for one of the returned
+	path names, in addition to the COMMON_APPDATA, COMMON_DOCUMENTS,
+	glib top-level and application top-level folders.
+	(g_get_system_data_dirs): Now just for backward compatibility on
+	Win32. Just call g_win32_get_system_data_dirs_for_module(NULL).
+
+	* glib/glib.symbols: Add g_win32_get_system_data_dirs_for_module.
+
 	* glib/gutils.c (read_aliases): Not used on Windows.
 	(unalias_lang): Don't do anything on Windows, there is no
 	/usr/share/locale/locale.alias file..

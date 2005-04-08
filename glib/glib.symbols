@@ -1174,6 +1174,9 @@ g_get_real_name_utf8
 #endif
 g_get_system_config_dirs
 g_get_system_data_dirs
+#ifdef G_OS_WIN32
+g_win32_get_system_data_dirs_for_module
+#endif
 g_get_tmp_dir PRIVATE
 #ifdef G_OS_WIN32
 g_get_tmp_dir_utf8
