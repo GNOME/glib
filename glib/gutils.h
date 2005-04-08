@@ -367,24 +367,38 @@ G_END_DECLS
 #ifndef G_PLATFORM_WIN32
 # define G_WIN32_DLLMAIN_FOR_DLL_NAME(static, dll_name)
 #else
-# define G_WIN32_DLLMAIN_FOR_DLL_NAME(static, dll_name)			   \
-static char *dll_name;							   \
-									   \
-BOOL WINAPI								   \
-DllMain (HINSTANCE hinstDLL,						   \
-	 DWORD     fdwReason,						   \
-	 LPVOID    lpvReserved)						   \
-{									   \
-  char bfr[1000];							   \
-  switch (fdwReason)							   \
-    {									   \
-    case DLL_PROCESS_ATTACH:						   \
-      GetModuleFileName ((HMODULE) hinstDLL, bfr, sizeof (bfr));	   \
-      dll_name = g_path_get_basename (bfr);				   \
-      break;								   \
-    }									   \
-									   \
-  return TRUE;								   \
+# define G_WIN32_DLLMAIN_FOR_DLL_NAME(static, dll_name)			\
+static char *dll_name;							\
+									\
+BOOL WINAPI								\
+DllMain (HINSTANCE hinstDLL,						\
+	 DWORD     fdwReason,						\
+	 LPVOID    lpvReserved)						\
+{									\
+  wchar_t wcbfr[1000];							\
+  char cpbfr[1000];							\
+  char *tem;								\
+  switch (fdwReason)							\
+    {									\
+    case DLL_PROCESS_ATTACH:						\
+      if (GetVersion () < 0x80000000)					\
+	{								\
+	  GetModuleFileNameW ((HMODULE) hinstDLL, wcbfr, G_N_ELEMENTS (wcbfr));	\
+	  tem = g_utf16_to_utf8 (wcbfr, -1, NULL, NULL, NULL);		\
+	  dll_name = g_path_get_basename (tem);				\
+	  g_free (tem);							\
+	}								\
+      else								\
+	{								\
+	  GetModuleFileNameA ((HMODULE) hinstDLL, cpbfr, G_N_ELEMENTS (cpbfr));	\
+	  tem = g_locale_to_utf8 (cpbfr, -1, NULL, NULL, NULL);		\
+	  dll_name = g_path_get_basename (tem);				\
+	  g_free (tem);							\
+	}								\
+      break;								\
+    }									\
+									\
+  return TRUE;								\
 }
 #endif /* G_PLATFORM_WIN32 */
 
