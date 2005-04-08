@@ -7,11 +7,11 @@ Thu Apr  7 22:51:15 2005  <yosh@gimp.org>
 
 	* glib/gutils.c (g_get_system_data_dirs): After investigating more
 	closely the actual use cases of this function, I understand better
-	what it should do. In addition to the Windows COMMON_APPDATA and
-	COMMON_DOCUMENTS folders, also return the "share" subfolders of
-	GLib's installation location and the application .exe's
-	installation location, hoping that either matches what the
-	function's caller is looking for.
+	what it needs to do on Windows. In addition to the Windows
+	COMMON_APPDATA and COMMON_DOCUMENTS folders, also return the
+	"share" subfolders of GLib's installation location and the
+	application .exe's installation location, hoping that either
+	matches what the function's caller is looking for.
 
 	* glib/gutils.h (G_WIN32_DLLMAIN_FOR_DLL_NAME): Use wide char API
 	if available, and store dll name in UTF-8.
