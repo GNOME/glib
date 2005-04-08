@@ -1,5 +1,12 @@
 2005-04-08  Tor Lillqvist  <tml@novell.com>
 
+	* glib/gstdio.h
+	* glib/gstdio.c
+	* glib/glib.symbols (g_access, g_chmod): Wrap also access() and
+	chmod(). (#169623)
+
+2005-04-08  Tor Lillqvist  <tml@novell.com>
+
 	Improve g_get_system_data_dirs() on Windows. A library that calls
 	g_get_system_data_dirs() might be installed in a different
 	top-level prefix than GLib or the application being run.

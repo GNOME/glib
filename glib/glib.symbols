@@ -849,6 +849,8 @@ g_spawn_sync
 #if IN_FILE(__G_STDIO_C__)
 #if !defined(G_OS_UNIX) || defined(G_STDIO_NO_WRAP_ON_UNIX)
 /* gstdio wrappers */
+g_access
+g_chmod
 g_open
 g_rename
 g_mkdir

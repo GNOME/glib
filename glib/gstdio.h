@@ -31,6 +31,8 @@
  * format mismatches, especially with large file interfaces.
  */
 
+#define g_access  access
+#define g_chmod   chmod
 #define g_open    open
 #define g_rename  rename
 #define g_mkdir   mkdir
@@ -53,6 +55,12 @@
  * encoding, and not the encoding accepted by the C library or Win32
  * API.
  */
+
+int g_access    (const gchar *filename,
+		 int          mode);
+
+int g_chmod     (const gchar *filename,
+		 int          mode);
 
 int g_open      (const gchar *filename,
                  int          flags,

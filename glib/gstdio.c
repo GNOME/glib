@@ -49,6 +49,145 @@
 
 
 /**
+ * g_access:
+ * @filename: a pathname in the GLib file name encoding
+ * @mode: as in access()
+ *
+ * A wrapper for the POSIX access() function. This function is used to
+ * test a pathname for one or several of read, write or execute
+ * permissions, or just existence. On Windows, the underlying access()
+ * function in the C library only checks the READONLY attribute, and
+ * does not look at the ACL at all. Software that needs to handle file
+ * permisssions on Windows more exactly should use the Win32 API.
+ *
+ * See the C library manual for more details about access().
+ *
+ * Returns: zero if the pathname refers to an existing file system
+ * object that has all the tested permissions, or -1 otherwise or on
+ * error.
+ * 
+ * Since: 2.7
+ */
+int
+g_access (const gchar *filename,
+	  int          mode)
+{
+#ifdef G_OS_WIN32
+  if (G_WIN32_HAVE_WIDECHAR_API ())
+    {
+      wchar_t *wfilename = g_utf8_to_utf16 (filename, -1, NULL, NULL, NULL);
+      int retval;
+      int save_errno;
+      
+      if (wfilename == NULL)
+	{
+	  errno = EINVAL;
+	  return -1;
+	}
+
+      retval = _waccess (wfilename, mode);
+      save_errno = errno;
+
+      g_free (wfilename);
+
+      errno = save_errno;
+      return retval;
+    }
+  else
+    {    
+      gchar *cp_filename = g_locale_from_utf8 (filename, -1, NULL, NULL, NULL);
+      int retval;
+      int save_errno;
+
+      if (cp_filename == NULL)
+	{
+	  errno = EINVAL;
+	  return -1;
+	}
+
+      retval = access (cp_filename, mode);
+      save_errno = errno;
+
+      g_free (cp_filename);
+
+      errno = save_errno;
+      return retval;
+    }
+#else
+  return access (filename, mode);
+#endif
+}
+
+/**
+ * g_chmod:
+ * @filename: a pathname in the GLib file name encoding
+ * @mode: as in chmod()
+ *
+ * A wrapper for the POSIX chmod() function. The chmod() function is
+ * used to set the permissions of a file system object. Note that on
+ * Windows the file protection mechanism is not at all POSIX-like, and
+ * the underlying chmod() function in the C library just sets or
+ * clears the READONLY attribute. It does not touch any ACL. Software
+ * that needs to manage file permisssions on Windows exactly should
+ * use the Win32 API.
+ *
+ * See the C library manual for more details about chmod().
+ *
+ * Returns: zero if the operation succeedd, -1 on error.
+ * 
+ * Since: 2.7
+ */
+int
+g_chmod (const gchar *filename,
+	 int          mode)
+{
+#ifdef G_OS_WIN32
+  if (G_WIN32_HAVE_WIDECHAR_API ())
+    {
+      wchar_t *wfilename = g_utf8_to_utf16 (filename, -1, NULL, NULL, NULL);
+      int retval;
+      int save_errno;
+      
+      if (wfilename == NULL)
+	{
+	  errno = EINVAL;
+	  return -1;
+	}
+
+      retval = _wchmod (wfilename, mode);
+      save_errno = errno;
+
+      g_free (wfilename);
+
+      errno = save_errno;
+      return retval;
+    }
+  else
+    {    
+      gchar *cp_filename = g_locale_from_utf8 (filename, -1, NULL, NULL, NULL);
+      int retval;
+      int save_errno;
+
+      if (cp_filename == NULL)
+	{
+	  errno = EINVAL;
+	  return -1;
+	}
+
+      retval = chmod (cp_filename, mode);
+      save_errno = errno;
+
+      g_free (cp_filename);
+
+      errno = save_errno;
+      return retval;
+    }
+#else
+  return chmod (filename, mode);
+#endif
+}
+
+/**
  * g_open:
  * @filename: a pathname in the GLib file name encoding
  * @flags: as in open()
