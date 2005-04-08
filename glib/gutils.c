@@ -2060,13 +2060,14 @@ g_get_user_cache_dir (void)
 G_CONST_RETURN gchar * G_CONST_RETURN * 
 g_get_system_data_dirs (void)
 {
-  gchar *data_dirs, *glib_top_share_dir, *exe_top_share_dir, **data_dir_vector;
+  gchar *data_dirs, **data_dir_vector;
 
   G_LOCK (g_utils_global);
 
   if (!g_system_data_dirs)
     {
 #ifdef G_OS_WIN32
+      gchar *glib_top_share_dir, *exe_top_share_dir;
 
       /* Documents and Settings\All Users\Application Data */
       char *appdata = get_special_folder (CSIDL_COMMON_APPDATA);
