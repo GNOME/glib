@@ -1,5 +1,9 @@
 2005-04-08  Tor Lillqvist  <tml@novell.com>
 
+	* glib/gutils.c (read_aliases): Not used on Windows.
+	(unalias_lang): Don't do anything on Windows, there is no
+	/usr/share/locale/locale.alias file..
+	
 	* glib/gutils.c (g_get_system_data_dirs): After investigating more
 	closely the actual use cases of this function, I understand better
 	what it needs to do on Windows. In addition to the Windows
