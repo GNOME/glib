@@ -105,6 +105,12 @@ const guint glib_micro_version = GLIB_MICRO_VERSION;
 const guint glib_interface_age = GLIB_INTERFACE_AGE;
 const guint glib_binary_age = GLIB_BINARY_AGE;
 
+#ifdef G_PLATFORM_WIN32
+
+G_WIN32_DLLMAIN_FOR_DLL_NAME (static, dll_name)
+
+#endif
+
 /**
  * glib_check_version:
  * @required_major: the required major version.
@@ -2054,14 +2060,17 @@ g_get_user_cache_dir (void)
 G_CONST_RETURN gchar * G_CONST_RETURN * 
 g_get_system_data_dirs (void)
 {
-  gchar *data_dirs, **data_dir_vector;
+  gchar *data_dirs, *glib_top_share_dir, *exe_top_share_dir, **data_dir_vector;
 
   G_LOCK (g_utils_global);
 
   if (!g_system_data_dirs)
     {
 #ifdef G_OS_WIN32
+
+      /* Documents and Settings\All Users\Application Data */
       char *appdata = get_special_folder (CSIDL_COMMON_APPDATA);
+      /* Documents and Settings\All Users\Documents */
       char *docs = get_special_folder (CSIDL_COMMON_DOCUMENTS);
       
       if (appdata && docs)
@@ -2078,18 +2087,48 @@ g_get_system_data_dirs (void)
       else if (docs)
 	data_dirs = docs;
       else
-	data_dirs = NULL;
+	data_dirs = g_strdup ("");
 
-      if (data_dirs)
+      /* Using the above subfolders of Documents and Settings perhaps
+       * makes sense from a Windows perspective.
+       *
+       * But looking at the actual use cases of this function in GTK+
+       * and GNOME software, what we really want is the "share"
+       * subdirectory of the installation directory for the package
+       * our caller is a part of.
+       *
+       * As we don't know who calls us, punt, and use the installation
+       * location of GLib, and of the .exe file being run. To guard
+       * against neither of those being what we really want, callers
+       * of this function should have Win32-specific code to look up
+       * their installation folder themselves, and handle a subfolder
+       * "share" of it in the same way as the folders returned from
+       * this function.
+       */
+      glib_top_share_dir = g_win32_get_package_installation_subdirectory (NULL, dll_name, "share");
+
+      if (glib_top_share_dir)
 	{
-	  data_dir_vector = g_strsplit (data_dirs, G_SEARCHPATH_SEPARATOR_S, 0);
-	  g_free (data_dirs);
+	  gchar *tem = data_dirs;
+	  data_dirs = g_strconcat (data_dirs, G_SEARCHPATH_SEPARATOR_S,
+				   glib_top_share_dir, NULL);
+	  g_free (tem);
+	  g_free (glib_top_share_dir);
 	}
-      else
+
+      exe_top_share_dir = g_win32_get_package_installation_subdirectory (NULL, NULL, "share");
+
+      if (exe_top_share_dir)
 	{
-	  /* Punt, return empty list */
-	  data_dir_vector = g_strsplit ("", G_SEARCHPATH_SEPARATOR_S, 0);
+	  gchar *tem = data_dirs;
+	  data_dirs = g_strconcat (data_dirs, G_SEARCHPATH_SEPARATOR_S,
+				   exe_top_share_dir, NULL);
+	  g_free (tem);
+	  g_free (exe_top_share_dir);
 	}
+
+      data_dir_vector = g_strsplit (data_dirs, G_SEARCHPATH_SEPARATOR_S, 0);
+      g_free (data_dirs);
 #else
       data_dirs = (gchar *) g_getenv ("XDG_DATA_DIRS");
 
@@ -2603,8 +2642,6 @@ _g_utils_thread_init (void)
 #include <libintl.h>
 
 #ifdef G_PLATFORM_WIN32
-
-G_WIN32_DLLMAIN_FOR_DLL_NAME (static, dll_name)
 
 static const gchar *
 _glib_get_locale_dir (void)
