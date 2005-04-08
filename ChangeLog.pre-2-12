@@ -2,8 +2,8 @@
 
 	* glib/gstdio.h
 	* glib/gstdio.c
-	* glib/glib.symbols (g_access, g_chmod): Wrap also access() and
-	chmod(). (#169623)
+	* glib/glib.symbols (g_access, g_chmod, g_creat): Wrap also
+	access(), chmod() and creat(). (#169623, #171285)
 
 2005-04-08  Tor Lillqvist  <tml@novell.com>
 

@@ -852,6 +852,7 @@ g_spawn_sync
 g_access
 g_chmod
 g_open
+g_creat
 g_rename
 g_mkdir
 g_stat

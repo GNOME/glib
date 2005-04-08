@@ -34,6 +34,7 @@
 #define g_access  access
 #define g_chmod   chmod
 #define g_open    open
+#define g_creat   creat
 #define g_rename  rename
 #define g_mkdir   mkdir
 #define g_stat    stat
@@ -64,6 +65,9 @@ int g_chmod     (const gchar *filename,
 
 int g_open      (const gchar *filename,
                  int          flags,
+                 int          mode);
+
+int g_creat     (const gchar *filename,
                  int          mode);
 
 int g_rename    (const gchar *oldfilename,
