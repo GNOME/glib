@@ -93,6 +93,7 @@
 #  ifndef CSIDL_PROFILE
 #    define CSIDL_PROFILE 40
 #  endif
+#  include <process.h>
 #endif
 
 #ifdef HAVE_CODESET

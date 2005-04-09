@@ -1,3 +1,7 @@
+2005-04-09  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gutils.c: Include <process.h> on Win32 for getpid(). (#173094)
+
 2005-04-08  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gstdio.h
