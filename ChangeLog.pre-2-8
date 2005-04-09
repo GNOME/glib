@@ -17,6 +17,8 @@
 
 2005-04-06  Matthias Clasen  <mclasen@redhat.com>
 
+	* configure.in: Bump version
+
 	* === Released 2.6.4 ===
 
 	* gobject/Makefile.am (BUILT_EXTRA_DIST): add gobjectaliasdef.c
