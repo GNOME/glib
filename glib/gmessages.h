@@ -152,7 +152,7 @@ void g_assert_warning         (const char *log_domain,
                                        G_LOG_LEVEL_WARNING,  \
                                        format)
 #define g_debug(format...)      g_log (G_LOG_DOMAIN,         \
-                                       G_LOG_LEVEL_WARNING,  \
+                                       G_LOG_LEVEL_DEBUG,    \
                                        format)
 #else   /* no varargs macros */
 static void
