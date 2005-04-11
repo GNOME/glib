@@ -1,3 +1,8 @@
+2005-04-10  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gmessages.h (g_debug): Use G_LOG_LEVEL_DEBUG in
+	both definitions.  (#300071, Tommi Komulainen)
+
 2005-04-09  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gutils.c: Include <process.h> on Win32 for getpid(). (#173094)
