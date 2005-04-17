@@ -1,3 +1,11 @@
+Sat Apr 16 20:15:44 2005  Soeren Sandmann  <sandmann@redhat.com>
+
+	* glib/gfileutils.c (g_file_replace): Save the errno in various
+	places
+
+	* glib/gfileutils.c (set_umask_permissions): Fork a child and do
+	chmod() to the umask() permissions there.
+
 2005-04-10  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gmessages.h (g_debug): Use G_LOG_LEVEL_DEBUG in
