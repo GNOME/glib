@@ -34,8 +34,9 @@ G_BEGIN_DECLS
 
 #ifdef G_OS_WIN32
 
-/* On native Win32, directory separator is the backslash, and search path
- * separator is the semicolon.
+/* On Win32, the canonical directory separator is the backslash, and
+ * the search path separator is the semicolon. Note that also the
+ * (forward) slash works as directory separator.
  */
 #define G_DIR_SEPARATOR '\\'
 #define G_DIR_SEPARATOR_S "\\"
