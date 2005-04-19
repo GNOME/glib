@@ -1,3 +1,12 @@
+2005-04-19  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gutils.h: Minor comment improvement.
+
+2005-04-18  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gfileutils.c: No <sys/wait.h> on Win32. Definition of
+	save_errno was missing in one place.
+
 Sat Apr 16 20:15:44 2005  Soeren Sandmann  <sandmann@redhat.com>
 
 	* glib/gfileutils.c (g_file_replace): Save the errno in various

@@ -34,8 +34,9 @@ G_BEGIN_DECLS
 
 #ifdef G_OS_WIN32
 
-/* On native Win32, directory separator is the backslash, and search path
- * separator is the semicolon.
+/* On Win32, the canonical directory separator is the backslash, and
+ * the search path separator is the semicolon. Note that also the
+ * (forward) slash works as directory separator.
  */
 #define G_DIR_SEPARATOR '\\'
 #define G_DIR_SEPARATOR_S "\\"
@@ -131,7 +132,7 @@ G_CONST_RETURN gchar* G_CONST_RETURN * g_win32_get_system_data_dirs_for_module (
 static G_CONST_RETURN gchar * G_CONST_RETURN *
 g_win32_get_system_data_dirs (void)
 {
-  return g_win32_get_system_data_dirs_for_module (&g_win32_get_system_data_dirs);
+  return g_win32_get_system_data_dirs_for_module ((gconstpointer) &g_win32_get_system_data_dirs);
 }
 #define g_get_system_data_dirs g_win32_get_system_data_dirs
 #endif

@@ -33,7 +33,9 @@
 #include <errno.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#ifndef G_OS_WIN32
 #include <sys/wait.h>
+#endif
 #include <fcntl.h>
 #include <stdlib.h>
 
@@ -1160,7 +1162,7 @@ g_file_replace (const gchar *filename,
 	{
           gchar *display_filename = g_filename_display_name (filename);
 
-	  save_errno = errno;
+	  int save_errno = errno;
 	  
 	  g_set_error (error,
 		       G_FILE_ERROR,
