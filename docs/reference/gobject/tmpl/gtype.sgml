@@ -39,6 +39,7 @@ upper length limit. The first character needs to be a letter (a-z or A-Z)
 or an underscore '_'. Subsequent characters can be letters, numbers or
 any of '-_+'.
 </para>
+
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
