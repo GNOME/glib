@@ -1,3 +1,15 @@
+2005-04-22  Stefan Kost  <ensonic@users.sf.net>
+
+	* gobject/Makefile.am:
+	* gobject/gobject-docs.sgml:
+	* gobject/tut_gobject.xml:
+	* gobject/tut_gsignal.xml:
+	* gobject/tut_gtype.xml:
+	* gobject/tut_howto.xml:
+	* gobject/tut_intro.xml:
+	* gobject/tut_tools.xml:
+	merged in docs form the gobject tutorial
+
 2005-03-29  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/tmpl/arrays_pointer.sgml: Clarify the docs for

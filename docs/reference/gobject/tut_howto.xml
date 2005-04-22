@@ -1,17 +1,16 @@
-<chapter id="howto">
-  <title>How To ?</title>
-  
+<partintro>
   <para>
     This chapter tries to answer the real-life questions of users and presents
     the most common scenario use-cases I could come up with.
     The use-cases are presented from most likely to less likely.
   </para>
+</partintro>
 
 <!--
   Howto GObject
 -->
 
-  <sect1 id="howto-gobject">
+  <chapter id="howto-gobject">
     <title>How To define and implement a new GObject ?</title>
     
     <para>
@@ -23,13 +22,13 @@
       <filename>sample/gobject</filename> directory:
       <itemizedlist>
         <listitem><para><filename>maman-bar.{h|c}</filename>: this is the source for a object which derives from 
-        <type>GObject</type> and which shows how to declare different types of methods on the object.
+        <type><link linkend="GObject">GObject</link></type> and which shows how to declare different types of methods on the object.
         </para></listitem>
         <listitem><para><filename>maman-subbar.{h|c}</filename>: this is the source for a object which derives from 
         <type>MamanBar</type> and which shows how to override some of its parent's methods.
         </para></listitem>
         <listitem><para><filename>maman-foo.{h|c}</filename>: this is the source for an object which derives from 
-        <type>GObject</type> and which declares a signal.
+        <type><link linkend="GObject">GObject</link></type> and which declares a signal.
         </para></listitem>
         <listitem><para><filename>test.c</filename>: this is the main source which instantiates an instance of
         type and exercises their API.
@@ -37,7 +36,7 @@
       </itemizedlist>
     </para>
 
-    <sect2 id="howto-gobject-header">
+    <sect1 id="howto-gobject-header">
       <title>Boilerplate header code</title>
       
       <para>
@@ -186,7 +185,7 @@ static void maman_bar_init(GTypeInstance *instance, gpointer g_class) {
             <listitem><para>
               A similar alternative, available since Glib version 2.4, is to define a private structure in the .c file,
               declare it as a private structure in <function>class_init</function> using 
-              <function>g_type_class_add_private</function> and declare a macro to allow convenient access to this structure.
+              <function><link linkend="g-type-class-add-private">g_type_class_add_private</link></function> and declare a macro to allow convenient access to this structure.
               A private structure will then be attached to each newly created object by the GObject system.
               You dont need to free or allocate the private structure, only the objects or pointers that it may contain.
 <programlisting>
@@ -238,9 +237,9 @@ maman_bar_get_private_field (MamanBar *self)
         </itemizedlist>
       </para>
         
-    </sect2>
+    </sect1>
 
-    <sect2 id="howto-gobject-code">
+    <sect1 id="howto-gobject-code">
       <title>Boilerplate code</title>
 
       <para>
@@ -297,9 +296,9 @@ maman_bar_get_type (void)
 }
 </programlisting>
       </para>
-    </sect2>
+    </sect1>
 
-    <sect2 id="howto-gobject-construction">
+    <sect1 id="howto-gobject-construction">
       <title>Object Construction</title>
 
       <para>
@@ -320,7 +319,7 @@ maman_bar_get_type (void)
 
       <para>
         Construction properties will be set only after all instance_init functions have run.
-        No object reference will be returned to the client of <function>g_object_new></function>
+        No object reference will be returned to the client of <function><link linkend="g-object-new>">g_object_new></link></function>
         until all the construction properties have been set.
       </para>
 
@@ -343,14 +342,14 @@ maman_bar_init (GTypeInstance   *instance,
         And make sure that you set <function>maman_bar_init</function> as the type's instance_init function
         in <function>maman_bar_get_type</function>. Make sure the code builds and runs: create an instance 
         of the object and make sure <function>maman_bar_init</function> is called (add a 
-        <function>g_print</function> call in it).
+        <function><link linkend="g-print">g_print</link></function> call in it).
       </para>
 
       <para>
         Now, if you need special construction properties, install the properties in the class_init function,
         override the set and get methods and implement the get and set methods as described in 
         <xref linkend="gobject-properties"/>. Make sure that these properties use a construct only 
-        <type>GParamSpec</type> by setting the param spec's flag field to G_PARAM_CONSTRUCT_ONLY: this helps
+        <type><link linkend="GParamSpec">GParamSpec</link></type> by setting the param spec's flag field to G_PARAM_CONSTRUCT_ONLY: this helps
         GType ensure that these properties are not set again later by malicious user code.
 <programlisting>
 static void
@@ -375,7 +374,7 @@ bar_class_init (MamanBarClass *klass)
 </programlisting>
         If you need this, make sure you can build and run code similar to the code shown above. Make sure
         your construct properties can set correctly during construction, make sure you cannot set them 
-        afterwards and make sure that if your users do not call <function>g_object_new</function>
+        afterwards and make sure that if your users do not call <function><link linkend="g-object-new">g_object_new</link></function>
         with the required construction properties, these will be initialized with the default values.
       </para>
 
@@ -392,14 +391,14 @@ bar_class_init (MamanBarClass *klass)
         use of this feature. As such, to initialize your object instances, use by default the base_init function
         and construction properties.
         </para>
-    </sect2>
+    </sect1>
 
-    <sect2 id="howto-gobject-destruction">
+    <sect1 id="howto-gobject-destruction">
       <title>Object Destruction</title>
 
       <para>
         Again, it is often difficult to figure out which mechanism to use to hook into the object's
-        destruction process: when the last <function>g_object_unref</function> function call is made,
+        destruction process: when the last <function><link linkend="g-object-unref">g_object_unref</link></function> function call is made,
         a lot of things happen as described in <xref linkend="gobject-destruction-table"/>.
       </para>
 
@@ -487,9 +486,9 @@ if (self->private->dispose_has_run) {
 }
 </programlisting>
       </para>
-    </sect2>
+    </sect1>
 
-    <sect2 id="howto-gobject-methods">
+    <sect1 id="howto-gobject-methods">
       <title>Object methods</title>
 
       <para>
@@ -511,7 +510,7 @@ if (self->private->dispose_has_run) {
         </itemizedlist>
       </para>
 
-      <sect3>
+      <sect2>
         <title>Non-virtual public methods</title>
 
         <para>
@@ -530,9 +529,9 @@ void maman_bar_do_action (MamanBar *self, /* parameters */)
         </para>
 
         <para>There is really nothing scary about this.</para>
-      </sect3>
+      </sect2>
 
-      <sect3>
+      <sect2>
         <title>Virtual public methods</title>
 
         <para>
@@ -606,9 +605,9 @@ void maman_bar_do_action_two (MamanBar *self, /* parameters */)
 }
 </programlisting>
         </para>
-      </sect3>
+      </sect2>
 
-      <sect3>
+      <sect2>
         <title>Virtual private Methods</title>
 
         <para>
@@ -674,10 +673,10 @@ maman_bar_subtype_class_init (MamanBarSubTypeClass *klass)
 }
 </programlisting>
         </para>
-      </sect3>
-    </sect2>
+      </sect2>
+    </sect1>
 
-    <sect2 id="howto-gobject-chainup">
+    <sect1 id="howto-gobject-chainup">
      <title>Chaining up</title>
 
      <para>Chaining up is often loosely defined by the following set of conditions:
@@ -720,7 +719,7 @@ maman_bar_subtype_class_init (MamanBarSubTypeClass *klass)
         </footnote>
      </para>
 
-     <para>The function <function>g_type_class_peek_parent</function> is used to access the original parent 
+     <para>The function <function><link linkend="g-type-class-peek-parent">g_type_class_peek_parent</link></function> is used to access the original parent 
       class structure. Its input is a pointer to the class of the derived object and it returns a pointer
       to the original parent class structure. The code below shows how you could use it:
 <programlisting>
@@ -738,14 +737,14 @@ b_method_to_call (B *obj, int a)
 }
 </programlisting>
      A lot of people who use this idiom in GTK+ store the parent class structure pointer in a global static 
-     variable to avoid the costly call to <function>g_type_class_peek_parent</function> for each function call.
+     variable to avoid the costly call to <function><link linkend="g-type-class-peek-parent">g_type_class_peek_parent</link></function> for each function call.
      Typically, the class_init callback initializes the global static variable. <filename>gtk/gtkhscale.c</filename>
      does this.
     </para>
 
-    </sect2>
+    </sect1>
 
-  </sect1>
+  </chapter>
 
 <!--
   End Howto GObject
@@ -756,10 +755,10 @@ b_method_to_call (B *obj, int a)
   Howto Interfaces
 -->
 
-  <sect1 id="howto-interface">
+  <chapter id="howto-interface">
     <title>How To define and implement Interfaces ?</title>
 
-    <sect2 id="howto-interface-define">
+    <sect1 id="howto-interface-define">
       <title>How To define Interfaces ?</title>
     
     <para>
@@ -800,8 +799,8 @@ void maman_ibaz_do_action (MamanIbaz *self);
 
 #endif /*MAMAN_IBAZ_H*/
 </programlisting>
-      This code is almost exactly similar to the code for a normal <type>GType</type>
-      which derives from a <type>GObject</type> except for a few details:
+      This code is almost exactly similar to the code for a normal <type><link linkend="GType">GType</link></type>
+      which derives from a <type><link linkend="GObject">GObject</link></type> except for a few details:
       <itemizedlist>
         <listitem><para>
           The <function>_GET_CLASS</function> macro is not implemented with 
@@ -870,9 +869,9 @@ void maman_ibaz_do_action (MamanIbaz *self)
 }
 </programlisting>
     </para>
-  </sect2>
+  </sect1>
 
-  <sect2 id="howto-interface-implement">
+  <sect1 id="howto-interface-implement">
     <title>How To define and implement an implementation of an Interface ?</title>
 
     <para>
@@ -954,8 +953,8 @@ maman_baz_get_type (void)
 }
 </programlisting>
       This function is very much like all the similar functions we looked at previously. The only interface-specific
-      code present here is the call to <function>g_type_add_interface_static</function> which is used to inform
-      the type system that this just-registered <type>GType</type> also implements the interface 
+      code present here is the call to <function><link linkend="g-type-add-interface-static">g_type_add_interface_static</link></function> which is used to inform
+      the type system that this just-registered <type><link linkend="GType">GType</link></type> also implements the interface 
       <function>MAMAN_TYPE_IBAZ</function>.
     </para>
 
@@ -986,9 +985,9 @@ baz_instance_init (GTypeInstance   *instance,
       but it could :)
     </para>
 
-</sect2>
+</sect1>
 
-<sect2>
+<sect1>
   <title>Interface definition prerequisites</title>
 
   <para>To specify that an interface requires the presence of other interfaces when implemented, 
@@ -1085,7 +1084,7 @@ maman_bar_get_type (void)
 }
 </programlisting>
   It is very important to notice that the order in which interface implementations are added to the main object
-  is not random: <function>g_type_interface_static</function> must be invoked first on the interfaces which have
+  is not random: <function><link linkend="g-type-add-interface-static">g_type_add_interface_static</link></function> must be invoked first on the interfaces which have
   no prerequisites and then on the others.
 </para>
 
@@ -1095,16 +1094,16 @@ maman_bar_get_type (void)
       and <filename>sample/interface/maman-bar.{h|c}</filename>.
     </para>
 
-</sect2>
+</sect1>
 
-<sect2 id="howto-interface-properties">
+<sect1 id="howto-interface-properties">
   <title>Interface Properties</title>
 
   <para>Starting from version 2.4 of glib, gobject interfaces can also have properties. 
   Declaration of the interface properties is similar to declaring the properties of 
   ordinary gobject types as explained in <xref linkend="gobject-properties"/>, 
-  except that <function>g_object_interface_install_property</function> is used to 
-  declare the properties instead of <function>g_object_class_install_property</function>.
+  except that <function><link linkend="g-object-interface-install-property">g_object_interface_install_property</link></function> is used to 
+  declare the properties instead of <function><link linkend="g-object-class-install-property">g_object_class_install_property</link></function>.
   </para>
 
   <para>To include a property named 'name' of type <type>string</type> in the 
@@ -1150,8 +1149,8 @@ maman_ibaz_base_init (gpointer g_class)
   An implementer shall declare and define it's properties in the usual way as 
   explained in <xref linkend="gobject-properties"/>, except for one small
   change: it shall declare the properties of the interface it implements using 
-  <function>g_object_class_override_property</function> instead of 
-  <function>g_object_class_install_property</function>. The following code snipet 
+  <function><link linkend="g-object-class-override-property">g_object_class_override_property</link></function> instead of 
+  <function><link linkend="g-object-class-install-property">g_object_class_install_property</link></function>. The following code snipet 
   shows the modifications needed in the <type>MamanBaz</type> declaration and 
   implementation above:
 <programlisting>
@@ -1260,10 +1259,10 @@ maman_baz_get_property (GObject * object, guint prop_id,
 </programlisting>
   </para>
 
-</sect2>
+</sect1>
 
 
-  </sect1>
+</chapter>
 
 <!--
   End Howto Interfaces
@@ -1275,7 +1274,7 @@ maman_baz_get_property (GObject * object, guint prop_id,
 -->
 
 
-    <sect1 id="howto-signals">
+    <chapter id="howto-signals">
       <title>Howto create and use signals</title>
 
 
@@ -1292,7 +1291,7 @@ maman_baz_get_property (GObject * object, guint prop_id,
         just emit events which can be received by numerous clients. 
       </para>
 
-<sect2 id="howto-simple-signals">
+<sect1 id="howto-simple-signals">
 <title>Simple use of signals</title>
 
 <para>The most basic use of signals is to implement simple event notification: for example, if we have a 
@@ -1352,10 +1351,10 @@ The header <filename>gobject/gmarshal.h</filename> defines a set of commonly
 needed closures that one can use.
  </para>
 
-</sect2>
+</sect1>
 
 
-<sect2>
+<sect1>
 <title>How to provide more flexibility to users ?</title>
 
 <para>The previous implementation does the job but the signal facility of GObject can be used to provide
@@ -1440,8 +1439,8 @@ void maman_file_complex_write (MamanFileComplex *self, guint8 *buffer, guint siz
 
 <para>The client code (as shown in <filename>sample/signal/test.c</filename> and below) can now connect signal handlers before 
 and after the file write is completed: since the default signal handler which does the write itself runs during the 
-RUN_LAST phase of the signal emission, it will run after all handlers connected with <function>g_signal_connect</function>
-and before all handlers connected with <function>g_signal_connect_after</function>. If you intent to write a GObject
+RUN_LAST phase of the signal emission, it will run after all handlers connected with <function><link linkend="g-signal-connect">g_signal_connect</link></function>
+and before all handlers connected with <function><link linkend="g-signal-connect-after">g_signal_connect_after</link></function>. If you intent to write a GObject
 which emits signals, I would thus urge you to create all your signals with the G_SIGNAL_RUN_LAST such that your users
 have a maximum of flexibility as to when to get the event. Here, we combined it with G_SIGNAL_NO_RECURSE and 
 G_SIGNAL_NO_HOOKS to ensure our users will not try to do really weird things with our GObject. I strongly advise you
@@ -1492,7 +1491,7 @@ Complex Write event after: 0xbfffe280, 50
 </para>
 
 
-   <sect3>
+   <sect2>
      <title>How most people do the same thing with less code</title>
 
        <para>For many historic reasons related to how the ancestor of GObject used to work in GTK+ 1.x versions,
@@ -1510,13 +1509,13 @@ Complex Write event after: 0xbfffe280, 50
            </para>
          </footnote>
          way to create a signal with a default handler than to create 
-         a closure by hand and to use the <function>g_signal_newv</function>.
+         a closure by hand and to use the <function><link linkend="g-signal-newv">g_signal_newv</link></function>.
        </para>
 
-       <para>For example, <function>g_signal_new</function> can be used to create a signal which uses a default 
+       <para>For example, <function><link linkend="g-signal-new">g_signal_new</link></function> can be used to create a signal which uses a default 
          handler which is stored in the class structure of the object. More specifically, the class structure 
          contains a function pointer which is accessed during signal emission to invoke the default handler and
-         the user is expected to provide to <function>g_signal_new</function> the offset from the start of the
+         the user is expected to provide to <function><link linkend="g-signal-new">g_signal_new</link></function> the offset from the start of the
          class structure to the function pointer.
            <footnote>
              <para>I would like to point out here that the reason why the default handler of a signal is named everywhere
@@ -1550,7 +1549,7 @@ maman_file_simple_class_init (gpointer g_class,
 
   klass->write = default_write_signal_handler;
 </programlisting>
-        Finally, the signal is created with <function>g_signal_new</function> in the same class_init function:
+        Finally, the signal is created with <function><link linkend="g-signal-new">g_signal_new</link></function> in the same class_init function:
 <programlisting>
 klass->write_signal_id = 
  g_signal_new ("write",
@@ -1565,7 +1564,7 @@ klass->write_signal_id =
                G_TYPE_POINTER,
                G_TYPE_UINT);
 </programlisting>
-        Of note, here, is the 4th argument to the function: it is an integer calculated by the <function>G_STRUCT_OFFSET</function>
+        Of note, here, is the 4th argument to the function: it is an integer calculated by the <function><link linkend="G-STRUCT-OFFSET">G_STRUCT_OFFSET</link></function>
         macro which indicates the offset of the member <emphasis>write</emphasis> from the start of the 
         <type>MamanFileSimpleClass</type> class structure.
           <footnote>
@@ -1586,24 +1585,24 @@ klass->write_signal_id =
        </para>
 
        <para>If you have doubts about which method to use, I would advise you to use the second one which
-         involves <function>g_signal_new</function> rather than <function>g_signal_newv</function>: 
+         involves <function><link linkend="g-signal-new">g_signal_new</link></function> rather than <function><link linkend="g-signal-newv">g_signal_newv</link></function>: 
          it is better to write code which looks like the vast majority of other GTK+/Gobject code than to
          do it your own way. However, now, you know why.
        </para>
 
-   </sect3>
+   </sect2>
 
 
-</sect2>
+</sect1>
 
 
 
-<sect2>
+<sect1>
   <title>How users can abuse signals (and why some think it is good)</title>
 
    <para>Now that you know how to create signals to which the users can connect easily and at any point in
-     the signal emission process thanks to <function>g_signal_connect</function>, 
-     <function>g_signal_connect_after</function> and G_SIGNAL_RUN_LAST, it is time to look into how your
+     the signal emission process thanks to <function><link linkend="g-signal-connect">g_signal_connect</link></function>, 
+     <function><link linkend="g-signal-connect-after">g_signal_connect_after</link></function> and G_SIGNAL_RUN_LAST, it is time to look into how your
      users can and will screw you. This is also interesting to know how you too, can screw other people.
      This will make you feel good and eleet.
    </para>
@@ -1625,7 +1624,7 @@ klass->write_signal_id =
    </para>
 
    <para>If all you want to do is to stop the signal emission from one of the callbacks you connected yourself,
-    you can call <function>g_signal_stop_by_name</function>. Its use is very simple which is why I won't detail 
+    you can call <function><link linkend="g-signal-stop-by-name">g_signal_stop_by_name</link></function>. Its use is very simple which is why I won't detail 
     it further.
    </para>
 
@@ -1640,12 +1639,12 @@ klass->write_signal_id =
     which is why I won't bother to show exactly how to do it here again.</para>
 
 
-</sect2>
-
 </sect1>
 
+</chapter>
+
 <!--
-  <sect3>
+  <sect2>
           <title>Warning on signal creation and default closure</title>
 
           <para>
@@ -1655,10 +1654,10 @@ klass->write_signal_id =
           </para>
 
           <para>
-            Usually, the <function>g_signal_new</function> function is preferred over
-            <function>g_signal_newv</function>. When <function>g_signal_new</function>
+            Usually, the <function><link linkend="g-signal-new">g_signal_new</link></function> function is preferred over
+            <function><link linkend="g-signal-newv">g_signal_newv</link></function>. When <function><link linkend="g-signal-new">g_signal_new</link></function>
             is used, the default closure is exported as a class function. For example,
-            <filename>gobject.h</filename> contains the declaration of <type>GObjectClass</type>
+            <filename>gobject.h</filename> contains the declaration of <type><link linkend="GObjectClass">GObjectClass</link></type>
             whose notify class function is the default handler for the <emphasis>notify</emphasis>
             signal:
 <programlisting>
@@ -1676,7 +1675,7 @@ struct  _GObjectClass
          </para>
 
          <para>
-           <filename>gobject.c</filename>'s <function>g_object_do_class_init</function> function
+           <filename>gobject.c</filename>'s <function><link linkend="g-object-do-class-init">g_object_do_class_init</link></function> function
            registers the <emphasis>notify</emphasis> signal and initializes this class function
            to NULL:
 <programlisting>
@@ -1699,7 +1698,7 @@ g_object_do_class_init (GObjectClass *class)
                   1, G_TYPE_PARAM);
 }
 </programlisting>
-           <function>g_signal_new</function> creates a <type>GClosure</type> which de-references the
+           <function><link linkend="g-signal-new">g_signal_new</link></function> creates a <type><link linkend="GClosure">GClosure</link></type> which de-references the
            type's class structure to access the class function pointer and invoke it if it not NULL. The
            class function is ignored it is set to NULL.
          </para>
@@ -1721,20 +1720,13 @@ g_object_do_class_init (GObjectClass *class)
            supposedly more efficient.
          </para>
 
-        </sect3>
+        </sect2>
 -->
 
 
 <!--
-  <sect1 id="howto-doc">
+  <capter1 id="howto-doc">
     <title>How to generate API documentation for your type ?</title>
 
-  </sect1>
--->
-
   </chapter>
-
-
-
-
-
+-->

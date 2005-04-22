@@ -1,5 +1,5 @@
 <chapter>
-<title>Introduction</title>
+<title>Background</title>
 
 <para>
 GObject, and its lower-level type system, GType, are used by GTK+ and most Gnome libraries to
@@ -18,7 +18,7 @@ the solution choosen by GLib.
 </para>
 
 <para>The following chapters go into greater detail into how GType and GObject work and
-how you can use them as a C programmer. I personally find it useful to keep in mind that
+how you can use them as a C programmer. It is useful to keep in mind that
 allowing access to C objects from other interpreted languages was one of the major design
 goals: this can often explain the sometimes rather convoluted APIs and features present
 in this library.

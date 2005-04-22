@@ -18,6 +18,14 @@
 <!ENTITY glib-genmarshal SYSTEM "glib-genmarshal.xml">
 <!ENTITY gobject-query SYSTEM "gobject-query.xml">
 <!ENTITY version SYSTEM "version.xml">
+
+<!ENTITY tutorial-Intro SYSTEM "tut_intro.xml">
+<!ENTITY tutorial-GType SYSTEM "tut_gtype.xml">
+<!ENTITY tutorial-GObject SYSTEM "tut_gobject.xml">
+<!ENTITY tutorial-GSignal SYSTEM "tut_gsignal.xml">
+<!ENTITY tutorial-HowTo SYSTEM "tut_howto.xml">
+<!ENTITY tutorial-Tools SYSTEM "tut_tools.xml">
+
 ]>
 <book id="index">
   <bookinfo>
@@ -28,48 +36,56 @@
   <preface>
     <title>Introduction</title>
       <para>
-	Most modern programming languages come with their own native object
-	systems and additional fundamental algorithmic language constructs.
-	Just as GLib serves as an implementation of such fundamental
-	types and algorithms (linked lists, hash tables and so forth), the
-	GLib Object System provides the required implementations of a
-	flexible extensible and intentionally easy to map (into other
-	languages) object oriented framework for C.
-	The substantial elements that are provided can be summarized as:
-	<variablelist>
-	  <varlistentry><term></term><listitem><para>
-	    * A generic type system to register arbitrary single-inherited
-	      flat and deep derived types as well as interfaces for
-	      structured types.
-	      It takes care of creation, initialization and memory management
-	      of the assorted object and class structures, maintains
-	      parent/child relationships and deals with dynamic implementations
-	      of such types. That is, their type specific implementations are
-	      relocatable/unloadable during runtime.
-	  </para></listitem></varlistentry>
-	  <varlistentry><term></term><listitem><para>
-	    * A collection of fundamental type implementations, such as integers,
-	      doubles, enums and structured types, to name a few.
-	  </para></listitem></varlistentry>
-	  <varlistentry><term></term><listitem><para>
-	    * A sample fundamental type implementation to base object hierarchies
-	      upon - the GObject fundamental type.
-	  </para></listitem></varlistentry>
-	  <varlistentry><term></term><listitem><para>
-	    * A signal system that allows very flexible user customization of
-	      virtual/overridable object methods and can serve as a powerful
-	      notification mechanism.
-	  </para></listitem></varlistentry>
-	  <varlistentry><term></term><listitem><para>
-	    * An extensible parameter/value system, supporting all the provided
-	      fundamental types that can be used to generically handle object
-	      properties or otherwise parameterized types.
-	  </para></listitem></varlistentry>
-	</variablelist>
-      </para>
+			Most modern programming languages come with their own native object
+			systems and additional fundamental algorithmic language constructs.
+			Just as GLib serves as an implementation of such fundamental
+			types and algorithms (linked lists, hash tables and so forth), the
+			GLib Object System provides the required implementations of a
+			flexible extensible and intentionally easy to map (into other
+			languages) object oriented framework for C.
+			The substantial elements that are provided can be summarized as:
+			<itemizedlist>
+				<listitem><para>
+					 A generic type system to register arbitrary single-inherited
+						flat and deep derived types as well as interfaces for
+						structured types.
+						It takes care of creation, initialization and memory management
+						of the assorted object and class structures, maintains
+						parent/child relationships and deals with dynamic implementations
+						of such types. That is, their type specific implementations are
+						relocatable/unloadable during runtime.
+				</para></listitem>
+				<listitem><para>
+						A collection of fundamental type implementations, such as integers,
+						doubles, enums and structured types, to name a few.
+				</para></listitem>
+				<listitem><para>
+						A sample fundamental type implementation to base object hierarchies
+						upon - the GObject fundamental type.
+				</para></listitem>
+				<listitem><para>
+						A signal system that allows very flexible user customization of
+						virtual/overridable object methods and can serve as a powerful
+						notification mechanism.
+				</para></listitem>
+				<listitem><para>
+						An extensible parameter/value system, supporting all the provided
+						fundamental types that can be used to generically handle object
+						properties or otherwise parameterized types.
+				</para></listitem>
+			</itemizedlist>
+		</para>
   </preface>
 
-  <reference>
+  <part label="I">
+    <title>Concepts</title>
+
+    &tutorial-Intro;
+    &tutorial-GType;
+    &tutorial-GObject;
+    &tutorial-GSignal;
+  </part>
+  <reference label="II">
     <title>API Reference</title>
     
       &gobject-GType;
@@ -87,13 +103,23 @@
       &gobject-Value-Arrays;
       
   </reference>
-  <reference>
+  <reference label="III">
     <title>Tools Reference</title>
 
     &glib-mkenums;
     &glib-genmarshal;
     &gobject-query;
   </reference>
+  <part label="IV">
+    <title>Tutorial</title>
+
+    &tutorial-HowTo;
+  </part>
+  <part label="V">
+    <title>Related Tools</title>
+
+    &tutorial-Tools;
+  </part>
 
   <index>
     <title>Index</title>

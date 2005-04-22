@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding="ISO-8859-1"?>
   <chapter id="chapter-signal">
-    <title>Signals</title>
+    <title>The GObject messaging system</title>
 
     <sect1 id="closure">
       <title>Closures</title>
@@ -28,7 +28,7 @@ return_type function_callback (... , gpointer user_data);
       </para>
 
       <para>
-	The <type>GClosure</type> structure represents the common functionality of all
+	The <type><link linkend="GClosure">GClosure</link></type> structure represents the common functionality of all
 	closure implementations: there exist a different Closure implementation for
 	each separate runtime which wants to use the GObject type system.
 	<footnote><para>
@@ -39,27 +39,27 @@ return_type function_callback (... , gpointer user_data);
 	    it behaves as a normal C object for GTK+ and as a normal Python object for
 	    python code.
 	  </para></footnote>
-	The GObject library provides a simple <type>GCClosure</type> type which
+	The GObject library provides a simple <type><link linkend="GCClosure">GCClosure</link></type> type which
 	is a specific implementation of closures to be used with C/C++ callbacks.
       </para>
       <para>
-	A <type>GClosure</type> provides simple services:
+	A <type><link linkend="GClosure">GClosure</link></type> provides simple services:
 	<itemizedlist>
 	  <listitem><para>
-	      Invocation (<function>g_closure_invoke</function>): this is what closures 
+	      Invocation (<function><link linkend="g-closure-invoke">g_closure_invoke</link></function>): this is what closures 
 	      were created for: they hide the details of callback invocation from the
 	      callback invocator.
 	    </para></listitem>
 	  <listitem><para>
 	      Notification: the closure notifies listeners of certain events such as
 	      closure invocation, closure invalidation and closure finalization. Listeners
-	      can be registered with <function>g_closure_add_finalize_notifier</function>
-	      (finalization notification), <function>g_closure_add_invalidate_notifier</function> 
+	      can be registered with <function><link linkend="g-closure-add-finalize-notifier">g_closure_add_finalize_notifier</link></function>
+	      (finalization notification), <function><link linkend="g-closure-add-invalidate-notifier">g_closure_add_invalidate_notifier</link></function> 
 	      (invalidation notification) and 
-	      <function>g_closure_add_marshal_guards</function> (invocation notification).
+	      <function><link linkend="g-closure-add-marshal-guards">g_closure_add_marshal_guards</link></function> (invocation notification).
 	      There exist symmetric de-registration functions for finalization and invalidation
-	      events (<function>g_closure_remove_finalize_notifier</function> and
-	      <function>g_closure_remove_invalidate_notifier</function>) but not for the invocation 
+	      events (<function><link linkend="g-closure-remove-finalize-notifier">g_closure_remove_finalize_notifier</link></function> and
+	      <function><link linkend="g-closure-remove-invalidate-notifier">g_closure_remove_invalidate_notifier</link></function>) but not for the invocation 
 	      process.
 	      <footnote><para>
 		  Closures are refcounted and notify listeners of their destruction in a two-stage
@@ -74,8 +74,8 @@ return_type function_callback (... , gpointer user_data);
 
 	<para>
 	  If you are using C or C++
-	  to connect a callback to a given event, you will either use the simple <type>GCClosure</type>s
-	  which have a pretty minimal API or the even simpler <function>g_signal_connect</function> 
+	  to connect a callback to a given event, you will either use the simple <type><link linkend="GCClosure">GCClosure</link></type>s
+	  which have a pretty minimal API or the even simpler <function><link linkend="g-signal-connect">g_signal_connect</link></function> 
 	  functions (which will be presented a bit later :).
 	  <programlisting>
 GClosure* g_cclosure_new (GCallback        callback_func,
@@ -90,16 +90,16 @@ GClosure* g_signal_type_cclosure_new (GType  itype,
 	</para>
 
 	<para>
-	  <function>g_cclosure_new</function> will create a new closure which can invoke the
+	  <function><link linkend="g-cclosure-new">g_cclosure_new</link></function> will create a new closure which can invoke the
 	  user-provided callback_func with the user-provided user_data as last parameter. When the closure
 	  is finalized (second stage of the destruction process), it will invoke the destroy_data function 
 	  if the user has supplied one.
 	</para>
 
 	<para>
-	  <function>g_cclosure_new_swap</function> will create a new closure which can invoke the
+	  <function><link linkend="g-cclosure-new-swap">g_cclosure_new_swap</link></function> will create a new closure which can invoke the
 	  user-provided callback_func with the user-provided user_data as first parameter (instead of being the 
-          last parameter as with <function>g_cclosure_new</function>). When the closure
+    last parameter as with <function><link linkend="g-cclosure-new">g_cclosure_new</link></function>). When the closure
 	  is finalized (second stage of the destruction process), it will invoke the destroy_data 
 	  function if the user has supplied one.
 	</para>
@@ -200,8 +200,8 @@ return_type function_callback (gpointer instance, ... , gpointer user_data);
 	<title>Signal registration</title>
 
 	<para>
-	  To register a new signal on an existing type, we can use any of <function>g_signal_newv</function>,
-	  <function>g_signal_new_valist</function> or <function>g_signal_new</function> functions:
+	  To register a new signal on an existing type, we can use any of <function><link linkend="g-signal-newv">g_signal_newv</link></function>,
+	  <function><link linkend="g-signal-new-valist">g_signal_new_valist</link></function> or <function><link linkend="g-signal-new">g_signal_new</link></function> functions:
 <programlisting>
 guint                 g_signal_newv         (const gchar        *signal_name,
                                              GType               itype,
@@ -280,13 +280,13 @@ guint                 g_signal_newv         (const gchar        *signal_name,
 		of a given signal on all the instances of the type which supports that signal.
 	      </para></listitem>
 	    <listitem><para>
-		You can use <function>g_signal_override_class_closure</function> which
+		You can use <function><link linkend="g-signal-override-class-closure">g_signal_override_class_closure</link></function> which
 		overrides the class_closure of a given type. It is possible to call this function
 		only on a derived type of the type on which the signal was registered.
 		This function is of use only to language bindings.
 	      </para></listitem>
 	    <listitem><para>
-		You can register a closure with the <function>g_signal_connect</function>
+		You can register a closure with the <function><link linkend="g-signal-connect">g_signal_connect</link></function>
 		family of functions. This is an instance-specific operation: the closure
 		will be invoked only during emission of a given signal on a given instance.
 	      </para></listitem>
@@ -295,8 +295,8 @@ guint                 g_signal_newv         (const gchar        *signal_name,
 	  emission hooks are invoked whenever a given signal is emitted whatever the instance on 
 	  which it is emitted. Emission hooks are used for example to get all mouse_clicked
 	  emissions in an application to be able to emit the small mouse click sound.
-	  Emission hooks are connected with <function>g_signal_add_emission_hook</function>
-	  and removed with <function>g_signal_remove_emission_hook</function>.
+	  Emission hooks are connected with <function><link linkend="g-signal-add-emission-hook">g_signal_add_emission_hook</link></function>
+	  and removed with <function><link linkend="g-signal-remove-emission-hook">g_signal_remove_emission_hook</link></function>.
 	</para>
 
         <para>
@@ -308,7 +308,7 @@ guint                 g_signal_newv         (const gchar        *signal_name,
 	<title>Signal emission</title>
 
 	<para>
-	  Signal emission is done through the use of the <function>g_signal_emit</function> family 
+	  Signal emission is done through the use of the <function><link linkend="g-signal-emit">g_signal_emit</link></function> family 
 	  of functions.
 <programlisting>
 void                  g_signal_emitv        (const GValue       *instance_and_params,
@@ -369,8 +369,8 @@ void                  g_signal_emitv        (const GValue       *instance_and_pa
 	      </para></listitem>
 	    <listitem><para>
 		<emphasis>HANDLER_RUN_FIRST</emphasis>: if any closure were connected
-		with the <function>g_signal_connect</function> family of 
-		functions, and if they are not blocked (with the <function>g_signal_handler_block</function>
+		with the <function><link linkend="g-signal-connect">g_signal_connect</link></function> family of 
+		functions, and if they are not blocked (with the <function><link linkend="g-signal-handler-block">g_signal_handler_block</link></function>
 		family of functions) they are run here, from first to last connected.
                 Jump to <emphasis>RUN_LAST</emphasis> state.
 	      </para></listitem>
@@ -398,7 +398,7 @@ void                  g_signal_emitv        (const GValue       *instance_and_pa
 	<para>
 	  If, at any point during emission (except in RUN_CLEANUP state), one of the 
 	  closures or emission hook stops the signal emission with 
-	  <function>g_signal_stop</function>, emission jumps to CLEANUP state.
+	  <function><link linkend="g-signal-stop">g_signal_stop</link></function>, emission jumps to CLEANUP state.
 	</para>
 
 	<para>
@@ -416,7 +416,7 @@ void                  g_signal_emitv        (const GValue       *instance_and_pa
 
         <para>
           If no accumulator function was provided, the value returned by the last handler
-          run will be returned by <function>g_signal_emit</function>.
+          run will be returned by <function><link linkend="g-signal-emit">g_signal_emit</link></function>.
         </para>
 
       </sect2>
@@ -432,11 +432,11 @@ void                  g_signal_emitv        (const GValue       *instance_and_pa
 
         <para>
          Of the three main connection functions,
-          only one has an explicit detail parameter as a <type>GQuark</type>
+          only one has an explicit detail parameter as a <type><link linkend="GQuark">GQuark</link></type>
           <footnote>
             <para>A GQuark is an integer which uniquely represents a string. It is possible to transform
              back and forth between the integer and string representations with the functions 
-             <function>g_quark_from_string</function> and <function>g_quark_to_string</function>.
+             <function><link linkend="g-quark-from-string">g_quark_from_string</link></function> and <function><link linkend="g-quark-to-string">g_quark_to_string</link></function>.
             </para>
           </footnote>:
 <programlisting>
@@ -469,7 +469,7 @@ gulong	 g_signal_connect_data		      (gpointer		  instance,
 
         <para>
           Of the four main signal emission functions, three have an explicit detail parameter as a 
-          <type>GQuark</type> again:
+          <type><link linkend="GQuark">GQuark</link></type> again:
 <programlisting>
 void                  g_signal_emitv        (const GValue       *instance_and_params,
 					     guint               signal_id,
@@ -491,7 +491,7 @@ void                  g_signal_emit_by_name (gpointer            instance,
 					     ...);
 </programlisting>
          The format of the detailed_signal parameter is exactly the same as the format used by
-         the <function>g_signal_connect</function> functions: <emphasis>signal_name::detail_name</emphasis>.
+         the <function><link linkend="g-signal-connect">g_signal_connect</link></function> functions: <emphasis>signal_name::detail_name</emphasis>.
         </para>
 
         <para>

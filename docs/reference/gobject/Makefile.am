@@ -34,14 +34,21 @@ GTKDOC_LIBS = \
 # Extra options to supply to gtkdoc-mkdb
 MKDB_OPTIONS=
 
-# Images to copy into HTML directory
-HTML_IMAGES =
-
 # Extra SGML files that are included by $(DOC_MAIN_SGML_FILE)
 content_files = version.xml 		\
 		glib-mkenums.xml 	\
 		glib-genmarshal.xml	\
-		gobject-query.xml
+		gobject-query.xml \
+		tut_gobject.xml \
+		tut_gsignal.xml \
+		tut_gtype.xml \
+		tut_howto.xml \
+		tut_intro.xml \
+		tut_tools.xml
+
+# Images to copy into HTML directory
+HTML_IMAGES =  \
+	$(srcdir)/images/glue.png
 
 # Extra options to supply to gtkdoc-fixref
 FIXXREF_OPTIONS=--extra-dir=$(srcdir)/../glib/html
