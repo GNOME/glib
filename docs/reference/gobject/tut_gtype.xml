@@ -649,17 +649,15 @@ The class initialization process is entirely implemented in
 	  you have to register a non-instantiable classed type which derives from 
 	  <type><link linkend="GTypeInterface">GTypeInterface</link></type>. The following piece of code declares such an interface.
 <programlisting>
-#define MAMAN_IBAZ_TYPE             (maman_ibaz_get_type ())
-#define MAMAN_IBAZ(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), MAMAN_IBAZ_TYPE, MamanIbaz))
-#define MAMAN_IBAZ_CLASS(vtable)    (G_TYPE_CHECK_CLASS_CAST ((vtable), MAMAN_IBAZ_TYPE, MamanIbazClass))
-#define MAMAN_IS_IBAZ(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), MAMAN_IBAZ_TYPE))
-#define MAMAN_IS_IBAZ_CLASS(vtable) (G_TYPE_CHECK_CLASS_TYPE ((vtable), MAMAN_IBAZ_TYPE))
-#define MAMAN_IBAZ_GET_CLASS(inst)  (G_TYPE_INSTANCE_GET_INTERFACE ((inst), MAMAN_IBAZ_TYPE, MamanIbazClass))
+#define MAMAN_IBAZ_TYPE                (maman_ibaz_get_type ())
+#define MAMAN_IBAZ(obj)                (G_TYPE_CHECK_INSTANCE_CAST ((obj), MAMAN_IBAZ_TYPE, MamanIbaz))
+#define MAMAN_IS_IBAZ(obj)             (G_TYPE_CHECK_INSTANCE_TYPE ((obj), MAMAN_IBAZ_TYPE))
+#define MAMAN_IBAZ_GET_INTERFACE(inst) (G_TYPE_INSTANCE_GET_INTERFACE ((inst), MAMAN_IBAZ_TYPE, MamanIbazInterface))
 
 typedef struct _MamanIbaz MamanIbaz; /* dummy object */
-typedef struct _MamanIbazClass MamanIbazClass;
+typedef struct _MamanIbazInterface MamanIbazInterface;
 
-struct _MamanIbazClass {
+struct _MamanIbazInterface {
   GTypeInterface parent;
 
   void (*do_action) (MamanIbaz *self);
@@ -674,7 +672,7 @@ void maman_ibaz_do_action (MamanIbaz *self);
 <programlisting>
 void maman_ibaz_do_action (MamanIbaz *self)
 {
-  MAMAN_IBAZ_GET_CLASS (self)->do_action (self);
+  MAMAN_IBAZ_GET_INTERFACE (self)->do_action (self);
 }
 </programlisting>
          <function>maman_ibaz_get_gtype</function> registers a type named <emphasis>MamanIBaz</emphasis>
@@ -707,8 +705,8 @@ static void
 baz_interface_init (gpointer         g_iface,
                     gpointer         iface_data)
 {
-  MamanIbazClass *klass = (MamanIbazClass *)g_iface;
-  klass->do_action = maman_baz_do_action;
+  MamanIbazInterface *iface = (MamanIbazInterface *)g_iface;
+  iface->do_action = maman_baz_do_action;
 }
 
 GType 
@@ -717,7 +715,7 @@ maman_baz_get_type (void)
   static GType type = 0;
   if (type == 0) {
     static const GTypeInfo info = {
-      sizeof (MamanBazClass),
+      sizeof (MamanBazInterface),
       NULL,   /* base_init */
       NULL,   /* base_finalize */
       NULL,   /* class_init */
@@ -799,7 +797,7 @@ struct _GInterfaceInfo
 	    multiple implementations of the interface:
 <programlisting>
 static void
-maman_ibaz_base_init (gpointer g_class)
+maman_ibaz_base_init (gpointer g_iface)
 {
   static gboolean initialized = FALSE;
 

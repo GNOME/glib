@@ -1,3 +1,9 @@
+2005-04-23  Stefan Kost  <ensonic@users.sf.net>
+
+	* gobject/tut_gtype.xml:
+	* gobject/tut_howto.xml:
+	all interface examples use 'interface' instead of 'class'
+
 2005-04-22  Stefan Kost  <ensonic@users.sf.net>
 
 	* gobject/Makefile.am:
@@ -88,7 +94,7 @@
 2005-01-04  Matthias Clasen  <mclasen@redhat.com>
 
 	* gobject/tmpl/signals.sgml: Small addition. (#145158,
-	Mariano Suárez-Alvarez)
+	Mariano Su??rez-Alvarez)
 
 2004-12-20  Matthias Clasen  <mclasen@redhat.com>
 
@@ -521,7 +527,7 @@ Wed Jan 28 01:39:59 2004  Matthias Clasen  <maclas@gmx.de>
 Thu Jan 22 14:51:19 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/glib-sections.txt glib/tmpl/timers.sgml: Document
-	g_timer_continue. (Tim-Philipp Müller)
+	g_timer_continue. (Tim-Philipp M??ller)
 
 Sun Jan 11 01:25:44 2004  Matthias Clasen  <maclas@gmx.de>
 
@@ -657,7 +663,7 @@ Mon Oct 20 01:12:46 2003  Matthias Clasen  <maclas@gmx.de>
 Sun Oct 19 22:18:28 2003  Matthias Clasen  <maclas@gmx.de>
 
 	* gobject/Makefile.am (INCLUDES): Add $(top_builddir)/glib
-	as an include dir.  (#124934, Mariano Suárez-Alvarez)
+	as an include dir.  (#124934, Mariano Su??rez-Alvarez)
 
 Sun Oct 19 00:33:28 2003  Matthias Clasen  <maclas@gmx.de>
 

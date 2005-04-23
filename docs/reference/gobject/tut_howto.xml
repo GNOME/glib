@@ -776,18 +776,16 @@ b_method_to_call (B *obj, int a)
 
 #include &lt;glib-object.h&gt;
 
-#define MAMAN_TYPE_IBAZ             (maman_ibaz_get_type ())
-#define MAMAN_IBAZ(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), MAMAN_TYPE_IBAZ, MamanIbaz))
-#define MAMAN_IBAZ_CLASS(vtable)    (G_TYPE_CHECK_CLASS_CAST ((vtable), MAMAN_TYPE_IBAZ, MamanIbazClass))
-#define MAMAN_IS_IBAZ(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), MAMAN_TYPE_IBAZ))
-#define MAMAN_IS_IBAZ_CLASS(vtable) (G_TYPE_CHECK_CLASS_TYPE ((vtable), MAMAN_TYPE_IBAZ))
-#define MAMAN_IBAZ_GET_CLASS(inst)  (G_TYPE_INSTANCE_GET_INTERFACE ((inst), MAMAN_TYPE_IBAZ, MamanIbazClass))
+#define MAMAN_TYPE_IBAZ                (maman_ibaz_get_type ())
+#define MAMAN_IBAZ(obj)                (G_TYPE_CHECK_INSTANCE_CAST ((obj), MAMAN_TYPE_IBAZ, MamanIbaz))
+#define MAMAN_IS_IBAZ(obj)             (G_TYPE_CHECK_INSTANCE_TYPE ((obj), MAMAN_TYPE_IBAZ))
+#define MAMAN_IBAZ_GET_INTERFACE(inst) (G_TYPE_INSTANCE_GET_INTERFACE ((inst), MAMAN_TYPE_IBAZ, MamanIbazInterface))
 
 
 typedef struct _MamanIbaz MamanIbaz; /* dummy object */
-typedef struct _MamanIbazClass MamanIbazClass;
+typedef struct _MamanIbazInterface MamanIbazInterface;
 
-struct _MamanIbazClass {
+struct _MamanIbazInterface {
   GTypeInterface parent;
 
   void (*do_action) (MamanIbaz *self);
@@ -803,8 +801,9 @@ void maman_ibaz_do_action (MamanIbaz *self);
       which derives from a <type><link linkend="GObject">GObject</link></type> except for a few details:
       <itemizedlist>
         <listitem><para>
-          The <function>_GET_CLASS</function> macro is not implemented with 
-          <function>G_TYPE_INSTANCE_GET_CLASS</function> but with <function>G_TYPE_INSTANCE_GET_INTERFACE</function>.
+          The <function>_GET_CLASS</function> macro is called <function>_GET_INTERFACE</function>
+					and not implemented with <function><link linkend="G_TYPE_INSTANCE_GET_CLASS">G_TYPE_INSTANCE_GET_CLASS</link></function>
+					but with <function><link linkend="G_TYPE_INSTANCE_GET_INTERFACE">G_TYPE_INSTANCE_GET_INTERFACE</link></function>.
         </para></listitem>
         <listitem><para>
           The instance type, <type>MamanIbaz</type> is not fully defined: it is used merely as an abstract 
@@ -848,7 +847,7 @@ maman_ibaz_get_type (void)
   static GType type = 0;
   if (type == 0) {
     static const GTypeInfo info = {
-      sizeof (MamanIbazClass),
+      sizeof (MamanIbazInterface),
       maman_ibaz_base_init,   /* base_init */
       NULL,   /* base_finalize */
       NULL,   /* class_init */
@@ -865,7 +864,7 @@ maman_ibaz_get_type (void)
 
 void maman_ibaz_do_action (MamanIbaz *self)
 {
-  MAMAN_IBAZ_GET_CLASS (self)->do_action (self);
+  MAMAN_IBAZ_GET_INTERFACE (self)->do_action (self);
 }
 </programlisting>
     </para>
@@ -969,14 +968,14 @@ static void
 baz_interface_init (gpointer   g_iface,
                     gpointer   iface_data)
 {
-  MamanIbazClass *klass = (MamanIbazClass *)g_iface;
-  klass->do_action = (void (*) (MamanIbaz *self))baz_do_action;
+  MamanIbazInteface *iface = (MamanIbazInteface *)g_iface;
+  iface->do_action = (void (*) (MamanIbaz *self))baz_do_action;
 }
 static void
 baz_instance_init (GTypeInstance   *instance,
                    gpointer         g_class)
 {
-  MamanBaz *self = (MamanBaz *)instance;
+  MamanBaz *self = MAMAN_BAZ(instance);
   self->instance_member = 0xdeadbeaf;
 }
 </programlisting>
@@ -1016,8 +1015,8 @@ static void
 ibar_interface_init (gpointer   g_iface,
                      gpointer   iface_data)
 {
-  MamanIbarClass *klass = (MamanIbarClass *)g_iface;
-  klass->do_another_action = (void (*) (MamanIbar *self))ibar_do_another_action;
+  MamanIbarInterface *iface = (MamanIbarInterface *)g_iface;
+  iface->do_another_action = (void (*) (MamanIbar *self))ibar_do_another_action;
 }
 
 
@@ -1030,8 +1029,8 @@ static void
 ibaz_interface_init (gpointer   g_iface,
                     gpointer   iface_data)
 {
-  MamanIbazClass *klass = (MamanIbazClass *)g_iface;
-  klass->do_action = (void (*) (MamanIbaz *self))ibaz_do_action;
+  MamanIbazInterface *iface = (MamanIbazInterface *)g_iface;
+  iface->do_action = (void (*) (MamanIbaz *self))ibaz_do_action;
 }
 
 
@@ -1063,7 +1062,7 @@ maman_bar_get_type (void)
     static const GInterfaceInfo ibar_info = {
       (GInterfaceInitFunc) ibar_interface_init,   /* interface_init */
       NULL,                                       /* interface_finalize */
-            NULL                                        /* interface_data */
+      NULL                                        /* interface_data */
     };
     static const GInterfaceInfo ibaz_info = {
       (GInterfaceInitFunc) ibaz_interface_init,   /* interface_init */
@@ -1088,11 +1087,11 @@ maman_bar_get_type (void)
   no prerequisites and then on the others.
 </para>
 
-    <para>
-      Complete source code showing how to define the MamanIbar interface which requires MamanIbaz and how to 
-      implement the MamanIbar interface is located in <filename>sample/interface/maman-ibar.{h|c}</filename> 
-      and <filename>sample/interface/maman-bar.{h|c}</filename>.
-    </para>
+	<para>
+		Complete source code showing how to define the MamanIbar interface which requires MamanIbaz and how to 
+		implement the MamanIbar interface is located in <filename>sample/interface/maman-ibar.{h|c}</filename> 
+		and <filename>sample/interface/maman-bar.{h|c}</filename>.
+	</para>
 
 </sect1>
 
@@ -1109,25 +1108,28 @@ maman_bar_get_type (void)
   <para>To include a property named 'name' of type <type>string</type> in the 
   <type>maman_ibaz</type> interface example code above, we only need to add one 
 	<footnote>
-  	  <para>That really is one line extended to six for the sake of clarity
-  	  </para>
+		<para>
+			That really is one line extended to six for the sake of clarity
+		</para>
 	</footnote>  
   line in the <function>maman_ibaz_base_init</function>
 	<footnote>
-  	  <para>The gobject_install_property can also be called from <function>class_init</function> but it must not be called after that point.
-  	  </para>
+		<para>
+			The <function><link linkend="g-object-interface-install-property">g_object_interface_install_property</link></function> can also be called from
+			<function>class_init</function> but it must not be called after that point.
+		</para>
 	</footnote>
   as shown below:
 <programlisting>
 static void
-maman_ibaz_base_init (gpointer g_class)
+maman_ibaz_base_init (gpointer g_iface)
 {
   static gboolean initialized = FALSE;
 
   if (!initialized) {
     /* create interface signals here. */
 
-    g_object_interface_install_property (g_class,
+    g_object_interface_install_property (g_iface,
     			g_param_spec_string ("name",
 			    	"maman_ibaz_name",
 			    	"Name of the MamanIbaz",
