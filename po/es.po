@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: es\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-02-09 14:10+0100\n"
-"PO-Revision-Date: 2005-02-09 14:17+0100\n"
+"POT-Creation-Date: 2005-04-23 18:05+0200\n"
+"PO-Revision-Date: 2005-04-23 18:12+0200\n"
 "Last-Translator: Francisco Javier F. Serrador <serrador@cvs.gnome.org>\n"
 "Language-Team: Spanish <traductores@es.gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -21,177 +21,231 @@ msgstr ""
 "X-Generator: KBabel 1.9.1\n"
 "Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 
-#: ../glib/gconvert.c:403
+#: ../glib/gconvert.c:404
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
-msgstr "La conversión desde el conjunto de caracteres «%s»·a·«%s»·no está soportada"
+msgstr ""
+"La conversión desde el conjunto de caracteres «%s»·a·«%s»·no está soportada"
 
-#: ../glib/gconvert.c:407
+#: ../glib/gconvert.c:408
 #, c-format
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "No se pudo abrir el conversor de «%s»·a·«%s»"
 
-#: ../glib/gconvert.c:605 ../glib/gconvert.c:892 ../glib/giochannel.c:1318
-#: ../glib/giochannel.c:1360 ../glib/giochannel.c:2202 ../glib/gutf8.c:911
+#: ../glib/gconvert.c:614 ../glib/gconvert.c:902 ../glib/giochannel.c:1319
+#: ../glib/giochannel.c:1361 ../glib/giochannel.c:2203 ../glib/gutf8.c:911
 #: ../glib/gutf8.c:1361
 msgid "Invalid byte sequence in conversion input"
 msgstr "Hay una secuencia de bytes no válida en la entrada de conversión"
 
-#: ../glib/gconvert.c:610 ../glib/gconvert.c:825 ../glib/giochannel.c:1325
-#: ../glib/giochannel.c:2214
+#: ../glib/gconvert.c:619 ../glib/gconvert.c:835 ../glib/giochannel.c:1326
+#: ../glib/giochannel.c:2215
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Ha ocurrido un error·durante la·conversión:·%s"
 
-#: ../glib/gconvert.c:628 ../glib/gutf8.c:907 ../glib/gutf8.c:1112
+#: ../glib/gconvert.c:637 ../glib/gutf8.c:907 ../glib/gutf8.c:1112
 #: ../glib/gutf8.c:1253 ../glib/gutf8.c:1357
 msgid "Partial character sequence at end of input"
 msgstr "Hay una secuencia parcial de caracteres en el final de la entrada"
 
-#: ../glib/gconvert.c:801
+#: ../glib/gconvert.c:811
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "No se puede convertir el fallback «%s»·al conjunto de códigos·«%s»"
 
-#: ../glib/gconvert.c:1601
+#: ../glib/gconvert.c:1611
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "La URI·«%s»·no es una URI·absoluta utilizando el esquema «file»"
 
-#: ../glib/gconvert.c:1611
+#: ../glib/gconvert.c:1621
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "El archivo local·en la URI «%s»·no debe incluir un·«#»"
 
-#: ../glib/gconvert.c:1628
+#: ../glib/gconvert.c:1638
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "La URI·«%s»·es inválida"
 
-#: ../glib/gconvert.c:1640
+#: ../glib/gconvert.c:1650
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "El nombre del anfitrión de la·URI·«%s»·es inválido"
 
-#: ../glib/gconvert.c:1656
+#: ../glib/gconvert.c:1666
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "La·URI·«%s»·contiene caracteres de escape inválidos"
 
-#: ../glib/gconvert.c:1750
+#: ../glib/gconvert.c:1760
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "El nombre de la ruta «%s» no es una ruta absoluta"
 
-#: ../glib/gconvert.c:1760
+#: ../glib/gconvert.c:1770
 msgid "Invalid hostname"
 msgstr "El nombre del anfitrión es inválido"
 
-#: ../glib/gdir.c:120 ../glib/gdir.c:140
+#: ../glib/gdir.c:121 ../glib/gdir.c:141
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "Ha ocurrido un error al abrir el directorio «%s»:·%s"
 
-#: ../glib/gfileutils.c:501 ../glib/gfileutils.c:569
+#: ../glib/gfileutils.c:504 ../glib/gfileutils.c:577
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "No se pueden asignar %lu bytes para leer el archivo «%s»"
 
-#: ../glib/gfileutils.c:514
+#: ../glib/gfileutils.c:519
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Ha ocurrido un error al leer el archivo «%s»:·%s"
 
-#: ../glib/gfileutils.c:593
+#: ../glib/gfileutils.c:601
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Ha ocurrido un error en la lectura desde el archivo «%s»:·%s"
 
-#: ../glib/gfileutils.c:644 ../glib/gfileutils.c:733
+#: ../glib/gfileutils.c:652 ../glib/gfileutils.c:739
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Ha ocurrido un error al abrir el archivo «%s»:·%s"
 
-#: ../glib/gfileutils.c:661
+#: ../glib/gfileutils.c:669
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr ""
-"Ha ocurrido un error al obtener los atributos del archivo «%s»:·fstat()·falló:"
-"·%s"
+"Ha ocurrido un error al obtener los atributos del archivo «%s»:·fstat()"
+"·falló:·%s"
 
-#: ../glib/gfileutils.c:695
+#: ../glib/gfileutils.c:703
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Ha ocurrido un error al abrir el archivo «%s»:·fdopen()·falló:·%s"
 
-#: ../glib/gfileutils.c:1032
+#: ../glib/gfileutils.c:837
 #, c-format
-msgid "Template '%s' invalid, should not contain a '%s'"
-msgstr "La plantilla «%s» es inválida, no debería contener un «%s»"
+msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
+msgstr "Falló al renombrar el archivo «%s» a «%s»:·g_rename()·falló:·%s"
 
-#: ../glib/gfileutils.c:1046
+#: ../glib/gfileutils.c:880
 #, c-format
-msgid "Template '%s' doesn't end with XXXXXX"
-msgstr "La plantilla ·«%s»· no termina con XXXXXX"
+msgid "Could not change file mode: fork() failed: %s"
+msgstr "No se pudo cambiar el modo del archivo: fork()·falló:·%s"
 
-#: ../glib/gfileutils.c:1071
+#: ../glib/gfileutils.c:911
+#, c-format
+msgid "Could not change file mode: waitpid() failed: %s"
+msgstr "No se pudo cambiar el modo del archivo: waitpid() falló: %s"
+
+#: ../glib/gfileutils.c:930
+#, c-format
+msgid "Could not change file mode: chmod() failed: %s"
+msgstr "No se pudo cambiar el modo del archivo: chmod() falló: %s"
+
+#: ../glib/gfileutils.c:941
+#, c-format
+msgid "Could not change file mode: Child terminated by signal: %s"
+msgstr "No sepudo cambiar el modo del archivo: El hijo fue terminado por la señal: %s"
+
+#: ../glib/gfileutils.c:952
+msgid "Could not change file mode: Child terminated abnormally"
+msgstr "No se pudo cambiar el modo del archivo: el hijo terminó anormalmente"
+
+#: ../glib/gfileutils.c:986 ../glib/gfileutils.c:1452
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Ha ocurrido un error al crear el archivo «%s»:·%s"
 
-#: ../glib/gfileutils.c:1449
+#: ../glib/gfileutils.c:1008
+#, c-format
+msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
+msgstr "Falló al abrir el archivo «%s» para escritura: fdopen() falló: %s"
+
+#: ../glib/gfileutils.c:1033
+#, c-format
+msgid "Failed to write file '%s': fwrite() failed: %s"
+msgstr "Ha ocurrido un error al escribir el archivo «%s»:·fwrite()·falló:·%s"
+
+#: ../glib/gfileutils.c:1052
+#, c-format
+msgid "Failed to close file '%s': fclose() failed: %s"
+msgstr "Ha ocurrido un error al cerrar el archivo «%s»:·fclose()·falló:·%s"
+
+#: ../glib/gfileutils.c:1170
+#, c-format
+msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
+msgstr "El archivo existente «%s» no se pudo eliminar: g_unlink() falló: %s"
+
+#: ../glib/gfileutils.c:1413
+#, c-format
+msgid "Template '%s' invalid, should not contain a '%s'"
+msgstr "La plantilla «%s» es inválida, no debería contener un «%s»"
+
+#: ../glib/gfileutils.c:1427
+#, c-format
+msgid "Template '%s' doesn't end with XXXXXX"
+msgstr "La plantilla ·«%s»· no termina con XXXXXX"
+
+#: ../glib/gfileutils.c:1830
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Ha ocurrido un error al leer el enlace simbólico «%s»:·%s"
 
-#: ../glib/gfileutils.c:1470
+#: ../glib/gfileutils.c:1851
 msgid "Symbolic links not supported"
 msgstr "Enlaces simbólicos no soportados"
 
-#: ../glib/giochannel.c:1146
+#: ../glib/giochannel.c:1147
 #, c-format
 msgid "Conversion from character set `%s' to `%s' is not supported"
-msgstr "La conversión desde el conjunto de caracteres «%s»·a·«%s»·no está soportada"
+msgstr ""
+"La conversión desde el conjunto de caracteres «%s»·a·«%s»·no está soportada"
 
-#: ../glib/giochannel.c:1150
+#: ../glib/giochannel.c:1151
 #, c-format
 msgid "Could not open converter from `%s' to `%s': %s"
 msgstr "No se pudo abrir el conversor de «%s»·a·«%s»:·%s"
 
-#: ../glib/giochannel.c:1495
+#: ../glib/giochannel.c:1496
 msgid "Can't do a raw read in g_io_channel_read_line_string"
-msgstr "No se puede hacer una lectura en bruto (raw) en g_io_channel_read_line_string"
+msgstr ""
+"No se puede hacer una lectura en bruto (raw) en g_io_channel_read_line_string"
 
-#: ../glib/giochannel.c:1542 ../glib/giochannel.c:1799
-#: ../glib/giochannel.c:1885
+#: ../glib/giochannel.c:1543 ../glib/giochannel.c:1800
+#: ../glib/giochannel.c:1886
 msgid "Leftover unconverted data in read buffer"
 msgstr "Se han dejado datos no convertidos en el búfer de lectura"
 
-#: ../glib/giochannel.c:1622 ../glib/giochannel.c:1699
+#: ../glib/giochannel.c:1623 ../glib/giochannel.c:1700
 msgid "Channel terminates in a partial character"
 msgstr "El canal termina en un carácter parcial"
 
-#: ../glib/giochannel.c:1685
+#: ../glib/giochannel.c:1686
 msgid "Can't do a raw read in g_io_channel_read_to_end"
-msgstr "No se puede hacer una lectura en bruto (raw) en g_io_channel_read_to_end"
+msgstr ""
+"No se puede hacer una lectura en bruto (raw) en g_io_channel_read_to_end"
 
-#: ../glib/gmarkup.c:226
+#: ../glib/gmarkup.c:232
 #, c-format
 msgid "Error on line %d char %d: %s"
 msgstr "Error en la línea %d,·carácter·%d:·%s"
 
-#: ../glib/gmarkup.c:324
+#: ../glib/gmarkup.c:330
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "Error·en la línea·%d:·%s"
 
-#: ../glib/gmarkup.c:428
-msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+#: ../glib/gmarkup.c:434
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "La entidad '&;' está vacía; las entidades válidas son:·&amp;·&quot;·&lt;·&gt;"
 "·&apos;"
 
-#: ../glib/gmarkup.c:438
+#: ../glib/gmarkup.c:444
 #, c-format
 msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
@@ -199,20 +253,20 @@ msgid ""
 "it as &amp;"
 msgstr ""
 "El carácter «%s»·no es válido al inicio del nombre de una entidad; el "
-"carácter «&» inicia una entidad; si el signo '&' no debiera ser una "
-"entidad, escápela como &amp;"
+"carácter «&» inicia una entidad; si el signo '&' no debiera ser una entidad, "
+"escápela como &amp;"
 
-#: ../glib/gmarkup.c:472
+#: ../glib/gmarkup.c:478
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
 msgstr "El carácter «%s»·no es válido dentro del nombre de una entidad"
 
-#: ../glib/gmarkup.c:509
+#: ../glib/gmarkup.c:515
 #, c-format
 msgid "Entity name '%s' is not known"
 msgstr "El nombre de la entidad «%s»·es desconocido"
 
-#: ../glib/gmarkup.c:520
+#: ../glib/gmarkup.c:526
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
@@ -221,7 +275,7 @@ msgstr ""
 "\"&\" sin la intención de indicar una entidad - escape el signo \"&\" como "
 "&amp;"
 
-#: ../glib/gmarkup.c:573
+#: ../glib/gmarkup.c:579
 #, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
@@ -231,18 +285,18 @@ msgstr ""
 "dentro de un carácter de referencia·( por ejemplo &#234;·)·-·tal vez el "
 "dígito es demasiado grande"
 
-#: ../glib/gmarkup.c:598
+#: ../glib/gmarkup.c:604
 #, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
 msgstr "El carácter de referencia «%-.*s» no codifica un carácter permitido"
 
-#: ../glib/gmarkup.c:613
+#: ../glib/gmarkup.c:619
 msgid "Empty character reference; should include a digit such as &#454;"
 msgstr ""
 "El carácter de referencia está vacío; debería incluir un dígito tal como "
 "&#454;"
 
-#: ../glib/gmarkup.c:623
+#: ../glib/gmarkup.c:629
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -252,23 +306,23 @@ msgstr ""
 "un carácter «&» sin pretender iniciar una entidad - escape·el·carácter·\"&"
 "\"·como·&amp;"
 
-#: ../glib/gmarkup.c:709
+#: ../glib/gmarkup.c:715
 msgid "Unfinished entity reference"
 msgstr "Referencia a entidad sin terminar"
 
-#: ../glib/gmarkup.c:715
+#: ../glib/gmarkup.c:721
 msgid "Unfinished character reference"
 msgstr "Referencia a carácter sin terminar"
 
-#: ../glib/gmarkup.c:958 ../glib/gmarkup.c:986 ../glib/gmarkup.c:1017
+#: ../glib/gmarkup.c:964 ../glib/gmarkup.c:992 ../glib/gmarkup.c:1023
 msgid "Invalid UTF-8 encoded text"
 msgstr "El texto codificado como UTF-8 no es válido"
 
-#: ../glib/gmarkup.c:1053
+#: ../glib/gmarkup.c:1059
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "El documento debe comenzar con un elemento (por ejemplo: <book>)"
 
-#: ../glib/gmarkup.c:1093
+#: ../glib/gmarkup.c:1099
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -277,7 +331,7 @@ msgstr ""
 "«%s» no es un carácter válido a continuación del carácter '<': no debe "
 "iniciar el nombre de un elemento"
 
-#: ../glib/gmarkup.c:1157
+#: ../glib/gmarkup.c:1163
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
@@ -286,14 +340,15 @@ msgstr ""
 "Carácter impropio «%s», se esperaba un carácter '>' para terminar la "
 "etiqueta del elemento «%s»"
 
-#: ../glib/gmarkup.c:1246
+#: ../glib/gmarkup.c:1252
 #, c-format
-msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgid ""
+"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "Carácter impropio «%s»,·se esperaba el carácter '='·después del nombre de "
 "atributo·«%s»·del elemento·«%s»"
 
-#: ../glib/gmarkup.c:1288
+#: ../glib/gmarkup.c:1294
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -304,7 +359,7 @@ msgstr ""
 "inicio de la etiqueta del elemento «%s» u opcionalmente un atributo;·tal vez "
 "utilizó un carácter que no es válido en un nombre de atributo"
 
-#: ../glib/gmarkup.c:1377
+#: ../glib/gmarkup.c:1383
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -313,7 +368,7 @@ msgstr ""
 "Carácter impropio «%s», se esperaba una marca de apertura de comillas "
 "después del signo igual al darle valor al atributo «%s» del elemento «%s»"
 
-#: ../glib/gmarkup.c:1522
+#: ../glib/gmarkup.c:1528
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -322,7 +377,7 @@ msgstr ""
 "«%s» no es un carácter válido a continuación de los caracteres '</';·«%s»· "
 "no debe iniciar el nombre de un elemento"
 
-#: ../glib/gmarkup.c:1562
+#: ../glib/gmarkup.c:1568
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -331,27 +386,27 @@ msgstr ""
 "«%s»·no es un carácter válido a continuación del nombre del elemento de "
 "cierre «%s»; el carácter permitido es '>'"
 
-#: ../glib/gmarkup.c:1573
+#: ../glib/gmarkup.c:1579
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "El elemento «%s» fue cerrado, no existe ningún elemento abierto"
 
-#: ../glib/gmarkup.c:1582
+#: ../glib/gmarkup.c:1588
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr ""
 "El·elemento·«%s» fue cerrado,·pero el elemento que está abierto actualmente "
 "es «%s»"
 
-#: ../glib/gmarkup.c:1729
+#: ../glib/gmarkup.c:1735
 msgid "Document was empty or contained only whitespace"
 msgstr "El documento estaba vacío o sólo contenía espacios en blanco"
 
-#: ../glib/gmarkup.c:1743
+#: ../glib/gmarkup.c:1749
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "El documento termina inesperadamente justo después de un '<'"
 
-#: ../glib/gmarkup.c:1751 ../glib/gmarkup.c:1795
+#: ../glib/gmarkup.c:1757 ../glib/gmarkup.c:1801
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -360,7 +415,7 @@ msgstr ""
 "El documento termina inesperadamente con elementos todavía abiertos - «%s» "
 "fue el último elemento abierto"
 
-#: ../glib/gmarkup.c:1759
+#: ../glib/gmarkup.c:1765
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -369,21 +424,21 @@ msgstr ""
 "El documento termina inesperadamente, se esperada un carácter '>' "
 "finalizando la etiqueta <%s/>"
 
-#: ../glib/gmarkup.c:1765
+#: ../glib/gmarkup.c:1771
 msgid "Document ended unexpectedly inside an element name"
 msgstr "El documento termina inesperadamente dentro de un nombre de elemento"
 
-#: ../glib/gmarkup.c:1770
+#: ../glib/gmarkup.c:1776
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "El documento termina inesperadamente dentro de un nombre de atributo"
 
-#: ../glib/gmarkup.c:1775
+#: ../glib/gmarkup.c:1781
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr ""
 "El documento termina inesperadamente dentro de una etiqueta de apertura de "
 "elemento."
 
-#: ../glib/gmarkup.c:1781
+#: ../glib/gmarkup.c:1787
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -391,18 +446,18 @@ msgstr ""
 "El documento termina inesperadamente después de los signos igual que siguen "
 "al nombre de atributo; sin valor de atributo"
 
-#: ../glib/gmarkup.c:1788
+#: ../glib/gmarkup.c:1794
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "El documento termina inesperadamente dentro del valor de un atributo"
 
-#: ../glib/gmarkup.c:1803
+#: ../glib/gmarkup.c:1809
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr ""
 "El documento termina inesperadamente dentro de la etiqueta cierre del "
 "elemento «%s»"
 
-#: ../glib/gmarkup.c:1809
+#: ../glib/gmarkup.c:1815
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "El documento termina inesperadamente dentro de un comentario o procesando "
@@ -421,7 +476,8 @@ msgstr ""
 #: ../glib/gshell.c:541
 #, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
-msgstr "El texto termina justo después de un carácter '\\'. (El texto era «%s»)"
+msgstr ""
+"El texto termina justo después de un carácter '\\'. (El texto era «%s»)"
 
 #: ../glib/gshell.c:548
 #, c-format
@@ -460,11 +516,11 @@ msgstr "Ha ocurrido un error al cambiar al directorio «%s»·(%s)"
 msgid "Failed to execute child process (%s)"
 msgstr "Ha ocurrido un error al ejecutar el proceso hijo (%s)"
 
-#: ../glib/gspawn-win32.c:590
+#: ../glib/gspawn-win32.c:599
 msgid "Failed to execute helper program"
 msgstr "Ha ocurrido un error al ejecutar el programa auxiliar"
 
-#: ../glib/gspawn-win32.c:789
+#: ../glib/gspawn-win32.c:797
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -536,93 +592,95 @@ msgstr "La secuencia en la conversión de entrada no es válida"
 msgid "Character out of range for UTF-16"
 msgstr "El carácter se encuentra fuera del rango para UTF-16"
 
-#: ../glib/goption.c:405
+#: ../glib/goption.c:442
 msgid "Usage:"
 msgstr "Uso:"
 
-#: ../glib/goption.c:405
+#: ../glib/goption.c:442
 msgid "[OPTION...]"
 msgstr "[OPCIÓN...]"
 
-#: ../glib/goption.c:494
+#: ../glib/goption.c:525
 msgid "Help Options:"
 msgstr "Opciones de ayuda:"
 
-#: ../glib/goption.c:494
+#: ../glib/goption.c:526
 msgid "Show help options"
 msgstr "Mostrar opciones de ayuda"
 
-#: ../glib/goption.c:498
+#: ../glib/goption.c:531
 msgid "Show all help options"
 msgstr "Mostrar todas las opciones de ayuda"
 
-#: ../glib/goption.c:547
+#: ../glib/goption.c:581
 msgid "Application Options:"
 msgstr "Opciones de la aplicación:"
 
-#: ../glib/goption.c:586
+#: ../glib/goption.c:621
 #, c-format
-msgid "Cannot parse integer value '%s' for --%s"
-msgstr "No se puede parsear el valor entero «%s» para --%s"
+msgid "Cannot parse integer value '%s' for %s"
+msgstr "No se puede analizar gramaticalmente el valor entero «%s» para %s"
 
-#: ../glib/goption.c:596
+#: ../glib/goption.c:631
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "El valor entero «%s» para %s está fuera de rango"
 
-#: ../glib/goption.c:1323
+#: ../glib/goption.c:1361
 #, c-format
 msgid "Unknown option %s"
 msgstr "Opción desconocida %s"
 
-#: ../glib/gkeyfile.c:338
+#: ../glib/gkeyfile.c:339
 msgid "Valid key file could not be found in data dirs"
-msgstr "No se pudo encontrar la clave de archivo válida en los directorios de datos"
+msgstr ""
+"No se pudo encontrar la clave de archivo válida en los directorios de datos"
 
-#: ../glib/gkeyfile.c:371
+#: ../glib/gkeyfile.c:374
 msgid "Not a regular file"
 msgstr "No es un archivo regular"
 
-#: ../glib/gkeyfile.c:379
+#: ../glib/gkeyfile.c:382
 msgid "File is empty"
 msgstr "El archivo está vacío"
 
-#: ../glib/gkeyfile.c:689
+#: ../glib/gkeyfile.c:692
 #, c-format
-msgid "Key file contains line '%s' which is not a key-value pair, group, or comment"
+msgid ""
+"Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr ""
 "El archivo clave contiene la línea «%s» que no es un par valor-clave, grupo "
 "o comentario"
 
-#: ../glib/gkeyfile.c:757
+#: ../glib/gkeyfile.c:760
 msgid "Key file does not start with a group"
 msgstr "El archivo clave no empieza con un grupo"
 
-#: ../glib/gkeyfile.c:800
+#: ../glib/gkeyfile.c:803
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "El archivo clave contiene una codificación no soportada «%s»"
 
-#: ../glib/gkeyfile.c:1009 ../glib/gkeyfile.c:1155 ../glib/gkeyfile.c:2161
-#: ../glib/gkeyfile.c:2226 ../glib/gkeyfile.c:2344 ../glib/gkeyfile.c:2412
-#: ../glib/gkeyfile.c:2597 ../glib/gkeyfile.c:2771 ../glib/gkeyfile.c:2828
+#: ../glib/gkeyfile.c:1012 ../glib/gkeyfile.c:1158 ../glib/gkeyfile.c:2159
+#: ../glib/gkeyfile.c:2224 ../glib/gkeyfile.c:2342 ../glib/gkeyfile.c:2410
+#: ../glib/gkeyfile.c:2594 ../glib/gkeyfile.c:2768 ../glib/gkeyfile.c:2825
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "El archivo clave no tiene el grupo «%s»"
 
-#: ../glib/gkeyfile.c:1167
+#: ../glib/gkeyfile.c:1170
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "El archivo clave no tiene la clave «%s»"
 
-#: ../glib/gkeyfile.c:1268 ../glib/gkeyfile.c:1377
+#: ../glib/gkeyfile.c:1271 ../glib/gkeyfile.c:1380
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr ""
 "El archivo clave contiene la clave  «%s» con el valor «%s» el cual no está "
 "en UTF-8"
 
-#: ../glib/gkeyfile.c:1286 ../glib/gkeyfile.c:1395 ../glib/gkeyfile.c:1769
+#: ../glib/gkeyfile.c:1289 ../glib/gkeyfile.c:1398 ../glib/gkeyfile.c:1770
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr ""
@@ -638,27 +696,26 @@ msgstr ""
 "El archivo clave contiene la clave «%s» en el grupo «%s» que tiene un valor "
 "que no puede ser interpretado."
 
-#: ../glib/gkeyfile.c:2176 ../glib/gkeyfile.c:2359 ../glib/gkeyfile.c:2839
+#: ../glib/gkeyfile.c:2174 ../glib/gkeyfile.c:2357 ../glib/gkeyfile.c:2836
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "El archivo clave no tiene la clave «%s» en el grupo «%s»"
 
-#: ../glib/gkeyfile.c:3020
+#: ../glib/gkeyfile.c:3017
 msgid "Key file contains escape character at end of line"
 msgstr "El archivo clave contiene un carácter de escape al final de la línea"
 
-#: ../glib/gkeyfile.c:3042
+#: ../glib/gkeyfile.c:3039
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "El archivo clave contiene la secuencia de escape inválida «%s»"
 
-#: ../glib/gkeyfile.c:3180
+#: ../glib/gkeyfile.c:3177
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "El valor «%s» no puede interpretarse como un número."
 
-#: ../glib/gkeyfile.c:3208
+#: ../glib/gkeyfile.c:3205
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "El valor «%s» no puede interpretarse como un booleano."
-
