@@ -399,14 +399,17 @@ open_converter (const gchar *to_codeset,
   G_UNLOCK (iconv_cache_lock);
   
   /* Something went wrong.  */
-  if (errno == EINVAL)
-    g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_NO_CONVERSION,
-		 _("Conversion from character set '%s' to '%s' is not supported"),
-		 from_codeset, to_codeset);
-  else
-    g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_FAILED,
-		 _("Could not open converter from '%s' to '%s'"),
-		 from_codeset, to_codeset);
+  if (error)
+    {
+      if (errno == EINVAL)
+	g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_NO_CONVERSION,
+		     _("Conversion from character set '%s' to '%s' is not supported"),
+		     from_codeset, to_codeset);
+      else
+	g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_FAILED,
+		     _("Could not open converter from '%s' to '%s'"),
+		     from_codeset, to_codeset);
+    }
   
   return cd;
 }
@@ -610,14 +613,16 @@ g_convert_with_iconv (const gchar *str,
 	    goto again;
 	  }
 	case EILSEQ:
-	  g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_ILLEGAL_SEQUENCE,
-		       _("Invalid byte sequence in conversion input"));
+	  if (error)
+	    g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_ILLEGAL_SEQUENCE,
+			 _("Invalid byte sequence in conversion input"));
 	  have_error = TRUE;
 	  break;
 	default:
-	  g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_FAILED,
-		       _("Error during conversion: %s"),
-		       g_strerror (errno));
+	  if (error)
+	    g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_FAILED,
+			 _("Error during conversion: %s"),
+			 g_strerror (errno));
 	  have_error = TRUE;
 	  break;
 	}
@@ -633,8 +638,9 @@ g_convert_with_iconv (const gchar *str,
 	{
           if (!have_error)
             {
-              g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_PARTIAL_INPUT,
-                           _("Partial character sequence at end of input"));
+	      if (error)
+		g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_PARTIAL_INPUT,
+			     _("Partial character sequence at end of input"));
               have_error = TRUE;
             }
 	}
@@ -1122,7 +1128,7 @@ g_get_filename_charsets (G_CONST_RETURN gchar ***filename_charsets)
 gboolean
 g_get_filename_charsets (G_CONST_RETURN gchar ***filename_charsets) 
 {
-  static gchar *charsets[] = {
+  static const gchar *charsets[] = {
     "UTF-8",
     NULL
   };
@@ -1190,8 +1196,9 @@ _g_convert_thread_init (void)
  * @error:         location to store the error occuring, or %NULL to ignore
  *                 errors. Any of the errors in #GConvertError may occur.
  * 
- * Converts a string which is in the encoding used by GLib for filenames
- * into a UTF-8 string.
+ * Converts a string which is in the encoding used by GLib for
+ * filenames into a UTF-8 string. Note that on Windows GLib uses UTF-8
+ * for filenames.
  * 
  * Return value: The converted string, or %NULL on an error.
  **/
@@ -1253,7 +1260,8 @@ g_filename_to_utf8 (const gchar *opsysstring,
  * @error:         location to store the error occuring, or %NULL to ignore
  *                 errors. Any of the errors in #GConvertError may occur.
  * 
- * Converts a string from UTF-8 to the encoding used for filenames.
+ * Converts a string from UTF-8 to the encoding GLib uses for
+ * filenames. Note that on Windows GLib uses UTF-8 for filenames.
  * 
  * Return value: The converted string, or %NULL on an error.
  **/

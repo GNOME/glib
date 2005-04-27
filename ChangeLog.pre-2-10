@@ -1,3 +1,31 @@
+2005-04-27  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gconvert.c (open_converter, g_convert_with_iconv): Don't
+	call g_set_error() unless the GError pointer is non-NULL. This
+	avoids infinite recursion problems in certain rare situations on
+	Windows, when g_locale_from_utf8() is called from
+	_glib_get_locale_dir() after the change below. It's the
+	_glib_gettext() calls to translate error messages that are
+	parameters to g_set_error() that cause the recursion, not
+	g_set_error() itself.
+
+	* glib/gwin32.c (g_win32_locale_filename_from_utf8): New
+	function. Converts a filename to the system codepage, and if a
+	straight conversion isn't possible (because the filename contains
+	characters not in the system codepage), try looking up the
+	filename (which should refer to an existing file for this to
+	succeed) with short (8.3) pathname components.
+
+	* glib/gutils.c (_glib_get_locale_dir): No need to cache the
+	result, this function is normally called only once. Return the
+	path to the locale directory in system codepage, not UTF-8. The
+	path is passed to bindtextdomain(), which doesn't use UTF-8 file
+	names. Use g_win32_locale_filename_from_utf8(). (#301772)
+
+	Don't do run-time lookup of message catalog directory on
+	Cygwin. Cygwin is supposed to look and feel like Unix, and on Unix
+	we use paths fixed at configure time.
+
 2005-04-19  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gutils.h: Minor comment improvement.

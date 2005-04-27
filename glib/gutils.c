@@ -2781,23 +2781,46 @@ _g_utils_thread_init (void)
 
 #include <libintl.h>
 
-#ifdef G_PLATFORM_WIN32
+#ifdef G_OS_WIN32
 
+/**
+ * _glib_get_locale_dir:
+ *
+ * Return the path to the lib\locale subfolder of the GLib
+ * installation folder. The path is in the system codepage. We have to
+ * use system codepage as bindtextdomain() doesn't have a UTF-8
+ * interface.
+ */
 static const gchar *
 _glib_get_locale_dir (void)
 {
-  static const gchar *cache = NULL;
-  if (cache == NULL)
-    cache = g_win32_get_package_installation_subdirectory
-      (GETTEXT_PACKAGE, dll_name, "lib\\locale");
+  gchar *dir, *cp_dir;
+  gchar *retval = NULL;
 
-  return cache;
+  dir = g_win32_get_package_installation_directory (GETTEXT_PACKAGE, dll_name);
+  cp_dir = g_win32_locale_filename_from_utf8 (dir);
+  g_free (dir);
+
+  if (cp_dir)
+    {
+      /* Don't use g_build_filename() on pathnames in the system
+       * codepage. In CJK locales cp_dir might end with a double-byte
+       * character whose trailing byte is a backslash.
+       */
+      retval = g_strconcat (cp_dir, "\\lib\\locale", NULL);
+      g_free (cp_dir);
+    }
+
+  if (retval)
+    return retval;
+  else
+    return g_strdup ("");
 }
 
 #undef GLIB_LOCALE_DIR
 #define GLIB_LOCALE_DIR _glib_get_locale_dir ()
 
-#endif /* G_PLATFORM_WIN32 */
+#endif /* G_OS_WIN32 */
 
 G_CONST_RETURN gchar *
 _glib_gettext (const gchar *str)

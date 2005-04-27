@@ -1223,7 +1223,7 @@ get_package_directory_from_module (gchar *module_name)
  * @dll_name was %NULL.
  *
  * If both @package and @dll_name are %NULL, the directory from where
- * the main executable of the process was loaded is uses instead in
+ * the main executable of the process was loaded is used instead in
  * the same way as above.
  *
  * Returns: a string containing the installation directory for
@@ -1465,6 +1465,60 @@ g_win32_get_windows_version (void)
   g_win32_windows_version_init ();
   
   return windows_version;
+}
+
+/**
+ * g_win32_locale_filename_from_utf8:
+ *
+ * @utf8filename: a UTF-8 encoded filename.
+ *
+ * Convertes a filename from UTF-8 to the system codepage.
+ *
+ * On NT-based Windows, on NTFS file systems, file names are in
+ * Unicode. It is quite possible that Unicode file names contain
+ * characters not representable in the system codepage. (For instance,
+ * Greek or Cyrillic characters on Western European or US Windows
+ * installations, or various less common CJK characters on CJK Windows
+ * installations.)
+ *
+ * In such a case, and if the filename refers to an existing file, and
+ * the file system stores alternate short (8.3) names for directory
+ * entries, the short form of the filename is returned. Note that the
+ * "short" name might in fact be longer than the Unicode name. If no
+ * system codepage name for the file is possible, NULL is returned.
+ *
+ * The return value is dynamically allocated and should be freed when
+ * no longer used.
+ *
+ * Return value: The converted filename, or %NULL on conversion
+ * failure and lack of short names.
+ *
+ * Since: 2.7
+ */
+gchar *
+g_win32_locale_filename_from_utf8 (const gchar *utf8filename)
+{
+  gchar *retval = g_locale_from_utf8 (utf8filename, -1, NULL, NULL, NULL);
+
+  if (retval == NULL && G_WIN32_HAVE_WIDECHAR_API ())
+    {
+      /* Conversion failed, so convert to wide chars, check if there
+       * is a 8.3 version, and use that.
+       */
+      wchar_t *wname = g_utf8_to_utf16 (utf8filename, -1, NULL, NULL, NULL);
+      if (wname != NULL)
+	{
+	  wchar_t wshortname[MAX_PATH + 1];
+	  if (GetShortPathNameW (wname, wshortname, G_N_ELEMENTS (wshortname)))
+	    {
+	      gchar *tem = g_utf16_to_utf8 (wshortname, -1, NULL, NULL, NULL);
+	      retval = g_locale_from_utf8 (tem, -1, NULL, NULL, NULL);
+	      g_free (tem);
+	    }
+	  g_free (wname);
+	}
+    }
+  return retval;
 }
 
 #define __G_WIN32_C__
