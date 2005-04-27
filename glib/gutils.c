@@ -2436,23 +2436,72 @@ _g_utils_thread_init (void)
 
 #include <libintl.h>
 
-#ifdef G_PLATFORM_WIN32
+#ifdef G_OS_WIN32
 
+/**
+ * _glib_get_locale_dir:
+ *
+ * Return the path to the lib\locale subfolder of the GLib
+ * installation folder. The path is in the system codepage. We have to
+ * use system codepage as bindtextdomain() doesn't have a UTF-8
+ * interface.
+ */
 static const gchar *
 _glib_get_locale_dir (void)
 {
-  static const gchar *cache = NULL;
-  if (cache == NULL)
-    cache = g_win32_get_package_installation_subdirectory
-      (GETTEXT_PACKAGE, dll_name, "lib\\locale");
+  gchar *dir;
+  gchar *cp_dir;
+  gchar *retval = NULL;
 
-  return cache;
+  dir = g_win32_get_package_installation_directory (GETTEXT_PACKAGE, dll_name);
+  if (dir != NULL)
+    {
+      /* Convert to system codepage. We *must* pass a NULL error
+       * pointer so that the functions that g_locale_from_utf8() calls
+       * don't attempt to store a translated error message into the
+       * error in case of failure. Note that these functions have been
+       * specially modified to not call g_set_error() if the error
+       * pointer is NULL. The translation would cause a recursive
+       * invocation of _glib_gettext(), and infinite recursion.
+       */
+      cp_dir = g_locale_from_utf8 (dir, -1, NULL, NULL, NULL);
+
+      if (cp_dir == NULL && G_WIN32_HAVE_WIDECHAR_API ())
+	{
+	  /* It failed, so convert to wide chars, check if there is a
+	   * 8.3 version and use that.
+	   */
+	  wchar_t *wdir = g_utf8_to_utf16 (dir, -1, NULL, NULL, NULL);
+	  if (wdir != NULL)
+	    {
+	      wchar_t wshortdir[MAX_PATH + 1];
+	      if (GetShortPathNameW (wdir, wshortdir, G_N_ELEMENTS (wshortdir)))
+		{
+		  g_free (dir);
+		  dir = g_utf16_to_utf8 (wshortdir, -1, NULL, NULL, NULL);
+		  cp_dir = g_locale_from_utf8 (dir, -1, NULL, NULL, NULL);
+		}
+	      g_free (wdir);
+	    }
+	}
+
+      if (cp_dir != NULL)
+	retval = g_strconcat (cp_dir, "\\lib\\locale", NULL);
+      
+      g_free (dir);
+      g_free (cp_dir);
+    }
+
+  if (retval)
+    return retval;
+  else
+    return g_strdup ("");
 }
 
 #undef GLIB_LOCALE_DIR
 #define GLIB_LOCALE_DIR _glib_get_locale_dir ()
 
-#endif /* G_PLATFORM_WIN32 */
+#endif /* G_OS_WIN32 */
 
 G_CONST_RETURN gchar *
 _glib_gettext (const gchar *str)
