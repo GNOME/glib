@@ -1,3 +1,8 @@
+2005-04-28  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gstrfuncs.c (g_strcompress): Warn and don't crash
+	when meeting a trailing \\.  (#301373, Benjamin Otte)
+
 2005-04-27  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gconvert.c (open_converter, g_convert_with_iconv): Don't
