@@ -1,3 +1,10 @@
+2005-04-29  Matthias Clasen  <mclasen@redhat.com>
+
+	* gobject.symbols: 
+	* gboxed.h (G_TYPE_DATE): 
+	* gboxed.c: Add a boxed type for GDate. (#301787, Tim-Philipp 
+	Müller)
+
 2005-03-25  Matthias Clasen  <mclasen@redhat.com>
 
 	* gparam.c (param_spec_ht_lookup): Don't do the second

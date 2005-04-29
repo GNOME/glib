@@ -16,6 +16,7 @@
 g_boxed_copy
 g_boxed_free
 g_boxed_type_register_static
+g_date_get_type G_GNUC_CONST
 g_gstring_get_type G_GNUC_CONST
 g_strv_get_type G_GNUC_CONST
 g_closure_get_type G_GNUC_CONST

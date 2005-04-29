@@ -309,6 +309,7 @@ g_boxed_type_register_static
 g_pointer_type_register_static
 
 <SUBSECTION>
+G_TYPE_DATE
 G_TYPE_GSTRING
 G_TYPE_STRV
 GStrv

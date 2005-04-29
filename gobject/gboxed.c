@@ -94,6 +94,14 @@ value_free (gpointer boxed)
 }
 
 static gpointer
+gdate_copy (gpointer boxed)
+{
+  const GDate *date = (const GDate*) boxed;
+
+  return g_date_new_julian (g_date_get_julian (date));
+}
+
+static gpointer
 gstring_copy (gpointer boxed)
 {
   const GString *src_gstring = boxed;
@@ -169,6 +177,18 @@ g_value_array_get_type (void)
     type_id = g_boxed_type_register_static ("GValueArray",
 					    (GBoxedCopyFunc) g_value_array_copy,
 					    (GBoxedFreeFunc) g_value_array_free);
+  return type_id;
+}
+
+GType
+g_date_get_type (void)
+{
+  static GType type_id = 0;
+
+  if (!type_id)
+    type_id = g_boxed_type_register_static ("GDate",
+					    (GBoxedCopyFunc) gdate_copy,
+					    (GBoxedFreeFunc) g_date_free);
   return type_id;
 }
 

@@ -75,6 +75,13 @@ pointer type with name @name.
 @Returns: a new %G_TYPE_POINTER derived type id for @name.
 
 
+<!-- ##### MACRO G_TYPE_DATE ##### -->
+<para>
+The #GType for #GDate.
+</para>
+
+
+
 <!-- ##### MACRO G_TYPE_GSTRING ##### -->
 <para>
 The #GType for #GString.

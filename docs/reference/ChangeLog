@@ -1,3 +1,8 @@
+2005-04-29  Matthias Clasen  <mclasen@redhat.com>
+
+	* gobject/tmpl/gboxed.sgml: 
+	* gobject/gobject-sections.txt: Add G_TYPE_DATE.
+
 2005-04-23  Stefan Kost  <ensonic@users.sf.net>
 
 	* gobject/tut_gtype.xml:
