@@ -340,6 +340,7 @@ g_tree_replace (GTree    *tree,
  * If the #GTree was created using g_tree_new_full(), the key and value 
  * are freed using the supplied destroy functions, otherwise you have to 
  * make sure that any dynamically allocated values are freed yourself.
+ * If the key does not exist in the #GTree, the function does nothing.
  **/
 void
 g_tree_remove (GTree         *tree,
@@ -357,6 +358,8 @@ g_tree_remove (GTree         *tree,
  * 
  * Removes a key and its associated value from a #GTree without calling 
  * the key and value destroy functions.
+ *
+ * If the key does not exist in the #GTree, the function does nothing.
  **/
 void
 g_tree_steal (GTree         *tree,
@@ -376,7 +379,8 @@ g_tree_steal (GTree         *tree,
  * automatically balanced as key/value pairs are added, key lookup is very 
  * fast.
  *
- * Return value: the value corresponding to the key.
+ * Return value: the value corresponding to the key, or %NULL if the key was
+ * not found.
  **/
 gpointer
 g_tree_lookup (GTree         *tree,
