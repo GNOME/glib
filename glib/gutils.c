@@ -1332,7 +1332,7 @@ g_unsetenv (const gchar *variable)
  *
  * Gets the names of all variables set in the environment.
  * 
- * Return: a NUL-terminated list of strings which must be freed
+ * Returns: a %NULL-terminated list of strings which must be freed
  * with g_strfreev().
  *
  * Since: 2.8
