@@ -1469,10 +1469,9 @@ g_win32_get_windows_version (void)
 
 /**
  * g_win32_locale_filename_from_utf8:
- *
  * @utf8filename: a UTF-8 encoded filename.
  *
- * Convertes a filename from UTF-8 to the system codepage.
+ * Converts a filename from UTF-8 to the system codepage.
  *
  * On NT-based Windows, on NTFS file systems, file names are in
  * Unicode. It is quite possible that Unicode file names contain
@@ -1485,7 +1484,7 @@ g_win32_get_windows_version (void)
  * the file system stores alternate short (8.3) names for directory
  * entries, the short form of the filename is returned. Note that the
  * "short" name might in fact be longer than the Unicode name. If no
- * system codepage name for the file is possible, NULL is returned.
+ * system codepage name for the file is possible, %NULL is returned.
  *
  * The return value is dynamically allocated and should be freed when
  * no longer used.
@@ -1493,7 +1492,7 @@ g_win32_get_windows_version (void)
  * Return value: The converted filename, or %NULL on conversion
  * failure and lack of short names.
  *
- * Since: 2.7
+ * Since: 2.8
  */
 gchar *
 g_win32_locale_filename_from_utf8 (const gchar *utf8filename)
