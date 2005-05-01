@@ -1500,7 +1500,6 @@ g_completion_free
 <TITLE>Windows Compatability Functions</TITLE>
 <FILE>windows</FILE>
 MAXPATHLEN
-pid_t
 pipe
 
 g_win32_error_message
@@ -1515,7 +1514,6 @@ G_WIN32_IS_NT_BASED
 
 <SUBSECTION Private>
 g_win32_ftruncate
-pipe
 
 </SECTION>
 
