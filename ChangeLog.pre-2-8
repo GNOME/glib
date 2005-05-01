@@ -1,3 +1,8 @@
+2005-05-01  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/ghash.h: Rename some parameters to make gtk-doc
+	happy.
+
 2005-04-29  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gtree.c: Clarify some docs. (#302062, Matthew F. Barnes)
