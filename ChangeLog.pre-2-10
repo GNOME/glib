@@ -3,6 +3,8 @@
 	* glib/ghash.h: Rename some parameters to make gtk-doc
 	happy.
 
+	* glib/gstdio.c: Fix some typos, mark new API as "Since 2.8".
+
 2005-04-29  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gtree.c: Clarify some docs. (#302062, Matthew F. Barnes)

@@ -58,7 +58,7 @@
  * permissions, or just existence. On Windows, the underlying access()
  * function in the C library only checks the READONLY attribute, and
  * does not look at the ACL at all. Software that needs to handle file
- * permisssions on Windows more exactly should use the Win32 API.
+ * permissions on Windows more exactly should use the Win32 API.
  *
  * See the C library manual for more details about access().
  *
@@ -66,7 +66,7 @@
  * object that has all the tested permissions, or -1 otherwise or on
  * error.
  * 
- * Since: 2.7
+ * Since: 2.8
  */
 int
 g_access (const gchar *filename,
@@ -128,14 +128,14 @@ g_access (const gchar *filename,
  * Windows the file protection mechanism is not at all POSIX-like, and
  * the underlying chmod() function in the C library just sets or
  * clears the READONLY attribute. It does not touch any ACL. Software
- * that needs to manage file permisssions on Windows exactly should
+ * that needs to manage file permissions on Windows exactly should
  * use the Win32 API.
  *
  * See the C library manual for more details about chmod().
  *
- * Returns: zero if the operation succeedd, -1 on error.
+ * Returns: zero if the operation succeeded, -1 on error.
  * 
- * Since: 2.7
+ * Since: 2.8
  */
 int
 g_chmod (const gchar *filename,
@@ -275,7 +275,7 @@ g_open (const gchar *filename,
  * Returns: a new file descriptor, or -1 if an error occurred. The
  * return value can be used exactly like the return value from creat().
  * 
- * Since: 2.7
+ * Since: 2.8
  */
 int
 g_creat (const gchar *filename,
