@@ -289,9 +289,9 @@ This function is deprecated and will be removed in the next major
 
 </para>
 
-@v1:
-@v2:
-@Returns:
+@v1: 
+@v2: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_direct_hash ##### -->
@@ -308,9 +308,11 @@ This function is deprecated and will be removed in the next major
 
 </para>
 
-@v:
-@v2:
-@Returns:
+@v1: 
+@v2: 
+@Returns: 
+<!-- # Unused Parameters # -->
+@v: 
 
 
 <!-- ##### FUNCTION g_int_hash ##### -->
@@ -318,7 +320,7 @@ This function is deprecated and will be removed in the next major
 
 </para>
 
-@v:
+@v: 
 @Returns: 
 
 
@@ -329,9 +331,11 @@ It can be passed to g_hash_table_new() as the @key_equal_func
 parameter, when using strings as keys in a #GHashTable.
 </para>
 
-@v: a key.
+@v1: 
 @v2: a key to compare with @v.
 @Returns: %TRUE if the two keys match.
+<!-- # Unused Parameters # -->
+@v: a key.
 
 
 <!-- ##### FUNCTION g_str_hash ##### -->
