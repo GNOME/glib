@@ -980,6 +980,7 @@ G_FILE_ERROR
 GFileTest
 g_file_error_from_errno
 g_file_get_contents
+g_file_replace
 g_file_test
 g_mkstemp
 g_file_open_tmp
@@ -1003,7 +1004,9 @@ g_remove
 g_rmdir
 g_fopen
 g_freopen
-
+g_chmod
+g_access
+g_creat
 <SUBSECTION Private>
 g_file_error_quark
 </SECTION>
