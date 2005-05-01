@@ -320,6 +320,7 @@ G_TYPE_IS_BOXED
 <SUBSECTION Private>
 g_gstring_get_type
 g_strv_get_type
+g_date_get_type
 </SECTION>
 
 <SECTION>

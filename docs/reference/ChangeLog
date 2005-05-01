@@ -3,6 +3,8 @@
 	* glib/tmpl/completions.sgml: Document
 	strncmp_func.
 
+	glib/glib-sections.txt: Add new API.
+
 2005-04-29  Matthias Clasen  <mclasen@redhat.com>
 
 	* gobject/tmpl/gboxed.sgml: 
