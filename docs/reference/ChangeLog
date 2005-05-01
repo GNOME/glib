@@ -1,3 +1,8 @@
+2005-05-01  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/tmpl/completions.sgml: Document
+	strncmp_func.
+
 2005-04-29  Matthias Clasen  <mclasen@redhat.com>
 
 	* gobject/tmpl/gboxed.sgml: 

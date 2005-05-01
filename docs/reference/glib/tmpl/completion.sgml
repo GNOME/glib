@@ -33,6 +33,9 @@ a different #GCompletionStrncmpFunc in g_completion_set_compare().
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### STRUCT GCompletion ##### -->
 <para>
 The data structure used for automatic completion.
@@ -44,7 +47,8 @@ The data structure used for automatic completion.
 @prefix: the last prefix passed to g_completion_complete() or 
   g_completion_complete_utf8().
 @cache: the list of items which begin with @prefix.
-@strncmp_func: 
+@strncmp_func: The function to use when comparing strings. 
+  Use g_completion_set_compare() to modify this function.
 
 <!-- ##### FUNCTION g_completion_new ##### -->
 <para>
@@ -123,7 +127,7 @@ not be changed.
 <!-- ##### FUNCTION g_completion_set_compare ##### -->
 <para>
 Sets the function to use for string comparisons. The default
-string comparison function is <function>strncmp()</function>.
+string comparison function is strncmp().
 </para>
 
 @cmp: a #GCompletion.
