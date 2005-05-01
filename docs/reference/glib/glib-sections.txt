@@ -1515,6 +1515,7 @@ G_WIN32_IS_NT_BASED
 
 <SUBSECTION Private>
 g_win32_ftruncate
+pipe
 
 </SECTION>
 
