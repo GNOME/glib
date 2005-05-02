@@ -13,13 +13,16 @@ Enumeration and flags types
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### STRUCT GEnumClass ##### -->
 <para>
 The class of an enumeration type holds information about its 
 possible values.
 </para>
 
-@g_type_class: 
+@g_type_class: the parent class
 @minimum: the smallest possible value.
 @maximum: the largest possible value.
 @n_values: the number of possible values.
@@ -32,7 +35,7 @@ The class of a flags type holds information about its
 possible values.
 </para>
 
-@g_type_class: 
+@g_type_class: the parent class
 @mask: a mask covering all possible values.
 @n_values: the number of possible values.
 @values: an array of #GFlagsValue structs describing the 

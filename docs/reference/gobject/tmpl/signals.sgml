@@ -70,6 +70,9 @@ wildcard and matches any detail argument passed in to emission.
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### STRUCT GSignalInvocationHint ##### -->
 <para>
 The #GSignalInvocationHint structure is used to pass on additional information
@@ -95,8 +98,8 @@ value returned by the last callback.
 @ihint: 	Signal invocation hint, see #GSignalInvocationHint.
 @return_accu: 	Accumulator to collect callback return values in, this
 		is the return value of the current signal emission.
-@handler_return: 
-@data: 
+@handler_return: A #GValue holding the return value of the signal handler.
+@data:          Callback data that was specified when creating the signal.
 @Returns: 	The accumulator function returns whether the signal emission
 		should be aborted. Returning %FALSE means to abort the
 		current emission and %TRUE is returned for continuation.

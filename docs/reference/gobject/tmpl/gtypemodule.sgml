@@ -52,13 +52,16 @@ in #GTypeModuleClass.
 </variablelist>
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### STRUCT GTypeModule ##### -->
 <para>
 The members of the <structname>GTypeModule</structname> structure should not 
 be accessed directly, except for the @name field.
 </para>
 
-@name: 
+@name: the name of the module
 
 <!-- ##### STRUCT GTypeModuleClass ##### -->
 <para>
@@ -66,7 +69,7 @@ In order to implement dynamic loading of types based on #GTypeModule,
 the @load and @unload functions in #GTypeModuleClass must be implemented.
 </para>
 
-@parent_class: 
+@parent_class: the parent class
 @load: loads the module and registers one or more types using
   g_type_module_register_type().
 @unload: unloads the module

@@ -45,6 +45,9 @@ any of '-_+'.
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### TYPEDEF GType ##### -->
 <para>
 A numerical value which represents the unique identifier of a registered
@@ -229,7 +232,7 @@ A structure that provides information to the type system which is
 used specifically for managing fundamental types.  
 </para>
 
-@type_flags: 
+@type_flags: #GTypeFundamentalFlags describing the characteristics of the fundamental type
 
 <!-- ##### STRUCT GInterfaceInfo ##### -->
 <para>
@@ -628,7 +631,7 @@ Note that the messages can also be triggered by setting the
 @G_TYPE_DEBUG_NONE: Print no messages.
 @G_TYPE_DEBUG_OBJECTS: Print messages about object bookkeeping.
 @G_TYPE_DEBUG_SIGNALS: Print messages about signal emissions.
-@G_TYPE_DEBUG_MASK: 
+@G_TYPE_DEBUG_MASK: Mask covering all debug flags.
 
 <!-- ##### FUNCTION g_type_init_with_debug_flags ##### -->
 <para>
@@ -1203,7 +1206,7 @@ fundamental type.
 
 @G_TYPE_FLAG_CLASSED: 		Indicates a classed type.
 @G_TYPE_FLAG_INSTANTIATABLE: 	Indicates an instantiable type (implies classed).
-@G_TYPE_FLAG_DERIVABLE: 		Indicates a flat derivable type.
+@G_TYPE_FLAG_DERIVABLE: 	Indicates a flat derivable type.
 @G_TYPE_FLAG_DEEP_DERIVABLE: 	Indicates a deep derivable type (implies derivable).
 
 <!-- ##### FUNCTION g_type_register_static ##### -->

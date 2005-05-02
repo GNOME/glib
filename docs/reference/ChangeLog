@@ -1,3 +1,13 @@
+2005-05-02  Matthias Clasen  <mclasen@redhat.com>
+
+	* gobject/tmpl/signals.sgml: 
+	* gobject/tmpl/generic_values.sgml: 
+	* gobject/tmpl/gtype.sgml: 
+	* gobject/tmpl/value_arrays.sgml: 
+	* gobject/tmpl/param_value_types.sgml: 
+	* gobject/tmpl/gtypemodule.sgml:
+	* gobject/tmpl/enumerations_flags.sgml: Small additions.
+
 2005-05-01  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/tmpl/completions.sgml: Document

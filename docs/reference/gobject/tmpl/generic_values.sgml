@@ -26,6 +26,9 @@ can be used as a type initializer for g_value_init() are defined by
 a separate interface.  See the Standard Values API for details.
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### MACRO G_VALUE_HOLDS ##### -->
 <para>
 Returns #TRUE if @value holds (or contains) a value of @type.
@@ -33,8 +36,8 @@ This macro will also check for @value != #NULL and issue a
 warning if the check fails.
 </para>
 
-@value: 
-@type: 
+@value: A #GValue structure.
+@type: A #GType value.
 
 
 <!-- ##### MACRO G_VALUE_TYPE ##### -->

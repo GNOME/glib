@@ -24,6 +24,9 @@ All other characters are replaced by a '-' during construction.
 #GParamSpec, #GValue, g_object_class_install_property().
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### MACRO G_IS_PARAM_SPEC_BOOLEAN ##### -->
 <para>
 Return whether the given #GParamSpec is of type %G_TYPE_PARAM_BOOLEAN.
@@ -749,7 +752,8 @@ A #GParamSpec derived structure that contains the meta data for float properties
 @minimum:         minimum value for the property specified
 @maximum:         maximum value for the property specified
 @default_value:   default value for the property specified
-@epsilon: 
+@epsilon:         values closer than @epsilon will be considered identical
+                  by g_param_values_cmp(); the default value is 1e-30.
 
 <!-- ##### FUNCTION g_param_spec_float ##### -->
 <para>
@@ -827,7 +831,9 @@ A #GParamSpec derived structure that contains the meta data for double propertie
 @minimum:         minimum value for the property specified
 @maximum:         maximum value for the property specified
 @default_value:   default value for the property specified
-@epsilon: 
+@epsilon:         values closer than @epsilon will be considered identical
+                  by g_param_values_cmp(); the default value is 1e-90.
+                  
 
 <!-- ##### FUNCTION g_param_spec_double ##### -->
 <para>
