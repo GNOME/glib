@@ -59,6 +59,17 @@ static GMemChunk *string_mem_chunk = NULL;
 /* Hash Functions.
  */
 
+/**
+ * g_str_equal:
+ * @v1: a key. 
+ * @v2: a key to compare with @v1.
+ * 
+ * Compares two strings and returns %TRUE if they are equal.
+ * It can be passed to g_hash_table_new() as the @key_equal_func
+ * parameter, when using strings as keys in a #GHashTable.
+ *
+ * Returns: %TRUE if the two keys match.
+ */
 gboolean
 g_str_equal (gconstpointer v1,
 	     gconstpointer v2)
@@ -69,11 +80,21 @@ g_str_equal (gconstpointer v1,
   return strcmp (string1, string2) == 0;
 }
 
-/* 31 bit hash function */
+/**
+ * g_str_hash:
+ * @v: a string key.
+ *
+ * Converts a string to a hash value.
+ * It can be passed to g_hash_table_new() as the @hash_func parameter, 
+ * when using strings as keys in a #GHashTable.
+ *
+ * Returns: a hash value corresponding to the key.
+ */
 guint
-g_str_hash (gconstpointer key)
+g_str_hash (gconstpointer v)
 {
-  const char *p = key;
+  /* 31 bit hash function */
+  const char *p = v;
   guint h = *p;
 
   if (h)

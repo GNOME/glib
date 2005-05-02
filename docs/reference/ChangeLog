@@ -1,5 +1,8 @@
 2005-05-02  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/tmpl/hash_tables.sgml: Move some docs inline.
+
+	* glib/tmpl/windows.sgml: 
 	* gobject/tmpl/signals.sgml: 
 	* gobject/tmpl/generic_values.sgml: 
 	* gobject/tmpl/gtype.sgml: 

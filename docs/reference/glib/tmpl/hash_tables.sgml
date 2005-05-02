@@ -51,6 +51,9 @@ To destroy a #GHashTable use g_hash_table_destroy().
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### STRUCT GHashTable ##### -->
 <para>
 The <structname>GHashTable</structname> struct is an opaque data structure to represent a
@@ -311,8 +314,6 @@ This function is deprecated and will be removed in the next major
 @v1: 
 @v2: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@v: 
 
 
 <!-- ##### FUNCTION g_int_hash ##### -->
@@ -326,26 +327,18 @@ This function is deprecated and will be removed in the next major
 
 <!-- ##### FUNCTION g_str_equal ##### -->
 <para>
-Compares two strings and returns %TRUE if they are equal.
-It can be passed to g_hash_table_new() as the @key_equal_func
-parameter, when using strings as keys in a #GHashTable.
 </para>
 
 @v1: 
-@v2: a key to compare with @v.
-@Returns: %TRUE if the two keys match.
-<!-- # Unused Parameters # -->
-@v: a key.
+@v2: 
+@Returns:
 
 
 <!-- ##### FUNCTION g_str_hash ##### -->
 <para>
-Converts a string to a hash value.
-It can be passed to g_hash_table_new() as the @hash_func parameter, when
-using strings as keys in a #GHashTable.
 </para>
 
-@v: a string key.
-@Returns: a hash value corresponding to the key.
+@v:
+@Returns:
 
 

@@ -14,6 +14,9 @@ UNIX emulation on Windows.
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### MACRO MAXPATHLEN ##### -->
 <para>
 Provided for UNIX emulation on Windows; equivalent to UNIX 
@@ -23,19 +26,13 @@ macro %MAXPATHLEN, which is the maximum length of a filename
 
 
 
-<!-- ##### TYPEDEF pid_t ##### -->
-<para>
-Provided for UNIX emulation on Windows; process ID type.
-</para>
-
-
 <!-- ##### MACRO pipe ##### -->
 <para>
 Provided for UNIX emulation on Windows; see documentation for <function>pipe()</function>
 in any UNIX manual.
 </para>
 
-@phandles: 
+@phandles: file descriptors, the first one for reading, the second one for writing.
 
 
 <!-- ##### FUNCTION g_win32_error_message ##### -->
@@ -81,6 +78,15 @@ in any UNIX manual.
 
 </para>
 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_win32_locale_filename_from_utf8 ##### -->
+<para>
+
+</para>
+
+@utf8filename: 
 @Returns: 
 
 
