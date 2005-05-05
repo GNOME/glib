@@ -64,6 +64,9 @@ Convenience functions for creating #GIOChannel instances and adding them to the
 </variablelist>
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### STRUCT GIOChannel ##### -->
 <para>
 A data structure representing an IO Channel. The fields should be considered

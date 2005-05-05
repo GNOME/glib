@@ -86,7 +86,7 @@ gboolean g_file_get_contents (const gchar  *filename,
                               gchar       **contents,
                               gsize        *length,    
                               GError      **error);
-gboolean g_file_replace      (const gchar *filename,
+gboolean g_file_set_contents (const gchar *filename,
 			      const gchar *contents,
 			      gssize	     length,
 			      GError	   **error);

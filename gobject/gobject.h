@@ -178,6 +178,18 @@ void        g_object_add_weak_pointer         (GObject        *object,
                                                gpointer       *weak_pointer_location);
 void        g_object_remove_weak_pointer      (GObject        *object, 
                                                gpointer       *weak_pointer_location);
+
+typedef void (*GToggleNotify) (gpointer      data,
+			       GObject      *object,
+			       gboolean      is_last_ref);
+
+void g_object_add_toggle_ref    (GObject       *object,
+				 GToggleNotify  notify,
+				 gpointer       data);
+void g_object_remove_toggle_ref (GObject       *object,
+				 GToggleNotify  notify,
+				 gpointer       data);
+
 gpointer    g_object_get_qdata                (GObject        *object,
 					       GQuark          quark);
 void        g_object_set_qdata                (GObject        *object,

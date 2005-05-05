@@ -63,6 +63,9 @@ locking function variants (those without the suffix _unlocked)
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### STRUCT GAsyncQueue ##### -->
 <para>
 The #GAsyncQueue struct is an opaque data structure, which represents

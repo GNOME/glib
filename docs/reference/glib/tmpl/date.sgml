@@ -63,6 +63,9 @@ can request the current time as a #GTimeVal with g_get_current_time().
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### MACRO G_USEC_PER_SEC ##### -->
 <para>
 Number of microseconds in one second (1 million). This macro is provided for

@@ -56,6 +56,9 @@ To help debug #GRelation objects, use g_relation_print().
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### STRUCT GRelation ##### -->
 <para>
 The #GRelation struct is an opaque data structure to represent a

@@ -14,6 +14,9 @@ Converting varargs to generic values
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### UNION GTypeCValue ##### -->
 <para>
 A union holding one collected value.

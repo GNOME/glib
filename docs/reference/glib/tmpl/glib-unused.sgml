@@ -44,6 +44,10 @@ serializes and deserializes a desktop entry.
 Desktop Entry Parser
 
 
+<!-- ##### SECTION ./tmpl/glib-unused.sgml:Stability_Level ##### -->
+
+
+
 <!-- ##### ENUM GChannelError ##### -->
 <para>
 
@@ -625,6 +629,17 @@ in any UNIX manual.
 </para>
 
 @entry: 
+@length: 
+@error: 
+@Returns: 
+
+<!-- ##### FUNCTION g_file_replace ##### -->
+<para>
+
+</para>
+
+@filename: 
+@contents: 
 @length: 
 @error: 
 @Returns: 

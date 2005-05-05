@@ -21,6 +21,9 @@ g_object_class_install_property(), g_object_set(), g_object_get(),
 g_object_set_property(), g_object_get_property(), g_value_register_transform_func()
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### MACRO G_TYPE_IS_PARAM ##### -->
 <para>
 Returns whether @type "is a" %G_TYPE_PARAM.

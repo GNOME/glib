@@ -14,6 +14,9 @@ These are portable utility functions.
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### FUNCTION g_get_application_name ##### -->
 <para>
 
@@ -74,12 +77,20 @@ These are portable utility functions.
 @variable: 
 
 
+<!-- ##### FUNCTION g_listenv ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
 <!-- ##### FUNCTION g_get_user_name ##### -->
 <para>
 
 </para>
 
-@Returns:
+@Returns: 
 
 
 <!-- ##### FUNCTION g_get_real_name ##### -->
@@ -87,7 +98,7 @@ These are portable utility functions.
 
 </para>
 
-@Returns:
+@Returns: 
 
 
 <!-- ##### FUNCTION g_get_user_cache_dir ##### -->
@@ -151,7 +162,7 @@ These are portable utility functions.
 
 </para>
 
-@Returns:
+@Returns: 
 
 
 <!-- ##### FUNCTION g_basename ##### -->
@@ -181,8 +192,8 @@ The returned string should be freed when no longer needed.
 
 </para>
 
-@file_name:
-@Returns:
+@file_name: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_path_skip_root ##### -->
@@ -309,8 +320,8 @@ larger than @num.
 
 @string: 
 @keys: 
-@nkeys:
-@Returns:
+@nkeys: 
+@Returns: 
 
 
 <!-- ##### STRUCT GDebugKey ##### -->

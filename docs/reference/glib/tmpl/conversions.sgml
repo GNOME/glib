@@ -161,6 +161,9 @@ export G_FILENAME_ENCODING=ISO-8859-1
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### FUNCTION g_convert ##### -->
 <para>
 

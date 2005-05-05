@@ -15,6 +15,9 @@ by application programmers.
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### MACRO G_INLINE_FUNC ##### -->
 <para>
 Used to declare inline functions. If inline functions are not supported on
@@ -237,6 +240,8 @@ See the GNU C documentation for details.
 </para>
 
 Since: 2.8
+
+
 
 <!-- ##### MACRO G_GNUC_FUNCTION ##### -->
 <para>

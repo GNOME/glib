@@ -70,6 +70,7 @@ libglib_2_0_la_SOURCES = 	\
 	gcompletion.c		\
 	gconvert.c		\
 	gdataset.c		\
+	gdatasetprivate.h	\
 	gdate.c         	\
 	gdir.c			\
 	gerror.c		\

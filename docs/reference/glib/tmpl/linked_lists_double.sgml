@@ -64,6 +64,9 @@ To free the entire list, use g_list_free().
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### STRUCT GList ##### -->
 <para>
 The #GList struct is used for each element in a doubly-linked list.

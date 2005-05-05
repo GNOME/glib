@@ -39,19 +39,35 @@ typedef void            (*GDataForeachFunc)     (GQuark         key_id,
 
 /* Keyed Data List
  */
-void      g_datalist_init                (GData          **datalist);
-void      g_datalist_clear               (GData          **datalist);
-gpointer  g_datalist_id_get_data         (GData          **datalist,
-                                          GQuark           key_id);
-void      g_datalist_id_set_data_full    (GData          **datalist,
-                                          GQuark           key_id,
-                                          gpointer         data,
-                                          GDestroyNotify   destroy_func);
-gpointer  g_datalist_id_remove_no_notify (GData          **datalist,
-                                          GQuark           key_id);
-void      g_datalist_foreach             (GData          **datalist,
-                                          GDataForeachFunc func,
-                                          gpointer         user_data);
+void     g_datalist_init                (GData            **datalist);
+void     g_datalist_clear               (GData            **datalist);
+gpointer g_datalist_id_get_data         (GData            **datalist,
+					 GQuark             key_id);
+void     g_datalist_id_set_data_full    (GData            **datalist,
+					 GQuark             key_id,
+					 gpointer           data,
+					 GDestroyNotify     destroy_func);
+gpointer g_datalist_id_remove_no_notify (GData            **datalist,
+					 GQuark             key_id);
+void     g_datalist_foreach             (GData            **datalist,
+					 GDataForeachFunc   func,
+					 gpointer           user_data);
+
+/**
+ * G_DATALIST_FLAGS_MASK:
+ *
+ * A bitmask that restricts the possible flags passed to
+ * g_datalist_set_flags(). Passing a flags value where
+ * flags & ~G_DATALIST_FLAGS_MASK != 0 is an error.
+ */
+#define G_DATALIST_FLAGS_MASK 0x3
+
+void     g_datalist_set_flags           (GData            **datalist,
+					 guint              flags);
+void     g_datalist_unset_flags         (GData            **datalist,
+					 guint              flags);
+guint    g_datalist_get_flags           (GData            **datalist);
+
 #define   g_datalist_id_set_data(dl, q, d)      \
      g_datalist_id_set_data_full ((dl), (q), (d), NULL)
 #define   g_datalist_id_remove_data(dl, q)      \

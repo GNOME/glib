@@ -34,6 +34,9 @@ elements. Each must use separate allocators.
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### STRUCT GAllocator ##### -->
 <para>
 The <structname>GAllocator</structname> struct contains private data. and should only be accessed

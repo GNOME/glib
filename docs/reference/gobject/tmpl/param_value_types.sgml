@@ -833,7 +833,6 @@ A #GParamSpec derived structure that contains the meta data for double propertie
 @default_value:   default value for the property specified
 @epsilon:         values closer than @epsilon will be considered identical
                   by g_param_values_cmp(); the default value is 1e-90.
-                  
 
 <!-- ##### FUNCTION g_param_spec_double ##### -->
 <para>

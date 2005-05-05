@@ -148,6 +148,8 @@ g_object_unref
 g_object_watch_closure
 g_object_weak_ref
 g_object_weak_unref
+g_object_add_toggle_ref
+g_object_remove_toggle_ref
 g_value_get_object
 g_value_set_object
 g_value_dup_object

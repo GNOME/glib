@@ -37,6 +37,7 @@
 
 #include "glib.h"
 #include "galias.h"
+#include "gdatasetprivate.h"
 
 
 /* --- defines --- */
@@ -91,7 +92,6 @@ static GHashTable   *g_quark_ht = NULL;
 static gchar       **g_quarks = NULL;
 static GQuark        g_quark_seq_id = 0;
 
-
 /* --- functions --- */
 
 /* HOLDS: g_dataset_global_lock */
@@ -102,8 +102,8 @@ g_datalist_clear_i (GData **datalist)
   
   /* unlink *all* items before walking their destructors
    */
-  list = *datalist;
-  *datalist = NULL;
+  list = G_DATALIST_GET_POINTER (datalist);
+  G_DATALIST_SET_POINTER (datalist, NULL);
   
   while (list)
     {
@@ -139,7 +139,7 @@ g_datalist_clear (GData **datalist)
   if (!g_dataset_location_ht)
     g_data_initialize ();
 
-  while (*datalist)
+  while (G_DATALIST_GET_POINTER (datalist))
     g_datalist_clear_i (datalist);
   G_UNLOCK (g_dataset_global);
 }
@@ -210,7 +210,7 @@ g_data_set_internal (GData	  **datalist,
 {
   register GData *list;
   
-  list = *datalist;
+  list = G_DATALIST_GET_POINTER (datalist);
   if (!data)
     {
       register GData *prev;
@@ -226,12 +226,12 @@ g_data_set_internal (GData	  **datalist,
 		prev->next = list->next;
 	      else
 		{
-		  *datalist = list->next;
+		  G_DATALIST_SET_POINTER (datalist, list->next);
 		  
 		  /* the dataset destruction *must* be done
 		   * prior to invokation of the data destroy function
 		   */
-		  if (!*datalist && dataset)
+		  if (!list->next && dataset)
 		    g_dataset_destroy_internal (dataset);
 		}
 	      
@@ -309,11 +309,11 @@ g_data_set_internal (GData	  **datalist,
 	}
       else
 	list = g_chunk_new (GData, g_data_mem_chunk);
-      list->next = *datalist;
+      list->next = G_DATALIST_GET_POINTER (datalist);
       list->id = key_id;
       list->data = data;
       list->destroy_func = destroy_func;
-      *datalist = list;
+      G_DATALIST_SET_POINTER (datalist, list);
     }
 
   return NULL;
@@ -459,7 +459,7 @@ g_datalist_id_get_data (GData	 **datalist,
     {
       register GData *list;
       
-      for (list = *datalist; list; list = list->next)
+      for (list = G_DATALIST_GET_POINTER (datalist); list; list = list->next)
 	if (list->id == key_id)
 	  return list->data;
     }
@@ -509,7 +509,7 @@ g_datalist_foreach (GData	   **datalist,
   g_return_if_fail (datalist != NULL);
   g_return_if_fail (func != NULL);
   
-  for (list = *datalist; list; list = next)
+  for (list = G_DATALIST_GET_POINTER (datalist); list; list = next)
     {
       next = list->next;
       func (list->id, list->data, user_data);
@@ -522,6 +522,70 @@ g_datalist_init (GData **datalist)
   g_return_if_fail (datalist != NULL);
   
   *datalist = NULL;
+}
+
+/**
+ * g_datalist_set_flags:
+ * @datalist: pointer to the location that holds a list
+ * @flags: the flags to turn on. The values of the flags are
+ *   restricted by %G_DATALIST_FLAGS_MASK (currently
+ *   3; giving two possible boolean flags).
+ *   A value for @flags that doesn't fit within the mask is
+ *   an error.
+ * 
+ * Turns on flag values for a data list. This function is used
+ * to keep a small number of boolean flags in an object with
+ * a data list without using any additional space. It is
+ * not generally useful except in circumstances where space
+ * is very tight. (It is used in the base #GObject type, for
+ * example.)
+ **/
+void
+g_datalist_set_flags (GData **datalist,
+		      guint   flags)
+{
+  g_return_if_fail (datalist != NULL);
+  g_return_if_fail ((flags & ~G_DATALIST_FLAGS_MASK) == 0);
+
+  G_DATALIST_SET_FLAGS (datalist, flags);
+}
+
+/**
+ * g_datalist_unset_flags:
+ * @datalist: pointer to the location that holds a list
+ * @flags: the flags to turn off. The values of the flags are
+ *   restricted by %G_DATALIST_FLAGS_MASK (currently
+ *   3: giving two possible boolean flags).
+ *   A value for @flags that doesn't fit within the mask is
+ *   an error.
+ * 
+ * Turns off flag values for a data list. See g_datalist_unset_flags()
+ **/
+void
+g_datalist_unset_flags (GData **datalist,
+			guint   flags)
+{
+  g_return_if_fail (datalist != NULL);
+  g_return_if_fail ((flags & ~G_DATALIST_FLAGS_MASK) == 0);
+
+  G_DATALIST_UNSET_FLAGS (datalist, flags);
+}
+
+/**
+ * g_datalist_get_flags:
+ * @datalist: pointer to the location that holds a list
+ * 
+ * Gets flags values packed in together with the datalist.
+ * See g_datalist_set_flags().
+ * 
+ * Return value: the flags of the datalist
+ **/
+guint
+g_datalist_get_flags (GData **datalist)
+{
+  g_return_val_if_fail (datalist != NULL, 0);
+
+  return G_DATALIST_GET_FLAGS (datalist);
 }
 
 /* HOLDS: g_dataset_global_lock */

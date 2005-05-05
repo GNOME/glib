@@ -14,6 +14,9 @@ The base object type
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### STRUCT GObject ##### -->
 <para>
 All the fields in the <structname>GObject</structname> structure are private 
@@ -430,6 +433,76 @@ to match the one used with g_object_add_weak_pointer().
 
 @object: The object that is weak referenced.
 @weak_pointer_location: The memory address of a pointer.
+
+
+<!-- ##### USER_FUNCTION GToggleNotify ##### -->
+<para>
+A callback function used for notification when the state
+of a toggle reference changes. See g_object_add_toggle_ref().
+</para>
+
+@data: Callback data passed to g_object_add_toggle_ref()
+@object: The object on which g_object_add_toggle_ref() was called.
+@is_last_ref: %TRUE if the toggle reference is now the
+  last reference to the object. %FALSE if the toggle
+  reference was the last reference and there are now other
+  references.
+
+
+<!-- ##### FUNCTION g_object_add_toggle_ref ##### -->
+<para>
+Increases the reference count of the object by one and sets a
+callback to be called when all other references to the object are
+dropped, or when this is already the last reference to the object
+and another reference is established.
+</para>
+<para>
+This functionality is intended for binding @object to a proxy
+object managed by another memory manager. This is done with two
+paired references: the strong reference added by
+g_object_add_toggle_ref() and a reverse reference to the proxy
+object which is either a strong reference or weak reference.
+</para>
+<para>
+The setup is that when there are no other references to @object,
+only a weak reference is held in the reverse direction from @object
+to the proxy object, but when there are other references held to
+@object, a strong reference is held. The @notify callback is called
+when the reference from @object to the proxy object should be
+<firstterm>toggled</firstterm> from strong to weak (@is_last_ref
+true) or weak to strong (@is_last_ref false).
+</para>
+<para>
+Since a (normal) reference must be held to the object before
+calling g_object_toggle_ref(), the initial state of the reverse
+link is always strong.
+</para>
+<para>
+Multiple toggle references may be added to the same gobject,
+however if there are multiple toggle references to an object, none
+of them will ever be notified until all but one are removed.  For
+this reason, you should only ever use a toggle reference if there
+is important state in the proxy object.
+</para>
+
+@object: a #GObject
+@notify: a function to call when this reference is the
+  last reference to the object, or is no longer
+  the last reference.
+@data: data to pass to @notify
+
+
+<!-- ##### FUNCTION g_object_remove_toggle_ref ##### -->
+<para>
+Removes a reference added with g_object_add_toggle_ref(). The
+reference count of the object is decreased by one.
+</para>
+
+@object: a #GObject
+@notify: a function to call when this reference is the
+  last reference to the object, or is no longer
+  the last reference.
+@data: data to pass to @notify
 
 
 <!-- ##### FUNCTION g_object_connect ##### -->

@@ -22,6 +22,7 @@ IGNORE_HFILES=			\
 	build			\
 	gobject 		\
 	config.h 		\
+	gdatasetprivate.h	\
 	glibintl.h		\
 	gbsearcharray.h		\
 	gmoduleconf.h		\

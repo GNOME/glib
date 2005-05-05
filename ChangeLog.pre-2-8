@@ -1,3 +1,18 @@
+2005-05-05  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gdataset.[ch] glib/gdatasetprivate.h: Add 
+	g_datalist_set/unset_flags(), g_datalist_get_flags() functions
+	to squeeze some bits into a GDataSet... this is needed for
+	efficient implementation of toggle references in GObject.
+
+	* tests/gobject/references.c tests/gobject/Makefile.am:
+	Add a test case for weak and toggle references.
+
+	* glib/gfileutils.[ch]: Rename g_file_replace() back
+	to g_file_set_contents().
+
+	* glib/glib.symbols: Update.
+
 2005-05-02  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gstring.c (g_str_equal, g_str_hash): Move docs

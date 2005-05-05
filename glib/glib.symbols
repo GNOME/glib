@@ -152,9 +152,12 @@ g_uri_list_extract_uris G_GNUC_MALLOC
 #if IN_FILE(__G_DATASET_C__)
 g_datalist_clear
 g_datalist_foreach
+g_datalist_get_flags
 g_datalist_id_get_data
 g_datalist_id_remove_no_notify
 g_datalist_id_set_data_full
+g_datalist_set_flags
+g_datalist_unset_flags
 g_datalist_init
 g_dataset_destroy
 g_dataset_foreach
@@ -252,7 +255,7 @@ g_build_path G_GNUC_NULL_TERMINATED
 g_file_error_from_errno
 g_file_error_quark
 g_file_get_contents PRIVATE
-g_file_replace
+g_file_set_contents
 g_file_open_tmp PRIVATE
 g_file_test PRIVATE
 g_file_read_link

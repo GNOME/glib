@@ -14,6 +14,9 @@ A mechanism to wrap opaque C structures registered by the type system
 #GParamSpecBoxed, g_param_spec_boxed()
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### USER_FUNCTION GBoxedCopyFunc ##### -->
 <para>
 This function is provided by the user and should produce a copy of the passed

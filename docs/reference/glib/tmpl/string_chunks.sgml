@@ -40,6 +40,9 @@ It is not possible to free individual strings.
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### STRUCT GStringChunk ##### -->
 <para>
 An opaque data structure representing String Chunks.

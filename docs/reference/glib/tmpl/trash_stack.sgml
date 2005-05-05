@@ -21,6 +21,9 @@ is a perfectly valid empty stack.
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### STRUCT GTrashStack ##### -->
 <para>
 Each piece of memory that is pushed onto the stack

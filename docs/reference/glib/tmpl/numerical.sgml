@@ -24,6 +24,9 @@ The #GFloatIEEE754 and #GDoubleIEEE754 unions are used to access the
 <ulink url="http://cch.loria.fr/documentation/IEEE754/numerical_comp_guide/ncg_math.doc.html">http://cch.loria.fr/documentation/IEEE754/numerical_comp_guide/ncg_math.doc.html</ulink>
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### MACRO G_IEEE754_FLOAT_BIAS ##### -->
 <para>
 See <ulink url="http://cch.loria.fr/documentation/IEEE754/numerical_comp_guide/ncg_math.doc.html">http://cch.loria.fr/documentation/IEEE754/numerical_comp_guide/ncg_math.doc.html</ulink>

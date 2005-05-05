@@ -20,6 +20,9 @@ This also means that there is no need to check if the call succeeded.
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### MACRO g_new ##### -->
 <para>
 Allocates @n_structs elements of type @struct_type.
@@ -228,18 +231,12 @@ Wraps g_alloca() in a more typesafe manner.
 
 <!-- ##### MACRO g_memmove ##### -->
 <para>
-Copies a block of memory @n bytes long, from @s to @d.
-The source and destination areas may overlap.
-</para>
-<para>
-In order to use this function, you must include <filename>string.h</filename>
-yourself, because this macro will typically simply resolve
-to <function>memmove()</function> and GLib does not include <filename>string.h</filename> for you.
+
 </para>
 
-@d: the destination address to copy the bytes to.
-@s: the source address to copy the bytes from.
-@n: the number of bytes to copy.
+@dest: 
+@src: 
+@len: 
 
 
 <!-- ##### FUNCTION g_memdup ##### -->

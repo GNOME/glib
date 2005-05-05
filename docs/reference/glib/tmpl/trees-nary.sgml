@@ -49,6 +49,9 @@ g_node_destroy().
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### STRUCT GNode ##### -->
 <para>
 The <structname>GNode</structname> struct represents one node in a

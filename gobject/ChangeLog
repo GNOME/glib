@@ -1,3 +1,11 @@
+2005-05-05  Owen Taylor  <otaylor@redhat.com>
+
+	* gobject.[ch] gobject.symbols: Add
+	g_object_add/remove_toggle_ref() functions to get notification
+	when a reference count is the last remaining reference; this
+	enables better memory management for language bindings.
+	(http://mail.gnome.org/archives/gtk-devel-list/2005-April/msg00095.html)
+
 2005-04-29  Matthias Clasen  <mclasen@redhat.com>
 
 	* gobject.symbols: 

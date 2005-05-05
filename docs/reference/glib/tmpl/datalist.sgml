@@ -47,6 +47,9 @@ To remove all data elements from a datalist, use g_datalist_clear().
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### STRUCT GData ##### -->
 <para>
 The #GData struct is an opaque data structure to represent a
@@ -200,5 +203,39 @@ The data elements' destroy functions are called if they have been set.
 </para>
 
 @datalist: a datalist.
+
+
+<!-- ##### FUNCTION g_datalist_set_flags ##### -->
+<para>
+
+</para>
+
+@datalist: 
+@flags: 
+
+
+<!-- ##### FUNCTION g_datalist_unset_flags ##### -->
+<para>
+
+</para>
+
+@datalist: 
+@flags: 
+
+
+<!-- ##### FUNCTION g_datalist_get_flags ##### -->
+<para>
+
+</para>
+
+@datalist: 
+@Returns: 
+
+
+<!-- ##### MACRO G_DATALIST_FLAGS_MASK ##### -->
+<para>
+
+</para>
+
 
 

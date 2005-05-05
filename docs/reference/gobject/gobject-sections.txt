@@ -242,6 +242,9 @@ g_object_weak_ref
 g_object_weak_unref
 g_object_add_weak_pointer
 g_object_remove_weak_pointer
+GToggleNotify
+g_object_add_toggle_ref
+g_object_remove_toggle_ref
 g_object_connect
 g_object_disconnect
 g_object_set

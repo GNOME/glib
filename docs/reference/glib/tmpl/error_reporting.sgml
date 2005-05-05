@@ -370,6 +370,9 @@ Summary of rules for use of #GError:
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### STRUCT GError ##### -->
 <para>
 The <structname>GError</structname> structure contains 

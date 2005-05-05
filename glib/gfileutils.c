@@ -1068,7 +1068,7 @@ write_to_temp_file (const gchar *contents,
 }
 
 /**
- * g_file_replace:
+ * g_file_set_contents:
  * @filename: name of a file to write @contents to, in the GLib file name
  *   encoding
  * @contents: string to write to the file
@@ -1108,10 +1108,10 @@ write_to_temp_file (const gchar *contents,
  * Since: 2.8
  **/
 gboolean
-g_file_replace (const gchar *filename,
-		const gchar *contents,
-		gssize	     length,
-		GError	   **error)
+g_file_set_contents (const gchar *filename,
+		     const gchar *contents,
+		     gssize	     length,
+		     GError	   **error)
 {
   gchar *tmp_filename;
   gboolean retval;

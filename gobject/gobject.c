@@ -18,6 +18,7 @@
  */
 #include	"gobject.h"
 #include	"gobjectalias.h"
+#include        <glib/gdatasetprivate.h>
 
 /*
  * MT safe
@@ -38,6 +39,10 @@
 /* --- macros --- */
 #define PARAM_SPEC_PARAM_ID(pspec)		((pspec)->param_id)
 #define	PARAM_SPEC_SET_PARAM_ID(pspec, id)	((pspec)->param_id = (id))
+
+#define OBJECT_HAS_TOGGLE_REF_FLAG 0x1
+#define OBJECT_HAS_TOGGLE_REF(object) \
+    ((G_DATALIST_GET_FLAGS(&(object)->qdata) & OBJECT_HAS_TOGGLE_REF_FLAG) != 0)
 
 
 /* --- signals --- */
@@ -105,6 +110,7 @@ static void object_interface_check_properties           (gpointer        func_da
 /* --- variables --- */
 static GQuark	            quark_closure_array = 0;
 static GQuark	            quark_weak_refs = 0;
+static GQuark	            quark_toggle_refs = 0;
 static GParamSpecPool      *pspec_pool = NULL;
 static GObjectNotifyContext property_notify_context = { 0, };
 static gulong	            gobject_signals[LAST_SIGNAL] = { 0, };
@@ -241,6 +247,7 @@ g_object_do_class_init (GObjectClass *class)
   quark_closure_array = g_quark_from_static_string ("GObject-closure-array");
 
   quark_weak_refs = g_quark_from_static_string ("GObject-weak-references");
+  quark_toggle_refs = g_quark_from_static_string ("GObject-toggle-references");
   pspec_pool = g_param_spec_pool_new (TRUE);
   property_notify_context.quark_notify_queue = g_quark_from_static_string ("GObject-notify-queue");
   property_notify_context.dispatcher = g_object_notify_dispatcher;
@@ -1519,10 +1526,8 @@ g_object_weak_unref (GObject    *object,
 	    found_one = TRUE;
 	    wstack->n_weak_refs -= 1;
 	    if (i != wstack->n_weak_refs)
-	      {
-		wstack->weak_refs[i].notify = wstack->weak_refs[wstack->n_weak_refs].notify;
-		wstack->weak_refs[i].data = wstack->weak_refs[wstack->n_weak_refs].data;
-	      }
+	      wstack->weak_refs[i] = wstack->weak_refs[wstack->n_weak_refs];
+
 	    break;
 	  }
     }
@@ -1554,6 +1559,106 @@ g_object_remove_weak_pointer (GObject  *object,
                        weak_pointer_location);
 }
 
+typedef struct {
+  GObject *object;
+  guint n_toggle_refs;
+  struct {
+    GToggleNotify notify;
+    gpointer    data;
+  } toggle_refs[1];  /* flexible array */
+} ToggleRefStack;
+
+static void
+toggle_refs_notify (GObject *object,
+		    gboolean is_last_ref)
+{
+  ToggleRefStack *tstack = g_datalist_id_get_data (&object->qdata, quark_toggle_refs);
+
+  /* Reentrancy here is not as tricky as it seems, because a toggle reference
+   * will only be notified when there is exactly one of them.
+   */
+  g_assert (tstack->n_toggle_refs == 1);
+  tstack->toggle_refs[0].notify (tstack->toggle_refs[0].data, tstack->object, is_last_ref);
+}
+
+void
+g_object_add_toggle_ref (GObject       *object,
+			 GToggleNotify  notify,
+			 gpointer       data)
+{
+  ToggleRefStack *tstack;
+  guint i;
+  
+  g_return_if_fail (G_IS_OBJECT (object));
+  g_return_if_fail (notify != NULL);
+  g_return_if_fail (object->ref_count >= 1);
+
+  g_object_ref (object);
+
+  tstack = g_datalist_id_remove_no_notify (&object->qdata, quark_toggle_refs);
+  if (tstack)
+    {
+      i = tstack->n_toggle_refs++;
+      /* allocate i = tstate->n_toggle_refs - 1 positions beyond the 1 declared
+       * in tstate->toggle_refs */
+      tstack = g_realloc (tstack, sizeof (*tstack) + sizeof (tstack->toggle_refs[0]) * i);
+    }
+  else
+    {
+      tstack = g_renew (ToggleRefStack, NULL, 1);
+      tstack->object = object;
+      tstack->n_toggle_refs = 1;
+      i = 0;
+    }
+
+  /* Set a flag for fast lookup after adding the first toggle reference */
+  if (tstack->n_toggle_refs == 1)
+    G_DATALIST_SET_FLAGS (&object->qdata, OBJECT_HAS_TOGGLE_REF_FLAG);
+  
+  tstack->toggle_refs[i].notify = notify;
+  tstack->toggle_refs[i].data = data;
+  g_datalist_id_set_data_full (&object->qdata, quark_toggle_refs, tstack,
+			       (GDestroyNotify)g_free);
+}
+ 
+void
+g_object_remove_toggle_ref (GObject       *object,
+			    GToggleNotify  notify,
+			    gpointer       data)
+{
+  ToggleRefStack *tstack;
+  gboolean found_one = FALSE;
+
+  g_return_if_fail (G_IS_OBJECT (object));
+  g_return_if_fail (notify != NULL);
+
+  tstack = g_datalist_id_get_data (&object->qdata, quark_toggle_refs);
+  if (tstack)
+    {
+      guint i;
+
+      for (i = 0; i < tstack->n_toggle_refs; i++)
+	if (tstack->toggle_refs[i].notify == notify &&
+	    tstack->toggle_refs[i].data == data)
+	  {
+	    found_one = TRUE;
+	    tstack->n_toggle_refs -= 1;
+	    if (i != tstack->n_toggle_refs)
+	      tstack->toggle_refs[i] = tstack->toggle_refs[tstack->n_toggle_refs];
+
+	    if (tstack->n_toggle_refs == 0)
+	      G_DATALIST_UNSET_FLAGS (&object->qdata, OBJECT_HAS_TOGGLE_REF_FLAG);
+
+	    g_object_unref (object);
+	    
+	    break;
+	  }
+    }
+  
+  if (!found_one)
+    g_warning ("%s: couldn't find toggle ref %p(%p)", G_STRFUNC, notify, data);
+}
+
 gpointer
 g_object_ref (gpointer _object)
 {
@@ -1568,6 +1673,8 @@ g_object_ref (gpointer _object)
 #endif  /* G_ENABLE_DEBUG */
 
   object->ref_count += 1;
+  if (object->ref_count == 2 && OBJECT_HAS_TOGGLE_REF (object))
+    toggle_refs_notify (object, FALSE);
   
   return object;
 }
@@ -1586,7 +1693,11 @@ g_object_unref (gpointer _object)
 #endif  /* G_ENABLE_DEBUG */
 
   if (object->ref_count > 1)
-    object->ref_count -= 1;
+    {
+      object->ref_count -= 1;
+      if (object->ref_count == 1 && OBJECT_HAS_TOGGLE_REF (object))
+	toggle_refs_notify (object, TRUE);
+    }
   else
     g_object_last_unref (object);
 }

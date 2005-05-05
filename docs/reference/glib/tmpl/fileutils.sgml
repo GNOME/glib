@@ -38,6 +38,9 @@ g_dir_read_name(), g_dir_rewind(), g_dir_close().
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### ENUM GFileError ##### -->
 <para>
 Values corresponding to <literal>errno</literal> codes returned from file operations
@@ -154,6 +157,18 @@ A test to perform on a file using g_file_test().
 
 
 <!-- ##### FUNCTION g_file_get_contents ##### -->
+<para>
+
+</para>
+
+@filename: 
+@contents: 
+@length: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_file_set_contents ##### -->
 <para>
 
 </para>
@@ -343,6 +358,36 @@ An opaque structure representing an opened directory.
 @filename: 
 @mode: 
 @stream: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_chmod ##### -->
+<para>
+
+</para>
+
+@filename: 
+@mode: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_access ##### -->
+<para>
+
+</para>
+
+@filename: 
+@mode: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_creat ##### -->
+<para>
+
+</para>
+
+@filename: 
+@mode: 
 @Returns: 
 
 

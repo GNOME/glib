@@ -60,6 +60,9 @@ automatically removed when the objects they point to go away.
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### MACRO G_CLOSURE_NEEDS_MARSHAL ##### -->
 <para>
 Returns %TRUE if a #GClosureMarshal marshaller has not yet been set on 

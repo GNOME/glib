@@ -31,6 +31,9 @@ To find the #GQuark corresponding to a given string, use g_quark_try_string().
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### TYPEDEF GQuark ##### -->
 <para>
 A GQuark is an integer which uniquely identifies a particular string.

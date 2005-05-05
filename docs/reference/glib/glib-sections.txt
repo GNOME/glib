@@ -980,7 +980,7 @@ G_FILE_ERROR
 GFileTest
 g_file_error_from_errno
 g_file_get_contents
-g_file_replace
+g_file_set_contents
 g_file_test
 g_mkstemp
 g_file_open_tmp
@@ -1345,6 +1345,7 @@ g_nullify_pointer
 <SUBSECTION Private>
 G_NATIVE_ATEXIT
 g_ATEXIT
+g_win32_get_system_data_dirs_for_module
 ATEXIT
 
 </SECTION>
@@ -1970,6 +1971,10 @@ g_datalist_remove_no_notify
 <SUBSECTION>
 g_datalist_foreach
 g_datalist_clear
+g_datalist_set_flags
+g_datalist_unset_flags
+g_datalist_get_flags
+G_DATALIST_FLAGS_MASK
 </SECTION>
 
 
