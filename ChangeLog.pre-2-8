@@ -1,3 +1,10 @@
+2005-05-06  Brian Cameron  <brian.cameron@sun.com>
+
+	* configure.in, gmodule-no-export-2.0-uninstalled.pc.in,
+	  Makefile.am:  Added gmodule-no-export-2.0-uninstalled.pc.in
+	  to allow building of other libraries like pango when 
+	  glib is uninstalled.
+
 2005-05-06  Matthias Clasen  <mclasen@redhat.com>
 
 	* tests/option-test.c: Add a testcase.

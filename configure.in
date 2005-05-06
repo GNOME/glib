@@ -2697,6 +2697,7 @@ gmodule-2.0.pc
 gmodule-export-2.0.pc
 gmodule-no-export-2.0.pc
 gmodule-2.0-uninstalled.pc
+gmodule-no-export-2.0-uninstalled.pc
 gthread-2.0.pc
 gthread-2.0-uninstalled.pc
 gobject-2.0.pc
