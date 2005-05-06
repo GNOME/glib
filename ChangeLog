@@ -1,3 +1,11 @@
+2005-05-06  Matthias Clasen  <mclasen@redhat.com>
+
+	* tests/option-test.c: Add a testcase.
+	
+	* glib/goption.c (g_option_context_parse): Treat '-'
+	on its own as a non-option argument.  (#168008, Tim Musson,
+	Thomas Leonard and others)
+
 2005-05-05  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gdataset.[ch] glib/gdatasetprivate.h: Add 

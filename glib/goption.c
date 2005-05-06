@@ -1168,7 +1168,7 @@ g_option_context_parse (GOptionContext   *context,
 	  gchar *arg, *dash;
 	  gboolean parsed = FALSE;
 
-	  if ((*argv)[i][0] == '-' && !stop_parsing)
+	  if ((*argv)[i][0] == '-' && (*argv)[i][1] != '\0' && !stop_parsing)
 	    {
 	      if ((*argv)[i][1] == '-')
 		{
