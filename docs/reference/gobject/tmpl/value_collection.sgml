@@ -6,12 +6,15 @@ Converting varargs to generic values
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-
+The macros in this section provide the varargs parsing support needed
+in variadic GObject functions such as g_object_new() or g_object_set().
+They currently support the collection of integral types, floating point 
+types and pointers.
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
-
+#GValueTable
 </para>
 
 <!-- ##### SECTION Stability_Level ##### -->

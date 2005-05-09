@@ -1,3 +1,10 @@
+2005-05-09  Matthias Clasen  <mclasen@redhat.com>
+
+	* gobject/tmpl/value_collection.sgml: 
+	* gobject/tmpl/gboxed.sgml: 
+	* gobject/tmpl/enumerations_flags.sgml: 
+	* gobject/tmpl/objects.sgml: Add long descriptions.
+
 2005-05-05  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/Makefile.am glib/glib-sections.txt gobject/gobject-sections.txt:

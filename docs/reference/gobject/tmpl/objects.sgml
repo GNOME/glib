@@ -6,12 +6,15 @@ The base object type
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-
+GObject is the fundamental type providing the common attributes and methods for all object
+types in GTK+, Pango and other libraries based on GObject. The GObject class provides methods 
+for object construction and destruction, property access methods, and signal support. 
+Signals are described in detail in <xref linkend="gobject-Signals"/>.
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
-
+#GParamSpecObject, g_param_spec_object()
 </para>
 
 <!-- ##### SECTION Stability_Level ##### -->
