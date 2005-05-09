@@ -147,7 +147,7 @@ write_field_info (GIFieldInfo *info,
   size = g_field_info_get_size (info);
   offset = g_field_info_get_offset (info);
 
-  g_print ("      <field cname=\"%s\" readable=\"%s\" writable=\"%s\" ",
+  g_print ("      <field name=\"%s\" readable=\"%s\" writable=\"%s\" ",
 	   name, 
 	   flags & GI_FIELD_IS_READABLE ? "1" : "0", 
 	   flags & GI_FIELD_IS_WRITABLE ? "1" : "0");
@@ -239,12 +239,12 @@ write_function_info (GIFunctionInfo *info,
   GIFunctionInfoFlags flags;
   const gchar *tag;
   const gchar *name;
-  const gchar *cname;
+  const gchar *symbol;
   gboolean deprecated;
 
   flags = g_function_info_get_flags (info);
   name = g_base_info_get_name ((GIBaseInfo *)info);
-  cname = g_function_info_get_symbol (info);
+  symbol = g_function_info_get_symbol (info);
   deprecated = g_base_info_is_deprecated ((GIBaseInfo *)info);
 
   if (flags & GI_FUNCTION_IS_CONSTRUCTOR)
@@ -254,8 +254,8 @@ write_function_info (GIFunctionInfo *info,
   else
     tag = "function";
 	
-  g_fprintf (file, "%*s<%s name=\"%s\" cname=\"%s\"", 
-	     indent, "", tag, name, cname);
+  g_fprintf (file, "%*s<%s name=\"%s\" symbol=\"%s\"", 
+	     indent, "", tag, name, symbol);
 	
   if (flags & GI_FUNCTION_IS_SETTER)
     g_fprintf (file, " type=\"setter\"");
@@ -310,10 +310,10 @@ write_struct_info (GIStructInfo *info,
       type_name = g_registered_type_info_get_type_name ((GIRegisteredTypeInfo*)info);
       type_init = g_registered_type_info_get_type_init ((GIRegisteredTypeInfo*)info);
 	    
-      g_fprintf (file, "    <boxed name=\"%s\" cname=\"%s\" get-type=\"%s\"", name, type_name, type_init);
+      g_fprintf (file, "    <boxed name=\"%s\" type-name=\"%s\" get-type=\"%s\"", name, type_name, type_init);
     }
   else
-    g_fprintf (file, "    <struct name=\"%s\" cname=\"%s\"", name);
+    g_fprintf (file, "    <struct name=\"%s\"", name);
 	  
   if (deprecated)
     g_fprintf (file, " deprecated=\"1\"");
@@ -350,12 +350,10 @@ write_value_info (GIValueInfo *info,
   gboolean deprecated;
 
   name = g_base_info_get_name ((GIBaseInfo *)info);
-  short_name = g_value_info_get_short_name (info);
   value = g_value_info_get_value (info);
   deprecated = g_base_info_is_deprecated ((GIBaseInfo *)info);
 
-  g_print ("      <member name=\"%s\" cname=\"%s\" value=\"%d\" ",
-	   name, short_name, value);
+  g_print ("      <member name=\"%s\" value=\"%d\"", name, value);
 
   if (deprecated)
     g_fprintf (file, " deprecated=\"1\"");
@@ -460,10 +458,10 @@ write_enum_info (GIEnumInfo *info,
     g_fprintf (file, "    <enum ");
   else
     g_fprintf (file, "    <flags ");
-  g_fprintf (file, "name=\"%s\" cname=\"%s\"", name, type_name, type_init);
+  g_fprintf (file, "name=\"%s\"", name);
 
   if (type_init)
-    g_fprintf (file, " get-type=\"%s\"", type_init);
+    g_fprintf (file, " type-name=\"%s\" get-type=\"%s\"", type_name, type_init);
   
   if (deprecated)
     g_fprintf (file, " deprecated=\"1\"");
@@ -627,7 +625,7 @@ write_object_info (GIObjectInfo *info,
   if (parent)
     g_fprintf (file, " parent=\"%s\"", parent);
 
-  g_fprintf (file, " cname=\"%s\" get-type=\"%s\"", type_name, type_init);
+  g_fprintf (file, " type-name=\"%s\" get-type=\"%s\"", type_name, type_init);
 
   if (deprecated)
     g_fprintf (file, " deprecated=\"1\"");
@@ -707,7 +705,7 @@ write_interface_info (GIInterfaceInfo *info,
 
   type_name = g_registered_type_info_get_type_name ((GIRegisteredTypeInfo*)info);
   type_init = g_registered_type_info_get_type_init ((GIRegisteredTypeInfo*)info);
-  g_fprintf (file, "    <interface name=\"%s\" cname=\"%s\" get-type=\"%s\"",
+  g_fprintf (file, "    <interface name=\"%s\" type-name=\"%s\" get-type=\"%s\"",
 	     name, type_name, type_init);
 
   if (deprecated)
