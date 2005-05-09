@@ -1,0 +1,999 @@
+/* GObject introspection: IDL generator
+ *
+ * Copyright (C) 2005 Matthias Clasen
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ */
+
+#include <errno.h>
+#include <dlfcn.h>
+
+#include <glib.h>
+#include <glib-object.h>
+#include <glib/gstdio.h>
+
+#include "girepository.h"
+
+gboolean raw = FALSE;
+gchar **input = NULL;
+gchar *output = NULL;
+
+static void
+write_type_info (GITypeInfo *info, 
+		 FILE       *file)
+{
+  gint tag;
+  gint i;
+  GITypeInfo *type;
+  
+  const gchar* basic[] = {
+    "void", 
+    "gboolean", 
+    "gint8", 
+    "guint8", 
+    "gint16", 
+    "guint16", 
+    "gint32", 
+    "guint32", 
+    "gint64", 
+    "guint64", 
+    "gfloat", 
+    "gdouble", 
+    "gchar", 
+    "GString", 
+    "gint", 
+    "guint", 
+    "glong", 
+    "gulong"
+  };
+
+  tag = g_type_info_get_tag (info);
+
+  if (tag < 20)
+    g_print ("%s%s", basic[tag], g_type_info_is_pointer (info) ? "*" : "");
+  else if (tag == 20)
+    {
+      gint length;
+
+      type = g_type_info_get_param_type (info, 0);
+      write_type_info (type, file);
+      g_print ("["); 
+
+      length = g_type_info_get_array_length (info);
+      
+      if (length >= 0)
+	g_print ("length=%d", length);
+      
+      if (g_type_info_is_zero_terminated (info))
+	g_print ("%szero-terminated=1", length >= 0 ? "," : "");
+      
+     g_print ("]"); 
+      g_base_info_unref ((GIBaseInfo *)type);
+    }
+  else if (tag == 21)
+    {
+      GIBaseInfo *iface = g_type_info_get_interface (info);
+      g_print ("%s%s", 
+	       g_base_info_get_name (iface), 
+	       g_type_info_is_pointer (info) ? "*" : "");
+      g_base_info_unref (iface);
+    }
+  else if (tag == 22)
+    {
+      type = g_type_info_get_param_type (info, 0);
+      g_print ("GList<");
+      write_type_info (type, file);
+      g_print (">"); 
+      g_base_info_unref ((GIBaseInfo *)type);
+    }
+  else if (tag == 23)
+    {
+      type = g_type_info_get_param_type (info, 0);
+      g_print ("GSList<");
+      write_type_info (type, file);
+      g_print (">"); 
+      g_base_info_unref ((GIBaseInfo *)type);
+    }
+  else if (tag == 24)
+    {
+      type = g_type_info_get_param_type (info, 0);
+      g_print ("GHashTable<");
+      write_type_info (type, file);
+      g_base_info_unref ((GIBaseInfo *)type);
+      type = g_type_info_get_param_type (info, 1);
+      g_print(",");
+      write_type_info (type, file);
+      g_print (">"); 
+      g_base_info_unref ((GIBaseInfo *)type);
+    }
+  else if (tag == 25) 
+    {
+      g_print ("GError<");
+      for (i = 0; i < g_type_info_get_n_error_domains (info); i++)
+	{
+	  GIErrorDomainInfo *ed = g_type_info_get_error_domain (info, i);
+	  g_print ("%s%s", i ? "," : "", g_base_info_get_name ((GIBaseInfo *)ed));
+	  g_base_info_unref ((GIBaseInfo *)ed);
+	}
+      g_print (">");
+    }
+}
+
+static void
+write_field_info (GIFieldInfo *info,
+		  FILE        *file)
+{
+  const gchar *name;
+  GIFieldInfoFlags flags;
+  gint size;
+  gint offset;
+  GITypeInfo *type;
+
+  name = g_base_info_get_name ((GIBaseInfo *)info);
+  flags = g_field_info_get_flags (info);
+  size = g_field_info_get_size (info);
+  offset = g_field_info_get_offset (info);
+
+  g_print ("      <field cname=\"%s\" readable=\"%s\" writable=\"%s\" ",
+	   name, 
+	   flags & GI_FIELD_IS_READABLE ? "1" : "0", 
+	   flags & GI_FIELD_IS_WRITABLE ? "1" : "0");
+  if (size)
+    g_print ("bits=\"%d\" ", size);
+  g_print ("offset=\"%d\" ", offset);
+
+  g_print ("type=\"");
+
+  type = g_field_info_get_type (info);
+  write_type_info (type, file);
+  g_base_info_unref ((GIBaseInfo *)type);
+
+  g_print ("\" />\n");
+}
+
+static void 
+write_callable_info (GICallableInfo *info,
+		     FILE           *file,
+		     gint            indent)
+{
+  GITypeInfo *type;
+  gint i;
+
+  g_fprintf (file, "%*s  <return-type type=\"", indent, "");
+  
+  type = g_callable_info_get_return_type (info);
+  write_type_info (type, file);
+  g_base_info_unref ((GIBaseInfo *)type);
+
+  g_fprintf (file, "\"/>\n");
+	
+  if (g_callable_info_get_n_args (info) > 0)
+    {
+      g_fprintf (file, "%*s  <parameters>\n", indent, "");
+      for (i = 0; i < g_callable_info_get_n_args (info); i++)
+	{
+	  GIArgInfo *arg = g_callable_info_get_arg (info, i);
+		
+	  g_fprintf (file, "%*s    <parameter name=\"%s\" type=\"",
+		     indent, "", g_base_info_get_name ((GIBaseInfo *) arg));
+		
+	  type = g_arg_info_get_type (arg);
+	  write_type_info (type, file);
+	  g_base_info_unref ((GIBaseInfo *)type);
+	  g_fprintf (file, "\"");
+
+	  g_fprintf (file, " direction=\"");
+	  switch (g_arg_info_get_direction (arg))
+	    {
+	    case GI_DIRECTION_IN:
+	      g_fprintf (file, "in");
+	      break;
+	    case GI_DIRECTION_OUT:
+	      g_fprintf (file, "out");
+	      break;
+	    case GI_DIRECTION_INOUT:
+	      g_fprintf (file, "inout");
+	      break;
+	    }
+	  g_fprintf (file, "\"");
+
+	  if (g_arg_info_may_be_null (arg))
+	    g_fprintf (file, " null-ok=\"1\"");
+	  
+	  if (g_arg_info_is_dipper (arg))
+	    g_fprintf (file, " dipper=\"1\"");
+	  
+	  if (g_arg_info_is_return_value (arg))
+	    g_fprintf (file, " retval=\"1\"");
+	  
+	  if (g_arg_info_is_optional (arg))
+	    g_fprintf (file, " optional=\"1\"");
+	  
+	  g_fprintf (file, "/>\n");
+                
+	  g_base_info_unref ((GIBaseInfo *)arg);
+	}
+	    
+      g_fprintf (file, "%*s  </parameters>\n", indent, "");
+    }
+}
+
+static void
+write_function_info (GIFunctionInfo *info,
+		     FILE           *file,
+		     gint            indent)
+{
+  GIFunctionInfoFlags flags;
+  const gchar *tag;
+  const gchar *name;
+  const gchar *cname;
+  gboolean deprecated;
+
+  flags = g_function_info_get_flags (info);
+  name = g_base_info_get_name ((GIBaseInfo *)info);
+  cname = g_function_info_get_symbol (info);
+  deprecated = g_base_info_is_deprecated ((GIBaseInfo *)info);
+
+  if (flags & GI_FUNCTION_IS_CONSTRUCTOR)
+    tag = "constructor";
+  else if (flags & GI_FUNCTION_IS_METHOD)
+    tag = "method";
+  else
+    tag = "function";
+	
+  g_fprintf (file, "%*s<%s name=\"%s\" cname=\"%s\"", 
+	     indent, "", tag, name, cname);
+	
+  if (flags & GI_FUNCTION_IS_SETTER)
+    g_fprintf (file, " type=\"setter\"");
+  else if (flags & GI_FUNCTION_IS_GETTER)
+    g_fprintf (file, " type=\"getter\"");
+	  
+  if (deprecated)
+    g_fprintf (file, " deprecated=\"1\"");
+	
+  g_fprintf (file, ">\n");
+  write_callable_info ((GICallableInfo*)info, file, indent);
+  g_fprintf (file, "%*s</%s>\n", indent, "", tag);
+}
+
+static void
+write_callback_info (GICallbackInfo *info,
+		     FILE           *file,
+		     gint            indent)
+{
+  GIFunctionInfoFlags flags;
+  const gchar *name;
+  gboolean deprecated;
+
+  name = g_base_info_get_name ((GIBaseInfo *)info);
+  deprecated = g_base_info_is_deprecated ((GIBaseInfo *)info);
+
+  g_fprintf (file, "%*s<callback name=\"%s\"", indent, "", name);
+	
+  if (deprecated)
+    g_fprintf (file, " deprecated=\"1\"");
+	
+  g_fprintf (file, ">\n");
+  write_callable_info ((GICallableInfo*)info, file, indent);
+  g_fprintf (file, "%*s</callback>\n", indent, "");
+}
+
+static void
+write_struct_info (GIStructInfo *info,
+		   FILE         *file)
+{
+  const gchar *name;
+  const gchar *type_name;
+  const gchar *type_init;
+  gboolean deprecated;
+  gint i;
+
+  name = g_base_info_get_name ((GIBaseInfo *)info);
+  deprecated = g_base_info_is_deprecated ((GIBaseInfo *)info);
+
+  if (g_base_info_get_type ((GIBaseInfo *)info) == GI_INFO_TYPE_BOXED)
+    {
+      type_name = g_registered_type_info_get_type_name ((GIRegisteredTypeInfo*)info);
+      type_init = g_registered_type_info_get_type_init ((GIRegisteredTypeInfo*)info);
+	    
+      g_fprintf (file, "    <boxed name=\"%s\" cname=\"%s\" get-type=\"%s\"", name, type_name, type_init);
+    }
+  else
+    g_fprintf (file, "    <struct name=\"%s\" cname=\"%s\"", name);
+	  
+  if (deprecated)
+    g_fprintf (file, " deprecated=\"1\"");
+	
+  g_fprintf (file, ">\n");
+
+  for (i = 0; i < g_struct_info_get_n_fields (info); i++)
+    {
+      GIFieldInfo *field = g_struct_info_get_field (info, i);
+      write_field_info (field, file);
+      g_base_info_unref ((GIBaseInfo *)field);
+    }
+
+  for (i = 0; i < g_struct_info_get_n_methods (info); i++)
+    {
+      GIFunctionInfo *function = g_struct_info_get_method (info, i);
+      write_function_info (function, file, 6);
+      g_base_info_unref ((GIBaseInfo *)function);
+    }
+
+  if (g_base_info_get_type ((GIBaseInfo *)info) == GI_INFO_TYPE_BOXED)
+    g_fprintf (file, "    </boxed>\n");
+  else
+    g_fprintf (file, "    </struct>\n");
+}
+
+static void
+write_value_info (GIValueInfo *info,
+		  FILE        *file)
+{
+  const gchar *name;
+  const gchar *short_name;
+  glong value;
+  gboolean deprecated;
+
+  name = g_base_info_get_name ((GIBaseInfo *)info);
+  short_name = g_value_info_get_short_name (info);
+  value = g_value_info_get_value (info);
+  deprecated = g_base_info_is_deprecated ((GIBaseInfo *)info);
+
+  g_print ("      <member name=\"%s\" cname=\"%s\" value=\"%d\" ",
+	   name, short_name, value);
+
+  if (deprecated)
+    g_fprintf (file, " deprecated=\"1\"");
+  
+  g_print (" />\n");
+}
+
+static void
+write_constant_info (GIConstantInfo *info,
+		     FILE           *file,
+		     gint            indent)
+{
+  GITypeInfo *type;
+  const gchar *name;
+  gboolean deprecated;
+  GArgument value;
+
+  name = g_base_info_get_name ((GIBaseInfo *)info);
+  deprecated = g_base_info_is_deprecated ((GIBaseInfo *)info);
+
+  g_print ("%*s<constant name=\"%s\" type=\"", indent, "", name);
+
+  type = g_constant_info_get_type (info);
+  write_type_info (type, file);
+  g_fprintf (file, "\" value=\"");
+
+  g_constant_info_get_value (info, &value);
+  switch (g_type_info_get_tag (type))
+    {
+    case GI_TYPE_TAG_BOOLEAN:
+      g_fprintf (file, "%d", value.v_boolean);
+      break;
+    case GI_TYPE_TAG_INT8:
+      g_fprintf (file, "%d", value.v_int8);
+      break;
+    case GI_TYPE_TAG_UINT8:
+      g_fprintf (file, "%d", value.v_uint8);
+      break;
+    case GI_TYPE_TAG_INT16:
+      g_fprintf (file, "%" G_GINT16_FORMAT, value.v_int16);
+      break;
+    case GI_TYPE_TAG_UINT16:
+      g_fprintf (file, "%" G_GUINT16_FORMAT, value.v_uint16);
+      break;
+    case GI_TYPE_TAG_INT32:
+      g_fprintf (file, "%" G_GINT32_FORMAT, value.v_int32);
+      break;
+    case GI_TYPE_TAG_UINT32:
+      g_fprintf (file, "%" G_GUINT32_FORMAT, value.v_uint32);
+      break;
+    case GI_TYPE_TAG_INT64:
+      g_fprintf (file, "%" G_GINT64_FORMAT, value.v_int64);
+      break;
+    case GI_TYPE_TAG_UINT64:
+      g_fprintf (file, "%" G_GUINT64_FORMAT, value.v_uint64);
+      break;
+    case GI_TYPE_TAG_FLOAT:
+      g_fprintf (file, "%f", value.v_float);
+      break;
+    case GI_TYPE_TAG_DOUBLE:
+      g_fprintf (file, "%Lf", value.v_double);
+      break;
+    case GI_TYPE_TAG_STRING:
+      g_fprintf (file, "%s", value.v_string);
+      break;
+    case GI_TYPE_TAG_INT:
+      g_fprintf (file, "%d", value.v_int);
+      break;
+    case GI_TYPE_TAG_UINT:
+      g_fprintf (file, "%d", value.v_uint);
+      break;
+    case GI_TYPE_TAG_LONG:
+      g_fprintf (file, "%ld", value.v_long);
+      break;
+    case GI_TYPE_TAG_ULONG:
+      g_fprintf (file, "%ld", value.v_ulong);
+      break;
+    }
+  g_fprintf (file, "\" />\n");
+  
+  g_base_info_unref ((GIBaseInfo *)type);
+}
+
+
+static void
+write_enum_info (GIEnumInfo *info,
+		 FILE       *file)
+{
+  const gchar *name;
+  const gchar *type_name;
+  const gchar *type_init;
+  gboolean deprecated;
+  gint i;
+
+  name = g_base_info_get_name ((GIBaseInfo *)info);
+  deprecated = g_base_info_is_deprecated ((GIBaseInfo *)info);
+
+  type_name = g_registered_type_info_get_type_name ((GIRegisteredTypeInfo*)info);
+  type_init = g_registered_type_info_get_type_init ((GIRegisteredTypeInfo*)info);
+
+  if (g_base_info_get_type ((GIBaseInfo *)info) == GI_INFO_TYPE_ENUM)
+    g_fprintf (file, "    <enum ");
+  else
+    g_fprintf (file, "    <flags ");
+  g_fprintf (file, "name=\"%s\" cname=\"%s\"", name, type_name, type_init);
+
+  if (type_init)
+    g_fprintf (file, " get-type=\"%s\"", type_init);
+  
+  if (deprecated)
+    g_fprintf (file, " deprecated=\"1\"");
+	
+  g_fprintf (file, ">\n");
+
+  for (i = 0; i < g_enum_info_get_n_values (info); i++)
+    {
+      GIValueInfo *value = g_enum_info_get_value (info, i);
+      write_value_info (value, file);
+      g_base_info_unref ((GIBaseInfo *)value);
+    }
+
+  if (g_base_info_get_type ((GIBaseInfo *)info) == GI_INFO_TYPE_ENUM)
+    g_fprintf (file, "    </enum>\n");
+  else
+    g_fprintf (file, "    </flags>\n");
+}
+
+static void
+write_signal_info (GISignalInfo *info,
+		   FILE         *file)
+{
+  GSignalFlags flags;
+  const gchar *name;
+  gboolean deprecated;
+
+  name = g_base_info_get_name ((GIBaseInfo *)info);
+  flags = g_signal_info_get_flags (info);
+  deprecated = g_base_info_is_deprecated ((GIBaseInfo *)info);
+
+  g_fprintf (file, "      <signal name=\"%s\"", name);
+
+  if (deprecated)
+    g_fprintf (file, " deprecated=\"1\"");
+	
+  if (flags & G_SIGNAL_RUN_FIRST)
+    g_fprintf (file, " when=\"FIRST\"");
+  else if (flags & G_SIGNAL_RUN_LAST)
+    g_fprintf (file, " when=\"LAST\"");
+  else if (flags & G_SIGNAL_RUN_CLEANUP)
+    g_fprintf (file, " when=\"CLEANUP\"");
+
+  if (flags & G_SIGNAL_NO_RECURSE)
+    g_fprintf (file, " no-recurse=\"1\"");
+
+  if (flags & G_SIGNAL_DETAILED)
+    g_fprintf (file, " detailed=\"1\"");
+
+  if (flags & G_SIGNAL_ACTION)
+    g_fprintf (file, " action=\"1\"");
+
+  if (flags & G_SIGNAL_NO_HOOKS)
+    g_fprintf (file, " no-hooks=\"1\"");
+
+  g_fprintf (file, ">\n");
+
+  write_callable_info ((GICallableInfo*)info, file, 6);
+  g_fprintf (file, "      </signal>\n");
+}
+
+static void
+write_vfunc_info (GIVFuncInfo *info,
+		  FILE        *file)
+{
+  GIVFuncInfoFlags flags;
+  const gchar *name;
+  gboolean deprecated;
+
+  name = g_base_info_get_name ((GIBaseInfo *)info);
+  flags = g_vfunc_info_get_flags (info);
+  deprecated = g_base_info_is_deprecated ((GIBaseInfo *)info);
+
+  g_fprintf (file, "      <vfunc name=\"%s\"", name);
+
+  if (deprecated)
+    g_fprintf (file, " deprecated=\"1\"");
+	
+  if (flags & GI_VFUNC_MUST_CHAIN_UP)
+    g_fprintf (file, " must-chain-up=\"1\"");
+
+  if (flags & GI_VFUNC_MUST_OVERRIDE)
+    g_fprintf (file, " override=\"always\"");
+  else if (flags & GI_VFUNC_MUST_NOT_OVERRIDE)
+    g_fprintf (file, " override=\"never\"");
+    
+  g_fprintf (file, ">\n");
+
+  write_callable_info ((GICallableInfo*)info, file, 6);
+  g_fprintf (file, "      </vfunc>\n");
+}
+
+static void
+write_property_info (GIPropertyInfo *info,
+		     FILE           *file)
+{
+  GParamFlags flags;
+  const gchar *name;
+  gboolean deprecated;
+  GITypeInfo *type;
+
+  name = g_base_info_get_name ((GIBaseInfo *)info);
+  flags = g_property_info_get_flags (info);
+  deprecated = g_base_info_is_deprecated ((GIBaseInfo *)info);
+
+  g_fprintf (file, "      <property name=\"%s\"", name);
+
+  if (deprecated)
+    g_fprintf (file, " deprecated=\"1\"");
+	
+  if (flags & G_PARAM_READABLE)
+    g_fprintf (file, " readable=\"1\"");
+  else
+    g_fprintf (file, " readable=\"0\"");
+
+  if (flags & G_PARAM_WRITABLE)
+    g_fprintf (file, " writable=\"1\"");
+  else
+    g_fprintf (file, " writable=\"0\"");
+
+  if (flags & G_PARAM_CONSTRUCT)
+    g_fprintf (file, " construct=\"1\"");
+
+  if (flags & G_PARAM_CONSTRUCT_ONLY)
+    g_fprintf (file, " construct-only=\"1\"");
+    
+  type = g_property_info_get_type (info);
+  g_fprintf (file, " type=\"");
+  write_type_info (type, file);
+  g_fprintf (file, "\"");
+
+  g_fprintf (file, "/>\n");
+}
+
+static void
+write_object_info (GIObjectInfo *info,
+		   FILE         *file)
+{
+  const gchar *name;
+  const gchar *parent;
+  const gchar *type_name;
+  const gchar *type_init;
+  gboolean deprecated;
+  GIObjectInfo *pnode;
+  gint i;
+
+  name = g_base_info_get_name ((GIBaseInfo *)info);
+  deprecated = g_base_info_is_deprecated ((GIBaseInfo *)info);
+  
+  pnode = g_object_info_get_parent (info);
+  if (pnode)
+    parent = g_base_info_get_name ((GIBaseInfo *)pnode);
+  else
+    parent = NULL;
+  g_base_info_unref ((GIBaseInfo *)pnode);
+
+  type_name = g_registered_type_info_get_type_name ((GIRegisteredTypeInfo*)info);
+  type_init = g_registered_type_info_get_type_init ((GIRegisteredTypeInfo*)info);
+  g_fprintf (file, "    <object name=\"%s\"", name);
+
+  if (parent)
+    g_fprintf (file, " parent=\"%s\"", parent);
+
+  g_fprintf (file, " cname=\"%s\" get-type=\"%s\"", type_name, type_init);
+
+  if (deprecated)
+    g_fprintf (file, " deprecated=\"1\"");
+	
+  g_fprintf (file, ">\n");
+
+  if (g_object_info_get_n_interfaces (info) > 0)
+    {
+      g_fprintf (file, "      <implements>\n");
+      for (i = 0; i < g_object_info_get_n_interfaces (info); i++)
+	{
+	  GIInterfaceInfo *imp = g_object_info_get_interface (info, i);
+	  g_fprintf (file, "      <interface name=\"%s\" />\n",
+		     g_base_info_get_name ((GIBaseInfo*)imp));
+	  g_base_info_unref ((GIBaseInfo*)imp);
+	}
+      g_fprintf (file, "      </implements>\n");
+    }
+
+  for (i = 0; i < g_object_info_get_n_fields (info); i++)
+    {
+      GIFieldInfo *field = g_object_info_get_field (info, i);
+      write_field_info (field, file);
+      g_base_info_unref ((GIBaseInfo *)field);
+    }
+
+  for (i = 0; i < g_object_info_get_n_methods (info); i++)
+    {
+      GIFunctionInfo *function = g_object_info_get_method (info, i);
+      write_function_info (function, file, 6);
+      g_base_info_unref ((GIBaseInfo *)function);
+    }
+
+  for (i = 0; i < g_object_info_get_n_properties (info); i++)
+    {
+      GIPropertyInfo *prop = g_object_info_get_property (info, i);
+      write_property_info (prop, file);
+      g_base_info_unref ((GIBaseInfo *)prop);
+    }
+
+  for (i = 0; i < g_object_info_get_n_signals (info); i++)
+    {
+      GISignalInfo *signal = g_object_info_get_signal (info, i);
+      write_signal_info (signal, file);
+      g_base_info_unref ((GIBaseInfo *)signal);
+    }
+  
+  for (i = 0; i < g_object_info_get_n_vfuncs (info); i++)
+    {
+      GIVFuncInfo *vfunc = g_object_info_get_vfunc (info, i);
+      write_vfunc_info (vfunc, file);
+      g_base_info_unref ((GIBaseInfo *)vfunc);
+    }
+
+  for (i = 0; i < g_object_info_get_n_constants (info); i++)
+    {
+      GIConstantInfo *constant = g_object_info_get_constant (info, i);
+      write_constant_info (constant, file, 6);
+      g_base_info_unref ((GIBaseInfo *)constant);
+    }
+  
+  g_fprintf (file, "    </object>\n");
+}
+
+static void
+write_interface_info (GIInterfaceInfo *info,
+		      FILE            *file)
+{
+  const gchar *name;
+  const gchar *type_name;
+  const gchar *type_init;
+  gboolean deprecated;
+  gint i;
+
+  name = g_base_info_get_name ((GIBaseInfo *)info);
+  deprecated = g_base_info_is_deprecated ((GIBaseInfo *)info);
+
+  type_name = g_registered_type_info_get_type_name ((GIRegisteredTypeInfo*)info);
+  type_init = g_registered_type_info_get_type_init ((GIRegisteredTypeInfo*)info);
+  g_fprintf (file, "    <interface name=\"%s\" cname=\"%s\" get-type=\"%s\"",
+	     name, type_name, type_init);
+
+  if (deprecated)
+    g_fprintf (file, " deprecated=\"1\"");
+	
+  g_fprintf (file, ">\n");
+
+  if (g_interface_info_get_n_prerequisites (info) > 0)
+    {
+      g_fprintf (file, "      <requires>\n");
+      for (i = 0; i < g_interface_info_get_n_prerequisites (info); i++)
+	{
+	  GIBaseInfo *req = g_interface_info_get_prerequisite (info, i);
+	  
+	  if (g_base_info_get_type (req) == GI_INFO_TYPE_INTERFACE)
+	    g_fprintf (file, "      <interface name=\"%s\" />\n",
+		       g_base_info_get_name (req));
+	  else
+	    g_fprintf (file, "      <object name=\"%s\" />\n",
+		       g_base_info_get_name (req));
+	    
+	  g_base_info_unref (req);
+	}
+      g_fprintf (file, "      </requires>\n");
+    }
+
+  for (i = 0; i < g_interface_info_get_n_methods (info); i++)
+    {
+      GIFunctionInfo *function = g_interface_info_get_method (info, i);
+      write_function_info (function, file, 6);
+      g_base_info_unref ((GIBaseInfo *)function);
+    }
+
+  for (i = 0; i < g_interface_info_get_n_properties (info); i++)
+    {
+      GIPropertyInfo *prop = g_interface_info_get_property (info, i);
+      write_property_info (prop, file);
+      g_base_info_unref ((GIBaseInfo *)prop);
+    }
+
+  for (i = 0; i < g_interface_info_get_n_signals (info); i++)
+    {
+      GISignalInfo *signal = g_interface_info_get_signal (info, i);
+      write_signal_info (signal, file);
+      g_base_info_unref ((GIBaseInfo *)signal);
+    }
+  
+  for (i = 0; i < g_interface_info_get_n_vfuncs (info); i++)
+    {
+      GIVFuncInfo *vfunc = g_interface_info_get_vfunc (info, i);
+      write_vfunc_info (vfunc, file);
+      g_base_info_unref ((GIBaseInfo *)vfunc);
+    }
+
+  for (i = 0; i < g_interface_info_get_n_constants (info); i++)
+    {
+      GIConstantInfo *constant = g_interface_info_get_constant (info, i);
+      write_constant_info (constant, file, 6);
+      g_base_info_unref ((GIBaseInfo *)constant);
+    }
+  
+  g_fprintf (file, "    </interface>\n");
+}
+
+static void
+write_error_domain_info (GIErrorDomainInfo *info,
+			 FILE              *file)
+{
+  GIBaseInfo *enum_;
+  const gchar *name, *quark, *codes;
+  
+  name = g_base_info_get_name ((GIBaseInfo *)info);
+  quark = g_error_domain_info_get_quark (info);
+  enum_ = (GIBaseInfo *)g_error_domain_info_get_codes (info);
+  codes = g_base_info_get_name (enum_);
+  g_base_info_unref (enum_);
+  
+  g_fprintf (file,
+	     "    <errordomain name=\"%s\" get-quark=\"%s\" codes=\"%s\" />\n",
+	     name, quark, codes);
+}
+
+static void
+write_repository (GIRepository *repository,
+		  gboolean      needs_prefix)
+{
+  FILE *file;
+  gchar **namespaces;
+  gint i, j;
+
+  namespaces = g_irepository_get_namespaces (repository);
+
+  if (output == NULL)
+    file = stdout;
+  else
+    {
+      gchar *filename;
+      
+      if (needs_prefix)
+	filename = g_strdup_printf ("%s-%s", namespaces[0], output);  
+      else
+	filename = g_strdup (output);
+      file = g_fopen (filename, "w");
+      
+      if (file == NULL)
+	{
+	  g_fprintf (stderr, "failed to open '%s': %s\n",
+		     filename, g_strerror (errno));
+	  g_free (filename);
+	  
+	  return;
+	}
+      
+      g_free (filename);
+    }
+  
+  g_fprintf (file, "<?xml version=\"1.0\"?>\n");
+  g_fprintf (file, "<api version=\"1.0\">\n");
+
+  for (i = 0; namespaces[i]; i++)
+    {
+      g_fprintf (file, "  <namespace name=\"%s\">\n", namespaces[i]);
+      
+      for (j = 0; j < g_irepository_get_n_infos (repository, namespaces[i]); j++)
+	{
+	  GIBaseInfo *info = g_irepository_get_info (repository, namespaces[i], j);
+	  switch (g_base_info_get_type (info))
+	    {
+	    case GI_INFO_TYPE_FUNCTION:
+	      write_function_info ((GIFunctionInfo *)info, file, 4);
+	      break;
+	      
+	    case GI_INFO_TYPE_CALLBACK:
+	      write_callback_info ((GICallbackInfo *)info, file, 4);
+	      break;
+
+	    case GI_INFO_TYPE_STRUCT:
+	    case GI_INFO_TYPE_BOXED:
+	      write_struct_info ((GIStructInfo *)info, file);
+	      break;
+	      
+	    case GI_INFO_TYPE_ENUM:
+	    case GI_INFO_TYPE_FLAGS:
+	      write_enum_info ((GIEnumInfo *)info, file);
+	      break;
+	      
+	    case GI_INFO_TYPE_CONSTANT:
+	      write_constant_info ((GIConstantInfo *)info, file, 4);
+	      break;
+
+	    case GI_INFO_TYPE_OBJECT:
+	      write_object_info ((GIObjectInfo *)info, file);
+	      break;
+
+	    case GI_INFO_TYPE_INTERFACE:
+	      write_interface_info ((GIInterfaceInfo *)info, file);
+	      break;
+
+	    case GI_INFO_TYPE_ERROR_DOMAIN:
+	      write_error_domain_info ((GIErrorDomainInfo *)info, file);
+	      break;
+	    }
+
+	  g_base_info_unref (info);
+	}
+
+      g_fprintf (file, "  </namespace>\n");
+    }
+
+  g_fprintf (file, "</api>\n");
+      
+  if (output != NULL)
+    fclose (file);        
+
+  g_strfreev (namespaces);
+}
+
+static GOptionEntry options[] = 
+{
+  { "raw", 0, 0, G_OPTION_ARG_NONE, &raw, "handle raw metadata", NULL },
+  { "output", 'o', 0, G_OPTION_ARG_FILENAME, &output, "output file", "FILE" }, 
+  { G_OPTION_REMAINING, 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &input, NULL, NULL },
+  { NULL, }
+};
+
+static const guchar *
+load_metadata (const gchar  *filename,
+	       void        **dlhandle)
+{
+  guchar *metadata; 
+  void *handle; 
+  char *error; 
+
+  handle = dlopen (filename, RTLD_LAZY);
+  metadata = dlsym (handle, "_G_METADATA");
+  
+  error = dlerror ();
+
+  if (dlhandle)
+    *dlhandle = handle;
+
+  if (error) 
+    { 
+      g_fprintf (stderr, 
+		 "Could not load metadata from '%s': %s\n", 
+		 filename, error);
+
+      return NULL;
+    }
+
+  return metadata;
+}
+
+int 
+main (int argc, char *argv[])
+{  
+  GOptionContext *context;
+  GError *error = NULL;
+  gboolean needs_prefix;
+  gint i;
+
+  g_type_init ();
+
+  g_metadata_check_sanity ();
+
+  context = g_option_context_new ("");
+  g_option_context_add_main_entries (context, options, NULL);
+  g_option_context_parse (context, &argc, &argv, &error);
+
+  if (!input) 
+    { 
+      g_fprintf (stderr, "no input files\n"); 
+      
+      return 1;
+    }
+
+  for (i = 0; input[i]; i++)
+    {
+      void *dlhandle = NULL;
+      const guchar *metadata;
+
+      if (raw)
+	{
+	  if (!g_file_get_contents (input[i], (gchar **)&metadata, NULL, &error))
+	    {
+	      g_fprintf (stderr, "failed to read '%s': %s\n", 
+			 input[i], error->message);
+	      g_clear_error (&error);
+	      continue;
+	    }
+	}
+      else
+	{
+	  metadata = load_metadata (input[i], &dlhandle);
+	  if (!metadata)
+	    {
+	      g_fprintf (stderr, "failed to load metadata from '%s'\n", 
+			 input[i]);
+	      continue;
+	    }
+	}
+
+      if (input[i + 1] && output)
+	needs_prefix = TRUE;
+      else
+	needs_prefix = FALSE;
+
+      g_irepository_register (g_irepository_get_default (), metadata);
+      write_repository (g_irepository_get_default (), needs_prefix);
+      g_irepository_unregister (g_irepository_get_default (), metadata);
+
+      if (dlhandle)
+	{
+	  dlclose (dlhandle);
+	  dlhandle = NULL;
+	}
+
+      /* when writing to stdout, stop after the first module */
+      if (input[i + 1] && !output)
+	{
+	  g_fprintf (stderr, "warning, %d modules omitted\n",
+		     g_strv_length (input) - 1);
+
+	  break;
+	}
+    }
+      
+  return 0;
+}
