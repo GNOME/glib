@@ -1,3 +1,8 @@
+2005-05-10  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/tmpl/markup.sgml: Fix sloppy language, pointed out by
+	Daniel Vaillard.
+
 2005-04-06  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.6.4 ===
