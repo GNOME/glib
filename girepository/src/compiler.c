@@ -31,6 +31,7 @@
 
 gboolean raw = FALSE;
 gboolean no_init = FALSE;
+gboolean debug = FALSE;
 gchar **input = NULL;
 gchar *output = NULL;
 gchar *mname = NULL;
@@ -132,9 +133,19 @@ static GOptionEntry options[] =
   { "no-init", 0, 0, G_OPTION_ARG_NONE, &no_init, "do not create _init() function", NULL },
   { "output", 'o', 0, G_OPTION_ARG_FILENAME, &output, "output file", "FILE" }, 
   { "module", 'm', 0, G_OPTION_ARG_STRING, &mname, "module to compile", "NAME" }, 
+  { "debug", 0, 0, G_OPTION_ARG_NONE, &debug, "show debug messages", NULL }, 
   { G_OPTION_REMAINING, 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &input, NULL, NULL },
   { NULL, }
 };
+
+static void log_handler (const gchar *log_domain,
+			 GLogLevelFlags log_level,
+			 const gchar *message,
+			 gpointer user_data)
+{
+  if (debug || log_level & G_LOG_LEVEL_DEBUG == 0)
+    g_log_default_handler (log_domain, log_level, message, user_data);
+}
 
 int
 main (int argc, char ** argv)
@@ -150,6 +161,8 @@ main (int argc, char ** argv)
   g_option_context_add_main_entries (context, options, NULL);
   g_option_context_parse (context, &argc, &argv, &error);
   g_option_context_free (context);
+
+  g_log_set_default_handler (log_handler, NULL);
 
   if (!input) 
     { 
