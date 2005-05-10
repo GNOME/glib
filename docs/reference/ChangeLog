@@ -1,3 +1,8 @@
+2005-05-10  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/tmpl/markup.sgml: Fix sloppy language, pointed out by
+	Daniel Vaillard.
+
 2005-05-09  Matthias Clasen  <mclasen@redhat.com>
 
 	* gobject/tmpl/value_collection.sgml: 

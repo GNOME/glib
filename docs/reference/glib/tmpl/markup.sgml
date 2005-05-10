@@ -18,8 +18,12 @@ easily migrate to full-scale XML at a later time if the need arises.
 
 <para>
 GMarkup is not guaranteed to signal an error on all invalid XML; the
-parser may accept documents that an XML parser would not. However, invalid XML 
-documents are not considered valid GMarkup documents. 
+parser may accept documents that an XML parser would not. However, XML 
+documents which are not well-formed<footnote id="wellformed">Being wellformed
+is a weaker condition than being valid. See the 
+<ulink url="http://www.w3.org/TR/REC-xml/">XML specification</ulink> for 
+definitions of these terms.</footnote> are not considered valid GMarkup 
+documents. 
 </para>
 
 <para>
@@ -37,8 +41,8 @@ No user-defined entities.
 </listitem>
 <listitem>
 <para>
-Processing instructions, comments and the doctype declaration are "passed through" but are not 
-interpreted in any way.
+Processing instructions, comments and the doctype declaration are "passed 
+through" but are not interpreted in any way.
 </para>
 </listitem>
 <listitem>
