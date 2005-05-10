@@ -149,6 +149,7 @@ main (int argc, char ** argv)
   context = g_option_context_new ("");
   g_option_context_add_main_entries (context, options, NULL);
   g_option_context_parse (context, &argc, &argv, &error);
+  g_option_context_free (context);
 
   if (!input) 
     { 
