@@ -31,9 +31,21 @@ gboolean raw = FALSE;
 gchar **input = NULL;
 gchar *output = NULL;
 
+static void 
+write_type_name (const gchar *namespace,
+		 GIBaseInfo  *info,
+		 FILE        *file)
+{
+  if (strcmp (namespace, g_base_info_get_namespace (info)) != 0)
+    g_fprintf (file, "%s.", g_base_info_get_namespace (info));
+
+  g_fprintf (file, "%s", g_base_info_get_name (info));
+}
+
 static void
-write_type_info (GITypeInfo *info, 
-		 FILE       *file)
+write_type_info (const gchar *namespace,
+		 GITypeInfo  *info, 
+		 FILE        *file)
 {
   gint tag;
   gint i;
@@ -63,77 +75,80 @@ write_type_info (GITypeInfo *info,
   tag = g_type_info_get_tag (info);
 
   if (tag < 20)
-    g_print ("%s%s", basic[tag], g_type_info_is_pointer (info) ? "*" : "");
+    g_fprintf (file, "%s%s", basic[tag], g_type_info_is_pointer (info) ? "*" : "");
   else if (tag == 20)
     {
       gint length;
 
       type = g_type_info_get_param_type (info, 0);
-      write_type_info (type, file);
-      g_print ("["); 
+      write_type_info (namespace, type, file);
+      g_fprintf (file, "["); 
 
       length = g_type_info_get_array_length (info);
       
       if (length >= 0)
-	g_print ("length=%d", length);
+	g_fprintf (file, "length=%d", length);
       
       if (g_type_info_is_zero_terminated (info))
-	g_print ("%szero-terminated=1", length >= 0 ? "," : "");
+	g_fprintf (file, "%szero-terminated=1", length >= 0 ? "," : "");
       
-     g_print ("]"); 
+     g_fprintf (file, "]"); 
       g_base_info_unref ((GIBaseInfo *)type);
     }
   else if (tag == 21)
     {
       GIBaseInfo *iface = g_type_info_get_interface (info);
-      g_print ("%s%s", 
-	       g_base_info_get_name (iface), 
-	       g_type_info_is_pointer (info) ? "*" : "");
+      write_type_name (namespace, iface, file);
+      if (g_type_info_is_pointer (info))
+	g_fprintf (file, "*"); 
       g_base_info_unref (iface);
     }
   else if (tag == 22)
     {
       type = g_type_info_get_param_type (info, 0);
-      g_print ("GList<");
-      write_type_info (type, file);
-      g_print (">"); 
+      g_fprintf (file, "GList<");
+      write_type_info (namespace, type, file);
+      g_fprintf (file, ">"); 
       g_base_info_unref ((GIBaseInfo *)type);
     }
   else if (tag == 23)
     {
       type = g_type_info_get_param_type (info, 0);
-      g_print ("GSList<");
-      write_type_info (type, file);
-      g_print (">"); 
+      g_fprintf (file, "GSList<");
+      write_type_info (namespace, type, file);
+      g_fprintf (file, ">"); 
       g_base_info_unref ((GIBaseInfo *)type);
     }
   else if (tag == 24)
     {
       type = g_type_info_get_param_type (info, 0);
-      g_print ("GHashTable<");
-      write_type_info (type, file);
+      g_fprintf (file, "GHashTable<");
+      write_type_info (namespace, type, file);
       g_base_info_unref ((GIBaseInfo *)type);
       type = g_type_info_get_param_type (info, 1);
-      g_print(",");
-      write_type_info (type, file);
-      g_print (">"); 
+      g_fprintf (file, ",");
+      write_type_info (namespace, type, file);
+      g_fprintf (file, ">"); 
       g_base_info_unref ((GIBaseInfo *)type);
     }
   else if (tag == 25) 
     {
-      g_print ("GError<");
+      g_fprintf (file, "GError<");
       for (i = 0; i < g_type_info_get_n_error_domains (info); i++)
 	{
 	  GIErrorDomainInfo *ed = g_type_info_get_error_domain (info, i);
-	  g_print ("%s%s", i ? "," : "", g_base_info_get_name ((GIBaseInfo *)ed));
+	  if (i > 0)
+	    g_fprintf (file, ",");
+	  write_type_name (namespace, (GIBaseInfo *)ed, file);
 	  g_base_info_unref ((GIBaseInfo *)ed);
 	}
-      g_print (">");
+      g_fprintf (file, ">");
     }
 }
 
 static void
-write_field_info (GIFieldInfo *info,
+write_field_info (const gchar *namespace,
+		  GIFieldInfo *info,
 		  FILE        *file)
 {
   const gchar *name;
@@ -147,25 +162,27 @@ write_field_info (GIFieldInfo *info,
   size = g_field_info_get_size (info);
   offset = g_field_info_get_offset (info);
 
-  g_print ("      <field name=\"%s\" readable=\"%s\" writable=\"%s\" ",
-	   name, 
-	   flags & GI_FIELD_IS_READABLE ? "1" : "0", 
-	   flags & GI_FIELD_IS_WRITABLE ? "1" : "0");
+  g_fprintf (file, 
+	     "      <field name=\"%s\" readable=\"%s\" writable=\"%s\" ",
+	     name, 
+	     flags & GI_FIELD_IS_READABLE ? "1" : "0", 
+	     flags & GI_FIELD_IS_WRITABLE ? "1" : "0");
   if (size)
-    g_print ("bits=\"%d\" ", size);
-  g_print ("offset=\"%d\" ", offset);
+    g_fprintf (file, "bits=\"%d\" ", size);
+  g_fprintf (file, "offset=\"%d\" ", offset);
 
-  g_print ("type=\"");
+  g_fprintf (file, "type=\"");
 
   type = g_field_info_get_type (info);
-  write_type_info (type, file);
+  write_type_info (namespace, type, file);
   g_base_info_unref ((GIBaseInfo *)type);
 
-  g_print ("\" />\n");
+  g_fprintf (file, "\" />\n");
 }
 
 static void 
-write_callable_info (GICallableInfo *info,
+write_callable_info (const gchar    *namespace,
+		     GICallableInfo *info,
 		     FILE           *file,
 		     gint            indent)
 {
@@ -175,10 +192,30 @@ write_callable_info (GICallableInfo *info,
   g_fprintf (file, "%*s  <return-type type=\"", indent, "");
   
   type = g_callable_info_get_return_type (info);
-  write_type_info (type, file);
+  write_type_info (namespace, type, file);
   g_base_info_unref ((GIBaseInfo *)type);
 
-  g_fprintf (file, "\"/>\n");
+  g_fprintf (file, "\"");
+
+  if (g_type_info_is_pointer (type))
+    {
+      switch (g_callable_info_get_caller_owns (info))
+	{
+	case GI_TRANSFER_NOTHING:
+	  g_fprintf (file, " transfer=\"none\"");
+	  break;
+	case GI_TRANSFER_CONTAINER:
+	  g_fprintf (file, " transfer=\"shallow\"");
+	  break;
+	case GI_TRANSFER_EVERYTHING:
+	  g_fprintf (file, " transfer=\"full\"");
+	  break;
+	default:
+	  g_assert_not_reached ();
+	}
+    }
+  
+  g_fprintf (file, "/>\n");
 	
   if (g_callable_info_get_n_args (info) > 0)
     {
@@ -191,7 +228,7 @@ write_callable_info (GICallableInfo *info,
 		     indent, "", g_base_info_get_name ((GIBaseInfo *) arg));
 		
 	  type = g_arg_info_get_type (arg);
-	  write_type_info (type, file);
+	  write_type_info (namespace, type, file);
 	  g_base_info_unref ((GIBaseInfo *)type);
 	  g_fprintf (file, "\"");
 
@@ -232,7 +269,8 @@ write_callable_info (GICallableInfo *info,
 }
 
 static void
-write_function_info (GIFunctionInfo *info,
+write_function_info (const gchar    *namespace,
+		     GIFunctionInfo *info,
 		     FILE           *file,
 		     gint            indent)
 {
@@ -266,12 +304,13 @@ write_function_info (GIFunctionInfo *info,
     g_fprintf (file, " deprecated=\"1\"");
 	
   g_fprintf (file, ">\n");
-  write_callable_info ((GICallableInfo*)info, file, indent);
+  write_callable_info (namespace, (GICallableInfo*)info, file, indent);
   g_fprintf (file, "%*s</%s>\n", indent, "", tag);
 }
 
 static void
-write_callback_info (GICallbackInfo *info,
+write_callback_info (const gchar    *namespace,
+		     GICallbackInfo *info,
 		     FILE           *file,
 		     gint            indent)
 {
@@ -288,12 +327,13 @@ write_callback_info (GICallbackInfo *info,
     g_fprintf (file, " deprecated=\"1\"");
 	
   g_fprintf (file, ">\n");
-  write_callable_info ((GICallableInfo*)info, file, indent);
+  write_callable_info (namespace, (GICallableInfo*)info, file, indent);
   g_fprintf (file, "%*s</callback>\n", indent, "");
 }
 
 static void
-write_struct_info (GIStructInfo *info,
+write_struct_info (const gchar  *namespace,
+		   GIStructInfo *info,
 		   FILE         *file)
 {
   const gchar *name;
@@ -323,14 +363,14 @@ write_struct_info (GIStructInfo *info,
   for (i = 0; i < g_struct_info_get_n_fields (info); i++)
     {
       GIFieldInfo *field = g_struct_info_get_field (info, i);
-      write_field_info (field, file);
+      write_field_info (namespace, field, file);
       g_base_info_unref ((GIBaseInfo *)field);
     }
 
   for (i = 0; i < g_struct_info_get_n_methods (info); i++)
     {
       GIFunctionInfo *function = g_struct_info_get_method (info, i);
-      write_function_info (function, file, 6);
+      write_function_info (namespace, function, file, 6);
       g_base_info_unref ((GIBaseInfo *)function);
     }
 
@@ -341,7 +381,8 @@ write_struct_info (GIStructInfo *info,
 }
 
 static void
-write_value_info (GIValueInfo *info,
+write_value_info (const gchar *namespace,
+		  GIValueInfo *info,
 		  FILE        *file)
 {
   const gchar *name;
@@ -353,16 +394,17 @@ write_value_info (GIValueInfo *info,
   value = g_value_info_get_value (info);
   deprecated = g_base_info_is_deprecated ((GIBaseInfo *)info);
 
-  g_print ("      <member name=\"%s\" value=\"%d\"", name, value);
+  g_fprintf (file, "      <member name=\"%s\" value=\"%d\"", name, value);
 
   if (deprecated)
     g_fprintf (file, " deprecated=\"1\"");
   
-  g_print (" />\n");
+  g_fprintf (file, " />\n");
 }
 
 static void
-write_constant_info (GIConstantInfo *info,
+write_constant_info (const gchar    *namespace,
+		     GIConstantInfo *info,
 		     FILE           *file,
 		     gint            indent)
 {
@@ -374,10 +416,10 @@ write_constant_info (GIConstantInfo *info,
   name = g_base_info_get_name ((GIBaseInfo *)info);
   deprecated = g_base_info_is_deprecated ((GIBaseInfo *)info);
 
-  g_print ("%*s<constant name=\"%s\" type=\"", indent, "", name);
+  g_fprintf (file, "%*s<constant name=\"%s\" type=\"", indent, "", name);
 
   type = g_constant_info_get_type (info);
-  write_type_info (type, file);
+  write_type_info (namespace, type, file);
   g_fprintf (file, "\" value=\"");
 
   g_constant_info_get_value (info, &value);
@@ -439,8 +481,9 @@ write_constant_info (GIConstantInfo *info,
 
 
 static void
-write_enum_info (GIEnumInfo *info,
-		 FILE       *file)
+write_enum_info (const gchar *namespace,
+		 GIEnumInfo *info,
+		 FILE        *file)
 {
   const gchar *name;
   const gchar *type_name;
@@ -471,7 +514,7 @@ write_enum_info (GIEnumInfo *info,
   for (i = 0; i < g_enum_info_get_n_values (info); i++)
     {
       GIValueInfo *value = g_enum_info_get_value (info, i);
-      write_value_info (value, file);
+      write_value_info (namespace, value, file);
       g_base_info_unref ((GIBaseInfo *)value);
     }
 
@@ -482,7 +525,8 @@ write_enum_info (GIEnumInfo *info,
 }
 
 static void
-write_signal_info (GISignalInfo *info,
+write_signal_info (const gchar  *namespace,
+		   GISignalInfo *info,
 		   FILE         *file)
 {
   GSignalFlags flags;
@@ -519,12 +563,13 @@ write_signal_info (GISignalInfo *info,
 
   g_fprintf (file, ">\n");
 
-  write_callable_info ((GICallableInfo*)info, file, 6);
+  write_callable_info (namespace, (GICallableInfo*)info, file, 6);
   g_fprintf (file, "      </signal>\n");
 }
 
 static void
-write_vfunc_info (GIVFuncInfo *info,
+write_vfunc_info (const gchar *namespace, 
+		  GIVFuncInfo *info,
 		  FILE        *file)
 {
   GIVFuncInfoFlags flags;
@@ -550,12 +595,13 @@ write_vfunc_info (GIVFuncInfo *info,
     
   g_fprintf (file, ">\n");
 
-  write_callable_info ((GICallableInfo*)info, file, 6);
+  write_callable_info (namespace, (GICallableInfo*)info, file, 6);
   g_fprintf (file, "      </vfunc>\n");
 }
 
 static void
-write_property_info (GIPropertyInfo *info,
+write_property_info (const gchar    *namespace,
+		     GIPropertyInfo *info,
 		     FILE           *file)
 {
   GParamFlags flags;
@@ -590,18 +636,18 @@ write_property_info (GIPropertyInfo *info,
     
   type = g_property_info_get_type (info);
   g_fprintf (file, " type=\"");
-  write_type_info (type, file);
+  write_type_info (namespace, type, file);
   g_fprintf (file, "\"");
 
   g_fprintf (file, "/>\n");
 }
 
 static void
-write_object_info (GIObjectInfo *info,
+write_object_info (const gchar  *namespace, 
+		   GIObjectInfo *info,
 		   FILE         *file)
 {
   const gchar *name;
-  const gchar *parent;
   const gchar *type_name;
   const gchar *type_init;
   gboolean deprecated;
@@ -611,19 +657,18 @@ write_object_info (GIObjectInfo *info,
   name = g_base_info_get_name ((GIBaseInfo *)info);
   deprecated = g_base_info_is_deprecated ((GIBaseInfo *)info);
   
-  pnode = g_object_info_get_parent (info);
-  if (pnode)
-    parent = g_base_info_get_name ((GIBaseInfo *)pnode);
-  else
-    parent = NULL;
-  g_base_info_unref ((GIBaseInfo *)pnode);
-
   type_name = g_registered_type_info_get_type_name ((GIRegisteredTypeInfo*)info);
   type_init = g_registered_type_info_get_type_init ((GIRegisteredTypeInfo*)info);
   g_fprintf (file, "    <object name=\"%s\"", name);
 
-  if (parent)
-    g_fprintf (file, " parent=\"%s\"", parent);
+  pnode = g_object_info_get_parent (info);
+  if (pnode)
+    {
+      g_fprintf (file, " parent=\"");
+      write_type_name (namespace, (GIBaseInfo *)pnode, file);
+      g_fprintf (file, "\""  );
+    }
+  g_base_info_unref ((GIBaseInfo *)pnode);
 
   g_fprintf (file, " type-name=\"%s\" get-type=\"%s\"", type_name, type_init);
 
@@ -638,8 +683,9 @@ write_object_info (GIObjectInfo *info,
       for (i = 0; i < g_object_info_get_n_interfaces (info); i++)
 	{
 	  GIInterfaceInfo *imp = g_object_info_get_interface (info, i);
-	  g_fprintf (file, "      <interface name=\"%s\" />\n",
-		     g_base_info_get_name ((GIBaseInfo*)imp));
+	  g_fprintf (file, "        <interface name=\"");
+	  write_type_name (namespace, (GIBaseInfo*)imp, file);
+	  g_fprintf (file,"\" />\n");
 	  g_base_info_unref ((GIBaseInfo*)imp);
 	}
       g_fprintf (file, "      </implements>\n");
@@ -648,42 +694,42 @@ write_object_info (GIObjectInfo *info,
   for (i = 0; i < g_object_info_get_n_fields (info); i++)
     {
       GIFieldInfo *field = g_object_info_get_field (info, i);
-      write_field_info (field, file);
+      write_field_info (namespace, field, file);
       g_base_info_unref ((GIBaseInfo *)field);
     }
 
   for (i = 0; i < g_object_info_get_n_methods (info); i++)
     {
       GIFunctionInfo *function = g_object_info_get_method (info, i);
-      write_function_info (function, file, 6);
+      write_function_info (namespace, function, file, 6);
       g_base_info_unref ((GIBaseInfo *)function);
     }
 
   for (i = 0; i < g_object_info_get_n_properties (info); i++)
     {
       GIPropertyInfo *prop = g_object_info_get_property (info, i);
-      write_property_info (prop, file);
+      write_property_info (namespace, prop, file);
       g_base_info_unref ((GIBaseInfo *)prop);
     }
 
   for (i = 0; i < g_object_info_get_n_signals (info); i++)
     {
       GISignalInfo *signal = g_object_info_get_signal (info, i);
-      write_signal_info (signal, file);
+      write_signal_info (namespace, signal, file);
       g_base_info_unref ((GIBaseInfo *)signal);
     }
   
   for (i = 0; i < g_object_info_get_n_vfuncs (info); i++)
     {
       GIVFuncInfo *vfunc = g_object_info_get_vfunc (info, i);
-      write_vfunc_info (vfunc, file);
+      write_vfunc_info (namespace, vfunc, file);
       g_base_info_unref ((GIBaseInfo *)vfunc);
     }
 
   for (i = 0; i < g_object_info_get_n_constants (info); i++)
     {
       GIConstantInfo *constant = g_object_info_get_constant (info, i);
-      write_constant_info (constant, file, 6);
+      write_constant_info (namespace, constant, file, 6);
       g_base_info_unref ((GIBaseInfo *)constant);
     }
   
@@ -691,7 +737,8 @@ write_object_info (GIObjectInfo *info,
 }
 
 static void
-write_interface_info (GIInterfaceInfo *info,
+write_interface_info (const gchar     *namespace,
+		      GIInterfaceInfo *info,
 		      FILE            *file)
 {
   const gchar *name;
@@ -721,12 +768,11 @@ write_interface_info (GIInterfaceInfo *info,
 	  GIBaseInfo *req = g_interface_info_get_prerequisite (info, i);
 	  
 	  if (g_base_info_get_type (req) == GI_INFO_TYPE_INTERFACE)
-	    g_fprintf (file, "      <interface name=\"%s\" />\n",
-		       g_base_info_get_name (req));
+	    g_fprintf (file, "      <interface name=\"");
 	  else
-	    g_fprintf (file, "      <object name=\"%s\" />\n",
-		       g_base_info_get_name (req));
-	    
+	    g_fprintf (file, "      <object name=\"");
+	  write_type_name (namespace, req, file);
+	  g_fprintf (file, "\" />\n");
 	  g_base_info_unref (req);
 	}
       g_fprintf (file, "      </requires>\n");
@@ -735,35 +781,35 @@ write_interface_info (GIInterfaceInfo *info,
   for (i = 0; i < g_interface_info_get_n_methods (info); i++)
     {
       GIFunctionInfo *function = g_interface_info_get_method (info, i);
-      write_function_info (function, file, 6);
+      write_function_info (namespace, function, file, 6);
       g_base_info_unref ((GIBaseInfo *)function);
     }
 
   for (i = 0; i < g_interface_info_get_n_properties (info); i++)
     {
       GIPropertyInfo *prop = g_interface_info_get_property (info, i);
-      write_property_info (prop, file);
+      write_property_info (namespace, prop, file);
       g_base_info_unref ((GIBaseInfo *)prop);
     }
 
   for (i = 0; i < g_interface_info_get_n_signals (info); i++)
     {
       GISignalInfo *signal = g_interface_info_get_signal (info, i);
-      write_signal_info (signal, file);
+      write_signal_info (namespace, signal, file);
       g_base_info_unref ((GIBaseInfo *)signal);
     }
   
   for (i = 0; i < g_interface_info_get_n_vfuncs (info); i++)
     {
       GIVFuncInfo *vfunc = g_interface_info_get_vfunc (info, i);
-      write_vfunc_info (vfunc, file);
+      write_vfunc_info (namespace, vfunc, file);
       g_base_info_unref ((GIBaseInfo *)vfunc);
     }
 
   for (i = 0; i < g_interface_info_get_n_constants (info); i++)
     {
       GIConstantInfo *constant = g_interface_info_get_constant (info, i);
-      write_constant_info (constant, file, 6);
+      write_constant_info (namespace, constant, file, 6);
       g_base_info_unref ((GIBaseInfo *)constant);
     }
   
@@ -771,21 +817,22 @@ write_interface_info (GIInterfaceInfo *info,
 }
 
 static void
-write_error_domain_info (GIErrorDomainInfo *info,
+write_error_domain_info (const gchar       *namespace,
+			 GIErrorDomainInfo *info,
 			 FILE              *file)
 {
   GIBaseInfo *enum_;
-  const gchar *name, *quark, *codes;
+  const gchar *name, *quark;
   
   name = g_base_info_get_name ((GIBaseInfo *)info);
   quark = g_error_domain_info_get_quark (info);
   enum_ = (GIBaseInfo *)g_error_domain_info_get_codes (info);
-  codes = g_base_info_get_name (enum_);
-  g_base_info_unref (enum_);
-  
   g_fprintf (file,
-	     "    <errordomain name=\"%s\" get-quark=\"%s\" codes=\"%s\" />\n",
-	     name, quark, codes);
+	     "    <errordomain name=\"%s\" get-quark=\"%s\" codes=\"",
+	     name, quark);
+  write_type_name (namespace, enum_, file);
+  g_fprintf (file, "\" />\n");
+  g_base_info_unref (enum_);
 }
 
 static void
@@ -794,6 +841,7 @@ write_repository (GIRepository *repository,
 {
   FILE *file;
   gchar **namespaces;
+  gchar *ns;
   gint i, j;
 
   namespaces = g_irepository_get_namespaces (repository);
@@ -827,45 +875,46 @@ write_repository (GIRepository *repository,
 
   for (i = 0; namespaces[i]; i++)
     {
-      g_fprintf (file, "  <namespace name=\"%s\">\n", namespaces[i]);
+      ns = namespaces[i];
+      g_fprintf (file, "  <namespace name=\"%s\">\n", ns);
       
-      for (j = 0; j < g_irepository_get_n_infos (repository, namespaces[i]); j++)
+      for (j = 0; j < g_irepository_get_n_infos (repository, ns); j++)
 	{
-	  GIBaseInfo *info = g_irepository_get_info (repository, namespaces[i], j);
+	  GIBaseInfo *info = g_irepository_get_info (repository, ns, j);
 	  switch (g_base_info_get_type (info))
 	    {
 	    case GI_INFO_TYPE_FUNCTION:
-	      write_function_info ((GIFunctionInfo *)info, file, 4);
+	      write_function_info (ns, (GIFunctionInfo *)info, file, 4);
 	      break;
 	      
 	    case GI_INFO_TYPE_CALLBACK:
-	      write_callback_info ((GICallbackInfo *)info, file, 4);
+	      write_callback_info (ns, (GICallbackInfo *)info, file, 4);
 	      break;
 
 	    case GI_INFO_TYPE_STRUCT:
 	    case GI_INFO_TYPE_BOXED:
-	      write_struct_info ((GIStructInfo *)info, file);
+	      write_struct_info (ns, (GIStructInfo *)info, file);
 	      break;
 	      
 	    case GI_INFO_TYPE_ENUM:
 	    case GI_INFO_TYPE_FLAGS:
-	      write_enum_info ((GIEnumInfo *)info, file);
+	      write_enum_info (ns, (GIEnumInfo *)info, file);
 	      break;
 	      
 	    case GI_INFO_TYPE_CONSTANT:
-	      write_constant_info ((GIConstantInfo *)info, file, 4);
+	      write_constant_info (ns, (GIConstantInfo *)info, file, 4);
 	      break;
 
 	    case GI_INFO_TYPE_OBJECT:
-	      write_object_info ((GIObjectInfo *)info, file);
+	      write_object_info (ns, (GIObjectInfo *)info, file);
 	      break;
 
 	    case GI_INFO_TYPE_INTERFACE:
-	      write_interface_info ((GIInterfaceInfo *)info, file);
+	      write_interface_info (ns, (GIInterfaceInfo *)info, file);
 	      break;
 
 	    case GI_INFO_TYPE_ERROR_DOMAIN:
-	      write_error_domain_info ((GIErrorDomainInfo *)info, file);
+	      write_error_domain_info (ns, (GIErrorDomainInfo *)info, file);
 	      break;
 	    }
 
