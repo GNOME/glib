@@ -64,15 +64,15 @@ format_output (guchar *metadata,
   if (!no_init)
     {
       g_string_append_printf (result,
-			      "void\n"
-			      "register_metadata (void) __attribute__((constructor))\n"
+			      "__attribute__((constructor)) void\n"
+			      "register_metadata (void)\n"
 			      "{\n"
 			      "\tg_irepository_register (NULL, _G_METADATA);\n"
 			      "}\n\n");
 
       g_string_append_printf (result,
-			      "void\n"
-			      "unregister_metadata (void) __attribute__((destructor))\n"
+			      "__attribute__((destructor)) void\n"
+			      "unregister_metadata (void)\n"
 			      "{\n"
 			      "\tg_irepository_unregister (NULL, _G_METADATA);\n"
 			      "}\n");
