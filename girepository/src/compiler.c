@@ -46,6 +46,8 @@ format_output (guchar *metadata,
 
   result = g_string_sized_new (6 * len);
 
+  g_string_append_printf (result, "#include <stdlib.h>\n\n");
+
   g_string_append_printf (result, "const unsigned char _G_METADATA[] = \n{");
 
   for (i = 0; i < len; i++)
