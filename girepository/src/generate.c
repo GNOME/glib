@@ -214,7 +214,9 @@ write_callable_info (const gchar    *namespace,
 	  g_assert_not_reached ();
 	}
     }
-  
+  if (g_callable_info_may_return_null (info))
+    g_fprintf (file, "null-ok=\"1\"");
+
   g_fprintf (file, " />\n");
 	
   if (g_callable_info_get_n_args (info) > 0)
@@ -229,8 +231,26 @@ write_callable_info (const gchar    *namespace,
 		
 	  type = g_arg_info_get_type (arg);
 	  write_type_info (namespace, type, file);
-	  g_base_info_unref ((GIBaseInfo *)type);
 	  g_fprintf (file, "\"");
+
+	  if (g_type_info_is_pointer (type))
+	    {
+	      switch (g_arg_info_get_ownership_transfer (arg))
+		{
+		case GI_TRANSFER_NOTHING:
+		  g_fprintf (file, " transfer=\"none\"");
+		  break;
+		case GI_TRANSFER_CONTAINER:
+		  g_fprintf (file, " transfer=\"shallow\"");
+		  break;
+		case GI_TRANSFER_EVERYTHING:
+		  g_fprintf (file, " transfer=\"full\"");
+		  break;
+		default:
+		  g_assert_not_reached ();
+		}
+	    }	      
+	  g_base_info_unref ((GIBaseInfo *)type);
 
 	  g_fprintf (file, " direction=\"");
 	  switch (g_arg_info_get_direction (arg))
