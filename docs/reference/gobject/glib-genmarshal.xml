@@ -186,6 +186,20 @@ for unsigned long integer types (gulong)
 </varlistentry>
 
 <varlistentry>
+<term><replaceable>INT64</replaceable></term>
+<listitem><para>
+for signed 64bit integer types (gint64)
+</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><replaceable>UINT64</replaceable></term>
+<listitem><para>
+for unsigned 64bit integer types (guint64)
+</para></listitem>
+</varlistentry>
+
+<varlistentry>
 <term><replaceable>ENUM</replaceable></term>
 <listitem><para>
 for enumeration types (gint)

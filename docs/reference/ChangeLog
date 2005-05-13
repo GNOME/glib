@@ -1,3 +1,9 @@
+2005-05-13  Matthias Clasen  <mclasen@redhat.com>
+
+	* gobject/glib-genmarshal.1: 
+	* gobject/glib-genmarshal.xml: Mention 64bit integer
+	types.
+
 2005-05-10  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/tmpl/markup.sgml: Fix sloppy language, pointed out by

@@ -1,3 +1,7 @@
+2005-05-13  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib-genmarshal.1: Mention 64bit integer types.
+
 2005-05-05  Owen Taylor  <otaylor@redhat.com>
 
 	* gobject.[ch] gobject.symbols: Add
