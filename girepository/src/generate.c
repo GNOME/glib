@@ -215,7 +215,7 @@ write_callable_info (const gchar    *namespace,
 	}
     }
   
-  g_fprintf (file, "/>\n");
+  g_fprintf (file, " />\n");
 	
   if (g_callable_info_get_n_args (info) > 0)
     {
@@ -259,7 +259,7 @@ write_callable_info (const gchar    *namespace,
 	  if (g_arg_info_is_optional (arg))
 	    g_fprintf (file, " optional=\"1\"");
 	  
-	  g_fprintf (file, "/>\n");
+	  g_fprintf (file, " />\n");
                 
 	  g_base_info_unref ((GIBaseInfo *)arg);
 	}
@@ -639,7 +639,7 @@ write_property_info (const gchar    *namespace,
   write_type_info (namespace, type, file);
   g_fprintf (file, "\"");
 
-  g_fprintf (file, "/>\n");
+  g_fprintf (file, " />\n");
 }
 
 static void
