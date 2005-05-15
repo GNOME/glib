@@ -147,8 +147,15 @@ write_type_info (const gchar *namespace,
 }
 
 static void
+write_constant_value (const gchar *namespace, 
+		      GITypeInfo *info,
+		      GArgument *argument,
+		      FILE *file);
+
+static void
 write_field_info (const gchar *namespace,
 		  GIFieldInfo *info,
+		  GIConstantInfo *branch,
 		  FILE        *file)
 {
   const gchar *name;
@@ -156,6 +163,7 @@ write_field_info (const gchar *namespace,
   gint size;
   gint offset;
   GITypeInfo *type;
+  GArgument value; 
 
   name = g_base_info_get_name ((GIBaseInfo *)info);
   flags = g_field_info_get_flags (info);
@@ -177,7 +185,18 @@ write_field_info (const gchar *namespace,
   write_type_info (namespace, type, file);
   g_base_info_unref ((GIBaseInfo *)type);
 
-  g_fprintf (file, "\" />\n");
+  g_fprintf (file, "\"");
+
+  if (branch)
+    {
+      g_fprintf (file, " branch=\"");
+      type = g_constant_info_get_type (branch);
+      g_constant_info_get_value (branch, &value);
+      write_constant_value (namespace, type, &value, file);
+      g_fprintf (file, "\"");
+    }
+
+  g_fprintf (file," />\n");
 }
 
 static void 
@@ -383,7 +402,7 @@ write_struct_info (const gchar  *namespace,
   for (i = 0; i < g_struct_info_get_n_fields (info); i++)
     {
       GIFieldInfo *field = g_struct_info_get_field (info, i);
-      write_field_info (namespace, field, file);
+      write_field_info (namespace, field, NULL, file);
       g_base_info_unref ((GIBaseInfo *)field);
     }
 
@@ -423,6 +442,65 @@ write_value_info (const gchar *namespace,
 }
 
 static void
+write_constant_value (const gchar *namespace, 
+		      GITypeInfo *type,
+		      GArgument  *value,
+		      FILE       *file)
+{
+  switch (g_type_info_get_tag (type))
+    {
+    case GI_TYPE_TAG_BOOLEAN:
+      g_fprintf (file, "%d", value->v_boolean);
+      break;
+    case GI_TYPE_TAG_INT8:
+      g_fprintf (file, "%d", value->v_int8);
+      break;
+    case GI_TYPE_TAG_UINT8:
+      g_fprintf (file, "%d", value->v_uint8);
+      break;
+    case GI_TYPE_TAG_INT16:
+      g_fprintf (file, "%" G_GINT16_FORMAT, value->v_int16);
+      break;
+    case GI_TYPE_TAG_UINT16:
+      g_fprintf (file, "%" G_GUINT16_FORMAT, value->v_uint16);
+      break;
+    case GI_TYPE_TAG_INT32:
+      g_fprintf (file, "%" G_GINT32_FORMAT, value->v_int32);
+      break;
+    case GI_TYPE_TAG_UINT32:
+      g_fprintf (file, "%" G_GUINT32_FORMAT, value->v_uint32);
+      break;
+    case GI_TYPE_TAG_INT64:
+      g_fprintf (file, "%" G_GINT64_FORMAT, value->v_int64);
+      break;
+    case GI_TYPE_TAG_UINT64:
+      g_fprintf (file, "%" G_GUINT64_FORMAT, value->v_uint64);
+      break;
+    case GI_TYPE_TAG_FLOAT:
+      g_fprintf (file, "%f", value->v_float);
+      break;
+    case GI_TYPE_TAG_DOUBLE:
+      g_fprintf (file, "%Lf", value->v_double);
+      break;
+    case GI_TYPE_TAG_STRING:
+      g_fprintf (file, "%s", value->v_string);
+      break;
+    case GI_TYPE_TAG_INT:
+      g_fprintf (file, "%d", value->v_int);
+      break;
+    case GI_TYPE_TAG_UINT:
+      g_fprintf (file, "%d", value->v_uint);
+      break;
+    case GI_TYPE_TAG_LONG:
+      g_fprintf (file, "%ld", value->v_long);
+      break;
+    case GI_TYPE_TAG_ULONG:
+      g_fprintf (file, "%ld", value->v_ulong);
+      break;
+    }
+}
+
+static void
 write_constant_info (const gchar    *namespace,
 		     GIConstantInfo *info,
 		     FILE           *file,
@@ -443,57 +521,7 @@ write_constant_info (const gchar    *namespace,
   g_fprintf (file, "\" value=\"");
 
   g_constant_info_get_value (info, &value);
-  switch (g_type_info_get_tag (type))
-    {
-    case GI_TYPE_TAG_BOOLEAN:
-      g_fprintf (file, "%d", value.v_boolean);
-      break;
-    case GI_TYPE_TAG_INT8:
-      g_fprintf (file, "%d", value.v_int8);
-      break;
-    case GI_TYPE_TAG_UINT8:
-      g_fprintf (file, "%d", value.v_uint8);
-      break;
-    case GI_TYPE_TAG_INT16:
-      g_fprintf (file, "%" G_GINT16_FORMAT, value.v_int16);
-      break;
-    case GI_TYPE_TAG_UINT16:
-      g_fprintf (file, "%" G_GUINT16_FORMAT, value.v_uint16);
-      break;
-    case GI_TYPE_TAG_INT32:
-      g_fprintf (file, "%" G_GINT32_FORMAT, value.v_int32);
-      break;
-    case GI_TYPE_TAG_UINT32:
-      g_fprintf (file, "%" G_GUINT32_FORMAT, value.v_uint32);
-      break;
-    case GI_TYPE_TAG_INT64:
-      g_fprintf (file, "%" G_GINT64_FORMAT, value.v_int64);
-      break;
-    case GI_TYPE_TAG_UINT64:
-      g_fprintf (file, "%" G_GUINT64_FORMAT, value.v_uint64);
-      break;
-    case GI_TYPE_TAG_FLOAT:
-      g_fprintf (file, "%f", value.v_float);
-      break;
-    case GI_TYPE_TAG_DOUBLE:
-      g_fprintf (file, "%Lf", value.v_double);
-      break;
-    case GI_TYPE_TAG_STRING:
-      g_fprintf (file, "%s", value.v_string);
-      break;
-    case GI_TYPE_TAG_INT:
-      g_fprintf (file, "%d", value.v_int);
-      break;
-    case GI_TYPE_TAG_UINT:
-      g_fprintf (file, "%d", value.v_uint);
-      break;
-    case GI_TYPE_TAG_LONG:
-      g_fprintf (file, "%ld", value.v_long);
-      break;
-    case GI_TYPE_TAG_ULONG:
-      g_fprintf (file, "%ld", value.v_ulong);
-      break;
-    }
+  write_constant_value (namespace, type, &value, file);
   g_fprintf (file, "\" />\n");
   
   g_base_info_unref ((GIBaseInfo *)type);
@@ -714,7 +742,7 @@ write_object_info (const gchar  *namespace,
   for (i = 0; i < g_object_info_get_n_fields (info); i++)
     {
       GIFieldInfo *field = g_object_info_get_field (info, i);
-      write_field_info (namespace, field, file);
+      write_field_info (namespace, field, NULL, file);
       g_base_info_unref ((GIBaseInfo *)field);
     }
 
@@ -856,6 +884,67 @@ write_error_domain_info (const gchar       *namespace,
 }
 
 static void
+write_union_info (const gchar *namespace, 
+		  GIUnionInfo *info, 
+		  FILE        *file)
+{
+  const gchar *name;
+  const gchar *type_name;
+  const gchar *type_init;
+  gboolean deprecated;
+  gint i;
+
+  name = g_base_info_get_name ((GIBaseInfo *)info);
+  deprecated = g_base_info_is_deprecated ((GIBaseInfo *)info);
+
+  type_name = g_registered_type_info_get_type_name ((GIRegisteredTypeInfo*)info);
+  type_init = g_registered_type_info_get_type_init ((GIRegisteredTypeInfo*)info);
+  
+  g_fprintf (file, "    <union name=\"%s\"", name);
+  
+  if (type_name)
+    g_fprintf (file, " type-name=\"%s\" get-type=\"%s\"", type_name, type_init);
+	  
+  if (deprecated)
+    g_fprintf (file, " deprecated=\"1\"");
+	
+  g_fprintf (file, ">\n");
+
+  if (g_union_info_is_discriminated (info))
+    {
+      gint offset;
+      GITypeInfo *type;
+
+      offset = g_union_info_get_discriminator_offset (info);
+      type = g_union_info_get_discriminator_type (info);
+      
+      g_fprintf (file, "      <discriminator offset=\"%d\" type=\"", offset);
+      write_type_info (namespace, type, file);
+      g_fprintf (file, "\" />\n");
+      g_base_info_unref ((GIBaseInfo *)type);
+    }
+
+  for (i = 0; i < g_union_info_get_n_fields (info); i++)
+    {
+      GIFieldInfo *field = g_union_info_get_field (info, i);
+      GIConstantInfo *constant = g_union_info_get_discriminator (info, i);
+      write_field_info (namespace, field, constant, file);
+      g_base_info_unref ((GIBaseInfo *)field);
+      if (constant)
+	g_base_info_unref ((GIBaseInfo *)constant);
+    }
+
+  for (i = 0; i < g_union_info_get_n_methods (info); i++)
+    {
+      GIFunctionInfo *function = g_union_info_get_method (info, i);
+      write_function_info (namespace, function, file, 6);
+      g_base_info_unref ((GIBaseInfo *)function);
+    }
+
+  g_fprintf (file, "    </union>\n");
+}
+
+static void
 write_repository (GIRepository *repository,
 		  gboolean      needs_prefix)
 {
@@ -915,7 +1004,11 @@ write_repository (GIRepository *repository,
 	    case GI_INFO_TYPE_BOXED:
 	      write_struct_info (ns, (GIStructInfo *)info, file);
 	      break;
-	      
+
+	    case GI_INFO_TYPE_UNION:
+	      write_union_info (ns, (GIUnionInfo *)info, file);
+	      break;
+
 	    case GI_INFO_TYPE_ENUM:
 	    case GI_INFO_TYPE_FLAGS:
 	      write_enum_info (ns, (GIEnumInfo *)info, file);
@@ -936,6 +1029,9 @@ write_repository (GIRepository *repository,
 	    case GI_INFO_TYPE_ERROR_DOMAIN:
 	      write_error_domain_info (ns, (GIErrorDomainInfo *)info, file);
 	      break;
+
+	    default:
+	      g_error ("unknown info type %d\n", g_base_info_get_type (info));
 	    }
 
 	  g_base_info_unref (info);
