@@ -1,3 +1,12 @@
+2005-05-17  Matthias Clasen  <mclasen@redhat.com>
+
+	* tests/tree-test.c (main): Check the return values of
+	g_tree_remove().
+
+	* glib/gtree.c (g_tree_remove, g_tree_steal): Return
+	a boolean indicating wether the key was found.  (#302545,
+	Matthew F. Barnes)
+
 2005-05-06  Brian Cameron  <brian.cameron@sun.com>
 
 	* configure.in, gmodule-no-export-2.0-uninstalled.pc.in,

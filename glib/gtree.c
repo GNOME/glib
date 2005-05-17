@@ -69,7 +69,8 @@ static GTreeNode* g_tree_node_insert                (GTree            *tree,
 static GTreeNode* g_tree_node_remove                (GTree            *tree,
                                                      GTreeNode        *node,
 						     gconstpointer     key,
-                                                     gboolean          notify);
+                                                     gboolean          notify,
+						     gboolean         *removed);
 static GTreeNode* g_tree_node_balance               (GTreeNode        *node);
 static GTreeNode* g_tree_node_remove_leftmost       (GTreeNode        *node,
 						     GTreeNode       **leftmost);
@@ -341,14 +342,20 @@ g_tree_replace (GTree    *tree,
  * are freed using the supplied destroy functions, otherwise you have to 
  * make sure that any dynamically allocated values are freed yourself.
  * If the key does not exist in the #GTree, the function does nothing.
+ *
+ * Returns: %TRUE if the key was found (prior to 2.8, this function returned nothing)
  **/
-void
+gboolean
 g_tree_remove (GTree         *tree,
 	       gconstpointer  key)
 {
-  g_return_if_fail (tree != NULL);
+  gboolean removed;
 
-  tree->root = g_tree_node_remove (tree, tree->root, key, TRUE);
+  g_return_val_if_fail (tree != NULL, FALSE);
+
+  tree->root = g_tree_node_remove (tree, tree->root, key, TRUE, &removed);
+
+  return removed;
 }
 
 /**
@@ -360,14 +367,20 @@ g_tree_remove (GTree         *tree,
  * the key and value destroy functions.
  *
  * If the key does not exist in the #GTree, the function does nothing.
+ *
+ * Returns: %TRUE if the key was found (prior to 2.8, this function returned nothing)
  **/
-void
+gboolean
 g_tree_steal (GTree         *tree,
               gconstpointer  key)
 {
-  g_return_if_fail (tree != NULL);
+  gboolean removed;
 
-  tree->root = g_tree_node_remove (tree, tree->root, key, FALSE);
+  g_return_val_if_fail (tree != NULL, FALSE);
+
+  tree->root = g_tree_node_remove (tree, tree->root, key, FALSE, &removed);
+
+  return removed;
 }
 
 /**
@@ -682,11 +695,14 @@ static GTreeNode*
 g_tree_node_remove (GTree         *tree,
                     GTreeNode     *node,
 		    gconstpointer  key,
-                    gboolean       notify)
+                    gboolean       notify,
+		    gboolean      *removed)
 {
   GTreeNode *new_root;
   gint old_balance;
   gint cmp;
+
+  *removed = FALSE;
 
   if (!node)
     return NULL;
@@ -730,13 +746,15 @@ g_tree_node_remove (GTree         *tree,
       garbage->right = node_free_list;
       node_free_list = garbage;
       G_UNLOCK (g_tree_global);
+
+      *removed = TRUE;
    }
   else if (cmp < 0)
     {
       if (node->left)
 	{
 	  old_balance = node->left->balance;
-	  node->left = g_tree_node_remove (tree, node->left, key, notify);
+	  node->left = g_tree_node_remove (tree, node->left, key, notify, removed);
 	  node = g_tree_node_restore_left_balance (node, old_balance);
 	}
     }
@@ -745,7 +763,7 @@ g_tree_node_remove (GTree         *tree,
       if (node->right)
 	{
 	  old_balance = node->right->balance;
-	  node->right = g_tree_node_remove (tree, node->right, key, notify);
+	  node->right = g_tree_node_remove (tree, node->right, key, notify, removed);
 	  node = g_tree_node_restore_right_balance (node, old_balance);
 	}
     }

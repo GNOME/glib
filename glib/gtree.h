@@ -53,9 +53,9 @@ void     g_tree_insert          (GTree            *tree,
 void     g_tree_replace         (GTree            *tree,
                                  gpointer          key,
                                  gpointer          value);
-void     g_tree_remove          (GTree            *tree,
+gboolean g_tree_remove          (GTree            *tree,
                                  gconstpointer     key);
-void     g_tree_steal           (GTree            *tree,
+gboolean g_tree_steal           (GTree            *tree,
                                  gconstpointer     key);
 gpointer g_tree_lookup          (GTree            *tree,
                                  gconstpointer     key);

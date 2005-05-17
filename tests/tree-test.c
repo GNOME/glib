@@ -83,7 +83,9 @@ main (int   argc,
 {
   gint i, j;
   GTree *tree;
+  gboolean removed;
   char chars[62];
+  char c;
 
   tree = g_tree_new (my_compare);
   i = 0;
@@ -108,7 +110,14 @@ main (int   argc,
   g_assert (g_tree_nnodes (tree) == (10 + 26 + 26));
 
   for (i = 0; i < 10; i++)
-    g_tree_remove (tree, &chars[i]);
+  {
+    removed = g_tree_remove (tree, &chars[i]);
+    g_assert (removed);
+  }
+
+  c = '\0';
+  removed = g_tree_remove (tree, &c);
+  g_assert (removed == FALSE);
 
   g_tree_foreach (tree, my_traverse, NULL);
 
