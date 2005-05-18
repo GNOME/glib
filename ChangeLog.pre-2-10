@@ -1,3 +1,9 @@
+2005-05-18  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gunidecomp.c: Correct the end of the Hangul 
+	Syllables range, from 0xd7af to 0xd7a3, in several
+	places.  (#301984, Changwoo Ryu)
+
 2005-05-17  Matthias Clasen  <mclasen@redhat.com>
 
 	* tests/tree-test.c (main): Check the return values of

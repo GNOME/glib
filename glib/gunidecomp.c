@@ -217,7 +217,7 @@ g_unicode_canonical_decomposition (gunichar ch,
   gunichar *r;
 
   /* Hangul syllable */
-  if (ch >= 0xac00 && ch <= 0xd7af)
+  if (ch >= 0xac00 && ch <= 0xd7a3)
     {
       decompose_hangul (ch, NULL, result_len);
       r = g_malloc (*result_len * sizeof (gunichar));
@@ -356,7 +356,7 @@ _g_utf8_normalize_wc (const gchar    *str,
       const gchar *decomp;
       gunichar wc = g_utf8_get_char (p);
 
-      if (wc >= 0xac00 && wc <= 0xd7af)
+      if (wc >= 0xac00 && wc <= 0xd7a3)
         {
           gsize result_len;
           decompose_hangul (wc, NULL, &result_len);
@@ -387,7 +387,7 @@ _g_utf8_normalize_wc (const gchar    *str,
       int cc;
       gsize old_n_wc = n_wc;
 	  
-      if (wc >= 0xac00 && wc <= 0xd7af)
+      if (wc >= 0xac00 && wc <= 0xd7a3)
         {
           gsize result_len;
           decompose_hangul (wc, wc_buffer + n_wc, &result_len);
