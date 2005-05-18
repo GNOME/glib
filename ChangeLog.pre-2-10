@@ -1,3 +1,10 @@
+2005-05-18  Matthias Clasen  <mclasen@redhat.com>
+
+	* gmodule-no-export-2.0-uninstalled.pc.in (prefix): New file.
+	
+	* configure.in: 
+	* Makefile.am (EXTRA_DIST): Add gmodule-no-export-2.0-uninstalled.pc.in
+	
 2005-05-06  Matthias Clasen  <mclasen@redhat.com>
 
 	* tests/option-test.c: Add a testcase.

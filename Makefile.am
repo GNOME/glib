@@ -36,6 +36,7 @@ EXTRA_DIST = 			\
 	glib-2.0-uninstalled.pc.in 	\
 	gobject-2.0-uninstalled.pc.in 	\
 	gmodule-2.0-uninstalled.pc.in	\
+	gmodule-no-export-2.0-uninstalled.pc.in	\
 	gthread-2.0-uninstalled.pc.in
 
 # These may be in the builddir too
