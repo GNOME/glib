@@ -106,43 +106,66 @@ write_type_info (const gchar *namespace,
   else if (tag == 22)
     {
       type = g_type_info_get_param_type (info, 0);
-      g_fprintf (file, "GList<");
-      write_type_info (namespace, type, file);
-      g_fprintf (file, ">"); 
-      g_base_info_unref ((GIBaseInfo *)type);
+      g_fprintf (file, "GList");
+      if (type)
+	{
+	  g_fprintf (file, "<"); 
+	  write_type_info (namespace, type, file);
+	  g_fprintf (file, ">"); 
+	  g_base_info_unref ((GIBaseInfo *)type);
+	}
+      g_fprintf (file, "*");
     }
   else if (tag == 23)
     {
       type = g_type_info_get_param_type (info, 0);
-      g_fprintf (file, "GSList<");
-      write_type_info (namespace, type, file);
-      g_fprintf (file, ">"); 
-      g_base_info_unref ((GIBaseInfo *)type);
+      g_fprintf (file, "GSList");
+      if (type)
+	{
+	  g_fprintf (file, "<"); 
+	  write_type_info (namespace, type, file);
+	  g_fprintf (file, ">"); 
+	  g_base_info_unref ((GIBaseInfo *)type);
+	}
+      g_fprintf (file, "*");
     }
   else if (tag == 24)
     {
       type = g_type_info_get_param_type (info, 0);
-      g_fprintf (file, "GHashTable<");
-      write_type_info (namespace, type, file);
-      g_base_info_unref ((GIBaseInfo *)type);
-      type = g_type_info_get_param_type (info, 1);
-      g_fprintf (file, ",");
-      write_type_info (namespace, type, file);
-      g_fprintf (file, ">"); 
-      g_base_info_unref ((GIBaseInfo *)type);
+      g_fprintf (file, "GHashTable");
+      if (type)
+	{
+	  g_fprintf (file, "<"); 
+	  write_type_info (namespace, type, file);
+	  g_base_info_unref ((GIBaseInfo *)type);
+	  type = g_type_info_get_param_type (info, 1);
+	  g_fprintf (file, ",");
+	  write_type_info (namespace, type, file);
+	  g_fprintf (file, ">"); 
+	  g_base_info_unref ((GIBaseInfo *)type);
+	}
+      g_fprintf (file, "*");
     }
   else if (tag == 25) 
     {
-      g_fprintf (file, "GError<");
-      for (i = 0; i < g_type_info_get_n_error_domains (info); i++)
+      gint n;
+
+      g_fprintf (file, "GError");
+      n = g_type_info_get_n_error_domains (info);
+      if (n > 0)
 	{
-	  GIErrorDomainInfo *ed = g_type_info_get_error_domain (info, i);
-	  if (i > 0)
-	    g_fprintf (file, ",");
-	  write_type_name (namespace, (GIBaseInfo *)ed, file);
-	  g_base_info_unref ((GIBaseInfo *)ed);
+	  g_fprintf (file, "<"); 
+	  for (i = 0; i < n; i++)
+	    {
+	      GIErrorDomainInfo *ed = g_type_info_get_error_domain (info, i);
+	      if (i > 0)
+		g_fprintf (file, ",");
+	      write_type_name (namespace, (GIBaseInfo *)ed, file);
+	      g_base_info_unref ((GIBaseInfo *)ed);
+	    }
+	  g_fprintf (file, ">");
 	}
-      g_fprintf (file, ">");
+      g_fprintf (file, "*");
     }
 }
 
@@ -234,7 +257,7 @@ write_callable_info (const gchar    *namespace,
 	}
     }
   if (g_callable_info_may_return_null (info))
-    g_fprintf (file, "null-ok=\"1\"");
+    g_fprintf (file, " null-ok=\"1\"");
 
   g_fprintf (file, " />\n");
 	
