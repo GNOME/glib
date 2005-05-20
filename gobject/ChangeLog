@@ -1,3 +1,9 @@
+2005-05-20  Matthias Clasen  <mclasen@redhat.com>
+
+	* gvaluetypes.c (g_value_set_string): dup the new value
+	before freeing the old, just in case.  (#172142, Morten
+	Welinder)
+
 2005-05-13  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib-genmarshal.1: Mention 64bit integer types.
