@@ -22,7 +22,8 @@ find the GLib header files and libraries. This is done with the
 </para>
 <para>
 The following interactive shell session demonstrates how
-<application>pkg-config</application> is used:
+<application>pkg-config</application> is used (the actual output on
+your system may be different):
 <programlisting>
 $ pkg-config --cflags glib-2.0
  -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include 
