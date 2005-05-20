@@ -1,5 +1,8 @@
 2005-05-20  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/tmpl/threads.sgml: Add a paragraph about thread
+	safety of GLib data structures.
+
 	* glib/compiling.sgml: Update an example from 1.3 to 2.x
 
 2005-05-13  Matthias Clasen  <mclasen@redhat.com>

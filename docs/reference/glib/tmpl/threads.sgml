@@ -32,6 +32,14 @@ for thread-private data, that every thread has a private instance of
 primitives to portably create and manage threads (#GThread).
 </para>
 
+<para>
+You must call g_thread_init() before executing any other GLib functions 
+in a threaded GLib program. After that, GLib is completely thread safe 
+(all global data is automatically locked). But individual data structure 
+instances are not automatically locked for performance reasons. So e.g. 
+you must coordinate accesses to the same #GHashTable from multiple threads.
+</para>
+
 <!-- ##### SECTION See_Also ##### -->
 <para>
 <variablelist>
