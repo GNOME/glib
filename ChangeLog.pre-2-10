@@ -1,3 +1,11 @@
+2005-05-20  Federico Mena Quintero  <federico@ximian.com>
+
+	Merged from glib-2-6:
+
+	* glib/gspawn.c (g_spawn_command_line_sync): Clarify the meaning
+	of exit_status(); it's not the return code from the child, but
+	rather the waitpid() status.
+
 2005-05-18  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gunidecomp.c: Correct the end of the Hangul 
