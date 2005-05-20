@@ -739,13 +739,18 @@ void
 g_value_set_string (GValue	*value,
 		    const gchar *v_string)
 {
+  gchar *new_val;
+
   g_return_if_fail (G_VALUE_HOLDS_STRING (value));
-  
+
+  new_val = g_strdup (v_string);
+
   if (value->data[1].v_uint & G_VALUE_NOCOPY_CONTENTS)
     value->data[1].v_uint = 0;
   else
     g_free (value->data[0].v_pointer);
-  value->data[0].v_pointer = g_strdup (v_string);
+
+  value->data[0].v_pointer = new_val;
 }
 
 void
