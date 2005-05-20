@@ -1,3 +1,7 @@
+2005-05-20  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/compiling.sgml: Update an example from 1.3 to 2.x
+
 2005-05-13  Matthias Clasen  <mclasen@redhat.com>
 
 	* gobject/glib-genmarshal.1: 
