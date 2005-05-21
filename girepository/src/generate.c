@@ -62,20 +62,24 @@ write_type_info (const gchar *namespace,
     "guint32", 
     "gint64", 
     "guint64", 
+    "gint",
+    "guint",
+    "glong",
+    "gulong",
+    "gssize",
+    "gsize",
     "gfloat", 
     "gdouble", 
-    "gchar", 
-    "GString", 
-    "gint", 
-    "guint", 
-    "glong", 
-    "gulong"
+    "utf8",
+    "filename"
   };
 
   tag = g_type_info_get_tag (info);
 
-  if (tag < 20)
+  if (tag < 18)
     g_fprintf (file, "%s%s", basic[tag], g_type_info_is_pointer (info) ? "*" : "");
+  else if (tag < 20)
+    g_fprintf (file, "%s", basic[tag]);
   else if (tag == 20)
     {
       gint length;
@@ -499,15 +503,6 @@ write_constant_value (const gchar *namespace,
     case GI_TYPE_TAG_UINT64:
       g_fprintf (file, "%" G_GUINT64_FORMAT, value->v_uint64);
       break;
-    case GI_TYPE_TAG_FLOAT:
-      g_fprintf (file, "%f", value->v_float);
-      break;
-    case GI_TYPE_TAG_DOUBLE:
-      g_fprintf (file, "%Lf", value->v_double);
-      break;
-    case GI_TYPE_TAG_STRING:
-      g_fprintf (file, "%s", value->v_string);
-      break;
     case GI_TYPE_TAG_INT:
       g_fprintf (file, "%d", value->v_int);
       break;
@@ -519,6 +514,22 @@ write_constant_value (const gchar *namespace,
       break;
     case GI_TYPE_TAG_ULONG:
       g_fprintf (file, "%ld", value->v_ulong);
+      break;
+    case GI_TYPE_TAG_SSIZE:
+      g_fprintf (file, "%z", value->v_ssize);
+      break;
+    case GI_TYPE_TAG_SIZE:
+      g_fprintf (file, "%z", value->v_size);
+      break;
+    case GI_TYPE_TAG_FLOAT:
+      g_fprintf (file, "%f", value->v_float);
+      break;
+    case GI_TYPE_TAG_DOUBLE:
+      g_fprintf (file, "%Lf", value->v_double);
+      break;
+    case GI_TYPE_TAG_UTF8:
+    case GI_TYPE_TAG_FILENAME:
+      g_fprintf (file, "%s", value->v_string);
       break;
     }
 }
