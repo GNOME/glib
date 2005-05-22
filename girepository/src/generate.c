@@ -657,10 +657,12 @@ write_vfunc_info (const gchar *namespace,
   GIVFuncInfoFlags flags;
   const gchar *name;
   gboolean deprecated;
+  gint offset;
 
   name = g_base_info_get_name ((GIBaseInfo *)info);
   flags = g_vfunc_info_get_flags (info);
   deprecated = g_base_info_is_deprecated ((GIBaseInfo *)info);
+  offset = g_vfunc_info_get_offset (info);
 
   g_fprintf (file, "      <vfunc name=\"%s\"", name);
 
@@ -675,6 +677,7 @@ write_vfunc_info (const gchar *namespace,
   else if (flags & GI_VFUNC_MUST_NOT_OVERRIDE)
     g_fprintf (file, " override=\"never\"");
     
+  g_fprintf (file, " offset=\"%d\"", offset);
   g_fprintf (file, ">\n");
 
   write_callable_info (namespace, (GICallableInfo*)info, file, 6);
