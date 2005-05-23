@@ -38,6 +38,9 @@ in a threaded GLib program. After that, GLib is completely thread safe
 (all global data is automatically locked). But individual data structure 
 instances are not automatically locked for performance reasons. So e.g. 
 you must coordinate accesses to the same #GHashTable from multiple threads.
+The two notable exceptions from this rule are #GMainLoop and #GAsyncQueue, 
+which <emphasis>are</emphasis> threadsafe and needs no further 
+application-level locking to be accessed from multiple threads.
 </para>
 
 <!-- ##### SECTION See_Also ##### -->

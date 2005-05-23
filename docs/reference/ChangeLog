@@ -1,3 +1,8 @@
+2005-05-23  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/tmpl/threads.sgml: Point out exceptions to the
+	general GLib data structure locking rules.
+
 2005-05-20  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/tmpl/threads.sgml: Add a paragraph about thread
