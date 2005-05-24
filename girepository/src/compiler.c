@@ -214,10 +214,14 @@ main (int argc, char ** argv)
       g_idl_module_build_metadata (module, modules, &metadata, &len);
       if (metadata == NULL)
 	{
-	  g_error ("failed to build metadata for module '%s'\n", module->name);
+	  g_error ("Failed to build metadata for module '%s'\n", module->name);
 
 	  continue;
 	}
+      if (!g_metadata_validate (metadata, len, &error))
+	g_error ("Invalid metadata for module '%s': %s", 
+		 module->name, error->message);
+
 
       if (!mname && (m->next || m->prev) && output)
 	prefix = module->name;
