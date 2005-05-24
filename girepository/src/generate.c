@@ -752,8 +752,8 @@ write_object_info (const gchar  *namespace,
       g_fprintf (file, " parent=\"");
       write_type_name (namespace, (GIBaseInfo *)pnode, file);
       g_fprintf (file, "\""  );
+      g_base_info_unref ((GIBaseInfo *)pnode);
     }
-  g_base_info_unref ((GIBaseInfo *)pnode);
 
   g_fprintf (file, " type-name=\"%s\" get-type=\"%s\"", type_name, type_init);
 
