@@ -1,3 +1,9 @@
+2005-05-25  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gunidecomp.c (combine_hangul): Don't eat Hangul 
+	when normalizing.  (#301742, reported by Christian Biere,
+	patch by Noah Levitt)
+
 2005-05-24  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/goption.c (print_help): If the remaining argument
