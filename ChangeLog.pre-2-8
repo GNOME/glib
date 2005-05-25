@@ -1,3 +1,9 @@
+2005-05-24  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/goption.c (print_help): If the remaining argument
+	has an arg_description, display the synopsis as
+	PROGNAME [OPTION...] REST  (#305346, Noah Levitt)
+
 2005-05-20  Federico Mena Quintero  <federico@ximian.com>
 
 	Merged from glib-2-6:

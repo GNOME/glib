@@ -437,9 +437,27 @@ print_help (GOptionContext *context,
   GOptionEntry *entry;
   GHashTable *shadow_map;
   gboolean seen[256];
+  gchar *rest_description;
   
-  g_print ("%s\n  %s %s %s\n\n", 
+  rest_description = NULL;
+  if (context->main_group)
+    {
+      for (i = 0; i < context->main_group->n_entries; i++)
+	{
+	  entry = &context->main_group->entries[i];
+	  if (entry->long_name[0] == 0)
+	    {
+	      rest_description = entry->arg_description;
+	      break;
+	    }
+	}
+    }
+  
+  g_print ("%s\n  %s %s%s%s%s%s\n\n", 
 	   _("Usage:"), g_get_prgname(), _("[OPTION...]"),
+	   rest_description ? " " : "",
+	   rest_description ? rest_description : "",
+	   context->parameter_string ? " " : "",
 	   context->parameter_string ? context->parameter_string : "");
 
   memset (seen, 0, sizeof (gboolean) * 256);
