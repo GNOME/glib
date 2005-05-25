@@ -1,3 +1,7 @@
+Wed May 25 15:33:51 2005  Manish Singh  <yosh@gimp.org>
+
+	* glib/goption.c (print_help): rest_description should be const.
+
 2005-05-25  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gunidecomp.c (combine_hangul): Don't eat Hangul 

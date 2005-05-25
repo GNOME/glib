@@ -437,7 +437,7 @@ print_help (GOptionContext *context,
   GOptionEntry *entry;
   GHashTable *shadow_map;
   gboolean seen[256];
-  gchar *rest_description;
+  const gchar *rest_description;
   
   rest_description = NULL;
   if (context->main_group)
