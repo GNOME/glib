@@ -267,7 +267,7 @@ combine_hangul (gunichar a,
       return TRUE;
     }
   else if (0 <= SIndex && SIndex < SCount && (SIndex % TCount) == 0
-           && 0 <= TIndex && TIndex <= TCount)
+           && 0 < TIndex && TIndex < TCount)
     {
       *result = a + TIndex;
       return TRUE;
