@@ -1,3 +1,11 @@
+2005-05-27  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/goption.c (parse_short_option, parse_long_option):
+	Return an error if an option is missing its argument.  (#305576,
+	Björn Lindqvist)
+
+	* tests/option-test.c (missing_arg_test): Add a testcase.
+
 Wed May 25 15:33:51 2005  Manish Singh  <yosh@gimp.org>
 
 	* glib/goption.c (print_help): rest_description should be const.

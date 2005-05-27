@@ -883,6 +883,41 @@ void lonely_dash_test (void)
   g_option_context_free (context);
 }
 
+void
+missing_arg_test (void)
+{
+  GOptionContext *context;
+  gboolean retval;
+  GError *error = NULL;
+  gchar **argv;
+  int argc;
+  gchar *arg = NULL;
+  GOptionEntry entries [] =
+    { { "test", 't', 0, G_OPTION_ARG_STRING, &arg, NULL, NULL },
+      { NULL } };
+
+  context = g_option_context_new (NULL);
+  g_option_context_add_main_entries (context, entries, NULL);
+
+  /* Now try parsing */
+  argv = split_string ("program --test", &argc);
+
+  retval = g_option_context_parse (context, &argc, &argv, &error);
+  g_assert (retval == FALSE);
+  g_clear_error (&error);
+
+  g_strfreev (argv);
+
+  /* Try parsing again */
+  argv = split_string ("program --t", &argc);
+
+  retval = g_option_context_parse (context, &argc, &argv, &error);
+  g_assert (retval == FALSE);
+
+  g_strfreev (argv);
+  g_option_context_free (context);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -930,6 +965,9 @@ main (int argc, char **argv)
 
   /* test for bug 168008 */
   lonely_dash_test ();
+
+  /* test for bug 305576 */
+  missing_arg_test ();
 
   return 0;
 }
