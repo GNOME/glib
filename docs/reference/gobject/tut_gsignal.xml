@@ -29,7 +29,7 @@ return_type function_callback (... , gpointer user_data);
 
       <para>
 	The <type><link linkend="GClosure">GClosure</link></type> structure represents the common functionality of all
-	closure implementations: there exist a different Closure implementation for
+	closure implementations: there exists a different Closure implementation for
 	each separate runtime which wants to use the GObject type system.
 	<footnote><para>
 	    In Practice, Closures sit at the boundary of language runtimes: if you are

@@ -1,7 +1,7 @@
 <partintro>
 	<para>
 		Several useful developer tools have been build around GObject technology.
-		Next sections briefly introduce them and link to the respective project pages.
+		The next sections briefly introduce them and link to the respective project pages.
 	</para>
 </partintro>
 
@@ -10,16 +10,29 @@
 
   <para>
 		Writing gobjects can be a tedious task. It requires a lot of typing and just
-		doing copy and paste needs care. On obvious idea is to use some sort of 
-		templates for the class skelletons. Then a tool could generate the real c
-		files from them.
-		<ulink url="http://www.5z.com/jirka/gob.html">GOB/</ulink> (or GOB2) is suc
-		h a tool. It is a preprocessor for making GObjects with inline C code so
-		that generated files are not edited.
-		Syntax is inspired by Java and Yacc or Lex. The implementation is
-		intentionally kept simple, and no C actual code parsing is done.
+		doing a copy/paste requires a great deal of care.
+                One obvious idea is to use some sort of templates for the class skeletons.
+                and then run them through a special tool to generate the real C files.
+                <ulink url="http://www.5z.com/jirka/gob.html">GOB/</ulink> (or GOB2) is such
+                a tool. It is a preprocessor which can be used to build GObjects 
+                with inline C code so that there is no need to edit the generated C code.
+		The syntax is inspired by Java and Yacc or Lex. The implementation is
+		intentionally kept simple: the inline C code provided by the user
+                is not parsed.
   </para>
 </chapter>
+
+<chapter id="tools-ginspector">
+    <title>Graphical inspection of Gobjects</title>
+
+    <para>
+      Yet another tool that you may find helpful when working with
+      GObjects is <ulink
+      url="http://sourceforge.net/projects/g-inspector">G-Inspector</ulink>. It
+      is able to display Glib/Gtk+ objects and their properties.
+    </para>
+</chapter>
+
 
 <chapter id="tools-refdb">
   <title>Debugging reference count problems</title>
@@ -27,9 +40,9 @@
   <para>
     The reference counting scheme used by GObject does solve quite 
     a few memory management problems but also introduces new sources of bugs.
-    In large applications, finding the exact spot where a the reference count
+    In large applications, finding the exact spot where the reference count
     of an Object is not properly handled can be very difficult. Hopefully, 
-    there exist at a too named <ulink url="http://refdbg.sf.net/">refdbg/</ulink>
+    there exist a tool named <ulink url="http://refdbg.sf.net/">refdbg/</ulink>
     which can be used to automate the task of tracking down the location
     of invalid code with regard to reference counting. This application 
     intercepts the reference counting calls and tries to detect invalid behavior. 
@@ -71,6 +84,5 @@ gtk_widget_freeze_child_notify (GtkWidget *widget)
   <ulink url="http://developer.gnome.org/arch/doc/authors.html">documentation</ulink> 
   on how to setup and use gtk-doc in your
   project is provided on the gnome developer website.
-  gtk-doc generates
   </para>
 </chapter>

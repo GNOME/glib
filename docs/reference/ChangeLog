@@ -1,3 +1,8 @@
+2005-05-25  Mathieu Lacage <mathieu@gnome.org>
+
+	* gobject/tut_*.xml: fix lots of typos, 
+	some of which were reported by Leonardo Boshell.
+
 2005-05-23  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/tmpl/threads.sgml: Point out exceptions to the

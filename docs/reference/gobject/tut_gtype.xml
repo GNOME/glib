@@ -286,7 +286,7 @@ struct _GTypeValueTable
 #define MAMAN_IS_BAR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), MAMAN_BAR_TYPE))
 #define MAMAN_BAR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), MAMAN_BAR_TYPE, MamanBarClass))
 </programlisting>
-        <note>Stick to the naming <code>klass</code> as <code>class</code> is a registered c++ keyword.</note>
+        <note><simpara>Stick to the naming <varname>klass</varname> as <varname>class</varname> is a registered c++ keyword.</simpara></note>
       </para>
 
       <para>
@@ -387,13 +387,13 @@ typedef struct {
   int field_a;
 } MamanBar;
 
-struct _MamanBarClass {
+typedef struct {
   GObjectClass parent;
   /* class members */
   void (*do_action_public_virtual) (MamanBar *self, guint8 i);
 
   void (*do_action_public_pure_virtual) (MamanBar *self, guint8 i);
-};
+} MamanBarClass;
 
 #define MAMAN_BAR_TYPE (maman_bar_get_type ())
 
@@ -413,9 +413,9 @@ maman_bar_get_type (void)
       0,              /* n_preallocs */
       (GInstanceInitFunc) NULL /* instance_init */
     };
-    type = g_type_register_fundamental (G_TYPE_OBJECT,
-                                        "BarType",
-                                        &amp;info, 0);
+    type = g_type_register_static (G_TYPE_OBJECT,
+                                   "BarType",
+                                   &amp;info, 0);
   }
   return type;
 }
@@ -609,8 +609,9 @@ The class initialization process is entirely implemented in
 	      </row>
 	      <row>
 		<entry>First call to <function><link linkend="g-type-create-instance">g_type_create_instance</link></function> for target type</entry>
-		<entry colspan="2">interface initialization, see 
+		<entry>interface initialization, see 
 		  <xref linkend="gtype-non-instantiable-classed-init"/></entry>
+                <entry></entry>
 	      </row>
 	      <row>
 		<entry>Each call to <function><link linkend="g-type-create-instance">g_type_create_instance</link></function> for target type</entry>
@@ -619,7 +620,7 @@ The class initialization process is entirely implemented in
 	      </row>
 	      <row>
 		<entry>Last call to <function><link linkend="g-type-free-instance">g_type_free_instance</link></function> for target type</entry>
-		<entry colspan="2">interface destruction, see
+		<entry>interface destruction, see
 		  <xref linkend="gtype-non-instantiable-classed-dest"/></entry>
 		<entry></entry>
 	      </row>
@@ -675,7 +676,7 @@ void maman_ibaz_do_action (MamanIbaz *self)
   MAMAN_IBAZ_GET_INTERFACE (self)->do_action (self);
 }
 </programlisting>
-         <function>maman_ibaz_get_gtype</function> registers a type named <emphasis>MamanIBaz</emphasis>
+         <function>maman_ibaz_get_type</function> registers a type named <emphasis>MamanIBaz</emphasis>
          which inherits from G_TYPE_INTERFACE. All interfaces must be children of G_TYPE_INTERFACE in the 
          inheritance tree.
         </para>

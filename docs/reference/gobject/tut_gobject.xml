@@ -498,7 +498,7 @@ void        g_object_run_dispose	      (GObject	      *object);
 
       <para>
 	The above example, which might seem a bit contrived can really happen if your
-	GObject's are being by language bindings. I would thus suggest the rules stated above
+	GObject's are being handled by language bindings. I would thus suggest the rules stated above
 	for object destruction are closely followed. Otherwise, <emphasis>Bad Bad Things</emphasis> 
 	will happen.
       </para>

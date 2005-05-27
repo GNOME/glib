@@ -148,10 +148,10 @@ boundaries is written once: the figure below states this more clearly.
 <figure>
   <mediaobject>
     <imageobject> <!-- this is for HTML output -->
-      <imagedata fileref="glue.png" format="png" align="center"/>
+      <imagedata fileref="glue.png" format="PNG" align="center"/>
     </imageobject>
     <imageobject> <!-- this is for PDF output -->
-      <imagedata fileref="glue.jpg" format="jpg" align="center"/>
+      <imagedata fileref="glue.jpg" format="JPG" align="center"/>
     </imageobject>
   </mediaobject>
 </figure>
@@ -165,7 +165,7 @@ is no need to generate huge amounts of glue code either automatically or by hand
 the whole GType/GObject library. C programmers are likely to be puzzled at the complexity 
 of the features exposed in the following chapters if they forget that the GType/GObject library
 was not only designed to offer OO-like features to C programmers but also transparent 
-cross-langage interoperability.
+cross-language interoperability.
 </para>
 
 </sect1>
