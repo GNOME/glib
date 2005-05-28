@@ -1,3 +1,8 @@
+Fri May 27 17:18:00 2005  Manish Singh  <yosh@gimp.org>
+
+	* glib/goption.c (parse_short_option): initialize option_name
+	before using it.
+
 2005-05-27  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/goption.c (parse_short_option, parse_long_option):

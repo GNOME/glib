@@ -899,6 +899,8 @@ parse_short_option (GOptionContext *context,
 
 		  return FALSE;
 		}
+
+	      option_name = g_strdup_printf ("-%c", group->entries[j].short_name);
 	      
 	      if (index < *argc - 1)
 		{
@@ -914,8 +916,6 @@ parse_short_option (GOptionContext *context,
 		  g_free (option_name);
 		  return FALSE;
 		}
-
-	      option_name = g_strdup_printf ("-%c", group->entries[j].short_name);
 	      
 	      if (!parse_arg (context, group, &group->entries[j], value, option_name, error))
 		{
@@ -970,7 +970,7 @@ parse_long_option (GOptionContext *context,
 
 	      add_pending_null (context, &((*argv)[*index]), NULL);
 	      option_name = g_strconcat ("--", group->entries[j].long_name, NULL);
-	      	      
+
 	      if (arg[len] == '=')
 		value = arg + len + 1;
 	      else if (*index < *argc - 1)
