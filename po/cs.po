@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-04-30 13:22+0000\n"
-"PO-Revision-Date: 2005-04-30 16:21+0200\n"
+"POT-Creation-Date: 2005-05-29 06:12+0000\n"
+"PO-Revision-Date: 2005-05-29 13:51+0200\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -467,17 +467,17 @@ msgstr "Text je prázdný (nebo obsahuje pouze mezery)"
 msgid "Failed to read data from child process"
 msgstr "Nemohu číst data z procesu potomka"
 
-#: ../glib/gspawn-win32.c:281 ../glib/gspawn.c:1350
+#: ../glib/gspawn-win32.c:281 ../glib/gspawn.c:1354
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Nemohu vytvořit rouru pro komunikaci s procesem potomka (%s)"
 
-#: ../glib/gspawn-win32.c:321 ../glib/gspawn.c:1014
+#: ../glib/gspawn-win32.c:321 ../glib/gspawn.c:1018
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Nemohu číst z roury potomka (%s)"
 
-#: ../glib/gspawn-win32.c:349 ../glib/gspawn.c:1219
+#: ../glib/gspawn-win32.c:349 ../glib/gspawn.c:1223
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Nemohu přejít do adresáře '%s' (%s)"
@@ -513,32 +513,32 @@ msgstr "Neočekávaná chyba v select() při čtení dat z procesu potomka (%s)"
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Neočekávaná chyba v waitpid() (%s)"
 
-#: ../glib/gspawn.c:1079
+#: ../glib/gspawn.c:1083
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Nemohu fork (%s)"
 
-#: ../glib/gspawn.c:1229
+#: ../glib/gspawn.c:1233
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Nemohu spustit proces potomka \"%s\" (%s)"
 
-#: ../glib/gspawn.c:1239
+#: ../glib/gspawn.c:1243
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Nemohu přesměrovat vstup nebo výstup procesu potomka (%s)"
 
-#: ../glib/gspawn.c:1248
+#: ../glib/gspawn.c:1252
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Nemohu fork proces potomka (%s)"
 
-#: ../glib/gspawn.c:1256
+#: ../glib/gspawn.c:1260
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Neznámá chyba při běhu procesu potomka \"%s\""
 
-#: ../glib/gspawn.c:1278
+#: ../glib/gspawn.c:1282
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Nemohu přečíst dostatek dat z roury pid potomka (%s)"
@@ -556,41 +556,46 @@ msgstr "Neplatná posloupnost na vstupu převodu"
 msgid "Character out of range for UTF-16"
 msgstr "Znak je mimo rozsah UTF-16"
 
-#: ../glib/goption.c:442
+#: ../glib/goption.c:457
 msgid "Usage:"
 msgstr "Použití:"
 
-#: ../glib/goption.c:442
+#: ../glib/goption.c:457
 msgid "[OPTION...]"
 msgstr "[PŘEPÍNAČ...]"
 
-#: ../glib/goption.c:525
+#: ../glib/goption.c:543
 msgid "Help Options:"
 msgstr "Přepínače nápovědy:"
 
-#: ../glib/goption.c:526
+#: ../glib/goption.c:544
 msgid "Show help options"
 msgstr "Zobrazit přepínače nápovědy"
 
-#: ../glib/goption.c:531
+#: ../glib/goption.c:549
 msgid "Show all help options"
 msgstr "Zobrazit všechny přepínače nápovědy"
 
-#: ../glib/goption.c:581
+#: ../glib/goption.c:599
 msgid "Application Options:"
 msgstr "Přepínače aplikace:"
 
-#: ../glib/goption.c:621
+#: ../glib/goption.c:639
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "Nemohu zpracovat celočíselnou hodnotu '%s' pro %s"
 
-#: ../glib/goption.c:631
+#: ../glib/goption.c:649
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "Celočíselná hodnota '%s' pro %s mimo rozsah"
 
-#: ../glib/goption.c:1361
+#: ../glib/goption.c:915 ../glib/goption.c:986
+#, c-format
+msgid "Missing argument for %s"
+msgstr "Chybí parametr %s"
+
+#: ../glib/goption.c:1389
 #, c-format
 msgid "Unknown option %s"
 msgstr "Neznámý přepínač %s"
