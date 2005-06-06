@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib (HEAD)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-05-14 05:23+0000\n"
-"PO-Revision-Date: 2005-05-14 14:55+0200\n"
+"POT-Creation-Date: 2005-06-05 05:22+0000\n"
+"PO-Revision-Date: 2005-06-05 08:17+0200\n"
 "Last-Translator: Tino Meinen <a.t.meinen@chello.nl>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
 "MIME-Version: 1.0\n"
@@ -483,17 +483,17 @@ msgstr "De tekst was leeg (of bevatte slechts lege ruimte)"
 msgid "Failed to read data from child process"
 msgstr "Lezen van data van dochterprocessen mislukt"
 
-#: ../glib/gspawn-win32.c:281 ../glib/gspawn.c:1350
+#: ../glib/gspawn-win32.c:281 ../glib/gspawn.c:1354
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Aanmaken van pijp voor het communiceren met dochterproces mislukt (%s)"
 
-#: ../glib/gspawn-win32.c:321 ../glib/gspawn.c:1014
+#: ../glib/gspawn-win32.c:321 ../glib/gspawn.c:1018
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Lezen van pijp naar dochter (%s) mislukt"
 
-#: ../glib/gspawn-win32.c:349 ../glib/gspawn.c:1219
+#: ../glib/gspawn-win32.c:349 ../glib/gspawn.c:1223
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Veranderen naar map '%s' is mislukt (%s)"
@@ -533,34 +533,34 @@ msgid "Unexpected error in waitpid() (%s)"
 msgstr "Onverwachte fout in waitpid() (%s)"
 
 # fork is een functienaam, mag niet met hoofdletter beginnen
-#: ../glib/gspawn.c:1079
+#: ../glib/gspawn.c:1083
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "fork mislukt (%s)"
 
-#: ../glib/gspawn.c:1229
+#: ../glib/gspawn.c:1233
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Uitvoeren van dochterproces \"%s\" mislukt (%s)"
 
 # was eerst: herleiden
-#: ../glib/gspawn.c:1239
+#: ../glib/gspawn.c:1243
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr ""
 "Doorsluizen van invoer of uitvoer van een dochterproces is mislukt (%s)"
 
-#: ../glib/gspawn.c:1248
+#: ../glib/gspawn.c:1252
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Het forken van een dochterproces is mislukt (%s)"
 
-#: ../glib/gspawn.c:1256
+#: ../glib/gspawn.c:1260
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Onbekende fout bij het uitvoeren van dochterproces \"%s\""
 
-#: ../glib/gspawn.c:1278
+#: ../glib/gspawn.c:1282
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Lezen van voldoende data van pijp dochter-pid mislukt (%s)"
@@ -578,43 +578,48 @@ msgstr "Ongeldige reeks in conversie-invoer"
 msgid "Character out of range for UTF-16"
 msgstr "Teken valt buiten bereik van UTF-16"
 
-#: ../glib/goption.c:442
+#: ../glib/goption.c:457
 msgid "Usage:"
 msgstr "Gebruik:"
 
-#: ../glib/goption.c:442
+#: ../glib/goption.c:457
 msgid "[OPTION...]"
 msgstr "[OPTIE...]"
 
 # hulp-opties zijn opties voor de hulp
 # hulp opties zijn die opties van hulp
-#: ../glib/goption.c:525
+#: ../glib/goption.c:543
 msgid "Help Options:"
 msgstr "Hulp opties:"
 
-#: ../glib/goption.c:526
+#: ../glib/goption.c:544
 msgid "Show help options"
 msgstr "Hulp opties tonen"
 
-#: ../glib/goption.c:531
+#: ../glib/goption.c:549
 msgid "Show all help options"
 msgstr "Alle hulp opties tonen"
 
-#: ../glib/goption.c:581
+#: ../glib/goption.c:599
 msgid "Application Options:"
 msgstr "Toepassing opties:"
 
-#: ../glib/goption.c:621
+#: ../glib/goption.c:639
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "Kan de gehele getalswaarde '%s' voor %s niet verwerken"
 
-#: ../glib/goption.c:631
+#: ../glib/goption.c:649
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "Gehele getalswaarde '%s' voor %s valt buiten bereik"
 
-#: ../glib/goption.c:1361
+#: ../glib/goption.c:915 ../glib/goption.c:986
+#, c-format
+msgid "Missing argument for %s"
+msgstr "Ontbrekend argument voor %s"
+
+#: ../glib/goption.c:1389
 #, c-format
 msgid "Unknown option %s"
 msgstr "Onbekende optie %s"
