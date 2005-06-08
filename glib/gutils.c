@@ -1414,6 +1414,26 @@ get_special_folder (int csidl)
   return retval;
 }
 
+static char *
+get_windows_directory_root (void)
+{
+  char windowsdir[MAX_PATH];
+
+  if (GetWindowsDirectory (windowsdir, sizeof (windowsdir)))
+    {
+      /* Usually X:\Windows, but in terminal server environments
+       * might be an UNC path, AFAIK.
+       */
+      char *p = (char *) g_path_skip_root (windowsdir);
+      if (G_IS_DIR_SEPARATOR (p[-1]) && p[-2] != ':')
+	p--;
+      *p = '\0';
+      return g_strdup (windowsdir);
+    }
+  else
+    return g_strdup ("C:\\");
+}
+
 #endif
 
 /* HOLDS: g_utils_global_lock */
@@ -1428,6 +1448,10 @@ g_get_any_init (void)
       if (!g_tmp_dir)
 	g_tmp_dir = g_strdup (g_getenv ("TEMP"));
       
+#ifdef G_OS_WIN32
+      if (!g_tmp_dir)
+	g_tmp_dir = get_windows_directory_root ();
+#else
 #ifdef P_tmpdir
       if (!g_tmp_dir)
 	{
@@ -1441,12 +1465,9 @@ g_get_any_init (void)
       
       if (!g_tmp_dir)
 	{
-#ifndef G_OS_WIN32
 	  g_tmp_dir = g_strdup ("/tmp");
-#else /* G_OS_WIN32 */
-	  g_tmp_dir = g_strdup ("\\");
-#endif /* G_OS_WIN32 */
 	}
+#endif	/* !G_OS_WIN32 */
       
 #ifdef G_OS_WIN32
       /* We check $HOME first for Win32, though it is a last resort for Unix
@@ -1486,17 +1507,7 @@ g_get_any_init (void)
 	g_home_dir = get_special_folder (CSIDL_PROFILE);
       
       if (!g_home_dir)
-	{
-	  /* At least at some time, HOMEDRIVE and HOMEPATH were used
-	   * to point to the home directory, I think. But on Windows
-	   * 2000 HOMEDRIVE seems to be equal to SYSTEMDRIVE, and
-	   * HOMEPATH is its root "\"?
-	   */
-	  if (g_getenv ("HOMEDRIVE") != NULL && g_getenv ("HOMEPATH") != NULL)
-	    g_home_dir = g_strconcat (g_getenv ("HOMEDRIVE"),
-				      g_getenv ("HOMEPATH"),
-				      NULL);
-	}
+	g_home_dir = get_windows_directory_root ();
 #endif /* G_OS_WIN32 */
       
 #ifdef HAVE_PWD_H

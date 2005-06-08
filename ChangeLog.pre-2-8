@@ -1,3 +1,15 @@
+2005-06-08  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gutils.c (get_windows_directory_root): New helper function
+	on Win32, returns the root of the drive (or possibly share) where
+	the Windows directory is. (In the case of Terminal Server sessions
+	the Windows directory is a per-user folder.)
+	(g_get_any_init): Use get_windows_directory_root() as last resort
+	for both temp directory and home directory. g_get_home_dir() now
+	never returns NULL on Win32. Don't look at HOMEDRIVE and
+	HOMEPATH. HOME, USERPROFILE, CSIDL_PROFILE and Windows directory
+	drive root should be enough.
+
 2005-06-08  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/glib.symbols: 
