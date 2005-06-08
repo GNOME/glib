@@ -1,3 +1,7 @@
+2005-06-07  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/glib-sections.txt: Add g_utf8_collate_key_for_filename.
+
 2005-05-25  Mathieu Lacage <mathieu@gnome.org>
 
 	* gobject/tut_*.xml: fix lots of typos, 

@@ -1073,6 +1073,7 @@ g_unichar_break_type G_GNUC_CONST
 #if IN_FILE(__G_UNICOLLATE_C__)
 g_utf8_collate
 g_utf8_collate_key G_GNUC_MALLOC
+g_utf8_collate_key_for_filename G_GNUC_MALLOC
 #endif
 #endif
 

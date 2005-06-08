@@ -2169,6 +2169,7 @@ g_utf8_normalize
 GNormalizeMode
 g_utf8_collate
 g_utf8_collate_key
+g_utf8_collate_key_for_filename
 
 <SUBSECTION>
 g_utf8_to_utf16
