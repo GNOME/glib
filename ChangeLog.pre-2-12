@@ -1,3 +1,15 @@
+2005-06-08  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gutils.c (get_windows_directory_root): New helper function
+	on Win32, returns the root of the drive (or possibly share) where
+	the Windows directory is. (In the case of Terminal Server sessions
+	the Windows directory is a per-user folder.)
+	(g_get_any_init): Use get_windows_directory_root() as last resort
+	for both temp directory and home directory. g_get_home_dir() now
+	never returns NULL on Win32. Don't look at HOMEDRIVE and
+	HOMEPATH. HOME, USERPROFILE, CSIDL_PROFILE and Windows directory
+	drive root should be enough.
+
 2005-05-25  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gunidecomp.c (combine_hangul): Don't eat Hangul 
@@ -41,7 +53,7 @@
 	avoids infinite recursion problems in certain rare situations on
 	Windows, when g_locale_from_utf8() is called from
 	_glib_get_locale_dir() after the change below. It's the
-	_glib_gettext() calls for the error messages that cause the
+	_glib_gettext() calls to translate error messages that cause the
 	recursion, not g_set_error() itself.
 
 	* glib/gutils.c (_glib_get_locale_dir): No need to cache the
