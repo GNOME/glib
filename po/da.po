@@ -3,8 +3,8 @@
 # This file is distributed under the same license as the glib package.
 # Keld Simonsen <keld@dkuug.dk>, 2001.
 # Kjartan Maraas <kmaraas@gnome.org>, 2001.
-# Ole Laursen <olau@hardworking.dk>, 2002, 03.
-# Martin Willemoes Hansen <mwh@sysrq.dk>, 2004.
+# Ole Laursen <olau@hardworking.dk>, 2002 - 2003.
+# Martin Willemoes Hansen <mwh@sysrq.dk>, 2004 - 2005
 #
 # Konventioner:
 #
@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-06-08 13:49+0200\n"
-"PO-Revision-Date: 2005-06-08 13:49+0200\n"
+"PO-Revision-Date: 2005-06-08 13:50+0200\n"
 "Last-Translator: Martin Willemoes Hansen <mwh@sysrq.dk>\n"
 "Language-Team: Danish <dansk@klid.dk>\n"
 "MIME-Version: 1.0\n"
