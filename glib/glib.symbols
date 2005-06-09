@@ -858,6 +858,7 @@ g_open
 g_creat
 g_rename
 g_mkdir
+g_chdir
 g_stat
 g_lstat
 g_unlink
@@ -1228,6 +1229,7 @@ g_win32_get_package_installation_subdirectory PRIVATE
 g_win32_get_package_installation_subdirectory_utf8
 g_win32_get_windows_version
 g_win32_getlocale
+g_win32_locale_filename_from_utf8
 #endif
 #endif
 #endif

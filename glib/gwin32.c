@@ -1483,11 +1483,13 @@ g_win32_get_windows_version (void)
  * In such a case, and if the filename refers to an existing file, and
  * the file system stores alternate short (8.3) names for directory
  * entries, the short form of the filename is returned. Note that the
- * "short" name might in fact be longer than the Unicode name. If no
- * system codepage name for the file is possible, %NULL is returned.
+ * "short" name might in fact be longer than the Unicode name if the
+ * Unicode name has very short pathname components containing
+ * non-ASCII characters. If no system codepage name for the file is
+ * possible, %NULL is returned.
  *
- * The return value is dynamically allocated and should be freed when
- * no longer used.
+ * The return value is dynamically allocated and should be freed with
+ * g_free() when no longer needed.
  *
  * Return value: The converted filename, or %NULL on conversion
  * failure and lack of short names.

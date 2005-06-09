@@ -37,6 +37,7 @@
 #define g_creat   creat
 #define g_rename  rename
 #define g_mkdir   mkdir
+#define g_chdir   chdir
 #define g_stat    stat
 #define g_lstat   lstat
 #define g_unlink  unlink
@@ -75,6 +76,8 @@ int g_rename    (const gchar *oldfilename,
 
 int g_mkdir     (const gchar *filename,
                  int          mode);
+
+int g_chdir     (const gchar *path);
 
 int g_stat      (const gchar *filename,
                  struct stat *buf);

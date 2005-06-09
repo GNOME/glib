@@ -1,3 +1,14 @@
+2005-06-09  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gstdio.h
+	* glib/gstdio.c
+	* glib/glib.symbols: Add a chdir() wrapper, too.
+
+	* glib/glib.symbols: Add g_win32_locale_filename_from_utf8().
+
+	* glib/gwin32.c (g_win32_locale_filename_from_utf8): Clarify doc
+	comment.
+
 2005-06-08  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gutils.c (get_windows_directory_root): New helper function
