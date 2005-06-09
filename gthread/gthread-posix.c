@@ -307,7 +307,9 @@ g_thread_create_posix_impl (GThreadFunc thread_func,
   if (stack_size)
     {
       stack_size = MAX (g_thread_min_stack_size, stack_size);
-      posix_check_cmd (pthread_attr_setstacksize (&attr, stack_size));
+      /* No error check here, because some systems can't do it and
+       * we simply don't want threads to fail because of that. */
+      pthread_attr_setstacksize (&attr, stack_size);
     }
 #endif /* HAVE_PTHREAD_ATTR_SETSTACKSIZE */
 

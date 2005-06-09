@@ -306,9 +306,9 @@ error is set, if and only if the function returns %NULL.
 
 <!-- ##### FUNCTION g_thread_create_full ##### -->
 <para>
-This function creates a new thread with the priority @priority. The
-stack gets the size @stack_size or the default value for the current
-platform, if @stack_size is 0.
+This function creates a new thread with the priority @priority. If the
+underlying thread implementation supports it, the thread gets a stack size 
+of @stack_size or the default value for the current platform, if @stack_size is 0.
 </para>
 
 <para>

@@ -1,3 +1,8 @@
+2005-06-09  Matthias Clasen  <mclasen@redhat.com>
+
+	* gthread-posix.c (g_thread_create_posix_impl): Allow
+	setstacksize to fail.  (#304790, Michael Banck)
+
 2005-01-07  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.6.1 ===

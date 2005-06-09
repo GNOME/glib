@@ -1,3 +1,9 @@
+2005-06-09  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/tmpl/threads.sgml: Document that stack size
+	will be ignored if the underlying thread implementation
+	doesn't support stack sizes.
+
 2005-06-07  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/glib-sections.txt: Add g_utf8_collate_key_for_filename.
