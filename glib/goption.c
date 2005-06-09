@@ -33,18 +33,22 @@
 
 #define TRANSLATE(group, str) (((group)->translate_func ? (* (group)->translate_func) ((str), (group)->translate_data) : (str)))
 
-typedef struct {
+typedef struct 
+{
   GOptionArg arg_type;
   gpointer arg_data;  
-  union {
+  union 
+  {
     gboolean bool;
     gint integer;
     gchar *str;
     gchar **array;
   } prev;
-  union {
+  union 
+  {
     gchar *str;
-    struct {
+    struct 
+    {
       gint len;
       gchar **data;
     } array;
@@ -628,9 +632,10 @@ parse_int (const gchar *arg_name,
 	   GError     **error)
 {
   gchar *end;
-  glong tmp = strtol (arg, &end, 0);
+  glong tmp;
 
   errno = 0;
+  tmp = strtol (arg, &end, 0);
   
   if (*arg == '\0' || *end != '\0')
     {

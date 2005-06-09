@@ -1,3 +1,8 @@
+2005-06-09  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/goption.c (parse_int): Set errno to 0 before calling
+	strtol.  (#306388, Morten Welinder)
+
 2005-06-09  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gstdio.h
