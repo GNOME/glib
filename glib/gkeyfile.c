@@ -3184,10 +3184,9 @@ g_key_file_parse_value_as_integer (GKeyFile     *key_file,
   int_value = long_value;
   if (int_value != long_value || errno == ERANGE)
     {
-      g_set_error (error,
-		   G_OPTION_ERROR, G_OPTION_ERROR_BAD_VALUE,
-		   _("Integer value '%s' for %s out of range"),
-		   arg, arg_name);
+      g_set_error (error, G_KEY_FILE_ERROR,
+		   G_KEY_FILE_ERROR_INVALID_VALUE,
+		   _("Integer value '%s' out of range"), value);
       return 0;
     }
 
