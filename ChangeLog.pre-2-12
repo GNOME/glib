@@ -1,3 +1,8 @@
+2005-06-09  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/goption.c (parse_int): Set errno to 0 before calling
+	strtol.  (#306388, Morten Welinder)
+
 2005-06-08  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gutils.c (get_windows_directory_root): New helper function

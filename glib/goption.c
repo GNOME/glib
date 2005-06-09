@@ -610,10 +610,11 @@ parse_int (const gchar *arg_name,
 	   GError     **error)
 {
   gchar *end;
-  glong tmp = strtol (arg, &end, 0);
+  glong tmp; 
 
   errno = 0;
-  
+  tmp = strtol (arg, &end, 0);
+
   if (*arg == '\0' || *end != '\0')
     {
       g_set_error (error,
