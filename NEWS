@@ -1,3 +1,15 @@
+Overview of Changes from GLib 2.6.4 to GLib 2.6.5
+=================================================
+* GOption
+ - Treat '-' as non-option argument [Tim Musson, Thomas Leonard]
+* Win32 changes
+ - Improve g_get_system_data_dirs() [Tor]
+* Other bug fixes [Tommi Komulainen, Tor, Benjamin Otte,
+  Morten Welinder, Christian Biere, Noah Levitt, Michael Banck]
+* Documentation improvements [Mattew F. Barnes, Federico
+  Mena Quintero, Daniel Vaillard, Matthias]
+* New and updated translations (da,eu,gl,mn,nb,ne,no)
+
 Overview of Changes from GLib 2.6.3 to GLib 2.6.4
 =================================================
 * Fix compilation with gcc 4.0 [Matthias Clasen]
