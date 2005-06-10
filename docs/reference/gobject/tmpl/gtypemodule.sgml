@@ -52,6 +52,9 @@ in #GTypeModuleClass.
 </variablelist>
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### STRUCT GTypeModule ##### -->
 <para>
 The members of the <structname>GTypeModule</structname> structure should not 

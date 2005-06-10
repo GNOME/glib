@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.glib-2-4.HEAD.or\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-04-06 10:49-0400\n"
+"POT-Creation-Date: 2005-06-10 12:53-0400\n"
 "PO-Revision-Date: 2004-09-05 21:30+0530\n"
 "Last-Translator: Subhransu Behera <arya_subhransu@yahoo.co.in>\n"
 "Language-Team: Oriya <oriya-group@lists.sarovar.org>\n"
@@ -16,69 +16,69 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: glib/gconvert.c:404
+#: glib/gconvert.c:406
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "ଅକ୍ଷର ସେଟ୍ '%s'କୁ '%s'େର ରୂପାନ୍ତରିତ କରିବା ଅସହାୟକ"
 
-#: glib/gconvert.c:408
+#: glib/gconvert.c:410
 #, c-format
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "'%s'ରୁ '%s'ର ରୁପାନ୍ତରକ ଖୋଲି ହେଲା ନାହିଁ"
 
-#: glib/gconvert.c:614 glib/gconvert.c:902 glib/giochannel.c:1319
+#: glib/gconvert.c:618 glib/gconvert.c:908 glib/giochannel.c:1319
 #: glib/giochannel.c:1361 glib/giochannel.c:2203 glib/gutf8.c:911
 #: glib/gutf8.c:1361
 msgid "Invalid byte sequence in conversion input"
 msgstr "ରୁପାନ୍ତରଣ ନିବେଶେର ଅବୈଧ ବାଇଟ୍ ଅନୁକ୍ରମ"
 
-#: glib/gconvert.c:619 glib/gconvert.c:835 glib/giochannel.c:1326
+#: glib/gconvert.c:624 glib/gconvert.c:841 glib/giochannel.c:1326
 #: glib/giochannel.c:2215
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "ରୁପାନ୍ତରଣରେ ତ୍ରୁଟି: %s"
 
-#: glib/gconvert.c:637 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
+#: glib/gconvert.c:643 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
 #: glib/gutf8.c:1357
 msgid "Partial character sequence at end of input"
 msgstr "ନିବେଶର ସମାପ୍ତିରେ ଆଶିଂକ ଅକ୍ଷର ଅନୁକ୍ରମ"
 
-#: glib/gconvert.c:811
+#: glib/gconvert.c:817
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "'%s' ସହାୟକକୁ ସଂକେତ '%s' ସେଟ୍ ରେ ରୁପାନ୍ତରିତ କରିହେଲା ନାହିଁ"
 
-#: glib/gconvert.c:1611
+#: glib/gconvert.c:1617
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "'%s' ୟୁ.ଆର୍.ଆଇ. \"ଫାଇଲ\" ଯୋଜନାକୁ ବ୍ଯବହାର କରୁଥିବା ଗୋଟିଏ ସମ୍ପୂର୍ଣ୍ଣ ୟୁ.ଆର୍.ଆଇ. ନୁହେଁ"
 
-#: glib/gconvert.c:1621
+#: glib/gconvert.c:1627
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "'%s' ସ୍ଥାନୀୟ ଫାଇଲ ୟୁ.ଆର୍.ଆଇ. '#' ଚିହ୍ନକୁ ସମ୍ମିଳିତ କରିପାରିବ ନାହିଁ"
 
-#: glib/gconvert.c:1638
+#: glib/gconvert.c:1644
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "'%s' ୟୁ.ଆର୍.ଆଇ. ଅବୈଧ ଅଟେ"
 
-#: glib/gconvert.c:1650
+#: glib/gconvert.c:1656
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "'%s' ୟୁ.ଆର୍.ଆଇ.ର ହୋଷ୍ଟ୍ ନାମ ଅବୈଧ ଅଟେ"
 
-#: glib/gconvert.c:1666
+#: glib/gconvert.c:1672
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "'%s' ୟୁ.ଆର୍.ଆଇ.ରେ ଅବୈଧ ଏସ୍କେପ୍ ଅକ୍ଷର ରହିଛି"
 
-#: glib/gconvert.c:1760
+#: glib/gconvert.c:1766
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "'%s' ପଥ ନାମ ଏକ ସମ୍ପୂର୍ଣ୍ଣ ପଥ ନୁହେଁ"
 
-#: glib/gconvert.c:1770
+#: glib/gconvert.c:1776
 msgid "Invalid hostname"
 msgstr "ଅବୈଧ ହୋଷ୍ଟ୍ ନାମ"
 
@@ -409,18 +409,18 @@ msgstr "ପାଠ୍ଯ ଖାଲି ଥିଲା (ବା କେବଳ ଖାଲ
 msgid "Failed to read data from child process"
 msgstr "ନିର୍ଭରକ ପ୍ରକ୍ରିୟାରୁ ତଥ୍ଯ ପଢ଼ିବାରେ ଅସଫଳ"
 
-#: glib/gspawn-win32.c:281 glib/gspawn.c:1350
+#: glib/gspawn-win32.c:281 glib/gspawn.c:1354
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "ନିର୍ଭରକ ପ୍ରକ୍ରିୟା ସହିତ ସଂଯୋଗ ପାଇଁ ପାଇପ୍ ସୃଷ୍ଟି କରିବାରେ ଅସଫଳ (%s)"
 
-#: glib/gspawn-win32.c:321 glib/gspawn.c:1014
+#: glib/gspawn-win32.c:321 glib/gspawn.c:1018
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "ନିର୍ଭରକ ପାଇପ୍ ରୁ ତଥ୍ଯ ପଢି଼ବାରେ ଅସଫଳ (%s)"
 
 # Gora: "change to directory" means "got to directory" here
-#: glib/gspawn-win32.c:349 glib/gspawn.c:1219
+#: glib/gspawn-win32.c:349 glib/gspawn.c:1223
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "'%s' ଡିରେକ୍ଟୋରିକୁ ଯିବାରେ ଅସଫଳ (%s)"
@@ -455,32 +455,32 @@ msgstr "ନିର୍ଭରକ ପ୍ରକ୍ରିୟାରୁ ତଥ୍ଯ ପ
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "waitpid()ରେ ଅପ୍ରତ୍ଯାଶିତ ତ୍ରୁଟି (%s)"
 
-#: glib/gspawn.c:1079
+#: glib/gspawn.c:1083
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "ଶାଖା ସୃଷ୍ଟି କରିବାରେ ଅସଫଳ (%s"
 
-#: glib/gspawn.c:1229
+#: glib/gspawn.c:1233
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "ନିର୍ଭରକ ପ୍ରକ୍ରିୟା \"%s\" ନିଷ୍ପାଦନ କରିବାରେ ଅସଫଳ (%s)"
 
-#: glib/gspawn.c:1239
+#: glib/gspawn.c:1243
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "ନିର୍ଭରକ ପ୍ରକ୍ରିୟାର ନିର୍ଗମ ବା ନିବେଶର ପୁନଃନିର୍ଦ୍ଦେଶନ କରିବାରେ ଅସଫଳ (%s)"
 
-#: glib/gspawn.c:1248
+#: glib/gspawn.c:1252
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "ନିର୍ଭରକ ପ୍ରକ୍ରିୟାକୁ ଶାଖାଯୁକ୍ତ କରିବାରେ ଅସଫଳ (%s)"
 
-#: glib/gspawn.c:1256
+#: glib/gspawn.c:1260
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "ନିର୍ଭରକ ପ୍ରକ୍ରିୟାକୁ ନିଷ୍ପାଦନ କରିବାରେ ଅଜଣା ତ୍ରୁଟି \"%s\""
 
-#: glib/gspawn.c:1278
+#: glib/gspawn.c:1282
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "ନିର୍ଭରକ ପି.ଆଇ.ଡି. ପାଇପ୍  ରୁ ପର୍ଯ୍ଯାପ୍ତ ତଥ୍ଯ ପଢି଼ବାରେ ଅସଫଳ (%s)"
@@ -522,17 +522,17 @@ msgstr "ସବୁ ସାହାଯ୍ଯ ପସନ୍ଦ ଦେଖାନ୍ତୁ
 msgid "Application Options:"
 msgstr "ପ୍ରୟୋଗ ପସନ୍ଦ"
 
-#: glib/goption.c:621
+#: glib/goption.c:622
 #, c-format
 msgid "Cannot parse integer value '%s' for --%s"
 msgstr "--%2$s ପାଇଁ ପୂର୍ଣ ସଂଖ୍ଯା ମୂଲ୍ଯ '%1$s' ବିଶ୍ଲେଷିତ କରିହେଲା ନାହିଁ"
 
-#: glib/goption.c:631
+#: glib/goption.c:632
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "%2$s ପାଇଁ ପୂର୍ଣ ସଂଖ୍ଯା ମୂଲ୍ଯ '%1$s' ପରିସର ବାହାରେ"
 
-#: glib/goption.c:1361
+#: glib/goption.c:1362
 #, c-format
 msgid "Unknown option %s"
 msgstr "ଅଜଣା ପସନ୍ଦ %s"
@@ -607,12 +607,17 @@ msgstr ""
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "'%s' ୟୁ.ଆର୍.ଆଇ.ରେ ଅବୈଧ ଏସ୍କେପ୍ ଅକ୍ଷର ରହିଛି"
 
-#: glib/gkeyfile.c:3177
+#: glib/gkeyfile.c:3180
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr ""
 
-#: glib/gkeyfile.c:3205
+#: glib/gkeyfile.c:3189
+#, fuzzy, c-format
+msgid "Integer value '%s' out of range"
+msgstr "%2$s ପାଇଁ ପୂର୍ଣ ସଂଖ୍ଯା ମୂଲ୍ଯ '%1$s' ପରିସର ବାହାରେ"
+
+#: glib/gkeyfile.c:3219
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr ""

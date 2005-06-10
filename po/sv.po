@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-04-06 10:49-0400\n"
+"POT-Creation-Date: 2005-06-10 12:53-0400\n"
 "PO-Revision-Date: 2004-12-18 15:59+0100\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
@@ -16,70 +16,70 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: glib/gconvert.c:404
+#: glib/gconvert.c:406
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Konvertering från teckentabellen \"%s\" till \"%s\" stöds inte"
 
-#: glib/gconvert.c:408
+#: glib/gconvert.c:410
 #, c-format
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "Kunde inte öppna konverteraren från \"%s\" till \"%s\""
 
-#: glib/gconvert.c:614 glib/gconvert.c:902 glib/giochannel.c:1319
+#: glib/gconvert.c:618 glib/gconvert.c:908 glib/giochannel.c:1319
 #: glib/giochannel.c:1361 glib/giochannel.c:2203 glib/gutf8.c:911
 #: glib/gutf8.c:1361
 msgid "Invalid byte sequence in conversion input"
 msgstr "Ogiltig bytesekvens i konverteringsindata"
 
-#: glib/gconvert.c:619 glib/gconvert.c:835 glib/giochannel.c:1326
+#: glib/gconvert.c:624 glib/gconvert.c:841 glib/giochannel.c:1326
 #: glib/giochannel.c:2215
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Fel vid konvertering: %s"
 
-#: glib/gconvert.c:637 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
+#: glib/gconvert.c:643 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
 #: glib/gutf8.c:1357
 msgid "Partial character sequence at end of input"
 msgstr "Ofullständig teckensekvens vid slutet av indata"
 
 # fallback syftar på en sträng
-#: glib/gconvert.c:811
+#: glib/gconvert.c:817
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Kan inte konvertera reservsträngen \"%s\" till kodningen \"%s\""
 
-#: glib/gconvert.c:1611
+#: glib/gconvert.c:1617
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "URI:n \"%s\" är ingen absolut URI som använder \"file\"-schemat"
 
-#: glib/gconvert.c:1621
+#: glib/gconvert.c:1627
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Lokala fil-URI:n \"%s\" får inte innehålla en \"#\""
 
-#: glib/gconvert.c:1638
+#: glib/gconvert.c:1644
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI:n \"%s\" är ogiltig"
 
-#: glib/gconvert.c:1650
+#: glib/gconvert.c:1656
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Värdnamnet i URI:n \"%s\" är ogiltigt"
 
-#: glib/gconvert.c:1666
+#: glib/gconvert.c:1672
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI:n \"%s\" innehåller ogiltigt kodade tecken"
 
-#: glib/gconvert.c:1760
+#: glib/gconvert.c:1766
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Sökvägen \"%s\" är ingen absolut sökväg"
 
-#: glib/gconvert.c:1770
+#: glib/gconvert.c:1776
 msgid "Invalid hostname"
 msgstr "Ogiltigt värdnamn"
 
@@ -425,17 +425,17 @@ msgstr "Texten var tom (eller innehöll bara tomrum)"
 msgid "Failed to read data from child process"
 msgstr "Misslyckades med att läsa data från barnprocessen"
 
-#: glib/gspawn-win32.c:281 glib/gspawn.c:1350
+#: glib/gspawn-win32.c:281 glib/gspawn.c:1354
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Misslyckades med att skapa rör för kommunikation med barnprocess (%s)"
 
-#: glib/gspawn-win32.c:321 glib/gspawn.c:1014
+#: glib/gspawn-win32.c:321 glib/gspawn.c:1018
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Misslyckades med att läsa från rör till barn (%s)"
 
-#: glib/gspawn-win32.c:349 glib/gspawn.c:1219
+#: glib/gspawn-win32.c:349 glib/gspawn.c:1223
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Misslyckades med att byta till katalogen \"%s\" (%s)"
@@ -472,33 +472,33 @@ msgstr "Oväntat fel i select() vid läsning av data från en barnprocess (%s)"
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Oväntat fel i waitpid() (%s)"
 
-#: glib/gspawn.c:1079
+#: glib/gspawn.c:1083
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Misslyckades med att grena (%s)"
 
-#: glib/gspawn.c:1229
+#: glib/gspawn.c:1233
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Misslyckades med att köra barnprocessen \"%s\" (%s)"
 
-#: glib/gspawn.c:1239
+#: glib/gspawn.c:1243
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr ""
 "Misslyckades med att dirigera om utdata eller indata från barnprocess (%s)"
 
-#: glib/gspawn.c:1248
+#: glib/gspawn.c:1252
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Misslyckades med att skapa barnprocess (%s)"
 
-#: glib/gspawn.c:1256
+#: glib/gspawn.c:1260
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Okänt fel vid körning av barnprocessen \"%s\""
 
-#: glib/gspawn.c:1278
+#: glib/gspawn.c:1282
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr ""
@@ -542,17 +542,17 @@ msgstr "Visa alla hjälpflaggor"
 msgid "Application Options:"
 msgstr "Programflaggor:"
 
-#: glib/goption.c:621
+#: glib/goption.c:622
 #, c-format
 msgid "Cannot parse integer value '%s' for --%s"
 msgstr "Kan inte tolka heltalsvärdet \"%s\" för --%s"
 
-#: glib/goption.c:631
+#: glib/goption.c:632
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "Heltalsvärdet \"%s\" för %s är utanför intervallet"
 
-#: glib/goption.c:1361
+#: glib/goption.c:1362
 #, c-format
 msgid "Unknown option %s"
 msgstr "Okänd flagga %s"
@@ -633,12 +633,17 @@ msgstr "Nyckelfilen innehåller kontrolltecken i slutet på en rad"
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "Nyckelfilen innehåller ogiltiga kontrollsekvensen \"%s\""
 
-#: glib/gkeyfile.c:3177
+#: glib/gkeyfile.c:3180
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Värdet \"%s\" kan inte tolkas som ett tal."
 
-#: glib/gkeyfile.c:3205
+#: glib/gkeyfile.c:3189
+#, fuzzy, c-format
+msgid "Integer value '%s' out of range"
+msgstr "Heltalsvärdet \"%s\" för %s är utanför intervallet"
+
+#: glib/gkeyfile.c:3219
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Värdet \"%s\" kan inte tolkas som ett booleskt värde."

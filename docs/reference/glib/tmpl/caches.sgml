@@ -26,6 +26,9 @@ A #GCache value is the actual resource.
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### STRUCT GCache ##### -->
 <para>
 The #GCache struct is an opaque data structure containing information about

@@ -49,6 +49,9 @@ To free a #GByteArray, use g_byte_array_free().
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### STRUCT GByteArray ##### -->
 <para>
 The <structname>GByteArray</structname> struct allows access to the public fields of a <structname>GByteArray</structname>.

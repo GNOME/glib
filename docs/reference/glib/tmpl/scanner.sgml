@@ -19,6 +19,9 @@ understand it myself. Look at gtkrc.c for some code using the scanner.
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### STRUCT GScanner ##### -->
 <para>
 The data structure representing a lexical scanner.

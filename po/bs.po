@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.glib-2-4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-04-06 10:49-0400\n"
+"POT-Creation-Date: 2005-06-10 12:53-0400\n"
 "PO-Revision-Date: 2004-05-17 01:30+0000\n"
 "Last-Translator: Kenan Hadžiavdić <kenanh@frisurf.no>\n"
 "Language-Team: Bosnian <lokal@lugbih.org>\n"
@@ -16,69 +16,69 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.0.2\n"
 
-#: glib/gconvert.c:404
+#: glib/gconvert.c:406
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Pretvaranje iz skupa znakova '%s' u '%s' nije podržano"
 
-#: glib/gconvert.c:408
+#: glib/gconvert.c:410
 #, c-format
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "Nisam mogao pokrenuti pretvaranje iz '%s' u '%s'"
 
-#: glib/gconvert.c:614 glib/gconvert.c:902 glib/giochannel.c:1319
+#: glib/gconvert.c:618 glib/gconvert.c:908 glib/giochannel.c:1319
 #: glib/giochannel.c:1361 glib/giochannel.c:2203 glib/gutf8.c:911
 #: glib/gutf8.c:1361
 msgid "Invalid byte sequence in conversion input"
 msgstr "Nevažeći niz bajtova u ulaznim podacima za pretvaranje"
 
-#: glib/gconvert.c:619 glib/gconvert.c:835 glib/giochannel.c:1326
+#: glib/gconvert.c:624 glib/gconvert.c:841 glib/giochannel.c:1326
 #: glib/giochannel.c:2215
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Greška tokom pretvaranja: %s"
 
-#: glib/gconvert.c:637 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
+#: glib/gconvert.c:643 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
 #: glib/gutf8.c:1357
 msgid "Partial character sequence at end of input"
 msgstr "Djelimičan niz znakova na kraju ulaznih podataka"
 
-#: glib/gconvert.c:811
+#: glib/gconvert.c:817
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Ne mogu pretvoriti '%s' u znakovni skup '%s'"
 
-#: glib/gconvert.c:1611
+#: glib/gconvert.c:1617
 #, fuzzy, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "URI '%s' nije apsolutni URI koristeći šemu datoteka"
 
-#: glib/gconvert.c:1621
+#: glib/gconvert.c:1627
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "URI lokalne datoteke '%s' ne smije sadržavati '#'"
 
-#: glib/gconvert.c:1638
+#: glib/gconvert.c:1644
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI '%s' je nevažeći"
 
-#: glib/gconvert.c:1650
+#: glib/gconvert.c:1656
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Ime računara URI-ja '%s' je nevažeće"
 
-#: glib/gconvert.c:1666
+#: glib/gconvert.c:1672
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI '%s' sadrži nevažeće escape znakove"
 
-#: glib/gconvert.c:1760
+#: glib/gconvert.c:1766
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Putanja '%s' nije absolutna putanja"
 
-#: glib/gconvert.c:1770
+#: glib/gconvert.c:1776
 msgid "Invalid hostname"
 msgstr "Nevažeće ime računara"
 
@@ -415,18 +415,18 @@ msgstr "Tekst je bio prazan (ili je sadržavao samo prazna polja)"
 msgid "Failed to read data from child process"
 msgstr "Neuspješno čitanje podataka iz podređenog procesa"
 
-#: glib/gspawn-win32.c:281 glib/gspawn.c:1350
+#: glib/gspawn-win32.c:281 glib/gspawn.c:1354
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr ""
 "Neuspješno stvaranje cijevi za komuniciranje sa podređenim procesom (%s)"
 
-#: glib/gspawn-win32.c:321 glib/gspawn.c:1014
+#: glib/gspawn-win32.c:321 glib/gspawn.c:1018
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Neuspješno čitanje iz podređene cijevi (%s)"
 
-#: glib/gspawn-win32.c:349 glib/gspawn.c:1219
+#: glib/gspawn-win32.c:349 glib/gspawn.c:1223
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Neuspješan prelazak u direktorij '%s' (%s)"
@@ -465,32 +465,32 @@ msgstr ""
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Neočekivana greška u waitpid() (%s)"
 
-#: glib/gspawn.c:1079
+#: glib/gspawn.c:1083
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Neuspješan fork (%s)"
 
-#: glib/gspawn.c:1229
+#: glib/gspawn.c:1233
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Neuspješno izvršavanje podređenog procesa \"%s\" (%s)"
 
-#: glib/gspawn.c:1239
+#: glib/gspawn.c:1243
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Neuspješno preusmjeravanje ulaza ili izlaza podređenog procesa (%s)"
 
-#: glib/gspawn.c:1248
+#: glib/gspawn.c:1252
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Neuspješno pokretanje fork() za podređeni proces (%s)"
 
-#: glib/gspawn.c:1256
+#: glib/gspawn.c:1260
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Nepoznata greška tokom izvršenja podređenog procesa \"%s\""
 
-#: glib/gspawn.c:1278
+#: glib/gspawn.c:1282
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Neuspješno čitanje dovoljno podataka iz podređene pid cijevi (%s)"
@@ -532,17 +532,17 @@ msgstr ""
 msgid "Application Options:"
 msgstr ""
 
-#: glib/goption.c:621
+#: glib/goption.c:622
 #, c-format
 msgid "Cannot parse integer value '%s' for --%s"
 msgstr ""
 
-#: glib/goption.c:631
+#: glib/goption.c:632
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr ""
 
-#: glib/goption.c:1361
+#: glib/goption.c:1362
 #, c-format
 msgid "Unknown option %s"
 msgstr ""
@@ -617,12 +617,17 @@ msgstr ""
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "URI '%s' sadrži nevažeće escape znakove"
 
-#: glib/gkeyfile.c:3177
+#: glib/gkeyfile.c:3180
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr ""
 
-#: glib/gkeyfile.c:3205
+#: glib/gkeyfile.c:3189
+#, c-format
+msgid "Integer value '%s' out of range"
+msgstr ""
+
+#: glib/gkeyfile.c:3219
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr ""

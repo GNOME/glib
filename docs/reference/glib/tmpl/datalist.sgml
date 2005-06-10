@@ -47,6 +47,9 @@ To remove all data elements from a datalist, use g_datalist_clear().
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### STRUCT GData ##### -->
 <para>
 The #GData struct is an opaque data structure to represent a

@@ -40,6 +40,9 @@ To destroy a #GTree, use g_tree_destroy().
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### STRUCT GTree ##### -->
 <para>
 The <structname>GTree</structname> struct is an opaque data structure representing a

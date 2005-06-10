@@ -45,6 +45,9 @@ any of '-_+'.
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### TYPEDEF GType ##### -->
 <para>
 A numerical value which represents the unique identifier of a registered

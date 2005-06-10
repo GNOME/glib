@@ -14,6 +14,9 @@ These macros provide a few commonly-used features.
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### MACRO G_OS_WIN32 ##### -->
 <para>
 This macro is defined only on Windows. So you can bracket

@@ -59,6 +59,9 @@ can be stopped by calling g_thread_pool_stop_unused_threads().
 </variablelist>
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### STRUCT GThreadPool ##### -->
 <para>
 The #GThreadPool struct represents a thread pool. It has six public

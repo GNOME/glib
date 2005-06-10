@@ -38,6 +38,9 @@ g_dir_read_name(), g_dir_rewind(), g_dir_close().
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### ENUM GFileError ##### -->
 <para>
 Values corresponding to <literal>errno</literal> codes returned from file operations

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-04-06 10:49-0400\n"
+"POT-Creation-Date: 2005-06-10 12:53-0400\n"
 "PO-Revision-Date: 2005-02-01 15:10-0200\n"
 "Last-Translator: Gustavo Noronha Silva <kov@debian.org>\n"
 "Language-Team: Brazilian Portuguese <gnome-l10n-br@listas.cipsga.org.br>\n"
@@ -15,69 +15,69 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: glib/gconvert.c:404
+#: glib/gconvert.c:406
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Conversão do conjunto de caracteres '%s' para '%s' não é suportada"
 
-#: glib/gconvert.c:408
+#: glib/gconvert.c:410
 #, c-format
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "Não foi possível abrir conversor de '%s' para '%s'"
 
-#: glib/gconvert.c:614 glib/gconvert.c:902 glib/giochannel.c:1319
+#: glib/gconvert.c:618 glib/gconvert.c:908 glib/giochannel.c:1319
 #: glib/giochannel.c:1361 glib/giochannel.c:2203 glib/gutf8.c:911
 #: glib/gutf8.c:1361
 msgid "Invalid byte sequence in conversion input"
 msgstr "Sequência de bytes inválida na entrada de conversão"
 
-#: glib/gconvert.c:619 glib/gconvert.c:835 glib/giochannel.c:1326
+#: glib/gconvert.c:624 glib/gconvert.c:841 glib/giochannel.c:1326
 #: glib/giochannel.c:2215
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Erro durante a conversão: %s"
 
-#: glib/gconvert.c:637 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
+#: glib/gconvert.c:643 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
 #: glib/gutf8.c:1357
 msgid "Partial character sequence at end of input"
 msgstr "Sequência de caracteres parcial no final da entrada"
 
-#: glib/gconvert.c:811
+#: glib/gconvert.c:817
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Não foi possível converter recurso '%s' para conjunto caracteres '%s'"
 
-#: glib/gconvert.c:1611
+#: glib/gconvert.c:1617
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "O URI '%s' não é um URI absoluto que utilize o esquema \"file\""
 
-#: glib/gconvert.c:1621
+#: glib/gconvert.c:1627
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "O URI de arquivo local '%s' não pode incluir um '#'"
 
-#: glib/gconvert.c:1638
+#: glib/gconvert.c:1644
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "O URI '%s' é inválido"
 
-#: glib/gconvert.c:1650
+#: glib/gconvert.c:1656
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "O nome de servidor do URI '%s' é inválido"
 
-#: glib/gconvert.c:1666
+#: glib/gconvert.c:1672
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "O URI '%s' contém caracteres mascarados inválidos"
 
-#: glib/gconvert.c:1760
+#: glib/gconvert.c:1766
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "O nome de caminho '%s' não é um caminho absoluto"
 
-#: glib/gconvert.c:1770
+#: glib/gconvert.c:1776
 msgid "Invalid hostname"
 msgstr "Nome de servidor inválido"
 
@@ -427,17 +427,17 @@ msgstr "Texto estava vazio (ou apenas continha espaços)"
 msgid "Failed to read data from child process"
 msgstr "Falha ao ler dados de processo filho"
 
-#: glib/gspawn-win32.c:281 glib/gspawn.c:1350
+#: glib/gspawn-win32.c:281 glib/gspawn.c:1354
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Falha ao criar canal para comunicar com com processo filho (%s)"
 
-#: glib/gspawn-win32.c:321 glib/gspawn.c:1014
+#: glib/gspawn-win32.c:321 glib/gspawn.c:1018
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Falha ao ler de canal filho (%s)"
 
-#: glib/gspawn-win32.c:349 glib/gspawn.c:1219
+#: glib/gspawn-win32.c:349 glib/gspawn.c:1223
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Falha ao ir para diretório '%s' (%s)"
@@ -474,32 +474,32 @@ msgstr "Erro inesperado no select() ao ler dados de processo filho (%s)"
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Erro inesperado em waitpid() (%s)"
 
-#: glib/gspawn.c:1079
+#: glib/gspawn.c:1083
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Falha no fork (%s)"
 
-#: glib/gspawn.c:1229
+#: glib/gspawn.c:1233
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Falha ao executar processo filho \"%s\" (%s)"
 
-#: glib/gspawn.c:1239
+#: glib/gspawn.c:1243
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Falha ao redireccionar saida ou entrada do processo filho (%s)"
 
-#: glib/gspawn.c:1248
+#: glib/gspawn.c:1252
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Falha no fork de processo filho (%s)"
 
-#: glib/gspawn.c:1256
+#: glib/gspawn.c:1260
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Erro desconhecido ao executar processo filho \"%s\""
 
-#: glib/gspawn.c:1278
+#: glib/gspawn.c:1282
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Falha ao ler dados suficientes de canal pid do filho (%s)"
@@ -541,17 +541,17 @@ msgstr "Exibir todas as opções de ajuda"
 msgid "Application Options:"
 msgstr "Opções de Aplicação:"
 
-#: glib/goption.c:621
+#: glib/goption.c:622
 #, c-format
 msgid "Cannot parse integer value '%s' for --%s"
 msgstr "Não foi possível analisar o valor inteiro '%s' para --%s"
 
-#: glib/goption.c:631
+#: glib/goption.c:632
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "Valor inteiro '%s' para %s fora dos limites"
 
-#: glib/goption.c:1361
+#: glib/goption.c:1362
 #, c-format
 msgid "Unknown option %s"
 msgstr "Opção %s desconhecida"
@@ -633,12 +633,17 @@ msgstr "Arquivo de chave contém caractere de escape no fim da linha"
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "Arquivo de chave contém seqüência de escape '%s' inválida"
 
-#: glib/gkeyfile.c:3177
+#: glib/gkeyfile.c:3180
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "O valor '%s' não pode ser interpretado como um número."
 
-#: glib/gkeyfile.c:3205
+#: glib/gkeyfile.c:3189
+#, fuzzy, c-format
+msgid "Integer value '%s' out of range"
+msgstr "Valor inteiro '%s' para %s fora dos limites"
+
+#: glib/gkeyfile.c:3219
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "O valor '%s' não pode ser interpretado como um booleano."

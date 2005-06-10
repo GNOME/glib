@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-04-06 10:49-0400\n"
+"POT-Creation-Date: 2005-06-10 12:53-0400\n"
 "PO-Revision-Date: 2004-03-08 15:46+0200\n"
 "Last-Translator: Ales Nyakhaychyk <nab@mail.by>\n"
 "Language-Team: Belarusian <i18n@mova.org>\n"
@@ -17,13 +17,13 @@ msgstr ""
 "X-Generator: KBabel 1.0.2\n"
 
 # glib/gconvert.c:390
-#: glib/gconvert.c:404
+#: glib/gconvert.c:406
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Пераўтварэньне з набору знакаў \"%s\" у \"%s\" не падтрымліваецца"
 
 # glib/gconvert.c:394
-#: glib/gconvert.c:408
+#: glib/gconvert.c:410
 #, fuzzy, c-format
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "Ня атрымалася адчыніць пераўтваральнік з \"%s\" у \"%s\": %s"
@@ -31,7 +31,7 @@ msgstr "Ня атрымалася адчыніць пераўтваральні�
 # glib/gconvert.c:592 glib/gconvert.c:882 glib/giochannel.c:1282
 # glib/giochannel.c:1324 glib/giochannel.c:2163 glib/gutf8.c:875
 # glib/gutf8.c:1320
-#: glib/gconvert.c:614 glib/gconvert.c:902 glib/giochannel.c:1319
+#: glib/gconvert.c:618 glib/gconvert.c:908 glib/giochannel.c:1319
 #: glib/giochannel.c:1361 glib/giochannel.c:2203 glib/gutf8.c:911
 #: glib/gutf8.c:1361
 msgid "Invalid byte sequence in conversion input"
@@ -40,7 +40,7 @@ msgstr ""
 
 # glib/gconvert.c:597 glib/gconvert.c:813 glib/giochannel.c:1289
 # glib/giochannel.c:2175
-#: glib/gconvert.c:619 glib/gconvert.c:835 glib/giochannel.c:1326
+#: glib/gconvert.c:624 glib/gconvert.c:841 glib/giochannel.c:1326
 #: glib/giochannel.c:2215
 #, c-format
 msgid "Error during conversion: %s"
@@ -48,56 +48,56 @@ msgstr "Памылка пад час пераўтварэньня: %s"
 
 # glib/gconvert.c:615 glib/gutf8.c:871 glib/gutf8.c:1071 glib/gutf8.c:1212
 # glib/gutf8.c:1316
-#: glib/gconvert.c:637 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
+#: glib/gconvert.c:643 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
 #: glib/gutf8.c:1357
 msgid "Partial character sequence at end of input"
 msgstr "Няпоўны сымбаль у канцы ўваходнага радка"
 
 # glib/gconvert.c:788
-#: glib/gconvert.c:811
+#: glib/gconvert.c:817
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Немагчыма пераўтвараць знак \"%s\" у знак з набору \"%s\""
 
 # glib/gconvert.c:1593
-#: glib/gconvert.c:1611
+#: glib/gconvert.c:1617
 #, fuzzy, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr ""
 "URI \"%s\" не зьяўляюцца абсалютным URI пад час выкарыстаньня файлавай схемы"
 
 # glib/gconvert.c:1603
-#: glib/gconvert.c:1621
+#: glib/gconvert.c:1627
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "URI \"%s\" мясцовага файлу ня можа ўлучаць \"#\""
 
 # glib/gconvert.c:1620
-#: glib/gconvert.c:1638
+#: glib/gconvert.c:1644
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI \"%s\" нерэчаісны"
 
 # glib/gconvert.c:1632
-#: glib/gconvert.c:1650
+#: glib/gconvert.c:1656
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Назва вузлу ў URI \"%s\" нерэчаісная"
 
 # glib/gconvert.c:1648
-#: glib/gconvert.c:1666
+#: glib/gconvert.c:1672
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI \"%s\" утрымлівае недапушчальны сымбаль"
 
 # glib/gconvert.c:1719
-#: glib/gconvert.c:1760
+#: glib/gconvert.c:1766
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Шлях \"%s\" ня зьяўляецца абсалютным"
 
 # glib/gconvert.c:1729
-#: glib/gconvert.c:1770
+#: glib/gconvert.c:1776
 msgid "Invalid hostname"
 msgstr "Недапушчальная назва вузла"
 
@@ -493,19 +493,19 @@ msgid "Failed to read data from child process"
 msgstr "Збой пад час чытаньня даньняў з працэса-нашчадка"
 
 # glib/gspawn-win32.c:981 glib/gspawn.c:1228
-#: glib/gspawn-win32.c:281 glib/gspawn.c:1350
+#: glib/gspawn-win32.c:281 glib/gspawn.c:1354
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Збой пад час стварэньня каналу для абмену з працэсам-нашчадкам (%s)"
 
 # glib/gspawn-win32.c:843 glib/gspawn.c:914
-#: glib/gspawn-win32.c:321 glib/gspawn.c:1014
+#: glib/gspawn-win32.c:321 glib/gspawn.c:1018
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Збой пад час чытаньня даньняў з каналу нашчадка (%s)"
 
 # glib/gspawn-win32.c:931 glib/gspawn.c:1119
-#: glib/gspawn-win32.c:349 glib/gspawn.c:1219
+#: glib/gspawn-win32.c:349 glib/gspawn.c:1223
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Збой пад час зьмены каталёгу \"%s\" (%s)"
@@ -551,37 +551,37 @@ msgid "Unexpected error in waitpid() (%s)"
 msgstr "Непрадбачаная памылка ў waitpid() (%s)"
 
 # glib/gspawn.c:979
-#: glib/gspawn.c:1079
+#: glib/gspawn.c:1083
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Збой пад час разгалінаньня (%s)"
 
 # glib/gspawn.c:1129
-#: glib/gspawn.c:1229
+#: glib/gspawn.c:1233
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Збой пад час выкананьня працэса-нашчадка \"%s\" (%s)"
 
 # glib/gspawn.c:1139
-#: glib/gspawn.c:1239
+#: glib/gspawn.c:1243
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Збой пад час перанакіраваньня вываду ці ўводу працэса-нашчадка (%s)"
 
 # glib/gspawn.c:1148
-#: glib/gspawn.c:1248
+#: glib/gspawn.c:1252
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Збой пад час разгалінаньня працэса-нашчадка (%s)"
 
 # glib/gspawn.c:1156
-#: glib/gspawn.c:1256
+#: glib/gspawn.c:1260
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Невядомая памылка пад час выкананьня працэса-нашчадка \"%s\""
 
 # glib/gspawn.c:1178
-#: glib/gspawn.c:1278
+#: glib/gspawn.c:1282
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr ""
@@ -628,17 +628,17 @@ msgstr ""
 msgid "Application Options:"
 msgstr ""
 
-#: glib/goption.c:621
+#: glib/goption.c:622
 #, c-format
 msgid "Cannot parse integer value '%s' for --%s"
 msgstr ""
 
-#: glib/goption.c:631
+#: glib/goption.c:632
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr ""
 
-#: glib/goption.c:1361
+#: glib/goption.c:1362
 #, c-format
 msgid "Unknown option %s"
 msgstr ""
@@ -714,12 +714,17 @@ msgstr ""
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "URI \"%s\" утрымлівае недапушчальны сымбаль"
 
-#: glib/gkeyfile.c:3177
+#: glib/gkeyfile.c:3180
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr ""
 
-#: glib/gkeyfile.c:3205
+#: glib/gkeyfile.c:3189
+#, c-format
+msgid "Integer value '%s' out of range"
+msgstr ""
+
+#: glib/gkeyfile.c:3219
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr ""

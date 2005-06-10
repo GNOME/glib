@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-04-06 10:49-0400\n"
+"POT-Creation-Date: 2005-06-10 12:53-0400\n"
 "PO-Revision-Date: 2005-03-03 21:28+0530\n"
 "Last-Translator: Amanpreet Singh Alam <amanpreetalam@yahoo.com>\n"
 "Language-Team: Punjabi <fedora-trans-pa@redhat.com>\n"
@@ -22,69 +22,69 @@ msgstr ""
 "X-Generator: KBabel 1.9.1\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: glib/gconvert.c:404
+#: glib/gconvert.c:406
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "ਕਰੈਕਟਰ ਸਮੂਹ %s ਤੋਂ %s ਵਿੱਚ ਬਦਲਣ ਇਸ ਵੇਲੇ ਸੰਭਵ ਨਹੀ"
 
-#: glib/gconvert.c:408
+#: glib/gconvert.c:410
 #, c-format
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "ਇਸ '%s' ਤੋ '%s' ਵਿੱਚ ਬਦਲਣ ਵਾਲਾ ਉਪਲਬਧ ਨਹੀ ਹੈ"
 
-#: glib/gconvert.c:614 glib/gconvert.c:902 glib/giochannel.c:1319
+#: glib/gconvert.c:618 glib/gconvert.c:908 glib/giochannel.c:1319
 #: glib/giochannel.c:1361 glib/giochannel.c:2203 glib/gutf8.c:911
 #: glib/gutf8.c:1361
 msgid "Invalid byte sequence in conversion input"
 msgstr "ਬਦਲਣ ਲਈ ਦਿਤੀ ਸਤਰ ਵਿੱਚ ਬਾਇਟ ਦਾ ਸਰੂਪ ਠੀਕ ਨਹੀ ਹੈ"
 
-#: glib/gconvert.c:619 glib/gconvert.c:835 glib/giochannel.c:1326
+#: glib/gconvert.c:624 glib/gconvert.c:841 glib/giochannel.c:1326
 #: glib/giochannel.c:2215
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "ਤਬਦੀਲੀ ਦਰਮਿਆਨ ਗਲਤੀ  %s"
 
-#: glib/gconvert.c:637 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
+#: glib/gconvert.c:643 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
 #: glib/gutf8.c:1357
 msgid "Partial character sequence at end of input"
 msgstr "ਸਤਰ ਦੇ ਅਖੀਰ ਤੇ ਅੱਖਰਾਂ ਦਾ ਸਰੂਪ ਅਧੂਰਾ ਹੈ"
 
-#: glib/gconvert.c:811
+#: glib/gconvert.c:817
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "ਤਬਦੀਲੀ ਸੰਭਵ ਨਹੀ ਕੋਡ ਸਮੂਹ %s ਤੋ %s ਵਿੱਚ ਤਬਦੀਲੀ"
 
-#: glib/gconvert.c:1611
+#: glib/gconvert.c:1617
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "URI '%s' \"ਫਾਇਲ\" ਸਕੀਮ ਨਾਲ ਅਸਲੀ URI ਨਹੀ ਹੈ"
 
-#: glib/gconvert.c:1621
+#: glib/gconvert.c:1627
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "ਸਥਾਨਕ ਫਾਇਲ %s ਵਿੱਚ ਇਹ ਨਿਸ਼ਾਨ # ਨਹੀ ਹੈ"
 
-#: glib/gconvert.c:1638
+#: glib/gconvert.c:1644
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI %s ਜਾਇਜ ਨਹੀ ਹੈ"
 
-#: glib/gconvert.c:1650
+#: glib/gconvert.c:1656
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "URI %s ਦੇ ਮੇਜਬਾਨ ਦਾ ਨਾਂ ਜਾਇਜ ਨਹੀ ਹੈ"
 
-#: glib/gconvert.c:1666
+#: glib/gconvert.c:1672
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "ਯੂਆਰਆਈ %s ਕੋਲ ਗਲਤ ਅੱਖਰ ਹਨ"
 
-#: glib/gconvert.c:1760
+#: glib/gconvert.c:1766
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "ਰਾਹ %s ਇਕ ਠੀਕ (absolute) ਰਾਹ ਨਹੀ ਹੈ"
 
-#: glib/gconvert.c:1770
+#: glib/gconvert.c:1776
 msgid "Invalid hostname"
 msgstr "ਗਲਤ ਮੇਜਬਾਨ ਨਾਂ"
 
@@ -410,17 +410,17 @@ msgstr "ਅੱਖਰੀ ਪਾਠ ਖਾਲੀ ਸੀ (ਜਾਂ ਸਾਫ ਥ�
 msgid "Failed to read data from child process"
 msgstr "ਅਗਲੇਰੀ ਕਿਰਿਆਵਾਂ ਤੋ ਡਾਟਾ ਵੇਖਣ ਵਿੱਚ ਅਸਫਲ ਹੈ  "
 
-#: glib/gspawn-win32.c:281 glib/gspawn.c:1350
+#: glib/gspawn-win32.c:281 glib/gspawn.c:1354
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "ਅਗਲੀ ਕਿਰਿਆ (%s) ਨਾਲ ਸੰਚਾਰ ਲਈ ਪਾਇਪ  ਬਣਾਉਣ ਵਿੱਚ ਅਸਫਲ ਹੈ  "
 
-#: glib/gspawn-win32.c:321 glib/gspawn.c:1014
+#: glib/gspawn-win32.c:321 glib/gspawn.c:1018
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "ਅਗਲੀ ਕਿਰਿਆ (%s) ਤੋ ਡਾਟਾ ਖੋਲਣ ਵਿੱਚ ਅਸਫਲ ਹੈ"
 
-#: glib/gspawn-win32.c:349 glib/gspawn.c:1219
+#: glib/gspawn-win32.c:349 glib/gspawn.c:1223
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "ਡਾਇਰੈਕਟਰੀ '%s' ਬਦਲਣ ਵਿੱਚ ਅਸਫਲ (%s)"
@@ -456,32 +456,32 @@ msgstr "ਅਣਪਛਾਤੀ ਗਲਤੀ ਅਗਲੀ ਕਿਰਿਆ(%s) ਤ�
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "waitpid() (%s) ਵਿੱਚ ਅਣਪਛਾਤੀ ਗਲਤੀ ਹੈ"
 
-#: glib/gspawn.c:1079
+#: glib/gspawn.c:1083
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "(%s) ਵੰਡਣ ਵਿੱਚ ਅਸਫਲ ਹੈ"
 
-#: glib/gspawn.c:1229
+#: glib/gspawn.c:1233
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "ਅਗਲੀ ਕਿਰਿਆ \"%s\" ਸ਼ੁਰੂ ਕਰਨ ਵਿੱਚ ਅਸਫਲ ਹੈ (%s)"
 
-#: glib/gspawn.c:1239
+#: glib/gspawn.c:1243
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "ਅਗਲੀ ਕਿਰਿਆ (%s) ਦੇ ਨਤੀਜੇ ਨੂੰ ਵਾਪਿਸ ਕਰਨ ਵਿੱਚ ਅਸਫਲ ਹੈ"
 
-#: glib/gspawn.c:1248
+#: glib/gspawn.c:1252
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "ਅਗਲੀ ਕਿਰਿਆ (%s) ਨੂੰ ਵੰਡ ਵਿੱਚ ਅਸਫਲ ਹੈ"
 
-#: glib/gspawn.c:1256
+#: glib/gspawn.c:1260
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "ਅਗਲੀ ਕਿਰਿਆ \"%s\" ਨੂੰ  ਚਾਲੂ ਕਰਨ ਵਿੱਚ ਅਸਫਲ ਹੈ"
 
-#: glib/gspawn.c:1278
+#: glib/gspawn.c:1282
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "ਅਗਲੀ ਕਿਰਿਆ ਪਾਇਪ(%s) ਤੋਂ ਚਾਹੀਦਾ ਡਾਟਾ ਖੋਲਣ ਵਿੱਚ ਅਸਫਲ ਹੈ"
@@ -523,17 +523,17 @@ msgstr "ਸਭ ਸਹਾਇਤਾ ਚੋਣ ਵੇਖਾਓ"
 msgid "Application Options:"
 msgstr "ਕਾਰਜ ਚੋਣ:"
 
-#: glib/goption.c:621
+#: glib/goption.c:622
 #, c-format
 msgid "Cannot parse integer value '%s' for --%s"
 msgstr "ਪੂਰਨ ਅੰਕ ਮੁੱਲ '%s' ਨੂੰ --%s ਨਾਲ ਪਾਰਸ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ"
 
-#: glib/goption.c:631
+#: glib/goption.c:632
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "ਪੂਰਨ ਅੰਕ '%s' ਲਈ %s ਸੀਮਾ ਤੋਂ ਬਾਹਰ ਹੈ"
 
-#: glib/goption.c:1361
+#: glib/goption.c:1362
 #, c-format
 msgid "Unknown option %s"
 msgstr "ਅਣਜਾਣ ਚੋਣ %s"
@@ -610,12 +610,17 @@ msgstr "ਕੁੰਜੀ ਫਾਇਲ ਵਿੱਚ ਸਤਰ ਦੇ ਅੰਤ ਤ
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "ਕੁੰਜੀ ਫਾਇਲ ਵਿੱਚ ਗਲਤ ਇਸਕੇਪ ਕ੍ਰਮ '%s' ਹੈ"
 
-#: glib/gkeyfile.c:3177
+#: glib/gkeyfile.c:3180
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "ਮੁੱਲ '%s' ਨੂੰ ਅੰਕ ਦੇ ਤੌਰ ਵਰਤਿਆ ਨਹੀਂ ਜਾ ਸਕਦਾ ਹੈ।"
 
-#: glib/gkeyfile.c:3205
+#: glib/gkeyfile.c:3189
+#, fuzzy, c-format
+msgid "Integer value '%s' out of range"
+msgstr "ਪੂਰਨ ਅੰਕ '%s' ਲਈ %s ਸੀਮਾ ਤੋਂ ਬਾਹਰ ਹੈ"
+
+#: glib/gkeyfile.c:3219
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "ਮੁੱਲ '%s' ਨੂੰ ਬੁਲੀਅਨ ਮੁੱਲ ਦੇ ਤੌਰ ਤੇ ਪੇਸ਼ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ ਹੈ।"

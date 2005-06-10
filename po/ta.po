@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-04-06 10:49-0400\n"
+"POT-Creation-Date: 2005-06-10 12:53-0400\n"
 "PO-Revision-Date: 2004-02-16 20:30-0600\n"
 "Last-Translator: Dinesh Nadarajah <dinesh_list@sbcglobal.net>\n"
 "Language-Team: Tamil <tamilinix@yahoogroups.com>\n"
@@ -14,69 +14,69 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: glib/gconvert.c:404
+#: glib/gconvert.c:406
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "வரியுரு வகை `%s' இலிருந்து `%s' க்கு மாற்றுவதற்கு ஆதரவளிப்பு கிடையாது"
 
-#: glib/gconvert.c:408
+#: glib/gconvert.c:410
 #, fuzzy, c-format
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "`%s' இலிருந்து `%s' க்கு மாற்றும் நிலை மாற்றியைத் திறக்க முடியவில்லை: %s"
 
-#: glib/gconvert.c:614 glib/gconvert.c:902 glib/giochannel.c:1319
+#: glib/gconvert.c:618 glib/gconvert.c:908 glib/giochannel.c:1319
 #: glib/giochannel.c:1361 glib/giochannel.c:2203 glib/gutf8.c:911
 #: glib/gutf8.c:1361
 msgid "Invalid byte sequence in conversion input"
 msgstr "நிலை மாற்றியின் உள்ளீடுக்கு தவறான பைட் வரிசைமுறை"
 
-#: glib/gconvert.c:619 glib/gconvert.c:835 glib/giochannel.c:1326
+#: glib/gconvert.c:624 glib/gconvert.c:841 glib/giochannel.c:1326
 #: glib/giochannel.c:2215
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "மாற்றும் போது பிழை: %s"
 
-#: glib/gconvert.c:637 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
+#: glib/gconvert.c:643 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
 #: glib/gutf8.c:1357
 msgid "Partial character sequence at end of input"
 msgstr "உள்ளீடின் முடிவில் பூர்த்தியாகாத வரியுரு வரிசைமுறை"
 
-#: glib/gconvert.c:811
+#: glib/gconvert.c:817
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "பின்னடைப்பு '%s', '%s' குறிக் கணமிற்கு மாற்ற முடியவில்லை"
 
-#: glib/gconvert.c:1611
+#: glib/gconvert.c:1617
 #, fuzzy, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "வலை முகவரி `%s' கோப்புத் திட்டமுறைப்படி ஓர் தனி வலை முகவரி அல்ல"
 
-#: glib/gconvert.c:1621
+#: glib/gconvert.c:1627
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "உள்ளமைக் கோப்பு வலை முகவரி `%s' இல் ஓர் `#' இல்லாமல் இருக்கலாம்"
 
-#: glib/gconvert.c:1638
+#: glib/gconvert.c:1644
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "`%s' செல்லுபடியாகாத வலை முகவரி"
 
-#: glib/gconvert.c:1650
+#: glib/gconvert.c:1656
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "`%s' வலை முகவரியின் விருந்தோம்புப்-பெயர் செல்லுபடியாகாதது"
 
-#: glib/gconvert.c:1666
+#: glib/gconvert.c:1672
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "வலை முகவரி `%s' இல் செல்லுபடியாகாத 'விடுபடு' வரியுருகள்"
 
-#: glib/gconvert.c:1760
+#: glib/gconvert.c:1766
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "'%s' பாதைப்-பெயர் ஓர் தனிப் பாதை அல்ல"
 
-#: glib/gconvert.c:1770
+#: glib/gconvert.c:1776
 msgid "Invalid hostname"
 msgstr "பிழையான விருந்தோம்புப்-பெயர்"
 
@@ -413,17 +413,17 @@ msgstr "உரை வெற்றா இருந்தது (அல்லத�
 msgid "Failed to read data from child process"
 msgstr "சேய் செயலில் இருந்து தரவு வாசிக்க முடியவில்லை"
 
-#: glib/gspawn-win32.c:281 glib/gspawn.c:1350
+#: glib/gspawn-win32.c:281 glib/gspawn.c:1354
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "(%s) சேய்-செயலிடன் தொடர்பு கொல்ல கழாய்த்-தொடரைப் படைக்க முடியவில்லை"
 
-#: glib/gspawn-win32.c:321 glib/gspawn.c:1014
+#: glib/gspawn-win32.c:321 glib/gspawn.c:1018
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "(%s) சேய் கழாய்த் தொடரில் இருந்து வாசிக்க முடியவில்லை"
 
-#: glib/gspawn-win32.c:349 glib/gspawn.c:1219
+#: glib/gspawn-win32.c:349 glib/gspawn.c:1223
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "'%s' (%s) அடைவுக்கு போக முடியவில்லை"
@@ -460,32 +460,32 @@ msgstr "(%s) சேய்-செயலில் இருந்து தரவ�
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "(%s) waitpid()'டில் எதிர்பாராத பிழை"
 
-#: glib/gspawn.c:1079
+#: glib/gspawn.c:1083
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "(%s) தொடங்க முடியவில்லை"
 
-#: glib/gspawn.c:1229
+#: glib/gspawn.c:1233
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "\"%s\" (%s) சேய்-செயலை இயக்க முடியவில்லை"
 
-#: glib/gspawn.c:1239
+#: glib/gspawn.c:1243
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "சேய் (%s) செயலகத்தின் வெளியீடலை அல்லது உள்ளடலை திசை-மாற்றும்போது பிழை"
 
-#: glib/gspawn.c:1248
+#: glib/gspawn.c:1252
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "சேய் (%s) செயலகத்தை தொடங்க முடியவில்லை"
 
-#: glib/gspawn.c:1256
+#: glib/gspawn.c:1260
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "சேய் செயல் \"%s\" இயக்கும்போது தெரியாத பிழை"
 
-#: glib/gspawn.c:1278
+#: glib/gspawn.c:1282
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Failed to read enough data from child pid pipe (%s)"
@@ -527,17 +527,17 @@ msgstr ""
 msgid "Application Options:"
 msgstr ""
 
-#: glib/goption.c:621
+#: glib/goption.c:622
 #, c-format
 msgid "Cannot parse integer value '%s' for --%s"
 msgstr ""
 
-#: glib/goption.c:631
+#: glib/goption.c:632
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr ""
 
-#: glib/goption.c:1361
+#: glib/goption.c:1362
 #, c-format
 msgid "Unknown option %s"
 msgstr ""
@@ -612,12 +612,17 @@ msgstr ""
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "வலை முகவரி `%s' இல் செல்லுபடியாகாத 'விடுபடு' வரியுருகள்"
 
-#: glib/gkeyfile.c:3177
+#: glib/gkeyfile.c:3180
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr ""
 
-#: glib/gkeyfile.c:3205
+#: glib/gkeyfile.c:3189
+#, c-format
+msgid "Integer value '%s' out of range"
+msgstr ""
+
+#: glib/gkeyfile.c:3219
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr ""

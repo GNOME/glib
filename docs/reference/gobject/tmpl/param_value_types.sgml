@@ -24,6 +24,9 @@ All other characters are replaced by a '-' during construction.
 #GParamSpec, #GValue, g_object_class_install_property().
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### MACRO G_IS_PARAM_SPEC_BOOLEAN ##### -->
 <para>
 Return whether the given #GParamSpec is of type %G_TYPE_PARAM_BOOLEAN.

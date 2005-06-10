@@ -60,6 +60,9 @@ To free a pointer array, use g_ptr_array_free().
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### STRUCT GPtrArray ##### -->
 <para>
 Contains the public fields of a pointer array.

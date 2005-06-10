@@ -14,6 +14,9 @@ shell-like commandline handling.
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### ENUM GShellError ##### -->
 <para>
 Error codes returned by shell functions.

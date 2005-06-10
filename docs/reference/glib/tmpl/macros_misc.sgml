@@ -15,6 +15,9 @@ by application programmers.
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### MACRO G_INLINE_FUNC ##### -->
 <para>
 Used to declare inline functions. If inline functions are not supported on

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-04-06 10:49-0400\n"
+"POT-Creation-Date: 2005-06-10 12:53-0400\n"
 "PO-Revision-Date: 2005-01-05 23:45+0100\n"
 "Last-Translator: Rhys Jones <rhys@sucs.org>\n"
 "Language-Team: Welsh <gnome-cy@pengwyn.linux.org.uk>\n"
@@ -16,69 +16,69 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
-#: glib/gconvert.c:404
+#: glib/gconvert.c:406
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Ni chynhelir trawsnewidiad o set nodau '%s' i '%s'"
 
-#: glib/gconvert.c:408
+#: glib/gconvert.c:410
 #, c-format
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "Methwyd agor trawsnewidydd rhwng '%s' a '%s'"
 
-#: glib/gconvert.c:614 glib/gconvert.c:902 glib/giochannel.c:1319
+#: glib/gconvert.c:618 glib/gconvert.c:908 glib/giochannel.c:1319
 #: glib/giochannel.c:1361 glib/giochannel.c:2203 glib/gutf8.c:911
 #: glib/gutf8.c:1361
 msgid "Invalid byte sequence in conversion input"
 msgstr "Dilyniant beit annilys ym mewnbwn trawsnewid"
 
-#: glib/gconvert.c:619 glib/gconvert.c:835 glib/giochannel.c:1326
+#: glib/gconvert.c:624 glib/gconvert.c:841 glib/giochannel.c:1326
 #: glib/giochannel.c:2215
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Gwall wrth drawsnewid: %s"
 
-#: glib/gconvert.c:637 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
+#: glib/gconvert.c:643 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
 #: glib/gutf8.c:1357
 msgid "Partial character sequence at end of input"
 msgstr "Dilyniant nod rhannol ar ddiwedd y mewnbwn"
 
-#: glib/gconvert.c:811
+#: glib/gconvert.c:817
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Methu trawsnewid '%s' wrth gefn i'r set godau '%s'"
 
-#: glib/gconvert.c:1611
+#: glib/gconvert.c:1617
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "Nid yw'r LAU '%s' yn LAU absoliwt yn y cynllun \"file\""
 
-#: glib/gconvert.c:1621
+#: glib/gconvert.c:1627
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Ni chaniateir i'r LAU ffeil lleol '%s' gynnwys '#'"
 
-#: glib/gconvert.c:1638
+#: glib/gconvert.c:1644
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "Mae'r LAU '%s' yn annilys"
 
-#: glib/gconvert.c:1650
+#: glib/gconvert.c:1656
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Mae'r enw gwesteiwr yn y LAU '%s' yn annilys"
 
-#: glib/gconvert.c:1666
+#: glib/gconvert.c:1672
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "Mae'r LAU '%s' yn cynnwys nodau wedi eu dianc mewn modd annilys"
 
-#: glib/gconvert.c:1760
+#: glib/gconvert.c:1766
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Nid yw'r llwybr '%s' yn llwybr gosodedig"
 
-#: glib/gconvert.c:1770
+#: glib/gconvert.c:1776
 msgid "Invalid hostname"
 msgstr "Enw gwesteiwr annilys"
 
@@ -417,17 +417,17 @@ msgstr "Roedd y testun yn wag, neu'n cynnwys gofodnodau'n unig"
 msgid "Failed to read data from child process"
 msgstr "Methwyd darllen data o broses plentyn"
 
-#: glib/gspawn-win32.c:281 glib/gspawn.c:1350
+#: glib/gspawn-win32.c:281 glib/gspawn.c:1354
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Methwyd creu pibell er mwyn cyfathrebu â phroses plentyn (%s)"
 
-#: glib/gspawn-win32.c:321 glib/gspawn.c:1014
+#: glib/gspawn-win32.c:321 glib/gspawn.c:1018
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Methwyd darllen o bibell plentyn (%s)"
 
-#: glib/gspawn-win32.c:349 glib/gspawn.c:1219
+#: glib/gspawn-win32.c:349 glib/gspawn.c:1223
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Methwyd newid i'r cyfeiriadur '%s' (%s)"
@@ -464,32 +464,32 @@ msgstr "Gwall annisgwyl yn select() wrth ddarllen o broses plentyn (%s)"
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Gwall annisgwyl yn waitpid() (%s)"
 
-#: glib/gspawn.c:1079
+#: glib/gspawn.c:1083
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Methwyd fforcio (%s)"
 
-#: glib/gspawn.c:1229
+#: glib/gspawn.c:1233
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Methwyd gweithredu proses plentyn \"%s\" (%s)"
 
-#: glib/gspawn.c:1239
+#: glib/gspawn.c:1243
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Methwyd ailgyrchu mewnbwn neu allbwn proses blentyn (%s)"
 
-#: glib/gspawn.c:1248
+#: glib/gspawn.c:1252
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Methwyd fforcio proses plentyn (%s)"
 
-#: glib/gspawn.c:1256
+#: glib/gspawn.c:1260
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Gwall anhysbys wrth weithredu proses blentyn \"%s\""
 
-#: glib/gspawn.c:1278
+#: glib/gspawn.c:1282
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Methwyd darllen digon o ddata o bibell plentyn (%s)"
@@ -531,17 +531,17 @@ msgstr "Dangos bob opsiwn cymorth"
 msgid "Application Options:"
 msgstr "Opsiynau Rhaglen:"
 
-#: glib/goption.c:621
+#: glib/goption.c:622
 #, c-format
 msgid "Cannot parse integer value '%s' for --%s"
 msgstr "Methu darllen y gwerth cyfanrif '%s' ar gyfer --%s"
 
-#: glib/goption.c:631
+#: glib/goption.c:632
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "Mae'r gwerth cyfanrif '%s' ar gyfer %s y tu allan i'r cwmpas"
 
-#: glib/goption.c:1361
+#: glib/goption.c:1362
 #, c-format
 msgid "Unknown option %s"
 msgstr "Opsiwn anhysbys %s"
@@ -622,12 +622,17 @@ msgstr "Ffeil allwedd yn cynnwys nod dianc ar ddiwedd llinell"
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "Ffeil allwedd yn cynnwys '%s', sy'n ddilyniant dianc annilys"
 
-#: glib/gkeyfile.c:3177
+#: glib/gkeyfile.c:3180
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Ni ellir darllen y gwerth '%s' fel rhif."
 
-#: glib/gkeyfile.c:3205
+#: glib/gkeyfile.c:3189
+#, fuzzy, c-format
+msgid "Integer value '%s' out of range"
+msgstr "Mae'r gwerth cyfanrif '%s' ar gyfer %s y tu allan i'r cwmpas"
+
+#: glib/gkeyfile.c:3219
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Ni ellir darllen '%s' fel gwerth Boole."

@@ -55,6 +55,9 @@ with Glib-2.0 that you need to reproduce exactly.
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### STRUCT GRand ##### -->
 <para>
 The #GRand struct is an opaque data structure. It should only be

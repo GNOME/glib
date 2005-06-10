@@ -49,6 +49,9 @@ primitives to portably create and manage threads (#GThread).
 </variablelist>
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### MACRO G_THREADS_ENABLED ##### -->
 
 <para>

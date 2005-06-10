@@ -49,6 +49,9 @@ To destroy a dataset, use g_dataset_destroy().
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### MACRO g_dataset_id_set_data ##### -->
 <para>
 Sets the data element associated with the given #GQuark id.

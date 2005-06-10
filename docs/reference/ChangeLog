@@ -1,3 +1,7 @@
+2005-06-10  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.6.5 ===
+
 2005-06-09  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/tmpl/threads.sgml: Document that stack size is

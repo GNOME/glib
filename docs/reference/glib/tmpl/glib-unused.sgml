@@ -44,6 +44,10 @@ serializes and deserializes a desktop entry.
 Desktop Entry Parser
 
 
+<!-- ##### SECTION ./tmpl/glib-unused.sgml:Stability_Level ##### -->
+
+
+
 <!-- ##### ENUM GChannelError ##### -->
 <para>
 
@@ -245,10 +249,6 @@ Provided for UNIX emulation on Windows; equivalent to UNIX macro
 %NAME_MAX, which is the maximum length of a single path component.
 i.e. just the <filename>foo</filename> in <filename>/usr/bin/foo</filename>.
 </para>
-
-
-<!-- ##### SECTION Stability_Level ##### -->
-
 
 
 <!-- ##### MACRO access ##### -->
@@ -631,27 +631,6 @@ in any UNIX manual.
 @entry: 
 @length: 
 @error: 
-@Returns: 
-
-<!-- ##### FUNCTION g_get_language_names ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-<!-- ##### FUNCTION g_get_system_config_dirs ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-<!-- ##### FUNCTION g_get_system_data_dirs ##### -->
-<para>
-
-</para>
-
 @Returns: 
 
 <!-- ##### FUNCTION g_io_channel_error_quark ##### -->

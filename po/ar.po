@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.ar\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-04-06 10:49-0400\n"
+"POT-Creation-Date: 2005-06-10 12:53-0400\n"
 "PO-Revision-Date: 2005-01-11 13:15+0100\n"
 "Last-Translator:  <kinryu@silverpen.de>\n"
 "Language-Team:  <en@li.org>\n"
@@ -18,69 +18,69 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: glib/gconvert.c:404
+#: glib/gconvert.c:406
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "التحويل من مجموعة المحارف '%s' إلى '%s' غير مدعوم"
 
-#: glib/gconvert.c:408
+#: glib/gconvert.c:410
 #, c-format
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "لم يمكن فتح المحوّل من '%s' الى '%s'"
 
-#: glib/gconvert.c:614 glib/gconvert.c:902 glib/giochannel.c:1319
+#: glib/gconvert.c:618 glib/gconvert.c:908 glib/giochannel.c:1319
 #: glib/giochannel.c:1361 glib/giochannel.c:2203 glib/gutf8.c:911
 #: glib/gutf8.c:1361
 msgid "Invalid byte sequence in conversion input"
 msgstr "سلسلة بايتات غير سليمة في مدخلات التحويل"
 
-#: glib/gconvert.c:619 glib/gconvert.c:835 glib/giochannel.c:1326
+#: glib/gconvert.c:624 glib/gconvert.c:841 glib/giochannel.c:1326
 #: glib/giochannel.c:2215
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "خطأ أثناء التحويل: %s"
 
-#: glib/gconvert.c:637 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
+#: glib/gconvert.c:643 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
 #: glib/gutf8.c:1357
 msgid "Partial character sequence at end of input"
 msgstr "سلسلة حرفيات جزئي عند نهاية المدخل"
 
-#: glib/gconvert.c:811
+#: glib/gconvert.c:817
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "لم يمكن تحويل fallback '%s' الى مجموعة المحارف '%s'"
 
-#: glib/gconvert.c:1611
+#: glib/gconvert.c:1617
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "العنوان '%s' ليس عنوانا كاملا بإستخدام مخطّط \"file\""
 
-#: glib/gconvert.c:1621
+#: glib/gconvert.c:1627
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "ملف الـ URI المحلي '%s' قد لا يحتوي على '#'"
 
-#: glib/gconvert.c:1638
+#: glib/gconvert.c:1644
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "الـURI '%s' غير سليم"
 
-#: glib/gconvert.c:1650
+#: glib/gconvert.c:1656
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "اسم مستضيف الـURI '%s' غير سليم"
 
-#: glib/gconvert.c:1666
+#: glib/gconvert.c:1672
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "الـURI '%s' يحتوي على حروف هربت بطريقة غير سليمة "
 
-#: glib/gconvert.c:1760
+#: glib/gconvert.c:1766
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "اسم المسار '%s' ليس مسارا كاملا"
 
-#: glib/gconvert.c:1770
+#: glib/gconvert.c:1776
 msgid "Invalid hostname"
 msgstr "اسم المستضيف غير سليم"
 
@@ -404,17 +404,17 @@ msgstr "النص كان فارغا (أو كان يحتوي على فراغ أب�
 msgid "Failed to read data from child process"
 msgstr "فشلت قراءة البيانات من العملية الإبنة"
 
-#: glib/gspawn-win32.c:281 glib/gspawn.c:1350
+#: glib/gspawn-win32.c:281 glib/gspawn.c:1354
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "فشل عمل أنبوب للاتصال بالعملية الإبنة (%s)"
 
-#: glib/gspawn-win32.c:321 glib/gspawn.c:1014
+#: glib/gspawn-win32.c:321 glib/gspawn.c:1018
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "فشلت القراءة من الأنبوب الإبن (%s)"
 
-#: glib/gspawn-win32.c:349 glib/gspawn.c:1219
+#: glib/gspawn-win32.c:349 glib/gspawn.c:1223
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "فشل التغيير الى الدليل '%s' (%s)"
@@ -449,32 +449,32 @@ msgstr "خطأ غير متوقع في select() أثناء قراءة البيا�
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "خطأ غير متوقع في waitpid() (%s)"
 
-#: glib/gspawn.c:1079
+#: glib/gspawn.c:1083
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "فشل تفريق (%s)"
 
-#: glib/gspawn.c:1229
+#: glib/gspawn.c:1233
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "فشل تنفيذ العملية الإبنة \"%s\" (%s)"
 
-#: glib/gspawn.c:1239
+#: glib/gspawn.c:1243
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "فشل اعادة توجيه المخرج أو المدخل للعملية الإبنة (%s)"
 
-#: glib/gspawn.c:1248
+#: glib/gspawn.c:1252
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "فشل تفريق العملية الإبنة (%s)"
 
-#: glib/gspawn.c:1256
+#: glib/gspawn.c:1260
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "خطأ غير معروف أثناء تنفيذ العملية الإبنة \"%s\""
 
-#: glib/gspawn.c:1278
+#: glib/gspawn.c:1282
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "فشلت قراءة بيانات كافية من أنبوب child pid (%s)"
@@ -516,17 +516,17 @@ msgstr "عرض جميع خيارات المساعدة"
 msgid "Application Options:"
 msgstr "خيارات التّطبيق:"
 
-#: glib/goption.c:621
+#: glib/goption.c:622
 #, c-format
 msgid "Cannot parse integer value '%s' for --%s"
 msgstr "لم يمكن إعراب قيمة العدد الصّحيح '%s' لـ --%s"
 
-#: glib/goption.c:631
+#: glib/goption.c:632
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "القيمة الصّحيحة '%s' لـ %s خارجة المجال"
 
-#: glib/goption.c:1361
+#: glib/goption.c:1362
 #, c-format
 msgid "Unknown option %s"
 msgstr "خيار مجهول %s"
@@ -604,12 +604,17 @@ msgstr "الملّف المفتاح يحوي محرف فارغ في آخر ال�
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "الملّف المفتاح يحوي سلسلة'%s' فارغة غير سليمة "
 
-#: glib/gkeyfile.c:3177
+#: glib/gkeyfile.c:3180
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "لا يمكن ترجمة القيمة '%s' كعدد."
 
-#: glib/gkeyfile.c:3205
+#: glib/gkeyfile.c:3189
+#, fuzzy, c-format
+msgid "Integer value '%s' out of range"
+msgstr "القيمة الصّحيحة '%s' لـ %s خارجة المجال"
+
+#: glib/gkeyfile.c:3219
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "لا يمكن ترجمة القيمة '%s' كقيمة منطقيّة."

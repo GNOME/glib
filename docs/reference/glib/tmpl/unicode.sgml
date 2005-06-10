@@ -29,6 +29,9 @@ Convenience functions for converting between UTF-8 and the locale encoding.
 </variablelist>
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### TYPEDEF gunichar ##### -->
 <para>
 A type which can hold any UCS-4 character code. 

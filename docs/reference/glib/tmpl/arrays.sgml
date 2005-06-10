@@ -55,6 +55,9 @@ To free an array, use g_array_free().
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### STRUCT GArray ##### -->
 <para>
 Contains the public fields of an <link linkend="glib-arrays">Array</link>.

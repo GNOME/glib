@@ -122,6 +122,9 @@ To help debug memory chunks, use g_mem_chunk_info() and g_mem_chunk_print().
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### STRUCT GMemChunk ##### -->
 <para>
 The #GMemChunk struct is an opaque data structure representing a memory

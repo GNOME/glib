@@ -35,6 +35,9 @@ To free the entire queue, use g_queue_free().
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### STRUCT GQueue ##### -->
 <para>
 Contains the public fields of a <link linkend="glib-queues">Queue</link>.

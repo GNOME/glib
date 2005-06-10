@@ -1,3 +1,7 @@
+<!-- ##### SECTION ./tmpl/gobject-unused.sgml:Stability_Level ##### -->
+
+
+
 <!-- ##### SECTION ./tmpl/param_specs.sgml:Long_Description ##### -->
 <para>
 
@@ -118,10 +122,6 @@ The predefined identifiers of the reserved fundamental types.
 <para>
 Shift value used in converting numbers to type IDs.
 </para>
-
-
-<!-- ##### SECTION Stability_Level ##### -->
-
 
 
 <!-- ##### FUNCTION g_closure_add_fnotify ##### -->

@@ -16,6 +16,9 @@ typically use the features described here.
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### VARIABLE glib_major_version ##### -->
 <para>
 The major version number of the GLib library. 

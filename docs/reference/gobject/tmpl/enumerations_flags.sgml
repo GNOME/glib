@@ -13,6 +13,9 @@ Enumeration and flags types
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### STRUCT GEnumClass ##### -->
 <para>
 The class of an enumeration type holds information about its 
