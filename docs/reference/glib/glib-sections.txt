@@ -1007,6 +1007,7 @@ g_freopen
 g_chmod
 g_access
 g_creat
+g_chdir
 <SUBSECTION Private>
 g_file_error_quark
 </SECTION>
