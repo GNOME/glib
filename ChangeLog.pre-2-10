@@ -1,3 +1,7 @@
+2005-06-10  Matthias Clasen  <mclasen@redhat.com>
+
+	* NEWS: Updates
+
 2005-06-09  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gkeyfile.c (g_key_file_parse_value_as_integer): Better

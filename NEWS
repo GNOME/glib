@@ -1,3 +1,52 @@
+Overview of Changes from GLib 2.6.x to GLib 2.7.0
+=================================================
+* GKeyFile
+ - Add unit tests [Matthias Clasen, Suren A. Chilingaryan]
+ - Accept \r\n as line end [Bastian Nocera]
+ - Don't interpret leading zeros as octal numbers. [Matthias]
+ - Make key and group removal work [David Hoover, Matthias Hasselmann]
+* GOption
+ - Improve formatting of --help output [Matthias, Noah Levitt]
+ - Accept -? [Matthias]
+ - Warn about duplicate main groups [Jeff Franks]
+ - Treat '-' as non-option argument [Tim Musson, Thomas Leonard]
+ - Report missing arguments as errors [Björn Lindqvist]
+ - Add a boxed type for GDate [Tim-Philipp Müller]
+* GTree
+ - g_tree_remove() and g_tree_steal() return status information [Matthew F. Barnes]
+* Stdio wrappers
+ - Work regardless of large file support [Manish Singh]
+ - Add g_access(), g_chmod(), g_creat(), g_chdir [Tor Lillqvist]
+* GObject
+ - Implement "toggle references" to help language bindings [Owen Taylor]
+ - Allow to mark names, nicks and blurbs of pspecs as static [Ben Maurer, Matthias]
+ - Make pspec lookup a bit faster [Morten Welinder]
+* Add g_listenv() to list all set environment variables [Hans Petter Jansson]
+* Add g_file_set_contents() to atomically write a file.  [Søren Sandmann,
+  Sven Neumann, Manish, Alexis S. L. Carvalho]
+* Add g_try_malloc(), g_try_new(), g_try_new0() and g_try_renew() [Stefan Kost]
+* Add g_utf8_collate_key_for_filename() to sort filenames taking
+  extensions and numeric suffixes into account.  [Ole Laursen, Alex Larsson]
+* Add G_GNUC_NULL_TERMINATED to mark varargs function with 
+  NULL-terminated argument lists. [Marc Meissner]
+* Win32 changes
+ - Improved debugability [Ulf Lamping, Hans Breuer]
+ - Make filename handling more robust [Tor, Billy Skaggs]
+ - Improve g_get_system_data_dirs() [Tor]
+ - Use more precise timers [Tor]
+ - Build fixes [Kazuki Iwamoto, Hans, Tor, Robert Ögren]
+* Other bug fixes [Roger Leigh, Owen, Matthias, Morten, Kjartan Maraas, 
+  Pawel Sakowski, Tor, Simon Budig, Ed Avis, Manish, Nicolas Laurent, 
+  Bastien, Fabrício Barros Cabral, Michael Banck, Daniel Atallah, 
+  J. Ali Harlow, Tim Janik, Hazael Maldonado Torres, Sven, Jon-Kare Hellan,
+  Dave Benson, Tommi Komulainen, Benjamin Otte, Brian Cameron, Changwoo Ryu, 
+  Christian Biere, Noah, Benoît Carpentier]
+* Documentation improvements [Vincent Untz, Matthias, Tim-Philipp Müller,
+  Morten, Matthew, Federico Mena Quintero, Sebastian Bacher, Oliver Sessink, 
+  Stefan, Jared Lash, Tor, Owen, Daniel Vaillard, Mathieu Lacage]
+* New and updated translations (ca,cs,da,el,en_CA,en_GB,es,et,eu,fa,fr,gl,
+  hu,id,it,lt,mn,ne,nl,pl,pt,pt_BR,ro,rw,sk,sq,sr,sr@Latn,tl,uk,xh,zh_CN)
+
 Overview of Changes from GLib 2.6.0 to GLib 2.6.1
 =================================================
 * GOption
