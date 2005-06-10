@@ -31,10 +31,10 @@
 
 
 static GError* 
-g_error_new_valist(GQuark         domain,
-                   gint           code,
-                   const gchar   *format,
-                   va_list        args)
+g_error_new_valist (GQuark         domain,
+                    gint           code,
+                    const gchar   *format,
+                    va_list        args)
 {
   GError *error;
   
