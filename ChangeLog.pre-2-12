@@ -1,5 +1,8 @@
 2005-06-09  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gkeyfile.c (g_key_file_parse_value_as_integer): Better
+	error checking. (#306389, Morten Welinder)
+
 	* glib/goption.c (parse_int): Set errno to 0 before calling
 	strtol.  (#306388, Morten Welinder)
 
