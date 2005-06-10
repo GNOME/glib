@@ -3167,15 +3167,30 @@ g_key_file_parse_value_as_integer (GKeyFile     *key_file,
 				   GError      **error)
 {
   gchar *end_of_valid_int;
-  gint int_value = 0;
+  glong long_value;
+  gint int_value;
 
-  int_value = strtol (value, &end_of_valid_int, 10);
+  errno = 0;
+  long_value = strtol (value, &end_of_valid_int, 10);
 
-  if (*end_of_valid_int != '\0')
-    g_set_error (error, G_KEY_FILE_ERROR,
-		 G_KEY_FILE_ERROR_INVALID_VALUE,
-		 _("Value '%s' cannot be interpreted as a number."), value);
+  if (*value == '\0' || *end_of_valid_int != '\0')
+    {
+      g_set_error (error, G_KEY_FILE_ERROR,
+		   G_KEY_FILE_ERROR_INVALID_VALUE,
+		   _("Value '%s' cannot be interpreted as a number."), value);
+      return 0;
+    }
 
+  int_value = long_value;
+  if (int_value != long_value || errno == ERANGE)
+    {
+      g_set_error (error,
+		   G_KEY_FILE_ERROR, 
+		   G_KEY_FILE_ERROR_INVALID_VALUE,
+		   _("Integer value '%s' out of range"), value);
+      return 0;
+    }
+  
   return int_value;
 }
 
