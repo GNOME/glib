@@ -182,4 +182,5 @@ dist-hook: $(BUILT_EXTRA_DIST)
 	  cp $$f $(distdir)/markups;       \
 	done
 
-DISTCLEANFILES = iochannel-test-outfile
+DISTCLEANFILES = iochannel-test-outfile \
+		file-test-get-contents

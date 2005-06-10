@@ -584,6 +584,16 @@ character. Unicode strings should generally be normalized before comparing them.
 @Returns: 
 
 
+<!-- ##### FUNCTION g_utf8_collate_key_for_filename ##### -->
+<para>
+
+</para>
+
+@str: 
+@len: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_utf8_to_utf16 ##### -->
 <para>
 

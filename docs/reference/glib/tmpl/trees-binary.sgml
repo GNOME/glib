@@ -210,6 +210,7 @@ g_node_traverse() and g_node_find().
 
 @tree: 
 @key: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_tree_steal ##### -->
@@ -219,6 +220,7 @@ g_node_traverse() and g_node_find().
 
 @tree: 
 @key: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_tree_destroy ##### -->

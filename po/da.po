@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-06-08 13:49+0200\n"
+"POT-Creation-Date: 2005-06-10 11:24-0400\n"
 "PO-Revision-Date: 2005-06-08 14:28+0200\n"
 "Last-Translator: Martin Willemoes Hansen <mwh@sysrq.dk>\n"
 "Language-Team: Danish <dansk@klid.dk>\n"
@@ -22,226 +22,225 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
-#: ../glib/gconvert.c:406
+#: glib/gconvert.c:406
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Konvertering fra tegnsæt \"%s\" til \"%s\" er ikke understøttet"
 
-#: ../glib/gconvert.c:410
+#: glib/gconvert.c:410
 #, c-format
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "Kunne ikke konvertere fra \"%s\" til \"%s\""
 
-#: ../glib/gconvert.c:618 ../glib/gconvert.c:908 ../glib/giochannel.c:1319
-#: ../glib/giochannel.c:1361 ../glib/giochannel.c:2203 ../glib/gutf8.c:911
-#: ../glib/gutf8.c:1361
+#: glib/gconvert.c:618 glib/gconvert.c:908 glib/giochannel.c:1319
+#: glib/giochannel.c:1361 glib/giochannel.c:2203 glib/gutf8.c:911
+#: glib/gutf8.c:1361
 msgid "Invalid byte sequence in conversion input"
 msgstr "Ugyldig bytesekvens i konverteringsinddata"
 
-#: ../glib/gconvert.c:624 ../glib/gconvert.c:841 ../glib/giochannel.c:1326
-#: ../glib/giochannel.c:2215
+#: glib/gconvert.c:624 glib/gconvert.c:841 glib/giochannel.c:1326
+#: glib/giochannel.c:2215
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Fejl under konvertering: %s"
 
-#: ../glib/gconvert.c:643 ../glib/gutf8.c:907 ../glib/gutf8.c:1112
-#: ../glib/gutf8.c:1253 ../glib/gutf8.c:1357
+#: glib/gconvert.c:643 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
+#: glib/gutf8.c:1357
 msgid "Partial character sequence at end of input"
 msgstr "Delvis tegnsekvens ved slutningen af inddata"
 
-#: ../glib/gconvert.c:817
+#: glib/gconvert.c:817
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Kan ikke konvertere tilbagefaldet \"%s\" til tegnsæt \"%s\""
 
-#: ../glib/gconvert.c:1619
+#: glib/gconvert.c:1619
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "URI'en \"%s\" er ikke en absolut URI, ved brug af \"fil\"-metoden"
 
-#: ../glib/gconvert.c:1629
+#: glib/gconvert.c:1629
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Den lokale fil-URI \"%s\" må ikke indeholde en '#'"
 
-#: ../glib/gconvert.c:1646
+#: glib/gconvert.c:1646
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI'en \"%s\" er ugyldig"
 
-#: ../glib/gconvert.c:1658
+#: glib/gconvert.c:1658
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Værtsnavnet for URI'en \"%s\" er ugyldig"
 
-#: ../glib/gconvert.c:1674
+#: glib/gconvert.c:1674
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI'en \"%s\" indeholder ugyldigt beskyttede tegn"
 
-#: ../glib/gconvert.c:1768
+#: glib/gconvert.c:1768
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Stinavnet \"%s\" er ikke en absolut sti"
 
-#: ../glib/gconvert.c:1778
+#: glib/gconvert.c:1778
 msgid "Invalid hostname"
 msgstr "Ugyldigt værtsnavn"
 
-#: ../glib/gdir.c:121 ../glib/gdir.c:141
+#: glib/gdir.c:121 glib/gdir.c:141
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "Fejl ved åbning af mappen \"%s\": %s"
 
-#: ../glib/gfileutils.c:504 ../glib/gfileutils.c:577
+#: glib/gfileutils.c:504 glib/gfileutils.c:577
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Kunne ikke allokere %lu byte til at læse filen \"%s\""
 
-#: ../glib/gfileutils.c:519
+#: glib/gfileutils.c:519
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Fejl ved læsning af filen \"%s\": %s"
 
-#: ../glib/gfileutils.c:601
+#: glib/gfileutils.c:601
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Kunne ikke læse fra filen \"%s\": %s"
 
-#: ../glib/gfileutils.c:652 ../glib/gfileutils.c:739
+#: glib/gfileutils.c:652 glib/gfileutils.c:739
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Kunne ikke åbne filen \"%s\": %s"
 
-#: ../glib/gfileutils.c:669
+#: glib/gfileutils.c:669
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Kunne ikke læse egenskaber for filen \"%s\": fstat() mislykkedes: %s"
 
-#: ../glib/gfileutils.c:703
+#: glib/gfileutils.c:703
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Kunne ikke åbne filen \"%s\": fdopen() mislykkedes: %s"
 
-#: ../glib/gfileutils.c:837
+#: glib/gfileutils.c:837
 #, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "Kunne ikke omdøbe filen \"%s\" til \"%s\": g_rename() mislykkedes: %s"
 
-#: ../glib/gfileutils.c:880
+#: glib/gfileutils.c:880
 #, c-format
 msgid "Could not change file mode: fork() failed: %s"
 msgstr "Kunne ikke ændre fil-tilstand: fork() mislykkedes: %s"
 
-#: ../glib/gfileutils.c:911
+#: glib/gfileutils.c:911
 #, c-format
 msgid "Could not change file mode: waitpid() failed: %s"
 msgstr "Kunne ikke ændre fil-tilstand: waitpid() mislykkedes: %s"
 
-#: ../glib/gfileutils.c:930
+#: glib/gfileutils.c:930
 #, c-format
 msgid "Could not change file mode: chmod() failed: %s"
 msgstr "Kunne ikke ændre fil-tilstand: chmod() mislykkedes: %s"
 
-#: ../glib/gfileutils.c:941
+#: glib/gfileutils.c:941
 #, c-format
 msgid "Could not change file mode: Child terminated by signal: %s"
 msgstr "Kunne ikke ændre fil-tilstand: Barn afsluttede med signal: %s"
 
-#: ../glib/gfileutils.c:952
+#: glib/gfileutils.c:952
 msgid "Could not change file mode: Child terminated abnormally"
 msgstr "Kunne ikke ændre fil-tilstand: Barn afsluttede ikke normalt"
 
-#: ../glib/gfileutils.c:986 ../glib/gfileutils.c:1452
+#: glib/gfileutils.c:986 glib/gfileutils.c:1452
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Fejl under oprettelse af filen \"%s\": %s"
 
-#: ../glib/gfileutils.c:1008
+#: glib/gfileutils.c:1008
 #, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr "Kunne ikke åbne filen \"%s\" til skrivning: fdopen() mislykkedes: %s"
 
-#: ../glib/gfileutils.c:1033
+#: glib/gfileutils.c:1033
 #, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "Kunne ikke skrive filen \"%s\": fwrite() mislykkedes: %s"
 
-#: ../glib/gfileutils.c:1052
+#: glib/gfileutils.c:1052
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "Kunne ikke lukke filen \"%s\": fclose() mislykkedes: %s"
 
-#: ../glib/gfileutils.c:1170
+#: glib/gfileutils.c:1170
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr ""
 "Den eksisterende fil \"%s\" kunne ikke fjernes: g_unlink() mislykkedes: %s"
 
-#: ../glib/gfileutils.c:1413
+#: glib/gfileutils.c:1413
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Skabelonen \"%s\" er ugyldig, må ikke indeholde en \"%s\""
 
-#: ../glib/gfileutils.c:1427
+#: glib/gfileutils.c:1427
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Skabelonen \"%s\" slutter ikke med XXXXXX"
 
-#: ../glib/gfileutils.c:1830
+#: glib/gfileutils.c:1830
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Kunne ikke læse den symbolske henvisning \"%s\": %s"
 
-#: ../glib/gfileutils.c:1851
+#: glib/gfileutils.c:1851
 msgid "Symbolic links not supported"
 msgstr "Symbolske henvisninger er ikke understøttet"
 
-#: ../glib/giochannel.c:1147
+#: glib/giochannel.c:1147
 #, c-format
 msgid "Conversion from character set `%s' to `%s' is not supported"
 msgstr "Konvertering fra tegnsæt \"%s\" til \"%s\" er ikke understøttet"
 
-#: ../glib/giochannel.c:1151
+#: glib/giochannel.c:1151
 #, c-format
 msgid "Could not open converter from `%s' to `%s': %s"
 msgstr "Kunne ikke åbne konverterer fra \"%s\" til \"%s\": %s"
 
-#: ../glib/giochannel.c:1496
+#: glib/giochannel.c:1496
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "Kan ikke foretage en rå læsning i g_io_channel_read_line_string"
 
-#: ../glib/giochannel.c:1543 ../glib/giochannel.c:1800
-#: ../glib/giochannel.c:1886
+#: glib/giochannel.c:1543 glib/giochannel.c:1800 glib/giochannel.c:1886
 msgid "Leftover unconverted data in read buffer"
 msgstr "Resterende ukonverterede data i læsemellemlager"
 
-#: ../glib/giochannel.c:1623 ../glib/giochannel.c:1700
+#: glib/giochannel.c:1623 glib/giochannel.c:1700
 msgid "Channel terminates in a partial character"
 msgstr "Kanal afslutter med et ufuldendt tegn"
 
-#: ../glib/giochannel.c:1686
+#: glib/giochannel.c:1686
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Kan ikke foretage en rå læsning i g_io_channel_read_to_end"
 
-#: ../glib/gmarkup.c:232
+#: glib/gmarkup.c:232
 #, c-format
 msgid "Error on line %d char %d: %s"
 msgstr "Fejl på linje %d tegn %d: %s"
 
-#: ../glib/gmarkup.c:330
+#: glib/gmarkup.c:330
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "Fejl på linje %d: %s"
 
-#: ../glib/gmarkup.c:434
+#: glib/gmarkup.c:434
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "Tom entitet \"&;\" fundet; gyldige entiteter er: &amp; &quot; &lt; &gt; "
 "&apos;"
 
-#: ../glib/gmarkup.c:444
+#: glib/gmarkup.c:444
 #, c-format
 msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
@@ -252,17 +251,17 @@ msgstr ""
 "starter en entitet; hvis dette og-tegn ikke er beregnet på at være en "
 "entitet, så undgå dette ved at bruge &amp; i stedet"
 
-#: ../glib/gmarkup.c:478
+#: glib/gmarkup.c:478
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
 msgstr "Tegnet \"%s\" er ikke gyldigt inde i et entitetsnavn"
 
-#: ../glib/gmarkup.c:515
+#: glib/gmarkup.c:515
 #, c-format
 msgid "Entity name '%s' is not known"
 msgstr "Entitetsnavnet \"%s\" er ikke kendt"
 
-#: ../glib/gmarkup.c:526
+#: glib/gmarkup.c:526
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
@@ -271,7 +270,7 @@ msgstr ""
 "tegn uden at det var beregnet på at starte en entitet - dette undgås ved at "
 "bruge &amp; i stedet"
 
-#: ../glib/gmarkup.c:579
+#: glib/gmarkup.c:579
 #, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
@@ -280,16 +279,16 @@ msgstr ""
 "Fejl ved fortolkning af \"%-.*s\" som skulle have været et ciffer i en "
 "tegnreference (&#234; for eksempel) - måske er cifret for stort"
 
-#: ../glib/gmarkup.c:604
+#: glib/gmarkup.c:604
 #, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
 msgstr "Tegnreferencen \"%-.*s\" koder ikke et tilladt tegn"
 
-#: ../glib/gmarkup.c:619
+#: glib/gmarkup.c:619
 msgid "Empty character reference; should include a digit such as &#454;"
 msgstr "Tom tegnreference; skulle indeholde et tal såsom &#454;"
 
-#: ../glib/gmarkup.c:629
+#: glib/gmarkup.c:629
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -299,23 +298,23 @@ msgstr ""
 "og-tegn uden at det var beregnet på at starte en entitet - undgå dette ved "
 "at bruge &amp; i stedet"
 
-#: ../glib/gmarkup.c:715
+#: glib/gmarkup.c:715
 msgid "Unfinished entity reference"
 msgstr "Ufærdig entitetsreference"
 
-#: ../glib/gmarkup.c:721
+#: glib/gmarkup.c:721
 msgid "Unfinished character reference"
 msgstr "Ufærdig tegnreference"
 
-#: ../glib/gmarkup.c:964 ../glib/gmarkup.c:992 ../glib/gmarkup.c:1023
+#: glib/gmarkup.c:964 glib/gmarkup.c:992 glib/gmarkup.c:1023
 msgid "Invalid UTF-8 encoded text"
 msgstr "Ugyldig UTF-8-kodet tekst"
 
-#: ../glib/gmarkup.c:1059
+#: glib/gmarkup.c:1059
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Dokumentet skal begynde med et element (f.eks <book>)"
 
-#: ../glib/gmarkup.c:1099
+#: glib/gmarkup.c:1099
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -324,7 +323,7 @@ msgstr ""
 "\"%s\" er ikke et gyldigt tegn efter et '<'-tegn; det kan ikke være "
 "begyndelsen på et elementnavn"
 
-#: ../glib/gmarkup.c:1163
+#: glib/gmarkup.c:1163
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
@@ -333,7 +332,7 @@ msgstr ""
 "Mærkeligt tegn \"%s\", forventede et '>'-tegn for at afslutte "
 "begyndelsesmærket til elementet \"%s\""
 
-#: ../glib/gmarkup.c:1252
+#: glib/gmarkup.c:1252
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -341,7 +340,7 @@ msgstr ""
 "Mærkeligt tegn \"%s\", forventede et '=' efter egenskabsnavn \"%s\" for "
 "elementet \"%s\""
 
-#: ../glib/gmarkup.c:1294
+#: glib/gmarkup.c:1294
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -352,7 +351,7 @@ msgstr ""
 "begyndelsesmærket til elementet \"%s\" eller alternativt en egenskab; måske "
 "brugte du et ugyldigt tegn i egenskabsnavnet"
 
-#: ../glib/gmarkup.c:1383
+#: glib/gmarkup.c:1383
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -361,7 +360,7 @@ msgstr ""
 "Mærkeligt tegn \"%s\", forventede et åbningsanførselstegn efter "
 "lighedstegnet når værdien for egenskaben \"%s\" for elementet \"%s\" angives"
 
-#: ../glib/gmarkup.c:1528
+#: glib/gmarkup.c:1528
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -370,7 +369,7 @@ msgstr ""
 "\"%s\" er ikke et gyldigt tegn efter tegnene '</'; \"%s\" er måske ikke "
 "begyndelsen på et elementnavn"
 
-#: ../glib/gmarkup.c:1568
+#: glib/gmarkup.c:1568
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -379,25 +378,25 @@ msgstr ""
 "\"%s\" er ikke et gyldigt tegn efter det lukkende elementnavn \"%s\"; "
 "tilladt tegn er '>'"
 
-#: ../glib/gmarkup.c:1579
+#: glib/gmarkup.c:1579
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "Element \"%s\" blev lukket, ingen åbne elementer nu"
 
-#: ../glib/gmarkup.c:1588
+#: glib/gmarkup.c:1588
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "Element \"%s\" blev lukket, men aktivt åbent element er \"%s\""
 
-#: ../glib/gmarkup.c:1735
+#: glib/gmarkup.c:1735
 msgid "Document was empty or contained only whitespace"
 msgstr "Dokumentet var tomt eller indeholdt kun blanke tegn"
 
-#: ../glib/gmarkup.c:1749
+#: glib/gmarkup.c:1749
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "Dokumentet sluttede uventet lige efter en åben vinkelparantes '<'"
 
-#: ../glib/gmarkup.c:1757 ../glib/gmarkup.c:1801
+#: glib/gmarkup.c:1757 glib/gmarkup.c:1801
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -406,7 +405,7 @@ msgstr ""
 "Dokumentet sluttede uventet med åbne elementer - \"%s\" var sidste åbne "
 "element"
 
-#: ../glib/gmarkup.c:1765
+#: glib/gmarkup.c:1765
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -415,19 +414,19 @@ msgstr ""
 "Dokumentet sluttede uventet, forventede at se en vinkelparantes for at "
 "afslutte det sidste mærke <%s/>"
 
-#: ../glib/gmarkup.c:1771
+#: glib/gmarkup.c:1771
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Dokumentet sluttede uventet inden i et elementnavn"
 
-#: ../glib/gmarkup.c:1776
+#: glib/gmarkup.c:1776
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Dokumentet sluttede uventet inden i et egenskabsnavn"
 
-#: ../glib/gmarkup.c:1781
+#: glib/gmarkup.c:1781
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Dokumentet sluttede uventet inden i et element-åbnende mærke"
 
-#: ../glib/gmarkup.c:1787
+#: glib/gmarkup.c:1787
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -435,75 +434,75 @@ msgstr ""
 "Dokumentet sluttede uventet efter lighedstegnet efter et egenskabsnavn; "
 "ingen egenskabsværdi"
 
-#: ../glib/gmarkup.c:1794
+#: glib/gmarkup.c:1794
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Dokumentet sluttede uventet inden i en egenskabsværdi"
 
-#: ../glib/gmarkup.c:1809
+#: glib/gmarkup.c:1809
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr ""
 "Dokumentet sluttede uventet inden i lukningsmærket for elementet \"%s\""
 
-#: ../glib/gmarkup.c:1815
+#: glib/gmarkup.c:1815
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Dokumentet sluttede uventet inden i en kommentar eller behandlingsinstruktion"
 
-#: ../glib/gshell.c:73
+#: glib/gshell.c:73
 msgid "Quoted text doesn't begin with a quotation mark"
 msgstr "Anført tekst begynder ikke med anførselstegn"
 
-#: ../glib/gshell.c:163
+#: glib/gshell.c:163
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr ""
 "Uafbalanceret anførselstegn i kommandolinje eller anden skal-anført tekst"
 
-#: ../glib/gshell.c:541
+#: glib/gshell.c:541
 #, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
 msgstr "Tekst sluttede lige efter et '\\' tegn (teksten var \"%s\")"
 
-#: ../glib/gshell.c:548
+#: glib/gshell.c:548
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr ""
 "Tekst sluttede før tilsvarende anførselstegn blev fundet for %c (teksten var "
 "\"%s\")"
 
-#: ../glib/gshell.c:560
+#: glib/gshell.c:560
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Tekst var tom (eller indeholdt kun blanke tegn)"
 
-#: ../glib/gspawn-win32.c:264
+#: glib/gspawn-win32.c:264
 msgid "Failed to read data from child process"
 msgstr "Fejl under læsning af data fra underprocess"
 
-#: ../glib/gspawn-win32.c:281 ../glib/gspawn.c:1354
+#: glib/gspawn-win32.c:281 glib/gspawn.c:1354
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Fejl under oprettelse af kommunikationskanal til underproces (%s)"
 
-#: ../glib/gspawn-win32.c:321 ../glib/gspawn.c:1018
+#: glib/gspawn-win32.c:321 glib/gspawn.c:1018
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Fejl under læsning fra barnedatakanal (%s)"
 
-#: ../glib/gspawn-win32.c:349 ../glib/gspawn.c:1223
+#: glib/gspawn-win32.c:349 glib/gspawn.c:1223
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Fejl ved skift til mappen \"%s\" (%s)"
 
-#: ../glib/gspawn-win32.c:357 ../glib/gspawn-win32.c:442
+#: glib/gspawn-win32.c:357 glib/gspawn-win32.c:442
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Fejl under kørsel af underprocess (%s)"
 
-#: ../glib/gspawn-win32.c:599
+#: glib/gspawn-win32.c:599
 msgid "Failed to execute helper program"
 msgstr "Fejl under kørsel af hjælpeprogram"
 
-#: ../glib/gspawn-win32.c:797
+#: glib/gspawn-win32.c:797
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -511,122 +510,122 @@ msgstr ""
 "Uventet fejl i g_io_channel_win32_poll() under læsning af data fra en "
 "underprocess"
 
-#: ../glib/gspawn.c:179
+#: glib/gspawn.c:179
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "Fejl ved læsning af data fra underprocess (%s)"
 
-#: ../glib/gspawn.c:310
+#: glib/gspawn.c:310
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr "Uventet fejl i select() ved læsning af data fra underprocess (%s)"
 
-#: ../glib/gspawn.c:393
+#: glib/gspawn.c:393
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Uventet fejl i waitpid() (%s)"
 
-#: ../glib/gspawn.c:1083
+#: glib/gspawn.c:1083
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Fejl under fraspaltning af proces (%s)"
 
-#: ../glib/gspawn.c:1233
+#: glib/gspawn.c:1233
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Fejl under kørsel af underprocessen \"%s\" (%s)"
 
-#: ../glib/gspawn.c:1243
+#: glib/gspawn.c:1243
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Fejl under omdirigering af uddata eller inddata for underprocess (%s)"
 
-#: ../glib/gspawn.c:1252
+#: glib/gspawn.c:1252
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Fejl ved fraspaltning af underprocess (%s)"
 
-#: ../glib/gspawn.c:1260
+#: glib/gspawn.c:1260
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Ukendt fejl under kørsel af underprocessen \"%s\""
 
-#: ../glib/gspawn.c:1282
+#: glib/gspawn.c:1282
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr ""
 "Kunne ikke læse tilstrækkelig mængde data fra underprocessens pid-kanal (%s)"
 
-#: ../glib/gutf8.c:986
+#: glib/gutf8.c:986
 msgid "Character out of range for UTF-8"
 msgstr "Tegn uden for gyldigt interval for UTF-8"
 
-#: ../glib/gutf8.c:1080 ../glib/gutf8.c:1089 ../glib/gutf8.c:1221
-#: ../glib/gutf8.c:1230 ../glib/gutf8.c:1371 ../glib/gutf8.c:1467
+#: glib/gutf8.c:1080 glib/gutf8.c:1089 glib/gutf8.c:1221 glib/gutf8.c:1230
+#: glib/gutf8.c:1371 glib/gutf8.c:1467
 msgid "Invalid sequence in conversion input"
 msgstr "Ugyldig sekvens i konverteringsinddata"
 
-#: ../glib/gutf8.c:1382 ../glib/gutf8.c:1478
+#: glib/gutf8.c:1382 glib/gutf8.c:1478
 msgid "Character out of range for UTF-16"
 msgstr "Tegn uden for gyldigt interval for UTF-16"
 
-#: ../glib/goption.c:457
+#: glib/goption.c:461
 msgid "Usage:"
 msgstr "Brug:"
 
-#: ../glib/goption.c:457
+#: glib/goption.c:461
 msgid "[OPTION...]"
 msgstr "[FLAG...]"
 
-#: ../glib/goption.c:543
+#: glib/goption.c:547
 msgid "Help Options:"
 msgstr "Flag for hjælp:"
 
-#: ../glib/goption.c:544
+#: glib/goption.c:548
 msgid "Show help options"
 msgstr "Vis flag for hjælp"
 
-#: ../glib/goption.c:549
+#: glib/goption.c:553
 msgid "Show all help options"
 msgstr "Vis alle flag for hjælp"
 
-#: ../glib/goption.c:599
+#: glib/goption.c:603
 msgid "Application Options:"
 msgstr "Flag for programmet:"
 
-#: ../glib/goption.c:639
+#: glib/goption.c:644
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "Kan ikke fortolke heltalsværdien \"%s\" for %s"
 
-#: ../glib/goption.c:649
+#: glib/goption.c:654
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "Heltalsværdien \"%s\" for %s er ikke i gyldigt interval"
 
-#: ../glib/goption.c:915 ../glib/goption.c:986
+#: glib/goption.c:920 glib/goption.c:991
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Mangler argument for %s"
 
-#: ../glib/goption.c:1389
+#: glib/goption.c:1394
 #, c-format
 msgid "Unknown option %s"
 msgstr "Ukendt flag %s"
 
-#: ../glib/gkeyfile.c:339
+#: glib/gkeyfile.c:339
 msgid "Valid key file could not be found in data dirs"
 msgstr "Gyldig nøglefil blev ikke fundet i datakatalogerne"
 
-#: ../glib/gkeyfile.c:374
+#: glib/gkeyfile.c:374
 msgid "Not a regular file"
 msgstr "Ikke en almindelig fil"
 
-#: ../glib/gkeyfile.c:382
+#: glib/gkeyfile.c:382
 msgid "File is empty"
 msgstr "Filen er tom"
 
-#: ../glib/gkeyfile.c:692
+#: glib/gkeyfile.c:692
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
@@ -634,40 +633,40 @@ msgstr ""
 "Nøglefilen indeholder linjen \"%s\" hvilken ikke er et nøgle-værdi-par, en "
 "gruppe eller en kommentar"
 
-#: ../glib/gkeyfile.c:760
+#: glib/gkeyfile.c:760
 msgid "Key file does not start with a group"
 msgstr "Nøglefilen starter ikke med en gruppe"
 
-#: ../glib/gkeyfile.c:803
+#: glib/gkeyfile.c:803
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "Nøglefilen indeholder kodningen \"%s\" der ikke er understøttet"
 
-#: ../glib/gkeyfile.c:1012 ../glib/gkeyfile.c:1158 ../glib/gkeyfile.c:2159
-#: ../glib/gkeyfile.c:2224 ../glib/gkeyfile.c:2342 ../glib/gkeyfile.c:2410
-#: ../glib/gkeyfile.c:2594 ../glib/gkeyfile.c:2768 ../glib/gkeyfile.c:2825
+#: glib/gkeyfile.c:1012 glib/gkeyfile.c:1158 glib/gkeyfile.c:2159
+#: glib/gkeyfile.c:2224 glib/gkeyfile.c:2342 glib/gkeyfile.c:2410
+#: glib/gkeyfile.c:2594 glib/gkeyfile.c:2768 glib/gkeyfile.c:2825
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Nøglefilen indeholder ikke gruppen \"%s\""
 
-#: ../glib/gkeyfile.c:1170
+#: glib/gkeyfile.c:1170
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "Nøglefilen indeholder ikke nøglen \"%s\""
 
-#: ../glib/gkeyfile.c:1271 ../glib/gkeyfile.c:1380
+#: glib/gkeyfile.c:1271 glib/gkeyfile.c:1380
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr ""
 "Nøglefilen indeholder nøglen \"%s\" med værdien \"%s\" der ikke er UTF-8"
 
-#: ../glib/gkeyfile.c:1289 ../glib/gkeyfile.c:1398 ../glib/gkeyfile.c:1770
+#: glib/gkeyfile.c:1289 glib/gkeyfile.c:1398 glib/gkeyfile.c:1770
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr ""
 "Nøglefilen indeholder nøglen \"%s\" som har en værdi der ikke kan fortolkes."
 
-#: ../glib/gkeyfile.c:1986
+#: glib/gkeyfile.c:1986
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -676,26 +675,31 @@ msgstr ""
 "Nøglefilen indeholder nøglen \"%s\" i gruppen \"%s\" som har en værdi der "
 "ikke kan fortolkes."
 
-#: ../glib/gkeyfile.c:2174 ../glib/gkeyfile.c:2357 ../glib/gkeyfile.c:2836
+#: glib/gkeyfile.c:2174 glib/gkeyfile.c:2357 glib/gkeyfile.c:2836
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Nøglefilen har ikke nøglen \"%s\" i gruppen \"%s\""
 
-#: ../glib/gkeyfile.c:3017
+#: glib/gkeyfile.c:3017
 msgid "Key file contains escape character at end of line"
 msgstr "Nøglefilen indeholder beskyttede tegn for enden af linjen"
 
-#: ../glib/gkeyfile.c:3039
+#: glib/gkeyfile.c:3039
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "Nøglefilen indeholder en ugyldig undvigesekvens \"%s\""
 
-#: ../glib/gkeyfile.c:3177
+#: glib/gkeyfile.c:3180
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Værdien \"%s\" kan ikke fortolkes som et nummer."
 
-#: ../glib/gkeyfile.c:3205
+#: glib/gkeyfile.c:3190
+#, fuzzy, c-format
+msgid "Integer value '%s' out of range"
+msgstr "Heltalsværdien \"%s\" for %s er ikke i gyldigt interval"
+
+#: glib/gkeyfile.c:3220
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Værdien \"%s\" kan ikke fortolkes som en sandhedsværdi."

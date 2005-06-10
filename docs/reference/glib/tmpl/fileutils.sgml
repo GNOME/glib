@@ -391,3 +391,12 @@ An opaque structure representing an opened directory.
 @Returns: 
 
 
+<!-- ##### FUNCTION g_chdir ##### -->
+<para>
+
+</para>
+
+@path: 
+@Returns: 
+
+
