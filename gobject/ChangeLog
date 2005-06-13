@@ -1,3 +1,9 @@
+2005-06-13  Matthias Clasen  <mclasen@redhat.com>
+
+	* gparam.h (GParamFlags): Re-add G_PARAM_PRIVATE as a 
+	deprecated name for bit 5, since some language bindings
+	have it bound.
+
 2005-06-10  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.7.0 ===
