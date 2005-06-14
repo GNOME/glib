@@ -1,0 +1,686 @@
+# Thai translation of glib.
+# Copyright (C) 2005 Free Software Foundation, Inc.
+# This file is distributed under the same license as the glib package.
+# Theppitak Karoonboonyanan <thep@linux.thai.net>, 2005.
+# 
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: glib 2.7.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-06-14 12:20+0700\n"
+"PO-Revision-Date: 2005-06-14 16:23+0700\n"
+"Last-Translator: Theppitak Karoonboonyanan <thep@linux.thai.net>\n"
+"Language-Team: Thai\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit"
+
+#: glib/gconvert.c:406
+#, c-format
+msgid "Conversion from character set '%s' to '%s' is not supported"
+msgstr "ไม่สนับสนุนการแปลงรหัสอักขระจาก '%s' ไปเป็น '%s'"
+
+#: glib/gconvert.c:410
+#, c-format
+msgid "Could not open converter from '%s' to '%s'"
+msgstr "ไม่สามารถเปิดตัวแปลงรหัสอักขระจาก '%s' ไปเป็น '%s' ได้"
+
+#: glib/gconvert.c:618 glib/gconvert.c:908 glib/giochannel.c:1319
+#: glib/giochannel.c:1361 glib/giochannel.c:2203 glib/gutf8.c:911
+#: glib/gutf8.c:1361
+msgid "Invalid byte sequence in conversion input"
+msgstr "มีลำดับไบต์ที่ไม่ถูกต้องในข้อมูลที่ป้อนให้ตัวแปลงรหัส"
+
+#: glib/gconvert.c:624 glib/gconvert.c:841 glib/giochannel.c:1326
+#: glib/giochannel.c:2215
+#, c-format
+msgid "Error during conversion: %s"
+msgstr "เกิดข้อผิดพลาดระหว่างแปลงรหัส: %s"
+
+#: glib/gconvert.c:643 glib/gutf8.c:907 glib/gutf8.c:1112
+#: glib/gutf8.c:1253 glib/gutf8.c:1357
+msgid "Partial character sequence at end of input"
+msgstr "มีลำดับไบต์ไม่เต็มอักขระอยู่ที่ท้ายข้อมูลเข้า"
+
+#: glib/gconvert.c:817
+#, c-format
+msgid "Cannot convert fallback '%s' to codeset '%s'"
+msgstr "ไม่สามารถแปลงสตริงซ่อมเสริม '%s' ให้เป็นรหัส '%s' ได้"
+
+#: glib/gconvert.c:1619
+#, c-format
+msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
+msgstr "URI '%s' ไม่ใช่ URI สัมบูรณ์ที่ใช้ scheme \"file\""
+
+#: glib/gconvert.c:1629
+#, c-format
+msgid "The local file URI '%s' may not include a '#'"
+msgstr "URI ของแฟ้มท้องถิ่น '%s' ต้องไม่มี '#'"
+
+#: glib/gconvert.c:1646
+#, c-format
+msgid "The URI '%s' is invalid"
+msgstr "URI '%s' ใช้ไม่ได้"
+
+#: glib/gconvert.c:1658
+#, c-format
+msgid "The hostname of the URI '%s' is invalid"
+msgstr "ชื่อโฮสต์ของ URI '%s' ใช้ไม่ได้"
+
+#: glib/gconvert.c:1674
+#, c-format
+msgid "The URI '%s' contains invalidly escaped characters"
+msgstr "URI '%s' มีอักขระหลีกที่ไม่ถูกต้อง"
+
+#: glib/gconvert.c:1768
+#, c-format
+msgid "The pathname '%s' is not an absolute path"
+msgstr "ชื่อพาธ '%s' ไม่ใช่พาธเต็ม"
+
+#: glib/gconvert.c:1778
+msgid "Invalid hostname"
+msgstr "ชื่อโฮสต์ผิดรูปแบบ"
+
+#: glib/gdir.c:121 glib/gdir.c:141
+#, c-format
+msgid "Error opening directory '%s': %s"
+msgstr "เกิดข้อผิดพลาดขณะเปิดไดเรกทอรี '%s': %s"
+
+#: glib/gfileutils.c:504 glib/gfileutils.c:577
+#, c-format
+msgid "Could not allocate %lu bytes to read file \"%s\""
+msgstr "ไม่สามารถจองหน่วยความจำ %lu ไบต์เพื่ออ่านแฟ้ม \"%s\" ได้"
+
+#: glib/gfileutils.c:519
+#, c-format
+msgid "Error reading file '%s': %s"
+msgstr "เกิดข้อผิดพลาดขณะอ่านแฟ้ม '%s': %s"
+
+#: glib/gfileutils.c:601
+#, c-format
+msgid "Failed to read from file '%s': %s"
+msgstr "อ่านข้อมูลจากแฟ้ม '%s' ไม่สำเร็จ: %s"
+
+#: glib/gfileutils.c:652 glib/gfileutils.c:739
+#, c-format
+msgid "Failed to open file '%s': %s"
+msgstr "เปิดแฟ้ม '%s' ไม่สำเร็จ: %s"
+
+#: glib/gfileutils.c:669
+#, c-format
+msgid "Failed to get attributes of file '%s': fstat() failed: %s"
+msgstr "อ่านแอตทริบิวต์ของแฟ้ม '%s' ไม่สำเร็จ: fstat() ล้มเหลว: %s"
+
+#: glib/gfileutils.c:703
+#, c-format
+msgid "Failed to open file '%s': fdopen() failed: %s"
+msgstr "เปิดแฟ้ม '%s' ไม่สำเร็จ: fdopen() ล้มเหลว: %s"
+
+#: glib/gfileutils.c:837
+#, c-format
+msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
+msgstr "เปลี่ยนชื่อแฟ้ม '%s' ไปเป็น '%s' ไม่สำเร็จ: g_rename() ล้มเหลว: %s"
+
+#: glib/gfileutils.c:880
+#, c-format
+msgid "Could not change file mode: fork() failed: %s"
+msgstr "ไม่สามารถเปลี่ยนโหมดของแฟ้มได้: fork() ล้มเหลว: %s"
+
+#: glib/gfileutils.c:911
+#, c-format
+msgid "Could not change file mode: waitpid() failed: %s"
+msgstr "ไม่สามารถเปลี่ยนโหมดของแฟ้มได้: waitpid() ล้มเหลว: %s"
+
+#: glib/gfileutils.c:930
+#, c-format
+msgid "Could not change file mode: chmod() failed: %s"
+msgstr "ไม่สามารถเปลี่ยนโหมดของแฟ้มได้: chmod() ล้มเหลว: %s"
+
+#: glib/gfileutils.c:941
+#, c-format
+msgid "Could not change file mode: Child terminated by signal: %s"
+msgstr "ไม่สามารถเปลี่ยนโหมดของแฟ้มได้: โพรเซสลูกจบโดยสัญญาณ: %s"
+
+#: glib/gfileutils.c:952
+msgid "Could not change file mode: Child terminated abnormally"
+msgstr "ไม่สามารถเปลี่ยนโหมดของแฟ้มได้: โพรเซสลูกจบแบบผิดปกติ"
+
+#: glib/gfileutils.c:986 glib/gfileutils.c:1452
+#, c-format
+msgid "Failed to create file '%s': %s"
+msgstr "สร้างแฟ้ม '%s' ไม่สำเร็จ: %s"
+
+#: glib/gfileutils.c:1008
+#, c-format
+msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
+msgstr "เปิดแฟ้ม '%s' เพื่อเขียนไม่สำเร็จ: fdopen() ล้มเหลว: %s"
+
+#: glib/gfileutils.c:1033
+#, c-format
+msgid "Failed to write file '%s': fwrite() failed: %s"
+msgstr "เขียนแฟ้ม '%s' ไม่สำเร็จ: fwrite() ล้มเหลว: %s"
+
+#: glib/gfileutils.c:1052
+#, c-format
+msgid "Failed to close file '%s': fclose() failed: %s"
+msgstr "ปิดแฟ้ม '%s' ไม่สำเร็จ: fclose() ล้มเหลว: %s"
+
+#: glib/gfileutils.c:1170
+#, c-format
+msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
+msgstr "ไม่สามารถลบแฟ้ม '%s' ที่มีอยู่ได้: g_unlink() ล้มเหลว: %s"
+
+#: glib/gfileutils.c:1413
+#, c-format
+msgid "Template '%s' invalid, should not contain a '%s'"
+msgstr "แม่แบบ '%s' ใช้ไม่ได้ ไม่ควรมี '%s'"
+
+#: glib/gfileutils.c:1427
+#, c-format
+msgid "Template '%s' doesn't end with XXXXXX"
+msgstr "แม่แบบ '%s' ไม่ได้ลงท้ายด้วย XXXXXX"
+
+#: glib/gfileutils.c:1830
+#, c-format
+msgid "Failed to read the symbolic link '%s': %s"
+msgstr "อ่านลิงก์สัญลักษณ์ '%s' ไม่สำเร็จ: %s"
+
+#: glib/gfileutils.c:1851
+msgid "Symbolic links not supported"
+msgstr "ไม่สนับสนุนลิงก์สัญลักษณ์"
+
+#: glib/giochannel.c:1147
+#, c-format
+msgid "Conversion from character set `%s' to `%s' is not supported"
+msgstr "ไม่สนับสนุนการแปลงรหัสอักขระจาก '%s' ไปเป็น '%s'"
+
+#: glib/giochannel.c:1151
+#, c-format
+msgid "Could not open converter from `%s' to `%s': %s"
+msgstr "ไม่สามารถเปิดตัวแปลงรหัสอักขระจาก '%s' ไปเป็น '%s' ได้: %s"
+
+#: glib/giochannel.c:1496
+msgid "Can't do a raw read in g_io_channel_read_line_string"
+msgstr "ไม่สามารถอ่านข้อมูลแบบดิบใน g_io_channel_read_line_string"
+
+#: glib/giochannel.c:1543 glib/giochannel.c:1800
+#: glib/giochannel.c:1886
+msgid "Leftover unconverted data in read buffer"
+msgstr "มีข้อมูลตกค้างไม่ได้แปลงอยู่ในบัฟเฟอร์สำหรับอ่าน"
+
+#: glib/giochannel.c:1623 glib/giochannel.c:1700
+msgid "Channel terminates in a partial character"
+msgstr "แชนเนลจบด้วยข้อมูลไม่เต็มอักขระ"
+
+#: glib/giochannel.c:1686
+msgid "Can't do a raw read in g_io_channel_read_to_end"
+msgstr "ไม่สามารถอ่านข้อมูลแบบดิบใน g_io_channel_read_to_end"
+
+#: glib/gmarkup.c:232
+#, c-format
+msgid "Error on line %d char %d: %s"
+msgstr "มีข้อผิดพลาดที่บรรทัด %d อักขระที่ %d: %s"
+
+#: glib/gmarkup.c:330
+#, c-format
+msgid "Error on line %d: %s"
+msgstr "มีข้อผิดพลาดที่บรรทัด %d: %s"
+
+#: glib/gmarkup.c:434
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgstr ""
+"พบเอนทิตี '&;' ซึ่งไม่ถูกต้อง ค่าที่ใช้ได้คือ: &amp; &quot; &lt; &gt; &apos;"
+
+#: glib/gmarkup.c:444
+#, c-format
+msgid ""
+"Character '%s' is not valid at the start of an entity name; the & character "
+"begins an entity; if this ampersand isn't supposed to be an entity, escape "
+"it as &amp;"
+msgstr ""
+"อักขระ '%s' ไม่สามารถใช้ขึ้นต้นชื่อเอนทิตีได้ อักขระ & ใช้เริ่มเอนทิตี "
+"ถ้าเครื่องหมาย ampersand นี้ไม่ได้เจตนาให้เป็นเอนทิตี "
+"ต้องหลีกโดยแทนด้วย &amp;"
+
+#: glib/gmarkup.c:478
+#, c-format
+msgid "Character '%s' is not valid inside an entity name"
+msgstr "อักขระ '%s' ใช้ในชื่อเอนทิตีไม่ได้"
+
+#: glib/gmarkup.c:515
+#, c-format
+msgid "Entity name '%s' is not known"
+msgstr "ไม่รู้จักเอนทิตีชื่อ '%s'"
+
+#: glib/gmarkup.c:526
+msgid ""
+"Entity did not end with a semicolon; most likely you used an ampersand "
+"character without intending to start an entity - escape ampersand as &amp;"
+msgstr ""
+"เอนทิตีไม่ได้ปิดด้วยอัฒภาค เป็นไปได้สูงที่คุณอาจใช้ ampersand "
+"โดยไม่ได้จงใจให้เริ่มเอนทิตี ถ้าใช่ ก็จงหลีก ampersand โดยแทนด้วย "
+"&amp; เสีย"
+
+#: glib/gmarkup.c:579
+#, c-format
+msgid ""
+"Failed to parse '%-.*s', which should have been a digit inside a character "
+"reference (&#234; for example) - perhaps the digit is too large"
+msgstr ""
+"ไม่สามารถแจง '%-.*s' ซึ่งควรจะเป็นตัวเลขภายในตัวอ้างอิงอักขระ "
+"(เช่น &#234;) เป็นไปได้ว่าตัวเลขอาจจะมากเกินไป"
+
+#: glib/gmarkup.c:604
+#, c-format
+msgid "Character reference '%-.*s' does not encode a permitted character"
+msgstr "ตัวอ้างอิงอักขระ '%-.*s' ไม่ได้เข้ารหัสอักขระที่เป็นไปได้"
+
+#: glib/gmarkup.c:619
+msgid "Empty character reference; should include a digit such as &#454;"
+msgstr "ตัวอ้างอิงอักขระว่างเปล่า ควรจะมีตัวเลข เช่น &#454;"
+
+#: glib/gmarkup.c:629
+msgid ""
+"Character reference did not end with a semicolon; most likely you used an "
+"ampersand character without intending to start an entity - escape ampersand "
+"as &amp;"
+msgstr ""
+"ตัวอ้างอิงอักขระไม่ได้ปิดด้วยอัฒภาค เป็นไปได้สูงที่คุณอาจใช้ ampersand "
+"โดยไม่ได้จงใจให้เริ่มเอนทิตี ถ้าใช่ ก็จงหลีก ampersand โดยแทนด้วย "
+"&amp; เสีย"
+
+#: glib/gmarkup.c:715
+msgid "Unfinished entity reference"
+msgstr "ตัวอ้างอิงเอนทิตีไม่สมบูรณ์"
+
+#: glib/gmarkup.c:721
+msgid "Unfinished character reference"
+msgstr "ตัวอ้างอิงอักขระไม่สมบูรณ์"
+
+#: glib/gmarkup.c:964 glib/gmarkup.c:992 glib/gmarkup.c:1023
+msgid "Invalid UTF-8 encoded text"
+msgstr "ข้อความลงรหัส UTF-8 ไม่ถูกต้อง"
+
+#: glib/gmarkup.c:1059
+msgid "Document must begin with an element (e.g. <book>)"
+msgstr "เอกสารต้องเริ่มด้วยอิลิเมนต์ (เช่น <book>)"
+
+#: glib/gmarkup.c:1099
+#, c-format
+msgid ""
+"'%s' is not a valid character following a '<' character; it may not begin an "
+"element name"
+msgstr ""
+"'%s' ไม่ใช่อักขระที่ใช้ตามหลัง '<' ได้ จึงไม่สามารถใช้ขึ้นต้นชื่ออิลิเมนต์ได้"
+
+#: glib/gmarkup.c:1163
+#, c-format
+msgid ""
+"Odd character '%s', expected a '>' character to end the start tag of element "
+"'%s'"
+msgstr ""
+"พบอักขระแปลกปลอม '%s' ในขณะที่มองหาอักขระ '>' "
+"ที่จะมาปิดแท็กตั้งต้นอิลิเมนต์ '%s'"
+
+#: glib/gmarkup.c:1252
+#, c-format
+msgid ""
+"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgstr ""
+"พบอักขระแปลกปลอม '%s' ในขณะที่กำลังมองหา '=' หลังชื่อแอตทริบิวต์ "
+"'%s' ของอิลิเมนต์ '%s'"
+
+#: glib/gmarkup.c:1294
+#, c-format
+msgid ""
+"Odd character '%s', expected a '>' or '/' character to end the start tag of "
+"element '%s', or optionally an attribute; perhaps you used an invalid "
+"character in an attribute name"
+msgstr ""
+"พบอักขระแปลกปลอม '%s' ในขณะที่กำลังมองหา '>' หรือ '/' "
+"ที่จะมาปิดแท็กตั้งต้นของอิลิเมนต์ '%s' หรือไม่ก็เป็นแอตทริบิวต์ "
+"เป็นไปได้ว่าคุณกำลังใช้อักขระที่ใช้ไม่ได้ในชื่อแอตทริบิวต์"
+
+#: glib/gmarkup.c:1383
+#, c-format
+msgid ""
+"Odd character '%s', expected an open quote mark after the equals sign when "
+"giving value for attribute '%s' of element '%s'"
+msgstr ""
+"พบอักขระแปลกปลอม '%s' ในขณะที่กำลังมองหาอัญประกาศเปิดหลัง '=' "
+"ในการกำหนดค่าให้กับแอตทริบิวต์ '%s' ของอิลิเมนต์ '%s'"
+
+#: glib/gmarkup.c:1528
+#, c-format
+msgid ""
+"'%s' is not a valid character following the characters '</'; '%s' may not "
+"begin an element name"
+msgstr ""
+"'%s' ไม่ใช่อักขระที่ตามหลัง '</' ได้ '%s' ไม่สามารถใช้ขึ้นต้นชื่ออิลิเมนต์ได้"
+
+#: glib/gmarkup.c:1568
+#, c-format
+msgid ""
+"'%s' is not a valid character following the close element name '%s'; the "
+"allowed character is '>'"
+msgstr ""
+"'%s' ไม่ใช่อักขระที่ใช้ตามหลังชื่ออิลิเมนต์ '%s' ในแท็กปิดได้ "
+"อักขระเดียวที่อนุญาตคือ '>'"
+
+#: glib/gmarkup.c:1579
+#, c-format
+msgid "Element '%s' was closed, no element is currently open"
+msgstr "พบการปิดอิลิเมนต์ '%s' แต่ไม่มีอิลิเมนต์ใดเปิดอยู่"
+
+#: glib/gmarkup.c:1588
+#, c-format
+msgid "Element '%s' was closed, but the currently open element is '%s'"
+msgstr "พบการปิดอิลิเมนต์ '%s' แต่อิลิเมนต์ที่เปิดอยู่คือ '%s'"
+
+#: glib/gmarkup.c:1735
+msgid "Document was empty or contained only whitespace"
+msgstr "เอกสารว่างเปล่า หรือมีแต่อักขระช่องว่าง"
+
+#: glib/gmarkup.c:1749
+msgid "Document ended unexpectedly just after an open angle bracket '<'"
+msgstr "เอกสารจบแบบผิดปกติหลังจากวงเล็บแหลม '<'"
+
+#: glib/gmarkup.c:1757 glib/gmarkup.c:1801
+#, c-format
+msgid ""
+"Document ended unexpectedly with elements still open - '%s' was the last "
+"element opened"
+msgstr ""
+"เอกสารจบแบบผิดปกติ โดยยังมีอิลิเมนต์เปิดอยู่ - '%s' คืออิลิเมนต์ที่เปิดล่าสุด"
+
+#: glib/gmarkup.c:1765
+#, c-format
+msgid ""
+"Document ended unexpectedly, expected to see a close angle bracket ending "
+"the tag <%s/>"
+msgstr ""
+"เอกสารจบแบบผิดปกติ ในขณะที่กำลังมองหาวงเล็บแหลมที่จะมาปิดแท็ก <%s/>"
+
+#: glib/gmarkup.c:1771
+msgid "Document ended unexpectedly inside an element name"
+msgstr "เอกสารจบแบบผิดปกติระหว่างกลางชื่ออิลิเมนต์"
+
+#: glib/gmarkup.c:1776
+msgid "Document ended unexpectedly inside an attribute name"
+msgstr "เอกสารจบแบบผิดปกติระหว่างกลางชื่อแอตทริบิวต์"
+
+#: glib/gmarkup.c:1781
+msgid "Document ended unexpectedly inside an element-opening tag."
+msgstr "เอกสารจบแบบผิดปกติระหว่างกลางแท็กเปิดอิลิเมนต์"
+
+#: glib/gmarkup.c:1787
+msgid ""
+"Document ended unexpectedly after the equals sign following an attribute "
+"name; no attribute value"
+msgstr ""
+"เอกสารจบแบบผิดปกติหลังจากเครื่องหมาย '=' หลังชื่อแอตทริบิวต์ "
+"โดยไม่มีค่าของแอตทริบิวต์"
+
+#: glib/gmarkup.c:1794
+msgid "Document ended unexpectedly while inside an attribute value"
+msgstr "เอกสารจบแบบผิดปกติระหว่างกลางค่าแอตทริบิวต์"
+
+#: glib/gmarkup.c:1809
+#, c-format
+msgid "Document ended unexpectedly inside the close tag for element '%s'"
+msgstr "เอกสารจบแบบผิดปกติระหว่างกลางแท็กปิดสำหรับอิลิเมนต์ '%s'"
+
+#: glib/gmarkup.c:1815
+msgid "Document ended unexpectedly inside a comment or processing instruction"
+msgstr "เอกสารจบแบบผิดปกติระหว่างกลางหมายเหตุหรือคำสั่งประมวลผล"
+
+#: glib/gshell.c:73
+msgid "Quoted text doesn't begin with a quotation mark"
+msgstr "ข้อความคำพูดไม่ได้ขึ้นต้นด้วยอัญประกาศ"
+
+#: glib/gshell.c:163
+msgid "Unmatched quotation mark in command line or other shell-quoted text"
+msgstr "พบอัญประกาศไม่เข้าคู่ในบรรทัดคำสั่งหรือข้อความคำพูดของเชลล์"
+
+#: glib/gshell.c:541
+#, c-format
+msgid "Text ended just after a '\\' character. (The text was '%s')"
+msgstr "ข้อความจบทันทีหลังอักขระ '\\' (ข้อความที่ว่าคือ '%s')"
+
+#: glib/gshell.c:548
+#, c-format
+msgid "Text ended before matching quote was found for %c. (The text was '%s')"
+msgstr "ข้อความจบเสียก่อนจะพบอัญประกาศที่เข้าคู่กับ %c (ข้อความที่ว่าคือ '%s')"
+
+#: glib/gshell.c:560
+msgid "Text was empty (or contained only whitespace)"
+msgstr "ข้อความว่างเปล่า (หรือมีแต่อักขระช่องว่าง)"
+
+#: glib/gspawn-win32.c:264
+msgid "Failed to read data from child process"
+msgstr "อ่านข้อมูลจากโพรเซสลูกไม่สำเร็จ"
+
+#: glib/gspawn-win32.c:281 glib/gspawn.c:1354
+#, c-format
+msgid "Failed to create pipe for communicating with child process (%s)"
+msgstr "สร้างไปป์เพื่อสื่อสารกับโพรเซสลูกไม่สำเร็จ (%s)"
+
+#: glib/gspawn-win32.c:321 glib/gspawn.c:1018
+#, c-format
+msgid "Failed to read from child pipe (%s)"
+msgstr "อ่านข้อมูลจากไปป์จากโพรเซสลูกไม่สำเร็จ (%s)"
+
+#: glib/gspawn-win32.c:349 glib/gspawn.c:1223
+#, c-format
+msgid "Failed to change to directory '%s' (%s)"
+msgstr "เข้าไปที่ไดเรกทอรี '%s' ไม่สำเร็จ (%s)"
+
+#: glib/gspawn-win32.c:357 glib/gspawn-win32.c:442
+#, c-format
+msgid "Failed to execute child process (%s)"
+msgstr "ดำเนินงานโพรเซสลูกไม่สำเร็จ (%s)"
+
+#: glib/gspawn-win32.c:599
+msgid "Failed to execute helper program"
+msgstr "ดำเนินงานโปรแกรมช่วยไม่สำเร็จ"
+
+#: glib/gspawn-win32.c:797
+msgid ""
+"Unexpected error in g_io_channel_win32_poll() reading data from a child "
+"process"
+msgstr ""
+"เกิดข้อผิดพลาดไม่คาดหมายใน g_io_channel_win32_poll() "
+"ระหว่างอ่านข้อมูลจากโพรเซสลูก"
+
+#: glib/gspawn.c:179
+#, c-format
+msgid "Failed to read data from child process (%s)"
+msgstr "อ่านข้อมูลจากโพรเซสลูกไม่สำเร็จ (%s)"
+
+#: glib/gspawn.c:310
+#, c-format
+msgid "Unexpected error in select() reading data from a child process (%s)"
+msgstr "เกิดข้อผิดพลาดไม่คาดหมายใน select() ระหว่างอ่านข้อมูลจากโพรเซสลูก (%s)"
+
+#: glib/gspawn.c:393
+#, c-format
+msgid "Unexpected error in waitpid() (%s)"
+msgstr "เกิดข้อผิดพลาดไม่คาดหมายใน waitpid() (%s)"
+
+#: glib/gspawn.c:1083
+#, c-format
+msgid "Failed to fork (%s)"
+msgstr "fork ไม่สำเร็จ (%s)"
+
+#: glib/gspawn.c:1233
+#, c-format
+msgid "Failed to execute child process \"%s\" (%s)"
+msgstr "ดำเนินงานโพรเซสลูก \"%s\" ไม่สำเร็จ (%s)"
+
+#: glib/gspawn.c:1243
+#, c-format
+msgid "Failed to redirect output or input of child process (%s)"
+msgstr "เปลี่ยนทิศทางข้อมูลเข้าหรือออกจากโพรเซสลูกไม่สำเร็จ (%s)"
+
+#: glib/gspawn.c:1252
+#, c-format
+msgid "Failed to fork child process (%s)"
+msgstr "fork โพรเซสลูกไม่สำเร็จ (%s)"
+
+#: glib/gspawn.c:1260
+#, c-format
+msgid "Unknown error executing child process \"%s\""
+msgstr "เกิดข้อผิดพลาดไม่ทราบสาเหตุขณะดำเนินงานโพรเซสลูก \"%s\""
+
+#: glib/gspawn.c:1282
+#, c-format
+msgid "Failed to read enough data from child pid pipe (%s)"
+msgstr "อ่านข้อมูลจากไปป์จากโพรเซสลูกได้ไม่เพียงพอ (%s)"
+
+#: glib/gutf8.c:986
+msgid "Character out of range for UTF-8"
+msgstr "อักขระอยู่นอกช่วงของ UTF-8"
+
+#: glib/gutf8.c:1080 glib/gutf8.c:1089 glib/gutf8.c:1221
+#: glib/gutf8.c:1230 glib/gutf8.c:1371 glib/gutf8.c:1467
+msgid "Invalid sequence in conversion input"
+msgstr "มีลำดับข้อมูลที่ไม่ถูกต้องในข้อมูลที่ป้อนให้ตัวแปลงรหัส"
+
+#: glib/gutf8.c:1382 glib/gutf8.c:1478
+msgid "Character out of range for UTF-16"
+msgstr "อักขระอยู่นอกช่วงของ UTF-16"
+
+#: glib/goption.c:461
+msgid "Usage:"
+msgstr "วิธีใช้:"
+
+#: glib/goption.c:461
+msgid "[OPTION...]"
+msgstr "[OPTION...]"
+
+#: glib/goption.c:547
+msgid "Help Options:"
+msgstr "ตัวเลือกแสดงวิธีใช้:"
+
+#: glib/goption.c:548
+msgid "Show help options"
+msgstr "แสดงวิธีใช้ตัวเลือกต่างๆ"
+
+#: glib/goption.c:553
+msgid "Show all help options"
+msgstr "แสดงวิธีใช้ตัวเลือกต่างๆ ทั้งหมด"
+
+#: glib/goption.c:603
+msgid "Application Options:"
+msgstr "ตัวเลือกของโปรแกรม:"
+
+#: glib/goption.c:644
+#, c-format
+msgid "Cannot parse integer value '%s' for %s"
+msgstr "ไม่สามารถแจงค่าจำนวนเต็ม '%s' สำหรับ %s"
+
+#: glib/goption.c:654
+#, c-format
+msgid "Integer value '%s' for %s out of range"
+msgstr "ค่าจำนวนเต็ม '%s' สำหรับ %s ออกนอกช่วงที่กำหนด"
+
+#: glib/goption.c:920 glib/goption.c:991
+#, c-format
+msgid "Missing argument for %s"
+msgstr "ขาดอาร์กิวเมนต์สำหรับ %s"
+
+#: glib/goption.c:1394
+#, c-format
+msgid "Unknown option %s"
+msgstr "ไม่รู้จักตัวเลือก %s"
+
+#: glib/gkeyfile.c:339
+msgid "Valid key file could not be found in data dirs"
+msgstr "ไม่พบแฟ้มคีย์ในไดเรกทอรีข้อมูลทั้งหลาย"
+
+#: glib/gkeyfile.c:374
+msgid "Not a regular file"
+msgstr "ไม่ใช่แฟ้มปกติ"
+
+#: glib/gkeyfile.c:382
+msgid "File is empty"
+msgstr "แฟ้มว่างเปล่า"
+
+#: glib/gkeyfile.c:692
+#, c-format
+msgid ""
+"Key file contains line '%s' which is not a key-value pair, group, or comment"
+msgstr ""
+"แฟ้มคีย์มีบรรทัด '%s' ซึ่งไม่ใช่รูปแบบคู่คีย์-ค่า, กลุ่ม, หรือหมายเหตุ "
+"ที่ถูกต้อง"
+
+#: glib/gkeyfile.c:760
+msgid "Key file does not start with a group"
+msgstr "แฟ้มคีย์ไม่ได้ขึ้นต้นด้วยกลุ่ม"
+
+#: glib/gkeyfile.c:803
+#, c-format
+msgid "Key file contains unsupported encoding '%s'"
+msgstr "แฟ้มคีย์มีเนื้อหาเป็นรหัสอักขระ '%s' ซึ่งไม่สนับสนุน"
+
+#: glib/gkeyfile.c:1012 glib/gkeyfile.c:1158 glib/gkeyfile.c:2159
+#: glib/gkeyfile.c:2224 glib/gkeyfile.c:2342 glib/gkeyfile.c:2410
+#: glib/gkeyfile.c:2594 glib/gkeyfile.c:2768 glib/gkeyfile.c:2825
+#, c-format
+msgid "Key file does not have group '%s'"
+msgstr "แฟ้มคีย์ไม่มีกลุ่ม '%s'"
+
+#: glib/gkeyfile.c:1170
+#, c-format
+msgid "Key file does not have key '%s'"
+msgstr "แฟ้มคีย์ไม่มีคีย์ '%s'"
+
+#: glib/gkeyfile.c:1271 glib/gkeyfile.c:1380
+#, c-format
+msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
+msgstr "แฟ้มคีย์มีคีย์ '%s' ซึ่งมีค่า '%s' ซึ่งไม่ใช่รูปแบบ UTF-8"
+
+#: glib/gkeyfile.c:1289 glib/gkeyfile.c:1398 glib/gkeyfile.c:1770
+#, c-format
+msgid "Key file contains key '%s' which has value that cannot be interpreted."
+msgstr "แฟ้มคีย์มีคีย์ '%s' ซึ่งมีค่าที่ไม่สามารถตีความได้"
+
+#: glib/gkeyfile.c:1986
+#, c-format
+msgid ""
+"Key file contains key '%s' in group '%s' which has value that cannot be "
+"interpreted."
+msgstr ""
+"แฟ้มคีย์มีคีย์ '%s' ในกลุ่ม '%s' ซึ่งมีค่าที่ไม่สามารถตีความได้"
+
+#: glib/gkeyfile.c:2174 glib/gkeyfile.c:2357 glib/gkeyfile.c:2836
+#, c-format
+msgid "Key file does not have key '%s' in group '%s'"
+msgstr "แฟ้มคีย์ไม่มีคีย์ '%s' ในกลุ่ม '%s'"
+
+#: glib/gkeyfile.c:3017
+msgid "Key file contains escape character at end of line"
+msgstr "แฟ้มคีย์มีอักขระหลีกที่ท้ายบรรทัด"
+
+#: glib/gkeyfile.c:3039
+#, c-format
+msgid "Key file contains invalid escape sequence '%s'"
+msgstr "แฟ้มคีย์มีลำดับหลีก '%s' ที่ไม่ถูกต้อง"
+
+#: glib/gkeyfile.c:3180
+#, c-format
+msgid "Value '%s' cannot be interpreted as a number."
+msgstr "ค่า '%s' ไม่สามารถตีความเป็นตัวเลขได้"
+
+#: glib/gkeyfile.c:3190
+#, c-format
+msgid "Integer value '%s' out of range"
+msgstr "ค่าจำนวนเต็ม '%s' ออกนอกช่วง"
+
+#: glib/gkeyfile.c:3220
+#, c-format
+msgid "Value '%s' cannot be interpreted as a boolean."
+msgstr "ค่า '%s' ไม่สามารถตีความเป็นบูลีนได้"
+

@@ -1,3 +1,7 @@
+2005-06-14  Theppitak Karoonboonyanan  <thep@linux.thai.net>
+
+	* configure.in: Added 'th' (Thai) to ALL_LINGUAS.
+
 2005-06-10  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Bump version
