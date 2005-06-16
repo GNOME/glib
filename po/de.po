@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-06-10 12:53-0400\n"
-"PO-Revision-Date: 2004-12-18 14:51+0100\n"
+"POT-Creation-Date: 2005-06-17 00:09+0200\n"
+"PO-Revision-Date: 2005-06-17 00:09+0200\n"
 "Last-Translator: Hendrik Brandt <heb@gnome-de.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -654,9 +654,9 @@ msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Der Wert »%s« konnte nicht als Zahl interpretiert werden."
 
 #: glib/gkeyfile.c:3189
-#, fuzzy, c-format
+#, c-format
 msgid "Integer value '%s' out of range"
-msgstr "Ganzzahliger Wert »%s« für %s ist außerhalb des Bereiches."
+msgstr "Ganzzahliger Wert »%s« ist außerhalb des Wertebereiches"
 
 #: glib/gkeyfile.c:3219
 #, c-format
