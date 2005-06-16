@@ -633,7 +633,7 @@ The class initialization process is entirely implemented in
 		<entry>Last call to <function><link linkend="g-type-free-instance">g_type_free_instance</link></function> for target type</entry>
 		<entry>type's base_finalize function</entry>
 		<entry>On the inheritance tree of classes from fundamental type to target type. 
-		  base_init is invoked once for each class structure.</entry>
+		  base_finalize is invoked once for each class structure.</entry>
 	      </row>
 	    </tbody>
 	  </tgroup>

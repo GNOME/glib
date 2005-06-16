@@ -1,3 +1,7 @@
+2005-06-16  Mathieu Lacage <mathieu@gnome.org>
+
+	* gobject/tut_gtype.xml: fix typo reported by Hong Gang XU.
+	
 2005-06-10  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.7.0 ===
