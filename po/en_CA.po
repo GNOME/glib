@@ -1,15 +1,15 @@
 # English/Canada translation of glib.
-# Copyright (C) 2004 Adam Weinberger <adamw@gnome.org>
+# Copyright (C) 2004-2005 Adam Weinberger <adamw@gnome.org>
 # This file is distributed under the same licence as the glib package.
-# Adam Weinberger <adamw@gnome.org>, 2004.
+# Adam Weinberger <adamw@gnome.org>, 2004, 2005.
 # 
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-06-10 12:53-0400\n"
-"PO-Revision-Date: 2004-11-29 16:20-0400\n"
+"POT-Creation-Date: 2005-06-17 01:39-0400\n"
+"PO-Revision-Date: 2005-06-17 16:20-0400\n"
 "Last-Translator: Adam Weinberger <adamw@gnome.org>\n"
 "Language-Team: English/Canada <adamw@FreeBSD.org>\n"
 "MIME-Version: 1.0\n"
@@ -622,9 +622,9 @@ msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Value '%s' cannot be interpreted as a number."
 
 #: glib/gkeyfile.c:3189
-#, fuzzy, c-format
+#, c-format
 msgid "Integer value '%s' out of range"
-msgstr "Integer value '%s' for %s out of range"
+msgstr "Integer value '%s' out of range"
 
 #: glib/gkeyfile.c:3219
 #, c-format
