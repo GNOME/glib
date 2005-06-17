@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-06-10 11:24-0400\n"
-"PO-Revision-Date: 2005-05-28 16:20-0400\n"
+"POT-Creation-Date: 2005-06-17 01:38-0400\n"
+"PO-Revision-Date: 2005-06-17 16:20-0400\n"
 "Last-Translator: Adam Weinberger <adamw@gnome.org>\n"
 "Language-Team: Canadian English <adamw@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -676,9 +676,9 @@ msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Value '%s' cannot be interpreted as a number."
 
 #: glib/gkeyfile.c:3190
-#, fuzzy, c-format
+#, c-format
 msgid "Integer value '%s' out of range"
-msgstr "Integer value '%s' for %s out of range"
+msgstr "Integer value '%s' out of range"
 
 #: glib/gkeyfile.c:3220
 #, c-format
