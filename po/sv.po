@@ -1,6 +1,6 @@
 # Swedish messages for glib.
-# Copyright (C) 2001, 2002, 2003, 2004 Free Software Foundation, Inc.
-# Christian Rose <menthos@menthos.com>, 2001, 2002, 2003, 2004.
+# Copyright (C) 2001, 2002, 2003, 2004, 2005 Free Software Foundation, Inc.
+# Christian Rose <menthos@menthos.com>, 2001, 2002, 2003, 2004, 2005.
 #
 # $Id$
 #
@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-06-10 12:53-0400\n"
-"PO-Revision-Date: 2004-12-18 15:59+0100\n"
+"POT-Creation-Date: 2005-06-18 13:54+0200\n"
+"PO-Revision-Date: 2005-06-18 14:05+0200\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -639,9 +639,9 @@ msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Värdet \"%s\" kan inte tolkas som ett tal."
 
 #: glib/gkeyfile.c:3189
-#, fuzzy, c-format
+#, c-format
 msgid "Integer value '%s' out of range"
-msgstr "Heltalsvärdet \"%s\" för %s är utanför intervallet"
+msgstr "Heltalsvärdet \"%s\" är utanför intervallet"
 
 #: glib/gkeyfile.c:3219
 #, c-format
