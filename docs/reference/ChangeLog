@@ -1,3 +1,8 @@
+2005-06-18  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/tmpl/option.sgml (GOptionFlags): document
+ 	G_OPTION_FLAG_NO_ARG and G_OPTION_FLAG_FILENAME  (Dan Winship)
+
 2005-06-16  Mathieu Lacage <mathieu@gnome.org>
 
 	* gobject/tut_gtype.xml: fix typo reported by Hong Gang XU.

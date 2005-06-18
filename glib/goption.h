@@ -34,7 +34,9 @@ typedef enum
 {
   G_OPTION_FLAG_HIDDEN       = 1 << 0,
   G_OPTION_FLAG_IN_MAIN      = 1 << 1,
-  G_OPTION_FLAG_REVERSE	     = 1 << 2
+  G_OPTION_FLAG_REVERSE      = 1 << 2,
+  G_OPTION_FLAG_NO_ARG       = 1 << 3,
+  G_OPTION_FLAG_FILENAME     = 1 << 4
 } GOptionFlags;
 
 typedef enum

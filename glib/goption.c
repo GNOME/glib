@@ -33,6 +33,10 @@
 
 #define TRANSLATE(group, str) (((group)->translate_func ? (* (group)->translate_func) ((str), (group)->translate_data) : (str)))
 
+#define NO_ARG(entry) ((entry)->arg == G_OPTION_ARG_NONE ||       \
+                       ((entry)->arg == G_OPTION_ARG_CALLBACK &&  \
+                        ((entry)->flags & G_OPTION_FLAG_NO_ARG)))
+
 typedef struct 
 {
   GOptionArg arg_type;
@@ -393,7 +397,7 @@ calculate_max_length (GOptionGroup *group)
       if (entry->short_name)
 	len += 4;
       
-      if (entry->arg != G_OPTION_ARG_NONE && entry->arg_description)
+      if (!NO_ARG (entry) && entry->arg_description)
 	len += 1 + g_utf8_strlen (TRANSLATE (group, entry->arg_description), -1);
       
       max_length = MAX (max_length, len);
@@ -847,17 +851,28 @@ parse_arg (GOptionContext *context,
       }
     case G_OPTION_ARG_CALLBACK:
       {
-	gchar *tmp;
+	gchar *data;
 	gboolean retval;
 	
-	tmp = g_locale_to_utf8 (value, -1, NULL, NULL, error);
+	if (entry->flags & G_OPTION_FLAG_NO_ARG)
+	  data = NULL;
+	else if (entry->flags & G_OPTION_FLAG_FILENAME)
+	  {
+#ifdef G_OS_WIN32
+	    data = g_locale_to_utf8 (value, -1, NULL, NULL, error);
+#else
+	    data = g_strdup (value);
+#endif
+	  }
+	else
+	  data = g_locale_to_utf8 (value, -1, NULL, NULL, error);
 
-	if (!value)
+	if (!(entry->flags & G_OPTION_FLAG_NO_ARG) && !data)
 	  return FALSE;
 
-	retval = (* (GOptionArgFunc) entry->arg_data) (option_name, tmp, group->user_data, error);
+	retval = (* (GOptionArgFunc) entry->arg_data) (option_name, data, group->user_data, error);
 	
-	g_free (tmp);
+	g_free (data);
 	
 	return retval;
 	
@@ -887,7 +902,7 @@ parse_short_option (GOptionContext *context,
     {
       if (arg == group->entries[j].short_name)
 	{
-	  if (group->entries[j].arg == G_OPTION_ARG_NONE)
+	  if (NO_ARG (&group->entries[j]))
 	    {
 	      parse_arg (context, group, &group->entries[j],
 			 NULL, NULL, error);
@@ -954,7 +969,7 @@ parse_long_option (GOptionContext *context,
       if (*index >= *argc)
 	return TRUE;
 
-      if (group->entries[j].arg == G_OPTION_ARG_NONE &&
+      if (NO_ARG (&group->entries[j]) &&
 	  strcmp (arg, group->entries[j].long_name) == 0)
 	{
 	  parse_arg (context, group, &group->entries[j],

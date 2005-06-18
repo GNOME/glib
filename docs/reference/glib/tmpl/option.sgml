@@ -124,9 +124,6 @@ main (int argc, char *argv[])
 
 </para>
 
-<!-- ##### SECTION Stability_Level ##### -->
-
-
 <!-- ##### ENUM GOptionError ##### -->
 <para>
 Error codes returned by option parsing.
@@ -267,8 +264,14 @@ Flags which modify individual options.
    output.
 @G_OPTION_FLAG_IN_MAIN: The option appears in the main section of the
    <option>--help</option> output, even if it is defined in a group.
-@G_OPTION_FLAG_REVERSE: For options of the G_OPTION_ARG_NONE kind, this flag
+@G_OPTION_FLAG_REVERSE: For options of the %G_OPTION_ARG_NONE kind, this flag
    indicates that the sense of the option is reversed.
+@G_OPTION_FLAG_NO_ARG: For options of the %G_OPTION_ARG_CALLBACK kind,
+   this flag indicates that the callback does not take any argument
+   (like a %G_OPTION_ARG_NONE option). Since 2.8
+@G_OPTION_FLAG_FILENAME: For options of the %G_OPTION_ARG_CALLBACK
+   kind, this flag indicates that the argument should be passed to the
+   callback in the GLib filename encoding rather than UTF-8. Since 2.8
 
 <!-- ##### MACRO G_OPTION_REMAINING ##### -->
 <para>
