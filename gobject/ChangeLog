@@ -1,3 +1,8 @@
+2005-06-19  Matthias Clasen  <mclasen@redhat.com>
+
+	* gparam.h (GParamFlags): Avoid a warning.  (#308295,
+	Murray Cumming).
+
 2005-06-13  Matthias Clasen  <mclasen@redhat.com>
 
 	* gparam.h (GParamFlags): Re-add G_PARAM_PRIVATE as a 
