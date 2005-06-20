@@ -6,6 +6,7 @@
 # 
 # Allan Sims <allsi@eau.ee>, 2002.
 # Ivar Smolin <okul@linux.ee>, 2005.
+# Priit Laes <amd@store20.com>, 2005.
 #
 msgid ""
 msgstr ""
