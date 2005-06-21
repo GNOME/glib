@@ -1,3 +1,7 @@
+2005-06-21  Runa Bhattacharjee <runa@bengalinux.org>
+
+        * configure.in: Added "te" to ALL_LINGUAS.
+
 2005-06-10  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Bump version number
