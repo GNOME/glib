@@ -1795,6 +1795,8 @@ g_get_tmp_dir (void)
  * string is owned by GLib and should not be modified or freed. If no
  * name can be determined, a default fixed string "unknown" is
  * returned.
+ *
+ * Since: 2.8
  */
 const gchar *
 g_get_host_name (void)
