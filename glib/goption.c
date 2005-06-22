@@ -732,7 +732,7 @@ parse_arg (GOptionContext *context,
 
 	if (change->allocated.array.len == 0)
 	  {
-	    change->prev.array = entry->arg_data;
+	    change->prev.array = *(gchar ***)entry->arg_data;
 	    change->allocated.array.data = g_new (gchar *, 2);
 	  }
 	else
@@ -790,7 +790,7 @@ parse_arg (GOptionContext *context,
 
 	if (change->allocated.array.len == 0)
 	  {
-	    change->prev.array = entry->arg_data;
+	    change->prev.array = *(gchar ***)entry->arg_data;
 	    change->allocated.array.data = g_new (gchar *, 2);
 	  }
 	else
