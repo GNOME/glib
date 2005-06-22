@@ -1,3 +1,9 @@
+2005-06-22  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/goption.c (parse_short_option, parse_long_option): 
+	Pass the option name also in the NO_ARG case.  (#308602,
+	Masatake YAMATO)
+	
 2005-06-22  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gfileutils.c (g_makepath): New function. Creates a

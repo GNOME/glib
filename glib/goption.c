@@ -904,8 +904,13 @@ parse_short_option (GOptionContext *context,
 	{
 	  if (NO_ARG (&group->entries[j]))
 	    {
+	      gchar *option_name;
+
+	      option_name = g_strdup_printf ("-%c", group->entries[j].short_name);
 	      parse_arg (context, group, &group->entries[j],
-			 NULL, NULL, error);
+			 NULL, option_name, error);
+	      g_free (option_name);
+	      
 	      *parsed = TRUE;
 	    }
 	  else
@@ -972,8 +977,12 @@ parse_long_option (GOptionContext *context,
       if (NO_ARG (&group->entries[j]) &&
 	  strcmp (arg, group->entries[j].long_name) == 0)
 	{
+	  gchar *option_name;
+
+	  option_name = g_strconcat ("--", group->entries[j].long_name, NULL);
 	  parse_arg (context, group, &group->entries[j],
-		     NULL, NULL, error);
+		     NULL, option_name, error);
+	  g_free(option_name);
 	  
 	  add_pending_null (context, &((*argv)[*index]), NULL);
 	  *parsed = TRUE;
