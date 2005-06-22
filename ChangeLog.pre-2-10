@@ -1,3 +1,10 @@
+2005-06-22  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gfileutils.c
+	* glib/gfileutils.h
+	* glib/glib.symbols
+	* tests/testglib.c: Rename g_makepath() to g_mkdir_with_parents().
+
 2005-06-22  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/goption.c (parse_short_option, parse_long_option): 

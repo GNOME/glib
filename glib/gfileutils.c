@@ -58,7 +58,7 @@
 #include "galias.h"
 
 /**
- * g_makepath:
+ * g_mkdir_with_parents:
  * @pathname: a pathname in the GLib file name encoding
  * @mode: permissions to use for newly created directories
  *
@@ -71,8 +71,8 @@
  * Since: 2.8
  */
 int
-g_makepath (const gchar *pathname,
-	    int          mode)
+g_mkdir_with_parents (const gchar *pathname,
+		      int          mode)
 {
   gchar *fn, *p;
 

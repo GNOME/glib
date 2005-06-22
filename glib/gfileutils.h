@@ -107,8 +107,8 @@ gchar *g_build_path     (const gchar *separator,
 gchar *g_build_filename (const gchar *first_element,
 			 ...) G_GNUC_NULL_TERMINATED;
 
-int    g_makepath       (const gchar *pathname,
-			 int          mode);
+int    g_mkdir_with_parents (const gchar *pathname,
+			     int          mode);
 
 G_END_DECLS
 

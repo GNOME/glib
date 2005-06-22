@@ -320,7 +320,7 @@ find_first_that(gpointer key,
 
 
 static gboolean
-test_g_makepath_1 (const gchar *base)
+test_g_mkdir_with_parents_1 (const gchar *base)
 {
   char *p0 = g_build_filename (base, "fum", NULL);
   char *p1 = g_build_filename (p0, "tem", NULL);
@@ -333,43 +333,43 @@ test_g_makepath_1 (const gchar *base)
 
   if (g_file_test (p0, G_FILE_TEST_EXISTS))
     {
-      g_print ("failed, %s exists, cannot test g_makepath\n", p0);
+      g_print ("failed, %s exists, cannot test g_mkdir_with_parents\n", p0);
       return FALSE;
     }
 
   if (g_file_test (p1, G_FILE_TEST_EXISTS))
     {
-      g_print ("failed, %s exists, cannot test g_makepath\n", p1);
+      g_print ("failed, %s exists, cannot test g_mkdir_with_parents\n", p1);
       return FALSE;
     }
 
   if (g_file_test (p2, G_FILE_TEST_EXISTS))
     {
-      g_print ("failed, %s exists, cannot test g_makepath\n", p2);
+      g_print ("failed, %s exists, cannot test g_mkdir_with_parents\n", p2);
       return FALSE;
     }
 
-  if (g_makepath (p2, 0666) == -1)
+  if (g_mkdir_with_parents (p2, 0666) == -1)
     {
-      g_print ("failed, g_makepath(%s) failed: %s\n", p2, g_strerror (errno));
+      g_print ("failed, g_mkdir_with_parents(%s) failed: %s\n", p2, g_strerror (errno));
       return FALSE;
     }
 
   if (!g_file_test (p2, G_FILE_TEST_IS_DIR))
     {
-      g_print ("failed, g_makepath(%s) succeeded, but %s is not a directory\n", p2, p2);
+      g_print ("failed, g_mkdir_with_parents(%s) succeeded, but %s is not a directory\n", p2, p2);
       return FALSE;
     }
 
   if (!g_file_test (p1, G_FILE_TEST_IS_DIR))
     {
-      g_print ("failed, g_makepath(%s) succeeded, but %s is not a directory\n", p2, p1);
+      g_print ("failed, g_mkdir_with_parents(%s) succeeded, but %s is not a directory\n", p2, p1);
       return FALSE;
     }
 
   if (!g_file_test (p0, G_FILE_TEST_IS_DIR))
     {
-      g_print ("failed, g_makepath(%s) succeeded, but %s is not a directory\n", p2, p0);
+      g_print ("failed, g_mkdir_with_parents(%s) succeeded, but %s is not a directory\n", p2, p0);
       return FALSE;
     }
 
@@ -395,15 +395,15 @@ test_g_makepath_1 (const gchar *base)
     }
   fclose (f);
   
-  if (g_makepath (p1, 0666) == 0)
+  if (g_mkdir_with_parents (p1, 0666) == 0)
     {
-      g_print ("failed, g_makepath(%s) succeeded, even if %s is a file\n", p1, p1);
+      g_print ("failed, g_mkdir_with_parents(%s) succeeded, even if %s is a file\n", p1, p1);
       return FALSE;
     }
 
-  if (g_makepath (p2, 0666) == 0)
+  if (g_mkdir_with_parents (p2, 0666) == 0)
     {
-      g_print ("failed, g_makepath(%s) succeeded, even if %s is a file\n", p2, p1);
+      g_print ("failed, g_mkdir_with_parents(%s) succeeded, even if %s is a file\n", p2, p1);
       return FALSE;
     }
 
@@ -415,18 +415,18 @@ test_g_makepath_1 (const gchar *base)
 }
 
 static gboolean
-test_g_makepath (void)
+test_g_mkdir_with_parents (void)
 {
-  g_print ("checking g_makepath()...");
-  if (!test_g_makepath_1 ("hum"))
+  g_print ("checking g_mkdir_with_parents()...");
+  if (!test_g_mkdir_with_parents_1 ("hum"))
     return FALSE;
   g_remove ("hum");
-  if (!test_g_makepath_1 ("hii///haa/hee"))
+  if (!test_g_mkdir_with_parents_1 ("hii///haa/hee"))
     return FALSE;
   g_remove ("hii/haa/hee");
   g_remove ("hii/haa");
   g_remove ("hii");
-  if (!test_g_makepath_1 (g_get_current_dir ()))
+  if (!test_g_mkdir_with_parents_1 (g_get_current_dir ()))
     return FALSE;
 
   return TRUE;
@@ -639,7 +639,7 @@ main (int   argc,
   if (n_skip_root_checks)
     g_print ("ok\n");
 
-  if (test_g_makepath ())
+  if (test_g_mkdir_with_parents ())
     g_print ("ok\n");
 
   g_print ("checking doubly linked lists...");
