@@ -1164,6 +1164,7 @@ g_get_current_dir PRIVATE
 g_getenv PRIVATE
 g_unsetenv PRIVATE
 g_get_home_dir PRIVATE
+g_get_host_name
 g_setenv PRIVATE
 g_listenv PRIVATE
 #ifdef G_OS_WIN32

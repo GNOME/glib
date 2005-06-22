@@ -117,6 +117,7 @@ G_CONST_RETURN gchar* g_get_user_name        (void);
 G_CONST_RETURN gchar* g_get_real_name        (void);
 G_CONST_RETURN gchar* g_get_home_dir         (void);
 G_CONST_RETURN gchar* g_get_tmp_dir          (void);
+G_CONST_RETURN gchar* g_get_host_name	     (void);
 gchar*                g_get_prgname          (void);
 void                  g_set_prgname          (const gchar *prgname);
 G_CONST_RETURN gchar* g_get_application_name (void);

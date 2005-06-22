@@ -1363,6 +1363,7 @@ static	gchar	*g_tmp_dir = NULL;
 static	gchar	*g_user_name = NULL;
 static	gchar	*g_real_name = NULL;
 static	gchar	*g_home_dir = NULL;
+static	gchar	*g_host_name = NULL;
 
 #ifdef G_OS_WIN32
 /* System codepage versions of the above, kept at file level so that they,
@@ -1442,6 +1443,8 @@ g_get_any_init (void)
 {
   if (!g_tmp_dir)
     {
+      gchar hostname[100];
+
       g_tmp_dir = g_strdup (g_getenv ("TMPDIR"));
       if (!g_tmp_dir)
 	g_tmp_dir = g_strdup (g_getenv ("TMP"));
@@ -1650,6 +1653,22 @@ g_get_any_init (void)
       if (!g_real_name)
 	g_real_name = g_strdup ("Unknown");
 
+#ifndef G_OS_WIN32
+      if (gethostname (hostname, sizeof (hostname)) == -1)
+	g_host_name = g_strdup ("unknown");
+      else
+	g_host_name = g_strdup (hostname);
+#else
+      {
+	DWORD size = sizeof (hostname);
+	
+	if (!GetComputerName (hostname, &size))
+	  g_host_name = g_strdup ("unknown");
+	else
+	  g_host_name = g_strdup (hostname);
+      }
+#endif
+
 #ifdef G_OS_WIN32
       g_tmp_dir_cp = g_locale_from_utf8 (g_tmp_dir, -1, NULL, NULL, NULL);
       g_user_name_cp = g_locale_from_utf8 (g_user_name, -1, NULL, NULL, NULL);
@@ -1759,6 +1778,33 @@ g_get_tmp_dir (void)
   G_UNLOCK (g_utils_global);
   
   return g_tmp_dir;
+}
+
+/**
+ * g_get_host_name:
+ *
+ * Return a name for the machine. 
+ *
+ * The returned name is not necessarily a fully-qualified domain name,
+ * or even present in DNS or some other name service at all. It need
+ * not even be unique on your local network or site, but usually it
+ * is. Callers should not rely on the return value having any specific
+ * properties like uniqueness for security purposes. Even if the name
+ * of the machine is changed while an application is running, the
+ * return value from this function does not change. The returned
+ * string is owned by GLib and should not be modified or freed. If no
+ * name can be determined, a default fixed string "unknown" is
+ * returned.
+ */
+const gchar *
+g_get_host_name (void)
+{
+  G_LOCK (g_utils_global);
+  if (!g_tmp_dir)
+    g_get_any_init ();
+  G_UNLOCK (g_utils_global);
+
+  return g_host_name;
 }
 
 G_LOCK_DEFINE_STATIC (g_prgname);

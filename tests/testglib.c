@@ -438,6 +438,7 @@ main (int   argc,
   g_free (string);
   g_print ("user: %s\n", g_get_user_name ());
   g_print ("real: %s\n", g_get_real_name ());
+  g_print ("host: %s\n", g_get_host_name ());
   s = g_get_home_dir ();
   g_print ("home: %s\n", s ? s : "NULL!");
   s = g_get_user_data_dir ();
