@@ -38,6 +38,7 @@
 #include <errno.h>
 
 #include "glib.h"
+#include "gstdio.h"
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
@@ -318,6 +319,119 @@ find_first_that(gpointer key,
 }
 
 
+static gboolean
+test_g_makepath_1 (const gchar *base)
+{
+  char *p0 = g_build_filename (base, "fum", NULL);
+  char *p1 = g_build_filename (p0, "tem", NULL);
+  char *p2 = g_build_filename (p1, "zap", NULL);
+  FILE *f;
+
+  g_remove (p2);
+  g_remove (p1);
+  g_remove (p0);
+
+  if (g_file_test (p0, G_FILE_TEST_EXISTS))
+    {
+      g_print ("failed, %s exists, cannot test g_makepath\n", p0);
+      return FALSE;
+    }
+
+  if (g_file_test (p1, G_FILE_TEST_EXISTS))
+    {
+      g_print ("failed, %s exists, cannot test g_makepath\n", p1);
+      return FALSE;
+    }
+
+  if (g_file_test (p2, G_FILE_TEST_EXISTS))
+    {
+      g_print ("failed, %s exists, cannot test g_makepath\n", p2);
+      return FALSE;
+    }
+
+  if (g_makepath (p2, 0666) == -1)
+    {
+      g_print ("failed, g_makepath(%s) failed: %s\n", p2, g_strerror (errno));
+      return FALSE;
+    }
+
+  if (!g_file_test (p2, G_FILE_TEST_IS_DIR))
+    {
+      g_print ("failed, g_makepath(%s) succeeded, but %s is not a directory\n", p2, p2);
+      return FALSE;
+    }
+
+  if (!g_file_test (p1, G_FILE_TEST_IS_DIR))
+    {
+      g_print ("failed, g_makepath(%s) succeeded, but %s is not a directory\n", p2, p1);
+      return FALSE;
+    }
+
+  if (!g_file_test (p0, G_FILE_TEST_IS_DIR))
+    {
+      g_print ("failed, g_makepath(%s) succeeded, but %s is not a directory\n", p2, p0);
+      return FALSE;
+    }
+
+  g_rmdir (p2);
+  if (g_file_test (p2, G_FILE_TEST_EXISTS))
+    {
+      g_print ("failed, did g_rmdir(%s), but %s is still there\n", p2, p2);
+      return FALSE;
+    }
+
+  g_rmdir (p1);
+  if (g_file_test (p1, G_FILE_TEST_EXISTS))
+    {
+      g_print ("failed, did g_rmdir(%s), but %s is still there\n", p1, p1);
+      return FALSE;
+    }
+
+  f = g_fopen (p1, "w");
+  if (f == NULL)
+    {
+      g_print ("failed, couldn't create file %s\n", p1);
+      return FALSE;
+    }
+  fclose (f);
+  
+  if (g_makepath (p1, 0666) == 0)
+    {
+      g_print ("failed, g_makepath(%s) succeeded, even if %s is a file\n", p1, p1);
+      return FALSE;
+    }
+
+  if (g_makepath (p2, 0666) == 0)
+    {
+      g_print ("failed, g_makepath(%s) succeeded, even if %s is a file\n", p2, p1);
+      return FALSE;
+    }
+
+  g_remove (p2);
+  g_remove (p1);
+  g_remove (p0);
+
+  return TRUE;
+}
+
+static gboolean
+test_g_makepath (void)
+{
+  g_print ("checking g_makepath()...");
+  if (!test_g_makepath_1 ("hum"))
+    return FALSE;
+  g_remove ("hum");
+  if (!test_g_makepath_1 ("hii///haa/hee"))
+    return FALSE;
+  g_remove ("hii/haa/hee");
+  g_remove ("hii/haa");
+  g_remove ("hii");
+  if (!test_g_makepath_1 (g_get_current_dir ()))
+    return FALSE;
+
+  return TRUE;
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -482,7 +596,6 @@ main (int   argc,
   string = g_path_get_basename ("/foo/file");
   g_assert (strcmp (string, "file") == 0);
   g_free (string);
-  g_print ("ok\n");
 #endif
 
   g_print ("checking g_path_get_dirname()...");
@@ -524,6 +637,9 @@ main (int   argc,
 	}
     }
   if (n_skip_root_checks)
+    g_print ("ok\n");
+
+  if (test_g_makepath ())
     g_print ("ok\n");
 
   g_print ("checking doubly linked lists...");

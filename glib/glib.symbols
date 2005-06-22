@@ -260,6 +260,7 @@ g_file_open_tmp PRIVATE
 g_file_test PRIVATE
 g_file_read_link
 g_mkstemp PRIVATE
+g_makepath
 #ifdef G_OS_WIN32
 g_file_get_contents_utf8
 g_file_open_tmp_utf8

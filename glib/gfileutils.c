@@ -58,6 +58,78 @@
 #include "galias.h"
 
 /**
+ * g_makepath:
+ * @pathname: a pathname in the GLib file name encoding
+ * @mode: permissions to use for newly created directories
+ *
+ * Create a directory if it doesn't already exist. Create intermediate
+ * parent directories as needed, too.
+ *
+ * Returns: 0 if the directoty already exists, or was successfully
+ * created. Returns -1 if an error occurred, with errno set.
+ *
+ * Since: 2.8
+ */
+int
+g_makepath (const gchar *pathname,
+	    int          mode)
+{
+  gchar *fn, *p;
+
+  if (pathname == NULL)
+    {
+      errno = EINVAL;
+      return -1;
+    }
+
+  fn = g_strdup (pathname);
+
+  if (g_path_is_absolute (fn))
+    p = (gchar *) g_path_skip_root (fn);
+  else
+    p = fn;
+
+  do
+    {
+      while (*p && !G_IS_DIR_SEPARATOR (*p))
+	p++;
+      
+      if (!*p)
+	p = NULL;
+      else
+	*p = '\0';
+      
+      if (!g_file_test (fn, G_FILE_TEST_EXISTS))
+	{
+	  if (g_mkdir (fn, mode) == -1)
+	    {
+	      int errno_save = errno;
+	      g_free (fn);
+	      errno = errno_save;
+	      return -1;
+	    }
+	}
+      else if (!g_file_test (fn, G_FILE_TEST_IS_DIR))
+	{
+	  g_free (fn);
+	  errno = ENOTDIR;
+	  return -1;
+	}
+      if (p)
+	{
+	  *p++ = G_DIR_SEPARATOR;
+	  while (*p && G_IS_DIR_SEPARATOR (*p))
+	    p++;
+	}
+    }
+  while (p);
+
+  g_free (fn);
+
+  return 0;
+}
+
+/**
  * g_file_test:
  * @filename: a filename to test in the GLib file name encoding
  * @test: bitfield of #GFileTest flags

@@ -1,15 +1,22 @@
 2005-06-22  Tor Lillqvist  <tml@novell.com>
 
+	* glib/gfileutils.c (g_makepath): New function. Creates a
+	directory including intermediate parent directories as
+	needed. (#60509)
+
+	* glib/gfileutils.h: Declare it.
+
 	* glib/gutils.c (g_get_host_name): New function. Returns the
 	machine's name, or one of its names. Document that it is
 	best-effort only, and not guaranteed to be unique or anything.
 	(g_get_any_init): Get the host name here. On Unix use
 	gethostname(), on Windows use GetComputerName(). (#5200)
 
-	* glib/gutils.h
-	* glib/glib.symbols: Add here, too.
+	* glib/gutils.h: Declare it.
 
-	* tests/testglib.c: Test it.
+	* glib/glib.symbols: Add new functions.
+
+	* tests/testglib.c: Test g_makepath() and g_get_host_name().
 	
 2005-06-18  Matthias Clasen  <mclasen@redhat.com>
 
