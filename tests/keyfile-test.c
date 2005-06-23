@@ -708,6 +708,8 @@ test_group_remove (void)
   g_key_file_remove_group (keyfile, "group1", &error);
   check_no_error (&error);
   
+  g_strfreev (names);
+
   names = g_key_file_get_groups (keyfile, &len);
   if (names == NULL)
     {
@@ -722,6 +724,8 @@ test_group_remove (void)
   g_key_file_remove_group (keyfile, "group2", &error);
   check_no_error (&error);
   
+  g_strfreev (names);
+
   names = g_key_file_get_groups (keyfile, &len);
   if (names == NULL)
     {
@@ -734,6 +738,8 @@ test_group_remove (void)
 
   g_key_file_remove_group (keyfile, "no such group", &error);
   check_error (&error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_GROUP_NOT_FOUND);
+
+  g_strfreev (names);
 
   g_key_file_free (keyfile);
 }
