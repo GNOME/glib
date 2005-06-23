@@ -1313,7 +1313,9 @@ g_path_skip_root
 g_path_get_basename
 g_path_get_dirname
 g_build_filename
+g_build_filenamev
 g_build_path
+g_build_pathv
 
 <SUBSECTION>
 g_find_program_in_path
