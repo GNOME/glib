@@ -1,3 +1,15 @@
+2005-06-23  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/glib.symbols: 
+	* glib/gfileutils.h: 
+	* glib/gfileutils.c (g_build_pathv, g_build_filenamev): 
+	Variants of g_build_path() and g_build_filename()
+	which take a string array instead of varargs.  
+	(#149092, Todd A. Fisher)
+
+	* tests/strfunc-test.c: Add tests for g_build_pathv() 
+	and g_build_filenamev().
+
 2005-06-22  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gfileutils.c

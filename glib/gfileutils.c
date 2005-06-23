@@ -1570,9 +1570,10 @@ g_file_open_tmp (const gchar *tmpl,
 #endif
 
 static gchar *
-g_build_pathv (const gchar *separator,
-	       const gchar *first_element,
-	       va_list      args)
+g_build_path_va (const gchar  *separator,
+		 const gchar  *first_element,
+		 va_list       args,
+		 gchar       **str_array)
 {
   GString *result;
   gint separator_len = strlen (separator);
@@ -1581,10 +1582,14 @@ g_build_pathv (const gchar *separator,
   const gchar *single_element = NULL;
   const gchar *next_element;
   const gchar *last_trailing = NULL;
+  gint i = 0;
 
   result = g_string_new (NULL);
 
-  next_element = first_element;
+  if (str_array)
+    next_element = str_array[i++];
+  else
+    next_element = first_element;
 
   while (TRUE)
     {
@@ -1595,7 +1600,10 @@ g_build_pathv (const gchar *separator,
       if (next_element)
 	{
 	  element = next_element;
-	  next_element = va_arg (args, gchar *);
+	  if (str_array)
+	    next_element = str_array[i++];
+	  else
+	    next_element = va_arg (args, gchar *);
 	}
       else
 	break;
@@ -1666,6 +1674,32 @@ g_build_pathv (const gchar *separator,
 }
 
 /**
+ * g_build_pathv:
+ * @separator: a string used to separator the elements of the path.
+ * @args: %NULL-terminated array of strings containing the path elements.
+ * 
+ * Behaves exactly like g_build_path(), but takes the path elements 
+ * as a string array, instead of varargs. This function is mainly
+ * meant for language bindings.
+ *
+ * Return value: a newly-allocated string that must be freed with g_free().
+ *
+ * Since: 2.8
+ */
+gchar *
+g_build_pathv (const gchar  *separator,
+	       gchar       **args)
+{
+  va_list va_args;
+
+  if (!args)
+    return NULL;
+
+  return g_build_path_va (separator, NULL, va_args, args);
+}
+
+
+/**
  * g_build_path:
  * @separator: a string used to separator the elements of the path.
  * @first_element: the first element in the path
@@ -1712,54 +1746,20 @@ g_build_path (const gchar *separator,
   g_return_val_if_fail (separator != NULL, NULL);
 
   va_start (args, first_element);
-  str = g_build_pathv (separator, first_element, args);
+  str = g_build_path_va (separator, first_element, args, NULL);
   va_end (args);
 
   return str;
 }
 
-/**
- * g_build_filename:
- * @first_element: the first element in the path
- * @Varargs: remaining elements in path, terminated by %NULL
- * 
- * Creates a filename from a series of elements using the correct
- * separator for filenames.
- *
- * On Unix, this function behaves identically to <literal>g_build_path
- * (G_DIR_SEPARATOR_S, first_element, ....)</literal>.
- *
- * On Windows, it takes into account that either the backslash
- * (<literal>\</literal> or slash (<literal>/</literal>) can be used
- * as separator in filenames, but otherwise behaves as on Unix. When
- * file pathname separators need to be inserted, the one that last
- * previously occurred in the parameters (reading from left to right)
- * is used.
- *
- * No attempt is made to force the resulting filename to be an absolute
- * path. If the first element is a relative path, the result will
- * be a relative path. 
- * 
- * Return value: a newly-allocated string that must be freed with g_free().
- **/
-gchar *
-g_build_filename (const gchar *first_element, 
-		  ...)
+static gchar *
+g_build_filename_va (const gchar  *first_element,
+		     va_list       args,
+		     gchar       **str_array)
 {
-#ifndef G_OS_WIN32
-  gchar *str;
-  va_list args;
-
-  va_start (args, first_element);
-  str = g_build_pathv (G_DIR_SEPARATOR_S, first_element, args);
-  va_end (args);
-
-  return str;
-#else
-  /* Code copied from g_build_pathv(), and modifed to use two
+  /* Code copied from g_build_pathv(), and modified to use two
    * alternative single-character separators.
    */
-  va_list args;
   GString *result;
   gboolean is_first = TRUE;
   gboolean have_leading = FALSE;
@@ -1767,13 +1767,15 @@ g_build_filename (const gchar *first_element,
   const gchar *next_element;
   const gchar *last_trailing = NULL;
   gchar current_separator = '\\';
-
-  va_start (args, first_element);
+  gint i = 0;
 
   result = g_string_new (NULL);
 
-  next_element = first_element;
-
+  if (str_array)
+    next_element = str_array[i++];
+  else
+    next_element = first_element;
+  
   while (TRUE)
     {
       const gchar *element;
@@ -1783,7 +1785,10 @@ g_build_filename (const gchar *first_element,
       if (next_element)
 	{
 	  element = next_element;
-	  next_element = va_arg (args, gchar *);
+	  if (str_array)
+	    next_element = str_array[i++];
+	  else
+	    next_element = va_arg (args, gchar *);
 	}
       else
 	break;
@@ -1845,8 +1850,6 @@ g_build_filename (const gchar *first_element,
       is_first = FALSE;
     }
 
-  va_end (args);
-
   if (single_element)
     {
       g_string_free (result, TRUE);
@@ -1859,7 +1862,75 @@ g_build_filename (const gchar *first_element,
   
       return g_string_free (result, FALSE);
     }
+}
+
+/**
+ * g_build_filenamev:
+ * @args: %NULL-terminated array of strings containing the path elements.
+ * 
+ * Behaves exactly like g_build_filename(), but takes the path elements 
+ * as a string array, instead of varargs. This function is mainly
+ * meant for language bindings.
+ *
+ * Return value: a newly-allocated string that must be freed with g_free().
+ * 
+ * Since: 2.8
+ */
+gchar *
+g_build_filenamev (gchar **args)
+{
+  gchar *str;
+  va_list va_args;
+
+#ifndef G_OS_WIN32
+  str = g_build_path_va (G_DIR_SEPARATOR_S, NULL, va_args, args);
+#else
+  str = g_build_pathname_va (NULL, va_args, args);
 #endif
+
+  return str;
+}
+
+/**
+ * g_build_filename:
+ * @first_element: the first element in the path
+ * @Varargs: remaining elements in path, terminated by %NULL
+ * 
+ * Creates a filename from a series of elements using the correct
+ * separator for filenames.
+ *
+ * On Unix, this function behaves identically to <literal>g_build_path
+ * (G_DIR_SEPARATOR_S, first_element, ....)</literal>.
+ *
+ * On Windows, it takes into account that either the backslash
+ * (<literal>\</literal> or slash (<literal>/</literal>) can be used
+ * as separator in filenames, but otherwise behaves as on Unix. When
+ * file pathname separators need to be inserted, the one that last
+ * previously occurred in the parameters (reading from left to right)
+ * is used.
+ *
+ * No attempt is made to force the resulting filename to be an absolute
+ * path. If the first element is a relative path, the result will
+ * be a relative path. 
+ * 
+ * Return value: a newly-allocated string that must be freed with g_free().
+ **/
+gchar *
+g_build_filename (const gchar *first_element, 
+		  ...)
+{
+  gchar *str;
+  va_list args;
+
+  va_start (args, first_element);
+#ifndef G_OS_WIN32
+  str = g_build_path_va (G_DIR_SEPARATOR_S, first_element, args, NULL);
+#else
+  str = g_build_pathname_va (first_element, args, NULL);
+#endif
+  va_end (args);
+
+  return str;
 }
 
 /**

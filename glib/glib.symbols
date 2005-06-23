@@ -250,8 +250,10 @@ g_set_error G_GNUC_PRINTF(4,5)
 
 #if IN_HEADER(__G_FILEUTILS_H__)
 #if IN_FILE(__G_FILEUTILS_C__)
-g_build_filename G_GNUC_NULL_TERMINATED
-g_build_path G_GNUC_NULL_TERMINATED
+g_build_filename G_GNUC_MALLOC G_GNUC_NULL_TERMINATED
+g_build_filenamev G_GNUC_MALLOC
+g_build_path G_GNUC_MALLOC G_GNUC_NULL_TERMINATED
+g_build_pathv G_GNUC_MALLOC 
 g_file_error_from_errno
 g_file_error_quark
 g_file_get_contents PRIVATE
