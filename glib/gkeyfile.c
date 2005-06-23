@@ -612,9 +612,12 @@ g_key_file_load_from_data_dirs (GKeyFile       *key_file,
       
       if (full_path)
 	*full_path = output_path;
+      else
+	g_free (output_path);
     }
 
   g_strfreev (all_data_dirs);
+
   return found_file;
 }
 

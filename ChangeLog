@@ -1,5 +1,8 @@
 2005-06-23  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gkeyfile.c (g_key_file_load_from_data_dirs): Don't
+	leak output_path.  (#308546, Kjartan Maraas)
+
 	* glib/glib.symbols: 
 	* glib/gfileutils.h: 
 	* glib/gfileutils.c (g_build_pathv, g_build_filenamev): 
