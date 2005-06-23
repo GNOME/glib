@@ -1752,6 +1752,8 @@ g_build_path (const gchar *separator,
   return str;
 }
 
+#ifdef G_OS_WIN32
+
 static gchar *
 g_build_filename_va (const gchar  *first_element,
 		     va_list       args,
@@ -1863,6 +1865,8 @@ g_build_filename_va (const gchar  *first_element,
       return g_string_free (result, FALSE);
     }
 }
+
+#endif
 
 /**
  * g_build_filenamev:

@@ -1,3 +1,8 @@
+Thu Jun 23 15:52:08 2005  Manish Singh  <yosh@gimp.org>
+
+	* glib/gfileutils.c: g_build_filename_va is only use in the G_OS_WIN32
+	case, so compile it conditionally.
+
 2005-06-23  Matthias Clasen  <mclasen@redhat.com>
 
 	* tests/keyfile-test.c (test_group_remove): Don't leak
