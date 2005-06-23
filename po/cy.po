@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-06-10 12:53-0400\n"
-"PO-Revision-Date: 2005-01-05 23:45+0100\n"
+"PO-Revision-Date: 2005-06-23 23:25+0100\n"
 "Last-Translator: Rhys Jones <rhys@sucs.org>\n"
 "Language-Team: Welsh <gnome-cy@pengwyn.linux.org.uk>\n"
 "MIME-Version: 1.0\n"
@@ -628,9 +628,9 @@ msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Ni ellir darllen y gwerth '%s' fel rhif."
 
 #: glib/gkeyfile.c:3189
-#, fuzzy, c-format
+#, c-format
 msgid "Integer value '%s' out of range"
-msgstr "Mae'r gwerth cyfanrif '%s' ar gyfer %s y tu allan i'r cwmpas"
+msgstr "Gwerth cyfanrif '%s' y tu allan i'r cwmpas"
 
 #: glib/gkeyfile.c:3219
 #, c-format
