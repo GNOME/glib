@@ -1,3 +1,11 @@
+2005-06-23  Matthias Clasen  <mclasen@redhat.com>
+
+	* tests/keyfile-test.c (test_group_remove): Don't leak
+	memory here.
+
+	* glib/gkeyfile.c (g_key_file_load_from_data_dirs): Don't
+	leak output_path.  (#308546, Kjartan Maraas)
+
 2005-06-22  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/goption.c (parse_arg): Properly store changes 

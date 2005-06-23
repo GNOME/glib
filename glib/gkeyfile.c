@@ -586,9 +586,12 @@ g_key_file_load_from_data_dirs (GKeyFile       *key_file,
     all_data_dirs[i++] = g_strdup (system_data_dirs[j++]);
 
   found_file = FALSE;
+  output_path = NULL;
   data_dirs = all_data_dirs;
   while (*data_dirs != NULL && !found_file)
     {
+      g_free (output_path);
+
       fd = find_file_in_data_dirs (file, &output_path, &data_dirs, 
                                    &key_file_error);
       
@@ -606,15 +609,17 @@ g_key_file_load_from_data_dirs (GKeyFile       *key_file,
       if (key_file_error)
         {
 	  g_propagate_error (error, key_file_error);
-          g_free (output_path);
 	  break;
         }
-      
-      if (full_path)
-	*full_path = output_path;
     }
 
+  if (found_file && full_path)
+    *full_path = output_path;
+  else
+    g_free (output_path);
+
   g_strfreev (all_data_dirs);
+
   return found_file;
 }
 
