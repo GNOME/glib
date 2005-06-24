@@ -1,3 +1,7 @@
+2005-06-24  Matthias Clasen  <mclasen@redhat.com>
+
+	* Makefile.am (DISTCHECK_CONFIGURE_FLAGS): Add --enable-man.
+
 2005-06-24  Tor Lillqvist  <tml@novell.com>
 
 	* glib/Makefile.am (install-libtool-import-lib): Current GNU tools
