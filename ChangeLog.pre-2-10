@@ -1,3 +1,12 @@
+2005-06-24  Tor Lillqvist  <tml@novell.com>
+
+	* glib/Makefile.am (install-libtool-import-lib): Current GNU tools
+	do understand the PRIVATE keyword.
+
+	* glib/gfileutils.c (g_mkdir_with_parents): Return error with
+	EINVAL also for empty pathnames.
+	(g_build_pathname_va): Fix typo.
+
 Thu Jun 23 15:52:08 2005  Manish Singh  <yosh@gimp.org>
 
 	* glib/gfileutils.c: g_build_filename_va is only use in the G_OS_WIN32

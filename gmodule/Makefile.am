@@ -55,11 +55,6 @@ if OS_WIN32
 export_symbols = -export-symbols $(srcdir)/gmodule.def
 
 install-libtool-import-lib:
-# 	Don't put the binary compatibility entries in the import lib!
-	for entry in `grep PRIVATE gmodule.def | sed -e 's/PRIVATE//'`; do \
-	  file=`nm -A .libs/libgmodule-2.0.dll.a | tr -d '\r' | grep -E $$entry'$$' | head -n 1 | cut -d: -f2`; \
-	  ar d .libs/libgmodule-2.0.dll.a $$file; \
-	done
 	$(INSTALL) .libs/libgmodule-2.0.dll.a $(DESTDIR)$(libdir)
 	$(INSTALL) $(srcdir)/gmodule.def $(DESTDIR)$(libdir)/gmodule-2.0.def
 

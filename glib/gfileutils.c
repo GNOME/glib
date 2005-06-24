@@ -76,7 +76,7 @@ g_mkdir_with_parents (const gchar *pathname,
 {
   gchar *fn, *p;
 
-  if (pathname == NULL)
+  if (pathname == NULL || *pathname == '\0')
     {
       errno = EINVAL;
       return -1;
@@ -1755,7 +1755,7 @@ g_build_path (const gchar *separator,
 #ifdef G_OS_WIN32
 
 static gchar *
-g_build_filename_va (const gchar  *first_element,
+g_build_pathname_va (const gchar  *first_element,
 		     va_list       args,
 		     gchar       **str_array)
 {
