@@ -77,6 +77,7 @@ test_programs =					\
 	keyfile-test				\
 	list-test				\
 	mainloop-test				\
+	mapping-test				\
 	markup-escape-test			\
 	module-test				\
 	node-test				\
@@ -133,6 +134,7 @@ keyfile_test_LDADD = $(progs_ldadd)
 list_test_LDADD = $(progs_ldadd)
 mainloop_test_LDADD = $(thread_ldadd)
 markup_test_LDADD = $(progs_ldadd)
+mapping_test_LDADD = $(progs_ldadd)
 markup_escape_test_LDADD = $(progs_ldadd)
 module_test_LDADD = $(module_ldadd) $(module_test_exp)
 module_test_LDFLAGS = $(G_MODULE_LDFLAGS)

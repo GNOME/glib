@@ -994,6 +994,13 @@ g_dir_rewind
 g_dir_close
 
 <SUBSECTION>
+GMappedFile
+g_mapped_file_new
+g_mapped_file_free
+g_mapped_file_get_length
+g_mapped_file_get_contents
+
+<SUBSECTION>
 g_open
 g_rename
 g_mkdir
@@ -1008,6 +1015,7 @@ g_chmod
 g_access
 g_creat
 g_chdir
+
 <SUBSECTION Private>
 g_file_error_quark
 </SECTION>

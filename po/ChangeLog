@@ -1,3 +1,7 @@
+2005-06-24  Matthias Clasen  <mclasen@redhat.com>
+
+	* POTFILES.in: Add gmappedfile.c
+
 2005-06-22  Abel Cheung  <maddog@linuxhall.org>
 
 	* zh_TW.po: Fix language team reference.

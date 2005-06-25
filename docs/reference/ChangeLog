@@ -1,3 +1,7 @@
+2005-06-24  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/glib-sections.txt: Add GMappedFile functions.
+
 2005-06-18  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/tmpl/option.sgml (GOptionFlags): document

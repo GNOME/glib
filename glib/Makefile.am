@@ -82,6 +82,7 @@ libglib_2_0_la_SOURCES = 	\
 	glibintl.h		\
 	glist.c			\
 	gmain.c         	\
+	gmappedfile.c		\
 	gmarkup.c		\
 	gmem.c			\
 	gmessages.c		\
@@ -155,6 +156,7 @@ glibsubinclude_HEADERS =   \
 	glist.h		\
 	gmacros.h	\
 	gmain.h		\
+	gmappedfile.h	\
 	gmarkup.h	\
 	gmem.h		\
 	gmessages.h	\

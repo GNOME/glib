@@ -3,6 +3,7 @@ glib/gdir.c
 glib/gfileutils.c
 glib/giochannel.c
 glib/giowin32.c
+glib/gmappedfile.c
 glib/gmarkup.c
 glib/gshell.c
 glib/gspawn-win32.c

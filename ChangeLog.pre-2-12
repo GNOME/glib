@@ -1,5 +1,22 @@
 2005-06-24  Matthias Clasen  <mclasen@redhat.com>
 
+	Add an mmap() wrapper called GMappedFile. (#148218,
+	David Schleef, Behdad Esfahbod)
+	
+	* glib/gmappedfile.[hc]: New files.
+
+	* configure.in: Check for mmap.
+	
+	* glib/Makefile.am: Add new files.
+	
+	* glib/glib.symbols: Add new functions.
+
+	* glib/glib.h: Include gmappedfile.h
+
+	* tests/mapping-test.c: Tests for GMappedFile.
+
+	* tests/Makefile.am: Add new file.
+
 	* Makefile.am (DISTCHECK_CONFIGURE_FLAGS): Add --enable-man.
 
 2005-06-24  Tor Lillqvist  <tml@novell.com>

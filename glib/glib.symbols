@@ -532,6 +532,15 @@ g_timeout_source_new
 #endif
 #endif
 
+#if IN_HEADER(__G_MAPPED_FILE_H__)
+#if IN_FILE(__G_MAPPED_FILE_C__)
+g_mapped_file_new G_GNUC_MALLOC
+g_mapped_file_get_length
+g_mapped_file_get_contents
+g_mapped_file_free
+#endif
+#endif
+
 #if IN_HEADER(__G_MARKUP_H__)
 #if IN_FILE(__G_MARKUP_C__)
 g_markup_error_quark
