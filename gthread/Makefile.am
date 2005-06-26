@@ -43,15 +43,14 @@ endif
 if OS_WIN32
 export_symbols = -export-symbols $(srcdir)/gthread.def
 
-install-libtool-import-lib:
-	$(INSTALL) .libs/libgthread-2.0.dll.a $(DESTDIR)$(libdir)
+install-def-file:
 	$(INSTALL) $(srcdir)/gthread.def $(DESTDIR)$(libdir)/gthread-2.0.def
 
-uninstall-libtool-import-lib:
-	-rm $(DESTDIR)$(libdir)/libgthread-2.0.dll.a $(DESTDIR)$(libdir)/gthread-2.0.def
+uninstall-def-file:
+	-rm $(DESTDIR)$(libdir)/gthread-2.0.def
 else
-install-libtool-import-lib:
-uninstall-libtool-import-lib:
+install-def-file:
+uninstall-def-file:
 endif
 
 libgthread_2_0_la_SOURCES = gthread-impl.c
@@ -77,7 +76,7 @@ dist-hook: $(BUILT_EXTRA_DIST)
 	  if test -f $$f; then d=.; else d=$(srcdir); fi; \
 	  cp $$d/$$f $(distdir) || exit 1; done
 
-install-data-local: install-ms-lib install-libtool-import-lib
+install-data-local: install-ms-lib install-def-file
 
-uninstall-local: uninstall-ms-lib uninstall-libtool-import-lib
+uninstall-local: uninstall-ms-lib uninstall-def-file
 

@@ -53,15 +53,14 @@ endif
 if OS_WIN32
 export_symbols = -export-symbols gobject.def
 
-install-libtool-import-lib:
-	$(INSTALL) .libs/libgobject-2.0.dll.a $(DESTDIR)$(libdir)
+install-def-file:
 	$(INSTALL) gobject.def $(DESTDIR)$(libdir)/gobject-2.0.def
 
-uninstall-libtool-import-lib:
-	-rm $(DESTDIR)$(libdir)/libgobject-2.0.dll.a $(DESTDIR)$(libdir)/gobject-2.0.def
+uninstall-def-file:
+	-rm $(DESTDIR)$(libdir)/gobject-2.0.def
 else
-install-libtool-import-lib:
-uninstall-libtool-import-lib:
+install-def-file:
+uninstall-def-file:
 
 export_symbols = $(LIBTOOL_EXPORT_OPTIONS)
 endif
@@ -244,9 +243,9 @@ dist-hook: $(BUILT_EXTRA_DIST)
 	  if test -f $$f; then d=.; else d=$(srcdir); fi; \
 	  cp $$d/$$f $(distdir) || exit 1; done
 
-install-data-local: install-ms-lib install-libtool-import-lib
+install-data-local: install-ms-lib install-def-file
 
-uninstall-local: uninstall-ms-lib uninstall-libtool-import-lib
+uninstall-local: uninstall-ms-lib uninstall-def-file
 
 distclean-local:
 	if test $(srcdir) = .; then :; else \

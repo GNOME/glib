@@ -54,15 +54,14 @@ endif
 if OS_WIN32
 export_symbols = -export-symbols $(srcdir)/gmodule.def
 
-install-libtool-import-lib:
-	$(INSTALL) .libs/libgmodule-2.0.dll.a $(DESTDIR)$(libdir)
+install-def-file:
 	$(INSTALL) $(srcdir)/gmodule.def $(DESTDIR)$(libdir)/gmodule-2.0.def
 
-uninstall-libtool-import-lib:
-	-rm $(DESTDIR)$(libdir)/libgmodule-2.0.dll.a $(DESTDIR)$(libdir)/gmodule-2.0.def
+uninstall-def-file:
+	-rm $(DESTDIR)$(libdir)/gmodule-2.0.def
 else
-install-libtool-import-lib:
-uninstall-libtool-import-lib:
+install-def-file:
+uninstall-def-file:
 endif
 
 libgmodule_2_0_la_SOURCES = gmodule.c
@@ -100,6 +99,6 @@ dist-hook: $(BUILT_EXTRA_DIST)
 	  cp $$d/$$f $(distdir) || exit 1; done
 
 
-install-data-local: install-ms-lib install-libtool-import-lib
+install-data-local: install-ms-lib install-def-file
 
-uninstall-local: uninstall-ms-lib uninstall-libtool-import-lib
+uninstall-local: uninstall-ms-lib uninstall-def-file
