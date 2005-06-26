@@ -32,6 +32,11 @@
 #include <sys/mman.h>
 #endif
 
+#include "glibconfig.h"
+
+#ifdef G_OS_WIN32
+#include <windows.h>
+#endif
 
 #include "gconvert.h"
 #include "gerror.h"
@@ -46,6 +51,10 @@
 
 #include "galias.h"
 
+#ifndef _O_BINARY
+#define _O_BINARY 0
+#endif
+
 #ifndef MAP_FAILED
 #define MAP_FAILED ((void *) -1)
 #endif
@@ -54,6 +63,9 @@ struct _GMappedFile
 {
   gsize  length;
   gchar *contents;
+#ifdef G_OS_WIN32
+  HANDLE mapping;
+#endif
 };
 
 /**
@@ -91,7 +103,7 @@ g_mapped_file_new (const gchar  *filename,
   g_return_val_if_fail (filename != NULL, NULL);
   g_return_val_if_fail (!error || *error == NULL, NULL);
 
-  fd = g_open (filename, writable ? O_RDWR : O_RDONLY);
+  fd = g_open (filename, (writable ? O_RDWR : O_RDONLY) | _O_BINARY, 0);
   if (fd == -1)
     {
       int save_errno = errno;
@@ -132,6 +144,27 @@ g_mapped_file_new (const gchar  *filename,
 				   writable ? PROT_READ|PROT_WRITE : PROT_READ,
 				   MAP_PRIVATE, fd, 0);
 #endif
+#ifdef G_OS_WIN32
+  file->length = st.st_size;
+  file->mapping = CreateFileMapping ((HANDLE) _get_osfhandle (fd), NULL,
+				     writable ? PAGE_WRITECOPY : PAGE_READONLY,
+				     0, 0,
+				     NULL);
+  if (file->mapping != NULL)
+    {
+      file->contents = MapViewOfFile (file->mapping,
+				      writable ? FILE_MAP_COPY : FILE_MAP_READ,
+				      0, 0,
+				      0);
+      if (file->contents == NULL)
+	{
+	  file->contents = MAP_FAILED;
+	  CloseHandle (file->mapping);
+	  file->mapping = NULL;
+	}
+    }
+#endif
+
   
   if (file->contents == MAP_FAILED)
     {
@@ -203,9 +236,6 @@ g_mapped_file_get_contents (GMappedFile *file)
  *
  * Unmaps the buffer of @file and frees it. 
  *
- * For writable, shared mappings, the contents
- * will be written back to the file at this point.
- *
  * Since: 2.8
  */
 void
@@ -216,6 +246,12 @@ g_mapped_file_free (GMappedFile *file)
 #ifdef HAVE_MMAP
   munmap (file->contents, file->length);
 #endif
+#ifdef G_OS_WIN32
+  UnmapViewOfFile (file->contents);
+  CloseHandle (file->mapping);
+#endif
+
+  g_free (file);
 }
 
 

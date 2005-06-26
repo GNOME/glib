@@ -1,3 +1,17 @@
+2005-06-26  Tor Lillqvist  <tml@novell.com>
+
+	* glib/Makefile.am: libtool installs/uninstalls the import
+	library, no need to do it ourselves. Do still install/uninstall
+	the .def file, though.
+
+	* glib/gmappedfile.c: Add Win32 implementation.
+	(g_mapped_file_free): Don't mention writable shared mappings in
+	the doc comment. Free the GMappedFile struct.
+
+	* tests/mapping-test.c (main): No kill() or SIGUSR1 on Win32, use
+	a flag file instead to stop the child. Use g_usleep() instead of
+	sleep().
+
 2005-06-24  Matthias Clasen  <mclasen@redhat.com>
 
 	Add an mmap() wrapper called GMappedFile. (#148218,

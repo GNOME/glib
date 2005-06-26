@@ -186,14 +186,14 @@ glibsubinclude_HEADERS =   \
 	gwin32.h	\
 	gprintf.h
 
-install-data-local: install-ms-lib install-libtool-import-lib
+install-data-local: install-ms-lib install-def-file
 	@if test -f $(glibincludedir)/glist.h ; then					\
 	  echo "*** Old headers found in $(glibincludedir). You should remove the" ;	\
 	  echo "*** contents of this directory and type 'make install' again." ;	\
 	  false ;									\
         fi
 
-uninstall-local: uninstall-ms-lib uninstall-libtool-import-lib
+uninstall-local: uninstall-ms-lib uninstall-def-file
 
 if PLATFORM_WIN32
 no_undefined = -no-undefined
@@ -203,15 +203,14 @@ if OS_WIN32
 # This requires a very new libtool
 export_symbols = -export-symbols glib.def
 
-install-libtool-import-lib:
-	$(INSTALL) .libs/libglib-2.0.dll.a $(DESTDIR)$(libdir)
+install-def-file:
 	$(INSTALL) glib.def $(DESTDIR)$(libdir)/glib-2.0.def
 
-uninstall-libtool-import-lib:
-	-rm $(DESTDIR)$(libdir)/libglib-2.0.dll.a $(DESTDIR)$(libdir)/glib-2.0.def
+uninstall-def-file:
+	-rm $(DESTDIR)$(libdir)/glib-2.0.def
 else
-install-libtool-import-lib:
-uninstall-libtool-import-lib:
+install-def-file:
+uninstall-def-file:
 
 export_symbols = $(LIBTOOL_EXPORT_OPTIONS)
 endif

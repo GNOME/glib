@@ -24,10 +24,13 @@
 #include <signal.h>
 
 #include "glib.h"
+#include "gstdio.h"
 
 static gchar *dir, *filename, *displayname, *childname;
 
 static gboolean stop = FALSE;
+
+#ifndef G_OS_WIN32
 
 static void
 handle_usr1 (int signum)
@@ -35,10 +38,16 @@ handle_usr1 (int signum)
   stop = TRUE;
 }
 
+#endif
+
 static gboolean
 check_stop (gpointer data)
 {
   GMainLoop *loop = data;
+
+#ifdef G_OS_WIN32
+  stop = g_file_test ("STOP", G_FILE_TEST_EXISTS);
+#endif
 
   if (stop)
     g_main_loop_quit (loop);
@@ -93,7 +102,9 @@ child_main (int argc, char *argv[])
   
   loop = g_main_loop_new (NULL, FALSE);
 
+#ifndef G_OS_WIN32
   signal (SIGUSR1, handle_usr1);
+#endif
   g_idle_add (check_stop, loop);
   g_main_loop_run (loop);
 
@@ -160,6 +171,11 @@ test_child_private (gchar *argv0)
   gchar *child_argv[3];
   GPid  child_pid;
   
+#ifdef G_OS_WIN32
+  g_remove ("STOP");
+  g_assert (!g_file_test ("STOP", G_FILE_TEST_EXISTS));
+#endif
+
   write_or_die (filename, "ABC", -1);
   map = map_or_die (filename, TRUE);
 
@@ -175,7 +191,7 @@ test_child_private (gchar *argv0)
     }
 
   /* give the child some time to set up its mapping */
-  sleep (2);
+  g_usleep (2000000);
 
   buffer = (gchar *)g_mapped_file_get_contents (map);
   buffer[0] = '1';
@@ -183,10 +199,14 @@ test_child_private (gchar *argv0)
   buffer[2] = '3';
   g_mapped_file_free (map);
 
+#ifndef G_OS_WIN32
   kill (child_pid, SIGUSR1);
+#else
+  g_file_set_contents ("STOP", "Hey there\n", -1, NULL);
+#endif
 
   /* give the child some time to write the file */
-  sleep (2);
+  g_usleep (2000000);
 
   if (!g_file_get_contents (childname, &buffer, &len, &error))
     {
