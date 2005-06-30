@@ -1,5 +1,8 @@
 2005-06-30  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gstring.c (g_str_hash): Fix portability issues.  
+	(#307064, Morten Welinder)
+
 	Apply a patch which may make GLib work on BeOS again.  
 	(#309157, Kian Duffy)
 
