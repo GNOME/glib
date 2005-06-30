@@ -1,5 +1,9 @@
 2005-06-30  Matthias Clasen  <mclasen@redhat.com>
 
+	* === Released 2.7.1 ===
+
+2005-06-30  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/gstring.c (g_str_hash): Fix portability issues.  
 	(#307064, Morten Welinder)
 

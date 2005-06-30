@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.12\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-06-10 11:24-0400\n"
+"POT-Creation-Date: 2005-06-30 16:44-0400\n"
 "PO-Revision-Date: 2005-03-28 19:34-0700\n"
 "Last-Translator: Steve Murphy <murf@e-tools.com>\n"
 "Language-Team: Kinyarwanda <translation-team-rw@lists.sourceforge.net>\n"
@@ -97,107 +97,107 @@ msgstr "Izina ry'inturo:"
 msgid "Error opening directory '%s': %s"
 msgstr "Gufungura %s%S bushyinguro"
 
-#: glib/gfileutils.c:504 glib/gfileutils.c:577
+#: glib/gfileutils.c:576 glib/gfileutils.c:649
 #, fuzzy, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "OYA Bayite Kuri Gusoma IDOSIYE"
 
 # svtools/source\misc\errtxt.src:RID_ERRHDL.ERRCODE_SFX_DOLOADFAILED.text
-#: glib/gfileutils.c:519
+#: glib/gfileutils.c:591
 #, fuzzy, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Ikosa mu gusoma idosiye"
 
-#: glib/gfileutils.c:601
+#: glib/gfileutils.c:673
 #, fuzzy, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Kuri Gusoma Bivuye IDOSIYE"
 
-#: glib/gfileutils.c:652 glib/gfileutils.c:739
+#: glib/gfileutils.c:724 glib/gfileutils.c:811
 #, fuzzy, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Kuri Gufungura IDOSIYE"
 
-#: glib/gfileutils.c:669
+#: glib/gfileutils.c:741 glib/gmappedfile.c:132
 #, fuzzy, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Kuri Kubona Ibiranga Bya IDOSIYE Byanze"
 
-#: glib/gfileutils.c:703
+#: glib/gfileutils.c:775
 #, fuzzy, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Kuri Gufungura IDOSIYE Byanze"
 
-#: glib/gfileutils.c:837
+#: glib/gfileutils.c:909
 #, fuzzy, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "Kuri Guhindura izina IDOSIYE Kuri Byanze"
 
-#: glib/gfileutils.c:880
+#: glib/gfileutils.c:952
 #, fuzzy, c-format
 msgid "Could not change file mode: fork() failed: %s"
 msgstr "Kuri Gufunga IDOSIYE Byanze"
 
-#: glib/gfileutils.c:911
+#: glib/gfileutils.c:983
 #, fuzzy, c-format
 msgid "Could not change file mode: waitpid() failed: %s"
 msgstr "Kuri IDOSIYE Byanze"
 
-#: glib/gfileutils.c:930
+#: glib/gfileutils.c:1002
 #, fuzzy, c-format
 msgid "Could not change file mode: chmod() failed: %s"
 msgstr "Kuri Gufunga IDOSIYE Byanze"
 
-#: glib/gfileutils.c:941
+#: glib/gfileutils.c:1013
 #, c-format
 msgid "Could not change file mode: Child terminated by signal: %s"
 msgstr ""
 
-#: glib/gfileutils.c:952
+#: glib/gfileutils.c:1024
 msgid "Could not change file mode: Child terminated abnormally"
 msgstr ""
 
-#: glib/gfileutils.c:986 glib/gfileutils.c:1452
+#: glib/gfileutils.c:1058 glib/gfileutils.c:1524
 #, fuzzy, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Kuri Kurema IDOSIYE"
 
-#: glib/gfileutils.c:1008
+#: glib/gfileutils.c:1080
 #, fuzzy, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr "Kuri Gufungura IDOSIYE kugirango Byanze"
 
-#: glib/gfileutils.c:1033
+#: glib/gfileutils.c:1105
 #, fuzzy, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "Kuri IDOSIYE Byanze"
 
-#: glib/gfileutils.c:1052
+#: glib/gfileutils.c:1124
 #, fuzzy, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "Kuri Gufunga IDOSIYE Byanze"
 
-#: glib/gfileutils.c:1170
+#: glib/gfileutils.c:1242
 #, fuzzy, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "IDOSIYE OYA Cyavanyweho Byanze"
 
-#: glib/gfileutils.c:1413
+#: glib/gfileutils.c:1485
 #, fuzzy, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Sibyo OYA a"
 
-#: glib/gfileutils.c:1427
+#: glib/gfileutils.c:1499
 #, fuzzy, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Impera Na:"
 
-#: glib/gfileutils.c:1830
+#: glib/gfileutils.c:1977
 #, fuzzy, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Kuri Gusoma Ihuza"
 
-#: glib/gfileutils.c:1851
+#: glib/gfileutils.c:1998
 #, fuzzy
 msgid "Symbolic links not supported"
 msgstr "amahuza OYA"
@@ -231,6 +231,16 @@ msgstr "in a Bituzuye Inyuguti"
 #, fuzzy
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "a Gusoma in"
+
+#: glib/gmappedfile.c:115
+#, fuzzy, c-format
+msgid "Failed to open file '%s': open() failed: %s"
+msgstr "Kuri Gufungura IDOSIYE Byanze"
+
+#: glib/gmappedfile.c:177
+#, fuzzy, c-format
+msgid "Failed to map file '%s': mmap() failed: %s"
+msgstr "Kuri Gufungura IDOSIYE Byanze"
 
 #: glib/gmarkup.c:232
 #, fuzzy, c-format
@@ -569,48 +579,48 @@ msgid "Character out of range for UTF-16"
 msgstr "Inyuma Bya Urutonde kugirango"
 
 # crashrep/source\all\crashrep.lng:%MSG_CMDLINE_USAGE%.text
-#: glib/goption.c:461
+#: glib/goption.c:465
 msgid "Usage:"
 msgstr "Ikoresha:"
 
-#: glib/goption.c:461
+#: glib/goption.c:465
 msgid "[OPTION...]"
 msgstr ""
 
-#: glib/goption.c:547
+#: glib/goption.c:551
 msgid "Help Options:"
 msgstr ""
 
-#: glib/goption.c:548
+#: glib/goption.c:552
 #, fuzzy
 msgid "Show help options"
 msgstr "Ifashayobora Amahitamo"
 
-#: glib/goption.c:553
+#: glib/goption.c:557
 #, fuzzy
 msgid "Show all help options"
 msgstr "Byose Ifashayobora Amahitamo"
 
-#: glib/goption.c:603
+#: glib/goption.c:607
 msgid "Application Options:"
 msgstr ""
 
-#: glib/goption.c:644
+#: glib/goption.c:648
 #, fuzzy, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "Umubare wuzuye Agaciro kugirango"
 
-#: glib/goption.c:654
+#: glib/goption.c:658
 #, fuzzy, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "Agaciro kugirango Inyuma Bya Urutonde"
 
-#: glib/goption.c:920 glib/goption.c:991
+#: glib/goption.c:940 glib/goption.c:1015
 #, c-format
 msgid "Missing argument for %s"
 msgstr ""
 
-#: glib/goption.c:1394
+#: glib/goption.c:1418
 #, fuzzy, c-format
 msgid "Unknown option %s"
 msgstr "Ihitamo ritazwi:"
@@ -630,7 +640,7 @@ msgstr "a Ibisanzwe IDOSIYE"
 msgid "File is empty"
 msgstr "Idosiye ni ubusa"
 
-#: glib/gkeyfile.c:692
+#: glib/gkeyfile.c:697
 #, fuzzy, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
@@ -638,71 +648,71 @@ msgstr ""
 "IDOSIYE Kirimo Umurongo ni OYA a Urufunguzo Agaciro Itsinda Cyangwa Icyo "
 "wongeraho"
 
-#: glib/gkeyfile.c:760
+#: glib/gkeyfile.c:765
 #, fuzzy
 msgid "Key file does not start with a group"
 msgstr "IDOSIYE OYA Gutangira Na: a Itsinda"
 
-#: glib/gkeyfile.c:803
+#: glib/gkeyfile.c:808
 #, fuzzy, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "IDOSIYE Kirimo Imisobekere:"
 
-#: glib/gkeyfile.c:1012 glib/gkeyfile.c:1158 glib/gkeyfile.c:2159
-#: glib/gkeyfile.c:2224 glib/gkeyfile.c:2342 glib/gkeyfile.c:2410
-#: glib/gkeyfile.c:2594 glib/gkeyfile.c:2768 glib/gkeyfile.c:2825
+#: glib/gkeyfile.c:1017 glib/gkeyfile.c:1163 glib/gkeyfile.c:2164
+#: glib/gkeyfile.c:2229 glib/gkeyfile.c:2347 glib/gkeyfile.c:2415
+#: glib/gkeyfile.c:2599 glib/gkeyfile.c:2773 glib/gkeyfile.c:2830
 #, fuzzy, c-format
 msgid "Key file does not have group '%s'"
 msgstr "IDOSIYE OYA Itsinda"
 
-#: glib/gkeyfile.c:1170
+#: glib/gkeyfile.c:1175
 #, fuzzy, c-format
 msgid "Key file does not have key '%s'"
 msgstr "IDOSIYE OYA Urufunguzo"
 
-#: glib/gkeyfile.c:1271 glib/gkeyfile.c:1380
+#: glib/gkeyfile.c:1276 glib/gkeyfile.c:1385
 #, fuzzy, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "IDOSIYE Kirimo Urufunguzo Na: Agaciro ni OYA 8"
 
-#: glib/gkeyfile.c:1289 glib/gkeyfile.c:1398 glib/gkeyfile.c:1770
+#: glib/gkeyfile.c:1294 glib/gkeyfile.c:1403 glib/gkeyfile.c:1775
 #, fuzzy, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "IDOSIYE Kirimo Urufunguzo Agaciro"
 
-#: glib/gkeyfile.c:1986
+#: glib/gkeyfile.c:1991
 #, fuzzy, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
 "interpreted."
 msgstr "IDOSIYE Kirimo Urufunguzo in Itsinda Agaciro"
 
-#: glib/gkeyfile.c:2174 glib/gkeyfile.c:2357 glib/gkeyfile.c:2836
+#: glib/gkeyfile.c:2179 glib/gkeyfile.c:2362 glib/gkeyfile.c:2841
 #, fuzzy, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "IDOSIYE OYA Urufunguzo in Itsinda"
 
-#: glib/gkeyfile.c:3017
+#: glib/gkeyfile.c:3022
 #, fuzzy
 msgid "Key file contains escape character at end of line"
 msgstr "IDOSIYE Kirimo Inyuguti ku Impera Bya Umurongo"
 
-#: glib/gkeyfile.c:3039
+#: glib/gkeyfile.c:3044
 #, fuzzy, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "IDOSIYE Kirimo Sibyo"
 
-#: glib/gkeyfile.c:3180
+#: glib/gkeyfile.c:3185
 #, fuzzy, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Nka a Umubare"
 
-#: glib/gkeyfile.c:3190
+#: glib/gkeyfile.c:3195
 #, fuzzy, c-format
 msgid "Integer value '%s' out of range"
 msgstr "Agaciro kugirango Inyuma Bya Urutonde"
 
-#: glib/gkeyfile.c:3220
+#: glib/gkeyfile.c:3225
 #, fuzzy, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Nka a Icyungo"

@@ -126,7 +126,7 @@ month, and year.
 </para>
 
 @julian_days: the Julian representation of the date
-@julian: this bit is set if @julian_days is valid 
+@julian: this bit is set if @julian_days is valid
 @dmy: this is set if @day, @month and @year are valid
 @day: the day of the day-month-year representation of the date, as 
   a number between 1 and 31

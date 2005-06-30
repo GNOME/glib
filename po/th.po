@@ -8,13 +8,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.7.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-06-28 16:52+0700\n"
+"POT-Creation-Date: 2005-06-30 16:44-0400\n"
 "PO-Revision-Date: 2005-06-28 16:54+0700\n"
 "Last-Translator: Theppitak Karoonboonyanan <thep@linux.thai.net>\n"
 "Language-Team: Thai <l10n@opentle.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
-"Content-Transfer-Encoding: 8bit"
+"Content-Transfer-Encoding: 8bit\n"
 
 #: glib/gconvert.c:406
 #, c-format
@@ -38,8 +38,8 @@ msgstr "มีลำดับไบต์ที่ไม่ถูกต้อง
 msgid "Error during conversion: %s"
 msgstr "เกิดข้อผิดพลาดระหว่างแปลงรหัส: %s"
 
-#: glib/gconvert.c:643 glib/gutf8.c:907 glib/gutf8.c:1112
-#: glib/gutf8.c:1253 glib/gutf8.c:1357
+#: glib/gconvert.c:643 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
+#: glib/gutf8.c:1357
 msgid "Partial character sequence at end of input"
 msgstr "มีลำดับไบต์ไม่เต็มอักขระอยู่ที่ท้ายข้อมูลเข้า"
 
@@ -204,8 +204,7 @@ msgstr "ไม่สามารถเปิดตัวแปลงรหัส
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "ไม่สามารถอ่านข้อมูลแบบดิบใน g_io_channel_read_line_string"
 
-#: glib/giochannel.c:1543 glib/giochannel.c:1800
-#: glib/giochannel.c:1886
+#: glib/giochannel.c:1543 glib/giochannel.c:1800 glib/giochannel.c:1886
 msgid "Leftover unconverted data in read buffer"
 msgstr "มีข้อมูลตกค้างไม่ได้แปลงอยู่ในบัฟเฟอร์สำหรับอ่าน"
 
@@ -536,8 +535,8 @@ msgstr "อ่านข้อมูลจากไปป์จากโพรเ
 msgid "Character out of range for UTF-8"
 msgstr "อักขระอยู่นอกช่วงของ UTF-8"
 
-#: glib/gutf8.c:1080 glib/gutf8.c:1089 glib/gutf8.c:1221
-#: glib/gutf8.c:1230 glib/gutf8.c:1371 glib/gutf8.c:1467
+#: glib/gutf8.c:1080 glib/gutf8.c:1089 glib/gutf8.c:1221 glib/gutf8.c:1230
+#: glib/gutf8.c:1371 glib/gutf8.c:1467
 msgid "Invalid sequence in conversion input"
 msgstr "มีลำดับข้อมูลที่ไม่ถูกต้องในข้อมูลที่ป้อนให้ตัวแปลงรหัส"
 
@@ -673,4 +672,3 @@ msgstr "ค่าจำนวนเต็ม '%s' ออกนอกช่วง
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "ค่า '%s' ไม่สามารถตีความเป็นบูลีนได้"
-

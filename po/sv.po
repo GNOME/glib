@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-06-10 11:24-0400\n"
+"POT-Creation-Date: 2005-06-30 16:44-0400\n"
 "PO-Revision-Date: 2004-12-18 15:59+0100\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
@@ -88,108 +88,108 @@ msgstr "Ogiltigt värdnamn"
 msgid "Error opening directory '%s': %s"
 msgstr "Fel vid öppning av katalogen \"%s\": %s"
 
-#: glib/gfileutils.c:504 glib/gfileutils.c:577
+#: glib/gfileutils.c:576 glib/gfileutils.c:649
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Kunde inte allokera %lu byte för att läsa filen \"%s\""
 
-#: glib/gfileutils.c:519
+#: glib/gfileutils.c:591
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Fel vid läsning av filen \"%s\": %s"
 
-#: glib/gfileutils.c:601
+#: glib/gfileutils.c:673
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Misslyckades med att läsa från filen \"%s\": %s"
 
-#: glib/gfileutils.c:652 glib/gfileutils.c:739
+#: glib/gfileutils.c:724 glib/gfileutils.c:811
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Misslyckades med att öppna filen \"%s\": %s"
 
-#: glib/gfileutils.c:669
+#: glib/gfileutils.c:741 glib/gmappedfile.c:132
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr ""
 "Misslyckades med att få tag på attributen på filen \"%s\": fstat() "
 "misslyckades: %s"
 
-#: glib/gfileutils.c:703
+#: glib/gfileutils.c:775
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Misslyckades med att öppna filen \"%s\": fdopen() misslyckades: %s"
 
-#: glib/gfileutils.c:837
+#: glib/gfileutils.c:909
 #, fuzzy, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "Misslyckades med att öppna filen \"%s\": fdopen() misslyckades: %s"
 
-#: glib/gfileutils.c:880
+#: glib/gfileutils.c:952
 #, fuzzy, c-format
 msgid "Could not change file mode: fork() failed: %s"
 msgstr "Misslyckades med att öppna filen \"%s\": fdopen() misslyckades: %s"
 
-#: glib/gfileutils.c:911
+#: glib/gfileutils.c:983
 #, fuzzy, c-format
 msgid "Could not change file mode: waitpid() failed: %s"
 msgstr "Kunde inte allokera %lu byte för att läsa filen \"%s\""
 
-#: glib/gfileutils.c:930
+#: glib/gfileutils.c:1002
 #, fuzzy, c-format
 msgid "Could not change file mode: chmod() failed: %s"
 msgstr "Misslyckades med att öppna filen \"%s\": fdopen() misslyckades: %s"
 
-#: glib/gfileutils.c:941
+#: glib/gfileutils.c:1013
 #, c-format
 msgid "Could not change file mode: Child terminated by signal: %s"
 msgstr ""
 
-#: glib/gfileutils.c:952
+#: glib/gfileutils.c:1024
 msgid "Could not change file mode: Child terminated abnormally"
 msgstr ""
 
-#: glib/gfileutils.c:986 glib/gfileutils.c:1452
+#: glib/gfileutils.c:1058 glib/gfileutils.c:1524
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Misslyckades med att skapa filen \"%s\": %s"
 
-#: glib/gfileutils.c:1008
+#: glib/gfileutils.c:1080
 #, fuzzy, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr "Misslyckades med att öppna filen \"%s\": fdopen() misslyckades: %s"
 
-#: glib/gfileutils.c:1033
+#: glib/gfileutils.c:1105
 #, fuzzy, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "Misslyckades med att öppna filen \"%s\": fdopen() misslyckades: %s"
 
-#: glib/gfileutils.c:1052
+#: glib/gfileutils.c:1124
 #, fuzzy, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "Misslyckades med att öppna filen \"%s\": fdopen() misslyckades: %s"
 
-#: glib/gfileutils.c:1170
+#: glib/gfileutils.c:1242
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr ""
 
-#: glib/gfileutils.c:1413
+#: glib/gfileutils.c:1485
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Mallen \"%s\" är ogiltig, den får inte innehålla ett \"%s\""
 
-#: glib/gfileutils.c:1427
+#: glib/gfileutils.c:1499
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Mallen \"%s\" slutar inte med XXXXXX"
 
-#: glib/gfileutils.c:1830
+#: glib/gfileutils.c:1977
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Misslyckades med att läsa den symboliska länken \"%s\": %s"
 
-#: glib/gfileutils.c:1851
+#: glib/gfileutils.c:1998
 msgid "Symbolic links not supported"
 msgstr "Symboliska länkar stöds inte"
 
@@ -218,6 +218,16 @@ msgstr "Kanalen slutar med ett ofullständigt tecken"
 #: glib/giochannel.c:1686
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Kan inte göra en rå läsning i g_io_channel_read_to_end"
+
+#: glib/gmappedfile.c:115
+#, fuzzy, c-format
+msgid "Failed to open file '%s': open() failed: %s"
+msgstr "Misslyckades med att öppna filen \"%s\": fdopen() misslyckades: %s"
+
+#: glib/gmappedfile.c:177
+#, fuzzy, c-format
+msgid "Failed to map file '%s': mmap() failed: %s"
+msgstr "Misslyckades med att öppna filen \"%s\": fdopen() misslyckades: %s"
 
 #: glib/gmarkup.c:232
 #, c-format
@@ -567,46 +577,46 @@ msgstr "Ogiltig sekvens i konverteringsindata"
 msgid "Character out of range for UTF-16"
 msgstr "Tecknet är utanför intervallet för UTF-16"
 
-#: glib/goption.c:461
+#: glib/goption.c:465
 msgid "Usage:"
 msgstr "Användning:"
 
-#: glib/goption.c:461
+#: glib/goption.c:465
 msgid "[OPTION...]"
 msgstr "[FLAGGA...]"
 
-#: glib/goption.c:547
+#: glib/goption.c:551
 msgid "Help Options:"
 msgstr "Hjälpflaggor:"
 
-#: glib/goption.c:548
+#: glib/goption.c:552
 msgid "Show help options"
 msgstr "Visa hjälpflaggor"
 
-#: glib/goption.c:553
+#: glib/goption.c:557
 msgid "Show all help options"
 msgstr "Visa alla hjälpflaggor"
 
-#: glib/goption.c:603
+#: glib/goption.c:607
 msgid "Application Options:"
 msgstr "Programflaggor:"
 
-#: glib/goption.c:644
+#: glib/goption.c:648
 #, fuzzy, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "Kan inte tolka heltalsvärdet \"%s\" för --%s"
 
-#: glib/goption.c:654
+#: glib/goption.c:658
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "Heltalsvärdet \"%s\" för %s är utanför intervallet"
 
-#: glib/goption.c:920 glib/goption.c:991
+#: glib/goption.c:940 glib/goption.c:1015
 #, c-format
 msgid "Missing argument for %s"
 msgstr ""
 
-#: glib/goption.c:1394
+#: glib/goption.c:1418
 #, c-format
 msgid "Unknown option %s"
 msgstr "Okänd flagga %s"
@@ -623,7 +633,7 @@ msgstr "Inte en vanlig fil"
 msgid "File is empty"
 msgstr "Filen är tom"
 
-#: glib/gkeyfile.c:692
+#: glib/gkeyfile.c:697
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
@@ -631,40 +641,40 @@ msgstr ""
 "Nyckelfilen innehåller raden \"%s\" som inte är ett nyckel-värde-par, grupp "
 "eller kommentar"
 
-#: glib/gkeyfile.c:760
+#: glib/gkeyfile.c:765
 msgid "Key file does not start with a group"
 msgstr "Nyckelfilen börjar inte med en grupp"
 
-#: glib/gkeyfile.c:803
+#: glib/gkeyfile.c:808
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "Nyckelfilen innehåller kodningen \"%s\" som inte stöds"
 
-#: glib/gkeyfile.c:1012 glib/gkeyfile.c:1158 glib/gkeyfile.c:2159
-#: glib/gkeyfile.c:2224 glib/gkeyfile.c:2342 glib/gkeyfile.c:2410
-#: glib/gkeyfile.c:2594 glib/gkeyfile.c:2768 glib/gkeyfile.c:2825
+#: glib/gkeyfile.c:1017 glib/gkeyfile.c:1163 glib/gkeyfile.c:2164
+#: glib/gkeyfile.c:2229 glib/gkeyfile.c:2347 glib/gkeyfile.c:2415
+#: glib/gkeyfile.c:2599 glib/gkeyfile.c:2773 glib/gkeyfile.c:2830
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Nyckelfilen har inte gruppen \"%s\""
 
-#: glib/gkeyfile.c:1170
+#: glib/gkeyfile.c:1175
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "Nyckelfilen har inte nyckeln \"%s\""
 
-#: glib/gkeyfile.c:1271 glib/gkeyfile.c:1380
+#: glib/gkeyfile.c:1276 glib/gkeyfile.c:1385
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr ""
 "Nyckelfilen innehåller nyckeln \"%s\" med värdet \"%s\" som inte är UTF-8"
 
-#: glib/gkeyfile.c:1289 glib/gkeyfile.c:1398 glib/gkeyfile.c:1770
+#: glib/gkeyfile.c:1294 glib/gkeyfile.c:1403 glib/gkeyfile.c:1775
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr ""
 "Nyckelfilen innehåller nyckeln \"%s\" som har värde som inte kan tolkas."
 
-#: glib/gkeyfile.c:1986
+#: glib/gkeyfile.c:1991
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -673,31 +683,31 @@ msgstr ""
 "Nyckelfilen innehåller nyckeln \"%s\" i gruppen \"%s\" som har värde som "
 "inte kan tolkas."
 
-#: glib/gkeyfile.c:2174 glib/gkeyfile.c:2357 glib/gkeyfile.c:2836
+#: glib/gkeyfile.c:2179 glib/gkeyfile.c:2362 glib/gkeyfile.c:2841
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Nyckelfilen har inte nyckeln \"%s\" i gruppen \"%s\""
 
-#: glib/gkeyfile.c:3017
+#: glib/gkeyfile.c:3022
 msgid "Key file contains escape character at end of line"
 msgstr "Nyckelfilen innehåller kontrolltecken i slutet på en rad"
 
-#: glib/gkeyfile.c:3039
+#: glib/gkeyfile.c:3044
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "Nyckelfilen innehåller ogiltiga kontrollsekvensen \"%s\""
 
-#: glib/gkeyfile.c:3180
+#: glib/gkeyfile.c:3185
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Värdet \"%s\" kan inte tolkas som ett tal."
 
-#: glib/gkeyfile.c:3190
+#: glib/gkeyfile.c:3195
 #, fuzzy, c-format
 msgid "Integer value '%s' out of range"
 msgstr "Heltalsvärdet \"%s\" för %s är utanför intervallet"
 
-#: glib/gkeyfile.c:3220
+#: glib/gkeyfile.c:3225
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Värdet \"%s\" kan inte tolkas som ett booleskt värde."

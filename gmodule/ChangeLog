@@ -1,5 +1,9 @@
 2005-06-30  Matthias Clasen  <mclasen@redhat.com>
 
+	* === Released 2.7.1 ===
+
+2005-06-30  Matthias Clasen  <mclasen@redhat.com>
+
 	* gmodule-ar.c: Include stdlib.h
 
 2005-06-26  Tor Lillqvist  <tml@novell.com>

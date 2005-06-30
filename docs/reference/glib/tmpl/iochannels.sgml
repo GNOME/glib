@@ -564,7 +564,7 @@ g_io_channel_set_flags().
 g_io_channel_write(), and g_io_channel_seek().
 </para>
 
-@G_IO_ERROR_NONE: no error 
+@G_IO_ERROR_NONE: no error
 @G_IO_ERROR_AGAIN: an EAGAIN error occurred
 @G_IO_ERROR_INVAL: an EINVAL error occurred
 @G_IO_ERROR_UNKNOWN: another error occurred

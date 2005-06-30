@@ -434,6 +434,8 @@ The type of function that can be called before and after parsing.
 </para>
 
 @context The active #GOptionContext
+
+@context: 
 @group: The group to which the function belongs
 @data: User data added to the #GOptionGroup containing the option when it
   was created with g_option_group_new()
@@ -459,6 +461,8 @@ occurs.
 </para>
 
 @context The active #GOptionContext
+
+@context: 
 @group: The group to which the function belongs
 @data: User data added to the #GOptionGroup containing the option when it
   was created with g_option_group_new()

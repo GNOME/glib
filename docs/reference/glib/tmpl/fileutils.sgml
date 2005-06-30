@@ -220,6 +220,16 @@ A test to perform on a file using g_file_test().
 @Returns: 
 
 
+<!-- ##### FUNCTION g_mkdir_with_parents ##### -->
+<para>
+
+</para>
+
+@pathname: 
+@mode: 
+@Returns: 
+
+
 <!-- ##### STRUCT GDir ##### -->
 <para>
 An opaque structure representing an opened directory.

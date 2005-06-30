@@ -185,4 +185,6 @@ dist-hook: $(BUILT_EXTRA_DIST)
 	done
 
 DISTCLEANFILES = iochannel-test-outfile \
-		file-test-get-contents
+		file-test-get-contents \
+		maptest \
+		mapchild

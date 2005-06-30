@@ -349,7 +349,6 @@ Flags used internally in the #GHook implementation.
 @G_HOOK_FLAG_MASK: A mask covering all bits reserved for 
   hook flags; see #G_HOOK_FLAGS_USER_SHIFT
 
-
 <!-- ##### MACRO G_HOOK_FLAGS ##### -->
 <para>
 Returns the flags of a hook.

@@ -141,6 +141,14 @@ These are portable utility functions.
 @Returns: 
 
 
+<!-- ##### FUNCTION g_get_host_name ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
 <!-- ##### FUNCTION g_get_home_dir ##### -->
 <para>
 
