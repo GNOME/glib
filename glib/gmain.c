@@ -68,7 +68,8 @@
 #endif /* G_OS_WIN32 */
 
 #ifdef G_OS_BEOS
-#include <net/socket.h>
+#include <sys/socket.h>
+#include <sys/wait.h>
 #endif /* G_OS_BEOS */
 
 #ifdef G_OS_UNIX
