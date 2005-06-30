@@ -125,12 +125,14 @@ date becomes valid after you set it to a Julian day or you set a day,
 month, and year.
 </para>
 
-@julian_days: 
-@julian: 
-@dmy: 
-@day: 
-@month: 
-@year: 
+@julian_days: the Julian representation of the date
+@julian: this bit is set if @julian_days is valid 
+@dmy: this is set if @day, @month and @year are valid
+@day: the day of the day-month-year representation of the date, as 
+  a number between 1 and 31
+@month: the day of the day-month-year representation of the date, as 
+  a number between 1 and 12
+@year: the day of the day-month-year representation of the date
 
 <!-- ##### TYPEDEF GTime ##### -->
 <para>
@@ -144,9 +146,9 @@ This enumeration isn't used in the API, but may be useful if you need
 to mark a number as a day, month, or year.
 </para>
 
-@G_DATE_DAY: 
-@G_DATE_MONTH: 
-@G_DATE_YEAR: 
+@G_DATE_DAY: a day
+@G_DATE_MONTH: a month
+@G_DATE_YEAR: a year
 
 <!-- ##### TYPEDEF GDateDay ##### -->
 <para>

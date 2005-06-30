@@ -346,7 +346,9 @@ Flags used internally in the #GHook implementation.
 
 @G_HOOK_FLAG_ACTIVE: set if the hook has not been destroyed.
 @G_HOOK_FLAG_IN_CALL: set if the hook is currently being run.
-@G_HOOK_FLAG_MASK: 
+@G_HOOK_FLAG_MASK: A mask covering all bits reserved for 
+  hook flags; see #G_HOOK_FLAGS_USER_SHIFT
+
 
 <!-- ##### MACRO G_HOOK_FLAGS ##### -->
 <para>

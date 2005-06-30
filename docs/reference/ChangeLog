@@ -1,3 +1,14 @@
+2005-06-29  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/tmpl/threads.sgml: 
+	* glib/tmpl/option.sgml: 
+	* glib/tmpl/fileutils.sgml: 
+	* glib/tmpl/iochannels.sgml: 
+	* glib/tmpl/hooks.sgml: 
+	* glib/tmpl/misc_utils.sgml: 
+	* glib/tmpl/date.sgml: 
+	* glib/glib-sections.txt: Updates
+
 2005-06-24  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/glib-sections.txt: Add GMappedFile functions.

@@ -262,6 +262,51 @@ An opaque structure representing an opened directory.
 @dir: 
 
 
+<!-- ##### STRUCT GMappedFile ##### -->
+<para>
+The #GMappedFile represents a file mapping created with
+g_mapped_file_new(). It has only private members and should
+not be accessed directly.
+</para>
+
+
+<!-- ##### FUNCTION g_mapped_file_new ##### -->
+<para>
+
+</para>
+
+@filename: 
+@writable: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_mapped_file_free ##### -->
+<para>
+
+</para>
+
+@file: 
+
+
+<!-- ##### FUNCTION g_mapped_file_get_length ##### -->
+<para>
+
+</para>
+
+@file: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_mapped_file_get_contents ##### -->
+<para>
+
+</para>
+
+@file: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_open ##### -->
 <para>
 

@@ -233,6 +233,15 @@ The returned string should be freed when no longer needed.
 @Returns: 
 
 
+<!-- ##### FUNCTION g_build_filenamev ##### -->
+<para>
+
+</para>
+
+@args: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_build_path ##### -->
 <para>
 
@@ -241,6 +250,16 @@ The returned string should be freed when no longer needed.
 @separator: 
 @first_element: 
 @Varargs: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_build_pathv ##### -->
+<para>
+
+</para>
+
+@separator: 
+@args: 
 @Returns: 
 
 
@@ -330,8 +349,8 @@ Associates a string with a bit flag.
 Used in g_parse_debug_string().
 </para>
 
-@key: 
-@value: 
+@key: the string
+@value: the flag
 
 <!-- ##### USER_FUNCTION GVoidFunc ##### -->
 <para>
