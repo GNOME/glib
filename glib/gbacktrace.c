@@ -157,7 +157,7 @@ g_on_error_query (const gchar *prg_name)
 void
 g_on_error_stack_trace (const gchar *prg_name)
 {
-#ifdef G_OS_UNIX
+#if defined(G_OS_UNIX) || defined(G_OS_BEOS)
   pid_t pid;
   gchar buf[16];
   gchar *args[4] = { "gdb", NULL, NULL, NULL };

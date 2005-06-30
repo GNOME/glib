@@ -1,5 +1,18 @@
 2005-06-30  Matthias Clasen  <mclasen@redhat.com>
 
+	Apply a patch which may make GLib work on BeOS again.  
+	(#309157, Kian Duffy)
+
+	* glib/gmain.c: Update the BeOS includes.
+
+	* glib/gstdio.c: 
+	* glib/gutils.c (g_find_program_in_path): 
+	* glib/gbacktrace.c (g_on_error_stack_trace): Use the UNIX
+	implementation on BeOS, as well.
+
+	* configure.in: Don't put glib 1.0 into G_MODULE_LIBS, even
+	on BeOS.
+
 	* NEWS: Updates
 
 2005-06-26  Tor Lillqvist  <tml@novell.com>

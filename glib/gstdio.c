@@ -43,7 +43,7 @@
 
 #include "galias.h"
 
-#if !defined (G_OS_UNIX) && !defined (G_OS_WIN32)
+#if !defined (G_OS_UNIX) && !defined (G_OS_WIN32) && !defined (G_OS_BEOS)
 #error Please port this to your operating system
 #endif
 
