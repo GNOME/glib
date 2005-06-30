@@ -1,3 +1,7 @@
+2005-06-30  Matthias Clasen  <mclasen@redhat.com>
+
+	* NEWS: Updates
+
 2005-06-26  Tor Lillqvist  <tml@novell.com>
 
 	* glib/Makefile.am: libtool installs/uninstalls the import
