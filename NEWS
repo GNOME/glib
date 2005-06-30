@@ -9,7 +9,7 @@ Overview of Changes from GLib 2.7.0 to GLib 2.7.1
  - g_build_pathv, g_build_filenamev [Todd A. Fisher, 
    Matthias Clasen]
 * Bug fixes [Roger Leigh, Masatake YAMATO, Kjartan Maraas,
-  Manish Singh, Tor, Murray Cumming]
+  Manish Singh, Tor, Murray Cumming, Kian Duffy, Morten Welinder]
 * Documentation improvements [Hong Gang XU, Dan Winship, Matthias]
 * New and updated translations (bg,cs,da,en_CA,es,et,nb,nl,no,
   sk,th,zh_TW)
