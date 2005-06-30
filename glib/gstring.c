@@ -73,8 +73,8 @@ g_str_equal (gconstpointer v1,
 guint
 g_str_hash (gconstpointer key)
 {
-  const char *p = key;
-  guint h = *p;
+  const signed char *p = key;
+  guint32 h = *p;
 
   if (h)
     for (p += 1; *p != '\0'; p++)
