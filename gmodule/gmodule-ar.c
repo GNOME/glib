@@ -25,6 +25,7 @@
 
 #define __AR_BIG__
 #include <ar.h>
+#include <stdlib.h>
 
 #include <dlfcn.h>
 
