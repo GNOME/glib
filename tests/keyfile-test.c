@@ -367,6 +367,49 @@ test_whitespace (void)
   g_key_file_free (keyfile);
 }
 
+/* check handling of comments
+ */
+static void
+test_comments (void)
+{
+  GKeyFile *keyfile;
+  gchar **names;
+  gsize len;
+  GError *error = NULL;
+
+  const gchar *data = 
+    "# comment 1\n"
+    "# second line\n"
+    "[group1]\n"
+    "key1 = value1\n"
+    "#comment 2\n"
+    "key2 = value2\n"
+    "# comment 3\r\n"
+    "key3 = value3\n"
+    "key4 = value4\n";
+  
+  keyfile = load_data (data, 0);
+
+  check_string_value (keyfile, "group1", "key1", "value1");
+  check_string_value (keyfile, "group1", "key2", "value2");
+  check_string_value (keyfile, "group1", "key3", "value3");
+  check_string_value (keyfile, "group1", "key4", "value4");
+
+  names = g_key_file_get_keys (keyfile, "group1", &len, &error);
+  check_no_error (&error);
+
+  check_length ("keys", g_strv_length (names), len, 4);
+  check_name ("key", names[0], "key1", 0);
+  check_name ("key", names[1], "key2", 1);
+  check_name ("key", names[2], "key3", 2);
+  check_name ("key", names[3], "key4", 3);
+
+  g_strfreev (names);
+
+  g_key_file_free (keyfile);
+}
+
+
 /* check key and group listing */
 static void
 test_listing (void)
@@ -783,6 +826,7 @@ main (int argc, char *argv[])
 {
   test_line_ends ();
   test_whitespace ();
+  test_comments ();
   test_listing ();
   test_string ();
   test_boolean ();
