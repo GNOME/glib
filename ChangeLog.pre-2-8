@@ -1,3 +1,8 @@
+2005-07-01  Matthias Clasen  <mclasen@redhat.com>
+
+	* tests/keyfile-test.c (test_comments): Test that comments are
+	handled properly.  (#309263, Mikael Magnusson)
+
 2005-06-30  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Bump version
