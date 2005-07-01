@@ -1030,7 +1030,7 @@ g_key_file_get_keys (GKeyFile     *key_file,
 	num_keys++;
     }
   
-  keys = (gchar **) g_new0 (gchar **, num_keys + 1);
+  keys = (gchar **) g_new0 (gchar *, num_keys + 1);
 
   i = num_keys - 1;
   for (tmp = group->key_value_pairs; tmp; tmp = tmp->next)
