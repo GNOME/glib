@@ -291,9 +291,9 @@ check_name (const gchar *what,
 	    const gchar *expected,
 	    gint         position)
 {
-  if (strcmp (expected, value) != 0)
+  if (!value || strcmp (expected, value) != 0)
     {
-      g_print ("Wrong %s returned: got %s at %d, expected %s\n",
+      g_print ("Wrong %s returned: got '%s' at %d, expected '%s'\n",
 	       what, value, position, expected);
       exit (1);
     }
@@ -376,17 +376,26 @@ test_comments (void)
   gchar **names;
   gsize len;
   GError *error = NULL;
+  gchar *comment;
 
   const gchar *data = 
-    "# comment 1\n"
-    "# second line\n"
+    "# top comment\n"
+    "# top comment, continued\n"
     "[group1]\n"
     "key1 = value1\n"
-    "#comment 2\n"
+    "# key comment\n"
+    "# key comment, continued\n"
     "key2 = value2\n"
-    "# comment 3\r\n"
+    "# line end check\r\n"
     "key3 = value3\n"
-    "key4 = value4\n";
+    "key4 = value4\n"
+    "# group comment\n"
+    "# group comment, continued\n"
+    "[group2]\n";
+
+  const gchar *top_comment= " top comment\n top comment, continued\n";
+  const gchar *group_comment= " group comment\n group comment, continued\n";
+  const gchar *key_comment= " key comment\n key comment, continued\n";
   
   keyfile = load_data (data, 0);
 
@@ -405,6 +414,36 @@ test_comments (void)
   check_name ("key", names[3], "key4", 3);
 
   g_strfreev (names);
+
+  g_key_file_free (keyfile);
+
+  keyfile = load_data (data, G_KEY_FILE_KEEP_COMMENTS);
+
+  names = g_key_file_get_keys (keyfile, "group1", &len, &error);
+  check_no_error (&error);
+
+  check_length ("keys", g_strv_length (names), len, 4);
+  check_name ("key", names[0], "key1", 0);
+  check_name ("key", names[1], "key2", 1);
+  check_name ("key", names[2], "key3", 2);
+  check_name ("key", names[3], "key4", 3);
+
+  g_strfreev (names);
+
+  comment = g_key_file_get_comment (keyfile, NULL, NULL, &error);
+  check_no_error (&error);
+  check_name ("top comment", comment, top_comment, 0);
+  g_free (comment);
+
+  comment = g_key_file_get_comment (keyfile, "group1", "key2", &error);
+  check_no_error (&error);
+  check_name ("key comment", comment, key_comment, 0);
+  g_free (comment);
+
+  comment = g_key_file_get_comment (keyfile, "group2", NULL, &error);
+  check_no_error (&error);
+  check_name ("group comment", comment, group_comment, 0);
+  g_free (comment);
 
   g_key_file_free (keyfile);
 }

@@ -1019,20 +1019,33 @@ g_key_file_get_keys (GKeyFile     *key_file,
       return NULL;
     }
 
-  num_keys = g_list_length (group->key_value_pairs);
-  
-  keys = (gchar **) g_new0 (gchar **, num_keys + 1);
-
-  tmp = group->key_value_pairs;
-  for (i = 1; i <= num_keys; i++)
+  num_keys = 0;
+  for (tmp = group->key_value_pairs; tmp; tmp = tmp->next)
     {
       GKeyFileKeyValuePair *pair;
 
       pair = (GKeyFileKeyValuePair *) tmp->data;
-      keys[num_keys - i] = g_strdup (pair->key);
 
-      tmp = tmp->next;
+      if (pair->key)
+	num_keys++;
     }
+  
+  keys = (gchar **) g_new0 (gchar **, num_keys + 1);
+
+  i = num_keys - 1;
+  for (tmp = group->key_value_pairs; tmp; tmp = tmp->next)
+    {
+      GKeyFileKeyValuePair *pair;
+
+      pair = (GKeyFileKeyValuePair *) tmp->data;
+
+      if (pair->key)
+	{
+	  keys[i] = g_strdup (pair->key);
+	  i--;
+	}
+    }
+
   keys[num_keys] = NULL;
 
   if (length)
@@ -2335,6 +2348,7 @@ g_key_file_get_key_comment (GKeyFile             *key_file,
                             GError              **error)
 {
   GKeyFileGroup *group;
+  GKeyFileKeyValuePair *pair;
   GList *key_node, *tmp;
   GString *string;
   gchar *comment;
@@ -2370,23 +2384,37 @@ g_key_file_get_key_comment (GKeyFile             *key_file,
    * key and concatentate them.
    */
   tmp = key_node->next;
-  while (tmp != NULL)
+  if (!key_node->next)
+    return NULL;
+
+  pair = (GKeyFileKeyValuePair *) tmp->data;
+  if (pair->key != NULL)
+    return NULL;
+
+  while (tmp->next)
     {
-      GKeyFileKeyValuePair *pair;
-
-      pair = (GKeyFileKeyValuePair *) tmp->data;
-
+      pair = (GKeyFileKeyValuePair *) tmp->next->data;
+      
       if (pair->key != NULL)
         break;
+
+      tmp = tmp->next;
+    }
+
+  while (tmp != key_node)
+    {
+      GKeyFileKeyValuePair *pair;
+      
+      pair = (GKeyFileKeyValuePair *) tmp->data;
       
       if (string == NULL)
-        string = g_string_sized_new (512);
-
+	string = g_string_sized_new (512);
+      
       comment = g_key_file_parse_value_as_comment (key_file, pair->value);
       g_string_append (string, comment);
       g_free (comment);
-
-      tmp = tmp->next;
+      
+      tmp = tmp->prev;
     }
 
   if (string != NULL)
@@ -2401,13 +2429,67 @@ g_key_file_get_key_comment (GKeyFile             *key_file,
 }
 
 static gchar *
+get_group_comment (GKeyFile       *key_file,
+		   GKeyFileGroup  *group,
+		   GError        **error)
+{
+  GString *string;
+  GList *tmp;
+  gchar *comment;
+
+  string = NULL;
+
+  tmp = group->key_value_pairs;
+  while (tmp)
+    {
+      GKeyFileKeyValuePair *pair;
+
+      pair = (GKeyFileKeyValuePair *) tmp->data;
+
+      if (pair->key != NULL)
+	{
+	  tmp = tmp->prev;
+	  break;
+	}
+
+      if (tmp->next == NULL)
+	break;
+
+      tmp = tmp->next;
+    }
+  
+  while (tmp != NULL)
+    {
+      GKeyFileKeyValuePair *pair;
+
+      pair = (GKeyFileKeyValuePair *) tmp->data;
+
+      if (string == NULL)
+        string = g_string_sized_new (512);
+
+      comment = g_key_file_parse_value_as_comment (key_file, pair->value);
+      g_string_append (string, comment);
+      g_free (comment);
+
+      tmp = tmp->prev;
+    }
+
+  if (string != NULL)
+    return g_string_free (string, FALSE);
+
+  return NULL;
+}
+
+static gchar *
 g_key_file_get_group_comment (GKeyFile             *key_file,
                               const gchar          *group_name,
                               GError              **error)
 {
+  GList *group_node;
   GKeyFileGroup *group;
   
-  group = g_key_file_lookup_group (key_file, group_name);
+  group_node = g_key_file_lookup_group_node (key_file, group_name);
+  group = (GKeyFileGroup *)group_node->data;
   if (!group)
     {
       g_set_error (error, G_KEY_FILE_ERROR,
@@ -2420,18 +2502,18 @@ g_key_file_get_group_comment (GKeyFile             *key_file,
 
   if (group->comment)
     return g_strdup (group->comment->value);
-
-  return NULL;
+  
+  group_node = group_node->next;
+  group = (GKeyFileGroup *)group_node->data;  
+  return get_group_comment (key_file, group, error);
 }
 
 static gchar *
 g_key_file_get_top_comment (GKeyFile             *key_file,
                             GError              **error)
 {
-  GList *group_node, *tmp;
+  GList *group_node;
   GKeyFileGroup *group;
-  GString *string;
-  gchar *comment;
 
   /* The last group in the list should be the top (comments only)
    * group in the file
@@ -2441,40 +2523,7 @@ g_key_file_get_top_comment (GKeyFile             *key_file,
   group = (GKeyFileGroup *) group_node->data;
   g_assert (group->name == NULL);
 
-  string = NULL;
-
-  /* Then find all the comments already associated with the
-   * key and concatentate them.
-   */
-  tmp = group->key_value_pairs;
-  while (tmp != NULL)
-    {
-      GKeyFileKeyValuePair *pair;
-
-      pair = (GKeyFileKeyValuePair *) tmp->data;
-
-      if (pair->key != NULL)
-        break;
-      
-      if (string == NULL)
-        string = g_string_sized_new (512);
-
-      comment = g_key_file_parse_value_as_comment (key_file, pair->value);
-      g_string_append (string, comment);
-      g_free (comment);
-
-      tmp = tmp->next;
-    }
-
-  if (string != NULL)
-    {
-      comment = string->str;
-      g_string_free (string, FALSE);
-    }
-  else
-    comment = NULL;
-
-  return comment;
+  return get_group_comment (key_file, group, error);
 }
 
 /**
@@ -2484,14 +2533,15 @@ g_key_file_get_top_comment (GKeyFile             *key_file,
  * @key: a key
  * @error: return location for a #GError
  *
- * Retreives a comment above @key from @group_name.
+ * Retrieves a comment above @key from @group_name.
  * @group_name. If @key is %NULL then @comment will
  * be read from above @group_name.  If both @key
  * and @group_name are NULL, then @comment will
  * be read from above the first group in the file.
  *
- * Since: 2.6
  * Returns: a comment that should be freed with g_free()
+ *
+ * Since: 2.6
  **/
 gchar * 
 g_key_file_get_comment (GKeyFile             *key_file,

@@ -1,5 +1,10 @@
 2005-07-01  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gkeyfile.c (g_key_file_get_key_comment): 
+	(g_key_file_get_top_comment): Don't reverse the order of multiline 
+	comments.
+	(g_key_file_get_group_comment): Actually get the group comment.
+
 	* tests/keyfile-test.c (test_comments): Test that comments are
 	handled properly.  (#309263, Mikael Magnusson)
 
