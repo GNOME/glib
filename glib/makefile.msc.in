@@ -43,6 +43,7 @@ glib_OBJECTS =			\
 	ghash.obj		\
 	ghook.obj		\
 	gkeyfile.obj		\
+	gmappedfile.obj	\
 	giochannel.obj		\
 	giowin32.obj		\
 	glist.obj		\

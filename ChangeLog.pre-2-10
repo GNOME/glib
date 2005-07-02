@@ -1,3 +1,9 @@
+2005-07-01  Hans Breuer  <hans@breuer.org>
+
+	* glib/gmessages.c : include <process.h> for getpid()
+	* glib/gmappedfile.c : include <io.h> for close() etc.
+	* glib/makefile.msc.in : add 	gmappedfile.obj
+
 2005-07-01  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gkeyfile.c (g_key_file_get_key_comment): 
