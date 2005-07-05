@@ -17,9 +17,6 @@ Signals are described in detail in <xref linkend="gobject-Signals"/>.
 #GParamSpecObject, g_param_spec_object()
 </para>
 
-<!-- ##### SECTION Stability_Level ##### -->
-
-
 <!-- ##### STRUCT GObject ##### -->
 <para>
 All the fields in the <structname>GObject</structname> structure are private 
@@ -42,13 +39,38 @@ the setter for the property is called to reinstate the previous value.
 <para>
 The class structure for the <structname>GObject</structname> type.
 </para>
+<example>
+<title>Implementing singletons using a constructor</title>
+<programlisting>
+static MySingleton *the_singleton = NULL;
+
+static GObject*
+my_singleton_constructor (GType                  type,
+                          guint                  n_construct_params,
+                          GObjectConstructParam *construct_params)
+{
+  GObject *object;
+  
+  if (!the_singleton)
+    {
+      object = G_OBJECT_CLASS (parent_class)->constructor (type,
+                                                           n_construct_params,
+                                                           construct_params);
+      the_singleton = MY_SINGLETON (object);
+    }
+  else
+    object = g_object_ref (G_OBJECT (the_singleton));
+
+  return object;
+}
+</programlisting></example>
 
 @g_type_class: the parent class
 @constructor:  the @constructor function is called by g_object_new () to 
   complete the object initialization after all the construction properties are
   set. The first thing a @constructor implementation must do is chain up to the
   @constructor of the parent class. Overriding @constructor should be rarely 
-  needed.
+  needed, e.g. to handle construct properties, or to implement singletons.
 @set_property: the generic setter for all properties of this type. Should be
   overridden for every type with properties. Implementations of @set_property
   don't need to emit property change notification explicitly, this is handled
