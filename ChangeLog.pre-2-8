@@ -1,3 +1,7 @@
+2005-07-06  Matthias Clasen  <mclasen@redhat.com>
+
+	* configure.in: Require a newer gtk-doc.
+
 2005-07-01  Hans Breuer  <hans@breuer.org>
 
 	* glib/gmessages.c : include <process.h> for getpid()
