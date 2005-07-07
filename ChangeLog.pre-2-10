@@ -1,3 +1,8 @@
+2005-07-07  Matthias Clasen  <mclasen@redhat.com>
+
+	* configure.in: Make the size_t size detection work on AIX. 
+	(#309725)
+
 2005-07-01  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gkeyfile.c (g_key_file_get_key_comment): 
