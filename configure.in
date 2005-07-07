@@ -787,6 +787,9 @@ dnl
 if test $ac_cv_sizeof_size_t = $ac_cv_sizeof_int &&
    test $ac_cv_sizeof_size_t = $ac_cv_sizeof_long ; then
   GLIB_CHECK_COMPILE_WARNINGS([
+#ifdef _AIX
+#pragma options langlvl=stdc89
+#endif
 #include <stddef.h> 
 int main ()
 {
@@ -796,6 +799,9 @@ int main ()
 }
     ],glib_size_type=int,
       [GLIB_CHECK_COMPILE_WARNINGS([
+#ifdef _AIX
+#pragma options langlvl=stdc89
+#endif
 #include <stddef.h> 
 int main ()
 {

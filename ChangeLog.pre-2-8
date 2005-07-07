@@ -1,3 +1,8 @@
+2005-07-07  Matthias Clasen  <mclasen@redhat.com>
+
+	* configure.in: Make the size_t size detection work on AIX. 
+	(#309725)
+
 2005-07-06  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Require a newer gtk-doc.
