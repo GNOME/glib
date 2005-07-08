@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib-2-6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-06-30 16:44-0400\n"
+"POT-Creation-Date: 2005-07-08 11:40-0400\n"
 "PO-Revision-Date: 2005-03-02 22:46+0200\n"
 "Last-Translator: Mişu Moldovan <dumol@go.ro>\n"
 "Language-Team: Română <gnomero-list@lists.sourceforge.net>\n"
@@ -106,7 +106,7 @@ msgstr "Nu am reuşit să citesc din fişierul „%s”: %s"
 msgid "Failed to open file '%s': %s"
 msgstr "Nu am reuşit să deschid fişierul „%s”: %s"
 
-#: glib/gfileutils.c:741 glib/gmappedfile.c:132
+#: glib/gfileutils.c:741 glib/gmappedfile.c:133
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Nu am reuşit să obţin atributele fişierului „%s”: fstat() a eşuat: %s"
@@ -215,12 +215,12 @@ msgstr "Canalul se termină cu un caracter parţial"
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Nu am reuşit să citesc datele brute din g_io_channel_read_to_end"
 
-#: glib/gmappedfile.c:115
+#: glib/gmappedfile.c:116
 #, fuzzy, c-format
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "Nu am reuşit să deschid fişierul „%s”: fdopen() a eşuat: %s"
 
-#: glib/gmappedfile.c:177
+#: glib/gmappedfile.c:178
 #, fuzzy, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "Nu am reuşit să deschid fişierul „%s”: fdopen() a eşuat: %s"
@@ -649,29 +649,29 @@ msgstr "Fişierul cheie nu începe cu un grup"
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "Fişierul cheie are o codare nesuportată de tip „%s”"
 
-#: glib/gkeyfile.c:1017 glib/gkeyfile.c:1163 glib/gkeyfile.c:2164
-#: glib/gkeyfile.c:2229 glib/gkeyfile.c:2347 glib/gkeyfile.c:2415
-#: glib/gkeyfile.c:2599 glib/gkeyfile.c:2773 glib/gkeyfile.c:2830
+#: glib/gkeyfile.c:1017 glib/gkeyfile.c:1176 glib/gkeyfile.c:2177
+#: glib/gkeyfile.c:2242 glib/gkeyfile.c:2361 glib/gkeyfile.c:2497
+#: glib/gkeyfile.c:2649 glib/gkeyfile.c:2823 glib/gkeyfile.c:2880
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Fişierul cheie nu are grupul „%s”"
 
-#: glib/gkeyfile.c:1175
+#: glib/gkeyfile.c:1188
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "Fişierul cheie nu are cheie „%s”"
 
-#: glib/gkeyfile.c:1276 glib/gkeyfile.c:1385
+#: glib/gkeyfile.c:1289 glib/gkeyfile.c:1398
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "Fişierul cheie conţine cheia „%s” cu valoarea „%s” care nu este UTF-8"
 
-#: glib/gkeyfile.c:1294 glib/gkeyfile.c:1403 glib/gkeyfile.c:1775
+#: glib/gkeyfile.c:1307 glib/gkeyfile.c:1416 glib/gkeyfile.c:1788
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "Fişierul cheie conţine cheia „%s” care are o valoare neinterpretabilă."
 
-#: glib/gkeyfile.c:1991
+#: glib/gkeyfile.c:2004
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -680,31 +680,31 @@ msgstr ""
 "Fişierul cheie conţine cheia „%s” în grupul „%s” care are o valoare ce nu "
 "poate fi interpretată"
 
-#: glib/gkeyfile.c:2179 glib/gkeyfile.c:2362 glib/gkeyfile.c:2841
+#: glib/gkeyfile.c:2192 glib/gkeyfile.c:2376 glib/gkeyfile.c:2891
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Fişierul cheie nu are cheia „%s” în grupul „%s”"
 
-#: glib/gkeyfile.c:3022
+#: glib/gkeyfile.c:3072
 msgid "Key file contains escape character at end of line"
 msgstr "Fişieul cheie conţine caractere „escape” la sfârşit de linie"
 
-#: glib/gkeyfile.c:3044
+#: glib/gkeyfile.c:3094
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "URI-ul „%s” conţine secvenţe „escaped” invalide"
 
-#: glib/gkeyfile.c:3185
+#: glib/gkeyfile.c:3235
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Valoarea „%s” nu poate fi interpretată ca un număr."
 
-#: glib/gkeyfile.c:3195
+#: glib/gkeyfile.c:3245
 #, fuzzy, c-format
 msgid "Integer value '%s' out of range"
 msgstr "Valoarea întregului „%s” pentru %s este înafara limitelor"
 
-#: glib/gkeyfile.c:3225
+#: glib/gkeyfile.c:3275
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Valoarea „%s” nu poate fi interpretată ca o valoare booleană."

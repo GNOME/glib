@@ -1,3 +1,10 @@
+Overview of Changes from GLib 2.7.1 to GLib 2.7.2
+=================================================
+* Win32 build fixes [Hans Breuer]
+* Bug fixes [Mikael Magnusson]
+* Documentation improvements [Matthias Clasen]
+* New and updated translations (en_CA,es,et,ja,sr,sr@Latn,zh_TW)
+
 Overview of Changes from GLib 2.7.0 to GLib 2.7.1
 =================================================
 * GOption 

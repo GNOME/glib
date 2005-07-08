@@ -17,6 +17,9 @@ Signals are described in detail in <xref linkend="gobject-Signals"/>.
 #GParamSpecObject, g_param_spec_object()
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### STRUCT GObject ##### -->
 <para>
 All the fields in the <structname>GObject</structname> structure are private 

@@ -1,4 +1,8 @@
 2005-07-08  Matthias Clasen  <mclasen@redhat.com>
+	
+	* === Released 2.7.2 ===
+
+2005-07-08  Matthias Clasen  <mclasen@redhat.com>
 
 	* gobject/gobject-docs.sgml: 
 	* glib/glib-docs.sgml: Add the "new in 2.8" index.

@@ -1,3 +1,9 @@
+2005-07-08  Matthias Clasen  <mclasen@redhat.com>
+	
+	* === Released 2.7.2 ===
+
+	* NEWS: Updates
+
 2005-07-07  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Make the size_t size detection work on AIX. 
