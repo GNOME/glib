@@ -13,9 +13,9 @@ msgstr ""
 "Project-Id-Version: pa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-06-10 12:53-0400\n"
-"PO-Revision-Date: 2005-03-03 21:28+0530\n"
+"PO-Revision-Date: 2005-07-08 09:25+0530\n"
 "Last-Translator: Amanpreet Singh Alam <amanpreetalam@yahoo.com>\n"
-"Language-Team: Punjabi <fedora-trans-pa@redhat.com>\n"
+"Language-Team: Punjabi <fedora-transa-pa@redhat.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -184,8 +184,7 @@ msgid "Error on line %d: %s"
 msgstr "ਇਸ ਲਾਇਨ %d ਵਿੱਚ ਗਲਤੀ ਹੈ %s"
 
 #: glib/gmarkup.c:434
-msgid ""
-"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr "ਖਾਲੀ ਇਕਾਈ '&;' ਵੇਖੋ; ਜਾਇਜ ਇਕਾਈ : &amp; &quot; &lt; &gt; &apos; ਹਨ"
 
 #: glib/gmarkup.c:444
@@ -279,8 +278,7 @@ msgstr ""
 
 #: glib/gmarkup.c:1252
 #, c-format
-msgid ""
-"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr "ਅਨਿਸ਼ਚਿਤ ਅੱਖਰ %s ਹੈ   ਇਸ %s ਭਾਗ ਦੇ ਇਸ ਵਿਸ਼ੇਸਤਾ ਨਾਂ %s  ਮਗਰੋ  = ਨਿਸ਼ਚਿਤ ਹੈ"
 
 #: glib/gmarkup.c:1294
@@ -307,16 +305,14 @@ msgstr ""
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
-msgstr ""
-"ਇਸ '</' ਅੱਖਰ ਮਗਰੋਂ ਇਹ %s'  ਅੱਖਰ ਜਾਇਜ ਨਹੀ ਹੈ  '%s' ਇਕ ਭਾਗ ਦੇ ਨਾਂ ਨਾਲ ਆਰੰਭ ਨਹੀ ਹੋ ਸਕਦਾ ਹੈ"
+msgstr "ਇਸ '</' ਅੱਖਰ ਮਗਰੋਂ ਇਹ %s'  ਅੱਖਰ ਜਾਇਜ ਨਹੀ ਹੈ  '%s' ਇਕ ਭਾਗ ਦੇ ਨਾਂ ਨਾਲ ਆਰੰਭ ਨਹੀ ਹੋ ਸਕਦਾ ਹੈ"
 
 #: glib/gmarkup.c:1568
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
-msgstr ""
-"ਇਹ '%s' ਅੱਖਰ ਬੰਦ ਭਾਗ ਦੇ ਨਾਂ ਮਗਰੋ ਜਾਇਜ ਨਹੀ ਹੈ  '%s'; ਸਿਰਫ '>' ਅੱਖਰ ਹੀ ਨਿਸ਼ਚਿਤ ਹੈ "
+msgstr "ਇਹ '%s' ਅੱਖਰ ਬੰਦ ਭਾਗ ਦੇ ਨਾਂ ਮਗਰੋ ਜਾਇਜ ਨਹੀ ਹੈ  '%s'; ਸਿਰਫ '>' ਅੱਖਰ ਹੀ ਨਿਸ਼ਚਿਤ ਹੈ "
 
 #: glib/gmarkup.c:1579
 #, c-format
@@ -348,8 +344,7 @@ msgstr "ਦਸਤਾਵੇਜ਼ ਬੇਉਮੀਦ ਬੰਦ ਹੋ ਗਿਆ ਹ�
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
 "the tag <%s/>"
-msgstr ""
-"ਦਸਤਾਵੇਜ਼ ਬੇਉਮੀਦ ਬੰਦ ਹੋ ਗਿਆ ਹੈ, ਇਕ ਬੰਦ ਬਰੈਕਟ <%s/> ਜੋ ਕਿ ਪੱਟੀ ਨੂੰ ਬੰਦ ਕਰਦੀ ਹੈ, ਦੀ ਉਮੀਦ ਸੀ  "
+msgstr "ਦਸਤਾਵੇਜ਼ ਬੇਉਮੀਦ ਬੰਦ ਹੋ ਗਿਆ ਹੈ, ਇਕ ਬੰਦ ਬਰੈਕਟ <%s/> ਜੋ ਕਿ ਪੱਟੀ ਨੂੰ ਬੰਦ ਕਰਦੀ ਹੈ, ਦੀ ਉਮੀਦ ਸੀ  "
 
 #: glib/gmarkup.c:1771
 msgid "Document ended unexpectedly inside an element name"
@@ -438,8 +433,7 @@ msgstr "ਸਹਾਇਤਾ ਕਾਰਜ ਚਲਾਉਣ ਵਿੱਚ ਅਸਫ�
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
-msgstr ""
-"ਅਣਜਾਣੀ ਗਲਤੀ - g_io_channel_win32_poll() ਅਗਲੇਰੀਆਂ ਕਿਰਿਆਵਾਂ ਤੋ ਡਾਟਾ ਖੋਲਣ ਵਿੱਚ ਅਸਫਲ ਹੈ"
+msgstr "ਅਣਜਾਣੀ ਗਲਤੀ - g_io_channel_win32_poll() ਅਗਲੇਰੀਆਂ ਕਿਰਿਆਵਾਂ ਤੋ ਡਾਟਾ ਖੋਲਣ ਵਿੱਚ ਅਸਫਲ ਹੈ"
 
 #: glib/gspawn.c:179
 #, c-format
@@ -552,8 +546,7 @@ msgstr "ਫਾਇਲ ਖਾਲੀ ਹੈ"
 
 #: glib/gkeyfile.c:692
 #, c-format
-msgid ""
-"Key file contains line '%s' which is not a key-value pair, group, or comment"
+msgid "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr "ਕੁੰਜੀ ਫਾਇਲ ਵਿੱਚ ਸਤਰ '%s' ਹੈ, ਜੋ ਕਿ ਠੀਕ ਕੁੰਜੀ-ਮੁੱਲ ਜੋੜਾ, ਸਮੂਹ ਜਾਂ ਟਿੱਪਣੀ ਨਹੀਂ ਰੱਖਦੀ ਹੈ"
 
 #: glib/gkeyfile.c:760
@@ -616,11 +609,12 @@ msgid "Value '%s' cannot be interpreted as a number."
 msgstr "ਮੁੱਲ '%s' ਨੂੰ ਅੰਕ ਦੇ ਤੌਰ ਵਰਤਿਆ ਨਹੀਂ ਜਾ ਸਕਦਾ ਹੈ।"
 
 #: glib/gkeyfile.c:3189
-#, fuzzy, c-format
+#, c-format
 msgid "Integer value '%s' out of range"
-msgstr "ਪੂਰਨ ਅੰਕ '%s' ਲਈ %s ਸੀਮਾ ਤੋਂ ਬਾਹਰ ਹੈ"
+msgstr "ਪੂਰਨ ਅੰਕ ਮੁੱਲ '%s' ਸੀਮਾ ਤੋਂ ਬਾਹਰ ਹੈ"
 
 #: glib/gkeyfile.c:3219
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "ਮੁੱਲ '%s' ਨੂੰ ਬੁਲੀਅਨ ਮੁੱਲ ਦੇ ਤੌਰ ਤੇ ਪੇਸ਼ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ ਹੈ।"
+
