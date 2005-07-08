@@ -1,7 +1,7 @@
 #include <winver.h>
 
 VS_VERSION_INFO VERSIONINFO
-  FILEVERSION @GLIB_MAJOR_VERSION@,@GLIB_MINOR_VERSION@,@GLIB_MICRO_VERSION@,BUILDNUMBER
+  FILEVERSION @GLIB_MAJOR_VERSION@,@GLIB_MINOR_VERSION@,@GLIB_MICRO_VERSION@,0
   PRODUCTVERSION @GLIB_MAJOR_VERSION@,@GLIB_MINOR_VERSION@,@GLIB_MICRO_VERSION@,0
   FILEFLAGSMASK 0
   FILEFLAGS 0
@@ -15,7 +15,7 @@ VS_VERSION_INFO VERSIONINFO
       BEGIN
 	VALUE "CompanyName", "The GLib developer community"
 	VALUE "FileDescription", "GLib"
-	VALUE "FileVersion", "@GLIB_VERSION@.BUILDNUMBER"
+	VALUE "FileVersion", "@GLIB_VERSION@.0"
 	VALUE "InternalName", "libglib-2.0-@LT_CURRENT_MINUS_AGE@"
 	VALUE "LegalCopyright", "Copyright © 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald. Modified by the GLib Team and others 1997-2004."
 	VALUE "OriginalFilename", "libglib-2.0-@LT_CURRENT_MINUS_AGE@.dll"

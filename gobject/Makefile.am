@@ -65,15 +65,21 @@ uninstall-def-file:
 export_symbols = $(LIBTOOL_EXPORT_OPTIONS)
 endif
 
+if OS_WIN32
+gobject_win32_res = gobject-win32-res.o
+gobject_win32_res_ldflag = -Wl,$(gobject_win32_res)
+endif
+
 # libtool stuff: set version and export symbols for resolving
 libgobjectincludedir = $(includedir)/glib-2.0/gobject
 libgobject_2_0_la_LDFLAGS = \
-  -version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE)	\
+  $(gobject_win32_res_ldflag) \
+  -version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
   -export-dynamic $(no_undefined) $(export_symbols)
 
-libgobject_2_0_la_LIBADD = $(G_OBJECT_WIN32_RESOURCE) $(libglib)
+libgobject_2_0_la_LIBADD = $(libglib)
 
-libgobject_2_0_la_DEPENDENCIES = $(G_OBJECT_WIN32_RESOURCE) $(GOBJECT_DEF)
+libgobject_2_0_la_DEPENDENCIES = $(gobject_win32_res) $(GOBJECT_DEF)
 
 #
 # setup source file variables
@@ -230,8 +236,8 @@ BUILT_EXTRA_DIST = \
 
 
 if OS_WIN32
-$(G_OBJECT_WIN32_RESOURCE): gobject.rc
-	$(top_srcdir)/build/win32/lt-compile-resource gobject.rc $@
+gobject-win32-res.o: gobject.rc
+	$(WINDRES) gobject.rc $@
 endif
 
 gobject-2.0.lib: libgobject-2.0.la gobject.def

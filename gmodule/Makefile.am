@@ -64,19 +64,25 @@ install-def-file:
 uninstall-def-file:
 endif
 
+if OS_WIN32
+gmodule_win32_res = gmodule-win32-res.o
+gmodule_win32_res_ldflag = -Wl,$(gmodule_win32_res)
+endif
+
 libgmodule_2_0_la_SOURCES = gmodule.c
 libgmodule_2_0_la_LDFLAGS = \
+	$(gmodule_win32_res_ldflag) \
 	$(G_MODULE_LDFLAGS) \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
 	-export-dynamic $(no_undefined) $(export_symbols)
 
-libgmodule_2_0_la_LIBADD = $(G_MODULE_WIN32_RESOURCE) $(G_MODULE_LIBS_EXTRA) $(G_MODULE_LIBS) $(libglib)
+libgmodule_2_0_la_LIBADD = $(G_MODULE_LIBS_EXTRA) $(G_MODULE_LIBS) $(libglib)
 
-libgmodule_2_0_la_DEPENDENCIES = $(G_MODULE_WIN32_RESOURCE) $(GMODULE_DEF)
+libgmodule_2_0_la_DEPENDENCIES = $(gmodule_win32_res) $(GMODULE_DEF)
 
 if OS_WIN32
-$(G_MODULE_WIN32_RESOURCE): gmodule.rc
-	$(top_srcdir)/build/win32/lt-compile-resource gmodule.rc $@
+gmodule-win32-res.o: gmodule.rc
+	$(WINDRES) gmodule.rc $@
 endif
 
 gmodule-2.0.lib: libgmodule-2.0.la gmodule.def

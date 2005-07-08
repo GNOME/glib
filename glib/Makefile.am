@@ -215,10 +215,16 @@ uninstall-def-file:
 export_symbols = $(LIBTOOL_EXPORT_OPTIONS)
 endif
 
-libglib_2_0_la_LIBADD = libcharset/libcharset.la $(printf_la) @GIO@ @GSPAWN@ @PLATFORMDEP@ @G_LIB_WIN32_RESOURCE@ @ICONV_LIBS@ @G_LIBS_EXTRA@ 
-libglib_2_0_la_DEPENDENCIES = libcharset/libcharset.la $(printf_la) @GIO@ @GSPAWN@ @PLATFORMDEP@ @G_LIB_WIN32_RESOURCE@ @GLIB_DEF@
+if OS_WIN32
+glib_win32_res = glib-win32-res.o
+glib_win32_res_ldflag = -Wl,$(glib_win32_res)
+endif
+
+libglib_2_0_la_LIBADD = libcharset/libcharset.la $(printf_la) @GIO@ @GSPAWN@ @PLATFORMDEP@ @ICONV_LIBS@ @G_LIBS_EXTRA@ 
+libglib_2_0_la_DEPENDENCIES = libcharset/libcharset.la $(printf_la) @GIO@ @GSPAWN@ @PLATFORMDEP@ $(glib_win32_res) @GLIB_DEF@
 
 libglib_2_0_la_LDFLAGS = \
+	 $(glib_win32_res_ldflag) \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
 	-export-dynamic $(no_undefined) $(export_symbols)
 
@@ -227,8 +233,8 @@ bin_PROGRAMS = gspawn-win32-helper
 gspawn_win32_helper_LDADD = libglib-2.0.la
 gspawn_win32_helper_LDFLAGS = -mwindows
 
-$(G_LIB_WIN32_RESOURCE): glib.rc
-	$(top_srcdir)/build/win32/lt-compile-resource glib.rc $@
+glib-win32-res.o: glib.rc
+	$(WINDRES) glib.rc $@
 endif
 
 glib-2.0.lib: libglib-2.0.la glib.def
