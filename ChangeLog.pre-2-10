@@ -1,5 +1,8 @@
 2005-07-09  Tor Lillqvist  <tml@novell.com>
 
+	* glib/giowin32.c: Totally rewritten socket channel
+	implementation. See discussion in bug #147392.
+
 	* configure.in: Don't use autoconf variables for the resource
 	object files on Win32 any longer. Instead handle that in the
 	Makefile.am files. Check for windres.
