@@ -787,7 +787,7 @@ dnl
 if test $ac_cv_sizeof_size_t = $ac_cv_sizeof_int &&
    test $ac_cv_sizeof_size_t = $ac_cv_sizeof_long ; then
   GLIB_CHECK_COMPILE_WARNINGS([
-#ifdef _AIX
+#if defined(_AIX) && !defined(__GNUC__)
 #pragma options langlvl=stdc89
 #endif
 #include <stddef.h> 
