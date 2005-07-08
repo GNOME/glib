@@ -799,7 +799,7 @@ int main ()
 }
     ],glib_size_type=int,
       [GLIB_CHECK_COMPILE_WARNINGS([
-#ifdef _AIX
+#if defined(_AIX) && !defined(__GNUC__)
 #pragma options langlvl=stdc89
 #endif
 #include <stddef.h> 
