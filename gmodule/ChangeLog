@@ -1,7 +1,7 @@
 2005-07-09  Tor Lillqvist  <tml@novell.com>
 
 	* Makefile.am: Don't use the scripts in build/win32 to compile
-	gmodule.rc into a resource object file. (This means we loose the
+	gmodule.rc into a resource object file. (This means we lose the
 	build number increment magic, but I doubt it was that useful
 	anyway.) Instead use windres directly. To pass the normal .o file
 	produced by windres through libtool, which wants .lo files, pass

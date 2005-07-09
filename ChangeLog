@@ -11,7 +11,7 @@
 	configure-produced glibconfig.h closely.
 
 	* glib/Makefile.am: Don't use the scripts in build/win32 to
-	compile glib.rc into a resource object file. (This means we loose
+	compile glib.rc into a resource object file. (This means we lose
 	the build number increment magic, but I doubt it was that useful
 	anyway.) Instead use windres directly. To pass the normal .o file
 	produced by windres through libtool, which wants .lo files, pass
