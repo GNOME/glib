@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib (HEAD)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-07-08 11:40-0400\n"
-"PO-Revision-Date: 2005-06-16 00:09+0200\n"
+"POT-Creation-Date: 2005-07-08 21:47+0000\n"
+"PO-Revision-Date: 2005-07-09 03:33+0200\n"
 "Last-Translator: Tino Meinen <a.t.meinen@chello.nl>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: glib/gconvert.c:406
+#: ../glib/gconvert.c:406
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Conversie van tekenset '%s' naar '%s' wordt niet ondersteund"
@@ -23,239 +23,240 @@ msgstr "Conversie van tekenset '%s' naar '%s' wordt niet ondersteund"
 # conversieprogramma/omzet-programma/omzetter
 # kon converteerder van %s naar %s niet openen
 # Openen van converteerder van '%s' naar '%s' mislukt
-#: glib/gconvert.c:410
+#: ../glib/gconvert.c:410
 #, c-format
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "Kon conversieprogramma voor omzetten van '%s' naar '%s' niet openen"
 
-#: glib/gconvert.c:618 glib/gconvert.c:908 glib/giochannel.c:1319
-#: glib/giochannel.c:1361 glib/giochannel.c:2203 glib/gutf8.c:911
-#: glib/gutf8.c:1361
+#: ../glib/gconvert.c:618 ../glib/gconvert.c:908 ../glib/giochannel.c:1319
+#: ../glib/giochannel.c:1361 ../glib/giochannel.c:2203 ../glib/gutf8.c:911
+#: ../glib/gutf8.c:1361
 msgid "Invalid byte sequence in conversion input"
 msgstr "Ongeldige bytereeks in conversie-invoer"
 
-#: glib/gconvert.c:624 glib/gconvert.c:841 glib/giochannel.c:1326
-#: glib/giochannel.c:2215
+#: ../glib/gconvert.c:624 ../glib/gconvert.c:841 ../glib/giochannel.c:1326
+#: ../glib/giochannel.c:2215
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Fout tijdens conversie: %s"
 
-#: glib/gconvert.c:643 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
-#: glib/gutf8.c:1357
+#: ../glib/gconvert.c:643 ../glib/gutf8.c:907 ../glib/gutf8.c:1112
+#: ../glib/gutf8.c:1253 ../glib/gutf8.c:1357
 msgid "Partial character sequence at end of input"
 msgstr "Onvolledige tekenreeks aan het eind van de invoer"
 
-#: glib/gconvert.c:817
+#: ../glib/gconvert.c:817
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Kan vanaf codeverzameling '%s' niet terugvallen op '%s'"
 
-#: glib/gconvert.c:1619
+#: ../glib/gconvert.c:1619
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr ""
 "De URI '%s' is geen absolute URI die gebruik maakt van het \"bestand\" schema"
 
-#: glib/gconvert.c:1629
+#: ../glib/gconvert.c:1629
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "De lokale bestands-URI '%s' mag geen '#' bevatten"
 
-#: glib/gconvert.c:1646
+#: ../glib/gconvert.c:1646
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "De URI '%s' is ongeldig"
 
-#: glib/gconvert.c:1658
+#: ../glib/gconvert.c:1658
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "De hostnaam van de URI '%s' is ongeldig"
 
-#: glib/gconvert.c:1674
+#: ../glib/gconvert.c:1674
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "De URI '%s' bevat ongeldige ontsnappingstekens"
 
-#: glib/gconvert.c:1768
+#: ../glib/gconvert.c:1768
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Het pad '%s' is geen absoluut pad"
 
-#: glib/gconvert.c:1778
+#: ../glib/gconvert.c:1778
 msgid "Invalid hostname"
 msgstr "Ongeldige hostnaam"
 
-#: glib/gdir.c:121 glib/gdir.c:141
+#: ../glib/gdir.c:121 ../glib/gdir.c:141
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "Fout bij het openen van map '%s': %s"
 
 # Allocatie van %lu bytes om bestand "%s" te lezen is mislukt<
-#: glib/gfileutils.c:576 glib/gfileutils.c:649
+#: ../glib/gfileutils.c:576 ../glib/gfileutils.c:649
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Kon geen %lu byte geheugenruimte reserveren om bestand \"%s\" te lezen"
 
-#: glib/gfileutils.c:591
+#: ../glib/gfileutils.c:591
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Fout bij lezen van bestand '%s': %s"
 
-#: glib/gfileutils.c:673
+#: ../glib/gfileutils.c:673
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Lezen van bestand '%s' mislukt: %s"
 
-#: glib/gfileutils.c:724 glib/gfileutils.c:811
+#: ../glib/gfileutils.c:724 ../glib/gfileutils.c:811
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Openen van bestand '%s' mislukt: %s"
 
-#: glib/gfileutils.c:741 glib/gmappedfile.c:133
+#: ../glib/gfileutils.c:741 ../glib/gmappedfile.c:133
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Opvragen gegevens van bestand '%s' mislukt: fstat() mislukte: %s"
 
-#: glib/gfileutils.c:775
+#: ../glib/gfileutils.c:775
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Openen van bestand '%s' mislukt: fdopen() mislukte: %s"
 
-#: glib/gfileutils.c:909
+#: ../glib/gfileutils.c:909
 #, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "Hernoemen van bestand '%s' naar '%s' mislukt: g_rename() mislukte: %s"
 
-#: glib/gfileutils.c:952
+#: ../glib/gfileutils.c:952
 #, c-format
 msgid "Could not change file mode: fork() failed: %s"
 msgstr "Kon bestandsmodus niet wijzigen: fork() mislukte: %s"
 
 # Allocatie van %lu bytes om bestand "%s" te lezen is mislukt<
-#: glib/gfileutils.c:983
+#: ../glib/gfileutils.c:983
 #, c-format
 msgid "Could not change file mode: waitpid() failed: %s"
 msgstr "Kon bestandsmodus niet wijzigen: waitpid() mislukte: %s"
 
-#: glib/gfileutils.c:1002
+#: ../glib/gfileutils.c:1002
 #, c-format
 msgid "Could not change file mode: chmod() failed: %s"
 msgstr "Kon bestandsmodus niet wijzigen: chmod() mislukte: %s"
 
-#: glib/gfileutils.c:1013
+#: ../glib/gfileutils.c:1013
 #, c-format
 msgid "Could not change file mode: Child terminated by signal: %s"
 msgstr "Kon bestandsmodus niet wijzigen: dochter afgebroken door signaal: %s"
 
-#: glib/gfileutils.c:1024
+#: ../glib/gfileutils.c:1024
 msgid "Could not change file mode: Child terminated abnormally"
 msgstr "Kon bestandsmodus niet wijzigen: dochter is abnormaal afgebroken"
 
-#: glib/gfileutils.c:1058 glib/gfileutils.c:1524
+#: ../glib/gfileutils.c:1058 ../glib/gfileutils.c:1524
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Aanmaken van bestand '%s' mislukt: %s"
 
-#: glib/gfileutils.c:1080
+#: ../glib/gfileutils.c:1080
 #, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr "Openen van bestand '%s' voor schrijven mislukt: fdopen() mislukte: %s"
 
-#: glib/gfileutils.c:1105
+#: ../glib/gfileutils.c:1105
 #, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "Schrijven van bestand '%s' mislukt: fwrite() mislukte: %s"
 
-#: glib/gfileutils.c:1124
+#: ../glib/gfileutils.c:1124
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "Sluiten van bestand '%s' mislukt: fclose() mislukte: %s"
 
 # bestaand bestand is een beetje dubbelop
-#: glib/gfileutils.c:1242
+#: ../glib/gfileutils.c:1242
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "Bestand '%s' kon niet worden verwijderd: g_unlink() mislukte: %s"
 
-#: glib/gfileutils.c:1485
+#: ../glib/gfileutils.c:1485
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Sjabloon '%s' is ongeldig, het zou geen '%s' moeten bevatten"
 
-#: glib/gfileutils.c:1499
+#: ../glib/gfileutils.c:1499
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Sjabloon '%s' eindigt niet op XXXXXX"
 
-#: glib/gfileutils.c:1977
+#: ../glib/gfileutils.c:1977
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Lezen van symbolische link '%s' mislukt: %s"
 
-#: glib/gfileutils.c:1998
+#: ../glib/gfileutils.c:1998
 msgid "Symbolic links not supported"
 msgstr "Symbolische links niet ondersteund"
 
 # omzetten/conversie
-#: glib/giochannel.c:1147
+#: ../glib/giochannel.c:1147
 #, c-format
 msgid "Conversion from character set `%s' to `%s' is not supported"
 msgstr "Conversie van tekenset '%s' naar '%s' wordt niet ondersteund"
 
 # Openen van converteerder van '%s' naar '%s' mislukt: %s
-#: glib/giochannel.c:1151
+#: ../glib/giochannel.c:1151
 #, c-format
 msgid "Could not open converter from `%s' to `%s': %s"
 msgstr ""
 "Kon conversieprogramma voor omzetten van '%s' naar '%s' niet openen: %s"
 
-#: glib/giochannel.c:1496
+#: ../glib/giochannel.c:1496
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr ""
 "Een kale ('raw') leesoperatie is niet mogelijk in "
 "g_io_channel_read_line_string"
 
-#: glib/giochannel.c:1543 glib/giochannel.c:1800 glib/giochannel.c:1886
+#: ../glib/giochannel.c:1543 ../glib/giochannel.c:1800
+#: ../glib/giochannel.c:1886
 msgid "Leftover unconverted data in read buffer"
 msgstr "Restant aan ongeconverteerde data in de leesbuffer"
 
-#: glib/giochannel.c:1623 glib/giochannel.c:1700
+#: ../glib/giochannel.c:1623 ../glib/giochannel.c:1700
 msgid "Channel terminates in a partial character"
 msgstr "Kanaal eindigt in een gedeeltelijk teken"
 
-#: glib/giochannel.c:1686
+#: ../glib/giochannel.c:1686
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr ""
 "Een kale ('raw') leesoperatie is niet mogelijk in g_io_channel_read_to_end"
 
-#: glib/gmappedfile.c:116
-#, fuzzy, c-format
+#: ../glib/gmappedfile.c:116
+#, c-format
 msgid "Failed to open file '%s': open() failed: %s"
-msgstr "Openen van bestand '%s' mislukt: fdopen() mislukte: %s"
+msgstr "Openen van bestand '%s' mislukt: open() mislukte: %s"
 
-#: glib/gmappedfile.c:178
-#, fuzzy, c-format
+#: ../glib/gmappedfile.c:178
+#, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
-msgstr "Openen van bestand '%s' mislukt: fdopen() mislukte: %s"
+msgstr "Openen van bestand '%s' mislukt: mmap() mislukte: %s"
 
-#: glib/gmarkup.c:232
+#: ../glib/gmarkup.c:232
 #, c-format
 msgid "Error on line %d char %d: %s"
 msgstr "Fout in regel %d teken %d: %s"
 
-#: glib/gmarkup.c:330
+#: ../glib/gmarkup.c:330
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "Fout in regel %d: %s"
 
-#: glib/gmarkup.c:434
+#: ../glib/gmarkup.c:434
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "Lege entiteit '&;' gevonden;  geldige entiteiten zijn: &amp; &quot; &lt; "
 "&gt; &apos;"
 
-#: glib/gmarkup.c:444
+#: ../glib/gmarkup.c:444
 #, c-format
 msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
@@ -265,17 +266,17 @@ msgstr ""
 "Teken '%s' is niet geldig aan het begin van een entiteitnaam; het &-teken "
 "begint een entiteit; indien dat niet de bedoeling is, gebruik dan &amp;"
 
-#: glib/gmarkup.c:478
+#: ../glib/gmarkup.c:478
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
 msgstr "Teken '%s' is niet geldig in een entiteitnaam"
 
-#: glib/gmarkup.c:515
+#: ../glib/gmarkup.c:515
 #, c-format
 msgid "Entity name '%s' is not known"
 msgstr "Entiteitnaam '%s' is niet bekend"
 
-#: glib/gmarkup.c:526
+#: ../glib/gmarkup.c:526
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
@@ -284,7 +285,7 @@ msgstr ""
 "ampersand-teken gebruikt zonder daarmee een entiteit te willen beginnen - "
 "gebruik in plaats daarvan &amp;"
 
-#: glib/gmarkup.c:579
+#: ../glib/gmarkup.c:579
 #, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
@@ -294,16 +295,16 @@ msgstr ""
 "zou moeten zijn (bijvoorbeeld &#234;) - misschien is het getal te groot"
 
 # niet geoorloofd/toegestaan/ongeoorloofd
-#: glib/gmarkup.c:604
+#: ../glib/gmarkup.c:604
 #, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
 msgstr "Tekenreferentie '%-.*s' staat niet voor een geoorloofd teken"
 
-#: glib/gmarkup.c:619
+#: ../glib/gmarkup.c:619
 msgid "Empty character reference; should include a digit such as &#454;"
 msgstr "Lege tekenreferentie; ze zou een getal moeten bevatten, zoals &#454;"
 
-#: glib/gmarkup.c:629
+#: ../glib/gmarkup.c:629
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -313,23 +314,23 @@ msgstr ""
 "ampersand-teken gebruikt zonder daarmee een entiteit te willen beginnen - "
 "gebruik in plaats daarvan &amp;"
 
-#: glib/gmarkup.c:715
+#: ../glib/gmarkup.c:715
 msgid "Unfinished entity reference"
 msgstr "Onbeëindigde entiteitreferentie"
 
-#: glib/gmarkup.c:721
+#: ../glib/gmarkup.c:721
 msgid "Unfinished character reference"
 msgstr "Onbeëindigde tekenreferentie"
 
-#: glib/gmarkup.c:964 glib/gmarkup.c:992 glib/gmarkup.c:1023
+#: ../glib/gmarkup.c:964 ../glib/gmarkup.c:992 ../glib/gmarkup.c:1023
 msgid "Invalid UTF-8 encoded text"
 msgstr "Ongeldige UTF-8-geëncodeerde tekst"
 
-#: glib/gmarkup.c:1059
+#: ../glib/gmarkup.c:1059
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Document moet beginnen met een element (bijv. <book>)"
 
-#: glib/gmarkup.c:1099
+#: ../glib/gmarkup.c:1099
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -338,7 +339,7 @@ msgstr ""
 "'%s' is geen geldig teken na een '<'-teken; het mag niet beginnen met een "
 "elementnaam"
 
-#: glib/gmarkup.c:1163
+#: ../glib/gmarkup.c:1163
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
@@ -347,7 +348,7 @@ msgstr ""
 "Onverwacht teken '%s', er werd een '>'-teken verwacht om het start-tag van "
 "het element '%s' af te sluiten"
 
-#: glib/gmarkup.c:1252
+#: ../glib/gmarkup.c:1252
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -355,7 +356,7 @@ msgstr ""
 "Onverwacht teken '%s', er werd een '=' verwacht na de attribuutnaam '%s' van "
 "element '%s'"
 
-#: glib/gmarkup.c:1294
+#: ../glib/gmarkup.c:1294
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -366,7 +367,7 @@ msgstr ""
 "start-tag van element '%s' af te sluiten, of eventueel een attribuut; "
 "misschien heeft u ongeldige tekens gebruikt in een attribuutnaam"
 
-#: glib/gmarkup.c:1383
+#: ../glib/gmarkup.c:1383
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -375,7 +376,7 @@ msgstr ""
 "Onverwacht teken '%s', er werd een '\"'-teken verwacht na het '='-teken bij "
 "de attribuutwaarde van '%s' in element '%s'"
 
-#: glib/gmarkup.c:1528
+#: ../glib/gmarkup.c:1528
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -383,7 +384,7 @@ msgid ""
 msgstr ""
 "'%s' is geen geldig teken na '</'; '%s' mag niet beginnen met een elementnaam"
 
-#: glib/gmarkup.c:1568
+#: ../glib/gmarkup.c:1568
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -392,25 +393,25 @@ msgstr ""
 "'%s' is geen geldig teken na de elementnaam '%s' in het afluitings-tag; het "
 "toegestane teken is '>' "
 
-#: glib/gmarkup.c:1579
+#: ../glib/gmarkup.c:1579
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "Element '%s' is gesloten, er is nu geen enkel element open"
 
-#: glib/gmarkup.c:1588
+#: ../glib/gmarkup.c:1588
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "Element '%s' is gesloten, maar op dit moment is element '%s' open"
 
-#: glib/gmarkup.c:1735
+#: ../glib/gmarkup.c:1735
 msgid "Document was empty or contained only whitespace"
 msgstr "Het document was leeg of bevatte slechts lege ruimte"
 
-#: glib/gmarkup.c:1749
+#: ../glib/gmarkup.c:1749
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "Het document eindigde onverwacht na een openings-'<'"
 
-#: glib/gmarkup.c:1757 glib/gmarkup.c:1801
+#: ../glib/gmarkup.c:1757 ../glib/gmarkup.c:1801
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -419,7 +420,7 @@ msgstr ""
 "Het document eindigde onverwacht met niet-afgesloten elementen - '%s' is het "
 "laatstgeopende element"
 
-#: glib/gmarkup.c:1765
+#: ../glib/gmarkup.c:1765
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -428,19 +429,19 @@ msgstr ""
 "Het document eindigde onverwacht, er werd een afsluitings-'>' verwacht voor "
 "de tag <%s/>"
 
-#: glib/gmarkup.c:1771
+#: ../glib/gmarkup.c:1771
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Het document eindigde onverwacht in een elementnaam"
 
-#: glib/gmarkup.c:1776
+#: ../glib/gmarkup.c:1776
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Het document eindigde onverwacht in een attribuutnaam"
 
-#: glib/gmarkup.c:1781
+#: ../glib/gmarkup.c:1781
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Het document eindigde onverwacht in een element-openings-tag."
 
-#: glib/gmarkup.c:1787
+#: ../glib/gmarkup.c:1787
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -448,75 +449,75 @@ msgstr ""
 "Het document eindigde onverwacht na een '='-teken dat op een attribuutnaam "
 "volgde; geen attribuutwaarde"
 
-#: glib/gmarkup.c:1794
+#: ../glib/gmarkup.c:1794
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Het document eindigde onverwacht in een attribuutwaarde"
 
-#: glib/gmarkup.c:1809
+#: ../glib/gmarkup.c:1809
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr ""
 "Het document eindigde onverwacht in een een afsluitings-tag voor element '%s'"
 
-#: glib/gmarkup.c:1815
+#: ../glib/gmarkup.c:1815
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Het document eindigde onverwacht in commentaar of een bewerkingsinstructie"
 
-#: glib/gshell.c:73
+#: ../glib/gshell.c:73
 msgid "Quoted text doesn't begin with a quotation mark"
 msgstr "Aangehaalde tekst begint niet met een '\"'-teken"
 
-#: glib/gshell.c:163
+#: ../glib/gshell.c:163
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr ""
 "Ongebalanceerd '\"'-teken in opdrachtregel of andere shell-aangehaalde tekst"
 
-#: glib/gshell.c:541
+#: ../glib/gshell.c:541
 #, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
 msgstr "Tekst eindigde na een '\\'-teken (de tekst was '%s')."
 
-#: glib/gshell.c:548
+#: ../glib/gshell.c:548
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr ""
 "De tekst eindigde voordat een afsluitend aanhalingsteken was gevonden voor %"
 "c (de tekst was '%s')"
 
-#: glib/gshell.c:560
+#: ../glib/gshell.c:560
 msgid "Text was empty (or contained only whitespace)"
 msgstr "De tekst was leeg (of bevatte slechts lege ruimte)"
 
-#: glib/gspawn-win32.c:264
+#: ../glib/gspawn-win32.c:264
 msgid "Failed to read data from child process"
 msgstr "Lezen van data van dochterprocessen mislukt"
 
-#: glib/gspawn-win32.c:281 glib/gspawn.c:1354
+#: ../glib/gspawn-win32.c:281 ../glib/gspawn.c:1354
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Aanmaken van pijp voor het communiceren met dochterproces mislukt (%s)"
 
-#: glib/gspawn-win32.c:321 glib/gspawn.c:1018
+#: ../glib/gspawn-win32.c:321 ../glib/gspawn.c:1018
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Lezen van pijp naar dochter (%s) mislukt"
 
-#: glib/gspawn-win32.c:349 glib/gspawn.c:1223
+#: ../glib/gspawn-win32.c:349 ../glib/gspawn.c:1223
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Veranderen naar map '%s' is mislukt (%s)"
 
-#: glib/gspawn-win32.c:357 glib/gspawn-win32.c:442
+#: ../glib/gspawn-win32.c:357 ../glib/gspawn-win32.c:442
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Uitvoeren van dochterproces mislukt (%s)"
 
-#: glib/gspawn-win32.c:599
+#: ../glib/gspawn-win32.c:599
 msgid "Failed to execute helper program"
 msgstr "Uitvoeren van het hulpprogramma is mislukt"
 
-#: glib/gspawn-win32.c:797
+#: ../glib/gspawn-win32.c:797
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -524,128 +525,128 @@ msgstr ""
 "Onverwachte fout in g_io_channel_win32_poll() bij het lezen van data van een "
 "dochterproces"
 
-#: glib/gspawn.c:179
+#: ../glib/gspawn.c:179
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "Lezen van data van dochterproces mislukt (%s)"
 
-#: glib/gspawn.c:310
+#: ../glib/gspawn.c:310
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr ""
 "Onverwachte fout in select() bij het lezen van data van een dochterproces (%"
 "s)"
 
-#: glib/gspawn.c:393
+#: ../glib/gspawn.c:393
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Onverwachte fout in waitpid() (%s)"
 
 # fork is een functienaam, mag niet met hoofdletter beginnen
-#: glib/gspawn.c:1083
+#: ../glib/gspawn.c:1083
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "fork mislukt (%s)"
 
-#: glib/gspawn.c:1233
+#: ../glib/gspawn.c:1233
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Uitvoeren van dochterproces \"%s\" mislukt (%s)"
 
 # was eerst: herleiden
-#: glib/gspawn.c:1243
+#: ../glib/gspawn.c:1243
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr ""
 "Doorsluizen van invoer of uitvoer van een dochterproces is mislukt (%s)"
 
-#: glib/gspawn.c:1252
+#: ../glib/gspawn.c:1252
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Het forken van een dochterproces is mislukt (%s)"
 
-#: glib/gspawn.c:1260
+#: ../glib/gspawn.c:1260
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Onbekende fout bij het uitvoeren van dochterproces \"%s\""
 
-#: glib/gspawn.c:1282
+#: ../glib/gspawn.c:1282
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Lezen van voldoende data van pijp dochter-pid mislukt (%s)"
 
-#: glib/gutf8.c:986
+#: ../glib/gutf8.c:986
 msgid "Character out of range for UTF-8"
 msgstr "Teken valt buiten van bereik van UTF-8"
 
-#: glib/gutf8.c:1080 glib/gutf8.c:1089 glib/gutf8.c:1221 glib/gutf8.c:1230
-#: glib/gutf8.c:1371 glib/gutf8.c:1467
+#: ../glib/gutf8.c:1080 ../glib/gutf8.c:1089 ../glib/gutf8.c:1221
+#: ../glib/gutf8.c:1230 ../glib/gutf8.c:1371 ../glib/gutf8.c:1467
 msgid "Invalid sequence in conversion input"
 msgstr "Ongeldige reeks in conversie-invoer"
 
-#: glib/gutf8.c:1382 glib/gutf8.c:1478
+#: ../glib/gutf8.c:1382 ../glib/gutf8.c:1478
 msgid "Character out of range for UTF-16"
 msgstr "Teken valt buiten bereik van UTF-16"
 
-#: glib/goption.c:465
+#: ../glib/goption.c:465
 msgid "Usage:"
 msgstr "Gebruik:"
 
-#: glib/goption.c:465
+#: ../glib/goption.c:465
 msgid "[OPTION...]"
 msgstr "[OPTIE...]"
 
 # hulp-opties zijn opties voor de hulp
 # hulp opties zijn die opties van hulp
-#: glib/goption.c:551
+#: ../glib/goption.c:551
 msgid "Help Options:"
 msgstr "Hulp opties:"
 
-#: glib/goption.c:552
+#: ../glib/goption.c:552
 msgid "Show help options"
 msgstr "Hulp opties tonen"
 
-#: glib/goption.c:557
+#: ../glib/goption.c:557
 msgid "Show all help options"
 msgstr "Alle hulp opties tonen"
 
-#: glib/goption.c:607
+#: ../glib/goption.c:607
 msgid "Application Options:"
 msgstr "Toepassing opties:"
 
-#: glib/goption.c:648
+#: ../glib/goption.c:648
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "Kan de gehele getalswaarde '%s' voor %s niet verwerken"
 
-#: glib/goption.c:658
+#: ../glib/goption.c:658
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "Gehele getalswaarde '%s' voor %s valt buiten bereik"
 
-#: glib/goption.c:940 glib/goption.c:1015
+#: ../glib/goption.c:940 ../glib/goption.c:1015
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Ontbrekend argument voor %s"
 
-#: glib/goption.c:1418
+#: ../glib/goption.c:1418
 #, c-format
 msgid "Unknown option %s"
 msgstr "Onbekende optie %s"
 
-#: glib/gkeyfile.c:339
+#: ../glib/gkeyfile.c:339
 msgid "Valid key file could not be found in data dirs"
 msgstr "Er kon geen geldig sleutelbestand worden gevonden in de datamappen"
 
-#: glib/gkeyfile.c:374
+#: ../glib/gkeyfile.c:374
 msgid "Not a regular file"
 msgstr "Geen regulier bestand"
 
-#: glib/gkeyfile.c:382
+#: ../glib/gkeyfile.c:382
 msgid "File is empty"
 msgstr "Bestand is leeg"
 
-#: glib/gkeyfile.c:697
+#: ../glib/gkeyfile.c:697
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
@@ -653,40 +654,40 @@ msgstr ""
 "Sleutelbestand bevat regel '%s' wat geen sleutelwaarde-paar, groep of "
 "opmerking is."
 
-#: glib/gkeyfile.c:765
+#: ../glib/gkeyfile.c:765
 msgid "Key file does not start with a group"
 msgstr "Sleutelbestand start niet met een groep"
 
-#: glib/gkeyfile.c:808
+#: ../glib/gkeyfile.c:808
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "Sleutelbestand bevat niet-ondersteunde tekenset '%s'"
 
-#: glib/gkeyfile.c:1017 glib/gkeyfile.c:1176 glib/gkeyfile.c:2177
-#: glib/gkeyfile.c:2242 glib/gkeyfile.c:2361 glib/gkeyfile.c:2497
-#: glib/gkeyfile.c:2649 glib/gkeyfile.c:2823 glib/gkeyfile.c:2880
+#: ../glib/gkeyfile.c:1017 ../glib/gkeyfile.c:1176 ../glib/gkeyfile.c:2177
+#: ../glib/gkeyfile.c:2242 ../glib/gkeyfile.c:2361 ../glib/gkeyfile.c:2497
+#: ../glib/gkeyfile.c:2649 ../glib/gkeyfile.c:2823 ../glib/gkeyfile.c:2880
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Sleutelbestand bevat geen groep '%s'"
 
-#: glib/gkeyfile.c:1188
+#: ../glib/gkeyfile.c:1188
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "Sleutelbestand bevat geen sleutel '%s'"
 
-#: glib/gkeyfile.c:1289 glib/gkeyfile.c:1398
+#: ../glib/gkeyfile.c:1289 ../glib/gkeyfile.c:1398
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "Sleutelbestand bevat sleutel '%s' met waarde '%s' wat geen UTF-8 is"
 
-#: glib/gkeyfile.c:1307 glib/gkeyfile.c:1416 glib/gkeyfile.c:1788
+#: ../glib/gkeyfile.c:1307 ../glib/gkeyfile.c:1416 ../glib/gkeyfile.c:1788
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr ""
 "Sleutelbestand bevat sleutel '%s' die een waarde heeft die niet kan worden "
 "geïnterpreteerd."
 
-#: glib/gkeyfile.c:2004
+#: ../glib/gkeyfile.c:2004
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -695,31 +696,31 @@ msgstr ""
 "Sleutelbestand bevat sleutel '%s' in groep '%s' die een waarde heeft die "
 "niet kan worden geïnterpreteerd."
 
-#: glib/gkeyfile.c:2192 glib/gkeyfile.c:2376 glib/gkeyfile.c:2891
+#: ../glib/gkeyfile.c:2192 ../glib/gkeyfile.c:2376 ../glib/gkeyfile.c:2891
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Sleutelbestand bevat geen sleutel '%s' in groep '%s'"
 
-#: glib/gkeyfile.c:3072
+#: ../glib/gkeyfile.c:3072
 msgid "Key file contains escape character at end of line"
 msgstr "Sleutelbestand bevat een ontsnappingsteken aan het einde van een regel"
 
-#: glib/gkeyfile.c:3094
+#: ../glib/gkeyfile.c:3094
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "Sleutelbestand bevat ongeldige ontsnappingstekens '%s'"
 
-#: glib/gkeyfile.c:3235
+#: ../glib/gkeyfile.c:3235
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Waarde '%s' kan niet geïnterpreteerd worden als een getal."
 
-#: glib/gkeyfile.c:3245
+#: ../glib/gkeyfile.c:3245
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "Gehele getalswaarde '%s' valt buiten bereik"
 
-#: glib/gkeyfile.c:3275
+#: ../glib/gkeyfile.c:3275
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Waarde '%s' kan niet geïnterpreteerd worden als een booleese."
