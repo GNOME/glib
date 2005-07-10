@@ -1341,18 +1341,20 @@ gchar **
 g_listenv (void)
 {
   gchar **result, *eq;
-  gint len, i;
+  gint len, i, j;
 
   len = g_strv_length (environ);
   result = g_new0 (gchar *, len + 1);
   
+  j = 0;
   for (i = 0; i < len; i++)
     {
       eq = strchr (environ[i], '=');
-      result[i] = g_strndup (environ[i], eq - environ[i]);
+      if (eq)
+	result[j++] = g_strndup (environ[i], eq - environ[i]);
     }
 
-  result[len] = NULL;
+  result[j] = NULL;
 
   return result;
 }
