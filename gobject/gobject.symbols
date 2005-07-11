@@ -127,7 +127,7 @@ g_object_get_valist
 g_object_interface_find_property
 g_object_interface_install_property
 g_object_interface_list_properties
-g_object_new G_GNUC_NULL_TERMINATED
+g_object_new
 g_object_newv
 g_object_new_valist
 g_object_notify
@@ -308,7 +308,7 @@ g_type_add_interface_dynamic
 g_type_add_interface_static
 g_type_check_class_cast
 g_type_check_class_is_a
-g_type_check_instance
+g_type_check_instance 
 g_type_check_instance_cast
 g_type_check_instance_is_a
 g_type_check_is_value_type

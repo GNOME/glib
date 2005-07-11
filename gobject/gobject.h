@@ -131,7 +131,7 @@ GParamSpec**g_object_interface_list_properties  (gpointer     g_iface,
 
 gpointer    g_object_new                      (GType           object_type,
 					       const gchar    *first_property_name,
-					       ...) G_GNUC_NULL_TERMINATED;
+					       ...);
 gpointer    g_object_newv		      (GType           object_type,
 					       guint	       n_parameters,
 					       GParameter     *parameters);
