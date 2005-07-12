@@ -275,6 +275,15 @@ Flags which modify individual options.
 @G_OPTION_FLAG_FILENAME: For options of the %G_OPTION_ARG_CALLBACK
    kind, this flag indicates that the argument should be passed to the
    callback in the GLib filename encoding rather than UTF-8. Since 2.8
+@G_OPTION_FLAG_OPTIONAL_ARG: For options of the %G_OPTION_ARG_CALLBACK 
+   kind, this flag indicates that the argument supply is optional. If no argument
+   is given then data of %GOptionParseFunc will be set to NULL. Since 2.8
+@G_OPTION_FLAG_NOALIAS: This flag turns off the automatic conflict resolution
+   which prefixes long option names with <literal>groupname-</literal> if 
+   there is a conflict. This option should only be used in situations where
+   aliasing is necessary to model some legacy commandline interface. It is
+   not safe to use this option, unless all option groups are under your 
+   direct control. Since 2.8.
 
 <!-- ##### MACRO G_OPTION_REMAINING ##### -->
 <para>
