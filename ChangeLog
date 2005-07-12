@@ -1,3 +1,8 @@
+2005-07-12  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gthread.c (g_static_rec_mutex_lock_full): Don't lock
+	if depth is zero.  (#310148, Wim Taymans)
+
 2005-07-10  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gutils.c (g_listenv): Ignore anomalous environment

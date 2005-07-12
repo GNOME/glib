@@ -335,6 +335,9 @@ g_static_rec_mutex_lock_full   (GStaticRecMutex *mutex,
   if (!g_thread_supported ())
     return;
 
+  if (depth == 0)
+    return;
+
   G_THREAD_UF (thread_self, (&self));
 
   if (g_system_thread_equal (self, mutex->owner))
