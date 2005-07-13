@@ -1,5 +1,7 @@
 2005-07-13  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/glib-overrides.txt: Add G_VA_COPY
+
 	* glib/tmpl/option.sgml: Document that short names must
 	be printable ASCII characters != '-'.
 
