@@ -1649,15 +1649,29 @@ void
 g_option_group_add_entries (GOptionGroup       *group,
 			    const GOptionEntry *entries)
 {
-  gint n_entries;
+  gint i, n_entries;
   
   g_return_if_fail (entries != NULL);
 
-  for (n_entries = 0; entries[n_entries].long_name != NULL; n_entries++);
+  for (n_entries = 0; entries[n_entries].long_name != NULL; n_entries++) ;
 
   group->entries = g_renew (GOptionEntry, group->entries, group->n_entries + n_entries);
 
   memcpy (group->entries + group->n_entries, entries, sizeof (GOptionEntry) * n_entries);
+
+  for (i = group->n_entries; i < group->n_entries + n_entries; i++)
+    {
+      gchar c = group->entries[i].short_name;
+
+      if (c)
+	{
+	  if (c == '-' || !g_ascii_isprint (c))
+	    {
+	      g_warning (G_STRLOC": ignoring invalid short option '%c' (%d)", c, c);
+	      group->entries[i].short_name = 0;
+	    }
+	}
+    }
 
   group->n_entries += n_entries;
 }

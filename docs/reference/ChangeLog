@@ -1,3 +1,8 @@
+2005-07-13  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/tmpl/option.sgml: Document that short names must
+	be printable ASCII characters != '-'.
+
 2005-07-08  Matthias Clasen  <mclasen@redhat.com>
 	
 	* === Released 2.7.2 ===
