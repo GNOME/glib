@@ -1,5 +1,8 @@
 2005-07-13  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gfileutils.c (g_mkdir_with_parents): Fix a 
+	typo.  (#310243, Richard Laager)
+
 	* glib/goption.c (g_option_group_add_entries): Warn if a
 	short name is not acceptable.
 

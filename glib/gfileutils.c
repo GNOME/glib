@@ -65,7 +65,7 @@
  * Create a directory if it doesn't already exist. Create intermediate
  * parent directories as needed, too.
  *
- * Returns: 0 if the directoty already exists, or was successfully
+ * Returns: 0 if the directory already exists, or was successfully
  * created. Returns -1 if an error occurred, with errno set.
  *
  * Since: 2.8
