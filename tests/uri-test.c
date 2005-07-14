@@ -219,9 +219,6 @@ run_to_uri_tests (void)
 	    g_print ("Error message: %s\n", error->message);
 	  any_failed = TRUE;
 	}
-      
-      /* Give some output */
-      g_print (".");
     }
 }
 
@@ -303,9 +300,6 @@ run_from_uri_tests (void)
 	      any_failed = TRUE;
 	    }
 	}
-      
-      /* Give some output */
-      g_print (".");
     }
 }
 
@@ -365,11 +359,7 @@ run_roundtrip_tests (void)
 		   i, to_uri_tests[i].hostname, hostname);
 	  any_failed = TRUE;
 	}
-
-      /* Give some output */
-      g_print (".");
     }
-  g_print ("\n");
 }
 
 static void

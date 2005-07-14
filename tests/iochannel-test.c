@@ -21,7 +21,6 @@ gint main (gint argc, gchar * argv[])
     gint rlength = 0;
     glong wlength = 0;
     gsize length_out;
-    gboolean block;
     const gchar encoding[] = "EUC-JP";
     GIOStatus status;
     GIOFlags flags;
@@ -30,28 +29,28 @@ gint main (gint argc, gchar * argv[])
       srcdir = ".";
     filename = g_strconcat (srcdir, G_DIR_SEPARATOR_S, "iochannel-test-infile", NULL);
   
-    setbuf(stdout, NULL); /* For debugging */
+    setbuf (stdout, NULL); /* For debugging */
 
     gio_r = g_io_channel_new_file (filename, "r", &gerr);
     if (gerr)
       {
-        g_warning("Unable to open file %s: %s", filename, gerr->message);
-        g_error_free(gerr);
+        g_warning ("Unable to open file %s: %s", filename, gerr->message);
+        g_error_free (gerr);
         return 1;
       }
-    gio_w = g_io_channel_new_file( "iochannel-test-outfile", "w", &gerr);
+    gio_w = g_io_channel_new_file ("iochannel-test-outfile", "w", &gerr);
     if (gerr)
       {
-        g_warning("Unable to open file %s: %s", "iochannel-test-outfile", gerr->message);
-        g_error_free(gerr);
+        g_warning ("Unable to open file %s: %s", "iochannel-test-outfile", gerr->message);
+        g_error_free (gerr);
         return 1;
       }
 
     g_io_channel_set_encoding (gio_r, encoding, &gerr);
     if (gerr)
       {
-        g_warning(gerr->message);
-        g_error_free(gerr);
+        g_warning (gerr->message);
+        g_error_free (gerr);
         return 1;
       }
     
@@ -60,17 +59,11 @@ gint main (gint argc, gchar * argv[])
     status = g_io_channel_set_flags (gio_r, G_IO_FLAG_NONBLOCK, &gerr);
     if (status == G_IO_STATUS_ERROR)
       {
-        g_warning(gerr->message);
-        g_error_free(gerr);
+        g_warning (gerr->message);
+        g_error_free (gerr);
         gerr = NULL;
       }
     flags = g_io_channel_get_flags (gio_r);
-    block = ! (flags & G_IO_FLAG_NONBLOCK);
-    if (block)
-        g_print (" BLOCKING TRUE \n\n");
-    else
-        g_print (" BLOCKING FALSE \n\n");
-
     buffer = g_string_sized_new (BUFFER_SIZE);
 
     while (TRUE)
@@ -95,7 +88,9 @@ gint main (gint argc, gchar * argv[])
         if (length_out < buffer->len)
           g_warning ("Only wrote part of the line.");
 
+#ifdef VERBOSE
         g_print ("%s", buffer->str);
+#endif
         g_string_truncate (buffer, 0);
     }
 
@@ -119,12 +114,14 @@ gint main (gint argc, gchar * argv[])
 
     if (status == G_IO_STATUS_ERROR)
       {
-        g_warning(gerr->message);
-        g_error_free(gerr);
+        g_warning (gerr->message);
+        g_error_free (gerr);
         gerr = NULL;
       }
 
+#ifdef VERBOSE
     g_print ("read %d bytes, wrote %ld bytes\n", rlength, wlength);
+#endif
 
     g_io_channel_unref(gio_r);
     g_io_channel_unref(gio_w);

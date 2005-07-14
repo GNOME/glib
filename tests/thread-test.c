@@ -374,15 +374,10 @@ void
 run_all_tests()
 {
   test_g_mutex ();
-  g_print (".");
   test_g_static_rec_mutex ();
-  g_print (".");
   test_g_static_private ();
-  g_print (".");
   test_g_static_rw_lock ();
-  g_print (".");
   test_g_thread_once ();
-  g_print (".");
 }
 
 int 
@@ -401,7 +396,6 @@ main (int   argc,
 
   g_thread_use_default_impl = FALSE;
   run_all_tests ();
-  g_print ("\n");
   
 #endif
   return 0;

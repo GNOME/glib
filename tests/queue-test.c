@@ -9,6 +9,8 @@
 #include <time.h>
 #include <stdlib.h>
 
+static gboolean verbose = FALSE;
+
 static void
 check_integrity (GQueue *queue)
 {
@@ -225,7 +227,9 @@ random_test (int seed)
   QueueOp op;
   QueueInfo queues[N_QUEUES];
 
-  g_print ("seed: %d\n", seed);
+  if (verbose)
+    g_print ("seed: %d\n", seed);
+
   g_random_set_seed (seed);
   
   for (i = 0; i < N_QUEUES; ++i)
@@ -748,6 +752,9 @@ int main(int argc, gchar *args[])
   gpointer data;
   int i;
   
+  if (argc > 1 && args[1][0] == '-' && args[1][1] == 'v')
+    verbose = TRUE;
+
   q = g_queue_new ();
   
   g_assert (g_queue_is_empty (q) == TRUE);
@@ -944,6 +951,8 @@ int main(int argc, gchar *args[])
   
   g_queue_free (q);
 
+  if (argc > 2 && args[1][0] == '-' && args[1][1] == 'v')
+    random_test (strtol (args[2], NULL, 0));    
   if (argc > 1)
     random_test (strtol (args[1], NULL, 0));
   else

@@ -92,14 +92,26 @@ get_a_child (gint ttl)
 gboolean
 child_watch_callback (GPid pid, gint status, gpointer data)
 {
+#ifdef VERBOSE
   gint ttl = GPOINTER_TO_INT (data);
 
   g_print ("child " GPID_FORMAT " (ttl %d) exited, status %d\n", pid, ttl, status);
+#endif
 
   g_spawn_close_pid (pid);
 
   if (--alive == 0)
     g_main_loop_quit (main_loop);
+
+  return TRUE;
+}
+
+static gboolean
+quit_loop (gpointer data)
+{
+  GMainLoop *main_loop = data;
+
+  g_main_loop_quit (main_loop);
 
   return TRUE;
 }
@@ -121,7 +133,9 @@ test_thread (gpointer data)
   g_source_attach (source, g_main_loop_get_context (new_main_loop));
   g_source_unref (source);
 
+#ifdef VERBOSE
   g_print ("whee! created pid: " GPID_FORMAT " (ttl %d)\n", pid, ttl);
+#endif
 
   g_main_loop_run (new_main_loop);
 
@@ -164,6 +178,8 @@ main (int argc, char *argv[])
 #endif
 
   alive = 2;
+  g_timeout_add (30000, quit_loop, main_loop);
+
 #ifdef TEST_THREAD
   g_thread_create (test_thread, GINT_TO_POINTER (10), FALSE, NULL);
   g_thread_create (test_thread, GINT_TO_POINTER (20), FALSE, NULL);
@@ -178,6 +194,12 @@ main (int argc, char *argv[])
   
   g_main_loop_run (main_loop);
 
+  if (alive > 0)
+    {
+      g_warning ("%d children still alive\n", alive);
+      return 1;
+    }
+    
 #endif
    return 0;
 }

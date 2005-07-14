@@ -176,7 +176,9 @@ adder_thread (gpointer data)
   
   g_main_loop_unref (addr_data.loop);
 
+#ifdef VERBOSE
   g_print ("Timeout run %d times\n", addr_data.count);
+#endif
 
   g_mutex_lock (context_array_mutex);
   g_ptr_array_remove (context_array, context);

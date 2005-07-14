@@ -49,27 +49,31 @@ run_tests (void)
   gchar **argv = 0;
 #endif
   
-  printf ("The following errors are supposed to occur:\n");
-
   err = NULL;
   if (!g_spawn_command_line_sync ("nonexistent_application foo 'bar baz' blah blah",
                                   NULL, NULL, NULL,
                                   &err))
     {
-      fprintf (stderr, "Error (normal, supposed to happen): %s\n", err->message);
       g_error_free (err);
+    }
+  else
+    {
+      g_warning ("no error for sync spawn of nonexistent application");
+      exit (1);
     }
 
   err = NULL;
   if (!g_spawn_command_line_async ("nonexistent_application foo bar baz \"blah blah\"",
                                    &err))
     {
-      fprintf (stderr, "Error (normal, supposed to happen): %s\n", err->message);
       g_error_free (err);
     }
+  else
+    {
+      g_warning ("no error for async spawn of nonexistent application");
+      exit (1);
+    }
 
-  printf ("Errors after this are not supposed to happen:\n");
-  
   err = NULL;
 #ifdef G_OS_UNIX
   if (!g_spawn_command_line_sync ("/bin/sh -c 'echo hello'",

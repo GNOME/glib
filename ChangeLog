@@ -1,3 +1,14 @@
+2005-07-14  Matthias Clasen  <mclasen@redhat.com>
+
+	* tests/spawn-test.c: 
+	* tests/uri-test.c: 
+	* tests/thread-test.c: 
+	* tests/queue-test.c: 
+	* tests/mainloop-test.c: 
+	* tests/iochannel-test.c: 
+	* tests/gio-test.c: 
+	* tests/child-test.c: Make the tests silent on success.
+
 2005-07-13  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gfileutils.c (g_mkdir_with_parents): Fix a 
