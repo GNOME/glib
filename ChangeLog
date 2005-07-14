@@ -1,3 +1,8 @@
+2005-07-14  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gmessages.c: Include <process.h> on Win32 for getpid()
+	prototype with MSVC. (#305462, Kazuki Iwamoto)
+
 2005-07-07  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Make the size_t size detection work on AIX. 

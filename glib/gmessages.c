@@ -48,6 +48,7 @@
 #include "galias.h"
 
 #ifdef G_OS_WIN32
+#include <process.h>		/* For getpid() */
 #include <io.h>
 #endif
 
