@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.10\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-07-08 11:40-0400\n"
+"POT-Creation-Date: 2005-07-15 13:18-0400\n"
 "PO-Revision-Date: 2005-01-10 22:05+0000\n"
 "Last-Translator: Duarte Loreto <happyguy_pt@hotmail.com>\n"
 "Language-Team: Portuguese <gnome_pt@yahoogroups.com>\n"
@@ -25,14 +25,14 @@ msgstr "Conversão do conjunto de caracteres '%s' para '%s' não é suportada"
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "Incapaz de abrir conversor de '%s' para '%s'"
 
-#: glib/gconvert.c:618 glib/gconvert.c:908 glib/giochannel.c:1319
-#: glib/giochannel.c:1361 glib/giochannel.c:2203 glib/gutf8.c:911
+#: glib/gconvert.c:618 glib/gconvert.c:908 glib/giochannel.c:1322
+#: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:911
 #: glib/gutf8.c:1361
 msgid "Invalid byte sequence in conversion input"
 msgstr "Sequência de bytes inválida na origem da conversão"
 
-#: glib/gconvert.c:624 glib/gconvert.c:841 glib/giochannel.c:1326
-#: glib/giochannel.c:2215
+#: glib/gconvert.c:624 glib/gconvert.c:841 glib/giochannel.c:1329
+#: glib/giochannel.c:2218
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Erro durante a conversão: %s"
@@ -189,30 +189,30 @@ msgstr "Falha ao ler o atalho '%s': %s"
 msgid "Symbolic links not supported"
 msgstr "Atalhos não são suportados"
 
-#: glib/giochannel.c:1147
+#: glib/giochannel.c:1150
 #, c-format
 msgid "Conversion from character set `%s' to `%s' is not supported"
 msgstr "Conversão do conjunto de caracteres `%s' para `%s' não é suportada"
 
-#: glib/giochannel.c:1151
+#: glib/giochannel.c:1154
 #, c-format
 msgid "Could not open converter from `%s' to `%s': %s"
 msgstr "Incapaz de abrir conversor de `%s' para `%s': %s"
 
-#: glib/giochannel.c:1496
+#: glib/giochannel.c:1499
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr ""
 "Incapaz de efectuar uma leitura em bruto sobre g_io_channel_read_line_string"
 
-#: glib/giochannel.c:1543 glib/giochannel.c:1800 glib/giochannel.c:1886
+#: glib/giochannel.c:1546 glib/giochannel.c:1803 glib/giochannel.c:1889
 msgid "Leftover unconverted data in read buffer"
 msgstr "Dados residuais não convertidos no buffer de leitura"
 
-#: glib/giochannel.c:1623 glib/giochannel.c:1700
+#: glib/giochannel.c:1626 glib/giochannel.c:1703
 msgid "Channel terminates in a partial character"
 msgstr "Canal termina num caracter parcial"
 
-#: glib/giochannel.c:1686
+#: glib/giochannel.c:1689
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr ""
 "Incapaz de efectuar uma leitura em bruto sobre g_io_channel_read_to_end"
@@ -575,46 +575,46 @@ msgstr "Sequência inválida na conversão da entrada"
 msgid "Character out of range for UTF-16"
 msgstr "Caracter fora do limite para UTF-16"
 
-#: glib/goption.c:465
+#: glib/goption.c:468
 msgid "Usage:"
 msgstr "Utilização:"
 
-#: glib/goption.c:465
+#: glib/goption.c:468
 msgid "[OPTION...]"
 msgstr "[OPÇÃO...]"
 
-#: glib/goption.c:551
+#: glib/goption.c:556
 msgid "Help Options:"
 msgstr "Opções de Ajuda:"
 
-#: glib/goption.c:552
+#: glib/goption.c:557
 msgid "Show help options"
 msgstr "Apresentar as opções de ajuda"
 
-#: glib/goption.c:557
+#: glib/goption.c:562
 msgid "Show all help options"
 msgstr "Apresentar todas as opções de ajuda"
 
-#: glib/goption.c:607
+#: glib/goption.c:612
 msgid "Application Options:"
 msgstr "Opções da Aplicação:"
 
-#: glib/goption.c:648
+#: glib/goption.c:653
 #, fuzzy, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "Incapaz de parsear o valor inteiro '%s' para --%s"
 
-#: glib/goption.c:658
+#: glib/goption.c:663
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "Valor inteiro '%s' para %s para lá do limite permitido"
 
-#: glib/goption.c:940 glib/goption.c:1015
+#: glib/goption.c:957 glib/goption.c:1068
 #, c-format
 msgid "Missing argument for %s"
 msgstr ""
 
-#: glib/goption.c:1418
+#: glib/goption.c:1472
 #, c-format
 msgid "Unknown option %s"
 msgstr "Opção %s desconhecida"

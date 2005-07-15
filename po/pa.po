@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-07-08 11:40-0400\n"
+"POT-Creation-Date: 2005-07-15 13:18-0400\n"
 "PO-Revision-Date: 2005-07-08 09:52+0530\n"
 "Last-Translator: Amanpreet Singh Alam <amanpreetalam@yahoo.com>\n"
 "Language-Team: Punjabi <fedora-transa-pa@redhat.com>\n"
@@ -33,14 +33,14 @@ msgstr "ਕਰੈਕਟਰ ਸਮੂਹ %s ਤੋਂ %s ਵਿੱਚ ਬਦਲ�
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "ਇਸ '%s' ਤੋ '%s' ਵਿੱਚ ਬਦਲਣ ਵਾਲਾ ਉਪਲਬਧ ਨਹੀ ਹੈ"
 
-#: glib/gconvert.c:618 glib/gconvert.c:908 glib/giochannel.c:1319
-#: glib/giochannel.c:1361 glib/giochannel.c:2203 glib/gutf8.c:911
+#: glib/gconvert.c:618 glib/gconvert.c:908 glib/giochannel.c:1322
+#: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:911
 #: glib/gutf8.c:1361
 msgid "Invalid byte sequence in conversion input"
 msgstr "ਬਦਲਣ ਲਈ ਦਿਤੀ ਸਤਰ ਵਿੱਚ ਬਾਇਟ ਦਾ ਸਰੂਪ ਠੀਕ ਨਹੀ ਹੈ"
 
-#: glib/gconvert.c:624 glib/gconvert.c:841 glib/giochannel.c:1326
-#: glib/giochannel.c:2215
+#: glib/gconvert.c:624 glib/gconvert.c:841 glib/giochannel.c:1329
+#: glib/giochannel.c:2218
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "ਤਬਦੀਲੀ ਦਰਮਿਆਨ ਗਲਤੀ  %s"
@@ -197,29 +197,29 @@ msgstr "ਚਿੰਨ੍ਹ ਸਬੰਧ %s' ਖੋਲਣ ਵਿੱਚ ਗਲਤ�
 msgid "Symbolic links not supported"
 msgstr "ਚਿੰਨ੍ਹ ਸਬੰਧ ਸਹਾਇਤਾ ਪ੍ਰਾਪਤ ਨਹੀ ਹਨ"
 
-#: glib/giochannel.c:1147
+#: glib/giochannel.c:1150
 #, c-format
 msgid "Conversion from character set `%s' to `%s' is not supported"
 msgstr "ਇਸ ਅੱਖਰ ਸੂਚੀ %s' ਤੋ `%s' ਬਦਲਾਉ ਸੰਭਵ ਨਹੀ ਹੈ"
 
-#: glib/giochannel.c:1151
+#: glib/giochannel.c:1154
 #, c-format
 msgid "Could not open converter from `%s' to `%s': %s"
 msgstr "`%s' ਤੋਂ `%s' ਬਦਲਣ ਵਾਲਾ ਖੋਲਿਆ ਨਹੀਂ ਜਾ ਸਕਿਆ: %s"
 
-#: glib/giochannel.c:1496
+#: glib/giochannel.c:1499
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "g_io_channel_read_line_string ਖੁੱਲ ਨਹੀ ਰਿਹਾ ਹੈ"
 
-#: glib/giochannel.c:1543 glib/giochannel.c:1800 glib/giochannel.c:1886
+#: glib/giochannel.c:1546 glib/giochannel.c:1803 glib/giochannel.c:1889
 msgid "Leftover unconverted data in read buffer"
 msgstr "ਕੁਝ ਅਣਬਦਲਿਆ ਡਾਟਾ ਬਫਰ ਵਿੱਚ ਪਿਆ ਹੈ"
 
-#: glib/giochannel.c:1623 glib/giochannel.c:1700
+#: glib/giochannel.c:1626 glib/giochannel.c:1703
 msgid "Channel terminates in a partial character"
 msgstr "ਇਕ ਅੱਧ ਪਚਦੇ ਅੱਖਰ ਤੇ ਬੰਦ ਹੋ ਗਿਆ ਹੈ"
 
-#: glib/giochannel.c:1686
+#: glib/giochannel.c:1689
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "g_io_channel_read_to_end ਵਿੱਚ ਪਡ਼ਿਆ ਨਹੀਂ ਜਾ ਸਕਦਾ"
 
@@ -558,46 +558,46 @@ msgstr "ਬਦਲਾਉ ਲਈ ਨਿਵੇਸ਼ ਵਿੱਚ ਤਰਤੀਬ ਜ�
 msgid "Character out of range for UTF-16"
 msgstr "UTF-16 ਲਈ ਅੱਖਰ ਨਿਸ਼ਚਿਤ ਸੀਮਾ ਤੋ ਬਾਹਰ ਹਨ"
 
-#: glib/goption.c:465
+#: glib/goption.c:468
 msgid "Usage:"
 msgstr "ਵਰਤੋਂ:"
 
-#: glib/goption.c:465
+#: glib/goption.c:468
 msgid "[OPTION...]"
 msgstr "[OPTION...]"
 
-#: glib/goption.c:551
+#: glib/goption.c:556
 msgid "Help Options:"
 msgstr "ਸਹਾਇਤਾ ਚੋਣ:"
 
-#: glib/goption.c:552
+#: glib/goption.c:557
 msgid "Show help options"
 msgstr "ਸਹਾਇਤਾ ਚੋਣ ਵੇਖਾਓ"
 
-#: glib/goption.c:557
+#: glib/goption.c:562
 msgid "Show all help options"
 msgstr "ਸਭ ਸਹਾਇਤਾ ਚੋਣਾਂ ਵੇਖਾਓ"
 
-#: glib/goption.c:607
+#: glib/goption.c:612
 msgid "Application Options:"
 msgstr "ਕਾਰਜ ਚੋਣ:"
 
-#: glib/goption.c:648
+#: glib/goption.c:653
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "ਪੂਰਨ ਅੰਕ ਮੁੱਲ %s' ਨੂੰ %s ਲਈ ਪਾਰਸ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ"
 
-#: glib/goption.c:658
+#: glib/goption.c:663
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "ਪੂਰਨ ਅੰਕ '%s' %s ਲਈ ਸੀਮਾ ਤੋਂ ਬਾਹਰ ਜਾ ਰਿਹਾ ਹੈ"
 
-#: glib/goption.c:940 glib/goption.c:1015
+#: glib/goption.c:957 glib/goption.c:1068
 #, c-format
 msgid "Missing argument for %s"
 msgstr "%s ਲਈ ਮੁੱਲ (argument) ਗੁੰਮ ਹੈ"
 
-#: glib/goption.c:1418
+#: glib/goption.c:1472
 #, c-format
 msgid "Unknown option %s"
 msgstr "ਅਣਜਾਣ ਚੋਣ %s"

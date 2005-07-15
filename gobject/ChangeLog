@@ -1,5 +1,9 @@
 2005-07-15  Matthias Clasen  <mclasen@redhat.com>
 
+	* === Released 2.7.3 ===
+	
+2005-07-15  Matthias Clasen  <mclasen@redhat.com>
+
 	Make refcounting threadsafe by using atomic 
 	operations.  (#166020, Wim Taymans)
 	

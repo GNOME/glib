@@ -1,3 +1,7 @@
+2005-07-15  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.7.3 ===
+	
 2005-07-13  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/glib-overrides.txt: Add G_VA_COPY

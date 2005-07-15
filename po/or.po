@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.glib-2-4.HEAD.or\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-07-08 11:40-0400\n"
+"POT-Creation-Date: 2005-07-15 13:18-0400\n"
 "PO-Revision-Date: 2004-09-05 21:30+0530\n"
 "Last-Translator: Subhransu Behera <arya_subhransu@yahoo.co.in>\n"
 "Language-Team: Oriya <oriya-group@lists.sarovar.org>\n"
@@ -26,14 +26,14 @@ msgstr "ଅକ୍ଷର ସେଟ୍ '%s'କୁ '%s'େର ରୂପାନ୍ତ
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "'%s'ରୁ '%s'ର ରୁପାନ୍ତରକ ଖୋଲି ହେଲା ନାହିଁ"
 
-#: glib/gconvert.c:618 glib/gconvert.c:908 glib/giochannel.c:1319
-#: glib/giochannel.c:1361 glib/giochannel.c:2203 glib/gutf8.c:911
+#: glib/gconvert.c:618 glib/gconvert.c:908 glib/giochannel.c:1322
+#: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:911
 #: glib/gutf8.c:1361
 msgid "Invalid byte sequence in conversion input"
 msgstr "ରୁପାନ୍ତରଣ ନିବେଶେର ଅବୈଧ ବାଇଟ୍ ଅନୁକ୍ରମ"
 
-#: glib/gconvert.c:624 glib/gconvert.c:841 glib/giochannel.c:1326
-#: glib/giochannel.c:2215
+#: glib/gconvert.c:624 glib/gconvert.c:841 glib/giochannel.c:1329
+#: glib/giochannel.c:2218
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "ରୁପାନ୍ତରଣରେ ତ୍ରୁଟି: %s"
@@ -190,29 +190,29 @@ msgstr "'%s' ପ୍ରତିକାତ୍ମକ ସଂୟୋଗ ପଢିବା�
 msgid "Symbolic links not supported"
 msgstr "ପ୍ରତିକାତ୍ମକ ସଂୟୋଗ ଅସହାୟକ"
 
-#: glib/giochannel.c:1147
+#: glib/giochannel.c:1150
 #, c-format
 msgid "Conversion from character set `%s' to `%s' is not supported"
 msgstr "ଅକ୍ଷର ସେଟ୍ '%s'କୁ '%s'େର ରୂପାନ୍ତରିତ କରିବା ଅସହାୟକ"
 
-#: glib/giochannel.c:1151
+#: glib/giochannel.c:1154
 #, c-format
 msgid "Could not open converter from `%s' to `%s': %s"
 msgstr "%s' ରୁ '%s' ର ରୁପାନ୍ତରକ ଖୋଲି ହେଲା ନାହିଁ: %s"
 
-#: glib/giochannel.c:1496
+#: glib/giochannel.c:1499
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "g_io_channel_read_line_stringରେ ଅଂସସାଧିତ ପଠନ କରିହେଲା ନାହିଁ"
 
-#: glib/giochannel.c:1543 glib/giochannel.c:1800 glib/giochannel.c:1886
+#: glib/giochannel.c:1546 glib/giochannel.c:1803 glib/giochannel.c:1889
 msgid "Leftover unconverted data in read buffer"
 msgstr "ପଠନ ବଫରରେ ଅରୂପାନ୍ତରିତ ତଥ୍ଯ ବଳକା ଅଛି"
 
-#: glib/giochannel.c:1623 glib/giochannel.c:1700
+#: glib/giochannel.c:1626 glib/giochannel.c:1703
 msgid "Channel terminates in a partial character"
 msgstr "ଆଂଶିକ ଅକ୍ଷର ରେ ଚାନେଲର ସମାପ୍ତି"
 
-#: glib/giochannel.c:1686
+#: glib/giochannel.c:1689
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "g_io_channel_read_to_endେର ଅଂସସାଧିତ ପଠନ କରିହେଲା ନାହିଁ"
 
@@ -557,46 +557,46 @@ msgstr "ରୁପାନ୍ତରଣ ନିବେଶେର ଅବୈଧ ଅନୁ
 msgid "Character out of range for UTF-16"
 msgstr "ଇ.ଉ.ଟିଏଫ୍.-୧୬ ପାଇଁ ଅକ୍ଷରଟି ପରିସର ବାହାରେ"
 
-#: glib/goption.c:465
+#: glib/goption.c:468
 msgid "Usage:"
 msgstr "ବ୍ଯବହାର:"
 
-#: glib/goption.c:465
+#: glib/goption.c:468
 msgid "[OPTION...]"
 msgstr "[ପସନ୍ଦ...]"
 
-#: glib/goption.c:551
+#: glib/goption.c:556
 msgid "Help Options:"
 msgstr "ସାହାଯ୍ଯ ପସନ୍ଦ"
 
-#: glib/goption.c:552
+#: glib/goption.c:557
 msgid "Show help options"
 msgstr "ସାହାଯ୍ଯ ପସନ୍ଦ ଦେଖାନ୍ତୁ"
 
-#: glib/goption.c:557
+#: glib/goption.c:562
 msgid "Show all help options"
 msgstr "ସବୁ ସାହାଯ୍ଯ ପସନ୍ଦ ଦେଖାନ୍ତୁ"
 
-#: glib/goption.c:607
+#: glib/goption.c:612
 msgid "Application Options:"
 msgstr "ପ୍ରୟୋଗ ପସନ୍ଦ"
 
-#: glib/goption.c:648
+#: glib/goption.c:653
 #, fuzzy, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "--%2$s ପାଇଁ ପୂର୍ଣ ସଂଖ୍ଯା ମୂଲ୍ଯ '%1$s' ବିଶ୍ଲେଷିତ କରିହେଲା ନାହିଁ"
 
-#: glib/goption.c:658
+#: glib/goption.c:663
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "%2$s ପାଇଁ ପୂର୍ଣ ସଂଖ୍ଯା ମୂଲ୍ଯ '%1$s' ପରିସର ବାହାରେ"
 
-#: glib/goption.c:940 glib/goption.c:1015
+#: glib/goption.c:957 glib/goption.c:1068
 #, c-format
 msgid "Missing argument for %s"
 msgstr ""
 
-#: glib/goption.c:1418
+#: glib/goption.c:1472
 #, c-format
 msgid "Unknown option %s"
 msgstr "ଅଜଣା ପସନ୍ଦ %s"

@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: es\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-07-08 11:40-0400\n"
+"POT-Creation-Date: 2005-07-15 13:18-0400\n"
 "PO-Revision-Date: 2005-07-06 17:14+0200\n"
 "Last-Translator: Francisco Javier F. Serrador <serrador@cvs.gnome.org>\n"
 "Language-Team: Spanish <traductores@es.gnome.org>\n"
@@ -32,14 +32,14 @@ msgstr ""
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "No se pudo abrir el conversor de «%s»·a·«%s»"
 
-#: glib/gconvert.c:618 glib/gconvert.c:908 glib/giochannel.c:1319
-#: glib/giochannel.c:1361 glib/giochannel.c:2203 glib/gutf8.c:911
+#: glib/gconvert.c:618 glib/gconvert.c:908 glib/giochannel.c:1322
+#: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:911
 #: glib/gutf8.c:1361
 msgid "Invalid byte sequence in conversion input"
 msgstr "Hay una secuencia de bytes no válida en la entrada de conversión"
 
-#: glib/gconvert.c:624 glib/gconvert.c:841 glib/giochannel.c:1326
-#: glib/giochannel.c:2215
+#: glib/gconvert.c:624 glib/gconvert.c:841 glib/giochannel.c:1329
+#: glib/giochannel.c:2218
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Ha ocurrido un error·durante la·conversión:·%s"
@@ -199,31 +199,31 @@ msgstr "Ha ocurrido un error al leer el enlace simbólico «%s»:·%s"
 msgid "Symbolic links not supported"
 msgstr "Enlaces simbólicos no soportados"
 
-#: glib/giochannel.c:1147
+#: glib/giochannel.c:1150
 #, c-format
 msgid "Conversion from character set `%s' to `%s' is not supported"
 msgstr ""
 "La conversión desde el conjunto de caracteres «%s»·a·«%s»·no está soportada"
 
-#: glib/giochannel.c:1151
+#: glib/giochannel.c:1154
 #, c-format
 msgid "Could not open converter from `%s' to `%s': %s"
 msgstr "No se pudo abrir el conversor de «%s»·a·«%s»:·%s"
 
-#: glib/giochannel.c:1496
+#: glib/giochannel.c:1499
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr ""
 "No se puede hacer una lectura en bruto (raw) en g_io_channel_read_line_string"
 
-#: glib/giochannel.c:1543 glib/giochannel.c:1800 glib/giochannel.c:1886
+#: glib/giochannel.c:1546 glib/giochannel.c:1803 glib/giochannel.c:1889
 msgid "Leftover unconverted data in read buffer"
 msgstr "Se han dejado datos no convertidos en el búfer de lectura"
 
-#: glib/giochannel.c:1623 glib/giochannel.c:1700
+#: glib/giochannel.c:1626 glib/giochannel.c:1703
 msgid "Channel terminates in a partial character"
 msgstr "El canal termina en un carácter parcial"
 
-#: glib/giochannel.c:1686
+#: glib/giochannel.c:1689
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr ""
 "No se puede hacer una lectura en bruto (raw) en g_io_channel_read_to_end"
@@ -602,46 +602,46 @@ msgstr "La secuencia en la conversión de entrada no es válida"
 msgid "Character out of range for UTF-16"
 msgstr "El carácter se encuentra fuera del rango para UTF-16"
 
-#: glib/goption.c:465
+#: glib/goption.c:468
 msgid "Usage:"
 msgstr "Uso:"
 
-#: glib/goption.c:465
+#: glib/goption.c:468
 msgid "[OPTION...]"
 msgstr "[OPCIÓN...]"
 
-#: glib/goption.c:551
+#: glib/goption.c:556
 msgid "Help Options:"
 msgstr "Opciones de ayuda:"
 
-#: glib/goption.c:552
+#: glib/goption.c:557
 msgid "Show help options"
 msgstr "Mostrar opciones de ayuda"
 
-#: glib/goption.c:557
+#: glib/goption.c:562
 msgid "Show all help options"
 msgstr "Mostrar todas las opciones de ayuda"
 
-#: glib/goption.c:607
+#: glib/goption.c:612
 msgid "Application Options:"
 msgstr "Opciones de la aplicación:"
 
-#: glib/goption.c:648
+#: glib/goption.c:653
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "No se puede analizar gramaticalmente el valor entero «%s» para %s"
 
-#: glib/goption.c:658
+#: glib/goption.c:663
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "El valor entero «%s» para %s está fuera de rango"
 
-#: glib/goption.c:940 glib/goption.c:1015
+#: glib/goption.c:957 glib/goption.c:1068
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Falta un argumento para %s"
 
-#: glib/goption.c:1418
+#: glib/goption.c:1472
 #, c-format
 msgid "Unknown option %s"
 msgstr "Opción desconocida %s"

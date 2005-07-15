@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-07-08 11:40-0400\n"
+"POT-Creation-Date: 2005-07-15 13:18-0400\n"
 "PO-Revision-Date: 2005-06-11 10:24+0200\n"
 "Last-Translator: Martin Willemoes Hansen <mwh@sysrq.dk>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
@@ -32,14 +32,14 @@ msgstr "Konvertering fra tegnsæt \"%s\" til \"%s\" er ikke understøttet"
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "Kunne ikke konvertere fra \"%s\" til \"%s\""
 
-#: glib/gconvert.c:618 glib/gconvert.c:908 glib/giochannel.c:1319
-#: glib/giochannel.c:1361 glib/giochannel.c:2203 glib/gutf8.c:911
+#: glib/gconvert.c:618 glib/gconvert.c:908 glib/giochannel.c:1322
+#: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:911
 #: glib/gutf8.c:1361
 msgid "Invalid byte sequence in conversion input"
 msgstr "Ugyldig bytesekvens i konverteringsinddata"
 
-#: glib/gconvert.c:624 glib/gconvert.c:841 glib/giochannel.c:1326
-#: glib/giochannel.c:2215
+#: glib/gconvert.c:624 glib/gconvert.c:841 glib/giochannel.c:1329
+#: glib/giochannel.c:2218
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Fejl under konvertering: %s"
@@ -197,29 +197,29 @@ msgstr "Kunne ikke læse den symbolske henvisning \"%s\": %s"
 msgid "Symbolic links not supported"
 msgstr "Symbolske henvisninger er ikke understøttet"
 
-#: glib/giochannel.c:1147
+#: glib/giochannel.c:1150
 #, c-format
 msgid "Conversion from character set `%s' to `%s' is not supported"
 msgstr "Konvertering fra tegnsæt \"%s\" til \"%s\" er ikke understøttet"
 
-#: glib/giochannel.c:1151
+#: glib/giochannel.c:1154
 #, c-format
 msgid "Could not open converter from `%s' to `%s': %s"
 msgstr "Kunne ikke åbne konverterer fra \"%s\" til \"%s\": %s"
 
-#: glib/giochannel.c:1496
+#: glib/giochannel.c:1499
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "Kan ikke foretage en rå læsning i g_io_channel_read_line_string"
 
-#: glib/giochannel.c:1543 glib/giochannel.c:1800 glib/giochannel.c:1886
+#: glib/giochannel.c:1546 glib/giochannel.c:1803 glib/giochannel.c:1889
 msgid "Leftover unconverted data in read buffer"
 msgstr "Resterende ukonverterede data i læsemellemlager"
 
-#: glib/giochannel.c:1623 glib/giochannel.c:1700
+#: glib/giochannel.c:1626 glib/giochannel.c:1703
 msgid "Channel terminates in a partial character"
 msgstr "Kanal afslutter med et ufuldendt tegn"
 
-#: glib/giochannel.c:1686
+#: glib/giochannel.c:1689
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Kan ikke foretage en rå læsning i g_io_channel_read_to_end"
 
@@ -579,46 +579,46 @@ msgstr "Ugyldig sekvens i konverteringsinddata"
 msgid "Character out of range for UTF-16"
 msgstr "Tegn uden for gyldigt interval for UTF-16"
 
-#: glib/goption.c:465
+#: glib/goption.c:468
 msgid "Usage:"
 msgstr "Brug:"
 
-#: glib/goption.c:465
+#: glib/goption.c:468
 msgid "[OPTION...]"
 msgstr "[FLAG...]"
 
-#: glib/goption.c:551
+#: glib/goption.c:556
 msgid "Help Options:"
 msgstr "Flag for hjælp:"
 
-#: glib/goption.c:552
+#: glib/goption.c:557
 msgid "Show help options"
 msgstr "Vis flag for hjælp"
 
-#: glib/goption.c:557
+#: glib/goption.c:562
 msgid "Show all help options"
 msgstr "Vis alle flag for hjælp"
 
-#: glib/goption.c:607
+#: glib/goption.c:612
 msgid "Application Options:"
 msgstr "Flag for programmet:"
 
-#: glib/goption.c:648
+#: glib/goption.c:653
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "Kan ikke fortolke heltalsværdien \"%s\" for %s"
 
-#: glib/goption.c:658
+#: glib/goption.c:663
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "Heltalsværdien \"%s\" for %s er ikke i gyldigt interval"
 
-#: glib/goption.c:940 glib/goption.c:1015
+#: glib/goption.c:957 glib/goption.c:1068
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Mangler argument for %s"
 
-#: glib/goption.c:1418
+#: glib/goption.c:1472
 #, c-format
 msgid "Unknown option %s"
 msgstr "Ukendt flag %s"

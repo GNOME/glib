@@ -1,5 +1,9 @@
 2005-07-15  Matthias Clasen  <mclasen@redhat.com>
 
+	* === Released 2.7.3 ===
+	
+2005-07-15  Matthias Clasen  <mclasen@redhat.com>
+
 	* tests/Makefile.am (SUBDIRS): Add tests/refcount
 
 	* configure.in: Add tests/refcount

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-07-08 11:40-0400\n"
+"POT-Creation-Date: 2005-07-15 13:18-0400\n"
 "PO-Revision-Date: 2005-05-20 11:50+0545\n"
 "Last-Translator: Jyotshna Shrestha <shresthajyo@hotmail.com>\n"
 "Language-Team: Nepali <info@mpp.org.np>\n"
@@ -27,14 +27,14 @@ msgstr "वर्ण समूह '%s' बाट '%s' मा बदलन सम
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "'%s' बाट '%s'मा अनुवादक खुलेन"
 
-#: glib/gconvert.c:618 glib/gconvert.c:908 glib/giochannel.c:1319
-#: glib/giochannel.c:1361 glib/giochannel.c:2203 glib/gutf8.c:911
+#: glib/gconvert.c:618 glib/gconvert.c:908 glib/giochannel.c:1322
+#: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:911
 #: glib/gutf8.c:1361
 msgid "Invalid byte sequence in conversion input"
 msgstr "अनुवादन निवेशमा अमान्य बाइट शृङ्खला"
 
-#: glib/gconvert.c:624 glib/gconvert.c:841 glib/giochannel.c:1326
-#: glib/giochannel.c:2215
+#: glib/gconvert.c:624 glib/gconvert.c:841 glib/giochannel.c:1329
+#: glib/giochannel.c:2218
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "अनुवाद क्रममा गल्ती: %s"
@@ -191,29 +191,29 @@ msgstr "सांकेतिक सम्बन्ध '%s' पढ्न अस�
 msgid "Symbolic links not supported"
 msgstr "सांकेतिक सम्बन्धले समर्थन गरेन"
 
-#: glib/giochannel.c:1147
+#: glib/giochannel.c:1150
 #, c-format
 msgid "Conversion from character set `%s' to `%s' is not supported"
 msgstr "वर्ण समूह `%s' बाट `%s'मा परिवर्तन गर्न समर्थन गरेन"
 
-#: glib/giochannel.c:1151
+#: glib/giochannel.c:1154
 #, c-format
 msgid "Could not open converter from `%s' to `%s': %s"
 msgstr "अनुवादक `%s' बाट `%s' मा खुल्न सकेन : %s"
 
-#: glib/giochannel.c:1496
+#: glib/giochannel.c:1499
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "g_io_channel_read_line_string मा पढ्न सकिएन"
 
-#: glib/giochannel.c:1543 glib/giochannel.c:1800 glib/giochannel.c:1886
+#: glib/giochannel.c:1546 glib/giochannel.c:1803 glib/giochannel.c:1889
 msgid "Leftover unconverted data in read buffer"
 msgstr "अपरिवर्तित तथ्याङ्क अस्थायी पढाइमा छाडिदेऊ"
 
-#: glib/giochannel.c:1623 glib/giochannel.c:1700
+#: glib/giochannel.c:1626 glib/giochannel.c:1703
 msgid "Channel terminates in a partial character"
 msgstr "अर्ध-वर्णमा मार्ग टुङ्गिन्छ"
 
-#: glib/giochannel.c:1686
+#: glib/giochannel.c:1689
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "g_io_channel_read_to_end मा पढ्न सकिएन"
 
@@ -551,46 +551,46 @@ msgstr "अनुवादन निवेशमा अमान्य शृङ
 msgid "Character out of range for UTF-16"
 msgstr "युटिएफ-१६ को लागी वर्ण क्षेत्र भन्दा बाहिर"
 
-#: glib/goption.c:465
+#: glib/goption.c:468
 msgid "Usage:"
 msgstr "प्रयोग:"
 
-#: glib/goption.c:465
+#: glib/goption.c:468
 msgid "[OPTION...]"
 msgstr "[विकल्प...]"
 
-#: glib/goption.c:551
+#: glib/goption.c:556
 msgid "Help Options:"
 msgstr "सहयोग विकल्पहरू:"
 
-#: glib/goption.c:552
+#: glib/goption.c:557
 msgid "Show help options"
 msgstr "सहयोग विकल्पहरू देखाउनुहोला"
 
-#: glib/goption.c:557
+#: glib/goption.c:562
 msgid "Show all help options"
 msgstr "सबै सहयोग विकल्पहरू देखाउनुहोला"
 
-#: glib/goption.c:607
+#: glib/goption.c:612
 msgid "Application Options:"
 msgstr "अनुरोधपत्र विकल्पहरू:"
 
-#: glib/goption.c:648
+#: glib/goption.c:653
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "पूर्ण संख्या मान '%s' %s को लागि व्याख्या गर्न सकेन"
 
-#: glib/goption.c:658
+#: glib/goption.c:663
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "पूर्ण संख्या मान '%s' %s को लागि क्षेत्र भन्दा बाहिर छ"
 
-#: glib/goption.c:940 glib/goption.c:1015
+#: glib/goption.c:957 glib/goption.c:1068
 #, c-format
 msgid "Missing argument for %s"
 msgstr ""
 
-#: glib/goption.c:1418
+#: glib/goption.c:1472
 #, c-format
 msgid "Unknown option %s"
 msgstr "अज्ञात विकल्प %s"

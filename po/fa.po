@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-07-08 11:40-0400\n"
+"POT-Creation-Date: 2005-07-15 13:18-0400\n"
 "PO-Revision-Date: 2005-03-13 11:36+0330\n"
 "Last-Translator: Hamed Malek <hamed@farsiweb.info>\n"
 "Language-Team: Persian <farsi@lists.sharif.edu>\n"
@@ -25,14 +25,14 @@ msgstr "تبدیل از مجموعه‌نویسه‌ی «%s» به «%s» پشت
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "نمی‌توان مبدل «%s» به «%s» را باز کرد"
 
-#: glib/gconvert.c:618 glib/gconvert.c:908 glib/giochannel.c:1319
-#: glib/giochannel.c:1361 glib/giochannel.c:2203 glib/gutf8.c:911
+#: glib/gconvert.c:618 glib/gconvert.c:908 glib/giochannel.c:1322
+#: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:911
 #: glib/gutf8.c:1361
 msgid "Invalid byte sequence in conversion input"
 msgstr "دنباله‌ی بایتی نامعتبر در ورودی تبدیل"
 
-#: glib/gconvert.c:624 glib/gconvert.c:841 glib/giochannel.c:1326
-#: glib/giochannel.c:2215
+#: glib/gconvert.c:624 glib/gconvert.c:841 glib/giochannel.c:1329
+#: glib/giochannel.c:2218
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "خطا در حین تبدیل: %s"
@@ -190,29 +190,29 @@ msgstr "خواندن پیوند نمادی «%s» شکست خورد: %s"
 msgid "Symbolic links not supported"
 msgstr "پیوند‌های نمادی پشتیبانی نمی‌شوند"
 
-#: glib/giochannel.c:1147
+#: glib/giochannel.c:1150
 #, c-format
 msgid "Conversion from character set `%s' to `%s' is not supported"
 msgstr "تبدیل از مجموعه‌نویسه‌ی «%s» به «%s» پشتیبانی نمی‌شود"
 
-#: glib/giochannel.c:1151
+#: glib/giochannel.c:1154
 #, c-format
 msgid "Could not open converter from `%s' to `%s': %s"
 msgstr "نمی‌توان مبدل از «%s» به «%s» را باز کرد: %s"
 
-#: glib/giochannel.c:1496
+#: glib/giochannel.c:1499
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "نمی‌توان در g_io_channel_read_line_string خواندن خام انجام داد"
 
-#: glib/giochannel.c:1543 glib/giochannel.c:1800 glib/giochannel.c:1886
+#: glib/giochannel.c:1546 glib/giochannel.c:1803 glib/giochannel.c:1889
 msgid "Leftover unconverted data in read buffer"
 msgstr "داده‌ی تبدیل‌نشده در میان‌گیر خواندن باقی مانده است"
 
-#: glib/giochannel.c:1623 glib/giochannel.c:1700
+#: glib/giochannel.c:1626 glib/giochannel.c:1703
 msgid "Channel terminates in a partial character"
 msgstr "کانال با یک نویسه‌ی ناتمام پایان می‌یابد"
 
-#: glib/giochannel.c:1686
+#: glib/giochannel.c:1689
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "نمی‌توان در g_io_channel_read_to_end خواندن خام انجام داد"
 
@@ -565,46 +565,46 @@ msgstr "دنباله‌ی نامعتبر در ورودی تبدیل"
 msgid "Character out of range for UTF-16"
 msgstr "نویسه‌ی خارج از محدوده برای UTF-16"
 
-#: glib/goption.c:465
+#: glib/goption.c:468
 msgid "Usage:"
 msgstr "طریقه‌ی استفاده:"
 
-#: glib/goption.c:465
+#: glib/goption.c:468
 msgid "[OPTION...]"
 msgstr "[گزینه...]"
 
-#: glib/goption.c:551
+#: glib/goption.c:556
 msgid "Help Options:"
 msgstr "گزینه‌های راهنما:"
 
-#: glib/goption.c:552
+#: glib/goption.c:557
 msgid "Show help options"
 msgstr "نمایش گزینه‌های راهنما"
 
-#: glib/goption.c:557
+#: glib/goption.c:562
 msgid "Show all help options"
 msgstr "نمایش همه‌ی گزینه‌های راهنما"
 
-#: glib/goption.c:607
+#: glib/goption.c:612
 msgid "Application Options:"
 msgstr "گزینه‌های برنامه:"
 
-#: glib/goption.c:648
+#: glib/goption.c:653
 #, fuzzy, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "نمی‌توان مقدار صحیح «%s» را برای --%s تجزیه کرد"
 
-#: glib/goption.c:658
+#: glib/goption.c:663
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "مقدار صحیح «%s» برای %s خارج از محدوده است"
 
-#: glib/goption.c:940 glib/goption.c:1015
+#: glib/goption.c:957 glib/goption.c:1068
 #, c-format
 msgid "Missing argument for %s"
 msgstr ""
 
-#: glib/goption.c:1418
+#: glib/goption.c:1472
 #, c-format
 msgid "Unknown option %s"
 msgstr "گزینه نامعلوم %s"
