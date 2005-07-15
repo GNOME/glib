@@ -1,3 +1,17 @@
+Overview of Changes from GLib 2.7.2 to GLib 2.7.3
+=================================================
+* GOption
+ - Allow callbacks with optional arguments [Pawel Sliwowski]
+ - Allow to turn off the automatic long option name
+   disambiguation  [Adam McLaurin]
+ - Only allow printable ASCII as short option names [Matthias]
+* Win32
+ - Build fixes [Tor Lillqvist]
+ - Rewrite iochannel socket implementation [Tor]
+* Bug fixes [Morten Welinder, Matthias, Wim Taymans]
+* Documentation improvements [Richard Laager, Matthias]
+* New and improved translations (bf,cs,hu,nb,nl,no)
+
 Overview of Changes from GLib 2.7.1 to GLib 2.7.2
 =================================================
 * Win32 build fixes [Hans Breuer]
