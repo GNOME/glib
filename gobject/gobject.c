@@ -66,7 +66,6 @@ static void	g_object_init				(GObject	*object);
 static GObject*	g_object_constructor			(GType                  type,
 							 guint                  n_construct_properties,
 							 GObjectConstructParam *construct_params);
-static void	g_object_last_unref			(GObject	*object);
 static void	g_object_real_dispose			(GObject	*object);
 static void	g_object_finalize			(GObject	*object);
 static void	g_object_do_set_property		(GObject        *object,
@@ -117,6 +116,7 @@ static gulong	            gobject_signals[LAST_SIGNAL] = { 0, };
 G_LOCK_DEFINE_STATIC (construct_objects_lock);
 static GSList *construct_objects = NULL;
 
+static GStaticRecMutex notify_mutex = G_STATIC_REC_MUTEX_INIT;
 
 /* --- functions --- */
 #ifdef	G_ENABLE_DEBUG
@@ -533,7 +533,7 @@ g_object_real_dispose (GObject *object)
   /* yes, temporarily altering the ref_count is hackish, but that
    * enforces people not jerking around with weak_ref notifiers
    */
-  ref_count = object->ref_count;
+  ref_count = g_atomic_int_get (&object->ref_count);
   object->ref_count = 0;
   g_datalist_id_set_data (&object->qdata, quark_weak_refs, NULL);
   object->ref_count = ref_count;
@@ -556,38 +556,6 @@ g_object_finalize (GObject *object)
 #endif	/* G_ENABLE_DEBUG */
 }
 
-static void
-g_object_last_unref (GObject *object)
-{
-  g_return_if_fail (object->ref_count > 0);
-  
-  if (object->ref_count == 1)	/* may have been re-referenced meanwhile */
-    G_OBJECT_GET_CLASS (object)->dispose (object);
-  
-#ifdef	G_ENABLE_DEBUG
-  if (g_trap_object_ref == object)
-    G_BREAKPOINT ();
-#endif	/* G_ENABLE_DEBUG */
-
-  object->ref_count -= 1;
-  
-  if (object->ref_count == 0)	/* may have been re-referenced meanwhile */
-    {
-      g_signal_handlers_destroy (object);
-      g_datalist_id_set_data (&object->qdata, quark_weak_refs, NULL);
-      G_OBJECT_GET_CLASS (object)->finalize (object);
-#ifdef	G_ENABLE_DEBUG
-      IF_DEBUG (OBJECTS)
-	{
-	  /* catch objects not chaining finalize handlers */
-	  G_LOCK (debug_objects);
-	  g_assert (g_hash_table_lookup (debug_objects_ht, object) == NULL);
-	  G_UNLOCK (debug_objects);
-	}
-#endif	/* G_ENABLE_DEBUG */
-      g_type_free_instance ((GTypeInstance*) object);
-    }
-}
 
 static void
 g_object_dispatch_properties_changed (GObject     *object,
@@ -615,12 +583,15 @@ void
 g_object_freeze_notify (GObject *object)
 {
   g_return_if_fail (G_IS_OBJECT (object));
-  if (!object->ref_count)
+
+  if (g_atomic_int_get (&object->ref_count) == 0)
     return;
 
+  g_static_rec_mutex_lock (&notify_mutex);
   g_object_ref (object);
   g_object_notify_queue_freeze (object, &property_notify_context);
   g_object_unref (object);
+  g_static_rec_mutex_unlock (&notify_mutex);
 }
 
 void
@@ -631,7 +602,7 @@ g_object_notify (GObject     *object,
   
   g_return_if_fail (G_IS_OBJECT (object));
   g_return_if_fail (property_name != NULL);
-  if (!object->ref_count)
+  if (g_atomic_int_get (&object->ref_count) == 0)
     return;
   
   g_object_ref (object);
@@ -651,10 +622,13 @@ g_object_notify (GObject     *object,
 	       property_name);
   else
     {
-      GObjectNotifyQueue *nqueue = g_object_notify_queue_freeze (object, &property_notify_context);
-
+      GObjectNotifyQueue *nqueue;
+      
+      g_static_rec_mutex_lock (&notify_mutex);
+      nqueue = g_object_notify_queue_freeze (object, &property_notify_context);
       g_object_notify_queue_add (object, nqueue, pspec);
       g_object_notify_queue_thaw (object, nqueue);
+      g_static_rec_mutex_unlock (&notify_mutex);
     }
   g_object_unref (object);
 }
@@ -665,16 +639,18 @@ g_object_thaw_notify (GObject *object)
   GObjectNotifyQueue *nqueue;
   
   g_return_if_fail (G_IS_OBJECT (object));
-  if (!object->ref_count)
+  if (g_atomic_int_get (&object->ref_count) == 0)
     return;
   
   g_object_ref (object);
+  g_static_rec_mutex_lock (&notify_mutex);
   nqueue = g_object_notify_queue_from_object (object, &property_notify_context);
   if (!nqueue || !nqueue->freeze_count)
     g_warning ("%s: property-changed notification for %s(%p) is not frozen",
 	       G_STRFUNC, G_OBJECT_TYPE_NAME (object), object);
   else
     g_object_notify_queue_thaw (object, nqueue);
+  g_static_rec_mutex_unlock (&notify_mutex);
   g_object_unref (object);
 }
 
@@ -730,7 +706,9 @@ object_set_property (GObject             *object,
   else
     {
       class->set_property (object, param_id, &tmp_value, pspec);
+      g_static_rec_mutex_lock (&notify_mutex);
       g_object_notify_queue_add (object, nqueue, pspec);
+      g_static_rec_mutex_unlock (&notify_mutex);
     }
   g_value_unset (&tmp_value);
 }
@@ -1085,6 +1063,7 @@ g_object_set_valist (GObject	 *object,
   
   g_return_if_fail (G_IS_OBJECT (object));
   
+  g_static_rec_mutex_lock (&notify_mutex);
   g_object_ref (object);
   nqueue = g_object_notify_queue_freeze (object, &property_notify_context);
   
@@ -1141,6 +1120,7 @@ g_object_set_valist (GObject	 *object,
 
   g_object_notify_queue_thaw (object, nqueue);
   g_object_unref (object);
+  g_static_rec_mutex_unlock (&notify_mutex);
 }
 
 void
@@ -1246,6 +1226,7 @@ g_object_set_property (GObject	    *object,
   g_return_if_fail (property_name != NULL);
   g_return_if_fail (G_IS_VALUE (value));
   
+  g_static_rec_mutex_lock (&notify_mutex);
   g_object_ref (object);
   nqueue = g_object_notify_queue_freeze (object, &property_notify_context);
   
@@ -1271,6 +1252,7 @@ g_object_set_property (GObject	    *object,
   
   g_object_notify_queue_thaw (object, nqueue);
   g_object_unref (object);
+  g_static_rec_mutex_unlock (&notify_mutex);
 }
 
 void
@@ -1663,6 +1645,7 @@ gpointer
 g_object_ref (gpointer _object)
 {
   GObject *object = _object;
+  gint old_val;
 
   g_return_val_if_fail (G_IS_OBJECT (object), NULL);
   g_return_val_if_fail (object->ref_count > 0, NULL);
@@ -1672,8 +1655,10 @@ g_object_ref (gpointer _object)
     G_BREAKPOINT ();
 #endif  /* G_ENABLE_DEBUG */
 
-  object->ref_count += 1;
-  if (object->ref_count == 2 && OBJECT_HAS_TOGGLE_REF (object))
+
+  old_val = g_atomic_int_exchange_and_add (&object->ref_count, 1);
+
+  if (old_val == 1 && OBJECT_HAS_TOGGLE_REF (object))
     toggle_refs_notify (object, FALSE);
   
   return object;
@@ -1683,6 +1668,8 @@ void
 g_object_unref (gpointer _object)
 {
   GObject *object = _object;
+  gint old_val;
+  gboolean is_zero;
 
   g_return_if_fail (G_IS_OBJECT (object));
   g_return_if_fail (object->ref_count > 0);
@@ -1692,14 +1679,60 @@ g_object_unref (gpointer _object)
     G_BREAKPOINT ();
 #endif  /* G_ENABLE_DEBUG */
 
-  if (object->ref_count > 1)
+retry1:
+  old_val = g_atomic_int_get (&object->ref_count);
+  if (old_val > 1)
     {
-      object->ref_count -= 1;
-      if (object->ref_count == 1 && OBJECT_HAS_TOGGLE_REF (object))
+      if (!g_atomic_int_compare_and_exchange (&object->ref_count, old_val, old_val-1))
+	goto retry1;
+
+      /* if we went from 2->1 we need to notify toggle refs if any */
+      if (old_val == 2 && OBJECT_HAS_TOGGLE_REF (object))
 	toggle_refs_notify (object, TRUE);
     }
   else
-    g_object_last_unref (object);
+    {
+      /* removing the last ref */
+      G_OBJECT_GET_CLASS (object)->dispose (object);
+
+      /* dispose could have resurected the object */
+retry2:
+      old_val = g_atomic_int_get (&object->ref_count);
+      if (old_val > 1)
+        {
+          if (!g_atomic_int_compare_and_exchange (&object->ref_count, old_val, old_val-1))
+	    goto retry2;
+
+          /* if we went from 2->1 we need to notify toggle refs if any */
+          if (old_val == 2 && OBJECT_HAS_TOGGLE_REF (object))
+	    toggle_refs_notify (object, TRUE);
+
+	  return;
+	}
+
+      /* we are still taking away the last ref */
+      g_signal_handlers_destroy (object);
+      g_datalist_id_set_data (&object->qdata, quark_weak_refs, NULL);
+
+      /* now we really take away the last ref */
+      is_zero = g_atomic_int_dec_and_test (&object->ref_count);
+
+      /* may have been re-referenced meanwhile */
+      if (G_LIKELY (is_zero)) 
+	{
+          G_OBJECT_GET_CLASS (object)->finalize (object);
+#ifdef	G_ENABLE_DEBUG
+          IF_DEBUG (OBJECTS)
+	    {
+	      /* catch objects not chaining finalize handlers */
+	      G_LOCK (debug_objects);
+	      g_assert (g_hash_table_lookup (debug_objects_ht, object) == NULL);
+	      G_UNLOCK (debug_objects);
+	    }
+#endif	/* G_ENABLE_DEBUG */
+          g_type_free_instance ((GTypeInstance*) object);
+	}
+    }
 }
 
 gpointer

@@ -1,4 +1,4 @@
-SUBDIRS=gobject
+SUBDIRS=gobject refcount
 
 INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/glib -I$(top_srcdir)/gmodule $(GLIB_DEBUG_FLAGS)
 

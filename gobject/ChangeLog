@@ -1,3 +1,30 @@
+2005-07-15  Matthias Clasen  <mclasen@redhat.com>
+
+	Make refcounting threadsafe by using atomic 
+	operations.  (#166020, Wim Taymans)
+	
+	* gobject.c: Use a recursive lock to protect the 
+	notify queue.
+	(g_object_unref): Get rid of g_object_last_unref and
+	do the last unref handling in g_object_unref.
+	(g_object_ref, g_object_unref): Use atomic operations.
+
+	* gsignal.c (struct _HandlerMatch): Use a full integer
+	for the ref_count field.
+	(handler_ref, handler_unref_R): Use atomic operations.
+
+	* gparam.c (g_param_spec_ref, g_param_spec_unref): 
+	Use atomic operations instead of a lock to make the
+	refcounting threadsafe.
+
+	* gclosure.c (g_closure_ref, g_closure_unref): Use atomic
+	operations. This is more complicated here, since the
+	refcount is stored in a bitfield, so we also have
+	to access all other bitfield members atomically.
+
+	* gsignal.c (handlers_find): Read the meta_marshal flag
+	of the closure atomically.
+
 2005-07-11  Matthias Clasen  <mclasen@redhat.com>
 
 	* gobject.h: 

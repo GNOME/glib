@@ -2723,6 +2723,7 @@ docs/reference/gobject/Makefile
 docs/reference/gobject/version.xml
 tests/Makefile
 tests/gobject/Makefile
+tests/refcount/Makefile
 m4macros/Makefile
 ])
 

@@ -1,0 +1,34 @@
+INCLUDES =					\
+	-I$(top_srcdir)				\
+	-I$(top_srcdir)/glib			\
+	-I$(top_srcdir)/gmodule			\
+	$(GLIB_DEBUG_FLAGS)
+
+libglib = $(top_builddir)/glib/libglib-2.0.la
+libgthread = $(top_builddir)/gthread/libgthread-2.0.la
+libgmodule = $(top_builddir)/gmodule/libgmodule-2.0.la
+libgobject = $(top_builddir)/gobject/libgobject-2.0.la
+
+LDADD = $(libgobject) $(libgthread)
+
+test_programs =					\
+	signal1					\
+	signal2					\
+	signal3					\
+	objects					\
+	objects2				\
+	properties				\
+	properties2
+
+signal1_SOURCES = signals.c
+signal1_CFLAGS = -DTESTNUM=1 $(AM_CFLAGS)
+signal2_SOURCES = signals.c
+signal2_CFLAGS = -DTESTNUM=2 $(AM_CFLAGS)
+signal3_SOURCES = signals.c
+signal3_CFLAGS = -DTESTNUM=3 $(AM_CFLAGS)
+
+check_PROGRAMS = $(test_programs)
+
+TESTS = $(test_programs)
+TESTS_ENVIRONMENT = srcdir=$(srcdir) \
+	LIBCHARSET_ALIAS_DIR=$(top_builddir)/glib/libcharset

@@ -97,7 +97,7 @@ g_io_channel_ref (GIOChannel *channel)
 {
   g_return_val_if_fail (channel != NULL, NULL);
 
-  channel->ref_count++;
+  g_atomic_int_inc (&channel->ref_count);
 
   return channel;
 }
@@ -105,10 +105,13 @@ g_io_channel_ref (GIOChannel *channel)
 void 
 g_io_channel_unref (GIOChannel *channel)
 {
+  gboolean is_zero;
+
   g_return_if_fail (channel != NULL);
 
-  channel->ref_count--;
-  if (channel->ref_count == 0)
+  is_zero = g_atomic_int_dec_and_test (&channel->ref_count);
+
+  if (G_UNLIKELY (is_zero))
     {
       if (channel->close_on_unref)
         g_io_channel_shutdown (channel, TRUE, NULL);

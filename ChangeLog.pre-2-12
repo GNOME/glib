@@ -1,5 +1,26 @@
 2005-07-15  Matthias Clasen  <mclasen@redhat.com>
 
+	* tests/Makefile.am (SUBDIRS): Add tests/refcount
+
+	* configure.in: Add tests/refcount
+
+	* tests/refcount/properties.c: Test property changes
+	from multiple threads.
+
+	* tests/refcount/signals.c: Test signal emission from
+	multiple threads.
+
+	* tests/refcount/objects.c: Test refcounting from 
+	multiple threads.
+
+	* tests/refcount/objects2.c: 
+	* tests/refcount/properties2.c: Tests to measure the 
+	overhead of threadsafe refcounting.
+	
+	* glib/giochannel.c (g_io_channel_ref, g_io_channel_unref): 
+	Use atomic operations to make refcounting
+	threadsafe.  (#166020, Wim Taymans)
+
 	* NEWS: Updates
 
 2005-07-14  Matthias Clasen  <mclasen@redhat.com>

@@ -36,6 +36,44 @@
 #define	CLOSURE_N_NOTIFIERS(cl)		(CLOSURE_N_MFUNCS (cl) + \
                                          (cl)->n_fnotifiers + \
                                          (cl)->n_inotifiers)
+
+/* union of first int we need to make atomic */
+typedef union {
+  GClosure bits;
+  gint atomic;
+} GAtomicClosureBits;
+
+#define BITS_AS_INT(b)	(((GAtomicClosureBits*)(b))->atomic)
+
+#define CLOSURE_READ_BITS(cl,bits)	(BITS_AS_INT(bits) = g_atomic_int_get ((gint*)(cl)))
+#define CLOSURE_READ_BITS2(cl,old,new)	(BITS_AS_INT(old) = CLOSURE_READ_BITS (cl, new))
+#define CLOSURE_SWAP_BITS(cl,old,new)	(g_atomic_int_compare_and_exchange ((gint*)(cl),	\
+						BITS_AS_INT(old),BITS_AS_INT(new)))
+
+#define CLOSURE_REF(closure)  							\
+G_STMT_START {									\
+  GClosure old, new;								\
+  do {										\
+    CLOSURE_READ_BITS2 (closure, &old, &new);					\
+    new.ref_count++;								\
+  }										\
+  while (!CLOSURE_SWAP_BITS (closure, &old, &new));				\
+} G_STMT_END
+
+
+#define CLOSURE_UNREF(closure, is_zero)  					\
+G_STMT_START {									\
+  GClosure old, new;								\
+  do {										\
+    CLOSURE_READ_BITS2 (closure, &old, &new);					\
+    if (old.ref_count == 1)	/* last unref, invalidate first */		\
+      g_closure_invalidate ((closure));						\
+    new.ref_count--;								\
+    is_zero = (new.ref_count == 0);						\
+  }										\
+  while (!CLOSURE_SWAP_BITS (closure, &old, &new));				\
+} G_STMT_END
+
 enum {
   FNOTIFY,
   INOTIFY,
@@ -76,6 +114,8 @@ static inline void
 closure_invoke_notifiers (GClosure *closure,
 			  guint     notify_type)
 {
+  GClosure bits, new;
+
   /* notifier layout:
    *     meta_marshal  n_guards    n_guards     n_fnotif.  n_inotifiers
    * ->[[meta_marshal][pre_guards][post_guards][fnotifiers][inotifiers]]
@@ -99,11 +139,12 @@ closure_invoke_notifiers (GClosure *closure,
       GClosureNotifyData *ndata;
       guint i, offs;
     case FNOTIFY:
-      while (closure->n_fnotifiers)
+      CLOSURE_READ_BITS (closure, &bits);
+      while (bits.n_fnotifiers)
 	{
-	  register guint n = --closure->n_fnotifiers;
+	  register guint n = --bits.n_fnotifiers;
 
-	  ndata = closure->notifiers + CLOSURE_N_MFUNCS (closure) + n;
+	  ndata = closure->notifiers + CLOSURE_N_MFUNCS (&bits) + n;
 	  closure->marshal = (GClosureMarshal) ndata->notify;
 	  closure->data = ndata->data;
 	  ndata->notify (ndata->data, closure);
@@ -112,23 +153,34 @@ closure_invoke_notifiers (GClosure *closure,
       closure->data = NULL;
       break;
     case INOTIFY:
-      closure->in_inotify = TRUE;
-      while (closure->n_inotifiers)
-	{
-          register guint n = --closure->n_inotifiers;
+      do {
+        CLOSURE_READ_BITS2 (closure, &bits, &new);
+        new.in_inotify = TRUE;
+      }
+      while (!CLOSURE_SWAP_BITS (closure, &bits,  &new));
 
-	  ndata = closure->notifiers + CLOSURE_N_MFUNCS (closure) + closure->n_fnotifiers + n;
+      while (bits.n_inotifiers)
+	{
+          register guint n = --bits.n_inotifiers;
+
+	  ndata = closure->notifiers + CLOSURE_N_MFUNCS (&bits) + bits.n_fnotifiers + n;
 	  closure->marshal = (GClosureMarshal) ndata->notify;
 	  closure->data = ndata->data;
 	  ndata->notify (ndata->data, closure);
 	}
       closure->marshal = NULL;
       closure->data = NULL;
-      closure->in_inotify = FALSE;
+      do {
+        CLOSURE_READ_BITS2 (closure, &bits, &new);
+        new.n_inotifiers = 0;
+        new.in_inotify = FALSE;
+      }
+      while (!CLOSURE_SWAP_BITS (closure, &bits, &new));
       break;
     case PRE_NOTIFY:
-      i = closure->n_guards;
-      offs = closure->meta_marshal;
+      CLOSURE_READ_BITS (closure, &bits);
+      i = bits.n_guards;
+      offs = bits.meta_marshal;
       while (i--)
 	{
 	  ndata = closure->notifiers + offs + i;
@@ -136,8 +188,9 @@ closure_invoke_notifiers (GClosure *closure,
 	}
       break;
     case POST_NOTIFY:
-      i = closure->n_guards;
-      offs = closure->meta_marshal + i;
+      CLOSURE_READ_BITS (closure, &bits);
+      i = bits.n_guards;
+      offs = bits.meta_marshal + i;
       while (i--)
 	{
 	  ndata = closure->notifiers + offs + i;
@@ -152,29 +205,48 @@ g_closure_set_meta_marshal (GClosure       *closure,
 			    gpointer        marshal_data,
 			    GClosureMarshal meta_marshal)
 {
-  GClosureNotifyData *notifiers;
+  GClosureNotifyData *old_notifiers, *new_notifiers;
   guint n;
+  GClosure old, new;
 
   g_return_if_fail (closure != NULL);
   g_return_if_fail (meta_marshal != NULL);
-  g_return_if_fail (closure->is_invalid == FALSE);
-  g_return_if_fail (closure->in_marshal == FALSE);
-  g_return_if_fail (closure->meta_marshal == 0);
 
-  n = CLOSURE_N_NOTIFIERS (closure);
-  notifiers = closure->notifiers;
-  closure->notifiers = g_renew (GClosureNotifyData, NULL, CLOSURE_N_NOTIFIERS (closure) + 1);
-  if (notifiers)
+retry:
+  CLOSURE_READ_BITS2 (closure, &old, &new);
+
+  g_return_if_fail (old.is_invalid == FALSE);
+  g_return_if_fail (old.in_marshal == FALSE);
+  g_return_if_fail (old.meta_marshal == 0);
+
+  n = CLOSURE_N_NOTIFIERS (&old);
+
+  old_notifiers = closure->notifiers;
+  new_notifiers = g_renew (GClosureNotifyData, NULL, n + 1);
+  if (old_notifiers)
     {
       /* usually the meta marshal will be setup right after creation, so the
        * g_memmove() should be rare-case scenario
        */
-      g_memmove (closure->notifiers + 1, notifiers, CLOSURE_N_NOTIFIERS (closure) * sizeof (notifiers[0]));
-      g_free (notifiers);
+      g_memmove (new_notifiers + 1, old_notifiers, n * sizeof (old_notifiers[0]));
     }
-  closure->notifiers[0].data = marshal_data;
-  closure->notifiers[0].notify = (GClosureNotify) meta_marshal;
-  closure->meta_marshal = 1;
+  new_notifiers[0].data = marshal_data;
+  new_notifiers[0].notify = (GClosureNotify) meta_marshal;
+
+  new.meta_marshal = 1;
+
+  /* this cannot be made atomic, as soon as we switch on the meta_marshal
+   * bit, another thread could use the notifier while we have not yet
+   * copied it. the safest is to install the new_notifiers first and then
+   * switch on the meta_marshal flag. */
+  closure->notifiers = new_notifiers;
+
+  if (!CLOSURE_SWAP_BITS (closure, &old, &new)) {
+    g_free (new_notifiers);
+    goto retry;
+  }
+
+  g_free (old_notifiers);
 }
 
 void
@@ -185,40 +257,56 @@ g_closure_add_marshal_guards (GClosure      *closure,
 			      GClosureNotify post_marshal_notify)
 {
   guint i;
+  GClosure old, new;
+  GClosureNotifyData *old_notifiers, *new_notifiers;
 
   g_return_if_fail (closure != NULL);
   g_return_if_fail (pre_marshal_notify != NULL);
   g_return_if_fail (post_marshal_notify != NULL);
-  g_return_if_fail (closure->is_invalid == FALSE);
-  g_return_if_fail (closure->in_marshal == FALSE);
-  g_return_if_fail (closure->n_guards < CLOSURE_MAX_N_GUARDS);
 
-  closure->notifiers = g_renew (GClosureNotifyData, closure->notifiers, CLOSURE_N_NOTIFIERS (closure) + 2);
-  if (closure->n_inotifiers)
-    closure->notifiers[(CLOSURE_N_MFUNCS (closure) +
-			closure->n_fnotifiers +
-			closure->n_inotifiers + 1)] = closure->notifiers[(CLOSURE_N_MFUNCS (closure) +
-									  closure->n_fnotifiers + 0)];
-  if (closure->n_inotifiers > 1)
-    closure->notifiers[(CLOSURE_N_MFUNCS (closure) +
-			closure->n_fnotifiers +
-			closure->n_inotifiers)] = closure->notifiers[(CLOSURE_N_MFUNCS (closure) +
-								      closure->n_fnotifiers + 1)];
-  if (closure->n_fnotifiers)
-    closure->notifiers[(CLOSURE_N_MFUNCS (closure) +
-			closure->n_fnotifiers + 1)] = closure->notifiers[CLOSURE_N_MFUNCS (closure) + 0];
-  if (closure->n_fnotifiers > 1)
-    closure->notifiers[(CLOSURE_N_MFUNCS (closure) +
-			closure->n_fnotifiers)] = closure->notifiers[CLOSURE_N_MFUNCS (closure) + 1];
-  if (closure->n_guards)
-    closure->notifiers[(closure->meta_marshal +
-			closure->n_guards +
-			closure->n_guards + 1)] = closure->notifiers[closure->meta_marshal + closure->n_guards];
-  i = closure->n_guards++;
-  closure->notifiers[closure->meta_marshal + i].data = pre_marshal_data;
-  closure->notifiers[closure->meta_marshal + i].notify = pre_marshal_notify;
-  closure->notifiers[closure->meta_marshal + i + 1].data = post_marshal_data;
-  closure->notifiers[closure->meta_marshal + i + 1].notify = post_marshal_notify;
+retry:
+  CLOSURE_READ_BITS2 (closure,  &old,  &new);
+
+  g_return_if_fail (old.is_invalid == FALSE);
+  g_return_if_fail (old.in_marshal == FALSE);
+  g_return_if_fail (old.n_guards < CLOSURE_MAX_N_GUARDS);
+
+  old_notifiers = closure->notifiers;
+  new_notifiers = g_renew (GClosureNotifyData, old_notifiers, CLOSURE_N_NOTIFIERS (&old) + 2);
+  if (old.n_inotifiers)
+    new_notifiers[(CLOSURE_N_MFUNCS (&old) +
+			old.n_fnotifiers +
+			old.n_inotifiers + 1)] = new_notifiers[(CLOSURE_N_MFUNCS (&old) +
+									  old.n_fnotifiers + 0)];
+  if (old.n_inotifiers > 1)
+    new_notifiers[(CLOSURE_N_MFUNCS (&old) +
+			old.n_fnotifiers +
+			old.n_inotifiers)] = new_notifiers[(CLOSURE_N_MFUNCS (&old) +
+								      old.n_fnotifiers + 1)];
+  if (old.n_fnotifiers)
+    new_notifiers[(CLOSURE_N_MFUNCS (&old) +
+			old.n_fnotifiers + 1)] = new_notifiers[CLOSURE_N_MFUNCS (&old) + 0];
+  if (old.n_fnotifiers > 1)
+    new_notifiers[(CLOSURE_N_MFUNCS (&old) +
+			old.n_fnotifiers)] = new_notifiers[CLOSURE_N_MFUNCS (&old) + 1];
+  if (old.n_guards)
+    new_notifiers[(old.meta_marshal +
+			old.n_guards +
+			old.n_guards + 1)] = new_notifiers[old.meta_marshal + old.n_guards];
+  i = old.n_guards;
+
+  new.n_guards = i+1;
+
+  new_notifiers[old.meta_marshal + i].data = pre_marshal_data;
+  new_notifiers[old.meta_marshal + i].notify = pre_marshal_notify;
+  new_notifiers[old.meta_marshal + i + 1].data = post_marshal_data;
+  new_notifiers[old.meta_marshal + i + 1].notify = post_marshal_notify;
+
+  /* not really atomic */
+  closure->notifiers = new_notifiers;
+
+  if (!CLOSURE_SWAP_BITS (closure, &old, &new))
+    goto retry;
 }
 
 void
@@ -227,20 +315,35 @@ g_closure_add_finalize_notifier (GClosure      *closure,
 				 GClosureNotify notify_func)
 {
   guint i;
+  GClosure old, new;
+  GClosureNotifyData *old_notifiers, *new_notifiers;
 
   g_return_if_fail (closure != NULL);
   g_return_if_fail (notify_func != NULL);
-  g_return_if_fail (closure->n_fnotifiers < CLOSURE_MAX_N_FNOTIFIERS);
 
-  closure->notifiers = g_renew (GClosureNotifyData, closure->notifiers, CLOSURE_N_NOTIFIERS (closure) + 1);
-  if (closure->n_inotifiers)
-    closure->notifiers[(CLOSURE_N_MFUNCS (closure) +
-			closure->n_fnotifiers +
-			closure->n_inotifiers)] = closure->notifiers[(CLOSURE_N_MFUNCS (closure) +
-								      closure->n_fnotifiers + 0)];
-  i = CLOSURE_N_MFUNCS (closure) + closure->n_fnotifiers++;
-  closure->notifiers[i].data = notify_data;
-  closure->notifiers[i].notify = notify_func;
+retry:
+  CLOSURE_READ_BITS2 (closure, &old, &new);
+
+  g_return_if_fail (old.n_fnotifiers < CLOSURE_MAX_N_FNOTIFIERS);
+
+  old_notifiers = closure->notifiers;
+  new_notifiers = g_renew (GClosureNotifyData, old_notifiers, CLOSURE_N_NOTIFIERS (&old) + 1);
+  if (old.n_inotifiers)
+    new_notifiers[(CLOSURE_N_MFUNCS (&old) +
+			old.n_fnotifiers +
+			old.n_inotifiers)] = new_notifiers[(CLOSURE_N_MFUNCS (&old) +
+								      old.n_fnotifiers + 0)];
+  i = CLOSURE_N_MFUNCS (&old) + old.n_fnotifiers;
+  new.n_fnotifiers++;
+
+  new_notifiers[i].data = notify_data;
+  new_notifiers[i].notify = notify_func;
+
+  /* not really atomic */
+  closure->notifiers = new_notifiers;
+
+  while (!CLOSURE_SWAP_BITS (closure, &old, &new))
+    goto retry;
 }
 
 void
@@ -249,16 +352,31 @@ g_closure_add_invalidate_notifier (GClosure      *closure,
 				   GClosureNotify notify_func)
 {
   guint i;
+  GClosure old, new;
+  GClosureNotifyData *old_notifiers, *new_notifiers;
 
   g_return_if_fail (closure != NULL);
   g_return_if_fail (notify_func != NULL);
-  g_return_if_fail (closure->is_invalid == FALSE);
-  g_return_if_fail (closure->n_inotifiers < CLOSURE_MAX_N_INOTIFIERS);
 
-  closure->notifiers = g_renew (GClosureNotifyData, closure->notifiers, CLOSURE_N_NOTIFIERS (closure) + 1);
-  i = CLOSURE_N_MFUNCS (closure) + closure->n_fnotifiers + closure->n_inotifiers++;
-  closure->notifiers[i].data = notify_data;
-  closure->notifiers[i].notify = notify_func;
+retry:
+  CLOSURE_READ_BITS2 (closure, &old, &new);
+
+  g_return_if_fail (old.is_invalid == FALSE);
+  g_return_if_fail (old.n_inotifiers < CLOSURE_MAX_N_INOTIFIERS);
+
+  old_notifiers = closure->notifiers;
+  new_notifiers = g_renew (GClosureNotifyData, old_notifiers, CLOSURE_N_NOTIFIERS (&old) + 1);
+  i = CLOSURE_N_MFUNCS (&old) + old.n_fnotifiers + old.n_inotifiers;
+  new.n_inotifiers++;
+
+  new_notifiers[i].data = notify_data;
+  new_notifiers[i].notify = notify_func;
+
+  /* not really atomic */
+  closure->notifiers = new_notifiers;
+
+  while (!CLOSURE_SWAP_BITS (closure, &old, &new))
+    goto retry;
 }
 
 static inline gboolean
@@ -267,12 +385,19 @@ closure_try_remove_inotify (GClosure       *closure,
 			    GClosureNotify notify_func)
 {
   GClosureNotifyData *ndata, *nlast;
+  GClosure old, new;
 
-  nlast = closure->notifiers + CLOSURE_N_NOTIFIERS (closure) - 1;
-  for (ndata = nlast + 1 - closure->n_inotifiers; ndata <= nlast; ndata++)
+retry:
+  CLOSURE_READ_BITS2 (closure, &old, &new);
+
+  nlast = closure->notifiers + CLOSURE_N_NOTIFIERS (&old) - 1;
+  for (ndata = nlast + 1 - old.n_inotifiers; ndata <= nlast; ndata++)
     if (ndata->notify == notify_func && ndata->data == notify_data)
       {
-	closure->n_inotifiers -= 1;
+	new.n_inotifiers -= 1;
+	if (!CLOSURE_SWAP_BITS (closure, &old, &new))
+          goto retry;
+	
 	if (ndata < nlast)
 	  *ndata = *nlast;
 
@@ -287,19 +412,27 @@ closure_try_remove_fnotify (GClosure       *closure,
 			    GClosureNotify notify_func)
 {
   GClosureNotifyData *ndata, *nlast;
+  GClosure old, new;
 
-  nlast = closure->notifiers + CLOSURE_N_NOTIFIERS (closure) - closure->n_inotifiers - 1;
-  for (ndata = nlast + 1 - closure->n_fnotifiers; ndata <= nlast; ndata++)
+retry:
+  CLOSURE_READ_BITS2 (closure, &old, &new);
+
+  nlast = closure->notifiers + CLOSURE_N_NOTIFIERS (&old) - old.n_inotifiers - 1;
+  for (ndata = nlast + 1 - old.n_fnotifiers; ndata <= nlast; ndata++)
     if (ndata->notify == notify_func && ndata->data == notify_data)
       {
-	closure->n_fnotifiers -= 1;
+	new.n_fnotifiers -= 1;
+	if (!CLOSURE_SWAP_BITS (closure, &old, &new))
+          goto retry;
+	
 	if (ndata < nlast)
 	  *ndata = *nlast;
-	if (closure->n_inotifiers)
-	  closure->notifiers[(CLOSURE_N_MFUNCS (closure) +
-			      closure->n_fnotifiers)] = closure->notifiers[(CLOSURE_N_MFUNCS (closure) +
-									    closure->n_fnotifiers +
-									    closure->n_inotifiers)];
+
+	if (new.n_inotifiers)
+	  closure->notifiers[(CLOSURE_N_MFUNCS (&new) +
+			      new.n_fnotifiers)] = closure->notifiers[(CLOSURE_N_MFUNCS (&new) +
+									    new.n_fnotifiers +
+									    new.n_inotifiers)];
 	return TRUE;
       }
   return FALSE;
@@ -312,7 +445,7 @@ g_closure_ref (GClosure *closure)
   g_return_val_if_fail (closure->ref_count > 0, NULL);
   g_return_val_if_fail (closure->ref_count < CLOSURE_MAX_REF_COUNT, NULL);
 
-  closure->ref_count += 1;
+  CLOSURE_REF (closure);
 
   return closure;
 }
@@ -320,12 +453,21 @@ g_closure_ref (GClosure *closure)
 void
 g_closure_invalidate (GClosure *closure)
 {
+  GClosure old, new;
+
   g_return_if_fail (closure != NULL);
 
-  if (!closure->is_invalid)
+retry:
+  CLOSURE_READ_BITS2 (closure, &old, &new);
+
+  if (!old.is_invalid)
     {
-      closure->ref_count += 1;	/* preserve floating flag */
-      closure->is_invalid = TRUE;
+      new.ref_count++;
+      new.is_invalid = TRUE;
+
+      if (!CLOSURE_SWAP_BITS (closure, &old, &new))
+	goto retry;
+
       closure_invoke_notifiers (closure, INOTIFY);
       g_closure_unref (closure);
     }
@@ -334,15 +476,14 @@ g_closure_invalidate (GClosure *closure)
 void
 g_closure_unref (GClosure *closure)
 {
+  gboolean is_zero;
+
   g_return_if_fail (closure != NULL);
   g_return_if_fail (closure->ref_count > 0);
 
-  if (closure->ref_count == 1)	/* last unref, invalidate first */
-    g_closure_invalidate (closure);
+  CLOSURE_UNREF (closure, is_zero);
 
-  closure->ref_count -= 1;
-
-  if (closure->ref_count == 0)
+  if (G_UNLIKELY (is_zero))
     {
       closure_invoke_notifiers (closure, FNOTIFY);
       g_free (closure->notifiers);
@@ -353,6 +494,8 @@ g_closure_unref (GClosure *closure)
 void
 g_closure_sink (GClosure *closure)
 {
+  GClosure old, new;
+
   g_return_if_fail (closure != NULL);
   g_return_if_fail (closure->ref_count > 0);
 
@@ -361,13 +504,17 @@ g_closure_sink (GClosure *closure)
    * is unowned. with invoking g_closure_sink() code may
    * indicate that it takes over that intiial ref_count.
    */
-  if (closure->floating)
+retry:
+  CLOSURE_READ_BITS2 (closure, &old, &new);
+
+  if (old.floating)
     {
-      closure->floating = FALSE;
-      if (closure->ref_count > 1)
-	closure->ref_count -= 1;
-      else
-	g_closure_unref (closure);
+      new.floating = FALSE;
+
+      if (!CLOSURE_SWAP_BITS (closure, &old, &new))
+	goto retry;
+
+      g_closure_unref (closure);
     }
 }
 
@@ -376,10 +523,14 @@ g_closure_remove_invalidate_notifier (GClosure      *closure,
 				      gpointer       notify_data,
 				      GClosureNotify notify_func)
 {
+  GClosure bits;
+
   g_return_if_fail (closure != NULL);
   g_return_if_fail (notify_func != NULL);
 
-  if (closure->is_invalid && closure->in_inotify && /* account removal of notify_func() while its called */
+  CLOSURE_READ_BITS (closure, &bits);
+
+  if (bits.is_invalid && bits.in_inotify && /* account removal of notify_func() while its called */
       ((gpointer) closure->marshal) == ((gpointer) notify_func) && closure->data == notify_data)
     closure->marshal = NULL;
   else if (!closure_try_remove_inotify (closure, notify_data, notify_func))
@@ -392,10 +543,14 @@ g_closure_remove_finalize_notifier (GClosure      *closure,
 				    gpointer       notify_data,
 				    GClosureNotify notify_func)
 {
+  GClosure bits;
+	
   g_return_if_fail (closure != NULL);
   g_return_if_fail (notify_func != NULL);
 
-  if (closure->is_invalid && !closure->in_inotify && /* account removal of notify_func() while its called */
+  CLOSURE_READ_BITS (closure, &bits);
+
+  if (bits.is_invalid && !bits.in_inotify && /* account removal of notify_func() while its called */
       ((gpointer) closure->marshal) == ((gpointer) notify_func) && closure->data == notify_data)
     closure->marshal = NULL;
   else if (!closure_try_remove_fnotify (closure, notify_data, notify_func))
@@ -410,19 +565,29 @@ g_closure_invoke (GClosure       *closure,
 		  const GValue   *param_values,
 		  gpointer        invocation_hint)
 {
+  GClosure old, new;
+
   g_return_if_fail (closure != NULL);
 
-  if (!closure->is_invalid)
-    {
+retry:
+  CLOSURE_READ_BITS2 (closure, &old, &new);
+
+  if (!old.is_invalid)
+   {
       GClosureMarshal marshal;
       gpointer marshal_data;
-      gboolean in_marshal = closure->in_marshal;
+      gboolean in_marshal = old.in_marshal;
+      gboolean meta_marshal = old.meta_marshal;
 
-      g_return_if_fail (closure->marshal || closure->meta_marshal);
+      g_return_if_fail (closure->marshal || meta_marshal);
 
-      closure->ref_count += 1;	/* preserve floating flag */
-      closure->in_marshal = TRUE;
-      if (closure->meta_marshal)
+      new.ref_count++;
+      new.in_marshal = TRUE;
+
+      if (!CLOSURE_SWAP_BITS (closure, &old, &new))
+	goto retry;
+
+      if (meta_marshal)
 	{
 	  marshal_data = closure->notifiers[0].data;
 	  marshal = (GClosureMarshal) closure->notifiers[0].notify;
@@ -434,15 +599,22 @@ g_closure_invoke (GClosure       *closure,
 	}
       if (!in_marshal)
 	closure_invoke_notifiers (closure, PRE_NOTIFY);
+
       marshal (closure,
 	       return_value,
 	       n_param_values, param_values,
 	       invocation_hint,
 	       marshal_data);
+
       if (!in_marshal)
 	closure_invoke_notifiers (closure, POST_NOTIFY);
-      closure->in_marshal = in_marshal;
-      g_closure_unref (closure);
+
+      do {
+        CLOSURE_READ_BITS2 (closure, &old, &new);
+        new.in_marshal = in_marshal;
+        new.ref_count--;
+      }
+      while (!CLOSURE_SWAP_BITS (closure, &old, &new));
     }
 }
 
