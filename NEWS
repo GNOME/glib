@@ -8,6 +8,9 @@ Overview of Changes from GLib 2.7.2 to GLib 2.7.3
 * Win32
  - Build fixes [Tor Lillqvist]
  - Rewrite iochannel socket implementation [Tor]
+* GObject
+ - Threadsafety improvements; in particular, refcounting
+   of objects is done atomically now. [Wim Taymans, Tim Janik]
 * Bug fixes [Morten Welinder, Matthias, Wim Taymans]
 * Documentation improvements [Richard Laager, Matthias]
 * New and improved translations (bf,cs,hu,nb,nl,no)
