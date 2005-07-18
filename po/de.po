@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-07-15 13:18-0400\n"
-"PO-Revision-Date: 2004-12-18 14:51+0100\n"
+"POT-Creation-Date: 2005-07-08 11:40-0400\n"
+"PO-Revision-Date: 2005-07-18 09:25-0400\n"
 "Last-Translator: Hendrik Brandt <heb@gnome-de.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -285,14 +285,12 @@ msgstr ""
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
-msgstr ""
-"»%s«, was eine Zahl in einer Zeichenreferenz (wie &#234;) sein sollte, "
-"konnte nicht analysiert werden - vielleicht ist die Zahl zu groß"
+msgstr "»%-.*s«, was eine Zahl in einer Zeichenreferenz (wie &#234;) sein sollte, konnte nicht analysiert werden - vielleicht ist die Zahl zu groß"
 
 #: glib/gmarkup.c:604
 #, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
-msgstr "Zeichenreferenz »%s« kodiert kein zulässiges Zeichen"
+msgstr "Zeichenreferenz »%-.*s« kodiert kein zulässiges Zeichen"
 
 #: glib/gmarkup.c:619
 msgid "Empty character reference; should include a digit such as &#454;"
