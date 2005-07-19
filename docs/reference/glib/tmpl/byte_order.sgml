@@ -7,7 +7,7 @@ a portable way to convert between different byte orders.
 <!-- ##### SECTION Long_Description ##### -->
 <para>
 These macros provide a portable way to determine the host byte order
-and to convert values between different byte orders.
+and to convert values between different byte orders. 
 </para>
 <para>
 The byte order is the order in which bytes are stored to create larger
@@ -37,6 +37,11 @@ They are typically used to convert values into a byte order
 which has been agreed on for use when communicating between different
 processors. The Internet uses what is known as 'network byte order'
 as the standard byte order (which is in fact the big-endian byte order).
+</para>
+<para>
+Note that the byte order conversion macros may evaluate their arguments 
+multiple times, thus you should not use them with arguments which have
+side-effects.
 </para>
 
 <!-- ##### SECTION See_Also ##### -->

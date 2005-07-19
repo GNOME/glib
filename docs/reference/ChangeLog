@@ -1,3 +1,8 @@
+2005-07-19  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/tmpl/byte_order.sgml: Add docs for #307047,
+	Bryan Silverthorn.
+
 2005-07-15  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.7.3 ===
