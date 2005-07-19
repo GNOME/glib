@@ -1,5 +1,9 @@
 2005-07-19  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gstring.c (g_string_chunk_insert_len): Avoid
+	an unnecessary strlen if len is -1.  (#169692, 
+	Benoit Dejean)
+
 	* glib/gatomic.c (g_atomic_pointer_compare_and_exchange): 
 	Fix g_atomic_pointer_compare_and_exchange on sparc64.
 	(#167572, Gert Doering)

@@ -218,16 +218,19 @@ g_string_chunk_insert_len (GStringChunk *chunk,
 			   const gchar  *string, 
 			   gssize        len)
 {
+  gssize size;
   gchar* pos;
 
   g_return_val_if_fail (chunk != NULL, NULL);
 
   if (len < 0)
-    len = strlen (string);
+    size = strlen (string);
+  else
+    size = len;
   
-  if ((chunk->storage_next + len + 1) > chunk->this_size)
+  if ((chunk->storage_next + size + 1) > chunk->this_size)
     {
-      gsize new_size = nearest_power (chunk->default_size, len + 1);
+      gsize new_size = nearest_power (chunk->default_size, size + 1);
 
       chunk->storage_list = g_slist_prepend (chunk->storage_list,
 					     g_new (gchar, new_size));
@@ -238,12 +241,13 @@ g_string_chunk_insert_len (GStringChunk *chunk,
 
   pos = ((gchar *) chunk->storage_list->data) + chunk->storage_next;
 
-  *(pos + len) = '\0';
+  *(pos + size) = '\0';
 
-  strncpy (pos, string, len);
-  len = strlen (pos);
+  strncpy (pos, string, size);
+  if (len > 0)
+    size = strlen (pos);
 
-  chunk->storage_next += len + 1;
+  chunk->storage_next += size + 1;
 
   return pos;
 }
