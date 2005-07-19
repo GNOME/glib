@@ -121,7 +121,7 @@ g_atomic_pointer_compare_and_exchange (gpointer *atomic,
 			: "=r" (result), "=m" (*a)
 			: "r" (oldval), "m" (*a), "r" (a),
 			"0" (newval));
-  return result != 0;
+  return result == oldval;
 }
 #  else /* What's that */
 #    error "Your system has an unsupported pointer size"
