@@ -1,3 +1,7 @@
+2005-07-20  Manish Singh  <yosh@gimp.org>
+
+	* tests/refcount/signals.c: use G_CALLBACK for signal connections.
+
 2005-07-20  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gthreadpool.c (g_thread_pool_free): Don't get

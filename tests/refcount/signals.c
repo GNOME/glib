@@ -244,9 +244,9 @@ main (int argc, char **argv)
   test1 = g_object_new (G_TYPE_TEST, NULL);
   test2 = g_object_new (G_TYPE_TEST, NULL);
 
-  g_signal_connect (test1, "notify::test-prop", notify, NULL);
-  g_signal_connect (test1, "test-signal1", notify, NULL);
-  g_signal_connect (test1, "test-signal2", notify, NULL);
+  g_signal_connect (test1, "notify::test-prop", G_CALLBACK (notify), NULL);
+  g_signal_connect (test1, "test-signal1", G_CALLBACK (notify), NULL);
+  g_signal_connect (test1, "test-signal2", G_CALLBACK (notify), NULL);
 
   test_threads = g_array_new (FALSE, FALSE, sizeof (GThread *));
 
