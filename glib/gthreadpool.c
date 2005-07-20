@@ -79,7 +79,6 @@ g_thread_pool_thread_proxy (gpointer data)
       gboolean goto_global_pool = !pool->pool.exclusive;
       gint len = g_async_queue_length_unlocked (pool->queue);
       
-      g_print ("thread pool proxy loop\n");
       if (g_thread_should_run (pool, len))
 	{
 	  if (watcher)
@@ -119,16 +118,13 @@ g_thread_pool_thread_proxy (gpointer data)
 	  len = g_async_queue_length_unlocked (pool->queue);
 	}
 
-      g_print ("queue len %d\n", len);
       if (!g_thread_should_run (pool, len))
 	{
-	  g_print ("shouldn't run, go to global pool\n");
 	  g_cond_broadcast (inform_cond);
 	  goto_global_pool = TRUE;
 	}
       else if (len > 0)
 	{
-	  g_print ("should run, don't go to global pool\n");
 	  /* At this pool there are no threads waiting, but tasks are. */
 	  goto_global_pool = FALSE; 
 	}
@@ -138,7 +134,6 @@ g_thread_pool_thread_proxy (gpointer data)
 	   * just return from a timed wait. We now wait for a limited
 	   * time at this pool for new tasks to avoid costly context
 	   * switches. */
-	  g_print ("no threads, no tasks, wait for a while\n");
 	  goto_global_pool = FALSE;
 	  watcher = TRUE;
 	}
