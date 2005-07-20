@@ -8,6 +8,7 @@
 G_LOCK_DEFINE_STATIC (thread_counter);
 gulong abs_thread_counter;
 gulong running_thread_counter;
+gulong leftover_task_counter;
 
 void
 thread_pool_func (gpointer a, gpointer b)
@@ -21,6 +22,7 @@ thread_pool_func (gpointer a, gpointer b)
 
   G_LOCK (thread_counter);
   running_thread_counter--;
+  leftover_task_counter--;
   G_UNLOCK (thread_counter);
 }
 
@@ -44,13 +46,14 @@ main (int   argc,
       g_thread_pool_push (pool1, GUINT_TO_POINTER (1), NULL);
       g_thread_pool_push (pool2, GUINT_TO_POINTER (1), NULL);
       g_thread_pool_push (pool3, GUINT_TO_POINTER (1), NULL);
+      leftover_task_counter += 3;
     } 
   
-  g_thread_pool_free (pool1, FALSE, TRUE);
+  g_thread_pool_free (pool1, TRUE, TRUE);
   g_thread_pool_free (pool2, FALSE, TRUE);
   g_thread_pool_free (pool3, FALSE, TRUE);
 
-  g_assert (RUNS * 3 == abs_thread_counter);
+  g_assert (RUNS * 3 == abs_thread_counter + leftover_task_counter);
   g_assert (running_thread_counter == 0);  
 #endif
   return 0;
