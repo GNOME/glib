@@ -20,10 +20,18 @@ by application programmers.
 
 <!-- ##### MACRO G_INLINE_FUNC ##### -->
 <para>
-Used to declare inline functions. If inline functions are not supported on
-the particular platform, the macro evaluates to the empty string.
+This macro is used to export function prototypes so they can be linked
+with an external version when no inlining is performed. The file which
+implements the functions should define %G_IMPLEMENTS_INLINES
+before including the headers which contain %G_INLINE_FUNC declarations.
+Since inlining is very compiler-dependent using these macros correctly
+is very difficult. Their use is strongly discouraged.
 </para>
-
+<para>
+This macro is often mistaken for a replacement for the inline keyword;
+inline is already declared in a portable manner in the glib headers
+and can be used normally.
+</para>
 
 
 <!-- ##### MACRO G_STMT_START ##### -->

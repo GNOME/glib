@@ -1,3 +1,9 @@
+2005-07-20  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/tmpl/macros_misc.sgml: Add some discouraging
+	comments to the G_INLINE_FUNC macros.  (#310836,
+	Callum McKenzie)
+
 2005-07-19  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/tmpl/byte_order.sgml: Add docs for #307047,
