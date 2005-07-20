@@ -130,7 +130,10 @@ G_CONST_RETURN gchar* G_CONST_RETURN * g_get_system_data_dirs   (void);
 
 #ifdef G_OS_WIN32
 G_CONST_RETURN gchar* G_CONST_RETURN * g_win32_get_system_data_dirs_for_module (gconstpointer address);
-static G_CONST_RETURN gchar * G_CONST_RETURN *
+#endif
+
+#if defined (G_OS_WIN32) && defined (G_CAN_INLINE) && !defined (__cplusplus)
+static inline G_CONST_RETURN gchar * G_CONST_RETURN *
 g_win32_get_system_data_dirs (void)
 {
   return g_win32_get_system_data_dirs_for_module ((gconstpointer) &g_win32_get_system_data_dirs);
