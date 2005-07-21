@@ -1,3 +1,7 @@
+2005-07-21  Matthias Clasen  <mclasen@redhat.com>
+
+	* NEWS: Updates
+
 2005-07-20  Manish Singh  <yosh@gimp.org>
 
 	* tests/refcount/signals.c: use G_CALLBACK for signal connections.

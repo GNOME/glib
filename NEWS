@@ -1,3 +1,14 @@
+Overview of Changes from GLib 2.7.3 to GLib 2.7.4
+=================================================
+* Fix g_atomic_pointer_compare_and_exchange 
+  on Sparc64 [Gert Doering]
+* Fix a hang in g_thread_pool_free. [Hong Jen Yee]
+* Win32 bug fixes [Tor Lillquist]
+* Other bug fixes [Benoit Dejean, Manish Singh]
+* Documentation improvements [Bryan Silverthorn,
+  Callum McKenzie] 
+* New and updated translations (de,lt,sq,zh_CN)
+
 Overview of Changes from GLib 2.7.2 to GLib 2.7.3
 =================================================
 * GOption
