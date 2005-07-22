@@ -34,6 +34,7 @@ and can be used normally.
 </para>
 
 
+
 <!-- ##### MACRO G_STMT_START ##### -->
 <para>
 Used within multi-statement macros so that they can be used in places where

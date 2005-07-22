@@ -1,3 +1,7 @@
+2005-07-21  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.7.4 ===
+
 2005-07-20  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/tmpl/macros_misc.sgml: Add some discouraging
