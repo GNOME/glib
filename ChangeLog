@@ -1,5 +1,7 @@
 2005-07-21  Matthias Clasen  <mclasen@redhat.com>
 
+	* configure.in: Bump version 
+
 	* === Released 2.7.4 ===
 
 	* NEWS: Updates
