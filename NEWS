@@ -1,3 +1,18 @@
+Overview of Changes from GLib 2.6.5 to GLib 2.6.6
+=================================================
+* Fix several bugs with the handling
+  of comments in key files [Mikael Magnusson]  
+* Fix g_atomic_pointer_compare_and_exchange 
+  on Sparc64 [Gert Doering]
+* Fix a deadlock with threadpools [Hong Jen Yee]
+* Make GLib work on BeOS again [Kian Duffy]
+* Win32 bug fixes [Kazuki Iwamoto]
+* Other bug fixes [Roger Leigh, Kjartan Maraas,
+  Morten Welinder]
+* New and updated translations (bg,cs,cy,de,
+  en_CA,es,et,fr,hu,ja,ko,nl,sq,sr,sr@Latn,sv,
+  te,zh_CN,zh_TW)
+
 Overview of Changes from GLib 2.6.4 to GLib 2.6.5
 =================================================
 * GOption

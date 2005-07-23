@@ -1,5 +1,7 @@
 2005-07-23  Matthias Clasen  <mclasen@redhat.com>
 
+	* NEWS: Updates
+
 	* glib/gthreadpool.c (g_thread_pool_free): Don't get
 	stuck in here if immediate is TRUE.  (#310954,
 	Hong Jen Yee)
