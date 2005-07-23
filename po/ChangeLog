@@ -1,3 +1,8 @@
+2005-07-23  Matthias Clasen  <mclasen@redhat.com>
+
+	* de.po: Fix a problem with incorrectly
+	translated printf placeholders.
+
 2005-07-15  Laurent Dhima  <laurenti@alblinux.net>
 
 	* sq.po: Updated Albanian translation.
