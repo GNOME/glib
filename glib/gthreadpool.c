@@ -545,7 +545,8 @@ g_thread_pool_free (GThreadPool     *pool,
   if (wait)
     {
       g_mutex_lock (inform_mutex);
-      while (g_async_queue_length_unlocked (real->queue) != -real->num_threads)
+      while (g_async_queue_length_unlocked (real->queue) != -real->num_threads &&
+	     !(immediate && real->num_threads == 0))
 	{
 	  g_async_queue_unlock (real->queue); 
 	  g_cond_wait (inform_cond, inform_mutex); 
@@ -554,7 +555,8 @@ g_thread_pool_free (GThreadPool     *pool,
       g_mutex_unlock (inform_mutex); 
     }
 
-  if (g_async_queue_length_unlocked (real->queue) == -real->num_threads)
+  if (immediate ||
+      g_async_queue_length_unlocked (real->queue) == -real->num_threads)
     {
       /* No thread is currently doing something (and nothing is left
        * to process in the queue) */
