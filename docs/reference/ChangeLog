@@ -1,3 +1,7 @@
+2005-07-26  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/tmpl/arrays.sgml: One more improvement.
+
 2005-07-25  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/tmpl/arrays.sgml: Add some details.  (#311310,

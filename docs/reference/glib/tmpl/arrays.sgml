@@ -291,6 +291,12 @@ If @free_segment is %TRUE it frees the memory block holding the elements
 as well. Pass %FALSE if you want to free the #GArray wrapper but preserve
 the underlying array for use elsewhere.
 </para>
+<note>
+<para>
+If array elements contain dynamically-allocated memory, they should be freed
+first.
+</para>
+</note>
 
 @array: a #GArray.
 @free_segment: if %TRUE the actual element data is freed as well.
