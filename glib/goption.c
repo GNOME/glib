@@ -23,7 +23,7 @@
 
 #include "goption.h"
 #include "glib.h"
-#include "gi18n.h"
+#include "glibintl.h"
 
 #include "galias.h"
 

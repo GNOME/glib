@@ -1,5 +1,8 @@
 2005-07-26  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/goption.c: Include glibintl.h, not gi18n.h, noticed
+	by Dan Winship.
+
 	* configure.in: Try -mt as compiler flag for threads, needed
 	for the HP C compiler on HP-UX.  (#163051, Paul Cornett)
 
