@@ -545,7 +545,7 @@ g_hash_table_foreach_remove_or_steal (GHashTable *hash_table,
  * pair, and the given @user_data parameter.  The hash table may not
  * be modified while iterating over it (you can't add/remove
  * items). To remove all items matching a predicate, use
- * g_hash_table_remove().
+ * g_hash_table_foreach_remove().
  **/
 void
 g_hash_table_foreach (GHashTable *hash_table,
