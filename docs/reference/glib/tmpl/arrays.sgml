@@ -287,7 +287,9 @@ If the array was created with @clear_ set to %TRUE, the new elements are set to 
 <!-- ##### FUNCTION g_array_free ##### -->
 <para>
 Frees the memory allocated for the #GArray.
-If @free_segment is %TRUE it frees the actual element data as well.
+If @free_segment is %TRUE it frees the memory block holding the elements
+as well. Pass %FALSE if you want to free the #GArray wrapper but preserve
+the underlying array for use elsewhere.
 </para>
 
 @array: a #GArray.

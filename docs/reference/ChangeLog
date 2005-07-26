@@ -1,3 +1,8 @@
+2005-07-25  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/tmpl/arrays.sgml: Add some details.  (#311310,
+	Jochen Baier)
+
 2005-07-21  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.7.4 ===
