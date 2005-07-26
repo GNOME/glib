@@ -1480,7 +1480,7 @@ if test x"$have_threads" != xno; then
          # skip cygwin -pthread or -pthreads test
          ;;
       *)
-        for flag in pthread pthreads; do
+        for flag in pthread pthreads mt; do
           glib_save_CFLAGS="$CFLAGS"
           CFLAGS="$CFLAGS -$flag"
           AC_TRY_RUN(glib_thread_test(0),

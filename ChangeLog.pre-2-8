@@ -1,5 +1,8 @@
 2005-07-26  Matthias Clasen  <mclasen@redhat.com>
 
+	* configure.in: Try -mt as compiler flag for threads, needed
+	for the HP C compiler on HP-UX.  (#163051, Paul Cornett)
+
 	* glib/ghash.c (g_hash_table_foreach): Fix a typo in the 
 	docs.  (#311569, Ross Burton)
 
