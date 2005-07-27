@@ -1,3 +1,8 @@
+2005-07-27  Christian Neumair  <chris@gnome-de.org>
+
+	* de.po: Fixed format specifiers. Thanks to Murray Cumming for
+	pointing this out.
+
 2005-07-26  Hendrik Brandt  <heb@gnome-de.org>
 
 	* de.po: Updated German translation.
