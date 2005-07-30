@@ -1,3 +1,22 @@
+Sat Jul 30 21:10:26 2005  Tim Janik  <timj@gtk.org>
+
+	* gobject.c: reverted notify_mutex introduction, since this prevents
+	parallelized setting of object properties on different objects, and
+	serves no apparent purpose (to me at least).
+	g_object_real_dispose(): removed non-atomic reference count 
+	modifications.
+	g_object_unref(): make sure the closures array is destroyed when
+	destroying signal handlers.
+
+	* gparam.c: cosmetic changes.
+
+	* gsignal.c: comment fixup. allow 16bit blocking count.
+
+	* gsignal.c: reverted GClosure related changes.
+
+	* gclosure.c: reverted premature commit of atomic reference
+	counting attempt.
+
 2005-07-21  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.7.4 ===

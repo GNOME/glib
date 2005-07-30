@@ -198,9 +198,7 @@ g_param_spec_sink (GParamSpec *pspec)
   g_return_if_fail (pspec->ref_count > 0);
 
   if (g_datalist_id_remove_no_notify (&pspec->qdata, quark_floating))
-    {
-      g_param_spec_unref (pspec);
-    }
+    g_param_spec_unref (pspec);
 }
 
 G_CONST_RETURN gchar*

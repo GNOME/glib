@@ -116,8 +116,6 @@ static gulong	            gobject_signals[LAST_SIGNAL] = { 0, };
 G_LOCK_DEFINE_STATIC (construct_objects_lock);
 static GSList *construct_objects = NULL;
 
-static GStaticRecMutex notify_mutex = G_STATIC_REC_MUTEX_INIT;
-
 /* --- functions --- */
 #ifdef	G_ENABLE_DEBUG
 #define	IF_DEBUG(debug_type)	if (_g_type_debug_flags & G_TYPE_DEBUG_ ## debug_type)
@@ -525,18 +523,9 @@ g_object_do_get_property (GObject     *object,
 static void
 g_object_real_dispose (GObject *object)
 {
-  guint ref_count;
-
   g_signal_handlers_destroy (object);
   g_datalist_id_set_data (&object->qdata, quark_closure_array, NULL);
-
-  /* yes, temporarily altering the ref_count is hackish, but that
-   * enforces people not jerking around with weak_ref notifiers
-   */
-  ref_count = g_atomic_int_get (&object->ref_count);
-  object->ref_count = 0;
   g_datalist_id_set_data (&object->qdata, quark_weak_refs, NULL);
-  object->ref_count = ref_count;
 }
 
 static void
@@ -587,11 +576,9 @@ g_object_freeze_notify (GObject *object)
   if (g_atomic_int_get (&object->ref_count) == 0)
     return;
 
-  g_static_rec_mutex_lock (&notify_mutex);
   g_object_ref (object);
   g_object_notify_queue_freeze (object, &property_notify_context);
   g_object_unref (object);
-  g_static_rec_mutex_unlock (&notify_mutex);
 }
 
 void
@@ -624,11 +611,9 @@ g_object_notify (GObject     *object,
     {
       GObjectNotifyQueue *nqueue;
       
-      g_static_rec_mutex_lock (&notify_mutex);
       nqueue = g_object_notify_queue_freeze (object, &property_notify_context);
       g_object_notify_queue_add (object, nqueue, pspec);
       g_object_notify_queue_thaw (object, nqueue);
-      g_static_rec_mutex_unlock (&notify_mutex);
     }
   g_object_unref (object);
 }
@@ -643,14 +628,12 @@ g_object_thaw_notify (GObject *object)
     return;
   
   g_object_ref (object);
-  g_static_rec_mutex_lock (&notify_mutex);
   nqueue = g_object_notify_queue_from_object (object, &property_notify_context);
   if (!nqueue || !nqueue->freeze_count)
     g_warning ("%s: property-changed notification for %s(%p) is not frozen",
 	       G_STRFUNC, G_OBJECT_TYPE_NAME (object), object);
   else
     g_object_notify_queue_thaw (object, nqueue);
-  g_static_rec_mutex_unlock (&notify_mutex);
   g_object_unref (object);
 }
 
@@ -706,9 +689,7 @@ object_set_property (GObject             *object,
   else
     {
       class->set_property (object, param_id, &tmp_value, pspec);
-      g_static_rec_mutex_lock (&notify_mutex);
       g_object_notify_queue_add (object, nqueue, pspec);
-      g_static_rec_mutex_unlock (&notify_mutex);
     }
   g_value_unset (&tmp_value);
 }
@@ -1063,7 +1044,6 @@ g_object_set_valist (GObject	 *object,
   
   g_return_if_fail (G_IS_OBJECT (object));
   
-  g_static_rec_mutex_lock (&notify_mutex);
   g_object_ref (object);
   nqueue = g_object_notify_queue_freeze (object, &property_notify_context);
   
@@ -1120,7 +1100,6 @@ g_object_set_valist (GObject	 *object,
 
   g_object_notify_queue_thaw (object, nqueue);
   g_object_unref (object);
-  g_static_rec_mutex_unlock (&notify_mutex);
 }
 
 void
@@ -1226,7 +1205,6 @@ g_object_set_property (GObject	    *object,
   g_return_if_fail (property_name != NULL);
   g_return_if_fail (G_IS_VALUE (value));
   
-  g_static_rec_mutex_lock (&notify_mutex);
   g_object_ref (object);
   nqueue = g_object_notify_queue_freeze (object, &property_notify_context);
   
@@ -1252,7 +1230,6 @@ g_object_set_property (GObject	    *object,
   
   g_object_notify_queue_thaw (object, nqueue);
   g_object_unref (object);
-  g_static_rec_mutex_unlock (&notify_mutex);
 }
 
 void
@@ -1668,9 +1645,9 @@ void
 g_object_unref (gpointer _object)
 {
   GObject *object = _object;
-  gint old_val;
+  gint old_ref;
   gboolean is_zero;
-
+  
   g_return_if_fail (G_IS_OBJECT (object));
   g_return_if_fail (object->ref_count > 0);
   
@@ -1679,44 +1656,46 @@ g_object_unref (gpointer _object)
     G_BREAKPOINT ();
 #endif  /* G_ENABLE_DEBUG */
 
-retry1:
-  old_val = g_atomic_int_get (&object->ref_count);
-  if (old_val > 1)
+  /* here we want to atomically do: if (ref_count>1) { ref_count--; return; } */
+ retry_atomic_decrement1:
+  old_ref = g_atomic_int_get (&object->ref_count);
+  if (old_ref > 1)
     {
-      if (!g_atomic_int_compare_and_exchange (&object->ref_count, old_val, old_val-1))
-	goto retry1;
+      if (!g_atomic_int_compare_and_exchange (&object->ref_count, old_ref, old_ref - 1))
+	goto retry_atomic_decrement1;
 
       /* if we went from 2->1 we need to notify toggle refs if any */
-      if (old_val == 2 && OBJECT_HAS_TOGGLE_REF (object))
+      if (old_ref == 2 && OBJECT_HAS_TOGGLE_REF (object))
 	toggle_refs_notify (object, TRUE);
     }
   else
     {
-      /* removing the last ref */
+      /* we are about tp remove the last reference */
       G_OBJECT_GET_CLASS (object)->dispose (object);
 
-      /* dispose could have resurected the object */
-retry2:
-      old_val = g_atomic_int_get (&object->ref_count);
-      if (old_val > 1)
+      /* may have been re-referenced meanwhile */
+    retry_atomic_decrement2:
+      old_ref = g_atomic_int_get (&object->ref_count);
+      if (old_ref > 1)
         {
-          if (!g_atomic_int_compare_and_exchange (&object->ref_count, old_val, old_val-1))
-	    goto retry2;
+          if (!g_atomic_int_compare_and_exchange (&object->ref_count, old_ref, old_ref - 1))
+	    goto retry_atomic_decrement2;
 
           /* if we went from 2->1 we need to notify toggle refs if any */
-          if (old_val == 2 && OBJECT_HAS_TOGGLE_REF (object))
+          if (old_ref == 2 && OBJECT_HAS_TOGGLE_REF (object))
 	    toggle_refs_notify (object, TRUE);
-
+          
 	  return;
 	}
-
-      /* we are still taking away the last ref */
+      
+      /* we are still in the process of taking away the last ref */
+      g_datalist_id_set_data (&object->qdata, quark_closure_array, NULL);
       g_signal_handlers_destroy (object);
       g_datalist_id_set_data (&object->qdata, quark_weak_refs, NULL);
-
-      /* now we really take away the last ref */
+      
+      /* decrement the last reference */
       is_zero = g_atomic_int_dec_and_test (&object->ref_count);
-
+      
       /* may have been re-referenced meanwhile */
       if (G_LIKELY (is_zero)) 
 	{

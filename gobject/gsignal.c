@@ -222,9 +222,9 @@ struct _Handler
   Handler      *next;
   Handler      *prev;
   GQuark	detail;
-  guint         ref_count;	/* ABI change, was 16 bits but since it's internal... */
-  guint         block_count : 12;
-#define HANDLER_MAX_BLOCK_COUNT (1 << 12)
+  guint         ref_count;
+  guint         block_count : 16;
+#define HANDLER_MAX_BLOCK_COUNT (1 << 16)
   guint         after : 1;
   GClosure     *closure;
 };
@@ -454,17 +454,6 @@ handler_match_free1_R (HandlerMatch *node,
   return next;
 }
 
-/* copy of gclosure.c code here to make the first 32 bits of the closure
- * atomic. */
-typedef union 
-{
-  GClosure bits;
-  gint atomic;
-} GAtomicClosureBits;
-
-#define BITS_AS_INT(b)  (((GAtomicClosureBits*)(b))->atomic)
-#define CLOSURE_READ_BITS(cl,bits)      (BITS_AS_INT(bits) = g_atomic_int_get ((gint*)(cl)))
-
 static HandlerMatch*
 handlers_find (gpointer         instance,
 	       GSignalMatchType mask,
@@ -491,26 +480,20 @@ handlers_find (gpointer         instance,
 	}
       
       mask = ~mask;
-      for (handler = hlist ? hlist->handlers : NULL; handler; handler = handler->next) 
-        {
-	  GClosure bits;
-
-	  CLOSURE_READ_BITS (handler->closure, &bits);
-	  
-          if (handler->sequential_number &&
-	      ((mask & G_SIGNAL_MATCH_DETAIL) || handler->detail == detail) &&
-	      ((mask & G_SIGNAL_MATCH_CLOSURE) || handler->closure == closure) &&
-              ((mask & G_SIGNAL_MATCH_DATA) || handler->closure->data == data) &&
-	      ((mask & G_SIGNAL_MATCH_UNBLOCKED) || handler->block_count == 0) &&
-	      ((mask & G_SIGNAL_MATCH_FUNC) || (handler->closure->marshal == node->c_marshaller &&
-					        bits.meta_marshal == 0 &&
-					        ((GCClosure*) handler->closure)->callback == func)))
-	    {
-	      mlist = handler_match_prepend (mlist, handler, signal_id);
-	      if (one_and_only)
-	        return mlist;
-	    }
-	}
+      for (handler = hlist ? hlist->handlers : NULL; handler; handler = handler->next)
+        if (handler->sequential_number &&
+	    ((mask & G_SIGNAL_MATCH_DETAIL) || handler->detail == detail) &&
+	    ((mask & G_SIGNAL_MATCH_CLOSURE) || handler->closure == closure) &&
+            ((mask & G_SIGNAL_MATCH_DATA) || handler->closure->data == data) &&
+	    ((mask & G_SIGNAL_MATCH_UNBLOCKED) || handler->block_count == 0) &&
+	    ((mask & G_SIGNAL_MATCH_FUNC) || (handler->closure->marshal == node->c_marshaller &&
+					      handler->closure->meta_marshal == 0 &&
+					      ((GCClosure*) handler->closure)->callback == func)))
+	  {
+	    mlist = handler_match_prepend (mlist, handler, signal_id);
+	    if (one_and_only)
+	      return mlist;
+	  }
     }
   else
     {
@@ -535,25 +518,19 @@ handlers_find (gpointer         instance,
 		}
 	      
               for (handler = hlist->handlers; handler; handler = handler->next)
-		{
-	  	  GClosure bits;
-
-	  	  CLOSURE_READ_BITS (handler->closure, &bits);
-	  
-		  if (handler->sequential_number &&
-		      ((mask & G_SIGNAL_MATCH_DETAIL) || handler->detail == detail) &&
-                      ((mask & G_SIGNAL_MATCH_CLOSURE) || handler->closure == closure) &&
-                      ((mask & G_SIGNAL_MATCH_DATA) || handler->closure->data == data) &&
-		      ((mask & G_SIGNAL_MATCH_UNBLOCKED) || handler->block_count == 0) &&
-		      ((mask & G_SIGNAL_MATCH_FUNC) || (handler->closure->marshal == node->c_marshaller &&
-						        bits.meta_marshal == 0 &&
-						        ((GCClosure*) handler->closure)->callback == func)))
-		    {
-		      mlist = handler_match_prepend (mlist, handler, hlist->signal_id);
-		      if (one_and_only)
-		        return mlist;
-		    }
-		}
+		if (handler->sequential_number &&
+		    ((mask & G_SIGNAL_MATCH_DETAIL) || handler->detail == detail) &&
+                    ((mask & G_SIGNAL_MATCH_CLOSURE) || handler->closure == closure) &&
+                    ((mask & G_SIGNAL_MATCH_DATA) || handler->closure->data == data) &&
+		    ((mask & G_SIGNAL_MATCH_UNBLOCKED) || handler->block_count == 0) &&
+		    ((mask & G_SIGNAL_MATCH_FUNC) || (handler->closure->marshal == node->c_marshaller &&
+						      handler->closure->meta_marshal == 0 &&
+						      ((GCClosure*) handler->closure)->callback == func)))
+		  {
+		    mlist = handler_match_prepend (mlist, handler, hlist->signal_id);
+		    if (one_and_only)
+		      return mlist;
+		  }
             }
         }
     }
