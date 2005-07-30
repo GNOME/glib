@@ -1,3 +1,9 @@
+Sat Jul 30 23:40:35 2005  Tim Janik  <timj@gtk.org>
+
+	* glib/tmpl/datalist.sgml:
+	* glib/tmpl/datalset.sgml: document non-thread-safety for 
+	_foreach() functions.
+
 2005-07-26  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/tmpl/arrays.sgml: One more improvement.

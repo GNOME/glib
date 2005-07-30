@@ -32,7 +32,7 @@ To get data elements from a datalist use g_datalist_id_get_data() and
 g_datalist_get_data().
 </para>
 <para>
-To iterate over all data elements in a datalist use g_datalist_foreach().
+To iterate over all data elements in a datalist use g_datalist_foreach() (not thread-safe).
 </para>
 <para>
 To remove data elements from a datalist use g_datalist_id_remove_data() and
@@ -189,6 +189,9 @@ Removes an element, without calling its destroy notifier.
 Calls the given function for each data element of the datalist.
 The function is called with each data element's #GQuark id and data,
 together with the given @user_data parameter.
+Note that this function is NOT thread-safe. So unless @datalist
+can be protected from any modifications during invokation of this
+function, it should not be called.
 </para>
 
 @datalist: a datalist.

@@ -34,7 +34,7 @@ To get data elements from a dataset use g_dataset_id_get_data() and
 g_dataset_get_data().
 </para>
 <para>
-To iterate over all data elements in a dataset use g_dataset_foreach().
+To iterate over all data elements in a dataset use g_dataset_foreach() (not thread-safe).
 </para>
 <para>
 To remove data elements from a dataset use g_dataset_id_remove_data() and
@@ -179,6 +179,9 @@ Removes an element, without calling its destroy notifier.
 <para>
 Calls the given function for each data element which is associated with the
 given location.
+Note that this function is NOT thread-safe. So unless @datalist
+can be protected from any modifications during invokation of this
+function, it should not be called.
 </para>
 
 @dataset_location: the location identifying the dataset.
