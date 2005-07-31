@@ -1,3 +1,15 @@
+Sun Jul 31 01:50:20 2005  Tim Janik  <timj@gtk.org>
+
+	* glib/gdataset.c:
+	moved G_DATALIST_*_POINTER() macros here, because proper use requires
+	the global g_dataset_global mutex to be acquired.
+	g_datalist_id_get_data():
+	g_datalist_unset_flags():
+	g_datalist_set_flags(): properly acquire and release dataset mutex.
+
+	* glib/gdatasetprivate.h: implement G_DATALIST_GET_FLAGS() via atomic
+	pointer access to account for memory barriers. moved all other macros.
+
 2005-07-26  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/goption.c: Include glibintl.h, not gi18n.h, noticed

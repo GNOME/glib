@@ -32,21 +32,12 @@
 
 G_BEGIN_DECLS
 
+/* GET_FLAGS is implemented via atomic pointer access, to allow memory
+ * barriers take effect without acquirering the global dataset mutex.
+ */
 #define G_DATALIST_GET_FLAGS(datalist)				\
-  ((gsize)*(datalist) & G_DATALIST_FLAGS_MASK)
-#define G_DATALIST_SET_FLAGS(datalist, flags) G_STMT_START {	\
-  *datalist = (GData *)((flags) | (gsize)*(datalist));		\
-} G_STMT_END
-#define G_DATALIST_UNSET_FLAGS(datalist, flags) G_STMT_START {	\
-  *datalist = (GData *)(~(gsize)(flags) & (gsize)*(datalist));	\
-} G_STMT_END
+  ((gsize) g_atomic_pointer_get (datalist) & G_DATALIST_FLAGS_MASK)
 
-#define G_DATALIST_GET_POINTER(datalist)						\
-  ((GData *)((gsize)*(datalist) & ~(gsize)G_DATALIST_FLAGS_MASK))
-#define G_DATALIST_SET_POINTER(datalist,pointer) G_STMT_START {				\
-  *(datalist) = (GData *)(G_DATALIST_GET_FLAGS (datalist) |				\
-			  (gsize)pointer);						\
-} G_STMT_END
 
 G_END_DECLS
 

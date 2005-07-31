@@ -27,8 +27,7 @@
  */
 
 /* 
- * MT safe ; FIXME: might still freeze, watch out, not thoroughly
- * looked at yet.  
+ * MT safe ; except for g_data*_foreach()
  */
 
 #include "config.h"
@@ -45,6 +44,14 @@
 #define	G_DATA_MEM_CHUNK_PREALLOC		(128)
 #define	G_DATA_CACHE_MAX			(512)
 #define	G_DATASET_MEM_CHUNK_PREALLOC		(32)
+
+/* datalist pointer modifications have to be done with the g_dataset_global mutex held */
+#define G_DATALIST_GET_POINTER(datalist)						\
+  ((GData*) ((gsize) *(datalist) & ~(gsize) G_DATALIST_FLAGS_MASK))
+#define G_DATALIST_SET_POINTER(datalist, pointer) G_STMT_START {			\
+  *(datalist) = (GData*) (G_DATALIST_GET_FLAGS (datalist) |				\
+			  (gsize) pointer);						\
+} G_STMT_END
 
 
 /* --- structures --- */
@@ -453,18 +460,21 @@ gpointer
 g_datalist_id_get_data (GData	 **datalist,
 			GQuark     key_id)
 {
+  gpointer data = NULL;
   g_return_val_if_fail (datalist != NULL, NULL);
-  
   if (key_id)
     {
       register GData *list;
-      
+      G_LOCK (g_dataset_global);
       for (list = G_DATALIST_GET_POINTER (datalist); list; list = list->next)
 	if (list->id == key_id)
-	  return list->data;
+	  {
+            data = list->data;
+            break;
+          }
+      G_UNLOCK (g_dataset_global);
     }
-  
-  return NULL;
+  return data;
 }
 
 void
@@ -547,7 +557,9 @@ g_datalist_set_flags (GData **datalist,
   g_return_if_fail (datalist != NULL);
   g_return_if_fail ((flags & ~G_DATALIST_FLAGS_MASK) == 0);
 
-  G_DATALIST_SET_FLAGS (datalist, flags);
+  G_LOCK (g_dataset_global);
+  *datalist = (GData*) (flags | (gsize) *datalist);
+  G_UNLOCK (g_dataset_global);
 }
 
 /**
@@ -568,7 +580,9 @@ g_datalist_unset_flags (GData **datalist,
   g_return_if_fail (datalist != NULL);
   g_return_if_fail ((flags & ~G_DATALIST_FLAGS_MASK) == 0);
 
-  G_DATALIST_UNSET_FLAGS (datalist, flags);
+  G_LOCK (g_dataset_global);
+  *datalist = (GData*) (~(gsize) flags & (gsize) *datalist);
+  G_UNLOCK (g_dataset_global);
 }
 
 /**
@@ -585,7 +599,7 @@ g_datalist_get_flags (GData **datalist)
 {
   g_return_val_if_fail (datalist != NULL, 0);
 
-  return G_DATALIST_GET_FLAGS (datalist);
+  return G_DATALIST_GET_FLAGS (datalist); /* atomic macro */
 }
 
 /* HOLDS: g_dataset_global_lock */
