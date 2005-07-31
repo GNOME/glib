@@ -1572,7 +1572,7 @@ g_object_add_toggle_ref (GObject       *object,
 
   /* Set a flag for fast lookup after adding the first toggle reference */
   if (tstack->n_toggle_refs == 1)
-    G_DATALIST_SET_FLAGS (&object->qdata, OBJECT_HAS_TOGGLE_REF_FLAG);
+    g_datalist_set_flags (&object->qdata, OBJECT_HAS_TOGGLE_REF_FLAG);
   
   tstack->toggle_refs[i].notify = notify;
   tstack->toggle_refs[i].data = data;
@@ -1606,7 +1606,7 @@ g_object_remove_toggle_ref (GObject       *object,
 	      tstack->toggle_refs[i] = tstack->toggle_refs[tstack->n_toggle_refs];
 
 	    if (tstack->n_toggle_refs == 0)
-	      G_DATALIST_UNSET_FLAGS (&object->qdata, OBJECT_HAS_TOGGLE_REF_FLAG);
+	      g_datalist_unset_flags (&object->qdata, OBJECT_HAS_TOGGLE_REF_FLAG);
 
 	    g_object_unref (object);
 	    

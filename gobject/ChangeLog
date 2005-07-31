@@ -1,3 +1,8 @@
+Sun Jul 31 02:04:23 2005  Tim Janik  <timj@gtk.org>
+
+	* gobject.c: use g_datalist_set_flags() and g_datalist_unset_flags() to
+	allow proper locking around &qdata modifications.
+
 Sat Jul 30 21:10:26 2005  Tim Janik  <timj@gtk.org>
 
 	* gobject.c: reverted notify_mutex introduction, since this prevents
