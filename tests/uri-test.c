@@ -317,10 +317,8 @@ safe_strcmp_filename (const gchar *a, const gchar *b)
 #ifndef G_OS_WIN32
   return safe_strcmp (a, b);
 #else
-  if (!a)
-    return safe_strcmp ("", b);
-  else if (!b)
-    return safe_strcmp (a, "");
+  if (!a || !b)
+    return safe_strcmp (a, b);
   else
     {
       while (*a && *b)
