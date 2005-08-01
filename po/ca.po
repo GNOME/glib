@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.6.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-06-10 12:53-0400\n"
+"POT-Creation-Date: 2005-08-01 10:25-0400\n"
 "PO-Revision-Date: 2005-01-14 10:51+0100\n"
 "Last-Translator: Jordi Mallach <jordi@sindominio.net>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
@@ -576,7 +576,7 @@ msgstr "No és un fitxer regular"
 msgid "File is empty"
 msgstr "El fitxer és buit"
 
-#: glib/gkeyfile.c:692
+#: glib/gkeyfile.c:697
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
@@ -584,40 +584,40 @@ msgstr ""
 "El fitxer de claus conté la línia «%s» que no és una parella clau-valor, "
 "grup o comentari"
 
-#: glib/gkeyfile.c:760
+#: glib/gkeyfile.c:765
 msgid "Key file does not start with a group"
 msgstr "El fitxer de claus no comença amb un grup"
 
-#: glib/gkeyfile.c:803
+#: glib/gkeyfile.c:808
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "El fitxer de claus conté la codificació no implementada «%s»"
 
-#: glib/gkeyfile.c:1012 glib/gkeyfile.c:1158 glib/gkeyfile.c:2159
-#: glib/gkeyfile.c:2224 glib/gkeyfile.c:2342 glib/gkeyfile.c:2410
-#: glib/gkeyfile.c:2594 glib/gkeyfile.c:2768 glib/gkeyfile.c:2825
+#: glib/gkeyfile.c:1017 glib/gkeyfile.c:1176 glib/gkeyfile.c:2177
+#: glib/gkeyfile.c:2242 glib/gkeyfile.c:2361 glib/gkeyfile.c:2497
+#: glib/gkeyfile.c:2649 glib/gkeyfile.c:2823 glib/gkeyfile.c:2880
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "El fitxer de claus no té el grup «%s»"
 
-#: glib/gkeyfile.c:1170
+#: glib/gkeyfile.c:1188
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "El fitxer de claus no té la clau «%s»"
 
-#: glib/gkeyfile.c:1271 glib/gkeyfile.c:1380
+#: glib/gkeyfile.c:1289 glib/gkeyfile.c:1398
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "El fitxer de claus conté la clau «%s» amb valor «%s» que no és UTF-8"
 
-#: glib/gkeyfile.c:1289 glib/gkeyfile.c:1398 glib/gkeyfile.c:1770
+#: glib/gkeyfile.c:1307 glib/gkeyfile.c:1416 glib/gkeyfile.c:1788
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr ""
 "El fitxer de claus conté la clau «%s» que té un valor que no es pot "
 "interpretar."
 
-#: glib/gkeyfile.c:1986
+#: glib/gkeyfile.c:2004
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -626,31 +626,31 @@ msgstr ""
 "El fitxer de claus conté la clau «%s» al grup «%s», que té un valor que no "
 "es pot interpretar."
 
-#: glib/gkeyfile.c:2174 glib/gkeyfile.c:2357 glib/gkeyfile.c:2836
+#: glib/gkeyfile.c:2192 glib/gkeyfile.c:2376 glib/gkeyfile.c:2891
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "El fitxer de claus no conté una clau «%s» al grup «%s»"
 
-#: glib/gkeyfile.c:3017
+#: glib/gkeyfile.c:3072
 msgid "Key file contains escape character at end of line"
 msgstr "El fitxer de claus conté un caràcter d'escapada al final de línia"
 
-#: glib/gkeyfile.c:3039
+#: glib/gkeyfile.c:3094
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "El fitxer de claus conté el caràcter d'escapada invàlid «%s»"
 
-#: glib/gkeyfile.c:3180
+#: glib/gkeyfile.c:3235
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "El valor «%s» no es pot interpretar com a un nombre."
 
-#: glib/gkeyfile.c:3189
+#: glib/gkeyfile.c:3245
 #, fuzzy, c-format
 msgid "Integer value '%s' out of range"
 msgstr "El valor enter «%s» per a %s és fora de l'abast"
 
-#: glib/gkeyfile.c:3219
+#: glib/gkeyfile.c:3275
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "El valor «%s» no es pot interpretar com un booleà."

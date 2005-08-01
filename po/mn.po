@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-06-10 12:53-0400\n"
+"POT-Creation-Date: 2005-08-01 10:25-0400\n"
 "PO-Revision-Date: 2005-05-30 01:07-0800\n"
 "Last-Translator: Бадрал <badral@openmn.org>\n"
 "Language-Team: Mongolian <openmn-translation@lists.sf.net>\n"
@@ -576,45 +576,45 @@ msgstr "Тохиромжгүй файл"
 msgid "File is empty"
 msgstr "Файл хоосон"
 
-#: glib/gkeyfile.c:692
+#: glib/gkeyfile.c:697
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr ""
 "Түлхүүр файл түлхүүр утга, бүлэг, эсвэл тайлбаргүй  '%s' мөр агуулж байна."
 
-#: glib/gkeyfile.c:760
+#: glib/gkeyfile.c:765
 msgid "Key file does not start with a group"
 msgstr "Түлхүүр файл бүлэг утгаар эхлэх боломжгүй"
 
-#: glib/gkeyfile.c:803
+#: glib/gkeyfile.c:808
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "Түлхүүр файлд дэмжигдээгүй кодчилол '%s' байна"
 
-#: glib/gkeyfile.c:1012 glib/gkeyfile.c:1158 glib/gkeyfile.c:2159
-#: glib/gkeyfile.c:2224 glib/gkeyfile.c:2342 glib/gkeyfile.c:2410
-#: glib/gkeyfile.c:2594 glib/gkeyfile.c:2768 glib/gkeyfile.c:2825
+#: glib/gkeyfile.c:1017 glib/gkeyfile.c:1176 glib/gkeyfile.c:2177
+#: glib/gkeyfile.c:2242 glib/gkeyfile.c:2361 glib/gkeyfile.c:2497
+#: glib/gkeyfile.c:2649 glib/gkeyfile.c:2823 glib/gkeyfile.c:2880
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Түлхүүр файлд '%s' бүлэг алга"
 
-#: glib/gkeyfile.c:1170
+#: glib/gkeyfile.c:1188
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "Түлхүүр файлд '%s' түлхүүр алга"
 
-#: glib/gkeyfile.c:1271 glib/gkeyfile.c:1380
+#: glib/gkeyfile.c:1289 glib/gkeyfile.c:1398
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "Түлхүүр файлд '%s' мөр '%s' гэсэн UTF-8 бус утгатай байна"
 
-#: glib/gkeyfile.c:1289 glib/gkeyfile.c:1398 glib/gkeyfile.c:1770
+#: glib/gkeyfile.c:1307 glib/gkeyfile.c:1416 glib/gkeyfile.c:1788
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "Түлхүүр файлд илэрхийлэх боломжгүй '%s' утга байна."
 
-#: glib/gkeyfile.c:1986
+#: glib/gkeyfile.c:2004
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -622,32 +622,32 @@ msgid ""
 msgstr ""
 "Түлхүүр файлын '%2$s' бүлэгт '%1$s' гэсэн илэрхийлэх боломжгүй утга байна."
 
-#: glib/gkeyfile.c:2174 glib/gkeyfile.c:2357 glib/gkeyfile.c:2836
+#: glib/gkeyfile.c:2192 glib/gkeyfile.c:2376 glib/gkeyfile.c:2891
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Түлхүүр файлын '%2$s' бүлэгт '%1$s' түлхүүр алга"
 
-#: glib/gkeyfile.c:3017
+#: glib/gkeyfile.c:3072
 msgid "Key file contains escape character at end of line"
 msgstr "Түлхүүр файлын мөрийн төгсгөлд ESC тэмдэгт байна"
 
 # CHECK
-#: glib/gkeyfile.c:3039
+#: glib/gkeyfile.c:3094
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "Түлхүүр файлд »%s« хүчингүй escape-тэмдэгт байна"
 
-#: glib/gkeyfile.c:3180
+#: glib/gkeyfile.c:3235
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "'%s' утга бүхэл тоогоор илэрхийлэгдэх боломжгүй."
 
-#: glib/gkeyfile.c:3189
+#: glib/gkeyfile.c:3245
 #, fuzzy, c-format
 msgid "Integer value '%s' out of range"
 msgstr "'%s' бүхэл %s -н хувьд хязгаараас хальжээ"
 
-#: glib/gkeyfile.c:3219
+#: glib/gkeyfile.c:3275
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "'%s' утга бүүл утгаар дүрслэгдэх боломжгүй ."

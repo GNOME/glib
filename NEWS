@@ -10,7 +10,7 @@ Overview of Changes from GLib 2.6.5 to GLib 2.6.6
 * Other bug fixes [Roger Leigh, Kjartan Maraas,
   Morten Welinder]
 * New and updated translations (bg,cs,cy,de,
-  en_CA,es,et,fr,hu,ja,ko,nl,sq,sr,sr@Latn,sv,
+  en_CA,es,et,fr,gu,hu,ja,ko,nl,sq,sr,sr@Latn,sv,
   te,zh_CN,zh_TW)
 
 Overview of Changes from GLib 2.6.4 to GLib 2.6.5

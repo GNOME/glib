@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-06-10 12:53-0400\n"
+"POT-Creation-Date: 2005-08-01 10:25-0400\n"
 "PO-Revision-Date: 2005-07-08 09:25+0530\n"
 "Last-Translator: Amanpreet Singh Alam <amanpreetalam@yahoo.com>\n"
 "Language-Team: Punjabi <fedora-transa-pa@redhat.com>\n"
@@ -184,7 +184,8 @@ msgid "Error on line %d: %s"
 msgstr "ਇਸ ਲਾਇਨ %d ਵਿੱਚ ਗਲਤੀ ਹੈ %s"
 
 #: glib/gmarkup.c:434
-msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr "ਖਾਲੀ ਇਕਾਈ '&;' ਵੇਖੋ; ਜਾਇਜ ਇਕਾਈ : &amp; &quot; &lt; &gt; &apos; ਹਨ"
 
 #: glib/gmarkup.c:444
@@ -278,7 +279,8 @@ msgstr ""
 
 #: glib/gmarkup.c:1252
 #, c-format
-msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgid ""
+"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr "ਅਨਿਸ਼ਚਿਤ ਅੱਖਰ %s ਹੈ   ਇਸ %s ਭਾਗ ਦੇ ਇਸ ਵਿਸ਼ੇਸਤਾ ਨਾਂ %s  ਮਗਰੋ  = ਨਿਸ਼ਚਿਤ ਹੈ"
 
 #: glib/gmarkup.c:1294
@@ -305,14 +307,16 @@ msgstr ""
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
-msgstr "ਇਸ '</' ਅੱਖਰ ਮਗਰੋਂ ਇਹ %s'  ਅੱਖਰ ਜਾਇਜ ਨਹੀ ਹੈ  '%s' ਇਕ ਭਾਗ ਦੇ ਨਾਂ ਨਾਲ ਆਰੰਭ ਨਹੀ ਹੋ ਸਕਦਾ ਹੈ"
+msgstr ""
+"ਇਸ '</' ਅੱਖਰ ਮਗਰੋਂ ਇਹ %s'  ਅੱਖਰ ਜਾਇਜ ਨਹੀ ਹੈ  '%s' ਇਕ ਭਾਗ ਦੇ ਨਾਂ ਨਾਲ ਆਰੰਭ ਨਹੀ ਹੋ ਸਕਦਾ ਹੈ"
 
 #: glib/gmarkup.c:1568
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
-msgstr "ਇਹ '%s' ਅੱਖਰ ਬੰਦ ਭਾਗ ਦੇ ਨਾਂ ਮਗਰੋ ਜਾਇਜ ਨਹੀ ਹੈ  '%s'; ਸਿਰਫ '>' ਅੱਖਰ ਹੀ ਨਿਸ਼ਚਿਤ ਹੈ "
+msgstr ""
+"ਇਹ '%s' ਅੱਖਰ ਬੰਦ ਭਾਗ ਦੇ ਨਾਂ ਮਗਰੋ ਜਾਇਜ ਨਹੀ ਹੈ  '%s'; ਸਿਰਫ '>' ਅੱਖਰ ਹੀ ਨਿਸ਼ਚਿਤ ਹੈ "
 
 #: glib/gmarkup.c:1579
 #, c-format
@@ -344,7 +348,8 @@ msgstr "ਦਸਤਾਵੇਜ਼ ਬੇਉਮੀਦ ਬੰਦ ਹੋ ਗਿਆ ਹ�
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
 "the tag <%s/>"
-msgstr "ਦਸਤਾਵੇਜ਼ ਬੇਉਮੀਦ ਬੰਦ ਹੋ ਗਿਆ ਹੈ, ਇਕ ਬੰਦ ਬਰੈਕਟ <%s/> ਜੋ ਕਿ ਪੱਟੀ ਨੂੰ ਬੰਦ ਕਰਦੀ ਹੈ, ਦੀ ਉਮੀਦ ਸੀ  "
+msgstr ""
+"ਦਸਤਾਵੇਜ਼ ਬੇਉਮੀਦ ਬੰਦ ਹੋ ਗਿਆ ਹੈ, ਇਕ ਬੰਦ ਬਰੈਕਟ <%s/> ਜੋ ਕਿ ਪੱਟੀ ਨੂੰ ਬੰਦ ਕਰਦੀ ਹੈ, ਦੀ ਉਮੀਦ ਸੀ  "
 
 #: glib/gmarkup.c:1771
 msgid "Document ended unexpectedly inside an element name"
@@ -433,7 +438,8 @@ msgstr "ਸਹਾਇਤਾ ਕਾਰਜ ਚਲਾਉਣ ਵਿੱਚ ਅਸਫ�
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
-msgstr "ਅਣਜਾਣੀ ਗਲਤੀ - g_io_channel_win32_poll() ਅਗਲੇਰੀਆਂ ਕਿਰਿਆਵਾਂ ਤੋ ਡਾਟਾ ਖੋਲਣ ਵਿੱਚ ਅਸਫਲ ਹੈ"
+msgstr ""
+"ਅਣਜਾਣੀ ਗਲਤੀ - g_io_channel_win32_poll() ਅਗਲੇਰੀਆਂ ਕਿਰਿਆਵਾਂ ਤੋ ਡਾਟਾ ਖੋਲਣ ਵਿੱਚ ਅਸਫਲ ਹੈ"
 
 #: glib/gspawn.c:179
 #, c-format
@@ -544,43 +550,44 @@ msgstr "ਨਿਯਮਤ ਫਾਇਲ ਨਹੀਂ ਹੈ"
 msgid "File is empty"
 msgstr "ਫਾਇਲ ਖਾਲੀ ਹੈ"
 
-#: glib/gkeyfile.c:692
+#: glib/gkeyfile.c:697
 #, c-format
-msgid "Key file contains line '%s' which is not a key-value pair, group, or comment"
+msgid ""
+"Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr "ਕੁੰਜੀ ਫਾਇਲ ਵਿੱਚ ਸਤਰ '%s' ਹੈ, ਜੋ ਕਿ ਠੀਕ ਕੁੰਜੀ-ਮੁੱਲ ਜੋੜਾ, ਸਮੂਹ ਜਾਂ ਟਿੱਪਣੀ ਨਹੀਂ ਰੱਖਦੀ ਹੈ"
 
-#: glib/gkeyfile.c:760
+#: glib/gkeyfile.c:765
 msgid "Key file does not start with a group"
 msgstr "ਕੁੰਜੀ ਫਾਇਲ ਸਮੂਹ ਨਾਲ ਸ਼ੁਰੂ ਨਹੀਂ ਹੁੰਦੀ ਹੈ"
 
-#: glib/gkeyfile.c:803
+#: glib/gkeyfile.c:808
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "ਕੁੰਜੀ ਫਾਇਲ ਵਿੱਚ ਨਾ-ਸਹਾਇਕ ਇੰਕੋਡਿੰਗ '%s' ਹੈ"
 
-#: glib/gkeyfile.c:1012 glib/gkeyfile.c:1158 glib/gkeyfile.c:2159
-#: glib/gkeyfile.c:2224 glib/gkeyfile.c:2342 glib/gkeyfile.c:2410
-#: glib/gkeyfile.c:2594 glib/gkeyfile.c:2768 glib/gkeyfile.c:2825
+#: glib/gkeyfile.c:1017 glib/gkeyfile.c:1176 glib/gkeyfile.c:2177
+#: glib/gkeyfile.c:2242 glib/gkeyfile.c:2361 glib/gkeyfile.c:2497
+#: glib/gkeyfile.c:2649 glib/gkeyfile.c:2823 glib/gkeyfile.c:2880
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "ਕੁੰਜੀ ਫਾਇਲ ਵਿੱਚ ਸਮੂਹ '%s' ਨਹੀਂ ਹੈ"
 
-#: glib/gkeyfile.c:1170
+#: glib/gkeyfile.c:1188
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "ਕੁੰਜੀ ਫਾਇਲ ਵਿੱਚ ਕੁੰਜੀ '%s' ਨਹੀਂ ਹੈ"
 
-#: glib/gkeyfile.c:1271 glib/gkeyfile.c:1380
+#: glib/gkeyfile.c:1289 glib/gkeyfile.c:1398
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "ਕੁੰਜੀ ਫਾਇਲ ਵਿੱਚ ਕੁੰਜੀ '%s' ਹੈ, ਜਿਸ ਦਾ ਮੁੱਲ '%s' UTF-8 ਨਹੀਂ ਹੈ"
 
-#: glib/gkeyfile.c:1289 glib/gkeyfile.c:1398 glib/gkeyfile.c:1770
+#: glib/gkeyfile.c:1307 glib/gkeyfile.c:1416 glib/gkeyfile.c:1788
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "ਕੁੰਜੀ ਫਾਇਲ ਵਿੱਚ '%s' ਕੁੰਜੀ ਹੈ, ਜਿਸ ਦੇ ਮੁੱਲ ਵਰਤਿਆ ਨਹੀਂ ਜਾ ਸਕਦਾ ਹੈ।"
 
-#: glib/gkeyfile.c:1986
+#: glib/gkeyfile.c:2004
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -589,32 +596,31 @@ msgstr ""
 "ਕੁੰਜੀ ਫਾਇਲ ਵਿੱਚ ਕੁੰਜੀ '%s' ਸਮੂਹ '%s' ਵਿੱਚ ਹੈ, ਜੋ ਕਿ ਅਜਿਹਾ ਮੁੱਲ ਹੈ, ਜਿਸ ਨੂੰ ਵਰਤਿਆ ਨਹੀਂ ਜਾ "
 "ਸਕਦਾ ਹੈ।"
 
-#: glib/gkeyfile.c:2174 glib/gkeyfile.c:2357 glib/gkeyfile.c:2836
+#: glib/gkeyfile.c:2192 glib/gkeyfile.c:2376 glib/gkeyfile.c:2891
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "ਕੁੰਜੀ ਫਾਇਲ ਵਿੱਚ ਕੁੰਜੀ '%s' ਸਮੂਹ '%s' ਵਿੱਚ ਨਹੀਂ"
 
-#: glib/gkeyfile.c:3017
+#: glib/gkeyfile.c:3072
 msgid "Key file contains escape character at end of line"
 msgstr "ਕੁੰਜੀ ਫਾਇਲ ਵਿੱਚ ਸਤਰ ਦੇ ਅੰਤ ਤੇ ਇਸਕੇਪ ਅੱਖਰ ਹੈ।"
 
-#: glib/gkeyfile.c:3039
+#: glib/gkeyfile.c:3094
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "ਕੁੰਜੀ ਫਾਇਲ ਵਿੱਚ ਗਲਤ ਇਸਕੇਪ ਕ੍ਰਮ '%s' ਹੈ"
 
-#: glib/gkeyfile.c:3180
+#: glib/gkeyfile.c:3235
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "ਮੁੱਲ '%s' ਨੂੰ ਅੰਕ ਦੇ ਤੌਰ ਵਰਤਿਆ ਨਹੀਂ ਜਾ ਸਕਦਾ ਹੈ।"
 
-#: glib/gkeyfile.c:3189
+#: glib/gkeyfile.c:3245
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "ਪੂਰਨ ਅੰਕ ਮੁੱਲ '%s' ਸੀਮਾ ਤੋਂ ਬਾਹਰ ਹੈ"
 
-#: glib/gkeyfile.c:3219
+#: glib/gkeyfile.c:3275
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "ਮੁੱਲ '%s' ਨੂੰ ਬੁਲੀਅਨ ਮੁੱਲ ਦੇ ਤੌਰ ਤੇ ਪੇਸ਼ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ ਹੈ।"
-

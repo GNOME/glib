@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.glib-2-6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-06-10 12:53-0400\n"
+"POT-Creation-Date: 2005-08-01 10:25-0400\n"
 "PO-Revision-Date: 2005-06-05 19:44+0200\n"
 "Last-Translator: \n"
 "Language-Team:  <gl@li.org>\n"
@@ -571,7 +571,7 @@ msgstr "Non é un arquivo regular"
 msgid "File is empty"
 msgstr "O ficheiro está vacío"
 
-#: glib/gkeyfile.c:692
+#: glib/gkeyfile.c:697
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
@@ -579,41 +579,41 @@ msgstr ""
 "O arquivo chave contén a liña '%s' que non é un par valor-chave, grupo, ou "
 "comentario"
 
-#: glib/gkeyfile.c:760
+#: glib/gkeyfile.c:765
 msgid "Key file does not start with a group"
 msgstr "O ficheiro chave non empeza cun grupo"
 
-#: glib/gkeyfile.c:803
+#: glib/gkeyfile.c:808
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "O ficheiro chave contén unha codificación non soportada '%s'"
 
-#: glib/gkeyfile.c:1012 glib/gkeyfile.c:1158 glib/gkeyfile.c:2159
-#: glib/gkeyfile.c:2224 glib/gkeyfile.c:2342 glib/gkeyfile.c:2410
-#: glib/gkeyfile.c:2594 glib/gkeyfile.c:2768 glib/gkeyfile.c:2825
+#: glib/gkeyfile.c:1017 glib/gkeyfile.c:1176 glib/gkeyfile.c:2177
+#: glib/gkeyfile.c:2242 glib/gkeyfile.c:2361 glib/gkeyfile.c:2497
+#: glib/gkeyfile.c:2649 glib/gkeyfile.c:2823 glib/gkeyfile.c:2880
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "O arquivo chave non ten un grupo '%s'"
 
-#: glib/gkeyfile.c:1170
+#: glib/gkeyfile.c:1188
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "O arquivo chave non ten a chave '%s'"
 
-#: glib/gkeyfile.c:1271 glib/gkeyfile.c:1380
+#: glib/gkeyfile.c:1289 glib/gkeyfile.c:1398
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr ""
 "O arquivo chave contén a chave '%s' co valor '%s' o cal non está en UTF-8"
 
-#: glib/gkeyfile.c:1289 glib/gkeyfile.c:1398 glib/gkeyfile.c:1770
+#: glib/gkeyfile.c:1307 glib/gkeyfile.c:1416 glib/gkeyfile.c:1788
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr ""
 "O arquivo chave contén a chave '%s' que ten un valor que non pode ser "
 "interpretado."
 
-#: glib/gkeyfile.c:1986
+#: glib/gkeyfile.c:2004
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -622,31 +622,31 @@ msgstr ""
 "O arquivo chave contén a chave '%s' no grupo '%s' que ten un valor que non "
 "pode ser interpretado."
 
-#: glib/gkeyfile.c:2174 glib/gkeyfile.c:2357 glib/gkeyfile.c:2836
+#: glib/gkeyfile.c:2192 glib/gkeyfile.c:2376 glib/gkeyfile.c:2891
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "O arquivo chave non ten a chave '%s' no grupo '%s'"
 
-#: glib/gkeyfile.c:3017
+#: glib/gkeyfile.c:3072
 msgid "Key file contains escape character at end of line"
 msgstr "O arquivo chave contén un carácter de escape ao final da liña"
 
-#: glib/gkeyfile.c:3039
+#: glib/gkeyfile.c:3094
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "O arquivo chave contén a secuencia de escape inválida '%s'"
 
-#: glib/gkeyfile.c:3180
+#: glib/gkeyfile.c:3235
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "O valor '%s' non pode interpretarse como un número."
 
-#: glib/gkeyfile.c:3189
+#: glib/gkeyfile.c:3245
 #, fuzzy, c-format
 msgid "Integer value '%s' out of range"
 msgstr "O valor enteiro '%s' para %s está fora de rango"
 
-#: glib/gkeyfile.c:3219
+#: glib/gkeyfile.c:3275
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "O valor '%s' non pode interpretarse como un booleano."
