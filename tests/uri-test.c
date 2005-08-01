@@ -314,7 +314,7 @@ safe_strcmp (const gchar *a, const gchar *b)
 static gint
 safe_strcmp_filename (const gchar *a, const gchar *b)
 {
-#ifdef G_OS_WIN32
+#ifndef G_OS_WIN32
   return safe_strcmp (a, b);
 #else
   if (!a)
@@ -331,7 +331,21 @@ safe_strcmp_filename (const gchar *a, const gchar *b)
 	  else
 	    return (*a - *b);
 	}
+      return (*a - *b);
     }
+#endif
+}
+
+static gint
+safe_strcmp_hostname (const gchar *a, const gchar *b)
+{
+#ifndef G_OS_WIN32
+  return safe_strcmp (a, b);
+#else
+  if (safe_strcmp (a, "localhost") == 0 && b == NULL)
+    return 0;
+  else
+    return safe_strcmp (a, b);
 #endif
 }
 
@@ -378,7 +392,7 @@ run_roundtrip_tests (void)
 	  any_failed = TRUE;
 	}
 
-      if (safe_strcmp (to_uri_tests[i].hostname, hostname))
+      if (safe_strcmp_hostname (to_uri_tests[i].hostname, hostname))
 	{
 	  g_print ("roundtrip test %d failed, hostname modified: "
 		     " expected \"%s\", but got \"%s\"\n",

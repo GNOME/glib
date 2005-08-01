@@ -5,7 +5,10 @@
 	return "localhost" hostnames.
 	(safe_strcmp_filename): New function that considers slash and
 	backslash equal on Win32.
-	(run_roundtrip_tests): Use safe_strcmp_filename().
+	(safe_strcmp_hostname): New function that considers "localhost"
+	equal NULL on Win32.
+	(run_roundtrip_tests): Use safe_strcmp_filename() and
+	safe_strcmp_hostname().
 
 Sun Jul 31 01:50:20 2005  Tim Janik  <timj@gtk.org>
 
