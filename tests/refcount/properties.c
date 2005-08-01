@@ -20,7 +20,7 @@ typedef struct _GTestClass GTestClass;
 struct _GTest
 {
   GObject object;
-
+  gint id;
   gint dummy;
 
   gint count;
@@ -32,7 +32,7 @@ struct _GTestClass
 };
 
 static GType g_test_get_type (void);
-static gboolean stopping;
+static volatile gboolean stopping;
 
 static void g_test_class_init (GTestClass * klass);
 static void g_test_init (GTest * test);
@@ -67,8 +67,7 @@ g_test_get_type (void)
       NULL
     };
 
-    test_type = g_type_register_static (G_TYPE_OBJECT, "GTest",
-        &test_info, 0);
+    test_type = g_type_register_static (G_TYPE_OBJECT, "GTest", &test_info, 0);
   }
   return test_type;
 }
@@ -98,7 +97,8 @@ g_test_class_init (GTestClass * klass)
 static void
 g_test_init (GTest * test)
 {
-  g_print ("init %p\n", test);
+  static guint static_id = 1;
+  test->id = static_id++;
 }
 
 static void
@@ -107,8 +107,6 @@ g_test_dispose (GObject * object)
   GTest *test;
 
   test = G_TEST (object);
-
-  g_print ("dispose %p!\n", object);
 
   G_OBJECT_CLASS (parent_class)->dispose (object);
 }
@@ -178,14 +176,15 @@ g_test_do_property (GTest * test)
 static gpointer
 run_thread (GTest * test)
 {
-  gint i = 0;
-
+  gint i = 1;
+  
   while (!stopping) {
     g_test_do_property (test);
-    if ((i++ % 100000) == 0) {
-      g_print (".");
-      g_usleep (1);             /* context switch */
-    }
+    if ((i++ % 10000) == 0)
+      {
+        g_print (".%c", 'a' + test->id);
+        g_thread_yield(); /* force context switch */
+      }
   }
 
   return NULL;
@@ -197,13 +196,16 @@ main (int argc, char **argv)
   gint i;
   GArray *test_objects;
   GArray *test_threads;
+  const gint n_threads = 5;
 
   g_thread_init (NULL);
+  g_print ("START: %s\n", argv[0]);
+  g_log_set_always_fatal (G_LOG_LEVEL_WARNING | G_LOG_LEVEL_CRITICAL | g_log_set_always_fatal (G_LOG_FATAL_MASK));
   g_type_init ();
 
   test_objects = g_array_new (FALSE, FALSE, sizeof (GTest *));
 
-  for (i = 0; i < 20; i++) {
+  for (i = 0; i < n_threads; i++) {
     GTest *test;
     
     test = g_object_new (G_TYPE_TEST, NULL);
@@ -217,7 +219,7 @@ main (int argc, char **argv)
 
   stopping = FALSE;
 
-  for (i = 0; i < 20; i++) {
+  for (i = 0; i < n_threads; i++) {
     GThread *thread;
     GTest *test;
 
@@ -226,14 +228,13 @@ main (int argc, char **argv)
     thread = g_thread_create ((GThreadFunc) run_thread, test, TRUE, NULL);
     g_array_append_val (test_threads, thread);
   }
-  sleep (5);
+  sleep (3);
 
   stopping = TRUE;
-
   g_print ("\nstopping\n");
 
   /* join all threads */
-  for (i = 0; i < 20; i++) {
+  for (i = 0; i < n_threads; i++) {
     GThread *thread;
 
     thread = g_array_index (test_threads, GThread *, i);
@@ -242,7 +243,7 @@ main (int argc, char **argv)
 
   g_print ("stopped\n");
 
-  for (i = 0; i < 20; i++) {
+  for (i = 0; i < n_threads; i++) {
     GTest *test;
 
     test = g_array_index (test_objects, GTest *, i);

@@ -11,14 +11,17 @@ libgobject = $(top_builddir)/gobject/libgobject-2.0.la
 
 LDADD = $(libgobject) $(libgthread)
 
-test_programs =					\
-	signal1					\
-	signal2					\
-	signal3					\
+test_programs = 				\
+	closures				\
 	objects					\
 	objects2				\
 	properties				\
-	properties2
+	properties2				\
+	signal1					\
+	signal2					\
+	signal3
+
+
 
 signal1_SOURCES = signals.c
 signal1_CFLAGS = -DTESTNUM=1 $(AM_CFLAGS)
@@ -28,6 +31,8 @@ signal3_SOURCES = signals.c
 signal3_CFLAGS = -DTESTNUM=3 $(AM_CFLAGS)
 
 check_PROGRAMS = $(test_programs)
+
+all: $(check_PROGRAMS)
 
 TESTS = $(test_programs)
 TESTS_ENVIRONMENT = srcdir=$(srcdir) \

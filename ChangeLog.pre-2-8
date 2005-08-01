@@ -1,3 +1,32 @@
+Mon Aug  1 23:33:47 2005  Tim Janik  <timj@imendio.com>
+
+	* tests/refcount/closures.c: test high contention on closure
+	reference counts to trigger and catch non-atomic updates.
+
+	* tests/refcount/objects.c:
+	* tests/refcount/objects2.c: 
+	* tests/refcount/properties.c: 
+	* tests/refcount/properties2.c: 
+	* tests/refcount/signals.c:
+	fixed up test and threading fundamentals. variables accessed from all 
+	threads need to be volatile. context switches are enforced by using
+	g_thread_yield(), not g_usleep(1) which may result in busy waits on 
+	some platforms. for testcode, always consider all warnings and
+	critical messages fatal. issue the currently running program on
+	stdout. improved progress indicators.
+
+	* tests/refcount/properties.c:
+	* tests/refcount/objects.c:
+	don't overdo the number of testing threads to keep the testing machine
+	usable, 2 threads can produce as much contention as 20 if executing the
+	same code.
+
+	* tests/refcount/signals.c: only start 1 thread per object. GObject 
+	doesn't provide mutually exclusive object access, but only mutually
+	exclusive reference count modification.
+
+	* tests/Makefile.am: added closures test.
+
 2005-08-01  Tor Lillqvist  <tml@novell.com>
 
 	* tests/uri-test.c: Make it pass on Win32.

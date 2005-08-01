@@ -30,7 +30,7 @@ struct _GTestClass
 };
 
 static GType g_test_get_type (void);
-static gboolean stopping;
+static volatile gboolean stopping;
 
 /* Element signals and args */
 enum
@@ -204,7 +204,7 @@ g_test_do_prop (GTest * test)
 static gpointer
 run_thread (GTest * test)
 {
-  gint i = 0;
+  gint i = 1;
 
   while (!stopping) {
     if (TESTNUM == 1)
@@ -213,9 +213,9 @@ run_thread (GTest * test)
       g_test_do_signal2 (test);
     if (TESTNUM == 3)
       g_test_do_prop (test);
-    if ((i++ % 100000) == 0) {
+    if ((i++ % 10000) == 0) {
       g_print (".");
-      g_usleep (1);             /* context switch */
+      g_thread_yield(); /* force context switch */
     }
   }
 
@@ -237,8 +237,11 @@ main (int argc, char **argv)
   gint i;
   GTest *test1, *test2;
   GArray *test_threads;
+  const gint n_threads = 1;
 
   g_thread_init (NULL);
+  g_print ("START: %s\n", argv[0]);
+  g_log_set_always_fatal (G_LOG_LEVEL_WARNING | G_LOG_LEVEL_CRITICAL | g_log_set_always_fatal (G_LOG_FATAL_MASK));
   g_type_init ();
 
   test1 = g_object_new (G_TYPE_TEST, NULL);
@@ -252,7 +255,7 @@ main (int argc, char **argv)
 
   stopping = FALSE;
 
-  for (i = 0; i < 20; i++) {
+  for (i = 0; i < n_threads; i++) {
     GThread *thread;
 
     thread = g_thread_create ((GThreadFunc) run_thread, test1, TRUE, NULL);
@@ -268,7 +271,7 @@ main (int argc, char **argv)
   g_print ("\nstopping\n");
 
   /* join all threads */
-  for (i = 0; i < 40; i++) {
+  for (i = 0; i < 2 * n_threads; i++) {
     GThread *thread;
 
     thread = g_array_index (test_threads, GThread *, i);

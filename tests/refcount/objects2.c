@@ -88,6 +88,9 @@ g_test_dispose (GObject * object)
 static void
 g_test_do_refcount (GTest * test)
 {
+  static guint i = 1;
+  if (i++ % 100000 == 0)
+    g_print (".");
   g_object_ref (test); 
   g_object_unref (test); 
 }
@@ -99,6 +102,8 @@ main (int argc, char **argv)
   GTest *test;
 
   g_thread_init (NULL);
+  g_print ("START: %s\n", argv[0]);
+  g_log_set_always_fatal (G_LOG_LEVEL_WARNING | G_LOG_LEVEL_CRITICAL | g_log_set_always_fatal (G_LOG_FATAL_MASK));
   g_type_init ();
 
   test = g_object_new (G_TYPE_TEST, NULL);
@@ -107,5 +112,7 @@ main (int argc, char **argv)
     g_test_do_refcount (test);
   }
 
+  g_print ("\n");
+  
   return 0;
 }
