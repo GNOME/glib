@@ -62,11 +62,11 @@ typedef void (*GWeakNotify)		(gpointer      data,
 					 GObject      *where_the_object_was);
 struct  _GObject
 {
-  GTypeInstance g_type_instance;
+  GTypeInstance  g_type_instance;
   
   /*< private >*/
-  guint         ref_count;
-  GData        *qdata;
+  volatile guint ref_count;
+  GData         *qdata;
 };
 struct  _GObjectClass
 {

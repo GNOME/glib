@@ -21,7 +21,7 @@
 #include        <glib/gdatasetprivate.h>
 
 /*
- * MT safe
+ * MT safe with regards to reference counting.
  */
 
 #include	"gvaluecollector.h"

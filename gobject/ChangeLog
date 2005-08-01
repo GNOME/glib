@@ -1,3 +1,13 @@
+Mon Aug  1 23:00:42 2005  Tim Janik  <timj@imendio.com>
+
+	* gclosure.c: turned all modifications to the first 32 integer bits in a 
+	closure into atomic accesses. wrapped write accesses into special macros
+	to keep the atomic modification logic in a single place. comment cleanups.
+
+	* gclosure.h: made all atomicly accessed closure fields volatile.
+
+	* gobject.h: made ref_count field volatile.
+
 Sun Jul 31 02:04:23 2005  Tim Janik  <timj@gtk.org>
 
 	* gobject.c: use g_datalist_set_flags() and g_datalist_unset_flags() to

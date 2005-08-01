@@ -1,5 +1,6 @@
 /* GObject - GLib Type, Object, Parameter and Signal Library
  * Copyright (C) 2000-2001 Red Hat, Inc.
+ * Copyright (C) 2005 Imendio AB
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -58,16 +59,19 @@ struct _GClosureNotifyData
 };
 struct _GClosure
 {
-  /*< private >*/	guint	 ref_count : 15;
-  /*< private >*/	guint	 meta_marshal : 1;
-  /*< private >*/	guint	 n_guards : 1;
-  /*< private >*/	guint	 n_fnotifiers : 2;	/* finalization notifiers */
-  /*< private >*/	guint	 n_inotifiers : 8;	/* invalidation notifiers */
-  /*< private >*/	guint	 in_inotify : 1;
-  /*< private >*/	guint	 floating : 1;
-  /*< protected >*/	guint	 derivative_flag : 1;
-  /*< public >*/	guint	 in_marshal : 1;
-  /*< public >*/	guint	 is_invalid : 1;
+  /*< private >*/
+  volatile      	guint	 ref_count : 15;
+  volatile       	guint	 meta_marshal : 1;
+  volatile       	guint	 n_guards : 1;
+  volatile       	guint	 n_fnotifiers : 2;	/* finalization notifiers */
+  volatile       	guint	 n_inotifiers : 8;	/* invalidation notifiers */
+  volatile       	guint	 in_inotify : 1;
+  volatile       	guint	 floating : 1;
+  /*< protected >*/
+  volatile         	guint	 derivative_flag : 1;
+  /*< public >*/
+  volatile       	guint	 in_marshal : 1;
+  volatile       	guint	 is_invalid : 1;
 
   /*< private >*/	void   (*marshal)  (GClosure       *closure,
 					    GValue /*out*/ *return_value,
