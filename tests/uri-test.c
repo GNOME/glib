@@ -120,17 +120,19 @@ from_uri_tests[] = {
    */
   { "file://localhost/etc", "/etc", NULL},
   { "file://localhost/etc/%23%25%20file", "/etc/#% file", NULL},
+  { "file://localhost/\xE5\xE4\xF6", "/\xe5\xe4\xf6", NULL},
+  { "file://localhost/%E5%E4%F6", "/\xe5\xe4\xf6", NULL},
 #else
   { "file://localhost/etc", "/etc", "localhost"},
   { "file://localhost/etc/%23%25%20file", "/etc/#% file", "localhost"},
+  { "file://localhost/\xE5\xE4\xF6", "/\xe5\xe4\xf6", "localhost"},
+  { "file://localhost/%E5%E4%F6", "/\xe5\xe4\xf6", "localhost"},
 #endif
   { "file://otherhost/etc", "/etc", "otherhost"},
   { "file://otherhost/etc/%23%25%20file", "/etc/#% file", "otherhost"},
   { "file://%C3%B6%C3%A4%C3%A5/etc", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
   { "file:////etc/%C3%B6%C3%C3%C3%A5", "//etc/\xc3\xb6\xc3\xc3\xc3\xa5", NULL},
-  { "file://localhost/\xE5\xE4\xF6", "/\xe5\xe4\xf6", "localhost"},
   { "file://\xE5\xE4\xF6/etc", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
-  { "file://localhost/%E5%E4%F6", "/\xe5\xe4\xf6", "localhost"},
   { "file://%E5%E4%F6/etc", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
   { "file:///some/file#bad", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
   { "file://some", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
@@ -309,6 +311,30 @@ safe_strcmp (const gchar *a, const gchar *b)
   return strcmp (a ? a : "", b ? b : "");
 }
 
+static gint
+safe_strcmp_filename (const gchar *a, const gchar *b)
+{
+#ifdef G_OS_WIN32
+  return safe_strcmp (a, b);
+#else
+  if (!a)
+    return safe_strcmp ("", b);
+  else if (!b)
+    return safe_strcmp (a, "");
+  else
+    {
+      while (*a && *b)
+	{
+	  if ((G_IS_DIR_SEPARATOR (*a) && G_IS_DIR_SEPARATOR (*b)) ||
+	      *a == *b)
+	    a++, b++;
+	  else
+	    return (*a - *b);
+	}
+    }
+#endif
+}
+
 static void
 run_roundtrip_tests (void)
 {
@@ -344,7 +370,7 @@ run_roundtrip_tests (void)
 	  continue;
 	}
 
-      if (safe_strcmp (to_uri_tests[i].filename, res))
+      if (safe_strcmp_filename (to_uri_tests[i].filename, res))
 	{
 	  g_print ("roundtrip test %d failed, filename modified: "
 		   " expected \"%s\", but got \"%s\"\n",
