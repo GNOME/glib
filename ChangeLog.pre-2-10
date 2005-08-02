@@ -1,3 +1,10 @@
+2005-08-02  Tor Lillqvist  <tml@novell.com>
+
+	* tests/refcount/objects.c 
+	* tests/refcount/properties.c 
+	* tests/refcount/signals.c: Use g_usleep() instead of sleep() for
+	portability.
+
 Mon Aug  1 23:33:47 2005  Tim Janik  <timj@imendio.com>
 
 	* tests/refcount/closures.c: test high contention on closure

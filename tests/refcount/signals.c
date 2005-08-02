@@ -264,7 +264,7 @@ main (int argc, char **argv)
     thread = g_thread_create ((GThreadFunc) run_thread, test2, TRUE, NULL);
     g_array_append_val (test_threads, thread);
   }
-  sleep (5);
+  g_usleep (5000000);
 
   stopping = TRUE;
 
