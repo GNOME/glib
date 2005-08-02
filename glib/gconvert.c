@@ -484,14 +484,6 @@ close_converter (GIConv converter)
  *
  * Converts a string from one character set to another. 
  * 
- * Note that despite the fact that @byes_read can return information
- * about partial characters, this function is not generally suitable
- * for streaming. It may not handle stateful encodings like CP1255 
- * correctly, since it doesn't keep the @converter state across
- * multiple invocations. If you need to do streaming conversions
- * which may involve stateful encodings, you have to use g_iconv()
- * directly.
- *
  * Note that you should use g_iconv() for streaming 
  * conversions<footnote id="streaming-state">
  *  <para>
@@ -653,14 +645,6 @@ g_convert_with_iconv (const gchar *str,
  *                 errors. Any of the errors in #GConvertError may occur.
  *
  * Converts a string from one character set to another.
- *
- * Note that despite the fact that @byes_read can return information
- * about partial characters, this function is not generally suitable
- * for streaming. It may not handle stateful encodings like CP1255 
- * correctly, since it doesn't keep the @converter state across
- * multiple invocations. If you need to do streaming conversions
- * which may involve stateful encodings, you have to use g_iconv()
- * directly.
  *
  * Note that you should use g_iconv() for streaming 
  * conversions<footnoteref linkend="streaming-state"/>.
