@@ -1,3 +1,7 @@
+2005-08-02  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.7.5 ===
+
 Mon Aug  1 23:00:42 2005  Tim Janik  <timj@imendio.com>
 
 	* gclosure.c: turned all modifications to the first 32 integer bits in a 

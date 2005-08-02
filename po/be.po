@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-07-22 12:48-0400\n"
+"POT-Creation-Date: 2005-08-02 12:08-0400\n"
 "PO-Revision-Date: 2004-03-08 15:46+0200\n"
 "Last-Translator: Ales Nyakhaychyk <nab@mail.by>\n"
 "Language-Team: Belarusian <i18n@mova.org>\n"
@@ -31,7 +31,7 @@ msgstr "Ня атрымалася адчыніць пераўтваральні�
 # glib/gconvert.c:592 glib/gconvert.c:882 glib/giochannel.c:1282
 # glib/giochannel.c:1324 glib/giochannel.c:2163 glib/gutf8.c:875
 # glib/gutf8.c:1320
-#: glib/gconvert.c:618 glib/gconvert.c:908 glib/giochannel.c:1322
+#: glib/gconvert.c:562 glib/gconvert.c:951 glib/giochannel.c:1322
 #: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:911
 #: glib/gutf8.c:1361
 msgid "Invalid byte sequence in conversion input"
@@ -40,7 +40,7 @@ msgstr ""
 
 # glib/gconvert.c:597 glib/gconvert.c:813 glib/giochannel.c:1289
 # glib/giochannel.c:2175
-#: glib/gconvert.c:624 glib/gconvert.c:841 glib/giochannel.c:1329
+#: glib/gconvert.c:568 glib/gconvert.c:878 glib/giochannel.c:1329
 #: glib/giochannel.c:2218
 #, c-format
 msgid "Error during conversion: %s"
@@ -48,56 +48,56 @@ msgstr "Памылка пад час пераўтварэньня: %s"
 
 # glib/gconvert.c:615 glib/gutf8.c:871 glib/gutf8.c:1071 glib/gutf8.c:1212
 # glib/gutf8.c:1316
-#: glib/gconvert.c:643 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
+#: glib/gconvert.c:603 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
 #: glib/gutf8.c:1357
 msgid "Partial character sequence at end of input"
 msgstr "Няпоўны сымбаль у канцы ўваходнага радка"
 
 # glib/gconvert.c:788
-#: glib/gconvert.c:817
+#: glib/gconvert.c:853
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Немагчыма пераўтвараць знак \"%s\" у знак з набору \"%s\""
 
 # glib/gconvert.c:1593
-#: glib/gconvert.c:1619
+#: glib/gconvert.c:1662
 #, fuzzy, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr ""
 "URI \"%s\" не зьяўляюцца абсалютным URI пад час выкарыстаньня файлавай схемы"
 
 # glib/gconvert.c:1603
-#: glib/gconvert.c:1629
+#: glib/gconvert.c:1672
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "URI \"%s\" мясцовага файлу ня можа ўлучаць \"#\""
 
 # glib/gconvert.c:1620
-#: glib/gconvert.c:1646
+#: glib/gconvert.c:1689
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI \"%s\" нерэчаісны"
 
 # glib/gconvert.c:1632
-#: glib/gconvert.c:1658
+#: glib/gconvert.c:1701
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Назва вузлу ў URI \"%s\" нерэчаісная"
 
 # glib/gconvert.c:1648
-#: glib/gconvert.c:1674
+#: glib/gconvert.c:1717
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI \"%s\" утрымлівае недапушчальны сымбаль"
 
 # glib/gconvert.c:1719
-#: glib/gconvert.c:1768
+#: glib/gconvert.c:1811
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Шлях \"%s\" ня зьяўляецца абсалютным"
 
 # glib/gconvert.c:1729
-#: glib/gconvert.c:1778
+#: glib/gconvert.c:1821
 msgid "Invalid hostname"
 msgstr "Недапушчальная назва вузла"
 

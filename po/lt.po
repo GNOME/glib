@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-07-22 12:48-0400\n"
+"POT-Creation-Date: 2005-08-02 12:08-0400\n"
 "PO-Revision-Date: 2005-07-17 21:26+0300\n"
 "Last-Translator: Žygimantas Beručka <uid0@akl.lt>\n"
 "Language-Team: Lithuanian <komp_lt@konferencijos.lt>\n"
@@ -26,59 +26,59 @@ msgstr "Keitimas iš koduotės „%s“ į koduotę „%s“ nepalaikomas"
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "Nepavyko atverti keitiklio iš „%s“ į „%s“"
 
-#: glib/gconvert.c:618 glib/gconvert.c:908 glib/giochannel.c:1322
+#: glib/gconvert.c:562 glib/gconvert.c:951 glib/giochannel.c:1322
 #: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:911
 #: glib/gutf8.c:1361
 msgid "Invalid byte sequence in conversion input"
 msgstr "Klaidinga baitų seka keitimo įvedime"
 
-#: glib/gconvert.c:624 glib/gconvert.c:841 glib/giochannel.c:1329
+#: glib/gconvert.c:568 glib/gconvert.c:878 glib/giochannel.c:1329
 #: glib/giochannel.c:2218
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Klaida keitimo metu: %s"
 
-#: glib/gconvert.c:643 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
+#: glib/gconvert.c:603 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
 #: glib/gutf8.c:1357
 msgid "Partial character sequence at end of input"
 msgstr "Nepilna simbolio seka įvedimo pabaigoje"
 
-#: glib/gconvert.c:817
+#: glib/gconvert.c:853
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Negalima keisti atgalinio varianto „%s“ į koduotę „%s“"
 
-#: glib/gconvert.c:1619
+#: glib/gconvert.c:1662
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "Adresas „%s“ nėra absoliutus adresas naudojantis „file“ schemą"
 
-#: glib/gconvert.c:1629
+#: glib/gconvert.c:1672
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Vietinės bylos adresas „%s“ negali turėti simbolio „#“"
 
-#: glib/gconvert.c:1646
+#: glib/gconvert.c:1689
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "Adresas „%s“ yra klaidingas"
 
-#: glib/gconvert.c:1658
+#: glib/gconvert.c:1701
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Kompiuterio vardas „%s“ adrese yra klaidingas"
 
-#: glib/gconvert.c:1674
+#: glib/gconvert.c:1717
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "Adrese „%s“ yra klaidingai perkoduoti symboliai"
 
-#: glib/gconvert.c:1768
+#: glib/gconvert.c:1811
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Kelias „%s“ nėra absoliutus"
 
-#: glib/gconvert.c:1778
+#: glib/gconvert.c:1821
 msgid "Invalid hostname"
 msgstr "Klaidingas kompiuterio vardas"
 

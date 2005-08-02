@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-07-22 12:48-0400\n"
+"POT-Creation-Date: 2005-08-02 12:08-0400\n"
 "PO-Revision-Date: 2004-12-17 15:42+0200\n"
 "Last-Translator: Leonid Kanter <leon@asplinux.ru>\n"
 "Language-Team:  <gnome-cyr@gnome.org>\n"
@@ -27,7 +27,7 @@ msgstr "Преобразование из набора символов \"%s\" �
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "Не удалось открыть преобразователь из \"%s\" в \"%s\""
 
-#: glib/gconvert.c:618 glib/gconvert.c:908 glib/giochannel.c:1322
+#: glib/gconvert.c:562 glib/gconvert.c:951 glib/giochannel.c:1322
 #: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:911
 #: glib/gutf8.c:1361
 msgid "Invalid byte sequence in conversion input"
@@ -35,57 +35,57 @@ msgstr ""
 "Недопустимая последовательность байтов для преобразования содержится во "
 "входной строке"
 
-#: glib/gconvert.c:624 glib/gconvert.c:841 glib/giochannel.c:1329
+#: glib/gconvert.c:568 glib/gconvert.c:878 glib/giochannel.c:1329
 #: glib/giochannel.c:2218
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Произошла ошибка при преобразовании: %s"
 
-#: glib/gconvert.c:643 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
+#: glib/gconvert.c:603 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
 #: glib/gutf8.c:1357
 msgid "Partial character sequence at end of input"
 msgstr "Неполный символ содержится в конце входной строки"
 
-#: glib/gconvert.c:817
+#: glib/gconvert.c:853
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr ""
 "Невозможно корректно преобразовать символ \"%s\" в символ из набора \"%s\""
 
-#: glib/gconvert.c:1619
+#: glib/gconvert.c:1662
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr ""
 "URI \"%s\" не является абсолютным идентификатором при использовании схемы "
 "\"file\""
 
-#: glib/gconvert.c:1629
+#: glib/gconvert.c:1672
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr ""
 "Идентификатор URI локального файла \"%s\" не может включать символ \"#\""
 
-#: glib/gconvert.c:1646
+#: glib/gconvert.c:1689
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "Идентификатор URI \"%s\" недопустим"
 
-#: glib/gconvert.c:1658
+#: glib/gconvert.c:1701
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Имя узла недопустимо в идентификаторе URI \"%s\""
 
-#: glib/gconvert.c:1674
+#: glib/gconvert.c:1717
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "Идентификатор URI \"%s\" содержит недопустимо экранированный символ"
 
-#: glib/gconvert.c:1768
+#: glib/gconvert.c:1811
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Путь \"%s\" не является абсолютным"
 
-#: glib/gconvert.c:1778
+#: glib/gconvert.c:1821
 msgid "Invalid hostname"
 msgstr "Имя узла недопустимо"
 

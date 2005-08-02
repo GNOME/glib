@@ -1,3 +1,21 @@
+Overview of Changes from GLib 2.7.4 to GLib 2.7.5
+=================================================
+* Thread-related changes
+ - Fix build issues on HP-UX [Paul Cornett]
+ - Threadsafe access to flags stored in datasets [Tim Janik]
+ - Fix several issues with atomic refcounting for 
+   closures, objects and paramspecs [Tim]
+ - Improve tests for atomic refcounting changes [Tim]
+* Fix handling of stateful encodings in g_convert_* [Matthias]
+* Fix translation of GOption help output [Dan Winship]
+* Catch format errors in translations. This may cause 
+  "make check" to fail when using older versions
+  of gettext [Matthias]
+* Win32 bug fixes [Tor Lillqvist]
+* Documentation improvements [Ross Burton, Jochen Baier, 
+  Matthias, Tim]
+* New and updated translations (de,fi,gu,pl,pt,tr,zh_TW)
+
 Overview of Changes from GLib 2.7.3 to GLib 2.7.4
 =================================================
 * Fix g_atomic_pointer_compare_and_exchange 

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-07-22 12:48-0400\n"
+"POT-Creation-Date: 2005-08-02 12:08-0400\n"
 "PO-Revision-Date: 2001-02-16 12:30+0200\n"
 "Last-Translator: Andraz Tori <andraz.tori1@guest.arnes.si>\n"
 "Language-Team: Slovenian <sl@li.org>\n"
@@ -24,59 +24,59 @@ msgstr "Pretvorba iz nabora znakov '%s' v '%s' ni podprta"
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "Nisem mogel odpreti pretvornika iz '%s' v '%s': %s"
 
-#: glib/gconvert.c:618 glib/gconvert.c:908 glib/giochannel.c:1322
+#: glib/gconvert.c:562 glib/gconvert.c:951 glib/giochannel.c:1322
 #: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:911
 #: glib/gutf8.c:1361
 msgid "Invalid byte sequence in conversion input"
 msgstr "Neveljavna sekvenca bajtov na vhodu pretvorbe"
 
-#: glib/gconvert.c:624 glib/gconvert.c:841 glib/giochannel.c:1329
+#: glib/gconvert.c:568 glib/gconvert.c:878 glib/giochannel.c:1329
 #: glib/giochannel.c:2218
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Napaka med pretvorbo: %s"
 
-#: glib/gconvert.c:643 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
+#: glib/gconvert.c:603 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
 #: glib/gutf8.c:1357
 msgid "Partial character sequence at end of input"
 msgstr "Delna (nedokončana) sekvenca znakov na koncu vhoda"
 
-#: glib/gconvert.c:817
+#: glib/gconvert.c:853
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Ne morem pretvoriti '%s' v nabor znakov '%s'"
 
-#: glib/gconvert.c:1619
+#: glib/gconvert.c:1662
 #, fuzzy, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "URI '%s' pri uporabi sheme datotek ni absoluten"
 
-#: glib/gconvert.c:1629
+#: glib/gconvert.c:1672
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Krajevna datoteka URI '%s' ne sme vsebovati '#'"
 
-#: glib/gconvert.c:1646
+#: glib/gconvert.c:1689
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI '%s' je neveljaven"
 
-#: glib/gconvert.c:1658
+#: glib/gconvert.c:1701
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Ime gostitelja URIja '%s' ni veljavno"
 
-#: glib/gconvert.c:1674
+#: glib/gconvert.c:1717
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI '%s' vsebuje neveljavne ubežne znake"
 
-#: glib/gconvert.c:1768
+#: glib/gconvert.c:1811
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Pot '%s' ni absolutna pot"
 
-#: glib/gconvert.c:1778
+#: glib/gconvert.c:1821
 msgid "Invalid hostname"
 msgstr "Neveljavno ime gostitelja"
 

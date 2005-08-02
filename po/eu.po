@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-07-22 12:48-0400\n"
+"POT-Creation-Date: 2005-08-02 12:08-0400\n"
 "PO-Revision-Date: 2005-04-12 19:01+0200\n"
 "Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>\n"
 "Language-Team: Basque <itzulpena@euskalgnu.org>\n"
@@ -31,60 +31,60 @@ msgstr "'%s' karaktere-multzoa '%s' bihurtzea ez da onartzen"
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "Ezin izan da '%s'(e)tik %s(e)rako bihurtzailea ireki"
 
-#: glib/gconvert.c:618 glib/gconvert.c:908 glib/giochannel.c:1322
+#: glib/gconvert.c:562 glib/gconvert.c:951 glib/giochannel.c:1322
 #: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:911
 #: glib/gutf8.c:1361
 msgid "Invalid byte sequence in conversion input"
 msgstr "Byten sekuentzia baliogabea bihurketa-sarreran"
 
-#: glib/gconvert.c:624 glib/gconvert.c:841 glib/giochannel.c:1329
+#: glib/gconvert.c:568 glib/gconvert.c:878 glib/giochannel.c:1329
 #: glib/giochannel.c:2218
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Errorea bihurtzean: %s"
 
-#: glib/gconvert.c:643 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
+#: glib/gconvert.c:603 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
 #: glib/gutf8.c:1357
 msgid "Partial character sequence at end of input"
 msgstr "Karaktere-sekuentzia partziala sarreraren amaieran"
 
-#: glib/gconvert.c:817
+#: glib/gconvert.c:853
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Ezin da '%s' atzerapena '%s' kode-multzo bihurtu"
 
-#: glib/gconvert.c:1619
+#: glib/gconvert.c:1662
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "'%s' URIa ez da \"fitxategi\"-eskema erabiltzen duen URI absolutua "
 
-#: glib/gconvert.c:1629
+#: glib/gconvert.c:1672
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Baliteke '%s' URI fitxategi lokalak '#' ez edukitzea"
 
-#: glib/gconvert.c:1646
+#: glib/gconvert.c:1689
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "'%s' URI baliogabea da"
 
-#: glib/gconvert.c:1658
+#: glib/gconvert.c:1701
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "'%s' URIaren ostalari-izena baliogabea da"
 
-#: glib/gconvert.c:1674
+#: glib/gconvert.c:1717
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "'%s' URIak ihes-karaktere baliogabeak ditu"
 
-#: glib/gconvert.c:1768
+#: glib/gconvert.c:1811
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "'%s' bide-izena ez da bide-izen absolutua"
 
 #
-#: glib/gconvert.c:1778
+#: glib/gconvert.c:1821
 msgid "Invalid hostname"
 msgstr "Ostalari-izen baliogabea"
 

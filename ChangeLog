@@ -1,5 +1,11 @@
 2005-08-02  Matthias Clasen  <mclasen@redhat.com>
 
+	* === Released 2.7.5 ===
+
+	* NEWS: Updates
+
+2005-08-02  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/gconvert.c (g_convert_with_iconv, g_convert_with_fallback):
 	Cleanup converter state after the conversion. Document streaming
 	conversion pitfalls.  (#311337)

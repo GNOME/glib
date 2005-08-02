@@ -1,3 +1,7 @@
+2005-08-02  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.7.5 ===
+
 2005-07-25  Matthias Clasen  <mclasen@redhat.com>
 
 	* Makefile.in.in: Call msgfmt with -c to catch
