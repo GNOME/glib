@@ -544,6 +544,7 @@ g_convert_with_iconv (const gchar *str,
 	    {
 	    case EINVAL:
 	      /* Incomplete text, do not report an error */
+	      done = TRUE;
 	      break;
 	    case E2BIG:
 	      {

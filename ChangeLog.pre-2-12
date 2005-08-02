@@ -1,5 +1,9 @@
 2005-08-02  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gconvert.c (g_convert_with_iconv): Don't go in an
+	infinite loop if the input text ends in an incomplete multibyte
+	character.  (#312402, Sebastian Bacher)
+
 	* Bump version
 
 	* === Released 2.7.5 ===
