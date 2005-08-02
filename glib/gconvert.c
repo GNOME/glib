@@ -463,77 +463,6 @@ close_converter (GIConv converter)
   return 0;
 }
 
-
-/**
- * g_convert:
- * @str:           the string to convert
- * @len:           the length of the string, or -1 if the string is 
- *                 nul-terminated<footnote id="nul-unsafe">
-                     <para>
-                       Note that some encodings may allow nul bytes to 
-                       occur inside strings. In that case, using -1 for 
-                       the @len parameter is unsafe.
-                     </para>
-                   </footnote>. 
- * @to_codeset:    name of character set into which to convert @str
- * @from_codeset:  character set of @str.
- * @bytes_read:    location to store the number of bytes in the
- *                 input string that were successfully converted, or %NULL.
- *                 Even if the conversion was successful, this may be 
- *                 less than @len if there were partial characters
- *                 at the end of the input. If the error
- *                 #G_CONVERT_ERROR_ILLEGAL_SEQUENCE occurs, the value
- *                 stored will the byte offset after the last valid
- *                 input sequence.
- * @bytes_written: the number of bytes stored in the output buffer (not 
- *                 including the terminating nul).
- * @error:         location to store the error occuring, or %NULL to ignore
- *                 errors. Any of the errors in #GConvertError may occur.
- *
- * Converts a string from one character set to another.
- *
- * Return value: If the conversion was successful, a newly allocated
- *               nul-terminated string, which must be freed with
- *               g_free(). Otherwise %NULL and @error will be set.
- **/
-gchar*
-g_convert (const gchar *str,
-           gssize       len,  
-           const gchar *to_codeset,
-           const gchar *from_codeset,
-           gsize       *bytes_read, 
-	   gsize       *bytes_written, 
-	   GError     **error)
-{
-  gchar *res;
-  GIConv cd;
-  
-  g_return_val_if_fail (str != NULL, NULL);
-  g_return_val_if_fail (to_codeset != NULL, NULL);
-  g_return_val_if_fail (from_codeset != NULL, NULL);
-  
-  cd = open_converter (to_codeset, from_codeset, error);
-
-  if (cd == (GIConv) -1)
-    {
-      if (bytes_read)
-        *bytes_read = 0;
-      
-      if (bytes_written)
-        *bytes_written = 0;
-      
-      return NULL;
-    }
-
-  res = g_convert_with_iconv (str, len, cd,
-			      bytes_read, bytes_written,
-			      error);
-  
-  close_converter (cd);
-
-  return res;
-}
-
 /**
  * g_convert_with_iconv:
  * @str:           the string to convert
@@ -553,7 +482,30 @@ g_convert (const gchar *str,
  * @error:         location to store the error occuring, or %NULL to ignore
  *                 errors. Any of the errors in #GConvertError may occur.
  *
- * Converts a string from one character set to another.
+ * Converts a string from one character set to another. 
+ * 
+ * Note that despite the fact that @byes_read can return information
+ * about partial characters, this function is not generally suitable
+ * for streaming. It may not handle stateful encodings like CP1255 
+ * correctly, since it doesn't keep the @converter state across
+ * multiple invocations. If you need to do streaming conversions
+ * which may involve stateful encodings, you have to use g_iconv()
+ * directly.
+ *
+ * Note that you should use g_iconv() for streaming 
+ * conversions<footnote id="streaming-state">
+ *  <para>
+ * Despite the fact that @byes_read can return information about partial 
+ * characters, the <literal>g_convert_...</literal> functions
+ * are not generally suitable for streaming. If the underlying converter 
+ * being used maintains internal state, then this won't be preserved 
+ * across successive calls to g_convert(), g_convert_with_iconv() or 
+ * g_convert_with_fallback(). (An example of this is the GNU C converter 
+ * for CP1255 which does not emit a base character until it knows that 
+ * the next character is not a mark that could combine with the base 
+ * character.)
+ *  </para>
+ * </footnote>. 
  *
  * Return value: If the conversion was successful, a newly allocated
  *               nul-terminated string, which must be freed with
@@ -570,13 +522,14 @@ g_convert_with_iconv (const gchar *str,
   gchar *dest;
   gchar *outp;
   const gchar *p;
+  const gchar *shift_p = NULL;
   gsize inbytes_remaining;
   gsize outbytes_remaining;
   gsize err;
   gsize outbuf_size;
   gboolean have_error = FALSE;
+  gboolean done = FALSE;
   
-  g_return_val_if_fail (str != NULL, NULL);
   g_return_val_if_fail (converter != (GIConv) -1, NULL);
      
   if (len < 0)
@@ -589,44 +542,59 @@ g_convert_with_iconv (const gchar *str,
   outbytes_remaining = outbuf_size - 1; /* -1 for nul */
   outp = dest = g_malloc (outbuf_size);
 
- again:
-  
-  err = g_iconv (converter, (char **)&p, &inbytes_remaining, &outp, &outbytes_remaining);
-
-  if (err == (size_t) -1)
+  while (!done && !have_error)
     {
-      switch (errno)
+      err = g_iconv (converter, (char **)&p, &inbytes_remaining, &outp, &outbytes_remaining);
+
+      if (err == (size_t) -1)
 	{
-	case EINVAL:
-	  /* Incomplete text, do not report an error */
-	  break;
-	case E2BIG:
-	  {
-	    size_t used = outp - dest;
-
-	    outbuf_size *= 2;
-	    dest = g_realloc (dest, outbuf_size);
+	  switch (errno)
+	    {
+	    case EINVAL:
+	      /* Incomplete text, do not report an error */
+	      break;
+	    case E2BIG:
+	      {
+		size_t used = outp - dest;
 		
-	    outp = dest + used;
-	    outbytes_remaining = outbuf_size - used - 1; /* -1 for nul */
-
-	    goto again;
-	  }
-	case EILSEQ:
-	  if (error)
-	    g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_ILLEGAL_SEQUENCE,
-			 _("Invalid byte sequence in conversion input"));
-	  have_error = TRUE;
-	  break;
-	default:
-	  if (error)
-	    g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_FAILED,
-			 _("Error during conversion: %s"),
-			 g_strerror (errno));
-	  have_error = TRUE;
-	  break;
+		outbuf_size *= 2;
+		dest = g_realloc (dest, outbuf_size);
+		
+		outp = dest + used;
+		outbytes_remaining = outbuf_size - used - 1; /* -1 for nul */
+	      }
+	      break;
+	    case EILSEQ:
+	      if (error)
+		g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_ILLEGAL_SEQUENCE,
+			     _("Invalid byte sequence in conversion input"));
+	      have_error = TRUE;
+	      break;
+	    default:
+	      if (error)
+		g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_FAILED,
+			     _("Error during conversion: %s"),
+			     g_strerror (errno));
+	      have_error = TRUE;
+	      break;
+	    }
+	}
+      else 
+	{
+	  if (!shift_p)
+	    {
+	      /* call g_iconv with NULL inbuf to cleanup shift state */
+	      shift_p = p;
+	      p = NULL;
+	      inbytes_remaining = 0;
+	    }
+	  else
+	    done = TRUE;
 	}
     }
+
+  if (shift_p)
+    p = shift_p;
 
   *outp = '\0';
   
@@ -659,6 +627,87 @@ g_convert_with_iconv (const gchar *str,
 }
 
 /**
+ * g_convert:
+ * @str:           the string to convert
+ * @len:           the length of the string, or -1 if the string is 
+ *                 nul-terminated<footnote id="nul-unsafe">
+                     <para>
+                       Note that some encodings may allow nul bytes to 
+                       occur inside strings. In that case, using -1 for 
+                       the @len parameter is unsafe.
+                     </para>
+                   </footnote>. 
+ * @to_codeset:    name of character set into which to convert @str
+ * @from_codeset:  character set of @str.
+ * @bytes_read:    location to store the number of bytes in the
+ *                 input string that were successfully converted, or %NULL.
+ *                 Even if the conversion was successful, this may be 
+ *                 less than @len if there were partial characters
+ *                 at the end of the input. If the error
+ *                 #G_CONVERT_ERROR_ILLEGAL_SEQUENCE occurs, the value
+ *                 stored will the byte offset after the last valid
+ *                 input sequence.
+ * @bytes_written: the number of bytes stored in the output buffer (not 
+ *                 including the terminating nul).
+ * @error:         location to store the error occuring, or %NULL to ignore
+ *                 errors. Any of the errors in #GConvertError may occur.
+ *
+ * Converts a string from one character set to another.
+ *
+ * Note that despite the fact that @byes_read can return information
+ * about partial characters, this function is not generally suitable
+ * for streaming. It may not handle stateful encodings like CP1255 
+ * correctly, since it doesn't keep the @converter state across
+ * multiple invocations. If you need to do streaming conversions
+ * which may involve stateful encodings, you have to use g_iconv()
+ * directly.
+ *
+ * Note that you should use g_iconv() for streaming 
+ * conversions<footnoteref linkend="streaming-state"/>.
+ *
+ * Return value: If the conversion was successful, a newly allocated
+ *               nul-terminated string, which must be freed with
+ *               g_free(). Otherwise %NULL and @error will be set.
+ **/
+gchar*
+g_convert (const gchar *str,
+           gssize       len,  
+           const gchar *to_codeset,
+           const gchar *from_codeset,
+           gsize       *bytes_read, 
+	   gsize       *bytes_written, 
+	   GError     **error)
+{
+  gchar *res;
+  GIConv cd;
+
+  g_return_val_if_fail (str != NULL, NULL);
+  g_return_val_if_fail (to_codeset != NULL, NULL);
+  g_return_val_if_fail (from_codeset != NULL, NULL);
+  
+  cd = open_converter (to_codeset, from_codeset, error);
+
+  if (cd == (GIConv) -1)
+    {
+      if (bytes_read)
+        *bytes_read = 0;
+      
+      if (bytes_written)
+        *bytes_written = 0;
+      
+      return NULL;
+    }
+
+  res = g_convert_with_iconv (str, len, cd,
+			      bytes_read, bytes_written,
+			      error);
+
+  close_converter (cd);
+
+  return res;
+}
+
+/**
  * g_convert_with_fallback:
  * @str:          the string to convert
  * @len:          the length of the string, or -1 if the string is 
@@ -687,6 +736,9 @@ g_convert_with_iconv (const gchar *str,
  * systems may do a approximate conversion from @from_codeset
  * to @to_codeset in their iconv() functions, 
  * in which case GLib will simply return that approximate conversion.
+ *
+ * Note that you should use g_iconv() for streaming 
+ * conversions<footnoteref linkend="streaming-state"/>.
  *
  * Return value: If the conversion was successful, a newly allocated
  *               nul-terminated string, which must be freed with
@@ -819,7 +871,7 @@ g_convert_with_fallback (const gchar *str,
 		  have_error = TRUE;
 		  break;
 		}
-	      else
+	      else if (p)
 		{
 		  if (!fallback)
 		    { 
@@ -834,8 +886,9 @@ g_convert_with_fallback (const gchar *str,
 		  save_inbytes = inbytes_remaining - (save_p - p);
 		  p = insert_str;
 		  inbytes_remaining = strlen (p);
+		  break;
 		}
-	      break;
+	      /* fall thru if p is NULL */
 	    default:
 	      g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_FAILED,
 			   _("Error during conversion: %s"),
@@ -853,6 +906,12 @@ g_convert_with_fallback (const gchar *str,
 	      p = save_p;
 	      inbytes_remaining = save_inbytes;
 	      save_p = NULL;
+	    }
+	  else if (p)
+	    {
+	      /* call g_iconv with NULL inbuf to cleanup shift state */
+	      p = NULL;
+	      inbytes_remaining = 0;
 	    }
 	  else
 	    done = TRUE;
