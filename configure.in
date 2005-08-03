@@ -1967,6 +1967,12 @@ if test x"$GCC" = xyes; then
 		   	 [ia64 atomic implementation])
       glib_memory_barrier_needed=yes
       ;;	
+    s390|s390x)
+      AC_MSG_RESULT([s390])
+      AC_DEFINE_UNQUOTED(G_ATOMIC_S390, 1,
+		   	 [s390 atomic implementation])
+      glib_memory_barrier_needed=no
+      ;;	
     *)
       AC_MSG_RESULT([none])
       glib_memory_barrier_needed=yes

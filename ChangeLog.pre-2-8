@@ -1,3 +1,10 @@
+2005-08-03  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gatomic.c: Add native atomic operations
+	for s390.
+
+	* configure.in: ... and use them on s390.
+
 2005-08-03  Ross Burton  <ross@burtonini.com>
 
 	* glib/gstdio.c:

@@ -442,9 +442,49 @@ g_atomic_pointer_compare_and_exchange (gpointer *atomic,
 }
 
 #  define G_ATOMIC_MEMORY_BARRIER __sync_synchronize ()
-# else /* !G_ATOMIC */
+# elif defined (G_ATOMIC_S390)
+/* Adapted from glibc's sysdeps/s390/bits/atomic.h
+ */
+#  define ATOMIC_INT_CMP_XCHG(atomic, oldval, newval)			\
+  ({ 									\
+     gint __result = oldval;					\
+     __asm__ __volatile__ ("cs %0, %2, %1"				\
+                           : "+d" (__result), "=Q" (*(atomic))		\
+                           : "d" (newval), "m" (*(atomic)) : "cc" );	\
+     __result == oldval;						\
+  })
+
+#  if GLIB_SIZEOF_VOID_P == 4 /* 32-bit system */
+gboolean
+g_atomic_pointer_compare_and_exchange (gpointer *atomic, 
+				       gpointer  oldval, 
+				       gpointer  newval)
+{
+  gpointer result = oldval;
+  __asm__ __volatile__ ("cs %0, %2, %1"
+			: "+d" (result), "=Q" (*(atomic))
+			: "d" (newval), "m" (*(atomic)) : "cc" );
+  result == oldval;
+}
+#  elif GLIB_SIZEOF_VOID_P == 8 /* 64-bit system */
+gboolean
+g_atomic_pointer_compare_and_exchange (gpointer *atomic, 
+				       gpointer  oldval, 
+				       gpointer  newval)
+{
+  gpointer result = oldval;
+  gpointer *a = atomic;
+  __asm__ __volatile__ ("csg %0, %2, %1"
+			: "+d" (result), "=Q" (*a)
+			: "d" ((long)(newval)), "m" (*a) : "cc" );
+  result == oldval;
+}
+#  else /* What's that */
+#    error "Your system has an unsupported pointer size"
+#  endif /* GLIB_SIZEOF_VOID_P */
+# else /* !G_ATOMIC_IA64 */
 #  define DEFINE_WITH_MUTEXES
-# endif /* G_ATOMIC */
+# endif /* G_ATOMIC_IA64 */
 #else /* !__GNUC__ */
 # ifdef G_PLATFORM_WIN32
 #  define DEFINE_WITH_WIN32_INTERLOCKED
