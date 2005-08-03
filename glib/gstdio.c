@@ -857,7 +857,7 @@ g_rmdir (const gchar *filename)
  * 
  * See the C library manual for more details about fopen().
  *
- * Returns: A <typename>FILE</typename> pointer if the file was successfully
+ * Returns: A <type>FILE</type> pointer if the file was successfully
  *    opened, or %NULL if an error occurred
  * 
  * Since: 2.6
@@ -935,7 +935,7 @@ g_fopen (const gchar *filename,
  * 
  * See the C library manual for more details about freopen().
  *
- * Returns: A <typename>FILE</typename> pointer if the file was successfully
+ * Returns: A <type>FILE</type> pointer if the file was successfully
  *    opened, or %NULL if an error occurred.
  * 
  * Since: 2.6

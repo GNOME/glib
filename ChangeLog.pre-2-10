@@ -1,3 +1,8 @@
+2005-08-03  Ross Burton  <ross@burtonini.com>
+
+	* glib/gstdio.c:
+	Fix DocBook tag typo. (#311966)
+
 2005-08-03  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gstdio.h: Add G_BEGIN_DECLS/G_END_DECLS.  (#312424)
