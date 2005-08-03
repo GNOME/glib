@@ -1798,6 +1798,8 @@ g_get_tmp_dir (void)
  * name can be determined, a default fixed string "unknown" is
  * returned.
  *
+ * Returns: the host name of the machine.
+ *
  * Since: 2.8
  */
 const gchar *
