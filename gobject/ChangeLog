@@ -1,5 +1,9 @@
 2005-08-02  Matthias Clasen  <mclasen@redhat.com>
 
+	* gclosure.c (union ClosureInt): Mark the vint member as
+	volatile, which seems to be necessary to make atomic operations
+	work on s390.
+
 	* === Released 2.7.5 ===
 
 Mon Aug  1 23:00:42 2005  Tim Janik  <timj@imendio.com>
