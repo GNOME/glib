@@ -1,3 +1,7 @@
+2005-08-03  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gstdio.h: Add G_BEGIN_DECLS/G_END_DECLS.  (#312424)
+
 2005-08-02  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gconvert.c (g_convert_with_iconv): Don't go in an
