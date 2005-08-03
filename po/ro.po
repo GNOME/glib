@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib-2-6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-08-02 12:08-0400\n"
+"POT-Creation-Date: 2005-08-03 16:50-0400\n"
 "PO-Revision-Date: 2005-03-02 22:46+0200\n"
 "Last-Translator: Mişu Moldovan <dumol@go.ro>\n"
 "Language-Team: Română <gnomero-list@lists.sourceforge.net>\n"
@@ -25,59 +25,59 @@ msgstr "Conversia de la setul de caractere „%s” la „%s” nu este suportat
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "Nu s-a putut iniţia conversia de la „%s” la „%s”"
 
-#: glib/gconvert.c:562 glib/gconvert.c:951 glib/giochannel.c:1322
+#: glib/gconvert.c:563 glib/gconvert.c:952 glib/giochannel.c:1322
 #: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:911
 #: glib/gutf8.c:1361
 msgid "Invalid byte sequence in conversion input"
 msgstr "Secvenţă de octeţi invalidă în intrarea conversiei"
 
-#: glib/gconvert.c:568 glib/gconvert.c:878 glib/giochannel.c:1329
+#: glib/gconvert.c:569 glib/gconvert.c:879 glib/giochannel.c:1329
 #: glib/giochannel.c:2218
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Eroare în timpul conversiei: %s"
 
-#: glib/gconvert.c:603 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
+#: glib/gconvert.c:604 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
 #: glib/gutf8.c:1357
 msgid "Partial character sequence at end of input"
 msgstr "Secvenţă parţială de caractere la sfârşitul intrării"
 
-#: glib/gconvert.c:853
+#: glib/gconvert.c:854
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Nu pot converti rezerva „%s” la setul de caractere „%s”"
 
-#: glib/gconvert.c:1662
+#: glib/gconvert.c:1663
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "URI-ul „%s” nu este un URI absolut folosind schema „fişier”"
 
-#: glib/gconvert.c:1672
+#: glib/gconvert.c:1673
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "URI-ul fişierului local „%s” nu poate include un „#”"
 
-#: glib/gconvert.c:1689
+#: glib/gconvert.c:1690
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI-ul „%s” este invalid"
 
-#: glib/gconvert.c:1701
+#: glib/gconvert.c:1702
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Gazda URI-ului „%s” este invalidă"
 
-#: glib/gconvert.c:1717
+#: glib/gconvert.c:1718
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI-ul „%s” conţine caractere „escaped” invalide"
 
-#: glib/gconvert.c:1811
+#: glib/gconvert.c:1812
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Calea „%s” nu este o cale absolută"
 
-#: glib/gconvert.c:1821
+#: glib/gconvert.c:1822
 msgid "Invalid hostname"
 msgstr "Nume gazdă invalid"
 

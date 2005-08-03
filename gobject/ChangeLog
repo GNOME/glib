@@ -1,3 +1,7 @@
+2005-08-03  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.7.6 ===
+
 2005-08-02  Matthias Clasen  <mclasen@redhat.com>
 
 	* gclosure.c (union ClosureInt): Mark the vint member as

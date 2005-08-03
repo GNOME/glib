@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.az\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-08-02 12:08-0400\n"
+"POT-Creation-Date: 2005-08-03 16:50-0400\n"
 "PO-Revision-Date: 2004-02-02 12:12+0200\n"
 "Last-Translator: Mətin Əmirov <metin@karegen.com>\n"
 "Language-Team: Azerbaijani Turkish <gnome@azitt.com>\n"
@@ -26,59 +26,59 @@ msgstr "`%s' hərf dəstəsindən `%s' hərf dəstəsinə dönüşdürmə dəst�
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "`%s' dən `%s' ə dönüşdürücü açıla bilmir: %s"
 
-#: glib/gconvert.c:562 glib/gconvert.c:951 glib/giochannel.c:1322
+#: glib/gconvert.c:563 glib/gconvert.c:952 glib/giochannel.c:1322
 #: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:911
 #: glib/gutf8.c:1361
 msgid "Invalid byte sequence in conversion input"
 msgstr "dönüşdürmə girişində hökmsüz bayt qatarı"
 
-#: glib/gconvert.c:568 glib/gconvert.c:878 glib/giochannel.c:1329
+#: glib/gconvert.c:569 glib/gconvert.c:879 glib/giochannel.c:1329
 #: glib/giochannel.c:2218
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Dönüşdürmə sırasında xəta yarandı: %s"
 
-#: glib/gconvert.c:603 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
+#: glib/gconvert.c:604 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
 #: glib/gutf8.c:1357
 msgid "Partial character sequence at end of input"
 msgstr "Girişin sonunda parçalı hərf qatarı"
 
-#: glib/gconvert.c:853
+#: glib/gconvert.c:854
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "fallback '%s' hərf dəstəsi '%s' ə dönüşdürülə bilmir"
 
-#: glib/gconvert.c:1662
+#: glib/gconvert.c:1663
 #, fuzzy, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "`%s' URI-si fayl sxemini işlədən mütləq URI deyildir"
 
-#: glib/gconvert.c:1672
+#: glib/gconvert.c:1673
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Yerli fayl uRI-si `%s' `#' daxil edə bilməz"
 
-#: glib/gconvert.c:1689
+#: glib/gconvert.c:1690
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "`%s' URI-si səhvdir"
 
-#: glib/gconvert.c:1701
+#: glib/gconvert.c:1702
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "`%s' URI-sinin qovşaq adı səhv qaçırılmış"
 
-#: glib/gconvert.c:1717
+#: glib/gconvert.c:1718
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "`%s'in URİ-si səhv qaçırılmış xarakterlər daxil edir"
 
-#: glib/gconvert.c:1811
+#: glib/gconvert.c:1812
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "`%s'in cığır adı mütləq cığır deyildir"
 
-#: glib/gconvert.c:1821
+#: glib/gconvert.c:1822
 msgid "Invalid hostname"
 msgstr "Hökmsüz qovşaq adı"
 

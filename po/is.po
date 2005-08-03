@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-08-02 12:08-0400\n"
+"POT-Creation-Date: 2005-08-03 16:50-0400\n"
 "PO-Revision-Date: 2003-08-18 18:05+0000\n"
 "Last-Translator: Richard Allen <ra@ra.is>\n"
 "Language-Team: is <is@li.org>\n"
@@ -25,59 +25,59 @@ msgstr "Umbreyting úr stafasettinu '%s' í '%s' er ekki stutt"
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "Gat ekki opnað umbreyti úr '%s' í '%s': %s"
 
-#: glib/gconvert.c:562 glib/gconvert.c:951 glib/giochannel.c:1322
+#: glib/gconvert.c:563 glib/gconvert.c:952 glib/giochannel.c:1322
 #: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:911
 #: glib/gutf8.c:1361
 msgid "Invalid byte sequence in conversion input"
 msgstr "Ógild bætaruna í ílagi umbreytingar"
 
-#: glib/gconvert.c:568 glib/gconvert.c:878 glib/giochannel.c:1329
+#: glib/gconvert.c:569 glib/gconvert.c:879 glib/giochannel.c:1329
 #: glib/giochannel.c:2218
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Villa við umbreytingu: %s"
 
-#: glib/gconvert.c:603 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
+#: glib/gconvert.c:604 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
 #: glib/gutf8.c:1357
 msgid "Partial character sequence at end of input"
 msgstr "Ókláruð stafaruna í enda ílags"
 
-#: glib/gconvert.c:853
+#: glib/gconvert.c:854
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Gat ekki umbreytt '%s' í stafatöflu '%s'"
 
-#: glib/gconvert.c:1662
+#: glib/gconvert.c:1663
 #, fuzzy, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "URI '%s' er ekki fullt URI sem notar 'file' skemuna"
 
-#: glib/gconvert.c:1672
+#: glib/gconvert.c:1673
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Skráar-URI '%s' má ekki innihalda '#'"
 
-#: glib/gconvert.c:1689
+#: glib/gconvert.c:1690
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI '%s' er ógilt"
 
-#: glib/gconvert.c:1701
+#: glib/gconvert.c:1702
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Vélarheitið í URI '%s' er ógilt"
 
-#: glib/gconvert.c:1717
+#: glib/gconvert.c:1718
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI '%s' inniheldur ógild sértákn"
 
-#: glib/gconvert.c:1811
+#: glib/gconvert.c:1812
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Slóðin '%s' er ekki full slóð"
 
-#: glib/gconvert.c:1821
+#: glib/gconvert.c:1822
 msgid "Invalid hostname"
 msgstr "Ógilt vélarheiti"
 

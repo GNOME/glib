@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.he\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-08-02 12:08-0400\n"
+"POT-Creation-Date: 2005-08-03 16:50-0400\n"
 "PO-Revision-Date: 2004-03-25 23:13+0000\n"
 "Last-Translator: Gil Osher <dolfin@rpg.org.il>\n"
 "Language-Team: Hebrew <he@li.org>\n"
@@ -32,59 +32,59 @@ msgstr "אין תמיכה בהמרה ממערך תוים '%s' ל '%s'"
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "לא ניתן לפתוח ממיר מ-'%s' ל-'%s': %s"
 
-#: glib/gconvert.c:562 glib/gconvert.c:951 glib/giochannel.c:1322
+#: glib/gconvert.c:563 glib/gconvert.c:952 glib/giochannel.c:1322
 #: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:911
 #: glib/gutf8.c:1361
 msgid "Invalid byte sequence in conversion input"
 msgstr "רצף תווים לא חוקי בקלט המיועד להמרה"
 
-#: glib/gconvert.c:568 glib/gconvert.c:878 glib/giochannel.c:1329
+#: glib/gconvert.c:569 glib/gconvert.c:879 glib/giochannel.c:1329
 #: glib/giochannel.c:2218
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "שגיאה בזמן המרה: %s"
 
-#: glib/gconvert.c:603 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
+#: glib/gconvert.c:604 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
 #: glib/gutf8.c:1357
 msgid "Partial character sequence at end of input"
 msgstr "רצף תווים חלקי בסוף הקלט"
 
-#: glib/gconvert.c:853
+#: glib/gconvert.c:854
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "לא ניתן להמיר ברירת מחדל '%s' למערך תווים '%s'"
 
-#: glib/gconvert.c:1662
+#: glib/gconvert.c:1663
 #, fuzzy, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "הכתובת '%s' היא לא אבסולוטית בשימוש בתור מזהה קובץ"
 
-#: glib/gconvert.c:1672
+#: glib/gconvert.c:1673
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "הכתובת של קובץ מקומי '%s' אינה יכולה להכיל '#'"
 
-#: glib/gconvert.c:1689
+#: glib/gconvert.c:1690
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "הכתובת '%s' אינה תקפה"
 
-#: glib/gconvert.c:1701
+#: glib/gconvert.c:1702
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "שם המארח של הכתובת '%s' אינו תקף"
 
-#: glib/gconvert.c:1717
+#: glib/gconvert.c:1718
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "הכתובת '%s' מכילה תווים ללא תוי חילוף תקפים"
 
-#: glib/gconvert.c:1811
+#: glib/gconvert.c:1812
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "שם הנתיב '%s' אינו נתיב מוחלט"
 
-#: glib/gconvert.c:1821
+#: glib/gconvert.c:1822
 msgid "Invalid hostname"
 msgstr "שם מחשב מארח לא תקף"
 

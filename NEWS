@@ -1,3 +1,13 @@
+Overview of Changes from GLib 2.7.5 to GLib 2.7.6
+=================================================
+* Add native implementations of atomic operations 
+  on s390 [Matthias]
+* Make atomic reference counting of closures
+  work on s390 [Matthias]
+* Avoid an infinite loop in g_convert_with_iconv().
+  [Sebastian Bacher]
+* Documentation improvements [Ross Burton]
+
 Overview of Changes from GLib 2.7.4 to GLib 2.7.5
 =================================================
 * Thread-related changes
