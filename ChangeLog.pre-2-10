@@ -1,3 +1,10 @@
+2005-08-04  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gstdio.h: Move the G_BEGIN_DECLS/G_END_DECLS pair outside
+	the #if/#else/#endif block. Otherwise we had G_BEGIN_DECLS without
+	matching G_END_DECLS on Unix, and G_END_DECLS without matching
+	G_BEGIN_DECLS on Win32.
+
 2005-08-03  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Bump version
