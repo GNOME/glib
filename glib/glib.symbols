@@ -82,7 +82,8 @@ g_atomic_int_add
 g_atomic_int_compare_and_exchange
 g_atomic_int_exchange_and_add
 g_atomic_pointer_compare_and_exchange
-#ifdef G_ATOMIC_OP_MEMORY_BARRIER_NEEDED
+#ifdef INCLUDE_INTERNAL_SYMBOLS
+ /* these are not internal, but we don't want to alias them */
 g_atomic_int_get
 g_atomic_pointer_get
 #endif

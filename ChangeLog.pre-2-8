@@ -1,3 +1,13 @@
+2005-08-04  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/glib.symbols:
+	* glib/gatomic.[hc]: Always export g_atomic_int_get and
+	g_atomic_pointer_get as functions, even if we have macros,
+	to avoid changing the ABI depending on configuration.
+	
+	* glib/gatomic.c: Fix the s390 implementations of 
+	g_atomic_pointer_compare_and_exchange.
+
 2005-08-04  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gstdio.h: Move the G_BEGIN_DECLS/G_END_DECLS pair outside

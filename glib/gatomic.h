@@ -45,10 +45,10 @@ gboolean g_atomic_pointer_compare_and_exchange (gpointer *atomic,
 						gpointer  oldval, 
 						gpointer  newval);
 
-#ifdef G_ATOMIC_OP_MEMORY_BARRIER_NEEDED
 gint     g_atomic_int_get                      (gint     *atomic);
 gpointer g_atomic_pointer_get                  (gpointer *atomic);
-#else /* !G_ATOMIC_OP_MEMORY_BARRIER_NEEDED */
+
+#ifndef G_ATOMIC_OP_MEMORY_BARRIER_NEEDED
 # define g_atomic_int_get(atomic) (*(atomic))
 # define g_atomic_pointer_get(atomic) (*(atomic))
 #endif /* G_ATOMIC_OP_MEMORY_BARRIER_NEEDED */

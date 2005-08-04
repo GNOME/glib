@@ -464,7 +464,7 @@ g_atomic_pointer_compare_and_exchange (gpointer *atomic,
   __asm__ __volatile__ ("cs %0, %2, %1"
 			: "+d" (result), "=Q" (*(atomic))
 			: "d" (newval), "m" (*(atomic)) : "cc" );
-  result == oldval;
+  return result == oldval;
 }
 #  elif GLIB_SIZEOF_VOID_P == 8 /* 64-bit system */
 gboolean
@@ -477,7 +477,7 @@ g_atomic_pointer_compare_and_exchange (gpointer *atomic,
   __asm__ __volatile__ ("csg %0, %2, %1"
 			: "+d" (result), "=Q" (*a)
 			: "d" ((long)(newval)), "m" (*a) : "cc" );
-  result == oldval;
+  return result == oldval;
 }
 #  else /* What's that */
 #    error "Your system has an unsupported pointer size"
@@ -686,6 +686,20 @@ _g_atomic_thread_init (void)
   g_atomic_mutex = g_mutex_new ();
 #endif /* DEFINE_WITH_MUTEXES */
 }
+
+#ifndef G_ATOMIC_OP_MEMORY_BARRIER_NEEDED
+gint
+(g_atomic_int_get) (gint *atomic)
+{
+  return g_atomic_int_get (atomic);
+}
+
+gpointer
+(g_atomic_pointer_get) (gpointer *atomic)
+{
+  return g_atomic_pointer_get (atomic);
+}
+#endif /* G_ATOMIC_OP_MEMORY_BARRIER_NEEDED */
 
 #define __G_ATOMIC_C__
 #include "galiasdef.c"
