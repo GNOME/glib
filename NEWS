@@ -1,3 +1,8 @@
+Overview of Changes from GLib 2.7.6 to GLib 2.7.7
+=================================================
+* Make atomic operations on s390 work [Matthias]
+* Fix C++ guards in gstdio.h [Tor Lillqvist]
+
 Overview of Changes from GLib 2.7.5 to GLib 2.7.6
 =================================================
 * Add native implementations of atomic operations 

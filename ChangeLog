@@ -1,3 +1,9 @@
+2005-08-05  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.7.7 ===
+
+	* NEWS: Updates
+
 2005-08-04  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/glib.symbols:
