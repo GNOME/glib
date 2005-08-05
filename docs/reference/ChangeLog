@@ -1,5 +1,9 @@
 2005-08-05  Matthias Clasen  <mclasen@redhat.com>
 
+	* gobject/tmpl/generic_values.sgml: Small fixes
+
+2005-08-05  Matthias Clasen  <mclasen@redhat.com>
+
 	* === Released 2.7.7 ===
 
 2005-08-03  Matthias Clasen  <mclasen@redhat.com>

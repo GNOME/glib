@@ -23,7 +23,9 @@ provided by this interface.
 <para>
 The fundamental types which all support #GValue operations and thus
 can be used as a type initializer for g_value_init() are defined by
-a separate interface.  See the Standard Values API for details.
+a separate interface.  See the <link 
+linkend="gobject-Standard-Parameter-and-Value-Types">Standard Values 
+API</link> for details.
 </para>
 
 <!-- ##### SECTION Stability_Level ##### -->
@@ -31,8 +33,8 @@ a separate interface.  See the Standard Values API for details.
 
 <!-- ##### MACRO G_VALUE_HOLDS ##### -->
 <para>
-Returns #TRUE if @value holds (or contains) a value of @type.
-This macro will also check for @value != #NULL and issue a
+Returns %TRUE if @value holds (or contains) a value of @type.
+This macro will also check for @value != %NULL and issue a
 warning if the check fails.
 </para>
 
@@ -79,7 +81,7 @@ used as an abstract base type for derived value types.
 
 <!-- ##### MACRO G_IS_VALUE ##### -->
 <para>
-Returns #TRUE if @value is a valid and initialized #GValue structure.
+Returns %TRUE if @value is a valid and initialized #GValue structure.
 </para>
 
 @value: A #GValue structure.
@@ -93,7 +95,7 @@ to functions within a #GTypeValueTable structure, or implementations of
 the g_value_*() API. That is, code portions which implement new fundamental
 types.
 #GValue users can not make any assumptions about how data is stored
-within the 2 element #GValue.data[] union, and the g_type member should
+within the 2 element @data union, and the @g_type member should
 only be accessed through the G_VALUE_TYPE() macro.
 </para>
 
@@ -161,18 +163,18 @@ This is an internal function introduced mainly for C marshallers.
 </para>
 
 @value: An initialized #GValue structure.
-@Returns: #TRUE if @value will fit inside a pointer value.
+@Returns: %TRUE if @value will fit inside a pointer value.
 
 
 <!-- ##### FUNCTION g_value_peek_pointer ##### -->
 <para>
 Return the value contents as pointer. This function asserts that
-g_value_fits_pointer() returned #TRUE for the passed in value.
+g_value_fits_pointer() returned %TRUE for the passed in value.
 This is an internal function introduced mainly for C marshallers.
 </para>
 
 @value: An initialized #GValue structure.
-@Returns: #TRUE if @value will fit inside a pointer value.
+@Returns: %TRUE if @value will fit inside a pointer value.
 
 
 <!-- ##### FUNCTION g_value_type_compatible ##### -->
@@ -199,10 +201,10 @@ of type @src_type into values of type @dest_type.
 
 <!-- ##### FUNCTION g_value_transform ##### -->
 <para>
-Tries to cast the contents of @src_value into a type apropriate
+Tries to cast the contents of @src_value into a type appropriate
 to store in @dest_value, e.g. to transform a %G_TYPE_INT value
 into a %G_TYPE_FLOAT value. Performing transformations between
-value types might incour precision lossage. Especially
+value types might incur precision lossage. Especially
 transformations into strings might reveal seemingly arbitrary
 results and shouldn't be relied upon for production code (such
 as rcfile value or object property serialization).
@@ -240,9 +242,9 @@ will be replaced.
 <!-- ##### FUNCTION g_strdup_value_contents ##### -->
 <para>
 Return a newly allocated string, which describes the contents of a #GValue.
-The main purpose of this function is to describe #GValue contents for debugging
-output, the way in which the contents are described may change between different
-GLib versions.
+The main purpose of this function is to describe #GValue contents for 
+debugging output, the way in which the contents are described may change 
+between different GLib versions.
 </para>
 
 @value:   #GValue which contents are to be described.
