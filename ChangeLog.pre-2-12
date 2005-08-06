@@ -1,3 +1,7 @@
+2005-08-05  Manish Singh  <yosh@gimp.org>
+
+	* tests/refcount/closures.c: remove unused n_threads variable.
+
 2005-08-05  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Bump version

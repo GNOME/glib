@@ -236,7 +236,6 @@ int
 main (int    argc,
       char **argv)
 {
-  const gint n_threads = 1;
   GThread *thread1, *thread2;
   GClosure *closure;
   GTest *object;
