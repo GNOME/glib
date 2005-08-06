@@ -1,3 +1,9 @@
+2005-08-06  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/glib.symbols: Include glib_on_error_halt.
+	
+	* glib/abicheck.sh: Also check exported variables.
+
 2005-08-05  Manish Singh  <yosh@gimp.org>
 
 	* tests/refcount/closures.c: remove unused n_threads variable.
