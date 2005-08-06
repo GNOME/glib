@@ -1,4 +1,6 @@
 2005-08-05  Matthias Clasen  <mclasen@redhat.com>
+	
+	* abicheck.sh: Also check exported variables
 
 	* === Released 2.7.7 ===
 
