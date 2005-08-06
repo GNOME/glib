@@ -444,9 +444,7 @@ the application can then add to its #GOptionContext.
 The type of function that can be called before and after parsing.
 </para>
 
-@context The active #GOptionContext
-
-@context: 
+@context: The active #GOptionContext
 @group: The group to which the function belongs
 @data: User data added to the #GOptionGroup containing the option when it
   was created with g_option_group_new()
@@ -471,9 +469,7 @@ The type of function to be used as callback when a parse error
 occurs.
 </para>
 
-@context The active #GOptionContext
-
-@context: 
+@context: The active #GOptionContext
 @group: The group to which the function belongs
 @data: User data added to the #GOptionGroup containing the option when it
   was created with g_option_group_new()

@@ -43,7 +43,7 @@ for completeness - #gchar, #gint, #gshort, #glong, #gfloat, #gdouble.
 <!-- ##### TYPEDEF gboolean ##### -->
 <para>
 A standard <type>boolean</type> type.
-Variables of this type should only contain the value #TRUE or #FALSE.
+Variables of this type should only contain the value %TRUE or %FALSE.
 </para>
 
 

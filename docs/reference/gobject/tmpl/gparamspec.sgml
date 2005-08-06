@@ -196,7 +196,7 @@ Decrements the reference count of a @pspec.
 The initial reference count of a newly created #GParamSpec is 1, even 
 though no one has explicitly called g_param_spec_ref() on it yet. So the 
 initial reference count is flagged as "floating", until someone calls 
-<literal>g_param_spec_ref (@pspec); g_param_spec_sink (@pspec);</literal>
+<literal>g_param_spec_ref (pspec); g_param_spec_sink (pspec);</literal>
 in sequence on it, taking over the initial reference count (thus
 ending up with a @pspec that has a reference count of 1 still, but is
 not flagged "floating" anymore).
@@ -254,7 +254,7 @@ g_param_value_validate().
 @src_value:         souce #GValue
 @dest_value:        destination #GValue of correct type for @pspec
 @strict_validation: %TRUE requires @dest_value to conform to @pspec without modifications
-@Returns:           %TRUE if transformation and validation were successfull,
+@Returns:           %TRUE if transformation and validation were successful,
                     %FALSE otherwise and @dest_value is left untouched.
 
 
@@ -314,7 +314,7 @@ Sets an opaque, named pointer on a #GParamSpec. The name is specified
 through a #GQuark (retrieved e.g. via g_quark_from_static_string()), and 
 the pointer can be gotten back from the @pspec with g_param_spec_get_qdata().
 Setting a previously set user data pointer, overrides (frees)
-the old pointer set, using #NULL as pointer essentially
+the old pointer set, using %NULL as pointer essentially
 removes the data stored.
 </para>
 
@@ -358,7 +358,7 @@ user data pointers with a destroy notifier.
 If the paramspec redirects operations to another paramspec,
 returns that paramspec. Redirect is used typically for
 providing a new implementation of a property in a derived
-type while perserving all the properties from the parent
+type while preserving all the properties from the parent
 type. Redirection is established by creating a property
 of type #GParamSpecOverride. See g_object_override_property()
 for an example of the use of this capability.
@@ -418,6 +418,7 @@ g_param_type_register_static().
   g_param_value_set_validate().
 @values_cmp: Compares @value1 with @value2 according to @pspec 
   (recommended, the default is memcmp()), see g_param_values_cmp().
+
 
 <!-- ##### FUNCTION g_param_type_register_static ##### -->
 <para>
