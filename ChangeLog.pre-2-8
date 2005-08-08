@@ -1,3 +1,10 @@
+2005-08-08  Matthias Clasen  <mclasen@redhat.com>
+
+	* tests/Makefile.am: Add convert-test here.
+
+	* tests/convert-test.c: Add the beginning of a testsuite
+	for g_convert() and friends. 
+
 2005-08-06  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/glib.symbols: Include glib_on_error_halt.
