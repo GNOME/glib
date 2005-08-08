@@ -106,7 +106,6 @@ test_byte_order (void)
   gsize bytes_read = 0;
   gsize bytes_written = 0;
   GError *error = NULL;  
-  int i;
 
   out = g_convert (in_be, sizeof (in_be), 
 		   "UTF-8", "UTF-16",
@@ -125,7 +124,7 @@ test_byte_order (void)
 		   &error);
 
   g_assert (error == NULL);
-  g_assert (bytes_read == 2);
+  g_assert (bytes_read == 4);
   g_assert (bytes_written == 2);
   g_assert (strcmp (out, expected) == 0);
   g_free (out);
@@ -136,13 +135,7 @@ main (int argc, char *argv[])
 {
   test_iconv_state ();
   test_one_half ();
-  
-#if 0
-  /* this one currently fails due to 
-   * https://bugzilla.redhat.com/bugzilla/show_bug.cgi?id=165368 
-   */
   test_byte_order ();
-#endif
 
   return 0;
 }

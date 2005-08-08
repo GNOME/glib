@@ -196,6 +196,8 @@ g_iconv_close (GIConv converter)
 }
 
 
+#ifdef NEED_ICONV_CACHE
+
 #define ICONV_CACHE_SIZE   (16)
 
 struct _iconv_cache_bucket {
@@ -462,6 +464,47 @@ close_converter (GIConv converter)
   
   return 0;
 }
+
+#else  /* !NEED_ICONV_CACHE */
+
+static GIConv
+open_converter (const gchar *to_codeset,
+		const gchar *from_codeset,
+		GError     **error)
+{
+  GIConv cd;
+
+  cd = g_iconv_open (to_codeset, from_codeset);
+
+  if (cd == (GIConv) -1)
+    {
+      /* Something went wrong.  */
+      if (error)
+	{
+	  if (errno == EINVAL)
+	    g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_NO_CONVERSION,
+			 _("Conversion from character set '%s' to '%s' is not supported"),
+			 from_codeset, to_codeset);
+	  else
+	    g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_FAILED,
+			 _("Could not open converter from '%s' to '%s'"),
+			 from_codeset, to_codeset);
+	}
+    }
+  
+  return cd;
+}
+
+static int
+close_converter (GIConv cd)
+{
+  if (cd == (GIConv) -1)
+    return 0;
+  
+  return g_iconv_close (cd);  
+}
+
+#endif /* NEED_ICONV_CACHE */
 
 /**
  * g_convert_with_iconv:

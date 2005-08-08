@@ -1,5 +1,19 @@
 2005-08-08  Matthias Clasen  <mclasen@redhat.com>
 
+	* tests/convert-test.c: Enable the endianness test.
+
+	* glib/gconvert.c: Make the caching of iconv descriptors
+	optional.
+
+	* configure.in: Add an --enable-iconv-cache option, and
+	default to disabling iconv caching on new enough glibc.
+	Somebody with access to Solaris systems will need to test
+	if opening/closing of iconv descriptors is enough of
+	a performance problem to warrant the caching on that 
+	platform. Note that the caching is causing correctness
+	problems in some corner cases, thus turning it off
+	is desirable unless it has severe performance implications.
+
 	* tests/convert-test.c: Add a test for 
 	endianness handling.
 
