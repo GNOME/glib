@@ -1,3 +1,8 @@
+2005-08-08  Matthias Clasen  <mclasen@redhat.com>
+
+	* tests/convert-test.c: Add a test for 
+	endianness handling.
+
 2005-08-08  Sunil Mohan Adapa  <sunil@atc.tcs.co.in>
 
 	* configure.in: Added "te" to ALL_LINGUAS.

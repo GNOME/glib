@@ -96,12 +96,53 @@ test_one_half (void)
   g_free (out);
 }
 
+static void
+test_byte_order (void)
+{
+  gchar *in_be = "\xfe\xff\x03\x93"; /* capital gamma */
+  gchar *in_le = "\xff\xfe\x93\x03";
+  gchar *expected = "\xce\x93";
+  gchar *out;
+  gsize bytes_read = 0;
+  gsize bytes_written = 0;
+  GError *error = NULL;  
+  int i;
+
+  out = g_convert (in_le, -1, 
+		   "UTF-8", "UTF-16",
+		   &bytes_read, &bytes_written,
+		   &error);
+
+  g_assert (error == NULL);
+  g_assert (bytes_read == 4);
+  g_assert (bytes_written == 2);
+  g_assert (strcmp (out, expected) == 0);
+  g_free (out);
+
+  out = g_convert (in_le, -1, 
+		   "UTF-8", "UTF-16",
+		   &bytes_read, &bytes_written,
+		   &error);
+
+  g_assert (error == NULL);
+  g_assert (bytes_read == 2);
+  g_assert (bytes_written == 2);
+  g_assert (strcmp (out, expected) == 0);
+  g_free (out);
+}
 
 int
 main (int argc, char *argv[])
 {
   test_iconv_state ();
   test_one_half ();
+  
+#if 0
+  /* this one currently fails due to 
+   * https://bugzilla.redhat.com/bugzilla/show_bug.cgi?id=165368 
+   */
+  test_byte_order ();
+#endif
 
   return 0;
 }
