@@ -99,8 +99,8 @@ test_one_half (void)
 static void
 test_byte_order (void)
 {
-  gchar *in_be = "\xfe\xff\x03\x93"; /* capital gamma */
-  gchar *in_le = "\xff\xfe\x93\x03";
+  gchar in_be[4] = { 0xfe, 0xff, 0x03, 0x93}; /* capital gamma */
+  gchar in_le[4] = { 0xff, 0xfe, 0x93, 0x03};
   gchar *expected = "\xce\x93";
   gchar *out;
   gsize bytes_read = 0;
@@ -108,7 +108,7 @@ test_byte_order (void)
   GError *error = NULL;  
   int i;
 
-  out = g_convert (in_le, -1, 
+  out = g_convert (in_be, sizeof (in_be), 
 		   "UTF-8", "UTF-16",
 		   &bytes_read, &bytes_written,
 		   &error);
@@ -119,7 +119,7 @@ test_byte_order (void)
   g_assert (strcmp (out, expected) == 0);
   g_free (out);
 
-  out = g_convert (in_le, -1, 
+  out = g_convert (in_le, sizeof (in_le), 
 		   "UTF-8", "UTF-16",
 		   &bytes_read, &bytes_written,
 		   &error);
