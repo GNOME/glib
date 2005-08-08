@@ -400,7 +400,7 @@ dnl
 dnl gettext support
 dnl
 
-ALL_LINGUAS="am ar az be bg bn bs ca cs cy da de el en_CA en_GB eo es et eu fa fi fr ga gl gu he hi hr hu id is it ja ko lt lv mk mn ms nb ne nl nn no or pa pl pt pt_BR ro ru rw sk sl sq sr sr@ije sr@Latn sv ta th tl tr uk vi wa xh yi zh_CN zh_TW"
+ALL_LINGUAS="am ar az be bg bn bs ca cs cy da de el en_CA en_GB eo es et eu fa fi fr ga gl gu he hi hr hu id is it ja ko lt lv mk mn ms nb ne nl nn no or pa pl pt pt_BR ro ru rw sk sl sq sr sr@ije sr@Latn sv ta te th tl tr uk vi wa xh yi zh_CN zh_TW"
 GLIB_GNU_GETTEXT
 
 if test "$gt_cv_have_gettext" != "yes" ; then

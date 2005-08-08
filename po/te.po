@@ -1,0 +1,684 @@
+# Telugu translation of glib
+# Copyright (C) 2005 Free Software Foundation, Andhra Pradesh.
+# This file is distributed under the same license as the GLIB package.
+#
+# విక్రం ఫణీంద్ర <vikramphaneendra@yahoo.co.in>, 2005
+# దండు ప్రసాద్ <dandu_prasad2000@yahoo.com>, 2005
+# రమణ సాయి <rmn_sai@yahoo.co.in>, 2005
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: GLIB\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-08-08 15:07+0530\n"
+"PO-Revision-Date: 2004-12-13 20:16+0100\n"
+"Last-Translator: రమణ సాయి <rmn_sai@yahoo.com>\n"
+"Language-Team: Free Software Foundation, Andhra Pradesh <fsfap@gnu.org.in>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../glib/gconvert.c:406
+#, c-format
+msgid "Conversion from character set '%s' to '%s' is not supported"
+msgstr "అక్షరమాలలొ కల '%s' నుండి '%s'  కు పరివర్తించడానికి  సహకరించదు"
+
+#: ../glib/gconvert.c:410
+#, c-format
+msgid "Could not open converter from '%s' to '%s'"
+msgstr "'%s' నుండి  '%s' కు పరివర్తించడం సాధ్యం కాదు "
+
+#: ../glib/gconvert.c:563 ../glib/gconvert.c:952 ../glib/giochannel.c:1322
+#: ../glib/giochannel.c:1364 ../glib/giochannel.c:2206 ../glib/gutf8.c:911
+#: ../glib/gutf8.c:1361
+msgid "Invalid byte sequence in conversion input"
+msgstr "ఎగుబడి బైట్ క్రమంను పరివర్తించుట నిస్సారమగును"
+
+#: ../glib/gconvert.c:569 ../glib/gconvert.c:879 ../glib/giochannel.c:1329
+#: ../glib/giochannel.c:2218
+#, c-format
+msgid "Error during conversion: %s"
+msgstr "పరివర్తనం నందు దోషం కలదు: %s"
+
+#: ../glib/gconvert.c:604 ../glib/gutf8.c:907 ../glib/gutf8.c:1112
+#: ../glib/gutf8.c:1253 ../glib/gutf8.c:1357
+msgid "Partial character sequence at end of input"
+msgstr "చివరి ఎగుబడి నందు పాక్షికముగా అక్షర క్రమము కలదు."
+
+#: ../glib/gconvert.c:854
+#, c-format
+msgid "Cannot convert fallback '%s' to codeset '%s'"
+msgstr "ఫాల్ బ్యాక్ '%s' ను  '%s'"
+
+#: ../glib/gconvert.c:1663
+#, c-format
+msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
+msgstr "\"దస్త్రం\" యోచనను ఉపయోగించిన యుఆర్ఐ '%s' సంపూర్ణమైన యుఆర్ఐ కాదు"
+
+#: ../glib/gconvert.c:1673
+#, c-format
+msgid "The local file URI '%s' may not include a '#'"
+msgstr "స్థానిక యుఆర్ఐ '%s'   '#' ను కలుపుకొనియండలెదు  "
+
+#: ../glib/gconvert.c:1690
+#, c-format
+msgid "The URI '%s' is invalid"
+msgstr " '%s' యుఆర్ఐ నిస్సారము"
+
+#: ../glib/gconvert.c:1702
+#, c-format
+msgid "The hostname of the URI '%s' is invalid"
+msgstr "ఆతిథ్య నామం యొక్క యుఆర్ఐ '%s' నిస్సారము"
+
+#: ../glib/gconvert.c:1718
+#, c-format
+msgid "The URI '%s' contains invalidly escaped characters"
+msgstr "యుఆర్ఐ '%s' నిస్సారమైన ఎస్కేప్ అక్షరాలు కలిగియున్నాయి."
+
+#: ../glib/gconvert.c:1812
+#, c-format
+msgid "The pathname '%s' is not an absolute path"
+msgstr " '%s' త్రోవ నామం సరిఐనది కాదు."
+
+#: ../glib/gconvert.c:1822
+msgid "Invalid hostname"
+msgstr "నిస్సారమైన ఆతిథ్య నామము"
+
+#: ../glib/gdir.c:121 ../glib/gdir.c:141
+#, c-format
+msgid "Error opening directory '%s': %s"
+msgstr " వివరణ తెరచుటలో దోషం '%s': %s"
+
+#: ../glib/gfileutils.c:576 ../glib/gfileutils.c:649
+#, c-format
+msgid "Could not allocate %lu bytes to read file \"%s\""
+msgstr "%lu బైట్లని దస్త్రం  \"%s\" చదువుటకు ఇవ్వలేము"
+
+#: ../glib/gfileutils.c:591
+#, c-format
+msgid "Error reading file '%s': %s"
+msgstr "దస్త్రం '%s': %s చదువుటలో దోషం"
+
+#: ../glib/gfileutils.c:673
+#, c-format
+msgid "Failed to read from file '%s': %s"
+msgstr " దస్త్రం '%s': %s నుండి చదువుటలో విఫలమైనారు"
+
+#: ../glib/gfileutils.c:724 ../glib/gfileutils.c:811
+#, c-format
+msgid "Failed to open file '%s': %s"
+msgstr " దస్త్రం '%s': %s తెరుచుటలో విఫలమైనారు"
+
+#: ../glib/gfileutils.c:741 ../glib/gmappedfile.c:133
+#, c-format
+msgid "Failed to get attributes of file '%s': fstat() failed: %s"
+msgstr "దస్త్ర ఆపాదనలు విఫలమగును '%s': ఎఫ్ స్టాట్() విఫలమైనది: %s"
+
+#: ../glib/gfileutils.c:775
+#, c-format
+msgid "Failed to open file '%s': fdopen() failed: %s"
+msgstr "దస్త్రం '%s' తెరుచుటలో విఫలమైనారు: ఎఫ్ డిఓపన్()  విఫలమైనది: %s"
+
+#: ../glib/gfileutils.c:909
+#, fuzzy, c-format
+msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
+msgstr "దస్త్రం '%s' తెరుచుటలో విఫలమైనారు: ఎఫ్ డిఓపన్()  విఫలమైనది: %s"
+
+#: ../glib/gfileutils.c:952
+#, fuzzy, c-format
+msgid "Could not change file mode: fork() failed: %s"
+msgstr "దస్త్రం '%s' తెరుచుటలో విఫలమైనారు: ఎఫ్ డిఓపన్()  విఫలమైనది: %s"
+
+#: ../glib/gfileutils.c:983
+#, fuzzy, c-format
+msgid "Could not change file mode: waitpid() failed: %s"
+msgstr "%lu బైట్లని దస్త్రం  \"%s\" చదువుటకు ఇవ్వలేము"
+
+#: ../glib/gfileutils.c:1002
+#, fuzzy, c-format
+msgid "Could not change file mode: chmod() failed: %s"
+msgstr "దస్త్రం '%s' తెరుచుటలో విఫలమైనారు: ఎఫ్ డిఓపన్()  విఫలమైనది: %s"
+
+#: ../glib/gfileutils.c:1013
+#, c-format
+msgid "Could not change file mode: Child terminated by signal: %s"
+msgstr ""
+
+#: ../glib/gfileutils.c:1024
+msgid "Could not change file mode: Child terminated abnormally"
+msgstr ""
+
+#: ../glib/gfileutils.c:1058 ../glib/gfileutils.c:1524
+#, c-format
+msgid "Failed to create file '%s': %s"
+msgstr " '%s' దస్త్రమును సృష్టించుటలో విఫలమయినావు. :%s"
+
+#: ../glib/gfileutils.c:1080
+#, fuzzy, c-format
+msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
+msgstr "దస్త్రం '%s' తెరుచుటలో విఫలమైనారు: ఎఫ్ డిఓపన్()  విఫలమైనది: %s"
+
+#: ../glib/gfileutils.c:1105
+#, fuzzy, c-format
+msgid "Failed to write file '%s': fwrite() failed: %s"
+msgstr "దస్త్రం '%s' తెరుచుటలో విఫలమైనారు: ఎఫ్ డిఓపన్()  విఫలమైనది: %s"
+
+#: ../glib/gfileutils.c:1124
+#, fuzzy, c-format
+msgid "Failed to close file '%s': fclose() failed: %s"
+msgstr "దస్త్రం '%s' తెరుచుటలో విఫలమైనారు: ఎఫ్ డిఓపన్()  విఫలమైనది: %s"
+
+#: ../glib/gfileutils.c:1242
+#, c-format
+msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
+msgstr ""
+
+#: ../glib/gfileutils.c:1485
+#, c-format
+msgid "Template '%s' invalid, should not contain a '%s'"
+msgstr " '%s' మాదిరి,  '%s' కలిగియుండలెదు. "
+
+#: ../glib/gfileutils.c:1499
+#, c-format
+msgid "Template '%s' doesn't end with XXXXXX"
+msgstr " '%s' మాదిరి XXXXXX అంతం అవలేదు. "
+
+#: ../glib/gfileutils.c:1977
+#, c-format
+msgid "Failed to read the symbolic link '%s': %s"
+msgstr " '%s'  చిహ్న పూరితజోడి చదువుటలో విఫలమయినావు : %s"
+
+#: ../glib/gfileutils.c:1998
+msgid "Symbolic links not supported"
+msgstr "చిహ్న పూరితజోడి సహకరించలెదు. "
+
+#: ../glib/giochannel.c:1150
+#, c-format
+msgid "Conversion from character set `%s' to `%s' is not supported"
+msgstr " అక్షరమాలో`%s' నుండి `%s' కు పరివర్తన చెందడం సాధ్యం కాదు "
+
+#: ../glib/giochannel.c:1154
+#, c-format
+msgid "Could not open converter from `%s' to `%s': %s"
+msgstr " తెరచుటలో `%s' నుండి `%s' సాధ్యం కాదు  : %s"
+
+#: ../glib/giochannel.c:1499
+msgid "Can't do a raw read in g_io_channel_read_line_string"
+msgstr " జి_ఐఓ_ఛానెల్_రీడ్_లైన్_స్ర్టింగ్ ముడి చదువు సాధ్యపడదు  "
+
+#: ../glib/giochannel.c:1546 ../glib/giochannel.c:1803
+#: ../glib/giochannel.c:1889
+msgid "Leftover unconverted data in read buffer"
+msgstr " మిగిలిన దత్తాంశమును రీడ్ బఫర్ లో పరివర్తించలెము  "
+
+#: ../glib/giochannel.c:1626 ../glib/giochannel.c:1703
+msgid "Channel terminates in a partial character"
+msgstr " పూర్తికాని అక్షరాన్ని ప్రసార మార్గం ముగించును. "
+
+#: ../glib/giochannel.c:1689
+msgid "Can't do a raw read in g_io_channel_read_to_end"
+msgstr "జి_ఐఓ_ఛానెల్_రీడ్_లైన్_ఎండ్ ముడి చదువు సాధ్యపడదు"
+
+#: ../glib/gmappedfile.c:116
+#, fuzzy, c-format
+msgid "Failed to open file '%s': open() failed: %s"
+msgstr "దస్త్రం '%s' తెరుచుటలో విఫలమైనారు: ఎఫ్ డిఓపన్()  విఫలమైనది: %s"
+
+#: ../glib/gmappedfile.c:178
+#, fuzzy, c-format
+msgid "Failed to map file '%s': mmap() failed: %s"
+msgstr "దస్త్రం '%s' తెరుచుటలో విఫలమైనారు: ఎఫ్ డిఓపన్()  విఫలమైనది: %s"
+
+#: ../glib/gmarkup.c:232
+#, c-format
+msgid "Error on line %d char %d: %s"
+msgstr " %d క్యార్ %d వరుసలో దోషం కలదు  : %s"
+
+#: ../glib/gmarkup.c:330
+#, c-format
+msgid "Error on line %d: %s"
+msgstr "%d  వరుసలో దోషం కలదు : %s"
+
+#: ../glib/gmarkup.c:434
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgstr " ఖాశి వ్యష్టి '&;' చూడబడినది;  వర్తించు వ్యష్టిలు: &amp; &quot; &lt; &gt; &apos;"
+
+#: ../glib/gmarkup.c:444
+#, c-format
+msgid ""
+"Character '%s' is not valid at the start of an entity name; the & character "
+"begins an entity; if this ampersand isn't supposed to be an entity, escape "
+"it as &amp;"
+msgstr ""
+"  వ్యష్టినామముతో ప్రారంభమగు అక్షరము '%s' నిస్సారము; వ్యష్టి & అక్షరముతో ప్రారంభమగును;వ్యష్టి "
+"ప్రారంబమగును; ఒక వేశ ఆంపర్సండ్ ఊహించిన విధంగా వ్యష్టి కాకపోతే , ఎస్కేప్it as &amp;"
+
+#: ../glib/gmarkup.c:478
+#, c-format
+msgid "Character '%s' is not valid inside an entity name"
+msgstr " వ్యష్టినామంలో అక్షరము '%s' నిస్సారము "
+
+#: ../glib/gmarkup.c:515
+#, c-format
+msgid "Entity name '%s' is not known"
+msgstr " '%s' వ్యష్టి నామం తెలియదు "
+
+#: ../glib/gmarkup.c:526
+msgid ""
+"Entity did not end with a semicolon; most likely you used an ampersand "
+"character without intending to start an entity - escape ampersand as &amp;"
+msgstr ""
+" వ్యష్టి సెమికోలన్ తో పూర్తవలేదు; దాదాపుగా యాంపర్ సెండ్ ఉపయెగించవలెను  అక్షరము దాదాపుగా  -' ఎస్కేప్ "
+"యంపర్ సెండ్ యాజ్ &యాంప్;' తో ప్రారంభమవలేదు. "
+
+#: ../glib/gmarkup.c:579
+#, c-format
+msgid ""
+"Failed to parse '%-.*s', which should have been a digit inside a character "
+"reference (&#234; for example) - perhaps the digit is too large"
+msgstr ""
+"అక్షరములో అంకె కలిగియున్నందువలన '%-.*s', పార్సింగ్ విఫలమైనది.దాదాపుగా అంక్య భారీగా ఉన్నది -నివేదన "
+"(ఉదాహరణకు : &#234; )"
+
+#: ../glib/gmarkup.c:604
+#, c-format
+msgid "Character reference '%-.*s' does not encode a permitted character"
+msgstr "అక్షర నివేదన '%-.*s' అనుమతించబడిన అక్షరము ఎన్ కోడ్ అవ్వదు."
+
+#: ../glib/gmarkup.c:619
+msgid "Empty character reference; should include a digit such as &#454;"
+msgstr " ఖాళీ అక్షర నివేదన తప్పనిసరిగా &#454 ఈ సంఖ్యను కలుపుకొనవలెను"
+
+#: ../glib/gmarkup.c:629
+msgid ""
+"Character reference did not end with a semicolon; most likely you used an "
+"ampersand character without intending to start an entity - escape ampersand "
+"as &amp;"
+msgstr ""
+"అక్షర నివేదన సెమికోలన్ తో ముగియలేదు; దాదాపుగా యిది ఉపయెగించండి యాంపర్ సెండ్ అక్షరం తో ప్రారంభమవరాదు - "
+"ఎస్సేప్ యాంపర్ సెండ్ యాజ్ &యాంప్ "
+
+#: ../glib/gmarkup.c:715
+msgid "Unfinished entity reference"
+msgstr " పూర్తికాని వ్యష్టినివెదన  "
+
+#: ../glib/gmarkup.c:721
+msgid "Unfinished character reference"
+msgstr " అక్షర నివేదన పూర్తికాలేదు "
+
+#: ../glib/gmarkup.c:964 ../glib/gmarkup.c:992 ../glib/gmarkup.c:1023
+msgid "Invalid UTF-8 encoded text"
+msgstr "నిస్సారమైన యుటిఎఫ్-8 ఎన్ కోడెడ్ పాఠం"
+
+#: ../glib/gmarkup.c:1059
+msgid "Document must begin with an element (e.g. <book>)"
+msgstr "పత్రం తప్పనిసరిగా ఒక మూలకంతో ప్రారంభమవలెను (ఉదా. <బుక్>)"
+
+#: ../glib/gmarkup.c:1099
+#, c-format
+msgid ""
+"'%s' is not a valid character following a '<' character; it may not begin an "
+"element name"
+msgstr ""
+"  '<' తో ప్రారంభమగు '%s' అనునది సరరిఐన అక్షరం కాదు ; యిది మూలక నామంతో ప్రారంభమవలేదు.  "
+
+#: ../glib/gmarkup.c:1163
+#, c-format
+msgid ""
+"Odd character '%s', expected a '>' character to end the start tag of element "
+"'%s'"
+msgstr "బేసి అక్షరము '%s', ఊహించిన '>' అక్షరము చివరి ప్రారంభ బొందు మూతకం '%s'"
+
+#: ../glib/gmarkup.c:1252
+#, c-format
+msgid ""
+"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgstr "బేసి అక్షరము '%s', ఊహించిన '=' తర్వాత '%s'  ఆపాదించు నామం '%s' మూలకం "
+
+#: ../glib/gmarkup.c:1294
+#, c-format
+msgid ""
+"Odd character '%s', expected a '>' or '/' character to end the start tag of "
+"element '%s', or optionally an attribute; perhaps you used an invalid "
+"character in an attribute name"
+msgstr ""
+"'%s' ఊహించిన బేసి అక్షరము '>' లేక '/' చివరి ర్రంభ బొందు అక్షరము మాలకం %sలేక ఇచ్చాపూర్వక "
+"ఆపాదన; దాదాపుగా ఆపాదన నామంలో అనర్హమైన అక్షరం ఉపమెగించినావు"
+
+#: ../glib/gmarkup.c:1383
+#, c-format
+msgid ""
+"Odd character '%s', expected an open quote mark after the equals sign when "
+"giving value for attribute '%s' of element '%s'"
+msgstr ""
+"బేసి అక్షరము '%s', ఊహించిన తెరచిన క్వోట్ చిహ్నం తరాత ఇచ్చిన ఆపాదన విలువ  '%s' మూతకము '%s'"
+
+#: ../glib/gmarkup.c:1528
+#, c-format
+msgid ""
+"'%s' is not a valid character following the characters '</'; '%s' may not "
+"begin an element name"
+msgstr "  '</' వెంటనే ప్రారంభమగు '%s' నిసారమైన అక్షరము  ; '%s' తో మూలకనామం ప్రారంభమవరాదు "
+
+#: ../glib/gmarkup.c:1568
+#, c-format
+msgid ""
+"'%s' is not a valid character following the close element name '%s'; the "
+"allowed character is '>'"
+msgstr ""
+"'%s' is not a valid character following the close element name '%s'; the "
+"allowed character is '>'"
+
+#: ../glib/gmarkup.c:1579
+#, c-format
+msgid "Element '%s' was closed, no element is currently open"
+msgstr " '%s' మూలకం మూయబడినది, ప్రస్ధుతం ఏ మూలకము తెరచియుండలెదు "
+
+# ../glib/gmarkup.c:1588
+#: ../glib/gmarkup.c:1588
+#, c-format
+msgid "Element '%s' was closed, but the currently open element is '%s'"
+msgstr "'%s' మూలకం మూయబడినది, కాని ప్రస్ధుతం తెరువ బడిన మూలకం '%s'"
+
+#: ../glib/gmarkup.c:1735
+msgid "Document was empty or contained only whitespace"
+msgstr " పత్రం ఖాలిగా ఉన్నది లేక ఒక వైట్ స్పేస్ కలిగి యున్నది.  "
+
+#: ../glib/gmarkup.c:1749
+msgid "Document ended unexpectedly just after an open angle bracket '<'"
+msgstr "పత్రం చివర కోణ కుండలీకరణము'<' వెంటనె అనవసరముగా ముగింపు అయినది"
+
+#: ../glib/gmarkup.c:1757 ../glib/gmarkup.c:1801
+#, c-format
+msgid ""
+"Document ended unexpectedly with elements still open - '%s' was the last "
+"element opened"
+msgstr ""
+"మూలకములు ఇంకను తెరచియున్న పత్రం ఊహించని విధంగా అంతమైనది- '%s' చివరిది మూలకము తెరచబడినది"
+
+#: ../glib/gmarkup.c:1765
+#, c-format
+msgid ""
+"Document ended unexpectedly, expected to see a close angle bracket ending "
+"the tag <%s/>"
+msgstr ""
+"పత్రం ఊహించని విధంగా అంతమైనది,మూసిన కోణకుండశికరణం అంతము చూచుటకు ఊహించబడినది బొందు <%s/>"
+
+#: ../glib/gmarkup.c:1771
+msgid "Document ended unexpectedly inside an element name"
+msgstr " పత్రం చివర ఊహించని మూలకనామం కలదు "
+
+#: ../glib/gmarkup.c:1776
+msgid "Document ended unexpectedly inside an attribute name"
+msgstr "పత్రం చివర ఊహించని ఆపాదననామం కలదు"
+
+#: ../glib/gmarkup.c:1781
+msgid "Document ended unexpectedly inside an element-opening tag."
+msgstr "పత్రం చివర ఊహించని తెరచిన బొందు కలదు."
+
+#: ../glib/gmarkup.c:1787
+#, fuzzy
+msgid ""
+"Document ended unexpectedly after the equals sign following an attribute "
+"name; no attribute value"
+msgstr ""
+" '=' చిహ్నము తర్వాత క్రింద కనబరిచిన ఆపాదన పాఠం చివర ఊహించకుండా ఉన్నది. నామం; ఆపాదన విలువ లేదు."
+
+#: ../glib/gmarkup.c:1794
+msgid "Document ended unexpectedly while inside an attribute value"
+msgstr " లోపల ఆపాదన విలువ ఉన్నపుడు పాఠం ఊహించకుండా ముగింపు అయినది "
+
+#: ../glib/gmarkup.c:1809
+#, c-format
+msgid "Document ended unexpectedly inside the close tag for element '%s'"
+msgstr " '%s'మూలకము యోక్క మూసిన బొందు ఊహించకుండా పాఠం ముగింపు అయినది "
+
+#: ../glib/gmarkup.c:1815
+msgid "Document ended unexpectedly inside a comment or processing instruction"
+msgstr " లోపల వ్యాఖ్య క్రమగతి ఆదేశం ఉండగా ఊహించకుండా పాఠం ముగింపు  అయినది "
+
+#: ../glib/gshell.c:73
+msgid "Quoted text doesn't begin with a quotation mark"
+msgstr "కోటెడ్ పాఠం కొటేషన్ చిహ్నంతో ప్రారంభవరాదు"
+
+#: ../glib/gshell.c:163
+msgid "Unmatched quotation mark in command line or other shell-quoted text"
+msgstr " కమాండ్ లైన్ లేద షల్_కోటెడ్ పాఠం లో సామ్యంలేని కొటేషన్ చిహ్నం కలదు "
+
+#: ../glib/gshell.c:541
+#, c-format
+msgid "Text ended just after a '\\' character. (The text was '%s')"
+msgstr "పాఠం '\\' అక్షరము వెంటనె ముగింపు అయినది. (ఈ పాఠము '%s')"
+
+#: ../glib/gshell.c:548
+#, c-format
+msgid "Text ended before matching quote was found for %c. (The text was '%s')"
+msgstr "సామ్యమైన కొటేషన్ చిహ్నం %c లభించకముందె పాఠం ముగింపు అయినది . (ఈ పాఠము'%s')"
+
+#: ../glib/gshell.c:560
+msgid "Text was empty (or contained only whitespace)"
+msgstr "పాఠం ఏమి లేదు (లేక ఒక వైట్ స్పేస్ కలదు)"
+
+#: ../glib/gspawn-win32.c:264
+msgid "Failed to read data from child process"
+msgstr " శిశు కార్యం నుండి చదువుటలో విఫలమయినావు "
+
+#: ../glib/gspawn-win32.c:281 ../glib/gspawn.c:1354
+#, c-format
+msgid "Failed to create pipe for communicating with child process (%s)"
+msgstr " (%s) శిశు కార్యం తో తెలియచేయుటకు పైప్ ను సృష్టించుటలో విఫలమైనావు "
+
+#: ../glib/gspawn-win32.c:321 ../glib/gspawn.c:1018
+#, c-format
+msgid "Failed to read from child pipe (%s)"
+msgstr " శిశు పైప్ నుండి చదువుటలో విఫలమయినావు(%s)"
+
+#: ../glib/gspawn-win32.c:349 ../glib/gspawn.c:1223
+#, c-format
+msgid "Failed to change to directory '%s' (%s)"
+msgstr " '%s' (%s) వివరణ మార్చుటలో విఫలమయినావు  "
+
+#: ../glib/gspawn-win32.c:357 ../glib/gspawn-win32.c:442
+#, c-format
+msgid "Failed to execute child process (%s)"
+msgstr "(%s) శిశు కార్యం నిర్వర్తించుటలో విఫలమయినావు  "
+
+#: ../glib/gspawn-win32.c:599
+msgid "Failed to execute helper program"
+msgstr " సహాయ కార్యక్రమం నిర్వర్తించుటలో విఫలమయినావు "
+
+#: ../glib/gspawn-win32.c:797
+msgid ""
+"Unexpected error in g_io_channel_win32_poll() reading data from a child "
+"process"
+msgstr "  శిశు కార్యం నుండి జి_ఐఓ_ఛానెల్_విన్౩౨32_పోల్()  పాఠం ను చదువుటలో ఊహించని దోషం కలదు"
+
+#: ../glib/gspawn.c:179
+#, c-format
+msgid "Failed to read data from child process (%s)"
+msgstr "(%s) శిశు కార్యం నుండి వివరము చదువుటలో విఫలమయినావు "
+
+#: ../glib/gspawn.c:310
+#, c-format
+msgid "Unexpected error in select() reading data from a child process (%s)"
+msgstr " శిశు కార్యం (%s) నుండి పాఠం చదువుటలో సెలెక్ట్() లో ఊహించని దోషం కలదు.  "
+
+#: ../glib/gspawn.c:393
+#, c-format
+msgid "Unexpected error in waitpid() (%s)"
+msgstr "వెయిట్ పిడ్() లో ఊహించని దోషం కలదు(%s)"
+
+#: ../glib/gspawn.c:1083
+#, c-format
+msgid "Failed to fork (%s)"
+msgstr "(%s) ఫోర్క్ విఫలమయినది  "
+
+#: ../glib/gspawn.c:1233
+#, c-format
+msgid "Failed to execute child process \"%s\" (%s)"
+msgstr " \"%s\" శిశుకార్యం నిర్వర్తించుటలో విఫలమయినావు (%s)"
+
+#: ../glib/gspawn.c:1243
+#, c-format
+msgid "Failed to redirect output or input of child process (%s)"
+msgstr "ఎగుబడికి రిడైరెక్ట్ చేయుటలో విఫలమైనది లేక శిశు కార్యం యొక్క దిగుబడి  (%s)"
+
+#: ../glib/gspawn.c:1252
+#, c-format
+msgid "Failed to fork child process (%s)"
+msgstr " (%s) శిశుకార్యం యెక్క ఫోర్క్ విఫలమయినది "
+
+#: ../glib/gspawn.c:1260
+#, c-format
+msgid "Unknown error executing child process \"%s\""
+msgstr " \"%s\" శిశుకార్యం నిర్వర్తించుటలో తెలియని ధోషం కలదు  "
+
+#: ../glib/gspawn.c:1282
+#, c-format
+msgid "Failed to read enough data from child pid pipe (%s)"
+msgstr "శిశు పిడ్ పైప్ (%s) నుండి సరిపడునంత చదువుటలో విఫలమైనావు.  "
+
+#: ../glib/gutf8.c:986
+msgid "Character out of range for UTF-8"
+msgstr "అక్షరము  యుటిఫ్-8 శ్రేణియందు లేదు "
+
+#: ../glib/gutf8.c:1080 ../glib/gutf8.c:1089 ../glib/gutf8.c:1221
+#: ../glib/gutf8.c:1230 ../glib/gutf8.c:1371 ../glib/gutf8.c:1467
+msgid "Invalid sequence in conversion input"
+msgstr "పరివర్తన ఎగుబడి వరుస నిస్సారము "
+
+# ../glib/gutf8.c:1382 ../glib/gutf8.c:1478
+#: ../glib/gutf8.c:1382 ../glib/gutf8.c:1478
+msgid "Character out of range for UTF-16"
+msgstr "అక్షరము UTF-16 శ్రేణియందు లేదు"
+
+#: ../glib/goption.c:468
+msgid "Usage:"
+msgstr "వినిమయం:"
+
+#: ../glib/goption.c:468
+msgid "[OPTION...]"
+msgstr "[ఇచ్చాపూర్వరకం...]"
+
+#: ../glib/goption.c:556
+msgid "Help Options:"
+msgstr "సహాయ ఇచ్ఛాపూర్వకాలు:"
+
+#: ../glib/goption.c:557
+msgid "Show help options"
+msgstr "సహాయ ఇచ్ఛాపూర్వకాలను చూపించుట"
+
+#: ../glib/goption.c:562
+msgid "Show all help options"
+msgstr "సహాయ ఇచ్ఛాపూర్వకాలన్నింటని చూపించుట"
+
+#: ../glib/goption.c:612
+msgid "Application Options:"
+msgstr "కార్యక్షేత్ర ఇచ్ఛాపూర్వకాలు :"
+
+#: ../glib/goption.c:653
+#, fuzzy, c-format
+msgid "Cannot parse integer value '%s' for %s"
+msgstr "పూర్ణాంకం విలువ '%s' పార్స్ చేయలేదు --%s"
+
+#: ../glib/goption.c:663
+#, c-format
+msgid "Integer value '%s' for %s out of range"
+msgstr " పూర్ణాంకం విలువ '%s' లో విస్రృతి లో లేని %s "
+
+#: ../glib/goption.c:957 ../glib/goption.c:1068
+#, c-format
+msgid "Missing argument for %s"
+msgstr ""
+
+#: ../glib/goption.c:1472
+#, c-format
+msgid "Unknown option %s"
+msgstr "తెలియని  ఇచ్ఛాపూర్వకము %s"
+
+#: ../glib/gkeyfile.c:339
+msgid "Valid key file could not be found in data dirs"
+msgstr " సరియైన మీటదస్త్రం దత్తాంశవివరణలో లభించలేదు  "
+
+#: ../glib/gkeyfile.c:374
+msgid "Not a regular file"
+msgstr "క్రమబద్దమైన దస్త్రం కాదు"
+
+#: ../glib/gkeyfile.c:382
+msgid "File is empty"
+msgstr " కాళీ దస్త్రం "
+
+#: ../glib/gkeyfile.c:697
+#, c-format
+msgid ""
+"Key file contains line '%s' which is not a key-value pair, group, or comment"
+msgstr "ఏదైతే మీట-విలువలు , గ్రూప్ ,లేక వ్యాఖ్య కాదో అది మీట దస్త్రంలో లైన్ '%s' కలిగియున్నది"
+
+#: ../glib/gkeyfile.c:765
+msgid "Key file does not start with a group"
+msgstr " మీట దస్త్రం సముదాయంతో ప్రారంభమవలెదు.  "
+
+#: ../glib/gkeyfile.c:808
+#, c-format
+msgid "Key file contains unsupported encoding '%s'"
+msgstr " మీట దస్త్రం కలిగియున్న సంకేతరచన '%s' సహకరించదు "
+
+#: ../glib/gkeyfile.c:1017 ../glib/gkeyfile.c:1176 ../glib/gkeyfile.c:2177
+#: ../glib/gkeyfile.c:2242 ../glib/gkeyfile.c:2361 ../glib/gkeyfile.c:2497
+#: ../glib/gkeyfile.c:2649 ../glib/gkeyfile.c:2823 ../glib/gkeyfile.c:2880
+#, c-format
+msgid "Key file does not have group '%s'"
+msgstr " మీట దస్త్రం సముదాయం '%s' ను కలిగియుండలేదు "
+
+#: ../glib/gkeyfile.c:1188
+#, c-format
+msgid "Key file does not have key '%s'"
+msgstr "మీట దస్త్రం '%s' తాళంను కలిగియుండలేదు. "
+
+#: ../glib/gkeyfile.c:1289 ../glib/gkeyfile.c:1398
+#, c-format
+msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
+msgstr "'%s' మీట దస్త్రం యొక్క మీటను కలిగియున్నది,దాని విలువ '%s' యుటిఫ్-8 "
+
+#: ../glib/gkeyfile.c:1307 ../glib/gkeyfile.c:1416 ../glib/gkeyfile.c:1788
+#, c-format
+msgid "Key file contains key '%s' which has value that cannot be interpreted."
+msgstr "'%s' మీట దస్త్రం యొక్క మీట ను కలిగియున్నది,దాని విలువను చదువుటకు సాధ్యపడదు."
+
+#: ../glib/gkeyfile.c:2004
+#, c-format
+msgid ""
+"Key file contains key '%s' in group '%s' which has value that cannot be "
+"interpreted."
+msgstr ""
+"'%s' మీట దస్త్రం యొక్క మీట ను గ్రూప్ '%s' లో కలిగియున్నది,దాని విలువను చదువుటకు సాధ్యపడదు."
+
+#: ../glib/gkeyfile.c:2192 ../glib/gkeyfile.c:2376 ../glib/gkeyfile.c:2891
+#, c-format
+msgid "Key file does not have key '%s' in group '%s'"
+msgstr "'%s' మీట దస్త్రం యొక్క మీట ను గ్రూప్ '%s' లో కలిగియుండలేదు "
+
+#: ../glib/gkeyfile.c:3072
+msgid "Key file contains escape character at end of line"
+msgstr " మీట దస్త్రం గీత చివర ఎస్పేప్ అక్షరము కలదు"
+
+#: ../glib/gkeyfile.c:3094
+#, c-format
+msgid "Key file contains invalid escape sequence '%s'"
+msgstr " '%s' మీట దస్త్రం నిస్సారమైన ఎస్పేప్ వరుస కలదు "
+
+#: ../glib/gkeyfile.c:3235
+#, c-format
+msgid "Value '%s' cannot be interpreted as a number."
+msgstr "'%s' విలువను సంఖ్య గా చదువుటకు సాధ్యపడదు."
+
+#: ../glib/gkeyfile.c:3245
+#, fuzzy, c-format
+msgid "Integer value '%s' out of range"
+msgstr " పూర్ణాంకం విలువ '%s' లో విస్రృతి లో లేని %s "
+
+#: ../glib/gkeyfile.c:3275
+#, c-format
+msgid "Value '%s' cannot be interpreted as a boolean."
+msgstr "%s' విలువను బులియన్ గా చదువుటకు సాధ్యపడదు."
