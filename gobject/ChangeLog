@@ -1,3 +1,11 @@
+2005-08-09  Matthias Clasen  <mclasen@redhat.com>
+
+	* gvaluetransform.c: Access enum and flags
+	values as v_long/v_ulong, not v_int/v_uint,
+	to make value transformation of such types
+	work on bigendian 64bit machines.  (#312485,
+	Michael Lorenz)
+
 2005-08-05  Matthias Clasen  <mclasen@redhat.com>
 	
 	* abicheck.sh: Also check exported variables

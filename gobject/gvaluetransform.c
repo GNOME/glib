@@ -191,12 +191,12 @@ value_transform_enum_string (const GValue *src_value,
                              GValue       *dest_value)
 {
   GEnumClass *class = g_type_class_ref (G_VALUE_TYPE (src_value));
-  GEnumValue *enum_value = g_enum_get_value (class, src_value->data[0].v_int);
+  GEnumValue *enum_value = g_enum_get_value (class, src_value->data[0].v_long);
   
   if (enum_value)
     dest_value->data[0].v_pointer = g_strdup (enum_value->value_name);
   else
-    dest_value->data[0].v_pointer = g_strdup_printf ("%d", src_value->data[0].v_int);
+    dest_value->data[0].v_pointer = g_strdup_printf ("%ld", src_value->data[0].v_long);
   
   g_type_class_unref (class);
 }
@@ -205,12 +205,12 @@ value_transform_flags_string (const GValue *src_value,
                               GValue       *dest_value)
 {
   GFlagsClass *class = g_type_class_ref (G_VALUE_TYPE (src_value));
-  GFlagsValue *flags_value = g_flags_get_first_value (class, src_value->data[0].v_uint);
+  GFlagsValue *flags_value = g_flags_get_first_value (class, src_value->data[0].v_ulong);
   
   if (flags_value)
     {
       GString *gstring = g_string_new (NULL);
-      guint v_flags = src_value->data[0].v_uint;
+      guint v_flags = src_value->data[0].v_ulong;
       
       do
         {
@@ -232,7 +232,7 @@ value_transform_flags_string (const GValue *src_value,
       g_string_free (gstring, TRUE);
     }
   else
-    dest_value->data[0].v_pointer = g_strdup_printf ("%u", src_value->data[0].v_uint);
+    dest_value->data[0].v_pointer = g_strdup_printf ("%lu", src_value->data[0].v_ulong);
   
   g_type_class_unref (class);
 }
@@ -259,8 +259,8 @@ g_value_transforms_init (void)
   g_value_register_transform_func (G_TYPE_CHAR,         G_TYPE_ULONG,           value_transform_int_ulong);
   g_value_register_transform_func (G_TYPE_CHAR,         G_TYPE_INT64,           value_transform_int_int64);
   g_value_register_transform_func (G_TYPE_CHAR,         G_TYPE_UINT64,          value_transform_int_uint64);
-  g_value_register_transform_func (G_TYPE_CHAR,         G_TYPE_ENUM,            value_transform_int_int);
-  g_value_register_transform_func (G_TYPE_CHAR,         G_TYPE_FLAGS,           value_transform_int_uint);
+  g_value_register_transform_func (G_TYPE_CHAR,         G_TYPE_ENUM,            value_transform_int_long);
+  g_value_register_transform_func (G_TYPE_CHAR,         G_TYPE_FLAGS,           value_transform_int_ulong);
   g_value_register_transform_func (G_TYPE_CHAR,         G_TYPE_FLOAT,           value_transform_int_float);
   g_value_register_transform_func (G_TYPE_CHAR,         G_TYPE_DOUBLE,          value_transform_int_double);
   g_value_register_transform_func (G_TYPE_CHAR,         G_TYPE_STRING,          value_transform_int_string);
@@ -273,8 +273,8 @@ g_value_transforms_init (void)
   g_value_register_transform_func (G_TYPE_UCHAR,        G_TYPE_ULONG,           value_transform_uint_ulong);
   g_value_register_transform_func (G_TYPE_UCHAR,        G_TYPE_INT64,           value_transform_uint_int64);
   g_value_register_transform_func (G_TYPE_UCHAR,        G_TYPE_UINT64,          value_transform_uint_uint64);
-  g_value_register_transform_func (G_TYPE_UCHAR,        G_TYPE_ENUM,            value_transform_uint_int);
-  g_value_register_transform_func (G_TYPE_UCHAR,        G_TYPE_FLAGS,           value_transform_uint_uint);
+  g_value_register_transform_func (G_TYPE_UCHAR,        G_TYPE_ENUM,            value_transform_uint_long);
+  g_value_register_transform_func (G_TYPE_UCHAR,        G_TYPE_FLAGS,           value_transform_uint_ulong);
   g_value_register_transform_func (G_TYPE_UCHAR,        G_TYPE_FLOAT,           value_transform_uint_float);
   g_value_register_transform_func (G_TYPE_UCHAR,        G_TYPE_DOUBLE,          value_transform_uint_double);
   g_value_register_transform_func (G_TYPE_UCHAR,        G_TYPE_STRING,          value_transform_uint_string);
@@ -287,8 +287,8 @@ g_value_transforms_init (void)
   g_value_register_transform_func (G_TYPE_BOOLEAN,      G_TYPE_ULONG,           value_transform_int_ulong);
   g_value_register_transform_func (G_TYPE_BOOLEAN,      G_TYPE_INT64,           value_transform_int_int64);
   g_value_register_transform_func (G_TYPE_BOOLEAN,      G_TYPE_UINT64,          value_transform_int_uint64);
-  g_value_register_transform_func (G_TYPE_BOOLEAN,      G_TYPE_ENUM,            value_transform_int_int);
-  g_value_register_transform_func (G_TYPE_BOOLEAN,      G_TYPE_FLAGS,           value_transform_int_uint);
+  g_value_register_transform_func (G_TYPE_BOOLEAN,      G_TYPE_ENUM,            value_transform_int_long);
+  g_value_register_transform_func (G_TYPE_BOOLEAN,      G_TYPE_FLAGS,           value_transform_int_ulong);
   SKIP____register_transform_func (G_TYPE_BOOLEAN,      G_TYPE_FLOAT,           value_transform_int_float);
   SKIP____register_transform_func (G_TYPE_BOOLEAN,      G_TYPE_DOUBLE,          value_transform_int_double);
   g_value_register_transform_func (G_TYPE_BOOLEAN,      G_TYPE_STRING,          value_transform_bool_string);
@@ -301,8 +301,8 @@ g_value_transforms_init (void)
   g_value_register_transform_func (G_TYPE_INT,          G_TYPE_ULONG,           value_transform_int_ulong);
   g_value_register_transform_func (G_TYPE_INT,          G_TYPE_INT64,           value_transform_int_int64);
   g_value_register_transform_func (G_TYPE_INT,          G_TYPE_UINT64,          value_transform_int_uint64);
-  g_value_register_transform_func (G_TYPE_INT,          G_TYPE_ENUM,            value_transform_int_int);
-  g_value_register_transform_func (G_TYPE_INT,          G_TYPE_FLAGS,           value_transform_int_uint);
+  g_value_register_transform_func (G_TYPE_INT,          G_TYPE_ENUM,            value_transform_int_long);
+  g_value_register_transform_func (G_TYPE_INT,          G_TYPE_FLAGS,           value_transform_int_ulong);
   g_value_register_transform_func (G_TYPE_INT,          G_TYPE_FLOAT,           value_transform_int_float);
   g_value_register_transform_func (G_TYPE_INT,          G_TYPE_DOUBLE,          value_transform_int_double);
   g_value_register_transform_func (G_TYPE_INT,          G_TYPE_STRING,          value_transform_int_string);
@@ -315,8 +315,8 @@ g_value_transforms_init (void)
   g_value_register_transform_func (G_TYPE_UINT,         G_TYPE_ULONG,           value_transform_uint_ulong);
   g_value_register_transform_func (G_TYPE_UINT,         G_TYPE_INT64,           value_transform_uint_int64);
   g_value_register_transform_func (G_TYPE_UINT,         G_TYPE_UINT64,          value_transform_uint_uint64);
-  g_value_register_transform_func (G_TYPE_UINT,         G_TYPE_ENUM,            value_transform_uint_int);
-  g_value_register_transform_func (G_TYPE_UINT,         G_TYPE_FLAGS,           value_transform_uint_uint);
+  g_value_register_transform_func (G_TYPE_UINT,         G_TYPE_ENUM,            value_transform_uint_long);
+  g_value_register_transform_func (G_TYPE_UINT,         G_TYPE_FLAGS,           value_transform_uint_ulong);
   g_value_register_transform_func (G_TYPE_UINT,         G_TYPE_FLOAT,           value_transform_uint_float);
   g_value_register_transform_func (G_TYPE_UINT,         G_TYPE_DOUBLE,          value_transform_uint_double);
   g_value_register_transform_func (G_TYPE_UINT,         G_TYPE_STRING,          value_transform_uint_string);
@@ -329,8 +329,8 @@ g_value_transforms_init (void)
   g_value_register_transform_func (G_TYPE_LONG,         G_TYPE_ULONG,           value_transform_long_ulong);
   g_value_register_transform_func (G_TYPE_LONG,         G_TYPE_INT64,           value_transform_long_int64);
   g_value_register_transform_func (G_TYPE_LONG,         G_TYPE_UINT64,          value_transform_long_uint64);
-  g_value_register_transform_func (G_TYPE_LONG,         G_TYPE_ENUM,            value_transform_long_int);
-  g_value_register_transform_func (G_TYPE_LONG,         G_TYPE_FLAGS,           value_transform_long_uint);
+  g_value_register_transform_func (G_TYPE_LONG,         G_TYPE_ENUM,            value_transform_long_long);
+  g_value_register_transform_func (G_TYPE_LONG,         G_TYPE_FLAGS,           value_transform_long_ulong);
   g_value_register_transform_func (G_TYPE_LONG,         G_TYPE_FLOAT,           value_transform_long_float);
   g_value_register_transform_func (G_TYPE_LONG,         G_TYPE_DOUBLE,          value_transform_long_double);
   g_value_register_transform_func (G_TYPE_LONG,         G_TYPE_STRING,          value_transform_long_string);
@@ -343,8 +343,8 @@ g_value_transforms_init (void)
   g_value_register_transform_func (G_TYPE_ULONG,        G_TYPE_ULONG,           value_transform_ulong_ulong);
   g_value_register_transform_func (G_TYPE_ULONG,        G_TYPE_INT64,           value_transform_ulong_int64);
   g_value_register_transform_func (G_TYPE_ULONG,        G_TYPE_UINT64,          value_transform_ulong_uint64);
-  g_value_register_transform_func (G_TYPE_ULONG,        G_TYPE_ENUM,            value_transform_ulong_int);
-  g_value_register_transform_func (G_TYPE_ULONG,        G_TYPE_FLAGS,           value_transform_ulong_uint);
+  g_value_register_transform_func (G_TYPE_ULONG,        G_TYPE_ENUM,            value_transform_ulong_long);
+  g_value_register_transform_func (G_TYPE_ULONG,        G_TYPE_FLAGS,           value_transform_ulong_ulong);
   g_value_register_transform_func (G_TYPE_ULONG,        G_TYPE_FLOAT,           value_transform_ulong_float);
   g_value_register_transform_func (G_TYPE_ULONG,        G_TYPE_DOUBLE,          value_transform_ulong_double);
   g_value_register_transform_func (G_TYPE_ULONG,        G_TYPE_STRING,          value_transform_ulong_string);
@@ -357,8 +357,8 @@ g_value_transforms_init (void)
   g_value_register_transform_func (G_TYPE_INT64,        G_TYPE_ULONG,           value_transform_int64_ulong);
   g_value_register_transform_func (G_TYPE_INT64,        G_TYPE_INT64,           value_transform_int64_int64);
   g_value_register_transform_func (G_TYPE_INT64,        G_TYPE_UINT64,          value_transform_int64_uint64);
-  g_value_register_transform_func (G_TYPE_INT64,        G_TYPE_ENUM,            value_transform_int64_int);
-  g_value_register_transform_func (G_TYPE_INT64,        G_TYPE_FLAGS,           value_transform_int64_uint);
+  g_value_register_transform_func (G_TYPE_INT64,        G_TYPE_ENUM,            value_transform_int64_long);
+  g_value_register_transform_func (G_TYPE_INT64,        G_TYPE_FLAGS,           value_transform_int64_ulong);
   g_value_register_transform_func (G_TYPE_INT64,        G_TYPE_FLOAT,           value_transform_int64_float);
   g_value_register_transform_func (G_TYPE_INT64,        G_TYPE_DOUBLE,          value_transform_int64_double);
   g_value_register_transform_func (G_TYPE_INT64,        G_TYPE_STRING,          value_transform_int64_string);
@@ -371,41 +371,41 @@ g_value_transforms_init (void)
   g_value_register_transform_func (G_TYPE_UINT64,       G_TYPE_ULONG,           value_transform_uint64_ulong);
   g_value_register_transform_func (G_TYPE_UINT64,       G_TYPE_INT64,           value_transform_uint64_int64);
   g_value_register_transform_func (G_TYPE_UINT64,       G_TYPE_UINT64,          value_transform_uint64_uint64);
-  g_value_register_transform_func (G_TYPE_UINT64,       G_TYPE_ENUM,            value_transform_uint64_int);
-  g_value_register_transform_func (G_TYPE_UINT64,       G_TYPE_FLAGS,           value_transform_uint64_uint);
+  g_value_register_transform_func (G_TYPE_UINT64,       G_TYPE_ENUM,            value_transform_uint64_long);
+  g_value_register_transform_func (G_TYPE_UINT64,       G_TYPE_FLAGS,           value_transform_uint64_ulong);
 #ifndef _MSC_VER
   /* required casts unsupported with msvc 5.0 */
   g_value_register_transform_func (G_TYPE_UINT64,       G_TYPE_FLOAT,           value_transform_uint64_float);
   g_value_register_transform_func (G_TYPE_UINT64,       G_TYPE_DOUBLE,          value_transform_uint64_double);
 #endif
   g_value_register_transform_func (G_TYPE_UINT64,       G_TYPE_STRING,          value_transform_uint64_string);
-  g_value_register_transform_func (G_TYPE_ENUM,         G_TYPE_CHAR,            value_transform_int_s8);
-  g_value_register_transform_func (G_TYPE_ENUM,         G_TYPE_UCHAR,           value_transform_int_u8);
-  SKIP____register_transform_func (G_TYPE_ENUM,         G_TYPE_BOOLEAN,         value_transform_int_bool);
-  g_value_register_transform_func (G_TYPE_ENUM,         G_TYPE_INT,             value_transform_int_int);
-  g_value_register_transform_func (G_TYPE_ENUM,         G_TYPE_UINT,            value_transform_int_uint);
-  g_value_register_transform_func (G_TYPE_ENUM,         G_TYPE_LONG,            value_transform_int_long);
-  g_value_register_transform_func (G_TYPE_ENUM,         G_TYPE_ULONG,           value_transform_int_ulong);
-  g_value_register_transform_func (G_TYPE_ENUM,         G_TYPE_INT64,           value_transform_int_int64);
-  g_value_register_transform_func (G_TYPE_ENUM,         G_TYPE_UINT64,          value_transform_int_uint64);
-  g_value_register_transform_func (G_TYPE_ENUM,         G_TYPE_ENUM,            value_transform_int_int);
-  g_value_register_transform_func (G_TYPE_ENUM,         G_TYPE_FLAGS,           value_transform_int_uint);
-  SKIP____register_transform_func (G_TYPE_ENUM,         G_TYPE_FLOAT,           value_transform_int_float);
-  SKIP____register_transform_func (G_TYPE_ENUM,         G_TYPE_DOUBLE,          value_transform_int_double);
+  g_value_register_transform_func (G_TYPE_ENUM,         G_TYPE_CHAR,            value_transform_long_s8);
+  g_value_register_transform_func (G_TYPE_ENUM,         G_TYPE_UCHAR,           value_transform_long_u8);
+  SKIP____register_transform_func (G_TYPE_ENUM,         G_TYPE_BOOLEAN,         value_transform_long_bool);
+  g_value_register_transform_func (G_TYPE_ENUM,         G_TYPE_INT,             value_transform_long_int);
+  g_value_register_transform_func (G_TYPE_ENUM,         G_TYPE_UINT,            value_transform_long_uint);
+  g_value_register_transform_func (G_TYPE_ENUM,         G_TYPE_LONG,            value_transform_long_long);
+  g_value_register_transform_func (G_TYPE_ENUM,         G_TYPE_ULONG,           value_transform_long_ulong);
+  g_value_register_transform_func (G_TYPE_ENUM,         G_TYPE_INT64,           value_transform_long_int64);
+  g_value_register_transform_func (G_TYPE_ENUM,         G_TYPE_UINT64,          value_transform_long_uint64);
+  g_value_register_transform_func (G_TYPE_ENUM,         G_TYPE_ENUM,            value_transform_long_long);
+  g_value_register_transform_func (G_TYPE_ENUM,         G_TYPE_FLAGS,           value_transform_long_ulong);
+  SKIP____register_transform_func (G_TYPE_ENUM,         G_TYPE_FLOAT,           value_transform_long_float);
+  SKIP____register_transform_func (G_TYPE_ENUM,         G_TYPE_DOUBLE,          value_transform_long_double);
   g_value_register_transform_func (G_TYPE_ENUM,         G_TYPE_STRING,          value_transform_enum_string);
-  g_value_register_transform_func (G_TYPE_FLAGS,        G_TYPE_CHAR,            value_transform_uint_s8);
-  g_value_register_transform_func (G_TYPE_FLAGS,        G_TYPE_UCHAR,           value_transform_uint_u8);
-  SKIP____register_transform_func (G_TYPE_FLAGS,        G_TYPE_BOOLEAN,         value_transform_uint_bool);
-  g_value_register_transform_func (G_TYPE_FLAGS,        G_TYPE_INT,             value_transform_uint_int);
-  g_value_register_transform_func (G_TYPE_FLAGS,        G_TYPE_UINT,            value_transform_uint_uint);
-  g_value_register_transform_func (G_TYPE_FLAGS,        G_TYPE_LONG,            value_transform_uint_long);
-  g_value_register_transform_func (G_TYPE_FLAGS,        G_TYPE_ULONG,           value_transform_uint_ulong);
-  g_value_register_transform_func (G_TYPE_FLAGS,        G_TYPE_INT64,           value_transform_uint_int64);
-  g_value_register_transform_func (G_TYPE_FLAGS,        G_TYPE_UINT64,          value_transform_uint_uint64);
-  SKIP____register_transform_func (G_TYPE_FLAGS,        G_TYPE_ENUM,            value_transform_uint_int);
-  g_value_register_transform_func (G_TYPE_FLAGS,        G_TYPE_FLAGS,           value_transform_uint_uint);
-  SKIP____register_transform_func (G_TYPE_FLAGS,        G_TYPE_FLOAT,           value_transform_uint_float);
-  SKIP____register_transform_func (G_TYPE_FLAGS,        G_TYPE_DOUBLE,          value_transform_uint_double);
+  g_value_register_transform_func (G_TYPE_FLAGS,        G_TYPE_CHAR,            value_transform_ulong_s8);
+  g_value_register_transform_func (G_TYPE_FLAGS,        G_TYPE_UCHAR,           value_transform_ulong_u8);
+  SKIP____register_transform_func (G_TYPE_FLAGS,        G_TYPE_BOOLEAN,         value_transform_ulong_bool);
+  g_value_register_transform_func (G_TYPE_FLAGS,        G_TYPE_INT,             value_transform_ulong_int);
+  g_value_register_transform_func (G_TYPE_FLAGS,        G_TYPE_UINT,            value_transform_ulong_uint);
+  g_value_register_transform_func (G_TYPE_FLAGS,        G_TYPE_LONG,            value_transform_ulong_long);
+  g_value_register_transform_func (G_TYPE_FLAGS,        G_TYPE_ULONG,           value_transform_ulong_ulong);
+  g_value_register_transform_func (G_TYPE_FLAGS,        G_TYPE_INT64,           value_transform_ulong_int64);
+  g_value_register_transform_func (G_TYPE_FLAGS,        G_TYPE_UINT64,          value_transform_ulong_uint64);
+  SKIP____register_transform_func (G_TYPE_FLAGS,        G_TYPE_ENUM,            value_transform_ulong_long);
+  g_value_register_transform_func (G_TYPE_FLAGS,        G_TYPE_FLAGS,           value_transform_ulong_ulong);
+  SKIP____register_transform_func (G_TYPE_FLAGS,        G_TYPE_FLOAT,           value_transform_ulong_float);
+  SKIP____register_transform_func (G_TYPE_FLAGS,        G_TYPE_DOUBLE,          value_transform_ulong_double);
   g_value_register_transform_func (G_TYPE_FLAGS,        G_TYPE_STRING,          value_transform_flags_string);
   g_value_register_transform_func (G_TYPE_FLOAT,        G_TYPE_CHAR,            value_transform_float_s8);
   g_value_register_transform_func (G_TYPE_FLOAT,        G_TYPE_UCHAR,           value_transform_float_u8);
@@ -416,8 +416,8 @@ g_value_transforms_init (void)
   g_value_register_transform_func (G_TYPE_FLOAT,        G_TYPE_ULONG,           value_transform_float_ulong);
   g_value_register_transform_func (G_TYPE_FLOAT,        G_TYPE_INT64,           value_transform_float_int64);
   g_value_register_transform_func (G_TYPE_FLOAT,        G_TYPE_UINT64,          value_transform_float_uint64);
-  SKIP____register_transform_func (G_TYPE_FLOAT,        G_TYPE_ENUM,            value_transform_float_int);
-  SKIP____register_transform_func (G_TYPE_FLOAT,        G_TYPE_FLAGS,           value_transform_float_uint);
+  SKIP____register_transform_func (G_TYPE_FLOAT,        G_TYPE_ENUM,            value_transform_float_long);
+  SKIP____register_transform_func (G_TYPE_FLOAT,        G_TYPE_FLAGS,           value_transform_float_ulong);
   g_value_register_transform_func (G_TYPE_FLOAT,        G_TYPE_FLOAT,           value_transform_float_float);
   g_value_register_transform_func (G_TYPE_FLOAT,        G_TYPE_DOUBLE,          value_transform_float_double);
   g_value_register_transform_func (G_TYPE_FLOAT,        G_TYPE_STRING,          value_transform_float_string);
@@ -430,8 +430,8 @@ g_value_transforms_init (void)
   g_value_register_transform_func (G_TYPE_DOUBLE,       G_TYPE_ULONG,           value_transform_double_ulong);
   g_value_register_transform_func (G_TYPE_DOUBLE,       G_TYPE_INT64,           value_transform_double_int64);
   g_value_register_transform_func (G_TYPE_DOUBLE,       G_TYPE_UINT64,          value_transform_double_uint64);
-  SKIP____register_transform_func (G_TYPE_DOUBLE,       G_TYPE_ENUM,            value_transform_double_int);
-  SKIP____register_transform_func (G_TYPE_DOUBLE,       G_TYPE_FLAGS,           value_transform_double_uint);
+  SKIP____register_transform_func (G_TYPE_DOUBLE,       G_TYPE_ENUM,            value_transform_double_long);
+  SKIP____register_transform_func (G_TYPE_DOUBLE,       G_TYPE_FLAGS,           value_transform_double_ulong);
   g_value_register_transform_func (G_TYPE_DOUBLE,       G_TYPE_FLOAT,           value_transform_double_float);
   g_value_register_transform_func (G_TYPE_DOUBLE,       G_TYPE_DOUBLE,          value_transform_double_double);
   g_value_register_transform_func (G_TYPE_DOUBLE,       G_TYPE_STRING,          value_transform_double_string);
