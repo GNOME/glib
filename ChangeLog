@@ -1,3 +1,8 @@
+2005-08-08  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gutils.c (_g_compute_locale_variants): Initialize
+	variables to not make gcc nervous.
+
 2005-08-08  Manish Singh  <yosh@gimp.org>
 
 	* glib/abicheck.sh: remove stray -V option to grep so it actually
