@@ -1,3 +1,8 @@
+2005-08-08  Manish Singh  <yosh@gimp.org>
+
+	* glib/abicheck.sh: remove stray -V option to grep so it actually
+	works.
+
 2005-08-08  Matthias Clasen  <mclasen@redhat.com>
 
 	* tests/convert-test.c: Enable the endianness test.
