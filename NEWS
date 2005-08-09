@@ -1,3 +1,12 @@
+Overview of Changes from GLib 2.7.7 to GLib 2.8.0
+=================================================
+* Make g_value_transform() handle enum values
+  correctly on ppc64.  [Michael Lorenz]
+  (Third-party code accessing enumeration values 
+  in GValues should also be changed to access 
+  v_long, not v_int, in order to work on bigendian 
+  64bit machines.)
+
 Overview of Changes from GLib 2.7.6 to GLib 2.7.7
 =================================================
 * Make atomic operations on s390 work [Matthias]
