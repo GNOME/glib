@@ -46,6 +46,7 @@ CLEANFILES = stamp-testmarshal.h
 LDADD = libtestgobject.la $(libgobject) 
 
 test_programs =					\
+	gvalue-test				\
 	accumulator				\
 	defaultiface				\
 	ifacecheck				\

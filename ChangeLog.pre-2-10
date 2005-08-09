@@ -1,5 +1,10 @@
 2005-08-09  Matthias Clasen  <mclasen@redhat.com>
 
+	* tests/gobject/Makefile.am (test_programs): Add it here.
+
+	* tests/gobject/gvalue-test.c: Beginning of a test suite
+	for GValue.
+
 	* NEWS: Updates
 
 2005-08-08  Matthias Clasen  <mclasen@redhat.com>
