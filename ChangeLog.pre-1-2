@@ -462,12 +462,12 @@ Sun Jan 17 14:13:52 1999  Tim Janik  <timj@gtk.org>
 
 	* gmain.c (g_source_add): set hook_destroy to G_HOOK_DEFERRED_DESTROY,
 	instead of using an ugly _noop() hack, this is to avoid an uneccessary
-	function invokation. set hook_free to g_source_destroy_func, this way
+	function invocation. set hook_free to g_source_destroy_func, this way
 	we always invoke the destroy notifiers for user_data and source_data
 	after execution of dispatch(). thus, g_source_destroy_func() will always
 	be called within the main_loop lock (this wasn't really assured
 	before), and can release and reaquire the look around destroy notifier
-	invokation.
+	invocation.
 
 Sun Jan 17 11:01:40 1999  Tor Lillqvist  <tml@iki.fi>
 
@@ -1769,7 +1769,7 @@ Thu Oct  8 06:47:27 1998  Tim Janik  <timj@gtk.org>
 	added new functions g_dataset_id_remove_no_notify and
 	g_datalist_id_remove_no_notify plus associated macros
 	g_dataset_remove_no_notify and g_datalist_remove_no_notify, which
- 	will remove a certain data portion without invokation of its destroy
+ 	will remove a certain data portion without invocation of its destroy
  	notifier, this should only be used in very controled circumstances.
 
 Wed Oct  7 05:31:24 1998  Tim Janik  <timj@gtk.org>
@@ -1860,7 +1860,7 @@ Mon Sep 21 02:22:12 1998  Tim Janik  <timj@gtk.org>
 
 	* ghash.c: added some g_return_if_fail() statements. make
  	g_hash_table_lookup_node() an inline function so we save an extra
-	function invokation on lookups.
+	function invocation on lookups.
 
 Sun Sep 20 18:21:46 1998  Owen Taylor  <otaylor@redhat.com>
 
@@ -2081,7 +2081,7 @@ Mon Aug 24 02:08:56 1998  Tim Janik  <timj@gtk.org>
 	removed g_attach_process().
 	g_on_error_stack_trace() should probably be handled with caution,
 	i've seem several different linux versions (2.0.x) become unstable
-	after invokation of this function.
+	after invocation of this function.
 
 1998-08-18: Elliot Lee <sopwith@redhat.com>
 

@@ -34,7 +34,7 @@ $ pkg-config --libs glib-2.0
 <para>
 If your application uses modules, threads or <structname>GObject</structname>
 features, it must be compiled and linked with the options returned by the 
-following <application>pkg-config</application> invokations: 
+following <application>pkg-config</application> invocations: 
 <programlisting>
 $ pkg-config --cflags --libs gmodule-2.0 
 $ pkg-config --cflags --libs gthread-2.0

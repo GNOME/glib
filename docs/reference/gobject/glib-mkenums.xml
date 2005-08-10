@@ -28,7 +28,7 @@ value name strings for introspection.
 </para>
 </refsect1>
 
-<refsect1><title>Invokation</title>
+<refsect1><title>Invocation</title>
 <para>
 <command>glib-mkenums</command> takes a list of valid C code files as
 input. The options specified control the text that is output, certain 

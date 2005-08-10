@@ -2501,8 +2501,8 @@ Fri Oct 27 16:33:41 2000  Tim Janik  <timj@gtk.org>
 	that gets passed in to closure invocations. added signal details.
 	renamed GSignalType to GSignalFlags to comply with conventions.
 	quite some cleanups and minor fixes. avoid uneccessary handler list
-	walks upon invokation of after handlers. relookup handler list for
-	restarted emissions. preliminary abort normal handler invokation if
+	walks upon invocation of after handlers. relookup handler list for
+	restarted emissions. preliminary abort normal handler invocation if
 	after handler is encountered.
 
 	* glib-genmarshal.c:

@@ -180,7 +180,7 @@ Removes an element, without calling its destroy notifier.
 Calls the given function for each data element which is associated with the
 given location.
 Note that this function is NOT thread-safe. So unless @datalist
-can be protected from any modifications during invokation of this
+can be protected from any modifications during invocation of this
 function, it should not be called.
 </para>
 

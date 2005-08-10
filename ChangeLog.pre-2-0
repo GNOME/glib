@@ -6777,7 +6777,7 @@ Mon Mar 22 03:54:43 1999  Tim Janik  <timj@gtk.org>
 	functions, so it can be used to e.g. pass a GPollFd.
 	(g_main_poll): only add poll records with an events mask != 0 to the
 	fd_array. don't even bother calling poll_func() if fds=timeout=0.
-	added debugging printouts around poll_func() invokation that can be
+	added debugging printouts around poll_func() invocation that can be
 	enabled with #define G_MAIN_POLL_DEBUG.
 
 Fri Mar 19 16:29:50 PST 1999 Manish Singh <yosh@gimp.org>

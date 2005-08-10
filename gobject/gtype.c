@@ -55,7 +55,7 @@
  *   a write lock or more than 0 read locks have to be held across
  *   function invocation
  * - _W:	[Write-locked invocation]
- *   a write lock has to be held across function invokation
+ *   a write lock has to be held across function invocation
  * - _Wm:	[Write-locked invocation, mutatable]
  *   like _W, but the write lock might be released and reacquired
  *   during invocation, watch your pointers

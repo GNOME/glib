@@ -1,3 +1,7 @@
+2005-08-10  Stepan Kasal  <kasal@ucw.cz>
+
+	Fix typos: Invokation --> Invocation (in various places)
+
 2005-08-10  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gfileutils.c (g_build_path_va, g_build_pathname_va):

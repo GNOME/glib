@@ -236,7 +236,7 @@ g_data_set_internal (GData	  **datalist,
 		  G_DATALIST_SET_POINTER (datalist, list->next);
 		  
 		  /* the dataset destruction *must* be done
-		   * prior to invokation of the data destroy function
+		   * prior to invocation of the data destroy function
 		   */
 		  if (!list->next && dataset)
 		    g_dataset_destroy_internal (dataset);
@@ -295,7 +295,7 @@ g_data_set_internal (GData	  **datalist,
 		  list->destroy_func = destroy_func;
 		  
 		  /* we need to have updated all structures prior to
-		   * invokation of the destroy function
+		   * invocation of the destroy function
 		   */
 		  G_UNLOCK (g_dataset_global);
 		  dfunc (ddata);

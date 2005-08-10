@@ -30,7 +30,7 @@ types.
 </para>
 </refsect1>
 
-<refsect1><title>Invokation</title>
+<refsect1><title>Invocation</title>
 <para>
 <command>gobject-query</command> takes a mandatory argument that specifies
 whether it should iterate over the fundamental types or print a type tree.

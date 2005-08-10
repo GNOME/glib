@@ -31,7 +31,7 @@ collect its return value.
 </para>
 </refsect1>
 
-<refsect1><title>Invokation</title>
+<refsect1><title>Invocation</title>
 <para>
 <command>glib-genmarshal</command> takes a list of marshallers to generate as 
 input. The marshaller list is either read from standard input or from files

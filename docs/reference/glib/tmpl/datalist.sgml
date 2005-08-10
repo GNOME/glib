@@ -190,7 +190,7 @@ Calls the given function for each data element of the datalist.
 The function is called with each data element's #GQuark id and data,
 together with the given @user_data parameter.
 Note that this function is NOT thread-safe. So unless @datalist
-can be protected from any modifications during invokation of this
+can be protected from any modifications during invocation of this
 function, it should not be called.
 </para>
 
