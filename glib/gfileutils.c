@@ -1572,7 +1572,7 @@ g_file_open_tmp (const gchar *tmpl,
 static gchar *
 g_build_path_va (const gchar  *separator,
 		 const gchar  *first_element,
-		 va_list       args,
+		 va_list      *args,
 		 gchar       **str_array)
 {
   GString *result;
@@ -1603,7 +1603,7 @@ g_build_path_va (const gchar  *separator,
 	  if (str_array)
 	    next_element = str_array[i++];
 	  else
-	    next_element = va_arg (args, gchar *);
+	    next_element = va_arg (*args, gchar *);
 	}
       else
 	break;
@@ -1690,12 +1690,10 @@ gchar *
 g_build_pathv (const gchar  *separator,
 	       gchar       **args)
 {
-  va_list va_args;
-
   if (!args)
     return NULL;
 
-  return g_build_path_va (separator, NULL, va_args, args);
+  return g_build_path_va (separator, NULL, NULL, args);
 }
 
 
@@ -1746,7 +1744,7 @@ g_build_path (const gchar *separator,
   g_return_val_if_fail (separator != NULL, NULL);
 
   va_start (args, first_element);
-  str = g_build_path_va (separator, first_element, args, NULL);
+  str = g_build_path_va (separator, first_element, &args, NULL);
   va_end (args);
 
   return str;
@@ -1756,7 +1754,7 @@ g_build_path (const gchar *separator,
 
 static gchar *
 g_build_pathname_va (const gchar  *first_element,
-		     va_list       args,
+		     va_list      *args,
 		     gchar       **str_array)
 {
   /* Code copied from g_build_pathv(), and modified to use two
@@ -1790,7 +1788,7 @@ g_build_pathname_va (const gchar  *first_element,
 	  if (str_array)
 	    next_element = str_array[i++];
 	  else
-	    next_element = va_arg (args, gchar *);
+	    next_element = va_arg (*args, gchar *);
 	}
       else
 	break;
@@ -1884,12 +1882,11 @@ gchar *
 g_build_filenamev (gchar **args)
 {
   gchar *str;
-  va_list va_args;
 
 #ifndef G_OS_WIN32
-  str = g_build_path_va (G_DIR_SEPARATOR_S, NULL, va_args, args);
+  str = g_build_path_va (G_DIR_SEPARATOR_S, NULL, NULL, args);
 #else
-  str = g_build_pathname_va (NULL, va_args, args);
+  str = g_build_pathname_va (NULL, NULL, args);
 #endif
 
   return str;
@@ -1928,9 +1925,9 @@ g_build_filename (const gchar *first_element,
 
   va_start (args, first_element);
 #ifndef G_OS_WIN32
-  str = g_build_path_va (G_DIR_SEPARATOR_S, first_element, args, NULL);
+  str = g_build_path_va (G_DIR_SEPARATOR_S, first_element, &args, NULL);
 #else
-  str = g_build_pathname_va (first_element, args, NULL);
+  str = g_build_pathname_va (first_element, &args, NULL);
 #endif
   va_end (args);
 

@@ -1,3 +1,9 @@
+2005-08-10  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gfileutils.c (g_build_path_va, g_build_pathname_va):
+	Take a va_list*, not a va_list, to avoid compiler warnings
+	about uninitialized variables.
+
 2005-08-09  Matthias Clasen  <mclasen@redhat.com>
 
 	* tests/gobject/Makefile.am (test_programs): Add it here.
