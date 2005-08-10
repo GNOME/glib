@@ -1657,7 +1657,7 @@ g_get_any_init (void)
 
 #ifndef G_OS_WIN32
       if (gethostname (hostname, sizeof (hostname)) == -1)
-	g_host_name = g_strdup ("unknown");
+	g_host_name = g_strdup ("localhost");
       else
 	g_host_name = g_strdup (hostname);
 #else
@@ -1665,7 +1665,7 @@ g_get_any_init (void)
 	DWORD size = sizeof (hostname);
 	
 	if (!GetComputerName (hostname, &size))
-	  g_host_name = g_strdup ("unknown");
+	  g_host_name = g_strdup ("localhost");
 	else
 	  g_host_name = g_strdup (hostname);
       }
@@ -1795,7 +1795,7 @@ g_get_tmp_dir (void)
  * of the machine is changed while an application is running, the
  * return value from this function does not change. The returned
  * string is owned by GLib and should not be modified or freed. If no
- * name can be determined, a default fixed string "unknown" is
+ * name can be determined, a default fixed string "localhost" is
  * returned.
  *
  * Returns: the host name of the machine.

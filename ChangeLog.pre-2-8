@@ -1,3 +1,8 @@
+2005-08-11  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gutils.c (g_get_any_init): Use "localhost" as fallback for
+	g_get_host_name(), not "unknown".
+
 2005-08-10  Stepan Kasal  <kasal@ucw.cz>
 
 	Fix typos: Invokation --> Invocation (in various places)
