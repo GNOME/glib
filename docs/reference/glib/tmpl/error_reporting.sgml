@@ -249,7 +249,7 @@ The error domain is called
 <listitem>
 <para>
 The error codes are in an enumeration called 
-<literal>&lt;Namespace&gt;_&lt;Module&gt;_Error</literal>; for example,
+<literal>&lt;Namespace&gt;&lt;Module&gt;Error</literal>; for example,
 #GThreadError or #GSpawnError.
 </para>
 </listitem>

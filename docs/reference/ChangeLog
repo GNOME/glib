@@ -2,6 +2,8 @@
 
 	Fix typos: Invokation --> Invocation (in various places)
 
+	* glib/tmpl/error_reporting.sgml: Fix a typo.
+
 2005-08-05  Matthias Clasen  <mclasen@redhat.com>
 
 	* gobject/tmpl/gparamspec.sgml: 
