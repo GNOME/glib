@@ -3,6 +3,7 @@
 	Fix typos: Invokation --> Invocation (in various places)
 
 	* glib/tmpl/error_reporting.sgml: Fix a typo.
+	* gobject/tut_howto.xml: Several typos.
 
 2005-08-05  Matthias Clasen  <mclasen@redhat.com>
 

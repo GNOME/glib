@@ -11,7 +11,7 @@
 -->
 
   <chapter id="howto-gobject">
-    <title>How To define and implement a new GObject ?</title>
+    <title>How To define and implement a new GObject?</title>
     
     <para>
       Clearly, this is one of the most common question people ask: they just want to crank code and 
@@ -556,7 +556,7 @@ void maman_bar_do_action (MamanBar *self, /* parameters */)
 </programlisting>
           The code above simply redirects the do_action call to the relevant class function. Some users,
           concerned about performance, do not provide the <function>maman_bar_do_action</function>
-          wrapper function and require users to de-reference the class pointer themselves. This is not such
+          wrapper function and require users to dereference the class pointer themselves. This is not such
           a great idea in terms of encapsulation and makes it difficult to change the object's implementation
           afterwards, should this be needed.
         </para>
@@ -564,7 +564,7 @@ void maman_bar_do_action (MamanBar *self, /* parameters */)
         <para>
           Other users, also concerned by performance issues, declare the <function>maman_bar_do_action</function>
           function inline in the header file. This, however, makes it difficult to change the
-          object's implementation later (although easier than requiring users to directly de-reference the class 
+          object's implementation later (although easier than requiring users to directly dereference the class 
           function) and is often difficult to write in a portable way (the <emphasis>inline</emphasis> keyword
           is not part of the C standard).
         </para>
@@ -756,10 +756,10 @@ b_method_to_call (B *obj, int a)
 -->
 
   <chapter id="howto-interface">
-    <title>How To define and implement Interfaces ?</title>
+    <title>How To define and implement Interfaces?</title>
 
     <sect1 id="howto-interface-define">
-      <title>How To define Interfaces ?</title>
+      <title>How To define Interfaces?</title>
     
     <para>
       The bulk of interface definition has already been shown in <xref linkend="gtype-non-instantiable-classed"/>
@@ -825,7 +825,7 @@ void maman_ibaz_do_action (MamanIbaz *self);
         <xref linkend="gtype-non-instantiable-classed-init"/>, 
         <function>base_init</function> is run once for each interface implementation 
         instanciation)</para></listitem>
-        <listitem><para><function>maman_ibaz_do_action</function> de-references the class
+        <listitem><para><function>maman_ibaz_do_action</function> dereferences the class
         structure to access its associated class function and calls it.
         </para></listitem>
       </itemizedlist>
@@ -871,7 +871,7 @@ void maman_ibaz_do_action (MamanIbaz *self)
   </sect1>
 
   <sect1 id="howto-interface-implement">
-    <title>How To define and implement an implementation of an Interface ?</title>
+    <title>How To define and implement an implementation of an Interface?</title>
 
     <para>
       Once the interface is defined, implementing it is rather trivial. Source code showing how to do this
@@ -1357,7 +1357,7 @@ needed closures that one can use.
 
 
 <sect1>
-<title>How to provide more flexibility to users ?</title>
+<title>How to provide more flexibility to users?</title>
 
 <para>The previous implementation does the job but the signal facility of GObject can be used to provide
 even more flexibility to this file change notification mechanism. One of the key ideas is to make the process
@@ -1700,7 +1700,7 @@ g_object_do_class_init (GObjectClass *class)
                   1, G_TYPE_PARAM);
 }
 </programlisting>
-           <function><link linkend="g-signal-new">g_signal_new</link></function> creates a <type><link linkend="GClosure">GClosure</link></type> which de-references the
+           <function><link linkend="g-signal-new">g_signal_new</link></function> creates a <type><link linkend="GClosure">GClosure</link></type> which dereferences the
            type's class structure to access the class function pointer and invoke it if it not NULL. The
            class function is ignored it is set to NULL.
          </para>
@@ -1711,7 +1711,7 @@ g_object_do_class_init (GObjectClass *class)
            a part of the process to the user without requiring the user to subclass the object to override
            one of the class functions. The alternative to subclassing, that is, the use of signals
            to delegate processing to the user, is, however, a bit less optimal in terms of speed: rather
-           than just de-referencing a function pointer in a class structure, you must start the whole
+           than just dereferencing a function pointer in a class structure, you must start the whole
            process of signal emission which is a bit heavyweight.
          </para>
 
@@ -1728,7 +1728,7 @@ g_object_do_class_init (GObjectClass *class)
 
 <!--
   <capter1 id="howto-doc">
-    <title>How to generate API documentation for your type ?</title>
+    <title>How to generate API documentation for your type?</title>
 
   </chapter>
 -->
