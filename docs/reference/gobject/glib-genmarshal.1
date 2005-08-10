@@ -31,7 +31,7 @@ glib-genmarshal \- C code marshaller generation utility for GLib closures
 .PP
  \fBglib-genmarshal\fR is a small utility that generates C code marshallers for callback functions of the GClosure mechanism in the GObject sublibrary of GLib\&. The marshaller functions have a standard signature, they get passed in the invoking closure, an array of value structures holding the callback function parameters and a value structure for the return value of the callback\&. The marshaller is then responsible to call the respective C code function of the closure with all the parameters on the stack and to collect its return value\&.
 
-.SH "INVOKATION"
+.SH "INVOCATION"
 
 .PP
  \fBglib-genmarshal\fR takes a list of marshallers to generate as input\&. The marshaller list is either read from standard input or from files passed as additional arguments on the command line\&.
