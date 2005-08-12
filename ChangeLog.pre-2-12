@@ -1,3 +1,11 @@
+2005-08-12  Tim-Philipp Müller  <tim at centricular dot net>
+
+	* gobject/genums.c: (g_flags_get_first_value): Special-case flag
+	  value of 0. Instead of returning the first random GFlagsValue
+	  we come across, return the GFlagsValue for 0 if it exists or
+	  NULL if it does not exist. Never return the GFlagsValue for 0
+	  if the requested flags value is nonzero.
+
 2005-08-12  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Bump version to 2.8.0

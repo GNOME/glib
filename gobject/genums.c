@@ -379,10 +379,19 @@ g_flags_get_first_value (GFlagsClass *flags_class,
   if (flags_class->n_values)
     {
       GFlagsValue *flags_value;
-      
-      for (flags_value = flags_class->values; flags_value->value_name; flags_value++)
-	if ((flags_value->value & value) == flags_value->value)
-	  return flags_value;
+
+      if (value == 0)
+        {
+          for (flags_value = flags_class->values; flags_value->value_name; flags_value++)
+            if (flags_value->value == 0)
+              return flags_value;
+        }
+      else
+        {
+          for (flags_value = flags_class->values; flags_value->value_name; flags_value++)
+            if (flags_value->value != 0 && (flags_value->value & value) == flags_value->value)
+              return flags_value;
+        }      
     }
   
   return NULL;
