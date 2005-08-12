@@ -797,7 +797,7 @@ void maman_ibaz_do_action (MamanIbaz *self);
 
 #endif /*MAMAN_IBAZ_H*/
 </programlisting>
-      This code is almost exactly similar to the code for a normal <type><link linkend="GType">GType</link></type>
+      This code is the same as the code for a normal <type><link linkend="GType">GType</link></type>
       which derives from a <type><link linkend="GObject">GObject</link></type> except for a few details:
       <itemizedlist>
         <listitem><para>
@@ -871,7 +871,7 @@ void maman_ibaz_do_action (MamanIbaz *self)
   </sect1>
 
   <sect1 id="howto-interface-implement">
-    <title>How To define and implement an implementation of an Interface?</title>
+    <title>How To define implement an Interface?</title>
 
     <para>
       Once the interface is defined, implementing it is rather trivial. Source code showing how to do this
