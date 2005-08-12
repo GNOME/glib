@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.6.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-08-05 10:48-0400\n"
+"POT-Creation-Date: 2005-08-12 12:59-0400\n"
 "PO-Revision-Date: 2005-01-14 10:51+0100\n"
 "Last-Translator: Jordi Mallach <jordi@sindominio.net>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
@@ -15,69 +15,69 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: glib/gconvert.c:406
+#: glib/gconvert.c:408 glib/gconvert.c:486
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "No es permet la conversió del joc de caràcters de «%s» a «%s»"
 
-#: glib/gconvert.c:410
+#: glib/gconvert.c:412 glib/gconvert.c:490
 #, c-format
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "No s'ha pogut obrir el convertidor de «%s» a «%s»"
 
-#: glib/gconvert.c:563 glib/gconvert.c:952 glib/giochannel.c:1322
+#: glib/gconvert.c:606 glib/gconvert.c:995 glib/giochannel.c:1322
 #: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:911
 #: glib/gutf8.c:1361
 msgid "Invalid byte sequence in conversion input"
 msgstr "Seqüència de bytes invàlida en l'entrada de conversió"
 
-#: glib/gconvert.c:569 glib/gconvert.c:879 glib/giochannel.c:1329
+#: glib/gconvert.c:612 glib/gconvert.c:922 glib/giochannel.c:1329
 #: glib/giochannel.c:2218
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "S'ha produït un error durant la conversió: %s"
 
-#: glib/gconvert.c:604 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
+#: glib/gconvert.c:647 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
 #: glib/gutf8.c:1357
 msgid "Partial character sequence at end of input"
 msgstr "Seqüència de caràcters parcial al final de l'entrada"
 
-#: glib/gconvert.c:854
+#: glib/gconvert.c:897
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "No es pot convertir el \"fallback\" «%s» al joc de codis «%s»"
 
-#: glib/gconvert.c:1663
+#: glib/gconvert.c:1706
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "L'URI «%s» no és un URI absolut que utilitzi l'esquema «file»"
 
-#: glib/gconvert.c:1673
+#: glib/gconvert.c:1716
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Pot ser que l'URI del fitxer local «%s» no inclogui cap «#»"
 
-#: glib/gconvert.c:1690
+#: glib/gconvert.c:1733
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "L'URI «%s» no és vàlid"
 
-#: glib/gconvert.c:1702
+#: glib/gconvert.c:1745
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "El nom de l'ordinador central de l'URI «%s» no és vàlid"
 
-#: glib/gconvert.c:1718
+#: glib/gconvert.c:1761
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "L'URI «%s» conté caràcters d'escapada invàlids"
 
-#: glib/gconvert.c:1812
+#: glib/gconvert.c:1855
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "El nom de camí «%s» no és un camí absolut"
 
-#: glib/gconvert.c:1822
+#: glib/gconvert.c:1865
 msgid "Invalid hostname"
 msgstr "Nom de l'ordinador central invàlid"
 
@@ -181,12 +181,12 @@ msgstr "La plantilla «%s» no és vàlida, no pot contenir cap «%s»"
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "La plantilla «%s» no acaba en XXXXXX"
 
-#: glib/gfileutils.c:1977
+#: glib/gfileutils.c:1974
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "No s'ha pogut llegir l'enllaç simbòlic «%s»: %s"
 
-#: glib/gfileutils.c:1998
+#: glib/gfileutils.c:1995
 msgid "Symbolic links not supported"
 msgstr "No se suporten els enllaços simbòlics"
 

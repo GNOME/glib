@@ -419,7 +419,6 @@ g_param_type_register_static().
 @values_cmp: Compares @value1 with @value2 according to @pspec 
   (recommended, the default is memcmp()), see g_param_values_cmp().
 
-
 <!-- ##### FUNCTION g_param_type_register_static ##### -->
 <para>
 Registers @name as the name of a new static type derived from

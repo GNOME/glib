@@ -1,3 +1,7 @@
+2005-08-12  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.8.0 ===
+
 2005-08-09  Matthias Clasen  <mclasen@redhat.com>
 
 	* gvaluetransform.c: Access enum and flags

@@ -6,6 +6,8 @@ Overview of Changes from GLib 2.7.7 to GLib 2.8.0
   in GValues should also be changed to access 
   v_long, not v_int, in order to work on bigendian 
   64bit machines.)
+* Make g_flags_get_first_value() handle a value
+  of 0 meaningfully. [Tim-Philipp Müller] 
 
 Overview of Changes from GLib 2.7.6 to GLib 2.7.7
 =================================================
