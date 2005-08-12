@@ -2,6 +2,7 @@ Makefile
 Makefile.in
 accumulator
 defaultiface
+gvalue-test
 ifacecheck
 ifaceinherit
 ifaceinit

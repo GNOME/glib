@@ -19,6 +19,7 @@ array-test
 atomic-test
 child-test
 completion-test
+convert-test
 cxx-test
 date-test
 dirname-test
