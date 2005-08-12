@@ -1,3 +1,7 @@
+2005-08-12  Matthias Clasen  <mclasen@redhat.com>
+
+	* configure.in: Bump version to 2.8.0
+
 2005-08-11  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gutils.c (g_get_any_init): Use "localhost" as fallback for
