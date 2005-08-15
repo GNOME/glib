@@ -1,5 +1,8 @@
 2005-08-15  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gqueue.c (g_queue_find_custom): Clarify docs
+	a little.  (#311727, Tristan van Berkom)
+
 	* glib/abicheck.sh, gobject/abicheck.sh: Make the 
 	check work on ia64 too, where some symbols ended up 
 	in yet another section.

@@ -229,8 +229,8 @@ g_queue_find (GQueue        *queue,
  * Finds an element in a #GQueue, using a supplied function to find the
  * desired element. It iterates over the queue, calling the given function
  * which should return 0 when the desired element is found. The function
- * takes two gconstpointer arguments, the #GQueue element's data and the
- * given user data.
+ * takes two gconstpointer arguments, the #GQueue element's data as the
+ * first argument and the given user data as the second argument.
  * 
  * Return value: The found link, or %NULL if it wasn't found
  * 

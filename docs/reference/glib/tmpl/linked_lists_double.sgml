@@ -293,10 +293,11 @@ Sorts a #GList using the given comparison function.
 </para>
 
 @list: a #GList.
-@compare_func: the comparison function used to sort the #GList. This function
-is passed 2 elements of the #GList and should return 0 if they are equal,
-a negative value if the first element comes before the second, or a positive
-value if the first element comes after the second.
+@compare_func: the comparison function used to sort the #GList. 
+This function is passed the data from 2 elements of the #GList and should 
+return 0 if they are equal, a negative value if the first element 
+comes before the second, or a positive value if the first element 
+comes after the second.
 @Returns: the start of the sorted #GList.
 
 
@@ -456,8 +457,8 @@ Finds an element in a #GList, using a supplied function to find the desired
 element.
 It iterates over the list, calling the given function which should return 0
 when the desired element is found.
-The function takes two #gconstpointer arguments, the #GList element's data
-and the given user data.
+The function takes two #gconstpointer arguments, the #GList element's data as
+the first argument and the given user data.
 </para>
 
 @list: a #GList.
