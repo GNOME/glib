@@ -19,8 +19,7 @@
 </refsynopsisdiv>
 
 <refsect1><title>Description</title>
-<para>
-<command>glib-genmarshal</command> is a small utility that generates C code 
+<para><command>glib-genmarshal</command> is a small utility that generates C code 
 marshallers for callback functions of the GClosure mechanism in the GObject 
 sublibrary of GLib. The marshaller functions have a standard signature, 
 they get passed in the invoking closure, an array of value structures holding
@@ -32,8 +31,7 @@ collect its return value.
 </refsect1>
 
 <refsect1><title>Invocation</title>
-<para>
-<command>glib-genmarshal</command> takes a list of marshallers to generate as 
+<para><command>glib-genmarshal</command> takes a list of marshallers to generate as 
 input. The marshaller list is either read from standard input or from files
 passed as additional arguments on the command line.
 </para>
@@ -337,8 +335,7 @@ None known yet.
 </para>
 </refsect1>
 <refsect1><title>Author</title>
-<para>
-<command>glib-genmarshal</command> has been written by Tim Janik 
+<para><command>glib-genmarshal</command> has been written by Tim Janik 
 <email>timj@gtk.org</email>.
 </para>
 <para>

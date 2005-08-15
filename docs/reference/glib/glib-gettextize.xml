@@ -19,15 +19,13 @@
 </refsynopsisdiv>
 
 <refsect1><title>Description</title>
-<para>
-<command>glib-gettextize</command> helps to prepare a source package for being
+<para><command>glib-gettextize</command> helps to prepare a source package for being
 internationalized through <application>gettext</application>. 
 It is a variant of the <command>gettextize</command> that ships with
 <application>gettext</application>. 
 </para>
 
-<para>
-<command>glib-gettextize</command> differs
+<para><command>glib-gettextize</command> differs
 from <command>gettextize</command> in that it doesn't create an
 <filename>intl/</filename> subdirectory and doesn't modify
 <filename>po/ChangeLog</filename> (note that newer versions of 

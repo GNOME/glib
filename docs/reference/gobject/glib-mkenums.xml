@@ -19,8 +19,7 @@
 </refsynopsisdiv>
 
 <refsect1><title>Description</title>
-<para>
-<command>glib-mkenums</command> is a small perl-script utility that parses C
+<para><command>glib-mkenums</command> is a small perl-script utility that parses C
 code to extract enum definitions and produces enum descriptions based on text
 templates specified by the user. Most frequently this script is used to 
 produce C code that contains enum values as strings so programs can provide 
@@ -29,8 +28,7 @@ value name strings for introspection.
 </refsect1>
 
 <refsect1><title>Invocation</title>
-<para>
-<command>glib-mkenums</command> takes a list of valid C code files as
+<para><command>glib-mkenums</command> takes a list of valid C code files as
 input. The options specified control the text that is output, certain 
 substitutions are performed on the text templates for keywords enclosed 
 in @ characters.
@@ -266,8 +264,7 @@ typedef enum /*&lt; flags,prefix=PREFIX &gt;*/
 </refsect2>
 </refsect1>
 <refsect1><title>See also</title>
-<para>
-<command>glib-genmarshal</command>(1)
+<para><command>glib-genmarshal</command>(1)
 </para>
 </refsect1>
 </refentry>

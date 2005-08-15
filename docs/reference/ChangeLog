@@ -1,5 +1,10 @@
 2005-08-15  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/glib-gettexttize.xml:
+	* gobject/glib-genmarshal.xml:
+	* gobject/glib-mkenums.xml: Fix some trivial
+	formatting problems.  (#313099, Stepan Kasal)
+
 	* glib/tmpl/modules.sgml: Document that file_name can
 	be NULL.  (#313143, Gustavo Carneiro)
 
