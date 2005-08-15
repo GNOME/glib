@@ -1,5 +1,10 @@
 2005-08-15  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gbacktrace.c (g_on_error_stack_trace): Wait for
+	the child process and then simply return. This makes 
+	The "S" option work as documented in g_on_error_query().
+	(#313125, Matthew F. Barnes)
+
 	* glib/gunicode.h: Update the link to Unicode category
 	values.  (#313369, Behnam Esfahbod)
 

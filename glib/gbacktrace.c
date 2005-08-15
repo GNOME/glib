@@ -45,6 +45,7 @@
 #include <sys/times.h>
 #endif
 #include <sys/types.h>
+#include <sys/wait.h>
 
 #include <time.h>
 #ifdef HAVE_UNISTD_H
@@ -161,6 +162,7 @@ g_on_error_stack_trace (const gchar *prg_name)
   pid_t pid;
   gchar buf[16];
   gchar *args[4] = { "gdb", NULL, NULL, NULL };
+  int status;
 
   if (!prg_name)
     return;
@@ -181,10 +183,8 @@ g_on_error_stack_trace (const gchar *prg_name)
       perror ("unable to fork gdb");
       return;
     }
-  
-  while (glib_on_error_halt)
-    ;
-  glib_on_error_halt = TRUE;
+
+  waitpid (pid, &status, 0);
 #else
   if (IsDebuggerPresent ())
     G_BREAKPOINT ();
