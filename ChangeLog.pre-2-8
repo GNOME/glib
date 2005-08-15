@@ -1,3 +1,9 @@
+2005-08-15  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/abicheck.sh, gobject/abicheck.sh: Make the 
+	check work on ia64 too, where some symbols ended up 
+	in yet another section.
+
 2005-08-12  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Bump version
