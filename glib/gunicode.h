@@ -31,7 +31,7 @@ typedef guint32 gunichar;
 typedef guint16 gunichar2;
 
 /* These are the possible character classifications.
- * See http://www.unicode.org/Public/UNIDATA/UnicodeData.html
+ * See http://www.unicode.org/Public/UNIDATA/UCD.html#General_Category_Values
  */
 typedef enum
 {

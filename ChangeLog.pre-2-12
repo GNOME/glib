@@ -1,5 +1,8 @@
 2005-08-15  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gunicode.h: Update the link to Unicode category
+	values.  (#313369, Behnam Esfahbod)
+
 	* glib/gqueue.c (g_queue_find_custom): Clarify docs
 	a little.  (#311727, Tristan van Berkom)
 
