@@ -152,7 +152,8 @@ appended and g_module_open() tries to open the corresponding module. If
 eventually that fails as well, %NULL is returned.
 </para>
 
-@file_name: the name of the file containing the module.
+@file_name: the name of the file containing the module, or %NULL to obtain
+  a #GModule representing the main program itself.
 @flags: the flags used for opening the module. This can be the logical
 OR of any of the #GModuleFlags.
 @Returns: a #GModule on success, or %NULL on failure.

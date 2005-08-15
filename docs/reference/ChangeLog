@@ -1,5 +1,8 @@
 2005-08-15  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/tmpl/modules.sgml: Document that file_name can
+	be NULL.  (#313143, Gustavo Carneiro)
+
 	* glib/tmpl/linked_lists_single.sgml: 
 	* glib/tmpl/linked_lists_double.sgml: Clarify docs
 	a little.  (#311727, Tristan van Berkom)
