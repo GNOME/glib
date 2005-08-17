@@ -46,6 +46,9 @@
 #ifdef HAVE_SYS_PARAM_H
 #include <sys/param.h>
 #endif
+#ifdef HAVE_CRT_EXTERNS_H 
+#include <crt-externs.h> /* for _NSGetEnviron */
+#endif
 
 /* implement gutils's inline functions
  */
@@ -1229,15 +1232,16 @@ g_setenv (const gchar *variable,
 #endif /* G_OS_WIN32 */
 }
 
-#ifndef G_OS_WIN32
+#ifdef HAVE__NSGETENVIRON
+#define environ (*_NSGetEnviron())
+#elif !defined(G_OS_WIN32)
 
 /* According to the Single Unix Specification, environ is not in 
  * any system header, although unistd.h often declares it.
  */
 extern char **environ;
-
 #endif
-           
+
 /**
  * g_unsetenv:
  * @variable: the environment variable to remove, must not contain '='.
