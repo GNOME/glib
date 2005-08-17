@@ -1441,258 +1441,265 @@ get_windows_directory_root (void)
 
 /* HOLDS: g_utils_global_lock */
 static void
-g_get_any_init (void)
+g_get_any_init_do (void)
 {
+  gchar hostname[100];
+
+  g_tmp_dir = g_strdup (g_getenv ("TMPDIR"));
+  if (!g_tmp_dir)
+    g_tmp_dir = g_strdup (g_getenv ("TMP"));
+  if (!g_tmp_dir)
+    g_tmp_dir = g_strdup (g_getenv ("TEMP"));
+
+#ifdef G_OS_WIN32
+  if (!g_tmp_dir)
+    g_tmp_dir = get_windows_directory_root ();
+#else  
+#ifdef P_tmpdir
   if (!g_tmp_dir)
     {
-      gchar hostname[100];
-
-      g_tmp_dir = g_strdup (g_getenv ("TMPDIR"));
-      if (!g_tmp_dir)
-	g_tmp_dir = g_strdup (g_getenv ("TMP"));
-      if (!g_tmp_dir)
-	g_tmp_dir = g_strdup (g_getenv ("TEMP"));
-      
-#ifdef G_OS_WIN32
-      if (!g_tmp_dir)
-	g_tmp_dir = get_windows_directory_root ();
-#else
-#ifdef P_tmpdir
-      if (!g_tmp_dir)
-	{
-	  gsize k;    
-	  g_tmp_dir = g_strdup (P_tmpdir);
-	  k = strlen (g_tmp_dir);
-	  if (k > 1 && G_IS_DIR_SEPARATOR (g_tmp_dir[k - 1]))
-	    g_tmp_dir[k - 1] = '\0';
-	}
+      gsize k;    
+      g_tmp_dir = g_strdup (P_tmpdir);
+      k = strlen (g_tmp_dir);
+      if (k > 1 && G_IS_DIR_SEPARATOR (g_tmp_dir[k - 1]))
+	g_tmp_dir[k - 1] = '\0';
+    }
 #endif
-      
-      if (!g_tmp_dir)
-	{
-	  g_tmp_dir = g_strdup ("/tmp");
-	}
+  
+  if (!g_tmp_dir)
+    {
+      g_tmp_dir = g_strdup ("/tmp");
+    }
 #endif	/* !G_OS_WIN32 */
-      
+  
 #ifdef G_OS_WIN32
-      /* We check $HOME first for Win32, though it is a last resort for Unix
-       * where we prefer the results of getpwuid().
-       */
-      g_home_dir = g_strdup (g_getenv ("HOME"));
+  /* We check $HOME first for Win32, though it is a last resort for Unix
+   * where we prefer the results of getpwuid().
+   */
+  g_home_dir = g_strdup (g_getenv ("HOME"));
 
-      /* Only believe HOME if it is an absolute path and exists */
-      if (g_home_dir)
+  /* Only believe HOME if it is an absolute path and exists */
+  if (g_home_dir)
+    {
+      if (!(g_path_is_absolute (g_home_dir) &&
+	    g_file_test (g_home_dir, G_FILE_TEST_IS_DIR)))
 	{
-	  if (!(g_path_is_absolute (g_home_dir) &&
-		g_file_test (g_home_dir, G_FILE_TEST_IS_DIR)))
-	    {
-	      g_free (g_home_dir);
-	      g_home_dir = NULL;
-	    }
+	  g_free (g_home_dir);
+	  g_home_dir = NULL;
 	}
-      
-      /* In case HOME is Unix-style (it happens), convert it to
-       * Windows style.
-       */
-      if (g_home_dir)
-	{
-	  gchar *p;
-	  while ((p = strchr (g_home_dir, '/')) != NULL)
-	    *p = '\\';
-	}
+    }
+  
+  /* In case HOME is Unix-style (it happens), convert it to
+   * Windows style.
+   */
+  if (g_home_dir)
+    {
+      gchar *p;
+      while ((p = strchr (g_home_dir, '/')) != NULL)
+	*p = '\\';
+    }
 
-      if (!g_home_dir)
-	{
-	  /* USERPROFILE is probably the closest equivalent to $HOME? */
-	  if (g_getenv ("USERPROFILE") != NULL)
-	    g_home_dir = g_strdup (g_getenv ("USERPROFILE"));
-	}
+  if (!g_home_dir)
+    {
+      /* USERPROFILE is probably the closest equivalent to $HOME? */
+      if (g_getenv ("USERPROFILE") != NULL)
+	g_home_dir = g_strdup (g_getenv ("USERPROFILE"));
+    }
 
-      if (!g_home_dir)
-	g_home_dir = get_special_folder (CSIDL_PROFILE);
-      
-      if (!g_home_dir)
-	g_home_dir = get_windows_directory_root ();
+  if (!g_home_dir)
+    g_home_dir = get_special_folder (CSIDL_PROFILE);
+  
+  if (!g_home_dir)
+    g_home_dir = get_windows_directory_root ();
 #endif /* G_OS_WIN32 */
-      
+  
 #ifdef HAVE_PWD_H
-      {
-	struct passwd *pw = NULL;
-	gpointer buffer = NULL;
-        gint error;
-	
+  {
+    struct passwd *pw = NULL;
+    gpointer buffer = NULL;
+    gint error;
+    
 #  if defined (HAVE_POSIX_GETPWUID_R) || defined (HAVE_NONPOSIX_GETPWUID_R)
-        struct passwd pwd;
+    struct passwd pwd;
 #    ifdef _SC_GETPW_R_SIZE_MAX  
-	/* This reurns the maximum length */
-        glong bufsize = sysconf (_SC_GETPW_R_SIZE_MAX);
-	
-	if (bufsize < 0)
-	  bufsize = 64;
+    /* This reurns the maximum length */
+    glong bufsize = sysconf (_SC_GETPW_R_SIZE_MAX);
+    
+    if (bufsize < 0)
+      bufsize = 64;
 #    else /* _SC_GETPW_R_SIZE_MAX */
-        glong bufsize = 64;
+    glong bufsize = 64;
 #    endif /* _SC_GETPW_R_SIZE_MAX */
+    
+    do
+      {
+	g_free (buffer);
+	/* we allocate 6 extra bytes to work around a bug in 
+	 * Mac OS < 10.3. See #156446
+	 */
+	buffer = g_malloc (bufsize + 6);
+	errno = 0;
 	
-        do
-          {
-            g_free (buffer);
-	    /* we allocate 6 extra bytes to work around a bug in 
-	     * Mac OS < 10.3. See #156446
-             */
-	    buffer = g_malloc (bufsize + 6);
-	    errno = 0;
-	    
 #    ifdef HAVE_POSIX_GETPWUID_R
-	    error = getpwuid_r (getuid (), &pwd, buffer, bufsize, &pw);
-            error = error < 0 ? errno : error;
+	error = getpwuid_r (getuid (), &pwd, buffer, bufsize, &pw);
+	error = error < 0 ? errno : error;
 #    else /* HAVE_NONPOSIX_GETPWUID_R */
-       /* HPUX 11 falls into the HAVE_POSIX_GETPWUID_R case */
+   /* HPUX 11 falls into the HAVE_POSIX_GETPWUID_R case */
 #      if defined(_AIX) || defined(__hpux)
-	    error = getpwuid_r (getuid (), &pwd, buffer, bufsize);
-	    pw = error == 0 ? &pwd : NULL;
+	error = getpwuid_r (getuid (), &pwd, buffer, bufsize);
+	pw = error == 0 ? &pwd : NULL;
 #      else /* !_AIX */
-            pw = getpwuid_r (getuid (), &pwd, buffer, bufsize);
-            error = pw ? 0 : errno;
+	pw = getpwuid_r (getuid (), &pwd, buffer, bufsize);
+	error = pw ? 0 : errno;
 #      endif /* !_AIX */            
 #    endif /* HAVE_NONPOSIX_GETPWUID_R */
-	    
-	    if (!pw)
-	      {
-		/* we bail out prematurely if the user id can't be found
-		 * (should be pretty rare case actually), or if the buffer
-		 * should be sufficiently big and lookups are still not
-		 * successfull.
-		 */
-		if (error == 0 || error == ENOENT)
-		  {
-		    g_warning ("getpwuid_r(): failed due to unknown user id (%lu)",
-			       (gulong) getuid ());
-		    break;
-		  }
-		if (bufsize > 32 * 1024)
-		  {
-		    g_warning ("getpwuid_r(): failed due to: %s.",
-			       g_strerror (error));
-		    break;
-		  }
-		
-		bufsize *= 2;
-	      }
-	  }
-	while (!pw);
-#  endif /* HAVE_POSIX_GETPWUID_R || HAVE_NONPOSIX_GETPWUID_R */
 	
 	if (!pw)
 	  {
-	    setpwent ();
-	    pw = getpwuid (getuid ());
-	    endpwent ();
-	  }
-	if (pw)
-	  {
- 	    g_user_name = g_strdup (pw->pw_name);
-
-	    if (pw->pw_gecos && *pw->pw_gecos != '\0') 
+	    /* we bail out prematurely if the user id can't be found
+	     * (should be pretty rare case actually), or if the buffer
+	     * should be sufficiently big and lookups are still not
+	     * successfull.
+	     */
+	    if (error == 0 || error == ENOENT)
 	      {
-		gchar **gecos_fields;
-		gchar **name_parts;
-
-		/* split the gecos field and substitute '&' */
-		gecos_fields = g_strsplit (pw->pw_gecos, ",", 0);
-		name_parts = g_strsplit (gecos_fields[0], "&", 0);
-		pw->pw_name[0] = g_ascii_toupper (pw->pw_name[0]);
-		g_real_name = g_strjoinv (pw->pw_name, name_parts);
-		g_strfreev (gecos_fields);
-		g_strfreev (name_parts);
+		g_warning ("getpwuid_r(): failed due to unknown user id (%lu)",
+			   (gulong) getuid ());
+		break;
 	      }
-
-	    if (!g_home_dir)
-	      g_home_dir = g_strdup (pw->pw_dir);
+	    if (bufsize > 32 * 1024)
+	      {
+		g_warning ("getpwuid_r(): failed due to: %s.",
+			   g_strerror (error));
+		break;
+	      }
+	    
+	    bufsize *= 2;
 	  }
-	g_free (buffer);
       }
-      
+    while (!pw);
+#  endif /* HAVE_POSIX_GETPWUID_R || HAVE_NONPOSIX_GETPWUID_R */
+    
+    if (!pw)
+      {
+	setpwent ();
+	pw = getpwuid (getuid ());
+	endpwent ();
+      }
+    if (pw)
+      {
+	g_user_name = g_strdup (pw->pw_name);
+
+	if (pw->pw_gecos && *pw->pw_gecos != '\0') 
+	  {
+	    gchar **gecos_fields;
+	    gchar **name_parts;
+
+	    /* split the gecos field and substitute '&' */
+	    gecos_fields = g_strsplit (pw->pw_gecos, ",", 0);
+	    name_parts = g_strsplit (gecos_fields[0], "&", 0);
+	    pw->pw_name[0] = g_ascii_toupper (pw->pw_name[0]);
+	    g_real_name = g_strjoinv (pw->pw_name, name_parts);
+	    g_strfreev (gecos_fields);
+	    g_strfreev (name_parts);
+	  }
+
+	if (!g_home_dir)
+	  g_home_dir = g_strdup (pw->pw_dir);
+      }
+    g_free (buffer);
+  }
+  
 #else /* !HAVE_PWD_H */
-      
+  
 #ifdef G_OS_WIN32
-      if (G_WIN32_HAVE_WIDECHAR_API ())
+  if (G_WIN32_HAVE_WIDECHAR_API ())
+    {
+      guint len = UNLEN+1;
+      wchar_t buffer[UNLEN+1];
+      
+      if (GetUserNameW (buffer, (LPDWORD) &len))
 	{
-	  guint len = UNLEN+1;
-	  wchar_t buffer[UNLEN+1];
-	  
-	  if (GetUserNameW (buffer, (LPDWORD) &len))
-	    {
-	      g_user_name = g_utf16_to_utf8 (buffer, -1, NULL, NULL, NULL);
-	      g_real_name = g_strdup (g_user_name);
-	    }
+	  g_user_name = g_utf16_to_utf8 (buffer, -1, NULL, NULL, NULL);
+	  g_real_name = g_strdup (g_user_name);
 	}
-      else
+    }
+  else
+    {
+      guint len = UNLEN+1;
+      char buffer[UNLEN+1];
+      
+      if (GetUserNameA (buffer, (LPDWORD) &len))
 	{
-	  guint len = UNLEN+1;
-	  char buffer[UNLEN+1];
-	  
-	  if (GetUserNameA (buffer, (LPDWORD) &len))
-	    {
-	      g_user_name = g_locale_to_utf8 (buffer, -1, NULL, NULL, NULL);
-	      g_real_name = g_strdup (g_user_name);
-	    }
+	  g_user_name = g_locale_to_utf8 (buffer, -1, NULL, NULL, NULL);
+	  g_real_name = g_strdup (g_user_name);
 	}
+    }
 #endif /* G_OS_WIN32 */
 
 #endif /* !HAVE_PWD_H */
 
 #ifndef G_OS_WIN32
-      if (!g_home_dir)
-	g_home_dir = g_strdup (g_getenv ("HOME"));
+  if (!g_home_dir)
+    g_home_dir = g_strdup (g_getenv ("HOME"));
 #endif
 
 #ifdef __EMX__
-      /* change '\\' in %HOME% to '/' */
-      g_strdelimit (g_home_dir, "\\",'/');
+  /* change '\\' in %HOME% to '/' */
+  g_strdelimit (g_home_dir, "\\",'/');
 #endif
-      if (!g_user_name)
-	g_user_name = g_strdup ("somebody");
-      if (!g_real_name)
-	g_real_name = g_strdup ("Unknown");
+  if (!g_user_name)
+    g_user_name = g_strdup ("somebody");
+  if (!g_real_name)
+    g_real_name = g_strdup ("Unknown");
 
+  {
 #ifndef G_OS_WIN32
-      if (gethostname (hostname, sizeof (hostname)) == -1)
-	g_host_name = g_strdup ("localhost");
-      else
-	g_host_name = g_strdup (hostname);
+    gboolean hostname_fail = (gethostname (hostname, sizeof (hostname)) == -1);
 #else
-      {
-	DWORD size = sizeof (hostname);
-	
-	if (!GetComputerName (hostname, &size))
-	  g_host_name = g_strdup ("localhost");
-	else
-	  g_host_name = g_strdup (hostname);
-      }
+    DWORD size = sizeof (hostname);
+    gboolean hostname_fail = (!GetComputerName (hostname, &size));
 #endif
+    g_host_name = g_strdup (hostname_fail ? "localhost" : hostname);
+  }
 
 #ifdef G_OS_WIN32
-      g_tmp_dir_cp = g_locale_from_utf8 (g_tmp_dir, -1, NULL, NULL, NULL);
-      g_user_name_cp = g_locale_from_utf8 (g_user_name, -1, NULL, NULL, NULL);
-      g_real_name_cp = g_locale_from_utf8 (g_real_name, -1, NULL, NULL, NULL);
+  g_tmp_dir_cp = g_locale_from_utf8 (g_tmp_dir, -1, NULL, NULL, NULL);
+  g_user_name_cp = g_locale_from_utf8 (g_user_name, -1, NULL, NULL, NULL);
+  g_real_name_cp = g_locale_from_utf8 (g_real_name, -1, NULL, NULL, NULL);
 
-      if (!g_tmp_dir_cp)
-	g_tmp_dir_cp = g_strdup ("\\");
-      if (!g_user_name_cp)
-	g_user_name_cp = g_strdup ("somebody");
-      if (!g_real_name_cp)
-	g_real_name_cp = g_strdup ("Unknown");
+  if (!g_tmp_dir_cp)
+    g_tmp_dir_cp = g_strdup ("\\");
+  if (!g_user_name_cp)
+    g_user_name_cp = g_strdup ("somebody");
+  if (!g_real_name_cp)
+    g_real_name_cp = g_strdup ("Unknown");
 
-      /* home_dir might be NULL, unlike tmp_dir, user_name and
-       * real_name.
-       */
-      if (g_home_dir)
-	g_home_dir_cp = g_locale_from_utf8 (g_home_dir, -1, NULL, NULL, NULL);
-      else
-	g_home_dir_cp = NULL;
+  /* home_dir might be NULL, unlike tmp_dir, user_name and
+   * real_name.
+   */
+  if (g_home_dir)
+    g_home_dir_cp = g_locale_from_utf8 (g_home_dir, -1, NULL, NULL, NULL);
+  else
+    g_home_dir_cp = NULL;
 #endif /* G_OS_WIN32 */
-    }
 }
+
+static inline void
+g_get_any_init (void)
+{
+  if (!g_tmp_dir)
+    g_get_any_init_do ();
+}
+
+static inline void
+g_get_any_init_locked (void)
+{
+  G_LOCK (g_utils_global);
+  g_get_any_init ();
+  G_UNLOCK (g_utils_global);
+}
+
 
 /**
  * g_get_user_name:
@@ -1707,11 +1714,7 @@ g_get_any_init (void)
 G_CONST_RETURN gchar*
 g_get_user_name (void)
 {
-  G_LOCK (g_utils_global);
-  if (!g_tmp_dir)
-    g_get_any_init ();
-  G_UNLOCK (g_utils_global);
-  
+  g_get_any_init_locked ();
   return g_user_name;
 }
 
@@ -1729,11 +1732,7 @@ g_get_user_name (void)
 G_CONST_RETURN gchar*
 g_get_real_name (void)
 {
-  G_LOCK (g_utils_global);
-  if (!g_tmp_dir)
-    g_get_any_init ();
-  G_UNLOCK (g_utils_global);
- 
+  g_get_any_init_locked ();
   return g_real_name;
 }
 
@@ -1751,11 +1750,7 @@ g_get_real_name (void)
 G_CONST_RETURN gchar*
 g_get_home_dir (void)
 {
-  G_LOCK (g_utils_global);
-  if (!g_tmp_dir)
-    g_get_any_init ();
-  G_UNLOCK (g_utils_global);
-  
+  g_get_any_init_locked ();
   return g_home_dir;
 }
 
@@ -1774,11 +1769,7 @@ g_get_home_dir (void)
 G_CONST_RETURN gchar*
 g_get_tmp_dir (void)
 {
-  G_LOCK (g_utils_global);
-  if (!g_tmp_dir)
-    g_get_any_init ();
-  G_UNLOCK (g_utils_global);
-  
+  g_get_any_init_locked ();
   return g_tmp_dir;
 }
 
@@ -1805,11 +1796,7 @@ g_get_tmp_dir (void)
 const gchar *
 g_get_host_name (void)
 {
-  G_LOCK (g_utils_global);
-  if (!g_tmp_dir)
-    g_get_any_init ();
-  G_UNLOCK (g_utils_global);
-
+  g_get_any_init_locked ();
   return g_host_name;
 }
 
@@ -1988,14 +1975,13 @@ g_get_user_data_dir (void)
 #endif
       if (!data_dir || !data_dir[0])
 	{
-	  if (!g_tmp_dir)
-	    g_get_any_init ();
+	  g_get_any_init ();
 
 	  if (g_home_dir)
 	    data_dir = g_build_filename (g_home_dir, ".local", 
 					 "share", NULL);
 	  else
-	    data_dir = g_build_filename (g_tmp_dir, g_user_name, ".local",
+	    data_dir = g_build_filename (g_tmp_dir, g_user_name, ".local", 
 					 "share", NULL);
 	}
 
@@ -2042,9 +2028,8 @@ g_get_user_config_dir (void)
 #endif
       if (!config_dir || !config_dir[0])
 	{
-	  if (!g_tmp_dir)
-	    g_get_any_init ();
-	  
+	  g_get_any_init ();
+
 	  if (g_home_dir)
 	    config_dir = g_build_filename (g_home_dir, ".config", NULL);
 	  else
@@ -2093,9 +2078,8 @@ g_get_user_cache_dir (void)
 #endif
       if (!cache_dir || !cache_dir[0])
 	{
-	  if (!g_tmp_dir)
-	    g_get_any_init ();
-
+	  g_get_any_init ();
+	
 	  if (g_home_dir)
 	    cache_dir = g_build_filename (g_home_dir, ".cache", NULL);
 	  else
@@ -2991,11 +2975,7 @@ g_unsetenv (const gchar *variable)
 G_CONST_RETURN gchar*
 g_get_user_name (void)
 {
-  G_LOCK (g_utils_global);
-  if (!g_tmp_dir)
-    g_get_any_init ();
-  G_UNLOCK (g_utils_global);
-  
+  g_get_any_init_locked ();
   return g_user_name_cp;
 }
 
@@ -3004,11 +2984,7 @@ g_get_user_name (void)
 G_CONST_RETURN gchar*
 g_get_real_name (void)
 {
-  G_LOCK (g_utils_global);
-  if (!g_tmp_dir)
-    g_get_any_init ();
-  G_UNLOCK (g_utils_global);
- 
+  g_get_any_init_locked ();
   return g_real_name_cp;
 }
 
@@ -3017,11 +2993,7 @@ g_get_real_name (void)
 G_CONST_RETURN gchar*
 g_get_home_dir (void)
 {
-  G_LOCK (g_utils_global);
-  if (!g_tmp_dir)
-    g_get_any_init ();
-  G_UNLOCK (g_utils_global);
-
+  g_get_any_init_locked ();
   return g_home_dir_cp;
 }
 
@@ -3030,11 +3002,7 @@ g_get_home_dir (void)
 G_CONST_RETURN gchar*
 g_get_tmp_dir (void)
 {
-  G_LOCK (g_utils_global);
-  if (!g_tmp_dir)
-    g_get_any_init ();
-  G_UNLOCK (g_utils_global);
-
+  g_get_any_init_locked ();
   return g_tmp_dir_cp;
 }
 

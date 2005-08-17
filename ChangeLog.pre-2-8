@@ -1,3 +1,11 @@
+2005-08-16  Stepan Kasal  <kasal@ucw.cz>
+
+	* glib/gutils.c (g_get_any_init): Move the body of the big if...
+	(g_get_any_init_do): ... to this new function.
+	(g_get_any_init): Declare as inline.
+	(g_get_any_init_locked): New inline function, does the locking.
+	Make use of these two throughout the code.
+
 2005-08-15  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gbacktrace.c (g_on_error_stack_trace): Wait for
