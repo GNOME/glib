@@ -45,7 +45,9 @@
 #include <sys/times.h>
 #endif
 #include <sys/types.h>
+#ifdef HAVE_SYS_WAIT_H
 #include <sys/wait.h>
+#endif
 
 #include <time.h>
 #ifdef HAVE_UNISTD_H
