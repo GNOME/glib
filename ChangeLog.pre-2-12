@@ -1,3 +1,14 @@
+2005-08-18  Ross Burton  <ross@burtonini.com>
+
+	* glib/gstring.c:
+	Optimise single-character insertions.
+	
+	* glib/gutf8.c:
+	Note copied code.
+	
+	* tests/string-test.c:
+	Add tests for new optimisation, and fix a leak.
+
 2005-08-17  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Check for crt_externs.h and _NSGetEnviron.

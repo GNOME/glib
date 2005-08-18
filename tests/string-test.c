@@ -133,7 +133,6 @@ main (int   argc,
   g_string_free (string1, TRUE);
 
   /* append_len */
-
   string1 = g_string_new ("firsthalf");
   g_string_append_len (string1, "lasthalfjunkjunk", strlen ("lasthalf"));
   g_assert (strcmp (string1->str, "firsthalflasthalf") == 0);
@@ -164,7 +163,6 @@ main (int   argc,
   g_string_free (string1, TRUE);
   
   /* insert_len */
-
   string1 = g_string_new ("firstlast");
   g_string_insert_len (string1, 5, "middlejunkjunk", strlen ("middle"));
   g_assert (strcmp (string1->str, "firstmiddlelast") == 0);
@@ -207,6 +205,48 @@ main (int   argc,
   string1 = g_string_new ("boring text");
   g_string_assign (string1, string1->str);
   g_assert (strcmp (string1->str, "boring text") == 0);
+  g_string_free (string1, TRUE);
+
+  /* insert_unichar with insertion in middle */
+  string1 = g_string_new ("firsthalf");
+  g_string_insert_unichar (string1, 5, 0x0041);
+  g_assert (strcmp (string1->str, "first\x41half") == 0);
+  g_string_free (string1, TRUE);
+
+  string1 = g_string_new ("firsthalf");
+  g_string_insert_unichar (string1, 5, 0x0298);
+  g_assert (strcmp (string1->str, "first\xCA\x98half") == 0);
+  g_string_free (string1, TRUE);
+
+  string1 = g_string_new ("firsthalf");
+  g_string_insert_unichar (string1, 5, 0xFFFD);
+  g_assert (strcmp (string1->str, "first\xEF\xBF\xBDhalf") == 0);
+  g_string_free (string1, TRUE);
+
+  string1 = g_string_new ("firsthalf");
+  g_string_insert_unichar (string1, 5, 0x1D100);
+  g_assert (strcmp (string1->str, "first\xF0\x9D\x84\x80half") == 0);
+  g_string_free (string1, TRUE);
+
+  /* insert_unichar with insertion at end */
+  string1 = g_string_new ("start");
+  g_string_insert_unichar (string1, -1, 0x0041);
+  g_assert (strcmp (string1->str, "start\x41") == 0);
+  g_string_free (string1, TRUE);
+
+  string1 = g_string_new ("start");
+  g_string_insert_unichar (string1, -1, 0x0298);
+  g_assert (strcmp (string1->str, "start\xCA\x98") == 0);
+  g_string_free (string1, TRUE);
+
+  string1 = g_string_new ("start");
+  g_string_insert_unichar (string1, -1, 0xFFFD);
+  g_assert (strcmp (string1->str, "start\xEF\xBF\xBD") == 0);
+  g_string_free (string1, TRUE);
+
+  string1 = g_string_new ("start");
+  g_string_insert_unichar (string1, -1, 0x1D100);
+  g_assert (strcmp (string1->str, "start\xF0\x9D\x84\x80") == 0);
   g_string_free (string1, TRUE);
 
   /* g_string_equal */
@@ -261,6 +301,8 @@ main (int   argc,
   tmp_string = (gchar *) g_malloc (10);
   g_snprintf (tmp_string, 10, "%2$s %1$s", "a", "b");
   g_assert (strcmp (tmp_string, "b a") == 0);
+  g_free (tmp_string);
+
   return 0;
 }
 

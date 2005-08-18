@@ -510,7 +510,10 @@ g_string_insert_len (GString     *string,
 	g_memmove (string->str + pos + len, string->str + pos, string->len - pos);
 
       /* insert the new string */
-      memcpy (string->str + pos, val, len);
+      if (len == 1)
+        string->str[pos] = *val;
+      else
+        memcpy (string->str + pos, val, len);
     }
 
   string->len += len;
@@ -675,18 +678,71 @@ GString*
 g_string_insert_unichar (GString *string,
 			 gssize   pos,    
 			 gunichar wc)
-{  
-  gchar buf[6];
-  gint charlen;
+{
+  gint charlen, first, i;
+  gchar *dest;
 
-  /* We could be somewhat more efficient here by computing
-   * the length, adding the space, then converting into that
-   * space, by cut-and-pasting the internals of g_unichar_to_utf8.
-   */
   g_return_val_if_fail (string != NULL, NULL);
 
-  charlen = g_unichar_to_utf8 (wc, buf);
-  return g_string_insert_len (string, pos, buf, charlen);
+  /* Code copied from g_unichar_to_utf() */
+  if (wc < 0x80)
+    {
+      first = 0;
+      charlen = 1;
+    }
+  else if (wc < 0x800)
+    {
+      first = 0xc0;
+      charlen = 2;
+    }
+  else if (wc < 0x10000)
+    {
+      first = 0xe0;
+      charlen = 3;
+    }
+   else if (wc < 0x200000)
+    {
+      first = 0xf0;
+      charlen = 4;
+    }
+  else if (wc < 0x4000000)
+    {
+      first = 0xf8;
+      charlen = 5;
+    }
+  else
+    {
+      first = 0xfc;
+      charlen = 6;
+    }
+  /* End of copied code */
+
+  g_string_maybe_expand (string, charlen);
+
+  if (pos < 0)
+    pos = string->len;
+  else
+    g_return_val_if_fail (pos <= string->len, string);
+
+  /* If not just an append, move the old stuff */
+  if (pos < string->len)
+    g_memmove (string->str + pos + charlen, string->str + pos, string->len - pos);
+
+  dest = string->str + pos;
+  /* Code copied from g_unichar_to_utf() */
+  for (i = charlen - 1; i > 0; --i)
+    {
+      dest[i] = (wc & 0x3f) | 0x80;
+      wc >>= 6;
+    }
+  dest[0] = wc | first;
+  /* End of copied code */
+  
+  string->len += charlen;
+
+  string->str[string->len] = 0;
+
+  return string;
 }
 
 GString*

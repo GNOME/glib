@@ -536,6 +536,7 @@ int
 g_unichar_to_utf8 (gunichar c,
 		   gchar   *outbuf)
 {
+  /* If this gets modified, also update the copy in g_string_insert_unichar() */
   guint len = 0;    
   int first;
   int i;
