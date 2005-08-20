@@ -17,8 +17,8 @@ all :				\
 	galias.h		\
 	galiasdef.c		\
 	gnulib\gnulib.lib	\
-	libglib-2.0-@LT_CURRENT_MINUS_AGE@.dll \
-	glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@s.lib \
+	libglib-2.0-0.dll \
+	glib-2.8s.lib \
 	gspawn-win32-helper.exe	\
 
 
@@ -109,9 +109,10 @@ glib.res : glib.rc
 glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@s.lib : $(glib_OBJECTS) gnulib\gnulib.lib
 	lib /out:glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@s.lib $(glib_OBJECTS) gnulib\gnulib.lib
 
-libglib-2.0-@LT_CURRENT_MINUS_AGE@.dll : $(glib_OBJECTS) gnulib\gnulib.lib glib.def glib.res
+libglib-2.0-0.dll : $(glib_OBJECTS) gnulib\gnulib.lib glib.def glib.res
 	$(CC) $(CFLAGS) -LD -Fe$@ $(glib_OBJECTS) glib.res $(LIBICONV_LIBS) $(INTL_LIBS) \
-	gnulib\gnulib.lib $(DIRENT_LIBS) user32.lib advapi32.lib shell32.lib wsock32.lib ole32.lib $(LDFLAGS) /implib:glib-2.0.lib /def:glib.def
+	gnulib\gnulib.lib $(DIRENT_LIBS) user32.lib advapi32.lib shell32.lib wsock32.lib ole32.lib ws2_32.lib \
+	$(LDFLAGS) /implib:glib-2.0.lib /def:glib.def
 
 gspawn-win32-helper.exe : gspawn-win32-helper.c libglib-2.0-@LT_CURRENT_MINUS_AGE@.dll
 	$(CC) $(CFLAGS) -Fe$@ -DG_LOG_DOMAIN=\"gspawn-win32-helper\" gspawn-win32-helper.c glib-2.0.lib $(LDFLAGS) /subsystem:windows user32.lib
