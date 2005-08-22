@@ -53,9 +53,9 @@ representation is valid. Sometimes neither is valid. Use the API.
 
 <para>
 GLib doesn't contain any time-manipulation functions; however, there
-is a #GTime typedef which is equivalent to <type>time_t</type>, and a #GTimeVal
-struct which represents a more precise time (with microseconds). You
-can request the current time as a #GTimeVal with g_get_current_time().
+is a #GTime typedef and a #GTimeVal struct which represents a more 
+precise time (with microseconds). You can request the current time as 
+a #GTimeVal with g_get_current_time().
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
@@ -76,9 +76,9 @@ code readability.
 
 <!-- ##### STRUCT GTimeVal ##### -->
 <para>
-Represents a precise time, with seconds and microseconds. Same as the
-<structname>struct timeval</structname> returned by the
-<function>gettimeofday()</function> UNIX call.
+Represents a precise time, with seconds and microseconds. 
+Similar to the <structname>struct timeval</structname> returned by 
+the <function>gettimeofday()</function> UNIX call.
 </para>
 
 @tv_sec: seconds.
@@ -138,6 +138,24 @@ month, and year.
 <para>
 Simply a replacement for <type>time_t</type>. Unrelated to #GTimer.
 </para>
+
+<para>
+Note that <type>GTime</type> is defined to always be a 32bit integer,
+unlike <type>time_t</type> which may be 64bit on some systems. 
+Therefore, <type>GType</type> will overflow in the year 2038, and
+you cannot use the address of a <type>GTime</type> variable as argument 
+to the UNIX time() function. Instead, do the following:
+<informalexample>
+<programlisting>
+time_t ttime;
+GTime gtime;
+
+time (&amp;ttime);
+gtime = (GTime)ttime;
+</programlisting>
+</informalexample>
+</para>
+
 
 
 <!-- ##### ENUM GDateDMY ##### -->

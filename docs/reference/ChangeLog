@@ -1,3 +1,7 @@
+2005-08-22  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/tmpl/date.sgml: Point out time_t vs GTime pitfalls.
+
 2005-08-15  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/glib-gettexttize.xml:
