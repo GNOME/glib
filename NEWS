@@ -3,9 +3,9 @@ Overview of Changes from GLib 2.8.0 to GLib 2.8.1
 * Optimize single-character insertions in GString [Ross Burton]
 * Fix build problems on OS X
 * Fix build problems on Win32 [Tor Lillqvist, Hans Breuer]
-* Other bug fixes [Matthew F. Barnes, Stefan Kasal] 
+* Other bug fixes [Matthew F. Barnes, Stepan Kasal] 
 * Documentation improvements [Tristan van Berkom, Behnam
-  Esfahbod, Gustavo Carneiro, Stefan Kasal, Matthias]
+  Esfahbod, Gustavo Carneiro, Stepan Kasal, Matthias]
 * New and updated translations (ca,cy,ko,ro,uk)
 
 Overview of Changes from GLib 2.7.7 to GLib 2.8.0
