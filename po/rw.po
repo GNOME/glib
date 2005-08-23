@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.12\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-08-12 12:59-0400\n"
+"POT-Creation-Date: 2005-08-23 00:30-0400\n"
 "PO-Revision-Date: 2005-03-28 19:34-0700\n"
 "Last-Translator: Steve Murphy <murf@e-tools.com>\n"
 "Language-Team: Kinyarwanda <translation-team-rw@lists.sourceforge.net>\n"
@@ -34,8 +34,8 @@ msgid "Could not open converter from '%s' to '%s'"
 msgstr "OYA Gufungura Bivuye Kuri"
 
 #: glib/gconvert.c:606 glib/gconvert.c:995 glib/giochannel.c:1322
-#: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:911
-#: glib/gutf8.c:1361
+#: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:912
+#: glib/gutf8.c:1362
 #, fuzzy
 msgid "Invalid byte sequence in conversion input"
 msgstr "Bayite in Ihindurangero Iyinjiza"
@@ -46,8 +46,8 @@ msgstr "Bayite in Ihindurangero Iyinjiza"
 msgid "Error during conversion: %s"
 msgstr "Ihindurangero"
 
-#: glib/gconvert.c:647 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
-#: glib/gutf8.c:1357
+#: glib/gconvert.c:647 glib/gutf8.c:908 glib/gutf8.c:1113 glib/gutf8.c:1254
+#: glib/gutf8.c:1358
 #, fuzzy
 msgid "Partial character sequence at end of input"
 msgstr "Inyuguti ku Impera Bya Iyinjiza"
@@ -562,18 +562,18 @@ msgstr "Ikosa Gukora: %s%s"
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Kuri Gusoma Ibyatanzwe Bivuye"
 
-#: glib/gutf8.c:986
+#: glib/gutf8.c:987
 #, fuzzy
 msgid "Character out of range for UTF-8"
 msgstr "Inyuma Bya Urutonde kugirango 8"
 
-#: glib/gutf8.c:1080 glib/gutf8.c:1089 glib/gutf8.c:1221 glib/gutf8.c:1230
-#: glib/gutf8.c:1371 glib/gutf8.c:1467
+#: glib/gutf8.c:1081 glib/gutf8.c:1090 glib/gutf8.c:1222 glib/gutf8.c:1231
+#: glib/gutf8.c:1372 glib/gutf8.c:1468
 #, fuzzy
 msgid "Invalid sequence in conversion input"
 msgstr "in Ihindurangero Iyinjiza"
 
-#: glib/gutf8.c:1382 glib/gutf8.c:1478
+#: glib/gutf8.c:1383 glib/gutf8.c:1479
 #, fuzzy
 msgid "Character out of range for UTF-16"
 msgstr "Inyuma Bya Urutonde kugirango"

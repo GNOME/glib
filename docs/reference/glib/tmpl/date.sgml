@@ -157,7 +157,6 @@ gtime = (GTime)ttime;
 </para>
 
 
-
 <!-- ##### ENUM GDateDMY ##### -->
 <para>
 This enumeration isn't used in the API, but may be useful if you need

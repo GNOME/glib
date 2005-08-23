@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-08-12 12:59-0400\n"
+"POT-Creation-Date: 2005-08-23 00:30-0400\n"
 "PO-Revision-Date: 2005-07-18 13:14+0800\n"
 "Last-Translator: He Qiangqiang <carton@263.net>\n"
 "Language-Team: zh_CN <i18n-translation@lists.linux.net.cn>\n"
@@ -26,8 +26,8 @@ msgid "Could not open converter from '%s' to '%s'"
 msgstr "无法打开从“%s”到“%s”的转换器"
 
 #: glib/gconvert.c:606 glib/gconvert.c:995 glib/giochannel.c:1322
-#: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:911
-#: glib/gutf8.c:1361
+#: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:912
+#: glib/gutf8.c:1362
 msgid "Invalid byte sequence in conversion input"
 msgstr "转换输入中出现无效字符序列"
 
@@ -37,8 +37,8 @@ msgstr "转换输入中出现无效字符序列"
 msgid "Error during conversion: %s"
 msgstr "转换过程中出错：%s"
 
-#: glib/gconvert.c:647 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
-#: glib/gutf8.c:1357
+#: glib/gconvert.c:647 glib/gutf8.c:908 glib/gutf8.c:1113 glib/gutf8.c:1254
+#: glib/gutf8.c:1358
 msgid "Partial character sequence at end of input"
 msgstr "输入末尾出现未尽字符序列"
 
@@ -524,16 +524,16 @@ msgstr "执行子进程“%s”时出现未知错误"
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "从子进程管道中读取足够的数据失败(%s)"
 
-#: glib/gutf8.c:986
+#: glib/gutf8.c:987
 msgid "Character out of range for UTF-8"
 msgstr "字符超出 UTF-8 范围"
 
-#: glib/gutf8.c:1080 glib/gutf8.c:1089 glib/gutf8.c:1221 glib/gutf8.c:1230
-#: glib/gutf8.c:1371 glib/gutf8.c:1467
+#: glib/gutf8.c:1081 glib/gutf8.c:1090 glib/gutf8.c:1222 glib/gutf8.c:1231
+#: glib/gutf8.c:1372 glib/gutf8.c:1468
 msgid "Invalid sequence in conversion input"
 msgstr "转换输入中出现无效序列"
 
-#: glib/gutf8.c:1382 glib/gutf8.c:1478
+#: glib/gutf8.c:1383 glib/gutf8.c:1479
 msgid "Character out of range for UTF-16"
 msgstr "字符超出 UTF-16 范围"
 

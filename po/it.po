@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.6.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-08-12 12:59-0400\n"
+"POT-Creation-Date: 2005-08-23 00:30-0400\n"
 "PO-Revision-Date: 2005-01-30 17:16+0100\n"
 "Last-Translator: Luca Ferretti <elle.uca@infinito.it>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -27,8 +27,8 @@ msgid "Could not open converter from '%s' to '%s'"
 msgstr "Impossibile aprire il convertitore da \"%s\" a \"%s\""
 
 #: glib/gconvert.c:606 glib/gconvert.c:995 glib/giochannel.c:1322
-#: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:911
-#: glib/gutf8.c:1361
+#: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:912
+#: glib/gutf8.c:1362
 msgid "Invalid byte sequence in conversion input"
 msgstr "Sequenza di byte non valida nell'ingresso per la conversione"
 
@@ -38,8 +38,8 @@ msgstr "Sequenza di byte non valida nell'ingresso per la conversione"
 msgid "Error during conversion: %s"
 msgstr "Errore durante la conversione: %s"
 
-#: glib/gconvert.c:647 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
-#: glib/gutf8.c:1357
+#: glib/gconvert.c:647 glib/gutf8.c:908 glib/gutf8.c:1113 glib/gutf8.c:1254
+#: glib/gutf8.c:1358
 msgid "Partial character sequence at end of input"
 msgstr "Sequenza di caratteri parziale al termine dei dati in ingresso"
 
@@ -588,16 +588,16 @@ msgstr ""
 "Lettura di una quantità di dati sufficiente dalla pipe del processo figlio (%"
 "s) fallita"
 
-#: glib/gutf8.c:986
+#: glib/gutf8.c:987
 msgid "Character out of range for UTF-8"
 msgstr "Carattere fuori dell'intervallo per UTF-8"
 
-#: glib/gutf8.c:1080 glib/gutf8.c:1089 glib/gutf8.c:1221 glib/gutf8.c:1230
-#: glib/gutf8.c:1371 glib/gutf8.c:1467
+#: glib/gutf8.c:1081 glib/gutf8.c:1090 glib/gutf8.c:1222 glib/gutf8.c:1231
+#: glib/gutf8.c:1372 glib/gutf8.c:1468
 msgid "Invalid sequence in conversion input"
 msgstr "Sequenza non valida in ingresso per la conversione"
 
-#: glib/gutf8.c:1382 glib/gutf8.c:1478
+#: glib/gutf8.c:1383 glib/gutf8.c:1479
 msgid "Character out of range for UTF-16"
 msgstr "Carattere fuori dell'intervallo per UTF-16"
 

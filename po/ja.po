@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-08-12 12:59-0400\n"
+"POT-Creation-Date: 2005-08-23 00:30-0400\n"
 "PO-Revision-Date: 2005-07-02 18:33+0900\n"
 "Last-Translator: Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
@@ -28,8 +28,8 @@ msgid "Could not open converter from '%s' to '%s'"
 msgstr "'%s' から '%s' へのコンバータを開けませんでした"
 
 #: glib/gconvert.c:606 glib/gconvert.c:995 glib/giochannel.c:1322
-#: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:911
-#: glib/gutf8.c:1361
+#: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:912
+#: glib/gutf8.c:1362
 msgid "Invalid byte sequence in conversion input"
 msgstr "変換する入力に無効なバイトの並びがあります"
 
@@ -39,8 +39,8 @@ msgstr "変換する入力に無効なバイトの並びがあります"
 msgid "Error during conversion: %s"
 msgstr "変換中にエラー: %s"
 
-#: glib/gconvert.c:647 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
-#: glib/gutf8.c:1357
+#: glib/gconvert.c:647 glib/gutf8.c:908 glib/gutf8.c:1113 glib/gutf8.c:1254
+#: glib/gutf8.c:1358
 msgid "Partial character sequence at end of input"
 msgstr "入力の最後に不完全な文字シーケンスがあります"
 
@@ -559,16 +559,16 @@ msgstr "子プロセスの実行時に不明なエラー \"%s\""
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "子 pid パイプから十分なデータを読めません (%s)"
 
-#: glib/gutf8.c:986
+#: glib/gutf8.c:987
 msgid "Character out of range for UTF-8"
 msgstr "UTF-8 の範囲外の文字です"
 
-#: glib/gutf8.c:1080 glib/gutf8.c:1089 glib/gutf8.c:1221 glib/gutf8.c:1230
-#: glib/gutf8.c:1371 glib/gutf8.c:1467
+#: glib/gutf8.c:1081 glib/gutf8.c:1090 glib/gutf8.c:1222 glib/gutf8.c:1231
+#: glib/gutf8.c:1372 glib/gutf8.c:1468
 msgid "Invalid sequence in conversion input"
 msgstr "変換する入力で無効なシーケンスがあります"
 
-#: glib/gutf8.c:1382 glib/gutf8.c:1478
+#: glib/gutf8.c:1383 glib/gutf8.c:1479
 msgid "Character out of range for UTF-16"
 msgstr "UTF-16 の範囲外の文字です"
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-08-12 12:59-0400\n"
+"POT-Creation-Date: 2005-08-23 00:30-0400\n"
 "PO-Revision-Date: 2004-03-08 15:46+0200\n"
 "Last-Translator: Ales Nyakhaychyk <nab@mail.by>\n"
 "Language-Team: Belarusian <i18n@mova.org>\n"
@@ -32,8 +32,8 @@ msgstr "Ня атрымалася адчыніць пераўтваральні�
 # glib/giochannel.c:1324 glib/giochannel.c:2163 glib/gutf8.c:875
 # glib/gutf8.c:1320
 #: glib/gconvert.c:606 glib/gconvert.c:995 glib/giochannel.c:1322
-#: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:911
-#: glib/gutf8.c:1361
+#: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:912
+#: glib/gutf8.c:1362
 msgid "Invalid byte sequence in conversion input"
 msgstr ""
 "Недапушчальная пасьлядоўнасьць байтаў для пераўтварэньня ў уваходным радку"
@@ -48,8 +48,8 @@ msgstr "Памылка пад час пераўтварэньня: %s"
 
 # glib/gconvert.c:615 glib/gutf8.c:871 glib/gutf8.c:1071 glib/gutf8.c:1212
 # glib/gutf8.c:1316
-#: glib/gconvert.c:647 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
-#: glib/gutf8.c:1357
+#: glib/gconvert.c:647 glib/gutf8.c:908 glib/gutf8.c:1113 glib/gutf8.c:1254
+#: glib/gutf8.c:1358
 msgid "Partial character sequence at end of input"
 msgstr "Няпоўны сымбаль у канцы ўваходнага радка"
 
@@ -656,19 +656,19 @@ msgstr ""
 "Збой пад час чытаньня патрэбнае колькасьці даньняў з канала нашчадку (%s)"
 
 # glib/gutf8.c:950
-#: glib/gutf8.c:986
+#: glib/gutf8.c:987
 msgid "Character out of range for UTF-8"
 msgstr "Сымбаль па-за дыяпазонам UTF-8"
 
 # glib/gutf8.c:1039 glib/gutf8.c:1048 glib/gutf8.c:1180 glib/gutf8.c:1189
 # glib/gutf8.c:1330 glib/gutf8.c:1426
-#: glib/gutf8.c:1080 glib/gutf8.c:1089 glib/gutf8.c:1221 glib/gutf8.c:1230
-#: glib/gutf8.c:1371 glib/gutf8.c:1467
+#: glib/gutf8.c:1081 glib/gutf8.c:1090 glib/gutf8.c:1222 glib/gutf8.c:1231
+#: glib/gutf8.c:1372 glib/gutf8.c:1468
 msgid "Invalid sequence in conversion input"
 msgstr "Нядапушчальная пасьлядоўнасьць для пераўтварэньня"
 
 # glib/gutf8.c:1341 glib/gutf8.c:1437
-#: glib/gutf8.c:1382 glib/gutf8.c:1478
+#: glib/gutf8.c:1383 glib/gutf8.c:1479
 msgid "Character out of range for UTF-16"
 msgstr "Сымбаль па-за дыяпазонам UTF-16"
 

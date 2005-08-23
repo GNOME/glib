@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-08-12 12:59-0400\n"
+"POT-Creation-Date: 2005-08-23 00:30-0400\n"
 "PO-Revision-Date: 2004-02-03 02:11+0730\n"
 "Last-Translator: Hasbullah Bin Pit <sebol@my-penguin.org>\n"
 "Language-Team: Projek Gabai <gabai-penyumbang@lists.sourceforge.org>\n"
@@ -25,8 +25,8 @@ msgid "Could not open converter from '%s' to '%s'"
 msgstr "tak dapat membuka penukar daripada '%s' kepada '%s': %s"
 
 #: glib/gconvert.c:606 glib/gconvert.c:995 glib/giochannel.c:1322
-#: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:911
-#: glib/gutf8.c:1361
+#: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:912
+#: glib/gutf8.c:1362
 msgid "Invalid byte sequence in conversion input"
 msgstr "Turutan byte tidak sah pada penukaran iput"
 
@@ -36,8 +36,8 @@ msgstr "Turutan byte tidak sah pada penukaran iput"
 msgid "Error during conversion: %s"
 msgstr "Ralat semasa penukaran: %s"
 
-#: glib/gconvert.c:647 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
-#: glib/gutf8.c:1357
+#: glib/gconvert.c:647 glib/gutf8.c:908 glib/gutf8.c:1113 glib/gutf8.c:1254
+#: glib/gutf8.c:1358
 msgid "Partial character sequence at end of input"
 msgstr "Sebahagian turutan aksara berada di penghujung input"
 
@@ -548,16 +548,16 @@ msgstr "Ralat misteri ketika melaksanakan proses anak  \"%s\""
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Gagal membaca data yang cukup daripada paip pid anaki(%s)"
 
-#: glib/gutf8.c:986
+#: glib/gutf8.c:987
 msgid "Character out of range for UTF-8"
 msgstr "Aksara di luar julat UTF-8"
 
-#: glib/gutf8.c:1080 glib/gutf8.c:1089 glib/gutf8.c:1221 glib/gutf8.c:1230
-#: glib/gutf8.c:1371 glib/gutf8.c:1467
+#: glib/gutf8.c:1081 glib/gutf8.c:1090 glib/gutf8.c:1222 glib/gutf8.c:1231
+#: glib/gutf8.c:1372 glib/gutf8.c:1468
 msgid "Invalid sequence in conversion input"
 msgstr "Turutan tidak sah semasa penukaran input"
 
-#: glib/gutf8.c:1382 glib/gutf8.c:1478
+#: glib/gutf8.c:1383 glib/gutf8.c:1479
 msgid "Character out of range for UTF-16"
 msgstr "Aksara di luar julat UTF-16"
 

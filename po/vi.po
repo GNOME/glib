@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-08-12 12:59-0400\n"
+"POT-Creation-Date: 2005-08-23 00:30-0400\n"
 "PO-Revision-Date: 2004-06-25 05:12+0700\n"
 "Last-Translator: T.M.Thanh <tmthanhmd@fptnet.com ; tmthanh@yahoo.com>\n"
 "Language-Team: Gnome-Vi Team <gnomevi-list@lists.sourceforge.net>\n"
@@ -27,8 +27,8 @@ msgid "Could not open converter from '%s' to '%s'"
 msgstr "Không thể mở trình chuyển đổi từ '%s' sang '%s'"
 
 #: glib/gconvert.c:606 glib/gconvert.c:995 glib/giochannel.c:1322
-#: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:911
-#: glib/gutf8.c:1361
+#: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:912
+#: glib/gutf8.c:1362
 msgid "Invalid byte sequence in conversion input"
 msgstr "Byte sequence không hợp lệ trong phần nhập chuyển đổi"
 
@@ -38,8 +38,8 @@ msgstr "Byte sequence không hợp lệ trong phần nhập chuyển đổi"
 msgid "Error during conversion: %s"
 msgstr "Lỗi khi chuyển đổi: %s"
 
-#: glib/gconvert.c:647 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
-#: glib/gutf8.c:1357
+#: glib/gconvert.c:647 glib/gutf8.c:908 glib/gutf8.c:1113 glib/gutf8.c:1254
+#: glib/gutf8.c:1358
 msgid "Partial character sequence at end of input"
 msgstr "Character sequence riêng phần ở cuối đầu vào"
 
@@ -557,16 +557,16 @@ msgstr "Lỗi không xác định khi thực thi tiến trình con \"%s\""
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Không đọc được đủ dữ liệu từ pid pipe con(%s)"
 
-#: glib/gutf8.c:986
+#: glib/gutf8.c:987
 msgid "Character out of range for UTF-8"
 msgstr "Ký tự nằm ngoài vùng UTF-8"
 
-#: glib/gutf8.c:1080 glib/gutf8.c:1089 glib/gutf8.c:1221 glib/gutf8.c:1230
-#: glib/gutf8.c:1371 glib/gutf8.c:1467
+#: glib/gutf8.c:1081 glib/gutf8.c:1090 glib/gutf8.c:1222 glib/gutf8.c:1231
+#: glib/gutf8.c:1372 glib/gutf8.c:1468
 msgid "Invalid sequence in conversion input"
 msgstr "Sequence bất hợp lệ trong đầu vào chuyển đổi"
 
-#: glib/gutf8.c:1382 glib/gutf8.c:1478
+#: glib/gutf8.c:1383 glib/gutf8.c:1479
 msgid "Character out of range for UTF-16"
 msgstr "Ký tự nằm ngoài vùng UTF-16"
 
