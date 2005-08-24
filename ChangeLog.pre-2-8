@@ -1,3 +1,7 @@
+2005-08-23  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gutils.c: Fix the crt_externs.h include.
+
 2005-08-23  Stepan Kasal  <kasal@ucw.cz>
 
 	* NEWS: Fix spelling of my first name.

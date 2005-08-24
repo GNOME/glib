@@ -47,7 +47,7 @@
 #include <sys/param.h>
 #endif
 #ifdef HAVE_CRT_EXTERNS_H 
-#include <crt-externs.h> /* for _NSGetEnviron */
+#include <crt_externs.h> /* for _NSGetEnviron */
 #endif
 
 /* implement gutils's inline functions
