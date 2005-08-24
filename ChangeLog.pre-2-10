@@ -1,3 +1,9 @@
+2005-08-24  Stepan Kasal  <kasal@ucw.cz>
+
+	* glib/gtypes.h (G_MININT64): Cast the constant to gint64; it is
+	guint64 otherwise and that can produce warnings about comparison
+	between signed and unsigned.
+
 2005-08-23  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gutils.c: Fix the crt_externs.h include.

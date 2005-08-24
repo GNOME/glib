@@ -65,7 +65,7 @@ typedef double  gdouble;
 #define G_MAXINT32	((gint32)  0x7fffffff)
 #define G_MAXUINT32	((guint32) 0xffffffff)
 
-#define G_MININT64	G_GINT64_CONSTANT(0x8000000000000000)
+#define G_MININT64	((gint64) G_GINT64_CONSTANT(0x8000000000000000))
 #define G_MAXINT64	G_GINT64_CONSTANT(0x7fffffffffffffff)
 #define G_MAXUINT64	G_GINT64_CONSTANT(0xffffffffffffffffU)
 
