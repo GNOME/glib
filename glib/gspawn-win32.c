@@ -59,6 +59,14 @@
 #include <process.h>
 #include <direct.h>
 
+#ifdef __MINGW32__
+/* Mingw doesn't have prototypes for these */
+int _wspawnvpe (int, const wchar_t *, const wchar_t **, const wchar_t **);
+int _wspawnvp (int, const wchar_t *, const wchar_t **);
+int _wspawnve (int, const wchar_t *, const wchar_t **, const wchar_t **);
+int _wspawnv (int, const wchar_t *, const wchar_t **);
+#endif
+
 #include "glibintl.h"
 
 #ifdef G_SPAWN_WIN32_DEBUG
@@ -171,7 +179,6 @@ protect_argv (gchar  **argv,
       if (need_dblquotes)
 	*q++ = '"';
       *q++ = '\0';
-      /* printf ("argv[%d]:%s, need_dblquotes:%s len:%d => %s\n", i, argv[i], need_dblquotes?"TRUE":"FALSE", len, (*new_argv)[i]); */
     }
   (*new_argv)[argc] = NULL;
 
@@ -192,25 +199,25 @@ g_spawn_error_quark (void)
 }
 
 gboolean
-g_spawn_async (const gchar          *working_directory,
-               gchar               **argv,
-               gchar               **envp,
-               GSpawnFlags           flags,
-               GSpawnChildSetupFunc  child_setup,
-               gpointer              user_data,
-               GPid                 *child_handle,
-               GError              **error)
+g_spawn_async_utf8 (const gchar          *working_directory,
+		    gchar               **argv,
+		    gchar               **envp,
+		    GSpawnFlags           flags,
+		    GSpawnChildSetupFunc  child_setup,
+		    gpointer              user_data,
+		    GPid                 *child_handle,
+		    GError              **error)
 {
   g_return_val_if_fail (argv != NULL, FALSE);
   
-  return g_spawn_async_with_pipes (working_directory,
-                                   argv, envp,
-                                   flags,
-                                   child_setup,
-                                   user_data,
-                                   child_handle,
-                                   NULL, NULL, NULL,
-                                   error);
+  return g_spawn_async_with_pipes_utf8 (working_directory,
+					argv, envp,
+					flags,
+					child_setup,
+					user_data,
+					child_handle,
+					NULL, NULL, NULL,
+					error);
 }
 
 /* Avoids a danger in threaded situations (calling close()
@@ -362,6 +369,46 @@ set_child_error (gint         report[2],
     }
 }
 
+static wchar_t **
+utf8_charv_to_wcharv (gchar **utf8_charv)
+{
+  wchar_t **retval = NULL;
+
+  if (utf8_charv != NULL)
+    {
+      int n = 0, i;
+
+      while (utf8_charv[n])
+	n++;
+      retval = g_new (wchar_t *, n + 1);
+
+      for (i = 0; i < n; i++)
+	retval[i] = g_utf8_to_utf16 (utf8_charv[i], -1, NULL, NULL, NULL);
+      retval[n] = NULL;
+    }
+  return retval;
+}
+
+static char **
+utf8_charv_to_cp_charv (gchar **utf8_charv)
+{
+  char **retval = NULL;
+
+  if (utf8_charv != NULL)
+    {
+      int n = 0, i;
+
+      while (utf8_charv[n])
+	n++;
+      retval = g_new (char *, n + 1);
+
+      for (i = 0; i < n; i++)
+	retval[i] = g_locale_from_utf8 (utf8_charv[i], -1, NULL, NULL, NULL);
+      retval[n] = NULL;
+    }
+  return retval;
+}
+
 static gboolean
 do_spawn_with_pipes (gboolean              dont_wait,
 		     gboolean		   dont_return_handle,
@@ -414,25 +461,63 @@ do_spawn_with_pipes (gboolean              dont_wait,
        * Unix probably isn't of much use as such on Win32, anyhow.
        */
       if (child_setup)
-	(* child_setup) (user_data);
+	{
+	  static gboolean warned = FALSE;
+	  if (!warned)
+	    {
+	      warned = TRUE;
+	      g_warning ("passing a child setup function to the g_spawn functions is pointless and dangerous on Win32");
+	    }
+	  (* child_setup) (user_data);
+	}
 
       new_argv = (flags & G_SPAWN_FILE_AND_ARGV_ZERO) ? protected_argv + 1 : protected_argv;
-      if (flags & G_SPAWN_SEARCH_PATH)
-	if (envp != NULL)
-	  rc = spawnvpe (mode, argv[0], (const char **) new_argv, (const char **) envp);
-	else
-	  rc = spawnvp (mode, argv[0], (const char **) new_argv);
+      if (G_WIN32_HAVE_WIDECHAR_API ())
+	{
+	  wchar_t *wargv0 = g_utf8_to_utf16 (argv[0], -1, NULL, NULL, NULL);
+	  wchar_t **wargv = utf8_charv_to_wcharv (new_argv);
+	  wchar_t **wenvp = utf8_charv_to_wcharv (envp);
+	  
+	  if (flags & G_SPAWN_SEARCH_PATH)
+	    if (wenvp != NULL)
+	      rc = _wspawnvpe (mode, wargv0, (const wchar_t **) wargv, (const wchar_t **) wenvp);
+	    else
+	      rc = _wspawnvp (mode, wargv0, (const wchar_t **) wargv);
+	  else
+	    if (wenvp != NULL)
+	      rc = _wspawnve (mode, wargv0, (const wchar_t **) wargv, (const wchar_t **) wenvp);
+	    else
+	      rc = _wspawnv (mode, wargv0, (const wchar_t **) wargv);
+
+	  g_free (wargv0);
+	  g_strfreev ((gchar **) wargv);
+	  g_strfreev ((gchar **) wenvp);
+	}
       else
-	if (envp != NULL)
-	  rc = spawnve (mode, argv[0], (const char **) new_argv, (const char **) envp);
-	else
-	  rc = spawnv (mode, argv[0], (const char **) new_argv);
+	{
+	  char *cpargv0 = g_locale_from_utf8 (argv[0], -1, NULL, NULL, NULL);
+	  char **cpargv = utf8_charv_to_cp_charv (new_argv);
+	  char **cpenvp = utf8_charv_to_cp_charv (envp);
+	  
+	  if (flags & G_SPAWN_SEARCH_PATH)
+	    if (cpenvp != NULL)
+	      rc = spawnvpe (mode, cpargv0, (const char **) cpargv, (const char **) cpenvp);
+	    else
+	      rc = spawnvp (mode, cpargv0, (const char **) cpargv);
+	  else
+	    if (envp != NULL)
+	      rc = spawnve (mode, cpargv0, (const char **) cpargv, (const char **) cpenvp);
+	    else
+	      rc = spawnv (mode, cpargv0, (const char **) cpargv);
+
+	  g_free (cpargv0);
+	  g_strfreev (cpargv);
+	  g_strfreev (cpenvp);
+	}
 
       saved_errno = errno;
 
-      for (i = 0; i < argc; i++)
-	g_free (protected_argv[i]);
-      g_free (protected_argv);
+      g_strfreev (protected_argv);
 
       if (rc == -1 && saved_errno != 0)
 	{
@@ -565,27 +650,51 @@ do_spawn_with_pipes (gboolean              dont_wait,
   if (child_setup)
     (* child_setup) (user_data);
 
-  if (envp != NULL)
-    /* Let's hope envp hasn't mucked with PATH so that
-     * gspawn-win32-helper.exe isn't found.
-     */
-    rc = spawnvpe (P_NOWAIT, HELPER_PROCESS, (const char **) new_argv, (const char **) envp);
+  if (G_WIN32_HAVE_WIDECHAR_API ())
+    {
+      wchar_t *whelper = g_utf8_to_utf16 (HELPER_PROCESS, -1, NULL, NULL, NULL);
+      wchar_t **wargv = utf8_charv_to_wcharv (new_argv);
+      wchar_t **wenvp = utf8_charv_to_wcharv (envp);
+
+      if (wenvp != NULL)
+	/* Let's hope envp hasn't mucked with PATH so that
+	 * gspawn-win32-helper.exe isn't found.
+	 */
+	rc = _wspawnvpe (P_NOWAIT, whelper, (const wchar_t **) wargv, (const wchar_t **) wenvp);
+      else
+	rc = _wspawnvp (P_NOWAIT, whelper, (const wchar_t **) wargv);
+
+      saved_errno = errno;
+
+      g_free (whelper);
+      g_strfreev ((gchar **) wargv);
+      g_strfreev ((gchar **) wenvp);
+    }
   else
-    rc = spawnvp (P_NOWAIT, HELPER_PROCESS, (const char **) new_argv);
+    {
+      char **cpargv = utf8_charv_to_cp_charv (new_argv);
+      char **cpenvp = utf8_charv_to_cp_charv (envp);
 
-  saved_errno = errno;
+      if (cpenvp != NULL)
+	rc = spawnvpe (P_NOWAIT, HELPER_PROCESS, (const char **) cpargv, (const char **) cpenvp);
+      else
+	rc = spawnvp (P_NOWAIT, HELPER_PROCESS, (const char **) cpargv);
 
-  /* Close thed the other process's ends of the pipes in this
-   * process, otherwise the reader will never get EOF.
+      saved_errno = errno;
+
+      g_strfreev (cpargv);
+      g_strfreev (cpenvp);
+    }
+
+  /* Close the other process's ends of the pipes in this process,
+   * otherwise the reader will never get EOF.
    */
   close_and_invalidate (&child_err_report_pipe[1]);
   close_and_invalidate (&stdin_pipe[0]);
   close_and_invalidate (&stdout_pipe[1]);
   close_and_invalidate (&stderr_pipe[1]);
 
-  for (i = 0; i < argc; i++)
-    g_free (protected_argv[i]);
-  g_free (protected_argv);
+  g_strfreev (protected_argv);
 
   g_free (new_argv[ARG_WORKING_DIRECTORY]);
   g_free (new_argv);
@@ -680,16 +789,16 @@ do_spawn_with_pipes (gboolean              dont_wait,
 }
 
 gboolean
-g_spawn_sync (const gchar          *working_directory,
-              gchar               **argv,
-              gchar               **envp,
-              GSpawnFlags           flags,
-              GSpawnChildSetupFunc  child_setup,
-              gpointer              user_data,
-              gchar               **standard_output,
-              gchar               **standard_error,
-              gint                 *exit_status,
-              GError              **error)     
+g_spawn_sync_utf8 (const gchar          *working_directory,
+		   gchar               **argv,
+		   gchar               **envp,
+		   GSpawnFlags           flags,
+		   GSpawnChildSetupFunc  child_setup,
+		   gpointer              user_data,
+		   gchar               **standard_output,
+		   gchar               **standard_error,
+		   gint                 *exit_status,
+		   GError              **error)     
 {
   gint outpipe = -1;
   gint errpipe = -1;
@@ -920,17 +1029,17 @@ g_spawn_sync (const gchar          *working_directory,
 }
 
 gboolean
-g_spawn_async_with_pipes (const gchar          *working_directory,
-                          gchar               **argv,
-                          gchar               **envp,
-                          GSpawnFlags           flags,
-                          GSpawnChildSetupFunc  child_setup,
-                          gpointer              user_data,
-                          GPid                 *child_handle,
-                          gint                 *standard_input,
-                          gint                 *standard_output,
-                          gint                 *standard_error,
-                          GError              **error)
+g_spawn_async_with_pipes_utf8 (const gchar          *working_directory,
+			       gchar               **argv,
+			       gchar               **envp,
+			       GSpawnFlags           flags,
+			       GSpawnChildSetupFunc  child_setup,
+			       gpointer              user_data,
+			       GPid                 *child_handle,
+			       gint                 *standard_input,
+			       gint                 *standard_output,
+			       gint                 *standard_error,
+			       GError              **error)
 {
   g_return_val_if_fail (argv != NULL, FALSE);
   g_return_val_if_fail (standard_output == NULL ||
@@ -959,11 +1068,268 @@ g_spawn_async_with_pipes (const gchar          *working_directory,
 }
 
 gboolean
+g_spawn_command_line_sync_utf8 (const gchar  *command_line,
+				gchar       **standard_output,
+				gchar       **standard_error,
+				gint         *exit_status,
+				GError      **error)
+{
+  gboolean retval;
+  gchar **argv = 0;
+
+  g_return_val_if_fail (command_line != NULL, FALSE);
+  
+  if (!g_shell_parse_argv (command_line,
+                           NULL, &argv,
+                           error))
+    return FALSE;
+  
+  retval = g_spawn_sync_utf8 (NULL,
+			      argv,
+			      NULL,
+			      G_SPAWN_SEARCH_PATH,
+			      NULL,
+			      NULL,
+			      standard_output,
+			      standard_error,
+			      exit_status,
+			      error);
+  g_strfreev (argv);
+
+  return retval;
+}
+
+gboolean
+g_spawn_command_line_async_utf8 (const gchar *command_line,
+				 GError     **error)
+{
+  gboolean retval;
+  gchar **argv = 0;
+
+  g_return_val_if_fail (command_line != NULL, FALSE);
+
+  if (!g_shell_parse_argv (command_line,
+                           NULL, &argv,
+                           error))
+    return FALSE;
+  
+  retval = g_spawn_async_utf8 (NULL,
+			       argv,
+			       NULL,
+			       G_SPAWN_SEARCH_PATH,
+			       NULL,
+			       NULL,
+			       NULL,
+			       error);
+  g_strfreev (argv);
+
+  return retval;
+}
+
+void
+g_spawn_close_pid (GPid pid)
+{
+    CloseHandle (pid);
+}
+
+/* Binary compatibility versions that take system codepage pathnames,
+ * argument vectors and environments. These get used only by code
+ * built against 2.8.1 or earlier. Code built against 2.8.2 or later
+ * will use the _utf8 versions above (see the #defines in gspawn.h).
+ */
+
+#undef g_spawn_async
+#undef g_spawn_async_with_pipes
+#undef g_spawn_sync
+#undef g_spawn_command_line_sync
+#undef g_spawn_command_line_async
+
+static gboolean
+setup_utf8_copies (const gchar *working_directory,
+		   gchar      **utf8_working_directory,
+		   gchar      **argv,
+		   gchar     ***utf8_argv,
+		   gchar      **envp,
+		   gchar     ***utf8_envp,
+		   GError     **error)
+{
+  gint i, argc, envc;
+
+  if (working_directory == NULL)
+    *utf8_working_directory = NULL;
+  else
+    {
+      *utf8_working_directory = g_locale_to_utf8 (working_directory, -1, NULL, NULL, NULL);
+      if (*utf8_working_directory == NULL)
+	g_set_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_FAILED,
+		     "Invalid characters in working directory");
+      return FALSE;
+    }
+
+  argc = 0;
+  while (argv[argc])
+    ++argc;
+  *utf8_argv = g_new (gchar *, argc + 1);
+  for (i = 0; i < argc; i++)
+    {
+      (*utf8_argv)[i] = g_locale_to_utf8 (argv[i], -1, NULL, NULL, NULL);
+      if ((*utf8_argv)[i] == NULL)
+	{	
+	  g_set_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_FAILED,
+		       "Invalid characters in argument vector");
+	  
+	  g_strfreev (*utf8_argv);
+	  *utf8_argv = NULL;
+
+	  g_free (*utf8_working_directory);
+	  *utf8_working_directory = NULL;
+
+	  return FALSE;
+	}
+    }
+  (*utf8_argv)[argc] = NULL;
+
+  if (envp == NULL)
+    {
+      *utf8_envp = NULL;
+    }
+  else
+    {
+      envc = 0;
+      while (envp[envc])
+	++envc;
+      *utf8_envp = g_new (gchar *, envc + 1);
+      for (i = 0; i < envc; i++)
+	{
+	  (*utf8_envp)[i] = g_locale_to_utf8 (envp[i], -1, NULL, NULL, NULL);
+	  if ((*utf8_envp)[i] == NULL)
+	    {	
+	      g_set_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_FAILED,
+			   "Invalid characters in environment");
+
+	      g_strfreev (*utf8_envp);
+	      *utf8_envp = NULL;
+
+	      g_strfreev (*utf8_argv);
+	      *utf8_argv = NULL;
+
+	      g_free (*utf8_working_directory);
+	      *utf8_working_directory = NULL;
+
+	      return FALSE;
+	    }
+	}
+      (*utf8_envp)[envc] = NULL;
+    }
+  return TRUE;
+}
+
+static void
+free_utf8_copies (gchar  *utf8_working_directory,
+		  gchar **utf8_argv,
+		  gchar **utf8_envp)
+{
+  g_free (utf8_working_directory);
+  g_strfreev (utf8_argv);
+  g_strfreev (utf8_envp);
+}
+
+gboolean
+g_spawn_async_with_pipes (const gchar          *working_directory,
+                          gchar               **argv,
+                          gchar               **envp,
+                          GSpawnFlags           flags,
+                          GSpawnChildSetupFunc  child_setup,
+                          gpointer              user_data,
+                          GPid                 *child_handle,
+                          gint                 *standard_input,
+                          gint                 *standard_output,
+                          gint                 *standard_error,
+                          GError              **error)
+{
+  gchar *utf8_working_directory;
+  gchar **utf8_argv;
+  gchar **utf8_envp;
+  gboolean retval;
+
+  if (!setup_utf8_copies (working_directory, &utf8_working_directory,
+			  argv, &utf8_argv,
+			  envp, &utf8_envp,
+			  error))
+    return FALSE;
+
+  retval = g_spawn_async_with_pipes_utf8 (utf8_working_directory,
+					  utf8_argv, utf8_envp,
+					  flags, child_setup, user_data,
+					  child_handle,
+					  standard_input, standard_output, standard_error,
+					  error);
+
+  free_utf8_copies (utf8_working_directory, utf8_argv, utf8_envp);
+
+  return retval;
+}
+
+gboolean
+g_spawn_async (const gchar          *working_directory,
+	       gchar               **argv,
+	       gchar               **envp,
+	       GSpawnFlags           flags,
+	       GSpawnChildSetupFunc  child_setup,
+	       gpointer              user_data,
+	       GPid                 *child_handle,
+	       GError              **error)
+{
+  return g_spawn_async_with_pipes (working_directory,
+				   argv, envp,
+				   flags,
+				   child_setup,
+				   user_data,
+				   child_handle,
+				   NULL, NULL, NULL,
+				   error);
+}
+
+gboolean
+g_spawn_sync (const gchar          *working_directory,
+	      gchar               **argv,
+	      gchar               **envp,
+	      GSpawnFlags           flags,
+	      GSpawnChildSetupFunc  child_setup,
+	      gpointer              user_data,
+	      gchar               **standard_output,
+	      gchar               **standard_error,
+	      gint                 *exit_status,
+	      GError              **error)     
+{
+  gchar *utf8_working_directory;
+  gchar **utf8_argv;
+  gchar **utf8_envp;
+  gboolean retval;
+
+  if (!setup_utf8_copies (working_directory, &utf8_working_directory,
+			  argv, &utf8_argv,
+			  envp, &utf8_envp,
+			  error))
+    return FALSE;
+
+  retval = g_spawn_sync_utf8 (utf8_working_directory,
+			      utf8_argv, utf8_envp,
+			      flags, child_setup, user_data,
+			      standard_output, standard_error, exit_status,
+			      error);
+
+  free_utf8_copies (utf8_working_directory, utf8_argv, utf8_envp);
+
+  return retval;
+}
+
+gboolean
 g_spawn_command_line_sync (const gchar  *command_line,
-                           gchar       **standard_output,
-                           gchar       **standard_error,
-                           gint         *exit_status,
-                           GError      **error)
+			   gchar       **standard_output,
+			   gchar       **standard_error,
+			   gint         *exit_status,
+			   GError      **error)
 {
   gboolean retval;
   gchar **argv = 0;
@@ -992,7 +1358,7 @@ g_spawn_command_line_sync (const gchar  *command_line,
 
 gboolean
 g_spawn_command_line_async (const gchar *command_line,
-                            GError     **error)
+			    GError     **error)
 {
   gboolean retval;
   gchar **argv = 0;
@@ -1018,12 +1384,6 @@ g_spawn_command_line_async (const gchar *command_line,
 }
 
 #endif /* !GSPAWN_HELPER */
-
-void
-g_spawn_close_pid (GPid pid)
-{
-    CloseHandle (pid);
-}
 
 #define __G_SPAWN_C__
 #include "galiasdef.c"

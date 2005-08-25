@@ -71,6 +71,14 @@ typedef enum
 
 GQuark g_spawn_error_quark (void);
 
+#ifdef G_OS_WIN32
+#define g_spawn_async g_spawn_async_utf8
+#define g_spawn_async_with_pipes g_spawn_async_with_pipes_utf8
+#define g_spawn_sync g_spawn_sync_utf8
+#define g_spawn_command_line_sync g_spawn_command_line_sync_utf8
+#define g_spawn_command_line_async g_spawn_command_line_async_utf8
+#endif
+
 gboolean g_spawn_async (const gchar           *working_directory,
                         gchar                **argv,
                         gchar                **envp,
