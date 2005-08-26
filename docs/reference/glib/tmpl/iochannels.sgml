@@ -21,7 +21,7 @@ manner using g_io_channel_new_file().
 <para>
 Once a #GIOChannel has been created, it can be used in a generic manner
 with the functions g_io_channel_read_chars(), g_io_channel_write_chars(),
-g_io_channel_seek_position(), and g_io_channel_close().
+g_io_channel_seek_position(), and g_io_channel_shutdown().
 </para>
 <para>
 To add a #GIOChannel to the 

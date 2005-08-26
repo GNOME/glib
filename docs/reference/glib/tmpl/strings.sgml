@@ -25,7 +25,7 @@ The #GString struct contains the public fields of a #GString.
 The <structfield>str</structfield> field points to the character data.
 It may move as text is added.
 The <structfield>len</structfield> field contains the length of the string,
-not including the terminating nul character.
+not including the terminating nul byte.
 </para>
 <para>
 The <structfield>str</structfield> field is nul-terminated and so can be used as an ordinary C
@@ -59,7 +59,7 @@ provided, @init need not be nul-terminated, and can contain embedded nul bytes.
 
 <!-- ##### FUNCTION g_string_sized_new ##### -->
 <para>
-Creates a new #GString, with enough space for @dfl_size characters.
+Creates a new #GString, with enough space for @dfl_size bytes.
 This is useful if you are going to add a lot of text to the string and
 don't want it to be reallocated too often.
 </para>
@@ -70,7 +70,7 @@ don't want it to be reallocated too often.
 
 <!-- ##### FUNCTION g_string_assign ##### -->
 <para>
-Copies the characters from a string into a #GString, destroying any previous
+Copies the bytes from a string into a #GString, destroying any previous
 contents. It is rather like the standard strcpy() function, except that
 you do not have to worry about having enough space to copy the string.
 </para>
@@ -148,11 +148,11 @@ Adds a string onto the end of a #GString, expanding it if necessary.
 
 <!-- ##### FUNCTION g_string_append_c ##### -->
 <para>
-Adds a character onto the end of a #GString, expanding it if necessary.
+Adds a byte onto the end of a #GString, expanding it if necessary.
 </para>
 
 @string: a #GString.
-@c: the character to append onto the end of the #GString.
+@c: the byte to append onto the end of the #GString.
 @Returns: the #GString.
 
 
@@ -190,11 +190,11 @@ Adds a string on to the start of a #GString, expanding it if necessary.
 
 <!-- ##### FUNCTION g_string_prepend_c ##### -->
 <para>
-Adds a character onto the start of a #GString, expanding it if necessary.
+Adds a byte onto the start of a #GString, expanding it if necessary.
 </para>
 
 @string: a #GString.
-@c: the character to prepend on the start of the #GString.
+@c: the byte to prepend on the start of the #GString.
 @Returns: the #GString.
 
 
@@ -233,12 +233,12 @@ Inserts a copy of a string into a #GString, expanding it if necessary.
 
 <!-- ##### FUNCTION g_string_insert_c ##### -->
 <para>
-Inserts a character into a #GString, expanding it if necessary.
+Inserts a byte into a #GString, expanding it if necessary.
 </para>
 
 @string: a #GString.
-@pos: the position to insert the character.
-@c: the character to insert.
+@pos: the position to insert the byte.
+@c: the byte to insert.
 @Returns: the #GString.
 
 
@@ -268,20 +268,20 @@ Inserts @len bytes of @val into @string at @pos.  Because @len is provided, @val
 
 <!-- ##### FUNCTION g_string_erase ##### -->
 <para>
-Removes @len characters from a #GString, starting at position @pos.
+Removes @len bytes from a #GString, starting at position @pos.
 The rest of the #GString is shifted down to fill the gap.
 </para>
 
 @string: a #GString.
-@pos: the position of the characters to remove.
-@len: the number of characters to remove, or -1 to remove all
-      following characters.
+@pos: the position of the content to remove.
+@len: the number of bytes to remove, or -1 to remove all
+      following bytes.
 @Returns: the #GString.
 
 
 <!-- ##### FUNCTION g_string_truncate ##### -->
 <para>
-Cuts off the end of the GString, leaving the first @len characters.
+Cuts off the end of the GString, leaving the first @len bytes.
 </para>
 
 @string: a #GString.
