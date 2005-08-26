@@ -1,3 +1,13 @@
+2005-08-26  Matthias Clasen  <mclasen@redhat.com>
+
+	Improvements pointed out by Behdad Esfahbod (#314460):
+	
+	* glib/tmpl/strings.sgml: Fix up some character/byte
+	sloppyness.
+
+	* glib/tmpl/iochannels.sgml: Don't mention deprecated
+	functions in the introduction.
+
 2005-08-23  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.8.1 ===
