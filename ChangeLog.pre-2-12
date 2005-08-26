@@ -1,3 +1,7 @@
+2005-08-26  Matthias Clasen  <mclasen@redhat.com>
+
+	* configure.in: Bump version to 2.9.0
+
 2005-08-25  Tor Lillqvist  <tml@novell.com>
 
 	Make also the g_spawn*() functions take parameters in the GLib
