@@ -1,5 +1,9 @@
 2005-08-26  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/glib-docs.sgml:
+	* gobject/gobject-docs.sgml: Add indices for new
+	symbols in 2.10
+
 	Improvements pointed out by Behdad Esfahbod (#314460):
 	
 	* glib/tmpl/strings.sgml: Fix up some character/byte
