@@ -7,10 +7,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: glib 2.6.3\n"
+"Project-Id-Version: glib 2.8.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-08-23 00:30-0400\n"
-"PO-Revision-Date: 2005-02-20 11:53+0100\n"
+"POT-Creation-Date: 2005-08-27 12:51+0200\n"
+"PO-Revision-Date: 2005-08-27 12:40+0200\n"
 "Last-Translator: Christophe Merlet (RedFox) <redfox@redfoxcenter.org>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "MIME-Version: 1.0\n"
@@ -122,33 +122,39 @@ msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "L'ouverture du fichier « %s » a échoué : fdopen() a échoué : %s"
 
 #: glib/gfileutils.c:909
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
-msgstr "L'ouverture du fichier « %s » a échoué : fdopen() a échoué : %s"
+msgstr ""
+"Le renommage du fichier « %s » vers « %s » a échoué : g_rename() a échoué : %"
+"s"
 
 #: glib/gfileutils.c:952
-#, fuzzy, c-format
+#, c-format
 msgid "Could not change file mode: fork() failed: %s"
-msgstr "L'ouverture du fichier « %s » a échoué : fdopen() a échoué : %s"
+msgstr "Impossible de modifier le mode du fichier : fork() a échoué : %s"
 
 #: glib/gfileutils.c:983
-#, fuzzy, c-format
+#, c-format
 msgid "Could not change file mode: waitpid() failed: %s"
-msgstr "Impossible d'allouer %lu octets pour lire le fichier « %s »"
+msgstr "Impossible de modifier le mode du fichier : waitpid() a échoué : %s"
 
 #: glib/gfileutils.c:1002
-#, fuzzy, c-format
+#, c-format
 msgid "Could not change file mode: chmod() failed: %s"
-msgstr "L'ouverture du fichier « %s » a échoué : fdopen() a échoué : %s"
+msgstr "Impossible de modifier le mode du fichier : chmod() a échoué : %s"
 
 #: glib/gfileutils.c:1013
 #, c-format
 msgid "Could not change file mode: Child terminated by signal: %s"
 msgstr ""
+"Impossible de modifier le mode du fichier : le fils a été terminé par le "
+"signal : %s"
 
 #: glib/gfileutils.c:1024
 msgid "Could not change file mode: Child terminated abnormally"
 msgstr ""
+"Impossible de modifier le mode du fichier : le fils s'est terminé "
+"anormalement"
 
 #: glib/gfileutils.c:1058 glib/gfileutils.c:1524
 #, c-format
@@ -156,24 +162,27 @@ msgid "Failed to create file '%s': %s"
 msgstr "La création du fichier « %s » a échoué : %s"
 
 #: glib/gfileutils.c:1080
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
-msgstr "L'ouverture du fichier « %s » a échoué : fdopen() a échoué : %s"
+msgstr ""
+"L'ouverture du fichier « %s » en écriture a échoué : fdopen() a échoué : %s"
 
 #: glib/gfileutils.c:1105
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
-msgstr "L'ouverture du fichier « %s » a échoué : fdopen() a échoué : %s"
+msgstr ""
+"L'ouverture du fichier « %s » en écriture a échoué : fwrite() a échoué : %s"
 
 #: glib/gfileutils.c:1124
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
-msgstr "L'ouverture du fichier « %s » a échoué : fdopen() a échoué : %s"
+msgstr "La fermeture du fichier « %s » a échoué : fclose() a échoué : %s"
 
 #: glib/gfileutils.c:1242
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr ""
+"Le fichier existant « %s » ne peut être supprimé : g_unlink() a échoué : %s"
 
 #: glib/gfileutils.c:1485
 #, c-format
@@ -224,14 +233,14 @@ msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Impossible de faire une lecture brut dans g_io_channel_read_to_end"
 
 #: glib/gmappedfile.c:116
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to open file '%s': open() failed: %s"
-msgstr "L'ouverture du fichier « %s » a échoué : fdopen() a échoué : %s"
+msgstr "L'ouverture du fichier « %s » a échoué : open() a échoué : %s"
 
 #: glib/gmappedfile.c:178
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
-msgstr "L'ouverture du fichier « %s » a échoué : fdopen() a échoué : %s"
+msgstr "Le mappage du fichier « %s » a échoué : mmap() a échoué : %s"
 
 #: glib/gmarkup.c:232
 #, c-format
@@ -493,36 +502,59 @@ msgstr ""
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Le texte était vide (ou ne contenait que des espaces)"
 
-#: glib/gspawn-win32.c:264
+#: glib/gspawn-win32.c:276
 msgid "Failed to read data from child process"
 msgstr "La lecture des données depuis le processus fils a échoué"
 
-#: glib/gspawn-win32.c:281 glib/gspawn.c:1354
+#: glib/gspawn-win32.c:291 glib/gspawn.c:1375
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr ""
 "La création du tube de communication avec le processus fils a échoué (%s)"
 
-#: glib/gspawn-win32.c:321 glib/gspawn.c:1018
+#: glib/gspawn-win32.c:329 glib/gspawn.c:1039
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "La lecture depuis un tube fils a échoué (%s)"
 
-#: glib/gspawn-win32.c:349 glib/gspawn.c:1223
+#: glib/gspawn-win32.c:355 glib/gspawn.c:1244
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Le changement de répertoire « %s » a échoué (%s)"
 
-#: glib/gspawn-win32.c:357 glib/gspawn-win32.c:442
+#: glib/gspawn-win32.c:361 glib/gspawn-win32.c:582
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "L'exécution du processus fils a échoué (%s)"
 
-#: glib/gspawn-win32.c:599
-msgid "Failed to execute helper program"
+#: glib/gspawn-win32.c:472 glib/gspawn-win32.c:528
+#, fuzzy, c-format
+msgid "Invalid program name: %s"
+msgstr "Nom d'hôte non valide"
+
+#: glib/gspawn-win32.c:482 glib/gspawn-win32.c:538 glib/gspawn-win32.c:776
+#: glib/gspawn-win32.c:831 glib/gspawn-win32.c:1364
+#, fuzzy, c-format
+msgid "Invalid string in argument vector at %d: %s"
+msgstr "Argument manquant pour %s"
+
+#: glib/gspawn-win32.c:493 glib/gspawn-win32.c:549 glib/gspawn-win32.c:790
+#: glib/gspawn-win32.c:844 glib/gspawn-win32.c:1397
+#, fuzzy, c-format
+msgid "Invalid string in environment: %s"
+msgstr "Séquence non valide dans l'entrée du convertisseur"
+
+#: glib/gspawn-win32.c:772 glib/gspawn-win32.c:827 glib/gspawn-win32.c:1345
+#, fuzzy, c-format
+msgid "Invalid working directory: %s"
+msgstr "Erreur à l'ouverture du répertoire « %s » : %s"
+
+#: glib/gspawn-win32.c:886
+#, fuzzy, c-format
+msgid "Failed to execute helper program (%s)"
 msgstr "L'exécution du processus d'aide a échoué"
 
-#: glib/gspawn-win32.c:797
+#: glib/gspawn-win32.c:1083
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -535,45 +567,45 @@ msgstr ""
 msgid "Failed to read data from child process (%s)"
 msgstr "La lecture des données depuis le processus fils a échoué (%s)"
 
-#: glib/gspawn.c:310
+#: glib/gspawn.c:311
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr ""
 "Erreur inattendue dans select() à la lecture des données depuis un processus "
 "fils (%s)"
 
-#: glib/gspawn.c:393
+#: glib/gspawn.c:394
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Erreur inattendue dans waitpid() (%s)"
 
-#: glib/gspawn.c:1083
+#: glib/gspawn.c:1104
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Le fork a échoué (%s)"
 
-#: glib/gspawn.c:1233
+#: glib/gspawn.c:1254
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "L'exécution du processus fils « %s » a échoué (%s)"
 
-#: glib/gspawn.c:1243
+#: glib/gspawn.c:1264
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr ""
 "La redirection de la sortie ou de l'entrée du processus fils a échoué (%s)"
 
-#: glib/gspawn.c:1252
+#: glib/gspawn.c:1273
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Le fork du processus fils a échoué (%s)"
 
-#: glib/gspawn.c:1260
+#: glib/gspawn.c:1281
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Erreur inconnue à l'exécution du processus fils « %s »"
 
-#: glib/gspawn.c:1282
+#: glib/gspawn.c:1303
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr ""
@@ -618,9 +650,9 @@ msgid "Application Options:"
 msgstr "Options de l'application :"
 
 #: glib/goption.c:653
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot parse integer value '%s' for %s"
-msgstr "Impossible d'analyser l'entier « %s » pour --%s"
+msgstr "Impossible d'analyser la valeur entière « %s » pour %s"
 
 #: glib/goption.c:663
 #, c-format
@@ -630,7 +662,7 @@ msgstr "La valeur entière « %s » pour %s est hors de limites"
 #: glib/goption.c:957 glib/goption.c:1068
 #, c-format
 msgid "Missing argument for %s"
-msgstr ""
+msgstr "Argument manquant pour %s"
 
 #: glib/goption.c:1472
 #, c-format
@@ -721,9 +753,9 @@ msgid "Value '%s' cannot be interpreted as a number."
 msgstr "La valeur « %s » ne peut être interprétée comme un nombre."
 
 #: glib/gkeyfile.c:3245
-#, fuzzy, c-format
+#, c-format
 msgid "Integer value '%s' out of range"
-msgstr "La valeur entière « %s » pour %s est hors de limites"
+msgstr "La valeur entière « %s » est hors limites"
 
 #: glib/gkeyfile.c:3275
 #, c-format
