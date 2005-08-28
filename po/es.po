@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-control-center\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-08-27 00:30+0200\n"
-"PO-Revision-Date: 2005-08-27 00:32+0200\n"
+"POT-Creation-Date: 2005-08-28 19:14+0200\n"
+"PO-Revision-Date: 2005-08-28 19:22+0200\n"
 "Last-Translator: Francisco Javier F. Serrador <serrador@cvs.gnome.org>\n"
 "Language-Team: Spanish <traductores@es.gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -21,15 +21,15 @@ msgstr ""
 "X-Generator: KBabel 1.10.2\n"
 "Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 
-#: ../glib/gconvert.c:408 ../glib/gconvert.c:486
+#: ../glib/gconvert.c:408 ../glib/gconvert.c:486 ../glib/giochannel.c:1150
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
-msgstr "La conversión desde el conjunto de caracteres «%s»·a·«%s»·no está soportada"
+msgstr "La conversión desde el conjunto de caracteres «%s» a «%s» no está soportada"
 
 #: ../glib/gconvert.c:412 ../glib/gconvert.c:490
 #, c-format
 msgid "Could not open converter from '%s' to '%s'"
-msgstr "No se pudo abrir el conversor de «%s»·a·«%s»"
+msgstr "No se pudo abrir el conversor de «%s» a «%s»"
 
 #: ../glib/gconvert.c:606 ../glib/gconvert.c:995 ../glib/giochannel.c:1322
 #: ../glib/giochannel.c:1364 ../glib/giochannel.c:2206 ../glib/gutf8.c:912
@@ -41,7 +41,7 @@ msgstr "Hay una secuencia de bytes no válida en la entrada de conversión"
 #: ../glib/giochannel.c:2218
 #, c-format
 msgid "Error during conversion: %s"
-msgstr "Ha ocurrido un error·durante la·conversión:·%s"
+msgstr "Ha ocurrido un error durante la conversión: %s"
 
 #: ../glib/gconvert.c:647 ../glib/gutf8.c:908 ../glib/gutf8.c:1113
 #: ../glib/gutf8.c:1254 ../glib/gutf8.c:1358
@@ -51,32 +51,32 @@ msgstr "Hay una secuencia parcial de caracteres en el final de la entrada"
 #: ../glib/gconvert.c:897
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
-msgstr "No se puede convertir el fallback «%s»·al conjunto de códigos·«%s»"
+msgstr "No se puede convertir el fallback «%s» al conjunto de códigos «%s»"
 
 #: ../glib/gconvert.c:1706
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
-msgstr "La URI·«%s»·no es una URI·absoluta utilizando el esquema «file»"
+msgstr "La URI «%s» no es una URI absoluta utilizando el esquema «file»"
 
 #: ../glib/gconvert.c:1716
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
-msgstr "El archivo local·en la URI «%s»·no debe incluir un·«#»"
+msgstr "El archivo local en la URI «%s» no debe incluir un «#»"
 
 #: ../glib/gconvert.c:1733
 #, c-format
 msgid "The URI '%s' is invalid"
-msgstr "La URI·«%s»·es inválida"
+msgstr "La URI «%s» es inválida"
 
 #: ../glib/gconvert.c:1745
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
-msgstr "El nombre del anfitrión de la·URI·«%s»·es inválido"
+msgstr "El nombre del anfitrión de la URI «%s» es inválido"
 
 #: ../glib/gconvert.c:1761
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
-msgstr "La·URI·«%s»·contiene caracteres de escape inválidos"
+msgstr "La URI «%s» contiene caracteres de escape inválidos"
 
 #: ../glib/gconvert.c:1855
 #, c-format
@@ -90,7 +90,7 @@ msgstr "El nombre del anfitrión es inválido"
 #: ../glib/gdir.c:121 ../glib/gdir.c:141
 #, c-format
 msgid "Error opening directory '%s': %s"
-msgstr "Ha ocurrido un error al abrir el directorio «%s»:·%s"
+msgstr "Ha ocurrido un error al abrir el directorio «%s»: %s"
 
 #: ../glib/gfileutils.c:576 ../glib/gfileutils.c:649
 #, c-format
@@ -100,39 +100,39 @@ msgstr "No se pueden asignar %lu bytes para leer el archivo «%s»"
 #: ../glib/gfileutils.c:591
 #, c-format
 msgid "Error reading file '%s': %s"
-msgstr "Ha ocurrido un error al leer el archivo «%s»:·%s"
+msgstr "Ha ocurrido un error al leer el archivo «%s»: %s"
 
 #: ../glib/gfileutils.c:673
 #, c-format
 msgid "Failed to read from file '%s': %s"
-msgstr "Ha ocurrido un error en la lectura desde el archivo «%s»:·%s"
+msgstr "Ha ocurrido un error en la lectura desde el archivo «%s»: %s"
 
 #: ../glib/gfileutils.c:724 ../glib/gfileutils.c:811
 #, c-format
 msgid "Failed to open file '%s': %s"
-msgstr "Ha ocurrido un error al abrir el archivo «%s»:·%s"
+msgstr "Ha ocurrido un error al abrir el archivo «%s»: %s"
 
 #: ../glib/gfileutils.c:741 ../glib/gmappedfile.c:133
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr ""
-"Ha ocurrido un error al obtener los atributos del archivo «%s»:·fstat()"
-"·falló:·%s"
+"Ha ocurrido un error al obtener los atributos del archivo «%s»: fstat()"
+" falló: %s"
 
 #: ../glib/gfileutils.c:775
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
-msgstr "Ha ocurrido un error al abrir el archivo «%s»:·fdopen()·falló:·%s"
+msgstr "Ha ocurrido un error al abrir el archivo «%s»: fdopen() falló: %s"
 
 #: ../glib/gfileutils.c:909
 #, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
-msgstr "Falló al renombrar el archivo «%s» a «%s»:·g_rename()·falló:·%s"
+msgstr "Falló al renombrar el archivo «%s» a «%s»: g_rename() falló: %s"
 
 #: ../glib/gfileutils.c:952
 #, c-format
 msgid "Could not change file mode: fork() failed: %s"
-msgstr "No se pudo cambiar el modo del archivo: fork()·falló:·%s"
+msgstr "No se pudo cambiar el modo del archivo: fork() falló: %s"
 
 #: ../glib/gfileutils.c:983
 #, c-format
@@ -147,7 +147,7 @@ msgstr "No se pudo cambiar el modo del archivo: chmod() falló: %s"
 #: ../glib/gfileutils.c:1013
 #, c-format
 msgid "Could not change file mode: Child terminated by signal: %s"
-msgstr "No sepudo cambiar el modo del archivo: El hijo fue terminado por la señal: %s"
+msgstr "No se pudo cambiar el modo del archivo: El hijo fue terminado por la señal: %s"
 
 #: ../glib/gfileutils.c:1024
 msgid "Could not change file mode: Child terminated abnormally"
@@ -156,7 +156,7 @@ msgstr "No se pudo cambiar el modo del archivo: el hijo terminó anormalmente"
 #: ../glib/gfileutils.c:1058 ../glib/gfileutils.c:1524
 #, c-format
 msgid "Failed to create file '%s': %s"
-msgstr "Ha ocurrido un error al crear el archivo «%s»:·%s"
+msgstr "Ha ocurrido un error al crear el archivo «%s»: %s"
 
 #: ../glib/gfileutils.c:1080
 #, c-format
@@ -166,12 +166,12 @@ msgstr "Falló al abrir el archivo «%s» para escritura: fdopen() falló: %s"
 #: ../glib/gfileutils.c:1105
 #, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
-msgstr "Ha ocurrido un error al escribir el archivo «%s»:·fwrite()·falló:·%s"
+msgstr "Ha ocurrido un error al escribir el archivo «%s»: fwrite() falló: %s"
 
 #: ../glib/gfileutils.c:1124
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
-msgstr "Ha ocurrido un error al cerrar el archivo «%s»:·fclose()·falló:·%s"
+msgstr "Ha ocurrido un error al cerrar el archivo «%s»: fclose() falló: %s"
 
 #: ../glib/gfileutils.c:1242
 #, c-format
@@ -186,26 +186,21 @@ msgstr "La plantilla «%s» es inválida, no debería contener un «%s»"
 #: ../glib/gfileutils.c:1499
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
-msgstr "La plantilla ·«%s»· no termina con XXXXXX"
+msgstr "La plantilla  «%s»  no termina con XXXXXX"
 
 #: ../glib/gfileutils.c:1974
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
-msgstr "Ha ocurrido un error al leer el enlace simbólico «%s»:·%s"
+msgstr "Ha ocurrido un error al leer el enlace simbólico «%s»: %s"
 
 #: ../glib/gfileutils.c:1995
 msgid "Symbolic links not supported"
 msgstr "Enlaces simbólicos no soportados"
 
-#: ../glib/giochannel.c:1150
-#, c-format
-msgid "Conversion from character set `%s' to `%s' is not supported"
-msgstr "La conversión desde el conjunto de caracteres «%s»·a·«%s»·no está soportada"
-
 #: ../glib/giochannel.c:1154
 #, c-format
-msgid "Could not open converter from `%s' to `%s': %s"
-msgstr "No se pudo abrir el conversor de «%s»·a·«%s»:·%s"
+msgid "Could not open converter from '%s' to '%s': %s"
+msgstr "No se pudo abrir el conversor de «%s» a «%s»: %s"
 
 #: ../glib/giochannel.c:1499
 msgid "Can't do a raw read in g_io_channel_read_line_string"
@@ -227,28 +222,26 @@ msgstr "No se puede hacer una lectura en bruto (raw) en g_io_channel_read_to_end
 #: ../glib/gmappedfile.c:116
 #, c-format
 msgid "Failed to open file '%s': open() failed: %s"
-msgstr "Ha ocurrido un error al abrir el archivo «%s»:·open()·falló:·%s"
+msgstr "Ha ocurrido un error al abrir el archivo «%s»: open() falló: %s"
 
 #: ../glib/gmappedfile.c:178
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
-msgstr "Ha ocurrido un error al mapear el archivo «%s»:·mmap()·falló:·%s"
+msgstr "Ha ocurrido un error al mapear el archivo «%s»: mmap() falló: %s"
 
 #: ../glib/gmarkup.c:232
 #, c-format
 msgid "Error on line %d char %d: %s"
-msgstr "Error en la línea %d,·carácter·%d:·%s"
+msgstr "Error en la línea %d, carácter %d: %s"
 
 #: ../glib/gmarkup.c:330
 #, c-format
 msgid "Error on line %d: %s"
-msgstr "Error·en la línea·%d:·%s"
+msgstr "Error en la línea %d: %s"
 
 #: ../glib/gmarkup.c:434
 msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
-msgstr ""
-"La entidad '&;' está vacía; las entidades válidas son:·&amp;·&quot;·&lt;·&gt;"
-"·&apos;"
+msgstr "La entidad '&;' está vacía; las entidades válidas son: &amp; &quot; &lt; &gt; &apos;"
 
 #: ../glib/gmarkup.c:444
 #, c-format
@@ -256,20 +249,17 @@ msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
 "begins an entity; if this ampersand isn't supposed to be an entity, escape "
 "it as &amp;"
-msgstr ""
-"El carácter «%s»·no es válido al inicio del nombre de una entidad; el "
-"carácter «&» inicia una entidad; si el signo '&' no debiera ser una entidad, "
-"escápela como &amp;"
+msgstr "El carácter «%s» no es válido al inicio del nombre de una entidad; el carácter «&» inicia una entidad; si el signo '&' no debiera ser una entidad, escápela como &amp;"
 
 #: ../glib/gmarkup.c:478
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
-msgstr "El carácter «%s»·no es válido dentro del nombre de una entidad"
+msgstr "El carácter «%s» no es válido dentro del nombre de una entidad"
 
 #: ../glib/gmarkup.c:515
 #, c-format
 msgid "Entity name '%s' is not known"
-msgstr "El nombre de la entidad «%s»·es desconocido"
+msgstr "El nombre de la entidad «%s» es desconocido"
 
 #: ../glib/gmarkup.c:526
 msgid ""
@@ -285,10 +275,7 @@ msgstr ""
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
-msgstr ""
-"Ha ocurrido un error al analizar «%-.*s»,·el cual debería tener un dígito "
-"dentro de un carácter de referencia·( por ejemplo &#234;·)·-·tal vez el "
-"dígito es demasiado grande"
+msgstr "Ha ocurrido un error al analizar «%-.*s», el cual debería tener un dígito dentro de un carácter de referencia( por ejemplo &#234;) - tal vez el dígito es demasiado grande"
 
 #: ../glib/gmarkup.c:604
 #, c-format
@@ -306,10 +293,7 @@ msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
 "as &amp;"
-msgstr ""
-"El carácter de referencia no termina con punto y coma; probablemente utilizó "
-"un carácter «&» sin pretender iniciar una entidad - escape·el·carácter·\"&"
-"\"·como·&amp;"
+msgstr "El carácter de referencia no termina con punto y coma; probablemente utilizó un carácter «&» sin pretender iniciar una entidad - escape el carácter \"&\" como &amp;"
 
 #: ../glib/gmarkup.c:715
 msgid "Unfinished entity reference"
@@ -332,9 +316,7 @@ msgstr "El documento debe comenzar con un elemento (por ejemplo: <book>)"
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
-msgstr ""
-"«%s» no es un carácter válido a continuación del carácter '<': no debe "
-"iniciar el nombre de un elemento"
+msgstr "«%s» no es un carácter válido a continuación del carácter '<'; no debe iniciar el nombre de un elemento"
 
 #: ../glib/gmarkup.c:1163
 #, c-format
@@ -348,9 +330,7 @@ msgstr ""
 #: ../glib/gmarkup.c:1252
 #, c-format
 msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
-msgstr ""
-"Carácter impropio «%s»,·se esperaba el carácter '='·después del nombre de "
-"atributo·«%s»·del elemento·«%s»"
+msgstr "Carácter impropio «%s»,se esperaba el carácter '=' después del nombre de atributo «%s» del elemento «%s»"
 
 #: ../glib/gmarkup.c:1294
 #, c-format
@@ -359,8 +339,8 @@ msgid ""
 "element '%s', or optionally an attribute; perhaps you used an invalid "
 "character in an attribute name"
 msgstr ""
-"Carácter impropio «%s»,·se esperaba un carácter '>'·o·'/'·para finalizar el "
-"inicio de la etiqueta del elemento «%s» u opcionalmente un atributo;·tal vez "
+"Carácter impropio «%s», se esperaba un carácter '>' o '/' para finalizar el "
+"inicio de la etiqueta del elemento «%s» u opcionalmente un atributo; tal vez "
 "utilizó un carácter que no es válido en un nombre de atributo"
 
 #: ../glib/gmarkup.c:1383
@@ -378,7 +358,7 @@ msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 msgstr ""
-"«%s» no es un carácter válido a continuación de los caracteres '</';·«%s»· "
+"«%s» no es un carácter válido a continuación de los caracteres '</'; «%s»  "
 "no debe iniciar el nombre de un elemento"
 
 #: ../glib/gmarkup.c:1568
@@ -387,7 +367,7 @@ msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 msgstr ""
-"«%s»·no es un carácter válido a continuación del nombre del elemento de "
+"«%s» no es un carácter válido a continuación del nombre del elemento de "
 "cierre «%s»; el carácter permitido es '>'"
 
 #: ../glib/gmarkup.c:1579
@@ -399,7 +379,7 @@ msgstr "El elemento «%s» fue cerrado, no existe ningún elemento abierto"
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr ""
-"El·elemento·«%s» fue cerrado,·pero el elemento que está abierto actualmente "
+"El elemento «%s» fue cerrado, pero el elemento que está abierto actualmente "
 "es «%s»"
 
 #: ../glib/gmarkup.c:1735
@@ -512,7 +492,7 @@ msgstr "Ha ocurrido un error al leer desde el conducto (pipe) hijo (%s)"
 #: ../glib/gspawn-win32.c:355 ../glib/gspawn.c:1244
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
-msgstr "Ha ocurrido un error al cambiar al directorio «%s»·(%s)"
+msgstr "Ha ocurrido un error al cambiar al directorio «%s» (%s)"
 
 #: ../glib/gspawn-win32.c:361 ../glib/gspawn-win32.c:582
 #, c-format
@@ -566,13 +546,13 @@ msgstr "Ha ocurrido un error en la lectura de datos desde el proceso hijo (%s)"
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr ""
-"Ha ocurrido un error inesperado en select()·leyendo datos desde el proceso "
+"Ha ocurrido un error inesperado en select() leyendo datos desde el proceso "
 "hijo (%s)"
 
 #: ../glib/gspawn.c:394
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
-msgstr "Ha ocurrido un error inesperado en waitpid()·(%s)"
+msgstr "Ha ocurrido un error inesperado en waitpid() (%s)"
 
 #: ../glib/gspawn.c:1104
 #, c-format
@@ -594,7 +574,7 @@ msgstr ""
 #: ../glib/gspawn.c:1273
 #, c-format
 msgid "Failed to fork child process (%s)"
-msgstr "Ha ocurrido un error al lanzar el proceso hijo·(%s)"
+msgstr "Ha ocurrido un error al lanzar el proceso hijo (%s)"
 
 #: ../glib/gspawn.c:1281
 #, c-format
