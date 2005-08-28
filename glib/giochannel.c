@@ -1147,11 +1147,11 @@ g_io_channel_set_encoding (GIOChannel	*channel,
 
           if (err == EINVAL)
             g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_NO_CONVERSION,
-                         _("Conversion from character set `%s' to `%s' is not supported"),
+                         _("Conversion from character set '%s' to '%s' is not supported"),
                          from_enc, to_enc);
           else
             g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_FAILED,
-                         _("Could not open converter from `%s' to `%s': %s"),
+                         _("Could not open converter from '%s' to '%s': %s"),
                          from_enc, to_enc, g_strerror (err));
 
           if (read_cd != (GIConv) -1)

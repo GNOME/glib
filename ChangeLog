@@ -1,3 +1,8 @@
+2005-08-28  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/giochannel.c: Unify some near-duplicate strings. (#314654,
+	Clytie Siddall)
+	
 2005-08-26  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Bump version to 2.9.0
