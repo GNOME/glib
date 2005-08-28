@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.gu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-08-27 06:34+0000\n"
-"PO-Revision-Date: 2005-08-27 15:06+0530\n"
+"POT-Creation-Date: 2005-08-28 06:27+0000\n"
+"PO-Revision-Date: 2005-08-28 13:08+0530\n"
 "Last-Translator: Ankit Patel <ankit644@yahoo.com>\n"
 "Language-Team: Gujarati <indianoss-gujarati@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -14,8 +14,9 @@ msgstr ""
 "X-Generator: KBabel 1.9.1\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n\n"
 "\n"
+"\n"
 
-#: ../glib/gconvert.c:408 ../glib/gconvert.c:486
+#: ../glib/gconvert.c:408 ../glib/gconvert.c:486 ../glib/giochannel.c:1150
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "'%s' અક્ષર સમુહ માંથી '%s' માં રુપાંતરણ માટે આધાર નથી"
@@ -189,15 +190,10 @@ msgstr "'%s' સાંકેતિક કડી વાંચવામાં ન�
 msgid "Symbolic links not supported"
 msgstr "સાંકેતિક કડી આધાર આપતી નથી"
 
-#: ../glib/giochannel.c:1150
-#, c-format
-msgid "Conversion from character set `%s' to `%s' is not supported"
-msgstr " '%s' માંથી '%s' અક્ષર સમુહમાં રુપાંતર માટેનો આધાર નથી"
-
 #: ../glib/giochannel.c:1154
 #, c-format
-msgid "Could not open converter from `%s' to `%s': %s"
-msgstr "'%s' માંથી '%s' માટેનું રુપાંતરક ખોલી શકતુ નથી: %s"
+msgid "Could not open converter from '%s' to '%s': %s"
+msgstr "'%s' માંથી '%s' માટેનું રુપાંતરક ખોલી શકાયું નહિં: %s"
 
 #: ../glib/giochannel.c:1499
 msgid "Can't do a raw read in g_io_channel_read_line_string"
