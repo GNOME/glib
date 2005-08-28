@@ -1,26 +1,27 @@
+# translation of glib.HEAD.mk.po to Macedonian
 # translation of mk.po to Macedonian
 # translation of glib.glib-2-4.mk.po to Macedonian
 # translation of glib.HEAD.po to Macedonian
 # This file is distributed under the same license as the PACKAGE package.
 # Copyright (C) 2005 THE PACKAGE'S COPYRIGHT HOLDER.
 # Ivan Stojmirov <stojmir@linux.net.mk>, 2002.
-# Arangel Angov <ufo@linux.net.mk>, 2004.
+# Arangel Angov <ufo@linux.net.mk>, 2004, 2005.
 # Арангел Ангов <ufo@linux.net.mk>, 2005.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mk\n"
+"Project-Id-Version: glib.HEAD.mk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-08-27 06:34+0000\n"
-"PO-Revision-Date: 2005-08-27 14:19+0200\n"
-"Last-Translator: Арангел Ангов <ufo@linux.net.mk>\n"
+"POT-Creation-Date: 2005-08-28 06:27+0000\n"
+"PO-Revision-Date: 2005-08-28 17:08+0200\n"
+"Last-Translator: Arangel Angov <ufo@linux.net.mk>\n"
 "Language-Team: Macedonian <ossm-members@hedona.on.net.mk>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.10\n"
+"X-Generator: KBabel 1.10.2\n"
 
-#: ../glib/gconvert.c:408 ../glib/gconvert.c:486
+#: ../glib/gconvert.c:408 ../glib/gconvert.c:486 ../glib/giochannel.c:1150
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Конвертирањето од  %s' во '%s' не е поддржано"
@@ -200,15 +201,10 @@ msgstr "Не успеав да ја прочитам симболичката в
 msgid "Symbolic links not supported"
 msgstr "Симболичките врски не се поддржани"
 
-#: ../glib/giochannel.c:1150
-#, c-format
-msgid "Conversion from character set `%s' to `%s' is not supported"
-msgstr "Конвертирањето од `%s' до `%s' не е поддржано"
-
 #: ../glib/giochannel.c:1154
 #, c-format
-msgid "Could not open converter from `%s' to `%s': %s"
-msgstr "Не можам да го отворам конверторот од `%s' до `%s': %s"
+msgid "Could not open converter from '%s' to '%s': %s"
+msgstr "Не можам да го отворам конверторот од '%s' до '%s': %s"
 
 #: ../glib/giochannel.c:1499
 msgid "Can't do a raw read in g_io_channel_read_line_string"
