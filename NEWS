@@ -1,3 +1,8 @@
+Overview of Changes from GLib 2.8.1 to GLib 2.8.2
+=================================================
+* On Win32, also the g_spawn* functions now take their arguments
+  in UTF-8 [Tor Lillqvist]
+
 Overview of Changes from GLib 2.8.0 to GLib 2.8.1
 =================================================
 * Optimize single-character insertions in GString [Ross Burton]

@@ -1,4 +1,4 @@
-2005-08-25  Tor Lillqvist  <tml@novell.com>
+2005-08-30  Tor Lillqvist  <tml@novell.com>
 
 	Make also the g_spawn*() functions take parameters in the GLib
 	file name encoding, i.e. UTF-8, on Windows. Has no impact on Unix
@@ -8,10 +8,12 @@
 	header file. The old names are kept for functions with the old
 	behaviour, taking parameters in the system codepage, for DLL ABI
 	stability.
-	
+
+	* NEWS: Mention this.
+
 	* glib/gspawn.h: On Win32 add the suffix _utf8 to the names of the
 	g_spawn*() functions.
-	
+
 	* glib/gspawn-win32.c: Use wide-char API on NT-based
 	Windows. Convert parameters from UTF-8 to wide chars (NT) or
 	system codepage (Win9x) and call the C library _wspawn*() or
