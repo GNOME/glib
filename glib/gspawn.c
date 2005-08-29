@@ -206,8 +206,9 @@ read_data (GString *str,
  * must be used to evaluate the exit status. If an error occurs, no data is 
  * returned in @standard_output, @standard_error, or @exit_status.
  * 
- * This function calls g_spawn_async_with_pipes() internally; see that function
- * for full details on the other parameters.
+ * This function calls g_spawn_async_with_pipes() internally; see that
+ * function for full details on the other parameters and details on
+ * how these functions work on Windows.
  * 
  * Return value: %TRUE on success, %FALSE if an error was set.
  **/
@@ -422,9 +423,9 @@ g_spawn_sync (const gchar          *working_directory,
 
 /**
  * g_spawn_async_with_pipes:
- * @working_directory: child's current working directory, or %NULL to inherit parent's
- * @argv: child's argument vector
- * @envp: child's environment, or %NULL to inherit parent's
+ * @working_directory: child's current working directory, or %NULL to inherit parent's, in the GLib file name encoding
+ * @argv: child's argument vector, in the GLib file name encoding
+ * @envp: child's environment, or %NULL to inherit parent's, in the GLib file name encoding
  * @flags: flags from #GSpawnFlags
  * @child_setup: function to run in the child just before exec()
  * @user_data: user data for @child_setup
@@ -443,12 +444,30 @@ g_spawn_sync (const gchar          *working_directory,
  * the program must be a full path; the <envar>PATH</envar> shell variable 
  * will only be searched if you pass the %G_SPAWN_SEARCH_PATH flag.
  *
- * On Windows, the low-level child process creation API
- * (CreateProcess())doesn't use argument vectors,
+ * On Windows, note that all the string or string vector arguments to
+ * this function and the other g_spawn*() functions are in UTF-8, the
+ * GLib file name encoding. Unicode characters that are not part of
+ * the system codepage passed in argument vectors will be correctly
+ * available in the spawned program only if it uses wide character API
+ * to retrieve its command line. For C programs built with Microsoft's
+ * tools it is enough to make the program have a wmain() instead of
+ * main(). wmain() has a wide character argument vector as parameter.
+ *
+ * At least currently, mingw doesn't support wmain(), so if you use
+ * mingw to develop the spawned program, it will have to call the
+ * undocumented function __wgetmainargs() to get the wide character
+ * argument vector and environment. See gspawn-win32-helper.c in the
+ * GLib sources or init.c in the mingw runtime sources for a prototype
+ * for that function. Alternatively, you can retrieve the Win32 system
+ * level wide character command line passed to the spawned program
+ * using the GetCommandLineW() function.
+ *
+ * On Windows the low-level child process creation API
+ * <function>CreateProcess()</function> doesn't use argument vectors,
  * but a command line. The C runtime library's
  * <function>spawn*()</function> family of functions (which
  * g_spawn_async_with_pipes() eventually calls) paste the argument
- * vector elements into a command line, and the C runtime startup code
+ * vector elements together into a command line, and the C runtime startup code
  * does a corresponding reconstruction of an argument vector from the
  * command line, to be passed to main(). Complications arise when you have
  * argument vector elements that contain spaces of double quotes. The
@@ -506,8 +525,8 @@ g_spawn_sync (const gchar          *working_directory,
  * before calling exec() in the child. Obviously
  * actions taken in this function will only affect the child, not the
  * parent. On Windows, there is no separate fork() and exec()
- * functionality. Child processes are created and run right away with
- * one API call, CreateProcess(). @child_setup is
+ * functionality. Child processes are created and run with
+ * a single API call, CreateProcess(). @child_setup is
  * called in the parent process just before creating the child
  * process. You should carefully consider what you do in @child_setup
  * if you intend your software to be portable to Windows.
@@ -521,7 +540,7 @@ g_spawn_sync (const gchar          *working_directory,
  * process using the Win32 API, for example wait for its termination
  * with the <function>WaitFor*()</function> functions, or examine its
  * exit code with GetExitCodeProcess(). You should close the handle 
- * with CloseHandle() when you no longer need it.
+ * with CloseHandle() or g_spawn_close_pid() when you no longer need it.
  *
  * If non-%NULL, the @standard_input, @standard_output, @standard_error
  * locations will be filled with file descriptors for writing to the child's
@@ -617,7 +636,9 @@ g_spawn_async_with_pipes (const gchar          *working_directory,
  * and WEXITSTATUS() must be used to evaluate the exit status.
  * 
  * On Windows, please note the implications of g_shell_parse_argv()
- * parsing @command_line. Space is a separator, and backslashes are
+ * parsing @command_line. Parsing is done according to Unix shell rules, not 
+ * Windows command interpreter rules.
+ * Space is a separator, and backslashes are
  * special. Thus you cannot simply pass a @command_line containing
  * canonical Windows paths, like "c:\\program files\\app\\app.exe", as
  * the backslashes will be eaten, and the space will act as a
