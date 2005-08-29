@@ -1,3 +1,35 @@
+2005-08-25  Tor Lillqvist  <tml@novell.com>
+
+	Make also the g_spawn*() functions take parameters in the GLib
+	file name encoding, i.e. UTF-8, on Windows. Has no impact on Unix
+	API or ABI. Like the other GLib API that was earlier changed to
+	use UTF-8 on Windows, the names of the functions that take UTF-8
+	have _utf8 suffixes added by using preprocessor macros in the
+	header file. The old names are kept for functions with the old
+	behaviour, taking parameters in the system codepage, for DLL ABI
+	stability.
+	
+	* glib/gspawn.h: On Win32 add the suffix _utf8 to the names of the
+	g_spawn*() functions.
+	
+	* glib/gspawn-win32.c: Use wide-char API on NT-based
+	Windows. Convert parameters from UTF-8 to wide chars (NT) or
+	system codepage (Win9x) and call the C library _wspawn*() or
+	spawn*() functions respectvely. Add DLL ABI stability versions
+	that take parameters in the system codepage.
+
+	* glib/gspawn-win32-helper.c: On NT-based Windows use the
+	wide-char versions of argv and envp, and use wide-char API to
+	change directory and spawn the program to run. Remove the verbose
+	debugging output, it was too complex to modify for the wide-char
+	features. (Just add temporary debugging printouts if needed, no
+	need to have them permanently in the source.)
+
+	* glib/gspawn.c: Corresponding documentation updates.
+
+	* glib/glib.symbols: Corresponding changes: Mark the ABI stability
+	symbols as PRIVATE, add the new _utf8-suffixed ones.
+
 2005-08-24  Stepan Kasal  <kasal@ucw.cz>
 
 	* glib/gtypes.h (G_MININT64): Cast the constant to gint64; it is

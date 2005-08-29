@@ -851,13 +851,20 @@ g_slist_sort_with_data
 
 #if IN_HEADER(__G_SPAWN_H__)
 #if IN_FILE(__G_SPAWN_C__)
-g_spawn_async
-g_spawn_async_with_pipes
+g_spawn_async PRIVATE
+g_spawn_async_with_pipes PRIVATE
 g_spawn_close_pid
-g_spawn_command_line_async
-g_spawn_command_line_sync
+g_spawn_command_line_async PRIVATE
+g_spawn_command_line_sync PRIVATE
 g_spawn_error_quark
-g_spawn_sync
+g_spawn_sync PRIVATE
+#ifdef G_OS_WIN32
+g_spawn_async_utf8
+g_spawn_async_with_pipes_utf8
+g_spawn_command_line_async_utf8
+g_spawn_command_line_sync_utf8
+g_spawn_sync_utf8
+#endif
 #endif
 #endif
 

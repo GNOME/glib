@@ -27,23 +27,12 @@
 #include "gspawn-win32.c"	/* For shared definitions */
 
 
-static GString *debugstring;
-
 static void
 write_err_and_exit (gint fd,
 		    gint msg)
 {
   gint en = errno;
   
-  if (debug)
-    {
-      debugstring = g_string_new (NULL);
-      g_string_append (debugstring,
-		       g_strdup_printf ("writing error code %d and errno %d",
-					msg, en));
-      MessageBox (NULL, debugstring->str, "gspawn-win32-helper", 0);
-    }
-
   write (fd, &msg, sizeof(msg));
   write (fd, &en, sizeof(en));
   
@@ -63,6 +52,99 @@ write_err_and_exit (gint fd,
  * away in the global __argc and __argv by the C runtime startup code.
  */
 
+/* Info peeked from mingw runtime's source code. __wgetmainargs() is a
+ * function to get the program's argv in wide char format.
+ */
+
+typedef struct {
+  int newmode;
+} _startupinfo;
+
+extern void __wgetmainargs(int *argc,
+			   wchar_t ***wargv,
+			   wchar_t ***wenviron,
+			   int expand_wildcards,
+			   _startupinfo *startupinfo);
+
+/* Copy of protect_argv that handles wchar_t strings */
+
+static gint
+protect_wargv (wchar_t  **wargv,
+	       wchar_t ***new_wargv)
+{
+  gint i;
+  gint argc = 0;
+  
+  while (wargv[argc])
+    ++argc;
+  *new_wargv = g_new (wchar_t *, argc+1);
+
+  /* Quote each argv element if necessary, so that it will get
+   * reconstructed correctly in the C runtime startup code.  Note that
+   * the unquoting algorithm in the C runtime is really weird, and
+   * rather different than what Unix shells do. See stdargv.c in the C
+   * runtime sources (in the Platform SDK, in src/crt).
+   *
+   * Note that an new_wargv[0] constructed by this function should
+   * *not* be passed as the filename argument to a _wspawn* or _wexec*
+   * family function. That argument should be the real file name
+   * without any quoting.
+   */
+  for (i = 0; i < argc; i++)
+    {
+      wchar_t *p = wargv[i];
+      wchar_t *q;
+      gint len = 0;
+      gboolean need_dblquotes = FALSE;
+      while (*p)
+	{
+	  if (*p == ' ' || *p == '\t')
+	    need_dblquotes = TRUE;
+	  else if (*p == '"')
+	    len++;
+	  else if (*p == '\\')
+	    {
+	      wchar_t *pp = p;
+	      while (*pp && *pp == '\\')
+		pp++;
+	      if (*pp == '"')
+		len++;
+	    }
+	  len++;
+	  p++;
+	}
+
+      q = (*new_wargv)[i] = g_new (wchar_t, len + need_dblquotes*2 + 1);
+      p = wargv[i];
+
+      if (need_dblquotes)
+	*q++ = '"';
+
+      while (*p)
+	{
+	  if (*p == '"')
+	    *q++ = '\\';
+	  else if (*p == '\\')
+	    {
+	      wchar_t *pp = p;
+	      while (*pp && *pp == '\\')
+		pp++;
+	      if (*pp == '"')
+		*q++ = '\\';
+	    }
+	  *q++ = *p;
+	  p++;
+	}
+
+      if (need_dblquotes)
+	*q++ = '"';
+      *q++ = '\0';
+    }
+  (*new_wargv)[argc] = NULL;
+
+  return argc;
+}
+
 int _stdcall
 WinMain (struct HINSTANCE__ *hInstance,
 	 struct HINSTANCE__ *hPrevInstance,
@@ -77,44 +159,43 @@ WinMain (struct HINSTANCE__ *hInstance,
   int saved_errno;
   int no_error = CHILD_NO_ERROR;
   int zero = 0;
-  gint file_and_argv_zero = 0;
+  gint argv_zero_offset = ARG_PROGRAM;
   gchar **new_argv;
-
-  SETUP_DEBUG();
-
-  if (debug)
-    {
-      debugstring = g_string_new (NULL);
-
-      g_string_append (debugstring,
-		       g_strdup_printf ("g-spawn-win32-helper: "
-					"argc = %d, argv: ",
-					__argc));
-      for (i = 0; i < __argc; i++)
-	{
-	  if (i > 0)
-	    g_string_append (debugstring, " ");
-	  g_string_append (debugstring, __argv[i]);
-	}
-      
-      MessageBox (NULL, debugstring->str, "gspawn-win32-helper", 0);
-    }
+  wchar_t **new_wargv;
+  int argc;
+  wchar_t **wargv, **wenvp;
+  _startupinfo si = { 0 };
 
   g_assert (__argc >= ARG_COUNT);
 
-  /* argv[ARG_CHILD_ERR_REPORT] is the file descriptor onto which
-   * write error messages.
+  if (G_WIN32_HAVE_WIDECHAR_API ())
+    {
+      /* Fetch the wide-char argument vector */
+      __wgetmainargs (&argc, &wargv, &wenvp, 0, &si);
+
+      /* We still have the system codepage args in __argv. We can look
+       * at the first args in which gspawn-win32.c passes us flags and
+       * fd numbers in __argv, as we know those are just ASCII anyway.
+       */
+      g_assert (argc == __argc);
+    }
+
+  /* argv[ARG_CHILD_ERR_REPORT] is the file descriptor number onto
+   * which write error messages.
    */
   child_err_report_fd = atoi (__argv[ARG_CHILD_ERR_REPORT]);
 
-  /* Hack to implement G_SPAWN_FILE_AND_ARGV_ZERO */
+  /* Hack to implement G_SPAWN_FILE_AND_ARGV_ZERO. If
+   * argv[ARG_CHILD_ERR_REPORT] is suffixed with a '#' it means we get
+   * the program to run and its argv[0] separately.
+   */
   if (__argv[ARG_CHILD_ERR_REPORT][strlen (__argv[ARG_CHILD_ERR_REPORT]) - 1] == '#')
-    file_and_argv_zero = 1;
+    argv_zero_offset++;
 
-  /* argv[ARG_STDIN..ARG_STDERR] are the file descriptors that should
-   * be dup2'd to stdin, stdout and stderr, '-' if the corresponding
-   * std* should be let alone, and 'z' if it should be connected to
-   * the bit bucket NUL:.
+  /* argv[ARG_STDIN..ARG_STDERR] are the file descriptor numbers that
+   * should be dup2'd to 0, 1 and 2. '-' if the corresponding fd
+   * should be left alone, and 'z' if it should be connected to the
+   * bit bucket NUL:.
    */
   if (__argv[ARG_STDIN][0] == '-')
     ; /* Nothing */
@@ -185,21 +266,21 @@ WinMain (struct HINSTANCE__ *hInstance,
   if (__argv[ARG_WORKING_DIRECTORY][0] == '-' &&
       __argv[ARG_WORKING_DIRECTORY][1] == 0)
     ; /* Nothing */
-  else if (chdir (__argv[ARG_WORKING_DIRECTORY]) < 0)
-    write_err_and_exit (child_err_report_fd,
-			CHILD_CHDIR_FAILED);
+  else if ((G_WIN32_HAVE_WIDECHAR_API () &&
+	    _wchdir (wargv[ARG_WORKING_DIRECTORY]) < 0) ||
+	   (!G_WIN32_HAVE_WIDECHAR_API () &&
+	    chdir (__argv[ARG_WORKING_DIRECTORY]) < 0))
+    write_err_and_exit (child_err_report_fd, CHILD_CHDIR_FAILED);
 
   /* __argv[ARG_CLOSE_DESCRIPTORS] is "y" if file descriptors from 3
    *  upwards should be closed
    */
-
   if (__argv[ARG_CLOSE_DESCRIPTORS][0] == 'y')
     for (i = 3; i < 1000; i++)	/* FIXME real limit? */
       if (i != child_err_report_fd)
 	close (i);
 
   /* __argv[ARG_WAIT] is "w" to wait for the program to exit */
-
   if (__argv[ARG_WAIT][0] == 'w')
     mode = P_WAIT;
   else
@@ -207,52 +288,35 @@ WinMain (struct HINSTANCE__ *hInstance,
 
   /* __argv[ARG_USE_PATH] is "y" to use PATH, otherwise not */
 
-  /* __argv[ARG_PROGRAM] is program file to run,
-   * __argv[ARG_PROGRAM+1]... is its __argv.
+  /* __argv[ARG_PROGRAM] is executable file to run,
+   * __argv[argv_zero_offset]... is its argv. argv_zero_offset equals
+   * ARG_PROGRAM unless G_SPAWN_FILE_AND_ARGV_ZERO was used, in which
+   * case we have a separate executable name and argv[0].
    */
 
-  protect_argv (__argv, &new_argv);
-
   /* For the program name passed to spawnv(), don't use the quoted
-   * version. */
-
-  if (debug)
+   * version.
+   */
+  if (G_WIN32_HAVE_WIDECHAR_API ())
     {
-      debugstring = g_string_new (NULL);
-      g_string_append (debugstring,
-		       g_strdup_printf ("calling %s %s mode=%s argv: ",
-					(__argv[ARG_USE_PATH][0] == 'y' ?
-					 "spawnvp" : "spawnv"),
-					__argv[ARG_PROGRAM],
-					(mode == P_WAIT ?
-					 "P_WAIT" : "P_NOWAIT")));
-      i = ARG_PROGRAM + 1 + file_and_argv_zero;
-      while (new_argv[i])
-	{
-	  g_string_append (debugstring, new_argv[i++]);
-	  if (new_argv[i])
-	    g_string_append (debugstring, " ");
-	}
-      MessageBox (NULL, debugstring->str, "gspawn-win32-helper", 0);
-    }
+      protect_wargv (wargv + argv_zero_offset, &new_wargv);
 
-  if (new_argv[ARG_USE_PATH][0] == 'y')
-    handle = spawnvp (mode, __argv[ARG_PROGRAM], new_argv + ARG_PROGRAM + file_and_argv_zero);
+      if (__argv[ARG_USE_PATH][0] == 'y')
+	handle = _wspawnvp (mode, wargv[ARG_PROGRAM], (const wchar_t **) new_wargv);
+      else
+	handle = _wspawnv (mode, wargv[ARG_PROGRAM], (const wchar_t **) new_wargv);
+    }
   else
-    handle = spawnv (mode, __argv[ARG_PROGRAM], new_argv + ARG_PROGRAM + file_and_argv_zero);
+    {
+      protect_argv (__argv + argv_zero_offset, &new_argv);
+
+      if (__argv[ARG_USE_PATH][0] == 'y')
+	handle = spawnvp (mode, __argv[ARG_PROGRAM], (const char **) new_argv);
+      else
+	handle = spawnv (mode, __argv[ARG_PROGRAM], (const char **) new_argv);
+    }
 
   saved_errno = errno;
-
-  if (debug)
-    {
-      debugstring = g_string_new (NULL);
-      g_string_append (debugstring,
-		       g_strdup_printf ("%s returned %#x",
-					(__argv[ARG_USE_PATH][0] == 'y' ?
-					 "spawnvp" : "spawnv"),
-					handle));
-      MessageBox (NULL, debugstring->str, "gspawn-win32-helper", 0);
-    }
 
   if (handle == -1 && saved_errno != 0)
     write_err_and_exit (child_err_report_fd, CHILD_SPAWN_FAILED);
@@ -264,4 +328,3 @@ WinMain (struct HINSTANCE__ *hInstance,
     write (child_err_report_fd, &zero, sizeof (zero));
   return 0;
 }
-
