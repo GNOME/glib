@@ -1,3 +1,10 @@
+2005-08-30  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/tmpl/arrays.sgml: 
+	* glib/tmpl/arrays_pointer.sgml: 
+	* glib/tmpl/arrays_byte.sgml: Enhance sort() documentation.
+	(#314839, Behdad Esfahbod)
+
 2005-08-26  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/glib-docs.sgml:

@@ -231,8 +231,12 @@ Removes the given number of elements starting at the given index from a
 <!-- ##### FUNCTION g_array_sort ##### -->
 <para>
 Sorts a #GArray using @compare_func which should be a qsort()-style comparison
-function (returns -1 for first arg is less than second arg, 0 for equal, 1 if
-first arg is greater than second arg).
+function (returns less than zero for first arg is less than second arg, 
+zero for equal, greater zero if first arg is greater than second arg).
+</para>
+<para>
+If two array elements compare equal, their order in the sorted array is
+undefined.
 </para>
 
 @array: a #GArray.
@@ -241,7 +245,7 @@ first arg is greater than second arg).
 
 <!-- ##### FUNCTION g_array_sort_with_data ##### -->
 <para>
-Like g_array_sort(), but the comparison function receives a user data
+Like g_array_sort(), but the comparison function receives an extra user data
 argument.
 </para>
 

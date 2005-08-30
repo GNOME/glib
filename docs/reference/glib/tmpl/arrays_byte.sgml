@@ -144,8 +144,13 @@ Removes the given number of bytes starting at the given index from a
 <!-- ##### FUNCTION g_byte_array_sort ##### -->
 <para>
 Sorts a byte array, using @compare_func which should be a qsort()-style
-comparison function (returns -1 for first arg is less than second arg, 0 for
-equal, 1 if first arg is greater than second arg).
+comparison function (returns less than zero for first arg is less than second 
+arg, zero for equal, greater than zero if first arg is greater than second 
+arg).
+</para>
+<para>
+If two array elements compare equal, their order in the sorted array is
+undefined.
 </para>
 
 @array: a #GByteArray.
@@ -154,7 +159,8 @@ equal, 1 if first arg is greater than second arg).
 
 <!-- ##### FUNCTION g_byte_array_sort_with_data ##### -->
 <para>
-Like g_byte_array_sort(), but the comparison function takes a user data argument.
+Like g_byte_array_sort(), but the comparison function takes an extra user data
+argument.
 </para>
 
 @array: a #GByteArray.
