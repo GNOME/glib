@@ -711,5 +711,43 @@ g_quark_new (gchar *string)
   return quark;
 }
 
+/**
+ * g_intern_string:
+ * @string: a string
+ * 
+ * Returns a canonical representation for @string. Interned strings can
+ * be compared for equality by comparing the pointers, instead of using strcmp().
+ * 
+ * Returns: a canonical representation for the string
+ *
+ * Since: 2.10
+ */
+G_CONST_RETURN gchar*
+g_intern_string (const gchar *string)
+{
+   return string ? g_quark_to_string (g_quark_from_string (string)) : NULL;
+}
+
+/**
+ * g_intern_static_string:
+ * @string: a static string
+ * 
+ * Returns a canonical representation for @string. Interned strings can
+ * be compared for equality by comparing the pointers, instead of using strcmp().
+ * g_intern_static_string() does not copy the string, therefore @string must
+ * not be freed or modified. 
+ * 
+ * Returns: a canonical representation for the string
+ *
+ * Since: 2.10
+ */
+G_CONST_RETURN gchar*
+g_intern_static_string (const gchar *string)
+{
+   return string ? g_quark_to_string (g_quark_from_static_string (string)) : NULL;
+}
+
+
+
 #define __G_DATASET_C__
 #include "galiasdef.c"

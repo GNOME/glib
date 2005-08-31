@@ -1,3 +1,9 @@
+2005-08-31  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/glib.symbols: 
+	* glib/gquark.h: 
+	* glib/gdataset.c: 
+
 2005-08-28  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/giochannel.c: Unify some near-duplicate strings. (#314654,

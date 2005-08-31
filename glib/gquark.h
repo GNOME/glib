@@ -40,6 +40,10 @@ GQuark                g_quark_from_static_string (const gchar *string);
 GQuark                g_quark_from_string        (const gchar *string);
 G_CONST_RETURN gchar* g_quark_to_string          (GQuark       quark) G_GNUC_CONST;
 
+G_CONST_RETURN gchar* g_intern_string            (const gchar *string);
+G_CONST_RETURN gchar* g_intern_static_string     (const gchar *string);
+
+
 G_END_DECLS
 
 #endif /* __G_QUARK_H__ */

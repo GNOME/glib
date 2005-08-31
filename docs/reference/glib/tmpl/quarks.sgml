@@ -25,6 +25,13 @@ To find the string corresponding to a given #GQuark, use g_quark_to_string().
 <para>
 To find the #GQuark corresponding to a given string, use g_quark_try_string().
 </para>
+<para>
+Another use for the string pool maintained for the quark functions is string
+interning, using g_intern_string() or g_intern_static_string(). An interned string 
+is a canonical representation for a string. One important advantage of interned strings 
+is that they can be compared for equality by a simple pointer comparision, rather than 
+using strcmp(). 
+</para>
 
 <!-- ##### SECTION See_Also ##### -->
 <para>

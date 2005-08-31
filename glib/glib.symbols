@@ -165,10 +165,17 @@ g_dataset_foreach
 g_dataset_id_get_data
 g_dataset_id_remove_no_notify
 g_dataset_id_set_data_full
+#endif
+#endif
+
+#if IN_HEADER(__G_QUARK_H__)
+#if IN_FILE(__G_DATASET_C__)
 g_quark_from_static_string
 g_quark_from_string
 g_quark_to_string G_GNUC_CONST
 g_quark_try_string
+g_intern_string
+g_intern_static_string
 #endif
 #endif
 
