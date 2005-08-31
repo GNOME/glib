@@ -208,11 +208,44 @@ g_memmove (gpointer      dest,
 }
 #endif /* !HAVE_MEMMOVE && !HAVE_WORKING_BCOPY */
 
+#ifdef G_OS_WIN32
+#undef g_atexit
+#endif
+
 /**
  * g_atexit:
  * @func: the function to call on normal program termination.
  * 
  * Specifies a function to be called at normal program termination.
+ *
+ * Since GLib 2.8.2, on Windows g_atexit() actually is a preprocessor
+ * macro that maps to a call to the atexit() function in the C
+ * library. This means that in case the code that calls g_atexit(),
+ * i.e. atexit(), is in a DLL, the function will be called when the
+ * DLL is detached from the program. This typically makes more sense
+ * than that the function is called when the GLib DLL is detached,
+ * which happened earlier when g_atexit() was a function in the GLib
+ * DLL.
+ *
+ * The behaviour of atexit() in the context of dynamically loaded
+ * modules is not formally specified and varies wildly.
+ *
+ * On POSIX systems, calling g_atexit() (or atexit()) in a dynamically
+ * loaded module which is unloaded before the program terminates might
+ * well cause a crash at program exit.
+ *
+ * Some POSIX systems implement atexit() like Windows, and have each
+ * dynamically loaded module maintain an own atexit chain that is
+ * called when the module is unloaded.
+ *
+ * On other POSIX systems, before a dynamically loaded module is
+ * unloaded, the registered atexit functions (if any) residing in that
+ * module are called, regardless where the code that registered them
+ * resided. This is presumably the most robust approach.
+ *
+ * As can be seen from the above, for portability it's best to avoid
+ * calling g_atexit() (or atexit()) except in the main executable of a
+ * program.
  */
 void
 g_atexit (GVoidFunc func)
