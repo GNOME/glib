@@ -259,7 +259,7 @@ g_object_do_class_init (GObjectClass *class)
   class->notify = NULL;
 
   gobject_signals[NOTIFY] =
-    g_signal_new ("notify",
+    g_signal_new (g_intern_static_string ("notify"),
 		  G_TYPE_FROM_CLASS (class),
 		  G_SIGNAL_RUN_FIRST | G_SIGNAL_NO_RECURSE | G_SIGNAL_DETAILED | G_SIGNAL_NO_HOOKS | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (GObjectClass, notify),

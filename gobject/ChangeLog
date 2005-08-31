@@ -1,5 +1,10 @@
 2005-08-31  Matthias Clasen  <mclasen@redhat.com>
 
+	* gobject.c (g_object_do_class_init): Intern the signal name.
+
+	* gparam.c (g_param_spec_internal): Intern the name here,
+	since we need the quark anyway when sending change notification.
+
 	* gboxed.c: 
 	* gparamspecs.c: 
 	* gtype.c (g_type_init_with_debug_flags): Intern type name
