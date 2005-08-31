@@ -389,9 +389,9 @@ g_value_types_init (void)
       value_lcopy_char,		/* lcopy_value */
     };
     info.value_table = &value_table;
-    type = g_type_register_fundamental (G_TYPE_CHAR, "gchar", &info, &finfo, 0);
+    type = g_type_register_fundamental (G_TYPE_CHAR, g_intern_static_string ("gchar"), &info, &finfo, 0);
     g_assert (type == G_TYPE_CHAR);
-    type = g_type_register_fundamental (G_TYPE_UCHAR, "guchar", &info, &finfo, 0);
+    type = g_type_register_fundamental (G_TYPE_UCHAR, g_intern_static_string ("guchar"), &info, &finfo, 0);
     g_assert (type == G_TYPE_UCHAR);
   }
 
@@ -409,7 +409,7 @@ g_value_types_init (void)
       value_lcopy_boolean,	 /* lcopy_value */
     };
     info.value_table = &value_table;
-    type = g_type_register_fundamental (G_TYPE_BOOLEAN, "gboolean", &info, &finfo, 0);
+    type = g_type_register_fundamental (G_TYPE_BOOLEAN, g_intern_static_string ("gboolean"), &info, &finfo, 0);
     g_assert (type == G_TYPE_BOOLEAN);
   }
   
@@ -427,9 +427,9 @@ g_value_types_init (void)
       value_lcopy_int,		/* lcopy_value */
     };
     info.value_table = &value_table;
-    type = g_type_register_fundamental (G_TYPE_INT, "gint", &info, &finfo, 0);
+    type = g_type_register_fundamental (G_TYPE_INT, g_intern_static_string ("gint"), &info, &finfo, 0);
     g_assert (type == G_TYPE_INT);
-    type = g_type_register_fundamental (G_TYPE_UINT, "guint", &info, &finfo, 0);
+    type = g_type_register_fundamental (G_TYPE_UINT, g_intern_static_string ("guint"), &info, &finfo, 0);
     g_assert (type == G_TYPE_UINT);
   }
 
@@ -447,9 +447,9 @@ g_value_types_init (void)
       value_lcopy_long,		/* lcopy_value */
     };
     info.value_table = &value_table;
-    type = g_type_register_fundamental (G_TYPE_LONG, "glong", &info, &finfo, 0);
+    type = g_type_register_fundamental (G_TYPE_LONG, g_intern_static_string ("glong"), &info, &finfo, 0);
     g_assert (type == G_TYPE_LONG);
-    type = g_type_register_fundamental (G_TYPE_ULONG, "gulong", &info, &finfo, 0);
+    type = g_type_register_fundamental (G_TYPE_ULONG, g_intern_static_string ("gulong"), &info, &finfo, 0);
     g_assert (type == G_TYPE_ULONG);
   }
   
@@ -467,9 +467,9 @@ g_value_types_init (void)
       value_lcopy_int64,	/* lcopy_value */
     };
     info.value_table = &value_table;
-    type = g_type_register_fundamental (G_TYPE_INT64, "gint64", &info, &finfo, 0);
+    type = g_type_register_fundamental (G_TYPE_INT64, g_intern_static_string ("gint64"), &info, &finfo, 0);
     g_assert (type == G_TYPE_INT64);
-    type = g_type_register_fundamental (G_TYPE_UINT64, "guint64", &info, &finfo, 0);
+    type = g_type_register_fundamental (G_TYPE_UINT64, g_intern_static_string ("guint64"), &info, &finfo, 0);
     g_assert (type == G_TYPE_UINT64);
   }
   
@@ -487,7 +487,7 @@ g_value_types_init (void)
       value_lcopy_float,	 /* lcopy_value */
     };
     info.value_table = &value_table;
-    type = g_type_register_fundamental (G_TYPE_FLOAT, "gfloat", &info, &finfo, 0);
+    type = g_type_register_fundamental (G_TYPE_FLOAT, g_intern_static_string ("gfloat"), &info, &finfo, 0);
     g_assert (type == G_TYPE_FLOAT);
   }
   
@@ -505,7 +505,7 @@ g_value_types_init (void)
       value_lcopy_double,	/* lcopy_value */
     };
     info.value_table = &value_table;
-    type = g_type_register_fundamental (G_TYPE_DOUBLE, "gdouble", &info, &finfo, 0);
+    type = g_type_register_fundamental (G_TYPE_DOUBLE, g_intern_static_string ("gdouble"), &info, &finfo, 0);
     g_assert (type == G_TYPE_DOUBLE);
   }
 
@@ -523,7 +523,7 @@ g_value_types_init (void)
       value_lcopy_string,	/* lcopy_value */
     };
     info.value_table = &value_table;
-    type = g_type_register_fundamental (G_TYPE_STRING, "gchararray", &info, &finfo, 0);
+    type = g_type_register_fundamental (G_TYPE_STRING, g_intern_static_string ("gchararray"), &info, &finfo, 0);
     g_assert (type == G_TYPE_STRING);
   }
 
@@ -541,7 +541,7 @@ g_value_types_init (void)
       value_lcopy_pointer,	/* lcopy_value */
     };
     info.value_table = &value_table;
-    type = g_type_register_fundamental (G_TYPE_POINTER, "gpointer", &info, &finfo, 0);
+    type = g_type_register_fundamental (G_TYPE_POINTER, g_intern_static_string ("gpointer"), &info, &finfo, 0);
     g_assert (type == G_TYPE_POINTER);
   }
 }

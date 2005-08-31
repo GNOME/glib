@@ -86,14 +86,14 @@ g_enum_types_init (void)
   /* G_TYPE_ENUM
    */
   info.class_size = sizeof (GEnumClass);
-  type = g_type_register_fundamental (G_TYPE_ENUM, "GEnum", &info, &finfo,
+  type = g_type_register_fundamental (G_TYPE_ENUM, g_intern_static_string ("GEnum"), &info, &finfo,
 				      G_TYPE_FLAG_ABSTRACT | G_TYPE_FLAG_VALUE_ABSTRACT);
   g_assert (type == G_TYPE_ENUM);
   
   /* G_TYPE_FLAGS
    */
   info.class_size = sizeof (GFlagsClass);
-  type = g_type_register_fundamental (G_TYPE_FLAGS, "GFlags", &info, &finfo,
+  type = g_type_register_fundamental (G_TYPE_FLAGS, g_intern_static_string ("GFlags"), &info, &finfo,
 				      G_TYPE_FLAG_ABSTRACT | G_TYPE_FLAG_VALUE_ABSTRACT);
   g_assert (type == G_TYPE_FLAGS);
 }

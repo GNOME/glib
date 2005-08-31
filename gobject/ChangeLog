@@ -1,3 +1,15 @@
+2005-08-31  Matthias Clasen  <mclasen@redhat.com>
+
+	* gvaluetypes.c (g_value_types_init): 
+	* gtypeplugin.c (g_type_plugin_get_type): 
+	* gtypemodule.c (g_type_module_get_type): 
+	* gparam.c (g_param_type_init): 
+	* gobject.c (g_object_type_init): 
+	* genums.c (g_enum_types_init): 
+	* gboxed.c (g_boxed_type_init): Intern type names
+	before registering the type to avoid unnecessary
+	copies.
+
 2005-08-23  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.8.1 ===

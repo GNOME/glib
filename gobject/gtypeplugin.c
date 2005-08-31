@@ -35,7 +35,7 @@ g_type_plugin_get_type (void)
 	NULL,           /* base_finalize */
       };
       
-      type_plugin_type = g_type_register_static (G_TYPE_INTERFACE, "GTypePlugin", &type_plugin_info, 0);
+      type_plugin_type = g_type_register_static (G_TYPE_INTERFACE, g_intern_static_string ("GTypePlugin"), &type_plugin_info, 0);
     }
   
   return type_plugin_type;

@@ -103,7 +103,7 @@ g_param_type_init (void)
   };
   GType type;
 
-  type = g_type_register_fundamental (G_TYPE_PARAM, "GParam", &param_spec_info, &finfo, G_TYPE_FLAG_ABSTRACT);
+  type = g_type_register_fundamental (G_TYPE_PARAM, g_intern_static_string ("GParam"), &param_spec_info, &finfo, G_TYPE_FLAG_ABSTRACT);
   g_assert (type == G_TYPE_PARAM);
   g_value_register_transform_func (G_TYPE_PARAM, G_TYPE_PARAM, value_param_transform_value);
 }

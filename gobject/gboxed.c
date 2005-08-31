@@ -139,7 +139,7 @@ g_boxed_type_init (void)
 
   /* G_TYPE_BOXED
    */
-  type = g_type_register_fundamental (G_TYPE_BOXED, "GBoxed", &info, &finfo,
+  type = g_type_register_fundamental (G_TYPE_BOXED, g_intern_static_string ("GBoxed"), &info, &finfo,
 				      G_TYPE_FLAG_ABSTRACT | G_TYPE_FLAG_VALUE_ABSTRACT);
   g_assert (type == G_TYPE_BOXED);
 }

@@ -123,7 +123,7 @@ g_type_module_get_type (void)
         NULL,               /* interface_data */
       };
 
-      type_module_type = g_type_register_static (G_TYPE_OBJECT, "GTypeModule", &type_module_info, G_TYPE_FLAG_ABSTRACT);
+      type_module_type = g_type_register_static (G_TYPE_OBJECT, g_intern_static_string ("GTypeModule"), &type_module_info, G_TYPE_FLAG_ABSTRACT);
 
       g_type_add_interface_static (type_module_type, G_TYPE_TYPE_PLUGIN, &iface_info);
     }
