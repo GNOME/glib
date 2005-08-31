@@ -208,6 +208,10 @@ g_memmove (gpointer      dest,
 }
 #endif /* !HAVE_MEMMOVE && !HAVE_WORKING_BCOPY */
 
+#ifdef G_OS_WIN32
+#undef g_atexit
+#endif
+
 /**
  * g_atexit:
  * @func: the function to call on normal program termination.

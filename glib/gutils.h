@@ -229,6 +229,17 @@ typedef	void		(*GVoidFunc)		(void);
  */
 void	g_atexit		(GVoidFunc    func);
 
+#ifdef G_OS_WIN32
+/* It's a bad idea to wrap atexit() on Windows. If the GLib DLL calls
+ * atexit(), the function will be called when the GLib DLL is detached
+ * from the program, which is not what the caller wants. The caller
+ * wants the function to be called when it *itself* exits (or is
+ * detached, in case the caller, too, is a DLL).
+ */
+int atexit (void (*)(void));
+#define g_atexit(func) atexit(func)
+#endif
+
 /* Look for an executable in PATH, following execvp() rules */
 gchar*  g_find_program_in_path  (const gchar *program);
 
