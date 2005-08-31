@@ -11,7 +11,10 @@
 	the time the GLib DLL got unloaded.
 
 	* glib/gutils.c: #undef the #define mentioned above, to also get a
-	real g_atexit() into the DLL for backward compatibility.
+	real g_atexit() into the DLL for backward compatibility. Document
+	the Windows behaviour of g_atexit(), and document the varying ways
+	atexit() can behave in the context of dynamically loaded modules
+	on Unix.
 
 2005-08-30  Tor Lillqvist  <tml@novell.com>
 
