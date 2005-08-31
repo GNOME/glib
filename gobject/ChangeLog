@@ -1,5 +1,8 @@
 2005-08-31  Matthias Clasen  <mclasen@redhat.com>
 
+	* gtype.h (G_DEFINE_TYPE_EXTENDED): Intern type name
+	before registering the type.
+
 	* gvaluetypes.c (g_value_types_init): 
 	* gtypeplugin.c (g_type_plugin_get_type): 
 	* gtypemodule.c (g_type_module_get_type): 
