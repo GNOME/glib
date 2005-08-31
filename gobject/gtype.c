@@ -3426,14 +3426,14 @@ g_type_init_with_debug_flags (GTypeDebugFlags debug_flags)
   
   /* void type G_TYPE_NONE
    */
-  node = type_node_fundamental_new_W (G_TYPE_NONE, "void", 0);
+  node = type_node_fundamental_new_W (G_TYPE_NONE, g_intern_static_string ("void"), 0);
   type = NODE_TYPE (node);
   g_assert (type == G_TYPE_NONE);
   
   /* interface fundamental type G_TYPE_INTERFACE (!classed)
    */
   memset (&info, 0, sizeof (info));
-  node = type_node_fundamental_new_W (G_TYPE_INTERFACE, "GInterface", G_TYPE_FLAG_DERIVABLE);
+  node = type_node_fundamental_new_W (G_TYPE_INTERFACE, g_intern_static_string ("GInterface"), G_TYPE_FLAG_DERIVABLE);
   type = NODE_TYPE (node);
   type_data_make_W (node, &info, NULL);
   g_assert (type == G_TYPE_INTERFACE);

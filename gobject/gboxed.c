@@ -150,7 +150,7 @@ g_closure_get_type (void)
   static GType type_id = 0;
 
   if (!type_id)
-    type_id = g_boxed_type_register_static ("GClosure",
+    type_id = g_boxed_type_register_static (g_intern_static_string ("GClosure"),
 					    (GBoxedCopyFunc) g_closure_ref,
 					    (GBoxedFreeFunc) g_closure_unref);
   return type_id;
@@ -162,7 +162,7 @@ g_value_get_type (void)
   static GType type_id = 0;
 
   if (!type_id)
-    type_id = g_boxed_type_register_static ("GValue",
+    type_id = g_boxed_type_register_static (g_intern_static_string ("GValue"),
 					    value_copy,
 					    value_free);
   return type_id;
@@ -174,7 +174,7 @@ g_value_array_get_type (void)
   static GType type_id = 0;
 
   if (!type_id)
-    type_id = g_boxed_type_register_static ("GValueArray",
+    type_id = g_boxed_type_register_static (g_intern_static_string ("GValueArray"),
 					    (GBoxedCopyFunc) g_value_array_copy,
 					    (GBoxedFreeFunc) g_value_array_free);
   return type_id;
@@ -186,7 +186,7 @@ g_date_get_type (void)
   static GType type_id = 0;
 
   if (!type_id)
-    type_id = g_boxed_type_register_static ("GDate",
+    type_id = g_boxed_type_register_static (g_intern_static_string ("GDate"),
 					    (GBoxedCopyFunc) gdate_copy,
 					    (GBoxedFreeFunc) g_date_free);
   return type_id;
@@ -198,7 +198,7 @@ g_strv_get_type (void)
   static GType type_id = 0;
 
   if (!type_id)
-    type_id = g_boxed_type_register_static ("GStrv",
+    type_id = g_boxed_type_register_static (g_intern_static_string ("GStrv"),
 					    (GBoxedCopyFunc) g_strdupv,
 					    (GBoxedFreeFunc) g_strfreev);
   return type_id;
@@ -210,7 +210,7 @@ g_gstring_get_type (void)
   static GType type_id = 0;
 
   if (!type_id)
-    type_id = g_boxed_type_register_static ("GString",	/* the naming is a bit odd, but GString is obviously not G_TYPE_STRING */
+    type_id = g_boxed_type_register_static (g_intern_static_string ("GString"),	/* the naming is a bit odd, but GString is obviously not G_TYPE_STRING */
 					    gstring_copy,
 					    gstring_free);
   return type_id;

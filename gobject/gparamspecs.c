@@ -1042,7 +1042,7 @@ g_param_spec_types_init (void)
       param_char_validate,	/* value_validate */
       param_int_values_cmp,	/* values_cmp */
     };
-    type = g_param_type_register_static ("GParamChar", &pspec_info);
+    type = g_param_type_register_static (g_intern_static_string ("GParamChar"), &pspec_info);
     *spec_types++ = type;
     g_assert (type == G_TYPE_PARAM_CHAR);
   }
@@ -1060,7 +1060,7 @@ g_param_spec_types_init (void)
       param_uchar_validate,	/* value_validate */
       param_uint_values_cmp,	/* values_cmp */
     };
-    type = g_param_type_register_static ("GParamUChar", &pspec_info);
+    type = g_param_type_register_static (g_intern_static_string ("GParamUChar"), &pspec_info);
     *spec_types++ = type;
     g_assert (type == G_TYPE_PARAM_UCHAR);
   }
@@ -1078,7 +1078,7 @@ g_param_spec_types_init (void)
       param_boolean_validate,     /* value_validate */
       param_int_values_cmp,       /* values_cmp */
     };
-    type = g_param_type_register_static ("GParamBoolean", &pspec_info);
+    type = g_param_type_register_static (g_intern_static_string ("GParamBoolean"), &pspec_info);
     *spec_types++ = type;
     g_assert (type == G_TYPE_PARAM_BOOLEAN);
   }
@@ -1096,7 +1096,7 @@ g_param_spec_types_init (void)
       param_int_validate,	/* value_validate */
       param_int_values_cmp,	/* values_cmp */
     };
-    type = g_param_type_register_static ("GParamInt", &pspec_info);
+    type = g_param_type_register_static (g_intern_static_string ("GParamInt"), &pspec_info);
     *spec_types++ = type;
     g_assert (type == G_TYPE_PARAM_INT);
   }
@@ -1114,7 +1114,7 @@ g_param_spec_types_init (void)
       param_uint_validate,	/* value_validate */
       param_uint_values_cmp,	/* values_cmp */
     };
-    type = g_param_type_register_static ("GParamUInt", &pspec_info);
+    type = g_param_type_register_static (g_intern_static_string ("GParamUInt"), &pspec_info);
     *spec_types++ = type;
     g_assert (type == G_TYPE_PARAM_UINT);
   }
@@ -1132,7 +1132,7 @@ g_param_spec_types_init (void)
       param_long_validate,	/* value_validate */
       param_long_values_cmp,	/* values_cmp */
     };
-    type = g_param_type_register_static ("GParamLong", &pspec_info);
+    type = g_param_type_register_static (g_intern_static_string ("GParamLong"), &pspec_info);
     *spec_types++ = type;
     g_assert (type == G_TYPE_PARAM_LONG);
   }
@@ -1150,7 +1150,7 @@ g_param_spec_types_init (void)
       param_ulong_validate,	/* value_validate */
       param_ulong_values_cmp,	/* values_cmp */
     };
-    type = g_param_type_register_static ("GParamULong", &pspec_info);
+    type = g_param_type_register_static (g_intern_static_string ("GParamULong"), &pspec_info);
     *spec_types++ = type;
     g_assert (type == G_TYPE_PARAM_ULONG);
   }
@@ -1168,7 +1168,7 @@ g_param_spec_types_init (void)
       param_int64_validate,	/* value_validate */
       param_int64_values_cmp,	/* values_cmp */
     };
-    type = g_param_type_register_static ("GParamInt64", &pspec_info);
+    type = g_param_type_register_static (g_intern_static_string ("GParamInt64"), &pspec_info);
     *spec_types++ = type;
     g_assert (type == G_TYPE_PARAM_INT64);
   }
@@ -1186,7 +1186,7 @@ g_param_spec_types_init (void)
       param_uint64_validate,	/* value_validate */
       param_uint64_values_cmp,	/* values_cmp */
     };
-    type = g_param_type_register_static ("GParamUInt64", &pspec_info);
+    type = g_param_type_register_static (g_intern_static_string ("GParamUInt64"), &pspec_info);
     *spec_types++ = type;
     g_assert (type == G_TYPE_PARAM_UINT64);
   }
@@ -1204,7 +1204,7 @@ g_param_spec_types_init (void)
       param_unichar_validate,	 /* value_validate */
       param_unichar_values_cmp,	 /* values_cmp */
     };
-    type = g_param_type_register_static ("GParamUnichar", &pspec_info);
+    type = g_param_type_register_static (g_intern_static_string ("GParamUnichar"), &pspec_info);
     *spec_types++ = type;
     g_assert (type == G_TYPE_PARAM_UNICHAR);
   }
@@ -1222,7 +1222,7 @@ g_param_spec_types_init (void)
       param_enum_validate,	/* value_validate */
       param_long_values_cmp,	/* values_cmp */
     };
-    type = g_param_type_register_static ("GParamEnum", &pspec_info);
+    type = g_param_type_register_static (g_intern_static_string ("GParamEnum"), &pspec_info);
     *spec_types++ = type;
     g_assert (type == G_TYPE_PARAM_ENUM);
   }
@@ -1240,7 +1240,7 @@ g_param_spec_types_init (void)
       param_flags_validate,	/* value_validate */
       param_ulong_values_cmp,	/* values_cmp */
     };
-    type = g_param_type_register_static ("GParamFlags", &pspec_info);
+    type = g_param_type_register_static (g_intern_static_string ("GParamFlags"), &pspec_info);
     *spec_types++ = type;
     g_assert (type == G_TYPE_PARAM_FLAGS);
   }
@@ -1258,7 +1258,7 @@ g_param_spec_types_init (void)
       param_float_validate,	/* value_validate */
       param_float_values_cmp,	/* values_cmp */
     };
-    type = g_param_type_register_static ("GParamFloat", &pspec_info);
+    type = g_param_type_register_static (g_intern_static_string ("GParamFloat"), &pspec_info);
     *spec_types++ = type;
     g_assert (type == G_TYPE_PARAM_FLOAT);
   }
@@ -1276,7 +1276,7 @@ g_param_spec_types_init (void)
       param_double_validate,		/* value_validate */
       param_double_values_cmp,		/* values_cmp */
     };
-    type = g_param_type_register_static ("GParamDouble", &pspec_info);
+    type = g_param_type_register_static (g_intern_static_string ("GParamDouble"), &pspec_info);
     *spec_types++ = type;
     g_assert (type == G_TYPE_PARAM_DOUBLE);
   }
@@ -1294,7 +1294,7 @@ g_param_spec_types_init (void)
       param_string_validate,		/* value_validate */
       param_string_values_cmp,		/* values_cmp */
     };
-    type = g_param_type_register_static ("GParamString", &pspec_info);
+    type = g_param_type_register_static (g_intern_static_string ("GParamString"), &pspec_info);
     *spec_types++ = type;
     g_assert (type == G_TYPE_PARAM_STRING);
   }
@@ -1312,7 +1312,7 @@ g_param_spec_types_init (void)
       param_param_validate,	/* value_validate */
       param_pointer_values_cmp,	/* values_cmp */
     };
-    type = g_param_type_register_static ("GParamParam", &pspec_info);
+    type = g_param_type_register_static (g_intern_static_string ("GParamParam"), &pspec_info);
     *spec_types++ = type;
     g_assert (type == G_TYPE_PARAM_PARAM);
   }
@@ -1330,7 +1330,7 @@ g_param_spec_types_init (void)
       param_boxed_validate,	/* value_validate */
       param_boxed_values_cmp,	/* values_cmp */
     };
-    type = g_param_type_register_static ("GParamBoxed", &pspec_info);
+    type = g_param_type_register_static (g_intern_static_string ("GParamBoxed"), &pspec_info);
     *spec_types++ = type;
     g_assert (type == G_TYPE_PARAM_BOXED);
   }
@@ -1348,7 +1348,7 @@ g_param_spec_types_init (void)
       param_pointer_validate,	   /* value_validate */
       param_pointer_values_cmp,	   /* values_cmp */
     };
-    type = g_param_type_register_static ("GParamPointer", &pspec_info);
+    type = g_param_type_register_static (g_intern_static_string ("GParamPointer"), &pspec_info);
     *spec_types++ = type;
     g_assert (type == G_TYPE_PARAM_POINTER);
   }
@@ -1367,7 +1367,7 @@ g_param_spec_types_init (void)
       param_value_array_values_cmp,	/* values_cmp */
     };
     pspec_info.value_type = G_TYPE_VALUE_ARRAY;
-    type = g_param_type_register_static ("GParamValueArray", &pspec_info);
+    type = g_param_type_register_static (g_intern_static_string ("GParamValueArray"), &pspec_info);
     *spec_types++ = type;
     g_assert (type == G_TYPE_PARAM_VALUE_ARRAY);
   }
@@ -1385,7 +1385,7 @@ g_param_spec_types_init (void)
       param_object_validate,	 /* value_validate */
       param_object_values_cmp,	 /* values_cmp */
     };
-    type = g_param_type_register_static ("GParamObject", &pspec_info);
+    type = g_param_type_register_static (g_intern_static_string ("GParamObject"), &pspec_info);
     *spec_types++ = type;
     g_assert (type == G_TYPE_PARAM_OBJECT);
   }
@@ -1403,7 +1403,7 @@ g_param_spec_types_init (void)
       param_override_validate,	  /* value_validate */
       param_override_values_cmp,  /* values_cmp */
     };
-    type = g_param_type_register_static ("GParamOverride", &pspec_info);
+    type = g_param_type_register_static (g_intern_static_string ("GParamOverride"), &pspec_info);
     *spec_types++ = type;
     g_assert (type == G_TYPE_PARAM_OVERRIDE);
   }

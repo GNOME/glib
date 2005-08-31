@@ -1,5 +1,10 @@
 2005-08-31  Matthias Clasen  <mclasen@redhat.com>
 
+	* gboxed.c: 
+	* gparamspecs.c: 
+	* gtype.c (g_type_init_with_debug_flags): Intern type name
+	before registering the types.
+
 	* gtype.h (G_DEFINE_TYPE_EXTENDED): Intern type name
 	before registering the type.
 
