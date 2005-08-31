@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-08-27 06:34+0000\n"
-"PO-Revision-Date: 2005-08-27 10:17+0300\n"
+"POT-Creation-Date: 2005-08-31 14:13+0000\n"
+"PO-Revision-Date: 2005-08-14 20:38+0300\n"
 "Last-Translator: Mişu Moldovan <dumol@gnome.ro>\n"
 "Language-Team: Română <gnomero-list@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -508,35 +508,10 @@ msgstr "Nu am reuşit să schimb în directorul „%s” (%s)"
 msgid "Failed to execute child process (%s)"
 msgstr "Nu am reuşit să lansez în execuţie procesul copil (%s)"
 
-#: ../glib/gspawn-win32.c:472 ../glib/gspawn-win32.c:528
-#, c-format
-msgid "Invalid program name: %s"
-msgstr "Nume program invalid: %s"
-
-#: ../glib/gspawn-win32.c:482 ../glib/gspawn-win32.c:538
-#: ../glib/gspawn-win32.c:776 ../glib/gspawn-win32.c:831
-#: ../glib/gspawn-win32.c:1364
-#, c-format
-msgid "Invalid string in argument vector at %d: %s"
-msgstr "String invalid în vectorul argument la %d: %s"
-
-#: ../glib/gspawn-win32.c:493 ../glib/gspawn-win32.c:549
-#: ../glib/gspawn-win32.c:790 ../glib/gspawn-win32.c:844
-#: ../glib/gspawn-win32.c:1397
-#, c-format
-msgid "Invalid string in environment: %s"
-msgstr "String invalid în mediu: %s"
-
-#: ../glib/gspawn-win32.c:772 ../glib/gspawn-win32.c:827
-#: ../glib/gspawn-win32.c:1345
-#, c-format
-msgid "Invalid working directory: %s"
-msgstr "Director de lucru invalid: %s"
-
 #: ../glib/gspawn-win32.c:886
 #, c-format
 msgid "Failed to execute helper program (%s)"
-msgstr "Nu am reuşit lansarea în execuţie a programului ajutător (%s)"
+msgstr "Nu am putut porni programul asociat (%s)"
 
 #: ../glib/gspawn-win32.c:1083
 msgid ""
