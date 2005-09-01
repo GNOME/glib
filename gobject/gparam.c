@@ -307,6 +307,7 @@ g_param_spec_internal (GType        param_type,
       tmp = g_strdup (name);
       canonicalize_key (tmp);
       pspec->name = g_intern_string (tmp);
+      g_free (tmp);
     }
 
   if (flags & G_PARAM_STATIC_NICK)
