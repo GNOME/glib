@@ -1,3 +1,7 @@
+2005-09-01  Clytie Siddall <clytie@riverland.net.au>
+
+        * vi.po: Updated Vietnamese translation.
+
 2005-08-31  Mugurel Tudor  <mugurelu@gnome.ro>
 
 	* ro.po: Updated Romanian translation
@@ -68,6 +72,79 @@
 2005-08-26  Priit Laes  <plaes@cvs.gnome.org>
 
 	* et.po: Translation updated by Ivar Smolin.
+
+=======
+2005-09-01  Vincent van Adrighem  <adrighem@gnome.org>
+
+	* nl.po: Translation updated by Tino Meinen.
+
+2005-09-01  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>
+
+	* es.po: Updated Spanish translation.
+
+2005-08-31  Adam Weinberger  <adamw@gnome.org>
+
+	* en_CA.po: Updated Canadian English translation.
+
+2005-09-01  Mugurel Tudor  <mugurelu@gnome.ro>
+
+	* ro.po: Updated Romanian translation by
+	Mişu Moldovan <dumol@gnome.ro>
+
+2005-08-31  Laurent Dhima  <laurenti@alblinux.net>
+
+	* sq.po: Updated Albanian translation.
+
+2005-08-31  Kostas Papadimas <pkst@gnome.org>
+
+	* el.po: Updated the Greek translation>
+
+2005-08-31  Kjartan Maraas  <kmaraas@gnome.org>
+
+	* nb.po: Updated Norwegian bokmål translation.
+	* no.po: Same
+
+2005-08-31  Gabor Kelemen  <kelemeng@gnome.hu>
+
+	* hu.po: Hungarian translation updated.
+
+2005-08-30  Artur Flinta  <aflinta@cvs.gnome.org>
+
+	* pl.po: Updated Polish translation by GNOME PL Team.
+
+2005-08-30  Duarte Loreto <happyguy_pt@hotmail.com>
+
+	* pt.po: Updated Portuguese translation.
+
+2005-08-30  Leonid Kanter <leon@asplinux.ru>
+
+	* ru.po: Updated Russian translation
+
+2005-08-30  Alexander Shopov  <ash@contact.bg>
+
+	* bg.po: Updated Bulgarian translation by
+	Alexander Shopov <ash@contact.bg>
+
+2005-08-30  Jordi Mallach  <jordi@sindominio.net>
+
+	* ca.po: Updated Catalan translation.
+
+2005-08-30  Ankit Patel  <ankit644@yahoo.com>
+
+	* gu.po: Updated Gujarati Translation.
+
+2005-08-29  Alessio Frusciante  <algol@firenze.linux.it>
+
+	* it.po: Updated Italian translation by
+	Luca Ferretti <elle.uca@infinito.it>.
+
+2005-08-28  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>
+
+	* es.po: Updated Spanish translation.
+
+2005-08-27  Christophe Merlet  <redfox@redfoxcenter.org>
+
+	* fr.po: Updated French translation.
 
 2005-08-23  Matthias Clasen  <mclasen@redhat.com>
 
