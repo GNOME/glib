@@ -1,9 +1,9 @@
 # Glib eesti tõlge.
 # Estonian translation of Glib.
-#
+# 
 # Copyright (C) 2002, 2005 Free Software Foundation, Inc.
 # This file is distributed under the same license as the Glib package.
-#
+# 
 # Allan Sims <allsi@eau.ee>, 2002.
 # Ivar Smolin <okul@linux.ee>, 2005.
 # Priit Laes <amd@store20.com>, 2005.
@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-08-26 06:42+0000\n"
-"PO-Revision-Date: 2005-08-26 10:36+0300\n"
+"POT-Creation-Date: 2005-09-01 07:59+0000\n"
+"PO-Revision-Date: 2005-09-01 11:51+0300\n"
 "Last-Translator: Ivar Smolin <okul@linux.ee>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
 "MIME-Version: 1.0\n"
@@ -495,31 +495,6 @@ msgstr "Tõrge kataloogi '%s' muutmisel (%s)"
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Tõrge alamprotsessi käivitamisel (%s)"
-
-#: ../glib/gspawn-win32.c:472 ../glib/gspawn-win32.c:528
-#, c-format
-msgid "Invalid program name: %s"
-msgstr "Vigane programminimi: %s"
-
-#: ../glib/gspawn-win32.c:482 ../glib/gspawn-win32.c:538
-#: ../glib/gspawn-win32.c:776 ../glib/gspawn-win32.c:831
-#: ../glib/gspawn-win32.c:1364
-#, c-format
-msgid "Invalid string in argument vector at %d: %s"
-msgstr "Vigane string argumendivektori positsioonil %d: %s"
-
-#: ../glib/gspawn-win32.c:493 ../glib/gspawn-win32.c:549
-#: ../glib/gspawn-win32.c:790 ../glib/gspawn-win32.c:844
-#: ../glib/gspawn-win32.c:1397
-#, c-format
-msgid "Invalid string in environment: %s"
-msgstr "Vigane string keskkonnas: %s"
-
-#: ../glib/gspawn-win32.c:772 ../glib/gspawn-win32.c:827
-#: ../glib/gspawn-win32.c:1345
-#, c-format
-msgid "Invalid working directory: %s"
-msgstr "Vigane töökataloog: %s"
 
 #: ../glib/gspawn-win32.c:886
 #, c-format
