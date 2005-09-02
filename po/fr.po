@@ -9,15 +9,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.8.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-08-27 12:51+0200\n"
-"PO-Revision-Date: 2005-08-27 12:40+0200\n"
+"POT-Creation-Date: 2005-09-02 12:14+0200\n"
+"PO-Revision-Date: 2005-09-02 12:07+0200\n"
 "Last-Translator: Christophe Merlet (RedFox) <redfox@redfoxcenter.org>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: glib/gconvert.c:408 glib/gconvert.c:486
+#: glib/gconvert.c:408 glib/gconvert.c:486 glib/giochannel.c:1150
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr ""
@@ -182,7 +182,8 @@ msgstr "La fermeture du fichier « %s » a échoué : fclose() a échoué : 
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr ""
-"Le fichier existant « %s » ne peut être supprimé : g_unlink() a échoué : %s"
+"Le fichier existant « %s » ne peut pas être supprimé : g_unlink() a échoué : "
+"%s"
 
 #: glib/gfileutils.c:1485
 #, c-format
@@ -204,15 +205,9 @@ msgstr "La lecture du lien symbolique « %s » a échoué : %s"
 msgid "Symbolic links not supported"
 msgstr "Liens symboliques non supportés"
 
-#: glib/giochannel.c:1150
-#, c-format
-msgid "Conversion from character set `%s' to `%s' is not supported"
-msgstr ""
-"La conversion du jeu de caractères « %s » vers « %s » n'est pas supporté"
-
 #: glib/giochannel.c:1154
-#, c-format
-msgid "Could not open converter from `%s' to `%s': %s"
+#, fuzzy, c-format
+msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Impossible d'ouvrir le convertisseur de « %s » vers « %s » : %s"
 
 #: glib/giochannel.c:1499
@@ -387,7 +382,7 @@ msgid ""
 "begin an element name"
 msgstr ""
 "« %s » n'est pas un caractère valide suivant les caractères « </ » ; « %s » "
-"ne peut commencer un nom d'élément"
+"ne peut pas commencer un nom d'élément"
 
 #: glib/gmarkup.c:1568
 #, c-format
@@ -550,9 +545,9 @@ msgid "Invalid working directory: %s"
 msgstr "Erreur à l'ouverture du répertoire « %s » : %s"
 
 #: glib/gspawn-win32.c:886
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to execute helper program (%s)"
-msgstr "L'exécution du processus d'aide a échoué"
+msgstr "L'exécution du programme d'aide a échoué (%s)"
 
 #: glib/gspawn-win32.c:1083
 msgid ""
@@ -750,7 +745,7 @@ msgstr "Le fichier clef contient une séquence d'échappement non valide « %s�
 #: glib/gkeyfile.c:3235
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
-msgstr "La valeur « %s » ne peut être interprétée comme un nombre."
+msgstr "La valeur « %s » ne peut pas être interprétée comme un nombre."
 
 #: glib/gkeyfile.c:3245
 #, c-format
@@ -760,4 +755,8 @@ msgstr "La valeur entière « %s » est hors limites"
 #: glib/gkeyfile.c:3275
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
-msgstr "La valeur « %s » ne peut être interprétée comme un booléen."
+msgstr "La valeur « %s » ne peut pas être interprétée comme un booléen."
+
+#~ msgid "Conversion from character set `%s' to `%s' is not supported"
+#~ msgstr ""
+#~ "La conversion du jeu de caractères « %s » vers « %s » n'est pas supporté"
