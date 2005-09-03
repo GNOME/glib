@@ -4,19 +4,19 @@
 # Copyright (C) 2001, 2005 Free Software Foundation, Inc.
 # Manuel A. Fernández Montecelo <manuel@sindominio.net>, 2001, 2005.
 # Ignacio Casal Quinteiro <nacho.resa@gmail.com>, 2005.
-#
+# 
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: gl\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-08-23 00:30-0400\n"
-"PO-Revision-Date: 2005-06-05 20:02+0200\n"
+"PO-Revision-Date: 2005-09-03 11:40+0200\n"
 "Last-Translator: Ignacio Casal Quinteiro <nacho.resa@gmail.com>\n"
-"Language-Team: Galego\n"
+"Language-Team: Galician <trasno@ceu.fi.udc.es>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.9.1\n"
+"Content-Transfer-Encoding: 8bit"
 
 #: glib/gconvert.c:408 glib/gconvert.c:486
 #, c-format
@@ -222,14 +222,14 @@ msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Non se pode facer unha lectura crúa (raw) en g_io_channel_read_to_end"
 
 #: glib/gmappedfile.c:116
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to open file '%s': open() failed: %s"
-msgstr "Fallo ao abrir o ficheiro '%s': fdopen() fallou: %s"
+msgstr "Fallo ao abrir o ficheiro '%s': open() fallou: %s"
 
 #: glib/gmappedfile.c:178
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
-msgstr "Fallo ao abrir o ficheiro '%s': fdopen() fallou: %s"
+msgstr "Fallo ao mapear o ficheiro '%s': mmap() fallou: %s"
 
 #: glib/gmarkup.c:232
 #, c-format
@@ -710,9 +710,9 @@ msgid "Value '%s' cannot be interpreted as a number."
 msgstr "O valor '%s' non pode interpretarse como un número."
 
 #: glib/gkeyfile.c:3245
-#, fuzzy, c-format
+#, c-format
 msgid "Integer value '%s' out of range"
-msgstr "O valor enteiro '%s' para %s está fora de rango"
+msgstr "O valor enteiro '%s' está fora de rango"
 
 #: glib/gkeyfile.c:3275
 #, c-format
