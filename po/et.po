@@ -10,7 +10,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Glib\n"
+"Project-Id-Version: Glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-09-01 07:59+0000\n"
 "PO-Revision-Date: 2005-09-01 11:51+0300\n"
