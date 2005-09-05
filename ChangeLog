@@ -1,3 +1,8 @@
+2005-09-05  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gkeyfile.c (g_key_file_load_from_fd): The return value
+	of read() is signed.  (#315273, Kjartan Maraas)
+	
 2005-08-31  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gutils.h: Wrapping atexit() is a bad idea on Windows, where
@@ -20,7 +25,7 @@
 
 	* glib/glib.symbols: 
 	* glib/gquark.h: 
-	* glib/gdataset.c: 
+	* glib/gdataset.c: Add string interning functions.
 
 2005-08-28  Matthias Clasen  <mclasen@redhat.com>
 
