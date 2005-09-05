@@ -1,3 +1,10 @@
+2005-09-05  Matthias Clasen  <mclasen@redhat.com>
+
+	* gsignal.c (struct _SignalNode): Make the name field const.
+	(g_signal_newv): Don't keep an unnecessary extra copy of the 
+	signal name around, and don't forget to free the name if
+	an existing node is reused.	
+
 2005-08-31  Matthias Clasen  <mclasen@redhat.com>
 
 	* gobject.c (g_object_do_class_init): Intern the signal name.
