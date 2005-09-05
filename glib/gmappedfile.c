@@ -140,10 +140,17 @@ g_mapped_file_new (const gchar  *filename,
   file->contents = MAP_FAILED;
 
 #ifdef HAVE_MMAP
-  file->length = st.st_size;
-  file->contents = (gchar *) mmap (NULL, st.st_size,
-				   writable ? PROT_READ|PROT_WRITE : PROT_READ,
-				   MAP_PRIVATE, fd, 0);
+  if (st.st_size > G_MAXSIZE)
+    {
+      errno = EINVAL;
+    }
+  else
+    {
+      file->length = (gsize) st.st_size;
+      file->contents = (gchar *) mmap (NULL, file->length,
+				       writable ? PROT_READ|PROT_WRITE : PROT_READ,
+				       MAP_PRIVATE, fd, 0);
+    }
 #endif
 #ifdef G_OS_WIN32
   file->length = st.st_size;
