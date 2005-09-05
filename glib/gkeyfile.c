@@ -355,7 +355,7 @@ g_key_file_load_from_fd (GKeyFile       *key_file,
 			 GError        **error)
 {
   GError *key_file_error = NULL;
-  gsize bytes_read;
+  gssize bytes_read;
   struct stat stat_buf;
   gchar read_buf[4096];
   
