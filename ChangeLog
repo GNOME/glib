@@ -1,5 +1,8 @@
 2005-09-05  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gmappedfile.c (g_mapped_file_new): Report an error
+	if the file is too large.  (#315275, Kjartan Maraas)
+
 	* glib/gkeyfile.c (g_key_file_load_from_fd): The return value
 	of read() is signed.  (#315273, Kjartan Maraas)
 	
