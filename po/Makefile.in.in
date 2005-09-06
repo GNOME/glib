@@ -93,6 +93,21 @@ all-no:
 $(srcdir)/$(GETTEXT_PACKAGE).pot: $(POTFILES)
 	$(XGETTEXT) --default-domain=$(GETTEXT_PACKAGE) --directory=$(top_srcdir) \
 	  --add-comments --keyword=_ --keyword=N_ \
+          --flag=g_strdup_printf:1:c-format \
+          --flag=g_string_printf:2:c-format \
+          --flag=g_string_append_printf:2:c-format \
+          --flag=g_error_new:3:c-format \
+          --flag=g_set_error:4:c-format \
+          --flag=g_markup_printf_escaped:1:c-format \
+          --flag=g_log:3:c-format \
+          --flag=g_print:1:c-format \
+          --flag=g_printerr:1:c-format \
+          --flag=g_printf:1:c-format \
+          --flag=g_fprintf:2:c-format \
+          --flag=g_sprintf:2:c-format \
+          --flag=g_snprintf:3:c-format \
+          --flag=g_scanner_error:2:c-format \
+          --flag=g_scanner_warn:2:c-format \
 	  --files-from=$(srcdir)/POTFILES.in \
 	&& test ! -f $(GETTEXT_PACKAGE).po \
 	   || ( rm -f $(srcdir)/$(GETTEXT_PACKAGE).pot \
