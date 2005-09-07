@@ -441,8 +441,8 @@ utf8_charv_to_cp_charv (char   **utf8_charv,
 }
 
 static gboolean
-do_spawn_directly (gboolean              dont_wait,
-		   gboolean		 dont_return_handle,
+do_spawn_directly (gint                 *exit_status,
+		   gboolean		 do_return_handle,
 		   GSpawnFlags           flags,
 		   gchar               **argv,
 		   char                **envp,
@@ -450,10 +450,9 @@ do_spawn_directly (gboolean              dont_wait,
 		   GSpawnChildSetupFunc  child_setup,
 		   gpointer              user_data,
 		   GPid                 *child_handle,
-		   gint                 *exit_status,
 		   GError              **error)     
 {
-  int mode = dont_wait ? P_NOWAIT : P_WAIT;
+  const int mode = (exit_status == NULL) ? P_NOWAIT : P_WAIT;
   char **new_argv;
   int rc = -1;
   int saved_errno;
@@ -584,9 +583,9 @@ do_spawn_directly (gboolean              dont_wait,
       return FALSE;
     }
 
-  if (dont_wait)
+  if (exit_status == NULL)
     {
-      if (child_handle && !dont_return_handle)
+      if (child_handle && do_return_handle)
 	*child_handle = (GPid) rc;
       else
 	{
@@ -595,15 +594,15 @@ do_spawn_directly (gboolean              dont_wait,
 	    *child_handle = 0;
 	}
     }
-  else if (exit_status)
+  else
     *exit_status = rc;
 
   return TRUE;
 }
 
 static gboolean
-do_spawn_with_pipes (gboolean              dont_wait,
-		     gboolean		   dont_return_handle,
+do_spawn_with_pipes (gint                 *exit_status,
+		     gboolean		   do_return_handle,
 		     const gchar          *working_directory,
 		     gchar               **argv,
 		     char                **envp,
@@ -614,7 +613,6 @@ do_spawn_with_pipes (gboolean              dont_wait,
 		     gint                 *standard_input,
 		     gint                 *standard_output,
 		     gint                 *standard_error,
-		     gint                 *exit_status,
 		     gint		  *err_report,
 		     GError              **error)     
 {
@@ -633,6 +631,8 @@ do_spawn_with_pipes (gboolean              dont_wait,
   static gboolean warned_about_child_setup = FALSE;
   GError *conv_error = NULL;
   gint conv_error_index;
+  gchar *helper_process;
+  CONSOLE_CURSOR_INFO cursor_info;
   
   SETUP_DEBUG();
 
@@ -653,10 +653,10 @@ do_spawn_with_pipes (gboolean              dont_wait,
     {
       /* We can do without the helper process */
       gboolean retval =
-	do_spawn_directly (dont_wait, dont_return_handle, flags,
+	do_spawn_directly (exit_status, do_return_handle, flags,
 			   argv, envp, protected_argv,
 			   child_setup, user_data, child_handle,
-			   exit_status, error);
+			   error);
       g_strfreev (protected_argv);
       return retval;
     }
@@ -674,7 +674,11 @@ do_spawn_with_pipes (gboolean              dont_wait,
     goto cleanup_and_fail;
   
   new_argv = g_new (char *, argc + 1 + ARG_COUNT);
-  new_argv[0] = HELPER_PROCESS;
+  if (GetConsoleCursorInfo (GetStdHandle (STD_OUTPUT_HANDLE), &cursor_info))
+    helper_process = HELPER_PROCESS "-console.exe";
+  else
+    helper_process = HELPER_PROCESS ".exe";
+  new_argv[0] = helper_process;
   _g_sprintf (args[ARG_CHILD_ERR_REPORT], "%d", child_err_report_pipe[1]);
   new_argv[ARG_CHILD_ERR_REPORT] = args[ARG_CHILD_ERR_REPORT];
   
@@ -745,7 +749,7 @@ do_spawn_with_pipes (gboolean              dont_wait,
   else
     new_argv[ARG_USE_PATH] = "-";
 
-  if (dont_wait)
+  if (exit_status == NULL)
     new_argv[ARG_WAIT] = "-";
   else
     new_argv[ARG_WAIT] = "w";
@@ -755,14 +759,14 @@ do_spawn_with_pipes (gboolean              dont_wait,
 
   if (debug)
     {
-      g_print ("calling " HELPER_PROCESS " with argv:\n");
+      g_print ("calling %s with argv:\n", helper_process);
       for (i = 0; i < argc + 1 + ARG_COUNT; i++)
 	g_print ("argv[%d]: %s\n", i, (new_argv[i] ? new_argv[i] : "NULL"));
     }
 
   if (G_WIN32_HAVE_WIDECHAR_API ())
     {
-      wchar_t *whelper = g_utf8_to_utf16 (HELPER_PROCESS, -1, NULL, NULL, NULL);
+      wchar_t *whelper = g_utf8_to_utf16 (helper_process, -1, NULL, NULL, NULL);
       wchar_t **wargv, **wenvp;
 
       if (!utf8_charv_to_wcharv (new_argv, &wargv, &conv_error_index, &conv_error))
@@ -856,9 +860,9 @@ do_spawn_with_pipes (gboolean              dont_wait,
 	(* child_setup) (user_data);
 
       if (cpenvp != NULL)
-	rc = spawnvpe (P_NOWAIT, HELPER_PROCESS, (const char **) cpargv, (const char **) cpenvp);
+	rc = spawnvpe (P_NOWAIT, helper_process, (const char **) cpargv, (const char **) cpenvp);
       else
-	rc = spawnvp (P_NOWAIT, HELPER_PROCESS, (const char **) cpargv);
+	rc = spawnvp (P_NOWAIT, helper_process, (const char **) cpargv);
 
       saved_errno = errno;
 
@@ -888,7 +892,7 @@ do_spawn_with_pipes (gboolean              dont_wait,
       goto cleanup_and_fail;
     }
 
-  if (!dont_wait)
+  if (exit_status != NULL)
     {
       /* Synchronous case. Pass helper's report pipe back to caller,
        * which takes care of reading it after the grandchild has
@@ -908,7 +912,7 @@ do_spawn_with_pipes (gboolean              dont_wait,
       switch (helper_report[0])
 	{
 	case CHILD_NO_ERROR:
-	  if (child_handle && dont_wait && !dont_return_handle)
+	  if (child_handle && do_return_handle)
 	    {
 	      /* rc is our HANDLE for gspawn-win32-helper. It has
 	       * told us the HANDLE of its child. Duplicate that into
@@ -921,8 +925,6 @@ do_spawn_with_pipes (gboolean              dont_wait,
 	    }
 	  else if (child_handle)
 	    *child_handle = 0;
-	  if (exit_status)
-	    *exit_status = helper_report[1];
 	  break;
 	  
 	default:
@@ -1011,8 +1013,8 @@ g_spawn_sync_utf8 (const gchar          *working_directory,
   if (standard_error)
     *standard_error = NULL;
   
-  if (!do_spawn_with_pipes (FALSE,
-			    TRUE,
+  if (!do_spawn_with_pipes (&status,
+			    FALSE,
 			    working_directory,
 			    argv,
 			    envp,
@@ -1023,7 +1025,6 @@ g_spawn_sync_utf8 (const gchar          *working_directory,
 			    NULL,
 			    standard_output ? &outpipe : NULL,
 			    standard_error ? &errpipe : NULL,
-			    &status,
 			    &reportpipe,
 			    error))
     return FALSE;
@@ -1227,8 +1228,8 @@ g_spawn_async_with_pipes_utf8 (const gchar          *working_directory,
   g_return_val_if_fail (standard_input == NULL ||
                         !(flags & G_SPAWN_CHILD_INHERITS_STDIN), FALSE);
   
-  return do_spawn_with_pipes (TRUE,
-			      !(flags & G_SPAWN_DO_NOT_REAP_CHILD),
+  return do_spawn_with_pipes (NULL,
+			      (flags & G_SPAWN_DO_NOT_REAP_CHILD),
 			      working_directory,
 			      argv,
 			      envp,
@@ -1239,7 +1240,6 @@ g_spawn_async_with_pipes_utf8 (const gchar          *working_directory,
 			      standard_input,
 			      standard_output,
 			      standard_error,
-			      NULL,
 			      NULL,
 			      error);
 }

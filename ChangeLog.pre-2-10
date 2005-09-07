@@ -1,3 +1,29 @@
+2005-09-07  Tor Lillqvist  <tml@novell.com>
+
+	* glib/Makefile.am: Create also a console version of the
+	gspawn-win32-helper program, gspawn-win32-helper-console.exe.
+	It's otherwise identical to gspawn-win32-helper.exe, except marked
+	as a console application (linked without the -mwindows option).
+	
+	* glib/gspawn-win32.c (do_spawn_directly, do_spawn_with_pipes):
+	Drop the dont_wait parameter. Its truth value correlated 100% with
+	the NULLness of the exit_status parameter anyway, so it's enough
+	to check whether exit_status is NULL. Invert the sense of the
+	dont_return_handle parameter and rename it to do_return_handle, to
+	make the code easier to read by avoiding double negations.
+
+	(g_spawn_sync_utf8, g_spawn_async_with_pipes_utf8): Modify calls
+	to do_spawn_with_pipes() accordingly.
+
+	(do_spawn_with_pipes): If we have a console, use the console
+	version of the helper program, otherwise use the GUI one. This
+	avoids extra console windows opening up in some situations. (In
+	case a console application uses the GUI gspawn-win32-helper.exe to
+	spawn another console application we would get a separate console
+	for the spawned console application).
+
+	* glib-zip.in: Distribute also gspawn-win32-helper-console.exe.
+
 2005-09-05  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gmappedfile.c (g_mapped_file_new): Report an error

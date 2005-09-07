@@ -15,6 +15,7 @@ DLLDIR=lib
 zip $ZIP -@ <<EOF
 COPYING.LIB-2
 bin/gspawn-win32-helper.exe
+bin/gspawn-win32-helper-console.exe
 $DLLDIR/libglib-2.0-@LT_CURRENT_MINUS_AGE@.dll
 $DLLDIR/libgmodule-2.0-@LT_CURRENT_MINUS_AGE@.dll
 $DLLDIR/libgobject-2.0-@LT_CURRENT_MINUS_AGE@.dll
