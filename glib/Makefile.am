@@ -229,13 +229,17 @@ libglib_2_0_la_LDFLAGS = \
 	-export-dynamic $(no_undefined) $(export_symbols)
 
 if OS_WIN32
-bin_PROGRAMS = gspawn-win32-helper
+bin_PROGRAMS = gspawn-win32-helper gspawn-win32-helper-console
 gspawn_win32_helper_LDADD = libglib-2.0.la
 gspawn_win32_helper_LDFLAGS = -mwindows
+gspawn_win32_helper_console_LDADD = libglib-2.0.la
 
 glib-win32-res.o: glib.rc
 	$(WINDRES) glib.rc $@
 endif
+
+gspawn-win32-helper-console.c:
+	echo '#include "gspawn-win32-helper.c"' >$@
 
 glib-2.0.lib: libglib-2.0.la glib.def
 	lib -name:libglib-2.0-$(LT_CURRENT_MINUS_AGE).dll -def:glib.def -out:$@
