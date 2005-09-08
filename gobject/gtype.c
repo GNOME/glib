@@ -2195,7 +2195,6 @@ g_type_register_fundamental (GType                       type_id,
 			     const GTypeFundamentalInfo *finfo,
 			     GTypeFlags			 flags)
 {
-  GTypeFundamentalInfo *node_finfo;
   TypeNode *node;
   
   g_return_val_if_uninitialized (static_quark_type_flags, g_type_init, 0);
@@ -2231,7 +2230,6 @@ g_type_register_fundamental (GType                       type_id,
   
   G_WRITE_LOCK (&type_rw_lock);
   node = type_node_fundamental_new_W (type_id, type_name, finfo->type_flags);
-  node_finfo = type_node_fundamental_info_I (node);
   type_add_flags_W (node, flags);
   
   if (check_type_info_I (NULL, NODE_FUNDAMENTAL_TYPE (node), type_name, info))

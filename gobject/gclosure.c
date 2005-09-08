@@ -196,7 +196,6 @@ g_closure_set_meta_marshal (GClosure       *closure,
 			    GClosureMarshal meta_marshal)
 {
   GClosureNotifyData *notifiers;
-  guint n;
 
   g_return_if_fail (closure != NULL);
   g_return_if_fail (meta_marshal != NULL);
@@ -204,7 +203,6 @@ g_closure_set_meta_marshal (GClosure       *closure,
   g_return_if_fail (closure->in_marshal == FALSE);
   g_return_if_fail (closure->meta_marshal == 0);
 
-  n = CLOSURE_N_NOTIFIERS (closure);
   notifiers = closure->notifiers;
   closure->notifiers = g_renew (GClosureNotifyData, NULL, CLOSURE_N_NOTIFIERS (closure) + 1);
   if (notifiers)

@@ -2079,10 +2079,10 @@ g_signal_emitv (const GValue *instance_and_params,
 		GQuark	      detail,
 		GValue       *return_value)
 {
-  const GValue *param_values;
   gpointer instance;
   SignalNode *node;
 #ifdef G_ENABLE_DEBUG
+  const GValue *param_values;
   guint i;
 #endif
   
@@ -2091,8 +2091,10 @@ g_signal_emitv (const GValue *instance_and_params,
   g_return_if_fail (G_TYPE_CHECK_INSTANCE (instance));
   g_return_if_fail (signal_id > 0);
 
+#ifdef G_ENABLE_DEBUG
   param_values = instance_and_params + 1;
-  
+#endif
+
   SIGNAL_LOCK ();
   node = LOOKUP_SIGNAL_NODE (signal_id);
   if (!node || !g_type_is_a (G_TYPE_FROM_INSTANCE (instance), node->itype))

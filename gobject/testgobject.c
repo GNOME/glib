@@ -40,7 +40,7 @@ static void	iface_base_init		(TestIfaceClass	*iface);
 static void	iface_base_finalize	(TestIfaceClass	*iface);
 static void	print_foo		(TestIface	*tiobj,
 					 const gchar	*string);
-GType
+static GType
 test_iface_get_type (void)
 {
   static GType test_iface_type = 0;
@@ -103,7 +103,7 @@ test_object_test_iface_init (gpointer giface,
   /* initialize stuff */
   iface->print_string = print_foo;
 }
-void
+static void
 iface_print_string (TestIface   *tiobj,
 		    const gchar *string)
 {
@@ -156,7 +156,7 @@ static gboolean	test_signal_accumulator	(GSignalInvocationHint	*ihint,
 static gchar*	test_object_test_signal	(TestObject		*tobject,
 					 TestIface		*iface_object,
 					 gpointer		 tdata);
-GType
+static GType
 test_object_get_type (void)
 {
   static GType test_object_type = 0;

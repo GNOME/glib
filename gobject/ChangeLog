@@ -1,3 +1,11 @@
+2005-09-08  Kjartan Maraas  <kmaraas@gnome.org>
+
+	* gclosure.c: (g_closure_set_meta_marshal): Remove some unused
+	code.
+	* gsignal.c: (g_signal_emitv): Same here
+	* gtype.c: (g_type_register_fundamental): And here
+	* testgobject.c: Mark some functions static.
+
 2005-09-05  Matthias Clasen  <mclasen@redhat.com>
 
 	* gsignal.c (struct _SignalNode): Make the name field const.
