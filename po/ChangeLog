@@ -1,3 +1,7 @@
+2005-09-08  Maxim Dziumanenko <mvd@mylinux.com.ua>
+
+	* uk.po: Updated Ukrainian translation
+
 2005-09-06  Matthias Clasen  <mclasen@redhat.com>
 
 	* Makefile.in.in: Tell xgettext about all the
