@@ -74,7 +74,7 @@ static GStaticRWLock            type_rw_lock = G_STATIC_RW_LOCK_INIT;
 #define G_WRITE_UNLOCK(rw_lock) g_static_rw_lock_writer_unlock (rw_lock)
 #endif
 #define	INVALID_RECURSION(func, arg, type_name) G_STMT_START{ \
-    static const gchar *_action = " invalidly modified type "; \
+    static const gchar _action[] = " invalidly modified type ";  \
     gpointer _arg = (gpointer) (arg); const gchar *_tname = (type_name), *_fname = (func); \
     if (_arg) \
       g_error ("%s(%p)%s`%s'", _fname, _arg, _action, _tname); \
@@ -583,7 +583,7 @@ check_plugin_U (GTypePlugin *plugin,
 static gboolean
 check_type_name_I (const gchar *type_name)
 {
-  static const gchar *extra_chars = "-_+";
+  static const gchar extra_chars[] = "-_+";
   const gchar *p = type_name;
   gboolean name_valid;
   
