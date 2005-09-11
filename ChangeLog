@@ -1,3 +1,9 @@
+2005-09-11  Sebastian Wilhelmi  <seppi@seppi.de>
+
+	* tests/refcount/Makefile.am (INCLUDES): Link the the refcount
+	tests to the system thread library $(G_THREAD_LIBS). Fixes #313744
+	and #314217.
+
 2005-09-07  Tor Lillqvist  <tml@novell.com>
 
 	* glib/Makefile.am: Create also a console version of the
