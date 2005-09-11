@@ -1,3 +1,9 @@
+2005-09-11  Kjartan Maraas  <kmaraas@gnome.org>
+
+	* glib/gmain.c: (g_child_watch_prepare), (g_child_watch_check),
+	(child_watch_helper_thread): Remove some dead code. Closes
+	bug #315278.
+
 2005-09-07  Tor Lillqvist  <tml@novell.com>
 
 	* glib/Makefile.am: Create also a console version of the

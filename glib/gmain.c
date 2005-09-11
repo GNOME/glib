@@ -3492,10 +3492,7 @@ static gboolean
 g_child_watch_prepare (GSource *source,
 		       gint    *timeout)
 {
-  GChildWatchSource *child_watch_source;
   *timeout = -1;
-
-  child_watch_source = (GChildWatchSource *) source;
 
   return check_for_child_exited (source);
 }
@@ -3504,10 +3501,6 @@ g_child_watch_prepare (GSource *source,
 static gboolean 
 g_child_watch_check (GSource  *source)
 {
-  GChildWatchSource *child_watch_source;
-
-  child_watch_source = (GChildWatchSource *) source;
-
   return check_for_child_exited (source);
 }
 
@@ -3573,18 +3566,6 @@ g_child_watch_source_init_single (void)
 static gpointer
 child_watch_helper_thread (gpointer data)
 {
-  GPollFD fds;
-  GPollFunc poll_func;
-
-#ifdef HAVE_POLL
-      poll_func = (GPollFunc)poll;
-#else
-      poll_func = g_poll;
-#endif
-
-  fds.fd = child_watch_wake_up_pipe[0];
-  fds.events = G_IO_IN;
-
   while (1)
     {
       gchar b[20];
@@ -3608,7 +3589,6 @@ child_watch_helper_thread (gpointer data)
 	}
       G_UNLOCK (main_context_list);
     }
-  return NULL;
 }
 
 static void
