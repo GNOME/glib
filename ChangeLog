@@ -1,3 +1,9 @@
+2005-09-11  Sebastian Wilhelmi  <seppi@seppi.de>
+
+	* tests/refcount/Makefile.am (INCLUDES): Link the the refcount
+	tests to the system thread library $(G_THREAD_LIBS). Fixes #313744
+	and #314217.
+
 2005-09-11  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* glib/gmain.c: (g_child_watch_prepare), (g_child_watch_check),
