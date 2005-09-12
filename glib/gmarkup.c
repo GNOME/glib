@@ -1934,7 +1934,7 @@ append_escaped_text (GString     *str,
  * from being processed according to the XML rules for normalization
  * of line endings and attribute values.
  * 
- * Return value: escaped text
+ * Return value: a newly allocated string with the escaped text
  **/
 gchar*
 g_markup_escape_text (const gchar *text,
