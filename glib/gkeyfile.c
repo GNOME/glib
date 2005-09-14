@@ -2989,14 +2989,9 @@ g_key_file_line_is_group (const gchar *line)
 
   p = g_utf8_next_char (p);
 
-  if (!*p)
-    return FALSE;
-
-  p = g_utf8_next_char (p);
-
   /* Group name must be non-empty
    */
-  if (*p == ']')
+  if (!*p || *p == ']')
     return FALSE;
 
   while (*p && *p != ']')
