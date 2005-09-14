@@ -755,6 +755,25 @@ test_lists (void)
   g_key_file_free (keyfile);  
 }
 
+static void
+test_groups (void)
+{
+  GKeyFile *keyfile;
+
+  const gchar *data = 
+    "[1]\n"
+    "key1=123\n"
+    "[2]\n"
+    "key2=123\n";
+  
+  keyfile = load_data (data, 0);
+
+  check_string_value (keyfile, "1", "key1", "123");
+  check_string_value (keyfile, "2", "key2", "123");
+
+  g_key_file_free (keyfile);  
+}
+
 /* http://bugzilla.gnome.org/show_bug.cgi?id=165887 */
 static void 
 test_group_remove (void)
@@ -874,6 +893,7 @@ main (int argc, char *argv[])
   test_lists ();
   test_group_remove ();
   test_key_remove ();
+  test_groups ();
   
   return 0;
 }
