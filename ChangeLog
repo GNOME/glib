@@ -1,3 +1,9 @@
+2005-09-16  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gstrfuncs.c (g_ascii_strcasecmp, g_ascii_strncasecmp): Add
+	warning to doc comment that these functions should not be used on
+	encodings like CP932.
+
 2005-09-14  Matthias Clasen  <mclasen@redhat.com>
 
 	* tests/keyfile-test.c: Add a test for grup names of length 1.
