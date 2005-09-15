@@ -1735,8 +1735,16 @@ g_ascii_xdigit_value (gchar c)
  *
  * Unlike the BSD strcasecmp() function, this only recognizes standard
  * ASCII letters and ignores the locale, treating all non-ASCII
- * characters as if they are not letters.
- * 
+ * bytes as if they are not letters.
+ *
+ * This function should be used only on strings that are known to be
+ * in encodings where the bytes corresponding to ASCII letters always
+ * represent themselves. This includes UTF-8 and the ISO-8859-*
+ * charsets, but not for instance double-byte encodings like the
+ * Windows Codepage 932, where the trailing bytes of double-byte
+ * characters include all ASCII letters. If you compare two CP932
+ * strings using this function, you will get false matches.
+ *
  * Return value: an integer less than, equal to, or greater than
  *               zero if @s1 is found, respectively, to be less than,
  *               to match, or to be greater than @s2.
@@ -1775,6 +1783,10 @@ g_ascii_strcasecmp (const gchar *s1,
  * ASCII letters and ignores the locale, treating all non-ASCII
  * characters as if they are not letters.
  * 
+ * The same warning as in g_ascii_strcasecmp() applies: Use this
+ * function only on strings known to be in encodings where bytes
+ * corresponding to ASCII letters always represent themselves.
+ *
  * Return value: an integer less than, equal to, or greater than zero
  *               if the first @n bytes of @s1 is found, respectively,
  *               to be less than, to match, or to be greater than the
