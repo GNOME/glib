@@ -58,6 +58,7 @@ struct _GPatternSpec
   GMatchType match_type;
   guint      pattern_length;
   guint      min_length;
+  guint      max_length;
   gchar     *pattern;
 };
 
@@ -273,8 +274,13 @@ main (int argc, char** argv)
   TEST_MATCH("ab*", "ab\xc3\xa4\xc3\xb6", TRUE);
   TEST_MATCH("ab*\xc3\xb6", "ab\xc3\xa4\xc3\xb6", TRUE);
   TEST_MATCH("ab*\xc3\xb6", "aba\xc3\xb6x\xc3\xb6", TRUE);
-  TEST_MATCH("", "", TRUE);
   TEST_MATCH("", "abc", FALSE);
+
+  TEST_MATCH("", "", TRUE);
+  TEST_MATCH("abc", "abc", TRUE);
+  TEST_MATCH("*fo1*bar", "yyyfoxfo1bar", TRUE);
+  TEST_MATCH("12*fo1g*bar", "12yyyfoxfo1gbar", TRUE);
+  TEST_MATCH("__________:*fo1g*bar", "__________:yyyfoxfo1gbar", TRUE);
   
   verbose ("\n%u tests passed, %u failed\n", passed, failed);
 
