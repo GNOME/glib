@@ -975,7 +975,7 @@ g_queue_insert_after (GQueue   *queue,
  *     called with two elements of the @queue and @user_data. It should
  *     return 0 if the elements are equal, a negative value if the first
  *     element comes before the second, and a positive value if the second
- *     element comes after the first.
+ *     element comes before the first.
  * @user_data: user data passed to @func.
  * 
  * Inserts @data into @queue using @func to determine the new position.

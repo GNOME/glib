@@ -1,3 +1,8 @@
+2005-09-20  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gqueue.c (g_queue_insert_sorted): Correct the docs.
+	(#316703, Mark Drago)
+
 Mon Sep 19 17:23:23 2005  Tim Janik  <timj@imendio.com>
 
 	* glib/gpattern.c: applied a patch from matthias which checks on the
