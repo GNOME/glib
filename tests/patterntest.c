@@ -281,7 +281,21 @@ main (int argc, char** argv)
   TEST_MATCH("*fo1*bar", "yyyfoxfo1bar", TRUE);
   TEST_MATCH("12*fo1g*bar", "12yyyfoxfo1gbar", TRUE);
   TEST_MATCH("__________:*fo1g*bar", "__________:yyyfoxfo1gbar", TRUE);
-  
+  TEST_MATCH("*abc*cde", "abcde", FALSE);
+  TEST_MATCH("*abc*cde", "abccde", TRUE);
+  TEST_MATCH("*abc*cde", "abcxcde", TRUE);
+  TEST_MATCH("*abc*?cde", "abccde", FALSE);
+  TEST_MATCH("*abc*?cde", "abcxcde", TRUE);
+  TEST_MATCH("*abc*def", "abababcdededef", TRUE);
+  TEST_MATCH("*abc*def", "abcbcbcdededef", TRUE);
+  TEST_MATCH("*acbc*def", "acbcbcbcdededef", TRUE);
+  TEST_MATCH("*a?bc*def", "acbcbcbcdededef", TRUE);
+  TEST_MATCH("*abc*def", "bcbcbcdefdef", FALSE);
+  TEST_MATCH("*abc*def*ghi", "abcbcbcbcbcbcdefefdefdefghi", TRUE);
+  TEST_MATCH("*abc*def*ghi", "bcbcbcbcbcbcdefdefdefdefghi", FALSE);
+  TEST_MATCH("_1_2_3_4_5_6_7_8_9_0_1_2_3_4_5_*abc*def*ghi", "_1_2_3_4_5_6_7_8_9_0_1_2_3_4_5_abcbcbcbcbcbcdefefdefdefghi", TRUE);
+  TEST_MATCH("fooooooo*a*bc", "fooooooo_a_bd_a_bc", TRUE);
+    
   verbose ("\n%u tests passed, %u failed\n", passed, failed);
 
   return failed;

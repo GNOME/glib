@@ -52,10 +52,10 @@ struct _GPatternSpec
 
 
 /* --- functions --- */
-
 static inline gboolean
 g_pattern_ph_match (const gchar *match_pattern,
-		    const gchar *match_string)
+		    const gchar *match_string,
+		    gboolean    *wildcard_reached_p)
 {
   register const gchar *pattern, *string;
   register gchar ch;
@@ -76,6 +76,7 @@ g_pattern_ph_match (const gchar *match_pattern,
 	  break;
 
 	case '*':
+	  *wildcard_reached_p = TRUE;
 	  do
 	    {
 	      ch = *pattern;
@@ -92,6 +93,7 @@ g_pattern_ph_match (const gchar *match_pattern,
 	    return TRUE;
 	  do
 	    {
+              gboolean next_wildcard_reached = FALSE;
 	      while (ch != *string)
 		{
 		  if (!*string)
@@ -99,8 +101,16 @@ g_pattern_ph_match (const gchar *match_pattern,
 		  string = g_utf8_next_char (string);
 		}
 	      string++;
-	      if (g_pattern_ph_match (pattern, string))
+	      if (g_pattern_ph_match (pattern, string, &next_wildcard_reached))
 		return TRUE;
+              if (next_wildcard_reached)
+                /* the forthcoming pattern substring up to the next wildcard has
+                 * been matched, but a mismatch occoured for the rest of the
+                 * pattern, following the next wildcard.
+                 * there's no need to advance the current match position any
+                 * further if the rest pattern will not match.
+                 */
+		return FALSE;
 	    }
 	  while (*string);
 	  break;
@@ -135,17 +145,18 @@ g_pattern_match (GPatternSpec *pspec,
 
   switch (pspec->match_type)
     {
+      gboolean dummy;
     case G_MATCH_ALL:
-      return g_pattern_ph_match (pspec->pattern, string);
+      return g_pattern_ph_match (pspec->pattern, string, &dummy);
     case G_MATCH_ALL_TAIL:
       if (string_reversed)
-	return g_pattern_ph_match (pspec->pattern, string_reversed);
+	return g_pattern_ph_match (pspec->pattern, string_reversed, &dummy);
       else
 	{
           gboolean result;
           gchar *tmp;
 	  tmp = g_utf8_strreverse (string, string_length);
-	  result = g_pattern_ph_match (pspec->pattern, tmp);
+	  result = g_pattern_ph_match (pspec->pattern, tmp, &dummy);
 	  g_free (tmp);
 	  return result;
 	}

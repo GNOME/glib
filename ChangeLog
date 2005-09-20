@@ -1,3 +1,10 @@
+Tue Sep 20 13:16:04 2005  Tim Janik  <timj@imendio.com>
+
+	* glib/gpattern.c (g_pattern_ph_match): applied significant recursion
+	complexity optimization, based on a patch from Matthias Clasen.
+
+	* tests/patterntest.c: more tests, mostly from matthias.
+
 2005-09-20  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gqueue.c (g_queue_insert_sorted): Correct the docs.
