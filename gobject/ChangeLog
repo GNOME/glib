@@ -1,3 +1,9 @@
+2005-09-20  Matthias Clasen  <mclasen@redhat.com>
+
+	* gsignal.h (struct _GSignalQuery): Remove the misleading comment
+	about G_SIGNAL_TYPE_STATIC_SCOPE, since we don't allow that 
+	on return types.
+
 2005-09-08  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* gclosure.c: (g_closure_set_meta_marshal): Remove some unused

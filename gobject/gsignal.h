@@ -87,7 +87,7 @@ struct _GSignalQuery
   const gchar  *signal_name;
   GType		itype;
   GSignalFlags	signal_flags;
-  GType		return_type; /* mangled with G_SIGNAL_TYPE_STATIC_SCOPE flag */
+  GType		return_type; 
   guint		n_params;
   const GType  *param_types; /* mangled with G_SIGNAL_TYPE_STATIC_SCOPE flag */
 };
