@@ -291,7 +291,6 @@ g_param_spec_internal (GType        param_type,
 		       GParamFlags  flags)
 {
   GParamSpec *pspec;
-  gchar *tmp;
   
   g_return_val_if_fail (G_TYPE_IS_PARAM (param_type) && param_type != G_TYPE_PARAM, NULL);
   g_return_val_if_fail (name != NULL, NULL);
@@ -300,23 +299,26 @@ g_param_spec_internal (GType        param_type,
   
   pspec = (gpointer) g_type_create_instance (param_type);
 
-  if ((flags & G_PARAM_STATIC_NAME))
-    pspec->name = g_intern_static_string (name);
+  if (flags & G_PARAM_STATIC_NAME)
+    {
+      pspec->name = g_intern_static_string (name);
+      if (!is_canonical (pspec->name))
+        g_warning ("G_PARAM_STATIC_NAME used with non-canonical pspec name: %s", pspec->name);
+    }
   else
     {
-      tmp = g_strdup (name);
-      canonicalize_key (tmp);
-      pspec->name = g_intern_string (tmp);
-      g_free (tmp);
+      pspec->name = g_strdup (name);
+      canonicalize_key (pspec->name);
+      g_intern_string (pspec->name);
     }
 
   if (flags & G_PARAM_STATIC_NICK)
-    pspec->_nick = (gchar *) nick;
+    pspec->_nick = (gchar*) nick;
   else
     pspec->_nick = g_strdup (nick);
 
   if (flags & G_PARAM_STATIC_BLURB)
-    pspec->_blurb = (gchar *) blurb;
+    pspec->_blurb = (gchar*) blurb;
   else
     pspec->_blurb = g_strdup (blurb);
 

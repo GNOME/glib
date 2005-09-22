@@ -1,3 +1,13 @@
+Thu Sep 22 12:42:12 2005  Tim Janik  <timj@gtk.org>
+
+	* gparam.c (g_param_spec_internal): fix pspec->name assignment which
+	needs to be strdup()ed for non G_PARAM_STATIC_NAME pspecs. this fixes
+	recently introduced crashes during plugin unloading.
+	also, ensure that static pspec names are canonicalized.
+
+	* gsignal.h: reverted last change from matthias, we don't guarantee
+	that type ids aren't mangled with G_SIGNAL_TYPE_STATIC_SCOPE anywhere.
+
 2005-09-20  Matthias Clasen  <mclasen@redhat.com>
 
 	* gsignal.h (struct _GSignalQuery): Remove the misleading comment
