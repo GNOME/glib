@@ -1,5 +1,8 @@
 2005-09-26  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gstrfuncs.c (g_ascii_strtoull): Add details to the 
+	docs.  (#314393, Matthew F. Barnes)
+
 	* glib/glib.symbols:
 	* glib/gprintf.h: Remove g_snprintf() and g_vsnprintf(), since
 	they are already declared in glib.h. This doesn't break documented
