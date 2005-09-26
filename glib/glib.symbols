@@ -290,8 +290,10 @@ g_hash_table_foreach_steal
 g_hash_table_insert
 g_hash_table_lookup
 g_hash_table_lookup_extended
+#ifdef G_UNDEFINED
 g_hash_table_new
 g_hash_table_new_full
+#endif
 g_hash_table_remove
 g_hash_table_replace
 g_hash_table_size
@@ -461,10 +463,6 @@ g_list_length
 g_list_nth
 g_list_nth_data
 g_list_nth_prev
-#ifndef DISABLE_MEM_POOLS
-g_list_pop_allocator
-g_list_push_allocator
-#endif
 g_list_position
 g_list_prepend
 g_list_remove
@@ -635,10 +633,6 @@ g_node_n_children
 g_node_new
 g_node_n_nodes
 g_node_nth_child
-#ifndef DISABLE_MEM_POOLS
-g_node_pop_allocator
-g_node_push_allocator
-#endif
 g_node_prepend
 g_node_reverse_children
 g_node_traverse
@@ -692,12 +686,17 @@ g_spaced_primes_closest G_GNUC_CONST
 g_fprintf G_GNUC_PRINTF(2,3)
 g_printf G_GNUC_PRINTF(1,2)
 g_sprintf G_GNUC_PRINTF(2,3)
-g_snprintf G_GNUC_PRINTF(3,4)
 g_vasprintf
 g_vfprintf
 g_vprintf
-g_vsnprintf
 g_vsprintf
+#endif
+#endif
+
+#if IN_HEADER(__G_UTILS_H__)
+#if IN_FILE(__G_PRINTF_C__)
+g_snprintf G_GNUC_PRINTF(3,4)
+g_vsnprintf
 #endif
 #endif
 
@@ -841,10 +840,6 @@ g_slist_last
 g_slist_length
 g_slist_nth
 g_slist_nth_data
-#ifndef DISABLE_MEM_POOLS
-g_slist_pop_allocator
-g_slist_push_allocator
-#endif
 g_slist_position
 g_slist_prepend
 g_slist_remove

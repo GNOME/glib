@@ -1,3 +1,11 @@
+2005-09-26  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/glib.symbols:
+	* glib/gprintf.h: Remove g_snprintf() and g_vsnprintf(), since
+	they are already declared in glib.h. This doesn't break documented
+	use of gprintf.h, but should probably be pointed out in the 
+	release notes for 2.10. (#314232, Behdad Esfahbod)
+
 Tue Sep 20 13:16:04 2005  Tim Janik  <timj@imendio.com>
 
 	* glib/gpattern.c (g_pattern_ph_match): applied significant recursion
