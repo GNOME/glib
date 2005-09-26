@@ -340,7 +340,9 @@ gpointer g_type_instance_get_private    (GTypeInstance              *instance,
  */
 #define G_IMPLEMENT_INTERFACE(TYPE_IFACE, iface_init)       { \
   static const GInterfaceInfo g_implement_interface_info = { \
-    (GInterfaceInitFunc) iface_init \
+    (GInterfaceInitFunc) iface_init, \
+    (GInterfaceFinalizeFunc) NULL, \
+    NULL \
   }; \
   g_type_add_interface_static (g_define_type_id, TYPE_IFACE, &g_implement_interface_info); \
 }

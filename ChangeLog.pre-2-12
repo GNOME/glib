@@ -1,3 +1,8 @@
+2005-09-26  DindinX  <dindinx@gimp.org>
+
+	* gobject/gtype.h: initialize all the fields of GInterfaceInfo in the
+	G_IMPLEMENT_INTERFACE macro, to shut up a warning when compiling at -W
+
 2005-09-26  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gstrfuncs.c (g_ascii_strtoull): Add details to the 
