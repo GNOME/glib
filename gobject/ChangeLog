@@ -1,3 +1,8 @@
+2005-09-26  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib-mkenums.in: Don't hang on '{' following a trigraph comment
+	in the same line.  (#314890, Mathias Hasselmann)
+
 Thu Sep 22 12:42:12 2005  Tim Janik  <timj@gtk.org>
 
 	* gparam.c (g_param_spec_internal): fix pspec->name assignment which
