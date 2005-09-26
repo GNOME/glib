@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-08-23 00:30-0400\n"
+"POT-Creation-Date: 2005-09-26 12:42-0400\n"
 "PO-Revision-Date: 2004-02-03 02:11+0730\n"
 "Last-Translator: Hasbullah Bin Pit <sebol@my-penguin.org>\n"
 "Language-Team: Projek Gabai <gabai-penyumbang@lists.sourceforge.org>\n"
@@ -27,6 +27,7 @@ msgstr "tak dapat membuka penukar daripada '%s' kepada '%s': %s"
 #: glib/gconvert.c:606 glib/gconvert.c:995 glib/giochannel.c:1322
 #: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:912
 #: glib/gutf8.c:1362
+#, c-format
 msgid "Invalid byte sequence in conversion input"
 msgstr "Turutan byte tidak sah pada penukaran iput"
 
@@ -38,6 +39,7 @@ msgstr "Ralat semasa penukaran: %s"
 
 #: glib/gconvert.c:647 glib/gutf8.c:908 glib/gutf8.c:1113 glib/gutf8.c:1254
 #: glib/gutf8.c:1358
+#, c-format
 msgid "Partial character sequence at end of input"
 msgstr "Sebahagian turutan aksara berada di penghujung input"
 
@@ -77,6 +79,7 @@ msgid "The pathname '%s' is not an absolute path"
 msgstr "Nama laluan '%s' adalah bukan laluan mutlak"
 
 #: glib/gconvert.c:1865
+#, c-format
 msgid "Invalid hostname"
 msgstr "Namahos tidak sah"
 
@@ -141,6 +144,7 @@ msgid "Could not change file mode: Child terminated by signal: %s"
 msgstr ""
 
 #: glib/gfileutils.c:1024
+#, c-format
 msgid "Could not change file mode: Child terminated abnormally"
 msgstr ""
 
@@ -185,6 +189,7 @@ msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Gagal membaca pautan simbolik '%s': %s"
 
 #: glib/gfileutils.c:1995
+#, c-format
 msgid "Symbolic links not supported"
 msgstr "Pautan simbolik tidak disokong"
 
@@ -199,18 +204,22 @@ msgid "Could not open converter from `%s' to `%s': %s"
 msgstr "Tak dapat membuka penukar daripada `%s' kepada `%s': %s"
 
 #: glib/giochannel.c:1499
+#, c-format
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "Tak dapat membuat bacaan rawak pada g_io_channel_read_line_string"
 
 #: glib/giochannel.c:1546 glib/giochannel.c:1803 glib/giochannel.c:1889
+#, c-format
 msgid "Leftover unconverted data in read buffer"
 msgstr "Data tak boleh ditukar Leftover pada penimbal bacaan"
 
 #: glib/giochannel.c:1626 glib/giochannel.c:1703
+#, c-format
 msgid "Channel terminates in a partial character"
 msgstr "Saluran terhenti pada sebahagian aksara"
 
 #: glib/giochannel.c:1689
+#, c-format
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Tak dapat membuat bacaan rawak pada g_io_channel_read_to_end"
 
@@ -219,7 +228,7 @@ msgstr "Tak dapat membuat bacaan rawak pada g_io_channel_read_to_end"
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "Gagal membuka fail '%s': fdopen() gagal: %s"
 
-#: glib/gmappedfile.c:178
+#: glib/gmappedfile.c:185
 #, fuzzy, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "Gagal membuka fail '%s': fdopen() gagal: %s"
@@ -444,10 +453,12 @@ msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "Dokumen berakhir tanpa diduga di dalam komen atau memproses arahan"
 
 #: glib/gshell.c:73
+#, c-format
 msgid "Quoted text doesn't begin with a quotation mark"
 msgstr "Teks dipetik tidak bermula dengan tanda petikan"
 
 #: glib/gshell.c:163
+#, c-format
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr ""
 "Tanda petikan tidak sepadan pada arahan baris atau teks shell-quoted lain"
@@ -463,38 +474,42 @@ msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr "Teks berakhir sebelum quot sepadan dijumpai untuk %c (Teks ialah '%s')"
 
 #: glib/gshell.c:560
+#, c-format
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Teks telah kosong (atau mengandungi hanya ruangputih)"
 
-#: glib/gspawn-win32.c:264
+#: glib/gspawn-win32.c:276
+#, c-format
 msgid "Failed to read data from child process"
 msgstr "Gagal membaca data daripada proses anak"
 
-#: glib/gspawn-win32.c:281 glib/gspawn.c:1354
+#: glib/gspawn-win32.c:291 glib/gspawn.c:1375
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Gagal mencipta paip untuk berkomunikasi dengan proses anak (%s)"
 
-#: glib/gspawn-win32.c:321 glib/gspawn.c:1018
+#: glib/gspawn-win32.c:329 glib/gspawn.c:1039
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Gagal membaca daripada paip anak (%s)"
 
-#: glib/gspawn-win32.c:349 glib/gspawn.c:1223
+#: glib/gspawn-win32.c:355 glib/gspawn.c:1244
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Gagal menukar direktori '%s' (%s)"
 
-#: glib/gspawn-win32.c:357 glib/gspawn-win32.c:442
+#: glib/gspawn-win32.c:361 glib/gspawn-win32.c:581
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Gagal melaksanakan proses anak (%s)"
 
-#: glib/gspawn-win32.c:599
-msgid "Failed to execute helper program"
+#: glib/gspawn-win32.c:890
+#, fuzzy, c-format
+msgid "Failed to execute helper program (%s)"
 msgstr "Gagal melaksanakan program pembantu"
 
-#: glib/gspawn-win32.c:797
+#: glib/gspawn-win32.c:1084
+#, c-format
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -507,57 +522,60 @@ msgstr ""
 msgid "Failed to read data from child process (%s)"
 msgstr "Gagal membaca data daripada proses anak (%s)"
 
-#: glib/gspawn.c:310
+#: glib/gspawn.c:311
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr ""
 "Ralat tanpa diduga bila select() membaca data daripada proses anak (%s)"
 
-#: glib/gspawn.c:393
+#: glib/gspawn.c:394
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Ralat tanpa diduga pada waitpid() (%s)"
 
-#: glib/gspawn.c:1083
+#: glib/gspawn.c:1104
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Gagal untuk sepit (%s)"
 
-#: glib/gspawn.c:1233
+#: glib/gspawn.c:1254
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Gagal melaksanakan proses anak \"%s\" (%s)"
 
-#: glib/gspawn.c:1243
+#: glib/gspawn.c:1264
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Gagal melencongkan output atau input proses anak (%s)"
 
-#: glib/gspawn.c:1252
+#: glib/gspawn.c:1273
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Gagal menyepit proses anak (%s)"
 
-#: glib/gspawn.c:1260
+#: glib/gspawn.c:1281
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Ralat misteri ketika melaksanakan proses anak  \"%s\""
 
-#: glib/gspawn.c:1282
+#: glib/gspawn.c:1303
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Gagal membaca data yang cukup daripada paip pid anaki(%s)"
 
 #: glib/gutf8.c:987
+#, c-format
 msgid "Character out of range for UTF-8"
 msgstr "Aksara di luar julat UTF-8"
 
 #: glib/gutf8.c:1081 glib/gutf8.c:1090 glib/gutf8.c:1222 glib/gutf8.c:1231
 #: glib/gutf8.c:1372 glib/gutf8.c:1468
+#, c-format
 msgid "Invalid sequence in conversion input"
 msgstr "Turutan tidak sah semasa penukaran input"
 
 #: glib/gutf8.c:1383 glib/gutf8.c:1479
+#, c-format
 msgid "Character out of range for UTF-16"
 msgstr "Aksara di luar julat UTF-16"
 
@@ -606,14 +624,17 @@ msgid "Unknown option %s"
 msgstr ""
 
 #: glib/gkeyfile.c:339
+#, c-format
 msgid "Valid key file could not be found in data dirs"
 msgstr ""
 
 #: glib/gkeyfile.c:374
+#, c-format
 msgid "Not a regular file"
 msgstr ""
 
 #: glib/gkeyfile.c:382
+#, c-format
 msgid "File is empty"
 msgstr ""
 
@@ -624,6 +645,7 @@ msgid ""
 msgstr ""
 
 #: glib/gkeyfile.c:765
+#, c-format
 msgid "Key file does not start with a group"
 msgstr ""
 
@@ -666,26 +688,27 @@ msgstr ""
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr ""
 
-#: glib/gkeyfile.c:3072
+#: glib/gkeyfile.c:3067
+#, c-format
 msgid "Key file contains escape character at end of line"
 msgstr ""
 
-#: glib/gkeyfile.c:3094
+#: glib/gkeyfile.c:3089
 #, fuzzy, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "URI '%s' mengandungi aksara escaped yang tidak sah"
 
-#: glib/gkeyfile.c:3235
+#: glib/gkeyfile.c:3230
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr ""
 
-#: glib/gkeyfile.c:3245
+#: glib/gkeyfile.c:3240
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr ""
 
-#: glib/gkeyfile.c:3275
+#: glib/gkeyfile.c:3270
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr ""

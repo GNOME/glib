@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-08-23 00:30-0400\n"
+"POT-Creation-Date: 2005-09-26 12:42-0400\n"
 "PO-Revision-Date: 2003-03-19\n"
 "Last-Translator: Raphael Finkel <raphael@cs.uky.edu>\n"
 "Language-Team: Yiddish <raphael@cs.uky.edu>\n"
@@ -27,6 +27,7 @@ msgstr "ניט געקענט עפֿענען פֿאַרװאַנדלער פֿון %
 #: glib/gconvert.c:606 glib/gconvert.c:995 glib/giochannel.c:1322
 #: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:912
 #: glib/gutf8.c:1362
+#, c-format
 msgid "Invalid byte sequence in conversion input"
 msgstr "אומלעקסיק אַכטעלע־סעײַװענץ אין פֿאַרװאַנדלונג אַרױסשרײַב"
 
@@ -38,6 +39,7 @@ msgstr "דורכפֿאַל בשעת פֿאַרװאַנדלונג: %s"
 
 #: glib/gconvert.c:647 glib/gutf8.c:908 glib/gutf8.c:1113 glib/gutf8.c:1254
 #: glib/gutf8.c:1358
+#, c-format
 msgid "Partial character sequence at end of input"
 msgstr "האַלבע כאַראַקטער־סעקװענץ צום סוף פֿון אַרײַנשרײַב"
 
@@ -77,6 +79,7 @@ msgid "The pathname '%s' is not an absolute path"
 msgstr "די פּאַפּקע־רשימה %s איז ניט אַבסאָלוט"
 
 #: glib/gconvert.c:1865
+#, c-format
 msgid "Invalid hostname"
 msgstr "אומלעקסיקער מאַשין־נאָמען"
 
@@ -141,6 +144,7 @@ msgid "Could not change file mode: Child terminated by signal: %s"
 msgstr ""
 
 #: glib/gfileutils.c:1024
+#, c-format
 msgid "Could not change file mode: Child terminated abnormally"
 msgstr ""
 
@@ -185,6 +189,7 @@ msgid "Failed to read the symbolic link '%s': %s"
 msgstr "ניט געקענט שאַפֿן טעקע %s: %s"
 
 #: glib/gfileutils.c:1995
+#, c-format
 msgid "Symbolic links not supported"
 msgstr ""
 
@@ -199,18 +204,22 @@ msgid "Could not open converter from `%s' to `%s': %s"
 msgstr "ניט געקענט עפֿענען פֿאַרװאַנדלער פֿון %s צו %s: %s"
 
 #: glib/giochannel.c:1499
+#, c-format
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "ניט געקענט מאַכן אַ רױ־לײען אין g_io_channel_read_line_string"
 
 #: glib/giochannel.c:1546 glib/giochannel.c:1803 glib/giochannel.c:1889
+#, c-format
 msgid "Leftover unconverted data in read buffer"
 msgstr "איבעריקע ניט־פֿאַרװאַנדלטע דאַטן אין לײען־באַהאַלטאָרט"
 
 #: glib/giochannel.c:1626 glib/giochannel.c:1703
+#, c-format
 msgid "Channel terminates in a partial character"
 msgstr "קאַנאַל ענדיקט זיך מיט אַ האַלבן שריפֿטצײכן"
 
 #: glib/giochannel.c:1689
+#, c-format
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "ניט געקענט מאַכן אַ רױ־לײען אין g_io_channel_read_to_end"
 
@@ -219,7 +228,7 @@ msgstr "ניט געקענט מאַכן אַ רױ־לײען אין g_io_channel_r
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "ניט געקענט עפֿענען טעקע %s: fdopen() איז דורכגעפֿאַלן: %s"
 
-#: glib/gmappedfile.c:178
+#: glib/gmappedfile.c:185
 #, fuzzy, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "ניט געקענט עפֿענען טעקע %s: fdopen() איז דורכגעפֿאַלן: %s"
@@ -449,10 +458,12 @@ msgstr ""
 "באַאַרבעטן־באַפֿעל"
 
 #: glib/gshell.c:73
+#, c-format
 msgid "Quoted text doesn't begin with a quotation mark"
 msgstr "ציטירטער טעקסט הײבט ניט אָן מיט קײן גענדזן־פֿיסל"
 
 #: glib/gshell.c:163
+#, c-format
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr "גענדזן־פֿיסל אָן אַ זיװג אין באַפֿעל־שורה אָדער אַנדער ציטירטן טעקסט"
 
@@ -470,38 +481,42 @@ msgstr ""
 "געװען '%s')"
 
 #: glib/gshell.c:560
+#, c-format
 msgid "Text was empty (or contained only whitespace)"
 msgstr "טעקסט איז געװען פּוסט (אָדער איז כּולל בלױס לײדיק אָרט)"
 
-#: glib/gspawn-win32.c:264
+#: glib/gspawn-win32.c:276
+#, c-format
 msgid "Failed to read data from child process"
 msgstr "ניט געקענט לײענען דאַטן פֿון קינדפּראָצעס"
 
-#: glib/gspawn-win32.c:281 glib/gspawn.c:1354
+#: glib/gspawn-win32.c:291 glib/gspawn.c:1375
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "דורכפֿאַל אין שאַפֿן רער צוליב קאָמוניקירן מיט קינדפּראָצעס (%s)"
 
-#: glib/gspawn-win32.c:321 glib/gspawn.c:1018
+#: glib/gspawn-win32.c:329 glib/gspawn.c:1039
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "דורכפֿאַל אין לײענע פֿון אַ ינדרער (%s)"
 
-#: glib/gspawn-win32.c:349 glib/gspawn.c:1223
+#: glib/gspawn-win32.c:355 glib/gspawn.c:1244
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "דורכפֿאַל אין זיך קערן צו פּאַפּקע '%s' (%s)"
 
-#: glib/gspawn-win32.c:357 glib/gspawn-win32.c:442
+#: glib/gspawn-win32.c:361 glib/gspawn-win32.c:581
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "דורכפֿאַל אין באַאַרבעטן קינדפּראָצעס (%s)"
 
-#: glib/gspawn-win32.c:599
-msgid "Failed to execute helper program"
+#: glib/gspawn-win32.c:890
+#, fuzzy, c-format
+msgid "Failed to execute helper program (%s)"
 msgstr "דורכפֿאַל אין באַאַרבעטן הילף־פּראָגראַם"
 
-#: glib/gspawn-win32.c:797
+#: glib/gspawn-win32.c:1084
+#, c-format
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -514,56 +529,59 @@ msgstr ""
 msgid "Failed to read data from child process (%s)"
 msgstr "דורכפֿאַל אין לײענען דאַטן פֿון אַ קינדפּראָצעס (%s)"
 
-#: glib/gspawn.c:310
+#: glib/gspawn.c:311
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr "אומדערװאַרטער דורכפֿאַל אין select() לײענען דאַטן פֿון אַ קינדפּראָצעס (%s)"
 
-#: glib/gspawn.c:393
+#: glib/gspawn.c:394
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "אומדערװאַרטער דורכפֿאַל אין waitpid() (%s)"
 
-#: glib/gspawn.c:1083
+#: glib/gspawn.c:1104
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "דורכפֿאַל אין קלאָנירן (%s)"
 
-#: glib/gspawn.c:1233
+#: glib/gspawn.c:1254
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "דורכפֿאַל אין באַאַרבעטן קינדפּראָצעס \"%s\" (%s)"
 
-#: glib/gspawn.c:1243
+#: glib/gspawn.c:1264
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "דורכפֿאַל אין װידערצילן אַרױסשרײַב אָדער אַרײַנשרײַב פֿון קינדפּראָצעס (%s)"
 
-#: glib/gspawn.c:1252
+#: glib/gspawn.c:1273
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "דורכפֿאַל אין קלאָנירן קינדפּראָצעס (%s)"
 
-#: glib/gspawn.c:1260
+#: glib/gspawn.c:1281
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "אומבאַקאַנטער דורכפֿאַל אין באַאַרבעטן קינדפּראָצעס \"%s\""
 
-#: glib/gspawn.c:1282
+#: glib/gspawn.c:1303
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "דורכפֿאַל אין לײענען גענוג דאַטן פֿון קינד pid-רער (%s)"
 
 #: glib/gutf8.c:987
+#, c-format
 msgid "Character out of range for UTF-8"
 msgstr "שריפֿטצײכן ניט אין דער UTF־8 גאַמע"
 
 #: glib/gutf8.c:1081 glib/gutf8.c:1090 glib/gutf8.c:1222 glib/gutf8.c:1231
 #: glib/gutf8.c:1372 glib/gutf8.c:1468
+#, c-format
 msgid "Invalid sequence in conversion input"
 msgstr "אומלעקסיקער סעקװענץ אין פֿאַרװאַנדל־אַרײַנשרײַב"
 
 #: glib/gutf8.c:1383 glib/gutf8.c:1479
+#, c-format
 msgid "Character out of range for UTF-16"
 msgstr "שריפֿטצײכן ניט אין דער UTF־16 גאַמע"
 
@@ -612,14 +630,17 @@ msgid "Unknown option %s"
 msgstr ""
 
 #: glib/gkeyfile.c:339
+#, c-format
 msgid "Valid key file could not be found in data dirs"
 msgstr ""
 
 #: glib/gkeyfile.c:374
+#, c-format
 msgid "Not a regular file"
 msgstr ""
 
 #: glib/gkeyfile.c:382
+#, c-format
 msgid "File is empty"
 msgstr ""
 
@@ -630,6 +651,7 @@ msgid ""
 msgstr ""
 
 #: glib/gkeyfile.c:765
+#, c-format
 msgid "Key file does not start with a group"
 msgstr ""
 
@@ -672,26 +694,27 @@ msgstr ""
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr ""
 
-#: glib/gkeyfile.c:3072
+#: glib/gkeyfile.c:3067
+#, c-format
 msgid "Key file contains escape character at end of line"
 msgstr ""
 
-#: glib/gkeyfile.c:3094
+#: glib/gkeyfile.c:3089
 #, fuzzy, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "דער URI %s איז כּולל אומלעקסיקע פּליטה־כאַראַקטערס"
 
-#: glib/gkeyfile.c:3235
+#: glib/gkeyfile.c:3230
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr ""
 
-#: glib/gkeyfile.c:3245
+#: glib/gkeyfile.c:3240
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr ""
 
-#: glib/gkeyfile.c:3275
+#: glib/gkeyfile.c:3270
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr ""

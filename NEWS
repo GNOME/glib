@@ -1,7 +1,17 @@
 Overview of Changes from GLib 2.8.1 to GLib 2.8.2
 =================================================
-* On Win32, also the g_spawn* functions now take their arguments
-  in UTF-8 [Tor Lillqvist]
+* Win32 changes
+ - the g_spawn* functions now take their arguments
+   in UTF-8 [Tor Lillqvist]
+ - Avoid extra console windows in some situations
+   [Tor Lillqvist]
+* Bug fixes [Kjartan Maraas, Sebastian Wilhelmi,
+  Mathias Hasselmann]
+* Documentation improvements [Matthias, Mark Drago,
+  Matthew F. Barnes, Behdad Esfahbod]
+* Translation updates (bg,ca,cs,cy,da,de,el,en_CA,es,et,
+  eu,fi,fr,gl,gu,hu,it,ja,nb,nl,no,pl,pt,pt_BR,ro,ru,sk,
+  sq,sr,sr@Latn,sv,uk,vi,zh_TW)
 
 Overview of Changes from GLib 2.8.0 to GLib 2.8.1
 =================================================

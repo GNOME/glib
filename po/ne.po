@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-08-23 00:30-0400\n"
+"POT-Creation-Date: 2005-09-26 12:42-0400\n"
 "PO-Revision-Date: 2005-05-20 11:50+0545\n"
 "Last-Translator: Jyotshna Shrestha <shresthajyo@hotmail.com>\n"
 "Language-Team: Nepali <info@mpp.org.np>\n"
@@ -30,6 +30,7 @@ msgstr "'%s' बाट '%s'मा अनुवादक खुलेन"
 #: glib/gconvert.c:606 glib/gconvert.c:995 glib/giochannel.c:1322
 #: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:912
 #: glib/gutf8.c:1362
+#, c-format
 msgid "Invalid byte sequence in conversion input"
 msgstr "अनुवादन निवेशमा अमान्य बाइट शृङ्खला"
 
@@ -41,6 +42,7 @@ msgstr "अनुवाद क्रममा गल्ती: %s"
 
 #: glib/gconvert.c:647 glib/gutf8.c:908 glib/gutf8.c:1113 glib/gutf8.c:1254
 #: glib/gutf8.c:1358
+#, c-format
 msgid "Partial character sequence at end of input"
 msgstr "निवेशको अन्त्यमा अर्धवर्ण शृङ्खला"
 
@@ -80,6 +82,7 @@ msgid "The pathname '%s' is not an absolute path"
 msgstr "मार्ग-नाम '%s' वास्तबिक मार्ग होइन"
 
 #: glib/gconvert.c:1865
+#, c-format
 msgid "Invalid hostname"
 msgstr "मुख्य नाम अबैध छ"
 
@@ -144,6 +147,7 @@ msgid "Could not change file mode: Child terminated by signal: %s"
 msgstr "फाइल शैली परिवर्तन हुन सकेन: शाखा संकेतद्वारा अन्त्य भयो: %s"
 
 #: glib/gfileutils.c:1024
+#, c-format
 msgid "Could not change file mode: Child terminated abnormally"
 msgstr "फाइल शैली परिवर्तन हुन सकेन: अनियमित तरिकाले शाखा अन्त्य भयो"
 
@@ -188,6 +192,7 @@ msgid "Failed to read the symbolic link '%s': %s"
 msgstr "सांकेतिक सम्बन्ध '%s' पढ्न असफल: %s"
 
 #: glib/gfileutils.c:1995
+#, c-format
 msgid "Symbolic links not supported"
 msgstr "सांकेतिक सम्बन्धले समर्थन गरेन"
 
@@ -202,18 +207,22 @@ msgid "Could not open converter from `%s' to `%s': %s"
 msgstr "अनुवादक `%s' बाट `%s' मा खुल्न सकेन : %s"
 
 #: glib/giochannel.c:1499
+#, c-format
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "g_io_channel_read_line_string मा पढ्न सकिएन"
 
 #: glib/giochannel.c:1546 glib/giochannel.c:1803 glib/giochannel.c:1889
+#, c-format
 msgid "Leftover unconverted data in read buffer"
 msgstr "अपरिवर्तित तथ्याङ्क अस्थायी पढाइमा छाडिदेऊ"
 
 #: glib/giochannel.c:1626 glib/giochannel.c:1703
+#, c-format
 msgid "Channel terminates in a partial character"
 msgstr "अर्ध-वर्णमा मार्ग टुङ्गिन्छ"
 
 #: glib/giochannel.c:1689
+#, c-format
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "g_io_channel_read_to_end मा पढ्न सकिएन"
 
@@ -222,7 +231,7 @@ msgstr "g_io_channel_read_to_end मा पढ्न सकिएन"
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "'%s'फाइल खोल्न असफल : एफडीखोल्न() असफल: %s"
 
-#: glib/gmappedfile.c:178
+#: glib/gmappedfile.c:185
 #, fuzzy, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "'%s'फाइल खोल्न असफल : एफडीखोल्न() असफल: %s"
@@ -438,10 +447,12 @@ msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "टिप्पणी वा प्रक्रिया आदेश भित्र कागजपत्र अप्रत्याशितरूपले समाप्त भयो"
 
 #: glib/gshell.c:73
+#, c-format
 msgid "Quoted text doesn't begin with a quotation mark"
 msgstr "उद्वरण पाठ उद्वरण चिन्हसंग शुरू भएन"
 
 #: glib/gshell.c:163
+#, c-format
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr "आदेश रेखामा वा अरू कोष्ठ-उद्धरण गरिएको पाठमा नमिलेको उद्धरण चिन्ह"
 
@@ -456,38 +467,42 @@ msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr "%c को लागी मिल्ने उद्धरण फेला पर्नु अगाडि पाठ समाप्त भयो।. (पाठ '%s' थियो)"
 
 #: glib/gshell.c:560
+#, c-format
 msgid "Text was empty (or contained only whitespace)"
 msgstr "पाठ खाली थियो (वा सेतो खाली स्थान मात्र समावेश थियो)"
 
-#: glib/gspawn-win32.c:264
+#: glib/gspawn-win32.c:276
+#, c-format
 msgid "Failed to read data from child process"
 msgstr "शाखा प्रक्रियाबाट डाटा पढ्न असफल"
 
-#: glib/gspawn-win32.c:281 glib/gspawn.c:1354
+#: glib/gspawn-win32.c:291 glib/gspawn.c:1375
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "शाखा प्रक्रिया (%s) संग कुराकानीको लागी पाईप सृजना गर्न असफल"
 
-#: glib/gspawn-win32.c:321 glib/gspawn.c:1018
+#: glib/gspawn-win32.c:329 glib/gspawn.c:1039
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "शाखा प्रक्रिया (%s) बाट पढ्न असफल"
 
-#: glib/gspawn-win32.c:349 glib/gspawn.c:1223
+#: glib/gspawn-win32.c:355 glib/gspawn.c:1244
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "निर्देशिका '%s' (%s) परिवर्तन गर्न असफल"
 
-#: glib/gspawn-win32.c:357 glib/gspawn-win32.c:442
+#: glib/gspawn-win32.c:361 glib/gspawn-win32.c:581
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "शाखा प्रक्रिया (%s) कार्यान्वयन गर्न असफल"
 
-#: glib/gspawn-win32.c:599
-msgid "Failed to execute helper program"
+#: glib/gspawn-win32.c:890
+#, fuzzy, c-format
+msgid "Failed to execute helper program (%s)"
 msgstr "सहयोग गर्ने कार्यक्रम कार्यान्वयन गर्न असफल"
 
-#: glib/gspawn-win32.c:797
+#: glib/gspawn-win32.c:1084
+#, c-format
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -498,56 +513,59 @@ msgstr "शाखा प्रक्रियाबाट g_io_channel_win32_pol
 msgid "Failed to read data from child process (%s)"
 msgstr "शाखा प्रक्रिया (%s) बाट डाटा पढ्न असफल"
 
-#: glib/gspawn.c:310
+#: glib/gspawn.c:311
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr "शाखा प्रक्रिया (%s) बाट select() reading data मा अपेक्षित त्रुटि"
 
-#: glib/gspawn.c:393
+#: glib/gspawn.c:394
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "waitpid() (%s) मा अपेक्षा नगरिएको त्रुटि"
 
-#: glib/gspawn.c:1083
+#: glib/gspawn.c:1104
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "(%s) फोर्क गर्न असफल"
 
-#: glib/gspawn.c:1233
+#: glib/gspawn.c:1254
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "शाखा प्रक्रिया \"%s\" (%s) कार्यान्वयन गर्न असफल"
 
-#: glib/gspawn.c:1243
+#: glib/gspawn.c:1264
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "शाखा प्रक्रिया (%s) को प्रतिफल र आयात फिर्ता पठाउन असफल"
 
-#: glib/gspawn.c:1252
+#: glib/gspawn.c:1273
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "शाखा प्रक्रिया (%s) फोर्क गर्न असफल"
 
-#: glib/gspawn.c:1260
+#: glib/gspawn.c:1281
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "शाखा प्रक्रिया \"%s\" कार्यान्वयन गर्दा अज्ञात त्रुटि"
 
-#: glib/gspawn.c:1282
+#: glib/gspawn.c:1303
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "शाखा पिड पाईप (%s) बाट प्रयाप्त डाटाहरू पढ्न असफल"
 
 #: glib/gutf8.c:987
+#, c-format
 msgid "Character out of range for UTF-8"
 msgstr "युटिएफ-८ को लागी वर्ण क्षेत्र भन्दा बाहिर"
 
 #: glib/gutf8.c:1081 glib/gutf8.c:1090 glib/gutf8.c:1222 glib/gutf8.c:1231
 #: glib/gutf8.c:1372 glib/gutf8.c:1468
+#, c-format
 msgid "Invalid sequence in conversion input"
 msgstr "अनुवादन निवेशमा अमान्य शृङ्खला"
 
 #: glib/gutf8.c:1383 glib/gutf8.c:1479
+#, c-format
 msgid "Character out of range for UTF-16"
 msgstr "युटिएफ-१६ को लागी वर्ण क्षेत्र भन्दा बाहिर"
 
@@ -596,14 +614,17 @@ msgid "Unknown option %s"
 msgstr "अज्ञात विकल्प %s"
 
 #: glib/gkeyfile.c:339
+#, c-format
 msgid "Valid key file could not be found in data dirs"
 msgstr "मान्य कुन्ज फाइल डाटा निर्देशिकाहरूमा फेला पर्दैन"
 
 #: glib/gkeyfile.c:374
+#, c-format
 msgid "Not a regular file"
 msgstr "नियमित फाईल होइन"
 
 #: glib/gkeyfile.c:382
+#, c-format
 msgid "File is empty"
 msgstr "फाइल खालि छ"
 
@@ -614,6 +635,7 @@ msgid ""
 msgstr "कुन्ज फाइलमा पंक्ति '%s' समावेश छ जुन कुन्ज-मान जोडि, समूह, वा टिप्पणी होइन।"
 
 #: glib/gkeyfile.c:765
+#, c-format
 msgid "Key file does not start with a group"
 msgstr "समूहसंगै कुण्ज फाईल शुरू भएन"
 
@@ -656,26 +678,27 @@ msgstr "कुन्ज फाइलमा समूह '%s' मा कुन्
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "समूह '%s' मा कुण्ज फाईल संग कुण्ज '%s' छैन"
 
-#: glib/gkeyfile.c:3072
+#: glib/gkeyfile.c:3067
+#, c-format
 msgid "Key file contains escape character at end of line"
 msgstr "कुन्ज फाइलमा पंक्तिको अन्त्यमा निस्कनुस् वर्ण समावेश छ।"
 
-#: glib/gkeyfile.c:3094
+#: glib/gkeyfile.c:3089
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "कुन्ज फाइलमा अमान्य निस्कनुस् अनुक्रम '%s' समावेस छ।"
 
-#: glib/gkeyfile.c:3235
+#: glib/gkeyfile.c:3230
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "मान '%s' लाई संख्याको रूपमा व्याख्या गर्न सकिंदैन"
 
-#: glib/gkeyfile.c:3245
+#: glib/gkeyfile.c:3240
 #, fuzzy, c-format
 msgid "Integer value '%s' out of range"
 msgstr "पूर्ण संख्या मान '%s' %s को लागि क्षेत्र भन्दा बाहिर छ"
 
-#: glib/gkeyfile.c:3275
+#: glib/gkeyfile.c:3270
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "मान '%s' बुलेनको रुपमा व्याख्या गर्न सकिंदैन।"
