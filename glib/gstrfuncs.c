@@ -610,9 +610,12 @@ g_ascii_formatd (gchar       *buffer,
  * locale-sensitive system strtoull() function.
  *
  * If the correct value would cause overflow, %G_MAXUINT64
- * is returned, and %ERANGE is stored in %errno.
+ * is returned, and %ERANGE is stored in %errno.  If the base is
+ * outside the valid range, zero is returned, and %EINVAL is stored
+ * in %errno.  If the string conversion fails, zero is returned, and
+ * @endptr returns @nptr (if @endptr is non-%NULL).
  *
- * Return value: the #guint64 value.
+ * Return value: the #guint64 value or zero on error.
  *
  * Since: 2.2
  **/
