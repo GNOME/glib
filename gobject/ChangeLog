@@ -1,3 +1,10 @@
+2005-09-28  Michael Natterer  <mitch@gimp.org>
+
+	* gtype.h (G_IMPLEMENT_INTERFACE): revert last change, it breaks
+	all users of G_IMPLEMENT_INTERFACE() inside
+	G_DEFINE_TYPE_WITH_CODE(), since apparently GCC doesn't like
+	commas enclosed in {}, not (), in nested macro calls.
+
 2005-09-26  DindinX  <dindinx@gimp.org>
 
 	* gobject/gtype.h: initialize all the fields of GInterfaceInfo in the
