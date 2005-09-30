@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-08-27 19:10-0400\n"
+"POT-Creation-Date: 2005-09-30 16:30-0400\n"
 "PO-Revision-Date: 2005-08-27 16:20-0400\n"
 "Last-Translator: Adam Weinberger <adamw@gnome.org>\n"
 "Language-Team: Canadian English <adamw@gnome.org>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: glib/gconvert.c:408 glib/gconvert.c:486
+#: glib/gconvert.c:408 glib/gconvert.c:486 glib/giochannel.c:1150
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Conversion from character set '%s' to '%s' is not supported"
@@ -190,15 +190,10 @@ msgstr "Failed to read the symbolic link '%s': %s"
 msgid "Symbolic links not supported"
 msgstr "Symbolic links not supported"
 
-#: glib/giochannel.c:1150
-#, c-format
-msgid "Conversion from character set `%s' to `%s' is not supported"
-msgstr "Conversion from character set `%s' to `%s' is not supported"
-
 #: glib/giochannel.c:1154
 #, c-format
-msgid "Could not open converter from `%s' to `%s': %s"
-msgstr "Could not open converter from `%s' to `%s': %s"
+msgid "Could not open converter from '%s' to '%s': %s"
+msgstr "Could not open converter from '%s' to '%s': %s"
 
 #: glib/giochannel.c:1499
 msgid "Can't do a raw read in g_io_channel_read_line_string"
@@ -221,7 +216,7 @@ msgstr "Cannot do a raw read in g_io_channel_read_to_end"
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "Failed to open file '%s': open() failed: %s"
 
-#: glib/gmappedfile.c:178
+#: glib/gmappedfile.c:185
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "Failed to map file '%s': mmap() failed: %s"
@@ -488,39 +483,39 @@ msgstr "Failed to read from child pipe (%s)"
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Failed to change to directory '%s' (%s)"
 
-#: glib/gspawn-win32.c:361 glib/gspawn-win32.c:582
+#: glib/gspawn-win32.c:361 glib/gspawn-win32.c:581
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Failed to execute child process (%s)"
 
-#: glib/gspawn-win32.c:472 glib/gspawn-win32.c:528
+#: glib/gspawn-win32.c:471 glib/gspawn-win32.c:527
 #, c-format
 msgid "Invalid program name: %s"
 msgstr "Invalid program name: %s"
 
-#: glib/gspawn-win32.c:482 glib/gspawn-win32.c:538 glib/gspawn-win32.c:776
-#: glib/gspawn-win32.c:831 glib/gspawn-win32.c:1364
+#: glib/gspawn-win32.c:481 glib/gspawn-win32.c:537 glib/gspawn-win32.c:780
+#: glib/gspawn-win32.c:835 glib/gspawn-win32.c:1364
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr "Invalid string in argument vector at %d: %s"
 
-#: glib/gspawn-win32.c:493 glib/gspawn-win32.c:549 glib/gspawn-win32.c:790
-#: glib/gspawn-win32.c:844 glib/gspawn-win32.c:1397
+#: glib/gspawn-win32.c:492 glib/gspawn-win32.c:548 glib/gspawn-win32.c:794
+#: glib/gspawn-win32.c:848 glib/gspawn-win32.c:1397
 #, c-format
 msgid "Invalid string in environment: %s"
 msgstr "Invalid string in environment: %s"
 
-#: glib/gspawn-win32.c:772 glib/gspawn-win32.c:827 glib/gspawn-win32.c:1345
+#: glib/gspawn-win32.c:776 glib/gspawn-win32.c:831 glib/gspawn-win32.c:1345
 #, c-format
 msgid "Invalid working directory: %s"
 msgstr "Invalid working directory: %s"
 
-#: glib/gspawn-win32.c:886
+#: glib/gspawn-win32.c:890
 #, c-format
 msgid "Failed to execute helper program (%s)"
 msgstr "Failed to execute helper program (%s)"
 
-#: glib/gspawn-win32.c:1083
+#: glib/gspawn-win32.c:1084
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -694,26 +689,26 @@ msgstr ""
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Key file does not have key '%s' in group '%s'"
 
-#: glib/gkeyfile.c:3072
+#: glib/gkeyfile.c:3067
 msgid "Key file contains escape character at end of line"
 msgstr "Key file contains escape character at end of line"
 
-#: glib/gkeyfile.c:3094
+#: glib/gkeyfile.c:3089
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "Key file contains invalid escape sequence '%s'"
 
-#: glib/gkeyfile.c:3235
+#: glib/gkeyfile.c:3230
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Value '%s' cannot be interpreted as a number."
 
-#: glib/gkeyfile.c:3245
+#: glib/gkeyfile.c:3240
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "Integer value '%s' out of range"
 
-#: glib/gkeyfile.c:3275
+#: glib/gkeyfile.c:3270
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Value '%s' cannot be interpreted as a boolean."
