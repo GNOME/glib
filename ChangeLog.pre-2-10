@@ -1,3 +1,15 @@
+2005-10-01  Behdad Esfahbod  <behdad@gnome.org>
+
+	* docs/reference/glib/tmpl/unicode.sgml:
+	* glib/gen-unicode-tables.pl:
+	* glib/gunibreak.h:
+	* glib/gunichartables.h:
+	* glib/gunicode.h:
+	* tests/casefold.txt:
+	* tests/casemap.txt: Updated to Unicode 4.1.  There are five new
+	GUnicodeBreakType types.  That may break some applications, like
+	Pango <= 1.10.
+
 2005-09-26  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gstrfuncs.c (g_ascii_strtoull): Add details to the 

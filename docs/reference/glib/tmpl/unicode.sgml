@@ -274,8 +274,14 @@ See <ulink url="http://www.unicode.org/Public/UNIDATA/UnicodeData.html"
 <!-- ##### ENUM GUnicodeBreakType ##### -->
 <para>
 These are the possible line break classifications.
+GLib 2.8 supports Unicode 4.0, GLib 2.10 supports Unicode 4.1.
+The five Hangul types were added in Unicode 4.1, so, has been
+introduced in GLib 2.10.  Note that new types may be added in the future.
+Applications should be ready to handle unknown values.
+They may be regarded as @G_UNICODE_BREAK_UNKNOWN
 See <ulink url="http://www.unicode.org/unicode/reports/tr14/"
 >http://www.unicode.org/unicode/reports/tr14/</ulink>.
+
 </para>
 
 @G_UNICODE_BREAK_MANDATORY: 
@@ -309,6 +315,12 @@ See <ulink url="http://www.unicode.org/unicode/reports/tr14/"
 @G_UNICODE_BREAK_UNKNOWN: 
 @G_UNICODE_BREAK_NEXT_LINE: 
 @G_UNICODE_BREAK_WORD_JOINER: 
+@G_UNICODE_BREAK_HANGUL_L_JAMO:
+@G_UNICODE_BREAK_HANGUL_V_JAMO:
+@G_UNICODE_BREAK_HANGUL_T_JAMO:
+@G_UNICODE_BREAK_HANGUL_LV_SYLLABLE:
+@G_UNICODE_BREAK_HANGUL_LVT_SYLLABLE:
+
 
 <!-- ##### FUNCTION g_unichar_break_type ##### -->
 <para>

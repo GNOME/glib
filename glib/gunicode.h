@@ -68,6 +68,8 @@ typedef enum
 } GUnicodeType;
 
 /* These are the possible line break classifications.
+ * Note that new types may be added in the future.
+ * Implementations may regard unknown values like G_UNICODE_BREAK_UNKNOWN
  * See http://www.unicode.org/unicode/reports/tr14/
  */
 typedef enum
@@ -102,7 +104,12 @@ typedef enum
   G_UNICODE_BREAK_AMBIGUOUS,
   G_UNICODE_BREAK_UNKNOWN,
   G_UNICODE_BREAK_NEXT_LINE,
-  G_UNICODE_BREAK_WORD_JOINER
+  G_UNICODE_BREAK_WORD_JOINER,
+  G_UNICODE_BREAK_HANGUL_L_JAMO,
+  G_UNICODE_BREAK_HANGUL_V_JAMO,
+  G_UNICODE_BREAK_HANGUL_T_JAMO,
+  G_UNICODE_BREAK_HANGUL_LV_SYLLABLE,
+  G_UNICODE_BREAK_HANGUL_LVT_SYLLABLE
 } GUnicodeBreakType;
 
 /* Returns TRUE if current locale uses UTF-8 charset.  If CHARSET is
