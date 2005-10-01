@@ -1,3 +1,8 @@
+2005-10-01  Davyd Madeley  <davyd@fugro-fsi.com.au>
+
+	* glib/tmpl/string_utils.sgml: Minor documentation improvements for
+	  g_strchug, g_strchomp and g_strstrip. Brought forward from glib-2-8.
+
 2005-08-31  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/tmpl/quarks.sgml: 
