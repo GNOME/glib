@@ -267,7 +267,7 @@ while (<>) {
            (?:/\*<
              (([^*]|\*(?!/))*)
             >\s*\*/)?
-           ({)?
+           \s*({)?
          @x) {
 	if (defined $2) {
 	    my %options = parse_trigraph ($2);
@@ -281,7 +281,7 @@ while (<>) {
       $option_lowercase_name = undef;
 	}
 	# Didn't have trailing '{' look on next lines
-	if (!defined $1 && !defined $3) {
+	if (!defined $1 && !defined $4) {
 	    while (<>) {
 		if (s/^\s*\{//) {
 		    last;
