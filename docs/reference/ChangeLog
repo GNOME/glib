@@ -1,3 +1,7 @@
+2005-10-03  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.8.3 ===
+
 2005-10-01  Davyd Madeley  <davyd@fugro-fsi.com.au>
 
 	* glib/tmpl/string_utils.sgml: Minor documentation improvements for

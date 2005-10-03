@@ -1,3 +1,10 @@
+Overview of Changes from GLib 2.8.2 to GLib 2.8.3
+=================================================
+* Fix an error that crept in with a change to 
+  glib-mkenums in 2.8.2 [Matthias]
+* Documentation improvements [Davyd Madeley]
+* Translation updates (bn)
+
 Overview of Changes from GLib 2.8.1 to GLib 2.8.2
 =================================================
 * Win32 changes

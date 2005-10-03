@@ -1,5 +1,9 @@
 2005-10-03  Matthias Clasen  <mclasen@redhat.com>
 
+	* === Released 2.8.3 ===
+
+2005-10-03  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib-mkenums.in: Really fix #314890.
 
 2005-09-28  Michael Natterer  <mitch@gimp.org>
