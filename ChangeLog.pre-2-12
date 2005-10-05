@@ -1,5 +1,7 @@
 2005-10-05  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gmarkup.c (g_markup_escape_text): Doc addition
+
 	* Makefile.am: Add Collation tests.
 
 	* tests/collate/*: Inputs and expected outputs for collation tests.

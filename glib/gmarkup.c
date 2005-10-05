@@ -1923,7 +1923,7 @@ append_escaped_text (GString     *str,
 /**
  * g_markup_escape_text:
  * @text: some valid UTF-8 text
- * @length: length of @text in bytes
+ * @length: length of @text in bytes, or -1 if the text is nul-terminated
  * 
  * Escapes text so that the markup parser will parse it verbatim.
  * Less than, greater than, ampersand, etc. are replaced with the
