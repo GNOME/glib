@@ -36,19 +36,37 @@ int main (int argc, char **argv)
   GError *error = NULL;
   GArray *line_array = g_array_new (FALSE, FALSE, sizeof(Line));
   guint i;
+  gboolean do_key = FALSE;
+  gboolean do_file = FALSE;
 
-  if (argc != 1 && argc != 2)
+  if (argc != 1 && argc != 2 && argc != 3)
     {
-      fprintf (stderr, "Usage: unicode-collate [FILE]\n");
+      fprintf (stderr, "Usage: unicode-collate [--key|--file] [FILE]\n");
       return 1;
     }
 
-  if (argc == 2)
+  i = 1;
+  if (argc > 1)
     {
-      in = g_io_channel_new_file (argv[1], "r", &error);
+      if (strcmp (argv[1], "--key") == 0)
+        {
+          do_key = TRUE;
+	  i = 2;
+        }
+      else if (strcmp (argv[1], "--file") == 0)
+        {
+          do_key = TRUE;
+          do_file = TRUE;
+	  i = 2;
+        }
+    }
+
+ if (argc > i)
+    {
+      in = g_io_channel_new_file (argv[i], "r", &error);
       if (!in)
 	{
-	  fprintf (stderr, "Cannot open %s: %s\n", argv[1], error->message);
+	  fprintf (stderr, "Cannot open %s: %s\n", argv[i], error->message);
 	  return 1;
 	}
     }
@@ -68,7 +86,10 @@ int main (int argc, char **argv)
 
       str[term_pos] = '\0';
 
-      line.key = g_utf8_collate_key (str, -1);
+      if (do_file)
+	line.key = g_utf8_collate_key_for_filename (str, -1);
+      else
+	line.key = g_utf8_collate_key (str, -1);
       line.str = str;
 
       g_array_append_val (line_array, line);
@@ -80,15 +101,7 @@ int main (int argc, char **argv)
       return 1;
     }
 
-  printf ("== g_utf8_collate ==\n");
-
-  qsort (line_array->data, line_array->len, sizeof (Line), compare_collate);
-  for (i = 0; i < line_array->len; i++)
-    printf ("%s\n", g_array_index (line_array, Line, i).str);
-
-  printf ("== g_utf8_collate_key ==\n");
-
-  qsort (line_array->data, line_array->len, sizeof (Line), compare_key);
+  qsort (line_array->data, line_array->len, sizeof (Line), do_key ? compare_key : compare_collate);
   for (i = 0; i < line_array->len; i++)
     printf ("%s\n", g_array_index (line_array, Line, i).str);
 

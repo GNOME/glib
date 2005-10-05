@@ -105,9 +105,9 @@ test_programs =					\
 	utf8-validate				\
 	uri-test
 
-test_scripts = run-markup-tests.sh
+test_scripts = run-markup-tests.sh run-collate-tests.sh
 
-test_script_support_programs = markup-test
+test_script_support_programs = markup-test unicode-collate
 
 check_PROGRAMS = $(test_programs) $(test_script_support_programs)
 
@@ -159,6 +159,7 @@ tree_test_LDADD = $(progs_ldadd)
 type_test_LDADD = $(progs_ldadd)
 unicode_encoding_LDADD = $(progs_ldadd)
 unicode_caseconv_LDADD = $(progs_ldadd)
+unicode_collate_LDADD = $(progs_ldadd)
 utf8_validate_LDADD = $(progs_ldadd)
 uri_test_LDADD = $(progs_ldadd)
 
@@ -184,6 +185,10 @@ dist-hook: $(BUILT_EXTRA_DIST)
 	mkdir $(distdir)/markups;          \
 	for f in $(srcdir)/markups/* ; do  \
 	  cp $$f $(distdir)/markups;       \
+	done
+	mkdir $(distdir)/collate;          \
+	for f in $(srcdir)/collate/* ; do  \
+	  cp $$f $(distdir)/collate;       \
 	done
 
 DISTCLEANFILES = iochannel-test-outfile \

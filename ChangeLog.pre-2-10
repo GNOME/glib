@@ -1,3 +1,14 @@
+2005-10-05  Matthias Clasen  <mclasen@redhat.com>
+
+	* Makefile.am: Add Collation tests.
+
+	* tests/collate/*: Inputs and expected outputs for collation tests.
+
+	* tests/run-collate-tests.sh: Script to run collation tests.
+
+	* tests/unicode-collate.c (main): Rework slightly to make
+	it usable in unit tests. Also test g_utf8_collate_key_for_filename().
+
 2005-10-01  Behdad Esfahbod  <behdad@gnome.org>
 
 	* docs/reference/glib/tmpl/unicode.sgml:
