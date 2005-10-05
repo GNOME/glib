@@ -1,3 +1,7 @@
+2005-10-05  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/compiling.sgml: Document gmodule-no-export-2.0
+
 2005-10-01  Davyd Madeley  <davyd@fugro-fsi.com.au>
 
 	* glib/tmpl/string_utils.sgml: Minor documentation improvements for

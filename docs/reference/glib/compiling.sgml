@@ -32,14 +32,23 @@ $ pkg-config --libs glib-2.0
 </programlisting>
 </para>
 <para>
-If your application uses modules, threads or <structname>GObject</structname>
+If your application uses threads or <structname>GObject</structname>
 features, it must be compiled and linked with the options returned by the 
 following <application>pkg-config</application> invocations: 
 <programlisting>
-$ pkg-config --cflags --libs gmodule-2.0 
 $ pkg-config --cflags --libs gthread-2.0
 $ pkg-config --cflags --libs gobject-2.0
 </programlisting>
+</para>
+<para>
+If your application uses modules, it must be compiled and linked with the options 
+returned by one of the following <application>pkg-config</application> invocations: 
+<programlisting>
+$ pkg-config --cflags --libs gmodule-no-export-2.0 
+$ pkg-config --cflags --libs gmodule-2.0 
+</programlisting>
+The difference between the two is that gmodule-2.0 adds <option>--export-dynamic</option> 
+to the linker flags, which is often not needed.
 </para>
 <para>
 The simplest way to compile a program is to use the "backticks"
