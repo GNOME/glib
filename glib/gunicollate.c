@@ -415,7 +415,17 @@ g_utf8_collate_key_for_filename (const gchar *str,
 	      else if (g_ascii_isdigit(*p))
 		++digits;
 	      else
-		break;
+                {
+                  /* count an all-zero sequence as
+                   * one digit plus leading zeros
+                   */
+                  if (!digits)
+                    {
+                      ++digits;
+                      --leading_zeros;
+                    }
+                  break;
+                }
 	    }
 	  while (*p != '\0');
 
