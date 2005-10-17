@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-09-01 07:59+0000\n"
-"PO-Revision-Date: 2005-09-01 11:51+0300\n"
+"POT-Creation-Date: 2005-10-14 05:11+0200\n"
+"PO-Revision-Date: 2005-10-14 09:55+0300\n"
 "Last-Translator: Ivar Smolin <okul@linux.ee>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
 "MIME-Version: 1.0\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../glib/gconvert.c:408 ../glib/gconvert.c:486
+#: ../glib/gconvert.c:408 ../glib/gconvert.c:486 ../glib/giochannel.c:1150
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Teisendamine koodistikust '%s' koodistikku '%s' ei ole toetatud"
@@ -195,15 +195,10 @@ msgstr "Tõrge nimeviite '%s' lugemisel: %s"
 msgid "Symbolic links not supported"
 msgstr "Nimeviited ei ole toetatud"
 
-#: ../glib/giochannel.c:1150
-#, c-format
-msgid "Conversion from character set `%s' to `%s' is not supported"
-msgstr "Teisendamine koodistikust `%s' koodistikuks `%s ei ole toetatud"
-
 #: ../glib/giochannel.c:1154
 #, c-format
-msgid "Could not open converter from `%s' to `%s': %s"
-msgstr "Konverterit `%s'-st `%s'-ks pole võimalik avada: %s"
+msgid "Could not open converter from '%s' to '%s': %s"
+msgstr "Konverterit '%s'->'%s' pole võimalik avada: %s"
 
 #: ../glib/giochannel.c:1499
 msgid "Can't do a raw read in g_io_channel_read_line_string"
@@ -227,7 +222,7 @@ msgstr "Ei saa teostada toorest lugemise g_io_channel_read_to_end'i sees"
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "Tõrge faili '%s' avamisel: open() nurjus: %s"
 
-#: ../glib/gmappedfile.c:178
+#: ../glib/gmappedfile.c:185
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "Tõrge faili '%s' avamisel: mmap() nurjus: %s"
@@ -491,17 +486,42 @@ msgstr "Tõrge alamprotsessi torust lugemisel (%s)"
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Tõrge kataloogi '%s' muutmisel (%s)"
 
-#: ../glib/gspawn-win32.c:361 ../glib/gspawn-win32.c:582
+#: ../glib/gspawn-win32.c:361 ../glib/gspawn-win32.c:581
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Tõrge alamprotsessi käivitamisel (%s)"
 
-#: ../glib/gspawn-win32.c:886
+#: ../glib/gspawn-win32.c:471 ../glib/gspawn-win32.c:527
+#, c-format
+msgid "Invalid program name: %s"
+msgstr "Vigane programminimi: %s"
+
+#: ../glib/gspawn-win32.c:481 ../glib/gspawn-win32.c:537
+#: ../glib/gspawn-win32.c:780 ../glib/gspawn-win32.c:835
+#: ../glib/gspawn-win32.c:1364
+#, c-format
+msgid "Invalid string in argument vector at %d: %s"
+msgstr "Vigane string argumendivektori positsioonil %d: %s"
+
+#: ../glib/gspawn-win32.c:492 ../glib/gspawn-win32.c:548
+#: ../glib/gspawn-win32.c:794 ../glib/gspawn-win32.c:848
+#: ../glib/gspawn-win32.c:1397
+#, c-format
+msgid "Invalid string in environment: %s"
+msgstr "Vigane string keskkonnamuutujas: %s"
+
+#: ../glib/gspawn-win32.c:776 ../glib/gspawn-win32.c:831
+#: ../glib/gspawn-win32.c:1345
+#, c-format
+msgid "Invalid working directory: %s"
+msgstr "Vigane töökataloog: %s"
+
+#: ../glib/gspawn-win32.c:890
 #, c-format
 msgid "Failed to execute helper program (%s)"
 msgstr "Tõrge abiprogrammi käivitamisel (%s)"
 
-#: ../glib/gspawn-win32.c:1083
+#: ../glib/gspawn-win32.c:1084
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -678,26 +698,29 @@ msgstr ""
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Võtmefail ei sisalda võtit '%s' grupis '%s'"
 
-#: ../glib/gkeyfile.c:3072
+#: ../glib/gkeyfile.c:3067
 msgid "Key file contains escape character at end of line"
 msgstr "Võtmefail sisaldab rea lõpus paomärki"
 
-#: ../glib/gkeyfile.c:3094
+#: ../glib/gkeyfile.c:3089
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "Võtmefail sisaldab vigast paojada '%s'"
 
-#: ../glib/gkeyfile.c:3235
+#: ../glib/gkeyfile.c:3230
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Väärtust '%s' pole võimalik numbrilise väärtusena kasutada."
 
-#: ../glib/gkeyfile.c:3245
+#: ../glib/gkeyfile.c:3240
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "Täisarvu väärtus '%s' on väljaspool lubatud piire"
 
-#: ../glib/gkeyfile.c:3275
+#: ../glib/gkeyfile.c:3270
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Väärtust '%s' pole võimalik tõeväärtusena kasutada."
+
+#~ msgid "Conversion from character set `%s' to `%s' is not supported"
+#~ msgstr "Teisendamine koodistikust `%s' koodistikuks `%s ei ole toetatud"
