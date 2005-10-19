@@ -1,3 +1,8 @@
+2005-10-19  Manish Singh  <yosh@gimp.org>
+
+	* configure.in: Use AC_CHECK_FUNCS for _NSGetEnviron, to get the
+	config.h symbol automatically. Fixes bug #313731.
+
 2005-10-19  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gwin32.c (g_win32_get_package_installation_directory):

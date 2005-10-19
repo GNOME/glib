@@ -838,7 +838,7 @@ AC_MSG_RESULT(unsigned $glib_size_type)
 AC_CHECK_FUNCS(lstat strerror strsignal memmove mkstemp vsnprintf stpcpy strcasecmp strncasecmp poll getcwd nanosleep vasprintf setenv unsetenv getc_unlocked readlink symlink)
 
 AC_CHECK_HEADERS(crt_externs.h)
-AC_CHECK_FUNC(_NSGetEnviron)
+AC_CHECK_FUNCS(_NSGetEnviron)
 
 AC_FUNC_VSNPRINTF_C99
 AC_FUNC_PRINTF_UNIX98
