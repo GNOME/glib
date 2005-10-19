@@ -1318,7 +1318,7 @@ g_win32_get_package_installation_directory (gchar *package,
 	{
 	  g_hash_table_insert (package_dirs, package, result);
 	  G_UNLOCK (package_dirs);
-	  return result;
+	  return g_strdup (result);
 	}
       G_UNLOCK (package_dirs);
     }
