@@ -1,3 +1,10 @@
+2005-10-19  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gwin32.c (g_win32_get_package_installation_directory):
+	Return a g_strdup()ed copy of the value stored in the hash table,
+	so that it can be g_free()d without leaving a dangling pointer in
+	the hash table. (#319232)
+
 2005-10-06  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gunicollate.c (g_utf8_collate_key_for_filename): Handle
