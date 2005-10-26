@@ -958,7 +958,9 @@ g_utf8_to_ucs4 (const gchar *str,
  * Return value: a pointer to a newly allocated UTF-8 string.
  *               This value must be freed with g_free(). If an
  *               error occurs, %NULL will be returned and
- *               @error set.
+ *               @error set. In that case, @items_read will be
+ *               set to the position of the first invalid input 
+ *               character.
  **/
 gchar *
 g_ucs4_to_utf8 (const gunichar *str,
@@ -980,9 +982,6 @@ g_ucs4_to_utf8 (const gunichar *str,
 
       if (str[i] >= 0x80000000)
 	{
-	  if (items_read)
-	    *items_read = i;
-	  
 	  g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_ILLEGAL_SEQUENCE,
 		       _("Character out of range for UTF-8"));
 	  goto err_out;
