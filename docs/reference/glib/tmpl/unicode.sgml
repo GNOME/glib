@@ -40,7 +40,12 @@ A type which can hold any UCS-4 character code.
 
 <!-- ##### TYPEDEF gunichar2 ##### -->
 <para>
-A type which can hold any UTF-16 character code. 
+A type which can hold any UTF-16 code 
+point<footnote id="utf16_surrogate_pairs">UTF-16 also has so called 
+<firstterm>surrogate pairs</firstterm> to encode characters beyond the 
+BMP as pairs of 16bit numbers. Surrogate pairs cannot be stored in a 
+single gunichar2 field, but all GLib functions accepting gunichar2 arrays 
+will correctly interpret surrogate pairs.</footnote>.
 </para>
 
 

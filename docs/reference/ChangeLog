@@ -1,3 +1,8 @@
+2005-10-26  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/tmpl/unicode.sgml: Add a footnote about surrogate 
+	pairs.  (#317683, Behdad Esfahbod)
+
 2005-10-05  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/compiling.sgml: Document gmodule-no-export-2.0
