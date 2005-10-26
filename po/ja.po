@@ -74,7 +74,7 @@ msgstr "URI 中のホスト名 '%s' がおかしいです"
 #: glib/gconvert.c:1761
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
-msgstr "URI %s' に無効なエスケープ文字が含まれています"
+msgstr "URI '%s' に無効なエスケープ文字が含まれています"
 
 #: glib/gconvert.c:1855
 #, c-format
@@ -537,7 +537,7 @@ msgstr "子プロセスからデータを読めません (%s)"
 #: glib/gspawn.c:311
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
-msgstr "子プロセスからのデータ読む出し中に select() で予期しないエラー (%s)"
+msgstr "子プロセスからのデータ読み出し中に select() で予期しないエラー (%s)"
 
 #: glib/gspawn.c:394
 #, c-format
