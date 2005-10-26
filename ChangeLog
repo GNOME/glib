@@ -1,3 +1,9 @@
+2005-10-26  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gutf8.c (g_ucs4_to_utf8): Don't set items_read twice
+	in the error case, and add some documentation.  (#319806, Morten
+	Welinder)
+
 2005-10-19  Manish Singh  <yosh@gimp.org>
 
 	* configure.in: Use AC_CHECK_FUNCS for _NSGetEnviron, to get the
