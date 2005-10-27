@@ -156,6 +156,15 @@ An unset value is the same as an uninitialized (zero-filled)
 @value: 	An initialized #GValue structure.
 
 
+<!-- ##### FUNCTION g_value_set_instance ##### -->
+<para>
+Sets @value from an instantiatable type via the 
+value_table's collect_value() function.
+</para>
+
+@value: An initialized #GValue structure.
+
+
 <!-- ##### FUNCTION g_value_fits_pointer ##### -->
 <para>
 Determines if @value will fit inside the size of a pointer value.

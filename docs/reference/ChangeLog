@@ -1,5 +1,11 @@
 2005-10-26  Matthias Clasen  <mclasen@redhat.com>
 
+	* gobject/gobject-sections.txt: 
+	* gobject/tmpl/generic_values.sgml: Document g_value_set_instance(),
+	(#319885, Milosz Derezynski)
+
+2005-10-26  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/tmpl/unicode.sgml: Add a footnote about surrogate 
 	pairs.  (#317683, Behdad Esfahbod)
 
