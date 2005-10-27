@@ -1,3 +1,7 @@
+2005-10-27  Erdal Ronahi  <erdal.ronahi@gmail.com>
+
+	* configure.in: Added ku (Kurdish) to ALL_LINGUAS
+
 2005-10-26  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gutf8.c (g_ucs4_to_utf8): Don't set items_read twice
