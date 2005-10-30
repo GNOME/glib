@@ -896,7 +896,7 @@ g_utf8_to_ucs4 (const gchar *str,
   n_chars = 0;
   while ((len < 0 || str + len - in > 0) && *in)
     {
-      gunichar wc = g_utf8_get_char_extended (in, str + len - in);
+      gunichar wc = g_utf8_get_char_extended (in, len < 0 ? 6 : str + len - in);
       if (wc & 0x80000000)
 	{
 	  if (wc == (gunichar)-2)
@@ -944,7 +944,7 @@ g_utf8_to_ucs4 (const gchar *str,
  * @str: a UCS-4 encoded string
  * @len: the maximum length of @str to use. If @len < 0, then
  *       the string is terminated with a 0 character.
- * @items_read: location to store number of characters read read, or %NULL.
+ * @items_read: location to store number of characters read, or %NULL.
  * @items_written: location to store number of bytes written or %NULL.
  *                 The value here stored does not include the trailing 0
  *                 byte. 
@@ -1345,7 +1345,7 @@ g_utf8_to_utf16 (const gchar *str,
   n16 = 0;
   while ((len < 0 || str + len - in > 0) && *in)
     {
-      gunichar wc = g_utf8_get_char_extended (in, str + len - in);
+      gunichar wc = g_utf8_get_char_extended (in, len < 0 ? 6 : str + len - in);
       if (wc & 0x80000000)
 	{
 	  if (wc == (gunichar)-2)

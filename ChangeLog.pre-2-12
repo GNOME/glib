@@ -1,3 +1,11 @@
+2005-10-29  Matthias Clasen  <mclasen@redhat.com>
+
+	* tests/convert-test.c: Add some tests for conversions between
+	UTF-8, UCS-4 and UTF-16.
+
+	* glib/gutf8.c (g_utf8_to_ucs4, g_utf8_to_utf16): Fix handling
+	of len == -1, noticed by Morten Welinder.
+
 2005-10-27  Erdal Ronahi  <erdal.ronahi@gmail.com>
 
 	* configure.in: Added ku (Kurdish) to ALL_LINGUAS
