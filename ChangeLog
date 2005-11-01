@@ -1,3 +1,10 @@
+2005-11-02  Tor Lillqvist  <tml@novell.com>
+
+	* glib/glib.symbols: Remove large amount of trailing whitespace
+	from one line. Remove #ifdef G_UNDEFINED from around
+	g_hash_table_new and g_hash_table_new_full symbols, what was the
+	purpose of that? Add the g_slice functions.
+
 Tue Nov  1 16:24:20 2005  Tim Janik  <timj@imendio.com>
 
 	* glib/gmem.[hc]: prepared deprecation of GMemChunk and GAllocator.

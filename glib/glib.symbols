@@ -290,10 +290,8 @@ g_hash_table_foreach_steal
 g_hash_table_insert
 g_hash_table_lookup
 g_hash_table_lookup_extended
-#ifdef G_UNDEFINED
 g_hash_table_new
 g_hash_table_new_full
-#endif
 g_hash_table_remove
 g_hash_table_replace
 g_hash_table_size
@@ -574,7 +572,11 @@ g_realloc
 g_try_malloc G_GNUC_MALLOC
 g_try_malloc0 G_GNUC_MALLOC
 g_try_realloc
-#ifndef G_DISABLE_DEPRECATED                                                                                                                                  
+g_slice_alloc
+g_slice_alloc0
+g_slice_free1
+g_slice_free_chain
+#ifndef G_DISABLE_DEPRECATED
 g_allocator_free
 g_allocator_new
 g_mem_chunk_alloc
