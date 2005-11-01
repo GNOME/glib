@@ -34,199 +34,29 @@
 #include "galias.h"
 
 
-#ifndef DISABLE_MEM_POOLS
-struct _GAllocator /* from gmem.c */
-{
-  gchar         *name;
-  guint16        n_preallocs;
-  guint          is_unused : 1;
-  guint          type : 4;
-  GAllocator    *last;
-  GMemChunk     *mem_chunk;
-  GSList        *free_lists; /* implementation specific */
-};
+void g_slist_push_allocator (gpointer dummy) { /* present for binary compat only */ }
+void g_slist_pop_allocator  (void)           { /* present for binary compat only */ }
 
-G_LOCK_DEFINE_STATIC (current_allocator);
-static GAllocator       *current_allocator = NULL;
-
-/* HOLDS: current_allocator_lock */
-static void
-g_slist_validate_allocator (GAllocator *allocator)
-{
-  g_return_if_fail (allocator != NULL);
-  g_return_if_fail (allocator->is_unused == TRUE);
-
-  if (allocator->type != G_ALLOCATOR_SLIST)
-    {
-      allocator->type = G_ALLOCATOR_SLIST;
-      if (allocator->mem_chunk)
-	{
-	  g_mem_chunk_destroy (allocator->mem_chunk);
-	  allocator->mem_chunk = NULL;
-	}
-    }
-
-  if (!allocator->mem_chunk)
-    {
-      allocator->mem_chunk = g_mem_chunk_new (allocator->name,
-					      sizeof (GSList),
-					      sizeof (GSList) * allocator->n_preallocs,
-					      G_ALLOC_ONLY);
-      allocator->free_lists = NULL;
-    }
-
-  allocator->is_unused = FALSE;
-}
-
-void
-g_slist_push_allocator (GAllocator *allocator)
-{
-  G_LOCK (current_allocator);
-  g_slist_validate_allocator (allocator);
-  allocator->last = current_allocator;
-  current_allocator = allocator;
-  G_UNLOCK (current_allocator);
-}
-
-void
-g_slist_pop_allocator (void)
-{
-  G_LOCK (current_allocator);
-  if (current_allocator)
-    {
-      GAllocator *allocator;
-
-      allocator = current_allocator;
-      current_allocator = allocator->last;
-      allocator->last = NULL;
-      allocator->is_unused = TRUE;
-    }
-  G_UNLOCK (current_allocator);
-}
-
-static inline GSList*
-_g_slist_alloc (void)
-{
-  GSList *list;
-
-  G_LOCK (current_allocator);
-  if (!current_allocator)
-    {
-      GAllocator *allocator = g_allocator_new ("GLib default GSList allocator",
-					       128);
-      g_slist_validate_allocator (allocator);
-      allocator->last = NULL;
-      current_allocator = allocator; 
-    }
-  if (!current_allocator->free_lists)
-    {
-      list = g_chunk_new (GSList, current_allocator->mem_chunk);
-      list->data = NULL;
-    }
-  else
-    {
-      if (current_allocator->free_lists->data)
-	{
-	  list = current_allocator->free_lists->data;
-	  current_allocator->free_lists->data = list->next;
-	  list->data = NULL;
-	}
-      else
-	{
-	  list = current_allocator->free_lists;
-	  current_allocator->free_lists = list->next;
-	}
-    }
-  G_UNLOCK (current_allocator);
-  
-  list->next = NULL;
-
-  return list;
-}
+#define _g_slist_alloc0()       g_slice_new0 (GSList)
+#define _g_slist_free1(slist)   g_slice_free (GSList, slist)
 
 GSList*
 g_slist_alloc (void)
 {
-  return _g_slist_alloc ();
+  return _g_slist_alloc0 ();
 }
 
 void
-g_slist_free (GSList *list)
+g_slist_free (GSList *slist)
 {
-  if (list)
-    {
-      GSList *last_node = list;
-  
-#ifdef ENABLE_GC_FRIENDLY
-      while (last_node->next)
-	{
-	  last_node->data = NULL;
-	  last_node = last_node->next;
-	}
-      last_node->data = NULL;
-#else /* !ENABLE_GC_FRIENDLY */
-      list->data = list->next;  
-#endif /* ENABLE_GC_FRIENDLY */
-	
-      G_LOCK (current_allocator);
-      last_node->next = current_allocator->free_lists;
-      current_allocator->free_lists = list;
-      G_UNLOCK (current_allocator);
-    }
-}
-
-static inline void
-_g_slist_free_1 (GSList *list)
-{
-  if (list)
-    {
-      list->data = NULL;
-      G_LOCK (current_allocator);
-      list->next = current_allocator->free_lists;
-      current_allocator->free_lists = list;
-      G_UNLOCK (current_allocator);
-    }
+  g_slice_free_chain (sizeof (GSList), slist, G_STRUCT_OFFSET (GSList, next));
 }
 
 void
-g_slist_free_1 (GSList *list)
+g_slist_free_1 (GSList *slist)
 {
-  _g_slist_free_1 (list);
+  _g_slist_free1 (slist);
 }
-#else /* DISABLE_MEM_POOLS */
-
-#define _g_slist_alloc g_slist_alloc
-GSList*
-g_slist_alloc (void)
-{
-  GSList *list;
-  
-  list = g_new0 (GSList, 1);
-  
-  return list;
-}
-
-void
-g_slist_free (GSList *list)
-{
-  GSList *last;
-  
-  while (list)
-    {
-      last = list;
-      list = list->next;
-      g_free (last);
-    }
-}
-
-#define _g_slist_free_1 g_slist_free_1
-void
-g_slist_free_1 (GSList *list)
-{
-  g_free (list);
-}
-
-#endif
 
 GSList*
 g_slist_append (GSList   *list,
@@ -235,7 +65,7 @@ g_slist_append (GSList   *list,
   GSList *new_list;
   GSList *last;
 
-  new_list = _g_slist_alloc ();
+  new_list = _g_slist_alloc0 ();
   new_list->data = data;
 
   if (list)
@@ -256,7 +86,7 @@ g_slist_prepend (GSList   *list,
 {
   GSList *new_list;
 
-  new_list = _g_slist_alloc ();
+  new_list = _g_slist_alloc0 ();
   new_list->data = data;
   new_list->next = list;
 
@@ -277,7 +107,7 @@ g_slist_insert (GSList   *list,
   else if (position == 0)
     return g_slist_prepend (list, data);
 
-  new_list = _g_slist_alloc ();
+  new_list = _g_slist_alloc0 ();
   new_list->data = data;
 
   if (!list)
@@ -458,7 +288,7 @@ g_slist_delete_link (GSList *list,
 		     GSList *link)
 {
   list = _g_slist_remove_link (list, link);
-  _g_slist_free_1 (link);
+  _g_slist_free1 (link);
 
   return list;
 }
@@ -472,13 +302,13 @@ g_slist_copy (GSList *list)
     {
       GSList *last;
 
-      new_list = _g_slist_alloc ();
+      new_list = _g_slist_alloc0 ();
       new_list->data = list->data;
       last = new_list;
       list = list->next;
       while (list)
 	{
-	  last->next = _g_slist_alloc ();
+	  last->next = _g_slist_alloc0 ();
 	  last = last->next;
 	  last->data = list->data;
 	  list = list->next;
@@ -647,7 +477,7 @@ g_slist_insert_sorted (GSList       *list,
 
   if (!list)
     {
-      new_list = _g_slist_alloc ();
+      new_list = _g_slist_alloc0 ();
       new_list->data = data;
       return new_list;
     }
@@ -661,7 +491,7 @@ g_slist_insert_sorted (GSList       *list,
       cmp = (*func) (data, tmp_list->data);
     }
 
-  new_list = _g_slist_alloc ();
+  new_list = _g_slist_alloc0 ();
   new_list->data = data;
 
   if ((!tmp_list->next) && (cmp > 0))

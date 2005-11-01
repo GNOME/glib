@@ -45,7 +45,6 @@ struct _GRelation
   
   GHashTable   *all_tuples;
   GHashTable  **hashed_tuple_tables;
-  GMemChunk    *tuple_chunk;
   
   gint count;
 };
@@ -109,14 +108,20 @@ g_relation_new (gint fields)
   GRelation* rel = g_new0 (GRelation, 1);
   
   rel->fields = fields;
-  rel->tuple_chunk = g_mem_chunk_new ("Relation Chunk",
-				      fields * sizeof (gpointer),
-				      fields * sizeof (gpointer) * 128,
-				      G_ALLOC_AND_FREE);
   rel->all_tuples = g_hash_table_new (tuple_hash (fields), tuple_equal (fields));
   rel->hashed_tuple_tables = g_new0 (GHashTable*, fields);
   
   return rel;
+}
+
+static void
+relation_delete_value_tuple (gpointer tuple_key,
+                             gpointer tuple_value,
+                             gpointer user_data)
+{
+  GRelation *relation = user_data;
+  gpointer *tuple = tuple_value;
+  g_slice_free1 (relation->fields * sizeof (gpointer), tuple);
 }
 
 static void
@@ -132,9 +137,6 @@ g_relation_destroy (GRelation *relation)
   
   if (relation)
     {
-      g_hash_table_destroy (relation->all_tuples);
-      g_mem_chunk_destroy (relation->tuple_chunk);
-      
       for (i = 0; i < relation->fields; i += 1)
 	{
 	  if (relation->hashed_tuple_tables[i])
@@ -143,6 +145,9 @@ g_relation_destroy (GRelation *relation)
 	      g_hash_table_destroy (relation->hashed_tuple_tables[i]);
 	    }
 	}
+
+      g_hash_table_foreach (relation->all_tuples, relation_delete_value_tuple, relation);
+      g_hash_table_destroy (relation->all_tuples);
       
       g_free (relation->hashed_tuple_tables);
       g_free (relation);
@@ -166,16 +171,16 @@ void
 g_relation_insert (GRelation   *relation,
 		   ...)
 {
-  gpointer* tuple = g_chunk_new (gpointer, relation->tuple_chunk);
+  gpointer* tuple = g_slice_alloc (relation->fields * sizeof (gpointer));
   va_list args;
   gint i;
   
-  va_start(args, relation);
+  va_start (args, relation);
   
   for (i = 0; i < relation->fields; i += 1)
-    tuple[i] = va_arg(args, gpointer);
+    tuple[i] = va_arg (args, gpointer);
   
-  va_end(args);
+  va_end (args);
   
   g_hash_table_insert (relation->all_tuples, tuple, tuple);
   
@@ -211,21 +216,21 @@ g_relation_delete_tuple (gpointer tuple_key,
 			 gpointer user_data)
 {
   gpointer      *tuple = (gpointer*) tuple_value;
-  GRelation     *rel = (GRelation *) user_data;
+  GRelation     *relation = (GRelation *) user_data;
   gint           j;
   
   g_assert (tuple_key == tuple_value);
   
-  for (j = 0; j < rel->fields; j += 1)
+  for (j = 0; j < relation->fields; j += 1)
     {
-      GHashTable *one_table = rel->hashed_tuple_tables[j];
+      GHashTable *one_table = relation->hashed_tuple_tables[j];
       gpointer    one_key;
       GHashTable *per_key_table;
       
       if (one_table == NULL)
 	continue;
       
-      if (j == rel->current_field)
+      if (j == relation->current_field)
 	/* can't delete from the table we're foreaching in */
 	continue;
       
@@ -236,9 +241,10 @@ g_relation_delete_tuple (gpointer tuple_key,
       g_hash_table_remove (per_key_table, tuple);
     }
   
-  g_hash_table_remove (rel->all_tuples, tuple);
+  if (g_hash_table_remove (relation->all_tuples, tuple))
+    g_slice_free1 (relation->fields * sizeof (gpointer), tuple);
   
-  rel->count -= 1;
+  relation->count -= 1;
 }
 
 gint
@@ -341,7 +347,7 @@ g_relation_count (GRelation     *relation,
 gboolean
 g_relation_exists (GRelation   *relation, ...)
 {
-  gpointer* tuple = g_chunk_new (gpointer, relation->tuple_chunk);
+  gpointer *tuple = g_slice_alloc (relation->fields * sizeof (gpointer));
   va_list args;
   gint i;
   gboolean result;
@@ -355,7 +361,7 @@ g_relation_exists (GRelation   *relation, ...)
   
   result = g_hash_table_lookup (relation->all_tuples, tuple) != NULL;
   
-  g_mem_chunk_free (relation->tuple_chunk, tuple);
+  g_slice_free1 (relation->fields * sizeof (gpointer), tuple);
   
   return result;
 }

@@ -41,9 +41,7 @@
 
 /* --- defines --- */
 #define	G_QUARK_BLOCK_SIZE			(512)
-#define	G_DATA_MEM_CHUNK_PREALLOC		(128)
 #define	G_DATA_CACHE_MAX			(512)
-#define	G_DATASET_MEM_CHUNK_PREALLOC		(32)
 
 /* datalist pointer modifications have to be done with the g_dataset_global mutex held */
 #define G_DATALIST_GET_POINTER(datalist)						\
@@ -89,8 +87,6 @@ G_LOCK_DEFINE_STATIC (g_dataset_global);
 static GHashTable   *g_dataset_location_ht = NULL;
 static GDataset     *g_dataset_cached = NULL; /* should this be
 						 threadspecific? */
-static GMemChunk    *g_dataset_mem_chunk = NULL;
-static GMemChunk    *g_data_mem_chunk = NULL;
 static GData	    *g_data_cache = NULL;
 static guint	     g_data_cache_length = 0;
 
@@ -133,7 +129,7 @@ g_datalist_clear_i (GData **datalist)
 	  g_data_cache_length++;
 	}
       else
-	g_mem_chunk_free (g_data_mem_chunk, prev);
+	g_slice_free (GData, prev);
     }
 }
 
@@ -181,7 +177,7 @@ g_dataset_destroy_internal (GDataset *dataset)
 	  if (dataset == g_dataset_cached)
 	    g_dataset_cached = NULL;
 	  g_hash_table_remove (g_dataset_location_ht, dataset_location);
-	  g_mem_chunk_free (g_dataset_mem_chunk, dataset);
+	  g_slice_free (GDataset, dataset);
 	  break;
 	}
       
@@ -264,7 +260,7 @@ g_data_set_internal (GData	  **datalist,
 		  g_data_cache_length++;
 		}
 	      else
-		g_mem_chunk_free (g_data_mem_chunk, list);
+		g_slice_free (GData, list);
 	      
 	      return ret_data;
 	    }
@@ -315,7 +311,7 @@ g_data_set_internal (GData	  **datalist,
 	  g_data_cache_length--;
 	}
       else
-	list = g_chunk_new (GData, g_data_mem_chunk);
+	list = g_slice_new (GData);
       list->next = G_DATALIST_GET_POINTER (datalist);
       list->id = key_id;
       list->data = data;
@@ -352,7 +348,7 @@ g_dataset_id_set_data_full (gconstpointer  dataset_location,
   dataset = g_dataset_lookup (dataset_location);
   if (!dataset)
     {
-      dataset = g_chunk_new (GDataset, g_dataset_mem_chunk);
+      dataset = g_slice_new (GDataset);
       dataset->location = dataset_location;
       g_datalist_init (&dataset->datalist);
       g_hash_table_insert (g_dataset_location_ht, 
@@ -610,16 +606,6 @@ g_data_initialize (void)
 
   g_dataset_location_ht = g_hash_table_new (g_direct_hash, NULL);
   g_dataset_cached = NULL;
-  g_dataset_mem_chunk =
-    g_mem_chunk_new ("GDataset MemChunk",
-		     sizeof (GDataset),
-		     sizeof (GDataset) * G_DATASET_MEM_CHUNK_PREALLOC,
-		     G_ALLOC_AND_FREE);
-  g_data_mem_chunk =
-    g_mem_chunk_new ("GData MemChunk",
-		     sizeof (GData),
-		     sizeof (GData) * G_DATA_MEM_CHUNK_PREALLOC,
-		     G_ALLOC_AND_FREE);
 }
 
 GQuark

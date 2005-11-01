@@ -41,11 +41,10 @@ struct _GSList
 
 /* Singly linked lists
  */
-void     g_slist_push_allocator (GAllocator       *allocator);
-void     g_slist_pop_allocator  (void);
 GSList*  g_slist_alloc          (void);
 void     g_slist_free           (GSList           *list);
 void     g_slist_free_1         (GSList           *list);
+#define	 g_slist_free1		g_slist_free_1
 GSList*  g_slist_append         (GSList           *list,
 				 gpointer          data);
 GSList*  g_slist_prepend        (GSList           *list,
@@ -96,6 +95,10 @@ gpointer g_slist_nth_data       (GSList           *list,
 				 guint             n);
 #define  g_slist_next(slist)	((slist) ? (((GSList *)(slist))->next) : NULL)
 
+#ifndef G_DISABLE_DEPRECATED
+void     g_slist_push_allocator (gpointer	   dummy);
+void     g_slist_pop_allocator  (void);
+#endif
 G_END_DECLS
 
 #endif /* __G_SLIST_H__ */

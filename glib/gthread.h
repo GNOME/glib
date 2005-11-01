@@ -289,6 +289,9 @@ gboolean  g_static_rw_lock_writer_trylock (GStaticRWLock* lock);
 void      g_static_rw_lock_writer_unlock  (GStaticRWLock* lock);
 void      g_static_rw_lock_free           (GStaticRWLock* lock);
 
+void	  g_thread_foreach         	  (GFunc    	  thread_func,
+					   gpointer 	  user_data);
+
 typedef enum
 {
   G_ONCE_STATUS_NOTCALLED,
@@ -366,6 +369,11 @@ extern void glib_dummy_decl (void);
 #  define G_UNLOCK(name)
 #  define G_TRYLOCK(name)               (TRUE)
 #endif  /* !G_THREADS_ENABLED */
+
+/* --- internal API --- */
+gpointer _g_thread_mem_private_get (GThread *thread);
+void     _g_thread_mem_private_set (GThread *thread,
+				    gpointer data);
 
 G_END_DECLS
 

@@ -1,3 +1,11 @@
+Tue Nov  1 17:07:43 2005  Tim Janik  <timj@imendio.com>
+
+	* gsignal.c: allocate signal handlers and handler match structures
+	via the new g_slice_*() API (get's rid of GList allocation hack).
+
+	* gtype.c: got rid of per-type memchunks. if GTypeInfo.n_preallocs
+	is > 0, objects are allocated via g_slice_*() instead of g_malloc().
+
 2005-10-03  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib-mkenums.in: Really fix #314890.

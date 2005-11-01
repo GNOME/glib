@@ -42,7 +42,6 @@
 /* pre allocation configurations
  */
 #define	MAX_STACK_VALUES	(16)
-#define HANDLER_PRE_ALLOC       (48)
 
 #define REPORT_BUG      "please report occurrence circumstances to gtk-devel-list@gnome.org"
 #ifdef	G_ENABLE_DEBUG
@@ -50,41 +49,6 @@
 static volatile gpointer g_trace_instance_signals = NULL;
 static volatile gpointer g_trap_instance_signals = NULL;
 #endif	/* G_ENABLE_DEBUG */
-
-
-/* --- generic allocation --- */
-/* we special case allocations generically by replacing
- * these functions with more speed/memory aware variants
- */
-#ifndef	DISABLE_MEM_POOLS
-static inline gpointer
-g_generic_node_alloc (GTrashStack **trash_stack_p,
-                      guint         sizeof_node,
-                      guint         nodes_pre_alloc)
-{
-  gpointer node = g_trash_stack_pop (trash_stack_p);
-  
-  if (!node)
-    {
-      guint8 *block;
-      
-      nodes_pre_alloc = MAX (nodes_pre_alloc, 1);
-      block = g_malloc (sizeof_node * nodes_pre_alloc);
-      while (--nodes_pre_alloc)
-        {
-          g_trash_stack_push (trash_stack_p, block);
-          block += sizeof_node;
-        }
-      node = block;
-    }
-  
-  return node;
-}
-#define	g_generic_node_free(trash_stack_p, node) g_trash_stack_push (trash_stack_p, node)
-#else	/* !DISABLE_MEM_POOLS */
-#define	g_generic_node_alloc(t,sizeof_node,p)	 g_malloc (sizeof_node)
-#define	g_generic_node_free(t,node)		 g_free (node)
-#endif	/* !DISABLE_MEM_POOLS */
 
 
 /* --- typedefs --- */
@@ -232,10 +196,7 @@ struct _HandlerMatch
 {
   Handler      *handler;
   HandlerMatch *next;
-  union {
-    guint       signal_id;
-    gpointer	dummy;
-  } d;
+  guint         signal_id;
 };
 
 typedef struct
@@ -434,10 +395,10 @@ handler_match_prepend (HandlerMatch *list,
    * instead, we use GList* nodes, since they are exactly the size
    * we need and are already cached. g_signal_init() asserts this.
    */
-  node = (HandlerMatch*) g_list_alloc ();
+  node = g_slice_new (HandlerMatch);
   node->handler = handler;
   node->next = list;
-  node->d.signal_id = signal_id;
+  node->signal_id = signal_id;
   handler_ref (handler);
   
   return node;
@@ -448,8 +409,8 @@ handler_match_free1_R (HandlerMatch *node,
 {
   HandlerMatch *next = node->next;
   
-  handler_unref_R (node->d.signal_id, instance, node->handler);
-  g_list_free_1 ((GList*) node);
+  handler_unref_R (node->signal_id, instance, node->handler);
+  g_slice_free (HandlerMatch, node);
   
   return next;
 }
@@ -541,9 +502,7 @@ handlers_find (gpointer         instance,
 static inline Handler*
 handler_new (gboolean after)
 {
-  Handler *handler = g_generic_node_alloc (&g_handler_ts,
-                                           sizeof (Handler),
-                                           HANDLER_PRE_ALLOC);
+  Handler *handler = g_slice_new (Handler);
 #ifndef G_DISABLE_CHECKS
   if (g_handler_sequential_number < 1)
     g_error (G_STRLOC ": handler id overflow, %s", REPORT_BUG);
@@ -624,7 +583,7 @@ handler_unref_R (guint    signal_id,
       SIGNAL_UNLOCK ();
       g_closure_unref (handler->closure);
       SIGNAL_LOCK ();
-      g_generic_node_free (&g_handler_ts, handler);
+      g_slice_free (Handler, handler);
     }
 }
 

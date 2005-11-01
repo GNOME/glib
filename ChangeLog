@@ -1,3 +1,53 @@
+Tue Nov  1 16:24:20 2005  Tim Janik  <timj@imendio.com>
+
+	* glib/gmem.[hc]: prepared deprecation of GMemChunk and GAllocator.
+	added g_slice_*() API to allocate and cache small bits of memory.
+	an actuall allocator implementation for g_slice_*() is still pending.
+
+	* glib/gthread.[hc]: changes from a patch by Matthias Clasen.
+	changed GRealThread list to use in-structure *next; fields instead
+	of GSList, in order for thread iteration to not depenend on g_slice_*()
+	indirectly.
+	_g_thread_mem_private_get():
+	_g_thread_mem_private_set(): added accessors for private memory,
+	needed because the ordinary GPrivate implementation relies on GArray
+	and GSList and therefore indirectly on working g_slice_*() allocations.
+
+	* glib/gthread.[hc]:
+	g_thread_foreach(): new public API function to loop over all existing threads.
+
+	* glib/gdataset.c:
+	* glib/gstring.c:
+	* glib/gcache.c:
+	* glib/garray.c: 
+	* glib/gqueue.c:
+	* glib/gslist.c:
+	* glib/glist.c:
+	* glib/ghash.c:
+	* glib/gtree.c:
+	* glib/ghook.c:
+	* glib/gmain.c:
+	* glib/gnode.c:
+	removed GAllocator and free list usages and accompanying locks.
+	use g_slice_*() API to allocate and cache small bits of memory.
+
+	* glib/ghook.h: removed GMemChunk field from public API.
+
+	* glib/gslist.h:
+	* glib/glist.h: deprecate allocator API, provide _free1() for consistency.
+
+	* glib/gnode.h: deprecate allocator API.
+
+	* glib/gmain.c: reordered GPollRec fields so g_slice_free_chain() can
+	be used for poll rec lists.
+
+	* glib/grel.c: removed mem chunk usage, and allocated tuples via g_slice_*().
+	g_relation_destroy(): free all tuples from the all_tuples hash table,
+	this effectively maintains the life time track keeping of tuples.
+	g_relation_delete_tuple(): free tuples which are removed from the
+	all_tuples hash table. this fixes a temporary leak that was present
+	in the memchunk code until the destruction of the relation.
+
 2005-10-29  Matthias Clasen  <mclasen@redhat.com>
 
 	* tests/convert-test.c: Add some tests for conversions between

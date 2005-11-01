@@ -37,10 +37,6 @@
 #include "galias.h"
 
 
-/* --- defines --- */
-#define	G_HOOKS_PREALLOC	(16)
-
-
 /* --- functions --- */
 static void
 default_finalize_hook (GHookList *hook_list,
@@ -61,16 +57,12 @@ g_hook_list_init (GHookList *hook_list,
 {
   g_return_if_fail (hook_list != NULL);
   g_return_if_fail (hook_size >= sizeof (GHook));
-  g_return_if_fail (hook_size < 65536);
   
   hook_list->seq_id = 1;
   hook_list->hook_size = hook_size;
   hook_list->is_setup = TRUE;
   hook_list->hooks = NULL;
-  hook_list->hook_memchunk = g_mem_chunk_new ("GHook Memchunk",
-					      hook_size,
-					      hook_size * G_HOOKS_PREALLOC,
-					      G_ALLOC_AND_FREE);
+  hook_list->dummy3 = NULL;
   hook_list->finalize_hook = default_finalize_hook;
   hook_list->dummy[0] = NULL;
   hook_list->dummy[1] = NULL;
@@ -90,8 +82,7 @@ g_hook_list_clear (GHookList *hook_list)
       hook = hook_list->hooks;
       if (!hook)
 	{
-	  g_mem_chunk_destroy (hook_list->hook_memchunk);
-	  hook_list->hook_memchunk = NULL;
+	  /* destroy hook_list->hook_memchunk */
 	}
       else
 	do
@@ -105,8 +96,6 @@ g_hook_list_clear (GHookList *hook_list)
 	    hook = tmp;
 	  }
 	while (hook);
-      if (hook_list->hook_memchunk)
-	g_warning (G_STRLOC ": failed to clear hooklist, unconsolidated references on hooks left");
     }
 }
 
@@ -118,7 +107,7 @@ g_hook_alloc (GHookList *hook_list)
   g_return_val_if_fail (hook_list != NULL, NULL);
   g_return_val_if_fail (hook_list->is_setup, NULL);
   
-  hook = g_chunk_new0 (GHook, hook_list->hook_memchunk);
+  hook = g_slice_alloc0 (hook_list->hook_size);
   hook->data = NULL;
   hook->next = NULL;
   hook->prev = NULL;
@@ -142,7 +131,7 @@ g_hook_free (GHookList *hook_list,
   g_return_if_fail (!G_HOOK_IN_CALL (hook));
 
   hook_list->finalize_hook (hook_list, hook);
-  g_chunk_free (hook, hook_list->hook_memchunk);
+  g_slice_free1 (hook_list->hook_size, hook);
 }
 
 void
@@ -184,7 +173,6 @@ g_hook_unref (GHookList *hook_list,
 	      GHook	*hook)
 {
   g_return_if_fail (hook_list != NULL);
-  g_return_if_fail (hook_list->hook_memchunk != NULL);
   g_return_if_fail (hook != NULL);
   g_return_if_fail (hook->ref_count > 0);
   
@@ -213,8 +201,7 @@ g_hook_unref (GHookList *hook_list,
       
 	  if (!hook_list->hooks)
 	    {
-	      g_mem_chunk_destroy (hook_list->hook_memchunk);
-	      hook_list->hook_memchunk = NULL;
+	      /* destroy hook_list->hook_memchunk */
 	    }
 	}
       else

@@ -602,8 +602,55 @@ GMemVTable *glib_mem_profiler_table = &profiler_table;
 
 #endif	/* !G_DISABLE_CHECKS */
 
+/* --- memory slices --- */
+typedef struct {
+  gpointer dummy, next;
+} MemSlice;
+
+gpointer
+g_slice_alloc (guint block_size)
+{
+  return g_malloc (block_size);
+}
+
+gpointer
+g_slice_alloc0 (guint block_size)
+{
+  return g_malloc0 (block_size);
+}
+
+void
+g_slice_free1 (guint    block_size,
+               gpointer mem_block)
+{
+  if (mem_block)
+    g_free (mem_block);
+}
+
+void
+g_slice_free_chain (guint    block_size,
+                    gpointer mem_chain,
+                    guint    next_offset)
+{
+  MemSlice *slice = mem_chain;
+  g_return_if_fail (next_offset == G_STRUCT_OFFSET (MemSlice, next));
+  g_return_if_fail (block_size >= sizeof (MemSlice));
+  while (slice)
+    {
+      MemSlice *current = slice;
+      slice = slice->next;
+      g_slice_free1 (block_size, current);
+    }
+}
 
 /* --- MemChunks --- */
+#ifndef G_ALLOC_AND_FREE
+typedef struct _GAllocator GAllocator;
+typedef struct _GMemChunk  GMemChunk;
+#define G_ALLOC_ONLY	  1
+#define G_ALLOC_AND_FREE  2
+#endif
+
 typedef struct _GFreeAtom      GFreeAtom;
 typedef struct _GMemArea       GMemArea;
 
@@ -1219,50 +1266,28 @@ void	g_blow_chunks		(void)			{}
 #endif /* DISABLE_MEM_POOLS */
 
 
-/* generic allocators
- */
-struct _GAllocator /* from gmem.c */
-{
-  gchar		*name;
-  guint16	 n_preallocs;
-  guint		 is_unused : 1;
-  guint		 type : 4;
-  GAllocator	*last;
-  GMemChunk	*mem_chunk;
-  gpointer	 dummy; /* implementation specific */
-};
-
 GAllocator*
 g_allocator_new (const gchar *name,
 		 guint        n_preallocs)
 {
-  GAllocator *allocator;
-
-  g_return_val_if_fail (name != NULL, NULL);
-
-  allocator = g_new0 (GAllocator, 1);
-  allocator->name = g_strdup (name);
-  allocator->n_preallocs = CLAMP (n_preallocs, 1, 65535);
-  allocator->is_unused = TRUE;
-  allocator->type = 0;
-  allocator->last = NULL;
-  allocator->mem_chunk = NULL;
-  allocator->dummy = NULL;
-
-  return allocator;
+  static const struct _GAllocator {
+    gchar      *name;
+    guint16     n_preallocs;
+    guint       is_unused : 1;
+    guint       type : 4;
+    GAllocator *last;
+    GMemChunk  *mem_chunk;
+    gpointer    free_list;
+  } dummy = {
+    "GAllocator is deprecated", 0, TRUE, 0, NULL, NULL, NULL,
+  };
+  /* some (broken) GAllocator uses depend on non-NULL allocators */
+  return (GAllocator*) &dummy;
 }
 
 void
 g_allocator_free (GAllocator *allocator)
 {
-  g_return_if_fail (allocator != NULL);
-  g_return_if_fail (allocator->is_unused == TRUE);
-
-  g_free (allocator->name);
-  if (allocator->mem_chunk)
-    g_mem_chunk_destroy (allocator->mem_chunk);
-
-  g_free (allocator);
 }
 
 void

@@ -29,11 +29,6 @@
 #include "glib.h"
 #include "galias.h"
 
-
-G_LOCK_DEFINE_STATIC (queue_memchunk);
-static GMemChunk   *queue_memchunk = NULL;
-static GTrashStack *free_queue_nodes = NULL;
-
 /**
  * g_queue_new:
  *
@@ -44,27 +39,7 @@ static GTrashStack *free_queue_nodes = NULL;
 GQueue*
 g_queue_new (void)
 {
-  GQueue *queue;
-
-  G_LOCK (queue_memchunk);
-  queue = g_trash_stack_pop (&free_queue_nodes);
-
-  if (!queue)
-    {
-      if (!queue_memchunk)
-	queue_memchunk = g_mem_chunk_new ("GLib GQueue chunk",
-					  sizeof (GQueue),
-					  sizeof (GQueue) * 128,
-					  G_ALLOC_ONLY);
-      queue = g_chunk_new (GQueue, queue_memchunk);
-    }
-  G_UNLOCK (queue_memchunk);
-
-  queue->head = NULL;
-  queue->tail = NULL;
-  queue->length = 0;
-
-  return queue;
+  return g_slice_new0 (GQueue);
 }
 
 /**
@@ -79,15 +54,7 @@ g_queue_free (GQueue *queue)
   g_return_if_fail (queue != NULL);
 
   g_list_free (queue->head);
-
-#ifdef ENABLE_GC_FRIENDLY
-  queue->head = NULL;
-  queue->tail = NULL;
-#endif /* ENABLE_GC_FRIENDLY */
-
-  G_LOCK (queue_memchunk);
-  g_trash_stack_push (&free_queue_nodes, queue);
-  G_UNLOCK (queue_memchunk);
+  g_slice_free (GQueue, queue);
 }
 
 /**

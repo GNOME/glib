@@ -70,9 +70,6 @@ static gint g_nearest_pow        (gint        num) G_GNUC_CONST;
 static void g_array_maybe_expand (GRealArray *array,
 				  gint        len);
 
-static GMemChunk *array_mem_chunk = NULL;
-G_LOCK_DEFINE_STATIC (array_mem_chunk);
-
 GArray*
 g_array_new (gboolean zero_terminated,
 	     gboolean clear,
@@ -86,16 +83,7 @@ GArray* g_array_sized_new (gboolean zero_terminated,
 			   guint    elt_size,
 			   guint    reserved_size)
 {
-  GRealArray *array;
-
-  G_LOCK (array_mem_chunk);
-  if (!array_mem_chunk)
-    array_mem_chunk = g_mem_chunk_new ("array mem chunk",
-				       sizeof (GRealArray),
-				       1024, G_ALLOC_AND_FREE);
-
-  array = g_chunk_new (GRealArray, array_mem_chunk);
-  G_UNLOCK (array_mem_chunk);
+  GRealArray *array = g_slice_new (GRealArray);
 
   array->data            = NULL;
   array->len             = 0;
@@ -129,9 +117,7 @@ g_array_free (GArray  *array,
   else
     segment = array->data;
 
-  G_LOCK (array_mem_chunk);
-  g_mem_chunk_free (array_mem_chunk, array);
-  G_UNLOCK (array_mem_chunk);
+  g_slice_free1 (sizeof (GRealArray), array);
 
   return segment;
 }
@@ -380,10 +366,6 @@ struct _GRealPtrArray
 static void g_ptr_array_maybe_expand (GRealPtrArray *array,
 				      gint           len);
 
-static GMemChunk *ptr_array_mem_chunk = NULL;
-G_LOCK_DEFINE_STATIC (ptr_array_mem_chunk);
-
-
 GPtrArray*
 g_ptr_array_new (void)
 {
@@ -393,16 +375,7 @@ g_ptr_array_new (void)
 GPtrArray*  
 g_ptr_array_sized_new (guint reserved_size)
 {
-  GRealPtrArray *array;
-
-  G_LOCK (ptr_array_mem_chunk);
-  if (!ptr_array_mem_chunk)
-    ptr_array_mem_chunk = g_mem_chunk_new ("array mem chunk",
-					   sizeof (GRealPtrArray),
-					   1024, G_ALLOC_AND_FREE);
-
-  array = g_chunk_new (GRealPtrArray, ptr_array_mem_chunk);
-  G_UNLOCK (ptr_array_mem_chunk);
+  GRealPtrArray *array = g_slice_new (GRealPtrArray);
 
   array->pdata = NULL;
   array->len = 0;
@@ -430,9 +403,7 @@ g_ptr_array_free (GPtrArray   *array,
   else
     segment = array->pdata;
 
-  G_LOCK (ptr_array_mem_chunk);
-  g_mem_chunk_free (ptr_array_mem_chunk, array);
-  G_UNLOCK (ptr_array_mem_chunk);
+  g_slice_free1 (sizeof (GRealPtrArray), array);
 
   return segment;
 }

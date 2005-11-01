@@ -53,9 +53,6 @@ struct _GStringChunk
   gsize       default_size;    
 };
 
-G_LOCK_DEFINE_STATIC (string_mem_chunk);
-static GMemChunk *string_mem_chunk = NULL;
-
 /* Hash Functions.
  */
 
@@ -268,16 +265,7 @@ g_string_maybe_expand (GString* string,
 GString*
 g_string_sized_new (gsize dfl_size)    
 {
-  GString *string;
-
-  G_LOCK (string_mem_chunk);
-  if (!string_mem_chunk)
-    string_mem_chunk = g_mem_chunk_new ("string mem chunk",
-					sizeof (GString),
-					1024, G_ALLOC_AND_FREE);
-
-  string = g_chunk_new (GString, string_mem_chunk);
-  G_UNLOCK (string_mem_chunk);
+  GString *string = g_slice_new (GString);
 
   string->allocated_len = 0;
   string->len   = 0;
@@ -344,9 +332,7 @@ g_string_free (GString *string,
   else
     segment = string->str;
 
-  G_LOCK (string_mem_chunk);
-  g_mem_chunk_free (string_mem_chunk, string);
-  G_UNLOCK (string_mem_chunk);
+  g_slice_free (GString, string);
 
   return segment;
 }

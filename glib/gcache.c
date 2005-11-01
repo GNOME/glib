@@ -64,13 +64,20 @@ struct _GCache
   GHashTable *value_table;
 };
 
+static inline GCacheNode*
+g_cache_node_new (gpointer value)
+{
+  GCacheNode *node = g_slice_new (GCacheNode);
+  node->value = value;
+  node->ref_count = 1;
+  return node;
+}
 
-static GCacheNode* g_cache_node_new     (gpointer value);
-static void        g_cache_node_destroy (GCacheNode *node);
-
-
-static GMemChunk *node_mem_chunk = NULL;
-G_LOCK_DEFINE_STATIC (node_mem_chunk);
+static inline void
+g_cache_node_destroy (GCacheNode *node)
+{
+  g_slice_free (GCacheNode, node);
+}
 
 GCache*
 g_cache_new (GCacheNewFunc      value_new_func,
@@ -91,7 +98,7 @@ g_cache_new (GCacheNewFunc      value_new_func,
   g_return_val_if_fail (hash_value_func != NULL, NULL);
   g_return_val_if_fail (key_equal_func != NULL, NULL);
 
-  cache = g_new (GCache, 1);
+  cache = g_slice_new (GCache);
   cache->value_new_func = value_new_func;
   cache->value_destroy_func = value_destroy_func;
   cache->key_dup_func = key_dup_func;
@@ -109,7 +116,7 @@ g_cache_destroy (GCache *cache)
 
   g_hash_table_destroy (cache->key_table);
   g_hash_table_destroy (cache->value_table);
-  g_free (cache);
+  g_slice_free (GCache, cache);
 }
 
 gpointer
@@ -184,34 +191,6 @@ g_cache_value_foreach (GCache   *cache,
   g_return_if_fail (func != NULL);
 
   g_hash_table_foreach (cache->key_table, func, user_data);
-}
-
-
-static GCacheNode*
-g_cache_node_new (gpointer value)
-{
-  GCacheNode *node;
-
-  G_LOCK (node_mem_chunk);
-  if (!node_mem_chunk)
-    node_mem_chunk = g_mem_chunk_new ("cache node mem chunk", sizeof (GCacheNode),
-				      1024, G_ALLOC_AND_FREE);
-
-  node = g_chunk_new (GCacheNode, node_mem_chunk);
-  G_UNLOCK (node_mem_chunk);
-
-  node->value = value;
-  node->ref_count = 1;
-
-  return node;
-}
-
-static void
-g_cache_node_destroy (GCacheNode *node)
-{
-  G_LOCK (node_mem_chunk);
-  g_mem_chunk_free (node_mem_chunk, node);
-  G_UNLOCK (node_mem_chunk);
 }
 
 #define __G_CACHE_C__

@@ -36,170 +36,33 @@
 #include "glib.h"
 #include "galias.h"
 
-#ifndef DISABLE_MEM_POOLS
-/* node allocation
- */
-struct _GAllocator /* from gmem.c */
-{
-  gchar         *name;
-  guint16        n_preallocs;
-  guint          is_unused : 1;
-  guint          type : 4;
-  GAllocator    *last;
-  GMemChunk     *mem_chunk;
-  GNode         *free_nodes; /* implementation specific */
-};
+void g_node_push_allocator (gpointer dummy) { /* present for binary compat only */ }
+void g_node_pop_allocator  (void)           { /* present for binary compat only */ }
 
-G_LOCK_DEFINE_STATIC (current_allocator);
-static GAllocator *current_allocator = NULL;
-
-/* HOLDS: current_allocator_lock */
-static void
-g_node_validate_allocator (GAllocator *allocator)
-{
-  g_return_if_fail (allocator != NULL);
-  g_return_if_fail (allocator->is_unused == TRUE);
-
-  if (allocator->type != G_ALLOCATOR_NODE)
-    {
-      allocator->type = G_ALLOCATOR_NODE;
-      if (allocator->mem_chunk)
-	{
-	  g_mem_chunk_destroy (allocator->mem_chunk);
-	  allocator->mem_chunk = NULL;
-	}
-    }
-
-  if (!allocator->mem_chunk)
-    {
-      allocator->mem_chunk = g_mem_chunk_new (allocator->name,
-					      sizeof (GNode),
-					      sizeof (GNode) * allocator->n_preallocs,
-					      G_ALLOC_ONLY);
-      allocator->free_nodes = NULL;
-    }
-
-  allocator->is_unused = FALSE;
-}
-
-void
-g_node_push_allocator (GAllocator *allocator)
-{
-  G_LOCK (current_allocator);
-  g_node_validate_allocator (allocator);
-  allocator->last = current_allocator;
-  current_allocator = allocator;
-  G_UNLOCK (current_allocator);
-}
-
-void
-g_node_pop_allocator (void)
-{
-  G_LOCK (current_allocator);
-  if (current_allocator)
-    {
-      GAllocator *allocator;
-
-      allocator = current_allocator;
-      current_allocator = allocator->last;
-      allocator->last = NULL;
-      allocator->is_unused = TRUE;
-    }
-  G_UNLOCK (current_allocator);
-}
-
+#define g_node_alloc0()         g_slice_new0 (GNode)
+#define g_node_free(node)       g_slice_free (GNode, node)
 
 /* --- functions --- */
 GNode*
 g_node_new (gpointer data)
 {
-  GNode *node;
-
-  G_LOCK (current_allocator);
-  if (!current_allocator)
-    {
-       GAllocator *allocator = g_allocator_new ("GLib default GNode allocator",
-						128);
-       g_node_validate_allocator (allocator);
-       allocator->last = NULL;
-       current_allocator = allocator;
-    }
-  if (!current_allocator->free_nodes)
-    node = g_chunk_new (GNode, current_allocator->mem_chunk);
-  else
-    {
-      node = current_allocator->free_nodes;
-      current_allocator->free_nodes = node->next;
-    }
-  G_UNLOCK (current_allocator);
-  
+  GNode *node = g_node_alloc0();
   node->data = data;
-  node->next = NULL;
-  node->prev = NULL;
-  node->parent = NULL;
-  node->children = NULL;
-  
   return node;
 }
 
 static void
 g_nodes_free (GNode *node)
 {
-  GNode *parent;
-
-  parent = node;
-  while (1)
+  while (node)
     {
-      if (parent->children)
-	g_nodes_free (parent->children);
-
-#ifdef ENABLE_GC_FRIENDLY
-      parent->data = NULL;
-      parent->prev = NULL;
-      parent->parent = NULL;
-      parent->children = NULL;
-#endif /* ENABLE_GC_FRIENDLY */
-
-      if (parent->next)
-	parent = parent->next;
-      else
-	break;
-    }
-  
-  G_LOCK (current_allocator);
-  parent->next = current_allocator->free_nodes;
-  current_allocator->free_nodes = node;
-  G_UNLOCK (current_allocator);
-}
-#else /* DISABLE_MEM_POOLS */
-
-GNode*
-g_node_new (gpointer data)
-{
-  GNode *node;
-
-  node = g_new0 (GNode, 1);
-  
-  node->data = data;
-  
-  return node;
-}
-
-static void
-g_nodes_free (GNode *root)
-{
-  GNode *node, *next;
-  
-  node = root;
-  while (node != NULL)
-    {
-      next = node->next;
-      g_nodes_free (node->children);
-      g_free (node);
+      GNode *next = node->next;
+      if (node->children)
+        g_nodes_free (node->children);
+      g_node_free (node);
       node = next;
     }
 }
-#endif
 
 void
 g_node_destroy (GNode *root)

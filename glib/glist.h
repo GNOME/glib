@@ -42,11 +42,10 @@ struct _GList
 
 /* Doubly linked lists
  */
-void     g_list_push_allocator (GAllocator       *allocator);
-void     g_list_pop_allocator  (void);
 GList*   g_list_alloc          (void);
 void     g_list_free           (GList            *list);
 void     g_list_free_1         (GList            *list);
+#define  g_list_free1          g_list_free_1
 GList*   g_list_append         (GList            *list,
 				gpointer          data);
 GList*   g_list_prepend        (GList            *list,
@@ -102,6 +101,10 @@ gpointer g_list_nth_data       (GList            *list,
 #define g_list_previous(list)	((list) ? (((GList *)(list))->prev) : NULL)
 #define g_list_next(list)	((list) ? (((GList *)(list))->next) : NULL)
 
+#ifndef G_DISABLE_DEPRECATED
+void     g_list_push_allocator (gpointer          allocator);
+void     g_list_pop_allocator  (void);
+#endif
 G_END_DECLS
 
 #endif /* __G_LIST_H__ */

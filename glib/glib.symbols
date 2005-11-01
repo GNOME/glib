@@ -565,6 +565,18 @@ g_markup_vprintf_escaped
 #if IN_HEADER(__G_MEM_H__)
 #if IN_FILE(__G_MEM_C__)
 g_free
+g_malloc G_GNUC_MALLOC
+g_malloc0 G_GNUC_MALLOC
+g_mem_is_system_malloc
+g_mem_profile
+g_mem_set_vtable
+g_realloc
+g_try_malloc G_GNUC_MALLOC
+g_try_malloc0 G_GNUC_MALLOC
+g_try_realloc
+#ifndef G_DISABLE_DEPRECATED                                                                                                                                  
+g_allocator_free
+g_allocator_new
 g_mem_chunk_alloc
 g_mem_chunk_alloc0
 g_mem_chunk_clean
@@ -574,18 +586,8 @@ g_mem_chunk_info
 g_mem_chunk_new
 g_mem_chunk_print
 g_mem_chunk_reset
-g_malloc G_GNUC_MALLOC
-g_malloc0 G_GNUC_MALLOC
-g_mem_is_system_malloc
-g_mem_profile
-g_mem_set_vtable
-g_realloc
-g_allocator_free
-g_allocator_new
 g_blow_chunks
-g_try_malloc G_GNUC_MALLOC
-g_try_malloc0 G_GNUC_MALLOC
-g_try_realloc
+#endif
 #endif
 #endif
 
@@ -1031,6 +1033,7 @@ g_static_rw_lock_reader_unlock
 g_static_rw_lock_writer_lock
 g_static_rw_lock_writer_trylock
 g_static_rw_lock_writer_unlock
+g_thread_foreach
 #endif
 #endif
 

@@ -278,7 +278,6 @@ struct _InstanceData
   guint16            private_size;
   guint16            n_preallocs;
   GInstanceInitFunc  instance_init;
-  GMemChunk        *mem_chunk;
 };
 union _TypeData
 {
@@ -976,7 +975,6 @@ type_data_make_W (TypeNode              *node,
       data->instance.n_preallocs = MIN (info->n_preallocs, 1024);
 #endif	/* !DISABLE_MEM_POOLS */
       data->instance.instance_init = info->instance_init;
-      data->instance.mem_chunk = NULL;
     }
   else if (node->is_classed) /* only classed */
     {
@@ -1526,8 +1524,7 @@ g_type_create_instance (GType type)
   TypeNode *node;
   GTypeInstance *instance;
   GTypeClass *class;
-  guint i;
-  gsize total_instance_size;
+  guint i, total_size;
   
   node = lookup_type_node_I (type);
   if (!node || !node->is_instantiatable)
@@ -1545,35 +1542,12 @@ g_type_create_instance (GType type)
     }
   
   class = g_type_class_ref (type);
+  total_size = type_total_instance_size_I (node);
 
-  total_instance_size = type_total_instance_size_I (node);
-  
   if (node->data->instance.n_preallocs)
-    {
-      G_WRITE_LOCK (&type_rw_lock);
-      if (!node->data->instance.mem_chunk)
-	{
-	  /* If there isn't private data, the compiler will have already
-	   * added the necessary padding, but in the private data case, we
-	   * have to pad ourselves to ensure proper alignment of all the
-	   * atoms in the slab.
-	   */
-	  gsize atom_size = total_instance_size;
-	  if (node->data->instance.private_size)
-	    atom_size = ALIGN_STRUCT (atom_size);
-	  
-	  node->data->instance.mem_chunk = g_mem_chunk_new (NODE_NAME (node),
-							    atom_size,
-							    (atom_size *
-							     node->data->instance.n_preallocs),
-							    G_ALLOC_AND_FREE);
-	}
-      
-      instance = g_chunk_new0 (GTypeInstance, node->data->instance.mem_chunk);
-      G_WRITE_UNLOCK (&type_rw_lock);
-    }
+    instance = g_slice_alloc0 (total_size);
   else
-    instance = g_malloc0 (total_instance_size);	/* fine without read lock */
+    instance = g_malloc0 (total_size);
 
   if (node->data->instance.private_size)
     instance_real_class_set (instance, class);
@@ -1624,17 +1598,13 @@ g_type_free_instance (GTypeInstance *instance)
   
   instance->g_class = NULL;
 #ifdef G_ENABLE_DEBUG  
-  memset (instance, 0xaa, type_total_instance_size_I (node));	/* debugging hack */
-#endif  
+  memset (instance, 0xaa, type_total_instance_size_I (node));
+#endif
   if (node->data->instance.n_preallocs)
-    {
-      G_WRITE_LOCK (&type_rw_lock);
-      g_chunk_free (instance, node->data->instance.mem_chunk);
-      G_WRITE_UNLOCK (&type_rw_lock);
-    }
+    g_slice_free1 (type_total_instance_size_I (node), instance);
   else
     g_free (instance);
-  
+
   g_type_class_unref (class);
 }
 
@@ -2045,10 +2015,9 @@ type_data_last_unref_Wm (GType    type,
       
       node->data->common.ref_count = 0;
       
-      if (node->is_instantiatable && node->data->instance.mem_chunk)
+      if (node->is_instantiatable)
 	{
-	  g_mem_chunk_destroy (node->data->instance.mem_chunk);
-	  node->data->instance.mem_chunk = NULL;
+	  /* destroy node->data->instance.mem_chunk */
 	}
       
       tdata = node->data;

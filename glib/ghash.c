@@ -84,13 +84,6 @@ static guint g_hash_table_foreach_remove_or_steal (GHashTable     *hash_table,
                                                    gboolean        notify);
 
 
-#ifndef DISABLE_MEM_POOLS
-G_LOCK_DEFINE_STATIC (g_hash_global);
-
-static GMemChunk *node_mem_chunk = NULL;
-static GHashNode *node_free_list = NULL;
-#endif
-
 /**
  * g_hash_table_new:
  * @hash_func: a function to create a hash value from a key.
@@ -143,7 +136,7 @@ g_hash_table_new_full (GHashFunc       hash_func,
   GHashTable *hash_table;
   guint i;
   
-  hash_table = g_new (GHashTable, 1);
+  hash_table = g_slice_new (GHashTable);
   hash_table->size               = HASH_TABLE_MIN_SIZE;
   hash_table->nnodes             = 0;
   hash_table->hash_func          = hash_func ? hash_func : g_direct_hash;
@@ -181,7 +174,7 @@ g_hash_table_destroy (GHashTable *hash_table)
 			  hash_table->value_destroy_func);
   
   g_free (hash_table->nodes);
-  g_free (hash_table);
+  g_slice_free (GHashTable, hash_table);
 }
 
 static inline GHashNode**
@@ -649,28 +642,7 @@ static GHashNode*
 g_hash_node_new (gpointer key,
 		 gpointer value)
 {
-  GHashNode *hash_node;
-  
-#ifdef DISABLE_MEM_POOLS
-  hash_node = g_new (GHashNode, 1);
-#else
-  G_LOCK (g_hash_global);
-  if (node_free_list)
-    {
-      hash_node = node_free_list;
-      node_free_list = node_free_list->next;
-    }
-  else
-    {
-      if (!node_mem_chunk)
-	node_mem_chunk = g_mem_chunk_new ("hash node mem chunk",
-					  sizeof (GHashNode),
-					  1024, G_ALLOC_ONLY);
-      
-      hash_node = g_chunk_new (GHashNode, node_mem_chunk);
-    }
-  G_UNLOCK (g_hash_global);
-#endif
+  GHashNode *hash_node = g_slice_new (GHashNode);
   
   hash_node->key = key;
   hash_node->value = value;
@@ -694,14 +666,7 @@ g_hash_node_destroy (GHashNode      *hash_node,
   hash_node->value = NULL;
 #endif /* ENABLE_GC_FRIENDLY */
 
-#ifdef DISABLE_MEM_POOLS
-  g_free (hash_node);
-#else
-  G_LOCK (g_hash_global);
-  hash_node->next = node_free_list;
-  node_free_list = hash_node;
-  G_UNLOCK (g_hash_global);
-#endif
+  g_slice_free (GHashNode, hash_node);
 }
 
 static void
@@ -709,55 +674,16 @@ g_hash_nodes_destroy (GHashNode *hash_node,
 		      GFreeFunc  key_destroy_func,
 		      GFreeFunc  value_destroy_func)
 {
-#ifdef DISABLE_MEM_POOLS
   while (hash_node)
     {
       GHashNode *next = hash_node->next;
-
       if (key_destroy_func)
 	key_destroy_func (hash_node->key);
       if (value_destroy_func)
 	value_destroy_func (hash_node->value);
-
-      g_free (hash_node);
+      g_slice_free (GHashNode, hash_node);
       hash_node = next;
-    }  
-#else
-  if (hash_node)
-    {
-      GHashNode *node = hash_node;
-  
-      while (node->next)
-	{
-	  if (key_destroy_func)
-	    key_destroy_func (node->key);
-	  if (value_destroy_func)
-	    value_destroy_func (node->value);
-
-#ifdef ENABLE_GC_FRIENDLY
-	  node->key = NULL;
-	  node->value = NULL;
-#endif /* ENABLE_GC_FRIENDLY */
-
-	  node = node->next;
-	}
-
-      if (key_destroy_func)
-	key_destroy_func (node->key);
-      if (value_destroy_func)
-	value_destroy_func (node->value);
-
-#ifdef ENABLE_GC_FRIENDLY
-      node->key = NULL;
-      node->value = NULL;
-#endif /* ENABLE_GC_FRIENDLY */
- 
-      G_LOCK (g_hash_global);
-      node->next = node_free_list;
-      node_free_list = hash_node;
-      G_UNLOCK (g_hash_global);
     }
-#endif
 }
 
 #define __G_HASH_C__

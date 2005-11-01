@@ -125,8 +125,6 @@ struct _GMainContext
   gint in_check_or_prepare;
 
   GPollRec *poll_records;
-  GPollRec *poll_free_list;
-  GMemChunk *poll_chunk;
   guint n_poll_records;
   GPollFD *cached_poll_array;
   guint cached_poll_array_size;
@@ -190,9 +188,9 @@ struct _GChildWatchSource
 
 struct _GPollRec
 {
-  gint priority;
   GPollFD *fd;
-  GPollRec *next;
+  GPollRec *next; /* chaining via second pointer member allows use of g_slice_free_chain() */
+  gint priority;
 };
 
 #ifdef G_THREADS_ENABLED
@@ -597,25 +595,12 @@ g_main_context_ref (GMainContext *context)
   return context;
 }
 
-/* If DISABLE_MEM_POOLS is defined, then freeing the
- * mem chunk won't free the records, so we have to
- * do it manually. The conditionalization here is
- * an optimization; g_mem_chunk_free() is a no-op
- * when DISABLE_MEM_POOLS is set.
- */
-#ifdef DISABLE_MEM_POOLS
-static void
+static inline void
 poll_rec_list_free (GMainContext *context,
 		    GPollRec     *list)
 {
-  while (list)
-    {
-      GPollRec *tmp_rec = list;
-      list = list->next;
-      g_chunk_free (tmp_rec, context->poll_chunk);
-    }
+  g_slice_free_chain (sizeof (GPollRec), list, G_STRUCT_OFFSET (GPollRec, next));
 }
-#endif /* DISABLE_MEM_POOLS */
 
 /**
  * g_main_context_unref:
@@ -653,14 +638,8 @@ g_main_context_unref (GMainContext *context)
   g_ptr_array_free (context->pending_dispatches, TRUE);
   g_free (context->cached_poll_array);
 
-#ifdef DISABLE_MEM_POLLS
   poll_rec_list_free (context, context->poll_records);
-  poll_rec_list_free (context, context->poll_free_list);
-#endif /* DISABLE_MEM_POOLS */
   
-  if (context->poll_chunk) 
-    g_mem_chunk_destroy (context->poll_chunk);
-
 #ifdef G_THREADS_ENABLED
   if (g_thread_supported())
     {
@@ -2951,18 +2930,8 @@ g_main_context_add_poll_unlocked (GMainContext *context,
 				  gint          priority,
 				  GPollFD      *fd)
 {
-  GPollRec *lastrec, *pollrec, *newrec;
-
-  if (!context->poll_chunk)
-    context->poll_chunk = g_mem_chunk_create (GPollRec, 32, G_ALLOC_ONLY);
-
-  if (context->poll_free_list)
-    {
-      newrec = context->poll_free_list;
-      context->poll_free_list = newrec->next;
-    }
-  else
-    newrec = g_chunk_new (GPollRec, context->poll_chunk);
+  GPollRec *lastrec, *pollrec;
+  GPollRec *newrec = g_slice_new (GPollRec);
 
   /* This file descriptor may be checked before we ever poll */
   fd->revents = 0;
@@ -3035,12 +3004,7 @@ g_main_context_remove_poll_unlocked (GMainContext *context,
 	  else
 	    context->poll_records = pollrec->next;
 
-#ifdef ENABLE_GC_FRIENDLY
-	  pollrec->fd = NULL;  
-#endif /* ENABLE_GC_FRIENDLY */
-
-	  pollrec->next = context->poll_free_list;
-	  context->poll_free_list = pollrec;
+	  g_slice_free (GPollRec, pollrec);
 
 	  context->n_poll_records--;
 	  break;
