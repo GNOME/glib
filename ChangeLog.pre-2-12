@@ -1,5 +1,8 @@
 2005-11-04  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gmain.c (g_child_watch_source_new): Expand
+	the docs.  (#320466, Steffen Gutmann)
+
 	* glib/gscanner.h: Include gdataset.h.  (#320322)
 
 	* glib/gdebug.h: add new GDebugFlag for fatal_criticals
