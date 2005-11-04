@@ -3615,6 +3615,10 @@ g_child_watch_source_init (void)
  * and must be added to one with g_source_attach() before it will be
  * executed.
  * 
+ * Note that child watch sources can only be used in conjunction with
+ * <literal>g_spawn...</literal> when the %G_SPAWN_DO_NOT_REAP_CHILD
+ * flag is used.
+ *
  * Note that on platforms where #GPid must be explicitely closed
  * (see g_spawn_close_pid()) @pid must not be closed while the
  * source is still active. Typically, you will want to call
