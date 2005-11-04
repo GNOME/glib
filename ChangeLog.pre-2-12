@@ -1,5 +1,16 @@
 2005-11-04  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/Makefile.am: Apply a patch from Behdad Esfahbod to 
+	use a faster lookup table for g_unichar_get_mirror_char().
+	* glib/gmirroringtable.h: The new table.
+	* glib/gunichartables.h: Remove bidi_mirroring_table.
+	* glib/gen-unicode-tables.pl: Don't generate the mirroring
+	table.
+	* glib/glib-mirroring-tab/*: Sources for the program
+	which generated gmirroringtable.h.
+
+	* glib/glist.c: Avoid some code duplication.
+
 	* glib/gscanner.h: Include gdataset.h.  (#320322)
 
 	* glib/gdebug.h: add new GDebugFlag for fatal_criticals

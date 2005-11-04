@@ -568,19 +568,16 @@ g_list_sort_merge (GList     *l1,
       if (cmp <= 0)
         {
 	  l->next = l1;
-	  l = l->next;
-	  l->prev = lprev; 
-	  lprev = l;
 	  l1 = l1->next;
         } 
       else 
 	{
 	  l->next = l2;
-	  l = l->next;
-	  l->prev = lprev; 
-	  lprev = l;
 	  l2 = l2->next;
         }
+      l = l->next;
+      l->prev = lprev; 
+      lprev = l;
     }
   l->next = l1 ? l1 : l2;
   l->next->prev = l;
