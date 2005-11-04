@@ -65,7 +65,16 @@ variables like <envar>LANG</envar>, <envar>PATH</envar> or <envar>HOME</envar>.
       <varlistentry>
         <term>fatal_warnings</term>
         <listitem><para>Causes GLib to abort the program at the first call
-           to <link linkend="g-warning">g_warning</link>(). This option is 
+           to <link linkend="g-warning">g_warning</link>() or
+	   <link linkend="g-critical">g_critical</link>(). This option is 
+           special in that it doesn't require GLib to be configured with 
+           debugging support.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>fatal_criticals</term>
+        <listitem><para>Causes GLib to abort the program at the first call
+           to <link linkend="g-critical">g_critical</link>(). This option is 
            special in that it doesn't require GLib to be configured with 
            debugging support.</para>
         </listitem>

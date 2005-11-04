@@ -30,7 +30,8 @@
 G_BEGIN_DECLS 
 
 typedef enum {
-  G_DEBUG_FATAL_WARNINGS = 1 << 0
+  G_DEBUG_FATAL_WARNINGS  = 1 << 0,
+  G_DEBUG_FATAL_CRITICALS = 1 << 1
 } GDebugFlag;
 
 
