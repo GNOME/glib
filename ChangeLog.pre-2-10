@@ -1,3 +1,10 @@
+2005-11-04  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gdebug.h: add new GDebugFlag for fatal_criticals
+	* glib/gmessages.c: (_g_debug_init): handle G_DEBUG=fatal_criticals,
+	to help find critical warnings in applications.  (#320017,
+	Vincent Untz)
+
 2005-11-02  Tor Lillqvist  <tml@novell.com>
 
 	* glib/glib.symbols: Remove large amount of trailing whitespace
