@@ -9,7 +9,7 @@ libgthread = $(top_builddir)/gthread/libgthread-2.0.la
 libgmodule = $(top_builddir)/gmodule/libgmodule-2.0.la
 libgobject = $(top_builddir)/gobject/libgobject-2.0.la
 
-LDADD = $(libgobject) $(libgthread) $(G_THREAD_LIBS)
+LDADD = $(libglib) $(libgobject) $(libgthread) $(G_THREAD_LIBS)
 
 test_programs = 				\
 	closures				\

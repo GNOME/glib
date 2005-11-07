@@ -1,3 +1,8 @@
+2005-11-07  Billy Biggs <vektor@dumbterm.net>
+
+	* tests/refcount/Makefile.am: Add a missing reference to libglib
+	in the LDADD for this test.
+
 2005-11-07  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gmem.c (g_allocator_new): We need to set n_preallocs to a
