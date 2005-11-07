@@ -1,3 +1,9 @@
+2005-11-07  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gmem.c (g_allocator_new): We need to set n_preallocs to a
+	nonzero value, otherwise GTK+ 2.8 breaks when compiled against
+	GLib 2.9.  (#320755, Luca Ferretti)
+
 2005-11-04  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/Makefile.am: Apply a patch from Behdad Esfahbod to 

@@ -1279,7 +1279,7 @@ g_allocator_new (const gchar *name,
     GMemChunk  *mem_chunk;
     gpointer    free_list;
   } dummy = {
-    "GAllocator is deprecated", 0, TRUE, 0, NULL, NULL, NULL,
+    "GAllocator is deprecated", 1, TRUE, 0, NULL, NULL, NULL,
   };
   /* some (broken) GAllocator uses depend on non-NULL allocators */
   return (GAllocator*) &dummy;
