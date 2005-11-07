@@ -1915,12 +1915,12 @@ g_main_dispatch (GMainContext *context)
 				     user_data);
 	  (*depth)--;
 	  
- 	  LOCK_CONTEXT (context);
-
 	  if (cb_funcs)
 	    cb_funcs->unref (cb_data);
 
-	 if (!was_in_call)
+ 	  LOCK_CONTEXT (context);
+	  
+	  if (!was_in_call)
 	    source->flags &= ~G_HOOK_FLAG_IN_CALL;
 
 	  if ((source->flags & G_SOURCE_CAN_RECURSE) == 0 &&

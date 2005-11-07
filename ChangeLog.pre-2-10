@@ -1,3 +1,8 @@
+2005-11-07  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gmain.c (g_main_dispatch): Don't call cb_funcs->unref
+	while holding the context lock.  (#320886, Andy Wingo)
+
 2005-11-07  Billy Biggs <vektor@dumbterm.net>
 
 	* tests/refcount/Makefile.am: Add a missing reference to libglib
