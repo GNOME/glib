@@ -1444,8 +1444,6 @@ g_io_win32_set_flags (GIOChannel *channel,
       g_print ("\n");
     }
 
-  g_warning ("g_io_win32_set_flags () not implemented.\n");
-
   return G_IO_STATUS_NORMAL;
 }
 
