@@ -1444,9 +1444,11 @@ g_io_win32_set_flags (GIOChannel *channel,
       g_print ("\n");
     }
 
-  g_warning ("g_io_win32_set_flags () not implemented.\n");
+  g_set_error (err, G_IO_CHANNEL_ERROR,
+	       G_IO_CHANNEL_ERROR_FAILED,
+	       "Not implemented on Win32");
 
-  return G_IO_STATUS_NORMAL;
+  return G_IO_STATUS_ERROR;
 }
 
 static GIOFlags
