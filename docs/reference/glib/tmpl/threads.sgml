@@ -1690,9 +1690,9 @@ get_debug_flags ()
 </para>
 
 @once: a #GOnce structure
-@func: the function associated to @once. This function is called only once, 
-       regardless of the number of times it and its associated #GOnce struct 
-       are passed to g_once() .
+@func: the #GTreadFunc function associated to @once. This function is called 
+       only once, regardless of the number of times it and its associated 
+       #GOnce struct are passed to g_once() .
 @arg:  data to be passed to @func
 @Since: 2.4
 
