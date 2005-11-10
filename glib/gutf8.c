@@ -523,7 +523,7 @@ g_get_charset (G_CONST_RETURN char **charset)
 
 /**
  * g_unichar_to_utf8:
- * @c: a ISO10646 character code
+ * @c: a Unicode character code
  * @outbuf: output buffer, must have at least 6 bytes of space.
  *       If %NULL, the length will be computed and returned
  *       and nothing will be written to @outbuf.
@@ -589,9 +589,9 @@ g_unichar_to_utf8 (gunichar c,
  * g_utf8_strchr:
  * @p: a nul-terminated UTF-8 encoded string
  * @len: the maximum length of @p
- * @c: a ISO10646 character
+ * @c: a Unicode character
  * 
- * Finds the leftmost occurrence of the given ISO10646 character
+ * Finds the leftmost occurrence of the given Unicode character
  * in a UTF-8 encoded string, while limiting the search to @len bytes.
  * If @len is -1, allow unbounded search.
  * 
@@ -617,9 +617,9 @@ g_utf8_strchr (const char *p,
  * g_utf8_strrchr:
  * @p: a nul-terminated UTF-8 encoded string
  * @len: the maximum length of @p
- * @c: a ISO10646 character
+ * @c: a Unicode character
  * 
- * Find the rightmost occurrence of the given ISO10646 character
+ * Find the rightmost occurrence of the given Unicode character
  * in a UTF-8 encoded string, while limiting the search to @len bytes.
  * If @len is -1, allow unbounded search.
  * 

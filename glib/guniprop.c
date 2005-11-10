@@ -56,20 +56,37 @@
       : G_UNICODE_UNASSIGNED))
 
 
-#define ISDIGIT(Type) ((Type) == G_UNICODE_DECIMAL_NUMBER	\
-		       || (Type) == G_UNICODE_LETTER_NUMBER	\
-		       || (Type) == G_UNICODE_OTHER_NUMBER)
+#define IS(Type, Class)	(((guint)1 << (Type)) & (Class))
+#define OR(Type, Rest)	(((guint)1 << (Type)) | (Rest))
 
-#define ISALPHA(Type) ((Type) == G_UNICODE_LOWERCASE_LETTER	\
-		       || (Type) == G_UNICODE_UPPERCASE_LETTER	\
-		       || (Type) == G_UNICODE_TITLECASE_LETTER	\
-		       || (Type) == G_UNICODE_MODIFIER_LETTER	\
-		       || (Type) == G_UNICODE_OTHER_LETTER)
 
-#define ISMARK(Type) ((Type) == G_UNICODE_NON_SPACING_MARK ||	\
-		      (Type) == G_UNICODE_COMBINING_MARK ||	\
-		      (Type) == G_UNICODE_ENCLOSING_MARK)
-		      
+
+#define ISDIGIT(Type)	IS ((Type),				\
+			    OR (G_UNICODE_DECIMAL_NUMBER,	\
+			    OR (G_UNICODE_LETTER_NUMBER,	\
+			    OR (G_UNICODE_OTHER_NUMBER,		0))))
+
+#define ISALPHA(Type)	IS ((Type),				\
+			    OR (G_UNICODE_LOWERCASE_LETTER,	\
+			    OR (G_UNICODE_UPPERCASE_LETTER,	\
+			    OR (G_UNICODE_TITLECASE_LETTER,	\
+			    OR (G_UNICODE_MODIFIER_LETTER,	\
+			    OR (G_UNICODE_OTHER_LETTER,		0))))))
+
+#define ISALDIGIT(Type)	IS ((Type),				\
+			    OR (G_UNICODE_DECIMAL_NUMBER,	\
+			    OR (G_UNICODE_LETTER_NUMBER,	\
+			    OR (G_UNICODE_OTHER_NUMBER,		\
+			    OR (G_UNICODE_LOWERCASE_LETTER,	\
+			    OR (G_UNICODE_UPPERCASE_LETTER,	\
+			    OR (G_UNICODE_TITLECASE_LETTER,	\
+			    OR (G_UNICODE_MODIFIER_LETTER,	\
+			    OR (G_UNICODE_OTHER_LETTER,		0)))))))))
+
+#define ISMARK(Type)	IS ((Type),				\
+			    OR (G_UNICODE_NON_SPACING_MARK,	\
+			    OR (G_UNICODE_COMBINING_MARK,	\
+			    OR (G_UNICODE_ENCLOSING_MARK,	0))))
 
 /**
  * g_unichar_isalnum:
@@ -84,8 +101,7 @@
 gboolean
 g_unichar_isalnum (gunichar c)
 {
-  int t = TYPE (c);
-  return ISDIGIT (t) || ISALPHA (t);
+  return ISALDIGIT (TYPE (c)) ? TRUE : FALSE;
 }
 
 /**
@@ -101,8 +117,7 @@ g_unichar_isalnum (gunichar c)
 gboolean
 g_unichar_isalpha (gunichar c)
 {
-  int t = TYPE (c);
-  return ISALPHA (t);
+  return ISALPHA (TYPE (c)) ? TRUE : FALSE;
 }
 
 
@@ -154,13 +169,14 @@ g_unichar_isdigit (gunichar c)
 gboolean
 g_unichar_isgraph (gunichar c)
 {
-  int t = TYPE (c);
-  return (t != G_UNICODE_CONTROL
-	  && t != G_UNICODE_FORMAT
-	  && t != G_UNICODE_UNASSIGNED
-	  && t != G_UNICODE_PRIVATE_USE
-	  && t != G_UNICODE_SURROGATE
-	  && t != G_UNICODE_SPACE_SEPARATOR);
+  return !IS (TYPE(c),
+	      OR (G_UNICODE_CONTROL,
+	      OR (G_UNICODE_FORMAT,
+	      OR (G_UNICODE_UNASSIGNED,
+	      OR (G_UNICODE_PRIVATE_USE,
+	      OR (G_UNICODE_SURROGATE,
+	      OR (G_UNICODE_SPACE_SEPARATOR,
+	     0)))))));
 }
 
 /**
@@ -194,12 +210,13 @@ g_unichar_islower (gunichar c)
 gboolean
 g_unichar_isprint (gunichar c)
 {
-  int t = TYPE (c);
-  return (t != G_UNICODE_CONTROL
-	  && t != G_UNICODE_FORMAT
-	  && t != G_UNICODE_UNASSIGNED
-	  && t != G_UNICODE_PRIVATE_USE
-	  && t != G_UNICODE_SURROGATE);
+  return !IS (TYPE(c),
+	      OR (G_UNICODE_CONTROL,
+	      OR (G_UNICODE_FORMAT,
+	      OR (G_UNICODE_UNASSIGNED,
+	      OR (G_UNICODE_PRIVATE_USE,
+	      OR (G_UNICODE_SURROGATE,
+	     0))))));
 }
 
 /**
@@ -215,13 +232,19 @@ g_unichar_isprint (gunichar c)
 gboolean
 g_unichar_ispunct (gunichar c)
 {
-  int t = TYPE (c);
-  return (t == G_UNICODE_CONNECT_PUNCTUATION || t == G_UNICODE_DASH_PUNCTUATION
-	  || t == G_UNICODE_CLOSE_PUNCTUATION || t == G_UNICODE_FINAL_PUNCTUATION
-	  || t == G_UNICODE_INITIAL_PUNCTUATION || t == G_UNICODE_OTHER_PUNCTUATION
-	  || t == G_UNICODE_OPEN_PUNCTUATION || t == G_UNICODE_CURRENCY_SYMBOL
-	  || t == G_UNICODE_MODIFIER_SYMBOL || t == G_UNICODE_MATH_SYMBOL
-	  || t == G_UNICODE_OTHER_SYMBOL);
+  return IS (TYPE(c),
+	     OR (G_UNICODE_CONNECT_PUNCTUATION,
+	     OR (G_UNICODE_DASH_PUNCTUATION,
+	     OR (G_UNICODE_CLOSE_PUNCTUATION,
+	     OR (G_UNICODE_FINAL_PUNCTUATION,
+	     OR (G_UNICODE_INITIAL_PUNCTUATION,
+	     OR (G_UNICODE_OTHER_PUNCTUATION,
+	     OR (G_UNICODE_OPEN_PUNCTUATION,
+	     OR (G_UNICODE_CURRENCY_SYMBOL,
+	     OR (G_UNICODE_MODIFIER_SYMBOL,
+	     OR (G_UNICODE_MATH_SYMBOL,
+	     OR (G_UNICODE_OTHER_SYMBOL,
+	    0)))))))))))) ? TRUE : FALSE;
 }
 
 /**
@@ -236,7 +259,7 @@ g_unichar_ispunct (gunichar c)
  * Pango or equivalent to get word breaking right, the algorithm
  * is fairly complex.)
  *  
- * Return value: %TRUE if @c is a punctuation character
+ * Return value: %TRUE if @c is a space character
  **/
 gboolean
 g_unichar_isspace (gunichar c)
@@ -253,9 +276,11 @@ g_unichar_isspace (gunichar c)
       
     default:
       {
-        int t = TYPE (c);
-        return (t == G_UNICODE_SPACE_SEPARATOR || t == G_UNICODE_LINE_SEPARATOR
-                || t == G_UNICODE_PARAGRAPH_SEPARATOR);
+	return IS (TYPE(c),
+	           OR (G_UNICODE_SPACE_SEPARATOR,
+	           OR (G_UNICODE_LINE_SEPARATOR,
+                   OR (G_UNICODE_PARAGRAPH_SEPARATOR,
+		  0)))) ? TRUE : FALSE;
       }
       break;
     }
@@ -309,10 +334,9 @@ g_unichar_istitle (gunichar c)
 gboolean
 g_unichar_isxdigit (gunichar c)
 {
-  int t = TYPE (c);
   return ((c >= 'a' && c <= 'f')
 	  || (c >= 'A' && c <= 'F')
-	  || ISDIGIT (t));
+	  || ISDIGIT (TYPE (c)));
 }
 
 /**
@@ -327,8 +351,7 @@ g_unichar_isxdigit (gunichar c)
 gboolean
 g_unichar_isdefined (gunichar c)
 {
-  int t = TYPE (c);
-  return t != G_UNICODE_UNASSIGNED;
+  return TYPE (c) != G_UNICODE_UNASSIGNED;
 }
 
 /**
@@ -567,9 +590,8 @@ output_marks (const char **p_inout,
   while (*p)
     {
       gunichar c = g_utf8_get_char (p);
-      int t = TYPE(c);
       
-      if (ISMARK(t))
+      if (ISMARK (TYPE (c)))
 	{
 	  if (!remove_dot || c != 0x307 /* COMBINING DOT ABOVE */)
 	    len += g_unichar_to_utf8 (c, out_buffer ? out_buffer + len : NULL);
@@ -653,7 +675,7 @@ real_toupper (const gchar *str,
 		  continue;
 		}
 
-	      if (!ISMARK(t))
+	      if (!ISMARK (t))
 		last_was_i = FALSE;
 	    }
 	}
@@ -673,7 +695,10 @@ real_toupper (const gchar *str,
 	  /* And output as GREEK CAPITAL LETTER IOTA */
 	  len += g_unichar_to_utf8 (0x399, out_buffer ? out_buffer + len : NULL); 	  
 	}
-      else if (t == G_UNICODE_LOWERCASE_LETTER || t == G_UNICODE_TITLECASE_LETTER)
+      else if (IS (t,
+		   OR (G_UNICODE_LOWERCASE_LETTER,
+		   OR (G_UNICODE_TITLECASE_LETTER,
+		  0))))
 	{
 	  val = ATTTABLE (c >> 8, c & 0xff);
 
@@ -845,7 +870,7 @@ real_tolower (const gchar *str,
 	       * sigma, but I don't think that occurs in real text.
 	       * The test here matches that in ICU.
 	       */
-	      if (ISALPHA(next_type)) /* Lu,Ll,Lt,Lm,Lo */
+	      if (ISALPHA (next_type)) /* Lu,Ll,Lt,Lm,Lo */
 		val = 0x3c3;	/* GREEK SMALL SIGMA */
 	      else
 		val = 0x3c2;	/* GREEK SMALL FINAL SIGMA */
@@ -855,7 +880,10 @@ real_tolower (const gchar *str,
 
 	  len += g_unichar_to_utf8 (val, out_buffer ? out_buffer + len : NULL);
 	}
-      else if (t == G_UNICODE_UPPERCASE_LETTER || t == G_UNICODE_TITLECASE_LETTER)
+      else if (IS (t,
+		   OR (G_UNICODE_UPPERCASE_LETTER,
+		   OR (G_UNICODE_TITLECASE_LETTER,
+		  0))))
 	{
 	  val = ATTTABLE (c >> 8, c & 0xff);
 
@@ -998,7 +1026,7 @@ g_utf8_casefold (const gchar *str,
 
 /**
  * g_unichar_get_mirror_char:
- * @ch: a unicode character
+ * @ch: a Unicode character
  * @mirrored_ch: location to store the mirrored character
  * 
  * In Unicode, some characters are <firstterm>mirrored</firstterm>. This

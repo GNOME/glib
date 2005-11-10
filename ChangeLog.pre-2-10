@@ -1,3 +1,10 @@
+2005-11-09  Behdad Esfahbod  <behdad@gnome.org>
+
+	* glib/guniprop.c: Use bit hacks instead when checking a general
+	category value against multiple values.
+
+	* glib/gutf8.c: Change ISO10646 to Unicode in docs.
+
 2005-11-10  Simos Xenitellis  <simos@gnome.org>
 
 	* configure.in: Added tt (Tatar) to ALL_LINGUAS.
