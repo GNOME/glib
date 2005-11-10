@@ -1,0 +1,693 @@
+# Tatarish translation
+# Albert Fazlí <tatarish.l10n@gmail.com>, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: libgnome\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-10-25 05:56+0200\n"
+"PO-Revision-Date: 2005-11-09 13:19+0300\n"
+"Last-Translator: Albert Fazlí <tatarish.l10n@gmail.com>\n"
+"Language-Team: Tatarish <tatarish.l10n@gmail.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../glib/gconvert.c:408
+#: ../glib/gconvert.c:486
+#: ../glib/giochannel.c:1150
+#, c-format
+msgid "Conversion from character set '%s' to '%s' is not supported"
+msgstr "'%s' -› '%s' digän bilge äyländerü totılmí"
+
+#: ../glib/gconvert.c:412
+#: ../glib/gconvert.c:490
+#, c-format
+msgid "Could not open converter from '%s' to '%s'"
+msgstr "'%s' -› '%s' äyländergeçen açıp bulmadı"
+
+#: ../glib/gconvert.c:606
+#: ../glib/gconvert.c:995
+#: ../glib/giochannel.c:1322
+#: ../glib/giochannel.c:1364
+#: ../glib/giochannel.c:2206
+#: ../glib/gutf8.c:912
+#: ../glib/gutf8.c:1362
+msgid "Invalid byte sequence in conversion input"
+msgstr ""
+
+#: ../glib/gconvert.c:612
+#: ../glib/gconvert.c:922
+#: ../glib/giochannel.c:1329
+#: ../glib/giochannel.c:2218
+#, c-format
+msgid "Error during conversion: %s"
+msgstr "Äyländergändä xata çıqtı: %s"
+
+#: ../glib/gconvert.c:647
+#: ../glib/gutf8.c:908
+#: ../glib/gutf8.c:1113
+#: ../glib/gutf8.c:1254
+#: ../glib/gutf8.c:1358
+msgid "Partial character sequence at end of input"
+msgstr ""
+
+#: ../glib/gconvert.c:897
+#, c-format
+msgid "Cannot convert fallback '%s' to codeset '%s'"
+msgstr ""
+
+#: ../glib/gconvert.c:1706
+#, c-format
+msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
+msgstr ""
+
+#: ../glib/gconvert.c:1716
+#, c-format
+msgid "The local file URI '%s' may not include a '#'"
+msgstr "'%s' digän cirle birem URI'sında '#' bilgese bula almí"
+
+#: ../glib/gconvert.c:1733
+#, c-format
+msgid "The URI '%s' is invalid"
+msgstr "'%s' digän URI yaraqsız"
+
+#: ../glib/gconvert.c:1745
+#, c-format
+msgid "The hostname of the URI '%s' is invalid"
+msgstr "'%s' digän URI'nıñ host adı yaraqsız"
+
+#: ../glib/gconvert.c:1761
+#, c-format
+msgid "The URI '%s' contains invalidly escaped characters"
+msgstr ""
+
+#: ../glib/gconvert.c:1855
+#, c-format
+msgid "The pathname '%s' is not an absolute path"
+msgstr "'%s' digän yul töptän tügel"
+
+#: ../glib/gconvert.c:1865
+msgid "Invalid hostname"
+msgstr "Host adı yaraqsız"
+
+#: ../glib/gdir.c:121
+#: ../glib/gdir.c:141
+#, c-format
+msgid "Error opening directory '%s': %s"
+msgstr "'%s' törgägen açıp bulmadı: %s"
+
+#: ../glib/gfileutils.c:576
+#: ../glib/gfileutils.c:649
+#, c-format
+msgid "Could not allocate %lu bytes to read file \"%s\""
+msgstr ""
+
+#: ../glib/gfileutils.c:591
+#, c-format
+msgid "Error reading file '%s': %s"
+msgstr "'%s' biremen uqığanda xata: %s"
+
+#: ../glib/gfileutils.c:673
+#, c-format
+msgid "Failed to read from file '%s': %s"
+msgstr "'%s' biremennän uqıp bulmadı: %s"
+
+#: ../glib/gfileutils.c:724
+#: ../glib/gfileutils.c:811
+#, c-format
+msgid "Failed to open file '%s': %s"
+msgstr "'%s' biremen açıp bulmadı: %s"
+
+#: ../glib/gfileutils.c:741
+#: ../glib/gmappedfile.c:133
+#, c-format
+msgid "Failed to get attributes of file '%s': fstat() failed: %s"
+msgstr "'%s' birem üzençälegen belep bulmadı: fstat() uzmadı: %s"
+
+#: ../glib/gfileutils.c:775
+#, c-format
+msgid "Failed to open file '%s': fdopen() failed: %s"
+msgstr "'%s' biremen açıp bulmadı: fdopen() uzmadı: %s"
+
+#: ../glib/gfileutils.c:909
+#, c-format
+msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
+msgstr "'%s' birem adın '%s' itep üzgärtep bulmadı: g_rename() uzmadı: %s"
+
+#: ../glib/gfileutils.c:952
+#, c-format
+msgid "Could not change file mode: fork() failed: %s"
+msgstr "Birem ısulın üzgärtep bulmadı: fork() uzmadı: %s"
+
+#: ../glib/gfileutils.c:983
+#, c-format
+msgid "Could not change file mode: waitpid() failed: %s"
+msgstr "Birem ısulın üzgärtep bulmadı: waitpid() uzmadı: %s"
+
+#: ../glib/gfileutils.c:1002
+#, c-format
+msgid "Could not change file mode: chmod() failed: %s"
+msgstr "Birem ısulın üzgärtep bulmadı: chmod() uzmadı: %s"
+
+#: ../glib/gfileutils.c:1013
+#, c-format
+msgid "Could not change file mode: Child terminated by signal: %s"
+msgstr "Birem ısulın üzgärtep bulmadı: Balanı ımlaw özderde: %s"
+
+#: ../glib/gfileutils.c:1024
+msgid "Could not change file mode: Child terminated abnormally"
+msgstr "Birem ısulın üzgärtep bulmadı: Balanı özü tieşleçä bulmadı"
+
+#: ../glib/gfileutils.c:1058
+#: ../glib/gfileutils.c:1524
+#, c-format
+msgid "Failed to create file '%s': %s"
+msgstr "'%s' biremen yasap bulmadı: %s"
+
+#: ../glib/gfileutils.c:1080
+#, c-format
+msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
+msgstr "Yazu öçen '%s' biremen açıp bulmadı: fdopen() uzmadı: %s"
+
+#: ../glib/gfileutils.c:1105
+#, c-format
+msgid "Failed to write file '%s': fwrite() failed: %s"
+msgstr "'%s' biremen yazıp bulmadı: fwrite() uzmadı: %s"
+
+#: ../glib/gfileutils.c:1124
+#, c-format
+msgid "Failed to close file '%s': fclose() failed: %s"
+msgstr "'%s' biremen yabıp bulmadı: fclose() uzmadı: %s"
+
+#: ../glib/gfileutils.c:1242
+#, c-format
+msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
+msgstr "Barlıqtağı '%s' biremen beterep bulmadı: g_unlink() uzmadı: %s"
+
+#: ../glib/gfileutils.c:1485
+#, c-format
+msgid "Template '%s' invalid, should not contain a '%s'"
+msgstr "'%s' ürçetmäse yaraqsız, eçendä '%s' bula almí"
+
+#: ../glib/gfileutils.c:1499
+#, c-format
+msgid "Template '%s' doesn't end with XXXXXX"
+msgstr "'%s' ürçetmäneñ azağında XXXXXX tügel"
+
+#: ../glib/gfileutils.c:1974
+#, c-format
+msgid "Failed to read the symbolic link '%s': %s"
+msgstr ""
+
+#: ../glib/gfileutils.c:1995
+msgid "Symbolic links not supported"
+msgstr ""
+
+#: ../glib/giochannel.c:1154
+#, c-format
+msgid "Could not open converter from '%s' to '%s': %s"
+msgstr "'%s' -› '%s' äyländergeçen açıp bulmadı: %s"
+
+#: ../glib/giochannel.c:1499
+msgid "Can't do a raw read in g_io_channel_read_line_string"
+msgstr ""
+
+#: ../glib/giochannel.c:1546
+#: ../glib/giochannel.c:1803
+#: ../glib/giochannel.c:1889
+msgid "Leftover unconverted data in read buffer"
+msgstr ""
+
+#: ../glib/giochannel.c:1626
+#: ../glib/giochannel.c:1703
+msgid "Channel terminates in a partial character"
+msgstr ""
+
+#: ../glib/giochannel.c:1689
+msgid "Can't do a raw read in g_io_channel_read_to_end"
+msgstr ""
+
+#: ../glib/gmappedfile.c:116
+#, c-format
+msgid "Failed to open file '%s': open() failed: %s"
+msgstr "'%s' biremen açıp bulmadı: open() uzmadı: %s"
+
+#: ../glib/gmappedfile.c:185
+#, c-format
+msgid "Failed to map file '%s': mmap() failed: %s"
+msgstr ""
+
+#: ../glib/gmarkup.c:232
+#, c-format
+msgid "Error on line %d char %d: %s"
+msgstr "%d. yulnıñ %d. bilgedä xata: %s"
+
+#: ../glib/gmarkup.c:330
+#, c-format
+msgid "Error on line %d: %s"
+msgstr "%d. yulda xata: %s"
+
+#: ../glib/gmarkup.c:434
+msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgstr ""
+
+#: ../glib/gmarkup.c:444
+#, c-format
+msgid "Character '%s' is not valid at the start of an entity name; the & character begins an entity; if this ampersand isn't supposed to be an entity, escape it as &amp;"
+msgstr ""
+
+#: ../glib/gmarkup.c:478
+#, c-format
+msgid "Character '%s' is not valid inside an entity name"
+msgstr ""
+
+#: ../glib/gmarkup.c:515
+#, c-format
+msgid "Entity name '%s' is not known"
+msgstr ""
+
+#: ../glib/gmarkup.c:526
+msgid "Entity did not end with a semicolon; most likely you used an ampersand character without intending to start an entity - escape ampersand as &amp;"
+msgstr ""
+
+#: ../glib/gmarkup.c:579
+#, c-format
+msgid "Failed to parse '%-.*s', which should have been a digit inside a character reference (&#234; for example) - perhaps the digit is too large"
+msgstr ""
+
+#: ../glib/gmarkup.c:604
+#, c-format
+msgid "Character reference '%-.*s' does not encode a permitted character"
+msgstr ""
+
+#: ../glib/gmarkup.c:619
+msgid "Empty character reference; should include a digit such as &#454;"
+msgstr ""
+
+#: ../glib/gmarkup.c:629
+msgid "Character reference did not end with a semicolon; most likely you used an ampersand character without intending to start an entity - escape ampersand as &amp;"
+msgstr ""
+
+#: ../glib/gmarkup.c:715
+msgid "Unfinished entity reference"
+msgstr ""
+
+#: ../glib/gmarkup.c:721
+msgid "Unfinished character reference"
+msgstr ""
+
+#: ../glib/gmarkup.c:964
+#: ../glib/gmarkup.c:992
+#: ../glib/gmarkup.c:1023
+msgid "Invalid UTF-8 encoded text"
+msgstr "Yazmanıñ UTF-8 bilgelämäse yaraqsız"
+
+#: ../glib/gmarkup.c:1059
+msgid "Document must begin with an element (e.g. <book>)"
+msgstr ""
+
+#: ../glib/gmarkup.c:1099
+#, c-format
+msgid "'%s' is not a valid character following a '<' character; it may not begin an element name"
+msgstr ""
+
+#: ../glib/gmarkup.c:1163
+#, c-format
+msgid "Odd character '%s', expected a '>' character to end the start tag of element '%s'"
+msgstr ""
+
+#: ../glib/gmarkup.c:1252
+#, c-format
+msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgstr ""
+
+#: ../glib/gmarkup.c:1294
+#, c-format
+msgid "Odd character '%s', expected a '>' or '/' character to end the start tag of element '%s', or optionally an attribute; perhaps you used an invalid character in an attribute name"
+msgstr ""
+
+#: ../glib/gmarkup.c:1383
+#, c-format
+msgid "Odd character '%s', expected an open quote mark after the equals sign when giving value for attribute '%s' of element '%s'"
+msgstr ""
+
+#: ../glib/gmarkup.c:1528
+#, c-format
+msgid "'%s' is not a valid character following the characters '</'; '%s' may not begin an element name"
+msgstr ""
+
+#: ../glib/gmarkup.c:1568
+#, c-format
+msgid "'%s' is not a valid character following the close element name '%s'; the allowed character is '>'"
+msgstr ""
+
+#: ../glib/gmarkup.c:1579
+#, c-format
+msgid "Element '%s' was closed, no element is currently open"
+msgstr ""
+
+#: ../glib/gmarkup.c:1588
+#, c-format
+msgid "Element '%s' was closed, but the currently open element is '%s'"
+msgstr ""
+
+#: ../glib/gmarkup.c:1735
+msgid "Document was empty or contained only whitespace"
+msgstr "İstälek eçtälege yä buş, yä buşlıq bilgelärennän genä tora"
+
+#: ../glib/gmarkup.c:1749
+msgid "Document ended unexpectedly just after an open angle bracket '<'"
+msgstr ""
+
+#: ../glib/gmarkup.c:1757
+#: ../glib/gmarkup.c:1801
+#, c-format
+msgid "Document ended unexpectedly with elements still open - '%s' was the last element opened"
+msgstr ""
+
+#: ../glib/gmarkup.c:1765
+#, c-format
+msgid "Document ended unexpectedly, expected to see a close angle bracket ending the tag <%s/>"
+msgstr ""
+
+#: ../glib/gmarkup.c:1771
+msgid "Document ended unexpectedly inside an element name"
+msgstr ""
+
+#: ../glib/gmarkup.c:1776
+msgid "Document ended unexpectedly inside an attribute name"
+msgstr ""
+
+#: ../glib/gmarkup.c:1781
+msgid "Document ended unexpectedly inside an element-opening tag."
+msgstr ""
+
+#: ../glib/gmarkup.c:1787
+msgid "Document ended unexpectedly after the equals sign following an attribute name; no attribute value"
+msgstr ""
+
+#: ../glib/gmarkup.c:1794
+msgid "Document ended unexpectedly while inside an attribute value"
+msgstr ""
+
+#: ../glib/gmarkup.c:1809
+#, c-format
+msgid "Document ended unexpectedly inside the close tag for element '%s'"
+msgstr ""
+
+#: ../glib/gmarkup.c:1815
+msgid "Document ended unexpectedly inside a comment or processing instruction"
+msgstr ""
+
+#: ../glib/gshell.c:73
+msgid "Quoted text doesn't begin with a quotation mark"
+msgstr ""
+
+#: ../glib/gshell.c:163
+msgid "Unmatched quotation mark in command line or other shell-quoted text"
+msgstr ""
+
+#: ../glib/gshell.c:541
+#, c-format
+msgid "Text ended just after a '\\' character. (The text was '%s')"
+msgstr ""
+
+#: ../glib/gshell.c:548
+#, c-format
+msgid "Text ended before matching quote was found for %c. (The text was '%s')"
+msgstr ""
+
+#: ../glib/gshell.c:560
+msgid "Text was empty (or contained only whitespace)"
+msgstr ""
+
+#: ../glib/gspawn-win32.c:276
+msgid "Failed to read data from child process"
+msgstr ""
+
+#: ../glib/gspawn-win32.c:291
+#: ../glib/gspawn.c:1375
+#, c-format
+msgid "Failed to create pipe for communicating with child process (%s)"
+msgstr ""
+
+#: ../glib/gspawn-win32.c:329
+#: ../glib/gspawn.c:1039
+#, c-format
+msgid "Failed to read from child pipe (%s)"
+msgstr ""
+
+#: ../glib/gspawn-win32.c:355
+#: ../glib/gspawn.c:1244
+#, c-format
+msgid "Failed to change to directory '%s' (%s)"
+msgstr ""
+
+#: ../glib/gspawn-win32.c:361
+#: ../glib/gspawn-win32.c:581
+#, c-format
+msgid "Failed to execute child process (%s)"
+msgstr ""
+
+#: ../glib/gspawn-win32.c:471
+#: ../glib/gspawn-win32.c:527
+#, c-format
+msgid "Invalid program name: %s"
+msgstr "Yazılım adı yaraqsız: %s"
+
+#: ../glib/gspawn-win32.c:481
+#: ../glib/gspawn-win32.c:537
+#: ../glib/gspawn-win32.c:780
+#: ../glib/gspawn-win32.c:835
+#: ../glib/gspawn-win32.c:1364
+#, c-format
+msgid "Invalid string in argument vector at %d: %s"
+msgstr ""
+
+#: ../glib/gspawn-win32.c:492
+#: ../glib/gspawn-win32.c:548
+#: ../glib/gspawn-win32.c:794
+#: ../glib/gspawn-win32.c:848
+#: ../glib/gspawn-win32.c:1397
+#, c-format
+msgid "Invalid string in environment: %s"
+msgstr "Tirä-yaqta yaraqsız yazma bar: %s"
+
+#: ../glib/gspawn-win32.c:776
+#: ../glib/gspawn-win32.c:831
+#: ../glib/gspawn-win32.c:1345
+#, c-format
+msgid "Invalid working directory: %s"
+msgstr "Eş törgäge yaraqsız: %s"
+
+#: ../glib/gspawn-win32.c:890
+#, c-format
+msgid "Failed to execute helper program (%s)"
+msgstr "Yärdämçe yazılım eşlätep bulmadı (%s)"
+
+#: ../glib/gspawn-win32.c:1084
+msgid "Unexpected error in g_io_channel_win32_poll() reading data from a child process"
+msgstr ""
+
+#: ../glib/gspawn.c:179
+#, c-format
+msgid "Failed to read data from child process (%s)"
+msgstr ""
+
+#: ../glib/gspawn.c:311
+#, c-format
+msgid "Unexpected error in select() reading data from a child process (%s)"
+msgstr ""
+
+#: ../glib/gspawn.c:394
+#, c-format
+msgid "Unexpected error in waitpid() (%s)"
+msgstr ""
+
+#: ../glib/gspawn.c:1104
+#, c-format
+msgid "Failed to fork (%s)"
+msgstr ""
+
+#: ../glib/gspawn.c:1254
+#, c-format
+msgid "Failed to execute child process \"%s\" (%s)"
+msgstr ""
+
+#: ../glib/gspawn.c:1264
+#, c-format
+msgid "Failed to redirect output or input of child process (%s)"
+msgstr ""
+
+#: ../glib/gspawn.c:1273
+#, c-format
+msgid "Failed to fork child process (%s)"
+msgstr ""
+
+#: ../glib/gspawn.c:1281
+#, c-format
+msgid "Unknown error executing child process \"%s\""
+msgstr ""
+
+#: ../glib/gspawn.c:1303
+#, c-format
+msgid "Failed to read enough data from child pid pipe (%s)"
+msgstr ""
+
+#: ../glib/gutf8.c:987
+msgid "Character out of range for UTF-8"
+msgstr "UTF-8 çigennän çıqqan bilge"
+
+#: ../glib/gutf8.c:1081
+#: ../glib/gutf8.c:1090
+#: ../glib/gutf8.c:1222
+#: ../glib/gutf8.c:1231
+#: ../glib/gutf8.c:1372
+#: ../glib/gutf8.c:1468
+msgid "Invalid sequence in conversion input"
+msgstr ""
+
+#: ../glib/gutf8.c:1383
+#: ../glib/gutf8.c:1479
+msgid "Character out of range for UTF-16"
+msgstr "UTF-16 çigennän çıqqan bilge"
+
+#: ../glib/goption.c:468
+msgid "Usage:"
+msgstr "Totılu:"
+
+#: ../glib/goption.c:468
+msgid "[OPTION...]"
+msgstr "[KÖYLÄMÄ...]"
+
+#: ../glib/goption.c:556
+msgid "Help Options:"
+msgstr "Yärdäm Köylämäse:"
+
+#: ../glib/goption.c:557
+msgid "Show help options"
+msgstr "Yärdäm köylämäsen kürsätü"
+
+#: ../glib/goption.c:562
+msgid "Show all help options"
+msgstr "Yärdäm köylämäsen kürsätü"
+
+#: ../glib/goption.c:612
+msgid "Application Options:"
+msgstr "Yazılım Köylämäläre:"
+
+#: ../glib/goption.c:653
+#, c-format
+msgid "Cannot parse integer value '%s' for %s"
+msgstr ""
+
+#: ../glib/goption.c:663
+#, c-format
+msgid "Integer value '%s' for %s out of range"
+msgstr "%2$s öçen '%1$s' digän tulısan bäyäse çiktän uzdı"
+
+#: ../glib/goption.c:957
+#: ../glib/goption.c:1068
+#, c-format
+msgid "Missing argument for %s"
+msgstr "%s öçen köylämä birelmäde"
+
+#: ../glib/goption.c:1472
+#, c-format
+msgid "Unknown option %s"
+msgstr "Bilgesez %s atlı köylämä"
+
+#: ../glib/gkeyfile.c:339
+msgid "Valid key file could not be found in data dirs"
+msgstr ""
+
+#: ../glib/gkeyfile.c:374
+msgid "Not a regular file"
+msgstr "Ğädäti birem tügel"
+
+#: ../glib/gkeyfile.c:382
+msgid "File is empty"
+msgstr "Birem buş ikän"
+
+#: ../glib/gkeyfile.c:697
+#, c-format
+msgid "Key file contains line '%s' which is not a key-value pair, group, or comment"
+msgstr ""
+
+#: ../glib/gkeyfile.c:765
+msgid "Key file does not start with a group"
+msgstr "Açqıç bireme törkem belän başlanmí"
+
+#: ../glib/gkeyfile.c:808
+#, c-format
+msgid "Key file contains unsupported encoding '%s'"
+msgstr "Açqıç biremendä '%s' digän totılmağan bilgelämä"
+
+#: ../glib/gkeyfile.c:1017
+#: ../glib/gkeyfile.c:1176
+#: ../glib/gkeyfile.c:2177
+#: ../glib/gkeyfile.c:2242
+#: ../glib/gkeyfile.c:2361
+#: ../glib/gkeyfile.c:2497
+#: ../glib/gkeyfile.c:2649
+#: ../glib/gkeyfile.c:2823
+#: ../glib/gkeyfile.c:2880
+#, c-format
+msgid "Key file does not have group '%s'"
+msgstr "Açqıç biremendä '%s' törkeme yuq"
+
+#: ../glib/gkeyfile.c:1188
+#, c-format
+msgid "Key file does not have key '%s'"
+msgstr "Açqıç biremendä '%s' açqıçı yuq"
+
+#: ../glib/gkeyfile.c:1289
+#: ../glib/gkeyfile.c:1398
+#, c-format
+msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
+msgstr ""
+
+#: ../glib/gkeyfile.c:1307
+#: ../glib/gkeyfile.c:1416
+#: ../glib/gkeyfile.c:1788
+#, c-format
+msgid "Key file contains key '%s' which has value that cannot be interpreted."
+msgstr ""
+
+#: ../glib/gkeyfile.c:2004
+#, c-format
+msgid "Key file contains key '%s' in group '%s' which has value that cannot be interpreted."
+msgstr ""
+
+#: ../glib/gkeyfile.c:2192
+#: ../glib/gkeyfile.c:2376
+#: ../glib/gkeyfile.c:2891
+#, c-format
+msgid "Key file does not have key '%s' in group '%s'"
+msgstr "Açqıç biremendäge '%2$s' törkemendä '%1$s' açqıçı yuq"
+
+#: ../glib/gkeyfile.c:3067
+msgid "Key file contains escape character at end of line"
+msgstr ""
+
+#: ../glib/gkeyfile.c:3089
+#, c-format
+msgid "Key file contains invalid escape sequence '%s'"
+msgstr ""
+
+#: ../glib/gkeyfile.c:3230
+#, c-format
+msgid "Value '%s' cannot be interpreted as a number."
+msgstr "'%s' digän bäyäsen san itep tanıp bulmí."
+
+#: ../glib/gkeyfile.c:3240
+#, c-format
+msgid "Integer value '%s' out of range"
+msgstr "'%s' digän tulısan bäyäse çiktän çıqtı"
+
+#: ../glib/gkeyfile.c:3270
+#, c-format
+msgid "Value '%s' cannot be interpreted as a boolean."
+msgstr "'%s' digän bäyäsen yuqbar itep tanıp bulmí."
+

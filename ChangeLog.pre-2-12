@@ -1,3 +1,7 @@
+2005-11-10  Simos Xenitellis  <simos@gnome.org>
+
+	* configure.in: Added tt (Tatar) to ALL_LINGUAS.
+
 2005-11-05  Tor Lillqvist  <tml@novell.com>
 
 	* glib/giowin32.c (g_io_win32_set_flags): Don't call g_warning().
