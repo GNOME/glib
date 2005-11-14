@@ -1,3 +1,14 @@
+Overview of Changes from GLib 2.8.3 to GLib 2.8.4
+=================================================
+* Support aborting on critical warnings by setting
+  G_DEBUG=fatal_criticals in the environment 
+  [Vincent Untz]
+* Bug fixes [Sebastien Bacher, Tor Lillqvist,
+  Manish Singh, Morten Welinder, Andy Wingo]
+* Documentation improvements [Steffen Gutmann,
+  Christophe Fergeau]
+* Translation updates (he,ja,nl,th)
+
 Overview of Changes from GLib 2.8.2 to GLib 2.8.3
 =================================================
 * Fix an error that crept in with a change to 
