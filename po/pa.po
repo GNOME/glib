@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.glib-2-8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-10-03 12:16-0400\n"
+"POT-Creation-Date: 2005-11-15 09:42-0500\n"
 "PO-Revision-Date: 2005-09-02 15:04+0530\n"
 "Last-Translator: Amanpreet Singh Alam <amanpreetalam@yahoo.com>\n"
 "Language-Team: Punjabi <fedora-trans-pa@redhat.com>\n"
@@ -36,7 +36,7 @@ msgstr "ਇਸ '%s' ਤੋ '%s' ਵਿੱਚ ਬਦਲਣ ਵਾਲਾ ਉਪਲ
 
 #: glib/gconvert.c:606 glib/gconvert.c:995 glib/giochannel.c:1322
 #: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:912
-#: glib/gutf8.c:1362
+#: glib/gutf8.c:1361
 #, c-format
 msgid "Invalid byte sequence in conversion input"
 msgstr "ਬਦਲਣ ਲਈ ਦਿਤੀ ਸਤਰ ਵਿੱਚ ਬਾਇਟ ਦਾ ਸਰੂਪ ਠੀਕ ਨਹੀ ਹੈ"
@@ -47,8 +47,8 @@ msgstr "ਬਦਲਣ ਲਈ ਦਿਤੀ ਸਤਰ ਵਿੱਚ ਬਾਇਟ ਦ
 msgid "Error during conversion: %s"
 msgstr "ਤਬਦੀਲੀ ਦਰਮਿਆਨ ਗਲਤੀ  %s"
 
-#: glib/gconvert.c:647 glib/gutf8.c:908 glib/gutf8.c:1113 glib/gutf8.c:1254
-#: glib/gutf8.c:1358
+#: glib/gconvert.c:647 glib/gutf8.c:908 glib/gutf8.c:1112 glib/gutf8.c:1253
+#: glib/gutf8.c:1357
 #, c-format
 msgid "Partial character sequence at end of input"
 msgstr "ਸਤਰ ਦੇ ਅਖੀਰ ਤੇ ਅੱਖਰਾਂ ਦਾ ਸਰੂਪ ਅਧੂਰਾ ਹੈ"
@@ -561,18 +561,18 @@ msgstr "ਅਗਲੀ ਕਿਰਿਆ \"%s\" ਨੂੰ ਚਾਲੂ ਕਰਨ ਵ
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "ਅਗਲੀ ਕਿਰਿਆ ਪਾਇਪ (%s) ਤੋ ਚਾਹੀਦਾ ਡਾਟਾ ਖੋਲਣ ਵਿੱਚ ਅਸਫਲ ਹੈ"
 
-#: glib/gutf8.c:987
+#: glib/gutf8.c:986
 #, c-format
 msgid "Character out of range for UTF-8"
 msgstr "UTF-8 ਲਈ ਅੱਖਰ ਨਿਸ਼ਚਿਤ ਸੀਮਾ ਤੋ ਬਾਹਰ ਹਨ"
 
-#: glib/gutf8.c:1081 glib/gutf8.c:1090 glib/gutf8.c:1222 glib/gutf8.c:1231
-#: glib/gutf8.c:1372 glib/gutf8.c:1468
+#: glib/gutf8.c:1080 glib/gutf8.c:1089 glib/gutf8.c:1221 glib/gutf8.c:1230
+#: glib/gutf8.c:1371 glib/gutf8.c:1467
 #, c-format
 msgid "Invalid sequence in conversion input"
 msgstr "ਬਦਲਾਉ ਲਈ ਨਿਵੇਸ਼ ਵਿੱਚ ਤਰਤੀਬ ਜਾਇਜ ਨਹੀ ਹੈ"
 
-#: glib/gutf8.c:1383 glib/gutf8.c:1479
+#: glib/gutf8.c:1382 glib/gutf8.c:1478
 #, c-format
 msgid "Character out of range for UTF-16"
 msgstr "UTF-16 ਲਈ ਅੱਖਰ ਨਿਸ਼ਚਿਤ ਸੀਮਾ ਤੋ ਬਾਹਰ ਹਨ"

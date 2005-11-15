@@ -1,3 +1,7 @@
+2005-11-15  Matthias Clasen  <mclasen@redhat.com>
+
+	* ===  Released 2.8.4 ===
+
 2005-11-08  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/tmpl/threads.sgml: Improve GOnce docs.

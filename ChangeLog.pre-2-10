@@ -1,3 +1,70 @@
+2005-11-15  Matthias Clasen  <mclasen@redhat.com>
+
+	* ===  Released 2.8.4 ===
+
+2005-11-13  Matthias Clasen  <mclasen@redhat.com>
+
+	* NEWS: Updates
+
+2005-11-05  Tor Lillqvist  <tml@novell.com>
+
+	* glib/giowin32.c (g_io_win32_set_flags): Don't call
+	g_warning(). (#320688)
+
+2005-11-07  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gmain.c (g_main_dispatch): Don't call cb_funcs->unref
+	while holding the context lock.  (#320886, Andy Wingo)
+
+2005-11-04  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gmain.c (g_child_watch_source_new): Expand
+	the docs.  (#320466, Steffen Gutmann)
+
+	* glib/gscanner.h: Include gdataset.h.  (#320322)
+
+	* glib/gdebug.h: add new GDebugFlag for fatal_criticals
+	* glib/gmessages.c: (_g_debug_init): handle G_DEBUG=fatal_criticals,
+	to help find critical warnings in applications.  (#320017,
+	Vincent Untz)
+
+2005-10-29  Matthias Clasen  <mclasen@redhat.com>
+
+	* tests/convert-test.c: Add some tests for conversions between
+	UTF-8, UCS-4 and UTF-16.
+
+	* glib/gutf8.c (g_utf8_to_ucs4, g_utf8_to_utf16): Fix handling
+	of len == -1, noticed by Morten Welinder.
+
+2005-10-26  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gutf8.c (g_ucs4_to_utf8): Don't set items_read twice
+	in the error case, and add some documentation.  (#319806, Morten
+	Welinder)
+
+2005-10-19  Manish Singh  <yosh@gimp.org>
+
+	* configure.in: Use AC_CHECK_FUNCS for _NSGetEnviron, to get the
+	config.h symbol automatically. Fixes bug #313731.
+
+2005-10-19  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gwin32.c (g_win32_get_package_installation_directory):
+	Return a g_strdup()ed copy of the value stored in the hash table,
+	so that it can be g_free()d without leaving a dangling pointer in
+	the hash table. (#319232)
+
+2005-10-06  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gunicollate.c (g_utf8_collate_key_for_filename): Handle
+	all-zero sequences correctly.  (#317930, Sebastien Bacher)
+
+2005-10-03  Matthias Clasen  <mclasen@redhat.com>
+
+	* configure.in: Bump version number
+
+	* === Released 2.8.3 ===
+	* === 
 2005-11-13  Matthias Clasen  <mclasen@redhat.com>
 
 	* NEWS: Updates

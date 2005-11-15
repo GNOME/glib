@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib glib-2-8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-10-03 12:16-0400\n"
+"POT-Creation-Date: 2005-11-15 09:42-0500\n"
 "PO-Revision-Date: 2005-08-31 11:03+0200\n"
 "Last-Translator: Laurent Dhima <laurenti@alblinux.net>\n"
 "Language-Team: Albanian <gnome-albanian-perkthyesit@lists.sourceforge.net>\n"
@@ -26,7 +26,7 @@ msgstr "E pamundur hapja e konvertuesit nga '%s' në '%s'"
 
 #: glib/gconvert.c:606 glib/gconvert.c:995 glib/giochannel.c:1322
 #: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:912
-#: glib/gutf8.c:1362
+#: glib/gutf8.c:1361
 #, c-format
 msgid "Invalid byte sequence in conversion input"
 msgstr "Sekuencë byte e pavlefshme tek të dhënat për konvertim"
@@ -37,8 +37,8 @@ msgstr "Sekuencë byte e pavlefshme tek të dhënat për konvertim"
 msgid "Error during conversion: %s"
 msgstr "Gabim gjatë konvertimit: %s"
 
-#: glib/gconvert.c:647 glib/gutf8.c:908 glib/gutf8.c:1113 glib/gutf8.c:1254
-#: glib/gutf8.c:1358
+#: glib/gconvert.c:647 glib/gutf8.c:908 glib/gutf8.c:1112 glib/gutf8.c:1253
+#: glib/gutf8.c:1357
 #, c-format
 msgid "Partial character sequence at end of input"
 msgstr "Sekuencë simbolesh e pjesëshme në fund të të dhënave në hyrje"
@@ -584,18 +584,18 @@ msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr ""
 "I pamundur leximi i një sasie të dhënash të mjaftueshme nga pid pipe bir (%s)"
 
-#: glib/gutf8.c:987
+#: glib/gutf8.c:986
 #, c-format
 msgid "Character out of range for UTF-8"
 msgstr "Simboli nuk ekziston në UTF-8"
 
-#: glib/gutf8.c:1081 glib/gutf8.c:1090 glib/gutf8.c:1222 glib/gutf8.c:1231
-#: glib/gutf8.c:1372 glib/gutf8.c:1468
+#: glib/gutf8.c:1080 glib/gutf8.c:1089 glib/gutf8.c:1221 glib/gutf8.c:1230
+#: glib/gutf8.c:1371 glib/gutf8.c:1467
 #, c-format
 msgid "Invalid sequence in conversion input"
 msgstr "Sekuencë e pavlefshme në hyrje për konvertimin"
 
-#: glib/gutf8.c:1383 glib/gutf8.c:1479
+#: glib/gutf8.c:1382 glib/gutf8.c:1478
 #, c-format
 msgid "Character out of range for UTF-16"
 msgstr "Simboli nuk ekziston në UTF-16"

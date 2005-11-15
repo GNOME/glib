@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-10-03 12:16-0400\n"
+"POT-Creation-Date: 2005-11-15 09:42-0500\n"
 "PO-Revision-Date: 2002-12-19 01:04+0200\n"
 "Last-Translator: Artis Trops <hornet@navigator.lv>\n"
 "Language-Team: Latvian <ll10nt@os.lv>\n"
@@ -26,7 +26,7 @@ msgstr "Nevarēju atvērt konvertātoru no '%s' uz '%s': %s"
 
 #: glib/gconvert.c:606 glib/gconvert.c:995 glib/giochannel.c:1322
 #: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:912
-#: glib/gutf8.c:1362
+#: glib/gutf8.c:1361
 #, c-format
 msgid "Invalid byte sequence in conversion input"
 msgstr "Nepareiza baitu secība konversijas ievadē"
@@ -37,8 +37,8 @@ msgstr "Nepareiza baitu secība konversijas ievadē"
 msgid "Error during conversion: %s"
 msgstr "Kļūda konversējot: %s"
 
-#: glib/gconvert.c:647 glib/gutf8.c:908 glib/gutf8.c:1113 glib/gutf8.c:1254
-#: glib/gutf8.c:1358
+#: glib/gconvert.c:647 glib/gutf8.c:908 glib/gutf8.c:1112 glib/gutf8.c:1253
+#: glib/gutf8.c:1357
 #, c-format
 msgid "Partial character sequence at end of input"
 msgstr "Daļēja simbolu secība ievades beigās"
@@ -566,18 +566,18 @@ msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr ""
 "Nevarēju nolasīt pietiekami daudz datus no bērna pid programkanāla (%s)"
 
-#: glib/gutf8.c:987
+#: glib/gutf8.c:986
 #, c-format
 msgid "Character out of range for UTF-8"
 msgstr "Rakstzīme nav UTF-8 laukā"
 
-#: glib/gutf8.c:1081 glib/gutf8.c:1090 glib/gutf8.c:1222 glib/gutf8.c:1231
-#: glib/gutf8.c:1372 glib/gutf8.c:1468
+#: glib/gutf8.c:1080 glib/gutf8.c:1089 glib/gutf8.c:1221 glib/gutf8.c:1230
+#: glib/gutf8.c:1371 glib/gutf8.c:1467
 #, c-format
 msgid "Invalid sequence in conversion input"
 msgstr "Nepareiza secība konversijas ievadē "
 
-#: glib/gutf8.c:1383 glib/gutf8.c:1479
+#: glib/gutf8.c:1382 glib/gutf8.c:1478
 #, c-format
 msgid "Character out of range for UTF-16"
 msgstr "Rakstzīme nav UTF-16 laukā"

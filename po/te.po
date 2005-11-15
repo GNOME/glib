@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLIB\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-10-03 12:16-0400\n"
+"POT-Creation-Date: 2005-11-15 09:42-0500\n"
 "PO-Revision-Date: 2004-12-13 20:16+0100\n"
 "Last-Translator: రమణ సాయి <rmn_sai@yahoo.com>\n"
 "Language-Team: Free Software Foundation, Andhra Pradesh <fsfap@gnu.org.in>\n"
@@ -30,7 +30,7 @@ msgstr "'%s' నుండి  '%s' కు పరివర్తించడం �
 
 #: glib/gconvert.c:606 glib/gconvert.c:995 glib/giochannel.c:1322
 #: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:912
-#: glib/gutf8.c:1362
+#: glib/gutf8.c:1361
 #, c-format
 msgid "Invalid byte sequence in conversion input"
 msgstr "ఎగుబడి బైట్ క్రమంను పరివర్తించుట నిస్సారమగును"
@@ -41,8 +41,8 @@ msgstr "ఎగుబడి బైట్ క్రమంను పరివర్
 msgid "Error during conversion: %s"
 msgstr "పరివర్తనం నందు దోషం కలదు: %s"
 
-#: glib/gconvert.c:647 glib/gutf8.c:908 glib/gutf8.c:1113 glib/gutf8.c:1254
-#: glib/gutf8.c:1358
+#: glib/gconvert.c:647 glib/gutf8.c:908 glib/gutf8.c:1112 glib/gutf8.c:1253
+#: glib/gutf8.c:1357
 #, c-format
 msgid "Partial character sequence at end of input"
 msgstr "చివరి ఎగుబడి నందు పాక్షికముగా అక్షర క్రమము కలదు."
@@ -553,19 +553,19 @@ msgstr " \"%s\" శిశుకార్యం నిర్వర్తించ
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "శిశు పిడ్ పైప్ (%s) నుండి సరిపడునంత చదువుటలో విఫలమైనావు.  "
 
-#: glib/gutf8.c:987
+#: glib/gutf8.c:986
 #, c-format
 msgid "Character out of range for UTF-8"
 msgstr "అక్షరము  యుటిఫ్-8 శ్రేణియందు లేదు "
 
-#: glib/gutf8.c:1081 glib/gutf8.c:1090 glib/gutf8.c:1222 glib/gutf8.c:1231
-#: glib/gutf8.c:1372 glib/gutf8.c:1468
+#: glib/gutf8.c:1080 glib/gutf8.c:1089 glib/gutf8.c:1221 glib/gutf8.c:1230
+#: glib/gutf8.c:1371 glib/gutf8.c:1467
 #, c-format
 msgid "Invalid sequence in conversion input"
 msgstr "పరివర్తన ఎగుబడి వరుస నిస్సారము "
 
 # ../glib/gutf8.c:1382 ../glib/gutf8.c:1478
-#: glib/gutf8.c:1383 glib/gutf8.c:1479
+#: glib/gutf8.c:1382 glib/gutf8.c:1478
 #, c-format
 msgid "Character out of range for UTF-16"
 msgstr "అక్షరము UTF-16 శ్రేణియందు లేదు"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.8.1 Gnome HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-10-03 12:16-0400\n"
+"POT-Creation-Date: 2005-11-15 09:42-0500\n"
 "PO-Revision-Date: 2005-09-02 18:36+0930\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <gnomevi-list@lists.sourceforge.net>\n"
@@ -29,7 +29,7 @@ msgstr "Không thể mở bộ chuyển đổi từ « %s » sang « %s »"
 
 #: glib/gconvert.c:606 glib/gconvert.c:995 glib/giochannel.c:1322
 #: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:912
-#: glib/gutf8.c:1362
+#: glib/gutf8.c:1361
 #, c-format
 msgid "Invalid byte sequence in conversion input"
 msgstr "Gặp dây byte không hợp lệ trong dữ liệu nhập chuyển đổi"
@@ -40,8 +40,8 @@ msgstr "Gặp dây byte không hợp lệ trong dữ liệu nhập chuyển đ�
 msgid "Error during conversion: %s"
 msgstr "Gặp lỗi khi chuyển đổi: %s"
 
-#: glib/gconvert.c:647 glib/gutf8.c:908 glib/gutf8.c:1113 glib/gutf8.c:1254
-#: glib/gutf8.c:1358
+#: glib/gconvert.c:647 glib/gutf8.c:908 glib/gutf8.c:1112 glib/gutf8.c:1253
+#: glib/gutf8.c:1357
 #, c-format
 msgid "Partial character sequence at end of input"
 msgstr "Dây ký tự riêng phần ở cuối dữ liệu nhập"
@@ -584,18 +584,18 @@ msgstr "Gặp lỗi không xác định khi thực thi tiến trình con « %s �
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Không đọc được đủ dữ liệu từ ống dẫn PID con (%s)."
 
-#: glib/gutf8.c:987
+#: glib/gutf8.c:986
 #, c-format
 msgid "Character out of range for UTF-8"
 msgstr "Ký tự ở ngoại phạm vị UTF-8."
 
-#: glib/gutf8.c:1081 glib/gutf8.c:1090 glib/gutf8.c:1222 glib/gutf8.c:1231
-#: glib/gutf8.c:1372 glib/gutf8.c:1468
+#: glib/gutf8.c:1080 glib/gutf8.c:1089 glib/gutf8.c:1221 glib/gutf8.c:1230
+#: glib/gutf8.c:1371 glib/gutf8.c:1467
 #, c-format
 msgid "Invalid sequence in conversion input"
 msgstr "Dây bất hợp lệ trong dữ liệu nhập việc chuyển đổi."
 
-#: glib/gutf8.c:1383 glib/gutf8.c:1479
+#: glib/gutf8.c:1382 glib/gutf8.c:1478
 #, c-format
 msgid "Character out of range for UTF-16"
 msgstr "Ký tự ở ngoại phạm vị UTF-16."

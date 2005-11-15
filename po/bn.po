@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-10-03 12:16-0400\n"
+"POT-Creation-Date: 2005-11-15 09:42-0500\n"
 "PO-Revision-Date: 2005-10-03 00:24+0600\n"
 "Last-Translator: Mahay Alam Khan <makl10n@yahoo.com>\n"
 "Language-Team: Bengali <gnome-translation@bengalinux.org>\n"
@@ -30,7 +30,7 @@ msgstr "'%s' থেকে '%s' তে কনভার্টার খোলা �
 
 #: glib/gconvert.c:606 glib/gconvert.c:995 glib/giochannel.c:1322
 #: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:912
-#: glib/gutf8.c:1362
+#: glib/gutf8.c:1361
 #, c-format
 msgid "Invalid byte sequence in conversion input"
 msgstr "পরিবর্তন করার জন্য দেয়া বাইট সমুহ সঠিক নয়"
@@ -41,8 +41,8 @@ msgstr "পরিবর্তন করার জন্য দেয়া বা�
 msgid "Error during conversion: %s"
 msgstr "পরিবর্তন সময়কালীন ভুল: %s"
 
-#: glib/gconvert.c:647 glib/gutf8.c:908 glib/gutf8.c:1113 glib/gutf8.c:1254
-#: glib/gutf8.c:1358
+#: glib/gconvert.c:647 glib/gutf8.c:908 glib/gutf8.c:1112 glib/gutf8.c:1253
+#: glib/gutf8.c:1357
 #, c-format
 msgid "Partial character sequence at end of input"
 msgstr "প্রদত্ত তথ্যের শেষে আংশিক অক্ষর সমুহ"
@@ -561,18 +561,18 @@ msgstr "চাইল্ড প্রসেস \"%s\" কার্যকর ক�
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "চাইল্ড পিয়াইডি পাইপ (%s) থেকে যথেস্ট তথ্য পড়তে ব্যর্থ"
 
-#: glib/gutf8.c:987
+#: glib/gutf8.c:986
 #, c-format
 msgid "Character out of range for UTF-8"
 msgstr "অক্ষর ইউটিএফ-৮ আয়তার বাইরে"
 
-#: glib/gutf8.c:1081 glib/gutf8.c:1090 glib/gutf8.c:1222 glib/gutf8.c:1231
-#: glib/gutf8.c:1372 glib/gutf8.c:1468
+#: glib/gutf8.c:1080 glib/gutf8.c:1089 glib/gutf8.c:1221 glib/gutf8.c:1230
+#: glib/gutf8.c:1371 glib/gutf8.c:1467
 #, c-format
 msgid "Invalid sequence in conversion input"
 msgstr "পরিবর্তন করার জন্য দেয়া তথ্য সঠিক নয়"
 
-#: glib/gutf8.c:1383 glib/gutf8.c:1479
+#: glib/gutf8.c:1382 glib/gutf8.c:1478
 #, c-format
 msgid "Character out of range for UTF-16"
 msgstr "অক্ষর ইউটিএফ-১৬ আয়তার বাইরে"

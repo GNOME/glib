@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.he\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-10-03 12:16-0400\n"
+"POT-Creation-Date: 2005-11-15 09:42-0500\n"
 "PO-Revision-Date: 2004-03-25 23:13+0000\n"
 "Last-Translator: Gil Osher <dolfin@rpg.org.il>\n"
 "Language-Team: Hebrew <he@li.org>\n"
@@ -28,13 +28,13 @@ msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Conversion from character set '%s' to '%s' is not supported"
 
 #: glib/gconvert.c:412 glib/gconvert.c:490
-#,  c-format
+#, c-format
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "Could not open converter from '%s' to '%s'"
 
 #: glib/gconvert.c:606 glib/gconvert.c:995 glib/giochannel.c:1322
 #: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:912
-#: glib/gutf8.c:1362
+#: glib/gutf8.c:1361
 #, c-format
 msgid "Invalid byte sequence in conversion input"
 msgstr "Invalid byte sequence in conversion input"
@@ -45,8 +45,8 @@ msgstr "Invalid byte sequence in conversion input"
 msgid "Error during conversion: %s"
 msgstr "Error during conversion: %s"
 
-#: glib/gconvert.c:647 glib/gutf8.c:908 glib/gutf8.c:1113 glib/gutf8.c:1254
-#: glib/gutf8.c:1358
+#: glib/gconvert.c:647 glib/gutf8.c:908 glib/gutf8.c:1112 glib/gutf8.c:1253
+#: glib/gutf8.c:1357
 #, c-format
 msgid "Partial character sequence at end of input"
 msgstr "Partial character sequence at end of input"
@@ -57,7 +57,7 @@ msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Cannot convert fallback '%s' to codeset '%s'"
 
 #: glib/gconvert.c:1706
-#,  c-format
+#, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "The URI '%s' is not an absolute URI using the \"file\" scheme"
 
@@ -127,22 +127,22 @@ msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Failed to open file '%s': fdopen() failed: %s"
 
 #: glib/gfileutils.c:909
-#,  c-format
+#, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 
 #: glib/gfileutils.c:952
-#,  c-format
+#, c-format
 msgid "Could not change file mode: fork() failed: %s"
 msgstr "Could not change file mode: fork() failed: %s"
 
 #: glib/gfileutils.c:983
-#,  c-format
+#, c-format
 msgid "Could not change file mode: waitpid() failed: %s"
 msgstr "Could not change file mode: waitpid() failed: %s"
 
 #: glib/gfileutils.c:1002
-#,  c-format
+#, c-format
 msgid "Could not change file mode: chmod() failed: %s"
 msgstr "Could not change file mode: chmod() failed: %s"
 
@@ -162,17 +162,17 @@ msgid "Failed to create file '%s': %s"
 msgstr "Failed to create file '%s': %s"
 
 #: glib/gfileutils.c:1080
-#,  c-format
+#, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr "Failed to open file '%s' for writing: fdopen() failed: %s"
 
 #: glib/gfileutils.c:1105
-#,  c-format
+#, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "Failed to write file '%s': fwrite() failed: %s"
 
 #: glib/gfileutils.c:1124
-#,  c-format
+#, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "Failed to close file '%s': fclose() failed: %s"
 
@@ -232,12 +232,12 @@ msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Can't do a raw read in g_io_channel_read_to_end"
 
 #: glib/gmappedfile.c:116
-#,  c-format
+#, c-format
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "Failed to open file '%s': open() failed: %s"
 
 #: glib/gmappedfile.c:185
-#,  c-format
+#, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "Failed to map file '%s': mmap() failed: %s"
 
@@ -287,7 +287,7 @@ msgstr ""
 "character without intending to start an entity - escape ampersand as &amp;"
 
 #: glib/gmarkup.c:579
-#,  c-format
+#, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
@@ -296,7 +296,7 @@ msgstr ""
 "reference (&#234; for example) - perhaps the digit is too large"
 
 #: glib/gmarkup.c:604
-#,  c-format
+#, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
 msgstr "Character reference '%-.*s' does not encode a permitted character"
 
@@ -513,7 +513,7 @@ msgid "Failed to execute child process (%s)"
 msgstr "Failed to execute child process (%s)"
 
 #: glib/gspawn-win32.c:890
-#,  c-format
+#, c-format
 msgid "Failed to execute helper program (%s)"
 msgstr "Failed to execute helper program (%s)"
 
@@ -571,18 +571,18 @@ msgstr "Unknown error executing child process \"%s\""
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Failed to read enough data from child pid pipe (%s)"
 
-#: glib/gutf8.c:987
+#: glib/gutf8.c:986
 #, c-format
 msgid "Character out of range for UTF-8"
 msgstr "Character out of range for UTF-8"
 
-#: glib/gutf8.c:1081 glib/gutf8.c:1090 glib/gutf8.c:1222 glib/gutf8.c:1231
-#: glib/gutf8.c:1372 glib/gutf8.c:1468
+#: glib/gutf8.c:1080 glib/gutf8.c:1089 glib/gutf8.c:1221 glib/gutf8.c:1230
+#: glib/gutf8.c:1371 glib/gutf8.c:1467
 #, c-format
 msgid "Invalid sequence in conversion input"
 msgstr "Invalid sequence in conversion input"
 
-#: glib/gutf8.c:1383 glib/gutf8.c:1479
+#: glib/gutf8.c:1382 glib/gutf8.c:1478
 #, c-format
 msgid "Character out of range for UTF-16"
 msgstr "Character out of range for UTF-16"
@@ -705,7 +705,7 @@ msgid "Key file contains escape character at end of line"
 msgstr "Key file contains escape character at end of line"
 
 #: glib/gkeyfile.c:3089
-#,  c-format
+#, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "Key file contains invalid escape sequence '%s'"
 
