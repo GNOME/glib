@@ -1,3 +1,8 @@
+2005-11-16  Behdad Esfahbod  <behdad@gnome.org>
+
+	* docs/reference/glib/tmpl/unicode.sgml: Correct typo on mentioning
+	@G_UNICODE_BREAK_UNKNOWN that should be #G_UNICODE_BREAK_UNKNOWN.
+
 2005-11-09  Behdad Esfahbod  <behdad@gnome.org>
 
 	* glib/guniprop.c: Use bit hacks instead when checking a general

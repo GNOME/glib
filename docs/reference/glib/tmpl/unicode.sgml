@@ -283,7 +283,7 @@ GLib 2.8 supports Unicode 4.0, GLib 2.10 supports Unicode 4.1.
 The five Hangul types were added in Unicode 4.1, so, has been
 introduced in GLib 2.10.  Note that new types may be added in the future.
 Applications should be ready to handle unknown values.
-They may be regarded as @G_UNICODE_BREAK_UNKNOWN
+They may be regarded as %G_UNICODE_BREAK_UNKNOWN
 See <ulink url="http://www.unicode.org/unicode/reports/tr14/"
 >http://www.unicode.org/unicode/reports/tr14/</ulink>.
 
