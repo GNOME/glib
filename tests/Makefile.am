@@ -103,6 +103,7 @@ test_programs =					\
 	unicode-caseconv			\
 	unicode-encoding			\
 	utf8-validate				\
+	utf8-pointer				\
 	uri-test
 
 test_scripts = run-markup-tests.sh run-collate-tests.sh
@@ -161,6 +162,7 @@ unicode_encoding_LDADD = $(progs_ldadd)
 unicode_caseconv_LDADD = $(progs_ldadd)
 unicode_collate_LDADD = $(progs_ldadd)
 utf8_validate_LDADD = $(progs_ldadd)
+utf8_pointer_LDADD = $(progs_ldadd)
 uri_test_LDADD = $(progs_ldadd)
 
 lib_LTLIBRARIES = libmoduletestplugin_a.la libmoduletestplugin_b.la

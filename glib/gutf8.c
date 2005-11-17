@@ -284,6 +284,9 @@ g_utf8_get_char (const gchar *p)
  * Converts from an integer character offset to a pointer to a position
  * within the string.
  * 
+ * Since 2.10, this function allows to pass a negative @offset to
+ * step backwards.
+ * 
  * Return value: the resulting pointer
  **/
 gchar *
@@ -291,9 +294,29 @@ g_utf8_offset_to_pointer  (const gchar *str,
 			   glong        offset)    
 {
   const gchar *s = str;
-  while (offset--)
-    s = g_utf8_next_char (s);
-  
+
+  if (offset > 0) 
+    while (offset--)
+      s = g_utf8_next_char (s);
+  else
+    {
+      const char *s1;
+
+      /* This nice technique for fast backwards stepping 
+       * through a UTF-8 string was dubbed "stutter stepping" 
+       * by its inventor, Larry Ewing.
+       */
+      while (offset)
+	{
+	  s1 = s;
+	  s += offset;
+	  while ((*s & 0xc0) == 0x80)
+	    s--;
+
+	  offset += g_utf8_pointer_to_offset (s, s1);
+	}
+    }
+
   return (gchar *)s;
 }
 
@@ -304,6 +327,9 @@ g_utf8_offset_to_pointer  (const gchar *str,
  * 
  * Converts from a pointer to position within a string to a integer
  * character offset.
+ *
+ * Since 2.10, this function allows @pos to be before @str, and returns
+ * a negative offset in this case.
  * 
  * Return value: the resulting character offset
  **/
@@ -313,13 +339,16 @@ g_utf8_pointer_to_offset (const gchar *str,
 {
   const gchar *s = str;
   glong offset = 0;    
-  
-  while (s < pos)
-    {
-      s = g_utf8_next_char (s);
-      offset++;
-    }
 
+  if (pos < str) 
+    offset = - g_utf8_pointer_to_offset (pos, str);
+  else
+    while (s < pos)
+      {
+	s = g_utf8_next_char (s);
+	offset++;
+      }
+  
   return offset;
 }
 

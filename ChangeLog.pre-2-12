@@ -1,5 +1,14 @@
 2005-11-17  Matthias Clasen  <mclasen@redhat.com>
 
+	* tests/Makefile.am:
+	* tests/utf8-pointer.c: Unit tests for g_utf8_pointer_to_offset
+	and g_utf8_offset_to_pointer.
+
+	* glib/gutf8.c (g_utf8_pointer_to_offset) 
+	(g_utf8_offset_to_pointer): Handle negative offsets, and use
+	"stutter stepping" for going backwards. (#320638, Larry
+	Ewing)
+
 	* glib/gbacktrace.c:
 	* glib/gdate.c:
 	* glib/gthread.c: const correctness fixes, found
