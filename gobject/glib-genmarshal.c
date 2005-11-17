@@ -115,7 +115,7 @@ static GScannerConfig scanner_config_template =
   FALSE                 /* symbol_2_token */,
   FALSE                 /* scope_0_fallback */,
 };
-static gchar		*std_marshaller_prefix = "g_cclosure_marshal";
+static gchar		* const std_marshaller_prefix = "g_cclosure_marshal";
 static gchar		*marshaller_prefix = "g_cclosure_user_marshal";
 static GHashTable	*marshallers = NULL;
 static gboolean		 gen_cheader = FALSE;

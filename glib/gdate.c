@@ -473,7 +473,7 @@ static GDateDMY dmy_order[3] =
  * are counted as in the year 1900.  
  */
 
-static GDateYear twodigit_start_year = 1930;
+static const GDateYear twodigit_start_year = 1930;
 
 /* It is impossible to enter a year between 1 AD and 99 AD with this
  * in effect.  

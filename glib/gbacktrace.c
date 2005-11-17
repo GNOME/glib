@@ -92,9 +92,9 @@ void
 g_on_error_query (const gchar *prg_name)
 {
 #ifndef G_OS_WIN32
-  static const gchar *query1 = "[E]xit, [H]alt";
-  static const gchar *query2 = ", show [S]tack trace";
-  static const gchar *query3 = " or [P]roceed";
+  static const gchar * const query1 = "[E]xit, [H]alt";
+  static const gchar * const query2 = ", show [S]tack trace";
+  static const gchar * const query3 = " or [P]roceed";
   gchar buf[16];
 
   if (!prg_name)

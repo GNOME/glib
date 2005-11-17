@@ -199,7 +199,7 @@ g_once_impl (GOnce       *once,
 void 
 g_static_mutex_init (GStaticMutex *mutex)
 {
-  static GStaticMutex init_mutex = G_STATIC_MUTEX_INIT;
+  static const GStaticMutex init_mutex = G_STATIC_MUTEX_INIT;
 
   g_return_if_fail (mutex);
 
@@ -253,7 +253,7 @@ g_static_mutex_free (GStaticMutex* mutex)
 void     
 g_static_rec_mutex_init (GStaticRecMutex *mutex)
 {
-  static GStaticRecMutex init_mutex = G_STATIC_REC_MUTEX_INIT;
+  static const GStaticRecMutex init_mutex = G_STATIC_REC_MUTEX_INIT;
   
   g_return_if_fail (mutex);
 
@@ -696,7 +696,7 @@ g_thread_self (void)
 void
 g_static_rw_lock_init (GStaticRWLock* lock)
 {
-  static GStaticRWLock init_lock = G_STATIC_RW_LOCK_INIT;
+  static const GStaticRWLock init_lock = G_STATIC_RW_LOCK_INIT;
 
   g_return_if_fail (lock);
 
