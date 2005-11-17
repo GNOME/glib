@@ -859,20 +859,33 @@ g_date_set_parse (GDate       *d,
   G_UNLOCK (g_date_global);
 }
 
+/**
+ * g_date_set_time_t:
+ * @date: a #GDate 
+ * @timet: <type>time_t</type> value to set
+ *
+ * Sets the value of a date from a <type>time_t</type> value. 
+ *
+ * To set the value of a date to the current day, you could write:
+ * <informalexample><programlisting> 
+ *  g_date_set_time_t (date, time (NULL)); 
+ * </programlisting></informalexample>
+ *
+ * Since: 2.10
+ */
 void         
-g_date_set_time (GDate *d,
-		 GTime  time)
+g_date_set_time_t (GDate *date,
+		   time_t timet)
 {
-  time_t t = time;
   struct tm tm;
   
-  g_return_if_fail (d != NULL);
+  g_return_if_fail (date != NULL);
   
 #ifdef HAVE_LOCALTIME_R
-  localtime_r (&t, &tm);
+  localtime_r (&timet, &tm);
 #else
   {
-    struct tm *ptm = localtime (&t);
+    struct tm *ptm = localtime (&timet);
 
     if (ptm == NULL)
       {
@@ -892,15 +905,50 @@ g_date_set_time (GDate *d,
   }
 #endif
   
-  d->julian = FALSE;
+  date->julian = FALSE;
   
-  d->month = tm.tm_mon + 1;
-  d->day   = tm.tm_mday;
-  d->year  = tm.tm_year + 1900;
+  date->month = tm.tm_mon + 1;
+  date->day   = tm.tm_mday;
+  date->year  = tm.tm_year + 1900;
   
-  g_return_if_fail (g_date_valid_dmy (d->day, d->month, d->year));
+  g_return_if_fail (g_date_valid_dmy (date->day, date->month, date->year));
   
-  d->dmy    = TRUE;
+  date->dmy    = TRUE;
+}
+
+
+/**
+ * g_date_set_time:
+ * @date: a #GDate.
+ * @time_: #GTime value to set.
+ *
+ * Sets the value of a date from a #GTime value. 
+ *
+ * @Deprecated: Use g_date_set_time_t() instead.
+ */
+void
+g_date_set_time (GDate    *date,
+		 GTime    *time_)
+{
+  g_date_set_time_t (date, (time_t) time_);
+}
+
+/**
+ * g_date_set_time_val:
+ * @date: a #GDate 
+ * @timeval: #GTimeVal value to set
+ *
+ * Sets the value of a date from a #GTimeVal value.  Note that the
+ * @tv_usec member is ignored, because #GDate can't make use of the
+ * additional precision.
+ *
+ * Since: 2.10
+ */
+void
+g_date_set_time_val (GDate    *date,
+		     GTimeVal *timeval)
+{
+  g_date_set_time_t (date, (time_t) timeval->tv_sec);
 }
 
 void         

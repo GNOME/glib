@@ -213,7 +213,11 @@ g_date_set_dmy
 g_date_set_julian
 g_date_set_month
 g_date_set_parse
+#ifndef G_DISABLE_DEPRECATED
 g_date_set_time
+#endif
+g_date_set_time_t
+g_date_set_time_val
 g_date_set_year
 g_date_strftime
 g_date_subtract_days

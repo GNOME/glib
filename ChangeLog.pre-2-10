@@ -1,5 +1,12 @@
 2005-11-17  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/glib.symbols: 
+	* glib/gdate.h: 
+	* glib/gdate.c (g_date_set_time_t): 
+	(g_date_set_time_val): Add functions to set a date from
+	a time_t and from a GTimeVal.
+	(g_date_set_time): Deprecate.  (#314067, Roger Leigh)
+	
 	* tests/Makefile.am:
 	* tests/utf8-pointer.c: Unit tests for g_utf8_pointer_to_offset
 	and g_utf8_offset_to_pointer.

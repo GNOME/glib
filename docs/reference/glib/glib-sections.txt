@@ -1171,6 +1171,8 @@ g_date_set_year
 g_date_set_dmy
 g_date_set_julian
 g_date_set_time
+g_date_set_time_t
+g_date_set_time_val
 g_date_set_parse
 
 <SUBSECTION>
