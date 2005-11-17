@@ -103,3 +103,21 @@ g_quark_from_string() or g_quark_from_static_string().
 #GQuark associated with the string.
 
 
+<!-- ##### FUNCTION g_intern_string ##### -->
+<para>
+
+</para>
+
+@string: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_intern_static_string ##### -->
+<para>
+
+</para>
+
+@string: 
+@Returns: 
+
+

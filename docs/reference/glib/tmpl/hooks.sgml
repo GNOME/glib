@@ -30,7 +30,7 @@ list of hook functions.
 @hook_size: the size of the #GHookList elements, in bytes.
 @is_setup: 1 if the #GHookList has been initialized.
 @hooks: the first #GHook element in the list.
-@hook_memchunk: the #GMemChunk used for allocating the #GHook elements.
+@dummy3: 
 @finalize_hook: the function to call to finalize a #GHook element. The
 default behaviour is to call the hooks <function>destroy</function> function.
 @dummy: 

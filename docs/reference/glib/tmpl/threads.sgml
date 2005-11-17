@@ -457,6 +457,15 @@ that will mess up the bookkeeping and lead to funny and unwanted results.
 @retval: the return value of this thread.
 
 
+<!-- ##### FUNCTION g_thread_foreach ##### -->
+<para>
+
+</para>
+
+@thread_func: 
+@user_data: 
+
+
 <!-- ##### STRUCT GMutex ##### -->
 
 <para>

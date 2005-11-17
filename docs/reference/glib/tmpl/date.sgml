@@ -353,8 +353,26 @@ Sets the value of a #GDate from a Julian day number.
 
 </para>
 
-@date:
+@date: 
 @time_: 
+
+
+<!-- ##### FUNCTION g_date_set_time_t ##### -->
+<para>
+
+</para>
+
+@date: 
+@timet: 
+
+
+<!-- ##### FUNCTION g_date_set_time_val ##### -->
+<para>
+
+</para>
+
+@date: 
+@timeval: 
 
 
 <!-- ##### FUNCTION g_date_set_parse ##### -->

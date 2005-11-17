@@ -163,6 +163,7 @@ value_table's collect_value() function.
 </para>
 
 @value: An initialized #GValue structure.
+@instance: 
 
 
 <!-- ##### FUNCTION g_value_fits_pointer ##### -->

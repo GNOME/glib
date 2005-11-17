@@ -465,8 +465,14 @@ g_list_length
 g_list_nth
 g_list_nth_data
 g_list_nth_prev
+#ifndef G_DISABLE_DEPRECATED
+g_list_pop_allocator
+#endif
 g_list_position
 g_list_prepend
+#ifndef G_DISABLE_DEPRECATED
+g_list_push_allocator
+#endif
 g_list_remove
 g_list_remove_all
 g_list_remove_link
@@ -641,7 +647,13 @@ g_node_n_children
 g_node_new
 g_node_n_nodes
 g_node_nth_child
+#ifndef G_DISABLE_DEPRECATED
+g_node_pop_allocator
+#endif
 g_node_prepend
+#ifndef G_DISABLE_DEPRECATED
+g_node_push_allocator
+#endif
 g_node_reverse_children
 g_node_traverse
 g_node_unlink
@@ -848,8 +860,14 @@ g_slist_last
 g_slist_length
 g_slist_nth
 g_slist_nth_data
+#ifndef G_DISABLE_DEPRECATED
+g_slist_pop_allocator
+#endif
 g_slist_position
 g_slist_prepend
+#ifndef G_DISABLE_DEPRECATED
+g_slist_push_allocator
+#endif
 g_slist_remove
 g_slist_remove_all
 g_slist_remove_link

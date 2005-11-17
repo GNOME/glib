@@ -1,5 +1,10 @@
 2005-11-17  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/glib.symbols: Updates
+
+	* glib/gutf8.c (g_utf8_offset_to_pointer): Add some performance
+	hints to the docs. (Paolo Borelli)
+	
 	* NEWS: Updates
 
 	* glib/gthread.c (g_thread_foreach): Mark as new api.

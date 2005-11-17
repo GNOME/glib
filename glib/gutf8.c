@@ -285,7 +285,9 @@ g_utf8_get_char (const gchar *p)
  * within the string.
  * 
  * Since 2.10, this function allows to pass a negative @offset to
- * step backwards.
+ * step backwards. It is usually worth stepping backwards from the end
+ * instead of forwards if @offset is in the last fourth of the string, 
+ * since moving forward is about 3 times faster than moving backward.
  * 
  * Return value: the resulting pointer
  **/
