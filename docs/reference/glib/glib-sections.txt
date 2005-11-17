@@ -522,6 +522,7 @@ g_thread_join
 g_thread_set_priority
 g_thread_yield
 g_thread_exit
+g_thread_foreach
 
 <SUBSECTION>
 GMutex

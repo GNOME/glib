@@ -1,5 +1,11 @@
 2005-11-17  Matthias Clasen  <mclasen@redhat.com>
 
+	* NEWS: Updates
+
+	* glib/gthread.c (g_thread_foreach): Mark as new api.
+
+	* README.in: Updates.
+
 	* glib/glib.symbols: 
 	* glib/gdate.h: 
 	* glib/gdate.c (g_date_set_time_t): 

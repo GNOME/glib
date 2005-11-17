@@ -1,3 +1,59 @@
+Overview of Changes from GLib 2.8.x to GLib 2.9.0
+=================================================
+* Unicode support:
+ - The Unicode tables have been updated to Unicode 4.1, 
+   adding several new values to the GUnicodeBreakType 
+   enumeration. This breaks Pango <= 1.10 
+   [Behdad Esfahbod]
+ - The various Unicode character predicate functions 
+   (g_unichar_isalpha, g_unichar_isdigit,...) have
+   been optimized
+   [Behdad]
+ - g_utf8_pointer_to_offset, g_utf8_offset_to_pointer:
+   These functions handle negative offsets now, and
+   going backwards in g_utf8_offset_to_pointer uses
+   "stutter stepping".
+   [Larry Ewing, Matthias Clasen]
+
+* Memory management:
+ - Mem chunks are no longer used internally in GLib and
+   GObject. GMemChunk will be deprecated in GLib 2.10
+ - All APIs based on GAllocator (g_list_push/pop_allocator,
+   and similar push/pop_allocator functions for other
+   data structures) have been deprecated, since they
+   never worked as intended.
+ - The g_slice_* functions have been added as a 
+   new API for fast allocation of small memory blocks. 
+   The implementation in GLib 2.9.0 is just a simple 
+   wrapper around malloc. GLib 2.10 will have an
+   efficient and scalable implementation. 
+   [Tim Janik, Matthias]
+
+* Pattern matching:
+ - g_pattern_match has been optimized to avoid
+   unnecessary recursion.
+   [Tim, Matthias]
+
+* g_intern_string, g_intern_static_string: 
+ - New functions to intern strings. These are now used 
+   by GObject to avoid duplicating static strings 
+   [Matthias]
+
+* g_thread_foreach: 
+ - New function to iterate over all GThreads 
+   [Tim, Matthias]
+
+* g_date_set_time_t, g_date_set_time_val:
+ - New functions to set a GDate from a time_t or
+   GTimeVal value. g_date_set_time has been deprecated 
+   in favor of these.
+   [Roger Leigh]
+
+* g_snprintf and g_vsnprintf:
+ - These functions are no longer declared in gprintf.h, 
+   since they are in glib.h
+   [Matthias]
+
 Overview of Changes from GLib 2.8.0 to GLib 2.8.1
 =================================================
 * Optimize single-character insertions in GString [Ross Burton]

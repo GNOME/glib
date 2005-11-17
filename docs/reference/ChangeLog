@@ -2,7 +2,7 @@
 
 	* glib/tmpl/date.sgml: 
 	* glib/glib-sections.txt: Add g_date_set_time_t,
-	g_date_set_time_val.
+	g_date_set_time_val and g_thread_foreach
 
 2005-11-08  Matthias Clasen  <mclasen@redhat.com>
 

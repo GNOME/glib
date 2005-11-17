@@ -894,14 +894,18 @@ _g_thread_mem_private_set (GThread *thread,
  * g_thread_foreach
  * @thread_func: function to call for all GThread structures
  * @user_data:   second argument to @thread_func
- * Call @thread_func on all existing GThread structures. Note that
+ *
+ * Call @thread_func on all existing #GThread structures. Note that
  * threads may decide to exit while @thread_func is running, so
  * without intimate knowledge about the lifetime of foreign threads,
  * @thread_func shouldn't access the GThread* pointer passed in as
  * first argument. However, @thread_func will not be called for threads
  * which are known to have exited already.
+ *
  * Due to thread lifetime checks, this function has an execution complexity
  * which is quadratic in the number of existing threads.
+ *
+ * Since: 2.10
  */
 void
 g_thread_foreach (GFunc    thread_func,
