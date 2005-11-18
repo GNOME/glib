@@ -1,7 +1,7 @@
 General Information
 ===================
 
-This is GLib version 2.8.1. GLib is the low-level core
+This is GLib version 2.9.0. GLib is the low-level core
 library that forms the basis for projects such as GTK+ and GNOME. It
 provides data structure handling for C, portability wrappers, and
 interfaces for such runtime functionality as an event loop, threads,
@@ -23,6 +23,17 @@ Installation
 ============
 
 See the file 'INSTALL'
+
+Notes about GLib 2.10
+=====================
+
+* The functions g_snprintf() and g_vsnprintf() have been removed from
+  the gprintf.h header, since they are already declared in glib.h. This
+  doesn't break documented use of gprintf.h, but people have been known
+  to include gprintf.h without including glib.h.
+
+* The Unicode support has been updated to Unicode 4.1. This adds several
+  new members to the GUnicodeBreakType enumeration.
 
 Notes about GLib 2.6.0
 ======================

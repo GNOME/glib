@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-08-23 00:30-0400\n"
+"POT-Creation-Date: 2005-11-18 08:20-0500\n"
 "PO-Revision-Date: 2004-09-06 21:31+0000\n"
 "Last-Translator: Åsmund Skjæveland <aasmunds@fys.uio.no>\n"
 "Language-Team: Norwegian Nynorsk <i18n-nn@lister.ping.uio.no>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "X-Generator: KBabel 1.3.1\n"
 "Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 
-#: glib/gconvert.c:408 glib/gconvert.c:486
+#: glib/gconvert.c:408 glib/gconvert.c:486 glib/giochannel.c:1150
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Konvertering frå teiknsettet «%s» til «%s» er ikkje støtta"
@@ -29,8 +29,9 @@ msgid "Could not open converter from '%s' to '%s'"
 msgstr "Kunne ikkje opna konverterar frå «%s» til «%s»"
 
 #: glib/gconvert.c:606 glib/gconvert.c:995 glib/giochannel.c:1322
-#: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:912
-#: glib/gutf8.c:1362
+#: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:943
+#: glib/gutf8.c:1392
+#, c-format
 msgid "Invalid byte sequence in conversion input"
 msgstr "Ugyldig bytesekvens i inndata for konvertering"
 
@@ -40,8 +41,9 @@ msgstr "Ugyldig bytesekvens i inndata for konvertering"
 msgid "Error during conversion: %s"
 msgstr "Feil under konvertering: %s"
 
-#: glib/gconvert.c:647 glib/gutf8.c:908 glib/gutf8.c:1113 glib/gutf8.c:1254
-#: glib/gutf8.c:1358
+#: glib/gconvert.c:647 glib/gutf8.c:939 glib/gutf8.c:1143 glib/gutf8.c:1284
+#: glib/gutf8.c:1388
+#, c-format
 msgid "Partial character sequence at end of input"
 msgstr "Delvis teiknsekvens på slutten av inndata"
 
@@ -81,6 +83,7 @@ msgid "The pathname '%s' is not an absolute path"
 msgstr "Filstien «%s» er ikkje ein absolutt sti"
 
 #: glib/gconvert.c:1865
+#, c-format
 msgid "Invalid hostname"
 msgstr "Ugyldig vertsnamn"
 
@@ -145,6 +148,7 @@ msgid "Could not change file mode: Child terminated by signal: %s"
 msgstr ""
 
 #: glib/gfileutils.c:1024
+#, c-format
 msgid "Could not change file mode: Child terminated abnormally"
 msgstr ""
 
@@ -189,32 +193,32 @@ msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Klarte ikkje å lesa den symolske lenkja «%s»: %s"
 
 #: glib/gfileutils.c:1995
+#, c-format
 msgid "Symbolic links not supported"
 msgstr "Symbolske lenkjer er ikkje støtta"
 
-#: glib/giochannel.c:1150
-#, c-format
-msgid "Conversion from character set `%s' to `%s' is not supported"
-msgstr "Konvertering frå teiknsettet «%s» til «%s» er ikkje støtta"
-
 #: glib/giochannel.c:1154
-#, c-format
-msgid "Could not open converter from `%s' to `%s': %s"
+#, fuzzy, c-format
+msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Kunne ikkje opna konverterar frå «%s» til «%s»: %s"
 
 #: glib/giochannel.c:1499
+#, c-format
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "Klarar ikkje å gjera ei rå lesing i g_io_channel_read_line_string"
 
 #: glib/giochannel.c:1546 glib/giochannel.c:1803 glib/giochannel.c:1889
+#, c-format
 msgid "Leftover unconverted data in read buffer"
 msgstr "Ukonvertert data til overs i lesebufferet"
 
 #: glib/giochannel.c:1626 glib/giochannel.c:1703
+#, c-format
 msgid "Channel terminates in a partial character"
 msgstr "Kanalen avsluttar på eit delvis teikn"
 
 #: glib/giochannel.c:1689
+#, c-format
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Kan ikkje lesa rått i g_io_channel_read_to_end"
 
@@ -223,7 +227,7 @@ msgstr "Kan ikkje lesa rått i g_io_channel_read_to_end"
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "Kunne ikkje opna fila «%s»: fdopen() feila: %s"
 
-#: glib/gmappedfile.c:178
+#: glib/gmappedfile.c:185
 #, fuzzy, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "Kunne ikkje opna fila «%s»: fdopen() feila: %s"
@@ -451,10 +455,12 @@ msgstr ""
 "Dokumentet avslutta uventa inne i ein merknad eller prosseseringsinstruksjon"
 
 #: glib/gshell.c:73
+#, c-format
 msgid "Quoted text doesn't begin with a quotation mark"
 msgstr "Sitert tekst startar ikkje med eit siteringsmerke"
 
 #: glib/gshell.c:163
+#, c-format
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr "Upara siteringsmerke i kommandolinje eller anna skal-sitert tekst"
 
@@ -471,38 +477,64 @@ msgstr ""
 "«%s»)"
 
 #: glib/gshell.c:560
+#, c-format
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Teksten var tom (eller inneheldt kun tomme teikn)"
 
-#: glib/gspawn-win32.c:264
+#: glib/gspawn-win32.c:276
+#, c-format
 msgid "Failed to read data from child process"
 msgstr "Klarte ikkje å lesa data frå barneprosess"
 
-#: glib/gspawn-win32.c:281 glib/gspawn.c:1354
+#: glib/gspawn-win32.c:291 glib/gspawn.c:1375
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Klarte ikkje å oppretta røyr for å kommunisera med barneprosess (%s)"
 
-#: glib/gspawn-win32.c:321 glib/gspawn.c:1018
+#: glib/gspawn-win32.c:329 glib/gspawn.c:1039
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Klarte ikkje å lesa frå røyr frå barn (%s)"
 
-#: glib/gspawn-win32.c:349 glib/gspawn.c:1223
+#: glib/gspawn-win32.c:355 glib/gspawn.c:1244
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Klarte ikkje å skifta til katalogen «%s» (%s)"
 
-#: glib/gspawn-win32.c:357 glib/gspawn-win32.c:442
+#: glib/gspawn-win32.c:361 glib/gspawn-win32.c:581
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Klarte ikkje å utføra barneprosess (%s)"
 
-#: glib/gspawn-win32.c:599
-msgid "Failed to execute helper program"
+#: glib/gspawn-win32.c:471 glib/gspawn-win32.c:527
+#, fuzzy, c-format
+msgid "Invalid program name: %s"
+msgstr "Ugyldig vertsnamn"
+
+#: glib/gspawn-win32.c:481 glib/gspawn-win32.c:537 glib/gspawn-win32.c:780
+#: glib/gspawn-win32.c:835 glib/gspawn-win32.c:1364
+#, c-format
+msgid "Invalid string in argument vector at %d: %s"
+msgstr ""
+
+#: glib/gspawn-win32.c:492 glib/gspawn-win32.c:548 glib/gspawn-win32.c:794
+#: glib/gspawn-win32.c:848 glib/gspawn-win32.c:1397
+#, fuzzy, c-format
+msgid "Invalid string in environment: %s"
+msgstr "Ugyldig sekvens i inndata-konvertering"
+
+#: glib/gspawn-win32.c:776 glib/gspawn-win32.c:831 glib/gspawn-win32.c:1345
+#, fuzzy, c-format
+msgid "Invalid working directory: %s"
+msgstr "Feil ved opning av katalog «%s»: %s"
+
+#: glib/gspawn-win32.c:890
+#, fuzzy, c-format
+msgid "Failed to execute helper program (%s)"
 msgstr "Klarte ikkje å køyra hjelpeprogram"
 
-#: glib/gspawn-win32.c:797
+#: glib/gspawn-win32.c:1084
+#, c-format
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -514,56 +546,59 @@ msgstr ""
 msgid "Failed to read data from child process (%s)"
 msgstr "Klarte ikkje å lesa data frå barneprosess (%s)"
 
-#: glib/gspawn.c:310
+#: glib/gspawn.c:311
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr "Uventa feil i select() ved lesing av data frå barneprosess (%s)"
 
-#: glib/gspawn.c:393
+#: glib/gspawn.c:394
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Uventa feil i waitpid() (%s)"
 
-#: glib/gspawn.c:1083
+#: glib/gspawn.c:1104
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Kunne ikkje starta barneprosess (%s)"
 
-#: glib/gspawn.c:1233
+#: glib/gspawn.c:1254
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Klarte ikkje å utføra barnprosess «%s» (%s)"
 
-#: glib/gspawn.c:1243
+#: glib/gspawn.c:1264
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Klarte ikkje å redirigera utdata eller inndata frå barneprosess (%s)"
 
-#: glib/gspawn.c:1252
+#: glib/gspawn.c:1273
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Kunne ikkje starta barneprosess (%s)"
 
-#: glib/gspawn.c:1260
+#: glib/gspawn.c:1281
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Ukjend feil ved køyring av barneprosess «%s»"
 
-#: glib/gspawn.c:1282
+#: glib/gspawn.c:1303
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Klarte ikkje å lesa nok data frå pid-røyr frå barn (%s)"
 
-#: glib/gutf8.c:987
+#: glib/gutf8.c:1017
+#, c-format
 msgid "Character out of range for UTF-8"
 msgstr "Teikn ikkje gyldig for UTF-8"
 
-#: glib/gutf8.c:1081 glib/gutf8.c:1090 glib/gutf8.c:1222 glib/gutf8.c:1231
-#: glib/gutf8.c:1372 glib/gutf8.c:1468
+#: glib/gutf8.c:1111 glib/gutf8.c:1120 glib/gutf8.c:1252 glib/gutf8.c:1261
+#: glib/gutf8.c:1402 glib/gutf8.c:1498
+#, c-format
 msgid "Invalid sequence in conversion input"
 msgstr "Ugyldig sekvens i inndata-konvertering"
 
-#: glib/gutf8.c:1383 glib/gutf8.c:1479
+#: glib/gutf8.c:1413 glib/gutf8.c:1509
+#, c-format
 msgid "Character out of range for UTF-16"
 msgstr "Teikn ikkje gyldig for UTF-16"
 
@@ -612,14 +647,17 @@ msgid "Unknown option %s"
 msgstr "Ukjend val «%s»"
 
 #: glib/gkeyfile.c:339
+#, c-format
 msgid "Valid key file could not be found in data dirs"
 msgstr ""
 
 #: glib/gkeyfile.c:374
+#, c-format
 msgid "Not a regular file"
 msgstr ""
 
 #: glib/gkeyfile.c:382
+#, c-format
 msgid "File is empty"
 msgstr ""
 
@@ -630,6 +668,7 @@ msgid ""
 msgstr ""
 
 #: glib/gkeyfile.c:765
+#, c-format
 msgid "Key file does not start with a group"
 msgstr ""
 
@@ -672,26 +711,30 @@ msgstr ""
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr ""
 
-#: glib/gkeyfile.c:3072
+#: glib/gkeyfile.c:3067
+#, c-format
 msgid "Key file contains escape character at end of line"
 msgstr ""
 
-#: glib/gkeyfile.c:3094
+#: glib/gkeyfile.c:3089
 #, fuzzy, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "URIen «%s» inneheld feil koda teikn"
 
-#: glib/gkeyfile.c:3235
+#: glib/gkeyfile.c:3230
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr ""
 
-#: glib/gkeyfile.c:3245
+#: glib/gkeyfile.c:3240
 #, fuzzy, c-format
 msgid "Integer value '%s' out of range"
 msgstr "Heiltalsverdien «%s» til «%s» utanfor gyldig område"
 
-#: glib/gkeyfile.c:3275
+#: glib/gkeyfile.c:3270
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr ""
+
+#~ msgid "Conversion from character set `%s' to `%s' is not supported"
+#~ msgstr "Konvertering frå teiknsettet «%s» til «%s» er ikkje støtta"

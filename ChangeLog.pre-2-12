@@ -1,5 +1,7 @@
 2005-11-17  Matthias Clasen  <mclasen@redhat.com>
 
+	* === Released 2.9.0 ===
+
 	* glib/glib.symbols: Updates
 
 	* glib/gutf8.c (g_utf8_offset_to_pointer): Add some performance

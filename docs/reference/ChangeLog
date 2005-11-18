@@ -1,5 +1,9 @@
 2005-11-17  Matthias Clasen  <mclasen@redhat.com>
 
+	* === Released 2.9.0 ===
+
+2005-11-17  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/tmpl/date.sgml: 
 	* glib/glib-sections.txt: Add g_date_set_time_t,
 	g_date_set_time_val and g_thread_foreach

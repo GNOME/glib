@@ -186,14 +186,13 @@ dist-hook: $(BUILT_EXTRA_DIST)
 	  cp $$d/$$f $(distdir) || exit 1; done
 	mkdir $(distdir)/markups;          \
 	for f in $(srcdir)/markups/* ; do  \
-	  cp $$f $(distdir)/markups;       \
-	done
+	  cp $$f $(distdir)/markups; done 
 	mkdir $(distdir)/collate;          \
 	for f in $(srcdir)/collate/* ; do  \
-	  cp $$f $(distdir)/collate;       \
-	done
+          if test -f $$f; then cp $$f $(distdir)/collate; fi; done
 
 DISTCLEANFILES = iochannel-test-outfile \
 		file-test-get-contents \
 		maptest \
-		mapchild
+		mapchild \
+		collate.out

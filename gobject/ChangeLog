@@ -1,5 +1,9 @@
 2005-11-17  Matthias Clasen  <mclasen@redhat.com>
 
+	* === Released 2.9.0 ===
+
+2005-11-17  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib-genmarshal.c: const correctness fixes, found
 	by Arjan van de Ven and gcc.
 	

@@ -13,14 +13,14 @@ echo "Checking glib-$VERSION.tar.gz..."
 tar xfz glib-$VERSION.tar.gz
 
 
-for file in INSTALL NEWS README glib.spec docs/glib-config.1
+for file in INSTALL NEWS README 
 do
 	echo -n "$file... "
-	if [ "x`grep $VERSION glib-$VERSION/$file | wc -l | awk -F' ' '{print $1}'`" == "x1" ]; then
-		echo "ok"
-	else
+	if [ "x`grep $VERSION glib-$VERSION/$file | wc -l | awk -F' ' '{print $1}'`" == "x0" ]; then
 		echo "failed."
 		exit 1
+	else
+		echo "ok"
 	fi
 done
 
@@ -35,7 +35,6 @@ fi
 echo ""
 echo "Number of lines in created documentation files:"
 
-wc -l glib-$VERSION/docs/*.html | grep -v total
-wc -l glib-$VERSION/docs/*.info | grep -v total
+wc -l glib-$VERSION/docs/reference/*/html/*.html | grep total 
 
 rm -rf glib-$VERSION
