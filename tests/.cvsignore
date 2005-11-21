@@ -66,9 +66,11 @@ timeloop-basic
 timeloop-closure
 uri-test
 unicode-caseconv
-unicode-collate
 unicode-normalize
+unicode-collate
+collate.out
 patterntest
 utf8-validate
+utf8-pointer
 mapchild
 maptest
