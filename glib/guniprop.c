@@ -1047,7 +1047,6 @@ gboolean
 g_unichar_get_mirror_char (gunichar ch,
                            gunichar *mirrored_ch)
 {
-  gint pos, step, size;
   gboolean found;
   gunichar mirrored;
 

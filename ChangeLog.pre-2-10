@@ -1,5 +1,10 @@
 2005-11-18  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/guniprop.c (g_unichar_get_mirror_char): Remove unused
+	variables. (#321984, Andrew Paprocki)
+
+2005-11-18  Matthias Clasen  <mclasen@redhat.com>
+
 	* configure.in: Bump version
 
 2005-11-17  Matthias Clasen  <mclasen@redhat.com>
