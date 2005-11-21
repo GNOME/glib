@@ -1,4 +1,4 @@
-2005-11-18  Matthias Clasen  <mclasen@redhat.com>
+2005-11-20  Behdad Esfahbod  <behdad@gnome.org>
 
 	* glib/guniprop.c (g_unichar_get_mirror_char): Remove unused
 	variables. (#321984, Andrew Paprocki)
