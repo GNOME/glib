@@ -622,6 +622,22 @@ g_quark_try_string (const gchar *string)
   return quark;
 }
 
+/* HOLDS: g_quark_global_lock */
+static inline GQuark
+g_quark_from_string_internal (const gchar *string, 
+			      gboolean     duplicate)
+{
+  GQuark quark = 0;
+  
+  if (g_quark_ht)
+    quark = GPOINTER_TO_UINT (g_hash_table_lookup (g_quark_ht, string));
+  
+  if (!quark)
+    quark = g_quark_new (duplicate ? g_strdup (string) : (gchar *)string);
+  
+  return quark;
+}
+
 GQuark
 g_quark_from_string (const gchar *string)
 {
@@ -630,16 +646,7 @@ g_quark_from_string (const gchar *string)
   g_return_val_if_fail (string != NULL, 0);
   
   G_LOCK (g_quark_global);
-  if (g_quark_ht)
-    quark = (gulong) g_hash_table_lookup (g_quark_ht, string);
-  else
-    {
-      g_quark_ht = g_hash_table_new (g_str_hash, g_str_equal);
-      quark = 0;
-    }
-  
-  if (!quark)
-    quark = g_quark_new (g_strdup (string));
+  quark = g_quark_from_string_internal (string, TRUE);
   G_UNLOCK (g_quark_global);
   
   return quark;
@@ -653,18 +660,9 @@ g_quark_from_static_string (const gchar *string)
   g_return_val_if_fail (string != NULL, 0);
   
   G_LOCK (g_quark_global);
-  if (g_quark_ht)
-    quark = (gulong) g_hash_table_lookup (g_quark_ht, string);
-  else
-    {
-      g_quark_ht = g_hash_table_new (g_str_hash, g_str_equal);
-      quark = 0;
-    }
-
-  if (!quark)
-    quark = g_quark_new ((gchar*) string);
+  quark = g_quark_from_string_internal (string, FALSE);
   G_UNLOCK (g_quark_global);
- 
+
   return quark;
 }
 
@@ -672,9 +670,10 @@ G_CONST_RETURN gchar*
 g_quark_to_string (GQuark quark)
 {
   gchar* result = NULL;
+
   G_LOCK (g_quark_global);
   if (quark > 0 && quark <= g_quark_seq_id)
-    result = g_quarks[quark - 1];
+    result = g_quarks[quark];
   G_UNLOCK (g_quark_global);
 
   return result;
@@ -689,9 +688,14 @@ g_quark_new (gchar *string)
   if (g_quark_seq_id % G_QUARK_BLOCK_SIZE == 0)
     g_quarks = g_renew (gchar*, g_quarks, g_quark_seq_id + G_QUARK_BLOCK_SIZE);
   
-  g_quarks[g_quark_seq_id] = string;
+  g_quarks[0] = NULL;
   g_quark_seq_id++;
+  g_quarks[g_quark_seq_id] = string;
   quark = g_quark_seq_id;
+
+  if (!g_quark_ht)
+    g_quark_ht = g_hash_table_new (g_str_hash, g_str_equal);
+
   g_hash_table_insert (g_quark_ht, string, GUINT_TO_POINTER (quark));
   
   return quark;
@@ -711,7 +715,18 @@ g_quark_new (gchar *string)
 G_CONST_RETURN gchar*
 g_intern_string (const gchar *string)
 {
-   return string ? g_quark_to_string (g_quark_from_string (string)) : NULL;
+  const gchar *result;
+  GQuark quark;
+
+  if (!string)
+    return NULL;
+
+  G_LOCK (g_quark_global);
+  quark = g_quark_from_string_internal (string, TRUE);
+  result = g_quarks[quark];
+  G_UNLOCK (g_quark_global);
+
+  return result;
 }
 
 /**
@@ -730,7 +745,18 @@ g_intern_string (const gchar *string)
 G_CONST_RETURN gchar*
 g_intern_static_string (const gchar *string)
 {
-   return string ? g_quark_to_string (g_quark_from_static_string (string)) : NULL;
+  GQuark quark;
+  const gchar *result;
+
+  if (!string)
+    return NULL;
+
+  G_LOCK (g_quark_global);
+  quark = g_quark_from_string_internal (string, FALSE);
+  result = g_quarks[quark];
+  G_UNLOCK (g_quark_global);
+
+  return result;
 }
 
 

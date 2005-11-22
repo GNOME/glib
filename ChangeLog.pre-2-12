@@ -1,3 +1,20 @@
+2005-11-22  Matthias Clasen  <mclasen@redhat.com>
+
+	Avoid double locking in g_intern_string (#322133,
+	Benedikt Meurer)
+
+	* glib/gdataset.c (g_quark_from_string_internal): New 
+	internal function which factors out common parts of 
+	g_quark_from[_static]_string.
+	(g_quark_from_string, g_quark_from_static_string):
+	Use g_quark_from_string_internal.
+	(g_intern_string, g_intern_static_string): Use
+	g_quark_from_string_internal, and only take the
+	lock once.
+	(g_quark_new): Don't store the strings shifted by -1
+	in the g_quarks array.
+	(g_quark_to_string): Adapt to the previous change.
+
 Tue Nov 22 14:04:26 2005  Tim Janik  <timj@imendio.com>
 
 	* glib/ghash.h: 
