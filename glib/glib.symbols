@@ -287,6 +287,8 @@ g_mkstemp_utf8
 #if IN_HEADER(__G_HASH_H__)
 #if IN_FILE(__G_HASH_C__)
 g_hash_table_destroy
+g_hash_table_unref
+g_hash_table_ref
 g_hash_table_find
 g_hash_table_foreach
 g_hash_table_foreach_remove

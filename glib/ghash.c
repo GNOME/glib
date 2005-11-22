@@ -54,6 +54,7 @@ struct _GHashTable
   GHashNode      **nodes;
   GHashFunc        hash_func;
   GEqualFunc       key_equal_func;
+  volatile guint   ref_count;
   GDestroyNotify   key_destroy_func;
   GDestroyNotify   value_destroy_func;
 };
@@ -98,7 +99,7 @@ static guint g_hash_table_foreach_remove_or_steal (GHashTable     *hash_table,
  *   directly in a similar fashion to g_direct_equal(), but without the
  *   overhead of a function call.
  *
- * Creates a new #GHashTable.
+ * Creates a new #GHashTable with a reference count of 1.
  * 
  * Return value: a new #GHashTable.
  **/
@@ -121,9 +122,9 @@ g_hash_table_new (GHashFunc    hash_func,
  *   value used when removing the entry from the #GHashTable or %NULL if 
  *   you don't want to supply such a function.
  * 
- * Creates a new #GHashTable like g_hash_table_new() and allows to specify
- * functions to free the memory allocated for the key and value that get 
- * called when removing the entry from the #GHashTable.
+ * Creates a new #GHashTable like g_hash_table_new() with a reference count
+ * of 1 and allows to specify functions to free the memory allocated for the
+ * key and value that get called when removing the entry from the #GHashTable.
  * 
  * Return value: a new #GHashTable.
  **/
@@ -134,32 +135,77 @@ g_hash_table_new_full (GHashFunc       hash_func,
 		       GDestroyNotify  value_destroy_func)
 {
   GHashTable *hash_table;
-  guint i;
   
   hash_table = g_slice_new (GHashTable);
   hash_table->size               = HASH_TABLE_MIN_SIZE;
   hash_table->nnodes             = 0;
   hash_table->hash_func          = hash_func ? hash_func : g_direct_hash;
   hash_table->key_equal_func     = key_equal_func;
+  hash_table->ref_count          = 1;
   hash_table->key_destroy_func   = key_destroy_func;
   hash_table->value_destroy_func = value_destroy_func;
-  hash_table->nodes              = g_new (GHashNode*, hash_table->size);
-  
-  for (i = 0; i < hash_table->size; i++)
-    hash_table->nodes[i] = NULL;
+  hash_table->nodes              = g_new0 (GHashNode*, hash_table->size);
   
   return hash_table;
+}
+
+
+/**
+ * g_hash_table_ref:
+ * @hash_table: a valid #GHashTable.
+ * 
+ * Atomically increments the reference count of @hash_table by one.
+ * This function is MT-safe and may be called from any thread.
+ * 
+ * Return value: the passed in #GHashTable.
+ **/
+GHashTable*
+g_hash_table_ref (GHashTable *hash_table)
+{
+  g_return_val_if_fail (hash_table != NULL, NULL);
+  g_return_val_if_fail (hash_table->ref_count > 0, hash_table);
+
+  g_atomic_int_add (&hash_table->ref_count, 1);
+  return hash_table;
+}
+
+/**
+ * g_hash_table_unref:
+ * @hash_table: a valid #GHashTable.
+ * 
+ * Atomically decrements the reference count of @hash_table by one.
+ * If the reference count drops to 0, all keys and values will be
+ * destroyed, and all memory allocated by the hash table is released.
+ * This function is MT-safe and may be called from any thread.
+ **/
+void
+g_hash_table_unref (GHashTable *hash_table)
+{
+  g_return_if_fail (hash_table != NULL);
+  g_return_if_fail (hash_table->ref_count > 0);
+
+  if (g_atomic_int_exchange_and_add (&hash_table->ref_count, -1) - 1 == 0)
+    {
+      guint i;
+      for (i = 0; i < hash_table->size; i++)
+        g_hash_nodes_destroy (hash_table->nodes[i], 
+                              hash_table->key_destroy_func,
+                              hash_table->value_destroy_func);
+      g_free (hash_table->nodes);
+      g_slice_free (GHashTable, hash_table);
+    }
 }
 
 /**
  * g_hash_table_destroy:
  * @hash_table: a #GHashTable.
  * 
- * Destroys the #GHashTable. If keys and/or values are dynamically 
- * allocated, you should either free them first or create the #GHashTable
- * using g_hash_table_new_full(). In the latter case the destroy functions 
- * you supplied will be called on all keys and values before destroying 
- * the #GHashTable.
+ * Destroys all keys and values in the #GHashTable and decrements it's
+ * reference count by 1. If keys and/or values are dynamically allocated,
+ * you should either free them first or create the #GHashTable with destroy
+ * notifiers using g_hash_table_new_full(). In the latter case the destroy
+ * functions you supplied will be called on all keys and values during the
+ * destruction phase.
  **/
 void
 g_hash_table_destroy (GHashTable *hash_table)
@@ -167,14 +213,19 @@ g_hash_table_destroy (GHashTable *hash_table)
   guint i;
   
   g_return_if_fail (hash_table != NULL);
+  g_return_if_fail (hash_table->ref_count > 0);
   
   for (i = 0; i < hash_table->size; i++)
-    g_hash_nodes_destroy (hash_table->nodes[i], 
-			  hash_table->key_destroy_func,
-			  hash_table->value_destroy_func);
-  
-  g_free (hash_table->nodes);
-  g_slice_free (GHashTable, hash_table);
+    {
+      g_hash_nodes_destroy (hash_table->nodes[i], 
+                            hash_table->key_destroy_func,
+                            hash_table->value_destroy_func);
+      hash_table->nodes[i] = NULL;
+    }
+  hash_table->nnodes = 0;
+  hash_table->size = HASH_TABLE_MIN_SIZE;
+
+  g_hash_table_unref (hash_table);
 }
 
 static inline GHashNode**
@@ -286,6 +337,7 @@ g_hash_table_insert (GHashTable *hash_table,
   GHashNode **node;
   
   g_return_if_fail (hash_table != NULL);
+  g_return_if_fail (hash_table->ref_count > 0);
   
   node = g_hash_table_lookup_node (hash_table, key);
   
@@ -334,6 +386,7 @@ g_hash_table_replace (GHashTable *hash_table,
   GHashNode **node;
   
   g_return_if_fail (hash_table != NULL);
+  g_return_if_fail (hash_table->ref_count > 0);
   
   node = g_hash_table_lookup_node (hash_table, key);
   
@@ -685,6 +738,7 @@ g_hash_nodes_destroy (GHashNode *hash_node,
       hash_node = next;
     }
 }
+
 
 #define __G_HASH_C__
 #include "galiasdef.c"

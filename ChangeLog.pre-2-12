@@ -1,3 +1,19 @@
+Tue Nov 22 14:04:26 2005  Tim Janik  <timj@imendio.com>
+
+	* glib/ghash.h: 
+	* glib/ghash.c: 
+	g_hash_table_new_full(): create hash tables with a ref count of 1.
+	g_hash_table_ref(): atomically ref_count+=1
+	g_hash_table_unref(): atomically ref_count-=1, destroys hash table
+	when refcount reaches 0.
+	g_hash_table_destroy(): just destroy keys and values, unref by 1.
+	g_hash_table_insert(): 
+	g_hash_table_replace(): assert ref_count>0.
+
+	* glib/gatomic.h: 
+	* glib/gatomic.c: added 'volatile' qualifier to all atomic pointer and
+	integer pointers.
+
 2005-11-20  Behdad Esfahbod  <behdad@gnome.org>
 
 	* glib/guniprop.c (g_unichar_get_mirror_char): Remove unused

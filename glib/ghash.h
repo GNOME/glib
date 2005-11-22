@@ -65,7 +65,7 @@ gboolean    g_hash_table_lookup_extended   (GHashTable	   *hash_table,
 void	    g_hash_table_foreach	   (GHashTable	   *hash_table,
 					    GHFunc	    func,
 					    gpointer	    user_data);
-gpointer    g_hash_table_find	   (GHashTable	   *hash_table,
+gpointer    g_hash_table_find	           (GHashTable	   *hash_table,
 					    GHRFunc	    predicate,
 					    gpointer	    user_data);
 guint	    g_hash_table_foreach_remove	   (GHashTable	   *hash_table,
@@ -75,6 +75,10 @@ guint	    g_hash_table_foreach_steal	   (GHashTable	   *hash_table,
 					    GHRFunc	    func,
 					    gpointer	    user_data);
 guint	    g_hash_table_size		   (GHashTable	   *hash_table);
+
+/* keeping hash tables alive */
+GHashTable* g_hash_table_ref   		   (GHashTable 	   *hash_table);
+void        g_hash_table_unref             (GHashTable     *hash_table);
 
 #ifndef G_DISABLE_DEPRECATED
 

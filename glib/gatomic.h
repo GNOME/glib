@@ -34,19 +34,19 @@
 
 G_BEGIN_DECLS
  
-gint     g_atomic_int_exchange_and_add         (gint     *atomic, 
-						gint      val);
-void     g_atomic_int_add                      (gint     *atomic, 
-						gint      val);
-gboolean g_atomic_int_compare_and_exchange     (gint     *atomic, 
-						gint      oldval, 
-						gint      newval);
-gboolean g_atomic_pointer_compare_and_exchange (gpointer *atomic, 
-						gpointer  oldval, 
-						gpointer  newval);
+gint     g_atomic_int_exchange_and_add         (volatile gint	   *atomic,
+						gint      	    val);
+void     g_atomic_int_add                      (volatile gint	   *atomic,
+						gint      	    val);
+gboolean g_atomic_int_compare_and_exchange     (volatile gint	   *atomic,
+						gint      	    oldval,
+						gint      	   newval);
+gboolean g_atomic_pointer_compare_and_exchange (volatile gpointer *atomic, 
+						gpointer  	   oldval, 
+						gpointer  	   newval);
 
-gint     g_atomic_int_get                      (gint     *atomic);
-gpointer g_atomic_pointer_get                  (gpointer *atomic);
+gint     g_atomic_int_get                      (volatile gint  	  *atomic);
+gpointer g_atomic_pointer_get                  (volatile gpointer *atomic);
 
 #ifndef G_ATOMIC_OP_MEMORY_BARRIER_NEEDED
 # define g_atomic_int_get(atomic) (*(atomic))
