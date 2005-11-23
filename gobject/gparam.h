@@ -117,6 +117,7 @@ struct _GParameter /* auxillary structure for _setv() variants */
 GParamSpec*	g_param_spec_ref		(GParamSpec    *pspec);
 void		g_param_spec_unref		(GParamSpec    *pspec);
 void		g_param_spec_sink		(GParamSpec    *pspec);
+GParamSpec*	g_param_spec_ref_sink   	(GParamSpec    *pspec);
 gpointer        g_param_spec_get_qdata		(GParamSpec    *pspec,
 						 GQuark         quark);
 void            g_param_spec_set_qdata		(GParamSpec    *pspec,

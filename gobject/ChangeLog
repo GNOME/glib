@@ -1,3 +1,17 @@
+Wed Nov 23 18:01:46 2005  Tim Janik  <timj@imendio.com>
+
+	* gobject.[hc]: added floating reference count.
+	g_object_is_floating():
+	g_object_ref_sink(): new functions to deal with floating references.
+	g_object_force_floating(): new funciton for object implementations
+	to set the floating flag.
+
+	* gobject.c (g_object_init): make objects initially floating.
+
+Wed Nov 23 17:58:13 2005  Tim Janik  <timj@gtk.org>
+
+	* gparam.[hc]: added g_param_spec_ref_sink().
+
 Wed Nov 23 13:36:02 2005  Tim Janik  <timj@gtk.org>
 
 	* gboxed.[hc]: minor cleanups, implemented G_TYPE_HASH_TABLE.

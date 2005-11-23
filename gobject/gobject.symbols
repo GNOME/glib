@@ -131,7 +131,11 @@ g_object_new
 g_object_newv
 g_object_new_valist
 g_object_notify
+g_object_is_floating
+g_object_ref_sink
+g_object_force_floating
 g_object_ref
+g_object_unref
 g_object_remove_weak_pointer
 g_object_run_dispose
 g_object_set G_GNUC_NULL_TERMINATED
@@ -144,7 +148,6 @@ g_object_set_valist
 g_object_steal_data
 g_object_steal_qdata
 g_object_thaw_notify
-g_object_unref
 g_object_watch_closure
 g_object_weak_ref
 g_object_weak_unref
@@ -196,6 +199,7 @@ g_param_spec_get_redirect_target
 g_param_spec_internal
 g_param_type_register_static
 g_param_spec_ref
+g_param_spec_ref_sink
 g_param_spec_unref
 g_param_spec_sink
 g_param_spec_steal_qdata

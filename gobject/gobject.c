@@ -42,7 +42,8 @@
 
 #define OBJECT_HAS_TOGGLE_REF_FLAG 0x1
 #define OBJECT_HAS_TOGGLE_REF(object) \
-    ((G_DATALIST_GET_FLAGS(&(object)->qdata) & OBJECT_HAS_TOGGLE_REF_FLAG) != 0)
+    ((G_DATALIST_GET_FLAGS (&(object)->qdata) & OBJECT_HAS_TOGGLE_REF_FLAG) != 0)
+#define OBJECT_FLOATING_FLAG 0x2
 
 
 /* --- signals --- */
@@ -472,6 +473,7 @@ g_object_init (GObject *object)
 {
   object->ref_count = 1;
   g_datalist_init (&object->qdata);
+  g_object_force_floating (object);
   
   /* freeze object's notification queue, g_object_newv() preserves pairedness */
   g_object_notify_queue_freeze (object, &property_notify_context);
@@ -1516,6 +1518,47 @@ g_object_remove_weak_pointer (GObject  *object,
   g_object_weak_unref (object, 
                        (GWeakNotify) g_nullify_pointer, 
                        weak_pointer_location);
+}
+
+gboolean
+g_object_is_floating (gpointer _object)
+{
+  GObject *object = _object;
+  g_return_val_if_fail (G_IS_OBJECT (object), FALSE);
+  return ((gsize) g_atomic_pointer_get (&object->qdata) & OBJECT_FLOATING_FLAG) != 0;
+}
+
+gpointer
+g_object_ref_sink (gpointer _object)
+{
+  GObject *object = _object;
+  gpointer oldvalue;
+  g_return_val_if_fail (G_IS_OBJECT (object), object);
+  g_return_val_if_fail (object->ref_count >= 1, object);
+  g_object_ref (object);
+  do
+    {
+      oldvalue = g_atomic_pointer_get (&object->qdata);
+    }
+  while (!g_atomic_pointer_compare_and_exchange ((void**) &object->qdata, oldvalue,
+                                                 (gpointer) ((gsize) oldvalue & ~(gsize) OBJECT_FLOATING_FLAG)));
+  if ((gsize) oldvalue & OBJECT_FLOATING_FLAG)
+    g_object_unref (object);
+  return object;
+}
+
+void
+g_object_force_floating (GObject *object)
+{
+  gpointer oldvalue;
+  g_return_if_fail (G_IS_OBJECT (object));
+  g_return_if_fail (object->ref_count >= 1);
+  do
+    {
+      oldvalue = g_atomic_pointer_get (&object->qdata);
+    }
+  while (!g_atomic_pointer_compare_and_exchange ((void**) &object->qdata, oldvalue,
+                                                 (gpointer) ((gsize) oldvalue | OBJECT_FLOATING_FLAG)));
 }
 
 typedef struct {

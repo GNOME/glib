@@ -201,6 +201,17 @@ g_param_spec_sink (GParamSpec *pspec)
     g_param_spec_unref (pspec);
 }
 
+GParamSpec*
+g_param_spec_ref_sink (GParamSpec *pspec)
+{
+  g_return_val_if_fail (G_IS_PARAM_SPEC (pspec), NULL);
+  g_return_val_if_fail (pspec->ref_count > 0, NULL);
+
+  g_param_spec_ref (pspec);
+  g_param_spec_sink (pspec);
+  return pspec;
+}
+
 G_CONST_RETURN gchar*
 g_param_spec_get_name (GParamSpec *pspec)
 {

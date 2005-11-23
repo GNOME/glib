@@ -166,6 +166,8 @@ void        g_object_freeze_notify            (GObject        *object);
 void        g_object_notify                   (GObject        *object,
 					       const gchar    *property_name);
 void        g_object_thaw_notify              (GObject        *object);
+gboolean    g_object_is_floating    	      (gpointer        object);
+gpointer    g_object_ref_sink       	      (gpointer	       object);
 gpointer    g_object_ref                      (gpointer        object);
 void        g_object_unref                    (gpointer        object);
 void	    g_object_weak_ref		      (GObject	      *object,
@@ -232,6 +234,7 @@ gulong	    g_signal_connect_object           (gpointer	       instance,
 
 
 /*< protected >*/
+void        g_object_force_floating           (GObject        *object);
 void        g_object_run_dispose	      (GObject	      *object);
 
 
