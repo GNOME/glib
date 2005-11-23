@@ -1,3 +1,10 @@
+Wed Nov 23 17:34:01 2005  Tim Janik  <timj@imendio.com>
+
+	* glib/gdataset.c: access datalist flags via atomic pointer access
+	funcitons, instead of acquiring the dataset lock. this is faster and
+	also matches the atomic pointer readouts in gdatalistprivate.h and
+	direct pointer modifications required by gobject.c.
+
 Wed Nov 23 13:35:31 2005  Tim Janik  <timj@gtk.org>
 
 	* glib/gdataset.c: streamlined initialization code somewhat,
