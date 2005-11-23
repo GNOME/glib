@@ -1,3 +1,8 @@
+Wed Nov 23 13:35:31 2005  Tim Janik  <timj@gtk.org>
+
+	* glib/gdataset.c: streamlined initialization code somewhat,
+	removed GData node cache.
+
 2005-11-22  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/ghash.c (g_hash_table_ref): 

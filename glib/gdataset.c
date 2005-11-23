@@ -41,7 +41,6 @@
 
 /* --- defines --- */
 #define	G_QUARK_BLOCK_SIZE			(512)
-#define	G_DATA_CACHE_MAX			(512)
 
 /* datalist pointer modifications have to be done with the g_dataset_global mutex held */
 #define G_DATALIST_GET_POINTER(datalist)						\
@@ -87,9 +86,6 @@ G_LOCK_DEFINE_STATIC (g_dataset_global);
 static GHashTable   *g_dataset_location_ht = NULL;
 static GDataset     *g_dataset_cached = NULL; /* should this be
 						 threadspecific? */
-static GData	    *g_data_cache = NULL;
-static guint	     g_data_cache_length = 0;
-
 G_LOCK_DEFINE_STATIC (g_quark_global);
 static GHashTable   *g_quark_ht = NULL;
 static gchar       **g_quarks = NULL;
@@ -122,14 +118,7 @@ g_datalist_clear_i (GData **datalist)
 	  G_LOCK (g_dataset_global);
 	}
       
-      if (g_data_cache_length < G_DATA_CACHE_MAX)
-	{
-	  prev->next = g_data_cache;
-	  g_data_cache = prev;
-	  g_data_cache_length++;
-	}
-      else
-	g_slice_free (GData, prev);
+      g_slice_free (GData, prev);
     }
 }
 
@@ -253,14 +242,7 @@ g_data_set_internal (GData	  **datalist,
 	      else
 		ret_data = list->data;
 	      
-	      if (g_data_cache_length < G_DATA_CACHE_MAX)
-		{
-		  list->next = g_data_cache;
-		  g_data_cache = list;
-		  g_data_cache_length++;
-		}
-	      else
-		g_slice_free (GData, list);
+              g_slice_free (GData, list);
 	      
 	      return ret_data;
 	    }
@@ -304,14 +286,7 @@ g_data_set_internal (GData	  **datalist,
 	  list = list->next;
 	}
       
-      if (g_data_cache)
-	{
-	  list = g_data_cache;
-	  g_data_cache = list->next;
-	  g_data_cache_length--;
-	}
-      else
-	list = g_slice_new (GData);
+      list = g_slice_new (GData);
       list->next = G_DATALIST_GET_POINTER (datalist);
       list->id = key_id;
       list->data = data;
@@ -672,7 +647,7 @@ g_quark_to_string (GQuark quark)
   gchar* result = NULL;
 
   G_LOCK (g_quark_global);
-  if (quark > 0 && quark <= g_quark_seq_id)
+  if (quark < g_quark_seq_id)
     result = g_quarks[quark];
   G_UNLOCK (g_quark_global);
 
@@ -687,15 +662,15 @@ g_quark_new (gchar *string)
   
   if (g_quark_seq_id % G_QUARK_BLOCK_SIZE == 0)
     g_quarks = g_renew (gchar*, g_quarks, g_quark_seq_id + G_QUARK_BLOCK_SIZE);
-  
-  g_quarks[0] = NULL;
-  g_quark_seq_id++;
-  g_quarks[g_quark_seq_id] = string;
-  quark = g_quark_seq_id;
-
   if (!g_quark_ht)
-    g_quark_ht = g_hash_table_new (g_str_hash, g_str_equal);
+    {
+      g_assert (g_quark_seq_id == 0);
+      g_quark_ht = g_hash_table_new (g_str_hash, g_str_equal);
+      g_quarks[g_quark_seq_id++] = NULL;
+    }
 
+  quark = g_quark_seq_id++;
+  g_quarks[quark] = string;
   g_hash_table_insert (g_quark_ht, string, GUINT_TO_POINTER (quark));
   
   return quark;
