@@ -63,6 +63,7 @@ GType	g_boxed_type_register_static		(const gchar	*name,
 #define	G_TYPE_DATE	        (g_date_get_type ())
 #define	G_TYPE_STRV	        (g_strv_get_type ())
 #define	G_TYPE_GSTRING		(g_gstring_get_type ())
+#define	G_TYPE_HASH_TABLE	(g_hash_table_get_type ())
 
 
 void    g_value_take_boxed      (GValue		*value,

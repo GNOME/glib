@@ -93,30 +93,6 @@ value_free (gpointer boxed)
   g_free (value);
 }
 
-static gpointer
-gdate_copy (gpointer boxed)
-{
-  const GDate *date = (const GDate*) boxed;
-
-  return g_date_new_julian (g_date_get_julian (date));
-}
-
-static gpointer
-gstring_copy (gpointer boxed)
-{
-  const GString *src_gstring = boxed;
-
-  return g_string_new_len (src_gstring->str, src_gstring->len);
-}
-
-static void
-gstring_free (gpointer boxed)
-{
-  GString *gstring = boxed;
-
-  g_string_free (gstring, TRUE);
-}
-
 void
 g_boxed_type_init (void) 
 {
@@ -180,6 +156,14 @@ g_value_array_get_type (void)
   return type_id;
 }
 
+static gpointer
+gdate_copy (gpointer boxed)
+{
+  const GDate *date = (const GDate*) boxed;
+
+  return g_date_new_julian (g_date_get_julian (date));
+}
+
 GType
 g_date_get_type (void)
 {
@@ -204,15 +188,56 @@ g_strv_get_type (void)
   return type_id;
 }
 
+static gpointer
+gstring_copy (gpointer boxed)
+{
+  const GString *src_gstring = boxed;
+
+  return g_string_new_len (src_gstring->str, src_gstring->len);
+}
+
+static void
+gstring_free (gpointer boxed)
+{
+  GString *gstring = boxed;
+
+  g_string_free (gstring, TRUE);
+}
+
 GType
 g_gstring_get_type (void)
 {
   static GType type_id = 0;
 
   if (!type_id)
-    type_id = g_boxed_type_register_static (g_intern_static_string ("GString"),	/* the naming is a bit odd, but GString is obviously not G_TYPE_STRING */
+    type_id = g_boxed_type_register_static (g_intern_static_string ("GString"),
+                                            /* the naming is a bit odd, but GString is obviously not G_TYPE_STRING */
 					    gstring_copy,
 					    gstring_free);
+  return type_id;
+}
+
+static gpointer
+hash_table_copy (gpointer boxed)
+{
+  GHashTable *hash_table = boxed;
+  return g_hash_table_ref (hash_table);
+}
+
+static void
+hash_table_free (gpointer boxed)
+{
+  GHashTable *hash_table = boxed;
+  g_hash_table_unref (hash_table);
+}
+
+GType
+g_hash_table_get_type (void)
+{
+  static GType type_id = 0;
+  if (!type_id)
+    type_id = g_boxed_type_register_static (g_intern_static_string ("GHashTable"),
+					    hash_table_copy, hash_table_free);
   return type_id;
 }
 

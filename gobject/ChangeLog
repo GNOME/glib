@@ -1,3 +1,7 @@
+Wed Nov 23 13:36:02 2005  Tim Janik  <timj@gtk.org>
+
+	* gboxed.[hc]: minor cleanups, implemented G_TYPE_HASH_TABLE.
+
 2005-11-17  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.9.0 ===
