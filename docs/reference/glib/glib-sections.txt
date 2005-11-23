@@ -1744,6 +1744,8 @@ GHRFunc
 g_hash_table_freeze
 g_hash_table_thaw
 g_hash_table_destroy
+g_hash_table_ref
+g_hash_table_unref
 
 <SUBSECTION>
 g_direct_equal

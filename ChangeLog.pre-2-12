@@ -1,5 +1,8 @@
 2005-11-22  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/ghash.c (g_hash_table_ref): 
+	(g_hash_table_unref): Mark these as new API.
+
 	Avoid double locking in g_intern_string (#322133,
 	Benedikt Meurer)
 

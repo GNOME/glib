@@ -1,3 +1,8 @@
+2005-11-22  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/glib-sections.txt: Add g_hash_table_ref
+	and g_hash_table_unref
+
 2005-11-17  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.9.0 ===

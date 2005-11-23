@@ -158,6 +158,8 @@ g_hash_table_new_full (GHashFunc       hash_func,
  * This function is MT-safe and may be called from any thread.
  * 
  * Return value: the passed in #GHashTable.
+ * 
+ * Since: 2.10
  **/
 GHashTable*
 g_hash_table_ref (GHashTable *hash_table)
@@ -177,6 +179,8 @@ g_hash_table_ref (GHashTable *hash_table)
  * If the reference count drops to 0, all keys and values will be
  * destroyed, and all memory allocated by the hash table is released.
  * This function is MT-safe and may be called from any thread.
+ * 
+ * Since: 2.10
  **/
 void
 g_hash_table_unref (GHashTable *hash_table)
