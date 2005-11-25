@@ -204,7 +204,7 @@ g_hash_table_unref (GHashTable *hash_table)
  * g_hash_table_destroy:
  * @hash_table: a #GHashTable.
  * 
- * Destroys all keys and values in the #GHashTable and decrements it's
+ * Destroys all keys and values in the #GHashTable and decrements its
  * reference count by 1. If keys and/or values are dynamically allocated,
  * you should either free them first or create the #GHashTable with destroy
  * notifiers using g_hash_table_new_full(). In the latter case the destroy
