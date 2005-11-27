@@ -237,6 +237,9 @@ g_object_newv
 GParameter
 g_object_ref
 g_object_unref
+g_object_ref_sink
+g_object_is_floating
+g_object_force_floating
 GWeakNotify
 g_object_weak_ref
 g_object_weak_unref
@@ -312,6 +315,7 @@ g_boxed_type_register_static
 g_pointer_type_register_static
 
 <SUBSECTION>
+G_TYPE_HASH_TABLE
 G_TYPE_DATE
 G_TYPE_GSTRING
 G_TYPE_STRV
@@ -324,6 +328,7 @@ G_TYPE_IS_BOXED
 g_gstring_get_type
 g_strv_get_type
 g_date_get_type
+g_hash_table_get_type
 </SECTION>
 
 <SECTION>
@@ -395,6 +400,7 @@ G_PARAM_USER_SHIFT
 g_param_spec_ref
 g_param_spec_unref
 g_param_spec_sink
+g_param_spec_ref_sink
 g_param_value_set_default
 g_param_value_defaults
 g_param_value_validate
