@@ -298,6 +298,7 @@ g_utf8_collate_key_for_filename (const gchar *str,
   GString *append;
   const gchar *p;
   const gchar *prev;
+  const gchar *end;
   gchar *collate_key;
   gint digits;
   gint leading_zeros;
@@ -354,8 +355,10 @@ g_utf8_collate_key_for_filename (const gchar *str,
   result = g_string_sized_new (len * 2);
   append = g_string_sized_new (0);
 
+  end = str + len;
+
   /* No need to use utf8 functions, since we're only looking for ascii chars */
-  for (prev = p = str; *p != '\0'; p++)
+  for (prev = p = str; p < end; p++)
     {
       switch (*p)
 	{
@@ -406,10 +409,8 @@ g_utf8_collate_key_for_filename (const gchar *str,
 	      digits = 1;
 	    }
 	  
-	  do
+	  while (++p < end)
 	    {
-	      p++;
-	      
 	      if (*p == '0' && !digits)
 		++leading_zeros;
 	      else if (g_ascii_isdigit(*p))
@@ -427,7 +428,6 @@ g_utf8_collate_key_for_filename (const gchar *str,
 		  break;
                 }
 	    }
-	  while (*p != '\0');
 
 	  while (digits > 1)
 	    {

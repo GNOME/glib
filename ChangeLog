@@ -1,3 +1,8 @@
+2005-11-27  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gunicollate.c (g_utf8_collate_key_for_filename): 
+	Don't read beyond len.  (#322520, Christian Persch)
+
 Wed Nov 23 17:34:01 2005  Tim Janik  <timj@imendio.com>
 
 	* glib/gdataset.c: access datalist flags via atomic pointer access
