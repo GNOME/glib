@@ -78,6 +78,7 @@ GType	g_value_array_get_type	(void)	G_GNUC_CONST;
 GType	g_date_get_type	        (void)	G_GNUC_CONST;
 GType	g_strv_get_type	        (void)	G_GNUC_CONST;
 GType	g_gstring_get_type      (void)	G_GNUC_CONST;
+GType   g_hash_table_get_type   (void)  G_GNUC_CONST;
 
 typedef gchar** GStrv;
      

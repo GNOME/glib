@@ -1,3 +1,7 @@
+2005-11-27  Matthias Clasen  <mclasen@redhat.com>
+
+	* gboxed.h: Declare g_hash_table_get_type.
+
 Wed Nov 23 18:01:46 2005  Tim Janik  <timj@imendio.com>
 
 	* gobject.[hc]: added floating reference count.

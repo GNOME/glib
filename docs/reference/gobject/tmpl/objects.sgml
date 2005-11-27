@@ -6,11 +6,25 @@ The base object type
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-GObject is the fundamental type providing the common attributes and methods for all object
-types in GTK+, Pango and other libraries based on GObject. The GObject class provides methods 
-for object construction and destruction, property access methods, and signal support. 
+GObject is the fundamental type providing the common attributes and methods 
+for all object types in GTK+, Pango and other libraries based on GObject. 
+The GObject class provides methods for object construction and destruction, 
+property access methods, and signal support. 
 Signals are described in detail in <xref linkend="gobject-Signals"/>.
 </para>
+<para id="floating-ref">
+The initial reference to a #GObject which is returned by g_object_new() can
+optionally be "floating", which means that it is not specifically owned
+by the creator of the object. The floating reference can be converted into 
+an ordinary reference by anyone at any time, by calling g_object_ref_sink(). 
+If the object is already sunk (has no floating reference), g_object_ref_sink() 
+returns a new reference.
+</para>
+<para>
+To create #GObject<!-- -->s with a floating reference, call 
+g_object_force_floating() from the object's init function.
+</para>
+
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
@@ -393,6 +407,42 @@ Increases the reference count of @object.
 
 @object: a #GObject
 @Returns: @object
+
+
+<!-- ##### FUNCTION g_object_ref_sink ##### -->
+<para>
+Increase the reference count of @object, and remove the 
+<link linkend="floating-ref">floating</link> reference, if @object
+has a floating reference.
+</para>
+
+@object: a #GObject
+@Returns: @object
+@Since: 2.10
+
+
+<!-- ##### FUNCTION g_object_is_floating ##### -->
+<para>
+Checks wether @object has a <link linkend="floating-ref">floating</link>
+reference.
+</para>
+
+@object: a #GObject
+@Returns: %TRUE if @object has a floating reference
+@Since: 2.10
+
+
+<!-- ##### FUNCTION g_object_force_floating ##### -->
+<para>
+This function is intended for #GObject implementations to mark the
+initial reference to the object as 
+<link linkend="floating-ref">floating</link>. It must only be called  
+from an object's init function.
+</para>
+
+@object: a #GObject
+@Since: 2.10
+
 
 
 <!-- ##### FUNCTION g_object_unref ##### -->

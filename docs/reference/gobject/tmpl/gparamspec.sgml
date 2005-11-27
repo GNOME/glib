@@ -205,6 +205,16 @@ not flagged "floating" anymore).
 @pspec: a valid #GParamSpec
 
 
+<!-- ##### FUNCTION g_param_spec_ref_sink ##### -->
+<para>
+Convenience function to ref and sink a #GParamSpec.
+</para>
+
+@pspec: a valid #GParamSpec
+@Returns: the #GParamSpec that was passed into this function
+@Since: 2.10
+
+
 <!-- ##### FUNCTION g_param_value_set_default ##### -->
 <para>
 Sets @value to its default value as specified in @pspec.
