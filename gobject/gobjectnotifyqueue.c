@@ -106,7 +106,7 @@ g_object_notify_queue_thaw (GObject            *object,
   for (slist = nqueue->pspecs; slist; slist = slist->next)
     {
       GParamSpec *pspec = slist->data;
-      gint i = 0;
+      guint i = 0;
 
       /* dedup, make pspecs in the list unique */
     redo_dedup_check:

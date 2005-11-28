@@ -122,7 +122,7 @@ main (gint   argc,
   GLogLevelFlags fatal_mask;
   gboolean gen_froots = 0;
   gboolean gen_tree = 0;
-  guint i;
+  gint i;
   gchar *iindent = "";
 
   f_out = stdout;

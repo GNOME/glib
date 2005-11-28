@@ -1,3 +1,10 @@
+2005-11-28  Matthias Clasen  <mclasen@redhat.com>
+
+	* gobjectnotifyqueue.c (g_object_notify_queue_thaw): 
+	* gobject-query.c (main): Silence compiler warnings.
+
+	* glib-genmarshal.c (main): Use G_N_ELEMENTS.
+
 2005-11-27  Matthias Clasen  <mclasen@redhat.com>
 
 	* gboxed.h: Declare g_hash_table_get_type.

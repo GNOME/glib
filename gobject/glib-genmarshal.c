@@ -622,7 +622,7 @@ main (int   argc,
 
   /* add standard marshallers of the GObject library */
   if (std_includes)
-    for (i = 0; i < sizeof (gobject_marshallers) / sizeof (gobject_marshallers[0]); i++)
+    for (i = 0; i < G_N_ELEMENTS (gobject_marshallers); i++)
       {
 	gchar *tmp = g_strdup (gobject_marshallers[i]);
 	
