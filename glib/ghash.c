@@ -190,7 +190,8 @@ g_hash_table_unref (GHashTable *hash_table)
 
   if (g_atomic_int_exchange_and_add (&hash_table->ref_count, -1) - 1 == 0)
     {
-      guint i;
+      gint i;
+
       for (i = 0; i < hash_table->size; i++)
         g_hash_nodes_destroy (hash_table->nodes[i], 
                               hash_table->key_destroy_func,
@@ -214,7 +215,7 @@ g_hash_table_unref (GHashTable *hash_table)
 void
 g_hash_table_destroy (GHashTable *hash_table)
 {
-  guint i;
+  gint i;
   
   g_return_if_fail (hash_table != NULL);
   g_return_if_fail (hash_table->ref_count > 0);
@@ -542,7 +543,7 @@ g_hash_table_foreach_remove_or_steal (GHashTable *hash_table,
                                       gboolean    notify)
 {
   GHashNode *node, *prev;
-  guint i;
+  gint i;
   guint deleted = 0;
   
   for (i = 0; i < hash_table->size; i++)

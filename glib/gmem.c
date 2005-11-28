@@ -1265,20 +1265,22 @@ void	g_blow_chunks		(void)			{}
 
 #endif /* DISABLE_MEM_POOLS */
 
+struct _GAllocator 
+{
+  gchar      *name;
+  guint16     n_preallocs;
+  guint       is_unused : 1;
+  guint       type : 4;
+  GAllocator *last;
+  GMemChunk  *mem_chunk;
+  gpointer    free_list;
+};
 
 GAllocator*
 g_allocator_new (const gchar *name,
 		 guint        n_preallocs)
 {
-  static const struct _GAllocator {
-    gchar      *name;
-    guint16     n_preallocs;
-    guint       is_unused : 1;
-    guint       type : 4;
-    GAllocator *last;
-    GMemChunk  *mem_chunk;
-    gpointer    free_list;
-  } dummy = {
+  static const GAllocator dummy = {
     "GAllocator is deprecated", 1, TRUE, 0, NULL, NULL, NULL,
   };
   /* some (broken) GAllocator uses depend on non-NULL allocators */

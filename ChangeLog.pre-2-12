@@ -1,3 +1,12 @@
+2005-11-28  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gthread.c (g_static_rw_lock_wait, g_static_rw_lock_signal): 
+	* glib/gnode.c (g_node_depth_traverse_level): 
+	* glib/gmem.c (g_allocator_new): 
+	* glib/ghash.c (g_hash_table_unref, g_hash_table_destroy) 
+	(g_hash_table_foreach_remove_or_steal): Silence compiler
+	warnings.
+
 2005-11-27  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gunicollate.c (g_utf8_collate_key_for_filename): 
@@ -6,7 +15,7 @@
 Wed Nov 23 17:34:01 2005  Tim Janik  <timj@imendio.com>
 
 	* glib/gdataset.c: access datalist flags via atomic pointer access
-	funcitons, instead of acquiring the dataset lock. this is faster and
+	functions, instead of acquiring the dataset lock. this is faster and
 	also matches the atomic pointer readouts in gdatalistprivate.h and
 	direct pointer modifications required by gobject.c.
 

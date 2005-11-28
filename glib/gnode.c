@@ -614,7 +614,7 @@ g_node_depth_traverse_level (GNode		 *node,
 			     GNodeTraverseFunc func,
 			     gpointer	  data)
 {
-  gint level;
+  guint level;
   gboolean more_levels;
 
   level = 0;  
