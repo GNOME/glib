@@ -194,23 +194,26 @@
  *  can be used as a single statement, as in
  *  if (x) G_STMT_START { ... } G_STMT_END; else ...
  *
- *  For gcc we will wrap the statements within `({' and `})' braces.
- *  For SunOS they will be wrapped within `if (1)' and `else (void) 0',
- *  and otherwise within `do' and `while (0)'.
+ *  When GCC is compiling C code in non-ANSI mode, it will use the
+ *  compiler __extension__ to wrap the statements wihin `({' and '})' braces.
+ *  When compiling on platforms where configure has defined
+ *  HAVE_DOWHILE_MACROS, statements will be wrapped with `do' and `while (0)'.
+ *  For any other platforms (SunOS4 is known to have this issue), wrap the
+ *  statements with `if (1)' and `else (void) 0'.
  */
 #if !(defined (G_STMT_START) && defined (G_STMT_END))
-#  if defined (__GNUC__) && !defined (__STRICT_ANSI__) && !defined (__cplusplus)
-#    define G_STMT_START	(void) __extension__ (
-#    define G_STMT_END		)
-#  else
-#    if (defined (sun) || defined (__sun__))
-#      define G_STMT_START	if (1)
-#      define G_STMT_END	else (void)0
-#    else
-#      define G_STMT_START	do
-#      define G_STMT_END	while (0)
-#    endif
-#  endif
+# if defined (__GNUC__) && !defined (__STRICT_ANSI__) && !defined (__cplusplus)
+#  define G_STMT_START (void) __extension__ (
+#  define G_STMT_END )
+# else /* !(__GNUC__ && !__STRICT_ANSI__ && !__cplusplus) */
+#  if defined (HAVE_DOWHILE_MACROS)
+#   define G_STMT_START do
+#   define G_STMT_END while (0)
+#  else /* !HAVE_DOWHILE_MACROS */
+#   define G_STMT_START if (1)
+#   define G_STMT_END else (void) 0
+#  endif /* !HAVE_DOWHILE_MACROS */
+# endif /* !(__GNUC__ && !__STRICT_ANSI__ && !__cplusplus) */
 #endif
 
 /* Allow the app programmer to select whether or not return values

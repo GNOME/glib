@@ -700,6 +700,21 @@ main (void) {
 }],[g_can_inline=yes],[g_can_inline=no])
 AC_MSG_RESULT($g_can_inline)
 
+dnl *** check for working do while(0) macros ***
+AC_CACHE_CHECK([for working do while(0) macros], g_support_dowhile_macros, [
+	AC_TRY_COMPILE([],[
+	#define STMT_START do
+	#define STMT_END while(0)
+	#define STMT_TEST STMT_START { i = 0; } STMT_END
+	int main(void) { int i = 1; STMT_TEST; return i; }],
+	[g_support_dowhile_macros=yes],
+	[g_support_dowhile_macros=no],
+	[g_support_dowhile_macros=yes])
+])
+if test x$g_support_dowhile_macros = xyes; then
+  AC_DEFINE(HAVE_DOWHILE_MACROS, 1, [define for working do while(0) macros])
+fi
+
 # check for flavours of varargs macros
 AC_MSG_CHECKING(for ISO C99 varargs macros in C)
 AC_TRY_COMPILE([],[

@@ -1,5 +1,15 @@
 2005-11-28  Matthias Clasen  <mclasen@redhat.com>
 
+	Fix G_STMT_START / G_STMT_END on Solaris.  (#321972,
+	Andrew Paprocki)
+	
+	* configure.in: Check whether do { } while (0) works.
+
+	* glib/gmacros.h: Use do { } while (0) for G_STMT_START / 
+	G_STMT_END if it works.
+	
+2005-11-28  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/gthread.c (g_static_rw_lock_wait, g_static_rw_lock_signal): 
 	* glib/gnode.c (g_node_depth_traverse_level): 
 	* glib/gmem.c (g_allocator_new): 
