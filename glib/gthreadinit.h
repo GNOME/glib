@@ -26,9 +26,13 @@ G_BEGIN_DECLS
 /* Is called from gthread/gthread-impl.c */
 void g_thread_init_glib (void);
 
-/* Are called from glib/gthread.c. May not contain g_private_new calls */
-void _g_mem_thread_init (void) G_GNUC_INTERNAL;
-void _g_messages_thread_init (void) G_GNUC_INTERNAL;
+/* base initializers, may only use g_mutex_new(), g_cond_new() */
+void _g_mem_thread_init_noprivate_nomessage (void) G_GNUC_INTERNAL;
+/* initializers that may also use g_private_new() */
+void _g_slice_thread_init_nomessage	    (void) G_GNUC_INTERNAL;
+void _g_messages_thread_init_nomessage      (void) G_GNUC_INTERNAL;
+
+/* full fledged initializersa */
 void _g_convert_thread_init (void) G_GNUC_INTERNAL;
 void _g_rand_thread_init (void) G_GNUC_INTERNAL;
 void _g_main_thread_init (void) G_GNUC_INTERNAL;
@@ -38,8 +42,10 @@ void _g_utils_thread_init (void) G_GNUC_INTERNAL;
 void _g_win32_thread_init (void) G_GNUC_INTERNAL;
 #endif
 
-/* Are called from glib/gthread.c. Must only contain g_private_new calls */
-void _g_mem_thread_private_init (void) G_GNUC_INTERNAL;
+/* initialization functions called from glib/gthread.c.
+ * may contain g_mutex_new().
+ * may contain g_private_new() calls.
+ */
 void _g_messages_thread_private_init (void) G_GNUC_INTERNAL;
 
 G_END_DECLS

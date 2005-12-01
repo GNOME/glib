@@ -1,3 +1,33 @@
+Thu Dec  1 17:32:46 2005  Tim Janik  <timj@imendio.com>
+
+	* glib/gslice.[hc]: new slice allocator implementation.
+
+	* tests/slice-test.c: added random slice allocation test.
+
+	* glib/gthread.[hc]: removed newly added private thread mem API.
+
+	* glib/gthreadinit.h:
+	* glib/gmessages.c:
+	* glib/gthread.c:
+	* glib/gmem.c: divided glib threading initialisation into three phases,
+	initialisation where private keys and messaging are not available (only
+	needed by gmem.c), initialisation without messaging but private keys
+	available (gslice.c, gmessage.c), and full fledged initialisers that
+	server the rest of glib. initialisation functions got renamed to reflect
+	the limitations of their corresponding phases.
+
+	* glib/gmem.c: removed memchunk code, defer allocations to 
+	g_slice_* instead.
+
+	* glib/gmem.[hc]: removed g_slice_* skeletons.
+
+	* glib/glib.symbols: added g_slice_* symbols.
+
+	* configure.in: check for availability of posix_memalign(3), memalign(3)
+	and valloc(3). 
+
+	* glib/Makefile.am: added gslice.[hc].
+
 2005-12-01  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gstdio.c (g_stat): In the Win32 implementation, strip

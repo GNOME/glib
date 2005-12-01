@@ -76,7 +76,6 @@ struct  _GRealThread
 {
   GThread thread;
   gpointer private_data;
-  gpointer mem_private;
   GRealThread *next;
   gpointer retval;
   GSystemThread system_thread;
@@ -145,29 +144,34 @@ g_thread_init_glib (void)
    */
   GRealThread* main_thread = (GRealThread*) g_thread_self ();
 
+  /* mutex and cond creation works without g_threads_got_initialized */
   g_once_mutex = g_mutex_new ();
   g_once_cond = g_cond_new ();
 
+  /* we may only create mutex and cond in here */
+  _g_mem_thread_init_noprivate_nomessage ();
+
+  /* setup the basic threading system */
+  g_threads_got_initialized = TRUE;
+  g_thread_specific_private = g_private_new (g_thread_cleanup);
+  g_private_set (g_thread_specific_private, main_thread);
+  G_THREAD_UF (thread_self, (&main_thread->system_thread));
+
+  /* complete memory system initialization, g_private_*() works now */
+  _g_slice_thread_init_nomessage ();
+
+  /* accomplish log system initialization to enable messaging */
+  _g_messages_thread_init_nomessage ();
+
+  /* we may run full-fledged initializers from here */
   _g_convert_thread_init ();
   _g_rand_thread_init ();
   _g_main_thread_init ();
-  _g_mem_thread_init ();
-  _g_messages_thread_init ();
   _g_atomic_thread_init ();
   _g_utils_thread_init ();
 #ifdef G_OS_WIN32
   _g_win32_thread_init ();
 #endif
-
-  g_threads_got_initialized = TRUE;
-
-  g_thread_specific_private = g_private_new (g_thread_cleanup);
-  g_private_set (g_thread_specific_private, main_thread);
-  G_THREAD_UF (thread_self, (&main_thread->system_thread));
-
-  _g_mem_thread_private_init ();
-  _g_messages_thread_private_init ();
-
 }
 #endif /* G_THREADS_ENABLED */
 
@@ -866,28 +870,6 @@ g_static_rw_lock_free (GStaticRWLock* lock)
       lock->write_cond = NULL;
     }
   g_static_mutex_free (&lock->mutex);
-}
-
-/*
- * Memory allocation can't use the regular GPrivate 
- * API, since that relies on GArray, which uses
- * chunked memory. 
- */
-gpointer
-_g_thread_mem_private_get (GThread *thread)
-{
-  GRealThread *real_thread = (GRealThread*) thread;
-
-  return real_thread->mem_private;
-}
-
-void
-_g_thread_mem_private_set (GThread *thread,
-			   gpointer data)
-{
-  GRealThread *real_thread = (GRealThread*) thread;
-
-  real_thread->mem_private = data;
 }
 
 /**

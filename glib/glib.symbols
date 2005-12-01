@@ -584,10 +584,6 @@ g_realloc
 g_try_malloc G_GNUC_MALLOC
 g_try_malloc0 G_GNUC_MALLOC
 g_try_realloc
-g_slice_alloc
-g_slice_alloc0
-g_slice_free1
-g_slice_free_chain
 #ifndef G_DISABLE_DEPRECATED
 g_allocator_free
 g_allocator_new
@@ -602,6 +598,18 @@ g_mem_chunk_print
 g_mem_chunk_reset
 g_blow_chunks
 #endif
+#endif
+#endif
+
+#if IN_HEADER(__G_SLICE_H__)
+#if IN_FILE(__G_SLICE_C__)
+g_slice_alloc G_GNUC_MALLOC
+g_slice_alloc0 G_GNUC_MALLOC
+g_slice_free1
+g_slice_free_chain
+g_slice_set_config
+g_slice_get_config
+g_slice_get_config_state
 #endif
 #endif
 

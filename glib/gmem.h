@@ -27,6 +27,7 @@
 #ifndef __G_MEM_H__
 #define __G_MEM_H__
 
+#include <glib/gslice.h>
 #include <glib/gtypes.h>
 
 G_BEGIN_DECLS
@@ -95,19 +96,6 @@ gboolean g_mem_is_system_malloc (void);
  */
 GLIB_VAR GMemVTable	*glib_mem_profiler_table;
 void	g_mem_profile	(void);
-
-/* slices - fast allocation/release of small memory blocks
- */
-gpointer g_slice_alloc		(guint    block_size);
-gpointer g_slice_alloc0		(guint    block_size);
-void     g_slice_free1		(guint    block_size,
-				 gpointer mem_block);
-void	 g_slice_free_chain	(guint    block_size,
-				 gpointer mem_chain,
-				 guint    next_offset);
-#define  g_slice_new(type)	((type*) g_slice_alloc (sizeof (type)))
-#define  g_slice_new0(type)	((type*) g_slice_alloc0 (sizeof (type)))
-#define  g_slice_free(type,mem)	g_slice_free1 (sizeof (type), mem)
 
 
 /* deprecated memchunks and allocators */

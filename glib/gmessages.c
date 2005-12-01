@@ -1041,18 +1041,12 @@ g_printf_string_upper_bound (const gchar *format,
 }
 
 void
-_g_messages_thread_init (void)
+_g_messages_thread_init_nomessage (void)
 {
   g_messages_lock = g_mutex_new ();
+  g_log_depth = g_private_new (NULL);
   g_messages_prefixed_init ();
   _g_debug_init ();
-}
-
-void
-_g_messages_thread_private_init (void)
-{
-  g_assert (g_log_depth == NULL);
-  g_log_depth = g_private_new (NULL);
 }
 
 gboolean _g_debug_initialized = FALSE;
