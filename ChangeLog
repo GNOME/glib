@@ -2,8 +2,8 @@ Fri Dec  2 00:16:59 2005  Tim Janik  <timj@imendio.com>
 
 	* glib/gslice.c: improved gettimeofday() timer resolution by maintaining
 	acceptable load distribution of the syscall.
-	(slab_allocator_free_chunk): reduce minimum/single-thread magazine sizes
-	to approximately page_size/2.5 to avoid excessive startup allocations.
+	(allocator_get_magazine_threshold): reduce minimum/single-thread magazine
+	sizes to approximately page_size/2.5 to avoid excessive startup allocations.
 
 2005-12-01  Matthias Clasen  <mclasen@redhat.com>
 
