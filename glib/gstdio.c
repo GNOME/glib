@@ -599,7 +599,8 @@ g_stat (const gchar *filename,
       len = wcslen (wfilename);
       while (len > 0 && G_IS_DIR_SEPARATOR (wfilename[len-1]))
 	len--;
-      if (len > g_path_skip_root (filename) - filename)
+      if (len > 0 &&
+	  (!g_path_is_absolute (filename) || len > g_path_skip_root (filename) - filename))
 	wfilename[len] = '\0';
 
       retval = _wstat (wfilename, (struct _stat *) buf);
@@ -626,7 +627,8 @@ g_stat (const gchar *filename,
       len = strlen (cp_filename);
       while (len > 0 && G_IS_DIR_SEPARATOR (cp_filename[len-1]))
 	len--;
-      if (len > g_path_skip_root (filename) - filename)
+      if (len > 0 &&
+	  (!g_path_is_absolute (filename) || len > g_path_skip_root (filename) - filename))
 	cp_filename[len] = '\0';
       
       retval = stat (cp_filename, buf);
