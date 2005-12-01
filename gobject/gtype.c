@@ -1544,10 +1544,7 @@ g_type_create_instance (GType type)
   class = g_type_class_ref (type);
   total_size = type_total_instance_size_I (node);
 
-  if (node->data->instance.n_preallocs)
-    instance = g_slice_alloc0 (total_size);
-  else
-    instance = g_malloc0 (total_size);
+  instance = g_slice_alloc0 (total_size);
 
   if (node->data->instance.private_size)
     instance_real_class_set (instance, class);
@@ -1600,10 +1597,7 @@ g_type_free_instance (GTypeInstance *instance)
 #ifdef G_ENABLE_DEBUG  
   memset (instance, 0xaa, type_total_instance_size_I (node));
 #endif
-  if (node->data->instance.n_preallocs)
-    g_slice_free1 (type_total_instance_size_I (node), instance);
-  else
-    g_free (instance);
+  g_slice_free1 (type_total_instance_size_I (node), instance);
 
   g_type_class_unref (class);
 }

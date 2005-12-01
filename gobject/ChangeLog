@@ -1,3 +1,7 @@
+Thu Dec  1 12:53:26 2005  Tim Janik  <timj@imendio.com>
+
+	* gtype.c: use g_slic_* for all object allocations.
+
 2005-11-28  Matthias Clasen  <mclasen@redhat.com>
 
 	* gobjectnotifyqueue.c (g_object_notify_queue_thaw): 
