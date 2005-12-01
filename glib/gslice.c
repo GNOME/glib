@@ -92,7 +92,7 @@
 #define SLAB_INFO_SIZE          P2ALIGN (sizeof (SlabInfo) + NATIVE_MALLOC_PADDING)
 #define MAX_MAGAZINE_SIZE       (256)                                           /* see [3] and allocator_get_magazine_threshold() for this */
 #define MIN_MAGAZINE_SIZE       (4)
-#define MAX_STAMP_COUNTER       (13)                                            /* distributes the load of gettimeofday() */
+#define MAX_STAMP_COUNTER       (7)                                             /* distributes the load of gettimeofday() */
 #define MAX_SLAB_CHUNK_SIZE(al) (((al)->max_page_size - SLAB_INFO_SIZE) / 8)    /* we want at last 8 chunks per page, see [4] */
 #define MAX_SLAB_INDEX(al)      (SLAB_INDEX (al, MAX_SLAB_CHUNK_SIZE (al)) + 1)
 #define SLAB_INDEX(al, asize)   ((asize) / P2ALIGNMENT - 1)                     /* asize must be P2ALIGNMENT aligned */
@@ -406,14 +406,14 @@ allocator_get_magazine_threshold (Allocator *allocator,
   /* the magazine size calculated here has a lower bound of MIN_MAGAZINE_SIZE,
    * which is required by the implementation. also, for moderately sized chunks
    * (say >= 64 bytes), magazine sizes shouldn't be much smaller then the number
-   * of chunks available per page to avoid excessive traffic in the magazine
+   * of chunks available per page/2 to avoid excessive traffic in the magazine
    * cache for small to medium sized structures.
    * the upper bound of the magazine size is effectively provided by
    * MAX_MAGAZINE_SIZE. for larger chunks, this number is scaled down so that
    * the content of a single magazine doesn't exceed ca. 16KB.
    */
   guint chunk_size = SLAB_CHUNK_SIZE (allocator, ix);
-  guint threshold = MAX (MIN_MAGAZINE_SIZE, sys_page_size / MAX (chunk_size, 64));
+  guint threshold = MAX (MIN_MAGAZINE_SIZE, allocator->max_page_size / MAX (5 * chunk_size, 5 * 32));
   guint contention_counter = allocator->contention_counters[ix];
   if (G_UNLIKELY (contention_counter))  /* single CPU bias */
     {
