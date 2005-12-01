@@ -1,3 +1,7 @@
+2005-12-01 Matthias Clasen <mclasen@redhat.com>
+
+	* tests/Makefile.am: Remove duplicate variable.
+
 Thu Dec  1 17:32:46 2005  Tim Janik  <timj@imendio.com>
 
 	* glib/gslice.[hc]: new slice allocator implementation.
