@@ -1,4 +1,7 @@
-2005-12-01 Matthias Clasen <mclasen@redhat.com>
+2005-12-01  Matthias Clasen  <mclasen@redhat.com>
+
+	* tests/gobject/ifacecheck.c (test_iface_base_init): Don't
+	double-free base interface members.
 
 	* tests/Makefile.am: Remove duplicate variable.
 

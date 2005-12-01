@@ -47,9 +47,7 @@ struct _TestIfaceClass
 static void
 test_iface_base_init (TestIfaceClass *iface)
 {
-  if (iface->history)
-    g_string_free (iface->history, TRUE);
-  iface->history = g_string_new (NULL);
+  iface->history = g_string_new (iface->history ? iface->history->str : NULL);
 }
 
 static DEFINE_IFACE(TestIface, test_iface, test_iface_base_init, NULL)
