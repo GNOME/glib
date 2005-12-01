@@ -337,10 +337,9 @@ g_creat (const gchar *filename,
  * renames a file, moving it between directories if required.
  * 
  * See your C library manual for more details about how rename() works
- * on your system. Note in particular that on Windows, it is in
- * general not possible to rename a file if a file with the new name
- * already exists. Also it is not possible in general to rename an
- * open file.
+ * on your system. Note in particular that on Win9x it is not possible
+ * to rename a file if a file with the new name already exists. Also
+ * it is not possible in general on Windows to rename an open file.
  *
  * Returns: 0 if the renaming succeeded, -1 if an error occurred
  * 
