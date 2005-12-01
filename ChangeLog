@@ -1,3 +1,14 @@
+2005-12-01  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gstdio.c (g_stat): In the Win32 implementation, strip
+	trailing slash(es) for non-root folders. stat() fails if non-root
+	folders are specified with trailing slashes. It's too much hassle
+	to demand that callers strip such slashes themselves, especially
+	as it is easy to get it wrong and strip the slash of a root
+	folder.
+	(g_rename): On NT-based Windows, use MoveFileEx() with
+	MOVEFILE_REPLACE_EXISTING to better match Unix behaviour.
+
 2005-11-28  Matthias Clasen  <mclasen@redhat.com>
 
 	Fix G_STMT_START / G_STMT_END on Solaris.  (#321972,
