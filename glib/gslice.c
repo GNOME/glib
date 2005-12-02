@@ -154,8 +154,8 @@ typedef struct {
 } Allocator;
 
 /* --- prototypes --- */
-static gpointer     slab_allocator_alloc_chunk       (guint      chunk_size);
-static void         slab_allocator_free_chunk        (guint      chunk_size,
+static gpointer     slab_allocator_alloc_chunk       (gsize      chunk_size);
+static void         slab_allocator_free_chunk        (gsize      chunk_size,
                                                       gpointer   mem);
 static void         private_thread_memory_cleanup    (gpointer   data);
 static gpointer     allocator_memalign               (gsize      alignment,
@@ -163,7 +163,7 @@ static gpointer     allocator_memalign               (gsize      alignment,
 static void         allocator_memfree                (gsize      memsize,
                                                       gpointer   mem);
 static inline void  magazine_cache_update_stamp      (void);
-static inline guint allocator_get_magazine_threshold (Allocator *allocator,
+static inline gsize allocator_get_magazine_threshold (Allocator *allocator,
                                                       guint      ix);
 
 /* --- variables --- */
@@ -281,7 +281,7 @@ g_slice_init_nomessage (void)
 }
 
 static inline guint
-allocator_categorize (guint aligned_chunk_size)
+allocator_categorize (gsize aligned_chunk_size)
 {
   /* speed up the likely path */
   if (G_LIKELY (aligned_chunk_size && aligned_chunk_size <= allocator->max_slab_chunk_size_for_magazine_cache))
@@ -317,7 +317,7 @@ _g_slice_thread_init_nomessage (void)
 
 static inline void
 g_mutex_lock_a (GMutex *mutex,
-                guint  *threshold)
+                guint  *contention_counter)
 {
   gboolean contention = FALSE;
   if (!g_mutex_trylock (mutex))
@@ -331,7 +331,7 @@ g_mutex_lock_a (GMutex *mutex,
       if (allocator->mutex_counter >= 1)        /* quickly adapt to contention */
         {
           allocator->mutex_counter = 0;
-          *threshold = MIN (*threshold + 1, MAX_MAGAZINE_SIZE);
+          *contention_counter = MIN (*contention_counter + 1, MAX_MAGAZINE_SIZE);
         }
     }
   else /* !contention */
@@ -340,7 +340,7 @@ g_mutex_lock_a (GMutex *mutex,
       if (allocator->mutex_counter < -11)       /* moderately recover magazine sizes */
         {
           allocator->mutex_counter = 0;
-          *threshold = MAX (*threshold, 1) - 1;
+          *contention_counter = MAX (*contention_counter, 1) - 1;
         }
     }
 }
@@ -382,6 +382,7 @@ magazine_chain_pop_head (ChunkLink **magazine_chunks)
   return chunk;
 }
 
+#if 0 /* useful for debugging */
 static guint
 magazine_count (ChunkLink *head)
 {
@@ -398,8 +399,9 @@ magazine_count (ChunkLink *head)
     }
   return count;
 }
+#endif
 
-static inline guint
+static inline gsize
 allocator_get_magazine_threshold (Allocator *allocator,
                                   guint      ix)
 {
@@ -412,7 +414,7 @@ allocator_get_magazine_threshold (Allocator *allocator,
    * MAX_MAGAZINE_SIZE. for larger chunks, this number is scaled down so that
    * the content of a single magazine doesn't exceed ca. 16KB.
    */
-  guint chunk_size = SLAB_CHUNK_SIZE (allocator, ix);
+  gsize chunk_size = SLAB_CHUNK_SIZE (allocator, ix);
   guint threshold = MAX (MIN_MAGAZINE_SIZE, allocator->max_page_size / MAX (5 * chunk_size, 5 * 32));
   guint contention_counter = allocator->contention_counters[ix];
   if (G_UNLIKELY (contention_counter))  /* single CPU bias */
@@ -496,7 +498,7 @@ magazine_cache_trim (Allocator *allocator,
   /* free trash */
   if (trash)
     {
-      const guint chunk_size = SLAB_CHUNK_SIZE (allocator, ix);
+      const gsize chunk_size = SLAB_CHUNK_SIZE (allocator, ix);
       g_mutex_lock (allocator->slab_mutex);
       while (trash)
         {
@@ -604,7 +606,7 @@ private_thread_memory_cleanup (gpointer data)
             magazine_cache_push_magazine (ix, mag->chunks, mag->count);
           else
             {
-              const guint chunk_size = SLAB_CHUNK_SIZE (allocator, ix);
+              const gsize chunk_size = SLAB_CHUNK_SIZE (allocator, ix);
               g_mutex_lock (allocator->slab_mutex);
               while (mag->chunks)
                 {
@@ -718,7 +720,7 @@ g_slice_alloc (gsize mem_size)
 }
 
 gpointer
-g_slice_alloc0 (guint mem_size)
+g_slice_alloc0 (gsize mem_size)
 {
   gpointer mem = g_slice_alloc (mem_size);
   if (mem)
@@ -727,10 +729,10 @@ g_slice_alloc0 (guint mem_size)
 }
 
 void
-g_slice_free1 (guint    mem_size,
+g_slice_free1 (gsize    mem_size,
                gpointer mem_block)
 {
-  guint chunk_size = P2ALIGN (mem_size);
+  gsize chunk_size = P2ALIGN (mem_size);
   guint acat = allocator_categorize (chunk_size);
   if (G_UNLIKELY (!mem_block))
     /* pass */;
@@ -757,9 +759,9 @@ g_slice_free1 (guint    mem_size,
 }
 
 void
-g_slice_free_chain (guint    mem_size,
+g_slice_free_chain (gsize    mem_size,
                     gpointer mem_chain,
-                    guint    next_offset)
+                    gsize    next_offset)
 {
   GSList *slice = mem_chain;
   g_return_if_fail (next_offset == G_STRUCT_OFFSET (GSList, next));
@@ -810,7 +812,7 @@ allocator_slab_stack_push (Allocator *allocator,
 static void
 allocator_add_slab (Allocator *allocator,
                     guint      ix,
-                    guint      chunk_size)
+                    gsize      chunk_size)
 {
   SlabInfo *sinfo;
   gsize padding, n_chunks, color = 0;
@@ -851,7 +853,7 @@ allocator_add_slab (Allocator *allocator,
 }
 
 static gpointer
-slab_allocator_alloc_chunk (guint chunk_size)
+slab_allocator_alloc_chunk (gsize chunk_size)
 {
   guint ix = SLAB_INDEX (allocator, chunk_size);
   /* ensure non-empty slab */
@@ -868,7 +870,7 @@ slab_allocator_alloc_chunk (guint chunk_size)
 }
 
 static void
-slab_allocator_free_chunk (guint    chunk_size,
+slab_allocator_free_chunk (gsize    chunk_size,
                            gpointer mem)
 {
   guint ix = SLAB_INDEX (allocator, chunk_size);
