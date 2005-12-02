@@ -1,5 +1,7 @@
 2005-12-02  Matthias Clasen  <mclasen@redhat.com>
 
+	* README.in: Add a note about Solaris threads.
+
 	* glib/gspawn.c:
 	* configure.in: Remove support for Solaris threads. 
 	(#136971, Sebastian Wilhelmi, patch by Andrew Paprocki)

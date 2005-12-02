@@ -35,6 +35,11 @@ Notes about GLib 2.10
 * The Unicode support has been updated to Unicode 4.1. This adds several
   new members to the GUnicodeBreakType enumeration.
 
+* The support for Solaris threads has been retired. Solaris has provided 
+  POSIX threads for long enough now to have them available on every 
+  Solaris platform. 
+
+
 Notes about GLib 2.6.0
 ======================
 
