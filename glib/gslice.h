@@ -40,17 +40,17 @@ void     g_slice_free_chain     (gsize    block_size,
 #define  g_slice_new0(type)     ((type*) g_slice_alloc0 (sizeof (type)))
 /*       g_slice_free(type,mem) g_slice_free1 (sizeof (type), mem) */
 
-#if __GNUC__ >= 2
+#if 	__GNUC__ >= 2
 /* for GCC, define a type-safe variant of g_slice_free() */
-#define  g_slice_free(type, mem)	({			\
-  static inline void g_slice_free (gsize, type*); 		\
-  while (0) g_slice_free (sizeof (type), mem); 			\
-  g_slice_free1 (sizeof (type), mem); 				\
+#define g_slice_free(type, mem)        ({                       \
+  void (*g_slice_free) (gsize, type*);                          \
+  while (0) g_slice_free (sizeof (type), mem);                  \
+  g_slice_free1 (sizeof (type), mem);                           \
 })
-#else
+#else	/* !__GNUC__ */
 #define	g_slice_free(type, mem)	g_slice_free1 (sizeof (type) + (gsize) (type*) 0, mem)
 /* we go through the extra (gsize)(type*)0 hoop to ensure a known type argument */
-#endif
+#endif	/* !__GNUC__ */
 
 /* --- internal debugging API --- */
 typedef enum {

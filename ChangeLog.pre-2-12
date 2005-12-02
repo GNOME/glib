@@ -1,3 +1,8 @@
+Fri Dec  2 13:08:58 2005  Tim Janik  <timj@gtk.org>
+
+        * glib/gslice.h (g_slice_free): reworked GCC-specific type-safe macro
+        variant into something less verbose, but digestible for gcc-3.4.
+
 Fri Dec  2 10:55:07 2005  Tim Janik  <timj@imendio.com>
 
 	* tests/slice-test.c: extended to perform the benchmarking on the old
