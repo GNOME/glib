@@ -32,7 +32,7 @@ m4_define([glib_interface_age], [0])
 m4_define([glib_binary_age],
           [m4_eval(100 * glib_minor_version + glib_micro_version)])
 m4_define([glib_version],
-          [glib_major_version.glib_minor_version.glib_micro_version])
+          [glib_major_version.glib_minor_version.glib_micro_version.cvs20051202])
 
 # libtool version related macros
 m4_define([glib_lt_release], [glib_major_version.glib_minor_version])
@@ -2224,6 +2224,7 @@ ${glib_extension}typedef signed $gint64 gint64;
 ${glib_extension}typedef unsigned $gint64 guint64;
 
 #define G_GINT64_CONSTANT(val)	$gint64_constant
+#define G_GUINT64_CONSTANT(val)	$guint64_constant
 _______EOF
 
 	if test x$gint64_format != x ; then
@@ -2547,6 +2548,7 @@ $ac_cv_sizeof_int)
   guint64_format='"u"'
   glib_extension=
   gint64_constant='(val)'
+  guint64_constant='(val)'
   ;;
 $ac_cv_sizeof_long)
   gint64=long
@@ -2555,6 +2557,7 @@ $ac_cv_sizeof_long)
   guint64_format='"lu"'
   glib_extension=
   gint64_constant='(val##L)'
+  guint64_constant='(val##UL)'
   ;;
 $ac_cv_sizeof_long_long)
   gint64='long long'
@@ -2565,6 +2568,7 @@ $ac_cv_sizeof_long_long)
   fi
   glib_extension='G_GNUC_EXTENSION '
   gint64_constant='(G_GNUC_EXTENSION (val##LL))'
+  guint64_constant='(G_GNUC_EXTENSION (val##ULL))'
   ;;
 $ac_cv_sizeof___int64)
   gint64='__int64'
@@ -2575,6 +2579,7 @@ $ac_cv_sizeof___int64)
   fi
   glib_extension=
   gint64_constant='(val##i64)'
+  guint64_constant='(val##ui64)'
   ;;
 esac
 glib_size_t=$ac_cv_sizeof_size_t

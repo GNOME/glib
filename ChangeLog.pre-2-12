@@ -1,5 +1,8 @@
 2005-12-02  Matthias Clasen  <mclasen@redhat.com>
 
+	* configure.in: Define G_GUINT64_CONSTANT in analogy to
+	G_GINT64_CONSTANT.  (#322568, Andrew Paprocki)
+
 	* glib/gslice.c: Win32 portability fixes and C99ism removal,
 	pointed out by Kazuki Iwamoto.  (#323052)
 	
