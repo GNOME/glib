@@ -1,3 +1,13 @@
+Fri Dec  2 10:55:07 2005  Tim Janik  <timj@imendio.com>
+
+	* tests/slice-test.c: extended to perform the benchmarking on the old
+	memchunk code if 'O' is selected.
+
+	* tests/memchunks.c: new file which contains the old GLib mem chunks
+	implementation with prefix old_mem_chunk_.
+
+	* tests/Makefile.am: added memchunks.c
+
 Fri Dec  2 00:16:59 2005  Tim Janik  <timj@imendio.com>
 
 	* glib/gslice.c: improved gettimeofday() timer resolution by maintaining
