@@ -418,7 +418,7 @@ g_atomic_int_exchange_and_add (volatile gint *atomic,
 }
  
 void
-g_atomic_int_add (gint *atomic, 
+g_atomic_int_add (volatile gint *atomic, 
 		  gint val)
 {
   __sync_fetch_and_add_si (atomic, val);
