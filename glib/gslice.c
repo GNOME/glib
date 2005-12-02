@@ -19,7 +19,6 @@
 /* MT safe */
 #define _XOPEN_SOURCE 600       /* posix_memalign() */
 #include <stdlib.h>             /* posix_memalign() */
-#include <unistd.h>             /* sysconf() */
 #include <assert.h>             /* assert() for nomessage phase */
 #include <string.h>
 #include <errno.h>
@@ -28,6 +27,12 @@
 #include "gthreadinit.h"
 #include "galias.h"
 #include "glib.h"
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>             /* sysconf() */
+#endif
+#ifdef G_OS_WIN32
+#include <windows.h>
+#endif
 
 /* the GSlice allocator is split up into 4 layers, roughly modelled after the slab
  * allocator and magazine extensions as outlined in:
@@ -246,10 +251,18 @@ g_slice_get_config_state (GSliceConfig ckey,
 static void
 g_slice_init_nomessage (void)
 {
+#ifdef G_OS_WIN32
+  SYSTEM_INFO system_info;
+#endif
   /* we may not use g_error() or friends here */
   assert (sys_page_size == 0);
 
+#ifdef G_OS_WIN32
+  GetSystemInfo (&system_info);
+  sys_page_size = system_info.dwPageSize;
+#else
   sys_page_size = sysconf (_SC_PAGESIZE); /* = sysconf (_SC_PAGE_SIZE); = getpagesize(); */
+#endif
   assert (sys_page_size >= 2 * LARGEALIGNMENT);
   allocator->config = slice_config;
   allocator->min_page_size = sys_page_size;
@@ -444,12 +457,16 @@ magazine_cache_update_stamp (void)
 static inline ChunkLink*
 magazine_chain_prepare_fields (ChunkLink *magazine_chunks)
 {
+  ChunkLink *chunk1;
+  ChunkLink *chunk2;
+  ChunkLink *chunk3;
+  ChunkLink *chunk4;
   g_assert (MIN_MAGAZINE_SIZE >= 4);
   /* ensure a magazine with at least 4 unused data pointers */
-  ChunkLink *chunk1 = magazine_chain_pop_head (&magazine_chunks);
-  ChunkLink *chunk2 = magazine_chain_pop_head (&magazine_chunks);
-  ChunkLink *chunk3 = magazine_chain_pop_head (&magazine_chunks);
-  ChunkLink *chunk4 = magazine_chain_pop_head (&magazine_chunks);
+  chunk1 = magazine_chain_pop_head (&magazine_chunks);
+  chunk2 = magazine_chain_pop_head (&magazine_chunks);
+  chunk3 = magazine_chain_pop_head (&magazine_chunks);
+  chunk4 = magazine_chain_pop_head (&magazine_chunks);
   chunk4->next = magazine_chunks;
   chunk3->next = chunk4;
   chunk2->next = chunk3;
@@ -815,16 +832,18 @@ allocator_add_slab (Allocator *allocator,
                     guint      ix,
                     gsize      chunk_size)
 {
+  ChunkLink *chunk;
   SlabInfo *sinfo;
-  gsize padding, n_chunks, color = 0;
+  gsize addr, padding, n_chunks, color = 0;
   gsize page_size = SLAB_PAGE_SIZE (allocator, chunk_size);
   /* allocate 1 page for the chunks and the slab */
   gpointer aligned_memory = allocator_memalign (page_size, page_size - NATIVE_MALLOC_PADDING);
   guint8 *mem = aligned_memory;
+  guint i;
   if (!mem)
     g_error ("%s: failed to allocate %lu bytes: %s", "GSlicedMemory", (gulong) (page_size - NATIVE_MALLOC_PADDING), g_strerror (errno));
   /* mask page adress */
-  gsize addr = ((gsize) mem / page_size) * page_size;
+  addr = ((gsize) mem / page_size) * page_size;
   /* assert alignment */
   g_assert (aligned_memory == (gpointer) addr);
   /* basic slab info setup */
@@ -840,8 +859,7 @@ allocator_add_slab (Allocator *allocator,
       allocator->color_accu += 1;       /* alternatively: + 0x7fffffff */
     }
   /* add chunks to free list */
-  ChunkLink *chunk = (ChunkLink*) (mem + color);
-  guint i;
+  chunk = (ChunkLink*) (mem + color);
   sinfo->chunks = chunk;
   for (i = 0; i < n_chunks - 1; i++)
     {
@@ -856,12 +874,13 @@ allocator_add_slab (Allocator *allocator,
 static gpointer
 slab_allocator_alloc_chunk (gsize chunk_size)
 {
+  ChunkLink *chunk;
   guint ix = SLAB_INDEX (allocator, chunk_size);
   /* ensure non-empty slab */
   if (!allocator->slab_stack[ix] || !allocator->slab_stack[ix]->chunks)
     allocator_add_slab (allocator, ix, chunk_size);
   /* allocate chunk */
-  ChunkLink *chunk = allocator->slab_stack[ix]->chunks;
+  chunk = allocator->slab_stack[ix]->chunks;
   allocator->slab_stack[ix]->chunks = chunk->next;
   allocator->slab_stack[ix]->n_allocated++;
   /* rotate empty slabs */
@@ -874,6 +893,8 @@ static void
 slab_allocator_free_chunk (gsize    chunk_size,
                            gpointer mem)
 {
+  ChunkLink *chunk;
+  gboolean was_empty;
   guint ix = SLAB_INDEX (allocator, chunk_size);
   gsize page_size = SLAB_PAGE_SIZE (allocator, chunk_size);
   gsize addr = ((gsize) mem / page_size) * page_size;
@@ -883,8 +904,8 @@ slab_allocator_free_chunk (gsize    chunk_size,
   /* assert valid chunk count */
   g_assert (sinfo->n_allocated > 0);
   /* add chunk to free list */
-  gboolean was_empty = sinfo->chunks == NULL;
-  ChunkLink *chunk = (ChunkLink*) mem;
+  was_empty = sinfo->chunks == NULL;
+  chunk = (ChunkLink*) mem;
   chunk->next = sinfo->chunks;
   sinfo->chunks = chunk;
   sinfo->n_allocated--;

@@ -1,5 +1,10 @@
 2005-12-02  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gslice.c: Win32 portability fixes and C99ism removal,
+	pointed out by Kazuki Iwamoto.  (#323052)
+	
+2005-12-02  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/gatomic.c (g_atomic_int_add): Add a missing volatile for
 	the IA64 implementation.
 
