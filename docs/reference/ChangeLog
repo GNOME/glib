@@ -1,5 +1,9 @@
 2005-12-02  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/building.sgml: 
+	* glib/tmpl/threads.sgml: 
+	* glib/glib-sections.txt: Remove G_THREADS_IMPL_SOLARIS
+
 	* glib/tmpl/types.sgml: Document G_GUINT64_CONSTANT.
 
 2005-11-27  Matthias Clasen  <mclasen@redhat.com>

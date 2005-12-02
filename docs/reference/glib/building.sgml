@@ -175,7 +175,7 @@ How to compile GLib itself
             <arg>--enable-threads</arg>
           </group>
           <group>
-            <arg>--with-threads=[none|posix|dce|solaris|win32]</arg>
+            <arg>--with-threads=[none|posix|dce|win32]</arg>
           </group>
 	  <group>
              <arg>--disable-included-printf</arg>
@@ -301,10 +301,6 @@ How to compile GLib itself
                 to mean the different versions of Posix
                 threads. configure tries to find out, which
                 one is installed.
-              </para></listitem>
-
-              <listitem><para>
-                'solaris' uses the native Solaris thread implementation.
               </para></listitem>
 
               <listitem><para>

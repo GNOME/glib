@@ -83,14 +83,6 @@ This macro is defined, if POSIX style threads are used.
 
 
 
-<!-- ##### MACRO G_THREADS_IMPL_SOLARIS ##### -->
-
-<para>
-This macro is defined, if the Solaris thread system is used.
-</para>
-
-
-
 <!-- ##### MACRO G_THREADS_IMPL_NONE ##### -->
 
 <para>

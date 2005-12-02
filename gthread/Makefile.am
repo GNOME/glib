@@ -7,7 +7,6 @@ INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/glib -I$(top_srcdir)/gthread \
 EXTRA_DIST =				\
 		makefile.msc.in		\
 		gthread-posix.c		\
-		gthread-solaris.c	\
 		gthread-win32.c		\
 		gthread-none.c		\
 		gthread.def		\

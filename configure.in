@@ -1366,7 +1366,7 @@ dnl *** g_thread checks ***
 dnl ***********************
 
 AC_ARG_WITH(threads,
-           [AC_HELP_STRING([--with-threads=@<:@none/posix/dce/solaris/win32@:>@],
+           [AC_HELP_STRING([--with-threads=@<:@none/posix/dce/win32@:>@],
                            [specify a thread implementation to use])],
            [if test "x$with_threads" = x; then
 		want_threads=yes
@@ -1428,13 +1428,6 @@ dnl ***************************************
 # have_threads=none means no default thread implementation
 
 have_threads=no
-if test "x$want_threads" = xyes || test "x$want_threads" = xsolaris; then
-       	case $host in
-               	*-*-solaris*)
-              	AC_CHECK_LIB(thread, cond_init, have_threads=solaris)
-		;;
-	esac
-fi
 if test "x$want_threads" = xyes || test "x$want_threads" = xposix \
 				|| test "x$want_threads" = xdce; then
 	# -D_POSIX4_DRAFT_SOURCE -D_POSIX4A_DRAFT10_SOURCE is for DG/UX
@@ -1580,16 +1573,6 @@ if test x"$have_threads" != xno; then
 		G_THREAD_CFLAGS="-threads"
 		G_THREAD_LIBS=$G_THREAD_CFLAGS
 		;;
-	*-solaris*)
-		if test x"$GCC" = xyes; then
-		   # We are using solaris threads. posix threads are 
-		   # already catched above.
-			G_THREAD_CFLAGS="-threads"
-		else
-			G_THREAD_CFLAGS="-mt"
-		fi
-		G_THREAD_LIBS=$G_THREAD_CFLAGS
-		;;
 	*-sysv5uw7*) # UnixWare 7 
 		# We are not using gcc with -pthread. Catched above.
 		G_THREAD_CFLAGS="-Kthread"
@@ -1727,13 +1710,6 @@ case $have_threads in
 	  AC_SUBST(GTHREAD_COMPILE_IMPL_DEFINES)
           CPPFLAGS="$glib_save_CPPFLAGS"
           ;;
-        solaris)
-           mutex_has_default=yes
-           mutex_default_type='mutex_t'
-	   mutex_default_init="DEFAULTMUTEX"
-           mutex_header_file='thread.h'
-	   g_threads_impl="SOLARIS"
-           ;;
 	win32)
 	   g_threads_impl="WIN32"
 	   ;;
@@ -1884,8 +1860,6 @@ int main () {
 	elif test x"$have_threads" = xwin32; then
 		# It's a pointer to a private struct
 		GLIB_SIZEOF(,struct _GThreadData *, system_thread)
-	elif test x"$have_threads" = xsolaris; then 
-		GLIB_SIZEOF([#include <thread.h>], thread_t, system_thread)
 	fi
 
 	LIBS="$glib_save_LIBS"
