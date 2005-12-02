@@ -23,7 +23,109 @@
 #include <sys/time.h> // gettimeofday
 
 #define quick_rand32()  (rand_accu = 1664525 * rand_accu + 1013904223, rand_accu)
-static guint prime_size = 1021; // 769; // 509
+static guint    prime_size = 1021; // 769; // 509
+static gboolean clean_memchunks = FALSE;
+static guint    number_of_blocks = 10000;          /* total number of blocks allocated */
+static guint    number_of_repetitions = 10000;     /* number of alloc+free repetitions */
+
+/* --- old memchunk prototypes (memchunks.c) --- */
+void            old_mem_chunks_init     (void);
+GMemChunk*      old_mem_chunk_new       (const gchar  *name,
+                                         gint          atom_size,
+                                         gulong        area_size,
+                                         gint          type);
+void            old_mem_chunk_destroy   (GMemChunk *mem_chunk);
+gpointer        old_mem_chunk_alloc     (GMemChunk *mem_chunk);
+gpointer        old_mem_chunk_alloc0    (GMemChunk *mem_chunk);
+void            old_mem_chunk_free      (GMemChunk *mem_chunk,
+                                         gpointer   mem);
+void            old_mem_chunk_clean     (GMemChunk *mem_chunk);
+void            old_mem_chunk_reset     (GMemChunk *mem_chunk);
+void            old_mem_chunk_print     (GMemChunk *mem_chunk);
+void            old_mem_chunk_info      (void);
+#ifndef G_ALLOC_AND_FREE
+#define G_ALLOC_AND_FREE  2
+#endif
+
+/* --- functions --- */
+static inline gpointer
+memchunk_alloc (GMemChunk **memchunkp,
+                guint       size)
+{
+  size = MAX (size, 1);
+  if (G_UNLIKELY (!*memchunkp))
+    *memchunkp = old_mem_chunk_new ("", size, 4096, G_ALLOC_AND_FREE);
+  return old_mem_chunk_alloc (*memchunkp);
+}
+
+static inline void
+memchunk_free (GMemChunk *memchunk,
+               gpointer   chunk)
+{
+  old_mem_chunk_free (memchunk, chunk);
+  if (clean_memchunks)
+    old_mem_chunk_clean (memchunk);
+}
+
+static gpointer
+test_memchunk_thread (gpointer data)
+{
+  guint32 rand_accu = 2147483563;
+  /* initialize random numbers */
+  if (data)
+    rand_accu = *(guint32*) data;
+  else
+    {
+      struct timeval rand_tv;
+      gettimeofday (&rand_tv, NULL);
+      rand_accu = rand_tv.tv_usec + (rand_tv.tv_sec << 16);
+    }
+
+  /* prepare for memchunk creation */
+  GMemChunk **memchunks = g_alloca (sizeof (memchunks[0]) * prime_size);
+  memset (memchunks, 0, sizeof (memchunks[0]) * prime_size);
+
+  guint i, j;
+  guint8 **ps = g_new (guint8*, number_of_blocks);
+  guint   *ss = g_new (guint, number_of_blocks);
+  /* create number_of_blocks random sizes */
+  for (i = 0; i < number_of_blocks; i++)
+    ss[i] = quick_rand32() % prime_size;
+  /* allocate number_of_blocks blocks */
+  for (i = 0; i < number_of_blocks; i++)
+    ps[i] = memchunk_alloc (&memchunks[ss[i]], ss[i]);
+  for (j = 0; j < number_of_repetitions; j++)
+    {
+      /* free number_of_blocks/2 blocks */
+      for (i = 0; i < number_of_blocks; i += 2)
+        memchunk_free (memchunks[ss[i]], ps[i]);
+      /* allocate number_of_blocks/2 blocks with new sizes */
+      for (i = 0; i < number_of_blocks; i += 2)
+        {
+          ss[i] = quick_rand32() % prime_size;
+          ps[i] = memchunk_alloc (&memchunks[ss[i]], ss[i]);
+        }
+    }
+  /* free number_of_blocks blocks */
+  for (i = 0; i < number_of_blocks; i++)
+    memchunk_free (memchunks[ss[i]], ps[i]);
+  /* alloc and free many equally sized chunks in a row */
+  for (i = 0; i < number_of_repetitions; i++)
+    {
+      guint sz = quick_rand32() % prime_size;
+      guint k = number_of_blocks / 100;
+      for (j = 0; j < k; j++)
+        ps[j] = memchunk_alloc (&memchunks[sz], sz);
+      for (j = 0; j < k; j++)
+        memchunk_free (memchunks[sz], ps[j]);
+    }
+  /* cleanout memchunks */
+  for (i = 0; i < prime_size; i++)
+    if (memchunks[i])
+      old_mem_chunk_destroy (memchunks[i]);
+
+  return NULL;
+}
 
 static gpointer
 test_sliced_mem_thread (gpointer data)
@@ -39,36 +141,35 @@ test_sliced_mem_thread (gpointer data)
       rand_accu = rand_tv.tv_usec + (rand_tv.tv_sec << 16);
     }
 
-  guint i, m = 10000;   /* number of blocks */
-  guint j, n = 10000;   /* number of alloc+free repetitions */
-  guint8 **ps = g_new (guint8*, m);
-  guint   *ss = g_new (guint, m);
-  /* create m random sizes */
-  for (i = 0; i < m; i++)
+  guint i, j;
+  guint8 **ps = g_new (guint8*, number_of_blocks);
+  guint   *ss = g_new (guint, number_of_blocks);
+  /* create number_of_blocks random sizes */
+  for (i = 0; i < number_of_blocks; i++)
     ss[i] = quick_rand32() % prime_size;
-  /* allocate m blocks */
-  for (i = 0; i < m; i++)
+  /* allocate number_of_blocks blocks */
+  for (i = 0; i < number_of_blocks; i++)
     ps[i] = g_slice_alloc (ss[i]);
-  for (j = 0; j < n; j++)
+  for (j = 0; j < number_of_repetitions; j++)
     {
-      /* free m/2 blocks */
-      for (i = 0; i < m; i += 2)
+      /* free number_of_blocks/2 blocks */
+      for (i = 0; i < number_of_blocks; i += 2)
         g_slice_free1 (ss[i], ps[i]);
-      /* allocate m/2 blocks with new sizes */
-      for (i = 0; i < m; i += 2)
+      /* allocate number_of_blocks/2 blocks with new sizes */
+      for (i = 0; i < number_of_blocks; i += 2)
         {
           ss[i] = quick_rand32() % prime_size;
           ps[i] = g_slice_alloc (ss[i]);
         }
     }
-  /* free m blocks */
-  for (i = 0; i < m; i++)
+  /* free number_of_blocks blocks */
+  for (i = 0; i < number_of_blocks; i++)
     g_slice_free1 (ss[i], ps[i]);
   /* alloc and free many equally sized chunks in a row */
-  for (i = 0; i < n; i++)
+  for (i = 0; i < number_of_repetitions; i++)
     {
       guint sz = quick_rand32() % prime_size;
-      guint k = m / 100;
+      guint k = number_of_blocks / 100;
       for (j = 0; j < k; j++)
         ps[j] = g_slice_alloc (sz);
       for (j = 0; j < k; j++)
@@ -81,7 +182,7 @@ test_sliced_mem_thread (gpointer data)
 static void
 usage (void)
 {
-  g_print ("Usage: gslicedmemory [n_threads] [G|S|M][f][c] [maxblocksize] [seed]\n");
+  g_print ("Usage: gslicedmemory [n_threads] [G|S|M|O][f][c] [maxblocksize] [seed]\n");
 }
 
 int
@@ -89,7 +190,7 @@ main (int   argc,
       char *argv[])
 {
   guint seed32, *seedp = NULL;
-  gboolean ccounters = FALSE;
+  gboolean ccounters = FALSE, use_memchunks = FALSE;
   guint n_threads = 1;
   const gchar *mode = "slab allocator + magazine cache", *emode = " ";
   if (argc > 1)
@@ -114,8 +215,13 @@ main (int   argc,
             g_slice_set_config (G_SLICE_CONFIG_ALWAYS_MALLOC, TRUE);
             mode = "system malloc";
             break;
+          case 'O': /* old memchunks */
+            use_memchunks = TRUE;
+            mode = "old memchunks";
+            break;
           case 'f': /* eager freeing */
             g_slice_set_config (G_SLICE_CONFIG_ALWAYS_FREE, TRUE);
+            clean_memchunks = TRUE;
             emode = " with eager freeing";
             break;
           case 'c': /* print contention counters */
@@ -146,8 +252,15 @@ main (int   argc,
   
   GThread *threads[n_threads];
   guint i;
-  for (i = 0; i < n_threads; i++)
-    threads[i] = g_thread_create_full (test_sliced_mem_thread, seedp, 0, TRUE, FALSE, 0, NULL);
+  if (!use_memchunks)
+    for (i = 0; i < n_threads; i++)
+      threads[i] = g_thread_create_full (test_sliced_mem_thread, seedp, 0, TRUE, FALSE, 0, NULL);
+  else
+    {
+      old_mem_chunks_init();
+      for (i = 0; i < n_threads; i++)
+        threads[i] = g_thread_create_full (test_memchunk_thread, seedp, 0, TRUE, FALSE, 0, NULL);
+    }
   for (i = 0; i < n_threads; i++)
     g_thread_join (threads[i]);
   
