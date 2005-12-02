@@ -460,6 +460,7 @@ magazine_chain_prepare_fields (ChunkLink *magazine_chunks)
 /* access the first 3 fields of a specially prepared magazine chain */
 #define magazine_chain_prev(mc)         ((mc)->data)
 #define magazine_chain_stamp(mc)        ((mc)->next->data)
+#define magazine_chain_uint_stamp(mc)   GPOINTER_TO_UINT ((mc)->next->data)
 #define magazine_chain_next(mc)         ((mc)->next->next->data)
 #define magazine_chain_count(mc)        ((mc)->next->next->next->data)
 
@@ -473,7 +474,7 @@ magazine_cache_trim (Allocator *allocator,
   ChunkLink *current = magazine_chain_prev (allocator->magazines[ix]);
   ChunkLink *trash = NULL;
   while (allocator->config.always_free ||
-         ABS (stamp - (guint) magazine_chain_stamp (current)) > allocator->config.working_set_msecs)
+         ABS (stamp - magazine_chain_uint_stamp (current)) > allocator->config.working_set_msecs)
     {
       /* unlink */
       ChunkLink *prev = magazine_chain_prev (current);
@@ -536,7 +537,7 @@ magazine_cache_push_magazine (guint      ix,
   magazine_chain_count (current) = (gpointer) count;
   /* stamp magazine */
   magazine_cache_update_stamp();
-  magazine_chain_stamp (current) = (gpointer) allocator->last_stamp;
+  magazine_chain_stamp (current) = GUINT_TO_POINTER (allocator->last_stamp);
   allocator->magazines[ix] = current;
   /* free old magazines beyond a certain threshold */
   magazine_cache_trim (allocator, ix, allocator->last_stamp);
