@@ -104,7 +104,9 @@ g_cache_insert
 g_cache_key_foreach
 g_cache_new
 g_cache_remove
+#ifndef G_DISABLE_DEPRECATED
 g_cache_value_foreach
+#endif
 #endif
 #endif
 

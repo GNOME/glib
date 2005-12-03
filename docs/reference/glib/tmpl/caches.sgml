@@ -104,6 +104,11 @@ Note that it does not destroy the keys and values which were contained in the
 <para>
 Calls the given function for each of the keys in the #GCache.
 </para>
+<note><para>@func is passed three parameters, the value and key of a
+cache entry and the @user_data. The order of value and key is different
+from the order in which g_hash_table_foreach() passes key-value pairs
+to its callback function !
+</para></note>
 
 @cache: a #GCache.
 @func: the function to call with each #GCache key.
@@ -118,6 +123,8 @@ Calls the given function for each of the values in the #GCache.
 @cache: a #GCache.
 @func: the function to call with each #GCache value.
 @user_data: user data to pass to the function.
+@Deprecated: Since it passes pointers to internal data structures
+to @func; use g_cache_key_foreach() instead
 
 
 <!-- ##### USER_FUNCTION GCacheDestroyFunc ##### -->

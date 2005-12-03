@@ -1,5 +1,9 @@
 2005-12-03  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/glib.symbols: 
+	* glib/gcache.h: Deprecate g_cache_value_foreach. (#322956,
+	Nicolas Caniart)
+
 	* glib/gmappedfile.c: Make mapping of empty files
 	work.  (#321530)
 	

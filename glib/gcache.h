@@ -54,9 +54,11 @@ void     g_cache_remove        (GCache            *cache,
 void     g_cache_key_foreach   (GCache            *cache,
                                 GHFunc             func,
                                 gpointer           user_data);
+#ifndef G_DISABLE_DEPRECATED
 void     g_cache_value_foreach (GCache            *cache,
                                 GHFunc             func,
                                 gpointer           user_data);
+#endif
 
 G_END_DECLS
 

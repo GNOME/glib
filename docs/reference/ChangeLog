@@ -1,5 +1,8 @@
 2005-12-03  Matthias Clasen  <mclasen@redhat.com>
-	
+
+	* glib/tmpl/caches.sgml: Document g_cache_value_foreach
+	as deprecated; document g_cache_key_foreach more thorougly
+
 	* glib/glib-sections.txt:
 	* glib/tmpl/linked_lists_single.sgml: Add g_slist_free1.
 
