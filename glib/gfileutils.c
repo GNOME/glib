@@ -33,9 +33,6 @@
 #include <errno.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#ifndef G_OS_WIN32
-#include <sys/wait.h>
-#endif
 #include <fcntl.h>
 #include <stdlib.h>
 
@@ -56,6 +53,9 @@
 #include "glibintl.h"
 
 #include "galias.h"
+
+static gint create_temp_file (gchar *tmpl, 
+			      int    permissions);
 
 /**
  * g_mkdir_with_parents:
@@ -920,114 +920,6 @@ rename_file (const char *old_name,
   return TRUE;
 }
 
-static gboolean
-set_umask_permissions (int	     fd,
-		       GError      **err)
-{
-#ifdef G_OS_WIN32
-
-  return TRUE;
-
-#else
-  /* All of this function is just to work around the fact that
-   * there is no way to get the umask without changing it.
-   *
-   * We can't just change-and-reset the umask because that would
-   * lead to a race condition if another thread tried to change
-   * the umask in between the getting and the setting of the umask.
-   * So we have to do the whole thing in a child process.
-   */
-
-  int save_errno;
-  pid_t pid;
-
-  pid = fork ();
-  
-  if (pid == -1)
-    {
-      save_errno = errno;
-      g_set_error (err,
-		   G_FILE_ERROR,
-		   g_file_error_from_errno (save_errno),
-		   _("Could not change file mode: fork() failed: %s"),
-		   g_strerror (save_errno));
-      
-      return FALSE;
-    }
-  else if (pid == 0)
-    {
-      /* child */
-      mode_t mask = umask (0666);
-
-      errno = 0;
-      if (fchmod (fd, 0666 & ~mask) == -1)
-	_exit (errno);
-      else
-	_exit (0);
-
-      return TRUE; /* To quiet gcc */
-    }
-  else
-    { 
-      /* parent */
-      int status;
-
-      errno = 0;
-      if (waitpid (pid, &status, 0) == -1)
-	{
-	  save_errno = errno;
-
-	  g_set_error (err,
-		       G_FILE_ERROR,
-		       g_file_error_from_errno (save_errno),
-		       _("Could not change file mode: waitpid() failed: %s"),
-		       g_strerror (save_errno));
-
-	  return FALSE;
-	}
-
-      if (WIFEXITED (status))
-	{
-	  save_errno = WEXITSTATUS (status);
-
-	  if (save_errno == 0)
-	    {
-	      return TRUE;
-	    }
-	  else
-	    {
-	      g_set_error (err,
-			   G_FILE_ERROR,
-			   g_file_error_from_errno (save_errno),
-			   _("Could not change file mode: chmod() failed: %s"),
-			   g_strerror (save_errno));
-      
-	      return FALSE;
-	    }
-	}
-      else if (WIFSIGNALED (status))
-	{
-	  g_set_error (err,
-		       G_FILE_ERROR,
-		       G_FILE_ERROR_FAILED,
-		       _("Could not change file mode: Child terminated by signal: %s"),
-		       g_strsignal (WTERMSIG (status)));
-		       
-	  return FALSE;
-	}
-      else
-	{
-	  /* This shouldn't happen */
-	  g_set_error (err,
-		       G_FILE_ERROR,
-		       G_FILE_ERROR_FAILED,
-		       _("Could not change file mode: Child terminated abnormally"));
-	  return FALSE;
-	}
-    }
-#endif
-}
-
 static gchar *
 write_to_temp_file (const gchar *contents,
 		    gssize length,
@@ -1046,7 +938,7 @@ write_to_temp_file (const gchar *contents,
   tmp_name = g_strdup_printf ("%s.XXXXXX", template);
 
   errno = 0;
-  fd = g_mkstemp (tmp_name);
+  fd = create_temp_file (tmp_name, 0666);
   display_name = g_filename_display_name (tmp_name);
       
   if (fd == -1)
@@ -1061,14 +953,6 @@ write_to_temp_file (const gchar *contents,
       goto out;
     }
 
-  if (!set_umask_permissions (fd, err))
-    {
-      close (fd);
-      g_unlink (tmp_name);
-
-      goto out;
-    }
-  
   errno = 0;
   file = fdopen (fd, "wb");
   if (!file)
@@ -1267,35 +1151,13 @@ g_file_set_contents (const gchar *filename,
 }
 
 /*
- * mkstemp() implementation is from the GNU C library.
+ * create_temp_file based on the mkstemp implementation from the GNU C library.
  * Copyright (C) 1991,92,93,94,95,96,97,98,99 Free Software Foundation, Inc.
  */
-/**
- * g_mkstemp:
- * @tmpl: template filename
- *
- * Opens a temporary file. See the mkstemp() documentation
- * on most UNIX-like systems. This is a portability wrapper, which simply calls 
- * mkstemp() on systems that have it, and implements 
- * it in GLib otherwise.
- *
- * The parameter is a string that should match the rules for
- * mkstemp(), i.e. end in "XXXXXX". The X string will 
- * be modified to form the name of a file that didn't exist.
- * The string should be in the GLib file name encoding. Most importantly, 
- * on Windows it should be in UTF-8.
- *
- * Return value: A file handle (as from open()) to the file
- * opened for reading and writing. The file is opened in binary mode
- * on platforms where there is a difference. The file handle should be
- * closed with close(). In case of errors, -1 is returned.
- */
-gint
-g_mkstemp (gchar *tmpl)
+static gint
+create_temp_file (gchar *tmpl, 
+		  int    permissions)
 {
-#ifdef HAVE_MKSTEMP
-  return mkstemp (tmpl);
-#else
   int len;
   char *XXXXXX;
   int count, fd;
@@ -1338,7 +1200,7 @@ g_mkstemp (gchar *tmpl)
       XXXXXX[5] = letters[v % NLETTERS];
 
       /* tmpl is in UTF-8 on Windows, thus use g_open() */
-      fd = g_open (tmpl, O_RDWR | O_CREAT | O_EXCL | O_BINARY, 0600);
+      fd = g_open (tmpl, O_RDWR | O_CREAT | O_EXCL | O_BINARY, permissions);
 
       if (fd >= 0)
 	return fd;
@@ -1352,6 +1214,35 @@ g_mkstemp (gchar *tmpl)
   /* We got out of the loop because we ran out of combinations to try.  */
   errno = EEXIST;
   return -1;
+}
+
+/**
+ * g_mkstemp:
+ * @tmpl: template filename
+ *
+ * Opens a temporary file. See the mkstemp() documentation
+ * on most UNIX-like systems. This is a portability wrapper, which simply calls 
+ * mkstemp() on systems that have it, and implements 
+ * it in GLib otherwise.
+ *
+ * The parameter is a string that should match the rules for
+ * mkstemp(), i.e. end in "XXXXXX". The X string will 
+ * be modified to form the name of a file that didn't exist.
+ * The string should be in the GLib file name encoding. Most importantly, 
+ * on Windows it should be in UTF-8.
+ *
+ * Return value: A file handle (as from open()) to the file
+ * opened for reading and writing. The file is opened in binary mode
+ * on platforms where there is a difference. The file handle should be
+ * closed with close(). In case of errors, -1 is returned.
+ */
+gint
+g_mkstemp (gchar *tmpl)
+{
+#ifdef HAVE_MKSTEMP
+  return mkstemp (tmpl);
+#else
+  return create_temp_file (tmpl, 0600);
 #endif
 }
 

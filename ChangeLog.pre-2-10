@@ -1,3 +1,9 @@
+2005-12-03  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gfileutils.c: Don't fork a new process just to 
+	fix the permissions of the created temp file.  (#321318,
+	Alexis S. L. Carvalho)
+
 2005-12-02  Matthias Clasen  <mclasen@redhat.com>
 
 	* README.in: Add a note about Solaris threads.
