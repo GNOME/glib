@@ -1567,6 +1567,26 @@ g_mem_chunk_print
 </SECTION>
 
 <SECTION>
+<TITLE>Memory Slices</TITLE>
+<FILE>memory_slices</FILE>
+g_slice_alloc
+g_slice_alloc0
+g_slice_free1
+g_slice_free_chain
+
+<SUBSECTION>
+g_slice_new
+g_slice_new0
+g_slice_free
+
+<SUBSECTION Private>
+GSliceConfig
+g_slice_set_config
+g_slice_get_config
+g_slice_get_config_state
+</SECTION>
+
+<SECTION>
 <TITLE>Doubly-Linked Lists</TITLE>
 <FILE>linked_lists_double</FILE>
 GList

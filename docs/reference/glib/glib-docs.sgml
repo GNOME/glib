@@ -32,6 +32,7 @@
 <!ENTITY glib-Automatic-String-Completion SYSTEM "xml/completion.xml">
 <!ENTITY glib-Windows-Compatability-Functions SYSTEM "xml/windows.xml">
 <!ENTITY glib-Memory-Chunks SYSTEM "xml/memory_chunks.xml">
+<!ENTITY glib-Memory-Slices SYSTEM "xml/memory_slices.xml">
 <!ENTITY glib-Doubly-Linked-Lists SYSTEM "xml/linked_lists_double.xml">
 <!ENTITY glib-Singly-Linked-Lists SYSTEM "xml/linked_lists_single.xml">
 <!ENTITY glib-Double-ended-Queues SYSTEM "xml/queue.xml">
@@ -153,6 +154,7 @@ synchronize their operation.
 
   <chapter id="glib-data-types">
     <title>GLib Data Types</title>
+    &glib-Memory-Slices;
     &glib-Memory-Chunks;
     &glib-Doubly-Linked-Lists;
     &glib-Singly-Linked-Lists;

@@ -1,3 +1,13 @@
+2005-12-03  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/tmpl/memory_chunks.sgml: Document GMemChunk
+	as deprecated.
+
+	* glib/glib-docs.sgml: 
+	* glib/glib-sections.txt: 
+	* glib/tmpl/memory_slices.sgml: Document the slice
+	allocator.
+
 2005-12-02  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/building.sgml: 

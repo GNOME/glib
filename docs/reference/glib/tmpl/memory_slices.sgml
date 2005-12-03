@@ -1,0 +1,179 @@
+<!-- ##### SECTION Title ##### -->
+Memory Slices
+
+<!-- ##### SECTION Short_Description ##### -->
+efficient way to allocate groups of equal-sized chunks of memory.
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+Memory slices provide a space-efficient way to allocate equal-sized
+pieces of memory, just like #GMemChunks, while avoiding their scalability
+and performance problems. 
+</para>
+
+<para>
+To achieve these goals, the slice allocator uses a sophisticated, 
+layered design that has been inspired by Bonwick's slab allocator
+<footnote><para><ulink url="http://citeseer.ist.psu.edu/bonwick94slab.html">[Bonwick94]</ulink> Jeff Bonwick, The slab allocator: An object-caching kernel
+memory allocator. USENIX 1994, and  
+ <ulink url="http://citeseer.ist.psu.edu/bonwick01magazines.html">[Bonwick01]</ulink> Bonwick and Jonathan Adams, Magazines and vmem: Extending the
+slab allocator to many cpu's and arbitrary resources. USENIX 2001</para></footnote>.
+It uses posix_memalign() to optimize allocations of many equally 
+sized chunks, and has per-thread free lists (the so-called magazine layer) 
+to quickly satisfy allocation requests of already known structure sizes. 
+This is accompanied by extra caching logic to keep freed memory around 
+for some time before returning it to the system. Memory that is unused 
+due to alignment constraints is used for cache colorization (random 
+distribution of chunk addresses) to improve CPU cache utilization. The 
+caching layer of the slice allocator adapts itself to high lock contention 
+to improve scalability.
+</para>
+
+<para>
+The slice allocator can allocate blocks as small as two pointers, and
+unlike malloc(), it does not reserve extra space per block. For large block 
+sizes, g_slice_new() and g_slice_alloc() will automatically delegate to the
+system malloc() implementation. For newly written code it is recommended
+to use the new <literal>g_slice</literal> API instead of g_malloc() and 
+friends, as long as objects are not resized during their lifetime and the 
+object size used at allocation time is still available when freeing.
+</para>
+
+<example>
+<title>Using the slice allocator</title>
+<programlisting>
+  gchar *mem[10000];
+  gint i;
+
+  /* Allocate 10000 blocks. */
+  for (i = 0; i &lt; 10000; i++)
+    {
+      mem[i] = g_slice_alloc (50);
+
+      /* Fill in the memory with some junk. */
+      for (j = 0; j &lt; 50; j++)
+	mem[i][j] = i * j;
+    }
+
+  /* Now free all of the blocks. */
+  for (i = 0; i &lt; 10000; i++)
+    {
+      g_slice_free1 (50, mem[i]);
+    }
+</programlisting></example>
+
+<example>
+<title>Using the slice allocator with data structures</title>
+<programlisting>
+  GRealArray *array;
+
+  /* Allocate one block, using the g_slice_new(<!-- -->) macro. */
+  array = g_slice_new (GRealArray);
+
+  /* We can now use array just like a normal pointer to a structure. */
+  array->data            = NULL;
+  array->len             = 0;
+  array->alloc           = 0;
+  array->zero_terminated = (zero_terminated ? 1 : 0);
+  array->clear           = (clear ? 1 : 0);
+  array->elt_size        = elt_size;
+
+  /* We can free the block, so it can be reused. */
+  g_slice_free (GRealArray, array);
+</programlisting></example>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+</para>
+
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### FUNCTION g_slice_alloc ##### -->
+<para>
+Allocates a block of memory from the slice allocator.
+</para>
+
+@block_size: the number of bytes to allocate
+@Returns: a pointer to the allocated 
+@Since: 2.10
+
+
+<!-- ##### FUNCTION g_slice_alloc0 ##### -->
+<para>
+Allocates a block of memory from the slice allocator, setting the
+memory to 0.
+</para>
+
+@block_size: the number of bytes to allocate
+@Returns: a pointer to the allocated block
+@Since: 2.10
+
+
+<!-- ##### FUNCTION g_slice_free1 ##### -->
+<para>
+Frees a block of memory. The memory must have been allocated from
+the slice allocator.
+</para>
+
+@block_size: the size of the block
+@mem_block: a pointer to the block to free
+@Since: 2.10
+
+<!-- ##### FUNCTION g_slice_free_chain ##### -->
+<para>
+Frees a linked list of memory block. The memory blocks must be equal-sized, 
+allocated from the slice allocator and linked together by a 
+<literal>next</literal> pointer stored in the @next_offset's word of 
+each block. 
+</para>
+<para>
+Currently, this function only supports blocks which store their 
+<literal>next</literal> pointer in the same position as #GSList. 
+Therefore, @next_offset must be 1.
+</para>
+
+@block_size: the size of the blocks
+@mem_chain: a pointer to the first block
+@next_offset: the offset of the <literal>next</literal> pointer
+@Since: 2.10
+
+
+<!-- ##### MACRO g_slice_new ##### -->
+<para>
+A convenience macro to allocate a block of memory from the slice allocator.
+It calls g_slice_alloc() and casts the returned pointer to a pointer to
+the given type, avoiding a type cast in the source code.
+</para>
+
+@type: the type to allocate, typically a structure name
+@Returns: a pointer to the allocated block, cast to a pointer to @type.
+@Since: 2.10
+
+
+<!-- ##### MACRO g_slice_new0 ##### -->
+<para>
+A convenience macro to allocate a block of memory from the slice allocator
+and set the memory to 0. It calls g_slice_alloc0() and casts the returned 
+pointer to a pointer to the given type, avoiding a type cast in the source 
+code.
+</para>
+
+@type: the type to allocate, typically a structure name
+@Returns: a pointer to the allocated block, cast to a pointer to @type.
+@Since: 2.10
+
+
+<!-- ##### MACRO g_slice_free ##### -->
+<para>
+A convenience macro to free a block of memory that has been allocated
+from the slice allocator. It calls g_slice_free1() using 
+<literal>sizeof (type)</literal> as the block size.
+</para>
+
+@type: the type of the block to free, typically a structure name
+@mem_block: a pointer to the block to free
+@Since: 2.10
+
