@@ -1,5 +1,8 @@
 2005-12-03  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gmappedfile.c: Make mapping of empty files
+	work.  (#321530)
+	
 	* glib/gfileutils.c: Don't fork a new process just to 
 	fix the permissions of the created temp file.  (#321318,
 	Alexis S. L. Carvalho)
