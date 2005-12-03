@@ -1657,6 +1657,7 @@ g_slist_delete_link
 g_slist_remove_all
 g_slist_free
 g_slist_free_1
+g_slist_free1
 
 <SUBSECTION>
 g_slist_length
