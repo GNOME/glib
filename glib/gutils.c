@@ -1555,7 +1555,8 @@ g_get_any_init_do (void)
     struct passwd *pw = NULL;
     gpointer buffer = NULL;
     gint error;
-    
+    gchar *logname;
+
 #  if defined (HAVE_POSIX_GETPWUID_R) || defined (HAVE_NONPOSIX_GETPWUID_R)
     struct passwd pwd;
 #    ifdef _SC_GETPW_R_SIZE_MAX  
@@ -1567,7 +1568,9 @@ g_get_any_init_do (void)
 #    else /* _SC_GETPW_R_SIZE_MAX */
     glong bufsize = 64;
 #    endif /* _SC_GETPW_R_SIZE_MAX */
-    
+
+    logname = (gchar *) g_getenv ("LOGNAME");
+        
     do
       {
 	g_free (buffer);
@@ -1578,7 +1581,15 @@ g_get_any_init_do (void)
 	errno = 0;
 	
 #    ifdef HAVE_POSIX_GETPWUID_R
-	error = getpwuid_r (getuid (), &pwd, buffer, bufsize, &pw);
+	if (logname) {
+	  error = getpwnam_r (logname, &pwd, buffer, bufsize, &pw);
+	  if (!pw || (pw->pw_uid != getuid ())) {
+	    /* LOGNAME is lying, fall back to looking up the uid */
+	    error = getpwuid_r (getuid (), &pwd, buffer, bufsize, &pw);
+	  }
+	} else {
+	  error = getpwuid_r (getuid (), &pwd, buffer, bufsize, &pw);
+	}
 	error = error < 0 ? errno : error;
 #    else /* HAVE_NONPOSIX_GETPWUID_R */
    /* HPUX 11 falls into the HAVE_POSIX_GETPWUID_R case */
@@ -1586,7 +1597,15 @@ g_get_any_init_do (void)
 	error = getpwuid_r (getuid (), &pwd, buffer, bufsize);
 	pw = error == 0 ? &pwd : NULL;
 #      else /* !_AIX */
-	pw = getpwuid_r (getuid (), &pwd, buffer, bufsize);
+	if (logname) {
+	  pw = getpwnam_r (logname, &pwd, buffer, bufsize);
+	  if (!pw || (pw->pw_uid != getuid ())) {
+	    /* LOGNAME is lying, fall back to looking up the uid */
+	    pw = getpwuid_r (getuid (), &pwd, buffer, bufsize);
+	  }
+	} else {
+	  pw = getpwuid_r (getuid (), &pwd, buffer, bufsize);
+	}
 	error = pw ? 0 : errno;
 #      endif /* !_AIX */            
 #    endif /* HAVE_NONPOSIX_GETPWUID_R */

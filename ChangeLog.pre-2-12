@@ -1,5 +1,15 @@
 2005-12-04  Matthias Clasen  <mclasen@redhat.com>
 
+	Handle multiple user names with the same UID better.
+	(#319535, Laszlo Peter)
+	
+	* glib/gutils.c (g_get_any_init_do): When determining user
+	data, first look up $LOGNAME. If the UID doesn't match
+	getuid(), fall back to the current behaviour of looking
+	up the user data based on getuid().
+
+2005-12-04  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/gmacros.h (G_GNUC_WARN_UNUSED_RESULT): Add a macro
 	to make gcc warn if a function result is ignored.  (#145466,
 	Arjan van de Ven, Alex Larsson)
