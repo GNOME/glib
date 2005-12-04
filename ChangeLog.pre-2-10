@@ -1,3 +1,12 @@
+2005-12-04  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gmacros.h (G_GNUC_WARN_UNUSED_RESULT): Add a macro
+	to make gcc warn if a function result is ignored.  (#145466,
+	Arjan van de Ven, Alex Larsson)
+
+	* glib/gmem.h: Add the new attribute to g_realloc and 
+	g_try_realloc.
+
 2005-12-03  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/glib.symbols: 

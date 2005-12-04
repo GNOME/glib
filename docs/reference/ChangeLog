@@ -1,3 +1,7 @@
+2005-12-04  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/tmpl/macros_misc.sgml: Document G_GNUC_WARN_UNUSED_RESULT.
+
 2005-12-03  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/tmpl/caches.sgml: Document g_cache_value_foreach

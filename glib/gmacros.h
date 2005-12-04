@@ -95,6 +95,13 @@
 #define G_GNUC_DEPRECATED
 #endif /* __GNUC__ */
 
+#if    __GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ >= 4)
+#define G_GNUC_WARN_UNUSED_RESULT 		\
+  __attribute__((warn_unused_result))
+#else
+#define G_GNUC_WARN_UNUSED_RESULT
+#endif /* __GNUC__ */
+
 /* Wrap the gcc __PRETTY_FUNCTION__ and __FUNCTION__ variables with
  * macros, so we can refer to them as strings unconditionally.
  * usage not-recommended since gcc-3.0

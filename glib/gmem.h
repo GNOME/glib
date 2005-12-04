@@ -47,12 +47,12 @@ typedef struct _GMemVTable GMemVTable;
 gpointer g_malloc         (gulong	 n_bytes) G_GNUC_MALLOC;
 gpointer g_malloc0        (gulong	 n_bytes) G_GNUC_MALLOC;
 gpointer g_realloc        (gpointer	 mem,
-			   gulong	 n_bytes);
+			   gulong	 n_bytes) G_GNUC_WARN_UNUSED_RESULT;
 void	 g_free	          (gpointer	 mem);
 gpointer g_try_malloc     (gulong	 n_bytes) G_GNUC_MALLOC;
 gpointer g_try_malloc0    (gulong	 n_bytes) G_GNUC_MALLOC;
 gpointer g_try_realloc    (gpointer	 mem,
-			   gulong	 n_bytes);
+			   gulong	 n_bytes) G_GNUC_WARN_UNUSED_RESULT;
 
 
 /* Convenience memory allocators
