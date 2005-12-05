@@ -1,5 +1,12 @@
 2005-12-05  Matthias Clasen  <mclasen@redhat.com>
 
+	* tests/Makefile.am (TESTS_ENVIRONMENT): 
+	* tests/gobject/Makefile.am (TESTS_ENVIRONMENT): Set
+	MALLOC_CHECK_ and MALLOC_PERTURB_
+
+	* tests/run-collate-tests.sh: Run the collation tests explicitly 
+	in en_US locale. (#320463)
+
 	* glib/gmem.h: Really deprecate GMemChunk.
 
 	* glib/gdate.c: 

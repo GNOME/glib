@@ -13,6 +13,7 @@ echo_v ()
   fi
 }
 
+LANG=en_US
 error_out=/dev/null
 if [ "$1" = "-v" ]; then
   verbose=1
