@@ -827,7 +827,7 @@ g_string_ascii_up (GString *string)
  *
  * Returns: the #GString.
  *
- * Deprecated: This function uses the locale-specific tolower() function, 
+ * Deprecated:2.2: This function uses the locale-specific tolower() function, 
  * which is almost never the right thing. Use g_string_ascii_down() or 
  * g_utf8_strdown() instead.
  */
@@ -861,7 +861,7 @@ g_string_down (GString *string)
  * 
  * Return value: the #GString
  *
- * Deprecated: This function uses the locale-specific toupper() function, 
+ * Deprecated:2.2: This function uses the locale-specific toupper() function, 
  * which is almost never the right thing. Use g_string_ascii_up() or 
  * g_utf8_strup() instead.
  **/

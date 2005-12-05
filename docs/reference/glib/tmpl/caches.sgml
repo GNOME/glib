@@ -123,8 +123,8 @@ Calls the given function for each of the values in the #GCache.
 @cache: a #GCache.
 @func: the function to call with each #GCache value.
 @user_data: user data to pass to the function.
-@Deprecated: Since it passes pointers to internal data structures
-to @func; use g_cache_key_foreach() instead
+@Deprecated:2.10: The reason is that it passes pointers to internal data 
+structures to @func; use g_cache_key_foreach() instead
 
 
 <!-- ##### USER_FUNCTION GCacheDestroyFunc ##### -->

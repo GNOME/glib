@@ -180,7 +180,7 @@ Creates a new #GMainLoop for the default main loop.
 @is_running: set to %TRUE to indicate that the loop is running. This is not
 very important since calling g_main_run() will set this to %TRUE anyway.
 @Returns: a new #GMainLoop.
-@Deprecated: Use g_main_loop_new() instead.
+@Deprecated:2.2: Use g_main_loop_new() instead.
 
 
 <!-- ##### MACRO g_main_destroy ##### -->
@@ -189,7 +189,7 @@ Frees the memory allocated for the #GMainLoop.
 </para>
 
 @loop: a #GMainLoop.
-@Deprecated: Use g_main_loop_unref() instead.
+@Deprecated:2.2: Use g_main_loop_unref() instead.
 
 
 <!-- ##### MACRO g_main_run ##### -->
@@ -198,7 +198,7 @@ Runs a main loop until it stops running.
 </para>
 
 @loop: a #GMainLoop.
-@Deprecated: Use g_main_loop_run() instead.
+@Deprecated:2.2: Use g_main_loop_run() instead.
 
 
 <!-- ##### MACRO g_main_quit ##### -->
@@ -208,7 +208,7 @@ it will now return.
 </para>
 
 @loop: a #GMainLoop.
-@Deprecated: Use g_main_loop_quit() instead.
+@Deprecated:2.2: Use g_main_loop_quit() instead.
 
 
 <!-- ##### MACRO g_main_is_running ##### -->
@@ -218,7 +218,7 @@ Checks if the main loop is running.
 
 @loop: a #GMainLoop.
 @Returns: %TRUE if the main loop is running.
-@Deprecated: USe g_main_loop_is_running() instead.
+@Deprecated:2.2: USe g_main_loop_is_running() instead.
 
 
 <!-- ##### MACRO G_PRIORITY_HIGH ##### -->
@@ -326,7 +326,7 @@ becomes ready. It will return after an event source has been processed.
 If set to %FALSE it will return immediately if no event source is ready to be
 processed.
 @Returns: %TRUE if more events are pending.
-@Deprecated: Use g_main_context_iteration() instead.
+@Deprecated:2.2: Use g_main_context_iteration() instead.
 
 
 <!-- ##### FUNCTION g_main_context_pending ##### -->
@@ -345,7 +345,7 @@ Checks if any events are pending for the default #GMainContext
 </para>
 
 @Returns: %TRUE if any events are pending.
-@Deprecated: Use g_main_context_pending() instead.
+@Deprecated:2.2: Use g_main_context_pending() instead.
 
 
 <!-- ##### FUNCTION g_main_context_find_source_by_id ##### -->
@@ -527,7 +527,7 @@ for the default main context.
 </para>
 
 @func: the function to call to poll all file descriptors.
-@Deprecated: Use g_main_context_set_poll_func() instead.
+@Deprecated:2.2: Use g_main_context_set_poll_func() instead.
 
 
 <!-- ##### FUNCTION g_timeout_source_new ##### -->

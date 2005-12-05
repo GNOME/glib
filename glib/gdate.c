@@ -924,7 +924,7 @@ g_date_set_time_t (GDate *date,
  *
  * Sets the value of a date from a #GTime value. 
  *
- * @Deprecated: Use g_date_set_time_t() instead.
+ * @Deprecated:2.10: Use g_date_set_time_t() instead.
  */
 void
 g_date_set_time (GDate    *date,

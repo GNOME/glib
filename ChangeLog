@@ -1,3 +1,12 @@
+2005-12-05  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gdate.c: 
+	* glib/gutils.c: 
+	* glib/gtree.c: 
+	* glib/gstring.c: 
+	* glib/giochannel.c: 
+	* glib/gstrfuncs.c: Add versioned deprecation docs. 
+
 2005-12-05  Martyn Russell  <martyn@imendio.com>
 
 	* docs/reference/glib/glib-sections.txt:

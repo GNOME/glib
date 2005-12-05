@@ -618,7 +618,7 @@ g_parse_debug_string  (const gchar     *string,
  * 
  * Return value: the name of the file without any leading directory components.
  *
- * Deprecated: Use g_path_get_basename() instead, but notice that
+ * Deprecated:2.2: Use g_path_get_basename() instead, but notice that
  * g_path_get_basename() allocates new memory for the returned string, unlike
  * this function which returns a pointer into the argument.
  **/

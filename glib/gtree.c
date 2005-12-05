@@ -462,7 +462,7 @@ g_tree_foreach (GTree         *tree,
  * 
  * Calls the given function for each node in the #GTree. 
  *
- * Deprecated: The order of a balanced tree is somewhat arbitrary. If you 
+ * Deprecated:2.2: The order of a balanced tree is somewhat arbitrary. If you 
  * just want to visit all nodes in sorted order, use g_tree_foreach() 
  * instead. If you really need to visit nodes in a different order, consider
  * using an <link linkend="glib-N-ary-Trees">N-ary Tree</link>.

@@ -1,3 +1,13 @@
+2005-12-05  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/tmpl/trees-nary.sgml: 
+	* glib/tmpl/linked_lists_single.sgml: 
+	* glib/tmpl/linked_lists_double.sgml: 
+	* glib/tmpl/caches.sgml: 
+	* glib/tmpl/strings.sgml: 
+	* glib/tmpl/scanner.sgml: 
+	* glib/tmpl/main.sgml: Add versioned deprecation.
+
 Mon Dec  5 15:53:37 2005  Tim Janik  <timj@imendio.com>
 
 	* glib/tmpl/memory_slices.sgml: updates to new g_slice API
