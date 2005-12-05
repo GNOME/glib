@@ -25,8 +25,9 @@ of the
 or simply pointers to any type of data.
 </para>
 <para>
-List elements are allocated in blocks using a #GAllocator, which is
-more efficient than allocating elements individually.
+List elements are allocated from the <link linkend="glib-Memory-Slices">slice
+allocator</link>, which is more efficient than allocating elements 
+individually.
 </para>
 <para>
 Note that most of the #GSList functions expect to be passed a pointer to
@@ -232,7 +233,7 @@ the first node matching the given data.
 <!-- ##### FUNCTION g_slist_free ##### -->
 <para>
 Frees all of the memory used by a #GSList.
-The freed elements are added to the #GAllocator free list.
+The freed elements are returned to the slice allocator.
 </para>
 
 @list: a #GSList.
@@ -247,12 +248,13 @@ It is usually used after g_slist_remove_link().
 @list: a #GSList element.
 
 
-<!-- ##### FUNCTION g_slist_free1 ##### -->
+<!-- ##### MACRO g_slist_free1 ##### -->
 <para>
 A macro which does the same as g_slist_free_1().
 </para>
 
 @Since: 2.10
+
 
 <!-- ##### FUNCTION g_slist_length ##### -->
 <para>
@@ -431,9 +433,9 @@ Note that this function is not available if GLib has been compiled
 with <option>--disable-mem-pools</option>
 </para>
 
-@dummy: 
-<!-- # Unused Parameters # -->
-@allocator: the #GAllocator to use when allocating #GSList elements.
+@dummy: the #GAllocator to use when allocating #GSList elements.
+@Deprecated: Since 2.10, it does nothing, since #GSList has been
+converted to the <link linkend="glib-Memory-Slices">slice allocator</link>
 
 
 <!-- ##### FUNCTION g_slist_pop_allocator ##### -->
@@ -444,6 +446,9 @@ Restores the previous #GAllocator, used when allocating #GSList elements.
 Note that this function is not available if GLib has been compiled
 with <option>--disable-mem-pools</option>
 </para>
+
+@Deprecated: Since 2.10, it does nothing, since #GSList has been
+converted to the <link linkend="glib-Memory-Slices">slice allocator</link>
 
 
 

@@ -1,5 +1,13 @@
 2005-12-05  Matthias Clasen  <mclasen@redhat.com>
 
+	* gobject/tmpl/generic_values.sgml: 
+	* glib/tmpl/trees-nary.sgml: 
+	* glib/tmpl/linked_lists_double.sgml: 
+	* glib/tmpl/linked_lists_single.sgml: 
+	* glib/tmpl/memory_chunks.sgml: 
+	* glib/tmpl/allocators.sgml: 
+	* glib/tmpl/macros_misc.sgml: Updates 
+
 	* glib/Makefile.am: Ignore gmirroringtable.h
 
 2005-12-04  Matthias Clasen  <mclasen@redhat.com>

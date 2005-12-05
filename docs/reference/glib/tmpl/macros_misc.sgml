@@ -250,6 +250,7 @@ See the GNU C documentation for details.
 Since: 2.8
 
 
+
 <!-- ##### MACRO G_GNUC_WARN_UNUSED_RESULT ##### -->
 <para>
 Expands to the GNU C <literal>warn_unused_ersult</literal> function attribute 
@@ -258,7 +259,8 @@ attribute makes the compiler emit a warning if the result of a function call
 is ignored. See the GNU C documentation for details. 
 </para>
 
-Since: 2.10
+@Since: 2.10
+
 
 
 <!-- ##### MACRO G_GNUC_FUNCTION ##### -->

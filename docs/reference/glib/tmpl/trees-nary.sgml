@@ -527,9 +527,9 @@ Note that this function is not available if GLib has been compiled
 with <option>--disable-mem-pools</option>
 </para>
 
-@dummy: 
-<!-- # Unused Parameters # -->
-@allocator: the #GAllocator to use when allocating #GNode elements.
+@dummy: the #GAllocator to use when allocating #GNode elements.
+@Deprecated: Since 2.10, it does nothing, since #GNode has been
+converted to the <link linkend="glib-Memory-Slices">slice allocator</link>
 
 
 <!-- ##### FUNCTION g_node_pop_allocator ##### -->
@@ -541,5 +541,7 @@ Note that this function is not available if GLib has been compiled
 with <option>--disable-mem-pools</option>
 </para>
 
+@Deprecated: Since 2.10, it does nothing, since #GNode has been
+converted to the <link linkend="glib-Memory-Slices">slice allocator</link>
 
 

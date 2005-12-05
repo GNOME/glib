@@ -25,8 +25,9 @@ of the
 or simply pointers to any type of data.
 </para>
 <para>
-List elements are allocated in blocks using a #GAllocator, which is
-more efficient than allocating elements individually.
+List elements are allocated from the <link linkend="glib-Memory-Slices">slice
+allocator</link>, which is more efficient than allocating elements 
+individually.
 </para>
 <para>
 Note that most of the #GList functions expect to be passed a pointer to
@@ -224,7 +225,7 @@ the first node matching the given data.
 <!-- ##### FUNCTION g_list_free ##### -->
 <para>
 Frees all of the memory used by a #GList.
-The freed elements are added to the #GAllocator free list.
+The freed elements are returned to the slice allocator.
 </para>
 <note>
 <para>
@@ -501,6 +502,8 @@ with <option>--disable-mem-pools</option>
 </para>
 
 @allocator: the #GAllocator to use when allocating #GList elements.
+@Deprecated: Since 2.10, it does nothing, since #GList has been
+converted to the <link linkend="glib-Memory-Slices">slice allocator</link>
 
 
 <!-- ##### FUNCTION g_list_pop_allocator ##### -->
@@ -511,6 +514,9 @@ Restores the previous #GAllocator, used when allocating #GList elements.
 Note that this function is not available if GLib has been compiled
 with <option>--disable-mem-pools</option>
 </para>
+
+@Deprecated: Since 2.10, it does nothing, since #GList has been
+converted to the <link linkend="glib-Memory-Slices">slice allocator</link>
 
 
 
