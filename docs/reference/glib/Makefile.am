@@ -34,6 +34,7 @@ IGNORE_HFILES=			\
 	gdebug.h		\
 	gprintfint.h		\
 	galias.h		\
+	gmirroringtable.h	\
 	gnulib
 
 # Extra options to supply to gtkdoc-mkdb

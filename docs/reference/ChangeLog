@@ -1,3 +1,7 @@
+2005-12-05  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/Makefile.am: Ignore gmirroringtable.h
+
 2005-12-04  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/tmpl/macros_misc.sgml: Document G_GNUC_WARN_UNUSED_RESULT.
