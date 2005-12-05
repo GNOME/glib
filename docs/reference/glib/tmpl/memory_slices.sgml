@@ -6,18 +6,21 @@ efficient way to allocate groups of equal-sized chunks of memory.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-Memory slices provide a space-efficient way to allocate equal-sized
-pieces of memory, just like #GMemChunks, while avoiding their scalability
-and performance problems. 
+Memory slices provide a space-efficient and multi processing scalable
+way to allocate equal-sized pieces of memory, just like the original
+#GMemChunks (from GLib <= 2.8), while avoiding their excessive
+memroy-waste scalability and performance problems.
 </para>
 
 <para>
 To achieve these goals, the slice allocator uses a sophisticated, 
 layered design that has been inspired by Bonwick's slab allocator
-<footnote><para><ulink url="http://citeseer.ist.psu.edu/bonwick94slab.html">[Bonwick94]</ulink> Jeff Bonwick, The slab allocator: An object-caching kernel
+<footnote><para>
+<ulink url="http://citeseer.ist.psu.edu/bonwick94slab.html">[Bonwick94]</ulink> Jeff Bonwick, The slab allocator: An object-caching kernel
 memory allocator. USENIX 1994, and  
- <ulink url="http://citeseer.ist.psu.edu/bonwick01magazines.html">[Bonwick01]</ulink> Bonwick and Jonathan Adams, Magazines and vmem: Extending the
-slab allocator to many cpu's and arbitrary resources. USENIX 2001</para></footnote>.
+<ulink url="http://citeseer.ist.psu.edu/bonwick01magazines.html">[Bonwick01]</ulink> Bonwick and Jonathan Adams, Magazines and vmem: Extending the
+slab allocator to many cpu's and arbitrary resources. USENIX 2001
+</para></footnote>.
 It uses posix_memalign() to optimize allocations of many equally 
 sized chunks, and has per-thread free lists (the so-called magazine layer) 
 to quickly satisfy allocation requests of already known structure sizes. 
@@ -94,17 +97,19 @@ object size used at allocation time is still available when freeing.
 <!-- ##### FUNCTION g_slice_alloc ##### -->
 <para>
 Allocates a block of memory from the slice allocator.
+The block adress handed out is guaranteed to be aligned
+to at leats 2 * sizeof (void*).
 </para>
 
 @block_size: the number of bytes to allocate
-@Returns: a pointer to the allocated 
+@Returns: a pointer to the allocated memory block
 @Since: 2.10
 
 
 <!-- ##### FUNCTION g_slice_alloc0 ##### -->
 <para>
-Allocates a block of memory from the slice allocator, setting the
-memory to 0.
+Allocates a block of memory via g_slice_alloc()
+and initialize the returned memory to 0.
 </para>
 
 @block_size: the number of bytes to allocate
@@ -114,38 +119,48 @@ memory to 0.
 
 <!-- ##### FUNCTION g_slice_free1 ##### -->
 <para>
-Frees a block of memory. The memory must have been allocated from
-the slice allocator.
+Frees a block of memory. The memory must have been allocated via
+g_slice_alloc() or g_slice_alloc0()
+and the @block_size has to match the size specified upon allocation.
 </para>
 
 @block_size: the size of the block
 @mem_block: a pointer to the block to free
 @Since: 2.10
 
-<!-- ##### FUNCTION g_slice_free_chain ##### -->
+<!-- ##### FUNCTION g_slice_free_chain_with_offset ##### -->
 <para>
-Frees a linked list of memory block. The memory blocks must be equal-sized, 
-allocated from the slice allocator and linked together by a 
-<literal>next</literal> pointer stored in the @next_offset's word of 
-each block. 
+Frees a linked list of memory blocks. The memory blocks must be equal-sized, 
+allocated via
+g_slice_alloc() or g_slice_alloc0()
+and linked together by a <literal>next</literal> pointer (similar to #GSList)
+stored in the word of each block denoted by @next_offset.
+The @block_size has to match the size specified upon allocation.
 </para>
-<para>
-Currently, this function only supports blocks which store their 
-<literal>next</literal> pointer in the same position as #GSList. 
-Therefore, @next_offset must be 1.
-</para>
-
 @block_size: the size of the blocks
 @mem_chain: a pointer to the first block
 @next_offset: the offset of the <literal>next</literal> pointer
+@Since: 2.10
+
+<!-- ##### MACRO g_slice_free_chain ##### -->
+<para>
+Frees a linked list of memory blocks of structure type @type.
+The memory blocks must be equal-sized, allocated via
+g_slice_alloc() or g_slice_alloc0()
+and linked together by a @next pointer (similar to #GSList). The name of the
+@next field in @type is passed as third argument.
+</para>
+@type:        the type of the @mem_chain blocks
+@mem_chain:   a pointer to the first block of the chain
+@next:        the field name of the next pointer in @type
 @Since: 2.10
 
 
 <!-- ##### MACRO g_slice_new ##### -->
 <para>
 A convenience macro to allocate a block of memory from the slice allocator.
-It calls g_slice_alloc() and casts the returned pointer to a pointer to
-the given type, avoiding a type cast in the source code.
+It calls g_slice_alloc() with sizeof (@type) and casts the returned pointer
+to a pointer of the given type, avoiding a type cast in the source code.
 </para>
 
 @type: the type to allocate, typically a structure name
@@ -156,9 +171,9 @@ the given type, avoiding a type cast in the source code.
 <!-- ##### MACRO g_slice_new0 ##### -->
 <para>
 A convenience macro to allocate a block of memory from the slice allocator
-and set the memory to 0. It calls g_slice_alloc0() and casts the returned 
-pointer to a pointer to the given type, avoiding a type cast in the source 
-code.
+and set the memory to 0. It calls g_slice_alloc0() with sizeof (@type) and
+casts the returned pointer to a pointer of the given type, avoiding a type
+cast in the source code.
 </para>
 
 @type: the type to allocate, typically a structure name

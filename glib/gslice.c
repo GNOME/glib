@@ -772,24 +772,16 @@ g_slice_free1 (gsize    mem_size,
       slab_allocator_free_chunk (chunk_size, mem_block);
       g_mutex_unlock (allocator->slab_mutex);
     }
-  else                          /* delegate to system malloc */
+  else                                  /* delegate to system malloc */
     g_free (mem_block);
 }
 
 void
-g_slice_free_chain (gsize    mem_size,
-                    gpointer mem_chain,
-                    gsize    next_offset)
+g_slice_free_chain_with_offset (gsize    mem_size,
+                                gpointer mem_chain,
+                                gsize    next_offset)
 {
-  GSList *slice = mem_chain;
-  g_return_if_fail (next_offset == G_STRUCT_OFFSET (GSList, next));
-  g_return_if_fail (mem_size >= sizeof (GSList));
-  while (slice)
-    {
-      GSList *current = slice;
-      slice = slice->next;
-      g_slice_free1 (mem_size, current);
-    }
+  gpointer slice = mem_chain;
   /* while the thread magazines and the magazine cache are implemented so that
    * they can easily be extended to allow for free lists containing more free
    * lists for the first level nodes, which would allow O(1) freeing in this
@@ -801,7 +793,47 @@ g_slice_free_chain (gsize    mem_size,
    * - memory usage histograms on larger applications seem to indicate that
    *   the amount of released multi node lists is negligible in comparison
    *   to single node releases.
+   * - the major performance bottle neck, namely g_private_get() or
+   *   g_mutex_lock()/g_mutex_unlock() has already been moved out of the
+   *   inner loop for freeing chained slices.
    */
+  gsize chunk_size = P2ALIGN (mem_size);
+  guint acat = allocator_categorize (chunk_size);
+  if (G_LIKELY (acat == 1))             /* allocate through magazine layer */
+    {
+      ThreadMemory *tmem = thread_memory_from_self();
+      guint ix = SLAB_INDEX (allocator, chunk_size);
+      while (slice)
+        {
+          guint8 *current = slice;
+          slice = *(gpointer*) (current + next_offset);
+          if (G_UNLIKELY (thread_memory_magazine2_is_full (tmem, ix)))
+            {
+              thread_memory_swap_magazines (tmem, ix);
+              if (G_UNLIKELY (thread_memory_magazine2_is_full (tmem, ix)))
+                thread_memory_magazine2_unload (tmem, ix);
+            }
+          thread_memory_magazine2_free (tmem, ix, current);
+        }
+    }
+  else if (acat == 2)                   /* allocate through slab allocator */
+    {
+      g_mutex_lock (allocator->slab_mutex);
+      while (slice)
+        {
+          guint8 *current = slice;
+          slice = *(gpointer*) (current + next_offset);
+          slab_allocator_free_chunk (chunk_size, current);
+        }
+      g_mutex_unlock (allocator->slab_mutex);
+    }
+  else                                  /* delegate to system malloc */
+    while (slice)
+      {
+        guint8 *current = slice;
+        slice = *(gpointer*) (current + next_offset);
+        g_free (current);
+      }
 }
 
 /* --- single page allocator --- */

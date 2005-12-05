@@ -1,3 +1,8 @@
+Mon Dec  5 15:53:37 2005  Tim Janik  <timj@imendio.com>
+
+	* glib/tmpl/memory_slices.sgml: updates to new g_slice API
+	and minor fixes.
+
 2005-12-05  Matthias Clasen  <mclasen@redhat.com>
 
 	* gobject/tmpl/generic_values.sgml: 

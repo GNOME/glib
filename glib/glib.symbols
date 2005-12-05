@@ -608,7 +608,7 @@ g_blow_chunks
 g_slice_alloc G_GNUC_MALLOC
 g_slice_alloc0 G_GNUC_MALLOC
 g_slice_free1
-g_slice_free_chain
+g_slice_free_chain_with_offset
 g_slice_set_config
 g_slice_get_config
 g_slice_get_config_state

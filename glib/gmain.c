@@ -189,7 +189,7 @@ struct _GChildWatchSource
 struct _GPollRec
 {
   GPollFD *fd;
-  GPollRec *next; /* chaining via second pointer member allows use of g_slice_free_chain() */
+  GPollRec *next;
   gint priority;
 };
 
@@ -599,7 +599,7 @@ static inline void
 poll_rec_list_free (GMainContext *context,
 		    GPollRec     *list)
 {
-  g_slice_free_chain (sizeof (GPollRec), list, G_STRUCT_OFFSET (GPollRec, next));
+  g_slice_free_chain (GPollRec, list, next);
 }
 
 /**

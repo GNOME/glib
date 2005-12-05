@@ -1,3 +1,23 @@
+Mon Dec  5 15:53:20 2005  Tim Janik  <timj@imendio.com>
+
+	* glib/gslice.c: implement chain walking for arbitrary ->next pointer
+	offsets in g_slice_free_chain_with_offset() based on a patch by behdad
+	in bug 323178. moved time consuming logic from g_slice_free() out of
+	the inner loop, so g_slice_free_chain_with_offset() provides a real
+	performance benefit over g_slice_free1() now.
+	
+	* glib/gslice.h: renamed g_slice_free_chain() to
+	g_slice_free_chain_with_offset(). implemented g_slice_free_chain() as
+	a type-safe macro as suggested in bug 323178.
+	simplified the macro implementation of g_slice_free() and implemented
+	it in a type safe manner for all compliers as suggested by Morten
+	Welinder <mortenw@gnome.org>.
+
+	* glib/gmain.c:
+	* glib/glist.c:
+	* glib/gslist.c:
+	* glib/glib.symbols: s/g_slice_free_chain/g_slice_free_chain_with_offset/
+
 2005-12-05  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gasyncqueue.c: Add some docs.

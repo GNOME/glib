@@ -49,7 +49,7 @@ g_list_alloc (void)
 void
 g_list_free (GList *list)
 {
-  g_slice_free_chain (sizeof (GList), list, G_STRUCT_OFFSET (GList, next));
+  g_slice_free_chain (GList, list, next);
 }
 
 void
