@@ -85,6 +85,7 @@ test_programs =					\
 	patterntest				\
 	printf-test				\
 	queue-test				\
+	asyncqueue-test				\
 	qsort-test				\
 	rand-test				\
 	relation-test				\
@@ -145,6 +146,7 @@ node_test_LDADD = $(progs_ldadd)
 option_test_LDADD = $(progs_ldadd)
 printf_test_LDADD = $(progs_ldadd)
 queue_test_LDADD = $(progs_ldadd)
+asyncqueue_test_LDADD = $(thread_ldadd)
 qsort_test_LDADD = $(progs_ldadd)
 rand_test_LDADD = $(progs_ldadd)
 relation_test_LDADD = $(progs_ldadd)

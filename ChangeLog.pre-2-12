@@ -1,3 +1,14 @@
+2005-12-05  Martyn Russell  <martyn@imendio.com>
+
+	* docs/reference/glib/glib-sections.txt:
+	* glib/gasyncqueue.[ch]:
+	- Added support for sorting async queues by with _push_sorted(),
+	_push_sorted_unlocked(), _sort() and _sort_unlocked() (#323047).
+	
+	* tests/Makefile.am:
+	* tests/asyncqueue-test.c:
+	- Added test case for gasyncqueue.c
+
 Mon Dec  5 15:53:20 2005  Tim Janik  <timj@imendio.com>
 
 	* glib/gslice.c: implement chain walking for arbitrary ->next pointer
