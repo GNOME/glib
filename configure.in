@@ -32,7 +32,7 @@ m4_define([glib_interface_age], [0])
 m4_define([glib_binary_age],
           [m4_eval(100 * glib_minor_version + glib_micro_version)])
 m4_define([glib_version],
-          [glib_major_version.glib_minor_version.glib_micro_version.cvs20051202])
+          [glib_major_version.glib_minor_version.glib_micro_version])
 
 # libtool version related macros
 m4_define([glib_lt_release], [glib_major_version.glib_minor_version])

@@ -1,5 +1,9 @@
 2005-12-05  Matthias Clasen  <mclasen@redhat.com>
 
+	* configure.in: Revert an accidential commit
+
+2005-12-05  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/gutf8.c: Documentation updates.  (#323291, Morten Welinder)
 
 	* tests/Makefile.am (TESTS_ENVIRONMENT): 
