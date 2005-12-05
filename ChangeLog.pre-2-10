@@ -1,3 +1,7 @@
+2005-12-04  Behdad Esfahbod  <behdad@gnome.org>
+
+	* glib/gslice.h: Remove comma at the end of enum.
+
 2005-12-04  Matthias Clasen  <mclasen@redhat.com>
 
 	Handle multiple user names with the same UID better.

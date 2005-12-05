@@ -59,7 +59,7 @@ typedef enum {
   G_SLICE_CONFIG_ALWAYS_FREE,
   G_SLICE_CONFIG_WORKING_SET_MSECS,
   G_SLICE_CONFIG_CHUNK_SIZES,
-  G_SLICE_CONFIG_CONTENTION_COUNTER,
+  G_SLICE_CONFIG_CONTENTION_COUNTER
 } GSliceConfig;
 void     g_slice_set_config	   (GSliceConfig ckey, gint64 value);
 gint64   g_slice_get_config	   (GSliceConfig ckey);
