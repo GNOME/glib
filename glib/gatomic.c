@@ -414,14 +414,14 @@ gint
 g_atomic_int_exchange_and_add (volatile gint *atomic,
 			       gint           val)
 {
-  return __sync_fetch_and_add_si (atomic, val);
+  return __sync_fetch_and_add (atomic, val);
 }
  
 void
 g_atomic_int_add (volatile gint *atomic, 
 		  gint val)
 {
-  __sync_fetch_and_add_si (atomic, val);
+  __sync_fetch_and_add (atomic, val);
 }
 
 gboolean
@@ -429,7 +429,7 @@ g_atomic_int_compare_and_exchange (volatile gint *atomic,
 				   gint           oldval, 
 				   gint           newval)
 {
-  return __sync_bool_compare_and_swap_si (atomic, oldval, newval);
+  return __sync_bool_compare_and_swap (atomic, oldval, newval);
 }
 
 gboolean
@@ -437,8 +437,8 @@ g_atomic_pointer_compare_and_exchange (volatile gpointer *atomic,
 				       gpointer           oldval, 
 				       gpointer           newval)
 {
-  return __sync_bool_compare_and_swap_di ((long *)atomic, 
-					  (long)oldval, (long)newval);
+  return __sync_bool_compare_and_swap ((long *)atomic, 
+				       (long)oldval, (long)newval);
 }
 
 #  define G_ATOMIC_MEMORY_BARRIER __sync_synchronize ()

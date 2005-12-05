@@ -1,3 +1,9 @@
+2005-12-05  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gatomic.c: In the ia64 implementation, use
+	__sync builtin without _si or _di suffix.  (#321229,
+	Stanislav Brabec, patch by Andreas Schwab)
+
 2005-12-04  Behdad Esfahbod  <behdad@gnome.org>
 
 	* glib/gslice.h: Remove comma at the end of enum.

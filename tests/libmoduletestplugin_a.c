@@ -59,13 +59,13 @@ gplugin_say_boo_func (void)
 G_MODULE_EXPORT void
 gplugin_a_module_func (GModule *module)
 {
-  void (*f) (void) = NULL;
+  void *f = NULL;
 
-  if (!g_module_symbol (module, "gplugin_say_boo_func", (gpointer *) &f))
+  if (!g_module_symbol (module, "gplugin_say_boo_func", &f ))
     {
       g_print ("error: %s\n", g_module_error ());
       exit (1);
     }
 
-  f ();
+  ((void(*)(void)) f) ();
 }
