@@ -973,8 +973,8 @@ g_utf8_to_ucs4 (const gchar *str,
 /**
  * g_ucs4_to_utf8:
  * @str: a UCS-4 encoded string
- * @len: the maximum length of @str to use. If @len < 0, then
- *       the string is terminated with a 0 character.
+ * @len: the maximum length (number of characters) of @str to use. 
+ *       If @len < 0, then the string is terminated with a 0 character.
  * @items_read: location to store number of characters read, or %NULL.
  * @items_written: location to store number of bytes written or %NULL.
  *                 The value here stored does not include the trailing 0
@@ -1045,8 +1045,8 @@ g_ucs4_to_utf8 (const gunichar *str,
 /**
  * g_utf16_to_utf8:
  * @str: a UTF-16 encoded string
- * @len: the maximum length of @str to use. If @len < 0, then
- *       the string is terminated with a 0 character.
+ * @len: the maximum length (number of <type>gunichar2</type>) of @str to use. 
+ *       If @len < 0, then the string is terminated with a 0 character.
  * @items_read: location to store number of words read, or %NULL.
  *              If %NULL, then %G_CONVERT_ERROR_PARTIAL_INPUT will be
  *              returned in case @str contains a trailing partial
@@ -1194,8 +1194,8 @@ g_utf16_to_utf8 (const gunichar2  *str,
 /**
  * g_utf16_to_ucs4:
  * @str: a UTF-16 encoded string
- * @len: the maximum length of @str to use. If @len < 0, then
- *       the string is terminated with a 0 character.
+ * @len: the maximum length (number of <type>gunichar2</type>) of @str to use. 
+ *       If @len < 0, then the string is terminated with a 0 character.
  * @items_read: location to store number of words read, or %NULL.
  *              If %NULL, then %G_CONVERT_ERROR_PARTIAL_INPUT will be
  *              returned in case @str contains a trailing partial
@@ -1336,21 +1336,21 @@ g_utf16_to_ucs4 (const gunichar2  *str,
 /**
  * g_utf8_to_utf16:
  * @str: a UTF-8 encoded string
- * @len: the maximum length of @str to use. If @len < 0, then
- *       the string is nul-terminated.
+ * @len: the maximum length (number of characters) of @str to use. 
+ *       If @len < 0, then the string is nul-terminated.
  * @items_read: location to store number of bytes read, or %NULL.
  *              If %NULL, then %G_CONVERT_ERROR_PARTIAL_INPUT will be
  *              returned in case @str contains a trailing partial
  *              character. If an error occurs then the index of the
  *              invalid input is stored here.
- * @items_written: location to store number of words written, or %NULL.
- *                 The value stored here does not include the trailing
- *                 0 word.
+ * @items_written: location to store number of <type>gunichar2</type> written, 
+ *                 or %NULL.
+ *                 The value stored here does not include the trailing 0.
  * @error: location to store the error occuring, or %NULL to ignore
  *         errors. Any of the errors in #GConvertError other than
  *         %G_CONVERT_ERROR_NO_CONVERSION may occur.
  *
- * Convert a string from UTF-8 to UTF-16. A 0 word will be
+ * Convert a string from UTF-8 to UTF-16. A 0 character will be
  * added to the result after the converted text.
  * 
  * Return value: a pointer to a newly allocated UTF-16 string.
@@ -1453,19 +1453,19 @@ g_utf8_to_utf16 (const gchar *str,
 /**
  * g_ucs4_to_utf16:
  * @str: a UCS-4 encoded string
- * @len: the maximum length of @str to use. If @len < 0, then
- *       the string is terminated with a 0 character.
+ * @len: the maximum length (number of characters) of @str to use. 
+ *       If @len < 0, then the string is terminated with a 0 character.
  * @items_read: location to store number of bytes read, or %NULL.
  *              If an error occurs then the index of the invalid input
  *              is stored here.
- * @items_written: location to store number of words written, or %NULL.
- *                 The value stored here does not include the trailing
- *                 0 word.
+ * @items_written: location to store number of <type>gunichar2</type> 
+ *                 written, or %NULL. The value stored here does not 
+ *                 include the trailing 0.
  * @error: location to store the error occuring, or %NULL to ignore
  *         errors. Any of the errors in #GConvertError other than
  *         %G_CONVERT_ERROR_NO_CONVERSION may occur.
  *
- * Convert a string from UCS-4 to UTF-16. A 0 word will be
+ * Convert a string from UCS-4 to UTF-16. A 0 character will be
  * added to the result after the converted text.
  * 
  * Return value: a pointer to a newly allocated UTF-16 string.
