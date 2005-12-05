@@ -1,3 +1,8 @@
+2005-12-05  Matthias Clasen  <mclasen@redhat.com>
+
+	* genums.h (G_FLAGS_CLASS_TYPE_NAME): Use G_FLAGS_CLASS_TYPE.
+	(#323273, Kalle Vahlman)
+
 2005-11-17  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib-genmarshal.c:
