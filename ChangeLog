@@ -1,3 +1,8 @@
+2005-12-05  Manish Singh  <yosh@gimp.org>
+
+	* tests/run-collate-test.sh: set LC_COLLATE, not LANG, to be sure
+	to override any user settings.
+
 2005-12-05  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Revert an accidential commit
