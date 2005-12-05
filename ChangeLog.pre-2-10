@@ -1,5 +1,9 @@
 2005-12-05  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gasyncqueue.c: Add some docs.
+
+	* tests/libmoduletestplugin_a.c: Fix compiler warnings.
+
 	* glib/gatomic.c: In the ia64 implementation, use
 	__sync builtin without _si or _di suffix.  (#321229,
 	Stanislav Brabec, patch by Andreas Schwab)

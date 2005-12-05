@@ -83,6 +83,10 @@ g_async_queue_ref (GAsyncQueue *queue)
  * @queue: a #GAsyncQueue.
  * 
  * Increases the reference count of the asynchronous @queue by 1.
+ *
+ * @Deprecated: Since 2.8, reference counting is done atomically
+ * so g_async_queue_ref() can be used regardless of the @queue's
+ * lock.
  **/
 void 
 g_async_queue_ref_unlocked (GAsyncQueue *queue)
@@ -101,6 +105,10 @@ g_async_queue_ref_unlocked (GAsyncQueue *queue)
  * releases the lock. This function must be called while holding the
  * @queue's lock. If the reference count went to 0, the @queue will be
  * destroyed and the memory allocated will be freed.
+ *
+ * @Deprecated: Since 2.8, reference counting is done atomically
+ * so g_async_queue_unref() can be used regardless of the @queue's
+ * lock.
  **/
 void 
 g_async_queue_unref_and_unlock (GAsyncQueue *queue)
