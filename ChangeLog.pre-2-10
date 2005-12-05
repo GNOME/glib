@@ -1,5 +1,7 @@
 2005-12-05  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gmem.h: Really deprecate GMemChunk.
+
 	* glib/gdate.c: 
 	* glib/gutils.c: 
 	* glib/gtree.c: 

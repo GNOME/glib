@@ -1,5 +1,8 @@
 2005-12-05  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/tmpl/memory_slices.sgml: Fix a small formatting
+	problem.
+
 	* glib/tmpl/trees-nary.sgml: 
 	* glib/tmpl/linked_lists_single.sgml: 
 	* glib/tmpl/linked_lists_double.sgml: 
