@@ -37,7 +37,7 @@ G_BEGIN_DECLS
 #define G_FLAGS_CLASS(class)	       (G_TYPE_CHECK_CLASS_CAST ((class), G_TYPE_FLAGS, GFlagsClass))
 #define G_IS_FLAGS_CLASS(class)        (G_TYPE_CHECK_CLASS_TYPE ((class), G_TYPE_FLAGS))
 #define G_FLAGS_CLASS_TYPE(class)      (G_TYPE_FROM_CLASS (class))
-#define G_FLAGS_CLASS_TYPE_NAME(class) (g_type_name (G_FLAGS_TYPE (class)))
+#define G_FLAGS_CLASS_TYPE_NAME(class) (g_type_name (G_FLAGS_CLASS_TYPE (class)))
 #define G_VALUE_HOLDS_ENUM(value)      (G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_ENUM))
 #define G_VALUE_HOLDS_FLAGS(value)     (G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_FLAGS))
 

@@ -1,3 +1,8 @@
+2005-12-05  Matthias Clasen  <mclasen@redhat.com>
+
+	* genums.h (G_FLAGS_CLASS_TYPE_NAME): Use G_FLAGS_CLASS_TYPE.
+	(#323273, Kalle Vahlman)
+	
 Thu Dec  1 12:53:26 2005  Tim Janik  <timj@imendio.com>
 
 	* gtype.c: use g_slic_* for all object allocations.
