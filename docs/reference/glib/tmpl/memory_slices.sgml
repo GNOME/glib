@@ -127,22 +127,34 @@ and the @block_size has to match the size specified upon allocation.
 @Since: 2.10
 
 
-<!-- ##### FUNCTION g_slice_free_chain ##### -->
+<!-- ##### FUNCTION g_slice_free_chain_with_offset ##### -->
 <para>
 Frees a linked list of memory blocks of structure type @type.
 The memory blocks must be equal-sized, allocated via
 g_slice_alloc() or g_slice_alloc0()
-and linked together by a @next pointer (similar to #GSList). The name of the
+and linked together by a @next pointer (similar to #GSList). The offset 
+of the @next field in each block is passed as third argument.
+</para>
+
+@block_size: the size of the blocks
+@mem_chain:  a pointer to the first block of the chain
+@next_offset: the offset of the @next field in the blocks
+@Since: 2.10
+
+
+<!-- ##### FUNCTION g_slice_free_chain ##### -->
+<para>
+Frees a linked list of memory blocks of structure type @type.
+The memory blocks must be equal-sized, allocated via
+g_slice_alloc() or g_slice_alloc0() and linked together by a 
+@next pointer (similar to #GSList). The name of the
 @next field in @type is passed as third argument.
 </para>
 
-@block_size: 
-@mem_chain:   a pointer to the first block of the chain
-@next_offset: 
-@Since: 2.10
-<!-- # Unused Parameters # -->
 @type:        the type of the @mem_chain blocks
+@mem_chain:   a pointer to the first block of the chain
 @next:        the field name of the next pointer in @type
+@Since: 2.10
 
 
 <!-- ##### MACRO g_slice_new ##### -->

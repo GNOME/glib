@@ -1,5 +1,7 @@
 2005-12-05  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/glib-sections.txt: Updates
+	
 	* glib/tmpl/memory_slices.sgml: Fix a small formatting
 	problem.
 

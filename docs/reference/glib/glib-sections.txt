@@ -30,6 +30,7 @@ G_HAVE_GINT64
 gint64
 guint64
 G_GINT64_CONSTANT
+G_GUINT64_CONSTANT
 
 <SUBSECTION>
 gfloat
@@ -1577,12 +1578,13 @@ g_mem_chunk_print
 g_slice_alloc
 g_slice_alloc0
 g_slice_free1
-g_slice_free_chain
+g_slice_free_chain_with_offset
 
 <SUBSECTION>
 g_slice_new
 g_slice_new0
 g_slice_free
+g_slice_free_chain
 
 <SUBSECTION Private>
 GSliceConfig
