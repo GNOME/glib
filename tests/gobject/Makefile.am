@@ -60,7 +60,9 @@ check_PROGRAMS = $(test_programs)
 
 TESTS = $(test_programs)
 TESTS_ENVIRONMENT = srcdir=$(srcdir) \
-	LIBCHARSET_ALIAS_DIR=$(top_builddir)/glib/libcharset
+	LIBCHARSET_ALIAS_DIR=$(top_builddir)/glib/libcharset \
+	MALLOC_CHECK_=2	\
+	MALLOC_PERTURB_=$$(($$RANDOM % 256))
 
 ########################################################################
 
