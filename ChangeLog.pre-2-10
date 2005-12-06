@@ -1,3 +1,8 @@
+2005-12-06  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gmem.h: Exempt GTK+ from the mem chunk deprecation, since
+	we need GTK+ 2.8 to compile against GLib 2.10.
+
 2005-12-05  Manish Singh  <yosh@gimp.org>
 
 	* tests/run-collate-test.sh: set LC_COLLATE, not LANG, to be sure
