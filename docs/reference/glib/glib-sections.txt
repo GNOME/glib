@@ -1620,6 +1620,7 @@ g_list_copy
 g_list_reverse
 g_list_sort
 GCompareFunc
+g_list_insert_sorted_with_data
 g_list_sort_with_data
 GCompareDataFunc
 g_list_concat
@@ -1670,6 +1671,7 @@ g_slist_free1
 g_slist_length
 g_slist_copy
 g_slist_reverse
+g_slist_insert_sorted_with_data
 g_slist_sort
 g_slist_sort_with_data
 g_slist_concat

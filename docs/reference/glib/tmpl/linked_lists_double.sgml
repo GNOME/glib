@@ -176,6 +176,22 @@ the sort order.
 @Returns: the new start of the #GList.
 
 
+<!-- ##### FUNCTION g_list_insert_sorted_with_data ##### -->
+<para>
+Inserts a new element into the list, using the given comparison function
+to determine its position.
+</para>
+
+@list: a pointer to a #GList.
+@data: the data for the new element.
+@func: the function to compare elements in the list. It should return a
+number > 0 if the first parameter comes after the second parameter in
+the sort order.
+@user_data: user data to pass to comparison function.
+@Returns: the new start of the #GList.
+@Since 2.10
+
+
 <!-- ##### FUNCTION g_list_remove ##### -->
 <para>
 Removes an element from a #GList.
