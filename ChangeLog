@@ -1,5 +1,18 @@
 2005-12-07  Martyn Russell  <martyn@imendio.com>
 
+	* glib/gasyncqueue.c:
+	- Call g_queue_insert_sorted() instead of duplicating the code.
+	- Call g_queue_sort() instead of duplicating the code.
+	- Invert sort function results to make sure the same sort function
+	gives the same results across glist, gslist, gqueue and
+	gasyncqueue.
+
+	* tests/asyncqueue-test.c:
+	- Updated the sort function to reflect the example in the
+	documentation for gasyncqueue.c.
+
+2005-12-07  Martyn Russell  <martyn@imendio.com>
+
 	* docs/reference/glib/glib-sections.txt:
 	* docs/reference/glib/tmpl/linked_lists_double.sgml:
 	* docs/reference/glib/tmpl/linked_lists_single.sgml:

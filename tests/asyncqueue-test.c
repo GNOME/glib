@@ -37,16 +37,16 @@ static GAsyncQueue *async_queue = NULL;
 static gint
 sort_compare (gconstpointer p1, gconstpointer p2, gpointer user_data)
 {
-  gint id1;
-  gint id2;
+  gint32 id1;
+  gint32 id2;
 
   id1 = GPOINTER_TO_INT (p1);
   id2 = GPOINTER_TO_INT (p2);
 
   d(g_print ("comparing #1:%d and #2:%d, returning %d\n", 
-	     id1, id2, (id2 - id1)));
+	     id1, id2, (id1 > id2 ? +1 : id1 == id2 ? 0 : -1)));
 
-  return (id2 - id1);
+  return (id1 > id2 ? +1 : id1 == id2 ? 0 : -1);
 }
 
 static gboolean

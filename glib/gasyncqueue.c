@@ -39,6 +39,11 @@ struct _GAsyncQueue
   gint32 ref_count;
 };
 
+typedef struct {
+  GCompareDataFunc func;
+  gpointer         user_data;
+} SortData;
+
 /**
  * g_async_queue_new:
  * 
@@ -255,6 +260,14 @@ g_async_queue_push_sorted (GAsyncQueue      *queue,
   g_mutex_unlock (queue->mutex);
 }
 
+static gint 
+g_async_queue_invert_compare (gpointer  v1, 
+			      gpointer  v2, 
+			      SortData *sd)
+{
+  return -sd->func (v1, v2, sd->user_data);
+}
+
 /**
  * g_async_queue_push_sorted_unlocked:
  * @queue: a #GAsyncQueue
@@ -284,21 +297,17 @@ g_async_queue_push_sorted_unlocked (GAsyncQueue      *queue,
 				    GCompareDataFunc  func,
 				    gpointer          user_data)
 {
-  GQueue *q;
-  GList  *list;
+  SortData sd;
   
   g_return_if_fail (queue != NULL);
 
-  q = queue->queue;
+  sd.func = func;
+  sd.user_data = user_data;
 
-  list = q->head;
-  while (list && func (list->data, data, user_data) < 0)
-    list = list->next;
-
-  if (list)
-    g_queue_insert_before (q, list, data);
-  else
-    g_queue_push_tail (q, data);
+  g_queue_insert_sorted (queue->queue, 
+			 data, 
+			 (GCompareDataFunc)g_async_queue_invert_compare, 
+			 &sd);
 }
 
 static gpointer
@@ -554,13 +563,13 @@ g_async_queue_length_unlocked (GAsyncQueue* queue)
  * If you were sorting a list of priority numbers to make sure the
  * lowest priority would be at the top of the queue, you could use:
  * <informalexample><programlisting> 
- *  gint id1;
- *  gint id2;
+ *  gint32 id1;
+ *  gint32 id2;
  *   
  *  id1 = GPOINTER_TO_INT (element1);
  *  id2 = GPOINTER_TO_INT (element2);
  *   
- *  return (id2 - id1);
+ *  return (id1 > id2 ? +1 : id1 == id2 ? 0 : -1);
  * </programlisting></informalexample>
  *
  * Since: 2.10
@@ -600,17 +609,18 @@ g_async_queue_sort_unlocked (GAsyncQueue      *queue,
 			     GCompareDataFunc  func,
 			     gpointer          user_data)
 {
-  GQueue *q;
+  SortData sd;
 
   g_return_if_fail (queue != NULL);
   g_return_if_fail (func != NULL);
 
-  q = queue->queue;
+  sd.func = func;
+  sd.user_data = user_data;
 
-  q->head = g_list_sort_with_data (q->head, func, user_data);
-  q->tail = g_list_last (q->head);
+  g_queue_sort (queue->queue, 
+		(GCompareDataFunc)g_async_queue_invert_compare, 
+		&sd);
 }
-
 
 #define __G_ASYNCQUEUE_C__
 #include "galiasdef.c"
