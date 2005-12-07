@@ -416,7 +416,7 @@ g_param_type_register_static().
 </para>
 
 @instance_size: Size of the instance (object) structure.
-@n_preallocs: Number of pre-allocated (cached) instances to reserve memory for (0 indicates no caching).
+@n_preallocs: Prior to GLib 2.10, it specified the number of pre-allocated (cached) instances to reserve memory for (0 indicates no caching). Since GLib 2.10, it is ignored, since instances are allocated with the <link linkend="glib-Memory-Slices">slice allocator</link> now.
 @instance_init: Location of the instance initialization function (optional).
 @value_type: The #GType of values conforming to this #GParamSpec
 @finalize: The instance finalization function (optional).
