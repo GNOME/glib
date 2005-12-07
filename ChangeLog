@@ -1,3 +1,9 @@
+2005-12-07  Tor Lillqvist  <tml@novell.com>
+
+	* glib-gettextize.in: Look up prefix at run-time on Win32,
+	assuming the standard directory structure with glib-gettextize in
+	$prefix/bin.
+
 2005-12-06  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gmem.h: Exempt GTK+ from the mem chunk deprecation, since
