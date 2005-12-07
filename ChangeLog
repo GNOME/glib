@@ -1,3 +1,15 @@
+2005-12-07  Martyn Russell  <martyn@imendio.com>
+
+	* docs/reference/glib/glib-sections.txt:
+	* docs/reference/glib/tmpl/linked_lists_double.sgml:
+	* docs/reference/glib/tmpl/linked_lists_single.sgml:
+	* glib/glist.[ch]: 
+	* glib/gslist.[ch]: 
+	- Added g_list_insert_sorted_with_data () and
+	g_slist_insert_sorted_with_data ().
+	- Removed the extra check in g_list_sort() and g_slist_sort() for
+	GCompareDataFunc vs. GCompareFunc.
+ 	
 2005-12-07  Tor Lillqvist  <tml@novell.com>
 
 	* glib-gettextize.in: Look up prefix at run-time on Win32,
