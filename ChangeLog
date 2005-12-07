@@ -1,3 +1,9 @@
+2005-12-07  Tor Lillqvist  <tml@novell.com>
+
+	* glib-gettextize.in: Look up prefix at run-time on Win32,
+	assuming the standard directory structure with glib-gettextize in
+	$prefix/bin.
+
 2005-12-01  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gstdio.c (g_stat): In the Win32 implementation, strip

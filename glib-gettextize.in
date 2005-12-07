@@ -43,7 +43,13 @@ try_ln_s=:
 
 # Directory where the sources are stored.
 prefix=@prefix@
-gettext_dir=@prefix@/share/glib-2.0/gettext
+case `uname` in
+MINGW32*)
+    prefix="`dirname $0`/.."
+    ;;
+esac
+
+gettext_dir="$prefix/share/glib-2.0/gettext"
 
 while test $# -gt 0; do
   case "$1" in
