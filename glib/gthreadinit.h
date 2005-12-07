@@ -42,12 +42,6 @@ void _g_utils_thread_init (void) G_GNUC_INTERNAL;
 void _g_win32_thread_init (void) G_GNUC_INTERNAL;
 #endif
 
-/* initialization functions called from glib/gthread.c.
- * may contain g_mutex_new().
- * may contain g_private_new() calls.
- */
-void _g_messages_thread_private_init (void) G_GNUC_INTERNAL;
-
 G_END_DECLS
  
 #endif /* __G_THREADINIT_H__ */
