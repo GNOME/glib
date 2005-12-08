@@ -1,3 +1,54 @@
+Overview of Changes from GLib 2.9.0 to GLib 2.9.1
+=================================================
+
+* Memory management
+ - The slice allocator is implemented [Tim Janik]
+ - g_slice_free_chain() has been renamed to 
+   g_slice_free_chain_with_offset()  [Tim, Behdad Esfahbod]
+ - Mem chunks are deprecated [Matthias Clasen]
+
+* Data structures
+ - Hash tables are refcounted, and have a boxed type [Tim]
+
+* Thread support
+ - Support for Solaris threads has been removed 
+   [Sebastian Wilhelmi, Andrew Paprocki]
+ - g_async_queue_sort(), g_async_queue_push_sorted() have 
+   been added to allow GAsyncQueue to be used as a priority 
+   queue, together with the corresponding _unlocked 
+   variants  [Martyn Russell]
+
+* GObject:
+ - The concept of a floating initial reference has been
+   moved from GtkObject to GObject [Tim]
+
+* Win32 changes:
+ - Make g_rename() replace existing files [Tor Lillqvist]
+
+* Misc new API:
+ - G_GUINT64_CONSTANT macro to define guint64 
+   constants [Andrew Paprocki]
+ - G_GNUC_WARN_UNUSED_RESULT macro to instruct the 
+   compiler to emit a warning if the value returned
+   by a function is ignored. [Arjan van de Ven, Alex Larsson]
+ - GList and GSList now have sort functions which take an
+   extra user data argument [Martyn Russell]
+ - g_param_spec_ref_sink() has been added for consistency [Tim]
+
+* $LOGNAME is respected when determining user data. [Laszlo Peter]
+
+* Other changes and bug fixes [Tim, Matthias, Behdad, 
+  Christian Persch, Benedikt Meurer, Andrew Paprocki, 
+  Kazuki Iwamoto, Alexis S. L. Carvalho, Stanislav Brabec,
+  Andreas Schwab, Kalle Vahlman]
+
+* Documentation
+ - Deprecation warnings carry version information [Matthias]
+ - The slice allocator has been documented [Matthias, Tim]
+ - Other improvements [Morten Welinder]
+
+* Bugs fixed: 321984,322133,322520,321972,323052,322568,136971,321318,321530,322956,145466,319535,321229,323178,323047,323291,323273
+
 Overview of Changes from GLib 2.8.x to GLib 2.9.0
 =================================================
 * Unicode support:
