@@ -42,39 +42,39 @@ struct _GList
 
 /* Doubly linked lists
  */
-GList*   g_list_alloc                   (void);
+GList*   g_list_alloc                   (void) G_GNUC_WARN_UNUSED_RESULT;
 void     g_list_free                    (GList            *list);
 void     g_list_free_1                  (GList            *list);
 #define  g_list_free1                   g_list_free_1
 GList*   g_list_append                  (GList            *list,
-					 gpointer          data);
+					 gpointer          data) G_GNUC_WARN_UNUSED_RESULT;
 GList*   g_list_prepend                 (GList            *list,
-					 gpointer          data);
+					 gpointer          data) G_GNUC_WARN_UNUSED_RESULT;
 GList*   g_list_insert                  (GList            *list,
 					 gpointer          data,
-					 gint              position);
+					 gint              position) G_GNUC_WARN_UNUSED_RESULT;
 GList*   g_list_insert_sorted           (GList            *list,
 					 gpointer          data,
-					 GCompareFunc      func);
+					 GCompareFunc      func) G_GNUC_WARN_UNUSED_RESULT;
 GList*   g_list_insert_sorted_with_data (GList            *list,
 					 gpointer          data,
 					 GCompareDataFunc  func,
-					 gpointer          user_data);
+					 gpointer          user_data) G_GNUC_WARN_UNUSED_RESULT;
 GList*   g_list_insert_before           (GList            *list,
 					 GList            *sibling,
-					 gpointer          data);
+					 gpointer          data) G_GNUC_WARN_UNUSED_RESULT;
 GList*   g_list_concat                  (GList            *list1,
-					 GList            *list2);
+					 GList            *list2) G_GNUC_WARN_UNUSED_RESULT;
 GList*   g_list_remove                  (GList            *list,
-					 gconstpointer     data);
+					 gconstpointer     data) G_GNUC_WARN_UNUSED_RESULT;
 GList*   g_list_remove_all              (GList            *list,
-					 gconstpointer     data);
+					 gconstpointer     data) G_GNUC_WARN_UNUSED_RESULT;
 GList*   g_list_remove_link             (GList            *list,
-					 GList            *llink);
+					 GList            *llink) G_GNUC_WARN_UNUSED_RESULT;
 GList*   g_list_delete_link             (GList            *list,
-					 GList            *link_);
-GList*   g_list_reverse                 (GList            *list);
-GList*   g_list_copy                    (GList            *list);
+					 GList            *link_) G_GNUC_WARN_UNUSED_RESULT;
+GList*   g_list_reverse                 (GList            *list) G_GNUC_WARN_UNUSED_RESULT;
+GList*   g_list_copy                    (GList            *list) G_GNUC_WARN_UNUSED_RESULT;
 GList*   g_list_nth                     (GList            *list,
 					 guint             n);
 GList*   g_list_nth_prev                (GList            *list,
@@ -95,10 +95,10 @@ void     g_list_foreach                 (GList            *list,
 					 GFunc             func,
 					 gpointer          user_data);
 GList*   g_list_sort                    (GList            *list,
-					 GCompareFunc      compare_func);
+					 GCompareFunc      compare_func) G_GNUC_WARN_UNUSED_RESULT;
 GList*   g_list_sort_with_data          (GList            *list,
 					 GCompareDataFunc  compare_func,
-					 gpointer          user_data);
+					 gpointer          user_data)  G_GNUC_WARN_UNUSED_RESULT;
 gpointer g_list_nth_data                (GList            *list,
 					 guint             n);
 

@@ -1,3 +1,10 @@
+2005-12-09  Alexander Larsson  <alexl@redhat.com>
+
+	* glib/glist.h: 
+	* glib/gslist.h:
+	Use G_GNUC_WARN_UNUSED_RESULT on list functions that return
+	the whole list.
+
 2005-12-08  Matthias Clasen  <mclasen@redhat.com>
 
 	* NEWS: Updates
