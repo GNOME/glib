@@ -144,7 +144,7 @@ typedef struct {
   /* const after initialization */
   gsize         min_page_size, max_page_size;
   SliceConfig   config;
-  guint         max_slab_chunk_size_for_magazine_cache;
+  gsize         max_slab_chunk_size_for_magazine_cache;
   /* magazine cache */
   GMutex       *magazine_mutex;
   ChunkLink   **magazines;                /* array of MAX_SLAB_INDEX (allocator) */
