@@ -62,7 +62,11 @@ g_async_queue_pop
 g_async_queue_pop_unlocked
 g_async_queue_push
 g_async_queue_push_unlocked
+g_async_queue_push_sorted
+g_async_queue_push_sorted_unlocked
 g_async_queue_ref
+g_async_queue_sort
+g_async_queue_sort_unlocked
 g_async_queue_timed_pop
 g_async_queue_timed_pop_unlocked
 g_async_queue_try_pop
@@ -464,6 +468,7 @@ g_list_index
 g_list_insert
 g_list_insert_before
 g_list_insert_sorted
+g_list_insert_sorted_with_data
 g_list_last
 g_list_length
 g_list_nth
@@ -868,6 +873,7 @@ g_slist_index
 g_slist_insert
 g_slist_insert_before
 g_slist_insert_sorted
+g_slist_insert_sorted_with_data
 g_slist_last
 g_slist_length
 g_slist_nth

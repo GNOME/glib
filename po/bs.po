@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.glib-2-4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-11-18 08:20-0500\n"
+"POT-Creation-Date: 2005-12-09 12:42-0500\n"
 "PO-Revision-Date: 2004-05-17 01:30+0000\n"
 "Last-Translator: Kenan Hadžiavdić <kenanh@frisurf.no>\n"
 "Language-Team: Bosnian <lokal@lugbih.org>\n"
@@ -125,72 +125,47 @@ msgstr "Neuspješno otvaranje datoteke '%s': fdopen() neuspješan: %s"
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "Neuspješno otvaranje datoteke '%s': fdopen() neuspješan: %s"
 
-#: glib/gfileutils.c:952
-#, fuzzy, c-format
-msgid "Could not change file mode: fork() failed: %s"
-msgstr "Neuspješno otvaranje datoteke '%s': fdopen() neuspješan: %s"
-
-#: glib/gfileutils.c:983
-#, fuzzy, c-format
-msgid "Could not change file mode: waitpid() failed: %s"
-msgstr "Nisam mogao dodijeliti %lu bajtova za čitanje datoteke \"%s\""
-
-#: glib/gfileutils.c:1002
-#, fuzzy, c-format
-msgid "Could not change file mode: chmod() failed: %s"
-msgstr "Neuspješno otvaranje datoteke '%s': fdopen() neuspješan: %s"
-
-#: glib/gfileutils.c:1013
-#, c-format
-msgid "Could not change file mode: Child terminated by signal: %s"
-msgstr ""
-
-#: glib/gfileutils.c:1024
-#, c-format
-msgid "Could not change file mode: Child terminated abnormally"
-msgstr ""
-
-#: glib/gfileutils.c:1058 glib/gfileutils.c:1524
+#: glib/gfileutils.c:950 glib/gfileutils.c:1415
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Neuspješno pravljenje datoteke '%s': %s"
 
-#: glib/gfileutils.c:1080
+#: glib/gfileutils.c:964
 #, fuzzy, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr "Neuspješno otvaranje datoteke '%s': fdopen() neuspješan: %s"
 
-#: glib/gfileutils.c:1105
+#: glib/gfileutils.c:989
 #, fuzzy, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "Neuspješno otvaranje datoteke '%s': fdopen() neuspješan: %s"
 
-#: glib/gfileutils.c:1124
+#: glib/gfileutils.c:1008
 #, fuzzy, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "Neuspješno otvaranje datoteke '%s': fdopen() neuspješan: %s"
 
-#: glib/gfileutils.c:1242
+#: glib/gfileutils.c:1126
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr ""
 
-#: glib/gfileutils.c:1485
+#: glib/gfileutils.c:1376
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Nevažeći šablon '%s', ne bi trebao sadržavati '%s'"
 
-#: glib/gfileutils.c:1499
+#: glib/gfileutils.c:1390
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Šablon '%s' ne završava sa XXXXXX"
 
-#: glib/gfileutils.c:1974
+#: glib/gfileutils.c:1865
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Neuspješno čitanje simboličkog linka '%s': %s"
 
-#: glib/gfileutils.c:1995
+#: glib/gfileutils.c:1886
 #, c-format
 msgid "Symbolic links not supported"
 msgstr "Simbolički linkovi nisu podržani"
@@ -225,7 +200,7 @@ msgstr "Ne mogu čitati sirovo u g_io_channel_read_to_end"
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "Neuspješno otvaranje datoteke '%s': fdopen() neuspješan: %s"
 
-#: glib/gmappedfile.c:185
+#: glib/gmappedfile.c:193
 #, fuzzy, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "Neuspješno otvaranje datoteke '%s': fdopen() neuspješan: %s"
@@ -482,18 +457,18 @@ msgstr "Tekst je bio prazan (ili je sadržavao samo prazna polja)"
 msgid "Failed to read data from child process"
 msgstr "Neuspješno čitanje podataka iz podređenog procesa"
 
-#: glib/gspawn-win32.c:291 glib/gspawn.c:1375
+#: glib/gspawn-win32.c:291 glib/gspawn.c:1364
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr ""
 "Neuspješno stvaranje cijevi za komuniciranje sa podređenim procesom (%s)"
 
-#: glib/gspawn-win32.c:329 glib/gspawn.c:1039
+#: glib/gspawn-win32.c:329 glib/gspawn.c:1028
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Neuspješno čitanje iz podređene cijevi (%s)"
 
-#: glib/gspawn-win32.c:355 glib/gspawn.c:1244
+#: glib/gspawn-win32.c:355 glib/gspawn.c:1233
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Neuspješan prelazak u direktorij '%s' (%s)"
@@ -539,49 +514,49 @@ msgstr ""
 "Neočekivana greška u g_io_channel_win32_poll() tokom čitanja podataka iz "
 "podređenog procesa"
 
-#: glib/gspawn.c:179
+#: glib/gspawn.c:168
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "Neuspješno čitanje podataka iz podređenog procesa (%s)"
 
-#: glib/gspawn.c:311
+#: glib/gspawn.c:300
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr ""
 "Neočekivana greška u select() tokom čitanja podataka iz podređenog procesa (%"
 "s)"
 
-#: glib/gspawn.c:394
+#: glib/gspawn.c:383
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Neočekivana greška u waitpid() (%s)"
 
-#: glib/gspawn.c:1104
+#: glib/gspawn.c:1093
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Neuspješan fork (%s)"
 
-#: glib/gspawn.c:1254
+#: glib/gspawn.c:1243
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Neuspješno izvršavanje podređenog procesa \"%s\" (%s)"
 
-#: glib/gspawn.c:1264
+#: glib/gspawn.c:1253
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Neuspješno preusmjeravanje ulaza ili izlaza podređenog procesa (%s)"
 
-#: glib/gspawn.c:1273
+#: glib/gspawn.c:1262
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Neuspješno pokretanje fork() za podređeni proces (%s)"
 
-#: glib/gspawn.c:1281
+#: glib/gspawn.c:1270
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Nepoznata greška tokom izvršenja podređenog procesa \"%s\""
 
-#: glib/gspawn.c:1303
+#: glib/gspawn.c:1292
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Neuspješno čitanje dovoljno podataka iz podređene pid cijevi (%s)"
@@ -735,6 +710,18 @@ msgstr ""
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr ""
+
+#, fuzzy
+#~ msgid "Could not change file mode: fork() failed: %s"
+#~ msgstr "Neuspješno otvaranje datoteke '%s': fdopen() neuspješan: %s"
+
+#, fuzzy
+#~ msgid "Could not change file mode: waitpid() failed: %s"
+#~ msgstr "Nisam mogao dodijeliti %lu bajtova za čitanje datoteke \"%s\""
+
+#, fuzzy
+#~ msgid "Could not change file mode: chmod() failed: %s"
+#~ msgstr "Neuspješno otvaranje datoteke '%s': fdopen() neuspješan: %s"
 
 #~ msgid "Conversion from character set `%s' to `%s' is not supported"
 #~ msgstr "Pretvaranje iz skupa znakova `%s' u `%s' nije podržano"

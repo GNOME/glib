@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-11-18 08:20-0500\n"
+"POT-Creation-Date: 2005-12-09 12:42-0500\n"
 "PO-Revision-Date: 2005-07-28 20:55+0300\n"
 "Last-Translator: Ilkka Tuohela <hile@iki.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
@@ -129,80 +129,50 @@ msgstr ""
 "Tiedoston \"%s\" uudelleen nimeäminen nimelle \"%s\" epäonnistui: g_rename() "
 "epäonnistui: %s"
 
-#: glib/gfileutils.c:952
-#, c-format
-msgid "Could not change file mode: fork() failed: %s"
-msgstr "Tiedoston oikeuksien muuttaminen epäonnistui: fork() epäonnistui: %s"
-
-#: glib/gfileutils.c:983
-#, c-format
-msgid "Could not change file mode: waitpid() failed: %s"
-msgstr ""
-"Tiedoston oikeuksien muuttaminen epäonnistui: waitpid() epäonnistui: %s"
-
-#: glib/gfileutils.c:1002
-#, c-format
-msgid "Could not change file mode: chmod() failed: %s"
-msgstr "Tiedoston oikeuksien muuttaminen epäonnistui: chmod() epäonnistui: %s"
-
-#: glib/gfileutils.c:1013
-#, c-format
-msgid "Could not change file mode: Child terminated by signal: %s"
-msgstr ""
-"Tiedoston oikeuksien muuttaminen epäonnistui: lapsiprosessi keskeytettiin "
-"signaaliin: %s"
-
-#: glib/gfileutils.c:1024
-#, c-format
-msgid "Could not change file mode: Child terminated abnormally"
-msgstr ""
-"Tiedoston oikeuksien muuttaminen epäonnistui: lapsiprosessi keskeytti "
-"odottamatta."
-
-#: glib/gfileutils.c:1058 glib/gfileutils.c:1524
+#: glib/gfileutils.c:950 glib/gfileutils.c:1415
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Tiedoston \"%s\" luominen epäonnistui: %s"
 
-#: glib/gfileutils.c:1080
+#: glib/gfileutils.c:964
 #, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr ""
 "Tiedoston \"%s\" avaaminen kirjoitettavaksi epäonnistui: fdopen() "
 "epäonnistui: %s"
 
-#: glib/gfileutils.c:1105
+#: glib/gfileutils.c:989
 #, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "Tiedoston \"%s\" kirjoittaminen epäonnistui: fwrite() epäonnistui: %s"
 
-#: glib/gfileutils.c:1124
+#: glib/gfileutils.c:1008
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "Tiedoston \"%s\" sulkeminen epäonnistui: fclose() epäonnistui: %s"
 
-#: glib/gfileutils.c:1242
+#: glib/gfileutils.c:1126
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr ""
 "Olemassaolevan tiedoston \"%s\" poisto epäonnistui: g_unlink epäonnistui: %s"
 
-#: glib/gfileutils.c:1485
+#: glib/gfileutils.c:1376
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Malli \"%s\" on virheellinen, se ei saa sisältää merkkijonoa \"%s\""
 
-#: glib/gfileutils.c:1499
+#: glib/gfileutils.c:1390
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Malli \"%s\" ei pääty merkkijonoon XXXXXX"
 
-#: glib/gfileutils.c:1974
+#: glib/gfileutils.c:1865
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Symbolisen linkin \"%s\" lukeminen epäonnistui: %s"
 
-#: glib/gfileutils.c:1995
+#: glib/gfileutils.c:1886
 #, c-format
 msgid "Symbolic links not supported"
 msgstr "Symbolisia linkkejä ei tueta"
@@ -238,7 +208,7 @@ msgstr "Funktiossa g_io_channel_read_to_end ei voi suorittaa raakalukemista"
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "Tiedoston \"%s\" avaaminen epäonnistui: open() epäonnistui: %s"
 
-#: glib/gmappedfile.c:185
+#: glib/gmappedfile.c:193
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "Tiedoston \"%s\" mappaaminen epäonnistui: mmap() epäonnistui: %s"
@@ -502,18 +472,18 @@ msgstr "Teksti oli tyhjä (tai sisälsi vain tyhjiä merkkejä)"
 msgid "Failed to read data from child process"
 msgstr "Datan lukeminen lapsiprosessilta epäonnistui"
 
-#: glib/gspawn-win32.c:291 glib/gspawn.c:1375
+#: glib/gspawn-win32.c:291 glib/gspawn.c:1364
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr ""
 "Putken luominen lapsiprosessin kanssa viestintää varten epäonnistui (%s)"
 
-#: glib/gspawn-win32.c:329 glib/gspawn.c:1039
+#: glib/gspawn-win32.c:329 glib/gspawn.c:1028
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Lukeminen lapsiprosessin putkesta epäonnistui (%s)"
 
-#: glib/gspawn-win32.c:355 glib/gspawn.c:1244
+#: glib/gspawn-win32.c:355 glib/gspawn.c:1233
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Hakemistoon \"%s\" siirtyminen epäonnistui (%s)"
@@ -559,48 +529,48 @@ msgstr ""
 "Odottamaton virhe funktiossa g_io_channel_win32_poll() luettaessa dataa "
 "lapsiprosessilta"
 
-#: glib/gspawn.c:179
+#: glib/gspawn.c:168
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "Datan lukeminen lapsiprosessilta epäonnistui (%s)"
 
-#: glib/gspawn.c:311
+#: glib/gspawn.c:300
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr ""
 "Odottamaton virhe funktiossa select() lapsiprosessilta dataa luettaessa (%s)"
 
-#: glib/gspawn.c:394
+#: glib/gspawn.c:383
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Odottamaton virhe funktiossa waitpid() (%s)"
 
-#: glib/gspawn.c:1104
+#: glib/gspawn.c:1093
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Haarauttaminen epäonnistui (%s)"
 
-#: glib/gspawn.c:1254
+#: glib/gspawn.c:1243
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Lapsiprosessin \"%s\" käynnistäminen epäonnistui (%s)"
 
-#: glib/gspawn.c:1264
+#: glib/gspawn.c:1253
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Lapsiprosessin tulosteen tai syötteen uudelleenohjaus epäonnistui (%s)"
 
-#: glib/gspawn.c:1273
+#: glib/gspawn.c:1262
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Lapsiprosessin haarauttaminen epäonnistui (%s)"
 
-#: glib/gspawn.c:1281
+#: glib/gspawn.c:1270
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Tuntematon virhe käynnistettäessä lapsiprosessia \"%s\""
 
-#: glib/gspawn.c:1303
+#: glib/gspawn.c:1292
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Lapsiprosessin pid-putkesta ei voitu lukea riittävästi dataa (%s)"
@@ -760,6 +730,28 @@ msgstr "Kokonaisluku \"%s\" on sallitun alueen ulkopuolella"
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Arvoa \"%s\" ei voida turkita totuusarvoksi."
+
+#~ msgid "Could not change file mode: fork() failed: %s"
+#~ msgstr ""
+#~ "Tiedoston oikeuksien muuttaminen epäonnistui: fork() epäonnistui: %s"
+
+#~ msgid "Could not change file mode: waitpid() failed: %s"
+#~ msgstr ""
+#~ "Tiedoston oikeuksien muuttaminen epäonnistui: waitpid() epäonnistui: %s"
+
+#~ msgid "Could not change file mode: chmod() failed: %s"
+#~ msgstr ""
+#~ "Tiedoston oikeuksien muuttaminen epäonnistui: chmod() epäonnistui: %s"
+
+#~ msgid "Could not change file mode: Child terminated by signal: %s"
+#~ msgstr ""
+#~ "Tiedoston oikeuksien muuttaminen epäonnistui: lapsiprosessi keskeytettiin "
+#~ "signaaliin: %s"
+
+#~ msgid "Could not change file mode: Child terminated abnormally"
+#~ msgstr ""
+#~ "Tiedoston oikeuksien muuttaminen epäonnistui: lapsiprosessi keskeytti "
+#~ "odottamatta."
 
 #~ msgid "Conversion from character set `%s' to `%s' is not supported"
 #~ msgstr "Muunnos merkistöstä \"%s\" merkistöön \"%s\" ei ole tuettu"

@@ -100,6 +100,17 @@ an asynchronous queue. It should only be accessed through the
 @data: 
 
 
+<!-- ##### FUNCTION g_async_queue_push_sorted ##### -->
+<para>
+
+</para>
+
+@queue: 
+@data: 
+@func: 
+@user_data: 
+
+
 <!-- ##### FUNCTION g_async_queue_pop ##### -->
 
 
@@ -127,6 +138,16 @@ an asynchronous queue. It should only be accessed through the
 
 @queue: 
 @Returns: 
+
+
+<!-- ##### FUNCTION g_async_queue_sort ##### -->
+<para>
+
+</para>
+
+@queue: 
+@func: 
+@user_data: 
 
 
 <!-- ##### FUNCTION g_async_queue_lock ##### -->
@@ -160,6 +181,17 @@ an asynchronous queue. It should only be accessed through the
 @data: 
 
 
+<!-- ##### FUNCTION g_async_queue_push_sorted_unlocked ##### -->
+<para>
+
+</para>
+
+@queue: 
+@data: 
+@func: 
+@user_data: 
+
+
 <!-- ##### FUNCTION g_async_queue_pop_unlocked ##### -->
 
 
@@ -187,5 +219,15 @@ an asynchronous queue. It should only be accessed through the
 
 @queue: 
 @Returns: 
+
+
+<!-- ##### FUNCTION g_async_queue_sort_unlocked ##### -->
+<para>
+
+</para>
+
+@queue: 
+@func: 
+@user_data: 
 
 

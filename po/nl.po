@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib (HEAD)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-11-18 08:20-0500\n"
+"POT-Creation-Date: 2005-12-09 12:42-0500\n"
 "PO-Revision-Date: 2005-11-01 04:14+0100\n"
 "Last-Translator: Tino Meinen <a.t.meinen@chello.nl>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -129,74 +129,48 @@ msgstr "Openen van bestand '%s' mislukt: fdopen() mislukte: %s"
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "Hernoemen van bestand '%s' naar '%s' mislukt: g_rename() mislukte: %s"
 
-#: glib/gfileutils.c:952
-#, c-format
-msgid "Could not change file mode: fork() failed: %s"
-msgstr "Kon bestandsmodus niet wijzigen: fork() mislukte: %s"
-
-# Allocatie van %lu bytes om bestand "%s" te lezen is mislukt<
-#: glib/gfileutils.c:983
-#, c-format
-msgid "Could not change file mode: waitpid() failed: %s"
-msgstr "Kon bestandsmodus niet wijzigen: waitpid() mislukte: %s"
-
-#: glib/gfileutils.c:1002
-#, c-format
-msgid "Could not change file mode: chmod() failed: %s"
-msgstr "Kon bestandsmodus niet wijzigen: chmod() mislukte: %s"
-
-#: glib/gfileutils.c:1013
-#, c-format
-msgid "Could not change file mode: Child terminated by signal: %s"
-msgstr "Kon bestandsmodus niet wijzigen: dochter afgebroken door signaal: %s"
-
-#: glib/gfileutils.c:1024
-#, c-format
-msgid "Could not change file mode: Child terminated abnormally"
-msgstr "Kon bestandsmodus niet wijzigen: dochter is abnormaal afgebroken"
-
-#: glib/gfileutils.c:1058 glib/gfileutils.c:1524
+#: glib/gfileutils.c:950 glib/gfileutils.c:1415
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Aanmaken van bestand '%s' mislukt: %s"
 
-#: glib/gfileutils.c:1080
+#: glib/gfileutils.c:964
 #, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr "Openen van bestand '%s' voor schrijven mislukt: fdopen() mislukte: %s"
 
-#: glib/gfileutils.c:1105
+#: glib/gfileutils.c:989
 #, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "Schrijven van bestand '%s' mislukt: fwrite() mislukte: %s"
 
-#: glib/gfileutils.c:1124
+#: glib/gfileutils.c:1008
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "Sluiten van bestand '%s' mislukt: fclose() mislukte: %s"
 
 # bestaand bestand is een beetje dubbelop
-#: glib/gfileutils.c:1242
+#: glib/gfileutils.c:1126
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "Bestand '%s' kon niet worden verwijderd: g_unlink() mislukte: %s"
 
-#: glib/gfileutils.c:1485
+#: glib/gfileutils.c:1376
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Sjabloon '%s' is ongeldig, het zou geen '%s' moeten bevatten"
 
-#: glib/gfileutils.c:1499
+#: glib/gfileutils.c:1390
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Sjabloon '%s' eindigt niet op XXXXXX"
 
-#: glib/gfileutils.c:1974
+#: glib/gfileutils.c:1865
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Lezen van symbolische link '%s' mislukt: %s"
 
-#: glib/gfileutils.c:1995
+#: glib/gfileutils.c:1886
 #, c-format
 msgid "Symbolic links not supported"
 msgstr "Symbolische links niet ondersteund"
@@ -236,7 +210,7 @@ msgstr ""
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "Openen van bestand '%s' mislukt: open() mislukte: %s"
 
-#: glib/gmappedfile.c:185
+#: glib/gmappedfile.c:193
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "Openen van bestand '%s' mislukt: mmap() mislukte: %s"
@@ -499,17 +473,17 @@ msgstr "De tekst was leeg (of bevatte slechts lege ruimte)"
 msgid "Failed to read data from child process"
 msgstr "Lezen van data van dochterprocessen mislukt"
 
-#: glib/gspawn-win32.c:291 glib/gspawn.c:1375
+#: glib/gspawn-win32.c:291 glib/gspawn.c:1364
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Aanmaken van pijp voor het communiceren met dochterproces mislukt (%s)"
 
-#: glib/gspawn-win32.c:329 glib/gspawn.c:1039
+#: glib/gspawn-win32.c:329 glib/gspawn.c:1028
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Lezen van pijp naar dochter (%s) mislukt"
 
-#: glib/gspawn-win32.c:355 glib/gspawn.c:1244
+#: glib/gspawn-win32.c:355 glib/gspawn.c:1233
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Veranderen naar map '%s' is mislukt (%s)"
@@ -556,52 +530,52 @@ msgstr ""
 "Onverwachte fout in g_io_channel_win32_poll() bij het lezen van data van een "
 "dochterproces"
 
-#: glib/gspawn.c:179
+#: glib/gspawn.c:168
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "Lezen van data van dochterproces mislukt (%s)"
 
-#: glib/gspawn.c:311
+#: glib/gspawn.c:300
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr ""
 "Onverwachte fout in select() bij het lezen van data van een dochterproces (%"
 "s)"
 
-#: glib/gspawn.c:394
+#: glib/gspawn.c:383
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Onverwachte fout in waitpid() (%s)"
 
 # fork is een functienaam, mag niet met hoofdletter beginnen
-#: glib/gspawn.c:1104
+#: glib/gspawn.c:1093
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "fork mislukt (%s)"
 
-#: glib/gspawn.c:1254
+#: glib/gspawn.c:1243
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Uitvoeren van dochterproces \"%s\" mislukt (%s)"
 
 # was eerst: herleiden
-#: glib/gspawn.c:1264
+#: glib/gspawn.c:1253
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr ""
 "Doorsluizen van invoer of uitvoer van een dochterproces is mislukt (%s)"
 
-#: glib/gspawn.c:1273
+#: glib/gspawn.c:1262
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Het forken van een dochterproces is mislukt (%s)"
 
-#: glib/gspawn.c:1281
+#: glib/gspawn.c:1270
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Onbekende fout bij het uitvoeren van dochterproces \"%s\""
 
-#: glib/gspawn.c:1303
+#: glib/gspawn.c:1292
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Lezen van voldoende data van pijp dochter-pid mislukt (%s)"
@@ -763,6 +737,23 @@ msgstr "Gehele getalswaarde '%s' valt buiten bereik"
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Waarde '%s' kan niet geïnterpreteerd worden als een booleese."
+
+#~ msgid "Could not change file mode: fork() failed: %s"
+#~ msgstr "Kon bestandsmodus niet wijzigen: fork() mislukte: %s"
+
+# Allocatie van %lu bytes om bestand "%s" te lezen is mislukt<
+#~ msgid "Could not change file mode: waitpid() failed: %s"
+#~ msgstr "Kon bestandsmodus niet wijzigen: waitpid() mislukte: %s"
+
+#~ msgid "Could not change file mode: chmod() failed: %s"
+#~ msgstr "Kon bestandsmodus niet wijzigen: chmod() mislukte: %s"
+
+#~ msgid "Could not change file mode: Child terminated by signal: %s"
+#~ msgstr ""
+#~ "Kon bestandsmodus niet wijzigen: dochter afgebroken door signaal: %s"
+
+#~ msgid "Could not change file mode: Child terminated abnormally"
+#~ msgstr "Kon bestandsmodus niet wijzigen: dochter is abnormaal afgebroken"
 
 # omzetten/conversie
 #~ msgid "Conversion from character set `%s' to `%s' is not supported"

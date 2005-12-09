@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-11-18 08:20-0500\n"
+"POT-Creation-Date: 2005-12-09 12:42-0500\n"
 "PO-Revision-Date: 2005-07-08 09:52+0530\n"
 "Last-Translator: Amanpreet Singh Alam <amanpreetalam@yahoo.com>\n"
 "Language-Team: Punjabi <fedora-transa-pa@redhat.com>\n"
@@ -132,72 +132,47 @@ msgstr "ਫਾਇਲ '%s': ਖੋਲ੍ਹਣ ਵਿੱਚ ਅਸਫਲਤਾ fd
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "ਫਾਇਲ '%s' ਨੂੰ '%s' ਦੇ ਤੌਰ 'ਤੇ ਨਾਂ-ਬਦਲਣ ਲਈ ਫੇਲ: g_rename() ਫੇਲ ਹੋਇਆ: %s"
 
-#: glib/gfileutils.c:952
-#, c-format
-msgid "Could not change file mode: fork() failed: %s"
-msgstr "ਫਾਇਲ ਢੰਗ ਬਦਲਿਆ ਨਹੀਂ ਜਾ ਸਕਿਆ: fork() ਫੇਲ ਹੋਇਆ: %s"
-
-#: glib/gfileutils.c:983
-#, c-format
-msgid "Could not change file mode: waitpid() failed: %s"
-msgstr "ਫਾਇਲ ਢੰਗ ਬਦਲਿਆ ਨਹੀਂ ਜਾ ਸਕਿਆ: waitpid() ਫੇਲ ਹੋਇਆ: %s"
-
-#: glib/gfileutils.c:1002
-#, c-format
-msgid "Could not change file mode: chmod() failed: %s"
-msgstr "ਫਾਇਲ ਢੰਗ ਬਦਲਿਆ ਨਹੀਂ ਜਾ ਸਕਿਆ: chmod() ਫੇਲ ਹੋਇਆ: %s"
-
-#: glib/gfileutils.c:1013
-#, c-format
-msgid "Could not change file mode: Child terminated by signal: %s"
-msgstr "ਫਾਇਲ ਢੰਗ ਬਦਲਿਆ ਨਹੀਂ ਜਾ ਸਕਿਆ: ਚਾਈਲਡ (Child) ਸੰਕੇਤ ਨਾਲ ਖਤਮ: %s"
-
-#: glib/gfileutils.c:1024
-#, c-format
-msgid "Could not change file mode: Child terminated abnormally"
-msgstr "ਫਾਇਲ ਢੰਗ ਬਦਲਿਆ ਨਹੀਂ ਜਾ ਸਕਿਆ: ਚਾਈਲਡ ਗਲਤ ਢੰਗ ਨਾਲ ਬੰਦ ਹੋ ਗਿਆ"
-
-#: glib/gfileutils.c:1058 glib/gfileutils.c:1524
+#: glib/gfileutils.c:950 glib/gfileutils.c:1415
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "ਫਾਇਲ %s' ਬਣਾਉਣ ਵਿੱਚ ਗਲਤੀ: %s"
 
-#: glib/gfileutils.c:1080
+#: glib/gfileutils.c:964
 #, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr "ਫਾਇਲ '%s' ਨੂੰ ਲਿਖਣ ਲਈ ਖੋਲਣ 'ਚ ਅਸਫ਼ਲ: fdopen() ਫੇਲ ਹੋਇਆ: %s"
 
-#: glib/gfileutils.c:1105
+#: glib/gfileutils.c:989
 #, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "ਫਾਇਲ '%s' ਨੂੰ ਲਿਖਣ ਲਈ ਫੇਲ: fwrite() ਫੇਲ ਹੋਇਆ: %s"
 
-#: glib/gfileutils.c:1124
+#: glib/gfileutils.c:1008
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "ਫਾਇਲ '%s' ਨੂੰ ਬੰਦ ਕਰਨ 'ਚ ਅਸਫ਼ਲ: fdopen() ਫੇਲ ਹੋਇਆ: %s"
 
-#: glib/gfileutils.c:1242
+#: glib/gfileutils.c:1126
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "ਮੌਜੂਦਾ ਫਾਇਲ '%s' ਨੂੰ ਹਟਾਇਆ ਨਹੀਂ ਜਾ ਸਕਿਆ: g_unlink() ਫੇਲ ਹੋਇਆ: %s"
 
-#: glib/gfileutils.c:1485
+#: glib/gfileutils.c:1376
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "ਨਮੂਨਾ %s ਸਹੀ ਨਹੀ ਹੈ, ਇਸ ਕੋਲ %s ਨਹੀ ਹੈ"
 
-#: glib/gfileutils.c:1499
+#: glib/gfileutils.c:1390
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "ਨਮੂਨਾ '%s' XXXXXX ਨਾਲ ਖਤਮ ਨਹੀ ਹੋ ਰਿਹਾ ਹੈ"
 
-#: glib/gfileutils.c:1974
+#: glib/gfileutils.c:1865
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "ਚਿੰਨ੍ਹ ਸਬੰਧ %s' ਖੋਲਣ ਵਿੱਚ ਗਲਤੀ: %s"
 
-#: glib/gfileutils.c:1995
+#: glib/gfileutils.c:1886
 #, c-format
 msgid "Symbolic links not supported"
 msgstr "ਚਿੰਨ੍ਹ ਸਬੰਧ ਸਹਾਇਤਾ ਪ੍ਰਾਪਤ ਨਹੀ ਹਨ"
@@ -232,7 +207,7 @@ msgstr "g_io_channel_read_to_end ਵਿੱਚ ਪਡ਼ਿਆ ਨਹੀਂ ਜ�
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "ਫਾਇਲ '%s': ਖੋਲ੍ਹਣ ਵਿੱਚ ਫੇਲ ਹੋਇਆ: fdopen() ਫੇਲ: %s"
 
-#: glib/gmappedfile.c:185
+#: glib/gmappedfile.c:193
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "ਫਾਇਲ '%s' ਮਿਲਾਉਣ ਵਿੱਚ ਫੇਲ: mmap() ਫੇਲ ਹੋਇਆ: %s"
@@ -477,17 +452,17 @@ msgstr "ਅੱਖਰੀ ਪਾਠ ਖਾਲੀ ਸੀ (ਜਾਂ ਸਾਫ ਥ�
 msgid "Failed to read data from child process"
 msgstr "ਅਗਲੇਰੀ ਕਿਰਿਆਵਾਂ ਤੋ ਡਾਟਾ ਵੇਖਣ ਵਿੱਚ ਅਸਫਲ ਹੈ"
 
-#: glib/gspawn-win32.c:291 glib/gspawn.c:1375
+#: glib/gspawn-win32.c:291 glib/gspawn.c:1364
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "ਅਗਲੀ ਕਿਰਿਆ (%s) ਨਾਲ ਸੰਚਾਰ ਲਈ ਪਾਇਪ ਬਣਾਉਣ ਵਿੱਚ ਅਸਫਲ ਹੈ"
 
-#: glib/gspawn-win32.c:329 glib/gspawn.c:1039
+#: glib/gspawn-win32.c:329 glib/gspawn.c:1028
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "ਅਗਲੀ ਕਿਰਿਆ (%s) ਤੋ ਡਾਟਾ ਖੋਲਣ ਵਿੱਚ ਅਸਫਲ ਹੈ"
 
-#: glib/gspawn-win32.c:355 glib/gspawn.c:1244
+#: glib/gspawn-win32.c:355 glib/gspawn.c:1233
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "ਡਾਇਕਰੈਕਟਰੀ '%s' ਬਦਲਣ ਵਿੱਚ ਅਸਫਲ (%s)"
@@ -532,47 +507,47 @@ msgid ""
 msgstr ""
 "ਅਣਪਛਾਤੀ ਗਲਤੀ - g_io_channel_win32_poll() ਅਗਲੇਰੀਆਂ ਕਿਰਿਆਵਾਂ ਤੋ ਡਾਟਾ ਖੋਲਣ ਵਿੱਚ ਅਸਫਲ ਹੈ"
 
-#: glib/gspawn.c:179
+#: glib/gspawn.c:168
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "ਅਗਲੀ ਕਿਰਿਆ (%s) ਤੋ ਡਾਟਾ ਖੋਲਣ ਵਿੱਚ ਅਸਫਲ ਹੈ"
 
-#: glib/gspawn.c:311
+#: glib/gspawn.c:300
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr "ਅਣਪਛਾਤੀ ਗਲਤੀ --ਅਗਲੀ ਕਿਰਿਆ(%s) ਤੋ ਡਾਟਾ ਖੋਲਣ ਲਈ select() ਵਿੱਚ ਗਲਤੀ ਹੈ"
 
-#: glib/gspawn.c:394
+#: glib/gspawn.c:383
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "waitpid() (%s) ਵਿੱਚ ਅਣਪਛਾਤੀ ਗਲਤੀ ਹੈ"
 
-#: glib/gspawn.c:1104
+#: glib/gspawn.c:1093
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "(%s) ਸ਼ਾਖਾਵਾਂ ਵਿੱਚ ਵੰਡਣ ਵਿੱਚ ਅਸਫਲ ਹੈ"
 
-#: glib/gspawn.c:1254
+#: glib/gspawn.c:1243
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "ਅਗਲੀ ਕਿਰਿਆ \"%s\" ਸ਼ੁਰੂ ਕਰਨ ਵਿੱਚ ਅਸਫਲ ਹੈ (%s)"
 
-#: glib/gspawn.c:1264
+#: glib/gspawn.c:1253
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "ਅਗਲੀ ਕਿਰਿਆ (%s) ਦੇ ਨਤੀਜੇ ਨੂੰ ਵਾਪਿਸ ਕਰਨ ਵਿੱਚ ਅਸਫਲ ਹੈ"
 
-#: glib/gspawn.c:1273
+#: glib/gspawn.c:1262
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "ਅਗਲੀ ਕਿਰਿਆ (%s) ਨੂੰ ਵੰਡ ਵਿੱਚ ਅਸਫਲ ਹੈ"
 
-#: glib/gspawn.c:1281
+#: glib/gspawn.c:1270
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "ਅਗਲੀ ਕਿਰਿਆ \"%s\" ਨੂੰ ਚਾਲੂ ਕਰਨ ਵਿੱਚ ਅਸਫਲ ਹੈ"
 
-#: glib/gspawn.c:1303
+#: glib/gspawn.c:1292
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "ਅਗਲੀ ਕਿਰਿਆ ਪਾਇਪ (%s) ਤੋ ਚਾਹੀਦਾ ਡਾਟਾ ਖੋਲਣ ਵਿੱਚ ਅਸਫਲ ਹੈ "
@@ -727,6 +702,21 @@ msgstr "ਪੂਰਨ ਅੰਕ '%s' ਸੀਮਾ ਤੋਂ ਬਾਹਰ ਹੈ"
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "ਮੁੱਲ '%s' ਨੂੰ ਬੂਲੀਅਮ ਵਾਂਗ ਇੰਟਰਪਰੇਟ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ ਹੈ।"
+
+#~ msgid "Could not change file mode: fork() failed: %s"
+#~ msgstr "ਫਾਇਲ ਢੰਗ ਬਦਲਿਆ ਨਹੀਂ ਜਾ ਸਕਿਆ: fork() ਫੇਲ ਹੋਇਆ: %s"
+
+#~ msgid "Could not change file mode: waitpid() failed: %s"
+#~ msgstr "ਫਾਇਲ ਢੰਗ ਬਦਲਿਆ ਨਹੀਂ ਜਾ ਸਕਿਆ: waitpid() ਫੇਲ ਹੋਇਆ: %s"
+
+#~ msgid "Could not change file mode: chmod() failed: %s"
+#~ msgstr "ਫਾਇਲ ਢੰਗ ਬਦਲਿਆ ਨਹੀਂ ਜਾ ਸਕਿਆ: chmod() ਫੇਲ ਹੋਇਆ: %s"
+
+#~ msgid "Could not change file mode: Child terminated by signal: %s"
+#~ msgstr "ਫਾਇਲ ਢੰਗ ਬਦਲਿਆ ਨਹੀਂ ਜਾ ਸਕਿਆ: ਚਾਈਲਡ (Child) ਸੰਕੇਤ ਨਾਲ ਖਤਮ: %s"
+
+#~ msgid "Could not change file mode: Child terminated abnormally"
+#~ msgstr "ਫਾਇਲ ਢੰਗ ਬਦਲਿਆ ਨਹੀਂ ਜਾ ਸਕਿਆ: ਚਾਈਲਡ ਗਲਤ ਢੰਗ ਨਾਲ ਬੰਦ ਹੋ ਗਿਆ"
 
 #~ msgid "Conversion from character set `%s' to `%s' is not supported"
 #~ msgstr "ਇਸ ਅੱਖਰ ਸੂਚੀ %s' ਤੋ `%s' ਬਦਲਾਉ ਸੰਭਵ ਨਹੀ ਹੈ"

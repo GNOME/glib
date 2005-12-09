@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-11-18 08:20-0500\n"
+"POT-Creation-Date: 2005-12-09 12:42-0500\n"
 "PO-Revision-Date: 2005-08-14 20:38+0300\n"
 "Last-Translator: Mişu Moldovan <dumol@gnome.ro>\n"
 "Language-Team: Română <gnomero-list@lists.sourceforge.net>\n"
@@ -125,75 +125,48 @@ msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr ""
 "Nu am reuşit să redenumesc fişierul „%s” în „%s”: g_rename() a eşuat: %s"
 
-#: glib/gfileutils.c:952
-#, c-format
-msgid "Could not change file mode: fork() failed: %s"
-msgstr "Nu am reuşit să schimb modul fişierului: fork() a eşuat: %s"
-
-#: glib/gfileutils.c:983
-#, c-format
-msgid "Could not change file mode: waitpid() failed: %s"
-msgstr "Nu am reuşit să schimb modul fişierului: waitpid() a eşuat: %s"
-
-#: glib/gfileutils.c:1002
-#, c-format
-msgid "Could not change file mode: chmod() failed: %s"
-msgstr "Nu am reuşit să schimb modul fişierului: chmod() a eşuat: %s"
-
-#: glib/gfileutils.c:1013
-#, c-format
-msgid "Could not change file mode: Child terminated by signal: %s"
-msgstr ""
-"Nu am reuşit să schimb modul fişierului: proces copil terminat cu semnalul: %"
-"s"
-
-#: glib/gfileutils.c:1024
-#, c-format
-msgid "Could not change file mode: Child terminated abnormally"
-msgstr "Nu am reuşit să schimb modul fişierului: proces copil terminat anormal"
-
-#: glib/gfileutils.c:1058 glib/gfileutils.c:1524
+#: glib/gfileutils.c:950 glib/gfileutils.c:1415
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Nu am reuşit să creez fişierul „%s”: %s"
 
-#: glib/gfileutils.c:1080
+#: glib/gfileutils.c:964
 #, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr ""
 "Nu am reuşit să deschid fişierul „%s” pentru scriere: fdopen() a eşuat: %s"
 
-#: glib/gfileutils.c:1105
+#: glib/gfileutils.c:989
 #, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "Nu am reuşit să scriu fişierul „%s”: fwrite() a eşuat: %s"
 
-#: glib/gfileutils.c:1124
+#: glib/gfileutils.c:1008
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "Nu am reuşit să închid fişierul „%s”: fclose() a eşuat: %s"
 
-#: glib/gfileutils.c:1242
+#: glib/gfileutils.c:1126
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "Fişierul existent „%s” nu a putut fi şters: g_unlink() a eşuat: %s"
 
-#: glib/gfileutils.c:1485
+#: glib/gfileutils.c:1376
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Şablonul „%s” este invalid, n-ar trebui să conţină un „%s”"
 
-#: glib/gfileutils.c:1499
+#: glib/gfileutils.c:1390
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Şablonul „%s” nu se termină cu XXXXXX"
 
-#: glib/gfileutils.c:1974
+#: glib/gfileutils.c:1865
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Nu am reuşit să citesc legătura simbolică „%s”: %s"
 
-#: glib/gfileutils.c:1995
+#: glib/gfileutils.c:1886
 #, c-format
 msgid "Symbolic links not supported"
 msgstr "Legăturile simbolice nu sunt suportate"
@@ -228,7 +201,7 @@ msgstr "Nu am reuşit să citesc datele brute din g_io_channel_read_to_end"
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "Nu am reuşit să deschid fişierul „%s”: open() a eşuat: %s"
 
-#: glib/gmappedfile.c:185
+#: glib/gmappedfile.c:193
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "Nu am reuşit să mapez fişierul „%s”: mmap() a eşuat: %s"
@@ -493,19 +466,19 @@ msgstr "Textul era gol (sau conţinea doar spaţiu gol)"
 msgid "Failed to read data from child process"
 msgstr "Nu am reuşit să citesc datele de la procesul copil"
 
-#: glib/gspawn-win32.c:291 glib/gspawn.c:1375
+#: glib/gspawn-win32.c:291 glib/gspawn.c:1364
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr ""
 "Nu am reuşit să creez conectorul „pipe” pentru a comunica cu procesul copil "
 "(%s)"
 
-#: glib/gspawn-win32.c:329 glib/gspawn.c:1039
+#: glib/gspawn-win32.c:329 glib/gspawn.c:1028
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Nu am reuşit să citesc datele din conectorul „pipe” copil (%s)"
 
-#: glib/gspawn-win32.c:355 glib/gspawn.c:1244
+#: glib/gspawn-win32.c:355 glib/gspawn.c:1233
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Nu am reuşit să schimb în directorul „%s” (%s)"
@@ -551,48 +524,48 @@ msgstr ""
 "Eroare neaşteptată în g_io_channel_win32_poll() la citirea datelor de la "
 "procesul copil"
 
-#: glib/gspawn.c:179
+#: glib/gspawn.c:168
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "Nu am reuşit să citesc datele din procesul copil (%s)"
 
-#: glib/gspawn.c:311
+#: glib/gspawn.c:300
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr ""
 "Eroare neaşteptată în select() la citirea datelor din  procesul copil (%s)"
 
-#: glib/gspawn.c:394
+#: glib/gspawn.c:383
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Eroare neaşteptată în waitpid() (%s)"
 
-#: glib/gspawn.c:1104
+#: glib/gspawn.c:1093
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Nu am reuşit să clonez procesul (%s)"
 
-#: glib/gspawn.c:1254
+#: glib/gspawn.c:1243
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Nu am reuşit să lansez în execuţie procesul „%s” (%s)"
 
-#: glib/gspawn.c:1264
+#: glib/gspawn.c:1253
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Eşuare la redirectarea ieşirii sau intrării procesului copil (%s)"
 
-#: glib/gspawn.c:1273
+#: glib/gspawn.c:1262
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Eşuare la clonarea procesului copil (%s)"
 
-#: glib/gspawn.c:1281
+#: glib/gspawn.c:1270
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Eroare necunoscută la lansarea în execuţie a procesului copil „%s”"
 
-#: glib/gspawn.c:1303
+#: glib/gspawn.c:1292
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr ""
@@ -752,6 +725,24 @@ msgstr "Valoarea întregului „%s” este înafara limitelor"
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Valoarea „%s” nu poate fi interpretată ca o valoare booleană."
+
+#~ msgid "Could not change file mode: fork() failed: %s"
+#~ msgstr "Nu am reuşit să schimb modul fişierului: fork() a eşuat: %s"
+
+#~ msgid "Could not change file mode: waitpid() failed: %s"
+#~ msgstr "Nu am reuşit să schimb modul fişierului: waitpid() a eşuat: %s"
+
+#~ msgid "Could not change file mode: chmod() failed: %s"
+#~ msgstr "Nu am reuşit să schimb modul fişierului: chmod() a eşuat: %s"
+
+#~ msgid "Could not change file mode: Child terminated by signal: %s"
+#~ msgstr ""
+#~ "Nu am reuşit să schimb modul fişierului: proces copil terminat cu "
+#~ "semnalul: %s"
+
+#~ msgid "Could not change file mode: Child terminated abnormally"
+#~ msgstr ""
+#~ "Nu am reuşit să schimb modul fişierului: proces copil terminat anormal"
 
 #~ msgid "Conversion from character set `%s' to `%s' is not supported"
 #~ msgstr "Conversia de la setul de caractere „%s” la „%s” nu este suportată"

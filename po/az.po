@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.az\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-11-18 08:20-0500\n"
+"POT-Creation-Date: 2005-12-09 12:42-0500\n"
 "PO-Revision-Date: 2004-02-02 12:12+0200\n"
 "Last-Translator: Mətin Əmirov <metin@karegen.com>\n"
 "Language-Team: Azerbaijani Turkish <gnome@azitt.com>\n"
@@ -125,72 +125,47 @@ msgstr "Fayl açma iflası '%s': fdopen() iflası: %s"
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "Fayl açma iflası '%s': fdopen() iflası: %s"
 
-#: glib/gfileutils.c:952
-#, fuzzy, c-format
-msgid "Could not change file mode: fork() failed: %s"
-msgstr "Fayl açma iflası '%s': fdopen() iflası: %s"
-
-#: glib/gfileutils.c:983
-#, fuzzy, c-format
-msgid "Could not change file mode: waitpid() failed: %s"
-msgstr "\"%2$s\" faylını oxumaq üçün %1$lu bayt ayrıla bilmir"
-
-#: glib/gfileutils.c:1002
-#, fuzzy, c-format
-msgid "Could not change file mode: chmod() failed: %s"
-msgstr "Fayl açma iflası '%s': fdopen() iflası: %s"
-
-#: glib/gfileutils.c:1013
-#, c-format
-msgid "Could not change file mode: Child terminated by signal: %s"
-msgstr ""
-
-#: glib/gfileutils.c:1024
-#, c-format
-msgid "Could not change file mode: Child terminated abnormally"
-msgstr ""
-
-#: glib/gfileutils.c:1058 glib/gfileutils.c:1524
+#: glib/gfileutils.c:950 glib/gfileutils.c:1415
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Fayl yaratma iflası '%s': %s"
 
-#: glib/gfileutils.c:1080
+#: glib/gfileutils.c:964
 #, fuzzy, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr "Fayl açma iflası '%s': fdopen() iflası: %s"
 
-#: glib/gfileutils.c:1105
+#: glib/gfileutils.c:989
 #, fuzzy, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "Fayl açma iflası '%s': fdopen() iflası: %s"
 
-#: glib/gfileutils.c:1124
+#: glib/gfileutils.c:1008
 #, fuzzy, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "Fayl açma iflası '%s': fdopen() iflası: %s"
 
-#: glib/gfileutils.c:1242
+#: glib/gfileutils.c:1126
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr ""
 
-#: glib/gfileutils.c:1485
+#: glib/gfileutils.c:1376
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Nümunə '%s' hökmsüzdür, '%s' daxil etməməlidir"
 
-#: glib/gfileutils.c:1499
+#: glib/gfileutils.c:1390
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Şablon '%s' XXXXXX ilə qurtarmır"
 
-#: glib/gfileutils.c:1974
+#: glib/gfileutils.c:1865
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "'%s' simvolik körpüsü oxuna bilmədi: %s"
 
-#: glib/gfileutils.c:1995
+#: glib/gfileutils.c:1886
 #, c-format
 msgid "Symbolic links not supported"
 msgstr "Simvolik körpülər dəstəklənmir"
@@ -225,7 +200,7 @@ msgstr "Can't do a raw read in g_io_channel_read_to_end"
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "Fayl açma iflası '%s': fdopen() iflası: %s"
 
-#: glib/gmappedfile.c:185
+#: glib/gmappedfile.c:193
 #, fuzzy, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "Fayl açma iflası '%s': fdopen() iflası: %s"
@@ -486,17 +461,17 @@ msgstr "Mətn boş idi (və ya təkcə boşluq daxil edirdi)"
 msgid "Failed to read data from child process"
 msgstr "Törəmə gedişatdan mə'lumat oxuma iflası"
 
-#: glib/gspawn-win32.c:291 glib/gspawn.c:1375
+#: glib/gspawn-win32.c:291 glib/gspawn.c:1364
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Törəmə gedişatların xəbərləşməyi üçün pipe yaratma iflası (%s)"
 
-#: glib/gspawn-win32.c:329 glib/gspawn.c:1039
+#: glib/gspawn-win32.c:329 glib/gspawn.c:1028
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Törəmə pipe-dan oxuma iflası (%s)"
 
-#: glib/gspawn-win32.c:355 glib/gspawn.c:1244
+#: glib/gspawn-win32.c:355 glib/gspawn.c:1233
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Qovluq dəyişdirmə iflası '%s' (%s)"
@@ -541,47 +516,47 @@ msgid ""
 msgstr ""
 "g_io_channel_win32_poll() törəmə gedişatdan mə'lumat oxumada gözlənilməz xəta"
 
-#: glib/gspawn.c:179
+#: glib/gspawn.c:168
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "Törəmə gedişatdan mə'lumat oxuma iflası (%s)"
 
-#: glib/gspawn.c:311
+#: glib/gspawn.c:300
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr "törəmə gedişatdan mə'lumat oxuma select()'də namə'lum xəta (%s)"
 
-#: glib/gspawn.c:394
+#: glib/gspawn.c:383
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "waitpid()'də namə'lum xəta (%s)"
 
-#: glib/gspawn.c:1104
+#: glib/gspawn.c:1093
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "fork iflası (%s)"
 
-#: glib/gspawn.c:1254
+#: glib/gspawn.c:1243
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "\"%s\" törəmə gedişat icra iflası (%s)"
 
-#: glib/gspawn.c:1264
+#: glib/gspawn.c:1253
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Törəmə gedişat giriş və ya yekun istiqamətləndirmə xətası (%s)"
 
-#: glib/gspawn.c:1273
+#: glib/gspawn.c:1262
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Törəmə gedişat fork xətası (%s)"
 
-#: glib/gspawn.c:1281
+#: glib/gspawn.c:1270
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "\"%s\" törəmə gedişat işində namə'lum xəta"
 
-#: glib/gspawn.c:1303
+#: glib/gspawn.c:1292
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Törəmə pid pipe dan kifayət qədər mə'lumat oxuma iflası (%s)"
@@ -735,6 +710,18 @@ msgstr ""
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr ""
+
+#, fuzzy
+#~ msgid "Could not change file mode: fork() failed: %s"
+#~ msgstr "Fayl açma iflası '%s': fdopen() iflası: %s"
+
+#, fuzzy
+#~ msgid "Could not change file mode: waitpid() failed: %s"
+#~ msgstr "\"%2$s\" faylını oxumaq üçün %1$lu bayt ayrıla bilmir"
+
+#, fuzzy
+#~ msgid "Could not change file mode: chmod() failed: %s"
+#~ msgstr "Fayl açma iflası '%s': fdopen() iflası: %s"
 
 #~ msgid "Conversion from character set `%s' to `%s' is not supported"
 #~ msgstr "`%s' hərf dəstəsindən `%s' hərf dəstəsinə dönüşdürmə dəstəklənmir"

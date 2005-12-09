@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.9.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-11-18 08:20-0500\n"
+"POT-Creation-Date: 2005-12-09 12:42-0500\n"
 "PO-Revision-Date: 2005-10-17 08:43+0800\n"
 "Last-Translator: Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>\n"
 "Language-Team: Chinese/Traditional <community@linuxhall.org>\n"
@@ -125,72 +125,47 @@ msgstr "開啟檔案‘%s’失敗：fdopen() 失敗：%s"
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "檔案名稱由‘%s’改為‘%s’失敗：g_rename() 失敗：%s"
 
-#: glib/gfileutils.c:952
-#, c-format
-msgid "Could not change file mode: fork() failed: %s"
-msgstr "無法更改檔案模式：fork() 失敗：%s"
-
-#: glib/gfileutils.c:983
-#, c-format
-msgid "Could not change file mode: waitpid() failed: %s"
-msgstr "無法更改檔案模式：waitpid() 失敗：%s"
-
-#: glib/gfileutils.c:1002
-#, c-format
-msgid "Could not change file mode: chmod() failed: %s"
-msgstr "無法更改檔案模式：chmod() 失敗：%s"
-
-#: glib/gfileutils.c:1013
-#, c-format
-msgid "Could not change file mode: Child terminated by signal: %s"
-msgstr "無法更改檔案模式：子程序被訊息中止，訊息：%s"
-
-#: glib/gfileutils.c:1024
-#, c-format
-msgid "Could not change file mode: Child terminated abnormally"
-msgstr "無法更改檔案模式：子程序不正常地被中止"
-
-#: glib/gfileutils.c:1058 glib/gfileutils.c:1524
+#: glib/gfileutils.c:950 glib/gfileutils.c:1415
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "建立檔案‘%s’失敗：%s"
 
-#: glib/gfileutils.c:1080
+#: glib/gfileutils.c:964
 #, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr "開啟檔案‘%s’作寫入失敗：fdopen() 失敗：%s"
 
-#: glib/gfileutils.c:1105
+#: glib/gfileutils.c:989
 #, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "寫入檔案‘%s’失敗：fwrite() 失敗：%s"
 
-#: glib/gfileutils.c:1124
+#: glib/gfileutils.c:1008
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "關閉檔案‘%s’失敗：fclose() 失敗：%s"
 
-#: glib/gfileutils.c:1242
+#: glib/gfileutils.c:1126
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "現存檔案‘%s’無法移除：g_unlink() 失敗：%s"
 
-#: glib/gfileutils.c:1485
+#: glib/gfileutils.c:1376
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "樣式‘%s’無效，不應含有‘%s’"
 
-#: glib/gfileutils.c:1499
+#: glib/gfileutils.c:1390
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "樣式‘%s’末端不是 XXXXXX"
 
-#: glib/gfileutils.c:1974
+#: glib/gfileutils.c:1865
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "讀取符號連結‘%s’失敗：%s"
 
-#: glib/gfileutils.c:1995
+#: glib/gfileutils.c:1886
 #, c-format
 msgid "Symbolic links not supported"
 msgstr "不支援符號連結"
@@ -225,7 +200,7 @@ msgstr "g_io_channel_read_to_end 中無法讀取原始資料"
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "開啟檔案‘%s’失敗：open() 失敗：%s"
 
-#: glib/gmappedfile.c:185
+#: glib/gmappedfile.c:193
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "對應檔案‘%s’失敗：mmap() 失敗：%s"
@@ -459,17 +434,17 @@ msgstr "文字是空白的（或只含有空白字元）"
 msgid "Failed to read data from child process"
 msgstr "無法從副進程讀取資料"
 
-#: glib/gspawn-win32.c:291 glib/gspawn.c:1375
+#: glib/gspawn-win32.c:291 glib/gspawn.c:1364
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "無法建立管道來和副進程溝通 (%s)"
 
-#: glib/gspawn-win32.c:329 glib/gspawn.c:1039
+#: glib/gspawn-win32.c:329 glib/gspawn.c:1028
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "無法從管道讀取資料 (%s)"
 
-#: glib/gspawn-win32.c:355 glib/gspawn.c:1244
+#: glib/gspawn-win32.c:355 glib/gspawn.c:1233
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "無法進入目錄‘%s’(%s)"
@@ -513,47 +488,47 @@ msgid ""
 "process"
 msgstr "當 g_io_channel_win32_poll() 從副進程讀取資料時發生無法預計的錯誤"
 
-#: glib/gspawn.c:179
+#: glib/gspawn.c:168
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "無法從副進程讀取資料 (%s)"
 
-#: glib/gspawn.c:311
+#: glib/gspawn.c:300
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr "當 select() 從副進程讀取資料時發生無法預計的錯誤 (%s)"
 
-#: glib/gspawn.c:394
+#: glib/gspawn.c:383
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "waitpid() 發生無法預計的錯誤 (%s)"
 
-#: glib/gspawn.c:1104
+#: glib/gspawn.c:1093
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "無法衍生進程 (%s)"
 
-#: glib/gspawn.c:1254
+#: glib/gspawn.c:1243
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "無法執行副進程“%s”(%s)"
 
-#: glib/gspawn.c:1264
+#: glib/gspawn.c:1253
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "無法將副進程的輸出或輸入重新導向 (%s)"
 
-#: glib/gspawn.c:1273
+#: glib/gspawn.c:1262
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "無法衍生副進程 (%s)"
 
-#: glib/gspawn.c:1281
+#: glib/gspawn.c:1270
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "執行副進程“%s”時發生不明的錯誤"
 
-#: glib/gspawn.c:1303
+#: glib/gspawn.c:1292
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "無法從 child pid pipe 讀取足夠的資料 (%s)"
@@ -707,3 +682,18 @@ msgstr "整數值‘%s’超出範圍"
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "數值‘%s’不能被解譯為布林值。"
+
+#~ msgid "Could not change file mode: fork() failed: %s"
+#~ msgstr "無法更改檔案模式：fork() 失敗：%s"
+
+#~ msgid "Could not change file mode: waitpid() failed: %s"
+#~ msgstr "無法更改檔案模式：waitpid() 失敗：%s"
+
+#~ msgid "Could not change file mode: chmod() failed: %s"
+#~ msgstr "無法更改檔案模式：chmod() 失敗：%s"
+
+#~ msgid "Could not change file mode: Child terminated by signal: %s"
+#~ msgstr "無法更改檔案模式：子程序被訊息中止，訊息：%s"
+
+#~ msgid "Could not change file mode: Child terminated abnormally"
+#~ msgstr "無法更改檔案模式：子程序不正常地被中止"

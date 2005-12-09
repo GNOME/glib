@@ -389,6 +389,7 @@ Removes a symbol from a scope.
 </para>
 
 @scanner: a #GScanner.
+<!-- # Unused Parameters # -->
 @Deprecated:2.2: This macro does nothing.
 
 
@@ -397,6 +398,7 @@ Removes a symbol from a scope.
 </para>
 
 @scanner: a #GScanner.
+<!-- # Unused Parameters # -->
 @Deprecated:2.2: This macro does nothing.
 
 
@@ -562,6 +564,7 @@ Adds a symbol to the default scope.
 @scanner: a #GScanner.
 @symbol: the symbol to add.
 @value: the value of the symbol.
+<!-- # Unused Parameters # -->
 @Deprecated:2.2: Use g_scanner_scope_add_symbol() instead.
 
 
@@ -572,6 +575,7 @@ Removes a symbol from the default scope.
 
 @scanner: a #GScanner.
 @symbol: the symbol to remove.
+<!-- # Unused Parameters # -->
 @Deprecated:2.2: Use g_scanner_scope_remove_symbol() instead.
 
 
@@ -583,6 +587,7 @@ Calls a function for each symbol in the default scope.
 @scanner: a #GScanner.
 @func: the function to call with each symbol.
 @data: data to pass to the function.
+<!-- # Unused Parameters # -->
 @Deprecated:2.2: Use g_scanner_scope_foreach_symbol() instead.
 
 

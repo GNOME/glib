@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.8.1 Gnome HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-11-18 08:20-0500\n"
+"POT-Creation-Date: 2005-12-09 12:42-0500\n"
 "PO-Revision-Date: 2005-09-01 15:12+0930\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <gnomevi-list@lists.sourceforge.net>\n"
@@ -128,73 +128,47 @@ msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr ""
 "Không đổi tên tập tin « %s » thành « %s » được: « g_rename() » không được: %s"
 
-#: glib/gfileutils.c:952
-#, c-format
-msgid "Could not change file mode: fork() failed: %s"
-msgstr "Không thể đổi chễ độ tập tin: « fork() » không được: %s"
-
-#: glib/gfileutils.c:983
-#, c-format
-msgid "Could not change file mode: waitpid() failed: %s"
-msgstr "Không thể đổi chễ độ tập tin: « waitpid() » không được: %s"
-
-#: glib/gfileutils.c:1002
-#, c-format
-msgid "Could not change file mode: chmod() failed: %s"
-msgstr "Không thể đổi chễ độ tập tin: « chmod() » không được: %s"
-
-#: glib/gfileutils.c:1013
-#, c-format
-msgid "Could not change file mode: Child terminated by signal: %s"
-msgstr "Không thể đổi chễ độ tập tin: tín hiệu kết thức tiến trình con: %s"
-
-#: glib/gfileutils.c:1024
-#, c-format
-msgid "Could not change file mode: Child terminated abnormally"
-msgstr ""
-"Không thể đổi chễ độ tập tin: tiến trình con bị kết thức một cách bất thường"
-
-#: glib/gfileutils.c:1058 glib/gfileutils.c:1524
+#: glib/gfileutils.c:950 glib/gfileutils.c:1415
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Lỗi tạo tập tin« %s »: %s"
 
-#: glib/gfileutils.c:1080
+#: glib/gfileutils.c:964
 #, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr "Không mở tập tin « %s » được: « fdopen() » không được: %s"
 
-#: glib/gfileutils.c:1105
+#: glib/gfileutils.c:989
 #, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "Không ghi tập tin « %s » được: « fdopen() » không được: %s"
 
-#: glib/gfileutils.c:1124
+#: glib/gfileutils.c:1008
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "Không đóng tập tin « %s » được: « fclose() » không được: %s"
 
-#: glib/gfileutils.c:1242
+#: glib/gfileutils.c:1126
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "Không thể gỡ bỏ tập tin tồn tại « %s »: « g_unlink() » thất bại: %s"
 
-#: glib/gfileutils.c:1485
+#: glib/gfileutils.c:1376
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Biểu mẫu « %s » không hợp lệ, không nên chứa « %s »"
 
-#: glib/gfileutils.c:1499
+#: glib/gfileutils.c:1390
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Biểu mẫu « %s » không kết thúc bằng XXXXXX"
 
-#: glib/gfileutils.c:1974
+#: glib/gfileutils.c:1865
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Lỗi đọc liên kết tượng trưng « %s »: %s"
 
-#: glib/gfileutils.c:1995
+#: glib/gfileutils.c:1886
 #, c-format
 msgid "Symbolic links not supported"
 msgstr "Không hỗ trợ liên kết tượng trưng"
@@ -233,7 +207,7 @@ msgstr ""
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "Không mở tập tin « %s » được: « fdopen() » không được: %s"
 
-#: glib/gmappedfile.c:185
+#: glib/gmappedfile.c:193
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "Không ánh xạ tập tin « %s » được: « mmap() » không được: %s"
@@ -499,17 +473,17 @@ msgstr "Văn bản rỗng (hay chỉ gồm các ký tự trắng)."
 msgid "Failed to read data from child process"
 msgstr "Không đọc được dữ liệu từ tiến trình con."
 
-#: glib/gspawn-win32.c:291 glib/gspawn.c:1375
+#: glib/gspawn-win32.c:291 glib/gspawn.c:1364
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Không tạo được ống dẫn để liên lạc với tiến trình con (%s)."
 
-#: glib/gspawn-win32.c:329 glib/gspawn.c:1039
+#: glib/gspawn-win32.c:329 glib/gspawn.c:1028
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Không đọc được từ ống dẫn con (%s)."
 
-#: glib/gspawn-win32.c:355 glib/gspawn.c:1244
+#: glib/gspawn-win32.c:355 glib/gspawn.c:1233
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Không chuyển đổi được sang thư mục « %s » (%s)."
@@ -555,48 +529,48 @@ msgstr ""
 "Gặp lỗi bất ngờ trong « g_io_channel_win32_poll() » khi đọc dữ liệu từ tiến "
 "trình con."
 
-#: glib/gspawn.c:179
+#: glib/gspawn.c:168
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "Không đọc được dữ liệu từ tiến trình con (%s)."
 
-#: glib/gspawn.c:311
+#: glib/gspawn.c:300
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr ""
 "Gặp lỗi bất ngờ trong « select() » khi đọc dữ liệu từ tiến trình con (%s)."
 
-#: glib/gspawn.c:394
+#: glib/gspawn.c:383
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Gặp lỗi bất ngờ trong « waitpid() » (%s)."
 
-#: glib/gspawn.c:1104
+#: glib/gspawn.c:1093
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Không tạo tiến trình con được (%s)."
 
-#: glib/gspawn.c:1254
+#: glib/gspawn.c:1243
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Không thực thi được tiến trình con « %s » (%s)."
 
-#: glib/gspawn.c:1264
+#: glib/gspawn.c:1253
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Không chuyển tiếp dữ liệu nhập hoặc xuất tiến trình con được (%s)."
 
-#: glib/gspawn.c:1273
+#: glib/gspawn.c:1262
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Không tạo tiến trình con được (%s)."
 
-#: glib/gspawn.c:1281
+#: glib/gspawn.c:1270
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Gặp lỗi không xác định khi thực thi tiến trình con « %s »."
 
-#: glib/gspawn.c:1303
+#: glib/gspawn.c:1292
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Không đọc được đủ dữ liệu từ ống dẫn PID con (%s)."
@@ -754,6 +728,23 @@ msgstr "Giá trị số nguyên « %s » ở ngoại phạm vị."
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Không thể giải dịch giá trị « %s » dạng bun (đúng/sai)."
+
+#~ msgid "Could not change file mode: fork() failed: %s"
+#~ msgstr "Không thể đổi chễ độ tập tin: « fork() » không được: %s"
+
+#~ msgid "Could not change file mode: waitpid() failed: %s"
+#~ msgstr "Không thể đổi chễ độ tập tin: « waitpid() » không được: %s"
+
+#~ msgid "Could not change file mode: chmod() failed: %s"
+#~ msgstr "Không thể đổi chễ độ tập tin: « chmod() » không được: %s"
+
+#~ msgid "Could not change file mode: Child terminated by signal: %s"
+#~ msgstr "Không thể đổi chễ độ tập tin: tín hiệu kết thức tiến trình con: %s"
+
+#~ msgid "Could not change file mode: Child terminated abnormally"
+#~ msgstr ""
+#~ "Không thể đổi chễ độ tập tin: tiến trình con bị kết thức một cách bất "
+#~ "thường"
 
 #~ msgid "Conversion from character set `%s' to `%s' is not supported"
 #~ msgstr "Không hỗ trợ việc chuyển đổi từ bộ ký tự « %s » thành « %s »"

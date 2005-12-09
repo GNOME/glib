@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-12-01 11:41+0100\n"
+"POT-Creation-Date: 2005-12-09 12:42-0500\n"
 "PO-Revision-Date: 2005-12-01 17:31+0800\n"
 "Last-Translator: Eric Pareja <xenos@upm.edu.ph>\n"
 "Language-Team: Tagalog <debian-tl@banwa.upm.edu.ph>\n"
@@ -30,6 +30,7 @@ msgstr "Hindi mabuksan ang converter mula '%s' tungong '%s'"
 #: glib/gconvert.c:606 glib/gconvert.c:995 glib/giochannel.c:1322
 #: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:943
 #: glib/gutf8.c:1392
+#, c-format
 msgid "Invalid byte sequence in conversion input"
 msgstr "Hindi tanggap na byte sequence sa conversion input"
 
@@ -41,6 +42,7 @@ msgstr "Error habang nagco-convert: %s"
 
 #: glib/gconvert.c:647 glib/gutf8.c:939 glib/gutf8.c:1143 glib/gutf8.c:1284
 #: glib/gutf8.c:1388
+#, c-format
 msgid "Partial character sequence at end of input"
 msgstr "Hindi kumpletong karakter sequence sa dulo ng input"
 
@@ -80,6 +82,7 @@ msgid "The pathname '%s' is not an absolute path"
 msgstr "Ang pathname '%s' ay hindi absolute path"
 
 #: glib/gconvert.c:1865
+#, c-format
 msgid "Invalid hostname"
 msgstr "Hindi tanggap na hostname"
 
@@ -126,73 +129,49 @@ msgstr ""
 "Bigo ang papalit ng pangalan ng talaksang '%s' sa '%s': bigo ang g_rename(): "
 "%s"
 
-#: glib/gfileutils.c:952
-#, c-format
-msgid "Could not change file mode: fork() failed: %s"
-msgstr "Hindi mapalitan ang modo ng talaksan: bigo ang fork(): %s"
-
-#: glib/gfileutils.c:983
-#, c-format
-msgid "Could not change file mode: waitpid() failed: %s"
-msgstr "Hindi mapalitan ang modo ng talaksan: bigo ang waitpid(): %s"
-
-#: glib/gfileutils.c:1002
-#, c-format
-msgid "Could not change file mode: chmod() failed: %s"
-msgstr "Hindi mapalitan ang modo ng talaksan: bigo ang chmod(): %s"
-
-#: glib/gfileutils.c:1013
-#, c-format
-msgid "Could not change file mode: Child terminated by signal: %s"
-msgstr "Hindi mapalitan ang modo ng talaksan: Hininto ang anak ng hudyat: %s"
-
-#: glib/gfileutils.c:1024
-msgid "Could not change file mode: Child terminated abnormally"
-msgstr ""
-"Hindi mapalitan ang modo ng talaksan: Hininto ng hindi pangkaraniwan ang anay"
-
-#: glib/gfileutils.c:1058 glib/gfileutils.c:1524
+#: glib/gfileutils.c:950 glib/gfileutils.c:1415
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Sawi ang paglikha ng talaksang '%s': %s"
 
-#: glib/gfileutils.c:1080
+#: glib/gfileutils.c:964
 #, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr ""
 "Bigo ang pagbukas ng talaksang '%s' para sa pagsusulat: bigo ang fdopen(): %s"
 
-#: glib/gfileutils.c:1105
+#: glib/gfileutils.c:989
 #, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "Bigo sa pagsusulat ng talaksang '%s': bigo ang fwrite(): %s"
 
-#: glib/gfileutils.c:1124
+#: glib/gfileutils.c:1008
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "Bigo ang pagsara ng talaksang '%s': bigo ang fclose(): %s"
 
-#: glib/gfileutils.c:1242
+#: glib/gfileutils.c:1126
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "Hindi matanggal ang talaksang '%s': bigo ang g_unlink(): %s"
 
-#: glib/gfileutils.c:1485
+#: glib/gfileutils.c:1376
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Hindi tanggap ang template '%s', wala dapat na '%s'"
 
-#: glib/gfileutils.c:1499
+#: glib/gfileutils.c:1390
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Hindi XXXXXX ang dulo ng template '%s'"
 
-#: glib/gfileutils.c:1974
+#: glib/gfileutils.c:1865
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Sawi ang pagbasa ng symbolic link '%s': %s"
 
-#: glib/gfileutils.c:1995
+#: glib/gfileutils.c:1886
+#, c-format
 msgid "Symbolic links not supported"
 msgstr "Hindi suportado ang mga symbolic link"
 
@@ -202,18 +181,22 @@ msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Hindi mabuksan ang converter mula '%s' patungong '%s': %s"
 
 #: glib/giochannel.c:1499
+#, c-format
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "Hindi mabasa ng hilaw ang g_io_channel_read_line_string"
 
 #: glib/giochannel.c:1546 glib/giochannel.c:1803 glib/giochannel.c:1889
+#, c-format
 msgid "Leftover unconverted data in read buffer"
 msgstr "May natirang hindi na-convert na datos sa read buffer"
 
 #: glib/giochannel.c:1626 glib/giochannel.c:1703
+#, c-format
 msgid "Channel terminates in a partial character"
 msgstr "Nagwakas sa partial karakter ang channel"
 
 #: glib/giochannel.c:1689
+#, c-format
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Hindi makapagbasa ng hilaw sa g_io_channel_read_to_end"
 
@@ -222,7 +205,7 @@ msgstr "Hindi makapagbasa ng hilaw sa g_io_channel_read_to_end"
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "Bigo ang pagbukas ng talaksang '%s': bigo ang open(): %s"
 
-#: glib/gmappedfile.c:185
+#: glib/gmappedfile.c:193
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr ""
@@ -471,10 +454,12 @@ msgstr ""
 "pagproseso"
 
 #: glib/gshell.c:73
+#, c-format
 msgid "Quoted text doesn't begin with a quotation mark"
 msgstr "Ang binanggit na teksto ay hindi nag-umpisa sa quotation mark"
 
 #: glib/gshell.c:163
+#, c-format
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr ""
 "Walang kapares na quotation mark sa command line o ibang shell na teksto."
@@ -492,24 +477,26 @@ msgstr ""
 "teksto ay '%s')"
 
 #: glib/gshell.c:560
+#, c-format
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Ang teksto ay walang laman (o naglaman lamang ng puwang)"
 
 #: glib/gspawn-win32.c:276
+#, c-format
 msgid "Failed to read data from child process"
 msgstr "Sawi sa pagbasa ng datos mula sa prosesong anak"
 
-#: glib/gspawn-win32.c:291 glib/gspawn.c:1375
+#: glib/gspawn-win32.c:291 glib/gspawn.c:1364
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Sawi sa paglikha ng pipe para makausap ang prosesong anak (%s)"
 
-#: glib/gspawn-win32.c:329 glib/gspawn.c:1039
+#: glib/gspawn-win32.c:329 glib/gspawn.c:1028
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Sawi sa pagbasa mula sa child pipe (%s)"
 
-#: glib/gspawn-win32.c:355 glib/gspawn.c:1244
+#: glib/gspawn-win32.c:355 glib/gspawn.c:1233
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Sawi sa paglipat sa directory '%s' (%s)"
@@ -547,6 +534,7 @@ msgid "Failed to execute helper program (%s)"
 msgstr "Bigo sa pagtakbo ng programang katulong (%s)"
 
 #: glib/gspawn-win32.c:1084
+#, c-format
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -554,63 +542,66 @@ msgstr ""
 "Hindi inaasahang error sa g_io_channel_win32_poll() sa pagbasa ng datos mula "
 "sa prosesong anak"
 
-#: glib/gspawn.c:179
+#: glib/gspawn.c:168
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "Sawi sa pagbasa ng datos mula sa prosesong anak (%s)"
 
-#: glib/gspawn.c:311
+#: glib/gspawn.c:300
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr ""
 "Hindi inaasahang error sa select() habang nagbabasa ng datos mula sa "
 "prosesong anak (%s)"
 
-#: glib/gspawn.c:394
+#: glib/gspawn.c:383
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Hindi inaasahang error sa waitpid() (%s)"
 
-#: glib/gspawn.c:1104
+#: glib/gspawn.c:1093
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Sawi sa pag-fork (%s)"
 
-#: glib/gspawn.c:1254
+#: glib/gspawn.c:1243
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Sawi sa pagtakbo ng prosesong anak \"%s\" (%s)"
 
-#: glib/gspawn.c:1264
+#: glib/gspawn.c:1253
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Sawi sa pag-redirect ng output o input ng prosesong anak (%s)"
 
-#: glib/gspawn.c:1273
+#: glib/gspawn.c:1262
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Sawi sa pag-fork ng prosesong anak (%s)"
 
-#: glib/gspawn.c:1281
+#: glib/gspawn.c:1270
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Hindi kilalang error sa pagpatakbo ng prosesong anak \"%s\""
 
-#: glib/gspawn.c:1303
+#: glib/gspawn.c:1292
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Sawi sa pagbasa ng akmang datos mula sa child pid pipe (%s)"
 
 #: glib/gutf8.c:1017
+#, c-format
 msgid "Character out of range for UTF-8"
 msgstr "Character wala sa sakop ng UTF-8"
 
 #: glib/gutf8.c:1111 glib/gutf8.c:1120 glib/gutf8.c:1252 glib/gutf8.c:1261
 #: glib/gutf8.c:1402 glib/gutf8.c:1498
+#, c-format
 msgid "Invalid sequence in conversion input"
 msgstr "Hindi tanggap na sequence sa conversion input"
 
 #: glib/gutf8.c:1413 glib/gutf8.c:1509
+#, c-format
 msgid "Character out of range for UTF-16"
 msgstr "Character wala sa sakop ng UTF-16"
 
@@ -659,14 +650,17 @@ msgid "Unknown option %s"
 msgstr "Hindi kilalang option %s"
 
 #: glib/gkeyfile.c:339
+#, c-format
 msgid "Valid key file could not be found in data dirs"
 msgstr "Walang mahanap na talaksang susi sa mga dir ng datos"
 
 #: glib/gkeyfile.c:374
+#, c-format
 msgid "Not a regular file"
 msgstr "Hindi karaniwang talaksan"
 
 #: glib/gkeyfile.c:382
+#, c-format
 msgid "File is empty"
 msgstr "Walang laman ang talaksan"
 
@@ -679,6 +673,7 @@ msgstr ""
 "halaga, grupo, o komento"
 
 #: glib/gkeyfile.c:765
+#, c-format
 msgid "Key file does not start with a group"
 msgstr "Ang talaksang susi ay hindi naguumpisa sa isang grupo"
 
@@ -727,6 +722,7 @@ msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Ang talaksang susi ay walang susing '%s' sa grupong '%s'"
 
 #: glib/gkeyfile.c:3067
+#, c-format
 msgid "Key file contains escape character at end of line"
 msgstr "Ang talaksang susi ay may escape karakter sa dulo ng linya"
 
@@ -749,6 +745,24 @@ msgstr "Halagang integer '%s' ay wala sa sakop"
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Ang halagang '%s' ay hindi mabasa bilang boolean."
+
+#~ msgid "Could not change file mode: fork() failed: %s"
+#~ msgstr "Hindi mapalitan ang modo ng talaksan: bigo ang fork(): %s"
+
+#~ msgid "Could not change file mode: waitpid() failed: %s"
+#~ msgstr "Hindi mapalitan ang modo ng talaksan: bigo ang waitpid(): %s"
+
+#~ msgid "Could not change file mode: chmod() failed: %s"
+#~ msgstr "Hindi mapalitan ang modo ng talaksan: bigo ang chmod(): %s"
+
+#~ msgid "Could not change file mode: Child terminated by signal: %s"
+#~ msgstr ""
+#~ "Hindi mapalitan ang modo ng talaksan: Hininto ang anak ng hudyat: %s"
+
+#~ msgid "Could not change file mode: Child terminated abnormally"
+#~ msgstr ""
+#~ "Hindi mapalitan ang modo ng talaksan: Hininto ng hindi pangkaraniwan ang "
+#~ "anay"
 
 #~ msgid "Conversion from character set `%s' to `%s' is not supported"
 #~ msgstr "Paglipat mula karakter set `%s' tungong `%s' ay hindi suportado"

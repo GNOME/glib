@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.12\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-11-18 08:20-0500\n"
+"POT-Creation-Date: 2005-12-09 12:42-0500\n"
 "PO-Revision-Date: 2005-03-28 19:34-0700\n"
 "Last-Translator: Steve Murphy <murf@e-tools.com>\n"
 "Language-Team: Kinyarwanda <translation-team-rw@lists.sourceforge.net>\n"
@@ -133,72 +133,47 @@ msgstr "Kuri Gufungura IDOSIYE Byanze"
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "Kuri Guhindura izina IDOSIYE Kuri Byanze"
 
-#: glib/gfileutils.c:952
-#, fuzzy, c-format
-msgid "Could not change file mode: fork() failed: %s"
-msgstr "Kuri Gufunga IDOSIYE Byanze"
-
-#: glib/gfileutils.c:983
-#, fuzzy, c-format
-msgid "Could not change file mode: waitpid() failed: %s"
-msgstr "Kuri IDOSIYE Byanze"
-
-#: glib/gfileutils.c:1002
-#, fuzzy, c-format
-msgid "Could not change file mode: chmod() failed: %s"
-msgstr "Kuri Gufunga IDOSIYE Byanze"
-
-#: glib/gfileutils.c:1013
-#, c-format
-msgid "Could not change file mode: Child terminated by signal: %s"
-msgstr ""
-
-#: glib/gfileutils.c:1024
-#, c-format
-msgid "Could not change file mode: Child terminated abnormally"
-msgstr ""
-
-#: glib/gfileutils.c:1058 glib/gfileutils.c:1524
+#: glib/gfileutils.c:950 glib/gfileutils.c:1415
 #, fuzzy, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Kuri Kurema IDOSIYE"
 
-#: glib/gfileutils.c:1080
+#: glib/gfileutils.c:964
 #, fuzzy, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr "Kuri Gufungura IDOSIYE kugirango Byanze"
 
-#: glib/gfileutils.c:1105
+#: glib/gfileutils.c:989
 #, fuzzy, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "Kuri IDOSIYE Byanze"
 
-#: glib/gfileutils.c:1124
+#: glib/gfileutils.c:1008
 #, fuzzy, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "Kuri Gufunga IDOSIYE Byanze"
 
-#: glib/gfileutils.c:1242
+#: glib/gfileutils.c:1126
 #, fuzzy, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "IDOSIYE OYA Cyavanyweho Byanze"
 
-#: glib/gfileutils.c:1485
+#: glib/gfileutils.c:1376
 #, fuzzy, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Sibyo OYA a"
 
-#: glib/gfileutils.c:1499
+#: glib/gfileutils.c:1390
 #, fuzzy, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Impera Na:"
 
-#: glib/gfileutils.c:1974
+#: glib/gfileutils.c:1865
 #, fuzzy, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Kuri Gusoma Ihuza"
 
-#: glib/gfileutils.c:1995
+#: glib/gfileutils.c:1886
 #, fuzzy, c-format
 msgid "Symbolic links not supported"
 msgstr "amahuza OYA"
@@ -233,7 +208,7 @@ msgstr "a Gusoma in"
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "Kuri Gufungura IDOSIYE Byanze"
 
-#: glib/gmappedfile.c:185
+#: glib/gmappedfile.c:193
 #, fuzzy, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "Kuri Gufungura IDOSIYE Byanze"
@@ -481,17 +456,17 @@ msgstr "ubusa Cyangwa"
 msgid "Failed to read data from child process"
 msgstr "Kuri Gusoma Ibyatanzwe Bivuye"
 
-#: glib/gspawn-win32.c:291 glib/gspawn.c:1375
+#: glib/gspawn-win32.c:291 glib/gspawn.c:1364
 #, fuzzy, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Kuri Kurema kugirango Na:"
 
-#: glib/gspawn-win32.c:329 glib/gspawn.c:1039
+#: glib/gspawn-win32.c:329 glib/gspawn.c:1028
 #, fuzzy, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Kuri Gusoma Bivuye"
 
-#: glib/gspawn-win32.c:355 glib/gspawn.c:1244
+#: glib/gspawn-win32.c:355 glib/gspawn.c:1233
 #, fuzzy, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Kuri Guhindura>> Kuri bushyinguro"
@@ -535,47 +510,47 @@ msgid ""
 "process"
 msgstr "Ikosa in Ibyatanzwe Bivuye a"
 
-#: glib/gspawn.c:179
+#: glib/gspawn.c:168
 #, fuzzy, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "Kuri Gusoma Ibyatanzwe Bivuye"
 
-#: glib/gspawn.c:311
+#: glib/gspawn.c:300
 #, fuzzy, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr "Ikosa in Guhitamo Ibyatanzwe Bivuye a"
 
-#: glib/gspawn.c:394
+#: glib/gspawn.c:383
 #, fuzzy, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Ikosa in"
 
-#: glib/gspawn.c:1104
+#: glib/gspawn.c:1093
 #, fuzzy, c-format
 msgid "Failed to fork (%s)"
 msgstr "Kuri"
 
-#: glib/gspawn.c:1254
+#: glib/gspawn.c:1243
 #, fuzzy, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Kuri Gukora"
 
-#: glib/gspawn.c:1264
+#: glib/gspawn.c:1253
 #, fuzzy, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Kuri Ibisohoka Cyangwa Iyinjiza Bya"
 
-#: glib/gspawn.c:1273
+#: glib/gspawn.c:1262
 #, fuzzy, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Kuri"
 
-#: glib/gspawn.c:1281
+#: glib/gspawn.c:1270
 #, fuzzy, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Ikosa Gukora: %s%s"
 
-#: glib/gspawn.c:1303
+#: glib/gspawn.c:1292
 #, fuzzy, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Kuri Gusoma Ibyatanzwe Bivuye"
@@ -734,6 +709,18 @@ msgstr "Agaciro kugirango Inyuma Bya Urutonde"
 #, fuzzy, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Nka a Icyungo"
+
+#, fuzzy
+#~ msgid "Could not change file mode: fork() failed: %s"
+#~ msgstr "Kuri Gufunga IDOSIYE Byanze"
+
+#, fuzzy
+#~ msgid "Could not change file mode: waitpid() failed: %s"
+#~ msgstr "Kuri IDOSIYE Byanze"
+
+#, fuzzy
+#~ msgid "Could not change file mode: chmod() failed: %s"
+#~ msgstr "Kuri Gufunga IDOSIYE Byanze"
 
 #, fuzzy
 #~ msgid "Conversion from character set `%s' to `%s' is not supported"

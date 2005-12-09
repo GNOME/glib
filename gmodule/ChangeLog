@@ -1,3 +1,7 @@
+2005-12-09  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.9.1 ===
+
 2005-11-28  Matthias Clasen  <mclasen@redhat.com>
 
 	* gmodule.c (parse_libtool_archive): Silence

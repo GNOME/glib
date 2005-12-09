@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.12\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-11-18 08:20-0500\n"
+"POT-Creation-Date: 2005-12-09 12:42-0500\n"
 "PO-Revision-Date: 2005-07-22 21:40+0000\n"
 "Last-Translator: Duarte Loreto <happyguy_pt@hotmail.com>\n"
 "Language-Team: Portuguese <gnome_pt@yahoogroups.com>\n"
@@ -124,72 +124,47 @@ msgstr "Falha ao abrir o ficheiro '%s': falha no fdopen(): %s"
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "Falha ao renomear o ficheiro '%s' para '%s': falha no g_rename(): %s"
 
-#: glib/gfileutils.c:952
-#, c-format
-msgid "Could not change file mode: fork() failed: %s"
-msgstr "Incapaz de alterar o modo do ficheiro: falha no fork(): %s"
-
-#: glib/gfileutils.c:983
-#, c-format
-msgid "Could not change file mode: waitpid() failed: %s"
-msgstr "Incapaz de alterar o modo do ficheiro: falha no waitpid(): %s"
-
-#: glib/gfileutils.c:1002
-#, c-format
-msgid "Could not change file mode: chmod() failed: %s"
-msgstr "Incapaz de alterar o modo do ficheiro: falha no chmod(): %s"
-
-#: glib/gfileutils.c:1013
-#, c-format
-msgid "Could not change file mode: Child terminated by signal: %s"
-msgstr "Incapaz de alterar o modo do ficheiro: Filho terminado pelo sinal: %s"
-
-#: glib/gfileutils.c:1024
-#, c-format
-msgid "Could not change file mode: Child terminated abnormally"
-msgstr "Incapaz de alterar o modo do ficheiro: Filho terminou anormalmente"
-
-#: glib/gfileutils.c:1058 glib/gfileutils.c:1524
+#: glib/gfileutils.c:950 glib/gfileutils.c:1415
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Falha ao criar o ficheiro '%s': %s"
 
-#: glib/gfileutils.c:1080
+#: glib/gfileutils.c:964
 #, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr "Falha ao abrir o ficheiro '%s' para escrita: falha no fdopen(): %s"
 
-#: glib/gfileutils.c:1105
+#: glib/gfileutils.c:989
 #, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "Falha ao escrever o ficheiro '%s': falha no fwrite(): %s"
 
-#: glib/gfileutils.c:1124
+#: glib/gfileutils.c:1008
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "Falha ao fechar o ficheiro '%s': falha no fclose(): %s"
 
-#: glib/gfileutils.c:1242
+#: glib/gfileutils.c:1126
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "Incapaz de remover o ficheiro '%s' existente: falha no g_unlink(): %s"
 
-#: glib/gfileutils.c:1485
+#: glib/gfileutils.c:1376
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Modelo '%s' inválido, não deveria conter um '%s'"
 
-#: glib/gfileutils.c:1499
+#: glib/gfileutils.c:1390
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Modelo '%s' não termina em XXXXXX"
 
-#: glib/gfileutils.c:1974
+#: glib/gfileutils.c:1865
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Falha ao ler o atalho '%s': %s"
 
-#: glib/gfileutils.c:1995
+#: glib/gfileutils.c:1886
 #, c-format
 msgid "Symbolic links not supported"
 msgstr "Atalhos não são suportados"
@@ -226,7 +201,7 @@ msgstr ""
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "Falha ao abrir o ficheiro '%s': falha no open(): %s"
 
-#: glib/gmappedfile.c:185
+#: glib/gmappedfile.c:193
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "Falha ao mapear o ficheiro '%s': falha no mmap(): %s"
@@ -493,17 +468,17 @@ msgstr "Texto estava vazio (ou apenas continha espaços)"
 msgid "Failed to read data from child process"
 msgstr "Falha ao ler dados de processo filho"
 
-#: glib/gspawn-win32.c:291 glib/gspawn.c:1375
+#: glib/gspawn-win32.c:291 glib/gspawn.c:1364
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Falha ao criar canal para comunicar com processo filho (%s)"
 
-#: glib/gspawn-win32.c:329 glib/gspawn.c:1039
+#: glib/gspawn-win32.c:329 glib/gspawn.c:1028
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Falha ao ler de canal filho (%s)"
 
-#: glib/gspawn-win32.c:355 glib/gspawn.c:1244
+#: glib/gspawn-win32.c:355 glib/gspawn.c:1233
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Falha ao ir para directório '%s' (%s)"
@@ -549,47 +524,47 @@ msgstr ""
 "Erro inesperado no g_io_channel_win32_poll() ao ler dados de um processo "
 "filho"
 
-#: glib/gspawn.c:179
+#: glib/gspawn.c:168
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "Falha ao ler dados de processo filho (%s)"
 
-#: glib/gspawn.c:311
+#: glib/gspawn.c:300
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr "Erro inesperado no select() ao ler dados de processo filho (%s)"
 
-#: glib/gspawn.c:394
+#: glib/gspawn.c:383
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Erro inesperado em waitpid() (%s)"
 
-#: glib/gspawn.c:1104
+#: glib/gspawn.c:1093
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Falha ao efectuar fork (%s)"
 
-#: glib/gspawn.c:1254
+#: glib/gspawn.c:1243
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Falha ao executar o processo filho \"%s\" (%s)"
 
-#: glib/gspawn.c:1264
+#: glib/gspawn.c:1253
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Falha ao redireccionar saída ou entrada de processo filho (%s)"
 
-#: glib/gspawn.c:1273
+#: glib/gspawn.c:1262
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Falha ao efectuar fork de processo filho (%s)"
 
-#: glib/gspawn.c:1281
+#: glib/gspawn.c:1270
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Erro desconhecido ao executar processo filho \"%s\""
 
-#: glib/gspawn.c:1303
+#: glib/gspawn.c:1292
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Incapaz de ler dados suficientes de canal pid do filho (%s)"
@@ -749,6 +724,22 @@ msgstr "Valor inteiro '%s' para além do limite permitido"
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Incapaz de interpretar o valor '%s' como uma boleana."
+
+#~ msgid "Could not change file mode: fork() failed: %s"
+#~ msgstr "Incapaz de alterar o modo do ficheiro: falha no fork(): %s"
+
+#~ msgid "Could not change file mode: waitpid() failed: %s"
+#~ msgstr "Incapaz de alterar o modo do ficheiro: falha no waitpid(): %s"
+
+#~ msgid "Could not change file mode: chmod() failed: %s"
+#~ msgstr "Incapaz de alterar o modo do ficheiro: falha no chmod(): %s"
+
+#~ msgid "Could not change file mode: Child terminated by signal: %s"
+#~ msgstr ""
+#~ "Incapaz de alterar o modo do ficheiro: Filho terminado pelo sinal: %s"
+
+#~ msgid "Could not change file mode: Child terminated abnormally"
+#~ msgstr "Incapaz de alterar o modo do ficheiro: Filho terminou anormalmente"
 
 #~ msgid "Conversion from character set `%s' to `%s' is not supported"
 #~ msgstr "Conversão do conjunto de caracteres `%s' para `%s' não é suportada"

@@ -25,7 +25,6 @@ To create #GObject<!-- -->s with a floating reference, call
 g_object_force_floating() from the object's init function.
 </para>
 
-
 <!-- ##### SECTION See_Also ##### -->
 <para>
 #GParamSpecObject, g_param_spec_object()
@@ -409,6 +408,15 @@ Increases the reference count of @object.
 @Returns: @object
 
 
+<!-- ##### FUNCTION g_object_unref ##### -->
+<para>
+Decreases the reference count if @object.
+When its reference count drops to 0, the object is finalized (i.e. its memory is freed).
+</para>
+
+@object: a #GObject
+
+
 <!-- ##### FUNCTION g_object_ref_sink ##### -->
 <para>
 Increase the reference count of @object, and remove the 
@@ -442,16 +450,6 @@ from an object's init function.
 
 @object: a #GObject
 @Since: 2.10
-
-
-
-<!-- ##### FUNCTION g_object_unref ##### -->
-<para>
-Decreases the reference count if @object.
-When its reference count drops to 0, the object is finalized (i.e. its memory is freed).
-</para>
-
-@object: a #GObject
 
 
 <!-- ##### USER_FUNCTION GWeakNotify ##### -->

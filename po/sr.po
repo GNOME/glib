@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-11-18 08:20-0500\n"
+"POT-Creation-Date: 2005-12-09 12:42-0500\n"
 "PO-Revision-Date: 2005-07-08 10:59+0200\n"
 "Last-Translator: Данило Шеган <danilo@gnome.org>\n"
 "Language-Team: Serbian (sr) <gnom@prevod.org>\n"
@@ -130,72 +130,47 @@ msgstr "Не могу да отворим датотеку „%s“: неусп�
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "Не могу да преименујем датотеку „%s“ у „%s“: неуспешан g_rename(): %s"
 
-#: glib/gfileutils.c:952
-#, c-format
-msgid "Could not change file mode: fork() failed: %s"
-msgstr "Не могу да променим овлашћења датотеке: неуспешан fork(): %s"
-
-#: glib/gfileutils.c:983
-#, c-format
-msgid "Could not change file mode: waitpid() failed: %s"
-msgstr "Не могу да променим овлашћења датотеке: неуспешан waitpid(): %s"
-
-#: glib/gfileutils.c:1002
-#, c-format
-msgid "Could not change file mode: chmod() failed: %s"
-msgstr "Не могу да променим овлашћења датотеке: неуспешан chmod(): %s"
-
-#: glib/gfileutils.c:1013
-#, c-format
-msgid "Could not change file mode: Child terminated by signal: %s"
-msgstr "Не могу да променим овлашћења датотеке: потпроцес окончан сигналом: %s"
-
-#: glib/gfileutils.c:1024
-#, c-format
-msgid "Could not change file mode: Child terminated abnormally"
-msgstr "Не могу да променим овлашћења датотеке: потпроцес силом окончан"
-
-#: glib/gfileutils.c:1058 glib/gfileutils.c:1524
+#: glib/gfileutils.c:950 glib/gfileutils.c:1415
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Не могу да направим датотеку „%s“: %s"
 
-#: glib/gfileutils.c:1080
+#: glib/gfileutils.c:964
 #, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr "Не могу да отворим датотеку „%s“ ради уписа: неуспешан fdopen(): %s"
 
-#: glib/gfileutils.c:1105
+#: glib/gfileutils.c:989
 #, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "Не могу да упишем датотеку „%s“: неуспешан fwrite(): %s"
 
-#: glib/gfileutils.c:1124
+#: glib/gfileutils.c:1008
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "Не могу да затворим датотеку „%s“: неуспешан fclose(): %s"
 
-#: glib/gfileutils.c:1242
+#: glib/gfileutils.c:1126
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "Постојећа датотека „%s“ се не може уклонити: неуспешан g_unlink(): %s"
 
-#: glib/gfileutils.c:1485
+#: glib/gfileutils.c:1376
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Неисправан шаблон „%s“, не сме садржати „%s“"
 
-#: glib/gfileutils.c:1499
+#: glib/gfileutils.c:1390
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Шаблон „%s“ се не завршава са XXXXXX"
 
-#: glib/gfileutils.c:1974
+#: glib/gfileutils.c:1865
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Не могу да прочитам симболичку везу „%s“: %s"
 
-#: glib/gfileutils.c:1995
+#: glib/gfileutils.c:1886
 #, c-format
 msgid "Symbolic links not supported"
 msgstr "Симболичке везе нису подржане"
@@ -230,7 +205,7 @@ msgstr "Не могу да читам без обраде у g_io_channel_read_t
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "Не могу да отворим датотеку „%s“: неуспешан open(): %s"
 
-#: glib/gmappedfile.c:185
+#: glib/gmappedfile.c:193
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "Не могу да мапирам датотеку „%s“: неуспешан mmap(): %s"
@@ -488,17 +463,17 @@ msgstr "Садржај празан (или садржи само белине)"
 msgid "Failed to read data from child process"
 msgstr "Неуспело читање података из потпроцеса"
 
-#: glib/gspawn-win32.c:291 glib/gspawn.c:1375
+#: glib/gspawn-win32.c:291 glib/gspawn.c:1364
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Неуспело стварање цевке за везу са потпроцесом (%s)"
 
-#: glib/gspawn-win32.c:329 glib/gspawn.c:1039
+#: glib/gspawn-win32.c:329 glib/gspawn.c:1028
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Неуспело читање из подређене цевке (%s)"
 
-#: glib/gspawn-win32.c:355 glib/gspawn.c:1244
+#: glib/gspawn-win32.c:355 glib/gspawn.c:1233
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Неуспело приступање директоријуму „%s“ (%s)"
@@ -544,48 +519,48 @@ msgstr ""
 "Неочекивана грешка док су у g_io_channel_win32_poll() читани подаци из "
 "потпроцеса"
 
-#: glib/gspawn.c:179
+#: glib/gspawn.c:168
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "Неуспело читање података од потпроцеса (%s)"
 
-#: glib/gspawn.c:311
+#: glib/gspawn.c:300
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr "Неочекивана грешка у select() при читању података из потпроцеса (%s)"
 
-#: glib/gspawn.c:394
+#: glib/gspawn.c:383
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Неочекивана грешка у waitpid() (%s)"
 
 # за сада овако, можда гранање, умножавање? виљушкање ;-)
-#: glib/gspawn.c:1104
+#: glib/gspawn.c:1093
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Неуспео fork() (%s)"
 
-#: glib/gspawn.c:1254
+#: glib/gspawn.c:1243
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Неуспело извршавање потпроцеса „%s“ (%s)"
 
-#: glib/gspawn.c:1264
+#: glib/gspawn.c:1253
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Неуспело преусмеравање улаза или излаза потпроцеса (%s)"
 
-#: glib/gspawn.c:1273
+#: glib/gspawn.c:1262
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Неуспео fork() потпроцеса (%s)"
 
-#: glib/gspawn.c:1281
+#: glib/gspawn.c:1270
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Непозната грешка при извршавању потпроцеса „%s“"
 
-#: glib/gspawn.c:1303
+#: glib/gspawn.c:1292
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Није успео да прочита довољно података из цевке ка потпроцесу (%s)"
@@ -742,6 +717,22 @@ msgstr "Целобројна вредност „%s“ је изван опсе�
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Вредност „%s“ се не може сматрати истинитосном."
+
+#~ msgid "Could not change file mode: fork() failed: %s"
+#~ msgstr "Не могу да променим овлашћења датотеке: неуспешан fork(): %s"
+
+#~ msgid "Could not change file mode: waitpid() failed: %s"
+#~ msgstr "Не могу да променим овлашћења датотеке: неуспешан waitpid(): %s"
+
+#~ msgid "Could not change file mode: chmod() failed: %s"
+#~ msgstr "Не могу да променим овлашћења датотеке: неуспешан chmod(): %s"
+
+#~ msgid "Could not change file mode: Child terminated by signal: %s"
+#~ msgstr ""
+#~ "Не могу да променим овлашћења датотеке: потпроцес окончан сигналом: %s"
+
+#~ msgid "Could not change file mode: Child terminated abnormally"
+#~ msgstr "Не могу да променим овлашћења датотеке: потпроцес силом окончан"
 
 #~ msgid "Conversion from character set `%s' to `%s' is not supported"
 #~ msgstr "Није подржано претварање из скупа знакова „%s“ у скуп „%s“"

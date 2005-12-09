@@ -1,7 +1,7 @@
 General Information
 ===================
 
-This is GLib version 2.9.0. GLib is the low-level core
+This is GLib version 2.9.1. GLib is the low-level core
 library that forms the basis for projects such as GTK+ and GNOME. It
 provides data structure handling for C, portability wrappers, and
 interfaces for such runtime functionality as an event loop, threads,
@@ -34,6 +34,11 @@ Notes about GLib 2.10
 
 * The Unicode support has been updated to Unicode 4.1. This adds several
   new members to the GUnicodeBreakType enumeration.
+
+* The support for Solaris threads has been retired. Solaris has provided 
+  POSIX threads for long enough now to have them available on every 
+  Solaris platform. 
+
 
 Notes about GLib 2.6.0
 ======================

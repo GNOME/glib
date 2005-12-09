@@ -201,7 +201,6 @@ source code.
 </para>
 
 @val: a literal integer value, e.g. 0x1d636b02300a7aa7U.
-
 @Since: 2.10
 
 

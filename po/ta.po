@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-11-18 08:20-0500\n"
+"POT-Creation-Date: 2005-12-09 12:42-0500\n"
 "PO-Revision-Date: 2004-02-16 20:30-0600\n"
 "Last-Translator: Dinesh Nadarajah <dinesh_list@sbcglobal.net>\n"
 "Language-Team: Tamil <tamilinix@yahoogroups.com>\n"
@@ -123,72 +123,47 @@ msgstr "'%s' கோப்பை திறக்க முடியவில்�
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "'%s' கோப்பை திறக்க முடியவில்லை: fdopen() நொடிப்படைந்தது: %s"
 
-#: glib/gfileutils.c:952
-#, fuzzy, c-format
-msgid "Could not change file mode: fork() failed: %s"
-msgstr "'%s' கோப்பை திறக்க முடியவில்லை: fdopen() நொடிப்படைந்தது: %s"
-
-#: glib/gfileutils.c:983
-#, fuzzy, c-format
-msgid "Could not change file mode: waitpid() failed: %s"
-msgstr "%lu பைட்டுகளை \"%s\" கோப்பு வாசிப்பதற்கு ஒதுக்கிவைக்க முடியவில்லை"
-
-#: glib/gfileutils.c:1002
-#, fuzzy, c-format
-msgid "Could not change file mode: chmod() failed: %s"
-msgstr "'%s' கோப்பை திறக்க முடியவில்லை: fdopen() நொடிப்படைந்தது: %s"
-
-#: glib/gfileutils.c:1013
-#, c-format
-msgid "Could not change file mode: Child terminated by signal: %s"
-msgstr ""
-
-#: glib/gfileutils.c:1024
-#, c-format
-msgid "Could not change file mode: Child terminated abnormally"
-msgstr ""
-
-#: glib/gfileutils.c:1058 glib/gfileutils.c:1524
+#: glib/gfileutils.c:950 glib/gfileutils.c:1415
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "'%s' கோப்பை படைக்க முடியவில்லை: %s"
 
-#: glib/gfileutils.c:1080
+#: glib/gfileutils.c:964
 #, fuzzy, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr "'%s' கோப்பை திறக்க முடியவில்லை: fdopen() நொடிப்படைந்தது: %s"
 
-#: glib/gfileutils.c:1105
+#: glib/gfileutils.c:989
 #, fuzzy, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "'%s' கோப்பை திறக்க முடியவில்லை: fdopen() நொடிப்படைந்தது: %s"
 
-#: glib/gfileutils.c:1124
+#: glib/gfileutils.c:1008
 #, fuzzy, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "'%s' கோப்பை திறக்க முடியவில்லை: fdopen() நொடிப்படைந்தது: %s"
 
-#: glib/gfileutils.c:1242
+#: glib/gfileutils.c:1126
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr ""
 
-#: glib/gfileutils.c:1485
+#: glib/gfileutils.c:1376
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "'%s' படிம அச்சு செல்லுபடியாகாதது; அதனில் '%s' இருக்கக் கூடாது"
 
-#: glib/gfileutils.c:1499
+#: glib/gfileutils.c:1390
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "'%s' படிம அச்சு XXXXXX கொண்டு முடிவதில்லை"
 
-#: glib/gfileutils.c:1974
+#: glib/gfileutils.c:1865
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "'%s' என்பதன்-குறுக்கம் இணைப்பை வாசிக்க முடியவில்லை: %s"
 
-#: glib/gfileutils.c:1995
+#: glib/gfileutils.c:1886
 #, c-format
 msgid "Symbolic links not supported"
 msgstr "என்பதன்-குறுக்கம் இணைப்புகளுக்கு ஆதரவு கிடையாது"
@@ -223,7 +198,7 @@ msgstr "g_io_channel_read_to_end இல் மூலமாக வாசிக்
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "'%s' கோப்பை திறக்க முடியவில்லை: fdopen() நொடிப்படைந்தது: %s"
 
-#: glib/gmappedfile.c:185
+#: glib/gmappedfile.c:193
 #, fuzzy, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "'%s' கோப்பை திறக்க முடியவில்லை: fdopen() நொடிப்படைந்தது: %s"
@@ -480,17 +455,17 @@ msgstr "உரை வெற்றா இருந்தது (அல்லத�
 msgid "Failed to read data from child process"
 msgstr "சேய் செயலில் இருந்து தரவு வாசிக்க முடியவில்லை"
 
-#: glib/gspawn-win32.c:291 glib/gspawn.c:1375
+#: glib/gspawn-win32.c:291 glib/gspawn.c:1364
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "(%s) சேய்-செயலிடன் தொடர்பு கொல்ல கழாய்த்-தொடரைப் படைக்க முடியவில்லை"
 
-#: glib/gspawn-win32.c:329 glib/gspawn.c:1039
+#: glib/gspawn-win32.c:329 glib/gspawn.c:1028
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "(%s) சேய் கழாய்த் தொடரில் இருந்து வாசிக்க முடியவில்லை"
 
-#: glib/gspawn-win32.c:355 glib/gspawn.c:1244
+#: glib/gspawn-win32.c:355 glib/gspawn.c:1233
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "'%s' (%s) அடைவுக்கு போக முடியவில்லை"
@@ -536,47 +511,47 @@ msgstr ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
 
-#: glib/gspawn.c:179
+#: glib/gspawn.c:168
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "(%s) சேய்-செயலில் இருந்து தரவு வாசிக்க முடியவில்லை"
 
-#: glib/gspawn.c:311
+#: glib/gspawn.c:300
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr "(%s) சேய்-செயலில் இருந்து தரவு வாசிக்கும் போது, select()'டில் எதிர்பாராத பிழை"
 
-#: glib/gspawn.c:394
+#: glib/gspawn.c:383
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "(%s) waitpid()'டில் எதிர்பாராத பிழை"
 
-#: glib/gspawn.c:1104
+#: glib/gspawn.c:1093
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "(%s) தொடங்க முடியவில்லை"
 
-#: glib/gspawn.c:1254
+#: glib/gspawn.c:1243
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "\"%s\" (%s) சேய்-செயலை இயக்க முடியவில்லை"
 
-#: glib/gspawn.c:1264
+#: glib/gspawn.c:1253
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "சேய் (%s) செயலகத்தின் வெளியீடலை அல்லது உள்ளடலை திசை-மாற்றும்போது பிழை"
 
-#: glib/gspawn.c:1273
+#: glib/gspawn.c:1262
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "சேய் (%s) செயலகத்தை தொடங்க முடியவில்லை"
 
-#: glib/gspawn.c:1281
+#: glib/gspawn.c:1270
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "சேய் செயல் \"%s\" இயக்கும்போது தெரியாத பிழை"
 
-#: glib/gspawn.c:1303
+#: glib/gspawn.c:1292
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Failed to read enough data from child pid pipe (%s)"
@@ -730,6 +705,18 @@ msgstr ""
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr ""
+
+#, fuzzy
+#~ msgid "Could not change file mode: fork() failed: %s"
+#~ msgstr "'%s' கோப்பை திறக்க முடியவில்லை: fdopen() நொடிப்படைந்தது: %s"
+
+#, fuzzy
+#~ msgid "Could not change file mode: waitpid() failed: %s"
+#~ msgstr "%lu பைட்டுகளை \"%s\" கோப்பு வாசிப்பதற்கு ஒதுக்கிவைக்க முடியவில்லை"
+
+#, fuzzy
+#~ msgid "Could not change file mode: chmod() failed: %s"
+#~ msgstr "'%s' கோப்பை திறக்க முடியவில்லை: fdopen() நொடிப்படைந்தது: %s"
 
 #~ msgid "Conversion from character set `%s' to `%s' is not supported"
 #~ msgstr "வரியுரு வகை `%s' இலிருந்து `%s' க்கு மாற்றுவதற்கு ஆதரவளிப்பு கிடையாது"

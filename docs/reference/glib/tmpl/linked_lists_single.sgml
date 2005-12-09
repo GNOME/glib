@@ -183,21 +183,6 @@ number > 0 if the first parameter comes after the second parameter in
 the sort order.
 @Returns: the new start of the #GSList.
 
-<!-- ##### FUNCTION g_slist_insert_sorted_with_data ##### -->
-<para>
-Inserts a new element into the list, using the given comparison function
-to determine its position.
-</para>
-
-@list: a #GSList.
-@data: the data for the new element.
-@func: the function to compare elements in the list. It should return a
-number > 0 if the first parameter comes after the second parameter in
-the sort order.
-@user_data: data to pass to comparison function.
-@Returns: the new start of the #GSList.
-@Since 2.10
-
 
 <!-- ##### FUNCTION g_slist_remove ##### -->
 <para>
@@ -300,6 +285,22 @@ Reverses a #GSList.
 
 @list: a #GSList.
 @Returns: the start of the reversed #GSList.
+
+
+<!-- ##### FUNCTION g_slist_insert_sorted_with_data ##### -->
+<para>
+Inserts a new element into the list, using the given comparison function
+to determine its position.
+</para>
+
+@list: a #GSList.
+@data: the data for the new element.
+@func: the function to compare elements in the list. It should return a
+number > 0 if the first parameter comes after the second parameter in
+the sort order.
+@user_data: data to pass to comparison function.
+@Returns: the new start of the #GSList.
+@Since 2.10
 
 
 <!-- ##### FUNCTION g_slist_sort ##### -->
@@ -449,6 +450,7 @@ with <option>--disable-mem-pools</option>
 </para>
 
 @dummy: the #GAllocator to use when allocating #GSList elements.
+<!-- # Unused Parameters # -->
 @Deprecated:2.10: It does nothing, since #GSList has been
 converted to the <link linkend="glib-Memory-Slices">slice allocator</link>
 
@@ -462,6 +464,7 @@ Note that this function is not available if GLib has been compiled
 with <option>--disable-mem-pools</option>
 </para>
 
+<!-- # Unused Parameters # -->
 @Deprecated:2.10: It does nothing, since #GSList has been
 converted to the <link linkend="glib-Memory-Slices">slice allocator</link>
 

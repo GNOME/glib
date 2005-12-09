@@ -180,6 +180,7 @@ Creates a new #GMainLoop for the default main loop.
 @is_running: set to %TRUE to indicate that the loop is running. This is not
 very important since calling g_main_run() will set this to %TRUE anyway.
 @Returns: a new #GMainLoop.
+<!-- # Unused Parameters # -->
 @Deprecated:2.2: Use g_main_loop_new() instead.
 
 
@@ -189,6 +190,7 @@ Frees the memory allocated for the #GMainLoop.
 </para>
 
 @loop: a #GMainLoop.
+<!-- # Unused Parameters # -->
 @Deprecated:2.2: Use g_main_loop_unref() instead.
 
 
@@ -198,6 +200,7 @@ Runs a main loop until it stops running.
 </para>
 
 @loop: a #GMainLoop.
+<!-- # Unused Parameters # -->
 @Deprecated:2.2: Use g_main_loop_run() instead.
 
 
@@ -208,6 +211,7 @@ it will now return.
 </para>
 
 @loop: a #GMainLoop.
+<!-- # Unused Parameters # -->
 @Deprecated:2.2: Use g_main_loop_quit() instead.
 
 
@@ -218,6 +222,7 @@ Checks if the main loop is running.
 
 @loop: a #GMainLoop.
 @Returns: %TRUE if the main loop is running.
+<!-- # Unused Parameters # -->
 @Deprecated:2.2: USe g_main_loop_is_running() instead.
 
 
@@ -326,6 +331,7 @@ becomes ready. It will return after an event source has been processed.
 If set to %FALSE it will return immediately if no event source is ready to be
 processed.
 @Returns: %TRUE if more events are pending.
+<!-- # Unused Parameters # -->
 @Deprecated:2.2: Use g_main_context_iteration() instead.
 
 
@@ -345,6 +351,7 @@ Checks if any events are pending for the default #GMainContext
 </para>
 
 @Returns: %TRUE if any events are pending.
+<!-- # Unused Parameters # -->
 @Deprecated:2.2: Use g_main_context_pending() instead.
 
 
@@ -527,6 +534,7 @@ for the default main context.
 </para>
 
 @func: the function to call to poll all file descriptors.
+<!-- # Unused Parameters # -->
 @Deprecated:2.2: Use g_main_context_set_poll_func() instead.
 
 

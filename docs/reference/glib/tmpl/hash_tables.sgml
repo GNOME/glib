@@ -287,6 +287,23 @@ This function is deprecated and will be removed in the next major
 @hash_table: 
 
 
+<!-- ##### FUNCTION g_hash_table_ref ##### -->
+<para>
+
+</para>
+
+@hash_table: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_hash_table_unref ##### -->
+<para>
+
+</para>
+
+@hash_table: 
+
+
 <!-- ##### FUNCTION g_direct_equal ##### -->
 <para>
 

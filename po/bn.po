@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-11-18 08:20-0500\n"
+"POT-Creation-Date: 2005-12-09 12:42-0500\n"
 "PO-Revision-Date: 2005-10-03 00:24+0600\n"
 "Last-Translator: Mahay Alam Khan <makl10n@yahoo.com>\n"
 "Language-Team: Bengali <gnome-translation@bengalinux.org>\n"
@@ -127,72 +127,47 @@ msgstr "ফাইল \"%s\" খুলতে ব্যর্থ: fdopen() ব্�
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "'%s' ফাইলের নাম '%s' তে পরিবর্তন করা যায়নি: g_rename() failed: %s"
 
-#: glib/gfileutils.c:952
-#, c-format
-msgid "Could not change file mode: fork() failed: %s"
-msgstr "ফাইল মোড পরিবর্তন করা যায়নি: fork() ব্যর্থ: %s"
-
-#: glib/gfileutils.c:983
-#, c-format
-msgid "Could not change file mode: waitpid() failed: %s"
-msgstr "ফাইল মোড পরিবর্তন করা যায়নি: waitpid() ব্যর্থ: %s"
-
-#: glib/gfileutils.c:1002
-#, c-format
-msgid "Could not change file mode: chmod() failed: %s"
-msgstr "ফাইল মোড পরিবর্তন করা যায়নি: chmod() ব্যর্থ: %s"
-
-#: glib/gfileutils.c:1013
-#, c-format
-msgid "Could not change file mode: Child terminated by signal: %s"
-msgstr "ফাইল মোড পরিবর্তন করতে পারেনি: সংকেত: %s দ্বারা চাইল্ড সমাপ্তকৃত"
-
-#: glib/gfileutils.c:1024
-#, c-format
-msgid "Could not change file mode: Child terminated abnormally"
-msgstr "ফাইল মোড পরিবর্তন করতে পারেনি: চাইল্ড সমাপ্তকৃত অস্বাভাবিকভাবে"
-
-#: glib/gfileutils.c:1058 glib/gfileutils.c:1524
+#: glib/gfileutils.c:950 glib/gfileutils.c:1415
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "ফাইল \"%s\" সৃষ্টি করতে ব্যর্থ: %s"
 
-#: glib/gfileutils.c:1080
+#: glib/gfileutils.c:964
 #, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr "লেখার জন্য ফাইল \"%s\" খুলতে ব্যর্থ: fdopen() ব্যর্থ: %s"
 
-#: glib/gfileutils.c:1105
+#: glib/gfileutils.c:989
 #, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "\"%s\" ফাইলে লিখতে ব্যর্থ: fwrite() ব্যর্থ: %s"
 
-#: glib/gfileutils.c:1124
+#: glib/gfileutils.c:1008
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "'%s' ফাইল বন্ধ করতে ব্যর্থ: fclose() ব্যর্থ: %s"
 
-#: glib/gfileutils.c:1242
+#: glib/gfileutils.c:1126
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "বিদ্যমান ফাইল '%s' অপসারিত করা যায়নি: g_unlink() ব্যর্থ: %s"
 
-#: glib/gfileutils.c:1485
+#: glib/gfileutils.c:1376
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "নমুনা '%s' সঠিক নয়, '%s' থাকা উচিত্‌ নয়"
 
-#: glib/gfileutils.c:1499
+#: glib/gfileutils.c:1390
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "নমুনা '%s' এর শেষে XXXXXX নাই"
 
-#: glib/gfileutils.c:1974
+#: glib/gfileutils.c:1865
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "প্রতীকি লিংক '%s' পড়তে ব্যর্থ: %s"
 
-#: glib/gfileutils.c:1995
+#: glib/gfileutils.c:1886
 #, c-format
 msgid "Symbolic links not supported"
 msgstr "প্রতীকী লিঙ্ক সমর্থিত নয়"
@@ -227,7 +202,7 @@ msgstr "g_io_channel_read_to_end এ সরাসরি পড়া যায়ন�
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "ফাইল '%s' খুলতে ব্যর্থ: open() ব্যর্থ: %s"
 
-#: glib/gmappedfile.c:185
+#: glib/gmappedfile.c:193
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "ফাইল '%s' ম্যাপ করতে ব্যর্থ: mmap() ব্যর্থ: %s"
@@ -477,17 +452,17 @@ msgstr "টেক্সট শূণ্য ছিল (অথবা সুধু 
 msgid "Failed to read data from child process"
 msgstr "চাইল্ড প্রসেস থেকে তথ্য পড়তে ব্যর্থ"
 
-#: glib/gspawn-win32.c:291 glib/gspawn.c:1375
+#: glib/gspawn-win32.c:291 glib/gspawn.c:1364
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "চাইল্ড প্রসেস (%s) এর সাথে যোগাযোগ করার জন্য পাইপ সৃষ্টি করতে ব্যর্থ"
 
-#: glib/gspawn-win32.c:329 glib/gspawn.c:1039
+#: glib/gspawn-win32.c:329 glib/gspawn.c:1028
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "চাইল্ড পাইপ (%s) থেকে পড়তে ব্যর্থ"
 
-#: glib/gspawn-win32.c:355 glib/gspawn.c:1244
+#: glib/gspawn-win32.c:355 glib/gspawn.c:1233
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "ডাইরেক্টরি '%s' (%s) তে বদলাতে ব্যর্থ"
@@ -533,47 +508,47 @@ msgstr ""
 "চাইল্ড প্রসেস (%s) থেকে তথ্য পড়াকালীন সময় g_io_channel_win32_poll() এ "
 "অনাকাঙ্ক্ষিত ভুল"
 
-#: glib/gspawn.c:179
+#: glib/gspawn.c:168
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "চাইল্ড প্রসেস (%s) থেকে তথ্য পড়তে ব্যর্থ"
 
-#: glib/gspawn.c:311
+#: glib/gspawn.c:300
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr "চাইল্ড প্রসেস (%s) থেকে তথ্য পড়াকালীন সময় select() এ অনাকাঙ্ক্ষিত ভুল"
 
-#: glib/gspawn.c:394
+#: glib/gspawn.c:383
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "waitpid() (%s) এ অনাকাঙ্ক্ষিত ভুল"
 
-#: glib/gspawn.c:1104
+#: glib/gspawn.c:1093
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "ফোর্ক (%s) সৃষ্টি করতে ব্যর্থ"
 
-#: glib/gspawn.c:1254
+#: glib/gspawn.c:1243
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "চাইল্ড প্রসেস \"%s\" (%s) কার্যকর করতে ব্যর্থ"
 
-#: glib/gspawn.c:1264
+#: glib/gspawn.c:1253
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "চাইল্ড প্রসেস (%s) এর ইনপুট অথবা আউটপুট রিডায়রেক্ট করতে ব্যর্থ"
 
-#: glib/gspawn.c:1273
+#: glib/gspawn.c:1262
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "চাইল্ড প্রসেস (%s) সৃষ্টি করতে ব্যর্থ"
 
-#: glib/gspawn.c:1281
+#: glib/gspawn.c:1270
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "চাইল্ড প্রসেস \"%s\" কার্যকর করার সময় অজানা ভুল"
 
-#: glib/gspawn.c:1303
+#: glib/gspawn.c:1292
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "চাইল্ড পিয়াইডি পাইপ (%s) থেকে যথেস্ট তথ্য পড়তে ব্যর্থ"
@@ -727,6 +702,21 @@ msgstr "ইন্টিজার মান '%s' সীমার বাহির�
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "মান '%s' কে বুলিয়ান হিসেবে ইন্টারপ্রেট করা যায় না।"
+
+#~ msgid "Could not change file mode: fork() failed: %s"
+#~ msgstr "ফাইল মোড পরিবর্তন করা যায়নি: fork() ব্যর্থ: %s"
+
+#~ msgid "Could not change file mode: waitpid() failed: %s"
+#~ msgstr "ফাইল মোড পরিবর্তন করা যায়নি: waitpid() ব্যর্থ: %s"
+
+#~ msgid "Could not change file mode: chmod() failed: %s"
+#~ msgstr "ফাইল মোড পরিবর্তন করা যায়নি: chmod() ব্যর্থ: %s"
+
+#~ msgid "Could not change file mode: Child terminated by signal: %s"
+#~ msgstr "ফাইল মোড পরিবর্তন করতে পারেনি: সংকেত: %s দ্বারা চাইল্ড সমাপ্তকৃত"
+
+#~ msgid "Could not change file mode: Child terminated abnormally"
+#~ msgstr "ফাইল মোড পরিবর্তন করতে পারেনি: চাইল্ড সমাপ্তকৃত অস্বাভাবিকভাবে"
 
 #~ msgid "Conversion from character set `%s' to `%s' is not supported"
 #~ msgstr "ক্যরেকটার সেট `%s' থেকে `%s' পরিবর্তন করার সামর্থ নেই"

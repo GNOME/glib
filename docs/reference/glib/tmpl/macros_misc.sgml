@@ -262,7 +262,6 @@ is ignored. See the GNU C documentation for details.
 @Since: 2.10
 
 
-
 <!-- ##### MACRO G_GNUC_FUNCTION ##### -->
 <para>
 Expands to the GNU C <literal>__FUNCTION__</literal> variable if the 
