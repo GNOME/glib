@@ -613,6 +613,15 @@ g_atomic_int_get (volatile gint *atomic)
   return result;
 }
 
+void
+g_atomic_int_set (volatile gint *atomic,
+                  gint           newval)
+{
+  g_mutex_lock (g_atomic_mutex);
+  *atomic = newval;
+  g_mutex_unlock (g_atomic_mutex);
+}
+
 gpointer
 g_atomic_pointer_get (volatile gpointer *atomic)
 {
@@ -623,6 +632,15 @@ g_atomic_pointer_get (volatile gpointer *atomic)
   g_mutex_unlock (g_atomic_mutex);
 
   return result;
+}
+
+void
+g_atomic_pointer_set (volatile gpointer *atomic,
+                      gpointer           newval)
+{
+  g_mutex_lock (g_atomic_mutex);
+  *atomic = newval;
+  g_mutex_unlock (g_atomic_mutex);
 }
 #endif /* G_ATOMIC_OP_MEMORY_BARRIER_NEEDED */   
 #elif defined (G_ATOMIC_OP_MEMORY_BARRIER_NEEDED)

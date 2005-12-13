@@ -1,3 +1,9 @@
+Tue Dec 13 10:13:32 2005  Tim Janik  <timj@imendio.com>
+
+	* glib/gatomic.h: added g_atomic_pointer_set() and g_atomic_int_set()
+	for systems where the initialization of atomic variables requires a
+	write memory barrier.
+
 2005-12-09  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Bump version
