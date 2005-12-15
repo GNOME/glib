@@ -90,9 +90,9 @@ g_atomic_pointer_compare_and_exchange
  /* these are not internal, but we don't want to alias them */
 g_atomic_int_get
 g_atomic_pointer_get
-#endif
 g_atomic_int_set
 g_atomic_pointer_set
+#endif
 #endif
 #endif
 
