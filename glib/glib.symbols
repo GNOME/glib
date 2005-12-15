@@ -91,6 +91,8 @@ g_atomic_pointer_compare_and_exchange
 g_atomic_int_get
 g_atomic_pointer_get
 #endif
+g_atomic_int_set
+g_atomic_pointer_set
 #endif
 #endif
 

@@ -670,12 +670,14 @@ g_async_queue_sort_unlocked
 
 <SECTION>
 <TITLE>Atomic Operations</TITLE>
-<FILE>atomic_operations</FILE>
+<FILE>atomic_operations</FILE>g
 g_atomic_int_get
+g_atomic_int_set
 g_atomic_int_add
 g_atomic_int_exchange_and_add
 g_atomic_int_compare_and_exchange
 g_atomic_pointer_get
+g_atomic_pointer_set
 g_atomic_pointer_compare_and_exchange
 g_atomic_int_inc
 g_atomic_int_dec_and_test

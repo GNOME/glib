@@ -69,9 +69,20 @@ Reads the value of the integer pointed to by @atomic. Also acts as
 a memory barrier.
 </para>
 
-@atomic: a pointer to an integer.
-@Returns: the value of *@atomic.
+@atomic: a pointer to an integer
+@Returns: the value of *@atomic
 @Since: 2.4
+
+
+<!-- ##### FUNCTION g_atomic_int_set ##### -->
+<para>
+Sets the value of the integer pointed to by @atomic. 
+Also acts as a memory barrier.
+</para>
+
+@atomic: a pointer to an integer
+@newval: the new value
+@Since: 2.10
 
 
 <!-- ##### FUNCTION g_atomic_int_add ##### -->
@@ -121,6 +132,17 @@ a memory barrier.
 @atomic: a pointer to a #gpointer.
 @Returns: the value to add to *@atomic.
 @Since: 2.4
+
+
+<!-- ##### FUNCTION g_atomic_pointer_set ##### -->
+<para>
+Sets the value of the pointer pointed to by @atomic. 
+Also acts as a memory barrier.
+</para>
+
+@atomic: a pointer to a #gpointer
+@newval: the new value
+@Since: 2.10
 
 
 <!-- ##### FUNCTION g_atomic_pointer_compare_and_exchange ##### -->
