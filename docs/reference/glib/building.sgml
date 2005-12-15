@@ -218,14 +218,61 @@ How to compile GLib itself
           <systemitem>--enable-gc-friendly</systemitem></title>
 
         <para>
-          When enabled all memory freed by the application,
-          but retained by GLib for performance reasons
-          is set to zero, thus making deployed garbage
-          collection or memory profiling tools detect
-          unlinked memory correctly. This will make GLib
-          slightly slower and is thus disabled by default.
+	  By default, and with <systemitem>--disable-gc-friendly</systemitem>
+	  as well, Glib does not clear the memory for certain objects before they
+	  are freed.  For example, Glib may decide to recycle GList nodes by
+	  putting them in a free list.  However, memory profiling and debugging tools like <ulink
+	  url="http://www.valgrind.org">Valgrind</ulink> work better if an
+	  application does not keep dangling pointers to freed memory (even
+	  though these pointers are no longer dereferenced), or invalid pointers inside
+	  uninitialized memory.   The
+	  <systemitem>--enable-gc-friendly</systemitem> option makes Glib clear
+	  memory in these situations:
         </para>
       </formalpara>
+
+      <itemizedlist>
+        <listitem>
+	  <para>
+	    When shrinking a GArray, Glib will clear the memory no longer
+	    available in the array:  shrink an array from 10 bytes to 7, and
+	    the last 3 bytes will be cleared.  This includes removals of single and multiple elements.
+	  </para>
+        </listitem>
+        <listitem>
+	  <para>
+	  </para>
+        </listitem>
+        <listitem>
+	  <para>
+	    When growing a GArray, Glib will clear the new chunk of memory.  
+	    Grow an array from 7 bytes to 10 bytes, and the last 3 bytes will be cleared.
+	  </para>
+        </listitem>
+        <listitem>
+	  <para>
+	    The above applies to GPtrArray as well.
+	  </para>
+        </listitem>
+        <listitem>
+	  <para>
+	    When freeing a node from a GHashTable, Glib will first clear
+	    the node, which used to have pointers to the key and the value 
+	    stored at that node.
+	  </para>
+        </listitem>
+        <listitem>
+	  <para>
+	    When destroying or removing a GTree node, Glib will clear the node,
+	    which used to have pointers to the node's value, and the left and right subnodes.
+	  </para>
+        </listitem>
+      </itemizedlist>
+
+      <para>
+        Since clearing the memory has a cost,
+        <systemitem>--disable-gc-friendly</systemitem> is the default.
+      </para>
 
       <formalpara>
         <title><systemitem>--disable-mem-pools</systemitem> and

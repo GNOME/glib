@@ -1,3 +1,7 @@
+2005-12-14  Federico Mena Quintero  <federico@ximian.com>
+
+	* glib/building.sgml: Clarify exactly what happens when you use --enable-gc-friendly.
+
 Mon Dec 12 15:31:41 2005  Tim Janik  <timj@imendio.com>
 
 	* gobject/tmpl/objects.sgml: corrected floating reference documentation.
