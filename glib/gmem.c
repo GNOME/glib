@@ -635,7 +635,7 @@ GAllocator*
 g_allocator_new (const gchar *name,
 		 guint        n_preallocs)
 {
-  static const struct _GAllocator {
+  static struct _GAllocator {
     gchar      *name;
     guint16     n_preallocs;
     guint       is_unused : 1;

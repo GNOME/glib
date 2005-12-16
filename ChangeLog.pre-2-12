@@ -1,3 +1,9 @@
+2005-12-16  Matthias Clasen  <mclasen@redhat.com>
+
+	*  glib/gmem.c (g_allocator_new): Don't return a pointer to
+	a const struct, since apps expect to be able to modify it. 
+	(#324179, J. Ali Harlow)
+
 Tue Dec 13 10:13:32 2005  Tim Janik  <timj@imendio.com>
 
 	* glib/gatomic.h: added g_atomic_pointer_set() and g_atomic_int_set()
