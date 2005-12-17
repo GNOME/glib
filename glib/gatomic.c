@@ -647,22 +647,32 @@ g_atomic_pointer_set (volatile gpointer *atomic,
 gint
 g_atomic_int_get (volatile gint *atomic)
 {
-  gint result = *atomic;
-
   G_ATOMIC_MEMORY_BARRIER;
+  return *atomic;
+}
 
-  return result;
+void
+g_atomic_int_set (volatile gint *atomic,
+                  gint           newval)
+{
+  *atomic = newval;
+  G_ATOMIC_MEMORY_BARRIER; 
 }
 
 gpointer
 g_atomic_pointer_get (volatile gpointer *atomic)
 {
-  gpointer result = *atomic;
-
   G_ATOMIC_MEMORY_BARRIER;
-
-  return result;
+  return *atomic;
 }   
+
+void
+g_atomic_pointer_set (volatile gpointer *atomic,
+                      gpointer           newval)
+{
+  *atomic = newval;
+  G_ATOMIC_MEMORY_BARRIER; 
+}
 #endif /* DEFINE_WITH_MUTEXES || G_ATOMIC_OP_MEMORY_BARRIER_NEEDED */
 
 #ifdef ATOMIC_INT_CMP_XCHG
@@ -712,10 +722,24 @@ gint
   return g_atomic_int_get (atomic);
 }
 
+void
+(g_atomic_int_set) (volatile gint *atomic,
+		    gint           newval)
+{
+  g_atomic_int_set (atomic, newval);
+}
+
 gpointer
 (g_atomic_pointer_get) (volatile gpointer *atomic)
 {
   return g_atomic_pointer_get (atomic);
+}
+
+void
+(g_atomic_pointer_set) (volatile gpointer *atomic,
+			gpointer           newval)
+{
+  g_atomic_pointer_set (atomic, newval);
 }
 #endif /* G_ATOMIC_OP_MEMORY_BARRIER_NEEDED */
 

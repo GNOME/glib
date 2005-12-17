@@ -1,3 +1,12 @@
+2005-12-17  Sebastian Wilhelmi  <seppi@seppi.de>
+
+	* glib/gatomic.c: Fix memory barrier position in g_atomic_int_get
+	and g_atomic_pointer_get. Add g_atomic_int_set and
+	g_atomic_pointer_set implementations for the !DEFINE_WITH_MUTEXES &&
+	G_ATOMIC_OP_MEMORY_BARRIER_NEEDED case, as well as defining them
+	as functions (additionally to the macros in the header) for the 
+	!G_ATOMIC_OP_MEMORY_BARRIER_NEEDED case.
+
 2005-12-16  Matthias Clasen  <mclasen@redhat.com>
 
 	*  glib/gmem.c (g_allocator_new): Don't return a pointer to
