@@ -1,3 +1,8 @@
+2005-12-17  Sebastian Wilhelmi  <seppi@seppi.de>
+
+	* glib/gatomic.c: Fix memory barrier position in g_atomic_int_get
+	and g_atomic_pointer_get.
+
 2005-12-07  Tor Lillqvist  <tml@novell.com>
 
 	* glib-gettextize.in: Look up prefix at run-time on Win32,

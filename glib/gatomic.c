@@ -629,21 +629,15 @@ g_atomic_pointer_get (gpointer *atomic)
 gint
 g_atomic_int_get (gint *atomic)
 {
-  gint result = *atomic;
-
   G_ATOMIC_MEMORY_BARRIER;
-
-  return result;
+  return *atomic;
 }
 
 gpointer
 g_atomic_pointer_get (gpointer *atomic)
 {
-  gpointer result = *atomic;
-
   G_ATOMIC_MEMORY_BARRIER;
-
-  return result;
+  return *atomic;
 }   
 #endif /* DEFINE_WITH_MUTEXES || G_ATOMIC_OP_MEMORY_BARRIER_NEEDED */
 
