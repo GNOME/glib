@@ -1,3 +1,8 @@
+2005-12-17  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/goption.c (parse_short_option): Set an error in all
+	failure cases.  (#324332, Tim-Philipp Müller) 
+
 2005-12-17  Sebastian Wilhelmi  <seppi@seppi.de>
 
 	* glib/gatomic.c: Fix memory barrier position in g_atomic_int_get
