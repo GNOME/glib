@@ -921,9 +921,11 @@ parse_short_option (GOptionContext *context,
 	    {
 	      if (*new_index > index)
 		{
-		  g_warning ("FIXME: figure out the correct error here");
-
-		  return FALSE;
+                  g_set_error (error,
+                               G_OPTION_ERROR, G_OPTION_ERROR_FAILED,
+                               _("Error parsing option %s"), option_name);
+                  g_free (option_name);
+                  return FALSE;
 		}
 
 	      option_name = g_strdup_printf ("-%c", group->entries[j].short_name);
