@@ -87,9 +87,10 @@ pointer type with name @name.
 
 <!-- ##### MACRO G_TYPE_HASH_TABLE ##### -->
 <para>
-
+The #GType for a boxed type holding a #GHashTable reference.
 </para>
 
+@Since: 2.10
 
 
 <!-- ##### MACRO G_TYPE_DATE ##### -->
