@@ -1615,6 +1615,7 @@ g_list_free
 <SUBSECTION>
 g_list_alloc
 g_list_free_1
+g_list_free1
 
 <SUBSECTION>
 g_list_length
