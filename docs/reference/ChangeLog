@@ -1,5 +1,7 @@
 2005-12-19  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/tmpl/*.sgml: Update versioned deprecation
+
 	* gobject/tmpl/gboxed.sgml: Document G_TYPE_HASH_TABLE.
 
 	* glib/glib-sections.txt: Add g_list_free1

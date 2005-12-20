@@ -41,7 +41,7 @@ Larger blocks mean less calls to g_malloc(), but some memory may be wasted.
 (GLib uses 128 elements per block by default.) The value must be between 1
 and 65535.
 @Returns: a new #GAllocator.
-@Deprecated: Use the <link linkend="glib-Memory-Slices">slice allocator</link>
+@Deprecated: 2.10: Use the <link linkend="glib-Memory-Slices">slice allocator</link>
 instead
 
 
@@ -51,7 +51,7 @@ Frees all of the memory allocated by the #GAllocator.
 </para>
 
 @allocator: a #GAllocator.
-@Deprecated: Use the <link linkend="glib-Memory-Slices">slice allocator</link>
+@Deprecated: 2.10: Use the <link linkend="glib-Memory-Slices">slice allocator</link>
 instead
 
 

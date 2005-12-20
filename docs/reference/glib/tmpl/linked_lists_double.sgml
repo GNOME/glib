@@ -256,6 +256,13 @@ It is usually used after g_list_remove_link().
 @list: a #GList element.
 
 
+<!-- ##### MACRO g_list_free1 ##### -->
+<para>
+
+</para>
+
+
+
 <!-- ##### FUNCTION g_list_length ##### -->
 <para>
 Gets the number of elements in a #GList.
@@ -518,8 +525,7 @@ with <option>--disable-mem-pools</option>
 </para>
 
 @allocator: the #GAllocator to use when allocating #GList elements.
-<!-- # Unused Parameters # -->
-@Deprecated:2.10: It does nothing, since #GList has been
+@Deprecated: 2.10: It does nothing, since #GList has been
 converted to the <link linkend="glib-Memory-Slices">slice allocator</link>
 
 
@@ -532,8 +538,7 @@ Note that this function is not available if GLib has been compiled
 with <option>--disable-mem-pools</option>
 </para>
 
-<!-- # Unused Parameters # -->
-@Deprecated:2.10: It does nothing, since #GList has been
+@Deprecated: 2.10: It does nothing, since #GList has been
 converted to the <link linkend="glib-Memory-Slices">slice allocator</link>
 
 

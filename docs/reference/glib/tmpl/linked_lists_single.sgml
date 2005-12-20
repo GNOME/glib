@@ -450,8 +450,7 @@ with <option>--disable-mem-pools</option>
 </para>
 
 @dummy: the #GAllocator to use when allocating #GSList elements.
-<!-- # Unused Parameters # -->
-@Deprecated:2.10: It does nothing, since #GSList has been
+@Deprecated: 2.10: It does nothing, since #GSList has been
 converted to the <link linkend="glib-Memory-Slices">slice allocator</link>
 
 
@@ -464,8 +463,7 @@ Note that this function is not available if GLib has been compiled
 with <option>--disable-mem-pools</option>
 </para>
 
-<!-- # Unused Parameters # -->
-@Deprecated:2.10: It does nothing, since #GSList has been
+@Deprecated: 2.10: It does nothing, since #GSList has been
 converted to the <link linkend="glib-Memory-Slices">slice allocator</link>
 
 
