@@ -220,7 +220,7 @@ main (int   argc,
             mode = "old memchunks";
             break;
           case 'f': /* eager freeing */
-            g_slice_set_config (G_SLICE_CONFIG_ALWAYS_FREE, TRUE);
+            g_slice_set_config (G_SLICE_CONFIG_WORKING_SET_MSECS, 0);
             clean_memchunks = TRUE;
             emode = " with eager freeing";
             break;

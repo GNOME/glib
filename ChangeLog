@@ -1,3 +1,25 @@
+Tue Dec 20 18:14:14 2005  Tim Janik  <timj@imendio.com>
+
+	* glib/gslice.[hc]: added mem_error() and mem_assert() to test and 
+	handle 	errors without depending on gmessage.c which might not be
+	setup when the error occours.
+	removed G_SLICE_CONFIG_ALWAYS_FREE config option, fixed the code so
+	always freeing can be achieved by adjusting the working set time to
+	0 with G_SLICE_CONFIG_WORKING_SET_MSECS.
+	added G_SLICE_CONFIG_COLOR_INCREMENT to test different color increments
+	(mainly 0 and 1). reduced the minimum block size to 128 bytes, to
+	minimize wastage if small amounts of differently sized structrues are
+	allocated, this does come at a performance cost of roughly 5% though.
+	fixed up block alignment calculation, so it works for varying
+	block sizes. only use strerror() not g_strerror() since the latter
+	depends on working GQuark and GSlice.
+	mem_error(): implemented in terms of fprintf and vfprintf.
+
+	* tests/slice-color.c: new program to test cache colorization effects.
+
+	* tests/slice-test.c: trade G_SLICE_CONFIG_ALWAYS_FREE for 0 duration
+	G_SLICE_CONFIG_WORKING_SET_MSECS.
+
 2005-12-17  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/goption.c (parse_short_option): Set an error in all

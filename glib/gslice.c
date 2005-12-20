@@ -19,7 +19,6 @@
 /* MT safe */
 #define _XOPEN_SOURCE 600       /* posix_memalign() */
 #include <stdlib.h>             /* posix_memalign() */
-#include <assert.h>             /* assert() for nomessage phase */
 #include <string.h>
 #include <errno.h>
 #include "config.h"
@@ -86,7 +85,7 @@
  *     a chunk size specific maximum to limit magazine storage sizes to roughly
  *     16KB.
  * [4] allocating ca. 8 chunks per block/page keeps a good balance between
- *     external and internal fragmentation (<= 12.5%) [Bonwick94]
+ *     external and internal fragmentation (<= 12.5%). [Bonwick94]
  */
 
 /* --- macros and constants --- */
@@ -102,7 +101,7 @@
 #define MAX_SLAB_INDEX(al)      (SLAB_INDEX (al, MAX_SLAB_CHUNK_SIZE (al)) + 1)
 #define SLAB_INDEX(al, asize)   ((asize) / P2ALIGNMENT - 1)                     /* asize must be P2ALIGNMENT aligned */
 #define SLAB_CHUNK_SIZE(al, ix) (((ix) + 1) * P2ALIGNMENT)
-#define SLAB_PAGE_SIZE(al,csz)  (ALIGN (8 * (csz) + SLAB_INFO_SIZE, (al)->min_page_size))
+#define SLAB_BPAGE_SIZE(al,csz) (8 * (csz) + SLAB_INFO_SIZE)
 
 /* optimized version of ALIGN (size, P2ALIGNMENT) */
 #if     GLIB_SIZEOF_SIZE_T * 2 == 8  /* P2ALIGNMENT */
@@ -112,6 +111,10 @@
 #else
 #define P2ALIGN(size)   ALIGN (size, P2ALIGNMENT)
 #endif
+
+/* special helpers to avoid gmessage.c dependency */
+static void mem_error (const char *format, ...) G_GNUC_PRINTF (1,2);
+#define mem_assert(cond)    do { if (G_LIKELY (cond)) ; else mem_error ("assertion failed: %s", #cond); } while (0)
 
 /* --- structures --- */
 typedef struct _ChunkLink      ChunkLink;
@@ -137,8 +140,8 @@ typedef struct {
 typedef struct {
   gboolean always_malloc;
   gboolean bypass_magazines;
-  gboolean always_free;
   gsize    working_set_msecs;
+  guint    color_increment;
 } SliceConfig;
 typedef struct {
   /* const after initialization */
@@ -178,8 +181,8 @@ static Allocator        allocator[1] = { { 0, }, };
 static SliceConfig      slice_config = {
   FALSE,        /* always_malloc */
   FALSE,        /* bypass_magazines */
-  FALSE,        /* always_free */
   15 * 1000,    /* working_set_msecs */
+  1,            /* color increment, alt: 0x7fffffff */
 };
 
 /* --- auxillary funcitons --- */
@@ -196,12 +199,11 @@ g_slice_set_config (GSliceConfig ckey,
     case G_SLICE_CONFIG_BYPASS_MAGAZINES:
       slice_config.bypass_magazines = value != 0;
       break;
-    case G_SLICE_CONFIG_ALWAYS_FREE:
-      slice_config.always_free = value != 0;
-      break;
     case G_SLICE_CONFIG_WORKING_SET_MSECS:
       slice_config.working_set_msecs = value;
       break;
+    case G_SLICE_CONFIG_COLOR_INCREMENT:
+      slice_config.color_increment = value;
     default: ;
     }
 }
@@ -215,12 +217,12 @@ g_slice_get_config (GSliceConfig ckey)
       return slice_config.always_malloc;
     case G_SLICE_CONFIG_BYPASS_MAGAZINES:
       return slice_config.bypass_magazines;
-    case G_SLICE_CONFIG_ALWAYS_FREE:
-      return slice_config.always_free;
     case G_SLICE_CONFIG_WORKING_SET_MSECS:
       return slice_config.working_set_msecs;
     case G_SLICE_CONFIG_CHUNK_SIZES:
       return MAX_SLAB_INDEX (allocator);
+    case G_SLICE_CONFIG_COLOR_INCREMENT:
+      return slice_config.color_increment;
     default:
       return 0;
     }
@@ -251,28 +253,35 @@ g_slice_get_config_state (GSliceConfig ckey,
 static void
 g_slice_init_nomessage (void)
 {
-#ifdef G_OS_WIN32
-  SYSTEM_INFO system_info;
-#endif
   /* we may not use g_error() or friends here */
-  assert (sys_page_size == 0);
+  mem_assert (sys_page_size == 0);
+  mem_assert (MIN_MAGAZINE_SIZE >= 4);
 
 #ifdef G_OS_WIN32
-  GetSystemInfo (&system_info);
-  sys_page_size = system_info.dwPageSize;
+  {
+    SYSTEM_INFO system_info;
+    GetSystemInfo (&system_info);
+    sys_page_size = system_info.dwPageSize;
+  }
 #else
   sys_page_size = sysconf (_SC_PAGESIZE); /* = sysconf (_SC_PAGE_SIZE); = getpagesize(); */
 #endif
-  assert (sys_page_size >= 2 * LARGEALIGNMENT);
+  mem_assert (sys_page_size >= 2 * LARGEALIGNMENT);
+  mem_assert ((sys_page_size & (sys_page_size - 1)) == 0);
   allocator->config = slice_config;
   allocator->min_page_size = sys_page_size;
 #if HAVE_POSIX_MEMALIGN || HAVE_MEMALIGN
   /* allow allocation of pages up to 8KB (with 8KB alignment).
    * this is useful because many medium to large sized structures
    * fit less than 8 times (see [4]) into 4KB pages.
+   * we allow very small page sizes here, to reduce wastage in
+   * threads if only small allocations are required (this does
+   * bear the risk of incresing allocation times and fragmentation
+   * though).
    */
   allocator->min_page_size = MAX (allocator->min_page_size, 4096);
   allocator->max_page_size = MAX (allocator->min_page_size, 8192);
+  allocator->min_page_size = MIN (allocator->min_page_size, 128);
 #else
   /* we can only align to system page size */
   allocator->max_page_size = sys_page_size;
@@ -461,7 +470,7 @@ magazine_chain_prepare_fields (ChunkLink *magazine_chunks)
   ChunkLink *chunk2;
   ChunkLink *chunk3;
   ChunkLink *chunk4;
-  g_assert (MIN_MAGAZINE_SIZE >= 4);
+  /* checked upon initialization: mem_assert (MIN_MAGAZINE_SIZE >= 4); */
   /* ensure a magazine with at least 4 unused data pointers */
   chunk1 = magazine_chain_pop_head (&magazine_chunks);
   chunk2 = magazine_chain_pop_head (&magazine_chunks);
@@ -490,8 +499,7 @@ magazine_cache_trim (Allocator *allocator,
   /* trim magazine cache from tail */
   ChunkLink *current = magazine_chain_prev (allocator->magazines[ix]);
   ChunkLink *trash = NULL;
-  while (allocator->config.always_free ||
-         ABS (stamp - magazine_chain_uint_stamp (current)) > allocator->config.working_set_msecs)
+  while (ABS (stamp - magazine_chain_uint_stamp (current)) >= allocator->config.working_set_msecs)
     {
       /* unlink */
       ChunkLink *prev = magazine_chain_prev (current);
@@ -643,7 +651,7 @@ thread_memory_magazine1_reload (ThreadMemory *tmem,
                                 guint         ix)
 {
   Magazine *mag = &tmem->magazine1[ix];
-  g_assert (mag->chunks == NULL); /* ensure that we may reset mag->count */
+  mem_assert (mag->chunks == NULL); /* ensure that we may reset mag->count */
   mag->count = 0;
   mag->chunks = magazine_cache_pop_magazine (ix, &mag->count);
 }
@@ -859,6 +867,15 @@ allocator_slab_stack_push (Allocator *allocator,
   allocator->slab_stack[ix] = sinfo;
 }
 
+static gsize
+allocator_aligned_page_size (Allocator *allocator,
+                             gsize      n_bytes)
+{
+  gsize val = 1 << g_bit_storage (n_bytes - 1);
+  val = MAX (val, allocator->min_page_size);
+  return val;
+}
+
 static void
 allocator_add_slab (Allocator *allocator,
                     guint      ix,
@@ -867,17 +884,24 @@ allocator_add_slab (Allocator *allocator,
   ChunkLink *chunk;
   SlabInfo *sinfo;
   gsize addr, padding, n_chunks, color = 0;
-  gsize page_size = SLAB_PAGE_SIZE (allocator, chunk_size);
+  gsize page_size = allocator_aligned_page_size (allocator, SLAB_BPAGE_SIZE (allocator, chunk_size));
   /* allocate 1 page for the chunks and the slab */
   gpointer aligned_memory = allocator_memalign (page_size, page_size - NATIVE_MALLOC_PADDING);
   guint8 *mem = aligned_memory;
   guint i;
   if (!mem)
-    g_error ("%s: failed to allocate %lu bytes: %s", "GSlicedMemory", (gulong) (page_size - NATIVE_MALLOC_PADDING), g_strerror (errno));
+    {
+      const gchar *syserr = "unknown error";
+#if HAVE_STRERROR
+      syserr = strerror (errno);
+#endif
+      mem_error ("failed to allocate %u bytes (alignment: %u): %s\n",
+                 (guint) (page_size - NATIVE_MALLOC_PADDING), (guint) page_size, syserr);
+    }
   /* mask page adress */
   addr = ((gsize) mem / page_size) * page_size;
   /* assert alignment */
-  g_assert (aligned_memory == (gpointer) addr);
+  mem_assert (aligned_memory == (gpointer) addr);
   /* basic slab info setup */
   sinfo = (SlabInfo*) (mem + page_size - SLAB_INFO_SIZE);
   sinfo->n_allocated = 0;
@@ -888,7 +912,7 @@ allocator_add_slab (Allocator *allocator,
   if (padding)
     {
       color = (allocator->color_accu * P2ALIGNMENT) % padding;
-      allocator->color_accu += 1;       /* alternatively: + 0x7fffffff */
+      allocator->color_accu += allocator->config.color_increment;
     }
   /* add chunks to free list */
   chunk = (ChunkLink*) (mem + color);
@@ -928,13 +952,13 @@ slab_allocator_free_chunk (gsize    chunk_size,
   ChunkLink *chunk;
   gboolean was_empty;
   guint ix = SLAB_INDEX (allocator, chunk_size);
-  gsize page_size = SLAB_PAGE_SIZE (allocator, chunk_size);
+  gsize page_size = allocator_aligned_page_size (allocator, SLAB_BPAGE_SIZE (allocator, chunk_size));
   gsize addr = ((gsize) mem / page_size) * page_size;
   /* mask page adress */
   guint8 *page = (guint8*) addr;
   SlabInfo *sinfo = (SlabInfo*) (page + page_size - SLAB_INFO_SIZE);
   /* assert valid chunk count */
-  g_assert (sinfo->n_allocated > 0);
+  mem_assert (sinfo->n_allocated > 0);
   /* add chunk to free list */
   was_empty = sinfo->chunks == NULL;
   chunk = (ChunkLink*) mem;
@@ -999,8 +1023,8 @@ allocator_memalign (gsize alignment,
   err = errno;
 #else
   /* simplistic non-freeing page allocator */
-  g_assert (alignment == sys_page_size);
-  g_assert (memsize <= sys_page_size);
+  mem_assert (alignment == sys_page_size);
+  mem_assert (memsize <= sys_page_size);
   if (!compat_valloc_trash)
     {
       const guint n_pages = 16;
@@ -1030,9 +1054,28 @@ allocator_memfree (gsize    memsize,
 #if     HAVE_POSIX_MEMALIGN || HAVE_MEMALIGN || HAVE_VALLOC
   free (mem);
 #else
-  g_assert (memsize <= sys_page_size);
+  mem_assert (memsize <= sys_page_size);
   g_trash_stack_push (&compat_valloc_trash, mem);
 #endif
+}
+
+#include <stdio.h>
+
+static void
+mem_error (const char *format,
+           ...)
+{
+  const char *pname;
+  va_list args;
+  /* at least, put out "MEMORY-ERROR", in case we segfault during the rest of the function */
+  fputs ("\n***MEMORY-ERROR***: ", stderr);
+  pname = g_get_prgname();
+  fprintf (stderr, "%s[%u]: GSlice: ", pname ? pname : "", getpid());
+  va_start (args, format);
+  vfprintf (stderr, format, args);
+  va_end (args);
+  fputs ("\n", stderr);
+  _exit (1);
 }
 
 #define __G_SLICE_C__
