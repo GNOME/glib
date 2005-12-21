@@ -41,6 +41,8 @@ struct _GRealThreadPool
   gboolean running;
   gboolean immediate;
   gboolean waiting;
+  GCompareDataFunc sort_func;
+  gpointer sort_user_data;
 };
 
 /* The following is just an address to mark the stop order for a
@@ -57,14 +59,32 @@ G_LOCK_DEFINE_STATIC (unused_threads);
 static GMutex *inform_mutex = NULL;
 static GCond *inform_cond = NULL;
 
-static void     g_thread_pool_free_internal (GRealThreadPool* pool);
-static gpointer g_thread_pool_thread_proxy (gpointer data);
-static void     g_thread_pool_start_thread (GRealThreadPool* pool, 
-					    GError **error);
-static void     g_thread_pool_wakeup_and_stop_all (GRealThreadPool* pool);
+
+static void     g_thread_pool_queue_push_unlocked (GRealThreadPool  *pool,
+						   gpointer          data);
+static void     g_thread_pool_free_internal       (GRealThreadPool  *pool);
+static gpointer g_thread_pool_thread_proxy        (gpointer          data);
+static void     g_thread_pool_start_thread        (GRealThreadPool  *pool,
+						   GError          **error);
+static void     g_thread_pool_wakeup_and_stop_all (GRealThreadPool  *pool);
+
 
 #define g_thread_should_run(pool, len) \
   ((pool)->running || (!(pool)->immediate && (len) > 0))
+
+
+static void
+g_thread_pool_queue_push_unlocked (GRealThreadPool *pool,
+				   gpointer         data)
+{
+  if (pool->sort_func) 
+    g_async_queue_push_sorted_unlocked (pool->queue, 
+					data,
+					pool->sort_func, 
+					pool->sort_user_data);
+  else
+    g_async_queue_push_unlocked (pool->queue, data);
+}
 
 static gpointer 
 g_thread_pool_thread_proxy (gpointer data)
@@ -105,10 +125,10 @@ g_thread_pool_thread_proxy (gpointer data)
 		 * the global pool and just hand the data further to
 		 * the next one waiting in the queue */
 		{
-		  g_async_queue_push_unlocked (pool->queue, task);
+		  g_thread_pool_queue_push_unlocked (pool, task);
 		  goto_global_pool = TRUE;
 		}
-	      else if (pool->running || !pool->immediate)
+ 	      else if (pool->running || !pool->immediate)
 		{
 		  g_async_queue_unlock (pool->queue);
 		  pool->pool.func (task, pool->pool.user_data);
@@ -293,6 +313,8 @@ g_thread_pool_new (GFunc            func,
   retval->max_threads = max_threads;
   retval->num_threads = 0;
   retval->running = TRUE;
+  retval->sort_func = NULL;
+  retval->sort_user_data = NULL;
 
   G_LOCK (init);
   
@@ -365,7 +387,7 @@ g_thread_pool_push (GThreadPool     *pool,
     /* No thread is waiting in the queue */
     g_thread_pool_start_thread (real, error);
 
-  g_async_queue_push_unlocked (real->queue, data);
+  g_thread_pool_queue_push_unlocked (real, data);
   g_async_queue_unlock (real->queue);
 }
 
@@ -599,7 +621,7 @@ g_thread_pool_wakeup_and_stop_all (GRealThreadPool* pool)
 
   pool->immediate = TRUE; 
   for (i = 0; i < pool->num_threads; i++)
-    g_async_queue_push_unlocked (pool->queue, GUINT_TO_POINTER (1));
+    g_thread_pool_queue_push_unlocked (pool, GUINT_TO_POINTER (1));
 }
 
 /**
@@ -682,6 +704,45 @@ void g_thread_pool_stop_unused_threads (void)
   guint oldval = g_thread_pool_get_max_unused_threads ();
   g_thread_pool_set_max_unused_threads (0);
   g_thread_pool_set_max_unused_threads (oldval);
+}
+
+/**
+ * g_thread_pool_set_sort_function:
+ * @pool: a #GThreadPool
+ * @func: the #GCompareDataFunc used to sort the list of tasks. 
+ *     This function is passed two tasks. It should return
+ *     0 if the order in which they are handled does not matter, 
+ *     a negative value if the first task should be processed before
+ *     the second or a positive value if the second task should be 
+ *     processed first.
+ * @user_data: user data passed to @func.
+ *
+ * Sets the function used to sort the list of tasks. This allows the
+ * tasks to be processed by a priority determined by @func, and not
+ * just in the order in which they were added to the pool.
+ *
+ * Since: 2.10
+ **/
+void g_thread_pool_set_sort_function (GThreadPool      *pool,
+				      GCompareDataFunc  func,
+				      gpointer          user_data)
+{ 
+  GRealThreadPool *real = (GRealThreadPool*) pool;
+
+  g_return_if_fail (real);
+  g_return_if_fail (real->running);
+
+  g_async_queue_lock (real->queue);
+
+  real->sort_func = func;
+  real->sort_user_data = user_data;
+  
+  if (func) 
+    g_async_queue_sort_unlocked (real->queue, 
+				 real->sort_func,
+				 real->sort_user_data);
+
+  g_async_queue_unlock (real->queue);
 }
 
 #define __G_THREADPOOL_C__

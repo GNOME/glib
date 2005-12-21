@@ -1094,6 +1094,7 @@ g_thread_pool_set_max_threads
 g_thread_pool_set_max_unused_threads
 g_thread_pool_stop_unused_threads
 g_thread_pool_unprocessed
+g_thread_pool_set_sort_function
 #endif
 #endif
 

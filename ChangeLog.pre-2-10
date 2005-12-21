@@ -1,3 +1,12 @@
+2005-12-20  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/glib.symbols: 
+	* glib/gthreadpool.h: 
+	* glib/gthreadpool.c (g_thread_pool_set_sort_function): New function
+	to sort tasks pushed into a threadpool.  (#324479, Martyn Russell)
+
+	* tests/threadpool-test.c: Test this.
+
 Tue Dec 20 18:14:14 2005  Tim Janik  <timj@imendio.com>
 
 	* glib/gslice.[hc]: added mem_error() and mem_assert() to test and 

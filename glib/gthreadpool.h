@@ -96,6 +96,11 @@ guint           g_thread_pool_get_num_unused_threads (void);
 /* Stop all currently unused threads, but leave the limit untouched */
 void            g_thread_pool_stop_unused_threads    (void);
 
+/* Set sort function for priority threading */
+void            g_thread_pool_set_sort_function      (GThreadPool      *pool,
+		                                      GCompareDataFunc  func,
+						      gpointer          user_data);
+
 G_END_DECLS
 
 #endif /* __G_THREADPOOL_H__ */

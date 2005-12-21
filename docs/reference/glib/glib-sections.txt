@@ -637,6 +637,7 @@ g_thread_pool_set_max_unused_threads
 g_thread_pool_get_max_unused_threads
 g_thread_pool_get_num_unused_threads
 g_thread_pool_stop_unused_threads
+g_thread_pool_set_sort_function
 </SECTION>
 
 <SECTION>
