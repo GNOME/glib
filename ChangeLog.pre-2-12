@@ -1,3 +1,7 @@
+2005-12-21  Matthias Clasen  <mclasen@redhat.com>
+	
+	* README.in: Add some notes on when 'make check' may fail.
+
 2005-12-20  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/glib.symbols: 
