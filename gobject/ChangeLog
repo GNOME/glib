@@ -1,3 +1,7 @@
+Thu Dec 22 16:33:49 2005  Tim Janik  <timj@imendio.com>
+
+	* gobject.[hc]: added g_object_compat_control().
+
 2005-12-05  Matthias Clasen  <mclasen@redhat.com>
 
 	* genums.h (G_FLAGS_CLASS_TYPE_NAME): Use G_FLAGS_CLASS_TYPE.

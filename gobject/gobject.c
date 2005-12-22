@@ -2138,5 +2138,18 @@ g_cclosure_new_object_swap (GCallback callback_func,
   return closure;
 }
 
+gsize
+g_object_compat_control (gsize           what,
+                         gpointer        data)
+{
+  switch (what)
+    {
+    case 1:     /* floating base type */
+      return G_TYPE_OBJECT;
+    default:
+      return 0;
+    }
+}
+
 #define __G_OBJECT_C__
 #include "gobjectaliasdef.c"

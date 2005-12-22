@@ -240,6 +240,8 @@ void        g_value_take_object               (GValue         *value,
 #ifndef G_DISABLE_DEPRECATED
 void        g_value_set_object_take_ownership (GValue         *value,
 					       gpointer        v_object);
+gsize       g_object_compat_control           (gsize           what,
+                                               gpointer        data);
 #endif
 
 /* --- implementation macros --- */

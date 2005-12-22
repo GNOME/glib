@@ -156,6 +156,7 @@ g_value_dup_object
 g_value_take_object
 #ifndef G_DISABLE_DEPRECATED
 g_value_set_object_take_ownership
+g_object_compat_control
 #endif
 g_signal_connect_object
 #endif
