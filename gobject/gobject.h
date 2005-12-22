@@ -44,10 +44,21 @@ G_BEGIN_DECLS
 #define G_OBJECT_CLASS_NAME(class)  (g_type_name (G_OBJECT_CLASS_TYPE (class)))
 #define G_VALUE_HOLDS_OBJECT(value) (G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_OBJECT))
 
+/* --- type macros --- */
+#define G_TYPE_UNOWNED		    (g_unowned_get_type())
+#define G_UNOWNED(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), G_TYPE_UNOWNED, GUnowned))
+#define G_UNOWNED_CLASS(class)      (G_TYPE_CHECK_CLASS_CAST ((class), G_TYPE_UNOWNED, GUnownedClass))
+#define G_IS_UNOWNED(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), G_TYPE_UNOWNED))
+#define G_IS_UNOWNED_CLASS(class)   (G_TYPE_CHECK_CLASS_TYPE ((class), G_TYPE_UNOWNED))
+#define G_UNOWNED_GET_CLASS(object) (G_TYPE_INSTANCE_GET_CLASS ((object), G_TYPE_UNOWNED, GUnownedClass))
+/* GUnowned ia a GObject with initially floating reference count */
+
 
 /* --- typedefs & structures --- */
 typedef struct _GObject                  GObject;
 typedef struct _GObjectClass             GObjectClass;
+typedef struct _GObject                  GUnowned;
+typedef struct _GObjectClass             GUnownedClass;
 typedef struct _GObjectConstructParam    GObjectConstructParam;
 typedef void (*GObjectGetPropertyFunc)  (GObject      *object,
                                          guint         property_id,
@@ -111,6 +122,7 @@ struct _GObjectConstructParam
 
 
 /* --- prototypes --- */
+GType       g_unowned_get_type                (void);
 void        g_object_class_install_property   (GObjectClass   *oclass,
 					       guint           property_id,
 					       GParamSpec     *pspec);
@@ -232,7 +244,6 @@ gulong	    g_signal_connect_object           (gpointer	       instance,
 					       gpointer	       gobject,
 					       GConnectFlags   connect_flags);
 
-
 /*< protected >*/
 void        g_object_force_floating           (GObject        *object);
 void        g_object_run_dispose	      (GObject	      *object);
@@ -243,6 +254,8 @@ void        g_value_take_object               (GValue         *value,
 #ifndef G_DISABLE_DEPRECATED
 void        g_value_set_object_take_ownership (GValue         *value,
 					       gpointer        v_object);
+gsize	    g_object_compat_control	      (gsize	       what,
+					       gpointer	       data);
 #endif
 
 /* --- implementation macros --- */

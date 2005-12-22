@@ -43,6 +43,8 @@ G_BEGIN_DECLS
 #define G_VALUE_HOLDS_DOUBLE(value)	 (G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_DOUBLE))
 #define G_VALUE_HOLDS_STRING(value)	 (G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_STRING))
 #define G_VALUE_HOLDS_POINTER(value)	 (G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_POINTER))
+#define	G_TYPE_GTYPE			 (g_gtype_get_type())
+#define G_VALUE_HOLDS_GTYPE(value)	 (G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_GTYPE))
 
 
 /* --- prototypes --- */
@@ -88,6 +90,10 @@ gchar*		      g_value_dup_string	(const GValue *value);
 void		      g_value_set_pointer	(GValue	      *value,
 						 gpointer      v_pointer);
 gpointer	      g_value_get_pointer	(const GValue *value);
+GType		      g_gtype_get_type		(void);
+void		      g_value_set_gtype	        (GValue	      *value,
+						 GType         v_gtype);
+GType	              g_value_get_gtype	        (const GValue *value);
 
 
 /* Convenience for registering new pointer types */

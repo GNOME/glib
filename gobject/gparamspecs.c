@@ -1016,13 +1016,55 @@ param_override_values_cmp (GParamSpec   *pspec,
   return g_param_values_cmp (ospec->overridden, value1, value2);
 }
 
+static void
+param_gtype_init (GParamSpec *pspec)
+{
+}
+
+static void
+param_gtype_set_default (GParamSpec *pspec,
+			 GValue     *value)
+{
+  value->data[0].v_long = G_TYPE_NONE;
+}
+
+static gboolean
+param_gtype_validate (GParamSpec *pspec,
+		      GValue     *value)
+{
+  GParamSpecGType *tspec = G_PARAM_SPEC_GTYPE (pspec);
+  GType gtype = value->data[0].v_long;
+  guint changed = 0;
+  
+  if (tspec->is_a_type != G_TYPE_NONE && !g_type_is_a (gtype, tspec->is_a_type))
+    {
+      value->data[0].v_long = G_TYPE_NONE;
+      changed++;
+    }
+  
+  return changed;
+}
+
+static gint
+param_gtype_values_cmp (GParamSpec   *pspec,
+			const GValue *value1,
+			const GValue *value2)
+{
+  GType p1 = value1->data[0].v_long;
+  GType p2 = value2->data[0].v_long;
+
+  /* not much to compare here, try to at least provide stable lesser/greater result */
+
+  return p1 < p2 ? -1 : p1 > p2;
+}
+
 /* --- type initialization --- */
 GType *g_param_spec_types = NULL;
 
 void
 g_param_spec_types_init (void)	
 {
-  const guint n_types = 21;
+  const guint n_types = 22;
   GType type, *spec_types, *spec_types_bound;
 
   g_param_spec_types = g_new0 (GType, n_types);
@@ -1406,6 +1448,24 @@ g_param_spec_types_init (void)
     type = g_param_type_register_static (g_intern_static_string ("GParamOverride"), &pspec_info);
     *spec_types++ = type;
     g_assert (type == G_TYPE_PARAM_OVERRIDE);
+  }
+
+  /* G_TYPE_PARAM_GTYPE
+   */
+  {
+    GParamSpecTypeInfo pspec_info = {
+      sizeof (GParamSpecGType),	/* instance_size */
+      0,			/* n_preallocs */
+      param_gtype_init,		/* instance_init */
+      G_TYPE_GTYPE,		/* value_type */
+      NULL,			/* finalize */
+      param_gtype_set_default,	/* value_set_default */
+      param_gtype_validate,	/* value_validate */
+      param_gtype_values_cmp,	/* values_cmp */
+    };
+    type = g_param_type_register_static (g_intern_static_string ("GParamGType"), &pspec_info);
+    *spec_types++ = type;
+    g_assert (type == G_TYPE_PARAM_GTYPE);
   }
 
   g_assert (spec_types == spec_types_bound);
@@ -1850,6 +1910,26 @@ g_param_spec_pointer (const gchar *name,
 				 blurb,
 				 flags);
   return G_PARAM_SPEC (pspec);
+}
+
+GParamSpec*
+g_param_spec_gtype (const gchar *name,
+		    const gchar *nick,
+		    const gchar *blurb,
+		    GType        is_a_type,
+		    GParamFlags  flags)
+{
+  GParamSpecGType *tspec;
+  
+  tspec = g_param_spec_internal (G_TYPE_PARAM_GTYPE,
+				 name,
+				 nick,
+				 blurb,
+				 flags);
+
+  tspec->is_a_type = is_a_type;
+
+  return G_PARAM_SPEC (tspec);
 }
 
 GParamSpec*

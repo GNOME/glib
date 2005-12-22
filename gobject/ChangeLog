@@ -1,3 +1,16 @@
+Thu Dec 22 14:59:24 2005  Tim Janik  <timj@imendio.com>
+
+	* gvaluetypes.[hc]: implemented G_TYPE_GTPYE. applied patch
+	from matthias which implements GType accessors for GValue.
+
+	* gparamspecs.[hc]: applied patch from matthias which 
+	implements G_TYPE_PARAM_GTYPE.
+
+	* gobject.[hc]:
+	GUnowned: introduced a new object type that has an initially
+	floating reference.
+	g_object_compat_control(): allow setting of a floating flag handler.
+
 2005-12-09  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.9.1 ===
