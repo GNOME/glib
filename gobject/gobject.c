@@ -2205,7 +2205,7 @@ g_object_compat_control (gsize           what,
   switch (what)
     {
     case 1:     /* floating base type */
-      return G_TYPE_UNOWNED;
+      return G_TYPE_INITIALLY_UNOWNED;
     case 2:     /* FIXME: remove this once GLib/Gtk+ break ABI again */
       floating_flag_handler = (guint(*)(GObject*,gint)) data;
       return 1;
@@ -2214,16 +2214,16 @@ g_object_compat_control (gsize           what,
     }
 }
 
-G_DEFINE_TYPE (GUnowned, g_unowned, G_TYPE_OBJECT);
+G_DEFINE_TYPE (GInitiallyUnowned, g_initially_unowned, G_TYPE_OBJECT);
 
 static void
-g_unowned_init (GUnowned *object)
+g_initially_unowned_init (GInitiallyUnowned *object)
 {
   g_object_force_floating (object);
 }
 
 static void
-g_unowned_class_init (GUnownedClass *klass)
+g_initially_unowned_class_init (GInitiallyUnownedClass *klass)
 {
 }
 

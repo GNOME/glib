@@ -45,20 +45,20 @@ G_BEGIN_DECLS
 #define G_VALUE_HOLDS_OBJECT(value) (G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_OBJECT))
 
 /* --- type macros --- */
-#define G_TYPE_UNOWNED		    (g_unowned_get_type())
-#define G_UNOWNED(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), G_TYPE_UNOWNED, GUnowned))
-#define G_UNOWNED_CLASS(class)      (G_TYPE_CHECK_CLASS_CAST ((class), G_TYPE_UNOWNED, GUnownedClass))
-#define G_IS_UNOWNED(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), G_TYPE_UNOWNED))
-#define G_IS_UNOWNED_CLASS(class)   (G_TYPE_CHECK_CLASS_TYPE ((class), G_TYPE_UNOWNED))
-#define G_UNOWNED_GET_CLASS(object) (G_TYPE_INSTANCE_GET_CLASS ((object), G_TYPE_UNOWNED, GUnownedClass))
-/* GUnowned ia a GObject with initially floating reference count */
+#define G_TYPE_INITIALLY_UNOWNED	      (g_initially_unowned_get_type())
+#define G_INITIALLY_UNOWNED(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), G_TYPE_INITIALLY_UNOWNED, GInitiallyUnowned))
+#define G_INITIALLY_UNOWNED_CLASS(class)      (G_TYPE_CHECK_CLASS_CAST ((class), G_TYPE_INITIALLY_UNOWNED, GInitiallyUnownedClass))
+#define G_IS_INITIALLY_UNOWNED(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), G_TYPE_INITIALLY_UNOWNED))
+#define G_IS_INITIALLY_UNOWNED_CLASS(class)   (G_TYPE_CHECK_CLASS_TYPE ((class), G_TYPE_INITIALLY_UNOWNED))
+#define G_INITIALLY_UNOWNED_GET_CLASS(object) (G_TYPE_INSTANCE_GET_CLASS ((object), G_TYPE_INITIALLY_UNOWNED, GInitiallyUnownedClass))
+/* GInitiallyUnowned ia a GObject with initially floating reference count */
 
 
 /* --- typedefs & structures --- */
 typedef struct _GObject                  GObject;
 typedef struct _GObjectClass             GObjectClass;
-typedef struct _GObject                  GUnowned;
-typedef struct _GObjectClass             GUnownedClass;
+typedef struct _GObject                  GInitiallyUnowned;
+typedef struct _GObjectClass             GInitiallyUnownedClass;
 typedef struct _GObjectConstructParam    GObjectConstructParam;
 typedef void (*GObjectGetPropertyFunc)  (GObject      *object,
                                          guint         property_id,
@@ -122,7 +122,7 @@ struct _GObjectConstructParam
 
 
 /* --- prototypes --- */
-GType       g_unowned_get_type                (void);
+GType       g_initially_unowned_get_type      (void);
 void        g_object_class_install_property   (GObjectClass   *oclass,
 					       guint           property_id,
 					       GParamSpec     *pspec);
