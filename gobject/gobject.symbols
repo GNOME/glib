@@ -180,6 +180,7 @@ g_param_spec_int64
 g_param_spec_long
 g_param_spec_object
 g_param_spec_override
+g_param_spec_gtype
 g_param_spec_param
 g_param_spec_pointer
 g_param_spec_string
