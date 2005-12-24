@@ -1,3 +1,7 @@
+2005-12-24  Matthias Clasen  <mclasen@redhat.com>
+
+	* gobject.symbols: Add new functions.
+
 Thu Dec 22 18:53:14 2005  Tim Janik  <timj@gtk.org>
 
 	* gobject.[hc]: renamed GUnowned to GInitiallyUnowned.

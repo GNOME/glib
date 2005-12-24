@@ -265,6 +265,9 @@ g_value_get_uint
 g_value_get_uint64
 g_value_get_ulong
 g_value_take_string
+g_gtype_get_type
+g_value_set_gtype
+g_value_get_gtype
 #endif
 #endif
 
