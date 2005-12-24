@@ -1656,7 +1656,7 @@ See g_param_spec_internal() for details on property names.
 
 <!-- ##### MACRO G_IS_PARAM_SPEC_OVERRIDE ##### -->
 <para>
-Returns whether the given #GParamSpec is of type %G_TYPE_PARAM_OBJECT.
+Returns whether the given #GParamSpec is of type %G_TYPE_PARAM_OVERRIDE.
 </para>
 
 @pspec: a #GParamSpec
@@ -1665,7 +1665,7 @@ Returns whether the given #GParamSpec is of type %G_TYPE_PARAM_OBJECT.
 
 <!-- ##### MACRO G_PARAM_SPEC_OVERRIDE ##### -->
 <para>
-Casts a #GParamSpec into a #GParamSpecObject.
+Casts a #GParamSpec into a #GParamSpecOverride.
 </para>
 
 @pspec:  a #GParamSpec
@@ -1706,4 +1706,58 @@ useful unless you are implementing a new base type similar to GObject.
 @Returns: the newly created #GParamSpec
 @Since: 2.4
 
+
+<!-- ##### MACRO G_IS_PARAM_SPEC_GTYPE ##### -->
+<para>
+Returns whether the given #GParamSpec is of type %G_TYPE_PARAM_GTYPE.
+</para>
+
+@pspec: a #GParamSpec
+@Since: 2.10
+
+
+<!-- ##### MACRO G_PARAM_SPEC_GTYPE ##### -->
+<para>
+Casts a #GParamSpec into a #GParamSpecGType.
+</para>
+
+@pspec:  a #GParamSpec
+@Since: 2.10
+
+
+<!-- ##### MACRO G_TYPE_PARAM_GTYPE ##### -->
+<para>
+The #GType of #GParamSpecGType.
+</para>
+
+@Since: 2.10
+
+
+<!-- ##### STRUCT GParamSpecGType ##### -->
+<para>
+A #GParamSpec derived structure that contains the meta data for #GType properties.
+</para>
+
+@parent_instance:  private #GParamSpec portion
+@is_a_type:        a #GType whose subtypes can occur as values
+@Since: 2.10
+
+
+<!-- ##### FUNCTION g_param_spec_gtype ##### -->
+<para>
+Creates a new #GParamSpecGType instance specifying a 
+%G_TYPE_GTYPE property. 
+</para>
+<para>
+See g_param_spec_internal() for details on property names.
+</para>
+
+@name:          canonical name of the property specified
+@nick:          nick name for the property specified
+@blurb:         description of the property specified
+@is_a_type:     a #GType whose subtypes are allowed as values
+                of the property
+@flags:         flags for the property specified
+@Returns: a newly created parameter specification
+@Since: 2.10
 

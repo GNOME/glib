@@ -646,6 +646,13 @@ G_TYPE_PARAM_OVERRIDE
 GParamSpecOverride
 g_param_spec_override
 
+<SUBSECTION GType>
+G_IS_PARAM_SPEC_GTYPE
+G_PARAM_SPEC_GTYPE
+G_TYPE_PARAM_GTYPE
+GParamSpecGType
+g_param_spec_gtype
+
 <SUBSECTION Private>
 g_value_set_instance
 g_param_spec_types
