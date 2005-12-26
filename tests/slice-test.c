@@ -70,6 +70,10 @@ memchunk_free (GMemChunk *memchunk,
 static gpointer
 test_memchunk_thread (gpointer data)
 {
+  GMemChunk **memchunks;
+  guint i, j;
+  guint8 **ps;
+  guint   *ss;
   guint32 rand_accu = 2147483563;
   /* initialize random numbers */
   if (data)
@@ -82,12 +86,11 @@ test_memchunk_thread (gpointer data)
     }
 
   /* prepare for memchunk creation */
-  GMemChunk **memchunks = g_alloca (sizeof (memchunks[0]) * prime_size);
+  memchunks = g_alloca (sizeof (memchunks[0]) * prime_size);
   memset (memchunks, 0, sizeof (memchunks[0]) * prime_size);
 
-  guint i, j;
-  guint8 **ps = g_new (guint8*, number_of_blocks);
-  guint   *ss = g_new (guint, number_of_blocks);
+  ps = g_new (guint8*, number_of_blocks);
+  ss = g_new (guint, number_of_blocks);
   /* create number_of_blocks random sizes */
   for (i = 0; i < number_of_blocks; i++)
     ss[i] = quick_rand32() % prime_size;

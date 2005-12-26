@@ -1,3 +1,7 @@
+2005-12-25  Matthias Clasen  <mclasen@redhat.com>
+
+	* tests/slice-test.c: Fix C99isms.  (#324950, Dan Yefimov)
+
 2005-12-21  Matthias Clasen  <mclasen@redhat.com>
 	
 	* README.in: Add some notes on when 'make check' may fail.
