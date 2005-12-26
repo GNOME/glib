@@ -1,3 +1,7 @@
+2005-12-26  Matthias Clasen  <mclasen@redhat.com>
+
+	* AUTHORS: Update my email
+
 2005-12-17  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/goption.c (parse_short_option): Set an error in all
