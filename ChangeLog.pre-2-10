@@ -1,3 +1,8 @@
+2005-12-26  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gslice.c: On Win32, include process.h  (#325015, Kazuki
+	Iwamoto)
+
 2005-12-25  Matthias Clasen  <mclasen@redhat.com>
 
 	* AUTHORS: Update my email

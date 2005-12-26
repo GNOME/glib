@@ -31,6 +31,7 @@
 #endif
 #ifdef G_OS_WIN32
 #include <windows.h>
+#include <process.h>
 #endif
 
 /* the GSlice allocator is split up into 4 layers, roughly modelled after the slab
