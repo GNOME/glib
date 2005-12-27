@@ -13,8 +13,8 @@ echo_v ()
   fi
 }
 
-LC_COLLATE=en_US
-export LC_COLLATE
+LC_ALL=en_US
+export LC_ALL
 
 error_out=/dev/null
 if [ "$1" = "-v" ]; then

@@ -1,3 +1,8 @@
+2005-12-27  Manish Singh  <yosh@gimp.org>
+
+	* tests/run-collate-tests.sh: use LC_ALL instead of LC_COLLATE, to
+	make sure we really override things.
+
 2005-12-27  Matthias Clasen  <mclasen@redhat.com>
 	
 	Fix #316221, Michal Benes, Stanislav Brabec;
