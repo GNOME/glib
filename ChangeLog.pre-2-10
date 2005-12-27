@@ -1,5 +1,12 @@
 2005-12-27  Matthias Clasen  <mclasen@redhat.com>
 	
+	Fix #316221, Michal Benes, Stanislav Brabec;
+
+	* configure.in: Fix a strict aliasing problem in 
+	g_static_mutex_get_mutex(). 
+	* glib/gthread.h: ...and in 
+	g_static_mutex_get_mutex_impl_shortcut().
+
 	* glib/gdatasetprivate.h: Add a cast to silence compiler
 	warnings.  (#321978, Andrew Paprocki)
 
