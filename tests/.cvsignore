@@ -44,6 +44,9 @@ qsort-test
 rand-test
 relation-test
 shell-test
+slice-test
+slice-color
+asyncqueue-test
 slist-test
 spawn-test
 stamp-gc-h
