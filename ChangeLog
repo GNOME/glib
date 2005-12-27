@@ -1,3 +1,8 @@
+2005-12-27  Manish Singh  <yosh@gimp.org>
+
+	* tests/run-collate-tests.sh: export LC_COLLATE so it takes.
+	(#324950, Dan Yefimov)
+
 2005-12-26  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gslice.c: On Win32, include process.h  (#325015, Kazuki

@@ -14,6 +14,8 @@ echo_v ()
 }
 
 LC_COLLATE=en_US
+export LC_COLLATE
+
 error_out=/dev/null
 if [ "$1" = "-v" ]; then
   verbose=1
