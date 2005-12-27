@@ -1,3 +1,10 @@
+2005-12-27  Matthias Clasen  <mclasen@redhat.com>
+
+	Partial fix for bug #32937, Bogdan Nicula.
+
+	* configure.in: Check for malloc.h
+	* glib/gslice.c: Don't include malloc.h unconditionally.
+
 2005-12-27  Manish Singh  <yosh@gimp.org>
 
 	* tests/run-collate-tests.sh: export LC_COLLATE so it takes.

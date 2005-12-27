@@ -789,8 +789,9 @@ AM_CONDITIONAL(HAVE_GNUC_VISIBILITY, [test x$g_have_gnuc_visibility = xyes])
 AC_C_BIGENDIAN
 
 # check for header files
-AC_CHECK_HEADERS([dirent.h float.h limits.h pwd.h sys/param.h sys/poll.h sys/select.h sys/types.h])
-AC_CHECK_HEADERS([sys/time.h sys/times.h sys/wait.h unistd.h values.h stdint.h sched.h])
+AC_CHECK_HEADERS([dirent.h float.h limits.h pwd.h sys/param.h sys/poll.h])
+AC_CHECK_HEADERS([sys/time.h sys/times.h sys/wait.h unistd.h values.h])
+AC_CHECK_HEADERS([sys/select.h sys/types.h stdint.h sched.h malloc.h])
 
 # Checks for libcharset
 jm_LANGINFO_CODESET

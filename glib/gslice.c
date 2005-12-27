@@ -993,7 +993,9 @@ slab_allocator_free_chunk (gsize    chunk_size,
 }
 
 /* --- memalign implementation --- */
+#ifdef HAVE_MALLOC_H
 #include <malloc.h>             /* memalign() */
+#endif
 
 /* from config.h:
  * define HAVE_POSIX_MEMALIGN     1     // if free(posix_memalign(3)) works, <stdlib.h>
