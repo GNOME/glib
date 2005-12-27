@@ -1,4 +1,7 @@
 2005-12-27  Matthias Clasen  <mclasen@redhat.com>
+	
+	* glib/gdatasetprivate.h: Add a cast to silence compiler
+	warnings.  (#321978, Andrew Paprocki)
 
 	Partial fix for bug #32937, Bogdan Nicula.
 
