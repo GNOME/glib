@@ -1,3 +1,8 @@
+2005-12-30  Matthias Clasen  <mclasen@redhat.com>
+
+	* gsignal.c: Remove the handler trash stack, which
+	is now unused.
+
 2005-12-24  Matthias Clasen  <mclasen@redhat.com>
 
 	* gobject.symbols: Add new functions.
