@@ -1,3 +1,8 @@
+2005-12-29  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gutils.c (glib_check_version): Fix a copy-and-paste error
+	in the docs.  (#325273, Declan Naughton)
+
 2005-12-27  Manish Singh  <yosh@gimp.org>
 
 	* tests/run-collate-tests.sh: use LC_ALL instead of LC_COLLATE, to
