@@ -387,11 +387,6 @@ handler_match_prepend (HandlerMatch *list,
 {
   HandlerMatch *node;
   
-  /* yeah, we could use our own memchunk here, introducing yet more
-   * rarely used cached nodes and extra allocation overhead.
-   * instead, we use GList* nodes, since they are exactly the size
-   * we need and are already cached. g_signal_init() asserts this.
-   */
   node = g_slice_new (HandlerMatch);
   node->handler = handler;
   node->next = list;
@@ -714,9 +709,6 @@ g_signal_init (void)
   SIGNAL_LOCK ();
   if (!g_n_signal_nodes)
     {
-      /* handler_id_node_prepend() requires this */
-      g_assert (sizeof (GList) == sizeof (HandlerMatch));
-      
       /* setup handler list binary searchable array hash table (in german, that'd be one word ;) */
       g_handler_list_bsa_ht = g_hash_table_new (g_direct_hash, NULL);
       g_signal_key_bsa = g_bsearch_array_create (&g_signal_key_bconfig);

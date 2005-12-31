@@ -2,6 +2,9 @@
 
 	* gsignal.c: Remove the handler trash stack, which
 	is now unused.
+	(g_signal_init): Remove the restriction that HandlerMatch
+	must be the same size as GList, and obsolete comments 
+	referring to mem chunks.
 
 2005-12-24  Matthias Clasen  <mclasen@redhat.com>
 
