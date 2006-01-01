@@ -1,3 +1,11 @@
+2006-01-01  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gspawn-win32.c (g_spawn_sync_utf8): Set the GIOChannels for
+	stdout and stderr to unbuffered. Otherwise the giochannel layer
+	will try to read from them regardless whether the
+	g_io_channel_win32_poll() call here has indicated
+	readability or not. (#325310)
+
 2005-12-29  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gutils.c (glib_check_version): Fix a copy-and-paste error
