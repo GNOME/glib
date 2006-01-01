@@ -177,7 +177,8 @@ protect_argv (gchar  **argv,
    * reconstructed correctly in the C runtime startup code.  Note that
    * the unquoting algorithm in the C runtime is really weird, and
    * rather different than what Unix shells do. See stdargv.c in the C
-   * runtime sources (in the Platform SDK, in src/crt).
+   * runtime sources (in the Platform SDK, in src/crt), and
+   * http://msdn.microsoft.com/library/default.asp?url=/library/en-us/vccelng/htm/progs_12.asp
    *
    * Note that an new_argv[0] constructed by this function should
    * *not* be passed as the filename argument to a spawn* or exec*
@@ -1038,9 +1039,12 @@ g_spawn_sync_utf8 (const gchar          *working_directory,
       outstr = g_string_new (NULL);
       outchannel = g_io_channel_win32_new_fd (outpipe);
       g_io_channel_set_encoding (outchannel, NULL, NULL);
+      g_io_channel_set_buffered (outchannel, FALSE);
       g_io_channel_win32_make_pollfd (outchannel,
 				      G_IO_IN | G_IO_ERR | G_IO_HUP,
 				      &outfd);
+      if (debug)
+	g_print ("outfd=%x\n", outfd.fd);
     }
       
   if (errpipe >= 0)
@@ -1048,9 +1052,12 @@ g_spawn_sync_utf8 (const gchar          *working_directory,
       errstr = g_string_new (NULL);
       errchannel = g_io_channel_win32_new_fd (errpipe);
       g_io_channel_set_encoding (errchannel, NULL, NULL);
+      g_io_channel_set_buffered (errchannel, FALSE);
       g_io_channel_win32_make_pollfd (errchannel,
 				      G_IO_IN | G_IO_ERR | G_IO_HUP,
 				      &errfd);
+      if (debug)
+	g_print ("errfd=%x\n", errfd.fd);
     }
 
   /* Read data until we get EOF on all pipes. */
