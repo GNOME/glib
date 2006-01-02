@@ -1522,7 +1522,7 @@ g_completion_free
 </SECTION>
 
 <SECTION>
-<TITLE>Windows Compatability Functions</TITLE>
+<TITLE>Windows Compatibility Functions</TITLE>
 <FILE>windows</FILE>
 MAXPATHLEN
 pipe

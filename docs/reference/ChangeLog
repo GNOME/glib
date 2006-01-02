@@ -1,3 +1,9 @@
+2006-01-02  Stepan Kasal  <kasal@ucw.cz>
+
+	* glib/glib-docs.sgml (glib-Windows-Compatability-Functions): Rename
+	(glib-Windows-Compatibility-Functions): , ie. s/Compata/Compati/
+	* glib/glib-sections.txt: s/Compata/Compati/
+
 2005-12-24  Matthias Clasen  <mclasen@redhat.com>
 
 	* gobject/gobject-sections.txt:

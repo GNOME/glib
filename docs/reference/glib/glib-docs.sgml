@@ -30,7 +30,7 @@
 <!ENTITY glib-Lexical-Scanner SYSTEM "xml/scanner.xml">
 <!ENTITY glib-Dynamic-Loading-of-Modules SYSTEM "xml/modules.xml">
 <!ENTITY glib-Automatic-String-Completion SYSTEM "xml/completion.xml">
-<!ENTITY glib-Windows-Compatability-Functions SYSTEM "xml/windows.xml">
+<!ENTITY glib-Windows-Compatibility-Functions SYSTEM "xml/windows.xml">
 <!ENTITY glib-Memory-Chunks SYSTEM "xml/memory_chunks.xml">
 <!ENTITY glib-Memory-Slices SYSTEM "xml/memory_slices.xml">
 <!ENTITY glib-Doubly-Linked-Lists SYSTEM "xml/linked_lists_double.xml">
@@ -149,7 +149,7 @@ synchronize their operation.
     &glib-Pattern-Matching;
     &glib-Markup;
     &glib-Keyfile;
-    &glib-Windows-Compatability-Functions;
+    &glib-Windows-Compatibility-Functions;
   </chapter>
 
   <chapter id="glib-data-types">
