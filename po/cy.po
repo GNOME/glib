@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-11-15 09:42-0500\n"
+"POT-Creation-Date: 2006-01-03 09:57-0500\n"
 "PO-Revision-Date: 2005-09-01 17:38+0100\n"
 "Last-Translator: Rhys Jones <rhys@sucs.org>\n"
 "Language-Team: Welsh <gnome-cy@pengwyn.linux.org.uk>\n"
@@ -484,37 +484,37 @@ msgstr ""
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Roedd y testun yn wag, neu'n cynnwys gofodnodau'n unig"
 
-#: glib/gspawn-win32.c:276
+#: glib/gspawn-win32.c:277
 #, c-format
 msgid "Failed to read data from child process"
 msgstr "Methwyd darllen data o broses plentyn"
 
-#: glib/gspawn-win32.c:291 glib/gspawn.c:1375
+#: glib/gspawn-win32.c:292 glib/gspawn.c:1375
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Methwyd creu pibell er mwyn cyfathrebu â phroses plentyn (%s)"
 
-#: glib/gspawn-win32.c:329 glib/gspawn.c:1039
+#: glib/gspawn-win32.c:330 glib/gspawn.c:1039
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Methwyd darllen o bibell plentyn (%s)"
 
-#: glib/gspawn-win32.c:355 glib/gspawn.c:1244
+#: glib/gspawn-win32.c:356 glib/gspawn.c:1244
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Methwyd newid i'r cyfeiriadur '%s' (%s)"
 
-#: glib/gspawn-win32.c:361 glib/gspawn-win32.c:581
+#: glib/gspawn-win32.c:362 glib/gspawn-win32.c:582
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Methwyd gweithredu proses plentyn (%s)"
 
-#: glib/gspawn-win32.c:890
+#: glib/gspawn-win32.c:891
 #, c-format
 msgid "Failed to execute helper program (%s)"
 msgstr "Methwyd gweithredu rhaglen gynorthwyol (%s)"
 
-#: glib/gspawn-win32.c:1084
+#: glib/gspawn-win32.c:1091
 #, c-format
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
@@ -618,12 +618,17 @@ msgstr "Methu gramadegu'r gwerth cyfanrif '%s' ar gyfer %s"
 msgid "Integer value '%s' for %s out of range"
 msgstr "Mae'r gwerth cyfanrif '%s' ar gyfer %s y tu allan i'r cwmpas"
 
-#: glib/goption.c:957 glib/goption.c:1068
+#: glib/goption.c:926
+#, fuzzy, c-format
+msgid "Error parsing option %s"
+msgstr "Gwall wrth drawsnewid: %s"
+
+#: glib/goption.c:959 glib/goption.c:1070
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Arg ar goll ar gyfer %s"
 
-#: glib/goption.c:1472
+#: glib/goption.c:1474
 #, c-format
 msgid "Unknown option %s"
 msgstr "Opsiwn anhysbys %s"

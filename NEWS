@@ -1,3 +1,24 @@
+Overview of Changes from GLib 2.8.4 to GLib 2.8.5
+=================================================
+* Bug fixes:
+ 322520 g_utf8_collate_key_for_filename reads too 
+        much [Christian Persch]
+ 324332 g_option_context_parse() returns false 
+        without setting error [Tim-Philipp Müller]
+ 325273 Error in documentation for glib_check_version()
+        [Declan Naughton]
+ 325310 g_spawn_sync hangs when catching both stdout 
+        and stderr [Tor Lillqvist]
+ 323273 Invalid macro in genums.h: G_FLAGS_TYPE
+        [Kalle Vahlman]
+ - Other fixes [Sebastian Wilhelmi, Arjan van de Ven]
+* Add g_object_compat_control() [Tim Janik]
+* Win32 changes:
+ - Strip trailing slashes in g_stat() [Tor Lillqvist]
+ - Make g_rename() replace existing files [Tor]
+ - Other fixes [Tor]
+* Translation updates (be,bg,en_CA,es,fi,fr,gl,gu,nl,vi,zh_CN)
+
 Overview of Changes from GLib 2.8.3 to GLib 2.8.4
 =================================================
 * Support aborting on critical warnings by setting

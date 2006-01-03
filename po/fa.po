@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-11-15 09:42-0500\n"
+"POT-Creation-Date: 2006-01-03 09:57-0500\n"
 "PO-Revision-Date: 2005-03-13 11:36+0330\n"
 "Last-Translator: Hamed Malek <hamed@farsiweb.info>\n"
 "Language-Team: Persian <farsi@lists.sharif.edu>\n"
@@ -482,37 +482,37 @@ msgstr ""
 msgid "Text was empty (or contained only whitespace)"
 msgstr "متن خالی بود (یا فقط فاصله‌ی خالی داشت)"
 
-#: glib/gspawn-win32.c:276
+#: glib/gspawn-win32.c:277
 #, c-format
 msgid "Failed to read data from child process"
 msgstr "خواندن داده‌ها از فراروند فرزند شکست خورد"
 
-#: glib/gspawn-win32.c:291 glib/gspawn.c:1375
+#: glib/gspawn-win32.c:292 glib/gspawn.c:1375
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "ایجاد لوله برای ارتباط با فراروند فرزند شکست خورد (%s)"
 
-#: glib/gspawn-win32.c:329 glib/gspawn.c:1039
+#: glib/gspawn-win32.c:330 glib/gspawn.c:1039
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "خواندن از لوله‌ی فرزند شکست خورد (%s)"
 
-#: glib/gspawn-win32.c:355 glib/gspawn.c:1244
+#: glib/gspawn-win32.c:356 glib/gspawn.c:1244
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "تغییر به شاخه‌ی «%s» شکست خورد (%s)"
 
-#: glib/gspawn-win32.c:361 glib/gspawn-win32.c:581
+#: glib/gspawn-win32.c:362 glib/gspawn-win32.c:582
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "اجرای فراروند فرزند شکست خورد (%s)"
 
-#: glib/gspawn-win32.c:890
+#: glib/gspawn-win32.c:891
 #, fuzzy, c-format
 msgid "Failed to execute helper program (%s)"
 msgstr "اجرای برنامه‌ی راهنما شکست خورد"
 
-#: glib/gspawn-win32.c:1084
+#: glib/gspawn-win32.c:1091
 #, c-format
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
@@ -617,12 +617,17 @@ msgstr "نمی‌توان مقدار صحیح «%s» را برای --%s تجزی
 msgid "Integer value '%s' for %s out of range"
 msgstr "مقدار صحیح «%s» برای %s خارج از محدوده است"
 
-#: glib/goption.c:957 glib/goption.c:1068
+#: glib/goption.c:926
+#, fuzzy, c-format
+msgid "Error parsing option %s"
+msgstr "خطا در حین تبدیل: %s"
+
+#: glib/goption.c:959 glib/goption.c:1070
 #, c-format
 msgid "Missing argument for %s"
 msgstr ""
 
-#: glib/goption.c:1472
+#: glib/goption.c:1474
 #, c-format
 msgid "Unknown option %s"
 msgstr "گزینه نامعلوم %s"

@@ -1,3 +1,9 @@
+2006-01-03  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.8.5 ===
+	
+	* NEWS: Updates
+
 2006-01-01  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gspawn-win32.c (g_spawn_sync_utf8): Set the GIOChannels for

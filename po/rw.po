@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.12\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-11-15 09:42-0500\n"
+"POT-Creation-Date: 2006-01-03 09:57-0500\n"
 "PO-Revision-Date: 2005-03-28 19:34-0700\n"
 "Last-Translator: Steve Murphy <murf@e-tools.com>\n"
 "Language-Team: Kinyarwanda <translation-team-rw@lists.sourceforge.net>\n"
@@ -481,37 +481,37 @@ msgstr "Mbere Gushyiraho akugarizo Byabonetse kugirango Umwandiko"
 msgid "Text was empty (or contained only whitespace)"
 msgstr "ubusa Cyangwa"
 
-#: glib/gspawn-win32.c:276
+#: glib/gspawn-win32.c:277
 #, fuzzy, c-format
 msgid "Failed to read data from child process"
 msgstr "Kuri Gusoma Ibyatanzwe Bivuye"
 
-#: glib/gspawn-win32.c:291 glib/gspawn.c:1375
+#: glib/gspawn-win32.c:292 glib/gspawn.c:1375
 #, fuzzy, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Kuri Kurema kugirango Na:"
 
-#: glib/gspawn-win32.c:329 glib/gspawn.c:1039
+#: glib/gspawn-win32.c:330 glib/gspawn.c:1039
 #, fuzzy, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Kuri Gusoma Bivuye"
 
-#: glib/gspawn-win32.c:355 glib/gspawn.c:1244
+#: glib/gspawn-win32.c:356 glib/gspawn.c:1244
 #, fuzzy, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Kuri Guhindura>> Kuri bushyinguro"
 
-#: glib/gspawn-win32.c:361 glib/gspawn-win32.c:581
+#: glib/gspawn-win32.c:362 glib/gspawn-win32.c:582
 #, fuzzy, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Kuri Gukora"
 
-#: glib/gspawn-win32.c:890
+#: glib/gspawn-win32.c:891
 #, fuzzy, c-format
 msgid "Failed to execute helper program (%s)"
 msgstr "Kuri Gukora Porogaramu"
 
-#: glib/gspawn-win32.c:1084
+#: glib/gspawn-win32.c:1091
 #, fuzzy, c-format
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
@@ -616,12 +616,17 @@ msgstr "Umubare wuzuye Agaciro kugirango"
 msgid "Integer value '%s' for %s out of range"
 msgstr "Agaciro kugirango Inyuma Bya Urutonde"
 
-#: glib/goption.c:957 glib/goption.c:1068
+#: glib/goption.c:926
+#, fuzzy, c-format
+msgid "Error parsing option %s"
+msgstr "Ihindurangero"
+
+#: glib/goption.c:959 glib/goption.c:1070
 #, c-format
 msgid "Missing argument for %s"
 msgstr ""
 
-#: glib/goption.c:1472
+#: glib/goption.c:1474
 #, fuzzy, c-format
 msgid "Unknown option %s"
 msgstr "Ihitamo ritazwi:"
