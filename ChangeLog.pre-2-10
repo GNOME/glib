@@ -1,3 +1,9 @@
+2005-12-20  Michael Meeks  <michael.meeks@novell.com>
+
+	* glib/gmain.c (g_main_context_is_owner): new method
+	to determine if the current thread is the owner of the
+	context.
+
 2006-01-02  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/glib.symbols: 

@@ -3156,6 +3156,36 @@ g_main_context_wakeup (GMainContext *context)
   UNLOCK_CONTEXT (context);
 }
 
+/**
+ * g_main_context_is_owner:
+ * @context: a #GMainContext
+ * 
+ * Determines whether this thread holds the (recursive)
+ * ownership of this #GMaincontext. This is useful to
+ * know before waiting on another thread that may be
+ * blocking to get ownership of @context.
+ *
+ * Returns: TRUE if current thread is owner of @context.
+ **/
+gboolean
+g_main_context_is_owner (GMainContext *context)
+{
+  gboolean is_owner;
+
+  if (!context)
+    context = g_main_context_default ();
+
+#ifdef G_THREADS_ENABLED
+  LOCK_CONTEXT (context);
+  is_owner = context->owner == G_THREAD_SELF;
+  UNLOCK_CONTEXT (context);
+#else
+  is_owner = TRUE;
+#endif
+
+  return is_owner;
+}
+
 /* Timeouts */
 
 static void
