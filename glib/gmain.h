@@ -159,6 +159,7 @@ GSource      *g_main_context_find_source_by_funcs_user_data (GMainContext *conte
 void     g_main_context_wakeup  (GMainContext *context);
 gboolean g_main_context_acquire (GMainContext *context);
 void     g_main_context_release (GMainContext *context);
+gboolean g_main_context_is_owner (GMainContext *context);
 gboolean g_main_context_wait    (GMainContext *context,
 				 GCond        *cond,
 				 GMutex       *mutex);

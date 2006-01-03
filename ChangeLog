@@ -1,4 +1,6 @@
 2006-01-03  Matthias Clasen  <mclasen@redhat.com>
+	
+	* glib/gmain.h: Add new functions here, too.
 
 	* glib/glib.symbols: Add new functions.
 
