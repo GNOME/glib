@@ -29,6 +29,7 @@
 #include "glib.h"
 #include "galias.h"
 
+#define debug(...) /* g_printerr (__VA_ARGS__) */
 
 typedef struct _GRealThreadPool GRealThreadPool;
 
@@ -54,7 +55,8 @@ static const gpointer stop_this_thread_marker = (gpointer) &g_thread_pool_new;
 static GAsyncQueue *unused_thread_queue;
 static gint unused_threads = 0;
 static gint max_unused_threads = 0;
-G_LOCK_DEFINE_STATIC (unused_threads);
+static guint max_idle_time = 0;
+G_LOCK_DEFINE_STATIC (settings);
 
 static GMutex *inform_mutex = NULL;
 static GCond *inform_cond = NULL;
@@ -92,13 +94,15 @@ g_thread_pool_thread_proxy (gpointer data)
   GRealThreadPool *pool = data;
   gboolean watcher = FALSE;
 
+  debug("pool:0x%.8x entering proxy ...\n", (guint)pool);
+
   g_async_queue_lock (pool->queue);
   while (TRUE)
     {
-      gpointer task; 
+      gpointer task = NULL; 
       gboolean goto_global_pool = !pool->pool.exclusive;
       gint len = g_async_queue_length_unlocked (pool->queue);
-      
+
       if (g_thread_should_run (pool, len))
 	{
 	  if (watcher)
@@ -111,11 +115,38 @@ g_thread_pool_thread_proxy (gpointer data)
 	      GTimeVal end_time;
 	      g_get_current_time (&end_time);
 	      g_time_val_add (&end_time, G_USEC_PER_SEC / 2); /* 1/2 second */
+	      debug("pool:0x%.8x waiting 1/2 second to pop next item "
+		    "in queue (%d running, %d unprocessed) ...\n", 
+		    (guint)pool, 
+		    pool->num_threads, 
+		    g_async_queue_length_unlocked (pool->queue));
 	      task = g_async_queue_timed_pop_unlocked (pool->queue, &end_time);
 	    }
+	  else if (g_thread_pool_get_max_idle_time() > 0) 
+	    {
+	      /* We always give a maximum time to pop the next task so
+	       * we know that when we evaluate task further down, that
+	       * it has had the maximum time to get a new task and it
+	       * can die */
+	      GTimeVal end_time;
+	      g_get_current_time (&end_time);
+	      debug("pool:0x%.8x waiting %d ms max to pop next item in "
+		    "queue (%d running, %d unprocessed) or exiting ...\n", 
+		    (guint)pool, 
+		    g_thread_pool_get_max_idle_time (), 
+		    pool->num_threads, 
+		    g_async_queue_length_unlocked (pool->queue));
+	      
+	      g_time_val_add (&end_time, g_thread_pool_get_max_idle_time () * 1000);
+ 	      task = g_async_queue_timed_pop_unlocked (pool->queue, &end_time);
+	    }
 	  else
-	    task = g_async_queue_pop_unlocked (pool->queue);
-	  
+	    {
+	      task = g_async_queue_pop_unlocked (pool->queue);
+	      debug("pool:0x%.8x new task:0x%.8x poped from pool queue ...\n", 
+		    (guint)pool, (guint)task);
+	}
+
 	  if (task)
 	    {
 	      watcher = FALSE;
@@ -125,18 +156,48 @@ g_thread_pool_thread_proxy (gpointer data)
 		 * the global pool and just hand the data further to
 		 * the next one waiting in the queue */
 		{
+		  debug("pool:0x%.8x, task:0x%.8x we have too many threads "
+			"and max is set, pushing task into queue ...\n", 
+			(guint)pool, (guint)task);
 		  g_thread_pool_queue_push_unlocked (pool, task);
 		  goto_global_pool = TRUE;
 		}
  	      else if (pool->running || !pool->immediate)
 		{
 		  g_async_queue_unlock (pool->queue);
+		  debug("pool:0x%.8x, task:0x%.8x calling func ...\n", 
+			(guint)pool, (guint)task);
 		  pool->pool.func (task, pool->pool.user_data);
 		  g_async_queue_lock (pool->queue);
 		}
+	    } 
+ 	  else if (g_thread_pool_get_max_idle_time() > 0)  
+	    {
+	      G_LOCK (settings);
+	      if (pool->num_threads > max_unused_threads) {
+		G_UNLOCK (settings);
+		pool->num_threads--;      
+		
+		debug("pool:0x%.8x queue timed pop has no tasks waiting, "
+		      "so stopping thread (%d running, %d unprocessed) ...\n", 
+		      (guint)pool, 
+		      pool->num_threads, 
+		      g_async_queue_length_unlocked (pool->queue));
+		g_async_queue_unlock (pool->queue);
+	  
+		return NULL; 
+	      }
+	      G_UNLOCK (settings);
 	    }
 	  len = g_async_queue_length_unlocked (pool->queue);
 	}
+
+      debug("pool:0x%.8x, len:%d, watcher:%s, exclusive:%s, should run:%s\n",
+	    (guint)pool, 
+	    len, 
+	    watcher ? "true" : "false", 
+	    pool->pool.exclusive ? "true" : "false", 
+	    g_thread_should_run (pool, len) ? "true" : "false");
 
       if (!g_thread_should_run (pool, len))
 	{
@@ -148,6 +209,11 @@ g_thread_pool_thread_proxy (gpointer data)
 	  /* At this pool there are no threads waiting, but tasks are. */
 	  goto_global_pool = FALSE; 
 	}
+      else if (len < 1 && g_thread_pool_get_max_idle_time () > 0) 
+	{
+	  goto_global_pool = FALSE;
+	  watcher = FALSE;
+	}
       else if (len == 0 && !watcher && !pool->pool.exclusive)
 	{
 	  /* Here neither threads nor tasks are queued and we didn't
@@ -156,10 +222,11 @@ g_thread_pool_thread_proxy (gpointer data)
 	   * switches. */
 	  goto_global_pool = FALSE;
 	  watcher = TRUE;
-	}
+	} 
 
       if (goto_global_pool)
 	{
+	  debug("pool:0x%.8x, now in the global pool\n", (guint)pool);
 	  pool->num_threads--;
 
 	  if (!pool->running && !pool->waiting)
@@ -182,23 +249,27 @@ g_thread_pool_thread_proxy (gpointer data)
 	  
 	  g_async_queue_lock (unused_thread_queue);
 
-	  G_LOCK (unused_threads);
-	  if ((unused_threads >= max_unused_threads && 
+	  G_LOCK (settings);
+	  if ((unused_threads >= max_unused_threads &&
 	       max_unused_threads != -1))
 	    {
-	      G_UNLOCK (unused_threads);
+	      G_UNLOCK (settings);
 	      g_async_queue_unlock (unused_thread_queue);
+	      debug("pool:0x%.8x stopping thread (%d running, %d unprocessed) ...\n", 
+		    (guint)pool, 
+		    pool->num_threads, 
+		    g_async_queue_length_unlocked (pool->queue));
 	      /* Stop this thread */
 	      return NULL;      
 	    }
 	  unused_threads++;
-	  G_UNLOCK (unused_threads);
+	  G_UNLOCK (settings);
 
 	  pool = g_async_queue_pop_unlocked (unused_thread_queue);
 
-	  G_LOCK (unused_threads);
+	  G_LOCK (settings);
 	  unused_threads--;
-	  G_UNLOCK (unused_threads);
+	  G_UNLOCK (settings);
 
 	  g_async_queue_unlock (unused_thread_queue);
 	  
@@ -252,6 +323,8 @@ g_thread_pool_start_thread (GRealThreadPool  *pool,
   /* See comment in g_thread_pool_thread_proxy as to why this is done
    * here and not there */
   pool->num_threads++;
+  debug("pool:0x%.8x thread created, (running:%d)\n", 
+	(guint)pool, pool->num_threads);
 }
 
 /**
@@ -637,7 +710,7 @@ g_thread_pool_set_max_unused_threads (gint max_threads)
 {
   g_return_if_fail (max_threads >= -1);  
 
-  G_LOCK (unused_threads);
+  G_LOCK (settings);
   
   max_unused_threads = max_threads;
 
@@ -652,7 +725,7 @@ g_thread_pool_set_max_unused_threads (gint max_threads)
       g_async_queue_unlock (unused_thread_queue);
     }
     
-  G_UNLOCK (unused_threads);
+  G_UNLOCK (settings);
 }
 
 /**
@@ -667,9 +740,9 @@ g_thread_pool_get_max_unused_threads (void)
 {
   gint retval;
   
-  G_LOCK (unused_threads);
+  G_LOCK (settings);
   retval = max_unused_threads;
-  G_UNLOCK (unused_threads);
+  G_UNLOCK (settings);
 
   return retval;
 }
@@ -681,13 +754,14 @@ g_thread_pool_get_max_unused_threads (void)
  *
  * Return value: the number of currently unused threads
  **/
-guint g_thread_pool_get_num_unused_threads (void)
+guint 
+g_thread_pool_get_num_unused_threads (void)
 {
   guint retval;
   
-  G_LOCK (unused_threads);
+  G_LOCK (settings);
   retval = unused_threads;
-  G_UNLOCK (unused_threads);
+  G_UNLOCK (settings);
 
   return retval;
 }
@@ -699,7 +773,8 @@ guint g_thread_pool_get_num_unused_threads (void)
  * maximal number of unused threads. This function can be used to
  * regularly stop all unused threads e.g. from g_timeout_add().
  **/
-void g_thread_pool_stop_unused_threads (void)
+void
+g_thread_pool_stop_unused_threads (void)
 { 
   guint oldval = g_thread_pool_get_max_unused_threads ();
   g_thread_pool_set_max_unused_threads (0);
@@ -723,9 +798,10 @@ void g_thread_pool_stop_unused_threads (void)
  *
  * Since: 2.10
  **/
-void g_thread_pool_set_sort_function (GThreadPool      *pool,
-				      GCompareDataFunc  func,
-				      gpointer          user_data)
+void 
+g_thread_pool_set_sort_function (GThreadPool      *pool,
+				 GCompareDataFunc  func,
+				 gpointer          user_data)
 { 
   GRealThreadPool *real = (GRealThreadPool*) pool;
 
@@ -743,6 +819,58 @@ void g_thread_pool_set_sort_function (GThreadPool      *pool,
 				 real->sort_user_data);
 
   g_async_queue_unlock (real->queue);
+}
+
+/**
+ * g_thread_pool_set_max_idle_time:
+ * @interval: the maximum @interval (1/1000ths of a second) a thread
+ *     can be idle. 
+ *
+ * This function will set the maximum @interval that a thread waiting
+ * in the pool for new tasks can be idle for before being
+ * stopped. This function is similar to calling
+ * g_thread_pool_stop_unused_threads() on a regular timeout, except,
+ * this is done on a per thread basis.    
+ *
+ * By setting @interval to 0, idle threads will not be stopped.
+ *  
+ * This function makes use of g_async_queue_timed_pop () using
+ * @interval.
+ *
+ * Since: 2.10
+ **/
+void
+g_thread_pool_set_max_idle_time (guint interval)
+{ 
+  G_LOCK (settings);
+  max_idle_time = interval;
+  G_UNLOCK (settings);
+}
+
+/**
+ * g_thread_pool_get_max_idle_time:
+ * 
+ * This function will return the maximum @interval that a thread will
+ * wait in the thread pool for new tasks before being stopped.
+ *
+ * If this function returns 0, threads waiting in the thread pool for
+ * new work are not stopped.
+ *
+ * Return value: the maximum @interval to wait for new tasks in the
+ *     thread pool before stopping the thread (1/1000ths of a second).
+ *  
+ * Since: 2.10
+ **/
+guint
+g_thread_pool_get_max_idle_time (void)
+{ 
+  guint retval;
+
+  G_LOCK (settings);
+  retval = max_idle_time;
+  G_UNLOCK (settings);
+
+  return retval;
 }
 
 #define __G_THREADPOOL_C__

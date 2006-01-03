@@ -1,3 +1,15 @@
+2006-01-03  Martyn Russell  <martyn@imendio.com>
+
+	* docs/reference/glib/glib-sections.txt:
+	* glib/glib.symbols:
+	* glib/gthreadpool.[ch]:
+	- Added new API g_thread_pool_get_idle_time() and
+	g_thread_pool_set_idle_time(). (#324228).
+	
+	* tests/threadpool-test.c: 
+	- Updated test case to do thread pool sorting, thread pool with
+	no sorting and a thread pool with idle thread timeouts.
+	
 2006-01-03  Matthias Clasen  <mclasen@redhat.com>
 	
 	* glib/gmain.h: Add new functions here, too.

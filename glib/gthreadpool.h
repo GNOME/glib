@@ -101,6 +101,10 @@ void            g_thread_pool_set_sort_function      (GThreadPool      *pool,
 		                                      GCompareDataFunc  func,
 						      gpointer          user_data);
 
+/* Set maximum time a thread can be idle in the pool before it is stopped */
+void            g_thread_pool_set_max_idle_time      (guint             interval);
+guint           g_thread_pool_get_max_idle_time      (void);
+
 G_END_DECLS
 
 #endif /* __G_THREADPOOL_H__ */
