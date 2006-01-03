@@ -3165,7 +3165,9 @@ g_main_context_wakeup (GMainContext *context)
  * know before waiting on another thread that may be
  * blocking to get ownership of @context.
  *
- * Returns: TRUE if current thread is owner of @context.
+ * Returns: %TRUE if current thread is owner of @context.
+ *
+ * Since: 2.10
  **/
 gboolean
 g_main_context_is_owner (GMainContext *context)

@@ -1,3 +1,7 @@
+2006-01-03  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/glib-sections.txt: Add new API 
+
 2006-01-02  Stepan Kasal  <kasal@ucw.cz>
 
 	* glib/glib-docs.sgml (glib-Windows-Compatability-Functions): Rename

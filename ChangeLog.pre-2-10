@@ -1,3 +1,7 @@
+2006-01-03  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/glib.symbols: Add new functions.
+
 2005-12-20  Michael Meeks  <michael.meeks@novell.com>
 
 	* glib/gmain.c (g_main_context_is_owner): new method
