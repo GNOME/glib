@@ -30,7 +30,9 @@ G_BEGIN_DECLS
 #if defined(G_OS_UNIX) && !defined(G_STDIO_NO_WRAP_ON_UNIX)
 
 /* Just pass on to the system functions, so there's no potential for data
- * format mismatches, especially with large file interfaces.
+ * format mismatches, especially with large file interfaces. 
+ * rmdir() can't be handled in this way, since it is not defined in 
+ * a portable system header that we could include here.
  */
 
 #define g_access  access
@@ -44,9 +46,10 @@ G_BEGIN_DECLS
 #define g_lstat   lstat
 #define g_unlink  unlink
 #define g_remove  remove
-#define g_rmdir   rmdir
 #define g_fopen   fopen
 #define g_freopen freopen
+
+int g_rmdir (const gchar *filename);
 
 #else /* ! G_OS_UNIX */
 
@@ -91,7 +94,7 @@ int g_unlink    (const gchar *filename);
 
 int g_remove    (const gchar *filename);
 
-int g_rmdir (const gchar *filename);
+int g_rmdir     (const gchar *filename);
 
 FILE *g_fopen   (const gchar *filename,
                  const gchar *mode);

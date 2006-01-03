@@ -1,3 +1,11 @@
+2006-01-02  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/glib.symbols: 
+	* glib/gstdio.h: 
+	* glib/gstdio.c (g_rmdir): Don't provide g_rmdir() as a macro
+	expanding to rmdir, since rmdir is not declared in a portable
+	system header we can include in gstdio.h.  (#325249, Jani Monoses)
+
 2006-01-01  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gspawn-win32.c (g_spawn_sync_utf8): Set the GIOChannels for

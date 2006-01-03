@@ -931,10 +931,10 @@ g_stat
 g_lstat
 g_unlink
 g_remove
-g_rmdir
 g_fopen
 g_freopen
 #endif
+g_rmdir
 #endif
 #endif
 
