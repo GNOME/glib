@@ -1,3 +1,9 @@
+Wed Jan  4 13:33:25 2006  Tim Janik  <timj@gtk.org>
+
+	* glib/gslice.c (magazine_cache_pop_magazine): don't reverse chunk 
+	order when creating magazines, so we hand out chunks with ascending
+	adresses.
+
 2006-01-04  Abel Cheung  <maddog@linuxhall.org>
 
 	* configure.in: Added "ml" "zh_HK" to ALL_LINGUAS.

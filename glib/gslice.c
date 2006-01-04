@@ -579,19 +579,22 @@ magazine_cache_pop_magazine (guint  ix,
     {
       guint magazine_threshold = allocator_get_magazine_threshold (allocator, ix);
       gsize i, chunk_size = SLAB_CHUNK_SIZE (allocator, ix);
-      ChunkLink *current = NULL;
+      ChunkLink *chunk, *head;
       g_mutex_unlock (allocator->magazine_mutex);
       g_mutex_lock (allocator->slab_mutex);
-      for (i = 0; i < magazine_threshold; i++)
+      head = slab_allocator_alloc_chunk (chunk_size);
+      head->data = NULL;
+      chunk = head;
+      for (i = 1; i < magazine_threshold; i++)
         {
-          ChunkLink *chunk = slab_allocator_alloc_chunk (chunk_size);
+          chunk->next = slab_allocator_alloc_chunk (chunk_size);
+          chunk = chunk->next;
           chunk->data = NULL;
-          chunk->next = current;
-          current = chunk;
         }
+      chunk->next = NULL;
       g_mutex_unlock (allocator->slab_mutex);
       *countp = i;
-      return current;
+      return head;
     }
   else
     {
