@@ -1,3 +1,7 @@
+2006-01-04  Abel Cheung  <maddog@linuxhall.org>
+
+	* configure.in: Added "ml" "zh_HK" to ALL_LINGUAS.
+
 2006-01-03  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.8.5 ===
