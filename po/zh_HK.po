@@ -1,4 +1,4 @@
-# Chinese (Taiwan) translation for glib 2.x
+# Chinese (Hong Kong) translation for glib 2.x
 # Copyright (C) 2001, 02, 03, 05 Free Software Foundation, Inc.
 #
 # XML glossary from http://xml.ascc.net/zh/big5/gloss.html
@@ -13,9 +13,9 @@ msgstr ""
 "Project-Id-Version: glib 2.9.2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-01-04 10:10+0800\n"
-"PO-Revision-Date: 2006-01-04 10:19+0800\n"
+"PO-Revision-Date: 2006-01-04 10:22+0800\n"
 "Last-Translator: Abel Cheung <abel@oaka.org>\n"
-"Language-Team: Chinese (Taiwan) <community@linuxhall.org>\n"
+"Language-Team: Chinese (Hong Kong) <community@linuxhall.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -243,7 +243,7 @@ msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
 msgstr ""
-"實體的結束部分不是分號；很可能您想使用 & 字元但未將它變為實體 ─ 請將 & 轉換"
+"實體的結束部分不是分號；很可能你想使用 & 字元但未將它變為實體 ─ 請將 & 轉換"
 "為 &amp;"
 
 #: ../glib/gmarkup.c:579
@@ -269,7 +269,7 @@ msgid ""
 "ampersand character without intending to start an entity - escape ampersand "
 "as &amp;"
 msgstr ""
-"字元參引的結束部分不是分號；很可能您想使用 & 字元但未將它變為實體 ─ 請將 & 轉"
+"字元參引的結束部分不是分號；很可能你想使用 & 字元但未將它變為實體 ─ 請將 & 轉"
 "換為 &amp;"
 
 #: ../glib/gmarkup.c:715
@@ -316,7 +316,7 @@ msgid ""
 "character in an attribute name"
 msgstr ""
 "不尋常的字元「%s」，元素「%s」的開始標籤應該以「>」或「/」字元終結，也可以是"
-"屬性；或許您在屬性名稱中使用了無效的字元"
+"屬性；或許你在屬性名稱中使用了無效的字元"
 
 #: ../glib/gmarkup.c:1383
 #, c-format
