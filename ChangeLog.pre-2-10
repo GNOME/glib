@@ -1,3 +1,7 @@
+2006-01-04  Abel Cheung  <maddog@linuxhall.org>
+
+	* configure.in: Added "ml" "zh_HK" to ALL_LINGUAS.
+
 2006-01-03  Martyn Russell  <martyn@imendio.com>
 
 	* docs/reference/glib/glib-sections.txt:
