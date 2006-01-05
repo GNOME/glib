@@ -1,5 +1,7 @@
 2006-01-05  Matthias Clasen  <mclasen@redhat.com>
 
+	* NEWS: Updates
+
 	* glib/gmain.c: Clarify the documentation of source ids
 	a bit.  (#325874, Dan Williams)
 
@@ -87,7 +89,7 @@ Wed Jan  4 13:33:25 2006  Tim Janik  <timj@gtk.org>
 	* glib/gdatasetprivate.h: Add a cast to silence compiler
 	warnings.  (#321978, Andrew Paprocki)
 
-	Partial fix for bug #32937, Bogdan Nicula.
+	Partial fix for bug #323937, Bogdan Nicula.
 
 	* configure.in: Check for malloc.h
 	* glib/gslice.c: Don't include malloc.h unconditionally.

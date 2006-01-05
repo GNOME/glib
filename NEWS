@@ -1,3 +1,57 @@
+Overview of Changes from GLib 2.9.1 to GLib 2.9.2
+=================================================
+
+* Memory management:
+ - Add tests for cache colorization [Tim Janik]
+ - Minimize space consumption if small amounts of differently
+   sized slices are allocated, at a small performance cost.  [Tim]
+
+* Thread support:
+ - Add g_atomic_pointer_set() and g_atomic_int_set() [Tim Janik,
+   Sebastian Wilhelmi]
+ - Add g_thread_pool_set_sort_function() to allow sorting the 
+   tasks of a threadpool.  [Martyn Russell]
+ - Add g_thread_pool_set_idle_time() to allow unused threads
+   to exit after a certain time.  [Martyn]
+
+* Type system:
+ - introduce a new type GInitiallyUnowned, which has an initial
+   floating reference. [Tim]
+ - Add support for GType parameters. [Matthias]
+
+* Main loop:
+ - Add g_main_context_is_owner() to determine if the current
+   thread is the owner of the context.  [Michael Meeks]
+
+* Provide g_access(), g_chdir(), g_unlink(), g_rmdir() as 
+  wrapper functions instead of macros.  [Manish Singh]
+
+* Documentation improvements [Tim, Matthias, Federico Mena Quintero,
+  Stefan Kasal, Dan Williams]
+
+* New and updated translations (en_CA,fi,fr,gl,ml,nb,no,zh_HK,zh_TW)
+
+* Bugs fixed:
+ 324179 g_allocator_new() returns pointer to const dummy which Gtk+ 2.8 
+        tries to modify [J. Ali Harlow]
+ 324332 g_option_context_parse() returns false without setting error 
+        [Tim-Philipp Müller]
+ 324950 GLIB 2.9.1 testcase errors [Dan Yefimov]
+ 325015 gslice.c: process.h is needed on Windows [Kazuki Iwamoto]
+ 321978 G_DATALIST_GET_FLAGS() macro is not casting datalist to 
+        gpointer [Andrew Paprocki]
+ 316221 G_LOCK warns about breaking strict-aliasing [Michal Benes, 
+        Stanislav Brabec]
+ 325273 Error in documentation for glib_check_version () [Declan Naughton]
+ 325310 g_spawn_sync hangs when catching both stdout and 
+        stderr [Tor Lillqvist]
+ 325249 gcc warning when using g_rmdir from <glib/gstdio.h> [Jani Monoses]
+ 325864 glib/gthreadpool.c:"#define debug(...)" is C99 [Kazuki Iwamoto]
+ 325874 Should say somewhere that source IDs are > 0 [Dan Williams]
+ 325438 a typo (compatability) [Stefan Kasal]
+ 323937 gslice.c in glib 2.9.1 doesn't build on Mac OS X [Bogdan Nicula]
+
+
 Overview of Changes from GLib 2.9.0 to GLib 2.9.1
 =================================================
 
@@ -46,8 +100,6 @@ Overview of Changes from GLib 2.9.0 to GLib 2.9.1
  - Deprecation warnings carry version information [Matthias]
  - The slice allocator has been documented [Matthias, Tim]
  - Other improvements [Morten Welinder]
-
-* Bugs fixed: 321984,322133,322520,321972,323052,322568,136971,321318,321530,322956,145466,319535,321229,323178,323047,323291,323273
 
 Overview of Changes from GLib 2.8.x to GLib 2.9.0
 =================================================
