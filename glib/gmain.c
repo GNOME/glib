@@ -880,7 +880,8 @@ g_source_list_remove (GSource      *source,
  * Adds a #GSource to a @context so that it will be executed within
  * that context.
  *
- * Return value: the ID for the source within the #GMainContext
+ * Return value: the ID (greater than 0) for the source within the 
+ *   #GMainContext. 
  **/
 guint
 g_source_attach (GSource      *source,
@@ -994,10 +995,11 @@ g_source_destroy (GSource *source)
  * @source: a #GSource
  * 
  * Returns the numeric ID for a particular source. The ID of a source
- * is unique within a particular main loop context. The reverse
+ * is a positive integer which is unique within a particular main loop 
+ * context. The reverse
  * mapping from ID to source is done by g_main_context_find_source_by_id().
  *
- * Return value: the ID for the source
+ * Return value: the ID (greater than 0) for the source
  **/
 guint
 g_source_get_id (GSource *source)
@@ -1441,9 +1443,9 @@ g_source_unref (GSource *source)
 /**
  * g_main_context_find_source_by_id:
  * @context: a #GMainContext (if %NULL, the default context will be used)
- * @source_id: the source ID, as returned by g_source_get_id()
+ * @source_id: the source ID, as returned by g_source_get_id(). 
  * 
- * Finds a #GSource given a pair of context and ID
+ * Finds a #GSource given a pair of context and ID.
  * 
  * Return value: the #GSource if found, otherwise, %NULL
  **/
@@ -1569,9 +1571,10 @@ g_main_context_find_source_by_user_data (GMainContext *context,
 
 /**
  * g_source_remove:
- * @tag: the id of the source to remove.
+ * @tag: the ID of the source to remove.
  * 
- * Removes the source with the given id from the default main context. The id of
+ * Removes the source with the given id from the default main context. 
+ * The id of
  * a #GSource is given by g_source_get_id(), or will be returned by the
  * functions g_source_attach(), g_idle_add(), g_idle_add_full(),
  * g_timeout_add(), g_timeout_add_full(), g_child_watch_add(),
@@ -3349,7 +3352,7 @@ g_timeout_source_new (guint interval)
  * timeout is recalculated based on the current time and the given interval
  * (it does not try to 'catch up' time lost in delays).
  * 
- * Return value: the id of event source.
+ * Return value: the ID (greater than 0) of the event source.
  **/
 guint
 g_timeout_add_full (gint           priority,
@@ -3394,7 +3397,7 @@ g_timeout_add_full (gint           priority,
  * timeout is recalculated based on the current time and the given interval
  * (it does not try to 'catch up' time lost in delays).
  * 
- * Return value: the id of event source.
+ * Return value: the ID (greater than 0) of the event source.
  **/
 guint 
 g_timeout_add (guint32        interval,
@@ -3704,7 +3707,7 @@ g_child_watch_source_new (GPid pid)
  * 
  * GLib supports only a single callback per process id.
  *
- * Return value: the id of event source.
+ * Return value: the ID (greater than 0) of the event source.
  *
  * Since: 2.4
  **/
@@ -3748,7 +3751,7 @@ g_child_watch_add_full (gint            priority,
  *
  * GLib supports only a single callback per process id.
  *
- * Return value: the id of event source.
+ * Return value: the ID (greater than 0) of the event source.
  *
  * Since: 2.4
  **/
@@ -3829,7 +3832,7 @@ g_idle_source_new (void)
  * events pending.  If the function returns %FALSE it is automatically
  * removed from the list of event sources and will not be called again.
  * 
- * Return value: the id of the event source.
+ * Return value: the ID (greater than 0) of the event source.
  **/
 guint 
 g_idle_add_full (gint           priority,
@@ -3865,7 +3868,7 @@ g_idle_add_full (gint           priority,
  * returns %FALSE it is automatically removed from the list of event
  * sources and will not be called again.
  * 
- * Return value: the id of the event source.
+ * Return value: the ID (greater than 0) of the event source.
  **/
 guint 
 g_idle_add (GSourceFunc    function,
