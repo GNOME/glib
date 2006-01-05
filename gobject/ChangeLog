@@ -1,5 +1,9 @@
-2005-12-30  Matthias Clasen  <mclasen@redhat.com>
+2006-01-04  Matthias Clasen  <mclasen@redhat.com>
 
+	* gobject.symbols: Add g_initially_unowned_get_type.
+
+2005-12-30  Matthias Clasen  <mclasen@redhat.com>
+	
 	* gsignal.c: Remove the handler trash stack, which
 	is now unused.
 	(g_signal_init): Remove the restriction that HandlerMatch
