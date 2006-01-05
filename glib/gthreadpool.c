@@ -29,7 +29,9 @@
 #include "glib.h"
 #include "galias.h"
 
-#define debug(...) /* g_printerr (__VA_ARGS__) */
+#define DEBUG_MSG(x) /* */
+/* #define DEBUG_MSG(args) g_message args ; */
+
 
 typedef struct _GRealThreadPool GRealThreadPool;
 
@@ -94,7 +96,7 @@ g_thread_pool_thread_proxy (gpointer data)
   GRealThreadPool *pool = data;
   gboolean watcher = FALSE;
 
-  debug("pool:0x%.8x entering proxy ...\n", (guint)pool);
+  DEBUG_MSG(("pool:0x%.8x entering proxy ...\n", (guint)pool));
 
   g_async_queue_lock (pool->queue);
   while (TRUE)
@@ -115,11 +117,11 @@ g_thread_pool_thread_proxy (gpointer data)
 	      GTimeVal end_time;
 	      g_get_current_time (&end_time);
 	      g_time_val_add (&end_time, G_USEC_PER_SEC / 2); /* 1/2 second */
-	      debug("pool:0x%.8x waiting 1/2 second to pop next item "
-		    "in queue (%d running, %d unprocessed) ...\n", 
-		    (guint)pool, 
-		    pool->num_threads, 
-		    g_async_queue_length_unlocked (pool->queue));
+	      DEBUG_MSG(("pool:0x%.8x waiting 1/2 second to pop next item "
+			 "in queue (%d running, %d unprocessed) ...\n", 
+			 (guint)pool, 
+			 pool->num_threads, 
+			 g_async_queue_length_unlocked (pool->queue)));
 	      task = g_async_queue_timed_pop_unlocked (pool->queue, &end_time);
 	    }
 	  else if (g_thread_pool_get_max_idle_time() > 0) 
@@ -130,12 +132,12 @@ g_thread_pool_thread_proxy (gpointer data)
 	       * can die */
 	      GTimeVal end_time;
 	      g_get_current_time (&end_time);
-	      debug("pool:0x%.8x waiting %d ms max to pop next item in "
-		    "queue (%d running, %d unprocessed) or exiting ...\n", 
-		    (guint)pool, 
-		    g_thread_pool_get_max_idle_time (), 
-		    pool->num_threads, 
-		    g_async_queue_length_unlocked (pool->queue));
+	      DEBUG_MSG(("pool:0x%.8x waiting %d ms max to pop next item in "
+			 "queue (%d running, %d unprocessed) or exiting ...\n", 
+			 (guint)pool, 
+			 g_thread_pool_get_max_idle_time (), 
+			 pool->num_threads, 
+			 g_async_queue_length_unlocked (pool->queue)));
 	      
 	      g_time_val_add (&end_time, g_thread_pool_get_max_idle_time () * 1000);
  	      task = g_async_queue_timed_pop_unlocked (pool->queue, &end_time);
@@ -143,8 +145,8 @@ g_thread_pool_thread_proxy (gpointer data)
 	  else
 	    {
 	      task = g_async_queue_pop_unlocked (pool->queue);
-	      debug("pool:0x%.8x new task:0x%.8x poped from pool queue ...\n", 
-		    (guint)pool, (guint)task);
+	      DEBUG_MSG(("pool:0x%.8x new task:0x%.8x poped from pool queue ...\n", 
+			 (guint)pool, (guint)task));
 	}
 
 	  if (task)
@@ -156,17 +158,17 @@ g_thread_pool_thread_proxy (gpointer data)
 		 * the global pool and just hand the data further to
 		 * the next one waiting in the queue */
 		{
-		  debug("pool:0x%.8x, task:0x%.8x we have too many threads "
-			"and max is set, pushing task into queue ...\n", 
-			(guint)pool, (guint)task);
+		  DEBUG_MSG(("pool:0x%.8x, task:0x%.8x we have too many threads "
+			     "and max is set, pushing task into queue ...\n", 
+			     (guint)pool, (guint)task));
 		  g_thread_pool_queue_push_unlocked (pool, task);
 		  goto_global_pool = TRUE;
 		}
  	      else if (pool->running || !pool->immediate)
 		{
 		  g_async_queue_unlock (pool->queue);
-		  debug("pool:0x%.8x, task:0x%.8x calling func ...\n", 
-			(guint)pool, (guint)task);
+		  DEBUG_MSG(("pool:0x%.8x, task:0x%.8x calling func ...\n", 
+			     (guint)pool, (guint)task));
 		  pool->pool.func (task, pool->pool.user_data);
 		  g_async_queue_lock (pool->queue);
 		}
@@ -178,13 +180,13 @@ g_thread_pool_thread_proxy (gpointer data)
 		G_UNLOCK (settings);
 		pool->num_threads--;      
 		
-		debug("pool:0x%.8x queue timed pop has no tasks waiting, "
-		      "so stopping thread (%d running, %d unprocessed) ...\n", 
-		      (guint)pool, 
-		      pool->num_threads, 
-		      g_async_queue_length_unlocked (pool->queue));
+		DEBUG_MSG(("pool:0x%.8x queue timed pop has no tasks waiting, "
+			   "so stopping thread (%d running, %d unprocessed) ...\n", 
+			   (guint)pool, 
+			   pool->num_threads, 
+			   g_async_queue_length_unlocked (pool->queue)));
 		g_async_queue_unlock (pool->queue);
-	  
+		
 		return NULL; 
 	      }
 	      G_UNLOCK (settings);
@@ -192,12 +194,12 @@ g_thread_pool_thread_proxy (gpointer data)
 	  len = g_async_queue_length_unlocked (pool->queue);
 	}
 
-      debug("pool:0x%.8x, len:%d, watcher:%s, exclusive:%s, should run:%s\n",
-	    (guint)pool, 
-	    len, 
-	    watcher ? "true" : "false", 
-	    pool->pool.exclusive ? "true" : "false", 
-	    g_thread_should_run (pool, len) ? "true" : "false");
+      DEBUG_MSG(("pool:0x%.8x, len:%d, watcher:%s, exclusive:%s, should run:%s\n",
+		 (guint)pool, 
+		 len, 
+		 watcher ? "true" : "false", 
+		 pool->pool.exclusive ? "true" : "false", 
+		 g_thread_should_run (pool, len) ? "true" : "false"));
 
       if (!g_thread_should_run (pool, len))
 	{
@@ -226,7 +228,7 @@ g_thread_pool_thread_proxy (gpointer data)
 
       if (goto_global_pool)
 	{
-	  debug("pool:0x%.8x, now in the global pool\n", (guint)pool);
+	  DEBUG_MSG(("pool:0x%.8x, now in the global pool\n", (guint)pool));
 	  pool->num_threads--;
 
 	  if (!pool->running && !pool->waiting)
@@ -255,10 +257,10 @@ g_thread_pool_thread_proxy (gpointer data)
 	    {
 	      G_UNLOCK (settings);
 	      g_async_queue_unlock (unused_thread_queue);
-	      debug("pool:0x%.8x stopping thread (%d running, %d unprocessed) ...\n", 
-		    (guint)pool, 
-		    pool->num_threads, 
-		    g_async_queue_length_unlocked (pool->queue));
+	      DEBUG_MSG(("pool:0x%.8x stopping thread (%d running, %d unprocessed) ...\n", 
+			 (guint)pool, 
+			 pool->num_threads, 
+			 g_async_queue_length_unlocked (pool->queue)));
 	      /* Stop this thread */
 	      return NULL;      
 	    }
@@ -323,8 +325,8 @@ g_thread_pool_start_thread (GRealThreadPool  *pool,
   /* See comment in g_thread_pool_thread_proxy as to why this is done
    * here and not there */
   pool->num_threads++;
-  debug("pool:0x%.8x thread created, (running:%d)\n", 
-	(guint)pool, pool->num_threads);
+  DEBUG_MSG(("pool:0x%.8x thread created, (running:%d)\n", 
+	     (guint)pool, pool->num_threads));
 }
 
 /**

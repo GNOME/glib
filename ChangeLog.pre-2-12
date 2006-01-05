@@ -1,3 +1,8 @@
+2006-01-05  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gthreadpool.c: Avoid use of varargs macro.  (#325864,
+	Kazuki IWAMOTO)
+
 2006-01-04  Manish Singh  <yosh@gimp.org>
 
 	* glib/glib.symbols
