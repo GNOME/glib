@@ -18,7 +18,7 @@ all :				\
 	galiasdef.c		\
 	gnulib\gnulib.lib	\
 	libglib-2.0-0.dll \
-	glib-2.8s.lib \
+	glib-2.9s.lib \
 	gspawn-win32-helper.exe	\
 
 
@@ -62,6 +62,7 @@ glib_OBJECTS =			\
 	grel.obj		\
 	gscanner.obj		\
 	gshell.obj		\
+	gslice.obj	\
 	gslist.obj		\
 	gspawn-win32.obj	\
 	gstdio.obj	\
