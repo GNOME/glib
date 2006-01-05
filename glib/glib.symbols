@@ -921,20 +921,20 @@ g_spawn_sync_utf8
 #if IN_FILE(__G_STDIO_C__)
 #if !defined(G_OS_UNIX) || defined(G_STDIO_NO_WRAP_ON_UNIX)
 /* gstdio wrappers */
-g_access
 g_chmod
 g_open
 g_creat
 g_rename
 g_mkdir
-g_chdir
 g_stat
 g_lstat
-g_unlink
 g_remove
 g_fopen
 g_freopen
 #endif
+g_access
+g_chdir
+g_unlink
 g_rmdir
 #endif
 #endif

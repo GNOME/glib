@@ -1,3 +1,10 @@
+2006-01-04  Manish Singh  <yosh@gimp.org>
+
+	* glib/glib.symbols
+	* glib/gstdio.h: don't macroized g_access, g_chdir, and g_unlink
+	either, since they have the same issue as g_rmdir. (Related to
+	bug #325249)
+
 Wed Jan  4 13:33:25 2006  Tim Janik  <timj@gtk.org>
 
 	* glib/gslice.c (magazine_cache_pop_magazine): don't reverse chunk 

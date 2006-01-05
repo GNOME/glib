@@ -31,25 +31,29 @@ G_BEGIN_DECLS
 
 /* Just pass on to the system functions, so there's no potential for data
  * format mismatches, especially with large file interfaces. 
- * rmdir() can't be handled in this way, since it is not defined in 
- * a portable system header that we could include here.
+ * A few functions can't be handled in this way, since they are not defined
+ * in a portable system header that we could include here.
  */
 
-#define g_access  access
 #define g_chmod   chmod
 #define g_open    open
 #define g_creat   creat
 #define g_rename  rename
 #define g_mkdir   mkdir
-#define g_chdir   chdir
 #define g_stat    stat
 #define g_lstat   lstat
-#define g_unlink  unlink
 #define g_remove  remove
 #define g_fopen   fopen
 #define g_freopen freopen
 
-int g_rmdir (const gchar *filename);
+int g_access (const gchar *filename,
+	      int          mode);
+
+int g_chdir  (const gchar *path);
+
+int g_unlink (const gchar *filename);
+
+int g_rmdir  (const gchar *filename);
 
 #else /* ! G_OS_UNIX */
 
