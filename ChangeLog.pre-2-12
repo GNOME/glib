@@ -1,5 +1,7 @@
 2006-01-05  Matthias Clasen  <mclasen@redhat.com>
 
+	* configure.in: Fix another strict aliasing problem.
+
 	* glib/gthreadpool.c: Avoid use of varargs macro.  (#325864,
 	Kazuki IWAMOTO)
 

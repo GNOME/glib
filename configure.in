@@ -2358,7 +2358,7 @@ struct _GStaticMutex
 };
 #define	G_STATIC_MUTEX_INIT	{ NULL, { { $g_mutex_contents} } }
 #define	g_static_mutex_get_mutex(mutex) \\
-  (g_thread_use_default_impl ? ((GMutex*) &((mutex)->static_mutex.pad)) : \\
+  (g_thread_use_default_impl ? ((GMutex*) ((mutex)->static_mutex.pad)) : \\
    g_static_mutex_get_mutex_impl_shortcut (&((mutex)->runtime_mutex)))
 _______EOF
 	else
