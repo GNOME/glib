@@ -91,6 +91,7 @@ The previous contents of the #GString are destroyed.
 </para>
 
 @Deprecated: This function has been renamed to g_string_printf().
+<!-- # Unused Parameters # -->
 @string: a #GString.
 @format: the string format. See the sprintf() documentation.
 @Varargs: the parameters to insert into the format string.
@@ -104,6 +105,7 @@ the text is appended to the #GString.
 </para>
 
 @Deprecated: This function has been renamed to g_string_append_printf().
+<!-- # Unused Parameters # -->
 @string: a #GString.
 @format: the string format. See the sprintf() documentation.
 @Varargs: the parameters to insert into the format string.

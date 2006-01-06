@@ -406,6 +406,15 @@ Checks if any events are pending for the default #GMainContext
 @context: 
 
 
+<!-- ##### FUNCTION g_main_context_is_owner ##### -->
+<para>
+
+</para>
+
+@context: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_main_context_wait ##### -->
 <para>
 

@@ -1129,8 +1129,7 @@ This is an internal function introduced mainly for C marshallers.
 
 @value:   a valid #GValue of type %G_TYPE_STRING
 @v_string: duplicated unowned string to be set
-<!-- # Unused Parameters # -->
-@Deprecated:2.4: Use g_value_take_string() instead.
+@Deprecated: 2.4: Use g_value_take_string() instead.
 
 
 <!-- ##### FUNCTION g_value_get_string ##### -->
@@ -1237,8 +1236,7 @@ This is an internal function introduced mainly for C marshallers.
 
 @value:  a valid #GValue of type %G_TYPE_PARAM
 @param: the #GParamSpec to be set
-<!-- # Unused Parameters # -->
-@Deprecated:2.4: Use g_value_take_param() instead.
+@Deprecated: 2.4: Use g_value_take_param() instead.
 
 
 <!-- ##### FUNCTION g_value_get_param ##### -->
@@ -1353,8 +1351,7 @@ This is an internal function introduced mainly for C marshallers.
 
 @value:   a valid #GValue of %G_TYPE_BOXED derived type
 @v_boxed: duplicated unowned boxed value to be set
-<!-- # Unused Parameters # -->
-@Deprecated:2.4: Use g_value_take_boxed() instead.
+@Deprecated: 2.4: Use g_value_take_boxed() instead.
 
 
 <!-- ##### FUNCTION g_value_get_boxed ##### -->
@@ -1531,8 +1528,7 @@ This is an internal function introduced mainly for C marshallers.
 
 @value:  a valid #GValue of %G_TYPE_OBJECT derived type
 @v_object: object value to be set
-<!-- # Unused Parameters # -->
-@Deprecated:2.4: Use g_value_take_object() instead.
+@Deprecated: 2.4: Use g_value_take_object() instead.
 
 
 <!-- ##### FUNCTION g_value_get_object ##### -->
@@ -1742,7 +1738,6 @@ A #GParamSpec derived structure that contains the meta data for #GType propertie
 @is_a_type:        a #GType whose subtypes can occur as values
 @Since: 2.10
 
-
 <!-- ##### FUNCTION g_param_spec_gtype ##### -->
 <para>
 Creates a new #GParamSpecGType instance specifying a 
@@ -1760,4 +1755,5 @@ See g_param_spec_internal() for details on property names.
 @flags:         flags for the property specified
 @Returns: a newly created parameter specification
 @Since: 2.10
+
 

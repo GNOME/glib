@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-12-09 12:42-0500\n"
+"POT-Creation-Date: 2006-01-05 22:21-0500\n"
 "PO-Revision-Date: 2005-11-02 23:01+0100\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
@@ -485,18 +485,18 @@ msgid "Invalid program name: %s"
 msgstr "Neplatný název programu: %s"
 
 #: glib/gspawn-win32.c:481 glib/gspawn-win32.c:537 glib/gspawn-win32.c:780
-#: glib/gspawn-win32.c:835 glib/gspawn-win32.c:1364
+#: glib/gspawn-win32.c:835 glib/gspawn-win32.c:1370
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr "Neplatný řetězec v poli argumentů v %d: %s"
 
 #: glib/gspawn-win32.c:492 glib/gspawn-win32.c:548 glib/gspawn-win32.c:794
-#: glib/gspawn-win32.c:848 glib/gspawn-win32.c:1397
+#: glib/gspawn-win32.c:848 glib/gspawn-win32.c:1403
 #, c-format
 msgid "Invalid string in environment: %s"
 msgstr "Neplatný řetězec v prostředí: %s"
 
-#: glib/gspawn-win32.c:776 glib/gspawn-win32.c:831 glib/gspawn-win32.c:1345
+#: glib/gspawn-win32.c:776 glib/gspawn-win32.c:831 glib/gspawn-win32.c:1351
 #, c-format
 msgid "Invalid working directory: %s"
 msgstr "Neplatný aktuální adresář: %s"
@@ -506,7 +506,7 @@ msgstr "Neplatný aktuální adresář: %s"
 msgid "Failed to execute helper program (%s)"
 msgstr "Nemohu spustit pomocný program (%s)"
 
-#: glib/gspawn-win32.c:1084
+#: glib/gspawn-win32.c:1090
 #, c-format
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
@@ -609,12 +609,17 @@ msgstr "Nemohu zpracovat celočíselnou hodnotu '%s' pro %s"
 msgid "Integer value '%s' for %s out of range"
 msgstr "Celočíselná hodnota '%s' pro %s mimo rozsah"
 
-#: glib/goption.c:957 glib/goption.c:1068
+#: glib/goption.c:926
+#, fuzzy, c-format
+msgid "Error parsing option %s"
+msgstr "Chyba při převodu: %s"
+
+#: glib/goption.c:959 glib/goption.c:1070
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Chybí parametr %s"
 
-#: glib/goption.c:1472
+#: glib/goption.c:1474
 #, c-format
 msgid "Unknown option %s"
 msgstr "Neznámý přepínač %s"

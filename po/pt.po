@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.12\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-12-09 12:42-0500\n"
+"POT-Creation-Date: 2006-01-05 22:21-0500\n"
 "PO-Revision-Date: 2005-07-22 21:40+0000\n"
 "Last-Translator: Duarte Loreto <happyguy_pt@hotmail.com>\n"
 "Language-Team: Portuguese <gnome_pt@yahoogroups.com>\n"
@@ -494,18 +494,18 @@ msgid "Invalid program name: %s"
 msgstr "Nome de máquina inválido"
 
 #: glib/gspawn-win32.c:481 glib/gspawn-win32.c:537 glib/gspawn-win32.c:780
-#: glib/gspawn-win32.c:835 glib/gspawn-win32.c:1364
+#: glib/gspawn-win32.c:835 glib/gspawn-win32.c:1370
 #, fuzzy, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr "Argumento em falta para %s"
 
 #: glib/gspawn-win32.c:492 glib/gspawn-win32.c:548 glib/gspawn-win32.c:794
-#: glib/gspawn-win32.c:848 glib/gspawn-win32.c:1397
+#: glib/gspawn-win32.c:848 glib/gspawn-win32.c:1403
 #, fuzzy, c-format
 msgid "Invalid string in environment: %s"
 msgstr "Sequência inválida na conversão da entrada"
 
-#: glib/gspawn-win32.c:776 glib/gspawn-win32.c:831 glib/gspawn-win32.c:1345
+#: glib/gspawn-win32.c:776 glib/gspawn-win32.c:831 glib/gspawn-win32.c:1351
 #, fuzzy, c-format
 msgid "Invalid working directory: %s"
 msgstr "Erro ao abrir o directório '%s': %s"
@@ -515,7 +515,7 @@ msgstr "Erro ao abrir o directório '%s': %s"
 msgid "Failed to execute helper program (%s)"
 msgstr "Falha ao executar aplicação auxiliar"
 
-#: glib/gspawn-win32.c:1084
+#: glib/gspawn-win32.c:1090
 #, c-format
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
@@ -619,12 +619,17 @@ msgstr "Incapaz de parsear o valor inteiro '%s' para %s"
 msgid "Integer value '%s' for %s out of range"
 msgstr "Valor inteiro '%s' para %s para lá do limite permitido"
 
-#: glib/goption.c:957 glib/goption.c:1068
+#: glib/goption.c:926
+#, fuzzy, c-format
+msgid "Error parsing option %s"
+msgstr "Erro durante a conversão: %s"
+
+#: glib/goption.c:959 glib/goption.c:1070
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Argumento em falta para %s"
 
-#: glib/goption.c:1472
+#: glib/goption.c:1474
 #, c-format
 msgid "Unknown option %s"
 msgstr "Opção %s desconhecida"

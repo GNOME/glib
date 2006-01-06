@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-12-09 12:42-0500\n"
+"POT-Creation-Date: 2006-01-05 22:21-0500\n"
 "PO-Revision-Date: 2005-07-26 17:39+0200\n"
 "Last-Translator: Hendrik Brandt <heb@gnome-de.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
@@ -511,18 +511,18 @@ msgid "Invalid program name: %s"
 msgstr "Ungültiger Rechnername"
 
 #: glib/gspawn-win32.c:481 glib/gspawn-win32.c:537 glib/gspawn-win32.c:780
-#: glib/gspawn-win32.c:835 glib/gspawn-win32.c:1364
+#: glib/gspawn-win32.c:835 glib/gspawn-win32.c:1370
 #, fuzzy, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr "Für %s wird ein Argument benötigt"
 
 #: glib/gspawn-win32.c:492 glib/gspawn-win32.c:548 glib/gspawn-win32.c:794
-#: glib/gspawn-win32.c:848 glib/gspawn-win32.c:1397
+#: glib/gspawn-win32.c:848 glib/gspawn-win32.c:1403
 #, fuzzy, c-format
 msgid "Invalid string in environment: %s"
 msgstr "Ungültige Folge in Umwandlungseingabe"
 
-#: glib/gspawn-win32.c:776 glib/gspawn-win32.c:831 glib/gspawn-win32.c:1345
+#: glib/gspawn-win32.c:776 glib/gspawn-win32.c:831 glib/gspawn-win32.c:1351
 #, fuzzy, c-format
 msgid "Invalid working directory: %s"
 msgstr "Fehler beim Öffnen des Verzeichnisses »%s«: %s"
@@ -532,7 +532,7 @@ msgstr "Fehler beim Öffnen des Verzeichnisses »%s«: %s"
 msgid "Failed to execute helper program (%s)"
 msgstr "Hilfsprogramm konnte nicht ausgeführt werden"
 
-#: glib/gspawn-win32.c:1084
+#: glib/gspawn-win32.c:1090
 #, c-format
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
@@ -640,12 +640,17 @@ msgstr "»%s« konnte nicht als ganzzahliger Wert für %s interpretiert werden"
 msgid "Integer value '%s' for %s out of range"
 msgstr "Ganzzahliger Wert »%s« für %s ist außerhalb des Bereiches."
 
-#: glib/goption.c:957 glib/goption.c:1068
+#: glib/goption.c:926
+#, fuzzy, c-format
+msgid "Error parsing option %s"
+msgstr "Fehler bei der Umwandlung: %s"
+
+#: glib/goption.c:959 glib/goption.c:1070
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Für %s wird ein Argument benötigt"
 
-#: glib/goption.c:1472
+#: glib/goption.c:1474
 #, c-format
 msgid "Unknown option %s"
 msgstr "Unbekannte Option %s"

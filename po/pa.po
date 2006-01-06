@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-12-09 12:42-0500\n"
+"POT-Creation-Date: 2006-01-05 22:21-0500\n"
 "PO-Revision-Date: 2005-07-08 09:52+0530\n"
 "Last-Translator: Amanpreet Singh Alam <amanpreetalam@yahoo.com>\n"
 "Language-Team: Punjabi <fedora-transa-pa@redhat.com>\n"
@@ -478,18 +478,18 @@ msgid "Invalid program name: %s"
 msgstr "ਗਲਤ ਮੇਜਬਾਨ ਨਾਂ"
 
 #: glib/gspawn-win32.c:481 glib/gspawn-win32.c:537 glib/gspawn-win32.c:780
-#: glib/gspawn-win32.c:835 glib/gspawn-win32.c:1364
+#: glib/gspawn-win32.c:835 glib/gspawn-win32.c:1370
 #, fuzzy, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr "%s ਲਈ ਮੁੱਲ (argument) ਗੁੰਮ ਹੈ"
 
 #: glib/gspawn-win32.c:492 glib/gspawn-win32.c:548 glib/gspawn-win32.c:794
-#: glib/gspawn-win32.c:848 glib/gspawn-win32.c:1397
+#: glib/gspawn-win32.c:848 glib/gspawn-win32.c:1403
 #, fuzzy, c-format
 msgid "Invalid string in environment: %s"
 msgstr "ਬਦਲਾਉ ਲਈ ਨਿਵੇਸ਼ ਵਿੱਚ ਤਰਤੀਬ ਜਾਇਜ ਨਹੀ ਹੈ"
 
-#: glib/gspawn-win32.c:776 glib/gspawn-win32.c:831 glib/gspawn-win32.c:1345
+#: glib/gspawn-win32.c:776 glib/gspawn-win32.c:831 glib/gspawn-win32.c:1351
 #, fuzzy, c-format
 msgid "Invalid working directory: %s"
 msgstr "ਗਲਤੀ '%s' ਡਾਇਕਰੈਕਟਰੀ ਖੋਲਣ ਲਈ: %s"
@@ -499,7 +499,7 @@ msgstr "ਗਲਤੀ '%s' ਡਾਇਕਰੈਕਟਰੀ ਖੋਲਣ ਲਈ: %s
 msgid "Failed to execute helper program (%s)"
 msgstr "ਸਹਾਇਤਾ ਕਾਰਜ ਚਲਾਉਣ ਵਿੱਚ ਅਸਫਲ ਹੈ"
 
-#: glib/gspawn-win32.c:1084
+#: glib/gspawn-win32.c:1090
 #, c-format
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
@@ -602,12 +602,17 @@ msgstr "ਪੂਰਨ ਅੰਕ ਮੁੱਲ %s' ਨੂੰ %s ਲਈ ਪਾਰਸ
 msgid "Integer value '%s' for %s out of range"
 msgstr "ਪੂਰਨ ਅੰਕ '%s' %s ਲਈ ਸੀਮਾ ਤੋਂ ਬਾਹਰ ਜਾ ਰਿਹਾ ਹੈ"
 
-#: glib/goption.c:957 glib/goption.c:1068
+#: glib/goption.c:926
+#, fuzzy, c-format
+msgid "Error parsing option %s"
+msgstr "ਤਬਦੀਲੀ ਦਰਮਿਆਨ ਗਲਤੀ  %s"
+
+#: glib/goption.c:959 glib/goption.c:1070
 #, c-format
 msgid "Missing argument for %s"
 msgstr "%s ਲਈ ਮੁੱਲ (argument) ਗੁੰਮ ਹੈ"
 
-#: glib/goption.c:1472
+#: glib/goption.c:1474
 #, c-format
 msgid "Unknown option %s"
 msgstr "ਅਣਜਾਣ ਚੋਣ %s"

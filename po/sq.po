@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.sq\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-12-09 12:42-0500\n"
+"POT-Creation-Date: 2006-01-05 22:21-0500\n"
 "PO-Revision-Date: 2005-08-26 18:45+0200\n"
 "Last-Translator: Laurent Dhima <laurenti@alblinux.net>\n"
 "Language-Team: Albanian <gnome-albanian-perkthyesit@lists.sourceforge.net>\n"
@@ -493,18 +493,18 @@ msgid "Invalid program name: %s"
 msgstr "Emër i pasaktë programi: %s"
 
 #: glib/gspawn-win32.c:481 glib/gspawn-win32.c:537 glib/gspawn-win32.c:780
-#: glib/gspawn-win32.c:835 glib/gspawn-win32.c:1364
+#: glib/gspawn-win32.c:835 glib/gspawn-win32.c:1370
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr "Vlerë e pasaktë në vektorin e argumentit tek %d: %s"
 
 #: glib/gspawn-win32.c:492 glib/gspawn-win32.c:548 glib/gspawn-win32.c:794
-#: glib/gspawn-win32.c:848 glib/gspawn-win32.c:1397
+#: glib/gspawn-win32.c:848 glib/gspawn-win32.c:1403
 #, c-format
 msgid "Invalid string in environment: %s"
 msgstr "Vlerë e pavlefshme në ambient: %s"
 
-#: glib/gspawn-win32.c:776 glib/gspawn-win32.c:831 glib/gspawn-win32.c:1345
+#: glib/gspawn-win32.c:776 glib/gspawn-win32.c:831 glib/gspawn-win32.c:1351
 #, c-format
 msgid "Invalid working directory: %s"
 msgstr "Directory e pavlefshme pune: %s"
@@ -514,7 +514,7 @@ msgstr "Directory e pavlefshme pune: %s"
 msgid "Failed to execute helper program (%s)"
 msgstr "I pamundur ekzekutimi i programit ndihmues (%s)"
 
-#: glib/gspawn-win32.c:1084
+#: glib/gspawn-win32.c:1090
 #, c-format
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
@@ -622,12 +622,17 @@ msgstr "I pamundur analizimi i vlerës së plotë '%s' për %s"
 msgid "Integer value '%s' for %s out of range"
 msgstr "Vlera integruese '%s' për %s është jashtë kufirit"
 
-#: glib/goption.c:957 glib/goption.c:1068
+#: glib/goption.c:926
+#, fuzzy, c-format
+msgid "Error parsing option %s"
+msgstr "Gabim gjatë konvertimit: %s"
+
+#: glib/goption.c:959 glib/goption.c:1070
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Mungojnë argumentë për %s"
 
-#: glib/goption.c:1472
+#: glib/goption.c:1474
 #, c-format
 msgid "Unknown option %s"
 msgstr "Opcion i panjohur %s"

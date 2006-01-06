@@ -1,7 +1,7 @@
 General Information
 ===================
 
-This is GLib version 2.9.1. GLib is the low-level core
+This is GLib version 2.9.2. GLib is the low-level core
 library that forms the basis for projects such as GTK+ and GNOME. It
 provides data structure handling for C, portability wrappers, and
 interfaces for such runtime functionality as an event loop, threads,
@@ -39,6 +39,11 @@ Notes about GLib 2.10
   POSIX threads for long enough now to have them available on every 
   Solaris platform. 
 
+* 'make check' has been changed to validate translations by calling 
+  msgfmt with the -c option. As a result, it may fail on systems with 
+  older gettext implementations (GNU gettext < 0.14.1, or Solaris gettext). 
+  'make check' will also fail on systems where the C compiler does not
+  support ELF visibility attributes.
 
 Notes about GLib 2.6.0
 ======================

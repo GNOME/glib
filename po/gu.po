@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.gu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-12-09 12:42-0500\n"
+"POT-Creation-Date: 2006-01-05 22:21-0500\n"
 "PO-Revision-Date: 2005-08-28 13:08+0530\n"
 "Last-Translator: Ankit Patel <ankit644@yahoo.com>\n"
 "Language-Team: Gujarati <indianoss-gujarati@lists.sourceforge.net>\n"
@@ -469,18 +469,18 @@ msgid "Invalid program name: %s"
 msgstr "અયોગ્ય કાર્યક્રમ નામ: %s"
 
 #: glib/gspawn-win32.c:481 glib/gspawn-win32.c:537 glib/gspawn-win32.c:780
-#: glib/gspawn-win32.c:835 glib/gspawn-win32.c:1364
+#: glib/gspawn-win32.c:835 glib/gspawn-win32.c:1370
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr "દલીલ વેક્ટરમાં %d આગળ અયોગ્ય શબ્દમાળા: %s"
 
 #: glib/gspawn-win32.c:492 glib/gspawn-win32.c:548 glib/gspawn-win32.c:794
-#: glib/gspawn-win32.c:848 glib/gspawn-win32.c:1397
+#: glib/gspawn-win32.c:848 glib/gspawn-win32.c:1403
 #, c-format
 msgid "Invalid string in environment: %s"
 msgstr "પર્યાવરણમાં અયોગ્ય શબ્દમાળા: %s"
 
-#: glib/gspawn-win32.c:776 glib/gspawn-win32.c:831 glib/gspawn-win32.c:1345
+#: glib/gspawn-win32.c:776 glib/gspawn-win32.c:831 glib/gspawn-win32.c:1351
 #, c-format
 msgid "Invalid working directory: %s"
 msgstr "અયોગ્ય કામ આપતી ડિરેક્ટરી: %s"
@@ -490,7 +490,7 @@ msgstr "અયોગ્ય કામ આપતી ડિરેક્ટરી: %
 msgid "Failed to execute helper program (%s)"
 msgstr "મદદગાર કાર્યક્રમ (%s) ચલાવવામાં નિષ્ફળ"
 
-#: glib/gspawn-win32.c:1084
+#: glib/gspawn-win32.c:1090
 #, c-format
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
@@ -593,12 +593,17 @@ msgstr "પૂર્ણાંક કિંમત '%s' ને %s માટે પ
 msgid "Integer value '%s' for %s out of range"
 msgstr "પૂર્ણાંક કિંમત '%s' એ %s માટે મર્યાદા બહાર છે"
 
-#: glib/goption.c:957 glib/goption.c:1068
+#: glib/goption.c:926
+#, fuzzy, c-format
+msgid "Error parsing option %s"
+msgstr "રુપાંતર વખતે ભૂલ: %s"
+
+#: glib/goption.c:959 glib/goption.c:1070
 #, c-format
 msgid "Missing argument for %s"
 msgstr "%s માટેની દલીલ ગુમ થયેલ છે"
 
-#: glib/goption.c:1472
+#: glib/goption.c:1474
 #, c-format
 msgid "Unknown option %s"
 msgstr "અજ્ઞાત વિકલ્પ %s"

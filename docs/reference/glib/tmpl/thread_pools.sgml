@@ -174,3 +174,29 @@ this struct.
 
 
 
+<!-- ##### FUNCTION g_thread_pool_set_sort_function ##### -->
+<para>
+
+</para>
+
+@pool: 
+@func: 
+@user_data: 
+
+
+<!-- ##### FUNCTION g_thread_pool_set_max_idle_time ##### -->
+<para>
+
+</para>
+
+@interval: 
+
+
+<!-- ##### FUNCTION g_thread_pool_get_max_idle_time ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
