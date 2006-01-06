@@ -1,5 +1,7 @@
 2006-01-05  Matthias Clasen  <mclasen@redhat.com>
 
+	* configure.in: Bump version
+
 	* === Released 2.9.2 ===
 
 2006-01-05  Hans Breuer  <hans@breuer.org>
