@@ -17,7 +17,9 @@
  * Boston, MA 02111-1307, USA.
  */
 /* MT safe */
+#ifdef HAVE_POSIX_MEMALIGN
 #define _XOPEN_SOURCE 600       /* posix_memalign() */
+#endif
 #include <stdlib.h>             /* posix_memalign() */
 #include <string.h>
 #include <errno.h>

@@ -1,3 +1,8 @@
+2006-01-06  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gslice.c: Only define _XOPEN_SOURCE if we know
+	that we have posix_memalign().  (#323937, Bogdan Nicula)
+
 2006-01-05  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Bump version
