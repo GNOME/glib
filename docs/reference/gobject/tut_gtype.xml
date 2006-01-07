@@ -74,37 +74,37 @@ GType g_type_register_fundamental (GType                       type_id,
 	Fundamental and non-Fundamental types are defined by:
 	<itemizedlist>
 	  <listitem><para>
-	      class size: the class_size field in <type><link linkend="GTypeInfo">GTypeInfo</link></type>.
-	    </para></listitem>
+            class size: the class_size field in <type><link linkend="GTypeInfo">GTypeInfo</link></type>.
+          </para></listitem>
 	  <listitem><para>
-	      class initialization functions (C++ constructor): the base_init and 
-	      class_init fields in <type><link linkend="GTypeInfo">GTypeInfo</link></type>.
-	    </para></listitem>
+            class initialization functions (C++ constructor): the base_init and 
+            class_init fields in <type><link linkend="GTypeInfo">GTypeInfo</link></type>.
+          </para></listitem>
 	  <listitem><para>
-	      class destruction functions (C++ destructor): the base_finalize and 
-	      class_finalize fields in <type><link linkend="GTypeInfo">GTypeInfo</link></type>.
-	    </para></listitem>
+            class destruction functions (C++ destructor): the base_finalize and 
+            class_finalize fields in <type><link linkend="GTypeInfo">GTypeInfo</link></type>.
+          </para></listitem>
 	  <listitem><para>
-	      instance size (C++ parameter to new): the instance_size field in 
-	      <type><link linkend="GTypeInfo">GTypeInfo</link></type>.
-	    </para></listitem>
+            instance size (C++ parameter to new): the instance_size field in 
+            <type><link linkend="GTypeInfo">GTypeInfo</link></type>.
+          </para></listitem>
 	  <listitem><para>
-	      instanciation policy (C++ type of new operator): the n_preallocs
-	      field in <type><link linkend="GTypeInfo">GTypeInfo</link></type>.
-	    </para></listitem>
+            instanciation policy (C++ type of new operator): the n_preallocs
+            field in <type><link linkend="GTypeInfo">GTypeInfo</link></type>.
+          </para></listitem>
 	  <listitem><para>
-	      copy functions (C++ copy operators): the value_table field in 
-	      <type><link linkend="GTypeInfo">GTypeInfo</link></type>.
-	    </para></listitem>
-	<listitem><para>
-	    XXX: <type><link linkend="GTypeFlags">GTypeFlags</link></type>.
-	  </para></listitem>
-	</itemizedlist>
-      Fundamental types are also defined by a set of <type><link linkend="GTypeFundamentalFlags">GTypeFundamentalFlags</link></type> 
-      which are stored in a <type><link linkend="GTypeFundamentalInfo">GTypeFundamentalInfo</link></type>.
-      Non-Fundamental types are furthermore defined by the type of their parent which is
-      passed as the parent_type parameter to <function><link linkend="g-type-register-static">g_type_register_static</link></function>
-      and <function><link linkend="g-type-register-dynamic">g_type_register_dynamic</link></function>.
+            copy functions (C++ copy operators): the value_table field in 
+            <type><link linkend="GTypeInfo">GTypeInfo</link></type>.
+          </para></listitem>
+          <listitem><para>
+            type characteristic flags: <type><link linkend="GTypeFlags">GTypeFlags</link></type>.
+          </para></listitem>
+        </itemizedlist>
+        Fundamental types are also defined by a set of <type><link linkend="GTypeFundamentalFlags">GTypeFundamentalFlags</link></type> 
+        which are stored in a <type><link linkend="GTypeFundamentalInfo">GTypeFundamentalInfo</link></type>.
+        Non-Fundamental types are furthermore defined by the type of their parent which is
+        passed as the parent_type parameter to <function><link linkend="g-type-register-static">g_type_register_static</link></function>
+        and <function><link linkend="g-type-register-dynamic">g_type_register_dynamic</link></function>.
       </para>
       
       <sect1 id="gtype-copy">
@@ -230,50 +230,52 @@ struct _GTypeValueTable
 	which are to be exported in a header file:
 	<itemizedlist>
 	  <listitem><para>
-	      Use the <function>object_method</function> pattern for function names: to invoke
-	      the method named foo on an instance of object type bar, call 
-	      <function>bar_foo</function>.
-	    </para></listitem>
+            Use the <function>object_method</function> pattern for function names: to invoke
+            the method named foo on an instance of object type bar, call 
+            <function>bar_foo</function>.
+          </para></listitem>
 	  <listitem><para>Use prefixing to avoid namespace conflicts with other projects.
-	      If your library (or application) is named <emphasis>Maman</emphasis>, 
-	      prefix all your function names with <emphasis>maman_</emphasis>.
-	      For example: <function>maman_object_method</function>.
-	    </para></listitem>
+            If your library (or application) is named <emphasis>Maman</emphasis>, 
+            prefix all your function names with <emphasis>maman_</emphasis>.
+            For example: <function>maman_object_method</function>.
+          </para></listitem>
 	  <listitem><para>Create a macro named <function>PREFIX_OBJECT_TYPE</function> which always 
-	      returns the Gtype for the associated object type. For an object of type 
-	      <emphasis>Bar</emphasis> in a libray prefixed by <emphasis>maman</emphasis>, 
-	      use: <function>MAMAN_BAR_TYPE</function>.
-	      It is common although not a convention to implement this macro using either a global 
-	      static variable or a function named <function>prefix_object_get_type</function>.
-	      We will follow the function pattern wherever possible in this document.
-	    </para></listitem>
+            returns the Gtype for the associated object type. For an object of type 
+            <emphasis>Bar</emphasis> in a libray prefixed by <emphasis>maman</emphasis>, 
+            use: <function>MAMAN_BAR_TYPE</function>.
+            It is common although not a convention to implement this macro using either a global 
+            static variable or a function named <function>prefix_object_get_type</function>.
+            We will follow the function pattern wherever possible in this document.
+          </para></listitem>
 	  <listitem><para>Create a macro named <function>PREFIX_OBJECT (obj)</function> which 
-	      returns a pointer of type <type>PrefixObject</type>. This macro is used to enforce
-	      static type safety by doing explicit casts wherever needed. It also enforces
-	      dynamic type safety by doing runtime checks. It is possible to disable the dynamic
-              type checks in production builds (see 
-              <ulink>http://developer.gnome.org/doc/API/2.0/glib/glib-building.html</ulink>).
-              For example, we would create 
-	      <function>MAMAN_BAR (obj)</function> to keep the previous example.
-	    </para></listitem>
+            returns a pointer of type <type>PrefixObject</type>. This macro is used to enforce
+            static type safety by doing explicit casts wherever needed. It also enforces
+            dynamic type safety by doing runtime checks. It is possible to disable the dynamic
+            type checks in production builds (see <link linkend="glib-building">building glib</link>).
+            For example, we would create 
+            <function>MAMAN_BAR (obj)</function> to keep the previous example.
+          </para></listitem>
 	  <listitem><para>If the type is classed, create a macro named 
-	      <function>PREFIX_OBJECT_CLASS (klass)</function>. This macro
-		is strictly equivalent to the previous casting macro: it does static casting with
-		dynamic type checking of class structures. It is expected to return a pointer
-		to a class structure of type <type>PrefixObjectClass</type>. Again, an example is:
-		<function>MAMAN_BAR_CLASS</function>.</para></listitem>
+            <function>PREFIX_OBJECT_CLASS (klass)</function>. This macro
+            is strictly equivalent to the previous casting macro: it does static casting with
+            dynamic type checking of class structures. It is expected to return a pointer
+            to a class structure of type <type>PrefixObjectClass</type>. Again, an example is:
+            <function>MAMAN_BAR_CLASS</function>.
+          </para></listitem>
 	  <listitem><para>Create a macro named <function>PREFIX_IS_BAR (obj)</function>: this macro is expected
-		to return a <type>gboolean</type> which indicates whether or not the input
-		object instance pointer of type BAR.</para></listitem>
+            to return a <type>gboolean</type> which indicates whether or not the input
+            object instance pointer of type BAR.
+          </para></listitem>
 	  <listitem><para>If the type is classed, create a macro named
-	      <function>PREFIX_IS_OBJECT_CLASS (klass)</function> which, as above, returns a boolean
-	      if the input class pointer is a pointer to a class of type OBJECT.
-	    </para></listitem>
+            <function>PREFIX_IS_OBJECT_CLASS (klass)</function> which, as above, returns a boolean
+            if the input class pointer is a pointer to a class of type OBJECT.
+          </para></listitem>
 	  <listitem><para>If the type is classed, create a macro named 
-	      <function>PREFIX_OBJECT_GET_CLASS (obj)</function>
+            <function>PREFIX_OBJECT_GET_CLASS (obj)</function>
 	    which returns the class pointer associated to an instance of a given type. This macro
 	    is used for static and dynamic type safety purposes (just like the previous casting
-	    macros).</para></listitem>
+	    macros).
+          </para></listitem>
 	</itemizedlist>
 	The implementation of these macros is pretty straightforward: a number of simple-to-use 
 	macros are provided in <filename>gtype.h</filename>. For the example we used above, we would 

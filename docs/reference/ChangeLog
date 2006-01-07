@@ -1,3 +1,8 @@
+2006-01-07  Stefan Kost  <ensonic@users.sf.net>
+
+	* gobject/tut_gtype.xml:
+	  fix internal link, little XXX cleanup
+
 2006-01-05  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.9.2 ===
