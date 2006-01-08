@@ -17,13 +17,15 @@
  * Boston, MA 02111-1307, USA.
  */
 /* MT safe */
+
+#include "config.h"
+
 #ifdef HAVE_POSIX_MEMALIGN
 #define _XOPEN_SOURCE 600       /* posix_memalign() */
 #endif
 #include <stdlib.h>             /* posix_memalign() */
 #include <string.h>
 #include <errno.h>
-#include "config.h"
 #include "gmem.h"               /* gslice.h */
 #include "gthreadinit.h"
 #include "galias.h"
