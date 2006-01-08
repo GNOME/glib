@@ -470,9 +470,13 @@ This macro should only be used in type implementations.
 <!-- ##### MACRO G_TYPE_INSTANCE_GET_CLASS ##### -->
 <para>
 Returns the class structure of a given @instance, casted
-to a specified anchestor type @g_type of the instance.
-<para>
+to a specified ancestor type @g_type of the instance.
 </para>
+<warning><para>Note
+that while calling a GInstanceInitFunc(), the class pointer gets
+modified, so it might not always return the expected pointer.
+</para></warning>
+<para>
 This macro should only be used in type implementations.
 </para>
 
