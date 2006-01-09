@@ -1,5 +1,9 @@
 2006-01-08  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gtree.c: Break some long lines.
+
+	* tests/tree-test.c: Add more tests.
+
 	* glib/gslice.c: Include config.h first, pointed out
 	by Bogdan Nicula.
 

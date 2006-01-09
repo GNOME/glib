@@ -31,31 +31,6 @@
 #include <string.h>
 #include "glib.h"
 
-int array[10000];
-gboolean failed = FALSE;
-
-#define	TEST(m,cond)	G_STMT_START { failed = !(cond); \
-if (failed) \
-  { if (!m) \
-      g_print ("\n(%s:%d) failed for: %s\n", __FILE__, __LINE__, ( # cond )); \
-    else \
-      g_print ("\n(%s:%d) failed for: %s: (%s)\n", __FILE__, __LINE__, ( # cond ), (gchar*)m); \
-  } \
-else \
-  g_print ("."); fflush (stdout); \
-} G_STMT_END
-
-#define	C2P(c)		((gpointer) ((long) (c)))
-#define	P2C(p)		((gchar) ((long) (p)))
-
-#define GLIB_TEST_STRING "el dorado "
-#define GLIB_TEST_STRING_5 "el do"
-
-typedef struct {
-	guint age;
-	gchar name[40];
-} GlibTestInfo;
-
 
 static gint
 my_compare (gconstpointer a,
@@ -68,6 +43,28 @@ my_compare (gconstpointer a,
 }
 
 static gint
+my_search (gconstpointer a,
+	   gconstpointer b)
+{
+  return my_compare (b, a);
+}
+
+static gpointer destroyed_key = NULL;
+static gpointer destroyed_value = NULL;
+
+static void 
+my_key_destroy (gpointer key)
+{
+  destroyed_key = key;
+}
+
+static void 
+my_value_destroy (gpointer value)
+{
+  destroyed_value = value;
+}
+
+static gint
 my_traverse (gpointer key,
 	     gpointer value,
 	     gpointer data)
@@ -77,49 +74,172 @@ my_traverse (gpointer key,
   return FALSE;
 }
 
+char chars[] = 
+  "0123456789"
+  "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+  "abcdefghijklmnopqrstuvwxyz";
+
+char chars2[] = 
+  "0123456789"
+  "abcdefghijklmnopqrstuvwxyz";
+
+static gint
+check_order (gpointer key,
+	     gpointer value,
+	     gpointer data)
+{
+  char **p = data;
+  char *ch = key;
+  
+  g_assert (**p == *ch);
+
+  (*p)++;
+
+  return FALSE;
+}
+
+
+
 int
 main (int   argc,
       char *argv[])
 {
-  gint i, j;
+  gint i;
   GTree *tree;
   gboolean removed;
-  char chars[62];
-  char c;
+  char c, d;
+  char *p;
 
   tree = g_tree_new (my_compare);
-  i = 0;
-  for (j = 0; j < 10; j++, i++)
-    {
-      chars[i] = '0' + j;
-      g_tree_insert (tree, &chars[i], &chars[i]);
-    }
-  for (j = 0; j < 26; j++, i++)
-    {
-      chars[i] = 'A' + j;
-      g_tree_insert (tree, &chars[i], &chars[i]);
-    }
-  for (j = 0; j < 26; j++, i++)
-    {
-      chars[i] = 'a' + j;
-      g_tree_insert (tree, &chars[i], &chars[i]);
-    }
+
+  for (i = 0; chars[i]; i++)
+    g_tree_insert (tree, &chars[i], &chars[i]);
 
   g_tree_foreach (tree, my_traverse, NULL);
 
-  g_assert (g_tree_nnodes (tree) == (10 + 26 + 26));
+  g_assert (g_tree_nnodes (tree) == strlen (chars));
+  g_assert (g_tree_height (tree) == 6);
+  
+  p = chars;
+  g_tree_foreach (tree, check_order, &p);
 
-  for (i = 0; i < 10; i++)
-  {
-    removed = g_tree_remove (tree, &chars[i]);
-    g_assert (removed);
-  }
+  for (i = 0; i < 26; i++)
+    {
+      removed = g_tree_remove (tree, &chars[i + 10]);
+      g_assert (removed);
+    }
 
   c = '\0';
   removed = g_tree_remove (tree, &c);
   g_assert (removed == FALSE);
 
   g_tree_foreach (tree, my_traverse, NULL);
+
+  g_assert (g_tree_nnodes (tree) == strlen (chars2));
+  g_assert (g_tree_height (tree) == 6);
+
+  p = chars2;
+  g_tree_foreach (tree, check_order, &p);
+
+  for (i = 25; i >= 0; i--)
+    g_tree_insert (tree, &chars[i + 10], &chars[i + 10]);
+
+  p = chars;
+  g_tree_foreach (tree, check_order, &p);
+
+  c = '0';
+  p = g_tree_lookup (tree, &c); 
+  g_assert (p && *p == c);
+
+  c = 'A';
+  p = g_tree_lookup (tree, &c);
+  g_assert (p && *p == c);
+
+  c = 'a';
+  p = g_tree_lookup (tree, &c);
+  g_assert (p && *p == c);
+
+  c = 'z';
+  p = g_tree_lookup (tree, &c);
+  g_assert (p && *p == c);
+
+  c = '!';
+  p = g_tree_lookup (tree, &c);
+  g_assert (p == NULL);
+
+  c = '=';
+  p = g_tree_lookup (tree, &c);
+  g_assert (p == NULL);
+
+  c = '|';
+  p = g_tree_lookup (tree, &c);
+  g_assert (p == NULL);
+
+  c = '0';
+  p = g_tree_search (tree, my_search, &c); 
+  g_assert (p && *p == c);
+
+  c = 'A';
+  p = g_tree_search (tree, my_search, &c);
+  g_assert (p && *p == c);
+
+  c = 'a';
+  p = g_tree_search (tree, my_search, &c);
+  g_assert (p &&*p == c);
+
+  c = 'z';
+  p = g_tree_search (tree, my_search, &c);
+  g_assert (p && *p == c);
+
+  c = '!';
+  p = g_tree_search (tree, my_search, &c);
+  g_assert (p == NULL);
+
+  c = '=';
+  p = g_tree_search (tree, my_search, &c);
+  g_assert (p == NULL);
+
+  c = '|';
+  p = g_tree_search (tree, my_search, &c);
+  g_assert (p == NULL);
+
+
+  g_tree_destroy (tree);
+
+  tree = g_tree_new_full (my_compare, NULL, 
+			  my_key_destroy, 
+			  my_value_destroy);
+
+  for (i = 0; chars[i]; i++)
+    g_tree_insert (tree, &chars[i], &chars[i]);
+  
+  c = '0';
+  g_tree_insert (tree, &c, &c);
+  g_assert (destroyed_key == &c);
+  g_assert (destroyed_value == &chars[0]);
+  destroyed_key = NULL;
+  destroyed_value = NULL;
+
+  d = '1';
+  g_tree_replace (tree, &d, &d);
+  g_assert (destroyed_key == &chars[1]);
+  g_assert (destroyed_value == &chars[1]);
+  destroyed_key = NULL;
+  destroyed_value = NULL;
+
+  c = '2';
+  removed = g_tree_remove (tree, &c);
+  g_assert (removed);
+  g_assert (destroyed_key == &chars[2]);
+  g_assert (destroyed_value == &chars[2]);
+  destroyed_key = NULL;
+  destroyed_value = NULL;
+
+  c = '3';
+  removed = g_tree_steal (tree, &c);
+  g_assert (removed);
+  g_assert (destroyed_key == NULL);
+  g_assert (destroyed_value == NULL);
 
   return 0;
 }

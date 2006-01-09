@@ -317,7 +317,8 @@ g_tree_replace (GTree    *tree,
  * make sure that any dynamically allocated values are freed yourself.
  * If the key does not exist in the #GTree, the function does nothing.
  *
- * Returns: %TRUE if the key was found (prior to 2.8, this function returned nothing)
+ * Returns: %TRUE if the key was found (prior to 2.8, this function returned 
+ *   nothing)
  **/
 gboolean
 g_tree_remove (GTree         *tree,
@@ -342,7 +343,8 @@ g_tree_remove (GTree         *tree,
  *
  * If the key does not exist in the #GTree, the function does nothing.
  *
- * Returns: %TRUE if the key was found (prior to 2.8, this function returned nothing)
+ * Returns: %TRUE if the key was found (prior to 2.8, this function returned 
+ *    nothing)
  **/
 gboolean
 g_tree_steal (GTree         *tree,
@@ -507,11 +509,12 @@ g_tree_traverse (GTree         *tree,
  * 
  * Searches a #GTree using @search_func.
  *
- * The @search_func is called with a pointer to the key of a key/value pair in the tree,
- * and the passed in @user_data. If @search_func returns 0 for a key/value pair, then
- * g_tree_search_func() will return the value of that pair. If @search_func returns -1,
- * searching will proceed among the key/value pairs that have a smaller key; if @search_func
- * returns 1, searching will proceed among the key/value pairs that have a larger key.
+ * The @search_func is called with a pointer to the key of a key/value pair in 
+ * the tree, and the passed in @user_data. If @search_func returns 0 for a 
+ * key/value pair, then g_tree_search_func() will return the value of that 
+ * pair. If @search_func returns -1,  searching will proceed among the 
+ * key/value pairs that have a smaller key; if @search_func returns 1, 
+ * searching will proceed among the key/value pairs that have a larger key.
  *
  * Return value: the value corresponding to the found key, or %NULL if the key 
  * was not found.
