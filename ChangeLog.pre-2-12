@@ -1,3 +1,7 @@
+2006-01-11  Matthias Clasen  <mclasen@redhat.com>
+
+	* tests/asyncqueue-test.c: Set error to NULL.
+
 2006-01-08  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gtree.c: Break some long lines.

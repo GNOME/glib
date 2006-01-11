@@ -150,7 +150,7 @@ int main (int argc, char *argv[])
 
   d(g_print ("creating threads...\n"));
   for (i = 0; i <= max_threads; i++) {
-    GError *error;
+    GError *error = NULL;
   
     g_thread_pool_push (thread_pool, GINT_TO_POINTER (i), &error);
     
