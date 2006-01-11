@@ -1,5 +1,8 @@
 2006-01-11  Matthias Clasen  <mclasen@redhat.com>
 
+	* tests/convert-test.c: Don't test items_read and
+	items_written in error cases where it is not set.
+
 	* tests/asyncqueue-test.c: Set error to NULL.
 
 2006-01-08  Matthias Clasen  <mclasen@redhat.com>
