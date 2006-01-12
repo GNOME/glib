@@ -1,3 +1,8 @@
+2006-01-12  Federico Mena Quintero  <federico@ximian.com>
+
+	* glib/file-name-encodings.png: Huh?  This was a 6-byte file.
+	Replaced it with the correct one.
+
 2006-01-07  Stefan Kost  <ensonic@users.sf.net>
 
 	* gobject/tut_gtype.xml:
