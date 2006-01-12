@@ -1,5 +1,7 @@
 2006-01-12  Federico Mena Quintero  <federico@ximian.com>
 
+	* glib/file-name-encodings.sxd: Replaced with the correct file.
+
 	* glib/file-name-encodings.png: Huh?  This was a 6-byte file.
 	Replaced it with the correct one.
 
