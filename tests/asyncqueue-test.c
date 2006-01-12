@@ -154,9 +154,7 @@ int main (int argc, char *argv[])
   
     g_thread_pool_push (thread_pool, GINT_TO_POINTER (i), &error);
     
-    if (!error) {
-      g_assert_not_reached ();
-    }
+    g_assert (error == NULL);
   }
 
   if (!SORT_QUEUE_AFTER) {

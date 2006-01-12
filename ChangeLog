@@ -1,3 +1,9 @@
+2006-01-12  Matthias Clasen  <mclasen@redhat.com>
+
+	* tests/asyncqueue-test.c (main): Fix the
+	assert to not always trigger.  (#326558, 
+	Daichi Kawahata)
+
 2006-01-11  Matthias Clasen  <mclasen@redhat.com>
 
 	* tests/convert-test.c: Don't test items_read and
