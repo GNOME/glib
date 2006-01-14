@@ -1,3 +1,9 @@
+2006-01-14  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gtree.c: Replace the simple recursive implementation
+	by a nonrecursive, threaded implementation by Maurizio 
+	Monge.  (#169285)
+
 2006-01-12  Matthias Clasen  <mclasen@redhat.com>
 
 	* tests/asyncqueue-test.c (main): Fix the
