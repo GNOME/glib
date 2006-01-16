@@ -2,18 +2,16 @@
 # Copyright (C) 2001-2004 Free Software Foundation, Inc.
 # Christian Meyer <chrisime@gnome.org>, 2001, 2002.
 # Christian Neumair <chris@gnome-de.org>, 2002-2004.
-# Hendrik Richter <hendrik@gnome-de.org>, 2004.
+# Hendrik Richter <hendrik@gnome-de.org>, 2004, 2005, 2006
 # Hendrik Brandt <heb@gnome-de.org>, 2004.
-# Hendrik Richter <hendrik@gnome-de.org>, 2004.
-# 
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-01-16 14:36+0100\n"
-"PO-Revision-Date: 2006-01-16 14:40+0100\n"
-"Last-Translator: Hendrik Brandt <heb@gnome-de.org>\n"
+"PO-Revision-Date: 2006-01-16 16:45+0100\n"
+"Last-Translator: Hendrik Richter <hendi@gnome.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -706,7 +704,7 @@ msgid ""
 "interpreted."
 msgstr ""
 "Die Schlüsselwertedatei enthält den Schlüssel »%s« in der Gruppe »%s« mit "
-"einem Wert der nicht interüretoert werden konnte."
+"einem Wert der nicht interpretiert werden konnte."
 
 #: ../glib/gkeyfile.c:2192 ../glib/gkeyfile.c:2376 ../glib/gkeyfile.c:2891
 #, c-format
