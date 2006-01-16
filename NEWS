@@ -1,3 +1,32 @@
+Overview of Changes from GLib 2.9.2 to GLib 2.9.3
+=================================================
+
+* GTree:
+ - Replace the simple recursive implementation by
+   a nonrecursive, threaded one  [Maurizio Monge]
+
+* Change g_filename_display_name and
+  g_filename_display_basename to use the Unicode
+  replacement character U+FFFD instead of a question
+  mark, and don't append "(invalid encoding)"  [Matthias]
+
+* Documentation improvements [Sven Herzberg, Federico
+  Mena Quintero, Stefan Kost]
+
+* Bugs fixed:
+ 323937 gslice.c in glib 2.9.1 doesn't build on Mac OS X 
+        [Bogdan Nicula]
+ 326558 Some test failures on IRIX 6.5 [Daichi Kawahata]
+ 169285 "threaded" tree implementation for GTree 
+        [Maurizio Monge]
+ 326747 g_filename_display_basename adds (invalid encoding) 
+        [Alberto Ruiz]
+
+Other contributors: Christian Kellner, Murray Cumming
+
+New and updated translations (bg,ca,de,es,et,gu,ja,nl,th,vi)
+
+
 Overview of Changes from GLib 2.9.1 to GLib 2.9.2
 =================================================
 
