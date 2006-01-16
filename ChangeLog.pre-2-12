@@ -1,5 +1,9 @@
 2006-01-16  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gthread.h (g_static_mutex_get_mutex_impl_shortcut): 
+	Rework the strict aliasing fix to not break C++, pointed
+	out by Murray Cumming.
+	
 	* glib/gasyncqueue.c (g_async_queue_push_sorted_unlocked):
 	Signal waiting threads, problem noticed by Christian Kellner.
 

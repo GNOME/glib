@@ -138,7 +138,7 @@ void    g_thread_init_with_errorcheck_mutexes (GThreadFunctions* vtable);
 GMutex* g_static_mutex_get_mutex_impl   (GMutex **mutex);
 
 #define g_static_mutex_get_mutex_impl_shortcut(mutex) \
-  (g_atomic_pointer_get (mutex) ? *(mutex) : \
+  (g_atomic_pointer_get ((gpointer*)(void*)mutex) ? *(mutex) : \
    g_static_mutex_get_mutex_impl (mutex))
 
 /* shorthands for conditional and unconditional function calls */
