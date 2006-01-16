@@ -1996,7 +1996,8 @@ make_valid_utf8 (const gchar *name)
 	string = g_string_sized_new (remaining_bytes);
 
       g_string_append_len (string, remainder, valid_bytes);
-      g_string_append_c (string, '?');
+      /* append U+FFFD REPLACEMENT CHARACTER */
+      g_string_append (string, "\357\277\275");
       
       remaining_bytes -= valid_bytes + 1;
       remainder = invalid + 1;
@@ -2006,7 +2007,6 @@ make_valid_utf8 (const gchar *name)
     return g_strdup (name);
   
   g_string_append (string, remainder);
-  g_string_append (string, " (invalid encoding)");
 
   g_assert (g_utf8_validate (string->str, -1, NULL));
   
@@ -2020,7 +2020,13 @@ make_valid_utf8 (const gchar *name)
  * Returns the display basename for the particular filename, guaranteed
  * to be valid UTF-8. The display name might not be identical to the filename,
  * for instance there might be problems converting it to UTF-8, and some files
- * can be translated in the display
+ * can be translated in the display.
+ *
+ * If GLib can not make sense of the encoding of @filename, as a last resort it 
+ * replaces unknown characters with U+FFFD, the Unicode replacement character.
+ * You can search the result for the UTF-8 encoding of this character (which is
+ * "\357\277\275" in octal notation) to find out if @filename was in an invalid
+ * encoding.
  *
  * You must pass the whole absolute pathname to this functions so that
  * translation of well known locations can be done.
@@ -2051,13 +2057,17 @@ g_filename_display_basename (const gchar *filename)
  * g_filename_display_name:
  * @filename: a pathname hopefully in the GLib file name encoding
  * 
- * Converts a filename into a valid UTF-8 string. The 
- * conversion is not necessarily reversible, so you 
- * should keep the original around and use the return
- * value of this function only for display purposes.
- * Unlike g_filename_to_utf8(), the result is guaranteed 
- * to be non-NULL even if the filename actually isn't in the GLib
- * file name encoding.
+ * Converts a filename into a valid UTF-8 string. The conversion is 
+ * not necessarily reversible, so you should keep the original around 
+ * and use the return value of this function only for display purposes.
+ * Unlike g_filename_to_utf8(), the result is guaranteed to be non-%NULL 
+ * even if the filename actually isn't in the GLib file name encoding.
+ *
+ * If GLib can not make sense of the encoding of @filename, as a last resort it 
+ * replaces unknown characters with U+FFFD, the Unicode replacement character.
+ * You can search the result for the UTF-8 encoding of this character (which is
+ * "\357\277\275" in octal notation) to find out if @filename was in an invalid
+ * encoding.
  *
  * If you know the whole pathname of the file you should use
  * g_filename_display_basename(), since that allows location-based
