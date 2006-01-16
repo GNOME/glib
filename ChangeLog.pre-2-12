@@ -1,5 +1,10 @@
 2006-01-16  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gasyncqueue.c (g_async_queue_push_sorted_unlocked):
+	Signal waiting threads, problem noticed by Christian Kellner.
+
+2006-01-16  Matthias Clasen  <mclasen@redhat.com>
+
 	Fix bug 326747, Alberto Ruiz:
 	
 	* glib/gconvert.c (make_valid_utf8): Change this function to

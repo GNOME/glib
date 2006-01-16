@@ -308,6 +308,8 @@ g_async_queue_push_sorted_unlocked (GAsyncQueue      *queue,
 			 data, 
 			 (GCompareDataFunc)g_async_queue_invert_compare, 
 			 &sd);
+  if (queue->waiting_threads > 0)
+    g_cond_signal (queue->cond);
 }
 
 static gpointer
