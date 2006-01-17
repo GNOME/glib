@@ -1,3 +1,16 @@
+2006-01-17  Sebastian Wilhelmi  <seppi@seppi.de>
+
+	* glib/gthreadpool.c: To avoid deadlocks get rid of the settings
+	G_LOCK. Use the unused_thread_queue lock instead. Change
+	g_thread_pool_thread_proxy such that threads only wait on
+	non-exlusive pools for at most a 1/2 second. Do not reorder tasks
+	due to superfluous tasks. Global tasks wait at most for
+	max-idle-time milliseconds. Make sure, that no task is woken up
+	twice for the same event via a wakeup_serial. This fixes #324228.
+
+	* tests/threadpool-test.c: Adapt test accordingly. Do not pass
+	invalid NULL into the thread pools. This as well fixes #327290.
+
 2006-01-16  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Bump version
