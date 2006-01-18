@@ -1,5 +1,9 @@
 2006-01-18  Matthias Clasen  <mclasen@redhat.com>
 
+	* === Released 2.8.6 ===
+
+2006-01-18  Matthias Clasen  <mclasen@redhat.com>
+
 	* gobject.h: Make g_object_compat_control() visible
 	for GTK+ compilation, to avoid segfaults on 64bit
 	platforms.

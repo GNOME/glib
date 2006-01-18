@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.8.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-01-03 09:57-0500\n"
+"POT-Creation-Date: 2006-01-18 12:03-0500\n"
 "PO-Revision-Date: 2006-01-04 10:20+0800\n"
 "Last-Translator: Abel Cheung <abel@oaka.org>\n"
 "Language-Team: Chinese (Hong Kong) <community@linuxhall.org>\n"
@@ -262,8 +262,8 @@ msgid ""
 "begins an entity; if this ampersand isn't supposed to be an entity, escape "
 "it as &amp;"
 msgstr ""
-"實體名稱不應以「%s」開始，應該使用 & 字元；如果這個 & 字元不是作為實體使用，請"
-"將 & 轉換為 &amp;"
+"實體名稱不應以「%s」開始，應該使用 & 字元；如果這個 & 字元不是作為實體使用，"
+"請將 & 轉換為 &amp;"
 
 #: glib/gmarkup.c:478
 #, c-format
@@ -288,7 +288,8 @@ msgstr ""
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
-msgstr "無法解析「%-.*s」，字元參引內應該含有數字（例如 &#234;）─ 可能是數字太大"
+msgstr ""
+"無法解析「%-.*s」，字元參引內應該含有數字（例如 &#234;）─ 可能是數字太大"
 
 #: glib/gmarkup.c:604
 #, c-format
@@ -351,8 +352,8 @@ msgid ""
 "element '%s', or optionally an attribute; perhaps you used an invalid "
 "character in an attribute name"
 msgstr ""
-"不尋常的字元「%s」，元素「%s」的開始標籤應該以「>」或「/」字元終結，也可以是屬性；或"
-"許你在屬性名稱中使用了無效的字元"
+"不尋常的字元「%s」，元素「%s」的開始標籤應該以「>」或「/」字元終結，也可以是"
+"屬性；或許你在屬性名稱中使用了無效的字元"
 
 #: glib/gmarkup.c:1383
 #, c-format
@@ -360,7 +361,8 @@ msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
 "giving value for attribute '%s' of element '%s'"
 msgstr ""
-"不尋常的字元「%s」，當指定屬性「%s」的值（屬於元素「%s」）時，等號後應該出現開引號"
+"不尋常的字元「%s」，當指定屬性「%s」的值（屬於元素「%s」）時，等號後應該出現"
+"開引號"
 
 #: glib/gmarkup.c:1528
 #, c-format

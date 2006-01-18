@@ -1,3 +1,15 @@
+Overview of Changes from GLib 2.8.5 to GLib 2.8.6
+=================================================
+
+* Fix a problem with g_object_compat_control()
+  which can lead to segfaults in GTK+ applications
+  on 64bit platforms.
+
+* Fix a memory allocation problem in GKeyFile.
+  [Morten Welinder]
+
+* New and updated translations (ca,ja,ml,sv,zh_HK,zh_TW)
+
 Overview of Changes from GLib 2.8.4 to GLib 2.8.5
 =================================================
 * Bug fixes:
