@@ -1,3 +1,8 @@
+2006-01-17  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gkeyfile.c (g_key_file_get_groups): Correct a g_new0()
+	call.  (#327421, Morten Welinder)
+
 2006-01-11  Matthias Clasen  <mclasen@redhat.com>
 
 	* tests/convert-test.c: Don't test items_read and
