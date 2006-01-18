@@ -1107,7 +1107,7 @@ g_key_file_get_groups (GKeyFile *key_file,
    * list) is always the comment group at the top,
    * which we skip
    */
-  groups = (gchar **) g_new0 (gchar **, num_groups);
+  groups = g_new0 (gchar *, num_groups);
 
   group_node = g_list_last (key_file->groups);
   
