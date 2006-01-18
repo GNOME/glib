@@ -1,3 +1,20 @@
+Overview of Changes from GLib 2.9.3 to GLib 2.9.4
+=================================================
+
+* Type system:
+  Fix a problem with g_object_compat_control() which 
+  can lead to segfaults in GTK+ applications on 64bit 
+  platforms. 
+
+* Thread suppport: 
+  Unused threads now fall back to the global pool after 
+  500 milliseconds, where they wait for another 
+  max-idle-time milliseconds. [Sebastian Wilhelmi]
+
+* Fix a memory allocation problem in GKeyFile. [Morten 
+  Welinder]
+
+
 Overview of Changes from GLib 2.9.2 to GLib 2.9.3
 =================================================
 

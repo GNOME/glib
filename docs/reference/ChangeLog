@@ -1,4 +1,8 @@
 2006-01-18  Matthias Clasen  <mclasen@redhat.com>
+	
+	* === Released 2.9.4 ===
+
+2006-01-18  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/tmpl/scanner.sgml: Add a note explaining peculiarities
 	of peek_token wrt to scope changes.  (#307922)
