@@ -9,10 +9,11 @@ a general purpose lexical scanner.
 The #GScanner and its associated functions provide a general purpose
 lexical scanner.
 </para>
-<para>
+
+<!--
 FIXME: really needs an example and more detail, but I don't completely
 understand it myself. Look at gtkrc.c for some code using the scanner.
-</para>
+-->
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
@@ -258,6 +259,15 @@ The token data is placed in the
 <structfield>next_value</structfield>,
 <structfield>next_line</structfield>, and
 <structfield>next_position</structfield> fields of the #GScanner structure.
+</para>
+<para>
+Note that, while the token is not removed from the input stream (i.e.
+the next call to g_scanner_get_next_token() will return the same token),
+it will not be reevaluated. This can lead to surprising results when
+changing scope after peeking for the next token. Getting the next token
+after switching the scope will return whatever was peeked before, 
+regardless of any symbols that may have been added or removed in the
+new scope. 
 </para>
 
 @scanner: a #GScanner.
