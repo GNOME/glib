@@ -180,10 +180,10 @@ static inline gsize allocator_get_magazine_threshold (Allocator *allocator,
                                                       guint      ix);
 
 /* --- variables --- */
-static GPrivate        *private_thread_memory = NULL;
-static gsize            sys_page_size = 0;
-static Allocator        allocator[1] = { { 0, }, };
-static SliceConfig      slice_config = {
+static GPrivate   *private_thread_memory = NULL;
+static gsize       sys_page_size = 0;
+static Allocator   allocator[1] = { { 0, }, };
+static SliceConfig slice_config = {
   FALSE,        /* always_malloc */
   FALSE,        /* bypass_magazines */
   15 * 1000,    /* working_set_msecs */
@@ -256,6 +256,23 @@ g_slice_get_config_state (GSliceConfig ckey,
 }
 
 static void
+slice_config_init (SliceConfig *config)
+{
+  /* don't use g_malloc/g_message here */
+  gchar buffer[1024];
+  const gchar *val = _g_getenv_nomalloc ("G_SLICE", buffer);
+  static const GDebugKey keys[] = {
+    { "always-malloc", 1 << 0 },
+  };
+  gint flags = !val ? 0 : g_parse_debug_string (val, keys, G_N_ELEMENTS (keys));
+  *config = slice_config;
+  if (flags & (1 << 0))         /* always-malloc */
+    {
+      config->always_malloc = TRUE;
+    }
+}
+
+static void
 g_slice_init_nomessage (void)
 {
   /* we may not use g_error() or friends here */
@@ -273,7 +290,7 @@ g_slice_init_nomessage (void)
 #endif
   mem_assert (sys_page_size >= 2 * LARGEALIGNMENT);
   mem_assert ((sys_page_size & (sys_page_size - 1)) == 0);
-  allocator->config = slice_config;
+  slice_config_init (&allocator->config);
   allocator->min_page_size = sys_page_size;
 #if HAVE_POSIX_MEMALIGN || HAVE_MEMALIGN
   /* allow allocation of pages up to 8KB (with 8KB alignment).

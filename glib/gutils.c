@@ -576,6 +576,11 @@ g_parse_debug_string  (const gchar     *string,
   guint result = 0;
   
   g_return_val_if_fail (string != NULL, 0);
+
+  /* this function is used by gmem.c/gslice.c initialization code,
+   * so introducing malloc dependencies here would require adaptions
+   * of those code portions.
+   */
   
   if (!g_ascii_strcasecmp (string, "all"))
     {
@@ -1152,6 +1157,64 @@ g_getenv (const gchar *variable)
   
   return g_quark_to_string (quark);
 
+#endif /* G_OS_WIN32 */
+}
+
+/* _g_getenv_nomalloc
+ * this function does a getenv() without doing any kind of allocation
+ * through glib. it's suitable for chars <= 127 only (both, for the
+ * variable name and the contents) and for contents < 1024 chars in
+ * length. also, it aliases "" to a NULL return value.
+ **/
+const gchar*
+_g_getenv_nomalloc (const gchar *variable,
+                    gchar        buffer[1024])
+{
+#ifndef G_OS_WIN32
+  const gchar *retval = getenv (variable);
+  if (retval && retval[0])
+    {
+      gint l = strlen (retval);
+      if (l < 1024)
+        {
+          strncpy (buffer, retval, l);
+          buffer[l] = 0;
+          return buffer;
+        }
+    }
+  return NULL;
+#else /* G_OS_WIN32 */
+  if (G_WIN32_HAVE_WIDECHAR_API ())
+    {
+      /* convert variable name to wchar_t without malloc */
+      wchar_t wname[256], result[1024];
+      gint i, l = strlen (variable);
+      if (l >= 256)
+        return NULL;
+      for (i = 0; variable[i]; i++)
+        wname[i] = variable[i];
+      wname[i] = 0;
+      l = GetEnvironmentVariableW (wname, result, 1024);
+      if (l > 0 && l < 1024 && result[0])
+        {
+          /* convert variable contents from wchar_t without malloc */
+          for (i = 0; i < l; i++)
+            buffer[i] = result[i];
+          buffer[i] = 0;
+          return buffer;
+        }
+      return NULL;
+    }
+  else
+    {
+      gint l = GetEnvironmentVariableW (variable, buffer, 1024);
+      if (l > 0 && l < 1024 && buffer[0])
+        {
+          buffer[l] = 0;
+          return buffer;
+        }
+      return NULL;
+    }
 #endif /* G_OS_WIN32 */
 }
 
