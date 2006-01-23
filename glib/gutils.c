@@ -1170,7 +1170,6 @@ const gchar*
 _g_getenv_nomalloc (const gchar *variable,
                     gchar        buffer[1024])
 {
-#ifndef G_OS_WIN32
   const gchar *retval = getenv (variable);
   if (retval && retval[0])
     {
@@ -1183,39 +1182,6 @@ _g_getenv_nomalloc (const gchar *variable,
         }
     }
   return NULL;
-#else /* G_OS_WIN32 */
-  if (G_WIN32_HAVE_WIDECHAR_API ())
-    {
-      /* convert variable name to wchar_t without malloc */
-      wchar_t wname[256], result[1024];
-      gint i, l = strlen (variable);
-      if (l >= 256)
-        return NULL;
-      for (i = 0; variable[i]; i++)
-        wname[i] = variable[i];
-      wname[i] = 0;
-      l = GetEnvironmentVariableW (wname, result, 1024);
-      if (l > 0 && l < 1024 && result[0])
-        {
-          /* convert variable contents from wchar_t without malloc */
-          for (i = 0; i < l; i++)
-            buffer[i] = result[i];
-          buffer[i] = 0;
-          return buffer;
-        }
-      return NULL;
-    }
-  else
-    {
-      gint l = GetEnvironmentVariableW (variable, buffer, 1024);
-      if (l > 0 && l < 1024 && buffer[0])
-        {
-          buffer[l] = 0;
-          return buffer;
-        }
-      return NULL;
-    }
-#endif /* G_OS_WIN32 */
 }
 
 /**

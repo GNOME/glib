@@ -1,3 +1,9 @@
+Mon Jan 23 17:30:33 2006  Tim Janik  <timj@imendio.com>
+
+	* glib/gutils.c (_g_getenv_nomalloc): wiped out all the wonderfull
+	G_OS_WIN32 code i wrote ;-[) after tml told me windows has getenv()
+	as well.
+
 Mon Jan 23 16:46:20 2006  Tim Janik  <timj@imendio.com>
 
 	* glib/gslice.c (slice_config_init): initialize GSlice config from
