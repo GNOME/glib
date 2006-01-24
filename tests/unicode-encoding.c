@@ -195,7 +195,7 @@ process (gint      line,
       gint n_chars;
       gchar *utf8_result;
 
-#ifdef G_PLATFORM_WIN32
+#if G_BYTE_ORDER == G_LITTLE_ENDIAN
 #define TARGET "UTF-16LE"
 #else
 #define TARGET "UTF-16"
