@@ -1,3 +1,8 @@
+2006-01-23  Matthias Clasen  <mclasen@redhat.com>
+
+	* configure.in: Change the shared libary extension for hpux-ia64
+	to so.  (#328253, The Written Word)
+
 Mon Jan 23 17:30:33 2006  Tim Janik  <timj@imendio.com>
 
 	* glib/gutils.c (_g_getenv_nomalloc): wiped out all the wonderfull
@@ -7,7 +12,7 @@ Mon Jan 23 17:30:33 2006  Tim Janik  <timj@imendio.com>
 Mon Jan 23 16:46:20 2006  Tim Janik  <timj@imendio.com>
 
 	* glib/gslice.c (slice_config_init): initialize GSlice config from
-	G_SLICE environemtn variable. we support G_SLICE=always-malloc
+	G_SLICE environment variable. we support G_SLICE=always-malloc
 	currently, which forces all g_slice_*() allocations to use the system
 	malloc instead.
 

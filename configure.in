@@ -1265,7 +1265,14 @@ fi
 AC_MSG_CHECKING(for the suffix of shared libraries)
 case "$host_os" in
   hpux9* | hpux10* | hpux11*)  # taken from ltconfig
-    glib_gmodule_suffix='sl'
+    case "$host_cpu" in
+      hppa*)
+	glib_gmodule_suffix='sl'
+	;;
+      ia64*)
+	glib_gmodule_suffix='so'
+	;;
+    esac
     ;;
   cygwin* | mingw*)
     glib_gmodule_suffix='dll'
