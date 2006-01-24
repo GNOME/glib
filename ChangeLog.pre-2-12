@@ -1,3 +1,11 @@
+Tue Jan 24 17:49:36 2006  Tim Janik  <timj@imendio.com>
+
+	* glib/gslice.c: only use posix_memalign() if it's known to work,
+	revert to memalign() otherwise.
+
+	* configure.in: check for broken posix_memalign() implementations
+	to fix #328254.
+
 2006-01-24  Matthias Clasen  <mclasen@redhat.com>
 
 	* tests/unicode-encoding.c: Use UTF-16LE as target encoding

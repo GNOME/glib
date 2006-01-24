@@ -38,6 +38,11 @@
 #include <process.h>
 #endif
 
+#if     defined HAVE_POSIX_MEMALIGN && defined POSIX_MEMALIGN_WITH_COMPLIANT_ALLOCS
+#  define HAVE_COMLIANT_POSIX_MEMALIGN 1
+#endif
+
+
 /* the GSlice allocator is split up into 4 layers, roughly modelled after the slab
  * allocator and magazine extensions as outlined in:
  * + [Bonwick94] Jeff Bonwick, The slab allocator: An object-caching kernel
@@ -292,7 +297,7 @@ g_slice_init_nomessage (void)
   mem_assert ((sys_page_size & (sys_page_size - 1)) == 0);
   slice_config_init (&allocator->config);
   allocator->min_page_size = sys_page_size;
-#if HAVE_POSIX_MEMALIGN || HAVE_MEMALIGN
+#if HAVE_COMLIANT_POSIX_MEMALIGN || HAVE_MEMALIGN
   /* allow allocation of pages up to 8KB (with 8KB alignment).
    * this is useful because many medium to large sized structures
    * fit less than 8 times (see [4]) into 4KB pages.
@@ -1022,13 +1027,14 @@ slab_allocator_free_chunk (gsize    chunk_size,
 #endif
 
 /* from config.h:
- * define HAVE_POSIX_MEMALIGN     1     // if free(posix_memalign(3)) works, <stdlib.h>
- * define HAVE_MEMALIGN           1     // if free(memalign(3)) works, <malloc.h>
- * define HAVE_VALLOC             1     // if free(valloc(3)) works, <stdlib.h> or <malloc.h>
+ * define HAVE_POSIX_MEMALIGN          1 // if free(posix_memalign(3)) works, <stdlib.h>
+ * define HAVE_COMLIANT_POSIX_MEMALIGN 1 // if free(posix_memalign(3)) works for sizes != 2^n, <stdlib.h>
+ * define HAVE_MEMALIGN                1 // if free(memalign(3)) works, <malloc.h>
+ * define HAVE_VALLOC                  1 // if free(valloc(3)) works, <stdlib.h> or <malloc.h>
  * if none is provided, we implement malloc(3)-based alloc-only page alignment
  */
 
-#if !(HAVE_POSIX_MEMALIGN || HAVE_MEMALIGN || HAVE_VALLOC)
+#if !(HAVE_COMLIANT_POSIX_MEMALIGN || HAVE_MEMALIGN || HAVE_VALLOC)
 static GTrashStack *compat_valloc_trash = NULL;
 #endif
 
@@ -1038,7 +1044,7 @@ allocator_memalign (gsize alignment,
 {
   gpointer aligned_memory = NULL;
   gint err = ENOMEM;
-#if     HAVE_POSIX_MEMALIGN
+#if     HAVE_COMLIANT_POSIX_MEMALIGN
   err = posix_memalign (&aligned_memory, alignment, memsize);
 #elif   HAVE_MEMALIGN
   errno = 0;
@@ -1078,7 +1084,7 @@ static void
 allocator_memfree (gsize    memsize,
                    gpointer mem)
 {
-#if     HAVE_POSIX_MEMALIGN || HAVE_MEMALIGN || HAVE_VALLOC
+#if     HAVE_COMLIANT_POSIX_MEMALIGN || HAVE_MEMALIGN || HAVE_VALLOC
   free (mem);
 #else
   mem_assert (memsize <= sys_page_size);
