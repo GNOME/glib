@@ -1,3 +1,8 @@
+Wed Jan 25 17:12:47 2006  Tim Janik  <timj@gtk.org>
+
+	* glib/running.sgml: documented G_SLICE=always-malloc and
+	G_DEBUG=gc-friendly. added anchors for each env var.
+
 2006-01-18  Matthias Clasen  <mclasen@redhat.com>
 	
 	* === Released 2.9.4 ===

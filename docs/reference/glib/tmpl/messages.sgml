@@ -115,9 +115,12 @@ A convenience function/macro to log a normal message.
 </para>
 
 @...: format string, followed by parameters to insert into the format string (as with printf())
-<!-- # Unused Parameters # -->
 @...: 
 @...: 
+@...:
+
+@...:
+
 @...: 
 
 
@@ -127,9 +130,12 @@ A convenience function/macro to log a warning message.
 </para>
 
 @...: format string, followed by parameters to insert into the format string (as with printf())
-<!-- # Unused Parameters # -->
 @...: 
 @...: 
+@...:
+
+@...:
+
 @...: 
 
 
@@ -143,9 +149,12 @@ example.
 </para>
 
 @...: format string, followed by parameters to insert into the format string (as with printf())
-<!-- # Unused Parameters # -->
 @...: 
 @...: 
+@...:
+
+@...:
+
 @...: 
 
 
@@ -160,9 +169,12 @@ assertion failure.
 </para>
 
 @...: the parameters to insert into the format string.
-<!-- # Unused Parameters # -->
 @...: 
 @...: 
+@...:
+
+@...:
+
 @...: 
 
 
@@ -172,11 +184,14 @@ A convenience function/macro to log a debug message.
 </para>
 
 @...: format string, followed by parameters to insert into the format string (as with printf())
+
+@...:
+
+@...: 
 @Since: 2.6
-<!-- # Unused Parameters # -->
 @...: 
 @...: 
-@...: 
+@...:
 
 
 <!-- ##### FUNCTION g_log_set_handler ##### -->

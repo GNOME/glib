@@ -44,7 +44,7 @@ variables like <envar>LANG</envar>, <envar>PATH</envar> or <envar>HOME</envar>.
   </para>
 </formalpara>
 
-<formalpara>
+<formalpara id="G_MESSAGES_PREFIXED">
   <title><envar>G_MESSAGES_PREFIXED</envar></title>
 
   <para>
@@ -54,9 +54,8 @@ variables like <envar>LANG</envar>, <envar>PATH</envar> or <envar>HOME</envar>.
   </para>
 </formalpara>
 
-<formalpara>
+<formalpara id="G_DEBUG">
   <title><envar>G_DEBUG</envar></title>
-
   <para>
     If GLib has been configured with <option>--enable-debug=yes</option>,
     this variable can be set to a list of debug options, which cause GLib
@@ -79,11 +78,49 @@ variables like <envar>LANG</envar>, <envar>PATH</envar> or <envar>HOME</envar>.
            debugging support.</para>
         </listitem>
       </varlistentry>
+      <varlistentry>
+        <term>gc-friendly</term>
+	<listitem>
+		<para>
+		  Newly allocated memory that isn't directly initialized, as well
+		  as memory being freed will be reset to 0. The point here is to
+		  allow memory checkers and similar programs that use bohem GC alike
+		  algorithms to produce more accurate results.
+		  This option is special in that it doesn't require GLib to be
+		  configured with debugging support.
+		</para>
+        </listitem>
+      </varlistentry>
     </variablelist>
   </para>
 </formalpara>
 
-<formalpara>
+<formalpara id="G_SLICE">
+	<title><envar>G_SLICE</envar></title>
+	<para>
+	  This environment variable allows reconfiguration of the #GSlice
+	  memory allocator.
+	  <variablelist>
+	    <varlistentry>
+	      <term>always-malloc</term>
+	      <listitem>
+		<para>
+		  This will cause all slices allocated through g_slice_alloc() and
+		  released by g_slice_free1() to be actually allocated via direct
+		  calls to g_malloc() and g_free().
+		  This is most useful for memory checkers and similar programs that
+		  use bohem GC alike algorithms to produce more accurate results.
+		  It can also be in conjunction with debugging features of the system's
+		  malloc implementation such as glibc's MALLOC_CHECK_=2 to debug
+		  erroneous slice allocation code.
+		</para>
+	      </listitem>
+	    </varlistentry>
+	  </variablelist>
+	</para>
+</formalpara>
+
+<formalpara id="G_RANDOM_VERSION">
   <title><envar>G_RANDOM_VERSION</envar></title>
 
   <para>
@@ -95,7 +132,7 @@ variables like <envar>LANG</envar>, <envar>PATH</envar> or <envar>HOME</envar>.
   </para>
 </formalpara> 
 
-<formalpara>
+<formalpara id="LIBCHARSET_ALIAS_DIR">
   <title><envar>LIBCHARSET_ALIAS_DIR</envar></title>
 
   <para>
@@ -106,7 +143,7 @@ variables like <envar>LANG</envar>, <envar>PATH</envar> or <envar>HOME</envar>.
   </para>
 </formalpara> 
 
-<formalpara>
+<formalpara id="G_WIN32_PRETEND_WIN9X">
   <title><envar>G_WIN32_PRETEND_WIN9X</envar></title>
 
   <para>
