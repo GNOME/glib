@@ -97,6 +97,9 @@ object size used at allocation time is still available when freeing.
 Allocates a block of memory from the slice allocator.
 The block adress handed out is guaranteed to be aligned
 to at least 2 * sizeof (void*).
+Note that the underlying slice allocation mechanism can
+be changed with the <link linkend="G_SLICE">G_SLICE=always-malloc</link>
+environment variable.
 </para>
 
 @block_size: the number of bytes to allocate
@@ -108,6 +111,9 @@ to at least 2 * sizeof (void*).
 <para>
 Allocates a block of memory via g_slice_alloc()
 and initialize the returned memory to 0.
+Note that the underlying slice allocation mechanism can
+be changed with the <link linkend="G_SLICE">G_SLICE=always-malloc</link>
+environment variable.
 </para>
 
 @block_size: the number of bytes to allocate
@@ -120,6 +126,8 @@ and initialize the returned memory to 0.
 Frees a block of memory. The memory must have been allocated via
 g_slice_alloc() or g_slice_alloc0()
 and the @block_size has to match the size specified upon allocation.
+Note that the exact release behaviour can be changed with the
+<link linkend="G_DEBUG">G_DEBUG=gc-friendly</link> environment variable.
 </para>
 
 @block_size: the size of the block
@@ -134,6 +142,8 @@ The memory blocks must be equal-sized, allocated via
 g_slice_alloc() or g_slice_alloc0()
 and linked together by a @next pointer (similar to #GSList). The offset 
 of the @next field in each block is passed as third argument.
+Note that the exact release behaviour can be changed with the
+<link linkend="G_DEBUG">G_DEBUG=gc-friendly</link> environment variable.
 </para>
 
 @block_size: the size of the blocks
@@ -147,6 +157,9 @@ of the @next field in each block is passed as third argument.
 A convenience macro to allocate a block of memory from the slice allocator.
 It calls g_slice_alloc() with sizeof (@type) and casts the returned pointer
 to a pointer of the given type, avoiding a type cast in the source code.
+Note that the underlying slice allocation mechanism can
+be changed with the <link linkend="G_SLICE">G_SLICE=always-malloc</link>
+environment variable.
 </para>
 
 @type: the type to allocate, typically a structure name
@@ -160,6 +173,9 @@ A convenience macro to allocate a block of memory from the slice allocator
 and set the memory to 0. It calls g_slice_alloc0() with sizeof (@type) and
 casts the returned pointer to a pointer of the given type, avoiding a type
 cast in the source code.
+Note that the underlying slice allocation mechanism can
+be changed with the <link linkend="G_SLICE">G_SLICE=always-malloc</link>
+environment variable.
 </para>
 
 @type: the type to allocate, typically a structure name
@@ -172,6 +188,8 @@ cast in the source code.
 A convenience macro to free a block of memory that has been allocated
 from the slice allocator. It calls g_slice_free1() using 
 <literal>sizeof (type)</literal> as the block size.
+Note that the exact release behaviour can be changed with the
+<link linkend="G_DEBUG">G_DEBUG=gc-friendly</link> environment variable.
 </para>
 
 @type: the type of the block to free, typically a structure name
@@ -188,11 +206,11 @@ The memory blocks must be equal-sized, allocated via
 g_slice_alloc() or g_slice_alloc0() and linked together by a 
 @next pointer (similar to #GSList). The name of the
 @next field in @type is passed as third argument.
+Note that the exact release behaviour can be changed with the
+<link linkend="G_DEBUG">G_DEBUG=gc-friendly</link> environment variable.
 </para>
 
 @type:        the type of the @mem_chain blocks
 @mem_chain:   a pointer to the first block of the chain
 @next:        the field name of the next pointer in @type
 @Since: 2.10
-
-

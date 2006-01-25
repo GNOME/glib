@@ -1,3 +1,7 @@
+Wed Jan 25 17:32:22 2006  Tim Janik  <timj@gtk.org>
+
+	* glib/tmpl/memory_slices.sgml: link to G_DEBUG/G_SLICE where appropriate.
+
 Wed Jan 25 17:12:47 2006  Tim Janik  <timj@gtk.org>
 
 	* glib/running.sgml: documented G_SLICE=always-malloc and
