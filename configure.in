@@ -1034,6 +1034,8 @@ AC_CACHE_VAL(glib_cv_compliant_posix_memalign,[
 		    void *mem = 0;
 		    if (posix_memalign (&mem, boundary, size) != 0 || !mem)
 			exit (1);
+                    else
+                      free (mem);
 		}
 		int main() {
 		    test_memalign (  128,   128 - 2 * sizeof (void*));

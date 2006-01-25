@@ -1,3 +1,11 @@
+Wed Jan 25 19:16:57 2006  Tim Janik  <timj@imendio.com>
+
+	* fixed buglets reported by Jens Granseuer in #328254.
+
+	* configure.in: free the memory allocated in posix_memalign() tests.
+
+	* glib/gslice.c: spelling fixes.
+
 Wed Jan 25 16:39:18 2006  Tim Janik  <timj@imendio.com>
 
 	* glib/gslice.c: honour g_mem_gc_friendly settings when freeing
