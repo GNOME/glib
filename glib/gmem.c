@@ -38,17 +38,24 @@
 #include "gthreadinit.h"
 #include "galias.h"
 
+#define MEM_PROFILE_TABLE_SIZE 4096
+
+
 /* notes on macros:
  * having G_DISABLE_CHECKS defined disables use of glib_mem_profiler_table and
  * g_mem_profile().
  * REALLOC_0_WORKS is defined if g_realloc (NULL, x) works.
  * SANE_MALLOC_PROTOS is defined if the systems malloc() and friends functions
  * match the corresponding GLib prototypes, keep configure.in and gmem.h in sync here.
- * if ENABLE_GC_FRIENDLY is defined, freed memory should be 0-wiped.
+ * g_mem_gc_friendly is TRUE, freed memory should be 0-wiped.
  */
 
-#define MEM_PROFILE_TABLE_SIZE 4096
+/* --- prototypes --- */
+static gboolean g_mem_initialized = FALSE;
+static void     g_mem_init_nomessage (void);
 
+
+/* --- malloc wrappers --- */
 #ifndef	REALLOC_0_WORKS
 static gpointer
 standard_realloc (gpointer mem,
@@ -115,7 +122,9 @@ static GMemVTable glib_mem_vtable = {
 gpointer
 g_malloc (gulong n_bytes)
 {
-  if (n_bytes)
+  if (G_UNLIKELY (!g_mem_initialized))
+    g_mem_init_nomessage();
+  if (G_LIKELY (n_bytes))
     {
       gpointer mem;
 
@@ -132,7 +141,9 @@ g_malloc (gulong n_bytes)
 gpointer
 g_malloc0 (gulong n_bytes)
 {
-  if (n_bytes)
+  if (G_UNLIKELY (!g_mem_initialized))
+    g_mem_init_nomessage();
+  if (G_LIKELY (n_bytes))
     {
       gpointer mem;
 
@@ -150,7 +161,9 @@ gpointer
 g_realloc (gpointer mem,
 	   gulong   n_bytes)
 {
-  if (n_bytes)
+  if (G_UNLIKELY (!g_mem_initialized))
+    g_mem_init_nomessage();
+  if (G_LIKELY (n_bytes))
     {
       mem = glib_mem_vtable.realloc (mem, n_bytes);
       if (mem)
@@ -168,14 +181,18 @@ g_realloc (gpointer mem,
 void
 g_free (gpointer mem)
 {
-  if (mem)
+  if (G_UNLIKELY (!g_mem_initialized))
+    g_mem_init_nomessage();
+  if (G_LIKELY (mem))
     glib_mem_vtable.free (mem);
 }
 
 gpointer
 g_try_malloc (gulong n_bytes)
 {
-  if (n_bytes)
+  if (G_UNLIKELY (!g_mem_initialized))
+    g_mem_init_nomessage();
+  if (G_LIKELY (n_bytes))
     return glib_mem_vtable.try_malloc (n_bytes);
   else
     return NULL;
@@ -198,7 +215,9 @@ gpointer
 g_try_realloc (gpointer mem,
 	       gulong   n_bytes)
 {
-  if (n_bytes)
+  if (G_UNLIKELY (!g_mem_initialized))
+    g_mem_init_nomessage();
+  if (G_LIKELY (n_bytes))
     return glib_mem_vtable.try_realloc (mem, n_bytes);
 
   if (mem)
@@ -372,6 +391,9 @@ g_mem_profile (void)
   gulong local_allocs;
   gulong local_zinit;
   gulong local_frees;
+
+  if (G_UNLIKELY (!g_mem_initialized))
+    g_mem_init_nomessage();
 
   g_mutex_lock (gmem_profile_mutex);
 
@@ -655,12 +677,38 @@ g_allocator_free (GAllocator *allocator)
 {
 }
 
+#ifdef ENABLE_GC_FRIENDLY_DEFAULT
+gboolean g_mem_gc_friendly = TRUE;
+#else
+gboolean g_mem_gc_friendly = FALSE;
+#endif
+
+static void
+g_mem_init_nomessage (void)
+{
+  if (g_mem_initialized)
+    return;
+  /* don't use g_malloc/g_message here */
+  gchar buffer[1024];
+  const gchar *val = _g_getenv_nomalloc ("G_DEBUG", buffer);
+  static const GDebugKey keys[] = {
+    { "gc-friendly", 1 },
+  };
+  gint flags = !val ? 0 : g_parse_debug_string (val, keys, G_N_ELEMENTS (keys));
+  if (flags & 1)        /* gc-friendly */
+    {
+      g_mem_gc_friendly = TRUE;
+    }
+  g_mem_initialized = TRUE;
+}
+
 void
 _g_mem_thread_init_noprivate_nomessage (void)
 {
-  /* we may only create mutexes here, locking/unlocking itself
-   * does not yet work.
+  /* we may only create mutexes here, locking/
+   * unlocking a mutex does not yet work.
    */
+  g_mem_init_nomessage();
 #ifndef G_DISABLE_CHECKS
   gmem_profile_mutex = g_mutex_new ();
 #endif

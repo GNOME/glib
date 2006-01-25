@@ -1,3 +1,26 @@
+Wed Jan 25 16:39:18 2006  Tim Janik  <timj@imendio.com>
+
+	* glib/gslice.c: honour g_mem_gc_friendly settings when freeing
+	slices, make sure g_mem_gc_friendly is properly initialized.
+
+	* gmem.[hc]: ensure g_mem_gc_friendly is initialized from G_DEBUG upon
+	the first allocation. applied some branching optimizations.
+
+	* docs/macros.txt: reflected --enable-gc-friendly change and
+	described ENABLE_GC_FRIENDLY_DEFAULT as well as G_DEBUG=gc-friendly.
+
+	* configure.in: changed --enable-gc-friendly=yes to define
+	ENABLE_GC_FRIENDLY_DEFAULT.
+
+	* glib/garray.c: changed ENABLE_GC_FRIENDLY macro #ifdef-s to
+	if (G_UNLIKELY (g_mem_gc_friendly)).
+
+	* glib/gtree.c:
+	* glib/ghash.c: removed ENABLE_GC_FRIENDLY code which is now taken
+	care of by g_slice_free1().
+
+	* tests/slice-test.c: fixed leaks, reported by Kjartan Maraas.
+
 Tue Jan 24 17:49:36 2006  Tim Janik  <timj@imendio.com>
 
 	* glib/gslice.c: only use posix_memalign() if it's known to work,

@@ -718,12 +718,6 @@ g_hash_node_destroy (GHashNode      *hash_node,
     key_destroy_func (hash_node->key);
   if (value_destroy_func)
     value_destroy_func (hash_node->value);
-  
-#ifdef ENABLE_GC_FRIENDLY
-  hash_node->key = NULL;
-  hash_node->value = NULL;
-#endif /* ENABLE_GC_FRIENDLY */
-
   g_slice_free (GHashNode, hash_node);
 }
 

@@ -327,6 +327,9 @@ g_slice_init_nomessage (void)
   allocator->max_slab_chunk_size_for_magazine_cache = MAX_SLAB_CHUNK_SIZE (allocator);
   if (allocator->config.always_malloc || allocator->config.bypass_magazines)
     allocator->max_slab_chunk_size_for_magazine_cache = 0;      /* non-optimized cases */
+  /* at this point, g_mem_gc_friendly() should be initialized, this
+   * should have been accomplished by the above g_malloc/g_new calls
+   */
 }
 
 static inline guint
@@ -791,8 +794,8 @@ g_slice_free1 (gsize    mem_size,
   gsize chunk_size = P2ALIGN (mem_size);
   guint acat = allocator_categorize (chunk_size);
   if (G_UNLIKELY (!mem_block))
-    /* pass */;
-  else if (G_LIKELY (acat == 1))        /* allocate through magazine layer */
+    return;
+  if (G_LIKELY (acat == 1))             /* allocate through magazine layer */
     {
       ThreadMemory *tmem = thread_memory_from_self();
       guint ix = SLAB_INDEX (allocator, chunk_size);
@@ -802,16 +805,24 @@ g_slice_free1 (gsize    mem_size,
           if (G_UNLIKELY (thread_memory_magazine2_is_full (tmem, ix)))
             thread_memory_magazine2_unload (tmem, ix);
         }
+      if (G_UNLIKELY (g_mem_gc_friendly))
+        memset (mem_block, 0, chunk_size);
       thread_memory_magazine2_free (tmem, ix, mem_block);
     }
   else if (acat == 2)                   /* allocate through slab allocator */
     {
+      if (G_UNLIKELY (g_mem_gc_friendly))
+        memset (mem_block, 0, chunk_size);
       g_mutex_lock (allocator->slab_mutex);
       slab_allocator_free_chunk (chunk_size, mem_block);
       g_mutex_unlock (allocator->slab_mutex);
     }
   else                                  /* delegate to system malloc */
-    g_free (mem_block);
+    {
+      if (G_UNLIKELY (g_mem_gc_friendly))
+        memset (mem_block, 0, mem_size);
+      g_free (mem_block);
+    }
 }
 
 void
@@ -851,6 +862,8 @@ g_slice_free_chain_with_offset (gsize    mem_size,
               if (G_UNLIKELY (thread_memory_magazine2_is_full (tmem, ix)))
                 thread_memory_magazine2_unload (tmem, ix);
             }
+          if (G_UNLIKELY (g_mem_gc_friendly))
+            memset (current, 0, chunk_size);
           thread_memory_magazine2_free (tmem, ix, current);
         }
     }
@@ -861,6 +874,8 @@ g_slice_free_chain_with_offset (gsize    mem_size,
         {
           guint8 *current = slice;
           slice = *(gpointer*) (current + next_offset);
+          if (G_UNLIKELY (g_mem_gc_friendly))
+            memset (current, 0, chunk_size);
           slab_allocator_free_chunk (chunk_size, current);
         }
       g_mutex_unlock (allocator->slab_mutex);
@@ -870,6 +885,8 @@ g_slice_free_chain_with_offset (gsize    mem_size,
       {
         guint8 *current = slice;
         slice = *(gpointer*) (current + next_offset);
+        if (G_UNLIKELY (g_mem_gc_friendly))
+          memset (current, 0, mem_size);
         g_free (current);
       }
 }

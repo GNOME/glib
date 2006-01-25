@@ -126,6 +126,8 @@ test_memchunk_thread (gpointer data)
   for (i = 0; i < prime_size; i++)
     if (memchunks[i])
       old_mem_chunk_destroy (memchunks[i]);
+  g_free (ps);
+  g_free (ss);
 
   return NULL;
 }
@@ -178,6 +180,8 @@ test_sliced_mem_thread (gpointer data)
       for (j = 0; j < k; j++)
         g_slice_free1 (sz, ps[j]);
     }
+  g_free (ps);
+  g_free (ss);
 
   return NULL;
 }

@@ -197,10 +197,8 @@ g_array_set_size (GArray *farray,
       if (array->clear)
 	g_array_elt_zero (array, array->len, length - array->len);
     }
-#ifdef ENABLE_GC_FRIENDLY  
-  else if (length < array->len)
+  else if (G_UNLIKELY (g_mem_gc_friendly) && length < array->len)
     g_array_elt_zero (array, length, array->len - length);
-#endif /* ENABLE_GC_FRIENDLY */  
   
   array->len = length;
   
@@ -226,11 +224,10 @@ g_array_remove_index (GArray* farray,
   
   array->len -= 1;
 
-#ifdef ENABLE_GC_FRIENDLY
-  g_array_elt_zero (array, array->len, 1);
-#else /* !ENABLE_GC_FRIENDLY */
-  g_array_zero_terminate (array);
-#endif /* ENABLE_GC_FRIENDLY */  
+  if (G_UNLIKELY (g_mem_gc_friendly))
+    g_array_elt_zero (array, array->len, 1);
+  else
+    g_array_zero_terminate (array);
 
   return farray;
 }
@@ -252,11 +249,10 @@ g_array_remove_index_fast (GArray* farray,
   
   array->len -= 1;
 
-#ifdef ENABLE_GC_FRIENDLY
-  g_array_elt_zero (array, array->len, 1);
-#else /* !ENABLE_GC_FRIENDLY */
-  g_array_zero_terminate (array);
-#endif /* ENABLE_GC_FRIENDLY */  
+  if (G_UNLIKELY (g_mem_gc_friendly))
+    g_array_elt_zero (array, array->len, 1);
+  else
+    g_array_zero_terminate (array);
 
   return farray;
 }
@@ -278,11 +274,10 @@ g_array_remove_range (GArray       *farray,
                (array->len - (index_ + length)) * array->elt_size);
 
   array->len -= length;
-#ifdef ENABLE_GC_FRIENDLY
-  g_array_elt_zero (array, array->len, length);
-#else /* !ENABLE_GC_FRIENDLY */
-  g_array_zero_terminate (array);
-#endif /* ENABLE_GC_FRIENDLY */
+  if (G_UNLIKELY (g_mem_gc_friendly))
+    g_array_elt_zero (array, array->len, length);
+  else
+    g_array_zero_terminate (array);
 
   return farray;
 }
@@ -343,9 +338,8 @@ g_array_maybe_expand (GRealArray *array,
 
       array->data = g_realloc (array->data, want_alloc);
 
-#ifdef ENABLE_GC_FRIENDLY
-      memset (array->data + array->alloc, 0, want_alloc - array->alloc);
-#endif /* ENABLE_GC_FRIENDLY */
+      if (G_UNLIKELY (g_mem_gc_friendly))
+        memset (array->data + array->alloc, 0, want_alloc - array->alloc);
 
       array->alloc = want_alloc;
     }
@@ -414,16 +408,13 @@ g_ptr_array_maybe_expand (GRealPtrArray *array,
 {
   if ((array->len + len) > array->alloc)
     {
-#ifdef ENABLE_GC_FRIENDLY
       guint old_alloc = array->alloc;
-#endif /* ENABLE_GC_FRIENDLY */
       array->alloc = g_nearest_pow (array->len + len);
       array->alloc = MAX (array->alloc, MIN_ARRAY_SIZE);
       array->pdata = g_realloc (array->pdata, sizeof (gpointer) * array->alloc);
-#ifdef ENABLE_GC_FRIENDLY
-      for ( ; old_alloc < array->alloc; old_alloc++)
-	array->pdata [old_alloc] = NULL;
-#endif /* ENABLE_GC_FRIENDLY */
+      if (G_UNLIKELY (g_mem_gc_friendly))
+        for ( ; old_alloc < array->alloc; old_alloc++)
+          array->pdata [old_alloc] = NULL;
     }
 }
 
@@ -448,14 +439,12 @@ g_ptr_array_set_size  (GPtrArray   *farray,
       for (i = array->len; i < length; i++)
 	array->pdata[i] = NULL;
     }
-#ifdef ENABLE_GC_FRIENDLY  
-  else if (length < array->len)
+  if (G_UNLIKELY (g_mem_gc_friendly) && length < array->len)
     {
       int i;
       for (i = length; i < array->len; i++)
 	array->pdata[i] = NULL;
     }
-#endif /* ENABLE_GC_FRIENDLY */  
 
   array->len = length;
 }
@@ -479,9 +468,8 @@ g_ptr_array_remove_index (GPtrArray* farray,
   
   array->len -= 1;
 
-#ifdef ENABLE_GC_FRIENDLY  
-  array->pdata[array->len] = NULL;
-#endif /* ENABLE_GC_FRIENDLY */  
+  if (G_UNLIKELY (g_mem_gc_friendly))
+    array->pdata[array->len] = NULL;
 
   return result;
 }
@@ -504,9 +492,8 @@ g_ptr_array_remove_index_fast (GPtrArray* farray,
 
   array->len -= 1;
 
-#ifdef ENABLE_GC_FRIENDLY  
-  array->pdata[array->len] = NULL;
-#endif /* ENABLE_GC_FRIENDLY */  
+  if (G_UNLIKELY (g_mem_gc_friendly))
+    array->pdata[array->len] = NULL;
 
   return result;
 }
@@ -528,13 +515,12 @@ g_ptr_array_remove_range (GPtrArray* farray,
                (array->len - (index_ + length)) * sizeof (gpointer));
 
   array->len -= length;
-#ifdef ENABLE_GC_FRIENDLY
-  {
-    guint i;
-    for (i = 0; i < length; i++)
-      array->pdata[array->len + i] = NULL;
-  }
-#endif /* ENABLE_GC_FRIENDLY */
+  if (G_UNLIKELY (g_mem_gc_friendly))
+    {
+      guint i;
+      for (i = 0; i < length; i++)
+        array->pdata[array->len + i] = NULL;
+    }
 }
 
 gboolean

@@ -10,7 +10,7 @@ GLib's configure options and corresponding macros
 --enable-debug=yes	[default for development branches]
 	-DG_ENABLE_DEBUG -g
 --enable-gc-friendly=yes
-	#define ENABLE_GC_FRIENDLY 1
+	#define ENABLE_GC_FRIENDLY_DEFAULT 1
 --disable-mem-pools=yes
 	#define DISABLE_MEM_POOLS 1
 
@@ -23,11 +23,13 @@ Notes on GLib's internal and global macros
 ==========================================
 
 
-ENABLE_GC_FRIENDLY
+ENABLE_GC_FRIENDLY_DEFAULT
 	Newly allocated memory that isn't directly initialized, as well
 	as memory being freed should be reset to 0. The point here is to
 	allow memory checkers and similar programs that use bohem GC alike
 	algorithms to produce more accurate results.
+	This can also be accomplished by setting the environment variable
+	G_DEBUG=gc-friendly.
 DISABLE_MEM_POOLS
 	Many small chunks of memory are often allocated via collective pools
 	in GLib and are cached after release to speed up reallocations.

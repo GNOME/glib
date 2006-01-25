@@ -259,14 +259,6 @@ g_tree_destroy (GTree *tree)
 	tree->key_destroy_func (node->key);
       if (tree->value_destroy_func)
 	tree->value_destroy_func (node->value);
-      
-#ifdef ENABLE_GC_FRIENDLY
-      node->left = NULL;
-      node->right = NULL;
-      node->key = NULL;
-      node->value = NULL;
-#endif /* ENABLE_GC_FRIENDLY */
-
       g_slice_free (GTreeNode, node);
 
       node = next;
@@ -723,13 +715,6 @@ g_tree_remove_internal (GTree         *tree,
       if (tree->value_destroy_func)
         tree->value_destroy_func (node->value);
     }
-
-#ifdef ENABLE_GC_FRIENDLY
-  node->left = NULL;
-  node->right = NULL;
-  node->key = NULL;
-  node->value = NULL;
-#endif /* ENABLE_GC_FRIENDLY */
 
   g_slice_free (GTreeNode, node);
 

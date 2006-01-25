@@ -217,8 +217,7 @@ AC_DEFINE_UNQUOTED(G_COMPILED_WITH_DEBUGGING, ["${enable_debug}"],
 
 AC_MSG_CHECKING([whether to enable garbage collector friendliness])
 if test "x$enable_gc_friendly" = "xyes"; then
-  AC_DEFINE(ENABLE_GC_FRIENDLY, 1, [Whether to enable GC friendliness])
-  AC_SUBST(ENABLE_GC_FRIENDLY)
+  AC_DEFINE(ENABLE_GC_FRIENDLY_DEFAULT, 1, [Whether to enable GC friendliness by default])
   AC_MSG_RESULT([yes])
 else
   AC_MSG_RESULT([no])
