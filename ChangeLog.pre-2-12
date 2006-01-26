@@ -1,3 +1,8 @@
+2006-01-26  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gmem.c (g_mem_init_nomessage): Fix C99isms.  (#328705, 
+	Kazuki Iwamoto)
+
 Wed Jan 25 19:16:57 2006  Tim Janik  <timj@imendio.com>
 
 	* fixed buglets reported by Jens Granseuer in #328254.

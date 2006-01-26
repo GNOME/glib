@@ -686,15 +686,17 @@ gboolean g_mem_gc_friendly = FALSE;
 static void
 g_mem_init_nomessage (void)
 {
-  if (g_mem_initialized)
-    return;
-  /* don't use g_malloc/g_message here */
   gchar buffer[1024];
-  const gchar *val = _g_getenv_nomalloc ("G_DEBUG", buffer);
+  const gchar *val;
   static const GDebugKey keys[] = {
     { "gc-friendly", 1 },
   };
-  gint flags = !val ? 0 : g_parse_debug_string (val, keys, G_N_ELEMENTS (keys));
+  gint flags;
+  if (g_mem_initialized)
+    return;
+  /* don't use g_malloc/g_message here */
+  val = _g_getenv_nomalloc ("G_DEBUG", buffer);
+  flags = !val ? 0 : g_parse_debug_string (val, keys, G_N_ELEMENTS (keys));
   if (flags & 1)        /* gc-friendly */
     {
       g_mem_gc_friendly = TRUE;
