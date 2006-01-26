@@ -160,6 +160,9 @@ variables like <envar>LANG</envar>, <envar>PATH</envar> or <envar>HOME</envar>.
 <title>Traps and traces</title>
 
 <para>
+<indexterm><primary>g_trap_free_size</primary></indexterm>
+<indexterm><primary>g_trap_realloc_size</primary></indexterm>
+<indexterm><primary>g_trap_malloc_size</primary></indexterm>
 Some code portions contain trap variables that can be set during debugging 
 time if GLib has been configured with <option>--enable-debug=yes</option>. 
 Such traps lead to immediate code halts to examine the current program state 
@@ -179,6 +182,16 @@ If set to a size > 0, <link linkend="g-free">g_free</link>(),
 matches the size of the corresponding memory block. This will only work with 
 <literal>g_mem_set_vtable (glib_mem_profiler_table)</literal> upon startup 
 though, because memory profiling is required to match on the memory block sizes.
+</para>
+<para>
+Note that many modern debuggers support conditional breakpoints, which achieve
+pretty much the same. E.g. in gdb, you can do
+<programlisting>
+break g_malloc
+condition 1 n_bytes == 20
+</programlisting>
+to break only on g_malloc() calls where the size of the allocated memory block
+is 20. 
 </para>
 </refsect2>
 

@@ -49,6 +49,17 @@
     It suports a filter-rule mechanism to let you trace only the objects you are 
     interested in and it can be used together with gdb.
   </para>
+  <para>
+    <indexterm><primary>g_trap_object_ref</primary></indexterm>
+    Note that if GObject has been compiled with <option>--enable-debug=yes</option>,
+    it exports a trap variable 
+    <programlisting>
+static volatile GObject *g_trap_object_ref;
+    </programlisting>
+    If set to a non-NULL value, <link linkend="g-object-ref">g_object_ref</link>()
+    and <link linkend="g-object-unref">g_object_unref</link>() will be intercepted
+    when called with that value. 
+  </para>
 </chapter>
   
 <chapter id="tools-gtkdoc">

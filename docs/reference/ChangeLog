@@ -1,3 +1,10 @@
+2006-01-26  Matthias Clasen  <mclasen@redhat.com>
+
+	* gobject/tut_tools.xml: Mention g_trap_object_ref
+
+	* glib/running.sgml: Add g_trap variables to the index.
+	Mention conditional breakpoints as an alternative.
+
 Wed Jan 25 17:32:22 2006  Tim Janik  <timj@gtk.org>
 
 	* glib/tmpl/memory_slices.sgml: link to G_DEBUG/G_SLICE where appropriate.
