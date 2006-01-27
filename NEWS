@@ -1,3 +1,23 @@
+Overview of Changes from GLib 2.9.4 to GLib 2.9.5
+=================================================
+
+* Memory management: 
+  Runtime debugging support: The slice allocator
+  can be turned off by setting G_SLICE=always-malloc
+  in the environment. Zeroing of freed memory can
+  now be turned on at runtime by setting
+  G_DEBUG=gc-friendly in the environment. [Tim Janik]
+
+* Bugs fixed:
+ 328253 HP-UX/IA-64 uses ".so" as default shared library 
+        extension [Albert Chin]
+ 143380 unicode-encoding test fails converting to UTF-16 
+        with libiconv [Marc Moorcroft]
+ 328254 Build breakage (GSlice) [Jens Ganseuer]
+ 328705 C99ism in glib/gmem.c [Kazuki Iwamoto]
+
+* Translation updates (da,et,zh_CN)
+
 Overview of Changes from GLib 2.9.3 to GLib 2.9.4
 =================================================
 
