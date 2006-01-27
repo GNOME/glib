@@ -1,5 +1,7 @@
 2006-01-27  Matthias Clasen  <mclasen@redhat.com>
 
+	* configure.in: Bump version
+
 	* === Released 2.9.5 ===
 
 	* glib/glib.symbols: Add g_mem_gc_friendly as an exported
