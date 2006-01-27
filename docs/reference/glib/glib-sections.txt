@@ -789,6 +789,7 @@ g_try_realloc
 
 <SUBSECTION>
 g_free
+g_mem_gc_friendly
 
 <SUBSECTION>
 g_alloca

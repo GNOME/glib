@@ -1,5 +1,10 @@
 2006-01-27  Matthias Clasen  <mclasen@redhat.com>
 
+	* === Released 2.9.5 ===
+
+	* glib/glib.symbols: Add g_mem_gc_friendly as an exported
+	variable.
+
 	* NEWS: Updates
 
 2006-01-26  Matthias Clasen  <mclasen@redhat.com>

@@ -189,6 +189,14 @@ If @mem is %NULL it simply returns.
 @mem: the memory to free.
 
 
+<!-- ##### VARIABLE g_mem_gc_friendly ##### -->
+<para>
+This variable is %TRUE if the <envar>G_DEBUG</envar> environment variable
+includes the key <link linkend="G_DEBUG">gc-friendly</link>.  
+</para>
+
+@Since: 2.10
+
 <!-- ##### MACRO g_alloca ##### -->
 <para>
 Allocates @size bytes on the stack; these bytes will be freed when the current
