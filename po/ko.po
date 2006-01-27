@@ -1,13 +1,13 @@
 # glib
 # Young-Ho Cha <ganadist@chollian.net>, 2002
-# Changwoo Ryu <cwryu@debian.org>, 2002, 2004-2005
+# Changwoo Ryu <cwryu@debian.org>, 2002, 2004-2006
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: glib 2.8.1\n"
+"Project-Id-Version: glib 2.9.6.4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-01-27 09:19-0500\n"
-"PO-Revision-Date: 2005-08-22 03:16+0900\n"
+"PO-Revision-Date: 2006-01-28 03:35+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: GNOME Korea <gnome-kr-hackers@lists.kldp.net>\n"
 "MIME-Version: 1.0\n"
@@ -169,7 +169,7 @@ msgid "Symbolic links not supported"
 msgstr "심볼릭 링크를 지원하지 않습니다"
 
 #: glib/giochannel.c:1154
-#, fuzzy, c-format
+#, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "`%s'에서 `%s'(으)로 변환하는 변환기를 열 수 없음: %s"
 
@@ -484,31 +484,31 @@ msgid "Failed to execute child process (%s)"
 msgstr "자식 프로세스 실행 실패 (%s)"
 
 #: glib/gspawn-win32.c:471 glib/gspawn-win32.c:527
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid program name: %s"
-msgstr "잘못된 호스트 이름"
+msgstr "잘못된 프로그램 이름: %s"
 
 #: glib/gspawn-win32.c:481 glib/gspawn-win32.c:537 glib/gspawn-win32.c:780
 #: glib/gspawn-win32.c:835 glib/gspawn-win32.c:1370
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid string in argument vector at %d: %s"
-msgstr "%s에 대한 인자가 빠졌습니다"
+msgstr "인자에서 잘못된 문자열, %d: %s"
 
 #: glib/gspawn-win32.c:492 glib/gspawn-win32.c:548 glib/gspawn-win32.c:794
 #: glib/gspawn-win32.c:848 glib/gspawn-win32.c:1403
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid string in environment: %s"
-msgstr "변환 입력에서 잘못된 순서"
+msgstr "환경에서 잘못된 문자열: %s"
 
 #: glib/gspawn-win32.c:776 glib/gspawn-win32.c:831 glib/gspawn-win32.c:1351
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid working directory: %s"
-msgstr "디렉토리 '%s' 여는 중 오류 : %s"
+msgstr "잘못된 현재 디렉토리: %s"
 
 #: glib/gspawn-win32.c:890
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to execute helper program (%s)"
-msgstr "도움 프로그램 실행 실패"
+msgstr "도움 프로그램 실행 실패 (%s)"
 
 #: glib/gspawn-win32.c:1090
 #, c-format
@@ -616,9 +616,9 @@ msgid "Integer value '%s' for %s out of range"
 msgstr "%2$s에 대한 정수 값 '%1$s'이(가) 범위를 벗어났습니다"
 
 #: glib/goption.c:926
-#, fuzzy, c-format
+#, c-format
 msgid "Error parsing option %s"
-msgstr "변환중 오류: %s"
+msgstr "옵션 읽는 중에 오류: %s"
 
 #: glib/goption.c:959 glib/goption.c:1070
 #, c-format
@@ -721,24 +721,3 @@ msgstr "정수 값 '%s'이(가) 범위를 벗어났습니다"
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "값 '%s'을(를) 불리언 값으로 해석할 수 없습니다."
-
-#~ msgid "Could not change file mode: fork() failed: %s"
-#~ msgstr "파일의 권한을 바꾸는 데 실패: fork() 실패: %s"
-
-#~ msgid "Could not change file mode: waitpid() failed: %s"
-#~ msgstr "파일의 권한을 바꾸는 데 실패: waitpid() 실패: %s"
-
-#~ msgid "Could not change file mode: chmod() failed: %s"
-#~ msgstr "파일의 권한을 바꾸는 데 실패: chmod() 실패: %s"
-
-#~ msgid "Could not change file mode: Child terminated by signal: %s"
-#~ msgstr ""
-#~ "파일 권한을 바꿀 수 없습니다: 하위 프로세스가 다음 시그널로 멈췄습니다: %s"
-
-#, fuzzy
-#~ msgid "Could not change file mode: Child terminated abnormally"
-#~ msgstr ""
-#~ "파일 권한을 바꿀 수 없습니다: 하위 프로세스가 비정상적으로 멈췄습니다: %s"
-
-#~ msgid "Conversion from character set `%s' to `%s' is not supported"
-#~ msgstr "문자셋 `%s'에서 `%s'(으)로 변환을 지원하지 않습니다"
