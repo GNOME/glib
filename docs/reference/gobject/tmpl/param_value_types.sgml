@@ -1751,7 +1751,7 @@ See g_param_spec_internal() for details on property names.
 @nick:          nick name for the property specified
 @blurb:         description of the property specified
 @is_a_type:     a #GType whose subtypes are allowed as values
-                of the property
+                of the property (use %G_TYPE_NONE for any type)
 @flags:         flags for the property specified
 @Returns: a newly created parameter specification
 @Since: 2.10

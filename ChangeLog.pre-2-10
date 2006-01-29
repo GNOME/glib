@@ -1,3 +1,8 @@
+2006-01-29  Sven Herzberg  <herzi@gnome-de.org>
+
+	* docs/reference/gobject/tmpl/param_value_types.sgml: tell how to
+	create container classes which are as flexible as a GValue is
+
 2006-01-27  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Bump version
