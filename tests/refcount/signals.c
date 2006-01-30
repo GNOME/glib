@@ -228,7 +228,7 @@ notify (GObject *object, GParamSpec *spec, gpointer user_data)
   gint value;
 
   g_object_get (object, "test-prop", &value, NULL);
-  //g_print ("+ %d", value);
+  /*g_print ("+ %d", value);*/
 }
 
 int
