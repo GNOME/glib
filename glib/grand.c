@@ -21,7 +21,7 @@
  * Nishimura.  Please mail <matumoto@math.keio.ac.jp>, if you're using
  * code from this file in your own programs or libraries.
  * Further information on the Mersenne Twister can be found at
- * http://www.math.keio.ac.jp/~matumoto/emt.html
+ * http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/emt.html
  * This code was adapted to glib by Sebastian Wilhelmi.
  */
 
