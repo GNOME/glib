@@ -1,3 +1,8 @@
+2006-01-31  Matthias Clasen  <mclasen@redhat.com>
+
+	* autogen.sh: Touch README and INSTALL here to pacify 
+	automake.  (#329124, Kjartan Maraas, Tim Janik)
+	
 Tue Jan 31 16:45:03 2006  Tim Janik  <timj@imendio.com>
 
 	* glib/gdataset.c: carry out all dtalist pointer accesses atomically,
