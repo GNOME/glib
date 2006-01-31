@@ -1,3 +1,8 @@
+2006-01-31  Behdad Esfahbod  <behdad@gnome.org>
+
+	* docs/reference/glib/tmpl/relations.sgml (g_relation_insert): Specify
+	the type of varargs arguments. (bug #317679)
+
 2006-01-31  Matthias Clasen  <mclasen@redhat.com>
 
 	* autogen.sh: Touch README and INSTALL here to pacify 

@@ -95,8 +95,8 @@ Inserts a record into a #GRelation.
 </para>
 
 @relation: a #GRelation.
-@Varargs: the fields of the record to add. This must match the number of
-fields in the #GRelation.
+@Varargs: the fields of the record to add. These must match the number of
+fields in the #GRelation, and of type #gpointer or #gconstpointer.
 
 
 <!-- ##### FUNCTION g_relation_exists ##### -->
