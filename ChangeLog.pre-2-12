@@ -1,3 +1,7 @@
+Tue Jan 31 12:33:48 2006  Tim Janik  <timj@imendio.com>
+
+	* configure.in: generate build/win32/vs8/Makefile, to fix build breakage.
+
 2006-01-30  David Schleef  <ds@schleef.org>
 
 	* glib/grand.c: Update URL
