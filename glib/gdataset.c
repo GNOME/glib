@@ -42,14 +42,17 @@
 /* --- defines --- */
 #define	G_QUARK_BLOCK_SIZE			(512)
 
-/* datalist pointer modifications have to be done with the g_dataset_global mutex held */
+/* datalist pointer accesses vae to be carried out atomically */
 #define G_DATALIST_GET_POINTER(datalist)						\
-  ((GData*) ((gsize) *(datalist) & ~(gsize) G_DATALIST_FLAGS_MASK))
-#define G_DATALIST_SET_POINTER(datalist, pointer) G_STMT_START {			\
-  *(datalist) = (GData*) (G_DATALIST_GET_FLAGS (datalist) |				\
-			  (gsize) pointer);						\
-} G_STMT_END
+  ((GData*) ((gsize) g_atomic_pointer_get ((gpointer*) datalist) & ~(gsize) G_DATALIST_FLAGS_MASK))
 
+#define G_DATALIST_SET_POINTER(datalist, pointer)       G_STMT_START {                  \
+  gpointer _oldv, _newv;                                                                \
+  do {                                                                                  \
+    _oldv = g_atomic_pointer_get (datalist);                                            \
+    _newv = (gpointer) (((gsize) _oldv & G_DATALIST_FLAGS_MASK) | (gsize) pointer);     \
+  } while (!g_atomic_pointer_compare_and_exchange ((void**) datalist, _oldv, _newv));   \
+} G_STMT_END
 
 /* --- structures --- */
 typedef struct _GDataset GDataset;
@@ -501,8 +504,8 @@ void
 g_datalist_init (GData **datalist)
 {
   g_return_if_fail (datalist != NULL);
-  
-  *datalist = NULL;
+
+  g_atomic_pointer_set ((gpointer*) datalist, NULL);
 }
 
 /**

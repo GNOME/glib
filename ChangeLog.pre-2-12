@@ -1,3 +1,8 @@
+Tue Jan 31 16:45:03 2006  Tim Janik  <timj@imendio.com>
+
+	* glib/gdataset.c: carry out all dtalist pointer accesses atomically,
+	some missing cases where pointed out by Sebastian Wilhelmi.
+
 Tue Jan 31 12:33:48 2006  Tim Janik  <timj@imendio.com>
 
 	* configure.in: generate build/win32/vs8/Makefile, to fix build breakage.
