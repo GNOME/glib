@@ -146,7 +146,7 @@ Unrelated to #GTimer.
 <para>
 Note that <type>GTime</type> is defined to always be a 32bit integer,
 unlike <type>time_t</type> which may be 64bit on some systems. 
-Therefore, <type>GType</type> will overflow in the year 2038, and
+Therefore, <type>GTime</type> will overflow in the year 2038, and
 you cannot use the address of a <type>GTime</type> variable as argument 
 to the UNIX time() function. Instead, do the following:
 <informalexample>
