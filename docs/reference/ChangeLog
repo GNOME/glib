@@ -1,5 +1,9 @@
 2006-02-10  Matthias Clasen  <mclasen@redhat.com>
 
+	* === Released 2.9.6 ===
+
+2006-02-10  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/tmpl/date.sgml: Fix a typo (#329123, Kjartan Maraas)
 
 2006-01-27  Matthias Clasen  <mclasen@redhat.com>

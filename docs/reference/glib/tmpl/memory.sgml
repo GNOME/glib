@@ -195,7 +195,6 @@ This variable is %TRUE if the <envar>G_DEBUG</envar> environment variable
 includes the key <link linkend="G_DEBUG">gc-friendly</link>.  
 </para>
 
-@Since: 2.10
 
 <!-- ##### MACRO g_alloca ##### -->
 <para>

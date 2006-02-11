@@ -1,3 +1,7 @@
+2006-02-10  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.9.6 ===
+
 2006-01-29  Matthias Clasen  <mclasen@redhat.com>
 
 	* gclosure.c: Remove C++ comment.

@@ -1,3 +1,16 @@
+Overview of Changes from GLib 2.9.5 to GLib 2.9.6
+=================================================
+
+* Bugs fixed: 
+ 329124 distclean removes README [Kjartan Maraas, Tim Janik]
+ 317679 GRelation field type not documented [Behdad Esfahbod]
+ 329123 Typo in GTime docs [Kjartan Maraas]
+
+* Documentation improvements [Sven Herzberg, David
+  Schleef, Kjartan Maraas, Behdad Esfahbod]
+
+* Translation updates (cs,cy,it,ko,pt,sq,sr,sr@Latn,ru
+
 Overview of Changes from GLib 2.9.4 to GLib 2.9.5
 =================================================
 

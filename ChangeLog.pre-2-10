@@ -1,3 +1,9 @@
+2006-02-10  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.9.6 ===
+
+	* NEWS: Updates
+
 2006-01-31  Behdad Esfahbod  <behdad@gnome.org>
 
 	* docs/reference/glib/tmpl/relations.sgml (g_relation_insert): Specify
