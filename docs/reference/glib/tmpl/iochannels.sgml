@@ -93,14 +93,89 @@ If you want to read raw binary data without interpretation, then
 call the g_io_channel_set_encoding() function with %NULL for the
 encoding argument.
 </para>
+<para>
+This function is available in GLib on Windows, too, but you should
+avoid using it on Windows. The domain of file descriptors and sockets
+overlap. There is no way for GLib to know which one you mean in case
+the argument you pass to this function happens to be both a valid file
+descriptor and socket. If that happens a warning is issued, and GLib
+assumes that it is the file descriptor you mean.
+</para>
 
 @fd: a file descriptor.
 @Returns: a new #GIOChannel.
 
 
+<!-- ##### FUNCTION g_io_channel_win32_new_fd ##### -->
+<para>
+Creates a new #GIOChannel given a file descriptor on Windows. This works for
+file descriptors from the C runtime.
+</para>
+<para>
+This function works for file descriptors as returned by the open(),
+creat(), pipe() and fileno() calls in the Microsoft C runtime. In
+order to meaningfully use this function your code should use the same
+C runtime as GLib uses, which is msvcrt.dll. Note that in current
+Microsoft compilers it is near impossible to convince it to build code
+that would use msvcrt.dll. The last Microsoft compiler version that
+supported using msvcrt.dll as the C runtime was version 6. The GNU
+compiler and toolchain for Windows, also known as Mingw, fully
+supports msvcrt.dll.
+</para>
+<para>
+If you have created a #GIOChannel for a file descriptor and started
+watching (polling) it, you shouldn't call read() on the file
+descriptor. This is because adding polling for a file descriptor is
+implemented in GLib on Windows by starting a thread that sits blocked
+in a read() from the file descriptor most of the time. All reads from
+the file descriptor should be done by this internal GLib thread. Your
+code should call only g_io_channel_read().
+</para>
+<para>
+This function is available only in GLib on Windows.
+</para>
+
+@fd: a C library file descriptor.
+@Returns: a new #GIOChannel.
+
+
+<!-- ##### FUNCTION g_io_channel_win32_new_socket ##### -->
+<para>
+Creates a new #GIOChannel given a socket on Windows.
+</para>
+<para>
+This function works for sockets created by Winsock. It's available
+only in GLib on Windows.
+</para>
+<para>
+Polling a #GSource created to watch a channel for a socket puts the
+socket in non-blocking mode. This is a side-effect of the
+implementation and unavoidable.
+</para>
+
+@fd: a Winsock socket.
+@Returns: a new #GIOChannel.
+
+
+<!-- ##### FUNCTION g_io_channel_win32_new_messages ##### -->
+<para>
+Creates a new #GIOChannel given a window handle on Windows.
+</para>
+<para>
+This function creates a #GIOChannel that can be used to poll for
+Windows messages for the window in question.
+</para>
+
+@hwnd: a window handle.
+@Returns: a new #GIOChannel.
+
+
 <!-- ##### FUNCTION g_io_channel_unix_get_fd ##### -->
 <para>
-Returns the file descriptor of the UNIX #GIOChannel.
+Returns the file descriptor of the #GIOChannel.
+</para>
+<para>
+On Windows this function returns the file descriptor or socket of the #GIOChannel.
 </para>
 
 @channel: a #GIOChannel, created with g_io_channel_unix_new().
@@ -322,6 +397,11 @@ Creates a #GSource that's dispatched when @condition is met for the given
 when there's data available for reading.  g_io_add_watch() is a simpler
 interface to this same functionality, for the case where you want to add the
 source to the default main loop at the default priority.
+</para>
+<para>
+On Windows, polling a #GSource created to watch a channel for a socket
+puts the socket in non-blocking mode. This is a side-effect of the
+implementation and unavoidable.
 </para>
 
 @channel: a #GIOChannel to watch
