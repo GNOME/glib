@@ -1,3 +1,13 @@
+Tue Feb 14 17:00:43 2006  Tim Janik  <timj@imendio.com>
+
+	* glib/gslice.c: only define _XOPEN_SOURCE to 600 to get at 
+	posix_memalign() in case we actually are going to use it, because
+	we detected a compliant implementation (#328997).
+
+	* configure.in (enable_included_printf): don't include malloc.h when
+	testing for posix_memalign() funcitonality, since this may break the 
+	test on some systems (#328997).
+
 2006-02-14  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gstrfuncs.c: Improve docs.

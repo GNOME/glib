@@ -1028,8 +1028,8 @@ AC_CACHE_VAL(glib_cv_compliant_posix_memalign,[
     if test "$ac_cv_func_posix_memalign" = "yes" ; then
 	AC_TRY_RUN([
                 #define _XOPEN_SOURCE 600
-                #include <stdlib.h>
-                #include <malloc.h>
+                #include <stdlib.h> /* posix_memalign() should be defined here */
+                /* some systems break if #include <malloc.h> used */
 		static void test_memalign (size_t boundary, size_t size) {
 		    void *mem = 0;
 		    if (posix_memalign (&mem, boundary, size) != 0 || !mem)

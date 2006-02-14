@@ -20,7 +20,11 @@
 
 #include "config.h"
 
-#ifdef HAVE_POSIX_MEMALIGN
+#if     defined HAVE_POSIX_MEMALIGN && defined POSIX_MEMALIGN_WITH_COMPLIANT_ALLOCS
+#  define HAVE_COMPLIANT_POSIX_MEMALIGN 1
+#endif
+
+#ifdef HAVE_COMPLIANT_POSIX_MEMALIGN
 #define _XOPEN_SOURCE 600       /* posix_memalign() */
 #endif
 #include <stdlib.h>             /* posix_memalign() */
@@ -36,10 +40,6 @@
 #ifdef G_OS_WIN32
 #include <windows.h>
 #include <process.h>
-#endif
-
-#if     defined HAVE_POSIX_MEMALIGN && defined POSIX_MEMALIGN_WITH_COMPLIANT_ALLOCS
-#  define HAVE_COMPLIANT_POSIX_MEMALIGN 1
 #endif
 
 
