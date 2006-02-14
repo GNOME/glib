@@ -1,3 +1,7 @@
+2006-02-14  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gstrfuncs.c: Improve docs.
+
 2006-02-11  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Bump version

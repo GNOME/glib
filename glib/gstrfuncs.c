@@ -1748,9 +1748,8 @@ g_ascii_xdigit_value (gchar c)
  * characters include all ASCII letters. If you compare two CP932
  * strings using this function, you will get false matches.
  *
- * Return value: an integer less than, equal to, or greater than
- *               zero if @s1 is found, respectively, to be less than,
- *               to match, or to be greater than @s2.
+ * Return value: 0 if the strings match, a negative value if @s1 &lt; @s2, 
+ *   or a positive value if @s1 &gt; @s2.
  **/
 gint
 g_ascii_strcasecmp (const gchar *s1,
@@ -1790,10 +1789,8 @@ g_ascii_strcasecmp (const gchar *s1,
  * function only on strings known to be in encodings where bytes
  * corresponding to ASCII letters always represent themselves.
  *
- * Return value: an integer less than, equal to, or greater than zero
- *               if the first @n bytes of @s1 is found, respectively,
- *               to be less than, to match, or to be greater than the
- *               first @n bytes of @s2.
+ * Return value: 0 if the strings match, a negative value if @s1 &lt; @s2, 
+ *   or a positive value if @s1 &gt; @s2.
  **/
 gint
 g_ascii_strncasecmp (const gchar *s1,
