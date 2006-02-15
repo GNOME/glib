@@ -201,7 +201,9 @@ g_thread_pool_thread_proxy (gpointer data)
 		   * are either no tasks left or the pool shall stop
 		   * immediatly, inform the waiting thread of a change
 		   * of the thread pool state. */
+		  g_mutex_lock (inform_mutex);
 		  g_cond_broadcast (inform_cond);
+		  g_mutex_unlock (inform_mutex);
 		}
 	    }
 	  g_async_queue_unlock (pool->queue);
@@ -640,7 +642,7 @@ g_thread_pool_free (GThreadPool     *pool,
 
   g_return_if_fail (real);
   g_return_if_fail (real->running);
-  /* It there's no thread allowed here, there is not much sense in
+  /* If there's no thread allowed here, there is not much sense in
    * not stopping this pool immediately, when it's not empty */
   g_return_if_fail (immediate || real->max_threads != 0 || 
 		    g_async_queue_length (real->queue) == 0);
@@ -653,15 +655,21 @@ g_thread_pool_free (GThreadPool     *pool,
 
   if (wait)
     {
-      g_mutex_lock (inform_mutex);
       while (g_async_queue_length_unlocked (real->queue) != -real->num_threads &&
 	     !(immediate && real->num_threads == 0))
 	{
+	  /* This locking is a bit delicate to avoid the broadcast of
+	   * inform_cond to overtake the wait for it.  Therefore the
+	   * inform_mutex is locked before the queue is unlocked. To
+	   * avoid deadlocks however, the queue _must_ always be
+	   * locked before locking the inform_mutex, if both are to be
+	   * locked at the same time. */
+	  g_mutex_lock (inform_mutex);
 	  g_async_queue_unlock (real->queue); 
 	  g_cond_wait (inform_cond, inform_mutex); 
+	  g_mutex_unlock (inform_mutex); 
 	  g_async_queue_lock (real->queue); 
 	}
-      g_mutex_unlock (inform_mutex); 
     }
 
   if (immediate ||

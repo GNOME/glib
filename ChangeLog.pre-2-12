@@ -1,3 +1,8 @@
+2006-02-15  Sebastian Wilhelmi  <seppi@seppi.de>
+
+	* glib/gthreadpool.c: Fix deadlock when signalling the thread
+	which freed a thread pool (#331110, Chris Wilson).
+
 Tue Feb 14 17:00:43 2006  Tim Janik  <timj@imendio.com>
 
 	* glib/gslice.c: only define _XOPEN_SOURCE to 600 to get at 
