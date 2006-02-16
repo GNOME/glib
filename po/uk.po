@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-02-10 15:36-0500\n"
-"PO-Revision-Date: 2005-08-15 11:56--500\n"
+"PO-Revision-Date: 2006-02-16 11:56--500\n"
 "Last-Translator: Maxim Dziumanenko <mvd@mylinux.ua>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -619,9 +619,9 @@ msgid "Integer value '%s' for %s out of range"
 msgstr "Числове ціле значення '%s' для %s поза межами діапазону"
 
 #: glib/goption.c:926
-#, fuzzy, c-format
+#, c-format
 msgid "Error parsing option %s"
-msgstr "Помилка під час перетворення: %s"
+msgstr "Помилка розбору параметра %s"
 
 #: glib/goption.c:959 glib/goption.c:1070
 #, c-format
