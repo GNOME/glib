@@ -123,7 +123,7 @@ const gchar * const g_utf8_skip = utf8_skip_data;
  * 
  * Given a position @p with a UTF-8 encoded string @str, find the start
  * of the previous UTF-8 character starting before @p. Returns %NULL if no
- * UTF-8 characters are present in @p before @str.
+ * UTF-8 characters are present in @str before @p.
  *
  * @p does not have to be at the beginning of a UTF-8 character. No check
  * is made to see if the character found is actually valid other than
