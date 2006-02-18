@@ -47,6 +47,7 @@ LDADD = libtestgobject.la $(libgobject)
 
 test_programs =					\
 	gvalue-test				\
+	paramspec-test				\
 	accumulator				\
 	defaultiface				\
 	ifacecheck				\

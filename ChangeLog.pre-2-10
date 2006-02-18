@@ -1,5 +1,9 @@
 2006-02-18  Matthias Clasen  <mclasen@redhat.com>
 
+	* tests/gobject/Makefile.am: Add paramspec-test
+
+	* tests/gobject/paramspec-test.c: Some GParamSpec tests. 
+
 	* tests/gobject/gvalue-test.c: Add more tests.
 
 2006-02-17  Kang Jeong-Hee  <keizie@gmail.com>
