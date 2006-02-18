@@ -1,3 +1,7 @@
+2006-02-18  Matthias Clasen  <mclasen@redhat.com>
+
+	* tests/gobject/gvalue-test.c: Add more tests.
+
 2006-02-17  Kang Jeong-Hee  <keizie@gmail.com>
 
 	* glib/gutf8.c (g_utf8_find_prev_char): Correct documentation typo.
