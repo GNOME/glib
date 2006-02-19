@@ -1,15 +1,15 @@
 #undef G_DISABLE_ASSERT
 #undef G_LOG_DOMAIN
 
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
-#include <glib.h>
-
 #include <time.h>
 #include <stdlib.h>
 
-#define d(x) x
+#include <glib.h>
+
+#define DEBUG_MSG(args)
+/* #define DEBUG_MSG(args) g_printerr args ; g_printerr ("\n");  */
+#define PRINT_MSG(args)
+/* #define PRINT_MSG(args) g_print args ; g_print ("\n"); */
 
 #define MAX_THREADS            50
 #define MAX_SORTS              5    /* only applies if
@@ -29,7 +29,7 @@
 #endif
 
 
-static GMainLoop *main_loop = NULL;
+static GMainLoop   *main_loop = NULL;
 static GThreadPool *thread_pool = NULL;
 static GAsyncQueue *async_queue = NULL;
 
@@ -43,7 +43,7 @@ sort_compare (gconstpointer p1, gconstpointer p2, gpointer user_data)
   id1 = GPOINTER_TO_INT (p1);
   id2 = GPOINTER_TO_INT (p2);
 
-  d(g_print ("comparing #1:%d and #2:%d, returning %d\n", 
+  DEBUG_MSG (("comparing #1:%d and #2:%d, returning %d", 
 	     id1, id2, (id1 > id2 ? +1 : id1 == id2 ? 0 : -1)));
 
   return (id1 > id2 ? +1 : id1 == id2 ? 0 : -1);
@@ -52,16 +52,18 @@ sort_compare (gconstpointer p1, gconstpointer p2, gpointer user_data)
 static gboolean
 sort_queue (gpointer user_data)
 {
-  static gint sorts = 0;
-  gboolean can_quit = FALSE;
-  gint sort_multiplier;
-  gint len;
-  gint i;
+  static gint     sorts = 0;
+  static gpointer last_p = NULL;
+  gpointer        p;
+  gboolean        can_quit = FALSE;
+  gint            sort_multiplier;
+  gint            len;
+  gint            i;
 
   sort_multiplier = GPOINTER_TO_INT (user_data);
 
   if (SORT_QUEUE_AFTER) {
-    d(g_print ("sorting async queue...\n")); 
+    PRINT_MSG (("sorting async queue...")); 
     g_async_queue_sort (async_queue, sort_compare, NULL);
 
     sorts++;
@@ -73,18 +75,22 @@ sort_queue (gpointer user_data)
     g_async_queue_sort (async_queue, sort_compare, NULL);
     len = g_async_queue_length (async_queue);
 
-    d(g_print ("sorted queue (for %d/%d times, size:%d)...\n", sorts, MAX_SORTS, len)); 
+    PRINT_MSG (("sorted queue (for %d/%d times, size:%d)...", sorts, MAX_SORTS, len)); 
   } else {
     can_quit = TRUE;
     len = g_async_queue_length (async_queue);
-    d(g_print ("printing queue (size:%d)...\n", len)); 
+    DEBUG_MSG (("printing queue (size:%d)...", len)); 
   }
 
-  for (i = 0; i < len; i++) {
-    gpointer p;
-    
+  for (i = 0, last_p = NULL; i < len; i++) {
     p = g_async_queue_pop (async_queue);
-    d(g_print ("item %d ---> %d\n", i, GPOINTER_TO_INT (p))); 
+    DEBUG_MSG (("item %d ---> %d", i, GPOINTER_TO_INT (p))); 
+
+    if (last_p) {
+      g_assert (GPOINTER_TO_INT (last_p) <= GPOINTER_TO_INT (p));
+    }
+
+    last_p = p;
   }
   
   if (can_quit && QUIT_WHEN_DONE) {
@@ -104,7 +110,7 @@ enter_thread (gpointer data, gpointer user_data)
   id = GPOINTER_TO_INT (data);
   
   ms = g_random_int_range (MIN_TIME * 1000, MAX_TIME * 1000);
-  d(g_print ("entered thread with id:%d, adding to queue in:%ld ms\n", id, ms));
+  DEBUG_MSG (("entered thread with id:%d, adding to queue in:%ld ms", id, ms));
 
   g_usleep (ms * 1000);
 
@@ -116,27 +122,29 @@ enter_thread (gpointer data, gpointer user_data)
 
   len = g_async_queue_length (async_queue);
 
-  d(g_print ("thread id:%d added to async queue (size:%d)\n", 
+  DEBUG_MSG (("thread id:%d added to async queue (size:%d)", 
 	     id, len));
 }
 
-int main (int argc, char *argv[])
+int 
+main (int argc, char *argv[])
 {
 #if defined(G_THREADS_ENABLED) && ! defined(G_THREADS_IMPL_NONE)
-  gint i;
-  gint max_threads = MAX_THREADS;
-  gint max_unused_threads = MAX_THREADS;
-  gint sort_multiplier = MAX_SORTS;
-  gint sort_interval;
+  gint   i;
+  gint   max_threads = MAX_THREADS;
+  gint   max_unused_threads = MAX_THREADS;
+  gint   sort_multiplier = MAX_SORTS;
+  gint   sort_interval;
+  gchar *msg;
 
   g_thread_init (NULL);
 
-  d(g_print ("creating async queue...\n"));
+  PRINT_MSG (("creating async queue..."));
   async_queue = g_async_queue_new ();
 
   g_return_val_if_fail (async_queue != NULL, EXIT_FAILURE);
 
-  d(g_print ("creating thread pool with max threads:%d, max unused threads:%d...\n",
+  PRINT_MSG (("creating thread pool with max threads:%d, max unused threads:%d...",
 	     max_threads, max_unused_threads));
   thread_pool = g_thread_pool_new (enter_thread,
 				   async_queue,
@@ -148,8 +156,8 @@ int main (int argc, char *argv[])
 
   g_thread_pool_set_max_unused_threads (max_unused_threads);
 
-  d(g_print ("creating threads...\n"));
-  for (i = 0; i <= max_threads; i++) {
+  PRINT_MSG (("creating threads..."));
+  for (i = 1; i <= max_threads; i++) {
     GError *error = NULL;
   
     g_thread_pool_push (thread_pool, GINT_TO_POINTER (i), &error);
@@ -162,15 +170,21 @@ int main (int argc, char *argv[])
   }
   
   sort_interval = ((MAX_TIME / sort_multiplier) + 2)  * 1000;
-  d(g_print ("adding timeout of %d seconds to sort %d times\n", 
-	     sort_interval, sort_multiplier));
   g_timeout_add (sort_interval, sort_queue, GINT_TO_POINTER (sort_multiplier));
 
   if (SORT_QUEUE_ON_PUSH) {
-    d(g_print ("sorting when pushing into the queue...\n")); 
+    msg = "sorting when pushing into the queue, checking queue is sorted";
+  } else {
+    msg = "sorting";
   }
 
-  d(g_print ("entering main event loop\n"));
+  PRINT_MSG (("%s %d %s %d ms",
+	      msg,
+	      sort_multiplier, 
+	      sort_multiplier == 1 ? "time in" : "times, once every",
+	      sort_interval));
+
+  DEBUG_MSG (("entering main event loop"));
 
   main_loop = g_main_loop_new (NULL, FALSE);
   g_main_loop_run (main_loop);

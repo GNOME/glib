@@ -1,151 +1,204 @@
-/* GLIB - Library of useful routines for C programming
- * Copyright (C) 1995-1997  Peter Mattis, Spencer Kimball and Josh MacDonald
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
- */
-
-/*
- * Modified by the GLib Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GLib Team.  See the ChangeLog
- * files for a list of changes.  These files are distributed with
- * GLib at ftp://ftp.gtk.org/pub/gtk/. 
- */
-
 #undef G_DISABLE_ASSERT
 #undef G_LOG_DOMAIN
 
-#include <stdio.h>
-#include <string.h>
-#include "glib.h"
+#include <glib.h>
 
-int array[10000];
-gboolean failed = FALSE;
+#define DEBUG_MSG(args) 
+/* #define DEBUG_MSG(args) g_printerr args ; g_printerr ("\n"); */
+#define PRINT_MSG(args) 
+/* #define PRINT_MSG(args) g_print args ; g_print ("\n"); */
 
-#define	TEST(m,cond)	G_STMT_START { failed = !(cond); \
-if (failed) \
-  { if (!m) \
-      g_print ("\n(%s:%d) failed for: %s\n", __FILE__, __LINE__, ( # cond )); \
-    else \
-      g_print ("\n(%s:%d) failed for: %s: (%s)\n", __FILE__, __LINE__, ( # cond ), (gchar*)m); \
-  } \
-else \
-  g_print ("."); fflush (stdout); \
-} G_STMT_END
+#define SIZE       50
+#define NUMBER_MIN 0000
+#define NUMBER_MAX 9999
 
-#define	C2P(c)		((gpointer) ((long) (c)))
-#define	P2C(p)		((gchar) ((long) (p)))
 
-#define GLIB_TEST_STRING "el dorado "
-#define GLIB_TEST_STRING_5 "el do"
+static guint32 array[SIZE];
 
-typedef struct {
-	guint age;
-	gchar name[40];
-} GlibTestInfo;
 
 static gint
-my_list_compare_one (gconstpointer a, gconstpointer b)
+sort (gconstpointer p1, gconstpointer p2)
 {
-  gint one = *((const gint*)a);
-  gint two = *((const gint*)b);
-  return one-two;
+  gint32 a, b;
+
+  a = GPOINTER_TO_INT (p1);
+  b = GPOINTER_TO_INT (p2);
+
+  return (a > b ? +1 : a == b ? 0 : -1);
 }
 
-static gint
-my_list_compare_two (gconstpointer a, gconstpointer b)
+/*
+ * gslist sort tests
+ */
+static void
+test_slist_sort (void)
 {
-  gint one = *((const gint*)a);
-  gint two = *((const gint*)b);
-  return two-one;
+  GSList *slist = NULL;
+  gint    i;
+
+  PRINT_MSG (("testing g_slist_sort()"));
+
+  for (i = 0; i < SIZE; i++) {
+    slist = g_slist_append (slist, GINT_TO_POINTER (array[i]));
+  }
+
+  slist = g_slist_sort (slist, sort);
+  for (i = 0; i < SIZE - 1; i++) {
+    gpointer p1, p2;
+
+    p1 = g_slist_nth_data (slist, i);
+    p2 = g_slist_nth_data (slist, i+1);
+
+    g_assert (GPOINTER_TO_INT (p1) <= GPOINTER_TO_INT (p2));
+    DEBUG_MSG (("slist_sort #%3.3d ---> %d", i, GPOINTER_TO_INT (p1)));
+  }
+}
+
+static void
+test_slist_sort_with_data (void)
+{
+  GSList *slist = NULL;
+  gint    i;
+
+  PRINT_MSG (("testing g_slist_sort_with_data()"));
+
+  for (i = 0; i < SIZE; i++) {
+    slist = g_slist_append (slist, GINT_TO_POINTER (array[i]));
+  }
+
+  slist = g_slist_sort_with_data (slist, (GCompareDataFunc)sort, NULL);
+  for (i = 0; i < SIZE - 1; i++) {
+    gpointer p1, p2;
+
+    p1 = g_slist_nth_data (slist, i);
+    p2 = g_slist_nth_data (slist, i+1);
+
+    g_assert (GPOINTER_TO_INT (p1) <= GPOINTER_TO_INT (p2));
+    DEBUG_MSG (("slist_sort_with_data #%3.3d ---> %d", i, GPOINTER_TO_INT (p1)));
+  }
+}
+
+static void
+test_slist_insert_sorted (void)
+{
+  GSList *slist = NULL;
+  gint    i;
+
+  PRINT_MSG (("testing g_slist_insert_sorted()"));
+
+  for (i = 0; i < SIZE; i++) {
+    slist = g_slist_insert_sorted (slist, GINT_TO_POINTER (array[i]), sort);
+  }
+
+  for (i = 0; i < SIZE - 1; i++) {
+    gpointer p1, p2;
+
+    p1 = g_slist_nth_data (slist, i);
+    p2 = g_slist_nth_data (slist, i+1);
+
+    g_assert (GPOINTER_TO_INT (p1) <= GPOINTER_TO_INT (p2));
+    DEBUG_MSG (("slist_insert_sorted #%3.3d ---> %d", i, GPOINTER_TO_INT (p1)));
+  }
+}
+
+static void
+test_slist_insert_sorted_with_data (void)
+{
+  GSList *slist = NULL;
+  gint    i;
+
+  PRINT_MSG (("testing g_slist_insert_sorted_with_data()"));
+
+  for (i = 0; i < SIZE; i++) {
+    slist = g_slist_insert_sorted_with_data (slist, 
+					   GINT_TO_POINTER (array[i]), 
+					   (GCompareDataFunc)sort, 
+					   NULL);
+  }
+
+  for (i = 0; i < SIZE - 1; i++) {
+    gpointer p1, p2;
+
+    p1 = g_slist_nth_data (slist, i);
+    p2 = g_slist_nth_data (slist, i+1);
+
+    g_assert (GPOINTER_TO_INT (p1) <= GPOINTER_TO_INT (p2));
+    DEBUG_MSG (("slist_insert_sorted_with_data #%3.3d ---> %d", i, GPOINTER_TO_INT (p1)));
+  }
+}
+
+static void
+test_slist_reverse (void)
+{
+  GSList *slist = NULL;
+  GSList *st;
+  gint    nums[10] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+  gint    i;
+
+  PRINT_MSG (("testing g_slist_reverse()"));
+
+  for (i = 0; i < 10; i++) {
+    slist = g_slist_append (slist, &nums[i]);
+  }
+
+  slist = g_slist_reverse (slist);
+
+  for (i = 0; i < 10; i++) {
+    st = g_slist_nth (slist, i);
+    g_assert (*((gint*) st->data) == (9 - i));
+  }
+
+  g_slist_free (slist);
+}
+
+static void
+test_slist_nth (void)
+{
+  GSList *slist = NULL;
+  GSList *st;
+  gint    nums[10] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+  gint    i;
+
+  PRINT_MSG (("testing g_slist_nth()"));
+
+  for (i = 0; i < 10; i++) {
+    slist = g_slist_append (slist, &nums[i]);
+  }
+
+  for (i = 0; i < 10; i++) {
+    st = g_slist_nth (slist, i);
+    g_assert (*((gint*) st->data) == i);
+  }
+
+  g_slist_free (slist);
 }
 
 int
-main (int   argc,
-      char *argv[])
+main (int argc, char *argv[])
 {
-  GSList *slist, *st;
-  gint nums[10] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-  gint morenums[10] = { 8, 9, 7, 0, 3, 2, 5, 1, 4, 6};
   gint i;
 
-  slist = NULL;
-  for (i = 0; i < 10; i++)
-    slist = g_slist_append (slist, &nums[i]);
-  slist = g_slist_reverse (slist);
+  DEBUG_MSG (("debugging messages turned on"));
 
-  for (i = 0; i < 10; i++)
-    {
-      st = g_slist_nth (slist, i);
-      g_assert (*((gint*) st->data) == (9 - i));
-    }
+  DEBUG_MSG (("creating %d random numbers", SIZE));
 
-  g_slist_free (slist);
-  slist = NULL;
+  /* Create an array of random numbers. */
+  for (i = 0; i < SIZE; i++) {
+    array[i] = g_random_int_range (NUMBER_MIN, NUMBER_MAX);
+    DEBUG_MSG (("number #%3.3d ---> %d", i, array[i]));
+  }
 
-  for (i = 0; i < 10; i++)
-    slist = g_slist_insert_sorted (slist, &morenums[i], my_list_compare_one);
+  /* Start tests. */
+  test_slist_sort ();
+  test_slist_sort_with_data ();
 
-  /*
-  g_print("\n");
-  g_slist_foreach (slist, my_list_print, NULL);
-  */
+  test_slist_insert_sorted ();
+  test_slist_insert_sorted_with_data ();
 
-  for (i = 0; i < 10; i++)
-    {
-      st = g_slist_nth (slist, i);
-      g_assert (*((gint*) st->data) == i);
-    }
+  test_slist_reverse ();
+  test_slist_nth ();
 
-  g_slist_free(slist);
-  slist = NULL;
-
-  for (i = 0; i < 10; i++)
-    slist = g_slist_insert_sorted (slist, &morenums[i], my_list_compare_two);
-
-  /*
-  g_print("\n");
-  g_slist_foreach (slist, my_list_print, NULL);
-  */
-
-  for (i = 0; i < 10; i++)
-    {
-      st = g_slist_nth (slist, i);
-      g_assert (*((gint*) st->data) == (9 - i));
-    }
-
-  g_slist_free(slist);
-  slist = NULL;
-
-  for (i = 0; i < 10; i++)
-    slist = g_slist_prepend (slist, &morenums[i]);
-
-  slist = g_slist_sort (slist, my_list_compare_two);
-
-  /*
-  g_print("\n");
-  g_slist_foreach (slist, my_list_print, NULL);
-  */
-
-  for (i = 0; i < 10; i++)
-    {
-      st = g_slist_nth (slist, i);
-      g_assert (*((gint*) st->data) == (9 - i));
-    }
-
-  g_slist_free(slist);
+  PRINT_MSG (("testing finished"));
 
   return 0;
 }

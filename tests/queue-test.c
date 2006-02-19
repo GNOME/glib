@@ -1,15 +1,14 @@
 #undef G_DISABLE_ASSERT
 #undef G_LOG_DOMAIN
 
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
-#include <glib.h>
-
 #include <time.h>
 #include <stdlib.h>
 
+#include <glib.h>
+
+
 static gboolean verbose = FALSE;
+
 
 static void
 check_integrity (GQueue *queue)
