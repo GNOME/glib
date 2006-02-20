@@ -1,3 +1,14 @@
+2006-02-20  Tor Lillqvist  <tml@novell.com>
+
+	* gthread-win32.c (g_thread_exit_win32_impl): Make the
+	implementation of GPrivate behave more closely as in POSIX
+	threads: The value associacted with a GPrivate must be set to NULL
+	before calling the destructor. (The destructor gets the original
+	value as argument.)  A destructor might re-associate a non-NULL
+	value with some GPrivate. To deal with this, if after all
+	destructors have been called, there still are some non-NULL
+	values, the process is repeated. (#331367)
+
 2006-02-10  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.9.6 ===
