@@ -1,3 +1,10 @@
+2006-02-14  Tor Lillqvist  <tml@novell.com>
+
+	* glib/tmpl/iochannels.sgml: Document some Windows-specific issues.
+
+	* glib/glib-sections.txt: Move three Windows-specific functions
+	that now are documented from being Private to the correct section.
+
 2006-02-10  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.9.6 ===

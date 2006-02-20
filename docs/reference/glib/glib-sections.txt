@@ -695,6 +695,9 @@ GIOChannel
 <SUBSECTION>
 g_io_channel_unix_new
 g_io_channel_unix_get_fd
+g_io_channel_win32_new_fd
+g_io_channel_win32_new_socket
+g_io_channel_win32_new_messages
 
 <SUBSECTION>
 g_io_channel_init
@@ -750,9 +753,6 @@ g_io_channel_get_close_on_unref
 g_io_channel_set_close_on_unref
 
 <SUBSECTION Private>
-g_io_channel_win32_new_fd
-g_io_channel_win32_new_messages
-g_io_channel_win32_new_socket
 g_io_channel_win32_poll
 g_io_channel_win32_make_pollfd
 g_io_channel_win32_get_fd
