@@ -414,13 +414,24 @@ g_thread_exit_win32_impl (void)
 
   if (array)
     {
-      for (i = 0; i < private_max; i++)
-	{
-	  GDestroyNotify destructor = g_private_destructors[i];
-	  GDestroyNotify data = array[i];
-	  if (destructor && data)
-	    destructor (data);
-	}
+      gboolean some_data_non_null;
+
+      do {
+	some_data_non_null = FALSE;
+	for (i = 0; i < private_max; i++)
+	  {
+	    GDestroyNotify destructor = g_private_destructors[i];
+	    GDestroyNotify data = array[i];
+	    
+	    if (data)
+	      some_data_non_null = TRUE;
+
+	    array[i] = NULL;
+	    
+	    if (destructor && data)
+	      destructor (data);
+	  }
+      } while (some_data_non_null);
 
       g_free (array);
 
