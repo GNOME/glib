@@ -240,10 +240,6 @@ A structure that provides information to the type system which is
 used specifically for managing interface types.
 </para>
 
-@interface_init: 	Location of the function that initializes the interface.
-@interface_finalize: 	Location of the function that finalizes the interface.
-@interface_data: 	Location of user data passed to the @interface_init and
-	 		@interface_finalize functions (optional).
 
 <!-- ##### STRUCT GTypeValueTable ##### -->
 <para>
@@ -511,6 +507,7 @@ This macro should only be used in type implementations.
 @instance: the instance of a type deriving from @private_type.
 @g_type: the type identifying which private data to retrieve.
 @c_type: The C type for the private structure.
+@Since: 2.4
 
 
 <!-- ##### MACRO G_TYPE_CHECK_INSTANCE ##### -->
@@ -827,6 +824,7 @@ my_object_get_some_field (MyObject *my_object)
 
 @g_class: class structure for an instantiatable type
 @private_size: size of private structure.
+@Since: 2.4
 
 
 <!-- ##### FUNCTION g_type_interface_peek ##### -->

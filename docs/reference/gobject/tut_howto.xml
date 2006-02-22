@@ -168,15 +168,17 @@ struct _MamanBar {
               The private structure is then defined in the .c file, instantiated in the object's
               <function>init</function> function and destroyed in the object's <function>finalize</function> function.
 <programlisting>
-static void maman_bar_finalize(GObject *object) {
+static void
+maman_bar_finalize (GObject *object) {
   MamanBar *self = MAMAN_BAR (object);
   /* do stuff */
   g_free (self->priv);
 }
 
-static void maman_bar_init(GTypeInstance *instance, gpointer g_class) {
+static void
+maman_bar_init (GTypeInstance *instance, gpointer g_class) {
   MamanBar *self = MAMAN_BAR (instance);
-  self->priv = g_new0(MamanBarPrivate,1);
+  self->priv = g_new0 (MamanBarPrivate,1);
   /* do stuff */
 }
 </programlisting>
@@ -184,18 +186,20 @@ static void maman_bar_init(GTypeInstance *instance, gpointer g_class) {
 
             <listitem><para>
               A similar alternative, available since Glib version 2.4, is to define a private structure in the .c file,
-              declare it as a private structure in <function>class_init</function> using 
-              <function><link linkend="g-type-class-add-private">g_type_class_add_private</link></function> and declare a macro to allow convenient access to this structure.
+              declare it as a private structure in <function>maman_bar_class_init</function> using 
+              <function><link linkend="g-type-class-add-private">g_type_class_add_private</link></function>.
+              Instead of allocating memory in <function>maman_bar_init</function> a pointer to the private memory area is
+              stored in the instance to allow convenient access to this structure.
               A private structure will then be attached to each newly created object by the GObject system.
               You dont need to free or allocate the private structure, only the objects or pointers that it may contain.
+              Another advantage of this to the previous version is that is lessens memory fragmentation,
+              as the public and private parts of the instance memory are allocated at once.
 <programlisting>
 typedef struct _MamanBarPrivate MamanBarPrivate;
 
 struct _MamanBarPrivate {
   int private_field;
 };
-
-#define MAMAN_BAR_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), MAMAN_BAR_TYPE, MamanBarPrivate))
 
 static void
 maman_bar_class_init (MamanBarClass *klass)
@@ -205,12 +209,11 @@ maman_bar_class_init (MamanBarClass *klass)
   ...
 }
 
-static int
-maman_bar_get_private_field (MamanBar *self)
-{
-  MamanBarPrivate *priv = MAMAN_BAR_GET_PRIVATE (self);
-
-  return priv->private_field;
+static void
+maman_bar_init (GTypeInstance *instance, gpointer g_class) {
+  MamanBar *self = MAMAN_BAR (instance);
+  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, MAMAN_BAR_TYPE, MamanBarPrivate);
+  /* do stuff */
 }
 </programlisting>
             </para></listitem>

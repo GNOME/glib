@@ -547,14 +547,14 @@ maman_bar_set_property (GObject      *object,
 
   switch (property_id) {
   case MAMAN_BAR_CONSTRUCT_NAME: {
-    g_free (self->private->name);
-    self->private->name = g_value_dup_string (value);
-    g_print ("maman: %s\n",self->private->name);
+    g_free (self->priv->name);
+    self->priv->name = g_value_dup_string (value);
+    g_print ("maman: %s\n",self->priv->name);
   }
     break;
   case MAMAN_BAR_PAPA_NUMBER: {
-    self->private->papa_number = g_value_get_uchar (value);
-    g_print ("papa: %u\n",self->private->papa_number);
+    self->priv->papa_number = g_value_get_uchar (value);
+    g_print ("papa: %u\n",self->priv->papa_number);
   }
     break;
   default:
@@ -574,11 +574,11 @@ maman_bar_get_property (GObject      *object,
 
   switch (property_id) {
   case MAMAN_BAR_CONSTRUCT_NAME: {
-    g_value_set_string (value, self->private->name);
+    g_value_set_string (value, self->priv->name);
   }
     break;
   case MAMAN_BAR_PAPA_NUMBER: {
-    g_value_set_uchar (value, self->private->papa_number);
+    g_value_set_uchar (value, self->priv->papa_number);
   }
     break;
   default:

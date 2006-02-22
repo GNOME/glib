@@ -1,3 +1,12 @@
+2006-02-22  Stefan Kost  <ensonic@users.sf.net>
+
+	* gobject/tmpl/gtype.sgml:
+	  add @since: for _add_private, _GET_PRIVATE
+	* gobject/tut_gobject.xml:
+	  fix example to use ->priv and not ->private
+	* gobject/tut_howto.xml:
+	  fix g_type_class_add_private example
+
 2006-02-14  Tor Lillqvist  <tml@novell.com>
 
 	* glib/tmpl/iochannels.sgml: Document some Windows-specific issues.
