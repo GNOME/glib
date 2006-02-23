@@ -221,6 +221,7 @@ run_to_uri_tests (void)
 	    g_print ("Error message: %s\n", error->message);
 	  any_failed = TRUE;
 	}
+      g_free (res);
     }
 }
 

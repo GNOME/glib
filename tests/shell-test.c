@@ -161,6 +161,7 @@ do_argv_test (const gchar *cmdline, const TestResult *result)
       fprintf (stderr, "argv didn't get NULL-terminated\n");
       exit (1);
     }
+  g_strfreev (argv);
 }
 
 static void

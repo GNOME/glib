@@ -105,6 +105,7 @@ test_compilation (gchar *src,
       g_print ("failed \t(match_type: %s, expected %s)\n",
 	       match_type_name (spec->match_type), 
 	       match_type_name (match_type));
+      g_pattern_spec_free (spec);
       return FALSE;
     }
   
@@ -113,6 +114,7 @@ test_compilation (gchar *src,
       g_print ("failed \t(pattern: \"%s\", expected \"%s\")\n",
 	       spec->pattern,
 	       pattern);
+      g_pattern_spec_free (spec);
       return FALSE;
     }
   
@@ -121,6 +123,7 @@ test_compilation (gchar *src,
       g_print ("failed \t(pattern_length: %d, expected %d)\n",
 	       spec->pattern_length,
 	       (gint)strlen (spec->pattern));
+      g_pattern_spec_free (spec);
       return FALSE;
     }
   
@@ -129,12 +132,15 @@ test_compilation (gchar *src,
       g_print ("failed \t(min_length: %d, expected %d)\n",
 	       spec->min_length,
 	       min);
+      g_pattern_spec_free (spec);
       return FALSE;
     }
   
   verbose ("passed (%s: \"%s\")\n",
 	   match_type_name (spec->match_type),
 	   spec->pattern);
+
+  g_pattern_spec_free (spec);
   
   return TRUE;
 }

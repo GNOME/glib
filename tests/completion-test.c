@@ -58,5 +58,7 @@ int main (int argc, char *argv[])
   g_assert (!strcmp ("b", prefix));
   g_free (prefix);
 
+  g_completion_free (cmp);
+
   return 0;
 }

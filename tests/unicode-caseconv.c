@@ -88,6 +88,7 @@ int main (int argc, char **argv)
   if (!infile)
     {
       fprintf (stderr, "Failed to open %s\n", filename );
+      g_free (filename);
       exit (1);
     }
   
@@ -114,6 +115,7 @@ int main (int argc, char **argv)
     }
 
   fclose (infile);
+  g_free (filename);
 
   return result;
 }

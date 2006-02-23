@@ -49,6 +49,7 @@ test_iconv_state (void)
   g_assert (bytes_read == 5);
   g_assert (bytes_written == 10);
   g_assert (strcmp (out, expected) == 0);
+  g_free (out);
 }
 
 /* some tests involving "vulgar fraction one half" */
@@ -82,6 +83,7 @@ test_one_half (void)
   g_assert (bytes_written == 0);
   g_assert (out == NULL);
   g_clear_error (&error);
+  g_free (out);
 
   out = g_convert_with_fallback (in, -1, 
 				 "ISO8859-15", "UTF-8",
