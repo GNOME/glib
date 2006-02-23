@@ -5,7 +5,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: glib 2.9.2\n"
+"Project-Id-Version: glib 2.9.6\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-04-06 10:49-0400\n"
 "PO-Revision-Date: 2006-02-17 15:40+0400\n"
