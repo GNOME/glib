@@ -106,6 +106,18 @@ assumes that it is the file descriptor you mean.
 @Returns: a new #GIOChannel.
 
 
+<!-- ##### FUNCTION g_io_channel_unix_get_fd ##### -->
+<para>
+Returns the file descriptor of the #GIOChannel.
+</para>
+<para>
+On Windows this function returns the file descriptor or socket of the #GIOChannel.
+</para>
+
+@channel: a #GIOChannel, created with g_io_channel_unix_new().
+@Returns: the file descriptor of the #GIOChannel.
+
+
 <!-- ##### FUNCTION g_io_channel_win32_new_fd ##### -->
 <para>
 Creates a new #GIOChannel given a file descriptor on Windows. This works for
@@ -153,8 +165,10 @@ socket in non-blocking mode. This is a side-effect of the
 implementation and unavoidable.
 </para>
 
-@fd: a Winsock socket.
+@socket: 
 @Returns: a new #GIOChannel.
+<!-- # Unused Parameters # -->
+@fd: a Winsock socket.
 
 
 <!-- ##### FUNCTION g_io_channel_win32_new_messages ##### -->
@@ -168,18 +182,6 @@ Windows messages for the window in question.
 
 @hwnd: a window handle.
 @Returns: a new #GIOChannel.
-
-
-<!-- ##### FUNCTION g_io_channel_unix_get_fd ##### -->
-<para>
-Returns the file descriptor of the #GIOChannel.
-</para>
-<para>
-On Windows this function returns the file descriptor or socket of the #GIOChannel.
-</para>
-
-@channel: a #GIOChannel, created with g_io_channel_unix_new().
-@Returns: the file descriptor of the #GIOChannel.
 
 
 <!-- ##### FUNCTION g_io_channel_init ##### -->

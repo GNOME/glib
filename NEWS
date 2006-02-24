@@ -10,6 +10,8 @@ Overview of Changes from GLib 2.9.6 to GLib 2.10.0
  332435 g_utf8_strlen returns wrong value if a maximum 
         number of bytes to check is specified 
         [Matthias Clasen]
+ 331367 gslice requires more POSIX-like semantics for 
+        GPrivate destructors [Tor Lillqvist]
 
 * Documentation improvements [Matthias, Kang Jeong-Hee,
   Tor Lillqvist, Stefan Kost]

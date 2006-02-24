@@ -1,5 +1,7 @@
 2006-02-24  Matthias Clasen  <mclasen@redhat.com>
 
+	* === Released 2.10.0 ===
+
 	* README.in: Mention the slice allocator and GInitiallyUnowned.
 
 	* NEWS: Updates
