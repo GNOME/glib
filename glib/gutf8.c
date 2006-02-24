@@ -242,7 +242,7 @@ g_utf8_strlen (const gchar *p,
       /* only do the last len increment if we got a complete
        * char (don't count partial chars)
        */
-      if (p - start == max)
+      if (p - start <= max)
         ++len;
     }
 

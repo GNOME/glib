@@ -1,3 +1,10 @@
+2006-02-24  Matthias Clasen  <mclasen@redhat.com>
+
+	* tests/utf8-pointer.c: Add tests for g_utf8_strlen().
+
+	* glib/gutf8.c: Fix boundary cases in g_utf8_strlen().
+	(#332435)
+
 2006-02-23  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* tests/completion-test.c: (main): Plug leaks reported by
