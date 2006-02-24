@@ -45,6 +45,18 @@ Notes about GLib 2.10
   'make check' will also fail on systems where the C compiler does not
   support ELF visibility attributes.
 
+* The GMemChunk API has been deprecated in favour of a new 'slice 
+  allocator'. See the g_slice documentation for more details. 
+
+* A new type, GInitiallyUnowned, has been introduced, which is
+  intended to serve as a common implementation of the 'floating reference'
+  concept that is e.g. used by GtkObject. Note that changing the
+  inheritance hierarchy of a type can cause problems for language
+  bindings and other code which needs to work closely with the type
+  system. Therefore, switching to GInitiallyUnowned should be done
+  carefully. g_object_compat_control() has been added to GLib 2.8.5
+  to help with the transition.
+
 Notes about GLib 2.6.0
 ======================
 

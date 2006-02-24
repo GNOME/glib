@@ -1,5 +1,11 @@
 2006-02-24  Matthias Clasen  <mclasen@redhat.com>
 
+	* README.in: Mention the slice allocator and GInitiallyUnowned.
+
+	* NEWS: Updates
+
+	* configure.in: Bump version to 2.10.0
+
 	* tests/utf8-pointer.c: Add tests for g_utf8_strlen().
 
 	* glib/gutf8.c: Fix boundary cases in g_utf8_strlen().

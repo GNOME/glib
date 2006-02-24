@@ -1,3 +1,21 @@
+Overview of Changes from GLib 2.9.6 to GLib 2.10.0
+==================================================
+
+* Bugs fixed:
+ 328997 64bit pointer trunction in glib slab-allocator
+        [Pascal Hofstee]
+ 331110 g_cond_broadcast(inform_cond) without holding 
+        inform_mutex [Chris Wilson, Sebastian Wilhelmi]
+ 332093 Fix some leaks in the tests [Kjartan Maraas]
+ 332435 g_utf8_strlen returns wrong value if a maximum 
+        number of bytes to check is specified 
+        [Matthias Clasen]
+
+* Documentation improvements [Matthias, Kang Jeong-Hee,
+  Tor Lillqvist, Stefan Kost]
+
+* Translation updates (el,eu,ka,uk)
+
 Overview of Changes from GLib 2.9.5 to GLib 2.9.6
 =================================================
 
