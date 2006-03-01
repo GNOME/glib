@@ -1,3 +1,12 @@
+2006-03-01  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gutils.c (g_listenv): Separate implementation on Win32: Use
+	the wide character API on NT-based Windows. Return UTF-8 strings.
+
+	* glib/glib.symbols: Don't mark g_listenv as PRIVATE, as that
+	meant it wasn't present in the import library. PRIVATE is used
+	only for the backwards-compatibility DLL ABI stability hacks.
+
 2006-02-24  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Bump version

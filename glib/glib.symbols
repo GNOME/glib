@@ -1239,7 +1239,7 @@ g_unsetenv PRIVATE
 g_get_home_dir PRIVATE
 g_get_host_name
 g_setenv PRIVATE
-g_listenv PRIVATE
+g_listenv
 #ifdef G_OS_WIN32
 g_find_program_in_path_utf8
 g_get_current_dir_utf8
