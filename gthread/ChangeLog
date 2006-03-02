@@ -1,3 +1,13 @@
+2006-03-02  Tor Lillqvist  <tml@novell.com>
+
+	* gthread-win32.c (G_PRIVATE_MAX): Increase to 100. 16 was rather
+	low.
+	(g_private_new_win32_impl): Can't use g_error() here as
+	g_private_new() is called a few times by GLib internally before
+	the messaging system that g_error() requires is ready. Thanks to
+	Tim Janik for noticing. Just display a MessageBox() and abort()
+	instead.
+
 2006-02-24  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.10.0 ===
