@@ -1,0 +1,662 @@
+# glib.po armenian translation 
+# Copyright (C) 2006 GNOME FOUNDATION
+# This file is distributed under the same license as the glib package.
+# Norayr Chilingaryan <norik@freenet.am>, 2006.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: glib.HEAD\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2006-03-03 16:24+0000\n"
+"PO-Revision-Date: 2006-03-03 16:24+0000\n"
+"Last-Translator: Norayr Chilingaryan <norik@freenet.am>\n"
+"Language-Team: Armenian <norik@freenet.am>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 16bit\n"
+
+#: ../glib/gconvert.c:408 ../glib/gconvert.c:486 ../glib/giochannel.c:1150
+#, c-format
+msgid "Conversion from character set '%s' to '%s' is not supported"
+msgstr ""
+
+#: ../glib/gconvert.c:412 ../glib/gconvert.c:490
+#, c-format
+msgid "Could not open converter from '%s' to '%s'"
+msgstr ""
+
+#: ../glib/gconvert.c:606 ../glib/gconvert.c:995 ../glib/giochannel.c:1322
+#: ../glib/giochannel.c:1364 ../glib/giochannel.c:2206 ../glib/gutf8.c:943
+#: ../glib/gutf8.c:1392
+msgid "Invalid byte sequence in conversion input"
+msgstr ""
+
+#: ../glib/gconvert.c:612 ../glib/gconvert.c:922 ../glib/giochannel.c:1329
+#: ../glib/giochannel.c:2218
+#, c-format
+msgid "Error during conversion: %s"
+msgstr ""
+
+#: ../glib/gconvert.c:647 ../glib/gutf8.c:939 ../glib/gutf8.c:1143
+#: ../glib/gutf8.c:1284 ../glib/gutf8.c:1388
+msgid "Partial character sequence at end of input"
+msgstr ""
+
+#: ../glib/gconvert.c:897
+#, c-format
+msgid "Cannot convert fallback '%s' to codeset '%s'"
+msgstr ""
+
+#: ../glib/gconvert.c:1706
+#, c-format
+msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
+msgstr ""
+
+#: ../glib/gconvert.c:1716
+#, c-format
+msgid "The local file URI '%s' may not include a '#'"
+msgstr ""
+
+#: ../glib/gconvert.c:1733
+#, c-format
+msgid "The URI '%s' is invalid"
+msgstr ""
+
+#: ../glib/gconvert.c:1745
+#, c-format
+msgid "The hostname of the URI '%s' is invalid"
+msgstr ""
+
+#: ../glib/gconvert.c:1761
+#, c-format
+msgid "The URI '%s' contains invalidly escaped characters"
+msgstr ""
+
+#: ../glib/gconvert.c:1855
+#, c-format
+msgid "The pathname '%s' is not an absolute path"
+msgstr ""
+
+#: ../glib/gconvert.c:1865
+msgid "Invalid hostname"
+msgstr ""
+
+#: ../glib/gdir.c:121 ../glib/gdir.c:141
+#, c-format
+msgid "Error opening directory '%s': %s"
+msgstr "'%s' պանակը բացելու սխալ՝ %s"
+
+#: ../glib/gfileutils.c:576 ../glib/gfileutils.c:649
+#, c-format
+msgid "Could not allocate %lu bytes to read file \"%s\""
+msgstr "Չի հաջովում հատկացնել %lu բայթ \"%s\" ֆայլը կարդալու համար"
+
+#: ../glib/gfileutils.c:591
+#, c-format
+msgid "Error reading file '%s': %s"
+msgstr "'%s' ֆայլը կարդալու սխալ՝ %s"
+
+#: ../glib/gfileutils.c:673
+#, c-format
+msgid "Failed to read from file '%s': %s"
+msgstr "Չի հաջողվում կարդալ '%s' ֆայլից՝ %s"
+
+#: ../glib/gfileutils.c:724 ../glib/gfileutils.c:811
+#, c-format
+msgid "Failed to open file '%s': %s"
+msgstr "Չի հաջողվել բացել '%s' ֆայլը՝ %s"
+
+#: ../glib/gfileutils.c:741 ../glib/gmappedfile.c:133
+#, c-format
+msgid "Failed to get attributes of file '%s': fstat() failed: %s"
+msgstr ""
+
+#: ../glib/gfileutils.c:775
+#, c-format
+msgid "Failed to open file '%s': fdopen() failed: %s"
+msgstr "Չի հաջողվել բացել '%s' ֆայլը՝ fdopen() խափանվեց՝ %s"
+
+#: ../glib/gfileutils.c:909
+#, c-format
+msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
+msgstr "Չի հաջողվել վերանվանել '%s' ֆայլը որպես '%s'՝ g_rename() խափանվեց՝ %s"
+
+#: ../glib/gfileutils.c:950 ../glib/gfileutils.c:1415
+#, c-format
+msgid "Failed to create file '%s': %s"
+msgstr "Չի հաջողվել ստեղծել ֆայլ '%s'՝ %s"
+
+#: ../glib/gfileutils.c:964
+#, c-format
+msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
+msgstr "Չի հաջողվել բացել '%s' ֆայլը գրելու համար՝ fdopen() խափանվել է՝ %s"
+
+#: ../glib/gfileutils.c:989
+#, c-format
+msgid "Failed to write file '%s': fwrite() failed: %s"
+msgstr "Չի հաողվել գրել '%s' ֆայլ՝ fwrite() խափանվեց՝ %s"
+
+#: ../glib/gfileutils.c:1008
+#, c-format
+msgid "Failed to close file '%s': fclose() failed: %s"
+msgstr "Չի հաջովել փակել '%s' ֆայլը՝ fclose() խափանվեց՝ %s"
+
+#: ../glib/gfileutils.c:1126
+#, c-format
+msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
+msgstr "'%s' ֆայլը չի կարող վերացվել՝ g_unlink() խափանվեց՝ %s"
+
+#: ../glib/gfileutils.c:1376
+#, c-format
+msgid "Template '%s' invalid, should not contain a '%s'"
+msgstr ""
+
+#: ../glib/gfileutils.c:1390
+#, c-format
+msgid "Template '%s' doesn't end with XXXXXX"
+msgstr ""
+
+#: ../glib/gfileutils.c:1865
+#, c-format
+msgid "Failed to read the symbolic link '%s': %s"
+msgstr "Չի հաջողվել կարդալ '%s' սիմվոլիկ հղումը՝ %s"
+
+#: ../glib/gfileutils.c:1886
+msgid "Symbolic links not supported"
+msgstr "Սիմվոլիկ հղումները չեն ապահովվում"
+
+#: ../glib/giochannel.c:1154
+#, c-format
+msgid "Could not open converter from '%s' to '%s': %s"
+msgstr ""
+
+#: ../glib/giochannel.c:1499
+msgid "Can't do a raw read in g_io_channel_read_line_string"
+msgstr ""
+
+#: ../glib/giochannel.c:1546 ../glib/giochannel.c:1803
+#: ../glib/giochannel.c:1889
+msgid "Leftover unconverted data in read buffer"
+msgstr ""
+
+#: ../glib/giochannel.c:1626 ../glib/giochannel.c:1703
+msgid "Channel terminates in a partial character"
+msgstr ""
+
+#: ../glib/giochannel.c:1689
+msgid "Can't do a raw read in g_io_channel_read_to_end"
+msgstr ""
+
+#: ../glib/gmappedfile.c:116
+#, c-format
+msgid "Failed to open file '%s': open() failed: %s"
+msgstr "Չի հաջողվել բացել '%s' ֆայլը՝ open() խափանվեց՝ %s"
+
+#: ../glib/gmappedfile.c:193
+#, c-format
+msgid "Failed to map file '%s': mmap() failed: %s"
+msgstr ""
+
+#: ../glib/gmarkup.c:232
+#, c-format
+msgid "Error on line %d char %d: %s"
+msgstr "Սխալ %d տողի %d տառում՝ %s"
+
+#: ../glib/gmarkup.c:330
+#, c-format
+msgid "Error on line %d: %s"
+msgstr "Սխալ %d տողում՝ %s"
+
+#: ../glib/gmarkup.c:434
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgstr ""
+
+#: ../glib/gmarkup.c:444
+#, c-format
+msgid ""
+"Character '%s' is not valid at the start of an entity name; the & character "
+"begins an entity; if this ampersand isn't supposed to be an entity, escape "
+"it as &amp;"
+msgstr ""
+
+#: ../glib/gmarkup.c:478
+#, c-format
+msgid "Character '%s' is not valid inside an entity name"
+msgstr ""
+
+#: ../glib/gmarkup.c:515
+#, c-format
+msgid "Entity name '%s' is not known"
+msgstr ""
+
+#: ../glib/gmarkup.c:526
+msgid ""
+"Entity did not end with a semicolon; most likely you used an ampersand "
+"character without intending to start an entity - escape ampersand as &amp;"
+msgstr ""
+
+#: ../glib/gmarkup.c:579
+#, c-format
+msgid ""
+"Failed to parse '%-.*s', which should have been a digit inside a character "
+"reference (&#234; for example) - perhaps the digit is too large"
+msgstr ""
+
+#: ../glib/gmarkup.c:604
+#, c-format
+msgid "Character reference '%-.*s' does not encode a permitted character"
+msgstr ""
+
+#: ../glib/gmarkup.c:619
+msgid "Empty character reference; should include a digit such as &#454;"
+msgstr ""
+
+#: ../glib/gmarkup.c:629
+msgid ""
+"Character reference did not end with a semicolon; most likely you used an "
+"ampersand character without intending to start an entity - escape ampersand "
+"as &amp;"
+msgstr ""
+
+#: ../glib/gmarkup.c:715
+msgid "Unfinished entity reference"
+msgstr ""
+
+#: ../glib/gmarkup.c:721
+msgid "Unfinished character reference"
+msgstr ""
+
+#: ../glib/gmarkup.c:964 ../glib/gmarkup.c:992 ../glib/gmarkup.c:1023
+msgid "Invalid UTF-8 encoded text"
+msgstr "Սխալ UTF-8 կոդավորված տեքստ"
+
+#: ../glib/gmarkup.c:1059
+msgid "Document must begin with an element (e.g. <book>)"
+msgstr "Փաստաթուղթը պետք է սկսվի որևէ էլէմենտով (օրինակ <book>)"
+
+#: ../glib/gmarkup.c:1099
+#, c-format
+msgid ""
+"'%s' is not a valid character following a '<' character; it may not begin an "
+"element name"
+msgstr ""
+
+#: ../glib/gmarkup.c:1163
+#, c-format
+msgid ""
+"Odd character '%s', expected a '>' character to end the start tag of element "
+"'%s'"
+msgstr ""
+
+#: ../glib/gmarkup.c:1252
+#, c-format
+msgid ""
+"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgstr ""
+
+#: ../glib/gmarkup.c:1294
+#, c-format
+msgid ""
+"Odd character '%s', expected a '>' or '/' character to end the start tag of "
+"element '%s', or optionally an attribute; perhaps you used an invalid "
+"character in an attribute name"
+msgstr ""
+
+#: ../glib/gmarkup.c:1383
+#, c-format
+msgid ""
+"Odd character '%s', expected an open quote mark after the equals sign when "
+"giving value for attribute '%s' of element '%s'"
+msgstr ""
+
+#: ../glib/gmarkup.c:1528
+#, c-format
+msgid ""
+"'%s' is not a valid character following the characters '</'; '%s' may not "
+"begin an element name"
+msgstr ""
+
+#: ../glib/gmarkup.c:1568
+#, c-format
+msgid ""
+"'%s' is not a valid character following the close element name '%s'; the "
+"allowed character is '>'"
+msgstr ""
+
+#: ../glib/gmarkup.c:1579
+#, c-format
+msgid "Element '%s' was closed, no element is currently open"
+msgstr ""
+
+#: ../glib/gmarkup.c:1588
+#, c-format
+msgid "Element '%s' was closed, but the currently open element is '%s'"
+msgstr ""
+
+#: ../glib/gmarkup.c:1735
+msgid "Document was empty or contained only whitespace"
+msgstr ""
+
+#: ../glib/gmarkup.c:1749
+msgid "Document ended unexpectedly just after an open angle bracket '<'"
+msgstr ""
+
+#: ../glib/gmarkup.c:1757 ../glib/gmarkup.c:1801
+#, c-format
+msgid ""
+"Document ended unexpectedly with elements still open - '%s' was the last "
+"element opened"
+msgstr ""
+
+#: ../glib/gmarkup.c:1765
+#, c-format
+msgid ""
+"Document ended unexpectedly, expected to see a close angle bracket ending "
+"the tag <%s/>"
+msgstr ""
+
+#: ../glib/gmarkup.c:1771
+msgid "Document ended unexpectedly inside an element name"
+msgstr ""
+
+#: ../glib/gmarkup.c:1776
+msgid "Document ended unexpectedly inside an attribute name"
+msgstr ""
+
+#: ../glib/gmarkup.c:1781
+msgid "Document ended unexpectedly inside an element-opening tag."
+msgstr ""
+
+#: ../glib/gmarkup.c:1787
+msgid ""
+"Document ended unexpectedly after the equals sign following an attribute "
+"name; no attribute value"
+msgstr ""
+
+#: ../glib/gmarkup.c:1794
+msgid "Document ended unexpectedly while inside an attribute value"
+msgstr ""
+
+#: ../glib/gmarkup.c:1809
+#, c-format
+msgid "Document ended unexpectedly inside the close tag for element '%s'"
+msgstr ""
+
+#: ../glib/gmarkup.c:1815
+msgid "Document ended unexpectedly inside a comment or processing instruction"
+msgstr ""
+
+#: ../glib/gshell.c:73
+msgid "Quoted text doesn't begin with a quotation mark"
+msgstr ""
+
+#: ../glib/gshell.c:163
+msgid "Unmatched quotation mark in command line or other shell-quoted text"
+msgstr ""
+
+#: ../glib/gshell.c:541
+#, c-format
+msgid "Text ended just after a '\\' character. (The text was '%s')"
+msgstr ""
+
+#: ../glib/gshell.c:548
+#, c-format
+msgid "Text ended before matching quote was found for %c. (The text was '%s')"
+msgstr ""
+
+#: ../glib/gshell.c:560
+msgid "Text was empty (or contained only whitespace)"
+msgstr ""
+
+#: ../glib/gspawn-win32.c:276
+msgid "Failed to read data from child process"
+msgstr ""
+
+#: ../glib/gspawn-win32.c:291 ../glib/gspawn.c:1364
+#, c-format
+msgid "Failed to create pipe for communicating with child process (%s)"
+msgstr ""
+
+#: ../glib/gspawn-win32.c:329 ../glib/gspawn.c:1028
+#, c-format
+msgid "Failed to read from child pipe (%s)"
+msgstr ""
+
+#: ../glib/gspawn-win32.c:355 ../glib/gspawn.c:1233
+#, c-format
+msgid "Failed to change to directory '%s' (%s)"
+msgstr ""
+
+#: ../glib/gspawn-win32.c:361 ../glib/gspawn-win32.c:581
+#, c-format
+msgid "Failed to execute child process (%s)"
+msgstr ""
+
+#: ../glib/gspawn-win32.c:471 ../glib/gspawn-win32.c:527
+#, c-format
+msgid "Invalid program name: %s"
+msgstr ""
+
+#: ../glib/gspawn-win32.c:481 ../glib/gspawn-win32.c:537
+#: ../glib/gspawn-win32.c:780 ../glib/gspawn-win32.c:835
+#: ../glib/gspawn-win32.c:1370
+#, c-format
+msgid "Invalid string in argument vector at %d: %s"
+msgstr ""
+
+#: ../glib/gspawn-win32.c:492 ../glib/gspawn-win32.c:548
+#: ../glib/gspawn-win32.c:794 ../glib/gspawn-win32.c:848
+#: ../glib/gspawn-win32.c:1403
+#, c-format
+msgid "Invalid string in environment: %s"
+msgstr ""
+
+#: ../glib/gspawn-win32.c:776 ../glib/gspawn-win32.c:831
+#: ../glib/gspawn-win32.c:1351
+#, c-format
+msgid "Invalid working directory: %s"
+msgstr ""
+
+#: ../glib/gspawn-win32.c:890
+#, c-format
+msgid "Failed to execute helper program (%s)"
+msgstr ""
+
+#: ../glib/gspawn-win32.c:1090
+msgid ""
+"Unexpected error in g_io_channel_win32_poll() reading data from a child "
+"process"
+msgstr ""
+
+#: ../glib/gspawn.c:168
+#, c-format
+msgid "Failed to read data from child process (%s)"
+msgstr ""
+
+#: ../glib/gspawn.c:300
+#, c-format
+msgid "Unexpected error in select() reading data from a child process (%s)"
+msgstr ""
+
+#: ../glib/gspawn.c:383
+#, c-format
+msgid "Unexpected error in waitpid() (%s)"
+msgstr ""
+
+#: ../glib/gspawn.c:1093
+#, c-format
+msgid "Failed to fork (%s)"
+msgstr ""
+
+#: ../glib/gspawn.c:1243
+#, c-format
+msgid "Failed to execute child process \"%s\" (%s)"
+msgstr ""
+
+#: ../glib/gspawn.c:1253
+#, c-format
+msgid "Failed to redirect output or input of child process (%s)"
+msgstr ""
+
+#: ../glib/gspawn.c:1262
+#, c-format
+msgid "Failed to fork child process (%s)"
+msgstr ""
+
+#: ../glib/gspawn.c:1270
+#, c-format
+msgid "Unknown error executing child process \"%s\""
+msgstr ""
+
+#: ../glib/gspawn.c:1292
+#, c-format
+msgid "Failed to read enough data from child pid pipe (%s)"
+msgstr ""
+
+#: ../glib/gutf8.c:1017
+msgid "Character out of range for UTF-8"
+msgstr ""
+
+#: ../glib/gutf8.c:1111 ../glib/gutf8.c:1120 ../glib/gutf8.c:1252
+#: ../glib/gutf8.c:1261 ../glib/gutf8.c:1402 ../glib/gutf8.c:1498
+msgid "Invalid sequence in conversion input"
+msgstr ""
+
+#: ../glib/gutf8.c:1413 ../glib/gutf8.c:1509
+msgid "Character out of range for UTF-16"
+msgstr ""
+
+#: ../glib/goption.c:468
+msgid "Usage:"
+msgstr "Կիրառում՝"
+
+#: ../glib/goption.c:468
+msgid "[OPTION...]"
+msgstr ""
+
+#: ../glib/goption.c:556
+msgid "Ձեռնարկի հաըկություններ"
+msgstr ""
+
+#: ../glib/goption.c:557
+msgid "Show help options"
+msgstr "Ցուցադրել Ձեռնարկի հատկությունները"
+
+#: ../glib/goption.c:562
+msgid "Show all help options"
+msgstr ""
+
+#: ../glib/goption.c:612
+msgid "Application Options:"
+msgstr ""
+
+#: ../glib/goption.c:653
+#, c-format
+msgid "Cannot parse integer value '%s' for %s"
+msgstr ""
+
+#: ../glib/goption.c:663
+#, c-format
+msgid "Integer value '%s' for %s out of range"
+msgstr ""
+
+#: ../glib/goption.c:926
+#, c-format
+msgid "Error parsing option %s"
+msgstr ""
+
+#: ../glib/goption.c:959 ../glib/goption.c:1070
+#, c-format
+msgid "Missing argument for %s"
+msgstr ""
+
+#: ../glib/goption.c:1474
+#, c-format
+msgid "Unknown option %s"
+msgstr ""
+
+#: ../glib/gkeyfile.c:339
+msgid "Valid key file could not be found in data dirs"
+msgstr ""
+
+#: ../glib/gkeyfile.c:374
+msgid "Not a regular file"
+msgstr ""
+
+#: ../glib/gkeyfile.c:382
+msgid "File is empty"
+msgstr "Ֆայլը դատարկ է"
+
+#: ../glib/gkeyfile.c:697
+#, c-format
+msgid ""
+"Key file contains line '%s' which is not a key-value pair, group, or comment"
+msgstr ""
+
+#: ../glib/gkeyfile.c:765
+msgid "Key file does not start with a group"
+msgstr ""
+
+#: ../glib/gkeyfile.c:808
+#, c-format
+msgid "Key file contains unsupported encoding '%s'"
+msgstr ""
+
+#: ../glib/gkeyfile.c:1017 ../glib/gkeyfile.c:1176 ../glib/gkeyfile.c:2177
+#: ../glib/gkeyfile.c:2242 ../glib/gkeyfile.c:2361 ../glib/gkeyfile.c:2497
+#: ../glib/gkeyfile.c:2649 ../glib/gkeyfile.c:2823 ../glib/gkeyfile.c:2880
+#, c-format
+msgid "Key file does not have group '%s'"
+msgstr ""
+
+#: ../glib/gkeyfile.c:1188
+#, c-format
+msgid "Key file does not have key '%s'"
+msgstr ""
+
+#: ../glib/gkeyfile.c:1289 ../glib/gkeyfile.c:1398
+#, c-format
+msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
+msgstr ""
+
+#: ../glib/gkeyfile.c:1307 ../glib/gkeyfile.c:1416 ../glib/gkeyfile.c:1788
+#, c-format
+msgid "Key file contains key '%s' which has value that cannot be interpreted."
+msgstr ""
+
+#: ../glib/gkeyfile.c:2004
+#, c-format
+msgid ""
+"Key file contains key '%s' in group '%s' which has value that cannot be "
+"interpreted."
+msgstr ""
+
+#: ../glib/gkeyfile.c:2192 ../glib/gkeyfile.c:2376 ../glib/gkeyfile.c:2891
+#, c-format
+msgid "Key file does not have key '%s' in group '%s'"
+msgstr ""
+
+#: ../glib/gkeyfile.c:3067
+msgid "Key file contains escape character at end of line"
+msgstr ""
+
+#: ../glib/gkeyfile.c:3089
+#, c-format
+msgid "Key file contains invalid escape sequence '%s'"
+msgstr ""
+
+#: ../glib/gkeyfile.c:3230
+#, c-format
+msgid "Value '%s' cannot be interpreted as a number."
+msgstr ""
+
+#: ../glib/gkeyfile.c:3240
+#, c-format
+msgid "Integer value '%s' out of range"
+msgstr ""
+
+#: ../glib/gkeyfile.c:3270
+#, c-format
+msgid "Value '%s' cannot be interpreted as a boolean."
+msgstr ""
