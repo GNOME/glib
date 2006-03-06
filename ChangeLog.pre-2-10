@@ -1,3 +1,9 @@
+2006-03-06  Anders Carlsson  <andersca@imendio.com>
+
+        * configure.in:
+	Skip checking thread flags on Darwin. Fix suggested by Manish Singh.
+	(#314794, Gregor Riepl)
+	
 2006-03-01  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gutils.c (g_listenv): Separate implementation on Win32: Use

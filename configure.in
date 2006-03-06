@@ -1568,8 +1568,8 @@ if test x"$have_threads" != xno; then
     # One of them does for most gcc versions and some other platforms/compilers
     # too and could be considered as the canonical way to go. 
     case $host in
-      *-*-cygwin*)
-         # skip cygwin -pthread or -pthreads test
+      *-*-cygwin*|*-*-darwin*)
+         # skip cygwin and darwin -pthread or -pthreads test
          ;;
       *)
         for flag in pthread pthreads mt; do
