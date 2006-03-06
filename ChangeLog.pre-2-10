@@ -1,6 +1,12 @@
 2006-03-06  Anders Carlsson  <andersca@imendio.com>
 
         * configure.in:
+	Make .dylib the shared library suffix on darwin.
+	(#322476, Vladimir Panov)
+	
+2006-03-06  Anders Carlsson  <andersca@imendio.com>
+
+        * configure.in:
 	Skip checking thread flags on Darwin. Fix suggested by Manish Singh.
 	(#314794, Gregor Riepl)
 	

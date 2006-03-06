@@ -1322,6 +1322,9 @@ case "$host_os" in
   aix*)
     glib_gmodule_suffix='a'
     ;;
+  darwin*)
+    glib_gmodule_suffix='dylib'
+    ;;
   *)
     glib_gmodule_suffix='so'    
     ;;
