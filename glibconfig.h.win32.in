@@ -55,6 +55,11 @@ typedef unsigned __int64 guint64;
 #else /* _MSC_VER */
 #define G_GINT64_CONSTANT(val)	(val##i64)
 #endif /* _MSC_VER */
+#ifndef _MSC_VER
+#define G_GUINT64_CONSTANT(val)	(G_GNUC_EXTENSION (val##ULL))
+#else /* _MSC_VER */
+#define G_GUINT64_CONSTANT(val)	(val##Ui64)
+#endif /* _MSC_VER */
 #define G_GINT64_MODIFIER "I64"
 #define G_GINT64_FORMAT "I64i"
 #define G_GUINT64_FORMAT "I64u"
