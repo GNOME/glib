@@ -1,18 +1,20 @@
 2006-03-07  Matthias Clasen  <mclasen@redhat.com>
 
+	* NEWS: Updates.
+
 	* glib/gutf8.c (_g_charset_get_aliases): Match the prototype
 	in gconvert.c to fix build problems in NetBSD.  (#333651,
 	Julio M. Merino Vidal)
 
 2006-03-06  Anders Carlsson  <andersca@imendio.com>
 
-        * configure.in:
+	* configure.in:
 	Make .dylib the shared library suffix on darwin.
 	(#322476, Vladimir Panov)
 	
 2006-03-06  Anders Carlsson  <andersca@imendio.com>
 
-        * configure.in:
+	* configure.in:
 	Skip checking thread flags on Darwin. Fix suggested by Manish Singh.
 	(#314794, Gregor Riepl)
 	

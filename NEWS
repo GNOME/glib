@@ -1,3 +1,20 @@
+Overview of Changes from GLib 2.10.0 to GLib 2.10.1
+===================================================
+
+* Bugs fixed:
+ 314794 Broken pthread detection on Darwin [Gregor Riepl]
+ 322476 Missing check for .dylib [Vladimir Panov]
+ 333651 Inconsistent _g_charset_get_aliases prototype [Julio 
+        M. Merino Vidal]
+ 333761 GInitiallyUnowned breaks application code [Sven Herzberg]
+
+* Win32 changes:
+ - Fix g_listenv() implementation.
+ - Allow up to 100 GPrivate structs
+
+* Translation updates (fr,hu,lt,pl,sv)
+
+
 Overview of Changes from GLib 2.9.6 to GLib 2.10.0
 ==================================================
 
