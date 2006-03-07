@@ -1,3 +1,7 @@
+2006-03-07  Matthias Clasen  <mclasen@redhat.com>
+
+	* ===  Released 2.10.1 ===
+
 2006-03-02  Tor Lillqvist  <tml@novell.com>
 
 	* gthread-win32.c (G_PRIVATE_MAX): Increase to 100. 16 was rather

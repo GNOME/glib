@@ -1,5 +1,7 @@
 2006-03-07  Matthias Clasen  <mclasen@redhat.com>
 
+	* ===  Released 2.10.1 ===
+
 	* NEWS: Updates.
 
 	* glib/gutf8.c (_g_charset_get_aliases): Match the prototype

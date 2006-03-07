@@ -129,6 +129,8 @@ A convenience function/macro to log a normal message.
 
 @...:
 
+@...:
+
 @...: 
 
 
@@ -140,6 +142,8 @@ A convenience function/macro to log a warning message.
 @...: format string, followed by parameters to insert into the format string (as with printf())
 @...: 
 @...: 
+@...:
+
 @...:
 
 @...:
@@ -167,6 +171,8 @@ example.
 @...: format string, followed by parameters to insert into the format string (as with printf())
 @...: 
 @...: 
+@...:
+
 @...:
 
 @...:
@@ -207,6 +213,8 @@ assertion failure.
 
 @...:
 
+@...:
+
 @...: 
 
 
@@ -216,6 +224,8 @@ A convenience function/macro to log a debug message.
 </para>
 
 @...: format string, followed by parameters to insert into the format string (as with printf())
+
+@...:
 
 @...:
 

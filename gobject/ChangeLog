@@ -1,3 +1,7 @@
+2006-03-07  Matthias Clasen  <mclasen@redhat.com>
+
+	* ===  Released 2.10.1 ===
+
 Tue Mar  7 17:09:07 2006  Tim Janik  <timj@gtk.org>
 
 	* gobject.c (g_object_compat_control): added case3 to hand out the
