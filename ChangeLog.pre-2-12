@@ -1,3 +1,9 @@
+2006-03-07  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gutf8.c (_g_charset_get_aliases): Match the prototype
+	in gconvert.c to fix build problems in NetBSD.  (#333651,
+	Julio M. Merino Vidal)
+
 2006-03-06  Anders Carlsson  <andersca@imendio.com>
 
         * configure.in:
