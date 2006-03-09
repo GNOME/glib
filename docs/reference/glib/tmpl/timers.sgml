@@ -75,9 +75,9 @@ out parameter is essentially useless.
 </para>
 
 @timer: a #GTimer.
-@microseconds: fractional part of seconds elapsed, in microseconds
-  (that is, the total number of microseconds elapsed, modulo 
-   1000000)
+@microseconds: return location for the fractional part of seconds elapsed, 
+  in microseconds (that is, the total number of microseconds elapsed, modulo 
+   1000000), or %NULL
 @Returns: seconds elapsed as a floating point value, including 
   any fractional part.
 

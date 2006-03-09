@@ -1,3 +1,9 @@
+2006-03-09  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/templ/timers.sgml: Mention that the second
+	parameter of g_timer_elapsed can be NULL (#333916,
+	Christian Neumair)
+
 2006-03-07  Matthias Clasen  <mclasen@redhat.com>
 
 	* ===  Released 2.10.1 ===
