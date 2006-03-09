@@ -10,6 +10,7 @@ INCLUDES = -DG_LOG_DOMAIN=g_log_domain_glib @GLIB_DEBUG_FLAGS@ \
 	-DG_DISABLE_DEPRECATED -DGLIB_COMPILATION
 
 EXTRA_DIST = 			\
+	ChangeLog.pre-2-8	\
 	ChangeLog.pre-2-6	\
 	ChangeLog.pre-2-4	\
 	ChangeLog.pre-2-2	\

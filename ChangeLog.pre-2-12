@@ -1,3 +1,7 @@
+2006-03-09  Matthias Clasen  <mclasen@redhat.com>
+
+	* Makefile.am: Add ChangeLog.pre-2.8 to EXTRA_DIST.
+
 2006-03-08  Tor Lillqvist  <tml@novell.com>
 
 	* glibconfig.h.win32.in: Add G_GUINT64_CONSTANT.
