@@ -1,3 +1,21 @@
+2006-03-02  Marcus Brinkmann  <mb@g10code.de>
+
+	Implement watches for GIOChannels for write file descriptors on
+	Win32 (#333098).
+	
+	* glib/giowin32.c (GIOWin32Channel): Add a new direction field.
+	(read_thread): Initialize direction.
+	(write_thread): New function.
+	(buffer_write): New function.
+	(g_io_win32_prepare): Handle the G_IO_WIN32_FILE_DESC case for the
+	write direction.
+	(g_io_win32_fd_write): Call buffer_write() if there is a writer
+	thread.
+	(g_io_win32_fd_close): Set space_avail_event for writer threads.
+	(g_io_win32_fd_create_watch): Create the writer thread if
+	condition is G_IO_OUT.
+	(g_io_channel_win32_make_pollfd): Likewise here.
+
 2006-03-09  Matthias Clasen  <mclasen@redhat.com>
 
 	* Makefile.am: Add ChangeLog.pre-2.8 to EXTRA_DIST.
