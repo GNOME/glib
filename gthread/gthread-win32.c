@@ -39,6 +39,7 @@
 #include <glib.h>
 
 #define STRICT
+#define _WIN32_WINDOWS 0x0401 /* to get IsDebuggerPresent */
 #include <windows.h>
 #undef STRICT
 
