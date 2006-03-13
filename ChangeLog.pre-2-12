@@ -1,3 +1,10 @@
+2006-03-13  Anders Carlsson  <andersca@luminoth.local>
+
+	* configure.in: Revert fix for #322476, it breaks module loading
+	since libtool on darwin makes shared modules use .so and shared
+	libraries use .dylib. The fix breaks shared module loading everywhere
+	in GTK+.
+
 2006-03-02  Marcus Brinkmann  <mb@g10code.de>
 
 	Implement watches for GIOChannels for write file descriptors on
