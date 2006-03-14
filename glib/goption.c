@@ -928,8 +928,6 @@ parse_short_option (GOptionContext *context,
 		  return FALSE;
 		}
 
-	      option_name = g_strdup_printf ("-%c", group->entries[j].short_name);
-	      
 	      if (index < *argc - 1)
 		{
 		  if (!OPTIONAL_ARG (&group->entries[j]))	
