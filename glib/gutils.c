@@ -591,23 +591,21 @@ g_parse_debug_string  (const gchar     *string,
     {
       const gchar *p = string;
       const gchar *q;
-      gboolean done = FALSE;
       
-      while (*p && !done)
+      while (*p)
 	{
 	  q = strchr (p, ':');
 	  if (!q)
-	    {
-	      q = p + strlen(p);
-	      done = TRUE;
-	    }
+	    q = p + strlen(p);
 	  
-	  for (i=0; i<nkeys; i++)
+	  for (i = 0; i < nkeys; i++)
 	    if (g_ascii_strncasecmp (keys[i].key, p, q - p) == 0 &&
 		keys[i].key[q - p] == '\0')
 	      result |= keys[i].value;
 	  
-	  p = q + 1;
+	  p = q;
+	  if (*p == ':')
+	    p++;
 	}
     }
   

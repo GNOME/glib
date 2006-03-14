@@ -432,6 +432,31 @@ test_g_mkdir_with_parents (void)
   return TRUE;
 }
 
+static void
+test_g_parse_debug_string (void)
+{
+  GDebugKey keys[3] = { 
+    { "foo", 1 },
+    { "bar", 2 },
+    { "baz", 4 }
+  };
+  guint n_keys = 3;
+  guint result;
+  
+  result = g_parse_debug_string ("bar:foo:blubb", keys, n_keys);
+  g_assert (result == 3);
+
+  result = g_parse_debug_string (":baz::_E@~!_::", keys, n_keys);
+  g_assert (result == 4);
+
+  result = g_parse_debug_string ("", keys, n_keys);
+  g_assert (result == 0);
+
+  result = g_parse_debug_string (" : ", keys, n_keys);
+  g_assert (result == 0);
+}
+
+
 int
 main (int   argc,
       char *argv[])
@@ -1488,7 +1513,9 @@ main (int   argc,
   close (fd);
   g_clear_error (&error);
   remove (name_used);
-  
+
+  test_g_parse_debug_string ();
+
   return 0;
 }
 

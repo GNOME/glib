@@ -1,5 +1,11 @@
 2006-03-14  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gutils.c (g_parse_debug_string): Don't read past the
+	end of the string.  (#334471, Morten Welinder)
+
+	* tests/testglib.c (test_g_parse_debug_string): Add testss
+	for g_parse_debug_string.
+
 	* glib/goption.c (parse_short_option): Don't create the
 	option_name twice.  (#334519, Chris Wilson)
 
