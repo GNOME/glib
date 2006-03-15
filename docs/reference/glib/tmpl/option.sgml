@@ -162,7 +162,7 @@ options.
 @error: A return location for errors. The error code %G_OPTION_ERROR_FAILED
   is intended to be used for errors in #GOptionArgFunc callbacks.
 @Returns: %TRUE if the option was successfully parsed, %FALSE if an error 
-  occurred
+  occurred, in which case @error should be set with g_set_error()
 
 
 <!-- ##### STRUCT GOptionContext ##### -->
@@ -441,7 +441,7 @@ the application can then add to its #GOptionContext.
 
 <!-- ##### USER_FUNCTION GOptionParseFunc ##### -->
 <para>
-The type of function that can be called before and after parsing.
+The type of function that can be called before and after parsing. 
 </para>
 
 @context: The active #GOptionContext
@@ -450,7 +450,7 @@ The type of function that can be called before and after parsing.
   was created with g_option_group_new()
 @error: A return location for error details
 @Returns: %TRUE if the function completed successfully, %FALSE if an error 
-  occurred
+  occurred, in which case @error should be set with g_set_error()
 
 
 <!-- ##### FUNCTION g_option_group_set_parse_hooks ##### -->
@@ -465,8 +465,7 @@ The type of function that can be called before and after parsing.
 
 <!-- ##### USER_FUNCTION GOptionErrorFunc ##### -->
 <para>
-The type of function to be used as callback when a parse error
-occurs.
+The type of function to be used as callback when a parse error occurs.
 </para>
 
 @context: The active #GOptionContext

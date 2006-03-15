@@ -1,3 +1,8 @@
+2006-03-15  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/tmpl/option.sgml: Hint that @error should
+	be set in error cases.  (#334646, Christian Persch)
+
 2006-03-09  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/templ/timers.sgml: Mention that the second
