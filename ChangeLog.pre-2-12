@@ -1,3 +1,8 @@
+2006-03-15  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/goption.c (g_option_context_parse): Only set the prgname
+	if it hasn't been set before.  (#334611, Chong Kai Xiong)
+
 2006-03-14  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gutils.c (g_parse_debug_string): Don't read past the

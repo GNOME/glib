@@ -1232,19 +1232,20 @@ g_option_context_parse (GOptionContext   *context,
   GList *list;
 
   /* Set program name */
-  if (argc && argv && *argc)
+  if (!g_get_prgname())
     {
-      gchar *prgname;
-      
-      prgname = g_path_get_basename ((*argv)[0]);
-      g_set_prgname (prgname);
-      g_free (prgname);
+      if (argc && argv && *argc)
+	{
+	  gchar *prgname;
+	  
+	  prgname = g_path_get_basename ((*argv)[0]);
+	  g_set_prgname (prgname);
+	  g_free (prgname);
+	}
+      else
+	g_set_prgname ("<unknown>");
     }
-  else
-    {
-      g_set_prgname ("<unknown>");
-    }
-  
+
   /* Call pre-parse hooks */
   list = context->groups;
   while (list)
