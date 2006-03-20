@@ -1,3 +1,7 @@
+2006-03-19  Matthias Clasen  <mclasen@redhat.com>
+
+	* MAINTAINERS: Add this, at the request of the GNOME sysadmin team.
+
 2006-03-15  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/goption.c (g_option_context_parse): Only set the prgname
