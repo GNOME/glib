@@ -38,6 +38,7 @@ void g_slist_push_allocator (gpointer dummy) { /* present for binary compat only
 void g_slist_pop_allocator  (void)           { /* present for binary compat only */ }
 
 #define _g_slist_alloc0()       g_slice_new0 (GSList)
+#define _g_slist_alloc()        g_slice_new (GSList)
 #define _g_slist_free1(slist)   g_slice_free (GSList, slist)
 
 GSList*
@@ -65,8 +66,9 @@ g_slist_append (GSList   *list,
   GSList *new_list;
   GSList *last;
 
-  new_list = _g_slist_alloc0 ();
+  new_list = _g_slist_alloc ();
   new_list->data = data;
+  new_list->next = NULL;
 
   if (list)
     {
@@ -77,7 +79,7 @@ g_slist_append (GSList   *list,
       return list;
     }
   else
-      return new_list;
+    return new_list;
 }
 
 GSList*
@@ -86,7 +88,7 @@ g_slist_prepend (GSList   *list,
 {
   GSList *new_list;
 
-  new_list = _g_slist_alloc0 ();
+  new_list = _g_slist_alloc ();
   new_list->data = data;
   new_list->next = list;
 
@@ -107,11 +109,14 @@ g_slist_insert (GSList   *list,
   else if (position == 0)
     return g_slist_prepend (list, data);
 
-  new_list = _g_slist_alloc0 ();
+  new_list = _g_slist_alloc ();
   new_list->data = data;
 
   if (!list)
-    return new_list;
+    {
+      new_list->next = NULL;
+      return new_list;
+    }
 
   prev_list = NULL;
   tmp_list = list;
@@ -143,8 +148,9 @@ g_slist_insert_before (GSList  *slist,
 {
   if (!slist)
     {
-      slist = g_slist_alloc ();
+      slist = _g_slist_alloc ();
       slist->data = data;
+      slist->next = NULL;
       g_return_val_if_fail (sibling == NULL, slist);
       return slist;
     }
@@ -157,7 +163,7 @@ g_slist_insert_before (GSList  *slist,
 	  break;
       if (!last)
 	{
-	  node = g_slist_alloc ();
+	  node = _g_slist_alloc ();
 	  node->data = data;
 	  node->next = slist;
 
@@ -165,7 +171,7 @@ g_slist_insert_before (GSList  *slist,
 	}
       else
 	{
-	  node = g_slist_alloc ();
+	  node = _g_slist_alloc ();
 	  node->data = data;
 	  node->next = last->next;
 	  last->next = node;
@@ -302,17 +308,18 @@ g_slist_copy (GSList *list)
     {
       GSList *last;
 
-      new_list = _g_slist_alloc0 ();
+      new_list = _g_slist_alloc ();
       new_list->data = list->data;
       last = new_list;
       list = list->next;
       while (list)
 	{
-	  last->next = _g_slist_alloc0 ();
+	  last->next = _g_slist_alloc ();
 	  last = last->next;
 	  last->data = list->data;
 	  list = list->next;
 	}
+      last->next = NULL;
     }
 
   return new_list;
@@ -478,8 +485,9 @@ g_slist_insert_sorted_real (GSList   *list,
 
   if (!list)
     {
-      new_list = _g_slist_alloc0 ();
+      new_list = _g_slist_alloc ();
       new_list->data = data;
+      new_list->next = NULL;
       return new_list;
     }
  
@@ -493,12 +501,13 @@ g_slist_insert_sorted_real (GSList   *list,
       cmp = ((GCompareDataFunc) func) (data, tmp_list->data, user_data);
     }
 
-  new_list = _g_slist_alloc0 ();
+  new_list = _g_slist_alloc ();
   new_list->data = data;
 
   if ((!tmp_list->next) && (cmp > 0))
     {
       tmp_list->next = new_list;
+      new_list->next = NULL;
       return list;
     }
   

@@ -37,6 +37,7 @@
 void g_list_push_allocator (gpointer dummy) { /* present for binary compat only */ }
 void g_list_pop_allocator  (void)           { /* present for binary compat only */ }
 
+#define _g_list_alloc()         g_slice_new (GList)
 #define _g_list_alloc0()        g_slice_new0 (GList)
 #define _g_list_free1(list)     g_slice_free (GList, list)
 
@@ -65,8 +66,9 @@ g_list_append (GList	*list,
   GList *new_list;
   GList *last;
   
-  new_list = _g_list_alloc0 ();
+  new_list = _g_list_alloc ();
   new_list->data = data;
+  new_list->next = NULL;
   
   if (list)
     {
@@ -78,7 +80,10 @@ g_list_append (GList	*list,
       return list;
     }
   else
-    return new_list;
+    {
+      new_list->prev = NULL;
+      return new_list;
+    }
 }
 
 GList*
@@ -87,19 +92,19 @@ g_list_prepend (GList	 *list,
 {
   GList *new_list;
   
-  new_list = _g_list_alloc0 ();
+  new_list = _g_list_alloc ();
   new_list->data = data;
+  new_list->next = list;
   
   if (list)
     {
+      new_list->prev = list->prev;
       if (list->prev)
-	{
-	  list->prev->next = new_list;
-	  new_list->prev = list->prev;
-	}
+	list->prev->next = new_list;
       list->prev = new_list;
-      new_list->next = list;
     }
+  else
+    new_list->prev = NULL;
   
   return new_list;
 }
@@ -121,14 +126,11 @@ g_list_insert (GList	*list,
   if (!tmp_list)
     return g_list_append (list, data);
   
-  new_list = _g_list_alloc0 ();
+  new_list = _g_list_alloc ();
   new_list->data = data;
-  
+  new_list->prev = tmp_list->prev;
   if (tmp_list->prev)
-    {
-      tmp_list->prev->next = new_list;
-      new_list->prev = tmp_list->prev;
-    }
+    tmp_list->prev->next = new_list;
   new_list->next = tmp_list;
   tmp_list->prev = new_list;
   
@@ -154,20 +156,18 @@ g_list_insert_before (GList   *list,
     {
       GList *node;
 
-      node = g_list_alloc ();
+      node = _g_list_alloc ();
       node->data = data;
-      if (sibling->prev)
+      node->prev = sibling->prev;
+      node->next = sibling;
+      sibling->prev = node;
+      if (node->prev)
 	{
-	  node->prev = sibling->prev;
 	  node->prev->next = node;
-	  node->next = sibling;
-	  sibling->prev = node;
 	  return list;
 	}
       else
 	{
-	  node->next = sibling;
-	  sibling->prev = node;
 	  g_return_val_if_fail (sibling == list, node);
 	  return node;
 	}
@@ -180,9 +180,10 @@ g_list_insert_before (GList   *list,
       while (last->next)
 	last = last->next;
 
-      last->next = g_list_alloc ();
+      last->next = _g_list_alloc ();
       last->next->data = data;
       last->next->prev = last;
+      last->next->next = NULL;
 
       return list;
     }
@@ -310,18 +311,20 @@ g_list_copy (GList *list)
     {
       GList *last;
 
-      new_list = _g_list_alloc0 ();
+      new_list = _g_list_alloc ();
       new_list->data = list->data;
+      new_list->prev = NULL;
       last = new_list;
       list = list->next;
       while (list)
 	{
-	  last->next = _g_list_alloc0 ();
+	  last->next = _g_list_alloc ();
 	  last->next->prev = last;
 	  last = last->next;
 	  last->data = list->data;
 	  list = list->next;
 	}
+      last->next = NULL;
     }
 
   return new_list;

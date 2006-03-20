@@ -1,3 +1,19 @@
+2006-03-20  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gmem.c (profiler_log): use standard_calloc to allocate
+	the profile_data.  (#335209, Chris Wilson)
+
+	* glib/gmain.c (g_main_context_unref): Avoid a deadlock.
+	(#335207, Chris Wilson)
+
+	Minor optimizations (#335216, Chris Wilson):
+	
+	* glib/gasyncqueue.c (g_async_queue_pop_intern_unlocked): Use
+	g_queue_peek_tail_link instead of g_queue_peek_tail.  
+
+	* glib/glist.c: 
+	* glib/gslist.c: Avoid some memset calls. 
+
 2006-03-19  Matthias Clasen  <mclasen@redhat.com>
 
 	* MAINTAINERS: Add this, at the request of the GNOME sysadmin team.

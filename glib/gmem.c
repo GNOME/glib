@@ -318,7 +318,7 @@ profiler_log (ProfilerJob job,
   g_mutex_lock (gmem_profile_mutex);
   if (!profile_data)
     {
-      profile_data = standard_malloc ((MEM_PROFILE_TABLE_SIZE + 1) * 8 * sizeof (profile_data[0]));
+      profile_data = standard_calloc ((MEM_PROFILE_TABLE_SIZE + 1) * 8 * sizeof (profile_data[0]));
       if (!profile_data)	/* memory system kiddin' me, eh? */
 	{
 	  g_mutex_unlock (gmem_profile_mutex);

@@ -627,7 +627,7 @@ g_main_context_unref (GMainContext *context)
   while (source)
     {
       GSource *next = source->next;
-      g_source_destroy_internal (source, context, TRUE);
+      g_source_destroy_internal (source, context, FALSE);
       source = next;
     }
 

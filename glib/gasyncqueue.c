@@ -313,12 +313,13 @@ g_async_queue_push_sorted_unlocked (GAsyncQueue      *queue,
 }
 
 static gpointer
-g_async_queue_pop_intern_unlocked (GAsyncQueue* queue, gboolean try, 
-				   GTimeVal *end_time)
+g_async_queue_pop_intern_unlocked (GAsyncQueue *queue, 
+				   gboolean     try, 
+				   GTimeVal    *end_time)
 {
   gpointer retval;
 
-  if (!g_queue_peek_tail (queue->queue))
+  if (!g_queue_peek_tail_link (queue->queue))
     {
       if (try)
 	return NULL;
@@ -329,18 +330,18 @@ g_async_queue_pop_intern_unlocked (GAsyncQueue* queue, gboolean try,
       if (!end_time)
         {
           queue->waiting_threads++;
-	  while (!g_queue_peek_tail (queue->queue))
-            g_cond_wait(queue->cond, queue->mutex);
+	  while (!g_queue_peek_tail_link (queue->queue))
+            g_cond_wait (queue->cond, queue->mutex);
           queue->waiting_threads--;
         }
       else
         {
           queue->waiting_threads++;
-          while (!g_queue_peek_tail (queue->queue))
+          while (!g_queue_peek_tail_link (queue->queue))
             if (!g_cond_timed_wait (queue->cond, queue->mutex, end_time))
               break;
           queue->waiting_threads--;
-          if (!g_queue_peek_tail (queue->queue))
+          if (!g_queue_peek_tail_link (queue->queue))
 	    return NULL;
         }
     }
