@@ -1,3 +1,8 @@
+2006-03-20  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/tmpl/types.sgml: Document G_HAVE_GINT64 as deprecated.
+	(#335294, Richard Laager)
+
 2006-03-15  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/tmpl/option.sgml: Hint that @error should

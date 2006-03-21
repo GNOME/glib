@@ -164,15 +164,16 @@ Values of this type can range from 0 to 4,294,967,295.
 <!-- ##### MACRO G_HAVE_GINT64 ##### -->
 <para>
 This macro is defined if 64-bit signed and unsigned integers are available
-on the platform.
+on the platform. 
 </para>
 
+@Deprecated: GLib requires 64-bit integer support since version 2.0, therefore
+%G_HAVE_GINT64 is <emphasis>always</emphasis> defined.
 
 
 <!-- ##### TYPEDEF gint64 ##### -->
 <para>
-A signed integer guaranteed to be 64 bits on all platforms on which it is
-available (see #G_HAVE_GINT64).
+A signed integer guaranteed to be 64 bits on all platforms.
 Values of this type can range from -9,223,372,036,854,775,808 to
 9,223,372,036,854,775,807.
 </para>
@@ -180,8 +181,7 @@ Values of this type can range from -9,223,372,036,854,775,808 to
 
 <!-- ##### TYPEDEF guint64 ##### -->
 <para>
-An unsigned integer guaranteed to be 64 bits on all platforms on which it is
-available (see #G_HAVE_GINT64).
+An unsigned integer guaranteed to be 64 bits on all platforms.
 Values of this type can range from 0 to 18,446,744,073,709,551,615.
 </para>
 
