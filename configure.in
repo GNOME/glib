@@ -528,6 +528,8 @@ AC_CHECK_FUNCS(valloc)
 
 AC_CHECK_FUNCS(atexit on_exit)
 
+AC_CHECK_FUNCS(timegm)
+
 AC_CHECK_SIZEOF(char)
 AC_CHECK_SIZEOF(short)
 AC_CHECK_SIZEOF(long)

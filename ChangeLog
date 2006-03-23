@@ -1,3 +1,17 @@
+2006-03-23  Emmanuele Bassi  <ebassi@cvs.gnome.org>
+
+	* configure.in: Check for timegm.
+	
+	* glib/gtimer.h:
+	* glib/gtimer.c:
+	* glib/glib.symbols:
+	* docs/reference/glib/glib-sections.txt: Added g_time_val_to_iso8601
+	and g_time_val_from_iso8601, to convert a GTimeVal to and from an
+	ISO 8601 encoded date.
+
+	* tests/testglib.c: Added test cases for g_time_val_to_iso8601()
+	and g_time_val_from_iso8601() functions.
+
 2006-03-20  Vladimer Sichinava  <vlsichinava@gmail.com>
 
         * configure.in: Added "ka" (Georgian) to ALL_LINGUAS

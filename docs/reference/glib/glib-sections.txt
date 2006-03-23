@@ -1155,6 +1155,8 @@ GTimeVal
 g_get_current_time
 g_usleep
 g_time_val_add
+g_time_val_from_iso8601
+g_time_val_to_iso8601
 
 <SUBSECTION>
 GDate

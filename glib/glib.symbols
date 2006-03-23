@@ -1111,6 +1111,8 @@ g_timer_reset
 g_timer_start
 g_timer_stop
 g_time_val_add
+g_time_val_from_iso8601
+g_time_val_to_iso8601 G_GNUC_MALLOC
 g_usleep
 #endif
 #endif

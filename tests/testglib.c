@@ -475,7 +475,9 @@ main (int   argc,
   gint morenums[10] = { 8, 9, 7, 0, 3, 2, 5, 1, 4, 6};
   gchar *string;
   gint value = 120; 
-  gint *pvalue=NULL; 
+  gint *pvalue=NULL;
+  GTimeVal ref_date, date;
+  gchar *date_str;
   
   gchar *mem[10000], *tmp_string = NULL, *tmp_string_2;
   gint i, j;
@@ -1175,6 +1177,37 @@ main (int   argc,
 
   g_timer_destroy(timer);
   g_timer_destroy(timer2);
+
+#define REF_SEC_UTC  343737360
+#define REF_STR_UTC  "1980-11-22T10:36:00Z"
+#define REF_STR_CEST "1980-11-22T12:36:00+02:00"
+#define REF_STR_EST  "1980-11-22T05:36:00-05:00"
+
+  g_print ("checking g_time_val_from_iso8601...\n");
+  ref_date.tv_sec = REF_SEC_UTC;
+  ref_date.tv_usec = 0;
+  g_assert (g_time_val_from_iso8601 (REF_STR_UTC, &date) != FALSE);
+  g_print ("\t=> UTC stamp = %ld (should be: %ld) (%ld off)\n", date.tv_sec, ref_date.tv_sec, date.tv_sec - ref_date.tv_sec);
+  g_assert (date.tv_sec == ref_date.tv_sec);
+
+  g_assert (g_time_val_from_iso8601 (REF_STR_CEST, &date) != FALSE);
+  g_print ("\t=> CEST stamp = %ld (should be: %ld) (%ld off)\n", date.tv_sec, ref_date.tv_sec, date.tv_sec - ref_date.tv_sec);
+  g_assert (date.tv_sec == ref_date.tv_sec);
+  
+  g_assert (g_time_val_from_iso8601 (REF_STR_EST, &date) != FALSE);
+  g_print ("\t=> EST stamp = %ld (should be: %ld) (%ld off)\n", date.tv_sec, ref_date.tv_sec, date.tv_sec - ref_date.tv_sec);
+  g_assert (date.tv_sec == ref_date.tv_sec);
+  g_print ("ok\n");
+  
+  g_print ("checking g_time_val_to_iso8601...\n");
+  ref_date.tv_sec = REF_SEC_UTC;
+  ref_date.tv_usec = 1;
+  date_str = g_time_val_to_iso8601 (&ref_date);
+  g_assert (date_str != NULL);
+  g_print ("\t=> date string = %s (should be: %s)\n", date_str, REF_STR_UTC);
+  g_assert (strcmp (date_str, REF_STR_UTC) == 0);
+  g_free (date_str);
+  g_print ("ok\n");
 
   g_print ("checking g_ascii_strcasecmp...");
   g_assert (g_ascii_strcasecmp ("FroboZZ", "frobozz") == 0);
