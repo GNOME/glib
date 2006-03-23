@@ -354,7 +354,7 @@ mktime_utc (struct tm *tm)
  *
  * Return value: %TRUE if the conversion was successful.
  *
- * Since: 2.10
+ * Since: 2.12
  */
 gboolean
 g_time_val_from_iso8601 (const gchar *iso_date,
@@ -443,7 +443,7 @@ g_time_val_from_iso8601 (const gchar *iso_date,
  *
  * Return value: a newly allocated string containing a ISO 8601 date
  *
- * Since: 2.10
+ * Since: 2.12
  */
 gchar *
 g_time_val_to_iso8601 (GTimeVal *time_)
