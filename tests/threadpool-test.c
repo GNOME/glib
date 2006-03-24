@@ -5,8 +5,8 @@
 
 #include <glib.h>
 
-/* #define DEBUG_MSG(x) */
-#define DEBUG_MSG(args) g_printerr args ; g_printerr ("\n");
+#define DEBUG_MSG(x)  
+/* #define DEBUG_MSG(args) g_printerr args ; g_printerr ("\n");  */
 
 #define RUNS 100
 
@@ -124,10 +124,11 @@ test_thread_sort_entry_func (gpointer data, gpointer user_data)
 	g_assert (last_thread_id <= thread_id);  
       }
 
-      /* here we remember one fail and if it concurrently fails, it
-	 can not be sorted. the last thread id might be < this thread
-	 id if something is added to the queue since threads were
-	 created */
+      /* Here we remember one fail and if it concurrently fails, it
+       * can not be sorted. the last thread id might be < this thread
+       * id if something is added to the queue since threads were
+       * created  
+       */
       last_failed = TRUE;
     } else {
       last_failed = FALSE;
@@ -145,12 +146,29 @@ static void
 test_thread_sort (gboolean sort)
 {
   GThreadPool *pool;
-  guint limit = 20;
+  guint limit;
+  guint max_threads;
   gint i;
 
+  limit = MAX_THREADS * 10;
+
+  if (sort) {
+    max_threads = 1;
+  } else {
+    max_threads = MAX_THREADS;
+  }
+
+  /* It is important that we only have a maximum of 1 thread for this
+   * test since the results can not be guranteed to be sorted if > 1.
+   * 
+   * Threads are scheduled by the operating system and are executed at
+   * random. It cannot be assumed that threads are executed in the
+   * order they are created. This was discussed in bug #334943.
+   */
+  
   pool = g_thread_pool_new (test_thread_sort_entry_func, 
 			    GINT_TO_POINTER (sort), 
-			    MAX_THREADS,
+			    max_threads, 
 			    FALSE,
 			    NULL);
 
@@ -165,10 +183,17 @@ test_thread_sort (gboolean sort)
   for (i = 0; i < limit; i++) {
     guint id;
 
-    id = g_random_int_range (1, limit*2);
-    g_thread_pool_push (pool, GUINT_TO_POINTER (id + 1), NULL);
+    id = g_random_int_range (1, limit) + 1;
+    g_thread_pool_push (pool, GUINT_TO_POINTER (id), NULL);
+    DEBUG_MSG (("%s ===> pushed new thread with id:%d, number "
+		"of threads:%d, unprocessed:%d",
+		sort ? "[  sorted]" : "[unsorted]", 
+		id, 
+		g_thread_pool_get_num_threads (pool),
+		g_thread_pool_unprocessed (pool)));
   }
 
+  g_assert (g_thread_pool_get_max_threads (pool) == max_threads);
   g_assert (g_thread_pool_get_num_threads (pool) == g_thread_pool_get_max_threads (pool));
 }
 
