@@ -128,10 +128,26 @@ g_option_error_quark (void)
 /**
  * g_option_context_new:
  * @parameter_string: a string which is displayed in
- *    the first line of <option>--help</option> output, after 
- *    <literal><replaceable>programname</replaceable> [OPTION...]</literal>
+ *    the first line of <option>--help</option> output, after the 
+ *    usage summary 
+ *    <literal><replaceable>programname</replaceable> [OPTION...]</literal>.
  *
  * Creates a new option context. 
+ *
+ * The @parameter_text can serve multiple purposes. It can be used
+ * to add descriptions for "rest" arguments, which are not parsed by 
+ * the #GOptionContext, typically something like "FILES" or 
+ * "FILE1 FILE2...". (If you are using #G_OPTION_REMAINING for 
+ * collecting "rest" arguments, GLib handles this automatically by 
+ * using the @arg_description of the corresponding #GOptionEntry in 
+ * the usage summary.)
+ *
+ * Another common usage is to give a summary of the program
+ * functionality. This can be a short summary on the same line, 
+ * like " - frob the strings", or a longer description in a paragraph 
+ * below the usage summary. In this case, @parameter_string should start 
+ * with two newlines, to separate the description from the usage summary:
+ * "\n\nA program to frob strings, which will..."
  *
  * Returns: a newly created #GOptionContext, which must be
  *    freed with g_option_context_free() after use.
