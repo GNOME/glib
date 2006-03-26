@@ -1,3 +1,8 @@
+2006-03-26  Matthias Clasen  <mclasen@redhat.com>
+
+        * glib/goption.c (g_option_context_new): Improve the description
+        of parameter_string in the docs.  (#336085, Claudio Saavedra)
+
 2006-03-24  Martyn Russell  <martyn@imendio.com>
 
 	* glib/gthreadpool.c: Updated the documentation to explain that
