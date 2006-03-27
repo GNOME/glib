@@ -4,6 +4,8 @@
 	test5, as per Matthias' comments in bug 329548#c11.
 
 	Change a gboolean to an int. Fixes bug #329789.
+
+	* configure.in: Bump version number to 2.11.0
 	
 2006-03-27  Matthias Clasen  <mclasen@redhat.com>
 
