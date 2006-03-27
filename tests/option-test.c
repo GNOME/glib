@@ -13,7 +13,7 @@ gdouble arg_test4_double;
 gdouble arg_test5_double;
 
 gchar *callback_test1_string;
-gboolean callback_test2_int;
+int callback_test2_int;
 
 gchar *callback_test_optional_string;
 gboolean callback_test_optional_boolean;
