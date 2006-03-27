@@ -1,5 +1,6 @@
 #include <glib.h>
 #include <string.h>
+#include <locale.h>
 
 int error_test1_int;
 char *error_test2_string;
@@ -8,6 +9,8 @@ gboolean error_test3_boolean;
 int arg_test1_int;
 gchar *arg_test2_string;
 gchar *arg_test3_filename;
+gdouble arg_test4_double;
+gdouble arg_test5_double;
 
 gchar *callback_test1_string;
 gboolean callback_test2_int;
@@ -326,6 +329,70 @@ arg_test3 (void)
 
   g_free (arg_test3_filename);
   
+  g_strfreev (argv);
+  g_option_context_free (context);
+}
+
+
+void
+arg_test4 (void)
+{
+  GOptionContext *context;
+  gboolean retval;
+  GError *error = NULL;
+  gchar **argv;
+  int argc;
+  GOptionEntry entries [] =
+    { { "test", 0, 0, G_OPTION_ARG_DOUBLE, &arg_test4_double, NULL, NULL },
+      { NULL } };
+
+  context = g_option_context_new (NULL);
+  g_option_context_add_main_entries (context, entries, NULL);
+
+  /* Now try parsing */
+  argv = split_string ("program --test 20.0 --test 30.03", &argc);
+
+  retval = g_option_context_parse (context, &argc, &argv, &error);
+  g_assert (retval);
+
+  /* Last arg specified is the one that should be stored */
+  g_assert (arg_test4_double == 30.03);
+
+  g_strfreev (argv);
+  g_option_context_free (context);
+}
+
+void
+arg_test5 (void)
+{
+  GOptionContext *context;
+  gboolean retval;
+  GError *error = NULL;
+  gchar **argv;
+  int argc;
+  char *old_locale;
+  GOptionEntry entries [] =
+    { { "test", 0, 0, G_OPTION_ARG_DOUBLE, &arg_test5_double, NULL, NULL },
+      { NULL } };
+
+  context = g_option_context_new (NULL);
+  g_option_context_add_main_entries (context, entries, NULL);
+
+  /* Now try parsing */
+  argv = split_string ("program --test 20,0 --test 30,03", &argc);
+
+  /* set it to some locale that uses commas instead of decimal points */
+  old_locale = g_strdup (setlocale(LC_NUMERIC, "de"));
+
+  retval = g_option_context_parse (context, &argc, &argv, &error);
+  g_assert (retval);
+
+  /* Last arg specified is the one that should be stored */
+  g_assert (arg_test4_double == 30.03);
+
+  setlocale(LC_NUMERIC, old_locale);
+  g_free (old_locale);
+
   g_strfreev (argv);
   g_option_context_free (context);
 }
@@ -1288,6 +1355,8 @@ main (int argc, char **argv)
   arg_test1 ();
   arg_test2 ();
   arg_test3 ();
+  arg_test4 ();
+  /* arg_test5 (); */
 
   /* Test string arrays */
   array_test1 ();

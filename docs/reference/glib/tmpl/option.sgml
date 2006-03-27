@@ -257,6 +257,8 @@ or combined in a single argument: <option>--name=arg</option>.
   uses of the option are collected into an array of strings.
 @G_OPTION_ARG_FILENAME_ARRAY: The option takes a filename as argument, 
   multiple uses of the option are collected into an array of strings.
+@G_OPTION_ARG_DOUBLE: The option takes a double argument. The argument
+  can be formatted either for the user's locale or for the "C" locale. Since 2.12
 
 <!-- ##### ENUM GOptionFlags ##### -->
 <para>
@@ -349,6 +351,10 @@ g_option_context_add_main_entries() or g_option_group_add_entries().
     <varlistentry>
       <term>%G_OPTION_ARG_FILENAME_ARRAY</term>
       <listitem><para>%gchar**</para></listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>%G_OPTION_ARG_DOUBLE</term>
+      <listitem><para>%gdouble</para></listitem>
     </varlistentry>
   </variablelist>
 @description: the description for the option in <option>--help</option>

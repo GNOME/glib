@@ -50,6 +50,7 @@ typedef struct
     gint integer;
     gchar *str;
     gchar **array;
+    gdouble dbl;
   } prev;
   union 
   {
@@ -684,6 +685,42 @@ parse_int (const gchar *arg_name,
   return TRUE;
 }
 
+
+static gboolean
+parse_double (const gchar *arg_name,
+	   const gchar *arg,
+	   gdouble        *result,
+	   GError     **error)
+{
+  gchar *end;
+  gdouble tmp;
+
+  errno = 0;
+  tmp = g_strtod (arg, &end);
+  
+  if (*arg == '\0' || *end != '\0')
+    {
+      g_set_error (error,
+		   G_OPTION_ERROR, G_OPTION_ERROR_BAD_VALUE,
+		   _("Cannot parse double value '%s' for %s"),
+		   arg, arg_name);
+      return FALSE;
+    }
+  if (errno == ERANGE)
+    {
+      g_set_error (error,
+		   G_OPTION_ERROR, G_OPTION_ERROR_BAD_VALUE,
+		   _("Double value '%s' for %s out of range"),
+		   arg, arg_name);
+      return FALSE;
+    }
+
+  *result = tmp;
+  
+  return TRUE;
+}
+
+
 static Change *
 get_change (GOptionContext *context,
 	    GOptionArg      arg_type,
@@ -900,6 +937,23 @@ parse_arg (GOptionContext *context,
 	
 	return retval;
 	
+	break;
+      }
+    case G_OPTION_ARG_DOUBLE:
+      {
+	gdouble data;
+
+	if (!parse_double (option_name, value,
+ 			&data,
+			error))
+	  {
+	    return FALSE;
+	  }
+
+	change = get_change (context, G_OPTION_ARG_DOUBLE,
+			     entry->arg_data);
+	change->prev.dbl = *(gdouble *)entry->arg_data;
+	*(gdouble *)entry->arg_data = data;
 	break;
       }
     default:
@@ -1165,6 +1219,9 @@ free_changes_list (GOptionContext *context,
 	    case G_OPTION_ARG_FILENAME_ARRAY:
 	      g_strfreev (change->allocated.array.data);
 	      *(gchar ***)change->arg_data = change->prev.array;
+	      break;
+	    case G_OPTION_ARG_DOUBLE:
+	      *(gdouble *)change->arg_data = change->prev.dbl;
 	      break;
 	    default:
 	      g_assert_not_reached ();

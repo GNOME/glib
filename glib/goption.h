@@ -49,7 +49,8 @@ typedef enum
   G_OPTION_ARG_CALLBACK,
   G_OPTION_ARG_FILENAME,
   G_OPTION_ARG_STRING_ARRAY,
-  G_OPTION_ARG_FILENAME_ARRAY
+  G_OPTION_ARG_FILENAME_ARRAY,
+  G_OPTION_ARG_DOUBLE
 } GOptionArg;
 
 typedef gboolean (*GOptionArgFunc) (const gchar    *option_name,

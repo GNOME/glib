@@ -1,3 +1,7 @@
+2006-03-27  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/tmpl/option.sgml: Document floating point arguments
+
 Fri Mar 24 15:22:04 2006  Tim Janik  <timj@imendio.com>
 
 	* glib/tmpl/atomic_operations.sgml: some wording fixups.
