@@ -1,3 +1,16 @@
+2006-03-27  Emmanuele Bassi  <ebassi@cvs.gnome.org>
+
+	* glib/glib.h:
+	* glib/gbookmarkfile.h
+	* glib/gbookmarkfile.c: Add GBookmarkFile, a parser for files
+	containing bookmarks stored using the Desktop Bookmark
+	specification. Fixes bug #327662.
+
+	* glib/glib.symbols:
+	* glib/Makefile.am:
+	* glib/makefile.msc.in:
+	* glib/makefile.mingw.in: Build glue for GBookmarkFile.
+
 2006-03-27  Dom Lachowicz  <cinamod@hotmail.com>
 
 	* tests/option-test.c: Copy-and-paste error slipped into test5. Enable

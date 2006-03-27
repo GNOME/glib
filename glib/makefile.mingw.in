@@ -25,6 +25,7 @@ glib_OBJECTS =			\
 	garray.o		\
 	gasyncqueue.o		\
 	gbacktrace.o		\
+	gbookmarkfile.o 	\
 	gbsearcharray.o		\
 	gcache.o		\
 	gcompletion.o		\

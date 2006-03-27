@@ -72,6 +72,7 @@ libglib_2_0_la_SOURCES = 	\
 	gasyncqueue.c		\
 	gatomic.c		\
 	gbacktrace.c		\
+	gbookmarkfile.c 	\
 	gbsearcharray.h		\
 	gcache.c		\
 	gcompletion.c		\
@@ -148,6 +149,7 @@ glibsubinclude_HEADERS =   \
 	gasyncqueue.h	\
 	gatomic.h	\
 	gbacktrace.h	\
+	gbookmarkfile.h \
 	gcache.h	\
 	gcompletion.h	\
 	gconvert.h	\

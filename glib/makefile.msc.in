@@ -32,6 +32,7 @@ glib_OBJECTS =			\
 	gasyncqueue.obj		\
 	gatomic.obj	\
 	gbacktrace.obj		\
+	gbookmarkfile.obj 	\
 	gcache.obj		\
 	gcompletion.obj		\
 	gconvert.obj		\
