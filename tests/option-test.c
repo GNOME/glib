@@ -388,7 +388,7 @@ arg_test5 (void)
   g_assert (retval);
 
   /* Last arg specified is the one that should be stored */
-  g_assert (arg_test4_double == 30.03);
+  g_assert (arg_test5_double == 30.03);
 
   setlocale(LC_NUMERIC, old_locale);
   g_free (old_locale);
@@ -1356,7 +1356,7 @@ main (int argc, char **argv)
   arg_test2 ();
   arg_test3 ();
   arg_test4 ();
-  /* arg_test5 (); */
+  arg_test5 ();
 
   /* Test string arrays */
   array_test1 ();

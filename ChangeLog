@@ -1,3 +1,8 @@
+2006-03-27  Dom Lachowicz  <cinamod@hotmail.com>
+
+	* tests/option-test.c: Copy-and-paste error slipped into test5. Enable
+	test5, as per Matthias' comments in bug 329548#c11.
+	
 2006-03-27  Matthias Clasen  <mclasen@redhat.com>
 
 	Add support for floating point numbers to goption.
