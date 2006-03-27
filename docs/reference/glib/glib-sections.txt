@@ -1490,6 +1490,60 @@ g_key_file_error_quark
 </SECTION>
 
 <SECTION>
+<TITLE>Bookmark file parser</TITLE>
+<FILE>bookmarkfile</FILE>
+GBookmarkFile
+G_BOOKMARK_FILE_ERROR
+GBookmarkFileError
+g_bookmark_file_new
+g_bookmark_file_free
+g_bookmark_file_load_from_file
+g_bookmark_file_load_from_data
+g_bookmark_file_load_from_data_dirs
+g_bookmark_file_to_data
+g_bookmark_file_to_file
+g_bookmark_file_has_item
+g_bookmark_file_has_group
+g_bookmark_file_has_application
+g_bookmark_file_get_size
+g_bookmark_file_get_uris G_GNUC_MALLOC
+
+<SUBSECTION>
+g_bookmark_file_get_title
+g_bookmark_file_get_description
+g_bookmark_file_get_mime_type
+g_bookmark_file_get_is_private
+g_bookmark_file_get_icon
+g_bookmark_file_get_added
+g_bookmark_file_get_modified
+g_bookmark_file_get_visited
+g_bookmark_file_get_groups
+g_bookmark_file_get_applications
+g_bookmark_file_get_app_info
+
+<SUBSECTION>
+g_bookmark_file_set_title
+g_bookmark_file_set_description
+g_bookmark_file_set_mime_type
+g_bookmark_file_set_is_private
+g_bookmark_file_set_icon
+g_bookmark_file_set_added
+g_bookmark_file_set_groups
+g_bookmark_file_set_modified
+g_bookmark_file_set_visited
+g_bookmark_file_set_app_info
+g_bookmark_file_add_group
+g_bookmark_file_add_application
+g_bookmark_file_remove_group
+g_bookmark_file_remove_application
+g_bookmark_file_remove_item
+g_bookmark_file_move_item
+
+<SUBSECTION Private>
+g_bookmark_file_error_quark
+</SECTION>
+
+<SECTION>
 <TITLE>Dynamic Loading of Modules</TITLE>
 <FILE>modules</FILE>
 <INCLUDE>gmodule.h</INCLUDE>

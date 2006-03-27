@@ -1,5 +1,12 @@
 2006-03-27  Emmanuele Bassi  <ebassi@cvs.gnome.org>
 
+	* docs/reference/glib/glib-docs.sgml:
+	* docs/reference/glib/glib-sections.txt:
+	* docs/reference/glib/tmpl/bookmarkfile.sgml: Add documentation for
+	GBookmarkFile to GLib's reference guide.
+
+2006-03-27  Emmanuele Bassi  <ebassi@cvs.gnome.org>
+
 	* glib/glib.h:
 	* glib/gbookmarkfile.h
 	* glib/gbookmarkfile.c: Add GBookmarkFile, a parser for files

@@ -57,6 +57,7 @@
 <!ENTITY glib-Option SYSTEM "xml/option.xml">
 <!ENTITY glib-Markup SYSTEM "xml/markup.xml">
 <!ENTITY glib-Keyfile SYSTEM "xml/keyfile.xml">
+<!ENTITY glib-Bookmarkfile SYSTEM "xml/bookmarkfile.xml">
 <!ENTITY glib-i18n SYSTEM "xml/i18n.xml">
 <!ENTITY glib-Version SYSTEM "xml/version.xml">
 
@@ -149,6 +150,7 @@ synchronize their operation.
     &glib-Pattern-Matching;
     &glib-Markup;
     &glib-Keyfile;
+    &glib-Bookmarkfile;
     &glib-Windows-Compatibility-Functions;
   </chapter>
 
