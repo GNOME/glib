@@ -63,6 +63,7 @@ endif
 test_programs =					\
 	atomic-test				\
 	array-test				\
+	bookmarkfile-test 				\
 	$(CXX_TEST)				\
 	child-test				\
 	completion-test				\
@@ -126,6 +127,7 @@ module_ldadd = $(libgmodule) $(G_MODULE_LIBS) $(progs_ldadd)
 
 atomic_test_LDADD = $(progs_ldadd)
 array_test_LDADD = $(progs_ldadd)
+bookmarkfile_test_LDADD = $(progs_ldadd)
 child_test_LDADD = $(thread_ldadd)
 completion_test_LDADD = $(progs_ldadd)
 convert_test_LDADD = $(progs_ldadd)

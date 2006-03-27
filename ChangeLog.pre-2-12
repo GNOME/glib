@@ -1,5 +1,12 @@
 2006-03-27  Emmanuele Bassi  <ebassi@cvs.gnome.org>
 
+	* tests/Makefile.am:
+	* tests/bookmarkfile-test.c:
+	* tests/run-bookmark-test.sh:
+	* tests/bookmarks/*.xbel: Add test suite for GBookmarkFile.
+
+2006-03-27  Emmanuele Bassi  <ebassi@cvs.gnome.org>
+
 	* docs/reference/glib/glib-docs.sgml:
 	* docs/reference/glib/glib-sections.txt:
 	* docs/reference/glib/tmpl/bookmarkfile.sgml: Add documentation for
