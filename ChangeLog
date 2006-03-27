@@ -1,5 +1,9 @@
 2006-03-27  Emmanuele Bassi  <ebassi@cvs.gnome.org>
 
+	* tests/.cvsignore: Add bookmarkfile-test to the ignored files.
+
+2006-03-27  Emmanuele Bassi  <ebassi@cvs.gnome.org>
+
 	* tests/Makefile.am:
 	* tests/bookmarkfile-test.c:
 	* tests/run-bookmark-test.sh:

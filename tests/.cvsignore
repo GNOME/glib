@@ -17,6 +17,7 @@ libmoduletestplugin_a.la
 libmoduletestplugin_b.la
 array-test
 atomic-test
+bookmarkfile-test
 child-test
 completion-test
 convert-test
