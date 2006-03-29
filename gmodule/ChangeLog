@@ -1,3 +1,9 @@
+2006-03-29  Matthias Clasen  <mclasen@redhat.com>
+
+	* gmodule.c (g_module_symbol): Make sure to
+	not return TRUE if symbol is NULL.  (#334440,
+	ITOH Yasufumi)
+
 2006-03-07  Matthias Clasen  <mclasen@redhat.com>
 
 	* ===  Released 2.10.1 ===
