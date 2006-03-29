@@ -601,7 +601,7 @@ g_module_symbol (GModule	*module,
     }
   
   g_static_rec_mutex_unlock (&g_module_global_lock);
-  return !module_error;
+  return *symbol != NULL;
 }
 
 G_CONST_RETURN gchar*
