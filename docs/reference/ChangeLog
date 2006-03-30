@@ -1,5 +1,8 @@
 2006-03-30  Matthias Clasen  <mclasen@redhat.com>
 
+	* gobject/tmpl/objects.sgml: Update the floating docs wrt
+	to GInitiallyUnowned.
+
 	* gobject/tmpl/param_value_types.sgml: 
 	* gobject/tmpl/objects.sgml: 
 	* gobject/tmpl/gtype.sgml: Additions
