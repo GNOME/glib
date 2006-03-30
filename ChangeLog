@@ -1,3 +1,7 @@
+2006-03-30  Guntupalli Karunakar  <karunakar@indlinux.org>
+
+        * configure.in: Added "dz" (Dzongkha) to ALL_LINGUAS.
+
 2006-02-15  Sebastian Wilhelmi  <seppi@seppi.de>
 
 	* glib/gthreadpool.c: Fix deadlock when signalling the thread
