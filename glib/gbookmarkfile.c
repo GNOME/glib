@@ -3355,7 +3355,7 @@ g_bookmark_file_get_app_info (GBookmarkFile  *bookmark,
   
   g_return_val_if_fail (bookmark != NULL, FALSE);
   g_return_val_if_fail (uri != NULL, FALSE);
-  g_return_val_if_fail (app_name != NULL, FALSE);
+  g_return_val_if_fail (name != NULL, FALSE);
   
   item = g_bookmark_file_lookup_item (bookmark, uri);
   if (!item)
