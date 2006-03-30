@@ -1,5 +1,9 @@
 2006-03-30  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/tmpl/messages.sgml: Cleanup
+
+	* glib/tmpl/memory_slices.sgml: Adapt to a parameter name change
+
 	* glib/tmpl/linked_lists_double.sgml: Document g_list_free1
 
 2006-03-27  Matthias Clasen  <mclasen@redhat.com>
