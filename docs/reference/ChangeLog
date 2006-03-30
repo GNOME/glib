@@ -1,5 +1,9 @@
 2006-03-30  Matthias Clasen  <mclasen@redhat.com>
 
+	* gobject/tmpl/param_value_types.sgml: 
+	* gobject/tmpl/objects.sgml: 
+	* gobject/tmpl/gtype.sgml: Additions
+
 	* glib/tmpl/messages.sgml: Cleanup
 
 	* glib/tmpl/memory_slices.sgml: Adapt to a parameter name change

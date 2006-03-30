@@ -85,8 +85,10 @@ value of the property has actually changed, it may also be emitted when
 the setter for the property is called to reinstate the previous value.
 </para>
 
-@gobject: the object which received the signal.
 @pspec: the #GParamSpec of the property which changed
+@: 
+<!-- # Unused Parameters # -->
+@gobject: the object which received the signal.
 
 <!-- ##### STRUCT GObjectClass ##### -->
 <para>
@@ -1051,5 +1053,71 @@ properties in set_property() and get_property() implementations.
 @object: the #GObject on which set_property() or get_property() was called
 @property_id: the numeric id of the property
 @pspec: the #GParamSpec of the property
+
+
+<!-- ##### TYPEDEF GInitiallyUnowned ##### -->
+<para>
+All the fields in the <structname>GInitiallyUnowned</structname> structure 
+are private to the #GInitiallyUnowned implementation and should never be 
+accessed directly.
+</para>
+
+
+<!-- ##### TYPEDEF GInitiallyUnownedClass ##### -->
+<para>
+The class structure for the <structname>GInitiallyUnowned</structname> type.
+</para>
+
+
+<!-- ##### MACRO G_INITIALLY_UNOWNED ##### -->
+<para>
+Casts a #GInitiallyUnowned or derived pointer into a (GInitiallyUnowned*) 
+pointer. Depending on the current debugging level, this function may invoke
+certain runtime checks to identify invalid casts.
+</para>
+
+@object: Object which is subject to casting
+
+
+<!-- ##### MACRO G_INITIALLY_UNOWNED_CLASS ##### -->
+<para>
+Casts a derived #GInitiallyUnownedClass structure into a 
+#GInitiallyUnownedClass structure.
+</para>
+
+@class: a valid #GInitiallyUnownedClass
+
+
+<!-- ##### MACRO G_INITIALLY_UNOWNED_GET_CLASS ##### -->
+<para>
+Returns the class structure associated to a #GInitiallyUnowned instance.
+</para>
+
+@object: a #GInitiallyUnowned instance
+
+
+<!-- ##### MACRO G_IS_INITIALLY_UNOWNED ##### -->
+<para>
+Checks whether a valid #GTypeInstance pointer is of type 
+%G_TYPE_INITIALLY_UNOWNED.
+</para>
+
+@object: Instance to check for being a %G_TYPE_INITIALLY_UNOWNED.
+
+
+<!-- ##### MACRO G_IS_INITIALLY_UNOWNED_CLASS ##### -->
+<para>
+Checks whether @class "is a" valid #GInitiallyUnownedClass structure of type
+%G_TYPE_INITIALLY_UNOWNED or derived.
+</para>
+
+@class: a #GInitiallyUnownedClass
+
+
+<!-- ##### MACRO G_TYPE_INITIALLY_UNOWNED ##### -->
+<para>
+The type for #GInitiallyUnowned.
+</para>
+
 
 

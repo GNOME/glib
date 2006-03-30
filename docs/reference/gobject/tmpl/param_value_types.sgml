@@ -1721,6 +1721,15 @@ Casts a #GParamSpec into a #GParamSpecGType.
 @Since: 2.10
 
 
+<!-- ##### MACRO G_VALUE_HOLDS_GTYPE ##### -->
+<para>
+Returns whether the given #GValue can hold values of type %G_TYPE_GTYPE.
+</para>
+
+@value:  a valid #GValue structure
+@Since: 2.12
+
+
 <!-- ##### MACRO G_TYPE_PARAM_GTYPE ##### -->
 <para>
 The #GType of #GParamSpecGType.
