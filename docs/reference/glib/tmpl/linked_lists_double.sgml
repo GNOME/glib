@@ -258,7 +258,7 @@ It is usually used after g_list_remove_link().
 
 <!-- ##### MACRO g_list_free1 ##### -->
 <para>
-
+Another name for g_list_free_1().
 </para>
 
 
