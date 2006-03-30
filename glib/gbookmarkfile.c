@@ -3319,8 +3319,8 @@ expand_exec_line (const gchar *exec_fmt,
  * g_bookmark_file_get_app_info:
  * @bookmark: a #GBookmarkFile
  * @uri: a valid URI
- * @app_name: an application's name
- * @app_exec: location for the command line of the application, or %NULL
+ * @name: an application's name
+ * @exec: location for the command line of the application, or %NULL
  * @count: return location for the registration count, or %NULL
  * @stamp: return location for the last registration time, or %NULL
  * @error: return location for a #GError, or %NULL
@@ -3344,8 +3344,8 @@ expand_exec_line (const gchar *exec_fmt,
 gboolean
 g_bookmark_file_get_app_info (GBookmarkFile  *bookmark,
 			      const gchar    *uri,
-			      const gchar    *app_name,
-			      gchar         **app_exec,
+			      const gchar    *name,
+			      gchar         **exec,
 			      guint          *count,
 			      time_t         *stamp,
 			      GError        **error)
@@ -3367,19 +3367,19 @@ g_bookmark_file_get_app_info (GBookmarkFile  *bookmark,
       return FALSE;
     }
   
-  ai = bookmark_item_lookup_app_info (item, app_name);
+  ai = bookmark_item_lookup_app_info (item, name);
   if (!ai)
     {
       g_set_error (error, G_BOOKMARK_FILE_ERROR,
 		   G_BOOKMARK_FILE_ERROR_APP_NOT_REGISTERED,
 		   _("No application with name '%s' registered a bookmark for '%s'"),
-		   app_name,
+		   name,
 		   uri);
       return FALSE;
     }
   
-  if (app_exec)
-    *app_exec = expand_exec_line (ai->exec, uri);
+  if (exec)
+    *exec = expand_exec_line (ai->exec, uri);
   
   if (count)
     *count = ai->count;

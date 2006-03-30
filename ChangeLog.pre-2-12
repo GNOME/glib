@@ -1,3 +1,9 @@
+2006-03-30  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gbookmarkfile.c (g_bookmark_file_get_app_info): Sync
+	the parameter names with the .h files, otherwise gtk-doc
+	misbehaves.
+
 2006-03-27  Emmanuele Bassi  <ebassi@cvs.gnome.org>
 
 	* tests/.cvsignore: Add bookmarkfile-test to the ignored files.
