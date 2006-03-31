@@ -780,7 +780,7 @@ g_remove (const gchar *filename)
 	}
 
       retval = _wremove (wfilename);
-      if (retval == -1)
+      if (retval == -1 && errno == ENOENT)
 	retval = _wrmdir (wfilename);
       save_errno = errno;
 
@@ -802,7 +802,7 @@ g_remove (const gchar *filename)
 	}
 
       retval = remove (cp_filename);
-      if (retval == -1)
+      if (retval == -1 && errno == ENOENT)
 	retval = rmdir (cp_filename);
       save_errno = errno;
 

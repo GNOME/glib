@@ -1,3 +1,9 @@
+2006-03-30  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gstdio.c (g_remove): [Win32] call rmdir() only if remove()
+	fails with errno set to ENOENT, to leave errno set to EACCESS if
+	that is the problem. (#334799, Yevgen Muntyan)
+
 2006-03-30  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gbookmarkfile.c (g_bookmark_file_get_app_info): Sync
