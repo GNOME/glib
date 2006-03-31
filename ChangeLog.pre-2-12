@@ -1,3 +1,9 @@
+2006-03-31  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gstdio.c (g_remove): Revert change below. It wasn't a good
+	idea after all, says the original bug reporter. See bug for
+	discussion.
+
 2006-03-30  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gstdio.c (g_remove): [Win32] call rmdir() only if remove()
