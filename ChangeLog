@@ -1,3 +1,8 @@
+2006-04-03  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gbookmarkfile.c: Don't include sys/time.h  (#337027,
+	 Kazuki IWAMOTO)
+
 2006-03-31  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gstdio.c (g_remove): Revert change below. It wasn't a good
