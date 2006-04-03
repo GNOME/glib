@@ -1,3 +1,8 @@
+2006-04-03  Matthias Clasen  <mclasen@redhat.com>
+
+	* gobject/tmpl/objects.sgml: Add some verbiage to 
+	g_object_ref_sink_docs.  (#336677)
+
 2006-03-30  Matthias Clasen  <mclasen@redhat.com>
 
 	* gobject/tmpl/objects.sgml: Update the floating docs wrt
