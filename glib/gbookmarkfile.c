@@ -32,7 +32,8 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #ifdef HAVE_UNISTD_H
-#include <unist
+#include <unistd.h>
+#endif
 
 #include "gconvert.h"
 #include "gdataset.h"

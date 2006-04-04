@@ -1,3 +1,7 @@
+2006-04-04  Behdad Esfahbod  <behdad@gnome.org>
+
+	* glib/gbookmarkfile.c: Fix accidentally broken build.
+
 2006-04-03  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gbookmarkfile.c: Don't include sys/time.h  (#337027,
