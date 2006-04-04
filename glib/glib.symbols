@@ -103,6 +103,16 @@ g_on_error_stack_trace
 #endif
 #endif
 
+#if IN_HEADER(__G_BASE64_H__)
+#if IN_FILE(__G_BASE64_C__)
+g_base64_encode_step
+g_base64_encode_close
+g_base64_encode
+g_base64_decode_step
+g_base64_decode
+#endif
+#endif
+
 #if IN_HEADER(__G_BOOKMARK_FILE_H__)
 #if IN_FILE(__G_BOOKMARK_FILE_C__)
 g_bookmark_file_error_quark

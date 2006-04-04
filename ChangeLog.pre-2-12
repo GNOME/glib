@@ -1,3 +1,17 @@
+2006-04-04  Alexander Larsson  <alexl@redhat.com>
+
+	* glib/Makefile.am:
+	* glib/gbase64.[ch]:
+	* glib/glib.symbols:
+	Add base64 encode/decode functions
+	
+	* glib/glib.h:
+	Include gbase64.h
+	
+	* tests/Makefile.am:
+	* tests/base64-test.c:
+	Tests for base64 functions
+
 2006-04-04  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gdate.c: Move short_month_names and long_month_names
