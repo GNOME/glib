@@ -52,11 +52,7 @@
 GQuark 
 g_convert_error_quark (void)
 {
-  static GQuark quark;
-  if (!quark)
-    quark = g_quark_from_static_string ("g_convert_error");
-
-  return quark;
+  return g_quark_from_static_string ("g_convert_error");
 }
 
 static gboolean

@@ -185,12 +185,7 @@ static void                  g_key_file_flush_parse_buffer     (GKeyFile        
 GQuark
 g_key_file_error_quark (void)
 {
-  static GQuark error_quark = 0;
-
-  if (error_quark == 0)
-    error_quark = g_quark_from_static_string ("g-key-file-error-quark");
-
-  return error_quark;
+  return g_quark_from_static_string ("g-key-file-error-quark");
 }
 
 static void

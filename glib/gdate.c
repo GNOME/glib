@@ -451,12 +451,12 @@ G_LOCK_DEFINE_STATIC (g_date_global);
 
 static gchar *long_month_names[13] = 
 { 
-  "Error", NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL 
+  NULL,
 };
 
 static gchar *short_month_names[13] = 
 {
-  "Error", NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL 
+  NULL, 
 };
 
 /* This tells us if we need to update the parse info */
@@ -605,6 +605,9 @@ g_date_prepare_to_parse (const gchar *str, GDateParseTokens *pt)
       
       current_locale = g_strdup (locale);
       
+      short_month_names[0] = "Error";
+      long_month_names[0] = "Error";
+
       while (i < 13) 
         {
 	  gchar *casefold;

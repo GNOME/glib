@@ -34,12 +34,7 @@
 GQuark
 g_markup_error_quark (void)
 {
-  static GQuark error_quark = 0;
-
-  if (error_quark == 0)
-    error_quark = g_quark_from_static_string ("g-markup-error-quark");
-
-  return error_quark;
+  return g_quark_from_static_string ("g-markup-error-quark");
 }
 
 typedef enum

@@ -36,10 +36,7 @@
 GQuark
 g_shell_error_quark (void)
 {
-  static GQuark quark = 0;
-  if (quark == 0)
-    quark = g_quark_from_static_string ("g-shell-error-quark");
-  return quark;
+  return g_quark_from_static_string ("g-shell-error-quark");
 }
 
 /* Single quotes preserve the literal string exactly. escape

@@ -64,10 +64,7 @@
 GQuark 
 g_thread_error_quark (void)
 {
-  static GQuark quark;
-  if (!quark)
-    quark = g_quark_from_static_string ("g_thread_error");
-  return quark;
+  return g_quark_from_static_string ("g_thread_error");
 }
 
 /* Keep this in sync with GRealThread in gmain.c! */

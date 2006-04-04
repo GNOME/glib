@@ -359,11 +359,7 @@ g_file_test (const gchar *filename,
 GQuark
 g_file_error_quark (void)
 {
-  static GQuark q = 0;
-  if (q == 0)
-    q = g_quark_from_static_string ("g-file-error-quark");
-
-  return q;
+  return g_quark_from_static_string ("g-file-error-quark");
 }
 
 /**

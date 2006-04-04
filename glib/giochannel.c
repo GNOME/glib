@@ -2299,11 +2299,7 @@ g_io_channel_write_unichar    (GIOChannel   *channel,
 GQuark
 g_io_channel_error_quark (void)
 {
-  static GQuark q = 0;
-  if (q == 0)
-    q = g_quark_from_static_string ("g-io-channel-error-quark");
-
-  return q;
+  return g_quark_from_static_string ("g-io-channel-error-quark");
 }
 
 #define __G_IOCHANNEL_C__

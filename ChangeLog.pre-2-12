@@ -1,5 +1,21 @@
 2006-04-04  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gdate.c: Move short_month_names and long_month_names
+	to bss.
+
+	* glib/gspawn-win32.c (g_spawn_error_quark):
+	* glib/gspawn.c (g_spawn_error_quark):
+	* glib/gshell.c (g_shell_error_quark):
+	* glib/gmarkup.c (g_markup_error_quark):
+	* glib/goption.c (g_option_error_quark):
+	* glib/gkeyfile.c (g_key_file_error_quark):
+	* glib/giochannel.c (g_io_channel_error_quark):
+	* glib/gfileutils.c (g_file_error_quark):
+	* glib/gconvert.c (g_convert_error_quark):
+	* glib/gbookmarkfile.c (g_bookmark_file_error_quark):
+	* glib/gthread.c (g_thread_error_quark): No point in making
+	the error path fast by caching quarks.
+
 	* glib/gbookmarkfile.c: Make the parser struct const.
 
 2006-04-04  Behdad Esfahbod  <behdad@gnome.org>

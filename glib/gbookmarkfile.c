@@ -1562,12 +1562,7 @@ timestamp_from_iso8601 (const gchar *iso_date)
 GQuark
 g_bookmark_file_error_quark (void)
 {
-  static GQuark error_quark = 0;
-
-  if (G_UNLIKELY (error_quark == 0))
-    error_quark = g_quark_from_static_string ("egg-bookmark-file-error-quark");
-
-  return error_quark;
+  return g_quark_from_static_string ("egg-bookmark-file-error-quark");
 }
 
 

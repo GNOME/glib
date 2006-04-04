@@ -118,12 +118,7 @@ static void free_pending_nulls (GOptionContext *context,
 GQuark
 g_option_error_quark (void)
 {
-  static GQuark q = 0;
-  
-  if (q == 0)
-    q = g_quark_from_static_string ("g-option-context-error-quark");
-
-  return q;
+  return g_quark_from_static_string ("g-option-context-error-quark");
 }
 
 /**

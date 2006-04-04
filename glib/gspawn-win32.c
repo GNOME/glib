@@ -199,10 +199,7 @@ protect_argv (gchar  **argv,
 GQuark
 g_spawn_error_quark (void)
 {
-  static GQuark quark = 0;
-  if (quark == 0)
-    quark = g_quark_from_static_string ("g-exec-error-quark");
-  return quark;
+  return g_quark_from_static_string ("g-exec-error-quark");
 }
 
 gboolean
