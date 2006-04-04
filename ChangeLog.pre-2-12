@@ -1,3 +1,7 @@
+2006-04-04  Pema Geyleg  <pema.geyleg@gmail.com>
+
+	* configure.in: Added dz (Dzongkha) to ALL_LINGUAS.
+
 2006-03-31  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gstdio.c (g_remove): Revert change below. It wasn't a good
