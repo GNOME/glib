@@ -1372,7 +1372,7 @@ text_raw_cb (GMarkupParseContext *context,
   g_free (payload);
 }
 
-static GMarkupParser markup_parser =
+static const GMarkupParser markup_parser =
 {
   start_element_raw_cb, /* start_element */
   end_element_raw_cb,   /* end_element */
