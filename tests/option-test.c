@@ -1,6 +1,7 @@
-#include <glib.h>
+#include <stdio.h>
 #include <string.h>
 #include <locale.h>
+#include <glib.h>
 
 int error_test1_int;
 char *error_test2_string;
@@ -370,7 +371,8 @@ arg_test5 (void)
   GError *error = NULL;
   gchar **argv;
   int argc;
-  char *old_locale;
+  char *old_locale, *current_locale;
+  const char *locale = "de_DE";
   GOptionEntry entries [] =
     { { "test", 0, 0, G_OPTION_ARG_DOUBLE, &arg_test5_double, NULL, NULL },
       { NULL } };
@@ -382,7 +384,14 @@ arg_test5 (void)
   argv = split_string ("program --test 20,0 --test 30,03", &argc);
 
   /* set it to some locale that uses commas instead of decimal points */
-  old_locale = g_strdup (setlocale(LC_NUMERIC, "de"));
+  
+  old_locale = g_strdup (setlocale (LC_NUMERIC, locale));
+  current_locale = setlocale (LC_NUMERIC, NULL);
+  if (strcmp (current_locale, locale) != 0)
+    {
+      fprintf (stderr, "Cannot set locale to %s, skipping\n", locale);
+      goto cleanup; 
+    }
 
   retval = g_option_context_parse (context, &argc, &argv, &error);
   g_assert (retval);
@@ -390,7 +399,8 @@ arg_test5 (void)
   /* Last arg specified is the one that should be stored */
   g_assert (arg_test5_double == 30.03);
 
-  setlocale(LC_NUMERIC, old_locale);
+ cleanup:
+  setlocale (LC_NUMERIC, old_locale);
   g_free (old_locale);
 
   g_strfreev (argv);
@@ -907,6 +917,7 @@ empty_test1 (void)
   GOptionEntry entries [] =
     { { NULL } };
 
+  g_set_prgname (NULL);
   context = g_option_context_new (NULL);
 
   g_option_context_add_main_entries (context, entries, NULL);

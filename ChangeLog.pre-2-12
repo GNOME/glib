@@ -1,5 +1,9 @@
 2006-04-05  Matthias Clasen  <mclasen@redhat.com>
 
+	* tests/option-test.c (arg_test5): Skip the test if
+	setting the locale fails.
+	(empty_test1): Reset prgname before the test.
+
 	* tests/Makefile.am: Arrange for run-bookmark-test.sh
 	to be run by make check.
 
