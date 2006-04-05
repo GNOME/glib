@@ -64,7 +64,6 @@ test_programs =					\
 	atomic-test				\
 	array-test				\
 	base64-test				\
-	bookmarkfile-test 				\
 	$(CXX_TEST)				\
 	child-test				\
 	completion-test				\
@@ -110,9 +109,9 @@ test_programs =					\
 	utf8-pointer				\
 	uri-test
 
-test_scripts = run-markup-tests.sh run-collate-tests.sh
+test_scripts = run-markup-tests.sh run-collate-tests.sh run-bookmark-test.sh
 
-test_script_support_programs = markup-test unicode-collate
+test_script_support_programs = markup-test unicode-collate bookmarkfile-test
 
 check_PROGRAMS = $(test_programs) $(test_script_support_programs)
 

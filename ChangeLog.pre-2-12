@@ -1,5 +1,8 @@
 2006-04-05  Matthias Clasen  <mclasen@redhat.com>
 
+	* tests/Makefile.am: Arrange for run-bookmark-test.sh
+	to be run by make check.
+
 	* tests/utf8-pointer.c: 
 	* tests/tree-test.c: Silence warnings.
 
