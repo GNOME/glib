@@ -1,3 +1,9 @@
+2006-04-05  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gnulib/vasnprintf.c (vasnprintf): Make
+	long long printing work if snprintf is not 
+	available.  (#332841, Michael McDonald)
+
 2006-04-05  Behdad Esfahbod  <behdad@gnome.org>
 
 	* tests/option-test.c: Check the return value of g_get_prgname for
