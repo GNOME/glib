@@ -12,3 +12,4 @@ references
 testmarshal.c
 testmarshal.h
 stamp-testmarshal.h
+paramspec-test
