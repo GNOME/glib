@@ -282,7 +282,7 @@ See g_signal_new() for details on allowed signal names.
 @signal_flags: a combination of #GSignalFlags specifying detail of when 
    the default handler is to be invoked. You should at least specify 
    %G_SIGNAL_RUN_FIRST or %G_SIGNAL_RUN_LAST.
-@class_closure: The closure to invoke on signal emission.
+@class_closure: The closure to invoke on signal emission; may be %NULL.
 @accumulator: the accumulator for this signal; may be %NULL.
 @accu_data: user data for the @accumulator.
 @c_marshaller: the function to translate arrays of parameter values to 
@@ -308,7 +308,7 @@ See g_signal_new() for details on allowed signal names.
 @signal_flags: a combination of #GSignalFlags specifying detail of when 
    the default handler is to be invoked. You should at least specify 
    %G_SIGNAL_RUN_FIRST or %G_SIGNAL_RUN_LAST.
-@class_closure: The closure to invoke on signal emission.
+@class_closure: The closure to invoke on signal emission; may be %NULL.
 @accumulator: the accumulator for this signal; may be %NULL.
 @accu_data: user data for the @accumulator.
 @c_marshaller: the function to translate arrays of parameter values to 
