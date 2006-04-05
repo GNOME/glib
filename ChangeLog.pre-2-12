@@ -1,3 +1,10 @@
+2006-04-05  Behdad Esfahbod  <behdad@gnome.org>
+
+	* tests/option-test.c: Check the return value of g_get_prgname for
+	NULL before passing to strcmp.
+
+	* tests/slice-test.c: Report the correct name in Usage summary.
+
 2006-04-05  Matthias Clasen  <mclasen@redhat.com>
 
 	* tests/run-collate-tests.sh: Fix up shell script.

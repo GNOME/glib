@@ -916,6 +916,7 @@ empty_test1 (void)
   GOptionContext *context;
   GOptionEntry entries [] =
     { { NULL } };
+  char *prgname;
 
   g_set_prgname (NULL);
   context = g_option_context_new (NULL);
@@ -924,7 +925,8 @@ empty_test1 (void)
   
   g_option_context_parse (context, NULL, NULL, NULL);
 
-  g_assert (strcmp (g_get_prgname (), "<unknown>") == 0);
+  prgname = g_get_prgname ();
+  g_assert (prgname && strcmp (prgname, "<unknown>") == 0);
   
   g_option_context_free (context);
 }
