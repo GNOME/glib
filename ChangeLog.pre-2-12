@@ -1,3 +1,9 @@
+2006-04-04  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/glib.symbols:
+	* glib/gbase64.[hc]: Add G_GNUC_MALLOC where
+	appropriate, use glib types.
+
 2006-04-04  Alexander Larsson  <alexl@redhat.com>
 
 	* glib/Makefile.am:

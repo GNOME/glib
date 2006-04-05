@@ -66,12 +66,12 @@ static const char base64_alphabet[] =
  * Since: 2.12
  */
 gsize
-g_base64_encode_step (const guchar  *in, 
-		      gsize          len, 
-		      gboolean       break_lines, 
-		      char          *out, 
-		      int           *state, 
-		      int           *save)
+g_base64_encode_step (const guchar *in, 
+		      gsize         len, 
+		      gboolean      break_lines, 
+		      gchar        *out, 
+		      gint         *state, 
+		      gint         *save)
 {
   char *outptr;
   const guchar *inptr;
@@ -91,10 +91,14 @@ g_base64_encode_step (const guchar  *in,
       already = *state;
       
       switch (((char *) save) [0])
-	{
-	case 1:	c1 = ((unsigned char *) save) [1]; goto skip1;
-	case 2:	c1 = ((unsigned char *) save) [1];
-	  c2 = ((unsigned char *) save) [2]; goto skip2;
+	{	
+	case 1:	
+	  c1 = ((unsigned char *) save) [1]; 
+          goto skip1;
+	case 2:	
+          c1 = ((unsigned char *) save) [1];
+	  c2 = ((unsigned char *) save) [2]; 
+          goto skip2;
 	}
       
       /* 
@@ -115,15 +119,15 @@ g_base64_encode_step (const guchar  *in,
 					(c3 >> 6) ];
 	  *outptr++ = base64_alphabet [ c3 & 0x3f ];
 	  /* this is a bit ugly ... */
-	  if (break_lines && (++already)>=19)
+	  if (break_lines && (++already) >= 19)
 	    {
-	      *outptr++='\n';
+	      *outptr++ = '\n';
 	      already = 0;
 	    }
 	}
       
       ((char *)save)[0] = 0;
-      len = 2-(inptr-inend);
+      len = 2 - (inptr - inend);
       *state = already;
     }
   
@@ -140,10 +144,10 @@ g_base64_encode_step (const guchar  *in,
 	case 2:	*saveout++ = *inptr++;
 	case 1:	*saveout++ = *inptr++;
 	}
-      ((char *)save)[0]+=len;
+      ((char *)save)[0] += len;
     }
   
-  return outptr-out;
+  return outptr - out;
 }
 
 /**
@@ -160,10 +164,10 @@ g_base64_encode_step (const guchar  *in,
  * Since: 2.12
  */
 gsize
-g_base64_encode_close (gboolean       break_lines,
-		       char          *out, 
-		       int           *state, 
-		       int           *save)
+g_base64_encode_close (gboolean  break_lines,
+		       gchar    *out, 
+		       gint     *state, 
+		       gint     *save)
 {
   int c1, c2;
   char *outptr = out;
@@ -192,7 +196,7 @@ g_base64_encode_close (gboolean       break_lines,
   *save = 0;
   *state = 0;
   
-  return outptr-out;
+  return outptr - out;
 }
 
 /**
@@ -208,12 +212,13 @@ g_base64_encode_close (gboolean       break_lines,
  *
  * Since: 2.12
  */
-char *
-g_base64_encode (const guchar *data, gsize len)
+gchar *
+g_base64_encode (const guchar *data, 
+                 gsize         len)
 {
-  char *out;
-  int state = 0, outlen;
-  int save = 0;
+  gchar *out;
+  gint state = 0, outlen;
+  gint save = 0;
 
   /* We can use a smaller limit here, since we know the saved state is 0 */
   out = g_malloc (len * 4 / 3 + 4);
@@ -223,7 +228,7 @@ g_base64_encode (const guchar *data, gsize len)
 				   &state, 
 				   &save);
   out[outlen] = '\0';
-  return (char *) out;
+  return (gchar *) out;
 }
 
 static const unsigned char mime_base64_rank[256] = {
@@ -246,7 +251,7 @@ static const unsigned char mime_base64_rank[256] = {
 };
 
 /**
- * g_base64_decode_step: decode a chunk of base64 encoded data
+ * g_base64_decode_step: 
  * @in: binary input data
  * @len: max length of @in data to decode
  * @out: output buffer
@@ -266,11 +271,11 @@ static const unsigned char mime_base64_rank[256] = {
  * Since: 2.12
  **/
 gsize
-g_base64_decode_step (const char  *in, 
-		      gsize        len, 
-		      guchar      *out, 
-		      int         *state, 
-		      guint       *save)
+g_base64_decode_step (const gchar  *in, 
+		      gsize         len, 
+		      guchar       *out, 
+		      gint         *state, 
+		      guint        *save)
 {
   const guchar *inptr;
   guchar *outptr;
@@ -337,11 +342,11 @@ g_base64_decode_step (const char  *in,
  * Since: 2.12
  */
 guchar *
-g_base64_decode (const char   *text,
-		 gsize        *out_len)
+g_base64_decode (const gchar *text,
+		 gsize       *out_len)
 {
   guchar *ret;
-  int inlen, state = 0;
+  gint inlen, state = 0;
   guint save = 0;
   
   inlen = strlen (text);
