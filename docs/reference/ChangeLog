@@ -1,3 +1,7 @@
+2006-04-05  Matthias Clasen  <mclasen@redhat.com>
+
+	* gobject/tmpl/signals.sgml: Document class_offset 0.
+
 2006-04-04  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/glib-sections.txt:
