@@ -25,17 +25,14 @@ for I in ${srcdir:-.}/collate/*.in; do
   echo_v "Sorting $I"
   name=`basename $I .in`
   ./unicode-collate $I > collate.out
-  if ! diff collate.out ${srcdir:-.}/collate/$name.unicode; then 
+  diff collate.out ${srcdir:-.}/collate/$name.unicode || 
     fail "unexpected error when using g_utf8_collate() on $I"
-  fi  
   ./unicode-collate --key $I > collate.out
-  if ! diff collate.out ${srcdir:-.}/collate/$name.unicode; then 
+  diff collate.out ${srcdir:-.}/collate/$name.unicode ||
     fail "unexpected error when using g_utf8_collate_key() on $I"
-  fi  
   ./unicode-collate --file $I > collate.out
-  if ! diff collate.out ${srcdir:-.}/collate/$name.file; then 
+  diff collate.out ${srcdir:-.}/collate/$name.file ||
     fail "unexpected error when using g_utf8_collate_key_for_filename() on $I"
-  fi  
 done
 
 echo_v "All tests passed."

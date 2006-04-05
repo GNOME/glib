@@ -1,5 +1,7 @@
 2006-04-05  Matthias Clasen  <mclasen@redhat.com>
 
+	* tests/run-collate-tests.sh: Fix up shell script.
+
 	* tests/option-test.c (arg_test5): Skip the test if
 	setting the locale fails.
 	(empty_test1): Reset prgname before the test.
