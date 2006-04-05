@@ -213,7 +213,7 @@ main (
   const char *data_file_type = "BidiMirroring.txt";
 
   if (argc < 3)
-    die2 ("usage:\n  " appname " max-depth /path/to/%s [junk...]",
+    die2 ("usage:\n  " appname " max-lookups /path/to/%s [junk...]",
 	  data_file_type);
 
   {
