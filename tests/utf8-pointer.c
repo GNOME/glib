@@ -24,6 +24,7 @@
  * GLib at ftp://ftp.gtk.org/pub/gtk/. 
  */
 
+#include <string.h>
 #include <glib.h>
 
 /* Test conversions between offsets and pointers */

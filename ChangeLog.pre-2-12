@@ -1,6 +1,7 @@
 2006-04-05  Matthias Clasen  <mclasen@redhat.com>
 
-	* tests/tree-test.c: Silence a warning
+	* tests/utf8-pointer.c: 
+	* tests/tree-test.c: Silence warnings.
 
 2006-04-04  Matthias Clasen  <mclasen@redhat.com>
 
