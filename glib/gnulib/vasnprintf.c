@@ -853,11 +853,19 @@ vasnprintf (char *resultbuf, size_t *lengthp, const char *format, va_list args)
 				}
 			    }
 			  
-			  count = print_long_long (result + length, maxlen,
+#if HAVE_SNPRINTF
+ 			  count = print_long_long (result + length, maxlen,
+ 						   width, precision,
+ 						   dp->flags,
+ 						   dp->conversion,
+ 						   arg);
+#else
+			  count = print_long_long (tmp, tmp_length,
 						   width, precision,
 						   dp->flags,
 						   dp->conversion,
 						   arg);
+#endif
 			}
 			break;
 #else
