@@ -206,7 +206,7 @@ main (int   argc,
 
   g_tree_destroy (tree);
 
-  tree = g_tree_new_full (my_compare, NULL, 
+  tree = g_tree_new_full ((GCompareDataFunc)my_compare, NULL, 
 			  my_key_destroy, 
 			  my_value_destroy);
 

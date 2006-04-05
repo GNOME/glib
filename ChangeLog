@@ -1,3 +1,7 @@
+2006-04-05  Matthias Clasen  <mclasen@redhat.com>
+
+	* tests/tree-test.c: Silence a warning
+
 2006-04-04  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/glib.symbols:
