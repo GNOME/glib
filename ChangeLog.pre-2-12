@@ -1,3 +1,8 @@
+2006-04-07  Martyn Russell  <martyn@imendio.com>
+
+	* tests/threadpool-test.c: (test_thread_stop_unused): Removed an
+	assertion which can fail and is not a critical test.
+
 2006-04-07  Hans Breuer  <hans@breuer.org>
 
 	* glib/makefile.msc.in : added gbase64.obj and derive the static libs
