@@ -121,10 +121,7 @@ test_thread_stop_unused (void)
    DEBUG_MSG (("[unused] current threads %d",
 	       test_count_threads()));
 
-   g_assert (test_count_threads () == limit);
-
    DEBUG_MSG (("[unused] stopping unused threads"));
-   
    g_thread_pool_stop_unused_threads ();
 
    DEBUG_MSG (("[unused] waiting ONE second for threads to die"));
