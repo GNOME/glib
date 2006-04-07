@@ -625,5 +625,18 @@ g_async_queue_sort_unlocked (GAsyncQueue      *queue,
 		&sd);
 }
 
+/*
+ * Private API
+ */
+
+GMutex*
+_g_async_queue_get_mutex (GAsyncQueue* queue)
+{
+  g_return_val_if_fail (queue, NULL);
+  g_return_val_if_fail (g_atomic_int_get (&queue->ref_count) > 0, NULL);
+
+  return queue->mutex;
+}
+
 #define __G_ASYNCQUEUE_C__
 #include "galiasdef.c"

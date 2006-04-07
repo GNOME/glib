@@ -1,3 +1,20 @@
+2006-04-07  Martyn Russell  <martyn@imendio.com>
+
+	* glib/gasyncqueue.[ch]: Added private API
+	_g_async_queue_get_mutex so that g_thread_pool_free() can use the
+	async queue mutex. 
+	
+	* glib/gthreadpool.c: Make sure
+	g_thread_pool_stop_unused_threads() actually stops unused threads
+	and global limits (like max idle time and max unused threads) can
+	be set without creating a thread pool first. Fixed #335215 (patch
+	from Chris Wilson).  
+	
+	* tests/threadpool-test.c: Added two new tests, tests setting
+	global limits before creating a thread pool. The second test
+	makes sure unused threads are actually stopped when using the
+	g_thread_pool_stop_unused_threads(). 
+
 2006-04-05  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gnulib/vasnprintf.c (vasnprintf): Make
