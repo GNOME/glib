@@ -1,3 +1,7 @@
+2006-04-07  Matthias Clasen  <mclasen@redhat.com>
+	
+	* === Released 2.10.2 ===
+
 2006-03-11  Tor Lillqvist  <tml@novell.com>
 
 	* gthread-win32.c: #define _WIN32_WINDOWS as 0x0401 to get

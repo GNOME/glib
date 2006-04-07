@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-03-07 13:10-0500\n"
+"POT-Creation-Date: 2006-04-07 13:20-0400\n"
 "PO-Revision-Date: 2005-05-20 11:50+0545\n"
 "Last-Translator: Jyotshna Shrestha <shresthajyo@hotmail.com>\n"
 "Language-Team: Nepali <info@mpp.org.np>\n"
@@ -561,51 +561,51 @@ msgstr "अनुवादन निवेशमा अमान्य शृङ
 msgid "Character out of range for UTF-16"
 msgstr "युटिएफ-१६ को लागी वर्ण क्षेत्र भन्दा बाहिर"
 
-#: glib/goption.c:468
+#: glib/goption.c:484
 msgid "Usage:"
 msgstr "प्रयोग:"
 
-#: glib/goption.c:468
+#: glib/goption.c:484
 msgid "[OPTION...]"
 msgstr "[विकल्प...]"
 
-#: glib/goption.c:556
+#: glib/goption.c:572
 msgid "Help Options:"
 msgstr "सहयोग विकल्पहरू:"
 
-#: glib/goption.c:557
+#: glib/goption.c:573
 msgid "Show help options"
 msgstr "सहयोग विकल्पहरू देखाउनुहोला"
 
-#: glib/goption.c:562
+#: glib/goption.c:578
 msgid "Show all help options"
 msgstr "सबै सहयोग विकल्पहरू देखाउनुहोला"
 
-#: glib/goption.c:612
+#: glib/goption.c:628
 msgid "Application Options:"
 msgstr "अनुरोधपत्र विकल्पहरू:"
 
-#: glib/goption.c:653
+#: glib/goption.c:669
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "पूर्ण संख्या मान '%s' %s को लागि व्याख्या गर्न सकेन"
 
-#: glib/goption.c:663
+#: glib/goption.c:679
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "पूर्ण संख्या मान '%s' %s को लागि क्षेत्र भन्दा बाहिर छ"
 
-#: glib/goption.c:926
+#: glib/goption.c:942
 #, fuzzy, c-format
 msgid "Error parsing option %s"
 msgstr "अनुवाद क्रममा गल्ती: %s"
 
-#: glib/goption.c:959 glib/goption.c:1070
+#: glib/goption.c:973 glib/goption.c:1084
 #, c-format
 msgid "Missing argument for %s"
 msgstr ""
 
-#: glib/goption.c:1474
+#: glib/goption.c:1489
 #, c-format
 msgid "Unknown option %s"
 msgstr "अज्ञात विकल्प %s"

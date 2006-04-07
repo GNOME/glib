@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-03-07 13:10-0500\n"
+"POT-Creation-Date: 2006-04-07 13:20-0400\n"
 "PO-Revision-Date: 2004-09-06 21:31+0000\n"
 "Last-Translator: Åsmund Skjæveland <aasmunds@fys.uio.no>\n"
 "Language-Team: Norwegian Nynorsk <i18n-nn@lister.ping.uio.no>\n"
@@ -577,51 +577,51 @@ msgstr "Ugyldig sekvens i inndata-konvertering"
 msgid "Character out of range for UTF-16"
 msgstr "Teikn ikkje gyldig for UTF-16"
 
-#: glib/goption.c:468
+#: glib/goption.c:484
 msgid "Usage:"
 msgstr "Bruk:"
 
-#: glib/goption.c:468
+#: glib/goption.c:484
 msgid "[OPTION...]"
 msgstr "[VAL...]"
 
-#: glib/goption.c:556
+#: glib/goption.c:572
 msgid "Help Options:"
 msgstr "Hjelpeval:"
 
-#: glib/goption.c:557
+#: glib/goption.c:573
 msgid "Show help options"
 msgstr "Vis hjelpeval"
 
-#: glib/goption.c:562
+#: glib/goption.c:578
 msgid "Show all help options"
 msgstr "Vis alle hjelpevala"
 
-#: glib/goption.c:612
+#: glib/goption.c:628
 msgid "Application Options:"
 msgstr "Programval:"
 
-#: glib/goption.c:653
+#: glib/goption.c:669
 #, fuzzy, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "Kan ikkje tolka heiltalsverdien «%s» til «--%s»"
 
-#: glib/goption.c:663
+#: glib/goption.c:679
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "Heiltalsverdien «%s» til «%s» utanfor gyldig område"
 
-#: glib/goption.c:926
+#: glib/goption.c:942
 #, fuzzy, c-format
 msgid "Error parsing option %s"
 msgstr "Feil under konvertering: %s"
 
-#: glib/goption.c:959 glib/goption.c:1070
+#: glib/goption.c:973 glib/goption.c:1084
 #, c-format
 msgid "Missing argument for %s"
 msgstr ""
 
-#: glib/goption.c:1474
+#: glib/goption.c:1489
 #, c-format
 msgid "Unknown option %s"
 msgstr "Ukjend val «%s»"

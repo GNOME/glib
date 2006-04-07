@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-03-07 13:10-0500\n"
+"POT-Creation-Date: 2006-04-07 13:20-0400\n"
 "PO-Revision-Date: 2006-02-21 15:21+0100\n"
 "Last-Translator: Iñaki Larrañaga <dooteo@euskalgnu.org>\n"
 "Language-Team: Basque <itzulpena@euskalgnu.org>\n"
@@ -596,51 +596,51 @@ msgstr "Sekuentzia baliogabea bihurketa-sarreran"
 msgid "Character out of range for UTF-16"
 msgstr "Karakterea honako barrutitik kanpo UTF-16 formaturako"
 
-#: glib/goption.c:468
+#: glib/goption.c:484
 msgid "Usage:"
 msgstr "Erabilera:"
 
-#: glib/goption.c:468
+#: glib/goption.c:484
 msgid "[OPTION...]"
 msgstr "[AUKERA...]"
 
-#: glib/goption.c:556
+#: glib/goption.c:572
 msgid "Help Options:"
 msgstr "Laguntzako aukerak:"
 
-#: glib/goption.c:557
+#: glib/goption.c:573
 msgid "Show help options"
 msgstr "Erakutsi laguntzako aukerak"
 
-#: glib/goption.c:562
+#: glib/goption.c:578
 msgid "Show all help options"
 msgstr "Erakutsi laguntzako aukera guztiak"
 
-#: glib/goption.c:612
+#: glib/goption.c:628
 msgid "Application Options:"
 msgstr "Aplikazio-aukerak:"
 
-#: glib/goption.c:653
+#: glib/goption.c:669
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "Ezin da '%2$s'(r)en '%1$s' osoko balioa analizatu"
 
-#: glib/goption.c:663
+#: glib/goption.c:679
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "%2$s(r)en '%1$s' osoko balioa barrutitik kanpo"
 
-#: glib/goption.c:926
+#: glib/goption.c:942
 #, c-format
 msgid "Error parsing option %s"
 msgstr "Errorea %s aukera analizatzean"
 
-#: glib/goption.c:959 glib/goption.c:1070
+#: glib/goption.c:973 glib/goption.c:1084
 #, c-format
 msgid "Missing argument for %s"
 msgstr "%s(e)ko argumentua falta da"
 
-#: glib/goption.c:1474
+#: glib/goption.c:1489
 #, c-format
 msgid "Unknown option %s"
 msgstr "%s aukera ezezaguna"

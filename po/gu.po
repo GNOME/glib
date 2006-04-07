@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.gu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-03-07 13:10-0500\n"
+"POT-Creation-Date: 2006-04-07 13:20-0400\n"
 "PO-Revision-Date: 2006-01-09 10:34+0530\n"
 "Last-Translator: Ankit Patel <ankit644@yahoo.com>\n"
 "Language-Team: Gujarati <indianoss-gujarati@lists.sourceforge.net>\n"
@@ -560,51 +560,51 @@ msgstr "પરીવર્તિત ઈનપુટની અંદર અયો
 msgid "Character out of range for UTF-16"
 msgstr "UTF-૧૬ ની સીમાની બહાર નો અક્ષર"
 
-#: glib/goption.c:468
+#: glib/goption.c:484
 msgid "Usage:"
 msgstr "વપરાશ:"
 
-#: glib/goption.c:468
+#: glib/goption.c:484
 msgid "[OPTION...]"
 msgstr "[OPTION...]"
 
-#: glib/goption.c:556
+#: glib/goption.c:572
 msgid "Help Options:"
 msgstr "મદદ વિકલ્પો:"
 
-#: glib/goption.c:557
+#: glib/goption.c:573
 msgid "Show help options"
 msgstr "મદદ વિકલ્પો બતાવો"
 
-#: glib/goption.c:562
+#: glib/goption.c:578
 msgid "Show all help options"
 msgstr "બધા મદદ વિકલ્પો બતાવો"
 
-#: glib/goption.c:612
+#: glib/goption.c:628
 msgid "Application Options:"
 msgstr "કાર્યક્રમ વિકલ્પો:"
 
-#: glib/goption.c:653
+#: glib/goption.c:669
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "પૂર્ણાંક કિંમત '%s' ને %s માટે પદચ્છેદન કરી શકતા નથી"
 
-#: glib/goption.c:663
+#: glib/goption.c:679
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "પૂર્ણાંક કિંમત '%s' એ %s માટે મર્યાદા બહાર છે"
 
-#: glib/goption.c:926
+#: glib/goption.c:942
 #, c-format
 msgid "Error parsing option %s"
 msgstr "ભૂલ પદચ્છેદન વિકલ્પ %s"
 
-#: glib/goption.c:959 glib/goption.c:1070
+#: glib/goption.c:973 glib/goption.c:1084
 #, c-format
 msgid "Missing argument for %s"
 msgstr "%s માટેની દલીલ ગુમ થયેલ છે"
 
-#: glib/goption.c:1474
+#: glib/goption.c:1489
 #, c-format
 msgid "Unknown option %s"
 msgstr "અજ્ઞાત વિકલ્પ %s"

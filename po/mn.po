@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-03-07 13:10-0500\n"
+"POT-Creation-Date: 2006-04-07 13:20-0400\n"
 "PO-Revision-Date: 2005-05-30 01:07-0800\n"
 "Last-Translator: Бадрал <badral@openmn.org>\n"
 "Language-Team: Mongolian <openmn-translation@lists.sf.net>\n"
@@ -594,51 +594,51 @@ msgstr "Хөрвүүлэлтийн оролтод хүчингүй дараал�
 msgid "Character out of range for UTF-16"
 msgstr "UTF-16 хязгаараас гаднах тэмдэгт"
 
-#: glib/goption.c:468
+#: glib/goption.c:484
 msgid "Usage:"
 msgstr "Хэрэглээ:"
 
-#: glib/goption.c:468
+#: glib/goption.c:484
 msgid "[OPTION...]"
 msgstr "[OPTION...]"
 
-#: glib/goption.c:556
+#: glib/goption.c:572
 msgid "Help Options:"
 msgstr "Тусламж:"
 
-#: glib/goption.c:557
+#: glib/goption.c:573
 msgid "Show help options"
 msgstr "Тусламж харуулах"
 
-#: glib/goption.c:562
+#: glib/goption.c:578
 msgid "Show all help options"
 msgstr "Бүх тусламж харуулах"
 
-#: glib/goption.c:612
+#: glib/goption.c:628
 msgid "Application Options:"
 msgstr "Програм:"
 
-#: glib/goption.c:653
+#: glib/goption.c:669
 #, fuzzy, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "'%s' бүхэл тоог --%s -н хувьд шинжлэх боломжгүй"
 
-#: glib/goption.c:663
+#: glib/goption.c:679
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "'%s' бүхэл %s -н хувьд хязгаараас хальжээ"
 
-#: glib/goption.c:926
+#: glib/goption.c:942
 #, fuzzy, c-format
 msgid "Error parsing option %s"
 msgstr "Хөрвүүлж байхад алдаа: %s"
 
-#: glib/goption.c:959 glib/goption.c:1070
+#: glib/goption.c:973 glib/goption.c:1084
 #, c-format
 msgid "Missing argument for %s"
 msgstr ""
 
-#: glib/goption.c:1474
+#: glib/goption.c:1489
 #, c-format
 msgid "Unknown option %s"
 msgstr "Тодорхойгүй утга %s"

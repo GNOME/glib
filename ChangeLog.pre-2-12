@@ -1,3 +1,11 @@
+2006-04-07  Matthias Clasen  <mclasen@redhat.com>
+	
+	* === Released 2.10.2 ===
+
+	* NEWS: Updates
+
+	* tests/option-test.c (add_test1): Fix this test.
+
 2006-04-07  Martyn Russell  <martyn@imendio.com>
 
 	* glib/gasyncqueue.[ch]: Added private API

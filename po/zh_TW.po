@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.9.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-03-07 13:10-0500\n"
+"POT-Creation-Date: 2006-04-07 13:20-0400\n"
 "PO-Revision-Date: 2006-01-04 10:19+0800\n"
 "Last-Translator: Abel Cheung <abel@oaka.org>\n"
 "Language-Team: Chinese (Taiwan) <community@linuxhall.org>\n"
@@ -556,51 +556,51 @@ msgstr "轉換輸入資料時出現無效的字元次序"
 msgid "Character out of range for UTF-16"
 msgstr "字元不在 UTF-16 範圍之內"
 
-#: glib/goption.c:468
+#: glib/goption.c:484
 msgid "Usage:"
 msgstr "用法："
 
-#: glib/goption.c:468
+#: glib/goption.c:484
 msgid "[OPTION...]"
 msgstr "[選項...]"
 
-#: glib/goption.c:556
+#: glib/goption.c:572
 msgid "Help Options:"
 msgstr "說明選項："
 
-#: glib/goption.c:557
+#: glib/goption.c:573
 msgid "Show help options"
 msgstr "顯示說明的選項"
 
-#: glib/goption.c:562
+#: glib/goption.c:578
 msgid "Show all help options"
 msgstr "顯示所有的說明選項"
 
-#: glib/goption.c:612
+#: glib/goption.c:628
 msgid "Application Options:"
 msgstr "應用程式選項："
 
-#: glib/goption.c:653
+#: glib/goption.c:669
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "無法給 %2$s 解析整數值「%1$s」"
 
-#: glib/goption.c:663
+#: glib/goption.c:679
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "%2$s 的整數值「%1$s」超出範圍"
 
-#: glib/goption.c:926
+#: glib/goption.c:942
 #, c-format
 msgid "Error parsing option %s"
 msgstr "解析 %s 選項時發生錯誤"
 
-#: glib/goption.c:959 glib/goption.c:1070
+#: glib/goption.c:973 glib/goption.c:1084
 #, c-format
 msgid "Missing argument for %s"
 msgstr "缺少 %s 的參數"
 
-#: glib/goption.c:1474
+#: glib/goption.c:1489
 #, c-format
 msgid "Unknown option %s"
 msgstr "未知的選項 %s"

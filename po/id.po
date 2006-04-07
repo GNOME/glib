@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-03-07 13:10-0500\n"
+"POT-Creation-Date: 2006-04-07 13:20-0400\n"
 "PO-Revision-Date: 2005-08-30 22:41+0300\n"
 "Last-Translator: Mohammad DAMT <mdamt@bisnisweb.com>\n"
 "Language-Team: Indonesia <sukarelawan@gnome.linux.or.id>\n"
@@ -592,51 +592,51 @@ msgstr "Rangkaian input konversi salah"
 msgid "Character out of range for UTF-16"
 msgstr "Karakter di luar jangkauan UTF-16"
 
-#: glib/goption.c:468
+#: glib/goption.c:484
 msgid "Usage:"
 msgstr "Gunakan:"
 
-#: glib/goption.c:468
+#: glib/goption.c:484
 msgid "[OPTION...]"
 msgstr "[PILIHAN...]"
 
-#: glib/goption.c:556
+#: glib/goption.c:572
 msgid "Help Options:"
 msgstr "Pilihan Bantuan:"
 
-#: glib/goption.c:557
+#: glib/goption.c:573
 msgid "Show help options"
 msgstr "Tampilkan pilihan bantuan"
 
-#: glib/goption.c:562
+#: glib/goption.c:578
 msgid "Show all help options"
 msgstr "Tampilkan seluruh pilihan bantuan"
 
-#: glib/goption.c:612
+#: glib/goption.c:628
 msgid "Application Options:"
 msgstr "Pilihan Aplikasi:"
 
-#: glib/goption.c:653
+#: glib/goption.c:669
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "Tidak dapat menguraikan nilai integer '%s' untuk %s"
 
-#: glib/goption.c:663
+#: glib/goption.c:679
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "Nilai integer '%s' untuk %s di luar jangkauan"
 
-#: glib/goption.c:926
+#: glib/goption.c:942
 #, fuzzy, c-format
 msgid "Error parsing option %s"
 msgstr "Error saat melakukan konversi: %s"
 
-#: glib/goption.c:959 glib/goption.c:1070
+#: glib/goption.c:973 glib/goption.c:1084
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Argumen untuk %s tidak lengkap"
 
-#: glib/goption.c:1474
+#: glib/goption.c:1489
 #, c-format
 msgid "Unknown option %s"
 msgstr "Pilihan tidak diketahui %s"

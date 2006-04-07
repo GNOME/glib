@@ -433,8 +433,6 @@ that may contain invalid UTF-8.
 @p: 
 @end: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@bound: 
 
 
 <!-- ##### FUNCTION g_utf8_find_prev_char ##### -->
@@ -477,8 +475,6 @@ that may contain invalid UTF-8.
 @len: 
 @c: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@ch: 
 
 
 <!-- ##### FUNCTION g_utf8_strrchr ##### -->
@@ -490,8 +486,6 @@ that may contain invalid UTF-8.
 @len: 
 @c: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@ch: 
 
 
 <!-- ##### FUNCTION g_utf8_strreverse ##### -->

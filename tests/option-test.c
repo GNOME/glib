@@ -840,6 +840,8 @@ empty_test1 (void)
   GOptionEntry entries [] =
     { { NULL } };
 
+  g_set_prgname (NULL);
+
   context = g_option_context_new (NULL);
 
   g_option_context_add_main_entries (context, entries, NULL);

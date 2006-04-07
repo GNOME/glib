@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.12\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-03-07 13:10-0500\n"
+"POT-Creation-Date: 2006-04-07 13:20-0400\n"
 "PO-Revision-Date: 2005-03-28 19:34-0700\n"
 "Last-Translator: Steve Murphy <murf@e-tools.com>\n"
 "Language-Team: Kinyarwanda <translation-team-rw@lists.sourceforge.net>\n"
@@ -572,53 +572,53 @@ msgid "Character out of range for UTF-16"
 msgstr "Inyuma Bya Urutonde kugirango"
 
 # crashrep/source\all\crashrep.lng:%MSG_CMDLINE_USAGE%.text
-#: glib/goption.c:468
+#: glib/goption.c:484
 msgid "Usage:"
 msgstr "Ikoresha:"
 
-#: glib/goption.c:468
+#: glib/goption.c:484
 msgid "[OPTION...]"
 msgstr ""
 
-#: glib/goption.c:556
+#: glib/goption.c:572
 msgid "Help Options:"
 msgstr ""
 
-#: glib/goption.c:557
+#: glib/goption.c:573
 #, fuzzy
 msgid "Show help options"
 msgstr "Ifashayobora Amahitamo"
 
-#: glib/goption.c:562
+#: glib/goption.c:578
 #, fuzzy
 msgid "Show all help options"
 msgstr "Byose Ifashayobora Amahitamo"
 
-#: glib/goption.c:612
+#: glib/goption.c:628
 msgid "Application Options:"
 msgstr ""
 
-#: glib/goption.c:653
+#: glib/goption.c:669
 #, fuzzy, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "Umubare wuzuye Agaciro kugirango"
 
-#: glib/goption.c:663
+#: glib/goption.c:679
 #, fuzzy, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "Agaciro kugirango Inyuma Bya Urutonde"
 
-#: glib/goption.c:926
+#: glib/goption.c:942
 #, fuzzy, c-format
 msgid "Error parsing option %s"
 msgstr "Ihindurangero"
 
-#: glib/goption.c:959 glib/goption.c:1070
+#: glib/goption.c:973 glib/goption.c:1084
 #, c-format
 msgid "Missing argument for %s"
 msgstr ""
 
-#: glib/goption.c:1474
+#: glib/goption.c:1489
 #, fuzzy, c-format
 msgid "Unknown option %s"
 msgstr "Ihitamo ritazwi:"

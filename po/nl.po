@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib (HEAD)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-03-07 13:10-0500\n"
+"POT-Creation-Date: 2006-04-07 13:20-0400\n"
 "PO-Revision-Date: 2006-01-07 14:26+0100\n"
 "Last-Translator: Tino Meinen <a.t.meinen@chello.nl>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -598,53 +598,53 @@ msgstr "Ongeldige reeks in conversie-invoer"
 msgid "Character out of range for UTF-16"
 msgstr "Teken valt buiten bereik van UTF-16"
 
-#: glib/goption.c:468
+#: glib/goption.c:484
 msgid "Usage:"
 msgstr "Gebruik:"
 
-#: glib/goption.c:468
+#: glib/goption.c:484
 msgid "[OPTION...]"
 msgstr "[OPTIE...]"
 
 # hulp-opties zijn opties voor de hulp
 # hulp opties zijn die opties van hulp
-#: glib/goption.c:556
+#: glib/goption.c:572
 msgid "Help Options:"
 msgstr "Hulp opties:"
 
-#: glib/goption.c:557
+#: glib/goption.c:573
 msgid "Show help options"
 msgstr "Hulp opties tonen"
 
-#: glib/goption.c:562
+#: glib/goption.c:578
 msgid "Show all help options"
 msgstr "Alle hulpopties tonen"
 
-#: glib/goption.c:612
+#: glib/goption.c:628
 msgid "Application Options:"
 msgstr "Toepassing opties:"
 
-#: glib/goption.c:653
+#: glib/goption.c:669
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "Kan de hele getalswaarde '%s' voor %s niet verwerken"
 
-#: glib/goption.c:663
+#: glib/goption.c:679
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "Hele getalswaarde '%s' voor %s valt buiten bereik"
 
-#: glib/goption.c:926
+#: glib/goption.c:942
 #, c-format
 msgid "Error parsing option %s"
 msgstr "Fout bij verwerken optie %s"
 
-#: glib/goption.c:959 glib/goption.c:1070
+#: glib/goption.c:973 glib/goption.c:1084
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Ontbrekend argument voor %s"
 
-#: glib/goption.c:1474
+#: glib/goption.c:1489
 #, c-format
 msgid "Unknown option %s"
 msgstr "Onbekende optie %s"

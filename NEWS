@@ -1,3 +1,36 @@
+Overview of Changes from GLib 2.10.1 to GLib 2.10.2
+===================================================
+
+* Bugs fixed:
+ 322476 Missing check for .dylib                      [Anders Carlsson]
+ 332841 Segmentation Fault when %llu is passed to 
+        vasnprintf and HAVE_SNPRINTF is not defined  [Michael McDonald]
+ 333098 Add support for write FDs to GIOChannel      [Markus Brinkmann]
+ 334519 Memleak in goption.c::parse_short_option         [Chris Wilson]
+ 334471 g_parse_debug_string reads beyond buffer      [Morten Welinder]
+ 334611 g_option_context_parse() should not set program 
+        name to '<Unknown>' if it is already set      [Chong Kai Xiong]
+ 335207 g_main_context_unref calls g_source_destroy_internal 
+        with incorrect arguments                         [Chris Wilson]
+ 335216 Slight performance gains (GList, GAsyncQueue)    [Chris Wilson]
+ 335209 Use of unitialised memory in g_mem_profile       [Chris Wilson]
+ 334943 make check FAIL: threadpool-test  
+ 336085 g_option_context_new parameter lacks better 
+        explanation                                  [Claudio Saavedra]
+ 335215 Some breakages with GThreadPool                  [Chris Wilson]
+ 333879	gthread/gthread-win32.c: IsDebuggerPresent needs 
+        '#define _WIN32_WINDOWS 0x0401'                [Kazuki Iwamoto]
+ 334440 dlerror() portability issue causes crash on (old) 
+        a.out NetBSD platform                           [ITOH Yasufumi]
+ 333916 g_timer_elapsed docs should mention that 
+        microseconds may be NULL                    [Christian Neumair]
+ 334646 goption + error out params                   [Christian Persch]
+ 335294 Documentation should not reference G_HAVE_GINT64, 
+        as it's deprecated.                            [Richard Laager]
+
+* Translation updates (dz,et,he,hi,ka,or,pt_BR,ro,tr)
+
+
 Overview of Changes from GLib 2.10.0 to GLib 2.10.1
 ===================================================
 

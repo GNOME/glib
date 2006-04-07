@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-03-07 13:10-0500\n"
+"POT-Creation-Date: 2006-04-07 13:20-0400\n"
 "PO-Revision-Date: 2006-01-16 16:45+0100\n"
 "Last-Translator: Hendrik Richter <hendi@gnome.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
@@ -604,51 +604,51 @@ msgstr "Ungültige Folge in Umwandlungseingabe"
 msgid "Character out of range for UTF-16"
 msgstr "Zeichen außerhalb des Bereiches für UTF-16"
 
-#: glib/goption.c:468
+#: glib/goption.c:484
 msgid "Usage:"
 msgstr "Aufruf:"
 
-#: glib/goption.c:468
+#: glib/goption.c:484
 msgid "[OPTION...]"
 msgstr "[OPTION...]"
 
-#: glib/goption.c:556
+#: glib/goption.c:572
 msgid "Help Options:"
 msgstr "Hilfeoptionen"
 
-#: glib/goption.c:557
+#: glib/goption.c:573
 msgid "Show help options"
 msgstr "Hilfeoptionen anzeigen"
 
-#: glib/goption.c:562
+#: glib/goption.c:578
 msgid "Show all help options"
 msgstr "Alle Hilfeoptionen anzeigen"
 
-#: glib/goption.c:612
+#: glib/goption.c:628
 msgid "Application Options:"
 msgstr "Anwendungsoptionen"
 
-#: glib/goption.c:653
+#: glib/goption.c:669
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "»%s« konnte nicht als ganzzahliger Wert für %s interpretiert werden"
 
-#: glib/goption.c:663
+#: glib/goption.c:679
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "Ganzzahliger Wert »%s« für %s ist außerhalb des Bereiches."
 
-#: glib/goption.c:926
+#: glib/goption.c:942
 #, c-format
 msgid "Error parsing option %s"
 msgstr "Fehler beim Analysieren der Option: %s"
 
-#: glib/goption.c:959 glib/goption.c:1070
+#: glib/goption.c:973 glib/goption.c:1084
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Für %s wird ein Argument benötigt"
 
-#: glib/goption.c:1474
+#: glib/goption.c:1489
 #, c-format
 msgid "Unknown option %s"
 msgstr "Unbekannte Option %s"

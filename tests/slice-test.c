@@ -189,7 +189,7 @@ test_sliced_mem_thread (gpointer data)
 static void
 usage (void)
 {
-  g_print ("Usage: gslicedmemory [n_threads] [G|S|M|O][f][c] [maxblocksize] [seed]\n");
+  g_print ("Usage: slice-test [n_threads] [G|S|M|O][f][c] [maxblocksize] [seed]\n");
 }
 
 int

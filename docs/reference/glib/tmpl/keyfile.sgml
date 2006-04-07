@@ -437,8 +437,6 @@ Flags which influence the parsing.
 @group_name: 
 @key: 
 @value: 
-<!-- # Unused Parameters # -->
-@boolean: 
 
 
 <!-- ##### FUNCTION g_key_file_set_integer ##### -->
@@ -450,8 +448,6 @@ Flags which influence the parsing.
 @group_name: 
 @key: 
 @value: 
-<!-- # Unused Parameters # -->
-@integer: 
 
 
 <!-- ##### FUNCTION g_key_file_set_string_list ##### -->
