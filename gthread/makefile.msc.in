@@ -23,4 +23,4 @@ gthread.res : gthread.rc
 
 libgthread-2.0-@LT_CURRENT_MINUS_AGE@.dll : $(gthread_OBJECTS) gthread.def gthread.res
 	$(CC) $(CFLAGS) -LD -Fe$@ $(gthread_OBJECTS) gthread.res \
-	..\glib\glib-2.0.lib $(DEPCLIBS) $(LDFLAGS) /implib:gthread-2.0.lib /def:gthread.def
+	..\glib\glib-2.0.lib $(DEPCLIBS) user32.lib $(LDFLAGS) /implib:gthread-2.0.lib /def:gthread.def

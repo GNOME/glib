@@ -18,7 +18,7 @@ all :				\
 	galiasdef.c		\
 	gnulib\gnulib.lib	\
 	libglib-2.0-0.dll \
-	glib-2.9s.lib \
+	glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@s.lib \
 	gspawn-win32-helper.exe	\
 
 
@@ -32,6 +32,7 @@ glib_OBJECTS =			\
 	gasyncqueue.obj		\
 	gatomic.obj	\
 	gbacktrace.obj		\
+	gbase64.obj	\
 	gbookmarkfile.obj 	\
 	gcache.obj		\
 	gcompletion.obj		\

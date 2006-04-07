@@ -1,3 +1,9 @@
+2006-04-07  Hans Breuer  <hans@breuer.org>
+
+	* glib/makefile.msc.in : added gbase64.obj and derive the static libs
+	name from auto* variables
+	* glib/makefile.msc.in : link user32.lib for MessageBox()
+
 2006-04-07  Martyn Russell  <martyn@imendio.com>
 
 	* glib/gasyncqueue.[ch]: Added private API
