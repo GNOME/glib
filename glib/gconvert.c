@@ -1831,7 +1831,8 @@ g_filename_from_uri (const gchar *uri,
  * @error: location to store the error occuring, or %NULL to ignore
  *         errors. Any of the errors in #GConvertError may occur.
  * 
- * Converts an absolute filename to an escaped ASCII-encoded URI.
+ * Converts an absolute filename to an escaped ASCII-encoded URI, with the path
+ * component following Section 3.3. of RFC 2396.
  * 
  * Return value: a newly-allocated string holding the resulting
  *               URI, or %NULL on an error.

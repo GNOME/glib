@@ -1,3 +1,10 @@
+2006-04-12  Bastien Nocera  <hadess@hadess.net>
+
+	reviewed by: Matthias Clasen <mclasen@redhat.com>
+
+	* glib/gconvert.c: add more details about which RFC is concerned
+	when using g_filename_to_uri (#337553)
+
 2006-04-12  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/goption.c (parse_arg): Add an assert to make it
