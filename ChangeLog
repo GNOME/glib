@@ -1,3 +1,8 @@
+2006-04-12  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/goption.c (parse_arg): Add an assert to make it
+	clear when value can be NULL.
+
 2006-04-07  Martyn Russell  <martyn@imendio.com>
 
 	* tests/threadpool-test.c: (test_thread_stop_unused): Removed an

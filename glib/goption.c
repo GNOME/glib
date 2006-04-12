@@ -767,7 +767,9 @@ parse_arg (GOptionContext *context,
      
 {
   Change *change;
-  
+
+  g_assert (value || OPTIONAL_ARG (entry) || NO_ARG (entry));
+
   switch (entry->arg)
     {
     case G_OPTION_ARG_NONE:
