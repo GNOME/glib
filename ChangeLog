@@ -1,3 +1,8 @@
+2006-04-16  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gdate.c (g_date_fill_parse_tokens): Avoid an array
+	overrun.  (Coverity, fix by Pascal Terjan)
+
 2006-04-07  Martyn Russell  <martyn@imendio.com>
 
 	* tests/threadpool-test.c: (test_thread_stop_unused): Removed an
