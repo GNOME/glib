@@ -1,3 +1,8 @@
+2006-04-16  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gdate.c (g_date_fill_parse_tokens): Avoid an array
+	overrun.  (Coverity, fix by Pascal Terjan)
+
 2006-04-12  Bastien Nocera  <hadess@hadess.net>
 
 	reviewed by: Matthias Clasen <mclasen@redhat.com>
