@@ -1,3 +1,8 @@
+2006-04-17  Kjartan Maraas  <kmaraas@gnome.org>
+
+	* configure.in: Remove obsolete entry for no_NO.
+	* po/no.po: And the translation.
+
 2006-04-16  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gdate.c (g_date_fill_parse_tokens): Avoid an array
