@@ -194,7 +194,7 @@ g_completion_complete_utf8 (GCompletion  *cmp,
 
   list = g_completion_complete (cmp, prefix, new_prefix);
 
-  if (*new_prefix)
+  if (new_prefix && *new_prefix)
     {
       p = *new_prefix + strlen (*new_prefix);
       q = g_utf8_find_prev_char (*new_prefix, p);
