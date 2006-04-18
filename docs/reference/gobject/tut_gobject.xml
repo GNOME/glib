@@ -323,7 +323,7 @@ void        g_object_run_dispose	      (GObject	      *object);
 
 	<para>
 	  The functions <function><link linkend="g-object-ref">g_object_ref</link></function>/<function><link linkend="g-object-unref">g_object_unref</link></function> respectively 
-	  increase and decrease the reference count. None of these function is thread-safe.
+	  increase and decrease the reference count. These function is thread-safe as of GLib 2.8.
 	  The reference count is, unsurprisingly, initialized to one by 
 	  <function><link linkend="g-object-new">g_object_new</link></function> which means that the caller
           is currenly the sole owner of the newly-created reference.
