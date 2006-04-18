@@ -44,19 +44,29 @@ int main (int argc, char *argv[])
 
   items = g_completion_complete (cmp, "a", &prefix);
   g_assert (!strcmp ("a\302", prefix));
+  g_assert (g_list_length (items) == 2);
   g_free (prefix);
   
   items = g_completion_complete_utf8 (cmp, "a", &prefix);
   g_assert (!strcmp ("a", prefix));
+  g_assert (g_list_length (items) == 2);
   g_free (prefix);
 
   items = g_completion_complete (cmp, "b", &prefix);
   g_assert (!strcmp ("b", prefix));
+  g_assert (g_list_length (items) == 2);
   g_free (prefix);
   
   items = g_completion_complete_utf8 (cmp, "b", &prefix);
   g_assert (!strcmp ("b", prefix));
+  g_assert (g_list_length (items) == 2);
   g_free (prefix);
+
+  items = g_completion_complete (cmp, "a", NULL);
+  g_assert (g_list_length (items) == 2);
+
+  items = g_completion_complete_utf8 (cmp, "a", NULL);
+  g_assert (g_list_length (items) == 2);
 
   g_completion_free (cmp);
 

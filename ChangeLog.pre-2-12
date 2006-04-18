@@ -1,3 +1,11 @@
+2006-04-17  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gcompletion.c (g_completion_complete_utf8): Make passing
+	NULL for new_prefix work as documented.  (#338845, Yevgen Muntyan)
+
+	* tests/completion-test.c: Test that passing NULL for 
+	new_prefix in g_completion_complete_utf8 works.
+
 2006-04-17  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* configure.in: Remove obsolete entry for no_NO.
