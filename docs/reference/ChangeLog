@@ -1,3 +1,8 @@
+2006-04-18  Matthias Clasen  <mclasen@redhat.com>
+
+	* gobject/tut_gobject.xml: Say that ref/unref are thread-safe now.  
+	(#322883, Christophe Fergeau)
+	
 2006-04-05  Matthias Clasen  <mclasen@redhat.com>
 
 	* gobject/tmpl/signals.sgml: Document class_offset 0.
