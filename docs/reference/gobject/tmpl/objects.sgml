@@ -604,6 +604,7 @@ is important state in the proxy object.
   last reference to the object, or is no longer
   the last reference.
 @data: data to pass to @notify
+@Since: 2.8
 
 
 <!-- ##### FUNCTION g_object_remove_toggle_ref ##### -->
@@ -617,6 +618,7 @@ reference count of the object is decreased by one.
   last reference to the object, or is no longer
   the last reference.
 @data: data to pass to @notify
+@Since: 2.8
 
 
 <!-- ##### FUNCTION g_object_connect ##### -->
