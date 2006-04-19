@@ -1,3 +1,7 @@
+2006-04-19  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gdataset.c: Add some missing Since: 2.8 tags.
+
 2006-04-19  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gatomic.c: Adapt to the changed prototype of

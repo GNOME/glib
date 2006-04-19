@@ -523,6 +523,8 @@ g_datalist_init (GData **datalist)
  * not generally useful except in circumstances where space
  * is very tight. (It is used in the base #GObject type, for
  * example.)
+ *
+ * Since: 2.8
  **/
 void
 g_datalist_set_flags (GData **datalist,
@@ -550,6 +552,8 @@ g_datalist_set_flags (GData **datalist,
  *   an error.
  * 
  * Turns off flag values for a data list. See g_datalist_unset_flags()
+ *
+ * Since: 2.8
  **/
 void
 g_datalist_unset_flags (GData **datalist,
@@ -575,6 +579,8 @@ g_datalist_unset_flags (GData **datalist,
  * See g_datalist_set_flags().
  * 
  * Return value: the flags of the datalist
+ *
+ * Since: 2.8
  **/
 guint
 g_datalist_get_flags (GData **datalist)

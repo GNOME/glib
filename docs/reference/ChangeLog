@@ -1,3 +1,7 @@
+2006-04-19  Matthias Clasen  <mclasen@redhat.com>
+
+	* gobject/tmpl/objects.sgml: Add some missing Since: 2.8 tags
+
 2006-04-18  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/glib-sections.txt: Add new keyfile api
