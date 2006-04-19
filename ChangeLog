@@ -1,3 +1,11 @@
+2006-04-18  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gkeyfile.c (g_key_file_add_group): Accept duplicate
+	groups.  (#157877, Sebastien Bacher)
+
+	* tests/keyfile-test.c: Add tests for duplicate key and
+	duplicate group handling.
+
 2006-04-17  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gcompletion.c (g_completion_complete_utf8): Make passing
