@@ -1,3 +1,10 @@
+2006-04-19  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gatomic.c: Adapt to the changed prototype of
+	InterlockedCompareExchange() in newer SDKs. Use
+	InterlockedCompareExchangePointer() when applicable. (#155884,
+	John Ehresman)
+
 2006-04-18  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gkeyfile.h:

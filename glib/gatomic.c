@@ -495,7 +495,17 @@ g_atomic_pointer_compare_and_exchange (volatile gpointer *atomic,
 
 #ifdef DEFINE_WITH_WIN32_INTERLOCKED
 # include <windows.h>
-gint32   
+/* Following indicates that InterlockedCompareExchangePointer is
+ * declared in winbase.h (included by windows.h) and needs to be
+ * commented out if not true. It is defined iff WINVER > 0x0400,
+ * which is usually correct but can be wrong if WINVER is set before
+ * windows.h is included.
+ */
+# if WINVER > 0x0400
+#  define HAVE_INTERLOCKED_COMPARE_EXCHANGE_POINTER
+# endif
+
+gint32
 g_atomic_int_exchange_and_add (volatile gint32 *atomic,
 			       gint32           val)
 {
@@ -514,9 +524,15 @@ g_atomic_int_compare_and_exchange (volatile gint32 *atomic,
 				   gint32           oldval,
 				   gint32           newval)
 {
+#ifndef HAVE_INTERLOCKED_COMPARE_EXCHANGE_POINTER
   return (guint32) InterlockedCompareExchange ((PVOID*)atomic, 
                                                (PVOID)newval, 
                                                (PVOID)oldval) == oldval;
+#else
+  return InterlockedCompareExchange (atomic, 
+                                     newval, 
+                                     oldval) == oldval;
+#endif
 }
 
 gboolean 
@@ -524,10 +540,14 @@ g_atomic_pointer_compare_and_exchange (volatile gpointer *atomic,
 				       gpointer           oldval,
 				       gpointer           newval)
 {
-# if GLIB_SIZEOF_VOID_P != 4 /* no 32-bit system */
-#  error "InterlockedCompareExchangePointer needed"
+# ifdef HAVE_INTERLOCKED_COMPARE_EXCHANGE_POINTER
+  return InterlockedCompareExchangePointer (atomic, newval, oldval) == oldval;
 # else
+#  if GLIB_SIZEOF_VOID_P != 4 /* no 32-bit system */
+#   error "InterlockedCompareExchangePointer needed"
+#  else
    return InterlockedCompareExchange (atomic, newval, oldval) == oldval;
+#  endif
 # endif
 }
 #endif /* DEFINE_WITH_WIN32_INTERLOCKED */
