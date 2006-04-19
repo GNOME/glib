@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.gu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-04-18 06:13+0200\n"
-"PO-Revision-Date: 2006-04-18 10:11+0530\n"
+"POT-Creation-Date: 2006-04-19 06:11+0200\n"
+"PO-Revision-Date: 2006-04-19 12:17+0530\n"
 "Last-Translator: Ankit Patel <ankit644@yahoo.com>\n"
 "Language-Team: Gujarati <indianoss-gujarati@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -17,11 +17,12 @@ msgstr ""
 "\n"
 "\n"
 "\n"
+"\n"
 
 #: ../glib/gconvert.c:404 ../glib/gconvert.c:482 ../glib/giochannel.c:1150
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
-msgstr "'%s' અક્ષર સમુહ માંથી '%s' માં રુપાંતરણ માટે આધાર નથી"
+msgstr "'%s' અક્ષર સમૂહમાંથી '%s' માં રુપાંતરણ માટે આધાર નથી"
 
 #: ../glib/gconvert.c:408 ../glib/gconvert.c:486
 #, c-format
@@ -603,55 +604,55 @@ msgstr "%s માટેની દલીલ ગુમ થયેલ છે"
 msgid "Unknown option %s"
 msgstr "અજ્ઞાત વિકલ્પ %s"
 
-#: ../glib/gkeyfile.c:334
+#: ../glib/gkeyfile.c:337
 msgid "Valid key file could not be found in data dirs"
 msgstr "માહિતી ડિરેક્ટરીઓમાં માન્ય કી ફાઈલ શોધી શકાઈ નહિં"
 
-#: ../glib/gkeyfile.c:369
+#: ../glib/gkeyfile.c:372
 msgid "Not a regular file"
 msgstr "નિયમિત ફાઈલ નથી"
 
-#: ../glib/gkeyfile.c:377
+#: ../glib/gkeyfile.c:380
 msgid "File is empty"
 msgstr "ફાઈલ ખાલી છે"
 
-#: ../glib/gkeyfile.c:692
+#: ../glib/gkeyfile.c:695
 #, c-format
 msgid "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr "કી ફાઈલ વાક્ય '%s' સમાવે છે કે જે કી-કિંમત જોડ, જૂથ, અથવા ટિપ્પણી નથી"
 
-#: ../glib/gkeyfile.c:760
+#: ../glib/gkeyfile.c:763
 msgid "Key file does not start with a group"
 msgstr "કી ફાઈલ જૂથ સાથે શરૂ થતી નથી"
 
-#: ../glib/gkeyfile.c:803
+#: ../glib/gkeyfile.c:806
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "કી ફાઈલ બિનઆધારભૂત અક્ષર સંગ્રહપદ્ધતિ '%s' સમાવે છે"
 
-#: ../glib/gkeyfile.c:1012 ../glib/gkeyfile.c:1171 ../glib/gkeyfile.c:2172
-#: ../glib/gkeyfile.c:2237 ../glib/gkeyfile.c:2356 ../glib/gkeyfile.c:2492
-#: ../glib/gkeyfile.c:2644 ../glib/gkeyfile.c:2818 ../glib/gkeyfile.c:2875
+#: ../glib/gkeyfile.c:1015 ../glib/gkeyfile.c:1174 ../glib/gkeyfile.c:2387
+#: ../glib/gkeyfile.c:2452 ../glib/gkeyfile.c:2571 ../glib/gkeyfile.c:2707
+#: ../glib/gkeyfile.c:2859 ../glib/gkeyfile.c:3035 ../glib/gkeyfile.c:3092
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "કી ફાઈલ પાસે જૂથ '%s' નથી"
 
-#: ../glib/gkeyfile.c:1183
+#: ../glib/gkeyfile.c:1186
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "કી ફાઈલ પાસે કી '%s' નથી"
 
-#: ../glib/gkeyfile.c:1284 ../glib/gkeyfile.c:1393
+#: ../glib/gkeyfile.c:1287 ../glib/gkeyfile.c:1396
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "કી ફાઈલ '%s' કીને કિંમત '%s' સાથે સમાવે છે કે જે UTF-8 નથી"
 
-#: ../glib/gkeyfile.c:1302 ../glib/gkeyfile.c:1411 ../glib/gkeyfile.c:1783
+#: ../glib/gkeyfile.c:1305 ../glib/gkeyfile.c:1414 ../glib/gkeyfile.c:1786
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "કી ફાઈલ '%s' કી સમાવે છે કે જેની પાસે કિંમત છે જે ઈન્ટરપ્રીટ કરી શકાતી નથી."
 
-#: ../glib/gkeyfile.c:1999
+#: ../glib/gkeyfile.c:2002 ../glib/gkeyfile.c:2215
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -660,31 +661,36 @@ msgstr ""
 "કી ફાઈલ '%s' કી જૂથ '%s' માં સમાવે છે કે જેની પાસે કિંમત છે કે જે ઈન્ટરપ્રીટ કરી શકાતી "
 "નથી."
 
-#: ../glib/gkeyfile.c:2187 ../glib/gkeyfile.c:2371 ../glib/gkeyfile.c:2886
+#: ../glib/gkeyfile.c:2402 ../glib/gkeyfile.c:2586 ../glib/gkeyfile.c:3103
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "કી ફાઈલ પાસે કી '%s' એ જૂથ '%s' માં નથી"
 
-#: ../glib/gkeyfile.c:3062
+#: ../glib/gkeyfile.c:3279
 msgid "Key file contains escape character at end of line"
 msgstr "કી ફાઈલ એસ્કેપ અક્ષર વાક્યના અંતે સમાવે છે"
 
-#: ../glib/gkeyfile.c:3084
+#: ../glib/gkeyfile.c:3301
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "કી ફાઈલ અયોગ્ય એસ્કેપ ક્રમ '%s' સમાવે છે"
 
-#: ../glib/gkeyfile.c:3225
+#: ../glib/gkeyfile.c:3442
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "કિંમત '%s' નંબર તરીકે ઈન્ટરપ્રીટ કરી શકાતું નથી."
 
-#: ../glib/gkeyfile.c:3235
+#: ../glib/gkeyfile.c:3452
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "પૂર્ણાંક કિંમત '%s' એ મર્યાદાની બહાર છે"
 
-#: ../glib/gkeyfile.c:3265
+#: ../glib/gkeyfile.c:3480
+#, c-format
+msgid "Value '%s' cannot be interpreted as a float number."
+msgstr "કિંમત '%s' એ અપૂર્ણાંક સંખ્યા તરીકે ઈન્ટરપ્રીટ કરી શકાતું નથી."
+
+#: ../glib/gkeyfile.c:3500
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "કિંમત '%s' બુલિયન તરીકે ઈન્ટરપ્રીટ કરી શકાતું નથી."
