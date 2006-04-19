@@ -126,6 +126,14 @@ void      g_key_file_set_integer            (GKeyFile             *key_file,
 					     const gchar          *group_name,
 					     const gchar          *key,
 					     gint                  value);
+gdouble   g_key_file_get_double             (GKeyFile             *key_file,
+                                             const gchar          *group_name,
+                                             const gchar          *key,
+                                             GError              **error);
+void      g_key_file_set_double             (GKeyFile             *key_file,
+                                             const gchar          *group_name,
+                                             const gchar          *key,
+                                             gdouble               value);
 gchar   **g_key_file_get_string_list        (GKeyFile             *key_file,
 					     const gchar          *group_name,
 					     const gchar          *key,
@@ -163,6 +171,16 @@ gint     *g_key_file_get_integer_list       (GKeyFile             *key_file,
 					     const gchar          *key,
 					     gsize                *length,
 					     GError              **error) G_GNUC_MALLOC;
+void      g_key_file_set_double_list        (GKeyFile             *key_file,
+                                             const gchar          *group_name,
+                                             const gchar          *key,
+                                             gdouble               list[],
+                                             gsize                 length);
+gdouble  *g_key_file_get_double_list        (GKeyFile             *key_file,
+                                             const gchar          *group_name,
+                                             const gchar          *key,
+                                             gsize                *length,
+                                             GError              **error) G_GNUC_MALLOC;
 void      g_key_file_set_integer_list       (GKeyFile             *key_file,
 					     const gchar          *group_name,
 					     const gchar          *key,

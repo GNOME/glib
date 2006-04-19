@@ -1,5 +1,12 @@
 2006-04-18  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gkeyfile.h:
+	* glib/glib.symbols:
+	* glib/gkeyfile.c: Add api to get and set doubles and 
+	lists of doubles.  (#164719, Maurizio Monge, Dom Lachowicz)
+
+	* tests/keyfile-test.c: Add tests for new api.
+
 	* glib/gkeyfile.c (g_key_file_add_group): Accept duplicate
 	groups.  (#157877, Sebastien Bacher)
 

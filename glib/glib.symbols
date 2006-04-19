@@ -475,6 +475,8 @@ g_key_file_get_boolean
 g_key_file_get_boolean_list G_GNUC_MALLOC
 g_key_file_get_comment G_GNUC_MALLOC
 g_key_file_get_groups G_GNUC_MALLOC
+g_key_file_get_double
+g_key_file_get_double_list G_GNUC_MALLOC
 g_key_file_get_integer
 g_key_file_get_integer_list G_GNUC_MALLOC
 g_key_file_get_keys G_GNUC_MALLOC
@@ -496,6 +498,8 @@ g_key_file_remove_key
 g_key_file_set_boolean
 g_key_file_set_boolean_list
 g_key_file_set_comment
+g_key_file_set_double
+g_key_file_set_double_list
 g_key_file_set_integer
 g_key_file_set_integer_list
 g_key_file_set_list_separator

@@ -199,6 +199,49 @@ check_integer_list_value (GKeyFile    *keyfile,
 }
 
 static void
+check_double_list_value (GKeyFile    *keyfile,
+			  const gchar *group,
+			  const gchar *key,
+			  ...)
+{
+  gint i;
+  gdouble v, *value;
+  va_list args;
+  gsize len;
+  GError *error = NULL;
+
+  value = g_key_file_get_double_list (keyfile, group, key, &len, &error);
+  check_no_error (&error);
+  g_assert (value != NULL);
+  
+  va_start (args, key);
+  i = 0;
+  v = va_arg (args, gdouble);
+  while (v != -100)
+    {
+      if (i == len)
+	{
+	  g_print ("Group %s key %s: list too short (%d)\n", 
+		   group, key, i);      
+	  exit (1);
+	}
+      if (value[i] != v)
+	{
+	  g_print ("Group %s key %s: mismatch at %d, expected %e, got %e\n", 
+		   group, key, i, v, value[i]);      
+	  exit (1);
+	}
+
+      i++;
+      v = va_arg (args, gdouble);
+    }
+
+  va_end (args);
+  
+  g_free (value);
+}
+
+static void
 check_boolean_list_value (GKeyFile    *keyfile,
 			  const gchar *group,
 			  const gchar *key,
@@ -280,6 +323,27 @@ check_integer_value (GKeyFile    *keyfile,
     {
       g_print ("Group %s key %s: "
 	       "expected integer value %d, actual value %d\n",
+	       group, key, expected, value);      
+      exit (1);
+    }
+}
+
+static void
+check_double_value (GKeyFile    *keyfile,
+		     const gchar *group,
+		     const gchar *key,
+		     gdouble      expected) 
+{
+  GError *error = NULL;
+  gdouble value;
+
+  value = g_key_file_get_double (keyfile, group, key, &error);
+  check_no_error (&error);
+
+  if (value != expected)
+    {
+      g_print ("Group %s key %s: "
+	       "expected integer value %e, actual value %e\n",
 	       group, key, expected, value);      
       exit (1);
     }
@@ -605,9 +669,9 @@ test_boolean (void)
   g_key_file_free (keyfile);
 }
 
-/* check parsing of integer values */
+/* check parsing of integer and double values */
 static void
-test_integer (void)
+test_number (void)
 {
   GKeyFile *keyfile;
   GError *error = NULL;
@@ -620,6 +684,9 @@ test_integer (void)
     "key4=2324431\n"
     "key5=-2324431\n"
     "key6=000111\n"
+    "dkey1=000111\n"
+    "dkey2=145.45\n"
+    "dkey3=-3453.7\n"
     "[invalid]\n"
     "key1=0xffff\n"
     "key2=0.5\n"
@@ -634,6 +701,9 @@ test_integer (void)
   check_integer_value (keyfile, "valid", "key4", 2324431);
   check_integer_value (keyfile, "valid", "key5", -2324431);
   check_integer_value (keyfile, "valid", "key6", 111);
+  check_double_value (keyfile, "valid", "dkey1", 111.0);
+  check_double_value (keyfile, "valid", "dkey2", 145.45);
+  check_double_value (keyfile, "valid", "dkey3", -3453.7);
 
   g_key_file_get_integer (keyfile, "invalid", "key1", &error);
   check_error (&error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_INVALID_VALUE);
@@ -727,7 +797,8 @@ test_lists (void)
     "key5=true;false\n"
     "key6=1;0;-1\n"
     "key7= 1 ; 0 ; -1 \n"
-    "key8=v1\\,v2\n";
+    "key8=v1\\,v2\n"
+    "key9=0;1.3456;-76532.456\n";
   
   keyfile = load_data (data, 0);
 
@@ -737,6 +808,7 @@ test_lists (void)
   check_string_list_value (keyfile, "valid", "key4", "v1;v2", NULL);
   check_boolean_list_value (keyfile, "valid", "key5", TRUE, FALSE, -100);
   check_integer_list_value (keyfile, "valid", "key6", 1, 0, -1, -100);
+  check_double_list_value (keyfile, "valid", "key9", 0.0, 1.3456, -76532.456, -100.0);
   /* maybe these should be valid */
   /* check_integer_list_value (keyfile, "valid", "key7", 1, 0, -1, -100);*/
   /* check_string_list_value (keyfile, "valid", "key8", "v1\\,v2", NULL);*/
@@ -921,7 +993,7 @@ main (int argc, char *argv[])
   test_listing ();
   test_string ();
   test_boolean ();
-  test_integer ();
+  test_number ();
   test_locale_string ();
   test_lists ();
   test_group_remove ();

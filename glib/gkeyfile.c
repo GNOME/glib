@@ -152,6 +152,9 @@ static gint                  g_key_file_parse_value_as_integer (GKeyFile        
 								GError                **error);
 static gchar                *g_key_file_parse_integer_as_value (GKeyFile               *key_file,
 								gint                    value);
+static gdouble               g_key_file_parse_value_as_double  (GKeyFile               *key_file,
+                                                                const gchar            *value,
+                                                                GError                **error);
 static gboolean              g_key_file_parse_value_as_boolean (GKeyFile               *key_file,
 								const gchar            *value,
 								GError                **error);
@@ -2153,6 +2156,218 @@ g_key_file_set_integer_list (GKeyFile     *key_file,
   g_string_free (values, TRUE);
 }
 
+/**
+ * g_key_file_get_double:
+ * @key_file: a #GKeyFile
+ * @group_name: a group name
+ * @key: a key
+ * @error: return location for a #GError
+ *
+ * Returns the value associated with @key under @group_name as an
+ * integer. If @group_name is %NULL, the start_group is used.
+ *
+ * If @key cannot be found then the return value is undefined and
+ * @error is set to #G_KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if
+ * the value associated with @key cannot be interpreted as a double
+ * then the return value is also undefined and @error is set to
+ * #G_KEY_FILE_ERROR_INVALID_VALUE.
+ *
+ * Return value: the value associated with the key as a double.
+ *
+ * Since: 2.12
+ **/
+gdouble
+g_key_file_get_double  (GKeyFile     *key_file,
+                        const gchar  *group_name,
+                        const gchar  *key,
+                        GError      **error)
+{
+  GError *key_file_error;
+  gchar *value;
+  gdouble double_value;
+
+  g_return_val_if_fail (key_file != NULL, -1);
+  g_return_val_if_fail (group_name != NULL, -1);
+  g_return_val_if_fail (key != NULL, -1);
+
+  key_file_error = NULL;
+
+  value = g_key_file_get_value (key_file, group_name, key, &key_file_error);
+
+  if (key_file_error)
+    {
+      g_propagate_error (error, key_file_error);
+      return 0;
+    }
+
+  double_value = g_key_file_parse_value_as_double (key_file, value,
+                                                  &key_file_error);
+  g_free (value);
+
+  if (key_file_error)
+    {
+      if (g_error_matches (key_file_error,
+                           G_KEY_FILE_ERROR,
+                           G_KEY_FILE_ERROR_INVALID_VALUE))
+        {
+          g_set_error (error, G_KEY_FILE_ERROR,
+                       G_KEY_FILE_ERROR_INVALID_VALUE,
+                       _("Key file contains key '%s' in group '%s' "
+                         "which has value that cannot be interpreted."), key,
+                       group_name);
+          g_error_free (key_file_error);
+        }
+      else
+        g_propagate_error (error, key_file_error);
+    }
+
+  return double_value;
+}
+
+/**
+ * g_key_file_set_double:
+ * @key_file: a #GKeyFile
+ * @group_name: a group name
+ * @key: a key
+ * @value: an double value
+ *
+ * Associates a new double value with @key under @group_name.
+ * If @key cannot be found then it is created. If @group_name
+ * is %NULL, the start group is used.
+ *
+ * Since: 2.12
+ **/
+void
+g_key_file_set_double  (GKeyFile    *key_file,
+                        const gchar *group_name,
+                        const gchar *key,
+                        gdouble      value)
+{
+  gchar result[G_ASCII_DTOSTR_BUF_SIZE];
+
+  g_return_if_fail (key_file != NULL);
+  g_return_if_fail (group_name != NULL);
+  g_return_if_fail (key != NULL);
+
+  g_ascii_dtostr ( result, sizeof (result), value );
+  g_key_file_set_value (key_file, group_name, key, result);
+}
+
+/**
+ * g_key_file_get_double_list:
+ * @key_file: a #GKeyFile
+ * @group_name: a group name
+ * @key: a key
+ * @length: the number of doubles returned
+ * @error: return location for a #GError
+ *
+ * Returns the values associated with @key under @group_name as
+ * doubles. If @group_name is %NULL, the start group is used.
+ *
+ * If @key cannot be found then the return value is undefined and
+ * @error is set to #G_KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if
+ * the values associated with @key cannot be interpreted as doubles
+ * then the return value is also undefined and @error is set to
+ * #G_KEY_FILE_ERROR_INVALID_VALUE.
+ *
+ * Return value: the values associated with the key as a double
+ *
+ * Since: 2.12
+ **/
+gdouble *
+g_key_file_get_double_list  (GKeyFile     *key_file,
+                             const gchar  *group_name,
+                             const gchar  *key,
+                             gsize        *length,
+                             GError      **error)
+{
+  GError *key_file_error = NULL;
+  gchar **values;
+  gdouble *double_values;
+  gsize i, num_doubles;
+
+  g_return_val_if_fail (key_file != NULL, NULL);
+  g_return_val_if_fail (group_name != NULL, NULL);
+  g_return_val_if_fail (key != NULL, NULL);
+
+  values = g_key_file_get_string_list (key_file, group_name, key,
+                                       &num_doubles, &key_file_error);
+
+  if (key_file_error)
+    g_propagate_error (error, key_file_error);
+
+  if (!values)
+    return NULL;
+
+  double_values = g_new0 (gdouble, num_doubles);
+
+  for (i = 0; i < num_doubles; i++)
+    {
+      double_values[i] = g_key_file_parse_value_as_double (key_file,
+							   values[i],
+							   &key_file_error);
+
+      if (key_file_error)
+        {
+          g_propagate_error (error, key_file_error);
+          g_strfreev (values);
+          g_free (double_values);
+
+          return NULL;
+        }
+    }
+  g_strfreev (values);
+
+  if (length)
+    *length = num_doubles;
+
+  return double_values;
+}
+
+/**
+ * g_key_file_set_double_list:
+ * @key_file: a #GKeyFile
+ * @group_name: a group name
+ * @key: a key
+ * @list: an array of double values
+ * @length: number of double values in @list
+ *
+ * Associates a list of double values with @key under
+ * @group_name.  If @key cannot be found then it is created.
+ * If @group_name is %NULL the start group is used.
+ *
+ * Since: 2.21
+ **/
+void
+g_key_file_set_double_list (GKeyFile     *key_file,
+			    const gchar  *group_name,
+			    const gchar  *key,
+			    gdouble       list[],
+			    gsize         length)
+{
+  GString *values;
+  gsize i;
+
+  g_return_if_fail (key_file != NULL);
+  g_return_if_fail (group_name != NULL);
+  g_return_if_fail (key != NULL);
+  g_return_if_fail (list != NULL);
+
+  values = g_string_sized_new (length * 16);
+  for (i = 0; i < length; i++)
+    {
+      gchar result[G_ASCII_DTOSTR_BUF_SIZE];
+
+      g_ascii_dtostr( result, sizeof (result), list[i] );
+
+      g_string_append (values, result);
+      g_string_append_c (values, ';');
+    }
+
+  g_key_file_set_value (key_file, group_name, key, values->str);
+  g_string_free (values, TRUE);
+}
+
 static void
 g_key_file_set_key_comment (GKeyFile             *key_file,
                             const gchar          *group_name,
@@ -3247,6 +3462,24 @@ g_key_file_parse_integer_as_value (GKeyFile *key_file,
 
 {
   return g_strdup_printf ("%d", value);
+}
+
+static gdouble
+g_key_file_parse_value_as_double  (GKeyFile     *key_file,
+                                   const gchar  *value,
+                                   GError      **error)
+{
+  gchar *end_of_valid_d;
+  gdouble double_value = 0;
+
+  double_value = g_ascii_strtod (value, &end_of_valid_d);
+
+  if (*end_of_valid_d != '\0')
+    g_set_error (error, G_KEY_FILE_ERROR,
+                 G_KEY_FILE_ERROR_INVALID_VALUE,
+                 _("Value '%s' cannot be interpreted as a float number."), value);
+
+  return double_value;
 }
 
 static gboolean

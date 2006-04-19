@@ -1,5 +1,9 @@
 2006-04-18  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/glib-sections.txt: Add new keyfile api
+
+2006-04-18  Matthias Clasen  <mclasen@redhat.com>
+
 	* gobject/tut_gobject.xml: Say that ref/unref are thread-safe now.  
 	(#322883, Christophe Fergeau)
 	
