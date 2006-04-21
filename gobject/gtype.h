@@ -287,6 +287,14 @@ GType g_type_register_static		(GType			     parent_type,
 					 const gchar		    *type_name,
 					 const GTypeInfo	    *info,
 					 GTypeFlags		     flags);
+GType g_type_register_static_simple     (GType                       parent_type,
+					 const gchar                *type_name,
+					 guint                       class_size,
+					 GClassInitFunc              class_init,
+					 guint                       instance_size,
+					 GInstanceInitFunc           instance_init,
+					 GTypeFlags	             flags);
+  
 GType g_type_register_dynamic		(GType			     parent_type,
 					 const gchar		    *type_name,
 					 GTypePlugin		    *plugin,
@@ -362,19 +370,14 @@ type_name##_get_type (void) \
   static GType g_define_type_id = 0; \
   if (G_UNLIKELY (g_define_type_id == 0)) \
     { \
-      static const GTypeInfo g_define_type_info = { \
-        sizeof (TypeName##Class), \
-        (GBaseInitFunc) NULL, \
-        (GBaseFinalizeFunc) NULL, \
-        (GClassInitFunc) type_name##_class_intern_init, \
-        (GClassFinalizeFunc) NULL, \
-        NULL,   /* class_data */ \
-        sizeof (TypeName), \
-        0,      /* n_preallocs */ \
-        (GInstanceInitFunc) type_name##_init, \
-        NULL    /* value_table */ \
-      }; \
-      g_define_type_id = g_type_register_static (TYPE_PARENT, g_intern_static_string (#TypeName), &g_define_type_info, (GTypeFlags) flags); \
+      g_define_type_id = \
+        g_type_register_static_simple (TYPE_PARENT, \
+                                       g_intern_static_string (#TypeName), \
+                                       sizeof (TypeName##Class), \
+                                       type_name##_class_intern_init, \
+                                       sizeof (TypeName), \
+                                       type_name##_init, \
+                                       (GTypeFlags) flags); \
       { CODE ; } \
     } \
   return g_define_type_id; \

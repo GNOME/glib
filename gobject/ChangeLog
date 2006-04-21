@@ -1,3 +1,11 @@
+2006-04-21  Matthias Clasen  <mclasen@redhat.com>
+
+	* gobject.symbols:
+	* gtype.[hc]: Add a g_type_register_static_simple
+	variant of g_type_register_static that does not take 
+	a relocation-causing GTypeInfo struct, and use it 
+	in G_DEFINE_TYPE.
+
 2006-03-07  Matthias Clasen  <mclasen@redhat.com>
 
 	* ===  Released 2.10.1 ===
