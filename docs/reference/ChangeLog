@@ -1,3 +1,10 @@
+2006-04-21  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/glib-docs.sgml:
+	* gobject/gobject-docs.sgml: Add 2.12 indices.
+
+	* gobject/tmpl/gtype.sgml: Document g_type_register_static_simple
+
 2006-04-19  Matthias Clasen  <mclasen@redhat.com>
 
 	* gobject/tmpl/objects.sgml: Add some missing Since: 2.8 tags

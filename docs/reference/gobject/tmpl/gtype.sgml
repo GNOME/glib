@@ -1230,6 +1230,24 @@ instances (if not abstract).  The value of @flags determines the nature
 @Returns: 	The new type identifier.
 
 
+<!-- ##### FUNCTION g_type_register_static_simple ##### -->
+<para>
+Registers @type_name as the name of a new static type derived from
+@parent_type.  The value of @flags determines the nature (e.g. 
+abstract or not) of the type. It works by filling a #GTypeInfo 
+struct and calling g_type_info_register_static().
+</para>
+
+@parent_type: 	Type which this type will be derived from.
+@type_name: 	0-terminated string used as the name of the new type.
+@class_size:    Size of the class structure (see #GTypeInfo)
+@class_init: 	Location of the class initialization function (see #GTypeInfo)
+@instance_size: Size of the instance structure (see #GTypeInfo)
+@instance_init: Location of the instance initialization function (see #GTypeInfo)
+@flags: 	Bitwise combination of #GTypeFlags values.
+@Returns: 	The new type identifier.
+@Since:         2.12
+
 <!-- ##### FUNCTION g_type_register_dynamic ##### -->
 <para>
 Registers @type_name as the name of a new dynamic type derived from
