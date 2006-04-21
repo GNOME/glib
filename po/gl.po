@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-04-07 12:56+0200\n"
-"PO-Revision-Date: 2006-04-07 12:56+0200\n"
+"POT-Creation-Date: 2006-04-21 14:22+0200\n"
+"PO-Revision-Date: 2006-04-21 14:23+0200\n"
 "Last-Translator: Ignacio Casal Quinteiro <nacho.resa@gmail.com>\n"
 "Language-Team: Galego <trasno@ceu.fi.udc.es>\n"
 "MIME-Version: 1.0\n"
@@ -75,12 +75,12 @@ msgstr "O nome do servidor no URI '%s' é inválido"
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "A URI '%s' contén caracteres de escape non válidos"
 
-#: ../glib/gconvert.c:1851
+#: ../glib/gconvert.c:1852
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "O nome de ruta '%s' non é unha ruta absoluta"
 
-#: ../glib/gconvert.c:1861
+#: ../glib/gconvert.c:1862
 msgid "Invalid hostname"
 msgstr "Nome de servidor inválido"
 
@@ -615,74 +615,74 @@ msgstr "Non se pode analizar o valor enteiro '%s' para %s"
 msgid "Double value '%s' for %s out of range"
 msgstr "O valor enteiro '%s' para %s está fora de rango"
 
-#: ../glib/goption.c:991
+#: ../glib/goption.c:993
 #, c-format
 msgid "Error parsing option %s"
 msgstr "Erro analizando a opción %s"
 
-#: ../glib/goption.c:1022 ../glib/goption.c:1133
+#: ../glib/goption.c:1024 ../glib/goption.c:1135
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Argumento perdido por %s"
 
-#: ../glib/goption.c:1541
+#: ../glib/goption.c:1543
 #, c-format
 msgid "Unknown option %s"
 msgstr "Opción %s descoñecida"
 
-#: ../glib/gkeyfile.c:334
+#: ../glib/gkeyfile.c:337
 msgid "Valid key file could not be found in data dirs"
 msgstr "Non se pode atopar a chave do arquivo válida nos directorios de datos"
 
-#: ../glib/gkeyfile.c:369
+#: ../glib/gkeyfile.c:372
 msgid "Not a regular file"
 msgstr "Non é un arquivo regular"
 
-#: ../glib/gkeyfile.c:377
+#: ../glib/gkeyfile.c:380
 msgid "File is empty"
 msgstr "O ficheiro está vacío"
 
-#: ../glib/gkeyfile.c:692
+#: ../glib/gkeyfile.c:695
 #, c-format
 msgid "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr ""
 "O arquivo chave contén a liña '%s' que non é un par valor-chave, grupo, ou "
 "comentario"
 
-#: ../glib/gkeyfile.c:760
+#: ../glib/gkeyfile.c:763
 msgid "Key file does not start with a group"
 msgstr "O ficheiro chave non empeza cun grupo"
 
-#: ../glib/gkeyfile.c:803
+#: ../glib/gkeyfile.c:806
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "O ficheiro chave contén unha codificación non soportada '%s'"
 
-#: ../glib/gkeyfile.c:1012 ../glib/gkeyfile.c:1171 ../glib/gkeyfile.c:2172
-#: ../glib/gkeyfile.c:2237 ../glib/gkeyfile.c:2356 ../glib/gkeyfile.c:2492
-#: ../glib/gkeyfile.c:2644 ../glib/gkeyfile.c:2818 ../glib/gkeyfile.c:2875
+#: ../glib/gkeyfile.c:1015 ../glib/gkeyfile.c:1174 ../glib/gkeyfile.c:2387
+#: ../glib/gkeyfile.c:2452 ../glib/gkeyfile.c:2571 ../glib/gkeyfile.c:2707
+#: ../glib/gkeyfile.c:2859 ../glib/gkeyfile.c:3035 ../glib/gkeyfile.c:3092
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "O arquivo chave non ten un grupo '%s'"
 
-#: ../glib/gkeyfile.c:1183
+#: ../glib/gkeyfile.c:1186
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "O arquivo chave non ten a chave '%s'"
 
-#: ../glib/gkeyfile.c:1284 ../glib/gkeyfile.c:1393
+#: ../glib/gkeyfile.c:1287 ../glib/gkeyfile.c:1396
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "O arquivo chave contén a chave '%s' co valor '%s' o cal non está en UTF-8"
 
-#: ../glib/gkeyfile.c:1302 ../glib/gkeyfile.c:1411 ../glib/gkeyfile.c:1783
+#: ../glib/gkeyfile.c:1305 ../glib/gkeyfile.c:1414 ../glib/gkeyfile.c:1786
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr ""
 "O arquivo chave contén a chave '%s' que ten un valor que non pode ser "
 "interpretado."
 
-#: ../glib/gkeyfile.c:1999
+#: ../glib/gkeyfile.c:2002 ../glib/gkeyfile.c:2215
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -691,31 +691,36 @@ msgstr ""
 "O arquivo chave contén a chave '%s' no grupo '%s' que ten un valor que non "
 "pode ser interpretado."
 
-#: ../glib/gkeyfile.c:2187 ../glib/gkeyfile.c:2371 ../glib/gkeyfile.c:2886
+#: ../glib/gkeyfile.c:2402 ../glib/gkeyfile.c:2586 ../glib/gkeyfile.c:3103
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "O arquivo chave non ten a chave '%s' no grupo '%s'"
 
-#: ../glib/gkeyfile.c:3062
+#: ../glib/gkeyfile.c:3279
 msgid "Key file contains escape character at end of line"
 msgstr "O arquivo chave contén un carácter de escape ao final da liña"
 
-#: ../glib/gkeyfile.c:3084
+#: ../glib/gkeyfile.c:3301
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "O arquivo chave contén a secuencia de escape inválida '%s'"
 
-#: ../glib/gkeyfile.c:3225
+#: ../glib/gkeyfile.c:3442
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "O valor '%s' non pode interpretarse como un número."
 
-#: ../glib/gkeyfile.c:3235
+#: ../glib/gkeyfile.c:3452
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "O valor enteiro '%s' está fora de rango"
 
-#: ../glib/gkeyfile.c:3265
+#: ../glib/gkeyfile.c:3480
+#, c-format
+msgid "Value '%s' cannot be interpreted as a float number."
+msgstr "O valor '%s' non pode interpretarse como un número flotante."
+
+#: ../glib/gkeyfile.c:3500
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "O valor '%s' non pode interpretarse como un booleano."
