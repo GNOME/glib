@@ -374,9 +374,9 @@ type_name##_get_type (void) \
         g_type_register_static_simple (TYPE_PARENT, \
                                        g_intern_static_string (#TypeName), \
                                        sizeof (TypeName##Class), \
-                                       type_name##_class_intern_init, \
+                                       (GClassInitFunc)type_name##_class_intern_init, \
                                        sizeof (TypeName), \
-                                       type_name##_init, \
+                                       (GInstanceInitFunc)type_name##_init, \
                                        (GTypeFlags) flags); \
       { CODE ; } \
     } \

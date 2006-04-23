@@ -2225,7 +2225,7 @@ g_type_register_static_simple (GType             parent_type,
   info.instance_init = instance_init;
   info.value_table = NULL;
 
-  g_type_register_static (parent_type, type_name, &info, flags);
+  return g_type_register_static (parent_type, type_name, &info, flags);
 }
 
 GType

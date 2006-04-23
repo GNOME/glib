@@ -1,3 +1,12 @@
+2006-04-23  Matthias Clasen  <mclasen@redhat.com>
+
+	* gobject.symbols: Fix a typo.
+
+	* gtype.c: (g_type_register_static_simple): Add a 
+	missing return.
+
+	* gtype.h: Silence warnings from G_DEFINE_TYPE.
+	
 2006-04-21  Matthias Clasen  <mclasen@redhat.com>
 
 	* gobject.symbols:
