@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib (HEAD)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-04-10 22:54+0200\n"
-"PO-Revision-Date: 2006-04-11 04:39+0200\n"
+"POT-Creation-Date: 2006-04-23 14:13+0200\n"
+"PO-Revision-Date: 2006-04-23 18:57+0200\n"
 "Last-Translator: Tino Meinen <a.t.meinen@chello.nl>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
 "MIME-Version: 1.0\n"
@@ -56,7 +56,8 @@ msgstr "Kan vanaf codeverzameling '%s' niet terugvallen op '%s'"
 #: ../glib/gconvert.c:1702
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
-msgstr "De URI '%s' is geen absolute URI die gebruik maakt van het schema \"bestand\""
+msgstr ""
+"De URI '%s' is geen absolute URI die gebruik maakt van het schema \"bestand\""
 
 #: ../glib/gconvert.c:1712
 #, c-format
@@ -79,12 +80,12 @@ msgstr "De hostnaam van de URI '%s' is ongeldig"
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "De URI '%s' bevat ongeldige ontsnappingstekens"
 
-#: ../glib/gconvert.c:1851
+#: ../glib/gconvert.c:1852
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Het pad '%s' is geen absoluut pad"
 
-#: ../glib/gconvert.c:1861
+#: ../glib/gconvert.c:1862
 msgid "Invalid hostname"
 msgstr "Ongeldige hostnaam"
 
@@ -127,7 +128,8 @@ msgstr "Openen van bestand '%s' mislukt: fdopen() is mislukt: %s"
 #: ../glib/gfileutils.c:905
 #, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
-msgstr "Hernoemen van bestand '%s' naar '%s' mislukt: g_rename() is mislukt: %s"
+msgstr ""
+"Hernoemen van bestand '%s' naar '%s' mislukt: g_rename() is mislukt: %s"
 
 #: ../glib/gfileutils.c:946 ../glib/gfileutils.c:1411
 #, c-format
@@ -137,7 +139,8 @@ msgstr "Aanmaken van bestand '%s' mislukt: %s"
 #: ../glib/gfileutils.c:960
 #, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
-msgstr "Openen van bestand '%s' voor schrijven mislukt: fdopen() is mislukt: %s"
+msgstr ""
+"Openen van bestand '%s' voor schrijven mislukt: fdopen() is mislukt: %s"
 
 #: ../glib/gfileutils.c:985
 #, c-format
@@ -468,7 +471,8 @@ msgstr "Lezen van data van dochterprocessen mislukt"
 #: ../glib/gspawn-win32.c:288 ../glib/gspawn.c:1361
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
-msgstr "Aanmaken van pijplijn voor het communiceren met dochterproces mislukt (%s)"
+msgstr ""
+"Aanmaken van pijplijn voor het communiceren met dochterproces mislukt (%s)"
 
 #: ../glib/gspawn-win32.c:326 ../glib/gspawn.c:1025
 #, c-format
@@ -632,34 +636,34 @@ msgstr "Kan de dubbele getalswaarde (double) '%s' voor %s niet verwerken"
 msgid "Double value '%s' for %s out of range"
 msgstr "Dubbele getalswaarde (double) '%s' voor %s valt buiten bereik"
 
-#: ../glib/goption.c:991
+#: ../glib/goption.c:993
 #, c-format
 msgid "Error parsing option %s"
 msgstr "Fout bij verwerken optie %s"
 
-#: ../glib/goption.c:1022 ../glib/goption.c:1133
+#: ../glib/goption.c:1024 ../glib/goption.c:1135
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Ontbrekend argument voor %s"
 
-#: ../glib/goption.c:1541
+#: ../glib/goption.c:1543
 #, c-format
 msgid "Unknown option %s"
 msgstr "Onbekende optie %s"
 
-#: ../glib/gkeyfile.c:334
+#: ../glib/gkeyfile.c:337
 msgid "Valid key file could not be found in data dirs"
 msgstr "Er kon geen geldig sleutelbestand worden gevonden in de datamappen"
 
-#: ../glib/gkeyfile.c:369
+#: ../glib/gkeyfile.c:372
 msgid "Not a regular file"
 msgstr "Geen regulier bestand"
 
-#: ../glib/gkeyfile.c:377
+#: ../glib/gkeyfile.c:380
 msgid "File is empty"
 msgstr "Bestand is leeg"
 
-#: ../glib/gkeyfile.c:692
+#: ../glib/gkeyfile.c:695
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
@@ -667,40 +671,40 @@ msgstr ""
 "Sleutelbestand bevat regel '%s' wat geen sleutelwaarde-paar, groep of "
 "opmerking is."
 
-#: ../glib/gkeyfile.c:760
+#: ../glib/gkeyfile.c:763
 msgid "Key file does not start with a group"
 msgstr "Sleutelbestand start niet met een groep"
 
-#: ../glib/gkeyfile.c:803
+#: ../glib/gkeyfile.c:806
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "Sleutelbestand bevat niet-ondersteunde tekenset '%s'"
 
-#: ../glib/gkeyfile.c:1012 ../glib/gkeyfile.c:1171 ../glib/gkeyfile.c:2172
-#: ../glib/gkeyfile.c:2237 ../glib/gkeyfile.c:2356 ../glib/gkeyfile.c:2492
-#: ../glib/gkeyfile.c:2644 ../glib/gkeyfile.c:2818 ../glib/gkeyfile.c:2875
+#: ../glib/gkeyfile.c:1015 ../glib/gkeyfile.c:1174 ../glib/gkeyfile.c:2387
+#: ../glib/gkeyfile.c:2452 ../glib/gkeyfile.c:2571 ../glib/gkeyfile.c:2707
+#: ../glib/gkeyfile.c:2859 ../glib/gkeyfile.c:3035 ../glib/gkeyfile.c:3092
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Sleutelbestand bevat geen groep '%s'"
 
-#: ../glib/gkeyfile.c:1183
+#: ../glib/gkeyfile.c:1186
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "Sleutelbestand bevat geen sleutel '%s'"
 
-#: ../glib/gkeyfile.c:1284 ../glib/gkeyfile.c:1393
+#: ../glib/gkeyfile.c:1287 ../glib/gkeyfile.c:1396
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "Sleutelbestand bevat sleutel '%s' met waarde '%s' wat geen UTF-8 is"
 
-#: ../glib/gkeyfile.c:1302 ../glib/gkeyfile.c:1411 ../glib/gkeyfile.c:1783
+#: ../glib/gkeyfile.c:1305 ../glib/gkeyfile.c:1414 ../glib/gkeyfile.c:1786
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr ""
 "Sleutelbestand bevat sleutel '%s' die een waarde heeft die niet kan worden "
 "geïnterpreteerd."
 
-#: ../glib/gkeyfile.c:1999
+#: ../glib/gkeyfile.c:2002 ../glib/gkeyfile.c:2215
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -709,31 +713,36 @@ msgstr ""
 "Sleutelbestand bevat sleutel '%s' in groep '%s' die een waarde heeft die "
 "niet kan worden geïnterpreteerd."
 
-#: ../glib/gkeyfile.c:2187 ../glib/gkeyfile.c:2371 ../glib/gkeyfile.c:2886
+#: ../glib/gkeyfile.c:2402 ../glib/gkeyfile.c:2586 ../glib/gkeyfile.c:3103
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Sleutelbestand bevat geen sleutel '%s' in groep '%s'"
 
-#: ../glib/gkeyfile.c:3062
+#: ../glib/gkeyfile.c:3279
 msgid "Key file contains escape character at end of line"
 msgstr "Sleutelbestand bevat een ontsnappingsteken aan het einde van een regel"
 
-#: ../glib/gkeyfile.c:3084
+#: ../glib/gkeyfile.c:3301
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "Sleutelbestand bevat ongeldige ontsnappingstekens '%s'"
 
-#: ../glib/gkeyfile.c:3225
+#: ../glib/gkeyfile.c:3442
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Waarde '%s' kan niet geïnterpreteerd worden als een getal."
 
-#: ../glib/gkeyfile.c:3235
+#: ../glib/gkeyfile.c:3452
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "Hele getalswaarde '%s' valt buiten bereik"
 
-#: ../glib/gkeyfile.c:3265
+#: ../glib/gkeyfile.c:3480
+#, c-format
+msgid "Value '%s' cannot be interpreted as a float number."
+msgstr "Waarde '%s' kan niet geïnterpreteerd worden als een float."
+
+#: ../glib/gkeyfile.c:3500
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Waarde '%s' kan niet geïnterpreteerd worden als een booleese."
