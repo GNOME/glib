@@ -240,9 +240,9 @@ A structure that provides information to the type system which is
 used specifically for managing interface types.
 </para>
 
-@interface_init: 
-@interface_finalize: 
-@interface_data: 
+@interface_init: location of the interface initialization function 
+@interface_finalize: location of the interface finalization function
+@interface_data: user-supplied data passed to the interface init/finalize functions
 
 <!-- ##### STRUCT GTypeValueTable ##### -->
 <para>
@@ -1248,6 +1248,7 @@ struct and calling g_type_info_register_static().
 @Returns: 	The new type identifier.
 @Since:         2.12
 
+
 <!-- ##### FUNCTION g_type_register_dynamic ##### -->
 <para>
 Registers @type_name as the name of a new dynamic type derived from
@@ -1633,25 +1634,6 @@ init functions.
 @flags: #GTypeFlags to pass to g_type_register_static()
 @CODE: Custom code that gets inserted in the *_get_type() function.
 @Since: 2.4
-
-
-<!-- ##### FUNCTION g_value_set_gtype ##### -->
-<para>
-Set the contents of a %G_TYPE_GTYPE #GValue to @v_gtype.
-</para>
-
-@value: a valid #GValue of type %G_TYPE_GTYPE
-@v_gtype: #GType to be set
-@Since: 2.12
-
-<!-- ##### FUNCTION g_value_get_gtype ##### -->
-<para>
-Get the contents of a %G_TYPE_GTYPE #GValue.
-</para>
-
-@value: a valid #GValue of type %G_TYPE_GTYPE
-@Returns: the #GType stored in @value
-@Since: 2.12
 
 
 <!-- ##### MACRO G_TYPE_INVALID ##### -->

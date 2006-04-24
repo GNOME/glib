@@ -141,6 +141,7 @@ G_TYPE_POINTER
 G_TYPE_BOXED
 G_TYPE_PARAM
 G_TYPE_OBJECT
+G_TYPE_GTYPE
 
 <SUBSECTION>
 G_TYPE_RESERVED_GLIB_FIRST
@@ -160,6 +161,7 @@ g_object_type_init
 g_param_spec_types_init
 g_value_transforms_init
 g_signal_init
+g_gtype_get_type
 </SECTION>
 
 <SECTION>
@@ -239,6 +241,9 @@ GParameter
 g_object_ref
 g_object_unref
 g_object_ref_sink
+GInitiallyUnowned
+GInitiallyUnownedClass
+G_TYPE_INITIALLY_UNOWNED
 g_object_is_floating
 g_object_force_floating
 GWeakNotify
@@ -272,8 +277,18 @@ g_object_get_valist
 g_object_watch_closure
 g_object_run_dispose
 G_OBJECT_WARN_INVALID_PROPERTY_ID
+
+<SUBSECTION Standard>
+G_INITIALLY_UNOWNED
+G_INITIALLY_UNOWNED_CLASS
+G_INITIALLY_UNOWNED_GET_CLASS
+G_IS_INITIALLY_UNOWNED
+G_IS_INITIALLY_UNOWNED_CLASS
+
 <SUBSECTION Private>
 G_OBJECT_WARN_INVALID_PSPEC
+g_initially_unowned_get_type
+g_object_compat_control
 </SECTION>
 
 <SECTION>
@@ -650,9 +665,12 @@ g_param_spec_override
 <SUBSECTION GType>
 G_IS_PARAM_SPEC_GTYPE
 G_PARAM_SPEC_GTYPE
+G_VALUE_HOLDS_GTYPE
 G_TYPE_PARAM_GTYPE
 GParamSpecGType
 g_param_spec_gtype
+g_value_get_gtype
+g_value_set_gtype
 
 <SUBSECTION Private>
 g_value_set_instance

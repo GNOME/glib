@@ -1766,3 +1766,23 @@ See g_param_spec_internal() for details on property names.
 @Since: 2.10
 
 
+<!-- ##### FUNCTION g_value_get_gtype ##### -->
+<para>
+Get the contents of a %G_TYPE_GTYPE #GValue.
+</para>
+
+@value: a valid #GValue of type %G_TYPE_GTYPE
+@Returns: the #GType stored in @value
+@Since: 2.12
+
+
+<!-- ##### FUNCTION g_value_set_gtype ##### -->
+<para>
+Set the contents of a %G_TYPE_GTYPE #GValue to @v_gtype.
+</para>
+
+@value: a valid #GValue of type %G_TYPE_GTYPE
+@v_gtype: #GType to be set
+@Since: 2.12
+
+

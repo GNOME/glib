@@ -1,5 +1,9 @@
 2006-04-21  Matthias Clasen  <mclasen@redhat.com>
 
+	* gobject/gobject-sections.txt:
+	* gobject/tmpl/objects.sgml: 
+	* gobject/tmpl/gtype.sgml: Additions
+
 	* glib/glib-docs.sgml:
 	* gobject/gobject-docs.sgml: Add 2.12 indices.
 

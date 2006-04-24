@@ -94,6 +94,46 @@ The predefined identifiers of the reserved fundamental types.
 @G_TYPE_PARAM_CLOSURE: 
 @G_TYPE_PARAM_OBJECT: 
 
+<!-- ##### MACRO G_INITIALLY_UNOWNED ##### -->
+<para>
+Casts a #GInitiallyUnowned or derived pointer into a (GInitiallyUnowned*) 
+pointer. Depending on the current debugging level, this function may invoke
+certain runtime checks to identify invalid casts.
+</para>
+
+@object: Object which is subject to casting
+
+<!-- ##### MACRO G_INITIALLY_UNOWNED_CLASS ##### -->
+<para>
+Casts a derived #GInitiallyUnownedClass structure into a 
+#GInitiallyUnownedClass structure.
+</para>
+
+@class: a valid #GInitiallyUnownedClass
+
+<!-- ##### MACRO G_INITIALLY_UNOWNED_GET_CLASS ##### -->
+<para>
+Returns the class structure associated to a #GInitiallyUnowned instance.
+</para>
+
+@object: a #GInitiallyUnowned instance
+
+<!-- ##### MACRO G_IS_INITIALLY_UNOWNED ##### -->
+<para>
+Checks whether a valid #GTypeInstance pointer is of type 
+%G_TYPE_INITIALLY_UNOWNED.
+</para>
+
+@object: Instance to check for being a %G_TYPE_INITIALLY_UNOWNED.
+
+<!-- ##### MACRO G_IS_INITIALLY_UNOWNED_CLASS ##### -->
+<para>
+Checks whether @class "is a" valid #GInitiallyUnownedClass structure of type
+%G_TYPE_INITIALLY_UNOWNED or derived.
+</para>
+
+@class: a #GInitiallyUnownedClass
+
 <!-- ##### MACRO G_IS_PARAM_SPEC_CLOSURE ##### -->
 <para>
 
