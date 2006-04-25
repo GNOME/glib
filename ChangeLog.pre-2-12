@@ -1,3 +1,10 @@
+2006-04-25  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gkeyfile.c (g_key_file_lookup_group_node): Remove
+	redundant code.
+	(g_key_file_get_group_comment): Don't dereference before
+	checking for NULL.  (#338572, Coverity, Pascal Terjan)
+
 2006-04-19  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gdataset.c: Add some missing Since: 2.8 tags.

@@ -2699,8 +2699,7 @@ g_key_file_get_group_comment (GKeyFile             *key_file,
   GKeyFileGroup *group;
   
   group_node = g_key_file_lookup_group_node (key_file, group_name);
-  group = (GKeyFileGroup *)group_node->data;
-  if (!group)
+  if (!group_node)
     {
       g_set_error (error, G_KEY_FILE_ERROR,
                    G_KEY_FILE_ERROR_GROUP_NOT_FOUND,
@@ -2710,6 +2709,7 @@ g_key_file_get_group_comment (GKeyFile             *key_file,
       return NULL;
     }
 
+  group = (GKeyFileGroup *)group_node->data;
   if (group->comment)
     return g_strdup (group->comment->value);
   
@@ -3119,15 +3119,12 @@ g_key_file_lookup_group_node (GKeyFile    *key_file,
   GKeyFileGroup *group;
   GList *tmp;
 
-  group = NULL;
   for (tmp = key_file->groups; tmp != NULL; tmp = tmp->next)
     {
       group = (GKeyFileGroup *) tmp->data;
 
       if (group && group->name && strcmp (group->name, group_name) == 0)
         break;
-
-      group = NULL;
     }
 
   return tmp;
