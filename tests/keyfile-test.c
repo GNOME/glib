@@ -509,6 +509,12 @@ test_comments (void)
   check_name ("group comment", comment, group_comment, 0);
   g_free (comment);
 
+  comment = g_key_file_get_comment (keyfile, "group3", NULL, &error);
+  check_error (&error, 
+	       G_KEY_FILE_ERROR,
+	       G_KEY_FILE_ERROR_GROUP_NOT_FOUND);
+  g_assert (comment == NULL);
+
   g_key_file_free (keyfile);
 }
 
