@@ -1020,13 +1020,19 @@ is_element_full (ParseData   *parse_data,
    * namespace has been set, just do a plain comparison between @full_element
    * and @element.
    */
-  p = g_utf8_strchr (element_full, -1, ':');
+  p = strchr (element_full, ':');
   if (p)
-    ns_name = g_strndup (element_full, p - element_full);
+    {
+      ns_name = g_strndup (element_full, p - element_full);
+      element_name = g_utf8_next_char (p);
+    }
   else
-    ns_name = g_strdup ("default");
+    {
+      ns_name = g_strdup ("default");
+      element_name = element_full;
+    }
   
-  ns_uri = g_strdup (g_hash_table_lookup (parse_data->namespaces, ns_name));
+  ns_uri = g_hash_table_lookup (parse_data->namespaces, ns_name);  
   if (!ns_uri)
     {
       /* no default namespace found */
@@ -1035,16 +1041,11 @@ is_element_full (ParseData   *parse_data,
       return (0 == strcmp (element_full, element));
     }
   
-  p = g_utf8_next_char (p);
-  element_name = g_strdup (p);
-  
   resolved = g_strdup_printf ("%s%c%s", ns_uri, sep, element_name);
   s = g_strdup_printf ("%s%c%s", namespace, sep, element);
   retval = (0 == strcmp (resolved, s));
   
   g_free (ns_name);
-  g_free (ns_uri);
-  g_free (element_name);
   g_free (resolved);
   g_free (s);
   
