@@ -191,12 +191,7 @@ g_rand_new (void)
 	  if (r != 1)
 	    dev_urandom_exists = FALSE;
 
-	  do
-	    {
-	      errno = 0;
-	      fclose (dev_urandom);
-	    }
-	  while G_UNLIKELY (errno == EINTR);
+	  fclose (dev_urandom);
 	}	
       else
 	dev_urandom_exists = FALSE;

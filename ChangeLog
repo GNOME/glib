@@ -1,3 +1,8 @@
+2006-04-26  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/grand.c (g_rand_new): Don't repeat a failed fclose()
+	call, since that invokes undefined behaviour.  (Coverity)
+
 2006-04-25  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gbookmarkfile.c (is_element_full): Avoid a possible
