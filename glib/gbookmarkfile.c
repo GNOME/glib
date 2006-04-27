@@ -2126,9 +2126,7 @@ g_bookmark_file_set_title (GBookmarkFile *bookmark,
   if (!uri)
     {
       g_free (bookmark->title);
-      
-      if (title && title[0] != '\0')
-        bookmark->title = g_strdup (title);
+      bookmark->title = g_strdup (title);
     }
   else
     {
@@ -2142,9 +2140,7 @@ g_bookmark_file_set_title (GBookmarkFile *bookmark,
         }
       
       g_free (item->title);
-      
-      if (title && title[0] != '\0')
-        item->title = g_strdup (title);
+      item->title = g_strdup (title);
       
       item->modified = time (NULL);
     }
@@ -2216,10 +2212,8 @@ g_bookmark_file_set_description (GBookmarkFile *bookmark,
 
   if (!uri)
     {
-      g_free (bookmark->description);
-      
-      if (description && description[0] != '\0')
-        bookmark->description = g_strdup (description);
+      g_free (bookmark->description); 
+      bookmark->description = g_strdup (description);
     }
   else
     {
@@ -2233,9 +2227,7 @@ g_bookmark_file_set_description (GBookmarkFile *bookmark,
         }
       
       g_free (item->description);
-      
-      if (description && description[0] != '\0')
-        item->description = g_strdup (description);
+      item->description = g_strdup (description);
       
       item->modified = time (NULL);
     }
@@ -3590,8 +3582,7 @@ g_bookmark_file_set_icon (GBookmarkFile *bookmark,
   g_free (item->metadata->icon_href);
   g_free (item->metadata->icon_mime);
   
-  if (href && href[0] != '\0')
-    item->metadata->icon_href = g_strdup (href);
+  item->metadata->icon_href = g_strdup (href);
   
   if (mime_type && mime_type[0] != '\0')
     item->metadata->icon_mime = g_strdup (mime_type);

@@ -1,3 +1,10 @@
+2006-04-27  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gbookmarkfile.c (g_bookmark_file_set_description) 
+	(g_bookmark_file_set_title, g_bookmark_file_set_icon): 
+	Remove some special-casing of empty string which led to 
+	dangling pointers.  (#339337, Morten Welinder)
+
 2006-04-27  Behdad Esfahbod  <behdad@gnome.org>
 
 	* glib/gunibreak.h, glib/gunichartables.h: Regenerated using
