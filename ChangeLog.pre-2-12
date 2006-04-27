@@ -1,3 +1,8 @@
+2006-04-27  Behdad Esfahbod  <behdad@gnome.org>
+
+	* glib/gunibreak.h, glib/gunichartables.h: Regenerated using
+	Unicode Character Database 5.0 beta.
+
 2006-04-26  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/grand.c (g_rand_new): Don't repeat a failed fclose()
