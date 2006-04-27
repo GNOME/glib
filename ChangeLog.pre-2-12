@@ -7,6 +7,9 @@
 	(expand_exec_line): Don't use printf() needlessly, handle
 	trailing '%' gracefully.  (#339338, Morten Welinder)
 	(is_element_full): Silence the compiler.
+	(g_bookmark_file_dump, bookmark_metadata_dump): 
+	(bookmark_app_info_dump): Escape strings before dumping 
+	them in xml.  (#339340, Morten Welinder)
 
 2006-04-27  Behdad Esfahbod  <behdad@gnome.org>
 

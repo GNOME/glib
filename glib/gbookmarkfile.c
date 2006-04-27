@@ -250,19 +250,26 @@ static gchar *
 bookmark_app_info_dump (BookmarkAppInfo *app_info)
 {
   gchar *retval;
+  gchar *name, *exec;
 
   g_assert (app_info != NULL);
 
   if (app_info->count == 0)
     return NULL;
+
+  name = g_markup_escape_text (app_info->name, -1);
+  exec = g_markup_escape_text (app_info->exec, -1);
  
   retval = g_strdup_printf ("          <%s:%s %s=\"%s\" %s=\"%s\" %s=\"%ld\" %s=\"%u\"/>\n",
                             BOOKMARK_NAMESPACE_NAME,
                             BOOKMARK_APPLICATION_ELEMENT,
-                            BOOKMARK_NAME_ATTRIBUTE, app_info->name,
-                            BOOKMARK_EXEC_ATTRIBUTE, app_info->exec,
+                            BOOKMARK_NAME_ATTRIBUTE, name,
+                            BOOKMARK_EXEC_ATTRIBUTE, exec,
                             BOOKMARK_TIMESTAMP_ATTRIBUTE, (time_t) app_info->stamp,
                             BOOKMARK_COUNT_ATTRIBUTE, app_info->count);
+
+  g_free (name);
+  g_free (exec);
 
   return retval;
 }
@@ -370,8 +377,9 @@ bookmark_metadata_dump (BookmarkMetadata *metadata)
       
       for (l = g_list_last (metadata->groups); l != NULL; l = l->prev)
         {
-          gchar *group_name = (gchar *) l->data;
-          
+          gchar *group_name;
+
+	  group_name = g_markup_escape_text ((gchar *) l->data, -1);
           g_string_append_printf (retval,
           			  "          <%s:%s>%s</%s:%s>\n",
           			  BOOKMARK_NAMESPACE_NAME,
@@ -379,6 +387,7 @@ bookmark_metadata_dump (BookmarkMetadata *metadata)
           			  group_name,
           			  BOOKMARK_NAMESPACE_NAME,
           			  BOOKMARK_GROUP_ELEMENT);
+	  g_free (group_name);
         }
       
       /* close groups container */
@@ -519,7 +528,7 @@ bookmark_item_dump (BookmarkItem *item)
   modified = timestamp_to_iso8601 (item->modified);
   visited = timestamp_to_iso8601 (item->visited);
 
-  escaped_uri = g_markup_escape_text (item->uri, strlen (item->uri));
+  escaped_uri = g_markup_escape_text (item->uri, -1);
   
   g_string_append_printf (retval,
                           "  <%s %s=\"%s\" %s=\"%s\" %s=\"%s\" %s=\"%s\">\n",
@@ -537,7 +546,7 @@ bookmark_item_dump (BookmarkItem *item)
     {
       gchar *escaped_title;
       
-      escaped_title = g_markup_escape_text (item->title, strlen (item->title));
+      escaped_title = g_markup_escape_text (item->title, -1);
       g_string_append_printf (retval,
     			      "    <%s>%s</%s>\n",
     			      XBEL_TITLE_ELEMENT,
@@ -550,11 +559,11 @@ bookmark_item_dump (BookmarkItem *item)
     {
       gchar *escaped_desc;
       
-      escaped_desc = g_markup_escape_text (item->description, strlen (item->description));
+      escaped_desc = g_markup_escape_text (item->description, -1);
       g_string_append_printf (retval,
     			      "    <%s>%s</%s>\n",
     			      XBEL_DESC_ELEMENT,
-    			      item->description,
+    			      escaped_desc,
     			      XBEL_DESC_ELEMENT);
       g_free (escaped_desc);
     }
@@ -1436,8 +1445,8 @@ g_bookmark_file_parse (GBookmarkFile  *bookmark,
 
 static gchar *
 g_bookmark_file_dump (GBookmarkFile  *bookmark,
-			gsize            *length,
-			GError          **error)
+		      gsize          *length,
+		      GError        **error)
 {
   GString *retval;
   GList *l;
