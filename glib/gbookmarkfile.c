@@ -1000,9 +1000,8 @@ is_element_full (ParseData   *parse_data,
                  const gchar *element,
                  const gchar  sep)
 {
-  gchar *ns_uri, *ns_name;
-  gchar *element_name, *resolved;
-  gchar *p, *s;
+  gchar *ns_uri, *ns_name, *s, *resolved;
+  const gchar *p, *element_name;
   gboolean retval;
  
   g_assert (parse_data != NULL);
@@ -3282,14 +3281,16 @@ expand_exec_line (const gchar *exec_fmt,
      ch = *exec_fmt++;
      switch (ch)
        {
+       case '\0':
+	 goto out;
        case 'u':
-         g_string_append_printf (exec, "%s", uri);
+         g_string_append (exec, uri);
          break;
        case 'f':
          {
-         gchar *file = g_filename_from_uri (uri, NULL, NULL);
-         g_string_append_printf (exec, "%s", file);
-         g_free (file);
+	   gchar *file = g_filename_from_uri (uri, NULL, NULL);
+	   g_string_append (exec, file);
+	   g_free (file);
          }
          break;
        case '%':
@@ -3299,6 +3300,7 @@ expand_exec_line (const gchar *exec_fmt,
        }
    }
    
+ out:
   return g_string_free (exec, FALSE);
 }
 

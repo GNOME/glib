@@ -4,6 +4,9 @@
 	(g_bookmark_file_set_title, g_bookmark_file_set_icon): 
 	Remove some special-casing of empty string which led to 
 	dangling pointers.  (#339337, Morten Welinder)
+	(expand_exec_line): Don't use printf() needlessly, handle
+	trailing '%' gracefully.  (#339338, Morten Welinder)
+	(is_element_full): Silence the compiler.
 
 2006-04-27  Behdad Esfahbod  <behdad@gnome.org>
 
