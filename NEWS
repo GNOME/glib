@@ -1,3 +1,50 @@
+Overview of Changes from GLib 2.10.x to GLib 2.11.0
+===================================================
+
+* GBookmarkFile: a parser for files containing bookmarks
+  stored using the Desktop Bookmark specification.
+
+* Base64 encoding support
+	
+* Unicode 5.0 support
+
+* GOption supports floating point numbers 
+
+* GKeyFile supports floating point numbers
+
+* Bug fixes:
+ 155884 gatomic.c should be based on new SDK
+ 157877 update-desktop-database doesn't handle duplicate entries
+ 164719 keyfile parser doesn't support floats
+ 327662 Import BookmarkFile from libegg
+ 329548 Add G_OPTION_ARG_DOUBLE
+ 329789 option-test.c type confusion
+ 332841 Segmentation Fault when %llu is passed to vasnprintf and 
+        HAVE_SNPRINTF is not defined
+ 333879 gthread/gthread-win32.c: IsDebuggerPresent needs '#define 
+        _WIN32_WINDOWS 0x0401'
+ 333916 g_timer_elapsed docs should mention that microseconds 
+        may be NULL
+ 334440 dlerror() portability issue causes crash on (old) a.out 
+        NetBSD platform
+ 334646 goption + error out params
+ 334799 g_remove() must check return value of remove()
+ 334943 make check FAIL: threadpool-test
+ 335215 Some breakages with GThreadPool
+ 336085 g_option_context_new parameter lacks better explanation
+ 336677 Documentation for g_object_ref_sink() is incorrect
+ 337027 gbookmarkfile.c: sys/time.h include error
+ 337553 Wrong escaping of URIs
+ 338572 Dereferencing NULL value in g_key_file_get_group_comment
+ 338845 g_completion_complete_utf8 crashes when NULL is passed to it
+ 339337 g_bookmark_file_set_description
+ 339338 gbookmarkfile.c, function expand_exec_line
+ 339340 gbookmarkfile.c, function bookmark_app_info_dump
+
+* Translation updates (bg,en_GB,et,gl,gu,he,hi,ka,nl,nn,
+                       or,pt_BR,ro,tr,vi)
+
+
 Overview of Changes from GLib 2.10.0 to GLib 2.10.1
 ===================================================
 
