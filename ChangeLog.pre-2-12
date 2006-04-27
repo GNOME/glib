@@ -1,3 +1,9 @@
+2006-04-27  Behdad Esfahbod  <behdad@gnome.org>
+
+	* docs/reference/glib/glib-sections.txt,
+	* glib/gunicode.h glib/guniprop.c: Implement g_unichar_iswide_cjk().
+	(#105626)
+
 2006-04-27  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gbookmarkfile.c (g_bookmark_file_set_description) 

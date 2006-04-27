@@ -2248,6 +2248,7 @@ g_unichar_isxdigit
 g_unichar_istitle
 g_unichar_isdefined
 g_unichar_iswide
+g_unichar_iswide_cjk
 g_unichar_toupper
 g_unichar_tolower
 g_unichar_totitle

@@ -136,6 +136,7 @@ gboolean g_unichar_isxdigit  (gunichar c) G_GNUC_CONST;
 gboolean g_unichar_istitle   (gunichar c) G_GNUC_CONST;
 gboolean g_unichar_isdefined (gunichar c) G_GNUC_CONST;
 gboolean g_unichar_iswide    (gunichar c) G_GNUC_CONST;
+gboolean g_unichar_iswide_cjk(gunichar c) G_GNUC_CONST;
 
 /* More <ctype.h> functions.  These convert between the three cases.
  * See the Unicode book to understand title case.  */
