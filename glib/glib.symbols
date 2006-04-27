@@ -1235,6 +1235,7 @@ g_unichar_isspace G_GNUC_CONST
 g_unichar_istitle G_GNUC_CONST
 g_unichar_isupper G_GNUC_CONST
 g_unichar_iswide G_GNUC_CONST
+g_unichar_iswide_cjk G_GNUC_CONST
 g_unichar_isxdigit G_GNUC_CONST
 g_unichar_tolower G_GNUC_CONST
 g_unichar_totitle G_GNUC_CONST

@@ -412,10 +412,12 @@ interval_compare (const void *key, const void *elt)
  * g_unichar_iswide(), then it is also reported wide with this function, but
  * the converse is not necessarily true.  See the
  * <ulink url="http://www.unicode.org/reports/tr11/">Unicode Standard
- * Annex #11</ulink> for details:
+ * Annex #11</ulink> for details.
  * 
  * Return value: %TRUE if the character is wide in legacy East Asian locales
- **/
+ *
+ * Since: 2.12
+ */
 /* This function stolen from Markus Kuhn <Markus.Kuhn@cl.cam.ac.uk>.  */
 gboolean
 g_unichar_iswide_cjk (gunichar c)
