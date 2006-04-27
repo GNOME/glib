@@ -15,6 +15,14 @@ collation on UTF-8 strings and finally functions to convert between
 the UTF-8, UTF-16 and UCS-4 encodings of Unicode.
 </para>
 
+<para>
+The implementations of the Unicode functions in GLib are based
+on the Unicode Character Data tables, which are available from
+<ulink url="http://www.unicode.org">www.unicode.org</ulink>.
+GLib 2.8 supports Unicode 4.0, GLib 2.10 supports Unicode 4.1,
+GLib 2.12 supports Unicode 5.0.
+</para>
+
 <!-- ##### SECTION See_Also ##### -->
 <para>
 <variablelist>
@@ -279,7 +287,6 @@ See <ulink url="http://www.unicode.org/Public/UNIDATA/UnicodeData.html"
 <!-- ##### ENUM GUnicodeBreakType ##### -->
 <para>
 These are the possible line break classifications.
-GLib 2.8 supports Unicode 4.0, GLib 2.10 supports Unicode 4.1.
 The five Hangul types were added in Unicode 4.1, so, has been
 introduced in GLib 2.10.  Note that new types may be added in the future.
 Applications should be ready to handle unknown values.

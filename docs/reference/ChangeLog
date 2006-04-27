@@ -1,3 +1,8 @@
+2006-04-27  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/tmpl/unicode.sgml: Mention that GLib 2.12 will
+	support UCD 5.0.
+
 2006-04-21  Matthias Clasen  <mclasen@redhat.com>
 
 	* gobject/gobject-sections.txt:
