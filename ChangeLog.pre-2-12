@@ -1,9 +1,13 @@
+2006-04-28  Behdad Esfahbod  <behdad@gnome.org>
+
+	* glib/guniprop.c: #include <stdlib.h>
+
 2006-04-27  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/glib.symbols: Add g_unichar_iswide_cjk.
 	* glib/guniprop.c: Add a "Since: 2.12".
 
-        * NEWS: Updates
+	* NEWS: Updates
 
 2006-04-27  Behdad Esfahbod  <behdad@gnome.org>
 
