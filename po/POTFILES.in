@@ -1,3 +1,4 @@
+glib/gbookmarkfile.c
 glib/gconvert.c
 glib/gdir.c
 glib/gfileutils.c

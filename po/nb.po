@@ -8,13 +8,79 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.9.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-04-30 13:49+0200\n"
-"PO-Revision-Date: 2006-04-30 13:50+0200\n"
+"POT-Creation-Date: 2006-04-30 13:57+0200\n"
+"PO-Revision-Date: 2006-04-30 14:00+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian Bokmal <i18n-nb@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
+
+#: ../glib/gbookmarkfile.c:716 ../glib/gbookmarkfile.c:793
+#: ../glib/gbookmarkfile.c:872 ../glib/gbookmarkfile.c:919
+#, c-format
+msgid "Unexpected attribute '%s' for element '%s'"
+msgstr "Uventet attributt «%s» for element «%s»"
+
+#: ../glib/gbookmarkfile.c:727 ../glib/gbookmarkfile.c:804
+#: ../glib/gbookmarkfile.c:814 ../glib/gbookmarkfile.c:930
+#, c-format
+msgid "Attribute '%s' of element '%s' not found"
+msgstr "Attributt «%s» i element «%s» ble ikke funnet"
+
+#: ../glib/gbookmarkfile.c:1103 ../glib/gbookmarkfile.c:1168
+#: ../glib/gbookmarkfile.c:1232 ../glib/gbookmarkfile.c:1242
+#, c-format
+msgid "Unexpected tag '%s', tag '%s' expected"
+msgstr "Uventet tagg «%s», tagg «%s» forventet"
+
+#: ../glib/gbookmarkfile.c:1128 ../glib/gbookmarkfile.c:1142
+#: ../glib/gbookmarkfile.c:1210 ../glib/gbookmarkfile.c:1262
+#, c-format
+msgid "Unexpected tag '%s' inside '%s'"
+msgstr "Uventet tagg «%s» i «%s»"
+
+#: ../glib/gbookmarkfile.c:1792
+msgid "No valid bookmark file was be found in data dirs"
+msgstr "Ingen gyldig bokmerkefil ble funnet i datakatalogen"
+
+#: ../glib/gbookmarkfile.c:1993
+#, c-format
+msgid "A bookmark for URI '%s' already exists"
+msgstr "Et bokmerke eksisterer allerede for URI «%s»"
+
+#: ../glib/gbookmarkfile.c:2037 ../glib/gbookmarkfile.c:2192
+#: ../glib/gbookmarkfile.c:2277 ../glib/gbookmarkfile.c:2358
+#: ../glib/gbookmarkfile.c:2443 ../glib/gbookmarkfile.c:2526
+#: ../glib/gbookmarkfile.c:2604 ../glib/gbookmarkfile.c:2683
+#: ../glib/gbookmarkfile.c:2725 ../glib/gbookmarkfile.c:2822
+#: ../glib/gbookmarkfile.c:2945 ../glib/gbookmarkfile.c:3135
+#: ../glib/gbookmarkfile.c:3211 ../glib/gbookmarkfile.c:3363
+#: ../glib/gbookmarkfile.c:3428 ../glib/gbookmarkfile.c:3518
+#: ../glib/gbookmarkfile.c:3641
+#, c-format
+msgid "No bookmark found for URI '%s'"
+msgstr "Ingen bokmerker funnet for URI «%s»"
+
+#: ../glib/gbookmarkfile.c:2367
+#, c-format
+msgid "No MIME type defined in the bookmark for URI '%s'"
+msgstr "Ingen MIME-type definert i bokmerke for URI «%s»"
+
+#: ../glib/gbookmarkfile.c:2452
+#, c-format
+msgid "No private flag has been defined in bookmark for URI '%s'"
+msgstr "Ingen private flagg er definert i bokmerke for URI «%s»"
+
+#: ../glib/gbookmarkfile.c:2831
+#, c-format
+msgid "No groups set in bookmark for URI '%s'"
+msgstr "Ingen grupper satt i bokmerke for URI «%s»"
+
+#: ../glib/gbookmarkfile.c:3229 ../glib/gbookmarkfile.c:3373
+#, c-format
+msgid "No application with name '%s' registered a bookmark for '%s'"
+msgstr "Ingen program med navn «%s» har registrert et bokmerke for «%s»"
 
 #: ../glib/gconvert.c:404 ../glib/gconvert.c:482 ../glib/giochannel.c:1150
 #, c-format

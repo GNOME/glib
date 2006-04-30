@@ -1,5 +1,10 @@
 2006-04-30  Kjartan Maraas  <kmaraas@gnome.org>
 
+	* POTFILES.in: Add gbookmarkfile.c
+	* nb.po: Adjust accordingly.
+
+2006-04-30  Kjartan Maraas  <kmaraas@gnome.org>
+
 	* nb.po: Updated Norwegian bokmål translation.
 
 2006-04-23  Vincent van Adrighem  <adrighem@gnome.org>
