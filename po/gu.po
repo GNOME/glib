@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.gu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-04-19 06:11+0200\n"
-"PO-Revision-Date: 2006-04-19 12:17+0530\n"
+"POT-Creation-Date: 2006-05-01 22:31+0200\n"
+"PO-Revision-Date: 2006-05-02 08:15+0530\n"
 "Last-Translator: Ankit Patel <ankit644@yahoo.com>\n"
 "Language-Team: Gujarati <indianoss-gujarati@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -18,6 +18,73 @@ msgstr ""
 "\n"
 "\n"
 "\n"
+"\n"
+
+#: ../glib/gbookmarkfile.c:716 ../glib/gbookmarkfile.c:793
+#: ../glib/gbookmarkfile.c:872 ../glib/gbookmarkfile.c:919
+#, c-format
+msgid "Unexpected attribute '%s' for element '%s'"
+msgstr "ઘટક '%s' માટે અનિચ્છનીય લક્ષણ '%s'"
+
+#: ../glib/gbookmarkfile.c:727 ../glib/gbookmarkfile.c:804
+#: ../glib/gbookmarkfile.c:814 ../glib/gbookmarkfile.c:930
+#, c-format
+msgid "Attribute '%s' of element '%s' not found"
+msgstr "ઘટક '%s' નું લક્ષણ '%s' મળ્યું નહિં"
+
+#: ../glib/gbookmarkfile.c:1103 ../glib/gbookmarkfile.c:1168
+#: ../glib/gbookmarkfile.c:1232 ../glib/gbookmarkfile.c:1242
+#, c-format
+msgid "Unexpected tag '%s', tag '%s' expected"
+msgstr "અનિચ્છનીય ટેગ '%s', ટેગ '%s' ઈચ્છિત"
+
+#: ../glib/gbookmarkfile.c:1128 ../glib/gbookmarkfile.c:1142
+#: ../glib/gbookmarkfile.c:1210 ../glib/gbookmarkfile.c:1262
+#, c-format
+msgid "Unexpected tag '%s' inside '%s'"
+msgstr "અનિચ્છનીય ટેગ '%s' એ '%s' માં"
+
+#: ../glib/gbookmarkfile.c:1792
+msgid "No valid bookmark file was be found in data dirs"
+msgstr "માહિતી ડિરેક્ટરીઓમાં કોઈમાન્ય બુકમાર્ક ફાઈલ મળી ન હતી"
+
+#: ../glib/gbookmarkfile.c:1993
+#, c-format
+msgid "A bookmark for URI '%s' already exists"
+msgstr "URI '%s' માટેની બુકમાર્ક પહેલાથી જ હાજર છે"
+
+#: ../glib/gbookmarkfile.c:2037 ../glib/gbookmarkfile.c:2192
+#: ../glib/gbookmarkfile.c:2277 ../glib/gbookmarkfile.c:2358
+#: ../glib/gbookmarkfile.c:2443 ../glib/gbookmarkfile.c:2526
+#: ../glib/gbookmarkfile.c:2604 ../glib/gbookmarkfile.c:2683
+#: ../glib/gbookmarkfile.c:2725 ../glib/gbookmarkfile.c:2822
+#: ../glib/gbookmarkfile.c:2945 ../glib/gbookmarkfile.c:3135
+#: ../glib/gbookmarkfile.c:3211 ../glib/gbookmarkfile.c:3363
+#: ../glib/gbookmarkfile.c:3428 ../glib/gbookmarkfile.c:3518
+#: ../glib/gbookmarkfile.c:3641
+#, c-format
+msgid "No bookmark found for URI '%s'"
+msgstr "URI '%s' માટે કોઈ બુકમાર્ક મળી નહિં"
+
+#: ../glib/gbookmarkfile.c:2367
+#, c-format
+msgid "No MIME type defined in the bookmark for URI '%s'"
+msgstr "URI '%s' માટે બુકમાર્કમાં કોઈ MIME પ્રકાર વ્યાખ્યાયિત નથી"
+
+#: ../glib/gbookmarkfile.c:2452
+#, c-format
+msgid "No private flag has been defined in bookmark for URI '%s'"
+msgstr "URI '%s' માટે બુકમાર્કમાં કોઈ ખાનગી ફ્લેગ વ્યાખ્યાયિત થયેલ નથી"
+
+#: ../glib/gbookmarkfile.c:2831
+#, c-format
+msgid "No groups set in bookmark for URI '%s'"
+msgstr "URI '%s' માટે બુકમાર્કમાં કોઈ જૂથો સુયોજિત નથી"
+
+#: ../glib/gbookmarkfile.c:3229 ../glib/gbookmarkfile.c:3373
+#, c-format
+msgid "No application with name '%s' registered a bookmark for '%s'"
+msgstr "'%s' નામવાળા કોઈ કાર્યક્રમે '%s' માટે બુકમાર્ક રજીસ્ટર કરી નથી"
 
 #: ../glib/gconvert.c:404 ../glib/gconvert.c:482 ../glib/giochannel.c:1150
 #, c-format
@@ -631,7 +698,7 @@ msgid "Key file contains unsupported encoding '%s'"
 msgstr "કી ફાઈલ બિનઆધારભૂત અક્ષર સંગ્રહપદ્ધતિ '%s' સમાવે છે"
 
 #: ../glib/gkeyfile.c:1015 ../glib/gkeyfile.c:1174 ../glib/gkeyfile.c:2387
-#: ../glib/gkeyfile.c:2452 ../glib/gkeyfile.c:2571 ../glib/gkeyfile.c:2707
+#: ../glib/gkeyfile.c:2452 ../glib/gkeyfile.c:2571 ../glib/gkeyfile.c:2706
 #: ../glib/gkeyfile.c:2859 ../glib/gkeyfile.c:3035 ../glib/gkeyfile.c:3092
 #, c-format
 msgid "Key file does not have group '%s'"
@@ -666,31 +733,31 @@ msgstr ""
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "કી ફાઈલ પાસે કી '%s' એ જૂથ '%s' માં નથી"
 
-#: ../glib/gkeyfile.c:3279
+#: ../glib/gkeyfile.c:3276
 msgid "Key file contains escape character at end of line"
 msgstr "કી ફાઈલ એસ્કેપ અક્ષર વાક્યના અંતે સમાવે છે"
 
-#: ../glib/gkeyfile.c:3301
+#: ../glib/gkeyfile.c:3298
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "કી ફાઈલ અયોગ્ય એસ્કેપ ક્રમ '%s' સમાવે છે"
 
-#: ../glib/gkeyfile.c:3442
+#: ../glib/gkeyfile.c:3439
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "કિંમત '%s' નંબર તરીકે ઈન્ટરપ્રીટ કરી શકાતું નથી."
 
-#: ../glib/gkeyfile.c:3452
+#: ../glib/gkeyfile.c:3449
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "પૂર્ણાંક કિંમત '%s' એ મર્યાદાની બહાર છે"
 
-#: ../glib/gkeyfile.c:3480
+#: ../glib/gkeyfile.c:3477
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "કિંમત '%s' એ અપૂર્ણાંક સંખ્યા તરીકે ઈન્ટરપ્રીટ કરી શકાતું નથી."
 
-#: ../glib/gkeyfile.c:3500
+#: ../glib/gkeyfile.c:3497
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "કિંમત '%s' બુલિયન તરીકે ઈન્ટરપ્રીટ કરી શકાતું નથી."
