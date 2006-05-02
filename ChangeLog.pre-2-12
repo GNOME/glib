@@ -1,3 +1,9 @@
+Tue May  2 14:18:25 2006  Tim Janik  <timj@gtk.org>
+
+	* glib/goption.c (g_option_context_parse): fixed leak in short
+	option parsing. rewrote parts of the code to be more concise to
+	enhance readability. fixed exaggerated uses of strlen.
+
 2006-04-28  Behdad Esfahbod  <behdad@gnome.org>
 
 	* glib/guniprop.c: #include <stdlib.h>
