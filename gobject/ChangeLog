@@ -1,3 +1,9 @@
+Tue May  2 14:51:03 2006  Tim Janik  <timj@gtk.org>
+
+	* gtype.h: split up G_DEFINE_*TYPE macro definitions so C CODE arguments
+	are not passed on to nested macro calls. patch mostly courtesy of Behdad
+	Esfahbod, fixes #337128.
+
 2006-04-23  Matthias Clasen  <mclasen@redhat.com>
 
 	* gobject.symbols: Fix a typo.
