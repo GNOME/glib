@@ -1,3 +1,8 @@
+2006-05-02  Matthias Clasen  <mclasen@redhat.com>
+
+	* gobject/tmpl/gtypemodule.sgml: Document a little
+	pitfall with the last unref for an object.
+
 2006-04-27  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/tmpl/unicode.sgml: Mention that GLib 2.12 will
