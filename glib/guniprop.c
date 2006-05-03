@@ -390,7 +390,7 @@ struct Interval
   gunichar start, end;
 };
 
-int
+static int
 interval_compare (const void *key, const void *elt)
 {
   gunichar c = GPOINTER_TO_UINT (key);

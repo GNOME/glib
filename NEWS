@@ -41,8 +41,8 @@ Overview of Changes from GLib 2.10.x to GLib 2.11.0
  339338 gbookmarkfile.c, function expand_exec_line
  339340 gbookmarkfile.c, function bookmark_app_info_dump
 
-* Translation updates (bg,en_GB,et,gl,gu,he,hi,ka,nl,nn,
-                       or,pt_BR,ro,tr,vi)
+* Translation updates (bg,en_GB,et,gl,gu,he,hi,ka,nb,nl,nn,
+                       or,pt_BR,ro,tr,vi,zh_CN)
 
 
 Overview of Changes from GLib 2.10.0 to GLib 2.10.1

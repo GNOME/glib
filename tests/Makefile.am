@@ -201,6 +201,9 @@ dist-hook: $(BUILT_EXTRA_DIST)
 	mkdir $(distdir)/collate;          \
 	for f in $(srcdir)/collate/* ; do  \
           if test -f $$f; then cp $$f $(distdir)/collate; fi; done
+	mkdir $(distdir)/bookmarks;          \
+	for f in $(srcdir)/bookmarks/* ; do  \
+	  cp $$f $(distdir)/bookmarks; done 
 
 DISTCLEANFILES = iochannel-test-outfile \
 		file-test-get-contents \

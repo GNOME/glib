@@ -112,6 +112,25 @@ length of the sleep.
 @microseconds: 
 
 
+<!-- ##### FUNCTION g_time_val_from_iso8601 ##### -->
+<para>
+
+</para>
+
+@iso_date: 
+@time_: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_time_val_to_iso8601 ##### -->
+<para>
+
+</para>
+
+@time_: 
+@Returns: 
+
+
 <!-- ##### STRUCT GDate ##### -->
 <para>
 Represents a day between January 1, Year 1 and a few thousand years in

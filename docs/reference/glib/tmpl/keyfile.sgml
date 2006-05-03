@@ -329,6 +329,18 @@ Flags which influence the parsing.
 @Returns: 
 
 
+<!-- ##### FUNCTION g_key_file_get_double ##### -->
+<para>
+
+</para>
+
+@key_file: 
+@group_name: 
+@key: 
+@error: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_key_file_get_string_list ##### -->
 <para>
 
@@ -370,6 +382,19 @@ Flags which influence the parsing.
 
 
 <!-- ##### FUNCTION g_key_file_get_integer_list ##### -->
+<para>
+
+</para>
+
+@key_file: 
+@group_name: 
+@key: 
+@length: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_key_file_get_double_list ##### -->
 <para>
 
 </para>
@@ -437,8 +462,6 @@ Flags which influence the parsing.
 @group_name: 
 @key: 
 @value: 
-<!-- # Unused Parameters # -->
-@boolean: 
 
 
 <!-- ##### FUNCTION g_key_file_set_integer ##### -->
@@ -450,8 +473,17 @@ Flags which influence the parsing.
 @group_name: 
 @key: 
 @value: 
-<!-- # Unused Parameters # -->
-@integer: 
+
+
+<!-- ##### FUNCTION g_key_file_set_double ##### -->
+<para>
+
+</para>
+
+@key_file: 
+@group_name: 
+@key: 
+@value: 
 
 
 <!-- ##### FUNCTION g_key_file_set_string_list ##### -->
@@ -492,6 +524,18 @@ Flags which influence the parsing.
 
 
 <!-- ##### FUNCTION g_key_file_set_integer_list ##### -->
+<para>
+
+</para>
+
+@key_file: 
+@group_name: 
+@key: 
+@list: 
+@length: 
+
+
+<!-- ##### FUNCTION g_key_file_set_double_list ##### -->
 <para>
 
 </para>

@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLIB\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-03-07 13:10-0500\n"
+"POT-Creation-Date: 2006-05-02 21:05-0400\n"
 "PO-Revision-Date: 2004-12-13 20:16+0100\n"
 "Last-Translator: రమణ సాయి <rmn_sai@yahoo.com>\n"
 "Language-Team: Free Software Foundation, Andhra Pradesh <fsfap@gnu.org.in>\n"
@@ -18,71 +18,138 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: glib/gconvert.c:408 glib/gconvert.c:486 glib/giochannel.c:1150
+#: glib/gbookmarkfile.c:716 glib/gbookmarkfile.c:793 glib/gbookmarkfile.c:872
+#: glib/gbookmarkfile.c:919
+#, fuzzy, c-format
+msgid "Unexpected attribute '%s' for element '%s'"
+msgstr "బేసి అక్షరము '%s', ఊహించిన '=' తర్వాత '%s'  ఆపాదించు నామం '%s' మూలకం "
+
+#: glib/gbookmarkfile.c:727 glib/gbookmarkfile.c:804 glib/gbookmarkfile.c:814
+#: glib/gbookmarkfile.c:930
+#, c-format
+msgid "Attribute '%s' of element '%s' not found"
+msgstr ""
+
+#: glib/gbookmarkfile.c:1103 glib/gbookmarkfile.c:1168
+#: glib/gbookmarkfile.c:1232 glib/gbookmarkfile.c:1242
+#, c-format
+msgid "Unexpected tag '%s', tag '%s' expected"
+msgstr ""
+
+#: glib/gbookmarkfile.c:1128 glib/gbookmarkfile.c:1142
+#: glib/gbookmarkfile.c:1210 glib/gbookmarkfile.c:1262
+#, c-format
+msgid "Unexpected tag '%s' inside '%s'"
+msgstr ""
+
+#: glib/gbookmarkfile.c:1792
+#, fuzzy, c-format
+msgid "No valid bookmark file was be found in data dirs"
+msgstr " సరియైన మీటదస్త్రం దత్తాంశవివరణలో లభించలేదు  "
+
+#: glib/gbookmarkfile.c:1993
+#, c-format
+msgid "A bookmark for URI '%s' already exists"
+msgstr ""
+
+#: glib/gbookmarkfile.c:2037 glib/gbookmarkfile.c:2192
+#: glib/gbookmarkfile.c:2277 glib/gbookmarkfile.c:2358
+#: glib/gbookmarkfile.c:2443 glib/gbookmarkfile.c:2526
+#: glib/gbookmarkfile.c:2604 glib/gbookmarkfile.c:2683
+#: glib/gbookmarkfile.c:2725 glib/gbookmarkfile.c:2822
+#: glib/gbookmarkfile.c:2945 glib/gbookmarkfile.c:3135
+#: glib/gbookmarkfile.c:3211 glib/gbookmarkfile.c:3363
+#: glib/gbookmarkfile.c:3428 glib/gbookmarkfile.c:3518
+#: glib/gbookmarkfile.c:3641
+#, c-format
+msgid "No bookmark found for URI '%s'"
+msgstr ""
+
+#: glib/gbookmarkfile.c:2367
+#, c-format
+msgid "No MIME type defined in the bookmark for URI '%s'"
+msgstr ""
+
+#: glib/gbookmarkfile.c:2452
+#, c-format
+msgid "No private flag has been defined in bookmark for URI '%s'"
+msgstr ""
+
+#: glib/gbookmarkfile.c:2831
+#, c-format
+msgid "No groups set in bookmark for URI '%s'"
+msgstr ""
+
+#: glib/gbookmarkfile.c:3229 glib/gbookmarkfile.c:3373
+#, c-format
+msgid "No application with name '%s' registered a bookmark for '%s'"
+msgstr ""
+
+#: glib/gconvert.c:404 glib/gconvert.c:482 glib/giochannel.c:1150
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "అక్షరమాలలొ కల '%s' నుండి '%s'  కు పరివర్తించడానికి  సహకరించదు"
 
-#: glib/gconvert.c:412 glib/gconvert.c:490
+#: glib/gconvert.c:408 glib/gconvert.c:486
 #, c-format
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "'%s' నుండి  '%s' కు పరివర్తించడం సాధ్యం కాదు "
 
-#: glib/gconvert.c:606 glib/gconvert.c:995 glib/giochannel.c:1322
+#: glib/gconvert.c:602 glib/gconvert.c:991 glib/giochannel.c:1322
 #: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:943
 #: glib/gutf8.c:1392
 #, c-format
 msgid "Invalid byte sequence in conversion input"
 msgstr "ఎగుబడి బైట్ క్రమంను పరివర్తించుట నిస్సారమగును"
 
-#: glib/gconvert.c:612 glib/gconvert.c:922 glib/giochannel.c:1329
+#: glib/gconvert.c:608 glib/gconvert.c:918 glib/giochannel.c:1329
 #: glib/giochannel.c:2218
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "పరివర్తనం నందు దోషం కలదు: %s"
 
-#: glib/gconvert.c:647 glib/gutf8.c:939 glib/gutf8.c:1143 glib/gutf8.c:1284
+#: glib/gconvert.c:643 glib/gutf8.c:939 glib/gutf8.c:1143 glib/gutf8.c:1284
 #: glib/gutf8.c:1388
 #, c-format
 msgid "Partial character sequence at end of input"
 msgstr "చివరి ఎగుబడి నందు పాక్షికముగా అక్షర క్రమము కలదు."
 
-#: glib/gconvert.c:897
+#: glib/gconvert.c:893
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "ఫాల్ బ్యాక్ '%s' ను  '%s'"
 
-#: glib/gconvert.c:1706
+#: glib/gconvert.c:1702
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "\"దస్త్రం\" యోచనను ఉపయోగించిన యుఆర్ఐ '%s' సంపూర్ణమైన యుఆర్ఐ కాదు"
 
-#: glib/gconvert.c:1716
+#: glib/gconvert.c:1712
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "స్థానిక యుఆర్ఐ '%s'   '#' ను కలుపుకొనియండలెదు  "
 
-#: glib/gconvert.c:1733
+#: glib/gconvert.c:1729
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr " '%s' యుఆర్ఐ నిస్సారము"
 
-#: glib/gconvert.c:1745
+#: glib/gconvert.c:1741
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "ఆతిథ్య నామం యొక్క యుఆర్ఐ '%s' నిస్సారము"
 
-#: glib/gconvert.c:1761
+#: glib/gconvert.c:1757
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "యుఆర్ఐ '%s' నిస్సారమైన ఎస్కేప్ అక్షరాలు కలిగియున్నాయి."
 
-#: glib/gconvert.c:1855
+#: glib/gconvert.c:1852
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr " '%s' త్రోవ నామం సరిఐనది కాదు."
 
-#: glib/gconvert.c:1865
+#: glib/gconvert.c:1862
 #, c-format
 msgid "Invalid hostname"
 msgstr "నిస్సారమైన ఆతిథ్య నామము"
@@ -92,82 +159,82 @@ msgstr "నిస్సారమైన ఆతిథ్య నామము"
 msgid "Error opening directory '%s': %s"
 msgstr " వివరణ తెరచుటలో దోషం '%s': %s"
 
-#: glib/gfileutils.c:576 glib/gfileutils.c:649
+#: glib/gfileutils.c:572 glib/gfileutils.c:645
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "%lu బైట్లని దస్త్రం  \"%s\" చదువుటకు ఇవ్వలేము"
 
-#: glib/gfileutils.c:591
+#: glib/gfileutils.c:587
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "దస్త్రం '%s': %s చదువుటలో దోషం"
 
-#: glib/gfileutils.c:673
+#: glib/gfileutils.c:669
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr " దస్త్రం '%s': %s నుండి చదువుటలో విఫలమైనారు"
 
-#: glib/gfileutils.c:724 glib/gfileutils.c:811
+#: glib/gfileutils.c:720 glib/gfileutils.c:807
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr " దస్త్రం '%s': %s తెరుచుటలో విఫలమైనారు"
 
-#: glib/gfileutils.c:741 glib/gmappedfile.c:133
+#: glib/gfileutils.c:737 glib/gmappedfile.c:133
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "దస్త్ర ఆపాదనలు విఫలమగును '%s': ఎఫ్ స్టాట్() విఫలమైనది: %s"
 
-#: glib/gfileutils.c:775
+#: glib/gfileutils.c:771
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "దస్త్రం '%s' తెరుచుటలో విఫలమైనారు: ఎఫ్ డిఓపన్()  విఫలమైనది: %s"
 
-#: glib/gfileutils.c:909
+#: glib/gfileutils.c:905
 #, fuzzy, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "దస్త్రం '%s' తెరుచుటలో విఫలమైనారు: ఎఫ్ డిఓపన్()  విఫలమైనది: %s"
 
-#: glib/gfileutils.c:950 glib/gfileutils.c:1415
+#: glib/gfileutils.c:946 glib/gfileutils.c:1411
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr " '%s' దస్త్రమును సృష్టించుటలో విఫలమయినావు. :%s"
 
-#: glib/gfileutils.c:964
+#: glib/gfileutils.c:960
 #, fuzzy, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr "దస్త్రం '%s' తెరుచుటలో విఫలమైనారు: ఎఫ్ డిఓపన్()  విఫలమైనది: %s"
 
-#: glib/gfileutils.c:989
+#: glib/gfileutils.c:985
 #, fuzzy, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "దస్త్రం '%s' తెరుచుటలో విఫలమైనారు: ఎఫ్ డిఓపన్()  విఫలమైనది: %s"
 
-#: glib/gfileutils.c:1008
+#: glib/gfileutils.c:1004
 #, fuzzy, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "దస్త్రం '%s' తెరుచుటలో విఫలమైనారు: ఎఫ్ డిఓపన్()  విఫలమైనది: %s"
 
-#: glib/gfileutils.c:1126
+#: glib/gfileutils.c:1122
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr ""
 
-#: glib/gfileutils.c:1376
+#: glib/gfileutils.c:1372
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr " '%s' మాదిరి,  '%s' కలిగియుండలెదు. "
 
-#: glib/gfileutils.c:1390
+#: glib/gfileutils.c:1386
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr " '%s' మాదిరి XXXXXX అంతం అవలేదు. "
 
-#: glib/gfileutils.c:1865
+#: glib/gfileutils.c:1861
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr " '%s'  చిహ్న పూరితజోడి చదువుటలో విఫలమయినావు : %s"
 
-#: glib/gfileutils.c:1886
+#: glib/gfileutils.c:1882
 #, c-format
 msgid "Symbolic links not supported"
 msgstr "చిహ్న పూరితజోడి సహకరించలెదు. "
@@ -207,22 +274,22 @@ msgstr "దస్త్రం '%s' తెరుచుటలో విఫలమ�
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "దస్త్రం '%s' తెరుచుటలో విఫలమైనారు: ఎఫ్ డిఓపన్()  విఫలమైనది: %s"
 
-#: glib/gmarkup.c:232
+#: glib/gmarkup.c:227
 #, c-format
 msgid "Error on line %d char %d: %s"
 msgstr " %d క్యార్ %d వరుసలో దోషం కలదు  : %s"
 
-#: glib/gmarkup.c:330
+#: glib/gmarkup.c:325
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "%d  వరుసలో దోషం కలదు : %s"
 
-#: glib/gmarkup.c:434
+#: glib/gmarkup.c:429
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr " ఖాశి వ్యష్టి '&;' చూడబడినది;  వర్తించు వ్యష్టిలు: &amp; &quot; &lt; &gt; &apos;"
 
-#: glib/gmarkup.c:444
+#: glib/gmarkup.c:439
 #, c-format
 msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
@@ -232,17 +299,17 @@ msgstr ""
 "  వ్యష్టినామముతో ప్రారంభమగు అక్షరము '%s' నిస్సారము; వ్యష్టి & అక్షరముతో ప్రారంభమగును;వ్యష్టి "
 "ప్రారంబమగును; ఒక వేశ ఆంపర్సండ్ ఊహించిన విధంగా వ్యష్టి కాకపోతే , ఎస్కేప్it as &amp;"
 
-#: glib/gmarkup.c:478
+#: glib/gmarkup.c:473
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
 msgstr " వ్యష్టినామంలో అక్షరము '%s' నిస్సారము "
 
-#: glib/gmarkup.c:515
+#: glib/gmarkup.c:510
 #, c-format
 msgid "Entity name '%s' is not known"
 msgstr " '%s' వ్యష్టి నామం తెలియదు "
 
-#: glib/gmarkup.c:526
+#: glib/gmarkup.c:521
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
@@ -250,7 +317,7 @@ msgstr ""
 " వ్యష్టి సెమికోలన్ తో పూర్తవలేదు; దాదాపుగా యాంపర్ సెండ్ ఉపయెగించవలెను  అక్షరము దాదాపుగా  -' ఎస్కేప్ "
 "యంపర్ సెండ్ యాజ్ &యాంప్;' తో ప్రారంభమవలేదు. "
 
-#: glib/gmarkup.c:579
+#: glib/gmarkup.c:574
 #, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
@@ -259,16 +326,16 @@ msgstr ""
 "అక్షరములో అంకె కలిగియున్నందువలన '%-.*s', పార్సింగ్ విఫలమైనది.దాదాపుగా అంక్య భారీగా ఉన్నది -నివేదన "
 "(ఉదాహరణకు : &#234; )"
 
-#: glib/gmarkup.c:604
+#: glib/gmarkup.c:599
 #, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
 msgstr "అక్షర నివేదన '%-.*s' అనుమతించబడిన అక్షరము ఎన్ కోడ్ అవ్వదు."
 
-#: glib/gmarkup.c:619
+#: glib/gmarkup.c:614
 msgid "Empty character reference; should include a digit such as &#454;"
 msgstr " ఖాళీ అక్షర నివేదన తప్పనిసరిగా &#454 ఈ సంఖ్యను కలుపుకొనవలెను"
 
-#: glib/gmarkup.c:629
+#: glib/gmarkup.c:624
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -277,23 +344,23 @@ msgstr ""
 "అక్షర నివేదన సెమికోలన్ తో ముగియలేదు; దాదాపుగా యిది ఉపయెగించండి యాంపర్ సెండ్ అక్షరం తో ప్రారంభమవరాదు - "
 "ఎస్సేప్ యాంపర్ సెండ్ యాజ్ &యాంప్ "
 
-#: glib/gmarkup.c:715
+#: glib/gmarkup.c:710
 msgid "Unfinished entity reference"
 msgstr " పూర్తికాని వ్యష్టినివెదన  "
 
-#: glib/gmarkup.c:721
+#: glib/gmarkup.c:716
 msgid "Unfinished character reference"
 msgstr " అక్షర నివేదన పూర్తికాలేదు "
 
-#: glib/gmarkup.c:964 glib/gmarkup.c:992 glib/gmarkup.c:1023
+#: glib/gmarkup.c:959 glib/gmarkup.c:987 glib/gmarkup.c:1018
 msgid "Invalid UTF-8 encoded text"
 msgstr "నిస్సారమైన యుటిఎఫ్-8 ఎన్ కోడెడ్ పాఠం"
 
-#: glib/gmarkup.c:1059
+#: glib/gmarkup.c:1054
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "పత్రం తప్పనిసరిగా ఒక మూలకంతో ప్రారంభమవలెను (ఉదా. <బుక్>)"
 
-#: glib/gmarkup.c:1099
+#: glib/gmarkup.c:1094
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -301,20 +368,20 @@ msgid ""
 msgstr ""
 "  '<' తో ప్రారంభమగు '%s' అనునది సరరిఐన అక్షరం కాదు ; యిది మూలక నామంతో ప్రారంభమవలేదు.  "
 
-#: glib/gmarkup.c:1163
+#: glib/gmarkup.c:1158
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
 "'%s'"
 msgstr "బేసి అక్షరము '%s', ఊహించిన '>' అక్షరము చివరి ప్రారంభ బొందు మూతకం '%s'"
 
-#: glib/gmarkup.c:1252
+#: glib/gmarkup.c:1247
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr "బేసి అక్షరము '%s', ఊహించిన '=' తర్వాత '%s'  ఆపాదించు నామం '%s' మూలకం "
 
-#: glib/gmarkup.c:1294
+#: glib/gmarkup.c:1289
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -324,7 +391,7 @@ msgstr ""
 "'%s' ఊహించిన బేసి అక్షరము '>' లేక '/' చివరి ర్రంభ బొందు అక్షరము మాలకం %sలేక ఇచ్చాపూర్వక "
 "ఆపాదన; దాదాపుగా ఆపాదన నామంలో అనర్హమైన అక్షరం ఉపమెగించినావు"
 
-#: glib/gmarkup.c:1383
+#: glib/gmarkup.c:1378
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -332,14 +399,14 @@ msgid ""
 msgstr ""
 "బేసి అక్షరము '%s', ఊహించిన తెరచిన క్వోట్ చిహ్నం తరాత ఇచ్చిన ఆపాదన విలువ  '%s' మూతకము '%s'"
 
-#: glib/gmarkup.c:1528
+#: glib/gmarkup.c:1523
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 msgstr "  '</' వెంటనే ప్రారంభమగు '%s' నిసారమైన అక్షరము  ; '%s' తో మూలకనామం ప్రారంభమవరాదు "
 
-#: glib/gmarkup.c:1568
+#: glib/gmarkup.c:1563
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -348,26 +415,26 @@ msgstr ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 
-#: glib/gmarkup.c:1579
+#: glib/gmarkup.c:1574
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr " '%s' మూలకం మూయబడినది, ప్రస్ధుతం ఏ మూలకము తెరచియుండలెదు "
 
 # ../glib/gmarkup.c:1588
-#: glib/gmarkup.c:1588
+#: glib/gmarkup.c:1583
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "'%s' మూలకం మూయబడినది, కాని ప్రస్ధుతం తెరువ బడిన మూలకం '%s'"
 
-#: glib/gmarkup.c:1735
+#: glib/gmarkup.c:1730
 msgid "Document was empty or contained only whitespace"
 msgstr " పత్రం ఖాలిగా ఉన్నది లేక ఒక వైట్ స్పేస్ కలిగి యున్నది.  "
 
-#: glib/gmarkup.c:1749
+#: glib/gmarkup.c:1744
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "పత్రం చివర కోణ కుండలీకరణము'<' వెంటనె అనవసరముగా ముగింపు అయినది"
 
-#: glib/gmarkup.c:1757 glib/gmarkup.c:1801
+#: glib/gmarkup.c:1752 glib/gmarkup.c:1796
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -375,7 +442,7 @@ msgid ""
 msgstr ""
 "మూలకములు ఇంకను తెరచియున్న పత్రం ఊహించని విధంగా అంతమైనది- '%s' చివరిది మూలకము తెరచబడినది"
 
-#: glib/gmarkup.c:1765
+#: glib/gmarkup.c:1760
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -383,19 +450,19 @@ msgid ""
 msgstr ""
 "పత్రం ఊహించని విధంగా అంతమైనది,మూసిన కోణకుండశికరణం అంతము చూచుటకు ఊహించబడినది బొందు <%s/>"
 
-#: glib/gmarkup.c:1771
+#: glib/gmarkup.c:1766
 msgid "Document ended unexpectedly inside an element name"
 msgstr " పత్రం చివర ఊహించని మూలకనామం కలదు "
 
-#: glib/gmarkup.c:1776
+#: glib/gmarkup.c:1771
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "పత్రం చివర ఊహించని ఆపాదననామం కలదు"
 
-#: glib/gmarkup.c:1781
+#: glib/gmarkup.c:1776
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "పత్రం చివర ఊహించని తెరచిన బొందు కలదు."
 
-#: glib/gmarkup.c:1787
+#: glib/gmarkup.c:1782
 #, fuzzy
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
@@ -403,144 +470,144 @@ msgid ""
 msgstr ""
 " '=' చిహ్నము తర్వాత క్రింద కనబరిచిన ఆపాదన పాఠం చివర ఊహించకుండా ఉన్నది. నామం; ఆపాదన విలువ లేదు."
 
-#: glib/gmarkup.c:1794
+#: glib/gmarkup.c:1789
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr " లోపల ఆపాదన విలువ ఉన్నపుడు పాఠం ఊహించకుండా ముగింపు అయినది "
 
-#: glib/gmarkup.c:1809
+#: glib/gmarkup.c:1804
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr " '%s'మూలకము యోక్క మూసిన బొందు ఊహించకుండా పాఠం ముగింపు అయినది "
 
-#: glib/gmarkup.c:1815
+#: glib/gmarkup.c:1810
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr " లోపల వ్యాఖ్య క్రమగతి ఆదేశం ఉండగా ఊహించకుండా పాఠం ముగింపు  అయినది "
 
-#: glib/gshell.c:73
+#: glib/gshell.c:70
 #, c-format
 msgid "Quoted text doesn't begin with a quotation mark"
 msgstr "కోటెడ్ పాఠం కొటేషన్ చిహ్నంతో ప్రారంభవరాదు"
 
-#: glib/gshell.c:163
+#: glib/gshell.c:160
 #, c-format
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr " కమాండ్ లైన్ లేద షల్_కోటెడ్ పాఠం లో సామ్యంలేని కొటేషన్ చిహ్నం కలదు "
 
-#: glib/gshell.c:541
+#: glib/gshell.c:538
 #, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
 msgstr "పాఠం '\\' అక్షరము వెంటనె ముగింపు అయినది. (ఈ పాఠము '%s')"
 
-#: glib/gshell.c:548
+#: glib/gshell.c:545
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr "సామ్యమైన కొటేషన్ చిహ్నం %c లభించకముందె పాఠం ముగింపు అయినది . (ఈ పాఠము'%s')"
 
-#: glib/gshell.c:560
+#: glib/gshell.c:557
 #, c-format
 msgid "Text was empty (or contained only whitespace)"
 msgstr "పాఠం ఏమి లేదు (లేక ఒక వైట్ స్పేస్ కలదు)"
 
-#: glib/gspawn-win32.c:276
+#: glib/gspawn-win32.c:273
 #, c-format
 msgid "Failed to read data from child process"
 msgstr " శిశు కార్యం నుండి చదువుటలో విఫలమయినావు "
 
-#: glib/gspawn-win32.c:291 glib/gspawn.c:1364
+#: glib/gspawn-win32.c:288 glib/gspawn.c:1361
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr " (%s) శిశు కార్యం తో తెలియచేయుటకు పైప్ ను సృష్టించుటలో విఫలమైనావు "
 
-#: glib/gspawn-win32.c:329 glib/gspawn.c:1028
+#: glib/gspawn-win32.c:326 glib/gspawn.c:1025
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr " శిశు పైప్ నుండి చదువుటలో విఫలమయినావు(%s)"
 
-#: glib/gspawn-win32.c:355 glib/gspawn.c:1233
+#: glib/gspawn-win32.c:352 glib/gspawn.c:1230
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr " '%s' (%s) వివరణ మార్చుటలో విఫలమయినావు  "
 
-#: glib/gspawn-win32.c:361 glib/gspawn-win32.c:581
+#: glib/gspawn-win32.c:358 glib/gspawn-win32.c:578
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "(%s) శిశు కార్యం నిర్వర్తించుటలో విఫలమయినావు  "
 
-#: glib/gspawn-win32.c:471 glib/gspawn-win32.c:527
+#: glib/gspawn-win32.c:468 glib/gspawn-win32.c:524
 #, fuzzy, c-format
 msgid "Invalid program name: %s"
 msgstr "నిస్సారమైన ఆతిథ్య నామము"
 
-#: glib/gspawn-win32.c:481 glib/gspawn-win32.c:537 glib/gspawn-win32.c:780
-#: glib/gspawn-win32.c:835 glib/gspawn-win32.c:1370
+#: glib/gspawn-win32.c:478 glib/gspawn-win32.c:534 glib/gspawn-win32.c:777
+#: glib/gspawn-win32.c:832 glib/gspawn-win32.c:1367
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr ""
 
-#: glib/gspawn-win32.c:492 glib/gspawn-win32.c:548 glib/gspawn-win32.c:794
-#: glib/gspawn-win32.c:848 glib/gspawn-win32.c:1403
+#: glib/gspawn-win32.c:489 glib/gspawn-win32.c:545 glib/gspawn-win32.c:791
+#: glib/gspawn-win32.c:845 glib/gspawn-win32.c:1400
 #, fuzzy, c-format
 msgid "Invalid string in environment: %s"
 msgstr "పరివర్తన ఎగుబడి వరుస నిస్సారము "
 
-#: glib/gspawn-win32.c:776 glib/gspawn-win32.c:831 glib/gspawn-win32.c:1351
+#: glib/gspawn-win32.c:773 glib/gspawn-win32.c:828 glib/gspawn-win32.c:1348
 #, fuzzy, c-format
 msgid "Invalid working directory: %s"
 msgstr " వివరణ తెరచుటలో దోషం '%s': %s"
 
-#: glib/gspawn-win32.c:890
+#: glib/gspawn-win32.c:887
 #, fuzzy, c-format
 msgid "Failed to execute helper program (%s)"
 msgstr " సహాయ కార్యక్రమం నిర్వర్తించుటలో విఫలమయినావు "
 
-#: glib/gspawn-win32.c:1090
+#: glib/gspawn-win32.c:1087
 #, c-format
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
 msgstr "  శిశు కార్యం నుండి జి_ఐఓ_ఛానెల్_విన్౩౨32_పోల్()  పాఠం ను చదువుటలో ఊహించని దోషం కలదు"
 
-#: glib/gspawn.c:168
+#: glib/gspawn.c:165
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "(%s) శిశు కార్యం నుండి వివరము చదువుటలో విఫలమయినావు "
 
-#: glib/gspawn.c:300
+#: glib/gspawn.c:297
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr " శిశు కార్యం (%s) నుండి పాఠం చదువుటలో సెలెక్ట్() లో ఊహించని దోషం కలదు.  "
 
-#: glib/gspawn.c:383
+#: glib/gspawn.c:380
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "వెయిట్ పిడ్() లో ఊహించని దోషం కలదు(%s)"
 
-#: glib/gspawn.c:1093
+#: glib/gspawn.c:1090
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "(%s) ఫోర్క్ విఫలమయినది  "
 
-#: glib/gspawn.c:1243
+#: glib/gspawn.c:1240
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr " \"%s\" శిశుకార్యం నిర్వర్తించుటలో విఫలమయినావు (%s)"
 
-#: glib/gspawn.c:1253
+#: glib/gspawn.c:1250
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "ఎగుబడికి రిడైరెక్ట్ చేయుటలో విఫలమైనది లేక శిశు కార్యం యొక్క దిగుబడి  (%s)"
 
-#: glib/gspawn.c:1262
+#: glib/gspawn.c:1259
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr " (%s) శిశుకార్యం యెక్క ఫోర్క్ విఫలమయినది "
 
-#: glib/gspawn.c:1270
+#: glib/gspawn.c:1267
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr " \"%s\" శిశుకార్యం నిర్వర్తించుటలో తెలియని ధోషం కలదు  "
 
-#: glib/gspawn.c:1292
+#: glib/gspawn.c:1289
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "శిశు పిడ్ పైప్ (%s) నుండి సరిపడునంత చదువుటలో విఫలమైనావు.  "
@@ -562,109 +629,119 @@ msgstr "పరివర్తన ఎగుబడి వరుస నిస్స
 msgid "Character out of range for UTF-16"
 msgstr "అక్షరము UTF-16 శ్రేణియందు లేదు"
 
-#: glib/goption.c:468
+#: glib/goption.c:480
 msgid "Usage:"
 msgstr "వినిమయం:"
 
-#: glib/goption.c:468
+#: glib/goption.c:480
 msgid "[OPTION...]"
 msgstr "[ఇచ్చాపూర్వరకం...]"
 
-#: glib/goption.c:556
+#: glib/goption.c:568
 msgid "Help Options:"
 msgstr "సహాయ ఇచ్ఛాపూర్వకాలు:"
 
-#: glib/goption.c:557
+#: glib/goption.c:569
 msgid "Show help options"
 msgstr "సహాయ ఇచ్ఛాపూర్వకాలను చూపించుట"
 
-#: glib/goption.c:562
+#: glib/goption.c:574
 msgid "Show all help options"
 msgstr "సహాయ ఇచ్ఛాపూర్వకాలన్నింటని చూపించుట"
 
-#: glib/goption.c:612
+#: glib/goption.c:624
 msgid "Application Options:"
 msgstr "కార్యక్షేత్ర ఇచ్ఛాపూర్వకాలు :"
 
-#: glib/goption.c:653
+#: glib/goption.c:665
 #, fuzzy, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "పూర్ణాంకం విలువ '%s' పార్స్ చేయలేదు --%s"
 
-#: glib/goption.c:663
+#: glib/goption.c:675
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr " పూర్ణాంకం విలువ '%s' లో విస్రృతి లో లేని %s "
 
-#: glib/goption.c:926
+#: glib/goption.c:700
+#, fuzzy, c-format
+msgid "Cannot parse double value '%s' for %s"
+msgstr "పూర్ణాంకం విలువ '%s' పార్స్ చేయలేదు --%s"
+
+#: glib/goption.c:708
+#, fuzzy, c-format
+msgid "Double value '%s' for %s out of range"
+msgstr " పూర్ణాంకం విలువ '%s' లో విస్రృతి లో లేని %s "
+
+#: glib/goption.c:993
 #, fuzzy, c-format
 msgid "Error parsing option %s"
 msgstr "పరివర్తనం నందు దోషం కలదు: %s"
 
-#: glib/goption.c:959 glib/goption.c:1070
+#: glib/goption.c:1024 glib/goption.c:1135
 #, c-format
 msgid "Missing argument for %s"
 msgstr ""
 
-#: glib/goption.c:1474
+#: glib/goption.c:1521
 #, c-format
 msgid "Unknown option %s"
 msgstr "తెలియని  ఇచ్ఛాపూర్వకము %s"
 
-#: glib/gkeyfile.c:339
+#: glib/gkeyfile.c:337
 #, c-format
 msgid "Valid key file could not be found in data dirs"
 msgstr " సరియైన మీటదస్త్రం దత్తాంశవివరణలో లభించలేదు  "
 
-#: glib/gkeyfile.c:374
+#: glib/gkeyfile.c:372
 #, c-format
 msgid "Not a regular file"
 msgstr "క్రమబద్దమైన దస్త్రం కాదు"
 
-#: glib/gkeyfile.c:382
+#: glib/gkeyfile.c:380
 #, c-format
 msgid "File is empty"
 msgstr " కాళీ దస్త్రం "
 
-#: glib/gkeyfile.c:697
+#: glib/gkeyfile.c:695
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr "ఏదైతే మీట-విలువలు , గ్రూప్ ,లేక వ్యాఖ్య కాదో అది మీట దస్త్రంలో లైన్ '%s' కలిగియున్నది"
 
-#: glib/gkeyfile.c:765
+#: glib/gkeyfile.c:763
 #, c-format
 msgid "Key file does not start with a group"
 msgstr " మీట దస్త్రం సముదాయంతో ప్రారంభమవలెదు.  "
 
-#: glib/gkeyfile.c:808
+#: glib/gkeyfile.c:806
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr " మీట దస్త్రం కలిగియున్న సంకేతరచన '%s' సహకరించదు "
 
-#: glib/gkeyfile.c:1017 glib/gkeyfile.c:1176 glib/gkeyfile.c:2177
-#: glib/gkeyfile.c:2242 glib/gkeyfile.c:2361 glib/gkeyfile.c:2497
-#: glib/gkeyfile.c:2649 glib/gkeyfile.c:2823 glib/gkeyfile.c:2880
+#: glib/gkeyfile.c:1015 glib/gkeyfile.c:1174 glib/gkeyfile.c:2387
+#: glib/gkeyfile.c:2452 glib/gkeyfile.c:2571 glib/gkeyfile.c:2706
+#: glib/gkeyfile.c:2859 glib/gkeyfile.c:3035 glib/gkeyfile.c:3092
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr " మీట దస్త్రం సముదాయం '%s' ను కలిగియుండలేదు "
 
-#: glib/gkeyfile.c:1188
+#: glib/gkeyfile.c:1186
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "మీట దస్త్రం '%s' తాళంను కలిగియుండలేదు. "
 
-#: glib/gkeyfile.c:1289 glib/gkeyfile.c:1398
+#: glib/gkeyfile.c:1287 glib/gkeyfile.c:1396
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "'%s' మీట దస్త్రం యొక్క మీటను కలిగియున్నది,దాని విలువ '%s' యుటిఫ్-8 "
 
-#: glib/gkeyfile.c:1307 glib/gkeyfile.c:1416 glib/gkeyfile.c:1788
+#: glib/gkeyfile.c:1305 glib/gkeyfile.c:1414 glib/gkeyfile.c:1786
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "'%s' మీట దస్త్రం యొక్క మీట ను కలిగియున్నది,దాని విలువను చదువుటకు సాధ్యపడదు."
 
-#: glib/gkeyfile.c:2004
+#: glib/gkeyfile.c:2002 glib/gkeyfile.c:2215
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -672,32 +749,37 @@ msgid ""
 msgstr ""
 "'%s' మీట దస్త్రం యొక్క మీట ను గ్రూప్ '%s' లో కలిగియున్నది,దాని విలువను చదువుటకు సాధ్యపడదు."
 
-#: glib/gkeyfile.c:2192 glib/gkeyfile.c:2376 glib/gkeyfile.c:2891
+#: glib/gkeyfile.c:2402 glib/gkeyfile.c:2586 glib/gkeyfile.c:3103
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "'%s' మీట దస్త్రం యొక్క మీట ను గ్రూప్ '%s' లో కలిగియుండలేదు "
 
-#: glib/gkeyfile.c:3067
+#: glib/gkeyfile.c:3276
 #, c-format
 msgid "Key file contains escape character at end of line"
 msgstr " మీట దస్త్రం గీత చివర ఎస్పేప్ అక్షరము కలదు"
 
-#: glib/gkeyfile.c:3089
+#: glib/gkeyfile.c:3298
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr " '%s' మీట దస్త్రం నిస్సారమైన ఎస్పేప్ వరుస కలదు "
 
-#: glib/gkeyfile.c:3230
+#: glib/gkeyfile.c:3439
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "'%s' విలువను సంఖ్య గా చదువుటకు సాధ్యపడదు."
 
-#: glib/gkeyfile.c:3240
+#: glib/gkeyfile.c:3449
 #, fuzzy, c-format
 msgid "Integer value '%s' out of range"
 msgstr " పూర్ణాంకం విలువ '%s' లో విస్రృతి లో లేని %s "
 
-#: glib/gkeyfile.c:3270
+#: glib/gkeyfile.c:3477
+#, fuzzy, c-format
+msgid "Value '%s' cannot be interpreted as a float number."
+msgstr "'%s' విలువను సంఖ్య గా చదువుటకు సాధ్యపడదు."
+
+#: glib/gkeyfile.c:3497
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "%s' విలువను బులియన్ గా చదువుటకు సాధ్యపడదు."

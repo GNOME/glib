@@ -1,4 +1,8 @@
 2006-05-02  Matthias Clasen  <mclasen@redhat.com>
+	
+	* === Released 2.11.0 ===
+
+2006-05-02  Matthias Clasen  <mclasen@redhat.com>
 
 	* gobject/tmpl/gtypemodule.sgml: Document a little
 	pitfall with the last unref for an object.

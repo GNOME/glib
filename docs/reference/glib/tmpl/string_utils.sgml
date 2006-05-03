@@ -547,8 +547,6 @@ possibly non-ASCII character in.
 @str: 
 @len: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@string: 
 
 
 <!-- ##### FUNCTION g_ascii_strdown ##### -->

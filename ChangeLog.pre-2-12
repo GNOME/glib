@@ -1,4 +1,15 @@
+2006-05-02  Matthias Clasen  <mclasen@redhat.com>
+	
+	* === Released 2.11.0 ===
+
+	* NEWS: Updates
+
+	* tests/casemap.txt: 
+	* tests/casefold.txt: Regenerate from Unicode 5.0 data. 
+
 Tue May  2 15:00:00 2006  Tim Janik  <timj@gtk.org>
+
+	* glib/guniprop.c: Make interval_compare static.
 
 	* tests/gobject/deftype.c: added test code from Behdad Esfahbod, 
 	see #337128.

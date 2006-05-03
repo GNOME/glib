@@ -240,7 +240,7 @@ A structure that provides information to the type system which is
 used specifically for managing interface types.
 </para>
 
-@interface_init: location of the interface initialization function 
+@interface_init: location of the interface initialization function
 @interface_finalize: location of the interface finalization function
 @interface_data: user-supplied data passed to the interface init/finalize functions
 
@@ -1627,13 +1627,19 @@ instance and class structure and the definitions of the instance and class
 init functions.
 </informalexample>
 
+@TN: 
+@t_n: 
+@T_P: 
+@_f_: 
+@_C_: 
+@Since: 2.4
+<!-- # Unused Parameters # -->
 @TypeName: The name of the new type, in Camel case.
 @type_name: The name of the new type, in lowercase, with words 
   separated by '_'.
 @TYPE_PARENT: The #GType of the parent type.
 @flags: #GTypeFlags to pass to g_type_register_static()
 @CODE: Custom code that gets inserted in the *_get_type() function.
-@Since: 2.4
 
 
 <!-- ##### MACRO G_TYPE_INVALID ##### -->

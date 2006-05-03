@@ -116,6 +116,8 @@ A convenience function/macro to log a normal message.
 
 @...: format string, followed by parameters to insert into the format string (as with printf())
 
+@...: 
+
 
 <!-- ##### MACRO g_warning ##### -->
 <para>
@@ -123,6 +125,8 @@ A convenience function/macro to log a warning message.
 </para>
 
 @...: format string, followed by parameters to insert into the format string (as with printf())
+
+@...: 
 
 
 <!-- ##### MACRO g_critical ##### -->
@@ -135,6 +139,8 @@ example.
 </para>
 
 @...: format string, followed by parameters to insert into the format string (as with printf())
+
+@...: 
 
 
 <!-- ##### MACRO g_error ##### -->
@@ -149,6 +155,8 @@ assertion failure.
 
 @...: format string, followed by parameters to insert into the format string (as with printf())
 
+@...: 
+
 
 <!-- ##### MACRO g_debug ##### -->
 <para>
@@ -156,6 +164,8 @@ A convenience function/macro to log a debug message.
 </para>
 
 @...: format string, followed by parameters to insert into the format string (as with printf())
+
+@...: 
 @Since: 2.6
 
 
