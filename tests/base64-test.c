@@ -11,13 +11,16 @@ static guchar data[DATA_SIZE];
 static void
 test_incremental (gboolean line_break)
 {
-  char text[DATA_SIZE * 2];
   char *p;
-  guchar data2[DATA_SIZE];
   int i;
   gsize len, decoded_len, max;
   int state, save;
   guint decoder_save;
+  char *text;
+  guchar *data2;
+
+  data2 = g_malloc (DATA_SIZE);
+  text = g_malloc (DATA_SIZE * 2);
 
   len = 0;
   state = 0;
@@ -65,6 +68,9 @@ test_incremental (gboolean line_break)
       g_print ("Wrong decoded base64 data\n");
       exit (1);
     }
+
+  g_free (text);
+  g_free (data2);
 }
 
 static void
@@ -90,6 +96,8 @@ test_full (void)
       g_print ("Wrong decoded base64 data\n");
       exit (1);
     }
+
+  g_free (data2);
 }
 
 int

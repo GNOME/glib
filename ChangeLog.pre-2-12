@@ -1,3 +1,13 @@
+2006-05-03  Matthias Clasen  <mclasen@redhat.com>
+
+	* tests/base64-test.c (test_incremental): Use malloced memory
+	instead of stack-allocated, so that MALLOC_CHECK_=2 catches
+	the OOB write...
+
+	* glib/gbookmarkfile.c (g_bookmark_file_load_from_data): Remove
+	an overzealous return_if_fail check that causes make check to 
+	fail.
+
 2006-05-02  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Bump version
