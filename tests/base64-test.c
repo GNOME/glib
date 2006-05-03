@@ -9,34 +9,39 @@
 static guchar data[DATA_SIZE];
 
 static void
-test_incremental (gboolean line_break)
+test_incremental (gboolean line_break, 
+		  gint     length)
 {
   char *p;
-  int i;
-  gsize len, decoded_len, max;
+  gsize len, decoded_len, max, input_len, block_size;
   int state, save;
   guint decoder_save;
   char *text;
   guchar *data2;
 
-  data2 = g_malloc (DATA_SIZE);
-  text = g_malloc (DATA_SIZE * 2);
+  data2 = g_malloc (length);
+  text = g_malloc (length * 2);
 
   len = 0;
   state = 0;
   save = 0;
-  for (i = 0; i < NUM_BLOCKS; i++)
-    len += g_base64_encode_step (data + i * BLOCK_SIZE, BLOCK_SIZE,
-				 line_break, text + len, &state, &save);
+  input_len = 0;
+  while (input_len < length)
+    {
+      block_size = MIN (BLOCK_SIZE, length - input_len);
+      len += g_base64_encode_step (data + input_len, block_size,
+				   line_break, text + len, &state, &save);
+      input_len += block_size;
+    }
   len += g_base64_encode_close (line_break, text + len, &state, &save);
 
   if (line_break)
-    max = DATA_SIZE * 4 / 3 + DATA_SIZE * 4 / (3 * 72) + 7;
+    max = length * 4 / 3 + length * 4 / (3 * 72) + 7;
   else
-    max = DATA_SIZE * 4 / 3 + 6;
+    max = length * 4 / 3 + 6;
   if (len > max)
     {
-      g_print ("To long encoded length: got %d, expected max %d\n",
+      g_print ("Too long encoded length: got %d, expected max %d\n",
 	       len, max);
       exit (1);
     }
@@ -47,7 +52,7 @@ test_incremental (gboolean line_break)
   p = text;
   while (len > 0)
     {
-      int chunk_len = MAX (32, len);
+      int chunk_len = MIN (BLOCK_SIZE, len);
       decoded_len += g_base64_decode_step (p, 
 					   chunk_len, 
 					   data2 + decoded_len,
@@ -55,15 +60,15 @@ test_incremental (gboolean line_break)
       p += chunk_len;
       len -= chunk_len;
     }
-  
-  if (decoded_len != DATA_SIZE)
+ 
+  if (decoded_len != length)
     {
       g_print ("Wrong decoded length: got %d, expected %d\n",
-	       decoded_len, DATA_SIZE);
+	       decoded_len, length);
       exit (1);
     }
 
-  if (memcmp (data, data2, DATA_SIZE) != 0)
+  if (memcmp (data, data2, length) != 0)
     {
       g_print ("Wrong decoded base64 data\n");
       exit (1);
@@ -108,8 +113,15 @@ main (int argc, char *argv[])
     data[i] = (guchar)i;
 
   test_full ();
-  test_incremental (FALSE);
-  test_incremental (TRUE);
-  
+
+  test_incremental (FALSE, DATA_SIZE);
+  test_incremental (TRUE, DATA_SIZE);
+
+  test_incremental (FALSE, DATA_SIZE - 1);
+  test_incremental (TRUE, DATA_SIZE - 1);
+
+  test_incremental (FALSE, DATA_SIZE - 2);
+  test_incremental (TRUE, DATA_SIZE - 2);
+
   return 0;
 }

@@ -1,5 +1,11 @@
 2006-05-03  Matthias Clasen  <mclasen@redhat.com>
 
+	* tests/base64-test.c: Add some more tests.
+
+	* glib/gbase64.c (g_base64_decode_step): Avoid writing
+	beyond the guaranteed lenght of the output buffer, if
+	there is padding.
+
 	* tests/base64-test.c (test_incremental): Use malloced memory
 	instead of stack-allocated, so that MALLOC_CHECK_=2 catches
 	the OOB write...
