@@ -443,7 +443,7 @@ g_thread_exit_win32_impl (void)
 	  }
       } while (some_data_non_null);
 
-      g_free (array);
+      free (array);
 
       win32_check_for_error (TlsSetValue (g_private_tls, NULL));
     }
