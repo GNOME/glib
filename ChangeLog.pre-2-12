@@ -1,3 +1,8 @@
+2006-05-04  Alexander Larsson  <alexl@redhat.com>
+
+	* glib/gbase64.c: (g_base64_decode_step):
+	Fix OOB write (#340538)
+
 2006-05-03  Matthias Clasen  <mclasen@redhat.com>
 
 	* tests/base64-test.c: Add some more tests.

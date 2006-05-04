@@ -280,7 +280,8 @@ g_base64_decode_step (const gchar  *in,
   const guchar *inptr;
   guchar *outptr;
   const guchar *inend;
-  guchar c;
+  guchar c, rank;
+  guchar last[2];
   unsigned int v;
   int i;
   
@@ -291,18 +292,24 @@ g_base64_decode_step (const gchar  *in,
   v=*save;
   i=*state;
   inptr = (const guchar *)in;
+  last[0] = last[1] = 0;
   while (inptr < inend)
     {
-      c = mime_base64_rank [*inptr++];
-      if (c != 0xff)
+      c = *inptr++;
+      rank = mime_base64_rank [c];
+      if (rank != 0xff)
 	{
-	  v = (v<<6) | c;
+	  last[1] = last[0];
+	  last[0] = c;
+	  v = (v<<6) | rank;
 	  i++;
 	  if (i==4)
 	    {
 	      *outptr++ = v>>16;
-	      *outptr++ = v>>8;
-	      *outptr++ = v;
+	      if (last[1] != '=')
+		*outptr++ = v>>8;
+	      if (last[0] != '=')
+		*outptr++ = v;
 	      i=0;
 	    }
 	}
@@ -311,21 +318,6 @@ g_base64_decode_step (const gchar  *in,
   *save = v;
   *state = i;
   
-  /* quick scan back for '=' on the end somewhere */
-  /* fortunately we can drop 1 output char for each trailing = (upto 2) */
-  i=2;
-  while (inptr > (const guchar *)in && i)
-    {
-      inptr--;
-      if (mime_base64_rank [*inptr] != 0xff)
-	{
-	  if (*inptr == '=')
-	    outptr--;
-	  i--;
-	}
-    }
-
-  /* if i!= 0 then there is a truncation error! */
   return outptr - out;
 }
 
