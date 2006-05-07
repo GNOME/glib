@@ -1448,8 +1448,8 @@ g_key_file_get_string_list (GKeyFile     *key_file,
  * If @key cannot be found then it is created.  If @group_name 
  * cannot be found then it is created.
  *
- * Since: 2.6
- **/
+ * Since: 2.6 
+ */
 void
 g_key_file_set_string_list (GKeyFile            *key_file,
 			    const gchar         *group_name,
@@ -1466,7 +1466,7 @@ g_key_file_set_string_list (GKeyFile            *key_file,
   g_return_if_fail (list != NULL);
 
   value_list = g_string_sized_new (length * 128);
-  for (i = 0; list[i] != NULL && i < length; i++)
+  for (i = 0; i < length && list[i] != NULL; i++)
     {
       gchar *value;
 
@@ -1714,7 +1714,7 @@ g_key_file_set_locale_string_list (GKeyFile            *key_file,
   g_return_if_fail (length != 0);
 
   value_list = g_string_sized_new (length * 128);
-  for (i = 0; list[i] != NULL && i < length; i++)
+  for (i = 0; i < length && list[i] != NULL; i++)
     {
       gchar *value;
       
