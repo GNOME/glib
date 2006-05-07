@@ -1,3 +1,9 @@
+2006-05-06  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gkeyfile.c (g_key_file_set_string_list)
+	(g_key_file_set_locale_string_list): Fix invalid memory
+	reads.  (#340816, Nick Treleaven)
+
 2006-05-04  Alexander Larsson  <alexl@redhat.com>
 
 	* glib/gbase64.c: (g_base64_decode_step):
