@@ -74,7 +74,7 @@ struct	_GScannerKey
 
 
 /* --- variables --- */
-static GScannerConfig g_scanner_config_template =
+static const GScannerConfig g_scanner_config_template =
 {
   (
    " \t\r\n"
