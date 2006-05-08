@@ -1,5 +1,11 @@
 2006-05-08  Matthias Clasen  <mclasen@redhat.com>
 
+	* tests/keyfile-test.c (test_number): Add some tests for
+	invalid floating point numbers.
+
+	* glib/gkeyfile.c (g_key_file_parse_value_as_double): Return
+	an error for the empty string.  (#339105, Morten Welinder)
+
 	* glib/gscanner.c (g_scanner_config_template): Make const,
 	noticed by Kjartan Maraas.
 

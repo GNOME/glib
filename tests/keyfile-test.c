@@ -697,7 +697,11 @@ test_number (void)
     "key1=0xffff\n"
     "key2=0.5\n"
     "key3=1e37\n"
-    "key4=ten\n";
+    "key4=ten\n"
+    "key5=\n"
+    "key6=1.0.0\n"
+    "key7=2x2\n"
+    "key8=abc\n";
   
   keyfile = load_data (data, 0);
 
@@ -721,6 +725,18 @@ test_number (void)
   check_error (&error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_INVALID_VALUE);
 
   g_key_file_get_integer (keyfile, "invalid", "key4", &error);
+  check_error (&error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_INVALID_VALUE);
+
+  g_key_file_get_double (keyfile, "invalid", "key5", &error);
+  check_error (&error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_INVALID_VALUE);
+
+  g_key_file_get_double (keyfile, "invalid", "key6", &error);
+  check_error (&error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_INVALID_VALUE);
+
+  g_key_file_get_double (keyfile, "invalid", "key7", &error);
+  check_error (&error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_INVALID_VALUE);
+
+  g_key_file_get_double (keyfile, "invalid", "key8", &error);
   check_error (&error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_INVALID_VALUE);
 
   g_key_file_free (keyfile);

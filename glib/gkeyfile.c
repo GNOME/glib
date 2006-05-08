@@ -3471,7 +3471,7 @@ g_key_file_parse_value_as_double  (GKeyFile     *key_file,
 
   double_value = g_ascii_strtod (value, &end_of_valid_d);
 
-  if (*end_of_valid_d != '\0')
+  if (*end_of_valid_d != '\0' || end_of_valid_d == value)
     g_set_error (error, G_KEY_FILE_ERROR,
                  G_KEY_FILE_ERROR_INVALID_VALUE,
                  _("Value '%s' cannot be interpreted as a float number."), value);
