@@ -1,5 +1,8 @@
 2006-05-08  Matthias Clasen  <mclasen@redhat.com>
 
+	* tests/convert-test.c (test_one_half): Use encoding names which 
+	may work better on Solaris.  (#340434, Alessandro Vesely)
+
 	* tests/keyfile-test.c (test_number): Add some tests for
 	invalid floating point numbers.
 

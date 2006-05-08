@@ -63,7 +63,7 @@ test_one_half (void)
   GError *error = NULL;  
 
   out = g_convert (in, -1, 
-		   "ISO8859-1", "UTF-8",
+		   "ISO-8859-1", "UTF-8",
 		   &bytes_read, &bytes_written,
 		   &error);
 
@@ -74,7 +74,7 @@ test_one_half (void)
   g_free (out);
 
   out = g_convert (in, -1, 
-		   "ISO8859-15", "UTF-8",
+		   "ISO-8859-15", "UTF-8",
 		   &bytes_read, &bytes_written,
 		   &error);
 
