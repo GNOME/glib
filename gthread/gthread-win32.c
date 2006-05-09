@@ -32,11 +32,9 @@
  * MT safe
  */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+#include "config.h"
 
-#include <glib.h>
+#include "glib.h"
 
 #define STRICT
 #define _WIN32_WINDOWS 0x0401 /* to get IsDebuggerPresent */

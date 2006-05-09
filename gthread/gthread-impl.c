@@ -31,12 +31,10 @@
  * MT safe
  */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+#include "config.h"
 
-#include <glib.h>
-#include <gthreadinit.h>
+#include "glib.h"
+#include "gthreadinit.h"
 
 #ifdef G_THREADS_ENABLED
 

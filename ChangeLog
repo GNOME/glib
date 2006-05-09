@@ -1,5 +1,10 @@
 2006-05-09  Sebastian Wilhelmi  <wilhelmi@google.com>
 
+	* glib/gprintf.c, glib/gspawn-win32.c, glib/gutf8.c,
+	gthread/gthread-impl.c, gthread/gthread-posix.c,
+	gthread/gthread-win32.c: Use canonical include form for internal
+	headers. config.h is always there.
+
 	* Remove obsolete gthread/gthread-solaris.c.
 
 2006-05-08  Matthias Clasen  <mclasen@redhat.com>
