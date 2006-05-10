@@ -30,7 +30,7 @@
 
 #include "glib.h"
 #include "gprintfint.h"
-#include "gthreadinit.h"
+#include "gthreadprivate.h"
 
 #ifdef G_PLATFORM_WIN32
 #define STRICT

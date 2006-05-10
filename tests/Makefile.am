@@ -49,12 +49,13 @@ endif
 if ENABLE_TIMELOOP
 timeloop = timeloop timeloop-closure
 endif
-noinst_PROGRAMS = testglib testgdate testgdateparser unicode-normalize unicode-collate $(timeloop)
+noinst_PROGRAMS = testglib testgdate testgdateparser unicode-normalize unicode-collate $(timeloop) errorcheck-mutex-test
 testglib_LDADD = $(libglib)
 patterntest_LDADD = $(libglib)
 testgdate_LDADD = $(libglib)
 testgdateparser_LDADD = $(libglib)
 unicode_normalize_LDADD = $(libglib)
+errorcheck_mutex_test_LDADD = $(libglib) $(libgthread)
 if ENABLE_TIMELOOP
 timeloop_LDADD = $(libglib)
 timeloop_closure_LDADD = $(libglib) $(libgobject)

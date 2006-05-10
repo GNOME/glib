@@ -56,7 +56,7 @@
 #define	__G_UTILS_C__
 #include "glib.h"
 #include "gprintfint.h"
-#include "gthreadinit.h"
+#include "gthreadprivate.h"
 #include "galias.h"
 
 #ifdef	MAXPATHLEN

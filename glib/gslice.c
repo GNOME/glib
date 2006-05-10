@@ -31,7 +31,7 @@
 #include <string.h>
 #include <errno.h>
 #include "gmem.h"               /* gslice.h */
-#include "gthreadinit.h"
+#include "gthreadprivate.h"
 #include "galias.h"
 #include "glib.h"
 #ifdef HAVE_UNISTD_H

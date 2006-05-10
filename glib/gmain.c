@@ -37,7 +37,7 @@
 /* #define G_MAIN_POLL_DEBUG */
 
 #include "glib.h"
-#include "gthreadinit.h"
+#include "gthreadprivate.h"
 #include <signal.h>
 #include <sys/types.h>
 #include <time.h>

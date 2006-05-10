@@ -48,7 +48,7 @@
 #endif
 
 #include "glib.h"
-#include "gthreadinit.h"
+#include "gthreadprivate.h"
 #include "galias.h"
 
 #ifdef G_OS_WIN32

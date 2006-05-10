@@ -1,5 +1,20 @@
 2006-05-09  Sebastian Wilhelmi  <wilhelmi@google.com>
 
+	* glib/gthreadinit.h: Renamed to glib/gthreadprivate.h and moved
+	system thread identifier comparision and assignment macros from
+	glib/gthread.c to glib/gthreadprivate.h.
+
+	* glib/Makefile.am, glib/gatomic.c, glib/gconvert.c, glib/gmain.c,
+	glib/gmem.c, glib/gmessages.c, glib/grand.c, glib/gslice.c,
+	glib/gthread.c, glib/gutils.c, gthread/gthread-impl.c: Use
+	glib/gthreadprivate.h instead of glib/gthreadinit.h.
+
+	* gthread/gthread-impl.c: Use GSystemThread instead of GThread for
+	owner determination. (#311043, jylefort@FreeBSD.org)
+
+	* tests/Makefile.am, tests/errorcheck-mutex-test: New test program
+	to test for all checked violations.
+
 	* glib/gprintf.c, glib/gspawn-win32.c, glib/gutf8.c,
 	gthread/gthread-impl.c, gthread/gthread-posix.c,
 	gthread/gthread-win32.c: Use canonical include form for internal

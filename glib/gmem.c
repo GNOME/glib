@@ -35,7 +35,7 @@
 #include <signal.h>
 
 #include "glib.h"
-#include "gthreadinit.h"
+#include "gthreadprivate.h"
 #include "galias.h"
 
 #define MEM_PROFILE_TABLE_SIZE 4096

@@ -25,6 +25,7 @@ cxx-test
 date-test
 dirname-test
 env-test
+errorcheck-mutex-test
 file-test
 file-test-get-contents
 hash-test

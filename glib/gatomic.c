@@ -23,7 +23,7 @@
 #include "config.h"
 
 #include "glib.h"
-#include "gthreadinit.h"
+#include "gthreadprivate.h"
 #include "galias.h"
 
 #if defined (__GNUC__)
