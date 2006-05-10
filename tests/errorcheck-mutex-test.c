@@ -108,24 +108,24 @@ main (int argc, char* argv[])
   int i;
 
   if (argc == 2)
-  {
-    for (i = 0; i < G_N_ELEMENTS (func_table); i++)
     {
-      if (strcmp (func_table[i].name, argv[1]) == 0)
-      {
-        g_thread_init (NULL);
-        func_table[i].func ();
-        g_assert_not_reached ();
-      }
+      for (i = 0; i < G_N_ELEMENTS (func_table); i++)
+        {
+          if (strcmp (func_table[i].name, argv[1]) == 0)
+            {
+              g_thread_init (NULL);
+              func_table[i].func ();
+              g_assert_not_reached ();
+            }
+        }
     }
-  }
 
   fprintf (stderr, "Usage: errorcheck-mutex-test [TEST]\n\n");
   fprintf (stderr, "   where TEST can be one of:\n\n");
   for (i = 0; i < G_N_ELEMENTS (func_table); i++)
-  {
-    fprintf (stderr, "      %s\n", func_table[i].name);
-  }
+    {
+      fprintf (stderr, "      %s\n", func_table[i].name);
+    }
 
   return 0;
 }
