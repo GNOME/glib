@@ -148,7 +148,8 @@ GMutex* g_static_mutex_get_mutex_impl   (GMutex **mutex);
 #define G_THREAD_CF(op, fail, arg)					\
     (g_thread_supported () ? G_THREAD_UF (op, arg) : (fail))
 #define G_THREAD_ECF(op, fail, mutex, type)				\
-    (g_thread_supported () ? ((type(*)(GMutex*, gulong, gchar*))	\
+    (g_thread_supported () ? 						\
+      ((type(*)(GMutex*, const gulong, gchar const*))			\
       (*g_thread_functions_for_glib_use . op))				\
      (mutex, G_MUTEX_DEBUG_MAGIC, G_STRLOC) : (fail))
 
@@ -374,4 +375,3 @@ extern void glib_dummy_decl (void);
 G_END_DECLS
 
 #endif /* __G_THREAD_H__ */
-

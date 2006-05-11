@@ -1,5 +1,10 @@
 2006-05-10  Sebastian Wilhelmi  <wilhelmi@google.com>
 
+	* glib/gthread.h, gthread/gthread-impl.c: Make the magic and
+	location arguments to the error-checking-mutex functions const and
+	do not write to them, as we might not own them. Clean up the
+	error-checking-mutex code quite a bit. (#335198, Chris Wilson)
+
 	* glib/gthread.c: Use g_atomic_pointer_set instead of old
 	homegrown version now that we have it. (#335198, Chris Wilson)
 

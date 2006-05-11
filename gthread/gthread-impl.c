@@ -24,10 +24,10 @@
  * Modified by the GLib Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GLib Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GLib at ftp://ftp.gtk.org/pub/gtk/. 
+ * GLib at ftp://ftp.gtk.org/pub/gtk/.
  */
 
-/* 
+/*
  * MT safe
  */
 
@@ -69,119 +69,95 @@ void g_convert_init (void);
 void g_rand_init (void);
 void g_main_thread_init (void);
 
-#define G_MUTEX_DEBUG_INFO(mutex) (*((gpointer*)(((char*)mutex)+G_MUTEX_SIZE)))
-
-typedef struct _ErrorCheckInfo ErrorCheckInfo;
-struct _ErrorCheckInfo
+typedef struct _GMutexDebugInfo GMutexDebugInfo;
+struct _GMutexDebugInfo
 {
   gchar *location;
   GSystemThread owner;
 };
 
+#define G_MUTEX_DEBUG_INFO(mutex) 					\
+  (((GMutexDebugInfo*)(((char*)mutex)+G_MUTEX_SIZE)))
+
 static GMutex *
 g_mutex_new_errorcheck_impl (void)
 {
   GMutex *retval = g_thread_functions_for_glib_use_default.mutex_new ();
-  retval = g_realloc (retval, G_MUTEX_SIZE + sizeof (gpointer));
-  G_MUTEX_DEBUG_INFO (retval) = NULL;
+  GMutexDebugInfo *info;
+  retval = g_realloc (retval, G_MUTEX_SIZE + sizeof (GMutexDebugInfo));
+
+  info = G_MUTEX_DEBUG_INFO (retval);
+  g_system_thread_assign (info->owner, zero_thread);
+  info->location = "invalid";
+
   return retval;
 }
 
 static void
-g_mutex_lock_errorcheck_impl (GMutex *mutex, 
-			      gulong magic,
-			      gchar *location)
+g_mutex_lock_errorcheck_impl (GMutex *mutex,
+			      const gulong magic,
+			      gchar * const location)
 {
-  ErrorCheckInfo *info;
-  GSystemThread self;
+  GMutexDebugInfo *info = G_MUTEX_DEBUG_INFO (mutex);
+  gchar *loc = (magic == G_MUTEX_DEBUG_MAGIC) ? location : "unknown";
 
+  GSystemThread self;
   g_thread_functions_for_glib_use.thread_self (&self);
 
-  if (magic != G_MUTEX_DEBUG_MAGIC)
-    location = "unknown";
-
-  if (G_MUTEX_DEBUG_INFO (mutex) == NULL)
-    {
-      /* if the debug info is NULL, we have not yet locked that mutex,
-       * so we do it now */
-      g_thread_functions_for_glib_use_default.mutex_lock (mutex);
-      /* Now we have to check again, because another thread might have
-       * tried to lock the mutex at the same time we did. This
-       * technique is not 100% save on systems without decent cache
-       * coherence, but we have no choice */
-      if (G_MUTEX_DEBUG_INFO (mutex) == NULL)
-	{
-	  info = G_MUTEX_DEBUG_INFO (mutex) = g_new0 (ErrorCheckInfo, 1);
-	}
-      g_thread_functions_for_glib_use_default.mutex_unlock (mutex);
-    }
-  
-  info = G_MUTEX_DEBUG_INFO (mutex);
   if (g_system_thread_equal (info->owner, self))
     g_error ("Trying to recursivly lock a mutex at '%s', "
-	     "previously locked at '%s'", 
-	     location, info->location);
+	     "previously locked at '%s'",
+	     loc, info->location);
 
   g_thread_functions_for_glib_use_default.mutex_lock (mutex);
 
   g_system_thread_assign (info->owner, self);
-  info->location = location;
+  info->location = loc;
 }
 
 static gboolean
-g_mutex_trylock_errorcheck_impl (GMutex *mutex, 
-				 gulong magic, 
-				 gchar *location)
+g_mutex_trylock_errorcheck_impl (GMutex *mutex,
+				 const gulong magic,
+				 gchar * const location)
 {
-  ErrorCheckInfo *info = G_MUTEX_DEBUG_INFO (mutex);
+  GMutexDebugInfo *info = G_MUTEX_DEBUG_INFO (mutex);
+  gchar *loc = (magic == G_MUTEX_DEBUG_MAGIC) ? location : "unknown";
+
   GSystemThread self;
-
   g_thread_functions_for_glib_use.thread_self (&self);
-
-  if (magic != G_MUTEX_DEBUG_MAGIC)
-    location = "unknown";
-
-  if (!info)
-    {
-      /* This mutex has not yet been used, so simply lock and return TRUE */
-      g_mutex_lock_errorcheck_impl (mutex, magic, location);
-      return TRUE;
-    }
 
   if (g_system_thread_equal (info->owner, self))
     g_error ("Trying to recursivly lock a mutex at '%s', "
-	     "previously locked at '%s'", 
-	     location, info->location);
-  
+	     "previously locked at '%s'",
+	     loc, info->location);
+
   if (!g_thread_functions_for_glib_use_default.mutex_trylock (mutex))
     return FALSE;
 
   g_system_thread_assign (info->owner, self);
-  info->location = location;
+  info->location = loc;
 
   return TRUE;
 }
 
 static void
-g_mutex_unlock_errorcheck_impl (GMutex *mutex, 
-				gulong magic, 
-				gchar *location)
+g_mutex_unlock_errorcheck_impl (GMutex *mutex,
+				const gulong magic,
+				gchar * const location)
 {
-  ErrorCheckInfo *info = G_MUTEX_DEBUG_INFO (mutex);
-  GSystemThread self;
+  GMutexDebugInfo *info = G_MUTEX_DEBUG_INFO (mutex);
+  gchar *loc = (magic == G_MUTEX_DEBUG_MAGIC) ? location : "unknown";
 
+  GSystemThread self;
   g_thread_functions_for_glib_use.thread_self (&self);
 
-  if (magic != G_MUTEX_DEBUG_MAGIC)
-    location = "unknown";
-
-  if (!info || g_system_thread_equal (info->owner, zero_thread))
-    g_error ("Trying to unlock an unlocked mutex at '%s'", location);
+  if (g_system_thread_equal (info->owner, zero_thread))
+    g_error ("Trying to unlock an unlocked mutex at '%s'", loc);
 
   if (!g_system_thread_equal (info->owner, self))
     g_warning ("Trying to unlock a mutex at '%s', "
 	       "previously locked by a different thread at '%s'",
-	       location, info->location);
+	       loc, info->location);
 
   g_system_thread_assign (info->owner, zero_thread);
   info->location = NULL;
@@ -190,90 +166,81 @@ g_mutex_unlock_errorcheck_impl (GMutex *mutex,
 }
 
 static void
-g_mutex_free_errorcheck_impl (GMutex *mutex, 
-			      gulong magic, 
-			      gchar *location)
+g_mutex_free_errorcheck_impl (GMutex *mutex,
+			      const gulong magic,
+			      gchar * const location)
 {
-  ErrorCheckInfo *info = G_MUTEX_DEBUG_INFO (mutex);
-  
-  if (magic != G_MUTEX_DEBUG_MAGIC)
-    location = "unknown";
+  GMutexDebugInfo *info = G_MUTEX_DEBUG_INFO (mutex);
+  gchar *loc = (magic == G_MUTEX_DEBUG_MAGIC) ? location : "unknown";
 
   if (info && !g_system_thread_equal (info->owner, zero_thread))
     g_error ("Trying to free a locked mutex at '%s', "
-	     "which was previously locked at '%s'", 
-	     location, info->location);
+	     "which was previously locked at '%s'",
+	     loc, info->location);
 
-  g_free (G_MUTEX_DEBUG_INFO (mutex));
-  g_thread_functions_for_glib_use_default.mutex_free (mutex);  
+  g_thread_functions_for_glib_use_default.mutex_free (mutex);
 }
 
-static void     
+static void
 g_cond_wait_errorcheck_impl (GCond *cond,
-			     GMutex *mutex, 
-			     gulong magic, 
-			     gchar *location)
+			     GMutex *mutex,
+			     const gulong magic,
+			     gchar * const location)
 {
-  
-  ErrorCheckInfo *info = G_MUTEX_DEBUG_INFO (mutex);
-  GSystemThread self;
+  GMutexDebugInfo *info = G_MUTEX_DEBUG_INFO (mutex);
+  gchar *loc = (magic == G_MUTEX_DEBUG_MAGIC) ? location : "unknown";
 
+  GSystemThread self;
   g_thread_functions_for_glib_use.thread_self (&self);
 
-  if (magic != G_MUTEX_DEBUG_MAGIC)
-    location = "unknown";
-
-  if (!info || g_system_thread_equal (info->owner, zero_thread))
-    g_error ("Trying to use an unlocked mutex in g_cond_wait() at '%s'",
-	     location);
+  if (g_system_thread_equal (info->owner, zero_thread))
+    g_error ("Trying to use an unlocked mutex in g_cond_wait() at '%s'", loc);
 
   if (!g_system_thread_equal (info->owner, self))
     g_error ("Trying to use a mutex locked by another thread in "
-	     "g_cond_wait() at '%s'", location);
+	     "g_cond_wait() at '%s'", loc);
 
   g_system_thread_assign (info->owner, zero_thread);
-  location = info->location;
+  loc = info->location;
 
   g_thread_functions_for_glib_use_default.cond_wait (cond, mutex);
 
   g_system_thread_assign (info->owner, self);
-  info->location = location;
+  info->location = loc;
 }
-    
 
-static gboolean 
+
+static gboolean
 g_cond_timed_wait_errorcheck_impl (GCond *cond,
                                    GMutex *mutex,
-                                   GTimeVal *end_time, 
-				   gulong magic, 
-				   gchar *location)
+                                   GTimeVal *end_time,
+				   const gulong magic,
+				   gchar * const location)
 {
-  ErrorCheckInfo *info = G_MUTEX_DEBUG_INFO (mutex);
-  GSystemThread self;
+  GMutexDebugInfo *info = G_MUTEX_DEBUG_INFO (mutex);
+  gchar *loc = (magic == G_MUTEX_DEBUG_MAGIC) ? location : "unknown";
   gboolean retval;
 
+  GSystemThread self;
   g_thread_functions_for_glib_use.thread_self (&self);
 
-  if (magic != G_MUTEX_DEBUG_MAGIC)
-    location = "unknown";
-
-  if (!info || g_system_thread_equal (info->owner, zero_thread))
+  if (g_system_thread_equal (info->owner, zero_thread))
     g_error ("Trying to use an unlocked mutex in g_cond_timed_wait() at '%s'",
-	     location);
+	     loc);
 
   if (!g_system_thread_equal (info->owner, self))
     g_error ("Trying to use a mutex locked by another thread in "
-	     "g_cond_timed_wait() at '%s'", location);
+	     "g_cond_timed_wait() at '%s'", loc);
 
   g_system_thread_assign (info->owner, zero_thread);
-  location = info->location;
-  
-  retval = g_thread_functions_for_glib_use_default.cond_timed_wait (cond, 
-								    mutex, 
+  loc = info->location;
+
+  retval = g_thread_functions_for_glib_use_default.cond_timed_wait (cond,
+								    mutex,
 								    end_time);
 
   g_system_thread_assign (info->owner, self);
-  info->location = location;
+  info->location = loc;
 
   return retval;
 }
@@ -282,12 +249,12 @@ g_cond_timed_wait_errorcheck_impl (GCond *cond,
 /* unshadow function declaration. See gthread.h */
 #undef g_thread_init
 
-void 
+void
 g_thread_init_with_errorcheck_mutexes (GThreadFunctions* init)
 {
   GThreadFunctions errorcheck_functions;
   if (init)
-    g_error ("Errorcheck mutexes can only be used for native " 
+    g_error ("Errorcheck mutexes can only be used for native "
 	     "thread implementations. Sorry." );
 
 #ifdef HAVE_G_THREAD_IMPL_INIT
@@ -304,20 +271,20 @@ g_thread_init_with_errorcheck_mutexes (GThreadFunctions* init)
 
   errorcheck_functions = g_thread_functions_for_glib_use_default;
   errorcheck_functions.mutex_new = g_mutex_new_errorcheck_impl;
-  errorcheck_functions.mutex_lock = 
+  errorcheck_functions.mutex_lock =
     (void (*)(GMutex *)) g_mutex_lock_errorcheck_impl;
-  errorcheck_functions.mutex_trylock = 
+  errorcheck_functions.mutex_trylock =
     (gboolean (*)(GMutex *)) g_mutex_trylock_errorcheck_impl;
-  errorcheck_functions.mutex_unlock = 
+  errorcheck_functions.mutex_unlock =
     (void (*)(GMutex *)) g_mutex_unlock_errorcheck_impl;
-  errorcheck_functions.mutex_free = 
+  errorcheck_functions.mutex_free =
     (void (*)(GMutex *)) g_mutex_free_errorcheck_impl;
-  errorcheck_functions.cond_wait = 
+  errorcheck_functions.cond_wait =
     (void (*)(GCond *, GMutex *)) g_cond_wait_errorcheck_impl;
-  errorcheck_functions.cond_timed_wait = 
-    (gboolean (*)(GCond *, GMutex *, GTimeVal *)) 
+  errorcheck_functions.cond_timed_wait =
+    (gboolean (*)(GCond *, GMutex *, GTimeVal *))
     g_cond_timed_wait_errorcheck_impl;
-    
+
   g_thread_init (&errorcheck_functions);
 }
 
@@ -328,7 +295,7 @@ g_thread_init (GThreadFunctions* init)
 
   if (thread_system_already_initialized)
     g_error ("GThread system may only be initialized once.");
-    
+
   thread_system_already_initialized = TRUE;
 
   if (init == NULL)
@@ -346,15 +313,15 @@ g_thread_init (GThreadFunctions* init)
 
   g_thread_functions_for_glib_use = *init;
 
-  supported = (init->mutex_new &&  
-	       init->mutex_lock && 
-	       init->mutex_trylock && 
-	       init->mutex_unlock && 
-	       init->mutex_free && 
-	       init->cond_new && 
-	       init->cond_signal && 
-	       init->cond_broadcast && 
-	       init->cond_wait && 
+  supported = (init->mutex_new &&
+	       init->mutex_lock &&
+	       init->mutex_trylock &&
+	       init->mutex_unlock &&
+	       init->mutex_free &&
+	       init->cond_new &&
+	       init->cond_signal &&
+	       init->cond_broadcast &&
+	       init->cond_wait &&
 	       init->cond_timed_wait &&
 	       init->cond_free &&
 	       init->private_new &&
