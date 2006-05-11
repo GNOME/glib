@@ -1,3 +1,10 @@
+2006-05-11  Bastien Nocera  <hadess@hadess.net>
+
+	* glib/goption.c: (parse_int64), (parse_arg), (free_changes_list):
+	* glib/goption.h:
+	* tests/option-test.c: (arg_test6), (main): add an int64 type for
+	GOption (G_OPTION_ARG_INT64) (#341237)
+
 2006-05-10  Sebastian Wilhelmi  <wilhelmi@google.com>
 
 	* glib/gthread.h, gthread/gthread-impl.c: Make the magic and

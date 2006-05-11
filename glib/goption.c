@@ -51,6 +51,7 @@ typedef struct
     gchar *str;
     gchar **array;
     gdouble dbl;
+    gint64 int64;
   } prev;
   union 
   {
@@ -716,6 +717,41 @@ parse_double (const gchar *arg_name,
 }
 
 
+static gboolean
+parse_int64 (const gchar *arg_name,
+	     const gchar *arg,
+	     gint64      *result,
+	     GError     **error)
+{
+  gchar *end;
+  gint64 tmp;
+
+  errno = 0;
+  tmp = strtoll (arg, &end, 0);
+
+  if (*arg == '\0' || *end != '\0')
+    {
+      g_set_error (error,
+		   G_OPTION_ERROR, G_OPTION_ERROR_BAD_VALUE,
+		   _("Cannot parse integer value '%s' for %s"),
+		   arg, arg_name);
+      return FALSE;
+    }
+  if (errno == ERANGE)
+    {
+      g_set_error (error,
+		   G_OPTION_ERROR, G_OPTION_ERROR_BAD_VALUE,
+		   _("Integer value '%s' for %s out of range"),
+		   arg, arg_name);
+      return FALSE;
+    }
+
+  *result = tmp;
+  
+  return TRUE;
+}
+
+
 static Change *
 get_change (GOptionContext *context,
 	    GOptionArg      arg_type,
@@ -951,6 +987,23 @@ parse_arg (GOptionContext *context,
 			     entry->arg_data);
 	change->prev.dbl = *(gdouble *)entry->arg_data;
 	*(gdouble *)entry->arg_data = data;
+	break;
+      }
+    case G_OPTION_ARG_INT64:
+      {
+        gint64 data;
+
+	if (!parse_int64 (option_name, value,
+ 			 &data,
+			 error))
+	  {
+	    return FALSE;
+	  }
+
+	change = get_change (context, G_OPTION_ARG_INT64,
+			     entry->arg_data);
+	change->prev.int64 = *(gint64 *)entry->arg_data;
+	*(gint64 *)entry->arg_data = data;
 	break;
       }
     default:
@@ -1219,6 +1272,9 @@ free_changes_list (GOptionContext *context,
 	      break;
 	    case G_OPTION_ARG_DOUBLE:
 	      *(gdouble *)change->arg_data = change->prev.dbl;
+	      break;
+	    case G_OPTION_ARG_INT64:
+	      *(gint64 *)change->arg_data = change->prev.int64;
 	      break;
 	    default:
 	      g_assert_not_reached ();

@@ -259,6 +259,10 @@ or combined in a single argument: <option>--name=arg</option>.
   multiple uses of the option are collected into an array of strings.
 @G_OPTION_ARG_DOUBLE: The option takes a double argument. The argument
   can be formatted either for the user's locale or for the "C" locale. Since 2.12
+@G_OPTION_ARG_INT64: The option takes a 64-bit integer. Like %G_OPTION_ARG_INT
+  but for larger numbers. The number can be in decimal base, or in hexadecimal
+  (when prefixed with <literal>0x</literal>, for example, <literal>0xffffffff</literal>).
+  Since 2.12
 
 <!-- ##### ENUM GOptionFlags ##### -->
 <para>

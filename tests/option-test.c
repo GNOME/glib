@@ -12,6 +12,8 @@ gchar *arg_test2_string;
 gchar *arg_test3_filename;
 gdouble arg_test4_double;
 gdouble arg_test5_double;
+gint64 arg_test6_int64;
+gint64 arg_test6_int64_2;
 
 gchar *callback_test1_string;
 int callback_test2_int;
@@ -402,6 +404,36 @@ arg_test5 (void)
  cleanup:
   setlocale (LC_NUMERIC, old_locale);
   g_free (old_locale);
+
+  g_strfreev (argv);
+  g_option_context_free (context);
+}
+
+void
+arg_test6 (void)
+{
+  GOptionContext *context;
+  gboolean retval;
+  GError *error = NULL;
+  gchar **argv;
+  int argc;
+  GOptionEntry entries [] =
+    { { "test", 0, 0, G_OPTION_ARG_INT64, &arg_test6_int64, NULL, NULL },
+      { "test2", 0, 0, G_OPTION_ARG_INT64, &arg_test6_int64_2, NULL, NULL },
+      { NULL } };
+
+  context = g_option_context_new (NULL);
+  g_option_context_add_main_entries (context, entries, NULL);
+
+  /* Now try parsing */
+  argv = split_string ("program --test 4294967297 --test 4294967296 --test2 0xfffffffff", &argc);
+
+  retval = g_option_context_parse (context, &argc, &argv, &error);
+  g_assert (retval);
+
+  /* Last arg specified is the one that should be stored */
+  g_assert (arg_test6_int64 == 4294967296LL);
+  g_assert (arg_test6_int64_2 == 0xfffffffffLL);
 
   g_strfreev (argv);
   g_option_context_free (context);
@@ -1370,6 +1402,7 @@ main (int argc, char **argv)
   arg_test3 ();
   arg_test4 ();
   arg_test5 ();
+  arg_test6 ();
 
   /* Test string arrays */
   array_test1 ();
