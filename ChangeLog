@@ -1,5 +1,8 @@
 2006-05-10  Sebastian Wilhelmi  <wilhelmi@google.com>
 
+	* glib/gthread.c: Use g_atomic_pointer_set instead of old
+	homegrown version now that we have it. (#335198, Chris Wilson)
+
 	* gthread/gthread-posix.c, gthread/gthread-win32.c: Prevent
 	calling into g_cond_wait resp. g_mutex_lock/unlock directly to
 	avoid recursions into the errorcheking mutex code (and out of
