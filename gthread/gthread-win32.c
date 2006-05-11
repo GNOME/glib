@@ -25,10 +25,10 @@
  * Modified by the GLib Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GLib Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GLib at ftp://ftp.gtk.org/pub/gtk/. 
+ * GLib at ftp://ftp.gtk.org/pub/gtk/.
  */
 
-/* 
+/*
  * MT safe
  */
 
@@ -76,6 +76,9 @@ static GDestroyNotify g_private_destructors[G_PRIVATE_MAX];
 
 static guint g_private_next = 0;
 
+/* A "forward" declaration of this structure */
+static GThreadFunctions g_thread_functions_for_glib_use_default;
+
 typedef struct _GThreadData GThreadData;
 struct _GThreadData
 {
@@ -85,7 +88,7 @@ struct _GThreadData
   gboolean joinable;
 };
 
-struct _GCond 
+struct _GCond
 {
   GPtrArray *array;
   CRITICAL_SECTION lock;
@@ -165,7 +168,7 @@ static gboolean
 g_mutex_trylock_win32_impl (GMutex * mutex)
 {
   DWORD result;
-  win32_check_for_error (WAIT_FAILED != 
+  win32_check_for_error (WAIT_FAILED !=
 			 (result = WaitForSingleObject (*(HANDLE *)mutex, 0)));
   return result != WAIT_TIMEOUT;
 }
@@ -236,12 +239,12 @@ g_cond_wait_internal (GCond *cond,
   g_ptr_array_add (cond->array, event);
   LeaveCriticalSection (&cond->lock);
 
-  g_mutex_unlock (entered_mutex);
+  g_thread_functions_for_glib_use_default.mutex_unlock (entered_mutex);
 
   win32_check_for_error (WAIT_FAILED !=
 			 (retval = WaitForSingleObject (event, milliseconds)));
 
-  g_mutex_lock (entered_mutex);
+  g_thread_functions_for_glib_use_default.mutex_lock (entered_mutex);
 
   if (retval == WAIT_TIMEOUT)
     {
@@ -252,7 +255,7 @@ g_cond_wait_internal (GCond *cond,
        * wait for the signal, this time with no timeout, to reset
        * it. retval is set again to honour the late arrival of the
        * signal */
-      win32_check_for_error (WAIT_FAILED != 
+      win32_check_for_error (WAIT_FAILED !=
 			     (retval = WaitForSingleObject (event, 0)));
 
       LeaveCriticalSection (&cond->lock);
@@ -270,7 +273,7 @@ g_cond_wait_internal (GCond *cond,
   return retval != WAIT_TIMEOUT;
 }
 
-static void     
+static void
 g_cond_wait_win32_impl (GCond *cond,
 			GMutex *entered_mutex)
 {
@@ -281,7 +284,7 @@ g_cond_wait_win32_impl (GCond *cond,
 }
 
 static gboolean
-g_cond_timed_wait_win32_impl (GCond *cond, 
+g_cond_timed_wait_win32_impl (GCond *cond,
 			      GMutex *entered_mutex,
 			      GTimeVal *abs_time)
 {
@@ -302,9 +305,9 @@ g_cond_timed_wait_win32_impl (GCond *cond,
 	to_wait = 0;
       else
 	to_wait = (abs_time->tv_sec - current_time.tv_sec) * 1000 +
-	  (abs_time->tv_usec - current_time.tv_usec) / 1000;      
+	  (abs_time->tv_usec - current_time.tv_usec) / 1000;
     }
-  
+
   return g_cond_wait_internal (cond, entered_mutex, to_wait);
 }
 
@@ -381,13 +384,13 @@ g_thread_set_priority_win32_impl (gpointer thread, GThreadPriority priority)
   g_return_if_fail (priority >= G_THREAD_PRIORITY_LOW);
   g_return_if_fail (priority <= G_THREAD_PRIORITY_URGENT);
 
-  win32_check_for_error (SetThreadPriority (target->thread,  
+  win32_check_for_error (SetThreadPriority (target->thread,
 					    g_thread_priority_map [priority]));
 }
 
 static void
 g_thread_self_win32_impl (gpointer thread)
-{  
+{
   GThreadData *self = TlsGetValue (g_thread_self_tls);
 
   if (!self)
@@ -396,19 +399,19 @@ g_thread_self_win32_impl (gpointer thread)
       HANDLE handle = GetCurrentThread ();
       HANDLE process = GetCurrentProcess ();
       self = g_new (GThreadData, 1);
-      win32_check_for_error (DuplicateHandle (process, handle, process, 
-					      &self->thread, 0, FALSE, 
+      win32_check_for_error (DuplicateHandle (process, handle, process,
+					      &self->thread, 0, FALSE,
 					      DUPLICATE_SAME_ACCESS));
       win32_check_for_error (TlsSetValue (g_thread_self_tls, self));
       self->func = NULL;
-      self->data = NULL;      
+      self->data = NULL;
       self->joinable = FALSE;
     }
 
   *(GThreadData **)thread = self;
 }
 
-static void 
+static void
 g_thread_exit_win32_impl (void)
 {
   GThreadData *self = TlsGetValue (g_thread_self_tls);
@@ -430,12 +433,12 @@ g_thread_exit_win32_impl (void)
 	  {
 	    GDestroyNotify destructor = g_private_destructors[i];
 	    GDestroyNotify data = array[i];
-	    
+
 	    if (data)
 	      some_data_non_null = TRUE;
 
 	    array[i] = NULL;
-	    
+
 	    if (destructor && data)
 	      destructor (data);
 	  }
@@ -445,7 +448,7 @@ g_thread_exit_win32_impl (void)
 
       win32_check_for_error (TlsSetValue (g_private_tls, NULL));
     }
-  
+
   if (self)
     {
       if (!self->joinable)
@@ -471,7 +474,7 @@ g_thread_proxy (gpointer data)
   GThreadData *self = (GThreadData*) data;
 
   win32_check_for_error (TlsSetValue (g_thread_self_tls, self));
-  
+
   self->func (self->data);
 
   g_thread_exit_win32_impl ();
@@ -482,35 +485,35 @@ g_thread_proxy (gpointer data)
 }
 
 static void
-g_thread_create_win32_impl (GThreadFunc func, 
-			    gpointer data, 
+g_thread_create_win32_impl (GThreadFunc func,
+			    gpointer data,
 			    gulong stack_size,
 			    gboolean joinable,
 			    gboolean bound,
 			    GThreadPriority priority,
 			    gpointer thread,
 			    GError **error)
-{     
+{
   guint ignore;
   GThreadData *retval;
 
   g_return_if_fail (func);
   g_return_if_fail (priority >= G_THREAD_PRIORITY_LOW);
   g_return_if_fail (priority <= G_THREAD_PRIORITY_URGENT);
-  
+
   retval = g_new(GThreadData, 1);
   retval->func = func;
   retval->data = data;
-  
+
   retval->joinable = joinable;
 
-  retval->thread = (HANDLE) _beginthreadex (NULL, stack_size, g_thread_proxy, 
+  retval->thread = (HANDLE) _beginthreadex (NULL, stack_size, g_thread_proxy,
 					    retval, 0, &ignore);
 
   if (retval->thread == NULL)
     {
       gchar *win_error = g_win32_error_message (GetLastError ());
-      g_set_error (error, G_THREAD_ERROR, G_THREAD_ERROR_AGAIN, 
+      g_set_error (error, G_THREAD_ERROR, G_THREAD_ERROR_AGAIN,
                    "Error creating thread: %s", win_error);
       g_free (retval);
       g_free (win_error);
@@ -522,7 +525,7 @@ g_thread_create_win32_impl (GThreadFunc func,
   g_thread_set_priority_win32_impl (thread, priority);
 }
 
-static void 
+static void
 g_thread_yield_win32_impl (void)
 {
   Sleep(0);
@@ -535,7 +538,7 @@ g_thread_join_win32_impl (gpointer thread)
 
   g_return_if_fail (target->joinable);
 
-  win32_check_for_error (WAIT_FAILED != 
+  win32_check_for_error (WAIT_FAILED !=
 			 WaitForSingleObject (target->thread, INFINITE));
 
   win32_check_for_error (CloseHandle (target->thread));
@@ -578,12 +581,12 @@ g_thread_impl_init ()
     return;
 
   beenhere = TRUE;
-  
-  win32_check_for_error (TLS_OUT_OF_INDEXES != 
+
+  win32_check_for_error (TLS_OUT_OF_INDEXES !=
 			 (g_thread_self_tls = TlsAlloc ()));
-  win32_check_for_error (TLS_OUT_OF_INDEXES != 
+  win32_check_for_error (TLS_OUT_OF_INDEXES !=
 			 (g_private_tls = TlsAlloc ()));
-  win32_check_for_error (TLS_OUT_OF_INDEXES != 
+  win32_check_for_error (TLS_OUT_OF_INDEXES !=
 			 (g_cond_event_tls = TlsAlloc ()));
   InitializeCriticalSection (&g_thread_global_spinlock);
 
@@ -597,10 +600,10 @@ g_thread_impl_init ()
     {
       try_enter_critical_section = (GTryEnterCriticalSectionFunc)
 	GetProcAddress(kernel32, "TryEnterCriticalSection");
-      
+
       /* Even if TryEnterCriticalSection is found, it is not
        * necessarily working..., we have to check it */
-      if (try_enter_critical_section && 
+      if (try_enter_critical_section &&
 	  try_enter_critical_section (&g_thread_global_spinlock))
 	{
 	  LeaveCriticalSection (&g_thread_global_spinlock);

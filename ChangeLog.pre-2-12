@@ -1,5 +1,10 @@
 2006-05-10  Sebastian Wilhelmi  <wilhelmi@google.com>
 
+	* gthread/gthread-posix.c, gthread/gthread-win32.c: Prevent
+	calling into g_cond_wait resp. g_mutex_lock/unlock directly to
+	avoid recursions into the errorcheking mutex code (and out of
+	principle anyway). (#335198, Chris Wilson)
+
 	* tests/errorcheck-mutex-test.c: Adapt to GLib coding standards.
 
 2006-05-09  Sebastian Wilhelmi  <wilhelmi@google.com>
