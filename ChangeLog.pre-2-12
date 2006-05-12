@@ -1,3 +1,11 @@
+2006-05-12  Tor Lillqvist  <tml@novell.com>
+
+	* glib/giowin32.c (g_io_win32_sock_set_flags): Implement
+	setting/clearing G_IO_FLAG_NONBLOCK for channels attached to
+	sockets. (#341192)
+	(g_io_win32_unimpl_set_flags): set_flags method for the
+	unimplemented case.
+	
 2006-05-11  Bastien Nocera  <hadess@hadess.net>
 
 	* glib/goption.c: (parse_int64), (parse_arg), (free_changes_list):

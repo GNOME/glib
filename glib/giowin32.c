@@ -1646,15 +1646,15 @@ g_io_channel_new_file (const gchar  *filename,
 #endif
 
 static GIOStatus
-g_io_win32_set_flags (GIOChannel *channel,
-                      GIOFlags    flags,
-                      GError    **err)
+g_io_win32_unimpl_set_flags (GIOChannel *channel,
+			     GIOFlags    flags,
+			     GError    **err)
 {
   GIOWin32Channel *win32_channel = (GIOWin32Channel *)channel;
 
   if (win32_channel->debug)
     {
-      g_print ("g_io_win32_set_flags: ");
+      g_print ("g_io_win32_unimpl_set_flags: ");
       g_win32_print_gioflags (flags);
       g_print ("\n");
     }
@@ -1735,10 +1735,51 @@ g_io_win32_msg_get_flags (GIOChannel *channel)
   return 0;
 }
 
+static GIOStatus
+g_io_win32_sock_set_flags (GIOChannel *channel,
+			   GIOFlags    flags,
+			   GError    **err)
+{
+  GIOWin32Channel *win32_channel = (GIOWin32Channel *)channel;
+  u_long arg;
+
+  if (win32_channel->debug)
+    {
+      g_print ("g_io_win32_sock_set_flags: ");
+      g_win32_print_gioflags (flags);
+      g_print ("\n");
+    }
+
+  if (flags & G_IO_FLAG_NONBLOCK)
+    {
+      arg = 1;
+      if (ioctlsocket (win32_channel->fd, FIONBIO, &arg) == SOCKET_ERROR)
+	{
+	  g_set_error (err, G_IO_CHANNEL_ERROR,
+		       G_IO_CHANNEL_ERROR_FAILED,
+		       winsock_error_message (WSAGetLastError ()));
+	  return G_IO_STATUS_ERROR;
+	}
+    }
+  else
+    {
+      arg = 0;
+      if (ioctlsocket (win32_channel->fd, FIONBIO, &arg) == SOCKET_ERROR)
+	{
+	  g_set_error (err, G_IO_CHANNEL_ERROR,
+		       G_IO_CHANNEL_ERROR_FAILED,
+		       winsock_error_message (WSAGetLastError ()));
+	  return G_IO_STATUS_ERROR;
+	}
+    }
+
+  return G_IO_STATUS_NORMAL;
+}
+
 static GIOFlags
 g_io_win32_sock_get_flags (GIOChannel *channel)
 {
-  /* XXX Could do something here. */
+  /* Could we do something here? */
   return 0;
 }
 
@@ -1749,7 +1790,7 @@ static GIOFuncs win32_channel_msg_funcs = {
   g_io_win32_msg_close,
   g_io_win32_msg_create_watch,
   g_io_win32_free,
-  g_io_win32_set_flags,
+  g_io_win32_unimpl_set_flags,
   g_io_win32_msg_get_flags,
 };
 
@@ -1760,7 +1801,7 @@ static GIOFuncs win32_channel_fd_funcs = {
   g_io_win32_fd_close,
   g_io_win32_fd_create_watch,
   g_io_win32_free,
-  g_io_win32_set_flags,
+  g_io_win32_unimpl_set_flags,
   g_io_win32_fd_get_flags,
 };
 
@@ -1771,7 +1812,7 @@ static GIOFuncs win32_channel_sock_funcs = {
   g_io_win32_sock_close,
   g_io_win32_sock_create_watch,
   g_io_win32_free,
-  g_io_win32_set_flags,
+  g_io_win32_sock_set_flags,
   g_io_win32_sock_get_flags,
 };
 
