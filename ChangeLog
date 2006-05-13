@@ -1,3 +1,11 @@
+2006-05-13  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/glib.symbols: 
+	* glib/goption.h: 
+	* glib/goption.c: Allow optional summary and description
+	texts before and after the option descriptions, and add
+	a way to translate them.  (#336120, Behdad Esfahbod)
+
 2006-05-12  Tor Lillqvist  <tml@novell.com>
 
 	* glib/giowin32.c (g_io_win32_sock_set_flags): Implement

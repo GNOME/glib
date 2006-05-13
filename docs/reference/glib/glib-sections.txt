@@ -954,6 +954,13 @@ G_OPTION_ERROR
 GOptionArgFunc
 GOptionContext
 g_option_context_new
+g_option_context_set_summary
+g_option_context_get_summary
+g_option_context_set_description
+g_option_context_get_description
+GTranslateFunc
+g_option_context_set_translate_func
+g_option_context_set_translation_domain
 g_option_context_free
 g_option_context_parse
 g_option_context_set_help_enabled
@@ -976,7 +983,6 @@ GOptionParseFunc
 g_option_group_set_parse_hooks
 GOptionErrorFunc
 g_option_group_set_error_hook
-GTranslateFunc
 g_option_group_set_translate_func
 g_option_group_set_translation_domain
 <SUBSECTION Private>

@@ -1,3 +1,7 @@
+2006-05-13  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/glib-sections.txt: Document new api.
+
 2006-05-11  Bastien Nocera  <hadess@hadess.net>
 
 	* glib/tmpl/option.sgml: add documentation for G_OPTION_ARG_INT64
