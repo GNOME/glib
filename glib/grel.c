@@ -252,11 +252,15 @@ g_relation_delete  (GRelation     *relation,
 		    gconstpointer  key,
 		    gint           field)
 {
-  GHashTable *table = relation->hashed_tuple_tables[field];
+  GHashTable *table; 
   GHashTable *key_table;
-  gint        count = relation->count;
+  gint        count;
   
   g_return_val_if_fail (relation != NULL, 0);
+
+  table = relation->hashed_tuple_tables[field];
+  count = relation->count;
+
   g_return_val_if_fail (table != NULL, 0);
   
   key_table = g_hash_table_lookup (table, key);
@@ -300,14 +304,18 @@ g_relation_select (GRelation     *relation,
 		   gconstpointer  key,
 		   gint           field)
 {
-  GHashTable  *table = relation->hashed_tuple_tables[field];
+  GHashTable  *table;
   GHashTable  *key_table;
-  GRealTuples *tuples = g_new0 (GRealTuples, 1);
+  GRealTuples *tuples; 
   gint count;
   
   g_return_val_if_fail (relation != NULL, NULL);
+
+  table = relation->hashed_tuple_tables[field];
+
   g_return_val_if_fail (table != NULL, NULL);
   
+  tuples = g_new0 (GRealTuples, 1);
   key_table = g_hash_table_lookup (table, key);
   
   if (!key_table)
@@ -330,10 +338,13 @@ g_relation_count (GRelation     *relation,
 		  gconstpointer  key,
 		  gint           field)
 {
-  GHashTable  *table = relation->hashed_tuple_tables[field];
+  GHashTable  *table;
   GHashTable  *key_table;
   
   g_return_val_if_fail (relation != NULL, 0);
+
+  table = relation->hashed_tuple_tables[field];
+
   g_return_val_if_fail (table != NULL, 0);
   
   key_table = g_hash_table_lookup (table, key);

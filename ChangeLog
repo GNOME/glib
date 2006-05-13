@@ -1,5 +1,8 @@
 2006-05-13  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/grel.c: Fix several cases of deref-before-NULL-check.
+	(#341191, Pascal Terjan)
+
 	* glib/glib.symbols: 
 	* glib/goption.h: 
 	* glib/goption.c: Allow optional summary and description
