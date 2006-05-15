@@ -117,9 +117,9 @@
 	* tests/casemap.txt: 
 	* tests/casefold.txt: Regenerate from Unicode 5.0 data. 
 
-Tue May  2 15:00:00 2006  Tim Janik  <timj@gtk.org>
-
 	* glib/guniprop.c: Make interval_compare static.
+
+Tue May  2 15:00:00 2006  Tim Janik  <timj@gtk.org>
 
 	* tests/gobject/deftype.c: added test code from Behdad Esfahbod, 
 	see #337128.
