@@ -1,3 +1,9 @@
+2006-05-15  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.11.1 ===
+
+	* NEWS: Updates
+
 2006-05-13  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/grel.c: Fix several cases of deref-before-NULL-check.

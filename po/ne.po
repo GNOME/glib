@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-05-02 21:05-0400\n"
+"POT-Creation-Date: 2006-05-15 12:51-0400\n"
 "PO-Revision-Date: 2005-05-20 11:50+0545\n"
 "Last-Translator: Jyotshna Shrestha <shresthajyo@hotmail.com>\n"
 "Language-Team: Nepali <info@mpp.org.np>\n"
@@ -628,61 +628,61 @@ msgstr "अनुवादन निवेशमा अमान्य शृङ
 msgid "Character out of range for UTF-16"
 msgstr "युटिएफ-१६ को लागी वर्ण क्षेत्र भन्दा बाहिर"
 
-#: glib/goption.c:480
+#: glib/goption.c:495
 msgid "Usage:"
 msgstr "प्रयोग:"
 
-#: glib/goption.c:480
+#: glib/goption.c:495
 msgid "[OPTION...]"
 msgstr "[विकल्प...]"
 
-#: glib/goption.c:568
+#: glib/goption.c:586
 msgid "Help Options:"
 msgstr "सहयोग विकल्पहरू:"
 
-#: glib/goption.c:569
+#: glib/goption.c:587
 msgid "Show help options"
 msgstr "सहयोग विकल्पहरू देखाउनुहोला"
 
-#: glib/goption.c:574
+#: glib/goption.c:592
 msgid "Show all help options"
 msgstr "सबै सहयोग विकल्पहरू देखाउनुहोला"
 
-#: glib/goption.c:624
+#: glib/goption.c:642
 msgid "Application Options:"
 msgstr "अनुरोधपत्र विकल्पहरू:"
 
-#: glib/goption.c:665
+#: glib/goption.c:686 glib/goption.c:756
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "पूर्ण संख्या मान '%s' %s को लागि व्याख्या गर्न सकेन"
 
-#: glib/goption.c:675
+#: glib/goption.c:696 glib/goption.c:764
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "पूर्ण संख्या मान '%s' %s को लागि क्षेत्र भन्दा बाहिर छ"
 
-#: glib/goption.c:700
+#: glib/goption.c:721
 #, fuzzy, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "पूर्ण संख्या मान '%s' %s को लागि व्याख्या गर्न सकेन"
 
-#: glib/goption.c:708
+#: glib/goption.c:729
 #, fuzzy, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "पूर्ण संख्या मान '%s' %s को लागि क्षेत्र भन्दा बाहिर छ"
 
-#: glib/goption.c:993
+#: glib/goption.c:1066
 #, fuzzy, c-format
 msgid "Error parsing option %s"
 msgstr "अनुवाद क्रममा गल्ती: %s"
 
-#: glib/goption.c:1024 glib/goption.c:1135
+#: glib/goption.c:1097 glib/goption.c:1208
 #, c-format
 msgid "Missing argument for %s"
 msgstr ""
 
-#: glib/goption.c:1521
+#: glib/goption.c:1597
 #, c-format
 msgid "Unknown option %s"
 msgstr "अज्ञात विकल्प %s"

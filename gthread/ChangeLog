@@ -1,3 +1,7 @@
+2006-05-15  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.11.1 ===
+
 2006-05-03  Tor Lillqvist  <tml@novell.com>
 
 	* gthread-win32.c (g_thread_exit_win32_impl): Free with free() and

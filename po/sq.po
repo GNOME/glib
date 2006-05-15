@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-05-02 21:05-0400\n"
+"POT-Creation-Date: 2006-05-15 12:51-0400\n"
 "PO-Revision-Date: 2006-01-30 10:58+0100\n"
 "Last-Translator: Laurent Dhima <laurenti@alblinux.net>\n"
 "Language-Team: Albanian <gnome-albanian-perkthyesit@lists.sourceforge.net>\n"
@@ -657,61 +657,61 @@ msgstr "Sekuencë e pavlefshme në hyrje për konvertimin"
 msgid "Character out of range for UTF-16"
 msgstr "Simboli nuk ekziston në UTF-16"
 
-#: glib/goption.c:480
+#: glib/goption.c:495
 msgid "Usage:"
 msgstr "Përdorimi:"
 
-#: glib/goption.c:480
+#: glib/goption.c:495
 msgid "[OPTION...]"
 msgstr "[OPCIONI...]"
 
-#: glib/goption.c:568
+#: glib/goption.c:586
 msgid "Help Options:"
 msgstr "Opcionet e ndihmës:"
 
-#: glib/goption.c:569
+#: glib/goption.c:587
 msgid "Show help options"
 msgstr "Shfaq opcionet e ndihmës"
 
-#: glib/goption.c:574
+#: glib/goption.c:592
 msgid "Show all help options"
 msgstr "Shfaq të gjithë opcionet e ndihmës"
 
-#: glib/goption.c:624
+#: glib/goption.c:642
 msgid "Application Options:"
 msgstr "Opcionet e programit:"
 
-#: glib/goption.c:665
+#: glib/goption.c:686 glib/goption.c:756
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "I pamundur analizimi i vlerës së plotë '%s' për %s"
 
-#: glib/goption.c:675
+#: glib/goption.c:696 glib/goption.c:764
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "Vlera integruese '%s' për %s është jashtë kufirit"
 
-#: glib/goption.c:700
+#: glib/goption.c:721
 #, fuzzy, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "I pamundur analizimi i vlerës së plotë '%s' për %s"
 
-#: glib/goption.c:708
+#: glib/goption.c:729
 #, fuzzy, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "Vlera integruese '%s' për %s është jashtë kufirit"
 
-#: glib/goption.c:993
+#: glib/goption.c:1066
 #, c-format
 msgid "Error parsing option %s"
 msgstr "Gabim gjatë analizimit të opsionit %s"
 
-#: glib/goption.c:1024 glib/goption.c:1135
+#: glib/goption.c:1097 glib/goption.c:1208
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Mungojnë argumentë për %s"
 
-#: glib/goption.c:1521
+#: glib/goption.c:1597
 #, c-format
 msgid "Unknown option %s"
 msgstr "Opcion i panjohur %s"

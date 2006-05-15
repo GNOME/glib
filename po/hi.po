@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.hi\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-05-02 21:05-0400\n"
+"POT-Creation-Date: 2006-05-15 12:51-0400\n"
 "PO-Revision-Date: 2006-04-21 11:40+0530\n"
 "Last-Translator: Rajesh Ranjan <rranjan@redhat.com>\n"
 "Language-Team: Hindi <fedora-trans-hi@redhat.com>\n"
@@ -635,61 +635,61 @@ msgstr "परिवर्तन इनपुट में अवैध अन�
 msgid "Character out of range for UTF-16"
 msgstr "यूटीएफ-16 हेतु अक्षर सीमा से बाहर"
 
-#: glib/goption.c:480
+#: glib/goption.c:495
 msgid "Usage:"
 msgstr "प्रयोग:"
 
-#: glib/goption.c:480
+#: glib/goption.c:495
 msgid "[OPTION...]"
 msgstr "[विकल्प...]"
 
-#: glib/goption.c:568
+#: glib/goption.c:586
 msgid "Help Options:"
 msgstr "सहायता विकल्प:"
 
-#: glib/goption.c:569
+#: glib/goption.c:587
 msgid "Show help options"
 msgstr "सहायता विकल्प दिखायें"
 
-#: glib/goption.c:574
+#: glib/goption.c:592
 msgid "Show all help options"
 msgstr "सभी सहायता विकल्प दिखायें"
 
-#: glib/goption.c:624
+#: glib/goption.c:642
 msgid "Application Options:"
 msgstr "अनुप्रयोग विकल्प:"
 
-#: glib/goption.c:665
+#: glib/goption.c:686 glib/goption.c:756
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "पूर्णांक मान '%s' को %s के लिये विश्लेषण नहीं कर सकता"
 
-#: glib/goption.c:675
+#: glib/goption.c:696 glib/goption.c:764
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "पूर्णांक मान '%s' %s के लिये रेंज के बाहर है"
 
-#: glib/goption.c:700
+#: glib/goption.c:721
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "'%s' दोहरे मान का विश्लेषण %s के लिये नहीं कर सकता है"
 
-#: glib/goption.c:708
+#: glib/goption.c:729
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "'%s' दोहरा मान %s के लिये परिसर से बाहर है"
 
-#: glib/goption.c:993
+#: glib/goption.c:1066
 #, c-format
 msgid "Error parsing option %s"
 msgstr "%s विकल्प विश्लेषण में त्रुटि"
 
-#: glib/goption.c:1024 glib/goption.c:1135
+#: glib/goption.c:1097 glib/goption.c:1208
 #, c-format
 msgid "Missing argument for %s"
 msgstr "%s के लिये गुम तर्क"
 
-#: glib/goption.c:1521
+#: glib/goption.c:1597
 #, c-format
 msgid "Unknown option %s"
 msgstr "अनजान विकल्प %s"

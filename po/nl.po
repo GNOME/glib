@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib (HEAD)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-05-02 21:05-0400\n"
+"POT-Creation-Date: 2006-05-15 12:51-0400\n"
 "PO-Revision-Date: 2006-04-23 18:57+0200\n"
 "Last-Translator: Tino Meinen <a.t.meinen@chello.nl>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -672,62 +672,62 @@ msgstr "Ongeldige reeks in conversie-invoer"
 msgid "Character out of range for UTF-16"
 msgstr "Teken valt buiten bereik van UTF-16"
 
-#: glib/goption.c:480
+#: glib/goption.c:495
 msgid "Usage:"
 msgstr "Gebruik:"
 
-#: glib/goption.c:480
+#: glib/goption.c:495
 msgid "[OPTION...]"
 msgstr "[OPTIE...]"
 
-#: glib/goption.c:568
+#: glib/goption.c:586
 msgid "Help Options:"
 msgstr "Hulpopties:"
 
-#: glib/goption.c:569
+#: glib/goption.c:587
 msgid "Show help options"
 msgstr "Hulpopties tonen"
 
-#: glib/goption.c:574
+#: glib/goption.c:592
 msgid "Show all help options"
 msgstr "Alle hulpopties tonen"
 
-#: glib/goption.c:624
+#: glib/goption.c:642
 msgid "Application Options:"
 msgstr "Toepassing opties:"
 
-#: glib/goption.c:665
+#: glib/goption.c:686 glib/goption.c:756
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "Kan de hele getalswaarde '%s' voor %s niet verwerken"
 
-#: glib/goption.c:675
+#: glib/goption.c:696 glib/goption.c:764
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "Hele getalswaarde '%s' voor %s valt buiten bereik"
 
 # integer-double
-#: glib/goption.c:700
+#: glib/goption.c:721
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "Kan de dubbele getalswaarde (double) '%s' voor %s niet verwerken"
 
-#: glib/goption.c:708
+#: glib/goption.c:729
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "Dubbele getalswaarde (double) '%s' voor %s valt buiten bereik"
 
-#: glib/goption.c:993
+#: glib/goption.c:1066
 #, c-format
 msgid "Error parsing option %s"
 msgstr "Fout bij verwerken optie %s"
 
-#: glib/goption.c:1024 glib/goption.c:1135
+#: glib/goption.c:1097 glib/goption.c:1208
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Ontbrekend argument voor %s"
 
-#: glib/goption.c:1521
+#: glib/goption.c:1597
 #, c-format
 msgid "Unknown option %s"
 msgstr "Onbekende optie %s"

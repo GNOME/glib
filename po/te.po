@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLIB\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-05-02 21:05-0400\n"
+"POT-Creation-Date: 2006-05-15 12:51-0400\n"
 "PO-Revision-Date: 2004-12-13 20:16+0100\n"
 "Last-Translator: రమణ సాయి <rmn_sai@yahoo.com>\n"
 "Language-Team: Free Software Foundation, Andhra Pradesh <fsfap@gnu.org.in>\n"
@@ -629,61 +629,61 @@ msgstr "పరివర్తన ఎగుబడి వరుస నిస్స
 msgid "Character out of range for UTF-16"
 msgstr "అక్షరము UTF-16 శ్రేణియందు లేదు"
 
-#: glib/goption.c:480
+#: glib/goption.c:495
 msgid "Usage:"
 msgstr "వినిమయం:"
 
-#: glib/goption.c:480
+#: glib/goption.c:495
 msgid "[OPTION...]"
 msgstr "[ఇచ్చాపూర్వరకం...]"
 
-#: glib/goption.c:568
+#: glib/goption.c:586
 msgid "Help Options:"
 msgstr "సహాయ ఇచ్ఛాపూర్వకాలు:"
 
-#: glib/goption.c:569
+#: glib/goption.c:587
 msgid "Show help options"
 msgstr "సహాయ ఇచ్ఛాపూర్వకాలను చూపించుట"
 
-#: glib/goption.c:574
+#: glib/goption.c:592
 msgid "Show all help options"
 msgstr "సహాయ ఇచ్ఛాపూర్వకాలన్నింటని చూపించుట"
 
-#: glib/goption.c:624
+#: glib/goption.c:642
 msgid "Application Options:"
 msgstr "కార్యక్షేత్ర ఇచ్ఛాపూర్వకాలు :"
 
-#: glib/goption.c:665
+#: glib/goption.c:686 glib/goption.c:756
 #, fuzzy, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "పూర్ణాంకం విలువ '%s' పార్స్ చేయలేదు --%s"
 
-#: glib/goption.c:675
+#: glib/goption.c:696 glib/goption.c:764
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr " పూర్ణాంకం విలువ '%s' లో విస్రృతి లో లేని %s "
 
-#: glib/goption.c:700
+#: glib/goption.c:721
 #, fuzzy, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "పూర్ణాంకం విలువ '%s' పార్స్ చేయలేదు --%s"
 
-#: glib/goption.c:708
+#: glib/goption.c:729
 #, fuzzy, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr " పూర్ణాంకం విలువ '%s' లో విస్రృతి లో లేని %s "
 
-#: glib/goption.c:993
+#: glib/goption.c:1066
 #, fuzzy, c-format
 msgid "Error parsing option %s"
 msgstr "పరివర్తనం నందు దోషం కలదు: %s"
 
-#: glib/goption.c:1024 glib/goption.c:1135
+#: glib/goption.c:1097 glib/goption.c:1208
 #, c-format
 msgid "Missing argument for %s"
 msgstr ""
 
-#: glib/goption.c:1521
+#: glib/goption.c:1597
 #, c-format
 msgid "Unknown option %s"
 msgstr "తెలియని  ఇచ్ఛాపూర్వకము %s"

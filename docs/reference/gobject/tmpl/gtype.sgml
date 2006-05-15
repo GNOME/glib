@@ -839,7 +839,7 @@ class conforms.
 @instance_class: A #GTypeClass structure.
 @iface_type:     An interface ID which this class conforms to.
 @Returns:        The GTypeInterface structure of iface_type if implemented 
-                 by @instance_class, %NULL otherwise   
+                 by @instance_class, %NULL otherwise
 
 
 <!-- ##### FUNCTION g_type_interface_peek_parent ##### -->

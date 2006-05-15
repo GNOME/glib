@@ -1,3 +1,28 @@
+Overview of Changes from GLib 2.11.0 to GLib 2.11.1
+===================================================
+
+* GOption  
+  - Support 64-bit integers 
+  - Allow optional text before and after the options
+    in help output
+
+* Bug fixes:
+ 340538 gbase64-test writes OOB 
+ 340816 GKeyFile set_string_list invalid memory reads 
+ 339105 g_key_file_parse_value_as_double
+ 340434 convert-test.c fails (function test_one_half)
+ 311043 Memory leaks (and potential infinite loops) 
+        when using G_ERRORCHECK_MUTEXES
+ 335198 Error checking mutexes are fubar  
+ 341237 Add a G_OPTION_ARG_INT64
+ 341192 g_io_channel_set_flags not implemented on win32
+ 336120 Allow adding description before/after GOption 
+        --help output body
+ 341191 misplaced check in g_relation_delete
+ 340530 mismatched calloc / g_free in win32 threads
+
+* Updated translation (es)
+
 Overview of Changes from GLib 2.10.x to GLib 2.11.0
 ===================================================
 

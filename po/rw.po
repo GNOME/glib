@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.12\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-05-02 21:05-0400\n"
+"POT-Creation-Date: 2006-05-15 12:51-0400\n"
 "PO-Revision-Date: 2005-03-28 19:34-0700\n"
 "Last-Translator: Steve Murphy <murf@e-tools.com>\n"
 "Language-Team: Kinyarwanda <translation-team-rw@lists.sourceforge.net>\n"
@@ -639,63 +639,63 @@ msgid "Character out of range for UTF-16"
 msgstr "Inyuma Bya Urutonde kugirango"
 
 # crashrep/source\all\crashrep.lng:%MSG_CMDLINE_USAGE%.text
-#: glib/goption.c:480
+#: glib/goption.c:495
 msgid "Usage:"
 msgstr "Ikoresha:"
 
-#: glib/goption.c:480
+#: glib/goption.c:495
 msgid "[OPTION...]"
 msgstr ""
 
-#: glib/goption.c:568
+#: glib/goption.c:586
 msgid "Help Options:"
 msgstr ""
 
-#: glib/goption.c:569
+#: glib/goption.c:587
 #, fuzzy
 msgid "Show help options"
 msgstr "Ifashayobora Amahitamo"
 
-#: glib/goption.c:574
+#: glib/goption.c:592
 #, fuzzy
 msgid "Show all help options"
 msgstr "Byose Ifashayobora Amahitamo"
 
-#: glib/goption.c:624
+#: glib/goption.c:642
 msgid "Application Options:"
 msgstr ""
 
-#: glib/goption.c:665
+#: glib/goption.c:686 glib/goption.c:756
 #, fuzzy, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "Umubare wuzuye Agaciro kugirango"
 
-#: glib/goption.c:675
+#: glib/goption.c:696 glib/goption.c:764
 #, fuzzy, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "Agaciro kugirango Inyuma Bya Urutonde"
 
-#: glib/goption.c:700
+#: glib/goption.c:721
 #, fuzzy, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "Umubare wuzuye Agaciro kugirango"
 
-#: glib/goption.c:708
+#: glib/goption.c:729
 #, fuzzy, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "Agaciro kugirango Inyuma Bya Urutonde"
 
-#: glib/goption.c:993
+#: glib/goption.c:1066
 #, fuzzy, c-format
 msgid "Error parsing option %s"
 msgstr "Ihindurangero"
 
-#: glib/goption.c:1024 glib/goption.c:1135
+#: glib/goption.c:1097 glib/goption.c:1208
 #, c-format
 msgid "Missing argument for %s"
 msgstr ""
 
-#: glib/goption.c:1521
+#: glib/goption.c:1597
 #, fuzzy, c-format
 msgid "Unknown option %s"
 msgstr "Ihitamo ritazwi:"

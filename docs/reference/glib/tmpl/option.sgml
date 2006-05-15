@@ -182,6 +182,75 @@ fields and should not be directly accessed.
 @Returns: 
 
 
+<!-- ##### FUNCTION g_option_context_set_summary ##### -->
+<para>
+
+</para>
+
+@context: 
+@summary: 
+
+
+<!-- ##### FUNCTION g_option_context_get_summary ##### -->
+<para>
+
+</para>
+
+@context: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_option_context_set_description ##### -->
+<para>
+
+</para>
+
+@context: 
+@description: 
+
+
+<!-- ##### FUNCTION g_option_context_get_description ##### -->
+<para>
+
+</para>
+
+@context: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION GTranslateFunc ##### -->
+<para>
+The type of functions which are used to translate user-visible
+strings, for <option>--help</option> output.
+</para>
+
+@str: the untranslated string
+@data: user data specified when installing the function, e.g.
+  in g_option_group_set_translate_func()
+@Returns: a translation of the string for the current locale.
+  The returned string is owned by GLib and must not be freed.
+
+
+<!-- ##### FUNCTION g_option_context_set_translate_func ##### -->
+<para>
+
+</para>
+
+@context: 
+@func: 
+@data: 
+@destroy_notify: 
+
+
+<!-- ##### FUNCTION g_option_context_set_translation_domain ##### -->
+<para>
+
+</para>
+
+@context: 
+@domain: 
+
+
 <!-- ##### FUNCTION g_option_context_free ##### -->
 <para>
 
@@ -492,19 +561,6 @@ The type of function to be used as callback when a parse error occurs.
 
 @group: 
 @error_func: 
-
-
-<!-- ##### USER_FUNCTION GTranslateFunc ##### -->
-<para>
-The type of functions which are used to translate user-visible
-strings, for <option>--help</option> output.
-</para>
-
-@str: the untranslated string
-@data: user data specified when installing the function, e.g.
-  in g_option_group_set_translate_func()
-@Returns: a translation of the string for the current locale.
-  The returned string is owned by GLib and must not be freed.
 
 
 <!-- ##### FUNCTION g_option_group_set_translate_func ##### -->
