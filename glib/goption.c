@@ -1392,36 +1392,23 @@ g_option_context_parse (GOptionContext   *context,
 		    continue;
 		}
 	      else
-		{
-		  /* short option */
-
-		  gint new_i, j;
+		{ /* short option */
+		  gint j, new_i = i, arg_length;
 		  gboolean *nulled_out = NULL;
-		  
 		  arg = (*argv)[i] + 1;
-
-		  new_i = i;
-
-		  if (context->ignore_unknown)
-		    nulled_out = g_new0 (gboolean, strlen (arg));
-		  
-		  for (j = 0; j < strlen (arg); j++)
+                  arg_length = strlen (arg);
+                  nulled_out = g_newa (gboolean, arg_length);
+                  memset (nulled_out, 0, arg_length * sizeof (gboolean));
+		  for (j = 0; j < arg_length; j++)
 		    {
 		      if (context->help_enabled && arg[j] == '?')
 			print_help (context, TRUE, NULL);
-		      
 		      parsed = FALSE;
-		      
 		      if (context->main_group &&
 			  !parse_short_option (context, context->main_group,
 					       i, &new_i, arg[j],
 					       argc, argv, error, &parsed))
-			{
-
-			  g_free (nulled_out);
-			  goto fail;
-			}
-
+                        goto fail;
 		      if (!parsed)
 			{
 			  /* Try the groups */
@@ -1429,47 +1416,38 @@ g_option_context_parse (GOptionContext   *context,
 			  while (list)
 			    {
 			      GOptionGroup *group = list->data;
-			      
 			      if (!parse_short_option (context, group, i, &new_i, arg[j],
 						       argc, argv, error, &parsed))
 				goto fail;
-			      
 			      if (parsed)
 				break;
-			  
 			      list = list->next;
 			    }
 			}
-
-		      if (context->ignore_unknown)
-			{
-			  if (parsed)
-			    nulled_out[j] = TRUE;
-			  else
-			    continue;
-			}
-
-		      if (!parsed)
-			break;
+                      
+		      if (context->ignore_unknown && parsed)
+                        nulled_out[j] = TRUE;
+                      else if (context->ignore_unknown)
+                        continue;
+                      else if (!parsed)
+                        break;
+                      /* !context->ignore_unknown && parsed */
 		    }
-
 		  if (context->ignore_unknown)
 		    {
 		      gchar *new_arg = NULL; 
 		      gint arg_index = 0;
-		      
-		      for (j = 0; j < strlen (arg); j++)
+		      for (j = 0; j < arg_length; j++)
 			{
 			  if (!nulled_out[j])
 			    {
 			      if (!new_arg)
-				new_arg = g_malloc (strlen (arg) + 1);
+				new_arg = g_malloc (arg_length + 1);
 			      new_arg[arg_index++] = arg[j];
 			    }
 			}
 		      if (new_arg)
 			new_arg[arg_index] = '\0';
-		      
 		      add_pending_null (context, &((*argv)[i]), new_arg);
 		    }
 		  else if (parsed)
