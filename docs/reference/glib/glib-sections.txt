@@ -1119,6 +1119,7 @@ g_strncasecmp
 g_strreverse
 
 <SUBSECTION>
+g_ascii_strtoll
 g_ascii_strtoull
 G_ASCII_DTOSTR_BUF_SIZE
 g_ascii_strtod

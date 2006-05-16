@@ -130,6 +130,9 @@ gdouble	              g_ascii_strtod   (const gchar  *nptr,
 guint64		      g_ascii_strtoull (const gchar *nptr,
 					gchar      **endptr,
 					guint        base);
+gint64		      g_ascii_strtoll  (const gchar *nptr,
+					gchar      **endptr,
+					guint        base);
 /* 29 bytes should enough for all possible values that
  * g_ascii_dtostr can produce.
  * Then add 10 for good measure */

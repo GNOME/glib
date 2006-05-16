@@ -591,38 +591,11 @@ g_ascii_formatd (gchar       *buffer,
   return buffer;
 }
 
-/**
- * g_ascii_strtoull:
- * @nptr:    the string to convert to a numeric value.
- * @endptr:  if non-%NULL, it returns the character after
- *           the last character used in the conversion.
- * @base:    to be used for the conversion, 2..36 or 0
- *
- * Converts a string to a #guint64 value.
- * This function behaves like the standard strtoull() function
- * does in the C locale. It does this without actually
- * changing the current locale, since that would not be
- * thread-safe.
- *
- * This function is typically used when reading configuration
- * files or other non-user input that should be locale independent.
- * To handle input from the user you should normally use the
- * locale-sensitive system strtoull() function.
- *
- * If the correct value would cause overflow, %G_MAXUINT64
- * is returned, and %ERANGE is stored in %errno.  If the base is
- * outside the valid range, zero is returned, and %EINVAL is stored
- * in %errno.  If the string conversion fails, zero is returned, and
- * @endptr returns @nptr (if @endptr is non-%NULL).
- *
- * Return value: the #guint64 value or zero on error.
- *
- * Since: 2.2
- **/
-guint64
-g_ascii_strtoull (const gchar *nptr,
-		  gchar      **endptr,
-		  guint        base)
+static guint64
+g_parse_long_long (const gchar *nptr,
+		   gchar      **endptr,
+		   guint        base,
+		   gboolean    *negative)
 {
   /* this code is based on on the strtol(3) code from GNU libc released under
    * the GNU Lesser General Public License.
@@ -637,7 +610,7 @@ g_ascii_strtoull (const gchar *nptr,
 #define ISALPHA(c)		(ISUPPER (c) || ISLOWER (c))
 #define	TOUPPER(c)		(ISLOWER (c) ? (c) - 'a' + 'A' : (c))
 #define	TOLOWER(c)		(ISUPPER (c) ? (c) - 'A' + 'a' : (c))
-  gboolean negative, overflow;
+  gboolean overflow;
   guint64 cutoff;
   guint64 cutlim;
   guint64 ui64;
@@ -657,14 +630,15 @@ g_ascii_strtoull (const gchar *nptr,
   /* Skip white space.  */
   while (ISSPACE (*s))
     ++s;
-  if (!*s)
+
+  if (G_UNLIKELY (!*s))
     goto noconv;
   
   /* Check for a sign.  */
-  negative = FALSE;
+  *negative = FALSE;
   if (*s == '-')
     {
-      negative = TRUE;
+      *negative = TRUE;
       ++s;
     }
   else if (*s == '+')
@@ -721,14 +695,13 @@ g_ascii_strtoull (const gchar *nptr,
   if (endptr)
     *endptr = (gchar*) s;
   
-  if (overflow)
+  if (G_UNLIKELY (overflow))
     {
       errno = ERANGE;
       return G_MAXUINT64;
     }
-  
-  /* Return the result of the appropriate sign.  */
-  return negative ? -ui64 : ui64;
+
+  return ui64;
   
  noconv:
   /* We must handle a special case here: the base is 0 or 16 and the
@@ -747,6 +720,99 @@ g_ascii_strtoull (const gchar *nptr,
   return 0;
 }
 
+/**
+ * g_ascii_strtoull:
+ * @nptr:    the string to convert to a numeric value.
+ * @endptr:  if non-%NULL, it returns the character after
+ *           the last character used in the conversion.
+ * @base:    to be used for the conversion, 2..36 or 0
+ *
+ * Converts a string to a #guint64 value.
+ * This function behaves like the standard strtoull() function
+ * does in the C locale. It does this without actually
+ * changing the current locale, since that would not be
+ * thread-safe.
+ *
+ * This function is typically used when reading configuration
+ * files or other non-user input that should be locale independent.
+ * To handle input from the user you should normally use the
+ * locale-sensitive system strtoull() function.
+ *
+ * If the correct value would cause overflow, %G_MAXUINT64
+ * is returned, and %ERANGE is stored in %errno.  If the base is
+ * outside the valid range, zero is returned, and %EINVAL is stored
+ * in %errno.  If the string conversion fails, zero is returned, and
+ * @endptr returns @nptr (if @endptr is non-%NULL).
+ *
+ * Return value: the #guint64 value or zero on error.
+ *
+ * Since: 2.2
+ **/
+guint64
+g_ascii_strtoull (const gchar *nptr,
+		  gchar      **endptr,
+		  guint        base)
+{
+  gboolean negative;
+  guint64 result;
+
+  result = g_parse_long_long (nptr, endptr, base, &negative);
+
+  /* Return the result of the appropriate sign.  */
+  return negative ? -result : result;
+}
+
+/**
+ * g_ascii_strtoll:
+ * @nptr:    the string to convert to a numeric value.
+ * @endptr:  if non-%NULL, it returns the character after
+ *           the last character used in the conversion.
+ * @base:    to be used for the conversion, 2..36 or 0
+ *
+ * Converts a string to a #gint64 value.
+ * This function behaves like the standard strtoll() function
+ * does in the C locale. It does this without actually
+ * changing the current locale, since that would not be
+ * thread-safe.
+ *
+ * This function is typically used when reading configuration
+ * files or other non-user input that should be locale independent.
+ * To handle input from the user you should normally use the
+ * locale-sensitive system strtoll() function.
+ *
+ * If the correct value would cause overflow, %G_MAXINT64 or %G_MININT64
+ * is returned, and %ERANGE is stored in %errno.  If the base is
+ * outside the valid range, zero is returned, and %EINVAL is stored
+ * in %errno.  If the string conversion fails, zero is returned, and
+ * @endptr returns @nptr (if @endptr is non-%NULL).
+ *
+ * Return value: the #gint64 value or zero on error.
+ *
+ * Since: 2.12
+ **/
+gint64 
+g_ascii_strtoll (const gchar *nptr,
+		 gchar      **endptr,
+		 guint        base)
+{
+  gboolean negative;
+  guint64 result;
+
+  result = g_parse_long_long (nptr, endptr, base, &negative);
+
+  if (negative && result > (guint64) G_MININT64)
+    {
+      errno = ERANGE;
+      return G_MININT64;
+    }
+  else if (!negative && result > (guint64) G_MAXINT64)
+    {
+      errno = ERANGE;
+      return G_MAXINT64;
+    }
+  else
+    return (gint64) result;
+}
 
 G_CONST_RETURN gchar*
 g_strerror (gint errnum)

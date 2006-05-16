@@ -1,3 +1,18 @@
+2006-05-16  Matthias Clasen  <mclasen@redhat.com>
+
+	* tests/Makefile.am: 
+	* tests/strtoll-test.c: Add tests for g_ascii_strtoll()
+	and g_ascii_strtoull().
+
+	* glib/glib.symbols:
+	* glib/gstrfuncs.h: 
+	* glib/gstrfuncs.c (g_ascii_strtoll): New function to
+	parse signed 64bit integers like strtoll does.  
+
+	* glib/goption.c (parse_int64): Use g_ascii_strtoll(),
+	since strtoll() is C99 and not available on some
+	systems.  (#341826, Kazuki Iwamoto)
+
 2006-05-15  Matthias Clasen  <mclasen@redhat.com>
 	
 	* configure.in: Bump version

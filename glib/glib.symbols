@@ -1012,6 +1012,7 @@ g_ascii_formatd
 g_ascii_strdown G_GNUC_MALLOC
 g_ascii_strtod
 g_ascii_strtoull
+g_ascii_strtoll
 g_ascii_strup G_GNUC_MALLOC
 g_ascii_tolower G_GNUC_CONST
 g_ascii_toupper G_GNUC_CONST

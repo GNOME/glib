@@ -100,6 +100,7 @@ test_programs =					\
 	strfunc-test				\
 	string-test				\
 	strtod-test				\
+	strtoll-test				\
 	thread-test				\
 	threadpool-test				\
 	tree-test				\
@@ -166,6 +167,7 @@ spawn_test_LDADD = $(progs_ldadd)
 strfunc_test_LDADD = $(progs_ldadd)
 string_test_LDADD = $(progs_ldadd)
 strtod_test_LDADD = $(progs_ldadd) -lm
+strtoll_test_LDADD = $(progs_ldadd) -lm
 thread_test_LDADD = $(thread_ldadd)
 threadpool_test_LDADD = $(thread_ldadd)
 tree_test_LDADD = $(progs_ldadd)

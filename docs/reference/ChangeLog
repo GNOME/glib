@@ -1,3 +1,7 @@
+2006-05-16  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/glib-sections.txt: Add g_ascii_strtoll
+
 2006-05-15  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.11.1 ===
