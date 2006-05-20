@@ -747,7 +747,7 @@ parse_int64 (const gchar *arg_name,
   gint64 tmp;
 
   errno = 0;
-  tmp = strtoll (arg, &end, 0);
+  tmp = g_ascii_strtoll (arg, &end, 0);
 
   if (*arg == '\0' || *end != '\0')
     {
