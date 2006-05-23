@@ -1,7 +1,7 @@
 # Thai translation of glib.
-# Copyright (C) 2005 Free Software Foundation, Inc.
+# Copyright (C) 2005-2006 Free Software Foundation, Inc.
 # This file is distributed under the same license as the glib package.
-# Theppitak Karoonboonyanan <thep@linux.thai.net>, 2005.
+# Theppitak Karoonboonyanan <thep@linux.thai.net>, 2005-2006.
 # 
 # 
 msgid ""
@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: glib 2.7.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-05-15 12:51-0400\n"
-"PO-Revision-Date: 2006-01-07 15:11+0700\n"
+"PO-Revision-Date: 2006-05-23 15:37+0700\n"
 "Last-Translator: Theppitak Karoonboonyanan <thep@linux.thai.net>\n"
 "Language-Team: Thai <l10n@opentle.org>\n"
 "MIME-Version: 1.0\n"
@@ -18,38 +18,37 @@ msgstr ""
 
 #: glib/gbookmarkfile.c:716 glib/gbookmarkfile.c:793 glib/gbookmarkfile.c:872
 #: glib/gbookmarkfile.c:919
-#, fuzzy, c-format
+#, c-format
 msgid "Unexpected attribute '%s' for element '%s'"
-msgstr ""
-"พบอักขระแปลกปลอม '%s' ในขณะที่กำลังมองหา '=' หลังชื่อแอตทริบิวต์ '%s' ของอิลิเมนต์ '%s'"
+msgstr "พบแอตทริบิวต์ '%s' ที่ไม่ต้องการ สำหรับอิลิเมนต์ '%s'"
 
 #: glib/gbookmarkfile.c:727 glib/gbookmarkfile.c:804 glib/gbookmarkfile.c:814
 #: glib/gbookmarkfile.c:930
 #, c-format
 msgid "Attribute '%s' of element '%s' not found"
-msgstr ""
+msgstr "ไม่พบแอตทริบิวต์ '%s' สำหรับอิลิเมนต์ '%s'"
 
 #: glib/gbookmarkfile.c:1103 glib/gbookmarkfile.c:1168
 #: glib/gbookmarkfile.c:1232 glib/gbookmarkfile.c:1242
 #, c-format
 msgid "Unexpected tag '%s', tag '%s' expected"
-msgstr ""
+msgstr "พบแท็ก '%s' ที่ไม่ต้องการ ขณะที่ต้องการแท็ก '%s'"
 
 #: glib/gbookmarkfile.c:1128 glib/gbookmarkfile.c:1142
 #: glib/gbookmarkfile.c:1210 glib/gbookmarkfile.c:1262
 #, c-format
 msgid "Unexpected tag '%s' inside '%s'"
-msgstr ""
+msgstr "พบแท็ก '%s' ที่ไม่ต้องการภายใน '%s'"
 
 #: glib/gbookmarkfile.c:1792
-#, fuzzy, c-format
+#, c-format
 msgid "No valid bookmark file was be found in data dirs"
-msgstr "ไม่พบแฟ้มคีย์ในไดเรกทอรีข้อมูลทั้งหลาย"
+msgstr "ไม่พบแฟ้มที่คั่นหน้าที่ใช้การได้ในไดเรกทอรีข้อมูล"
 
 #: glib/gbookmarkfile.c:1993
 #, c-format
 msgid "A bookmark for URI '%s' already exists"
-msgstr ""
+msgstr "มีที่คั่นหน้าสำหรับ URI '%s' อยู่ก่อนแล้ว"
 
 #: glib/gbookmarkfile.c:2037 glib/gbookmarkfile.c:2192
 #: glib/gbookmarkfile.c:2277 glib/gbookmarkfile.c:2358
@@ -62,27 +61,27 @@ msgstr ""
 #: glib/gbookmarkfile.c:3641
 #, c-format
 msgid "No bookmark found for URI '%s'"
-msgstr ""
+msgstr "ไม่พบที่คั่นหน้าสำหรับ URI '%s'"
 
 #: glib/gbookmarkfile.c:2367
 #, c-format
 msgid "No MIME type defined in the bookmark for URI '%s'"
-msgstr ""
+msgstr "ไม่ได้กำหนดชนิด MIME ไว้ในที่คั่นหน้าสำหรับ URI '%s'"
 
 #: glib/gbookmarkfile.c:2452
 #, c-format
 msgid "No private flag has been defined in bookmark for URI '%s'"
-msgstr ""
+msgstr "ไม่ได้กำหนดแฟล็กความเป็นส่วนตัวไว้ในที่คั่นหน้าสำหรับ URI '%s'"
 
 #: glib/gbookmarkfile.c:2831
 #, c-format
 msgid "No groups set in bookmark for URI '%s'"
-msgstr ""
+msgstr "ไม่ได้กำหนดกลุ่มไว้ในที่คั่นหน้าสำหรับ URI '%s'"
 
 #: glib/gbookmarkfile.c:3229 glib/gbookmarkfile.c:3373
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
-msgstr ""
+msgstr "ไม่มีโปรแกรมประยุกต์ชื่อ '%s' ที่ลงทะเบียนที่คั่นหน้าสำหรับ '%s' ไว้"
 
 #: glib/gconvert.c:404 glib/gconvert.c:482 glib/giochannel.c:1150
 #, c-format
@@ -657,14 +656,14 @@ msgid "Integer value '%s' for %s out of range"
 msgstr "ค่าจำนวนเต็ม '%s' สำหรับ %s ออกนอกช่วงที่กำหนด"
 
 #: glib/goption.c:721
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot parse double value '%s' for %s"
-msgstr "ไม่สามารถแจงค่าจำนวนเต็ม '%s' สำหรับ %s"
+msgstr "ไม่สามารถแจงค่า double '%s' สำหรับ %s"
 
 #: glib/goption.c:729
-#, fuzzy, c-format
+#, c-format
 msgid "Double value '%s' for %s out of range"
-msgstr "ค่าจำนวนเต็ม '%s' สำหรับ %s ออกนอกช่วงที่กำหนด"
+msgstr "ค่า double '%s' สำหรับ %s ออกนอกช่วงที่กำหนด"
 
 #: glib/goption.c:1066
 #, c-format
@@ -767,9 +766,9 @@ msgid "Integer value '%s' out of range"
 msgstr "ค่าจำนวนเต็ม '%s' ออกนอกช่วง"
 
 #: glib/gkeyfile.c:3477
-#, fuzzy, c-format
+#, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
-msgstr "ค่า '%s' ไม่สามารถตีความเป็นตัวเลขได้"
+msgstr "ค่า '%s' ไม่สามารถตีความเป็นตัวเลข float ได้"
 
 #: glib/gkeyfile.c:3497
 #, c-format
