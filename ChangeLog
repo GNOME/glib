@@ -1,3 +1,10 @@
+2006-05-22  Sebastian Wilhelmi  <wilhelmi@google.com>
+
+	* glib/gthread.c (g_thread_init_glib): Run _g_atomic_thread_init
+	as the first of the full fledged initializers to allow the later
+	to potentially use atomic ints (which they currently do
+	not). (#342563, Peter Kjellerstedt)
+
 2006-05-16  Matthias Clasen  <mclasen@redhat.com>
 
 	* tests/Makefile.am: 
