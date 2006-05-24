@@ -1,3 +1,8 @@
+2006-05-24  Matthias Clasen  <mclasen@redhat.com>
+
+	* configure.in: Don't compile timeloop on Minix. 
+	(Leonard den Ottolander)
+
 2006-05-22  Sebastian Wilhelmi  <wilhelmi@google.com>
 
 	* glib/gthread.c (g_thread_init_glib): Run _g_atomic_thread_init

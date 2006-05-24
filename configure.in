@@ -1391,7 +1391,7 @@ AC_SUBST(PLATFORMDEP)
 
 AC_MSG_CHECKING([whether to compile timeloop])
 case "$host" in
-  *-*-cygwin*|*-*-mingw*)
+  *-*-cygwin*|*-*-mingw*|*-*-minix)
     enable_timeloop=no
     ;;
   *)
