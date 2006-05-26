@@ -1,3 +1,23 @@
+Overview of Changes from GLib 2.10.2 to GLib 2.10.3
+===================================================
+
+* Bugs fixed:
+ 338845 g_completion_complete_utf8 crashes when NULL is 
+        passed to it                                   [Yevgen Muntyan]
+ 157877 update-desktop-database doesn't handle duplicate 
+        entries                                      [Sebastien Bacher]
+ 155884 gatomic.c should be based on new SDK on win32   [John Ehresman]
+ 338572 Dereferencing NULL value in g_key_file_get_group_comment 
+                                              [Coverity, Pascal Terjan]
+ 340816 GKeyFile set_string_list invalid memory reads  [Nick Treleaven]
+ 341192 g_io_channel_set_flags not implemented on win32 [Benjamin Otte]
+ 340530 mismatched calloc / g_free in win32 threads     [Jake Goulding]
+ 332883 The GObject tutorial say g_object_(un)ref is _not_ 
+        thread-safe                                [Christophe Fergeau]
+        Fix a memory leak in GOption                        [Tim Janik]
+
+* Updated translations (dz,et,nn)
+
 Overview of Changes from GLib 2.10.1 to GLib 2.10.2
 ===================================================
 

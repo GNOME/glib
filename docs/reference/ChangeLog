@@ -1,3 +1,7 @@
+2006-05-26  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.10.3 ===
+
 2006-04-19  Matthias Clasen  <mclasen@redhat.com>
 
 	* gobject/tmpl/objects.sgml: Add some missing Since: 2.8 tags
@@ -5,7 +9,7 @@
 2006-04-18  Matthias Clasen  <mclasen@redhat.com>
 
 	* gobject/tut_gobject.xml: Say that ref/unref are thread-safe now.  
-	(#322883, Christophe Fergeau)
+	(#332883, Christophe Fergeau)
 
 2006-04-07  Matthias Clasen  <mclasen@redhat.com>
 	
