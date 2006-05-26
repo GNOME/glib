@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-04-07 13:20-0400\n"
+"POT-Creation-Date: 2006-05-26 09:45-0400\n"
 "PO-Revision-Date: 2005-03-13 11:36+0330\n"
 "Last-Translator: Hamed Malek <hamed@farsiweb.info>\n"
 "Language-Team: Persian <farsi@lists.sharif.edu>\n"
@@ -619,7 +619,7 @@ msgstr "خطا در حین تبدیل: %s"
 msgid "Missing argument for %s"
 msgstr ""
 
-#: glib/goption.c:1489
+#: glib/goption.c:1467
 #, c-format
 msgid "Unknown option %s"
 msgstr "گزینه نامعلوم %s"
@@ -656,8 +656,8 @@ msgid "Key file contains unsupported encoding '%s'"
 msgstr "پرونده‌ی کلید شامل کدگذاری پشتیبانی نشده‌ی «%s» است"
 
 #: glib/gkeyfile.c:1017 glib/gkeyfile.c:1176 glib/gkeyfile.c:2177
-#: glib/gkeyfile.c:2242 glib/gkeyfile.c:2361 glib/gkeyfile.c:2497
-#: glib/gkeyfile.c:2649 glib/gkeyfile.c:2823 glib/gkeyfile.c:2880
+#: glib/gkeyfile.c:2242 glib/gkeyfile.c:2361 glib/gkeyfile.c:2496
+#: glib/gkeyfile.c:2649 glib/gkeyfile.c:2825 glib/gkeyfile.c:2882
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "پرونده‌ی کلید گروه «%s» را ندارد"
@@ -686,32 +686,32 @@ msgstr ""
 "پرونده‌ی کلید حاوی کلید «%s» در گروه «%s» است که مقداری دارد که قابل تفسیر "
 "نیست"
 
-#: glib/gkeyfile.c:2192 glib/gkeyfile.c:2376 glib/gkeyfile.c:2891
+#: glib/gkeyfile.c:2192 glib/gkeyfile.c:2376 glib/gkeyfile.c:2893
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "پرونده‌ی کلید، کلید «%s» در گروه «%s» را ندارد"
 
-#: glib/gkeyfile.c:3067
+#: glib/gkeyfile.c:3066
 #, c-format
 msgid "Key file contains escape character at end of line"
 msgstr "پرونده کلید شامل نویسه‌ی گریز در انتهای خط است"
 
-#: glib/gkeyfile.c:3089
+#: glib/gkeyfile.c:3088
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "پرونده‌ی کلید حاوی دنباله‌ی گریز نامعتبر «%s» است"
 
-#: glib/gkeyfile.c:3230
+#: glib/gkeyfile.c:3229
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "مقدار «%s» را نمی‌توان به عدد تفسیر کرد"
 
-#: glib/gkeyfile.c:3240
+#: glib/gkeyfile.c:3239
 #, fuzzy, c-format
 msgid "Integer value '%s' out of range"
 msgstr "مقدار صحیح «%s» برای %s خارج از محدوده است"
 
-#: glib/gkeyfile.c:3270
+#: glib/gkeyfile.c:3269
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "مقدار «%s» را نمی‌توان به بولی تفسیر کرد"

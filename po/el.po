@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: el\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-04-07 13:20-0400\n"
+"POT-Creation-Date: 2006-05-26 09:45-0400\n"
 "PO-Revision-Date: 2006-02-20 12:47+0200\n"
 "Last-Translator: Kostas Papadimas <pkst@gnome.org>\n"
 "Language-Team: Greek <team@gnome.gr>\n"
@@ -669,7 +669,7 @@ msgstr "Σφάλμα επιλογής ανάλυσης %s"
 msgid "Missing argument for %s"
 msgstr "Λείπει όρισμα για %s"
 
-#: glib/goption.c:1489
+#: glib/goption.c:1467
 #, c-format
 msgid "Unknown option %s"
 msgstr "Άγνωστη επιλογή %s"
@@ -708,8 +708,8 @@ msgid "Key file contains unsupported encoding '%s'"
 msgstr "Το Key file περιέχει μη υποστηριζόμενη κωδικοποίηση '%s'"
 
 #: glib/gkeyfile.c:1017 glib/gkeyfile.c:1176 glib/gkeyfile.c:2177
-#: glib/gkeyfile.c:2242 glib/gkeyfile.c:2361 glib/gkeyfile.c:2497
-#: glib/gkeyfile.c:2649 glib/gkeyfile.c:2823 glib/gkeyfile.c:2880
+#: glib/gkeyfile.c:2242 glib/gkeyfile.c:2361 glib/gkeyfile.c:2496
+#: glib/gkeyfile.c:2649 glib/gkeyfile.c:2825 glib/gkeyfile.c:2882
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Το Key file δεν έχει ομάδα '%s'"
@@ -738,32 +738,32 @@ msgstr ""
 "Το Key file περιέχει  key '%s' στην ομάδα '%s' που η τιμή του δεν μπορεί να "
 "ερμηνευθεί."
 
-#: glib/gkeyfile.c:2192 glib/gkeyfile.c:2376 glib/gkeyfile.c:2891
+#: glib/gkeyfile.c:2192 glib/gkeyfile.c:2376 glib/gkeyfile.c:2893
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Το Key file δεν έχει  key '%s' στην ομάδα '%s'"
 
-#: glib/gkeyfile.c:3067
+#: glib/gkeyfile.c:3066
 #, c-format
 msgid "Key file contains escape character at end of line"
 msgstr "Το Key file περιέχει escape character στο τέλος της γραμμής"
 
-#: glib/gkeyfile.c:3089
+#: glib/gkeyfile.c:3088
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "To Key file περιέχει χαρακτήρες μή έγκυρα escaped '%s'"
 
-#: glib/gkeyfile.c:3230
+#: glib/gkeyfile.c:3229
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Η τιμή '%s' δεν μπορεί να ερμηνευθεί ως ένας αριθμός."
 
-#: glib/gkeyfile.c:3240
+#: glib/gkeyfile.c:3239
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "Integer value '%s' είναι εκτός εύρους"
 
-#: glib/gkeyfile.c:3270
+#: glib/gkeyfile.c:3269
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Η τιμή '%s' δεν μπορεί να ερμηνευθεί ως  boolean."

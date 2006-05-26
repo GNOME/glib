@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-04-07 13:20-0400\n"
+"POT-Creation-Date: 2006-05-26 09:45-0400\n"
 "PO-Revision-Date: 2005-05-20 11:50+0545\n"
 "Last-Translator: Jyotshna Shrestha <shresthajyo@hotmail.com>\n"
 "Language-Team: Nepali <info@mpp.org.np>\n"
@@ -605,7 +605,7 @@ msgstr "अनुवाद क्रममा गल्ती: %s"
 msgid "Missing argument for %s"
 msgstr ""
 
-#: glib/goption.c:1489
+#: glib/goption.c:1467
 #, c-format
 msgid "Unknown option %s"
 msgstr "अज्ञात विकल्प %s"
@@ -642,8 +642,8 @@ msgid "Key file contains unsupported encoding '%s'"
 msgstr "कुन्ज फाइलमा असहयोगिक संकेतन '%s' समावेश छ।"
 
 #: glib/gkeyfile.c:1017 glib/gkeyfile.c:1176 glib/gkeyfile.c:2177
-#: glib/gkeyfile.c:2242 glib/gkeyfile.c:2361 glib/gkeyfile.c:2497
-#: glib/gkeyfile.c:2649 glib/gkeyfile.c:2823 glib/gkeyfile.c:2880
+#: glib/gkeyfile.c:2242 glib/gkeyfile.c:2361 glib/gkeyfile.c:2496
+#: glib/gkeyfile.c:2649 glib/gkeyfile.c:2825 glib/gkeyfile.c:2882
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "कुण्ज फाईलसंग समूह '%s' छैन"
@@ -670,32 +670,32 @@ msgid ""
 "interpreted."
 msgstr "कुन्ज फाइलमा समूह '%s' मा कुन्ज '%s' समावेश छ जसको मानलाई व्याख्या गर्न सकिंदैन।"
 
-#: glib/gkeyfile.c:2192 glib/gkeyfile.c:2376 glib/gkeyfile.c:2891
+#: glib/gkeyfile.c:2192 glib/gkeyfile.c:2376 glib/gkeyfile.c:2893
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "समूह '%s' मा कुण्ज फाईल संग कुण्ज '%s' छैन"
 
-#: glib/gkeyfile.c:3067
+#: glib/gkeyfile.c:3066
 #, c-format
 msgid "Key file contains escape character at end of line"
 msgstr "कुन्ज फाइलमा पंक्तिको अन्त्यमा निस्कनुस् वर्ण समावेश छ।"
 
-#: glib/gkeyfile.c:3089
+#: glib/gkeyfile.c:3088
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "कुन्ज फाइलमा अमान्य निस्कनुस् अनुक्रम '%s' समावेस छ।"
 
-#: glib/gkeyfile.c:3230
+#: glib/gkeyfile.c:3229
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "मान '%s' लाई संख्याको रूपमा व्याख्या गर्न सकिंदैन"
 
-#: glib/gkeyfile.c:3240
+#: glib/gkeyfile.c:3239
 #, fuzzy, c-format
 msgid "Integer value '%s' out of range"
 msgstr "पूर्ण संख्या मान '%s' %s को लागि क्षेत्र भन्दा बाहिर छ"
 
-#: glib/gkeyfile.c:3270
+#: glib/gkeyfile.c:3269
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "मान '%s' बुलेनको रुपमा व्याख्या गर्न सकिंदैन।"
