@@ -1,3 +1,17 @@
+2006-05-28  Matthias Clasen  <mclasen@redhat.com>
+
+	* tests/markups/expected-*: Output that test-markup
+	is expected to produce when run on the valid gmarkup 
+	examples.
+
+	* tests/markup-test.c: Only dump the results of the
+	first, unchunked parse, to compare it against the expected
+	output. 
+
+	* tests/run-markup-tests.sh: For valid examples, compare
+	the output of test-markup against the corresponding
+	expected-<n> file.
+	
 2006-05-24  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Don't compile timeloop on Minix. 

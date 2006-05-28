@@ -54,10 +54,10 @@ end_element_handler    (GMarkupParseContext *context,
   --depth;
   indent (0);
   printf ("END '%s'\n", element_name);
-}
+  }
 
 static void
-text_handler           (GMarkupParseContext *context,
+text_handler                      (GMarkupParseContext *context,
                         const gchar         *text,
                         gsize                text_len,
                         gpointer             user_data,
@@ -88,11 +88,19 @@ error_handler          (GMarkupParseContext *context,
   fprintf (stderr, " %s\n", error->message);
 }
 
-static GMarkupParser parser = {
+static const GMarkupParser parser = {
   start_element_handler,
   end_element_handler,
   text_handler,
   passthrough_handler,
+  error_handler
+};
+
+static const GMarkupParser silent_parser = {
+  NULL,
+  NULL,
+  NULL,
+  NULL,
   error_handler
 };
 
@@ -104,7 +112,7 @@ test_in_chunks (const gchar *contents,
   GMarkupParseContext *context;
   int i = 0;
   
-  context = g_markup_parse_context_new (&parser, 0, NULL, NULL);
+  context = g_markup_parse_context_new (&silent_parser, 0, NULL, NULL);
 
   while (i < length)
     {

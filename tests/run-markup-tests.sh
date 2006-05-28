@@ -17,7 +17,7 @@ error_out=/dev/null
 if [ "$1" = "-v" ]; then
   verbose=1
   error_out=/dev/stderr
-fi  
+fi
 for I in ${srcdir:-.}/markups/fail-*.gmarkup; do
   echo_v "Parsing $I, should fail"
   ./markup-test $I > /dev/null 2> $error_out && fail "failed to generate error on $I"
@@ -26,9 +26,14 @@ for I in ${srcdir:-.}/markups/fail-*.gmarkup; do
   fi  
 done
 
-for I in ${srcdir:-.}/markups/valid-*.gmarkup; do
-  echo_v "Parsing $I, should succeed"
-  ./markup-test $I > /dev/null 2> $error_out || fail "failed on $I"
+for (( I=1 ; I < 100 ; I++ )) ; do
+  F=${srcdir:-.}/markups/valid-$I.gmarkup
+  if [ -f $F ] ; then
+    echo_v "Parsing $F, should succeed"
+    ./markup-test $F > actual 2> $error_out || fail "failed on $F"
+    diff -u ${srcdir:-.}/markups/expected-$I actual || fail "unexpected output on $F"
+    rm actual
+  fi
 done
 
 echo_v "All tests passed."
