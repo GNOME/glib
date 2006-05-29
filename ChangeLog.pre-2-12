@@ -1,5 +1,10 @@
 2006-05-28  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gmarkup.c (g_markup_parse_context_parse): 
+	Don't use g_str_has_{prefix,suffix} here.
+
+2006-05-28  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/gmarkup.h: Add a GMarkupParseFlags flag for
 	treating CDATA as text. 
 

@@ -1624,18 +1624,27 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
 	      if (*context->iter == '<') 
 		context->balance++;
               if (*context->iter == '>') 
-		{
+		{				
+		  gchar *str;
+		  gsize len;
+
 		  context->balance--;
 		  add_to_partial (context, context->start, context->iter);
 		  context->start = context->iter;
-		  if ((g_str_has_prefix (context->partial_chunk->str, "<?")
-		       && g_str_has_suffix (context->partial_chunk->str, "?")) ||
-		      (g_str_has_prefix (context->partial_chunk->str, "<!--")
-		       && g_str_has_suffix (context->partial_chunk->str, "--")) ||
-		      (g_str_has_prefix (context->partial_chunk->str, "<![CDATA[") 
-		       && g_str_has_suffix (context->partial_chunk->str, "]]")) ||
-		      (g_str_has_prefix (context->partial_chunk->str, "<!DOCTYPE")
-		       && context->balance == 0)) 
+
+		  str = context->partial_chunk->str;
+		  len = context->partial_chunk->len;
+
+		  if (str[1] == '?' && str[len - 1] == '?')
+		    break;
+		  if (strncmp (str, "<!--", 4) == 0 && 
+		      strcmp (str + len - 2, "--") == 0)
+		    break;
+		  if (strncmp (str, "<![CDATA[", 9) == 0 && 
+		      strcmp (str + len - 2, "]]") == 0)
+		    break;
+		  if (strncmp (str, "<!DOCTYPE", 9) == 0 &&
+		      context->balance == 0)
 		    break;
 		}
             }
@@ -1661,13 +1670,12 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
               add_to_partial (context, context->start, context->iter);
 
 	      if (context->flags & G_MARKUP_TREAT_CDATA_AS_TEXT &&
-		  g_str_has_prefix (context->partial_chunk->str, "<![CDATA[") &&
-		  g_str_has_suffix (context->partial_chunk->str, "]]>"))
+		  strncmp (context->partial_chunk->str, "<![CDATA[", 9) == 0)
 		{
 		  if (context->parser->text)
 		    (*context->parser->text) (context,
-					      context->partial_chunk->str + strlen ("<![CDATA["),
-					      context->partial_chunk->len - strlen ("<![CDATA[" "]]>"),
+					      context->partial_chunk->str + 9,
+					      context->partial_chunk->len - 12,
 					      context->user_data,
 					      &tmp_error);
 		}
