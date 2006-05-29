@@ -1646,7 +1646,7 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
               /* The passthrough hasn't necessarily ended. Merge with
                * partial chunk, leave state unchanged.
                */
-              add_to_partial (context, context->start, context->iter);
+               add_to_partial (context, context->start, context->iter);
             }
           else
             {
@@ -1660,7 +1660,18 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
               advance_char (context); /* advance past close angle */
               add_to_partial (context, context->start, context->iter);
 
-              if (context->parser->passthrough)
+	      if (context->flags & G_MARKUP_TREAT_CDATA_AS_TEXT &&
+		  g_str_has_prefix (context->partial_chunk->str, "<![CDATA[") &&
+		  g_str_has_suffix (context->partial_chunk->str, "]]>"))
+		{
+		  if (context->parser->text)
+		    (*context->parser->text) (context,
+					      context->partial_chunk->str + strlen ("<![CDATA["),
+					      context->partial_chunk->len - strlen ("<![CDATA[" "]]>"),
+					      context->user_data,
+					      &tmp_error);
+		}
+	      else if (context->parser->passthrough)
                 (*context->parser->passthrough) (context,
                                                  context->partial_chunk->str,
                                                  context->partial_chunk->len,

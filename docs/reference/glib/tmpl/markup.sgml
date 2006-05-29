@@ -115,11 +115,16 @@ error domains.
 
 <!-- ##### ENUM GMarkupParseFlags ##### -->
 <para>
-There are no flags right now. Pass "0" for the flags argument to all 
-functions.
+Flags that affect the behaviour of the parser. 
 </para>
 
 @G_MARKUP_DO_NOT_USE_THIS_UNSUPPORTED_FLAG: flag you should not use.
+@G_MARKUP_TREAT_CDATA_AS_TEXT: When this flag is set, CDATA marked
+  sections are not passed literally to the @passthrough function of
+  the parser. Instead, the content of the section (without the 
+  <literal>&lt;![CDATA[</literal> and <literal>]]&gt;</literal>) is
+  passed to the @text function. This flag was added in GLib 2.12. 
+
 
 <!-- ##### STRUCT GMarkupParseContext ##### -->
 <para>
@@ -141,14 +146,22 @@ g_markup_parse_context_parse() will report that error back to its caller.
 </para>
 
 @start_element: Callback to invoke when the opening tag of an element
-is seen.
-@end_element: Callback to invoke when the closing tag of an element is seen
+    is seen.
+@end_element: Callback to invoke when the closing tag of an element is seen.
+    Note that this is also called for empty tags like 
+    <literal>&lt;empty/&gt;</literal>.
 @text: Callback to invoke when some text is seen (text is always
-inside an element)
-@passthrough: Callback to invoke for comments, processing
-instructions and doctype declarations; if you're re-writing the parsed document, write the
-passthrough text back out in the same position
-@error: Callback to invoke when an error occurs
+    inside an element). Note that the text of an element may be spread
+    over multiple calls of this function. If the %G_MARKUP_TREAT_CDATA_AS_TEXT
+    flag is set, this function is also called for the content of CDATA marked 
+    sections.
+@passthrough: Callback to invoke for comments, processing instructions 
+    and doctype declarations; if you're re-writing the parsed document, 
+    write the passthrough text back out in the same position. If the
+    %G_MARKUP_TREAT_CDATA_AS_TEXT flag is not set, this function is also 
+    called for CDATA marked sections.
+@error: Callback to invoke when an error occurs.
+
 
 <!-- ##### FUNCTION g_markup_escape_text ##### -->
 <para>
