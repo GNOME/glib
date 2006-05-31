@@ -1,3 +1,7 @@
+Wed May 31 11:35:48 2006  Tim Janik  <timj@gtk.org>
+
+	* gobject/tmpl/gtype.sgml (Note): amend G_TYPE_CHAR according to #303622.
+
 2006-05-28  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/tmpl/markup.sgml: Document G_MARKUP_TREAT_CDATA_AS_TEXT.

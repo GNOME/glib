@@ -1666,9 +1666,11 @@ The fundamental type from which all interfaces are derived.
 
 
 <!-- ##### MACRO G_TYPE_CHAR ##### -->
-<para>
-The fundamental type corresponding to #gchar.
-</para>
+  <para>
+    The fundamental type corresponding to #gchar.
+    The type designated by G_TYPE_CHAR is unconditionally an 8-bit signed integer.
+    This may or may not be the same type a the C type "gchar".
+  </para>
 
 
 

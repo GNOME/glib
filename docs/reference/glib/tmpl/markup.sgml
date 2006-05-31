@@ -123,8 +123,7 @@ Flags that affect the behaviour of the parser.
   sections are not passed literally to the @passthrough function of
   the parser. Instead, the content of the section (without the 
   <literal>&lt;![CDATA[</literal> and <literal>]]&gt;</literal>) is
-  passed to the @text function. This flag was added in GLib 2.12. 
-
+  passed to the @text function. This flag was added in GLib 2.12.
 
 <!-- ##### STRUCT GMarkupParseContext ##### -->
 <para>
@@ -161,7 +160,6 @@ g_markup_parse_context_parse() will report that error back to its caller.
     %G_MARKUP_TREAT_CDATA_AS_TEXT flag is not set, this function is also 
     called for CDATA marked sections.
 @error: Callback to invoke when an error occurs.
-
 
 <!-- ##### FUNCTION g_markup_escape_text ##### -->
 <para>

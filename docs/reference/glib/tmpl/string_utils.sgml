@@ -644,6 +644,17 @@ For that purpose, use g_utf8_strreverse().
 @Returns: the same pointer passed in as @string.
 
 
+<!-- ##### FUNCTION g_ascii_strtoll ##### -->
+<para>
+
+</para>
+
+@nptr: 
+@endptr: 
+@base: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_ascii_strtoull ##### -->
 <para>
 
