@@ -1,3 +1,10 @@
+2006-06-01  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/glib.symbols: 
+	* glib/ghash.h: 
+	* glib/ghash.c: Add g_hash_table_{remove,steal}_all to
+	remove all nodes from a hash table.  (#168538, Matt Barnes)
+
 2006-06-01  Behdad Esfahbod  <behdad@gnome.org>
 
 	* glib/gkeyfile.c (g_key_file_to_data),

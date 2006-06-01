@@ -362,9 +362,11 @@ g_hash_table_lookup_extended
 g_hash_table_new
 g_hash_table_new_full
 g_hash_table_remove
+g_hash_table_remove_all
 g_hash_table_replace
 g_hash_table_size
 g_hash_table_steal
+g_hash_table_steal_all
 #endif
 #endif
 

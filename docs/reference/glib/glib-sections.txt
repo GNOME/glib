@@ -1844,6 +1844,8 @@ g_hash_table_remove
 g_hash_table_steal
 g_hash_table_foreach_remove
 g_hash_table_foreach_steal
+g_hash_table_remove_all
+g_hash_table_steal_all
 GHRFunc
 g_hash_table_freeze
 g_hash_table_thaw

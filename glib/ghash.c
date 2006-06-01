@@ -215,21 +215,10 @@ g_hash_table_unref (GHashTable *hash_table)
 void
 g_hash_table_destroy (GHashTable *hash_table)
 {
-  gint i;
-  
   g_return_if_fail (hash_table != NULL);
   g_return_if_fail (hash_table->ref_count > 0);
   
-  for (i = 0; i < hash_table->size; i++)
-    {
-      g_hash_nodes_destroy (hash_table->nodes[i], 
-                            hash_table->key_destroy_func,
-                            hash_table->value_destroy_func);
-      hash_table->nodes[i] = NULL;
-    }
-  hash_table->nnodes = 0;
-  hash_table->size = HASH_TABLE_MIN_SIZE;
-
+  g_hash_table_remove_all (hash_table);
   g_hash_table_unref (hash_table);
 }
 
@@ -455,6 +444,38 @@ g_hash_table_remove (GHashTable	   *hash_table,
 }
 
 /**
+ * g_hash_table_remove_all:
+ * @hash_table: a #GHashTable
+ *
+ * Removes all keys and their associated values from a #GHashTable.
+ *
+ * If the #GHashTable was created using g_hash_table_new_full(), the keys
+ * and values are freed using the supplied destroy functions, otherwise you
+ * have to make sure that any dynamically allocated values are freed
+ * yourself.
+ *
+ * Since: 2.12
+ **/
+void
+g_hash_table_remove_all (GHashTable *hash_table)
+{
+  guint i;
+
+  g_return_if_fail (hash_table != NULL);
+
+  for (i = 0; i < hash_table->size; i++)
+    {
+      g_hash_nodes_destroy (hash_table->nodes[i],
+                            hash_table->key_destroy_func,
+                            hash_table->value_destroy_func);
+      hash_table->nodes[i] = NULL;
+    }
+  hash_table->nnodes = 0;
+  
+  G_HASH_TABLE_RESIZE (hash_table);
+}
+
+/**
  * g_hash_table_steal:
  * @hash_table: a #GHashTable.
  * @key: the key to remove.
@@ -486,6 +507,33 @@ g_hash_table_steal (GHashTable    *hash_table,
     }
 
   return FALSE;
+}
+
+/**
+ * g_hash_table_steal_all:
+ * @hash_table: a #GHashTable.
+ *
+ * Removes all keys and their associated values from a #GHashTable 
+ * without calling the key and value destroy functions.
+ *
+ * Since: 2.12
+ **/
+void
+g_hash_table_steal_all (GHashTable *hash_table)
+{
+  guint i;
+
+  g_return_if_fail (hash_table != NULL);
+
+  for (i = 0; i < hash_table->size; i++)
+    {
+      g_hash_nodes_destroy (hash_table->nodes[i], NULL, NULL);
+      hash_table->nodes[i] = NULL;
+    }
+
+  hash_table->nnodes = 0;
+
+  G_HASH_TABLE_RESIZE (hash_table);
 }
 
 /**

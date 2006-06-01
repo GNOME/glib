@@ -54,8 +54,10 @@ void        g_hash_table_replace           (GHashTable     *hash_table,
 					    gpointer	    value);
 gboolean    g_hash_table_remove		   (GHashTable	   *hash_table,
 					    gconstpointer   key);
+void        g_hash_table_remove_all        (GHashTable     *hash_table);
 gboolean    g_hash_table_steal             (GHashTable     *hash_table,
 					    gconstpointer   key);
+void        g_hash_table_steal_all         (GHashTable     *hash_table);
 gpointer    g_hash_table_lookup		   (GHashTable	   *hash_table,
 					    gconstpointer   key);
 gboolean    g_hash_table_lookup_extended   (GHashTable	   *hash_table,
