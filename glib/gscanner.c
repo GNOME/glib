@@ -1705,8 +1705,7 @@ g_scanner_get_token_ll	(GScanner	*scanner,
   
   if (gstring)
     {
-      value.v_string = gstring->str;
-      g_string_free (gstring, FALSE);
+      value.v_string = g_string_free (gstring, FALSE);
       gstring = NULL;
     }
   

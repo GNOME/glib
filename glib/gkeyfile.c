@@ -929,7 +929,6 @@ g_key_file_to_data (GKeyFile  *key_file,
 		    GError   **error)
 {
   GString *data_string;
-  gchar *data;
   GList *group_node, *key_file_node;
 
   g_return_val_if_fail (key_file != NULL, NULL);
@@ -967,11 +966,7 @@ g_key_file_to_data (GKeyFile  *key_file,
   if (length)
     *length = data_string->len;
 
-  data = data_string->str;
-
-  g_string_free (data_string, FALSE);
-
-  return data;
+  return g_string_free (data_string, FALSE);
 }
 
 /**
@@ -3514,7 +3509,7 @@ g_key_file_parse_value_as_comment (GKeyFile    *key_file,
                                    const gchar *value)
 {
   GString *string;
-  gchar **lines, *comment;
+  gchar **lines;
   gsize i;
 
   string = g_string_sized_new (512);
@@ -3530,11 +3525,7 @@ g_key_file_parse_value_as_comment (GKeyFile    *key_file,
     }
   g_strfreev (lines);
 
-  comment = string->str;
-
-  g_string_free (string, FALSE);
-
-  return comment;
+  return g_string_free (string, FALSE);
 }
 
 static gchar *
@@ -3542,7 +3533,7 @@ g_key_file_parse_comment_as_value (GKeyFile      *key_file,
                                    const gchar   *comment)
 {
   GString *string;
-  gchar **lines, *value;
+  gchar **lines;
   gsize i;
 
   string = g_string_sized_new (512);
@@ -3554,11 +3545,7 @@ g_key_file_parse_comment_as_value (GKeyFile      *key_file,
                             lines[i + 1] == NULL? "" : "\n");
   g_strfreev (lines);
 
-  value = string->str;
-
-  g_string_free (string, FALSE);
-
-  return value;
+  return g_string_free (string, FALSE);
 }
 
 #define __G_KEY_FILE_C__
