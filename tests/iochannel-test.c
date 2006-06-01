@@ -11,6 +11,47 @@
 
 #define BUFFER_SIZE 1024
 
+static void
+test_small_writes (void)
+{
+  GIOChannel *io;
+  GIOStatus status;
+  guint cnt; 
+  gchar tmp;
+  GError *error = NULL;
+
+  io = g_io_channel_new_file ("iochannel-test-outfile", "w", &error);
+  if (error)
+    {
+      g_warning ("Unable to open file %s: %s", 
+		 "iochannel-test-outfile", 
+		 error->message);
+      g_error_free (error);
+      
+      exit (1);
+    }
+
+  g_io_channel_set_encoding (io, NULL, NULL);
+  g_io_channel_set_buffer_size (io, 1022);
+
+  cnt = 2 * g_io_channel_get_buffer_size (io);
+  tmp = 0;
+ 
+  while (cnt)
+    {
+      status = g_io_channel_write_chars (io, &tmp, 1, NULL, NULL);
+      if (status == G_IO_STATUS_ERROR)
+	break;
+      if (status == G_IO_STATUS_NORMAL)
+	cnt--;
+    }
+
+  g_assert (status == G_IO_STATUS_NORMAL);
+
+  g_io_channel_unref (io);
+}
+
+
 gint main (gint argc, gchar * argv[])
 {
     GIOChannel *gio_r, *gio_w ;
@@ -125,6 +166,8 @@ gint main (gint argc, gchar * argv[])
 
     g_io_channel_unref(gio_r);
     g_io_channel_unref(gio_w);
+
+    test_small_writes ();
     
     return 0;
 }

@@ -1,5 +1,11 @@
 2006-06-01  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/giochannel.c (g_io_channel_write_chars): Avoid
+	running in an assertion with small writes.  (#343566, Chris
+	Wilson)
+
+	* tests/iochannel-test.c: Add a testcase for small writes.
+
 	* glib/glib.symbols: 
 	* glib/ghash.h: 
 	* glib/ghash.c: Add g_hash_table_{remove,steal}_all to

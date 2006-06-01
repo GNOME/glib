@@ -2009,7 +2009,7 @@ g_io_channel_write_chars (GIOChannel	*channel,
        * and never receiving an EAGAIN.
        */
 
-      if (channel->write_buf->len >= channel->buf_size)
+      if (channel->write_buf->len >= channel->buf_size - MAX_CHAR_SIZE)
         {
           gsize did_write = 0, this_time;
 
