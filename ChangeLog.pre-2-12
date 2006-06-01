@@ -1,3 +1,11 @@
+2006-06-01  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/giochannel.c (g_io_channel_write_chars): Avoid
+	running in an assertion with small writes.  (#343566, Chris
+	Wilson)
+
+	* tests/iochannel-test.c: Add a testcase for small writes.
+
 2006-05-26  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Bump version
