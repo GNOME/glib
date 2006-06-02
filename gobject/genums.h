@@ -69,14 +69,14 @@ struct	_GFlagsClass
 struct _GEnumValue
 {
   gint	 value;
-  gchar *value_name;
-  gchar *value_nick;
+  const gchar *value_name;
+  const gchar *value_nick;
 };
 struct _GFlagsValue
 {
   guint	 value;
-  gchar *value_name;
-  gchar *value_nick;
+  const gchar *value_name;
+  const gchar *value_nick;
 };
 
 
