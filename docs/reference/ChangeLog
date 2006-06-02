@@ -1,6 +1,7 @@
 2006-06-01  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/glib-sections.txt: Add new hash table functions.
+	Add new g_source functions.
 
 Wed May 31 11:35:48 2006  Tim Janik  <timj@gtk.org>
 
