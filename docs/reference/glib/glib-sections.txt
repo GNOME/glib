@@ -432,6 +432,7 @@ GPollFunc
 g_main_context_add_poll
 g_main_context_remove_poll
 g_main_depth
+g_main_current_source
 g_main_set_poll_func
 
 <SUBSECTION>

@@ -1861,7 +1861,11 @@ g_main_depth (void)
 /**
  * g_main_current_source:
  *
- * Return value: The currently firing source for this thread or NULL.
+ * Returns the currently firing source for this thread.
+ * 
+ * Return value: The currently firing source or %NULL.
+ *
+ * Since: 2.12
  */
 GSource *
 g_main_current_source (void)
