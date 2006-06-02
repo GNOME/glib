@@ -1,11 +1,11 @@
 2006-06-01  Matthias Clasen  <mclasen@redhat.com>
 
-	* glib/glib.symbols:
 	* glib/gmain.h: 
-	* glib/gmain.c: Add two new functions, 
-	g_source_set_funcs and g_source_is_destroyed,
-	that will be necessary to solve thread-safety
-	issues with idles in GTK+.  (#321886, Chris Wilson)
+	* glib/gmain.c: Add three new functions, 
+	g_main_current_source, g_source_set_funcs and 
+	g_source_is_destroyed, that will be necessary to 
+	solve thread-safety issues with idles in GTK+.  
+	(#321886, Chris Wilson)
 
 2006-06-01  Matthias Clasen  <mclasen@redhat.com>
 

@@ -1925,7 +1925,7 @@ g_main_current_source (void)
  *   SomeWidget *self = data;
  *   
  *   GDK_THREADS_ENTER ();
- *   if (!g_source_is_destroyed (g_main_get_current_source ()))
+ *   if (!g_source_is_destroyed (g_main_current_source ()))
  *     {
  *       /<!-- -->* do stuff with self *<!-- -->/
  *     }
