@@ -583,6 +583,7 @@ g_main_context_unref
 g_main_context_wait
 g_main_context_wakeup
 g_main_depth
+g_main_current_source
 g_main_loop_get_context
 g_main_loop_is_running
 g_main_loop_new
@@ -607,6 +608,8 @@ g_source_remove_poll
 g_source_set_callback
 g_source_set_callback_indirect
 g_source_set_can_recurse
+g_source_set_funcs
+g_source_is_destroyed
 g_source_set_priority
 g_source_unref
 g_idle_add
