@@ -87,7 +87,6 @@ the setter for the property is called to reinstate the previous value.
 </para>
 
 @pspec: the #GParamSpec of the property which changed
-@:
 @gobject: the object which received the signal.
 
 <!-- ##### STRUCT GObjectClass ##### -->

@@ -1896,28 +1896,28 @@ g_main_current_source (void)
  * {
  *   SomeWidget *self = data;
  *    
- *   GDK_THREADS_ENTER ();
+ *   GDK_THREADS_ENTER (<!-- -->);
  *   /<!-- -->* do stuff with self *<!-- -->/
  *   self->idle_id = 0;
- *   GDK_THREADS_LEAVE ();
+ *   GDK_THREADS_LEAVE (<!-- -->);
  *    
  *   return FALSE;
  * }
- *
+ *  
  * static void 
  * some_widget_do_stuff_later (SomeWidget *self)
  * {
  *   self->idle_id = g_idle_add (idle_callback, self);
  * }
- *
+ *  
  * static void 
  * some_widget_finalize (GObject *object)
  * {
  *   SomeWidget *self = SOME_WIDGET (object);
- *   
+ *    
  *   if (self->idle_id)
  *     g_source_remove (self->idle_id);
- *   
+ *    
  *   G_OBJECT_CLASS (parent_class)->finalize (object);
  * }
  * </programlisting></informalexample>

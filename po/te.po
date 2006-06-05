@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLIB\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-05-15 12:51-0400\n"
+"POT-Creation-Date: 2006-06-05 12:15-0400\n"
 "PO-Revision-Date: 2004-12-13 20:16+0100\n"
 "Last-Translator: రమణ సాయి <rmn_sai@yahoo.com>\n"
 "Language-Team: Free Software Foundation, Andhra Pradesh <fsfap@gnu.org.in>\n"
@@ -426,15 +426,15 @@ msgstr " '%s' మూలకం మూయబడినది, ప్రస్ధు
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "'%s' మూలకం మూయబడినది, కాని ప్రస్ధుతం తెరువ బడిన మూలకం '%s'"
 
-#: glib/gmarkup.c:1730
+#: glib/gmarkup.c:1749
 msgid "Document was empty or contained only whitespace"
 msgstr " పత్రం ఖాలిగా ఉన్నది లేక ఒక వైట్ స్పేస్ కలిగి యున్నది.  "
 
-#: glib/gmarkup.c:1744
+#: glib/gmarkup.c:1763
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "పత్రం చివర కోణ కుండలీకరణము'<' వెంటనె అనవసరముగా ముగింపు అయినది"
 
-#: glib/gmarkup.c:1752 glib/gmarkup.c:1796
+#: glib/gmarkup.c:1771 glib/gmarkup.c:1815
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -442,7 +442,7 @@ msgid ""
 msgstr ""
 "మూలకములు ఇంకను తెరచియున్న పత్రం ఊహించని విధంగా అంతమైనది- '%s' చివరిది మూలకము తెరచబడినది"
 
-#: glib/gmarkup.c:1760
+#: glib/gmarkup.c:1779
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -450,19 +450,19 @@ msgid ""
 msgstr ""
 "పత్రం ఊహించని విధంగా అంతమైనది,మూసిన కోణకుండశికరణం అంతము చూచుటకు ఊహించబడినది బొందు <%s/>"
 
-#: glib/gmarkup.c:1766
+#: glib/gmarkup.c:1785
 msgid "Document ended unexpectedly inside an element name"
 msgstr " పత్రం చివర ఊహించని మూలకనామం కలదు "
 
-#: glib/gmarkup.c:1771
+#: glib/gmarkup.c:1790
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "పత్రం చివర ఊహించని ఆపాదననామం కలదు"
 
-#: glib/gmarkup.c:1776
+#: glib/gmarkup.c:1795
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "పత్రం చివర ఊహించని తెరచిన బొందు కలదు."
 
-#: glib/gmarkup.c:1782
+#: glib/gmarkup.c:1801
 #, fuzzy
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
@@ -470,16 +470,16 @@ msgid ""
 msgstr ""
 " '=' చిహ్నము తర్వాత క్రింద కనబరిచిన ఆపాదన పాఠం చివర ఊహించకుండా ఉన్నది. నామం; ఆపాదన విలువ లేదు."
 
-#: glib/gmarkup.c:1789
+#: glib/gmarkup.c:1808
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr " లోపల ఆపాదన విలువ ఉన్నపుడు పాఠం ఊహించకుండా ముగింపు అయినది "
 
-#: glib/gmarkup.c:1804
+#: glib/gmarkup.c:1823
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr " '%s'మూలకము యోక్క మూసిన బొందు ఊహించకుండా పాఠం ముగింపు అయినది "
 
-#: glib/gmarkup.c:1810
+#: glib/gmarkup.c:1829
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr " లోపల వ్యాఖ్య క్రమగతి ఆదేశం ఉండగా ఊహించకుండా పాఠం ముగింపు  అయినది "
 
@@ -719,29 +719,29 @@ msgstr " మీట దస్త్రం సముదాయంతో ప్ర�
 msgid "Key file contains unsupported encoding '%s'"
 msgstr " మీట దస్త్రం కలిగియున్న సంకేతరచన '%s' సహకరించదు "
 
-#: glib/gkeyfile.c:1015 glib/gkeyfile.c:1174 glib/gkeyfile.c:2387
-#: glib/gkeyfile.c:2452 glib/gkeyfile.c:2571 glib/gkeyfile.c:2706
-#: glib/gkeyfile.c:2859 glib/gkeyfile.c:3035 glib/gkeyfile.c:3092
+#: glib/gkeyfile.c:1010 glib/gkeyfile.c:1169 glib/gkeyfile.c:2382
+#: glib/gkeyfile.c:2447 glib/gkeyfile.c:2566 glib/gkeyfile.c:2701
+#: glib/gkeyfile.c:2854 glib/gkeyfile.c:3030 glib/gkeyfile.c:3087
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr " మీట దస్త్రం సముదాయం '%s' ను కలిగియుండలేదు "
 
-#: glib/gkeyfile.c:1186
+#: glib/gkeyfile.c:1181
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "మీట దస్త్రం '%s' తాళంను కలిగియుండలేదు. "
 
-#: glib/gkeyfile.c:1287 glib/gkeyfile.c:1396
+#: glib/gkeyfile.c:1282 glib/gkeyfile.c:1391
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "'%s' మీట దస్త్రం యొక్క మీటను కలిగియున్నది,దాని విలువ '%s' యుటిఫ్-8 "
 
-#: glib/gkeyfile.c:1305 glib/gkeyfile.c:1414 glib/gkeyfile.c:1786
+#: glib/gkeyfile.c:1300 glib/gkeyfile.c:1409 glib/gkeyfile.c:1781
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "'%s' మీట దస్త్రం యొక్క మీట ను కలిగియున్నది,దాని విలువను చదువుటకు సాధ్యపడదు."
 
-#: glib/gkeyfile.c:2002 glib/gkeyfile.c:2215
+#: glib/gkeyfile.c:1997 glib/gkeyfile.c:2210
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -749,37 +749,37 @@ msgid ""
 msgstr ""
 "'%s' మీట దస్త్రం యొక్క మీట ను గ్రూప్ '%s' లో కలిగియున్నది,దాని విలువను చదువుటకు సాధ్యపడదు."
 
-#: glib/gkeyfile.c:2402 glib/gkeyfile.c:2586 glib/gkeyfile.c:3103
+#: glib/gkeyfile.c:2397 glib/gkeyfile.c:2581 glib/gkeyfile.c:3098
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "'%s' మీట దస్త్రం యొక్క మీట ను గ్రూప్ '%s' లో కలిగియుండలేదు "
 
-#: glib/gkeyfile.c:3276
+#: glib/gkeyfile.c:3271
 #, c-format
 msgid "Key file contains escape character at end of line"
 msgstr " మీట దస్త్రం గీత చివర ఎస్పేప్ అక్షరము కలదు"
 
-#: glib/gkeyfile.c:3298
+#: glib/gkeyfile.c:3293
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr " '%s' మీట దస్త్రం నిస్సారమైన ఎస్పేప్ వరుస కలదు "
 
-#: glib/gkeyfile.c:3439
+#: glib/gkeyfile.c:3434
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "'%s' విలువను సంఖ్య గా చదువుటకు సాధ్యపడదు."
 
-#: glib/gkeyfile.c:3449
+#: glib/gkeyfile.c:3444
 #, fuzzy, c-format
 msgid "Integer value '%s' out of range"
 msgstr " పూర్ణాంకం విలువ '%s' లో విస్రృతి లో లేని %s "
 
-#: glib/gkeyfile.c:3477
+#: glib/gkeyfile.c:3472
 #, fuzzy, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "'%s' విలువను సంఖ్య గా చదువుటకు సాధ్యపడదు."
 
-#: glib/gkeyfile.c:3497
+#: glib/gkeyfile.c:3492
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "%s' విలువను బులియన్ గా చదువుటకు సాధ్యపడదు."

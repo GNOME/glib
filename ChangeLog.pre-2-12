@@ -1,5 +1,13 @@
 2006-06-05  Matthias Clasen  <mclasen@redhat.com>
-	
+
+	* === Released 2.11.2 ===
+
+	* configure.in: Set interface age to 0.
+
+	* NEWS: Updates
+
+	* glib/gmain.c: Fix some doc formatting issues.
+
 	* glib/gstrfuncs.c: Revert accidental commit.
 
 	* glib/gmain.c (get_dispatch): Don't leak the

@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.gu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-05-15 12:51-0400\n"
+"POT-Creation-Date: 2006-06-05 12:15-0400\n"
 "PO-Revision-Date: 2006-05-02 08:15+0530\n"
 "Last-Translator: Ankit Patel <ankit644@yahoo.com>\n"
 "Language-Team: Gujarati <indianoss-gujarati@lists.sourceforge.net>\n"
@@ -427,22 +427,22 @@ msgstr "'%s' વસ્તુ બંધ હતી, અત્યારે એક �
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "'%s' વસ્તુ બંધ હતી, પણ અત્યારે '%s'એ ખુલ્લી વસ્તુ છે"
 
-#: glib/gmarkup.c:1730
+#: glib/gmarkup.c:1749
 msgid "Document was empty or contained only whitespace"
 msgstr "દસ્તાવેજ ખાલી છે અથવા ફક્ત ખાલી જ્ગ્યા ધરાવે છે"
 
-#: glib/gmarkup.c:1744
+#: glib/gmarkup.c:1763
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "'<' ચિન્હ વાપરતા પછી દસ્તાવેજનો અણધારી રીતે અંત આવે છે"
 
-#: glib/gmarkup.c:1752 glib/gmarkup.c:1796
+#: glib/gmarkup.c:1771 glib/gmarkup.c:1815
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
 "element opened"
 msgstr "વસ્તુ ખુલ્લી હોવા છતાં દસ્તાવેજનો અણધારી રીતે અંત આવે છે- છેલ્લે ખોલેલ વસ્તુ '%s' છે"
 
-#: glib/gmarkup.c:1760
+#: glib/gmarkup.c:1779
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -451,19 +451,19 @@ msgstr ""
 "દસ્તાવેજનો અણધારી રીતે અંત થાય છે, તે  અંતિમ ટેગ  <%s/> માં કૌંસને બંધ કરતુ ખૂણાનુ ચિન્હ "
 "જોવા માગે છે"
 
-#: glib/gmarkup.c:1766
+#: glib/gmarkup.c:1785
 msgid "Document ended unexpectedly inside an element name"
 msgstr "વસ્તુ નામની અંદર દસ્તાવેજનો અણધારી રીતે અંત થાય છે"
 
-#: glib/gmarkup.c:1771
+#: glib/gmarkup.c:1790
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "લાક્ષણિકતાના નામની અંદર દસ્તાવેજનો અણધારી રીતે અંત થાય છે"
 
-#: glib/gmarkup.c:1776
+#: glib/gmarkup.c:1795
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "વસ્તુની શરુઆતની ટેગમા દસ્તાવેજનો અણધારી રીતે અંત થાય છે"
 
-#: glib/gmarkup.c:1782
+#: glib/gmarkup.c:1801
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -471,16 +471,16 @@ msgstr ""
 "લાક્ષણિકતા નામ પછીની બરાબરની નિશાની પછી દસ્તાવેજ નો અણધારી રીતે અંત થાય છે. "
 "લાક્ષણિકતાના મુલ્ય નથી"
 
-#: glib/gmarkup.c:1789
+#: glib/gmarkup.c:1808
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "લાક્ષણિકતા મુલ્ય અંદર હોવા છતાં દસ્તાવેજ નો અણધારી રીતે અંત થાય છે"
 
-#: glib/gmarkup.c:1804
+#: glib/gmarkup.c:1823
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "'%s' વસ્તુના બંદ ટેગની અંદર દસ્તાવેજનો અણધારી રીતે અંત થાય છે"
 
-#: glib/gmarkup.c:1810
+#: glib/gmarkup.c:1829
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "ટિપ્પણી અથવા પ્રક્રિયા સુચનાની અંદર અણધારી રીતે દસ્તાવેજનો અંત થાય છે"
 
@@ -720,29 +720,29 @@ msgstr "કી ફાઈલ જૂથ સાથે શરૂ થતી નથી
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "કી ફાઈલ બિનઆધારભૂત અક્ષર સંગ્રહપદ્ધતિ '%s' સમાવે છે"
 
-#: glib/gkeyfile.c:1015 glib/gkeyfile.c:1174 glib/gkeyfile.c:2387
-#: glib/gkeyfile.c:2452 glib/gkeyfile.c:2571 glib/gkeyfile.c:2706
-#: glib/gkeyfile.c:2859 glib/gkeyfile.c:3035 glib/gkeyfile.c:3092
+#: glib/gkeyfile.c:1010 glib/gkeyfile.c:1169 glib/gkeyfile.c:2382
+#: glib/gkeyfile.c:2447 glib/gkeyfile.c:2566 glib/gkeyfile.c:2701
+#: glib/gkeyfile.c:2854 glib/gkeyfile.c:3030 glib/gkeyfile.c:3087
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "કી ફાઈલ પાસે જૂથ '%s' નથી"
 
-#: glib/gkeyfile.c:1186
+#: glib/gkeyfile.c:1181
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "કી ફાઈલ પાસે કી '%s' નથી"
 
-#: glib/gkeyfile.c:1287 glib/gkeyfile.c:1396
+#: glib/gkeyfile.c:1282 glib/gkeyfile.c:1391
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "કી ફાઈલ '%s' કીને કિંમત '%s' સાથે સમાવે છે કે જે UTF-8 નથી"
 
-#: glib/gkeyfile.c:1305 glib/gkeyfile.c:1414 glib/gkeyfile.c:1786
+#: glib/gkeyfile.c:1300 glib/gkeyfile.c:1409 glib/gkeyfile.c:1781
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "કી ફાઈલ '%s' કી સમાવે છે કે જેની પાસે કિંમત છે જે ઈન્ટરપ્રીટ કરી શકાતી નથી."
 
-#: glib/gkeyfile.c:2002 glib/gkeyfile.c:2215
+#: glib/gkeyfile.c:1997 glib/gkeyfile.c:2210
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -751,37 +751,37 @@ msgstr ""
 "કી ફાઈલ '%s' કી જૂથ '%s' માં સમાવે છે કે જેની પાસે કિંમત છે કે જે ઈન્ટરપ્રીટ કરી શકાતી "
 "નથી."
 
-#: glib/gkeyfile.c:2402 glib/gkeyfile.c:2586 glib/gkeyfile.c:3103
+#: glib/gkeyfile.c:2397 glib/gkeyfile.c:2581 glib/gkeyfile.c:3098
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "કી ફાઈલ પાસે કી '%s' એ જૂથ '%s' માં નથી"
 
-#: glib/gkeyfile.c:3276
+#: glib/gkeyfile.c:3271
 #, c-format
 msgid "Key file contains escape character at end of line"
 msgstr "કી ફાઈલ એસ્કેપ અક્ષર વાક્યના અંતે સમાવે છે"
 
-#: glib/gkeyfile.c:3298
+#: glib/gkeyfile.c:3293
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "કી ફાઈલ અયોગ્ય એસ્કેપ ક્રમ '%s' સમાવે છે"
 
-#: glib/gkeyfile.c:3439
+#: glib/gkeyfile.c:3434
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "કિંમત '%s' નંબર તરીકે ઈન્ટરપ્રીટ કરી શકાતું નથી."
 
-#: glib/gkeyfile.c:3449
+#: glib/gkeyfile.c:3444
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "પૂર્ણાંક કિંમત '%s' એ મર્યાદાની બહાર છે"
 
-#: glib/gkeyfile.c:3477
+#: glib/gkeyfile.c:3472
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "કિંમત '%s' એ અપૂર્ણાંક સંખ્યા તરીકે ઈન્ટરપ્રીટ કરી શકાતું નથી."
 
-#: glib/gkeyfile.c:3497
+#: glib/gkeyfile.c:3492
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "કિંમત '%s' બુલિયન તરીકે ઈન્ટરપ્રીટ કરી શકાતું નથી."

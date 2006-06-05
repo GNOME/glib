@@ -527,6 +527,14 @@ or -1 if an error occurred.
 @Returns: 
 
 
+<!-- ##### FUNCTION g_main_current_source ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
 <!-- ##### MACRO g_main_set_poll_func ##### -->
 <para>
 Sets the function to use for the handle polling of file descriptors
@@ -828,6 +836,15 @@ functions for managing callback objects.
 @source: 
 
 
+<!-- ##### FUNCTION g_source_set_funcs ##### -->
+<para>
+
+</para>
+
+@source: 
+@funcs: 
+
+
 <!-- ##### FUNCTION g_source_attach ##### -->
 <para>
 
@@ -844,6 +861,15 @@ functions for managing callback objects.
 </para>
 
 @source: 
+
+
+<!-- ##### FUNCTION g_source_is_destroyed ##### -->
+<para>
+
+</para>
+
+@source: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_source_set_priority ##### -->

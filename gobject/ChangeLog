@@ -1,3 +1,7 @@
+2006-06-05  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.11.2 ===
+
 2006-06-02  Behdad Esfahbod  <behdad@gnome.org>
 
 	* gobject/genum.h: Make value_name and value_nick const in structs

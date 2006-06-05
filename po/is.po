@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-05-15 12:51-0400\n"
+"POT-Creation-Date: 2006-06-05 12:15-0400\n"
 "PO-Revision-Date: 2003-08-18 18:05+0000\n"
 "Last-Translator: Richard Allen <ra@ra.is>\n"
 "Language-Team: is <is@li.org>\n"
@@ -429,15 +429,15 @@ msgstr "Mengið '%s' var lokað og engin önnur mengi eru opin"
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "Mengið '%s' var lokað en mengið sem nú er opið er '%s'"
 
-#: glib/gmarkup.c:1730
+#: glib/gmarkup.c:1749
 msgid "Document was empty or contained only whitespace"
 msgstr "Skjalið var tómt eða innihélt einungis orðabil"
 
-#: glib/gmarkup.c:1744
+#: glib/gmarkup.c:1763
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "Skjalið endar óvænt rétt eftir opið minna en merki '<'"
 
-#: glib/gmarkup.c:1752 glib/gmarkup.c:1796
+#: glib/gmarkup.c:1771 glib/gmarkup.c:1815
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -446,7 +446,7 @@ msgstr ""
 "Skjalið endar óvænt með mengi sem enn eru opin. '%s' var mengið sem síðast "
 "var opnað"
 
-#: glib/gmarkup.c:1760
+#: glib/gmarkup.c:1779
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -454,19 +454,19 @@ msgid ""
 msgstr ""
 "Skjalið endar óvænt. Átti von á að sjá stærraen merki sem lokar taginu <%s/>"
 
-#: glib/gmarkup.c:1766
+#: glib/gmarkup.c:1785
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Skjalið endar óvænt inn í heiti mengis"
 
-#: glib/gmarkup.c:1771
+#: glib/gmarkup.c:1790
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Skjalið endar óvænt inn í heiti eiginleika"
 
-#: glib/gmarkup.c:1776
+#: glib/gmarkup.c:1795
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Skjalið endar óvænt inn í tagi sem opnar mengi."
 
-#: glib/gmarkup.c:1782
+#: glib/gmarkup.c:1801
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -474,16 +474,16 @@ msgstr ""
 "Skjalið endar óvænt eftir samasem merkið sem fylgir heiti eiginleika og það "
 "er ekkert gildi"
 
-#: glib/gmarkup.c:1789
+#: glib/gmarkup.c:1808
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Skjalið endar óvænt inn í gildi eiginleika"
 
-#: glib/gmarkup.c:1804
+#: glib/gmarkup.c:1823
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "Skjalið endar óvænt inni í lokunartagi fyrir mengið '%s'"
 
-#: glib/gmarkup.c:1810
+#: glib/gmarkup.c:1829
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "Skjalið endar óvænt inni í athugasemd eða í miðri skipun"
 
@@ -722,66 +722,66 @@ msgstr ""
 msgid "Key file contains unsupported encoding '%s'"
 msgstr ""
 
-#: glib/gkeyfile.c:1015 glib/gkeyfile.c:1174 glib/gkeyfile.c:2387
-#: glib/gkeyfile.c:2452 glib/gkeyfile.c:2571 glib/gkeyfile.c:2706
-#: glib/gkeyfile.c:2859 glib/gkeyfile.c:3035 glib/gkeyfile.c:3092
+#: glib/gkeyfile.c:1010 glib/gkeyfile.c:1169 glib/gkeyfile.c:2382
+#: glib/gkeyfile.c:2447 glib/gkeyfile.c:2566 glib/gkeyfile.c:2701
+#: glib/gkeyfile.c:2854 glib/gkeyfile.c:3030 glib/gkeyfile.c:3087
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr ""
 
-#: glib/gkeyfile.c:1186
+#: glib/gkeyfile.c:1181
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr ""
 
-#: glib/gkeyfile.c:1287 glib/gkeyfile.c:1396
+#: glib/gkeyfile.c:1282 glib/gkeyfile.c:1391
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr ""
 
-#: glib/gkeyfile.c:1305 glib/gkeyfile.c:1414 glib/gkeyfile.c:1786
+#: glib/gkeyfile.c:1300 glib/gkeyfile.c:1409 glib/gkeyfile.c:1781
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr ""
 
-#: glib/gkeyfile.c:2002 glib/gkeyfile.c:2215
+#: glib/gkeyfile.c:1997 glib/gkeyfile.c:2210
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
 "interpreted."
 msgstr ""
 
-#: glib/gkeyfile.c:2402 glib/gkeyfile.c:2586 glib/gkeyfile.c:3103
+#: glib/gkeyfile.c:2397 glib/gkeyfile.c:2581 glib/gkeyfile.c:3098
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr ""
 
-#: glib/gkeyfile.c:3276
+#: glib/gkeyfile.c:3271
 #, c-format
 msgid "Key file contains escape character at end of line"
 msgstr ""
 
-#: glib/gkeyfile.c:3298
+#: glib/gkeyfile.c:3293
 #, fuzzy, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "URI '%s' inniheldur ógild sértákn"
 
-#: glib/gkeyfile.c:3439
+#: glib/gkeyfile.c:3434
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr ""
 
-#: glib/gkeyfile.c:3449
+#: glib/gkeyfile.c:3444
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr ""
 
-#: glib/gkeyfile.c:3477
+#: glib/gkeyfile.c:3472
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr ""
 
-#: glib/gkeyfile.c:3497
+#: glib/gkeyfile.c:3492
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr ""

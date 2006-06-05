@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.12\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-05-15 12:51-0400\n"
+"POT-Creation-Date: 2006-06-05 12:15-0400\n"
 "PO-Revision-Date: 2005-03-28 19:34-0700\n"
 "Last-Translator: Steve Murphy <murf@e-tools.com>\n"
 "Language-Team: Kinyarwanda <translation-team-rw@lists.sourceforge.net>\n"
@@ -430,63 +430,63 @@ msgstr "Oya Ikigize: ni Gufungura"
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "Gufungura Ikigize: ni"
 
-#: glib/gmarkup.c:1730
+#: glib/gmarkup.c:1749
 #, fuzzy
 msgid "Document was empty or contained only whitespace"
 msgstr "ubusa Cyangwa"
 
-#: glib/gmarkup.c:1744
+#: glib/gmarkup.c:1763
 #, fuzzy
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "Nyuma Gufungura Imfuruka"
 
-#: glib/gmarkup.c:1752 glib/gmarkup.c:1796
+#: glib/gmarkup.c:1771 glib/gmarkup.c:1815
 #, fuzzy, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
 "element opened"
 msgstr "Na: Ibintu Gufungura Iheruka Ikigize:"
 
-#: glib/gmarkup.c:1760
+#: glib/gmarkup.c:1779
 #, fuzzy, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
 "the tag <%s/>"
 msgstr "Ikitezwe: Kuri a Gufunga Imfuruka Itagi:"
 
-#: glib/gmarkup.c:1766
+#: glib/gmarkup.c:1785
 #, fuzzy
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Mo Imbere Ikigize: Izina:"
 
-#: glib/gmarkup.c:1771
+#: glib/gmarkup.c:1790
 #, fuzzy
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Mo Imbere Ikiranga Izina:"
 
-#: glib/gmarkup.c:1776
+#: glib/gmarkup.c:1795
 #, fuzzy
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Mo Imbere Ikigize: Gufungura%S Itagi:"
 
-#: glib/gmarkup.c:1782
+#: glib/gmarkup.c:1801
 #, fuzzy
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
 msgstr "Nyuma IKIMENYETSO Ikiranga Izina: Oya Ikiranga Agaciro"
 
-#: glib/gmarkup.c:1789
+#: glib/gmarkup.c:1808
 #, fuzzy
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Mo Imbere Ikiranga Agaciro"
 
-#: glib/gmarkup.c:1804
+#: glib/gmarkup.c:1823
 #, fuzzy, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "Mo Imbere Gufunga Itagi: kugirango Ikigize:"
 
-#: glib/gmarkup.c:1810
+#: glib/gmarkup.c:1829
 #, fuzzy
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "Mo Imbere a Icyo wongeraho Cyangwa Inonosora"
@@ -733,66 +733,66 @@ msgstr "IDOSIYE OYA Gutangira Na: a Itsinda"
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "IDOSIYE Kirimo Imisobekere:"
 
-#: glib/gkeyfile.c:1015 glib/gkeyfile.c:1174 glib/gkeyfile.c:2387
-#: glib/gkeyfile.c:2452 glib/gkeyfile.c:2571 glib/gkeyfile.c:2706
-#: glib/gkeyfile.c:2859 glib/gkeyfile.c:3035 glib/gkeyfile.c:3092
+#: glib/gkeyfile.c:1010 glib/gkeyfile.c:1169 glib/gkeyfile.c:2382
+#: glib/gkeyfile.c:2447 glib/gkeyfile.c:2566 glib/gkeyfile.c:2701
+#: glib/gkeyfile.c:2854 glib/gkeyfile.c:3030 glib/gkeyfile.c:3087
 #, fuzzy, c-format
 msgid "Key file does not have group '%s'"
 msgstr "IDOSIYE OYA Itsinda"
 
-#: glib/gkeyfile.c:1186
+#: glib/gkeyfile.c:1181
 #, fuzzy, c-format
 msgid "Key file does not have key '%s'"
 msgstr "IDOSIYE OYA Urufunguzo"
 
-#: glib/gkeyfile.c:1287 glib/gkeyfile.c:1396
+#: glib/gkeyfile.c:1282 glib/gkeyfile.c:1391
 #, fuzzy, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "IDOSIYE Kirimo Urufunguzo Na: Agaciro ni OYA 8"
 
-#: glib/gkeyfile.c:1305 glib/gkeyfile.c:1414 glib/gkeyfile.c:1786
+#: glib/gkeyfile.c:1300 glib/gkeyfile.c:1409 glib/gkeyfile.c:1781
 #, fuzzy, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "IDOSIYE Kirimo Urufunguzo Agaciro"
 
-#: glib/gkeyfile.c:2002 glib/gkeyfile.c:2215
+#: glib/gkeyfile.c:1997 glib/gkeyfile.c:2210
 #, fuzzy, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
 "interpreted."
 msgstr "IDOSIYE Kirimo Urufunguzo in Itsinda Agaciro"
 
-#: glib/gkeyfile.c:2402 glib/gkeyfile.c:2586 glib/gkeyfile.c:3103
+#: glib/gkeyfile.c:2397 glib/gkeyfile.c:2581 glib/gkeyfile.c:3098
 #, fuzzy, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "IDOSIYE OYA Urufunguzo in Itsinda"
 
-#: glib/gkeyfile.c:3276
+#: glib/gkeyfile.c:3271
 #, fuzzy, c-format
 msgid "Key file contains escape character at end of line"
 msgstr "IDOSIYE Kirimo Inyuguti ku Impera Bya Umurongo"
 
-#: glib/gkeyfile.c:3298
+#: glib/gkeyfile.c:3293
 #, fuzzy, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "IDOSIYE Kirimo Sibyo"
 
-#: glib/gkeyfile.c:3439
+#: glib/gkeyfile.c:3434
 #, fuzzy, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Nka a Umubare"
 
-#: glib/gkeyfile.c:3449
+#: glib/gkeyfile.c:3444
 #, fuzzy, c-format
 msgid "Integer value '%s' out of range"
 msgstr "Agaciro kugirango Inyuma Bya Urutonde"
 
-#: glib/gkeyfile.c:3477
+#: glib/gkeyfile.c:3472
 #, fuzzy, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "Nka a Umubare"
 
-#: glib/gkeyfile.c:3497
+#: glib/gkeyfile.c:3492
 #, fuzzy, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Nka a Icyungo"

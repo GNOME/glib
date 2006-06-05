@@ -1,3 +1,32 @@
+Overview of Changes from GLib 2.11.1 to GLib 2.11.2
+===================================================
+
+* Add g_ascii_stroll to parse signed 64bit integers
+
+* GMarkup: add a flag to treat CDATA as text
+
+* GHashTable: add functions to remove all entries
+
+* GMainLoop: add functions to find the currently
+  running source, and determine if it is destroyed
+
+* Bug fixes:
+ 342563  g_atomic_thread_init() needs to be called before 
+         other _g_*_thread_init() functions
+ 343548  Potential use after free in callers of g_string_free() 
+ 168538  Wish: Clearing contents of GHashTables
+ 321886  GTK+ cannot be reliably used in multi-threaded 
+         applications
+ 341826  goption.c: 'strtoll' is C99's function
+ 343899  g_ascii_formatd dosn't work as expected for all 
+         format strings
+ 317793  Make GEnumValue strings const
+ 337129  Compile warnings in G_IMPLEMENT_INTERFACE
+ 303622  What is G_TYPE_CHAR?
+
+* Updated translations (bg,dz,eu,gl,ja,ko,nl,th,vi)
+ 
+
 Overview of Changes from GLib 2.11.0 to GLib 2.11.1
 ===================================================
 
