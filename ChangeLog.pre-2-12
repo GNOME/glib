@@ -1,4 +1,6 @@
 2006-06-05  Matthias Clasen  <mclasen@redhat.com>
+	
+	* glib/gstrfuncs.c: Revert accidental commit.
 
 	* glib/gmain.c (get_dispatch): Don't leak the
 	dispatch struct.  (#321886)
