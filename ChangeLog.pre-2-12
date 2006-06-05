@@ -1,5 +1,7 @@
 2006-06-05  Matthias Clasen  <mclasen@redhat.com>
 
+	* configure.in: Bump version
+
 	* === Released 2.11.2 ===
 
 	* configure.in: Set interface age to 0.
