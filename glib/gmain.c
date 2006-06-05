@@ -107,7 +107,7 @@ typedef struct _GMainDispatch GMainDispatch;
 struct _GMainDispatch
 {
   gint depth;
-  GSList *source;
+  GSList *source; /* stack of current sources */
 };
 
 struct _GMainContext
@@ -1719,6 +1719,12 @@ g_get_current_time (GTimeVal *result)
 #endif
 }
 
+static void
+g_main_dispatch_free (gpointer dispatch)
+{
+  g_slice_free (GMainDispatch, dispatch);
+}
+
 /* Running the main loop */
 
 static GMainDispatch *
@@ -1729,7 +1735,7 @@ get_dispatch (void)
   if (!dispatch)
     {
       dispatch = g_slice_new0 (GMainDispatch);
-      g_static_private_set (&depth_private, dispatch, NULL);
+      g_static_private_set (&depth_private, dispatch, g_main_dispatch_free);
     }
 
   return dispatch;
