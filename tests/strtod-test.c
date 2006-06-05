@@ -10,11 +10,12 @@
 #include <stdlib.h>
 #include <math.h>
 
+static char *locales[] = {"sv_SE", "en_US", "fa_IR", "C", "ru_RU"};
+
 void
 test_string (char *number, double res, gboolean check_end, int correct_len)
 {
   double d;
-  char *locales[] = {"sv_SE", "en_US", "fa_IR", "C", "ru_RU"};
   int l;
   char *dummy;
   
@@ -58,6 +59,19 @@ test_string (char *number, double res, gboolean check_end, int correct_len)
   g_free (number);
 }
 
+
+static void
+test_number (gdouble num, gchar *fmt, gchar *str)
+{
+  int l;
+  gchar buf[G_ASCII_DTOSTR_BUF_SIZE];
+
+  for (l = 0; l < G_N_ELEMENTS (locales); l++)
+    {
+      g_ascii_formatd (buf, G_ASCII_DTOSTR_BUF_SIZE, fmt, num);
+      g_assert (strcmp (buf, str) == 0);
+    }
+}
 
 int 
 main ()
@@ -108,7 +122,25 @@ main ()
   
   d = -pow (2.0, -1024.1);
   g_assert (d == g_ascii_strtod (g_ascii_dtostr (buffer, sizeof (buffer), d), NULL));
-  
 
+  /* for #343899 */
+  test_string (" 0.75", 0.75, FALSE, 0);
+  test_string (" +0.75", 0.75, FALSE, 0);
+  test_string (" -0.75", -0.75, FALSE, 0);
+  test_string ("\f0.75", 0.75, FALSE, 0);
+  test_string ("\n0.75", 0.75, FALSE, 0);
+  test_string ("\r0.75", 0.75, FALSE, 0);
+  test_string ("\t0.75", 0.75, FALSE, 0);
+#if 0
+  /* g_ascii_isspace() returns FALSE for vertical tab, see #59388 */
+  test_string ("\v0.75", 0.75, FALSE, 0);
+#endif
+
+  /* for #343899 */
+  test_number (0.75, "%0.2f", "0.75");
+  test_number (0.75, "%5.2f", " 0.75");
+  test_number (-0.75, "%0.2f", "-0.75");
+  test_number (-0.75, "%5.2f", "-0.75");
+  test_number (1e99, "%.0e", "1e+99");
   return 0;
 }

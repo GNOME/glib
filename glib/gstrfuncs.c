@@ -30,6 +30,7 @@
 
 #include "config.h"
 
+#define __G_STRFUNCS_C__
 #define _GNU_SOURCE		/* For stpcpy */
 
 #include <stdarg.h>
@@ -94,6 +95,7 @@ g_strdup (const gchar *str)
   else
     new_str = NULL;
 
+  g_mem_mark_type (new_str, G_MEM_TYPE_STRING, 0);
   return new_str;
 }
 
@@ -129,6 +131,7 @@ g_strndup (const gchar *str,
   else
     new_str = NULL;
 
+  g_mem_mark_type (new_str, G_MEM_TYPE_STRING, 0);
   return new_str;
 }
 
@@ -187,6 +190,7 @@ g_strdup_vprintf (const gchar *format,
 
   g_vasprintf (&string, format, args);
 
+  g_mem_mark_type (string, G_MEM_TYPE_STRING, 0);
   return string;
 }
 
@@ -355,6 +359,7 @@ g_ascii_strtod (const gchar *nptr,
       decimal_point[1] != 0)
     {
       p = nptr;
+
       /* Skip leading space */
       while (g_ascii_isspace (*p))
 	p++;
@@ -567,6 +572,9 @@ g_ascii_formatd (gchar       *buffer,
       decimal_point[1] != 0)
     {
       p = buffer;
+
+      while (g_ascii_isspace (*p))
+	p++;
 
       if (*p == '+' || *p == '-')
 	p++;
@@ -1582,7 +1590,8 @@ g_ascii_strdown (const gchar *str,
   result = g_strndup (str, len);
   for (s = result; *s; s++)
     *s = g_ascii_tolower (*s);
-  
+
+  g_mem_mark_type (result, G_MEM_TYPE_STRING, 0);
   return result;
 }
 
@@ -1614,6 +1623,7 @@ g_ascii_strup (const gchar *str,
   for (s = result; *s; s++)
     *s = g_ascii_toupper (*s);
 
+  g_mem_mark_type (result, G_MEM_TYPE_STRING, 0);
   return result;
 }
 

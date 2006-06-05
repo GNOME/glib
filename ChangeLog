@@ -1,3 +1,11 @@
+2006-06-05  Matthias Clasen  <mclasen@redhat.com>
+
+	* tests/strtod-test.c: Add some tests involving
+	leading whitespace.
+
+	* glib/gstrfuncs.c (g_ascii_formatd): Skip leading 
+	whitespace.  (#343899, Øystein Johansen)
+
 2006-06-01  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gmain.h: 
