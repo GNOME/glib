@@ -30,6 +30,24 @@
 #include "gunicodeprivate.h"
 #include "galias.h"
 
+#ifdef _MSC_VER
+/* Workaround for bug in MSVCR80.DLL */
+static size_t
+msc_strxfrm_wrapper (char       *string1,
+		     const char *string2,
+		     size_t      count)
+{
+  if (!string1 || count <= 0)
+    {
+      char tmp;
+
+      return strxfrm (&tmp, string2, 1);
+    }
+  return strxfrm (string1, string2, count);
+}
+#define strxfrm msc_strxfrm_wrapper
+#endif
+
 /**
  * g_utf8_collate:
  * @str1: a UTF-8 encoded string

@@ -1,3 +1,9 @@
+2006-06-08  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gunicollate.c (msc_strxfrm_wrapper): Workaround for bug in
+	strxfrm() in Microsoft's newer C runtimes. (#343919, Kazuki
+	Iwamoto)
+
 2006-06-05  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Bump version
