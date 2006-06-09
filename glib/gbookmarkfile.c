@@ -3084,7 +3084,7 @@ g_bookmark_file_remove_application (GBookmarkFile  *bookmark,
   set_error = NULL;
   retval = g_bookmark_file_set_app_info (bookmark, uri,
   					 name,
-  					 NULL,
+  					 "",
 	  				 0,
   					 (time_t) -1,
   					 &set_error);
@@ -3509,7 +3509,7 @@ g_bookmark_file_move_item (GBookmarkFile  *bookmark,
   
   g_return_val_if_fail (bookmark != NULL, FALSE);
   g_return_val_if_fail (old_uri != NULL, FALSE);
-  
+
   item = g_bookmark_file_lookup_item (bookmark, old_uri);
   if (!item)
     {
@@ -3533,11 +3533,15 @@ g_bookmark_file_move_item (GBookmarkFile  *bookmark,
               return FALSE;
             }
         }
+
+      g_hash_table_steal (bookmark->items_by_uri, item->uri);
       
       g_free (item->uri);
       item->uri = g_strdup (new_uri);
       item->modified = time (NULL);
-      
+
+      g_hash_table_replace (bookmark->items_by_uri, item->uri, item);
+
       return TRUE;
     }
   else
@@ -3550,9 +3554,9 @@ g_bookmark_file_move_item (GBookmarkFile  *bookmark,
           
           return FALSE;
         }
+
+      return TRUE;
     }
-  
-  return FALSE;
 }
 
 /**

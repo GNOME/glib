@@ -1,3 +1,11 @@
+2006-06-09  Emmanuele Bassi  <ebassi@cvs.gnome.org>
+
+	* glib/gbookmarkfile.c (g_bookmark_file_remove_application): Use
+	an empty string to pass the test in set_app_info.
+
+	(g_bookmark_file_move_item): Remove the old item from the
+	look up table; return success in case of empty target.
+
 2006-06-08  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gunicollate.c (msc_strxfrm_wrapper): Workaround for bug in
