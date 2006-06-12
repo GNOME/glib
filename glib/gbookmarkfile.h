@@ -174,7 +174,7 @@ gboolean       g_bookmark_file_remove_application  (GBookmarkFile  *bookmark,
 						    const gchar    *uri,
 						    const gchar    *name,
 						    GError        **error);
-void           g_bookmark_file_remove_item         (GBookmarkFile  *bookmark,
+gboolean       g_bookmark_file_remove_item         (GBookmarkFile  *bookmark,
 						    const gchar    *uri,
 						    GError        **error);
 gboolean       g_bookmark_file_move_item           (GBookmarkFile  *bookmark,

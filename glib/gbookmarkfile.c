@@ -2016,17 +2016,19 @@ g_bookmark_file_add_item (GBookmarkFile  *bookmark,
  *
  * Removes the bookmark for @uri from the bookmark file @bookmark.
  *
+ * Return value: %TRUE if the bookmark was removed successfully.
+ * 
  * Since: 2.12
  */
-void
+gboolean
 g_bookmark_file_remove_item (GBookmarkFile  *bookmark,
 			     const gchar    *uri,
 			     GError        **error)
 {
   BookmarkItem *item;
   
-  g_return_if_fail (bookmark != NULL);
-  g_return_if_fail (uri != NULL);
+  g_return_val_if_fail (bookmark != NULL, FALSE);
+  g_return_val_if_fail (uri != NULL, FALSE);
   
   item = g_bookmark_file_lookup_item (bookmark, uri);
   
@@ -2036,13 +2038,15 @@ g_bookmark_file_remove_item (GBookmarkFile  *bookmark,
 		   G_BOOKMARK_FILE_ERROR_URI_NOT_FOUND,
 		   _("No bookmark found for URI '%s'"),
 		   uri);
-      return;	 
+      return FALSE;
     }
 
   bookmark->items = g_list_remove (bookmark->items, item);
   g_hash_table_remove (bookmark->items_by_uri, item->uri);  
   
   bookmark_item_free (item);
+
+  return TRUE;
 }
 
 /**

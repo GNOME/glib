@@ -1,3 +1,12 @@
+2006-06-12  Emmanuele Bassi  <ebassi@cvs.gnome.org>
+
+	* glib/gbookmarkfile.h:
+	* glib/gbookmarkfile.c (g_bookmark_file_remove_item): Return
+	a boolean instead of void.
+
+	* tests/bookmarkfile-test.c (test_modify): Add a test case
+	for g_bookmark_file_remove_item().
+
 2006-06-12  Matthias Clasen  <mclasen@redhat.com>
 
 	* Bump version

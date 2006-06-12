@@ -193,6 +193,13 @@ test_modify (GBookmarkFile *bookmark)
   g_assert (g_bookmark_file_has_group (bookmark, TEST_URI_1, "Test", NULL) == TRUE);
   g_assert (g_bookmark_file_has_group (bookmark, TEST_URI_1, "Fail", NULL) == FALSE);
   g_print ("ok\n");
+
+  g_print ("\t=> check remove...");
+  g_assert (g_bookmark_file_remove_item (bookmark, TEST_URI_1, &error) == TRUE);
+  test_assert_empty_error (&error);
+  g_assert (g_bookmark_file_remove_item (bookmark, TEST_URI_1, &error) == FALSE);
+  test_assert_not_empty_error (&error, G_BOOKMARK_FILE_ERROR, G_BOOKMARK_FILE_ERROR_URI_NOT_FOUND);
+  g_print ("ok\n");
   
   return TRUE;
 }
