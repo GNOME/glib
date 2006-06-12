@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-06-05 12:15-0400\n"
+"POT-Creation-Date: 2006-06-12 11:18-0400\n"
 "PO-Revision-Date: 2006-03-12 22:19+0200\n"
 "Last-Translator: Mişu Moldovan <dumol@gnome.ro>\n"
 "Language-Team: Română <gnomero-list@lists.sourceforge.net>\n"
@@ -59,7 +59,7 @@ msgstr ""
 #: glib/gbookmarkfile.c:2945 glib/gbookmarkfile.c:3135
 #: glib/gbookmarkfile.c:3211 glib/gbookmarkfile.c:3363
 #: glib/gbookmarkfile.c:3428 glib/gbookmarkfile.c:3518
-#: glib/gbookmarkfile.c:3641
+#: glib/gbookmarkfile.c:3645
 #, c-format
 msgid "No bookmark found for URI '%s'"
 msgstr ""

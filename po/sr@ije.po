@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-06-05 12:15-0400\n"
+"POT-Creation-Date: 2006-06-12 11:18-0400\n"
 "PO-Revision-Date: 2004-04-29 01:11+0200\n"
 "Last-Translator: Bojan Suzic <bojans@teol.net>\n"
 "Language-Team: Serbian (sr) <serbiagnome-lista@nongnu.org>\n"
@@ -60,7 +60,7 @@ msgstr ""
 #: glib/gbookmarkfile.c:2945 glib/gbookmarkfile.c:3135
 #: glib/gbookmarkfile.c:3211 glib/gbookmarkfile.c:3363
 #: glib/gbookmarkfile.c:3428 glib/gbookmarkfile.c:3518
-#: glib/gbookmarkfile.c:3641
+#: glib/gbookmarkfile.c:3645
 #, c-format
 msgid "No bookmark found for URI '%s'"
 msgstr ""

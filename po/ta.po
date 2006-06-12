@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.ta\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-06-07 06:40+0200\n"
+"POT-Creation-Date: 2006-06-12 11:18-0400\n"
 "PO-Revision-Date: 2006-06-07 18:04+0530\n"
 "Last-Translator: Felix <ifelix@redhat.com>\n"
 "Language-Team: Tamil <ta@li.org>\n"
@@ -16,271 +16,282 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.9.1\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"\n"
 
-#: ../glib/gbookmarkfile.c:716 ../glib/gbookmarkfile.c:793
-#: ../glib/gbookmarkfile.c:872 ../glib/gbookmarkfile.c:919
+#: glib/gbookmarkfile.c:716 glib/gbookmarkfile.c:793 glib/gbookmarkfile.c:872
+#: glib/gbookmarkfile.c:919
 #, c-format
 msgid "Unexpected attribute '%s' for element '%s'"
 msgstr "Unexpected attribute '%s' for element '%s'"
 
-#: ../glib/gbookmarkfile.c:727 ../glib/gbookmarkfile.c:804
-#: ../glib/gbookmarkfile.c:814 ../glib/gbookmarkfile.c:930
+#: glib/gbookmarkfile.c:727 glib/gbookmarkfile.c:804 glib/gbookmarkfile.c:814
+#: glib/gbookmarkfile.c:930
 #, c-format
 msgid "Attribute '%s' of element '%s' not found"
 msgstr "மதிப்பு '%s' க்கு '%s' உறுப்பு எதுவும் இல்லை"
 
-#: ../glib/gbookmarkfile.c:1103 ../glib/gbookmarkfile.c:1168
-#: ../glib/gbookmarkfile.c:1232 ../glib/gbookmarkfile.c:1242
+#: glib/gbookmarkfile.c:1103 glib/gbookmarkfile.c:1168
+#: glib/gbookmarkfile.c:1232 glib/gbookmarkfile.c:1242
 #, c-format
 msgid "Unexpected tag '%s', tag '%s' expected"
 msgstr "எதிர்பாராத ஒட்டு'%s', ஒட்டு '%s' எதிர்பார்க்கப்பட்டது"
 
-#: ../glib/gbookmarkfile.c:1128 ../glib/gbookmarkfile.c:1142
-#: ../glib/gbookmarkfile.c:1210 ../glib/gbookmarkfile.c:1262
+#: glib/gbookmarkfile.c:1128 glib/gbookmarkfile.c:1142
+#: glib/gbookmarkfile.c:1210 glib/gbookmarkfile.c:1262
 #, c-format
 msgid "Unexpected tag '%s' inside '%s'"
 msgstr "'%s' க்குள் எதிர்பாராத ஒட்டு '%s' உள்ளது"
 
-#: ../glib/gbookmarkfile.c:1792
+#: glib/gbookmarkfile.c:1792
+#, c-format
 msgid "No valid bookmark file was be found in data dirs"
 msgstr "தரவு அடைவுகளில் சரியான புத்தகக்குறி கோப்பு எதுவும் இல்லை"
 
-#: ../glib/gbookmarkfile.c:1993
+#: glib/gbookmarkfile.c:1993
 #, c-format
 msgid "A bookmark for URI '%s' already exists"
 msgstr "URI '%s' க்கு ஏற்கனவே புத்தகக்குறி உள்ளது"
 
-#: ../glib/gbookmarkfile.c:2037 ../glib/gbookmarkfile.c:2192
-#: ../glib/gbookmarkfile.c:2277 ../glib/gbookmarkfile.c:2358
-#: ../glib/gbookmarkfile.c:2443 ../glib/gbookmarkfile.c:2526
-#: ../glib/gbookmarkfile.c:2604 ../glib/gbookmarkfile.c:2683
-#: ../glib/gbookmarkfile.c:2725 ../glib/gbookmarkfile.c:2822
-#: ../glib/gbookmarkfile.c:2945 ../glib/gbookmarkfile.c:3135
-#: ../glib/gbookmarkfile.c:3211 ../glib/gbookmarkfile.c:3363
-#: ../glib/gbookmarkfile.c:3428 ../glib/gbookmarkfile.c:3518
-#: ../glib/gbookmarkfile.c:3641
+#: glib/gbookmarkfile.c:2037 glib/gbookmarkfile.c:2192
+#: glib/gbookmarkfile.c:2277 glib/gbookmarkfile.c:2358
+#: glib/gbookmarkfile.c:2443 glib/gbookmarkfile.c:2526
+#: glib/gbookmarkfile.c:2604 glib/gbookmarkfile.c:2683
+#: glib/gbookmarkfile.c:2725 glib/gbookmarkfile.c:2822
+#: glib/gbookmarkfile.c:2945 glib/gbookmarkfile.c:3135
+#: glib/gbookmarkfile.c:3211 glib/gbookmarkfile.c:3363
+#: glib/gbookmarkfile.c:3428 glib/gbookmarkfile.c:3518
+#: glib/gbookmarkfile.c:3645
 #, c-format
 msgid "No bookmark found for URI '%s'"
 msgstr "URIக்கு புத்தகக்குறி எதுவும் இல்லை '%s'"
 
-#: ../glib/gbookmarkfile.c:2367
+#: glib/gbookmarkfile.c:2367
 #, c-format
 msgid "No MIME type defined in the bookmark for URI '%s'"
 msgstr "URI '%s'க்கு MIME வகை எதுவும் புத்தகக்குறியில் குறிப்பிடப்படவில்லை"
 
-#: ../glib/gbookmarkfile.c:2452
+#: glib/gbookmarkfile.c:2452
 #, c-format
 msgid "No private flag has been defined in bookmark for URI '%s'"
 msgstr "URI '%s'க்கு புத்தகக்குறியில் தனிபட்ட கொடி எதுவும் குறிப்பிடப்படவில்லை"
 
-#: ../glib/gbookmarkfile.c:2831
+#: glib/gbookmarkfile.c:2831
 #, c-format
 msgid "No groups set in bookmark for URI '%s'"
 msgstr "URI '%s'க்கான புத்தகக்குறியில் குழுக்கள் எதுவும் அமைக்கப்படவில்லை"
 
-#: ../glib/gbookmarkfile.c:3229 ../glib/gbookmarkfile.c:3373
+#: glib/gbookmarkfile.c:3229 glib/gbookmarkfile.c:3373
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
 msgstr "'%s' பெயரிலுள்ள பயன்பாடு  '%s'க்கு ஒரு புத்தகக்குறியை பதிவு செய்தது"
 
-#: ../glib/gconvert.c:404 ../glib/gconvert.c:482 ../glib/giochannel.c:1150
+#: glib/gconvert.c:404 glib/gconvert.c:482 glib/giochannel.c:1150
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "வரியுரு வகை `%s' இலிருந்து `%s' க்கு மாற்றுவதற்கு ஆதரவளிப்பு கிடையாது"
 
-#: ../glib/gconvert.c:408 ../glib/gconvert.c:486
+#: glib/gconvert.c:408 glib/gconvert.c:486
 #, c-format
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "'%s' லிருந்து '%s'க்கு மாற்றியை திறக்க முடியவில்லை"
 
-#: ../glib/gconvert.c:602 ../glib/gconvert.c:991 ../glib/giochannel.c:1322
-#: ../glib/giochannel.c:1364 ../glib/giochannel.c:2206 ../glib/gutf8.c:943
-#: ../glib/gutf8.c:1392
+#: glib/gconvert.c:602 glib/gconvert.c:991 glib/giochannel.c:1322
+#: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:943
+#: glib/gutf8.c:1392
+#, c-format
 msgid "Invalid byte sequence in conversion input"
 msgstr "நிலை மாற்றியின் உள்ளீடுக்கு தவறான பைட் வரிசைமுறை"
 
-#: ../glib/gconvert.c:608 ../glib/gconvert.c:918 ../glib/giochannel.c:1329
-#: ../glib/giochannel.c:2218
+#: glib/gconvert.c:608 glib/gconvert.c:918 glib/giochannel.c:1329
+#: glib/giochannel.c:2218
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "மாற்றும் போது பிழை: %s"
 
-#: ../glib/gconvert.c:643 ../glib/gutf8.c:939 ../glib/gutf8.c:1143
-#: ../glib/gutf8.c:1284 ../glib/gutf8.c:1388
+#: glib/gconvert.c:643 glib/gutf8.c:939 glib/gutf8.c:1143 glib/gutf8.c:1284
+#: glib/gutf8.c:1388
+#, c-format
 msgid "Partial character sequence at end of input"
 msgstr "உள்ளீடின் முடிவில் பூர்த்தியாகாத வரியுரு வரிசைமுறை"
 
-#: ../glib/gconvert.c:893
+#: glib/gconvert.c:893
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "பின்னடைப்பு '%s', '%s' குறிக் கணமிற்கு மாற்ற முடியவில்லை"
 
-#: ../glib/gconvert.c:1702
+#: glib/gconvert.c:1702
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "URI '%s' \"கோப்பு\"திட்டத்தை பயன்படுத்தும் முழுமையான URI அல்ல"
 
-#: ../glib/gconvert.c:1712
+#: glib/gconvert.c:1712
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "உள்ளமைக் கோப்பு வலை முகவரி `%s' இல் ஓர் `#' இல்லாமல் இருக்கலாம்"
 
-#: ../glib/gconvert.c:1729
+#: glib/gconvert.c:1729
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "`%s' செல்லுபடியாகாத வலை முகவரி"
 
-#: ../glib/gconvert.c:1741
+#: glib/gconvert.c:1741
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "`%s' வலை முகவரியின் விருந்தோம்புப்-பெயர் செல்லுபடியாகாதது"
 
-#: ../glib/gconvert.c:1757
+#: glib/gconvert.c:1757
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "வலை முகவரி `%s' இல் செல்லுபடியாகாத 'விடுபடு' வரியுருகள்"
 
-#: ../glib/gconvert.c:1852
+#: glib/gconvert.c:1852
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "'%s' பாதைப்-பெயர் ஓர் தனிப் பாதை அல்ல"
 
-#: ../glib/gconvert.c:1862
+#: glib/gconvert.c:1862
+#, c-format
 msgid "Invalid hostname"
 msgstr "பிழையான விருந்தோம்புப்-பெயர்"
 
-#: ../glib/gdir.c:121 ../glib/gdir.c:141
+#: glib/gdir.c:121 glib/gdir.c:141
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "'%s' அடைவு திறக்கும்போது பிழை: %s"
 
-#: ../glib/gfileutils.c:572 ../glib/gfileutils.c:645
+#: glib/gfileutils.c:572 glib/gfileutils.c:645
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "%lu பைட்டுகளை \"%s\" கோப்பு வாசிப்பதற்கு ஒதுக்கிவைக்க முடியவில்லை"
 
-#: ../glib/gfileutils.c:587
+#: glib/gfileutils.c:587
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "'%s' கோப்பு வாசிக்கும் போது பிழை: %s"
 
-#: ../glib/gfileutils.c:669
+#: glib/gfileutils.c:669
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "'%s' கோப்பிலிருந்து வாசிக்க முடியவில்லை: %s"
 
-#: ../glib/gfileutils.c:720 ../glib/gfileutils.c:807
+#: glib/gfileutils.c:720 glib/gfileutils.c:807
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "'%s' கோப்பு திறக்க முடியவில்லை: %s"
 
-#: ../glib/gfileutils.c:737 ../glib/gmappedfile.c:133
+#: glib/gfileutils.c:737 glib/gmappedfile.c:133
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "'%s' கோப்பின் பண்புகளை பெறமுடியவில்லை: fstat() செயலிழந்தது: %s"
 
-#: ../glib/gfileutils.c:771
+#: glib/gfileutils.c:771
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "'%s' கோப்பை திறக்க முடியவில்லை: fdopen() செயலிழந்தது: %s"
 
-#: ../glib/gfileutils.c:905
+#: glib/gfileutils.c:905
 #, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "'%s'கோப்பினை '%s'க்கு மறுபெயரிட முடியவில்லை: g_rename() செயலிழந்தது: %s"
 
-#: ../glib/gfileutils.c:946 ../glib/gfileutils.c:1411
+#: glib/gfileutils.c:946 glib/gfileutils.c:1411
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "'%s' கோப்பை படைக்க முடியவில்லை: %s"
 
-#: ../glib/gfileutils.c:960
+#: glib/gfileutils.c:960
 #, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr "'%s' கோப்பினை திறக்க முடியவில்லை: fdopen() செயலிழந்தது: %s"
 
-#: ../glib/gfileutils.c:985
+#: glib/gfileutils.c:985
 #, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "'%s' கோப்பினை எழுத முடியவில்லை: fwrite() செயலிழந்தது: %s"
 
-#: ../glib/gfileutils.c:1004
+#: glib/gfileutils.c:1004
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "'%s'கோப்பினை மூட முடியவில்லை: fclose() செயலிழந்தது: %s"
 
-#: ../glib/gfileutils.c:1122
+#: glib/gfileutils.c:1122
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "இருக்கும் கோப்பு '%s' ஐ நீக்க முடியாது: g_unlink() செயலிழந்தது: %s"
 
-#: ../glib/gfileutils.c:1372
+#: glib/gfileutils.c:1372
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "'%s' படிம அச்சு செல்லுபடியாகாதது; அதனில் '%s' இருக்கக் கூடாது"
 
-#: ../glib/gfileutils.c:1386
+#: glib/gfileutils.c:1386
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "'%s' படிம அச்சு XXXXXX கொண்டு முடிவதில்லை"
 
-#: ../glib/gfileutils.c:1861
+#: glib/gfileutils.c:1861
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "'%s' என்பதன்-குறுக்கம் இணைப்பை வாசிக்க முடியவில்லை: %s"
 
-#: ../glib/gfileutils.c:1882
+#: glib/gfileutils.c:1882
+#, c-format
 msgid "Symbolic links not supported"
 msgstr "என்பதன்-குறுக்கம் இணைப்புகளுக்கு ஆதரவு கிடையாது"
 
-#: ../glib/giochannel.c:1154
+#: glib/giochannel.c:1154
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "'%s' லிருந்து'%s'க்கு மாற்றியை திறக்க முடியவில்லை: %s"
 
-#: ../glib/giochannel.c:1499
+#: glib/giochannel.c:1499
+#, c-format
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "g_io_channel_read_line_string இல் மூலமாக வாசிக்க முடியாது"
 
-#: ../glib/giochannel.c:1546 ../glib/giochannel.c:1803
-#: ../glib/giochannel.c:1889
+#: glib/giochannel.c:1546 glib/giochannel.c:1803 glib/giochannel.c:1889
+#, c-format
 msgid "Leftover unconverted data in read buffer"
 msgstr "வாசிப்புத் தாங்ககத்தில் மாற்றப்படாத மீதித் தரவுகள்"
 
-#: ../glib/giochannel.c:1626 ../glib/giochannel.c:1703
+#: glib/giochannel.c:1626 glib/giochannel.c:1703
+#, c-format
 msgid "Channel terminates in a partial character"
 msgstr "வாய்க்கால் பாதி வரியுருவில் முடிவடைகிறது"
 
-#: ../glib/giochannel.c:1689
+#: glib/giochannel.c:1689
+#, c-format
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "g_io_channel_read_to_end இல் மூலமாக வாசிக்க முடியாது"
 
-#: ../glib/gmappedfile.c:116
+#: glib/gmappedfile.c:116
 #, c-format
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "'%s' கோப்பினை திறக்க முடியவில்லை: open() செயலிழந்தது: %s"
 
-#: ../glib/gmappedfile.c:193
+#: glib/gmappedfile.c:193
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "'%s' கோப்பினை ஒப்பிட முடியவில்லை: mmap() செயலிழந்தது: %s"
 
-#: ../glib/gmarkup.c:227
+#: glib/gmarkup.c:227
 #, c-format
 msgid "Error on line %d char %d: %s"
 msgstr "%d வரியில் %d வரியுருவில் பிழை: %s"
 
-#: ../glib/gmarkup.c:325
+#: glib/gmarkup.c:325
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "%d வரியில் பிழை: %s"
 
-#: ../glib/gmarkup.c:429
-msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
-msgstr "வெற்றா பிரதிநிதி '&;' கண்டது; சரியான பிரதிநிதிகள்: &amp; &quot; &lt; &qt; &apos;"
+#: glib/gmarkup.c:429
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgstr ""
+"வெற்றா பிரதிநிதி '&;' கண்டது; சரியான பிரதிநிதிகள்: &amp; &quot; &lt; &qt; &apos;"
 
-#: ../glib/gmarkup.c:439
+#: glib/gmarkup.c:439
 #, c-format
 msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
@@ -290,17 +301,17 @@ msgstr ""
 "'%s' வரியுரு பிரதிநிதியின் தொடக்கத்தில் வரக்கூடாது; & வரியுரு பிரதிநிதியைத் "
 "தொடங்கும்; இந்த & ஓர் பிரதிநிதியாக இருக்கக்கூடாது என்றால்; அதை &amp ஆக விடுவி;"
 
-#: ../glib/gmarkup.c:473
+#: glib/gmarkup.c:473
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
 msgstr "'%s' வரியுரு பிரதிநிதியின் பெயரில் பிழையானது"
 
-#: ../glib/gmarkup.c:510
+#: glib/gmarkup.c:510
 #, c-format
 msgid "Entity name '%s' is not known"
 msgstr "பிரதிநிதியின் பெயர் '%s' தெரியாதது"
 
-#: ../glib/gmarkup.c:521
+#: glib/gmarkup.c:521
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
@@ -308,7 +319,7 @@ msgstr ""
 "பிரதிநிதி ';' உடன் முடிவடையவில்லை; நீங்கள் பிரதிநிதி ஒன்றை தொடங்க யோசிக்காமல் '&' "
 "பயன்படுத்தி இருக்கலாம் - '&'சை &amp ஆக விடுவி;"
 
-#: ../glib/gmarkup.c:574
+#: glib/gmarkup.c:574
 #, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
@@ -317,16 +328,16 @@ msgstr ""
 "'%-.*s'ஐ கூறிட முடியவில்லை,அதன் ஒரு எழுத்துக்குள் ஒரு தசமத்தை கொண்டிருக்க வேண்டும் "
 "குறிப்பு (&#234; எடுத்துக்காட்டாக) - எனினும் தசமம் மிக பெரியதாக உள்ளது"
 
-#: ../glib/gmarkup.c:599
+#: glib/gmarkup.c:599
 #, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
 msgstr "எழுத்து குறிப்பு '%-.*s' ஒரு அனுமதிக்கப்பட்ட எழுத்தினை குறிமுறையாக்கவில்லை"
 
-#: ../glib/gmarkup.c:614
+#: glib/gmarkup.c:614
 msgid "Empty character reference; should include a digit such as &#454;"
 msgstr "வேற்றான வரியுரு குறிப்பு; &#454 ஆகிய இலக்கங்கள் சேர்ந்திருக் வேண்டும்;"
 
-#: ../glib/gmarkup.c:624
+#: glib/gmarkup.c:624
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -336,23 +347,23 @@ msgstr ""
 "ampersand character without intending to start an entity - escape ampersand "
 "as &amp;"
 
-#: ../glib/gmarkup.c:710
+#: glib/gmarkup.c:710
 msgid "Unfinished entity reference"
 msgstr "முடிவடையாத உள்ளீட்பு மேற்கோள்"
 
-#: ../glib/gmarkup.c:716
+#: glib/gmarkup.c:716
 msgid "Unfinished character reference"
 msgstr "முடிவடையாத வரியுரு மேற்கோள்"
 
-#: ../glib/gmarkup.c:959 ../glib/gmarkup.c:987 ../glib/gmarkup.c:1018
+#: glib/gmarkup.c:959 glib/gmarkup.c:987 glib/gmarkup.c:1018
 msgid "Invalid UTF-8 encoded text"
 msgstr "பிழையான UTF-8 குறியீடு செய்யப்பட்ட உரை"
 
-#: ../glib/gmarkup.c:1054
+#: glib/gmarkup.c:1054
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "ஆவணம் ஓர் உறுப்புடன் (உதாரணம்: <book>) தொடங்க வேண்டும்"
 
-#: ../glib/gmarkup.c:1094
+#: glib/gmarkup.c:1094
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -361,7 +372,7 @@ msgstr ""
 "'<' வரியுருவை தொடர்ந்து '%s' வர முடியாது; அதைப் பயன்படுத்தி ஓர் உறுப்படியின் பெயரைத் "
 "தொடங்க முடியாது"
 
-#: ../glib/gmarkup.c:1158
+#: glib/gmarkup.c:1158
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
@@ -370,14 +381,15 @@ msgstr ""
 "ஒற்றை வரியுரு '%s', '%s' உறுப்படி தொடங்கல் ஒட்டை ஓர் '>' வரியுரு முடிவு செய்யும் "
 "என்று எதிர்பார்த்தது"
 
-#: ../glib/gmarkup.c:1247
+#: glib/gmarkup.c:1247
 #, c-format
-msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgid ""
+"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "'%s' ஓர் ஒற்றை வரியுரு, பண்பின் பெயர் '%s' பின் ('%s' உறுப்பின்) எதிர்பார்த்தது ஓர் '=' "
 "வரியுரு"
 
-#: ../glib/gmarkup.c:1289
+#: glib/gmarkup.c:1289
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -388,7 +400,7 @@ msgstr ""
 "element '%s', or optionally an attribute; perhaps you used an invalid "
 "character in an attribute name"
 
-#: ../glib/gmarkup.c:1378
+#: glib/gmarkup.c:1378
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -397,7 +409,7 @@ msgstr ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
 "giving value for attribute '%s' of element '%s'"
 
-#: ../glib/gmarkup.c:1523
+#: glib/gmarkup.c:1523
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -406,7 +418,7 @@ msgstr ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 
-#: ../glib/gmarkup.c:1563
+#: glib/gmarkup.c:1563
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -415,25 +427,25 @@ msgstr ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 
-#: ../glib/gmarkup.c:1574
+#: glib/gmarkup.c:1574
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "'%s' உறுப்பு மூடப்பட்டுல்லது, தற்பொது ஒரு உறுப்பும் திறந்து இல்லை"
 
-#: ../glib/gmarkup.c:1583
+#: glib/gmarkup.c:1583
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "'%s' உறுப்பு மூடப்பட்டுல்லது, அனால் தற்பொது திறந்திறுக்கும் உறுப்பு '%s'"
 
-#: ../glib/gmarkup.c:1749
+#: glib/gmarkup.c:1749
 msgid "Document was empty or contained only whitespace"
 msgstr "வெற்றான ஆவணம் அல்லது ஆவணத்தில் இறுப்பது அனைத்தும் வெண்வெளி"
 
-#: ../glib/gmarkup.c:1763
+#: glib/gmarkup.c:1763
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "'<' பிறகு ஆவணம் திடீரென முடிவடைந்தது"
 
-#: ../glib/gmarkup.c:1771 ../glib/gmarkup.c:1815
+#: glib/gmarkup.c:1771 glib/gmarkup.c:1815
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -442,7 +454,7 @@ msgstr ""
 "உறுப்புகள் திறந்திறுக்கும்போது ஆவணம் திடீரென முடிவடைந்தது - கடைசியாகத் திறக்கப்பட்ட "
 "உறுப்பு '%s'"
 
-#: ../glib/gmarkup.c:1779
+#: glib/gmarkup.c:1779
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -451,19 +463,19 @@ msgstr ""
 "ஆவணம் திடீரென முடிவடைந்தது, அடையாள ஒட்டு <%s/> முடிவில் ஓர் '}' இருக்கும் என "
 "எதிர்பார்த்தது"
 
-#: ../glib/gmarkup.c:1785
+#: glib/gmarkup.c:1785
 msgid "Document ended unexpectedly inside an element name"
 msgstr "உறுப்பு பெயர் உள்ளே ஆவணம் திடீரென முடிவடைந்தது"
 
-#: ../glib/gmarkup.c:1790
+#: glib/gmarkup.c:1790
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "பண்பு பெயர் உள்ளே ஆவணம் திடீரென முடிவடைந்தது"
 
-#: ../glib/gmarkup.c:1795
+#: glib/gmarkup.c:1795
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "உறுப்பு-தொடங்களின் அடையாள ஒட்டு  உள்ளே ஆவணம் திடீரென முடிவடைந்தது"
 
-#: ../glib/gmarkup.c:1801
+#: glib/gmarkup.c:1801
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -471,96 +483,99 @@ msgstr ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
 
-#: ../glib/gmarkup.c:1808
+#: glib/gmarkup.c:1808
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "பண்பு பெயர் உள்ளிறுக்கும் போது ஆவணம் திடீரென முடிவடைந்தது"
 
-#: ../glib/gmarkup.c:1823
+#: glib/gmarkup.c:1823
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "'%s' என்னும் மூடு-அடையாள ஒட்டு உள்ளே ஆவணம் திடீரென முடிவடைந்தது"
 
-#: ../glib/gmarkup.c:1829
+#: glib/gmarkup.c:1829
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "ஆவணம் திடீரென குறிப்புரையுல் அல்லது செயலாக்கம் ஆணையுல் முடிவடைந்தது"
 
-#: ../glib/gshell.c:70
+#: glib/gshell.c:70
+#, c-format
 msgid "Quoted text doesn't begin with a quotation mark"
 msgstr "மேற்களித்த உரை ஓர் \" -உடன் தொடங்கவில்லை"
 
-#: ../glib/gshell.c:160
+#: glib/gshell.c:160
+#, c-format
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr "`கட்டளை வடியில் அல்லது வேறு மேற்களித்த உரையில் பொருத்தமற்ற \" "
 
-#: ../glib/gshell.c:538
+#: glib/gshell.c:538
 #, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
 msgstr "'\\' வரியுருக்கு பின்பு உரை முடிவடைந்தது. (கடைசி உரை: '%s')"
 
-#: ../glib/gshell.c:545
+#: glib/gshell.c:545
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
-msgstr "%c க்கு பொருத்தமான மேற்கோள் கண்டுபிடிப்பதட்கு முன் உரை முடிவடைந்தது. (உரை: '%s')"
+msgstr ""
+"%c க்கு பொருத்தமான மேற்கோள் கண்டுபிடிப்பதட்கு முன் உரை முடிவடைந்தது. (உரை: '%s')"
 
-#: ../glib/gshell.c:557
+#: glib/gshell.c:557
+#, c-format
 msgid "Text was empty (or contained only whitespace)"
 msgstr "உரை வெற்றா இருந்தது (அல்லது வெண்வெளி மட்டுமே)"
 
-#: ../glib/gspawn-win32.c:273
+#: glib/gspawn-win32.c:273
+#, c-format
 msgid "Failed to read data from child process"
 msgstr "சேய் செயலில் இருந்து தரவு வாசிக்க முடியவில்லை"
 
-#: ../glib/gspawn-win32.c:288 ../glib/gspawn.c:1361
+#: glib/gspawn-win32.c:288 glib/gspawn.c:1361
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "(%s) சேய்-செயலிடன் தொடர்பு கொல்ல கழாய்த்-தொடரைப் படைக்க முடியவில்லை"
 
-#: ../glib/gspawn-win32.c:326 ../glib/gspawn.c:1025
+#: glib/gspawn-win32.c:326 glib/gspawn.c:1025
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "(%s) சேய் கழாய்த் தொடரில் இருந்து வாசிக்க முடியவில்லை"
 
-#: ../glib/gspawn-win32.c:352 ../glib/gspawn.c:1230
+#: glib/gspawn-win32.c:352 glib/gspawn.c:1230
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "'%s' (%s) அடைவுக்கு போக முடியவில்லை"
 
-#: ../glib/gspawn-win32.c:358 ../glib/gspawn-win32.c:578
+#: glib/gspawn-win32.c:358 glib/gspawn-win32.c:578
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "(%s) சேய்-செயலை இயக்க முடியவில்லை"
 
-#: ../glib/gspawn-win32.c:468 ../glib/gspawn-win32.c:524
+#: glib/gspawn-win32.c:468 glib/gspawn-win32.c:524
 #, c-format
 msgid "Invalid program name: %s"
 msgstr "தவறான நிரல் பெயர்: %s"
 
-#: ../glib/gspawn-win32.c:478 ../glib/gspawn-win32.c:534
-#: ../glib/gspawn-win32.c:777 ../glib/gspawn-win32.c:832
-#: ../glib/gspawn-win32.c:1367
+#: glib/gspawn-win32.c:478 glib/gspawn-win32.c:534 glib/gspawn-win32.c:777
+#: glib/gspawn-win32.c:832 glib/gspawn-win32.c:1367
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr "%dல் மதிப்பரு வெக்டாரில் தவறான சரம்: %s"
 
-#: ../glib/gspawn-win32.c:489 ../glib/gspawn-win32.c:545
-#: ../glib/gspawn-win32.c:791 ../glib/gspawn-win32.c:845
-#: ../glib/gspawn-win32.c:1400
+#: glib/gspawn-win32.c:489 glib/gspawn-win32.c:545 glib/gspawn-win32.c:791
+#: glib/gspawn-win32.c:845 glib/gspawn-win32.c:1400
 #, c-format
 msgid "Invalid string in environment: %s"
 msgstr "சூழலில் தவறான சரம்: %s"
 
-#: ../glib/gspawn-win32.c:773 ../glib/gspawn-win32.c:828
-#: ../glib/gspawn-win32.c:1348
+#: glib/gspawn-win32.c:773 glib/gspawn-win32.c:828 glib/gspawn-win32.c:1348
 #, c-format
 msgid "Invalid working directory: %s"
 msgstr "தவறான பணி செய்யும் அடைவு: %s"
 
-#: ../glib/gspawn-win32.c:887
+#: glib/gspawn-win32.c:887
 #, c-format
 msgid "Failed to execute helper program (%s)"
 msgstr "உதவியாளர் நிலையை இயக்க முடியவில்லை (%s)"
 
-#: ../glib/gspawn-win32.c:1087
+#: glib/gspawn-win32.c:1087
+#, c-format
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -568,209 +583,220 @@ msgstr ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
 
-#: ../glib/gspawn.c:165
+#: glib/gspawn.c:165
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "(%s) சேய்-செயலில் இருந்து தரவு வாசிக்க முடியவில்லை"
 
-#: ../glib/gspawn.c:297
+#: glib/gspawn.c:297
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr "(%s) சேய்-செயலில் இருந்து தரவு வாசிக்கும் போது, select()'டில் எதிர்பாராத பிழை"
 
-#: ../glib/gspawn.c:380
+#: glib/gspawn.c:380
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "(%s) waitpid()'டில் எதிர்பாராத பிழை"
 
-#: ../glib/gspawn.c:1090
+#: glib/gspawn.c:1090
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "(%s) தொடங்க முடியவில்லை"
 
-#: ../glib/gspawn.c:1240
+#: glib/gspawn.c:1240
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "\"%s\" (%s) சேய்-செயலை இயக்க முடியவில்லை"
 
-#: ../glib/gspawn.c:1250
+#: glib/gspawn.c:1250
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "சேய் (%s) செயலகத்தின் வெளியீடலை அல்லது உள்ளடலை திசை-மாற்றும்போது பிழை"
 
-#: ../glib/gspawn.c:1259
+#: glib/gspawn.c:1259
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "சேய் (%s) செயலகத்தை தொடங்க முடியவில்லை"
 
-#: ../glib/gspawn.c:1267
+#: glib/gspawn.c:1267
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "சேய் செயல் \"%s\" இயக்கும்போது தெரியாத பிழை"
 
-#: ../glib/gspawn.c:1289
+#: glib/gspawn.c:1289
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Failed to read enough data from child pid pipe (%s)"
 
-#: ../glib/gutf8.c:1017
+#: glib/gutf8.c:1017
+#, c-format
 msgid "Character out of range for UTF-8"
 msgstr "UTF-8 க்கு வரியுரு வீச்சு எல்லைக்கு வெளியே"
 
-#: ../glib/gutf8.c:1111 ../glib/gutf8.c:1120 ../glib/gutf8.c:1252
-#: ../glib/gutf8.c:1261 ../glib/gutf8.c:1402 ../glib/gutf8.c:1498
+#: glib/gutf8.c:1111 glib/gutf8.c:1120 glib/gutf8.c:1252 glib/gutf8.c:1261
+#: glib/gutf8.c:1402 glib/gutf8.c:1498
+#, c-format
 msgid "Invalid sequence in conversion input"
 msgstr "உரையாடல் உள்ளீட்டில் தவறான வரிசை"
 
-#: ../glib/gutf8.c:1413 ../glib/gutf8.c:1509
+#: glib/gutf8.c:1413 glib/gutf8.c:1509
+#, c-format
 msgid "Character out of range for UTF-16"
 msgstr "UTF-16 க்கு வரியுரு வீச்சு எல்லைக்கு வெளியே"
 
-#: ../glib/goption.c:495
+#: glib/goption.c:495
 msgid "Usage:"
 msgstr "ஓபயன்பாடு:"
 
-#: ../glib/goption.c:495
+#: glib/goption.c:495
 msgid "[OPTION...]"
 msgstr "[OPTION...]"
 
-#: ../glib/goption.c:586
+#: glib/goption.c:586
 msgid "Help Options:"
 msgstr "உதவி விருப்பங்கள்:"
 
-#: ../glib/goption.c:587
+#: glib/goption.c:587
 msgid "Show help options"
 msgstr "உதவி விருப்பங்களை காட்டு"
 
-#: ../glib/goption.c:592
+#: glib/goption.c:592
 msgid "Show all help options"
 msgstr "அனைத்து உதவி விருப்பங்களை காட்டு"
 
-#: ../glib/goption.c:642
+#: glib/goption.c:642
 msgid "Application Options:"
 msgstr "பயன்பாடு விருப்பங்கள்:"
 
-#: ../glib/goption.c:686 ../glib/goption.c:756
+#: glib/goption.c:686 glib/goption.c:756
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "'%s' க்கு %sன் இயல் எண் மதிப்பினை கூறிட முடியாது"
 
-#: ../glib/goption.c:696 ../glib/goption.c:764
+#: glib/goption.c:696 glib/goption.c:764
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "'%s' க்கு %sன் இயல் எண் மதிப்பு வரையறையை தாண்டியுள்ளது"
 
-#: ../glib/goption.c:721
+#: glib/goption.c:721
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "இரட்டை மதிப்பு '%s' ஐ %sக்கு கூறிட முடியாது"
 
-#: ../glib/goption.c:729
+#: glib/goption.c:729
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "இரட்டை மதிப்பு '%s' %sக்கு வரையறையை தாண்டியுள்ளது"
 
-#: ../glib/goption.c:1066
+#: glib/goption.c:1066
 #, c-format
 msgid "Error parsing option %s"
 msgstr "கூறிடும் போது பிழை: %s"
 
-#: ../glib/goption.c:1097 ../glib/goption.c:1208
+#: glib/goption.c:1097 glib/goption.c:1208
 #, c-format
 msgid "Missing argument for %s"
 msgstr " %sக்கான விடுபட்ட மதிப்புரு"
 
-#: ../glib/goption.c:1597
+#: glib/goption.c:1597
 #, c-format
 msgid "Unknown option %s"
 msgstr "தெரியாத விருப்பம் %s"
 
-#: ../glib/gkeyfile.c:337
+#: glib/gkeyfile.c:337
+#, c-format
 msgid "Valid key file could not be found in data dirs"
 msgstr "தரவு அடைவுகளில் சரியான விசை கோப்பினை காண முடியவில்லை"
 
-#: ../glib/gkeyfile.c:372
+#: glib/gkeyfile.c:372
+#, c-format
 msgid "Not a regular file"
 msgstr "ஒரு முறையான கோப்பில்லை"
 
-#: ../glib/gkeyfile.c:380
+#: glib/gkeyfile.c:380
+#, c-format
 msgid "File is empty"
 msgstr "கோப்பு வெற்றாக உள்ளது"
 
-#: ../glib/gkeyfile.c:695
+#: glib/gkeyfile.c:695
 #, c-format
-msgid "Key file contains line '%s' which is not a key-value pair, group, or comment"
-msgstr "விசை கோப்பு வரி '%s' கொண்டுள்ளது இது விசை-மதிப்பு சோடியை, குழு, அல்லது குறிப்பு அல்ல"
+msgid ""
+"Key file contains line '%s' which is not a key-value pair, group, or comment"
+msgstr ""
+"விசை கோப்பு வரி '%s' கொண்டுள்ளது இது விசை-மதிப்பு சோடியை, குழு, அல்லது குறிப்பு அல்ல"
 
-#: ../glib/gkeyfile.c:763
+#: glib/gkeyfile.c:763
+#, c-format
 msgid "Key file does not start with a group"
 msgstr "விசை கோப்பு ஒரு குழுவாக ஆரம்பமாகாது"
 
-#: ../glib/gkeyfile.c:806
+#: glib/gkeyfile.c:806
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "விசை கோப்பு துணையில்லாத குறிமுறையை கொண்டுள்ளது '%s'"
 
-#: ../glib/gkeyfile.c:1010 ../glib/gkeyfile.c:1169 ../glib/gkeyfile.c:2382
-#: ../glib/gkeyfile.c:2447 ../glib/gkeyfile.c:2566 ../glib/gkeyfile.c:2701
-#: ../glib/gkeyfile.c:2854 ../glib/gkeyfile.c:3030 ../glib/gkeyfile.c:3087
+#: glib/gkeyfile.c:1010 glib/gkeyfile.c:1169 glib/gkeyfile.c:2382
+#: glib/gkeyfile.c:2447 glib/gkeyfile.c:2566 glib/gkeyfile.c:2701
+#: glib/gkeyfile.c:2854 glib/gkeyfile.c:3030 glib/gkeyfile.c:3087
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "விசை கோப்பு குழுவினை கொண்டிருக்கவில்லை '%s'"
 
-#: ../glib/gkeyfile.c:1181
+#: glib/gkeyfile.c:1181
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr " '%s' விசையை விசை கோப்பு கொண்டிருக்கவில்லை"
 
-#: ../glib/gkeyfile.c:1282 ../glib/gkeyfile.c:1391
+#: glib/gkeyfile.c:1282 glib/gkeyfile.c:1391
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr " '%s'மதிப்பினை உடைய '%s'விசை விசை கோப்பு கொண்டுள்ளது, இது UTF-8 அல்ல"
 
-#: ../glib/gkeyfile.c:1300 ../glib/gkeyfile.c:1409 ../glib/gkeyfile.c:1781
+#: glib/gkeyfile.c:1300 glib/gkeyfile.c:1409 glib/gkeyfile.c:1781
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "%s'விசையை விசை கோப்பு கொண்டுள்ளது அது கொண்டுள்ள மதிப்பினை மாற்ற முடியாது."
 
-#: ../glib/gkeyfile.c:1997 ../glib/gkeyfile.c:2210
+#: glib/gkeyfile.c:1997 glib/gkeyfile.c:2210
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
 "interpreted."
-msgstr "'%s'குழுவில் %s'விசையை விசை கோப்பு கொண்டுள்ளது அது கொண்டுள்ள மதிப்பினை மாற்ற முடியாது."
+msgstr ""
+"'%s'குழுவில் %s'விசையை விசை கோப்பு கொண்டுள்ளது அது கொண்டுள்ள மதிப்பினை மாற்ற "
+"முடியாது."
 
-#: ../glib/gkeyfile.c:2397 ../glib/gkeyfile.c:2581 ../glib/gkeyfile.c:3098
+#: glib/gkeyfile.c:2397 glib/gkeyfile.c:2581 glib/gkeyfile.c:3098
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "'%s' குழுவில் '%s' விசையை விசை கோப்பு கொண்டிருக்கவில்லை"
 
-#: ../glib/gkeyfile.c:3271
+#: glib/gkeyfile.c:3271
+#, c-format
 msgid "Key file contains escape character at end of line"
 msgstr "கடைசி வரியில் விசை கோப்பு விடுபடு எழுத்தினை கொண்டுள்ளது"
 
-#: ../glib/gkeyfile.c:3293
+#: glib/gkeyfile.c:3293
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "விசை கோப்பு தவறான விடுபடு வரிசையை கொண்டுள்ளது '%s'"
 
-#: ../glib/gkeyfile.c:3434
+#: glib/gkeyfile.c:3434
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "மதிப்பு '%s' ஒரு எண்ணாக செயல்பட முடியாது."
 
-#: ../glib/gkeyfile.c:3444
+#: glib/gkeyfile.c:3444
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "இயல் எண் மதிப்பு '%s' வரையறையை தாண்டியுள்ளது"
 
-#: ../glib/gkeyfile.c:3472
+#: glib/gkeyfile.c:3472
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "மதிப்பு '%s' தசம எண்ணாக செயல்பட முடியாது."
 
-#: ../glib/gkeyfile.c:3492
+#: glib/gkeyfile.c:3492
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "மதிப்பு '%s' பூலியனாக செயல்பட முடியாது."
-
