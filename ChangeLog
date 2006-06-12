@@ -1,3 +1,7 @@
+2006-06-12  Matthias Clasen  <mclasen@redhat.com>
+
+	* NEWS: Updates
+
 2006-06-09  Emmanuele Bassi  <ebassi@cvs.gnome.org>
 
 	* glib/gbookmarkfile.c (g_bookmark_file_remove_application): Use

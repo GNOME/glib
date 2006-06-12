@@ -1,3 +1,15 @@
+Overview of Changes from GLib 2.11.2 to GLib 2.11.3
+===================================================
+
+* GBookmarkFile:
+  - g_bookmark_file_move_item: Return TRUE in case of
+    an empty target
+
+* Bugs fixed: 
+ 343919 gunicollate.c: strxfrm bug on VC8
+
+* Updated translations (fi)
+
 Overview of Changes from GLib 2.11.1 to GLib 2.11.2
 ===================================================
 
