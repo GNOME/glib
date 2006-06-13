@@ -1,3 +1,7 @@
+2006-06-14  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gutils.c (g_listenv): Add Windows notes to doc comment.
+
 2006-06-12  Emmanuele Bassi  <ebassi@cvs.gnome.org>
 
 	* glib/gbookmarkfile.h:
