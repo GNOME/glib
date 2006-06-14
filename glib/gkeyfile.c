@@ -943,6 +943,10 @@ g_key_file_to_data (GKeyFile  *key_file,
 
       group = (GKeyFileGroup *) group_node->data;
 
+      /* separate groups by an empty line */
+      if (group_node->next)
+        g_string_append_c (data_string, '\n');
+
       if (group->comment != NULL)
         g_string_append_printf (data_string, "%s\n", group->comment->value);
       if (group->name != NULL)

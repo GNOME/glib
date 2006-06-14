@@ -1,3 +1,8 @@
+2006-06-14  Matthias Clasen  <mclasen@redhat.com>
+	
+	* glib/gkeyfile.c (g_key_file_to_data): Separate groups by
+	an empty line  (#344868, Christian Persch)
+
 2006-06-14  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gutils.c (g_listenv): Add Windows notes to doc comment.
