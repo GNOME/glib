@@ -3557,7 +3557,7 @@ g_type_instance_get_private (GTypeInstance *instance,
 
       if (G_UNLIKELY (private_node->data->instance.private_size == parent_node->data->instance.private_size))
 	{
-	  g_warning ("g_type_get_private() requires a prior call to g_type_add_private()");
+	  g_warning ("g_type_instance_get_private() requires a prior call to g_type_class_add_private()");
 	  return NULL;
 	}
 

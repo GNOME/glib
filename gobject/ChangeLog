@@ -1,3 +1,10 @@
+2006-06-15  Federico Mena Quintero  <federico@novell.com>
+
+	* gtype.c (g_type_instance_get_private): Fix the error message so
+	that it mentions the right functions:
+	"g_type_instance_get_private() requires a prior call to
+	g_type_class_add_private()".
+
 2006-06-12  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.11.3 ===
