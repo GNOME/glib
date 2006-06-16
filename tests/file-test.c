@@ -60,7 +60,13 @@ test_mkstemp (void)
   strcpy (template, "foobar");
   fd = g_mkstemp (template);
   if (fd != -1)
-    g_warning ("g_mkstemp works even if template doesn't end in XXXXXX");
+    g_warning ("g_mkstemp works even if template doesn't contain XXXXXX");
+  close (fd);
+
+  strcpy (template, "foobarXXX");
+  fd = g_mkstemp (template);
+  if (fd != -1)
+    g_warning ("g_mkstemp works even if template contains less than six X");
   close (fd);
 
   strcpy (template, "fooXXXXXX");
@@ -77,6 +83,13 @@ test_mkstemp (void)
 
   chars[i] = 0;
   g_assert (strcmp (chars, hello) == 0 && "read() didn't get same string back");
+
+  close (fd);
+  remove (template);
+
+  strcpy (template, "fooXXXXXX.pdf");
+  fd = g_mkstemp (template);
+  g_assert (fd != -1 && "g_mkstemp didn't work for template fooXXXXXX.pdf");
 
   close (fd);
   remove (template);

@@ -1154,7 +1154,6 @@ static gint
 create_temp_file (gchar *tmpl, 
 		  int    permissions)
 {
-  int len;
   char *XXXXXX;
   int count, fd;
   static const char letters[] =
@@ -1164,15 +1163,14 @@ create_temp_file (gchar *tmpl,
   GTimeVal tv;
   static int counter = 0;
 
-  len = strlen (tmpl);
-  if (len < 6 || strcmp (&tmpl[len - 6], "XXXXXX"))
+  /* find the last occurrence of "XXXXXX" */
+  XXXXXX = g_strrstr (tmpl, "XXXXXX");
+
+  if (!XXXXXX || strncmp (XXXXXX, "XXXXXX", 6))
     {
       errno = EINVAL;
       return -1;
     }
-
-  /* This is where the Xs start.  */
-  XXXXXX = &tmpl[len - 6];
 
   /* Get some more or less random data.  */
   g_get_current_time (&tv);
@@ -1217,12 +1215,13 @@ create_temp_file (gchar *tmpl,
  * @tmpl: template filename
  *
  * Opens a temporary file. See the mkstemp() documentation
- * on most UNIX-like systems. This is a portability wrapper, which simply calls 
- * mkstemp() on systems that have it, and implements 
- * it in GLib otherwise.
+ * on most UNIX-like systems. 
  *
- * The parameter is a string that should match the rules for
- * mkstemp(), i.e. end in "XXXXXX". The X string will 
+ * The parameter is a string that should follow the rules for
+ * mkstemp() templates, i.e. contain the string "XXXXXX". 
+ * g_mkstemp() is slightly more flexible than mkstemp()
+ * in that the sequence does not have to occur at the very end of the 
+ * template. The X string will 
  * be modified to form the name of a file that didn't exist.
  * The string should be in the GLib file name encoding. Most importantly, 
  * on Windows it should be in UTF-8.
@@ -1230,16 +1229,12 @@ create_temp_file (gchar *tmpl,
  * Return value: A file handle (as from open()) to the file
  * opened for reading and writing. The file is opened in binary mode
  * on platforms where there is a difference. The file handle should be
- * closed with close(). In case of errors, -1 is returned.
- */
+ * closed with close(). In case of errors, -1 is returned.  
+ */ 
 gint
 g_mkstemp (gchar *tmpl)
 {
-#ifdef HAVE_MKSTEMP
-  return mkstemp (tmpl);
-#else
   return create_temp_file (tmpl, 0600);
-#endif
 }
 
 #ifdef G_OS_WIN32
@@ -1251,7 +1246,6 @@ g_mkstemp (gchar *tmpl)
 gint
 g_mkstemp (gchar *tmpl)
 {
-  int len;
   char *XXXXXX;
   int count, fd;
   static const char letters[] =
@@ -1261,15 +1255,14 @@ g_mkstemp (gchar *tmpl)
   GTimeVal tv;
   static int counter = 0;
 
-  len = strlen (tmpl);
-  if (len < 6 || strcmp (&tmpl[len - 6], "XXXXXX"))
+  /* find the last occurrence of 'XXXXXX' */
+  XXXXXX = g_strrstr (tmpl, "XXXXXX");
+
+  if (!XXXXXX || strcmp (XXXXXX, "XXXXXX"))
     {
       errno = EINVAL;
       return -1;
     }
-
-  /* This is where the Xs start.  */
-  XXXXXX = &tmpl[len - 6];
 
   /* Get some more or less random data.  */
   g_get_current_time (&tv);
@@ -1315,15 +1308,16 @@ g_mkstemp (gchar *tmpl)
 
 /**
  * g_file_open_tmp:
- * @tmpl: Template for file name, as in g_mkstemp(), basename only
+ * @tmpl: Template for file name, as in g_mkstemp(), basename only,
+ *        or %NULL, to a default template
  * @name_used: location to store actual name used
  * @error: return location for a #GError
  *
  * Opens a file for writing in the preferred directory for temporary
  * files (as returned by g_get_tmp_dir()). 
  *
- * @tmpl should be a string in the GLib file name encoding ending with
- * six 'X' characters, as the parameter to g_mkstemp() (or mkstemp()).
+ * @tmpl should be a string in the GLib file name encoding containing 
+ * a sequence of six 'X' characters, as the parameter to g_mkstemp().
  * However, unlike these functions, the template should only be a
  * basename, no directory components are allowed. If template is
  * %NULL, a default template is used.
@@ -1376,14 +1370,13 @@ g_file_open_tmp (const gchar *tmpl,
       return -1;
     }
   
-  if (strlen (tmpl) < 6 ||
-      strcmp (tmpl + strlen (tmpl) - 6, "XXXXXX") != 0)
+  if (strstr (tmpl, "XXXXXX") == NULL)
     {
       gchar *display_tmpl = g_filename_display_name (tmpl);
       g_set_error (error,
 		   G_FILE_ERROR,
 		   G_FILE_ERROR_FAILED,
-		   _("Template '%s' doesn't end with XXXXXX"),
+		   _("Template '%s' doesn't contain XXXXXX"),
 		   display_tmpl);
       g_free (display_tmpl);
       return -1;
