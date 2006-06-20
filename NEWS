@@ -1,3 +1,18 @@
+Overview of Changes from GLib 2.11.3 to GLib 2.11.4
+===================================================
+
+* GBookmarkFile:
+ - g_bookmark_file_remove_item returns a boolean
+ 
+* g_mkstemp accepts the XXXXXX in the middle of
+  the template
+ 
+* Bugs fixed:
+ 344868 g_key_file_to_data should separate groups 
+
+* Updated translations (de,es,fr,gu,hi,ko,th)
+
+
 Overview of Changes from GLib 2.11.2 to GLib 2.11.3
 ===================================================
 

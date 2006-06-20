@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-06-12 11:18-0400\n"
+"POT-Creation-Date: 2006-06-20 10:48-0400\n"
 "PO-Revision-Date: 2005-10-03 00:24+0600\n"
 "Last-Translator: Mahay Alam Khan <makl10n@yahoo.com>\n"
 "Language-Team: Bengali <gnome-translation@bengalinux.org>\n"
@@ -53,35 +53,35 @@ msgstr "বৈধ কী ফাইল ডাটা dirs পাওয়া যা�
 msgid "A bookmark for URI '%s' already exists"
 msgstr ""
 
-#: glib/gbookmarkfile.c:2037 glib/gbookmarkfile.c:2192
-#: glib/gbookmarkfile.c:2277 glib/gbookmarkfile.c:2358
-#: glib/gbookmarkfile.c:2443 glib/gbookmarkfile.c:2526
-#: glib/gbookmarkfile.c:2604 glib/gbookmarkfile.c:2683
-#: glib/gbookmarkfile.c:2725 glib/gbookmarkfile.c:2822
-#: glib/gbookmarkfile.c:2945 glib/gbookmarkfile.c:3135
-#: glib/gbookmarkfile.c:3211 glib/gbookmarkfile.c:3363
-#: glib/gbookmarkfile.c:3428 glib/gbookmarkfile.c:3518
-#: glib/gbookmarkfile.c:3645
+#: glib/gbookmarkfile.c:2039 glib/gbookmarkfile.c:2196
+#: glib/gbookmarkfile.c:2281 glib/gbookmarkfile.c:2362
+#: glib/gbookmarkfile.c:2447 glib/gbookmarkfile.c:2530
+#: glib/gbookmarkfile.c:2608 glib/gbookmarkfile.c:2687
+#: glib/gbookmarkfile.c:2729 glib/gbookmarkfile.c:2826
+#: glib/gbookmarkfile.c:2949 glib/gbookmarkfile.c:3139
+#: glib/gbookmarkfile.c:3215 glib/gbookmarkfile.c:3367
+#: glib/gbookmarkfile.c:3432 glib/gbookmarkfile.c:3522
+#: glib/gbookmarkfile.c:3649
 #, c-format
 msgid "No bookmark found for URI '%s'"
 msgstr ""
 
-#: glib/gbookmarkfile.c:2367
+#: glib/gbookmarkfile.c:2371
 #, c-format
 msgid "No MIME type defined in the bookmark for URI '%s'"
 msgstr ""
 
-#: glib/gbookmarkfile.c:2452
+#: glib/gbookmarkfile.c:2456
 #, c-format
 msgid "No private flag has been defined in bookmark for URI '%s'"
 msgstr ""
 
-#: glib/gbookmarkfile.c:2831
+#: glib/gbookmarkfile.c:2835
 #, c-format
 msgid "No groups set in bookmark for URI '%s'"
 msgstr ""
 
-#: glib/gbookmarkfile.c:3229 glib/gbookmarkfile.c:3373
+#: glib/gbookmarkfile.c:3233 glib/gbookmarkfile.c:3377
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
 msgstr ""
@@ -196,7 +196,7 @@ msgstr "ফাইল \"%s\" খুলতে ব্যর্থ: fdopen() ব্�
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "'%s' ফাইলের নাম '%s' তে পরিবর্তন করা যায়নি: g_rename() failed: %s"
 
-#: glib/gfileutils.c:946 glib/gfileutils.c:1411
+#: glib/gfileutils.c:946 glib/gfileutils.c:1404
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "ফাইল \"%s\" সৃষ্টি করতে ব্যর্থ: %s"
@@ -221,22 +221,22 @@ msgstr "'%s' ফাইল বন্ধ করতে ব্যর্থ: fclose()
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "বিদ্যমান ফাইল '%s' অপসারিত করা যায়নি: g_unlink() ব্যর্থ: %s"
 
-#: glib/gfileutils.c:1372
+#: glib/gfileutils.c:1366
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "নমুনা '%s' সঠিক নয়, '%s' থাকা উচিত্‌ নয়"
 
-#: glib/gfileutils.c:1386
-#, c-format
-msgid "Template '%s' doesn't end with XXXXXX"
+#: glib/gfileutils.c:1379
+#, fuzzy, c-format
+msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "নমুনা '%s' এর শেষে XXXXXX নাই"
 
-#: glib/gfileutils.c:1861
+#: glib/gfileutils.c:1854
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "প্রতীকি লিংক '%s' পড়তে ব্যর্থ: %s"
 
-#: glib/gfileutils.c:1882
+#: glib/gfileutils.c:1875
 #, c-format
 msgid "Symbolic links not supported"
 msgstr "প্রতীকী লিঙ্ক সমর্থিত নয়"
@@ -728,66 +728,66 @@ msgstr "কী ফাইল গ্রুপের সঙ্গে আরম্�
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "কী ফাইল অসমর্থিত এনকোডিং '%s' ধারণ করছে"
 
-#: glib/gkeyfile.c:1010 glib/gkeyfile.c:1169 glib/gkeyfile.c:2382
-#: glib/gkeyfile.c:2447 glib/gkeyfile.c:2566 glib/gkeyfile.c:2701
-#: glib/gkeyfile.c:2854 glib/gkeyfile.c:3030 glib/gkeyfile.c:3087
+#: glib/gkeyfile.c:1014 glib/gkeyfile.c:1173 glib/gkeyfile.c:2386
+#: glib/gkeyfile.c:2451 glib/gkeyfile.c:2570 glib/gkeyfile.c:2705
+#: glib/gkeyfile.c:2858 glib/gkeyfile.c:3034 glib/gkeyfile.c:3091
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "কী ফাইলের গ্রুপ '%s' নেই"
 
-#: glib/gkeyfile.c:1181
+#: glib/gkeyfile.c:1185
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "কী ফাইলের কী '%s' নেই"
 
-#: glib/gkeyfile.c:1282 glib/gkeyfile.c:1391
+#: glib/gkeyfile.c:1286 glib/gkeyfile.c:1395
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "কী ফাইলে '%s' কী এর মান '%s', যা UTF-8 নয়"
 
-#: glib/gkeyfile.c:1300 glib/gkeyfile.c:1409 glib/gkeyfile.c:1781
+#: glib/gkeyfile.c:1304 glib/gkeyfile.c:1413 glib/gkeyfile.c:1785
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "কী ফাইল '%s' কী ধারণ করে যার মান ইন্টারপ্রেট করা যাবেনা।"
 
-#: glib/gkeyfile.c:1997 glib/gkeyfile.c:2210
+#: glib/gkeyfile.c:2001 glib/gkeyfile.c:2214
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
 "interpreted."
 msgstr "কী ফাইল '%2$s' গ্রুপে '%1$s' কী ধারণ করছে যার মান ইন্টারপ্রেট করা যাবেনা।"
 
-#: glib/gkeyfile.c:2397 glib/gkeyfile.c:2581 glib/gkeyfile.c:3098
+#: glib/gkeyfile.c:2401 glib/gkeyfile.c:2585 glib/gkeyfile.c:3102
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "কী ফাইলের '%2$s' গ্রুপ এ অন্তর্ভুক্ত '%1$s' কী টি নেই"
 
-#: glib/gkeyfile.c:3271
+#: glib/gkeyfile.c:3275
 #, c-format
 msgid "Key file contains escape character at end of line"
 msgstr "কী ফাইল লাইনের শেষে এস্কেপ অক্ষর ধারণ করছে"
 
-#: glib/gkeyfile.c:3293
+#: glib/gkeyfile.c:3297
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "কী ফাইলে অবৈধ এস্কেপ সিকোয়েন্স '%s' আছে"
 
-#: glib/gkeyfile.c:3434
+#: glib/gkeyfile.c:3438
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "মান '%s' কে সংখ্যা হিসেবে ইন্টারপ্রেট করা যায় না।"
 
-#: glib/gkeyfile.c:3444
+#: glib/gkeyfile.c:3448
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "ইন্টিজার মান '%s' সীমার বাহিরে"
 
-#: glib/gkeyfile.c:3472
+#: glib/gkeyfile.c:3476
 #, fuzzy, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "মান '%s' কে সংখ্যা হিসেবে ইন্টারপ্রেট করা যায় না।"
 
-#: glib/gkeyfile.c:3492
+#: glib/gkeyfile.c:3496
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "মান '%s' কে বুলিয়ান হিসেবে ইন্টারপ্রেট করা যায় না।"

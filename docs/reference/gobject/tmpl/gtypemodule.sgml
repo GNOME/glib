@@ -164,11 +164,13 @@ not be unloaded.
 
 @module:              a #GTypeModule
 @name:                name for the type
+@_static_values: 
+@Returns: the new or existing type ID
+@Since: 2.6
+<!-- # Unused Parameters # -->
 @const_static_values: an array of #GEnumValue structs for the possible
   enumeration values. The array is terminated by a struct with all 
   members being 0.
-@Returns: the new or existing type ID
-@Since: 2.6
 
 
 <!-- ##### FUNCTION g_type_module_register_flags ##### -->
@@ -185,10 +187,12 @@ not be unloaded.
 
 @module:              a #GTypeModule
 @name:                name for the type
+@_static_values: 
+@Returns: the new or existing type ID
+@Since: 2.6
+<!-- # Unused Parameters # -->
 @const_static_values: an array of #GFlagsValue structs for the possible
   flags values. The array is terminated by a struct with all 
   members being 0.
-@Returns: the new or existing type ID
-@Since: 2.6
 
 
