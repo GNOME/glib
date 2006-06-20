@@ -1178,10 +1178,10 @@ main (int   argc,
   g_timer_destroy(timer);
   g_timer_destroy(timer2);
 
-#define REF_SEC_UTC  343737360
-#define REF_STR_UTC  "1980-11-22T10:36:00Z"
-#define REF_STR_CEST "1980-11-22T12:36:00+02:00"
-#define REF_STR_EST  "1980-11-22T05:36:00-05:00"
+#define REF_SEC_UTC  320063760
+#define REF_STR_UTC  "1980-02-22T10:36:00Z"
+#define REF_STR_CEST "1980-02-22T12:36:00+02:00"
+#define REF_STR_EST  "1980-02-22T05:36:00-05:00"
 
   g_print ("checking g_time_val_from_iso8601...\n");
   ref_date.tv_sec = REF_SEC_UTC;

@@ -1,5 +1,12 @@
 2006-06-20  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gtimer.c (mktime_utc): Fix an off-by-2 error
+	in the leap year calculation.  (#344905, Dan Winship)
+
+	* tests/testglib.c (main): Change the test data for
+	the g_time_val_from_iso8601 tests to expose an off-by-2
+	error in the leap year calculation.
+
 	* configure.in: Bump version
 
 	* === Released 2.11.4 ===

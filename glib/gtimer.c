@@ -333,7 +333,7 @@ mktime_utc (struct tm *tm)
   retval += (tm->tm_year - 68) / 4;
   retval += days_before[tm->tm_mon] + tm->tm_mday - 1;
   
-  if (tm->tm_year % 4 == 2 && tm->tm_mon < 2)
+  if (tm->tm_year % 4 == 0 && tm->tm_mon < 2)
     retval -= 1;
   
   retval = ((((retval * 24) + tm->tm_hour) * 60) + tm->tm_min) * 60 + tm->tm_sec;
