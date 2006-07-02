@@ -1,3 +1,11 @@
+Overview of Changes from GLib 2.11.4 to GLib 2.12
+=================================================
+
+* Bugs fixed:
+ 344905 leap-year bug in g_time_val_from_iso8601 w/o HAVE_TIMEGM
+
+* Updated translations (cy,nb,nl)
+
 Overview of Changes from GLib 2.11.3 to GLib 2.11.4
 ===================================================
 

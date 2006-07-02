@@ -1,5 +1,7 @@
 2006-06-30  Matthias Clasen  <mclasen@redhat.com>
 
+	* NEWS: Updates
+
 	* configure.in: Set version to 2.12.0
 
 2006-06-20  Matthias Clasen  <mclasen@redhat.com>
