@@ -789,7 +789,7 @@ msgstr "Tập tin khóa không chứa khóa « %s » trong nhóm « %s »."
 #: glib/gkeyfile.c:3275
 #, c-format
 msgid "Key file contains escape character at end of line"
-msgstr "Tập tin khóa chứa ký tự thoạt tại kết thức dòng."
+msgstr "Tập tin khóa chứa ký tự thoạt tại kết thúc dòng."
 
 #: glib/gkeyfile.c:3297
 #, c-format
