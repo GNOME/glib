@@ -1,3 +1,7 @@
+2006-07-03  Runa Bhattacharjee <runabh@gmail.com>
+
+	* configure.in: Added Bengali India (bn_IN) in ALL_LINGUAS.
+
 2006-07-02  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Bump version
