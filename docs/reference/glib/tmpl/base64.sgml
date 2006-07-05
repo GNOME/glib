@@ -17,8 +17,8 @@ for email.
 <para>
 GLib supports incremental encoding using g_base64_encode_step() and
 g_base64_encode_close(). Incremental decoding can be done with
-g_base64_decode_step() and g_base64_decode_close(). To encode or
-decode data in one go, use g_base64_encode() of g_base64_decode(). 
+g_base64_decode_step(). To encode or decode data in one go, use 
+g_base64_encode() or g_base64_decode(). 
 </para>
 
 <para>

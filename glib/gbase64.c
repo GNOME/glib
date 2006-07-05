@@ -46,11 +46,11 @@ static const char base64_alphabet[] =
  * @save: Saved state between steps, initialize to 0
  *
  * Incrementally encode a sequence of binary data into it's Base-64 stringified
- * representation. By calling this functions multiple times you can convert data
- * in chunks to avoid having to have the full encoded data in memory.
+ * representation. By calling this function multiple times you can convert 
+ * data in chunks to avoid having to have the full encoded data in memory.
  *
- * When all the data has been converted you must call g_base64_encode_close()
- * to flush the saved state.
+ * When all of the data has been converted you must call 
+ * g_base64_encode_close() to flush the saved state.
  *
  * The output buffer must be large enough to fit all the data that will
  * be written to it. Due to the way base64 encodes you will need
@@ -58,8 +58,8 @@ static const char base64_alphabet[] =
  * need at least: @len * 4 / 3 + @len * 4 / (3 * 72) + 7 bytes.
  *
  * @break_lines is typically used when putting base64-encoded data in emails.
- * It breaks the lines at 72 columns instead of putting all text on the same
- * line. This avoids problems with long lines in the email system.
+ * It breaks the lines at 72 columns instead of putting all of the text on 
+ * the same line. This avoids problems with long lines in the email system.
  *
  * Return value: The number of bytes of output that was written
  *
@@ -204,7 +204,7 @@ g_base64_encode_close (gboolean  break_lines,
  * @data: the binary data to encode.
  * @len: the length of @data.
  *
- * Encode a sequence of binary data into it's Base-64 stringified
+ * Encode a sequence of binary data into its Base-64 stringified
  * representation.
  *
  * Return value: a newly allocated, zero-terminated Base-64 encoded
@@ -258,9 +258,9 @@ static const unsigned char mime_base64_rank[256] = {
  * @state: Saved state between steps, initialize to 0
  * @save: Saved state between steps, initialize to 0
  *
- * Incrementally decode a sequence of binary data from it's Base-64 stringified
- * representation. By calling this functions multiple times you can convert data
- * in chunks to avoid having to have the full encoded data in memory.
+ * Incrementally decode a sequence of binary data from its Base-64 stringified
+ * representation. By calling this function multiple times you can convert 
+ * data in chunks to avoid having to have the full encoded data in memory.
  *
  * The output buffer must be large enough to fit all the data that will
  * be written to it. Since base64 encodes 3 bytes in 4 chars you need
@@ -324,11 +324,11 @@ g_base64_decode_step (const gchar  *in,
 /**
  * g_base64_decode:
  * @text: zero-terminated string with base64 text to decode.
- * @out_len: The lenght of the decoded data is written here.
+ * @out_len: The length of the decoded data is written here.
  *
  * Decode a sequence of Base-64 encoded text into binary data
  *
- * Return value: a newly allocated, buffer containing the binary data
+ * Return value: a newly allocated buffer containing the binary data
  *               that @text represents
  *
  * Since: 2.12
