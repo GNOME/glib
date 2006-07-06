@@ -1,3 +1,9 @@
+2006-07-06  Behdad Esfahbod  <behdad@gnome.org>
+
+	* glib/gutils.c (g_parse_debug_string): When matching debug flag keys, 
+	ignore case and accept any of comma, colon, semicolon, space, and tab
+	as separators.  Also, match dash with underscore.
+
 2006-07-05  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gbase64.c: Fix typos in the docs.  (#346660, Mark

@@ -38,6 +38,7 @@
 #include <stdio.h>
 #include <locale.h>
 #include <string.h>
+#include <ctype.h>		/* For tolower() */
 #include <errno.h>
 #ifdef HAVE_PWD_H
 #include <pwd.h>
@@ -552,16 +553,33 @@ g_find_program_in_path (const gchar *program)
   return NULL;
 }
 
+static gboolean
+debug_key_matches (const gchar *key,
+		   const gchar *token,
+		   guint        length)
+{
+  for (; length; length--, key++, token++)
+    {
+      char k = (*key   == '_') ? '-' : tolower (*key  );
+      char t = (*token == '_') ? '-' : tolower (*token);
+
+      if (k != t)
+        return FALSE;
+    }
+
+  return *key == '\0';
+}
+
 /**
  * g_parse_debug_string:
- * @string: a list of debug options separated by ':' or "all" 
- *     to set all flags.
+ * @string: a list of debug options separated by colons, spaces, or
+ * commas; or the string "all" to set all flags.
  * @keys: pointer to an array of #GDebugKey which associate 
  *     strings with bit flags.
  * @nkeys: the number of #GDebugKey<!-- -->s in the array.
  *
- * Parses a string containing debugging options separated 
- * by ':' into a %guint containing bit flags. This is used 
+ * Parses a string containing debugging options
+ * into a %guint containing bit flags. This is used 
  * within GDK and GTK+ to parse the debug options passed on the
  * command line or through environment variables.
  *
@@ -594,17 +612,16 @@ g_parse_debug_string  (const gchar     *string,
       
       while (*p)
 	{
-	  q = strchr (p, ':');
+	  q = strpbrk (p, ":;, \t");
 	  if (!q)
 	    q = p + strlen(p);
 	  
 	  for (i = 0; i < nkeys; i++)
-	    if (g_ascii_strncasecmp (keys[i].key, p, q - p) == 0 &&
-		keys[i].key[q - p] == '\0')
+	    if (debug_key_matches (keys[i].key, p, q - p))
 	      result |= keys[i].value;
 	  
 	  p = q;
-	  if (*p == ':')
+	  if (*p)
 	    p++;
 	}
     }
