@@ -645,7 +645,7 @@ msgstr "Không đọc được đủ dữ liệu từ ống dẫn PID con (%s)."
 #: glib/gutf8.c:1017
 #, c-format
 msgid "Character out of range for UTF-8"
-msgstr "Ký tự ở ngoại phạm vị UTF-8."
+msgstr "Ký tự ở ngoại phạm vi UTF-8."
 
 #: glib/gutf8.c:1111 glib/gutf8.c:1120 glib/gutf8.c:1252 glib/gutf8.c:1261
 #: glib/gutf8.c:1402 glib/gutf8.c:1498
@@ -656,7 +656,7 @@ msgstr "Dây bất hợp lệ trong dữ liệu nhập việc chuyển đổi."
 #: glib/gutf8.c:1413 glib/gutf8.c:1509
 #, c-format
 msgid "Character out of range for UTF-16"
-msgstr "Ký tự ở ngoại phạm vị UTF-16."
+msgstr "Ký tự ở ngoại phạm vi UTF-16."
 
 #: glib/goption.c:495
 msgid "Usage:"
@@ -690,7 +690,7 @@ msgstr "Không phân tách giá trị số nguyên « %s » cho %s."
 #: glib/goption.c:696 glib/goption.c:764
 #, c-format
 msgid "Integer value '%s' for %s out of range"
-msgstr "Giá trị số nguyên « %s » cho %s ở ngoại phạm vị."
+msgstr "Giá trị số nguyên « %s » cho %s ở ngoại phạm vi."
 
 #: glib/goption.c:721
 #, c-format
@@ -700,7 +700,7 @@ msgstr "Không thể phân tách giá trị đôi « %s » cho %s"
 #: glib/goption.c:729
 #, c-format
 msgid "Double value '%s' for %s out of range"
-msgstr "Giá trị đôi « %s » cho %s ở ngoại phạm vị"
+msgstr "Giá trị đôi « %s » cho %s ở ngoại phạm vi"
 
 #: glib/goption.c:1066
 #, c-format
@@ -804,7 +804,7 @@ msgstr "Không thể giải dịch giá trị « %s » dạng con số."
 #: glib/gkeyfile.c:3448
 #, c-format
 msgid "Integer value '%s' out of range"
-msgstr "Giá trị số nguyên « %s » ở ngoại phạm vị."
+msgstr "Giá trị số nguyên « %s » ở ngoại phạm vi."
 
 #: glib/gkeyfile.c:3476
 #, c-format
