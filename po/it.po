@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: glib 2.12.x\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-07-06 14:13+0200\n"
-"PO-Revision-Date: 2006-07-06 14:16+0200\n"
+"PO-Revision-Date: 2006-07-08 15:08+0200\n"
 "Last-Translator: Luca Ferretti <elle.uca@libero.it>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
@@ -239,7 +239,7 @@ msgstr "Il modello \"%s\" non è valido, non dovrebbe contenere un \"%s\""
 #: ../glib/gfileutils.c:1379
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
-msgstr "Il modello \"%s\" non termina per XXXXXX"
+msgstr "Il modello \"%s\" non contiene XXXXXX"
 
 #: ../glib/gfileutils.c:1854
 #, c-format
