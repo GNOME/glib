@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-07-07 09:35+0300\n"
-"PO-Revision-Date: 2006-07-07 09:36+0300\n"
+"POT-Creation-Date: 2006-07-11 06:53+0300\n"
+"PO-Revision-Date: 2006-07-11 06:54+0300\n"
 "Last-Translator: Ilkka Tuohela <hile@iki.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -80,7 +80,8 @@ msgstr "URI:n \"%s\" kirjanmerkissä ei ole asetettu ryhmiä"
 #: ../glib/gbookmarkfile.c:3233 ../glib/gbookmarkfile.c:3377
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
-msgstr ""
+msgstr "Sovellus nimeltä \"%s\" ei rekisteröinyt kirjanmerkkiä "
+"kohteelle \"%s\""
 
 #: ../glib/gconvert.c:404 ../glib/gconvert.c:482 ../glib/giochannel.c:1150
 #, c-format
