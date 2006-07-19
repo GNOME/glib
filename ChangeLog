@@ -1,3 +1,11 @@
+2006-07-19  Behdad Esfahbod  <behdad@gnome.org>
+
+	* glib/gunibreak.h:
+	* glib/gunichartables.h:
+	* glib/gunicomp.h:
+	* glib/gunidecomp.h:
+	Update to final Unicode Character Database 5.0.0. (#336281)
+
 2006-07-06  Behdad Esfahbod  <behdad@gnome.org>
 
 	* glib/gutils.c (g_parse_debug_string): When matching debug flag keys, 

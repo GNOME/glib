@@ -4,7 +4,7 @@
 #ifndef CHARTABLES_H
 #define CHARTABLES_H
 
-#define G_UNICODE_DATA_VERSION "5.0.0beta-20060427"
+#define G_UNICODE_DATA_VERSION "5.0.0"
 
 #define G_UNICODE_LAST_CHAR 0x10ffff
 
