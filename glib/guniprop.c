@@ -320,8 +320,8 @@ g_unichar_istitle (gunichar c)
   unsigned int i;
   for (i = 0; i < G_N_ELEMENTS (title_table); ++i)
     if (title_table[i][0] == c)
-      return 1;
-  return 0;
+      return TRUE;
+  return FALSE;
 }
 
 /**
@@ -823,7 +823,10 @@ real_toupper (const gchar *str,
 		  for (i = 0; i < G_N_ELEMENTS (title_table); ++i)
 		    {
 		      if (title_table[i][0] == c)
-			val = title_table[i][1];
+			{
+			  val = title_table[i][1];
+			  break;
+			}
 		    }
 		}
 
@@ -1007,7 +1010,10 @@ real_tolower (const gchar *str,
 		  for (i = 0; i < G_N_ELEMENTS (title_table); ++i)
 		    {
 		      if (title_table[i][0] == c)
-			val = title_table[i][2];
+			{
+			  val = title_table[i][2];
+			  break;
+			}
 		    }
 		}
 
