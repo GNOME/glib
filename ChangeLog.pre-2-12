@@ -1,7 +1,7 @@
 2006-07-20  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/guniprop.c (real_toupper, real_tolower): Small optimization.
-	(#348011, Nicolai Weibull)
+	(#348011, Nikolai Weibull)
 
 2006-07-19  Behdad Esfahbod  <behdad@gnome.org>
 
