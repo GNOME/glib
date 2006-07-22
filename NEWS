@@ -1,3 +1,19 @@
+Overview of Changes from GLib 2.12.0 to GLib 2.12.1
+===================================================
+
+* Update to final Unicode Character Database 5.0.0
+
+* Bugs fixed:
+ 346660 issues with base64 api documentation / g_base64_decode_cl...
+ 348136 Coverity reports allocation of wrong size CID #2839
+ 336281 Update to UCD 5.0
+ 346197 g_date_strftime %F option doesnt work for win32
+ 348011 Small optimization to real_toupper()
+
+* New and updated translations (bg,bn_IN,ca,dz,eu,fi,
+  fr,he,it,ja,mk,or,pt)
+
+
 Overview of Changes from GLib 2.11.4 to GLib 2.12
 =================================================
 

@@ -1,3 +1,7 @@
+2006-07-22  Matthias Clasen  <mclasen@redhat.com>
+
+	* NEWS: Updates
+
 2006-07-21  Behdad Esfahbod  <behdad@gnome.org>
 
 	* glib/gmirroringtable.h: Updated to Unicode Character Database 5.0.0.
