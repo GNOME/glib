@@ -1,5 +1,10 @@
 2006-07-22  Matthias Clasen  <mclasen@redhat.com>
 
+	* === Released 2.12.1 ===
+
+	* glib/gconvert.c: Fix the prototype of _g_charset_get_aliases.
+	(#346494, Thomas Klausner)
+
 	* NEWS: Updates
 
 2006-07-21  Behdad Esfahbod  <behdad@gnome.org>

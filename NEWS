@@ -9,6 +9,7 @@ Overview of Changes from GLib 2.12.0 to GLib 2.12.1
  336281 Update to UCD 5.0
  346197 g_date_strftime %F option doesnt work for win32
  348011 Small optimization to real_toupper()
+ 246494 prototype mismatch in glib/gconvert.c
 
 * New and updated translations (bg,bn_IN,ca,dz,eu,fi,
   fr,he,it,ja,mk,or,pt)

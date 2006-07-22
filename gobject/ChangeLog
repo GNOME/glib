@@ -1,3 +1,7 @@
+2006-07-22  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.12.1 ===
+
 2006-07-21  Matthias Clasen  <mclasen@redhat.com>
 
 	* gtypemodule.c (g_type_module_register_type): Copy the complete
