@@ -1,5 +1,7 @@
 2006-07-22  Matthias Clasen  <mclasen@redhat.com>
 
+	* configure.in: Bump version
+
 	* === Released 2.12.1 ===
 
 	* glib/gconvert.c: Fix the prototype of _g_charset_get_aliases.
