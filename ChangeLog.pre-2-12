@@ -1,3 +1,8 @@
+2006-07-24  Tor Lillqvist  <tml@novell.com>
+
+	* tests/slice-test.c: Use g_get_current_time() insted of
+	gettimeofday().
+
 2006-07-22  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Bump version

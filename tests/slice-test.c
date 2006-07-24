@@ -20,7 +20,6 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <sys/time.h> // gettimeofday
 
 #define quick_rand32()  (rand_accu = 1664525 * rand_accu + 1013904223, rand_accu)
 static guint    prime_size = 1021; // 769; // 509
@@ -80,8 +79,8 @@ test_memchunk_thread (gpointer data)
     rand_accu = *(guint32*) data;
   else
     {
-      struct timeval rand_tv;
-      gettimeofday (&rand_tv, NULL);
+      GTimeVal rand_tv;
+      g_get_current_time (&rand_tv);
       rand_accu = rand_tv.tv_usec + (rand_tv.tv_sec << 16);
     }
 
@@ -141,8 +140,8 @@ test_sliced_mem_thread (gpointer data)
     rand_accu = *(guint32*) data;
   else
     {
-      struct timeval rand_tv;
-      gettimeofday (&rand_tv, NULL);
+      GTimeVal rand_tv;
+      g_get_current_time (&rand_tv);
       rand_accu = rand_tv.tv_usec + (rand_tv.tv_sec << 16);
     }
 
