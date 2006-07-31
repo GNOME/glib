@@ -442,7 +442,7 @@ _g_utf8_normalize_wc (const gchar    *str,
 	  int cc = COMBINING_CLASS (wc_buffer[i]);
 
 	  if (i > 0 &&
-	      (last_cc == 0 || last_cc != cc) &&
+	      (last_cc == 0 || last_cc < cc) &&
 	      combine (wc_buffer[last_start], wc_buffer[i],
 		       &wc_buffer[last_start]))
 	    {

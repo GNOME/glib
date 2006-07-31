@@ -1,3 +1,11 @@
+2006-07-31  Behdad Esfahbod  <behdad@gnome.org>
+
+	* glib/gunidecomp.c (_g_utf8_normalize_wc): Update to reflect Unicode
+	PR #29 (#348694, Nikolai Weibull)
+
+	* tests/unicode-normalize.c (encode), (test_form): Make output more
+	useful, reporting the unexpected output of the test.
+
 2006-07-24  Tor Lillqvist  <tml@novell.com>
 
 	* tests/slice-test.c: Use g_get_current_time() insted of

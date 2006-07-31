@@ -42,6 +42,22 @@ const char *names[4] = {
   "NFKC"
 };
 
+static char *
+encode (const gchar *input)
+{
+  GString *result = g_string_new(NULL);
+
+  const gchar *p = input;
+  while (*p)
+    {
+      gunichar c = g_utf8_get_char (p);
+      g_string_append_printf (result, "%04X ", c);
+      p = g_utf8_next_char(p);
+    }
+
+  return g_string_free (result, FALSE);
+}
+
 static void
 test_form (int            line,
 	   GNormalizeMode mode,
@@ -62,9 +78,11 @@ test_form (int            line,
 	  char *result = g_utf8_normalize (c[i], -1, mode);
 	  if (strcmp (result, c[expected]) != 0)
 	    {
+	      char *result_raw = encode(result);
 	      fprintf (stderr, "\nFailure: %d/%d: %s\n", line, i + 1, raw[5]);
-	      fprintf (stderr, "  g_utf8_normalize (%s, %s) != %s\n",
-		   raw[i], names[mode], raw[expected]);
+	      fprintf (stderr, "  g_utf8_normalize (%s, %s) != %s but %s\n",
+		   raw[i], names[mode], raw[expected], result_raw);
+	      g_free (result_raw);
 	      success = FALSE;
 	    }
 	  
@@ -78,9 +96,11 @@ test_form (int            line,
 	  char *result = g_utf8_normalize (c[i], -1, mode);
 	  if (strcmp (result, c[expected]) != 0)
 	    {
+	      char *result_raw = encode(result);
 	      fprintf (stderr, "\nFailure: %d/%d: %s\n", line, i, raw[5]);
-	      fprintf (stderr, "  g_utf8_normalize (%s, %s) != %s\n",
-		   raw[i], names[mode], raw[expected]);
+	      fprintf (stderr, "  g_utf8_normalize (%s, %s) != %s but %s\n",
+		   raw[i], names[mode], raw[expected], result_raw);
+	      g_free (result_raw);
 	      success = FALSE;
 	    }
 	  
