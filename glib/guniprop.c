@@ -62,11 +62,6 @@
 
 
 
-#define ISDIGIT(Type)	IS ((Type),				\
-			    OR (G_UNICODE_DECIMAL_NUMBER,	\
-			    OR (G_UNICODE_LETTER_NUMBER,	\
-			    OR (G_UNICODE_OTHER_NUMBER,		0))))
-
 #define ISALPHA(Type)	IS ((Type),				\
 			    OR (G_UNICODE_LOWERCASE_LETTER,	\
 			    OR (G_UNICODE_UPPERCASE_LETTER,	\
@@ -337,7 +332,7 @@ g_unichar_isxdigit (gunichar c)
 {
   return ((c >= 'a' && c <= 'f')
 	  || (c >= 'A' && c <= 'F')
-	  || ISDIGIT (TYPE (c)));
+	  || (TYPE (c) == G_UNICODE_DECIMAL_NUMBER));
 }
 
 /**

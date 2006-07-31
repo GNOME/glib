@@ -1,5 +1,11 @@
 2006-07-31  Behdad Esfahbod  <behdad@gnome.org>
 
+	* glib/guniprop.c (g_unichar_isxdigit): Make it only accept those
+	characters that we accept i g_unichar_xdigit_value(), i.e. don't
+	accept non-decimal digits. (#347842, Nikolai Weibull)
+
+2006-07-31  Behdad Esfahbod  <behdad@gnome.org>
+
 	* glib/gunidecomp.c (_g_utf8_normalize_wc): Update to reflect Unicode
 	PR #29 (#348694, Nikolai Weibull)
 
