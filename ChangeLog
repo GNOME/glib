@@ -1,5 +1,8 @@
 2006-08-05  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gkeyfile.c (g_key_file_to_data): Don't insert unnecessary
+	newlines in keyfiles.  (#349825, Chris Wilson)
+
 	* glib/guniprop.c (g_unichar_toupper, g_unichar_tolower) 
 	(real_toupper, real_tolower): If a character can't be converted,
 	don't replace it with a NUL byte, but leave it unchanged.  
