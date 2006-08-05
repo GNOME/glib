@@ -1,5 +1,8 @@
 2006-08-05  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gbookmarkfile.c (find_file_in_data_dirs): Correct the
+	grammar of an error message.  (#349792, Jakub Friedl)
+
 	* glib/gkeyfile.c (g_key_file_to_data): Don't insert unnecessary
 	newlines in keyfiles.  (#349825, Chris Wilson)
 

@@ -1789,7 +1789,7 @@ find_file_in_data_dirs (const gchar   *file,
     {
       g_set_error (error, G_BOOKMARK_FILE_ERROR,
                    G_BOOKMARK_FILE_ERROR_FILE_NOT_FOUND,
-                   _("No valid bookmark file was be found in data dirs"));
+                   _("No valid bookmark file found in data dirs"));
       
       return NULL;
     }
