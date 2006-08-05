@@ -138,6 +138,11 @@ A convenience function/macro to log a normal message.
 A convenience function/macro to log a warning message.
 </para>
 
+<para>
+You can make warnings fatal at runtime by setting the %G_DEBUG environment
+variable (see <ulink url="glib-running.html">Running GLib Applications</ulink>).
+</para>
+
 @...: format string, followed by parameters to insert into the format string (as with printf())
 
 @...:
@@ -164,6 +169,12 @@ application-defined what constitutes a critical vs. a regular
 warning. You could call g_log_set_always_fatal() to make critical
 warnings exit the program, then use g_critical() for fatal errors, for
 example.
+</para>
+
+<para>
+You can also make critical warnings fatal at runtime by setting
+the %G_DEBUG environment variable (see
+<ulink url="glib-running.html">Running GLib Applications</ulink>).
 </para>
 
 @...: format string, followed by parameters to insert into the format string (as with printf())
@@ -302,6 +313,12 @@ Sets the message levels which are always fatal, in any log domain.
 When a message with any of these levels is logged the program terminates.
 You can only set the levels defined by GLib to be fatal.
 %G_LOG_LEVEL_ERROR is always fatal.
+</para>
+
+<para>
+You can also make some message levels
+fatal at runtime by setting the %G_DEBUG environment variable (see
+<ulink url="glib-running.html">Running GLib Applications</ulink>).
 </para>
 
 @fatal_mask: the mask containing bits set for each level of error which is

@@ -1,3 +1,9 @@
+2006-08-05  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/tmpl/messages.sgml: Add some hints
+	about making warnings fatal.  (#348785, Matt
+	Barnes)
+
 2006-07-22  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.12.1 ===
