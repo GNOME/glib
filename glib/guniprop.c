@@ -509,7 +509,12 @@ g_unichar_toupper (gunichar c)
 	  return g_utf8_get_char (p);
 	}
       else
-	return val ? val : c;
+        {
+	  /* Some lowercase letters, e.g., U+000AA, FEMININE ORDINAL INDICATOR,
+	   * do not have an uppercase equivalent, in which case val will be
+	   * zero. */
+	  return val ? val : c;
+	}
     }
   else if (t == G_UNICODE_TITLECASE_LETTER)
     {
@@ -546,7 +551,11 @@ g_unichar_tolower (gunichar c)
 	  return g_utf8_get_char (p);
 	}
       else
-	return val ? val : c;
+	{
+	  /* Not all uppercase letters are guaranteed to have a lowercase
+	   * equivalent.  If this is the case, val will be zero. */
+	  return val ? val : c;
+	}
     }
   else if (t == G_UNICODE_TITLECASE_LETTER)
     {
@@ -825,7 +834,10 @@ real_toupper (const gchar *str,
 		    }
 		}
 
-	      len += g_unichar_to_utf8 (val, out_buffer ? out_buffer + len : NULL);
+	      /* Some lowercase letters, e.g., U+000AA, FEMININE ORDINAL INDICATOR,
+	       * do not have an uppercase equivalent, in which case val will be
+	       * zero. */
+	      len += g_unichar_to_utf8 (val ? val : c, out_buffer ? out_buffer + len : NULL);
 	    }
 	}
       else
@@ -1012,7 +1024,9 @@ real_tolower (const gchar *str,
 		    }
 		}
 
-	      len += g_unichar_to_utf8 (val, out_buffer ? out_buffer + len : NULL);
+	      /* Not all uppercase letters are guaranteed to have a lowercase
+	       * equivalent.  If this is the case, val will be zero. */
+	      len += g_unichar_to_utf8 (val ? val : c, out_buffer ? out_buffer + len : NULL);
 	    }
 	}
       else

@@ -1,3 +1,15 @@
+2006-08-05  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/guniprop.c (g_unichar_toupper, g_unichar_tolower) 
+	(real_toupper, real_tolower): If a character can't be converted,
+	don't replace it with a NUL byte, but leave it unchanged.  
+	(#348491, Nikolai Weibull)
+
+	* tests/unicode-caseconv.c: Adapt to this change. 
+
+	* tests/unicode-caseconv.c (main): Add a comment to point out
+	a quirk in the test data that we are working around here.
+
 2006-07-31  Behdad Esfahbod  <behdad@gnome.org>
 
 	* glib/guniprop.c (g_unichar_isxdigit): Make it only accept those

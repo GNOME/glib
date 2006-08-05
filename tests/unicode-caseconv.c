@@ -16,6 +16,7 @@ int main (int argc, char **argv)
   char *filename;
   const char *locale;
   const char *test;
+  const char *expected;
   char *convert;
   char *current_locale = setlocale (LC_CTYPE, NULL);
   gint result = 0;
@@ -57,20 +58,30 @@ int main (int argc, char **argv)
       
       test = strings[1];
 
+      /* gen-casemap-txt.pl uses an empty string when a single character
+       * doesn't have an equivalent in a particular case; since that behavior
+       * is nonsense for multicharacter strings, it would make more sense
+       * to put the expected result .. the original character unchanged. But 
+       * for now, we just work around it here and take the empty string to mean
+       * "same as original"
+       */
+
       convert = g_utf8_strup (test, -1);
-      if (strcmp (convert, strings[4]) != 0)
+      expected = strings[4][0] ? strings[4] : test;
+      if (strcmp (convert, expected) != 0)
 	{
 	  fprintf (stderr, "Failure: toupper(%s) == %s, should have been %s\n",
-		   test, convert, strings[4]);
+		   test, convert, expected);
 	  result = 1;
 	}
       g_free (convert);
 
       convert = g_utf8_strdown (test, -1);
-      if (strcmp (convert, strings[2]) != 0)
+      expected = strings[2][0] ? strings[2] : test;
+      if (strcmp (convert, expected) != 0)
 	{
 	  fprintf (stderr, "Failure: tolower(%s) == %s, should have been %s\n",
-		   test, convert, strings[2]);
+		   test, convert, expected);
 	  result = 1;
 	}
       g_free (convert);
