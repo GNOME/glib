@@ -1453,11 +1453,12 @@ g_param_spec_types_init (void)
   /* G_TYPE_PARAM_GTYPE
    */
   {
+    GType value_type = G_TYPE_GTYPE;
     GParamSpecTypeInfo pspec_info = {
       sizeof (GParamSpecGType),	/* instance_size */
       0,			/* n_preallocs */
       param_gtype_init,		/* instance_init */
-      G_TYPE_GTYPE,		/* value_type */
+      value_type,		/* value_type */
       NULL,			/* finalize */
       param_gtype_set_default,	/* value_set_default */
       param_gtype_validate,	/* value_validate */
