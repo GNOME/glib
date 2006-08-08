@@ -2842,7 +2842,8 @@ g_bookmark_file_remove_group (GBookmarkFile  *bookmark,
       if (strcmp (l->data, group) == 0)
         {
           item->metadata->groups = g_list_remove_link (item->metadata->groups, l);
-          g_list_free_1 (l);
+          g_free (l->data);
+	  g_list_free_1 (l);
           
           item->modified = time (NULL);          
           
@@ -3248,7 +3249,8 @@ g_bookmark_file_set_app_info (GBookmarkFile  *bookmark,
     {
       item->metadata->applications = g_list_remove (item->metadata->applications, ai);
       g_hash_table_remove (item->metadata->apps_by_name, ai->name);
-          
+      bookmark_app_info_free (ai);
+
       item->modified = time (NULL);
           
       return TRUE;

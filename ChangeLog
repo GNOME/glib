@@ -1,3 +1,9 @@
+2006-08-08  Emmanuele Bassi  <ebassi@gnome.org>
+
+	* glib/gbookmarkfile.c (g_bookmark_file_remove_group)
+	(g_bookmark_file_set_app_info): Plug a couple of leaks
+	when removing data from a bookmark.
+
 2006-08-05  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gbookmarkfile.c (find_file_in_data_dirs): Correct the
