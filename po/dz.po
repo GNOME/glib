@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.dz\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-07-18 23:06+0530\n"
-"PO-Revision-Date: 2006-07-18 16:59+0530\n"
+"POT-Creation-Date: 2006-08-10 01:20+0530\n"
+"PO-Revision-Date: 2006-08-09 10:23+0530\n"
 "Last-Translator: Mindu Dorji\n"
 "Language-Team: DZONGKHA <pgeyleg@dit.gov.bt>\n"
 "MIME-Version: 1.0\n"
@@ -43,7 +43,7 @@ msgid "Unexpected tag '%s' inside '%s'"
 msgstr "རེ་བ་མེད་པའི་ངོ་རྟགས་ '%s' ངོ་རྟགས། '%s'ནང་ན།"
 
 #: ../glib/gbookmarkfile.c:1792
-msgid "No valid bookmark file was be found in data dirs"
+msgid "No valid bookmark file found in data dirs"
 msgstr "གནད་སྡུད་སྣོད་ཐོ་ཚུ་ནང་ ནུས་ཅན་དེབ་རྟགས་ཡིག་སྣོད་ འཚོལ་མ་ཐོབ།"
 
 #: ../glib/gbookmarkfile.c:1993
@@ -56,10 +56,10 @@ msgstr "ཡུ་ཨར་ཨའི་'%s'གི་དོན་ལུ་ དེ�
 #: ../glib/gbookmarkfile.c:2447 ../glib/gbookmarkfile.c:2530
 #: ../glib/gbookmarkfile.c:2608 ../glib/gbookmarkfile.c:2687
 #: ../glib/gbookmarkfile.c:2729 ../glib/gbookmarkfile.c:2826
-#: ../glib/gbookmarkfile.c:2949 ../glib/gbookmarkfile.c:3139
-#: ../glib/gbookmarkfile.c:3215 ../glib/gbookmarkfile.c:3367
-#: ../glib/gbookmarkfile.c:3432 ../glib/gbookmarkfile.c:3522
-#: ../glib/gbookmarkfile.c:3649
+#: ../glib/gbookmarkfile.c:2950 ../glib/gbookmarkfile.c:3140
+#: ../glib/gbookmarkfile.c:3216 ../glib/gbookmarkfile.c:3369
+#: ../glib/gbookmarkfile.c:3434 ../glib/gbookmarkfile.c:3524
+#: ../glib/gbookmarkfile.c:3651
 #, c-format
 msgid "No bookmark found for URI '%s'"
 msgstr "ཡུ་ཨར་ཨའི་'%s'གི་དོན་ལུ་དེབ་རྟགས་མ་ཐོབ།"
@@ -79,7 +79,7 @@ msgstr "ཡུ་ཨར་ཨའི་'%s'གི་དོན་ལུ་དེ�
 msgid "No groups set in bookmark for URI '%s'"
 msgstr "ཡུ་ཨར་ཨའི་'%sགི་དོན་ལུ་ དེབ་རྟགས་ནང་ སྡེ་ཚན་གཞི་སྒྲིག་མ་འབད་བས།"
 
-#: ../glib/gbookmarkfile.c:3233 ../glib/gbookmarkfile.c:3377
+#: ../glib/gbookmarkfile.c:3234 ../glib/gbookmarkfile.c:3379
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
 msgstr "མིང་'%sའབད་མི་གློག་རིམ་གྱིས་ '%s དོན་ལུ་ དེབ་རྟགས་ཅིག་ཐོ་འགོད་མ་འབད་བས། "
@@ -721,65 +721,65 @@ msgstr "ལྡེ་མིག་ཡིག་སྣོད་དེ་ སྡེ�
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "ལྡེ་མིག་ཡིག་སྣོད་ནང་ལུ་ རྒྱབ་སྐྱོར་མེད་པའི་ ཨིན་ཀོ་ཌིང་'%s'ཡོད།"
 
-#: ../glib/gkeyfile.c:1014 ../glib/gkeyfile.c:1173 ../glib/gkeyfile.c:2386
-#: ../glib/gkeyfile.c:2451 ../glib/gkeyfile.c:2570 ../glib/gkeyfile.c:2705
-#: ../glib/gkeyfile.c:2858 ../glib/gkeyfile.c:3034 ../glib/gkeyfile.c:3091
+#: ../glib/gkeyfile.c:1013 ../glib/gkeyfile.c:1172 ../glib/gkeyfile.c:2385
+#: ../glib/gkeyfile.c:2450 ../glib/gkeyfile.c:2569 ../glib/gkeyfile.c:2704
+#: ../glib/gkeyfile.c:2857 ../glib/gkeyfile.c:3033 ../glib/gkeyfile.c:3090
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "ལྡེ་མིག་ཡིག་སྣོད་ནང་ལུ་ སྡེ་ཚན་ '%s' མིན་འདུག།"
 
-#: ../glib/gkeyfile.c:1185
+#: ../glib/gkeyfile.c:1184
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "ལྡེ་མིག་ཡིག་སྣོད་ནང་ ལྡེ་མིག་'%s'མིན་འདུག"
 
-#: ../glib/gkeyfile.c:1286 ../glib/gkeyfile.c:1395
+#: ../glib/gkeyfile.c:1285 ../glib/gkeyfile.c:1394
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "ལྡེ་མིག་ཡིག་སྣོད་ནང་ལུ་ ཡུ་ཊི་ཨེཕ་-༨ མེད་པའི་ ལྡེ་མིག་'%s' བེ་ལུ་'%s' དང་བཅསཔ་སྦེ་འདུག"
 
-#: ../glib/gkeyfile.c:1304 ../glib/gkeyfile.c:1413 ../glib/gkeyfile.c:1785
+#: ../glib/gkeyfile.c:1303 ../glib/gkeyfile.c:1412 ../glib/gkeyfile.c:1784
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "ལྡེ་མིག་ཡིག་སྣོད་ནང་ལུ་ ཁ་བསྒྱུར་འབད་མ་ཚུགས་པའི་ བེ་ལུ་ཡོད་མི་ ལྡེ་མིག་ '%s'འདུག"
 
-#: ../glib/gkeyfile.c:2001 ../glib/gkeyfile.c:2214
+#: ../glib/gkeyfile.c:2000 ../glib/gkeyfile.c:2213
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
 "interpreted."
 msgstr "ལྡེ་མིག་ཡིག་སྣོད་ནང་ལུ་ ཁ་བསྒྱུར་འབད་མ་ཚུགས་པའི་ ལྡེ་མིག་'%s'སྡེ་ཚན་'%s' ནང་འདུག།"
 
-#: ../glib/gkeyfile.c:2401 ../glib/gkeyfile.c:2585 ../glib/gkeyfile.c:3102
+#: ../glib/gkeyfile.c:2400 ../glib/gkeyfile.c:2584 ../glib/gkeyfile.c:3101
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "ལྡེ་མིག་ཡིག་སྣོད་དེ་ལུ་ ལྡེ་མིག་'%s' སྡེ་ཚན་'%s' ནང་མིན་འདུག"
 
-#: ../glib/gkeyfile.c:3275
+#: ../glib/gkeyfile.c:3274
 msgid "Key file contains escape character at end of line"
 msgstr "ལྡེ་མིག་ཡིག་སྣོད་ནང་ལུ་ གྱལ་རིམ་མཇུག་ལུ་ གྲོས་ཐར་འབད་མི་ཡིག་འབྲུ་འདུག"
 
-#: ../glib/gkeyfile.c:3297
+#: ../glib/gkeyfile.c:3296
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "ལྡེ་མིག་ཡིག་སྣོད་ནང་ལུ་ ནུས་མེད་གྲོས་ཐར་འབྱུང་རིམ་ '%s' འདུག"
 
-#: ../glib/gkeyfile.c:3438
+#: ../glib/gkeyfile.c:3437
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "བེ་ལུ་'%s'དེ་ ཨང་གྲངས་ཅིག་སྦེ་ ཁ་བསྒྱུར་འབད་མི་ཚུགས།"
 
-#: ../glib/gkeyfile.c:3448
+#: ../glib/gkeyfile.c:3447
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "ཧྲིལ་ཨང་བེ་ལུ་ ’%s’ དེ་ ཁྱབ་ཚད་ཀྱི་ཕྱི་ཁར་ཨིན་པས།"
 
-#: ../glib/gkeyfile.c:3476
+#: ../glib/gkeyfile.c:3475
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "བེ་ལུ་'%s'དེ་ འཕུར་ལྡིང་ཨང་གྲངས་ཅིག་སྦེ་ ཁ་བསྒྱུར་འབད་མི་ཚུགས།"
 
-#: ../glib/gkeyfile.c:3496
+#: ../glib/gkeyfile.c:3495
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "བེ་ལུ་'%s'དེ་ བུ་ལིན་ཅིག་སྦེ་ ཁ་བསྒྱུར་འབད་མི་ཚུགས།"
