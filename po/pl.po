@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.pl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-11 08:43+0200\n"
+"POT-Creation-Date: 2006-08-16 00:18+0200\n"
 "PO-Revision-Date: 2006-08-14 15:10+0200\n"
 "Last-Translator: Artur Flinta <aflinta@at.kernel.pl>\n"
 "Language-Team: Polish <translators@gnomepl.org>\n"
@@ -20,7 +20,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.2\n"
-"Plural-Forms:  nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms:  nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%"
+"100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: ../glib/gbookmarkfile.c:716 ../glib/gbookmarkfile.c:793
 #: ../glib/gbookmarkfile.c:872 ../glib/gbookmarkfile.c:919
@@ -91,7 +92,8 @@ msgstr "Żadna aplikacja o nazwie \"%s\" nie zarejestrowała zakładki dla \"%s\
 #: ../glib/gconvert.c:404 ../glib/gconvert.c:482 ../glib/giochannel.c:1150
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
-msgstr "Konwersja z zestawu znaków \"%s\" na zestaw \"%s\" nie jest obsługiwana"
+msgstr ""
+"Konwersja z zestawu znaków \"%s\" na zestaw \"%s\" nie jest obsługiwana"
 
 #: ../glib/gconvert.c:408 ../glib/gconvert.c:486
 #, c-format
@@ -118,12 +120,14 @@ msgstr "Na końcu wejścia występuje sekwencja odpowiadająca części znaku"
 #: ../glib/gconvert.c:893
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
-msgstr "Nie można przekonwertować napisu zastępczego \"%s\" na zestaw znaków \"%s\""
+msgstr ""
+"Nie można przekonwertować napisu zastępczego \"%s\" na zestaw znaków \"%s\""
 
 #: ../glib/gconvert.c:1702
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
-msgstr "URI \"%s\" nie jest bezwzględnym URI, używającym schematu \"plikowego\""
+msgstr ""
+"URI \"%s\" nie jest bezwzględnym URI, używającym schematu \"plikowego\""
 
 #: ../glib/gconvert.c:1712
 #, c-format
@@ -182,7 +186,8 @@ msgstr "Nie można otworzyć pliku \"%s\": %s"
 #: ../glib/gfileutils.c:737 ../glib/gmappedfile.c:133
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
-msgstr "Nie można uzyskać atrybutów pliku \"%s\": funkcja fstat() zwróciła błąd: %s"
+msgstr ""
+"Nie można uzyskać atrybutów pliku \"%s\": funkcja fstat() zwróciła błąd: %s"
 
 #: ../glib/gfileutils.c:771
 #, c-format
@@ -204,7 +209,8 @@ msgstr "Nie można utworzyć pliku \"%s\": %s"
 #: ../glib/gfileutils.c:960
 #, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
-msgstr "Nie można otworzyć pliku \"%s\" do zapisu: funkcja fdopen() zwróciła błąd: %s"
+msgstr ""
+"Nie można otworzyć pliku \"%s\" do zapisu: funkcja fdopen() zwróciła błąd: %s"
 
 #: ../glib/gfileutils.c:985
 #, c-format
@@ -285,7 +291,8 @@ msgid "Error on line %d: %s"
 msgstr "Błąd w wierszu %d: %s"
 
 #: ../glib/gmarkup.c:429
-msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "Napotkano pustą jednostkę \"&;\"; poprawnymi jednostkami są: &amp; &quot; "
 "&lt; &gt; &apos;"
@@ -384,7 +391,8 @@ msgstr ""
 
 #: ../glib/gmarkup.c:1247
 #, c-format
-msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgid ""
+"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "Niespodziewany znak \"%s\"; po nazwie atrybutu \"%s\" elementu \"%s\" "
 "oczekiwano znaku \"=\""
@@ -430,7 +438,8 @@ msgstr ""
 #: ../glib/gmarkup.c:1574
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
-msgstr "Element \"%s\" został zamknięty, lecz brak aktualnie otwartego elementu"
+msgstr ""
+"Element \"%s\" został zamknięty, lecz brak aktualnie otwartego elementu"
 
 #: ../glib/gmarkup.c:1583
 #, c-format
@@ -698,7 +707,8 @@ msgstr "Nie można przetworzyć podwójnej wartości liczbowej \"%s\" dla %s"
 #: ../glib/goption.c:729
 #, c-format
 msgid "Double value '%s' for %s out of range"
-msgstr "Podwójna wartość liczbowa \"%s\" dla %s jest z poza dopuszczalnego zakresu"
+msgstr ""
+"Podwójna wartość liczbowa \"%s\" dla %s jest z poza dopuszczalnego zakresu"
 
 #: ../glib/goption.c:1066
 #, c-format
@@ -729,7 +739,8 @@ msgstr "Plik jest pusty"
 
 #: ../glib/gkeyfile.c:695
 #, c-format
-msgid "Key file contains line '%s' which is not a key-value pair, group, or comment"
+msgid ""
+"Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr ""
 "Plik klucza zawiera linię \"%s\", która nie jest parą klucz-wartość, grupą "
 "lub komentarzem"
@@ -811,4 +822,3 @@ msgstr "Nie można zinterpretować \"%s\" jako wartości zmiennoprzecinkowej."
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Nie można zinterpretować \"%s\" jako wartości logicznej."
-
