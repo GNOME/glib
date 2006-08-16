@@ -56,6 +56,7 @@ test_programs =					\
 	ifaceinherit				\
 	ifaceproperties				\
 	override				\
+	singleton				\
 	references
 
 check_PROGRAMS = $(test_programs)

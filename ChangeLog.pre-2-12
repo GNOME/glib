@@ -1,3 +1,9 @@
+Wed Aug 16 13:59:07 2006  Tim Janik  <timj@gtk.org>
+
+	* tests/gobject/Makefile.am:
+	* tests/gobject/singleton.c: added test program which demonstrates
+	and checks singleton construction.
+
 2006-08-15  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gbookmarkfile.c (g_bookmark_file_get_groups):
