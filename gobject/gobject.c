@@ -116,9 +116,9 @@ static GQuark	            quark_toggle_refs = 0;
 static GParamSpecPool      *pspec_pool = NULL;
 static GObjectNotifyContext property_notify_context = { 0, };
 static gulong	            gobject_signals[LAST_SIGNAL] = { 0, };
-G_LOCK_DEFINE_STATIC (construct_objects_lock);
-static GSList *construct_objects = NULL;
 static guint (*floating_flag_handler) (GObject*, gint) = object_floating_flag_handler;
+G_LOCK_DEFINE_STATIC (construction_mutex);
+static GSList *construction_objects = NULL;
 
 /* --- functions --- */
 #ifdef	G_ENABLE_DEBUG
@@ -479,12 +479,11 @@ g_object_init (GObject *object)
   
   /* freeze object's notification queue, g_object_newv() preserves pairedness */
   g_object_notify_queue_freeze (object, &property_notify_context);
+  /* enter construction list for notify_queue_thaw() and to allow construct-only properties */
+  G_LOCK (construction_mutex);
+  construction_objects = g_slist_prepend (construction_objects, object);
+  G_UNLOCK (construction_mutex);
 
-  /* allow construct-only properties to be set */
-  G_LOCK (construct_objects_lock);
-  construct_objects = g_slist_prepend (construct_objects, object);
-  G_UNLOCK (construct_objects_lock);
-  
 #ifdef	G_ENABLE_DEBUG
   IF_DEBUG (OBJECTS)
     {
@@ -797,12 +796,34 @@ g_object_new (GType	   object_type,
 }
 
 static gboolean
-object_in_construction (GObject *object)
+slist_maybe_remove (GSList       **slist,
+                    gconstpointer  data)
+{
+  GSList *last = NULL, *node = *slist;
+  while (node)
+    {
+      if (node->data == data)
+        {
+          if (last)
+            last->next = node->next;
+          else
+            *slist = node->next;
+          g_slist_free_1 (node);
+          return TRUE;
+        }
+      last = node;
+      node = last->next;
+    }
+  return FALSE;
+}
+
+static inline gboolean
+object_in_construction_list (GObject *object)
 {
   gboolean in_construction;
-  G_LOCK (construct_objects_lock);
-  in_construction = g_slist_find (construct_objects, object) != NULL;
-  G_UNLOCK (construct_objects_lock);
+  G_LOCK (construction_mutex);
+  in_construction = g_slist_find (construction_objects, object) != NULL;
+  G_UNLOCK (construction_mutex);
   return in_construction;
 }
 
@@ -812,13 +833,14 @@ g_object_newv (GType       object_type,
 	       GParameter *parameters)
 {
   GObjectConstructParam *cparams, *oparams;
-  GObjectNotifyQueue *nqueue;
+  GObjectNotifyQueue *nqueue = NULL; /* shouldn't be initialized, just to silence compiler */
   GObject *object;
   GObjectClass *class, *unref_class = NULL;
   GSList *slist;
   guint n_total_cparams = 0, n_cparams = 0, n_oparams = 0, n_cvalues;
   GValue *cvalues;
   GList *clist = NULL;
+  gboolean newly_constructed;
   guint i;
 
   g_return_val_if_fail (G_TYPE_IS_OBJECT (object_type), NULL);
@@ -910,31 +932,32 @@ g_object_newv (GType       object_type,
 
   /* construct object from construction parameters */
   object = class->constructor (object_type, n_total_cparams, cparams);
-  G_LOCK (construct_objects_lock);
-  construct_objects = g_slist_remove (construct_objects, object);
-  G_UNLOCK (construct_objects_lock);
-
   /* free construction values */
   g_free (cparams);
   while (n_cvalues--)
     g_value_unset (cvalues + n_cvalues);
   g_free (cvalues);
-  
-  /* release g_object_init() notification queue freeze_count */
-  nqueue = g_object_notify_queue_freeze (object, &property_notify_context);
-  g_object_notify_queue_thaw (object, nqueue);
-  
+
+  /* adjust freeze_count according to g_object_init() and remaining properties */
+  G_LOCK (construction_mutex);
+  newly_constructed = slist_maybe_remove (&construction_objects, object);
+  G_UNLOCK (construction_mutex);
+  if (newly_constructed || n_oparams)
+    nqueue = g_object_notify_queue_freeze (object, &property_notify_context);
+  if (newly_constructed)
+    g_object_notify_queue_thaw (object, nqueue);
+
   /* set remaining properties */
   for (i = 0; i < n_oparams; i++)
     object_set_property (object, oparams[i].pspec, oparams[i].value, nqueue);
   g_free (oparams);
 
+  /* release our own freeze count and handle notifications */
+  if (newly_constructed || n_oparams)
+    g_object_notify_queue_thaw (object, nqueue);
   if (unref_class)
     g_type_class_unref (unref_class);
 
-  /* release our own freeze count and handle notifications */
-  g_object_notify_queue_thaw (object, nqueue);
-  
   return object;
 }
 
@@ -1078,7 +1101,7 @@ g_object_set_valist (GObject	 *object,
 		     G_OBJECT_TYPE_NAME (object));
 	  break;
 	}
-      if ((pspec->flags & G_PARAM_CONSTRUCT_ONLY) && !object_in_construction (object))
+      if ((pspec->flags & G_PARAM_CONSTRUCT_ONLY) && !object_in_construction_list (object))
         {
           g_warning ("%s: construct property \"%s\" for object `%s' can't be set after construction",
                      G_STRFUNC, pspec->name, G_OBJECT_TYPE_NAME (object));
@@ -1226,7 +1249,7 @@ g_object_set_property (GObject	    *object,
                G_STRFUNC,
                pspec->name,
                G_OBJECT_TYPE_NAME (object));
-  else if ((pspec->flags & G_PARAM_CONSTRUCT_ONLY) && !object_in_construction (object))
+  else if ((pspec->flags & G_PARAM_CONSTRUCT_ONLY) && !object_in_construction_list (object))
     g_warning ("%s: construct property \"%s\" for object `%s' can't be set after construction",
                G_STRFUNC, pspec->name, G_OBJECT_TYPE_NAME (object));
   else
