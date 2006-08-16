@@ -1946,6 +1946,8 @@ g_main_current_source (void)
  * </programlisting></informalexample>
  *
  * Return value: %TRUE if the source has been destroyed
+ *
+ * Since: 2.12
  */
 gboolean
 g_source_is_destroyed (GSource *source)

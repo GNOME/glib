@@ -1,5 +1,10 @@
 2006-08-15  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gbookmarkfile.c (g_bookmark_file_get_groups):
+	* glib/gmain.c (g_source_is_destroyed): Add Since tags.
+	* glib/gkeyfile.c (g_key_file_get_double_list): Fix
+	Since tag.  (#351583, Brian Cameron)
+
 	* configure.in: Bump version
 
 	* === Released 2.12.2 ===

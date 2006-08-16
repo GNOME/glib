@@ -2334,7 +2334,7 @@ g_key_file_get_double_list  (GKeyFile     *key_file,
  * @group_name.  If @key cannot be found then it is created.
  * If @group_name is %NULL the start group is used.
  *
- * Since: 2.21
+ * Since: 2.12
  **/
 void
 g_key_file_set_double_list (GKeyFile     *key_file,

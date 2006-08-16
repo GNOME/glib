@@ -2927,6 +2927,8 @@ g_bookmark_file_set_groups (GBookmarkFile  *bookmark,
  *
  * Return value: a newly allocated %NULL-terminated array of group names.
  *   Use g_strfreev() to free it.
+ *
+ * Since: 2.12
  */
 gchar **
 g_bookmark_file_get_groups (GBookmarkFile  *bookmark,
