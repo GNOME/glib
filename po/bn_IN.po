@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: bn_IN\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-07-22 14:04-0400\n"
+"POT-Creation-Date: 2006-08-15 20:27-0400\n"
 "PO-Revision-Date: 2006-07-17 15:24+0530\n"
 "Last-Translator: Runa Bhattacharjee <runabh@gmail.com>\n"
 "Language-Team: Bangla (INDIA) <gnome-translation@bengalinux.org>\n"
@@ -44,8 +44,8 @@ msgid "Unexpected tag '%s' inside '%s'"
 msgstr "অপ্রত্যাশিত '%s' ট্যাগ '%s'-র মধ্যে"
 
 #: glib/gbookmarkfile.c:1792
-#, c-format
-msgid "No valid bookmark file was be found in data dirs"
+#, fuzzy, c-format
+msgid "No valid bookmark file found in data dirs"
 msgstr "data dir'র মধ্যে বৈধ বুকমার্ক ফাইল পাওয়া যায়নি"
 
 #: glib/gbookmarkfile.c:1993
@@ -58,10 +58,10 @@ msgstr "URI '%s'-র জন্য বুকমার্ক বর্তমান
 #: glib/gbookmarkfile.c:2447 glib/gbookmarkfile.c:2530
 #: glib/gbookmarkfile.c:2608 glib/gbookmarkfile.c:2687
 #: glib/gbookmarkfile.c:2729 glib/gbookmarkfile.c:2826
-#: glib/gbookmarkfile.c:2949 glib/gbookmarkfile.c:3139
-#: glib/gbookmarkfile.c:3215 glib/gbookmarkfile.c:3367
-#: glib/gbookmarkfile.c:3432 glib/gbookmarkfile.c:3522
-#: glib/gbookmarkfile.c:3649
+#: glib/gbookmarkfile.c:2950 glib/gbookmarkfile.c:3140
+#: glib/gbookmarkfile.c:3216 glib/gbookmarkfile.c:3369
+#: glib/gbookmarkfile.c:3434 glib/gbookmarkfile.c:3524
+#: glib/gbookmarkfile.c:3651
 #, c-format
 msgid "No bookmark found for URI '%s'"
 msgstr "URI '%s'-র জন্য বুকমার্ক পাওয়া যায়নি"
@@ -81,7 +81,7 @@ msgstr "URI '%s'-র বুকমার্কের ক্ষেত্রে ব
 msgid "No groups set in bookmark for URI '%s'"
 msgstr "URI '%s'-র বুকমার্কের ক্ষেত্রে দল নির্ধারণ করা হয়নি"
 
-#: glib/gbookmarkfile.c:3233 glib/gbookmarkfile.c:3377
+#: glib/gbookmarkfile.c:3234 glib/gbookmarkfile.c:3379
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
 msgstr "'%s' নামক কোনো অ্যাপ্লিকেশনের দ্বারা '%s' বুকমার্ক নিবন্ধিত হয়নি"
@@ -735,30 +735,30 @@ msgstr "কি-ফাইলের প্রারম্ভে কোনো স�
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "কি-ফাইলের মধ্যে অসমর্থিত এনকোডিং '%s'"
 
-#: glib/gkeyfile.c:1014 glib/gkeyfile.c:1173 glib/gkeyfile.c:2386
-#: glib/gkeyfile.c:2451 glib/gkeyfile.c:2570 glib/gkeyfile.c:2705
-#: glib/gkeyfile.c:2858 glib/gkeyfile.c:3034 glib/gkeyfile.c:3091
+#: glib/gkeyfile.c:1013 glib/gkeyfile.c:1172 glib/gkeyfile.c:2385
+#: glib/gkeyfile.c:2450 glib/gkeyfile.c:2569 glib/gkeyfile.c:2704
+#: glib/gkeyfile.c:2857 glib/gkeyfile.c:3033 glib/gkeyfile.c:3090
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "কি-ফাইলের মধ্যে কোনো সংকলন অনুপস্থিত '%s'"
 
-#: glib/gkeyfile.c:1185
+#: glib/gkeyfile.c:1184
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "কি-ফাইলের মধ্যে কোনো কি উপস্থিত নেই '%s'"
 
-#: glib/gkeyfile.c:1286 glib/gkeyfile.c:1395
+#: glib/gkeyfile.c:1285 glib/gkeyfile.c:1394
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr ""
 "কি-ফাইলের মধ্যে '%2$s' মান সহ  '%1$s' কি উপস্থিত রয়েছে যা UTF-8 বিন্যাসে নেই।"
 
-#: glib/gkeyfile.c:1304 glib/gkeyfile.c:1413 glib/gkeyfile.c:1785
+#: glib/gkeyfile.c:1303 glib/gkeyfile.c:1412 glib/gkeyfile.c:1784
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "কি-ফাইলের মধ্যে '%s' কি উপস্থিত রয়েছে যার মান ব্যাখ্যা করা সম্ভব নয়।"
 
-#: glib/gkeyfile.c:2001 glib/gkeyfile.c:2214
+#: glib/gkeyfile.c:2000 glib/gkeyfile.c:2213
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -767,37 +767,37 @@ msgstr ""
 "কি-ফাইলের মধ্যে '%2$s' সংকলনে '%1$s' কি উপস্থিত রয়েছে যার মান ব্যাখ্যা করা সম্ভব "
 "নয়।"
 
-#: glib/gkeyfile.c:2401 glib/gkeyfile.c:2585 glib/gkeyfile.c:3102
+#: glib/gkeyfile.c:2400 glib/gkeyfile.c:2584 glib/gkeyfile.c:3101
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "কি-ফাইলের মধ্যে '%2$s' সংকলনে '%1$s' কি উপস্থিত নেই"
 
-#: glib/gkeyfile.c:3275
+#: glib/gkeyfile.c:3274
 #, c-format
 msgid "Key file contains escape character at end of line"
 msgstr "কি-ফাইলের মধ্যে পংক্তির অবশেষে এস্কেপ অক্ষর উপস্থিত রয়েছে"
 
-#: glib/gkeyfile.c:3297
+#: glib/gkeyfile.c:3296
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "কি-ফাইলের মধ্যে অবৈধ এস্কেপ ধারা উপস্থিত রয়েছে '%s'"
 
-#: glib/gkeyfile.c:3438
+#: glib/gkeyfile.c:3437
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "'%s' মান কোনো সংখ্যারূপে ব্যাখ্যা করা সম্ভব নয়।"
 
-#: glib/gkeyfile.c:3448
+#: glib/gkeyfile.c:3447
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "'%s' পূর্ণসংখ্যা মান সীমা বহির্ভূত"
 
-#: glib/gkeyfile.c:3476
+#: glib/gkeyfile.c:3475
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "'%s' মান float সংখ্যা রূপে ব্যাখ্যা করা সম্ভব নয়।"
 
-#: glib/gkeyfile.c:3496
+#: glib/gkeyfile.c:3495
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "'%s' মান বুলিয়ান রূপে ব্যাখ্যা করা সম্ভব নয়।"

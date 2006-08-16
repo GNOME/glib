@@ -1,3 +1,7 @@
+2006-08-15  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.12.2 ===
+
 2006-08-10  Josh Parsons  <josh.parsons@stonebow.otago.ac.nz>
 
 	* gobject/tmpl/gtype.sgml:

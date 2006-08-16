@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.9.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-07-22 14:04-0400\n"
+"POT-Creation-Date: 2006-08-15 20:27-0400\n"
 "PO-Revision-Date: 2006-04-10 04:12+0200\n"
 "Last-Translator: Gia Shervashidze <giasher@telenet.ge>\n"
 "Language-Team: Georgian <ka@li.org>\n"
@@ -44,7 +44,7 @@ msgstr ""
 
 #: glib/gbookmarkfile.c:1792
 #, fuzzy, c-format
-msgid "No valid bookmark file was be found in data dirs"
+msgid "No valid bookmark file found in data dirs"
 msgstr "მონაცემთა დასტებში მართებული საკვანძო ფაილი ვერ მოიძებნა"
 
 #: glib/gbookmarkfile.c:1993
@@ -57,10 +57,10 @@ msgstr ""
 #: glib/gbookmarkfile.c:2447 glib/gbookmarkfile.c:2530
 #: glib/gbookmarkfile.c:2608 glib/gbookmarkfile.c:2687
 #: glib/gbookmarkfile.c:2729 glib/gbookmarkfile.c:2826
-#: glib/gbookmarkfile.c:2949 glib/gbookmarkfile.c:3139
-#: glib/gbookmarkfile.c:3215 glib/gbookmarkfile.c:3367
-#: glib/gbookmarkfile.c:3432 glib/gbookmarkfile.c:3522
-#: glib/gbookmarkfile.c:3649
+#: glib/gbookmarkfile.c:2950 glib/gbookmarkfile.c:3140
+#: glib/gbookmarkfile.c:3216 glib/gbookmarkfile.c:3369
+#: glib/gbookmarkfile.c:3434 glib/gbookmarkfile.c:3524
+#: glib/gbookmarkfile.c:3651
 #, c-format
 msgid "No bookmark found for URI '%s'"
 msgstr ""
@@ -80,7 +80,7 @@ msgstr ""
 msgid "No groups set in bookmark for URI '%s'"
 msgstr ""
 
-#: glib/gbookmarkfile.c:3233 glib/gbookmarkfile.c:3377
+#: glib/gbookmarkfile.c:3234 glib/gbookmarkfile.c:3379
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
 msgstr ""
@@ -741,31 +741,31 @@ msgstr "საკვანძო ფაილი ჯგუფით არ ი�
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "საკვანძო ფაილი შეიცავს არარეალიზებულ კოდირებას '%s'"
 
-#: glib/gkeyfile.c:1014 glib/gkeyfile.c:1173 glib/gkeyfile.c:2386
-#: glib/gkeyfile.c:2451 glib/gkeyfile.c:2570 glib/gkeyfile.c:2705
-#: glib/gkeyfile.c:2858 glib/gkeyfile.c:3034 glib/gkeyfile.c:3091
+#: glib/gkeyfile.c:1013 glib/gkeyfile.c:1172 glib/gkeyfile.c:2385
+#: glib/gkeyfile.c:2450 glib/gkeyfile.c:2569 glib/gkeyfile.c:2704
+#: glib/gkeyfile.c:2857 glib/gkeyfile.c:3033 glib/gkeyfile.c:3090
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "საკვანძო ფაილი არ შეიცავს ჯგუფებს '%s'"
 
-#: glib/gkeyfile.c:1185
+#: glib/gkeyfile.c:1184
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "საკვანძო ფაილი არ შეიცავს კოდს '%s'"
 
-#: glib/gkeyfile.c:1286 glib/gkeyfile.c:1395
+#: glib/gkeyfile.c:1285 glib/gkeyfile.c:1394
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr ""
 "საკვანძო ფაილი შეიცავს კოდს '%s', რომლის მნიშვნელობაც '%s' არაა UTF-8 "
 "კოდირებაში"
 
-#: glib/gkeyfile.c:1304 glib/gkeyfile.c:1413 glib/gkeyfile.c:1785
+#: glib/gkeyfile.c:1303 glib/gkeyfile.c:1412 glib/gkeyfile.c:1784
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "საკვანძო ფაილი შეიცავს კოდს '%s', რომლის მნიშვნელობაც ვერ იშიფრება."
 
-#: glib/gkeyfile.c:2001 glib/gkeyfile.c:2214
+#: glib/gkeyfile.c:2000 glib/gkeyfile.c:2213
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -774,37 +774,37 @@ msgstr ""
 "საკვანძო ფაილი შეიცავს კოდს '%s' ჯგუფში '%s', რომლის მნიშვნელობაც ვერ "
 "იშიფრება."
 
-#: glib/gkeyfile.c:2401 glib/gkeyfile.c:2585 glib/gkeyfile.c:3102
+#: glib/gkeyfile.c:2400 glib/gkeyfile.c:2584 glib/gkeyfile.c:3101
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "საკვანძო ფაილი არ შეიცავს კოდს '%s' ჯგუფში '%s'"
 
-#: glib/gkeyfile.c:3275
+#: glib/gkeyfile.c:3274
 #, c-format
 msgid "Key file contains escape character at end of line"
 msgstr "საკვანძო ფაილი სტრიქონის ბოლოს შეიცავს escape სიმბოლოს"
 
-#: glib/gkeyfile.c:3297
+#: glib/gkeyfile.c:3296
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "საკვანძო ფაილი შეიცავს მცდარ escape მიმდევრობას '%s'"
 
-#: glib/gkeyfile.c:3438
+#: glib/gkeyfile.c:3437
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "მნიშვნელობა '%s'  ვერ აღიქმება როგორც რიცხვი."
 
-#: glib/gkeyfile.c:3448
+#: glib/gkeyfile.c:3447
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "მთელი მნიშვნელობა '%s' რანგს გარეთაა"
 
-#: glib/gkeyfile.c:3476
+#: glib/gkeyfile.c:3475
 #, fuzzy, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "მნიშვნელობა '%s'  ვერ აღიქმება როგორც რიცხვი."
 
-#: glib/gkeyfile.c:3496
+#: glib/gkeyfile.c:3495
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "მნიშვნელობა '%s'  ვერ აღიქმება როგორც ლოგიკური ოპერატორი."

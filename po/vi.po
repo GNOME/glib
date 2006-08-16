@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.9.2 Gnome HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-07-22 14:04-0400\n"
+"POT-Creation-Date: 2006-08-15 20:27-0400\n"
 "PO-Revision-Date: 2006-05-25 21:52+0930\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <gnomevi-list@lists.sourceforge.net>\n"
@@ -42,8 +42,8 @@ msgid "Unexpected tag '%s' inside '%s'"
 msgstr "Thẻ bất ngờ « %s » bên trong « %s »"
 
 #: glib/gbookmarkfile.c:1792
-#, c-format
-msgid "No valid bookmark file was be found in data dirs"
+#, fuzzy, c-format
+msgid "No valid bookmark file found in data dirs"
 msgstr "Không tìm thấy tập tin Đánh dấu hợp lệ trong các thư mục dữ liệu."
 
 #: glib/gbookmarkfile.c:1993
@@ -56,10 +56,10 @@ msgstr "Đánh dấu cho URI « %s » đã có"
 #: glib/gbookmarkfile.c:2447 glib/gbookmarkfile.c:2530
 #: glib/gbookmarkfile.c:2608 glib/gbookmarkfile.c:2687
 #: glib/gbookmarkfile.c:2729 glib/gbookmarkfile.c:2826
-#: glib/gbookmarkfile.c:2949 glib/gbookmarkfile.c:3139
-#: glib/gbookmarkfile.c:3215 glib/gbookmarkfile.c:3367
-#: glib/gbookmarkfile.c:3432 glib/gbookmarkfile.c:3522
-#: glib/gbookmarkfile.c:3649
+#: glib/gbookmarkfile.c:2950 glib/gbookmarkfile.c:3140
+#: glib/gbookmarkfile.c:3216 glib/gbookmarkfile.c:3369
+#: glib/gbookmarkfile.c:3434 glib/gbookmarkfile.c:3524
+#: glib/gbookmarkfile.c:3651
 #, c-format
 msgid "No bookmark found for URI '%s'"
 msgstr "Không tìm thấy tập tin Đánh dấu cho URI « %s »"
@@ -79,7 +79,7 @@ msgstr "Chưa xác định cờ riêng trong Đánh dấu cho URI « %s »"
 msgid "No groups set in bookmark for URI '%s'"
 msgstr "Chưa đặt nhóm trong Đánh dấu cho URI « %s »"
 
-#: glib/gbookmarkfile.c:3233 glib/gbookmarkfile.c:3377
+#: glib/gbookmarkfile.c:3234 glib/gbookmarkfile.c:3379
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
 msgstr "Không có ứng dụng tên « %s » đã đăng ký Đánh dấu cho « %s »"
@@ -750,29 +750,29 @@ msgstr "Tập tin khóa không bắt đầu với nhóm."
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "Tập tin khóa chứa bảng mã không được hỗ trợ « %s »."
 
-#: glib/gkeyfile.c:1014 glib/gkeyfile.c:1173 glib/gkeyfile.c:2386
-#: glib/gkeyfile.c:2451 glib/gkeyfile.c:2570 glib/gkeyfile.c:2705
-#: glib/gkeyfile.c:2858 glib/gkeyfile.c:3034 glib/gkeyfile.c:3091
+#: glib/gkeyfile.c:1013 glib/gkeyfile.c:1172 glib/gkeyfile.c:2385
+#: glib/gkeyfile.c:2450 glib/gkeyfile.c:2569 glib/gkeyfile.c:2704
+#: glib/gkeyfile.c:2857 glib/gkeyfile.c:3033 glib/gkeyfile.c:3090
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Tập tin khóa không có nhóm « %s »."
 
-#: glib/gkeyfile.c:1185
+#: glib/gkeyfile.c:1184
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "Tập tin khóa không có khóa « %s »."
 
-#: glib/gkeyfile.c:1286 glib/gkeyfile.c:1395
+#: glib/gkeyfile.c:1285 glib/gkeyfile.c:1394
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "Tập tin khóa chứa khóa « %s » có giá trị « %s » không phải là UTF-8."
 
-#: glib/gkeyfile.c:1304 glib/gkeyfile.c:1413 glib/gkeyfile.c:1785
+#: glib/gkeyfile.c:1303 glib/gkeyfile.c:1412 glib/gkeyfile.c:1784
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "Tập tin khóa chứa khóa « %s » có giá trị không có khả năng giải dịch."
 
-#: glib/gkeyfile.c:2001 glib/gkeyfile.c:2214
+#: glib/gkeyfile.c:2000 glib/gkeyfile.c:2213
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -781,37 +781,37 @@ msgstr ""
 "Tập tin khóa chứa khóa « %s » trong nhóm « %s » có giá trị không có khả năng "
 "giải dịch."
 
-#: glib/gkeyfile.c:2401 glib/gkeyfile.c:2585 glib/gkeyfile.c:3102
+#: glib/gkeyfile.c:2400 glib/gkeyfile.c:2584 glib/gkeyfile.c:3101
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Tập tin khóa không chứa khóa « %s » trong nhóm « %s »."
 
-#: glib/gkeyfile.c:3275
+#: glib/gkeyfile.c:3274
 #, c-format
 msgid "Key file contains escape character at end of line"
 msgstr "Tập tin khóa chứa ký tự thoạt tại kết thúc dòng."
 
-#: glib/gkeyfile.c:3297
+#: glib/gkeyfile.c:3296
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "Tập tin khóa chứa sây thoát không hợp lệ « %s »."
 
-#: glib/gkeyfile.c:3438
+#: glib/gkeyfile.c:3437
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Không thể giải dịch giá trị « %s » dạng con số."
 
-#: glib/gkeyfile.c:3448
+#: glib/gkeyfile.c:3447
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "Giá trị số nguyên « %s » ở ngoại phạm vi."
 
-#: glib/gkeyfile.c:3476
+#: glib/gkeyfile.c:3475
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "Không thể giải dịch giá trị « %s » dạng con số nổi."
 
-#: glib/gkeyfile.c:3496
+#: glib/gkeyfile.c:3495
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Không thể giải dịch giá trị « %s » dạng bun (đúng/sai)."

@@ -1,3 +1,29 @@
+Overview of Changes from GLib 2.12.1 to GLib 2.12.2
+===================================================
+
+* Unicode updates:
+ - Normalization is following Unicode TR #29
+ - g_unichar_isxdigit() only accept characters
+   for which g_unichar_xdigit_value() returns a value
+ - g_unichar_toupper and g_unichar_tolower leave
+   unconvertable characters in place instead of
+   replacing them by NUL
+
+* Bugs fixed
+ 348491 g_utf8_strup() and g_utf8_strdown() returns 
+        string with NUL bytes
+ 349825	GKeyFile always inserts a newline before a group
+ 347842	g_unichar_isxdigit() is too general about what 
+        it considers a digit
+ 348694	g_utf8_normalize() hasn't been updated to PR #29
+ 348785	Hint about G_DEBUG in Message Logging docs
+ 349792	Wrong english string (UI)
+ 349952	gparamspecs.c uses gcc feature
+
+* Translation updates (ca,cs,de,dz,es,eu,fi,gu,ko,
+  nl,pl,tr,uk,zh_HK,zh_TW)
+
+
 Overview of Changes from GLib 2.12.0 to GLib 2.12.1
 ===================================================
 
