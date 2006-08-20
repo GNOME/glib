@@ -1,3 +1,9 @@
+2006-08-20  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gnulib/vasnprintf.c (vasnprintf): Fix crash when printing
+	large 64-bit values on Win32 using the %I64x format. (#351034,
+	Neil Piercy)
+
 Wed Aug 16 13:59:07 2006  Tim Janik  <timj@gtk.org>
 
 	* tests/gobject/Makefile.am:

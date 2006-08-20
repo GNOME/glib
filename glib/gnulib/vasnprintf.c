@@ -480,6 +480,16 @@ vasnprintf (char *resultbuf, size_t *lengthp, const char *format, va_list args)
 			  + 2; /* account for leading sign or alternate form */
 		      else
 # endif
+# ifdef HAVE_INT64_AND_I64
+		      if (type == TYPE_INT64 || type == TYPE_UINT64)
+			tmp_length =
+			  (unsigned int) (sizeof (unsigned __int64) * CHAR_BIT
+					  * 0.25 /* binary -> hexadecimal */
+					  )
+			  + 1 /* turn floor into ceil */
+			  + 2; /* account for leading sign or alternate form */
+		      else
+# endif
 		      if (type == TYPE_LONGINT || type == TYPE_ULONGINT)
 			tmp_length =
 			  (unsigned int) (sizeof (unsigned long) * CHAR_BIT
