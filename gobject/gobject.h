@@ -237,7 +237,7 @@ GClosure*   g_closure_new_object              (guint           sizeof_closure,
 void        g_value_set_object                (GValue         *value,
 					       gpointer        v_object);
 gpointer    g_value_get_object                (const GValue   *value);
-GObject*    g_value_dup_object                (const GValue   *value);
+gpointer    g_value_dup_object                (const GValue   *value);
 gulong	    g_signal_connect_object           (gpointer	       instance,
 					       const gchar    *detailed_signal,
 					       GCallback       c_handler,

@@ -2044,7 +2044,7 @@ g_value_get_object (const GValue *value)
   return value->data[0].v_pointer;
 }
 
-GObject*
+gpointer
 g_value_dup_object (const GValue *value)
 {
   g_return_val_if_fail (G_VALUE_HOLDS_OBJECT (value), NULL);
