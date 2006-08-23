@@ -1,3 +1,9 @@
+2006-08-23  Sven Neumann  <sven@gimp.org>
+
+	* gobject/glib-genmarshal.[c1]: added new command-line option
+	"--internal" that can be used to let glib-genmarshal generate
+	internal functions using the G_GNUC_INTERNAL attribute (bug #346647).
+
 2006-08-22  Matthias Clasen <mclasen@redhat.com>
 
 	* Branch for 2.12

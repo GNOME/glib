@@ -74,8 +74,7 @@ static void	print_blurb	(FILE	       	*bout,
 
 
 /* --- variables --- */
-static FILE          *fout = NULL;
-static GScannerConfig scanner_config_template =
+static const GScannerConfig scanner_config_template =
 {
   (
    " \t\r"		/* "\n" is statement delimiter */
@@ -118,8 +117,10 @@ static GScannerConfig scanner_config_template =
 static gchar		* const std_marshaller_prefix = "g_cclosure_marshal";
 static gchar		*marshaller_prefix = "g_cclosure_user_marshal";
 static GHashTable	*marshallers = NULL;
+static FILE             *fout = NULL;
 static gboolean		 gen_cheader = FALSE;
 static gboolean		 gen_cbody = FALSE;
+static gboolean          gen_internal = FALSE;
 static gboolean		 skip_ploc = FALSE;
 static gboolean		 std_includes = TRUE;
 
@@ -203,12 +204,11 @@ complete_in_arg (InArgument *iarg)
     { "NONE",		"VOID",		"void",		NULL,			},
     { "BOOL",		"BOOLEAN",	"gboolean",	"g_marshal_value_peek_boolean",	},
   };
-  const guint n_args = sizeof (args) / sizeof (args[0]);
   guint i;
 
   g_return_val_if_fail (iarg != NULL, FALSE);
 
-  for (i = 0; i < n_args; i++)
+  for (i = 0; i < G_N_ELEMENTS (args); i++)
     if (strcmp (args[i].keyword, iarg->keyword) == 0)
       {
 	iarg->sig_name = args[i].sig_name;
@@ -248,12 +248,11 @@ complete_out_arg (OutArgument *oarg)
     { "NONE",		"VOID",		"void",		NULL,					     },
     { "BOOL",		"BOOLEAN",	"gboolean",	"g_value_set_boolean",			     },
   };
-  const guint n_args = sizeof (args) / sizeof (args[0]);
   guint i;
 
   g_return_val_if_fail (oarg != NULL, FALSE);
 
-  for (i = 0; i < n_args; i++)
+  for (i = 0; i < G_N_ELEMENTS (args); i++)
     if (strcmp (args[i].keyword, oarg->keyword) == 0)
       {
 	oarg->sig_name = args[i].sig_name;
@@ -282,7 +281,8 @@ pad (const gchar *string)
     {
       g_free (buffer);
       buffer = g_strdup_printf ("%s ", string);
-      g_warning ("overfull string (%u bytes) for padspace", (guint) strlen (string));
+      g_warning ("overfull string (%u bytes) for padspace",
+                 (guint) strlen (string));
 
       return buffer;
     }
@@ -326,8 +326,8 @@ generate_marshal (const gchar *signame,
   gboolean have_std_marshaller = FALSE;
 
   /* here we have to make sure a marshaller named <marshaller_prefix>_<signame>
-   * exists. we might have put it out already, can revert to a standard marshaller
-   * provided by glib, or need to generate one.
+   * exists. we might have put it out already, can revert to a standard
+   * marshaller provided by glib, or need to generate one.
    */
 
   if (g_hash_table_lookup (marshallers, tmp))
@@ -356,18 +356,20 @@ generate_marshal (const gchar *signame,
     }
   if (gen_cheader && !have_std_marshaller)
     {
-      ind = g_fprintf (fout, "extern void ");
+      ind = g_fprintf (fout, gen_internal ? "G_GNUC_INTERNAL " : "extern ");
+      ind += g_fprintf (fout, "void ");
       ind += g_fprintf (fout, "%s_%s (", marshaller_prefix, signame);
       g_fprintf (fout,   "GClosure     *closure,\n");
       g_fprintf (fout, "%sGValue       *return_value,\n", indent (ind));
       g_fprintf (fout, "%sguint         n_param_values,\n", indent (ind));
       g_fprintf (fout, "%sconst GValue *param_values,\n", indent (ind));
       g_fprintf (fout, "%sgpointer      invocation_hint,\n", indent (ind));
-      g_fprintf (fout, "%sgpointer      marshal_data);\n", indent (ind));
+      g_fprintf (fout, "%sgpointer      marshal_data);\n",
+                 indent (ind));
     }
   if (gen_cbody && !have_std_marshaller)
     {
-      /* cfile marhsal header */
+      /* cfile marshal header */
       g_fprintf (fout, "void\n");
       ind = g_fprintf (fout, "%s_%s (", marshaller_prefix, signame);
       g_fprintf (fout,   "GClosure     *closure,\n");
@@ -573,11 +575,11 @@ parse_line (GScanner  *scanner,
 	return G_TOKEN_IDENTIFIER;
       sig->args = g_list_append (sig->args, new_in_arg (scanner->value.v_identifier));
     }
-  
+
   /* expect end of line, done */
   if (g_scanner_get_next_token (scanner) != '\n')
     return '\n';
-  
+
   /* success */
   return G_TOKEN_NONE;
 }
@@ -625,7 +627,7 @@ main (int   argc,
     for (i = 0; i < G_N_ELEMENTS (gobject_marshallers); i++)
       {
 	gchar *tmp = g_strdup (gobject_marshallers[i]);
-	
+
 	g_hash_table_insert (marshallers, tmp, tmp);
       }
 
@@ -666,7 +668,7 @@ main (int   argc,
 
       /* parse & process file */
       g_scanner_input_file (scanner, fd);
-      
+
       /* scanning loop, we parse the input untill it's end is reached,
        * or our sub routine came across invalid syntax
        */
@@ -690,11 +692,11 @@ main (int   argc,
 		GList *node;
 
 		expected_token = parse_line (scanner, &signature);
-		
+
 		/* once we got a valid signature, process it */
 		if (expected_token == G_TOKEN_NONE)
 		  process_signature (&signature);
-		
+
 		/* clean up signature contents */
 		g_free (signature.ploc);
 		if (signature.rarg)
@@ -703,7 +705,7 @@ main (int   argc,
 		for (node = signature.args; node; node = node->next)
 		  {
 		    InArgument *iarg = node->data;
-		    
+
 		    g_free (iarg->keyword);
 		    g_free (iarg);
 		  }
@@ -753,7 +755,7 @@ parse_args (gint    *argc_p,
   guint argc = *argc_p;
   gchar **argv = *argv_p;
   guint i, e;
-  
+
   for (i = 1; i < argc; i++)
     {
       if (strcmp ("--header", argv[i]) == 0)
@@ -779,6 +781,11 @@ parse_args (gint    *argc_p,
       else if (strcmp ("--stdinc", argv[i]) == 0)
 	{
 	  std_includes = TRUE;
+	  argv[i] = NULL;
+	}
+      else if (strcmp ("--internal", argv[i]) == 0)
+	{
+	  gen_internal = TRUE;
 	  argv[i] = NULL;
 	}
       else if ((strcmp ("--prefix", argv[i]) == 0) ||
@@ -813,15 +820,15 @@ parse_args (gint    *argc_p,
       else if (strcmp (argv[i], "--g-fatal-warnings") == 0)
 	{
 	  GLogLevelFlags fatal_mask;
-	  
+
 	  fatal_mask = g_log_set_always_fatal (G_LOG_FATAL_MASK);
 	  fatal_mask |= G_LOG_LEVEL_WARNING | G_LOG_LEVEL_CRITICAL;
 	  g_log_set_always_fatal (fatal_mask);
-	  
+
 	  argv[i] = NULL;
 	}
     }
-  
+
   e = 0;
   for (i = 1; i < argc; i++)
     {
@@ -863,6 +870,7 @@ print_blurb (FILE    *bout,
       g_fprintf (bout, "  --prefix=string            specify marshaller prefix\n");
       g_fprintf (bout, "  --skip-source              skip source location comments\n");
       g_fprintf (bout, "  --stdinc, --nostdinc       include/use standard marshallers\n");
+      g_fprintf (bout, "  --internal                 mark generated functions as internal\n");
       g_fprintf (bout, "  -h, --help                 show this help message\n");
       g_fprintf (bout, "  -v, --version              print version informations\n");
       g_fprintf (bout, "  --g-fatal-warnings         make warnings fatal (abort)\n");
