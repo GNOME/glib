@@ -159,9 +159,9 @@ g_cclosure_marshal_VOID__INT (GClosure     *closure,
 	  wrote a generic Python marshaller which is used by all python Closures (a python closure
 	  is used to have python-based callback be invoked by the closure invocation process).
 	  This python marshaller transforms the input GValue list representing the function 
-	  parameters into a Python tupple which is the equivalent structure in python (you can
+	  parameters into a Python tuple which is the equivalent structure in python (you can
 	  look in <function>pyg_closure_marshal</function> in <filename>pygtype.c</filename>
-	  in the <emphasis>pygtk</emphasis> module in Gnome cvs server).
+	  in the <emphasis>pygobject</emphasis> module in Gnome cvs server).
 	</para>
 
       </sect2>
