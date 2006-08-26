@@ -1,3 +1,7 @@
+2006-08-26  Matthias Clasen  <mclasen@redhat.com>
+
+	* gobject.c: Remove ; after G_DEFINE_TYPE.  (#351741, Kjartan Maraas)
+
 Wed Aug 23 10:35:32 2006  Tim Janik  <timj@gtk.org>
 
 	* gobject.[hc]: changed return value of g_value_dup_object(), fixes #343292.

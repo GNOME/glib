@@ -1,3 +1,8 @@
+2006-08-26  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gutils.h: 
+	* glib/gscanner.c: Fix some typos.  (#351741, Kjartan Maraas)
+
 2006-08-25  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Fix the pthread compiler flag detection.

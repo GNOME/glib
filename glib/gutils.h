@@ -211,10 +211,12 @@ gboolean              g_setenv             (const gchar *variable,
 					    gboolean     overwrite);
 void                  g_unsetenv           (const gchar *variable);
 gchar**               g_listenv            (void);
+
+/* private */
 const gchar*	     _g_getenv_nomalloc	   (const gchar	*variable,
 					    gchar        buffer[1024]);
 
-/* we try to provide a usefull equivalent for ATEXIT if it is
+/* we try to provide a useful equivalent for ATEXIT if it is
  * not defined, but use is actually abandoned. people should
  * use g_atexit() instead.
  */

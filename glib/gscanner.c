@@ -744,9 +744,9 @@ g_scanner_sync_file_offset (GScanner *scanner)
   g_return_if_fail (scanner != NULL);
 
   /* for file input, rewind the filedescriptor to the current
-   * buffer position and blow the file read ahead buffer. usefull for
-   * third party uses of our filedescriptor, which hooks onto the current
-   * scanning position.
+   * buffer position and blow the file read ahead buffer. useful
+   * for third party uses of our file descriptor, which hooks 
+   * onto the current scanning position.
    */
 
   if (scanner->input_fd >= 0 && scanner->text_end > scanner->text)
