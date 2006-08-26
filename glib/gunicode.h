@@ -292,6 +292,11 @@ gchar *g_utf8_collate_key_for_filename (const gchar *str,
 gboolean g_unichar_get_mirror_char (gunichar ch,
                                     gunichar *mirrored_ch);
 
+/* private */
+
+gchar *_g_utf8_make_valid (const gchar *name);
+
+
 G_END_DECLS
 
 #endif /* __G_UNICODE_H__ */

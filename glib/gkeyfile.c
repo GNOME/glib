@@ -690,10 +690,14 @@ g_key_file_parse_line (GKeyFile     *key_file,
 				     &parse_error);
   else
     {
+      gchar *line_utf8 = _g_utf8_make_valid (line);
       g_set_error (error, G_KEY_FILE_ERROR,
                    G_KEY_FILE_ERROR_PARSE,
                    _("Key file contains line '%s' which is not "
-                     "a key-value pair, group, or comment"), line);
+                     "a key-value pair, group, or comment"), 
+		   line_utf8);
+      g_free (line_utf8);
+
       return;
     }
 
@@ -801,9 +805,12 @@ g_key_file_parse_key_value_pair (GKeyFile     *key_file,
     {
       if (g_ascii_strcasecmp (value, "UTF-8") != 0)
         {
+	  gchar *value_utf8 = _g_utf8_make_valid (value);
           g_set_error (error, G_KEY_FILE_ERROR,
                        G_KEY_FILE_ERROR_UNKNOWN_ENCODING,
-                       _("Key file contains unsupported encoding '%s'"), value);
+                       _("Key file contains unsupported "
+			 "encoding '%s'"), value_utf8);
+	  g_free (value_utf8);
 
           g_free (key);
           g_free (value);
@@ -1280,11 +1287,14 @@ g_key_file_get_string (GKeyFile     *key_file,
 
   if (!g_utf8_validate (value, -1, NULL))
     {
+      gchar *value_utf8 = _g_utf8_make_valid (value);
       g_set_error (error, G_KEY_FILE_ERROR,
                    G_KEY_FILE_ERROR_UNKNOWN_ENCODING,
                    _("Key file contains key '%s' with value '%s' "
-                     "which is not UTF-8"), key, value);
+                     "which is not UTF-8"), key, value_utf8);
+      g_free (value_utf8);
       g_free (value);
+
       return NULL;
     }
 
@@ -1389,11 +1399,14 @@ g_key_file_get_string_list (GKeyFile     *key_file,
 
   if (!g_utf8_validate (value, -1, NULL))
     {
+      gchar *value_utf8 = _g_utf8_make_valid (value);
       g_set_error (error, G_KEY_FILE_ERROR,
                    G_KEY_FILE_ERROR_UNKNOWN_ENCODING,
                    _("Key file contains key '%s' with value '%s' "
-                     "which is not UTF-8"), key, value);
+                     "which is not UTF-8"), key, value_utf8);
+      g_free (value_utf8);
       g_free (value);
+
       return NULL;
     }
 
@@ -1587,7 +1600,7 @@ g_key_file_get_locale_string (GKeyFile     *key_file,
 						candidate_key, NULL);
       g_free (candidate_key);
 
-      if (translated_value && g_utf8_validate (translated_value, -1, NULL))
+      if (translated_value)
 	break;
 
       g_free (translated_value);
@@ -3432,19 +3445,27 @@ g_key_file_parse_value_as_integer (GKeyFile     *key_file,
 
   if (*value == '\0' || *end_of_valid_int != '\0')
     {
+      gchar *value_utf8 = _g_utf8_make_valid (value);
       g_set_error (error, G_KEY_FILE_ERROR,
 		   G_KEY_FILE_ERROR_INVALID_VALUE,
-		   _("Value '%s' cannot be interpreted as a number."), value);
+		   _("Value '%s' cannot be interpreted "
+		     "as a number."), value_utf8);
+      g_free (value_utf8);
+
       return 0;
     }
 
   int_value = long_value;
   if (int_value != long_value || errno == ERANGE)
     {
+      gchar *value_utf8 = _g_utf8_make_valid (value);
       g_set_error (error,
 		   G_KEY_FILE_ERROR, 
 		   G_KEY_FILE_ERROR_INVALID_VALUE,
-		   _("Integer value '%s' out of range"), value);
+		   _("Integer value '%s' out of range"), 
+		   value_utf8);
+      g_free (value_utf8);
+
       return 0;
     }
   
@@ -3470,9 +3491,15 @@ g_key_file_parse_value_as_double  (GKeyFile     *key_file,
   double_value = g_ascii_strtod (value, &end_of_valid_d);
 
   if (*end_of_valid_d != '\0' || end_of_valid_d == value)
-    g_set_error (error, G_KEY_FILE_ERROR,
-                 G_KEY_FILE_ERROR_INVALID_VALUE,
-                 _("Value '%s' cannot be interpreted as a float number."), value);
+    {
+      gchar *value_utf8 = _g_utf8_make_valid (value);
+      g_set_error (error, G_KEY_FILE_ERROR,
+		   G_KEY_FILE_ERROR_INVALID_VALUE,
+		   _("Value '%s' cannot be interpreted "
+		     "as a float number."), 
+		   value_utf8);
+      g_free (value_utf8);
+    }
 
   return double_value;
 }
@@ -3482,6 +3509,8 @@ g_key_file_parse_value_as_boolean (GKeyFile     *key_file,
 				   const gchar  *value,
 				   GError      **error)
 {
+  gchar *value_utf8;
+
   if (value)
     {
       if (strcmp (value, "true") == 0 || strcmp (value, "1") == 0)
@@ -3490,9 +3519,12 @@ g_key_file_parse_value_as_boolean (GKeyFile     *key_file,
         return FALSE;
     }
 
+  value_utf8 = _g_utf8_make_valid (value);
   g_set_error (error, G_KEY_FILE_ERROR,
                G_KEY_FILE_ERROR_INVALID_VALUE,
-               _("Value '%s' cannot be interpreted as a boolean."), value);
+               _("Value '%s' cannot be interpreted "
+		 "as a boolean."), value_utf8);
+  g_free (value_utf8);
 
   return FALSE;
 }
