@@ -1,97 +1,94 @@
 # translation of glib.glib-2-6.po to Hungarian
 # This file is distributed under the same license as the PACKAGE package.
-# Copyright (C) 2005, Free Software Foundation, Inc.
-# Szabolcs Varga <shirokuma@shirokuma.hu>, 2005.
-# Gabor Kelemen <kelemeng@gnome.hu>, 2005.
+# Copyright (C) 2005, 2006, Free Software Foundation, Inc.
 #
+# Szabolcs Varga <shirokuma@shirokuma.hu>, 2005.
+# Gabor Kelemen <kelemeng@gnome.hu>, 2005, 2006.
 msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-15 10:51+0200\n"
-"PO-Revision-Date: 2005-07-12 17:37+0200\n"
+"POT-Creation-Date: 2006-08-17 10:53+0200\n"
+"PO-Revision-Date: 2006-08-26 13:25+0200\n"
 "Last-Translator: Gabor Kelemen <kelemeng@gnome.hu>\n"
 "Language-Team: Hungarian <gnome@gnome.hu>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.10.1\n"
-"Plural-Forms:   nplurals=2; plural=(n != 1);\n"
+"X-Generator: KBabel 1.11.2\n"
+"Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 
 #: ../glib/gbookmarkfile.c:716 ../glib/gbookmarkfile.c:793
 #: ../glib/gbookmarkfile.c:872 ../glib/gbookmarkfile.c:919
-#, fuzzy, c-format
+#, c-format
 msgid "Unexpected attribute '%s' for element '%s'"
-msgstr ""
-"Furcsa karakter (\"%s\") - \"=\" karakternek kellett volna jönnie a(z) \"%s"
-"\" elem \"%s\" attribútumneve után"
+msgstr "Váratlan attribútum (\"%s\") a(z) \"%s\" elemhez"
 
 #: ../glib/gbookmarkfile.c:727 ../glib/gbookmarkfile.c:804
 #: ../glib/gbookmarkfile.c:814 ../glib/gbookmarkfile.c:930
 #, c-format
 msgid "Attribute '%s' of element '%s' not found"
-msgstr ""
+msgstr "A(z) \"$2%s\" elem \"$1%s\" attribútuma nem található"
 
 #: ../glib/gbookmarkfile.c:1103 ../glib/gbookmarkfile.c:1168
 #: ../glib/gbookmarkfile.c:1232 ../glib/gbookmarkfile.c:1242
 #, c-format
 msgid "Unexpected tag '%s', tag '%s' expected"
-msgstr ""
+msgstr "Váratlan címke: \"%s\" a várt \"%s\" helyett"
 
 #: ../glib/gbookmarkfile.c:1128 ../glib/gbookmarkfile.c:1142
 #: ../glib/gbookmarkfile.c:1210 ../glib/gbookmarkfile.c:1262
 #, c-format
 msgid "Unexpected tag '%s' inside '%s'"
-msgstr ""
+msgstr "Váratlan címke: \"%s\" a következőn belül: \"%s\""
 
 #: ../glib/gbookmarkfile.c:1792
-#, fuzzy
 msgid "No valid bookmark file found in data dirs"
-msgstr "Az adatkönyvtárakban nem található érvényes kulcsfájl"
+msgstr "Az adatkönyvtárakban nem található érvényes könyvjelzőfájl"
 
 #: ../glib/gbookmarkfile.c:1993
 #, c-format
 msgid "A bookmark for URI '%s' already exists"
-msgstr ""
+msgstr "Már létezik könyvjelző a következő URI címhez: \"%s\""
 
 #: ../glib/gbookmarkfile.c:2039 ../glib/gbookmarkfile.c:2196
 #: ../glib/gbookmarkfile.c:2281 ../glib/gbookmarkfile.c:2362
 #: ../glib/gbookmarkfile.c:2447 ../glib/gbookmarkfile.c:2530
 #: ../glib/gbookmarkfile.c:2608 ../glib/gbookmarkfile.c:2687
 #: ../glib/gbookmarkfile.c:2729 ../glib/gbookmarkfile.c:2826
-#: ../glib/gbookmarkfile.c:2950 ../glib/gbookmarkfile.c:3140
-#: ../glib/gbookmarkfile.c:3216 ../glib/gbookmarkfile.c:3369
-#: ../glib/gbookmarkfile.c:3434 ../glib/gbookmarkfile.c:3524
-#: ../glib/gbookmarkfile.c:3651
+#: ../glib/gbookmarkfile.c:2952 ../glib/gbookmarkfile.c:3142
+#: ../glib/gbookmarkfile.c:3218 ../glib/gbookmarkfile.c:3371
+#: ../glib/gbookmarkfile.c:3436 ../glib/gbookmarkfile.c:3526
+#: ../glib/gbookmarkfile.c:3653
 #, c-format
 msgid "No bookmark found for URI '%s'"
-msgstr ""
+msgstr "Nem található könyvjelző a következő URI címhez: \"%s\""
 
 #: ../glib/gbookmarkfile.c:2371
 #, c-format
 msgid "No MIME type defined in the bookmark for URI '%s'"
-msgstr ""
+msgstr "Nincs MIME típus meghatározva a következő URI könyvjelzőjéhez: \"%s\""
 
 #: ../glib/gbookmarkfile.c:2456
 #, c-format
 msgid "No private flag has been defined in bookmark for URI '%s'"
-msgstr ""
+msgstr "Nincs magán jelző meghatározva a következő URI könyvjelzőjéhez: \"%s\""
 
 #: ../glib/gbookmarkfile.c:2835
 #, c-format
 msgid "No groups set in bookmark for URI '%s'"
-msgstr ""
+msgstr "Nincsenek csoportok beállítva a következő URI könyvjelzőjéhez: \"%s\""
 
-#: ../glib/gbookmarkfile.c:3234 ../glib/gbookmarkfile.c:3379
+# FIXME: hol jön ez elő?
+#: ../glib/gbookmarkfile.c:3236 ../glib/gbookmarkfile.c:3381
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
-msgstr ""
+msgstr "Nincs \"%s\" nevű alkalmazás regisztrálva a következő könyvjelzőjéhez: \"%s\""
 
 #: ../glib/gconvert.c:404 ../glib/gconvert.c:482 ../glib/giochannel.c:1150
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
-msgstr ""
-"A(z) \"%s\" és \"%s\" karakterkészletek közötti átalakítás nem támogatott"
+msgstr "A(z) \"%s\" és \"%s\" karakterkészletek közötti átalakítás nem támogatott"
 
 #: ../glib/gconvert.c:408 ../glib/gconvert.c:486
 #, c-format
@@ -210,8 +207,7 @@ msgstr "Nem sikerült létrehozni a(z) \"%s\" fájlt: %s"
 #: ../glib/gfileutils.c:960
 #, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
-msgstr ""
-"Nem sikerült írásra megnyitni a(z) \"%s\" fájlt: Az fdopen() sikertelen: %s"
+msgstr "Nem sikerült írásra megnyitni a(z) \"%s\" fájlt: Az fdopen() sikertelen: %s"
 
 #: ../glib/gfileutils.c:985
 #, c-format
@@ -234,9 +230,9 @@ msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "A(z) \"%s\" sablon érvénytelen, \"%s\" nem lehet benne"
 
 #: ../glib/gfileutils.c:1379
-#, fuzzy, c-format
+#, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
-msgstr "A(z) \"%s\" sablon vége nem XXXXXX"
+msgstr "A(z) \"%s\" sablon nem tartalmaz XXXXXX karaktersorozatot"
 
 #: ../glib/gfileutils.c:1854
 #, c-format
@@ -254,8 +250,7 @@ msgstr "Az átalakító a(z) \"%s\" elemről \"%s\" elemre nem nyitható meg: %s
 
 #: ../glib/giochannel.c:1499
 msgid "Can't do a raw read in g_io_channel_read_line_string"
-msgstr ""
-"Nem lehet nyers (raw) olvasást végezni a g_io_channel_read_line_string-ben"
+msgstr "Nem lehet nyers (raw) olvasást végezni a g_io_channel_read_line_string-ben"
 
 #: ../glib/giochannel.c:1546 ../glib/giochannel.c:1803
 #: ../glib/giochannel.c:1889
@@ -291,10 +286,8 @@ msgid "Error on line %d: %s"
 msgstr "Hiba a(z) %d. sorban: %s"
 
 #: ../glib/gmarkup.c:429
-msgid ""
-"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
-msgstr ""
-"Üres \"&;\" entitás; az érvényes entitások: &amp; &quot; &lt; &gt; &apos;"
+msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgstr "Üres \"&;\" entitás; az érvényes entitások: &amp; &quot; &lt; &gt; &apos;"
 
 #: ../glib/gmarkup.c:439
 #, c-format
@@ -342,8 +335,7 @@ msgstr "A(z) \"%-.*s\" karakterhivatkozás nem engedélyezett karaktert kódol"
 
 #: ../glib/gmarkup.c:614
 msgid "Empty character reference; should include a digit such as &#454;"
-msgstr ""
-"Üres karakterhivatkozás; számjegyet is kell tartalmaznia, például így: &#454;"
+msgstr "Üres karakterhivatkozás; számjegyet is kell tartalmaznia, például így: &#454;"
 
 #: ../glib/gmarkup.c:624
 msgid ""
@@ -390,8 +382,7 @@ msgstr ""
 
 #: ../glib/gmarkup.c:1247
 #, c-format
-msgid ""
-"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "Furcsa karakter (\"%s\") - \"=\" karakternek kellett volna jönnie a(z) \"%s"
 "\" elem \"%s\" attribútumneve után"
@@ -442,8 +433,7 @@ msgstr "A(z) \"%s\" elem le lett lezárva, jelenleg egy elem sincs nyitva"
 #: ../glib/gmarkup.c:1583
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
-msgstr ""
-"A(z) \"%s\" elem le lett lezárva, de a jelenleg nyitott elem a(z) \"%s\""
+msgstr "A(z) \"%s\" elem le lett lezárva, de a jelenleg nyitott elem a(z) \"%s\""
 
 #: ../glib/gmarkup.c:1749
 msgid "Document was empty or contained only whitespace"
@@ -451,8 +441,7 @@ msgstr "A dokumentum üres volt, vagy csak üreshely karaktereket tartalmazott"
 
 #: ../glib/gmarkup.c:1763
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
-msgstr ""
-"A dokumentum váratlanul véget ért egy nyitott hegyes zárójel (\"<\") után"
+msgstr "A dokumentum váratlanul véget ért egy nyitott hegyes zárójel (\"<\") után"
 
 #: ../glib/gmarkup.c:1771 ../glib/gmarkup.c:1815
 #, c-format
@@ -499,8 +488,7 @@ msgstr "A dokumentum váratlanul véget ért egy attribútumértéken belül"
 #: ../glib/gmarkup.c:1823
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
-msgstr ""
-"A dokumentum váratlanul véget ért a(z) \"%s\" elem lezáró címkéjén belül"
+msgstr "A dokumentum váratlanul véget ért a(z) \"%s\" elem lezáró címkéjén belül"
 
 #: ../glib/gmarkup.c:1829
 msgid "Document ended unexpectedly inside a comment or processing instruction"
@@ -532,8 +520,7 @@ msgstr ""
 
 #: ../glib/gshell.c:557
 msgid "Text was empty (or contained only whitespace)"
-msgstr ""
-"A szöveg üres volt (vagy legfeljebb üreshely-karaktereket tartalmazott)"
+msgstr "A szöveg üres volt (vagy legfeljebb üreshely-karaktereket tartalmazott)"
 
 #: ../glib/gspawn-win32.c:273
 msgid "Failed to read data from child process"
@@ -681,7 +668,7 @@ msgstr "Minden súgólehetőség megjelenítése"
 
 #: ../glib/goption.c:642
 msgid "Application Options:"
-msgstr "Alkalmazás opciói:"
+msgstr "Alkalmazás kapcsolói:"
 
 #: ../glib/goption.c:686 ../glib/goption.c:756
 #, c-format
@@ -694,14 +681,14 @@ msgid "Integer value '%s' for %s out of range"
 msgstr "A(z) \"%s\" egész érték a tartományon kívülre esik a következőhöz: %s"
 
 #: ../glib/goption.c:721
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot parse double value '%s' for %s"
-msgstr "Nem dolgozható fel a(z) \"%s\" egész érték a következőhöz: %s"
+msgstr "Nem dolgozható fel a(z) \"%s\" duplahosszúságú érték a következőhöz: %s"
 
 #: ../glib/goption.c:729
-#, fuzzy, c-format
+#, c-format
 msgid "Double value '%s' for %s out of range"
-msgstr "A(z) \"%s\" egész érték a tartományon kívülre esik a következőhöz: %s"
+msgstr "A(z) \"%s\" duplahosszúságú érték a tartományon kívülre esik a következőhöz: %s"
 
 #: ../glib/goption.c:1066
 #, c-format
@@ -732,8 +719,7 @@ msgstr "A fájl üres"
 
 #: ../glib/gkeyfile.c:695
 #, c-format
-msgid ""
-"Key file contains line '%s' which is not a key-value pair, group, or comment"
+msgid "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr ""
 "A kulcsfájl tartalmazza a(z) \"%s\" sort, amelyik nem egy kulcs-érték pár, "
 "csoport, vagy megjegyzés"
@@ -785,13 +771,11 @@ msgstr ""
 #: ../glib/gkeyfile.c:2400 ../glib/gkeyfile.c:2584 ../glib/gkeyfile.c:3101
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
-msgstr ""
-"A kulcsfájl nem tartalmazza a(z) \"%s\" kulcsot a(z) \"%s\" csoportban."
+msgstr "A kulcsfájl nem tartalmazza a(z) \"%s\" kulcsot a(z) \"%s\" csoportban."
 
 #: ../glib/gkeyfile.c:3274
 msgid "Key file contains escape character at end of line"
-msgstr ""
-"A kulcsfájl escape-szekvenciával megadott karaktert tartalmaz a sor végén"
+msgstr "A kulcsfájl escape-szekvenciával megadott karaktert tartalmaz a sor végén"
 
 #: ../glib/gkeyfile.c:3296
 #, c-format
@@ -809,11 +793,12 @@ msgid "Integer value '%s' out of range"
 msgstr "A(z) \"%s\" egész érték a tartományon kívülre esik"
 
 #: ../glib/gkeyfile.c:3475
-#, fuzzy, c-format
+#, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
-msgstr "A(z) \"%s\" érték nem értelmezhető számként."
+msgstr "A(z) \"%s\" érték nem értelmezhető lebegőpontos számként."
 
 #: ../glib/gkeyfile.c:3495
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "A(z) \"%s\" érték nem értelmezhető logikai értékként."
+
