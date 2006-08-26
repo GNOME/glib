@@ -31,6 +31,7 @@
 #include "glib.h"
 #include "gprintfint.h"
 #include "gthreadprivate.h"
+#include "gunicode.h"
 
 #ifdef G_PLATFORM_WIN32
 #define STRICT
@@ -1972,44 +1973,6 @@ g_uri_list_extract_uris (const gchar *uri_list)
   return result;
 }
 
-static gchar *
-make_valid_utf8 (const gchar *name)
-{
-  GString *string;
-  const gchar *remainder, *invalid;
-  gint remaining_bytes, valid_bytes;
-  
-  string = NULL;
-  remainder = name;
-  remaining_bytes = strlen (name);
-  
-  while (remaining_bytes != 0) 
-    {
-      if (g_utf8_validate (remainder, remaining_bytes, &invalid)) 
-	break;
-      valid_bytes = invalid - remainder;
-    
-      if (string == NULL) 
-	string = g_string_sized_new (remaining_bytes);
-
-      g_string_append_len (string, remainder, valid_bytes);
-      /* append U+FFFD REPLACEMENT CHARACTER */
-      g_string_append (string, "\357\277\275");
-      
-      remaining_bytes -= valid_bytes + 1;
-      remainder = invalid + 1;
-    }
-  
-  if (string == NULL)
-    return g_strdup (name);
-  
-  g_string_append (string, remainder);
-
-  g_assert (g_utf8_validate (string->str, -1, NULL));
-  
-  return g_string_free (string, FALSE);
-}
-
 /**
  * g_filename_display_basename:
  * @filename: an absolute pathname in the GLib file name encoding
@@ -2110,7 +2073,7 @@ g_filename_display_name (const gchar *filename)
    * by a question mark
    */
   if (!display_name) 
-    display_name = make_valid_utf8 (filename);
+    display_name = _g_utf8_make_valid (filename);
 
   return display_name;
 }

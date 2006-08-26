@@ -856,6 +856,12 @@ AC_MSG_RESULT(unsigned $glib_size_type)
 
 # Check for some functions
 AC_CHECK_FUNCS(lstat strerror strsignal memmove vsnprintf stpcpy strcasecmp strncasecmp poll getcwd nanosleep vasprintf setenv unsetenv getc_unlocked readlink symlink)
+AC_CHECK_FUNCS(clock_gettime, [], [
+  AC_CHECK_LIB(rt, clock_gettime, [
+    AC_DEFINE(HAVE_CLOCK_GETTIME, 1)
+    LIBS="$LIBS -lrt"
+  ])
+])
 
 AC_CHECK_HEADERS(crt_externs.h)
 AC_CHECK_FUNCS(_NSGetEnviron)
@@ -1539,6 +1545,7 @@ dnl
 dnl Test program for basic POSIX threads functionality
 dnl
 m4_define([glib_thread_test],[
+#include <stdlib.h>
 #include <pthread.h> 
 int check_me = 0;
 void* func(void* data) {check_me = 42; return &check_me;}
