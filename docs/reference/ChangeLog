@@ -1,3 +1,8 @@
+2006-08-28  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/compiling.sgml: Add a note about G_DISABLE_DEPRECATED.
+	(#353172, Matt Barnes)
+
 Wed Aug 16 13:55:39 2006  Tim Janik  <timj@imendio.com>
 
 	* glib/tmpl/trash_stack.sgml: added notes about complexity.
