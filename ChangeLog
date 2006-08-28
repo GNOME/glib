@@ -1,3 +1,8 @@
+2006-08-27  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gtimer.c: Use Posix monotonic clocks instead of 
+	gettimeofday when available.  (#336114, William Jon McCann)
+
 2006-08-26  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gutils.h: 
