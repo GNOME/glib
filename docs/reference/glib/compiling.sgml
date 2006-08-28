@@ -61,6 +61,12 @@ $ cc `pkg-config --cflags --libs glib-2.0` hello.c -o hello
 </programlisting>
 </para>
 
+<para>
+If you want to make sure that your program doesn't use any deprecated
+functions, you can define the preprocessor symbol G_DISABLE_DEPRECATED
+by using the command line option <literal>-DG_DISABLE_DEPRECATED=1</literal>.
+</para>
+
 </refsect1>
 
 </refentry>
