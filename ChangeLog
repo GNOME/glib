@@ -1,5 +1,7 @@
 2006-08-27  Matthias Clasen  <mclasen@redhat.com>
 
+	* configure.in: Fix the pthread compiler flag detection more.
+
 	* configure.in: Check for clock_gettime.
 	* glib/gtimer.c: Use Posix monotonic clocks instead of 
 	gettimeofday when available.  (#336114, William Jon McCann)
