@@ -1545,7 +1545,6 @@ dnl
 dnl Test program for basic POSIX threads functionality
 dnl
 m4_define([glib_thread_test],[
-#include <stdlib.h>
 #include <pthread.h> 
 int check_me = 0;
 void* func(void* data) {check_me = 42; return &check_me;}
@@ -1554,7 +1553,7 @@ int main()
    void *ret;
    pthread_create (&t, $1, func, 0);
    pthread_join (t, &ret);
-   exit (check_me != 42 || ret != &check_me);
+   return (check_me != 42 || ret != &check_me);
 }])
 
 dnl
@@ -1594,6 +1593,7 @@ if test x"$have_threads" != xno; then
           if test $glib_flag_works = yes ; then
              G_THREAD_CFLAGS=-$flag
 	     G_THREAD_LIBS=-$flag
+	     break;
           fi
         done
          ;;
