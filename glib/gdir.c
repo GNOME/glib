@@ -25,7 +25,8 @@
 #include "config.h"
 
 #include <errno.h>
-#include <string.h> /* strcmp */
+#include <string.h>
+#include <sys/stat.h>
 
 #ifdef HAVE_DIRENT_H
 #include <sys/types.h>
@@ -41,12 +42,11 @@
 
 struct _GDir
 {
-  union {
-    DIR *dirp;
 #ifdef G_OS_WIN32
-    _WDIR *wdirp;
+  _WDIR *wdirp;
+#else
+  DIR *dirp;
 #endif
-  } u;
 #ifdef G_OS_WIN32
   gchar utf8_buf[FILENAME_MAX*4];
 #endif
@@ -74,44 +74,27 @@ g_dir_open (const gchar  *path,
             GError      **error)
 {
   GDir *dir;
-#ifndef G_OS_WIN32
+#ifdef G_OS_WIN32
+  wchar_t *wpath;
+#else
   gchar *utf8_path;
 #endif
 
   g_return_val_if_fail (path != NULL, NULL);
 
 #ifdef G_OS_WIN32
-  if (G_WIN32_HAVE_WIDECHAR_API ())
-    {
-      wchar_t *wpath = g_utf8_to_utf16 (path, -1, NULL, NULL, error);
-  
-      if (wpath == NULL)
-	return NULL;
+  wpath = g_utf8_to_utf16 (path, -1, NULL, NULL, error);
 
-      dir = g_new (GDir, 1);
+  if (wpath == NULL)
+    return NULL;
 
-      dir->u.wdirp = _wopendir (wpath);
-      g_free (wpath);
-  
-      if (dir->u.wdirp)
-	return dir;
-    }
-  else
-    {
-      gchar *cp_path = g_locale_from_utf8 (path, -1, NULL, NULL, error);
+  dir = g_new (GDir, 1);
 
-      if (cp_path == NULL)
-	return NULL;
+  dir->wdirp = _wopendir (wpath);
+  g_free (wpath);
 
-      dir = g_new (GDir, 1);
-
-      dir->u.dirp = opendir (cp_path);
-
-      g_free (cp_path);
-
-      if (dir->u.dirp)
-	return dir;
-    }
+  if (dir->wdirp)
+    return dir;
 
   /* error case */
 
@@ -127,9 +110,9 @@ g_dir_open (const gchar  *path,
 #else
   dir = g_new (GDir, 1);
 
-  dir->u.dirp = opendir (path);
+  dir->dirp = opendir (path);
 
-  if (dir->u.dirp)
+  if (dir->dirp)
     return dir;
 
   /* error case */
@@ -193,70 +176,43 @@ g_dir_open (const gchar  *path,
 G_CONST_RETURN gchar*
 g_dir_read_name (GDir *dir)
 {
+#ifdef G_OS_WIN32
+  gchar *utf8_name;
+  struct _wdirent *wentry;
+#else
   struct dirent *entry;
+#endif
 
   g_return_val_if_fail (dir != NULL, NULL);
 
 #ifdef G_OS_WIN32
-  if (G_WIN32_HAVE_WIDECHAR_API ())
+  while (1)
     {
-      gchar *utf8_name;
-      struct _wdirent *wentry;
+      wentry = _wreaddir (dir->wdirp);
+      while (wentry 
+	     && (0 == wcscmp (wentry->d_name, L".") ||
+		 0 == wcscmp (wentry->d_name, L"..")))
+	wentry = _wreaddir (dir->wdirp);
 
-      while (1)
-	{
-	  wentry = _wreaddir (dir->u.wdirp);
-	  while (wentry 
-		 && (0 == wcscmp (wentry->d_name, L".") ||
-		     0 == wcscmp (wentry->d_name, L"..")))
-	    wentry = _wreaddir (dir->u.wdirp);
-	  
-	  if (wentry == NULL)
-	    return NULL;
-	  
-	  utf8_name = g_utf16_to_utf8 (wentry->d_name, -1, NULL, NULL, NULL);
+      if (wentry == NULL)
+	return NULL;
 
-	  if (utf8_name == NULL)
-	    continue;		/* Huh, impossible? Skip it anyway */
-	  
-	  strcpy (dir->utf8_buf, utf8_name);
-	  g_free (utf8_name);
-	  
-	  return dir->utf8_buf;
-	}
-    }
-  else
-    {
-      while (1)
-	{
-	  gchar *utf8_name;
-      
-	  entry = readdir (dir->u.dirp);
-	  while (entry 
-		 && (0 == strcmp (entry->d_name, ".") ||
-		     0 == strcmp (entry->d_name, "..")))
-	    entry = readdir (dir->u.dirp);
+      utf8_name = g_utf16_to_utf8 (wentry->d_name, -1, NULL, NULL, NULL);
 
-	  if (entry == NULL)
-	    return NULL;
+      if (utf8_name == NULL)
+	continue;		/* Huh, impossible? Skip it anyway */
 
-	  utf8_name = g_locale_to_utf8 (entry->d_name, -1, NULL, NULL, NULL);
+      strcpy (dir->utf8_buf, utf8_name);
+      g_free (utf8_name);
 
-	  if (utf8_name != NULL)
-	    {
-	      strcpy (dir->utf8_buf, utf8_name);
-	      g_free (utf8_name);
-	      
-	      return dir->utf8_buf;
-	    }
-	}
+      return dir->utf8_buf;
     }
 #else
-  entry = readdir (dir->u.dirp);
+  entry = readdir (dir->dirp);
   while (entry 
          && (0 == strcmp (entry->d_name, ".") ||
              0 == strcmp (entry->d_name, "..")))
-    entry = readdir (dir->u.dirp);
+    entry = readdir (dir->dirp);
 
   if (entry)
     return entry->d_name;
@@ -311,14 +267,10 @@ g_dir_rewind (GDir *dir)
   g_return_if_fail (dir != NULL);
   
 #ifdef G_OS_WIN32
-  if (G_WIN32_HAVE_WIDECHAR_API ())
-    {
-      _wrewinddir (dir->u.wdirp);
-      return;
-    }
+  _wrewinddir (dir->wdirp);
+#else
+  rewinddir (dir->dirp);
 #endif
-
-  rewinddir (dir->u.dirp);
 }
 
 /**
@@ -333,15 +285,10 @@ g_dir_close (GDir *dir)
   g_return_if_fail (dir != NULL);
 
 #ifdef G_OS_WIN32
-  if (G_WIN32_HAVE_WIDECHAR_API ())
-    {
-      _wclosedir (dir->u.wdirp);
-      g_free (dir);
-      return;
-    }
+  _wclosedir (dir->wdirp);
+#else
+  closedir (dir->dirp);
 #endif
-
-  closedir (dir->u.dirp);
   g_free (dir);
 }
 

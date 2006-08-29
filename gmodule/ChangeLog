@@ -1,3 +1,13 @@
+2006-08-29  Tor Lillqvist  <tml@novell.com>
+
+	Remove support for Windows 9x/ME. GTK+ hasn't worked on Win9x
+	since 2.6. It's pointless to keep the Win9x code in here as it
+	isn't being maintained anyway. If somebody is interested, it is in
+	older GLib versions, and in CVS.
+
+	* gmodule-win32.c (_g_module_open): Remove the Win9x branch of if
+	statement.
+
 2006-08-15  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.12.2 ===

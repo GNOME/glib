@@ -1055,55 +1055,27 @@ gchar *
 g_win32_error_message (gint error)
 {
   gchar *retval;
+  wchar_t *msg = NULL;
+  int nchars;
 
-  if (G_WIN32_HAVE_WIDECHAR_API ())
+  FormatMessageW (FORMAT_MESSAGE_ALLOCATE_BUFFER
+		  |FORMAT_MESSAGE_IGNORE_INSERTS
+		  |FORMAT_MESSAGE_FROM_SYSTEM,
+		  NULL, error, 0,
+		  (LPWSTR) &msg, 0, NULL);
+  if (msg != NULL)
     {
-      wchar_t *msg = NULL;
-      int nchars;
-
-      FormatMessageW (FORMAT_MESSAGE_ALLOCATE_BUFFER
-		      |FORMAT_MESSAGE_IGNORE_INSERTS
-		      |FORMAT_MESSAGE_FROM_SYSTEM,
-		      NULL, error, 0,
-		      (LPWSTR) &msg, 0, NULL);
-      if (msg != NULL)
-	{
-	  nchars = wcslen (msg);
-
-	  if (nchars > 2 && msg[nchars-1] == '\n' && msg[nchars-2] == '\r')
-	    msg[nchars-2] = '\0';
-	  
-	  retval = g_utf16_to_utf8 (msg, -1, NULL, NULL, NULL);
-	  
-	  LocalFree (msg);
-	}
-      else
-	retval = g_strdup ("");
+      nchars = wcslen (msg);
+      
+      if (nchars > 2 && msg[nchars-1] == '\n' && msg[nchars-2] == '\r')
+	msg[nchars-2] = '\0';
+      
+      retval = g_utf16_to_utf8 (msg, -1, NULL, NULL, NULL);
+      
+      LocalFree (msg);
     }
   else
-    {
-      gchar *msg = NULL;
-      int nbytes;
-
-      FormatMessageA (FORMAT_MESSAGE_ALLOCATE_BUFFER
-		      |FORMAT_MESSAGE_IGNORE_INSERTS
-		      |FORMAT_MESSAGE_FROM_SYSTEM,
-		      NULL, error, 0,
-		      (LPTSTR) &msg, 0, NULL);
-      if (msg != NULL)
-	{
-	  nbytes = strlen (msg);
-
-	  if (nbytes > 2 && msg[nbytes-1] == '\n' && msg[nbytes-2] == '\r')
-	    msg[nbytes-2] = '\0';
-	  
-	  retval = g_locale_to_utf8 (msg, -1, NULL, NULL, NULL);
-	  
-	  LocalFree (msg);
-	}
-      else
-	retval = g_strdup ("");
-    }
+    retval = g_strdup ("");
 
   return retval;
 }
@@ -1117,6 +1089,7 @@ get_package_directory_from_module (gchar *module_name)
   gchar *fn;
   gchar *p;
   gchar *result;
+  wchar_t wc_fn[MAX_PATH];
 
   G_LOCK (module_dirs);
 
@@ -1133,42 +1106,20 @@ get_package_directory_from_module (gchar *module_name)
 
   if (module_name)
     {
-      if (G_WIN32_HAVE_WIDECHAR_API ())
-	{
-	  wchar_t *wc_module_name = g_utf8_to_utf16 (module_name, -1, NULL, NULL, NULL);
-	  hmodule = GetModuleHandleW (wc_module_name);
-	  g_free (wc_module_name);
-	}
-      else
-	{
-	  char *cp_module_name = g_locale_from_utf8 (module_name, -1, NULL, NULL, NULL);
-	  hmodule = GetModuleHandleA (cp_module_name);
-	  g_free (cp_module_name);
-	}
+      wchar_t *wc_module_name = g_utf8_to_utf16 (module_name, -1, NULL, NULL, NULL);
+      hmodule = GetModuleHandleW (wc_module_name);
+      g_free (wc_module_name);
+
       if (!hmodule)
 	return NULL;
     }
 
-  if (G_WIN32_HAVE_WIDECHAR_API ())
+  if (!GetModuleFileNameW (hmodule, wc_fn, MAX_PATH))
     {
-      wchar_t wc_fn[MAX_PATH];
-      if (!GetModuleFileNameW (hmodule, wc_fn, MAX_PATH))
-	{
-	  G_UNLOCK (module_dirs);
-	  return NULL;
-	}
-      fn = g_utf16_to_utf8 (wc_fn, -1, NULL, NULL, NULL);
+      G_UNLOCK (module_dirs);
+      return NULL;
     }
-  else
-    {
-      gchar cp_fn[MAX_PATH];
-      if (!GetModuleFileNameA (hmodule, cp_fn, MAX_PATH))
-	{
-	  G_UNLOCK (module_dirs);
-	  return NULL;
-	}
-      fn = g_locale_to_utf8 (cp_fn, -1, NULL, NULL, NULL);
-    }
+  fn = g_utf16_to_utf8 (wc_fn, -1, NULL, NULL, NULL);
 
   if ((p = strrchr (fn, G_DIR_SEPARATOR)) != NULL)
     *p = '\0';
@@ -1240,6 +1191,7 @@ g_win32_get_package_installation_directory (gchar *package,
   G_LOCK_DEFINE_STATIC (package_dirs);
   gchar *result = NULL;
   gchar *key;
+  wchar_t *wc_key;
   HKEY reg_key = NULL;
   DWORD type;
   DWORD nbytes;
@@ -1262,52 +1214,27 @@ g_win32_get_package_installation_directory (gchar *package,
       key = g_strconcat ("Software\\", package, NULL);
       
       nbytes = 0;
-      if (G_WIN32_HAVE_WIDECHAR_API ())
+
+      wc_key = g_utf8_to_utf16 (key, -1, NULL, NULL, NULL);
+      if (((RegOpenKeyExW (HKEY_CURRENT_USER, wc_key, 0,
+			   KEY_QUERY_VALUE, &reg_key) == ERROR_SUCCESS
+	    && RegQueryValueExW (reg_key, L"InstallationDirectory", 0,
+				 &type, NULL, &nbytes) == ERROR_SUCCESS)
+	   ||
+	   (RegOpenKeyExW (HKEY_LOCAL_MACHINE, wc_key, 0,
+			   KEY_QUERY_VALUE, &reg_key) == ERROR_SUCCESS
+	    && RegQueryValueExW (reg_key, L"InstallationDirectory", 0,
+				 &type, NULL, &nbytes) == ERROR_SUCCESS))
+	  && type == REG_SZ)
 	{
-	  wchar_t *wc_key = g_utf8_to_utf16 (key, -1, NULL, NULL, NULL);
-	  if (((RegOpenKeyExW (HKEY_CURRENT_USER, wc_key, 0,
-			       KEY_QUERY_VALUE, &reg_key) == ERROR_SUCCESS
-		&& RegQueryValueExW (reg_key, L"InstallationDirectory", 0,
-				     &type, NULL, &nbytes) == ERROR_SUCCESS)
-	       ||
-	       (RegOpenKeyExW (HKEY_LOCAL_MACHINE, wc_key, 0,
-			       KEY_QUERY_VALUE, &reg_key) == ERROR_SUCCESS
-		&& RegQueryValueExW (reg_key, L"InstallationDirectory", 0,
-				     &type, NULL, &nbytes) == ERROR_SUCCESS))
-	      && type == REG_SZ)
-	    {
-	      wchar_t *wc_temp = g_new (wchar_t, (nbytes+1)/2 + 1);
-	      RegQueryValueExW (reg_key, L"InstallationDirectory", 0,
-				&type, (LPBYTE) wc_temp, &nbytes);
-	      wc_temp[nbytes/2] = '\0';
-	      result = g_utf16_to_utf8 (wc_temp, -1, NULL, NULL, NULL);
-	      g_free (wc_temp);
-	    }
-	  g_free (wc_key);
+	  wchar_t *wc_temp = g_new (wchar_t, (nbytes+1)/2 + 1);
+	  RegQueryValueExW (reg_key, L"InstallationDirectory", 0,
+			    &type, (LPBYTE) wc_temp, &nbytes);
+	  wc_temp[nbytes/2] = '\0';
+	  result = g_utf16_to_utf8 (wc_temp, -1, NULL, NULL, NULL);
+	  g_free (wc_temp);
 	}
-      else
-	{
-	  char *cp_key = g_locale_from_utf8 (key, -1, NULL, NULL, NULL);
-	  if (((RegOpenKeyExA (HKEY_CURRENT_USER, cp_key, 0,
-			       KEY_QUERY_VALUE, &reg_key) == ERROR_SUCCESS
-		&& RegQueryValueExA (reg_key, "InstallationDirectory", 0,
-				     &type, NULL, &nbytes) == ERROR_SUCCESS)
-	       ||
-	       (RegOpenKeyExA (HKEY_LOCAL_MACHINE, cp_key, 0,
-			       KEY_QUERY_VALUE, &reg_key) == ERROR_SUCCESS
-		&& RegQueryValueExA (reg_key, "InstallationDirectory", 0,
-				     &type, NULL, &nbytes) == ERROR_SUCCESS))
-	      && type == REG_SZ)
-	    {
-	      char *cp_temp = g_malloc (nbytes + 1);
-	      RegQueryValueExA (reg_key, "InstallationDirectory", 0,
-				&type, cp_temp, &nbytes);
-	      cp_temp[nbytes] = '\0';
-	      result = g_locale_to_utf8 (cp_temp, -1, NULL, NULL, NULL);
-	      g_free (cp_temp);
-	    }
-	  g_free (cp_key);
-	}
+      g_free (wc_key);
 
       if (reg_key != NULL)
 	RegCloseKey (reg_key);
@@ -1425,10 +1352,10 @@ g_win32_windows_version_init (void)
   if (!beenhere)
     {
       beenhere = TRUE;
-      if (getenv ("G_WIN32_PRETEND_WIN9X"))
-	windows_version = 0x80000004;
-      else
-	windows_version = GetVersion ();
+      windows_version = GetVersion ();
+
+      if (windows_version & 0x80000000)
+	g_error ("This version of GLib requires NT-based Windows.");
     }
 }
 
@@ -1444,16 +1371,12 @@ _g_win32_thread_init (void)
  * Returns version information for the Windows operating system the
  * code is running on. See MSDN documentation for the GetVersion()
  * function. To summarize, the most significant bit is one on Win9x,
- * and zero on NT-based systems. The least significant byte is 4 on
- * Windows NT 4, 5 on Windows XP. Software that needs really detailled
- * version and feature information should use Win32 API like
+ * and zero on NT-based systems. Since version 2.14, GLib works only
+ * on NT-based systems, so checking whether your are running on Win9x
+ * in your own software is moot. The least significant byte is 4 on
+ * Windows NT 4, and 5 on Windows XP. Software that needs really
+ * detailled version and feature information should use Win32 API like
  * GetVersionEx() and VerifyVersionInfo().
- *
- * If there is an environment variable <envar>G_WIN32_PRETEND_WIN9X</envar> 
- * defined (with any value), this function always returns a version 
- * code for Windows 9x. This is mainly an internal debugging aid for 
- * GTK+ and GLib developers, to be able to check the code paths for 
- * Windows 9x.
  *
  * Returns: The version information.
  * 
@@ -1501,7 +1424,7 @@ g_win32_locale_filename_from_utf8 (const gchar *utf8filename)
 {
   gchar *retval = g_locale_from_utf8 (utf8filename, -1, NULL, NULL, NULL);
 
-  if (retval == NULL && G_WIN32_HAVE_WIDECHAR_API ())
+  if (retval == NULL)
     {
       /* Conversion failed, so convert to wide chars, check if there
        * is a 8.3 version, and use that.

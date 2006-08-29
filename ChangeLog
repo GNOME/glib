@@ -1,3 +1,26 @@
+2006-08-29  Tor Lillqvist  <tml@novell.com>
+
+	Remove support for Windows 9x/ME, as will be done also in Pango
+	and GTK+. GTK+ hasn't worked on Win9x since 2.6 or 2.8 anyway, so
+	it's pretty pointless to keep the Win9x code in here either. If
+	somebody is interested, the code can always be found in older GLib
+	versions, and in CVS.
+
+	* glib/gdir.c
+	* glib/gfileutils.c
+	* glib/gspawn-win32-helper.c
+	* glib/gspawn-win32.c
+	* glib/gstdio.c
+	* glib/gutils.c
+	* glib/gwin32.c
+	* glib/gwin32.h: Remove the G_WIN32_IS_NT_BASED() and
+	G_WIN32_HAVE_WIDECHAR_API() tests and their false (Win9x)
+	branches, and any variables or static functions used only by the
+	Win9x branches.
+
+	* glib/gwin32.c (g_win32_windows_version_init): Call g_error() if
+	run on Win9x.
+
 2006-08-27  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Fix pthread compiler flag detection.

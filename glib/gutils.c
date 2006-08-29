@@ -387,6 +387,9 @@ g_find_program_in_path (const gchar *program)
   const gchar *path_copy;
   gchar *filename = NULL, *appdir = NULL;
   gchar *sysdir = NULL, *windir = NULL;
+  int n;
+  wchar_t wfilename[MAXPATHLEN], wsysdir[MAXPATHLEN],
+    wwindir[MAXPATHLEN];
 #endif
   size_t len;
   size_t pathlen;
@@ -427,42 +430,17 @@ g_find_program_in_path (const gchar *program)
       path = "/bin:/usr/bin:.";
     }
 #else
-  if (G_WIN32_HAVE_WIDECHAR_API ())
-    {
-      int n;
-      wchar_t wfilename[MAXPATHLEN], wsysdir[MAXPATHLEN],
-	wwindir[MAXPATHLEN];
-      
-      n = GetModuleFileNameW (NULL, wfilename, MAXPATHLEN);
-      if (n > 0 && n < MAXPATHLEN)
-	filename = g_utf16_to_utf8 (wfilename, -1, NULL, NULL, NULL);
-      
-      n = GetSystemDirectoryW (wsysdir, MAXPATHLEN);
-      if (n > 0 && n < MAXPATHLEN)
-	sysdir = g_utf16_to_utf8 (wsysdir, -1, NULL, NULL, NULL);
-      
-      n = GetWindowsDirectoryW (wwindir, MAXPATHLEN);
-      if (n > 0 && n < MAXPATHLEN)
-	windir = g_utf16_to_utf8 (wwindir, -1, NULL, NULL, NULL);
-    }
-  else
-    {
-      int n;
-      gchar cpfilename[MAXPATHLEN], cpsysdir[MAXPATHLEN],
-	cpwindir[MAXPATHLEN];
-      
-      n = GetModuleFileNameA (NULL, cpfilename, MAXPATHLEN);
-      if (n > 0 && n < MAXPATHLEN)
-	filename = g_locale_to_utf8 (cpfilename, -1, NULL, NULL, NULL);
-      
-      n = GetSystemDirectoryA (cpsysdir, MAXPATHLEN);
-      if (n > 0 && n < MAXPATHLEN)
-	sysdir = g_locale_to_utf8 (cpsysdir, -1, NULL, NULL, NULL);
-      
-      n = GetWindowsDirectoryA (cpwindir, MAXPATHLEN);
-      if (n > 0 && n < MAXPATHLEN)
-	windir = g_locale_to_utf8 (cpwindir, -1, NULL, NULL, NULL);
-    }
+  n = GetModuleFileNameW (NULL, wfilename, MAXPATHLEN);
+  if (n > 0 && n < MAXPATHLEN)
+    filename = g_utf16_to_utf8 (wfilename, -1, NULL, NULL, NULL);
+  
+  n = GetSystemDirectoryW (wsysdir, MAXPATHLEN);
+  if (n > 0 && n < MAXPATHLEN)
+    sysdir = g_utf16_to_utf8 (wsysdir, -1, NULL, NULL, NULL);
+  
+  n = GetWindowsDirectoryW (wwindir, MAXPATHLEN);
+  if (n > 0 && n < MAXPATHLEN)
+    windir = g_utf16_to_utf8 (wwindir, -1, NULL, NULL, NULL);
   
   if (filename)
     {
@@ -939,33 +917,16 @@ g_get_current_dir (void)
 #ifdef G_OS_WIN32
 
   gchar *dir = NULL;
+  wchar_t dummy[2], *wdir;
+  int len;
 
-  if (G_WIN32_HAVE_WIDECHAR_API ())
-    {
-      wchar_t dummy[2], *wdir;
-      int len;
+  len = GetCurrentDirectoryW (2, dummy);
+  wdir = g_new (wchar_t, len);
 
-      len = GetCurrentDirectoryW (2, dummy);
-      wdir = g_new (wchar_t, len);
-
-      if (GetCurrentDirectoryW (len, wdir) == len - 1)
-	dir = g_utf16_to_utf8 (wdir, -1, NULL, NULL, NULL);
-
-      g_free (wdir);
-    }
-  else
-    {
-      gchar dummy[2], *cpdir;
-      int len;
-
-      len = GetCurrentDirectoryA (2, dummy);
-      cpdir = g_new (gchar, len);
-
-      if (GetCurrentDirectoryA (len, cpdir) == len - 1)
-	dir = g_locale_to_utf8 (cpdir, -1, NULL, NULL, NULL);
-
-      g_free (cpdir);
-    }
+  if (GetCurrentDirectoryW (len, wdir) == len - 1)
+    dir = g_utf16_to_utf8 (wdir, -1, NULL, NULL, NULL);
+  
+  g_free (wdir);
 
   if (dir == NULL)
     dir = g_strdup ("\\");
@@ -1048,6 +1009,8 @@ g_getenv (const gchar *variable)
 
   GQuark quark;
   gchar *value;
+  wchar_t dummy[2], *wname, *wvalue;
+  int len;
 
   g_return_val_if_fail (variable != NULL, NULL);
   g_return_val_if_fail (g_utf8_validate (variable, -1, NULL), NULL);
@@ -1062,110 +1025,51 @@ g_getenv (const gchar *variable)
    * contain references to other environment variables.)
    */
 
-  if (G_WIN32_HAVE_WIDECHAR_API ())
+  wname = g_utf8_to_utf16 (variable, -1, NULL, NULL, NULL);
+
+  len = GetEnvironmentVariableW (wname, dummy, 2);
+
+  if (len == 0)
     {
-      wchar_t dummy[2], *wname, *wvalue;
-      int len;
-      
-      wname = g_utf8_to_utf16 (variable, -1, NULL, NULL, NULL);
+      g_free (wname);
+      return NULL;
+    }
+  else if (len == 1)
+    len = 2;
 
-      len = GetEnvironmentVariableW (wname, dummy, 2);
+  wvalue = g_new (wchar_t, len);
 
-      if (len == 0)
-	{
-	  g_free (wname);
-	  return NULL;
-	}
-      else if (len == 1)
-	len = 2;
-
-      wvalue = g_new (wchar_t, len);
-
-      if (GetEnvironmentVariableW (wname, wvalue, len) != len - 1)
-	{
-	  g_free (wname);
-	  g_free (wvalue);
-	  return NULL;
-	}
-
-      if (wcschr (wvalue, L'%') != NULL)
-	{
-	  wchar_t *tem = wvalue;
-
-	  len = ExpandEnvironmentStringsW (wvalue, dummy, 2);
-
-	  if (len > 0)
-	    {
-	      wvalue = g_new (wchar_t, len);
-
-	      if (ExpandEnvironmentStringsW (tem, wvalue, len) != len)
-		{
-		  g_free (wvalue);
-		  wvalue = tem;
-		}
-	      else
-		g_free (tem);
-	    }
-	}
-
-      value = g_utf16_to_utf8 (wvalue, -1, NULL, NULL, NULL);
-
+  if (GetEnvironmentVariableW (wname, wvalue, len) != len - 1)
+    {
       g_free (wname);
       g_free (wvalue);
+      return NULL;
     }
-  else
+
+  if (wcschr (wvalue, L'%') != NULL)
     {
-      gchar dummy[3], *cpname, *cpvalue;
-      int len;
-      
-      cpname = g_locale_from_utf8 (variable, -1, NULL, NULL, NULL);
+      wchar_t *tem = wvalue;
 
-      g_return_val_if_fail (cpname != NULL, NULL);
+      len = ExpandEnvironmentStringsW (wvalue, dummy, 2);
 
-      len = GetEnvironmentVariableA (cpname, dummy, 2);
-
-      if (len == 0)
+      if (len > 0)
 	{
-	  g_free (cpname);
-	  return NULL;
-	}
-      else if (len == 1)
-	len = 2;
+	  wvalue = g_new (wchar_t, len);
 
-      cpvalue = g_new (gchar, len);
-
-      if (GetEnvironmentVariableA (cpname, cpvalue, len) != len - 1)
-	{
-	  g_free (cpname);
-	  g_free (cpvalue);
-	  return NULL;
-	}
-
-      if (strchr (cpvalue, '%') != NULL)
-	{
-	  gchar *tem = cpvalue;
-
-	  len = ExpandEnvironmentStringsA (cpvalue, dummy, 3);
-
-	  if (len > 0)
+	  if (ExpandEnvironmentStringsW (tem, wvalue, len) != len)
 	    {
-	      cpvalue = g_new (gchar, len);
-
-	      if (ExpandEnvironmentStringsA (tem, cpvalue, len) != len)
-		{
-		  g_free (cpvalue);
-		  cpvalue = tem;
-		}
-	      else
-		g_free (tem);
+	      g_free (wvalue);
+	      wvalue = tem;
 	    }
+	  else
+	    g_free (tem);
 	}
-
-      value = g_locale_to_utf8 (cpvalue, -1, NULL, NULL, NULL);
-
-      g_free (cpname);
-      g_free (cpvalue);
     }
+
+  value = g_utf16_to_utf8 (wvalue, -1, NULL, NULL, NULL);
+
+  g_free (wname);
+  g_free (wvalue);
 
   quark = g_quark_from_string (value);
   g_free (value);
@@ -1250,6 +1154,8 @@ g_setenv (const gchar *variable,
 #else /* G_OS_WIN32 */
 
   gboolean retval;
+  wchar_t *wname, *wvalue, *wassignment;
+  gchar *tem;
 
   g_return_val_if_fail (variable != NULL, FALSE);
   g_return_val_if_fail (strchr (variable, '=') == NULL, FALSE);
@@ -1273,36 +1179,19 @@ g_setenv (const gchar *variable,
    * the putenv() first, then call SetEnvironmentValueW ourselves.
    */
 
-  if (G_WIN32_HAVE_WIDECHAR_API ())
-    {
-      wchar_t *wname = g_utf8_to_utf16 (variable, -1, NULL, NULL, NULL);
-      wchar_t *wvalue = g_utf8_to_utf16 (value, -1, NULL, NULL, NULL);
-      gchar *tem = g_strconcat (variable, "=", value, NULL);
-      wchar_t *wassignment = g_utf8_to_utf16 (tem, -1, NULL, NULL, NULL);
-      
-      g_free (tem);
-      _wputenv (wassignment);
-      g_free (wassignment);
+  wname = g_utf8_to_utf16 (variable, -1, NULL, NULL, NULL);
+  wvalue = g_utf8_to_utf16 (value, -1, NULL, NULL, NULL);
+  tem = g_strconcat (variable, "=", value, NULL);
+  wassignment = g_utf8_to_utf16 (tem, -1, NULL, NULL, NULL);
+    
+  g_free (tem);
+  _wputenv (wassignment);
+  g_free (wassignment);
 
-      retval = (SetEnvironmentVariableW (wname, wvalue) != 0);
+  retval = (SetEnvironmentVariableW (wname, wvalue) != 0);
 
-      g_free (wname);
-      g_free (wvalue);
-    }
-  else
-    {
-      /* In the non-Unicode case (Win9x), just putenv() is good
-       * enough.
-       */
-      gchar *tem = g_strconcat (variable, "=", value, NULL);
-      gchar *cpassignment = g_locale_from_utf8 (tem, -1, NULL, NULL, NULL);
-
-      g_free (tem);
-      
-      retval = (putenv (cpassignment) == 0);
-
-      g_free (cpassignment);
-    }
+  g_free (wname);
+  g_free (wvalue);
 
   return retval;
 
@@ -1372,38 +1261,24 @@ g_unsetenv (const gchar *variable)
 
 #else  /* G_OS_WIN32 */
 
+  wchar_t *wname, *wassignment;
+  gchar *tem;
+
   g_return_if_fail (variable != NULL);
   g_return_if_fail (strchr (variable, '=') == NULL);
   g_return_if_fail (g_utf8_validate (variable, -1, NULL));
 
-  if (G_WIN32_HAVE_WIDECHAR_API ())
-    {
-      wchar_t *wname = g_utf8_to_utf16 (variable, -1, NULL, NULL, NULL);
-      gchar *tem = g_strconcat (variable, "=", NULL);
-      wchar_t *wassignment = g_utf8_to_utf16 (tem, -1, NULL, NULL, NULL);
-      
-      g_free (tem);
-      _wputenv (wassignment);
-      g_free (wassignment);
+  wname = g_utf8_to_utf16 (variable, -1, NULL, NULL, NULL);
+  tem = g_strconcat (variable, "=", NULL);
+  wassignment = g_utf8_to_utf16 (tem, -1, NULL, NULL, NULL);
+    
+  g_free (tem);
+  _wputenv (wassignment);
+  g_free (wassignment);
 
-      SetEnvironmentVariableW (wname, NULL);
+  SetEnvironmentVariableW (wname, NULL);
 
-      g_free (wname);
-    }
-  else
-    {
-      /* In the non-Unicode case (Win9x), just putenv() is good
-       * enough.
-       */
-      gchar *tem = g_strconcat (variable, "=", NULL);
-      gchar *cpassignment = g_locale_from_utf8 (tem, -1, NULL, NULL, NULL);
-
-      g_free (tem);
-      
-      putenv (cpassignment);
-
-      g_free (cpassignment);
-    }
+  g_free (wname);
 
 #endif /* G_OS_WIN32 */
 }
@@ -1448,68 +1323,41 @@ g_listenv (void)
   return result;
 #else
   gchar **result, *eq;
-  gint len = 0, i, j;
+  gint len = 0, j;
+  wchar_t *p, *q;
 
-  if (G_WIN32_HAVE_WIDECHAR_API ())
+  p = (wchar_t *) GetEnvironmentStringsW ();
+  if (p != NULL)
     {
-      wchar_t *p, *q;
-
-      p = (wchar_t *) GetEnvironmentStringsW ();
-      if (p != NULL)
-	{
-	  q = p;
-	  while (*q)
-	    {
-	      q += wcslen (q) + 1;
-	      len++;
-	    }
-	}
-      result = g_new0 (gchar *, len + 1);
-
-      j = 0;
       q = p;
       while (*q)
 	{
-	  result[j] = g_utf16_to_utf8 (q, -1, NULL, NULL, NULL);
-	  if (result[j] != NULL)
-	    {
-	      eq = strchr (result[j], '=');
-	      if (eq && eq > result[j])
-		{
-		  *eq = '\0';
-		  j++;
-		}
-	      else
-		g_free (result[j]);
-	    }
 	  q += wcslen (q) + 1;
+	  len++;
 	}
-      result[j] = NULL;
-      FreeEnvironmentStringsW (p);
     }
-  else
+  result = g_new0 (gchar *, len + 1);
+
+  j = 0;
+  q = p;
+  while (*q)
     {
-      len = g_strv_length (environ);
-      result = g_new0 (gchar *, len + 1);
-      
-      j = 0;
-      for (i = 0; i < len; i++)
+      result[j] = g_utf16_to_utf8 (q, -1, NULL, NULL, NULL);
+      if (result[j] != NULL)
 	{
-	  result[j] = g_locale_to_utf8 (environ[i], -1, NULL, NULL, NULL);
-	  if (result[j] != NULL)
+	  eq = strchr (result[j], '=');
+	  if (eq && eq > result[j])
 	    {
-	      eq = strchr (result[j], '=');
-	      if (eq && eq > result[j])
-		{
-		  *eq = '\0';
-		  j++;
-		}
-	      else
-		g_free (result[j]);
+	      *eq = '\0';
+	      j++;
 	    }
+	  else
+	    g_free (result[j]);
 	}
-      result[j] = NULL;
+      q += wcslen (q) + 1;
     }
+  result[j] = NULL;
+  FreeEnvironmentStringsW (p);
 
   return result;
 #endif
@@ -1556,18 +1404,9 @@ get_special_folder (int csidl)
   hr = SHGetSpecialFolderLocation (NULL, csidl, &pidl);
   if (hr == S_OK)
     {
-      if (G_WIN32_HAVE_WIDECHAR_API ())
-	{
-	  b = SHGetPathFromIDListW (pidl, path.wc);
-	  if (b)
-	    retval = g_utf16_to_utf8 (path.wc, -1, NULL, NULL, NULL);
-	}
-      else
-	{
-	  b = SHGetPathFromIDListA (pidl, path.c);
-	  if (b)
-	    retval = g_locale_to_utf8 (path.c, -1, NULL, NULL, NULL);
-	}
+      b = SHGetPathFromIDListW (pidl, path.wc);
+      if (b)
+	retval = g_utf16_to_utf8 (path.wc, -1, NULL, NULL, NULL);
       CoTaskMemFree (pidl);
     }
   return retval;
@@ -1788,27 +1627,13 @@ g_get_any_init_do (void)
 #else /* !HAVE_PWD_H */
   
 #ifdef G_OS_WIN32
-  if (G_WIN32_HAVE_WIDECHAR_API ())
+  guint len = UNLEN+1;
+  wchar_t buffer[UNLEN+1];
+    
+  if (GetUserNameW (buffer, (LPDWORD) &len))
     {
-      guint len = UNLEN+1;
-      wchar_t buffer[UNLEN+1];
-      
-      if (GetUserNameW (buffer, (LPDWORD) &len))
-	{
-	  g_user_name = g_utf16_to_utf8 (buffer, -1, NULL, NULL, NULL);
-	  g_real_name = g_strdup (g_user_name);
-	}
-    }
-  else
-    {
-      guint len = UNLEN+1;
-      char buffer[UNLEN+1];
-      
-      if (GetUserNameA (buffer, (LPDWORD) &len))
-	{
-	  g_user_name = g_locale_to_utf8 (buffer, -1, NULL, NULL, NULL);
-	  g_real_name = g_strdup (g_user_name);
-	}
+      g_user_name = g_utf16_to_utf8 (buffer, -1, NULL, NULL, NULL);
+      g_real_name = g_strdup (g_user_name);
     }
 #endif /* G_OS_WIN32 */
 
@@ -2004,22 +1829,13 @@ g_get_prgname (void)
       if (!beenhere)
 	{
 	  gchar *utf8_buf = NULL;
+	  wchar_t buf[MAX_PATH+1];
 
 	  beenhere = TRUE;
-	  if (G_WIN32_HAVE_WIDECHAR_API ())
-	    {
-	      wchar_t buf[MAX_PATH+1];
-	      if (GetModuleFileNameW (GetModuleHandle (NULL),
-				      buf, G_N_ELEMENTS (buf)) > 0)
-		utf8_buf = g_utf16_to_utf8 (buf, -1, NULL, NULL, NULL);
-	    }
-	  else
-	    {
-	      gchar buf[MAX_PATH+1];
-	      if (GetModuleFileNameA (GetModuleHandle (NULL),
-				      buf, G_N_ELEMENTS (buf)) > 0)
-		utf8_buf = g_locale_to_utf8 (buf, -1, NULL, NULL, NULL);
-	    }
+	  if (GetModuleFileNameW (GetModuleHandle (NULL),
+				  buf, G_N_ELEMENTS (buf)) > 0)
+	    utf8_buf = g_utf16_to_utf8 (buf, -1, NULL, NULL, NULL);
+
 	  if (utf8_buf)
 	    {
 	      g_prgname = g_path_get_basename (utf8_buf);
@@ -2314,23 +2130,14 @@ get_module_share_dir (gconstpointer address)
   HMODULE hmodule;
   gchar *filename = NULL;
   gchar *p, *retval;
+  wchar_t wfilename[MAX_PATH];
 
   hmodule = get_module_for_address (address);
   if (hmodule == NULL)
     return NULL;
 
-  if (G_WIN32_IS_NT_BASED ())
-    {
-      wchar_t wfilename[MAX_PATH];
-      if (GetModuleFileNameW (hmodule, wfilename, G_N_ELEMENTS (wfilename)))
-	filename = g_utf16_to_utf8 (wfilename, -1, NULL, NULL, NULL);
-    }
-  else
-    {
-      char cpfilename[MAX_PATH];
-      if (GetModuleFileNameA (hmodule, cpfilename, G_N_ELEMENTS (cpfilename)))
-	filename = g_locale_to_utf8 (cpfilename, -1, NULL, NULL, NULL);
-    }
+  if (GetModuleFileNameW (hmodule, wfilename, G_N_ELEMENTS (wfilename)))
+    filename = g_utf16_to_utf8 (wfilename, -1, NULL, NULL, NULL);
 
   if (filename == NULL)
     return NULL;

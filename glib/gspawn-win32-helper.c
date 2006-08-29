@@ -160,7 +160,6 @@ WinMain (struct HINSTANCE__ *hInstance,
   int no_error = CHILD_NO_ERROR;
   int zero = 0;
   gint argv_zero_offset = ARG_PROGRAM;
-  gchar **new_argv;
   wchar_t **new_wargv;
   int argc;
   wchar_t **wargv, **wenvp;
@@ -168,17 +167,14 @@ WinMain (struct HINSTANCE__ *hInstance,
 
   g_assert (__argc >= ARG_COUNT);
 
-  if (G_WIN32_HAVE_WIDECHAR_API ())
-    {
-      /* Fetch the wide-char argument vector */
-      __wgetmainargs (&argc, &wargv, &wenvp, 0, &si);
+  /* Fetch the wide-char argument vector */
+  __wgetmainargs (&argc, &wargv, &wenvp, 0, &si);
 
-      /* We still have the system codepage args in __argv. We can look
-       * at the first args in which gspawn-win32.c passes us flags and
-       * fd numbers in __argv, as we know those are just ASCII anyway.
-       */
-      g_assert (argc == __argc);
-    }
+  /* We still have the system codepage args in __argv. We can look
+   * at the first args in which gspawn-win32.c passes us flags and
+   * fd numbers in __argv, as we know those are just ASCII anyway.
+   */
+  g_assert (argc == __argc);
 
   /* argv[ARG_CHILD_ERR_REPORT] is the file descriptor number onto
    * which write error messages.
@@ -266,10 +262,7 @@ WinMain (struct HINSTANCE__ *hInstance,
   if (__argv[ARG_WORKING_DIRECTORY][0] == '-' &&
       __argv[ARG_WORKING_DIRECTORY][1] == 0)
     ; /* Nothing */
-  else if ((G_WIN32_HAVE_WIDECHAR_API () &&
-	    _wchdir (wargv[ARG_WORKING_DIRECTORY]) < 0) ||
-	   (!G_WIN32_HAVE_WIDECHAR_API () &&
-	    chdir (__argv[ARG_WORKING_DIRECTORY]) < 0))
+  else if (_wchdir (wargv[ARG_WORKING_DIRECTORY]) < 0)
     write_err_and_exit (child_err_report_fd, CHILD_CHDIR_FAILED);
 
   /* __argv[ARG_CLOSE_DESCRIPTORS] is "y" if file descriptors from 3
@@ -297,24 +290,12 @@ WinMain (struct HINSTANCE__ *hInstance,
   /* For the program name passed to spawnv(), don't use the quoted
    * version.
    */
-  if (G_WIN32_HAVE_WIDECHAR_API ())
-    {
-      protect_wargv (wargv + argv_zero_offset, &new_wargv);
+  protect_wargv (wargv + argv_zero_offset, &new_wargv);
 
-      if (__argv[ARG_USE_PATH][0] == 'y')
-	handle = _wspawnvp (mode, wargv[ARG_PROGRAM], (const wchar_t **) new_wargv);
-      else
-	handle = _wspawnv (mode, wargv[ARG_PROGRAM], (const wchar_t **) new_wargv);
-    }
+  if (__argv[ARG_USE_PATH][0] == 'y')
+    handle = _wspawnvp (mode, wargv[ARG_PROGRAM], (const wchar_t **) new_wargv);
   else
-    {
-      protect_argv (__argv + argv_zero_offset, &new_argv);
-
-      if (__argv[ARG_USE_PATH][0] == 'y')
-	handle = spawnvp (mode, __argv[ARG_PROGRAM], (const char **) new_argv);
-      else
-	handle = spawnv (mode, __argv[ARG_PROGRAM], (const char **) new_argv);
-    }
+    handle = _wspawnv (mode, wargv[ARG_PROGRAM], (const wchar_t **) new_wargv);
 
   saved_errno = errno;
 

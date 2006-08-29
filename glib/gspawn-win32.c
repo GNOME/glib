@@ -108,6 +108,10 @@ enum {
   ARG_COUNT = ARG_PROGRAM
 };
 
+#ifndef GSPAWN_HELPER
+
+#define HELPER_PROCESS "gspawn-win32-helper"
+
 static gchar *
 protect_argv_string (const gchar *string)
 {
@@ -191,10 +195,6 @@ protect_argv (gchar  **argv,
 
   return argc;
 }
-
-#ifndef GSPAWN_HELPER
-
-#define HELPER_PROCESS "gspawn-win32-helper"
 
 GQuark
 g_spawn_error_quark (void)
@@ -401,43 +401,6 @@ utf8_charv_to_wcharv (char     **utf8_charv,
 }
 
 static gboolean
-utf8_charv_to_cp_charv (char   **utf8_charv,
-			gchar ***cp_charv,
-			int     *error_index,
-			GError **error)
-{
-  char **retval = NULL;
-
-  *cp_charv = NULL;
-  if (utf8_charv != NULL)
-    {
-      int n = 0, i;
-
-      while (utf8_charv[n])
-	n++;
-      retval = g_new (char *, n + 1);
-
-      for (i = 0; i < n; i++)
-	{
-	  retval[i] = g_locale_from_utf8 (utf8_charv[i], -1, NULL, NULL, error);
-	  if (retval[i] == NULL)
-	    {
-	      if (error_index)
-		*error_index = i;
-	      while (i)
-		g_free (retval[--i]);
-	      g_free (retval);
-	      return FALSE;
-	    }
-	}
-      retval[n] = NULL;
-    }
-
-  *cp_charv = retval;
-  return TRUE;
-}
-
-static gboolean
 do_spawn_directly (gint                 *exit_status,
 		   gboolean		 do_return_handle,
 		   GSpawnFlags           flags,
@@ -455,120 +418,61 @@ do_spawn_directly (gint                 *exit_status,
   int saved_errno;
   GError *conv_error = NULL;
   gint conv_error_index;
+  wchar_t *wargv0, **wargv, **wenvp;
 
   new_argv = (flags & G_SPAWN_FILE_AND_ARGV_ZERO) ? protected_argv + 1 : protected_argv;
-  if (G_WIN32_HAVE_WIDECHAR_API ())
+      
+  wargv0 = g_utf8_to_utf16 (argv[0], -1, NULL, NULL, &conv_error);
+  if (wargv0 == NULL)
     {
-      wchar_t *wargv0, **wargv, **wenvp;
+      g_set_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_FAILED,
+		   _("Invalid program name: %s"),
+		   conv_error->message);
+      g_error_free (conv_error);
       
-      wargv0 = g_utf8_to_utf16 (argv[0], -1, NULL, NULL, &conv_error);
-      if (wargv0 == NULL)
-	{
-	  g_set_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_FAILED,
-		       _("Invalid program name: %s"),
-		       conv_error->message);
-	  g_error_free (conv_error);
-	  
-	  return FALSE;
-	}
-      
-      if (!utf8_charv_to_wcharv (new_argv, &wargv, &conv_error_index, &conv_error))
-	{
-	  g_set_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_FAILED,
-		       _("Invalid string in argument vector at %d: %s"),
-		       conv_error_index, conv_error->message);
-	  g_error_free (conv_error);
-	  g_free (wargv0);
-	  
-	  return FALSE;
-	}
-      
-      if (!utf8_charv_to_wcharv (envp, &wenvp, NULL, &conv_error))
-	{
-	  g_set_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_FAILED,
-		       _("Invalid string in environment: %s"),
-		       conv_error->message);
-	  g_error_free (conv_error);
-	  g_free (wargv0);
-	  g_strfreev ((gchar **) wargv);
-	  
-	  return FALSE;
-	}
-      
-      if (child_setup)
-	(* child_setup) (user_data);
-      
-      if (flags & G_SPAWN_SEARCH_PATH)
-	if (wenvp != NULL)
-	  rc = _wspawnvpe (mode, wargv0, (const wchar_t **) wargv, (const wchar_t **) wenvp);
-	else
-	  rc = _wspawnvp (mode, wargv0, (const wchar_t **) wargv);
-      else
-	if (wenvp != NULL)
-	  rc = _wspawnve (mode, wargv0, (const wchar_t **) wargv, (const wchar_t **) wenvp);
-	else
-	  rc = _wspawnv (mode, wargv0, (const wchar_t **) wargv);
-      
+      return FALSE;
+    }
+  
+  if (!utf8_charv_to_wcharv (new_argv, &wargv, &conv_error_index, &conv_error))
+    {
+      g_set_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_FAILED,
+		   _("Invalid string in argument vector at %d: %s"),
+		   conv_error_index, conv_error->message);
+      g_error_free (conv_error);
+      g_free (wargv0);
+
+      return FALSE;
+    }
+
+  if (!utf8_charv_to_wcharv (envp, &wenvp, NULL, &conv_error))
+    {
+      g_set_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_FAILED,
+		   _("Invalid string in environment: %s"),
+		   conv_error->message);
+      g_error_free (conv_error);
       g_free (wargv0);
       g_strfreev ((gchar **) wargv);
-      g_strfreev ((gchar **) wenvp);
+
+      return FALSE;
     }
+
+  if (child_setup)
+    (* child_setup) (user_data);
+
+  if (flags & G_SPAWN_SEARCH_PATH)
+    if (wenvp != NULL)
+      rc = _wspawnvpe (mode, wargv0, (const wchar_t **) wargv, (const wchar_t **) wenvp);
+    else
+      rc = _wspawnvp (mode, wargv0, (const wchar_t **) wargv);
   else
-    {
-      char *cpargv0, **cpargv, **cpenvp;
-      
-      cpargv0 = g_locale_from_utf8 (argv[0], -1, NULL, NULL, &conv_error);
-      if (cpargv0 == NULL)
-	{
-	  g_set_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_FAILED,
-		       _("Invalid program name: %s"),
-		       conv_error->message);
-	  g_error_free (conv_error);
+    if (wenvp != NULL)
+      rc = _wspawnve (mode, wargv0, (const wchar_t **) wargv, (const wchar_t **) wenvp);
+    else
+      rc = _wspawnv (mode, wargv0, (const wchar_t **) wargv);
 
-	  return FALSE;
-	}
-
-      if  (!utf8_charv_to_cp_charv (new_argv, &cpargv, &conv_error_index, &conv_error))
-	{
-	  g_set_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_FAILED,
-		       _("Invalid string in argument vector at %d: %s"),
-		       conv_error_index, conv_error->message);
-	  g_error_free (conv_error);
-	  g_free (cpargv0);
-
-	  return FALSE;
-	}
-
-      if (!utf8_charv_to_cp_charv (envp, &cpenvp, NULL, &conv_error))
-	{
-	  g_set_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_FAILED,
-		       _("Invalid string in environment: %s"),
-		       conv_error->message);
-	  g_error_free (conv_error);
-	  g_free (cpargv0);
-	  g_strfreev (cpargv);
-
-	  return FALSE;
-	}
-
-      if (child_setup)
-	(* child_setup) (user_data);
-
-      if (flags & G_SPAWN_SEARCH_PATH)
-	if (cpenvp != NULL)
-	  rc = spawnvpe (mode, cpargv0, (const char **) cpargv, (const char **) cpenvp);
-	else
-	  rc = spawnvp (mode, cpargv0, (const char **) cpargv);
-      else
-	if (envp != NULL)
-	  rc = spawnve (mode, cpargv0, (const char **) cpargv, (const char **) cpenvp);
-	else
-	  rc = spawnv (mode, cpargv0, (const char **) cpargv);
-
-      g_free (cpargv0);
-      g_strfreev (cpargv);
-      g_strfreev (cpenvp);
-    }
+  g_free (wargv0);
+  g_strfreev ((gchar **) wargv);
+  g_strfreev ((gchar **) wenvp);
 
   saved_errno = errno;
 
@@ -630,6 +534,7 @@ do_spawn_with_pipes (gint                 *exit_status,
   gint conv_error_index;
   gchar *helper_process;
   CONSOLE_CURSOR_INFO cursor_info;
+  wchar_t *whelper, **wargv, **wenvp;
   
   SETUP_DEBUG();
 
@@ -761,111 +666,58 @@ do_spawn_with_pipes (gint                 *exit_status,
 	g_print ("argv[%d]: %s\n", i, (new_argv[i] ? new_argv[i] : "NULL"));
     }
 
-  if (G_WIN32_HAVE_WIDECHAR_API ())
+  whelper = g_utf8_to_utf16 (helper_process, -1, NULL, NULL, NULL);
+
+  if (!utf8_charv_to_wcharv (new_argv, &wargv, &conv_error_index, &conv_error))
     {
-      wchar_t *whelper = g_utf8_to_utf16 (helper_process, -1, NULL, NULL, NULL);
-      wchar_t **wargv, **wenvp;
-
-      if (!utf8_charv_to_wcharv (new_argv, &wargv, &conv_error_index, &conv_error))
-	{
-	  if (conv_error_index == ARG_WORKING_DIRECTORY)
-	    g_set_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_CHDIR,
-			 _("Invalid working directory: %s"),
-			 conv_error->message);
-	  else
-	    g_set_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_FAILED,
-			 _("Invalid string in argument vector at %d: %s"),
-			 conv_error_index - ARG_PROGRAM, conv_error->message);
-	  g_error_free (conv_error);
-	  g_strfreev (protected_argv);
-	  g_free (new_argv[ARG_WORKING_DIRECTORY]);
-	  g_free (new_argv);
-	  g_free (whelper);
-	  
-	  return FALSE;
-	}
-      
-      if (!utf8_charv_to_wcharv (envp, &wenvp, NULL, &conv_error))
-	{
-	  g_set_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_FAILED,
-		       _("Invalid string in environment: %s"),
-		       conv_error->message);
-	  g_error_free (conv_error);
-	  g_strfreev (protected_argv);
-	  g_free (new_argv[ARG_WORKING_DIRECTORY]);
-	  g_free (new_argv);
-	  g_free (whelper);
-	  g_strfreev ((gchar **) wargv);
-	  
-	  return FALSE;
-	}
-
-      if (child_setup)
-	(* child_setup) (user_data);
-
-      if (wenvp != NULL)
-	/* Let's hope envp hasn't mucked with PATH so that
-	 * gspawn-win32-helper.exe isn't found.
-	 */
-	rc = _wspawnvpe (P_NOWAIT, whelper, (const wchar_t **) wargv, (const wchar_t **) wenvp);
+      if (conv_error_index == ARG_WORKING_DIRECTORY)
+	g_set_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_CHDIR,
+		     _("Invalid working directory: %s"),
+		     conv_error->message);
       else
-	rc = _wspawnvp (P_NOWAIT, whelper, (const wchar_t **) wargv);
+	g_set_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_FAILED,
+		     _("Invalid string in argument vector at %d: %s"),
+		     conv_error_index - ARG_PROGRAM, conv_error->message);
+      g_error_free (conv_error);
+      g_strfreev (protected_argv);
+      g_free (new_argv[ARG_WORKING_DIRECTORY]);
+      g_free (new_argv);
+      g_free (whelper);
 
-      saved_errno = errno;
+      return FALSE;
+    }
 
+  if (!utf8_charv_to_wcharv (envp, &wenvp, NULL, &conv_error))
+    {
+      g_set_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_FAILED,
+		   _("Invalid string in environment: %s"),
+		   conv_error->message);
+      g_error_free (conv_error);
+      g_strfreev (protected_argv);
+      g_free (new_argv[ARG_WORKING_DIRECTORY]);
+      g_free (new_argv);
       g_free (whelper);
       g_strfreev ((gchar **) wargv);
-      g_strfreev ((gchar **) wenvp);
+ 
+      return FALSE;
     }
+
+  if (child_setup)
+    (* child_setup) (user_data);
+
+  if (wenvp != NULL)
+    /* Let's hope envp hasn't mucked with PATH so that
+     * gspawn-win32-helper.exe isn't found.
+     */
+    rc = _wspawnvpe (P_NOWAIT, whelper, (const wchar_t **) wargv, (const wchar_t **) wenvp);
   else
-    {
-      char **cpargv, **cpenvp;
+    rc = _wspawnvp (P_NOWAIT, whelper, (const wchar_t **) wargv);
 
-      if (!utf8_charv_to_cp_charv (new_argv, &cpargv, &conv_error_index, &conv_error))
-	{
-	  if (conv_error_index == ARG_WORKING_DIRECTORY)
-	    g_set_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_CHDIR,
-			 _("Invalid working directory: %s"),
-			 conv_error->message);
-	  else
-	    g_set_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_FAILED,
-			 _("Invalid string in argument vector at %d: %s"),
-			 conv_error_index - ARG_PROGRAM, conv_error->message);
-	  g_error_free (conv_error);
-	  g_strfreev (protected_argv);
-	  g_free (new_argv[ARG_WORKING_DIRECTORY]);
-	  g_free (new_argv);
-	  
-	  return FALSE;
-	}
-	
-      if (!utf8_charv_to_cp_charv (envp, &cpenvp, NULL, &conv_error))
-	{
-	  g_set_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_FAILED,
-		       _("Invalid string in environment: %s"),
-		       conv_error->message);
-	  g_error_free (conv_error);
-	  g_strfreev (protected_argv);
-	  g_free (new_argv[ARG_WORKING_DIRECTORY]);
-	  g_free (new_argv);
-	  g_strfreev (cpargv);
-	  
-	  return FALSE;
-	}
+  saved_errno = errno;
 
-      if (child_setup)
-	(* child_setup) (user_data);
-
-      if (cpenvp != NULL)
-	rc = spawnvpe (P_NOWAIT, helper_process, (const char **) cpargv, (const char **) cpenvp);
-      else
-	rc = spawnvp (P_NOWAIT, helper_process, (const char **) cpargv);
-
-      saved_errno = errno;
-
-      g_strfreev (cpargv);
-      g_strfreev (cpenvp);
-    }
+  g_free (whelper);
+  g_strfreev ((gchar **) wargv);
+  g_strfreev ((gchar **) wenvp);
 
   /* Close the other process's ends of the pipes in this process,
    * otherwise the reader will never get EOF.

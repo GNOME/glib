@@ -74,46 +74,23 @@ g_access (const gchar *filename,
 	  int          mode)
 {
 #ifdef G_OS_WIN32
-  if (G_WIN32_HAVE_WIDECHAR_API ())
+  wchar_t *wfilename = g_utf8_to_utf16 (filename, -1, NULL, NULL, NULL);
+  int retval;
+  int save_errno;
+    
+  if (wfilename == NULL)
     {
-      wchar_t *wfilename = g_utf8_to_utf16 (filename, -1, NULL, NULL, NULL);
-      int retval;
-      int save_errno;
-      
-      if (wfilename == NULL)
-	{
-	  errno = EINVAL;
-	  return -1;
-	}
-
-      retval = _waccess (wfilename, mode);
-      save_errno = errno;
-
-      g_free (wfilename);
-
-      errno = save_errno;
-      return retval;
+      errno = EINVAL;
+      return -1;
     }
-  else
-    {    
-      gchar *cp_filename = g_locale_from_utf8 (filename, -1, NULL, NULL, NULL);
-      int retval;
-      int save_errno;
 
-      if (cp_filename == NULL)
-	{
-	  errno = EINVAL;
-	  return -1;
-	}
+  retval = _waccess (wfilename, mode);
+  save_errno = errno;
 
-      retval = access (cp_filename, mode);
-      save_errno = errno;
+  g_free (wfilename);
 
-      g_free (cp_filename);
-
-      errno = save_errno;
-      return retval;
-    }
+  errno = save_errno;
+  return retval;
 #else
   return access (filename, mode);
 #endif
@@ -143,46 +120,23 @@ g_chmod (const gchar *filename,
 	 int          mode)
 {
 #ifdef G_OS_WIN32
-  if (G_WIN32_HAVE_WIDECHAR_API ())
+  wchar_t *wfilename = g_utf8_to_utf16 (filename, -1, NULL, NULL, NULL);
+  int retval;
+  int save_errno;
+    
+  if (wfilename == NULL)
     {
-      wchar_t *wfilename = g_utf8_to_utf16 (filename, -1, NULL, NULL, NULL);
-      int retval;
-      int save_errno;
-      
-      if (wfilename == NULL)
-	{
-	  errno = EINVAL;
-	  return -1;
-	}
-
-      retval = _wchmod (wfilename, mode);
-      save_errno = errno;
-
-      g_free (wfilename);
-
-      errno = save_errno;
-      return retval;
+      errno = EINVAL;
+      return -1;
     }
-  else
-    {    
-      gchar *cp_filename = g_locale_from_utf8 (filename, -1, NULL, NULL, NULL);
-      int retval;
-      int save_errno;
 
-      if (cp_filename == NULL)
-	{
-	  errno = EINVAL;
-	  return -1;
-	}
+  retval = _wchmod (wfilename, mode);
+  save_errno = errno;
 
-      retval = chmod (cp_filename, mode);
-      save_errno = errno;
+  g_free (wfilename);
 
-      g_free (cp_filename);
-
-      errno = save_errno;
-      return retval;
-    }
+  errno = save_errno;
+  return retval;
 #else
   return chmod (filename, mode);
 #endif
@@ -214,46 +168,23 @@ g_open (const gchar *filename,
 	int          mode)
 {
 #ifdef G_OS_WIN32
-  if (G_WIN32_HAVE_WIDECHAR_API ())
+  wchar_t *wfilename = g_utf8_to_utf16 (filename, -1, NULL, NULL, NULL);
+  int retval;
+  int save_errno;
+    
+  if (wfilename == NULL)
     {
-      wchar_t *wfilename = g_utf8_to_utf16 (filename, -1, NULL, NULL, NULL);
-      int retval;
-      int save_errno;
-      
-      if (wfilename == NULL)
-	{
-	  errno = EINVAL;
-	  return -1;
-	}
-
-      retval = _wopen (wfilename, flags, mode);
-      save_errno = errno;
-
-      g_free (wfilename);
-
-      errno = save_errno;
-      return retval;
+      errno = EINVAL;
+      return -1;
     }
-  else
-    {    
-      gchar *cp_filename = g_locale_from_utf8 (filename, -1, NULL, NULL, NULL);
-      int retval;
-      int save_errno;
 
-      if (cp_filename == NULL)
-	{
-	  errno = EINVAL;
-	  return -1;
-	}
+  retval = _wopen (wfilename, flags, mode);
+  save_errno = errno;
 
-      retval = open (cp_filename, flags, mode);
-      save_errno = errno;
+  g_free (wfilename);
 
-      g_free (cp_filename);
-
-      errno = save_errno;
-      return retval;
-    }
+  errno = save_errno;
+  return retval;
 #else
   return open (filename, flags, mode);
 #endif
@@ -283,46 +214,23 @@ g_creat (const gchar *filename,
 	 int          mode)
 {
 #ifdef G_OS_WIN32
-  if (G_WIN32_HAVE_WIDECHAR_API ())
+  wchar_t *wfilename = g_utf8_to_utf16 (filename, -1, NULL, NULL, NULL);
+  int retval;
+  int save_errno;
+    
+  if (wfilename == NULL)
     {
-      wchar_t *wfilename = g_utf8_to_utf16 (filename, -1, NULL, NULL, NULL);
-      int retval;
-      int save_errno;
-      
-      if (wfilename == NULL)
-	{
-	  errno = EINVAL;
-	  return -1;
-	}
-
-      retval = _wcreat (wfilename, mode);
-      save_errno = errno;
-
-      g_free (wfilename);
-
-      errno = save_errno;
-      return retval;
+      errno = EINVAL;
+      return -1;
     }
-  else
-    {    
-      gchar *cp_filename = g_locale_from_utf8 (filename, -1, NULL, NULL, NULL);
-      int retval;
-      int save_errno;
 
-      if (cp_filename == NULL)
-	{
-	  errno = EINVAL;
-	  return -1;
-	}
+  retval = _wcreat (wfilename, mode);
+  save_errno = errno;
 
-      retval = creat (cp_filename, mode);
-      save_errno = errno;
+  g_free (wfilename);
 
-      g_free (cp_filename);
-
-      errno = save_errno;
-      return retval;
-    }
+  errno = save_errno;
+  return retval;
 #else
   return creat (filename, mode);
 #endif
@@ -350,86 +258,52 @@ g_rename (const gchar *oldfilename,
 	  const gchar *newfilename)
 {
 #ifdef G_OS_WIN32
-  if (G_WIN32_HAVE_WIDECHAR_API ())
+  wchar_t *woldfilename = g_utf8_to_utf16 (oldfilename, -1, NULL, NULL, NULL);
+  wchar_t *wnewfilename;
+  int retval;
+  int save_errno;
+
+  if (woldfilename == NULL)
     {
-      wchar_t *woldfilename = g_utf8_to_utf16 (oldfilename, -1, NULL, NULL, NULL);
-      wchar_t *wnewfilename;
-      int retval;
-      int save_errno;
-
-      if (woldfilename == NULL)
-	{
-	  errno = EINVAL;
-	  return -1;
-	}
-
-      wnewfilename = g_utf8_to_utf16 (newfilename, -1, NULL, NULL, NULL);
-
-      if (wnewfilename == NULL)
-	{
-	  g_free (woldfilename);
-	  errno = EINVAL;
-	  return -1;
-	}
-
-      if (MoveFileExW (woldfilename, wnewfilename, MOVEFILE_REPLACE_EXISTING))
-	retval = 0;
-      else
-	{
-	  retval = -1;
-	  switch (GetLastError ())
-	    {
-#define CASE(a,b) case ERROR_##a: save_errno = b; break
-	    CASE (FILE_NOT_FOUND, ENOENT);
-	    CASE (PATH_NOT_FOUND, ENOENT);
-	    CASE (ACCESS_DENIED, EACCES);
-	    CASE (NOT_SAME_DEVICE, EXDEV);
-	    CASE (LOCK_VIOLATION, EACCES);
-	    CASE (SHARING_VIOLATION, EACCES);
-	    CASE (FILE_EXISTS, EEXIST);
-	    CASE (ALREADY_EXISTS, EEXIST);
-#undef CASE
-	    default: save_errno = EIO;
-	    }
-	}
-
-      g_free (woldfilename);
-      g_free (wnewfilename);
-      
-      errno = save_errno;
-      return retval;
+      errno = EINVAL;
+      return -1;
     }
+
+  wnewfilename = g_utf8_to_utf16 (newfilename, -1, NULL, NULL, NULL);
+
+  if (wnewfilename == NULL)
+    {
+      g_free (woldfilename);
+      errno = EINVAL;
+      return -1;
+    }
+
+  if (MoveFileExW (woldfilename, wnewfilename, MOVEFILE_REPLACE_EXISTING))
+    retval = 0;
   else
     {
-      gchar *cp_oldfilename = g_locale_from_utf8 (oldfilename, -1, NULL, NULL, NULL);
-      gchar *cp_newfilename;
-      int retval;
-      int save_errno;
-
-      if (cp_oldfilename == NULL)
+      retval = -1;
+      switch (GetLastError ())
 	{
-	  errno = EINVAL;
-	  return -1;
+#define CASE(a,b) case ERROR_##a: save_errno = b; break
+	  CASE (FILE_NOT_FOUND, ENOENT);
+	  CASE (PATH_NOT_FOUND, ENOENT);
+	  CASE (ACCESS_DENIED, EACCES);
+	  CASE (NOT_SAME_DEVICE, EXDEV);
+	  CASE (LOCK_VIOLATION, EACCES);
+	  CASE (SHARING_VIOLATION, EACCES);
+	  CASE (FILE_EXISTS, EEXIST);
+	  CASE (ALREADY_EXISTS, EEXIST);
+#undef CASE
+	default: save_errno = EIO;
 	}
-
-      cp_newfilename = g_locale_from_utf8 (newfilename, -1, NULL, NULL, NULL);
-
-      if (cp_newfilename == NULL)
-	{
-	  g_free (cp_oldfilename);
-	  errno = EINVAL;
-	  return -1;
-	}
-	
-      retval = rename (cp_oldfilename, cp_newfilename);
-      save_errno = errno;
-
-      g_free (cp_oldfilename);
-      g_free (cp_newfilename);
-
-      errno = save_errno;
-      return retval;
     }
+
+  g_free (woldfilename);
+  g_free (wnewfilename);
+    
+  errno = save_errno;
+  return retval;
 #else
   return rename (oldfilename, newfilename);
 #endif
@@ -455,46 +329,23 @@ g_mkdir (const gchar *filename,
 	 int          mode)
 {
 #ifdef G_OS_WIN32
-  if (G_WIN32_HAVE_WIDECHAR_API ())
+  wchar_t *wfilename = g_utf8_to_utf16 (filename, -1, NULL, NULL, NULL);
+  int retval;
+  int save_errno;
+
+  if (wfilename == NULL)
     {
-      wchar_t *wfilename = g_utf8_to_utf16 (filename, -1, NULL, NULL, NULL);
-      int retval;
-      int save_errno;
-
-      if (wfilename == NULL)
-	{
-	  errno = EINVAL;
-	  return -1;
-	}
-
-      retval = _wmkdir (wfilename);
-      save_errno = errno;
-
-      g_free (wfilename);
-      
-      errno = save_errno;
-      return retval;
+      errno = EINVAL;
+      return -1;
     }
-  else
-    {
-      gchar *cp_filename = g_locale_from_utf8 (filename, -1, NULL, NULL, NULL);
-      int retval;
-      int save_errno;
 
-      if (cp_filename == NULL)
-	{
-	  errno = EINVAL;
-	  return -1;
-	}
+  retval = _wmkdir (wfilename);
+  save_errno = errno;
 
-      retval = mkdir (cp_filename);
-      save_errno = errno;
-
-      g_free (cp_filename);
-
-      errno = save_errno;
-      return retval;
-    }
+  g_free (wfilename);
+    
+  errno = save_errno;
+  return retval;
 #else
   return mkdir (filename, mode);
 #endif
@@ -517,46 +368,23 @@ int
 g_chdir (const gchar *path)
 {
 #ifdef G_OS_WIN32
-  if (G_WIN32_HAVE_WIDECHAR_API ())
+  wchar_t *wpath = g_utf8_to_utf16 (path, -1, NULL, NULL, NULL);
+  int retval;
+  int save_errno;
+
+  if (wpath == NULL)
     {
-      wchar_t *wpath = g_utf8_to_utf16 (path, -1, NULL, NULL, NULL);
-      int retval;
-      int save_errno;
-
-      if (wpath == NULL)
-	{
-	  errno = EINVAL;
-	  return -1;
-	}
-
-      retval = _wchdir (wpath);
-      save_errno = errno;
-
-      g_free (wpath);
-      
-      errno = save_errno;
-      return retval;
+      errno = EINVAL;
+      return -1;
     }
-  else
-    {
-      gchar *cp_path = g_locale_from_utf8 (path, -1, NULL, NULL, NULL);
-      int retval;
-      int save_errno;
 
-      if (cp_path == NULL)
-	{
-	  errno = EINVAL;
-	  return -1;
-	}
+  retval = _wchdir (wpath);
+  save_errno = errno;
 
-      retval = chdir (cp_path);
-      save_errno = errno;
-
-      g_free (cp_path);
-
-      errno = save_errno;
-      return retval;
-    }
+  g_free (wpath);
+    
+  errno = save_errno;
+  return retval;
 #else
   return chdir (path);
 #endif
@@ -583,62 +411,31 @@ g_stat (const gchar *filename,
 	struct stat *buf)
 {
 #ifdef G_OS_WIN32
-  if (G_WIN32_HAVE_WIDECHAR_API ())
+  wchar_t *wfilename = g_utf8_to_utf16 (filename, -1, NULL, NULL, NULL);
+  int retval;
+  int save_errno;
+  int len;
+
+  if (wfilename == NULL)
     {
-      wchar_t *wfilename = g_utf8_to_utf16 (filename, -1, NULL, NULL, NULL);
-      int retval;
-      int save_errno;
-      int len;
-
-      if (wfilename == NULL)
-	{
-	  errno = EINVAL;
-	  return -1;
-	}
-
-      len = wcslen (wfilename);
-      while (len > 0 && G_IS_DIR_SEPARATOR (wfilename[len-1]))
-	len--;
-      if (len > 0 &&
-	  (!g_path_is_absolute (filename) || len > g_path_skip_root (filename) - filename))
-	wfilename[len] = '\0';
-
-      retval = _wstat (wfilename, (struct _stat *) buf);
-      save_errno = errno;
-
-      g_free (wfilename);
-
-      errno = save_errno;
-      return retval;
+      errno = EINVAL;
+      return -1;
     }
-  else
-    {
-      gchar *cp_filename = g_locale_from_utf8 (filename, -1, NULL, NULL, NULL);
-      int retval;
-      int save_errno;
-      int len;
 
-      if (cp_filename == NULL)
-	{
-	  errno = EINVAL;
-	  return -1;
-	}
+  len = wcslen (wfilename);
+  while (len > 0 && G_IS_DIR_SEPARATOR (wfilename[len-1]))
+    len--;
+  if (len > 0 &&
+      (!g_path_is_absolute (filename) || len > g_path_skip_root (filename) - filename))
+    wfilename[len] = '\0';
 
-      len = strlen (cp_filename);
-      while (len > 0 && G_IS_DIR_SEPARATOR (cp_filename[len-1]))
-	len--;
-      if (len > 0 &&
-	  (!g_path_is_absolute (filename) || len > g_path_skip_root (filename) - filename))
-	cp_filename[len] = '\0';
-      
-      retval = stat (cp_filename, buf);
-      save_errno = errno;
+  retval = _wstat (wfilename, (struct _stat *) buf);
+  save_errno = errno;
 
-      g_free (cp_filename);
+  g_free (wfilename);
 
-      errno = save_errno;
-      return retval;
-    }
+  errno = save_errno;
+  return retval;
 #else
   return stat (filename, buf);
 #endif
@@ -697,46 +494,23 @@ int
 g_unlink (const gchar *filename)
 {
 #ifdef G_OS_WIN32
-  if (G_WIN32_HAVE_WIDECHAR_API ())
+  wchar_t *wfilename = g_utf8_to_utf16 (filename, -1, NULL, NULL, NULL);
+  int retval;
+  int save_errno;
+
+  if (wfilename == NULL)
     {
-      wchar_t *wfilename = g_utf8_to_utf16 (filename, -1, NULL, NULL, NULL);
-      int retval;
-      int save_errno;
-
-      if (wfilename == NULL)
-	{
-	  errno = EINVAL;
-	  return -1;
-	}
-
-      retval = _wunlink (wfilename);
-      save_errno = errno;
-
-      g_free (wfilename);
-
-      errno = save_errno;
-      return retval;
+      errno = EINVAL;
+      return -1;
     }
-  else
-    {
-      gchar *cp_filename = g_locale_from_utf8 (filename, -1, NULL, NULL, NULL);
-      int retval;
-      int save_errno;
 
-      if (cp_filename == NULL)
-	{
-	  errno = EINVAL;
-	  return -1;
-	}
+  retval = _wunlink (wfilename);
+  save_errno = errno;
 
-      retval = unlink (cp_filename);
-      save_errno = errno;
+  g_free (wfilename);
 
-      g_free (cp_filename);
-
-      errno = save_errno;
-      return retval;
-    }
+  errno = save_errno;
+  return retval;
 #else
   return unlink (filename);
 #endif
@@ -772,50 +546,25 @@ int
 g_remove (const gchar *filename)
 {
 #ifdef G_OS_WIN32
-  if (G_WIN32_HAVE_WIDECHAR_API ())
+  wchar_t *wfilename = g_utf8_to_utf16 (filename, -1, NULL, NULL, NULL);
+  int retval;
+  int save_errno;
+
+  if (wfilename == NULL)
     {
-      wchar_t *wfilename = g_utf8_to_utf16 (filename, -1, NULL, NULL, NULL);
-      int retval;
-      int save_errno;
-
-      if (wfilename == NULL)
-	{
-	  errno = EINVAL;
-	  return -1;
-	}
-
-      retval = _wremove (wfilename);
-      if (retval == -1)
-	retval = _wrmdir (wfilename);
-      save_errno = errno;
-
-      g_free (wfilename);
-
-      errno = save_errno;
-      return retval;
+      errno = EINVAL;
+      return -1;
     }
-  else
-    {
-      gchar *cp_filename = g_locale_from_utf8 (filename, -1, NULL, NULL, NULL);
-      int retval;
-      int save_errno;
-      
-      if (cp_filename == NULL)
-	{
-	  errno = EINVAL;
-	  return -1;
-	}
 
-      retval = remove (cp_filename);
-      if (retval == -1)
-	retval = rmdir (cp_filename);
-      save_errno = errno;
+  retval = _wremove (wfilename);
+  if (retval == -1)
+    retval = _wrmdir (wfilename);
+  save_errno = errno;
 
-      g_free (cp_filename);
+  g_free (wfilename);
 
-      errno = save_errno;
-      return retval;
-    }
+  errno = save_errno;
+  return retval;
 #else
   return remove (filename);
 #endif
@@ -840,46 +589,23 @@ int
 g_rmdir (const gchar *filename)
 {
 #ifdef G_OS_WIN32
-  if (G_WIN32_HAVE_WIDECHAR_API ())
+  wchar_t *wfilename = g_utf8_to_utf16 (filename, -1, NULL, NULL, NULL);
+  int retval;
+  int save_errno;
+
+  if (wfilename == NULL)
     {
-      wchar_t *wfilename = g_utf8_to_utf16 (filename, -1, NULL, NULL, NULL);
-      int retval;
-      int save_errno;
-
-      if (wfilename == NULL)
-	{
-	  errno = EINVAL;
-	  return -1;
-	}
-      
-      retval = _wrmdir (wfilename);
-      save_errno = errno;
-
-      g_free (wfilename);
-
-      errno = save_errno;
-      return retval;
+      errno = EINVAL;
+      return -1;
     }
-  else
-    {
-      gchar *cp_filename = g_locale_from_utf8 (filename, -1, NULL, NULL, NULL);
-      int retval;
-      int save_errno;
+  
+  retval = _wrmdir (wfilename);
+  save_errno = errno;
 
-      if (cp_filename == NULL)
-	{
-	  errno = EINVAL;
-	  return -1;
-	}
+  g_free (wfilename);
 
-      retval = rmdir (cp_filename);
-      save_errno = errno;
-
-      g_free (cp_filename);
-
-      errno = save_errno;
-      return retval;
-    }
+  errno = save_errno;
+  return retval;
 #else
   return rmdir (filename);
 #endif
@@ -906,57 +632,34 @@ g_fopen (const gchar *filename,
 	 const gchar *mode)
 {
 #ifdef G_OS_WIN32
-  if (G_WIN32_HAVE_WIDECHAR_API ())
+  wchar_t *wfilename = g_utf8_to_utf16 (filename, -1, NULL, NULL, NULL);
+  wchar_t *wmode;
+  FILE *retval;
+  int save_errno;
+
+  if (wfilename == NULL)
     {
-      wchar_t *wfilename = g_utf8_to_utf16 (filename, -1, NULL, NULL, NULL);
-      wchar_t *wmode;
-      FILE *retval;
-      int save_errno;
+      errno = EINVAL;
+      return NULL;
+    }
 
-      if (wfilename == NULL)
-	{
-	  errno = EINVAL;
-	  return NULL;
-	}
+  wmode = g_utf8_to_utf16 (mode, -1, NULL, NULL, NULL);
 
-      wmode = g_utf8_to_utf16 (mode, -1, NULL, NULL, NULL);
-
-      if (wmode == NULL)
-	{
-	  g_free (wfilename);
-	  errno = EINVAL;
-	  return NULL;
-	}
-	
-      retval = _wfopen (wfilename, wmode);
-      save_errno = errno;
-
+  if (wmode == NULL)
+    {
       g_free (wfilename);
-      g_free (wmode);
-
-      errno = save_errno;
-      return retval;
+      errno = EINVAL;
+      return NULL;
     }
-  else
-    {
-      gchar *cp_filename = g_locale_from_utf8 (filename, -1, NULL, NULL, NULL);
-      FILE *retval;
-      int save_errno;
 
-      if (cp_filename == NULL)
-	{
-	  errno = EINVAL;
-	  return NULL;
-	}
+  retval = _wfopen (wfilename, wmode);
+  save_errno = errno;
 
-      retval = fopen (cp_filename, mode);
-      save_errno = errno;
+  g_free (wfilename);
+  g_free (wmode);
 
-      g_free (cp_filename);
-
-      errno = save_errno;
-      return retval;
-    }
+  errno = save_errno;
+  return retval;
 #else
   return fopen (filename, mode);
 #endif
@@ -985,57 +688,34 @@ g_freopen (const gchar *filename,
 	   FILE        *stream)
 {
 #ifdef G_OS_WIN32
-  if (G_WIN32_HAVE_WIDECHAR_API ())
+  wchar_t *wfilename = g_utf8_to_utf16 (filename, -1, NULL, NULL, NULL);
+  wchar_t *wmode;
+  FILE *retval;
+  int save_errno;
+
+  if (wfilename == NULL)
     {
-      wchar_t *wfilename = g_utf8_to_utf16 (filename, -1, NULL, NULL, NULL);
-      wchar_t *wmode;
-      FILE *retval;
-      int save_errno;
+      errno = EINVAL;
+      return NULL;
+    }
+  
+  wmode = g_utf8_to_utf16 (mode, -1, NULL, NULL, NULL);
 
-      if (wfilename == NULL)
-	{
-	  errno = EINVAL;
-	  return NULL;
-	}
-      
-      wmode = g_utf8_to_utf16 (mode, -1, NULL, NULL, NULL);
-
-      if (wmode == NULL)
-	{
-	  g_free (wfilename);
-	  errno = EINVAL;
-	  return NULL;
-	}
-      
-      retval = _wfreopen (wfilename, wmode, stream);
-      save_errno = errno;
-
+  if (wmode == NULL)
+    {
       g_free (wfilename);
-      g_free (wmode);
-
-      errno = save_errno;
-      return retval;
+      errno = EINVAL;
+      return NULL;
     }
-  else
-    {
-      gchar *cp_filename = g_locale_from_utf8 (filename, -1, NULL, NULL, NULL);
-      FILE *retval;
-      int save_errno;
+  
+  retval = _wfreopen (wfilename, wmode, stream);
+  save_errno = errno;
 
-      if (cp_filename == NULL)
-	{
-	  errno = EINVAL;
-	  return NULL;
-	}
+  g_free (wfilename);
+  g_free (wmode);
 
-      retval = freopen (cp_filename, mode, stream);
-      save_errno = errno;
-
-      g_free (cp_filename);
-
-      errno = save_errno;
-      return retval;
-    }
+  errno = save_errno;
+  return retval;
 #else
   return freopen (filename, mode, stream);
 #endif
