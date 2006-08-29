@@ -2242,7 +2242,7 @@ g_object_compat_control (gsize           what,
     }
 }
 
-G_DEFINE_TYPE (GInitiallyUnowned, g_initially_unowned, G_TYPE_OBJECT)
+G_DEFINE_TYPE (GInitiallyUnowned, g_initially_unowned, G_TYPE_OBJECT);
 
 static void
 g_initially_unowned_init (GInitiallyUnowned *object)

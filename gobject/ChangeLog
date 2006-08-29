@@ -1,3 +1,10 @@
+Tue Aug 29 13:27:33 2006  Tim Janik  <timj@gtk.org>
+
+	* glib-mkenums.in: fixed to print usage and version info on STDOUT
+	(#322502).
+
+	* gobject.c (g_initially_unowned_init): restore ; after G_DEFINE_TYPE.
+
 2006-08-26  Matthias Clasen  <mclasen@redhat.com>
 
 	* gobject.c: Remove ; after G_DEFINE_TYPE.  (#351741, Kjartan Maraas)

@@ -117,38 +117,38 @@ sub parse_entries {
 }
 
 sub version {
-    print STDERR "glib-mkenums version glib-@GLIB_VERSION@\n";
-    print STDERR "glib-mkenums comes with ABSOLUTELY NO WARRANTY.\n";
-    print STDERR "You may redistribute copies of glib-mkenums under the terms of\n";
-    print STDERR "the GNU General Public License which can be found in the\n";
-    print STDERR "GLib source package. Sources, examples and contact\n";
-    print STDERR "information are available at http://www.gtk.org\n";
+    print "glib-mkenums version glib-@GLIB_VERSION@\n";
+    print "glib-mkenums comes with ABSOLUTELY NO WARRANTY.\n";
+    print "You may redistribute copies of glib-mkenums under the terms of\n";
+    print "the GNU General Public License which can be found in the\n";
+    print "GLib source package. Sources, examples and contact\n";
+    print "information are available at http://www.gtk.org\n";
     exit 0;
 }
 sub usage {
-    print STDERR "Usage: glib-mkenums [options] [files...]\n";
-    print STDERR "  --fhead <text>             output file header\n";
-    print STDERR "  --fprod <text>             per input file production\n";
-    print STDERR "  --ftail <text>             output file trailer\n";
-    print STDERR "  --eprod <text>             per enum text (produced prior to value itarations)\n";
-    print STDERR "  --vhead <text>             value header, produced before iterating over enum values\n";
-    print STDERR "  --vprod <text>             value text, produced for each enum value\n";
-    print STDERR "  --vtail <text>             value tail, produced after iterating over enum values\n";
-    print STDERR "  --comments <text>          comment structure\n";
-    print STDERR "  --template file            template file\n";
-    print STDERR "  -h, --help                 show this help message\n";
-    print STDERR "  -v, --version              print version informations\n";
-    print STDERR "Production text substitutions:\n";
-    print STDERR "  \@EnumName\@                 PrefixTheXEnum\n";
-    print STDERR "  \@enum_name\@                prefix_the_xenum\n";
-    print STDERR "  \@ENUMNAME\@                 PREFIX_THE_XENUM\n";
-    print STDERR "  \@ENUMSHORT\@                THE_XENUM\n";
-    print STDERR "  \@VALUENAME\@                PREFIX_THE_XVALUE\n";
-    print STDERR "  \@valuenick\@                the-xvalue\n";
-    print STDERR "  \@type\@                     either enum or flags\n";
-    print STDERR "  \@Type\@                     either Enum or Flags\n";
-    print STDERR "  \@TYPE\@                     either ENUM or FLAGS\n";
-    print STDERR "  \@filename\@                 name of current input file\n";
+    print "Usage: glib-mkenums [options] [files...]\n";
+    print "  --fhead <text>             output file header\n";
+    print "  --fprod <text>             per input file production\n";
+    print "  --ftail <text>             output file trailer\n";
+    print "  --eprod <text>             per enum text (produced prior to value itarations)\n";
+    print "  --vhead <text>             value header, produced before iterating over enum values\n";
+    print "  --vprod <text>             value text, produced for each enum value\n";
+    print "  --vtail <text>             value tail, produced after iterating over enum values\n";
+    print "  --comments <text>          comment structure\n";
+    print "  --template file            template file\n";
+    print "  -h, --help                 show this help message\n";
+    print "  -v, --version              print version informations\n";
+    print "Production text substitutions:\n";
+    print "  \@EnumName\@                 PrefixTheXEnum\n";
+    print "  \@enum_name\@                prefix_the_xenum\n";
+    print "  \@ENUMNAME\@                 PREFIX_THE_XENUM\n";
+    print "  \@ENUMSHORT\@                THE_XENUM\n";
+    print "  \@VALUENAME\@                PREFIX_THE_XVALUE\n";
+    print "  \@valuenick\@                the-xvalue\n";
+    print "  \@type\@                     either enum or flags\n";
+    print "  \@Type\@                     either Enum or Flags\n";
+    print "  \@TYPE\@                     either ENUM or FLAGS\n";
+    print "  \@filename\@                 name of current input file\n";
     exit 0;
 }
 
