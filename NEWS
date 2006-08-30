@@ -1,3 +1,22 @@
+Overview of Changes from GLib 2.12.2 to GLib 2.12.3
+===================================================
+
+* Use Posix monotonic clocks instead of gettimeofday() 
+  for GTimer when available.
+
+* Make the construction of singleton objects work
+  witout warnings.
+
+* Bugs fixed
+ 351583 API documentation issues with 2.15 release
+ 336114 desktop locks immediately after changing 
+        the system clock
+ 351853 GKeyFile creates non-UTF-8 error messages
+
+* Translation updates (fr,hu,ja,ku,lt,lv,ml,or,
+  pt,ru,sv,vi,zh_CN)
+
+
 Overview of Changes from GLib 2.12.1 to GLib 2.12.2
 ===================================================
 

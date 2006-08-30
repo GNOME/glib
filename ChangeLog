@@ -1,3 +1,7 @@
+2006-08-30  Matthias Clasen  <mclasen@redhat.com>
+
+	* NEWS: Updates
+
 2006-08-27  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Fix the pthread compiler flag detection more.
