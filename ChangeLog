@@ -1,3 +1,8 @@
+2006-08-30  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gmarkup.c (g_markup_vprintf_escaped): Don't call
+	va_end on caller-provided va_args.  (#353584, Chris Wilson)
+
 2006-08-29  Tor Lillqvist  <tml@novell.com>
 
 	Remove support for Windows 9x/ME, as will be done also in Pango
