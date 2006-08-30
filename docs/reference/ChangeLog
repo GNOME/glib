@@ -1,3 +1,7 @@
+2006-08-30  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.12.3 ===
+
 2006-08-28  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/compiling.sgml: Add a note about G_DISABLE_DEPRECATED.

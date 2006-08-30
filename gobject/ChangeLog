@@ -1,3 +1,7 @@
+2006-08-30  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.12.3 ===
+
 Wed Aug 16 13:55:08 2006  Tim Janik  <timj@imendio.com>
 
 	* gobject.c: conditionally thaw the notify queue after construction,

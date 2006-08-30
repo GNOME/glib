@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-20 08:30+0200\n"
+"POT-Creation-Date: 2006-08-30 02:02-0400\n"
 "PO-Revision-Date: 2006-08-20 17:41+0800\n"
 "Last-Translator: He Qiangqiang <carton@263.net>\n"
 "Language-Team: zh_CN <i18n-translation@lists.linux.net.cn>\n"
@@ -15,270 +15,278 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../glib/gbookmarkfile.c:716 ../glib/gbookmarkfile.c:793
-#: ../glib/gbookmarkfile.c:872 ../glib/gbookmarkfile.c:919
+#: glib/gbookmarkfile.c:716 glib/gbookmarkfile.c:793 glib/gbookmarkfile.c:872
+#: glib/gbookmarkfile.c:919
 #, c-format
 msgid "Unexpected attribute '%s' for element '%s'"
 msgstr "元素“%2$s”的意外属性“%1$s”"
 
-#: ../glib/gbookmarkfile.c:727 ../glib/gbookmarkfile.c:804
-#: ../glib/gbookmarkfile.c:814 ../glib/gbookmarkfile.c:930
+#: glib/gbookmarkfile.c:727 glib/gbookmarkfile.c:804 glib/gbookmarkfile.c:814
+#: glib/gbookmarkfile.c:930
 #, c-format
 msgid "Attribute '%s' of element '%s' not found"
 msgstr "元素“%2$s”的属性“%1$s”未找到"
 
-#: ../glib/gbookmarkfile.c:1103 ../glib/gbookmarkfile.c:1168
-#: ../glib/gbookmarkfile.c:1232 ../glib/gbookmarkfile.c:1242
+#: glib/gbookmarkfile.c:1103 glib/gbookmarkfile.c:1168
+#: glib/gbookmarkfile.c:1232 glib/gbookmarkfile.c:1242
 #, c-format
 msgid "Unexpected tag '%s', tag '%s' expected"
 msgstr "意外标签“%s”，需要标签“%s”"
 
-#: ../glib/gbookmarkfile.c:1128 ../glib/gbookmarkfile.c:1142
-#: ../glib/gbookmarkfile.c:1210 ../glib/gbookmarkfile.c:1262
+#: glib/gbookmarkfile.c:1128 glib/gbookmarkfile.c:1142
+#: glib/gbookmarkfile.c:1210 glib/gbookmarkfile.c:1262
 #, c-format
 msgid "Unexpected tag '%s' inside '%s'"
 msgstr "“%2$s”的意外标签“%1$s”"
 
-#: ../glib/gbookmarkfile.c:1792
+#: glib/gbookmarkfile.c:1792
+#, c-format
 msgid "No valid bookmark file found in data dirs"
 msgstr "无法在数据目录中找到有效的书签文件"
 
-#: ../glib/gbookmarkfile.c:1993
+#: glib/gbookmarkfile.c:1993
 #, c-format
 msgid "A bookmark for URI '%s' already exists"
 msgstr "URI“%s”的书签已经存在"
 
-#: ../glib/gbookmarkfile.c:2039 ../glib/gbookmarkfile.c:2196
-#: ../glib/gbookmarkfile.c:2281 ../glib/gbookmarkfile.c:2362
-#: ../glib/gbookmarkfile.c:2447 ../glib/gbookmarkfile.c:2530
-#: ../glib/gbookmarkfile.c:2608 ../glib/gbookmarkfile.c:2687
-#: ../glib/gbookmarkfile.c:2729 ../glib/gbookmarkfile.c:2826
-#: ../glib/gbookmarkfile.c:2952 ../glib/gbookmarkfile.c:3142
-#: ../glib/gbookmarkfile.c:3218 ../glib/gbookmarkfile.c:3371
-#: ../glib/gbookmarkfile.c:3436 ../glib/gbookmarkfile.c:3526
-#: ../glib/gbookmarkfile.c:3653
+#: glib/gbookmarkfile.c:2039 glib/gbookmarkfile.c:2196
+#: glib/gbookmarkfile.c:2281 glib/gbookmarkfile.c:2362
+#: glib/gbookmarkfile.c:2447 glib/gbookmarkfile.c:2530
+#: glib/gbookmarkfile.c:2608 glib/gbookmarkfile.c:2687
+#: glib/gbookmarkfile.c:2729 glib/gbookmarkfile.c:2826
+#: glib/gbookmarkfile.c:2952 glib/gbookmarkfile.c:3142
+#: glib/gbookmarkfile.c:3218 glib/gbookmarkfile.c:3371
+#: glib/gbookmarkfile.c:3436 glib/gbookmarkfile.c:3526
+#: glib/gbookmarkfile.c:3653
 #, c-format
 msgid "No bookmark found for URI '%s'"
 msgstr "未找到 URI“%s”的书签"
 
-#: ../glib/gbookmarkfile.c:2371
+#: glib/gbookmarkfile.c:2371
 #, c-format
 msgid "No MIME type defined in the bookmark for URI '%s'"
 msgstr "URI“%s”的书签未定义 MIME 类型"
 
-#: ../glib/gbookmarkfile.c:2456
+#: glib/gbookmarkfile.c:2456
 #, c-format
 msgid "No private flag has been defined in bookmark for URI '%s'"
 msgstr "URI“%s”的书签未定义私有标志"
 
-#: ../glib/gbookmarkfile.c:2835
+#: glib/gbookmarkfile.c:2835
 #, c-format
 msgid "No groups set in bookmark for URI '%s'"
 msgstr "URI“%s”的书签未设定组"
 
-#: ../glib/gbookmarkfile.c:3236 ../glib/gbookmarkfile.c:3381
+#: glib/gbookmarkfile.c:3236 glib/gbookmarkfile.c:3381
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
 msgstr "没有名为“%s”的应用程序为“%s”注册书签"
 
-#: ../glib/gconvert.c:404 ../glib/gconvert.c:482 ../glib/giochannel.c:1150
+#: glib/gconvert.c:405 glib/gconvert.c:483 glib/giochannel.c:1150
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "不支持从字符集“%s”到“%s”的转换"
 
-#: ../glib/gconvert.c:408 ../glib/gconvert.c:486
+#: glib/gconvert.c:409 glib/gconvert.c:487
 #, c-format
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "无法打开从“%s”到“%s”的转换器"
 
-#: ../glib/gconvert.c:602 ../glib/gconvert.c:991 ../glib/giochannel.c:1322
-#: ../glib/giochannel.c:1364 ../glib/giochannel.c:2206 ../glib/gutf8.c:943
-#: ../glib/gutf8.c:1392
+#: glib/gconvert.c:603 glib/gconvert.c:992 glib/giochannel.c:1322
+#: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:943
+#: glib/gutf8.c:1392
+#, c-format
 msgid "Invalid byte sequence in conversion input"
 msgstr "转换输入中出现无效字符序列"
 
-#: ../glib/gconvert.c:608 ../glib/gconvert.c:918 ../glib/giochannel.c:1329
-#: ../glib/giochannel.c:2218
+#: glib/gconvert.c:609 glib/gconvert.c:919 glib/giochannel.c:1329
+#: glib/giochannel.c:2218
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "转换过程中出错：%s"
 
-#: ../glib/gconvert.c:643 ../glib/gutf8.c:939 ../glib/gutf8.c:1143
-#: ../glib/gutf8.c:1284 ../glib/gutf8.c:1388
+#: glib/gconvert.c:644 glib/gutf8.c:939 glib/gutf8.c:1143 glib/gutf8.c:1284
+#: glib/gutf8.c:1388
+#, c-format
 msgid "Partial character sequence at end of input"
 msgstr "输入末尾出现未尽字符序列"
 
-#: ../glib/gconvert.c:893
+#: glib/gconvert.c:894
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "无法转换后备字符集“%s”到字符集“%s”"
 
-#: ../glib/gconvert.c:1702
+#: glib/gconvert.c:1703
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "URI“%s”不是“file”格式的绝对 URI"
 
-#: ../glib/gconvert.c:1712
+#: glib/gconvert.c:1713
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "本地文件 URI“%s”不能包含“#”"
 
-#: ../glib/gconvert.c:1729
+#: glib/gconvert.c:1730
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI“%s”无效"
 
-#: ../glib/gconvert.c:1741
+#: glib/gconvert.c:1742
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "URI中的主机名“%s”无效"
 
-#: ../glib/gconvert.c:1757
+#: glib/gconvert.c:1758
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI“%s”中包含无效的转义字符"
 
-#: ../glib/gconvert.c:1852
+#: glib/gconvert.c:1853
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "路径名“%s”不是绝对路径"
 
-#: ../glib/gconvert.c:1862
+#: glib/gconvert.c:1863
+#, c-format
 msgid "Invalid hostname"
 msgstr "无效的主机名"
 
-#: ../glib/gdir.c:121 ../glib/gdir.c:141
+#: glib/gdir.c:121 glib/gdir.c:141
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "打开目录“%s”时发生错误：%s"
 
-#: ../glib/gfileutils.c:572 ../glib/gfileutils.c:645
+#: glib/gfileutils.c:572 glib/gfileutils.c:645
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "无法分配 %lu 字节以读取文件“%s”"
 
-#: ../glib/gfileutils.c:587
+#: glib/gfileutils.c:587
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "读取文件“%s”出错：%s"
 
-#: ../glib/gfileutils.c:669
+#: glib/gfileutils.c:669
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "读取文件“%s”失败：%s"
 
-#: ../glib/gfileutils.c:720 ../glib/gfileutils.c:807
+#: glib/gfileutils.c:720 glib/gfileutils.c:807
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "打开文件“%s”失败：%s"
 
-#: ../glib/gfileutils.c:737 ../glib/gmappedfile.c:133
+#: glib/gfileutils.c:737 glib/gmappedfile.c:133
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "获得文件“%s”的属性失败：fstat() 失败：%s"
 
-#: ../glib/gfileutils.c:771
+#: glib/gfileutils.c:771
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "打开文件“%s”失败：fdopen() 失败：%s"
 
-#: ../glib/gfileutils.c:905
+#: glib/gfileutils.c:905
 #, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "将文件“%s”重命名为“%s”失败：g_rename() 失败：%s"
 
-#: ../glib/gfileutils.c:946 ../glib/gfileutils.c:1404
+#: glib/gfileutils.c:946 glib/gfileutils.c:1404
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "创建文件“%s”失败：%s"
 
-#: ../glib/gfileutils.c:960
+#: glib/gfileutils.c:960
 #, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr "打开文件“%s”写入失败：fdopen() 失败：%s"
 
-#: ../glib/gfileutils.c:985
+#: glib/gfileutils.c:985
 #, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "写入文件“%s”失败：fwrite() 失败：%s"
 
-#: ../glib/gfileutils.c:1004
+#: glib/gfileutils.c:1004
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "关闭文件“%s”失败：fclose() 失败：%s"
 
-#: ../glib/gfileutils.c:1122
+#: glib/gfileutils.c:1122
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "无法删除已有文件“%s”：g_unlink() 失败：%s"
 
-#: ../glib/gfileutils.c:1366
+#: glib/gfileutils.c:1366
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "模板“%s”无效，不应该包含“%s”"
 
-#: ../glib/gfileutils.c:1379
+#: glib/gfileutils.c:1379
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "模板“%s”的不包含 XXXXXX"
 
-#: ../glib/gfileutils.c:1854
+#: glib/gfileutils.c:1854
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "读取符号链接“%s”失败：%s"
 
-#: ../glib/gfileutils.c:1875
+#: glib/gfileutils.c:1875
+#, c-format
 msgid "Symbolic links not supported"
 msgstr "不支持符号链接"
 
-#: ../glib/giochannel.c:1154
+#: glib/giochannel.c:1154
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "无法打开从“%s”到“%s”的转换器：%s"
 
-#: ../glib/giochannel.c:1499
+#: glib/giochannel.c:1499
+#, c-format
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "g_io_channel_read_line_string 函数无法进行原始读取"
 
-#: ../glib/giochannel.c:1546 ../glib/giochannel.c:1803
-#: ../glib/giochannel.c:1889
+#: glib/giochannel.c:1546 glib/giochannel.c:1803 glib/giochannel.c:1889
+#, c-format
 msgid "Leftover unconverted data in read buffer"
 msgstr "在读缓冲里留有未转换数据"
 
-#: ../glib/giochannel.c:1626 ../glib/giochannel.c:1703
+#: glib/giochannel.c:1626 glib/giochannel.c:1703
+#, c-format
 msgid "Channel terminates in a partial character"
 msgstr "通道终止于未尽字符"
 
-#: ../glib/giochannel.c:1689
+#: glib/giochannel.c:1689
+#, c-format
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "g_io_channel_read_to_end 函数无法进行原始读取"
 
-#: ../glib/gmappedfile.c:116
+#: glib/gmappedfile.c:116
 #, c-format
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "打开文件“%s”失败：open() 失败：%s"
 
-#: ../glib/gmappedfile.c:193
+#: glib/gmappedfile.c:193
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "映射文件“%s”失败：mmap() 失败：%s"
 
-#: ../glib/gmarkup.c:227
+#: glib/gmarkup.c:227
 #, c-format
 msgid "Error on line %d char %d: %s"
 msgstr "第%d行第%d个字符出错：%s"
 
-#: ../glib/gmarkup.c:325
+#: glib/gmarkup.c:325
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "第%d行出错：%s"
 
-#: ../glib/gmarkup.c:429
+#: glib/gmarkup.c:429
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr "发现空的实体“&;”。有效的实体为：&amp; &quot; &lt; &gt; &apos;"
 
-#: ../glib/gmarkup.c:439
+#: glib/gmarkup.c:439
 #, c-format
 msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
@@ -288,17 +296,17 @@ msgstr ""
 "字符“%s”出现在实体名的开头无效。实体都以 & 字符 开头，如果这个 & 不是一个实体"
 "的开头，把它变为 &amp;"
 
-#: ../glib/gmarkup.c:473
+#: glib/gmarkup.c:473
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
 msgstr "字符“%s”在实体名中无效"
 
-#: ../glib/gmarkup.c:510
+#: glib/gmarkup.c:510
 #, c-format
 msgid "Entity name '%s' is not known"
 msgstr "未知的实体名“%s”"
 
-#: ../glib/gmarkup.c:521
+#: glib/gmarkup.c:521
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
@@ -306,23 +314,23 @@ msgstr ""
 "实体没有以分号结束。很可能您使用了 & 字符而又不是一个实体 - 将这个 & 变为 "
 "&amp;"
 
-#: ../glib/gmarkup.c:574
+#: glib/gmarkup.c:574
 #, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
 msgstr "分析“%-.*s”失败。它应该是字符引用中的数字(如&#234;) - 可能该数字太大了"
 
-#: ../glib/gmarkup.c:599
+#: glib/gmarkup.c:599
 #, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
 msgstr "字符引用“%-.*s”不是编码一个被允许的字符"
 
-#: ../glib/gmarkup.c:614
+#: glib/gmarkup.c:614
 msgid "Empty character reference; should include a digit such as &#454;"
 msgstr "空的字符引用；应该包括数字，如 &#454;"
 
-#: ../glib/gmarkup.c:624
+#: glib/gmarkup.c:624
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -331,43 +339,43 @@ msgstr ""
 "字符引用没有以分号结束。很可能您使用了 & 字符而又不是一个实体 - 将这个 & 变"
 "为 &amp;"
 
-#: ../glib/gmarkup.c:710
+#: glib/gmarkup.c:710
 msgid "Unfinished entity reference"
 msgstr "未完成的实体引用"
 
-#: ../glib/gmarkup.c:716
+#: glib/gmarkup.c:716
 msgid "Unfinished character reference"
 msgstr "未完成的字符引用"
 
-#: ../glib/gmarkup.c:959 ../glib/gmarkup.c:987 ../glib/gmarkup.c:1018
+#: glib/gmarkup.c:959 glib/gmarkup.c:987 glib/gmarkup.c:1018
 msgid "Invalid UTF-8 encoded text"
 msgstr "无效的 UTF-8 编码文本"
 
-#: ../glib/gmarkup.c:1054
+#: glib/gmarkup.c:1054
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "文档必须以一个元素开始(例如 <book>)"
 
-#: ../glib/gmarkup.c:1094
+#: glib/gmarkup.c:1094
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
 msgstr "“%s”出现在字符“<”后是无效字符；它不能作为元素名的开头"
 
-#: ../glib/gmarkup.c:1158
+#: glib/gmarkup.c:1158
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
 "'%s'"
 msgstr "字符“%s”无效，应该以字符“>”来结束元素“%s”的起始标记"
 
-#: ../glib/gmarkup.c:1247
+#: glib/gmarkup.c:1247
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr "字符“%s”无效，在属性名“%s”(元素“%s”)的后应该是字符“=”"
 
-#: ../glib/gmarkup.c:1289
+#: glib/gmarkup.c:1289
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -377,375 +385,385 @@ msgstr ""
 "字符“%s”无效，应该以“>”或“/”结束元素“%s”的起始标记，或紧跟该元素的属性；可能"
 "您在属性名中使用了无效字符"
 
-#: ../glib/gmarkup.c:1378
+#: glib/gmarkup.c:1378
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
 "giving value for attribute '%s' of element '%s'"
 msgstr "字符“%s”无效，在给属性“%s”(元素“%s”)赋值时，在等号后应该是引号"
 
-#: ../glib/gmarkup.c:1523
+#: glib/gmarkup.c:1523
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 msgstr "“%s”出现在字符“</”后无效；“%s”不能作为元素名的开头"
 
-#: ../glib/gmarkup.c:1563
+#: glib/gmarkup.c:1563
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 msgstr "“%s”出现在结束的元素名“%s”后无效；允许的字符是“>”"
 
-#: ../glib/gmarkup.c:1574
+#: glib/gmarkup.c:1574
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "元素“%s”已经结束，没有未结束的元素"
 
-#: ../glib/gmarkup.c:1583
+#: glib/gmarkup.c:1583
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "元素“%s”已经结束，当前未结束的元素是“%s”"
 
-#: ../glib/gmarkup.c:1749
+#: glib/gmarkup.c:1749
 msgid "Document was empty or contained only whitespace"
 msgstr "文档为空或仅含空白字符"
 
-#: ../glib/gmarkup.c:1763
+#: glib/gmarkup.c:1763
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "文档在一个打开的尖括号“<”后意外结束"
 
-#: ../glib/gmarkup.c:1771 ../glib/gmarkup.c:1815
+#: glib/gmarkup.c:1771 glib/gmarkup.c:1815
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
 "element opened"
 msgstr "文档在还存在未结束元素时意外结束 - 最后的未结束元素是“%s”"
 
-#: ../glib/gmarkup.c:1779
+#: glib/gmarkup.c:1779
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
 "the tag <%s/>"
 msgstr "文档意外结束，应该以右尖括号“>”来结束标记 <%s/>"
 
-#: ../glib/gmarkup.c:1785
+#: glib/gmarkup.c:1785
 msgid "Document ended unexpectedly inside an element name"
 msgstr "文档在元素名中意外结束"
 
-#: ../glib/gmarkup.c:1790
+#: glib/gmarkup.c:1790
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "文档在属性名中意外结束"
 
-#: ../glib/gmarkup.c:1795
+#: glib/gmarkup.c:1795
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "文档在元素起始标记中意外结束"
 
-#: ../glib/gmarkup.c:1801
+#: glib/gmarkup.c:1801
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
 msgstr "文档在跟在属性名后的等号后意外结束；没有属性值"
 
-#: ../glib/gmarkup.c:1808
+#: glib/gmarkup.c:1808
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "文档在属性值中意外结束"
 
-#: ../glib/gmarkup.c:1823
+#: glib/gmarkup.c:1823
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "文档在元素“%s”结束标记中意外结束"
 
-#: ../glib/gmarkup.c:1829
+#: glib/gmarkup.c:1829
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "文档在注释或处理指令中意外结束"
 
-#: ../glib/gshell.c:70
+#: glib/gshell.c:70
+#, c-format
 msgid "Quoted text doesn't begin with a quotation mark"
 msgstr "引用的文本没有以引号开头"
 
-#: ../glib/gshell.c:160
+#: glib/gshell.c:160
+#, c-format
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr "命令行或其他shell引用文本中出现不匹配的引号"
 
-#: ../glib/gshell.c:538
+#: glib/gshell.c:538
 #, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
 msgstr "文本在一个“\\”字符后结束。(文本为“%s”)"
 
-#: ../glib/gshell.c:545
+#: glib/gshell.c:545
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr "文本在找到与 %c 匹配的引号之前结束。(文本为“%s”)"
 
-#: ../glib/gshell.c:557
+#: glib/gshell.c:557
+#, c-format
 msgid "Text was empty (or contained only whitespace)"
 msgstr "空文本(或仅含空白字符)"
 
-#: ../glib/gspawn-win32.c:273
+#: glib/gspawn-win32.c:273
+#, c-format
 msgid "Failed to read data from child process"
 msgstr "从子进程中读取数据失败"
 
-#: ../glib/gspawn-win32.c:288 ../glib/gspawn.c:1361
+#: glib/gspawn-win32.c:288 glib/gspawn.c:1361
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "创建与子进程通讯的管道失败(%s)"
 
-#: ../glib/gspawn-win32.c:326 ../glib/gspawn.c:1025
+#: glib/gspawn-win32.c:326 glib/gspawn.c:1025
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "从子管道中读取失败(%s)"
 
-#: ../glib/gspawn-win32.c:352 ../glib/gspawn.c:1230
+#: glib/gspawn-win32.c:352 glib/gspawn.c:1230
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "更改到目录“%s”失败(%s)"
 
-#: ../glib/gspawn-win32.c:358 ../glib/gspawn-win32.c:578
+#: glib/gspawn-win32.c:358 glib/gspawn-win32.c:578
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "执行子进程失败(%s)"
 
-#: ../glib/gspawn-win32.c:468 ../glib/gspawn-win32.c:524
+#: glib/gspawn-win32.c:468 glib/gspawn-win32.c:524
 #, c-format
 msgid "Invalid program name: %s"
 msgstr "无效的程序名：%s"
 
-#: ../glib/gspawn-win32.c:478 ../glib/gspawn-win32.c:534
-#: ../glib/gspawn-win32.c:777 ../glib/gspawn-win32.c:832
-#: ../glib/gspawn-win32.c:1367
+#: glib/gspawn-win32.c:478 glib/gspawn-win32.c:534 glib/gspawn-win32.c:777
+#: glib/gspawn-win32.c:832 glib/gspawn-win32.c:1367
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr "%d 处的参数中有无效的字符串：%s"
 
-#: ../glib/gspawn-win32.c:489 ../glib/gspawn-win32.c:545
-#: ../glib/gspawn-win32.c:791 ../glib/gspawn-win32.c:845
-#: ../glib/gspawn-win32.c:1400
+#: glib/gspawn-win32.c:489 glib/gspawn-win32.c:545 glib/gspawn-win32.c:791
+#: glib/gspawn-win32.c:845 glib/gspawn-win32.c:1400
 #, c-format
 msgid "Invalid string in environment: %s"
 msgstr "环境中有无效的字符串：%s"
 
-#: ../glib/gspawn-win32.c:773 ../glib/gspawn-win32.c:828
-#: ../glib/gspawn-win32.c:1348
+#: glib/gspawn-win32.c:773 glib/gspawn-win32.c:828 glib/gspawn-win32.c:1348
 #, c-format
 msgid "Invalid working directory: %s"
 msgstr "无效的工作目录：%s"
 
-#: ../glib/gspawn-win32.c:887
+#: glib/gspawn-win32.c:887
 #, c-format
 msgid "Failed to execute helper program (%s)"
 msgstr "执行助手程序(%s)失败"
 
-#: ../glib/gspawn-win32.c:1087
+#: glib/gspawn-win32.c:1087
+#, c-format
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
 msgstr "g_io_channel_win32_poll() 从子进程中读取数据时出现异常错误"
 
-#: ../glib/gspawn.c:165
+#: glib/gspawn.c:165
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "从子进程中读取数据失败(%s)"
 
-#: ../glib/gspawn.c:297
+#: glib/gspawn.c:297
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr "select() 在从子进程中读取数据时出现异常错误 (%s)"
 
-#: ../glib/gspawn.c:380
+#: glib/gspawn.c:380
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "waitpid() 出现异常错误 (%s)"
 
-#: ../glib/gspawn.c:1090
+#: glib/gspawn.c:1090
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "fork 失败(%s)"
 
-#: ../glib/gspawn.c:1240
+#: glib/gspawn.c:1240
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "执行子进程“%s”失败(%s)"
 
-#: ../glib/gspawn.c:1250
+#: glib/gspawn.c:1250
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "重定向子进程(%s)的输入或输出失败"
 
-#: ../glib/gspawn.c:1259
+#: glib/gspawn.c:1259
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "fork 子进程失败 (%s)"
 
-#: ../glib/gspawn.c:1267
+#: glib/gspawn.c:1267
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "执行子进程“%s”时出现未知错误"
 
-#: ../glib/gspawn.c:1289
+#: glib/gspawn.c:1289
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "从子进程管道中读取足够的数据失败(%s)"
 
-#: ../glib/gutf8.c:1017
+#: glib/gutf8.c:1017
+#, c-format
 msgid "Character out of range for UTF-8"
 msgstr "字符超出 UTF-8 范围"
 
-#: ../glib/gutf8.c:1111 ../glib/gutf8.c:1120 ../glib/gutf8.c:1252
-#: ../glib/gutf8.c:1261 ../glib/gutf8.c:1402 ../glib/gutf8.c:1498
+#: glib/gutf8.c:1111 glib/gutf8.c:1120 glib/gutf8.c:1252 glib/gutf8.c:1261
+#: glib/gutf8.c:1402 glib/gutf8.c:1498
+#, c-format
 msgid "Invalid sequence in conversion input"
 msgstr "转换输入中出现无效序列"
 
-#: ../glib/gutf8.c:1413 ../glib/gutf8.c:1509
+#: glib/gutf8.c:1413 glib/gutf8.c:1509
+#, c-format
 msgid "Character out of range for UTF-16"
 msgstr "字符超出 UTF-16 范围"
 
-#: ../glib/goption.c:495
+#: glib/goption.c:495
 msgid "Usage:"
 msgstr "用法："
 
-#: ../glib/goption.c:495
+#: glib/goption.c:495
 msgid "[OPTION...]"
 msgstr "[选项...]"
 
-#: ../glib/goption.c:586
+#: glib/goption.c:586
 msgid "Help Options:"
 msgstr "帮助选项："
 
-#: ../glib/goption.c:587
+#: glib/goption.c:587
 msgid "Show help options"
 msgstr "显示帮助选项"
 
-#: ../glib/goption.c:592
+#: glib/goption.c:592
 msgid "Show all help options"
 msgstr "显示全部帮助选项"
 
-#: ../glib/goption.c:642
+#: glib/goption.c:642
 msgid "Application Options:"
 msgstr "应用程序选项："
 
-#: ../glib/goption.c:686 ../glib/goption.c:756
+#: glib/goption.c:686 glib/goption.c:756
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "无法处理 %2$s 所用的整数值“%1$s”"
 
-#: ../glib/goption.c:696 ../glib/goption.c:764
+#: glib/goption.c:696 glib/goption.c:764
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "%2$s 所用的整数值“%1$s”超出范围"
 
-#: ../glib/goption.c:721
+#: glib/goption.c:721
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "无法处理 %2$s 所用的双精度值“%1$s”"
 
-#: ../glib/goption.c:729
+#: glib/goption.c:729
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "%2$s 所用的双精度值“%1$s”超出范围"
 
-#: ../glib/goption.c:1066
+#: glib/goption.c:1066
 #, c-format
 msgid "Error parsing option %s"
 msgstr "分析选项出错：%s"
 
-#: ../glib/goption.c:1097 ../glib/goption.c:1208
+#: glib/goption.c:1097 glib/goption.c:1208
 #, c-format
 msgid "Missing argument for %s"
 msgstr "缺少 %s 的参数"
 
-#: ../glib/goption.c:1597
+#: glib/goption.c:1597
 #, c-format
 msgid "Unknown option %s"
 msgstr "未知选项 %s"
 
-#: ../glib/gkeyfile.c:337
+#: glib/gkeyfile.c:337
+#, c-format
 msgid "Valid key file could not be found in data dirs"
 msgstr "无法在数据目录中找到有效的键文件"
 
-#: ../glib/gkeyfile.c:372
+#: glib/gkeyfile.c:372
+#, c-format
 msgid "Not a regular file"
 msgstr "不是普通文件"
 
-#: ../glib/gkeyfile.c:380
+#: glib/gkeyfile.c:380
+#, c-format
 msgid "File is empty"
 msgstr "文件为空"
 
-#: ../glib/gkeyfile.c:695
+#: glib/gkeyfile.c:696
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr "键文件中的行“%s”不是键-值对、组或注释"
 
-#: ../glib/gkeyfile.c:763
+#: glib/gkeyfile.c:767
+#, c-format
 msgid "Key file does not start with a group"
 msgstr "键文件不以组开始"
 
-#: ../glib/gkeyfile.c:806
+#: glib/gkeyfile.c:811
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "键文件包含不支持的编码“%s”"
 
-#: ../glib/gkeyfile.c:1013 ../glib/gkeyfile.c:1172 ../glib/gkeyfile.c:2385
-#: ../glib/gkeyfile.c:2450 ../glib/gkeyfile.c:2569 ../glib/gkeyfile.c:2704
-#: ../glib/gkeyfile.c:2857 ../glib/gkeyfile.c:3033 ../glib/gkeyfile.c:3090
+#: glib/gkeyfile.c:1020 glib/gkeyfile.c:1179 glib/gkeyfile.c:2398
+#: glib/gkeyfile.c:2463 glib/gkeyfile.c:2582 glib/gkeyfile.c:2717
+#: glib/gkeyfile.c:2870 glib/gkeyfile.c:3046 glib/gkeyfile.c:3103
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "键文件没有组“%s”"
 
-#: ../glib/gkeyfile.c:1184
+#: glib/gkeyfile.c:1191
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "键文件没有键“%s”"
 
-#: ../glib/gkeyfile.c:1285 ../glib/gkeyfile.c:1394
+#: glib/gkeyfile.c:1293 glib/gkeyfile.c:1405
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "键文件包含“%s”，其值“%s”不是 UTF-8"
 
-#: ../glib/gkeyfile.c:1303 ../glib/gkeyfile.c:1412 ../glib/gkeyfile.c:1784
+#: glib/gkeyfile.c:1313 glib/gkeyfile.c:1425 glib/gkeyfile.c:1797
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "键文件包含键“%s”，其值无法解释。"
 
-#: ../glib/gkeyfile.c:2000 ../glib/gkeyfile.c:2213
+#: glib/gkeyfile.c:2013 glib/gkeyfile.c:2226
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
 "interpreted."
 msgstr "键文件在“%2$s”中包含“%1$s”，其值无法解释。"
 
-#: ../glib/gkeyfile.c:2400 ../glib/gkeyfile.c:2584 ../glib/gkeyfile.c:3101
+#: glib/gkeyfile.c:2413 glib/gkeyfile.c:2597 glib/gkeyfile.c:3114
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "键文件的组“%2$s”中不包含键“%1$s”"
 
-#: ../glib/gkeyfile.c:3274
+#: glib/gkeyfile.c:3287
+#, c-format
 msgid "Key file contains escape character at end of line"
 msgstr "键文件在行尾含有转义字符"
 
-#: ../glib/gkeyfile.c:3296
+#: glib/gkeyfile.c:3309
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "键文件中包含无效的转义序列“%s”"
 
-#: ../glib/gkeyfile.c:3437
+#: glib/gkeyfile.c:3451
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "无法将值“%s”解释为数值。"
 
-#: ../glib/gkeyfile.c:3447
+#: glib/gkeyfile.c:3465
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "整数值“%s”超出范围"
 
-#: ../glib/gkeyfile.c:3475
+#: glib/gkeyfile.c:3498
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "无法将值“%s”解释为浮点数。"
 
-#: ../glib/gkeyfile.c:3495
+#: glib/gkeyfile.c:3525
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "无法将值“%s”解释为布尔值。"
