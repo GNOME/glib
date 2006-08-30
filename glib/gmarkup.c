@@ -2172,9 +2172,11 @@ g_markup_vprintf_escaped (const char *format,
   G_VA_COPY (args2, args);
   
   output1 = g_strdup_vprintf (format1->str, args);
-  va_end (args);
   if (!output1)
-    goto cleanup;
+    {
+      va_end (args2);
+      goto cleanup;
+    }
   
   output2 = g_strdup_vprintf (format2->str, args2);
   va_end (args2);

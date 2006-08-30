@@ -1,5 +1,8 @@
 2006-08-30  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gmarkup.c (g_markup_vprintf_escaped): Don't call
+	va_end on caller-provided va_args.  (#353584, Chris Wilson)
+
 	* Bump version
 
 	* === Released 2.12.3 ===
