@@ -1098,6 +1098,7 @@ dnl we currently check for all three va_copy possibilities, so we get
 dnl all results in config.log for bug reports.
 AC_CACHE_CHECK([for an implementation of va_copy()],glib_cv_va_copy,[
 	AC_LINK_IFELSE([#include <stdarg.h>
+#include <stdlib>
 	void f (int i, ...) {
 	va_list args1, args2;
 	va_start (args1, i);
@@ -1115,6 +1116,7 @@ AC_CACHE_CHECK([for an implementation of va_copy()],glib_cv_va_copy,[
 ])
 AC_CACHE_CHECK([for an implementation of __va_copy()],glib_cv___va_copy,[
 	AC_LINK_IFELSE([#include <stdarg.h>
+#include <stdlib>
 	void f (int i, ...) {
 	va_list args1, args2;
 	va_start (args1, i);
@@ -1144,6 +1146,7 @@ fi
 
 AC_CACHE_CHECK([whether va_lists can be copied by value],glib_cv_va_val_copy,[
 	AC_TRY_RUN([#include <stdarg.h>
+#include <stdlib> 
 	void f (int i, ...) {
 	va_list args1, args2;
 	va_start (args1, i);
