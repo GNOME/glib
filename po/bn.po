@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-23 20:46+0600\n"
-"PO-Revision-Date: 2006-08-23 20:42+0600\n"
+"POT-Creation-Date: 2006-08-31 21:32+0600\n"
+"PO-Revision-Date: 2006-08-31 21:21+0600\n"
 "Last-Translator: Khandakar Mujahidul Islam <suzan@bengalinux.org>\n"
 "Language-Team: Bengali <gnome-translation@bengalinux.org>\n"
 "MIME-Version: 1.0\n"
@@ -43,7 +43,7 @@ msgstr "অপ্রত্যাশিত '%s' ট্যাগ '%s'-র মধ�
 
 #: ../glib/gbookmarkfile.c:1792
 msgid "No valid bookmark file found in data dirs"
-msgstr "data dir'র মধ্যে বৈধ বুকমার্ক ফাইল পাওয়া যায়নি"
+msgstr "data dir'র মধ্যে বৈধ বুকমার্ক ফাইল পাওয়া যায় নি"
 
 #: ../glib/gbookmarkfile.c:1993
 #, c-format
@@ -61,176 +61,176 @@ msgstr "URI '%s'-র জন্য বুকমার্ক বর্তমান
 #: ../glib/gbookmarkfile.c:3653
 #, c-format
 msgid "No bookmark found for URI '%s'"
-msgstr "URI '%s'-র জন্য বুকমার্ক পাওয়া যায়নি"
+msgstr "URI '%s'-র জন্য বুকমার্ক পাওয়া যায় নি"
 
 #: ../glib/gbookmarkfile.c:2371
 #, c-format
 msgid "No MIME type defined in the bookmark for URI '%s'"
-msgstr "URI '%s'-র বুকমার্কের ক্ষেত্রে MIME'র ধরন নির্ধারিত হয়নি"
+msgstr "URI '%s'-র বুকমার্কের ক্ষেত্রে MIME'র ধরন নির্ধারিত হয় নি"
 
 #: ../glib/gbookmarkfile.c:2456
 #, c-format
 msgid "No private flag has been defined in bookmark for URI '%s'"
-msgstr "URI '%s'-র বুকমার্কের ক্ষেত্রে ব্যক্তিগত ফ্ল্যাগ চিহ্ন দেওয়া হয়নি"
+msgstr "URI '%s'-র বুকমার্কের ক্ষেত্রে ব্যক্তিগত ফ্ল্যাগ চিহ্ন দেওয়া হয় নি"
 
 #: ../glib/gbookmarkfile.c:2835
 #, c-format
 msgid "No groups set in bookmark for URI '%s'"
-msgstr "URI '%s'-র বুকমার্কের ক্ষেত্রে দল নির্ধারণ করা হয়নি"
+msgstr "URI '%s'-র বুকমার্কের ক্ষেত্রে দল নির্ধারণ করা হয় নি"
 
 #: ../glib/gbookmarkfile.c:3236 ../glib/gbookmarkfile.c:3381
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
-msgstr "'%s' নামক কোনো অ্যাপ্লিকেশনের দ্বারা '%s' বুকমার্ক নিবন্ধিত হয়নি"
+msgstr "'%s' নামক কোনো অ্যাপ্লিকেশনের দ্বারা '%s' বুকমার্ক নিবন্ধিত হয় নি"
 
-#: ../glib/gconvert.c:404 ../glib/gconvert.c:482 ../glib/giochannel.c:1150
+#: ../glib/gconvert.c:405 ../glib/gconvert.c:483 ../glib/giochannel.c:1150
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "'%s' থেকে '%s' এ অক্ষর সমূহ পরিবর্তন করা সম্ভব নয়"
 
 # sam: রুপান্তরকারক
-#: ../glib/gconvert.c:408 ../glib/gconvert.c:486
+#: ../glib/gconvert.c:409 ../glib/gconvert.c:487
 #, c-format
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "'%s' থেকে '%s' তে কনভার্টার খোলা যায়নি"
 
-#: ../glib/gconvert.c:602 ../glib/gconvert.c:991 ../glib/giochannel.c:1322
+#: ../glib/gconvert.c:603 ../glib/gconvert.c:992 ../glib/giochannel.c:1322
 #: ../glib/giochannel.c:1364 ../glib/giochannel.c:2206 ../glib/gutf8.c:943
 #: ../glib/gutf8.c:1392
 msgid "Invalid byte sequence in conversion input"
 msgstr "পরিবর্তন করার জন্য দেয়া বাইট সমুহ সঠিক নয়"
 
-#: ../glib/gconvert.c:608 ../glib/gconvert.c:918 ../glib/giochannel.c:1329
+#: ../glib/gconvert.c:609 ../glib/gconvert.c:919 ../glib/giochannel.c:1329
 #: ../glib/giochannel.c:2218
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "পরিবর্তন সময়কালীন ভুল: %s"
 
-#: ../glib/gconvert.c:643 ../glib/gutf8.c:939 ../glib/gutf8.c:1143
+#: ../glib/gconvert.c:644 ../glib/gutf8.c:939 ../glib/gutf8.c:1143
 #: ../glib/gutf8.c:1284 ../glib/gutf8.c:1388
 msgid "Partial character sequence at end of input"
 msgstr "প্রদত্ত তথ্যের শেষে আংশিক অক্ষর সমুহ"
 
-#: ../glib/gconvert.c:893
+#: ../glib/gconvert.c:894
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "ফলব্যাক '%s' থেকে কোডসেট '%s' এ পরিবর্তন করা যায়নি"
 
-#: ../glib/gconvert.c:1702
+#: ../glib/gconvert.c:1703
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "\"ফাইল\" স্কীম অনুযায়ী URI '%s' একটি পরিপূর্ণ আপেক্ষিক URI নয়"
 
-#: ../glib/gconvert.c:1712
+#: ../glib/gconvert.c:1713
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "স্থানীয় ফাইল ইউআরআই '%s' এর মধ্যে '#' থাকা বৈধ নয়"
 
-#: ../glib/gconvert.c:1729
+#: ../glib/gconvert.c:1730
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "ইউআরআই '%s' গ্রহনযোগ্য নয়"
 
-#: ../glib/gconvert.c:1741
+#: ../glib/gconvert.c:1742
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "ইউআরআই '%s' এর হোস্ট নাম গ্রহনযোগ্য নয়"
 
-#: ../glib/gconvert.c:1757
+#: ../glib/gconvert.c:1758
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "ইউআরআই '%s' এর মধ্যে অগ্রহণীয় এস্কেপ অক্ষর আছে"
 
-#: ../glib/gconvert.c:1852
+#: ../glib/gconvert.c:1853
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "পথনাম '%s' একটি আপেক্ষিক পথ"
 
-#: ../glib/gconvert.c:1862
+#: ../glib/gconvert.c:1863
 msgid "Invalid hostname"
 msgstr "ভুল হোস্ট নাম"
 
-#: ../glib/gdir.c:121 ../glib/gdir.c:141
+#: ../glib/gdir.c:104 ../glib/gdir.c:124
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "ডাইরেক্টরি '%s' খুলতে ব্যর্থ: %s"
 
-#: ../glib/gfileutils.c:572 ../glib/gfileutils.c:645
+#: ../glib/gfileutils.c:557 ../glib/gfileutils.c:630
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "%lu বাইট, ফাইল \"%s\" পড়ার জন্য বরাদ্দ করা যায়নি"
 
-#: ../glib/gfileutils.c:587
+#: ../glib/gfileutils.c:572
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "ফাইল \"%s\" পড়ার সময়কালীন ভুল: %s"
 
-#: ../glib/gfileutils.c:669
+#: ../glib/gfileutils.c:654
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "ফাইল \"%s\" থেকে পড়াতে ব্যর্থ: %s"
 
-#: ../glib/gfileutils.c:720 ../glib/gfileutils.c:807
+#: ../glib/gfileutils.c:705 ../glib/gfileutils.c:792
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "ফাইল \"%s\" খুলতে ব্যর্থ: %s"
 
-#: ../glib/gfileutils.c:737 ../glib/gmappedfile.c:133
+#: ../glib/gfileutils.c:722 ../glib/gmappedfile.c:133
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "ফাইল \"%s\" এর বৈশিষ্ট্য পেতে ব্যর্থ: fstat() ব্যর্থ: %s"
 
-#: ../glib/gfileutils.c:771
+#: ../glib/gfileutils.c:756
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "ফাইল \"%s\" খুলতে ব্যর্থ: fdopen() ব্যর্থ: %s"
 
-#: ../glib/gfileutils.c:905
+#: ../glib/gfileutils.c:890
 #, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "'%s' ফাইলের নাম '%s' তে পরিবর্তন করা যায়নি: g_rename() failed: %s"
 
-#: ../glib/gfileutils.c:946 ../glib/gfileutils.c:1404
+#: ../glib/gfileutils.c:931 ../glib/gfileutils.c:1389
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "ফাইল \"%s\" সৃষ্টি করতে ব্যর্থ: %s"
 
-#: ../glib/gfileutils.c:960
+#: ../glib/gfileutils.c:945
 #, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr "লেখার জন্য ফাইল \"%s\" খুলতে ব্যর্থ: fdopen() ব্যর্থ: %s"
 
-#: ../glib/gfileutils.c:985
+#: ../glib/gfileutils.c:970
 #, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "\"%s\" ফাইলে লিখতে ব্যর্থ: fwrite() ব্যর্থ: %s"
 
-#: ../glib/gfileutils.c:1004
+#: ../glib/gfileutils.c:989
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "'%s' ফাইল বন্ধ করতে ব্যর্থ: fclose() ব্যর্থ: %s"
 
-#: ../glib/gfileutils.c:1122
+#: ../glib/gfileutils.c:1107
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "বিদ্যমান ফাইল '%s' অপসারিত করা যায়নি: g_unlink() ব্যর্থ: %s"
 
-#: ../glib/gfileutils.c:1366
+#: ../glib/gfileutils.c:1351
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "নমুনা '%s' সঠিক নয়, '%s' থাকা উচিত্‌ নয়"
 
-#: ../glib/gfileutils.c:1379
+#: ../glib/gfileutils.c:1364
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "'%s' টেমপ্লেটের মধ্যে XXXXXX অন্তর্ভুক্ত নেই"
 
-#: ../glib/gfileutils.c:1854
+#: ../glib/gfileutils.c:1839
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "প্রতীকি লিংক '%s' পড়তে ব্যর্থ: %s"
 
-#: ../glib/gfileutils.c:1875
+#: ../glib/gfileutils.c:1860
 msgid "Symbolic links not supported"
 msgstr "প্রতীকী লিঙ্ক সমর্থিত নয়"
 
@@ -522,42 +522,39 @@ msgstr "চাইল্ড পাইপ (%s) থেকে পড়তে ব্য
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "ডাইরেক্টরি '%s' (%s) তে বদলাতে ব্যর্থ"
 
-#: ../glib/gspawn-win32.c:358 ../glib/gspawn-win32.c:578
+#: ../glib/gspawn-win32.c:358 ../glib/gspawn-win32.c:482
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "চাইল্ড প্রসেস (%s) কার্যকর করতে ব্যর্থ"
 
-#: ../glib/gspawn-win32.c:468 ../glib/gspawn-win32.c:524
+#: ../glib/gspawn-win32.c:429
 #, c-format
 msgid "Invalid program name: %s"
 msgstr "প্রোগ্রামের নাম অবৈধ: %s"
 
-#: ../glib/gspawn-win32.c:478 ../glib/gspawn-win32.c:534
-#: ../glib/gspawn-win32.c:777 ../glib/gspawn-win32.c:832
-#: ../glib/gspawn-win32.c:1367
+#: ../glib/gspawn-win32.c:439 ../glib/gspawn-win32.c:679
+#: ../glib/gspawn-win32.c:1219
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
-msgstr "%d'এ আর্গুমেন্ট ভেক্টর'এ উল্লিখিত পংক্তি বৈধ নয়: %s"
+msgstr "%d এ আর্গুমেন্ট ভেক্টরে উল্লিখিত পংক্তি বৈধ নয়: %s"
 
-#: ../glib/gspawn-win32.c:489 ../glib/gspawn-win32.c:545
-#: ../glib/gspawn-win32.c:791 ../glib/gspawn-win32.c:845
-#: ../glib/gspawn-win32.c:1400
+#: ../glib/gspawn-win32.c:450 ../glib/gspawn-win32.c:693
+#: ../glib/gspawn-win32.c:1252
 #, c-format
 msgid "Invalid string in environment: %s"
 msgstr "পরিবেশের মধ্যে উল্লিখিত পংক্তি বৈধ নয়: %s"
 
-#: ../glib/gspawn-win32.c:773 ../glib/gspawn-win32.c:828
-#: ../glib/gspawn-win32.c:1348
+#: ../glib/gspawn-win32.c:675 ../glib/gspawn-win32.c:1200
 #, c-format
 msgid "Invalid working directory: %s"
 msgstr "সক্রিয় ডিরেক্টরি বৈধ নয়: %s"
 
-#: ../glib/gspawn-win32.c:887
+#: ../glib/gspawn-win32.c:739
 #, c-format
 msgid "Failed to execute helper program (%s)"
 msgstr "সাহায্যকারী প্রোগ্রাম চলাতে ব্যর্থ (%s)"
 
-#: ../glib/gspawn-win32.c:1087
+#: ../glib/gspawn-win32.c:939
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -669,7 +666,7 @@ msgstr "%2$s-র জন্য '%1$s'-র দ্বীগুণ মান সী�
 #: ../glib/goption.c:1066
 #, c-format
 msgid "Error parsing option %s"
-msgstr "%s অপশন পার্স করতে ব্যর্থ"
+msgstr "%s বিকল্প পার্স করতে ব্যর্থ"
 
 #: ../glib/goption.c:1097 ../glib/goption.c:1208
 #, c-format
@@ -693,80 +690,80 @@ msgstr "একটি নিয়মিত ফাইল নহে"
 msgid "File is empty"
 msgstr "ফাইল ফাঁকা"
 
-#: ../glib/gkeyfile.c:695
+#: ../glib/gkeyfile.c:696
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr "কী ফাইল ধারণ করে '%s' লাইন, যা কী-মান এর জোড়া, গ্রুপ বা মন্তব্য নহে"
 
-#: ../glib/gkeyfile.c:763
+#: ../glib/gkeyfile.c:767
 msgid "Key file does not start with a group"
 msgstr "কী ফাইল গ্রুপের সঙ্গে আরম্ভ করে না"
 
-#: ../glib/gkeyfile.c:806
+#: ../glib/gkeyfile.c:811
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "কী ফাইল অসমর্থিত এনকোডিং '%s' ধারণ করছে"
 
-#: ../glib/gkeyfile.c:1013 ../glib/gkeyfile.c:1172 ../glib/gkeyfile.c:2385
-#: ../glib/gkeyfile.c:2450 ../glib/gkeyfile.c:2569 ../glib/gkeyfile.c:2704
-#: ../glib/gkeyfile.c:2857 ../glib/gkeyfile.c:3033 ../glib/gkeyfile.c:3090
+#: ../glib/gkeyfile.c:1020 ../glib/gkeyfile.c:1179 ../glib/gkeyfile.c:2398
+#: ../glib/gkeyfile.c:2463 ../glib/gkeyfile.c:2582 ../glib/gkeyfile.c:2717
+#: ../glib/gkeyfile.c:2870 ../glib/gkeyfile.c:3046 ../glib/gkeyfile.c:3103
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "কী ফাইলের গ্রুপ '%s' নেই"
 
-#: ../glib/gkeyfile.c:1184
+#: ../glib/gkeyfile.c:1191
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "কী ফাইলের কী '%s' নেই"
 
-#: ../glib/gkeyfile.c:1285 ../glib/gkeyfile.c:1394
+#: ../glib/gkeyfile.c:1293 ../glib/gkeyfile.c:1405
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "কী ফাইলে '%s' কী এর মান '%s', যা UTF-8 নয়"
 
-#: ../glib/gkeyfile.c:1303 ../glib/gkeyfile.c:1412 ../glib/gkeyfile.c:1784
+#: ../glib/gkeyfile.c:1313 ../glib/gkeyfile.c:1425 ../glib/gkeyfile.c:1797
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "কী ফাইল '%s' কী ধারণ করে যার মান ইন্টারপ্রেট করা যাবেনা।"
 
-#: ../glib/gkeyfile.c:2000 ../glib/gkeyfile.c:2213
+#: ../glib/gkeyfile.c:2013 ../glib/gkeyfile.c:2226
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
 "interpreted."
 msgstr "কী ফাইল '%2$s' গ্রুপে '%1$s' কী ধারণ করছে যার মান ইন্টারপ্রেট করা যাবেনা।"
 
-#: ../glib/gkeyfile.c:2400 ../glib/gkeyfile.c:2584 ../glib/gkeyfile.c:3101
+#: ../glib/gkeyfile.c:2413 ../glib/gkeyfile.c:2597 ../glib/gkeyfile.c:3114
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "কী ফাইলের '%2$s' গ্রুপ এ অন্তর্ভুক্ত '%1$s' কী টি নেই"
 
-#: ../glib/gkeyfile.c:3274
+#: ../glib/gkeyfile.c:3287
 msgid "Key file contains escape character at end of line"
 msgstr "কী ফাইল লাইনের শেষে এস্কেপ অক্ষর ধারণ করছে"
 
-#: ../glib/gkeyfile.c:3296
+#: ../glib/gkeyfile.c:3309
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "কী ফাইলে অবৈধ এস্কেপ সিকোয়েন্স '%s' আছে"
 
-#: ../glib/gkeyfile.c:3437
+#: ../glib/gkeyfile.c:3451
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "মান '%s' কে সংখ্যা হিসেবে ইন্টারপ্রেট করা যায় না।"
 
-#: ../glib/gkeyfile.c:3447
+#: ../glib/gkeyfile.c:3465
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "ইন্টিজার মান '%s' সীমার বাহিরে"
 
-#: ../glib/gkeyfile.c:3475
+#: ../glib/gkeyfile.c:3498
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
-msgstr "%s' মান float সংখ্যা রূপে ব্যাখ্যা করা সম্ভব নয়।"
+msgstr "'%s' মান float সংখ্যা রূপে ব্যাখ্যা করা সম্ভব নয়।"
 
-#: ../glib/gkeyfile.c:3495
+#: ../glib/gkeyfile.c:3525
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "মান '%s' কে বুলিয়ান হিসেবে ইন্টারপ্রেট করা যায় না।"
