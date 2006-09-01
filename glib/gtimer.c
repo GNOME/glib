@@ -52,12 +52,16 @@
 
 #define G_NSEC_PER_SEC 1000000000
 
+#if defined(HAVE_CLOCK_GETTIME) && defined(HAVE_MONOTONIC_CLOCK) 
+#define USE_CLOCK_GETTIME 1
+#endif
+
 struct _GTimer
 {
 #ifdef G_OS_WIN32
   guint64 start;
   guint64 end;
-#elif HAVE_CLOCK_GETTIME 
+#elif USE_CLOCK_GETTIME 
   struct timespec start;
   struct timespec end;
   gint clock;
@@ -72,7 +76,7 @@ struct _GTimer
 #ifdef G_OS_WIN32
 #  define GETTIME(v)				\
      GetSystemTimeAsFileTime ((FILETIME *)&v)
-#elif HAVE_CLOCK_GETTIME
+#elif USE_CLOCK_GETTIME
 #  define GETTIME(v)				\
      clock_gettime (posix_clock, &v)
 #else
@@ -80,7 +84,7 @@ struct _GTimer
      gettimeofday (&v, NULL)
 #endif
 
-#ifdef HAVE_CLOCK_GETTIME
+#ifdef USE_CLOCK_GETTIME
 static gint posix_clock = 0;
 
 static void
@@ -91,11 +95,9 @@ init_posix_clock (void)
   if (!initialized)
     {
       initialized = TRUE;
-#if !defined(_POSIX_MONOTONIC_CLOCK) || _POSIX_MONOTONIC_CLOCK >= 0
       if (sysconf (_SC_MONOTONIC_CLOCK) >= 0)
 	posix_clock = CLOCK_MONOTONIC;
       else
-#endif
 	posix_clock = CLOCK_REALTIME;
     }
 }
@@ -109,7 +111,7 @@ g_timer_new (void)
   timer = g_new (GTimer, 1);
   timer->active = TRUE;
 
-#ifdef HAVE_CLOCK_GETTIME
+#ifdef USE_CLOCK_GETTIME
   init_posix_clock ();
 #endif
 
@@ -159,7 +161,7 @@ g_timer_continue (GTimer *timer)
 {
 #ifdef G_OS_WIN32
   guint64 elapsed;
-#elif HAVE_CLOCK_GETTIME
+#elif USE_CLOCK_GETTIME
   struct timespec elapsed;
 #else
   struct timeval elapsed;
@@ -181,7 +183,7 @@ g_timer_continue (GTimer *timer)
 
   timer->start -= elapsed;
 
-#elif HAVE_CLOCK_GETTIME
+#elif USE_CLOCK_GETTIME
 
   if (timer->start.tv_nsec > timer->end.tv_nsec)
     {
@@ -237,7 +239,7 @@ g_timer_elapsed (GTimer *timer,
   gdouble total;
 #ifdef G_OS_WIN32
   gint64 elapsed;
-#elif HAVE_CLOCK_GETTIME
+#elif USE_CLOCK_GETTIME
   struct timespec elapsed;
 #else
   struct timeval elapsed;
