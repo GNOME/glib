@@ -863,6 +863,25 @@ AC_CHECK_FUNCS(clock_gettime, [], [
   ])
 ])
 
+AC_CACHE_CHECK(for monotonic clocks,
+    glib_cv_monotonic_clock,AC_TRY_RUN([
+#include <time.h>
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
+      int main() {
+#if defined(_POSIX_MONOTONIC_CLOCK) && _POSIX_MONOTONIC_CLOCK >= 0 && defined(CLOCK_MONOTONIC)
+        return 0;
+#else
+        return 1;
+#endif
+      }],glib_cv_monotonic_clock=yes,glib_cv_monotonic_clock=no))
+
+GLIB_ASSERT_SET(glib_cv_monotonic_clock)
+if test "$glib_cv_monotonic_clock" = "yes"; then
+  AC_DEFINE(HAVE_MONOTONIC_CLOCK,1,[Have a monotonic clock])
+fi
+
 AC_CHECK_HEADERS(crt_externs.h)
 AC_CHECK_FUNCS(_NSGetEnviron)
 
