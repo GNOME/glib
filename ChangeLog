@@ -1,3 +1,7 @@
+2006-09-01  Abel Cheung  <abel@oaka.org>
+
+	* configure.in: Added 'dz' 'hy' to ALL_LINGUAS.
+
 2006-09-01  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Check for CLOCK_MONOTONIC.
