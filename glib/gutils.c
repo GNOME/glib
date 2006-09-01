@@ -1627,14 +1627,16 @@ g_get_any_init_do (void)
 #else /* !HAVE_PWD_H */
   
 #ifdef G_OS_WIN32
-  guint len = UNLEN+1;
-  wchar_t buffer[UNLEN+1];
+  {
+    guint len = UNLEN+1;
+    wchar_t buffer[UNLEN+1];
     
-  if (GetUserNameW (buffer, (LPDWORD) &len))
-    {
-      g_user_name = g_utf16_to_utf8 (buffer, -1, NULL, NULL, NULL);
-      g_real_name = g_strdup (g_user_name);
-    }
+    if (GetUserNameW (buffer, (LPDWORD) &len))
+      {
+	g_user_name = g_utf16_to_utf8 (buffer, -1, NULL, NULL, NULL);
+	g_real_name = g_strdup (g_user_name);
+      }
+  }
 #endif /* G_OS_WIN32 */
 
 #endif /* !HAVE_PWD_H */
