@@ -11,291 +11,283 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-30 02:02-0400\n"
-"PO-Revision-Date: 2006-01-31 23:39+0100\n"
-"Last-Translator: Slobodan D. Sredojević <slobo@akrep.be>\n"
+"POT-Creation-Date: 2006-09-03 17:52+0200\n"
+"PO-Revision-Date: 2006-09-01 00:10+0200\n"
+"Last-Translator: Goran Rakić <grakic@devbase.net>\n"
 "Language-Team: Serbian (sr) <gnom@prevod.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: glib/gbookmarkfile.c:716 glib/gbookmarkfile.c:793 glib/gbookmarkfile.c:872
-#: glib/gbookmarkfile.c:919
-#, fuzzy, c-format
+#: ../glib/gbookmarkfile.c:716 ../glib/gbookmarkfile.c:793
+#: ../glib/gbookmarkfile.c:872 ../glib/gbookmarkfile.c:919
+#, c-format
 msgid "Unexpected attribute '%s' for element '%s'"
-msgstr ""
-"Čudan znak „%s“, očekivao sam „=“ posle imena atributa „%s“ elementa „%s“"
+msgstr "Čudan atribut „%s“ za element „%s“"
 
-#: glib/gbookmarkfile.c:727 glib/gbookmarkfile.c:804 glib/gbookmarkfile.c:814
-#: glib/gbookmarkfile.c:930
+#: ../glib/gbookmarkfile.c:727 ../glib/gbookmarkfile.c:804
+#: ../glib/gbookmarkfile.c:814 ../glib/gbookmarkfile.c:930
 #, c-format
 msgid "Attribute '%s' of element '%s' not found"
-msgstr ""
+msgstr "Atribut „%s“ elementa „%s“ nije pronađen"
 
-#: glib/gbookmarkfile.c:1103 glib/gbookmarkfile.c:1168
-#: glib/gbookmarkfile.c:1232 glib/gbookmarkfile.c:1242
+#: ../glib/gbookmarkfile.c:1103 ../glib/gbookmarkfile.c:1168
+#: ../glib/gbookmarkfile.c:1232 ../glib/gbookmarkfile.c:1242
 #, c-format
 msgid "Unexpected tag '%s', tag '%s' expected"
-msgstr ""
+msgstr "Čudna oznaka „%s“, očekivana je oznaka „%s“"
 
-#: glib/gbookmarkfile.c:1128 glib/gbookmarkfile.c:1142
-#: glib/gbookmarkfile.c:1210 glib/gbookmarkfile.c:1262
+#: ../glib/gbookmarkfile.c:1128 ../glib/gbookmarkfile.c:1142
+#: ../glib/gbookmarkfile.c:1210 ../glib/gbookmarkfile.c:1262
 #, c-format
 msgid "Unexpected tag '%s' inside '%s'"
-msgstr ""
+msgstr "Čudna oznaka „%s“ unutar „%s“"
 
-#: glib/gbookmarkfile.c:1792
-#, fuzzy, c-format
+#: ../glib/gbookmarkfile.c:1792
 msgid "No valid bookmark file found in data dirs"
-msgstr "Ne mogu da nađem ispravnu datoteku sa ključevima među podacima"
+msgstr ""
+"Nije pronađena ispravna datoteka sa obeleživačima u direktorijumu sa podacima"
 
-#: glib/gbookmarkfile.c:1993
+#: ../glib/gbookmarkfile.c:1993
 #, c-format
 msgid "A bookmark for URI '%s' already exists"
-msgstr ""
+msgstr "Obeleživač ka „%s“ već postoji"
 
-#: glib/gbookmarkfile.c:2039 glib/gbookmarkfile.c:2196
-#: glib/gbookmarkfile.c:2281 glib/gbookmarkfile.c:2362
-#: glib/gbookmarkfile.c:2447 glib/gbookmarkfile.c:2530
-#: glib/gbookmarkfile.c:2608 glib/gbookmarkfile.c:2687
-#: glib/gbookmarkfile.c:2729 glib/gbookmarkfile.c:2826
-#: glib/gbookmarkfile.c:2952 glib/gbookmarkfile.c:3142
-#: glib/gbookmarkfile.c:3218 glib/gbookmarkfile.c:3371
-#: glib/gbookmarkfile.c:3436 glib/gbookmarkfile.c:3526
-#: glib/gbookmarkfile.c:3653
+#: ../glib/gbookmarkfile.c:2039 ../glib/gbookmarkfile.c:2196
+#: ../glib/gbookmarkfile.c:2281 ../glib/gbookmarkfile.c:2362
+#: ../glib/gbookmarkfile.c:2447 ../glib/gbookmarkfile.c:2530
+#: ../glib/gbookmarkfile.c:2608 ../glib/gbookmarkfile.c:2687
+#: ../glib/gbookmarkfile.c:2729 ../glib/gbookmarkfile.c:2826
+#: ../glib/gbookmarkfile.c:2952 ../glib/gbookmarkfile.c:3142
+#: ../glib/gbookmarkfile.c:3218 ../glib/gbookmarkfile.c:3371
+#: ../glib/gbookmarkfile.c:3436 ../glib/gbookmarkfile.c:3526
+#: ../glib/gbookmarkfile.c:3653
 #, c-format
 msgid "No bookmark found for URI '%s'"
-msgstr ""
+msgstr "Nije pronađen obeleživač ka „%s“"
 
-#: glib/gbookmarkfile.c:2371
+#: ../glib/gbookmarkfile.c:2371
 #, c-format
 msgid "No MIME type defined in the bookmark for URI '%s'"
-msgstr ""
+msgstr "Nije definisan MIME tip u obeleživaču ka „%s“"
 
-#: glib/gbookmarkfile.c:2456
+#: ../glib/gbookmarkfile.c:2456
 #, c-format
 msgid "No private flag has been defined in bookmark for URI '%s'"
-msgstr ""
+msgstr "Nije definisana oznaka privatnosti u obeleživaču ka „%s“"
 
-#: glib/gbookmarkfile.c:2835
+#: ../glib/gbookmarkfile.c:2835
 #, c-format
 msgid "No groups set in bookmark for URI '%s'"
-msgstr ""
+msgstr "Nije postavljena grupa u obeleživaču ka „%s“"
 
-#: glib/gbookmarkfile.c:3236 glib/gbookmarkfile.c:3381
+#: ../glib/gbookmarkfile.c:3236 ../glib/gbookmarkfile.c:3381
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
-msgstr ""
+msgstr "Program „%s“ nije registrovao obeleživač za „%s“"
 
-#: glib/gconvert.c:405 glib/gconvert.c:483 glib/giochannel.c:1150
+#: ../glib/gconvert.c:405 ../glib/gconvert.c:483 ../glib/giochannel.c:1150
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Pretvaranje iz skupa znakova „%s“ u „%s“ nije podržano"
 
-#: glib/gconvert.c:409 glib/gconvert.c:487
+#: ../glib/gconvert.c:409 ../glib/gconvert.c:487
 #, c-format
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "Ne mogu da pokrenem pretvaranje iz „%s“ u „%s“"
 
-#: glib/gconvert.c:603 glib/gconvert.c:992 glib/giochannel.c:1322
-#: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:943
-#: glib/gutf8.c:1392
-#, c-format
+#: ../glib/gconvert.c:603 ../glib/gconvert.c:992 ../glib/giochannel.c:1322
+#: ../glib/giochannel.c:1364 ../glib/giochannel.c:2206 ../glib/gutf8.c:943
+#: ../glib/gutf8.c:1392
 msgid "Invalid byte sequence in conversion input"
 msgstr "Neispravan niz bajtova u ulazu koji pretvaram"
 
-#: glib/gconvert.c:609 glib/gconvert.c:919 glib/giochannel.c:1329
-#: glib/giochannel.c:2218
+#: ../glib/gconvert.c:609 ../glib/gconvert.c:919 ../glib/giochannel.c:1329
+#: ../glib/giochannel.c:2218
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Greška pri pretvaranju: %s"
 
-#: glib/gconvert.c:644 glib/gutf8.c:939 glib/gutf8.c:1143 glib/gutf8.c:1284
-#: glib/gutf8.c:1388
-#, c-format
+#: ../glib/gconvert.c:644 ../glib/gutf8.c:939 ../glib/gutf8.c:1143
+#: ../glib/gutf8.c:1284 ../glib/gutf8.c:1388
 msgid "Partial character sequence at end of input"
 msgstr "Nepotpun niz znakova na kraju ulaza"
 
 # ovo pretpostavljam da se odnosi na delimičan UTF8 zapis
-#: glib/gconvert.c:894
+#: ../glib/gconvert.c:894
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Ne može pretvoriti rezervu „%s“ u zapis „%s“"
 
-#: glib/gconvert.c:1703
+#: ../glib/gconvert.c:1703
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "Adresa „%s“ nije apsolutna adresa pomoću „file“ šeme"
 
-#: glib/gconvert.c:1713
+#: ../glib/gconvert.c:1713
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Adresa lokalne datoteke „%s“ ne sme sadržati „#“"
 
-#: glib/gconvert.c:1730
+#: ../glib/gconvert.c:1730
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "Adresa „%s“ je neispravna"
 
-#: glib/gconvert.c:1742
+#: ../glib/gconvert.c:1742
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Ime domaćina iz adrese „%s“ je neispravno"
 
-#: glib/gconvert.c:1758
+#: ../glib/gconvert.c:1758
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "Adresa „%s“ sadrži neispravno naznačene znake"
 
-#: glib/gconvert.c:1853
+#: ../glib/gconvert.c:1853
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Putanja „%s“ nije apsolutna putanja"
 
-#: glib/gconvert.c:1863
-#, c-format
+#: ../glib/gconvert.c:1863
 msgid "Invalid hostname"
 msgstr "Neispravno ime domaćina"
 
-#: glib/gdir.c:121 glib/gdir.c:141
+#: ../glib/gdir.c:121 ../glib/gdir.c:141
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "Greška pri otvaranju direktorijuma „%s“: %s"
 
 # bug: plural-forms
-#: glib/gfileutils.c:572 glib/gfileutils.c:645
+#: ../glib/gfileutils.c:572 ../glib/gfileutils.c:645
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Ne mogu da obezbedim %lu bajtova za čitanje datoteke „%s“"
 
-#: glib/gfileutils.c:587
+#: ../glib/gfileutils.c:587
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Greška pri čitanju datoteke „%s“: %s"
 
-#: glib/gfileutils.c:669
+#: ../glib/gfileutils.c:669
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Ne mogu da pročitam iz datoteke „%s“: %s"
 
-#: glib/gfileutils.c:720 glib/gfileutils.c:807
+#: ../glib/gfileutils.c:720 ../glib/gfileutils.c:807
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Ne mogu da otvorim datoteku „%s“: %s"
 
-#: glib/gfileutils.c:737 glib/gmappedfile.c:133
+#: ../glib/gfileutils.c:737 ../glib/gmappedfile.c:133
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Ne mogu da saznam osobine datoteke „%s“: neuspešan fstat(): %s"
 
-#: glib/gfileutils.c:771
+#: ../glib/gfileutils.c:771
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Ne mogu da otvorim datoteku „%s“: neuspešan fdopen(): %s"
 
-#: glib/gfileutils.c:905
+#: ../glib/gfileutils.c:905
 #, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "Ne mogu da preimenujem datoteku „%s“ u „%s“: neuspešan g_rename(): %s"
 
-#: glib/gfileutils.c:946 glib/gfileutils.c:1404
+#: ../glib/gfileutils.c:946 ../glib/gfileutils.c:1404
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Ne mogu da napravim datoteku „%s“: %s"
 
-#: glib/gfileutils.c:960
+#: ../glib/gfileutils.c:960
 #, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr "Ne mogu da otvorim datoteku „%s“ radi upisa: neuspešan fdopen(): %s"
 
-#: glib/gfileutils.c:985
+#: ../glib/gfileutils.c:985
 #, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "Ne mogu da upišem datoteku „%s“: neuspešan fwrite(): %s"
 
-#: glib/gfileutils.c:1004
+#: ../glib/gfileutils.c:1004
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "Ne mogu da zatvorim datoteku „%s“: neuspešan fclose(): %s"
 
-#: glib/gfileutils.c:1122
+#: ../glib/gfileutils.c:1122
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "Postojeća datoteka „%s“ se ne može ukloniti: neuspešan g_unlink(): %s"
 
-#: glib/gfileutils.c:1366
+#: ../glib/gfileutils.c:1366
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Neispravan šablon „%s“, ne sme sadržati „%s“"
 
-#: glib/gfileutils.c:1379
-#, fuzzy, c-format
+#: ../glib/gfileutils.c:1379
+#, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
-msgstr "Šablon „%s“ se ne završava sa XXXXXX"
+msgstr "Šablon „%s“ ne sadrži XXXXXX"
 
-#: glib/gfileutils.c:1854
+#: ../glib/gfileutils.c:1854
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Ne mogu da pročitam simboličku vezu „%s“: %s"
 
-#: glib/gfileutils.c:1875
-#, c-format
+#: ../glib/gfileutils.c:1875
 msgid "Symbolic links not supported"
 msgstr "Simboličke veze nisu podržane"
 
-#: glib/giochannel.c:1154
+#: ../glib/giochannel.c:1154
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Ne mogu da pokrenem pretvaranje iz „%s“ u „%s“: %s"
 
-#: glib/giochannel.c:1499
-#, c-format
+#: ../glib/giochannel.c:1499
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "Ne mogu da čitam bez obrade u g_io_channel_read_line_string"
 
-#: glib/giochannel.c:1546 glib/giochannel.c:1803 glib/giochannel.c:1889
-#, c-format
+#: ../glib/giochannel.c:1546 ../glib/giochannel.c:1803
+#: ../glib/giochannel.c:1889
 msgid "Leftover unconverted data in read buffer"
 msgstr "Preostali nepretvoreni podaci u baferu za čitanje"
 
-#: glib/giochannel.c:1626 glib/giochannel.c:1703
-#, c-format
+#: ../glib/giochannel.c:1626 ../glib/giochannel.c:1703
 msgid "Channel terminates in a partial character"
 msgstr "Kanal se završava delimičnim znakom"
 
-#: glib/giochannel.c:1689
-#, c-format
+#: ../glib/giochannel.c:1689
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Ne mogu da čitam bez obrade u g_io_channel_read_to_end"
 
-#: glib/gmappedfile.c:116
+#: ../glib/gmappedfile.c:116
 #, c-format
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "Ne mogu da otvorim datoteku „%s“: neuspešan open(): %s"
 
-#: glib/gmappedfile.c:193
+#: ../glib/gmappedfile.c:193
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "Ne mogu da mapiram datoteku „%s“: neuspešan mmap(): %s"
 
-#: glib/gmarkup.c:227
+#: ../glib/gmarkup.c:227
 #, c-format
 msgid "Error on line %d char %d: %s"
 msgstr "Greška u %d. redu, %d. znak: %s"
 
-#: glib/gmarkup.c:325
+#: ../glib/gmarkup.c:325
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "Greška u %d. redu: %s"
 
-#: glib/gmarkup.c:429
+#: ../glib/gmarkup.c:429
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "Uočen prazan entitet „&;“; prihvatljivi entiteti su &amp; &quot; &lt; &gt; "
 "&apos;"
 
-#: glib/gmarkup.c:439
+#: ../glib/gmarkup.c:439
 #, c-format
 msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
@@ -305,17 +297,17 @@ msgstr ""
 "Ime entiteta ne može početi znakom „%s“ ; znak & započinje entitet; ako ovaj "
 "znak ne označava entitet, istaknite ga pomoću &amp;"
 
-#: glib/gmarkup.c:473
+#: ../glib/gmarkup.c:473
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
 msgstr "Znak „%s“ nije dozvoljen u imenu entiteta"
 
-#: glib/gmarkup.c:510
+#: ../glib/gmarkup.c:510
 #, c-format
 msgid "Entity name '%s' is not known"
 msgstr "Entitet „%s“ nije poznat"
 
-#: glib/gmarkup.c:521
+#: ../glib/gmarkup.c:521
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
@@ -323,7 +315,7 @@ msgstr ""
 "Entitet se ne završava tačka-zapetom; najverovatnije ste koristili ampersand "
 "bez namere da započnete entitet — naznačite ampersand sa &amp;"
 
-#: glib/gmarkup.c:574
+#: ../glib/gmarkup.c:574
 #, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
@@ -332,16 +324,16 @@ msgstr ""
 "Nisam uspeo da raščlanim „%-.*s“, što je trebalo da predstavlja cifru unutar "
 "znakovne reference (na primer &#234;) — možda je cifra prevelika"
 
-#: glib/gmarkup.c:599
+#: ../glib/gmarkup.c:599
 #, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
 msgstr "Znakovna referenca „%-.*s“ ne predstavlja dozvoljeni znak"
 
-#: glib/gmarkup.c:614
+#: ../glib/gmarkup.c:614
 msgid "Empty character reference; should include a digit such as &#454;"
 msgstr "Prazna znakovna referenca; mora da sadrži cifru kao na primer &#747;"
 
-#: glib/gmarkup.c:624
+#: ../glib/gmarkup.c:624
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -351,32 +343,32 @@ msgstr ""
 "koristili ampersand bez namere da započnete entitet — naznačite ampersand sa "
 "&amp;"
 
-#: glib/gmarkup.c:710
+#: ../glib/gmarkup.c:710
 msgid "Unfinished entity reference"
 msgstr "Nedovršena referenca entiteta"
 
-#: glib/gmarkup.c:716
+#: ../glib/gmarkup.c:716
 msgid "Unfinished character reference"
 msgstr "Nedovršena znakovna referenca"
 
-#: glib/gmarkup.c:959 glib/gmarkup.c:987 glib/gmarkup.c:1018
+#: ../glib/gmarkup.c:959 ../glib/gmarkup.c:987 ../glib/gmarkup.c:1018
 msgid "Invalid UTF-8 encoded text"
 msgstr "Neispravan tekst u UTF-8 zapisu"
 
-#: glib/gmarkup.c:1054
+#: ../glib/gmarkup.c:1054
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Dokument mora početi elementom (npr. <knjiga>)"
 
-#: glib/gmarkup.c:1094
+#: ../glib/gmarkup.c:1094
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
 msgstr ""
-"„%s“ ne predstavlja ispravan znak nakon znaka „<“; ime elementa ne može "
-"njime početi"
+"„%s“ ne predstavlja ispravan znak nakon znaka „<“; ime elementa ne može njime "
+"početi"
 
-#: glib/gmarkup.c:1158
+#: ../glib/gmarkup.c:1158
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
@@ -385,14 +377,14 @@ msgstr ""
 "Čudan znak „%s“, a očekivao sam „>“ znak radi okončanja početne oznake "
 "elementa „%s“"
 
-#: glib/gmarkup.c:1247
+#: ../glib/gmarkup.c:1247
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "Čudan znak „%s“, očekivao sam „=“ posle imena atributa „%s“ elementa „%s“"
 
-#: glib/gmarkup.c:1289
+#: ../glib/gmarkup.c:1289
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -403,7 +395,7 @@ msgstr ""
 "elementa „%s“, ili možda atribut; možda ste koristili neispravan znak u "
 "imenu atributa"
 
-#: glib/gmarkup.c:1378
+#: ../glib/gmarkup.c:1378
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -412,7 +404,7 @@ msgstr ""
 "Čudan znak „%s“, očekivao sam početni navodnik nakon znaka jednakosti pri "
 "dodeli vrednosti atributa  „%s“ elementa „%s“"
 
-#: glib/gmarkup.c:1523
+#: ../glib/gmarkup.c:1523
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -420,35 +412,35 @@ msgid ""
 msgstr ""
 "„%s“ nije ispravan znak nakon niza „</“; „%s“ ne može započeti ime elementa"
 
-#: glib/gmarkup.c:1563
+#: ../glib/gmarkup.c:1563
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 msgstr ""
-"„%s“ nije ispravan znak nakon imena zatvorenog elementa „%s“; dozvoljeni "
-"znak je „>“"
+"„%s“ nije ispravan znak nakon imena zatvorenog elementa „%s“; dozvoljeni znak "
+"je „>“"
 
-#: glib/gmarkup.c:1574
+#: ../glib/gmarkup.c:1574
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "Element „%s“ je zatvoren, nema trenutno otvorenih elemenata"
 
-#: glib/gmarkup.c:1583
+#: ../glib/gmarkup.c:1583
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "Element „%s“ je zatvoren, a trenutno otvoren element je „%s“"
 
-#: glib/gmarkup.c:1749
+#: ../glib/gmarkup.c:1749
 msgid "Document was empty or contained only whitespace"
 msgstr "Dokument je prazan ili sadrži samo beline"
 
-#: glib/gmarkup.c:1763
+#: ../glib/gmarkup.c:1763
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr ""
 "Dokument završen neočekivano neposredno nakon otvorene kosougle zagrade „<“"
 
-#: glib/gmarkup.c:1771 glib/gmarkup.c:1815
+#: ../glib/gmarkup.c:1771 ../glib/gmarkup.c:1815
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -457,7 +449,7 @@ msgstr ""
 "Dokument završen neočekivano sa otvorenim elementima — „%s“ je poslednje "
 "otvoren element"
 
-#: glib/gmarkup.c:1779
+#: ../glib/gmarkup.c:1779
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -466,19 +458,19 @@ msgstr ""
 "Dokument završen neočekivano, očekivao sam da naiđem na zatvorenu kosouglu "
 "zagradu koja zatvara oznaku <%s/>"
 
-#: glib/gmarkup.c:1785
+#: ../glib/gmarkup.c:1785
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Dokument završen neočekivano usred imena elementa"
 
-#: glib/gmarkup.c:1790
+#: ../glib/gmarkup.c:1790
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Dokument završen neočekivano usred imena atributa"
 
-#: glib/gmarkup.c:1795
+#: ../glib/gmarkup.c:1795
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Dokument završen neočekivano usred početne oznake elementa."
 
-#: glib/gmarkup.c:1801
+#: ../glib/gmarkup.c:1801
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -486,100 +478,98 @@ msgstr ""
 "Dokument završen neočekivano nakon znaka jednakosti posle imena atributa; "
 "vrednost atributa nije navedena"
 
-#: glib/gmarkup.c:1808
+#: ../glib/gmarkup.c:1808
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Dokument završen neočekivano usred vrednosti atributa"
 
-#: glib/gmarkup.c:1823
+#: ../glib/gmarkup.c:1823
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "Dokument završen neočekivano usred završne oznake elementa „%s“"
 
-#: glib/gmarkup.c:1829
+#: ../glib/gmarkup.c:1829
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "Dokument završen neočekivano usred primedbe ili uputa za obradu"
 
-#: glib/gshell.c:70
-#, c-format
+#: ../glib/gshell.c:70
 msgid "Quoted text doesn't begin with a quotation mark"
 msgstr "Navod ne počinje navodnikom"
 
-#: glib/gshell.c:160
-#, c-format
+#: ../glib/gshell.c:160
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr "Neuparen navodnik u naredbi ili drugom citatu iz ljuske"
 
-#: glib/gshell.c:538
+#: ../glib/gshell.c:538
 #, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
 msgstr "Sadržaj završen neposredno nakon „\\“ znaka. (Radi se o tekstu „%s“)"
 
-#: glib/gshell.c:545
+#: ../glib/gshell.c:545
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr ""
 "Sadržaj završen pre nailaska na odgovarajući navodnik za %c. (Radi se o "
 "tekstu „%s“)"
 
-#: glib/gshell.c:557
-#, c-format
+#: ../glib/gshell.c:557
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Sadržaj prazan (ili sadrži samo beline)"
 
-#: glib/gspawn-win32.c:273
-#, c-format
+#: ../glib/gspawn-win32.c:273
 msgid "Failed to read data from child process"
 msgstr "Neuspelo čitanje podataka iz potprocesa"
 
-#: glib/gspawn-win32.c:288 glib/gspawn.c:1361
+#: ../glib/gspawn-win32.c:288 ../glib/gspawn.c:1361
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Neuspelo stvaranje cevke za vezu sa potprocesom (%s)"
 
-#: glib/gspawn-win32.c:326 glib/gspawn.c:1025
+#: ../glib/gspawn-win32.c:326 ../glib/gspawn.c:1025
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Neuspelo čitanje iz podređene cevke (%s)"
 
-#: glib/gspawn-win32.c:352 glib/gspawn.c:1230
+#: ../glib/gspawn-win32.c:352 ../glib/gspawn.c:1230
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Neuspelo pristupanje direktorijumu „%s“ (%s)"
 
-#: glib/gspawn-win32.c:358 glib/gspawn-win32.c:578
+#: ../glib/gspawn-win32.c:358 ../glib/gspawn-win32.c:578
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Neuspelo izvršavanje potprocesa (%s)"
 
-#: glib/gspawn-win32.c:468 glib/gspawn-win32.c:524
+#: ../glib/gspawn-win32.c:468 ../glib/gspawn-win32.c:524
 #, c-format
 msgid "Invalid program name: %s"
 msgstr "Neispravno ime programa: %s"
 
-#: glib/gspawn-win32.c:478 glib/gspawn-win32.c:534 glib/gspawn-win32.c:777
-#: glib/gspawn-win32.c:832 glib/gspawn-win32.c:1367
+#: ../glib/gspawn-win32.c:478 ../glib/gspawn-win32.c:534
+#: ../glib/gspawn-win32.c:777 ../glib/gspawn-win32.c:832
+#: ../glib/gspawn-win32.c:1367
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr "Neispravna niska — član vektora u %d: %s"
 
-#: glib/gspawn-win32.c:489 glib/gspawn-win32.c:545 glib/gspawn-win32.c:791
-#: glib/gspawn-win32.c:845 glib/gspawn-win32.c:1400
+#: ../glib/gspawn-win32.c:489 ../glib/gspawn-win32.c:545
+#: ../glib/gspawn-win32.c:791 ../glib/gspawn-win32.c:845
+#: ../glib/gspawn-win32.c:1400
 #, c-format
 msgid "Invalid string in environment: %s"
 msgstr "Neispravna niska u okruženju: %s"
 
-#: glib/gspawn-win32.c:773 glib/gspawn-win32.c:828 glib/gspawn-win32.c:1348
+#: ../glib/gspawn-win32.c:773 ../glib/gspawn-win32.c:828
+#: ../glib/gspawn-win32.c:1348
 #, c-format
 msgid "Invalid working directory: %s"
 msgstr "Neispravna radna fascikla: %s"
 
-#: glib/gspawn-win32.c:887
+#: ../glib/gspawn-win32.c:887
 #, c-format
 msgid "Failed to execute helper program (%s)"
 msgstr "Neuspelo izvršavanje pomoćnog programa (%s)"
 
-#: glib/gspawn-win32.c:1087
-#, c-format
+#: ../glib/gspawn-win32.c:1087
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -587,143 +577,138 @@ msgstr ""
 "Neočekivana greška dok su u g_io_channel_win32_poll() čitani podaci iz "
 "potprocesa"
 
-#: glib/gspawn.c:165
+#: ../glib/gspawn.c:165
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "Neuspelo čitanje podataka od potprocesa (%s)"
 
-#: glib/gspawn.c:297
+#: ../glib/gspawn.c:297
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr "Neočekivana greška u select() pri čitanju podataka iz potprocesa (%s)"
 
-#: glib/gspawn.c:380
+#: ../glib/gspawn.c:380
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Neočekivana greška u waitpid() (%s)"
 
 # za sada ovako, možda grananje, umnožavanje? viljuškanje ;-)
-#: glib/gspawn.c:1090
+#: ../glib/gspawn.c:1090
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Neuspeo fork() (%s)"
 
-#: glib/gspawn.c:1240
+#: ../glib/gspawn.c:1240
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Neuspelo izvršavanje potprocesa „%s“ (%s)"
 
-#: glib/gspawn.c:1250
+#: ../glib/gspawn.c:1250
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Neuspelo preusmeravanje ulaza ili izlaza potprocesa (%s)"
 
-#: glib/gspawn.c:1259
+#: ../glib/gspawn.c:1259
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Neuspeo fork() potprocesa (%s)"
 
-#: glib/gspawn.c:1267
+#: ../glib/gspawn.c:1267
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Nepoznata greška pri izvršavanju potprocesa „%s“"
 
-#: glib/gspawn.c:1289
+#: ../glib/gspawn.c:1289
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Nije uspeo da pročita dovoljno podataka iz cevke ka potprocesu (%s)"
 
-#: glib/gutf8.c:1017
-#, c-format
+#: ../glib/gutf8.c:1017
 msgid "Character out of range for UTF-8"
 msgstr "Znak van opsega za UTF-8"
 
-#: glib/gutf8.c:1111 glib/gutf8.c:1120 glib/gutf8.c:1252 glib/gutf8.c:1261
-#: glib/gutf8.c:1402 glib/gutf8.c:1498
-#, c-format
+#: ../glib/gutf8.c:1111 ../glib/gutf8.c:1120 ../glib/gutf8.c:1252
+#: ../glib/gutf8.c:1261 ../glib/gutf8.c:1402 ../glib/gutf8.c:1498
 msgid "Invalid sequence in conversion input"
 msgstr "Neispravan niz u unosu za pretvaranje"
 
-#: glib/gutf8.c:1413 glib/gutf8.c:1509
-#, c-format
+#: ../glib/gutf8.c:1413 ../glib/gutf8.c:1509
 msgid "Character out of range for UTF-16"
 msgstr "Znak van opsega za UTF-16"
 
-#: glib/goption.c:495
+#: ../glib/goption.c:495
 msgid "Usage:"
 msgstr "Upotreba:"
 
-#: glib/goption.c:495
+#: ../glib/goption.c:495
 msgid "[OPTION...]"
 msgstr "[OPCIJA...]"
 
-#: glib/goption.c:586
+#: ../glib/goption.c:586
 msgid "Help Options:"
 msgstr "Pomoćne opcije:"
 
-#: glib/goption.c:587
+#: ../glib/goption.c:587
 msgid "Show help options"
 msgstr "Prikaži opcije za pomoć"
 
-#: glib/goption.c:592
+#: ../glib/goption.c:592
 msgid "Show all help options"
 msgstr "Prikaži sve opcije za pomoć"
 
-#: glib/goption.c:642
+#: ../glib/goption.c:642
 msgid "Application Options:"
 msgstr "Opcije programa:"
 
-#: glib/goption.c:686 glib/goption.c:756
+#: ../glib/goption.c:686 ../glib/goption.c:756
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "Ne mogu da rašlanim celobrojnu vrednost „%s“ za %s"
 
-#: glib/goption.c:696 glib/goption.c:764
+#: ../glib/goption.c:696 ../glib/goption.c:764
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "Celobrojna vrednost „%s“ za %s je izvan opsega"
 
-#: glib/goption.c:721
-#, fuzzy, c-format
+#: ../glib/goption.c:721
+#, c-format
 msgid "Cannot parse double value '%s' for %s"
-msgstr "Ne mogu da rašlanim celobrojnu vrednost „%s“ za %s"
+msgstr ""
+"Ne mogu da rašlanim decimalnu vrednost dvostruke preciznosti „%s“ za %s"
 
-#: glib/goption.c:729
-#, fuzzy, c-format
+#: ../glib/goption.c:729
+#, c-format
 msgid "Double value '%s' for %s out of range"
-msgstr "Celobrojna vrednost „%s“ za %s je izvan opsega"
+msgstr "decimalnu vrednost dvostruke preciznosti „%s“ za %s je izvan opsega"
 
-#: glib/goption.c:1066
+#: ../glib/goption.c:1066
 #, c-format
 msgid "Error parsing option %s"
 msgstr "Greška pri raščlanjivanju mogućnosti %s"
 
-#: glib/goption.c:1097 glib/goption.c:1208
+#: ../glib/goption.c:1097 ../glib/goption.c:1208
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Nedostaje argument za %s"
 
-#: glib/goption.c:1597
+#: ../glib/goption.c:1597
 #, c-format
 msgid "Unknown option %s"
 msgstr "Nepoznata opcija %s"
 
-#: glib/gkeyfile.c:337
-#, c-format
+#: ../glib/gkeyfile.c:337
 msgid "Valid key file could not be found in data dirs"
 msgstr "Ne mogu da nađem ispravnu datoteku sa ključevima među podacima"
 
-#: glib/gkeyfile.c:372
-#, c-format
+#: ../glib/gkeyfile.c:372
 msgid "Not a regular file"
 msgstr "Nije obična datoteka"
 
-#: glib/gkeyfile.c:380
-#, c-format
+#: ../glib/gkeyfile.c:380
 msgid "File is empty"
 msgstr "Datoteka je prazna"
 
-#: glib/gkeyfile.c:696
+#: ../glib/gkeyfile.c:696
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
@@ -731,39 +716,38 @@ msgstr ""
 "Datoteka sa ključevima sadrži red „%s“ što ne čini par ključ-vrednost, grupu "
 "ili primedbu"
 
-#: glib/gkeyfile.c:767
-#, c-format
+#: ../glib/gkeyfile.c:767
 msgid "Key file does not start with a group"
 msgstr "Datoteka sa ključevima ne počinje grupom"
 
-#: glib/gkeyfile.c:811
+#: ../glib/gkeyfile.c:811
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "Datoteka sa ključevima sadrži nepodržano kodiranje „%s“"
 
-#: glib/gkeyfile.c:1020 glib/gkeyfile.c:1179 glib/gkeyfile.c:2398
-#: glib/gkeyfile.c:2463 glib/gkeyfile.c:2582 glib/gkeyfile.c:2717
-#: glib/gkeyfile.c:2870 glib/gkeyfile.c:3046 glib/gkeyfile.c:3103
+#: ../glib/gkeyfile.c:1020 ../glib/gkeyfile.c:1179 ../glib/gkeyfile.c:2398
+#: ../glib/gkeyfile.c:2463 ../glib/gkeyfile.c:2582 ../glib/gkeyfile.c:2717
+#: ../glib/gkeyfile.c:2870 ../glib/gkeyfile.c:3046 ../glib/gkeyfile.c:3103
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Datoteka sa ključevima nema grupu „%s“"
 
-#: glib/gkeyfile.c:1191
+#: ../glib/gkeyfile.c:1191
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "Datoteka sa ključevima nema ključ „%s“"
 
-#: glib/gkeyfile.c:1293 glib/gkeyfile.c:1405
+#: ../glib/gkeyfile.c:1293 ../glib/gkeyfile.c:1405
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "Datoteka sa ključevima sadrži ključ „%s“ vrednosti „%s“ što nije UTF-8"
 
-#: glib/gkeyfile.c:1313 glib/gkeyfile.c:1425 glib/gkeyfile.c:1797
+#: ../glib/gkeyfile.c:1313 ../glib/gkeyfile.c:1425 ../glib/gkeyfile.c:1797
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "Datoteka sa ključevima sadrži ključ „%s“ nerazumljive vrednosti."
 
-#: glib/gkeyfile.c:2013 glib/gkeyfile.c:2226
+#: ../glib/gkeyfile.c:2013 ../glib/gkeyfile.c:2226
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -771,37 +755,36 @@ msgid ""
 msgstr ""
 "Datoteka sa ključevima sadrži ključ „%s“ u grupi „%s“ nerazumljive vrednosti."
 
-#: glib/gkeyfile.c:2413 glib/gkeyfile.c:2597 glib/gkeyfile.c:3114
+#: ../glib/gkeyfile.c:2413 ../glib/gkeyfile.c:2597 ../glib/gkeyfile.c:3114
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Datoteka sa ključevima ne sadrži ključ „%s“ u grupi „%s“"
 
-#: glib/gkeyfile.c:3287
-#, c-format
+#: ../glib/gkeyfile.c:3287
 msgid "Key file contains escape character at end of line"
 msgstr "Datoteka sa ključevima sadrži znak isticanja na kraju reda"
 
-#: glib/gkeyfile.c:3309
+#: ../glib/gkeyfile.c:3309
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "Datoteka sa ključevima sadrži nedozvoljen niz isticanja „%s“"
 
-#: glib/gkeyfile.c:3451
+#: ../glib/gkeyfile.c:3451
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Vrednost „%s“ se ne može smatrati brojem."
 
-#: glib/gkeyfile.c:3465
+#: ../glib/gkeyfile.c:3465
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "Celobrojna vrednost „%s“ je izvan opsega"
 
-#: glib/gkeyfile.c:3498
-#, fuzzy, c-format
+#: ../glib/gkeyfile.c:3498
+#, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
-msgstr "Vrednost „%s“ se ne može smatrati brojem."
+msgstr "Vrednost „%s“ se ne može smatrati decimalnim brojem."
 
-#: glib/gkeyfile.c:3525
+#: ../glib/gkeyfile.c:3525
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Vrednost „%s“ se ne može smatrati istinitosnom."
