@@ -38,7 +38,7 @@ g_error_new_valist (GQuark         domain,
 {
   GError *error;
   
-  error = g_new (GError, 1);
+  error = g_slice_new (GError);
   
   error->domain = domain;
   error->code = code;
@@ -101,7 +101,7 @@ g_error_new_literal (GQuark         domain,
   g_return_val_if_fail (message != NULL, NULL);
   g_return_val_if_fail (domain != 0, NULL);
 
-  err = g_new (GError, 1);
+  err = g_slice_new (GError);
 
   err->domain = domain;
   err->code = code;
@@ -124,7 +124,7 @@ g_error_free (GError *error)
 
   g_free (error->message);
 
-  g_free (error);
+  g_slice_free (GError, error);
 }
 
 /**
@@ -142,7 +142,7 @@ g_error_copy (const GError *error)
   
   g_return_val_if_fail (error != NULL, NULL);
 
-  copy = g_new (GError, 1);
+  copy = g_slice_new (GError);
 
   *copy = *error;
 
