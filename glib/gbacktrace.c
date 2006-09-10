@@ -58,9 +58,7 @@
 #include <sys/select.h>
 #endif /* HAVE_SYS_SELECT_H */
 
-#ifdef STDC_HEADERS
 #include <string.h> /* for bzero on BSD systems */
-#endif
 
 #ifdef G_OS_WIN32
 #  define STRICT		/* Strict typing, please */

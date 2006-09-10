@@ -1,5 +1,8 @@
 2006-09-10  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gbacktrace.c: Assume string.h is available. 
+	(#354523, Behdad Esfahbod)
+
 	* configure.in: Bump version to 2.13.0
 
 	* glib/glib.symbols:
