@@ -1,14 +1,18 @@
+2006-09-09  David Lodge <dave@cirt.net>
+
+	* en_GB.po: Updated English (British) translation.
+
 2006-09-09  Luca Ferretti  <elle.uca@libero.it>
 
 	* it.po: Updated Italian translation.
 
 2006-09-09  Jamil Ahmed  <jamil@bengalinux.org>
 
-        * bn.po: Updated Bengali translation.
+	* bn.po: Updated Bengali translation.
 
 2006-09-08  Vladimer Sichinava  <vlsichinava@gmail.com>
 
-        * ka.po: Updated Georgian translation.
+	* ka.po: Updated Georgian translation.
 
 2006-09-04  Roozbeh Pournader  <roozbeh@farsiweb.info>
 
@@ -25,7 +29,7 @@
 
 2006-09-04  Rajesh Ranjan <rajeshkajha@yahoo.com>
 
-        * hi.po: Updated Hindi Translation.
+	* hi.po: Updated Hindi Translation.
 
 2006-09-04  Lucas Rocha  <lucasr@gnome.org>
 
@@ -71,7 +75,7 @@
 
 2006-08-25  Raivis Dejus  <orvils@gmail.com>
 
-        * lv.po: Updated Latvian translation.
+	* lv.po: Updated Latvian translation.
 
 2006-08-24  Leonid Kanter  <leon@asplinux.ru>
 
