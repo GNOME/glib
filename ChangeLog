@@ -1,5 +1,7 @@
 2006-09-10  Matthias Clasen  <mclasen@redhat.com>
 
+	* configure.in: Bump version to 2.13.0
+
 	* glib/glib.symbols:
 	* glib/gmain.[hc]: Add functions to create approximate
 	timeouts.  (#353942, Arjan van de Ven)
