@@ -1,3 +1,8 @@
+2006-09-10  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gstdio.c (g_rename): Initialize save_errno.
+	(#355206, Mike Edenfield)
+
 2006-09-01  Abel Cheung  <abel@oaka.org>
 
 	* configure.in: Added 'dz' 'hy' to ALL_LINGUAS.

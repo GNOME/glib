@@ -355,7 +355,7 @@ g_rename (const gchar *oldfilename,
       wchar_t *woldfilename = g_utf8_to_utf16 (oldfilename, -1, NULL, NULL, NULL);
       wchar_t *wnewfilename;
       int retval;
-      int save_errno;
+      int save_errno = 0;
 
       if (woldfilename == NULL)
 	{
