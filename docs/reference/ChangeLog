@@ -1,3 +1,7 @@
+2006-09-10  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/glib-sections.txt: Add new functions
+
 2006-08-28  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/compiling.sgml: Add a note about G_DISABLE_DEPRECATED.

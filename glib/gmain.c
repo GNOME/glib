@@ -41,6 +41,7 @@
 #include <signal.h>
 #include <sys/types.h>
 #include <time.h>
+#include <stdlib.h>
 #ifdef HAVE_SYS_TIME_H
 #include <sys/time.h>
 #endif /* HAVE_SYS_TIME_H */
@@ -179,6 +180,7 @@ struct _GTimeoutSource
   GSource     source;
   GTimeVal    expiration;
   guint       interval;
+  guint	      granularity;
 };
 
 struct _GChildWatchSource
@@ -280,6 +282,8 @@ static gint child_watch_wake_up_pipe[2] = {0, 0};
 #endif /* !G_OS_WIN32 */
 G_LOCK_DEFINE_STATIC (main_context_list);
 static GSList *main_context_list = NULL;
+
+static gint timer_perturb = -1;
 
 GSourceFuncs g_timeout_funcs =
 {
@@ -3337,6 +3341,55 @@ g_timeout_set_expiration (GTimeoutSource *timeout_source,
       timeout_source->expiration.tv_usec -= 1000000;
       timeout_source->expiration.tv_sec++;
     }
+  if (timer_perturb==-1)
+    {
+      /*
+       * we want a per machine/session unique 'random' value; try the dbus
+       * address first, that has a UUID in it. If there is no dbus, use the
+       * hostname for hashing.
+       */
+      const char *session_bus_address = getenv("DBUS_SESSION_BUS_ADDRESS");
+      if (!session_bus_address)
+         session_bus_address = getenv("HOSTNAME");
+      if (session_bus_address)
+         timer_perturb = g_str_hash(session_bus_address);
+      else
+         timer_perturb = 0;
+    }
+  if (timeout_source->granularity)
+    {
+      gint remainder;
+      gint gran; /* in usecs */
+      gint perturb;
+
+      gran = timeout_source->granularity * 1000;
+      perturb = timer_perturb % gran;
+      /*
+       * We want to give each machine a per machine pertubation;
+       * shift time back first, and forward later after the rounding
+       */
+
+      timeout_source->expiration.tv_usec -= perturb;
+      if (timeout_source->expiration.tv_usec < 0)
+      {
+          timeout_source->expiration.tv_usec += 1000000;
+          timeout_source->expiration.tv_sec--;
+      }
+
+      remainder = timeout_source->expiration.tv_usec % gran;
+      if (remainder >= gran/4) /* round up */
+        timeout_source->expiration.tv_usec += gran;
+      timeout_source->expiration.tv_usec -= remainder;
+      /* shift back */
+      timeout_source->expiration.tv_usec += perturb;
+
+      /* the rounding may have overflown tv_usec */
+      while (timeout_source->expiration.tv_usec > 1000000)
+        {
+          timeout_source->expiration.tv_usec -= 1000000;
+          timeout_source->expiration.tv_sec++;
+        }
+    }
 }
 
 static gboolean
@@ -3460,6 +3513,39 @@ g_timeout_source_new (guint interval)
 }
 
 /**
+ * g_timeout_source_new_seconds:
+ * @interval: the timeout interval in seconds
+ *
+ * Creates a new timeout source.
+ *
+ * The source will not initially be associated with any #GMainContext
+ * and must be added to one with g_source_attach() before it will be
+ * executed.
+ * The scheduling granularity/accuracy of this timeout source will be
+ * in seconds.
+ *
+ * Return value: the newly-created timeout source
+ *
+ * Since: 2.14	
+ **/
+GSource *
+g_timeout_source_new_seconds (guint interval)
+{
+  GSource *source = g_source_new (&g_timeout_funcs, sizeof (GTimeoutSource));
+  GTimeoutSource *timeout_source = (GTimeoutSource *)source;
+  GTimeVal current_time;
+
+  timeout_source->interval = 1000*interval;
+  timeout_source->granularity = 1000;
+
+  g_get_current_time (&current_time);
+  g_timeout_set_expiration (timeout_source, &current_time);
+
+  return source;
+}
+
+
+/**
  * g_timeout_add_full:
  * @priority: the priority of the idle source. Typically this will be in the
  *            range between #G_PRIORITY_DEFAULT_IDLE and #G_PRIORITY_HIGH_IDLE.
@@ -3526,10 +3612,15 @@ g_timeout_add_full (gint           priority,
  * After each call to the timeout function, the time of the next
  * timeout is recalculated based on the current time and the given interval
  * (it does not try to 'catch up' time lost in delays).
- * 
+ *
+ * If you want to have a timer in the "seconds" range and do not care
+ * about the exact time of the first call of the timer, use the
+ * g_timeout_add_seconds() function; this function allows for more
+ * optimizations and more efficient system power usage.
+ *
  * Return value: the ID (greater than 0) of the event source.
  **/
-guint 
+guint
 g_timeout_add (guint32        interval,
 	       GSourceFunc    function,
 	       gpointer       data)
@@ -3537,6 +3628,62 @@ g_timeout_add (guint32        interval,
   return g_timeout_add_full (G_PRIORITY_DEFAULT, 
 			     interval, function, data, NULL);
 }
+
+/**
+ * g_timeout_add_seconds:
+ * @interval: the time between calls to the function, in seconds
+ * @function: function to call
+ * @data:     data to pass to @function
+ *
+ * Sets a function to be called at regular intervals, with the default
+ * priority, #G_PRIORITY_DEFAULT.  The function is called repeatedly
+ * until it returns %FALSE, at which point the timeout is automatically
+ * destroyed and the function will not be called again.
+ *
+ * Unlike g_timeout_add(), this function operates at whole second granularity.
+ * The initial starting point of the timer is determined by the implementation
+ * and the implementation is expected to group multiple timers together so that
+ * they fire all at the same time.
+ * To allow this grouping, the @interval to the first timer is rounded
+ * and can deviate up to one second from the specified interval.
+ * Subsequent timer iterations will generally run at the specified interval.
+ *
+ * Note that timeout functions may be delayed, due to the processing of other
+ * event sources. Thus they should not be relied on for precise timing.
+ * After each call to the timeout function, the time of the next
+ * timeout is recalculated based on the current time and the given @interval
+ *
+ * If you want timing more precise than whole seconds, use g_timeout_add()
+ * instead.
+ *
+ * The grouping of timers to fire at the same time results in a more power
+ * and CPU efficient behavior so if your timer is in multiples of seconds
+ * and you don't require the first timer exactly 1 second from now, the
+ * use of g_timeout_add_second() is prefered over g_timeout_add().
+ *
+ * Return value: the ID (greater than 0) of the event source.
+ *
+ * Since: 2.14
+ **/
+guint
+g_timeout_add_seconds (guint32        interval,
+	       GSourceFunc    function,
+	       gpointer       data)
+{
+  GSource *source;
+  guint id;
+
+  g_return_val_if_fail (function != NULL, 0);
+
+  source = g_timeout_source_new_seconds (interval);
+
+  g_source_set_callback (source, function, data, NULL);
+  id = g_source_attach (source, NULL);
+  g_source_unref (source);
+
+  return id;
+}
+
 
 /* Child watch functions */
 

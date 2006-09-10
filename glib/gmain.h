@@ -256,6 +256,7 @@ void     g_source_get_current_time (GSource        *source,
 GSource *g_idle_source_new        (void);
 GSource *g_child_watch_source_new (GPid pid);
 GSource *g_timeout_source_new     (guint interval);
+GSource *g_timeout_source_new_seconds (guint interval);
 
 /* Miscellaneous functions
  */
@@ -296,6 +297,9 @@ guint    g_timeout_add_full     (gint            priority,
 				 gpointer        data,
 				 GDestroyNotify  notify);
 guint    g_timeout_add          (guint           interval,
+				 GSourceFunc     function,
+				 gpointer        data);
+guint    g_timeout_add_seconds  (guint           interval,
 				 GSourceFunc     function,
 				 gpointer        data);
 guint    g_child_watch_add_full (gint            priority,

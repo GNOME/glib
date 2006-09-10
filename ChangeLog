@@ -1,5 +1,9 @@
 2006-09-10  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/glib.symbols:
+	* glib/gmain.[hc]: Add functions to create approximate
+	timeouts.  (#353942, Arjan van de Ven)
+
 	* glib/gstdio.c (g_rename): Initialize save_errno.
 	(#355206, Mike Edenfield)
 
