@@ -31,6 +31,7 @@
 
 
 /* --- defines --- */
+#define PARAM_FLOATING_FLAG                     0x2
 #define	G_PARAM_USER_MASK			(~0 << G_PARAM_USER_SHIFT)
 #define PSPEC_APPLIES_TO_VALUE(pspec, value)	(G_TYPE_CHECK_VALUE_TYPE ((value), G_PARAM_SPEC_VALUE_TYPE (pspec)))
 #define	G_SLOCK(mutex)				g_static_mutex_lock (mutex)
@@ -60,10 +61,6 @@ static gchar*	value_param_lcopy_value		(const GValue	*value,
 						 guint           n_collect_values,
 						 GTypeCValue    *collect_values,
 						 guint           collect_flags);
-
-
-/* --- variables --- */
-static GQuark quark_floating = 0;
 
 
 /* --- functions --- */
@@ -122,8 +119,6 @@ static void
 g_param_spec_class_init (GParamSpecClass *class,
 			 gpointer         class_data)
 {
-  quark_floating = g_quark_from_static_string ("GParamSpec-floating");
-
   class->value_type = G_TYPE_NONE;
   class->finalize = g_param_spec_finalize;
   class->value_set_default = NULL;
@@ -142,9 +137,10 @@ g_param_spec_init (GParamSpec      *pspec,
   pspec->value_type = class->value_type;
   pspec->owner_type = 0;
   pspec->qdata = NULL;
+  g_datalist_init (&pspec->qdata);
+  g_datalist_set_flags (&pspec->qdata, PARAM_FLOATING_FLAG);
   pspec->ref_count = 1;
   pspec->param_id = 0;
-  g_datalist_id_set_data (&pspec->qdata, quark_floating, GUINT_TO_POINTER (TRUE));
 }
 
 static void
@@ -194,10 +190,15 @@ g_param_spec_unref (GParamSpec *pspec)
 void
 g_param_spec_sink (GParamSpec *pspec)
 {
+  gpointer oldvalue;
   g_return_if_fail (G_IS_PARAM_SPEC (pspec));
   g_return_if_fail (pspec->ref_count > 0);
 
-  if (g_datalist_id_remove_no_notify (&pspec->qdata, quark_floating))
+  do
+    oldvalue = g_atomic_pointer_get (&pspec->qdata);
+  while (!g_atomic_pointer_compare_and_exchange ((void**) &pspec->qdata, oldvalue,
+                                                 (gpointer) ((gsize) oldvalue & ~(gsize) PARAM_FLOATING_FLAG)));
+  if ((gsize) oldvalue & PARAM_FLOATING_FLAG)
     g_param_spec_unref (pspec);
 }
 

@@ -1,3 +1,8 @@
+Mon Sep 11 12:12:45 2006  Tim Janik  <timj@imendio.com>
+
+	* gparam.c (g_param_spec_sink): reimplemented floating flag handling by
+	atomically accessing a reserved GData bit, fixes #330556.
+
 Tue Aug 29 13:27:33 2006  Tim Janik  <timj@gtk.org>
 
 	* glib-mkenums.in: fixed to print usage and version info on STDOUT
