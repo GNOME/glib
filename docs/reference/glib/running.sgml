@@ -91,6 +91,30 @@ variables like <envar>LANG</envar>, <envar>PATH</envar> or <envar>HOME</envar>.
 		</para>
         </listitem>
       </varlistentry>
+      <varlistentry>
+        <term>resident-modules</term>
+	<listitem>
+	  <para>
+	    All modules loaded by GModule will be made resident. This can be useful
+	    for tracking memory leaks in modules which are later unloaded; but it can
+	    also hide bugs where code is accessed after the module would have normally
+	    been unloaded.
+	    This option is special in that it doesn't require GLib to be
+ 	    configured with debugging support.
+	  </para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>bind-now-modules</term>
+	<listitem>
+	  <para>
+	    All modules loaded by GModule will bind their symbols at load time, even
+	    when the code uses %G_MODULE_BIND_LAZY.
+	    This option is special in that it doesn't require GLib to be
+ 	    configured with debugging support.
+	  </para>
+        </listitem>
+      </varlistentry>
     </variablelist>
   </para>
 </formalpara>

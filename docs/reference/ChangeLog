@@ -1,3 +1,8 @@
+Mon Sep 11 14:57:46 2006  Tim Janik  <timj@imendio.com>
+
+	* glib/running.sgml: documented G_DEBUG flags resident-modules
+	and bind-now-modules, patch by Christian Persch on bug #345099.
+
 2006-09-10  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/glib-sections.txt: Add new functions
