@@ -1,3 +1,8 @@
+Mon Sep 11 14:58:56 2006  Tim Janik  <timj@imendio.com>
+
+	* gmodule.c: applied patch from Christian Persch to support
+	G_DEBUG flags resident-modules and bind-now-modules, bug #345099.
+
 2006-08-29  Tor Lillqvist  <tml@novell.com>
 
 	Remove support for Windows 9x/ME. GTK+ hasn't worked on Win9x
