@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: glib 2.12.x\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-09-09 19:12+0200\n"
-"PO-Revision-Date: 2006-09-09 19:13+0200\n"
+"PO-Revision-Date: 2006-09-12 09:51+0200\n"
 "Last-Translator: Luca Ferretti <elle.uca@libero.it>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
@@ -126,7 +126,7 @@ msgstr "Impossibile convertire \"%s\" nel set di caratteri \"%s\""
 #: ../glib/gconvert.c:1703
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
-msgstr "L'URI \"%s\" non è un URI assoluto che utilizza lo schema \"file://\""
+msgstr "L'URI \"%s\" non è un URI assoluto che utilizza lo schema \"file\""
 
 #: ../glib/gconvert.c:1713
 #, c-format
@@ -185,7 +185,7 @@ msgstr "Apertura del file \"%s\" fallita: %s"
 #: ../glib/gfileutils.c:737 ../glib/gmappedfile.c:133
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
-msgstr "Lettura degli attributi del file \"%s\" fallito: fstat() fallita: %s"
+msgstr "Lettura degli attributi del file \"%s\" fallita: fstat() fallita: %s"
 
 #: ../glib/gfileutils.c:771
 #, c-format
@@ -360,7 +360,7 @@ msgstr ""
 
 #: ../glib/gmarkup.c:710
 msgid "Unfinished entity reference"
-msgstr "Riferimento ad entità non terminato"
+msgstr "Riferimento a entità non terminato"
 
 #: ../glib/gmarkup.c:716
 msgid "Unfinished character reference"
@@ -778,9 +778,7 @@ msgstr "Il file chiavi non presenta la chiave \"%s\""
 #: ../glib/gkeyfile.c:1293 ../glib/gkeyfile.c:1405
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
-msgstr ""
-"Il file chiavi contiene la chiave \"%s\" con il valore \"%s\" che non è in "
-"UTF-8"
+msgstr "Il file chiavi contiene la chiave \"%s\" con il valore \"%s\" che non è UTF-8"
 
 #: ../glib/gkeyfile.c:1313 ../glib/gkeyfile.c:1425 ../glib/gkeyfile.c:1797
 #, c-format
@@ -820,7 +818,7 @@ msgstr "Impossibile interpretare il valore \"%s\" come un numero."
 #: ../glib/gkeyfile.c:3465
 #, c-format
 msgid "Integer value '%s' out of range"
-msgstr "Il valore intero \"%s\" è fuori dell'intervallo"
+msgstr "Il valore intero \"%s\" è fuori dall'intervallo"
 
 #: ../glib/gkeyfile.c:3498
 #, c-format
