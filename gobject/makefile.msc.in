@@ -50,7 +50,9 @@ gobjectaliasdef.c: gobject.symbols
 
 gobject.def: gobject.symbols
 	echo EXPORTS > gobject.def
-	cl /EP -DINCLUDE_VARIABLES -DG_OS_WIN32 -DALL_FILES gobject.symbols >> gobject.def
+	cl /EP -DINCLUDE_VARIABLES -DG_OS_WIN32 -DALL_FILES \
+		-DG_GNUC_MALLOC= -DG_GNUC_CONST= -DG_GNUC_NULL_TERMINATED= -DG_GNUC_NORETURN= \
+		-DG_GNUC_PRINTF=;G_GNUC_PRINTF gobject.symbols >> gobject.def
 
 gobject.res : gobject.rc
 	rc -DBUILDNUMBER=0 -r -fo gobject.res gobject.rc
@@ -67,7 +69,7 @@ gmarshal.c: gmarshal.list gmarshal.h glib-genmarshal.exe
 
 libgobject-2.0-@LT_CURRENT_MINUS_AGE@.dll : $(gobject_OBJECTS) gobject.def gobject.res
 	$(CC) $(CFLAGS) -Fm -LD -Fe$@ $(gobject_OBJECTS) gobject.res \
-	..\glib\glib-2.0.lib $(LDFLAGS) /implib:gobject-2.0.lib /def:gobject.def
+	..\glib\glib-2.0.lib $(LDFLAGS) /implib:gobject-2.0.lib /def:gobject.def || del $@
 
 gobject-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@s.lib : $(gobject_OBJECTS) 
 	lib /out:$@ $(gobject_OBJECTS)

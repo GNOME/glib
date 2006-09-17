@@ -1,3 +1,9 @@
+2006-09-17  Hans Breuer  <hans@breuer.org>
+
+	* glib/makefile.msc.in gobject/makefile.msc.in : better filtering
+	of G_GNUC_* stuff when generating .def files. Now also works with
+	newer (less tolerant) linkers, e.g. from vc2500e
+
 2006-09-10  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gbacktrace.c: Assume string.h is available. 

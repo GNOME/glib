@@ -1,5 +1,5 @@
-## Makefile for building the GLib dlls with Microsoft C
-## Use: nmake -f makefile.msc
+## Makefile for building the gobject dll with Microsoft C
+## Use: nmake -f makefile.msc install
 
 TOP = ..\..
 
@@ -7,122 +7,85 @@ TOP = ..\..
 
 ################################################################
 
-INCLUDES = -FImsvc_recommended_pragmas.h -I . -I ..
-DEFINES = -DHAVE_CONFIG_H -DGLIB_COMPILATION -DG_LOG_DOMAIN=\"GLib\" -DG_ENABLE_DEBUG
-DEPCFLAGS = -Zm400 $(INTL_CFLAGS) $(LIBICONV_CFLAGS) $(DIRENT_CFLAGS)
+INCLUDES = -FImsvc_recommended_pragmas.h -I .. -I . -I ..\glib
+DEFINES = -DHAVE_CONFIG_H -DGOBJECT_COMPILATION -DG_LOG_DOMAIN=\"GLib-GObject\" \
+		-DG_ENABLE_DEBUG
+#		-DG_DISABLE_ASSERT -DG_DISABLE_CHECKS -DG_DISABLE_CAST_CHECKS
+#		-DG_DISABLE_CAST_CHECKS
 
 all :				\
-	..\config.h		\
-	..\glibconfig.h	\
-	galias.h		\
-	galiasdef.c		\
-	gnulib\gnulib.lib	\
-	libglib-2.0-0.dll \
-	glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@s.lib \
-	gspawn-win32-helper.exe	\
+	glib-genmarshal.exe     \
+	gmarshal.h              \
+	gmarshal.c              \
+	gobjectalias.h	\
+	gobjectaliasdef.c \
+	gmarshal.strings \
+	gobject-query.exe \
+	libgobject-2.0-@LT_CURRENT_MINUS_AGE@.dll	\
+	gobject-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@s.lib \
+	testgobject.exe
 
+gobject_OBJECTS =		\
+	gboxed.obj		\
+	gclosure.obj		\
+	genums.obj		\
+	gobject.obj		\
+	gparam.obj		\
+	gparamspecs.obj		\
+	gsignal.obj		\
+	gsourceclosure.obj	\
+	gtype.obj		\
+	gtypemodule.obj		\
+	gtypeplugin.obj		\
+	gvalue.obj		\
+	gvaluearray.obj		\
+	gvaluetypes.obj	\
+	gvaluetransform.obj
 
-gnulib\gnulib.lib :
-	cd gnulib
-	nmake -f makefile.msc
-	cd ..
+gobjectalias.h: gobject.symbols
+	perl makegobjectalias.pl < gobject.symbols > gobjectalias.h
 
-glib_OBJECTS =			\
-	garray.obj		\
-	gasyncqueue.obj		\
-	gatomic.obj	\
-	gbacktrace.obj		\
-	gbase64.obj	\
-	gbookmarkfile.obj 	\
-	gcache.obj		\
-	gcompletion.obj		\
-	gconvert.obj		\
-	gdataset.obj		\
-	gdate.obj		\
-	gdir.obj	\
-	gerror.obj		\
-	gfileutils.obj		\
-	ghash.obj		\
-	ghook.obj		\
-	gkeyfile.obj		\
-	gmappedfile.obj	\
-	giochannel.obj		\
-	giowin32.obj		\
-	glist.obj		\
-	gmain.obj		\
-	gmarkup.obj		\
-	gmem.obj		\
-	gmessages.obj		\
-	gnode.obj		\
-	goption.obj	\
-	gprimes.obj		\
-	gqsort.obj		\
-	gqueue.obj		\
-	gpattern.obj	\
-	gprintf.obj	\
-	grand.obj		\
-	grel.obj		\
-	gscanner.obj		\
-	gshell.obj		\
-	gslice.obj	\
-	gslist.obj		\
-	gspawn-win32.obj	\
-	gstdio.obj	\
-	gstrfuncs.obj		\
-	gstring.obj		\
-	gthread.obj		\
-	gthreadpool.obj		\
-	gtimer.obj		\
-	gtree.obj		\
-	gunibreak.obj		\
-	gunicollate.obj		\
-	gunidecomp.obj		\
-	guniprop.obj		\
-	gutf8.obj		\
-	gutils.obj		\
-	gwin32.obj		\
-	localcharset.obj
+gobjectaliasdef.c: gobject.symbols
+	perl makegobjectalias.pl -def < gobject.symbols > gobjectaliasdef.c
 
-..\glibconfig.h: ..\glibconfig.h.win32
-	copy ..\glibconfig.h.win32 ..\glibconfig.h
+gobject.def: gobject.symbols
+	echo EXPORTS > gobject.def
+	cl /EP -DINCLUDE_VARIABLES -DG_OS_WIN32 -DALL_FILES \
+		-DG_GNUC_MALLOC= -DG_GNUC_CONST= -DG_GNUC_NULL_TERMINATED= -DG_GNUC_NORETURN= \
+		-DG_GNUC_PRINTF=;G_GNUC_PRINTF gobject.symbols >> gobject.def
 
-..\config.h: ..\config.h.win32
-	copy ..\config.h.win32 ..\config.h
+gobject.res : gobject.rc
+	rc -DBUILDNUMBER=0 -r -fo gobject.res gobject.rc
 
-galias.h: glib.symbols
-	perl makegalias.pl < glib.symbols > galias.h
+gmarshal.h : gmarshal.list glib-genmarshal.exe
+	echo #ifndef __G_MARSHAL_H__ > xgen-gmh
+	echo #define __G_MARSHAL_H__ >> xgen-gmh
+	glib-genmarshal --nostdinc --prefix=g_cclosure_marshal gmarshal.list --header >> xgen-gmh
+	echo #endif /* __G_MARSHAL_H__ */ >> xgen-gmh
+	copy xgen-gmh gmarshal.h
 
-galiasdef.c: glib.symbols
-	  perl makegalias.pl -def < glib.symbols > galiasdef.c
+gmarshal.c: gmarshal.list gmarshal.h glib-genmarshal.exe
+	glib-genmarshal --nostdinc --prefix=g_cclosure_marshal gmarshal.list --body > gmarshal.c
 
-localcharset.c : libcharset/localcharset.c
-	copy libcharset\localcharset.c localcharset.c
+libgobject-2.0-@LT_CURRENT_MINUS_AGE@.dll : $(gobject_OBJECTS) gobject.def gobject.res
+	$(CC) $(CFLAGS) -Fm -LD -Fe$@ $(gobject_OBJECTS) gobject.res \
+	..\glib\glib-2.0.lib $(LDFLAGS) /implib:gobject-2.0.lib /def:gobject.def || del $@
 
-glib.def: glib.symbols
-	echo EXPORTS > glib.def
-	cl /EP -DINCLUDE_VARIABLES -DG_OS_WIN32 -DINCLUDE_INTERNAL_SYMBOLS -DALL_FILES glib.symbols >> glib.def
+gobject-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@s.lib : $(gobject_OBJECTS) 
+	lib /out:$@ $(gobject_OBJECTS)
 
-glib.res : glib.rc
-	rc -DBUILDNUMBER=0 -r -fo glib.res glib.rc
+# link glib's static version to avoid installing 
+glib-genmarshal.exe : glib-genmarshal.c gmarshal.strings
+	$(CC) -Fe$@ $(CFLAGS) -UGOBJECT_COMPILATION glib-genmarshal.c \
+	..\glib\glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@s.lib user32.lib advapi32.lib ole32.lib shell32.lib $(INTL_LIBS) $(LIBICONV_LIBS)
 
-################ glib
+gobject-query.exe : gobject-query.c libgobject-2.0-@LT_CURRENT_MINUS_AGE@.dll
+	$(CC) -Fe$@ $(CFLAGS) -UGOBJECT_COMPILATION gobject-query.c \
+	..\glib\glib-2.0.lib gobject-2.0.lib user32.lib advapi32.lib $(INTL_LIBS) $(LIBICONV_LIBS)
 
-# create a static libary
-# static library can well have the real version number in the name
-glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@s.lib : $(glib_OBJECTS) gnulib\gnulib.lib
-	lib /out:glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@s.lib $(glib_OBJECTS) gnulib\gnulib.lib
+gmarshal.strings : gmarshal.list
+	perl marshal-genstrings.pl > gmarshal.strings
 
-libglib-2.0-0.dll : $(glib_OBJECTS) gnulib\gnulib.lib glib.def glib.res
-	$(CC) $(CFLAGS) -LD -Fe$@ $(glib_OBJECTS) glib.res $(LIBICONV_LIBS) $(INTL_LIBS) \
-	gnulib\gnulib.lib $(DIRENT_LIBS) user32.lib advapi32.lib shell32.lib wsock32.lib ole32.lib ws2_32.lib \
-	$(LDFLAGS) /implib:glib-2.0.lib /def:glib.def
-
-gspawn-win32-helper.exe : gspawn-win32-helper.c libglib-2.0-@LT_CURRENT_MINUS_AGE@.dll
-	$(CC) $(CFLAGS) -Fe$@ -DG_LOG_DOMAIN=\"gspawn-win32-helper\" gspawn-win32-helper.c glib-2.0.lib $(LDFLAGS) /subsystem:windows user32.lib
-
-################ other stuff
-
-clean::
-	del ..\config.h
-	del ..\glibconfig.h
-
+.c.exe :
+	$(CC) $(CFLAGS) -c $<
+	$(CC) $(CFLAGS) -Fe$@ $< gobject-2.0.lib ..\glib\glib-2.0.lib ..\gmodule\gmodule-2.0.lib $(LDFLAGS) user32.lib /subsystem:console
