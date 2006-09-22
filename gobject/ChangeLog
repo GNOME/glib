@@ -1,3 +1,10 @@
+Fri Sep 22 13:41:02 2006  Tim Janik  <timj@imendio.com>
+
+	* gtype.h: applied patch from Behdad with slight optimization, 
+	fixes #356175.
+
+	* gobjectnotifyqueue.c: fixed include-guard macro name.
+
 Mon Sep 11 12:12:45 2006  Tim Janik  <timj@imendio.com>
 
 	* gparam.c (g_param_spec_sink): reimplemented floating flag handling by
