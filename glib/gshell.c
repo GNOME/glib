@@ -25,13 +25,13 @@
 #include <string.h>
 
 #include "glib.h"
-#include "galias.h"
 
 #ifdef _
 #warning "FIXME remove gettext hack"
 #endif
 
 #include "glibintl.h"
+#include "galias.h"
 
 GQuark
 g_shell_error_quark (void)

@@ -28,7 +28,6 @@
 #include <string.h>
 
 #include "glib.h"
-#include "galias.h"
 
 #ifdef G_PLATFORM_WIN32
 #include <stdio.h>
@@ -40,6 +39,7 @@
 #include "libcharset/libcharset.h"
 
 #include "glibintl.h"
+#include "galias.h"
 
 #define UTF8_COMPUTE(Char, Mask, Len)					      \
   if (Char < 128)							      \

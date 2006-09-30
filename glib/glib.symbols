@@ -1105,6 +1105,7 @@ g_string_down
 g_string_up
 #endif
 #ifdef INCLUDE_INTERNAL_SYMBOLS
+ /* these are not internal, but we don't want to alias them */
 g_string_append_c
 #endif
 g_str_equal

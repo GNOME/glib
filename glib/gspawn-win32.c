@@ -46,6 +46,7 @@
 
 #include "glib.h"
 #include "gprintfint.h"
+#include "glibintl.h"
 #include "galias.h"
 
 #include <string.h>
@@ -66,8 +67,6 @@ int _wspawnvp (int, const wchar_t *, const wchar_t **);
 int _wspawnve (int, const wchar_t *, const wchar_t **, const wchar_t **);
 int _wspawnv (int, const wchar_t *, const wchar_t **);
 #endif
-
-#include "glibintl.h"
 
 #ifdef G_SPAWN_WIN32_DEBUG
   static int debug = 1;

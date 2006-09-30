@@ -27,9 +27,8 @@
 #include <errno.h>
 
 #include "glib.h"
-#include "galias.h"
-
 #include "glibintl.h"
+#include "galias.h"
 
 GQuark
 g_markup_error_quark (void)

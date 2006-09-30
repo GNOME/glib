@@ -36,9 +36,8 @@
 #endif /* HAVE_SYS_SELECT_H */
 
 #include "glib.h"
-#include "galias.h"
-
 #include "glibintl.h"
+#include "galias.h"
 
 static gint g_execute (const gchar  *file,
                        gchar **argv,

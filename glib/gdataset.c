@@ -35,8 +35,8 @@
 #include <string.h>
 
 #include "glib.h"
-#include "galias.h"
 #include "gdatasetprivate.h"
+#include "galias.h"
 
 
 /* --- defines --- */
