@@ -18,7 +18,6 @@
  */
 #include        <config.h>
 #include	"gtype.h"
-#include	"gobjectalias.h"
 
 /*
  * MT safe
@@ -29,6 +28,7 @@
 #include	"gbsearcharray.h"
 #include	<string.h>
 
+#include	"gobjectalias.h"
 
 /* NOTE: some functions (some internal variants and exported ones)
  * invalidate data portions of the TypeNodes. if external functions/callbacks

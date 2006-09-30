@@ -1,3 +1,15 @@
+Sat Sep 30 2006  Matthias Clasen  <mclasen@redhat.com>
+
+	* pltcheck.sh: Script to check PLT entries.
+
+	* Makefile.am (TESTS): Run pltcheck.sh
+
+	* gtype.c:
+	* gsignal.c:
+	* gobject.c:
+	* gvaluetypes.c: Move all includes before gobjectalias.h.
+	(#3545422, Behdad Esfahbod)
+
 Fri Sep 22 13:41:02 2006  Tim Janik  <timj@imendio.com>
 
 	* gtype.h: applied patch from Behdad with slight optimization, 

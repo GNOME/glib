@@ -17,7 +17,6 @@
  * Boston, MA 02111-1307, USA.
  */
 #include	"gobject.h"
-#include	"gobjectalias.h"
 #include        <glib/gdatasetprivate.h>
 
 /*
@@ -28,9 +27,13 @@
 #include	"gsignal.h"
 #include	"gparamspecs.h"
 #include	"gvaluetypes.h"
-#include	"gobjectnotifyqueue.c"
 #include	<string.h>
 #include	<signal.h>
+
+#include	"gobjectalias.h"
+
+/* This should be included after gobjectalias.h (or pltcheck.sh will fail) */
+#include	"gobjectnotifyqueue.c"
 
 
 #define	PREALLOC_CPARAMS	(8)
