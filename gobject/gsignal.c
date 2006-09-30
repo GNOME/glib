@@ -32,6 +32,8 @@
 #include        "gvaluecollector.h"
 #include	"gvaluetypes.h"
 #include	"gboxed.h"
+#include	"gobject.h"
+#include	"genums.h"
 
 #include	"gobjectalias.h"
 
@@ -2605,8 +2607,6 @@ g_signal_accumulator_true_handled (GSignalInvocationHint *ihint,
 }
 
 /* --- compile standard marshallers --- */
-#include	"gobject.h"
-#include	"genums.h"
 #include        "gmarshal.c"
 
 #define __G_SIGNAL_C__

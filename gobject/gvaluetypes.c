@@ -24,6 +24,12 @@
 #include	"gvaluetypes.h"
 
 #include	"gvaluecollector.h"
+
+#include "gobject.h"
+#include "gparam.h"
+#include "gboxed.h"
+#include "genums.h"
+
 #include	"gobjectalias.h"
 #include	<string.h>
 #include	<stdlib.h>	/* qsort() */
@@ -846,12 +852,6 @@ g_value_get_gtype (const GValue *value)
   return value->data[0].v_long;
 }
 
-
-/* need extra includes for g_strdup_value_contents() ;( */
-#include "gobject.h"
-#include "gparam.h"
-#include "gboxed.h"
-#include "genums.h"
 
 gchar*
 g_strdup_value_contents (const GValue *value)
