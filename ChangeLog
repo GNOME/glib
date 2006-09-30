@@ -1,3 +1,11 @@
+2006-09-30  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/pltcheck.sh: A script to check PLT entries.
+	* glib/Makefile.am (TESTS): Run pltcheck.sh
+
+	* glib/*: Fix includes to correct some issues with
+	PLT entries.  (#354522, Behdad Esfahbod)
+
 2006-09-10  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gstdio.c (g_rename): Initialize save_errno.
