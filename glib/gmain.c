@@ -3931,7 +3931,7 @@ g_child_watch_source_init (void)
  * <literal>g_spawn...</literal> when the %G_SPAWN_DO_NOT_REAP_CHILD
  * flag is used.
  *
- * Note that on platforms where #GPid must be explicitely closed
+ * Note that on platforms where #GPid must be explicitly closed
  * (see g_spawn_close_pid()) @pid must not be closed while the
  * source is still active. Typically, you will want to call
  * g_spawn_close_pid() in the callback function for the source.
@@ -3977,7 +3977,7 @@ g_child_watch_source_new (GPid pid)
  * Sets a function to be called when the child indicated by @pid exits, at a
  * default priority, #G_PRIORITY_DEFAULT.
  * 
- * Note that on platforms where #GPid must be explicitely closed
+ * Note that on platforms where #GPid must be explicitly closed
  * (see g_spawn_close_pid()) @pid must not be closed while the
  * source is still active. Typically, you will want to call
  * g_spawn_close_pid() in the callback function for the source.
@@ -4021,7 +4021,7 @@ g_child_watch_add_full (gint            priority,
  * Sets a function to be called when the child indicated by @pid exits, at a
  * default priority, #G_PRIORITY_DEFAULT.
  * 
- * Note that on platforms where #GPid must be explicitely closed
+ * Note that on platforms where #GPid must be explicitly closed
  * (see g_spawn_close_pid()) @pid must not be closed while the
  * source is still active. Typically, you will want to call
  * g_spawn_close_pid() in the callback function for the source.
