@@ -1,3 +1,21 @@
+Overview of Changes from GLib 2.12.3 to GLib 2.12.4
+===================================================
+
+* Fix build problems related to Posix timers.
+
+* Bugs fixed
+ 321974 nanosleep on AIX / g_timer API using high 
+        resolution timers
+ 353584 va_end called on caller supplied va_list
+ 353580 va_copy detection breaks if user sets 
+        CFLAGS=-Werror-implicit-function-declaration
+ 354522 Small problem with PLT hiding 6 symbols
+ 358421 typos in gmain.c
+
+* New and updated translations (bn,bn_IN,dz,el,en_GB,
+  et,fa,hi,hy,it,ka,nn,pt_BR,ro,sl,sr,sr@Latn,ta)
+
+
 Overview of Changes from GLib 2.12.2 to GLib 2.12.3
 ===================================================
 
