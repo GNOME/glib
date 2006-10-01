@@ -1,3 +1,7 @@
+2006-10-01  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/tmpl/option.sgml: Improve example.  (#367625, Ross Burton) 
+
 Mon Sep 11 14:57:46 2006  Tim Janik  <timj@imendio.com>
 
 	* glib/running.sgml: documented G_DEBUG flags resident-modules
