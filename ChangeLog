@@ -1,5 +1,10 @@
 2006-10-01  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gtimer.c (g_usleep): Use nsleep to implement
+	g_usleep on AIX.  (#321974, Andrew Paprocki)
+
+	* configure.in: Check for nsleep
+
 	* glib/gmain.c: Fix typos in doc comments.  
 	(#358421, Tom Tromey)
 
