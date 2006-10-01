@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-30 02:02-0400\n"
+"POT-Creation-Date: 2006-10-01 18:52-0400\n"
 "PO-Revision-Date: 2004-04-29 01:11+0200\n"
 "Last-Translator: Bojan Suzic <bojans@teol.net>\n"
 "Language-Team: Serbian (sr) <serbiagnome-lista@nongnu.org>\n"
@@ -277,24 +277,24 @@ msgstr "Не могу да отворим датотеку „%s“: неусп�
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "Не могу да отворим датотеку „%s“: неуспјешан fdopen(): %s"
 
-#: glib/gmarkup.c:227
+#: glib/gmarkup.c:226
 #, c-format
 msgid "Error on line %d char %d: %s"
 msgstr "Грешка у %d. реду, %d. знак: %s"
 
-#: glib/gmarkup.c:325
+#: glib/gmarkup.c:324
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "Грешка у %d. реду: %s"
 
-#: glib/gmarkup.c:429
+#: glib/gmarkup.c:428
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "Уочен празан ентитет „&;“; прихватљиви ентитети су &amp; &quot; &lt; &gt; "
 "&apos;"
 
-#: glib/gmarkup.c:439
+#: glib/gmarkup.c:438
 #, c-format
 msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
@@ -304,17 +304,17 @@ msgstr ""
 "Име ентитета не може почети знаком „%s“ ; знак & започиње ентитет; ако овај "
 "знак не означава ентитет, истакните га помоћу &amp;"
 
-#: glib/gmarkup.c:473
+#: glib/gmarkup.c:472
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
 msgstr "Знак „%s“ није дозвољен у имену ентитета"
 
-#: glib/gmarkup.c:510
+#: glib/gmarkup.c:509
 #, c-format
 msgid "Entity name '%s' is not known"
 msgstr "Ентитет „%s“ није познат"
 
-#: glib/gmarkup.c:521
+#: glib/gmarkup.c:520
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
@@ -322,7 +322,7 @@ msgstr ""
 "Ентитет се не завршава тачка-запетом; највјероватније сте користили "
 "амперсанд без намере да започнете ентитет — назначите амперсанд као &amp;"
 
-#: glib/gmarkup.c:574
+#: glib/gmarkup.c:573
 #, fuzzy, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
@@ -331,16 +331,16 @@ msgstr ""
 "Нисам успио да рашчланим „%s“, што је требало да представља цифру унутар "
 "позива знака (на пример &#234;) — можда је цифра превелика"
 
-#: glib/gmarkup.c:599
+#: glib/gmarkup.c:598
 #, fuzzy, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
 msgstr "Позив знака „%s“ не стоји за дозвољени знак"
 
-#: glib/gmarkup.c:614
+#: glib/gmarkup.c:613
 msgid "Empty character reference; should include a digit such as &#454;"
 msgstr "Празан позив знака; морао би садржати цифру као на примјер &#747;"
 
-#: glib/gmarkup.c:624
+#: glib/gmarkup.c:623
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -349,26 +349,26 @@ msgstr ""
 "Позив знака се не завршава тачка-запетом; највјероватније сте користили "
 "амперсанд без намере да започнете ентитет — назначите амперсанд као &amp;"
 
-#: glib/gmarkup.c:710
+#: glib/gmarkup.c:709
 msgid "Unfinished entity reference"
 msgstr "Недовршена ознака ентитета"
 
 # позив уместо ознака?
-#: glib/gmarkup.c:716
+#: glib/gmarkup.c:715
 msgid "Unfinished character reference"
 msgstr "Недовршен позив знака"
 
 # ознака знака??? неееее
-#: glib/gmarkup.c:959 glib/gmarkup.c:987 glib/gmarkup.c:1018
+#: glib/gmarkup.c:958 glib/gmarkup.c:986 glib/gmarkup.c:1017
 msgid "Invalid UTF-8 encoded text"
 msgstr "Неисправан текст у УТФ-8 запису"
 
 # може и ћирилица: „Уникод ТрансФормација 8“
-#: glib/gmarkup.c:1054
+#: glib/gmarkup.c:1053
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Документ мора почети елементом (нпр. <књига>)"
 
-#: glib/gmarkup.c:1094
+#: glib/gmarkup.c:1093
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -377,7 +377,7 @@ msgstr ""
 "„%s“ не представља исправан знак након знака „<“; име елемента не може њиме "
 "почети"
 
-#: glib/gmarkup.c:1158
+#: glib/gmarkup.c:1157
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
@@ -386,13 +386,13 @@ msgstr ""
 "Чудан знак „%s“, а очекивао сам „>“ знак ради окончања почетне ознаке "
 "елемента „%s“"
 
-#: glib/gmarkup.c:1247
+#: glib/gmarkup.c:1246
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr "Чудан знак „%s“, очекивао сам „=“ после особине „%s“ елемента „%s“"
 
-#: glib/gmarkup.c:1289
+#: glib/gmarkup.c:1288
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -403,7 +403,7 @@ msgstr ""
 "елемента „%s“, или могућу особину; можда сте користили неисправан знак у "
 "имену особине"
 
-#: glib/gmarkup.c:1378
+#: glib/gmarkup.c:1377
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -412,7 +412,7 @@ msgstr ""
 "Чудан знак „%s“, очекивао сам почетни наводник након знака једнакости при "
 "додјели вриједности особини „%s“ елемента „%s“"
 
-#: glib/gmarkup.c:1523
+#: glib/gmarkup.c:1522
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -420,7 +420,7 @@ msgid ""
 msgstr ""
 "„%s“ није исправан знак након низа „</“; „%s“ не може започети име елемента"
 
-#: glib/gmarkup.c:1563
+#: glib/gmarkup.c:1562
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -429,26 +429,26 @@ msgstr ""
 "„%s“ није исправан знак након имена затвореног елемента „%s“; дозвољени знак "
 "је „>“"
 
-#: glib/gmarkup.c:1574
+#: glib/gmarkup.c:1573
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "Елемент „%s“ је затворен, нема тренутно отворених елемената"
 
-#: glib/gmarkup.c:1583
+#: glib/gmarkup.c:1582
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "Елемент „%s“ је затворен, а тренутно отворен елемент је „%s“"
 
-#: glib/gmarkup.c:1749
+#: glib/gmarkup.c:1748
 msgid "Document was empty or contained only whitespace"
 msgstr "Документ је празан или садржи само бјелине"
 
-#: glib/gmarkup.c:1763
+#: glib/gmarkup.c:1762
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr ""
 "Документ завршен неочекивано непосредно након отворене косоугле заграде „<“"
 
-#: glib/gmarkup.c:1771 glib/gmarkup.c:1815
+#: glib/gmarkup.c:1770 glib/gmarkup.c:1814
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -457,7 +457,7 @@ msgstr ""
 "Документ завршен неочекивано са отвореним елементима — „%s“ је последње "
 "отворен елемент"
 
-#: glib/gmarkup.c:1779
+#: glib/gmarkup.c:1778
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -466,19 +466,19 @@ msgstr ""
 "Документ завршен неочекивано, очекивао сам да наиђем на затворену косоуглу "
 "заграду која затвара ознаку <%s/>"
 
-#: glib/gmarkup.c:1785
+#: glib/gmarkup.c:1784
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Документ завршен неочекивано усред имена елемента"
 
-#: glib/gmarkup.c:1790
+#: glib/gmarkup.c:1789
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Документ завршен неочекивано усред имена особине"
 
-#: glib/gmarkup.c:1795
+#: glib/gmarkup.c:1794
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Документ завршен неочекивано усред почетне ознаке елемента."
 
-#: glib/gmarkup.c:1801
+#: glib/gmarkup.c:1800
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -486,16 +486,16 @@ msgstr ""
 "Документ завршен неочекивано након знака једнакости после имена особине; "
 "вриједност особине није наведена"
 
-#: glib/gmarkup.c:1808
+#: glib/gmarkup.c:1807
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Документ завршен неочекивано усред вриједности особине"
 
-#: glib/gmarkup.c:1823
+#: glib/gmarkup.c:1822
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "Документ завршен неочекивано усред завршне ознаке елемента „%s“"
 
-#: glib/gmarkup.c:1829
+#: glib/gmarkup.c:1828
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "Документ завршен неочекивано усред примедбе или упута за обраду"
 
@@ -526,60 +526,60 @@ msgstr ""
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Садржај празан (или садржи само бјелине)"
 
-#: glib/gspawn-win32.c:273
+#: glib/gspawn-win32.c:272
 #, c-format
 msgid "Failed to read data from child process"
 msgstr "Неуспјело читање података из подређеног процеса"
 
-#: glib/gspawn-win32.c:288 glib/gspawn.c:1361
+#: glib/gspawn-win32.c:287 glib/gspawn.c:1360
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Неуспјело стварање цјевке за везу са подређеним процесом (%s)"
 
-#: glib/gspawn-win32.c:326 glib/gspawn.c:1025
+#: glib/gspawn-win32.c:325 glib/gspawn.c:1024
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Неуспјело читање из подређене цјевке (%s)"
 
-#: glib/gspawn-win32.c:352 glib/gspawn.c:1230
+#: glib/gspawn-win32.c:351 glib/gspawn.c:1229
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Неуспјело приступање директоријуму „%s“ (%s)"
 
-#: glib/gspawn-win32.c:358 glib/gspawn-win32.c:578
+#: glib/gspawn-win32.c:357 glib/gspawn-win32.c:577
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Неуспјело извршавање подређеног процеса (%s)"
 
-#: glib/gspawn-win32.c:468 glib/gspawn-win32.c:524
+#: glib/gspawn-win32.c:467 glib/gspawn-win32.c:523
 #, fuzzy, c-format
 msgid "Invalid program name: %s"
 msgstr "Неисправно име домаћина"
 
-#: glib/gspawn-win32.c:478 glib/gspawn-win32.c:534 glib/gspawn-win32.c:777
-#: glib/gspawn-win32.c:832 glib/gspawn-win32.c:1367
+#: glib/gspawn-win32.c:477 glib/gspawn-win32.c:533 glib/gspawn-win32.c:776
+#: glib/gspawn-win32.c:831 glib/gspawn-win32.c:1366
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr ""
 
-#: glib/gspawn-win32.c:489 glib/gspawn-win32.c:545 glib/gspawn-win32.c:791
-#: glib/gspawn-win32.c:845 glib/gspawn-win32.c:1400
+#: glib/gspawn-win32.c:488 glib/gspawn-win32.c:544 glib/gspawn-win32.c:790
+#: glib/gspawn-win32.c:844 glib/gspawn-win32.c:1399
 #, fuzzy, c-format
 msgid "Invalid string in environment: %s"
 msgstr "Неисправан низ у уносу за претварање"
 
-#: glib/gspawn-win32.c:773 glib/gspawn-win32.c:828 glib/gspawn-win32.c:1348
+#: glib/gspawn-win32.c:772 glib/gspawn-win32.c:827 glib/gspawn-win32.c:1347
 #, fuzzy, c-format
 msgid "Invalid working directory: %s"
 msgstr "Грешка при отварању директоријума „%s“: %s"
 
-#: glib/gspawn-win32.c:887
+#: glib/gspawn-win32.c:886
 #, fuzzy, c-format
 msgid "Failed to execute helper program (%s)"
 msgstr "Неуспјело извршавање помоћног програма"
 
 # Овај превод није психолошке природе :)
-#: glib/gspawn-win32.c:1087
+#: glib/gspawn-win32.c:1086
 #, c-format
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
@@ -588,49 +588,49 @@ msgstr ""
 "Неочекивана грешка док су у g_io_channel_win32_poll() читани подаци од "
 "подређеног процеса"
 
-#: glib/gspawn.c:165
+#: glib/gspawn.c:164
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "Неуспјело читање података од подређеног процеса (%s)"
 
-#: glib/gspawn.c:297
+#: glib/gspawn.c:296
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr ""
 "Неочекивана грешка у select() при читању података од подређеног процеса (%s)"
 
-#: glib/gspawn.c:380
+#: glib/gspawn.c:379
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Неочекивана грешка у waitpid() (%s)"
 
 # за сада овако, можда гранање, умножавање? виљушкање ;-)
-#: glib/gspawn.c:1090
+#: glib/gspawn.c:1089
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Неуспио fork() (%s)"
 
-#: glib/gspawn.c:1240
+#: glib/gspawn.c:1239
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Неуспјело извршавање подређеног процеса „%s“ (%s)"
 
-#: glib/gspawn.c:1250
+#: glib/gspawn.c:1249
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Неуспјело преусмјеравање улаза или излаза подређеног процеса (%s)"
 
-#: glib/gspawn.c:1259
+#: glib/gspawn.c:1258
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Неуспио fork() подређеног процеса (%s)"
 
-#: glib/gspawn.c:1267
+#: glib/gspawn.c:1266
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Непозната грешка при извршавању подређеног процеса „%s“"
 
-#: glib/gspawn.c:1289
+#: glib/gspawn.c:1288
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr ""

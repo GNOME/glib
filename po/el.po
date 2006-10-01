@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: el\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-09-04 13:11+0300\n"
+"POT-Creation-Date: 2006-10-01 18:52-0400\n"
 "PO-Revision-Date: 2006-09-04 13:11+0300\n"
 "Last-Translator: Kostas Papadimas <pkst@gnome.org>\n"
 "Language-Team: Greek <team@gnome.gr>\n"
@@ -21,294 +21,302 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../glib/gbookmarkfile.c:716 ../glib/gbookmarkfile.c:793
-#: ../glib/gbookmarkfile.c:872 ../glib/gbookmarkfile.c:919
+#: glib/gbookmarkfile.c:716 glib/gbookmarkfile.c:793 glib/gbookmarkfile.c:872
+#: glib/gbookmarkfile.c:919
 #, c-format
 msgid "Unexpected attribute '%s' for element '%s'"
 msgstr "Απρόσμενο γνώρισμα '%s' για στοιχείο '%s'"
 
-#: ../glib/gbookmarkfile.c:727 ../glib/gbookmarkfile.c:804
-#: ../glib/gbookmarkfile.c:814 ../glib/gbookmarkfile.c:930
+#: glib/gbookmarkfile.c:727 glib/gbookmarkfile.c:804 glib/gbookmarkfile.c:814
+#: glib/gbookmarkfile.c:930
 #, c-format
 msgid "Attribute '%s' of element '%s' not found"
 msgstr "Το γνώρισμα '%s' του στοιχείου '%s' δεν βρέθηκε"
 
-#: ../glib/gbookmarkfile.c:1103 ../glib/gbookmarkfile.c:1168
-#: ../glib/gbookmarkfile.c:1232 ../glib/gbookmarkfile.c:1242
+#: glib/gbookmarkfile.c:1103 glib/gbookmarkfile.c:1168
+#: glib/gbookmarkfile.c:1232 glib/gbookmarkfile.c:1242
 #, c-format
 msgid "Unexpected tag '%s', tag '%s' expected"
 msgstr "Απρόσμενο tag '%s', tag '%s' αναμενόταν"
 
-#: ../glib/gbookmarkfile.c:1128 ../glib/gbookmarkfile.c:1142
-#: ../glib/gbookmarkfile.c:1210 ../glib/gbookmarkfile.c:1262
+#: glib/gbookmarkfile.c:1128 glib/gbookmarkfile.c:1142
+#: glib/gbookmarkfile.c:1210 glib/gbookmarkfile.c:1262
 #, c-format
 msgid "Unexpected tag '%s' inside '%s'"
 msgstr "Απρόσμενο tag '%s' μέσα στο '%s'"
 
-#: ../glib/gbookmarkfile.c:1792
+#: glib/gbookmarkfile.c:1792
+#, c-format
 msgid "No valid bookmark file found in data dirs"
 msgstr ""
 "Δεν μπορεί να βρεθεί έγκυρο αρχείο σελιδοδείκτη στους καταλόγους δεδομένων"
 
-#: ../glib/gbookmarkfile.c:1993
+#: glib/gbookmarkfile.c:1993
 #, c-format
 msgid "A bookmark for URI '%s' already exists"
 msgstr "Ένας σελιδοδείκτης για το URI '%s' υπάρχει ήδη"
 
-#: ../glib/gbookmarkfile.c:2039 ../glib/gbookmarkfile.c:2196
-#: ../glib/gbookmarkfile.c:2281 ../glib/gbookmarkfile.c:2362
-#: ../glib/gbookmarkfile.c:2447 ../glib/gbookmarkfile.c:2530
-#: ../glib/gbookmarkfile.c:2608 ../glib/gbookmarkfile.c:2687
-#: ../glib/gbookmarkfile.c:2729 ../glib/gbookmarkfile.c:2826
-#: ../glib/gbookmarkfile.c:2952 ../glib/gbookmarkfile.c:3142
-#: ../glib/gbookmarkfile.c:3218 ../glib/gbookmarkfile.c:3371
-#: ../glib/gbookmarkfile.c:3436 ../glib/gbookmarkfile.c:3526
-#: ../glib/gbookmarkfile.c:3653
+#: glib/gbookmarkfile.c:2039 glib/gbookmarkfile.c:2196
+#: glib/gbookmarkfile.c:2281 glib/gbookmarkfile.c:2362
+#: glib/gbookmarkfile.c:2447 glib/gbookmarkfile.c:2530
+#: glib/gbookmarkfile.c:2608 glib/gbookmarkfile.c:2687
+#: glib/gbookmarkfile.c:2729 glib/gbookmarkfile.c:2826
+#: glib/gbookmarkfile.c:2952 glib/gbookmarkfile.c:3142
+#: glib/gbookmarkfile.c:3218 glib/gbookmarkfile.c:3371
+#: glib/gbookmarkfile.c:3436 glib/gbookmarkfile.c:3526
+#: glib/gbookmarkfile.c:3653
 #, c-format
 msgid "No bookmark found for URI '%s'"
 msgstr "Δεν βρέθηκε σελιδοδείκτης για το URI '%s'"
 
-#: ../glib/gbookmarkfile.c:2371
+#: glib/gbookmarkfile.c:2371
 #, c-format
 msgid "No MIME type defined in the bookmark for URI '%s'"
 msgstr "Δεν έχει καθοριστεί τύπος MIME στο σελιδοδείκτη για το  URI '%s'"
 
-#: ../glib/gbookmarkfile.c:2456
+#: glib/gbookmarkfile.c:2456
 #, c-format
 msgid "No private flag has been defined in bookmark for URI '%s'"
 msgstr "Δεν έει ορισθεί ιδιωτική σημαία για το σελιδοδείκτη για το URI '%s'"
 
-#: ../glib/gbookmarkfile.c:2835
+#: glib/gbookmarkfile.c:2835
 #, c-format
 msgid "No groups set in bookmark for URI '%s'"
 msgstr "Δεν έχουν ορισθεί ομάδες στο σελιδοδείκτη για το URI '%s'"
 
-#: ../glib/gbookmarkfile.c:3236 ../glib/gbookmarkfile.c:3381
+#: glib/gbookmarkfile.c:3236 glib/gbookmarkfile.c:3381
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
 msgstr "Δεν υπάρχει εφαρμογή με το όνομα '%s' με σελιδοδείκτη για  '%s'"
 
-#: ../glib/gconvert.c:405 ../glib/gconvert.c:483 ../glib/giochannel.c:1150
+#: glib/gconvert.c:405 glib/gconvert.c:483 glib/giochannel.c:1150
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Η μετατροπή από την ομάδα χαρακτήρων %s' σε '%s'  δεν υποστηρίζεται"
 
-#: ../glib/gconvert.c:409 ../glib/gconvert.c:487
+#: glib/gconvert.c:409 glib/gconvert.c:487
 #, c-format
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "Δεν ήταν δυνατό το άνοιγμα μετατροπέα από  '%s' σε %s'"
 
-#: ../glib/gconvert.c:603 ../glib/gconvert.c:992 ../glib/giochannel.c:1322
-#: ../glib/giochannel.c:1364 ../glib/giochannel.c:2206 ../glib/gutf8.c:943
-#: ../glib/gutf8.c:1392
+#: glib/gconvert.c:603 glib/gconvert.c:992 glib/giochannel.c:1322
+#: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:943
+#: glib/gutf8.c:1392
+#, c-format
 msgid "Invalid byte sequence in conversion input"
 msgstr "Μή έγκυρη σειρά στην είσοδο μετατροπής"
 
 # gconf/gconftool.c:1181
-#: ../glib/gconvert.c:609 ../glib/gconvert.c:919 ../glib/giochannel.c:1329
-#: ../glib/giochannel.c:2218
+#: glib/gconvert.c:609 glib/gconvert.c:919 glib/giochannel.c:1329
+#: glib/giochannel.c:2218
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Σφάλμα κατά τη μετατροπή: %s"
 
-#: ../glib/gconvert.c:644 ../glib/gutf8.c:939 ../glib/gutf8.c:1143
-#: ../glib/gutf8.c:1284 ../glib/gutf8.c:1388
+#: glib/gconvert.c:644 glib/gutf8.c:939 glib/gutf8.c:1143 glib/gutf8.c:1284
+#: glib/gutf8.c:1388
+#, c-format
 msgid "Partial character sequence at end of input"
 msgstr "Ημιτελής σειρά χαρακτήρα στο τέλος της εισόδου"
 
-#: ../glib/gconvert.c:894
+#: glib/gconvert.c:894
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Αδυναμία μετατροπής fallback '%s' σε codeset '%s'"
 
-#: ../glib/gconvert.c:1703
+#: glib/gconvert.c:1703
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr ""
 "Το URI '%s' δεν είναι ένα απόλυτο URI με την χρήση του σχήματος αρχείου"
 
-#: ../glib/gconvert.c:1713
+#: glib/gconvert.c:1713
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Το URI τοπικού αρχείου '%s'  μπορεί να μην περιέχει ένα '#'"
 
-#: ../glib/gconvert.c:1730
+#: glib/gconvert.c:1730
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "Το URI '%s' δεν είναι έγκυρο"
 
-#: ../glib/gconvert.c:1742
+#: glib/gconvert.c:1742
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Το όνομα συστήματος του  URI '%s' δεν είναι έγκυρο"
 
-#: ../glib/gconvert.c:1758
+#: glib/gconvert.c:1758
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "Το URI '%s'  περιέχει χαρακτήρες μή έγκυρα escaped "
 
-#: ../glib/gconvert.c:1853
+#: glib/gconvert.c:1853
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Η όνομα διαδρομής '%s' δεν είναι μια απόλυτη διαδρομή"
 
-#: ../glib/gconvert.c:1863
+#: glib/gconvert.c:1863
+#, c-format
 msgid "Invalid hostname"
 msgstr "Ακατάλληλο όνομα συστήματος"
 
 #
-#: ../glib/gdir.c:121 ../glib/gdir.c:141
+#: glib/gdir.c:121 glib/gdir.c:141
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "Σφάλμα ανοίγματος καταλόγου '%s': %s"
 
 #
-#: ../glib/gfileutils.c:572 ../glib/gfileutils.c:645
+#: glib/gfileutils.c:572 glib/gfileutils.c:645
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Αδύνατη η διάθεση %lu bytes στην ανάγνωση αρχείου \"%s\""
 
 #
-#: ../glib/gfileutils.c:587
+#: glib/gfileutils.c:587
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Σφάλμα ανάγνωσης αρχείου '%s': %s"
 
 # gconf/gconf-internals.c:2416
-#: ../glib/gfileutils.c:669
+#: glib/gfileutils.c:669
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Αποτυχία ανάγνωσης από το αρχείο '%s': %s"
 
 # gconf/gconf-internals.c:2416
-#: ../glib/gfileutils.c:720 ../glib/gfileutils.c:807
+#: glib/gfileutils.c:720 glib/gfileutils.c:807
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Αποτυχία ανοίγματος αρχείου `%s': %s"
 
 # gconf/gconfd.c:1701
-#: ../glib/gfileutils.c:737 ../glib/gmappedfile.c:133
+#: glib/gfileutils.c:737 glib/gmappedfile.c:133
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Αποτυχία λήψης ιδιοτήτων του αρχείου '%s': fstat() απέτυχε: %s"
 
 # gconf/gconf-internals.c:2416
-#: ../glib/gfileutils.c:771
+#: glib/gfileutils.c:771
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Αδυναμία ανοίγματος αρχείου '%s': fdopen() απέτυχε: %s"
 
 # gconf/gconf-internals.c:2416
-#: ../glib/gfileutils.c:905
+#: glib/gfileutils.c:905
 #, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "Αδυναμία μετονομασίας αρχείου%s' σε '%s': g_rename() failed: %s"
 
 # gconf/gconf-internals.c:2416
-#: ../glib/gfileutils.c:946 ../glib/gfileutils.c:1404
+#: glib/gfileutils.c:946 glib/gfileutils.c:1404
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Αποτυχία δημιουργίας αρχείου '%s': %s"
 
 # gconf/gconf-internals.c:2416
-#: ../glib/gfileutils.c:960
+#: glib/gfileutils.c:960
 #, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr "Αδυναμία ανοίγματος αρχείου '%s' για εγγραφή: fdopen() απέτυχε: %s"
 
 # gconf/gconf-internals.c:2416
-#: ../glib/gfileutils.c:985
+#: glib/gfileutils.c:985
 #, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "Αδυναμία εγγραφής αρχείου '%s':  fwrite() failed: %s"
 
 # gconf/gconf-internals.c:2416
-#: ../glib/gfileutils.c:1004
+#: glib/gfileutils.c:1004
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "Αδυναμία κλεισίματος αρχείου '%s': fclose() απέτυχε: %s"
 
-#: ../glib/gfileutils.c:1122
+#: glib/gfileutils.c:1122
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr ""
 "Δεν είναι δυνατή η απομάκρυνση του υπάρχοντος αρχείου '%s': g_unlink() "
 "απέτυχε: %s"
 
-#: ../glib/gfileutils.c:1366
+#: glib/gfileutils.c:1366
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Το πρότυπο '%s' δεν είναι έγκυρο, θα πρέπει να περιέχει ένα '%s'"
 
-#: ../glib/gfileutils.c:1379
+#: glib/gfileutils.c:1379
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "Το πρότυπο '%s' δεν τελειώνει με XXXXXX"
 
 # gconf/gconf-internals.c:2416
-#: ../glib/gfileutils.c:1854
+#: glib/gfileutils.c:1854
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Αποτυχία ανάγνωσης συμβολικού δεσμού '%s': %s"
 
-#: ../glib/gfileutils.c:1875
+#: glib/gfileutils.c:1875
+#, c-format
 msgid "Symbolic links not supported"
 msgstr "Οι συμβολικοί δεσμοί δεν υποστηρίζονται"
 
-#: ../glib/giochannel.c:1154
+#: glib/giochannel.c:1154
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Δεν ήταν δυνατό το άνοιγμα μετατροπέα από  `%s' σε `%s': %s"
 
-#: ../glib/giochannel.c:1499
+#: glib/giochannel.c:1499
+#, c-format
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "Δεν είναι δυνατή η raw ανάγνωση σε  g_io_channel_read_line_string"
 
-#: ../glib/giochannel.c:1546 ../glib/giochannel.c:1803
-#: ../glib/giochannel.c:1889
+#: glib/giochannel.c:1546 glib/giochannel.c:1803 glib/giochannel.c:1889
+#, c-format
 msgid "Leftover unconverted data in read buffer"
 msgstr "Εναπομείναντα δεδομένα που δεν έχουν μετατραπεί στο read buffer"
 
-#: ../glib/giochannel.c:1626 ../glib/giochannel.c:1703
+#: glib/giochannel.c:1626 glib/giochannel.c:1703
+#, c-format
 msgid "Channel terminates in a partial character"
 msgstr "Το κανάλι τερματίζει σε ημιτελή χαρακτήρα"
 
-#: ../glib/giochannel.c:1689
+#: glib/giochannel.c:1689
+#, c-format
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Δεν είναι δυνατή η raw ανάγνωση σε  g_io_channel_read_to_end"
 
 # gconf/gconf-internals.c:2416
-#: ../glib/gmappedfile.c:116
+#: glib/gmappedfile.c:116
 #, c-format
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "Αδυναμία ανοίγματος αρχείου '%s': open() απέτυχε: %s"
 
 # gconf/gconf-internals.c:2416
-#: ../glib/gmappedfile.c:193
+#: glib/gmappedfile.c:193
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "Αδυναμία χαρτογράφησης αρχείου '%s': mmap() απέτυχε: %s"
 
 # gconf/gconfd.c:1676
-#: ../glib/gmarkup.c:227
+#: glib/gmarkup.c:226
 #, c-format
 msgid "Error on line %d char %d: %s"
 msgstr "Σφάλμα στη γραμμή %d χαρακτήρας %d: %s"
 
 #
-#: ../glib/gmarkup.c:325
+#: glib/gmarkup.c:324
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "Σφάλμα στη γραμμή %d: %s"
 
-#: ../glib/gmarkup.c:429
+#: glib/gmarkup.c:428
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "Κενή καταχώρηση  '&;' , έγκυρες οντότητες είναι: &amp; &quot; &lt; &gt; "
 "&apos; "
 
-#: ../glib/gmarkup.c:439
+#: glib/gmarkup.c:438
 #, c-format
 msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
@@ -319,17 +327,17 @@ msgstr ""
 "χαρακτήρας  & ξεκινά μια οντότητα, αν αυτό το συμπλεκτικό σύμβολο σεν "
 "υποτίθεται να είναι οντότητα, escape it as &amp;"
 
-#: ../glib/gmarkup.c:473
+#: glib/gmarkup.c:472
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
 msgstr "Ο χαρακτήρας '%s' δεν είναι έγκυρος μέσα σε όνομα ύπαρξης."
 
-#: ../glib/gmarkup.c:510
+#: glib/gmarkup.c:509
 #, c-format
 msgid "Entity name '%s' is not known"
 msgstr "Το όνομα οντότητας '%s' δεν είναι γνωστή"
 
-#: ../glib/gmarkup.c:521
+#: glib/gmarkup.c:520
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
@@ -338,7 +346,7 @@ msgstr ""
 "συμπλεκτικό χαρακτήρα χωρίς να θέλατε να ξεκινήσετε μια οντότητα - διαφυγή "
 "συμπλεκτικού χαρακτήρα ώς &amp;"
 
-#: ../glib/gmarkup.c:574
+#: glib/gmarkup.c:573
 #, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
@@ -348,16 +356,16 @@ msgstr ""
 "στην αναφορά χαρακτήρα (&#234; για παράδειγμα) - ίσως το ψηφίο να είναι πολύ "
 "μεγάλο"
 
-#: ../glib/gmarkup.c:599
+#: glib/gmarkup.c:598
 #, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
 msgstr "Η αναφορά χαρακτήρα'%-.*s' δεν κωδικοποιεί έναν επιτρεπόμενο χαρακτήρα"
 
-#: ../glib/gmarkup.c:614
+#: glib/gmarkup.c:613
 msgid "Empty character reference; should include a digit such as &#454;"
 msgstr "Κενή αναφορά χαρακτήρα;  πρέπει να περιέχει ένα ψηφίο όπως &#454;"
 
-#: ../glib/gmarkup.c:624
+#: glib/gmarkup.c:623
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -367,23 +375,23 @@ msgstr ""
 "έναν συμπλεκτικό χαρακτήρα χωρίς να θέλατε να ξεκινήσετε μια οντότητα - "
 "διαφυγή συμπλεκτικού χαρακτήρα ώς &amp;"
 
-#: ../glib/gmarkup.c:710
+#: glib/gmarkup.c:709
 msgid "Unfinished entity reference"
 msgstr "Ημιτελής αναφορά οντότητας"
 
-#: ../glib/gmarkup.c:716
+#: glib/gmarkup.c:715
 msgid "Unfinished character reference"
 msgstr "Ημιτελής αναφορά χαρακτήρα"
 
-#: ../glib/gmarkup.c:959 ../glib/gmarkup.c:987 ../glib/gmarkup.c:1018
+#: glib/gmarkup.c:958 glib/gmarkup.c:986 glib/gmarkup.c:1017
 msgid "Invalid UTF-8 encoded text"
 msgstr "Μή έγκυρα κωδικοποιημένο κείμενο UTF-8 "
 
-#: ../glib/gmarkup.c:1054
+#: glib/gmarkup.c:1053
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Το έγγραφο πρέπει να ξεκινάει με στοιχείο  (π.χ. <book>)"
 
-#: ../glib/gmarkup.c:1094
+#: glib/gmarkup.c:1093
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -392,7 +400,7 @@ msgstr ""
 "Το '%s' δεν είναι έγκυρος χαρακτήρας όταν ακολουθείται από ένα χαρακτήρα "
 "'<' ."
 
-#: ../glib/gmarkup.c:1158
+#: glib/gmarkup.c:1157
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
@@ -401,7 +409,7 @@ msgstr ""
 "Περίεργος χαρακτήρας  '%s',  αναμενόταν ένας χαρακτήρας '>'  στο τέλος της "
 "ετικέτας έναρξης του στοιχείου '%s'"
 
-#: ../glib/gmarkup.c:1247
+#: glib/gmarkup.c:1246
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -409,7 +417,7 @@ msgstr ""
 "Περίεργος χαρακτήρας  '%s',  αναμενόταν ένα  '=' μετά το όνομα γνωρίσματος '%"
 "s' του στοιχείου  '%s'"
 
-#: ../glib/gmarkup.c:1289
+#: glib/gmarkup.c:1288
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -420,7 +428,7 @@ msgstr ""
 "της ετικέτας έναρξης του στοιχείου '%s'. ή ένα γνώρισμα, πιθανόν να "
 "χρησιμοποιήσατε ένα μή έγκυρο χαρακτήρα σε ένα όνομα γνωρίσματος"
 
-#: ../glib/gmarkup.c:1378
+#: glib/gmarkup.c:1377
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -429,7 +437,7 @@ msgstr ""
 "Περίεργος χαρακτήρας  '%s',  αναμενόταν ένα ανοικτό εισαγωγικό μετα το "
 "σημείο ίσον κατά την απόδοση τιμής για το γνώρισμα  '%s' του στοιχείου '%s'"
 
-#: ../glib/gmarkup.c:1523
+#: glib/gmarkup.c:1522
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -438,7 +446,7 @@ msgstr ""
 "Το '%s'  δεν είναι έγκυρος χαρακτήρας ακολουθούμενος από χαρακτήρες </'; '%"
 "s' μπορεί να μην αρχίζει όνομα στοιχείου"
 
-#: ../glib/gmarkup.c:1563
+#: glib/gmarkup.c:1562
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -447,27 +455,27 @@ msgstr ""
 "Το '%s'  δεν είναι ένας έγκυρος χαρακτήρας ακολουθούμενος από το όνομα "
 "στοιχείου κλεισίματος '%s'; ο επιτρεπόμενος χαρακτήρας είναι '>'"
 
-#: ../glib/gmarkup.c:1574
+#: glib/gmarkup.c:1573
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "Το στοιχείο '%s'  έκλεισε, κανένα στοιχείο δεν είναι ανοικτό"
 
-#: ../glib/gmarkup.c:1583
+#: glib/gmarkup.c:1582
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "Το στοιχείο '%s'  έκλεισε, αλλά το τρέχον ανοικτό στοιχείο είναι '%s' "
 
-#: ../glib/gmarkup.c:1749
+#: glib/gmarkup.c:1748
 msgid "Document was empty or contained only whitespace"
 msgstr "Το έγγραφο ήταν κενό (ή περιέχει μόνο λευκό κενό)"
 
-#: ../glib/gmarkup.c:1763
+#: glib/gmarkup.c:1762
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr ""
 "Το έγγραφο τερματίστηκε απρόσμενα αμέσως μετά από μια ανοικτή γωνιακή "
 "παρένθεση  '<'"
 
-#: ../glib/gmarkup.c:1771 ../glib/gmarkup.c:1815
+#: glib/gmarkup.c:1770 glib/gmarkup.c:1814
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -476,7 +484,7 @@ msgstr ""
 "Το έγγραφο τερματίστηκε απρόσμενα με στοιχεία ακόμα ανοικτά  - '%s' ήταν το "
 "τελευταίο στοιχείο που ανοίχθηκε"
 
-#: ../glib/gmarkup.c:1779
+#: glib/gmarkup.c:1778
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -485,19 +493,19 @@ msgstr ""
 "Το έγγραφο τερματίστηκε απρόσμενα, αναμενόταν μια παρένθεση κλεισίματος στο "
 "τέλος του tag <%s/>"
 
-#: ../glib/gmarkup.c:1785
+#: glib/gmarkup.c:1784
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Το έγγραφο τερματίστηκε απρόσμενα μέσα σε όνομα στοιχείου"
 
-#: ../glib/gmarkup.c:1790
+#: glib/gmarkup.c:1789
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Το έγγραφο τερματίστηκε απρόσμενα μέσα σε όνομα γνωρίσματος"
 
-#: ../glib/gmarkup.c:1795
+#: glib/gmarkup.c:1794
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Το έγγραφο τερματίστηκε απρόσμενα μέσα σε tag ανοίγματος στοιχείου."
 
-#: ../glib/gmarkup.c:1801
+#: glib/gmarkup.c:1800
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -505,54 +513,58 @@ msgstr ""
 "Το έγγραφο τερματίστηκε απρόσμενα λόγω του ότι μετά του σημείου ίσον "
 "ακολουθεί ένα όνομα γνωρίσματος; δεν υπάρχει τιμή γνωρίσματος"
 
-#: ../glib/gmarkup.c:1808
+#: glib/gmarkup.c:1807
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Το έγγραφο τερματίστηκε απρόσμενα μέσα σε τιμή γνωρίσματος"
 
-#: ../glib/gmarkup.c:1823
+#: glib/gmarkup.c:1822
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr ""
 "Το έγγραφο τερματίστηκε απρόσμενα μέσα σε tag κλεισίματος για στοιχείο '%s'"
 
-#: ../glib/gmarkup.c:1829
+#: glib/gmarkup.c:1828
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "Το έγγραφο τερματίστηκε απρόσμενα μέσα σε σχόλιο ή εντολή σε διεργασία"
 
 # gconf/gconf-internals.c:1577
-#: ../glib/gshell.c:70
+#: glib/gshell.c:70
+#, c-format
 msgid "Quoted text doesn't begin with a quotation mark"
 msgstr "Το παρατιθέμενο αλφαριθμητικό δεν αρχίζει με εισαγωγικό σημείο"
 
-#: ../glib/gshell.c:160
+#: glib/gshell.c:160
+#, c-format
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr ""
 "Αταίριαστο ερωτηματικό στη γραμμή εντολών ή άλλο κείμενο που παρατίθεται από "
 "κέλυφος"
 
-#: ../glib/gshell.c:538
+#: glib/gshell.c:538
 #, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
 msgstr ""
 "Το κείμενο τερματίστηκε αμέσως μετά από χαρακτήρα '\\' (Το κείμενο ήταν  '%"
 "s')"
 
-#: ../glib/gshell.c:545
+#: glib/gshell.c:545
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr ""
 "Το κείμενο τερματίστηκε πριν να βρεθεί ταιριαστή παράθεση για %c. (Το "
 "κείμενο ήταν '%s')"
 
-#: ../glib/gshell.c:557
+#: glib/gshell.c:557
+#, c-format
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Το κείμενο ήταν κενό (ή περιέχει μόνο λευκό κενό)"
 
-#: ../glib/gspawn-win32.c:273
+#: glib/gspawn-win32.c:272
+#, c-format
 msgid "Failed to read data from child process"
 msgstr "Αποτυχία ανάγνωσης δεδομένων από θυγατρική διεργασία"
 
-#: ../glib/gspawn-win32.c:288 ../glib/gspawn.c:1361
+#: glib/gspawn-win32.c:287 glib/gspawn.c:1360
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr ""
@@ -560,53 +572,51 @@ msgstr ""
 "s)"
 
 # gconf/gconftool.c:881
-#: ../glib/gspawn-win32.c:326 ../glib/gspawn.c:1025
+#: glib/gspawn-win32.c:325 glib/gspawn.c:1024
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Αποτυχία ανάγνωσης από θυγατρική σωλήνωση (%s)"
 
-#: ../glib/gspawn-win32.c:352 ../glib/gspawn.c:1230
+#: glib/gspawn-win32.c:351 glib/gspawn.c:1229
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Αποτυχία αλλαγής καταλόγου '%s' (%s)"
 
-#: ../glib/gspawn-win32.c:358 ../glib/gspawn-win32.c:578
+#: glib/gspawn-win32.c:357 glib/gspawn-win32.c:577
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Αποτυχία εκτέλεσης θυγατρικής διεργασίας (%s)"
 
-#: ../glib/gspawn-win32.c:468 ../glib/gspawn-win32.c:524
+#: glib/gspawn-win32.c:467 glib/gspawn-win32.c:523
 #, c-format
 msgid "Invalid program name: %s"
 msgstr "Ακατάλληλο όνομα προγράμματος: %s"
 
-#: ../glib/gspawn-win32.c:478 ../glib/gspawn-win32.c:534
-#: ../glib/gspawn-win32.c:777 ../glib/gspawn-win32.c:832
-#: ../glib/gspawn-win32.c:1367
+#: glib/gspawn-win32.c:477 glib/gspawn-win32.c:533 glib/gspawn-win32.c:776
+#: glib/gspawn-win32.c:831 glib/gspawn-win32.c:1366
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr "Μη έγκυρο όρισμα για %d: %s"
 
-#: ../glib/gspawn-win32.c:489 ../glib/gspawn-win32.c:545
-#: ../glib/gspawn-win32.c:791 ../glib/gspawn-win32.c:845
-#: ../glib/gspawn-win32.c:1400
+#: glib/gspawn-win32.c:488 glib/gspawn-win32.c:544 glib/gspawn-win32.c:790
+#: glib/gspawn-win32.c:844 glib/gspawn-win32.c:1399
 #, c-format
 msgid "Invalid string in environment: %s"
 msgstr "Μή έγκυρη σειρά στο περιβάλλον: %s"
 
 #
-#: ../glib/gspawn-win32.c:773 ../glib/gspawn-win32.c:828
-#: ../glib/gspawn-win32.c:1348
+#: glib/gspawn-win32.c:772 glib/gspawn-win32.c:827 glib/gspawn-win32.c:1347
 #, c-format
 msgid "Invalid working directory: %s"
 msgstr "Μη έγκυρος κατάλογος εργασίας: %s"
 
-#: ../glib/gspawn-win32.c:887
+#: glib/gspawn-win32.c:886
 #, c-format
 msgid "Failed to execute helper program (%s)"
 msgstr "Αποτυχία εκτέλεσης βοηθητικού προγράμματος(%s)"
 
-#: ../glib/gspawn-win32.c:1087
+#: glib/gspawn-win32.c:1086
+#, c-format
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -615,142 +625,148 @@ msgstr ""
 "θυγατρική διεργασία"
 
 # gconf/gconf-internals.c:2416
-#: ../glib/gspawn.c:165
+#: glib/gspawn.c:164
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "Αποτυχία ανάγνωσης δεδομένων από θυγατρική διεργασία (%s)"
 
-#: ../glib/gspawn.c:297
+#: glib/gspawn.c:296
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr ""
 "Απρόσμενο σφάλμα στο select() ανάγνωσης δεδομένων από θυγατρική διεργασία (%"
 "s)"
 
-#: ../glib/gspawn.c:380
+#: glib/gspawn.c:379
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Μη αναμενόμενο σφάλμα στη waitpid() (%s)"
 
 # gconf/gconf-internals.c:2416
-#: ../glib/gspawn.c:1090
+#: glib/gspawn.c:1089
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Αποτυχία δικράνωσης (%s)"
 
 # gconf/gconf-internals.c:2416
-#: ../glib/gspawn.c:1240
+#: glib/gspawn.c:1239
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Αποτυχία εκτέλεσης θυγατρικής διεργασίας \"%s\" (%s)"
 
-#: ../glib/gspawn.c:1250
+#: glib/gspawn.c:1249
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr ""
 "Αποτυχία προώθησης αποτελέσματος ή εισόδου της θυγατρικής διεργασίας (%s)"
 
-#: ../glib/gspawn.c:1259
+#: glib/gspawn.c:1258
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Αποτυχία δικράνωσης θυγατρικής διεργασίάς (%s)"
 
-#: ../glib/gspawn.c:1267
+#: glib/gspawn.c:1266
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Άγνωστο σφάλμα κατά την εκτέλεση της θυγατρικής διεργασίας \"%s\""
 
-#: ../glib/gspawn.c:1289
+#: glib/gspawn.c:1288
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Αποτυχία ανάγνωσης επαρκών δεδομένων από θυγατρική σωλήνωση pid (%s)"
 
-#: ../glib/gutf8.c:1017
+#: glib/gutf8.c:1017
+#, c-format
 msgid "Character out of range for UTF-8"
 msgstr "Ο χαρακτήρας είναι έξω από την εμβέλεια για UTF-8"
 
-#: ../glib/gutf8.c:1111 ../glib/gutf8.c:1120 ../glib/gutf8.c:1252
-#: ../glib/gutf8.c:1261 ../glib/gutf8.c:1402 ../glib/gutf8.c:1498
+#: glib/gutf8.c:1111 glib/gutf8.c:1120 glib/gutf8.c:1252 glib/gutf8.c:1261
+#: glib/gutf8.c:1402 glib/gutf8.c:1498
+#, c-format
 msgid "Invalid sequence in conversion input"
 msgstr "Μή έγκυρη σειρά στην είσοδο μεταροπής"
 
-#: ../glib/gutf8.c:1413 ../glib/gutf8.c:1509
+#: glib/gutf8.c:1413 glib/gutf8.c:1509
+#, c-format
 msgid "Character out of range for UTF-16"
 msgstr "Ο χαρακτήρας είναι έξω από την εμβέλεια για UTF-16"
 
-#: ../glib/goption.c:495
+#: glib/goption.c:495
 msgid "Usage:"
 msgstr "Χρήση:"
 
-#: ../glib/goption.c:495
+#: glib/goption.c:495
 msgid "[OPTION...]"
 msgstr "[ΕΠΙΛΟΓΗ...]"
 
-#: ../glib/goption.c:586
+#: glib/goption.c:586
 msgid "Help Options:"
 msgstr "Επιλογές βοήθειας:"
 
-#: ../glib/goption.c:587
+#: glib/goption.c:587
 msgid "Show help options"
 msgstr "Εμφάνιση επιλογών βοήθειας"
 
-#: ../glib/goption.c:592
+#: glib/goption.c:592
 msgid "Show all help options"
 msgstr "Εμφάνιση όλων των επιλογών βοήθειας"
 
-#: ../glib/goption.c:642
+#: glib/goption.c:642
 msgid "Application Options:"
 msgstr "Επιλογές εφαρμογής:"
 
-#: ../glib/goption.c:686 ../glib/goption.c:756
+#: glib/goption.c:686 glib/goption.c:756
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "Αδυναμία ανάλυσης integer value '%s' για %s"
 
-#: ../glib/goption.c:696 ../glib/goption.c:764
+#: glib/goption.c:696 glib/goption.c:764
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "Integer value '%s' για %s είναι εκτός εύρους"
 
-#: ../glib/goption.c:721
+#: glib/goption.c:721
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "Αδυναμία ανάλυσης διπλής τιμής '%s' για %s"
 
-#: ../glib/goption.c:729
+#: glib/goption.c:729
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "Η διπλή τιμή '%s' για %s είναι εκτός εύρους"
 
 # gconf/gconftool.c:1181
-#: ../glib/goption.c:1066
+#: glib/goption.c:1066
 #, c-format
 msgid "Error parsing option %s"
 msgstr "Σφάλμα επιλογής ανάλυσης %s"
 
-#: ../glib/goption.c:1097 ../glib/goption.c:1208
+#: glib/goption.c:1097 glib/goption.c:1208
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Λείπει όρισμα για %s"
 
-#: ../glib/goption.c:1597
+#: glib/goption.c:1597
 #, c-format
 msgid "Unknown option %s"
 msgstr "Άγνωστη επιλογή %s"
 
-#: ../glib/gkeyfile.c:337
+#: glib/gkeyfile.c:337
+#, c-format
 msgid "Valid key file could not be found in data dirs"
 msgstr "Δεν μπορεί να βρεθεί έγκυρο key file στους καταλόγους δεδομένων"
 
-#: ../glib/gkeyfile.c:372
+#: glib/gkeyfile.c:372
+#, c-format
 msgid "Not a regular file"
 msgstr "Δεν είναι κανονικό αρχείο"
 
-#: ../glib/gkeyfile.c:380
+#: glib/gkeyfile.c:380
+#, c-format
 msgid "File is empty"
 msgstr "Το αρχείο είναι κενό"
 
-#: ../glib/gkeyfile.c:696
+#: glib/gkeyfile.c:696
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
@@ -758,38 +774,39 @@ msgstr ""
 "Το Key file περιέχει την γραμμή '%s' που δεν είναι key-value pair, group, ή "
 "comment"
 
-#: ../glib/gkeyfile.c:767
+#: glib/gkeyfile.c:767
+#, c-format
 msgid "Key file does not start with a group"
 msgstr "Το Key file δεν ξεκινάει με μια ομάδα"
 
-#: ../glib/gkeyfile.c:811
+#: glib/gkeyfile.c:811
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "Το Key file περιέχει μη υποστηριζόμενη κωδικοποίηση '%s'"
 
-#: ../glib/gkeyfile.c:1020 ../glib/gkeyfile.c:1179 ../glib/gkeyfile.c:2398
-#: ../glib/gkeyfile.c:2463 ../glib/gkeyfile.c:2582 ../glib/gkeyfile.c:2717
-#: ../glib/gkeyfile.c:2870 ../glib/gkeyfile.c:3046 ../glib/gkeyfile.c:3103
+#: glib/gkeyfile.c:1020 glib/gkeyfile.c:1179 glib/gkeyfile.c:2398
+#: glib/gkeyfile.c:2463 glib/gkeyfile.c:2582 glib/gkeyfile.c:2717
+#: glib/gkeyfile.c:2870 glib/gkeyfile.c:3046 glib/gkeyfile.c:3103
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Το Key file δεν έχει ομάδα '%s'"
 
-#: ../glib/gkeyfile.c:1191
+#: glib/gkeyfile.c:1191
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "Το Key file δεν έχει κλειδί'%s'"
 
-#: ../glib/gkeyfile.c:1293 ../glib/gkeyfile.c:1405
+#: glib/gkeyfile.c:1293 glib/gkeyfile.c:1405
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "Το Key file περιέχει ένα κλειδί '%s' με τιμή '%s' που δεν είναι UTF-8"
 
-#: ../glib/gkeyfile.c:1313 ../glib/gkeyfile.c:1425 ../glib/gkeyfile.c:1797
+#: glib/gkeyfile.c:1313 glib/gkeyfile.c:1425 glib/gkeyfile.c:1797
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "Το Key file περιέχει key '%s' που η τιμή του δεν μπορεί να ερμηνευθεί."
 
-#: ../glib/gkeyfile.c:2013 ../glib/gkeyfile.c:2226
+#: glib/gkeyfile.c:2013 glib/gkeyfile.c:2226
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -798,36 +815,37 @@ msgstr ""
 "Το Key file περιέχει  key '%s' στην ομάδα '%s' που η τιμή του δεν μπορεί να "
 "ερμηνευθεί."
 
-#: ../glib/gkeyfile.c:2413 ../glib/gkeyfile.c:2597 ../glib/gkeyfile.c:3114
+#: glib/gkeyfile.c:2413 glib/gkeyfile.c:2597 glib/gkeyfile.c:3114
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Το Key file δεν έχει  key '%s' στην ομάδα '%s'"
 
-#: ../glib/gkeyfile.c:3287
+#: glib/gkeyfile.c:3287
+#, c-format
 msgid "Key file contains escape character at end of line"
 msgstr "Το Key file περιέχει escape character στο τέλος της γραμμής"
 
-#: ../glib/gkeyfile.c:3309
+#: glib/gkeyfile.c:3309
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "To Key file περιέχει χαρακτήρες μή έγκυρα escaped '%s'"
 
-#: ../glib/gkeyfile.c:3451
+#: glib/gkeyfile.c:3451
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Η τιμή '%s' δεν μπορεί να ερμηνευθεί ως ένας αριθμός."
 
-#: ../glib/gkeyfile.c:3465
+#: glib/gkeyfile.c:3465
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "Integer value '%s' είναι εκτός εύρους"
 
-#: ../glib/gkeyfile.c:3498
+#: glib/gkeyfile.c:3498
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "Η τιμή '%s' δεν μπορεί να ερμηνευθεί ως ένας κινητός αριθμός."
 
-#: ../glib/gkeyfile.c:3525
+#: glib/gkeyfile.c:3525
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Η τιμή '%s' δεν μπορεί να ερμηνευθεί ως  boolean."

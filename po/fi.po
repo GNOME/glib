@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-30 02:02-0400\n"
+"POT-Creation-Date: 2006-10-01 18:52-0400\n"
 "PO-Revision-Date: 2006-08-09 15:58+0300\n"
 "Last-Translator: Ilkka Tuohela <hile@iki.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
@@ -281,24 +281,24 @@ msgstr "Tiedoston \"%s\" avaaminen epäonnistui: open() epäonnistui: %s"
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "Tiedoston \"%s\" mappaaminen epäonnistui: mmap() epäonnistui: %s"
 
-#: glib/gmarkup.c:227
+#: glib/gmarkup.c:226
 #, c-format
 msgid "Error on line %d char %d: %s"
 msgstr "Virhe rivillä %d, kohdassa %d: %s"
 
-#: glib/gmarkup.c:325
+#: glib/gmarkup.c:324
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "Virhe rivillä %d: %s"
 
-#: glib/gmarkup.c:429
+#: glib/gmarkup.c:428
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "Havaittu tyhjä entiteetti \"&;\"; kelvolliset ovat: &amp; &quot; &lt; &gt; "
 "&apos;"
 
-#: glib/gmarkup.c:439
+#: glib/gmarkup.c:438
 #, c-format
 msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
@@ -309,17 +309,17 @@ msgstr ""
 "entiteetin. Jos tämän &-merkin ei ole tarkoitus olla entiteetti, käytä "
 "merkintää &amp;"
 
-#: glib/gmarkup.c:473
+#: glib/gmarkup.c:472
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
 msgstr "Merkki \"%s\" ei ole kelvollinen entiteetin nimessä"
 
-#: glib/gmarkup.c:510
+#: glib/gmarkup.c:509
 #, c-format
 msgid "Entity name '%s' is not known"
 msgstr "Entiteetin nimi \"%s\" on tuntematon"
 
-#: glib/gmarkup.c:521
+#: glib/gmarkup.c:520
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
@@ -327,7 +327,7 @@ msgstr ""
 "Entiteetti ei päättynyt puolipisteeseen; todennäköisesti käytit &-merkkiä "
 "aikomatta aloittaa entiteettiä - käytä merkintää &amp;"
 
-#: glib/gmarkup.c:574
+#: glib/gmarkup.c:573
 #, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
@@ -336,16 +336,16 @@ msgstr ""
 "Merkkijonon \"%-.*s\" piti olla luku merkkiviitteen sisällä (esim. &#234;), "
 "mutta sen jäsentäminen epäonnistui - ehkä luku on liian suuri"
 
-#: glib/gmarkup.c:599
+#: glib/gmarkup.c:598
 #, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
 msgstr "Merkkiviite \"%-.*s\" ei ole sallitun merkin koodaus"
 
-#: glib/gmarkup.c:614
+#: glib/gmarkup.c:613
 msgid "Empty character reference; should include a digit such as &#454;"
 msgstr "Tyhjä merkkiviite; viitteen tulee sisältää luku, esim &#454;"
 
-#: glib/gmarkup.c:624
+#: glib/gmarkup.c:623
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -354,23 +354,23 @@ msgstr ""
 "Merkkiviite ei päättynyt puolipisteeseen; todennäköisesti käytit &-merkkiä "
 "aikomatta aloittaa entiteettiä - käytä merkintää &amp;"
 
-#: glib/gmarkup.c:710
+#: glib/gmarkup.c:709
 msgid "Unfinished entity reference"
 msgstr "Päättämätön entiteettiviite"
 
-#: glib/gmarkup.c:716
+#: glib/gmarkup.c:715
 msgid "Unfinished character reference"
 msgstr "Päättämätön merkkiviite"
 
-#: glib/gmarkup.c:959 glib/gmarkup.c:987 glib/gmarkup.c:1018
+#: glib/gmarkup.c:958 glib/gmarkup.c:986 glib/gmarkup.c:1017
 msgid "Invalid UTF-8 encoded text"
 msgstr "Virheellinen UTF-8-merkistöinen teksti"
 
-#: glib/gmarkup.c:1054
+#: glib/gmarkup.c:1053
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Asiakirjan on alettava elementillä (esim. <kirja>)"
 
-#: glib/gmarkup.c:1094
+#: glib/gmarkup.c:1093
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -379,7 +379,7 @@ msgstr ""
 "\"%s\" ei ole kelvollinen merkki \"<\"-merkin jälkeen; se ei voi aloittaa "
 "elementin nimeä"
 
-#: glib/gmarkup.c:1158
+#: glib/gmarkup.c:1157
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
@@ -388,7 +388,7 @@ msgstr ""
 "Pariton merkki \"%s\", odotettiin \">\"-merkkiä päättämään elementin \"%s\" "
 "alkulippu"
 
-#: glib/gmarkup.c:1247
+#: glib/gmarkup.c:1246
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -396,7 +396,7 @@ msgstr ""
 "Pariton merkki \"%1$s\", odotettiin \"=\"-merkkiä elementin \"%3$s\" "
 "ominaisuuden \"%2$s\" jälkeen"
 
-#: glib/gmarkup.c:1289
+#: glib/gmarkup.c:1288
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -407,7 +407,7 @@ msgstr ""
 "elementin \"%s\" aloituslippu, tai mahdollista ominaisuutta; käytit ehkä "
 "ominaisuuden nimessä siihen kelpaamatonta merkkiä"
 
-#: glib/gmarkup.c:1378
+#: glib/gmarkup.c:1377
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -416,7 +416,7 @@ msgstr ""
 "Pariton merkki \"%1$s\", odotettiin avaavaa lainausmerkkiä yhtäsuuruusmerkin "
 "jälkeen annettaessa elementin \"%3$s\" ominaisuuden \"%2$s\" arvoa"
 
-#: glib/gmarkup.c:1523
+#: glib/gmarkup.c:1522
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -425,7 +425,7 @@ msgstr ""
 "\"%s\" ei ole kelvollinen merkki merkkien \"</\" jälkeen; \"%s\" ei voi olla "
 "elementin nimen alussa"
 
-#: glib/gmarkup.c:1563
+#: glib/gmarkup.c:1562
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -434,28 +434,28 @@ msgstr ""
 "\"%s\" ei ole kelvollinen merkki sulkuelementin \"%s\" jälkeen; sallittu "
 "merkki on \">\""
 
-#: glib/gmarkup.c:1574
+#: glib/gmarkup.c:1573
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "Elementti \"%s\" on suljettu, ei avoimia elementtejä"
 
-#: glib/gmarkup.c:1583
+#: glib/gmarkup.c:1582
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr ""
 "Elementti \"%s\" on suljettu, mutta tällä hetkellä on avoinna elementti \"%s"
 "\""
 
-#: glib/gmarkup.c:1749
+#: glib/gmarkup.c:1748
 msgid "Document was empty or contained only whitespace"
 msgstr "Asiakirja oli tyhjä tai sisälsi vain tyhjiä merkkejä"
 
-#: glib/gmarkup.c:1763
+#: glib/gmarkup.c:1762
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr ""
 "Asiakirja loppui odottamattomasti heti avoimen kulmasulkeen \"<\" jälkeen"
 
-#: glib/gmarkup.c:1771 glib/gmarkup.c:1815
+#: glib/gmarkup.c:1770 glib/gmarkup.c:1814
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -464,7 +464,7 @@ msgstr ""
 "Asiakirja loppui odottamattomasti elementtien ollessa sulkematta - \"%s\" "
 "oli viimeinen avattu elementti"
 
-#: glib/gmarkup.c:1779
+#: glib/gmarkup.c:1778
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -473,19 +473,19 @@ msgstr ""
 "Asiakirja loppui odottamattomasti, odotettiin lipun <%s/> sulkevaa "
 "kulmasuljetta"
 
-#: glib/gmarkup.c:1785
+#: glib/gmarkup.c:1784
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Asiakirja loppui odottamattomasti elementin nimen kohdalla"
 
-#: glib/gmarkup.c:1790
+#: glib/gmarkup.c:1789
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Asiakirja loppui odottamattomasti ominaisuuden nimen kohdalla"
 
-#: glib/gmarkup.c:1795
+#: glib/gmarkup.c:1794
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Asiakirja loppui odottamattomasti elementin avauslipun kohdalla"
 
-#: glib/gmarkup.c:1801
+#: glib/gmarkup.c:1800
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -493,16 +493,16 @@ msgstr ""
 "Asiakirja loppui odottamattomasti ominaisuuden nimen jälkeisen "
 "yhtäsuuruusmerkin jälkeen; ominaisuudella ei ole arvoa"
 
-#: glib/gmarkup.c:1808
+#: glib/gmarkup.c:1807
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Asiakirja loppui odottamattomasti ominaisuuden arvon kohdalla"
 
-#: glib/gmarkup.c:1823
+#: glib/gmarkup.c:1822
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "Asiakirja loppui odottamattomasti elementin \"%s\" sulkulipun kohdalla"
 
-#: glib/gmarkup.c:1829
+#: glib/gmarkup.c:1828
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Asiakirja loppui odottamattomasti kommentin tai käsittelykomennon kohdalla"
@@ -535,60 +535,60 @@ msgstr ""
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Teksti oli tyhjä (tai sisälsi vain tyhjiä merkkejä)"
 
-#: glib/gspawn-win32.c:273
+#: glib/gspawn-win32.c:272
 #, c-format
 msgid "Failed to read data from child process"
 msgstr "Datan lukeminen lapsiprosessilta epäonnistui"
 
-#: glib/gspawn-win32.c:288 glib/gspawn.c:1361
+#: glib/gspawn-win32.c:287 glib/gspawn.c:1360
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr ""
 "Putken luominen lapsiprosessin kanssa viestintää varten epäonnistui (%s)"
 
-#: glib/gspawn-win32.c:326 glib/gspawn.c:1025
+#: glib/gspawn-win32.c:325 glib/gspawn.c:1024
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Lukeminen lapsiprosessin putkesta epäonnistui (%s)"
 
-#: glib/gspawn-win32.c:352 glib/gspawn.c:1230
+#: glib/gspawn-win32.c:351 glib/gspawn.c:1229
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Hakemistoon \"%s\" siirtyminen epäonnistui (%s)"
 
-#: glib/gspawn-win32.c:358 glib/gspawn-win32.c:578
+#: glib/gspawn-win32.c:357 glib/gspawn-win32.c:577
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Lapsiprosessin käynnistys epäonnistui (%s)"
 
-#: glib/gspawn-win32.c:468 glib/gspawn-win32.c:524
+#: glib/gspawn-win32.c:467 glib/gspawn-win32.c:523
 #, c-format
 msgid "Invalid program name: %s"
 msgstr "Virheellinen ohjelman nimi: %s"
 
-#: glib/gspawn-win32.c:478 glib/gspawn-win32.c:534 glib/gspawn-win32.c:777
-#: glib/gspawn-win32.c:832 glib/gspawn-win32.c:1367
+#: glib/gspawn-win32.c:477 glib/gspawn-win32.c:533 glib/gspawn-win32.c:776
+#: glib/gspawn-win32.c:831 glib/gspawn-win32.c:1366
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr "Virheellinen merkkijono argumenttivektorin kohdassa %d: %s"
 
-#: glib/gspawn-win32.c:489 glib/gspawn-win32.c:545 glib/gspawn-win32.c:791
-#: glib/gspawn-win32.c:845 glib/gspawn-win32.c:1400
+#: glib/gspawn-win32.c:488 glib/gspawn-win32.c:544 glib/gspawn-win32.c:790
+#: glib/gspawn-win32.c:844 glib/gspawn-win32.c:1399
 #, c-format
 msgid "Invalid string in environment: %s"
 msgstr "Virheellinen merkkijono ympäristössä: %s"
 
-#: glib/gspawn-win32.c:773 glib/gspawn-win32.c:828 glib/gspawn-win32.c:1348
+#: glib/gspawn-win32.c:772 glib/gspawn-win32.c:827 glib/gspawn-win32.c:1347
 #, c-format
 msgid "Invalid working directory: %s"
 msgstr "Virhe työhakemisto: %s"
 
-#: glib/gspawn-win32.c:887
+#: glib/gspawn-win32.c:886
 #, c-format
 msgid "Failed to execute helper program (%s)"
 msgstr "Apuohjelman suoritus epäonnistui (%s)"
 
-#: glib/gspawn-win32.c:1087
+#: glib/gspawn-win32.c:1086
 #, c-format
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
@@ -597,48 +597,48 @@ msgstr ""
 "Odottamaton virhe funktiossa g_io_channel_win32_poll() luettaessa dataa "
 "lapsiprosessilta"
 
-#: glib/gspawn.c:165
+#: glib/gspawn.c:164
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "Datan lukeminen lapsiprosessilta epäonnistui (%s)"
 
-#: glib/gspawn.c:297
+#: glib/gspawn.c:296
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr ""
 "Odottamaton virhe funktiossa select() lapsiprosessilta dataa luettaessa (%s)"
 
-#: glib/gspawn.c:380
+#: glib/gspawn.c:379
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Odottamaton virhe funktiossa waitpid() (%s)"
 
-#: glib/gspawn.c:1090
+#: glib/gspawn.c:1089
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Haarauttaminen epäonnistui (%s)"
 
-#: glib/gspawn.c:1240
+#: glib/gspawn.c:1239
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Lapsiprosessin \"%s\" käynnistäminen epäonnistui (%s)"
 
-#: glib/gspawn.c:1250
+#: glib/gspawn.c:1249
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Lapsiprosessin tulosteen tai syötteen uudelleenohjaus epäonnistui (%s)"
 
-#: glib/gspawn.c:1259
+#: glib/gspawn.c:1258
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Lapsiprosessin haarauttaminen epäonnistui (%s)"
 
-#: glib/gspawn.c:1267
+#: glib/gspawn.c:1266
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Tuntematon virhe käynnistettäessä lapsiprosessia \"%s\""
 
-#: glib/gspawn.c:1289
+#: glib/gspawn.c:1288
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Lapsiprosessin pid-putkesta ei voitu lukea riittävästi dataa (%s)"

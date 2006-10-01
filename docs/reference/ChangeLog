@@ -1,4 +1,8 @@
 2006-10-01  Matthias Clasen  <mclasen@redhat.com>
+	
+	* === Released 2.12.4 ===
+
+2006-10-01  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/tmpl/option.sgml: Improve example.  (#367625, Ross Burton)
 

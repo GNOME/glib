@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLIB\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-30 02:02-0400\n"
+"POT-Creation-Date: 2006-10-01 18:52-0400\n"
 "PO-Revision-Date: 2004-12-13 20:16+0100\n"
 "Last-Translator: రమణ సాయి <rmn_sai@yahoo.com>\n"
 "Language-Team: Free Software Foundation, Andhra Pradesh <fsfap@gnu.org.in>\n"
@@ -274,22 +274,22 @@ msgstr "దస్త్రం '%s' తెరుచుటలో విఫలమ�
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "దస్త్రం '%s' తెరుచుటలో విఫలమైనారు: ఎఫ్ డిఓపన్()  విఫలమైనది: %s"
 
-#: glib/gmarkup.c:227
+#: glib/gmarkup.c:226
 #, c-format
 msgid "Error on line %d char %d: %s"
 msgstr " %d క్యార్ %d వరుసలో దోషం కలదు  : %s"
 
-#: glib/gmarkup.c:325
+#: glib/gmarkup.c:324
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "%d  వరుసలో దోషం కలదు : %s"
 
-#: glib/gmarkup.c:429
+#: glib/gmarkup.c:428
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr " ఖాశి వ్యష్టి '&;' చూడబడినది;  వర్తించు వ్యష్టిలు: &amp; &quot; &lt; &gt; &apos;"
 
-#: glib/gmarkup.c:439
+#: glib/gmarkup.c:438
 #, c-format
 msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
@@ -299,17 +299,17 @@ msgstr ""
 "  వ్యష్టినామముతో ప్రారంభమగు అక్షరము '%s' నిస్సారము; వ్యష్టి & అక్షరముతో ప్రారంభమగును;వ్యష్టి "
 "ప్రారంబమగును; ఒక వేశ ఆంపర్సండ్ ఊహించిన విధంగా వ్యష్టి కాకపోతే , ఎస్కేప్it as &amp;"
 
-#: glib/gmarkup.c:473
+#: glib/gmarkup.c:472
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
 msgstr " వ్యష్టినామంలో అక్షరము '%s' నిస్సారము "
 
-#: glib/gmarkup.c:510
+#: glib/gmarkup.c:509
 #, c-format
 msgid "Entity name '%s' is not known"
 msgstr " '%s' వ్యష్టి నామం తెలియదు "
 
-#: glib/gmarkup.c:521
+#: glib/gmarkup.c:520
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
@@ -317,7 +317,7 @@ msgstr ""
 " వ్యష్టి సెమికోలన్ తో పూర్తవలేదు; దాదాపుగా యాంపర్ సెండ్ ఉపయెగించవలెను  అక్షరము దాదాపుగా  -' ఎస్కేప్ "
 "యంపర్ సెండ్ యాజ్ &యాంప్;' తో ప్రారంభమవలేదు. "
 
-#: glib/gmarkup.c:574
+#: glib/gmarkup.c:573
 #, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
@@ -326,16 +326,16 @@ msgstr ""
 "అక్షరములో అంకె కలిగియున్నందువలన '%-.*s', పార్సింగ్ విఫలమైనది.దాదాపుగా అంక్య భారీగా ఉన్నది -నివేదన "
 "(ఉదాహరణకు : &#234; )"
 
-#: glib/gmarkup.c:599
+#: glib/gmarkup.c:598
 #, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
 msgstr "అక్షర నివేదన '%-.*s' అనుమతించబడిన అక్షరము ఎన్ కోడ్ అవ్వదు."
 
-#: glib/gmarkup.c:614
+#: glib/gmarkup.c:613
 msgid "Empty character reference; should include a digit such as &#454;"
 msgstr " ఖాళీ అక్షర నివేదన తప్పనిసరిగా &#454 ఈ సంఖ్యను కలుపుకొనవలెను"
 
-#: glib/gmarkup.c:624
+#: glib/gmarkup.c:623
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -344,23 +344,23 @@ msgstr ""
 "అక్షర నివేదన సెమికోలన్ తో ముగియలేదు; దాదాపుగా యిది ఉపయెగించండి యాంపర్ సెండ్ అక్షరం తో ప్రారంభమవరాదు - "
 "ఎస్సేప్ యాంపర్ సెండ్ యాజ్ &యాంప్ "
 
-#: glib/gmarkup.c:710
+#: glib/gmarkup.c:709
 msgid "Unfinished entity reference"
 msgstr " పూర్తికాని వ్యష్టినివెదన  "
 
-#: glib/gmarkup.c:716
+#: glib/gmarkup.c:715
 msgid "Unfinished character reference"
 msgstr " అక్షర నివేదన పూర్తికాలేదు "
 
-#: glib/gmarkup.c:959 glib/gmarkup.c:987 glib/gmarkup.c:1018
+#: glib/gmarkup.c:958 glib/gmarkup.c:986 glib/gmarkup.c:1017
 msgid "Invalid UTF-8 encoded text"
 msgstr "నిస్సారమైన యుటిఎఫ్-8 ఎన్ కోడెడ్ పాఠం"
 
-#: glib/gmarkup.c:1054
+#: glib/gmarkup.c:1053
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "పత్రం తప్పనిసరిగా ఒక మూలకంతో ప్రారంభమవలెను (ఉదా. <బుక్>)"
 
-#: glib/gmarkup.c:1094
+#: glib/gmarkup.c:1093
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -368,20 +368,20 @@ msgid ""
 msgstr ""
 "  '<' తో ప్రారంభమగు '%s' అనునది సరరిఐన అక్షరం కాదు ; యిది మూలక నామంతో ప్రారంభమవలేదు.  "
 
-#: glib/gmarkup.c:1158
+#: glib/gmarkup.c:1157
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
 "'%s'"
 msgstr "బేసి అక్షరము '%s', ఊహించిన '>' అక్షరము చివరి ప్రారంభ బొందు మూతకం '%s'"
 
-#: glib/gmarkup.c:1247
+#: glib/gmarkup.c:1246
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr "బేసి అక్షరము '%s', ఊహించిన '=' తర్వాత '%s'  ఆపాదించు నామం '%s' మూలకం "
 
-#: glib/gmarkup.c:1289
+#: glib/gmarkup.c:1288
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -391,7 +391,7 @@ msgstr ""
 "'%s' ఊహించిన బేసి అక్షరము '>' లేక '/' చివరి ర్రంభ బొందు అక్షరము మాలకం %sలేక ఇచ్చాపూర్వక "
 "ఆపాదన; దాదాపుగా ఆపాదన నామంలో అనర్హమైన అక్షరం ఉపమెగించినావు"
 
-#: glib/gmarkup.c:1378
+#: glib/gmarkup.c:1377
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -399,14 +399,14 @@ msgid ""
 msgstr ""
 "బేసి అక్షరము '%s', ఊహించిన తెరచిన క్వోట్ చిహ్నం తరాత ఇచ్చిన ఆపాదన విలువ  '%s' మూతకము '%s'"
 
-#: glib/gmarkup.c:1523
+#: glib/gmarkup.c:1522
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 msgstr "  '</' వెంటనే ప్రారంభమగు '%s' నిసారమైన అక్షరము  ; '%s' తో మూలకనామం ప్రారంభమవరాదు "
 
-#: glib/gmarkup.c:1563
+#: glib/gmarkup.c:1562
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -415,26 +415,26 @@ msgstr ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 
-#: glib/gmarkup.c:1574
+#: glib/gmarkup.c:1573
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr " '%s' మూలకం మూయబడినది, ప్రస్ధుతం ఏ మూలకము తెరచియుండలెదు "
 
 # ../glib/gmarkup.c:1588
-#: glib/gmarkup.c:1583
+#: glib/gmarkup.c:1582
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "'%s' మూలకం మూయబడినది, కాని ప్రస్ధుతం తెరువ బడిన మూలకం '%s'"
 
-#: glib/gmarkup.c:1749
+#: glib/gmarkup.c:1748
 msgid "Document was empty or contained only whitespace"
 msgstr " పత్రం ఖాలిగా ఉన్నది లేక ఒక వైట్ స్పేస్ కలిగి యున్నది.  "
 
-#: glib/gmarkup.c:1763
+#: glib/gmarkup.c:1762
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "పత్రం చివర కోణ కుండలీకరణము'<' వెంటనె అనవసరముగా ముగింపు అయినది"
 
-#: glib/gmarkup.c:1771 glib/gmarkup.c:1815
+#: glib/gmarkup.c:1770 glib/gmarkup.c:1814
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -442,7 +442,7 @@ msgid ""
 msgstr ""
 "మూలకములు ఇంకను తెరచియున్న పత్రం ఊహించని విధంగా అంతమైనది- '%s' చివరిది మూలకము తెరచబడినది"
 
-#: glib/gmarkup.c:1779
+#: glib/gmarkup.c:1778
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -450,19 +450,19 @@ msgid ""
 msgstr ""
 "పత్రం ఊహించని విధంగా అంతమైనది,మూసిన కోణకుండశికరణం అంతము చూచుటకు ఊహించబడినది బొందు <%s/>"
 
-#: glib/gmarkup.c:1785
+#: glib/gmarkup.c:1784
 msgid "Document ended unexpectedly inside an element name"
 msgstr " పత్రం చివర ఊహించని మూలకనామం కలదు "
 
-#: glib/gmarkup.c:1790
+#: glib/gmarkup.c:1789
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "పత్రం చివర ఊహించని ఆపాదననామం కలదు"
 
-#: glib/gmarkup.c:1795
+#: glib/gmarkup.c:1794
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "పత్రం చివర ఊహించని తెరచిన బొందు కలదు."
 
-#: glib/gmarkup.c:1801
+#: glib/gmarkup.c:1800
 #, fuzzy
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
@@ -470,16 +470,16 @@ msgid ""
 msgstr ""
 " '=' చిహ్నము తర్వాత క్రింద కనబరిచిన ఆపాదన పాఠం చివర ఊహించకుండా ఉన్నది. నామం; ఆపాదన విలువ లేదు."
 
-#: glib/gmarkup.c:1808
+#: glib/gmarkup.c:1807
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr " లోపల ఆపాదన విలువ ఉన్నపుడు పాఠం ఊహించకుండా ముగింపు అయినది "
 
-#: glib/gmarkup.c:1823
+#: glib/gmarkup.c:1822
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr " '%s'మూలకము యోక్క మూసిన బొందు ఊహించకుండా పాఠం ముగింపు అయినది "
 
-#: glib/gmarkup.c:1829
+#: glib/gmarkup.c:1828
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr " లోపల వ్యాఖ్య క్రమగతి ఆదేశం ఉండగా ఊహించకుండా పాఠం ముగింపు  అయినది "
 
@@ -508,106 +508,106 @@ msgstr "సామ్యమైన కొటేషన్ చిహ్నం %c ల
 msgid "Text was empty (or contained only whitespace)"
 msgstr "పాఠం ఏమి లేదు (లేక ఒక వైట్ స్పేస్ కలదు)"
 
-#: glib/gspawn-win32.c:273
+#: glib/gspawn-win32.c:272
 #, c-format
 msgid "Failed to read data from child process"
 msgstr " శిశు కార్యం నుండి చదువుటలో విఫలమయినావు "
 
-#: glib/gspawn-win32.c:288 glib/gspawn.c:1361
+#: glib/gspawn-win32.c:287 glib/gspawn.c:1360
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr " (%s) శిశు కార్యం తో తెలియచేయుటకు పైప్ ను సృష్టించుటలో విఫలమైనావు "
 
-#: glib/gspawn-win32.c:326 glib/gspawn.c:1025
+#: glib/gspawn-win32.c:325 glib/gspawn.c:1024
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr " శిశు పైప్ నుండి చదువుటలో విఫలమయినావు(%s)"
 
-#: glib/gspawn-win32.c:352 glib/gspawn.c:1230
+#: glib/gspawn-win32.c:351 glib/gspawn.c:1229
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr " '%s' (%s) వివరణ మార్చుటలో విఫలమయినావు  "
 
-#: glib/gspawn-win32.c:358 glib/gspawn-win32.c:578
+#: glib/gspawn-win32.c:357 glib/gspawn-win32.c:577
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "(%s) శిశు కార్యం నిర్వర్తించుటలో విఫలమయినావు  "
 
-#: glib/gspawn-win32.c:468 glib/gspawn-win32.c:524
+#: glib/gspawn-win32.c:467 glib/gspawn-win32.c:523
 #, fuzzy, c-format
 msgid "Invalid program name: %s"
 msgstr "నిస్సారమైన ఆతిథ్య నామము"
 
-#: glib/gspawn-win32.c:478 glib/gspawn-win32.c:534 glib/gspawn-win32.c:777
-#: glib/gspawn-win32.c:832 glib/gspawn-win32.c:1367
+#: glib/gspawn-win32.c:477 glib/gspawn-win32.c:533 glib/gspawn-win32.c:776
+#: glib/gspawn-win32.c:831 glib/gspawn-win32.c:1366
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr ""
 
-#: glib/gspawn-win32.c:489 glib/gspawn-win32.c:545 glib/gspawn-win32.c:791
-#: glib/gspawn-win32.c:845 glib/gspawn-win32.c:1400
+#: glib/gspawn-win32.c:488 glib/gspawn-win32.c:544 glib/gspawn-win32.c:790
+#: glib/gspawn-win32.c:844 glib/gspawn-win32.c:1399
 #, fuzzy, c-format
 msgid "Invalid string in environment: %s"
 msgstr "పరివర్తన ఎగుబడి వరుస నిస్సారము "
 
-#: glib/gspawn-win32.c:773 glib/gspawn-win32.c:828 glib/gspawn-win32.c:1348
+#: glib/gspawn-win32.c:772 glib/gspawn-win32.c:827 glib/gspawn-win32.c:1347
 #, fuzzy, c-format
 msgid "Invalid working directory: %s"
 msgstr " వివరణ తెరచుటలో దోషం '%s': %s"
 
-#: glib/gspawn-win32.c:887
+#: glib/gspawn-win32.c:886
 #, fuzzy, c-format
 msgid "Failed to execute helper program (%s)"
 msgstr " సహాయ కార్యక్రమం నిర్వర్తించుటలో విఫలమయినావు "
 
-#: glib/gspawn-win32.c:1087
+#: glib/gspawn-win32.c:1086
 #, c-format
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
 msgstr "  శిశు కార్యం నుండి జి_ఐఓ_ఛానెల్_విన్౩౨32_పోల్()  పాఠం ను చదువుటలో ఊహించని దోషం కలదు"
 
-#: glib/gspawn.c:165
+#: glib/gspawn.c:164
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "(%s) శిశు కార్యం నుండి వివరము చదువుటలో విఫలమయినావు "
 
-#: glib/gspawn.c:297
+#: glib/gspawn.c:296
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr " శిశు కార్యం (%s) నుండి పాఠం చదువుటలో సెలెక్ట్() లో ఊహించని దోషం కలదు.  "
 
-#: glib/gspawn.c:380
+#: glib/gspawn.c:379
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "వెయిట్ పిడ్() లో ఊహించని దోషం కలదు(%s)"
 
-#: glib/gspawn.c:1090
+#: glib/gspawn.c:1089
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "(%s) ఫోర్క్ విఫలమయినది  "
 
-#: glib/gspawn.c:1240
+#: glib/gspawn.c:1239
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr " \"%s\" శిశుకార్యం నిర్వర్తించుటలో విఫలమయినావు (%s)"
 
-#: glib/gspawn.c:1250
+#: glib/gspawn.c:1249
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "ఎగుబడికి రిడైరెక్ట్ చేయుటలో విఫలమైనది లేక శిశు కార్యం యొక్క దిగుబడి  (%s)"
 
-#: glib/gspawn.c:1259
+#: glib/gspawn.c:1258
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr " (%s) శిశుకార్యం యెక్క ఫోర్క్ విఫలమయినది "
 
-#: glib/gspawn.c:1267
+#: glib/gspawn.c:1266
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr " \"%s\" శిశుకార్యం నిర్వర్తించుటలో తెలియని ధోషం కలదు  "
 
-#: glib/gspawn.c:1289
+#: glib/gspawn.c:1288
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "శిశు పిడ్ పైప్ (%s) నుండి సరిపడునంత చదువుటలో విఫలమైనావు.  "

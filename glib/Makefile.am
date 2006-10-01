@@ -42,6 +42,7 @@ EXTRA_DIST = 			\
 	gen-unicode-tables.pl	\
 	makegalias.pl		\
 	abicheck.sh		\
+	pltcheck.sh		\
 	glib.symbols		\
 	$(MIRRORING_TAB_SOURCES)
 
