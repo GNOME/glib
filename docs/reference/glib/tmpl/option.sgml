@@ -108,6 +108,7 @@ int
 main (int argc, char *argv[])
 {
   GError *error = NULL;
+  GOptionContext *context;
 
   context = g_option_context_new ("- test tree model performance");
   g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);
