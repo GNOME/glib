@@ -178,7 +178,7 @@ g_value_peek_pointer (const GValue *value)
   value_table = g_type_value_table_peek (G_VALUE_TYPE (value));
   if (!value_table->value_peek_pointer)
     {
-      g_assert (g_value_fits_pointer (value) == TRUE);
+      g_return_val_if_fail (g_value_fits_pointer (value) == TRUE, NULL);
       return NULL;
     }
 
