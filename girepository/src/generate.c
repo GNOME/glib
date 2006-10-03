@@ -20,12 +20,14 @@
 
 #include <errno.h>
 #include <dlfcn.h>
+#include <string.h>
 
 #include <glib.h>
 #include <glib-object.h>
 #include <glib/gstdio.h>
 
 #include "girepository.h"
+#include "gmetadata.h"
 
 gboolean raw = FALSE;
 gchar **input = NULL;
@@ -380,7 +382,6 @@ write_callback_info (const gchar    *namespace,
 		     FILE           *file,
 		     gint            indent)
 {
-  GIFunctionInfoFlags flags;
   const gchar *name;
   gboolean deprecated;
 
@@ -452,7 +453,6 @@ write_value_info (const gchar *namespace,
 		  FILE        *file)
 {
   const gchar *name;
-  const gchar *short_name;
   glong value;
   gboolean deprecated;
 
@@ -460,7 +460,7 @@ write_value_info (const gchar *namespace,
   value = g_value_info_get_value (info);
   deprecated = g_base_info_is_deprecated ((GIBaseInfo *)info);
 
-  g_fprintf (file, "      <member name=\"%s\" value=\"%d\"", name, value);
+  g_fprintf (file, "      <member name=\"%s\" value=\"%ld\"", name, value);
 
   if (deprecated)
     g_fprintf (file, " deprecated=\"1\"");
@@ -516,21 +516,23 @@ write_constant_value (const gchar *namespace,
       g_fprintf (file, "%ld", value->v_ulong);
       break;
     case GI_TYPE_TAG_SSIZE:
-      g_fprintf (file, "%z", value->v_ssize);
+      g_fprintf (file, "%zd", value->v_ssize);
       break;
     case GI_TYPE_TAG_SIZE:
-      g_fprintf (file, "%z", value->v_size);
+      g_fprintf (file, "%zd", value->v_size);
       break;
     case GI_TYPE_TAG_FLOAT:
       g_fprintf (file, "%f", value->v_float);
       break;
     case GI_TYPE_TAG_DOUBLE:
-      g_fprintf (file, "%Lf", value->v_double);
+      g_fprintf (file, "%f", value->v_double);
       break;
     case GI_TYPE_TAG_UTF8:
     case GI_TYPE_TAG_FILENAME:
       g_fprintf (file, "%s", value->v_string);
       break;
+    default:
+      g_assert_not_reached ();
     }
 }
 
