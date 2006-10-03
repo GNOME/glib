@@ -21,6 +21,7 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <errno.h>
+#include <string.h>
 
 #include <glib.h>
 #include <glib/gstdio.h>
@@ -28,6 +29,7 @@
 #include "gidlmodule.h"
 #include "gidlnode.h"
 #include "gidlparser.h"
+#include "gmetadata.h"
 
 gboolean raw = FALSE;
 gboolean no_init = FALSE;
@@ -85,7 +87,7 @@ format_output (guchar *metadata,
 
 static void
 write_out_metadata (gchar *prefix,
-		    gchar *metadata,
+		    guchar *metadata,
 		    gsize  len)
 {
   FILE *file;
