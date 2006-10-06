@@ -257,7 +257,7 @@ g_timer_elapsed (GTimer *timer,
 
   if (microseconds)
     *microseconds = (elapsed / 10) % 1000000;
-#elif HAVE_CLOCK_GETTIME
+#elif USE_CLOCK_GETTIME
   if (timer->active)
     GETTIME (timer->end);
 
