@@ -1,3 +1,7 @@
+2006-10-06  Matthias Clasen  <mclasen@redhat.com> 
+
+	* glib/gtimer.c: Fix a typo.  (#359190)
+
 2006-10-02  Behdad Esfahbod  <behdad@gnome.org>
 
 	* glib/Makefile.am:
