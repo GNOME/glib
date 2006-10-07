@@ -1,3 +1,10 @@
+2006-10-07  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gwin32.c (get_package_directory_from_module)
+	(g_win32_get_package_installation_directory): g_strdup the keys
+	that we are passed before adding them to the hash tables, to guard
+	against the caller freeing them. (#355955, Andreas Köhler)
+
 2006-10-06  Matthias Clasen  <mclasen@redhat.com> 
 
 	* glib/gtimer.c: Fix a typo.  (#359190)
