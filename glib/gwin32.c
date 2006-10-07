@@ -1189,7 +1189,7 @@ get_package_directory_from_module (gchar *module_name)
   }
 #endif
 
-  g_hash_table_insert (module_dirs, module_name ? module_name : "", fn);
+  g_hash_table_insert (module_dirs, module_name ? g_strdup (module_name) : "", fn);
 
   G_UNLOCK (module_dirs);
 
@@ -1316,7 +1316,7 @@ g_win32_get_package_installation_directory (gchar *package,
 
       if (result)
 	{
-	  g_hash_table_insert (package_dirs, package, result);
+	  g_hash_table_insert (package_dirs, g_strdup (package), result);
 	  G_UNLOCK (package_dirs);
 	  return g_strdup (result);
 	}
