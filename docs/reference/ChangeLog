@@ -1,3 +1,8 @@
+2006-10-08  Matthias Clasen  <mclasen@redhat.com>
+
+	* gobject/tmpl/enumerations_flags.sgml: Add a hint about
+	the requirement that enum and flags values must be static.
+
 2006-10-01  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/tmpl/option.sgml: Improve example.  (#367625, Ross Burton) 

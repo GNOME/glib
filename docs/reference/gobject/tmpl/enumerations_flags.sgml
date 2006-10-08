@@ -232,12 +232,11 @@ than to write one yourself using g_enum_register_static().
 </para>
 
 @name: A nul-terminated string used as the name of the new type.
-@_static_values: 
-@Returns: The new type identifier.
-<!-- # Unused Parameters # -->
 @const_static_values: An array of #GEnumValue structs for the possible
   enumeration values. The array is terminated by a struct with all 
-  members being 0.
+  members being 0. GObject keeps a reference to the data, so it cannot
+  be stack-allocated.
+@Returns: The new type identifier.
 
 
 <!-- ##### FUNCTION g_flags_register_static ##### -->
@@ -251,12 +250,10 @@ than to write one yourself using g_flags_register_static().
 </para>
 
 @name: A nul-terminated string used as the name of the new type.
-@_static_values: 
-@Returns: The new type identifier.
-<!-- # Unused Parameters # -->
 @const_static_values: An array of #GFlagsValue structs for the possible
   flags values. The array is terminated by a struct with all members being 0.
-
+  GObject keeps a reference to the data, so it cannot be stack-allocated.
+@Returns: The new type identifier.
 
 <!-- ##### FUNCTION g_enum_complete_type_info ##### -->
 <para>
