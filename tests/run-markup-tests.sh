@@ -26,7 +26,8 @@ for I in ${srcdir:-.}/markups/fail-*.gmarkup; do
   fi  
 done
 
-for (( I=1 ; I < 100 ; I++ )) ; do
+I=1
+while test $I -lt 100 ; do
   F=${srcdir:-.}/markups/valid-$I.gmarkup
   if [ -f $F ] ; then
     echo_v "Parsing $F, should succeed"
@@ -34,6 +35,7 @@ for (( I=1 ; I < 100 ; I++ )) ; do
     diff -u ${srcdir:-.}/markups/expected-$I actual || fail "unexpected output on $F"
     rm actual
   fi
+  I=`expr $I + 1`
 done
 
 echo_v "All tests passed."
