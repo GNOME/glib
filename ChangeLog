@@ -1,3 +1,8 @@
+2006-10-08  Matthias Clasen  <mclasen@redhat.com>
+
+	* tests/run-markup-tests.sh: Small portability fix.  (#347944,
+	Dan McMahill)
+
 2006-10-07  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gwin32.c (get_package_directory_from_module)
