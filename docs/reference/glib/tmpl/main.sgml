@@ -554,6 +554,15 @@ for the default main context.
 @Returns: 
 
 
+<!-- ##### FUNCTION g_timeout_source_new_seconds ##### -->
+<para>
+
+</para>
+
+@interval: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_timeout_add ##### -->
 <para>
 </para>
@@ -573,6 +582,17 @@ for the default main context.
 @function: 
 @data: 
 @notify: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_timeout_add_seconds ##### -->
+<para>
+
+</para>
+
+@interval: 
+@function: 
+@data: 
 @Returns: 
 
 

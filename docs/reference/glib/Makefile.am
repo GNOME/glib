@@ -35,6 +35,7 @@ IGNORE_HFILES=			\
 	gprintfint.h		\
 	galias.h		\
 	gmirroringtable.h	\
+	gscripttable.h		\
 	glib-mirroring-tab	\
 	gnulib
 

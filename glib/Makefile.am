@@ -40,6 +40,7 @@ EXTRA_DIST = 			\
 	makefile.msc.in		\
 	glib.rc.in		\
 	gen-unicode-tables.pl	\
+	gen-script-table.pl	\
 	makegalias.pl		\
 	abicheck.sh		\
 	pltcheck.sh		\
@@ -106,6 +107,7 @@ libglib_2_0_la_SOURCES = 	\
 	grel.c			\
 	grand.c			\
 	gscanner.c		\
+	gscripttable.h		\
 	gshell.c		\
 	gslice.c		\
 	gslist.c		\
