@@ -1,5 +1,9 @@
 2006-10-08  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/tmpl/unicode.sgml: Document GUnicodeType.
+
+2006-10-08  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/glib-sections.txt: Add g_unichar_get_script() and
 	GUnicodeScript.
 

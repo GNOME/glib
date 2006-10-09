@@ -248,41 +248,42 @@ will correctly interpret surrogate pairs.</footnote>.
 
 <!-- ##### ENUM GUnicodeType ##### -->
 <para>
-These are the possible character classifications.
+These are the possible character classifications from the 
+Unicode specification.
 See <ulink url="http://www.unicode.org/Public/UNIDATA/UnicodeData.html"
 >http://www.unicode.org/Public/UNIDATA/UnicodeData.html</ulink>.
 </para>
 
-@G_UNICODE_CONTROL: 
-@G_UNICODE_FORMAT: 
-@G_UNICODE_UNASSIGNED: 
-@G_UNICODE_PRIVATE_USE: 
-@G_UNICODE_SURROGATE: 
-@G_UNICODE_LOWERCASE_LETTER: 
-@G_UNICODE_MODIFIER_LETTER: 
-@G_UNICODE_OTHER_LETTER: 
-@G_UNICODE_TITLECASE_LETTER: 
-@G_UNICODE_UPPERCASE_LETTER: 
-@G_UNICODE_COMBINING_MARK: 
-@G_UNICODE_ENCLOSING_MARK: 
-@G_UNICODE_NON_SPACING_MARK: 
-@G_UNICODE_DECIMAL_NUMBER: 
-@G_UNICODE_LETTER_NUMBER: 
-@G_UNICODE_OTHER_NUMBER: 
-@G_UNICODE_CONNECT_PUNCTUATION: 
-@G_UNICODE_DASH_PUNCTUATION: 
-@G_UNICODE_CLOSE_PUNCTUATION: 
-@G_UNICODE_FINAL_PUNCTUATION: 
-@G_UNICODE_INITIAL_PUNCTUATION: 
-@G_UNICODE_OTHER_PUNCTUATION: 
-@G_UNICODE_OPEN_PUNCTUATION: 
-@G_UNICODE_CURRENCY_SYMBOL: 
-@G_UNICODE_MODIFIER_SYMBOL: 
-@G_UNICODE_MATH_SYMBOL: 
-@G_UNICODE_OTHER_SYMBOL: 
-@G_UNICODE_LINE_SEPARATOR: 
-@G_UNICODE_PARAGRAPH_SEPARATOR: 
-@G_UNICODE_SPACE_SEPARATOR: 
+@G_UNICODE_CONTROL: General category "Other, Control" (Cc)
+@G_UNICODE_FORMAT: General category "Other, Format" (Cf)
+@G_UNICODE_UNASSIGNED: General category "Other, Not Assigned" (Cn)
+@G_UNICODE_PRIVATE_USE: General category "Other, Private Use" (Co)
+@G_UNICODE_SURROGATE: General category "Other, Surrogate" (Cs)
+@G_UNICODE_LOWERCASE_LETTER: General category "Letter, Lowercase" (Ll)
+@G_UNICODE_MODIFIER_LETTER: General category "Letter, Modifier" (Lm)
+@G_UNICODE_OTHER_LETTER: General category "Letter, Other" (Lo)
+@G_UNICODE_TITLECASE_LETTER: General category "Letter, Titlecase" (Lt)
+@G_UNICODE_UPPERCASE_LETTER: General category "Letter, Uppercase" (Lu)
+@G_UNICODE_COMBINING_MARK: General category "Mark, Spacing Combining" (Mc)
+@G_UNICODE_ENCLOSING_MARK: General category "Mark, Enclosing" (Me)
+@G_UNICODE_NON_SPACING_MARK: General category "Mark, Nonspacing" (Mn)
+@G_UNICODE_DECIMAL_NUMBER: General category "Number, Decimal Digit" (Nd)
+@G_UNICODE_LETTER_NUMBER: General category "Number, Letter" (Nl)
+@G_UNICODE_OTHER_NUMBER: General category "Number, Other" (No)
+@G_UNICODE_CONNECT_PUNCTUATION: General category "Punctuation, Connector" (Pc)
+@G_UNICODE_DASH_PUNCTUATION: General category "Punctuation, Dash" (Pd)
+@G_UNICODE_CLOSE_PUNCTUATION: General category "Punctuation, Close" (Pe)
+@G_UNICODE_FINAL_PUNCTUATION: General category "Punctuation, Final quote" (Pf)
+@G_UNICODE_INITIAL_PUNCTUATION: General category "Punctuation, Initial quote" (Pi)
+@G_UNICODE_OTHER_PUNCTUATION: General category "Punctuation, Other" (Po)
+@G_UNICODE_OPEN_PUNCTUATION: General category "Punctuation, Open" (Ps)
+@G_UNICODE_CURRENCY_SYMBOL: General category "Symbol, Currency" (Sc)
+@G_UNICODE_MODIFIER_SYMBOL: General category "Symbol, Modifier" (Sk)
+@G_UNICODE_MATH_SYMBOL: General category "Symbol, Math" (Sm)
+@G_UNICODE_OTHER_SYMBOL: General category "Symbol, Other" (So)
+@G_UNICODE_LINE_SEPARATOR: General category "Separator, Line" (Zl)
+@G_UNICODE_PARAGRAPH_SEPARATOR: General category "Separator, Paragraph" (Zp)
+@G_UNICODE_SPACE_SEPARATOR: General category "Separator, Space" (Zs)
 
 <!-- ##### FUNCTION g_unichar_type ##### -->
 <para>
