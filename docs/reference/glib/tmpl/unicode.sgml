@@ -302,7 +302,6 @@ Applications should be ready to handle unknown values.
 They may be regarded as %G_UNICODE_BREAK_UNKNOWN.
 See <ulink url="http://www.unicode.org/unicode/reports/tr14/"
 >http://www.unicode.org/unicode/reports/tr14/</ulink>.
-
 </para>
 
 @G_UNICODE_BREAK_MANDATORY: 
@@ -377,6 +376,99 @@ See <ulink url="http://www.unicode.org/unicode/reports/tr14/"
 
 @ch: 
 @mirrored_ch: 
+@Returns: 
+
+
+<!-- ##### ENUM GUnicodeScript ##### -->
+<para>
+The #GUnicodeScript enumeration identifies different writing
+systems. The values correspond to the names as defined in the
+Unicode standard. The enumeration has been added in GLib 2.14. 
+Note that new types may be added in the future. Applications 
+should be ready to handle unknown values.
+See <ulink
+url="http://www.unicode.org/reports/tr24/">Unicode Standard Annex
+#24: Script names</ulink>.
+</para>
+
+@G_UNICODE_SCRIPT_INVALID_CODE: a value never returned from g_unichar_get_script()
+@G_UNICODE_SCRIPT_COMMON:     a character used by multiple different scripts
+@G_UNICODE_SCRIPT_INHERITED:  a mark glyph that takes its script from the
+                              base glyph to which it is attached
+@G_UNICODE_SCRIPT_ARABIC:     Arabic
+@G_UNICODE_SCRIPT_ARMENIAN:   Armenian
+@G_UNICODE_SCRIPT_BENGALI:    Bengali
+@G_UNICODE_SCRIPT_BOPOMOFO:   Bopomofo
+@G_UNICODE_SCRIPT_CHEROKEE:   Cherokee
+@G_UNICODE_SCRIPT_COPTIC:     Coptic
+@G_UNICODE_SCRIPT_CYRILLIC:   Cyrillic
+@G_UNICODE_SCRIPT_DESERET:    Deseret
+@G_UNICODE_SCRIPT_DEVANAGARI: Devanagari
+@G_UNICODE_SCRIPT_ETHIOPIC:   Ethiopic
+@G_UNICODE_SCRIPT_GEORGIAN:   Georgian
+@G_UNICODE_SCRIPT_GOTHIC:     Gothic
+@G_UNICODE_SCRIPT_GREEK:      Greek
+@G_UNICODE_SCRIPT_GUJARATI:   Gujarati
+@G_UNICODE_SCRIPT_GURMUKHI:   Gurmukhi
+@G_UNICODE_SCRIPT_HAN:        Han
+@G_UNICODE_SCRIPT_HANGUL:     Hangul
+@G_UNICODE_SCRIPT_HEBREW:     Hebrew
+@G_UNICODE_SCRIPT_HIRAGANA:   Hiragana
+@G_UNICODE_SCRIPT_KANNADA:    Kannada
+@G_UNICODE_SCRIPT_KATAKANA:   Katakana
+@G_UNICODE_SCRIPT_KHMER:      Khmer
+@G_UNICODE_SCRIPT_LAO:        Lao
+@G_UNICODE_SCRIPT_LATIN:      Latin
+@G_UNICODE_SCRIPT_MALAYALAM:  Malayalam
+@G_UNICODE_SCRIPT_MONGOLIAN:  Mongolian
+@G_UNICODE_SCRIPT_MYANMAR:    Myanmar
+@G_UNICODE_SCRIPT_OGHAM:      Ogham
+@G_UNICODE_SCRIPT_OLD_ITALIC: Old Italic
+@G_UNICODE_SCRIPT_ORIYA:      Oriya
+@G_UNICODE_SCRIPT_RUNIC:      Runic
+@G_UNICODE_SCRIPT_SINHALA:    Sinhala
+@G_UNICODE_SCRIPT_SYRIAC:     Syriac
+@G_UNICODE_SCRIPT_TAMIL:      Tamil
+@G_UNICODE_SCRIPT_TELUGU:     Telugu
+@G_UNICODE_SCRIPT_THAANA:     Thaana
+@G_UNICODE_SCRIPT_THAI:       Thai
+@G_UNICODE_SCRIPT_TIBETAN:    Tibetan
+@G_UNICODE_SCRIPT_CANADIAN_ABORIGINAL: 
+                              Canadian Aboriginal
+@G_UNICODE_SCRIPT_YI:         Yi
+@G_UNICODE_SCRIPT_TAGALOG:    Tagalog
+@G_UNICODE_SCRIPT_HANUNOO:    Hanunoo
+@G_UNICODE_SCRIPT_BUHID:      Buhid
+@G_UNICODE_SCRIPT_TAGBANWA:   Tagbanwa
+@G_UNICODE_SCRIPT_BRAILLE:    Braille
+@G_UNICODE_SCRIPT_CYPRIOT:    Cypriot
+@G_UNICODE_SCRIPT_LIMBU:      Limbu
+@G_UNICODE_SCRIPT_OSMANYA:    Osmanya
+@G_UNICODE_SCRIPT_SHAVIAN:    Shavian
+@G_UNICODE_SCRIPT_LINEAR_B:   Linear B
+@G_UNICODE_SCRIPT_TAI_LE:     Tai Le
+@G_UNICODE_SCRIPT_UGARITIC:   Ugaritic
+@G_UNICODE_SCRIPT_NEW_TAI_LUE: New Tai Lue
+@G_UNICODE_SCRIPT_BUGINESE:   Buginese
+@G_UNICODE_SCRIPT_GLAGOLITIC: Glagolitic
+@G_UNICODE_SCRIPT_TIFINAGH:   Tifinagh
+@G_UNICODE_SCRIPT_SYLOTI_NAGRI: Syloti Nagri
+@G_UNICODE_SCRIPT_OLD_PERSIAN: Old Persian
+@G_UNICODE_SCRIPT_KHAROSHTHI: Kharoshthi
+@G_UNICODE_SCRIPT_UNKNOWN:    an unassigned code point
+@G_UNICODE_SCRIPT_BALINESE:   Balinese
+@G_UNICODE_SCRIPT_CUNEIFORM:  Cuneiform
+@G_UNICODE_SCRIPT_PHOENICIAN: Phoenician
+@G_UNICODE_SCRIPT_PHAGS_PA:   Phags-pa
+@G_UNICODE_SCRIPT_NKO:        N'Ko
+
+
+<!-- ##### FUNCTION g_unichar_get_script ##### -->
+<para>
+
+</para>
+
+@ch: 
 @Returns: 
 
 

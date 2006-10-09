@@ -1,5 +1,10 @@
 2006-10-08  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/glib-sections.txt: Add g_unichar_get_script() and
+	GUnicodeScript.
+
+	* glib/tmpl/unicode.sgml: Document GUnicodeScript
+
 	* gobject/tmpl/enumerations_flags.sgml: Add a hint about
 	the requirement that enum and flags values must be static.
 

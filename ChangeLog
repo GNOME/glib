@@ -1,5 +1,23 @@
 2006-10-08  Matthias Clasen  <mclasen@redhat.com>
 
+	Add a way to obtain Unicode script information.  (#348348,
+	Marco Barisione)
+
+	* glib/glib.symbols:
+	* glib/gunicode.h: Add GUnicodeScript enumeration and
+	g_unichar_get_script. 
+	
+	* glib/guniprop.c: Implement g_unichar_get_script.
+
+	* glib/gscripttable.h: Generated private header containing
+	script tables.
+
+	* glib/gen-script-table.pl: Script to generate gscripttable.h.
+
+	* glib/Makefile.am: Update
+
+2006-10-08  Matthias Clasen  <mclasen@redhat.com>
+
 	* tests/run-markup-tests.sh: Small portability fix.  (#347944,
 	Dan McMahill)
 

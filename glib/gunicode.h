@@ -112,6 +112,84 @@ typedef enum
   G_UNICODE_BREAK_HANGUL_LVT_SYLLABLE
 } GUnicodeBreakType;
 
+typedef enum 
+{                         /* ISO 15924 code */
+  G_UNICODE_SCRIPT_INVALID_CODE = -1,
+  G_UNICODE_SCRIPT_COMMON       = 0,   /* Zyyy */
+  G_UNICODE_SCRIPT_INHERITED,          /* Qaai */
+  G_UNICODE_SCRIPT_ARABIC,             /* Arab */
+  G_UNICODE_SCRIPT_ARMENIAN,           /* Armn */
+  G_UNICODE_SCRIPT_BENGALI,            /* Beng */
+  G_UNICODE_SCRIPT_BOPOMOFO,           /* Bopo */
+  G_UNICODE_SCRIPT_CHEROKEE,           /* Cher */
+  G_UNICODE_SCRIPT_COPTIC,             /* Qaac */
+  G_UNICODE_SCRIPT_CYRILLIC,           /* Cyrl (Cyrs) */
+  G_UNICODE_SCRIPT_DESERET,            /* Dsrt */
+  G_UNICODE_SCRIPT_DEVANAGARI,         /* Deva */
+  G_UNICODE_SCRIPT_ETHIOPIC,           /* Ethi */
+  G_UNICODE_SCRIPT_GEORGIAN,           /* Geor (Geon, Geoa) */
+  G_UNICODE_SCRIPT_GOTHIC,             /* Goth */
+  G_UNICODE_SCRIPT_GREEK,              /* Grek */
+  G_UNICODE_SCRIPT_GUJARATI,           /* Gujr */
+  G_UNICODE_SCRIPT_GURMUKHI,           /* Guru */
+  G_UNICODE_SCRIPT_HAN,                /* Hani */
+  G_UNICODE_SCRIPT_HANGUL,             /* Hang */
+  G_UNICODE_SCRIPT_HEBREW,             /* Hebr */
+  G_UNICODE_SCRIPT_HIRAGANA,           /* Hira */
+  G_UNICODE_SCRIPT_KANNADA,            /* Knda */
+  G_UNICODE_SCRIPT_KATAKANA,           /* Kana */
+  G_UNICODE_SCRIPT_KHMER,              /* Khmr */
+  G_UNICODE_SCRIPT_LAO,                /* Laoo */
+  G_UNICODE_SCRIPT_LATIN,              /* Latn (Latf, Latg) */
+  G_UNICODE_SCRIPT_MALAYALAM,          /* Mlym */
+  G_UNICODE_SCRIPT_MONGOLIAN,          /* Mong */
+  G_UNICODE_SCRIPT_MYANMAR,            /* Mymr */
+  G_UNICODE_SCRIPT_OGHAM,              /* Ogam */
+  G_UNICODE_SCRIPT_OLD_ITALIC,         /* Ital */
+  G_UNICODE_SCRIPT_ORIYA,              /* Orya */
+  G_UNICODE_SCRIPT_RUNIC,              /* Runr */
+  G_UNICODE_SCRIPT_SINHALA,            /* Sinh */
+  G_UNICODE_SCRIPT_SYRIAC,             /* Syrc (Syrj, Syrn, Syre) */
+  G_UNICODE_SCRIPT_TAMIL,              /* Taml */
+  G_UNICODE_SCRIPT_TELUGU,             /* Telu */
+  G_UNICODE_SCRIPT_THAANA,             /* Thaa */
+  G_UNICODE_SCRIPT_THAI,               /* Thai */
+  G_UNICODE_SCRIPT_TIBETAN,            /* Tibt */
+  G_UNICODE_SCRIPT_CANADIAN_ABORIGINAL, /* Cans */
+  G_UNICODE_SCRIPT_YI,                 /* Yiii */
+  G_UNICODE_SCRIPT_TAGALOG,            /* Tglg */
+  G_UNICODE_SCRIPT_HANUNOO,            /* Hano */
+  G_UNICODE_SCRIPT_BUHID,              /* Buhd */
+  G_UNICODE_SCRIPT_TAGBANWA,           /* Tagb */
+
+  /* Unicode-4.0 additions */
+  G_UNICODE_SCRIPT_BRAILLE,            /* Brai */
+  G_UNICODE_SCRIPT_CYPRIOT,            /* Cprt */
+  G_UNICODE_SCRIPT_LIMBU,              /* Limb */
+  G_UNICODE_SCRIPT_OSMANYA,            /* Osma */
+  G_UNICODE_SCRIPT_SHAVIAN,            /* Shaw */
+  G_UNICODE_SCRIPT_LINEAR_B,           /* Linb */
+  G_UNICODE_SCRIPT_TAI_LE,             /* Tale */
+  G_UNICODE_SCRIPT_UGARITIC,           /* Ugar */
+      
+  /* Unicode-4.1 additions */
+  G_UNICODE_SCRIPT_NEW_TAI_LUE,        /* Talu */
+  G_UNICODE_SCRIPT_BUGINESE,           /* Bugi */
+  G_UNICODE_SCRIPT_GLAGOLITIC,         /* Glag */
+  G_UNICODE_SCRIPT_TIFINAGH,           /* Tfng */
+  G_UNICODE_SCRIPT_SYLOTI_NAGRI,       /* Sylo */
+  G_UNICODE_SCRIPT_OLD_PERSIAN,        /* Xpeo */
+  G_UNICODE_SCRIPT_KHAROSHTHI,         /* Khar */
+
+  /* Unicode-5.0 additions */
+  G_UNICODE_SCRIPT_UNKNOWN,            /* Zzzz */
+  G_UNICODE_SCRIPT_BALINESE,           /* Bali */
+  G_UNICODE_SCRIPT_CUNEIFORM,          /* Xsux */
+  G_UNICODE_SCRIPT_PHOENICIAN,         /* Phnx */
+  G_UNICODE_SCRIPT_PHAGS_PA,           /* Phag */
+  G_UNICODE_SCRIPT_NKO                 /* Nkoo */
+} GUnicodeScript;
+
 /* Returns TRUE if current locale uses UTF-8 charset.  If CHARSET is
  * not null, sets *CHARSET to the name of the current locale's
  * charset.  This value is statically allocated, and should be copied
@@ -291,6 +369,9 @@ gchar *g_utf8_collate_key_for_filename (const gchar *str,
 
 gboolean g_unichar_get_mirror_char (gunichar ch,
                                     gunichar *mirrored_ch);
+
+GUnicodeScript g_unichar_get_script (gunichar ch);
+
 
 /* private */
 
