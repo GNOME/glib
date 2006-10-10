@@ -1,3 +1,9 @@
+Tue Oct 10 12:06:08 2006  Tim Janik  <timj@gtk.org>
+
+	* glib-mkenums.in: 
+	* glib-mkenums.1: applied patch from David Necas which introduces
+	an underscore_name option and fixes #358734.
+
 Mon Oct  2 15:50:16 2006  Tim Janik  <timj@gtk.org>
 
 	* gvalue.c (g_value_peek_pointer): reverted a change to have an

@@ -3,8 +3,14 @@
 # glib-mkenums.pl 
 # Information about the current enumeration
 my $flags;			# Is enumeration a bitmask?
-my $option_lowercase_name;			# A lower case name to use as part of the *_get_type() function, instead of the one that we guess.
-                        # For instance, when an enum uses abnormal capitalization and we can not guess where to put the underscores.
+my $option_underscore_name;	# Overriden underscore variant of the enum name
+				# for example to fix the cases we don't get the
+				# mixed-case -> underscorized transform right.
+my $option_lowercase_name;	# DEPRECATED.  A lower case name to use as part
+				# of the *_get_type() function, instead of the
+				# one that we guess. For instance, when an enum
+				# uses abnormal capitalization and we can not
+				# guess where to put the underscores.
 my $seenbitshift;		# Have we seen bitshift operators?
 my $enum_prefix;		# Prefix for this enumeration
 my $enumname;			# Name for this enumeration
@@ -184,8 +190,7 @@ sub read_template_file {
       elsif (($in eq $2) && ($1 eq 'END') && (exists($tmpl{$2}))) {
 	$in = 'junk';
 	next;
-      }
-      else {
+      } else {
 	  die "Malformed template file $file\n";
       }
     }
@@ -274,11 +279,21 @@ while (<>) {
 	    next if defined $options{skip};
 	    $enum_prefix = $options{prefix};
 	    $flags = $options{flags};
-      $option_lowercase_name = $options{lowercase_name};
+	    $option_lowercase_name = $options{lowercase_name};
+	    $option_underscore_name = $options{underscore_name};
 	} else {
 	    $enum_prefix = undef;
 	    $flags = undef;
-      $option_lowercase_name = undef;
+	    $option_lowercase_name = undef;
+	    $option_underscore_name = undef;
+	}
+	if (defined $option_lowercase_name) {
+	    if (defined $option_underscore_name) {
+		print STDERR "$0: $ARGV:$.: lowercase_name overriden with underscore_name\n";
+		$option_lowercase_name = undef;
+	    } else {
+		print STDERR "$0: $ARGV:$.: lowercase_name is deprecated, use underscore_name\n";
+	    }
 	}
 	# Didn't have trailing '{' look on next lines
 	if (!defined $1 && !defined $4) {
@@ -340,24 +355,29 @@ while (<>) {
 	
 
 	# Spit out the output
-	
-	# enumname is e.g. GMatchType
-	$enspace = $enumname;
-	$enspace =~ s/^([A-Z][a-z]*).*$/$1/;
-	
-	$enumshort = $enumname;
-	$enumshort =~ s/^[A-Z][a-z]*//;
-	$enumshort =~ s/([^A-Z])([A-Z])/$1_$2/g;
-	$enumshort =~ s/([A-Z][A-Z])([A-Z][0-9a-z])/$1_$2/g;
-	$enumshort = uc($enumshort);
+	if (defined $option_underscore_name) {
+	    $enumlong = uc $option_underscore_name;
+	    $enumsym = lc $option_underscore_name;
+	    $enumshort = $enumlong;
+	    $enumshort =~ s/^[A-Z][A-Z0-9]*_//;
+	} else {
+	    # enumname is e.g. GMatchType
+	    $enspace = $enumname;
+	    $enspace =~ s/^([A-Z][a-z]*).*$/$1/;
 
-	$enumlong = uc($enspace) . "_" . $enumshort;
-	$enumsym = lc($enspace) . "_" . lc($enumshort);
+	    $enumshort = $enumname;
+	    $enumshort =~ s/^[A-Z][a-z]*//;
+	    $enumshort =~ s/([^A-Z])([A-Z])/$1_$2/g;
+	    $enumshort =~ s/([A-Z][A-Z])([A-Z][0-9a-z])/$1_$2/g;
+	    $enumshort = uc($enumshort);
 
-  #The options might override the lower case name if it could not be generated correctly:
-  if (defined($option_lowercase_name)) {
-      $enumsym = $option_lowercase_name;
-  }
+	    $enumlong = uc($enspace) . "_" . $enumshort;
+	    $enumsym = lc($enspace) . "_" . lc($enumshort);
+
+	    if (defined($option_lowercase_name)) {
+		$enumsym = $option_lowercase_name;
+	    }
+	}
 
 	if ($firstenum) {
 	    $firstenum = 0;
