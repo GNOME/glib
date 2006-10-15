@@ -1,3 +1,8 @@
+2006-10-15  Sebastian Wilhelmi  <seppi@seppi.de>
+
+	* tests/Makefile.am: Compile errorcheck-mutex-test with thread
+	libraries explicitly. (#74748, Javier Villavicencio)
+
 2006-10-08  Matthias Clasen  <mclasen@redhat.com>
 
 	* tests/run-markup-tests.sh: Small portability fix.  (#347944,
