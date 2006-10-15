@@ -55,7 +55,7 @@ patterntest_LDADD = $(libglib)
 testgdate_LDADD = $(libglib)
 testgdateparser_LDADD = $(libglib)
 unicode_normalize_LDADD = $(libglib)
-errorcheck_mutex_test_LDADD = $(libglib) $(libgthread)
+errorcheck_mutex_test_LDADD = $(libglib) $(libgthread) $(G_THREAD_LIBS) 
 if ENABLE_TIMELOOP
 timeloop_LDADD = $(libglib)
 timeloop_closure_LDADD = $(libglib) $(libgobject)
