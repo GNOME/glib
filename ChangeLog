@@ -1,3 +1,8 @@
+2006-10-16  Behdad Esfahbod  <behdad@gnome.org>
+
+	* glib/gnulib/Makefile.am: Add $(GLIB_DEBUG_FLAGS).  (#362543,
+	Peter Kjellerstedt)
+
 2006-10-15  Sebastian Wilhelmi  <seppi@seppi.de>
 
 	* tests/Makefile.am: Compile errorcheck-mutex-test with thread
