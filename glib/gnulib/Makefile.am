@@ -1,6 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 
-INCLUDES = -I$(top_srcdir)
+INCLUDES = -I$(top_srcdir) -DG_LOG_DOMAIN=\"GLib\" \
+	$(GLIB_DEBUG_FLAGS) -DG_DISABLE_DEPRECATED -DGLIB_COMPILATION 
 
 noinst_LTLIBRARIES = libgnulib.la
 
