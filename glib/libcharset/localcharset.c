@@ -183,8 +183,12 @@ _g_locale_get_charset_aliases (void)
 		}
 	      else
 		{
+		  char * p = res_ptr;
 		  res_size += l1 + 1 + l2 + 1;
 		  res_ptr = (char *) realloc (res_ptr, res_size + 1);
+		  if (res_ptr == NULL) {
+		    free(p);
+		  }
 		}
 	      if (res_ptr == NULL)
 		{
