@@ -1,3 +1,13 @@
+2006-11-05  Tor Lillqvist  <tml@novell.com>
+
+	* makefile.mingw
+	* gmodule/makefile.mingw.in
+	* glib/makefile.mingw.in
+	* gobject/makefile.mingw.in
+	* gthread/makefile.mingw.in
+	* tests/makefile.mingw.in: Remove from CVS. Haven't been
+	maintained or distributed for long.
+
 2006-10-26  Pascal Terjan  <pterjan@linuxfr.org>
 
 	* glib/libcharset/localcharset.c: Fix small leak on failed
