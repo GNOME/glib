@@ -1,3 +1,8 @@
+2006-11-05  Hans Breuer  <hans@breuer.org>
+
+	* glib/makefile.msc.in : glib/ version not the gobject/ 
+	one I accidentially commited. Fixes bug #371074.
+	
 2006-11-05  Tor Lillqvist  <tml@novell.com>
 
 	* makefile.mingw
