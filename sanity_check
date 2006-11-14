@@ -16,7 +16,7 @@ tar xfz glib-$VERSION.tar.gz
 for file in INSTALL NEWS README 
 do
 	echo -n "$file... "
-	if [ "x`grep $VERSION glib-$VERSION/$file | wc -l | awk -F' ' '{print $1}'`" == "x0" ]; then
+	if [ "x`grep $VERSION glib-$VERSION/$file | wc -l | awk -F' ' '{print $1}'`" = "x0" ]; then
 		echo "failed."
 		#exit 1
 	else
@@ -25,7 +25,7 @@ do
 done
 
 echo -n "INSTALL..."
-if [ "x`grep $VERSION glib-$VERSION/INSTALL | wc -l | awk -F' ' '{print $1}'`" == "x2" ]; then 
+if [ "x`grep $VERSION glib-$VERSION/INSTALL | wc -l | awk -F' ' '{print $1}'`" = "x2" ]; then 
 	echo "ok" 
 else
 	echo "failed."

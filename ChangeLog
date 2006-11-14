@@ -1,3 +1,8 @@
+2006-11-14  Behdad Esfahbod  <behdad@gnome.org>
+
+	* sanity_check: Replace bash-specific == with sh-understood =.
+	Fixes bug #373864.
+
 2006-10-16  Behdad Esfahbod  <behdad@gnome.org>
 
 	* glib/gnulib/Makefile.am: Add $(GLIB_DEBUG_FLAGS).  (#362543,
