@@ -1,3 +1,8 @@
+2006-11-15  Matthias Clasen  <mclasen@redhat.com>
+
+	* m4macros/glib-gettext.m4: Apply a patch from James 
+	Henstridge for compatibility with automake 2.60 (#343825)
+
 2006-11-14  Behdad Esfahbod  <behdad@gnome.org>
 
 	* sanity_check: Replace bash-specific == with sh-understood =.
