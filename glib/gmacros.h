@@ -95,6 +95,12 @@
 #define G_GNUC_DEPRECATED
 #endif /* __GNUC__ */
 
+#if     __GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ >= 3)
+#  define G_GNUC_MAY_ALIAS __attribute__((may_alias))
+#else
+#  define G_GNUC_MAY_ALIAS
+#endif
+
 #if    __GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ >= 4)
 #define G_GNUC_WARN_UNUSED_RESULT 		\
   __attribute__((warn_unused_result))

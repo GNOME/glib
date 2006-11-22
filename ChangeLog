@@ -1,3 +1,8 @@
+Wed Nov 22 16:09:13 2006  Tim Janik  <timj@gtk.org>
+
+	* glib/gmacros.h: added G_GNUC_MAY_ALIAS, suggested by Mathias
+	Hasselmann in bug #335341, fixes bug #335853.
+
 2006-11-15  Matthias Clasen  <mclasen@redhat.com>
 
 	* m4macros/glib-gettext.m4: Apply a patch from James 
