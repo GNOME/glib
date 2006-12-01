@@ -1,55 +1,57 @@
-# translation of glib.po to Arabic
+# translation of glib.glib-2-12.ar.po to Arabic
 # translation of glib.po to
-# Copyright (C) 2001,2002,2003 Free Software Foundation, Inc.
-# Isam Bayazidi <bayazidi@arabeyes.org>, 2001,2002.
-# Arafat Medini <lumina@silverpen.de>, 2003
+# Copyright (C) 2001,2002,2003, 2006 Free Software Foundation, Inc.
 #
+# Isam Bayazidi <bayazidi@arabeyes.org>, 2001,2002.
+# Arafat Medini <lumina@silverpen.de>, 2003.
 # Djihed Afifi <djihed@gmail.com>, 2006.
+# Khaled Hosny <khaledhosny@eglug.org>, 2006.
 msgid ""
 msgstr ""
-"Project-Id-Version: glib\n"
+"Project-Id-Version: glib.glib-2-12.ar\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-11-20 09:47+0000\n"
-"PO-Revision-Date: 2006-10-06 12:14-0000\n"
-"Last-Translator: Djihed Afifi <djihed@gmail.com>\n"
-"Language-Team: Arabic <doc@arabeyes.org>\n"
+"PO-Revision-Date: 2006-11-30 20:08+0200\n"
+"Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
+"Language-Team: Arabic <support@arabeyes.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms: Plural-Forms: nplurals=4; plural=n==1 ? 0 : n==2 ? 1 : n>=3 && n<=10 ? 2 : 3\n"
 
 #: ../glib/gbookmarkfile.c:716 ../glib/gbookmarkfile.c:793
 #: ../glib/gbookmarkfile.c:872 ../glib/gbookmarkfile.c:919
-#, fuzzy, c-format
+#, c-format
 msgid "Unexpected attribute '%s' for element '%s'"
-msgstr "قيمة مجهولة \"%s\" للتّوصيف \"%s\" على العنصر <%s>"
+msgstr "صفة غير متوقّعة '%s' للعنصر '%s'"
 
 #: ../glib/gbookmarkfile.c:727 ../glib/gbookmarkfile.c:804
 #: ../glib/gbookmarkfile.c:814 ../glib/gbookmarkfile.c:930
-#, fuzzy, c-format
+#, c-format
 msgid "Attribute '%s' of element '%s' not found"
-msgstr "خطأ: مستخدم غير موجود"
+msgstr "الصفة '%s' للعنصر '%s' غير موجودة"
 
 #: ../glib/gbookmarkfile.c:1103 ../glib/gbookmarkfile.c:1168
 #: ../glib/gbookmarkfile.c:1232 ../glib/gbookmarkfile.c:1242
-#, fuzzy, c-format
+#, c-format
 msgid "Unexpected tag '%s', tag '%s' expected"
-msgstr "ترقّب اللاعب القيم"
+msgstr "بطاقة غير متوقعة '%s'، توقّعت البطاقة '%s'"
 
 #: ../glib/gbookmarkfile.c:1128 ../glib/gbookmarkfile.c:1142
 #: ../glib/gbookmarkfile.c:1210 ../glib/gbookmarkfile.c:1262
-#, fuzzy, c-format
+#, c-format
 msgid "Unexpected tag '%s' inside '%s'"
-msgstr "بكسلات داخل الالتواء"
+msgstr "بطاقة غير متوقّعة '%s' داخل '%s'"
 
 #: ../glib/gbookmarkfile.c:1792
-#, fuzzy
 msgid "No valid bookmark file found in data dirs"
-msgstr "لا علامة صحيحة في ملف البيانات ديرس"
+msgstr "لا يوجد ملف علامة موقع صحيح في أدلّة البيانات"
 
 #: ../glib/gbookmarkfile.c:1993
-#, fuzzy, c-format
+#, c-format
 msgid "A bookmark for URI '%s' already exists"
-msgstr "علامة موقع بعنوان %s لهذه الصفحة موجودة سابقا. "
+msgstr "توجد بالفعل علامة موقع للعنوان '%s'"
 
 #: ../glib/gbookmarkfile.c:2039 ../glib/gbookmarkfile.c:2196
 #: ../glib/gbookmarkfile.c:2281 ../glib/gbookmarkfile.c:2362
@@ -60,29 +62,29 @@ msgstr "علامة موقع بعنوان %s لهذه الصفحة موجودة �
 #: ../glib/gbookmarkfile.c:3218 ../glib/gbookmarkfile.c:3371
 #: ../glib/gbookmarkfile.c:3436 ../glib/gbookmarkfile.c:3526
 #: ../glib/gbookmarkfile.c:3653
-#, fuzzy, c-format
+#, c-format
 msgid "No bookmark found for URI '%s'"
-msgstr "لايوجد ملف شخصي للمستخدم '%s'\n"
+msgstr "لا توجد علامة موقع للعنوان '%s'"
 
 #: ../glib/gbookmarkfile.c:2371
-#, fuzzy, c-format
+#, c-format
 msgid "No MIME type defined in the bookmark for URI '%s'"
-msgstr "لا المحاكاه في تحديد نوع المؤشر لوري 'او' ٪"
+msgstr "لم يعرّف نوع MIME في علامة موقع العنوان '%s'"
 
 #: ../glib/gbookmarkfile.c:2456
-#, fuzzy, c-format
+#, c-format
 msgid "No private flag has been defined in bookmark for URI '%s'"
-msgstr "لا العلم الخاص قد حدد في مؤشر لوري 'او' ٪"
+msgstr ""
 
 #: ../glib/gbookmarkfile.c:2835
-#, fuzzy, c-format
+#, c-format
 msgid "No groups set in bookmark for URI '%s'"
-msgstr "هناك مجموعات في مجموعة العلامه لوري 'او' ٪"
+msgstr "لم تحدد أي مجموعات في علامة موقع '%s'"
 
 #: ../glib/gbookmarkfile.c:3236 ../glib/gbookmarkfile.c:3381
-#, fuzzy, c-format
+#, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
-msgstr "لا ينطبق مع اسم 'او' ٪ سجل المؤشر ‘او’ ٪"
+msgstr "لم يسجل أي تطبيق بالإسم '%s' علامة موقع لـ '%s'"
 
 #: ../glib/gconvert.c:405 ../glib/gconvert.c:483 ../glib/giochannel.c:1150
 #, c-format
@@ -90,9 +92,9 @@ msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "التحويل من مجموعة المحارف '%s' إلى '%s' غير مدعوم"
 
 #: ../glib/gconvert.c:409 ../glib/gconvert.c:487
-#, fuzzy, c-format
+#, c-format
 msgid "Could not open converter from '%s' to '%s'"
-msgstr "لم يمكن فتح المحول من '%s' الى '%s': %s"
+msgstr "لم يمكن فتح المحول من '%s' الى '%s'"
 
 #: ../glib/gconvert.c:603 ../glib/gconvert.c:992 ../glib/giochannel.c:1322
 #: ../glib/giochannel.c:1364 ../glib/giochannel.c:2206 ../glib/gutf8.c:943
@@ -117,9 +119,9 @@ msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "لم يمكن تحويل fallback '%s' الى مجموعة المحارف '%s'"
 
 #: ../glib/gconvert.c:1703
-#, fuzzy, c-format
+#, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
-msgstr "الـURI '%s' ليس URI كامل باستخدام مخطط الملفات"
+msgstr "العنوان '%s' ليس عنوانا مطلقا باستخدام المخطط \"file\""
 
 #: ../glib/gconvert.c:1713
 #, c-format
@@ -186,9 +188,9 @@ msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "فشل فتح الملف '%s': فشل fdopen(): %s"
 
 #: ../glib/gfileutils.c:905
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
-msgstr "فشل في قراءة الملف '%s': %s"
+msgstr "فشل إعادة تسمية الملف '%s' إلى '%s': فشل g_rename(): %s"
 
 #: ../glib/gfileutils.c:946 ../glib/gfileutils.c:1404
 #, c-format
@@ -196,24 +198,24 @@ msgid "Failed to create file '%s': %s"
 msgstr "فشل انشاء الملف '%s': %s"
 
 #: ../glib/gfileutils.c:960
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
-msgstr "فشل فتح الملف '%s': فشل fdopen(): %s"
+msgstr "فشل فتح الملف '%s' للكتابة: فشل fdopen(): %s"
 
 #: ../glib/gfileutils.c:985
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
-msgstr "واصف الملف الذي سيكتب إليه الـ IOR"
+msgstr "فشلت في كتابة الملف '%s': فشل fwrite(): %s"
 
 #: ../glib/gfileutils.c:1004
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
-msgstr "لا يمكن غلق ملف الحالة المحفوظ آنفا '%s': %s"
+msgstr "فشلت في غلق الملف '%s': فشل fclose(): %s"
 
 #: ../glib/gfileutils.c:1122
-#, fuzzy, c-format
+#, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
-msgstr "القائمة ملف 'او' ٪ لا يمكن ازالتها : g_unlink () لا : ق ٪"
+msgstr "لا يمكن حذف الملف الموجود مسبقا '%s': فشل g_unlink(): %s"
 
 #: ../glib/gfileutils.c:1366
 #, c-format
@@ -221,9 +223,9 @@ msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "القالب '%s' غير سليم, لا يجب أن يحتوي على '%s'"
 
 #: ../glib/gfileutils.c:1379
-#, fuzzy, c-format
+#, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
-msgstr "القالب '%s' غير سليم, لا يجب أن يحتوي على '%s'"
+msgstr "لا يحتوي القالب '%s' على XXXXXX"
 
 #: ../glib/gfileutils.c:1854
 #, c-format
@@ -235,9 +237,9 @@ msgid "Symbolic links not supported"
 msgstr "الوصلات الرمزية غير مدعومة"
 
 #: ../glib/giochannel.c:1154
-#, fuzzy, c-format
+#, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
-msgstr "لم يمكن فتح المحول من `%s' الى `%s': %s"
+msgstr "لم يمكن فتح المحول من '%s' الى '%s': %s"
 
 #: ../glib/giochannel.c:1499
 msgid "Can't do a raw read in g_io_channel_read_line_string"
@@ -257,14 +259,14 @@ msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "لا يمكن عمل قراءة خام في g_io_channel_read_to_end"
 
 #: ../glib/gmappedfile.c:116
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to open file '%s': open() failed: %s"
-msgstr "فشل فتح الملف '%s': %s"
+msgstr "فشل فتح الملف '%s': فشل open(): %s"
 
 #: ../glib/gmappedfile.c:193
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
-msgstr "خطأ في إعراب ملف XML"
+msgstr ""
 
 #: ../glib/gmarkup.c:226
 #, c-format
@@ -277,10 +279,8 @@ msgid "Error on line %d: %s"
 msgstr "خطأ في السطر %d: %s"
 
 #: ../glib/gmarkup.c:428
-msgid ""
-"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
-msgstr ""
-"كيان فارغ '&;' تمت رؤيته، الكيانات السليمة هي:&amp; &quot; &lt; &gt; &apos; "
+msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgstr "كيان فارغ '&;' تمت رؤيته، الكيانات السليمة هي:&amp; &quot; &lt; &gt; &apos; "
 
 #: ../glib/gmarkup.c:438
 #, c-format
@@ -320,9 +320,9 @@ msgstr ""
 "ربما الرقم عريض جدا"
 
 #: ../glib/gmarkup.c:598
-#, fuzzy, c-format
+#, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
-msgstr "مرجع الرمز '%s' لا يقوم بتشفير رمز مسموح به"
+msgstr "مرجع المحرف '%-.*s'  لا يقوم بترميز محرف مسموح به"
 
 #: ../glib/gmarkup.c:613
 msgid "Empty character reference; should include a digit such as &#454;"
@@ -369,8 +369,7 @@ msgstr "رمز غريب '%s',  توقعت رمز '>' لإنهاء بداية ع�
 
 #: ../glib/gmarkup.c:1246
 #, c-format
-msgid ""
-"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr "رمز غريب '%s', توقعت '=' بعد اسم الصفة  '%s' للعنصر '%s'"
 
 #: ../glib/gmarkup.c:1288
@@ -438,8 +437,7 @@ msgstr ""
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
 "the tag <%s/>"
-msgstr ""
-"انتهى المستند بشكل غير متوقع، كنت توقعت رؤية قوس ذا زاوية لينهي العلامة<%s/>"
+msgstr "انتهى المستند بشكل غير متوقع، كنت توقعت رؤية قوس ذا زاوية لينهي العلامة<%s/>"
 
 #: ../glib/gmarkup.c:1784
 msgid "Document ended unexpectedly inside an element name"
@@ -480,8 +478,7 @@ msgstr "النص المقتبس لا يبدأ بعلامة اقتباس"
 
 #: ../glib/gshell.c:160
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
-msgstr ""
-"علامة اقتباس غير مطابقة في سطر الأوامر أو نص منقول من الغلاف (سطر الأوامر)"
+msgstr "علامة اقتباس غير مطابقة في سطر الأوامر أو نص منقول من الغلاف (سطر الأوامر)"
 
 #: ../glib/gshell.c:538
 #, c-format
@@ -522,34 +519,34 @@ msgid "Failed to execute child process (%s)"
 msgstr "فشل تنفيذ العملية الإبنة (%s)"
 
 #: ../glib/gspawn-win32.c:467 ../glib/gspawn-win32.c:523
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid program name: %s"
-msgstr "اسم ملف البرنامج المنهار"
+msgstr "اسم برنامج غير صحيح: %s"
 
 #: ../glib/gspawn-win32.c:477 ../glib/gspawn-win32.c:533
 #: ../glib/gspawn-win32.c:776 ../glib/gspawn-win32.c:831
 #: ../glib/gspawn-win32.c:1366
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid string in argument vector at %d: %s"
-msgstr "صحيح الخيط في موجة الجدل فى المائة د : ق ٪"
+msgstr ""
 
 #: ../glib/gspawn-win32.c:488 ../glib/gspawn-win32.c:544
 #: ../glib/gspawn-win32.c:790 ../glib/gspawn-win32.c:844
 #: ../glib/gspawn-win32.c:1399
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid string in environment: %s"
-msgstr "يو تي اف غير سليم في سلسلة القيمة عند '%s'"
+msgstr ""
 
 #: ../glib/gspawn-win32.c:772 ../glib/gspawn-win32.c:827
 #: ../glib/gspawn-win32.c:1347
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid working directory: %s"
-msgstr "ليس دليل مستخدمين صحيح"
+msgstr "دليل شبكة غير سليم: %s"
 
 #: ../glib/gspawn-win32.c:886
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to execute helper program (%s)"
-msgstr "فشل تنفيذ العملية الإبنة (%s)"
+msgstr "فشل تنفيذ البرنامج المساعد (%s)"
 
 #: ../glib/gspawn-win32.c:1086
 msgid ""
@@ -616,123 +613,111 @@ msgid "Character out of range for UTF-16"
 msgstr "الحرف خارج حدود UTF-16"
 
 #: ../glib/goption.c:495
-#, fuzzy
 msgid "Usage:"
-msgstr "الاستخدام: %s\n"
+msgstr "الاستخدام:"
 
 #: ../glib/goption.c:495
-#, fuzzy
 msgid "[OPTION...]"
-msgstr "مجموعة خيارات"
+msgstr "[OPTION...]"
 
 #: ../glib/goption.c:586
-#, fuzzy
 msgid "Help Options:"
-msgstr "خيارات المساعدة"
+msgstr "خيارات المساعدة:"
 
 #: ../glib/goption.c:587
-#, fuzzy
 msgid "Show help options"
-msgstr "عرض خيارات عامّة"
+msgstr "اعرض خيارات المساعدة"
 
 #: ../glib/goption.c:592
-#, fuzzy
 msgid "Show all help options"
-msgstr "إظهار خيارات القرص المتقدمة"
+msgstr "اعرض كل خيارات المساعدة"
 
 #: ../glib/goption.c:642
-#, fuzzy
 msgid "Application Options:"
-msgstr "<b>خيارات البرنامج:</b>"
+msgstr "خيارات التطبيق:"
 
 #: ../glib/goption.c:686 ../glib/goption.c:756
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot parse integer value '%s' for %s"
-msgstr "لا قيمة العدد الصحيح اعرب '٪ ق ٪ ق’"
+msgstr ""
 
 #: ../glib/goption.c:696 ../glib/goption.c:764
-#, fuzzy, c-format
+#, c-format
 msgid "Integer value '%s' for %s out of range"
-msgstr "الرمز خارج حدود UTF-8"
+msgstr ""
 
 #: ../glib/goption.c:721
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot parse double value '%s' for %s"
-msgstr "لا يستطيع اعرب ضعف قيمة '٪ ق ٪ ق’"
+msgstr ""
 
 #: ../glib/goption.c:729
-#, fuzzy, c-format
+#, c-format
 msgid "Double value '%s' for %s out of range"
-msgstr "الرمز خارج حدود UTF-8"
+msgstr ""
 
 #: ../glib/goption.c:1066
-#, fuzzy, c-format
+#, c-format
 msgid "Error parsing option %s"
-msgstr "خطأ أثناء ترجمة المصفات: %s: %s"
+msgstr ""
 
 #: ../glib/goption.c:1097 ../glib/goption.c:1208
-#, fuzzy, c-format
+#, c-format
 msgid "Missing argument for %s"
-msgstr "عامل التنفيذ لالشاشة الطرفية الافتراضية"
+msgstr ""
 
 #: ../glib/goption.c:1597
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown option %s"
-msgstr "مجموعة خيارات"
+msgstr "خيار مجهول %s"
 
 #: ../glib/gkeyfile.c:337
-#, fuzzy
 msgid "Valid key file could not be found in data dirs"
-msgstr "صحيح الرئيسية الملف تعذر العثور على البيانات ديرس"
+msgstr "لا يمكن إيجاد ملف مفتاح صحيح في دليل البيانات"
 
 #: ../glib/gkeyfile.c:372
-#, fuzzy
 msgid "Not a regular file"
-msgstr "%s ليس ملفا اعتياديا!\n"
+msgstr "ليس ملفا اعتياديا"
 
 #: ../glib/gkeyfile.c:380
-#, fuzzy
 msgid "File is empty"
-msgstr "ملف فارغ"
+msgstr "الملف فارغ"
 
 #: ../glib/gkeyfile.c:696
-#, fuzzy, c-format
-msgid ""
-"Key file contains line '%s' which is not a key-value pair, group, or comment"
-msgstr "الرئيسية ملف الخط '٪ او التي لا قيمة اساسية زوج او جماعة او تعليق"
+#, c-format
+msgid "Key file contains line '%s' which is not a key-value pair, group, or comment"
+msgstr ""
 
 #: ../glib/gkeyfile.c:767
-#, fuzzy
 msgid "Key file does not start with a group"
-msgstr "الرئيسية ملف لا يبدأ مع مجموعة"
+msgstr "لا يبدأ ملف المفتاح بمجموعة"
 
 #: ../glib/gkeyfile.c:811
-#, fuzzy, c-format
+#, c-format
 msgid "Key file contains unsupported encoding '%s'"
-msgstr "الرئيسية ملف بدون تشفير 'او' ٪"
+msgstr "يحتوي ملف المفتاع على ترميز غير مدعوم '%s'"
 
 #: ../glib/gkeyfile.c:1020 ../glib/gkeyfile.c:1179 ../glib/gkeyfile.c:2398
 #: ../glib/gkeyfile.c:2463 ../glib/gkeyfile.c:2582 ../glib/gkeyfile.c:2717
 #: ../glib/gkeyfile.c:2870 ../glib/gkeyfile.c:3046 ../glib/gkeyfile.c:3103
-#, fuzzy, c-format
+#, c-format
 msgid "Key file does not have group '%s'"
-msgstr "لا تحتوي الرزمةعلى ملف GdmGreeterTheme.info"
+msgstr "لا يحتوي ملف المفتاح على المجموعة '%s'"
 
 #: ../glib/gkeyfile.c:1191
-#, fuzzy, c-format
+#, c-format
 msgid "Key file does not have key '%s'"
-msgstr "الملف غير موجود."
+msgstr "لا يحتوي ملف المفتاح على المفتاح '%s'"
 
 #: ../glib/gkeyfile.c:1293 ../glib/gkeyfile.c:1405
-#, fuzzy, c-format
+#, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
-msgstr ""
-"الرئيسية ملف مفتاح 'او' ٪ '٪ او القيمه التي لا‘ الصندوق الاستءماني الاحادي 8"
+msgstr "يحتوي ملف المفتاح على المفتاح '%s' ذو القيمة '%s' التي ليست UTF-8"
 
 #: ../glib/gkeyfile.c:1313 ../glib/gkeyfile.c:1425 ../glib/gkeyfile.c:1797
-#, fuzzy, c-format
+#, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
-msgstr "الرئيسية ملف مفتاح '٪' او القيمه التي لا يمكن تفسيرها."
+msgstr ""
 
 #: ../glib/gkeyfile.c:2013 ../glib/gkeyfile.c:2226
 #, fuzzy, c-format
@@ -742,36 +727,36 @@ msgid ""
 msgstr "الرئيسية ملف مفتاح '٪' او مجموعة 'او' ٪ القيمه التي لا يمكن تفسيرها."
 
 #: ../glib/gkeyfile.c:2413 ../glib/gkeyfile.c:2597 ../glib/gkeyfile.c:3114
-#, fuzzy, c-format
+#, c-format
 msgid "Key file does not have key '%s' in group '%s'"
-msgstr "الرئيسية ملف لا تملك مفتاح '٪' او مجموعة 'او' ٪"
+msgstr "لا يحتوي ملف المفتاح على مفتاح '%s' في المجموعة '%s'"
 
 #: ../glib/gkeyfile.c:3287
-#, fuzzy
 msgid "Key file contains escape character at end of line"
-msgstr "الرئيسية ملف هروب الطابع في نهاية الخط"
+msgstr ""
 
 #: ../glib/gkeyfile.c:3309
-#, fuzzy, c-format
+#, c-format
 msgid "Key file contains invalid escape sequence '%s'"
-msgstr "الـURI '%s' يحتوي على حروف هربت بطريقة غير سليمة "
+msgstr ""
 
 #: ../glib/gkeyfile.c:3451
-#, fuzzy, c-format
+#, c-format
 msgid "Value '%s' cannot be interpreted as a number."
-msgstr "القيمه ٪ 'او' لا يمكن تفسير مثل العدد."
+msgstr "لا يمكن تفسير القيمة '%s' كعدد."
 
 #: ../glib/gkeyfile.c:3465
-#, fuzzy, c-format
+#, c-format
 msgid "Integer value '%s' out of range"
-msgstr "الرمز خارج حدود UTF-8"
+msgstr "قيمة عدد صحيح '%s' خارج المدى"
 
 #: ../glib/gkeyfile.c:3498
-#, fuzzy, c-format
+#, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
-msgstr "القيمه ٪ 'او' لا يمكن تفسيره بأنه طرح عدد."
+msgstr "لا يمكن تفسير القيمة '%s' ككسر عشري."
 
 #: ../glib/gkeyfile.c:3525
-#, fuzzy, c-format
+#, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
-msgstr "القيمه ٪ 'او' لا يمكن تفسيره بأنه منطقي."
+msgstr "لا يمكن تفسير القيمة '%s' كعدد منطقي."
+
