@@ -251,7 +251,7 @@ gunichar *g_unicode_canonical_decomposition (gunichar  ch,
  */
 GLIB_VAR const gchar * const g_utf8_skip;
 
-#define g_utf8_next_char(p) (char *)((p) + g_utf8_skip[*(guchar *)(p)])
+#define g_utf8_next_char(p) (char *)((p) + g_utf8_skip[*(const guchar *)(p)])
 
 gunichar g_utf8_get_char           (const gchar  *p);
 gunichar g_utf8_get_char_validated (const  gchar *p,
