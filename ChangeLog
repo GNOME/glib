@@ -1,3 +1,10 @@
+2006-12-12  Matthias Clasen  <mclasen@redhat.com>
+
+	* configure.in: Add a check for broken poll on Mac OS X.
+
+	* glib/gmain.c: Use poll emulation on OS X.  (#302672, Toby Peterson,
+	patch by Dave Vasilevsky)
+
 2006-12-11  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gatomic.c: Don't use local numeric labels in

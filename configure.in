@@ -2117,6 +2117,32 @@ else
   glib_cv_value_POLLNVAL=32
 fi
 
+# Check for Mac OS X's broken poll
+if test $cross_compiling != yes ; then
+  AC_MSG_CHECKING(for broken poll)
+  AC_TRY_RUN([[
+	#include <stdlib.h>
+	#include <fcntl.h>
+	#include <poll.h>
+	int main(void) {
+	  struct pollfd fds[1];
+	  int fd;
+	  fd = open("/dev/null", 1);
+	  fds[0].fd = fd;
+	  fds[0].events = POLLIN;
+	  fds[0].revents = 0;
+	  if (poll(fds, 1, 0) < 0 || (fds[0].revents & POLLNVAL) != 0) {
+		exit(1);  /* Does not work for devices -- fail */
+	  }
+	  exit(0);
+	}]],
+    broken_poll=no,
+    broken_poll=yes
+    AC_DEFINE(BROKEN_POLL,1,[poll doesn't work on devices])
+  )
+  AC_MSG_RESULT($broken_poll)
+fi
+
 dnl **********************
 dnl *** Win32 API libs ***
 dnl **********************
