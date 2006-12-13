@@ -96,7 +96,7 @@ _g_module_open (const gchar *file_name,
   gpointer handle;
   
   handle = dlopen (file_name,
-	(bind_local ? 0 : RTLD_GLOBAL) | (bind_lazy ? RTLD_LAZY : RTLD_NOW));
+		   (bind_local ? 0 : RTLD_GLOBAL) | (bind_lazy ? RTLD_LAZY : RTLD_NOW));
   if (!handle)
     g_module_set_error (fetch_dlerror (TRUE));
   
@@ -140,10 +140,13 @@ _g_module_symbol (gpointer     handle,
 		  const gchar *symbol_name)
 {
   gpointer p;
-  
+  gchar *msg;
+
+  fetch_dlerror (FALSE);
   p = dlsym (handle, symbol_name);
-  if (!p)
-    g_module_set_error (fetch_dlerror (FALSE));
+  msg = fetch_dlerror (FALSE);
+  if (msg)
+    g_module_set_error (msg);
   
   return p;
 }

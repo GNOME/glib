@@ -1,3 +1,7 @@
+2006-12-13  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/tmpl/modules.sgml: Point out that valid symbols may be NULL.
+
 2006-10-08  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/tmpl/unicode.sgml: Document GUnicodeType.

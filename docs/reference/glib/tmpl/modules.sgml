@@ -71,6 +71,22 @@ just_say_hello (const char *filename, GError **error)
       return FALSE;
     }
 
+  if (say_hello == NULL)
+    {
+      g_set_error (error, SAY_ERROR, SAY_ERROR_OPEN, "symbol say_hello is NULL");
+      if (!g_module_close (module))
+	g_warning ("&percnt;s: &percnt;s", filename, g_module_error (<!-- -->));
+      return FALSE;
+    }
+
+  if (say_hello == NULL)
+    {
+      g_set_error (error, SAY_ERROR, SAY_ERROR_OPEN, "symbol say_hello is NULL");
+      if (!g_module_close (module))
+	g_warning ("&percnt;s: &percnt;s", filename, g_module_error (<!-- -->));
+      return FALSE;
+    }
+
   /* call our function in the module */
   say_hello ("Hello world!");
 
@@ -176,6 +192,12 @@ not supported on all platforms.
 <!-- ##### FUNCTION g_module_symbol ##### -->
 <para>
 Gets a symbol pointer from a module.
+</para>
+<para>
+Note that a valid symbol can be %NULL.
+</para>
+<para>
+Note that a valid symbol can be %NULL.
 </para>
 
 @module: a #GModule.

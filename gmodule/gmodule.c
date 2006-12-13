@@ -477,7 +477,7 @@ g_module_open (const gchar    *file_name,
       modules = module;
       
       /* check initialization */
-      if (g_module_symbol (module, "g_module_check_init", (gpointer) &check_init))
+      if (g_module_symbol (module, "g_module_check_init", (gpointer) &check_init) && check_init != NULL)
 	check_failed = check_init (module);
       
       /* we don't call unload() if the initialization check failed. */
