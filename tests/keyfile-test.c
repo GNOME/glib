@@ -1001,10 +1001,31 @@ test_duplicate_groups (void)
     "key2=123\n";
   
   keyfile = load_data (data, 0);
+  check_string_value (keyfile, "Desktop Entry", "key1", "123");
+  check_string_value (keyfile, "Desktop Entry", "key2", "123");
 
   g_key_file_free (keyfile);  
 }
 
+/* http://bugzilla.gnome.org/show_bug.cgi?id=385910 */
+static void
+test_duplicate_groups2 (void)
+{
+  GKeyFile *keyfile;
+  const gchar *data = 
+    "[A]\n"
+    "foo=bar\n"
+    "[B]\n"
+    "foo=baz\n"
+    "[A]\n"
+    "foo=bang\n";
+  
+  keyfile = load_data (data, 0);
+  check_string_value (keyfile, "A", "foo", "bang");
+  check_string_value (keyfile, "B", "foo", "baz");
+
+  g_key_file_free (keyfile);  
+}
 
 int
 main (int argc, char *argv[])
@@ -1023,6 +1044,7 @@ main (int argc, char *argv[])
   test_groups ();
   test_duplicate_keys ();
   test_duplicate_groups ();
+  test_duplicate_groups2 ();
   
   return 0;
 }
