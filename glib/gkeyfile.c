@@ -2887,8 +2887,12 @@ g_key_file_add_group (GKeyFile    *key_file,
   g_return_if_fail (key_file != NULL);
   g_return_if_fail (group_name != NULL);
 
-  if (g_key_file_lookup_group_node (key_file, group_name) != NULL)
-    return;
+  group = g_key_file_lookup_group (key_file, group_name);
+  if (group != NULL)
+    {
+      key_file->current_group = group;
+      return;
+    }
 
   group = g_new0 (GKeyFileGroup, 1);
   group->name = g_strdup (group_name);

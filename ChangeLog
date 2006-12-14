@@ -1,3 +1,10 @@
+2006-12-14  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gkeyfile.c (g_key_file_add_group): If the group
+	is already there, make it current.  (#385910, Joe Halliwell)
+
+	* tests/keyfile-test.c: Add a test for duplicate groups/keys.
+
 2006-12-13  Matthias Clasen  <mclasen@redhat.com>
 
 	* m4macros/glib-gettext.m4: Require AC_CANONICAL_HOST in
