@@ -1078,6 +1078,7 @@ g_string_ascii_down
 g_string_ascii_up
 g_string_assign
 g_string_chunk_free
+g_string_chunk_clear
 g_string_chunk_insert
 g_string_chunk_insert_const
 g_string_chunk_insert_len

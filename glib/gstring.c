@@ -162,6 +162,39 @@ g_string_chunk_free (GStringChunk *chunk)
   g_free (chunk);
 }
 
+/**
+ * g_string_chunk_clear:
+ * @chunk: a #GStringChunk
+ *
+ * Frees all strings contained within the #GStringChunk.
+ * After calling g_string_chunk_clear() it is not safe to
+ * access any of the strings which were contained within it.
+ *
+ * Since: 2.14
+ */
+void
+g_string_chunk_clear (GStringChunk *chunk)
+{
+  GSList *tmp_list;
+
+  g_return_if_fail (chunk != NULL);
+
+  if (chunk->storage_list)
+    {
+      for (tmp_list = chunk->storage_list; tmp_list; tmp_list = tmp_list->next)
+        g_free (tmp_list->data);
+
+      g_slist_free (chunk->storage_list);
+
+      chunk->storage_list       = NULL;
+      chunk->storage_next       = chunk->default_size;
+      chunk->this_size          = chunk->default_size;
+    }
+
+  if (chunk->const_table)
+      g_hash_table_remove_all (chunk->const_table);
+}
+
 gchar*
 g_string_chunk_insert (GStringChunk *chunk,
 		       const gchar  *string)
