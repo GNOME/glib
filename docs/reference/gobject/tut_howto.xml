@@ -61,7 +61,7 @@
         <itemizedlist>
           <listitem><para>
               use a dash to separate the prefix from the typename: <filename>maman-bar.h</filename> and 
-              <filename>maman-bar.c</filename> (this is the convention used by Nautilus and most Gnome libraries).
+              <filename>maman-bar.c</filename> (this is the convention used by Nautilus and most GNOME libraries).
             </para></listitem>
           <listitem><para>
               use an underscore to separate the prefix from the typename: <filename>maman_bar.h</filename> and 
@@ -150,7 +150,7 @@ struct _MamanBar {
 </programlisting>
             </para></listitem>
           <listitem><para>
-              All of Nautilus code and a lot of Gnome libraries use private indirection members, as described
+              All of Nautilus code and a lot of GNOME libraries use private indirection members, as described
               by Herb Sutter in his Pimpl articles
               (see <ulink url="http://www.gotw.ca/gotw/024.htm">Compilation Firewalls</ulink>
               and <ulink url="http://www.gotw.ca/gotw/028.htm">The Fast Pimpl Idiom</ulink>
@@ -1653,8 +1653,8 @@ klass->write_signal_id =
           <title>Warning on signal creation and default closure</title>
 
           <para>
-            Most of the existing code I have seen up to now (in both GTK+, Gnome libraries and
-            many GTK+ and Gnome applications) using signals uses a small
+            Most of the existing code I have seen up to now (in both GTK+, GNOME libraries and
+            many GTK+ and GNOME applications) using signals uses a small
             variation of the default handler pattern I have shown in the previous section.
           </para>
 

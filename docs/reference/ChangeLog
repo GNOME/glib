@@ -1,5 +1,7 @@
 2006-12-14  Matthias Clasen  <mclasen@redhat.com>
 
+	* gobject/*.xml: s/Gnome/GNOME/g (#352156, Guillaume Desmottes)
+
 	* glib/tmpl/keyfile.sgml: Clarify the behaviour
 	wrt. to duplicate keys and groups.
 

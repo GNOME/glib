@@ -17,7 +17,7 @@
 	<listitem><para>Generic per-object properties with set/get function pairs</para></listitem>
 	<listitem><para>Easy use of signals</para></listitem>
       </itemizedlist>
-      All the GTK+ objects and all of the objects in Gnome libraries which use the GLib type
+      All the GTK+ objects and all of the objects in GNOME libraries which use the GLib type
       system inherit from <type><link linkend="GObject">GObject</link></type> which is why it is important to understand
       the details of how it works.
     </para>

@@ -7,7 +7,7 @@
 
       <para>
         Closures are central to the concept of asynchronous signal delivery
-        which is widely used throughout GTK+ and Gnome applications. A Closure is an 
+        which is widely used throughout GTK+ and GNOME applications. A Closure is an 
         abstraction, a generic representation of a callback. It is a small structure
         which contains three objects:
         <itemizedlist>
@@ -161,7 +161,7 @@ g_cclosure_marshal_VOID__INT (GClosure     *closure,
 	  This python marshaller transforms the input GValue list representing the function 
 	  parameters into a Python tuple which is the equivalent structure in python (you can
 	  look in <function>pyg_closure_marshal</function> in <filename>pygtype.c</filename>
-	  in the <emphasis>pygobject</emphasis> module in Gnome cvs server).
+	  in the <emphasis>pygobject</emphasis> module in GNOME cvs server).
 	</para>
 
       </sect2>
