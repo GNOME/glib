@@ -1,5 +1,10 @@
 2006-12-15  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gspawn.c (do_exec): Call set_cloexec() with
+	the right parameters.  (#386252, Guillaume Desmottes)
+
+2006-12-15  Matthias Clasen  <mclasen@redhat.com>
+
 	Fix #357585, Padraig O'Briain.
 	
 	* configure.in: Check for fdwalk.
