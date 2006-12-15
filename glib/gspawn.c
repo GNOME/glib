@@ -928,7 +928,7 @@ do_exec (gint                  child_err_report_fd,
   else
     {
       /* We need to do child_err_report_fd anyway */
-      set_cloexec (child_err_report_fd);
+      set_cloexec (NULL, child_err_report_fd);
     }
   
   /* Redirect pipes as required */
