@@ -2,7 +2,7 @@
  *
  * gconvert.c: Convert between character sets using iconv
  * Copyright Red Hat Inc., 2000
- * Authors: Havoc Pennington <hp@redhat.com>, Owen Taylor <otaylor@redhat.com
+ * Authors: Havoc Pennington <hp@redhat.com>, Owen Taylor <otaylor@redhat.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -235,15 +235,17 @@ iconv_cache_init (void)
  * Creates a new cache bucket, inserts it into the cache and
  * increments the cache size.
  *
+ * This assumes ownership of @key.
+ *
  * Returns a pointer to the newly allocated cache bucket.
  **/
 static struct _iconv_cache_bucket *
-iconv_cache_bucket_new (const gchar *key, GIConv cd)
+iconv_cache_bucket_new (gchar *key, GIConv cd)
 {
   struct _iconv_cache_bucket *bucket;
   
   bucket = g_new (struct _iconv_cache_bucket, 1);
-  bucket->key = g_strdup (key);
+  bucket->key = key;
   bucket->refcount = 1;
   bucket->used = TRUE;
   bucket->cd = cd;
@@ -336,13 +338,24 @@ open_converter (const gchar *to_codeset,
 		GError     **error)
 {
   struct _iconv_cache_bucket *bucket;
-  gchar *key;
+  gchar *key, *dyn_key, auto_key[80];
   GIConv cd;
+  gsize len_from_codeset, len_to_codeset;
   
   /* create our key */
-  key = g_alloca (strlen (from_codeset) + strlen (to_codeset) + 2);
-  _g_sprintf (key, "%s:%s", from_codeset, to_codeset);
-  
+  len_from_codeset = strlen (from_codeset);
+  len_to_codeset = strlen (to_codeset);
+  if (len_from_codeset + len_to_codeset + 2 < sizeof (auto_key))
+    {
+      key = auto_key;
+      dyn_key = NULL;
+    }
+  else
+    key = dyn_key = g_malloc (len_from_codeset + len_to_codeset + 2);
+  memcpy (key, from_codeset, len_from_codeset);
+  key[len_from_codeset] = ':';
+  strcpy (key + len_from_codeset + 1, to_codeset);
+
   G_LOCK (iconv_cache_lock);
   
   /* make sure the cache has been initialized */
@@ -351,6 +364,8 @@ open_converter (const gchar *to_codeset,
   bucket = g_hash_table_lookup (iconv_cache, key);
   if (bucket)
     {
+      g_free (dyn_key);
+
       if (bucket->used)
         {
           cd = g_iconv_open (to_codeset, from_codeset);
@@ -379,12 +394,15 @@ open_converter (const gchar *to_codeset,
   else
     {
       cd = g_iconv_open (to_codeset, from_codeset);
-      if (cd == (GIConv) -1)
-        goto error;
+      if (cd == (GIConv) -1) 
+	{
+	  g_free (dyn_key);
+	  goto error;
+	}
       
       iconv_cache_expire_unused ();
-      
-      bucket = iconv_cache_bucket_new (key, cd);
+
+      bucket = iconv_cache_bucket_new (dyn_key ? dyn_key : g_strdup (key), cd);
     }
   
   g_hash_table_insert (iconv_open_hash, cd, bucket->key);
