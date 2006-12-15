@@ -390,7 +390,7 @@ static int
 interval_compare (const void *key, const void *elt)
 {
   gunichar c = GPOINTER_TO_UINT (key);
-  struct Interval *interval = elt;
+  struct Interval *interval = (struct Interval *)elt;
 
   if (c < interval->start)
     return -1;
