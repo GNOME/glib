@@ -3974,8 +3974,12 @@ g_child_watch_source_new (GPid pid)
  * @data:     data to pass to @function
  * @notify:   function to call when the idle is removed, or %NULL
  * 
- * Sets a function to be called when the child indicated by @pid exits, at a
- * default priority, #G_PRIORITY_DEFAULT.
+ * Sets a function to be called when the child indicated by @pid 
+ * exits, at the priority @priority.
+ *
+ * If you obtain @pid from g_spawn_async() or g_spawn_async_with_pipes() 
+ * you will need to pass #G_SPAWN_DO_NOT_REAP_CHILD as flag to 
+ * the spawn function for the child watching to work.
  * 
  * Note that on platforms where #GPid must be explicitly closed
  * (see g_spawn_close_pid()) @pid must not be closed while the
@@ -4018,8 +4022,12 @@ g_child_watch_add_full (gint            priority,
  * @function: function to call
  * @data:     data to pass to @function
  * 
- * Sets a function to be called when the child indicated by @pid exits, at a
- * default priority, #G_PRIORITY_DEFAULT.
+ * Sets a function to be called when the child indicated by @pid 
+ * exits, at a default priority, #G_PRIORITY_DEFAULT.
+ * 
+ * If you obtain @pid from g_spawn_async() or g_spawn_async_with_pipes() 
+ * you will need to pass #G_SPAWN_DO_NOT_REAP_CHILD as flag to 
+ * the spawn function for the child watching to work.
  * 
  * Note that on platforms where #GPid must be explicitly closed
  * (see g_spawn_close_pid()) @pid must not be closed while the
