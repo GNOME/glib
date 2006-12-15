@@ -1,3 +1,15 @@
+2006-12-15  Matthias Clasen  <mclasen@redhat.com>
+
+	Fix #357585, Padraig O'Briain.
+	
+	* configure.in: Check for fdwalk.
+	
+	* glib/gspawn.c (do_exec): Use fdwalk() to close all
+	file descriptors. 
+
+	* glib/gspawn.c (fdwalk): Fallback implementation of
+	fdwalk.
+
 2006-12-14  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gconvert.c (open_converter): Don't use alloca

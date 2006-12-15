@@ -855,7 +855,7 @@ fi
 AC_MSG_RESULT(unsigned $glib_size_type)
 
 # Check for some functions
-AC_CHECK_FUNCS(lstat strerror strsignal memmove vsnprintf stpcpy strcasecmp strncasecmp poll getcwd vasprintf setenv unsetenv getc_unlocked readlink symlink)
+AC_CHECK_FUNCS(lstat strerror strsignal memmove vsnprintf stpcpy strcasecmp strncasecmp poll getcwd vasprintf setenv unsetenv getc_unlocked readlink symlink fdwalk)
 # Check for high-resolution sleep functions
 AC_CHECK_FUNCS(nanosleep nsleep)
 

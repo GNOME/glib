@@ -30,6 +30,7 @@
 #include <fcntl.h>
 #include <signal.h>
 #include <string.h>
+#include <stdlib.h>   /* for fdwalk */
 
 #ifdef HAVE_SYS_SELECT_H
 #include <sys/select.h>
@@ -850,10 +851,28 @@ write_err_and_exit (gint fd, gint msg)
 }
 
 static void
-set_cloexec (gint fd)
+set_cloexec (void *data, gint fd)
 {
-  fcntl (fd, F_SETFD, FD_CLOEXEC);
+  if (fd > 2)
+    fcntl (fd, F_SETFD, FD_CLOEXEC);
 }
+
+#ifndef HAVE_FDWALK
+static int
+fdwalk (int (*cb)(void *data, int fd), void *data)
+{
+  gint open_max;
+  gint fd;
+  gint res;
+
+  res = 0;
+  open_max = sysconf (_SC_OPEN_MAX);
+  for (fd = 0; fd < open_max && res == 0; fd++)
+    res = cb (data, fd);
+
+  return res;
+}
+#endif
 
 static gint
 sane_dup2 (gint fd1, gint fd2)
@@ -904,12 +923,7 @@ do_exec (gint                  child_err_report_fd,
    */
   if (close_descriptors)
     {
-      gint open_max;
-      gint i;
-      
-      open_max = sysconf (_SC_OPEN_MAX);
-      for (i = 3; i < open_max; i++)
-        set_cloexec (i);
+      fdwalk (set_cloexec, NULL);
     }
   else
     {
