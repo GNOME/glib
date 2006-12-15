@@ -1,3 +1,9 @@
+2006-12-15  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/glib-docs.sgml: Add a "Since 2.14" section.
+
+	* glib/glib-sections.txt: Add g_string_chunk_clear.
+	
 2006-12-14  Matthias Clasen  <mclasen@redhat.com>
 
 	* gobject/*.xml: s/Gnome/GNOME/g (#352156, Guillaume Desmottes)

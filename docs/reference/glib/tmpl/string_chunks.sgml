@@ -112,6 +112,14 @@ added with g_string_chunk_insert(), even if they do match.
 @Returns: 
 
 
+<!-- ##### FUNCTION g_string_chunk_clear ##### -->
+<para>
+
+</para>
+
+@chunk: 
+
+
 <!-- ##### FUNCTION g_string_chunk_free ##### -->
 <para>
 Frees all memory allocated by the #GStringChunk.
