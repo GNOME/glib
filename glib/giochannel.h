@@ -104,7 +104,7 @@ typedef enum
 struct _GIOChannel
 {
   /*< private >*/
-  guint ref_count;
+  gint ref_count;
   GIOFuncs *funcs;
 
   gchar *encoding;
