@@ -1,3 +1,8 @@
+Fri Dec 15 2006  Matthias Clasen  <mclasen@redhat.com>
+
+	* gtype.c (instance_real_class_get): Dereference the pointer
+	before dropping the lock.  (#378078, Jonathan Matthew)
+
 2006-10-01  Matthias Clasen  <mclasen@redhat.com>
 	
 	* === Released 2.12.4 ===
