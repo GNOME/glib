@@ -1604,6 +1604,13 @@ if test x"$have_threads" != xno; then
       *-*-cygwin*|*-*-darwin*)
          # skip cygwin and darwin -pthread or -pthreads test
          ;;
+      *-solaris*)
+        # These compiler/linker flags work with both Sun Studio and gcc
+	# Sun Studio expands -mt to -D_REENTRANT and -lthread
+	# gcc expands -pthreads to -D_REENTRANT -D_PTHREADS -lpthread
+        G_THREAD_CFLAGS="-D_REENTRANT -D_PTHREADS"
+        G_THREAD_LIBS="-lpthread -lthread"
+        ;;
       *)
         for flag in pthread pthreads mt; do
           glib_save_CFLAGS="$CFLAGS"
