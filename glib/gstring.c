@@ -124,13 +124,24 @@ nearest_power (gsize base, gsize num)
 /* String Chunks.
  */
 
+/**
+ * g_string_chunk_new:
+ * @size: the default size of the blocks of memory which are 
+ *        allocated to store the strings. If a particular string 
+ *        is larger than this default size, a larger block of 
+ *        memory will be allocated for it.
+ * 
+ * Creates a new #GStringChunk. 
+ * 
+ * Returns: a new #GStringChunk
+ */
 GStringChunk*
-g_string_chunk_new (gsize default_size)    
+g_string_chunk_new (gsize size)    
 {
   GStringChunk *new_chunk = g_new (GStringChunk, 1);
   gsize size = 1;    
 
-  size = nearest_power (1, default_size);
+  size = nearest_power (1, size);
 
   new_chunk->const_table       = NULL;
   new_chunk->storage_list      = NULL;
@@ -141,6 +152,14 @@ g_string_chunk_new (gsize default_size)
   return new_chunk;
 }
 
+/**
+ * g_string_chunk_free:
+ * @chunk: a #GStringChunk 
+ * 
+ * Frees all memory allocated by the #GStringChunk.
+ * After calling g_string_chunk_free() it is not safe to
+ * access any of the strings which were contained within it.
+ */
 void
 g_string_chunk_free (GStringChunk *chunk)
 {
@@ -195,6 +214,26 @@ g_string_chunk_clear (GStringChunk *chunk)
       g_hash_table_remove_all (chunk->const_table);
 }
 
+/**
+ * g_string_chunk_insert:
+ * @chunk: a #GStringChunk
+ * @string: the string to add
+ * 
+ * Adds a copy of @string to the #GStringChunk.
+ * It returns a pointer to the new copy of the string 
+ * in the #GStringChunk. The characters in the string 
+ * can be changed, if necessary, though you should not 
+ * change anything after the end of the string.
+ *
+ * Unlike g_string_chunk_insert_const(), this function 
+ * does not check for duplicates. Also strings added 
+ * with g_string_chunk_insert() will not be searched 
+ * by g_string_chunk_insert_const() when looking for 
+ * duplicates.
+ * 
+ * Returns: a pointer to the copy of @string within 
+ *          the #GStringChunk.
+ */
 gchar*
 g_string_chunk_insert (GStringChunk *chunk,
 		       const gchar  *string)
@@ -204,6 +243,28 @@ g_string_chunk_insert (GStringChunk *chunk,
   return g_string_chunk_insert_len (chunk, string, -1);
 }
 
+/**
+ * g_string_chunk_insert_const:
+ * @chunk:  a #GStringChunk
+ * @string: the string to add
+ * 
+ * Adds a copy of @string to the #GStringChunk, unless 
+ * the same string has already been added to the #GStringChunk 
+ * with g_string_chunk_insert_const().
+ * 
+ * This function is useful if you need to copy a large number 
+ * of strings but do not want to waste space storing duplicates. 
+ * But you must remember that there may be several pointers to 
+ * the same string, and so any changes made to the strings 
+ * should be done very carefully.
+ * 
+ * Note that g_string_chunk_insert_const() will not return a 
+ * pointer to a string added with g_string_chunk_insert(), even 
+ * if they do match.
+ * 
+ * Returns: a pointer to the new or existing copy of @string 
+ *          within the #GStringChunk
+ */
 gchar*
 g_string_chunk_insert_const (GStringChunk *chunk,
 			     const gchar  *string)
