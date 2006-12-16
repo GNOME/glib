@@ -1,3 +1,8 @@
+Fri Dec 15 2006  Matthias Clasen  <mclasen@redhat.com>
+
+	* gtype.c (instance_real_class_get): Dereference the pointer 
+	before dropping the lock.  (#378078, Jonathan Matthew)
+
 Tue Oct 10 12:06:08 2006  Tim Janik  <timj@gtk.org>
 
 	* glib-mkenums.in: 
