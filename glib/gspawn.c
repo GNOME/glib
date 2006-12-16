@@ -129,6 +129,9 @@ close_and_invalidate (gint *fd)
   return ret;
 }
 
+/* Some versions of OS X define READ_OK in public headers */
+#undef READ_OK
+
 typedef enum
 {
   READ_FAILED = 0, /* FALSE */
