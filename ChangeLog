@@ -1,5 +1,8 @@
 2006-12-16  Matthias Clasen  <mclasen@redhat.com>
 
+	* configure.in: Use AC_COMPILE_IFELSE for the monotonic
+	clock test.  (#362918, Han-Wen Nienhuys, Jeremy Lainé)
+
 	* glib/gstring.c: Move documentation inline. 
 
 2006-12-15  Matthias Clasen  <mclasen@redhat.com>
