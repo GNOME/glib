@@ -39,121 +39,90 @@ string.
 
 <!-- ##### FUNCTION g_string_new ##### -->
 <para>
-Creates a new #GString, initialized with the given string.
+
 </para>
 
-@init: the initial text to copy into the string.
-@Returns: the new #GString.
+@init: 
+@Returns:
 
 
 <!-- ##### FUNCTION g_string_new_len ##### -->
 <para>
-Creates a new #GString with @len bytes of the @init buffer.  Because a length is
-provided, @init need not be nul-terminated, and can contain embedded nul bytes.
+
 </para>
 
-@init: initial contents of string.
-@len: length of @init to use.
-@Returns: a new #GString.
+@init: 
+@len: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_string_sized_new ##### -->
 <para>
-Creates a new #GString, with enough space for @dfl_size bytes.
-This is useful if you are going to add a lot of text to the string and
-don't want it to be reallocated too often.
+
 </para>
 
-@dfl_size: the default size of the space allocated to hold the string.
-@Returns: the new #GString.
+@dfl_size:
+@Returns:
 
 
 <!-- ##### FUNCTION g_string_assign ##### -->
 <para>
-Copies the bytes from a string into a #GString, destroying any previous
-contents. It is rather like the standard strcpy() function, except that
-you do not have to worry about having enough space to copy the string.
+
 </para>
 
-@string: the destination #GString. Its current contents are destroyed.
-@rval: the string to copy into @string
-@Returns: the destination #GString.
-<!-- # Unused Parameters # -->
-@val: the string to copy into @string.
+@string: 
+@rval: 
+@Returns:
 
 
 <!-- ##### MACRO g_string_sprintf ##### -->
 <para>
-Writes a formatted string into a #GString.
-This is similar to the standard sprintf() function,
-except that the #GString buffer automatically expands to contain the results.
-The previous contents of the #GString are destroyed. 
-</para>
 
-@Deprecated: This function has been renamed to g_string_printf().
-<!-- # Unused Parameters # -->
-@string: a #GString.
-@format: the string format. See the sprintf() documentation.
-@Varargs: the parameters to insert into the format string.
+</para>
 
 
 <!-- ##### MACRO g_string_sprintfa ##### -->
 <para>
-Appends a formatted string onto the end of a #GString.
-This function is is similar to g_string_sprintf() except that
-the text is appended to the #GString. 
+
 </para>
-
-@Deprecated: This function has been renamed to g_string_append_printf().
-<!-- # Unused Parameters # -->
-@string: a #GString.
-@format: the string format. See the sprintf() documentation.
-@Varargs: the parameters to insert into the format string.
-
 
 <!-- ##### FUNCTION g_string_printf ##### -->
 <para>
-Writes a formatted string into a #GString.
-This is similar to the standard sprintf() function,
-except that the #GString buffer automatically expands to contain the results.
-The previous contents of the #GString are destroyed.
+
 </para>
 
-@string: a #GString.
-@format: the string format. See the printf() documentation.
-@Varargs: the parameters to insert into the format string.
+@string:
+@format: 
+@Varargs: 
 
 
 <!-- ##### FUNCTION g_string_append_printf ##### -->
 <para>
-Appends a formatted string onto the end of a #GString.
-This function is is similar to g_string_printf() except that
-the text is appended to the #GString.
+
 </para>
 
-@string: a #GString.
-@format: the string format. See the printf() documentation.
-@Varargs: the parameters to insert into the format string.
+@string:
+@format: 
+@Varargs:
 
 
 <!-- ##### FUNCTION g_string_append ##### -->
 <para>
-Adds a string onto the end of a #GString, expanding it if necessary.
+
 </para>
 
-@string: a #GString.
-@val: the string to append onto the end of the #GString.
-@Returns: the #GString.
+@string:
+@Returns:
 
 
 <!-- ##### FUNCTION g_string_append_c ##### -->
 <para>
-Adds a byte onto the end of a #GString, expanding it if necessary.
+
 </para>
 
-@string: a #GString.
-@c: the byte to append onto the end of the #GString.
-@Returns: the #GString.
+@string: 
+@c: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_string_append_unichar ##### -->
@@ -168,34 +137,32 @@ Adds a byte onto the end of a #GString, expanding it if necessary.
 
 <!-- ##### FUNCTION g_string_append_len ##### -->
 <para>
-Appends @len bytes of @val to @string. Because @len is provided, 
-@val may contain embedded nuls and need not be nul-terminated.
+
 </para>
 
-@string: a #GString.
-@val: bytes to append.
-@len: number of bytes of @val to use.
-@Returns: the #GString.
+@string:
+@val: 
+@len: 
+@Returns:
 
 
 <!-- ##### FUNCTION g_string_prepend ##### -->
 <para>
-Adds a string on to the start of a #GString, expanding it if necessary.
+
 </para>
 
-@string: a #GString.
-@val: the string to prepend on the start of the #GString.
-@Returns: the #GString.
+@string: 
+@val: 
+@Returns:
 
 
 <!-- ##### FUNCTION g_string_prepend_c ##### -->
 <para>
-Adds a byte onto the start of a #GString, expanding it if necessary.
+
 </para>
 
-@string: a #GString.
-@c: the byte to prepend on the start of the #GString.
-@Returns: the #GString.
+@string: 
+@Returns:
 
 
 <!-- ##### FUNCTION g_string_prepend_unichar ##### -->
@@ -210,30 +177,29 @@ Adds a byte onto the start of a #GString, expanding it if necessary.
 
 <!-- ##### FUNCTION g_string_prepend_len ##### -->
 <para>
-Prepends @len bytes of @val to @string. Because @len is provided, 
-@val may contain embedded nuls and need not be nul-terminated.
+
 </para>
 
-@string: a #GString.
-@val: bytes to prepend.
-@len: number of bytes in @val to prepend.
-@Returns: the #GString passed in.
+@string: 
+@val: 
+@len: 
+@Returns:
 
 
 <!-- ##### FUNCTION g_string_insert ##### -->
 <para>
-Inserts a copy of a string into a #GString, expanding it if necessary.
+
 </para>
 
-@string: a #GString.
-@pos: the position to insert the copy of the string.
-@val: the string to insert.
-@Returns: the #GString.
+
+@pos:
+@val: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_string_insert_c ##### -->
 <para>
-Inserts a byte into a #GString, expanding it if necessary.
+
 </para>
 
 @string: a #GString.
@@ -250,43 +216,39 @@ Inserts a byte into a #GString, expanding it if necessary.
 @string: 
 @pos: 
 @wc: 
-@Returns: 
+@Returns:
 
 
 <!-- ##### FUNCTION g_string_insert_len ##### -->
 <para>
-Inserts @len bytes of @val into @string at @pos.  Because @len is provided, @val
- may contain embedded nuls and need not be nul-terminated. If @pos is -1, bytes are inserted at the end of the string.
+
 </para>
 
-@string: a #GString.
-@pos: position in @string where insertion should happen, or -1 for at the end.
-@val: bytes to insert.
-@len: number of bytes of @val to insert.
-@Returns: the #GString.
-
+@string: 
+@pos: 
+@val: 
+@len: 
+@Returns:
+o
 
 <!-- ##### FUNCTION g_string_erase ##### -->
 <para>
-Removes @len bytes from a #GString, starting at position @pos.
-The rest of the #GString is shifted down to fill the gap.
+
 </para>
 
-@string: a #GString.
-@pos: the position of the content to remove.
-@len: the number of bytes to remove, or -1 to remove all
-      following bytes.
-@Returns: the #GString.
+@string:
+@len: 
+@Returns:
 
 
 <!-- ##### FUNCTION g_string_truncate ##### -->
 <para>
-Cuts off the end of the GString, leaving the first @len bytes.
+
 </para>
 
-@string: a #GString.
-@len: the new size of the #GString.
-@Returns: the #GString.
+@string:
+@len: 
+@Returns:
 
 
 <!-- ##### FUNCTION g_string_set_size ##### -->
@@ -301,13 +263,12 @@ Cuts off the end of the GString, leaving the first @len bytes.
 
 <!-- ##### FUNCTION g_string_free ##### -->
 <para>
-Frees the memory allocated for the #GString.
-If @free_segment is %TRUE it also frees the character data.
+
 </para>
 
-@string: a #GString.
-@free_segment: if %TRUE the actual character data is freed as well.
-@Returns: the character data of @string (i.e. %NULL if @free_segment is %TRUE)
+@string: 
+@free_segment:
+@Returns: 
 
 
 <!-- ##### FUNCTION g_string_up ##### -->
@@ -328,11 +289,11 @@ If @free_segment is %TRUE it also frees the character data.
 
 <!-- ##### FUNCTION g_string_hash ##### -->
 <para>
-Creates a hash code for @str; for use with #GHashTable.
+
 </para>
 
-@str: a string to hash.
-@Returns: hash code for @str.
+@str:
+@Returns:
 
 
 <!-- ##### FUNCTION g_string_equal ##### -->
