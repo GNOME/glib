@@ -129,6 +129,8 @@ close_and_invalidate (gint *fd)
   return ret;
 }
 
+#undef READ_OK
+
 typedef enum
 {
   READ_FAILED = 0, /* FALSE */
