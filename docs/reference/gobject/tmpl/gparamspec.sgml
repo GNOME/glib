@@ -231,7 +231,7 @@ Checks whether @value contains the default value as specified in @pspec.
 
 @pspec:   a valid #GParamSpec
 @value:   a #GValue of correct type for @pspec
-@Returns: whether @value contains the canonical defualt for this @pspec
+@Returns: whether @value contains the canonical default for this @pspec
 
 
 <!-- ##### FUNCTION g_param_value_validate ##### -->
