@@ -1,5 +1,8 @@
 2006-12-17  Matthias Clasen  <mclasen@redhat.com>
 
+	* tests/run-markup-tests.sh: Don't use diff -u  (#380801,
+	Marek Rouchal)
+
 	* glib/gspawn.c: Fix the recent fdwalk()-related changes
 	to not break mapping-test.  (#286838, Marco Barisione)
 

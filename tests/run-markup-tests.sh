@@ -32,7 +32,7 @@ while test $I -lt 100 ; do
   if [ -f $F ] ; then
     echo_v "Parsing $F, should succeed"
     ./markup-test $F > actual 2> $error_out || fail "failed on $F"
-    diff -u ${srcdir:-.}/markups/expected-$I actual || fail "unexpected output on $F"
+    diff ${srcdir:-.}/markups/expected-$I actual || fail "unexpected output on $F"
     rm actual
   fi
   I=`expr $I + 1`
