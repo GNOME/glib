@@ -114,6 +114,25 @@ g_memdup (gconstpointer mem,
   return new_mem;
 }
 
+/**
+ * g_strndup:
+ * @str: the string to duplicate
+ * @n: the maximum number of bytes to copy from @str
+ *
+ * Duplicates the first @n bytes of a string, returning a newly-allocated
+ * buffer @n + 1 bytes long which will always be nul-terminated.
+ * If @str is less than @n bytes long the buffer is padded with nuls.
+ * If @str is %NULL it returns %NULL.
+ * The returned value should be freed when no longer needed.
+ * 
+ * <note><para>
+ * To copy a number of characters from a UTF-8 encoded string, use
+ * g_utf8_strncpy() instead.
+ * </para></note>
+ * 
+ * Returns: a newly-allocated buffer containing the first @n bytes 
+ *          of @str, nul-terminated 
+ */
 gchar*
 g_strndup (const gchar *str,
 	   gsize        n)    
@@ -132,6 +151,16 @@ g_strndup (const gchar *str,
   return new_str;
 }
 
+/**
+ * g_strnfill:
+ * @length: the length of the new string
+ * @fill_char: the byte to fill the string with
+ *
+ * Creates a new string @length bytes long filled with @fill_char.
+ * The returned string should be freed when no longer needed.
+ * 
+ * Returns: a newly-allocated string filled the @fill_char
+ */
 gchar*
 g_strnfill (gsize length,     
 	    gchar fill_char)

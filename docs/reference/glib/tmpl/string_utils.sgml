@@ -53,17 +53,12 @@ The returned string should be freed when no longer needed.
 
 <!-- ##### FUNCTION g_strndup ##### -->
 <para>
-Duplicates the first @n characters of a string, returning a newly-allocated
-buffer @n + 1 characters long which will always be nul-terminated.
-If @str is less than @n characters long the buffer is padded with nuls.
-If @str is %NULL it returns %NULL.
-The returned value should be freed when no longer needed.
+
 </para>
 
-@str: the string to duplicate part of.
-@n: the maximum number of characters to copy from @str.
-@Returns: a newly-allocated buffer containing the first @n characters of @str,
-nul-terminated.
+@str: 
+@n: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_strdupv ##### -->
@@ -76,13 +71,12 @@ nul-terminated.
 
 <!-- ##### FUNCTION g_strnfill ##### -->
 <para>
-Creates a new string @length characters long filled with @fill_char.
-The returned string should be freed when no longer needed.
+
 </para>
 
-@length: the length of the new string.
-@fill_char: the character to fill the string with.
-@Returns: a newly-allocated string filled the @fill_char.
+@length: 
+@fill_char:
+@Returns: 
 
 
 <!-- ##### FUNCTION g_stpcpy ##### -->
