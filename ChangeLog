@@ -1,5 +1,8 @@
 2006-12-17  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gspawn.c: Add some pointers to the gdk_spawn_
+	variants.  (#338134, Federico Mena Quintero)
+
 	* configure.in: Make montonic clock test work again. Does
 	AC_COMPILE_IFELSE not get confdefs ? Also, move the clock
 	tests below the thread checks to fix #364663.

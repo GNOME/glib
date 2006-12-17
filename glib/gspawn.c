@@ -85,6 +85,13 @@ g_spawn_error_quark (void)
  * See g_spawn_async_with_pipes() for a full description; this function
  * simply calls the g_spawn_async_with_pipes() without any pipes.
  * 
+ * <note><para>
+ * If you are writing a GTK+ application, and the program you 
+ * are spawning is a graphical application, too, then you may
+ * want to use gdk_spawn_on_screen() instead to ensure that 
+ * the spawned program opens its windows no the right screen.
+ * </para></note>
+ *
  * Return value: %TRUE on success, %FALSE if error is set
  **/
 gboolean
@@ -538,14 +545,16 @@ g_spawn_sync (const gchar          *working_directory,
  * when they are no longer in use. If these parameters are %NULL, the corresponding
  * pipe won't be created.
  *
- * If @standard_input is NULL, the child's standard input is attached to /dev/null
- * unless %G_SPAWN_CHILD_INHERITS_STDIN is set.
+ * If @standard_input is NULL, the child's standard input is attached to 
+ * /dev/null unless %G_SPAWN_CHILD_INHERITS_STDIN is set.
  *
- * If @standard_error is NULL, the child's standard error goes to the same location
- * as the parent's standard error unless %G_SPAWN_STDERR_TO_DEV_NULL is set.
+ * If @standard_error is NULL, the child's standard error goes to the same 
+ * location as the parent's standard error unless %G_SPAWN_STDERR_TO_DEV_NULL 
+ * is set.
  *
- * If @standard_output is NULL, the child's standard output goes to the same location
- * as the parent's standard output unless %G_SPAWN_STDOUT_TO_DEV_NULL is set.
+ * If @standard_output is NULL, the child's standard output goes to the same 
+ * location as the parent's standard output unless %G_SPAWN_STDOUT_TO_DEV_NULL 
+ * is set.
  *
  * @error can be %NULL to ignore errors, or non-%NULL to report errors.
  * If an error is set, the function returns %FALSE. Errors
@@ -559,6 +568,13 @@ g_spawn_sync (const gchar          *working_directory,
  *
  * If @child_pid is not %NULL and an error does not occur then the returned
  * pid must be closed using g_spawn_close_pid().
+ *
+ * <note><para>
+ * If you are writing a GTK+ application, and the program you 
+ * are spawning is a graphical application, too, then you may
+ * want to use gdk_spawn_on_screen_with_pipes() instead to ensure that 
+ * the spawned program opens its windows no the right screen.
+ * </para></note>
  * 
  * Return value: %TRUE on success, %FALSE if an error was set
  **/
