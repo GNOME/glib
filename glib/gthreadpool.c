@@ -649,7 +649,7 @@ g_thread_pool_unprocessed (GThreadPool *pool)
  * g_thread_pool_free:
  * @pool: a #GThreadPool
  * @immediate: should @pool shut down immediately?
- * @wait: should the function wait for all tasks to be finished?
+ * @wait_: should the function wait for all tasks to be finished?
  *
  * Frees all resources allocated for @pool.
  *
@@ -659,7 +659,7 @@ g_thread_pool_unprocessed (GThreadPool *pool)
  * interrupted, while processing a task. Instead at least all still
  * running threads can finish their tasks before the @pool is freed.
  *
- * If @wait is %TRUE, the functions does not return before all tasks
+ * If @wait_ is %TRUE, the functions does not return before all tasks
  * to be processed (dependent on @immediate, whether all or only the
  * currently running) are ready. Otherwise the function returns immediately.
  *
@@ -668,7 +668,7 @@ g_thread_pool_unprocessed (GThreadPool *pool)
 void
 g_thread_pool_free (GThreadPool *pool,
 		    gboolean     immediate,
-		    gboolean     wait)
+		    gboolean     wait_)
 {
   GRealThreadPool *real;
 
@@ -688,9 +688,9 @@ g_thread_pool_free (GThreadPool *pool,
 
   real->running = FALSE;
   real->immediate = immediate;
-  real->waiting = wait;
+  real->waiting = wait_;
 
-  if (wait)
+  if (wait_)
     {
       real->cond = g_cond_new ();
 
