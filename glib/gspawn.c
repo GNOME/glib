@@ -529,7 +529,7 @@ g_spawn_sync (const gchar          *working_directory,
  *
  * If non-%NULL, @child_pid will on Unix be filled with the child's
  * process ID. You can use the process ID to send signals to the
- * child, or to waitpid() if you specified the
+ * child, or to use g_child_watch_add() (or waitpid()) if you specified the
  * %G_SPAWN_DO_NOT_REAP_CHILD flag. On Windows, @child_pid will be
  * filled with a handle to the child process only if you specified the
  * %G_SPAWN_DO_NOT_REAP_CHILD flag. You can then access the child
