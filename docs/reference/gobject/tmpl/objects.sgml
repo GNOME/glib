@@ -85,6 +85,19 @@ has been changed. Note that getting this signal doesn't guarantee that the
 value of the property has actually changed, it may also be emitted when
 the setter for the property is called to reinstate the previous value.
 </para>
+<para>
+This signal is typically used to obtain change notification for a 
+single property, by specifying the property name as a detail in the
+g_signal_connect() call, like this:
+<informalexample><programlisting>
+g_signal_connect (text_view->buffer, "notify::paste-target-list",
+                  G_CALLBACK (gtk_text_view_target_list_notify),
+                  text_view)
+</programlisting></informalexample>
+It is important to note that you must use 
+<link linkend="canonical-parameter-name">canonical</link> parameter names as
+detail strings for the notify signal.
+</para>
 
 @pspec: the #GParamSpec of the property which changed
 @gobject: the object which received the signal.

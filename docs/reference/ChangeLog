@@ -1,3 +1,10 @@
+2006-12-17  Matthias Clasen  <mclasen@redhat.com>
+
+	* gobject/tmpl/objects.sgml: Expand GObject::notify
+	documentation.  (#381722, Nickolay V. Shmyrev)
+
+	* gobject/tmpl/gparamspec.sgml: Add canonical-parameter-name id.
+
 2006-12-15  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/glib-docs.sgml: Add a "Since 2.14" section.
