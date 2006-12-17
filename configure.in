@@ -859,29 +859,6 @@ AC_CHECK_FUNCS(lstat strerror strsignal memmove vsnprintf stpcpy strcasecmp strn
 # Check for high-resolution sleep functions
 AC_CHECK_FUNCS(nanosleep nsleep)
 
-AC_CHECK_FUNCS(clock_gettime, [], [
-  AC_CHECK_LIB(rt, clock_gettime, [
-    AC_DEFINE(HAVE_CLOCK_GETTIME, 1)
-    LIBS="$LIBS -lrt"
-  ])
-])
-
-AC_CACHE_CHECK(for monotonic clocks,
-    glib_cv_monotonic_clock,AC_COMPILE_IFELSE([
-#include <time.h>
-#ifdef HAVE_UNISTD_H
-#include <unistd.h>
-#endif
-      int main() {
-#if !(defined(_POSIX_MONOTONIC_CLOCK) && _POSIX_MONOTONIC_CLOCK >= 0 && defined(CLOCK_MONOTONIC))
-        #error No monotonic clock
-#endif
-        return 0;
-      }],glib_cv_monotonic_clock=yes,glib_cv_monotonic_clock=no))
-if test "$glib_cv_monotonic_clock" = "yes"; then
-  AC_DEFINE(HAVE_MONOTONIC_CLOCK,1,[Have a monotonic clock])
-fi
-
 AC_CHECK_HEADERS(crt_externs.h)
 AC_CHECK_FUNCS(_NSGetEnviron)
 
@@ -2013,6 +1990,27 @@ if test $mutex_has_default = yes ; then
 	fi
 	CPPFLAGS="$glib_save_CPPFLAGS"
 	LIBS="$glib_save_LIBS"
+fi
+
+AC_CHECK_FUNCS(clock_gettime, [], [
+  AC_CHECK_LIB(rt, clock_gettime, [
+    AC_DEFINE(HAVE_CLOCK_GETTIME, 1)
+    LIBS="$LIBS -lrt"
+  ])
+])
+
+AC_CACHE_CHECK(for monotonic clocks,
+    glib_cv_monotonic_clock,AC_COMPILE_IFELSE([
+#include <time.h>
+#include <unistd.h>
+      int main() {
+#if !(defined(_POSIX_MONOTONIC_CLOCK) && _POSIX_MONOTONIC_CLOCK >= 0 && defined(CLOCK_MONOTONIC))
+        #error No monotonic clock
+#endif
+        return 0;
+      }],glib_cv_monotonic_clock=yes,glib_cv_monotonic_clock=no))
+if test "$glib_cv_monotonic_clock" = "yes"; then
+  AC_DEFINE(HAVE_MONOTONIC_CLOCK,1,[Have a monotonic clock])
 fi
 
 dnl ********************************
