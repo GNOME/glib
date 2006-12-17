@@ -139,15 +139,15 @@ GStringChunk*
 g_string_chunk_new (gsize size)    
 {
   GStringChunk *new_chunk = g_new (GStringChunk, 1);
-  gsize size = 1;    
+  gsize actual_size = 1;    
 
-  size = nearest_power (1, size);
+  actual_size = nearest_power (1, size);
 
   new_chunk->const_table       = NULL;
   new_chunk->storage_list      = NULL;
-  new_chunk->storage_next      = size;
-  new_chunk->default_size      = size;
-  new_chunk->this_size         = size;
+  new_chunk->storage_next      = actual_size;
+  new_chunk->default_size      = actual_size;
+  new_chunk->this_size         = actual_size;
 
   return new_chunk;
 }
