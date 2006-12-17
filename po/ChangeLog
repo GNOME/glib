@@ -1,3 +1,7 @@
+2006-12-17 Matthias Clasen <mclasen@redhat.com>
+	
+	* Makefile.in.in: Define datarootdir, to silence autoconf 2.60
+
 2006-12-1  Djihed Afifi <djihed@gmail.com> 
 
 	* ar.po: Updated Arabic Translation.
