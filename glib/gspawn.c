@@ -853,11 +853,13 @@ write_err_and_exit (gint fd, gint msg)
   _exit (1);
 }
 
-static void
+static int 
 set_cloexec (void *data, gint fd)
 {
-  if (fd > 2)
+  if (fd >= GPOINTER_TO_INT(data))
     fcntl (fd, F_SETFD, FD_CLOEXEC);
+
+  return 0;
 }
 
 #ifndef HAVE_FDWALK
@@ -926,12 +928,12 @@ do_exec (gint                  child_err_report_fd,
    */
   if (close_descriptors)
     {
-      fdwalk (set_cloexec, NULL);
+      fdwalk (set_cloexec, GINT_TO_POINTER(3));
     }
   else
     {
       /* We need to do child_err_report_fd anyway */
-      set_cloexec (NULL, child_err_report_fd);
+      set_cloexec (GINT_TO_POINTER(0), child_err_report_fd);
     }
   
   /* Redirect pipes as required */
