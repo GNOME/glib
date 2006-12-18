@@ -1,5 +1,7 @@
 2006-12-17  Matthias Clasen  <mclasen@redhat.com>
 
+	* configure.in: Use AC_LANG_SOURCE for the clock test.
+
 	* glib/gthreadpool.h:
 	* glib/gthreadpool.c (g_thread_pool_free): Don't use "wait"
 	as parameter name.  (#379207, Christian Biere)
