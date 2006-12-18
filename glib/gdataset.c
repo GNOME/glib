@@ -42,7 +42,7 @@
 /* --- defines --- */
 #define	G_QUARK_BLOCK_SIZE			(512)
 
-/* datalist pointer accesses vae to be carried out atomically */
+/* datalist pointer accesses have to be carried out atomically */
 #define G_DATALIST_GET_POINTER(datalist)						\
   ((GData*) ((gsize) g_atomic_pointer_get ((gpointer*) datalist) & ~(gsize) G_DATALIST_FLAGS_MASK))
 
