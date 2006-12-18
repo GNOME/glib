@@ -1,9 +1,21 @@
+2006-12-18  Matthias Clasen  <mclasen@redhat.com>
+
+	* tests/Makefile.am: Don't use $RANDOM if the shell doesn't
+	have it.  (#346373, Thomas Klausner)
+
 2006-12-17  Behdad Esfahbod  <behdad@gnome.org>
 
 	* glib/gstring.c: Improve docs about string functions taking a
 	length.  (#378727)
 
 2006-12-17  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gconvert.c:
+	* glib/gutf8.c (_g_charset_get_aliases): Put the G_GNUC_INTERNAL
+	where gcc doesn't complain about it.
+
+	* glib/ghash.c: Make ref_count an int to avoid compiler
+	warnings.
 
 	* configure.in: Use AC_LANG_SOURCE for the clock test.
 	
