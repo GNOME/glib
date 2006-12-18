@@ -1,3 +1,8 @@
+2006-12-18  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/tmpl/keyfile.sgml: Small clarification (#369908,
+	Tapani Pälli)
+
 2006-12-17  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/tmpl/spawn.sgml: Refer to g_child_watch_add() in addition

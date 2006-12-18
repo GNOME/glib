@@ -61,7 +61,7 @@ with the exception of localized strings, which have the form
 <literal>key[locale]=value</literal>. Space before and after the 
 '=' character are ignored. Newline, tab, carriage return and backslash 
 characters are escaped as \n, \t, \r, and \\, respectively. To preserve
-initial and final spaces, these can also be escaped as \s.
+leading spaces in values, these can also be escaped as \s.
 </para>
 
 <para>
