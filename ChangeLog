@@ -1,5 +1,9 @@
 2006-12-18  Matthias Clasen  <mclasen@redhat.com>
 	
+	* glib/gkeyfile.c: Accept '@' in locale names.
+
+	* tests/keyfile-test.c: Add a test for sr@Latn. 
+
 	* glib/gkeyfile.c: Tighten up the check for allowed
 	key and group names.  (#343191, Tommi Komulainen)
 

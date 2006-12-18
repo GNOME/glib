@@ -3240,7 +3240,7 @@ g_key_file_is_key_name (const gchar *name)
   if (*q == '[')
     {
       q++;
-      while (*q && (g_unichar_isalnum (g_utf8_get_char (q)) || *q == '-' || *q == '_' || *q == '.'))
+      while (*q && (g_unichar_isalnum (g_utf8_get_char (q)) || *q == '-' || *q == '_' || *q == '.' || *q == '@'))
         q = g_utf8_next_char (q);
 
       if (*q != ']')
