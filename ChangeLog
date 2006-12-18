@@ -1,5 +1,10 @@
 2006-12-18  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gkeyfile.c: Tighten up the check for allowed
+	key and group names.  (#343191, Tommi Komulainen)
+
+	* tests/keyfile-test.c: Test handling of key and group names.
+
 	* tests/Makefile.am: Don't use $RANDOM if the shell doesn't
 	have it.  (#346373, Thomas Klausner)
 

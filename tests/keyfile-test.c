@@ -747,8 +747,6 @@ static void
 test_locale_string (void)
 {
   GKeyFile *keyfile;
-  GError *error = NULL;
-  gchar *value;
 
   const gchar *data = 
     "[valid]\n"
@@ -757,11 +755,7 @@ test_locale_string (void)
     "key1[de_DE]=v1-de_DE\n"
     "key1[de_DE.UTF8]=v1-de_DE.UTF8\n"
     "key1[fr]=v1-fr\n"
-    "key1[en] =v1-en\n"
-    "[invalid]\n"
-    "key1[de=v1\n"
-    "key1[fr]]=v2\n"
-    "key1 [en]=v3\n";  
+    "key1[en] =v1-en\n";
   
   keyfile = load_data (data, G_KEY_FILE_KEEP_TRANSLATIONS);
 
@@ -772,18 +766,6 @@ test_locale_string (void)
   check_locale_string_value (keyfile, "valid", "key1", "fr", "v1-fr");
   check_locale_string_value (keyfile, "valid", "key1", "fr_FR", "v1-fr");
   check_locale_string_value (keyfile, "valid", "key1", "en", "v1-en");
-  
-  value = g_key_file_get_locale_string (keyfile, "invalid", "key1", "de", &error);
-  check_error (&error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_KEY_NOT_FOUND);
-  g_free (value);
-
-  value = g_key_file_get_locale_string (keyfile, "invalid", "key1", "fr", &error);
-  check_error (&error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_KEY_NOT_FOUND);
-  g_free (value);
-
-  value = g_key_file_get_locale_string (keyfile, "invalid", "key1", "en", &error);
-  check_error (&error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_KEY_NOT_FOUND);
-  g_free (value);
   
   g_key_file_free (keyfile);
 
@@ -975,6 +957,180 @@ test_groups (void)
 }
 
 static void
+test_group_names (void)
+{
+  GKeyFile *keyfile;
+  GError *error = NULL;
+  const gchar *data;
+  gchar *value;
+
+  /* [ in group name */
+  data = "[a[b]\n"
+         "key1=123\n";
+  keyfile = g_key_file_new ();
+  g_key_file_load_from_data (keyfile, data, -1, 0, &error);
+  g_key_file_free (keyfile);  
+  check_error (&error, 
+	       G_KEY_FILE_ERROR,
+	       G_KEY_FILE_ERROR_PARSE);
+
+  /* ] in group name */
+  data = "[a]b]\n"
+         "key1=123\n";
+  keyfile = g_key_file_new ();
+  g_key_file_load_from_data (keyfile, data, -1, 0, &error);
+  g_key_file_free (keyfile);  
+  check_error (&error, 
+	       G_KEY_FILE_ERROR,
+	       G_KEY_FILE_ERROR_PARSE);
+
+  /* control char in group name */
+  data = "[a\tb]\n"
+         "key1=123\n";
+  keyfile = g_key_file_new ();
+  g_key_file_load_from_data (keyfile, data, -1, 0, &error);
+  g_key_file_free (keyfile);  
+  check_error (&error, 
+	       G_KEY_FILE_ERROR,
+	       G_KEY_FILE_ERROR_PARSE);
+
+  /* Unicode in group name */
+  data = "[\xc2\xbd]\n"
+         "key1=123\n";
+  keyfile = g_key_file_new ();
+  g_key_file_load_from_data (keyfile, data, -1, 0, &error);
+  g_key_file_free (keyfile);  
+  check_no_error (&error);
+
+  keyfile = g_key_file_new ();
+  g_key_file_set_string (keyfile, "a[b", "key1", "123");
+  value = g_key_file_get_string (keyfile, "a[b", "key1", &error);
+  check_error (&error, 
+               G_KEY_FILE_ERROR,
+               G_KEY_FILE_ERROR_GROUP_NOT_FOUND);  
+  g_key_file_free (keyfile);  
+
+  keyfile = g_key_file_new ();
+  g_key_file_set_string (keyfile, "a]b", "key1", "123");
+  value = g_key_file_get_string (keyfile, "a]b", "key1", &error);
+  check_error (&error, 
+               G_KEY_FILE_ERROR,
+               G_KEY_FILE_ERROR_GROUP_NOT_FOUND);  
+  g_key_file_free (keyfile);  
+
+  keyfile = g_key_file_new ();
+  g_key_file_set_string (keyfile, "a\tb", "key1", "123");
+  value = g_key_file_get_string (keyfile, "a\tb", "key1", &error);
+  check_error (&error, 
+               G_KEY_FILE_ERROR,
+               G_KEY_FILE_ERROR_GROUP_NOT_FOUND);  
+  g_key_file_free (keyfile);  
+
+  keyfile = g_key_file_new ();
+  g_key_file_set_string (keyfile, "\xc2\xbd", "key1", "123");
+  check_string_value (keyfile, "\xc2\xbd", "key1", "123");
+  g_key_file_free (keyfile);  
+}
+
+static void
+test_key_names (void)
+{
+  GKeyFile *keyfile;
+  GError *error = NULL;
+  const gchar *data;
+  gchar *value;
+
+  /* [ in key name */
+  data = "[a]\n"
+         "key[=123\n";
+  keyfile = g_key_file_new ();
+  g_key_file_load_from_data (keyfile, data, -1, 0, &error);
+  g_key_file_free (keyfile);  
+  check_error (&error, 
+	       G_KEY_FILE_ERROR,
+	       G_KEY_FILE_ERROR_PARSE);
+
+  /* + in key name */
+  data = "[a]\n"
+         "key+foo=123\n";
+  keyfile = g_key_file_new ();
+  g_key_file_load_from_data (keyfile, data, -1, 0, &error);
+  g_key_file_free (keyfile);  
+  check_error (&error, 
+	       G_KEY_FILE_ERROR,
+	       G_KEY_FILE_ERROR_PARSE);
+
+  /* control char in key name */
+  data = "[a]\n"
+         "key\tfoo=123\n";
+  keyfile = g_key_file_new ();
+  g_key_file_load_from_data (keyfile, data, -1, 0, &error);
+  g_key_file_free (keyfile);  
+  check_error (&error, 
+	       G_KEY_FILE_ERROR,
+	       G_KEY_FILE_ERROR_PARSE);
+
+  /* Unicode in key name */
+  data = "[a]\n"
+         "\xc2\xbd=123\n";
+  keyfile = g_key_file_new ();
+  g_key_file_load_from_data (keyfile, data, -1, 0, &error);
+  g_key_file_free (keyfile);  
+  check_no_error (&error); 
+
+  keyfile = g_key_file_new ();
+  g_key_file_set_string (keyfile, "a", "x", "123");
+  g_key_file_set_string (keyfile, "a", "key=", "123");
+  value = g_key_file_get_string (keyfile, "a", "key=", &error);
+  check_error (&error, 
+               G_KEY_FILE_ERROR,
+               G_KEY_FILE_ERROR_KEY_NOT_FOUND);  
+  g_key_file_free (keyfile);  
+
+  keyfile = g_key_file_new ();
+  g_key_file_set_string (keyfile, "a", "x", "123");
+  g_key_file_set_string (keyfile, "a", "key[", "123");
+  value = g_key_file_get_string (keyfile, "a", "key[", &error);
+  check_error (&error, 
+               G_KEY_FILE_ERROR,
+               G_KEY_FILE_ERROR_KEY_NOT_FOUND);  
+  g_key_file_free (keyfile);  
+
+  keyfile = g_key_file_new ();
+  g_key_file_set_string (keyfile, "a", "x", "123");
+  g_key_file_set_string (keyfile, "a", "key+foo", "123");
+  value = g_key_file_get_string (keyfile, "a", "key+foo", &error);
+  check_error (&error, 
+               G_KEY_FILE_ERROR,
+               G_KEY_FILE_ERROR_KEY_NOT_FOUND);  
+  g_key_file_free (keyfile);  
+
+  keyfile = g_key_file_new ();
+  g_key_file_set_string (keyfile, "a", "x", "123");
+  g_key_file_set_string (keyfile, "a", "key\tfoo", "123");
+  value = g_key_file_get_string (keyfile, "a", "key\tfoo", &error);
+  check_error (&error, 
+               G_KEY_FILE_ERROR,
+               G_KEY_FILE_ERROR_KEY_NOT_FOUND);  
+  g_key_file_free (keyfile);  
+
+  keyfile = g_key_file_new ();
+  g_key_file_set_string (keyfile, "a", "x", "123");
+  g_key_file_set_string (keyfile, "a", " key", "123");
+  value = g_key_file_get_string (keyfile, "a", " key", &error);
+  check_error (&error, 
+               G_KEY_FILE_ERROR,
+               G_KEY_FILE_ERROR_KEY_NOT_FOUND);  
+  g_key_file_free (keyfile);  
+
+  keyfile = g_key_file_new ();
+  g_key_file_set_string (keyfile, "a", "x", "123");
+  g_key_file_set_string (keyfile, "a", "\xc2\xbd", "123");
+  check_string_value (keyfile, "a", "\xc2\xbd", "123");
+  g_key_file_free (keyfile);  
+}
+
+static void
 test_duplicate_keys (void)
 {
   GKeyFile *keyfile;
@@ -1027,9 +1183,19 @@ test_duplicate_groups2 (void)
   g_key_file_free (keyfile);  
 }
 
+static void 
+log_func (const gchar   *log_domain,
+          GLogLevelFlags log_level,
+          const gchar   *message,
+          gpointer       user_data)
+{
+}
+
 int
 main (int argc, char *argv[])
 {
+  g_log_set_default_handler (log_func, NULL);
+
   test_line_ends ();
   test_whitespace ();
   test_comments ();
@@ -1045,6 +1211,8 @@ main (int argc, char *argv[])
   test_duplicate_keys ();
   test_duplicate_groups ();
   test_duplicate_groups2 ();
+  test_group_names ();
+  test_key_names ();
   
   return 0;
 }
