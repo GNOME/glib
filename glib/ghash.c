@@ -54,7 +54,7 @@ struct _GHashTable
   GHashNode      **nodes;
   GHashFunc        hash_func;
   GEqualFunc       key_equal_func;
-  volatile guint   ref_count;
+  volatile gint    ref_count;
   GDestroyNotify   key_destroy_func;
   GDestroyNotify   value_destroy_func;
 };
