@@ -98,6 +98,8 @@ Note that in contrast to the
 Entry Specification</ulink>, groups in key files may contain the same
 key multiple times; the last entry wins. Key files may also contain
 multiple groups with the same name; they are merged together.
+Another difference is that keys and group names in key files are not
+restricted to ASCII characters.
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
