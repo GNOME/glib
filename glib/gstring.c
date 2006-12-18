@@ -297,8 +297,11 @@ g_string_chunk_insert_const (GStringChunk *chunk,
  * Adds a copy of the first @len bytes of @string to the #GStringChunk. The
  * copy is nul-terminated.
  * 
- * The characters in the string can be changed, if necessary, though you
- * should not change anything after the end of the string.
+ * Since this function does not stop at nul bytes, it is the caller's
+ * responsibility to ensure that @string has at least @len addressable bytes.
+ *
+ * The characters in the returned string can be changed, if necessary, though
+ * you should not change anything after the end of the string.
  * 
  * Return value: a pointer to the copy of @string within the #GStringChunk
  * 
@@ -420,6 +423,9 @@ g_string_new (const gchar *init)
  * @init buffer.  Because a length is provided, @init 
  * need not be nul-terminated, and can contain embedded 
  * nul bytes.
+ *
+ * Since this function does not stop at nul bytes, it is the caller's
+ * responsibility to ensure that @init has at least @len addressable bytes.
  *
  * Returns: a new #GString.
  */
@@ -629,6 +635,9 @@ g_string_set_size (GString *string,
  * nuls and need not be nul-terminated. If @pos is -1, 
  * bytes are inserted at the end of the string.
  *
+ * Since this function does not stop at nul bytes, it is the caller's
+ * responsibility to ensure that @val has at least @len addressable bytes.
+ *
  * Returns: the #GString
  */
 GString*
@@ -731,6 +740,9 @@ g_string_append (GString     *string,
  * Because @len is provided, @val may contain 
  * embedded nuls and need not be nul-terminated.
  * 
+ * Since this function does not stop at nul bytes, it is the caller's
+ * responsibility to ensure that @val has at least @len addressable bytes.
+ *
  * Returns: the #GString
  */
 GString*
@@ -811,6 +823,9 @@ g_string_prepend (GString     *string,
  * Prepends @len bytes of @val to @string. 
  * Because @len is provided, @val may contain 
  * embedded nuls and need not be nul-terminated.
+ *
+ * Since this function does not stop at nul bytes, it is the caller's
+ * responsibility to ensure that @val has at least @len addressable bytes.
  *
  * Returns: the #GString passed in
  */
