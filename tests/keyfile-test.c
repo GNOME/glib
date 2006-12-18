@@ -755,7 +755,8 @@ test_locale_string (void)
     "key1[de_DE]=v1-de_DE\n"
     "key1[de_DE.UTF8]=v1-de_DE.UTF8\n"
     "key1[fr]=v1-fr\n"
-    "key1[en] =v1-en\n";
+    "key1[en] =v1-en\n"
+    "key1[sr@Latn]=v1-sr\n";
   
   keyfile = load_data (data, G_KEY_FILE_KEEP_TRANSLATIONS);
 
@@ -766,6 +767,7 @@ test_locale_string (void)
   check_locale_string_value (keyfile, "valid", "key1", "fr", "v1-fr");
   check_locale_string_value (keyfile, "valid", "key1", "fr_FR", "v1-fr");
   check_locale_string_value (keyfile, "valid", "key1", "en", "v1-en");
+  check_locale_string_value (keyfile, "valid", "key1", "sr@Latn", "v1-sr");
   
   g_key_file_free (keyfile);
 
