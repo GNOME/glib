@@ -1,5 +1,9 @@
 2006-12-18  Matthias Clasen  <mclasen@redhat.com>
 
+	* tests/Makefile.am: Try a different fix for bug 346373.
+
+2006-12-18  Matthias Clasen  <mclasen@redhat.com>
+
 	Fix bug 161288:
 
 	* configure.in: Check for wcslen.

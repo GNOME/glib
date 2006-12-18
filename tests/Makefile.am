@@ -121,7 +121,7 @@ TESTS = $(test_programs) $(test_scripts)
 TESTS_ENVIRONMENT = srcdir=$(srcdir) \
 	LIBCHARSET_ALIAS_DIR=$(top_builddir)/glib/libcharset \
 	MALLOC_CHECK_=2	\
-	if test "$$RANDOM" != "" ; then MALLOC_PERTURB_=$$(($$RANDOM % 256)); fi
+        MALLOC_PERTURB_=$$(($${RANDOM:-256} % 256))
 
 progs_ldadd = $(EFENCE) $(libglib) $(EFENCE)
 thread_ldadd = $(libgthread) $(G_THREAD_LIBS) $(progs_ldadd)
