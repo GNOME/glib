@@ -1,3 +1,11 @@
+2006-12-19  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gkeyfile.c (g_key_file_is_key_name): Accept
+	'/', '+' and '.' in key names, since gnome-vfs uses
+	mime types as keys in some cache.
+
+	* tests/keyfile-test.c: Tests for the above.
+
 2006-12-18  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Fix the broken poll test.  (#387260,
