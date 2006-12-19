@@ -3234,7 +3234,11 @@ g_key_file_is_key_name (const gchar *name)
     return FALSE;
 
   p = q = (gchar *) name;
-  while (*q && (g_unichar_isalnum (g_utf8_get_char (q)) || *q == '-'))
+  /* We accept a little more than the desktop entry spec says,
+   * since gnome-vfs uses mime-types as keys in its cache.
+   */
+  while (*q && (g_unichar_isalnum (g_utf8_get_char (q)) || 
+                *q == '-' || *q == '_' || *q == '/' || *q == '+' || *q == '.'))
     q = g_utf8_next_char (q);
   
   if (*q == '[')

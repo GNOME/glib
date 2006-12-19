@@ -1052,16 +1052,6 @@ test_key_names (void)
 	       G_KEY_FILE_ERROR,
 	       G_KEY_FILE_ERROR_PARSE);
 
-  /* + in key name */
-  data = "[a]\n"
-         "key+foo=123\n";
-  keyfile = g_key_file_new ();
-  g_key_file_load_from_data (keyfile, data, -1, 0, &error);
-  g_key_file_free (keyfile);  
-  check_error (&error, 
-	       G_KEY_FILE_ERROR,
-	       G_KEY_FILE_ERROR_PARSE);
-
   /* control char in key name */
   data = "[a]\n"
          "key\tfoo=123\n";
@@ -1100,15 +1090,6 @@ test_key_names (void)
 
   keyfile = g_key_file_new ();
   g_key_file_set_string (keyfile, "a", "x", "123");
-  g_key_file_set_string (keyfile, "a", "key+foo", "123");
-  value = g_key_file_get_string (keyfile, "a", "key+foo", &error);
-  check_error (&error, 
-               G_KEY_FILE_ERROR,
-               G_KEY_FILE_ERROR_KEY_NOT_FOUND);  
-  g_key_file_free (keyfile);  
-
-  keyfile = g_key_file_new ();
-  g_key_file_set_string (keyfile, "a", "x", "123");
   g_key_file_set_string (keyfile, "a", "key\tfoo", "123");
   value = g_key_file_get_string (keyfile, "a", "key\tfoo", &error);
   check_error (&error, 
@@ -1131,6 +1112,15 @@ test_key_names (void)
   /* Unicode key */
   g_key_file_set_string (keyfile, "a", "\xc2\xbd", "123");
   check_string_value (keyfile, "a", "\xc2\xbd", "123");
+
+  /* Keys with / + . (as used by the gnome-vfs mime cache) */
+  g_key_file_set_string (keyfile, "a", "foo/bar", "/");
+  check_string_value (keyfile, "a", "foo/bar", "/");
+  g_key_file_set_string (keyfile, "a", "foo+bar", "+");
+  check_string_value (keyfile, "a", "foo+bar", "+");
+  g_key_file_set_string (keyfile, "a", "foo.bar", ".");
+  check_string_value (keyfile, "a", "foo.bar", ".");
+
   g_key_file_free (keyfile);  
 }
 
