@@ -3718,6 +3718,8 @@ child_watch_helper_thread (gpointer data)
 	}
       G_UNLOCK (main_context_list);
     }
+
+  return NULL;
 }
 
 static void
