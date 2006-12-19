@@ -1,5 +1,8 @@
 2006-12-18  Matthias Clasen  <mclasen@redhat.com>
 
+	* configure.in: Fix the broken poll test.  (#387260,
+	Christian Persch)
+
 	* glib/gmain.c (child_watch_helper_thread): Readd a
 	return which was removed as dead code a while ago.
 	icc may consider it dead, but gcc doesn't like non-void
