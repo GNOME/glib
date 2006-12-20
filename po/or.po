@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: or\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-10-01 18:52-0400\n"
+"POT-Creation-Date: 2006-12-20 11:41-0500\n"
 "PO-Revision-Date: 2006-08-23 10:29+0530\n"
 "Last-Translator: Subhransu Behera <arya_subhransu@yahoo.co.in>\n"
 "Language-Team: Oriya <oriya-group@lists.sarovar.org>\n"
@@ -89,71 +89,71 @@ msgstr "'%s' ୟୁ.ଆର.ଆଇ. ପାଇଁ ବୁକ୍ ମାର୍କର�
 msgid "No application with name '%s' registered a bookmark for '%s'"
 msgstr "'%s' ନାମରେ ନାମିତ କୌଣସି ପ୍ରୟୋଗ '%s' ପାଇଁ ଗୋଟିଏ ବୁକ୍ ମାର୍କକୁ ପଞ୍ଜିକ୍ରୁତ କରିନାହିଁ"
 
-#: glib/gconvert.c:405 glib/gconvert.c:483 glib/giochannel.c:1150
+#: glib/gconvert.c:423 glib/gconvert.c:501 glib/giochannel.c:1150
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "ଅକ୍ଷର ସେଟ୍ '%s'କୁ '%s'େର ରୂପାନ୍ତରିତ କରିବା ଅସହାୟକ"
 
-#: glib/gconvert.c:409 glib/gconvert.c:487
+#: glib/gconvert.c:427 glib/gconvert.c:505
 #, c-format
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "'%s'ରୁ '%s'ର ରୁପାନ୍ତରକ ଖୋଲି ହେଲା ନାହିଁ"
 
-#: glib/gconvert.c:603 glib/gconvert.c:992 glib/giochannel.c:1322
+#: glib/gconvert.c:621 glib/gconvert.c:1010 glib/giochannel.c:1322
 #: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:943
 #: glib/gutf8.c:1392
 #, c-format
 msgid "Invalid byte sequence in conversion input"
 msgstr "ରୁପାନ୍ତରଣ ନିବେଶେର ଅବୈଧ ବାଇଟ୍ ଅନୁକ୍ରମ"
 
-#: glib/gconvert.c:609 glib/gconvert.c:919 glib/giochannel.c:1329
+#: glib/gconvert.c:627 glib/gconvert.c:937 glib/giochannel.c:1329
 #: glib/giochannel.c:2218
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "ରୁପାନ୍ତରଣରେ ତ୍ରୁଟି: %s"
 
-#: glib/gconvert.c:644 glib/gutf8.c:939 glib/gutf8.c:1143 glib/gutf8.c:1284
+#: glib/gconvert.c:662 glib/gutf8.c:939 glib/gutf8.c:1143 glib/gutf8.c:1284
 #: glib/gutf8.c:1388
 #, c-format
 msgid "Partial character sequence at end of input"
 msgstr "ନିବେଶର ସମାପ୍ତିରେ ଆଶିଂକ ଅକ୍ଷର ଅନୁକ୍ରମ"
 
-#: glib/gconvert.c:894
+#: glib/gconvert.c:912
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "'%s' ସହାୟକକୁ ସଂକେତ '%s' ସେଟ୍ ରେ ରୁପାନ୍ତରିତ କରିହେଲା ନାହିଁ"
 
-#: glib/gconvert.c:1703
+#: glib/gconvert.c:1721
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "'%s' ୟୁ.ଆର୍.ଆଇ. \"ଫାଇଲ\" ଯୋଜନାକୁ ବ୍ଯବହାର କରୁଥିବା ଗୋଟିଏ ସମ୍ପୂର୍ଣ୍ଣ ୟୁ.ଆର୍.ଆଇ. ନୁହେଁ"
 
-#: glib/gconvert.c:1713
+#: glib/gconvert.c:1731
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "'%s' ସ୍ଥାନୀୟ ଫାଇଲ ୟୁ.ଆର୍.ଆଇ. '#' ଚିହ୍ନକୁ ସମ୍ମିଳିତ କରିପାରିବ ନାହିଁ"
 
-#: glib/gconvert.c:1730
+#: glib/gconvert.c:1748
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "'%s' ୟୁ.ଆର୍.ଆଇ. ଅବୈଧ ଅଟେ"
 
-#: glib/gconvert.c:1742
+#: glib/gconvert.c:1760
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "'%s' ୟୁ.ଆର୍.ଆଇ.ର ଆଧାର ନାମ ଅବୈଧ ଅଟେ"
 
-#: glib/gconvert.c:1758
+#: glib/gconvert.c:1776
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "'%s' ୟୁ.ଆର୍.ଆଇ.ରେ ଅବୈଧ ଏସ୍କେପ୍ ଅକ୍ଷର ରହିଛି"
 
-#: glib/gconvert.c:1853
+#: glib/gconvert.c:1871
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "'%s' ପଥ ନାମ ଏକ ସମ୍ପୂର୍ଣ୍ଣ ପଥ ନୁହେଁ"
 
-#: glib/gconvert.c:1863
+#: glib/gconvert.c:1881
 #, c-format
 msgid "Invalid hostname"
 msgstr "ଅବୈଧ ଆଧାର ନାମ"
@@ -524,18 +524,18 @@ msgstr "ପାଠ୍ଯ ଖାଲି ଥିଲା (ବା କେବଳ ଖାଲ
 msgid "Failed to read data from child process"
 msgstr "ନିର୍ଭରକ ପ୍ରକ୍ରିୟାରୁ ତଥ୍ଯ ପଢ଼ିବାରେ ଅସଫଳ"
 
-#: glib/gspawn-win32.c:287 glib/gspawn.c:1360
+#: glib/gspawn-win32.c:287 glib/gspawn.c:1379
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "ନିର୍ଭରକ ପ୍ରକ୍ରିୟା ସହିତ ସଂଯୋଗ ପାଇଁ ପାଇପ୍ ସୃଷ୍ଟି କରିବାରେ ଅସଫଳ (%s)"
 
-#: glib/gspawn-win32.c:325 glib/gspawn.c:1024
+#: glib/gspawn-win32.c:325 glib/gspawn.c:1043
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "ନିର୍ଭରକ ପାଇପ୍ ରୁ ତଥ୍ଯ ପଢି଼ବାରେ ଅସଫଳ (%s)"
 
 # Gora: "change to directory" means "go to directory" here
-#: glib/gspawn-win32.c:351 glib/gspawn.c:1229
+#: glib/gspawn-win32.c:351 glib/gspawn.c:1248
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "'%s' ଡିରେକ୍ଟୋରିକୁ ଯିବାରେ ଅସଫଳ (%s)"
@@ -579,47 +579,47 @@ msgid ""
 "process"
 msgstr "ନିର୍ଭରକ ପ୍ରକ୍ରିୟାରୁ ତଥ୍ଯ ପଢି଼ବାରେ g_io_channel_win32_poll()ରେ ଅପ୍ରତ୍ଯାଶିତ ତ୍ରୁଟି"
 
-#: glib/gspawn.c:164
+#: glib/gspawn.c:168
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "ନିର୍ଭରକ ପ୍ରକ୍ରିୟାରୁ ତଥ୍ଯ ପଢି଼ବାରେ ଅସଫଳ (%s)"
 
-#: glib/gspawn.c:296
+#: glib/gspawn.c:300
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr "ନିର୍ଭରକ ପ୍ରକ୍ରିୟାରୁ ତଥ୍ଯ ପଢି଼ବାରେ select()ରେ ଅପ୍ରତ୍ଯାଶିତ ତ୍ରୁଟି (%s)"
 
-#: glib/gspawn.c:379
+#: glib/gspawn.c:383
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "waitpid()ରେ ଅପ୍ରତ୍ଯାଶିତ ତ୍ରୁଟି (%s)"
 
-#: glib/gspawn.c:1089
+#: glib/gspawn.c:1108
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "ଶାଖା ସୃଷ୍ଟି କରିବାରେ ଅସଫଳ (%s"
 
-#: glib/gspawn.c:1239
+#: glib/gspawn.c:1258
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "ନିର୍ଭରକ ପ୍ରକ୍ରିୟା \"%s\" ନିଷ୍ପାଦନ କରିବାରେ ଅସଫଳ (%s)"
 
-#: glib/gspawn.c:1249
+#: glib/gspawn.c:1268
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "ନିର୍ଭରକ ପ୍ରକ୍ରିୟାର ନିର୍ଗମ ବା ନିବେଶର ପୁନଃନିର୍ଦ୍ଦେଶନ କରିବାରେ ଅସଫଳ (%s)"
 
-#: glib/gspawn.c:1258
+#: glib/gspawn.c:1277
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "ନିର୍ଭରକ ପ୍ରକ୍ରିୟାକୁ ଶାଖାଯୁକ୍ତ କରିବାରେ ଅସଫଳ (%s)"
 
-#: glib/gspawn.c:1266
+#: glib/gspawn.c:1285
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "ନିର୍ଭରକ ପ୍ରକ୍ରିୟାକୁ ନିଷ୍ପାଦନ କରିବାରେ ଅଜଣା ତ୍ରୁଟି \"%s\""
 
-#: glib/gspawn.c:1288
+#: glib/gspawn.c:1307
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "ନିର୍ଭରକ ପି.ଆଇ.ଡି. ପାଇପ୍  ରୁ ପର୍ଯ୍ଯାପ୍ତ ତଥ୍ଯ ପଢି଼ବାରେ ଅସଫଳ (%s)"
@@ -699,60 +699,70 @@ msgstr "%s ପାଇଁ ସ୍ବତନ୍ତ୍ରଚର ଟି ହଜି ଯ�
 msgid "Unknown option %s"
 msgstr "ଅଜଣା ପସନ୍ଦ %s"
 
-#: glib/gkeyfile.c:337
+#: glib/gkeyfile.c:341
 #, c-format
 msgid "Valid key file could not be found in data dirs"
 msgstr "ତଥ୍ଯ ଡିରେକ୍ଟୋରି ମାନଙ୍କ ରେ ମୂଖ୍ଯ ବୈଧ ଫାଇଲ ମିଳିବ ନାହିଁ"
 
-#: glib/gkeyfile.c:372
+#: glib/gkeyfile.c:376
 #, c-format
 msgid "Not a regular file"
 msgstr "ଏହା ଏକ ନିୟମିତ ଫାଇଲ ନୁହେଁ"
 
-#: glib/gkeyfile.c:380
+#: glib/gkeyfile.c:384
 #, c-format
 msgid "File is empty"
 msgstr "ଫାଇଲ ଟି ଖାଲି ଅଛି"
 
-#: glib/gkeyfile.c:696
+#: glib/gkeyfile.c:700
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr "ମୁଖ୍ଯ ଫାଇଲ '%s' କୁ ଧାରଣ କରିଛି ଯାହାକି ଗୋଟିଏ ମୁଖ୍ଯ-ଗୁଣ ର ଯୋଡି, ସମୂହ, କିମ୍ବା ବାକ୍ଯ ନୁହେଁ"
 
-#: glib/gkeyfile.c:767
+#: glib/gkeyfile.c:758
+#, fuzzy, c-format
+msgid "Invalid group name: %s"
+msgstr "ଅବୈଧ ହୋଷ୍ଟ୍ ନାମ: %s"
+
+#: glib/gkeyfile.c:780
 #, c-format
 msgid "Key file does not start with a group"
 msgstr "ମୂଖ୍ଯ ଫାଇଲ କୌଣସି ସମୂହ ସହ ଆରମ୍ଭ ହୁଏ ନାହିଁ"
 
-#: glib/gkeyfile.c:811
+#: glib/gkeyfile.c:806
+#, fuzzy, c-format
+msgid "Invalid key name: %s"
+msgstr "ଅବୈଧ ହୋଷ୍ଟ୍ ନାମ: %s"
+
+#: glib/gkeyfile.c:833
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "ମୂଖ୍ଯ ଫାଇଲ ଟି ଗୋଟିଏ ଅସହାୟକ ସଂକେତ '%s' ଧାରଣ କରିଛି"
 
-#: glib/gkeyfile.c:1020 glib/gkeyfile.c:1179 glib/gkeyfile.c:2398
-#: glib/gkeyfile.c:2463 glib/gkeyfile.c:2582 glib/gkeyfile.c:2717
-#: glib/gkeyfile.c:2870 glib/gkeyfile.c:3046 glib/gkeyfile.c:3103
+#: glib/gkeyfile.c:1042 glib/gkeyfile.c:1201 glib/gkeyfile.c:2402
+#: glib/gkeyfile.c:2469 glib/gkeyfile.c:2590 glib/gkeyfile.c:2725
+#: glib/gkeyfile.c:2878 glib/gkeyfile.c:3058 glib/gkeyfile.c:3115
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "ମୂଖ୍ଯ ଫାଇଲ େର '%s' ନାମ ଥିବା କୌଣସି ସମୂହ ନାହିଁ"
 
-#: glib/gkeyfile.c:1191
+#: glib/gkeyfile.c:1213
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "ମୂଖ୍ଯ ଫାଇଲ େର '%s' ନାମ ଥିବା  କୌଣସି ଚାବିକାଠି ନାହିଁ"
 
-#: glib/gkeyfile.c:1293 glib/gkeyfile.c:1405
+#: glib/gkeyfile.c:1315 glib/gkeyfile.c:1425
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "ମୂଖ୍ଯ ଫାଇଲ ଧାରଣ କରିଥିବା '%s' ଚାବିକାଠି ର ମୂଲ୍ଯ '%s' ଅଟେ, ଯାହାକି ଇଉ-ଟି-ଏଫ୍-୮ ନୁହେଁ"
 
-#: glib/gkeyfile.c:1313 glib/gkeyfile.c:1425 glib/gkeyfile.c:1797
+#: glib/gkeyfile.c:1335 glib/gkeyfile.c:1445 glib/gkeyfile.c:1813
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "ମୂଖ୍ଯ ଫାଇଲ ଧାରଣ କରିଥିବା '%s' ଚାବିକାଠି ର ମୂଲ୍ଯ ନିରୂପଣ କରିହେବ ନାହିଁ"
 
-#: glib/gkeyfile.c:2013 glib/gkeyfile.c:2226
+#: glib/gkeyfile.c:2025 glib/gkeyfile.c:2234
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -760,37 +770,37 @@ msgid ""
 msgstr ""
 "ମୂଖ୍ଯ ଫାଇଲ ଧାରଣ କରିଥିବା '%s' ଚାବିକାଠି ଗୋଟିଏ '%s' ସମୂହ ସହିତ ଏଛି ଯାହାର ମୂଲ୍ଯ ନିରୂପଣ କରିହେବ ନାହିଁ"
 
-#: glib/gkeyfile.c:2413 glib/gkeyfile.c:2597 glib/gkeyfile.c:3114
+#: glib/gkeyfile.c:2417 glib/gkeyfile.c:2605 glib/gkeyfile.c:3126
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "ମୂଖ୍ଯ ଫାଇଲ େର '%s' ନାମ ଥିବା କୌଣସି ଚାବିକାଠି '%s' ସମୂହ ରେ ନାହିଁ "
 
-#: glib/gkeyfile.c:3287
+#: glib/gkeyfile.c:3346
 #, c-format
 msgid "Key file contains escape character at end of line"
 msgstr "ମୂଖ୍ଯ ଫାଇଲ ଟି ଲାଇନ୍ ର ସମାପ୍ତି ରେ ଏସ୍କେପ୍ ଅକ୍ଷର ଧାରଣ କରିଛି"
 
-#: glib/gkeyfile.c:3309
+#: glib/gkeyfile.c:3368
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "ମୂଖ୍ଯ ଫାଇଲ '%s' ଅବୈଧ ଏସ୍କେପ୍ ଅକ୍ଷର ଧାରଣ କରିଛି"
 
-#: glib/gkeyfile.c:3451
+#: glib/gkeyfile.c:3510
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "'%s' ର ମୂଲ୍ଯ ଗୋଟିଏ ସଂଖ୍ଯା ଭାବରେ ନିରୂପଣ କରିହେବ ନାହିଁ"
 
-#: glib/gkeyfile.c:3465
+#: glib/gkeyfile.c:3524
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "ପୂର୍ଣ ମୂଲ୍ଯ '%s' ପରିସର ର ବାହାରେ ଅଛି"
 
-#: glib/gkeyfile.c:3498
+#: glib/gkeyfile.c:3557
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "'%s' ମୂଲ୍ଯକୁ ଗୋଟିଏ ଭାସମାନ ସଂଖ୍ଯା ଭାବରେ ବ୍ଯାଖ୍ଯା କରିହେବ ନାହିଁ"
 
-#: glib/gkeyfile.c:3525
+#: glib/gkeyfile.c:3584
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "'%s' ର ମୂଲ୍ଯ ଗୋଟିଏ ବୁଲିଆନ୍ ଭାବରେ ନିରୂପଣ କରିହେବ ନାହିଁ"

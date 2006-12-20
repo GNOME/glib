@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib (HEAD)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-10-01 18:52-0400\n"
+"POT-Creation-Date: 2006-12-20 11:41-0500\n"
 "PO-Revision-Date: 2006-08-09 00:29+0200 \n"
 "Last-Translator: Tino Meinen <a.t.meinen@chello.nl>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -86,7 +86,7 @@ msgstr ""
 "voor '%s'"
 
 # is niet mogelijk/wordt niet ondersteund
-#: glib/gconvert.c:405 glib/gconvert.c:483 glib/giochannel.c:1150
+#: glib/gconvert.c:423 glib/gconvert.c:501 glib/giochannel.c:1150
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Het omzetten van tekenset '%s' naar '%s' is niet mogelijk"
@@ -96,70 +96,70 @@ msgstr "Het omzetten van tekenset '%s' naar '%s' is niet mogelijk"
 # Openen van converteerder van '%s' naar '%s' mislukt
 # Openen van het programma voor het omzetten van s naar s is mislukt
 # (tekenreeks komt verderop nog een keer voor)
-#: glib/gconvert.c:409 glib/gconvert.c:487
+#: glib/gconvert.c:427 glib/gconvert.c:505
 #, c-format
 msgid "Could not open converter from '%s' to '%s'"
 msgstr ""
 "Kon het conversieprogramma voor omzetten van '%s' naar '%s' niet openen"
 
-#: glib/gconvert.c:603 glib/gconvert.c:992 glib/giochannel.c:1322
+#: glib/gconvert.c:621 glib/gconvert.c:1010 glib/giochannel.c:1322
 #: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:943
 #: glib/gutf8.c:1392
 #, c-format
 msgid "Invalid byte sequence in conversion input"
 msgstr "Ongeldige bytereeks in conversie-invoer"
 
-#: glib/gconvert.c:609 glib/gconvert.c:919 glib/giochannel.c:1329
+#: glib/gconvert.c:627 glib/gconvert.c:937 glib/giochannel.c:1329
 #: glib/giochannel.c:2218
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Fout tijdens omzetten: %s"
 
-#: glib/gconvert.c:644 glib/gutf8.c:939 glib/gutf8.c:1143 glib/gutf8.c:1284
+#: glib/gconvert.c:662 glib/gutf8.c:939 glib/gutf8.c:1143 glib/gutf8.c:1284
 #: glib/gutf8.c:1388
 #, c-format
 msgid "Partial character sequence at end of input"
 msgstr "Onvolledige tekenreeks aan het eind van de invoer"
 
-#: glib/gconvert.c:894
+#: glib/gconvert.c:912
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Kan vanaf codeverzameling '%s' niet terugvallen op '%s'"
 
-#: glib/gconvert.c:1703
+#: glib/gconvert.c:1721
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr ""
 "De URI '%s' is geen absolute URI die gebruik maakt van het schema \"bestand\""
 
-#: glib/gconvert.c:1713
+#: glib/gconvert.c:1731
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "De lokale bestands-URI '%s' mag het teken '#' niet bevatten"
 
-#: glib/gconvert.c:1730
+#: glib/gconvert.c:1748
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "De URI '%s' is ongeldig"
 
-#: glib/gconvert.c:1742
+#: glib/gconvert.c:1760
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "De hostnaam van de URI '%s' is ongeldig"
 
 # controle-tekens/ontsnappingstekens
 # betere vertaling?
-#: glib/gconvert.c:1758
+#: glib/gconvert.c:1776
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "De URI '%s' bevat tekens met een foutief controleteken"
 
-#: glib/gconvert.c:1853
+#: glib/gconvert.c:1871
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Het pad '%s' is geen absoluut pad"
 
-#: glib/gconvert.c:1863
+#: glib/gconvert.c:1881
 #, c-format
 msgid "Invalid hostname"
 msgstr "Ongeldige hostnaam"
@@ -551,18 +551,18 @@ msgstr "De tekst was leeg (of bevatte slechts lege ruimte)"
 msgid "Failed to read data from child process"
 msgstr "Lezen van data van dochterproces is mislukt"
 
-#: glib/gspawn-win32.c:287 glib/gspawn.c:1360
+#: glib/gspawn-win32.c:287 glib/gspawn.c:1379
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr ""
 "Aanmaken van pijplijn voor het communiceren met dochterproces is mislukt (%s)"
 
-#: glib/gspawn-win32.c:325 glib/gspawn.c:1024
+#: glib/gspawn-win32.c:325 glib/gspawn.c:1043
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Lezen van pijplijn naar dochter (%s) is mislukt"
 
-#: glib/gspawn-win32.c:351 glib/gspawn.c:1229
+#: glib/gspawn-win32.c:351 glib/gspawn.c:1248
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Wijzigen naar map '%s' is mislukt (%s)"
@@ -609,52 +609,52 @@ msgstr ""
 "Onverwachte fout in g_io_channel_win32_poll() bij het lezen van data van een "
 "dochterproces"
 
-#: glib/gspawn.c:164
+#: glib/gspawn.c:168
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "Lezen van data van dochterproces is mislukt (%s)"
 
-#: glib/gspawn.c:296
+#: glib/gspawn.c:300
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr ""
 "Onverwachte fout in select() bij het lezen van data van een dochterproces (%"
 "s)"
 
-#: glib/gspawn.c:379
+#: glib/gspawn.c:383
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Onverwachte fout in waitpid() (%s)"
 
 # fork is een functienaam, mag niet met hoofdletter beginnen
-#: glib/gspawn.c:1089
+#: glib/gspawn.c:1108
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "fork is mislukt (%s)"
 
-#: glib/gspawn.c:1239
+#: glib/gspawn.c:1258
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Uitvoeren van dochterproces \"%s\" is mislukt (%s)"
 
 # was eerst: herleiden
-#: glib/gspawn.c:1249
+#: glib/gspawn.c:1268
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr ""
 "Doorsluizen van invoer of uitvoer van een dochterproces is mislukt (%s)"
 
-#: glib/gspawn.c:1258
+#: glib/gspawn.c:1277
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Het forken van een dochterproces is mislukt (%s)"
 
-#: glib/gspawn.c:1266
+#: glib/gspawn.c:1285
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Onbekende fout bij het uitvoeren van dochterproces \"%s\""
 
-#: glib/gspawn.c:1288
+#: glib/gspawn.c:1307
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Lezen van voldoende data van pijplijn dochter-pid is mislukt (%s)"
@@ -735,22 +735,22 @@ msgstr "Ontbrekend argument voor %s"
 msgid "Unknown option %s"
 msgstr "Onbekende optie %s"
 
-#: glib/gkeyfile.c:337
+#: glib/gkeyfile.c:341
 #, c-format
 msgid "Valid key file could not be found in data dirs"
 msgstr "Er kon geen geldig sleutelbestand worden gevonden in de datamappen"
 
-#: glib/gkeyfile.c:372
+#: glib/gkeyfile.c:376
 #, c-format
 msgid "Not a regular file"
 msgstr "Geen regulier bestand"
 
-#: glib/gkeyfile.c:380
+#: glib/gkeyfile.c:384
 #, c-format
 msgid "File is empty"
 msgstr "Bestand is leeg"
 
-#: glib/gkeyfile.c:696
+#: glib/gkeyfile.c:700
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
@@ -758,41 +758,51 @@ msgstr ""
 "Sleutelbestand bevat regel '%s' wat geen sleutelwaarde-paar, groep of "
 "opmerking is."
 
-#: glib/gkeyfile.c:767
+#: glib/gkeyfile.c:758
+#, fuzzy, c-format
+msgid "Invalid group name: %s"
+msgstr "Ongeldige programmanaam: %s"
+
+#: glib/gkeyfile.c:780
 #, c-format
 msgid "Key file does not start with a group"
 msgstr "Sleutelbestand start niet met een groep"
 
-#: glib/gkeyfile.c:811
+#: glib/gkeyfile.c:806
+#, fuzzy, c-format
+msgid "Invalid key name: %s"
+msgstr "Ongeldige programmanaam: %s"
+
+#: glib/gkeyfile.c:833
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "Sleutelbestand bevat niet-ondersteunde tekenset '%s'"
 
-#: glib/gkeyfile.c:1020 glib/gkeyfile.c:1179 glib/gkeyfile.c:2398
-#: glib/gkeyfile.c:2463 glib/gkeyfile.c:2582 glib/gkeyfile.c:2717
-#: glib/gkeyfile.c:2870 glib/gkeyfile.c:3046 glib/gkeyfile.c:3103
+#: glib/gkeyfile.c:1042 glib/gkeyfile.c:1201 glib/gkeyfile.c:2402
+#: glib/gkeyfile.c:2469 glib/gkeyfile.c:2590 glib/gkeyfile.c:2725
+#: glib/gkeyfile.c:2878 glib/gkeyfile.c:3058 glib/gkeyfile.c:3115
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Sleutelbestand bevat geen groep '%s'"
 
-#: glib/gkeyfile.c:1191
+#: glib/gkeyfile.c:1213
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "Sleutelbestand bevat geen sleutel '%s'"
 
-#: glib/gkeyfile.c:1293 glib/gkeyfile.c:1405
+#: glib/gkeyfile.c:1315 glib/gkeyfile.c:1425
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "Sleutelbestand bevat sleutel '%s' met waarde '%s' wat geen UTF-8 is"
 
-#: glib/gkeyfile.c:1313 glib/gkeyfile.c:1425 glib/gkeyfile.c:1797
+#: glib/gkeyfile.c:1335 glib/gkeyfile.c:1445 glib/gkeyfile.c:1813
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr ""
 "Sleutelbestand bevat sleutel '%s' die een waarde heeft die niet kan worden "
 "geïnterpreteerd."
 
-#: glib/gkeyfile.c:2013 glib/gkeyfile.c:2226
+#: glib/gkeyfile.c:2025 glib/gkeyfile.c:2234
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -801,37 +811,37 @@ msgstr ""
 "Sleutelbestand bevat sleutel '%s' in groep '%s' die een waarde heeft die "
 "niet kan worden geïnterpreteerd."
 
-#: glib/gkeyfile.c:2413 glib/gkeyfile.c:2597 glib/gkeyfile.c:3114
+#: glib/gkeyfile.c:2417 glib/gkeyfile.c:2605 glib/gkeyfile.c:3126
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Sleutelbestand bevat geen sleutel '%s' in groep '%s'"
 
-#: glib/gkeyfile.c:3287
+#: glib/gkeyfile.c:3346
 #, c-format
 msgid "Key file contains escape character at end of line"
 msgstr "Sleutelbestand bevat een ontsnappingsteken aan het einde van een regel"
 
-#: glib/gkeyfile.c:3309
+#: glib/gkeyfile.c:3368
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "Sleutelbestand bevat ongeldige ontsnappingstekens '%s'"
 
-#: glib/gkeyfile.c:3451
+#: glib/gkeyfile.c:3510
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Waarde '%s' kan niet geïnterpreteerd worden als een getal."
 
-#: glib/gkeyfile.c:3465
+#: glib/gkeyfile.c:3524
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "Hele getalswaarde '%s' valt buiten bereik"
 
-#: glib/gkeyfile.c:3498
+#: glib/gkeyfile.c:3557
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "Waarde '%s' kan niet geïnterpreteerd worden als een float."
 
-#: glib/gkeyfile.c:3525
+#: glib/gkeyfile.c:3584
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Waarde '%s' kan niet geïnterpreteerd worden als een booleese."

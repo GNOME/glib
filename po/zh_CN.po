@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-10-01 18:52-0400\n"
+"POT-Creation-Date: 2006-12-20 11:41-0500\n"
 "PO-Revision-Date: 2006-08-20 17:41+0800\n"
 "Last-Translator: He Qiangqiang <carton@263.net>\n"
 "Language-Team: zh_CN <i18n-translation@lists.linux.net.cn>\n"
@@ -82,71 +82,71 @@ msgstr "URI“%s”的书签未设定组"
 msgid "No application with name '%s' registered a bookmark for '%s'"
 msgstr "没有名为“%s”的应用程序为“%s”注册书签"
 
-#: glib/gconvert.c:405 glib/gconvert.c:483 glib/giochannel.c:1150
+#: glib/gconvert.c:423 glib/gconvert.c:501 glib/giochannel.c:1150
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "不支持从字符集“%s”到“%s”的转换"
 
-#: glib/gconvert.c:409 glib/gconvert.c:487
+#: glib/gconvert.c:427 glib/gconvert.c:505
 #, c-format
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "无法打开从“%s”到“%s”的转换器"
 
-#: glib/gconvert.c:603 glib/gconvert.c:992 glib/giochannel.c:1322
+#: glib/gconvert.c:621 glib/gconvert.c:1010 glib/giochannel.c:1322
 #: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:943
 #: glib/gutf8.c:1392
 #, c-format
 msgid "Invalid byte sequence in conversion input"
 msgstr "转换输入中出现无效字符序列"
 
-#: glib/gconvert.c:609 glib/gconvert.c:919 glib/giochannel.c:1329
+#: glib/gconvert.c:627 glib/gconvert.c:937 glib/giochannel.c:1329
 #: glib/giochannel.c:2218
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "转换过程中出错：%s"
 
-#: glib/gconvert.c:644 glib/gutf8.c:939 glib/gutf8.c:1143 glib/gutf8.c:1284
+#: glib/gconvert.c:662 glib/gutf8.c:939 glib/gutf8.c:1143 glib/gutf8.c:1284
 #: glib/gutf8.c:1388
 #, c-format
 msgid "Partial character sequence at end of input"
 msgstr "输入末尾出现未尽字符序列"
 
-#: glib/gconvert.c:894
+#: glib/gconvert.c:912
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "无法转换后备字符集“%s”到字符集“%s”"
 
-#: glib/gconvert.c:1703
+#: glib/gconvert.c:1721
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "URI“%s”不是“file”格式的绝对 URI"
 
-#: glib/gconvert.c:1713
+#: glib/gconvert.c:1731
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "本地文件 URI“%s”不能包含“#”"
 
-#: glib/gconvert.c:1730
+#: glib/gconvert.c:1748
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI“%s”无效"
 
-#: glib/gconvert.c:1742
+#: glib/gconvert.c:1760
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "URI中的主机名“%s”无效"
 
-#: glib/gconvert.c:1758
+#: glib/gconvert.c:1776
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI“%s”中包含无效的转义字符"
 
-#: glib/gconvert.c:1853
+#: glib/gconvert.c:1871
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "路径名“%s”不是绝对路径"
 
-#: glib/gconvert.c:1863
+#: glib/gconvert.c:1881
 #, c-format
 msgid "Invalid hostname"
 msgstr "无效的主机名"
@@ -499,17 +499,17 @@ msgstr "空文本(或仅含空白字符)"
 msgid "Failed to read data from child process"
 msgstr "从子进程中读取数据失败"
 
-#: glib/gspawn-win32.c:287 glib/gspawn.c:1360
+#: glib/gspawn-win32.c:287 glib/gspawn.c:1379
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "创建与子进程通讯的管道失败(%s)"
 
-#: glib/gspawn-win32.c:325 glib/gspawn.c:1024
+#: glib/gspawn-win32.c:325 glib/gspawn.c:1043
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "从子管道中读取失败(%s)"
 
-#: glib/gspawn-win32.c:351 glib/gspawn.c:1229
+#: glib/gspawn-win32.c:351 glib/gspawn.c:1248
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "更改到目录“%s”失败(%s)"
@@ -553,47 +553,47 @@ msgid ""
 "process"
 msgstr "g_io_channel_win32_poll() 从子进程中读取数据时出现异常错误"
 
-#: glib/gspawn.c:164
+#: glib/gspawn.c:168
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "从子进程中读取数据失败(%s)"
 
-#: glib/gspawn.c:296
+#: glib/gspawn.c:300
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr "select() 在从子进程中读取数据时出现异常错误 (%s)"
 
-#: glib/gspawn.c:379
+#: glib/gspawn.c:383
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "waitpid() 出现异常错误 (%s)"
 
-#: glib/gspawn.c:1089
+#: glib/gspawn.c:1108
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "fork 失败(%s)"
 
-#: glib/gspawn.c:1239
+#: glib/gspawn.c:1258
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "执行子进程“%s”失败(%s)"
 
-#: glib/gspawn.c:1249
+#: glib/gspawn.c:1268
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "重定向子进程(%s)的输入或输出失败"
 
-#: glib/gspawn.c:1258
+#: glib/gspawn.c:1277
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "fork 子进程失败 (%s)"
 
-#: glib/gspawn.c:1266
+#: glib/gspawn.c:1285
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "执行子进程“%s”时出现未知错误"
 
-#: glib/gspawn.c:1288
+#: glib/gspawn.c:1307
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "从子进程管道中读取足够的数据失败(%s)"
@@ -673,97 +673,107 @@ msgstr "缺少 %s 的参数"
 msgid "Unknown option %s"
 msgstr "未知选项 %s"
 
-#: glib/gkeyfile.c:337
+#: glib/gkeyfile.c:341
 #, c-format
 msgid "Valid key file could not be found in data dirs"
 msgstr "无法在数据目录中找到有效的键文件"
 
-#: glib/gkeyfile.c:372
+#: glib/gkeyfile.c:376
 #, c-format
 msgid "Not a regular file"
 msgstr "不是普通文件"
 
-#: glib/gkeyfile.c:380
+#: glib/gkeyfile.c:384
 #, c-format
 msgid "File is empty"
 msgstr "文件为空"
 
-#: glib/gkeyfile.c:696
+#: glib/gkeyfile.c:700
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr "键文件中的行“%s”不是键-值对、组或注释"
 
-#: glib/gkeyfile.c:767
+#: glib/gkeyfile.c:758
+#, fuzzy, c-format
+msgid "Invalid group name: %s"
+msgstr "无效的程序名：%s"
+
+#: glib/gkeyfile.c:780
 #, c-format
 msgid "Key file does not start with a group"
 msgstr "键文件不以组开始"
 
-#: glib/gkeyfile.c:811
+#: glib/gkeyfile.c:806
+#, fuzzy, c-format
+msgid "Invalid key name: %s"
+msgstr "无效的程序名：%s"
+
+#: glib/gkeyfile.c:833
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "键文件包含不支持的编码“%s”"
 
-#: glib/gkeyfile.c:1020 glib/gkeyfile.c:1179 glib/gkeyfile.c:2398
-#: glib/gkeyfile.c:2463 glib/gkeyfile.c:2582 glib/gkeyfile.c:2717
-#: glib/gkeyfile.c:2870 glib/gkeyfile.c:3046 glib/gkeyfile.c:3103
+#: glib/gkeyfile.c:1042 glib/gkeyfile.c:1201 glib/gkeyfile.c:2402
+#: glib/gkeyfile.c:2469 glib/gkeyfile.c:2590 glib/gkeyfile.c:2725
+#: glib/gkeyfile.c:2878 glib/gkeyfile.c:3058 glib/gkeyfile.c:3115
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "键文件没有组“%s”"
 
-#: glib/gkeyfile.c:1191
+#: glib/gkeyfile.c:1213
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "键文件没有键“%s”"
 
-#: glib/gkeyfile.c:1293 glib/gkeyfile.c:1405
+#: glib/gkeyfile.c:1315 glib/gkeyfile.c:1425
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "键文件包含“%s”，其值“%s”不是 UTF-8"
 
-#: glib/gkeyfile.c:1313 glib/gkeyfile.c:1425 glib/gkeyfile.c:1797
+#: glib/gkeyfile.c:1335 glib/gkeyfile.c:1445 glib/gkeyfile.c:1813
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "键文件包含键“%s”，其值无法解释。"
 
-#: glib/gkeyfile.c:2013 glib/gkeyfile.c:2226
+#: glib/gkeyfile.c:2025 glib/gkeyfile.c:2234
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
 "interpreted."
 msgstr "键文件在“%2$s”中包含“%1$s”，其值无法解释。"
 
-#: glib/gkeyfile.c:2413 glib/gkeyfile.c:2597 glib/gkeyfile.c:3114
+#: glib/gkeyfile.c:2417 glib/gkeyfile.c:2605 glib/gkeyfile.c:3126
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "键文件的组“%2$s”中不包含键“%1$s”"
 
-#: glib/gkeyfile.c:3287
+#: glib/gkeyfile.c:3346
 #, c-format
 msgid "Key file contains escape character at end of line"
 msgstr "键文件在行尾含有转义字符"
 
-#: glib/gkeyfile.c:3309
+#: glib/gkeyfile.c:3368
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "键文件中包含无效的转义序列“%s”"
 
-#: glib/gkeyfile.c:3451
+#: glib/gkeyfile.c:3510
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "无法将值“%s”解释为数值。"
 
-#: glib/gkeyfile.c:3465
+#: glib/gkeyfile.c:3524
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "整数值“%s”超出范围"
 
-#: glib/gkeyfile.c:3498
+#: glib/gkeyfile.c:3557
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "无法将值“%s”解释为浮点数。"
 
-#: glib/gkeyfile.c:3525
+#: glib/gkeyfile.c:3584
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "无法将值“%s”解释为布尔值。"

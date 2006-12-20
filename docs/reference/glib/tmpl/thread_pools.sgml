@@ -140,7 +140,7 @@ this struct.
 
 @pool: 
 @immediate: 
-@wait: 
+@wait_: 
 
 
 <!-- ##### FUNCTION g_thread_pool_set_max_unused_threads ##### -->
