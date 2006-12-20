@@ -1,3 +1,19 @@
+Overview of Changes from GLib 2.12.5 to GLib 2.12.6
+===================================================
+
+* Fix a configure test that was added in 2.12.5 to
+  not declare every poll() broken  
+
+* Make GKeyFile accept keys that are commonly used
+
+* Bugs fixed
+ 354707 No return() in non-void function
+ 387260 hang in zenity
+ 387823 glib 2.12.5 is breaking hal
+  
+* New and updated translations (ca,gu,mk,th)
+
+
 Overview of Changes from GLib 2.12.4 to GLib 2.12.5
 ===================================================
 

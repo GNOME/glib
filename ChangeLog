@@ -1,3 +1,7 @@
+2006-12-20  Matthias Clasen  <mclasen@redhat.com>
+
+	* NEWS: Updates
+
 2006-12-19  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gkeyfile.c (g_key_file_is_key_name): Accept
