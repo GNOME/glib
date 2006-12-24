@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <locale.h>
 
 typedef struct {
   const char *key;
@@ -38,6 +39,18 @@ int main (int argc, char **argv)
   guint i;
   gboolean do_key = FALSE;
   gboolean do_file = FALSE;
+  gchar *locale;
+
+  /* FIXME: need to modify environment here,
+   * since g_utf8_collate_key calls setlocal (LC_COLLATE, "")
+   */
+  g_setenv ("LC_ALL", "en_US", TRUE);
+  locale = setlocale (LC_ALL, "");
+  if (locale == NULL || strcmp (locale, "en_US") != 0)
+    {
+      fprintf (stderr, "No suitable locale, skipping test\n"); 
+      return 2;
+    }
 
   if (argc != 1 && argc != 2 && argc != 3)
     {

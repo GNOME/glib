@@ -1,3 +1,9 @@
+2006-12-24  Matthias Clasen  <mclasen@redhat.com>
+
+	* tests/run-collate-tests.sh:
+	* tests/unicode-collate.c: Silently skip tests if
+	we can't set LC_COLLATE to en_US.  (#336438)
+
 2006-12-19  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gkeyfile.c (g_key_file_is_key_name): Accept
