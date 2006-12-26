@@ -1312,28 +1312,16 @@ else
 fi
 
 AC_MSG_CHECKING(for the suffix of shared libraries)
-case "$host_os" in
-  hpux9* | hpux10* | hpux11*)  # taken from ltconfig
-    case "$host_cpu" in
-      hppa*)
-	glib_gmodule_suffix='sl'
-	;;
-      ia64*)
-	glib_gmodule_suffix='so'
-	;;
-    esac
-    ;;
-  cygwin* | mingw*)
-    glib_gmodule_suffix='dll'
-    ;;
-  aix*)
-    glib_gmodule_suffix='a'
-    ;;
-  *)
-    glib_gmodule_suffix='so'    
-    ;;
-esac
+shrext_cmds=`./libtool --config | grep '^shrext_cmds='`
+eval $shrext_cmds
+module=yes eval std_shrext=$shrext_cmds
+# chop the initial dot
+glib_gmodule_suffix=`echo $std_shrext | sed 's/^\.//'`
 AC_MSG_RESULT(.$glib_gmodule_suffix)
+# any reason it may fail?
+if test "x$glib_gmodule_suffix" = x; then
+	AC_MSG_ERROR(Cannot determine shared library suffix from libtool)
+fi
  
 AC_SUBST(G_MODULE_SUPPORTED)
 AC_SUBST(G_MODULE_IMPL)
