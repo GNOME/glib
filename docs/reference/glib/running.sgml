@@ -180,6 +180,16 @@ variables like <envar>LANG</envar>, <envar>PATH</envar> or <envar>HOME</envar>.
 
 </refsect2>
 
+<refsect2 id="setlocale">
+<title>Locale</title>
+
+<para>
+A number of interfaces in GLib depend on the current locale in which
+an application is running. Therefore, most GLib-using applications should
+call <function>setlocale (LC_ALL, "")</function> to set up the current 
+locale.
+</para>
+
 <refsect2>
 <title>Traps and traces</title>
 

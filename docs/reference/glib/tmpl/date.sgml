@@ -397,10 +397,10 @@ Sets the value of a #GDate from a Julian day number.
 <!-- ##### FUNCTION g_date_set_parse ##### -->
 <para>
 Parses a user-inputted string @str, and try to figure out what date it
-represents, taking the current locale into account. If the string is
-successfully parsed, the date will be valid after the call. Otherwise,
-it will be invalid. You should check using g_date_valid() to see
-whether the parsing succeeded.
+represents, taking the <link linkend="setlocale">current locale</link> 
+into account. If the string is successfully parsed, the date will be 
+valid after the call. Otherwise, it will be invalid. You should check 
+using g_date_valid() to see whether the parsing succeeded.
 </para>
 
 <para>
@@ -684,21 +684,19 @@ to be a Sunday.)
 
 <!-- ##### FUNCTION g_date_strftime ##### -->
 <para>
-Generates a printed representation of the date, in a locale-specific
-way. Works just like the platform's C library
-<function>strftime()</function> function, but only accepts
-date-related formats; time-related formats give undefined
-results. Date must be valid. Unlike <function>strftime()</function>
-(which uses the locale encoding), works on a UTF-8 format string and
-stores a UTF-8 result.
+Generates a printed representation of the date, in a 
+<link linkend="setlocale">locale</link>-specific way. Works just like 
+the platform's C library strftime() function, but only accepts date-related 
+formats; time-related formats give undefined results. Date must be valid. 
+Unlike strftime() (which uses the locale encoding), works on a UTF-8 format 
+string and stores a UTF-8 result.
 </para>
 
 <para>
 This function does not provide any conversion specifiers in addition
 to those implemented by the platform's C library. For example, don't
-expect that using <function>g_date_strftime()</function> would make
-the %F provided by the C99 <function>strftime()</function> work on
-Windows where the C library only complies to C89.
+expect that using g_date_strftime() would make the %F provided by the C99 
+strftime() work on Windows where the C library only complies to C89.
 </para>
 
 @s: destination buffer.
