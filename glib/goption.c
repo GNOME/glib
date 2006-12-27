@@ -1341,8 +1341,8 @@ free_pending_nulls (GOptionContext *context,
 /**
  * g_option_context_parse:
  * @context: a #GOptionContext
- * @argc: a pointer to the number of command line arguments.
- * @argv: a pointer to the array of command line arguments.
+ * @argc: a pointer to the number of command line arguments
+ * @argv: a pointer to the array of command line arguments
  * @error: a return location for errors 
  * 
  * Parses the command line arguments, recognizing options
@@ -1362,6 +1362,11 @@ free_pending_nulls (GOptionContext *context,
  * @argv array contains one of the recognized help options,
  * this function will produce help output to stdout and
  * call <literal>exit (0)</literal>.
+ *
+ * Note that function depends on the 
+ * <link linkend="setlocale">current locale</link> for 
+ * automatic character set conversion of string and filename
+ * arguments.
  * 
  * Return value: %TRUE if the parsing was successful, 
  *               %FALSE if an error occurred
