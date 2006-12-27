@@ -1,3 +1,11 @@
+2006-12-27  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gwin32.h
+	* glib/gwin32.c (get_package_directory_from_module)
+	(g_win32_get_package_installation_directory)
+	(g_win32_get_package_installation_subdirectory): Add const to
+	gchar* arguments. (#384523, Yevgen Muntyan)
+	
 2006-12-27  Ryan Lortie  <desrt@desrt.ca>
 
 	* glib/ghash.c: cache the value of the hash function

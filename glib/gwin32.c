@@ -1081,7 +1081,7 @@ g_win32_error_message (gint error)
 }
 
 static gchar *
-get_package_directory_from_module (gchar *module_name)
+get_package_directory_from_module (const gchar *module_name)
 {
   static GHashTable *module_dirs = NULL;
   G_LOCK_DEFINE_STATIC (module_dirs);
@@ -1184,8 +1184,8 @@ get_package_directory_from_module (gchar *module_name)
  **/
 
 gchar *
-g_win32_get_package_installation_directory (gchar *package,
-					    gchar *dll_name)
+g_win32_get_package_installation_directory (const gchar *package,
+					    const gchar *dll_name)
 {
   static GHashTable *package_dirs = NULL;
   G_LOCK_DEFINE_STATIC (package_dirs);
@@ -1264,8 +1264,8 @@ g_win32_get_package_installation_directory (gchar *package,
 /* DLL ABI binary compatibility version that uses system codepage file names */
 
 gchar *
-g_win32_get_package_installation_directory (gchar *package,
-					    gchar *dll_name)
+g_win32_get_package_installation_directory (const gchar *package,
+					    const gchar *dll_name)
 {
   gchar *utf8_package = NULL, *utf8_dll_name = NULL;
   gchar *utf8_retval, *retval;
@@ -1307,9 +1307,9 @@ g_win32_get_package_installation_directory (gchar *package,
  **/
 
 gchar *
-g_win32_get_package_installation_subdirectory (gchar *package,
-					       gchar *dll_name,
-					       gchar *subdir)
+g_win32_get_package_installation_subdirectory (const gchar *package,
+					       const gchar *dll_name,
+					       const gchar *subdir)
 {
   gchar *prefix;
   gchar *dirname;
@@ -1327,9 +1327,9 @@ g_win32_get_package_installation_subdirectory (gchar *package,
 /* DLL ABI binary compatibility version that uses system codepage file names */
 
 gchar *
-g_win32_get_package_installation_subdirectory (gchar *package,
-					       gchar *dll_name,
-					       gchar *subdir)
+g_win32_get_package_installation_subdirectory (const gchar *package,
+					       const gchar *dll_name,
+					       const gchar *subdir)
 {
   gchar *prefix;
   gchar *dirname;

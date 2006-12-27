@@ -82,12 +82,12 @@ gchar*          g_win32_error_message (gint error);
 #define g_win32_get_package_installation_directory g_win32_get_package_installation_directory_utf8
 #define g_win32_get_package_installation_subdirectory g_win32_get_package_installation_subdirectory_utf8
 
-gchar*          g_win32_get_package_installation_directory (gchar *package,
-							    gchar *dll_name);
+gchar*          g_win32_get_package_installation_directory (const gchar *package,
+							    const gchar *dll_name);
 
-gchar*          g_win32_get_package_installation_subdirectory (gchar *package,
-							       gchar *dll_name,
-							       gchar *subdir);
+gchar*          g_win32_get_package_installation_subdirectory (const gchar *package,
+							       const gchar *dll_name,
+							       const gchar *subdir);
 
 guint		g_win32_get_windows_version (void);
 
