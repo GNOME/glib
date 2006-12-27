@@ -209,18 +209,16 @@ g_utf8_collate_key (const gchar *str,
 
   str_norm = _g_utf8_normalize_wc (str, len, G_NORMALIZE_ALL_COMPOSE);
 
-  setlocale (LC_COLLATE, "");
-
   xfrm_len = wcsxfrm (NULL, (wchar_t *)str_norm, 0);
   result_wc = g_new (wchar_t, xfrm_len + 1);
   wcsxfrm (result_wc, (wchar_t *)str_norm, xfrm_len + 1);
 
-  for (i=0; i < xfrm_len; i++)
+  for (i = 0; i < xfrm_len; i++)
     result_len += utf8_encode (NULL, result_wc[i]);
 
   result = g_malloc (result_len + 1);
   result_len = 0;
-  for (i=0; i < xfrm_len; i++)
+  for (i = 0; i < xfrm_len; i++)
     result_len += utf8_encode (result + result_len, result_wc[i]);
 
   result[result_len] = '\0';
