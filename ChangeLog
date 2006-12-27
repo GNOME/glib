@@ -1,3 +1,10 @@
+2006-12-27  Ryan Lortie  <desrt@desrt.ca>
+
+	* glib/ghash.c: cache the value of the hash function
+	in the GHashNode.  this speeds up resizing the hash
+	table and it also allows a slight optimisation on
+	lookups.  (#388332)
+
 2006-12-27  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gunicollate.c (g_utf8_collate_key): Don't modify
