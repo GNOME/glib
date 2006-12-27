@@ -1,3 +1,8 @@
+2006-12-26  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gconvert.c (g_get_filename_charsets): Improve
+	formatting of docs. 
+
 2006-12-26  Behdad Esfahbod  <behdad@gnome.org>
 
 	* configure.in: Use libtool to determine shared library suffix.

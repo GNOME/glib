@@ -1144,8 +1144,8 @@ filename_charset_cache_free (gpointer data)
  * used in the GLib API is always UTF-8 and said environment variables
  * have no effect.
  *
- * <envar>G_FILENAME_ENCODING</envar> may be set to a comma-separated list 
- * of character set names. The special token "@locale" is taken to mean the 
+ * <envar>G_FILENAME_ENCODING</envar> may be set to a comma-separated list of 
+ * character set names. The special token "&commat;locale" is taken to mean the
  * character set for the current locale. If <envar>G_FILENAME_ENCODING</envar> 
  * is not set, but <envar>G_BROKEN_FILENAMES</envar> is, the character set of 
  * the current locale is taken as the filename encoding. If neither environment
