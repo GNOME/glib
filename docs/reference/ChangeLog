@@ -1,3 +1,8 @@
+Wed Dec 27 15:56:53 2006  Tim Janik  <timj@gtk.org>
+
+	* glib/tmpl/memory_slices.sgml: 
+	* glib/running.sgml: document G_SLICE=debug-blocks.
+
 2006-12-27  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/running.sgml:

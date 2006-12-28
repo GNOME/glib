@@ -127,7 +127,8 @@ Frees a block of memory. The memory must have been allocated via
 g_slice_alloc() or g_slice_alloc0()
 and the @block_size has to match the size specified upon allocation.
 Note that the exact release behaviour can be changed with the
-<link linkend="G_DEBUG">G_DEBUG=gc-friendly</link> environment variable.
+<link linkend="G_DEBUG">G_DEBUG=gc-friendly</link> environment variable,
+also see <link linkend="G_SLICE">G_SLICE</link> for related debugging options.
 </para>
 
 @block_size: the size of the block
@@ -143,7 +144,8 @@ g_slice_alloc() or g_slice_alloc0()
 and linked together by a @next pointer (similar to #GSList). The offset 
 of the @next field in each block is passed as third argument.
 Note that the exact release behaviour can be changed with the
-<link linkend="G_DEBUG">G_DEBUG=gc-friendly</link> environment variable.
+<link linkend="G_DEBUG">G_DEBUG=gc-friendly</link> environment variable,
+also see <link linkend="G_SLICE">G_SLICE</link> for related debugging options.
 </para>
 
 @block_size: the size of the blocks
@@ -189,7 +191,8 @@ A convenience macro to free a block of memory that has been allocated
 from the slice allocator. It calls g_slice_free1() using 
 <literal>sizeof (type)</literal> as the block size.
 Note that the exact release behaviour can be changed with the
-<link linkend="G_DEBUG">G_DEBUG=gc-friendly</link> environment variable.
+<link linkend="G_DEBUG">G_DEBUG=gc-friendly</link> environment variable,
+also see <link linkend="G_SLICE">G_SLICE</link> for related debugging options.
 </para>
 
 @type: the type of the block to free, typically a structure name
@@ -205,7 +208,8 @@ g_slice_alloc() or g_slice_alloc0() and linked together by a
 @next pointer (similar to #GSList). The name of the
 @next field in @type is passed as third argument.
 Note that the exact release behaviour can be changed with the
-<link linkend="G_DEBUG">G_DEBUG=gc-friendly</link> environment variable.
+<link linkend="G_DEBUG">G_DEBUG=gc-friendly</link> environment variable,
+also see <link linkend="G_SLICE">G_SLICE</link> for related debugging options.
 </para>
 
 @type:        the type of the @mem_chain blocks

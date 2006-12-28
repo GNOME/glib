@@ -122,7 +122,7 @@ variables like <envar>LANG</envar>, <envar>PATH</envar> or <envar>HOME</envar>.
 <formalpara id="G_SLICE">
 	<title><envar>G_SLICE</envar></title>
 	<para>
-	  This environment variable allows reconfiguration of the #GSlice
+	  This environment variable allows reconfiguration of the GSlice
 	  memory allocator.
 	  <variablelist>
 	    <varlistentry>
@@ -133,10 +133,34 @@ variables like <envar>LANG</envar>, <envar>PATH</envar> or <envar>HOME</envar>.
 		  released by g_slice_free1() to be actually allocated via direct
 		  calls to g_malloc() and g_free().
 		  This is most useful for memory checkers and similar programs that
-		  use bohem GC alike algorithms to produce more accurate results.
+		  use Bohem GC alike algorithms to produce more accurate results.
 		  It can also be in conjunction with debugging features of the system's
 		  malloc implementation such as glibc's MALLOC_CHECK_=2 to debug
-		  erroneous slice allocation code.
+		  erroneous slice allocation code, allthough <term>debug-blocks</term>
+		  usually is a better suited debugging tool.
+		</para>
+	      </listitem>
+	    </varlistentry>
+	    <varlistentry>
+	      <term>debug-blocks</term>
+	      <listitem>
+		<para>
+		  Using this option (present since GLib-2.13) engages extra code
+		  which performs sanity checks on the released memory slices.
+		  Invalid slice adresses or slice sizes will be reported and lead to
+		  a program halt.
+		  This option should only be used in debugging scenarios, because it
+		  significantly degrades GSlice performance. Extra per slice memory
+		  is requied to do the necessary bookeeping, and multi-thread scalability
+		  is given up to perform global slice validation.
+		  This option is mostly useful in scenarios where program crashes are encountered
+		  while GSlice is in use, but crashes cannot be reproduced with G_SLICE=always-malloc.
+		  A potential cause for such a situation that will be caught by G_SLICE=debug-blocks
+		  is e.g.:
+		  <programlisting>
+		    void *slist = g_slist_alloc(); // void* gives up type-safety
+		    g_list_free (slist);           // corruption: sizeof (GSList) != sizeof (GList)
+		  </programlisting>
 		</para>
 	      </listitem>
 	    </varlistentry>
