@@ -463,7 +463,6 @@ url="http://www.unicode.org/reports/tr24/">Unicode Standard Annex
 @G_UNICODE_SCRIPT_PHAGS_PA:   Phags-pa
 @G_UNICODE_SCRIPT_NKO:        N'Ko
 
-
 <!-- ##### FUNCTION g_unichar_get_script ##### -->
 <para>
 

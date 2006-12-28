@@ -43,7 +43,7 @@ string.
 </para>
 
 @init: 
-@Returns:
+@Returns: 
 
 
 <!-- ##### FUNCTION g_string_new_len ##### -->
@@ -61,8 +61,8 @@ string.
 
 </para>
 
-@dfl_size:
-@Returns:
+@dfl_size: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_string_assign ##### -->
@@ -72,7 +72,7 @@ string.
 
 @string: 
 @rval: 
-@Returns:
+@Returns: 
 
 
 <!-- ##### MACRO g_string_sprintf ##### -->
@@ -81,17 +81,20 @@ string.
 </para>
 
 
+
 <!-- ##### MACRO g_string_sprintfa ##### -->
 <para>
 
 </para>
+
+
 
 <!-- ##### FUNCTION g_string_printf ##### -->
 <para>
 
 </para>
 
-@string:
+@string: 
 @format: 
 @Varargs: 
 
@@ -101,9 +104,9 @@ string.
 
 </para>
 
-@string:
+@string: 
 @format: 
-@Varargs:
+@Varargs: 
 
 
 <!-- ##### FUNCTION g_string_append ##### -->
@@ -111,8 +114,9 @@ string.
 
 </para>
 
-@string:
-@Returns:
+@string: 
+@val: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_string_append_c ##### -->
@@ -140,10 +144,10 @@ string.
 
 </para>
 
-@string:
+@string: 
 @val: 
 @len: 
-@Returns:
+@Returns: 
 
 
 <!-- ##### FUNCTION g_string_prepend ##### -->
@@ -153,7 +157,7 @@ string.
 
 @string: 
 @val: 
-@Returns:
+@Returns: 
 
 
 <!-- ##### FUNCTION g_string_prepend_c ##### -->
@@ -162,7 +166,8 @@ string.
 </para>
 
 @string: 
-@Returns:
+@c: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_string_prepend_unichar ##### -->
@@ -183,7 +188,7 @@ string.
 @string: 
 @val: 
 @len: 
-@Returns:
+@Returns: 
 
 
 <!-- ##### FUNCTION g_string_insert ##### -->
@@ -191,8 +196,8 @@ string.
 
 </para>
 
-
-@pos:
+@string: 
+@pos: 
 @val: 
 @Returns: 
 
@@ -216,7 +221,7 @@ string.
 @string: 
 @pos: 
 @wc: 
-@Returns:
+@Returns: 
 
 
 <!-- ##### FUNCTION g_string_insert_len ##### -->
@@ -228,17 +233,19 @@ string.
 @pos: 
 @val: 
 @len: 
-@Returns:
+@Returns: 
 o
+
 
 <!-- ##### FUNCTION g_string_erase ##### -->
 <para>
 
 </para>
 
-@string:
+@string: 
+@pos: 
 @len: 
-@Returns:
+@Returns: 
 
 
 <!-- ##### FUNCTION g_string_truncate ##### -->
@@ -246,9 +253,9 @@ o
 
 </para>
 
-@string:
+@string: 
 @len: 
-@Returns:
+@Returns: 
 
 
 <!-- ##### FUNCTION g_string_set_size ##### -->
@@ -267,7 +274,7 @@ o
 </para>
 
 @string: 
-@free_segment:
+@free_segment: 
 @Returns: 
 
 
@@ -292,8 +299,8 @@ o
 
 </para>
 
-@str:
-@Returns:
+@str: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_string_equal ##### -->

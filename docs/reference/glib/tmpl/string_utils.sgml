@@ -75,7 +75,7 @@ The returned string should be freed when no longer needed.
 </para>
 
 @length: 
-@fill_char:
+@fill_char: 
 @Returns: 
 
 

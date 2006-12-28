@@ -136,7 +136,7 @@ variables like <envar>LANG</envar>, <envar>PATH</envar> or <envar>HOME</envar>.
 		  use Bohem GC alike algorithms to produce more accurate results.
 		  It can also be in conjunction with debugging features of the system's
 		  malloc implementation such as glibc's MALLOC_CHECK_=2 to debug
-		  erroneous slice allocation code, allthough <term>debug-blocks</term>
+		  erroneous slice allocation code, allthough <literal>debug-blocks</literal>
 		  usually is a better suited debugging tool.
 		</para>
 	      </listitem>
