@@ -1,6 +1,7 @@
 2006-12-28  Tor Lillqvist  <tml@novell.com>
 
-	* glib/gutils.h (G_WIN32_DLLMAIN_FOR_DLL_NAME): Use only the wide
+	* glib/gutils.h (G_WIN32_DLLMAIN_FOR_DLL_NAME)
+	* glib/gutils.c (get_windows_directory_root): : Use only the wide
 	character API here, too.
 
 	* glib/gslice.c: Make it compile on Win32 without pthreads: Use a

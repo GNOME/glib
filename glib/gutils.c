@@ -1415,18 +1415,24 @@ get_special_folder (int csidl)
 static char *
 get_windows_directory_root (void)
 {
-  char windowsdir[MAX_PATH];
+  wchar_t wwindowsdir[MAX_PATH];
 
-  if (GetWindowsDirectory (windowsdir, sizeof (windowsdir)))
+  if (GetWindowsDirectoryW (wwindowsdir, G_N_ELEMENTS (wwindowsdir)))
     {
       /* Usually X:\Windows, but in terminal server environments
        * might be an UNC path, AFAIK.
        */
-      char *p = (char *) g_path_skip_root (windowsdir);
+      char *windowsdir = g_utf16_to_utf8 (wwindowsdir, -1, NULL, NULL, NULL);
+      char *p;
+
+      if (windowsdir == NULL)
+	return g_strdup ("C:\\");
+
+      p = (char *) g_path_skip_root (windowsdir);
       if (G_IS_DIR_SEPARATOR (p[-1]) && p[-2] != ':')
 	p--;
       *p = '\0';
-      return g_strdup (windowsdir);
+      return windowsdir;
     }
   else
     return g_strdup ("C:\\");
