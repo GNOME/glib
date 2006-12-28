@@ -42,7 +42,6 @@
 #include <process.h>
 #endif
 
-
 /* the GSlice allocator is split up into 4 layers, roughly modelled after the slab
  * allocator and magazine extensions as outlined in:
  * + [Bonwick94] Jeff Bonwick, The slab allocator: An object-caching kernel
@@ -150,6 +149,7 @@ typedef struct {
 typedef struct {
   gboolean always_malloc;
   gboolean bypass_magazines;
+  gboolean debug_blocks;
   gsize    working_set_msecs;
   guint    color_increment;
 } SliceConfig;
@@ -171,7 +171,7 @@ typedef struct {
   guint        color_accu;
 } Allocator;
 
-/* --- prototypes --- */
+/* --- g-slice prototypes --- */
 static gpointer     slab_allocator_alloc_chunk       (gsize      chunk_size);
 static void         slab_allocator_free_chunk        (gsize      chunk_size,
                                                       gpointer   mem);
@@ -184,6 +184,12 @@ static inline void  magazine_cache_update_stamp      (void);
 static inline gsize allocator_get_magazine_threshold (Allocator *allocator,
                                                       guint      ix);
 
+/* --- g-slice memory checker --- */
+static void     smc_notify_alloc  (void   *pointer,
+                                   size_t  size);
+static int      smc_notify_free   (void   *pointer,
+                                   size_t  size);
+
 /* --- variables --- */
 static GPrivate   *private_thread_memory = NULL;
 static gsize       sys_page_size = 0;
@@ -191,9 +197,11 @@ static Allocator   allocator[1] = { { 0, }, };
 static SliceConfig slice_config = {
   FALSE,        /* always_malloc */
   FALSE,        /* bypass_magazines */
+  FALSE,        /* debug_blocks */
   15 * 1000,    /* working_set_msecs */
   1,            /* color increment, alt: 0x7fffffff */
 };
+static GMutex     *smc_tree_mutex = NULL; /* mutex for G_SLICE=debug-blocks */
 
 /* --- auxillary funcitons --- */
 void
@@ -268,13 +276,14 @@ slice_config_init (SliceConfig *config)
   const gchar *val = _g_getenv_nomalloc ("G_SLICE", buffer);
   static const GDebugKey keys[] = {
     { "always-malloc", 1 << 0 },
+    { "debug-blocks",  1 << 1 },
   };
   gint flags = !val ? 0 : g_parse_debug_string (val, keys, G_N_ELEMENTS (keys));
   *config = slice_config;
   if (flags & (1 << 0))         /* always-malloc */
-    {
-      config->always_malloc = TRUE;
-    }
+    config->always_malloc = TRUE;
+  if (flags & (1 << 1))         /* debug-blocks */
+    config->debug_blocks = TRUE;
 }
 
 static void
@@ -360,11 +369,14 @@ void
 _g_slice_thread_init_nomessage (void)
 {
   /* we may not use g_error() or friends here */
-  if (!sys_page_size)
-    g_slice_init_nomessage();
+  if (sys_page_size)
+    mem_error ("g_thread_init() must be called before GSlice is used, memory corrupted...");
+  g_slice_init_nomessage();
   private_thread_memory = g_private_new (private_thread_memory_cleanup);
   allocator->magazine_mutex = g_mutex_new();
   allocator->slab_mutex = g_mutex_new();
+  if (allocator->config.debug_blocks)
+    smc_tree_mutex = g_mutex_new();
 }
 
 static inline void
@@ -775,6 +787,8 @@ g_slice_alloc (gsize mem_size)
     }
   else                          /* delegate to system malloc */
     mem = g_malloc (mem_size);
+  if (G_UNLIKELY (allocator->config.debug_blocks))
+    smc_notify_alloc (mem, mem_size);
   return mem;
 }
 
@@ -795,6 +809,9 @@ g_slice_free1 (gsize    mem_size,
   guint acat = allocator_categorize (chunk_size);
   if (G_UNLIKELY (!mem_block))
     return;
+  if (G_UNLIKELY (allocator->config.debug_blocks) &&
+      !smc_notify_free (mem_block, mem_size))
+    abort();
   if (G_LIKELY (acat == 1))             /* allocate through magazine layer */
     {
       ThreadMemory *tmem = thread_memory_from_self();
@@ -856,6 +873,9 @@ g_slice_free_chain_with_offset (gsize    mem_size,
         {
           guint8 *current = slice;
           slice = *(gpointer*) (current + next_offset);
+          if (G_UNLIKELY (allocator->config.debug_blocks) &&
+              !smc_notify_free (current, mem_size))
+            abort();
           if (G_UNLIKELY (thread_memory_magazine2_is_full (tmem, ix)))
             {
               thread_memory_swap_magazines (tmem, ix);
@@ -874,6 +894,9 @@ g_slice_free_chain_with_offset (gsize    mem_size,
         {
           guint8 *current = slice;
           slice = *(gpointer*) (current + next_offset);
+          if (G_UNLIKELY (allocator->config.debug_blocks) &&
+              !smc_notify_free (current, mem_size))
+            abort();
           if (G_UNLIKELY (g_mem_gc_friendly))
             memset (current, 0, chunk_size);
           slab_allocator_free_chunk (chunk_size, current);
@@ -885,6 +908,9 @@ g_slice_free_chain_with_offset (gsize    mem_size,
       {
         guint8 *current = slice;
         slice = *(gpointer*) (current + next_offset);
+        if (G_UNLIKELY (allocator->config.debug_blocks) &&
+            !smc_notify_free (current, mem_size))
+          abort();
         if (G_UNLIKELY (g_mem_gc_friendly))
           memset (current, 0, mem_size);
         g_free (current);
@@ -1125,8 +1151,288 @@ mem_error (const char *format,
   vfprintf (stderr, format, args);
   va_end (args);
   fputs ("\n", stderr);
+  abort();
   _exit (1);
 }
+
+/* --- g-slice memory checker tree --- */
+typedef size_t SmcKType;                /* key type */
+typedef size_t SmcVType;                /* value type */
+typedef struct {
+  SmcKType key;
+  SmcVType value;
+} SmcEntry;
+static void             smc_tree_insert      (SmcKType  key,
+                                              SmcVType  value);
+static gboolean         smc_tree_lookup      (SmcKType  key,
+                                              SmcVType *value_p);
+static gboolean         smc_tree_remove      (SmcKType  key);
+
+
+/* --- g-slice memory checker implementation --- */
+static void
+smc_notify_alloc (void   *pointer,
+                  size_t  size)
+{
+  size_t adress = (size_t) pointer;
+  if (pointer)
+    smc_tree_insert (adress, size);
+}
+
+#if 0
+static void
+smc_notify_ignore (void *pointer)
+{
+  size_t adress = (size_t) pointer;
+  if (pointer)
+    smc_tree_remove (adress);
+}
+#endif
+
+static int
+smc_notify_free (void   *pointer,
+                 size_t  size)
+{
+  size_t adress = (size_t) pointer;
+  if (!pointer)
+    return 1; /* ignore */
+  SmcVType real_size;
+  gboolean found_one = smc_tree_lookup (adress, &real_size);
+  if (!found_one)
+    {
+      fprintf (stderr, "GSlice: MemChecker: attempt to release non-allocated block: %p size=%zu\n", pointer, size);
+      return 0;
+    }
+  if (real_size != size && (real_size || size))
+    {
+      fprintf (stderr, "GSlice: MemChecker: attempt to release block with invalid size: %p size=%zu invalid-size=%zu\n", pointer, real_size, size);
+      return 0;
+    }
+  if (!smc_tree_remove (adress))
+    {
+      fprintf (stderr, "GSlice: MemChecker: attempt to release non-allocated block: %p size=%zu\n", pointer, size);
+      return 0;
+    }
+  return 1; /* all fine */
+}
+
+/* --- g-slice memory checker tree implementation --- */
+#define SMC_TRUNK_COUNT     (4093 /* 16381 */)          /* prime, to distribute trunk collisions (big, allocated just once) */
+#define SMC_BRANCH_COUNT    (511)                       /* prime, to distribute branch collisions */
+#define SMC_TRUNK_EXTENT    (SMC_BRANCH_COUNT * 2039)   /* key adress space per trunk, should distribute uniformly across BRANCH_COUNT */
+#define SMC_TRUNK_HASH(k)   ((k / SMC_TRUNK_EXTENT) % SMC_TRUNK_COUNT)  /* generate new trunk hash per megabyte (roughly) */
+#define SMC_BRANCH_HASH(k)  (k % SMC_BRANCH_COUNT)
+
+typedef struct {
+  SmcEntry    *entries;
+  unsigned int n_entries;
+} SmcBranch;
+
+static SmcBranch     **smc_tree_root = NULL;
+
+static void
+smc_tree_abort (int errval)
+{
+  const char *syserr = "unknown error";
+#if HAVE_STRERROR
+  syserr = strerror (errval);
+#endif
+  mem_error ("MemChecker: failure in debugging tree: %s", syserr);
+}
+
+static inline SmcEntry*
+smc_tree_branch_grow_L (SmcBranch   *branch,
+                        unsigned int index)
+{
+  unsigned int old_size = branch->n_entries * sizeof (branch->entries[0]);
+  unsigned int new_size = old_size + sizeof (branch->entries[0]);
+  SmcEntry *entry;
+  mem_assert (index <= branch->n_entries);
+  branch->entries = (SmcEntry*) realloc (branch->entries, new_size);
+  if (!branch->entries)
+    smc_tree_abort (errno);
+  entry = branch->entries + index;
+  g_memmove (entry + 1, entry, (branch->n_entries - index) * sizeof (entry[0]));
+  branch->n_entries += 1;
+  return entry;
+}
+
+static inline SmcEntry*
+smc_tree_branch_lookup_nearest_L (SmcBranch *branch,
+                                  SmcKType   key)
+{
+  unsigned int n_nodes = branch->n_entries, offs = 0;
+  SmcEntry *check = branch->entries;
+  int cmp = 0;
+  while (offs < n_nodes)
+    {
+      unsigned int i = (offs + n_nodes) >> 1;
+      check = branch->entries + i;
+      cmp = key < check->key ? -1 : key != check->key;
+      if (cmp == 0)
+        return check;                   /* return exact match */
+      else if (cmp < 0)
+        n_nodes = i;
+      else /* (cmp > 0) */
+        offs = i + 1;
+    }
+  /* check points at last mismatch, cmp > 0 indicates greater key */
+  return cmp > 0 ? check + 1 : check;   /* return insertion position for inexact match */
+}
+
+#include <pthread.h>
+static pthread_mutex_t sdt_mutex = PTHREAD_MUTEX_INITIALIZER;
+
+static void
+smc_tree_insert (SmcKType key,
+                 SmcVType value)
+{
+  pthread_mutex_lock (&sdt_mutex);
+  g_mutex_lock (smc_tree_mutex);
+  unsigned int ix0 = SMC_TRUNK_HASH (key), ix1 = SMC_BRANCH_HASH (key);
+  if (!smc_tree_root)
+    {
+      smc_tree_root = calloc (SMC_TRUNK_COUNT, sizeof (smc_tree_root[0]));
+      if (!smc_tree_root)
+        smc_tree_abort (errno);
+    }
+  if (!smc_tree_root[ix0])
+    {
+      smc_tree_root[ix0] = calloc (SMC_BRANCH_COUNT, sizeof (smc_tree_root[0][0]));
+      if (!smc_tree_root[ix0])
+        smc_tree_abort (errno);
+    }
+  SmcEntry *entry = smc_tree_branch_lookup_nearest_L (&smc_tree_root[ix0][ix1], key);
+  if (!entry ||                                                                         /* need create */
+      entry >= smc_tree_root[ix0][ix1].entries + smc_tree_root[ix0][ix1].n_entries ||   /* need append */
+      entry->key != key)                                                                /* need insert */
+    entry = smc_tree_branch_grow_L (&smc_tree_root[ix0][ix1], entry - smc_tree_root[ix0][ix1].entries);
+  entry->key = key;
+  entry->value = value;
+  g_mutex_unlock (smc_tree_mutex);
+  pthread_mutex_unlock (&sdt_mutex);
+}
+
+static gboolean
+smc_tree_lookup (SmcKType  key,
+                 SmcVType *value_p)
+{
+  unsigned int ix0 = SMC_TRUNK_HASH (key), ix1 = SMC_BRANCH_HASH (key);
+  gboolean found_one = FALSE;
+  pthread_mutex_lock (&sdt_mutex);
+  *value_p = 0;
+  g_mutex_lock (smc_tree_mutex);
+  SmcEntry *entry = NULL;
+  if (smc_tree_root && smc_tree_root[ix0])
+    {
+      entry = smc_tree_branch_lookup_nearest_L (&smc_tree_root[ix0][ix1], key);
+      if (entry &&
+          entry < smc_tree_root[ix0][ix1].entries + smc_tree_root[ix0][ix1].n_entries &&
+          entry->key == key)
+        {
+          found_one = TRUE;
+          *value_p = entry->value;
+        }
+    }
+  g_mutex_unlock (smc_tree_mutex);
+  pthread_mutex_unlock (&sdt_mutex);
+  return found_one;
+}
+
+static gboolean
+smc_tree_remove (SmcKType key)
+{
+  unsigned int ix0 = SMC_TRUNK_HASH (key), ix1 = SMC_BRANCH_HASH (key);
+  gboolean found_one = FALSE;
+  pthread_mutex_lock (&sdt_mutex);
+  g_mutex_lock (smc_tree_mutex);
+  if (smc_tree_root && smc_tree_root[ix0])
+    {
+      SmcEntry *entry = smc_tree_branch_lookup_nearest_L (&smc_tree_root[ix0][ix1], key);
+      if (entry &&
+          entry < smc_tree_root[ix0][ix1].entries + smc_tree_root[ix0][ix1].n_entries &&
+          entry->key == key)
+        {
+          unsigned int i = entry - smc_tree_root[ix0][ix1].entries;
+          smc_tree_root[ix0][ix1].n_entries -= 1;
+          g_memmove (entry, entry + 1, (smc_tree_root[ix0][ix1].n_entries - i) * sizeof (entry[0]));
+          if (!smc_tree_root[ix0][ix1].n_entries)
+            {
+              /* avoid useless pressure on the memory system */
+              free (smc_tree_root[ix0][ix1].entries);
+              smc_tree_root[ix0][ix1].entries = NULL;
+            }
+          found_one = TRUE;
+        }
+    }
+  g_mutex_unlock (smc_tree_mutex);
+  pthread_mutex_unlock (&sdt_mutex);
+  return found_one;
+}
+
+#ifdef  G_ENABLE_DEBUG
+void
+g_slice_debug_tree_statistics (void)
+{
+  pthread_mutex_lock (&sdt_mutex);
+  g_mutex_lock (smc_tree_mutex);
+  if (smc_tree_root)
+    {
+      unsigned int i, j, t = 0, o = 0, b = 0, su = 0, ex = 0, en = 4294967295u;
+      double tf, bf;
+      for (i = 0; i < SMC_TRUNK_COUNT; i++)
+        if (smc_tree_root[i])
+          {
+            t++;
+            for (j = 0; j < SMC_BRANCH_COUNT; j++)
+              if (smc_tree_root[i][j].n_entries)
+                {
+                  b++;
+                  su += smc_tree_root[i][j].n_entries;
+                  en = MIN (en, smc_tree_root[i][j].n_entries);
+                  ex = MAX (ex, smc_tree_root[i][j].n_entries);
+                }
+              else if (smc_tree_root[i][j].entries)
+                o++; /* formerly used, now empty */
+          }
+      en = b ? en : 0;
+      tf = MAX (t, 1.0); // max(1) to be a valid divisor
+      bf = MAX (b, 1.0); // max(1) to be a valid divisor
+      fprintf (stderr, "GSlice: MemChecker: %u trunks, %u branches, %u old branches\n", t, b, o);
+      fprintf (stderr, "GSlice: MemChecker: %f branches per trunk, %.2f%% utilization\n",
+               b / tf,
+               100.0 - (SMC_BRANCH_COUNT - b / tf) / (0.01 * SMC_BRANCH_COUNT));
+      fprintf (stderr, "GSlice: MemChecker: %f entries per branch, %u minimum, %u maximum\n",
+               su / bf, en, ex);
+    }
+  else
+    fprintf (stderr, "GSlice: MemChecker: root=NULL\n");
+  g_mutex_unlock (smc_tree_mutex);
+  pthread_mutex_unlock (&sdt_mutex);
+  
+  /* sample statistics (beast + GSLice + 24h scripted core & GUI activity):
+   *  PID %CPU %MEM   VSZ  RSS      COMMAND
+   * 8887 30.3 45.8 456068 414856   beast-0.7.1 empty.bse
+   * $ cat /proc/8887/statm # total-program-size resident-set-size shared-pages text/code data/stack library dirty-pages
+   * 114017 103714 2354 344 0 108676 0
+   * $ cat /proc/8887/status 
+   * Name:   beast-0.7.1
+   * VmSize:   456068 kB
+   * VmLck:         0 kB
+   * VmRSS:    414856 kB
+   * VmData:   434620 kB
+   * VmStk:        84 kB
+   * VmExe:      1376 kB
+   * VmLib:     13036 kB
+   * VmPTE:       456 kB
+   * Threads:        3
+   * (gdb) print g_slice_debug_tree_statistics ()
+   * GSlice: MemChecker: 422 trunks, 213068 branches, 0 old branches
+   * GSlice: MemChecker: 504.900474 branches per trunk, 98.81% utilization
+   * GSlice: MemChecker: 4.965039 entries per branch, 1 minimum, 37 maximum
+   */
+}
+#endif /* G_ENABLE_DEBUG */
 
 #define __G_SLICE_C__
 #include "galiasdef.c"

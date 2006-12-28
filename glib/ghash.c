@@ -44,8 +44,8 @@ struct _GHashNode
 {
   gpointer   key;
   gpointer   value;
-  guint      key_hash;
   GHashNode *next;
+  guint      key_hash;
 };
 
 struct _GHashTable

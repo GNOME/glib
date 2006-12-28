@@ -26,6 +26,7 @@ static guint    prime_size = 1021; // 769; // 509
 static gboolean clean_memchunks = FALSE;
 static guint    number_of_blocks = 10000;          /* total number of blocks allocated */
 static guint    number_of_repetitions = 10000;     /* number of alloc+free repetitions */
+static gboolean want_corruption = FALSE;
 
 /* --- old memchunk prototypes (memchunks.c) --- */
 void            old_mem_chunks_init     (void);
@@ -47,6 +48,18 @@ void            old_mem_chunk_info      (void);
 #endif
 
 /* --- functions --- */
+static inline int
+corruption (void)
+{
+  if (G_UNLIKELY (want_corruption))
+    {
+      /* corruption per call likelyness is about 1:4000000 */
+      guint32 r = g_random_int() % 8000009;
+      return r == 277 ? +1 : r == 281 ? -1 : 0;
+    }
+  return 0;
+}
+
 static inline gpointer
 memchunk_alloc (GMemChunk **memchunkp,
                 guint       size)
@@ -153,31 +166,31 @@ test_sliced_mem_thread (gpointer data)
     ss[i] = quick_rand32() % prime_size;
   /* allocate number_of_blocks blocks */
   for (i = 0; i < number_of_blocks; i++)
-    ps[i] = g_slice_alloc (ss[i]);
+    ps[i] = g_slice_alloc (ss[i] + corruption());
   for (j = 0; j < number_of_repetitions; j++)
     {
       /* free number_of_blocks/2 blocks */
       for (i = 0; i < number_of_blocks; i += 2)
-        g_slice_free1 (ss[i], ps[i]);
+        g_slice_free1 (ss[i] + corruption(), ps[i] + corruption());
       /* allocate number_of_blocks/2 blocks with new sizes */
       for (i = 0; i < number_of_blocks; i += 2)
         {
           ss[i] = quick_rand32() % prime_size;
-          ps[i] = g_slice_alloc (ss[i]);
+          ps[i] = g_slice_alloc (ss[i] + corruption());
         }
     }
   /* free number_of_blocks blocks */
   for (i = 0; i < number_of_blocks; i++)
-    g_slice_free1 (ss[i], ps[i]);
+    g_slice_free1 (ss[i] + corruption(), ps[i] + corruption());
   /* alloc and free many equally sized chunks in a row */
   for (i = 0; i < number_of_repetitions; i++)
     {
       guint sz = quick_rand32() % prime_size;
       guint k = number_of_blocks / 100;
       for (j = 0; j < k; j++)
-        ps[j] = g_slice_alloc (sz);
+        ps[j] = g_slice_alloc (sz + corruption());
       for (j = 0; j < k; j++)
-        g_slice_free1 (sz, ps[j]);
+        g_slice_free1 (sz + corruption(), ps[j] + corruption());
     }
   g_free (ps);
   g_free (ss);
@@ -188,7 +201,7 @@ test_sliced_mem_thread (gpointer data)
 static void
 usage (void)
 {
-  g_print ("Usage: slice-test [n_threads] [G|S|M|O][f][c] [maxblocksize] [seed]\n");
+  g_print ("Usage: slice-test [n_threads] [G|S|M|O][f][c][~] [maxblocksize] [seed]\n");
 }
 
 int
@@ -232,6 +245,9 @@ main (int   argc,
             break;
           case 'c': /* print contention counters */
             ccounters = TRUE;
+            break;
+          case '~':
+            want_corruption = TRUE; /* force occasional corruption */
             break;
           default:
             usage();
