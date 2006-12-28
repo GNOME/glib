@@ -359,6 +359,10 @@ g_slice_init_nomessage (void)
   /* at this point, g_mem_gc_friendly() should be initialized, this
    * should have been accomplished by the above g_malloc/g_new calls
    */
+#ifdef G_OS_WIN32
+  if (allocator->config.debug_blocks)
+    InitializeCriticalSection (&sdt_mutex);
+#endif
 }
 
 static inline guint
@@ -396,12 +400,7 @@ _g_slice_thread_init_nomessage (void)
   allocator->magazine_mutex = g_mutex_new();
   allocator->slab_mutex = g_mutex_new();
   if (allocator->config.debug_blocks)
-    {
-      smc_tree_mutex = g_mutex_new();
-#ifdef G_OS_WIN32
-      InitializeCriticalSection (&sdt_mutex);
-#endif
-    }
+    smc_tree_mutex = g_mutex_new();
 }
 
 static inline void
