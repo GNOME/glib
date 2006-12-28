@@ -28,23 +28,23 @@
  * MT safe
  */
 
-#ifdef HAVE_CONFIG_H
-# include <config.h>
-#endif
-#include	"gstdio.h"
-#include	"gmodule.h"
-#include	"gmoduleconf.h"
-#include	<errno.h>
-#include	<string.h>
-#include 	<sys/types.h>
-#include 	<sys/stat.h>
-#include 	<fcntl.h>
+#include <config.h>
+
+#include <errno.h>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 #ifdef HAVE_UNISTD_H
-# include <unistd.h>
+#include <unistd.h>
 #endif
 #if defined (G_OS_WIN32)
-# include <io.h>		/* For open() and close() prototypes. */
+#include <io.h>		/* For open() and close() prototypes. */
 #endif
+
+#include "gstdio.h"
+#include "gmodule.h"
+#include "gmoduleconf.h"
 
 /* We maintain a list of modules, so we can reference count them.
  * That's needed because some platforms don't support refernce counts on
