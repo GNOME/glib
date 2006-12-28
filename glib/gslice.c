@@ -203,26 +203,6 @@ static SliceConfig slice_config = {
 };
 static GMutex     *smc_tree_mutex = NULL; /* mutex for G_SLICE=debug-blocks */
 
-#ifndef G_OS_WIN32
-
-#include <pthread.h>
-static pthread_mutex_t sdt_mutex = PTHREAD_MUTEX_INITIALIZER;
-#define SDT_LOCK() pthread_mutex_lock (&sdt_mutex)
-#define SDT_UNLOCK() pthread_mutex_unlock (&sdt_mutex)
-
-#else
-
-/* We don't want to depend on pthreads on Win32, at least for now. But
- * if we change GThread to use pthreads-win32 we could use pthreads
- * here, too.
- */
-
-static CRITICAL_SECTION sdt_mutex;
-#define SDT_LOCK() EnterCriticalSection (&sdt_mutex)
-#define SDT_UNLOCK() LeaveCriticalSection (&sdt_mutex)
-
-#endif
-
 /* --- auxillary funcitons --- */
 void
 g_slice_set_config (GSliceConfig ckey,
@@ -359,10 +339,6 @@ g_slice_init_nomessage (void)
   /* at this point, g_mem_gc_friendly() should be initialized, this
    * should have been accomplished by the above g_malloc/g_new calls
    */
-#ifdef G_OS_WIN32
-  if (allocator->config.debug_blocks)
-    InitializeCriticalSection (&sdt_mutex);
-#endif
 }
 
 static inline guint
@@ -1308,7 +1284,6 @@ static void
 smc_tree_insert (SmcKType key,
                  SmcVType value)
 {
-  SDT_LOCK ();
   g_mutex_lock (smc_tree_mutex);
   unsigned int ix0 = SMC_TRUNK_HASH (key), ix1 = SMC_BRANCH_HASH (key);
   if (!smc_tree_root)
@@ -1331,7 +1306,6 @@ smc_tree_insert (SmcKType key,
   entry->key = key;
   entry->value = value;
   g_mutex_unlock (smc_tree_mutex);
-  SDT_UNLOCK ();
 }
 
 static gboolean
@@ -1340,7 +1314,6 @@ smc_tree_lookup (SmcKType  key,
 {
   unsigned int ix0 = SMC_TRUNK_HASH (key), ix1 = SMC_BRANCH_HASH (key);
   gboolean found_one = FALSE;
-  SDT_LOCK ();
   *value_p = 0;
   g_mutex_lock (smc_tree_mutex);
   SmcEntry *entry = NULL;
@@ -1356,7 +1329,6 @@ smc_tree_lookup (SmcKType  key,
         }
     }
   g_mutex_unlock (smc_tree_mutex);
-  SDT_UNLOCK ();
   return found_one;
 }
 
@@ -1365,7 +1337,6 @@ smc_tree_remove (SmcKType key)
 {
   unsigned int ix0 = SMC_TRUNK_HASH (key), ix1 = SMC_BRANCH_HASH (key);
   gboolean found_one = FALSE;
-  SDT_LOCK ();
   g_mutex_lock (smc_tree_mutex);
   if (smc_tree_root && smc_tree_root[ix0])
     {
@@ -1387,7 +1358,6 @@ smc_tree_remove (SmcKType key)
         }
     }
   g_mutex_unlock (smc_tree_mutex);
-  SDT_UNLOCK ();
   return found_one;
 }
 
@@ -1395,7 +1365,6 @@ smc_tree_remove (SmcKType key)
 void
 g_slice_debug_tree_statistics (void)
 {
-  SDT_LOCK ();
   g_mutex_lock (smc_tree_mutex);
   if (smc_tree_root)
     {
@@ -1429,7 +1398,6 @@ g_slice_debug_tree_statistics (void)
   else
     fprintf (stderr, "GSlice: MemChecker: root=NULL\n");
   g_mutex_unlock (smc_tree_mutex);
-  SDT_UNLOCK ();
   
   /* sample statistics (beast + GSLice + 24h scripted core & GUI activity):
    *  PID %CPU %MEM   VSZ  RSS      COMMAND
