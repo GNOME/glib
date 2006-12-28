@@ -214,6 +214,8 @@ call <function>setlocale (LC_ALL, "")</function> to set up the current
 locale.
 </para>
 
+</refsect2>
+
 <refsect2>
 <title>Traps and traces</title>
 
