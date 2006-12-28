@@ -591,10 +591,10 @@ g_thread_impl_init ()
   InitializeCriticalSection (&g_thread_global_spinlock);
 
   /* Here we are looking for TryEnterCriticalSection in KERNEL32.DLL,
-   * if it is found, we can use the faster critical sections instead
-   * of mutexes. Note however that
-   * http://www2.awl.com/cseng/titles/0-201-63465-1/csmutx.htm indicates,
-   * that critical sections might not be ideal after all on SMP machines */
+   * if it is found, we can use the in general faster critical
+   * sections instead of mutexes. See
+   * http://world.std.com/~jmhart/csmutx.htm for some discussion.
+   */
   kernel32 = GetModuleHandle ("KERNEL32.DLL");
   if (kernel32)
     {
