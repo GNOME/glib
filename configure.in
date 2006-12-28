@@ -1013,15 +1013,14 @@ if test x$glib_cv_sane_realloc = xyes; then
 fi
 
 dnl Check for nl_langinfo and CODESET
-
-AC_MSG_CHECKING([for nl_langinfo (CODESET)])
-AC_TRY_COMPILE([#include <langinfo.h>],
-	[char *codeset = nl_langinfo (CODESET);],
-   AC_DEFINE(HAVE_CODESET,1,[Have nl_langinfo (CODESET)])
-   have_codeset=yes,
-   have_codeset=no)
-AC_MSG_RESULT($have_codeset)
-
+AC_CACHE_CHECK([for nl_langinfo (CODESET)],glib_cv_langinfo_codeset,[
+	AC_TRY_COMPILE([#include <langinfo.h>],
+		[char *codeset = nl_langinfo (CODESET);],
+   		[glib_cv_langinfo_codeset=yes],
+   		[glib_cv_langinfo_codeset=no])])
+if test x$glib_cv_langinfo_codeset = xyes; then
+  AC_DEFINE(HAVE_CODESET,1,[Have nl_langinfo (CODESET)])
+fi
 
 dnl ****************************************
 dnl *** posix_memalign                   ***

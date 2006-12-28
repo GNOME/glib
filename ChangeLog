@@ -1,5 +1,10 @@
 2006-12-27  Matthias Clasen  <mclasen@redhat.com>
 
+	* configure.in: Use AC_CACHE_CHECK for the nl_langinfo
+	check.  (#304517, Lőrinczy Zsigmond)
+
+2006-12-27  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/gunicollate.c (g_utf8_collate_key): Don't modify
 	the current locale.  (#389300)
 
