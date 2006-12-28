@@ -27,7 +27,6 @@
 #ifndef __G_CONVERT_H__
 #define __G_CONVERT_H__
 
-#include <stddef.h>      /* For size_t */
 #include <glib/gerror.h>
 
 G_BEGIN_DECLS
@@ -51,7 +50,7 @@ typedef struct _GIConv *GIConv;
 
 GIConv g_iconv_open   (const gchar  *to_codeset,
 		       const gchar  *from_codeset);
-size_t g_iconv        (GIConv        converter,
+gsize  g_iconv        (GIConv        converter,
 		       gchar       **inbuf,
 		       gsize        *inbytes_left,
 		       gchar       **outbuf,

@@ -1476,8 +1476,8 @@ g_execute (const gchar *file,
       gboolean got_eacces = 0;
       const gchar *path, *p;
       gchar *name, *freeme;
-      size_t len;
-      size_t pathlen;
+      gsize len;
+      gsize pathlen;
 
       path = g_getenv ("PATH");
       if (path == NULL)

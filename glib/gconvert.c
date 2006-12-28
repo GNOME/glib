@@ -157,7 +157,7 @@ g_iconv_open (const gchar  *to_codeset,
  * 
  * Return value: count of non-reversible conversions, or -1 on error
  **/
-size_t 
+gsize 
 g_iconv (GIConv   converter,
 	 gchar  **inbuf,
 	 gsize   *inbytes_left,
@@ -596,7 +596,7 @@ g_convert_with_iconv (const gchar *str,
     {
       err = g_iconv (converter, (char **)&p, &inbytes_remaining, &outp, &outbytes_remaining);
 
-      if (err == (size_t) -1)
+      if (err == (gsize) -1)
 	{
 	  switch (errno)
 	    {
@@ -606,7 +606,7 @@ g_convert_with_iconv (const gchar *str,
 	      break;
 	    case E2BIG:
 	      {
-		size_t used = outp - dest;
+		gsize used = outp - dest;
 		
 		outbuf_size *= 2;
 		dest = g_realloc (dest, outbuf_size);
@@ -880,11 +880,11 @@ g_convert_with_fallback (const gchar *str,
 
   while (!done && !have_error)
     {
-      size_t inbytes_tmp = inbytes_remaining;
+      gsize inbytes_tmp = inbytes_remaining;
       err = g_iconv (cd, (char **)&p, &inbytes_tmp, &outp, &outbytes_remaining);
       inbytes_remaining = inbytes_tmp;
 
-      if (err == (size_t) -1)
+      if (err == (gsize) -1)
 	{
 	  switch (errno)
 	    {
@@ -893,7 +893,7 @@ g_convert_with_fallback (const gchar *str,
 	      break;
 	    case E2BIG:
 	      {
-		size_t used = outp - dest;
+		gsize used = outp - dest;
 
 		outbuf_size *= 2;
 		dest = g_realloc (dest, outbuf_size);

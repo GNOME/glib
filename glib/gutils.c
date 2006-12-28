@@ -391,8 +391,8 @@ g_find_program_in_path (const gchar *program)
   wchar_t wfilename[MAXPATHLEN], wsysdir[MAXPATHLEN],
     wwindir[MAXPATHLEN];
 #endif
-  size_t len;
-  size_t pathlen;
+  gsize len;
+  gsize pathlen;
 
   g_return_val_if_fail (program != NULL, NULL);
 

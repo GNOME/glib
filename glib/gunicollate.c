@@ -32,10 +32,10 @@
 
 #ifdef _MSC_VER
 /* Workaround for bug in MSVCR80.DLL */
-static size_t
+static gsize
 msc_strxfrm_wrapper (char       *string1,
 		     const char *string2,
-		     size_t      count)
+		     gsize       count)
 {
   if (!string1 || count <= 0)
     {
@@ -200,14 +200,14 @@ g_utf8_collate_key (const gchar *str,
 		    gssize       len)
 {
   gchar *result;
-  size_t xfrm_len;
+  gsize xfrm_len;
   
 #ifdef __STDC_ISO_10646__
 
   gunichar *str_norm;
   wchar_t *result_wc;
-  size_t i;
-  size_t result_len = 0;
+  gsize i;
+  gsize result_len = 0;
 
   g_return_val_if_fail (str != NULL, NULL);
 

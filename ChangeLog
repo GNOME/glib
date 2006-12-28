@@ -1,5 +1,18 @@
 2006-12-27  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gconvert.[hc]:
+	* glib/gfileutils.c:
+	* glib/giochannel.c:
+	* glib/goption.c:
+	* glib/gspawn.c:
+	* glib/gunicollate.c:
+	* glib/gutils.c:
+	* tests/timeloop-basic.c: 
+	Consistently use gsize rather than size_t.  (#333310,
+	Morten Welinder)
+
+2006-12-27  Matthias Clasen  <mclasen@redhat.com>
+
 	* configure.in: Use AC_CACHE_CHECK for the nl_langinfo
 	check.  (#304517, Lőrinczy Zsigmond)
 

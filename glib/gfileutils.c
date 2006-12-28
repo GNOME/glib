@@ -525,10 +525,10 @@ get_contents_stdio (const gchar *display_filename,
                     GError     **error)
 {
   gchar buf[4096];
-  size_t bytes;
+  gsize bytes;
   gchar *str = NULL;
-  size_t total_bytes = 0;
-  size_t total_allocated = 0;
+  gsize total_bytes = 0;
+  gsize total_allocated = 0;
   gchar *tmp;
 
   g_assert (f != NULL);
@@ -613,9 +613,9 @@ get_contents_regfile (const gchar *display_filename,
                       GError     **error)
 {
   gchar *buf;
-  size_t bytes_read;
-  size_t size;
-  size_t alloc_size;
+  gsize bytes_read;
+  gsize size;
+  gsize alloc_size;
   
   size = stat_buf->st_size;
 
@@ -954,7 +954,7 @@ write_to_temp_file (const gchar *contents,
 
   if (length > 0)
     {
-      size_t n_written;
+      gsize n_written;
       
       errno = 0;
 
