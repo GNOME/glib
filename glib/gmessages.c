@@ -485,8 +485,8 @@ g_logv (const gchar   *log_domain,
 			  MB_ICONERROR|MB_SETFOREGROUND);
 	      if (IsDebuggerPresent () && !(test_level & G_LOG_FLAG_RECURSION))
 		G_BREAKPOINT ();
-
-	      abort ();
+	      else
+		abort ();
 #else
 #if defined (G_ENABLE_DEBUG) && defined (SIGTRAP)
 	      if (!(test_level & G_LOG_FLAG_RECURSION))
