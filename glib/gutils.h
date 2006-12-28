@@ -407,25 +407,14 @@ DllMain (HINSTANCE hinstDLL,						\
 	 LPVOID    lpvReserved)						\
 {									\
   wchar_t wcbfr[1000];							\
-  char cpbfr[1000];							\
   char *tem;								\
   switch (fdwReason)							\
     {									\
     case DLL_PROCESS_ATTACH:						\
-      if (GetVersion () < 0x80000000)					\
-	{								\
-	  GetModuleFileNameW ((HMODULE) hinstDLL, wcbfr, G_N_ELEMENTS (wcbfr));	\
-	  tem = g_utf16_to_utf8 (wcbfr, -1, NULL, NULL, NULL);		\
-	  dll_name = g_path_get_basename (tem);				\
-	  g_free (tem);							\
-	}								\
-      else								\
-	{								\
-	  GetModuleFileNameA ((HMODULE) hinstDLL, cpbfr, G_N_ELEMENTS (cpbfr));	\
-	  tem = g_locale_to_utf8 (cpbfr, -1, NULL, NULL, NULL);		\
-	  dll_name = g_path_get_basename (tem);				\
-	  g_free (tem);							\
-	}								\
+      GetModuleFileNameW ((HMODULE) hinstDLL, wcbfr, G_N_ELEMENTS (wcbfr)); \
+      tem = g_utf16_to_utf8 (wcbfr, -1, NULL, NULL, NULL);		\
+      dll_name = g_path_get_basename (tem);				\
+      g_free (tem);							\
       break;								\
     }									\
 									\
