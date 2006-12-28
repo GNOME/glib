@@ -1,5 +1,8 @@
 2006-12-28  Tor Lillqvist  <tml@novell.com>
 
+	* glib/gslice.c: Make it compile on Win32 without pthreads: Use a
+	Win32 critical section instead.
+
 	* glib/gmessages.c (g_logv): On Win32, if we get a fatal error
 	message while being debugged we break into the debugger with
 	G_BREAKPOINT(). Don't call abort() if the user is foolhardy enough
