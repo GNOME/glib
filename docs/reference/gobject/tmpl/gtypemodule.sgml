@@ -196,3 +196,96 @@ not be unloaded.
   members being 0.
 
 
+<!-- ##### MACRO G_DEFINE_DYNAMIC_TYPE ##### -->
+<para>
+A convenience macro for dynamic type implementations, which declares a
+class initialization function, an instance initialization function (see 
+#GTypeInfo for information about these) and a static variable named 
+@t_n<!-- -->_parent_class pointing to the parent class. Furthermore, 
+it defines a <function>*_get_type()</function> and a static 
+<function>*_register_type()</function> function for use in your
+<function>module_init()</function>.
+See G_DEFINE_DYNAMIC_TYPE_EXTENDED() for an example.
+</para>
+
+@TN: The name of the new type, in Camel case.
+@t_n: The name of the new type, in lowercase, with words
+  separated by '_'.
+@T_P: The #GType of the parent type.
+
+@Since: 2.14
+
+
+<!-- ##### MACRO G_DEFINE_DYNAMIC_TYPE_EXTENDED ##### -->
+<para>
+A more general version of G_DEFINE_DYNAMIC_TYPE() which
+allows to specify #GTypeFlags and custom code.
+</para>
+<informalexample><programlisting>
+G_DEFINE_DYNAMIC_TYPE_EXTENDED (GtkGadget,
+                                gtk_gadget,
+                                GTK_TYPE_THING,
+                                0,
+                                G_IMPLEMENT_INTERFACE (TYPE_GIZMO,
+                                                       gtk_gadget_gizmo_init));
+</programlisting>
+expands to
+<programlisting>
+static void     gtk_gadget_init              (GtkGadget      *self);
+static void     gtk_gadget_class_init        (GtkGadgetClass *klass);
+static void     gtk_gadget_class_finalize    (GtkGadgetClass *klass);
+<!-- -->
+static gpointer gtk_gadget_parent_class = NULL;
+static GType    gtk_gadget_type_id = 0;
+<!-- -->
+static void     gtk_gadget_class_intern_init (gpointer klass)
+{
+  gtk_gadget_parent_class = g_type_class_peek_parent (klass); 
+  gtk_gadget_class_init ((GtkGadgetClass*) klass); 
+}
+<!-- -->
+GType
+gtk_gadget_get_type (void)
+{
+  return gtk_gadget_type_id;
+}
+<!-- -->
+static void
+gtk_gadget_register_type (GTypeModule *type_module)
+{
+  const GTypeInfo g_define_type_info = {
+    sizeof (GtkGadgetClass),
+    (GBaseInitFunc) NULL,
+    (GBaseFinalizeFunc) NULL,
+    (GClassInitFunc) gtk_gadget_class_intern_init,
+    (GClassFinalizeFunc) gtk_gadget_class_finalize,
+    NULL,   /* class_data */
+    sizeof (GtkGadget),
+    0,      /* n_preallocs */
+    (GInstanceInitFunc) gtk_gadget_init, 
+    NULL    /* value_table */
+  };
+  gtk_gadget_type_id = g_type_module_register_type (type_module,
+                                                    GTK_TYPE_THING,
+                                                    GtkGadget,
+                                                    &amp;g_define_type_info,
+                                                    (GTypeFlags) flags);
+  {
+    const GInterfaceInfo g_implement_interface_info = {
+      (GInterfaceInitFunc) gtk_gadget_gizmo_init
+    };
+    g_type_add_interface_static (g_define_type_id, TYPE_GIZMO, &amp;g_implement_interface_info);
+  }
+}
+</programlisting>
+</informalexample>
+
+@TypeName: The name of the new type, in Camel case.
+@type_name: The name of the new type, in lowercase, with words
+  separated by '_'.
+@TYPE_PARENT: The #GType of the parent type.
+@flags: #GTypeFlags to pass to g_type_register_static()
+@CODE: Custom code that gets inserted in the *_get_type() function.
+
+@Since: 2.14
+

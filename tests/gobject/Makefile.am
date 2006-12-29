@@ -51,6 +51,7 @@ test_programs =					\
 	paramspec-test				\
 	accumulator				\
 	defaultiface				\
+	dynamictype				\
 	ifacecheck				\
 	ifaceinit				\
 	ifaceinherit				\

@@ -66,6 +66,47 @@ struct _GTypeModuleClass
   void (*reserved4) (void);
 };
 
+#define G_DEFINE_DYNAMIC_TYPE(TN, t_n, T_P)          G_DEFINE_DYNAMIC_TYPE_EXTENDED (TN, t_n, T_P, 0, {})
+#define G_DEFINE_DYNAMIC_TYPE_EXTENDED(TypeName, type_name, TYPE_PARENT, flags, CODE) \
+static void     type_name##_init              (TypeName        *self); \
+static void     type_name##_class_init        (TypeName##Class *klass); \
+static void     type_name##_class_finalize    (TypeName##Class *klass); \
+static gpointer type_name##_parent_class = NULL; \
+static GType    type_name##_type_id = 0; \
+static void     type_name##_class_intern_init (gpointer klass) \
+{ \
+  type_name##_parent_class = g_type_class_peek_parent (klass); \
+  type_name##_class_init ((TypeName##Class*) klass); \
+} \
+GType \
+type_name##_get_type (void) \
+{ \
+  return type_name##_type_id; \
+} \
+static void \
+type_name##_register_type (GTypeModule *type_module) \
+{ \
+  const GTypeInfo g_define_type_info = { \
+    sizeof (TypeName##Class), \
+    (GBaseInitFunc) NULL, \
+    (GBaseFinalizeFunc) NULL, \
+    (GClassInitFunc) type_name##_class_intern_init, \
+    (GClassFinalizeFunc) type_name##_class_finalize, \
+    NULL,   /* class_data */ \
+    sizeof (TypeName), \
+    0,      /* n_preallocs */ \
+    (GInstanceInitFunc) type_name##_init, \
+    NULL    /* value_table */ \
+  }; \
+  type_name##_type_id = g_type_module_register_type (type_module, \
+						     TYPE_PARENT, \
+						     #TypeName, \
+						     &g_define_type_info, \
+						     (GTypeFlags) flags); \
+  { CODE ; } \
+}
+
+
 GType    g_type_module_get_type       (void) G_GNUC_CONST;
 gboolean g_type_module_use            (GTypeModule          *module);
 void     g_type_module_unuse          (GTypeModule          *module);
