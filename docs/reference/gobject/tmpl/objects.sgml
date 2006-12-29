@@ -880,6 +880,9 @@ Like g_object_set_data() except it adds notification
 for when the association is destroyed, either by setting it 
 to a different value or when the object is destroyed.
 </para>
+<para>
+Note that the @destroy callback is not called if @data is %NULL.
+</para>
 
 @object: #GObject containing the associations
 @key: name of the key

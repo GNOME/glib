@@ -1,3 +1,8 @@
+2006-12-28  Matthias Clasen  <mclasen@redhat.com>
+
+	* gobject/tmpl/objects.sgml: Clarify a detail about
+	g_object_set_data_full.  (#343750, Christian Neumair)
+
 Wed Dec 27 15:56:53 2006  Tim Janik  <timj@gtk.org>
 
 	* glib/tmpl/memory_slices.sgml: 
