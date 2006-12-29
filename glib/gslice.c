@@ -42,6 +42,9 @@
 #include <process.h>
 #endif
 
+#include <stdio.h>              /* fputs/fprintf */
+
+
 /* the GSlice allocator is split up into 4 layers, roughly modelled after the slab
  * allocator and magazine extensions as outlined in:
  * + [Bonwick94] Jeff Bonwick, The slab allocator: An object-caching kernel
@@ -370,8 +373,17 @@ _g_slice_thread_init_nomessage (void)
 {
   /* we may not use g_error() or friends here */
   if (sys_page_size)
-    mem_error ("g_thread_init() must be called before GSlice is used, memory corrupted...");
-  g_slice_init_nomessage();
+    {
+      /* mem_error ("g_thread_init() must be called before GSlice is used, memory corrupted..."); */
+      fputs ("\n***MEMORY-WARNING***: ", stderr);
+      const char *pname = g_get_prgname();
+      fprintf (stderr, "%s[%u]: GSlice: ", pname ? pname : "", getpid());
+      fputs ("g_thread_init() must be called before all other GLib functions; "
+             "memory corruption due to late invocation of g_thread_init() has been detected; "
+             "this program is likely to crash, leak or unexpectedly abort soon...\n", stderr);
+    }
+  if (!sys_page_size)
+    g_slice_init_nomessage();
   private_thread_memory = g_private_new (private_thread_memory_cleanup);
   allocator->magazine_mutex = g_mutex_new();
   allocator->slab_mutex = g_mutex_new();
@@ -1134,8 +1146,6 @@ allocator_memfree (gsize    memsize,
   g_trash_stack_push (&compat_valloc_trash, mem);
 #endif
 }
-
-#include <stdio.h>
 
 static void
 mem_error (const char *format,
