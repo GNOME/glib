@@ -1,3 +1,7 @@
+2006-12-31  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gslice.c: Fix some C99isms.  (#390913, Kazuki Iwamoto)
+
 Fri Dec 29 13:28:07 2006  Tim Janik  <timj@imendio.com>
 
 	* glib/gslice.c: turned detection of too late g_thread_init() calls

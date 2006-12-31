@@ -374,9 +374,11 @@ _g_slice_thread_init_nomessage (void)
   /* we may not use g_error() or friends here */
   if (sys_page_size)
     {
+      const char *pname;
+
       /* mem_error ("g_thread_init() must be called before GSlice is used, memory corrupted..."); */
       fputs ("\n***MEMORY-WARNING***: ", stderr);
-      const char *pname = g_get_prgname();
+      pname = g_get_prgname();
       fprintf (stderr, "%s[%u]: GSlice: ", pname ? pname : "", getpid());
       fputs ("g_thread_init() must be called before all other GLib functions; "
              "memory corruption due to late invocation of g_thread_init() has been detected; "
@@ -1204,10 +1206,12 @@ smc_notify_free (void   *pointer,
                  size_t  size)
 {
   size_t adress = (size_t) pointer;
+  SmcVType real_size;
+  gboolean found_one;
+
   if (!pointer)
     return 1; /* ignore */
-  SmcVType real_size;
-  gboolean found_one = smc_tree_lookup (adress, &real_size);
+  found_one = smc_tree_lookup (adress, &real_size);
   if (!found_one)
     {
       fprintf (stderr, "GSlice: MemChecker: attempt to release non-allocated block: %p size=%zu\n", pointer, size);
@@ -1294,8 +1298,12 @@ static void
 smc_tree_insert (SmcKType key,
                  SmcVType value)
 {
+  unsigned int ix0, ix1;
+  SmcEntry *entry;
+
   g_mutex_lock (smc_tree_mutex);
-  unsigned int ix0 = SMC_TRUNK_HASH (key), ix1 = SMC_BRANCH_HASH (key);
+  ix0 = SMC_TRUNK_HASH (key);
+  ix1 = SMC_BRANCH_HASH (key);
   if (!smc_tree_root)
     {
       smc_tree_root = calloc (SMC_TRUNK_COUNT, sizeof (smc_tree_root[0]));
@@ -1308,7 +1316,7 @@ smc_tree_insert (SmcKType key,
       if (!smc_tree_root[ix0])
         smc_tree_abort (errno);
     }
-  SmcEntry *entry = smc_tree_branch_lookup_nearest_L (&smc_tree_root[ix0][ix1], key);
+  entry = smc_tree_branch_lookup_nearest_L (&smc_tree_root[ix0][ix1], key);
   if (!entry ||                                                                         /* need create */
       entry >= smc_tree_root[ix0][ix1].entries + smc_tree_root[ix0][ix1].n_entries ||   /* need append */
       entry->key != key)                                                                /* need insert */
@@ -1322,11 +1330,11 @@ static gboolean
 smc_tree_lookup (SmcKType  key,
                  SmcVType *value_p)
 {
+  SmcEntry *entry = NULL;
   unsigned int ix0 = SMC_TRUNK_HASH (key), ix1 = SMC_BRANCH_HASH (key);
   gboolean found_one = FALSE;
   *value_p = 0;
   g_mutex_lock (smc_tree_mutex);
-  SmcEntry *entry = NULL;
   if (smc_tree_root && smc_tree_root[ix0])
     {
       entry = smc_tree_branch_lookup_nearest_L (&smc_tree_root[ix0][ix1], key);
