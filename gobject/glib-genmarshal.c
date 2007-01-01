@@ -654,7 +654,12 @@ main (int   argc,
   for (slist = files; slist; slist = slist->next)
     {
       gchar *file = slist->data;
-      gint fd = open (file, O_RDONLY);
+      gint fd;
+
+      if (strcmp (file, "/dev/stdin") == 0)
+	fd = dup (0);
+      else
+	fd = open (file, O_RDONLY);
 
       if (fd < 0)
 	{
