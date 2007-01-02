@@ -1,3 +1,66 @@
+2007-01-01  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gkeyfile.c: Convert the recently added stricter
+	keyfile syntax checks into critical warnings, to help apps
+	which do bad things with key files. Note that the
+	stricter checks will remain in place for 2.14.  (#390532,
+	Loïc Minier)
+
+	* tests/keyfile-test.c: Adapt
+
+2006-12-31  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gslice.c: Fix some C99isms.  (#390913, Kazuki Iwamoto)
+
+Fri Dec 29 13:28:07 2006  Tim Janik  <timj@imendio.com>
+
+	* glib/gslice.c: turned detection of too late g_thread_init() calls
+	into a warning. this is a temporary work-around for some head-room
+	to fix affected programs, memory corruption still occours regardless.
+
+2006-12-29  Matthias Clasen  <mclasen@redhat.com>
+
+	* tests/gobject/Makefile.am:
+	* tests/gobject/dynamictype.c: New test for dynamic type 
+	registration macros. 
+
+Thu Dec 28 21:14:45 2006  Tim Janik  <timj@imendio.com>
+
+	* glib/gslice.c: removed pthread-dependant debugging bits, the code
+	was already converted to GMutex. this obsoletes Tor's recent fixups.
+
+2006-12-28  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gutils.h (G_WIN32_DLLMAIN_FOR_DLL_NAME)
+	* glib/gutils.c (get_windows_directory_root): : Use only the wide
+	character API here, too.
+
+	* glib/gslice.c: Make it compile on Win32 without pthreads: Use a
+	Win32 critical section instead.
+
+	* glib/gmessages.c (g_logv): On Win32, if we get a fatal error
+	message while being debugged we break into the debugger with
+	G_BREAKPOINT(). Don't call abort() if the user is foolhardy enough
+	to continue after the breakpoint. The user presumably knows what
+	he is doing and deserves what he gets. (#376645, Andreas Köhler)
+
+Thu Dec 28 12:50:31 2006  Tim Janik  <timj@imendio.com>
+
+	* glib/gslice.h, glib/gslice.c: implemented static debugging
+	hash-tree to validate slice adresses and sizes with G_SLICE=debug-blocks.
+	use abort() to exit in mem_error() to allow catching of these in gdb.
+	abort programs with a descriptive error message if g_thread_init() is
+	called after GSlice was in use. previously this just silently corrupted
+	the magazines.
+
+	* glib/ghash.c (struct _GHashNode): reordered fields to keep 8-byte 
+	pointer alignment on 64bit systems and request smaller slice sizes
+	on 32bit systems.
+
+	* tests/slice-test.c: support '~' option flag to introduce slice 
+	allocation/release corruption with a significant probability. this
+	allowes testing of G_SLICE=debug-blocks.
+
 2006-12-27  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Use AC_CACHE_CHECK for the nl_langinfo
