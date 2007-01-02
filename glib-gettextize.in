@@ -49,6 +49,9 @@ MINGW32*)
     ;;
 esac
 
+datadir=@datadir@
+datarootdir=@datarootdir@
+
 gettext_dir=$prefix/share/glib-2.0/gettext
 
 while test $# -gt 0; do
@@ -176,7 +179,7 @@ echo
 echo "Please add the files"
 echo "  codeset.m4 gettext.m4 glibc21.m4 iconv.m4 isc-posix.m4 lcmessage.m4"
 echo "  progtest.m4"
-echo "from the @datadir@/aclocal directory to your autoconf macro directory"
+echo "from the $datadir/aclocal directory to your autoconf macro directory"
 echo "or directly to your aclocal.m4 file."
 echo "You will also need config.guess and config.sub, which you can get from"
 echo "ftp://ftp.gnu.org/pub/gnu/config/."

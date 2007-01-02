@@ -1,5 +1,10 @@
 2007-01-01  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib-gettextize.in: Silence autoconf warnings about
+	datarootdir.  (#391367, Loïc Minier)
+
+2007-01-01  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/gkeyfile.c: Convert the recently added stricter
 	keyfile syntax checks into critical warnings, to help apps
 	which do bad things with key files. Note that the
