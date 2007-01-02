@@ -686,7 +686,7 @@ g_slice_free_chain_with_offset
 g_slice_set_config
 g_slice_get_config
 g_slice_get_config_state
-#ifndef G_DISABLE_DEPRECATED
+#ifdef G_ENABLE_DEBUG
 g_slice_debug_tree_statistics
 #endif
 #endif

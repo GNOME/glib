@@ -1,3 +1,8 @@
+2007-01-02  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/glib.symbols: Guard g_slice_debug_tree_statistics
+	by G_ENABLE_DEBUG.  (#390940, Kazuki Iwamoto)
+
 2007-01-02  Michael Natterer  <mitch@imendio.com>
 
 	* configure.in

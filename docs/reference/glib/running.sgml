@@ -158,8 +158,8 @@ variables like <envar>LANG</envar>, <envar>PATH</envar> or <envar>HOME</envar>.
 		  A potential cause for such a situation that will be caught by G_SLICE=debug-blocks
 		  is e.g.:
 		  <programlisting>
-		    void *slist = g_slist_alloc(); // void* gives up type-safety
-		    g_list_free (slist);           // corruption: sizeof (GSList) != sizeof (GList)
+		    void *slist = g_slist_alloc(); /* void* gives up type-safety */
+		    g_list_free (slist);           /* corruption: sizeof (GSList) != sizeof (GList) */
 		  </programlisting>
 		</para>
 	      </listitem>
