@@ -3306,8 +3306,16 @@ expand_exec_line (const gchar *exec_fmt,
        case 'f':
          {
 	   gchar *file = g_filename_from_uri (uri, NULL, NULL);
-	   g_string_append (exec, file);
-	   g_free (file);
+           if (file)
+             {
+	       g_string_append (exec, file);
+	       g_free (file);
+             }
+           else
+             {
+               g_string_free (exec, TRUE);
+               return NULL;
+             }
          }
          break;
        case '%':
@@ -3385,8 +3393,18 @@ g_bookmark_file_get_app_info (GBookmarkFile  *bookmark,
     }
   
   if (exec)
-    *exec = expand_exec_line (ai->exec, uri);
-  
+    {
+      *exec = expand_exec_line (ai->exec, uri);
+      if (!*exec)
+        {
+          g_set_error (error, G_BOOKMARK_FILE_ERROR,
+		       G_BOOKMARK_FILE_ERROR_INVALID_URI,
+		       _("Failed to expand exec line '%s' with URI '%s'"),
+		     ai->exec, uri);
+          return FALSE;
+        }
+    } 
+
   if (count)
     *count = ai->count;
   
