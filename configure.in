@@ -2851,10 +2851,6 @@ gobject-2.0-uninstalled.pc
 glib-zip
 glib-gettextize
 Makefile
-build/Makefile
-build/win32/Makefile
-build/win32/dirent/Makefile
-build/win32/vs8/Makefile
 glib/Makefile
 glib/libcharset/Makefile
 glib/gnulib/Makefile

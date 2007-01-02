@@ -1,3 +1,9 @@
+2007-01-02  Michael Natterer  <mitch@imendio.com>
+
+	* configure.in
+	* Makefile.am: remove references to build/ until a proper decision
+	has been made what to do with it.
+
 2007-01-01  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib-gettextize.in: Silence autoconf warnings about
