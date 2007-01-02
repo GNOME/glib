@@ -3300,9 +3300,11 @@ expand_exec_line (const gchar *exec_fmt,
        {
        case '\0':
 	 goto out;
+       case 'U':
        case 'u':
          g_string_append (exec, uri);
          break;
+       case 'F':
        case 'f':
          {
 	   gchar *file = g_filename_from_uri (uri, NULL, NULL);
