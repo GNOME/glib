@@ -1,3 +1,8 @@
+2007-01-02  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gbookmarkfile.c (g_bookmark_file_get_app_info): 
+	Return an error if the uri is bad. (#391370, Maciej Piechotka)
+
 2007-01-02  Michael Natterer  <mitch@imendio.com>
 
 	* configure.in
