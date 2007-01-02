@@ -1,5 +1,10 @@
 2007-01-02  Matthias Clasen  <mclasen@redhat.com>
 
+	* configure.in: Avoid warnings from running libtool --config.
+	(#391364, Loïc Minier)
+
+2007-01-02  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/gbookmarkfile.c (g_bookmark_file_get_app_info): 
 	Return an error if the uri is bad. (#391370, Maciej Piechotka)
 
