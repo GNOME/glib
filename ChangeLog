@@ -3,7 +3,7 @@
 	* glib/goption.c (_g_unichar_get_width), (_g_utf8_strwidth),
 	(calculate_max_length), (print_entry), (print_help): Take zerowidth
 	and double-width chars into consideration when computing width of a
-	string.  Also fix another bug in width computation.
+	string.  Also fix another bug in width computation. (#346955)
 
 	* glib/guniprop.c (g_unichar_iszerowidth): Fix typo.  It was not
 	working correctly.
