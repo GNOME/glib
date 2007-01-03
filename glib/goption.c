@@ -122,6 +122,63 @@ static void free_changes_list (GOptionContext *context,
 static void free_pending_nulls (GOptionContext *context,
 				gboolean        perform_nulls);
 
+
+static int
+_g_unichar_get_width (gunichar c)
+{
+  /* we ignore zerowidth chars in glib-2-12, since the necessary
+   * g_unichar_iszerowidth() call is in >= 2.13 only.
+   */
+  /*
+  if (G_UNLIKELY (g_unichar_iszerowidth (c)))
+    return 0;
+  */
+
+  /* we ignore the fact that we should call g_unichar_iswide_cjk() under
+   * some locales (legacy East Asian ones) */
+  if (g_unichar_iswide (c))
+    return 2;
+
+  return 1;
+}
+
+static glong
+_g_utf8_strwidth (const gchar *p,
+                  gssize       max)
+{
+  glong len = 0;
+  const gchar *start = p;
+  g_return_val_if_fail (p != NULL || max == 0, 0);
+
+  if (max < 0)
+    {
+      while (*p)
+        {
+          len += _g_unichar_get_width (g_utf8_get_char (p));
+          p = g_utf8_next_char (p);
+        }
+    }
+  else
+    {
+      if (max == 0 || !*p)
+        return 0;
+
+      /* this case may not be quite correct */
+      
+      len += _g_unichar_get_width (g_utf8_get_char (p));
+      p = g_utf8_next_char (p);          
+
+      while (p - start < max && *p)
+        {
+          len += _g_unichar_get_width (g_utf8_get_char (p));
+          p = g_utf8_next_char (p);          
+        }
+    }
+
+  return len;
+}
+
+
 GQuark
 g_option_error_quark (void)
 {
@@ -421,13 +478,13 @@ calculate_max_length (GOptionGroup *group)
       if (entry->flags & G_OPTION_FLAG_HIDDEN)
 	continue;
 
-      len = g_utf8_strlen (entry->long_name, -1);
+      len = _g_utf8_strwidth (entry->long_name, -1);
       
       if (entry->short_name)
 	len += 4;
       
       if (!NO_ARG (entry) && entry->arg_description)
-	len += 1 + g_utf8_strlen (TRANSLATE (group, entry->arg_description), -1);
+	len += 1 + _g_utf8_strwidth (TRANSLATE (group, entry->arg_description), -1);
       
       max_length = MAX (max_length, len);
     }
@@ -458,7 +515,8 @@ print_entry (GOptionGroup       *group,
   if (entry->arg_description)
     g_string_append_printf (str, "=%s", TRANSLATE (group, entry->arg_description));
   
-  g_print ("%-*s %s\n", max_length + 4, str->str,
+  g_print ("%s%*s %s\n", str->str,
+	   (int) (max_length + 4 - _g_utf8_strwidth (str->str, -1)), "",
 	   entry->description ? TRANSLATE (group, entry->description) : "");
   g_string_free (str, TRUE);  
 }
@@ -546,11 +604,11 @@ print_help (GOptionContext *context,
 
   list = context->groups;
 
-  max_length = g_utf8_strlen ("-?, --help", -1);
+  max_length = _g_utf8_strwidth ("-?, --help", -1);
 
   if (list)
     {
-      len = g_utf8_strlen ("--help-all", -1);
+      len = _g_utf8_strwidth ("--help-all", -1);
       max_length = MAX (max_length, len);
     }
 
@@ -565,7 +623,7 @@ print_help (GOptionContext *context,
       GOptionGroup *group = list->data;
       
       /* First, we check the --help-<groupname> options */
-      len = g_utf8_strlen ("--help-", -1) + g_utf8_strlen (group->name, -1);
+      len = _g_utf8_strwidth ("--help-", -1) + _g_utf8_strwidth (group->name, -1);
       max_length = MAX (max_length, len);
 
       /* Then we go through the entries */

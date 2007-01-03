@@ -1,5 +1,12 @@
 2007-01-03  Behdad Esfahbod  <behdad@gnome.org>
 
+	* glib/goption.c (_g_unichar_get_width), (_g_utf8_strwidth),
+	(calculate_max_length), (print_entry), (print_help): Take
+	double-width chars into consideration when computing width of a
+	string.  Also fix another bug in width computation. (#346955)
+
+2007-01-03  Behdad Esfahbod  <behdad@gnome.org>
+
 	* glib/gutils.h: Fix bug in g_bit_nth_lsf (#371631) and use
 	__builtin_clzl for g_bit_storage if available (#371670).
 
