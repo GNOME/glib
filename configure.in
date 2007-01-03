@@ -1312,6 +1312,7 @@ else
 fi
 
 AC_MSG_CHECKING(for the suffix of shared libraries)
+export SED
 shrext_cmds=`./libtool --config | grep '^shrext_cmds='`
 eval $shrext_cmds
 module=yes eval std_shrext=$shrext_cmds

@@ -1,3 +1,8 @@
+2007-01-02  Behdad Esfahbod  <behdad@gnome.org>
+
+	* configure.in: Avoid more warnings from running libtool --config.
+	(#391364)
+
 2007-01-03  Michael Natterer  <mitch@imendio.com>
 
 	* removed all .cvsignore files. SVN doesn't need them.
