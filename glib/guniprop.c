@@ -380,7 +380,7 @@ g_unichar_iszerowidth (gunichar c)
   if (G_UNLIKELY (c == 0x00AD))
     return FALSE;
 
-  if (G_UNLIKELY (ISZEROWIDTHTYPE (c)))
+  if (G_UNLIKELY (ISZEROWIDTHTYPE (TYPE (c))))
     return TRUE;
 
   if (G_UNLIKELY ((c >= 0x1160 && c < 0x1200) ||

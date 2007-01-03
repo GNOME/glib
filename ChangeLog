@@ -1,5 +1,15 @@
 2007-01-03  Behdad Esfahbod  <behdad@gnome.org>
 
+	* glib/goption.c (_g_unichar_get_width), (_g_utf8_strwidth),
+	(calculate_max_length), (print_entry), (print_help): Take zerowidth
+	and double-width chars into consideration when computing width of a
+	string.  Also fix another bug in width computation.
+
+	* glib/guniprop.c (g_unichar_iszerowidth): Fix typo.  It was not
+	working correctly.
+
+2007-01-03  Behdad Esfahbod  <behdad@gnome.org>
+
 	* glib/glib.symbols:
 	* glib/gunicode.h:
 	* glib/guniprop.c: Add g_unichar_iszerowidth(). (#347645)
