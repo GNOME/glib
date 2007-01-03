@@ -201,6 +201,15 @@ will correctly interpret surrogate pairs.</footnote>.
 @Returns: 
 
 
+<!-- ##### FUNCTION g_unichar_iszerowidth ##### -->
+<para>
+
+</para>
+
+@c: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_unichar_toupper ##### -->
 <para>
 

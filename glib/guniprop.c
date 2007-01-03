@@ -85,6 +85,11 @@
 			    OR (G_UNICODE_COMBINING_MARK,	\
 			    OR (G_UNICODE_ENCLOSING_MARK,	0))))
 
+#define ISZEROWIDTHTYPE(Type)	IS ((Type),			\
+			    OR (G_UNICODE_NON_SPACING_MARK,	\
+			    OR (G_UNICODE_ENCLOSING_MARK,	\
+			    OR (G_UNICODE_FORMAT,		0))))
+
 /**
  * g_unichar_isalnum:
  * @c: a Unicode character
@@ -349,6 +354,40 @@ gboolean
 g_unichar_isdefined (gunichar c)
 {
   return TYPE (c) != G_UNICODE_UNASSIGNED;
+}
+
+/**
+ * g_unichar_iszerowidth:
+ * @c: a Unicode character
+ * 
+ * Determines if a given character typically takes zero width when rendered.
+ * The return value is %TRUE for all non-spacing and enclosing marks
+ * (e.g., combining accents), format characters, zero-width
+ * space, but not U+00AD SOFT HYPHEN.
+ *
+ * A typical use of this function is with one of g_unichar_iswide() or
+ * g_unichar_iswide_cjk() to determine the number of cells a string occupies
+ * when displayed on a grid display (terminals).  However, note that not all
+ * terminals support zero-width rendering of zero-width marks.
+ *
+ * Return value: %TRUE if the character has zero width
+ *
+ * Since: 2.14
+ **/
+gboolean
+g_unichar_iszerowidth (gunichar c)
+{
+  if (G_UNLIKELY (c == 0x00AD))
+    return FALSE;
+
+  if (G_UNLIKELY (ISZEROWIDTHTYPE (c)))
+    return TRUE;
+
+  if (G_UNLIKELY ((c >= 0x1160 && c < 0x1200) ||
+		  c == 0x200B))
+    return TRUE;
+
+  return FALSE;
 }
 
 /**

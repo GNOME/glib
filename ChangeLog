@@ -1,5 +1,11 @@
 2007-01-03  Behdad Esfahbod  <behdad@gnome.org>
 
+	* glib/glib.symbols:
+	* glib/gunicode.h:
+	* glib/guniprop.c: Add g_unichar_iszerowidth(). (#347645)
+
+2007-01-03  Behdad Esfahbod  <behdad@gnome.org>
+
 	* glib/gutils.h: Fix bug in g_bit_nth_lsf (#371631) and use
 	__builtin_clzl for g_bit_storage if available (#371670).
 

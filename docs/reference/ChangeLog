@@ -1,3 +1,14 @@
+2007-01-03  Behdad Esfahbod  <behdad@gnome.org>
+
+	* glib/glib-sections.txt: Add g_unichar_iszerowidth.
+
+	* glib/tmpl/glib-unused.sgml:
+	* glib/tmpl/keyfile.sgml:
+	* glib/tmpl/macros_misc.sgml:
+	* glib/tmpl/messages.sgml:
+	* glib/tmpl/unicode.sgml:
+	Template changes.
+
 2007-01-02  Matthias Clasen  <mclasen@redhat.com>
 	
 	* glib/running.sgml: Remove C99ism from example.

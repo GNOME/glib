@@ -164,13 +164,11 @@ not be unloaded.
 
 @module:              a #GTypeModule
 @name:                name for the type
-@_static_values: 
-@Returns: the new or existing type ID
-@Since: 2.6
-<!-- # Unused Parameters # -->
 @const_static_values: an array of #GEnumValue structs for the possible
   enumeration values. The array is terminated by a struct with all 
   members being 0.
+@Returns: the new or existing type ID
+@Since: 2.6
 
 
 <!-- ##### FUNCTION g_type_module_register_flags ##### -->
@@ -187,13 +185,11 @@ not be unloaded.
 
 @module:              a #GTypeModule
 @name:                name for the type
-@_static_values: 
-@Returns: the new or existing type ID
-@Since: 2.6
-<!-- # Unused Parameters # -->
 @const_static_values: an array of #GFlagsValue structs for the possible
   flags values. The array is terminated by a struct with all 
   members being 0.
+@Returns: the new or existing type ID
+@Since: 2.6
 
 
 <!-- ##### MACRO G_DEFINE_DYNAMIC_TYPE ##### -->
@@ -212,7 +208,6 @@ See G_DEFINE_DYNAMIC_TYPE_EXTENDED() for an example.
 @t_n: The name of the new type, in lowercase, with words
   separated by '_'.
 @T_P: The #GType of the parent type.
-
 @Since: 2.14
 
 
@@ -286,6 +281,6 @@ gtk_gadget_register_type (GTypeModule *type_module)
 @TYPE_PARENT: The #GType of the parent type.
 @flags: #GTypeFlags to pass to g_type_register_static()
 @CODE: Custom code that gets inserted in the *_get_type() function.
-
 @Since: 2.14
+
 
