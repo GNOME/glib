@@ -248,10 +248,10 @@ gchar*  g_find_program_in_path  (const gchar *program);
 /* Bit tests
  */
 G_INLINE_FUNC gint	g_bit_nth_lsf (gulong  mask,
-				       gint    nth_bit);
+				       gint    nth_bit) G_GNUC_CONST;
 G_INLINE_FUNC gint	g_bit_nth_msf (gulong  mask,
-				       gint    nth_bit);
-G_INLINE_FUNC guint	g_bit_storage (gulong  number);
+				       gint    nth_bit) G_GNUC_CONST;
+G_INLINE_FUNC guint	g_bit_storage (gulong  number) G_GNUC_CONST;
 
 /* Trash Stacks
  * elements need to be >= sizeof (gpointer)
@@ -275,33 +275,36 @@ G_INLINE_FUNC gint
 g_bit_nth_lsf (gulong mask,
 	       gint   nth_bit)
 {
-  do
+  if (G_UNLIKELY (nth_bit < -1))
+    nth_bit = -1;
+  while (nth_bit < ((GLIB_SIZEOF_LONG * 8) - 1))
     {
       nth_bit++;
       if (mask & (1UL << nth_bit))
 	return nth_bit;
     }
-  while (nth_bit < ((GLIB_SIZEOF_LONG * 8) - 1));
   return -1;
 }
 G_INLINE_FUNC gint
 g_bit_nth_msf (gulong mask,
 	       gint   nth_bit)
 {
-  if (nth_bit < 0)
+  if (nth_bit < 0 || G_UNLIKELY (nth_bit > GLIB_SIZEOF_LONG * 8))
     nth_bit = GLIB_SIZEOF_LONG * 8;
-  do
+  while (nth_bit > 0)
     {
       nth_bit--;
       if (mask & (1UL << nth_bit))
 	return nth_bit;
     }
-  while (nth_bit > 0);
   return -1;
 }
 G_INLINE_FUNC guint
 g_bit_storage (gulong number)
 {
+#if defined(__GNUC__) && (__GNUC__ >= 4) && defined(__OPTIMIZE__)
+  return number ? GLIB_SIZEOF_LONG * 8 - __builtin_clzl(number) : 1;
+#else
   register guint n_bits = 0;
   
   do
@@ -311,6 +314,7 @@ g_bit_storage (gulong number)
     }
   while (number);
   return n_bits;
+#endif
 }
 G_INLINE_FUNC void
 g_trash_stack_push (GTrashStack **stack_p,

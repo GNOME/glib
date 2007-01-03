@@ -1,3 +1,12 @@
+2007-01-03  Behdad Esfahbod  <behdad@gnome.org>
+
+	* glib/gutils.h: Fix bug in g_bit_nth_lsf (#371631) and use
+	__builtin_clzl for g_bit_storage if available (#371670).
+
+	* tests/Makefile.am:
+	* tests/bit-test.c: New test, to test g_bit_* operations against
+	naive and builtin implementations.
+
 2007-01-02  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Avoid warnings from running libtool --config.
