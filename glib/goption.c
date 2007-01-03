@@ -144,7 +144,6 @@ _g_utf8_strwidth (const gchar *p,
   glong len = 0;
   const gchar *start = p;
   g_return_val_if_fail (p != NULL || max == 0, 0);
-  max = strlen (p);
 
   if (max < 0)
     {
