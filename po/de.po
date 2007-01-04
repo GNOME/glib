@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-01-04 15:16+0100\n"
-"PO-Revision-Date: 2007-01-04 15:18+0100\n"
+"PO-Revision-Date: 2007-01-04 15:33+0100\n"
 "Last-Translator: Hendrik Richter <hendrikr@gnome.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -80,7 +80,7 @@ msgstr ""
 #, c-format
 msgid "No groups set in bookmark for URI '%s'"
 msgstr ""
-"Es wurden keine Gruppen für das Lesezeichen für die URI »%s« festgeleg.t"
+"Es wurden keine Gruppen für das Lesezeichen für die URI »%s« festgelegt."
 
 #: ../glib/gbookmarkfile.c:3236 ../glib/gbookmarkfile.c:3391
 #, c-format
