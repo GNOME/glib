@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.glib-2-10.ne\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-12-20 11:41-0500\n"
+"POT-Creation-Date: 2007-01-04 17:24-0500\n"
 "PO-Revision-Date: 2006-04-27 00:00+0545\n"
 "Last-Translator: Shyam Krishna Bal <shyamkrishna_bal@yahoo.com>\n"
 "Language-Team: Nepali <info@mpp.org.np>\n"
@@ -61,9 +61,9 @@ msgstr ""
 #: glib/gbookmarkfile.c:2608 glib/gbookmarkfile.c:2687
 #: glib/gbookmarkfile.c:2729 glib/gbookmarkfile.c:2826
 #: glib/gbookmarkfile.c:2952 glib/gbookmarkfile.c:3142
-#: glib/gbookmarkfile.c:3218 glib/gbookmarkfile.c:3371
-#: glib/gbookmarkfile.c:3436 glib/gbookmarkfile.c:3526
-#: glib/gbookmarkfile.c:3653
+#: glib/gbookmarkfile.c:3218 glib/gbookmarkfile.c:3379
+#: glib/gbookmarkfile.c:3454 glib/gbookmarkfile.c:3544
+#: glib/gbookmarkfile.c:3671
 #, c-format
 msgid "No bookmark found for URI '%s'"
 msgstr ""
@@ -83,10 +83,15 @@ msgstr ""
 msgid "No groups set in bookmark for URI '%s'"
 msgstr ""
 
-#: glib/gbookmarkfile.c:3236 glib/gbookmarkfile.c:3381
+#: glib/gbookmarkfile.c:3236 glib/gbookmarkfile.c:3389
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
 msgstr ""
+
+#: glib/gbookmarkfile.c:3402
+#, fuzzy, c-format
+msgid "Failed to expand exec line '%s' with URI '%s'"
+msgstr "सांकेतिक सम्बन्ध '%s' पढ्न असफल: %s"
 
 #: glib/gconvert.c:423 glib/gconvert.c:501 glib/giochannel.c:1150
 #, c-format
@@ -639,61 +644,61 @@ msgstr "रूपान्तरण आगतमा अवैध अनुक्
 msgid "Character out of range for UTF-16"
 msgstr "UTF-16 का लागि क्यारेक्टर दायरा भन्दा बाहिर छ"
 
-#: glib/goption.c:495
+#: glib/goption.c:553
 msgid "Usage:"
 msgstr "प्रयोग:"
 
-#: glib/goption.c:495
+#: glib/goption.c:553
 msgid "[OPTION...]"
 msgstr "[OPTION...]"
 
-#: glib/goption.c:586
+#: glib/goption.c:644
 msgid "Help Options:"
 msgstr "मद्दत विकल्पहरू:"
 
-#: glib/goption.c:587
+#: glib/goption.c:645
 msgid "Show help options"
 msgstr "मद्दत विकल्पहरू देखाउनुहोस्"
 
-#: glib/goption.c:592
+#: glib/goption.c:650
 msgid "Show all help options"
 msgstr "सबै मद्दत विकल्पहरू देखाउनुहोस्"
 
-#: glib/goption.c:642
+#: glib/goption.c:700
 msgid "Application Options:"
 msgstr "अनुप्रयोग विकल्पहरू:"
 
-#: glib/goption.c:686 glib/goption.c:756
+#: glib/goption.c:744 glib/goption.c:814
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "%s का लागि इन्टेजर मान %s को पद वर्णन गर्न सक्दैन"
 
-#: glib/goption.c:696 glib/goption.c:764
+#: glib/goption.c:754 glib/goption.c:822
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "इन्टेजर मान '%s' %s का लागि दायरा भन्दा बाहिर छ"
 
-#: glib/goption.c:721
+#: glib/goption.c:779
 #, fuzzy, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "%s का लागि इन्टेजर मान %s को पद वर्णन गर्न सक्दैन"
 
-#: glib/goption.c:729
+#: glib/goption.c:787
 #, fuzzy, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "इन्टेजर मान '%s' %s का लागि दायरा भन्दा बाहिर छ"
 
-#: glib/goption.c:1066
+#: glib/goption.c:1124
 #, c-format
 msgid "Error parsing option %s"
 msgstr "पद वर्णन विकल्पमा त्रुटि %s"
 
-#: glib/goption.c:1097 glib/goption.c:1208
+#: glib/goption.c:1155 glib/goption.c:1266
 #, c-format
 msgid "Missing argument for %s"
 msgstr "%s का छुटेको तर्क"
 
-#: glib/goption.c:1597
+#: glib/goption.c:1655
 #, c-format
 msgid "Unknown option %s"
 msgstr "अज्ञात विकल्प %s"
@@ -719,49 +724,50 @@ msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr "कुञ्जी फाइलमा पङ्गति '%s' समावेश छ जुन कुञ्जी-मान जोडि, समूह, वा टिप्पणी होइन।"
 
-#: glib/gkeyfile.c:758
+#: glib/gkeyfile.c:755 glib/gkeyfile.c:1233 glib/gkeyfile.c:2456
+#: glib/gkeyfile.c:2579 glib/gkeyfile.c:2894
 #, fuzzy, c-format
 msgid "Invalid group name: %s"
 msgstr "अवैध कार्यक्रम नाम : %s"
 
-#: glib/gkeyfile.c:780
+#: glib/gkeyfile.c:774
 #, c-format
 msgid "Key file does not start with a group"
 msgstr "कुञ्जी फाइल एउटा समूहबाट सुरु हुँदैन"
 
-#: glib/gkeyfile.c:806
+#: glib/gkeyfile.c:797 glib/gkeyfile.c:1235
 #, fuzzy, c-format
 msgid "Invalid key name: %s"
 msgstr "अवैध कार्यक्रम नाम : %s"
 
-#: glib/gkeyfile.c:833
+#: glib/gkeyfile.c:821
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "कुञ्जी फाइलमा समर्थन प्राप्त नभएको सङ्केतन '%s' समावेश छ।"
 
-#: glib/gkeyfile.c:1042 glib/gkeyfile.c:1201 glib/gkeyfile.c:2402
-#: glib/gkeyfile.c:2469 glib/gkeyfile.c:2590 glib/gkeyfile.c:2725
-#: glib/gkeyfile.c:2878 glib/gkeyfile.c:3058 glib/gkeyfile.c:3115
+#: glib/gkeyfile.c:1030 glib/gkeyfile.c:1189 glib/gkeyfile.c:2394
+#: glib/gkeyfile.c:2463 glib/gkeyfile.c:2586 glib/gkeyfile.c:2721
+#: glib/gkeyfile.c:2874 glib/gkeyfile.c:3056 glib/gkeyfile.c:3113
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "कुञ्जी फाइलसंगसमूह '%s' छैन"
 
-#: glib/gkeyfile.c:1213
+#: glib/gkeyfile.c:1201
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "कुञ्जी फाइलसंगकुञ्जी '%s' हुँदैन"
 
-#: glib/gkeyfile.c:1315 glib/gkeyfile.c:1425
+#: glib/gkeyfile.c:1307 glib/gkeyfile.c:1417
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "कुञ्जी फाइलमा मान '%s'सँगै कुञ्जी '%s' समावेश छ जुन UTF-8 होइन"
 
-#: glib/gkeyfile.c:1335 glib/gkeyfile.c:1445 glib/gkeyfile.c:1813
+#: glib/gkeyfile.c:1327 glib/gkeyfile.c:1437 glib/gkeyfile.c:1805
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "कुञ्जी फाइलमा कुञ्जी '%s' समावेश छ जसको मानलाई व्याख्या गर्न सकिँदैन।"
 
-#: glib/gkeyfile.c:2025 glib/gkeyfile.c:2234
+#: glib/gkeyfile.c:2017 glib/gkeyfile.c:2226
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -769,37 +775,37 @@ msgid ""
 msgstr ""
 "कुञ्जी फाइलमा समूह '%s' मा कुञ्जी '%s' समावेश छ जसको मानलाई व्याख्या गर्न सकिँदैन।"
 
-#: glib/gkeyfile.c:2417 glib/gkeyfile.c:2605 glib/gkeyfile.c:3126
+#: glib/gkeyfile.c:2409 glib/gkeyfile.c:2601 glib/gkeyfile.c:3124
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "कुञ्जी फाइलमा समूह '%s' मा कुञ्जी '%s' हुँदैन"
 
-#: glib/gkeyfile.c:3346
+#: glib/gkeyfile.c:3344
 #, c-format
 msgid "Key file contains escape character at end of line"
 msgstr "कुञ्जी फाइलमा पङ्गतिको अन्त्यमा निकास क्यारेक्टर समावेश छ।"
 
-#: glib/gkeyfile.c:3368
+#: glib/gkeyfile.c:3366
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "कुञ्जी फाइलमा अवैध निकास अनुक्रम '%s' समावेस छ।"
 
-#: glib/gkeyfile.c:3510
+#: glib/gkeyfile.c:3508
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "मान '%s' लाई सङ्ख्याको रूपमा व्याख्या गर्न सकिँदैन"
 
-#: glib/gkeyfile.c:3524
+#: glib/gkeyfile.c:3522
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "इन्टेजर मान '%s' क्षेत्र भन्दा बाहिर छ"
 
-#: glib/gkeyfile.c:3557
+#: glib/gkeyfile.c:3555
 #, fuzzy, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "मान '%s' लाई सङ्ख्याको रूपमा व्याख्या गर्न सकिँदैन"
 
-#: glib/gkeyfile.c:3584
+#: glib/gkeyfile.c:3582
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "मान '%s' एउटा बुलिएनको रूपमा व्याख्या गर्न सकिँदैन।"

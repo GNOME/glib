@@ -29,7 +29,7 @@ log_func (const gchar   *log_domain,
           const gchar   *message,
           gpointer       user_data)
 {
-//  log_flags |= log_level;   
+  log_flags |= log_level;   
 }
 
 static void
@@ -37,8 +37,8 @@ check_log (GLogLevelFlags flags)
 {
   if ((log_flags & flags) == 0)
     {
-//      g_print ("Missing a log at level %d\n", flags);
-//      exit (1);
+      g_print ("Missing a log at level %d\n", flags);
+      exit (1);
     }
 
   log_flags = 0;
@@ -1181,7 +1181,7 @@ test_duplicate_groups2 (void)
 int
 main (int argc, char *argv[])
 {
-//  g_log_set_default_handler (log_func, NULL);
+  g_log_set_default_handler (log_func, NULL);
 
   test_line_ends ();
   test_whitespace ();

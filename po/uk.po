@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-12-20 11:41-0500\n"
+"POT-Creation-Date: 2007-01-04 17:24-0500\n"
 "PO-Revision-Date: 2006-07-23 11:56+0300\n"
 "Last-Translator: Maxim Dziumanenko <dziumanenko@gmail.com>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
@@ -55,9 +55,9 @@ msgstr "Файл закладок для URI '%s' вже існує"
 #: glib/gbookmarkfile.c:2608 glib/gbookmarkfile.c:2687
 #: glib/gbookmarkfile.c:2729 glib/gbookmarkfile.c:2826
 #: glib/gbookmarkfile.c:2952 glib/gbookmarkfile.c:3142
-#: glib/gbookmarkfile.c:3218 glib/gbookmarkfile.c:3371
-#: glib/gbookmarkfile.c:3436 glib/gbookmarkfile.c:3526
-#: glib/gbookmarkfile.c:3653
+#: glib/gbookmarkfile.c:3218 glib/gbookmarkfile.c:3379
+#: glib/gbookmarkfile.c:3454 glib/gbookmarkfile.c:3544
+#: glib/gbookmarkfile.c:3671
 #, c-format
 msgid "No bookmark found for URI '%s'"
 msgstr "Не знайдено закладки для URI '%s'"
@@ -77,10 +77,15 @@ msgstr "Не вказано приватну ознаку у закладці д
 msgid "No groups set in bookmark for URI '%s'"
 msgstr "Не встановлено групи у закладці для URI '%s'"
 
-#: glib/gbookmarkfile.c:3236 glib/gbookmarkfile.c:3381
+#: glib/gbookmarkfile.c:3236 glib/gbookmarkfile.c:3389
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
 msgstr "Не зареєстровано програму з назвою '%s' для закладки '%s'"
+
+#: glib/gbookmarkfile.c:3402
+#, fuzzy, c-format
+msgid "Failed to expand exec line '%s' with URI '%s'"
+msgstr "Помилка читання символічного посилання \"%s\": %s"
 
 #: glib/gconvert.c:423 glib/gconvert.c:501 glib/giochannel.c:1150
 #, c-format
@@ -651,61 +656,61 @@ msgstr "Неправильна послідовність у перетворю�
 msgid "Character out of range for UTF-16"
 msgstr "Символ не входить в набір UTF-16"
 
-#: glib/goption.c:495
+#: glib/goption.c:553
 msgid "Usage:"
 msgstr "Використання:"
 
-#: glib/goption.c:495
+#: glib/goption.c:553
 msgid "[OPTION...]"
 msgstr "[ПАРАМЕТР...]"
 
-#: glib/goption.c:586
+#: glib/goption.c:644
 msgid "Help Options:"
 msgstr "Параметри довідки:"
 
-#: glib/goption.c:587
+#: glib/goption.c:645
 msgid "Show help options"
 msgstr "Показати параметри довідки"
 
-#: glib/goption.c:592
+#: glib/goption.c:650
 msgid "Show all help options"
 msgstr "Показати усі параметри довідки"
 
-#: glib/goption.c:642
+#: glib/goption.c:700
 msgid "Application Options:"
 msgstr "Параметри програми:"
 
-#: glib/goption.c:686 glib/goption.c:756
+#: glib/goption.c:744 glib/goption.c:814
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "Не вдається розібрати числове ціле значення '%s' для %s"
 
-#: glib/goption.c:696 glib/goption.c:764
+#: glib/goption.c:754 glib/goption.c:822
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "Числове ціле значення '%s' для %s поза межами діапазону"
 
-#: glib/goption.c:721
+#: glib/goption.c:779
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "Не вдається розібрати числове значення подвійної точності '%s' для %s"
 
-#: glib/goption.c:729
+#: glib/goption.c:787
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "Числове значення подвійної точності '%s' для %s поза межами діапазону"
 
-#: glib/goption.c:1066
+#: glib/goption.c:1124
 #, c-format
 msgid "Error parsing option %s"
 msgstr "Помилка розбору параметра %s"
 
-#: glib/goption.c:1097 glib/goption.c:1208
+#: glib/goption.c:1155 glib/goption.c:1266
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Відсутній аргумент %s"
 
-#: glib/goption.c:1597
+#: glib/goption.c:1655
 #, c-format
 msgid "Unknown option %s"
 msgstr "Невідомий параметр %s"
@@ -733,51 +738,52 @@ msgstr ""
 "Ключовий файл містить рядок '%s, який не є парою ключ-значення, групою або "
 "коментарем"
 
-#: glib/gkeyfile.c:758
+#: glib/gkeyfile.c:755 glib/gkeyfile.c:1233 glib/gkeyfile.c:2456
+#: glib/gkeyfile.c:2579 glib/gkeyfile.c:2894
 #, fuzzy, c-format
 msgid "Invalid group name: %s"
 msgstr "Неправильна назва програми: %s"
 
-#: glib/gkeyfile.c:780
+#: glib/gkeyfile.c:774
 #, c-format
 msgid "Key file does not start with a group"
 msgstr "Ключовий файл не починається з групи"
 
-#: glib/gkeyfile.c:806
+#: glib/gkeyfile.c:797 glib/gkeyfile.c:1235
 #, fuzzy, c-format
 msgid "Invalid key name: %s"
 msgstr "Неправильна назва програми: %s"
 
-#: glib/gkeyfile.c:833
+#: glib/gkeyfile.c:821
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "Ключовий фал містить кодування, що не підтримується '%s'"
 
-#: glib/gkeyfile.c:1042 glib/gkeyfile.c:1201 glib/gkeyfile.c:2402
-#: glib/gkeyfile.c:2469 glib/gkeyfile.c:2590 glib/gkeyfile.c:2725
-#: glib/gkeyfile.c:2878 glib/gkeyfile.c:3058 glib/gkeyfile.c:3115
+#: glib/gkeyfile.c:1030 glib/gkeyfile.c:1189 glib/gkeyfile.c:2394
+#: glib/gkeyfile.c:2463 glib/gkeyfile.c:2586 glib/gkeyfile.c:2721
+#: glib/gkeyfile.c:2874 glib/gkeyfile.c:3056 glib/gkeyfile.c:3113
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Ключовий файл не містить групи '%s'"
 
-#: glib/gkeyfile.c:1213
+#: glib/gkeyfile.c:1201
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "Ключовий файл не містить ключ '%s'"
 
-#: glib/gkeyfile.c:1315 glib/gkeyfile.c:1425
+#: glib/gkeyfile.c:1307 glib/gkeyfile.c:1417
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr ""
 "Ключовий файл містить ключ '%s' зі значенням '%s', кодування якого не UTF-8"
 
-#: glib/gkeyfile.c:1335 glib/gkeyfile.c:1445 glib/gkeyfile.c:1813
+#: glib/gkeyfile.c:1327 glib/gkeyfile.c:1437 glib/gkeyfile.c:1805
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr ""
 "Ключовий файл містить ключ '%s', що має значення, яке не вдається розібрати."
 
-#: glib/gkeyfile.c:2025 glib/gkeyfile.c:2234
+#: glib/gkeyfile.c:2017 glib/gkeyfile.c:2226
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -786,37 +792,37 @@ msgstr ""
 "Ключовий файл містить '%s' у групі '%s', що має значення, яке неможливо "
 "розібрати."
 
-#: glib/gkeyfile.c:2417 glib/gkeyfile.c:2605 glib/gkeyfile.c:3126
+#: glib/gkeyfile.c:2409 glib/gkeyfile.c:2601 glib/gkeyfile.c:3124
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Ключовий файл не містить ключ '%s' у групі '%s'"
 
-#: glib/gkeyfile.c:3346
+#: glib/gkeyfile.c:3344
 #, c-format
 msgid "Key file contains escape character at end of line"
 msgstr "Ключовий файл містить escape-символ наприкінці рядка"
 
-#: glib/gkeyfile.c:3368
+#: glib/gkeyfile.c:3366
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "Ключовий файл містить неправильну escape-послідовність '%s'"
 
-#: glib/gkeyfile.c:3510
+#: glib/gkeyfile.c:3508
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Не вдається розібрати значення '%s' як число."
 
-#: glib/gkeyfile.c:3524
+#: glib/gkeyfile.c:3522
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "Числове ціле значення '%s' поза межами діапазону"
 
-#: glib/gkeyfile.c:3557
+#: glib/gkeyfile.c:3555
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "Значення '%s' не вдається перетворити у число з рухомою комою."
 
-#: glib/gkeyfile.c:3584
+#: glib/gkeyfile.c:3582
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Не вдається розібрати значення '%s' як логічне значення."

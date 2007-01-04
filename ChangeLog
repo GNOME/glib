@@ -1,3 +1,11 @@
+2007-01-04  Matthias Clasen  <mclasen@redhat.com> 
+
+	* === Released 2.12.7 ===
+
+	* tests/keyfile-test.c: Remove some debug leftovers.
+
+	* NEWS: Updates
+
 2007-01-03  Behdad Esfahbod  <behdad@gnome.org>
 
 	* glib/goption.c (_g_unichar_get_width), (_g_utf8_strwidth),

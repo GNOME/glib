@@ -1,3 +1,37 @@
+Overview of Changes from GLib 2.12.6 to GLib 2.12.7
+===================================================
+
+* GKeyFile
+ - The stricter syntax checks introduced in 2.12.5 have 
+   been reduced to warnings for the 2.12 series
+ 
+* GSlice
+ - The slice allocator has gained address validation that
+   can be activated with the environment variable
+   G_SLICE=debug-blocks
+ - The allocator emits a warning if it detects too late
+   thread initialization
+
+* GOption
+ - Take double-width and zero-width characters into account
+   when formatting --help output
+
+* Bugs fixed
+ 391370 Recent crash on file
+ 346955 NON-ASCII UTF-8 arg_description in GOptionEntry causes wr...
+ 371631 Bug in g_bit_nth_lsf?
+ 376645 Win32: Fatal warnings abort application even if IsDebugge...
+ 389300 g_utf8_collate_key modifies the locale
+ 390913 gslice.c: illegal declaration (C99)
+ 304517 glib/libcharset/localcharset.c/_g_locale_charset_raw: han...
+ 336438 unicode collate test failing
+ 391364 Warnings during ./configure due to $SED being undefined i...
+ 391367 config.status warning for datarootdir support in glib-get...
+ 371670 Faster g_bit_* operations
+
+* Updated translations (ar,de,en_CA,en_GB,sv,vi)
+
+
 Overview of Changes from GLib 2.12.5 to GLib 2.12.6
 ===================================================
 

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.dz\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-12-20 11:41-0500\n"
+"POT-Creation-Date: 2007-01-04 17:24-0500\n"
 "PO-Revision-Date: 2006-08-09 10:23+0530\n"
 "Last-Translator: Mindu Dorji\n"
 "Language-Team: DZONGKHA <pgeyleg@dit.gov.bt>\n"
@@ -58,9 +58,9 @@ msgstr "ཡུ་ཨར་ཨའི་'%s'གི་དོན་ལུ་ དེ�
 #: glib/gbookmarkfile.c:2608 glib/gbookmarkfile.c:2687
 #: glib/gbookmarkfile.c:2729 glib/gbookmarkfile.c:2826
 #: glib/gbookmarkfile.c:2952 glib/gbookmarkfile.c:3142
-#: glib/gbookmarkfile.c:3218 glib/gbookmarkfile.c:3371
-#: glib/gbookmarkfile.c:3436 glib/gbookmarkfile.c:3526
-#: glib/gbookmarkfile.c:3653
+#: glib/gbookmarkfile.c:3218 glib/gbookmarkfile.c:3379
+#: glib/gbookmarkfile.c:3454 glib/gbookmarkfile.c:3544
+#: glib/gbookmarkfile.c:3671
 #, c-format
 msgid "No bookmark found for URI '%s'"
 msgstr "ཡུ་ཨར་ཨའི་'%s'གི་དོན་ལུ་དེབ་རྟགས་མ་ཐོབ།"
@@ -80,10 +80,15 @@ msgstr "ཡུ་ཨར་ཨའི་'%s'གི་དོན་ལུ་དེ�
 msgid "No groups set in bookmark for URI '%s'"
 msgstr "ཡུ་ཨར་ཨའི་'%sགི་དོན་ལུ་ དེབ་རྟགས་ནང་ སྡེ་ཚན་གཞི་སྒྲིག་མ་འབད་བས།"
 
-#: glib/gbookmarkfile.c:3236 glib/gbookmarkfile.c:3381
+#: glib/gbookmarkfile.c:3236 glib/gbookmarkfile.c:3389
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
 msgstr "མིང་'%sའབད་མི་གློག་རིམ་གྱིས་ '%s དོན་ལུ་ དེབ་རྟགས་ཅིག་ཐོ་འགོད་མ་འབད་བས། "
+
+#: glib/gbookmarkfile.c:3402
+#, fuzzy, c-format
+msgid "Failed to expand exec line '%s' with URI '%s'"
+msgstr "བརྡ་མཚོན་འགྲེལ་ལམ་ ’%s’:%s ལྷག་མ་ཚུགས།"
 
 #: glib/gconvert.c:423 glib/gconvert.c:501 glib/giochannel.c:1150
 #, c-format
@@ -648,61 +653,61 @@ msgstr "བསྒྱུར་བཅོས་ཀྱི་ ཨིན་པུཊ�
 msgid "Character out of range for UTF-16"
 msgstr "ཡིག་འབྲུ་ ཡུ་ཊི་ཨེཕ་- ༡༦ གི་ ཁྱབ་ཚད་ཀྱི་ཕྱི་ཁར་ཨིན་མས།"
 
-#: glib/goption.c:495
+#: glib/goption.c:553
 msgid "Usage:"
 msgstr "ལག་ལེན:"
 
-#: glib/goption.c:495
+#: glib/goption.c:553
 msgid "[OPTION...]"
 msgstr "[ གདམ་ཁ... ] "
 
-#: glib/goption.c:586
+#: glib/goption.c:644
 msgid "Help Options:"
 msgstr "གྲོགས་རམ་གདམ་ཁ་ཚུ།"
 
-#: glib/goption.c:587
+#: glib/goption.c:645
 msgid "Show help options"
 msgstr "གྲོགས་རམ་གདམ་ཁ་ཚུ་སྟོན།"
 
-#: glib/goption.c:592
+#: glib/goption.c:650
 msgid "Show all help options"
 msgstr "གྲོགས་རམ་གདམ་ཁ་ཚུ་ ཆ་མཉམ་སྟོན།"
 
-#: glib/goption.c:642
+#: glib/goption.c:700
 msgid "Application Options:"
 msgstr "གློག་རིམ་གྱི་གདམ་ཁ།"
 
-#: glib/goption.c:686 glib/goption.c:756
+#: glib/goption.c:744 glib/goption.c:814
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "ཧྲིལ་ཨང་བེ་ལུ་ ’%s’དེ་%s གི་དོན་ལུ་ མིང་དཔྱད་འབད་མི་ཚུགས།"
 
-#: glib/goption.c:696 glib/goption.c:764
+#: glib/goption.c:754 glib/goption.c:822
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "%s གི་དོན་ལུ་ ཧྲིལ་ཨང་བེ་ལུ་ ’%s’ དེ་ ཁྱབ་ཚད་ཀྱི་ཕྱི་ཁར་ཨིན་པས།"
 
-#: glib/goption.c:721
+#: glib/goption.c:779
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "བེ་ལུ་གཉིས་བལྟབ་%s'མིང་དཔྱད་འབད་མི་ཚུགས། %sགི་དོན་ལུ།"
 
-#: glib/goption.c:729
+#: glib/goption.c:787
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "བེ་ལུ་གཉིས་བལྟབ་'%s' དེ་%s གི་དོན་ལུ་ ཁྱབ་ཚད་ཀྱི་ཕྱི་ཁར་ཨིན་པས།"
 
-#: glib/goption.c:1066
+#: glib/goption.c:1124
 #, c-format
 msgid "Error parsing option %s"
 msgstr "གདམ་ཁ་%s མིང་དཔྱད་འབད་ནི་ལུ་འཛོལ་བ།"
 
-#: glib/goption.c:1097 glib/goption.c:1208
+#: glib/goption.c:1155 glib/goption.c:1266
 #, c-format
 msgid "Missing argument for %s"
 msgstr "%s གི་དོན་ལུ་ སྒྲུབ་རྟགས་བརླག་སྟོར་ཞུགས་ནུག"
 
-#: glib/goption.c:1597
+#: glib/goption.c:1655
 #, c-format
 msgid "Unknown option %s"
 msgstr "ཤེས་མ་ཚུགས་པའི་གདམ་ཁ་ %s།"
@@ -728,86 +733,87 @@ msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr "ལྡེ་མིག་ཡིག་སྣོད་ནང་ལུ་ ལྡེ་མིག་-བེ་ལུ་དང་ སྡེ་ཚན་ བསམ་བཀོད་མེན་པའི་ གྱལ་རིམ་'%s' ཡོད། "
 
-#: glib/gkeyfile.c:758
+#: glib/gkeyfile.c:755 glib/gkeyfile.c:1233 glib/gkeyfile.c:2456
+#: glib/gkeyfile.c:2579 glib/gkeyfile.c:2894
 #, fuzzy, c-format
 msgid "Invalid group name: %s"
 msgstr "ནུས་མེད་ལསརིམ་མིང་:%s།"
 
-#: glib/gkeyfile.c:780
+#: glib/gkeyfile.c:774
 #, c-format
 msgid "Key file does not start with a group"
 msgstr "ལྡེ་མིག་ཡིག་སྣོད་དེ་ སྡེ་ཚན་ཅིག་གི་ཐོག་ལས་ འགོ་མི་བཙུགས།"
 
-#: glib/gkeyfile.c:806
+#: glib/gkeyfile.c:797 glib/gkeyfile.c:1235
 #, fuzzy, c-format
 msgid "Invalid key name: %s"
 msgstr "ནུས་མེད་ལསརིམ་མིང་:%s།"
 
-#: glib/gkeyfile.c:833
+#: glib/gkeyfile.c:821
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "ལྡེ་མིག་ཡིག་སྣོད་ནང་ལུ་ རྒྱབ་སྐྱོར་མེད་པའི་ ཨིན་ཀོ་ཌིང་'%s'ཡོད།"
 
-#: glib/gkeyfile.c:1042 glib/gkeyfile.c:1201 glib/gkeyfile.c:2402
-#: glib/gkeyfile.c:2469 glib/gkeyfile.c:2590 glib/gkeyfile.c:2725
-#: glib/gkeyfile.c:2878 glib/gkeyfile.c:3058 glib/gkeyfile.c:3115
+#: glib/gkeyfile.c:1030 glib/gkeyfile.c:1189 glib/gkeyfile.c:2394
+#: glib/gkeyfile.c:2463 glib/gkeyfile.c:2586 glib/gkeyfile.c:2721
+#: glib/gkeyfile.c:2874 glib/gkeyfile.c:3056 glib/gkeyfile.c:3113
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "ལྡེ་མིག་ཡིག་སྣོད་ནང་ལུ་ སྡེ་ཚན་ '%s' མིན་འདུག།"
 
-#: glib/gkeyfile.c:1213
+#: glib/gkeyfile.c:1201
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "ལྡེ་མིག་ཡིག་སྣོད་ནང་ ལྡེ་མིག་'%s'མིན་འདུག"
 
-#: glib/gkeyfile.c:1315 glib/gkeyfile.c:1425
+#: glib/gkeyfile.c:1307 glib/gkeyfile.c:1417
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "ལྡེ་མིག་ཡིག་སྣོད་ནང་ལུ་ ཡུ་ཊི་ཨེཕ་-༨ མེད་པའི་ ལྡེ་མིག་'%s' བེ་ལུ་'%s' དང་བཅསཔ་སྦེ་འདུག"
 
-#: glib/gkeyfile.c:1335 glib/gkeyfile.c:1445 glib/gkeyfile.c:1813
+#: glib/gkeyfile.c:1327 glib/gkeyfile.c:1437 glib/gkeyfile.c:1805
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "ལྡེ་མིག་ཡིག་སྣོད་ནང་ལུ་ ཁ་བསྒྱུར་འབད་མ་ཚུགས་པའི་ བེ་ལུ་ཡོད་མི་ ལྡེ་མིག་ '%s'འདུག"
 
-#: glib/gkeyfile.c:2025 glib/gkeyfile.c:2234
+#: glib/gkeyfile.c:2017 glib/gkeyfile.c:2226
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
 "interpreted."
 msgstr "ལྡེ་མིག་ཡིག་སྣོད་ནང་ལུ་ ཁ་བསྒྱུར་འབད་མ་ཚུགས་པའི་ ལྡེ་མིག་'%s'སྡེ་ཚན་'%s' ནང་འདུག།"
 
-#: glib/gkeyfile.c:2417 glib/gkeyfile.c:2605 glib/gkeyfile.c:3126
+#: glib/gkeyfile.c:2409 glib/gkeyfile.c:2601 glib/gkeyfile.c:3124
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "ལྡེ་མིག་ཡིག་སྣོད་དེ་ལུ་ ལྡེ་མིག་'%s' སྡེ་ཚན་'%s' ནང་མིན་འདུག"
 
-#: glib/gkeyfile.c:3346
+#: glib/gkeyfile.c:3344
 #, c-format
 msgid "Key file contains escape character at end of line"
 msgstr "ལྡེ་མིག་ཡིག་སྣོད་ནང་ལུ་ གྱལ་རིམ་མཇུག་ལུ་ གྲོས་ཐར་འབད་མི་ཡིག་འབྲུ་འདུག"
 
-#: glib/gkeyfile.c:3368
+#: glib/gkeyfile.c:3366
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "ལྡེ་མིག་ཡིག་སྣོད་ནང་ལུ་ ནུས་མེད་གྲོས་ཐར་འབྱུང་རིམ་ '%s' འདུག"
 
-#: glib/gkeyfile.c:3510
+#: glib/gkeyfile.c:3508
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "བེ་ལུ་'%s'དེ་ ཨང་གྲངས་ཅིག་སྦེ་ ཁ་བསྒྱུར་འབད་མི་ཚུགས།"
 
-#: glib/gkeyfile.c:3524
+#: glib/gkeyfile.c:3522
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "ཧྲིལ་ཨང་བེ་ལུ་ ’%s’ དེ་ ཁྱབ་ཚད་ཀྱི་ཕྱི་ཁར་ཨིན་པས།"
 
-#: glib/gkeyfile.c:3557
+#: glib/gkeyfile.c:3555
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "བེ་ལུ་'%s'དེ་ འཕུར་ལྡིང་ཨང་གྲངས་ཅིག་སྦེ་ ཁ་བསྒྱུར་འབད་མི་ཚུགས།"
 
-#: glib/gkeyfile.c:3584
+#: glib/gkeyfile.c:3582
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "བེ་ལུ་'%s'དེ་ བུ་ལིན་ཅིག་སྦེ་ ཁ་བསྒྱུར་འབད་མི་ཚུགས།"

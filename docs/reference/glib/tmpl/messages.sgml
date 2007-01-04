@@ -138,6 +138,8 @@ A convenience function/macro to log a normal message.
 
 @...:
 
+@...:
+
 @...: 
 
 
@@ -152,6 +154,8 @@ variable (see <ulink url="glib-running.html">Running GLib Applications</ulink>).
 </para>
 
 @...: format string, followed by parameters to insert into the format string (as with printf())
+
+@...:
 
 @...:
 
@@ -217,6 +221,8 @@ the %G_DEBUG environment variable (see
 
 @...:
 
+@...:
+
 @...: 
 
 
@@ -254,6 +260,8 @@ assertion failure.
 
 @...:
 
+@...:
+
 @...: 
 
 
@@ -263,6 +271,8 @@ A convenience function/macro to log a debug message.
 </para>
 
 @...: format string, followed by parameters to insert into the format string (as with printf())
+
+@...:
 
 @...:
 
