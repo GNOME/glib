@@ -1,3 +1,8 @@
+2007-01-04  Behdad Esfahbod  <behdad@gnome.org>
+
+	* tests/bit-test.c (builtin_bit_nth_lsf1), (builtin_bit_nth_lsf2),
+	(builtin_bit_nth_msf): Fix tests on x86_64.
+
 2007-01-04  Matthias Clasen  <mclasen@redhat.com> 
 
 	* configure.in: Bump version
