@@ -1,27 +1,27 @@
 # translation of cs.po to Czech
 # glib Czech translation.
-# Copyright (C) 2002, 2006 Free Software Foundation, Inc.
+# Copyright (C) 2002, 2006, 2007 Free Software Foundation, Inc.
 # Copyright (C) 2004, 2005 glib'S COPYRIGHT HOLDER
 # Copyright (C) 2004, 2005 Miloslav Trmac <mitr@volny.cz>
 # Copyright (C) 2006 Lukas Novotny <lukasnov@cvs.gnome.org>
+#
+#
 # Petr Pytelka <pyta@lightcomp.cz>, 2002.
 # Miloslav Trmac <mitr@volny.cz>, 2002, 2004, 2005.
 # Lukas Novotny <lukasnov@cvs.gnome.org>, 2006.
-# Jakub Friedl <jfriedl@suse.cz>, 2006.
-#
-#
+# Jakub Friedl <jfriedl@suse.cz>, 2006, 2007.
 msgid ""
 msgstr ""
 "Project-Id-Version: cs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-10-04 16:24+0200\n"
-"PO-Revision-Date: 2006-10-04 16:24+0200\n"
+"POT-Creation-Date: 2007-01-05 13:32+0100\n"
+"PO-Revision-Date: 2007-01-05 13:34+0100\n"
 "Last-Translator: Jakub Friedl <jfriedl@suse.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.10.2\n"
+"X-Generator: KBabel 1.11.4\n"
 "Plural-Forms:  nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
 #: ../glib/gbookmarkfile.c:716 ../glib/gbookmarkfile.c:793
@@ -63,9 +63,9 @@ msgstr "Záložka pro URI '%s' již existuje"
 #: ../glib/gbookmarkfile.c:2608 ../glib/gbookmarkfile.c:2687
 #: ../glib/gbookmarkfile.c:2729 ../glib/gbookmarkfile.c:2826
 #: ../glib/gbookmarkfile.c:2952 ../glib/gbookmarkfile.c:3142
-#: ../glib/gbookmarkfile.c:3218 ../glib/gbookmarkfile.c:3371
-#: ../glib/gbookmarkfile.c:3436 ../glib/gbookmarkfile.c:3526
-#: ../glib/gbookmarkfile.c:3653
+#: ../glib/gbookmarkfile.c:3218 ../glib/gbookmarkfile.c:3381
+#: ../glib/gbookmarkfile.c:3456 ../glib/gbookmarkfile.c:3546
+#: ../glib/gbookmarkfile.c:3673
 #, c-format
 msgid "No bookmark found for URI '%s'"
 msgstr "Nebyla nalezena záložka pro URI '%s'"
@@ -85,74 +85,79 @@ msgstr "V záložce pro URI '%s' není definován žádný soukromý příznak"
 msgid "No groups set in bookmark for URI '%s'"
 msgstr "Žádné skupiny nenastaveny v záložce pro URI '%s'"
 
-#: ../glib/gbookmarkfile.c:3236 ../glib/gbookmarkfile.c:3381
+#: ../glib/gbookmarkfile.c:3236 ../glib/gbookmarkfile.c:3391
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
 msgstr "Žádná aplikace se jménem '%s' nezaregistrovala záložku pro '%s'"
 
-#: ../glib/gconvert.c:405 ../glib/gconvert.c:483 ../glib/giochannel.c:1150
+#: ../glib/gbookmarkfile.c:3404
+#, c-format
+msgid "Failed to expand exec line '%s' with URI '%s'"
+msgstr "Nelze expandovat exec řádek '%s' pomocí URI '%s'"
+
+#: ../glib/gconvert.c:423 ../glib/gconvert.c:501 ../glib/giochannel.c:1150
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Převod ze znakové sady '%s' do '%s' není podporován"
 
-#: ../glib/gconvert.c:409 ../glib/gconvert.c:487
+#: ../glib/gconvert.c:427 ../glib/gconvert.c:505
 #, c-format
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "Nemohu otevřít převaděč z '%s' do '%s'"
 
-#: ../glib/gconvert.c:603 ../glib/gconvert.c:992 ../glib/giochannel.c:1322
+#: ../glib/gconvert.c:621 ../glib/gconvert.c:1010 ../glib/giochannel.c:1322
 #: ../glib/giochannel.c:1364 ../glib/giochannel.c:2206 ../glib/gutf8.c:943
 #: ../glib/gutf8.c:1392
 msgid "Invalid byte sequence in conversion input"
 msgstr "Neplatná posloupnost bajtů na vstupu převodu"
 
-#: ../glib/gconvert.c:609 ../glib/gconvert.c:919 ../glib/giochannel.c:1329
+#: ../glib/gconvert.c:627 ../glib/gconvert.c:937 ../glib/giochannel.c:1329
 #: ../glib/giochannel.c:2218
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Chyba při převodu: %s"
 
-#: ../glib/gconvert.c:644 ../glib/gutf8.c:939 ../glib/gutf8.c:1143
+#: ../glib/gconvert.c:662 ../glib/gutf8.c:939 ../glib/gutf8.c:1143
 #: ../glib/gutf8.c:1284 ../glib/gutf8.c:1388
 msgid "Partial character sequence at end of input"
 msgstr "Částečná sekvence znaků na konci vstupu"
 
-#: ../glib/gconvert.c:894
+#: ../glib/gconvert.c:912
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Nemohu převést ukončení '%s' do znakové sady '%s'"
 
-#: ../glib/gconvert.c:1703
+#: ../glib/gconvert.c:1726
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "URI '%s' není absolutní URI používající schéma \"file\""
 
-#: ../glib/gconvert.c:1713
+#: ../glib/gconvert.c:1736
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "URI '%s' místního souboru nesmí obsahovat '#'"
 
-#: ../glib/gconvert.c:1730
+#: ../glib/gconvert.c:1753
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI '%s' je neplatné"
 
-#: ../glib/gconvert.c:1742
+#: ../glib/gconvert.c:1765
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Jméno počítače v URI '%s' je neplatné"
 
-#: ../glib/gconvert.c:1758
+#: ../glib/gconvert.c:1781
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI '%s' obsahuje nesprávně escapované znaky"
 
-#: ../glib/gconvert.c:1853
+#: ../glib/gconvert.c:1876
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "'%s' není absolutní cesta"
 
-#: ../glib/gconvert.c:1863
+#: ../glib/gconvert.c:1886
 msgid "Invalid hostname"
 msgstr "Neplatné jméno počítače"
 
@@ -515,17 +520,17 @@ msgstr "Text je prázdný (nebo obsahuje pouze mezery)"
 msgid "Failed to read data from child process"
 msgstr "Nemohu číst data z procesu potomka"
 
-#: ../glib/gspawn-win32.c:287 ../glib/gspawn.c:1360
+#: ../glib/gspawn-win32.c:287 ../glib/gspawn.c:1395
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Nemohu vytvořit rouru pro komunikaci s procesem potomka (%s)"
 
-#: ../glib/gspawn-win32.c:325 ../glib/gspawn.c:1024
+#: ../glib/gspawn-win32.c:325 ../glib/gspawn.c:1059
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Nemohu číst z roury potomka (%s)"
 
-#: ../glib/gspawn-win32.c:351 ../glib/gspawn.c:1229
+#: ../glib/gspawn-win32.c:351 ../glib/gspawn.c:1264
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Nemohu přejít do adresáře '%s' (%s)"
@@ -568,47 +573,47 @@ msgid ""
 "process"
 msgstr "Neočekávaná chyba v g_io_channel_win32_poll() při čtení dat z procesu potomka"
 
-#: ../glib/gspawn.c:164
+#: ../glib/gspawn.c:175
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "Nemohu číst data z procesu potomka (%s)"
 
-#: ../glib/gspawn.c:296
+#: ../glib/gspawn.c:307
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr "Neočekávaná chyba v select() při čtení dat z procesu potomka (%s)"
 
-#: ../glib/gspawn.c:379
+#: ../glib/gspawn.c:390
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Neočekávaná chyba v waitpid() (%s)"
 
-#: ../glib/gspawn.c:1089
+#: ../glib/gspawn.c:1124
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Nemohu fork (%s)"
 
-#: ../glib/gspawn.c:1239
+#: ../glib/gspawn.c:1274
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Nemohu spustit proces potomka \"%s\" (%s)"
 
-#: ../glib/gspawn.c:1249
+#: ../glib/gspawn.c:1284
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Nemohu přesměrovat vstup nebo výstup procesu potomka (%s)"
 
-#: ../glib/gspawn.c:1258
+#: ../glib/gspawn.c:1293
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Nemohu fork proces potomka (%s)"
 
-#: ../glib/gspawn.c:1266
+#: ../glib/gspawn.c:1301
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Neznámá chyba při běhu procesu potomka \"%s\""
 
-#: ../glib/gspawn.c:1288
+#: ../glib/gspawn.c:1323
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Nemohu přečíst dostatek dat z roury pid potomka (%s)"
@@ -626,118 +631,128 @@ msgstr "Neplatná posloupnost na vstupu převodu"
 msgid "Character out of range for UTF-16"
 msgstr "Znak je mimo rozsah UTF-16"
 
-#: ../glib/goption.c:495
+#: ../glib/goption.c:548
 msgid "Usage:"
 msgstr "Použití:"
 
-#: ../glib/goption.c:495
+#: ../glib/goption.c:548
 msgid "[OPTION...]"
 msgstr "[PŘEPÍNAČ...]"
 
-#: ../glib/goption.c:586
+#: ../glib/goption.c:639
 msgid "Help Options:"
 msgstr "Přepínače nápovědy:"
 
-#: ../glib/goption.c:587
+#: ../glib/goption.c:640
 msgid "Show help options"
 msgstr "Zobrazit přepínače nápovědy"
 
-#: ../glib/goption.c:592
+#: ../glib/goption.c:645
 msgid "Show all help options"
 msgstr "Zobrazit všechny přepínače nápovědy"
 
-#: ../glib/goption.c:642
+#: ../glib/goption.c:695
 msgid "Application Options:"
 msgstr "Přepínače aplikace:"
 
-#: ../glib/goption.c:686 ../glib/goption.c:756
+#: ../glib/goption.c:739 ../glib/goption.c:809
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "Nemohu zpracovat celočíselnou hodnotu '%s' pro %s"
 
-#: ../glib/goption.c:696 ../glib/goption.c:764
+#: ../glib/goption.c:749 ../glib/goption.c:817
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "Celočíselná hodnota '%s' pro %s mimo rozsah"
 
-#: ../glib/goption.c:721
+#: ../glib/goption.c:774
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "Nelze zpracovat celočíselnou (double) hodnotu '%s' pro %s"
 
-#: ../glib/goption.c:729
+#: ../glib/goption.c:782
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "Celočíselná (double) hodnota '%s' pro %s mimo rozsah"
 
-#: ../glib/goption.c:1066
+#: ../glib/goption.c:1119
 #, c-format
 msgid "Error parsing option %s"
 msgstr "Chyba volby %s při syntaktické analýze"
 
-#: ../glib/goption.c:1097 ../glib/goption.c:1208
+#: ../glib/goption.c:1150 ../glib/goption.c:1261
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Chybí parametr %s"
 
-#: ../glib/goption.c:1597
+#: ../glib/goption.c:1655
 #, c-format
 msgid "Unknown option %s"
 msgstr "Neznámý přepínač %s"
 
-#: ../glib/gkeyfile.c:337
+#: ../glib/gkeyfile.c:341
 msgid "Valid key file could not be found in data dirs"
 msgstr "V datových adresářích nelze najít platný soubor klíče"
 
-#: ../glib/gkeyfile.c:372
+#: ../glib/gkeyfile.c:376
 msgid "Not a regular file"
 msgstr "Není obyčejný soubor"
 
-#: ../glib/gkeyfile.c:380
+#: ../glib/gkeyfile.c:384
 msgid "File is empty"
 msgstr "Soubor je prázdný"
 
-#: ../glib/gkeyfile.c:696
+#: ../glib/gkeyfile.c:700
 #, c-format
 msgid "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr ""
 "Soubor klíče obsahuje '%s', což není dvojice klíč-hodnota, skupina ani "
 "komentář"
 
-#: ../glib/gkeyfile.c:767
+#: ../glib/gkeyfile.c:758
+#, c-format
+msgid "Invalid group name: %s"
+msgstr "Neplatné jméno skupiny: %s"
+
+#: ../glib/gkeyfile.c:780
 msgid "Key file does not start with a group"
 msgstr "Soubor klíče nezačíná skupinou"
 
-#: ../glib/gkeyfile.c:811
+#: ../glib/gkeyfile.c:806
+#, c-format
+msgid "Invalid key name: %s"
+msgstr "Neplatné jméno klíče: %s"
+
+#: ../glib/gkeyfile.c:833
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "Soubor klíče obsahuje nepodporované kódování '%s'"
 
-#: ../glib/gkeyfile.c:1020 ../glib/gkeyfile.c:1179 ../glib/gkeyfile.c:2398
-#: ../glib/gkeyfile.c:2463 ../glib/gkeyfile.c:2582 ../glib/gkeyfile.c:2717
-#: ../glib/gkeyfile.c:2870 ../glib/gkeyfile.c:3046 ../glib/gkeyfile.c:3103
+#: ../glib/gkeyfile.c:1042 ../glib/gkeyfile.c:1201 ../glib/gkeyfile.c:2402
+#: ../glib/gkeyfile.c:2469 ../glib/gkeyfile.c:2590 ../glib/gkeyfile.c:2725
+#: ../glib/gkeyfile.c:2878 ../glib/gkeyfile.c:3058 ../glib/gkeyfile.c:3115
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Soubor klíče nemá skupinu '%s'"
 
-#: ../glib/gkeyfile.c:1191
+#: ../glib/gkeyfile.c:1213
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "Soubor klíče nemá klíč '%s'"
 
-#: ../glib/gkeyfile.c:1293 ../glib/gkeyfile.c:1405
+#: ../glib/gkeyfile.c:1315 ../glib/gkeyfile.c:1425
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "Soubor klíče obsahuje klíč '%s' s hodnotou '%s', která není v UTF-8"
 
-#: ../glib/gkeyfile.c:1313 ../glib/gkeyfile.c:1425 ../glib/gkeyfile.c:1797
+#: ../glib/gkeyfile.c:1335 ../glib/gkeyfile.c:1445 ../glib/gkeyfile.c:1813
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr ""
 "Soubor klíče obsahuje klíč '%s', který má hodnotu, kterou nelze "
 "interpretovat."
 
-#: ../glib/gkeyfile.c:2013 ../glib/gkeyfile.c:2226
+#: ../glib/gkeyfile.c:2025 ../glib/gkeyfile.c:2234
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -746,36 +761,36 @@ msgstr ""
 "Soubor klíče obsahuje klíč '%s' ve skupině '%s', který má hodnotu, kterou "
 "nelze interpretovat."
 
-#: ../glib/gkeyfile.c:2413 ../glib/gkeyfile.c:2597 ../glib/gkeyfile.c:3114
+#: ../glib/gkeyfile.c:2417 ../glib/gkeyfile.c:2605 ../glib/gkeyfile.c:3126
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Soubor klíče nemá klíč '%s' ve skupině '%s'"
 
-#: ../glib/gkeyfile.c:3287
+#: ../glib/gkeyfile.c:3346
 msgid "Key file contains escape character at end of line"
 msgstr "Soubor klíče obsahuje znak escape na konci řádku"
 
-#: ../glib/gkeyfile.c:3309
+#: ../glib/gkeyfile.c:3368
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "Soubor klíče obsahuje neplatnou escape sekvenci '%s'"
 
-#: ../glib/gkeyfile.c:3451
+#: ../glib/gkeyfile.c:3510
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Hodnotu '%s' nelze interpretovat jako číslo."
 
-#: ../glib/gkeyfile.c:3465
+#: ../glib/gkeyfile.c:3524
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "Celočíselná hodnota '%s' mimo rozsah"
 
-#: ../glib/gkeyfile.c:3498
+#: ../glib/gkeyfile.c:3557
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "Hodnotu '%s' nelze interpretovat jako reálné (float) číslo."
 
-#: ../glib/gkeyfile.c:3525
+#: ../glib/gkeyfile.c:3584
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Hodnotu '%s' nelze interpretovat jako booleovskou hodnotu."
