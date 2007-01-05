@@ -13,7 +13,7 @@ builtin_bit_nth_lsf1 (gulong mask, gint nth_bit)
   if (nth_bit >= 0)
     {
       if (G_LIKELY (nth_bit < GLIB_SIZEOF_LONG * 8 - 1))
-	mask &= -(1<<(nth_bit+1));
+	mask &= -(1UL<<(nth_bit+1));
       else
 	mask = 0;
     }
@@ -26,7 +26,7 @@ builtin_bit_nth_lsf2 (gulong mask, gint nth_bit)
   if (nth_bit >= 0)
     {
       if (G_LIKELY (nth_bit < GLIB_SIZEOF_LONG * 8 - 1))
-	mask &= -(1<<(nth_bit+1));
+	mask &= -(1UL<<(nth_bit+1));
       else
 	mask = 0;
     }
@@ -37,7 +37,7 @@ static gint
 builtin_bit_nth_msf (gulong mask, gint nth_bit)
 {
   if (nth_bit >= 0 && nth_bit < GLIB_SIZEOF_LONG * 8)
-    mask &= (1<<nth_bit)-1;
+    mask &= (1UL<<nth_bit)-1;
   return mask ? GLIB_SIZEOF_LONG * 8 - 1 - __builtin_clzl(mask) : -1;
 }
 
