@@ -1,3 +1,11 @@
+2007-01-07  Tor Lillqvist  <tml@novell.com>
+
+	* glib/giowin32.c: Handle GIOChannels for file descriptors
+	connected to the console separately. This would typically be the
+	fd 0, 1, or 2 (if not redirected) in a console application. For
+	such fds we don't need a separate thread, as console HANDLEs are
+	waitable objects. (#359202, Michiel de Hoon)
+
 2007-01-04  Behdad Esfahbod  <behdad@gnome.org>
 
 	* tests/bit-test.c (builtin_bit_nth_lsf1), (builtin_bit_nth_lsf2),

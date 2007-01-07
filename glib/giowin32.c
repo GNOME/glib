@@ -36,6 +36,7 @@
 #include <stdlib.h>
 #include <winsock2.h>
 #include <windows.h>
+#include <conio.h>
 #include <fcntl.h>
 #include <io.h>
 #include <process.h>
@@ -55,9 +56,10 @@ typedef struct _GIOWin32Watch GIOWin32Watch;
 typedef enum {
   G_IO_WIN32_WINDOWS_MESSAGES,	/* Windows messages */
   G_IO_WIN32_FILE_DESC,		/* Unix-like file descriptors from
-				 * _open() or _pipe(). Read with read().
+				 * _open() or _pipe(), except for console IO.
 				 * Have to create separate thread to read.
 				 */
+  G_IO_WIN32_CONSOLE,		/* Console IO (usually stdin, stdout, stderr) */
   G_IO_WIN32_SOCKET		/* Sockets. No separate thread */
 } GIOWin32ChannelType;
 
@@ -777,6 +779,7 @@ g_io_win32_prepare (GSource *source,
   switch (channel->type)
     {
     case G_IO_WIN32_WINDOWS_MESSAGES:
+    case G_IO_WIN32_CONSOLE:
       break;
 
     case G_IO_WIN32_FILE_DESC:
@@ -873,6 +876,29 @@ g_io_win32_check (GSource *source)
 
       return ((watch->pollfd.revents | buffer_condition) & watch->condition);
 
+    case G_IO_WIN32_CONSOLE:
+      if (watch->channel->is_writeable)
+	return TRUE;
+      else if (watch->channel->is_readable)
+        {
+	  INPUT_RECORD buffer;
+	  DWORD n;
+	  if (PeekConsoleInput ((HANDLE) watch->pollfd.fd, &buffer, 1, &n) &&
+	      n == 1)
+	    {
+	      /* _kbhit() does quite complex processing to find out
+	       * whether at least one of the key events pending corresponds
+	       * to a "real" character that can be read.
+	       */
+	      if (_kbhit ())
+		return TRUE;
+	      
+	      /* Discard all other kinds of events */
+	      ReadConsoleInput ((HANDLE) watch->pollfd.fd, &buffer, 1, &n);
+	    }
+        }
+      return FALSE;
+
     case G_IO_WIN32_SOCKET:
       if (channel->last_events & FD_WRITE)
 	{
@@ -963,6 +989,7 @@ g_io_win32_finalize (GSource *source)
   switch (channel->type)
     {
     case G_IO_WIN32_WINDOWS_MESSAGES:
+    case G_IO_WIN32_CONSOLE:
       break;
 
     case G_IO_WIN32_FILE_DESC:
@@ -1111,11 +1138,11 @@ g_io_win32_msg_create_watch (GIOChannel   *channel,
 }
 
 static GIOStatus
-g_io_win32_fd_read (GIOChannel *channel,
-		    gchar      *buf,
-		    gsize       count,
-		    gsize      *bytes_read,
-		    GError    **err)
+g_io_win32_fd_and_console_read (GIOChannel *channel,
+				gchar      *buf,
+				gsize       count,
+				gsize      *bytes_read,
+				GError    **err)
 {
   GIOWin32Channel *win32_channel = (GIOWin32Channel *)channel;
   gint result;
@@ -1158,11 +1185,11 @@ g_io_win32_fd_read (GIOChannel *channel,
 }
 
 static GIOStatus
-g_io_win32_fd_write (GIOChannel  *channel,
-		     const gchar *buf,
-		     gsize        count,
-		     gsize       *bytes_written,
-		     GError     **err)
+g_io_win32_fd_and_console_write (GIOChannel  *channel,
+				 const gchar *buf,
+				 gsize        count,
+				 gsize       *bytes_written,
+				 GError     **err)
 {
   GIOWin32Channel *win32_channel = (GIOWin32Channel *)channel;
   gint result;
@@ -1324,6 +1351,44 @@ g_io_win32_fd_create_watch (GIOChannel    *channel,
 
   g_source_add_poll (source, &watch->pollfd);
   UNLOCK (win32_channel->mutex);
+
+  return source;
+}
+
+static GIOStatus
+g_io_win32_console_close (GIOChannel *channel,
+		          GError    **err)
+{
+  GIOWin32Channel *win32_channel = (GIOWin32Channel *)channel;
+  
+  if (close (win32_channel->fd) < 0)
+    {
+      g_set_error (err, G_IO_CHANNEL_ERROR,
+		   g_io_channel_error_from_errno (errno),
+		   g_strerror (errno));
+      return G_IO_STATUS_ERROR;
+    }
+
+  return G_IO_STATUS_NORMAL;
+}
+
+static GSource *
+g_io_win32_console_create_watch (GIOChannel    *channel,
+				 GIOCondition   condition)
+{
+  GIOWin32Channel *win32_channel = (GIOWin32Channel *)channel;
+  GSource *source = g_source_new (&g_io_watch_funcs, sizeof (GIOWin32Watch));
+  GIOWin32Watch *watch = (GIOWin32Watch *)source;
+
+  watch->channel = channel;
+  g_io_channel_ref (channel);
+  
+  watch->condition = condition;
+  
+  watch->pollfd.fd = (gint) _get_osfhandle (win32_channel->fd);
+  watch->pollfd.events = condition;
+  
+  g_source_add_poll (source, &watch->pollfd);
 
   return source;
 }
@@ -1682,23 +1747,6 @@ g_io_win32_fd_get_flags_internal (GIOChannel  *channel,
 	(WriteFile ((HANDLE) _get_osfhandle (win32_channel->fd), &c, 0, &count, NULL) != 0);
       channel->is_seekable  = FALSE;
     }
-  else if (st->st_mode & _S_IFCHR)
-    {
-      /* XXX Seems there is no way to find out the readability of file
-       * handles to device files (consoles, mostly) without doing a
-       * blocking read. So punt, say it's readable.
-       */
-      channel->is_readable = TRUE;
-
-      channel->is_writeable =
-	(WriteFile ((HANDLE) _get_osfhandle (win32_channel->fd), &c, 0, &count, NULL) != 0);
-
-      /* XXX What about devices that actually *are* seekable? But
-       * those would probably not be handled using the C runtime
-       * anyway, but using Windows-specific code.
-       */
-      channel->is_seekable = FALSE;
-    }
   else
     {
       channel->is_readable =
@@ -1727,6 +1775,33 @@ g_io_win32_fd_get_flags (GIOChannel *channel)
     return g_io_win32_fd_get_flags_internal (channel, &st);
   else
     return 0;
+}
+
+static GIOFlags
+g_io_win32_console_get_flags_internal (GIOChannel  *channel)
+{
+  GIOWin32Channel *win32_channel = (GIOWin32Channel *) channel;
+  HANDLE handle = (HANDLE) _get_osfhandle (win32_channel->fd);
+  gchar c;
+  DWORD count;
+  INPUT_RECORD record;
+
+  channel->is_readable = PeekConsoleInput (handle, &record, 1, &count);
+  channel->is_writeable = WriteFile (handle, &c, 0, &count, NULL);
+  channel->is_seekable = FALSE;
+
+  return 0;
+}
+
+static GIOFlags
+g_io_win32_console_get_flags (GIOChannel *channel)
+{
+  GIOWin32Channel *win32_channel = (GIOWin32Channel *)channel;
+
+  g_return_val_if_fail (win32_channel != NULL, 0);
+  g_return_val_if_fail (win32_channel->type == G_IO_WIN32_CONSOLE, 0);
+
+  return g_io_win32_console_get_flags_internal (channel);
 }
 
 static GIOFlags
@@ -1795,14 +1870,25 @@ static GIOFuncs win32_channel_msg_funcs = {
 };
 
 static GIOFuncs win32_channel_fd_funcs = {
-  g_io_win32_fd_read,
-  g_io_win32_fd_write,
+  g_io_win32_fd_and_console_read,
+  g_io_win32_fd_and_console_write,
   g_io_win32_fd_seek,
   g_io_win32_fd_close,
   g_io_win32_fd_create_watch,
   g_io_win32_free,
   g_io_win32_unimpl_set_flags,
   g_io_win32_fd_get_flags,
+};
+
+static GIOFuncs win32_channel_console_funcs = {
+  g_io_win32_fd_and_console_read,
+  g_io_win32_fd_and_console_write,
+  NULL,
+  g_io_win32_console_close,
+  g_io_win32_console_create_watch,
+  g_io_win32_free,
+  g_io_win32_unimpl_set_flags,
+  g_io_win32_console_get_flags,
 };
 
 static GIOFuncs win32_channel_sock_funcs = {
@@ -1851,13 +1937,23 @@ g_io_channel_win32_new_fd_internal (gint         fd,
 
   g_io_channel_init (channel);
   g_io_channel_win32_init (win32_channel);
-  if (win32_channel->debug)
-    g_print ("g_io_channel_win32_new_fd: %u\n", fd);
-  channel->funcs = &win32_channel_fd_funcs;
-  win32_channel->type = G_IO_WIN32_FILE_DESC;
+
   win32_channel->fd = fd;
 
-  g_io_win32_fd_get_flags_internal (channel, st);
+  if (win32_channel->debug)
+    g_print ("g_io_channel_win32_new_fd: %u\n", fd);
+  if (st->st_mode & _S_IFCHR) /* console */
+    {
+      channel->funcs = &win32_channel_console_funcs;
+      win32_channel->type = G_IO_WIN32_CONSOLE;
+      g_io_win32_console_get_flags_internal (channel);
+    }
+  else
+    {
+      channel->funcs = &win32_channel_fd_funcs;
+      win32_channel->type = G_IO_WIN32_FILE_DESC;
+      g_io_win32_fd_get_flags_internal (channel, st);
+    }
   
   return channel;
 }
@@ -1982,6 +2078,10 @@ g_io_channel_win32_make_pollfd (GIOChannel   *channel,
 	  else if (condition & G_IO_OUT)
 	    create_thread (win32_channel, condition, write_thread);
 	}
+      break;
+
+    case G_IO_WIN32_CONSOLE:
+      fd->fd = (gint) _get_osfhandle (win32_channel->fd);
       break;
 
     case G_IO_WIN32_SOCKET:
