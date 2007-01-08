@@ -38,6 +38,11 @@
 #include <unistd.h>
 #endif
 
+#ifndef G_OS_WIN32
+#include <sys/time.h>
+#include <time.h>
+#endif /* G_OS_WIN32 */
+
 #include <string.h>
 
 #include "glib.h"
@@ -68,8 +73,9 @@ struct _GStaticPrivateNode
   GDestroyNotify destroy;
 };
 
-static void g_thread_cleanup (gpointer data);
-static void g_thread_fail (void);
+static void    g_thread_cleanup (gpointer data);
+static void    g_thread_fail (void);
+static guint64 gettime (void);
 
 /* Global variables */
 
@@ -99,7 +105,9 @@ GThreadFunctions g_thread_functions_for_glib_use = {
   NULL,                                        /* thread_join */
   NULL,                                        /* thread_exit */
   NULL,                                        /* thread_set_priority */
-  NULL                                         /* thread_self */
+  NULL,                                         /* thread_self */
+  NULL,                                         /* thread_equal */
+  gettime                                      /* gettime */
 };
 
 /* Local data */
@@ -533,6 +541,24 @@ static void
 g_thread_fail (void)
 {
   g_error ("The thread system is not yet initialized.");
+}
+
+static guint64
+gettime (void)
+{
+#ifdef G_OS_WIN32
+  guint64 v;
+
+  GetSystemTimeAsFileTime ((FILETIME *)&v);
+
+  return v;
+#else
+  struct timeval tv;
+
+  gettimeofday (&tv, NULL);
+
+  return tv.tv_sec * 1e9 + tv.tv_usec * 1000; 
+#endif
 }
 
 static gpointer

@@ -106,6 +106,7 @@ struct _GThreadFunctions
   void      (*thread_self)        (gpointer              thread);
   gboolean  (*thread_equal)       (gpointer              thread1,
 				   gpointer              thread2);
+  guint64   (*gettime)            (void);
 };
 
 GLIB_VAR GThreadFunctions       g_thread_functions_for_glib_use;

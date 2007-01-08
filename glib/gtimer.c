@@ -48,60 +48,21 @@
 #endif /* G_OS_WIN32 */
 
 #include "glib.h"
+#include "gthread.h"
 #include "galias.h"
 
 #define G_NSEC_PER_SEC 1000000000
 
-#if defined(HAVE_CLOCK_GETTIME) && defined(HAVE_MONOTONIC_CLOCK) 
-#define USE_CLOCK_GETTIME 1
-#endif
+#define GETTIME(v) (v = G_THREAD_UF (gettime, ()))
 
 struct _GTimer
 {
-#ifdef G_OS_WIN32
   guint64 start;
   guint64 end;
-#elif USE_CLOCK_GETTIME 
-  struct timespec start;
-  struct timespec end;
-  gint clock;
-#else /* uses gettimeofday */
-  struct timeval start;
-  struct timeval end;
-#endif 
 
   guint active : 1;
 };
 
-#ifdef G_OS_WIN32
-#  define GETTIME(v)				\
-     GetSystemTimeAsFileTime ((FILETIME *)&v)
-#elif USE_CLOCK_GETTIME
-#  define GETTIME(v)				\
-     clock_gettime (posix_clock, &v)
-#else
-#  define GETTIME(v)				\
-     gettimeofday (&v, NULL)
-#endif
-
-#ifdef USE_CLOCK_GETTIME
-static gint posix_clock = 0;
-
-static void
-init_posix_clock (void)
-{
-  static gboolean initialized = FALSE;
-
-  if (!initialized)
-    {
-      initialized = TRUE;
-      if (sysconf (_SC_MONOTONIC_CLOCK) >= 0)
-	posix_clock = CLOCK_MONOTONIC;
-      else
-	posix_clock = CLOCK_REALTIME;
-    }
-}
-#endif
 
 GTimer*
 g_timer_new (void)
@@ -110,10 +71,6 @@ g_timer_new (void)
 
   timer = g_new (GTimer, 1);
   timer->active = TRUE;
-
-#ifdef USE_CLOCK_GETTIME
-  init_posix_clock ();
-#endif
 
   GETTIME (timer->start);
 
@@ -145,7 +102,7 @@ g_timer_stop (GTimer *timer)
 
   timer->active = FALSE;
 
-  GETTIME(timer->end);
+  GETTIME (timer->end);
 }
 
 void
@@ -159,13 +116,7 @@ g_timer_reset (GTimer *timer)
 void
 g_timer_continue (GTimer *timer)
 {
-#ifdef G_OS_WIN32
   guint64 elapsed;
-#elif USE_CLOCK_GETTIME
-  struct timespec elapsed;
-#else
-  struct timeval elapsed;
-#endif
 
   g_return_if_fail (timer != NULL);
   g_return_if_fail (timer->active == FALSE);
@@ -175,59 +126,11 @@ g_timer_continue (GTimer *timer)
    *  elapsed interval.
    */
 
-#ifdef G_OS_WIN32
-
   elapsed = timer->end - timer->start;
 
   GETTIME (timer->start);
 
   timer->start -= elapsed;
-
-#elif USE_CLOCK_GETTIME
-
-  if (timer->start.tv_nsec > timer->end.tv_nsec)
-    {
-      timer->end.tv_nsec += G_NSEC_PER_SEC;
-      timer->end.tv_sec--;
-    }
-
-  elapsed.tv_nsec = timer->end.tv_nsec - timer->start.tv_nsec;
-  elapsed.tv_sec = timer->end.tv_sec - timer->start.tv_sec;
-
-  GETTIME (timer->start);
-
-  if (timer->start.tv_nsec < elapsed.tv_nsec)
-    {
-      timer->start.tv_nsec += G_NSEC_PER_SEC;
-      timer->start.tv_sec--;
-    }
-
-  timer->start.tv_nsec -= elapsed.tv_nsec;
-  timer->start.tv_sec -= elapsed.tv_sec;
-
-#else
-
-  if (timer->start.tv_usec > timer->end.tv_usec)
-    {
-      timer->end.tv_usec += G_USEC_PER_SEC;
-      timer->end.tv_sec--;
-    }
-
-  elapsed.tv_usec = timer->end.tv_usec - timer->start.tv_usec;
-  elapsed.tv_sec = timer->end.tv_sec - timer->start.tv_sec;
-
-  GETTIME (timer->start);
-
-  if (timer->start.tv_usec < elapsed.tv_usec)
-    {
-      timer->start.tv_usec += G_USEC_PER_SEC;
-      timer->start.tv_sec--;
-    }
-
-  timer->start.tv_usec -= elapsed.tv_usec;
-  timer->start.tv_sec -= elapsed.tv_sec;
-
-#endif /* !G_OS_WIN32 */
 
   timer->active = TRUE;
 }
@@ -237,17 +140,10 @@ g_timer_elapsed (GTimer *timer,
 		 gulong *microseconds)
 {
   gdouble total;
-#ifdef G_OS_WIN32
   gint64 elapsed;
-#elif USE_CLOCK_GETTIME
-  struct timespec elapsed;
-#else
-  struct timeval elapsed;
-#endif 
 
   g_return_val_if_fail (timer != NULL, 0);
 
-#ifdef G_OS_WIN32
   if (timer->active)
     GETTIME (timer->end);
 
@@ -257,55 +153,6 @@ g_timer_elapsed (GTimer *timer,
 
   if (microseconds)
     *microseconds = (elapsed / 10) % 1000000;
-#elif USE_CLOCK_GETTIME
-  if (timer->active)
-    GETTIME (timer->end);
-
-  if (timer->start.tv_nsec > timer->end.tv_nsec)
-    {
-      timer->end.tv_nsec += G_NSEC_PER_SEC;
-      timer->end.tv_sec--;
-    }
-
-  elapsed.tv_nsec = timer->end.tv_nsec - timer->start.tv_nsec;
-  elapsed.tv_sec = timer->end.tv_sec - timer->start.tv_sec;
-
-  total = elapsed.tv_sec + ((gdouble) elapsed.tv_nsec / (gdouble) G_NSEC_PER_SEC);
-  if (total < 0)
-    {
-      total = 0;
-
-      if (microseconds)
-	*microseconds = 0;
-    }
-  else if (microseconds)
-    *microseconds = elapsed.tv_nsec / 1000;
-
-#else
-  if (timer->active)
-    GETTIME (timer->end);
-
-  if (timer->start.tv_usec > timer->end.tv_usec)
-    {
-      timer->end.tv_usec += G_USEC_PER_SEC;
-      timer->end.tv_sec--;
-    }
-
-  elapsed.tv_usec = timer->end.tv_usec - timer->start.tv_usec;
-  elapsed.tv_sec = timer->end.tv_sec - timer->start.tv_sec;
-
-  total = elapsed.tv_sec + ((gdouble) elapsed.tv_usec / (gdouble) G_USEC_PER_SEC);
-  if (total < 0)
-    {
-      total = 0;
-
-      if (microseconds)
-	*microseconds = 0;
-    }
-  else if (microseconds)
-    *microseconds = elapsed.tv_usec;
-
-#endif
 
   return total;
 }
