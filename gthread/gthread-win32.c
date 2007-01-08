@@ -545,6 +545,16 @@ g_thread_join_win32_impl (gpointer thread)
   g_free (target);
 }
 
+static guint64
+g_gettime_win32_impl (void)
+{
+  guint64 v;
+
+  GetSystemTimeAsFileTime ((FILETIME *)&v);
+
+  return v;
+}
+
 static GThreadFunctions g_thread_functions_for_glib_use_default =
 {
   g_mutex_new_win32_impl,           /* mutex */
@@ -567,7 +577,8 @@ static GThreadFunctions g_thread_functions_for_glib_use_default =
   g_thread_exit_win32_impl,
   g_thread_set_priority_win32_impl,
   g_thread_self_win32_impl,
-  NULL                              /* no equal function necessary */
+  NULL,                             /* no equal function necessary */
+  g_gettime_win32_impl
 };
 
 #define HAVE_G_THREAD_IMPL_INIT

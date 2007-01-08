@@ -1,5 +1,21 @@
 2007-01-07  Matthias Clasen  <mclasen@redhat.com>
 
+	Don't link glib against libpthread.  (#393812)
+	
+	* configure.in: Link gthread against librt, not glib itself.
+
+	* glib/gthread.h:
+	* glib/gthread.c: Add a new thread function, gettime.
+
+	* glib/gtimer.c: Use gettime instead of directly working with
+	the various system interfaces.
+
+	* gthread/gthread-impl.c:
+	* gthread/gthread-posix.c:
+	* gthread/gthread-win32.c: Implement gettime.
+	
+2007-01-07  Matthias Clasen  <mclasen@redhat.com>
+
 	* m4macros/glib-2.0.m4: Use PKG_PROG_PKG_CONFIG.  (#392636,
 	Yevgen Muntyan)
 

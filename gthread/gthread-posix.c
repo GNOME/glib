@@ -119,7 +119,12 @@ static gulong g_thread_min_stack_size = 0;
 
 #define G_MUTEX_SIZE (sizeof (pthread_mutex_t))
 
-#if defined(_SC_THREAD_STACK_MIN) || defined (HAVE_PRIORITIES)
+static gint posix_clock = 0;
+#if defined(HAVE_CLOCK_GETTIME) && defined(HAVE_MONOTONIC_CLOCK) 
+#define USE_CLOCK_GETTIME 1
+#endif
+
+#if defined(_SC_THREAD_STACK_MIN) || defined (HAVE_PRIORITIES) || defined (USE_CLOCK_GETTIME)
 #define HAVE_G_THREAD_IMPL_INIT
 static void
 g_thread_impl_init(void)
@@ -142,6 +147,10 @@ g_thread_impl_init(void)
 # endif
 #endif /* HAVE_PRIORITIES */
 
+ if (sysconf (_SC_MONOTONIC_CLOCK) >= 0)
+   posix_clock = CLOCK_MONOTONIC;
+ else
+   posix_clock = CLOCK_REALTIME;
 }
 #endif /* _SC_THREAD_STACK_MIN || HAVE_PRIORITIES */
 
@@ -415,6 +424,24 @@ g_thread_equal_posix_impl (gpointer thread1, gpointer thread2)
   return (pthread_equal (*(pthread_t*)thread1, *(pthread_t*)thread2) != 0);
 }
 
+static guint64
+g_gettime_posix_impl (void)
+{
+#ifdef USE_CLOCK_GETTIME 
+  struct timespec tv;
+
+  clock_gettime (posix_clock, &tv);
+
+  return tv.tv_sec * 1e9 + tv.tv_nsec;
+#else
+  struct timeval tv;
+
+  gettimeofday (&tv, NULL);
+
+  return tv.tv_sec * 1e9 + tv.tv_usec * 1000; 
+#endif
+}
+
 static GThreadFunctions g_thread_functions_for_glib_use_default =
 {
   g_mutex_new_posix_impl,
@@ -437,5 +464,6 @@ static GThreadFunctions g_thread_functions_for_glib_use_default =
   g_thread_exit_posix_impl,
   g_thread_set_priority_posix_impl,
   g_thread_self_posix_impl,
-  g_thread_equal_posix_impl
+  g_thread_equal_posix_impl,
+  g_gettime_posix_impl
 };

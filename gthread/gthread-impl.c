@@ -332,7 +332,8 @@ g_thread_init (GThreadFunctions* init)
 	       init->thread_join &&
 	       init->thread_exit &&
 	       init->thread_set_priority &&
-	       init->thread_self);
+	       init->thread_self &&
+               init->gettime);
 
   /* if somebody is calling g_thread_init (), it means that he wants to
    * have thread support, so check this
