@@ -1,3 +1,8 @@
+2007-01-07  Matthias Clasen  <mclasen@redhat.com>
+
+	* m4macros/glib-2.0.m4: Use PKG_PROG_PKG_CONFIG.  (#392636,
+	Yevgen Muntyan)
+
 2007-01-04  Behdad Esfahbod  <behdad@gnome.org>
 
 	* tests/bit-test.c (builtin_bit_nth_lsf1), (builtin_bit_nth_lsf2),
