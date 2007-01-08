@@ -1,3 +1,8 @@
+2007-01-07  Matthias Clasen  <mclasen@redhat.com>
+
+	* m4macros/glib-2.0.m4: Use PKG_PROG_PKG_CONFIG.  (#392636,
+	Yevgen Muntyan)
+
 2007-01-07  Tor Lillqvist  <tml@novell.com>
 
 	* glib/giowin32.c: Handle GIOChannels for file descriptors
