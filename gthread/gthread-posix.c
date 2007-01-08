@@ -119,9 +119,9 @@ static gulong g_thread_min_stack_size = 0;
 
 #define G_MUTEX_SIZE (sizeof (pthread_mutex_t))
 
-static gint posix_clock = 0;
 #if defined(HAVE_CLOCK_GETTIME) && defined(HAVE_MONOTONIC_CLOCK) 
 #define USE_CLOCK_GETTIME 1
+static gint posix_clock = 0;
 #endif
 
 #if defined(_SC_THREAD_STACK_MIN) || defined (HAVE_PRIORITIES) || defined (USE_CLOCK_GETTIME)
@@ -147,10 +147,12 @@ g_thread_impl_init(void)
 # endif
 #endif /* HAVE_PRIORITIES */
 
+#ifdef USE_CLOCK_GETTIME
  if (sysconf (_SC_MONOTONIC_CLOCK) >= 0)
    posix_clock = CLOCK_MONOTONIC;
  else
    posix_clock = CLOCK_REALTIME;
+#endif
 }
 #endif /* _SC_THREAD_STACK_MIN || HAVE_PRIORITIES */
 

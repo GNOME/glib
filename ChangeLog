@@ -1,3 +1,9 @@
+2007-01-08  Matthias Clasen  <mclasen@redhat.com>
+
+	* gthread/gthread-posix.c (g_thread_impl_init): Don't
+	use _SC_MONOTONIC_CLOCK unless USE_CLOCK_GETTIME is
+	defined.  (#394150)
+
 2007-01-07  Matthias Clasen  <mclasen@redhat.com>
 
 	Don't link glib against libpthread.  (#393812)
