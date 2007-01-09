@@ -1,15 +1,14 @@
 # Bulgarian translation for Glib po-file.
-# Copyright (C) 2002, 2005, 2006 Free Software Foundation, Inc.
+# Copyright (C) 2002, 2005, 2006, 2007 Free Software Foundation, Inc.
 # Borislav Aleksandrov <B.Aleksandrov@cnsys.bg>, 2002.
-# Alexander Shopov <al_shopov@yahoo.com>, 2002.
-# Alexander Shopov <ash@contact.bg>, 2005, 2006.
+# Alexander Shopov <ash@contact.bg>, 2002, 2005, 2006, 2007.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-01-10 00:51+0200\n"
-"PO-Revision-Date: 2007-01-10 00:55+0200\n"
+"POT-Creation-Date: 2007-01-10 01:09+0200\n"
+"PO-Revision-Date: 2007-01-10 01:05+0200\n"
 "Last-Translator: Alexander Shopov <ash@contact.bg>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
 "MIME-Version: 1.0\n"
