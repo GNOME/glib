@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLIB\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-12-28 17:57+0000\n"
-"PO-Revision-Date: 2006-12-28 17:58-0000\n"
+"POT-Creation-Date: 2007-01-09 07:19+0000\n"
+"PO-Revision-Date: 2007-01-09 07:19-0000\n"
 "Last-Translator: David Lodge <dave@cirt.net>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -69,10 +69,10 @@ msgstr "A bookmark for URI '%s' already exists"
 #: ../glib/gbookmarkfile.c:2952
 #: ../glib/gbookmarkfile.c:3142
 #: ../glib/gbookmarkfile.c:3218
-#: ../glib/gbookmarkfile.c:3371
-#: ../glib/gbookmarkfile.c:3436
-#: ../glib/gbookmarkfile.c:3526
-#: ../glib/gbookmarkfile.c:3653
+#: ../glib/gbookmarkfile.c:3381
+#: ../glib/gbookmarkfile.c:3456
+#: ../glib/gbookmarkfile.c:3546
+#: ../glib/gbookmarkfile.c:3673
 #, c-format
 msgid "No bookmark found for URI '%s'"
 msgstr "No bookmark found for URI '%s'"
@@ -93,10 +93,15 @@ msgid "No groups set in bookmark for URI '%s'"
 msgstr "No groups set in bookmark for URI '%s'"
 
 #: ../glib/gbookmarkfile.c:3236
-#: ../glib/gbookmarkfile.c:3381
+#: ../glib/gbookmarkfile.c:3391
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
 msgstr "No application with name '%s' registered a bookmark for '%s'"
+
+#: ../glib/gbookmarkfile.c:3404
+#, c-format
+msgid "Failed to expand exec line '%s' with URI '%s'"
+msgstr "Failed to expand exec line '%s' with URI '%s'"
 
 #: ../glib/gconvert.c:423
 #: ../glib/gconvert.c:501
@@ -608,64 +613,64 @@ msgstr "Invalid sequence in conversion input"
 msgid "Character out of range for UTF-16"
 msgstr "Character out of range for UTF-16"
 
-#: ../glib/goption.c:495
+#: ../glib/goption.c:548
 msgid "Usage:"
 msgstr "Usage:"
 
-#: ../glib/goption.c:495
+#: ../glib/goption.c:548
 msgid "[OPTION...]"
 msgstr "[OPTION...]"
 
-#: ../glib/goption.c:586
+#: ../glib/goption.c:639
 msgid "Help Options:"
 msgstr "Help Options:"
 
-#: ../glib/goption.c:587
+#: ../glib/goption.c:640
 msgid "Show help options"
 msgstr "Show help options"
 
-#: ../glib/goption.c:592
+#: ../glib/goption.c:645
 msgid "Show all help options"
 msgstr "Show all help options"
 
-#: ../glib/goption.c:642
+#: ../glib/goption.c:695
 msgid "Application Options:"
 msgstr "Application Options:"
 
-#: ../glib/goption.c:686
-#: ../glib/goption.c:756
+#: ../glib/goption.c:739
+#: ../glib/goption.c:809
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "Cannot parse integer value '%s' for %s"
 
-#: ../glib/goption.c:696
-#: ../glib/goption.c:764
+#: ../glib/goption.c:749
+#: ../glib/goption.c:817
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "Integer value '%s' for %s out of range"
 
-#: ../glib/goption.c:721
+#: ../glib/goption.c:774
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "Cannot parse double value '%s' for %s"
 
-#: ../glib/goption.c:729
+#: ../glib/goption.c:782
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "Double value '%s' for %s out of range"
 
-#: ../glib/goption.c:1066
+#: ../glib/goption.c:1119
 #, c-format
 msgid "Error parsing option %s"
 msgstr "Error parsing option %s"
 
-#: ../glib/goption.c:1097
-#: ../glib/goption.c:1208
+#: ../glib/goption.c:1150
+#: ../glib/goption.c:1261
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Missing argument for %s"
 
-#: ../glib/goption.c:1602
+#: ../glib/goption.c:1655
 #, c-format
 msgid "Unknown option %s"
 msgstr "Unknown option %s"
