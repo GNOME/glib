@@ -305,7 +305,8 @@ G_INLINE_FUNC guint
 g_bit_storage (gulong number)
 {
 #if defined(__GNUC__) && (__GNUC__ >= 4) && defined(__OPTIMIZE__)
-  return number ? GLIB_SIZEOF_LONG * 8 - __builtin_clzl(number) : 1;
+  return G_LIKELY (number) ?
+	   ((GLIB_SIZEOF_LONG * 8 - 1) ^ __builtin_clzl(number)) + 1 : 1;
 #else
   register guint n_bits = 0;
   
