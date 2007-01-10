@@ -1,5 +1,10 @@
 2007-01-10  Matthias Clasen  <mclasen@redhat.com>
 
+	* configure.in: Actually link gthread against librt.
+	(#394641, Marco Pesenti Gritti)
+
+2007-01-10  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/gkeyfile.c (g_key_file_is_key_name): Grr, allow '*' in keys,
 	too.  (#394262)
 
