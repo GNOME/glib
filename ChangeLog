@@ -1,3 +1,8 @@
+2007-01-10  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gkeyfile.c (g_key_file_is_key_name): Grr, allow '*' in keys,
+	too.  (#394262)
+	
 2007-01-09  Behdad Esfahbod  <behdad@gnome.org>
 
 	* glib/gutils.h: Use a more optimized g_bit_storage() when gcc is
