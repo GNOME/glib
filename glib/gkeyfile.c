@@ -3237,10 +3237,21 @@ g_key_file_is_key_name (const gchar *name)
   /* We accept a little more than the desktop entry spec says,
    * since gnome-vfs uses mime-types as keys in its cache.
    */
-  while (*q && (g_unichar_isalnum (g_utf8_get_char (q)) || 
-                *q == '-' || *q == '_' || *q == '/' || *q == '+' || *q == '.' || *q == '*')) 
+  while (*q && *q != '=' && *q != '[' && *q != ']')
     q = g_utf8_next_char (q);
   
+  /* No empty keys, please */
+  if (q == p)
+    return FALSE;
+
+  /* We accept spaces in the middle of keys to not break
+   * existing apps, but we don't tolerate initial of final
+   * spaces, which would lead to silent corruption when
+   * rereading the file.
+   */
+  if (*p == ' ' || q[-1] == ' ')
+    return FALSE;
+
   if (*q == '[')
     {
       q++;
@@ -3253,7 +3264,7 @@ g_key_file_is_key_name (const gchar *name)
       q++;
     }
 
-  if (*q != '\0' || q == p)
+  if (*q != '\0')
     return FALSE;
 
   return TRUE;
@@ -3276,7 +3287,15 @@ g_key_file_line_is_group (const gchar *line)
   while (*p && *p != ']')
     p = g_utf8_next_char (p);
 
-  if (!*p)
+  if (*p != ']')
+    return FALSE;
+ 
+  /* silently accept whitespace after the ] */
+  p = g_utf8_next_char (p);
+  while (*p == ' ' || *p == '\t')
+    p = g_utf8_next_char (p);
+     
+  if (*p)
     return FALSE;
 
   return TRUE;

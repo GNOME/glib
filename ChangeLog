@@ -1,5 +1,14 @@
 2007-01-12  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gkeyfile.c: Rework the handling of invalid
+	keys/groups again. We are back to being liberal about
+	what we accept, and only reject things that would lead
+	to non-rereadable keyfiles.
+
+	* tests/keyfile-test.c: Adapt tests.
+
+2007-01-12  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/gutils.c (g_get_home_dir): Clarify docs.  (#394687,
 	Marc Brockschmidt)
 
