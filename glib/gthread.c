@@ -42,9 +42,10 @@
 #endif
 
 #ifndef G_OS_WIN32
-#include <windows.h>
 #include <sys/time.h>
 #include <time.h>
+#else
+#include <windows.h>
 #endif /* G_OS_WIN32 */
 
 #include <string.h>
