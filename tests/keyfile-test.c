@@ -21,29 +21,6 @@ load_data (const gchar   *data,
   return keyfile;
 }
 
-static GLogLevelFlags log_flags = 0;
-
-static void 
-log_func (const gchar   *log_domain,
-          GLogLevelFlags log_level,
-          const gchar   *message,
-          gpointer       user_data)
-{
-  log_flags |= log_level;   
-}
-
-static void
-check_log (GLogLevelFlags flags)
-{
-  if ((log_flags & flags) == 0)
-    {
-      g_print ("Missing a log at level %d\n", flags);
-      exit (1);
-    }
-
-  log_flags = 0;
-}
-
 static void
 check_error (GError **error,
 	     GQuark   domain,
@@ -990,13 +967,14 @@ test_group_names (void)
   gchar *value;
 
   /* [ in group name */
-  log_flags = 0;
   data = "[a[b]\n"
          "key1=123\n";
   keyfile = g_key_file_new ();
   g_key_file_load_from_data (keyfile, data, -1, 0, &error);
   g_key_file_free (keyfile);  
-  check_log (G_LOG_LEVEL_CRITICAL);
+  check_error (&error, 
+	       G_KEY_FILE_ERROR,
+	       G_KEY_FILE_ERROR_PARSE);
 
   /* ] in group name */
   data = "[a]b]\n"
@@ -1004,7 +982,9 @@ test_group_names (void)
   keyfile = g_key_file_new ();
   g_key_file_load_from_data (keyfile, data, -1, 0, &error);
   g_key_file_free (keyfile);  
-  check_log (G_LOG_LEVEL_CRITICAL);
+  check_error (&error, 
+	       G_KEY_FILE_ERROR,
+	       G_KEY_FILE_ERROR_PARSE);
 
   /* control char in group name */
   data = "[a\tb]\n"
@@ -1012,7 +992,19 @@ test_group_names (void)
   keyfile = g_key_file_new ();
   g_key_file_load_from_data (keyfile, data, -1, 0, &error);
   g_key_file_free (keyfile);  
-  check_log (G_LOG_LEVEL_CRITICAL);
+  check_error (&error, 
+	       G_KEY_FILE_ERROR,
+	       G_KEY_FILE_ERROR_PARSE);
+
+  /* empty group name */
+  data = "[]\n"
+         "key1=123\n";
+  keyfile = g_key_file_new ();
+  g_key_file_load_from_data (keyfile, data, -1, 0, &error);
+  g_key_file_free (keyfile);  
+  check_error (&error, 
+	       G_KEY_FILE_ERROR,
+	       G_KEY_FILE_ERROR_PARSE);
 
   /* Unicode in group name */
   data = "[\xc2\xbd]\n"
@@ -1025,19 +1017,25 @@ test_group_names (void)
   keyfile = g_key_file_new ();
   g_key_file_set_string (keyfile, "a[b", "key1", "123");
   value = g_key_file_get_string (keyfile, "a[b", "key1", &error);
-  check_log (G_LOG_LEVEL_CRITICAL);
+  check_error (&error, 
+               G_KEY_FILE_ERROR,
+               G_KEY_FILE_ERROR_GROUP_NOT_FOUND);  
   g_key_file_free (keyfile);  
 
   keyfile = g_key_file_new ();
   g_key_file_set_string (keyfile, "a]b", "key1", "123");
   value = g_key_file_get_string (keyfile, "a]b", "key1", &error);
-  check_log (G_LOG_LEVEL_CRITICAL);
+  check_error (&error, 
+               G_KEY_FILE_ERROR,
+               G_KEY_FILE_ERROR_GROUP_NOT_FOUND);  
   g_key_file_free (keyfile);  
 
   keyfile = g_key_file_new ();
   g_key_file_set_string (keyfile, "a\tb", "key1", "123");
   value = g_key_file_get_string (keyfile, "a\tb", "key1", &error);
-  check_log (G_LOG_LEVEL_CRITICAL);
+  check_error (&error, 
+               G_KEY_FILE_ERROR,
+               G_KEY_FILE_ERROR_GROUP_NOT_FOUND);  
   g_key_file_free (keyfile);  
 
   keyfile = g_key_file_new ();
@@ -1055,13 +1053,81 @@ test_key_names (void)
   gchar *value;
 
   /* [ in key name */
-  log_flags = 0;
   data = "[a]\n"
          "key[=123\n";
   keyfile = g_key_file_new ();
   g_key_file_load_from_data (keyfile, data, -1, 0, &error);
   g_key_file_free (keyfile);  
-  check_log (G_LOG_LEVEL_CRITICAL);
+  check_error (&error, 
+	       G_KEY_FILE_ERROR,
+	       G_KEY_FILE_ERROR_PARSE);
+
+  /* empty key name */
+  data = "[a]\n"
+         " =123\n";
+  keyfile = g_key_file_new ();
+  g_key_file_load_from_data (keyfile, data, -1, 0, &error);
+  g_key_file_free (keyfile);  
+  check_error (&error, 
+	       G_KEY_FILE_ERROR,
+	       G_KEY_FILE_ERROR_PARSE);
+
+  /* empty key name */
+  data = "[a]\n"
+         " [de] =123\n";
+  keyfile = g_key_file_new ();
+  g_key_file_load_from_data (keyfile, data, -1, 0, &error);
+  g_key_file_free (keyfile);  
+  check_error (&error, 
+	       G_KEY_FILE_ERROR,
+	       G_KEY_FILE_ERROR_PARSE);
+
+  /* bad locale suffix */
+  data = "[a]\n"
+         "foo[@#!&%]=123\n";
+  keyfile = g_key_file_new ();
+  g_key_file_load_from_data (keyfile, data, -1, 0, &error);
+  g_key_file_free (keyfile);  
+  check_error (&error, 
+	       G_KEY_FILE_ERROR,
+	       G_KEY_FILE_ERROR_PARSE);
+
+  /* initial space */
+  data = "[a]\n"
+         " foo=123\n";
+  keyfile = g_key_file_new ();
+  g_key_file_load_from_data (keyfile, data, -1, 0, &error);
+  check_no_error (&error);
+  check_string_value (keyfile, "a", "foo", "123");
+  g_key_file_free (keyfile);  
+
+  /* final space */
+  data = "[a]\n"
+         "foo =123\n";
+  keyfile = g_key_file_new ();
+  g_key_file_load_from_data (keyfile, data, -1, 0, &error);
+  check_no_error (&error);
+  check_string_value (keyfile, "a", "foo", "123");
+  g_key_file_free (keyfile);  
+
+  /* inner space */
+  data = "[a]\n"
+         "foo bar=123\n";
+  keyfile = g_key_file_new ();
+  g_key_file_load_from_data (keyfile, data, -1, 0, &error);
+  check_no_error (&error);
+  check_string_value (keyfile, "a", "foo bar", "123");
+  g_key_file_free (keyfile);  
+
+  /* inner space */
+  data = "[a]\n"
+         "foo [de] =123\n";
+  keyfile = g_key_file_new ();
+  g_key_file_load_from_data (keyfile, data, -1, 0, &error);
+  check_error (&error, 
+	       G_KEY_FILE_ERROR,
+	       G_KEY_FILE_ERROR_PARSE);
+  g_key_file_free (keyfile);  
 
   /* control char in key name */
   data = "[a]\n"
@@ -1069,7 +1135,7 @@ test_key_names (void)
   keyfile = g_key_file_new ();
   g_key_file_load_from_data (keyfile, data, -1, 0, &error);
   g_key_file_free (keyfile);  
-  check_log (G_LOG_LEVEL_CRITICAL);
+  check_no_error (&error);
 
   /* Unicode in key name */
   data = "[a]\n"
@@ -1083,28 +1149,34 @@ test_key_names (void)
   g_key_file_set_string (keyfile, "a", "x", "123");
   g_key_file_set_string (keyfile, "a", "key=", "123");
   value = g_key_file_get_string (keyfile, "a", "key=", &error);
-  check_log (G_LOG_LEVEL_CRITICAL);
+  check_error (&error, 
+               G_KEY_FILE_ERROR,
+               G_KEY_FILE_ERROR_KEY_NOT_FOUND);  
   g_key_file_free (keyfile);  
 
   keyfile = g_key_file_new ();
   g_key_file_set_string (keyfile, "a", "x", "123");
   g_key_file_set_string (keyfile, "a", "key[", "123");
   value = g_key_file_get_string (keyfile, "a", "key[", &error);
-  check_log (G_LOG_LEVEL_CRITICAL);
+  check_error (&error, 
+               G_KEY_FILE_ERROR,
+               G_KEY_FILE_ERROR_KEY_NOT_FOUND);  
   g_key_file_free (keyfile);  
 
   keyfile = g_key_file_new ();
   g_key_file_set_string (keyfile, "a", "x", "123");
   g_key_file_set_string (keyfile, "a", "key\tfoo", "123");
   value = g_key_file_get_string (keyfile, "a", "key\tfoo", &error);
-  check_log (G_LOG_LEVEL_CRITICAL);
+  check_no_error (&error);
   g_key_file_free (keyfile);  
 
   keyfile = g_key_file_new ();
   g_key_file_set_string (keyfile, "a", "x", "123");
   g_key_file_set_string (keyfile, "a", " key", "123");
   value = g_key_file_get_string (keyfile, "a", " key", &error);
-  check_log (G_LOG_LEVEL_CRITICAL);
+  check_error (&error, 
+               G_KEY_FILE_ERROR,
+               G_KEY_FILE_ERROR_KEY_NOT_FOUND);  
   g_key_file_free (keyfile);  
 
   keyfile = g_key_file_new ();
@@ -1176,6 +1248,14 @@ test_duplicate_groups2 (void)
   check_string_value (keyfile, "B", "foo", "baz");
 
   g_key_file_free (keyfile);  
+}
+
+static void 
+log_func (const gchar   *log_domain,
+          GLogLevelFlags log_level,
+          const gchar   *message,
+          gpointer       user_data)
+{
 }
 
 int

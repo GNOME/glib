@@ -752,7 +752,13 @@ g_key_file_parse_group (GKeyFile     *key_file,
                           group_name_end - group_name_start);
   
   if (!g_key_file_is_group_name (group_name))
-    g_critical (_("Invalid group name: %s"), group_name);
+    {
+      g_set_error (error, G_KEY_FILE_ERROR,
+		   G_KEY_FILE_ERROR_PARSE,
+		   _("Invalid group name: %s"), group_name);
+      g_free (group_name);
+      return;
+    }
 
   g_key_file_add_group (key_file, group_name);
   g_free (group_name);
@@ -794,7 +800,13 @@ g_key_file_parse_key_value_pair (GKeyFile     *key_file,
   key = g_strndup (line, key_len - 1);
 
   if (!g_key_file_is_key_name (key))
-    g_critical (_("Invalid key name: %s"), key);
+    {
+      g_set_error (error, G_KEY_FILE_ERROR,
+                   G_KEY_FILE_ERROR_PARSE,
+                   _("Invalid key name: %s"), key);
+      g_free (key);
+      return; 
+    }
 
   /* Pull the value from the line (chugging leading whitespace)
    */
@@ -1226,13 +1238,9 @@ g_key_file_set_value (GKeyFile    *key_file,
   GKeyFileKeyValuePair *pair;
 
   g_return_if_fail (key_file != NULL);
+  g_return_if_fail (g_key_file_is_group_name (group_name));
+  g_return_if_fail (g_key_file_is_key_name (key));
   g_return_if_fail (value != NULL);
-  g_return_if_fail (group_name != NULL);
-  g_return_if_fail (key != NULL);
-  if (!g_key_file_is_group_name (group_name))
-    g_critical (_("Invalid group name: %s"), group_name);
-  if (!g_key_file_is_key_name (key))
-    g_critical (_("Invalid key name: %s"), key);
 
   group = g_key_file_lookup_group (key_file, group_name);
 
@@ -2451,9 +2459,7 @@ g_key_file_set_group_comment (GKeyFile             *key_file,
 {
   GKeyFileGroup *group;
   
-  g_return_if_fail (group_name != NULL);
-  if (!g_key_file_is_group_name (group_name))
-    g_critical (_("Invalid group name: %s"), group_name);
+  g_return_if_fail (g_key_file_is_group_name (group_name));
 
   group = g_key_file_lookup_group (key_file, group_name);
   if (!group)
@@ -2574,9 +2580,7 @@ g_key_file_get_key_comment (GKeyFile             *key_file,
   GString *string;
   gchar *comment;
 
-  g_return_val_if_fail (group_name != NULL, NULL);
-  if (!g_key_file_is_group_name (group_name))
-    g_critical (_("Invalid group name: %s"), group_name);
+  g_return_val_if_fail (g_key_file_is_group_name (group_name), NULL);
 
   group = g_key_file_lookup_group (key_file, group_name);
   if (!group)
@@ -2889,9 +2893,7 @@ g_key_file_add_group (GKeyFile    *key_file,
   GKeyFileGroup *group;
 
   g_return_if_fail (key_file != NULL);
-  g_return_if_fail (group_name != NULL);
-  if (!g_key_file_is_group_name (group_name))
-    g_critical (_("Invalid group name: %s"), group_name);
+  g_return_if_fail (g_key_file_is_group_name (group_name));
 
   group = g_key_file_lookup_group (key_file, group_name);
   if (group != NULL)
@@ -3235,10 +3237,21 @@ g_key_file_is_key_name (const gchar *name)
   /* We accept a little more than the desktop entry spec says,
    * since gnome-vfs uses mime-types as keys in its cache.
    */
-  while (*q && (g_unichar_isalnum (g_utf8_get_char (q)) || 
-                *q == '-' || *q == '_' || *q == '/' || *q == '+' || *q == '.' || *q == '*'))
+  while (*q && *q != '=' && *q != '[' && *q != ']')
     q = g_utf8_next_char (q);
   
+  /* No empty keys, please */
+  if (q == p)
+    return FALSE;
+
+  /* We accept spaces in the middle of keys to not break
+   * existing apps, but we don't tolerate initial of final
+   * spaces, which would lead to silent corruption when
+   * rereading the file.
+   */
+  if (*p == ' ' || q[-1] == ' ')
+    return FALSE;
+
   if (*q == '[')
     {
       q++;
@@ -3251,7 +3264,7 @@ g_key_file_is_key_name (const gchar *name)
       q++;
     }
 
-  if (*q != '\0' || q == p)
+  if (*q != '\0')
     return FALSE;
 
   return TRUE;
@@ -3274,7 +3287,15 @@ g_key_file_line_is_group (const gchar *line)
   while (*p && *p != ']')
     p = g_utf8_next_char (p);
 
-  if (!*p)
+  if (*p != ']')
+    return FALSE;
+ 
+  /* silently accept whitespace after the ] */
+  p = g_utf8_next_char (p);
+  while (*p == ' ' || *p == '\t')
+    p = g_utf8_next_char (p);
+     
+  if (*p)
     return FALSE;
 
   return TRUE;
