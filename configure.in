@@ -2450,7 +2450,7 @@ _______EOF
 #else
 #define G_HAVE_GNUC_VISIBILITY 1
 #define G_GNUC_INTERNAL __attribute__((visibility("hidden")))
-#fi
+#endif
 _______EOF
 	else
 		cat >>$outfile <<_______EOF
