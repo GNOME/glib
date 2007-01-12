@@ -1,5 +1,10 @@
 2007-01-12  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gthread.c: Include windows.h and fix
+	include order. (#394258, Kazuki Iwamoto)
+
+2007-01-12  Matthias Clasen  <mclasen@redhat.com>
+
 	* configure.in: Make G_GNUC_INTERNAL a no-op for
 	gcc 2.95.    (#329031, David Schleef, Marc Brockschmidt)
 	

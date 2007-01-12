@@ -34,19 +34,21 @@
 
 #include "config.h"
 
+#include "glib.h"
+#include "gthreadprivate.h"
+
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
 
 #ifndef G_OS_WIN32
+#include <windows.h>
 #include <sys/time.h>
 #include <time.h>
 #endif /* G_OS_WIN32 */
 
 #include <string.h>
 
-#include "glib.h"
-#include "gthreadprivate.h"
 #include "galias.h"
 
 GQuark
