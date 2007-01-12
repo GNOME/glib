@@ -1,3 +1,10 @@
+2007-01-12  Matthias Clasen  <mclasen@redhat.com>
+
+	* gthread/gthread-posix.c:
+	* glib/gtimer.c:
+	* glib/gthread.c: Fix errors in the recently moved
+	time calculations.  (#395203, Chris Wilson)
+
 2007-01-10  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Actually link gthread against librt.
