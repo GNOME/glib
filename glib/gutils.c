@@ -1747,7 +1747,8 @@ g_get_real_name (void)
 /**
  * g_get_home_dir:
  *
- * Gets the current user's home directory. 
+ * Gets the current user's home directory as defined in the 
+ * password database.
  *
  * Note that in contrast to traditional UNIX tools, this function 
  * prefers <filename>passwd</filename> entries over the <envar>HOME</envar> 

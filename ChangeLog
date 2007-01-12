@@ -1,5 +1,10 @@
 2007-01-12  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gutils.c (g_get_home_dir): Clarify docs.  (#394687,
+	Marc Brockschmidt)
+
+2007-01-12  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/gthread.c: Include windows.h and fix
 	include order. (#394258, Kazuki Iwamoto)
 
