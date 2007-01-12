@@ -2445,8 +2445,12 @@ _______EOF
 
 	if test x$g_have_gnuc_visibility = xyes ; then
 		cat >>$outfile <<_______EOF
+#if __GNUC__ == 2 && __GNUC_MINOR__ == 95
+#define G_GNUC_INTERNAL
+#else
 #define G_HAVE_GNUC_VISIBILITY 1
 #define G_GNUC_INTERNAL __attribute__((visibility("hidden")))
+#fi
 _______EOF
 	else
 		cat >>$outfile <<_______EOF
