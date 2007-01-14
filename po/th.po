@@ -1,7 +1,7 @@
 # Thai translation of glib.
-# Copyright (C) 2005-2006 Free Software Foundation, Inc.
+# Copyright (C) 2005-2007 Free Software Foundation, Inc.
 # This file is distributed under the same license as the glib package.
-# Theppitak Karoonboonyanan <thep@linux.thai.net>, 2005-2006.
+# Theppitak Karoonboonyanan <thep@linux.thai.net>, 2005-2007.
 # 
 # 
 msgid ""
@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: glib 2.7.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-01-04 17:24-0500\n"
-"PO-Revision-Date: 2006-12-20 16:25+0700\n"
+"PO-Revision-Date: 2007-01-15 00:35+0700\n"
 "Last-Translator: Theppitak Karoonboonyanan <thep@linux.thai.net>\n"
 "Language-Team: Thai <l10n@opentle.org>\n"
 "MIME-Version: 1.0\n"
@@ -84,9 +84,9 @@ msgid "No application with name '%s' registered a bookmark for '%s'"
 msgstr "ไม่มีโปรแกรมประยุกต์ชื่อ '%s' ที่ลงทะเบียนที่คั่นหน้าสำหรับ '%s' ไว้"
 
 #: glib/gbookmarkfile.c:3402
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to expand exec line '%s' with URI '%s'"
-msgstr "อ่านลิงก์สัญลักษณ์ '%s' ไม่สำเร็จ: %s"
+msgstr "กระจายบรรทัดคำสั่ง '%s' ด้วย URI '%s' ไม่สำเร็จ"
 
 #: glib/gconvert.c:423 glib/gconvert.c:501 glib/giochannel.c:1150
 #, c-format
