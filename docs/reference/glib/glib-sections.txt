@@ -624,6 +624,10 @@ g_thread_functions_for_glib_use
 g_thread_init_glib
 g_thread_error_quark
 g_once_impl
+atexit
+g_system_thread_assign
+g_system_thread_equal
+g_system_thread_equal_simple
 </SECTION>
 
 <SECTION>

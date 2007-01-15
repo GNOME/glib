@@ -396,6 +396,7 @@ Removes a symbol from a scope.
 
 <!-- ##### MACRO g_scanner_freeze_symbol_table ##### -->
 <para>
+There is no reason to use this macro, since it does nothing.
 </para>
 
 @scanner: a #GScanner.
@@ -404,6 +405,7 @@ Removes a symbol from a scope.
 
 <!-- ##### MACRO g_scanner_thaw_symbol_table ##### -->
 <para>
+There is no reason to use this macro, since it does nothing.
 </para>
 
 @scanner: a #GScanner.
