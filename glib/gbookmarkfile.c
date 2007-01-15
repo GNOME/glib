@@ -237,11 +237,8 @@ bookmark_app_info_free (BookmarkAppInfo *app_info)
   if (!app_info)
     return;
   
-  if (app_info->name)
-    g_free (app_info->name);
-  
-  if (app_info->exec)
-    g_free (app_info->exec);
+  g_free (app_info->name);
+  g_free (app_info->exec);
   
   g_slice_free (BookmarkAppInfo, app_info);
 }
@@ -311,8 +308,7 @@ bookmark_metadata_free (BookmarkMetadata *metadata)
   if (!metadata)
     return;
   
-  if (metadata->mime_type)
-    g_free (metadata->mime_type);
+  g_free (metadata->mime_type);
     
   if (metadata->groups)
     {
@@ -332,11 +328,8 @@ bookmark_metadata_free (BookmarkMetadata *metadata)
       g_hash_table_destroy (metadata->apps_by_name);
     }
   
-  if (metadata->icon_href)
-    g_free (metadata->icon_href);
-  
-  if (metadata->icon_mime)
-    g_free (metadata->icon_mime);
+  g_free (metadata->icon_href);
+  g_free (metadata->icon_mime);
   
   g_slice_free (BookmarkMetadata, metadata);
 }
@@ -491,14 +484,9 @@ bookmark_item_free (BookmarkItem *item)
   if (!item)
     return;
 
-  if (item->uri)
-    g_free (item->uri);
-  
-  if (item->title)
-    g_free (item->title);
-  
-  if (item->description)
-    g_free (item->description);
+  g_free (item->uri);
+  g_free (item->title);
+  g_free (item->description);
   
   if (item->metadata)
     bookmark_metadata_free (item->metadata);
@@ -2319,8 +2307,7 @@ g_bookmark_file_set_mime_type (GBookmarkFile *bookmark,
   if (!item->metadata)
     item->metadata = bookmark_metadata_new ();
   
-  if (item->metadata->mime_type != NULL)
-    g_free (item->metadata->mime_type);
+  g_free (item->metadata->mime_type);
   
   item->metadata->mime_type = g_strdup (mime_type);
   item->modified = time (NULL);

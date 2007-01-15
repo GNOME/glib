@@ -1,5 +1,11 @@
 2005-01-15  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/giochannel.c:
+	* glib/gbookmarkfile.c: Remove redundant NULL-checks.
+	(#369668, Morten Welinder)
+
+2005-01-15  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/gthread.c:
 	* gthread/gthread-posix.c: Correct the gettime calculations
 	once more.  (#395203, Chris Wilson)

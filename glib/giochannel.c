@@ -122,8 +122,7 @@ g_io_channel_unref (GIOChannel *channel)
         g_iconv_close (channel->read_cd);
       if (channel->write_cd != (GIConv) -1)
         g_iconv_close (channel->write_cd);
-      if (channel->line_term)
-        g_free (channel->line_term);
+      g_free (channel->line_term);
       if (channel->read_buf)
         g_string_free (channel->read_buf, TRUE);
       if (channel->write_buf)
@@ -691,8 +690,7 @@ g_io_channel_set_line_term (GIOChannel	*channel,
   else if (length < 0)
     length = strlen (line_term);
 
-  if (channel->line_term)
-    g_free (channel->line_term);
+  g_free (channel->line_term);
   channel->line_term = line_term ? g_memdup (line_term, length) : NULL;
   channel->line_term_len = length;
 }
