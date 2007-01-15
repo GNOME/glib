@@ -120,7 +120,7 @@ typedef gint	(*GPollFunc)	(GPollFD *ufds,
 
 struct _GPollFD
 {
-#ifdef G_OS_WIN32 && GLIB_SIZEOF_VOID_P == 8
+#if defined (G_OS_WIN32) && GLIB_SIZEOF_VOID_P == 8
   gint64	fd;
 #else
   gint		fd;
