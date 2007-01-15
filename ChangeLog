@@ -1,3 +1,9 @@
+2005-01-15  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gthread.c:
+	* gthread/gthread-posix.c: Correct the gettime calculations
+	once more.  (#395203, Chris Wilson)
+
 2007-01-15  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gmain.h (struct _GPollFD): Prepare for potential Win64

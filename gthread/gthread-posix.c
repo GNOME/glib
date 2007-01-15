@@ -429,7 +429,6 @@ g_thread_equal_posix_impl (gpointer thread1, gpointer thread2)
 static guint64
 g_gettime_posix_impl (void)
 {
-#define G_NSEC_PER_SEC 100000000000
 #ifdef USE_CLOCK_GETTIME 
   struct timespec tv;
 
@@ -441,7 +440,7 @@ g_gettime_posix_impl (void)
 
   gettimeofday (&tv, NULL);
 
-  return (guint64) tv.tv_sec * G_NSEC_PER_SEC + tv.tv_usec * 1000; 
+  return (guint64) tv.tv_sec * G_NSEC_PER_SEC + tv.tv_usec * (G_NSEC_PER_SEC / G_USEC_PER_SEC);
 #endif
 }
 
