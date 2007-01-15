@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.12\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-01-04 17:24-0500\n"
+"POT-Creation-Date: 2007-01-14 23:28-0500\n"
 "PO-Revision-Date: 2005-03-28 19:34-0700\n"
 "Last-Translator: Steve Murphy <murf@e-tools.com>\n"
 "Language-Team: Kinyarwanda <translation-team-rw@lists.sourceforge.net>\n"
@@ -728,87 +728,86 @@ msgstr ""
 "IDOSIYE Kirimo Umurongo ni OYA a Urufunguzo Agaciro Itsinda Cyangwa Icyo "
 "wongeraho"
 
-#: glib/gkeyfile.c:755 glib/gkeyfile.c:1233 glib/gkeyfile.c:2456
-#: glib/gkeyfile.c:2579 glib/gkeyfile.c:2894
+#: glib/gkeyfile.c:758
 #, fuzzy, c-format
 msgid "Invalid group name: %s"
 msgstr "Izina ry'inturo:"
 
-#: glib/gkeyfile.c:774
+#: glib/gkeyfile.c:780
 #, fuzzy, c-format
 msgid "Key file does not start with a group"
 msgstr "IDOSIYE OYA Gutangira Na: a Itsinda"
 
-#: glib/gkeyfile.c:797 glib/gkeyfile.c:1235
+#: glib/gkeyfile.c:806
 #, fuzzy, c-format
 msgid "Invalid key name: %s"
 msgstr "Izina ry'inturo:"
 
-#: glib/gkeyfile.c:821
+#: glib/gkeyfile.c:833
 #, fuzzy, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "IDOSIYE Kirimo Imisobekere:"
 
-#: glib/gkeyfile.c:1030 glib/gkeyfile.c:1189 glib/gkeyfile.c:2394
-#: glib/gkeyfile.c:2463 glib/gkeyfile.c:2586 glib/gkeyfile.c:2721
-#: glib/gkeyfile.c:2874 glib/gkeyfile.c:3056 glib/gkeyfile.c:3113
+#: glib/gkeyfile.c:1042 glib/gkeyfile.c:1201 glib/gkeyfile.c:2402
+#: glib/gkeyfile.c:2469 glib/gkeyfile.c:2590 glib/gkeyfile.c:2725
+#: glib/gkeyfile.c:2878 glib/gkeyfile.c:3058 glib/gkeyfile.c:3115
 #, fuzzy, c-format
 msgid "Key file does not have group '%s'"
 msgstr "IDOSIYE OYA Itsinda"
 
-#: glib/gkeyfile.c:1201
+#: glib/gkeyfile.c:1213
 #, fuzzy, c-format
 msgid "Key file does not have key '%s'"
 msgstr "IDOSIYE OYA Urufunguzo"
 
-#: glib/gkeyfile.c:1307 glib/gkeyfile.c:1417
+#: glib/gkeyfile.c:1315 glib/gkeyfile.c:1425
 #, fuzzy, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "IDOSIYE Kirimo Urufunguzo Na: Agaciro ni OYA 8"
 
-#: glib/gkeyfile.c:1327 glib/gkeyfile.c:1437 glib/gkeyfile.c:1805
+#: glib/gkeyfile.c:1335 glib/gkeyfile.c:1445 glib/gkeyfile.c:1813
 #, fuzzy, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "IDOSIYE Kirimo Urufunguzo Agaciro"
 
-#: glib/gkeyfile.c:2017 glib/gkeyfile.c:2226
+#: glib/gkeyfile.c:2025 glib/gkeyfile.c:2234
 #, fuzzy, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
 "interpreted."
 msgstr "IDOSIYE Kirimo Urufunguzo in Itsinda Agaciro"
 
-#: glib/gkeyfile.c:2409 glib/gkeyfile.c:2601 glib/gkeyfile.c:3124
+#: glib/gkeyfile.c:2417 glib/gkeyfile.c:2605 glib/gkeyfile.c:3126
 #, fuzzy, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "IDOSIYE OYA Urufunguzo in Itsinda"
 
-#: glib/gkeyfile.c:3344
+#: glib/gkeyfile.c:3365
 #, fuzzy, c-format
 msgid "Key file contains escape character at end of line"
 msgstr "IDOSIYE Kirimo Inyuguti ku Impera Bya Umurongo"
 
-#: glib/gkeyfile.c:3366
+#: glib/gkeyfile.c:3387
 #, fuzzy, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "IDOSIYE Kirimo Sibyo"
 
-#: glib/gkeyfile.c:3508
+#: glib/gkeyfile.c:3529
 #, fuzzy, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Nka a Umubare"
 
-#: glib/gkeyfile.c:3522
+#: glib/gkeyfile.c:3543
 #, fuzzy, c-format
 msgid "Integer value '%s' out of range"
 msgstr "Agaciro kugirango Inyuma Bya Urutonde"
 
-#: glib/gkeyfile.c:3555
+#: glib/gkeyfile.c:3576
 #, fuzzy, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "Nka a Umubare"
 
-#: glib/gkeyfile.c:3582
+#: glib/gkeyfile.c:3603
 #, fuzzy, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Nka a Icyungo"

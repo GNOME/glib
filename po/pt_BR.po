@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-01-04 17:24-0500\n"
+"POT-Creation-Date: 2007-01-14 23:28-0500\n"
 "PO-Revision-Date: 2006-09-04 00:53-0300\n"
 "Last-Translator: Leonardo Ferreira Fontenelle <leo.fontenelle@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-l10n-br@listas.cipsga.org.br>\n"
@@ -744,52 +744,51 @@ msgstr ""
 "Arquivo de chave contém a linha '%s' que não é um par chave-valor, grupo ou "
 "comentário"
 
-#: glib/gkeyfile.c:755 glib/gkeyfile.c:1233 glib/gkeyfile.c:2456
-#: glib/gkeyfile.c:2579 glib/gkeyfile.c:2894
+#: glib/gkeyfile.c:758
 #, fuzzy, c-format
 msgid "Invalid group name: %s"
 msgstr "Nome de programa inválido: %s"
 
-#: glib/gkeyfile.c:774
+#: glib/gkeyfile.c:780
 #, c-format
 msgid "Key file does not start with a group"
 msgstr "Arquivo de chave não começa com um grupo"
 
-#: glib/gkeyfile.c:797 glib/gkeyfile.c:1235
+#: glib/gkeyfile.c:806
 #, fuzzy, c-format
 msgid "Invalid key name: %s"
 msgstr "Nome de programa inválido: %s"
 
-#: glib/gkeyfile.c:821
+#: glib/gkeyfile.c:833
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "Arquivo de chave contém codificação '%s' não suportada"
 
-#: glib/gkeyfile.c:1030 glib/gkeyfile.c:1189 glib/gkeyfile.c:2394
-#: glib/gkeyfile.c:2463 glib/gkeyfile.c:2586 glib/gkeyfile.c:2721
-#: glib/gkeyfile.c:2874 glib/gkeyfile.c:3056 glib/gkeyfile.c:3113
+#: glib/gkeyfile.c:1042 glib/gkeyfile.c:1201 glib/gkeyfile.c:2402
+#: glib/gkeyfile.c:2469 glib/gkeyfile.c:2590 glib/gkeyfile.c:2725
+#: glib/gkeyfile.c:2878 glib/gkeyfile.c:3058 glib/gkeyfile.c:3115
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Arquivo de chave não tem grupo '%s'"
 
-#: glib/gkeyfile.c:1201
+#: glib/gkeyfile.c:1213
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "Arquivo de chave não tem chave '%s'"
 
-#: glib/gkeyfile.c:1307 glib/gkeyfile.c:1417
+#: glib/gkeyfile.c:1315 glib/gkeyfile.c:1425
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "Arquivo de chave contém chave '%s' com valor '%s' que não é UTF-8"
 
-#: glib/gkeyfile.c:1327 glib/gkeyfile.c:1437 glib/gkeyfile.c:1805
+#: glib/gkeyfile.c:1335 glib/gkeyfile.c:1445 glib/gkeyfile.c:1813
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr ""
 "Arquivo de chave contém chave '%s' que tem valor que não pode ser "
 "interpretado."
 
-#: glib/gkeyfile.c:2017 glib/gkeyfile.c:2226
+#: glib/gkeyfile.c:2025 glib/gkeyfile.c:2234
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -798,37 +797,37 @@ msgstr ""
 "Arquivo de chave contém chave '%s' no grupo '%s' que tem valor que não pode "
 "ser interpretado."
 
-#: glib/gkeyfile.c:2409 glib/gkeyfile.c:2601 glib/gkeyfile.c:3124
+#: glib/gkeyfile.c:2417 glib/gkeyfile.c:2605 glib/gkeyfile.c:3126
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Arquivo de chave não tem chave '%s' no grupo '%s'"
 
-#: glib/gkeyfile.c:3344
+#: glib/gkeyfile.c:3365
 #, c-format
 msgid "Key file contains escape character at end of line"
 msgstr "Arquivo de chave contém caractere de escape no fim da linha"
 
-#: glib/gkeyfile.c:3366
+#: glib/gkeyfile.c:3387
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "Arquivo de chave contém seqüência de escape '%s' inválida"
 
-#: glib/gkeyfile.c:3508
+#: glib/gkeyfile.c:3529
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "O valor '%s' não pode ser interpretado como um número."
 
-#: glib/gkeyfile.c:3522
+#: glib/gkeyfile.c:3543
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "Valor inteiro '%s' fora dos limites"
 
-#: glib/gkeyfile.c:3555
+#: glib/gkeyfile.c:3576
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "O valor '%s' não pode ser interpretado como ponto flutuante."
 
-#: glib/gkeyfile.c:3582
+#: glib/gkeyfile.c:3603
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "O valor '%s' não pode ser interpretado como um booleano."

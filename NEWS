@@ -1,3 +1,24 @@
+Overview of Changes from GLib 2.12.7 to GLib 2.12.8
+===================================================
+
+* Due to an oversight, GLib has been linked against 
+  libpthread since 2.12.2. This has been fixed by 
+  moving the monotonic timer support into gthread.
+ 
+* Bugs fixed:
+ 393812	glib links against pthread
+ 394258	gthread.c: illegal include order
+ 394641	Undefined reference in gthread
+ 394150	gettime implementation breaks compilation on darwin 6
+ 395203	g_timer_elapsed off by 2 order of magnitude
+ 394262	image/* mimetype breaks stuff
+ 392636	glib-2.0.m4 ignores PKG_CONFIG environment variable
+ 395419	Glib-2.12.7 with mingw(w32api-3.8/windows) fails to compi...
+ 329031	G_GNUC_INTERNAL fails with gcc-2.95
+
+* Updated translations (ar,bg,ca,it,nl,th)
+
+
 Overview of Changes from GLib 2.12.6 to GLib 2.12.7
 ===================================================
 

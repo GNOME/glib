@@ -1,5 +1,9 @@
 2005-01-15  Matthias Clasen  <mclasen@redhat.com>
 
+	* === Released 2.12.8 ===
+
+	* NEWS: Updates
+
 	Merge from trunk:
 
 	* glib/gthread.c:
