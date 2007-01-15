@@ -1,3 +1,8 @@
+2007-01-15  Matthias Clasen  <mclasen@redhat.com>
+
+	* gobject/tmpl/gparamspec.sgml; Document G_PARAM_STATIC_NICK.
+	(#396564, Vincent Untz)
+
 2007-01-12  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/tmpl/keyfile.sgml: Small clarifications.
