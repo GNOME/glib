@@ -19,7 +19,7 @@
 	* glib/gmain.h (struct _GPollFD): Prepare for potential Win64
 	build: Use gint64 for the fd field on Win64, as we want to be able
 	to store a HANDLE in it. (#395422) (Other changes will surely also
-	be necessary when building on Win64, at least in gwin32.c.)
+	be necessary when building on Win64, at least in giowin32.c.)
 
 2007-01-15  Tor Lillqvist  <tml@novell.com>
 
