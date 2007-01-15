@@ -1,5 +1,12 @@
 2007-01-15  Tor Lillqvist  <tml@novell.com>
 
+	* glib/gmain.h (struct _GPollFD): Prepare for potential Win64
+	build: Use gint64 for the fd field on Win64, as we want to be able
+	to store a HANDLE in it. (#395422) (Other changes will surely also
+	be necessary when building on Win64, at least in gwin32.c.)
+
+2007-01-15  Tor Lillqvist  <tml@novell.com>
+
 	* glib/gwin32.c (g_win32_getlocale): Simplify greatly. Instead of
 	hardcoding a large switch statement, just ask Windows for the
 	ISO639 and ISO3166 codes. Tack on @Latn or @Cyrl for those
