@@ -1,3 +1,11 @@
+2007-01-15  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gwin32.c (g_win32_getlocale): Simplify greatly. Instead of
+	hardcoding a large switch statement, just ask Windows for the
+	ISO639 and ISO3166 codes. Tack on @Latn or @Cyrl for those
+	languages which can alternatively be written in Latin or
+	Cyrillic. Fixes #395419.
+
 2007-01-12  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gkeyfile.c: Rework the handling of invalid
