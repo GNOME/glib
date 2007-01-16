@@ -1,3 +1,7 @@
+2007-01-16  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.12.9 ===
+
 2007-01-16  Tor Lillqvist  <tml@novell.com>
 
 	* gthread-win32.c (g_gettime_win32_impl):

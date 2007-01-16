@@ -147,7 +147,6 @@ Do not use this struct unless you know what you are doing.
 @thread_set_priority: 
 @thread_self: 
 @thread_equal: 
-@gettime: 
 
 <!-- ##### FUNCTION g_thread_init ##### -->
 
