@@ -1,8 +1,9 @@
 2007-01-16  Tor Lillqvist  <tml@novell.com>
 
 	* gthread-win32.c (g_gettime_win32_impl):
-	GetSystemTimeAsFileTime() returns 100s of nanoseconds, so multiply
-	by 100 to get nanoseconds which is what we want.
+	GetSystemTimeAsFileTime() returns 100s of nanoseconds since 1601,
+	so offset to Unix epoch (1970) and multiply by 100 to get
+	nanoseconds which is what we want.
 
 2005-01-15  Matthias Clasen  <mclasen@redhat.com>
 

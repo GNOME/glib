@@ -550,7 +550,12 @@ g_gettime_win32_impl (void)
 {
   guint64 v;
 
+  /* Returns 100s of nanoseconds since start of 1601 */
   GetSystemTimeAsFileTime ((FILETIME *)&v);
+
+  /* Offset to Unix epoch */
+  v -= G_GINT64_CONSTANT (116444736000000000);
+  /* Convert to nanoseconds */
   v *= 100;
 
   return v;
