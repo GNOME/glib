@@ -555,6 +555,7 @@ gettime (void)
   guint64 v;
 
   GetSystemTimeAsFileTime ((FILETIME *)&v);
+  v *= 100;
 
   return v;
 #else
