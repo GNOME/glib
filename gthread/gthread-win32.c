@@ -551,6 +551,7 @@ g_gettime_win32_impl (void)
   guint64 v;
 
   GetSystemTimeAsFileTime ((FILETIME *)&v);
+  v *= 100;
 
   return v;
 }
