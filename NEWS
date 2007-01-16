@@ -1,3 +1,12 @@
+Overview of Changes from GLib 2.12.8 to GLib 2.12.9
+===================================================
+
+* Fix an unintended ABI break in the 2.12.8 release
+
+* Bugs fixed:
+ 397139 glib-2.12.8 breaks ABI
+
+
 Overview of Changes from GLib 2.12.7 to GLib 2.12.8
 ===================================================
 
