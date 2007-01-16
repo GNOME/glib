@@ -1,3 +1,13 @@
+2007-01-16  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gthread.h:
+	* glib/gthread.c:
+	* glib/glib.symbols: Revert an accidental ABI break by
+	moving gettime out of the GThreadFunctions struct and making
+	it a separate variable.  (#397139, Joe Marcus Clarke)
+
+	* gthread/*.c: Adapt.
+
 2007-01-16  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gthread.c (gettime): GetSystemTimeAsFileTime() returns 100s

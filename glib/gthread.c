@@ -80,6 +80,8 @@ static void    g_thread_cleanup (gpointer data);
 static void    g_thread_fail (void);
 static guint64 gettime (void);
 
+guint64        (*g_thread_gettime) (void) = gettime;
+
 /* Global variables */
 
 static GSystemThread zero_thread; /* This is initialized to all zero */
@@ -108,9 +110,8 @@ GThreadFunctions g_thread_functions_for_glib_use = {
   NULL,                                        /* thread_join */
   NULL,                                        /* thread_exit */
   NULL,                                        /* thread_set_priority */
-  NULL,                                         /* thread_self */
-  NULL,                                         /* thread_equal */
-  gettime                                      /* gettime */
+  NULL,                                        /* thread_self */
+  NULL                                         /* thread_equal */
 };
 
 /* Local data */

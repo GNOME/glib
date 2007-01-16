@@ -426,23 +426,20 @@ g_thread_equal_posix_impl (gpointer thread1, gpointer thread2)
   return (pthread_equal (*(pthread_t*)thread1, *(pthread_t*)thread2) != 0);
 }
 
-static guint64
-g_gettime_posix_impl (void)
-{
 #ifdef USE_CLOCK_GETTIME 
+static guint64
+gettime (void)
+{
   struct timespec tv;
 
   clock_gettime (posix_clock, &tv);
 
   return (guint64) tv.tv_sec * G_NSEC_PER_SEC + tv.tv_nsec;
-#else
-  struct timeval tv;
-
-  gettimeofday (&tv, NULL);
-
-  return (guint64) tv.tv_sec * G_NSEC_PER_SEC + tv.tv_usec * (G_NSEC_PER_SEC / G_USEC_PER_SEC);
-#endif
 }
+static guint64 (*g_thread_gettime_impl)(void) = gettime;
+#else
+static guint64 (*g_thread_gettime_impl)(void) = 0;
+#endif
 
 static GThreadFunctions g_thread_functions_for_glib_use_default =
 {
@@ -466,6 +463,5 @@ static GThreadFunctions g_thread_functions_for_glib_use_default =
   g_thread_exit_posix_impl,
   g_thread_set_priority_posix_impl,
   g_thread_self_posix_impl,
-  g_thread_equal_posix_impl,
-  g_gettime_posix_impl
+  g_thread_equal_posix_impl
 };
