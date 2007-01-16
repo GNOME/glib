@@ -312,6 +312,8 @@ g_thread_init (GThreadFunctions* init)
     g_thread_use_default_impl = FALSE;
 
   g_thread_functions_for_glib_use = *init;
+  if (g_thread_gettime_impl)
+    g_thread_gettime = g_thread_gettime_impl;
 
   supported = (init->mutex_new &&
 	       init->mutex_lock &&
@@ -332,8 +334,7 @@ g_thread_init (GThreadFunctions* init)
 	       init->thread_join &&
 	       init->thread_exit &&
 	       init->thread_set_priority &&
-	       init->thread_self &&
-               init->gettime);
+	       init->thread_self);
 
   /* if somebody is calling g_thread_init (), it means that he wants to
    * have thread support, so check this

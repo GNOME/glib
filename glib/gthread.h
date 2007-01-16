@@ -106,12 +106,13 @@ struct _GThreadFunctions
   void      (*thread_self)        (gpointer              thread);
   gboolean  (*thread_equal)       (gpointer              thread1,
 				   gpointer              thread2);
-  guint64   (*gettime)            (void);
 };
 
 GLIB_VAR GThreadFunctions       g_thread_functions_for_glib_use;
 GLIB_VAR gboolean               g_thread_use_default_impl;
 GLIB_VAR gboolean               g_threads_got_initialized;
+
+GLIB_VAR guint64   (*g_thread_gettime) (void);
 
 /* initializes the mutex/cond/private implementation for glib, might
  * only be called once, and must not be called directly or indirectly

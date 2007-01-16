@@ -53,7 +53,7 @@
 
 #define G_NSEC_PER_SEC 1000000000
 
-#define GETTIME(v) (v = G_THREAD_UF (gettime, ()))
+#define GETTIME(v) (v = g_thread_gettime ())
 
 struct _GTimer
 {
