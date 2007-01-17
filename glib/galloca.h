@@ -37,7 +37,7 @@
 /* a native and working alloca.h is there */ 
 # include <alloca.h>
 #else /* !__GNUC__ && !GLIB_HAVE_ALLOCA_H */
-# ifdef _MSC_VER
+# if defined(_MSC_VER) || defined(__DMC__)
 #  include <malloc.h>
 #  define alloca _alloca
 # else /* !_MSC_VER */

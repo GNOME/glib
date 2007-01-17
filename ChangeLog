@@ -1,3 +1,8 @@
+2007-01-17  Tor Lillqvist  <tml@novell.com>
+
+	* glib/galloca.h: Use <malloc.h> also with Digital Mars compiler
+	on Win32. (#346808, Serhat Sevki Dincer)
+
 2007-01-16  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Bump version
