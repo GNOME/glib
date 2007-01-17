@@ -1,5 +1,11 @@
 2007-01-17  Tor Lillqvist  <tml@novell.com>
 
+	* glib-zip.in: DLLs are always installed in "bin" with current
+	libtool, drop unnecessary logic to check where they are. Include
+	also the COPYING file.
+
+2007-01-17  Tor Lillqvist  <tml@novell.com>
+
 	* glib/galloca.h: Use <malloc.h> also with Digital Mars compiler
 	on Win32. (#346808, Serhat Sevki Dincer)
 
