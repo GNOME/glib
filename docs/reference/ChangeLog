@@ -1,3 +1,8 @@
+2007-01-17  Behdad Esfahbod  <behdad@gnome.org>
+
+	* glib/tmpl/macros_misc.sgml: Put back G_GNUC_HAVE_VISIBILITY
+	doc that was removed accidentally.
+
 2007-01-15  Matthias Clasen  <mclasen@redhat.com>
 
 	* gobject/tmpl/gparamspec.sgml; Document G_PARAM_STATIC_NICK.
