@@ -1,5 +1,15 @@
 2007-01-17  Tor Lillqvist  <tml@novell.com>
 
+	* config.h.win32.in
+	* glib/galloca.h
+	* glib/gbacktrace.h
+	* glib/gwin32.c
+	* glibconfig.h.win32.in
+	* README.win32: More minor tweaks for Digital Mars
+	compiler. (#346808, Serhat Sevki Dincer)
+	
+2007-01-17  Tor Lillqvist  <tml@novell.com>
+
 	* glib-zip.in: DLLs are always installed in "bin" with current
 	libtool, drop unnecessary logic to check where they are. Include
 	also the COPYING file.

@@ -49,6 +49,7 @@ available in all source files that include <glib.h> or GTK+ headers.
 Additionally, there are the compiler-specific macros:
 - __GNUC__ is defined when using gcc
 - _MSC_VER is defined when using the Microsoft compiler
+- __DMC__ is defined when using the Digital Mars C/C++ compiler
 
 G_OS_WIN32 implies using the Microsoft C runtime MSVCRT.DLL. GLib is
 not known to work with the older CRTDLL.DLL runtime, or the static

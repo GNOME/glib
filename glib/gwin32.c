@@ -47,9 +47,9 @@
 #endif
 #include <errno.h>
 #include <ctype.h>
-#ifdef _MSC_VER
+#if defined(_MSC_VER) || defined(__DMC__)
 #  include <io.h>
-#endif /* _MSC_VER */
+#endif /* _MSC_VER || __DMC__ */
 
 #include "glib.h"
 #include "galias.h"

@@ -83,11 +83,11 @@
 #define G_HAVE___INLINE 1
 
 /* Have __inline__ keyword */
-#ifndef _MSC_VER
+#if !defined(_MSC_VER) && !defined(__DMC__)
 #define G_HAVE___INLINE__ 1
-#else /* _MSC_VER */
+#else /* _MSC_VER or __DMC__ */
 /* #undef G_HAVE___INLINE__ */
-#endif /* _MSC_VER */
+#endif /* _MSC_VER or __DMC__ */
 
 /* Source file containing theread implementation */
 #define G_THREAD_SOURCE "gthread-win32.c"
@@ -263,6 +263,9 @@
 /* Define to 1 if you have the `snprintf' function. */
 #ifndef _MSC_VER
 #define HAVE_SNPRINTF 1
+#ifdef __DMC__
+#define snprintf _snprintf
+#endif
 #else /* _MSC_VER */
 /* #undef HAVE_SNPRINTF */
 #endif /* _MSC_VER */
@@ -292,21 +295,21 @@
 /* #undef HAVE_STPCPY */
 
 /* Define to 1 if you have the `strcasecmp' function. */
-#ifndef _MSC_VER
+#if !defined(_MSC_VER) && !defined(__DMC__)
 #define HAVE_STRCASECMP 1
-#else /* _MSC_VER */
+#else /* _MSC_VER or __DMC__ */
 /* #undef HAVE_STRCASECMP */
-#endif /* _MSC_VER */
+#endif /* _MSC_VER or __DMC__ */
 
 /* Define to 1 if you have the `strerror' function. */
 #define HAVE_STRERROR 1
 
 /* Define to 1 if you have the <strings.h> header file. */
-#ifndef _MSC_VER
+#if !defined(_MSC_VER) && !defined(__DMC__)
 #define HAVE_STRINGS_H 1
-#else /* _MSC_VER */
+#else /* _MSC_VER or __DMC__ */
 /* #undef HAVE_STRINGS_H */
-#endif /* _MSC_VER */
+#endif /* _MSC_VER or __DMC__ */
 
 /* Define to 1 if you have the <string.h> header file. */
 #define HAVE_STRING_H 1
@@ -315,11 +318,11 @@
 /* #undef HAVE_STRLCPY */
 
 /* Define to 1 if you have the `strncasecmp' function. */
-#ifndef _MSC_VER
+#if !defined(_MSC_VER) && !defined(__DMC__)
 #define HAVE_STRNCASECMP 1
-#else /* _MSC_VER */
+#else /* _MSC_VER or __DMC__ */
 /* #undef HAVE_STRNCASECMP */
-#endif /* _MSC_VER */
+#endif /* _MSC_VER or __DMC__ */
 
 /* Define to 1 if you have the `strsignal' function. */
 /* #undef HAVE_STRSIGNAL */
@@ -328,11 +331,11 @@
 /* #undef HAVE_SYMLINK */
 
 /* Define to 1 if you have the <sys/param.h> header file. */
-#ifndef _MSC_VER
+#if !defined(_MSC_VER) && !defined(__DMC__)
 #define HAVE_SYS_PARAM_H 1
-#else /* _MSC_VER */
+#else /* _MSC_VER or __DMC__ */
 /* #undef HAVE_SYS_PARAM_H */
-#endif /* _MSC_VER */
+#endif /* _MSC_VER or __DMC__ */
 
 /* Define to 1 if you have the <sys/poll.h> header file. */
 /* #undef HAVE_SYS_POLL_H */
@@ -371,11 +374,11 @@
 /* #undef HAVE_UNSETENV */
 
 /* Define to 1 if you have the <values.h> header file. */
-#ifndef _MSC_VER
+#if !defined(_MSC_VER) && !defined(__DMC__)
 #define HAVE_VALUES_H 1
-#else /* _MSC_VER */
+#else /* _MSC_VER or __DMC__ */
 /* #undef HAVE_VALUES_H */
-#endif /* _MSC_VER */
+#endif /* _MSC_VER or __DMC__ */
 
 /* Define to 1 if you have the `vasprintf' function. */
 #define HAVE_VASPRINTF 1
@@ -386,6 +389,9 @@
 /* Define to 1 if you have the `vsnprintf' function. */
 #ifndef _MSC_VER
 #define HAVE_VSNPRINTF 1
+#ifdef __DMC__
+#define vsnprintf _vsnprintf
+#endif
 #else /* _MSC_VER */
 /* #undef HAVE_VSNPRINTF */
 #endif /* _MSC_VER */
