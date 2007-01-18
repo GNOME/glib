@@ -40,7 +40,7 @@
 # if defined(_MSC_VER) || defined(__DMC__)
 #  include <malloc.h>
 #  define alloca _alloca
-# else /* !_MSC_VER */
+# else /* !_MSC_VER && !__DMC__ */
 #  ifdef _AIX
 #   pragma alloca
 #  else /* !_AIX */
@@ -50,7 +50,7 @@ char *alloca ();
 G_END_DECLS
 #   endif /* !alloca */
 #  endif /* !_AIX */
-# endif /* !_MSC_VER */
+# endif /* !_MSC_VER && !__DMC__ */
 #endif /* !__GNUC__ && !GLIB_HAVE_ALLOCA_H */
 
 #define g_alloca(size)		 alloca (size)

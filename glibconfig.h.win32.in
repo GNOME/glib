@@ -108,26 +108,17 @@ typedef unsigned int gsize;
 #define G_HAVE_INLINE 1
 #endif /* _MSC_VER */
 #define G_HAVE___INLINE 1
-#ifndef _MSC_VER
+#if !defined(_MSC_VER) && !defined(__DMC__)
 #define G_HAVE___INLINE__ 1
-#endif /* not _MSC_VER */
+#endif /* !_MSC_VER and !__DMC__ */
 #endif	/* !__cplusplus */
 
-#ifdef	__cplusplus
+#if defined(__cplusplus) || !defined(_MSC_VER)
 #define G_CAN_INLINE	1
-#else	/* !__cplusplus */
-#ifndef _MSC_VER
-#define G_CAN_INLINE	1
-#endif
 #endif
 
 #ifndef _MSC_VER
-#ifndef __cplusplus
-# define G_HAVE_ISO_VARARGS 1
-#endif
-#ifdef __cplusplus
-# define G_HAVE_ISO_VARARGS 1
-#endif
+#define G_HAVE_ISO_VARARGS 1
 
 /* gcc-2.95.x supports both gnu style and ISO varargs, but if -ansi
  * is passed ISO vararg support is turned off, and there is no work
