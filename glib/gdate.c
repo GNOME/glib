@@ -931,7 +931,7 @@ g_date_set_time_t (GDate *date,
  */
 void
 g_date_set_time (GDate    *date,
-		 GTime    *time_)
+		 GTime     time_)
 {
   g_date_set_time_t (date, (time_t) time_);
 }
