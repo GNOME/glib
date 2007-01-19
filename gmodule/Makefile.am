@@ -86,7 +86,7 @@ gmodule-win32-res.o: gmodule.rc
 endif
 
 gmodule-2.0.lib: libgmodule-2.0.la gmodule.def
-	lib -name:libgmodule-2.0-$(LT_CURRENT_MINUS_AGE).dll -def:gmodule.def -out:$@
+	lib -name:libgmodule-2.0-$(LT_CURRENT_MINUS_AGE).dll -def:$(srcdir)/gmodule.def -out:$@
 
 .PHONY: files release
 

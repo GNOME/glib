@@ -1,3 +1,8 @@
+2007-01-19  Tor Lillqvist  <tml@novell.com>
+
+	* Makefile.am (gmodule-2.0.lib): Use $(srcdir) for builds outside
+	srcdir.
+
 2006-12-31  Matthias Clasen  <mclasen@redhat.com>
 
 	* gmodule.c: Fix include order for win32. (#390943, 
