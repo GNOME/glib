@@ -3,27 +3,6 @@
 	* glib/gdate.c (g_date_set_time): Fix a typo.  (#398203,
 	Owen Taylor)
 
-2007-01-18  Marco Barisione <marco@barisione.org>
-
-	Add GRegex for regular expression matching.  (#50075)
-
-	* configure.in: Handle GRegex compilation.
-
-	* glib/gregex.c:
-	* glib/gregex.h: Code for GRegex.
-
-	* glib/Makefile.am:
-	* glib/makefile.msc.in: Updated makefiles.
-
-	* glib/pcre/*: Internal copy of PCRE.
-
-	* glib/update-pcre/*: Stuff to automatically update the internal PCRE
-	to a newer version.
-
-	* tests/regex-test.c:
-	* tests/Makefile.am:
-	* tests/makefile.msc.in: Add tests for GRegex.
-
 2007-01-17  Tor Lillqvist  <tml@novell.com>
 
 	* config.h.win32.in
