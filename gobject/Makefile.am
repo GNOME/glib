@@ -145,7 +145,8 @@ EXTRA_HEADERS =
 EXTRA_DIST = \
 	$(gobject_private_h_sources) 	\
 	$(gobject_extra_sources) 	\
-	makegobjectalias.pl
+	makegobjectalias.pl		\
+	marshal-genstrings.pl
 
 #
 # rules to generate built sources

@@ -1,3 +1,19 @@
+2007-01-19  Matthias Clasen  <mclasen@redhat.com>
+
+	Some file list updates (#398069, Owen Taylor)
+
+	* docs/Changes-2.0.txt
+	* docs/reference/README.cvs-commits
+	* glib.spec.in: Remove obsolete files
+
+	* tests/Makefile.am:
+	* glib/libcharset/Makefile.am:
+	* gobject/Makefile.am:
+	* Makefile.am: Add some missing files to EXTRA_DIST
+
+	* tests/timeloop-basic.c: Make it build
+	* HACKING: Small updates
+
 2007-01-18  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gdate.c (g_date_set_time): Fix a typo.  (#398203,

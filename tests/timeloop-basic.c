@@ -33,8 +33,8 @@ my_pipe (int *fds)
 int
 read_all (int fd, char *buf, int len)
 {
-  gsize bytes_read = 0;
-  gssize count;
+  size_t bytes_read = 0;
+  ssize_t count;
 
   while (bytes_read < len)
     {
@@ -56,8 +56,8 @@ read_all (int fd, char *buf, int len)
 int
 write_all (int fd, char *buf, int len)
 {
-  gsize bytes_written = 0;
-  gssize count;
+  size_t bytes_written = 0;
+  ssize_t count;
 
   while (bytes_written < len)
     {

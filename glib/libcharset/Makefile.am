@@ -17,7 +17,8 @@ EXTRA_DIST = 			\
 	glibc21.m4		\
 	codeset.m4		\
 	update.sh		\
-	make-patch.sh
+	make-patch.sh		\
+	libcharset-glib.patch
 
 charset_alias = $(DESTDIR)$(libdir)/charset.alias
 charset_tmp = $(DESTDIR)$(libdir)/charset.tmp

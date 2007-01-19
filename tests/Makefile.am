@@ -33,7 +33,8 @@ EXTRA_DIST =					\
 	gen-casefold-txt.pl			\
 	gen-casemap-txt.pl			\
 	iochannel-test-infile			\
-	utf8.txt
+	utf8.txt				\
+	timeloop-basic.c		
 
 BUILT_EXTRA_DIST =				\
 	makefile.msc

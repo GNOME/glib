@@ -10,6 +10,8 @@ INCLUDES = -DG_LOG_DOMAIN=g_log_domain_glib @GLIB_DEBUG_FLAGS@ \
 	-DG_DISABLE_DEPRECATED -DGLIB_COMPILATION
 
 EXTRA_DIST = 			\
+	ChangeLog.pre-2-12	\
+	ChangeLog.pre-2-10	\
 	ChangeLog.pre-2-8	\
 	ChangeLog.pre-2-6	\
 	ChangeLog.pre-2-4	\
@@ -23,6 +25,9 @@ EXTRA_DIST = 			\
 	README.in		\
 	INSTALL.in		\
 	README.win32		\
+	HACKING			\
+	MAINTAINERS		\
+	autogen.sh		\
 	makefile.msc		\
 	glibconfig.h.win32.in	\
 	msvc_recommended_pragmas.h \
