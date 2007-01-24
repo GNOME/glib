@@ -348,6 +348,7 @@ g_param_spec_get_redirect_target().
 @property_id: the new property ID
 @name: the name of a property registered in a parent class or
        in an interface of this class.
+@Since: 2.4
 
 
 <!-- ##### FUNCTION g_object_interface_install_property ##### -->
