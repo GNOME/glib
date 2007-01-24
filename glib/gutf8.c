@@ -764,14 +764,20 @@ g_utf8_get_char_extended (const  gchar *p,
  * 
  * Return value: the resulting character. If @p points to a partial
  *    sequence at the end of a string that could begin a valid 
- *    character, returns (gunichar)-2; otherwise, if @p does not point 
- *    to a valid UTF-8 encoded Unicode character, returns (gunichar)-1.
+ *    character (or if @max_len is zero), returns (gunichar)-2; 
+ *    otherwise, if @p does not point to a valid UTF-8 encoded 
+ *    Unicode character, returns (gunichar)-1.
  **/
 gunichar
 g_utf8_get_char_validated (const  gchar *p,
 			   gssize max_len)
 {
-  gunichar result = g_utf8_get_char_extended (p, max_len);
+  gunichar result;
+
+  if (max_len == 0)
+    return (gunichar)-2;
+
+  result = g_utf8_get_char_extended (p, max_len);
 
   if (result & 0x80000000)
     return result;
