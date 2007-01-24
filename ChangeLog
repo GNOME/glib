@@ -1,5 +1,11 @@
 2007-01-23  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gutf8.c (g_utf8_get_char_validated): Clarify
+	the behaviour is max_len is zero.  (#400044, 
+	Benjamin Dauvergne)
+
+2007-01-23  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/goption.c (print_help): Use bitwise &
 	when operating on flags.  (#399971, Jon Oberheide)
 
