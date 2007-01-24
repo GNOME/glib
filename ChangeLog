@@ -1,3 +1,10 @@
+2007-01-23  Matthias Clasen  <mclasen@redhat.com>
+
+	Merge from trunk:
+
+	* glib/goption.c (print_help): Use bitwise &
+	when operating on flags.  (#399971, Jon Oberheide)
+
 2007-01-19  Matthias Clasen  <mclasen@redhat.com>
 
 	Merge from trunk:

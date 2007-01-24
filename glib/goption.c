@@ -586,13 +586,13 @@ print_help (GOptionContext *context,
 	{
 	  entry = &group->entries[i];
 	  if (g_hash_table_lookup (shadow_map, entry->long_name) && 
-	      !(entry->flags && G_OPTION_FLAG_NOALIAS))
+	      !(entry->flags & G_OPTION_FLAG_NOALIAS))
 	    entry->long_name = g_strdup_printf ("%s-%s", group->name, entry->long_name);
 	  else  
 	    g_hash_table_insert (shadow_map, (gpointer)entry->long_name, entry);
 
 	  if (seen[(guchar)entry->short_name] && 
-	      !(entry->flags && G_OPTION_FLAG_NOALIAS))
+	      !(entry->flags & G_OPTION_FLAG_NOALIAS))
 	    entry->short_name = 0;
 	  else
 	    seen[(guchar)entry->short_name] = TRUE;
