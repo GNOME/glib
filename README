@@ -159,9 +159,8 @@ to that bug report.
 Otherwise, enter a new bug report that describes the patch,
 and attach the patch to that bug report.
 
-Bug reports containing patches should include the PATCH keyword
-in their keyword fields. If the patch adds to or changes the GLib 
-programming interface, the API keyword should also be included.
+Bug reports containing patches that add to or change the GLib programming
+interface should include the API keyword in their keyword fields.
 
 Patches should be in unified diff form. (The -u option to GNU
 diff.)

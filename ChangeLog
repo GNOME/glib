@@ -1,3 +1,8 @@
+2007-01-24  Roozbeh Pournader  <roozbeh@farsiweb.info>
+
+	* README: Remove mention of no-longer-existing PATCH
+	keyword in bugzilla. (#396899)
+
 2007-01-23  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gutf8.c (g_utf8_get_char_validated): Clarify
