@@ -1,3 +1,8 @@
+2007-01-24  Benjamin Otte <otte@gnome.org>
+
+	* glib/gprintf.c (g_sprintf): Clarify the documentation
+	regarding overflows (wording by Jan Schmidt)
+
 2007-01-23  Roozbeh Pournader  <roozbeh@farsiweb.info>
 
 	* README: Remove mention of no-longer-existing PATCH

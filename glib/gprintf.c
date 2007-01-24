@@ -89,7 +89,9 @@ g_fprintf (FILE        *file,
 
 /**
  * g_sprintf:
- * @string: the buffer to hold the output.
+ * @string: A pointer to a memory buffer to contain the resulting string. It 
+ *          is up to the caller to ensure that the allocated buffer is large 
+ *          enough to hold the formatted result
  * @format: a standard printf() format string, but notice 
  *          <link linkend="string-precision">string precision pitfalls</link>.
  * @Varargs: the arguments to insert in the output.
