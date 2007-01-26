@@ -1,3 +1,11 @@
+2007-01-26  Matthias Clasen <mclasen@redhat.com>
+
+	* gmem.c:
+	* gslice.c:
+	* gmessages.c:
+	* gutils.c: Make some structs which are used only once 
+	non-static. 
+
 2007-01-24  Benjamin Otte <otte@gnome.org>
 
 	* glib/gprintf.c (g_sprintf): Clarify the documentation

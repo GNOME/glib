@@ -689,7 +689,7 @@ g_mem_init_nomessage (void)
 {
   gchar buffer[1024];
   const gchar *val;
-  static const GDebugKey keys[] = {
+  const GDebugKey keys[] = {
     { "gc-friendly", 1 },
   };
   gint flags;

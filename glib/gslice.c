@@ -277,7 +277,7 @@ slice_config_init (SliceConfig *config)
   /* don't use g_malloc/g_message here */
   gchar buffer[1024];
   const gchar *val = _g_getenv_nomalloc ("G_SLICE", buffer);
-  static const GDebugKey keys[] = {
+  const GDebugKey keys[] = {
     { "always-malloc", 1 << 0 },
     { "debug-blocks",  1 << 1 },
   };

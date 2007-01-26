@@ -144,7 +144,7 @@ g_messages_prefixed_init (void)
       
       if (val)
 	{
-	  static const GDebugKey keys[] = {
+	  const GDebugKey keys[] = {
 	    { "error", G_LOG_LEVEL_ERROR },
 	    { "critical", G_LOG_LEVEL_CRITICAL },
 	    { "warning", G_LOG_LEVEL_WARNING },
@@ -1062,7 +1062,7 @@ _g_debug_init (void)
   val = g_getenv ("G_DEBUG");
   if (val != NULL)
     {
-      static const GDebugKey keys[] = {
+      const GDebugKey keys[] = {
 	{"fatal_warnings", G_DEBUG_FATAL_WARNINGS},
 	{"fatal_criticals", G_DEBUG_FATAL_CRITICALS}
       };
