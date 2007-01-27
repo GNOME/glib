@@ -309,12 +309,29 @@ Since: 2.6
 
 <!-- ##### MACRO G_GNUC_INTERNAL ##### -->
 <para>
-Expands to the GNU C <literal>visibility(hidden)</literal> attribute if the 
-compiler supports it  (currently only <command>gcc</command>). This attribute 
-can be used for marking library functions as being used internally to the lib 
-only, to not create inefficient PLT entries. Note that static functions do not 
-need to be marked as internal in this way. See the GNU C documentation for details. 
+This attribute can be used for marking library functions as being used 
+internally to the library only, which may allow the compiler to handle
+function calls more efficiently. 
+Note that static functions do not need to be marked as internal in this way. 
+See the GNU C documentation for details. 
 </para>
+<para>
+When using a compiler that supports the GNU C hidden visibility attribute, 
+this macro expands to <literal>__attribute__((visibility("hidden")))</literal>.
+When using the Sun Studio compiler, it expands to <literal>__hidden</literal>.
+</para>
+<para>
+Note that for portability, the attribute should be placed before the
+function declaration. While GCC allows the macro after the declaration, 
+Sun Studio does not.
+</para>
+<informalexample><programlisting>
+G_GNUC_INTERNAL
+void _g_log_fallback_handler (const gchar    *log_domain,
+                              GLogLevelFlags  log_level,
+                              const gchar    *message,
+                              gpointer        unused_data);
+</programlisting></informalexample>
 
 Since: 2.6
 

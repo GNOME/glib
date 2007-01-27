@@ -1,5 +1,14 @@
 2007-01-26  Matthias Clasen <mclasen@redhat.com>
 
+	* configure.in: Define G_GNUC_INTERNAL for Sun Studio
+	as __hidden.  (#342981, Brian Cameron)
+
+	* glib/gconvert.c:
+	* glib/gutf8.c: Move G_GNUC_INTERNAL uses to the right
+	spot.  
+
+2007-01-26  Matthias Clasen <mclasen@redhat.com>
+
 	* gmem.c:
 	* gslice.c:
 	* gmessages.c:

@@ -786,6 +786,15 @@ int main (int argc, char **argv)
 AC_MSG_RESULT($g_have_gnuc_visibility)
 AM_CONDITIONAL(HAVE_GNUC_VISIBILITY, [test x$g_have_gnuc_visibility = xyes])
 
+AC_MSG_CHECKING([whether using Sun Studio C compiler])
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#if defined(__SUNPRO_C) || (__SUNPRO_C >= 0x550)
+#else
+# include "error: this is not Sun Studio."
+#endif
+]], [[]])], [ g_have_sunstudio_visibility=yes ], [ g_have_sunstudio_visibility=no ])
+AC_MSG_RESULT($g_have_sunstudio_visibility)
+AM_CONDITIONAL(HAVE_SUNSTUDIO_VISIBILITY, [test x$g_have_sunstudio_visibility = xyes])
+
 # check for bytesex stuff
 AC_C_BIGENDIAN
 
@@ -2440,10 +2449,16 @@ _______EOF
 #define G_GNUC_INTERNAL __attribute__((visibility("hidden")))
 #endif
 _______EOF
-	else
+        else
+          if test x$g_have_sunstudio_visibility = xyes ; then
+                cat >>$outfile <<_______EOF
+#define G_GNUC_INTERNAL __hidden
+_______EOF
+          else
 		cat >>$outfile <<_______EOF
 #define G_GNUC_INTERNAL
 _______EOF
+	  fi
 	fi
 
 
@@ -2769,6 +2784,7 @@ g_have_iso_cxx_varargs=$g_have_iso_cxx_varargs
 
 g_can_inline=$g_can_inline
 g_have_gnuc_visibility=$g_have_gnuc_visibility
+g_have_sunstudio_visibility=$g_have_sunstudio_visibility
 
 case xyes in
 x$ac_cv_c_bigendian)
