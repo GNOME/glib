@@ -1,3 +1,8 @@
+2007-01-30  Matthias Clasen  <mclasen@redhat.com>
+
+	* gobject/tmpl/gsignal.sgml: Correct a typo.
+	(#401994, Mariano Suarez-Alvarez)
+
 2007-01-26  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/tmpl/macros_misc.sgml: Document G_GNUC_INTERNAL
