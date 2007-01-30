@@ -71,9 +71,7 @@ typedef enum {
 void     g_slice_set_config	   (GSliceConfig ckey, gint64 value);
 gint64   g_slice_get_config	   (GSliceConfig ckey);
 gint64*  g_slice_get_config_state  (GSliceConfig ckey, gint64 address, guint *n_values);
-#ifdef  G_ENABLE_DEBUG
 void     g_slice_debug_tree_statistics (void);
-#endif /* G_ENABLE_DEBUG */
 
 G_END_DECLS
 

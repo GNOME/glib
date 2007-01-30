@@ -1,3 +1,11 @@
+2007-01-30  Matthias Clasen <mclasen@redhat.com>
+
+	* glib/glib.symbols:
+	* glib/gslice.h:
+	* glib/gslice.c: Don't make ABI depend on G_ENABLE_DEBUG,
+	just add an empty g_slice_debug_tree_statistics () implementation
+	in the !G_ENABLE_DEBUG case.
+
 2007-01-26  Matthias Clasen <mclasen@redhat.com>
 
 	* configure.in: Define G_GNUC_INTERNAL for Sun Studio
