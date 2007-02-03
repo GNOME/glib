@@ -1,6 +1,6 @@
 SUBDIRS=gobject refcount
 
-INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/glib -I$(top_srcdir)/gmodule $(GLIB_DEBUG_FLAGS)
+INCLUDES = -g -I$(top_srcdir) -I$(top_srcdir)/glib -I$(top_srcdir)/gmodule $(GLIB_DEBUG_FLAGS)
 
 EFENCE=
 
@@ -93,6 +93,7 @@ test_programs =					\
 	qsort-test				\
 	rand-test				\
 	relation-test				\
+	sequence-test				\
 	shell-test				\
 	slist-test				\
 	slice-test				\
@@ -160,6 +161,7 @@ asyncqueue_test_LDADD = $(thread_ldadd)
 qsort_test_LDADD = $(progs_ldadd)
 rand_test_LDADD = $(progs_ldadd)
 relation_test_LDADD = $(progs_ldadd)
+sequence_test_LDADD = $(progs_ldadd)
 shell_test_LDADD = $(progs_ldadd)
 slist_test_LDADD = $(progs_ldadd)
 slice_test_SOURCES = slice-test.c memchunks.c

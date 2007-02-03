@@ -108,6 +108,7 @@ libglib_2_0_la_SOURCES = 	\
 	grand.c			\
 	gscanner.c		\
 	gscripttable.h		\
+	gsequence.c		\
 	gshell.c		\
 	gslice.c		\
 	gslist.c		\
@@ -186,6 +187,7 @@ glibsubinclude_HEADERS =   \
 	grand.h		\
 	grel.h		\
 	gscanner.h	\
+	gsequence.h	\
 	gshell.h	\
 	gslice.h	\
 	gslist.h	\

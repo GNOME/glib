@@ -504,8 +504,6 @@ Flags which influence the parsing.
 @key_file: 
 @group_name: 
 @key: 
-@list: 
-@length: 
 
 
 <!-- ##### FUNCTION g_key_file_set_locale_string_list ##### -->
@@ -517,8 +515,6 @@ Flags which influence the parsing.
 @group_name: 
 @key: 
 @locale: 
-@list: 
-@length: 
 
 
 <!-- ##### FUNCTION g_key_file_set_boolean_list ##### -->

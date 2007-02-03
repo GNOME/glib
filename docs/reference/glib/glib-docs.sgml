@@ -36,6 +36,7 @@
 <!ENTITY glib-Doubly-Linked-Lists SYSTEM "xml/linked_lists_double.xml">
 <!ENTITY glib-Singly-Linked-Lists SYSTEM "xml/linked_lists_single.xml">
 <!ENTITY glib-Double-ended-Queues SYSTEM "xml/queue.xml">
+<!ENTITY glib-Sequences SYSTEM "xml/sequence.xml">
 <!ENTITY glib-Trash-Stacks SYSTEM "xml/trash_stack.xml">
 <!ENTITY glib-Hash-Tables SYSTEM "xml/hash_tables.xml">
 <!ENTITY glib-Strings SYSTEM "xml/strings.xml">
@@ -163,6 +164,7 @@ synchronize their operation.
     &glib-Doubly-Linked-Lists;
     &glib-Singly-Linked-Lists;
     &glib-Double-ended-Queues;
+    &glib-Sequences;
     &glib-Trash-Stacks;
     &glib-Hash-Tables;
     &glib-Strings;

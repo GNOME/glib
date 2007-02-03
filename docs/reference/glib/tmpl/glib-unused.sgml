@@ -203,15 +203,6 @@ error domains.
 </para>
 
 
-<!-- ##### MACRO G_HAVE_GNUC_VISIBILITY ##### -->
-<para>
-This macro is defined as 1 if the the compiler supports ELF visibility 
-attributes (currently only <command>gcc</command>).
-</para>
-
-Since: 2.6
-
-
 <!-- ##### MACRO G_HOOK_DEFERRED_DESTROY ##### -->
 <para>
 

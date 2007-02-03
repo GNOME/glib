@@ -924,6 +924,46 @@ g_scanner_warn G_GNUC_PRINTF(2,3)
 #endif
 #endif
 
+#if IN_HEADER(__G_SEQUENCE_H__)
+#if IN_FILE(__G_SEQUENCE_C__)
+g_sequence_new
+g_sequence_free
+g_sequence_get_length
+g_sequence_foreach
+g_sequence_foreach_range
+g_sequence_sort
+g_sequence_sort_iter
+g_sequence_get_begin_iter
+g_sequence_get_end_iter
+g_sequence_get_iter_at_pos
+g_sequence_append
+g_sequence_prepend
+g_sequence_insert_before
+g_sequence_move
+g_sequence_swap
+g_sequence_insert_sorted
+g_sequence_insert_sorted_iter
+g_sequence_sort_changed
+g_sequence_sort_changed_iter
+g_sequence_remove
+g_sequence_remove_range
+g_sequence_move_range
+g_sequence_search
+g_sequence_search_iter
+g_sequence_get
+g_sequence_set
+g_sequence_iter_is_begin
+g_sequence_iter_is_end
+g_sequence_iter_next
+g_sequence_iter_prev
+g_sequence_iter_get_position
+g_sequence_iter_move
+g_sequence_iter_get_sequence
+g_sequence_iter_compare
+g_sequence_range_get_midpoint
+#endif
+#endif
+
 #if IN_HEADER(__G_SHELL_H__)
 #if IN_FILE(__G_SHELL_C__)
 g_shell_error_quark
