@@ -30,6 +30,15 @@ struct _GSequence
   GSequenceNode *       end_node;
   GDestroyNotify        data_destroy_notify;
   gboolean              access_prohibited;
+
+  /* The 'real_sequence' is used when temporary sequences are created
+   * to hold nodes that being rearranged. The 'real_sequence' of such
+   * a temporary sequence points to the sequence that is actually being
+   * manipulated. The only reason we need this is so that when the
+   * sort/sort_changed/search_iter() functions call out to the application
+   * g_sequence_iter_get_sequence() will return the correct sequence.
+   */
+  GSequence *		real_sequence;
 };
 
 struct _GSequenceNode
@@ -161,6 +170,8 @@ g_sequence_new (GDestroyNotify data_destroy)
   seq->end_node = node_new (seq);
   
   seq->access_prohibited = FALSE;
+
+  seq->real_sequence = seq;
   
   return seq;
 }
@@ -697,11 +708,12 @@ g_sequence_sort_iter (GSequence                *seq,
   end   = g_sequence_get_end_iter (seq);
   
   tmp = g_sequence_new (NULL);
+  tmp->real_sequence = seq;
+  tmp->access_prohibited = TRUE;
+  
+  seq->access_prohibited = TRUE;
   
   g_sequence_move_range (g_sequence_get_begin_iter (tmp), begin, end);
-  
-  tmp->access_prohibited = TRUE;
-  seq->access_prohibited = TRUE;
   
   while (g_sequence_get_length (tmp) > 0)
     {
@@ -765,6 +777,8 @@ g_sequence_sort_changed_iter (GSequenceIter            *iter,
   seq->access_prohibited = TRUE;
 
   tmp_seq = g_sequence_new (NULL);
+  tmp_seq->real_sequence = seq;
+  
   node_unlink (iter);
   node_insert_before (tmp_seq->end_node, iter);
   
@@ -824,6 +838,8 @@ g_sequence_insert_sorted_iter (GSequence                *seq,
    * is the only kind of compare functions GtkTreeView can use.
    */
   tmp_seq = g_sequence_new (NULL);
+  tmp_seq->real_sequence = seq;
+  
   new_node = g_sequence_append (tmp_seq, data);
   
   node_insert_sorted (seq->end_node, new_node,
@@ -885,6 +901,8 @@ g_sequence_search_iter (GSequence                *seq,
    * is the only kind of compare functions GtkTreeView can use.
    */
   tmp_seq = g_sequence_new (NULL);
+  tmp_seq->real_sequence = seq;
+  
   dummy = g_sequence_append (tmp_seq, data);
   
   node = node_find_closest (seq->end_node, dummy,
@@ -910,9 +928,16 @@ g_sequence_search_iter (GSequence                *seq,
 GSequence *
 g_sequence_iter_get_sequence (GSequenceIter *iter)
 {
-  g_return_val_if_fail (iter != NULL, NULL);
+  GSequence *seq;
   
-  return get_sequence (iter);
+  g_return_val_if_fail (iter != NULL, NULL);
+
+  seq = get_sequence (iter);
+
+  /* For temporary sequences, this points to the sequence that
+   * is actually being manipulated
+   */
+  return seq->real_sequence;
 }
 
 /**

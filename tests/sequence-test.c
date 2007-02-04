@@ -127,7 +127,7 @@ compare_items (gconstpointer a,
 {
   const Item *item_a = fix_pointer (a);
   const Item *item_b = fix_pointer (b);
-  
+
   if (item_a->number < item_b->number)
     return -1;
   else if (item_a->number == item_b->number)
@@ -169,11 +169,18 @@ compare_iters (gconstpointer a,
 	       gconstpointer b,
 	       gpointer      data)
 {
+  GSequence *seq = data;
   GSequenceIter *iter_a = (GSequenceIter *)a;
   GSequenceIter *iter_b = (GSequenceIter *)b;
   /* compare_items() will fix up the pointers */
   Item *item_a = g_sequence_get (iter_a);
   Item *item_b = g_sequence_get (iter_b);
+  
+  if (seq)
+    {
+      g_assert (g_sequence_iter_get_sequence (iter_a) == seq);
+      g_assert (g_sequence_iter_get_sequence (iter_b) == seq);
+    }
   
   return compare_items (item_a, item_b, data);
 }
@@ -372,7 +379,7 @@ run_random_tests (guint32 seed)
 	case SORT_ITER:
 	  {
 	    g_sequence_sort_iter (seq->sequence,
-				  (GSequenceIterCompareFunc)compare_iters, NULL);
+				  (GSequenceIterCompareFunc)compare_iters, seq->sequence);
 	    g_queue_sort (seq->queue, compare_iters, NULL);
 	    check_sorted (seq);
 	  }
@@ -538,7 +545,7 @@ run_random_tests (guint32 seed)
 		iter = g_sequence_insert_sorted_iter (seq->sequence,
 						      new_item (seq),
 						      (GSequenceIterCompareFunc)compare_iters,
-						      NULL);
+						      seq->sequence);
 		
 		g_queue_insert_sorted (seq->queue, iter, compare_iters, NULL);
 	      }
@@ -593,7 +600,7 @@ run_random_tests (guint32 seed)
 		  {
 		    g_sequence_set (iter, new_item (seq));
 		    g_sequence_sort_changed_iter (iter,
-						  (GSequenceIterCompareFunc)compare_iters, NULL);
+						  (GSequenceIterCompareFunc)compare_iters, seq->sequence);
 		    
 		    g_queue_delete_link (seq->queue, link);
 		    g_queue_insert_sorted (seq->queue, iter, compare_iters, NULL);
@@ -737,7 +744,7 @@ run_random_tests (guint32 seed)
 	    item = new_item (seq);
 	    search_iter = g_sequence_search_iter (seq->sequence,
 						  item,
-						  (GSequenceIterCompareFunc)compare_iters, NULL);
+						  (GSequenceIterCompareFunc)compare_iters, seq->sequence);
 	    
 	    insert_iter = g_sequence_insert_sorted (seq->sequence, item, compare_items, NULL);
 	    
@@ -792,13 +799,11 @@ run_random_tests (guint32 seed)
 	    
 	    if (g_sequence_get_length (seq->sequence) > 0)
 	      {
-		g_assert (!g_sequence_iter_is_begin (
-						     g_sequence_get_end_iter (seq->sequence)));
+		g_assert (!g_sequence_iter_is_begin (g_sequence_get_end_iter (seq->sequence)));
 	      }
 	    else
 	      {
-		g_assert (g_sequence_iter_is_begin (
-						    g_sequence_get_end_iter (seq->sequence)));
+		g_assert (g_sequence_iter_is_begin (g_sequence_get_end_iter (seq->sequence)));
 	      }
 	    
 	    g_assert (g_sequence_iter_is_begin (g_sequence_get_begin_iter (seq->sequence)));
@@ -815,13 +820,11 @@ run_random_tests (guint32 seed)
 	    
 	    if (len > 0)
 	      {
-		g_assert (!g_sequence_iter_is_end (
-						   g_sequence_get_begin_iter (seq->sequence)));
+		g_assert (!g_sequence_iter_is_end (g_sequence_get_begin_iter (seq->sequence)));
 	      }
 	    else
 	      {
-		g_assert (g_sequence_iter_is_end (
-						  g_sequence_get_begin_iter (seq->sequence)));
+		g_assert (g_sequence_iter_is_end (g_sequence_get_begin_iter (seq->sequence)));
 	      }
 	    
 	    g_assert (g_sequence_iter_is_end (g_sequence_get_end_iter (seq->sequence)));
@@ -1083,12 +1086,10 @@ test_insert_sorted_non_pointer (void)
       
       for (j = 0; j < 10000; j++)
 	{
-	  g_sequence_insert_sorted (
-				    seq, GINT_TO_POINTER (g_random_int()),
+	  g_sequence_insert_sorted (seq, GINT_TO_POINTER (g_random_int()),
 				    compare, NULL);
 	  
-	  g_sequence_insert_sorted_iter (
-					 seq, GINT_TO_POINTER (g_random_int()),
+	  g_sequence_insert_sorted_iter (seq, GINT_TO_POINTER (g_random_int()),
 					 compare_iter, NULL);
 	}
       

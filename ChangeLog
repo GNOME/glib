@@ -1,5 +1,20 @@
 2007-02-03  Soren Sandmann <sandmann@daimi.au.dk>
 
+	* glib/gsequence.c (struct _GSequence): Add a new 'real_sequence'
+	field.
+	(g_sequence_new): Initialize real_sequence to the sequence
+	(g_sequence_sort_iter): Set real_sequence of the temporary
+	sequence to the real sequence.
+	(g_sequence_sort_changed_iter): Same
+	(g_sequence_insert_sorted_iter): Same
+	(g_sequence_search_iter): Same
+	(g_sequence_iter_get_sequence): Return real_sequence
+
+	* tests/sequence-test.c (compare_iters): Insert assertions that
+	the iters point to the sequence being manipulated.
+
+2007-02-03  Soren Sandmann <sandmann@daimi.au.dk>
+
 	* glib/gsequence.[ch]: New files implementing GSequence, a list
 	implemented using a binary tree.
 	* glib/glib.h, glib/glib.symbols: Update for GSequence.
