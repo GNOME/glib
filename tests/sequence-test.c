@@ -517,8 +517,7 @@ run_random_tests (guint32 seed)
 	    for (i = 0; i < 15; ++i)
 	      {
 		GSequenceIter *iter =
-		  g_sequence_insert_sorted (
-					    seq->sequence, new_item(seq), compare_items, NULL);
+		  g_sequence_insert_sorted (seq->sequence, new_item(seq), compare_items, NULL);
 		
 		g_queue_insert_sorted (seq->queue, iter, compare_iters, NULL);
 	      }

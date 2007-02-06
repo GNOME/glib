@@ -709,11 +709,11 @@ g_sequence_sort_iter (GSequence                *seq,
   
   tmp = g_sequence_new (NULL);
   tmp->real_sequence = seq;
-  tmp->access_prohibited = TRUE;
-  
-  seq->access_prohibited = TRUE;
   
   g_sequence_move_range (g_sequence_get_begin_iter (tmp), begin, end);
+  
+  seq->access_prohibited = TRUE;
+  tmp->access_prohibited = TRUE;
   
   while (g_sequence_get_length (tmp) > 0)
     {

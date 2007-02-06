@@ -1,3 +1,11 @@
+2007-02-05  Soren Sandmann <sandmann@daimi.au.dk>
+
+	* glib/gsequence.c (g_sequence_sort_iter): Don't prohibit access
+	until after the g_sequence_move_range() call.  Bug 404759,
+	Christian Persch.
+
+       * tests/sequence-test.c: Formatting fix.
+
 2007-02-03  Soren Sandmann <sandmann@daimi.au.dk>
 
 	* glib/gsequence.c (struct _GSequence): Add a new 'real_sequence'
