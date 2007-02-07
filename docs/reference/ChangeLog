@@ -1,3 +1,13 @@
+2007-02-08  Stefan Kost  <ensonic@users.sf.net>
+
+	* gobject/tut_gobject.xml:
+	* gobject/tut_gsignal.xml:
+	* gobject/tut_gtype.xml:
+	* gobject/tut_howto.xml:
+	* gobject/tut_tools.xml:
+	Unify spelling of GObject and GType. Improve some wording. Update the
+	usage of private data. Make tables use row-spans and add id's to them.
+
 2007-01-30  Matthias Clasen  <mclasen@redhat.com>
 
 	* gobject/tmpl/gsignal.sgml: Correct a typo.

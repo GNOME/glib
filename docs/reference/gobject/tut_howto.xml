@@ -107,7 +107,6 @@
  * Potentially, include other headers on which this header depends.
  */
 
-
 /*
  * Type macros.
  */
@@ -144,7 +143,7 @@ GType maman_bar_get_type (void);
 struct _MamanBar {
   GObject parent;
 
-  /* private */
+  /*&lt; private &gt;*/
   int hsize;
 };
 </programlisting>
@@ -160,7 +159,7 @@ typedef struct _MamanBarPrivate MamanBarPrivate;
 struct _MamanBar {
   GObject parent;
 	
-  /* private */
+  /*&lt; private &gt;*/
   MamanBarPrivate *priv;
 };
 </programlisting>
@@ -420,12 +419,12 @@ bar_dispose (GObject *obj)
 {
   MamanBar *self = (MamanBar *)obj;
 
-  if (self->private->dispose_has_run) {
+  if (self->priv->dispose_has_run) {
    /* If dispose did already run, return. */
     return;
   }
   /* Make sure dispose does not run twice. */
-  object->private->dispose_has_run = TRUE;
+  object->priv->dispose_has_run = TRUE;
 
   /* 
    * In dispose, you are supposed to free all types referenced from this
@@ -443,12 +442,6 @@ bar_finalize (GObject *obj)
 {
   MamanBar *self = (MamanBar *)obj;
 
-  /*
-   * Here, complete object destruction.
-   * You might not need to do much...
-   */
-  g_free (self->private);
-
    /* Chain up to the parent class */
    G_OBJECT_CLASS (parent_class)->finalize (obj);
 }
@@ -460,6 +453,9 @@ bar_class_init (BarClass *klass)
 
   gobject_class->dispose = bar_dispose;
   gobject_class->finalize = bar_finalize;
+
+  parent_class = g_type_class_peek_parent (klass);
+  g_type_class_add_private(klass,sizeof(MamanBarPrivate));
 }
 
 static void
@@ -467,10 +463,9 @@ maman_bar_init (GTypeInstance   *instance,
                 gpointer         g_class)
 {
   MamanBar *self = (MamanBar *)instance;
-  self->private = g_new0 (MamanBarPrivate, 1);
-  self->private->dispose_has_run = FALSE;
+  self->priv = G_TYPE_INSTANCE_GET_PRIVATE(self, BT_TYPE_PATTERN, BtPatternPrivate);
+  self->priv->dispose_has_run = FALSE;
 
-  parent_class = g_type_class_peek_parent (klass);
 }
 </programlisting>
       </para>
@@ -1101,9 +1096,9 @@ maman_bar_get_type (void)
 <sect1 id="howto-interface-properties">
   <title>Interface Properties</title>
 
-  <para>Starting from version 2.4 of glib, gobject interfaces can also have properties. 
+  <para>Starting from version 2.4 of glib, GObject interfaces can also have properties. 
   Declaration of the interface properties is similar to declaring the properties of 
-  ordinary gobject types as explained in <xref linkend="gobject-properties"/>, 
+  ordinary GObject types as explained in <xref linkend="gobject-properties"/>, 
   except that <function><link linkend="g-object-interface-install-property">g_object_interface_install_property</link></function> is used to 
   declare the properties instead of <function><link linkend="g-object-class-install-property">g_object_class_install_property</link></function>.
   </para>
@@ -1591,7 +1586,7 @@ klass->write_signal_id =
 
        <para>If you have doubts about which method to use, I would advise you to use the second one which
          involves <function><link linkend="g-signal-new">g_signal_new</link></function> rather than <function><link linkend="g-signal-newv">g_signal_newv</link></function>: 
-         it is better to write code which looks like the vast majority of other GTK+/Gobject code than to
+         it is better to write code which looks like the vast majority of other GTK+/GObject code than to
          do it your own way. However, now, you know why.
        </para>
 

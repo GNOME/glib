@@ -240,7 +240,7 @@ struct _GTypeValueTable
             For example: <function>maman_object_method</function>.
           </para></listitem>
 	  <listitem><para>Create a macro named <function>PREFIX_OBJECT_TYPE</function> which always 
-            returns the Gtype for the associated object type. For an object of type 
+            returns the GType for the associated object type. For an object of type 
             <emphasis>Bar</emphasis> in a libray prefixed by <emphasis>maman</emphasis>, 
             use: <function>MAMAN_BAR_TYPE</function>.
             It is common although not a convention to implement this macro using either a global 
@@ -551,7 +551,7 @@ The class initialization process is entirely implemented in
             </para>
           </footnote>
           (the concept of destruction is sometimes partly refered to as finalization 
-          in Gtype) is the symmetric process of the initialization: interfaces are 
+          in GType) is the symmetric process of the initialization: interfaces are 
           destroyed first. 
           Then, the most derived 
 	  class_finalize (<type><link linkend="ClassFinalizeFunc">ClassFinalizeFunc</link></type>) function is invoked. The 
@@ -583,7 +583,7 @@ The class initialization process is entirely implemented in
 
 	<para>
 	  The instanciation/finalization process can be summarized as follows:
-	<table>
+	<table id="gtype-init-fini-table">
 	  <title>GType Instantiation/Finalization</title>
 	  <tgroup cols="3">
 	    <colspec colwidth="*" colnum="1" align="left"/>
@@ -599,18 +599,18 @@ The class initialization process is entirely implemented in
 	    </thead>
 	    <tbody>
 	      <row>
-		<entry>First call to <function><link linkend="g-type-create-instance">g_type_create_instance</link></function> for target type</entry>
+		<entry morerows="2">First call to <function><link linkend="g-type-create-instance">g_type_create_instance</link></function> for target type</entry>
 		<entry>type's base_init function</entry>
 		<entry>On the inheritance tree of classes from fundamental type to target type. 
 		  base_init is invoked once for each class structure.</entry>
 	      </row>
 	      <row>
-		<entry>First call to <function><link linkend="g-type-create-instance">g_type_create_instance</link></function> for target type</entry>
+		<!--entry>First call to <function><link linkend="g-type-create-instance">g_type_create_instance</link></function> for target type</entry-->
 		<entry>target type's class_init function</entry>
 		<entry>On target type's class structure</entry>
 	      </row>
 	      <row>
-		<entry>First call to <function><link linkend="g-type-create-instance">g_type_create_instance</link></function> for target type</entry>
+		<!--entry>First call to <function><link linkend="g-type-create-instance">g_type_create_instance</link></function> for target type</entry-->
 		<entry>interface initialization, see 
 		  <xref linkend="gtype-non-instantiable-classed-init"/></entry>
                 <entry></entry>
@@ -621,18 +621,18 @@ The class initialization process is entirely implemented in
 		<entry>On object's instance</entry>
 	      </row>
 	      <row>
-		<entry>Last call to <function><link linkend="g-type-free-instance">g_type_free_instance</link></function> for target type</entry>
+		<entry morerows="2">Last call to <function><link linkend="g-type-free-instance">g_type_free_instance</link></function> for target type</entry>
 		<entry>interface destruction, see
 		  <xref linkend="gtype-non-instantiable-classed-dest"/></entry>
 		<entry></entry>
 	      </row>
 	      <row>
-		<entry>Last call to <function><link linkend="g-type-free-instance">g_type_free_instance</link></function> for target type</entry>
+		<!--entry>Last call to <function><link linkend="g-type-free-instance">g_type_free_instance</link></function> for target type</entry-->
 		<entry>target type's class_finalize function</entry>
 		<entry>On target type's class structure</entry>
 	      </row>
 	      <row>
-		<entry>Last call to <function><link linkend="g-type-free-instance">g_type_free_instance</link></function> for target type</entry>
+		<!--entry>Last call to <function><link linkend="g-type-free-instance">g_type_free_instance</link></function> for target type</entry-->
 		<entry>type's base_finalize function</entry>
 		<entry>On the inheritance tree of classes from fundamental type to target type. 
 		  base_finalize is invoked once for each class structure.</entry>
@@ -648,8 +648,10 @@ The class initialization process is entirely implemented in
 	<title>Non-instantiable classed types: Interfaces.</title>
 
 	<para>
-	  GType's Interfaces are very similar to Java's interfaces. To declare one of these
-	  you have to register a non-instantiable classed type which derives from 
+          GType's Interfaces are very similar to Java's interfaces. They allow
+          to describe a common API that several classes will adhere to.
+          To declare an interfacce you have to register a non-instantiable
+          classed type which derives from 
 	  <type><link linkend="GTypeInterface">GTypeInterface</link></type>. The following piece of code declares such an interface.
 <programlisting>
 #define MAMAN_IBAZ_TYPE                (maman_ibaz_get_type ())
@@ -820,7 +822,7 @@ maman_ibaz_base_init (gpointer g_iface)
 
 	  <para>
 	    The above process can be summarized as follows:
-	  <table>
+	  <table id="ginterface-init-table">
 	    <title>Interface Initialization</title>
 	    <tgroup cols="3">
 	      <colspec colwidth="*" colnum="1" align="left"/>
@@ -837,8 +839,9 @@ maman_ibaz_base_init (gpointer g_iface)
 	      </thead>
 	      <tbody>
 		<row>
-		  <entry>First call to <function><link linkend="g-type-create-instance">g_type_create_instance</link></function> for type
-		    implementing interface</entry>
+		  <entry morerows="1">First call to <function><link linkend="g-type-create-instance">g_type_create_instance</link></function> for type
+		    implementing interface
+                   </entry>
 		  <entry>interface' base_init function</entry>
 		  <entry>On interface' vtable</entry>
 		  <entry>Register interface' signals here (use a local static 
@@ -846,8 +849,9 @@ maman_ibaz_base_init (gpointer g_iface)
 		    twice.).</entry>
 		</row>
 		<row>
-		  <entry>First call to <function><link linkend="g-type-create-instance">g_type_create_instance</link></function> for type
-		    implementing interface</entry>
+		  <!--entry>First call to <function><link linkend="g-type-create-instance">g_type_create_instance</link></function> for type
+		    implementing interface
+                   </entry-->
 		  <entry>interface' interface_init function</entry>
 		  <entry>On interface' vtable</entry>
 		  <entry>
@@ -891,8 +895,8 @@ maman_ibaz_base_init (gpointer g_iface)
 	  </para>
 	  
 	<para>
-	    The above process can be summarized as follows:
-	  <table>
+	  The above process can be summarized as follows:
+	  <table id="ginterface-init-table">
 	    <title>Interface Finalization</title>
 	    <tgroup cols="3">
 	      <colspec colwidth="*" colnum="1" align="left"/>
@@ -908,14 +912,16 @@ maman_ibaz_base_init (gpointer g_iface)
 	      </thead>
 	      <tbody>
 		<row>
-		  <entry>Last call to <function><link linkend="g-type-free-instance">g_type_free_instance</link></function> for type
-		    implementing interface</entry>
+		  <entry morerows="1">Last call to <function><link linkend="g-type-free-instance">g_type_free_instance</link></function> for type
+		    implementing interface
+                   </entry>
 		  <entry>interface' interface_finalize function</entry>
 		  <entry>On interface' vtable</entry>
 		</row>
 		<row>
-		  <entry>Last call to <function><link linkend="g-type-free-instance">g_type_free_instance</link></function>for type
-		    implementing interface</entry>
+		  <!--entry>Last call to <function><link linkend="g-type-free-instance">g_type_free_instance</link></function>for type
+		    implementing interface
+                   </entry-->
 		  <entry>interface' base_finalize function</entry>
 		  <entry>On interface' vtable</entry>
 		</row>

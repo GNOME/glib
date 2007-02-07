@@ -496,9 +496,9 @@ void                  g_signal_emit_by_name (gpointer            instance,
 
         <para>
          If a detail is provided by the user to the emission function, it is used during emission to match
-         against the closures which also provide a detail. The closures which provided a detail will not
-         be invoked (even though they are connected to a signal which is being emitted) if their detail
-         does not match the detail provided by the user.
+         against the closures which also provide a detail.
+         If the closures' detail does not match the detail provided by the user, they will not be invoked
+         (even though they are connected to a signal which is being emitted).
         </para>
 
         <para>This completely optional filtering mechanism is mainly used as an optimization for signals

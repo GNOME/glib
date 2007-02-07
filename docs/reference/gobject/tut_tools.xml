@@ -1,29 +1,29 @@
 <partintro>
-	<para>
-		Several useful developer tools have been build around GObject technology.
-		The next sections briefly introduce them and link to the respective project pages.
-	</para>
+  <para>
+    Several useful developer tools have been build around GObject technology.
+    The next sections briefly introduce them and link to the respective project pages.
+  </para>
 </partintro>
 
 <chapter id="tools-gob">
   <title>GObject builder</title>
 
   <para>
-		Writing gobjects can be a tedious task. It requires a lot of typing and just
-		doing a copy/paste requires a great deal of care.
-                One obvious idea is to use some sort of templates for the class skeletons.
-                and then run them through a special tool to generate the real C files.
-                <ulink url="http://www.5z.com/jirka/gob.html">GOB/</ulink> (or GOB2) is such
-                a tool. It is a preprocessor which can be used to build GObjects 
-                with inline C code so that there is no need to edit the generated C code.
-		The syntax is inspired by Java and Yacc or Lex. The implementation is
-		intentionally kept simple: the inline C code provided by the user
-                is not parsed.
+    Writing GObjects can be a tedious task. It requires a lot of typing and just
+    doing a copy/paste requires a great deal of care.
+    One obvious idea is to use some sort of templates for the class skeletons.
+    and then run them through a special tool to generate the real C files.
+    <ulink url="http://www.5z.com/jirka/gob.html">GOB/</ulink> (or GOB2) is such
+    a tool. It is a preprocessor which can be used to build GObjects 
+    with inline C code so that there is no need to edit the generated C code.
+    The syntax is inspired by Java and Yacc or Lex. The implementation is
+    intentionally kept simple: the inline C code provided by the user
+    is not parsed.
   </para>
 </chapter>
 
 <chapter id="tools-ginspector">
-    <title>Graphical inspection of Gobjects</title>
+    <title>Graphical inspection of GObjects</title>
 
     <para>
       Yet another tool that you may find helpful when working with
