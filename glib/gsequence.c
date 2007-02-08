@@ -32,7 +32,7 @@ struct _GSequence
   gboolean              access_prohibited;
 
   /* The 'real_sequence' is used when temporary sequences are created
-   * to hold nodes that being rearranged. The 'real_sequence' of such
+   * to hold nodes that are being rearranged. The 'real_sequence' of such
    * a temporary sequence points to the sequence that is actually being
    * manipulated. The only reason we need this is so that when the
    * sort/sort_changed/search_iter() functions call out to the application
@@ -111,8 +111,16 @@ check_iter_access (GSequenceIter *iter)
 static gboolean
 is_end (GSequenceIter *iter)
 {
-  GSequence *seq = get_sequence (iter);
+  GSequence *seq;
+
+  if (iter->right)
+    return FALSE;
+
+  if (iter->parent && iter->parent->right != iter)
+    return FALSE;
   
+  seq = get_sequence (iter);
+
   return seq->end_node == iter;
 }
 
@@ -1289,6 +1297,49 @@ g_sequence_swap (GSequenceIter *a,
 /*
  * Implementation of the splay tree. 
  */
+
+/* Splay Tree vs. Other Kinds of Trees
+ *
+ * There are both advantages and disadvantages to using a splay tree vs. some other
+ * kind of tree such as a red/black tree or a btree.
+ *
+ * Advantages of splay trees
+ *
+ * - They are very simple to implement, especially things like move_range() or concatenate()
+ *   are very easy to do for splay trees. The algorithm to split a red/black tree, while still,
+ *   O(log n) is much more involved.
+ *
+ * - If we add aggregates at one point, splay trees make it really easy to compute the aggregate
+ *   for an arbitrary range of the tree. In a red/black tree you would have to pick out the correct
+ *   subtrees, then call out to the aggregator function to compute them.
+ *      On the other hand, for a splay tree, aggregates would be invalidated on lookups, so you
+ *   would call the aggregator much more often. In both cases, the aggregator function would be
+ *   called O(log n) times as a side-effect of asking for the aggregate of a range.
+ *
+ * - If you are only using the list API and never the insert_sorted(), the operations on a
+ *   splay tree will actually be O(1) rather than O(log n). But this is most likely one
+ *   for the "who cares" department, since the O(log n) of a red/black tree really is quite
+ *   fast and if what you need is a queue you can just use GQueue.
+ *
+ * The disadvantages
+ *
+ * - Splay trees are only amortized O(log n) which means individual operations could take a long
+ *   time, which is undesirable in GUI applications
+ *
+ * - Red/black trees are mode widely known since they are tought in CS101 courses.
+ *
+ * - Red/black trees or btrees are more efficient. In particular, splay trees write to the 
+ *   nodes on lookup, which causes dirty pages that the VM system will have to launder.
+ *
+ * - Splay trees are not necessarily balanced at all which means straight-forward recursive
+ *   algorithms can use lots of stack.
+ *
+ * It is likely worth investigating whether a BTree would be a better choice, in particular the
+ * algorithm to split a BTree may not be all that complicated given that split/join for nodes
+ * will have to be implemented anyway.
+ * 
+ */
+
 static void
 node_update_fields (GSequenceNode *node)
 {

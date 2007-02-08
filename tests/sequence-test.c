@@ -30,13 +30,32 @@ typedef struct SequenceInfo
   int		n_items;
 } SequenceInfo;
 
+typedef struct
+{
+  SequenceInfo *seq;
+  int		  number;
+} Item;
+
 void g_sequence_self_test_internal_to_glib_dont_use (GSequence *sequence);
+
+static Item *
+fix_pointer (gconstpointer data)
+{
+  return (Item *)((char *)data - 1);
+}
+
+static Item *
+get_item (GSequenceIter *iter)
+{
+  return fix_pointer (g_sequence_get (iter));
+}
 
 static void
 check_integrity (SequenceInfo *info)
 {
   GList *list;
   GSequenceIter *iter;
+  int i;
   
   g_sequence_self_test_internal_to_glib_dont_use (info->sequence);
   
@@ -45,26 +64,22 @@ check_integrity (SequenceInfo *info)
 	     g_sequence_get_length (info->sequence), info->n_items);
   g_assert (info->n_items == g_queue_get_length (info->queue));
   g_assert (g_sequence_get_length (info->sequence) == info->n_items);
-  
+
   iter = g_sequence_get_begin_iter (info->sequence);
   list = info->queue->head;
+  i = 0;
   while (iter != g_sequence_get_end_iter (info->sequence))
     {
       g_assert (list->data == iter);
       
       iter = g_sequence_iter_next (iter);
       list = list->next;
+      i++;
     }
   
   g_assert (info->n_items == g_queue_get_length (info->queue));
   g_assert (g_sequence_get_length (info->sequence) == info->n_items);
 }
-
-typedef struct
-{
-  SequenceInfo *seq;
-  int		  number;
-} Item;
 
 static gpointer
 new_item (SequenceInfo *seq)
@@ -79,18 +94,6 @@ new_item (SequenceInfo *seq)
    * behavior causes crashes
    */
   return ((char *)item + 1);
-}
-
-static Item *
-fix_pointer (gconstpointer data)
-{
-  return (Item *)((char *)data - 1);
-}
-
-static Item *
-get_item (GSequenceIter *iter)
-{
-  return fix_pointer (g_sequence_get (iter));
 }
 
 static void
@@ -129,11 +132,28 @@ compare_items (gconstpointer a,
   const Item *item_b = fix_pointer (b);
 
   if (item_a->number < item_b->number)
-    return -1;
+    {
+      return -1;
+    }
   else if (item_a->number == item_b->number)
-    return 0;
+    {
+      /* Force an arbitrary order on the items
+       * We have to do this, since g_queue_insert_sorted() and
+       * g_sequence_insert_sorted() do not agree on the exact
+       * position the item is inserted if the new item is
+       * equal to an existing one.
+       */
+      if (item_a < item_b)
+	return -1;
+      else if (item_a == item_b)
+	return 0;
+      else
+	return 1;
+    }
   else
-    return 1;
+    {
+      return 1;
+    }
 }
 
 static void
@@ -314,9 +334,9 @@ run_random_tests (guint32 seed)
       int i;
       SequenceInfo *seq = RANDOM_SEQUENCE();
       int op = g_random_int_range (0, N_OPS);
-      
+
 #if 0
-      g_print ("%d\n", op);
+      g_print ("%d on %p\n", op, seq);
 #endif
       
       switch (op)
@@ -378,6 +398,7 @@ run_random_tests (guint32 seed)
 	  break;
 	case SORT_ITER:
 	  {
+	    check_integrity (seq);
 	    g_sequence_sort_iter (seq->sequence,
 				  (GSequenceIterCompareFunc)compare_iters, seq->sequence);
 	    g_queue_sort (seq->queue, compare_iters, NULL);
@@ -978,6 +999,7 @@ run_random_tests (guint32 seed)
  */
 static gulong seeds[] =
   {
+    825541564u,
     801678400u,
     1477639090u,
     3369132895u,

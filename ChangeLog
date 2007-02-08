@@ -1,3 +1,12 @@
+2007-02-07  Soren Sandmann <sandmann@daimi.au.dk>
+
+	* tests/sequence-test.c (compare_items): Force an arbitrary order
+	on otherwise identical items. 
+
+	* glib/gsequence.c: Add comment discussing splay trees vs. other trees. 
+	* glib/gsequence.c (is_end): Add fast path for the common case
+	when the node is not actually the end node.
+
 2007-02-05  Soren Sandmann <sandmann@daimi.au.dk>
 
 	* glib/gsequence.c (g_sequence_sort_iter): Don't prohibit access
