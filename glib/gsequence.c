@@ -116,9 +116,12 @@ is_end (GSequenceIter *iter)
   if (iter->right)
     return FALSE;
 
-  if (iter->parent && iter->parent->right != iter)
+  if (!iter->parent)
+    return TRUE;
+
+  if (iter->parent->right != iter)
     return FALSE;
-  
+
   seq = get_sequence (iter);
 
   return seq->end_node == iter;
@@ -1035,8 +1038,6 @@ g_sequence_get_end_iter (GSequence *seq)
 {
   g_return_val_if_fail (seq != NULL, NULL);
   
-  g_assert (is_end (seq->end_node));
-  
   return seq->end_node;
 }
 
@@ -1305,31 +1306,32 @@ g_sequence_swap (GSequenceIter *a,
  *
  * Advantages of splay trees
  *
- * - They are very simple to implement, especially things like move_range() or concatenate()
- *   are very easy to do for splay trees. The algorithm to split a red/black tree, while still,
- *   O(log n) is much more involved.
+ * - They are very simple to implement, especially things like move_range or concatenate
+ *   are easy to do for splay trees. The algorithm to split a red/black tree, while still O(log n),
+ *   is much more complicated
  *
- * - If we add aggregates at one point, splay trees make it really easy to compute the aggregate
- *   for an arbitrary range of the tree. In a red/black tree you would have to pick out the correct
- *   subtrees, then call out to the aggregator function to compute them.
+ * - If we add aggregates at some point, splay trees make it easy to compute the aggregate
+ *   for an arbitrary range of the tree. In a red/black tree you would have to pick out
+ *   the correct subtrees, then call out to the aggregator function to compute them.
  *      On the other hand, for a splay tree, aggregates would be invalidated on lookups, so you
- *   would call the aggregator much more often. In both cases, the aggregator function would be
- *   called O(log n) times as a side-effect of asking for the aggregate of a range.
+ *   would call the aggregator much more often. The aggregates could be invalidated lazily though.
+ *      In both cases, the aggregator function would be called O(log n) times as a side-effect of
+ *   asking for the aggregate of a range.
  *
  * - If you are only using the list API and never the insert_sorted(), the operations on a
- *   splay tree will actually be O(1) rather than O(log n). But this is most likely one
- *   for the "who cares" department, since the O(log n) of a red/black tree really is quite
- *   fast and if what you need is a queue you can just use GQueue.
+ *   splay tree will actually be O(1) rather than O(log n). But this is most likely just
+ *   not that interesting in practice since the O(log n) of a BTree is actually very fast.
  *
  * The disadvantages
  *
  * - Splay trees are only amortized O(log n) which means individual operations could take a long
  *   time, which is undesirable in GUI applications
  *
- * - Red/black trees are mode widely known since they are tought in CS101 courses.
+ * - Red/black trees are more widely known since they are tought in CS101 courses.
  *
- * - Red/black trees or btrees are more efficient. In particular, splay trees write to the 
- *   nodes on lookup, which causes dirty pages that the VM system will have to launder.
+ * - Red/black trees or btrees are more efficient. Not only is the red/black algorithm faster
+ *   in itself, the splaying writes to nodes on lookup which causes dirty pages that the VM
+ *   system will have to launder.
  *
  * - Splay trees are not necessarily balanced at all which means straight-forward recursive
  *   algorithms can use lots of stack.
@@ -1337,21 +1339,23 @@ g_sequence_swap (GSequenceIter *a,
  * It is likely worth investigating whether a BTree would be a better choice, in particular the
  * algorithm to split a BTree may not be all that complicated given that split/join for nodes
  * will have to be implemented anyway.
- * 
+ *
  */
 
 static void
 node_update_fields (GSequenceNode *node)
 {
+  int n_nodes = 1;
+  
   g_assert (node != NULL);
-  
-  node->n_nodes = 1;
-  
+
   if (node->left)
-    node->n_nodes += node->left->n_nodes;
-  
+    n_nodes += node->left->n_nodes;
+
   if (node->right)
-    node->n_nodes += node->right->n_nodes;
+    n_nodes += node->right->n_nodes;
+
+  node->n_nodes = n_nodes;
 }
 
 #define NODE_LEFT_CHILD(n)  (((n)->parent) && ((n)->parent->left) == (n))
