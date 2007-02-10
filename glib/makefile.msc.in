@@ -63,6 +63,7 @@ glib_OBJECTS =			\
 	grand.obj		\
 	grel.obj		\
 	gscanner.obj		\
+	gsequence.obj	\
 	gshell.obj		\
 	gslice.obj	\
 	gslist.obj		\
