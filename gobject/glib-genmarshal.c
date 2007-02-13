@@ -657,6 +657,7 @@ main (int   argc,
       gint fd;
 
       if (strcmp (file, "/dev/stdin") == 0)
+	/* Mostly for Win32. This is equivalent to opening /dev/stdin */
 	fd = dup (0);
       else
 	fd = open (file, O_RDONLY);

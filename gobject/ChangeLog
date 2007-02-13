@@ -1,7 +1,8 @@
 2007-01-02  Tor Lillqvist  <tml@novell.com>
 
 	* glib-genmarshal.c (main): Handle "/dev/stdin" by dup()ing fd 0
-	so that it works on Win32, too.
+	so that it works on Win32 and other systems without
+	/dev/stdin. (#407431)
 
 2006-12-29 Matthias Clasen  <mclasen@redhat.com>
 
