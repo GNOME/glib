@@ -72,16 +72,17 @@ static gint           node_get_length    (GSequenceNode            *node);
 static void           node_free          (GSequenceNode            *node,
                                           GSequence                *seq);
 static void           node_cut           (GSequenceNode            *split);
-static void           node_insert_after  (GSequenceNode            *node,
-                                          GSequenceNode            *second);
 static void           node_insert_before (GSequenceNode            *node,
                                           GSequenceNode            *new);
 static void           node_unlink        (GSequenceNode            *node);
+static void           node_join          (GSequenceNode            *left,
+					  GSequenceNode            *right);
 static void           node_insert_sorted (GSequenceNode            *node,
                                           GSequenceNode            *new,
                                           GSequenceNode            *end,
                                           GSequenceIterCompareFunc  cmp_func,
                                           gpointer                  cmp_data);
+
 
 /*
  * Various helper functions
@@ -551,12 +552,23 @@ g_sequence_move_range (GSequenceIter *dest,
   node_cut (end);
   
   if (first != begin)
-    node_insert_after (node_get_last (first), end);
+    node_join (first, end);
   
   if (dest)
-    node_insert_before (dest, begin);
+    {
+      first = node_get_first (dest);
+      
+      node_cut (dest);
+      
+      node_join (begin, dest);
+      
+      if (dest != first)
+	node_join (first, begin);
+    }
   else
-    node_free (begin, src_seq);
+    {
+      node_free (begin, src_seq);
+    }
 }
 
 /**
@@ -899,18 +911,6 @@ g_sequence_search_iter (GSequence                *seq,
   
   seq->access_prohibited = TRUE;
 
-  /* Create a new temporary sequence and put the dummy node into
-   * that. The reason for this is that the user compare function
-   * will be called with the new node, and if it dereferences, 
-   * "is_end" will be called on it. But that will crash if the
-   * node is not actually in a sequence.
-   *
-   * node_insert_sorted() makes sure the node is unlinked before
-   * is is inserted.
-   *
-   * The reason we need the "iter" versions at all is that that
-   * is the only kind of compare functions GtkTreeView can use.
-   */
   tmp_seq = g_sequence_new (NULL);
   tmp_seq->real_sequence = seq;
   
@@ -1055,6 +1055,7 @@ GSequenceIter *
 g_sequence_get_begin_iter (GSequence *seq)
 {
   g_return_val_if_fail (seq != NULL, NULL);
+
   return node_get_first (seq->end_node);
 }
 
@@ -1104,7 +1105,8 @@ g_sequence_get_iter_at_pos (GSequence *seq,
  *
  * Moves the item pointed to by @src to the position indicated by @dest.
  * After calling this function @dest will point to the position immediately
- * after @src.
+ * after @src. It is allowed for @src and @dest to point into different
+ * sequences.
  * 
  * Since: 2.14
  **/
@@ -1253,7 +1255,8 @@ g_sequence_iter_move (GSequenceIter *iter,
  * @a: a #GSequenceIter
  * @b: a #GSequenceIter
  * 
- * Swaps the items pointed to by @a and @b
+ * Swaps the items pointed to by @a and @b. It is allowed for @a and @b
+ * to point into difference sequences.
  * 
  * Since: 2.14
  **/
@@ -1296,158 +1299,37 @@ g_sequence_swap (GSequenceIter *a,
 }
 
 /*
- * Implementation of the splay tree. 
- */
-
-/* Splay Tree vs. Other Kinds of Trees
+ * Implementation of a treap
  *
- * There are both advantages and disadvantages to using a splay tree vs. some other
- * kind of tree such as a red/black tree or a btree.
- *
- * Advantages of splay trees
- *
- * - They are very simple to implement, especially things like move_range or concatenate
- *   are easy to do for splay trees. The algorithm to split a red/black tree, while still O(log n),
- *   is much more complicated
- *
- * - If we add aggregates at some point, splay trees make it easy to compute the aggregate
- *   for an arbitrary range of the tree. In a red/black tree you would have to pick out
- *   the correct subtrees, then call out to the aggregator function to compute them.
- *      On the other hand, for a splay tree, aggregates would be invalidated on lookups, so you
- *   would call the aggregator much more often. The aggregates could be invalidated lazily though.
- *      In both cases, the aggregator function would be called O(log n) times as a side-effect of
- *   asking for the aggregate of a range.
- *
- * - If you are only using the list API and never the insert_sorted(), the operations on a
- *   splay tree will actually be O(1) rather than O(log n). But this is most likely just
- *   not that interesting in practice since the O(log n) of a BTree is actually very fast.
- *
- * The disadvantages
- *
- * - Splay trees are only amortized O(log n) which means individual operations could take a long
- *   time, which is undesirable in GUI applications
- *
- * - Red/black trees are more widely known since they are tought in CS101 courses.
- *
- * - Red/black trees or btrees are more efficient. Not only is the red/black algorithm faster
- *   in itself, the splaying writes to nodes on lookup which causes dirty pages that the VM
- *   system will have to launder.
- *
- * - Splay trees are not necessarily balanced at all which means straight-forward recursive
- *   algorithms can use lots of stack.
- *
- * It is likely worth investigating whether a BTree would be a better choice, in particular the
- * algorithm to split a BTree may not be all that complicated given that split/join for nodes
- * will have to be implemented anyway.
  *
  */
-
-static void
-node_update_fields (GSequenceNode *node)
+static guint
+get_priority (GSequenceNode *node)
 {
-  int n_nodes = 1;
-  
-  g_assert (node != NULL);
+  guint key = GPOINTER_TO_UINT (node);
 
-  if (node->left)
-    n_nodes += node->left->n_nodes;
+  /* This hash function is based on one found on Thomas Wang's
+   * web page at
+   *
+   *    http://www.concentric.net/~Ttwang/tech/inthash.htm
+   *
+   */
+  key = (key << 15) - key - 1;
+  key = key ^ (key >> 12);
+  key = key + (key << 2);
+  key = key ^ (key >> 4);
+  key = key + (key << 3) + (key << 11);
+  key = key ^ (key >> 16);
 
-  if (node->right)
-    n_nodes += node->right->n_nodes;
-
-  node->n_nodes = n_nodes;
-}
-
-#define NODE_LEFT_CHILD(n)  (((n)->parent) && ((n)->parent->left) == (n))
-#define NODE_RIGHT_CHILD(n) (((n)->parent) && ((n)->parent->right) == (n))
-
-static void
-node_rotate (GSequenceNode *node)
-{
-  GSequenceNode *tmp, *old;
-  
-  g_assert (node->parent);
-  g_assert (node->parent != node);
-  
-  if (NODE_LEFT_CHILD (node))
-    {
-      /* rotate right */
-      tmp = node->right;
-      
-      node->right = node->parent;
-      node->parent = node->parent->parent;
-      if (node->parent)
-        {
-          if (node->parent->left == node->right)
-            node->parent->left = node;
-          else
-            node->parent->right = node;
-        }
-      
-      g_assert (node->right);
-      
-      node->right->parent = node;
-      node->right->left = tmp;
-      
-      if (node->right->left)
-        node->right->left->parent = node->right;
-      
-      old = node->right;
-    }
-  else
-    {
-      /* rotate left */
-      tmp = node->left;
-      
-      node->left = node->parent;
-      node->parent = node->parent->parent;
-      if (node->parent)
-        {
-          if (node->parent->right == node->left)
-            node->parent->right = node;
-          else
-            node->parent->left = node;
-        }
-      
-      g_assert (node->left);
-      
-      node->left->parent = node;
-      node->left->right = tmp;
-      
-      if (node->left->right)
-        node->left->right->parent = node->left;
-      
-      old = node->left;
-    }
-  
-  node_update_fields (old);
-  node_update_fields (node);
+  /* We rely on 0 being less than all other priorities */
+  return key? key : 1;
 }
 
 static GSequenceNode *
-splay (GSequenceNode *node)
+find_root (GSequenceNode *node)
 {
   while (node->parent)
-    {
-      if (!node->parent->parent)
-        {
-          /* zig */
-          node_rotate (node);
-        }
-      else if ((NODE_LEFT_CHILD (node) && NODE_LEFT_CHILD (node->parent)) ||
-               (NODE_RIGHT_CHILD (node) && NODE_RIGHT_CHILD (node->parent)))
-        {
-          /* zig-zig */
-          node_rotate (node->parent);
-          node_rotate (node);
-        }
-      else
-        {
-          /* zig-zag */
-          node_rotate (node);
-          node_rotate (node);
-        }
-    }
+    node = node->parent;
   
   return node;
 }
@@ -1457,21 +1339,19 @@ node_new (gpointer data)
 {
   GSequenceNode *node = g_slice_new0 (GSequenceNode);
   
-  node->parent = NULL;
-  node->parent = NULL;
+  node->n_nodes = 1;
+  node->data = data;
   node->left = NULL;
   node->right = NULL;
-  
-  node->data = data;
-  node->n_nodes = 1;
+  node->parent = NULL;
   
   return node;
 }
 
 static GSequenceNode *
-find_min (GSequenceNode *node)
+node_get_first (GSequenceNode *node)
 {
-  splay (node);
+  node = find_root (node);
   
   while (node->left)
     node = node->left;
@@ -1480,9 +1360,9 @@ find_min (GSequenceNode *node)
 }
 
 static GSequenceNode *
-find_max (GSequenceNode *node)
+node_get_last (GSequenceNode *node)
 {
-  splay (node);
+  node = find_root (node);
   
   while (node->right)
     node = node->right;
@@ -1490,96 +1370,104 @@ find_max (GSequenceNode *node)
   return node;
 }
 
+#define NODE_LEFT_CHILD(n)  (((n)->parent) && ((n)->parent->left) == (n))
+#define NODE_RIGHT_CHILD(n) (((n)->parent) && ((n)->parent->right) == (n))
+
 static GSequenceNode *
-node_get_first (GSequenceNode *node)
+node_get_next (GSequenceNode *node)
 {
-  return splay (find_min (node));
+  GSequenceNode *n = node;
+
+  if (n->right)
+    {
+      n = n->right;
+      while (n->left)
+	n = n->left;
+    }
+  else
+    {
+      while (NODE_RIGHT_CHILD (n))
+	n = n->parent;
+      
+      if (n->parent)
+	n = n->parent;
+      else
+	n = node;
+    }
+  
+  return n;
 }
 
 static GSequenceNode *
-node_get_last (GSequenceNode *node)
+node_get_prev (GSequenceNode *node)
 {
-  return splay (find_max (node));
+  GSequenceNode *n = node;
+  
+  if (n->left)
+    {
+      n = n->left;
+      while (n->right)
+	n = n->right;
+    }
+  else
+    {
+      while (NODE_LEFT_CHILD (n))
+	n = n->parent;
+      
+      if (n->parent)
+	n = n->parent;
+      else
+	n = node;
+    }
+  
+  return n;
 }
+
+#define N_NODES(n) ((n)? (n)->n_nodes : 0)
 
 static gint
-get_n_nodes (GSequenceNode *node)
+node_get_pos (GSequenceNode *node)
 {
-  if (node)
-    return node->n_nodes;
-  else
-    return 0;
+  int n_smaller = 0;
+  
+  if (node->left)
+    n_smaller = node->left->n_nodes;
+  
+  while (node)
+    {
+      if (NODE_RIGHT_CHILD (node))
+	n_smaller += N_NODES (node->parent->left) + 1;
+      
+      node = node->parent;
+    }
+  
+  return n_smaller;
 }
 
 static GSequenceNode *
 node_get_by_pos (GSequenceNode *node,
 		 gint           pos)
 {
-  gint i;
+  int i;
   
-  g_assert (node != NULL);
+  node = find_root (node);
   
-  splay (node);
-  
-  while ((i = get_n_nodes (node->left)) != pos)
+  while ((i = N_NODES (node->left)) != pos)
     {
       if (i < pos)
         {
-          node = node->right;
-          pos -= (i + 1);
+	  node = node->right;
+	  pos -= (i + 1);
         }
       else
         {
-          node = node->left;
-          g_assert (node->parent != NULL);
-        }
+	  node = node->left;
+	}
     }
   
-  return splay (node);
+  return node;
 }
 
-static GSequenceNode *
-node_get_prev (GSequenceNode *node)
-{
-  splay (node);
-  
-  if (node->left)
-    {
-      node = node->left;
-      while (node->right)
-        node = node->right;
-    }
-  
-  return splay (node);
-}
-
-static GSequenceNode *
-node_get_next (GSequenceNode *node)
-{
-  splay (node);
-  
-  if (node->right)
-    {
-      node = node->right;
-      while (node->left)
-        node = node->left;
-   }
-  
-  return splay (node);
-}
-
-static gint
-node_get_pos (GSequenceNode *node)
-{
-  splay (node);
-  
-  return get_n_nodes (node->left);
-}
-
-/* Return closest node _strictly_ bigger than @needle. This node
- * always exists because the tree has an explicit end node).
- * This end node of @haystack must be passed in @end.
- */
 static GSequenceNode *
 node_find_closest (GSequenceNode            *haystack,
                    GSequenceNode            *needle,
@@ -1590,9 +1478,7 @@ node_find_closest (GSequenceNode            *haystack,
   GSequenceNode *best;
   gint c;
   
-  g_assert (haystack);
-  
-  haystack = splay (haystack);
+  haystack = find_root (haystack);
   
   do
     {
@@ -1626,140 +1512,211 @@ node_find_closest (GSequenceNode            *haystack,
   return best;
 }
 
-static void
-node_free (GSequenceNode *node,
-           GSequence     *seq)
+static gint
+node_get_length    (GSequenceNode            *node)
 {
-  GPtrArray *stack = g_ptr_array_new ();
+  node = find_root (node);
   
-  splay (node);
-
-  g_ptr_array_add (stack, node);
-  
-  while (stack->len > 0)
-    {
-      node = g_ptr_array_remove_index (stack, stack->len - 1);
-      
-      if (node)
-        {
-	  g_ptr_array_add (stack, node->right);
-	  g_ptr_array_add (stack, node->left);
-          
-          if (seq && seq->data_destroy_notify && node != seq->end_node)
-            seq->data_destroy_notify (node->data);
-          
-          g_slice_free (GSequenceNode, node);
-        }
-    }
-  
-  g_ptr_array_free (stack, TRUE);
+  return node->n_nodes;
 }
 
-/* Splits into two trees. @node will be part of the right tree
- */
+static void
+real_node_free (GSequenceNode *node,
+		GSequence     *seq)
+{
+  if (node)
+    {
+      real_node_free (node->left, seq);
+      real_node_free (node->right, seq);
+      
+      if (seq && seq->data_destroy_notify && node != seq->end_node)
+	seq->data_destroy_notify (node->data);
+      
+      g_slice_free (GSequenceNode, node);
+    }
+}
+
+static void
+node_free (GSequenceNode *node,
+	   GSequence *seq)
+{
+  node = find_root (node);
+  
+  real_node_free (node, seq);
+}
+
+static void
+node_update_fields (GSequenceNode *node)
+{
+  int n_nodes = 1;
+  
+  n_nodes += N_NODES (node->left);
+  n_nodes += N_NODES (node->right);
+  
+  node->n_nodes = n_nodes;
+}
+
+static void
+node_rotate (GSequenceNode *node)
+{
+  GSequenceNode *tmp, *old;
+  
+  g_assert (node->parent);
+  g_assert (node->parent != node);
+  
+  if (NODE_LEFT_CHILD (node))
+    {
+      /* rotate right */
+      tmp = node->right;
+  
+      node->right = node->parent;
+      node->parent = node->parent->parent;
+      if (node->parent)
+        {
+          if (node->parent->left == node->right)
+            node->parent->left = node;
+          else
+            node->parent->right = node;
+        }
+  
+      g_assert (node->right);
+  
+      node->right->parent = node;
+      node->right->left = tmp;
+  
+      if (node->right->left)
+        node->right->left->parent = node->right;
+      
+      old = node->right;
+    }
+  else
+    {
+      /* rotate left */
+      tmp = node->left;
+
+      node->left = node->parent;
+      node->parent = node->parent->parent;
+      if (node->parent)
+	{
+          if (node->parent->right == node->left)
+            node->parent->right = node;
+          else
+            node->parent->left = node;
+        }
+  
+      g_assert (node->left);
+  
+      node->left->parent = node;
+      node->left->right = tmp;
+  
+      if (node->left->right)
+        node->left->right->parent = node->left;
+  
+      old = node->left;
+    }
+  
+  node_update_fields (old);
+  node_update_fields (node);
+}
+
+static void
+node_update_fields_deep (GSequenceNode *node)
+{
+  if (node)
+    {
+      node_update_fields (node);
+      
+      node_update_fields_deep (node->parent);
+    }
+}
+
+static void
+rotate_down (GSequenceNode *node,
+	     guint          priority)
+{
+  guint left, right;
+  
+  left = node->left ? get_priority (node->left)  : 0;
+  right = node->right ? get_priority (node->right) : 0;
+  
+  while (priority < left || priority < right)
+    {
+      if (left > right)
+	node_rotate (node->left);
+      else
+	node_rotate (node->right);
+  
+      left = node->left ? get_priority (node->left)  : 0;
+      right = node->right ? get_priority (node->right) : 0;
+    }
+}
+
 static void
 node_cut (GSequenceNode *node)
 {
-  splay (node);
-  
-  g_assert (node->parent == NULL);
+  while (node->parent)
+    node_rotate (node);
   
   if (node->left)
     node->left->parent = NULL;
   
   node->left = NULL;
   node_update_fields (node);
+  
+  rotate_down (node, get_priority (node));
+}
+
+static void
+node_join (GSequenceNode *left,
+	   GSequenceNode *right)
+{
+  GSequenceNode *fake = node_new (NULL);
+      
+  fake->left = find_root (left);
+  fake->right = find_root (right);
+  fake->left->parent = fake;
+  fake->right->parent = fake;
+      
+  node_update_fields (fake);
+  
+  node_unlink (fake);
+  
+  node_free (fake, NULL);
 }
 
 static void
 node_insert_before (GSequenceNode *node,
-                    GSequenceNode *new)
+		    GSequenceNode *new)
 {
-  g_assert (node != NULL);
-  g_assert (new != NULL);
-  
-  splay (node);
-  
-  new = splay (find_min (new));
-  g_assert (new->left == NULL);
-  
-  if (node->left)
-    node->left->parent = new;
-  
   new->left = node->left;
-  new->parent = node;
+  if (new->left)
+    new->left->parent = new;
   
+  new->parent = node;
   node->left = new;
   
-  node_update_fields (new);
-  node_update_fields (node);
-}
-
-static void
-node_insert_after (GSequenceNode *node,
-                   GSequenceNode *new)
-{
-  g_assert (node != NULL);
-  g_assert (new != NULL);
+  node_update_fields_deep (new);
   
-  splay (node);
+  while (new->parent && get_priority (new) > get_priority (new->parent))
+    node_rotate (new);
   
-  new = splay (find_max (new));
-  g_assert (new->right == NULL);
-  g_assert (node->parent == NULL);
-  
-  if (node->right)
-    node->right->parent = new;
-  
-  new->right = node->right;
-  new->parent = node;
-  
-  node->right = new;
-  
-  node_update_fields (new);
-  node_update_fields (node);
-}
-
-static gint
-node_get_length (GSequenceNode    *node)
-{
-  g_assert (node != NULL);
-  
-  splay (node);
-  return node->n_nodes;
+  rotate_down (new, get_priority (new));
 }
 
 static void
 node_unlink (GSequenceNode *node)
 {
-  GSequenceNode *right, *left;
+  rotate_down (node, 0);
   
-  splay (node);
+  if (NODE_RIGHT_CHILD (node))
+    node->parent->right = NULL;
+  else if (NODE_LEFT_CHILD (node))
+    node->parent->left = NULL;
   
-  left = node->left;
-  right = node->right;
+  if (node->parent)
+    node_update_fields_deep (node->parent);
   
-  node->parent = node->left = node->right = NULL;
-  node_update_fields (node);
-  
-  if (right)
-    {
-      right->parent = NULL;
-      
-      right = node_get_first (right);
-      g_assert (right->left == NULL);
-      
-      right->left = left;
-      if (left)
-        {
-          left->parent = right;
-          node_update_fields (right);
-        }
-    }
-  else if (left)
-    {
-      left->parent = NULL;
-    }
+  node->parent = NULL;
 }
 
 static void
@@ -1778,49 +1735,60 @@ node_insert_sorted (GSequenceNode            *node,
   node_insert_before (closest, new);
 }
 
-static gint
-node_calc_height (GSequenceNode *node)
-{
-  gint left_height;
-  gint right_height;
-  
-  if (node)
-    {
-      left_height = 0;
-      right_height = 0;
-      
-      if (node->left)
-        left_height = node_calc_height (node->left);
-      
-      if (node->right)
-        right_height = node_calc_height (node->right);
-      
-      return MAX (left_height, right_height) + 1;
-    }
-  
-  return 0;
-}
-
 /* Self-test function */
+static int
+count_nodes (GSequenceNode *node)
+{
+  if (!node)
+    return 0;
+  
+  return count_nodes (node->left) + count_nodes (node->right) + 1;
+}
+  
 static void
 check_node (GSequenceNode *node)
 {
   if (node)
     {
       g_assert (node->parent != node);
-      g_assert (node->n_nodes ==
-                1 + get_n_nodes (node->left) + get_n_nodes (node->right));
+      if (node->parent)
+	g_assert (node->parent->left == node || node->parent->right == node);
+      g_assert (node->n_nodes == count_nodes (node));
+      if (node->left)
+	  g_assert (get_priority (node) >= get_priority (node->left));
+      if (node->right)
+	  g_assert (get_priority (node) >= get_priority (node->right));
       check_node (node->left);
       check_node (node->right);
     }
 }
 
+static gint
+compute_height (GSequenceNode *node)
+{
+  int left, right;
+  
+  if (!node)
+    return 0;
+
+  left = compute_height (node->left);
+  right = compute_height (node->right);
+
+  return MAX (left, right) + 1;
+}
+
 void
 g_sequence_self_test_internal_to_glib_dont_use (GSequence *seq)
 {
-  GSequenceNode *node = splay (seq->end_node);
+  GSequenceNode *node = find_root (seq->end_node);
   
   check_node (node);
+   
+  node = node_get_last (node);
+  
+  g_assert (seq->end_node == node);
+  g_assert (node->data == seq);
+
 }
 
 #define __G_SEQUENCE_C__

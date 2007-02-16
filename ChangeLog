@@ -1,3 +1,11 @@
+2007-02-16  Soren Sandmann <sandmann@redhat.com>
+
+	* tests/sequence-test.c: For move, test moving between two
+	sequences. Add test for swap.
+
+	* glib/gsequence.c: Replace splay tree with a treap.
+	(check_node): Add checks for the treap invariants.
+
 2007-02-10  Hans Breuer  <hans@breuer.org>
 
 	* glib/makefile.msc.in : added gsequence.obj

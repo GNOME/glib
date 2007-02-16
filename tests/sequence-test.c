@@ -2,26 +2,25 @@
 #include <glib.h>
 #include <stdlib.h>
 
-enum
-  {
-    NEW, FREE, GET_LENGTH, FOREACH, FOREACH_RANGE, SORT, SORT_ITER,
-    
-    /* Getting iters */
-    GET_BEGIN_ITER, GET_END_ITER, GET_ITER_AT_POS, APPEND, PREPEND,
-    INSERT_BEFORE, MOVE, INSERT_SORTED, INSERT_SORTED_ITER, SORT_CHANGED,
-    SORT_CHANGED_ITER, REMOVE, REMOVE_RANGE, MOVE_RANGE, SEARCH, SEARCH_ITER,
-    
-    /* dereferencing */
-    GET, SET,
-    
-    /* operations on GSequenceIter * */
-    ITER_IS_BEGIN, ITER_IS_END, ITER_NEXT, ITER_PREV, ITER_GET_POSITION,
-    ITER_MOVE, ITER_GET_SEQUENCE,
-    
-    /* search */
-    ITER_COMPARE, RANGE_GET_MIDPOINT,
-    N_OPS
-  } Op;
+enum {
+  NEW, FREE, GET_LENGTH, FOREACH, FOREACH_RANGE, SORT, SORT_ITER,
+  
+  /* Getting iters */
+  GET_BEGIN_ITER, GET_END_ITER, GET_ITER_AT_POS, APPEND, PREPEND,
+  INSERT_BEFORE, MOVE, SWAP, INSERT_SORTED, INSERT_SORTED_ITER, SORT_CHANGED,
+  SORT_CHANGED_ITER, REMOVE, REMOVE_RANGE, MOVE_RANGE, SEARCH, SEARCH_ITER,
+  
+  /* dereferencing */
+  GET, SET,
+  
+  /* operations on GSequenceIter * */
+  ITER_IS_BEGIN, ITER_IS_END, ITER_NEXT, ITER_PREV, ITER_GET_POSITION,
+  ITER_MOVE, ITER_GET_SEQUENCE,
+  
+  /* search */
+  ITER_COMPARE, RANGE_GET_MIDPOINT,
+  N_OPS
+};
 
 typedef struct SequenceInfo
 {
@@ -70,7 +69,10 @@ check_integrity (SequenceInfo *info)
   i = 0;
   while (iter != g_sequence_get_end_iter (info->sequence))
     {
+      Item *item;
       g_assert (list->data == iter);
+      item = get_item (list->data);
+      g_assert (item->seq == info);
       
       iter = g_sequence_iter_next (iter);
       list = list->next;
@@ -312,7 +314,8 @@ run_random_tests (guint32 seed)
 {
 #define N_ITERATIONS 60000
 #define N_SEQUENCES 8
-  
+#define N_TIMES 24
+    
   SequenceInfo sequences[N_SEQUENCES];
   int k;
   
@@ -501,8 +504,10 @@ run_random_tests (guint32 seed)
  	case MOVE:
 	  {
 	    GList *link1, *link2;
-	    GSequenceIter *iter1 = get_random_iter (seq, &link1);
-	    GSequenceIter *iter2 = get_random_iter (seq, &link2);
+	    SequenceInfo *seq1 = RANDOM_SEQUENCE();
+	    SequenceInfo *seq2 = RANDOM_SEQUENCE();
+	    GSequenceIter *iter1 = get_random_iter (seq1, &link1);
+	    GSequenceIter *iter2 = get_random_iter (seq2, &link2);
 	    
 	    if (!g_sequence_iter_is_end (iter1))
 	      {
@@ -511,9 +516,14 @@ run_random_tests (guint32 seed)
 		if (!link2)
 		  g_assert (g_sequence_iter_is_end (iter2));
 		
-		queue_insert_before (seq, link2, link1->data);
+		queue_insert_before (seq2, link2, link1->data);
 		
-		g_queue_delete_link (seq->queue, link1);
+		g_queue_delete_link (seq1->queue, link1);
+
+		get_item (iter1)->seq = seq2;
+		
+		seq1->n_items--;
+		seq2->n_items++;
 	      }
 	    
 	    check_integrity (seq);
@@ -523,6 +533,30 @@ run_random_tests (guint32 seed)
 	    /* Moving an iter to itself should have no effect */
 	    if (!g_sequence_iter_is_end (iter1))
 	      g_sequence_move (iter1, iter1);
+	  }
+	  break;
+	case SWAP:
+	  {
+	    GList *link1, *link2;
+	    SequenceInfo *seq1 = RANDOM_SEQUENCE();
+	    SequenceInfo *seq2 = RANDOM_SEQUENCE();
+	    GSequenceIter *iter1 = get_random_iter (seq1, &link1);
+	    GSequenceIter *iter2 = get_random_iter (seq2, &link2);
+	    
+	    if (!g_sequence_iter_is_end (iter1) &&
+		!g_sequence_iter_is_end (iter2))
+	      {
+		gpointer tmp;
+
+		g_sequence_swap (iter1, iter2);
+
+		get_item (iter1)->seq = seq2;
+		get_item (iter2)->seq = seq1;
+		
+		tmp = link1->data;
+		link1->data = link2->data;
+		link2->data = tmp;
+	      }
 	  }
 	  break;
 	case INSERT_SORTED:
@@ -535,7 +569,7 @@ run_random_tests (guint32 seed)
 	    
 	    check_sorted (seq);
 	    
-	    for (i = 0; i < 15; ++i)
+	    for (i = 0; i < N_TIMES; ++i)
 	      {
 		GSequenceIter *iter =
 		  g_sequence_insert_sorted (seq->sequence, new_item(seq), compare_items, NULL);
@@ -558,7 +592,7 @@ run_random_tests (guint32 seed)
 	    
 	    check_sorted (seq);
 	    
-	    for (i = 0; i < 15; ++i)
+	    for (i = 0; i < N_TIMES; ++i)
 	      {
 		GSequenceIter *iter;
 
@@ -584,7 +618,7 @@ run_random_tests (guint32 seed)
 	    
 	    check_sorted (seq);
 	    
-	    for (i = 0; i < 15; ++i)
+	    for (i = 0; i < N_TIMES; ++i)
 	      {
 		GList *link;
 		GSequenceIter *iter = get_random_iter (seq, &link);
@@ -611,7 +645,7 @@ run_random_tests (guint32 seed)
 	    
 	    check_sorted (seq);
 	    
-	    for (i = 0; i < 15; ++i)
+	    for (i = 0; i < N_TIMES; ++i)
 	      {
 		GList *link;
 		GSequenceIter *iter = get_random_iter (seq, &link);
@@ -634,7 +668,7 @@ run_random_tests (guint32 seed)
 	  {
 	    int i;
 	    
-	    for (i = 0; i < 15; ++i)
+	    for (i = 0; i < N_TIMES; ++i)
 	      {
 		GList *link;
 		GSequenceIter *iter = get_random_iter (seq, &link);
@@ -796,7 +830,7 @@ run_random_tests (guint32 seed)
 		g_assert (g_sequence_get (iter) == item);
 		
 		/* Make sure that existing items are freed */
-		for (i = 0; i < 15; ++i)
+		for (i = 0; i < N_TIMES; ++i)
 		  g_sequence_set (iter, new_item (seq));
 		
 		check_integrity (seq);
@@ -1113,6 +1147,8 @@ test_insert_sorted_non_pointer (void)
 	  g_sequence_insert_sorted_iter (seq, GINT_TO_POINTER (g_random_int()),
 					 compare_iter, NULL);
 	}
+
+      g_sequence_self_test_internal_to_glib_dont_use (seq);
       
       g_sequence_free (seq);
     }
@@ -1130,15 +1166,23 @@ test_stable_sort (void)
   GSequenceIter *iter;
   
   for (i = 0; i < N_ITEMS; ++i)
-    iters[i] = g_sequence_append (seq, GINT_TO_POINTER (3000));
-  
+    {
+      iters[i] = g_sequence_append (seq, GINT_TO_POINTER (3000)); 
+      g_sequence_self_test_internal_to_glib_dont_use (seq);
+      g_assert (g_sequence_iter_get_sequence (iters[i]) == seq);
+   }
+
   i = 0;
   iter = g_sequence_get_begin_iter (seq);
+  g_assert (g_sequence_iter_get_sequence (iter) == seq);
+  g_sequence_self_test_internal_to_glib_dont_use (seq);
   while (!g_sequence_iter_is_end (iter))
     {
+      g_assert (g_sequence_iter_get_sequence (iters[i]) == seq);
       g_assert (iters[i++] == iter);
       
       iter = g_sequence_iter_next (iter);
+      g_sequence_self_test_internal_to_glib_dont_use (seq);
     }
   
   g_sequence_sort (seq, compare, NULL);
@@ -1147,13 +1191,22 @@ test_stable_sort (void)
   iter = g_sequence_get_begin_iter (seq);
   while (!g_sequence_iter_is_end (iter))
     {
-      g_assert (iters[i++] == iter);
+      g_assert (g_sequence_iter_get_sequence (iters[i]) == seq);
+      g_assert (iters[i] == iter);
       
       iter = g_sequence_iter_next (iter);
+      g_sequence_self_test_internal_to_glib_dont_use (seq);
+
+      i++;
     }
   
   for (i = N_ITEMS - 1; i >= 0; --i)
-    g_sequence_sort_changed (iters[i], compare, NULL);
+    {
+      g_sequence_self_test_internal_to_glib_dont_use (seq);
+      g_assert (g_sequence_iter_get_sequence (iters[i]) == seq);
+      g_assert (g_sequence_get_end_iter (seq) != iters[i]);
+      g_sequence_sort_changed (iters[i], compare, NULL);
+    }
   
   i = 0;
   iter = g_sequence_get_begin_iter (seq);
@@ -1162,6 +1215,7 @@ test_stable_sort (void)
       g_assert (iters[i++] == iter);
       
       iter = g_sequence_iter_next (iter);
+      g_sequence_self_test_internal_to_glib_dont_use (seq);
     }
 }
 
