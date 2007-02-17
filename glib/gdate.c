@@ -1524,14 +1524,20 @@ win32_strftime_helper (const GDate     *d,
 	      break;
 	    case 'c':
 	      n = GetDateFormatW (lcid, 0, &systemtime, NULL, NULL, 0);
-	      g_array_set_size (result, result->len + n);
-	      GetDateFormatW (lcid, 0, &systemtime, NULL, ((wchar_t *) result->data) + result->len - n, n);
-	      g_array_set_size (result, result->len - 1);
+	      if (n > 0)
+		{
+		  g_array_set_size (result, result->len + n);
+		  GetDateFormatW (lcid, 0, &systemtime, NULL, ((wchar_t *) result->data) + result->len - n, n);
+		  g_array_set_size (result, result->len - 1);
+		}
 	      g_array_append_vals (result, L" ", 1);
 	      n = GetTimeFormatW (lcid, 0, &systemtime, NULL, NULL, 0);
-	      g_array_set_size (result, result->len + n);
-	      GetTimeFormatW (lcid, 0, &systemtime, NULL, ((wchar_t *) result->data) + result->len - n, n);
-	      g_array_set_size (result, result->len - 1);
+	      if (n > 0)
+		{
+		  g_array_set_size (result, result->len + n);
+		  GetTimeFormatW (lcid, 0, &systemtime, NULL, ((wchar_t *) result->data) + result->len - n, n);
+		  g_array_set_size (result, result->len - 1);
+		}
 	      break;
 	    case 'C':
 	      g_array_append_vals (result, digits + systemtime.wYear/1000, 1);
@@ -1609,9 +1615,12 @@ win32_strftime_helper (const GDate     *d,
 	      break;
 	    case 'p':
 	      n = GetTimeFormatW (lcid, 0, &systemtime, L"tt", NULL, 0);
-	      g_array_set_size (result, result->len + n);
-	      GetTimeFormatW (lcid, 0, &systemtime, L"tt", ((wchar_t *) result->data) + result->len - n, n);
-	      g_array_set_size (result, result->len - 1);
+	      if (n > 0)
+		{
+		  g_array_set_size (result, result->len + n);
+		  GetTimeFormatW (lcid, 0, &systemtime, L"tt", ((wchar_t *) result->data) + result->len - n, n);
+		  g_array_set_size (result, result->len - 1);
+		}
 	      break;
 	    case 'r':
 	      /* This is a rather odd format. Hard to say what to do.
@@ -1636,9 +1645,12 @@ win32_strftime_helper (const GDate     *d,
 	      g_array_append_vals (result, L" ", 1);
 #endif
 	      n = GetTimeFormatW (lcid, 0, &systemtime, L"tt", NULL, 0);
-	      g_array_set_size (result, result->len + n);
-	      GetTimeFormatW (lcid, 0, &systemtime, L"tt", ((wchar_t *) result->data) + result->len - n, n);
-	      g_array_set_size (result, result->len - 1);
+	      if (n > 0)
+		{
+		  g_array_set_size (result, result->len + n);
+		  GetTimeFormatW (lcid, 0, &systemtime, L"tt", ((wchar_t *) result->data) + result->len - n, n);
+		  g_array_set_size (result, result->len - 1);
+		}
 	      break;
 	    case 'R':
 #if 1
@@ -1702,15 +1714,21 @@ win32_strftime_helper (const GDate     *d,
 	      break;
 	    case 'x':
 	      n = GetDateFormatW (lcid, 0, &systemtime, NULL, NULL, 0);
-	      g_array_set_size (result, result->len + n);
-	      GetDateFormatW (lcid, 0, &systemtime, NULL, ((wchar_t *) result->data) + result->len - n, n);
-	      g_array_set_size (result, result->len - 1);
+	      if (n > 0)
+		{
+		  g_array_set_size (result, result->len + n);
+		  GetDateFormatW (lcid, 0, &systemtime, NULL, ((wchar_t *) result->data) + result->len - n, n);
+		  g_array_set_size (result, result->len - 1);
+		}
 	      break;
 	    case 'X':
 	      n = GetTimeFormatW (lcid, 0, &systemtime, NULL, NULL, 0);
-	      g_array_set_size (result, result->len + n);
-	      GetTimeFormatW (lcid, 0, &systemtime, NULL, ((wchar_t *) result->data) + result->len - n, n);
-	      g_array_set_size (result, result->len - 1);
+	      if (n > 0)
+		{
+		  g_array_set_size (result, result->len + n);
+		  GetTimeFormatW (lcid, 0, &systemtime, NULL, ((wchar_t *) result->data) + result->len - n, n);
+		  g_array_set_size (result, result->len - 1);
+		}
 	      break;
 	    case 'y':
 	      g_array_append_vals (result, digits + (systemtime.wYear/10)%10, 1);
