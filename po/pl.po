@@ -767,9 +767,9 @@ msgstr ""
 "lub komentarzem"
 
 #: glib/gkeyfile.c:758
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid group name: %s"
-msgstr "Niepoprawna nazwa programu: %s"
+msgstr "Niepoprawna nazwa grupy: %s"
 
 #: glib/gkeyfile.c:780
 #, c-format
@@ -777,9 +777,9 @@ msgid "Key file does not start with a group"
 msgstr "Plik klucza nie rozpoczyna się od grupy"
 
 #: glib/gkeyfile.c:806
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid key name: %s"
-msgstr "Niepoprawna nazwa programu: %s"
+msgstr "Niepoprawna nazwa klucza: %s"
 
 #: glib/gkeyfile.c:833
 #, c-format
