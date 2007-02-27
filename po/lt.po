@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lt\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-22 01:55+0200\n"
+"POT-Creation-Date: 2007-02-27 15:47+0200\n"
 "PO-Revision-Date: 2007-02-22 01:56+0200\n"
 "Last-Translator: Gintautas Miliauskas <gintas@akl.lt>\n"
 "Language-Team: Lithuanian <gnome-lt@lists.akl.lt>\n"
@@ -18,7 +18,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
-"Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%"
+"100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: ../glib/gbookmarkfile.c:704 ../glib/gbookmarkfile.c:781
 #: ../glib/gbookmarkfile.c:860 ../glib/gbookmarkfile.c:907
@@ -284,7 +285,8 @@ msgid "Error on line %d: %s"
 msgstr "Klaida eilutėje %d: %s"
 
 #: ../glib/gmarkup.c:428
-msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "Aptiktas tuščias elementas '&;'; galimi elementai yra: &amp; &quot; &lt; "
 "&gt; &apos;"
@@ -367,7 +369,8 @@ msgstr "Dokumentas turėtų prasidėti elementu (pvz. <book>)"
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
-msgstr "„%s“ negali būti rašomas po „<“ simbolio; jis nepradeda jokio elemento vardo"
+msgstr ""
+"„%s“ negali būti rašomas po „<“ simbolio; jis nepradeda jokio elemento vardo"
 
 #: ../glib/gmarkup.c:1157
 #, c-format
@@ -380,7 +383,8 @@ msgstr ""
 
 #: ../glib/gmarkup.c:1246
 #, c-format
-msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgid ""
+"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "Neįprastas simbolis „%1$s“, tikėtasi sulaukti „=“ po elemento „%3$s“ požymio "
 "vardo „%2$s“"
@@ -494,7 +498,8 @@ msgstr "Dokumentas netikėtai pasibaigė elemento „%s“ uždarančiame simbol
 
 #: ../glib/gmarkup.c:1828
 msgid "Document ended unexpectedly inside a comment or processing instruction"
-msgstr "Dokumentas netikėtai pasibaigė komentaruose arba apdorojimo instrukcijose"
+msgstr ""
+"Dokumentas netikėtai pasibaigė komentaruose arba apdorojimo instrukcijose"
 
 #: ../glib/gshell.c:70
 msgid "Quoted text doesn't begin with a quotation mark"
@@ -628,7 +633,8 @@ msgstr "Nežinoma klaida vykdant antrinį procesą „%s“"
 #: ../glib/gspawn.c:1323
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
-msgstr "Nepavyko perskaityti reikiamo duomenų kiekio iš antrinio pid konvejerio (%s)"
+msgstr ""
+"Nepavyko perskaityti reikiamo duomenų kiekio iš antrinio pid konvejerio (%s)"
 
 #: ../glib/gutf8.c:1023
 msgid "Character out of range for UTF-8"
@@ -716,7 +722,8 @@ msgstr "Failas yra tuščias"
 
 #: ../glib/gkeyfile.c:700
 #, c-format
-msgid "Key file contains line '%s' which is not a key-value pair, group, or comment"
+msgid ""
+"Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr ""
 "Raktų faile yra eilutė „%s“, kuri nėra raktas-reikšmė pora, grupė ar "
 "komentaras"
@@ -760,7 +767,8 @@ msgstr "Raktų faile yra raktas „%s“ su reikšme „%s“, kuri nėra UTF-8"
 #: ../glib/gkeyfile.c:1335 ../glib/gkeyfile.c:1445 ../glib/gkeyfile.c:1813
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
-msgstr "Raktų faile yra raktas „%s“, kuriame yra reikšmė, kurios negalima suprasti."
+msgstr ""
+"Raktų faile yra raktas „%s“, kuriame yra reikšmė, kurios negalima suprasti."
 
 #: ../glib/gkeyfile.c:2025 ../glib/gkeyfile.c:2234
 #, c-format
@@ -798,10 +806,10 @@ msgstr "Sveikoji reikšmė „%s“ viršija ribas"
 #: ../glib/gkeyfile.c:3576
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
-msgstr "Reikšmės „%s“ negalima interpretuoti kaip slankiojo kablelio skaičiaus."
+msgstr ""
+"Reikšmės „%s“ negalima interpretuoti kaip slankiojo kablelio skaičiaus."
 
 #: ../glib/gkeyfile.c:3603
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Reikšmės „%s“ negalima interpretuoti kaip loginės."
-
