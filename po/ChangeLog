@@ -3008,3 +3008,8 @@ Wed Sep  5 09:27:34 2001  Owen Taylor  <otaylor@redhat.com>
 
 
 a
+2007-02-27  Abel Cheung  <abelcheung@gmail.com>
+
+	* zh_HK.po, zh_TW.po: Updated traditional Chinese translation by
+	Woodman Tuen <wmtuen@gmail.com>.
+
