@@ -1,3 +1,8 @@
+2007-02-27  Abel Cheung  <abelcheung@gmail.com>
+
+	* zh_HK.po, zh_TW.po: Updated traditional Chinese translation by
+	Woodman Tuen <wmtuen@gmail.com>.
+
 2007-02-22  Gintautas Miliauskas  <gintas@akl.lt>
 
 	* lt.po: Updated Lithuanian translation.
@@ -3005,11 +3010,4 @@ Wed Sep  5 09:27:34 2001  Owen Taylor  <otaylor@redhat.com>
 2001-01-18  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* no.po: Added Norwegian translation.
-
-
-a
-2007-02-27  Abel Cheung  <abelcheung@gmail.com>
-
-	* zh_HK.po, zh_TW.po: Updated traditional Chinese translation by
-	Woodman Tuen <wmtuen@gmail.com>.
 
