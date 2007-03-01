@@ -1,3 +1,6 @@
+2007-03-01  Ihar Hrachyshka <iharh@gnome.org>
+	* configure.in: Added be@latin to ALL_LINGUAS.
+
 2007-02-17  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gdate.c (win32_strftime_helper): New Win32-only
