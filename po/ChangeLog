@@ -1,3 +1,7 @@
+2007-03-03  Wouter Bolsterlee  <wbolster@svn.gnome.org>
+
+	* nl.po: Dutch translation updated by Wouter Bolsterlee.
+
 2007-03-02  Ankit Patel  <ankit644@yahoo.com>
 
 	* gu.po: Updated Gujarati Translation.
@@ -508,7 +512,7 @@
 
 2006-06-20  Rajesh Ranjan <rajeshkajha@yahoo.com>
 
-        * hi.po: Updated Hindi Translation.
+	* hi.po: Updated Hindi Translation.
 
 2006-06-19  Hendrik Richter  <hendrikr@gnome.org>
 
@@ -601,7 +605,7 @@
 
 2006-05-02  Ankit Patel  <ankit644@yahoo.com>
 
-        * gu.po: Updated Gujarati Translation.
+	* gu.po: Updated Gujarati Translation.
 
 2006-04-30  Kjartan Maraas  <kmaraas@gnome.org>
 
@@ -630,19 +634,19 @@
 
 2006-04-21  Rajesh Ranjan <rajeshkajha@yahoo.com>
 
-        * hi.po: Updated Hindi Translation.
+	* hi.po: Updated Hindi Translation.
 
 2006-04-19  Ankit Patel  <ankit644@yahoo.com>
 
-        * gu.po: Updated Gujarati Translation.
+	* gu.po: Updated Gujarati Translation.
 
 2006-04-18  Rajesh Ranjan <rajeshkajha@yahoo.com>
 
-        * hi.po: Updated Hindi Translation.
+	* hi.po: Updated Hindi Translation.
 
 2006-04-18  Ankit Patel  <ankit644@yahoo.com>
 
-        * gu.po: Updated Gujarati Translation.
+	* gu.po: Updated Gujarati Translation.
 
 2006-04-17  Clytie Siddall <clytie@riverland.net.au>
 
@@ -654,7 +658,7 @@
 
 2006-04-10  Vladimer Sichinava  <vlsichinava@gmail.com>
 
-        * ka.po: Updated Georgian translation.
+	* ka.po: Updated Georgian translation.
 
 2006-04-07  Ignacio Casal Quinteiro  <nacho.resa@gmail.com>
 
@@ -689,15 +693,15 @@
 	
 2006-03-06  Rajesh Ranjan <rranjan@redhat.com>
 
-        * hi.po: Updated Hindi Translation.
+	* hi.po: Updated Hindi Translation.
 
 2006-03-06  Rajesh Ranjan <rranjan@redhat.com>
 
-        * hi.po: Updated Hindi Translation.
+	* hi.po: Updated Hindi Translation.
 
 2006-03-06  Rajesh Ranjan <rranjan@redhat.com>
 
-        * hi.po: Updated Hindi Translation.
+	* hi.po: Updated Hindi Translation.
 
 2006-03-10  Subhransu Behera <sbehera@redhat.com>
 
@@ -709,7 +713,7 @@
 
 2006-03-07  Daniel Nylander  <po@danielnylander.se>
 
-        * sv.po: Swedish translation updated.
+	* sv.po: Swedish translation updated.
 	
 2006-03-03  Gabor Kelemen  <kelemeng@gnome.hu>
 
@@ -830,7 +834,7 @@
 
 2005-01-09  Ankit Patel  <ankit644@yahoo.com>
 
-        * gu.po: Updated Gujarati Translation.
+	* gu.po: Updated Gujarati Translation.
 
 2006-01-08  Takeshi AIHANA <aihana@gnome.gr.jp>
 
@@ -992,7 +996,7 @@
 
 2005-09-01  Clytie Siddall <clytie@riverland.net.au>
 
-        * vi.po: Updated Vietnamese translation.
+	* vi.po: Updated Vietnamese translation.
 
 2005-08-31  Mugurel Tudor  <mugurelu@gnome.ro>
 
@@ -1005,7 +1009,7 @@
 	
 2005-08-29  Clytie Siddall <clytie@riverland.net.au>
 
-        * vi.po: Updated Vietnamese translation.
+	* vi.po: Updated Vietnamese translation.
 
 2005-08-28  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>
 
@@ -1034,7 +1038,7 @@
 
 2005-08-27  Clytie Siddall <clytie@riverland.net.au>
 
-        * vi.po: Updated Vietnamese translation.
+	* vi.po: Updated Vietnamese translation.
 
 2005-08-27  Christophe Merlet  <redfox@redfoxcenter.org>
 
@@ -1301,7 +1305,7 @@
 
 2005-07-01  Chao-Hsiung Liao  <j_h_liau@yahoo.com.tw>
 
-        * zh_TW.po: Updated Traditional Chinese translation.
+	* zh_TW.po: Updated Traditional Chinese translation.
 
 2005-06-30  Matthias Clasen  <mclasen@redhat.com>
 
@@ -1459,7 +1463,7 @@
 
 2005-03-30  Steve Murphy  <murf@e-tools.com>
 
-        * rw.po: Added Kinyarwanda translation.
+	* rw.po: Added Kinyarwanda translation.
 
 2005-03-30  Estêvão Samuel Procópio <tevaum@ig.com.br>
 
@@ -1651,9 +1655,9 @@
 	* zh_CN.po: Updated Simplified Chinese translation.
 
 2004-11-21  David Lodge <dave@cirt.net>
-                                                                                
-        * en_GB.po: Updated British translation.
-                                                                                
+
+	* en_GB.po: Updated British translation.
+
 2004-11-20  Laurent Dhima  <laurenti@alblinux.net>
 
 	* sq.po: Updated Albanian translation.
@@ -1895,8 +1899,8 @@ Sun Jul 18 18:03:08 2004  Soeren Sandmann  <sandmann@daimi.au.dk>
 
 2004-04-08  Guntupalli Karunakar  <karunakar@freedomink.org>
 
-        * gu.po: Added Gujurati translation by
-        Gujarati Team <magnet@magnet-i.com>.
+	* gu.po: Added Gujurati translation by
+	Gujarati Team <magnet@magnet-i.com>.
 
 2004-04-07  Iñaki Larrañaga  <dooteo@euskalgnu.org>
 
@@ -2118,8 +2122,8 @@ Mon Mar  1 16:49:51 2004  Owen Taylor  <otaylor@redhat.com>
 2003-11-10  Pablo Gonzalo del Campo  <pablodc@bigfoot.com>
 
 	* es.po: Updated Spanish translation by
-                 Francisco Javier F. Serrador <serrador@arrakis.es>.
-		 
+	Francisco Javier F. Serrador <serrador@arrakis.es>.
+
 2003-10-31  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* no.po: Updated Norwegian translation.
@@ -2128,7 +2132,7 @@ Mon Mar  1 16:49:51 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* ja.po: Updated Japanese translation.
 
-2003-10-19   Vincent van Adrighem  <adrighem@gnome.org>
+2003-10-19  Vincent van Adrighem  <adrighem@gnome.org>
 
 	* nl.po: Dutch translation updated by Tino Meinen.
 
@@ -2418,7 +2422,7 @@ Tue Dec  3 20:40:56 2002  Owen Taylor  <otaylor@redhat.com>
 
 2002-11-25  Hasbullah Bin Pit <sebol@ikhlas.com>
 
-        * ms.po: Updated Malay Translation.
+	* ms.po: Updated Malay Translation.
 
 2002-11-22  Kjartan Maraas  <kmaraas@gnome.org>
 
@@ -2442,7 +2446,7 @@ Tue Dec  3 20:40:56 2002  Owen Taylor  <otaylor@redhat.com>
 	* be.po: Added Belarusian translation
 	* from Belarusian team <i18n@infonet.by>.
 
-2002-10-13  Laurent Dhima   <laurenti@alblinux.net>
+2002-10-13  Laurent Dhima  <laurenti@alblinux.net>
 
 	* sq.po:  added albanian translation
 
@@ -2499,7 +2503,7 @@ Wed May 22 15:24:04 2002  Owen Taylor  <otaylor@redhat.com>
 
 2002-05-16  Duarte Loreto <happyguy_pt@hotmail.com>
 
-        * pt.po: Updated Portuguese translation.
+	* pt.po: Updated Portuguese translation.
 
 2002-05-12  Christophe Merlet  <christophe@merlet.net>
 
@@ -2515,7 +2519,7 @@ Wed May 22 15:24:04 2002  Owen Taylor  <otaylor@redhat.com>
 
 2002-04-30  Duarte Loreto <happyguy_pt@hotmail.com>
 
-        * pt.po: Converted Portuguese translation to UTF-8.
+	* pt.po: Converted Portuguese translation to UTF-8.
 
 2002-04-29  Pablo Saratxaga  <pablo@mandrakesoft.com>
 
@@ -2566,11 +2570,11 @@ Wed May 22 15:24:04 2002  Owen Taylor  <otaylor@redhat.com>
 
 2002-03-06  Germ� Poo-Caamao <gpoo@ubiobio.cl>
 
-        * es.po: Updated spanish translation.
+	* es.po: Updated spanish translation.
 
 2002-03-04  Duarte Loreto <happyguy_pt@hotmail.com>
 
-        * pt.po: Updated Portuguese translation.
+	* pt.po: Updated Portuguese translation.
 
 2002-03-03  Kjartan Maraas  <kmaraas@gnome.org>
 
@@ -2696,7 +2700,7 @@ Wed May 22 15:24:04 2002  Owen Taylor  <otaylor@redhat.com>
 
 2002-01-28  Roy-Magne Mo <rmo@sunnmore.net>
 
-        * nn.po: Updated Norwegian (nynorsk) translation and switched to UTF-8.
+	* nn.po: Updated Norwegian (nynorsk) translation and switched to UTF-8.
 
 2002-01-28  Christian Rose  <menthos@menthos.com>
 
@@ -2726,7 +2730,7 @@ Wed May 22 15:24:04 2002  Owen Taylor  <otaylor@redhat.com>
 
 2002-01-13  Hasbullah Bin Pit  <sebol@ikhlas.com>
 
-        * ms.po: Added Malay (Bahasa Melayu) translation.
+	* ms.po: Added Malay (Bahasa Melayu) translation.
 
 2002-01-11  Kjartan Maraas  <kmaraas@gnome.org>
 
@@ -2748,7 +2752,7 @@ Wed May 22 15:24:04 2002  Owen Taylor  <otaylor@redhat.com>
 
 2001-12-27  Duarte Loreto <happyguy_pt@hotmail.com>
 
-        * pt.po: Added portuguese translation
+	* pt.po: Added portuguese translation
 
 2001-12-27  Jesus Bravo Alvarez  <jba@pobox.com>
 
@@ -3009,7 +3013,7 @@ Wed Sep  5 09:27:34 2001  Owen Taylor  <otaylor@redhat.com>
 2001-02-08  Fatih Demir	<kabalak@kabalak.net>
 
 	* tr.po: Added the Turkish translation by
-                 Kemal Yilmaz.
+	Kemal Yilmaz.
 
 2001-01-18  Kjartan Maraas  <kmaraas@gnome.org>
 

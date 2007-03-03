@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: glib (HEAD)\n"
+"Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-01-01 11:05+0100\n"
-"PO-Revision-Date: 2007-02-06 10:16+0100\n"
+"POT-Creation-Date: 2007-03-03 13:25+0100\n"
+"PO-Revision-Date: 2007-03-03 13:28+0100 \n"
 "Last-Translator: Tino Meinen <a.t.meinen@chello.nl>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
 "MIME-Version: 1.0\n"
@@ -54,9 +54,9 @@ msgstr "Een bladwijzer voor URI '%s' bestaat al"
 #: ../glib/gbookmarkfile.c:2608 ../glib/gbookmarkfile.c:2687
 #: ../glib/gbookmarkfile.c:2729 ../glib/gbookmarkfile.c:2826
 #: ../glib/gbookmarkfile.c:2952 ../glib/gbookmarkfile.c:3142
-#: ../glib/gbookmarkfile.c:3218 ../glib/gbookmarkfile.c:3371
-#: ../glib/gbookmarkfile.c:3436 ../glib/gbookmarkfile.c:3526
-#: ../glib/gbookmarkfile.c:3653
+#: ../glib/gbookmarkfile.c:3218 ../glib/gbookmarkfile.c:3379
+#: ../glib/gbookmarkfile.c:3454 ../glib/gbookmarkfile.c:3544
+#: ../glib/gbookmarkfile.c:3671
 #, c-format
 msgid "No bookmark found for URI '%s'"
 msgstr "Geen bladwijzer gevonden voor URI '%s'"
@@ -77,12 +77,17 @@ msgstr "Er is geen privé-vlag gedefineerd in de bladwijzer voor URI '%s'"
 msgid "No groups set in bookmark for URI '%s'"
 msgstr "Geen groepen ingesteld in de bladwijzer voor URI '%s'"
 
-#: ../glib/gbookmarkfile.c:3236 ../glib/gbookmarkfile.c:3381
+#: ../glib/gbookmarkfile.c:3236 ../glib/gbookmarkfile.c:3389
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
 msgstr ""
 "Er is geen toepassing genaamd '%s' die een bladwijzer geregistreerd heeft "
 "voor '%s'"
+
+#: ../glib/gbookmarkfile.c:3402
+#, c-format
+msgid "Failed to expand exec line '%s' with URI '%s'"
+msgstr "Uitbreiden van opdrachtregel '%s' met URI '%s' mislukt"
 
 # is niet mogelijk/wordt niet ondersteund
 #: ../glib/gconvert.c:423 ../glib/gconvert.c:501 ../glib/giochannel.c:1150
@@ -102,8 +107,8 @@ msgstr ""
 "Kon het conversieprogramma voor omzetten van '%s' naar '%s' niet openen"
 
 #: ../glib/gconvert.c:621 ../glib/gconvert.c:1010 ../glib/giochannel.c:1322
-#: ../glib/giochannel.c:1364 ../glib/giochannel.c:2206 ../glib/gutf8.c:943
-#: ../glib/gutf8.c:1392
+#: ../glib/giochannel.c:1364 ../glib/giochannel.c:2206 ../glib/gutf8.c:949
+#: ../glib/gutf8.c:1398
 msgid "Invalid byte sequence in conversion input"
 msgstr "Ongeldige bytereeks in conversie-invoer"
 
@@ -113,8 +118,8 @@ msgstr "Ongeldige bytereeks in conversie-invoer"
 msgid "Error during conversion: %s"
 msgstr "Fout tijdens omzetten: %s"
 
-#: ../glib/gconvert.c:662 ../glib/gutf8.c:939 ../glib/gutf8.c:1143
-#: ../glib/gutf8.c:1284 ../glib/gutf8.c:1388
+#: ../glib/gconvert.c:662 ../glib/gutf8.c:945 ../glib/gutf8.c:1149
+#: ../glib/gutf8.c:1290 ../glib/gutf8.c:1394
 msgid "Partial character sequence at end of input"
 msgstr "Onvolledige tekenreeks aan het eind van de invoer"
 
@@ -649,75 +654,75 @@ msgstr "Onbekende fout bij het uitvoeren van dochterproces \"%s\""
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Lezen van voldoende data van pijplijn dochter-pid is mislukt (%s)"
 
-#: ../glib/gutf8.c:1017
+#: ../glib/gutf8.c:1023
 msgid "Character out of range for UTF-8"
 msgstr "Teken valt buiten van bereik van UTF-8"
 
-#: ../glib/gutf8.c:1111 ../glib/gutf8.c:1120 ../glib/gutf8.c:1252
-#: ../glib/gutf8.c:1261 ../glib/gutf8.c:1402 ../glib/gutf8.c:1498
+#: ../glib/gutf8.c:1117 ../glib/gutf8.c:1126 ../glib/gutf8.c:1258
+#: ../glib/gutf8.c:1267 ../glib/gutf8.c:1408 ../glib/gutf8.c:1504
 msgid "Invalid sequence in conversion input"
 msgstr "Ongeldige reeks in conversie-invoer"
 
-#: ../glib/gutf8.c:1413 ../glib/gutf8.c:1509
+#: ../glib/gutf8.c:1419 ../glib/gutf8.c:1515
 msgid "Character out of range for UTF-16"
 msgstr "Teken valt buiten bereik van UTF-16"
 
-#: ../glib/goption.c:495
+#: ../glib/goption.c:553
 msgid "Usage:"
 msgstr "Gebruik:"
 
-#: ../glib/goption.c:495
+#: ../glib/goption.c:553
 msgid "[OPTION...]"
 msgstr "[OPTIE...]"
 
-#: ../glib/goption.c:586
+#: ../glib/goption.c:644
 msgid "Help Options:"
 msgstr "Hulpopties:"
 
-#: ../glib/goption.c:587
+#: ../glib/goption.c:645
 msgid "Show help options"
 msgstr "Hulpopties tonen"
 
-#: ../glib/goption.c:592
+#: ../glib/goption.c:650
 msgid "Show all help options"
 msgstr "Alle hulpopties tonen"
 
-#: ../glib/goption.c:642
+#: ../glib/goption.c:700
 msgid "Application Options:"
 msgstr "Toepassing opties:"
 
-#: ../glib/goption.c:686 ../glib/goption.c:756
+#: ../glib/goption.c:744 ../glib/goption.c:814
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "Kan de hele getalswaarde '%s' voor %s niet verwerken"
 
-#: ../glib/goption.c:696 ../glib/goption.c:764
+#: ../glib/goption.c:754 ../glib/goption.c:822
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "Hele getalswaarde '%s' voor %s valt buiten bereik"
 
 # integer-double
-#: ../glib/goption.c:721
+#: ../glib/goption.c:779
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "Kan de dubbele getalswaarde (double) '%s' voor %s niet verwerken"
 
-#: ../glib/goption.c:729
+#: ../glib/goption.c:787
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "Dubbele getalswaarde (double) '%s' voor %s valt buiten bereik"
 
-#: ../glib/goption.c:1066
+#: ../glib/goption.c:1124
 #, c-format
 msgid "Error parsing option %s"
 msgstr "Fout bij verwerken optie %s"
 
-#: ../glib/goption.c:1097 ../glib/goption.c:1208
+#: ../glib/goption.c:1155 ../glib/goption.c:1266
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Ontbrekend argument voor %s"
 
-#: ../glib/goption.c:1597
+#: ../glib/goption.c:1655
 #, c-format
 msgid "Unknown option %s"
 msgstr "Onbekende optie %s"
@@ -799,31 +804,31 @@ msgstr ""
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Sleutelbestand bevat geen sleutel '%s' in groep '%s'"
 
-#: ../glib/gkeyfile.c:3346
+#: ../glib/gkeyfile.c:3365
 msgid "Key file contains escape character at end of line"
 msgstr "Sleutelbestand bevat een ontsnappingsteken aan het einde van een regel"
 
-#: ../glib/gkeyfile.c:3368
+#: ../glib/gkeyfile.c:3387
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "Sleutelbestand bevat ongeldige ontsnappingstekens '%s'"
 
-#: ../glib/gkeyfile.c:3510
+#: ../glib/gkeyfile.c:3529
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Waarde '%s' kan niet geïnterpreteerd worden als een getal."
 
-#: ../glib/gkeyfile.c:3524
+#: ../glib/gkeyfile.c:3543
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "Hele getalswaarde '%s' valt buiten bereik"
 
-#: ../glib/gkeyfile.c:3557
+#: ../glib/gkeyfile.c:3576
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "Waarde '%s' kan niet geïnterpreteerd worden als een float."
 
-#: ../glib/gkeyfile.c:3584
+#: ../glib/gkeyfile.c:3603
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Waarde '%s' kan niet geïnterpreteerd worden als een booleese."
