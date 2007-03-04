@@ -1,0 +1,785 @@
+# MALAGASY TRANSLATION OF GLIB.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Thierry Randrianiriana <randrianiriana@gmail.com>, 2007.
+msgid ""
+msgstr ""
+"Project-Id-Version: GLIB VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2006-12-20 07:16+0100\n"
+"PO-Revision-Date: 2007-03-03 19:00+0300\n"
+"Last-Translator: Fanomezana Rajaonarisoa <fano@isvtec.com>\n"
+"Language-Team: MALAGASY <i18n-malagasy-gnome@gna.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../glib/gbookmarkfile.c:716
+#: ../glib/gbookmarkfile.c:793
+#: ../glib/gbookmarkfile.c:872
+#: ../glib/gbookmarkfile.c:919
+#, c-format
+msgid "Unexpected attribute '%s' for element '%s'"
+msgstr "Marika manokana '%s' ho an'ny '%s' tsy nampoizina"
+
+#: ../glib/gbookmarkfile.c:727
+#: ../glib/gbookmarkfile.c:804
+#: ../glib/gbookmarkfile.c:814
+#: ../glib/gbookmarkfile.c:930
+#, c-format
+msgid "Attribute '%s' of element '%s' not found"
+msgstr "Tsy hita ny marika manokana '%s' ho an'ny '%s'"
+
+#: ../glib/gbookmarkfile.c:1103
+#: ../glib/gbookmarkfile.c:1168
+#: ../glib/gbookmarkfile.c:1232
+#: ../glib/gbookmarkfile.c:1242
+#, c-format
+msgid "Unexpected tag '%s', tag '%s' expected"
+msgstr "Tsy nampoizina ny taf '%s', nantenaina ny tag '%s'"
+
+#: ../glib/gbookmarkfile.c:1128
+#: ../glib/gbookmarkfile.c:1142
+#: ../glib/gbookmarkfile.c:1210
+#: ../glib/gbookmarkfile.c:1262
+#, c-format
+msgid "Unexpected tag '%s' inside '%s'"
+msgstr "Misy tag '%s' tsy nampoizina anatin'ny '%s'"
+
+#: ../glib/gbookmarkfile.c:1792
+msgid "No valid bookmark file found in data dirs"
+msgstr "Tsy misy raki-drohy mitombina anatin'ny lahatahiry misy ny data"
+
+#: ../glib/gbookmarkfile.c:1993
+#, c-format
+msgid "A bookmark for URI '%s' already exists"
+msgstr "Efa misy rohy ny URI '%s'"
+
+#: ../glib/gbookmarkfile.c:2039
+#: ../glib/gbookmarkfile.c:2196
+#: ../glib/gbookmarkfile.c:2281
+#: ../glib/gbookmarkfile.c:2362
+#: ../glib/gbookmarkfile.c:2447
+#: ../glib/gbookmarkfile.c:2530
+#: ../glib/gbookmarkfile.c:2608
+#: ../glib/gbookmarkfile.c:2687
+#: ../glib/gbookmarkfile.c:2729
+#: ../glib/gbookmarkfile.c:2826
+#: ../glib/gbookmarkfile.c:2952
+#: ../glib/gbookmarkfile.c:3142
+#: ../glib/gbookmarkfile.c:3218
+#: ../glib/gbookmarkfile.c:3371
+#: ../glib/gbookmarkfile.c:3436
+#: ../glib/gbookmarkfile.c:3526
+#: ../glib/gbookmarkfile.c:3653
+#, c-format
+msgid "No bookmark found for URI '%s'"
+msgstr "Tsy nahitana rohy ny URI '%s'"
+
+#: ../glib/gbookmarkfile.c:2371
+#, c-format
+msgid "No MIME type defined in the bookmark for URI '%s'"
+msgstr "Tsy misy karazana MIME voafaritra ho an'ny rohin'ny URI '%s'"
+
+#: ../glib/gbookmarkfile.c:2456
+#, c-format
+msgid "No private flag has been defined in bookmark for URI '%s'"
+msgstr "Tsy misy saina manokana voafaritra ho an'ny rohin'ny URI '%s'"
+
+#: ../glib/gbookmarkfile.c:2835
+#, c-format
+msgid "No groups set in bookmark for URI '%s'"
+msgstr "Tsy misy vondrona voafaritra ho an'ny rohin'ny URI '%s'"
+
+#: ../glib/gbookmarkfile.c:3236
+#: ../glib/gbookmarkfile.c:3381
+#, c-format
+msgid "No application with name '%s' registered a bookmark for '%s'"
+msgstr "Tsy misy rindranasa mitondra ny anarana '%s' nanambara rohy ho an'ny '%s'"
+
+#: ../glib/gconvert.c:423
+#: ../glib/gconvert.c:501
+#: ../glib/giochannel.c:1150
+#, c-format
+msgid "Conversion from character set '%s' to '%s' is not supported"
+msgstr "Tsy raisina an-tànana ny famadihan'amboara-marika '%s' ho '%s'"
+
+#: ../glib/gconvert.c:427
+#: ../glib/gconvert.c:505
+#, c-format
+msgid "Could not open converter from '%s' to '%s'"
+msgstr "Tsy voasokatra ny mpanova rakitra '%s' ho '%s'"
+
+#: ../glib/gconvert.c:621
+#: ../glib/gconvert.c:1010
+#: ../glib/giochannel.c:1322
+#: ../glib/giochannel.c:1364
+#: ../glib/giochannel.c:2206
+#: ../glib/gutf8.c:943
+#: ../glib/gutf8.c:1392
+msgid "Invalid byte sequence in conversion input"
+msgstr "Tsy mitombina filaharan'ny byte amin'ny zavatra ovaina"
+
+#: ../glib/gconvert.c:627
+#: ../glib/gconvert.c:937
+#: ../glib/giochannel.c:1329
+#: ../glib/giochannel.c:2218
+#, c-format
+msgid "Error during conversion: %s"
+msgstr "Nisy olana teo am-panovana: %s"
+
+#: ../glib/gconvert.c:662
+#: ../glib/gutf8.c:939
+#: ../glib/gutf8.c:1143
+#: ../glib/gutf8.c:1284
+#: ../glib/gutf8.c:1388
+msgid "Partial character sequence at end of input"
+msgstr "Tsy feno ny filaharan'ny marika amin'ny faran'ny zavatra ovaina"
+
+#: ../glib/gconvert.c:912
+#, c-format
+msgid "Cannot convert fallback '%s' to codeset '%s'"
+msgstr "Ny fallback '%s' tsy voaova ho amboaram-pango '%s'"
+
+#: ../glib/gconvert.c:1721
+#, c-format
+msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
+msgstr "Tsy URI feno mampiasa ny drafitra \"rakitra\" ny URI '%s'"
+
+#: ../glib/gconvert.c:1731
+#, c-format
+msgid "The local file URI '%s' may not include a '#'"
+msgstr "Tsy azo asiana '#' ny URI '%s' an'ilay rakitra an-toerana "
+
+#: ../glib/gconvert.c:1748
+#, c-format
+msgid "The URI '%s' is invalid"
+msgstr "Tsy mitombina ny URI '%s'"
+
+#: ../glib/gconvert.c:1760
+#, c-format
+msgid "The hostname of the URI '%s' is invalid"
+msgstr "Tsy mitombina ny anaram-mpampiantranon'ny URI '%s'"
+
+#: ../glib/gconvert.c:1776
+#, fuzzy, c-format
+msgid "The URI '%s' contains invalidly escaped characters"
+msgstr "Misy marika nalana tamin'ny fomba tsy mety ny URI '%s'"
+
+#: ../glib/gconvert.c:1871
+#, c-format
+msgid "The pathname '%s' is not an absolute path"
+msgstr "Tsy sori-dàlana feno ny anaran-tsori-dàlana '%s'"
+
+#: ../glib/gconvert.c:1881
+msgid "Invalid hostname"
+msgstr "Anaram-pampiantrano diso"
+
+#: ../glib/gdir.c:121
+#: ../glib/gdir.c:141
+#, c-format
+msgid "Error opening directory '%s': %s"
+msgstr "Nisy olana teo am-panokafana ny lahatahiry '%s': %s"
+
+#: ../glib/gfileutils.c:572
+#: ../glib/gfileutils.c:645
+#, c-format
+msgid "Could not allocate %lu bytes to read file \"%s\""
+msgstr "Tsy nahatokana %lu byte hamakiana ny rakitra \"%s\""
+
+#: ../glib/gfileutils.c:587
+#, c-format
+msgid "Error reading file '%s': %s"
+msgstr "Nisy olana teo am-pamakiana ny rakitra '%s': %s"
+
+#: ../glib/gfileutils.c:669
+#, c-format
+msgid "Failed to read from file '%s': %s"
+msgstr "Ny nahavaky ny mpiatin'ny rakitra '%s': %s"
+
+#: ../glib/gfileutils.c:720
+#: ../glib/gfileutils.c:807
+#, c-format
+msgid "Failed to open file '%s': %s"
+msgstr "Tsy voasokatran y rakitra '%s': %s"
+
+#: ../glib/gfileutils.c:737
+#: ../glib/gmappedfile.c:133
+#, c-format
+msgid "Failed to get attributes of file '%s': fstat() failed: %s"
+msgstr "Tsy azo ny marika manokan'ny rakitra '%s': tsy nahomby ny  fstat(): %s"
+
+#: ../glib/gfileutils.c:771
+#, c-format
+msgid "Failed to open file '%s': fdopen() failed: %s"
+msgstr "Tsy voasokatra ny rakitra '%s': tsy nahomby ny fdopen(): %s"
+
+#: ../glib/gfileutils.c:905
+#, c-format
+msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
+msgstr "Tsy voaova ny anaran'ny rakitra '%s' mba ho '%s': tsy nahomby ny g_rename(): %s"
+
+#: ../glib/gfileutils.c:946
+#: ../glib/gfileutils.c:1404
+#, c-format
+msgid "Failed to create file '%s': %s"
+msgstr "Tsy voaforona ny rakitra '%s': %s"
+
+#: ../glib/gfileutils.c:960
+#, c-format
+msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
+msgstr "Tsy voasotra mba hanoratana ny rakitra '%s': tsy nahomby ny fdopen(): %s"
+
+#: ../glib/gfileutils.c:985
+#, c-format
+msgid "Failed to write file '%s': fwrite() failed: %s"
+msgstr "Tsy voasoratra ny rakitra '%s': tsy nahomby ny fwrite(): %s"
+
+#: ../glib/gfileutils.c:1004
+#, c-format
+msgid "Failed to close file '%s': fclose() failed: %s"
+msgstr "Tsy voahidy ny rakitra '%s': tsy nahomby ny fclose(): %s"
+
+#: ../glib/gfileutils.c:1122
+#, c-format
+msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
+msgstr "Tsy mety fafàna ny rakitra '%s' misy: tsy nahomby ny g_unlink(): %s"
+
+#: ../glib/gfileutils.c:1366
+#, c-format
+msgid "Template '%s' invalid, should not contain a '%s'"
+msgstr "Tsy mitombina ny lasitra '%s'; tsy tokony hisy '%s'"
+
+#: ../glib/gfileutils.c:1379
+#, c-format
+msgid "Template '%s' doesn't contain XXXXXX"
+msgstr "Tsy misy XXXXXX ny lasitra '%s'"
+
+#: ../glib/gfileutils.c:1854
+#, c-format
+msgid "Failed to read the symbolic link '%s': %s"
+msgstr "Tsy voavaky ny rohy misolotena '%s': %s"
+
+#: ../glib/gfileutils.c:1875
+msgid "Symbolic links not supported"
+msgstr "Tsy raisina an-tànana ny rohy misolotena"
+
+#: ../glib/giochannel.c:1154
+#, c-format
+msgid "Could not open converter from '%s' to '%s': %s"
+msgstr "Tsy voasokatra ny mpanova rakitra '%s' ho '%s': %s"
+
+#: ../glib/giochannel.c:1499
+msgid "Can't do a raw read in g_io_channel_read_line_string"
+msgstr "Tsy afaka manao famakiana fototra amin'ny g_io_channel_read_line_string"
+
+#: ../glib/giochannel.c:1546
+#: ../glib/giochannel.c:1803
+#: ../glib/giochannel.c:1889
+msgid "Leftover unconverted data in read buffer"
+msgstr "Misy ambina data tsy voaova ao anatin'ny buffern'ny famakiana"
+
+#: ../glib/giochannel.c:1626
+#: ../glib/giochannel.c:1703
+msgid "Channel terminates in a partial character"
+msgstr "Marika tsy feno no mamarana ilay canal"
+
+#: ../glib/giochannel.c:1689
+msgid "Can't do a raw read in g_io_channel_read_to_end"
+msgstr "Tsy afaka manao famakiana fototra amin'ny g_io_channel_read_to_end"
+
+#: ../glib/gmappedfile.c:116
+#, c-format
+msgid "Failed to open file '%s': open() failed: %s"
+msgstr "Tsy voasokatra ny rakitra '%s': tsy nahomby ny open(): %s"
+
+#: ../glib/gmappedfile.c:193
+#, c-format
+msgid "Failed to map file '%s': mmap() failed: %s"
+msgstr "Tsy voamap ny rakitra '%s': tsy nahomby ny mmap(): %s"
+
+#: ../glib/gmarkup.c:226
+#, c-format
+msgid "Error on line %d char %d: %s"
+msgstr "Misy tsy fetezana amin'ny andalana %d marika %d: %s"
+
+#: ../glib/gmarkup.c:324
+#, c-format
+msgid "Error on line %d: %s"
+msgstr "Misy tsy fetezana amin'ny andalana %d: %s"
+
+#: ../glib/gmarkup.c:428
+msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgstr "Nahita ary '&;' foana; ireto no fidirana ekena: &amp; &quot; &lt; &gt; &apos;"
+
+#: ../glib/gmarkup.c:438
+#, c-format
+msgid "Character '%s' is not valid at the start of an entity name; the & character begins an entity; if this ampersand isn't supposed to be an entity, escape it as &amp;"
+msgstr "Tsy mety atao fiantomboham-pidirana ny marika '%s'; ny & no manomboka ny anaran'ny ary. Raha toa ka tsy raisin'ny ary iray an-tànana io marika io (&), dia ataovy &amp; mba ialana izany"
+
+#: ../glib/gmarkup.c:472
+#, c-format
+msgid "Character '%s' is not valid inside an entity name"
+msgstr "Tsy mety atao amin'ny anaran'ary ny marika '%s'"
+
+#: ../glib/gmarkup.c:509
+#, c-format
+msgid "Entity name '%s' is not known"
+msgstr "Tsy fantatra ny anaran'ary '%s'"
+
+#: ../glib/gmarkup.c:520
+msgid "Entity did not end with a semicolon; most likely you used an ampersand character without intending to start an entity - escape ampersand as &amp;"
+msgstr "Tsy nifarana tamin'ny teboka amam-paingo ilay ary. Mety tsy nihevitra hampiasa esperluette hanombohana ary angamba ianao - esperluette fialana toy ny &amp;"
+
+#: ../glib/gmarkup.c:573
+#, c-format
+msgid "Failed to parse '%-.*s', which should have been a digit inside a character reference (&#234; for example) - perhaps the digit is too large"
+msgstr "Tsy voazarazara ny '%-.*s' izay tokony ho isa anaty fiantsoana marika (&#234, ohatra). Mety lehibe loatra angamba ilay isa."
+
+#: ../glib/gmarkup.c:598
+#, c-format
+msgid "Character reference '%-.*s' does not encode a permitted character"
+msgstr "Tsy manafango marika azo ampiasaina ny fiantsoana marika '%-.*s'"
+
+#: ../glib/gmarkup.c:613
+msgid "Empty character reference; should include a digit such as &#454;"
+msgstr "Fiantsoana marika foana; tokony hisy isa toy ny &#454;"
+
+#: ../glib/gmarkup.c:623
+msgid "Character reference did not end with a semicolon; most likely you used an ampersand character without intending to start an entity - escape ampersand as &amp;"
+msgstr "Tsy niafara tamin'ny teboka amam-paingo ilay fiantsoana marika. Mety tsy nihevitra hampiasa esperluette hanombohana ary angamba ianao - esperluette fialana toy ny &amp;"
+
+#: ../glib/gmarkup.c:709
+msgid "Unfinished entity reference"
+msgstr "Fiantsoana ary tsy vita"
+
+#: ../glib/gmarkup.c:715
+msgid "Unfinished character reference"
+msgstr "Fiantsoana marika tsy vita"
+
+#: ../glib/gmarkup.c:958
+#: ../glib/gmarkup.c:986
+#: ../glib/gmarkup.c:1017
+msgid "Invalid UTF-8 encoded text"
+msgstr "Lahabolana voafango UTF-8 tsy mitombina"
+
+#: ../glib/gmarkup.c:1053
+msgid "Document must begin with an element (e.g. <book>)"
+msgstr "Tsy maintsy manomboka amina singantaharo ilay tahirin-kevitra (oh. <book>)"
+
+#: ../glib/gmarkup.c:1093
+#, c-format
+msgid "'%s' is not a valid character following a '<' character; it may not begin an element name"
+msgstr "Tsy mety atao aorian'ny marika '<' ny marika '%s'. Tsy mety anombohana anaran-tsingataharo io"
+
+#: ../glib/gmarkup.c:1157
+#, c-format
+msgid "Odd character '%s', expected a '>' character to end the start tag of element '%s'"
+msgstr "Marika '%s' hafahafa; nanantena marika '>' hamarana ny tag manomboka ny singantaharo '%s'"
+
+#: ../glib/gmarkup.c:1246
+#, c-format
+msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgstr "Marika '%s' hafahafa; nanantena '=' aorian'ny anaran'ny marika manokana '%s' amin'ny singantaharo '%s'"
+
+#: ../glib/gmarkup.c:1288
+#, c-format
+msgid "Odd character '%s', expected a '>' or '/' character to end the start tag of element '%s', or optionally an attribute; perhaps you used an invalid character in an attribute name"
+msgstr "Marika hafahafa '%s'; nanantena marika '>' na '/' hamarana ny tag manomboka ny singantaharo '%s', na koa marika manokana iray. Mety nampiasa marika tsy ekena amin'ny anarana marika manokana angamba ianao."
+
+#: ../glib/gmarkup.c:1377
+#, c-format
+msgid "Odd character '%s', expected an open quote mark after the equals sign when giving value for attribute '%s' of element '%s'"
+msgstr "Marika '%s' hafahafa; nanantena farango manokatra aorian'ny mira rehefa manome ny sanda ny marika manokana '%s' amin'ny singantaharo '%s'"
+
+#: ../glib/gmarkup.c:1522
+#, c-format
+msgid "'%s' is not a valid character following the characters '</'; '%s' may not begin an element name"
+msgstr "Tsy mety atao aorian'ny marika '</' ny marika '%s'. Tsy mety anombohana anaran-tsingantaharo ny '%s'."
+
+#: ../glib/gmarkup.c:1562
+#, c-format
+msgid "'%s' is not a valid character following the close element name '%s'; the allowed character is '>'"
+msgstr "'%s' dia tsy mety atao aorian'ny anaran'ny singantaharo mamarana ny marika '%s'. '>' no marika mety atao eo"
+
+#: ../glib/gmarkup.c:1573
+#, c-format
+msgid "Element '%s' was closed, no element is currently open"
+msgstr "Nofaranana ny singantaharo '%s'; tsy misy singantaharo misokatra izao"
+
+#: ../glib/gmarkup.c:1582
+#, c-format
+msgid "Element '%s' was closed, but the currently open element is '%s'"
+msgstr "Nofaranana ny singantaharo '%s', fa  '%s' no singantaharo misokatra izao"
+
+#: ../glib/gmarkup.c:1748
+msgid "Document was empty or contained only whitespace"
+msgstr "Foana na tsy misy afa-tsy elanelana ilay tahirin-kevitra"
+
+#: ../glib/gmarkup.c:1762
+msgid "Document ended unexpectedly just after an open angle bracket '<'"
+msgstr "Nifarana tampoka taoriana fonon-teny kitso loha '<' ilay tahirin-kevitra"
+
+#: ../glib/gmarkup.c:1770
+#: ../glib/gmarkup.c:1814
+#, c-format
+msgid "Document ended unexpectedly with elements still open - '%s' was the last element opened"
+msgstr "Nifarana tampoka ilay tahirin-kevitra nefa misy singantaharo mbola misokatra; '%s' no singantaharo farany nisokatra"
+
+#: ../glib/gmarkup.c:1778
+#, c-format
+msgid "Document ended unexpectedly, expected to see a close angle bracket ending the tag <%s/>"
+msgstr "Nifarana tampoka ilay singantaharo; nanantena fonon-teny kitso loha mamarana ny tag <%s/>"
+
+#: ../glib/gmarkup.c:1784
+msgid "Document ended unexpectedly inside an element name"
+msgstr "Nifarana tampoka tanaty anaran-tsingataharo ilay tahirin-kevitra"
+
+#: ../glib/gmarkup.c:1789
+msgid "Document ended unexpectedly inside an attribute name"
+msgstr "Nifarana tampoka tanaty anarana marika manokana ilay tahirin-kevitra"
+
+#: ../glib/gmarkup.c:1794
+msgid "Document ended unexpectedly inside an element-opening tag."
+msgstr "Nifarana tampoka tanaty tag manomboka singantaharo ilay tahirin-kevitra."
+
+#: ../glib/gmarkup.c:1800
+msgid "Document ended unexpectedly after the equals sign following an attribute name; no attribute value"
+msgstr "Nifarana tampoka taorian'ny mira manaraka anarana marika manokana ilay tahirin-kevitra; tsy misy sanda-marika manokana"
+
+#: ../glib/gmarkup.c:1807
+msgid "Document ended unexpectedly while inside an attribute value"
+msgstr "Nifarana tampoka ilay tahirin-kevitra raha mbola tanaty sanda-marika manokana"
+
+#: ../glib/gmarkup.c:1822
+#, c-format
+msgid "Document ended unexpectedly inside the close tag for element '%s'"
+msgstr "Nifarana tampoka tanatin'ny tag mamarana ny singantaharo '%s' ilay tahirin-kevitra"
+
+#: ../glib/gmarkup.c:1828
+msgid "Document ended unexpectedly inside a comment or processing instruction"
+msgstr "Nifarana tampoka tanaty teny fanampiny na torolàlana fikirakirana ilay tahirin-kevitra"
+
+#: ../glib/gshell.c:70
+msgid "Quoted text doesn't begin with a quotation mark"
+msgstr "Tsy manomboka amin'ny farango ny teny nalaina"
+
+#: ../glib/gshell.c:160
+msgid "Unmatched quotation mark in command line or other shell-quoted text"
+msgstr "Tsy mifamaly ny farango anaty lazam-baiko na lahabolana hafa tonon'ny akora"
+
+#: ../glib/gshell.c:538
+#, c-format
+msgid "Text ended just after a '\\' character. (The text was '%s')"
+msgstr "Nifarana taorian'ny marika '\\' ilay lahabolana. ('%s' ilay lahabolana)"
+
+#: ../glib/gshell.c:545
+#, c-format
+msgid "Text ended before matching quote was found for %c. (The text was '%s')"
+msgstr "Nifarana talohan'ny nahitana ny ilan'ny farango ho an'ny %c ilay lahabolana. ('%s' ilay lahabolana)"
+
+#: ../glib/gshell.c:557
+msgid "Text was empty (or contained only whitespace)"
+msgstr "Foana ilay lahabolana (na tsy misy afa-tsy elanelana)"
+
+#: ../glib/gspawn-win32.c:272
+msgid "Failed to read data from child process"
+msgstr "Tsy voavaky ny datan'ny fizotra zanaka"
+
+#: ../glib/gspawn-win32.c:287
+#: ../glib/gspawn.c:1379
+#, c-format
+msgid "Failed to create pipe for communicating with child process (%s)"
+msgstr "Tsy voaforona ny fantsona ifandraisana amin'ny fizotra zanaka (%s)"
+
+#: ../glib/gspawn-win32.c:325
+#: ../glib/gspawn.c:1043
+#, c-format
+msgid "Failed to read from child pipe (%s)"
+msgstr "Tsy voavaky ny mpiatin'ny fantson'ny zanaka (%s)"
+
+#: ../glib/gspawn-win32.c:351
+#: ../glib/gspawn.c:1248
+#, c-format
+msgid "Failed to change to directory '%s' (%s)"
+msgstr "Tsy nahomby ny fanovana lahatahiry ho '%s' (%s)"
+
+#: ../glib/gspawn-win32.c:357
+#: ../glib/gspawn-win32.c:577
+#, c-format
+msgid "Failed to execute child process (%s)"
+msgstr "Tsy nahavita nanatanteraka ny fizotra zanaka (%s)"
+
+#: ../glib/gspawn-win32.c:467
+#: ../glib/gspawn-win32.c:523
+#, c-format
+msgid "Invalid program name: %s"
+msgstr "Anaran-drindranasa diso: %s"
+
+#: ../glib/gspawn-win32.c:477
+#: ../glib/gspawn-win32.c:533
+#: ../glib/gspawn-win32.c:776
+#: ../glib/gspawn-win32.c:831
+#: ../glib/gspawn-win32.c:1366
+#, c-format
+msgid "Invalid string in argument vector at %d: %s"
+msgstr "Tsy mitombina ny laha-dazan'ny mpitondra tondriky amin'ny %d: %s"
+
+#: ../glib/gspawn-win32.c:488
+#: ../glib/gspawn-win32.c:544
+#: ../glib/gspawn-win32.c:790
+#: ../glib/gspawn-win32.c:844
+#: ../glib/gspawn-win32.c:1399
+#, c-format
+msgid "Invalid string in environment: %s"
+msgstr "Tsy mitombina ny laha-daza anatin'ny tontolo: %s"
+
+#: ../glib/gspawn-win32.c:772
+#: ../glib/gspawn-win32.c:827
+#: ../glib/gspawn-win32.c:1347
+#, c-format
+msgid "Invalid working directory: %s"
+msgstr "Lahatahiry fiasana tsy mitombina: %s"
+
+#: ../glib/gspawn-win32.c:886
+#, c-format
+msgid "Failed to execute helper program (%s)"
+msgstr "Tsy nahavita nandefa ny rindranasa mpanampy (%s)"
+
+#: ../glib/gspawn-win32.c:1086
+msgid "Unexpected error in g_io_channel_win32_poll() reading data from a child process"
+msgstr "Nisy olana tsy nampoizina tanatin'ny g_io_channel_win32_poll() raha namaky ny datan'ny fizotra zanaka"
+
+#: ../glib/gspawn.c:168
+#, c-format
+msgid "Failed to read data from child process (%s)"
+msgstr "Tsy voavaky ny datan'ny fizotra zanaka (%s)"
+
+#: ../glib/gspawn.c:300
+#, c-format
+msgid "Unexpected error in select() reading data from a child process (%s)"
+msgstr "Nisy olana tsy nampoizina tanatin'ny select() raha namaky ny datan'ny fizotra zanaka (%s)"
+
+#: ../glib/gspawn.c:383
+#, c-format
+msgid "Unexpected error in waitpid() (%s)"
+msgstr "Nisy olana tsy nampoizina tanatin'ny waitpid() (%s)"
+
+#: ../glib/gspawn.c:1108
+#, c-format
+msgid "Failed to fork (%s)"
+msgstr "Tsy nahavita nanasaka (%s)"
+
+#: ../glib/gspawn.c:1258
+#, c-format
+msgid "Failed to execute child process \"%s\" (%s)"
+msgstr "Tsy nahavita nandefa ny fizotra zanaka \"%s\" (%s)"
+
+#: ../glib/gspawn.c:1268
+#, c-format
+msgid "Failed to redirect output or input of child process (%s)"
+msgstr "Tsy nahavita namily lalana ny fivoahana na fidiran'ny fizotra zanaka (%s)"
+
+#: ../glib/gspawn.c:1277
+#, c-format
+msgid "Failed to fork child process (%s)"
+msgstr "Tsy nahavita nanasaka ny fizotra zanaka (%s)"
+
+#: ../glib/gspawn.c:1285
+#, c-format
+msgid "Unknown error executing child process \"%s\""
+msgstr "Nisy olana tsy fantatra teo am-panatanterahana ny fizotra zanaka \"%s\""
+
+#: ../glib/gspawn.c:1307
+#, c-format
+msgid "Failed to read enough data from child pid pipe (%s)"
+msgstr "Tsy nahavaky data ampy tanatin'ny fantsona zanaka pid (%s)"
+
+#: ../glib/gutf8.c:1017
+msgid "Character out of range for UTF-8"
+msgstr "Mihoatra ny fetran'ny UTF-8 ilay marika"
+
+#: ../glib/gutf8.c:1111
+#: ../glib/gutf8.c:1120
+#: ../glib/gutf8.c:1252
+#: ../glib/gutf8.c:1261
+#: ../glib/gutf8.c:1402
+#: ../glib/gutf8.c:1498
+msgid "Invalid sequence in conversion input"
+msgstr "Tsy mitombina ny filaharana amin'ny fidiran'ny fanovana"
+
+#: ../glib/gutf8.c:1413
+#: ../glib/gutf8.c:1509
+msgid "Character out of range for UTF-16"
+msgstr "Mihoatra ny fetran'ny UTF-16 ilay marika"
+
+#: ../glib/goption.c:495
+msgid "Usage:"
+msgstr "Fampiasa:"
+
+#: ../glib/goption.c:495
+msgid "[OPTION...]"
+msgstr "[SAFIDY...]"
+
+#: ../glib/goption.c:586
+msgid "Help Options:"
+msgstr "Safidy momba ny toro-làlana:"
+
+#: ../glib/goption.c:587
+msgid "Show help options"
+msgstr "Asehoy ny safidy momba ny toro-làlana"
+
+#: ../glib/goption.c:592
+msgid "Show all help options"
+msgstr "Asehoy ny safidy rehetra momba ny toro-làlana"
+
+#: ../glib/goption.c:642
+msgid "Application Options:"
+msgstr "Safidy momba ny rindranasa:"
+
+#: ../glib/goption.c:686
+#: ../glib/goption.c:756
+#, c-format
+msgid "Cannot parse integer value '%s' for %s"
+msgstr "Tsy afaka mizarazara ny sanda feno '%s' ho an'ny %s"
+
+#: ../glib/goption.c:696
+#: ../glib/goption.c:764
+#, c-format
+msgid "Integer value '%s' for %s out of range"
+msgstr "Mihoatra ny fetra ny sanda feno '%s' ho an'ny '%s'"
+
+#: ../glib/goption.c:721
+#, c-format
+msgid "Cannot parse double value '%s' for %s"
+msgstr "Tsy afaka mizarazara sanda roa '%s' ho an'ny '%s'"
+
+#: ../glib/goption.c:729
+#, c-format
+msgid "Double value '%s' for %s out of range"
+msgstr "Mihoatra ny fetra ny sanda roa '%s' ho an'ny '%s'"
+
+#: ../glib/goption.c:1066
+#, c-format
+msgid "Error parsing option %s"
+msgstr "Nisy olana teo am-pizarazarana ny safidy %s"
+
+#: ../glib/goption.c:1097
+#: ../glib/goption.c:1208
+#, c-format
+msgid "Missing argument for %s"
+msgstr "Tondrikin'ny %s tsy eo"
+
+#: ../glib/goption.c:1597
+#, c-format
+msgid "Unknown option %s"
+msgstr "Safidy %s tsy fantatra"
+
+#: ../glib/gkeyfile.c:341
+msgid "Valid key file could not be found in data dirs"
+msgstr "Tsy hita anatin'ny lahatahiry misy ny data ny rakitra misy ny famaha marina"
+
+#: ../glib/gkeyfile.c:376
+msgid "Not a regular file"
+msgstr "Rakitra tsy mahazatra"
+
+#: ../glib/gkeyfile.c:384
+msgid "File is empty"
+msgstr "Foana ilay rakitra"
+
+#: ../glib/gkeyfile.c:700
+#, c-format
+msgid "Key file contains line '%s' which is not a key-value pair, group, or comment"
+msgstr "Misy andalana '%s' izay tsy roroa famaha-sanda, vondrona, na teny fanampiny ilay raki-pamaha"
+
+#: ../glib/gkeyfile.c:758
+#, c-format
+msgid "Invalid group name: %s"
+msgstr "Anaram-bondrona diso: %s"
+
+#: ../glib/gkeyfile.c:780
+msgid "Key file does not start with a group"
+msgstr "Tsy manomboka amina vondrona ilay raki-pamaha"
+
+#: ../glib/gkeyfile.c:806
+#, c-format
+msgid "Invalid key name: %s"
+msgstr "Anaram-pamaha diso: %s"
+
+#: ../glib/gkeyfile.c:833
+#, c-format
+msgid "Key file contains unsupported encoding '%s'"
+msgstr "Misy fango '%s' tsy raisina an-tànana ilay raki-pamaha"
+
+#: ../glib/gkeyfile.c:1042
+#: ../glib/gkeyfile.c:1201
+#: ../glib/gkeyfile.c:2402
+#: ../glib/gkeyfile.c:2469
+#: ../glib/gkeyfile.c:2590
+#: ../glib/gkeyfile.c:2725
+#: ../glib/gkeyfile.c:2878
+#: ../glib/gkeyfile.c:3058
+#: ../glib/gkeyfile.c:3115
+#, c-format
+msgid "Key file does not have group '%s'"
+msgstr "Tsy manana vondrona '%s' ilay raki-pamaha"
+
+#: ../glib/gkeyfile.c:1213
+#, c-format
+msgid "Key file does not have key '%s'"
+msgstr "Tsy manana famaha '%s' ilay raki-pamaha"
+
+#: ../glib/gkeyfile.c:1315
+#: ../glib/gkeyfile.c:1425
+#, c-format
+msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
+msgstr "Misy famaha '%s' manana sanda '%s' izay tsy UTF-8 anatin'ilay raki-pamaha "
+
+#: ../glib/gkeyfile.c:1335
+#: ../glib/gkeyfile.c:1445
+#: ../glib/gkeyfile.c:1813
+#, c-format
+msgid "Key file contains key '%s' which has value that cannot be interpreted."
+msgstr "Misy famaha '%s' manana sanda tsy mety avadika mba ho azo anatin'ilay raki-pamaha."
+
+#: ../glib/gkeyfile.c:2025
+#: ../glib/gkeyfile.c:2234
+#, c-format
+msgid "Key file contains key '%s' in group '%s' which has value that cannot be interpreted."
+msgstr "Misy famaha '%s' anatin'ny vondrona '%s' manana sanda izay tsy mety avadika mba ho azo ilay raki-pamaha."
+
+#: ../glib/gkeyfile.c:2417
+#: ../glib/gkeyfile.c:2605
+#: ../glib/gkeyfile.c:3126
+#, c-format
+msgid "Key file does not have key '%s' in group '%s'"
+msgstr "Tsy manana famaha '%s' anatin'ny vondrona '%s' ilay raki-pamaha"
+
+#: ../glib/gkeyfile.c:3346
+msgid "Key file contains escape character at end of line"
+msgstr "Misy marika fialana amin'ny faran'ny andalan'ilay raki-pamaha"
+
+#: ../glib/gkeyfile.c:3368
+#, c-format
+msgid "Key file contains invalid escape sequence '%s'"
+msgstr "Misy fisesisesim-pialana '%s' tsy mitombina anatin'ilay raki-pamaha"
+
+#: ../glib/gkeyfile.c:3510
+#, c-format
+msgid "Value '%s' cannot be interpreted as a number."
+msgstr "Tsy mety avadika ho isa mba ho azo ny sanda '%s'."
+
+#: ../glib/gkeyfile.c:3524
+#, c-format
+msgid "Integer value '%s' out of range"
+msgstr "Mihoatra ny fetra ny sanda feno '%s'"
+
+#: ../glib/gkeyfile.c:3557
+#, c-format
+msgid "Value '%s' cannot be interpreted as a float number."
+msgstr "Tsy mety avadika ho isa float mba ho azo ny sanda '%s'."
+
+#: ../glib/gkeyfile.c:3584
+#, c-format
+msgid "Value '%s' cannot be interpreted as a boolean."
+msgstr "Tsy mety avadika ho boleanina mba ho azo ny sanda '%s'."
