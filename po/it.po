@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: glib 2.12.x\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-01-16 18:50-0500\n"
-"PO-Revision-Date: 2007-01-08 11:19+0100\n"
+"PO-Revision-Date: 2007-03-04 15:25+0100\n"
 "Last-Translator: Luca Ferretti <elle.uca@libero.it>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
@@ -175,7 +175,7 @@ msgstr "Errore nell'aprire la directory \"%s\": %s"
 #: glib/gfileutils.c:572 glib/gfileutils.c:645
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
-msgstr "Impossibile allocare %lu bytes per leggere il file \"%s\""
+msgstr "Impossibile allocare %lu byte per leggere il file \"%s\""
 
 #: glib/gfileutils.c:587
 #, c-format
@@ -346,10 +346,7 @@ msgstr ""
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
-msgstr ""
-"Analisi di '%-.*s' fallita: dovrebbe presentare una numero all'interno di un "
-"riferimento a carattere (es. &#234;) - probabilmente il numero è troppo "
-"grande"
+msgstr "Analisi di '%-.*s' fallita: dovrebbe presentare un numero all'interno di un riferimento a carattere (es. &#234;) - probabilmente il numero è troppo grande"
 
 #: glib/gmarkup.c:598
 #, c-format
@@ -544,9 +541,7 @@ msgstr "Il testo citato non inizia con un carattere di quoting"
 #: glib/gshell.c:160
 #, c-format
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
-msgstr ""
-"Carattere di quoting non accoppitato nella riga di comando o nel testo con "
-"quoting di shell"
+msgstr "Carattere di quoting non accoppiato nella riga di comando o nel testo con quoting di shell"
 
 #: glib/gshell.c:538
 #, c-format
@@ -748,7 +743,7 @@ msgstr "Argomento mancante per %s"
 #: glib/goption.c:1655
 #, c-format
 msgid "Unknown option %s"
-msgstr "Opzione %s sconoscuta"
+msgstr "Opzione %s sconosciuta"
 
 # key files sono, per glib, file di impostazioni in stile Windows INI
 #
