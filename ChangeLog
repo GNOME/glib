@@ -1,5 +1,11 @@
 2007-03-06  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gmarkup.c (g_markup_parse_context_parse): Report
+	more accurate position for invalid UTF-8.  (#350802,
+	Simon Budig)
+
+2007-03-06  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/gbase64.c: Add NULL checks to the base64 
 	functions that take pointers.  (#399611, Martyn Russell)
 

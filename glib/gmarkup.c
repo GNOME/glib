@@ -1000,16 +1000,21 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
 			&first_invalid))
     {
       gint newlines = 0;
-      const gchar *p;
-      p = context->current_text;
-      while (p != context->current_text_end)
+      const gchar *p, *q;
+      q = p = context->current_text;
+      while (p != first_invalid)
         {
           if (*p == '\n')
-            ++newlines;
+            {
+              ++newlines;
+              q = p + 1;
+              context->char_number = 1;
+            }
           ++p;
         }
 
       context->line_number += newlines;
+      context->char_number += g_utf8_strlen (q, first_invalid - q);
 
       set_error (context,
                  error,
