@@ -1,3 +1,8 @@
+2007-03-06  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gstring.c (g_str_equal): Clarify docs.  (#364026, 
+	Bastian Nocera)
+
 2007-03-06  Matthew Barnes  <mbarnes@redhat.com>
 
 	* glib/gqueue.h:
