@@ -20,6 +20,10 @@ or simply pointers to any type of data.
 To create a new #GQueue, use g_queue_new().
 </para>
 <para>
+To initialize a statically-allocated #GQueue, use #G_QUEUE_INIT or
+g_queue_init().
+</para>
+<para>
 To add elements, use g_queue_push_head(), g_queue_push_head_link(), 
 g_queue_push_tail() and g_queue_push_tail_link().
 </para>
@@ -56,6 +60,38 @@ Contains the public fields of a <link linkend="glib-queues">Queue</link>.
 
 
 <!-- ##### FUNCTION g_queue_free ##### -->
+<para>
+
+</para>
+
+@queue: 
+
+
+<!-- ##### MACRO G_QUEUE_INIT ##### -->
+<para>
+A statically-allocated #GQueue must be initialized with this macro before it
+can be used.  This macro can be used to initialize a variable, but it cannot
+be assigned to a variable.  In that case you have to use g_queue_init().
+</para>
+
+<informalexample>
+<programlisting>
+GQueue my_queue = G_QUEUE_INIT;
+</programlisting>
+</informalexample>
+
+@Since: 2.14
+
+
+<!-- ##### FUNCTION g_queue_init ##### -->
+<para>
+
+</para>
+
+@queue: 
+
+
+<!-- ##### FUNCTION g_queue_clear ##### -->
 <para>
 
 </para>

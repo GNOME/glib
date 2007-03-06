@@ -1,3 +1,10 @@
+2007-03-06  Matthew Barnes  <mbarnes@redhat.com>
+
+	* glib/gqueue.h:
+	* glib/gqueue.c: Add G_QUEUE_INIT, g_queue_init(), and
+	g_queue_clear() to better support statically allocated
+	queues.  (#413244)
+
 2007-03-06  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gkeyfile.c (g_key_file_parse_value_as_boolean):

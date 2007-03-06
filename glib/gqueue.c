@@ -46,7 +46,9 @@ g_queue_new (void)
  * g_queue_free:
  * @queue: a #GQueue.
  *
- * Frees the memory allocated for the #GQueue.
+ * Frees the memory allocated for the #GQueue. Only call this function if
+ * @queue was created with g_queue_new(). If queue elements contain
+ * dynamically-allocated memory, they should be freed first.
  **/
 void
 g_queue_free (GQueue *queue)
@@ -55,6 +57,44 @@ g_queue_free (GQueue *queue)
 
   g_list_free (queue->head);
   g_slice_free (GQueue, queue);
+}
+
+/**
+ * g_queue_init:
+ * @queue: an uninitialized #GQueue
+ *
+ * A statically-allocated #GQueue must be initialized with this function
+ * before it can be used. Alternatively you can initialize it with
+ * #G_QUEUE_INIT. It is not necessary to initialize queues created with
+ * g_queue_new().
+ *
+ * Since: 2.14
+ **/
+void
+g_queue_init (GQueue *queue)
+{
+  g_return_if_fail (queue != NULL);
+
+  queue->head = queue->tail = NULL;
+  queue->length = 0;
+}
+
+/**
+ * g_queue_clear:
+ * @queue: a #GQueue
+ *
+ * Removes all the elements in @queue. If queue elements contain
+ * dynamically-allocated memory, they should be freed first.
+ *
+ * Since: 2.14
+ */
+void
+g_queue_clear (GQueue *queue)
+{
+  g_return_if_fail (queue != NULL);
+
+  g_list_free (queue->head);
+  g_queue_init (queue);
 }
 
 /**

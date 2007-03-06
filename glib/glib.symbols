@@ -821,6 +821,7 @@ g_qsort_with_data
 
 #if IN_HEADER(__G_QUEUE_H__)
 #if IN_FILE(__G_QUEUE_C__)
+g_queue_clear
 g_queue_copy
 g_queue_delete_link
 g_queue_find
@@ -829,6 +830,7 @@ g_queue_foreach
 g_queue_free
 g_queue_get_length
 g_queue_index
+g_queue_init
 g_queue_insert_after
 g_queue_insert_before
 g_queue_insert_sorted
