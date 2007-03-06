@@ -3589,13 +3589,10 @@ g_key_file_parse_value_as_boolean (GKeyFile     *key_file,
 {
   gchar *value_utf8;
 
-  if (value)
-    {
-      if (strcmp (value, "true") == 0 || strcmp (value, "1") == 0)
-        return TRUE;
-      else if (strcmp (value, "false") == 0 || strcmp (value, "0") == 0)
-        return FALSE;
-    }
+  if (strcmp (value, "true") == 0 || strcmp (value, "1") == 0)
+    return TRUE;
+  else if (strcmp (value, "false") == 0 || strcmp (value, "0") == 0)
+    return FALSE;
 
   value_utf8 = _g_utf8_make_valid (value);
   g_set_error (error, G_KEY_FILE_ERROR,

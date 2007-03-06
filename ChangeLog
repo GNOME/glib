@@ -1,5 +1,11 @@
 2007-03-06  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gkeyfile.c (g_key_file_parse_value_as_boolean):
+	Remove a NULL check that didn't do any good.  (#360904,
+	Paolo Borelli)
+
+2007-03-06  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/gmarkup.c (g_markup_parse_context_parse): Report
 	more accurate position for invalid UTF-8.  (#350802,
 	Simon Budig)
