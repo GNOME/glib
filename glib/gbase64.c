@@ -38,8 +38,8 @@ static const char base64_alphabet[] =
 
 /**
  * g_base64_encode_step:
- * @in: the binary data to encode.
- * @len: the length of @in.
+ * @in: the binary data to encode
+ * @len: the length of @in
  * @break_lines: whether to break long lines
  * @out: pointer to destination buffer
  * @state: Saved state between steps, initialize to 0
@@ -76,6 +76,11 @@ g_base64_encode_step (const guchar *in,
   char *outptr;
   const guchar *inptr;
   
+  g_return_val_if_fail (in != NULL, 0);
+  g_return_val_if_fail (out != NULL, 0);
+  g_return_val_if_fail (state != NULL, 0);
+  g_return_val_if_fail (save != NULL, 0);
+
   if (len <= 0)
     return 0;
   
@@ -172,6 +177,10 @@ g_base64_encode_close (gboolean  break_lines,
   int c1, c2;
   char *outptr = out;
 
+  g_return_val_if_fail (out != NULL, 0);
+  g_return_val_if_fail (state != NULL, 0);
+  g_return_val_if_fail (save != NULL, 0);
+
   c1 = ((unsigned char *) save) [1];
   c2 = ((unsigned char *) save) [2];
   
@@ -201,8 +210,8 @@ g_base64_encode_close (gboolean  break_lines,
 
 /**
  * g_base64_encode:
- * @data: the binary data to encode.
- * @len: the length of @data.
+ * @data: the binary data to encode
+ * @len: the length of @data
  *
  * Encode a sequence of binary data into its Base-64 stringified
  * representation.
@@ -219,6 +228,9 @@ g_base64_encode (const guchar *data,
   gchar *out;
   gint state = 0, outlen;
   gint save = 0;
+
+  g_return_val_if_fail (data != NULL, NULL);
+  g_return_val_if_fail (len > 1, NULL);
 
   /* We can use a smaller limit here, since we know the saved state is 0 */
   out = g_malloc (len * 4 / 3 + 4);
@@ -284,6 +296,14 @@ g_base64_decode_step (const gchar  *in,
   guchar last[2];
   unsigned int v;
   int i;
+
+  g_return_val_if_fail (in != NULL, 0);
+  g_return_val_if_fail (out != NULL, 0);
+  g_return_val_if_fail (state != NULL, 0);
+  g_return_val_if_fail (save != NULL, 0);
+
+  if (len <= 0)
+    return 0;
   
   inend = (const guchar *)in+len;
   outptr = out;
@@ -323,8 +343,8 @@ g_base64_decode_step (const gchar  *in,
 
 /**
  * g_base64_decode:
- * @text: zero-terminated string with base64 text to decode.
- * @out_len: The length of the decoded data is written here.
+ * @text: zero-terminated string with base64 text to decode
+ * @out_len: The length of the decoded data is written here
  *
  * Decode a sequence of Base-64 encoded text into binary data
  *
@@ -341,6 +361,9 @@ g_base64_decode (const gchar *text,
   gint inlen, state = 0;
   guint save = 0;
   
+  g_return_val_if_fail (text != NULL, NULL);
+  g_return_val_if_fail (out_len != NULL, NULL);
+
   inlen = strlen (text);
   ret = g_malloc0 (inlen * 3 / 4);
   
