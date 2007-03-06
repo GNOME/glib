@@ -2,6 +2,13 @@
 
 	Merge from trunk:
 
+	* glib/gbase64.c: Add NULL checks to the base64
+	functions that take pointers.  (#399611, Martyn Russell)
+
+2007-03-06  Matthias Clasen  <mclasen@redhat.com>
+
+	Merge from trunk:
+
 	Work with Solaris gettext (#341988, Laszlo Peter)
 
 	* m4macros/glib-gettext.m4: Make GLIB_WITH_NLS define
