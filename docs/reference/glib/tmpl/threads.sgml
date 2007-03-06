@@ -44,6 +44,13 @@ which <emphasis>are</emphasis> threadsafe and needs no further
 application-level locking to be accessed from multiple threads.
 </para>
 
+<para>
+To help debugging problems in multithreaded applications, GLib supports
+error-checking mutexes that will give you helpful error messages on
+common problems. To use error-checking mutexes, define the symbol 
+#G_ERRORCHECK_MUTEXES when compiling the application.
+</para>
+
 <!-- ##### SECTION See_Also ##### -->
 <para>
 <variablelist>
