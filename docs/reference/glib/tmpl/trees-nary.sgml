@@ -360,7 +360,7 @@ Gets the first child of a #GNode.
 </para>
 
 @node: a #GNode.
-@Returns: the last child of @node, or %NULL if @node is %NULL or has no children.
+@Returns: the first child of @node, or %NULL if @node is %NULL or has no children.
 
 
 <!-- ##### FUNCTION g_node_last_child ##### -->

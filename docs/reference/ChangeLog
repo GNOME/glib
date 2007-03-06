@@ -1,3 +1,8 @@
+2007-03-06  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/tmpl/trees-nary.sgml: Fix a typo in the docs for
+	g_node_first_child().  (#409395, Vincent Untz)
+
 2007-02-11  Stefan Kost  <ensonic@users.sf.net>
 
 	* gobject/tut_gobject.xml:
