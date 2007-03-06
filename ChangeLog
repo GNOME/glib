@@ -1,3 +1,8 @@
+2007-03-06  Matthias Clasen  <mclasen@Redhat.com>
+
+	* tests/Makefile.am: Apply a patch by Loïc Minier
+	to fix building with -Wl,-z,defs.  (#149144)
+
 2007-03-03  Ihar Hrachyshka <iharh@gnome.org>
 
 	* configure.in: Added be@latin to ALL_LINGUAS variable.

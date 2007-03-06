@@ -9,9 +9,9 @@ libgthread = $(top_builddir)/gthread/libgthread-2.0.la
 libgmodule = $(top_builddir)/gmodule/libgmodule-2.0.la
 libgobject = $(top_builddir)/gobject/libgobject-2.0.la
 
-if PLATFORM_WIN32
 libadd_libgmodule = $(libgmodule)
 libadd_libglib = $(libglib)
+if PLATFORM_WIN32
 no_undefined = -no-undefined
 
 module_test_exp = module-test.exp
