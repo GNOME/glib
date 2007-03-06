@@ -1,3 +1,8 @@
+2007-03-06  Matthias Clasen  <mclasen@Redhat.com>
+
+	* tests/Makefile.am: Apply a patch by Loïc Minier
+	to fix building with -Wl,-z,defs.  (#149144)
+
 2007-03-03  Thierry Randrianiriana  <randrianiriana@gmail.com>
 
 	* po/mg.po: Added Malagasy translation.
