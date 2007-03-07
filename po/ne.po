@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.glib-2-10.ne\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-01-16 18:50-0500\n"
+"POT-Creation-Date: 2007-03-07 00:17-0500\n"
 "PO-Revision-Date: 2006-04-27 00:00+0545\n"
 "Last-Translator: Shyam Krishna Bal <shyamkrishna_bal@yahoo.com>\n"
 "Language-Team: Nepali <info@mpp.org.np>\n"
@@ -104,8 +104,8 @@ msgid "Could not open converter from '%s' to '%s'"
 msgstr "'%s' बाट '%s'मा रूपान्तरणकर्ता खोल्न सकेन"
 
 #: glib/gconvert.c:621 glib/gconvert.c:1010 glib/giochannel.c:1322
-#: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:943
-#: glib/gutf8.c:1392
+#: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:949
+#: glib/gutf8.c:1398
 #, c-format
 msgid "Invalid byte sequence in conversion input"
 msgstr "रूपान्तरण आगतमा अवैध बाइट अनुक्रम"
@@ -116,8 +116,8 @@ msgstr "रूपान्तरण आगतमा अवैध बाइट �
 msgid "Error during conversion: %s"
 msgstr "रूपान्तरण अवधिमा त्रुटि: %s"
 
-#: glib/gconvert.c:662 glib/gutf8.c:939 glib/gutf8.c:1143 glib/gutf8.c:1284
-#: glib/gutf8.c:1388
+#: glib/gconvert.c:662 glib/gutf8.c:945 glib/gutf8.c:1149 glib/gutf8.c:1290
+#: glib/gutf8.c:1394
 #, c-format
 msgid "Partial character sequence at end of input"
 msgstr "आगतको अन्त्यमा आंशिक क्यारेक्टर"
@@ -362,15 +362,15 @@ msgstr "अधुरो अस्तित्व सन्दर्भ"
 msgid "Unfinished character reference"
 msgstr "अधुरो क्यारेक्टर सन्दर्भ"
 
-#: glib/gmarkup.c:958 glib/gmarkup.c:986 glib/gmarkup.c:1017
+#: glib/gmarkup.c:958 glib/gmarkup.c:986 glib/gmarkup.c:1022
 msgid "Invalid UTF-8 encoded text"
 msgstr "अवैध UTF-8 सङ्केतन गरिएको पाठ"
 
-#: glib/gmarkup.c:1053
+#: glib/gmarkup.c:1058
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "कागजात एउटा तत्व बाट सुरु हुनैपर्छ (जस्तै: <book>)"
 
-#: glib/gmarkup.c:1093
+#: glib/gmarkup.c:1098
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -379,7 +379,7 @@ msgstr ""
 "एउटा '<' क्यारेक्टर पछ्याउन '%s' वैधानिक क्यारेक्टर होइन; यस्ले एउटा तत्व नाम प्रारम्भ "
 "नगर्न सक्छ"
 
-#: glib/gmarkup.c:1157
+#: glib/gmarkup.c:1162
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
@@ -388,13 +388,13 @@ msgstr ""
 "बिजोड क्यारेक्टर '%s', एउटा अपेक्षा गरिएको क्यारेक्टर '>', '%s' को सुरु ट्याग अन्त्य "
 "गर्नलाइ"
 
-#: glib/gmarkup.c:1246
+#: glib/gmarkup.c:1251
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr "विजोड क्यारेक्टर '%s' ले,'%s' तत्वको गुण नाम '%s' पछि अपेक्षा गरिएको एउटा '=' "
 
-#: glib/gmarkup.c:1288
+#: glib/gmarkup.c:1293
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -405,7 +405,7 @@ msgstr ""
 "'/'  क्यारेक्टर, वा वैकल्पिक रूपमा एउटा विशेषता ,सायद तपाईँले एउटा विशेषता नाममा अवैध "
 "क्यारेक्टर प्रयोग गर्नुभयो"
 
-#: glib/gmarkup.c:1377
+#: glib/gmarkup.c:1382
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -414,7 +414,7 @@ msgstr ""
 "बिजोड क्यारेक्टर '%s',तत्व '%s' को '%s' विशेषताका लागि मान दिइएको बेला बराबर चिन्ह "
 "पछि खुला उद्धरण चिन्हको अपेक्षा गरेको हुन्छ।"
 
-#: glib/gmarkup.c:1522
+#: glib/gmarkup.c:1527
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -423,7 +423,7 @@ msgstr ""
 "'%s' एउटा वैध क्यारेक्टर होइन निम्न क्यारेक्टरहरू '</'; '%s' एउटा तत्व नाम प्रारम्भ नगर्न "
 "सक्छन"
 
-#: glib/gmarkup.c:1562
+#: glib/gmarkup.c:1567
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -432,32 +432,32 @@ msgstr ""
 "बन्द तत्व नाम '%s' को पछि लाग्ने '%s' मान्य क्यारेक्टर होइन; अनुमति पाएको क्यारेक्टर '>' "
 "हो।"
 
-#: glib/gmarkup.c:1573
+#: glib/gmarkup.c:1578
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "तत्व '%s' बन्द थियो, हाल कुनै तत्व खुलेको छैन"
 
-#: glib/gmarkup.c:1582
+#: glib/gmarkup.c:1587
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "तत्व '%s' बन्द थियो, तर हाल खुला तत्व '%s' हो"
 
-#: glib/gmarkup.c:1748
+#: glib/gmarkup.c:1753
 msgid "Document was empty or contained only whitespace"
 msgstr "कागजात खाली छ वा सेतो खाली स्थान मात्र राखिएको छ"
 
-#: glib/gmarkup.c:1762
+#: glib/gmarkup.c:1767
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "एउटा खुल्ला कोण कोष्ठ पछि '<' कागजात अनपेक्षित रूपले समाप्त भयो।"
 
-#: glib/gmarkup.c:1770 glib/gmarkup.c:1814
+#: glib/gmarkup.c:1775 glib/gmarkup.c:1819
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
 "element opened"
 msgstr "'%s' खोलिएको अन्तिम तत्व संगकागजात अप्रत्याशित रूपले समाप्त भयो।"
 
-#: glib/gmarkup.c:1778
+#: glib/gmarkup.c:1783
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -466,19 +466,19 @@ msgstr ""
 "कागजपत्र अप्रत्याशित रूपले समाप्त भयो, ट्याग <%s/> को अन्तमा बन्द कोण कोष्ठको अपेक्षा "
 "गर्दछ।"
 
-#: glib/gmarkup.c:1784
+#: glib/gmarkup.c:1789
 msgid "Document ended unexpectedly inside an element name"
 msgstr "तत्व नाम भित्र कागजात अपेक्षित रूपले समाप्त भयो।"
 
-#: glib/gmarkup.c:1789
+#: glib/gmarkup.c:1794
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "विशेषता नाम भित्र कागजात अपेक्षित रूपले समाप्त भयो।"
 
-#: glib/gmarkup.c:1794
+#: glib/gmarkup.c:1799
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "तत्व-खुल्ला ट्याग भित्र कागजात अपेक्षित रूपले समाप्त भयो।"
 
-#: glib/gmarkup.c:1800
+#: glib/gmarkup.c:1805
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -486,16 +486,16 @@ msgstr ""
 "बिशेषता नाम पछ्याउन बराबर चिन्ह पछि कागजातपत्र अप्रत्याशित रूपले समाप्त भयो; गुण मान "
 "होइन"
 
-#: glib/gmarkup.c:1807
+#: glib/gmarkup.c:1812
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "गुण मान भित्र भएको बेला कागजपत्र अप्रत्याशित रूपले समाप्त भयो"
 
-#: glib/gmarkup.c:1822
+#: glib/gmarkup.c:1827
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "तत्व '%s' का लागि बन्द ट्याग भित्र कागजात अनपेक्षित रूपले समाप्त भयो।"
 
-#: glib/gmarkup.c:1828
+#: glib/gmarkup.c:1833
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "एउटा टिप्पणी वा प्रक्रिया निर्देशन भित्र कागजपत्र अप्रत्याशित रूपले समाप्त भयो"
 
@@ -628,18 +628,18 @@ msgstr "शाखा प्रक्रिया \"%s\" कार्यान्
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "शाखा पिड पाईप (%s) बाट प्रशस्त डेटाहरू पढ्न असफल"
 
-#: glib/gutf8.c:1017
+#: glib/gutf8.c:1023
 #, c-format
 msgid "Character out of range for UTF-8"
 msgstr "UTF-8 का लागि क्यारेक्टर दायरा भन्दा बाहिर छ"
 
-#: glib/gutf8.c:1111 glib/gutf8.c:1120 glib/gutf8.c:1252 glib/gutf8.c:1261
-#: glib/gutf8.c:1402 glib/gutf8.c:1498
+#: glib/gutf8.c:1117 glib/gutf8.c:1126 glib/gutf8.c:1258 glib/gutf8.c:1267
+#: glib/gutf8.c:1408 glib/gutf8.c:1504
 #, c-format
 msgid "Invalid sequence in conversion input"
 msgstr "रूपान्तरण आगतमा अवैध अनुक्रम"
 
-#: glib/gutf8.c:1413 glib/gutf8.c:1509
+#: glib/gutf8.c:1419 glib/gutf8.c:1515
 #, c-format
 msgid "Character out of range for UTF-16"
 msgstr "UTF-16 का लागि क्यारेक्टर दायरा भन्दा बाहिर छ"

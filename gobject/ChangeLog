@@ -1,3 +1,7 @@
+2007-03-07  Matthias Clasen  <mclasen@redhat.com>
+	
+	* === Released 2.12.10 ===
+
 2007-02-13  Tor Lillqvist  <tml@novell.com>
 
 	* glib-genmarshal.c (main): Handle "/dev/stdin" by dup()ing fd 0

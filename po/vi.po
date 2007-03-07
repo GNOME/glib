@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.12.2 Gnome HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-01-16 18:50-0500\n"
+"POT-Creation-Date: 2007-03-07 00:17-0500\n"
 "PO-Revision-Date: 2007-01-04 21:41+1030\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <gnomevi-list@lists.sourceforge.net>\n"
@@ -100,8 +100,8 @@ msgid "Could not open converter from '%s' to '%s'"
 msgstr "Không thể mở bộ chuyển đổi từ « %s » sang « %s »"
 
 #: glib/gconvert.c:621 glib/gconvert.c:1010 glib/giochannel.c:1322
-#: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:943
-#: glib/gutf8.c:1392
+#: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:949
+#: glib/gutf8.c:1398
 #, c-format
 msgid "Invalid byte sequence in conversion input"
 msgstr "Gặp dây byte không hợp lệ trong dữ liệu nhập chuyển đổi"
@@ -112,8 +112,8 @@ msgstr "Gặp dây byte không hợp lệ trong dữ liệu nhập chuyển đ�
 msgid "Error during conversion: %s"
 msgstr "Gặp lỗi khi chuyển đổi: %s"
 
-#: glib/gconvert.c:662 glib/gutf8.c:939 glib/gutf8.c:1143 glib/gutf8.c:1284
-#: glib/gutf8.c:1388
+#: glib/gconvert.c:662 glib/gutf8.c:945 glib/gutf8.c:1149 glib/gutf8.c:1290
+#: glib/gutf8.c:1394
 #, c-format
 msgid "Partial character sequence at end of input"
 msgstr "Dây ký tự riêng phần ở cuối dữ liệu nhập"
@@ -363,15 +363,15 @@ msgstr "Tham chiếu thực thể chưa hoàn thành"
 msgid "Unfinished character reference"
 msgstr "Tham chiếu ký tự chưa hoàn thành"
 
-#: glib/gmarkup.c:958 glib/gmarkup.c:986 glib/gmarkup.c:1017
+#: glib/gmarkup.c:958 glib/gmarkup.c:986 glib/gmarkup.c:1022
 msgid "Invalid UTF-8 encoded text"
 msgstr "Đoạn chữ mã UTF-8 không hợp lệ"
 
-#: glib/gmarkup.c:1053
+#: glib/gmarkup.c:1058
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Tài liệu phải bắt đầu bằng một yếu tố (v.d. <book> [quyển sách])"
 
-#: glib/gmarkup.c:1093
+#: glib/gmarkup.c:1098
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -380,7 +380,7 @@ msgstr ""
 "« %s » không phải là một ký tự hợp lệ đi theo một dấu ngoặc nhọn mở « < » ; "
 "không cho phép nó bắt đầu một tên yếu tố"
 
-#: glib/gmarkup.c:1157
+#: glib/gmarkup.c:1162
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
@@ -389,7 +389,7 @@ msgstr ""
 "Ký tự lẻ « %s », còn ngờ một dấu ngoặc nhọn đóng « > » để kết thúc thẻ khởi "
 "đầu của yếu tố « %s »"
 
-#: glib/gmarkup.c:1246
+#: glib/gmarkup.c:1251
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -397,7 +397,7 @@ msgstr ""
 "Ký tự lẻ « %s », còn ngờ một dấu bằng « = » nằm sau tên thuộc tính « %s » "
 "của yếu tố « %s »"
 
-#: glib/gmarkup.c:1288
+#: glib/gmarkup.c:1293
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -408,7 +408,7 @@ msgstr ""
 "để kết thúc thẻ khởi đầu của yếu tố « %s », hay tùy ý một thuộc tính; có lẽ "
 "bạn đã dùng một ký tự không hợp lệ trong một tên thuộc tính."
 
-#: glib/gmarkup.c:1377
+#: glib/gmarkup.c:1382
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -417,7 +417,7 @@ msgstr ""
 "Ký tự lẻ « %s », còn ngờ một dấu nháy kép mở nằm sau dấu bằng khi đưa giá "
 "trị cho thuộc tính « %s » của yếu tố « %s »"
 
-#: glib/gmarkup.c:1522
+#: glib/gmarkup.c:1527
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -426,7 +426,7 @@ msgstr ""
 "« %s » không phải là một ký tự hợp lệ nằm theo các ký tự « </ » ; không cho "
 "phép « %s » bắt đầu một tên yếu tố"
 
-#: glib/gmarkup.c:1562
+#: glib/gmarkup.c:1567
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -435,25 +435,25 @@ msgstr ""
 "« %s »  không phải là một ký tự hợp lệ nằm theo tên yếu tố đóng « %s »; ký "
 "tự được phép là « > »."
 
-#: glib/gmarkup.c:1573
+#: glib/gmarkup.c:1578
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "Yếu tố « %s » đã được đóng, không có yếu tố mở hiện thời"
 
-#: glib/gmarkup.c:1582
+#: glib/gmarkup.c:1587
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "Yếu tố « %s » đã được đóng, nhưng yếu tố mở hiện thời là « %s »"
 
-#: glib/gmarkup.c:1748
+#: glib/gmarkup.c:1753
 msgid "Document was empty or contained only whitespace"
 msgstr "Tài liệu rỗng hay chứa chỉ khoảng trắng"
 
-#: glib/gmarkup.c:1762
+#: glib/gmarkup.c:1767
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "Tài liệu đã kết thúc bất ngờ ngay sau một dấu ngoặc nhọn mở « < »"
 
-#: glib/gmarkup.c:1770 glib/gmarkup.c:1814
+#: glib/gmarkup.c:1775 glib/gmarkup.c:1819
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -462,7 +462,7 @@ msgstr ""
 "Tài liệu đã kết thúc bất ngờ với các yếu tố vẫn còn mở — « %s » là yếu tố đã "
 "mở cuối cùng"
 
-#: glib/gmarkup.c:1778
+#: glib/gmarkup.c:1783
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -471,19 +471,19 @@ msgstr ""
 "Tài liệu kết thúc bất ngờ, khi ngờ thấy dấu ngoặc nhọn đóng kết thúc thẻ « <%"
 "s/> »"
 
-#: glib/gmarkup.c:1784
+#: glib/gmarkup.c:1789
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Tài liệu đã kết thúc bất ngờ bên trong một tên yếu tố"
 
-#: glib/gmarkup.c:1789
+#: glib/gmarkup.c:1794
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Tài liệu đã kết thúc bất ngờ bên trong một tên thuộc tính"
 
-#: glib/gmarkup.c:1794
+#: glib/gmarkup.c:1799
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Tài liệu đã kết thúc bất ngờ bên trong một thẻ mở yếu tố"
 
-#: glib/gmarkup.c:1800
+#: glib/gmarkup.c:1805
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -491,17 +491,17 @@ msgstr ""
 "Tài liệu đã kết thúc bất ngờ sau dấu bằng nằm sau một tên thuộc tính; không "
 "có giá trị thuộc tính"
 
-#: glib/gmarkup.c:1807
+#: glib/gmarkup.c:1812
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr ""
 "Tài liệu đã kết thúc bất ngờ trong khi nằm trong một giá trị thuộc tính"
 
-#: glib/gmarkup.c:1822
+#: glib/gmarkup.c:1827
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "Tài liệu đã kết thúc bất ngờ bên trong thẻ đóng cho yếu tố « %s »"
 
-#: glib/gmarkup.c:1828
+#: glib/gmarkup.c:1833
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Tài liệu đã kết thúc bất ngờ bên trong một chú thích hay hướng dẫn xử lý"
@@ -642,18 +642,18 @@ msgstr "Gặp lỗi không rõ khi thực hiện tiến trình con « %s »"
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Lỗi đọc đủ dữ liệu từ ống dẫn PID con (%s)"
 
-#: glib/gutf8.c:1017
+#: glib/gutf8.c:1023
 #, c-format
 msgid "Character out of range for UTF-8"
 msgstr "Ký tự ở ngoại phạm vi UTF-8"
 
-#: glib/gutf8.c:1111 glib/gutf8.c:1120 glib/gutf8.c:1252 glib/gutf8.c:1261
-#: glib/gutf8.c:1402 glib/gutf8.c:1498
+#: glib/gutf8.c:1117 glib/gutf8.c:1126 glib/gutf8.c:1258 glib/gutf8.c:1267
+#: glib/gutf8.c:1408 glib/gutf8.c:1504
 #, c-format
 msgid "Invalid sequence in conversion input"
 msgstr "Dãy không hợp lệ nằm trong dữ liệu nhập việc chuyển đổi"
 
-#: glib/gutf8.c:1413 glib/gutf8.c:1509
+#: glib/gutf8.c:1419 glib/gutf8.c:1515
 #, c-format
 msgid "Character out of range for UTF-16"
 msgstr "Ký tự ở ngoại phạm vi UTF-16"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-01-16 18:50-0500\n"
+"POT-Creation-Date: 2007-03-07 00:17-0500\n"
 "PO-Revision-Date: 2003-08-18 18:05+0000\n"
 "Last-Translator: Richard Allen <ra@ra.is>\n"
 "Language-Team: is <is@li.org>\n"
@@ -99,8 +99,8 @@ msgid "Could not open converter from '%s' to '%s'"
 msgstr "Gat ekki opnað umbreyti úr '%s' í '%s': %s"
 
 #: glib/gconvert.c:621 glib/gconvert.c:1010 glib/giochannel.c:1322
-#: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:943
-#: glib/gutf8.c:1392
+#: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:949
+#: glib/gutf8.c:1398
 #, c-format
 msgid "Invalid byte sequence in conversion input"
 msgstr "Ógild bætaruna í ílagi umbreytingar"
@@ -111,8 +111,8 @@ msgstr "Ógild bætaruna í ílagi umbreytingar"
 msgid "Error during conversion: %s"
 msgstr "Villa við umbreytingu: %s"
 
-#: glib/gconvert.c:662 glib/gutf8.c:939 glib/gutf8.c:1143 glib/gutf8.c:1284
-#: glib/gutf8.c:1388
+#: glib/gconvert.c:662 glib/gutf8.c:945 glib/gutf8.c:1149 glib/gutf8.c:1290
+#: glib/gutf8.c:1394
 #, c-format
 msgid "Partial character sequence at end of input"
 msgstr "Ókláruð stafaruna í enda ílags"
@@ -356,15 +356,15 @@ msgstr "Hálfkláruð viðfangatilvísun"
 msgid "Unfinished character reference"
 msgstr "Hálfkláruð tákntilvísun"
 
-#: glib/gmarkup.c:958 glib/gmarkup.c:986 glib/gmarkup.c:1017
+#: glib/gmarkup.c:958 glib/gmarkup.c:986 glib/gmarkup.c:1022
 msgid "Invalid UTF-8 encoded text"
 msgstr "Ógildur UTF-8 þýddur texti"
 
-#: glib/gmarkup.c:1053
+#: glib/gmarkup.c:1058
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Skjalið verður að byrja á viðfangi (t.d. <book>)"
 
-#: glib/gmarkup.c:1093
+#: glib/gmarkup.c:1098
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -373,21 +373,21 @@ msgstr ""
 "'%s' er ekki gilt tákn strax á eftir '<' tákninu; það má ekki byrja á heiti "
 "viðfangs"
 
-#: glib/gmarkup.c:1157
+#: glib/gmarkup.c:1162
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
 "'%s'"
 msgstr "Undarlegt tákn '%s', átti von á '>' tákninu til að enda viðfangið '%s'"
 
-#: glib/gmarkup.c:1246
+#: glib/gmarkup.c:1251
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "Undarlegt tákn '%s', átti von á '=' eftir heiti eiginleika '%s' af mengi '%s'"
 
-#: glib/gmarkup.c:1288
+#: glib/gmarkup.c:1293
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -398,7 +398,7 @@ msgstr ""
 "viðfangi '%s', eða eiginleika; Þú notaðir ef til vill ógilt tákn í heiti "
 "eiginleika"
 
-#: glib/gmarkup.c:1377
+#: glib/gmarkup.c:1382
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -407,7 +407,7 @@ msgstr ""
 "Undarlegt tákn '%s', átti von á tilvísunarmerki eftir samasem merkinu þegar "
 "gildi er gefið með eiginleikanum '%s' af menginu '%s'"
 
-#: glib/gmarkup.c:1522
+#: glib/gmarkup.c:1527
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -416,7 +416,7 @@ msgstr ""
 "'%s' er ekki gilt tákn strax á eftir '</'; '%s' má ekki vera fyrsta tákn í "
 "heiti mengis"
 
-#: glib/gmarkup.c:1562
+#: glib/gmarkup.c:1567
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -424,25 +424,25 @@ msgid ""
 msgstr ""
 "'%s' er ekki gilt tákn strax á eftir lokun mengis '%s'. Leyfilegt tákn er '>'"
 
-#: glib/gmarkup.c:1573
+#: glib/gmarkup.c:1578
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "Mengið '%s' var lokað og engin önnur mengi eru opin"
 
-#: glib/gmarkup.c:1582
+#: glib/gmarkup.c:1587
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "Mengið '%s' var lokað en mengið sem nú er opið er '%s'"
 
-#: glib/gmarkup.c:1748
+#: glib/gmarkup.c:1753
 msgid "Document was empty or contained only whitespace"
 msgstr "Skjalið var tómt eða innihélt einungis orðabil"
 
-#: glib/gmarkup.c:1762
+#: glib/gmarkup.c:1767
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "Skjalið endar óvænt rétt eftir opið minna en merki '<'"
 
-#: glib/gmarkup.c:1770 glib/gmarkup.c:1814
+#: glib/gmarkup.c:1775 glib/gmarkup.c:1819
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -451,7 +451,7 @@ msgstr ""
 "Skjalið endar óvænt með mengi sem enn eru opin. '%s' var mengið sem síðast "
 "var opnað"
 
-#: glib/gmarkup.c:1778
+#: glib/gmarkup.c:1783
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -459,19 +459,19 @@ msgid ""
 msgstr ""
 "Skjalið endar óvænt. Átti von á að sjá stærraen merki sem lokar taginu <%s/>"
 
-#: glib/gmarkup.c:1784
+#: glib/gmarkup.c:1789
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Skjalið endar óvænt inn í heiti mengis"
 
-#: glib/gmarkup.c:1789
+#: glib/gmarkup.c:1794
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Skjalið endar óvænt inn í heiti eiginleika"
 
-#: glib/gmarkup.c:1794
+#: glib/gmarkup.c:1799
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Skjalið endar óvænt inn í tagi sem opnar mengi."
 
-#: glib/gmarkup.c:1800
+#: glib/gmarkup.c:1805
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -479,16 +479,16 @@ msgstr ""
 "Skjalið endar óvænt eftir samasem merkið sem fylgir heiti eiginleika og það "
 "er ekkert gildi"
 
-#: glib/gmarkup.c:1807
+#: glib/gmarkup.c:1812
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Skjalið endar óvænt inn í gildi eiginleika"
 
-#: glib/gmarkup.c:1822
+#: glib/gmarkup.c:1827
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "Skjalið endar óvænt inni í lokunartagi fyrir mengið '%s'"
 
-#: glib/gmarkup.c:1828
+#: glib/gmarkup.c:1833
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "Skjalið endar óvænt inni í athugasemd eða í miðri skipun"
 
@@ -621,18 +621,18 @@ msgstr "Óþekkt villa við keyrslu undirferlis \"%s\""
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Gat ekki lesið nægjanleg gögn úr pípunni til undirferlisins (%s)"
 
-#: glib/gutf8.c:1017
+#: glib/gutf8.c:1023
 #, c-format
 msgid "Character out of range for UTF-8"
 msgstr "Táknið er utan UTF-8 sviðsins"
 
-#: glib/gutf8.c:1111 glib/gutf8.c:1120 glib/gutf8.c:1252 glib/gutf8.c:1261
-#: glib/gutf8.c:1402 glib/gutf8.c:1498
+#: glib/gutf8.c:1117 glib/gutf8.c:1126 glib/gutf8.c:1258 glib/gutf8.c:1267
+#: glib/gutf8.c:1408 glib/gutf8.c:1504
 #, c-format
 msgid "Invalid sequence in conversion input"
 msgstr "Ógild runa í ílagi umbreytingar"
 
-#: glib/gutf8.c:1413 glib/gutf8.c:1509
+#: glib/gutf8.c:1419 glib/gutf8.c:1515
 #, c-format
 msgid "Character out of range for UTF-16"
 msgstr "Táknið er utan UTF-16 sviðsins"

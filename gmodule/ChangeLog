@@ -1,3 +1,7 @@
+2007-03-07  Matthias Clasen  <mclasen@redhat.com>
+	
+	* === Released 2.12.10 ===
+
 2007-01-19  Tor Lillqvist  <tml@novell.com>
 
 	* Makefile.am (gmodule-2.0.lib): Use $(srcdir) for builds outside

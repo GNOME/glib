@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-03 21:19+0200\n"
+"POT-Creation-Date: 2007-03-07 00:17-0500\n"
 "PO-Revision-Date: 2007-03-01 12:25+0300\n"
 "Last-Translator: Ihar Hrachyshka <ihar.hrachyshka@gmail.com>\n"
 "Language-Team: Belarusian Latin <i18n@mova.org>\n"
@@ -18,87 +18,88 @@ msgstr ""
 "10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 # glib/gmarkup.c:1120
-#: ../glib/gbookmarkfile.c:716 ../glib/gbookmarkfile.c:793
-#: ../glib/gbookmarkfile.c:872 ../glib/gbookmarkfile.c:919
+#: glib/gbookmarkfile.c:716 glib/gbookmarkfile.c:793 glib/gbookmarkfile.c:872
+#: glib/gbookmarkfile.c:919
 #, c-format
 msgid "Unexpected attribute '%s' for element '%s'"
 msgstr "Niečakany atrybut '%s' dla elementu '%s'"
 
-#: ../glib/gbookmarkfile.c:727 ../glib/gbookmarkfile.c:804
-#: ../glib/gbookmarkfile.c:814 ../glib/gbookmarkfile.c:930
+#: glib/gbookmarkfile.c:727 glib/gbookmarkfile.c:804 glib/gbookmarkfile.c:814
+#: glib/gbookmarkfile.c:930
 #, c-format
 msgid "Attribute '%s' of element '%s' not found"
 msgstr "Atrybut '%s' elementu '%s' nia znojdzieny"
 
-#: ../glib/gbookmarkfile.c:1103 ../glib/gbookmarkfile.c:1168
-#: ../glib/gbookmarkfile.c:1232 ../glib/gbookmarkfile.c:1242
+#: glib/gbookmarkfile.c:1103 glib/gbookmarkfile.c:1168
+#: glib/gbookmarkfile.c:1232 glib/gbookmarkfile.c:1242
 #, c-format
 msgid "Unexpected tag '%s', tag '%s' expected"
 msgstr "Niečakany značnik '%s', spadziavalisia značnika '%s'"
 
-#: ../glib/gbookmarkfile.c:1128 ../glib/gbookmarkfile.c:1142
-#: ../glib/gbookmarkfile.c:1210 ../glib/gbookmarkfile.c:1262
+#: glib/gbookmarkfile.c:1128 glib/gbookmarkfile.c:1142
+#: glib/gbookmarkfile.c:1210 glib/gbookmarkfile.c:1262
 #, c-format
 msgid "Unexpected tag '%s' inside '%s'"
 msgstr "Niečakany značnik '%s' unutry '%s'"
 
-#: ../glib/gbookmarkfile.c:1792
+#: glib/gbookmarkfile.c:1792
+#, c-format
 msgid "No valid bookmark file found in data dirs"
 msgstr "Niemahčyma znajści pravilnaha fajłu zakładak u katalohach źviestak"
 
-#: ../glib/gbookmarkfile.c:1993
+#: glib/gbookmarkfile.c:1993
 #, c-format
 msgid "A bookmark for URI '%s' already exists"
 msgstr "Zakładka dla URI '%s' užo isnuje"
 
-#: ../glib/gbookmarkfile.c:2039 ../glib/gbookmarkfile.c:2196
-#: ../glib/gbookmarkfile.c:2281 ../glib/gbookmarkfile.c:2362
-#: ../glib/gbookmarkfile.c:2447 ../glib/gbookmarkfile.c:2530
-#: ../glib/gbookmarkfile.c:2608 ../glib/gbookmarkfile.c:2687
-#: ../glib/gbookmarkfile.c:2729 ../glib/gbookmarkfile.c:2826
-#: ../glib/gbookmarkfile.c:2952 ../glib/gbookmarkfile.c:3142
-#: ../glib/gbookmarkfile.c:3218 ../glib/gbookmarkfile.c:3379
-#: ../glib/gbookmarkfile.c:3454 ../glib/gbookmarkfile.c:3544
-#: ../glib/gbookmarkfile.c:3671
+#: glib/gbookmarkfile.c:2039 glib/gbookmarkfile.c:2196
+#: glib/gbookmarkfile.c:2281 glib/gbookmarkfile.c:2362
+#: glib/gbookmarkfile.c:2447 glib/gbookmarkfile.c:2530
+#: glib/gbookmarkfile.c:2608 glib/gbookmarkfile.c:2687
+#: glib/gbookmarkfile.c:2729 glib/gbookmarkfile.c:2826
+#: glib/gbookmarkfile.c:2952 glib/gbookmarkfile.c:3142
+#: glib/gbookmarkfile.c:3218 glib/gbookmarkfile.c:3379
+#: glib/gbookmarkfile.c:3454 glib/gbookmarkfile.c:3544
+#: glib/gbookmarkfile.c:3671
 #, c-format
 msgid "No bookmark found for URI '%s'"
 msgstr "Dla URI '%s' nia znojdziena zakładak"
 
-#: ../glib/gbookmarkfile.c:2371
+#: glib/gbookmarkfile.c:2371
 #, c-format
 msgid "No MIME type defined in the bookmark for URI '%s'"
 msgstr "Nie akreśleny typ MIME ŭ zakładcy dla URI '%s'"
 
-#: ../glib/gbookmarkfile.c:2456
+#: glib/gbookmarkfile.c:2456
 #, c-format
 msgid "No private flag has been defined in bookmark for URI '%s'"
 msgstr "Nie akreślili pryvatnaha ściažka ŭ zakładcy dla URI '%s'"
 
-#: ../glib/gbookmarkfile.c:2835
+#: glib/gbookmarkfile.c:2835
 #, c-format
 msgid "No groups set in bookmark for URI '%s'"
 msgstr "Nie akreślili hrup u zakładcy dla URI '%s'"
 
-#: ../glib/gbookmarkfile.c:3236 ../glib/gbookmarkfile.c:3389
+#: glib/gbookmarkfile.c:3236 glib/gbookmarkfile.c:3389
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
 msgstr ""
 "Nivodnaja aplikacyja pad nazvaj '%s' nie zarehistravała zakładki dla '%s'"
 
 # glib/gfileutils.c:745
-#: ../glib/gbookmarkfile.c:3402
+#: glib/gbookmarkfile.c:3402
 #, c-format
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "Prablema z razhortvańniem radka zapusku '%s' z URI '%s'"
 
 # glib/gconvert.c:390
-#: ../glib/gconvert.c:423 ../glib/gconvert.c:501 ../glib/giochannel.c:1150
+#: glib/gconvert.c:423 glib/gconvert.c:501 glib/giochannel.c:1150
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Kanversija naboru znakaŭ '%s' na '%s' nie padtrymlivajecca"
 
 # glib/gconvert.c:394
-#: ../glib/gconvert.c:427 ../glib/gconvert.c:505
+#: glib/gconvert.c:427 glib/gconvert.c:505
 #, c-format
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "Niemahčyma adčynić kanverter z  '%s' na '%s'"
@@ -106,120 +107,123 @@ msgstr "Niemahčyma adčynić kanverter z  '%s' na '%s'"
 # glib/gconvert.c:592 glib/gconvert.c:882 glib/giochannel.c:1282
 # glib/giochannel.c:1324 glib/giochannel.c:2163 glib/gutf8.c:875
 # glib/gutf8.c:1320
-#: ../glib/gconvert.c:621 ../glib/gconvert.c:1010 ../glib/giochannel.c:1322
-#: ../glib/giochannel.c:1364 ../glib/giochannel.c:2206 ../glib/gutf8.c:949
-#: ../glib/gutf8.c:1398
+#: glib/gconvert.c:621 glib/gconvert.c:1010 glib/giochannel.c:1322
+#: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:949
+#: glib/gutf8.c:1398
+#, c-format
 msgid "Invalid byte sequence in conversion input"
 msgstr "Niapravilnaja paśladoŭnaść bajtaŭ na ŭvachodzie kanversii"
 
 # glib/gconvert.c:597 glib/gconvert.c:813 glib/giochannel.c:1289
 # glib/giochannel.c:2175
-#: ../glib/gconvert.c:627 ../glib/gconvert.c:937 ../glib/giochannel.c:1329
-#: ../glib/giochannel.c:2218
+#: glib/gconvert.c:627 glib/gconvert.c:937 glib/giochannel.c:1329
+#: glib/giochannel.c:2218
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Pamyłka padčas kanversii: %s"
 
 # glib/gconvert.c:615 glib/gutf8.c:871 glib/gutf8.c:1071 glib/gutf8.c:1212
 # glib/gutf8.c:1316
-#: ../glib/gconvert.c:662 ../glib/gutf8.c:945 ../glib/gutf8.c:1149
-#: ../glib/gutf8.c:1290 ../glib/gutf8.c:1394
+#: glib/gconvert.c:662 glib/gutf8.c:945 glib/gutf8.c:1149 glib/gutf8.c:1290
+#: glib/gutf8.c:1394
+#, c-format
 msgid "Partial character sequence at end of input"
 msgstr "Niapoŭny znak u kancy ŭvachodnaha radka"
 
 # glib/gconvert.c:788
-#: ../glib/gconvert.c:912
+#: glib/gconvert.c:912
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Niemahčyma pierakanvertavać surahat znaku '%s' na nabor znakaŭ '%s'"
 
 # glib/gconvert.c:1593
-#: ../glib/gconvert.c:1721
+#: glib/gconvert.c:1721
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr ""
 "URI '%s' nie źjaŭlajucca absalutnym URI vykarystańnia \"fajłavaj\" schiemy"
 
 # glib/gconvert.c:1603
-#: ../glib/gconvert.c:1731
+#: glib/gconvert.c:1731
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "URI '%s' miascovaha fajłu nia moža ŭklučać '#'"
 
 # glib/gconvert.c:1620
-#: ../glib/gconvert.c:1748
+#: glib/gconvert.c:1748
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI '%s' niapravilny"
 
 # glib/gconvert.c:1632
-#: ../glib/gconvert.c:1760
+#: glib/gconvert.c:1760
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Niapravilnaja nazva hostu ŭ URI '%s' "
 
 # glib/gconvert.c:1648
-#: ../glib/gconvert.c:1776
+#: glib/gconvert.c:1776
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI '%s' utrymlivaje nieadpaviedna cytavanyja znaki"
 
 # glib/gconvert.c:1719
-#: ../glib/gconvert.c:1871
+#: glib/gconvert.c:1871
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Ściežka '%s nie źjaŭlajecca absalutnaj"
 
 # glib/gconvert.c:1729
-#: ../glib/gconvert.c:1881
+#: glib/gconvert.c:1881
+#, c-format
 msgid "Invalid hostname"
 msgstr "Niapravilnaja nazva kamputara"
 
 # glib/gdir.c:79
-#: ../glib/gdir.c:121 ../glib/gdir.c:141
+#: glib/gdir.c:121 glib/gdir.c:141
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "Pamyłka pry adčynieńni katalohu '%s': %s"
 
 # glib/gfileutils.c:337 glib/gfileutils.c:402
-#: ../glib/gfileutils.c:572 ../glib/gfileutils.c:645
+#: glib/gfileutils.c:572 glib/gfileutils.c:645
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Nie atrymałasia raźmierkavać %lu bajtaŭ dla adčytańnia fajłu \"%s\""
 
 # glib/gfileutils.c:348
-#: ../glib/gfileutils.c:587
+#: glib/gfileutils.c:587
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Pamyłka adčytańnia fajłu '%s': %s"
 
 # glib/gfileutils.c:426
-#: ../glib/gfileutils.c:669
+#: glib/gfileutils.c:669
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Pamyłka čytańnia z fajłu '%s': %s"
 
 # glib/gfileutils.c:465 glib/gfileutils.c:533
-#: ../glib/gfileutils.c:720 ../glib/gfileutils.c:807
+#: glib/gfileutils.c:720 glib/gfileutils.c:807
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Niemahčyma adčynić fajł '%s': %s"
 
 # glib/gfileutils.c:479
-#: ../glib/gfileutils.c:737 ../glib/gmappedfile.c:133
+#: glib/gfileutils.c:737 glib/gmappedfile.c:133
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr ""
 "Niemahčyma atrymać atrybuty fajłu '%s': funkcyja fstat() vyvieła pamyłku: %s"
 
 # glib/gfileutils.c:505
-#: ../glib/gfileutils.c:771
+#: glib/gfileutils.c:771
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Niemahčyma adčynić fajł '%s': funkcyja fdopen() vyvieła pamyłku: %s"
 
 # glib/gfileutils.c:505
-#: ../glib/gfileutils.c:905
+#: glib/gfileutils.c:905
 #, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr ""
@@ -227,120 +231,124 @@ msgstr ""
 "pamyłku: %s"
 
 # glib/gfileutils.c:745
-#: ../glib/gfileutils.c:946 ../glib/gfileutils.c:1404
+#: glib/gfileutils.c:946 glib/gfileutils.c:1404
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Niemahčyma stvaryć fajł '%s': %s"
 
 # glib/gfileutils.c:505
-#: ../glib/gfileutils.c:960
+#: glib/gfileutils.c:960
 #, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr ""
 "Niemahčyma adčynic fajł %s' dla zapisu: funkcyja fdopen() vyvieła pamyłku: %s"
 
 # glib/gfileutils.c:505
-#: ../glib/gfileutils.c:985
+#: glib/gfileutils.c:985
 #, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "Niemahčyma zapisać fajł '%s': funkcyja fwrite() vyvieła pamyłku: %s"
 
 # glib/gfileutils.c:505
-#: ../glib/gfileutils.c:1004
+#: glib/gfileutils.c:1004
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "Niemahčyma začynić fajł %s': funkcyja fclose() vyvieła pamyłku: %s"
 
-#: ../glib/gfileutils.c:1122
+#: glib/gfileutils.c:1122
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr ""
 "Niemahčyma vydalić najaŭny fajł '%s': funkcyja g_unlink() vyvieła pamyłku: %s"
 
 # glib/gfileutils.c:712
-#: ../glib/gfileutils.c:1366
+#: glib/gfileutils.c:1366
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Šablon '%s' niapravilny, u im nie pavinna być '%s'"
 
 # glib/gfileutils.c:724
-#: ../glib/gfileutils.c:1379
+#: glib/gfileutils.c:1379
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "U šablonie '%s' niama XXXXXX"
 
 # glib/gfileutils.c:745
-#: ../glib/gfileutils.c:1854
+#: glib/gfileutils.c:1854
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Niemahčyma pračytać symbaličnuju spasyłku '%s': %s"
 
-#: ../glib/gfileutils.c:1875
+#: glib/gfileutils.c:1875
+#, c-format
 msgid "Symbolic links not supported"
 msgstr "Symbaličnyja spasyłki nie padtrymlivajucca"
 
 # glib/giochannel.c:1114
-#: ../glib/giochannel.c:1154
+#: glib/giochannel.c:1154
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Nielha adčynić kanverter z '%s' na '%s': %s"
 
 # glib/giochannel.c:1460
-#: ../glib/giochannel.c:1499
+#: glib/giochannel.c:1499
+#, c-format
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr ""
 "Niemahčyma vykanać niepasrednaje čytańnie ŭ funkcyi "
 "g_io_channel_read_line_string"
 
 # glib/giochannel.c:1507 glib/giochannel.c:1761 glib/giochannel.c:1847
-#: ../glib/giochannel.c:1546 ../glib/giochannel.c:1803
-#: ../glib/giochannel.c:1889
+#: glib/giochannel.c:1546 glib/giochannel.c:1803 glib/giochannel.c:1889
+#, c-format
 msgid "Leftover unconverted data in read buffer"
 msgstr "U bufery čytańnia zastalisia niepieraŭtvoranyja źviestki"
 
 # glib/giochannel.c:1587 glib/giochannel.c:1661
-#: ../glib/giochannel.c:1626 ../glib/giochannel.c:1703
+#: glib/giochannel.c:1626 glib/giochannel.c:1703
+#, c-format
 msgid "Channel terminates in a partial character"
 msgstr "Na kancy kanału isnuje paśladoŭnaść, jakaja adpaviadaje častcy znaku"
 
 # glib/giochannel.c:1647
-#: ../glib/giochannel.c:1689
+#: glib/giochannel.c:1689
+#, c-format
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr ""
 "Niemahčyma vykanać niepasrednaje čytańnie ŭ funkcyi g_io_channel_read_to_end"
 
 # glib/gfileutils.c:505
-#: ../glib/gmappedfile.c:116
+#: glib/gmappedfile.c:116
 #, c-format
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "Niemahčyma adčynić fajł '%s': funkcyja open() vyvieła pamyłku: %s"
 
 # glib/gfileutils.c:505
-#: ../glib/gmappedfile.c:193
+#: glib/gmappedfile.c:193
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "Niemahčyma zmapavać fajł '%s': funkcyja mmap() vyvieła: %s"
 
 # glib/gmarkup.c:219
-#: ../glib/gmarkup.c:226
+#: glib/gmarkup.c:226
 #, c-format
 msgid "Error on line %d char %d: %s"
 msgstr "Pamyłka ŭ %d radku pry znaku %d: %s"
 
 # glib/gmarkup.c:303
-#: ../glib/gmarkup.c:324
+#: glib/gmarkup.c:324
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "Pamyłka ŭ radku %d: %s"
 
 # glib/gmarkup.c:382
-#: ../glib/gmarkup.c:428
+#: glib/gmarkup.c:428
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr "Pusty zapis '&;' adšukany; dapuščalnyja: &amp; &quot; &lt; &gt; &apos;"
 
 # glib/gmarkup.c:392
-#: ../glib/gmarkup.c:438
+#: glib/gmarkup.c:438
 #, c-format
 msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
@@ -351,19 +359,19 @@ msgstr ""
 "kali hety znak nie pavinien pačynać adzinki, zamianicie jaho na znak &amp;"
 
 # glib/gmarkup.c:428
-#: ../glib/gmarkup.c:472
+#: glib/gmarkup.c:472
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
 msgstr "Znak '%s' niedapuščalny ŭnutry nazvy adzinki"
 
 # glib/gmarkup.c:472
-#: ../glib/gmarkup.c:509
+#: glib/gmarkup.c:509
 #, c-format
 msgid "Entity name '%s' is not known"
 msgstr "Nieviadomaja nazva adzinki '%s'"
 
 # glib/gmarkup.c:482
-#: ../glib/gmarkup.c:520
+#: glib/gmarkup.c:520
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
@@ -372,7 +380,7 @@ msgstr ""
 "nia mieŭ aznačać pačatku adzinki — zamianicie jaho na &amp;"
 
 # glib/gmarkup.c:528
-#: ../glib/gmarkup.c:573
+#: glib/gmarkup.c:573
 #, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
@@ -382,18 +390,18 @@ msgstr ""
 "znaku (naprykład &#234;) — mahčyma, ličba zavialikaja"
 
 # glib/gmarkup.c:553
-#: ../glib/gmarkup.c:598
+#: glib/gmarkup.c:598
 #, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
 msgstr "Spasyłka na znak '%-.*s' nie źjaŭlajecca zapisam dazvolenaha znaku"
 
 # glib/gmarkup.c:570
-#: ../glib/gmarkup.c:613
+#: glib/gmarkup.c:613
 msgid "Empty character reference; should include a digit such as &#454;"
 msgstr "Pustaja spasyłka na znak: u joj pavinien być numar, naprykład &#454;"
 
 # glib/gmarkup.c:580
-#: ../glib/gmarkup.c:623
+#: glib/gmarkup.c:623
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -403,26 +411,26 @@ msgstr ""
 "nie dla paznačeńnia pačatku adzinki — u takim vypadku zamianicie jaho jak "
 "&amp;"
 
-#: ../glib/gmarkup.c:709
+#: glib/gmarkup.c:709
 msgid "Unfinished entity reference"
 msgstr "Niezavieršanaja spasyłka na adzinku"
 
-#: ../glib/gmarkup.c:715
+#: glib/gmarkup.c:715
 msgid "Unfinished character reference"
 msgstr "Niezavieršanaja spasyłka na znak"
 
 # glib/gmarkup.c:837 glib/gmarkup.c:865 glib/gmarkup.c:896
-#: ../glib/gmarkup.c:958 ../glib/gmarkup.c:986 ../glib/gmarkup.c:1017
+#: glib/gmarkup.c:958 glib/gmarkup.c:986 glib/gmarkup.c:1022
 msgid "Invalid UTF-8 encoded text"
 msgstr "Niapravilna kadavany tekst UTF-8"
 
 # glib/gmarkup.c:932
-#: ../glib/gmarkup.c:1053
+#: glib/gmarkup.c:1058
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Dakument musić pačynacca z elementu (naprykład <book>)"
 
 # glib/gmarkup.c:970
-#: ../glib/gmarkup.c:1093
+#: glib/gmarkup.c:1098
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -432,7 +440,7 @@ msgstr ""
 "pačynać nazvy adzinki"
 
 # glib/gmarkup.c:1033
-#: ../glib/gmarkup.c:1157
+#: glib/gmarkup.c:1162
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
@@ -441,7 +449,7 @@ msgstr ""
 "Dziŭny znak '%s', čakaŭsia znak '>' dla zakančeńnia značnika elementu '%s'"
 
 # glib/gmarkup.c:1120
-#: ../glib/gmarkup.c:1246
+#: glib/gmarkup.c:1251
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -449,7 +457,7 @@ msgstr ""
 "Dziŭny znak '%s', čakaŭsia znak '=' paśla nazvy atrybutu '%s' elementu '%s'"
 
 # glib/gmarkup.c:1161
-#: ../glib/gmarkup.c:1288
+#: glib/gmarkup.c:1293
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -461,7 +469,7 @@ msgstr ""
 "niedapuščalny znak u nazovie atrybutu"
 
 # glib/gmarkup.c:1244
-#: ../glib/gmarkup.c:1377
+#: glib/gmarkup.c:1382
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -471,7 +479,7 @@ msgstr ""
 "nadajecca značeńnie atrybutu '%s' elementu '%s'"
 
 # glib/gmarkup.c:1384
-#: ../glib/gmarkup.c:1522
+#: glib/gmarkup.c:1527
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -481,7 +489,7 @@ msgstr ""
 "pačynać nazovu elementu"
 
 # glib/gmarkup.c:1422
-#: ../glib/gmarkup.c:1562
+#: glib/gmarkup.c:1567
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -491,29 +499,29 @@ msgstr ""
 "dapuščalnym znakam źjaŭlajecca '>'"
 
 # glib/gmarkup.c:1433
-#: ../glib/gmarkup.c:1573
+#: glib/gmarkup.c:1578
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "Element '%s' byŭ začynieny, dziejna niama adčynienych elementaŭ"
 
 # glib/gmarkup.c:1442
-#: ../glib/gmarkup.c:1582
+#: glib/gmarkup.c:1587
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "Element '%s' byŭ začynieny, ale dziejna adčynieny '%s'"
 
 # glib/gmarkup.c:1574
-#: ../glib/gmarkup.c:1748
+#: glib/gmarkup.c:1753
 msgid "Document was empty or contained only whitespace"
 msgstr "Dakument byŭ pusty albo ŭtrymlivaŭ tolki prabieły"
 
 # glib/gmarkup.c:1588
-#: ../glib/gmarkup.c:1762
+#: glib/gmarkup.c:1767
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "Adrazu paśla znaku '%s' dakument niečakana skončyŭsia"
 
 # glib/gmarkup.c:1596 glib/gmarkup.c:1640
-#: ../glib/gmarkup.c:1770 ../glib/gmarkup.c:1814
+#: glib/gmarkup.c:1775 glib/gmarkup.c:1819
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -523,7 +531,7 @@ msgstr ""
 "— '%s' byŭ apošnim adčynienym elementam"
 
 # glib/gmarkup.c:1604
-#: ../glib/gmarkup.c:1778
+#: glib/gmarkup.c:1783
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -533,22 +541,22 @@ msgstr ""
 "značnik <%s/>"
 
 # glib/gmarkup.c:1610
-#: ../glib/gmarkup.c:1784
+#: glib/gmarkup.c:1789
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Dakument niečakana skončyŭsia ŭnutry nazvy elementu"
 
 # glib/gmarkup.c:1615
-#: ../glib/gmarkup.c:1789
+#: glib/gmarkup.c:1794
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Dakument niečakana skončyŭsia ŭnutry nazvy atrybutu"
 
 # glib/gmarkup.c:1620
-#: ../glib/gmarkup.c:1794
+#: glib/gmarkup.c:1799
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Dakument niečakana skončyŭsia ŭnutry elementu, jaki adkryvaje značnik."
 
 # glib/gmarkup.c:1626
-#: ../glib/gmarkup.c:1800
+#: glib/gmarkup.c:1805
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -557,117 +565,119 @@ msgstr ""
 "atrybutu: niama vartaści atrybutu"
 
 # glib/gmarkup.c:1633
-#: ../glib/gmarkup.c:1807
+#: glib/gmarkup.c:1812
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Dakument niečakana skončyŭsia ŭnutry vartaści atrybutu"
 
 # glib/gmarkup.c:1648
-#: ../glib/gmarkup.c:1822
+#: glib/gmarkup.c:1827
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "Dakument niečakana skončyŭsia ŭnutry značnika zamykańnia elementu '%s'"
 
 # glib/gmarkup.c:1654
-#: ../glib/gmarkup.c:1828
+#: glib/gmarkup.c:1833
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "Dakument niečakana skončyŭsia ŭnutry kamentara albo instrukcyi"
 
 # glib/gshell.c:71
-#: ../glib/gshell.c:70
+#: glib/gshell.c:70
+#, c-format
 msgid "Quoted text doesn't begin with a quotation mark"
 msgstr "Cytavany znak nie pačynajecca znakam dvukośsia"
 
 # glib/gshell.c:161
-#: ../glib/gshell.c:160
+#: glib/gshell.c:160
+#, c-format
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr ""
 "U zahadnym radku albo inšym cytavanym, jak u abałoncy, tekście pajaviŭsia "
 "adzinočny znak cytavańnia"
 
 # glib/gshell.c:529
-#: ../glib/gshell.c:538
+#: glib/gshell.c:538
 #, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
 msgstr "Tekst skončyŭsia adrazu paśla znaku '\\'. (Tekst byŭ '%s')"
 
 # glib/gshell.c:536
-#: ../glib/gshell.c:545
+#: glib/gshell.c:545
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr ""
 "Tekst skončyŭsia pierad adpaviednym dvukośsiem dla %c. (Tekst byŭ '%s')"
 
 # glib/gshell.c:548
-#: ../glib/gshell.c:557
+#: glib/gshell.c:557
+#, c-format
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Tekst byŭ pusty (albo ŭ im byli tolki prabieły)"
 
 # glib/gspawn-win32.c:214
-#: ../glib/gspawn-win32.c:272
+#: glib/gspawn-win32.c:272
+#, c-format
 msgid "Failed to read data from child process"
 msgstr "Niemahčyma adčytać źviestki pracesu-naščadka"
 
 # glib/gspawn-win32.c:981 glib/gspawn.c:1228
-#: ../glib/gspawn-win32.c:287 ../glib/gspawn.c:1379
+#: glib/gspawn-win32.c:287 glib/gspawn.c:1379
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Nielha stvaryć płyniu dziela kamunikacyi z pracesam-naščadkam (%s)"
 
 # glib/gspawn-win32.c:843 glib/gspawn.c:914
-#: ../glib/gspawn-win32.c:325 ../glib/gspawn.c:1043
+#: glib/gspawn-win32.c:325 glib/gspawn.c:1043
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Niemahčyma adčytać płyniu naščadka (%s)"
 
 # glib/gspawn-win32.c:931 glib/gspawn.c:1119
-#: ../glib/gspawn-win32.c:351 ../glib/gspawn.c:1248
+#: glib/gspawn-win32.c:351 glib/gspawn.c:1248
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Niemahčyma źmianić kataloh na '%s' (%s)"
 
 # glib/gspawn-win32.c:940
-#: ../glib/gspawn-win32.c:357 ../glib/gspawn-win32.c:577
+#: glib/gspawn-win32.c:357 glib/gspawn-win32.c:577
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Niemahčyma vykanać praces-naščadka (%s)"
 
 # glib/gconvert.c:1729
-#: ../glib/gspawn-win32.c:467 ../glib/gspawn-win32.c:523
+#: glib/gspawn-win32.c:467 glib/gspawn-win32.c:523
 #, c-format
 msgid "Invalid program name: %s"
 msgstr "Niapravilnaja nazva prahramy: %s"
 
-#: ../glib/gspawn-win32.c:477 ../glib/gspawn-win32.c:533
-#: ../glib/gspawn-win32.c:776 ../glib/gspawn-win32.c:831
-#: ../glib/gspawn-win32.c:1366
+#: glib/gspawn-win32.c:477 glib/gspawn-win32.c:533 glib/gspawn-win32.c:776
+#: glib/gspawn-win32.c:831 glib/gspawn-win32.c:1366
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr "Niapravilny paradak u arhumencie %d: %s"
 
 # glib/gutf8.c:1039 glib/gutf8.c:1048 glib/gutf8.c:1180 glib/gutf8.c:1189
 # glib/gutf8.c:1330 glib/gutf8.c:1426
-#: ../glib/gspawn-win32.c:488 ../glib/gspawn-win32.c:544
-#: ../glib/gspawn-win32.c:790 ../glib/gspawn-win32.c:844
-#: ../glib/gspawn-win32.c:1399
+#: glib/gspawn-win32.c:488 glib/gspawn-win32.c:544 glib/gspawn-win32.c:790
+#: glib/gspawn-win32.c:844 glib/gspawn-win32.c:1399
 #, c-format
 msgid "Invalid string in environment: %s"
 msgstr "Niapravilny radok u asiarodździ: %s"
 
 # glib/gdir.c:79
-#: ../glib/gspawn-win32.c:772 ../glib/gspawn-win32.c:827
-#: ../glib/gspawn-win32.c:1347
+#: glib/gspawn-win32.c:772 glib/gspawn-win32.c:827 glib/gspawn-win32.c:1347
 #, c-format
 msgid "Invalid working directory: %s"
 msgstr "Niapravilny rabočy kataloh: %s"
 
 # glib/gspawn-win32.c:940
-#: ../glib/gspawn-win32.c:886
+#: glib/gspawn-win32.c:886
 #, c-format
 msgid "Failed to execute helper program (%s)"
 msgstr "Niemahčyma ŭklučyć prahramu dapamohi (%s)"
 
 # glib/gspawn-win32.c:365
-#: ../glib/gspawn-win32.c:1086
+#: glib/gspawn-win32.c:1086
+#, c-format
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -676,13 +686,13 @@ msgstr ""
 "adbyłasia nieviadomaja pamyłka"
 
 # glib/gspawn.c:161
-#: ../glib/gspawn.c:168
+#: glib/gspawn.c:168
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "Niemahčyma adčytać źviestki pracesu-naščadka (%s)"
 
 # glib/gspawn.c:293
-#: ../glib/gspawn.c:300
+#: glib/gspawn.c:300
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr ""
@@ -690,139 +700,145 @@ msgstr ""
 "naščadka (%s)"
 
 # glib/gspawn.c:376
-#: ../glib/gspawn.c:383
+#: glib/gspawn.c:383
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Niečakanaja pamyłka ŭ waitpid() (%s)"
 
 # glib/gspawn.c:979
-#: ../glib/gspawn.c:1108
+#: glib/gspawn.c:1108
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Niemahčyma stvaryć praces (%s)"
 
 # glib/gspawn.c:1129
-#: ../glib/gspawn.c:1258
+#: glib/gspawn.c:1258
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Niemahvyma vykanać praces-naščadka \"%s\" (%s)"
 
 # glib/gspawn.c:1139
-#: ../glib/gspawn.c:1268
+#: glib/gspawn.c:1268
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Niemahčyma pierakiravać uvachod albo vyjście pracesu-naščadka (%s)"
 
 # glib/gspawn.c:1148
-#: ../glib/gspawn.c:1277
+#: glib/gspawn.c:1277
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Niemahčyma stvaryć praces-naščadka (%s)"
 
 # glib/gspawn.c:1156
-#: ../glib/gspawn.c:1285
+#: glib/gspawn.c:1285
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Nieviadomaja pamyłka vykanańnia pracesu-naščadka \"%s\""
 
 # glib/gspawn.c:1178
-#: ../glib/gspawn.c:1307
+#: glib/gspawn.c:1307
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr ""
 "Niemahčyma adčytać adpaviednuju kolkaść źviestak ź PID kanału naščadka (%s)"
 
 # glib/gutf8.c:950
-#: ../glib/gutf8.c:1023
+#: glib/gutf8.c:1023
+#, c-format
 msgid "Character out of range for UTF-8"
 msgstr "Znak pa-za dyjapazonam UTF-8"
 
 # glib/gutf8.c:1039 glib/gutf8.c:1048 glib/gutf8.c:1180 glib/gutf8.c:1189
 # glib/gutf8.c:1330 glib/gutf8.c:1426
-#: ../glib/gutf8.c:1117 ../glib/gutf8.c:1126 ../glib/gutf8.c:1258
-#: ../glib/gutf8.c:1267 ../glib/gutf8.c:1408 ../glib/gutf8.c:1504
+#: glib/gutf8.c:1117 glib/gutf8.c:1126 glib/gutf8.c:1258 glib/gutf8.c:1267
+#: glib/gutf8.c:1408 glib/gutf8.c:1504
+#, c-format
 msgid "Invalid sequence in conversion input"
 msgstr "Niapravilny paradak na ŭvachodzie kanversii"
 
 # glib/gutf8.c:1341 glib/gutf8.c:1437
-#: ../glib/gutf8.c:1419 ../glib/gutf8.c:1515
+#: glib/gutf8.c:1419 glib/gutf8.c:1515
+#, c-format
 msgid "Character out of range for UTF-16"
 msgstr "Znak pa-za dyjapazonam UTF-16"
 
-#: ../glib/goption.c:553
+#: glib/goption.c:553
 msgid "Usage:"
 msgstr "Vykarystańnie:"
 
-#: ../glib/goption.c:553
+#: glib/goption.c:553
 msgid "[OPTION...]"
 msgstr "[OPCYJA...]"
 
-#: ../glib/goption.c:644
+#: glib/goption.c:644
 msgid "Help Options:"
 msgstr "Opcyi dapamohi:"
 
-#: ../glib/goption.c:645
+#: glib/goption.c:645
 msgid "Show help options"
 msgstr "Pakažy opcyi dapamohi"
 
-#: ../glib/goption.c:650
+#: glib/goption.c:650
 msgid "Show all help options"
 msgstr "Pakažy ŭsie opcyi dapamohi"
 
-#: ../glib/goption.c:700
+#: glib/goption.c:700
 msgid "Application Options:"
 msgstr "Opcyi aplikacyi:"
 
-#: ../glib/goption.c:744 ../glib/goption.c:814
+#: glib/goption.c:744 glib/goption.c:814
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "Niemahčyma pierapracavać ličbavaj vartaści '%s' dla %s"
 
-#: ../glib/goption.c:754 ../glib/goption.c:822
+#: glib/goption.c:754 glib/goption.c:822
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "Ličbavaja vartaść '%s' dla %s pa-za dapuščalnymi miežami"
 
-#: ../glib/goption.c:779
+#: glib/goption.c:779
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "Nielha pierapracavać padvojnuju ličbavuju vartaść '%s' dla %s"
 
-#: ../glib/goption.c:787
+#: glib/goption.c:787
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "Padvojnaja ličbavaja vartaść '%s' dla %s pa-za dapuščalnymi miežami"
 
 # glib/gconvert.c:597 glib/gconvert.c:813 glib/giochannel.c:1289
 # glib/giochannel.c:2175
-#: ../glib/goption.c:1124
+#: glib/goption.c:1124
 #, c-format
 msgid "Error parsing option %s"
 msgstr "Pamyłka padčas pierapracoŭki %s"
 
-#: ../glib/goption.c:1155 ../glib/goption.c:1266
+#: glib/goption.c:1155 glib/goption.c:1266
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Adsutny parametar dla %s"
 
-#: ../glib/goption.c:1655
+#: glib/goption.c:1655
 #, c-format
 msgid "Unknown option %s"
 msgstr "Nieviadomaja opcyja %s"
 
-#: ../glib/gkeyfile.c:341
+#: glib/gkeyfile.c:341
+#, c-format
 msgid "Valid key file could not be found in data dirs"
 msgstr "Niemahčyma znajści pravilnaha fajłu kluča ŭ katalohach źviestak"
 
-#: ../glib/gkeyfile.c:376
+#: glib/gkeyfile.c:376
+#, c-format
 msgid "Not a regular file"
 msgstr "Heta nie zvyčajny fajł"
 
-#: ../glib/gkeyfile.c:384
+#: glib/gkeyfile.c:384
+#, c-format
 msgid "File is empty"
 msgstr "Fajł pusty"
 
-#: ../glib/gkeyfile.c:700
+#: glib/gkeyfile.c:700
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
@@ -831,52 +847,53 @@ msgstr ""
 "hrupaj, albo kamentarom"
 
 # glib/gconvert.c:1729
-#: ../glib/gkeyfile.c:758
+#: glib/gkeyfile.c:758
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "Niapravilnaja nazva hrupy: %s"
 
-#: ../glib/gkeyfile.c:780
+#: glib/gkeyfile.c:780
+#, c-format
 msgid "Key file does not start with a group"
 msgstr "Fajł kluča nie pačynajecca ad hrupy"
 
 # glib/gconvert.c:1729
-#: ../glib/gkeyfile.c:806
+#: glib/gkeyfile.c:806
 #, c-format
 msgid "Invalid key name: %s"
 msgstr "Niapravilnaja nazva kluča: %s"
 
-#: ../glib/gkeyfile.c:833
+#: glib/gkeyfile.c:833
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "Fajł kluča ŭtrymlivaje kadavańnie '%s', jakoje nie absłuhoŭvajecca"
 
-#: ../glib/gkeyfile.c:1042 ../glib/gkeyfile.c:1201 ../glib/gkeyfile.c:2402
-#: ../glib/gkeyfile.c:2469 ../glib/gkeyfile.c:2590 ../glib/gkeyfile.c:2725
-#: ../glib/gkeyfile.c:2878 ../glib/gkeyfile.c:3058 ../glib/gkeyfile.c:3115
+#: glib/gkeyfile.c:1042 glib/gkeyfile.c:1201 glib/gkeyfile.c:2402
+#: glib/gkeyfile.c:2469 glib/gkeyfile.c:2590 glib/gkeyfile.c:2725
+#: glib/gkeyfile.c:2878 glib/gkeyfile.c:3058 glib/gkeyfile.c:3115
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Fajł kluča nie ŭklučaje ŭ siabie hrupy '%s'"
 
-#: ../glib/gkeyfile.c:1213
+#: glib/gkeyfile.c:1213
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "Fajł kluča nie ŭklučaje ŭ siabie kluča '%s'"
 
-#: ../glib/gkeyfile.c:1315 ../glib/gkeyfile.c:1425
+#: glib/gkeyfile.c:1315 glib/gkeyfile.c:1425
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr ""
 "Fajł kluča ŭklučaje ŭ siabie kluč '%s' z vartaściu '%s', nie zapisanaj jak "
 "UTF-8"
 
-#: ../glib/gkeyfile.c:1335 ../glib/gkeyfile.c:1445 ../glib/gkeyfile.c:1813
+#: glib/gkeyfile.c:1335 glib/gkeyfile.c:1445 glib/gkeyfile.c:1813
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr ""
 "Fajł kluča ŭklučaje ŭ siabie kluč '%s' ź nieinterpretavalnaj vartaściu."
 
-#: ../glib/gkeyfile.c:2025 ../glib/gkeyfile.c:2234
+#: glib/gkeyfile.c:2025 glib/gkeyfile.c:2234
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -885,39 +902,40 @@ msgstr ""
 "Fajł kluča ŭklučaje ŭ siabie kluč '%s' u hrupie '%s', jaki maje "
 "nieinterpretavalnuju vartaść."
 
-#: ../glib/gkeyfile.c:2417 ../glib/gkeyfile.c:2605 ../glib/gkeyfile.c:3126
+#: glib/gkeyfile.c:2417 glib/gkeyfile.c:2605 glib/gkeyfile.c:3126
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Fajł kluča nia maje kluča '%s' u hrupie '%s'"
 
-#: ../glib/gkeyfile.c:3365
+#: glib/gkeyfile.c:3365
+#, c-format
 msgid "Key file contains escape character at end of line"
 msgstr "Fajł kluča maje ŭ sabie cytavany znak na kancy radka"
 
 # glib/gconvert.c:1648
-#: ../glib/gkeyfile.c:3387
+#: glib/gkeyfile.c:3387
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "Fajł kluča maje ŭ sabie niedapuščalny cytavalny łancužok '%s'"
 
-#: ../glib/gkeyfile.c:3529
+#: glib/gkeyfile.c:3529
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Nielha interpretavać '%s' jak ličbavuju vartaść."
 
-#: ../glib/gkeyfile.c:3543
+#: glib/gkeyfile.c:3543
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "Ličbavaja vartaść '%s' pa-za dapuščalnymi miežami"
 
-#: ../glib/gkeyfile.c:3576
+#: glib/gkeyfile.c:3576
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr ""
 "Niemahčyma interpretavać značeńnie '%s' jak ličbavuju vartaść ź "
 "niefiksavanaj koskaj."
 
-#: ../glib/gkeyfile.c:3603
+#: glib/gkeyfile.c:3603
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Ličbavuju vartaść '%s' niemahčyma interpretavać jak lahičnuju vartaść."

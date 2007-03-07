@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-01-16 18:50-0500\n"
+"POT-Creation-Date: 2007-03-07 00:17-0500\n"
 "PO-Revision-Date: 2005-11-16 11:21+0200\n"
 "Last-Translator: Vital Khilko <vk@altlinux.ru>\n"
 "Language-Team: Belarusian <i18n@mova.org>\n"
@@ -108,8 +108,8 @@ msgstr "Не атрымалася адкрыць пераўтваральнік 
 # glib/giochannel.c:1324 glib/giochannel.c:2163 glib/gutf8.c:875
 # glib/gutf8.c:1320
 #: glib/gconvert.c:621 glib/gconvert.c:1010 glib/giochannel.c:1322
-#: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:943
-#: glib/gutf8.c:1392
+#: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:949
+#: glib/gutf8.c:1398
 #, c-format
 msgid "Invalid byte sequence in conversion input"
 msgstr "Недапушчальная пасьлядоўнасьць байтаў на ўваходзе пераўтварэньня"
@@ -124,8 +124,8 @@ msgstr "Памылка ў часе пераўтварэньня: %s"
 
 # glib/gconvert.c:615 glib/gutf8.c:871 glib/gutf8.c:1071 glib/gutf8.c:1212
 # glib/gutf8.c:1316
-#: glib/gconvert.c:662 glib/gutf8.c:939 glib/gutf8.c:1143 glib/gutf8.c:1284
-#: glib/gutf8.c:1388
+#: glib/gconvert.c:662 glib/gutf8.c:945 glib/gutf8.c:1149 glib/gutf8.c:1290
+#: glib/gutf8.c:1394
 #, c-format
 msgid "Partial character sequence at end of input"
 msgstr "Няпоўны сымбаль у канцы ўваходнага радку"
@@ -415,17 +415,17 @@ msgid "Unfinished character reference"
 msgstr "Незавершанае лучыва сымбалю"
 
 # glib/gmarkup.c:837 glib/gmarkup.c:865 glib/gmarkup.c:896
-#: glib/gmarkup.c:958 glib/gmarkup.c:986 glib/gmarkup.c:1017
+#: glib/gmarkup.c:958 glib/gmarkup.c:986 glib/gmarkup.c:1022
 msgid "Invalid UTF-8 encoded text"
 msgstr "Недапушчальна закадаваны тэкст UTF-8"
 
 # glib/gmarkup.c:932
-#: glib/gmarkup.c:1053
+#: glib/gmarkup.c:1058
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Дакумэнт мусіць пачынацца з элемэнту (напрыклад <book>)"
 
 # glib/gmarkup.c:970
-#: glib/gmarkup.c:1093
+#: glib/gmarkup.c:1098
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -435,7 +435,7 @@ msgstr ""
 "сымбаль ня можа пачынаць назву элемэнту"
 
 # glib/gmarkup.c:1033
-#: glib/gmarkup.c:1157
+#: glib/gmarkup.c:1162
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
@@ -445,7 +445,7 @@ msgstr ""
 "\""
 
 # glib/gmarkup.c:1120
-#: glib/gmarkup.c:1246
+#: glib/gmarkup.c:1251
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -454,7 +454,7 @@ msgstr ""
 "элемэнту \"%s\""
 
 # glib/gmarkup.c:1161
-#: glib/gmarkup.c:1288
+#: glib/gmarkup.c:1293
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -466,7 +466,7 @@ msgstr ""
 "выкарыстаны недапушчальны сымбаль у назве атрыбуту"
 
 # glib/gmarkup.c:1244
-#: glib/gmarkup.c:1377
+#: glib/gmarkup.c:1382
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -476,7 +476,7 @@ msgstr ""
 "надаецца значэньне атрыбуту \"%s\" элемэнту \"%s\""
 
 # glib/gmarkup.c:1384
-#: glib/gmarkup.c:1522
+#: glib/gmarkup.c:1527
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -486,7 +486,7 @@ msgstr ""
 "s\" ня можа пачынаць назву элемэнту"
 
 # glib/gmarkup.c:1422
-#: glib/gmarkup.c:1562
+#: glib/gmarkup.c:1567
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -496,30 +496,30 @@ msgstr ""
 "\"; дапушчальным сымбалем зьяўляецца \">\""
 
 # glib/gmarkup.c:1433
-#: glib/gmarkup.c:1573
+#: glib/gmarkup.c:1578
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr ""
 "Элемэнт \"%s\" быў закрыты, аніводны элемэнт у бягучы момант не адкрыты"
 
 # glib/gmarkup.c:1442
-#: glib/gmarkup.c:1582
+#: glib/gmarkup.c:1587
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "Элемэнт \"%s\" быў закрыты, але ў гэты час адкрыты \"%s\""
 
 # glib/gmarkup.c:1574
-#: glib/gmarkup.c:1748
+#: glib/gmarkup.c:1753
 msgid "Document was empty or contained only whitespace"
 msgstr "Дакумэнт быў пусты ці утрымліваў толькі прагалы"
 
 # glib/gmarkup.c:1588
-#: glib/gmarkup.c:1762
+#: glib/gmarkup.c:1767
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "Дакумэнт нечакана скончыўся адразу пасьля вуглавой дужкі \"<\""
 
 # glib/gmarkup.c:1596 glib/gmarkup.c:1640
-#: glib/gmarkup.c:1770 glib/gmarkup.c:1814
+#: glib/gmarkup.c:1775 glib/gmarkup.c:1819
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -529,7 +529,7 @@ msgstr ""
 "апошнім адкрытым элемэнтам"
 
 # glib/gmarkup.c:1604
-#: glib/gmarkup.c:1778
+#: glib/gmarkup.c:1783
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -538,22 +538,22 @@ msgstr ""
 "Дакумэнт нечакана скончыўся, чакаецца вуглавая дужка якая закрывае тэг <%s/>"
 
 # glib/gmarkup.c:1610
-#: glib/gmarkup.c:1784
+#: glib/gmarkup.c:1789
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Дакумэнт нечакана скончыўся ўнутры назвы элемэнту"
 
 # glib/gmarkup.c:1615
-#: glib/gmarkup.c:1789
+#: glib/gmarkup.c:1794
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Дакумэнт нечакана скончыўся ўнутры назвы атрыбуту"
 
 # glib/gmarkup.c:1620
-#: glib/gmarkup.c:1794
+#: glib/gmarkup.c:1799
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Дакумэнт нечакана скончыўся  ўнутры элемэнту які адкрывае тэг."
 
 # glib/gmarkup.c:1626
-#: glib/gmarkup.c:1800
+#: glib/gmarkup.c:1805
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -562,18 +562,18 @@ msgstr ""
 "атрыбуту: не пазначана значэньне атрыбуту"
 
 # glib/gmarkup.c:1633
-#: glib/gmarkup.c:1807
+#: glib/gmarkup.c:1812
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Дакумэнт нечакана скончыўся ўнутры значэньня атрыбуту"
 
 # glib/gmarkup.c:1648
-#: glib/gmarkup.c:1822
+#: glib/gmarkup.c:1827
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "Дакумэнт нечакана скончыўся ўнутры элемэнту \"%s\" які закрывае тэг"
 
 # glib/gmarkup.c:1654
-#: glib/gmarkup.c:1828
+#: glib/gmarkup.c:1833
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "Дакумэнт нечакана скончыўся ўнутры камэнтару ці інструкцыі"
 
@@ -735,21 +735,21 @@ msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Збой чытаньня патрэбнае колькасьці даньняў з pid канала нашчадку (%s)"
 
 # glib/gutf8.c:950
-#: glib/gutf8.c:1017
+#: glib/gutf8.c:1023
 #, c-format
 msgid "Character out of range for UTF-8"
 msgstr "Сымбаль па-за дыяпазонам UTF-8"
 
 # glib/gutf8.c:1039 glib/gutf8.c:1048 glib/gutf8.c:1180 glib/gutf8.c:1189
 # glib/gutf8.c:1330 glib/gutf8.c:1426
-#: glib/gutf8.c:1111 glib/gutf8.c:1120 glib/gutf8.c:1252 glib/gutf8.c:1261
-#: glib/gutf8.c:1402 glib/gutf8.c:1498
+#: glib/gutf8.c:1117 glib/gutf8.c:1126 glib/gutf8.c:1258 glib/gutf8.c:1267
+#: glib/gutf8.c:1408 glib/gutf8.c:1504
 #, c-format
 msgid "Invalid sequence in conversion input"
 msgstr "Недапушчальная пасьлядоўнасьць на ўваходзе пераўтварэньня"
 
 # glib/gutf8.c:1341 glib/gutf8.c:1437
-#: glib/gutf8.c:1413 glib/gutf8.c:1509
+#: glib/gutf8.c:1419 glib/gutf8.c:1515
 #, c-format
 msgid "Character out of range for UTF-16"
 msgstr "Сымбаль па-за дыяпазонам UTF-16"

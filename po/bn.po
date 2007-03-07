@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-01-16 18:50-0500\n"
+"POT-Creation-Date: 2007-03-07 00:17-0500\n"
 "PO-Revision-Date: 2006-08-31 21:21+0600\n"
 "Last-Translator: Khandakar Mujahidul Islam <suzan@bengalinux.org>\n"
 "Language-Team: Bengali <gnome-translation@bengalinux.org>\n"
@@ -102,8 +102,8 @@ msgid "Could not open converter from '%s' to '%s'"
 msgstr "'%s' থেকে '%s' তে কনভার্টার খোলা যায়নি"
 
 #: glib/gconvert.c:621 glib/gconvert.c:1010 glib/giochannel.c:1322
-#: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:943
-#: glib/gutf8.c:1392
+#: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:949
+#: glib/gutf8.c:1398
 #, c-format
 msgid "Invalid byte sequence in conversion input"
 msgstr "পরিবর্তন করার জন্য দেয়া বাইট সমুহ সঠিক নয়"
@@ -114,8 +114,8 @@ msgstr "পরিবর্তন করার জন্য দেয়া বা�
 msgid "Error during conversion: %s"
 msgstr "পরিবর্তন সময়কালীন ভুল: %s"
 
-#: glib/gconvert.c:662 glib/gutf8.c:939 glib/gutf8.c:1143 glib/gutf8.c:1284
-#: glib/gutf8.c:1388
+#: glib/gconvert.c:662 glib/gutf8.c:945 glib/gutf8.c:1149 glib/gutf8.c:1290
+#: glib/gutf8.c:1394
 #, c-format
 msgid "Partial character sequence at end of input"
 msgstr "প্রদত্ত তথ্যের শেষে আংশিক অক্ষর সমুহ"
@@ -358,22 +358,22 @@ msgstr "অসম্পূর্ণ বস্তুর রেফারেন্�
 msgid "Unfinished character reference"
 msgstr "অসম্পূর্ণ অক্ষরের রেফারেন্স"
 
-#: glib/gmarkup.c:958 glib/gmarkup.c:986 glib/gmarkup.c:1017
+#: glib/gmarkup.c:958 glib/gmarkup.c:986 glib/gmarkup.c:1022
 msgid "Invalid UTF-8 encoded text"
 msgstr "অগ্রহনযোগ্য ইউটিএফ-৮ টেক্সট"
 
-#: glib/gmarkup.c:1053
+#: glib/gmarkup.c:1058
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "ডকুউমেন্ট একটি এলিমেন্ট দিয়ে শুরু "
 
-#: glib/gmarkup.c:1093
+#: glib/gmarkup.c:1098
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
 msgstr "'<' অক্ষরটির পরে '%s' গ্রহনযোগ্য নয়; এটি কোন এলিমেন্টের নাম শুরু করতে পারেনা"
 
-#: glib/gmarkup.c:1157
+#: glib/gmarkup.c:1162
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
@@ -381,7 +381,7 @@ msgid ""
 msgstr ""
 "অসামঞ্জস্যকর অক্ষর '%s', এলিমেন্ট '%s' এর ট্যগ শেষ করার জন্য '>' অক্ষরটি আশা করা হয়"
 
-#: glib/gmarkup.c:1246
+#: glib/gmarkup.c:1251
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -389,7 +389,7 @@ msgstr ""
 "বেজোড় অক্ষর '%1$s', এলিমেন্ট '%3$s' এর অ্যাট্রিবিউট নাম '%2$s' এর পর একটি '=' "
 "প্রত্যাশিত"
 
-#: glib/gmarkup.c:1288
+#: glib/gmarkup.c:1293
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -400,7 +400,7 @@ msgstr ""
 "প্রত্যাশিত, অথবা একটি ঐচ্ছিক অ্যাট্রিবিউট; সম্ভবত আপনি বৈশিষ্ট্য নামে অবৈধ অক্ষর "
 "ব্যবহার করেছেন"
 
-#: glib/gmarkup.c:1377
+#: glib/gmarkup.c:1382
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -409,7 +409,7 @@ msgstr ""
 "বেজোড় অক্ষর '%1$s', এলিমেন্ট '%3$s' এর অ্যাট্রিবিউট নাম '%2$s' এর মান দেয়ার সময়, "
 "'=' চিহ্নটির পর একটি খোলা উদ্ধৃতি চিহ্ন আব্যশক"
 
-#: glib/gmarkup.c:1522
+#: glib/gmarkup.c:1527
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -418,7 +418,7 @@ msgstr ""
 "অক্ষর '</' কে অনুসরণকারী '%s' একটি বৈধ অক্ষর নয়; '%s' দিয়ে কোনো এলিমেন্টের নাম "
 "শুরু করা বৈধ নয়"
 
-#: glib/gmarkup.c:1562
+#: glib/gmarkup.c:1567
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -427,25 +427,25 @@ msgstr ""
 "বন্ধ এলিমেন্ট নাম '%2$s' কে অনুসরণকারী '%1$s' একটি বৈধ অক্ষর নয়; সমর্থিত অক্ষর "
 "হচ্ছে '>'"
 
-#: glib/gmarkup.c:1573
+#: glib/gmarkup.c:1578
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "'%s' এলিমেন্টটি বন্ধ ছিল, এখন খোলা এলিমেন্ট নেই"
 
-#: glib/gmarkup.c:1582
+#: glib/gmarkup.c:1587
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "'%s' এলিমেন্টটি বন্ধ ছিল, কিন্তু এখন '%s' এলিমেন্টটি খোলা"
 
-#: glib/gmarkup.c:1748
+#: glib/gmarkup.c:1753
 msgid "Document was empty or contained only whitespace"
 msgstr "ডকুউমেন্ট শূণ্য ছিল অথবা সুধু ওয়াইটস্পেইস ছিল"
 
-#: glib/gmarkup.c:1762
+#: glib/gmarkup.c:1767
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "একটি কোণ বন্ধনী '<' খোলা থাকায় নথী অপ্রত্যাশিতভাবে শেষ হয়েছে"
 
-#: glib/gmarkup.c:1770 glib/gmarkup.c:1814
+#: glib/gmarkup.c:1775 glib/gmarkup.c:1819
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -453,7 +453,7 @@ msgid ""
 msgstr ""
 "উপাদান খোলা অবস্থায় নথী অপ্রত্যাশিতভাবে শেষ হয়েছে - '%s' ছিল শেষ খোলা উপাদান"
 
-#: glib/gmarkup.c:1778
+#: glib/gmarkup.c:1783
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -462,19 +462,19 @@ msgstr ""
 "নথী অপ্রত্যাশিতভাবে শেষ হয়েছে, প্রত্যাশিতভাবে দৃষ্ট কারণ একটি কোণ বন্ধনী যার শেষে <%"
 "s/> ট্যাগ রয়েছে"
 
-#: glib/gmarkup.c:1784
+#: glib/gmarkup.c:1789
 msgid "Document ended unexpectedly inside an element name"
 msgstr "একটি এলিমেন্ট নাম অভ্যন্তরে নথী অপ্রত্যাশিতভাবে শেষ হয়েছে"
 
-#: glib/gmarkup.c:1789
+#: glib/gmarkup.c:1794
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "একটি বৈশিষ্ট্য নাম অভ্যন্তরে নথী অপ্রত্যাশিতভাবে শেষ হয়েছে"
 
-#: glib/gmarkup.c:1794
+#: glib/gmarkup.c:1799
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "একটি এলিমেন্ট-ওপেনিং ট্যাগ অভ্যন্তরে নথী অপ্রত্যাশিতভাবে শেষ হয়েছে"
 
-#: glib/gmarkup.c:1800
+#: glib/gmarkup.c:1805
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -482,16 +482,16 @@ msgstr ""
 "বৈশিষ্ট্য নাম অনুসরণকরী সমান চিহ্নের পর নথী অপ্রত্যাশিতভাবে শেষ হয়েছে; কোন বৈশিষ্ট্য "
 "মান নয়"
 
-#: glib/gmarkup.c:1807
+#: glib/gmarkup.c:1812
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "একটি বৈশিষ্ট্য মান এর অভ্যন্তরে নথী অপ্রত্যাশিতভাবে শেষ হয়েছে"
 
-#: glib/gmarkup.c:1822
+#: glib/gmarkup.c:1827
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "নথী অপ্রত্যাশিতভাবে শেষ হয়েছে উপাদান '%s' এর বন্ধ ট্যাগ এর অভ্যন্তরে"
 
-#: glib/gmarkup.c:1828
+#: glib/gmarkup.c:1833
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "নথী অপ্রত্যাশিতভাবে শেষ হয়েছে একটি মন্তব্য বা প্রসেসরত নির্দেশের অভ্যন্তরে"
 
@@ -625,18 +625,18 @@ msgstr "চাইল্ড প্রসেস \"%s\" কার্যকর ক�
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "চাইল্ড পিয়াইডি পাইপ (%s) থেকে যথেস্ট তথ্য পড়তে ব্যর্থ"
 
-#: glib/gutf8.c:1017
+#: glib/gutf8.c:1023
 #, c-format
 msgid "Character out of range for UTF-8"
 msgstr "অক্ষর ইউটিএফ-৮ আয়তার বাইরে"
 
-#: glib/gutf8.c:1111 glib/gutf8.c:1120 glib/gutf8.c:1252 glib/gutf8.c:1261
-#: glib/gutf8.c:1402 glib/gutf8.c:1498
+#: glib/gutf8.c:1117 glib/gutf8.c:1126 glib/gutf8.c:1258 glib/gutf8.c:1267
+#: glib/gutf8.c:1408 glib/gutf8.c:1504
 #, c-format
 msgid "Invalid sequence in conversion input"
 msgstr "পরিবর্তন করার জন্য দেয়া তথ্য সঠিক নয়"
 
-#: glib/gutf8.c:1413 glib/gutf8.c:1509
+#: glib/gutf8.c:1419 glib/gutf8.c:1515
 #, c-format
 msgid "Character out of range for UTF-16"
 msgstr "অক্ষর ইউটিএফ-১৬ আয়তার বাইরে"

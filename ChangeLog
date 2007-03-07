@@ -1,4 +1,9 @@
-2007-03-06  Matthias Clasen  <mclasen@redhat.com>
+2007-03-07  Matthias Clasen  <mclasen@redhat.com>
+	
+	* === Released 2.12.10 ===
+
+	* tests/threadpool-test.c: Stop unused threads before
+	the last test, to make the test terminate reliably.
 
 	* NEWS: Updates
 

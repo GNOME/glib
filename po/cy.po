@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-01-16 18:50-0500\n"
+"POT-Creation-Date: 2007-03-07 00:17-0500\n"
 "PO-Revision-Date: 2006-06-29 19:38+0100\n"
 "Last-Translator: Rhys Jones <rhys@sucs.org>\n"
 "Language-Team: Welsh <gnome-cy@pengwyn.linux.org.uk>\n"
@@ -99,8 +99,8 @@ msgid "Could not open converter from '%s' to '%s'"
 msgstr "Methwyd agor trawsnewidydd rhwng '%s' a '%s'"
 
 #: glib/gconvert.c:621 glib/gconvert.c:1010 glib/giochannel.c:1322
-#: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:943
-#: glib/gutf8.c:1392
+#: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:949
+#: glib/gutf8.c:1398
 #, c-format
 msgid "Invalid byte sequence in conversion input"
 msgstr "Dilyniant beit annilys ym mewnbwn trawsnewid"
@@ -111,8 +111,8 @@ msgstr "Dilyniant beit annilys ym mewnbwn trawsnewid"
 msgid "Error during conversion: %s"
 msgstr "Gwall wrth drawsnewid: %s"
 
-#: glib/gconvert.c:662 glib/gutf8.c:939 glib/gutf8.c:1143 glib/gutf8.c:1284
-#: glib/gutf8.c:1388
+#: glib/gconvert.c:662 glib/gutf8.c:945 glib/gutf8.c:1149 glib/gutf8.c:1290
+#: glib/gutf8.c:1394
 #, c-format
 msgid "Partial character sequence at end of input"
 msgstr "Dilyniant nod rhannol ar ddiwedd y mewnbwn"
@@ -357,15 +357,15 @@ msgstr "Cyfeiriant endid heb ei orffen"
 msgid "Unfinished character reference"
 msgstr "Cyfeiriant nod heb ei orffen"
 
-#: glib/gmarkup.c:958 glib/gmarkup.c:986 glib/gmarkup.c:1017
+#: glib/gmarkup.c:958 glib/gmarkup.c:986 glib/gmarkup.c:1022
 msgid "Invalid UTF-8 encoded text"
 msgstr "Testun annilys wedi ei amgodio fel UTF-8"
 
-#: glib/gmarkup.c:1053
+#: glib/gmarkup.c:1058
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Rhaid i'r ddogfen ddechrau gydag elfen (e.e. <llyfr>)"
 
-#: glib/gmarkup.c:1093
+#: glib/gmarkup.c:1098
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -373,14 +373,14 @@ msgid ""
 msgstr ""
 "Nid yw '%s' yn nod dilys yn dilyn '<'; nid yw'n gallu dechrau enw elfen"
 
-#: glib/gmarkup.c:1157
+#: glib/gmarkup.c:1162
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
 "'%s'"
 msgstr "Nod od '%s', disgwyliwyd '>' er mwyn gorffen tag dechrau'r elfen '%s'"
 
-#: glib/gmarkup.c:1246
+#: glib/gmarkup.c:1251
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -388,7 +388,7 @@ msgstr ""
 "Nod od '%s', disgwyliwyd '=' ar ôl yr enw priodoledd '%s' o'r elfen '%s'"
 
 # c-format
-#: glib/gmarkup.c:1288
+#: glib/gmarkup.c:1293
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -399,7 +399,7 @@ msgstr ""
 "s', neu briodoledd ddewisol; efallai defnyddiwyd nod annilys mewn enw "
 "priodoledd"
 
-#: glib/gmarkup.c:1377
+#: glib/gmarkup.c:1382
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -408,7 +408,7 @@ msgstr ""
 "Nod od '%s', disgwyliwyd dyfynnod agored ar ôl y '=' wrth roi gwerth i'r "
 "priodoledd '%s' o'r elfen '%s'"
 
-#: glib/gmarkup.c:1522
+#: glib/gmarkup.c:1527
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -417,7 +417,7 @@ msgstr ""
 "Nid yw '%s' yn nod ddilys yn dilyn y nodau '</'; nid yw '%s' yn gallu "
 "dechrau enw elfen."
 
-#: glib/gmarkup.c:1562
+#: glib/gmarkup.c:1567
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -426,26 +426,26 @@ msgstr ""
 "Nid yw '%s' yn nod ddilys yn dilyn y nodau '</'; nid yw '%s' yn gallu "
 "dechrau enw elfen."
 
-#: glib/gmarkup.c:1573
+#: glib/gmarkup.c:1578
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "Cafodd yr elfen '%s' ei gau, nid oes elfen ar agor ar hyn o bryd"
 
-#: glib/gmarkup.c:1582
+#: glib/gmarkup.c:1587
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr ""
 "Cafodd yr elfen '%s' ei gau, ond yr elfen sydd ar agor ar hyn o bryd yw '%s'"
 
-#: glib/gmarkup.c:1748
+#: glib/gmarkup.c:1753
 msgid "Document was empty or contained only whitespace"
 msgstr "Roedd y ddogfen yn wag neu'n cynnwys gofod yn unig"
 
-#: glib/gmarkup.c:1762
+#: glib/gmarkup.c:1767
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "Gorffennodd y ddogfen yn annisgwyl ar ôl '<'"
 
-#: glib/gmarkup.c:1770 glib/gmarkup.c:1814
+#: glib/gmarkup.c:1775 glib/gmarkup.c:1819
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -454,7 +454,7 @@ msgstr ""
 "Gorffennodd y ddogfen yn annisgwyl tra roedd elfennau ar agor - '%s' oedd yr "
 "elfen ddiwethaf a agorwyd"
 
-#: glib/gmarkup.c:1778
+#: glib/gmarkup.c:1783
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -463,19 +463,19 @@ msgstr ""
 "Gorffennodd y ddogfen yn annisgwyl, disgwyliwyd ongl-fraced caeedig i "
 "ddiweddu'r tag <%s/>"
 
-#: glib/gmarkup.c:1784
+#: glib/gmarkup.c:1789
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Gorffennodd y ddogfen yn annisgwyl y tu fewn i enw elfen"
 
-#: glib/gmarkup.c:1789
+#: glib/gmarkup.c:1794
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Gorffennodd y ddogfen yn annisgwyl y tu fewn i enw priodoledd"
 
-#: glib/gmarkup.c:1794
+#: glib/gmarkup.c:1799
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Gorffennodd y ddogfen yn annisgwyl y tu fewn i dag agor elfen"
 
-#: glib/gmarkup.c:1800
+#: glib/gmarkup.c:1805
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -483,16 +483,16 @@ msgstr ""
 "Gorffennodd y ddogfen yn annisgwyl ar ôl yr hafalnod yn dilyn enw "
 "priodoledd; dim gwerth priodoledd"
 
-#: glib/gmarkup.c:1807
+#: glib/gmarkup.c:1812
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Gorffennodd y ddogfen yn annisgwyl y tu fewn i werth priodoledd"
 
-#: glib/gmarkup.c:1822
+#: glib/gmarkup.c:1827
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "Gorffennodd y ddogfen yn annisgwyl y tu fewn i dag cau'r elfen '%s'"
 
-#: glib/gmarkup.c:1828
+#: glib/gmarkup.c:1833
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Gorffennodd y ddogfen yn annisgwyl y tu fewn i sylw neu gyfarwyddiad brosesu"
@@ -632,18 +632,18 @@ msgstr "Gwall anhysbys wrth weithredu proses blentyn \"%s\""
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Methwyd darllen digon o ddata o bibell plentyn (%s)"
 
-#: glib/gutf8.c:1017
+#: glib/gutf8.c:1023
 #, c-format
 msgid "Character out of range for UTF-8"
 msgstr "Nod y tu allan i ystod ddilys UTF-8"
 
-#: glib/gutf8.c:1111 glib/gutf8.c:1120 glib/gutf8.c:1252 glib/gutf8.c:1261
-#: glib/gutf8.c:1402 glib/gutf8.c:1498
+#: glib/gutf8.c:1117 glib/gutf8.c:1126 glib/gutf8.c:1258 glib/gutf8.c:1267
+#: glib/gutf8.c:1408 glib/gutf8.c:1504
 #, c-format
 msgid "Invalid sequence in conversion input"
 msgstr "Dilyniant annilys ym mewnbwn trawsnewidiad"
 
-#: glib/gutf8.c:1413 glib/gutf8.c:1509
+#: glib/gutf8.c:1419 glib/gutf8.c:1515
 #, c-format
 msgid "Character out of range for UTF-16"
 msgstr "Nod y tu allan i ystod ddilys UTF-16"

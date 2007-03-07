@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.12\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-01-16 18:50-0500\n"
+"POT-Creation-Date: 2007-03-07 00:17-0500\n"
 "PO-Revision-Date: 2005-03-28 19:34-0700\n"
 "Last-Translator: Steve Murphy <murf@e-tools.com>\n"
 "Language-Team: Kinyarwanda <translation-team-rw@lists.sourceforge.net>\n"
@@ -106,8 +106,8 @@ msgid "Could not open converter from '%s' to '%s'"
 msgstr "OYA Gufungura Bivuye Kuri"
 
 #: glib/gconvert.c:621 glib/gconvert.c:1010 glib/giochannel.c:1322
-#: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:943
-#: glib/gutf8.c:1392
+#: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:949
+#: glib/gutf8.c:1398
 #, fuzzy, c-format
 msgid "Invalid byte sequence in conversion input"
 msgstr "Bayite in Ihindurangero Iyinjiza"
@@ -118,8 +118,8 @@ msgstr "Bayite in Ihindurangero Iyinjiza"
 msgid "Error during conversion: %s"
 msgstr "Ihindurangero"
 
-#: glib/gconvert.c:662 glib/gutf8.c:939 glib/gutf8.c:1143 glib/gutf8.c:1284
-#: glib/gutf8.c:1388
+#: glib/gconvert.c:662 glib/gutf8.c:945 glib/gutf8.c:1149 glib/gutf8.c:1290
+#: glib/gutf8.c:1394
 #, fuzzy, c-format
 msgid "Partial character sequence at end of input"
 msgstr "Inyuguti ku Impera Bya Iyinjiza"
@@ -361,24 +361,24 @@ msgstr "Indango"
 msgid "Unfinished character reference"
 msgstr "Inyuguti Indango"
 
-#: glib/gmarkup.c:958 glib/gmarkup.c:986 glib/gmarkup.c:1017
+#: glib/gmarkup.c:958 glib/gmarkup.c:986 glib/gmarkup.c:1022
 #, fuzzy
 msgid "Invalid UTF-8 encoded text"
 msgstr "8 Umwandiko"
 
-#: glib/gmarkup.c:1053
+#: glib/gmarkup.c:1058
 #, fuzzy
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "g."
 
-#: glib/gmarkup.c:1093
+#: glib/gmarkup.c:1098
 #, fuzzy, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
 msgstr "'%s'ni OYA a Byemewe Inyuguti a Inyuguti Gicurasi OYA Ikigize: Izina:"
 
-#: glib/gmarkup.c:1157
+#: glib/gmarkup.c:1162
 #, fuzzy, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
@@ -386,13 +386,13 @@ msgid ""
 msgstr ""
 "Inyuguti Ikitezwe: a Inyuguti Kuri Impera Gutangira Itagi: Bya Ikigize:"
 
-#: glib/gmarkup.c:1246
+#: glib/gmarkup.c:1251
 #, fuzzy, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr "Inyuguti Ikitezwe: a Nyuma Ikiranga Izina: Bya Ikigize:"
 
-#: glib/gmarkup.c:1288
+#: glib/gmarkup.c:1293
 #, fuzzy, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -402,7 +402,7 @@ msgstr ""
 "Inyuguti Ikitezwe: a Cyangwa Inyuguti Kuri Impera Gutangira Itagi: Bya "
 "Ikigize: Cyangwa Ikiranga Sibyo Inyuguti in Ikiranga Izina:"
 
-#: glib/gmarkup.c:1377
+#: glib/gmarkup.c:1382
 #, fuzzy, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -411,87 +411,87 @@ msgstr ""
 "Inyuguti Ikitezwe: Gufungura Gushyiraho akugarizo Ikimenyetso Nyuma "
 "IKIMENYETSO Ryari: Agaciro kugirango Ikiranga Bya Ikigize:"
 
-#: glib/gmarkup.c:1522
+#: glib/gmarkup.c:1527
 #, fuzzy, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 msgstr "'%s'ni OYA a Byemewe Inyuguti Inyuguti Gicurasi OYA Ikigize: Izina:"
 
-#: glib/gmarkup.c:1562
+#: glib/gmarkup.c:1567
 #, fuzzy, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 msgstr "'%s'ni OYA a Byemewe Inyuguti Gufunga Ikigize: Izina: Inyuguti ni"
 
-#: glib/gmarkup.c:1573
+#: glib/gmarkup.c:1578
 #, fuzzy, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "Oya Ikigize: ni Gufungura"
 
-#: glib/gmarkup.c:1582
+#: glib/gmarkup.c:1587
 #, fuzzy, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "Gufungura Ikigize: ni"
 
-#: glib/gmarkup.c:1748
+#: glib/gmarkup.c:1753
 #, fuzzy
 msgid "Document was empty or contained only whitespace"
 msgstr "ubusa Cyangwa"
 
-#: glib/gmarkup.c:1762
+#: glib/gmarkup.c:1767
 #, fuzzy
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "Nyuma Gufungura Imfuruka"
 
-#: glib/gmarkup.c:1770 glib/gmarkup.c:1814
+#: glib/gmarkup.c:1775 glib/gmarkup.c:1819
 #, fuzzy, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
 "element opened"
 msgstr "Na: Ibintu Gufungura Iheruka Ikigize:"
 
-#: glib/gmarkup.c:1778
+#: glib/gmarkup.c:1783
 #, fuzzy, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
 "the tag <%s/>"
 msgstr "Ikitezwe: Kuri a Gufunga Imfuruka Itagi:"
 
-#: glib/gmarkup.c:1784
+#: glib/gmarkup.c:1789
 #, fuzzy
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Mo Imbere Ikigize: Izina:"
 
-#: glib/gmarkup.c:1789
+#: glib/gmarkup.c:1794
 #, fuzzy
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Mo Imbere Ikiranga Izina:"
 
-#: glib/gmarkup.c:1794
+#: glib/gmarkup.c:1799
 #, fuzzy
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Mo Imbere Ikigize: Gufungura%S Itagi:"
 
-#: glib/gmarkup.c:1800
+#: glib/gmarkup.c:1805
 #, fuzzy
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
 msgstr "Nyuma IKIMENYETSO Ikiranga Izina: Oya Ikiranga Agaciro"
 
-#: glib/gmarkup.c:1807
+#: glib/gmarkup.c:1812
 #, fuzzy
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Mo Imbere Ikiranga Agaciro"
 
-#: glib/gmarkup.c:1822
+#: glib/gmarkup.c:1827
 #, fuzzy, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "Mo Imbere Gufunga Itagi: kugirango Ikigize:"
 
-#: glib/gmarkup.c:1828
+#: glib/gmarkup.c:1833
 #, fuzzy
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "Mo Imbere a Icyo wongeraho Cyangwa Inonosora"
@@ -627,18 +627,18 @@ msgstr "Ikosa Gukora: %s%s"
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Kuri Gusoma Ibyatanzwe Bivuye"
 
-#: glib/gutf8.c:1017
+#: glib/gutf8.c:1023
 #, fuzzy, c-format
 msgid "Character out of range for UTF-8"
 msgstr "Inyuma Bya Urutonde kugirango 8"
 
-#: glib/gutf8.c:1111 glib/gutf8.c:1120 glib/gutf8.c:1252 glib/gutf8.c:1261
-#: glib/gutf8.c:1402 glib/gutf8.c:1498
+#: glib/gutf8.c:1117 glib/gutf8.c:1126 glib/gutf8.c:1258 glib/gutf8.c:1267
+#: glib/gutf8.c:1408 glib/gutf8.c:1504
 #, fuzzy, c-format
 msgid "Invalid sequence in conversion input"
 msgstr "in Ihindurangero Iyinjiza"
 
-#: glib/gutf8.c:1413 glib/gutf8.c:1509
+#: glib/gutf8.c:1419 glib/gutf8.c:1515
 #, fuzzy, c-format
 msgid "Character out of range for UTF-16"
 msgstr "Inyuma Bya Urutonde kugirango"

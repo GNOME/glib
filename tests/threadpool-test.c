@@ -405,6 +405,9 @@ test_check_start_and_stop (gpointer user_data)
       test_thread_sort (TRUE);  
       break;
     case 6:
+      test_thread_stop_unused ();
+      break;
+    case 7:
       test_thread_idle_time ();   
       break;
     default:
@@ -434,7 +437,7 @@ test_check_start_and_stop (gpointer user_data)
     G_UNLOCK (thread_counter_sort); 
   }
 
-  if (test_number == 6) {
+  if (test_number == 7) {
     guint idle;
 
     idle = g_thread_pool_get_num_unused_threads ();

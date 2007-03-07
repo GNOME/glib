@@ -1,7 +1,7 @@
 General Information
 ===================
 
-This is GLib version 2.12.9. GLib is the low-level core
+This is GLib version 2.12.10. GLib is the low-level core
 library that forms the basis for projects such as GTK+ and GNOME. It
 provides data structure handling for C, portability wrappers, and
 interfaces for such runtime functionality as an event loop, threads,
@@ -159,8 +159,9 @@ to that bug report.
 Otherwise, enter a new bug report that describes the patch,
 and attach the patch to that bug report.
 
-Bug reports containing patches that add to or change the GLib programming
-interface should include the API keyword in their keyword fields.
+Bug reports containing patches should include the PATCH keyword
+in their keyword fields. If the patch adds to or changes the GLib 
+programming interface, the API keyword should also be included.
 
 Patches should be in unified diff form. (The -u option to GNU
 diff.)
