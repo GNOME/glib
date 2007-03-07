@@ -1,3 +1,24 @@
+Overview of Changes from GLib 2.12.9 to GLib 2.12.10
+====================================================
+
+* Bugs fixed:
+ 149144 Missing linker flags in tests prevent build with -z defs ...
+ 399611 Variable checking base64 public functions
+ 350802 GMarkupParser reports wrong position for invalid UTF-8
+ 398069 Files missing from GLib distribution
+ 398203 Screwy definition of g_date_set_time()
+ 399971 goption flag typo
+ 400044 g_utf8_char_validated doesn't return -2 when maxlen is 0
+ 404832 g_date_strftime should use wcsftime if available
+ 407431 GLib-Genmarshal-WARNING **: failed to open "/dev/stdin": ...
+ 341988 don't use "-c" with msgfmt in Makefile.in.in
+ 346808 Minor tweaks for using GLib from Digital Mars c/c++ compi...
+ 396899 glib mentions non-existing PATCH bugzilla keyword 
+
+* New and updated translations (ar,be@latin,bn_IN,dz,en_GB,et,fi,
+  fr,gu,hu,it,ko,lt,mk,nb,nl,pl,pt,pt_BR,sq,sv,uk,zh_HK,zh_TW)
+
+
 Overview of Changes from GLib 2.12.8 to GLib 2.12.9
 ===================================================
 
