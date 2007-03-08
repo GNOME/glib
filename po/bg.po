@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-01-10 01:09+0200\n"
-"PO-Revision-Date: 2007-01-10 01:05+0200\n"
+"POT-Creation-Date: 2007-03-08 08:50+0200\n"
+"PO-Revision-Date: 2007-03-08 08:20+0200\n"
 "Last-Translator: Alexander Shopov <ash@contact.bg>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
 "MIME-Version: 1.0\n"
@@ -16,142 +16,142 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: ../glib/gbookmarkfile.c:716 ../glib/gbookmarkfile.c:793
-#: ../glib/gbookmarkfile.c:872 ../glib/gbookmarkfile.c:919
+#: ../glib/gbookmarkfile.c:704 ../glib/gbookmarkfile.c:781
+#: ../glib/gbookmarkfile.c:860 ../glib/gbookmarkfile.c:907
 #, c-format
 msgid "Unexpected attribute '%s' for element '%s'"
 msgstr "Неочакван атрибут „%s“ на елемента „%s“"
 
-#: ../glib/gbookmarkfile.c:727 ../glib/gbookmarkfile.c:804
-#: ../glib/gbookmarkfile.c:814 ../glib/gbookmarkfile.c:930
+#: ../glib/gbookmarkfile.c:715 ../glib/gbookmarkfile.c:792
+#: ../glib/gbookmarkfile.c:802 ../glib/gbookmarkfile.c:918
 #, c-format
 msgid "Attribute '%s' of element '%s' not found"
 msgstr "Атрибутът „%s“ на елемента „%s“ не е открит"
 
-#: ../glib/gbookmarkfile.c:1103 ../glib/gbookmarkfile.c:1168
-#: ../glib/gbookmarkfile.c:1232 ../glib/gbookmarkfile.c:1242
+#: ../glib/gbookmarkfile.c:1091 ../glib/gbookmarkfile.c:1156
+#: ../glib/gbookmarkfile.c:1220 ../glib/gbookmarkfile.c:1230
 #, c-format
 msgid "Unexpected tag '%s', tag '%s' expected"
 msgstr "Неочакван етикет „%s“, очакваше се „%s“"
 
-#: ../glib/gbookmarkfile.c:1128 ../glib/gbookmarkfile.c:1142
-#: ../glib/gbookmarkfile.c:1210 ../glib/gbookmarkfile.c:1262
+#: ../glib/gbookmarkfile.c:1116 ../glib/gbookmarkfile.c:1130
+#: ../glib/gbookmarkfile.c:1198 ../glib/gbookmarkfile.c:1250
 #, c-format
 msgid "Unexpected tag '%s' inside '%s'"
 msgstr "Неочакван етикет „%s“ вътре в „%s“"
 
-#: ../glib/gbookmarkfile.c:1792
+#: ../glib/gbookmarkfile.c:1780
 msgid "No valid bookmark file found in data dirs"
 msgstr "Не може да се открие валиден файл с отметки в папките с данни"
 
-#: ../glib/gbookmarkfile.c:1993
+#: ../glib/gbookmarkfile.c:1981
 #, c-format
 msgid "A bookmark for URI '%s' already exists"
 msgstr "Вече съществува отметка за адреса „%s“"
 
-#: ../glib/gbookmarkfile.c:2039 ../glib/gbookmarkfile.c:2196
-#: ../glib/gbookmarkfile.c:2281 ../glib/gbookmarkfile.c:2362
-#: ../glib/gbookmarkfile.c:2447 ../glib/gbookmarkfile.c:2530
-#: ../glib/gbookmarkfile.c:2608 ../glib/gbookmarkfile.c:2687
-#: ../glib/gbookmarkfile.c:2729 ../glib/gbookmarkfile.c:2826
-#: ../glib/gbookmarkfile.c:2952 ../glib/gbookmarkfile.c:3142
-#: ../glib/gbookmarkfile.c:3218 ../glib/gbookmarkfile.c:3381
-#: ../glib/gbookmarkfile.c:3456 ../glib/gbookmarkfile.c:3546
-#: ../glib/gbookmarkfile.c:3673
+#: ../glib/gbookmarkfile.c:2027 ../glib/gbookmarkfile.c:2184
+#: ../glib/gbookmarkfile.c:2269 ../glib/gbookmarkfile.c:2349
+#: ../glib/gbookmarkfile.c:2434 ../glib/gbookmarkfile.c:2517
+#: ../glib/gbookmarkfile.c:2595 ../glib/gbookmarkfile.c:2674
+#: ../glib/gbookmarkfile.c:2716 ../glib/gbookmarkfile.c:2813
+#: ../glib/gbookmarkfile.c:2939 ../glib/gbookmarkfile.c:3129
+#: ../glib/gbookmarkfile.c:3205 ../glib/gbookmarkfile.c:3368
+#: ../glib/gbookmarkfile.c:3443 ../glib/gbookmarkfile.c:3533
+#: ../glib/gbookmarkfile.c:3660
 #, c-format
 msgid "No bookmark found for URI '%s'"
 msgstr "Не е открита отметка за адреса „%s“"
 
-#: ../glib/gbookmarkfile.c:2371
+#: ../glib/gbookmarkfile.c:2358
 #, c-format
 msgid "No MIME type defined in the bookmark for URI '%s'"
 msgstr "Не е указан типът MIME в отметката към адреса „%s“"
 
-#: ../glib/gbookmarkfile.c:2456
+#: ../glib/gbookmarkfile.c:2443
 #, c-format
 msgid "No private flag has been defined in bookmark for URI '%s'"
 msgstr "Не е зададен флаг за лични данни за адреса „%s“"
 
-#: ../glib/gbookmarkfile.c:2835
+#: ../glib/gbookmarkfile.c:2822
 #, c-format
 msgid "No groups set in bookmark for URI '%s'"
 msgstr "Не са зададени групи в отметката за адреса „%s“"
 
-#: ../glib/gbookmarkfile.c:3236 ../glib/gbookmarkfile.c:3391
+#: ../glib/gbookmarkfile.c:3223 ../glib/gbookmarkfile.c:3378
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
 msgstr "Никое приложение „%s“ не е регистрирало отметка за „%s“"
 
-#: ../glib/gbookmarkfile.c:3404
+#: ../glib/gbookmarkfile.c:3391
 #, c-format
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "Неуспех при разширяването на реда за изпълнение „%s“ с адреса „%s“"
 
-#: ../glib/gconvert.c:423 ../glib/gconvert.c:501 ../glib/giochannel.c:1150
+#: ../glib/gconvert.c:424 ../glib/gconvert.c:502 ../glib/giochannel.c:1148
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Преобразуването от набора символи „%s“ към „%s“ не се поддържа"
 
-#: ../glib/gconvert.c:427 ../glib/gconvert.c:505
+#: ../glib/gconvert.c:428 ../glib/gconvert.c:506
 #, c-format
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "Не може да се отвори конвертор от „%s“ към „%s“"
 
-#: ../glib/gconvert.c:621 ../glib/gconvert.c:1010 ../glib/giochannel.c:1322
-#: ../glib/giochannel.c:1364 ../glib/giochannel.c:2206 ../glib/gutf8.c:943
-#: ../glib/gutf8.c:1392
+#: ../glib/gconvert.c:622 ../glib/gconvert.c:1011 ../glib/giochannel.c:1320
+#: ../glib/giochannel.c:1362 ../glib/giochannel.c:2204 ../glib/gutf8.c:949
+#: ../glib/gutf8.c:1398
 msgid "Invalid byte sequence in conversion input"
 msgstr "Грешна байтова последователност на входа за преобразуване"
 
-#: ../glib/gconvert.c:627 ../glib/gconvert.c:937 ../glib/giochannel.c:1329
-#: ../glib/giochannel.c:2218
+#: ../glib/gconvert.c:628 ../glib/gconvert.c:938 ../glib/giochannel.c:1327
+#: ../glib/giochannel.c:2216
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Грешка по време на преобразуване: %s"
 
-#: ../glib/gconvert.c:662 ../glib/gutf8.c:939 ../glib/gutf8.c:1143
-#: ../glib/gutf8.c:1284 ../glib/gutf8.c:1388
+#: ../glib/gconvert.c:663 ../glib/gutf8.c:945 ../glib/gutf8.c:1149
+#: ../glib/gutf8.c:1290 ../glib/gutf8.c:1394
 msgid "Partial character sequence at end of input"
 msgstr "Непълна символна последователност в края на входните данни"
 
-#: ../glib/gconvert.c:912
+#: ../glib/gconvert.c:913
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr ""
 "Заместващият символ „%s“ не може да бъде преобразуван към символ от набора „%"
 "s“"
 
-#: ../glib/gconvert.c:1726
+#: ../glib/gconvert.c:1727
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
-msgstr "URI „%s“ не е абсолютен URI при използване на схемата „файл“"
+msgstr "Адресът „%s“ не е абсолютен при използване на схемата „файл“"
 
-#: ../glib/gconvert.c:1736
+#: ../glib/gconvert.c:1737
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
-msgstr "URI „%s“ към локален файл не може да включва „#“"
+msgstr "Адресът „%s“ на локален файл не може да включва „#“"
 
-#: ../glib/gconvert.c:1753
+#: ../glib/gconvert.c:1754
 #, c-format
 msgid "The URI '%s' is invalid"
-msgstr "URI „%s“ е неправилен"
+msgstr "Адресът „%s“ е неправилен"
 
-#: ../glib/gconvert.c:1765
+#: ../glib/gconvert.c:1766
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
-msgstr "Името на хоста в URI „%s“ е невалидно"
+msgstr "Името на хоста в адреса „%s“ е невалидно"
 
-#: ../glib/gconvert.c:1781
+#: ../glib/gconvert.c:1782
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
-msgstr "URI „%s“ съдържа грешни екраниращи последователности"
+msgstr "Адресът „%s“ съдържа грешни екраниращи последователности"
 
-#: ../glib/gconvert.c:1876
+#: ../glib/gconvert.c:1877
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Пътят „%s“ не е абсолютен"
 
-#: ../glib/gconvert.c:1886
+#: ../glib/gconvert.c:1887
 msgid "Invalid hostname"
 msgstr "Неправилно име на хост"
 
@@ -249,25 +249,25 @@ msgstr "Неуспех при четене на символната връзк�
 msgid "Symbolic links not supported"
 msgstr "Символни връзки не се поддържат"
 
-#: ../glib/giochannel.c:1154
+#: ../glib/giochannel.c:1152
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Не може да се отвори конвертор от „%s“ към „%s“: %s"
 
-#: ../glib/giochannel.c:1499
+#: ../glib/giochannel.c:1497
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "Не може да се чете от g_io_channel_read_line_string"
 
-#: ../glib/giochannel.c:1546 ../glib/giochannel.c:1803
-#: ../glib/giochannel.c:1889
+#: ../glib/giochannel.c:1544 ../glib/giochannel.c:1801
+#: ../glib/giochannel.c:1887
 msgid "Leftover unconverted data in read buffer"
 msgstr "В буфера за четене останаха непреобразувани данни"
 
-#: ../glib/giochannel.c:1626 ../glib/giochannel.c:1703
+#: ../glib/giochannel.c:1624 ../glib/giochannel.c:1701
 msgid "Channel terminates in a partial character"
 msgstr "Каналът прекъсна на непълен символ"
 
-#: ../glib/giochannel.c:1689
+#: ../glib/giochannel.c:1687
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Не може да се чете от g_io_channel_read_to_end"
 
@@ -367,15 +367,15 @@ msgstr "Незавършена заместваща последователно
 msgid "Unfinished character reference"
 msgstr "Незавършен указател на символ"
 
-#: ../glib/gmarkup.c:958 ../glib/gmarkup.c:986 ../glib/gmarkup.c:1017
+#: ../glib/gmarkup.c:958 ../glib/gmarkup.c:986 ../glib/gmarkup.c:1022
 msgid "Invalid UTF-8 encoded text"
 msgstr "Неправилно кодиран текст в UTF-8"
 
-#: ../glib/gmarkup.c:1053
+#: ../glib/gmarkup.c:1058
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Документът трябва да започва с елемент (напр. <book>)"
 
-#: ../glib/gmarkup.c:1093
+#: ../glib/gmarkup.c:1098
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -383,7 +383,7 @@ msgid ""
 msgstr ""
 "„%s“ е невалиден символ след „<“. Името на елемент не може да започне с него"
 
-#: ../glib/gmarkup.c:1157
+#: ../glib/gmarkup.c:1162
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
@@ -392,7 +392,7 @@ msgstr ""
 "Неподходящ символ „%s“, очаква се отварящия етикет на елемент „%s“ да "
 "завърши с „>“"
 
-#: ../glib/gmarkup.c:1246
+#: ../glib/gmarkup.c:1251
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -400,7 +400,7 @@ msgstr ""
 "Неподходящ символ „%s“, очаква се „=“ след името на атрибут „%s“ на елемент "
 "„%s“"
 
-#: ../glib/gmarkup.c:1288
+#: ../glib/gmarkup.c:1293
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -411,7 +411,7 @@ msgstr ""
 "завърши със символ „>“ или „/“, или евентуално да продължи с атрибут. Най-"
 "вероятно използвате неправилен символ в името на атрибут"
 
-#: ../glib/gmarkup.c:1377
+#: ../glib/gmarkup.c:1382
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -420,7 +420,7 @@ msgstr ""
 "Неподходящ символ „%s“, очаква се символ „\"“ след знака за равенство, "
 "когато се присвоява стойност на атрибута „%s“ на елемент „%s“"
 
-#: ../glib/gmarkup.c:1522
+#: ../glib/gmarkup.c:1527
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -429,7 +429,7 @@ msgstr ""
 "„%s“ е невалиден символ след символите „</“. Името на елемент не може да "
 "започва с „%s“"
 
-#: ../glib/gmarkup.c:1562
+#: ../glib/gmarkup.c:1567
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -438,26 +438,26 @@ msgstr ""
 "„%s“ е невалиден символ при завършването на затварящ етикет с име „%s“. "
 "Позволен е символът „>“"
 
-#: ../glib/gmarkup.c:1573
+#: ../glib/gmarkup.c:1578
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "Елементът „%s“ е затворен, няма текущо отворен елемент"
 
-#: ../glib/gmarkup.c:1582
+#: ../glib/gmarkup.c:1587
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "Елементът „%s“ е затворен, но текущо е отворен елемент „%s“"
 
-#: ../glib/gmarkup.c:1748
+#: ../glib/gmarkup.c:1753
 msgid "Document was empty or contained only whitespace"
 msgstr "Документът е празен или съдържа само празни символи"
 
-#: ../glib/gmarkup.c:1762
+#: ../glib/gmarkup.c:1767
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr ""
 "Документът завършва неочаквано веднага след отваряща счупена скоба - „<“"
 
-#: ../glib/gmarkup.c:1770 ../glib/gmarkup.c:1814
+#: ../glib/gmarkup.c:1775 ../glib/gmarkup.c:1819
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -466,7 +466,7 @@ msgstr ""
 "Документът завършва неочаквано - има отворени елементи. Последно отворен е „%"
 "s“"
 
-#: ../glib/gmarkup.c:1778
+#: ../glib/gmarkup.c:1783
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -475,19 +475,19 @@ msgstr ""
 "Документът завършва неочаквано, очаква се затваряща счупена скоба да завърши "
 "етикета <%s/>"
 
-#: ../glib/gmarkup.c:1784
+#: ../glib/gmarkup.c:1789
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Документът завършва неочаквано в името на елемент"
 
-#: ../glib/gmarkup.c:1789
+#: ../glib/gmarkup.c:1794
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Документът завършва неочаквано в името на атрибут"
 
-#: ../glib/gmarkup.c:1794
+#: ../glib/gmarkup.c:1799
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Документът завършва неочаквано в отварящ етикет на елемент "
 
-#: ../glib/gmarkup.c:1800
+#: ../glib/gmarkup.c:1805
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -495,16 +495,16 @@ msgstr ""
 "Документът завършва неочаквано след знака за равенство следващ името на "
 "атрибута. Атрибутът няма стойност"
 
-#: ../glib/gmarkup.c:1807
+#: ../glib/gmarkup.c:1812
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Документът завършва неочаквано вътре в стойността на атрибут"
 
-#: ../glib/gmarkup.c:1822
+#: ../glib/gmarkup.c:1827
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "Документът завършва неочаквано в затварящия етикет на елемент „%s“"
 
-#: ../glib/gmarkup.c:1828
+#: ../glib/gmarkup.c:1833
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "Документът завършва неочаквано в коментар или инструкция за обработка"
 
@@ -639,16 +639,16 @@ msgstr ""
 "Неуспех при четенето на достатъчно данни от канала на дъщерен процес с pid (%"
 "s)"
 
-#: ../glib/gutf8.c:1017
+#: ../glib/gutf8.c:1023
 msgid "Character out of range for UTF-8"
 msgstr "Символ извън обхвата на UTF-8"
 
-#: ../glib/gutf8.c:1111 ../glib/gutf8.c:1120 ../glib/gutf8.c:1252
-#: ../glib/gutf8.c:1261 ../glib/gutf8.c:1402 ../glib/gutf8.c:1498
+#: ../glib/gutf8.c:1117 ../glib/gutf8.c:1126 ../glib/gutf8.c:1258
+#: ../glib/gutf8.c:1267 ../glib/gutf8.c:1408 ../glib/gutf8.c:1504
 msgid "Invalid sequence in conversion input"
 msgstr "Неправилна последователност на входа за преобразуване"
 
-#: ../glib/gutf8.c:1413 ../glib/gutf8.c:1509
+#: ../glib/gutf8.c:1419 ../glib/gutf8.c:1515
 msgid "Character out of range for UTF-16"
 msgstr "Символ извън обхвата на UTF-16"
 
@@ -792,32 +792,32 @@ msgstr ""
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Ключовият файл не съдържа ключа „%s“ в групата „%s“"
 
-#: ../glib/gkeyfile.c:3346
+#: ../glib/gkeyfile.c:3365
 msgid "Key file contains escape character at end of line"
 msgstr "Ключовият файл съдържа екранираща последователност в край на ред"
 
-#: ../glib/gkeyfile.c:3368
+#: ../glib/gkeyfile.c:3387
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "Ключовият файл съдържа грешна екранираща последователност - „%s“"
 
-#: ../glib/gkeyfile.c:3510
+#: ../glib/gkeyfile.c:3529
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Стойността „%s“ не може да се интерпретира като число."
 
-#: ../glib/gkeyfile.c:3524
+#: ../glib/gkeyfile.c:3543
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "Целочислената стойност „%s“ е извън интервала на допустими стойности"
 
-#: ../glib/gkeyfile.c:3557
+#: ../glib/gkeyfile.c:3576
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr ""
 "Стойността „%s“ не може да се интерпретира като число с плаваща запетая."
 
-#: ../glib/gkeyfile.c:3584
+#: ../glib/gkeyfile.c:3600
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Стойността „%s“ не може да се интерпретира като булева."
