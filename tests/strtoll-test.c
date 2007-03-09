@@ -62,6 +62,10 @@ main (int argc, char *argv[])
   test_int64 ("9223372036854775808", "", 10, G_MAXINT64, ERANGE);
   test_int64 ("-9223372036854775808", "", 10, G_MININT64, 0);
   test_int64 ("-9223372036854775809", "", 10, G_MININT64, ERANGE);
+  test_int64 ("32768", "", 10, 32768, 0);
+  test_int64 ("-32768", "", 10, -32768, 0);
+  test_int64 ("001", "", 10, 1, 0);
+  test_int64 ("-001", "", 10, -1, 0);
 
   return 0;
 }

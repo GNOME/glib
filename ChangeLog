@@ -1,3 +1,10 @@
+2007-03-08  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gstrfuncs.c (g_strtoll): Return negative values.
+	(#416062)
+
+	* tests/strtoll-test.c: Add more testcases.
+
 2007-03-06  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gstring.c (g_str_equal): Clarify docs.  (#364026, 
