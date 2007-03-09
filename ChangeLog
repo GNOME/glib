@@ -1,5 +1,11 @@
 2007-03-08  Matthias Clasen  <mclasen@redhat.com>
 
+	* === Released 2.12.11 ===
+
+	* NEWS: Updates
+
+2007-03-08  Matthias Clasen  <mclasen@redhat.com>
+
 	Merge from trunk:
 
 	* glib/gstrfuncs.c (g_strtoll): Return negative values.

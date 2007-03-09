@@ -1,3 +1,11 @@
+Overview of Changes from GLib 2.12.10 to GLib 2.12.11
+=====================================================
+
+* Remove leftover debug spew from thread pool code
+
+* Make g_strtoll() parse negative numbers correctly
+ 
+
 Overview of Changes from GLib 2.12.9 to GLib 2.12.10
 ====================================================
 
