@@ -813,6 +813,8 @@ g_ascii_strtoll (const gchar *nptr,
       errno = ERANGE;
       return G_MAXINT64;
     }
+  else if (negative)
+    return - (gint64) result;
   else
     return (gint64) result;
 }

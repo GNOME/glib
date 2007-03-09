@@ -1,5 +1,14 @@
 2007-03-08  Matthias Clasen  <mclasen@redhat.com>
 
+	Merge from trunk:
+
+	* glib/gstrfuncs.c (g_strtoll): Return negative values.
+	(#416062)
+
+	* tests/strtoll-test.c: Add more testcases.
+
+2007-03-08  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/gthreadpool.c: Remove leftover debug spew.
 
 2007-03-07  Matthias Clasen  <mclasen@redhat.com>
