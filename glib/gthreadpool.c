@@ -29,7 +29,8 @@
 #include "glib.h"
 #include "galias.h"
 
-#define DEBUG_MSG(args) g_printerr args ; g_printerr ("\n");
+#define DEBUG_MSG(x)
+/* #define DEBUG_MSG(args) g_printerr args ; g_printerr ("\n"); */
 
 typedef struct _GRealThreadPool GRealThreadPool;
 

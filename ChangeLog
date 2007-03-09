@@ -1,3 +1,7 @@
+2007-03-08  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gthreadpool.c: Remove leftover debug spew.
+
 2007-03-07  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Bump version
