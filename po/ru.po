@@ -1,4 +1,4 @@
-# translation of glib.glib-2-12.po to
+# translation of glib to Russian
 # Copyright (C) 1998-2002, 2004, 2006 Free Software Foundation, Inc.
 #
 # Valek Filippov <frob@df.ru>, 2001-2002.
@@ -6,12 +6,12 @@
 # Leonid Kanter <leon@asplinux.ru>, 2004, 2006.
 msgid ""
 msgstr ""
-"Project-Id-Version: glib.glib-2-12\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-08 23:30-0500\n"
+"Project-Id-Version: glib 2.12\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org\n"
+"POT-Creation-Date: 2007-03-10 12:04+0300\n"
 "PO-Revision-Date: 2006-08-24 18:17+0300\n"
-"Last-Translator: Leonid Kanter <leon@asplinux.ru>\n"
-"Language-Team:  <gnome-cyr@gnome.org>\n"
+"Last-Translator: Nickolay V. Shmyrev <nshmyrev@yandex.ru>\n"
+"Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -19,296 +19,288 @@ msgstr ""
 "Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
 "10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: glib/gbookmarkfile.c:716 glib/gbookmarkfile.c:793 glib/gbookmarkfile.c:872
-#: glib/gbookmarkfile.c:919
+#: ../glib/gbookmarkfile.c:716 ../glib/gbookmarkfile.c:793
+#: ../glib/gbookmarkfile.c:872 ../glib/gbookmarkfile.c:919
 #, c-format
 msgid "Unexpected attribute '%s' for element '%s'"
 msgstr "Неожиданный атрибут \"%s\" для элемента \"%s\""
 
-#: glib/gbookmarkfile.c:727 glib/gbookmarkfile.c:804 glib/gbookmarkfile.c:814
-#: glib/gbookmarkfile.c:930
+#: ../glib/gbookmarkfile.c:727 ../glib/gbookmarkfile.c:804
+#: ../glib/gbookmarkfile.c:814 ../glib/gbookmarkfile.c:930
 #, c-format
 msgid "Attribute '%s' of element '%s' not found"
 msgstr "Атрибут \"%s\" элемента \"%s\" не найден"
 
-#: glib/gbookmarkfile.c:1103 glib/gbookmarkfile.c:1168
-#: glib/gbookmarkfile.c:1232 glib/gbookmarkfile.c:1242
+#: ../glib/gbookmarkfile.c:1103 ../glib/gbookmarkfile.c:1168
+#: ../glib/gbookmarkfile.c:1232 ../glib/gbookmarkfile.c:1242
 #, c-format
 msgid "Unexpected tag '%s', tag '%s' expected"
 msgstr "Неожиданный тег \"%s\", ожидался тег \"%s\""
 
-#: glib/gbookmarkfile.c:1128 glib/gbookmarkfile.c:1142
-#: glib/gbookmarkfile.c:1210 glib/gbookmarkfile.c:1262
+#: ../glib/gbookmarkfile.c:1128 ../glib/gbookmarkfile.c:1142
+#: ../glib/gbookmarkfile.c:1210 ../glib/gbookmarkfile.c:1262
 #, c-format
 msgid "Unexpected tag '%s' inside '%s'"
 msgstr "Неожиданный тег \"%s\" внутри \"%s\""
 
-#: glib/gbookmarkfile.c:1792
-#, c-format
+#: ../glib/gbookmarkfile.c:1792
 msgid "No valid bookmark file found in data dirs"
 msgstr "Не удается найти действительный файл закладки в каталогах данных"
 
-#: glib/gbookmarkfile.c:1993
+#: ../glib/gbookmarkfile.c:1993
 #, c-format
 msgid "A bookmark for URI '%s' already exists"
 msgstr "Закладка для URI \"%s\" уже существует"
 
-#: glib/gbookmarkfile.c:2039 glib/gbookmarkfile.c:2196
-#: glib/gbookmarkfile.c:2281 glib/gbookmarkfile.c:2362
-#: glib/gbookmarkfile.c:2447 glib/gbookmarkfile.c:2530
-#: glib/gbookmarkfile.c:2608 glib/gbookmarkfile.c:2687
-#: glib/gbookmarkfile.c:2729 glib/gbookmarkfile.c:2826
-#: glib/gbookmarkfile.c:2952 glib/gbookmarkfile.c:3142
-#: glib/gbookmarkfile.c:3218 glib/gbookmarkfile.c:3379
-#: glib/gbookmarkfile.c:3454 glib/gbookmarkfile.c:3544
-#: glib/gbookmarkfile.c:3671
+#: ../glib/gbookmarkfile.c:2039 ../glib/gbookmarkfile.c:2196
+#: ../glib/gbookmarkfile.c:2281 ../glib/gbookmarkfile.c:2362
+#: ../glib/gbookmarkfile.c:2447 ../glib/gbookmarkfile.c:2530
+#: ../glib/gbookmarkfile.c:2608 ../glib/gbookmarkfile.c:2687
+#: ../glib/gbookmarkfile.c:2729 ../glib/gbookmarkfile.c:2826
+#: ../glib/gbookmarkfile.c:2952 ../glib/gbookmarkfile.c:3142
+#: ../glib/gbookmarkfile.c:3218 ../glib/gbookmarkfile.c:3379
+#: ../glib/gbookmarkfile.c:3454 ../glib/gbookmarkfile.c:3544
+#: ../glib/gbookmarkfile.c:3671
 #, c-format
 msgid "No bookmark found for URI '%s'"
 msgstr "Не найдена закладка для URI \"%s\""
 
-#: glib/gbookmarkfile.c:2371
+#: ../glib/gbookmarkfile.c:2371
 #, c-format
 msgid "No MIME type defined in the bookmark for URI '%s'"
 msgstr "Тип MIME не определён в закладке для URI \"%s\""
 
-#: glib/gbookmarkfile.c:2456
+#: ../glib/gbookmarkfile.c:2456
 #, c-format
 msgid "No private flag has been defined in bookmark for URI '%s'"
 msgstr "Частные флаги не были определены в закладке для URI \"%s\""
 
-#: glib/gbookmarkfile.c:2835
+#: ../glib/gbookmarkfile.c:2835
 #, c-format
 msgid "No groups set in bookmark for URI '%s'"
 msgstr "Не установлены группы в закладке для URI \"%s\""
 
-#: glib/gbookmarkfile.c:3236 glib/gbookmarkfile.c:3389
+#: ../glib/gbookmarkfile.c:3236 ../glib/gbookmarkfile.c:3389
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
 msgstr ""
 "Ни одно из приложений с именем \"%s\" не зарегистрировало закладку для \"%s\""
 
-#: glib/gbookmarkfile.c:3402
-#, fuzzy, c-format
+#: ../glib/gbookmarkfile.c:3402
+#, c-format
 msgid "Failed to expand exec line '%s' with URI '%s'"
-msgstr "Произошёл сбой при чтении символической ссылки \"%s\": %s"
+msgstr "Не удалось дополнить строку выполнения '%s' с помощью URI '%s'"
 
-#: glib/gconvert.c:423 glib/gconvert.c:501 glib/giochannel.c:1150
+#: ../glib/gconvert.c:423 ../glib/gconvert.c:501 ../glib/giochannel.c:1150
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Преобразование из набора символов \"%s\" в \"%s\" не поддерживается"
 
-#: glib/gconvert.c:427 glib/gconvert.c:505
+#: ../glib/gconvert.c:427 ../glib/gconvert.c:505
 #, c-format
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "Не удалось открыть преобразователь из \"%s\" в \"%s\""
 
-#: glib/gconvert.c:621 glib/gconvert.c:1010 glib/giochannel.c:1322
-#: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:949
-#: glib/gutf8.c:1398
-#, c-format
+#: ../glib/gconvert.c:621 ../glib/gconvert.c:1010 ../glib/giochannel.c:1322
+#: ../glib/giochannel.c:1364 ../glib/giochannel.c:2206 ../glib/gutf8.c:949
+#: ../glib/gutf8.c:1398
 msgid "Invalid byte sequence in conversion input"
 msgstr ""
 "Недопустимая последовательность байтов для преобразования содержится во "
 "входной строке"
 
-#: glib/gconvert.c:627 glib/gconvert.c:937 glib/giochannel.c:1329
-#: glib/giochannel.c:2218
+#: ../glib/gconvert.c:627 ../glib/gconvert.c:937 ../glib/giochannel.c:1329
+#: ../glib/giochannel.c:2218
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Произошла ошибка при преобразовании: %s"
 
-#: glib/gconvert.c:662 glib/gutf8.c:945 glib/gutf8.c:1149 glib/gutf8.c:1290
-#: glib/gutf8.c:1394
-#, c-format
+#: ../glib/gconvert.c:662 ../glib/gutf8.c:945 ../glib/gutf8.c:1149
+#: ../glib/gutf8.c:1290 ../glib/gutf8.c:1394
 msgid "Partial character sequence at end of input"
 msgstr "Неполный символ содержится в конце входной строки"
 
-#: glib/gconvert.c:912
+#: ../glib/gconvert.c:912
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr ""
 "Невозможно корректно преобразовать символ \"%s\" в символ из набора \"%s\""
 
-#: glib/gconvert.c:1721
+#: ../glib/gconvert.c:1721
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr ""
 "URI \"%s\" не является абсолютным идентификатором при использовании схемы "
 "\"file\""
 
-#: glib/gconvert.c:1731
+#: ../glib/gconvert.c:1731
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr ""
 "Идентификатор URI локального файла \"%s\" не может включать символ \"#\""
 
-#: glib/gconvert.c:1748
+#: ../glib/gconvert.c:1748
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "Идентификатор URI \"%s\" недопустим"
 
-#: glib/gconvert.c:1760
+#: ../glib/gconvert.c:1760
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Имя узла недопустимо в идентификаторе URI \"%s\""
 
-#: glib/gconvert.c:1776
+#: ../glib/gconvert.c:1776
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "Идентификатор URI \"%s\" содержит недопустимо экранированный символ"
 
-#: glib/gconvert.c:1871
+#: ../glib/gconvert.c:1871
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Путь \"%s\" не является абсолютным"
 
-#: glib/gconvert.c:1881
-#, c-format
+#: ../glib/gconvert.c:1881
 msgid "Invalid hostname"
 msgstr "Имя узла недопустимо"
 
-#: glib/gdir.c:121 glib/gdir.c:141
+#: ../glib/gdir.c:121 ../glib/gdir.c:141
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "Произошла ошибка при открытии каталога \"%s\": %s"
 
-#: glib/gfileutils.c:572 glib/gfileutils.c:645
+#: ../glib/gfileutils.c:572 ../glib/gfileutils.c:645
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Не удалось распределить %lu байтов для прочтения файла \"%s\""
 
-#: glib/gfileutils.c:587
+#: ../glib/gfileutils.c:587
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Произошла ошибка при чтении файла \"%s\": %s"
 
-#: glib/gfileutils.c:669
+#: ../glib/gfileutils.c:669
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Сбой при чтении из файла \"%s\": %s"
 
-#: glib/gfileutils.c:720 glib/gfileutils.c:807
+#: ../glib/gfileutils.c:720 ../glib/gfileutils.c:807
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Сбой при открытии файла \"%s\": %s"
 
-#: glib/gfileutils.c:737 glib/gmappedfile.c:133
+#: ../glib/gfileutils.c:737 ../glib/gmappedfile.c:133
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Сбой при получении аттрибутов файла \"%s\": сбой в функции fstat(): %s"
 
-#: glib/gfileutils.c:771
+#: ../glib/gfileutils.c:771
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Сбой при открытии файла \"%s\": сбой в функции fdopen(): %s"
 
-#: glib/gfileutils.c:905
+#: ../glib/gfileutils.c:905
 #, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "Не удается переименовать файл '%s' в '%s': сбой функции g_rename(): %s"
 
-#: glib/gfileutils.c:946 glib/gfileutils.c:1404
+#: ../glib/gfileutils.c:946 ../glib/gfileutils.c:1404
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Произошёл сбой при создании файла \"%s\": %s"
 
-#: glib/gfileutils.c:960
+#: ../glib/gfileutils.c:960
 #, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr "Не удается открыть файл \"%s\" для записи: сбой в функции fdopen(): %s"
 
-#: glib/gfileutils.c:985
+#: ../glib/gfileutils.c:985
 #, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "Не удается записать файл \"%s\": сбой в функции fwrite(): %s"
 
-#: glib/gfileutils.c:1004
+#: ../glib/gfileutils.c:1004
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "Не удается закрыть файл \"%s\": сбой в функции fclose(): %s"
 
-#: glib/gfileutils.c:1122
+#: ../glib/gfileutils.c:1122
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "Существующий файл '%s' не может быть удалён: сбой g_unlink(): %s"
 
-#: glib/gfileutils.c:1366
+#: ../glib/gfileutils.c:1366
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Шаблон \"%s\" недопустим: он не должен содержать \"%s\""
 
-#: glib/gfileutils.c:1379
+#: ../glib/gfileutils.c:1379
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "Шаблон \"%s\" не содержит XXXXXX"
 
-#: glib/gfileutils.c:1854
+#: ../glib/gfileutils.c:1854
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Произошёл сбой при чтении символической ссылки \"%s\": %s"
 
-#: glib/gfileutils.c:1875
-#, c-format
+#: ../glib/gfileutils.c:1875
 msgid "Symbolic links not supported"
 msgstr "Символические ссылки не поддерживаются"
 
-#: glib/giochannel.c:1154
+#: ../glib/giochannel.c:1154
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Не удалось открыть преобразователь из \"%s\" в \"%s\": %s"
 
-#: glib/giochannel.c:1499
-#, c-format
+#: ../glib/giochannel.c:1499
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr ""
 "Невозможно выполнить непосредственное чтение в функции "
 "g_io_channel_read_line_string"
 
-#: glib/giochannel.c:1546 glib/giochannel.c:1803 glib/giochannel.c:1889
-#, c-format
+#: ../glib/giochannel.c:1546 ../glib/giochannel.c:1803
+#: ../glib/giochannel.c:1889
 msgid "Leftover unconverted data in read buffer"
 msgstr "Непреобразованные данные остались в буфере чтения "
 
-#: glib/giochannel.c:1626 glib/giochannel.c:1703
-#, c-format
+#: ../glib/giochannel.c:1626 ../glib/giochannel.c:1703
 msgid "Channel terminates in a partial character"
 msgstr "Канал закрывается на неполном символе"
 
-#: glib/giochannel.c:1689
-#, c-format
+#: ../glib/giochannel.c:1689
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr ""
 "Невозможно выполнить непосредственное чтение в функции "
 "g_io_channel_read_to_end"
 
-#: glib/gmappedfile.c:116
+#: ../glib/gmappedfile.c:116
 #, c-format
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "Не удалось открыть файл \"%s\": сбой в функции fdopen(): %s"
 
-#: glib/gmappedfile.c:193
+#: ../glib/gmappedfile.c:193
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "Не удается отразить файл \"%s\": сбой в функции mmap(): %s"
 
-#: glib/gmarkup.c:226
+#: ../glib/gmarkup.c:226
 #, c-format
 msgid "Error on line %d char %d: %s"
 msgstr "Ошибка в строке %d на символе %d: %s"
 
-#: glib/gmarkup.c:324
+#: ../glib/gmarkup.c:324
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "Ошибка в строке %d: %s"
 
-#: glib/gmarkup.c:428
+#: ../glib/gmarkup.c:428
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "Обнаружена пустая сущность \"&;\"; допустимыми сущностями являются: &amp; "
 "&quot; &lt; &gt; &apos;"
 
-#: glib/gmarkup.c:438
+#: ../glib/gmarkup.c:438
 #, c-format
 msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
@@ -319,17 +311,17 @@ msgstr ""
 "последовательность;  если этот символ не должен быть частью сущности, то "
 "экранируйте его сущностью &amp;"
 
-#: glib/gmarkup.c:472
+#: ../glib/gmarkup.c:472
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
 msgstr "Символ \"%s\" недопустим внутри названия сущности"
 
-#: glib/gmarkup.c:509
+#: ../glib/gmarkup.c:509
 #, c-format
 msgid "Entity name '%s' is not known"
 msgstr "Наименование сущности \"%s\" неизвестно"
 
-#: glib/gmarkup.c:520
+#: ../glib/gmarkup.c:520
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
@@ -337,7 +329,7 @@ msgstr ""
 "Сущность не заканчивается точкой с запятой; похоже, что символ & был "
 "использован не для обозначения начала сущности - экранируйте его как &amp;"
 
-#: glib/gmarkup.c:573
+#: ../glib/gmarkup.c:573
 #, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
@@ -346,16 +338,16 @@ msgstr ""
 "Сбой при разборе строки '%-.*s', где должно быть число внутри ссылки на "
 "символ (&#234; например): возможно, номер слишком велик"
 
-#: glib/gmarkup.c:598
+#: ../glib/gmarkup.c:598
 #, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
 msgstr "Ссылка на символ '%-.*s' не определяет допустимый символ"
 
-#: glib/gmarkup.c:613
+#: ../glib/gmarkup.c:613
 msgid "Empty character reference; should include a digit such as &#454;"
 msgstr "Ссылка на символ пуста; она должна включать номер, например &#454;"
 
-#: glib/gmarkup.c:623
+#: ../glib/gmarkup.c:623
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -365,23 +357,23 @@ msgstr ""
 "был использован не для обозначения начала сущности - экранируйте его как "
 "&amp;"
 
-#: glib/gmarkup.c:709
+#: ../glib/gmarkup.c:709
 msgid "Unfinished entity reference"
 msgstr "Ссылка на сущность не закончена"
 
-#: glib/gmarkup.c:715
+#: ../glib/gmarkup.c:715
 msgid "Unfinished character reference"
 msgstr "Ссылка на символ не закончена"
 
-#: glib/gmarkup.c:958 glib/gmarkup.c:986 glib/gmarkup.c:1022
+#: ../glib/gmarkup.c:958 ../glib/gmarkup.c:986 ../glib/gmarkup.c:1022
 msgid "Invalid UTF-8 encoded text"
 msgstr "Текст закодирован как UTF-8 недопустимым образом"
 
-#: glib/gmarkup.c:1058
+#: ../glib/gmarkup.c:1058
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Документ должен начинаться с элемента (например <book>)"
 
-#: glib/gmarkup.c:1098
+#: ../glib/gmarkup.c:1098
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -390,7 +382,7 @@ msgstr ""
 "Символ \"%s\" является недопустим символом, следующим за символом \"<\"; "
 "этот символ не может начинать имя элемента"
 
-#: glib/gmarkup.c:1162
+#: ../glib/gmarkup.c:1162
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
@@ -399,7 +391,7 @@ msgstr ""
 "Встретился лишний символ \"%s\", ожидался символ \">\" для закрытия "
 "начального тэга элемента \"%s\""
 
-#: glib/gmarkup.c:1251
+#: ../glib/gmarkup.c:1251
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -407,7 +399,7 @@ msgstr ""
 "Встретился лишний символ \"%s\", ожидался символ \"=\" после имени атрибута "
 "\"%s\" элемента \"%s\""
 
-#: glib/gmarkup.c:1293
+#: ../glib/gmarkup.c:1293
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -418,7 +410,7 @@ msgstr ""
 "закрытия начального тэга элемента \"%s\" или дополнительный атрибут; "
 "возможно, был использован недопустимый символ в имени атрибута"
 
-#: glib/gmarkup.c:1382
+#: ../glib/gmarkup.c:1382
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -427,7 +419,7 @@ msgstr ""
 "Встретился лишний символ \"%s\", ожидалась открывающая двойная кавычка после "
 "знака равенства при присваивании значения атрибуту \"%s\" элемента \"%s\""
 
-#: glib/gmarkup.c:1527
+#: ../glib/gmarkup.c:1527
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -436,7 +428,7 @@ msgstr ""
 "Символ \"%s\" является недопустимым символом при следовании за символами \"</"
 "\"; символ \"%s\" не может начинать имя элемента"
 
-#: glib/gmarkup.c:1567
+#: ../glib/gmarkup.c:1567
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -445,30 +437,30 @@ msgstr ""
 "Символ \"%s\" является недопустимым символом при закрытии имени элемента \"%s"
 "\"; допутимым символом является \">\""
 
-#: glib/gmarkup.c:1578
+#: ../glib/gmarkup.c:1578
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr ""
 "Элемент \"%s\" был закрыт, ни один элемент в настоящий момент не открыт"
 
-#: glib/gmarkup.c:1587
+#: ../glib/gmarkup.c:1587
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr ""
 "Элемент \"%s\" был закрыт, но открытым в настоящий момент является элемент "
 "\"%s\""
 
-#: glib/gmarkup.c:1753
+#: ../glib/gmarkup.c:1753
 msgid "Document was empty or contained only whitespace"
 msgstr "Документ был пуст или содержал только пробелы"
 
-#: glib/gmarkup.c:1767
+#: ../glib/gmarkup.c:1767
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr ""
 "Документ непредвиденно окончился сразу же после открывающей угловой скобки "
 "\"<\""
 
-#: glib/gmarkup.c:1775 glib/gmarkup.c:1819
+#: ../glib/gmarkup.c:1775 ../glib/gmarkup.c:1819
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -477,7 +469,7 @@ msgstr ""
 "Документ непредвиденно окончился, когда элементы были ещё открыты - \"%s\" "
 "был последним открытым элементом"
 
-#: glib/gmarkup.c:1783
+#: ../glib/gmarkup.c:1783
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -486,19 +478,19 @@ msgstr ""
 "Документ непредвиденно окончился, ожидается закрывающая тэг угловая скобка <%"
 "s/>"
 
-#: glib/gmarkup.c:1789
+#: ../glib/gmarkup.c:1789
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Документ непредвиденно окончился внутри имени элемента"
 
-#: glib/gmarkup.c:1794
+#: ../glib/gmarkup.c:1794
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Документ непредвиденно окончился внутри имени атрибута"
 
-#: glib/gmarkup.c:1799
+#: ../glib/gmarkup.c:1799
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Документ непредвиденно окончился внутри открывающего элемент тэга"
 
-#: glib/gmarkup.c:1805
+#: ../glib/gmarkup.c:1805
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -506,103 +498,101 @@ msgstr ""
 "Документ непредвиденно окончился после знака равенства, следующего за именем "
 "атрибута; значение атрибута не указано"
 
-#: glib/gmarkup.c:1812
+#: ../glib/gmarkup.c:1812
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Документ непредвиденно окончился внутри значения атрибута"
 
-#: glib/gmarkup.c:1827
+#: ../glib/gmarkup.c:1827
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr ""
 "Документ непредвиденно окончился внутри закрывающего элемент тэга \"%s\""
 
-#: glib/gmarkup.c:1833
+#: ../glib/gmarkup.c:1833
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Документ непредвиденно окончился внутри комментария или инструкции обработки"
 
-#: glib/gshell.c:70
-#, c-format
+#: ../glib/gshell.c:70
 msgid "Quoted text doesn't begin with a quotation mark"
 msgstr "Текст в кавычках не начинается с символа кавычки"
 
-#: glib/gshell.c:160
-#, c-format
+#: ../glib/gshell.c:160
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr ""
 "Обнаружена несоответствующая кавычка в командной строке или ином тексте "
 "оболочки"
 
-#: glib/gshell.c:538
+#: ../glib/gshell.c:538
 #, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
 msgstr "Текст закончился сразу после символа \"\\\". (Текст был \"%s\")"
 
-#: glib/gshell.c:545
+#: ../glib/gshell.c:545
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr ""
 "Текст закончился перед соответствующей кавычкой для %c. (Текст был \"%s\")"
 
-#: glib/gshell.c:557
-#, c-format
+#: ../glib/gshell.c:557
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Текст был пуст (или содержал только пробелы)"
 
-#: glib/gspawn-win32.c:272
-#, c-format
+#: ../glib/gspawn-win32.c:272
 msgid "Failed to read data from child process"
 msgstr "Сбой при чтении данных из процесса-потомка"
 
-#: glib/gspawn-win32.c:287 glib/gspawn.c:1379
+#: ../glib/gspawn-win32.c:287 ../glib/gspawn.c:1379
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Сбой при создании канала для сообщения с процессом-потомком (%s)"
 
-#: glib/gspawn-win32.c:325 glib/gspawn.c:1043
+#: ../glib/gspawn-win32.c:325 ../glib/gspawn.c:1043
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Сбой при чтении данных из канала потомка (%s)"
 
-#: glib/gspawn-win32.c:351 glib/gspawn.c:1248
+#: ../glib/gspawn-win32.c:351 ../glib/gspawn.c:1248
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Сбой при смене каталога \"%s\" (%s)"
 
-#: glib/gspawn-win32.c:357 glib/gspawn-win32.c:577
+#: ../glib/gspawn-win32.c:357 ../glib/gspawn-win32.c:577
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Сбой при выполнении процесса-потомка (%s)"
 
-#: glib/gspawn-win32.c:467 glib/gspawn-win32.c:523
+#: ../glib/gspawn-win32.c:467 ../glib/gspawn-win32.c:523
 #, c-format
 msgid "Invalid program name: %s"
 msgstr "Неверное имя программы: %s"
 
-#: glib/gspawn-win32.c:477 glib/gspawn-win32.c:533 glib/gspawn-win32.c:776
-#: glib/gspawn-win32.c:831 glib/gspawn-win32.c:1366
+#: ../glib/gspawn-win32.c:477 ../glib/gspawn-win32.c:533
+#: ../glib/gspawn-win32.c:776 ../glib/gspawn-win32.c:831
+#: ../glib/gspawn-win32.c:1366
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr "Неверная строка в векторе аргумента в %d: %s"
 
-#: glib/gspawn-win32.c:488 glib/gspawn-win32.c:544 glib/gspawn-win32.c:790
-#: glib/gspawn-win32.c:844 glib/gspawn-win32.c:1399
+#: ../glib/gspawn-win32.c:488 ../glib/gspawn-win32.c:544
+#: ../glib/gspawn-win32.c:790 ../glib/gspawn-win32.c:844
+#: ../glib/gspawn-win32.c:1399
 #, c-format
 msgid "Invalid string in environment: %s"
 msgstr "Неверная строка в окружении: %s"
 
-#: glib/gspawn-win32.c:772 glib/gspawn-win32.c:827 glib/gspawn-win32.c:1347
+#: ../glib/gspawn-win32.c:772 ../glib/gspawn-win32.c:827
+#: ../glib/gspawn-win32.c:1347
 #, c-format
 msgid "Invalid working directory: %s"
 msgstr "Неверный рабочий каталог: %s"
 
-#: glib/gspawn-win32.c:886
+#: ../glib/gspawn-win32.c:886
 #, c-format
 msgid "Failed to execute helper program (%s)"
 msgstr "Сбой при выполнении вспомогательной программы (%s)"
 
-#: glib/gspawn-win32.c:1086
-#, c-format
+#: ../glib/gspawn-win32.c:1086
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -610,147 +600,141 @@ msgstr ""
 "Произошла непредвиденная ошибка в функции g_io_channel_win32_poll() при "
 "чтении данных из процесса-потомка"
 
-#: glib/gspawn.c:168
+#: ../glib/gspawn.c:168
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "Сбой при чтении данных из процесса-потомка (%s)"
 
-#: glib/gspawn.c:300
+#: ../glib/gspawn.c:300
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr ""
 "Произошла непредвиденная ошибка в функции select() при чтении данных из "
 "процесса-потомка (%s)"
 
-#: glib/gspawn.c:383
+#: ../glib/gspawn.c:383
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Произошла непредвиденная ошибка в функции waitpid() (%s)"
 
-#: glib/gspawn.c:1108
+#: ../glib/gspawn.c:1108
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Сбой при ответвлении (%s)"
 
-#: glib/gspawn.c:1258
+#: ../glib/gspawn.c:1258
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Сбой при выполнении процесса-потомка \"%s\" (%s)"
 
-#: glib/gspawn.c:1268
+#: ../glib/gspawn.c:1268
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Сбой при перенаправлении вывода или ввода процесса-потомка (%s)"
 
-#: glib/gspawn.c:1277
+#: ../glib/gspawn.c:1277
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Сбой при ответвлении процесса-потомка (%s)"
 
-#: glib/gspawn.c:1285
+#: ../glib/gspawn.c:1285
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Произошла неизвестная ошибка при выполнении процесса-потомка \"%s\""
 
-#: glib/gspawn.c:1307
+#: ../glib/gspawn.c:1307
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr ""
 "Сбой при чтении нужного количества данных из канала процесса-потомка (%s)"
 
-#: glib/gutf8.c:1023
-#, c-format
+#: ../glib/gutf8.c:1023
 msgid "Character out of range for UTF-8"
 msgstr "Символ находится вне диапазона для UTF-8"
 
-#: glib/gutf8.c:1117 glib/gutf8.c:1126 glib/gutf8.c:1258 glib/gutf8.c:1267
-#: glib/gutf8.c:1408 glib/gutf8.c:1504
-#, c-format
+#: ../glib/gutf8.c:1117 ../glib/gutf8.c:1126 ../glib/gutf8.c:1258
+#: ../glib/gutf8.c:1267 ../glib/gutf8.c:1408 ../glib/gutf8.c:1504
 msgid "Invalid sequence in conversion input"
 msgstr ""
 "Недопустимая последовательность для преобразования обнаружена во входной "
 "строке"
 
-#: glib/gutf8.c:1419 glib/gutf8.c:1515
-#, c-format
+#: ../glib/gutf8.c:1419 ../glib/gutf8.c:1515
 msgid "Character out of range for UTF-16"
 msgstr "Символ находится вне диапазона для UTF-16"
 
-#: glib/goption.c:553
+#: ../glib/goption.c:553
 msgid "Usage:"
 msgstr "Использование:"
 
-#: glib/goption.c:553
+#: ../glib/goption.c:553
 msgid "[OPTION...]"
 msgstr "[OPTION...]"
 
-#: glib/goption.c:644
+#: ../glib/goption.c:644
 msgid "Help Options:"
 msgstr "Параметры справки:"
 
-#: glib/goption.c:645
+#: ../glib/goption.c:645
 msgid "Show help options"
 msgstr "Показать параметры справки"
 
-#: glib/goption.c:650
+#: ../glib/goption.c:650
 msgid "Show all help options"
 msgstr "Показать все параметры справки"
 
-#: glib/goption.c:700
+#: ../glib/goption.c:700
 msgid "Application Options:"
 msgstr "Применимые параметры:"
 
-#: glib/goption.c:744 glib/goption.c:814
+#: ../glib/goption.c:744 ../glib/goption.c:814
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "Не удается разобрать целое значение '%s' для %s"
 
-#: glib/goption.c:754 glib/goption.c:822
+#: ../glib/goption.c:754 ../glib/goption.c:822
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "Целое значение '%s' для %s выходит за пределы"
 
-#: glib/goption.c:779
+#: ../glib/goption.c:779
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "Не удается разобрать двойное значение '%s' для %s"
 
-#: glib/goption.c:787
+#: ../glib/goption.c:787
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "Двойное значение '%s' для %s выходит за пределы"
 
-#: glib/goption.c:1124
+#: ../glib/goption.c:1124
 #, c-format
 msgid "Error parsing option %s"
 msgstr "Ошибка разбора параметра %s"
 
-#: glib/goption.c:1155 glib/goption.c:1266
+#: ../glib/goption.c:1155 ../glib/goption.c:1266
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Отсутствует аргумент для %s"
 
-#: glib/goption.c:1655
+#: ../glib/goption.c:1655
 #, c-format
 msgid "Unknown option %s"
 msgstr "Неизвестный параметр %s"
 
-#: glib/gkeyfile.c:341
-#, c-format
+#: ../glib/gkeyfile.c:341
 msgid "Valid key file could not be found in data dirs"
 msgstr "Не удается найти действительный файл ключа в каталогах данных"
 
-#: glib/gkeyfile.c:376
-#, c-format
+#: ../glib/gkeyfile.c:376
 msgid "Not a regular file"
 msgstr "Не является обычным файлом"
 
-#: glib/gkeyfile.c:384
-#, c-format
+#: ../glib/gkeyfile.c:384
 msgid "File is empty"
 msgstr "Файл пуст"
 
-#: glib/gkeyfile.c:700
+#: ../glib/gkeyfile.c:700
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
@@ -758,52 +742,51 @@ msgstr ""
 "Файл ключа содержит строку '%s', которая не является ключом - парой величин, "
 "группой или комментарием"
 
-#: glib/gkeyfile.c:758
-#, fuzzy, c-format
-msgid "Invalid group name: %s"
-msgstr "Неверное имя программы: %s"
-
-#: glib/gkeyfile.c:780
+#: ../glib/gkeyfile.c:758
 #, c-format
+msgid "Invalid group name: %s"
+msgstr "Неверное имя группы: %s"
+
+#: ../glib/gkeyfile.c:780
 msgid "Key file does not start with a group"
 msgstr "Файл ключа не начинается с группы"
 
-#: glib/gkeyfile.c:806
-#, fuzzy, c-format
+#: ../glib/gkeyfile.c:806
+#, c-format
 msgid "Invalid key name: %s"
-msgstr "Неверное имя программы: %s"
+msgstr "Неверное имя ключа: %s"
 
-#: glib/gkeyfile.c:833
+#: ../glib/gkeyfile.c:833
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "Файл ключа содержит неподдерживаемую кодировку '%s'"
 
-#: glib/gkeyfile.c:1042 glib/gkeyfile.c:1201 glib/gkeyfile.c:2402
-#: glib/gkeyfile.c:2469 glib/gkeyfile.c:2590 glib/gkeyfile.c:2725
-#: glib/gkeyfile.c:2878 glib/gkeyfile.c:3058 glib/gkeyfile.c:3115
+#: ../glib/gkeyfile.c:1042 ../glib/gkeyfile.c:1201 ../glib/gkeyfile.c:2402
+#: ../glib/gkeyfile.c:2469 ../glib/gkeyfile.c:2590 ../glib/gkeyfile.c:2725
+#: ../glib/gkeyfile.c:2878 ../glib/gkeyfile.c:3058 ../glib/gkeyfile.c:3115
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Файл ключей не имеет группы '%s'"
 
-#: glib/gkeyfile.c:1213
+#: ../glib/gkeyfile.c:1213
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "Файл ключа не содержит ключ '%s'"
 
-#: glib/gkeyfile.c:1315 glib/gkeyfile.c:1425
+#: ../glib/gkeyfile.c:1315 ../glib/gkeyfile.c:1425
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr ""
 "Файл ключа содержит ключ '%s', значение которого '%s' не в кодировке UTF-8"
 
-#: glib/gkeyfile.c:1335 glib/gkeyfile.c:1445 glib/gkeyfile.c:1813
+#: ../glib/gkeyfile.c:1335 ../glib/gkeyfile.c:1445 ../glib/gkeyfile.c:1813
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr ""
 "Файл ключа содержит ключ '%s', значение которого не может быть "
 "интерпретировано."
 
-#: glib/gkeyfile.c:2025 glib/gkeyfile.c:2234
+#: ../glib/gkeyfile.c:2025 ../glib/gkeyfile.c:2234
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -812,37 +795,36 @@ msgstr ""
 "Файл ключа содержит ключ '%s' в группе '%s', значение которого не может быть "
 "интерпретировано."
 
-#: glib/gkeyfile.c:2417 glib/gkeyfile.c:2605 glib/gkeyfile.c:3126
+#: ../glib/gkeyfile.c:2417 ../glib/gkeyfile.c:2605 ../glib/gkeyfile.c:3126
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Файл ключа не имеет ключа '%s' в группе '%s'"
 
-#: glib/gkeyfile.c:3365
-#, c-format
+#: ../glib/gkeyfile.c:3365
 msgid "Key file contains escape character at end of line"
 msgstr "Файл ключа содержит символ escape в конце файла"
 
-#: glib/gkeyfile.c:3387
+#: ../glib/gkeyfile.c:3387
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "Файл ключа содержит неверную escape-последовательность '%s'"
 
-#: glib/gkeyfile.c:3529
+#: ../glib/gkeyfile.c:3529
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Значение '%s'  не может быть интерпретировано как числовое."
 
-#: glib/gkeyfile.c:3543
+#: ../glib/gkeyfile.c:3543
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "Целое значение '%s' выходит за пределы"
 
-#: glib/gkeyfile.c:3576
+#: ../glib/gkeyfile.c:3576
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "Значение '%s'  не может быть интерпретировано как плавающее."
 
-#: glib/gkeyfile.c:3603
+#: ../glib/gkeyfile.c:3603
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Значение '%s'  не может быть интерпретировано как булево."
