@@ -1,3 +1,8 @@
+Mon Mar 12 13:30:20 2007  Tim Janik  <timj@gtk.org>
+
+	* gtype.h: marked purely functional g_type accessors as PURE or CONST,
+	closes #305100.
+
 2007-01-02  Tor Lillqvist  <tml@novell.com>
 
 	* glib-genmarshal.c (main): Handle "/dev/stdin" by dup()ing fd 0

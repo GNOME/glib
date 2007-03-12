@@ -412,21 +412,21 @@ GTypeValueTable* g_type_value_table_peek        (GType		     type);
 
 
 /*< private >*/
-gboolean	 g_type_check_instance          (GTypeInstance      *instance);
+gboolean	 g_type_check_instance          (GTypeInstance      *instance) G_GNUC_PURE;
 GTypeInstance*   g_type_check_instance_cast     (GTypeInstance      *instance,
 						 GType               iface_type);
 gboolean         g_type_check_instance_is_a	(GTypeInstance      *instance,
-						 GType               iface_type);
+						 GType               iface_type) G_GNUC_PURE;
 GTypeClass*      g_type_check_class_cast        (GTypeClass         *g_class,
 						 GType               is_a_type);
 gboolean         g_type_check_class_is_a        (GTypeClass         *g_class,
-						 GType               is_a_type);
-gboolean	 g_type_check_is_value_type     (GType		     type);
-gboolean	 g_type_check_value             (GValue		    *value);
+						 GType               is_a_type) G_GNUC_PURE;
+gboolean	 g_type_check_is_value_type     (GType		     type) G_GNUC_CONST;
+gboolean	 g_type_check_value             (GValue		    *value) G_GNUC_PURE;
 gboolean	 g_type_check_value_holds	(GValue		    *value,
-						 GType		     type);
+						 GType		     type) G_GNUC_PURE;
 gboolean         g_type_test_flags              (GType               type,
-						 guint               flags);
+						 guint               flags) G_GNUC_CONST;
 
 
 /* --- debugging functions --- */
