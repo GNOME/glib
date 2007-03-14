@@ -1,3 +1,9 @@
+2007-03-14  Stefan Kost  <ensonic@users.sf.net>
+
+	* gobject/tmpl/gparamspec.sgml:
+	  Readd docs for G_PARAM_STATIC_NICK and add docs for new
+	  G_PARAM_STATIC_STRINGS (fixes #418021).
+
 2007-03-06  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/tmpl/threads.sgml: Document G_ERRORCHECK_MUTEXES. (#412145)
