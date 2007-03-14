@@ -61,6 +61,7 @@ typedef enum
   G_PARAM_STATIC_BLURB	      = 1 << 7
 } GParamFlags;
 #define	G_PARAM_READWRITE	(G_PARAM_READABLE | G_PARAM_WRITABLE)
+#define	G_PARAM_STATIC_STRINGS (G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB)
 #define	G_PARAM_MASK		(0x000000ff)
 /* bits in the range 0xffffff00 are reserved for 3rd party usage */
 #define	G_PARAM_USER_SHIFT	(8)

@@ -1,3 +1,8 @@
+2007-03-14  Stefan Kost  <ensonic@users.sf.net>
+
+	* gparam.h:
+	  Add G_PARAM_STATIC_STRINGS define (fixes #418021).
+
 Mon Mar 12 13:30:20 2007  Tim Janik  <timj@gtk.org>
 
 	* gtype.h: marked purely functional g_type accessors as PURE or CONST,
