@@ -2182,8 +2182,8 @@ g_key_file_set_integer_list (GKeyFile     *key_file,
  * @key: a key
  * @error: return location for a #GError
  *
- * Returns the value associated with @key under @group_name as an
- * integer. If @group_name is %NULL, the start_group is used.
+ * Returns the value associated with @key under @group_name as a
+ * double. If @group_name is %NULL, the start_group is used.
  *
  * If @key cannot be found then the return value is undefined and
  * @error is set to #G_KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if

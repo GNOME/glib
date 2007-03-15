@@ -1,3 +1,8 @@
+2007-03-14  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gkeyfile.c (g_key_file_get_double): Fix a 
+	small typo.  (#417947, Bobby Jack)
+
 2007-03-08  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gstrfuncs.c (g_strtoll): Return negative values.
