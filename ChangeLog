@@ -55,6 +55,15 @@
 
 2007-03-15  Matthias Clasen  <mclasen@redhat.com>
 
+	Fix two glitches in the Unicode case conversion
+	functions (#418217,  Denis Jacquerye)
+
+	* glib/guniprop.c (g_unichar_toupper): Handle zero entries
+	in special_case_table correctly.
+	(g_unichar_totitle): Fall back to g_unichar_toupper.
+
+2007-03-15  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/gscanner.[hc]: Some optimizations, use a lookup
 	table for character classes, pre-allocate GStrings with
 	reasonable sizes.  (#415323, Charlie Brej)
@@ -62,7 +71,7 @@
 2007-03-14  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gkeyfile.c (g_key_file_get_double): Fix a 
-	small typo.  (#417947, Bobby Jack)
+	small typo.  (#417847, Bobby Jack)
 
 2007-03-08  Matthias Clasen  <mclasen@redhat.com>
 
