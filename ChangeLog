@@ -1,3 +1,9 @@
+2007-03-15  Chris Wilson  <chris@chris-wilson.co.uk>
+
+	* glib/gmain.c (g_main_dispatch): Replace a
+	g_slist_prepend/g_slist_remove pair with an on-stack link
+	and open coding. (#416094)
+
 2007-03-15  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gscanner.[hc]: Some optimizations, use a lookup

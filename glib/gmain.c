@@ -2025,6 +2025,7 @@ g_main_dispatch (GMainContext *context)
 	  gboolean (*dispatch) (GSource *,
 				GSourceFunc,
 				gpointer);
+	  GSList current_source_link;
 
 	  dispatch = source->source_funcs->dispatch;
 	  cb_funcs = source->callback_funcs;
@@ -2045,11 +2046,23 @@ g_main_dispatch (GMainContext *context)
 	  UNLOCK_CONTEXT (context);
 
 	  current->depth++;
-	  current->source = g_slist_prepend (current->source, source);
+	  /* The on-stack allocation of the GSList is unconventional, but
+	   * we know that the lifetime of the link is bounded to this
+	   * function as the link is kept in a thread specific list and
+	   * not manipulated outside of this function and its descendants.
+	   * Avoiding the overhead of a g_slist_alloc() is useful as many
+	   * applications do little more than dispatch events.
+	   *
+	   * This is a performance hack - do not revert to g_slist_prepend()!
+	   */
+	  current_source_link.data = source;
+	  current_source_link.next = current->source;
+	  current->source = &current_source_link;
 	  need_destroy = ! dispatch (source,
 				     callback,
 				     user_data);
-	  current->source = g_slist_remove (current->source, source);
+	  g_assert (current->source == &current_source_link);
+	  current->source = current_source_link.next;
 	  current->depth--;
 	  
 	  if (cb_funcs)
