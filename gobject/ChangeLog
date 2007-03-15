@@ -1,3 +1,7 @@
+2007-03-15  Matthias Clasen  <mclasen@redhat.com>
+
+	* gvaluearray.c: Use  g_slice.  (#404430, Chris Wilson)
+
 2007-03-14  Stefan Kost  <ensonic@users.sf.net>
 
 	* gparam.h:
