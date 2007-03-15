@@ -1688,7 +1688,7 @@ g_scanner_get_token_ll	(GScanner	*scanner,
 		      gstring = g_string_append_c (gstring, ch);
 		      ch = g_scanner_peek_next_char (scanner);
 		    }
-		  while (ch && g_scanner_cset_table_lookup (scanner->cset_table, ch, CSET_IDENT_FIRST_FLAG));
+		  while (ch && g_scanner_cset_table_lookup (scanner->cset_table, ch, CSET_IDENT_NTH_FLAG));
 		  ch = 0;
 		}
 	      else if (config->scan_identifier_1char)
