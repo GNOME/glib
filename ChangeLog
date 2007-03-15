@@ -1,3 +1,7 @@
+2007-03-15  Tor Lillqvist  <tml@novell.com>
+
+	* config.h.win32.in: Update to match what configure produces.
+
 2007-03-15  Marco Barisione <marco@barisione.org>
 
 	Add GRegex for regular expression matching.  (#50075)

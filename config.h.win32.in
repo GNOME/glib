@@ -13,8 +13,8 @@
 /* Whether to disable memory pools */
 /* #undef DISABLE_MEM_POOLS */
 
-/* Whether to enable GC friendliness */
-/* #undef ENABLE_GC_FRIENDLY */
+/* Whether to enable GC friendliness by default */
+/* #undef ENABLE_GC_FRIENDLY_DEFAULT */
 
 /* always defined to indicate that i18n is enabled */
 #define ENABLE_NLS 1
@@ -62,6 +62,9 @@
 
 /* powerpc atomic implementation */
 /* #undef G_ATOMIC_POWERPC */
+
+/* s390 atomic implementation */
+/* #undef G_ATOMIC_S390 */
 
 /* sparcv9 atomic implementation */
 /* #undef G_ATOMIC_SPARCV9 */
@@ -123,8 +126,14 @@
    specified by the ISO C99 standard. */
 /* #undef HAVE_C99_VSNPRINTF */
 
+/* Define to 1 if you have the `clock_gettime' function. */
+/* #undef HAVE_CLOCK_GETTIME */
+
 /* Have nl_langinfo (CODESET) */
 /* #undef HAVE_CODESET */
+
+/* Define to 1 if you have the <crt_externs.h> header file. */
+/* #undef HAVE_CRT_EXTERNS_H */
 
 /* Define to 1 if you have the `dcgettext' function. */
 #define HAVE_DCGETTEXT 1
@@ -138,6 +147,12 @@
 /* Define to 1 if you don't have `vprintf' but do have `_doprnt.' */
 /* #undef HAVE_DOPRNT */
 
+/* define for working do while(0) macros */
+#define HAVE_DOWHILE_MACROS 1
+
+/* Define to 1 if you have the `fdwalk' function. */
+/* #undef HAVE_FDWALK */
+
 /* Define to 1 if you have the <float.h> header file. */
 #define HAVE_FLOAT_H 1
 
@@ -146,6 +161,13 @@
 
 /* Define to 1 if you have the `getc_unlocked' function. */
 /* #undef HAVE_GETC_UNLOCKED */
+
+/* Define to 1 if you have the `getpagesize' function. */
+#if !defined(_MSC_VER) && !defined(__DMC__)
+#define HAVE_GETPAGESIZE 1
+#else
+/* #undef HAVE_GETPAGESIZE */
+#endif
 
 /* Define if the GNU gettext() function is already present or preinstalled. */
 #define HAVE_GETTEXT 1
@@ -212,14 +234,23 @@
 /* Define to 1 if you have the `lstat' function. */
 /* #undef HAVE_LSTAT */
 
+/* Define to 1 if you have the <malloc.h> header file. */
+#define HAVE_MALLOC_H 1
+
+/* Define to 1 if you have the `memalign' function. */
+/* #undef HAVE_MEMALIGN */
+
 /* Define to 1 if you have the `memmove' function. */
 #define HAVE_MEMMOVE 1
 
 /* Define to 1 if you have the <memory.h> header file. */
 #define HAVE_MEMORY_H 1
 
-/* Define to 1 if you have the `mkstemp' function. */
-/* #undef HAVE_MKSTEMP */
+/* Define to 1 if you have a working `mmap' system call. */
+/* #undef HAVE_MMAP */
+
+/* Have a monotonic clock */
+/* #undef HAVE_MONOTONIC_CLOCK */
 
 /* Define to 1 if you have the `nanosleep' function. */
 /* #undef HAVE_NANOSLEEP */
@@ -230,6 +261,9 @@
 /* Have non-POSIX function getpwuid_r */
 /* #undef HAVE_NONPOSIX_GETPWUID_R */
 
+/* Define to 1 if you have the `nsleep' function. */
+/* #undef HAVE_NSLEEP */
+
 /* Define to 1 if you have the `on_exit' function. */
 /* #undef HAVE_ON_EXIT */
 
@@ -238,6 +272,9 @@
 
 /* Have POSIX function getpwuid_r */
 /* #undef HAVE_POSIX_GETPWUID_R */
+
+/* Define to 1 if you have the `posix_memalign' function. */
+/* #undef HAVE_POSIX_MEMALIGN */
 
 /* Have function pthread_attr_setstacksize */
 /* #undef HAVE_PTHREAD_ATTR_SETSTACKSIZE */
@@ -359,6 +396,12 @@
 /* Define to 1 if you have the <sys/types.h> header file. */
 #define HAVE_SYS_TYPES_H 1
 
+/* Define to 1 if you have the <sys/wait.h> header file. */
+/* #undef HAVE_SYS_WAIT_H */
+
+/* Define to 1 if you have the `timegm' function. */
+/* #undef HAVE_TIMEGM */
+
 /* Define to 1 if you have the <unistd.h> header file. */
 #ifndef _MSC_VER
 #define HAVE_UNISTD_H 1
@@ -372,6 +415,9 @@
 
 /* Define to 1 if you have the `unsetenv' function. */
 /* #undef HAVE_UNSETENV */
+
+/* Define to 1 if you have the `valloc' function. */
+/* #undef HAVE_VALLOC */
 
 /* Define to 1 if you have the <values.h> header file. */
 #if !defined(_MSC_VER) && !defined(__DMC__)
@@ -399,11 +445,20 @@
 /* Define if you have the 'wchar_t' type. */
 #define HAVE_WCHAR_T 1
 
+/* Define to 1 if you have the `wcslen' function. */
+#define HAVE_WCSLEN 1
+
 /* Define if you have the 'wint_t' type. */
 #define HAVE_WINT_T 1
 
 /* Have a working bcopy */
 /* #undef HAVE_WORKING_BCOPY */
+
+/* Define to 1 if you have the `_NSGetEnviron' function. */
+/* #undef HAVE__NSGETENVIRON */
+
+/* Do we cache iconv descriptors */
+#define NEED_ICONV_CACHE 1
 
 /* didn't find fd_set */
 #define NO_FD_SET 1
@@ -434,6 +489,9 @@
 
 /* Maximum POSIX RT priority */
 /* #undef POSIX_MAX_PRIORITY */
+
+/* define if posix_memalign() can allocate any size */
+/* #undef POSIX_MEMALIGN_WITH_COMPLIANT_ALLOCS */
 
 /* Minimum POSIX RT priority */
 /* #undef POSIX_MIN_PRIORITY */
@@ -482,9 +540,9 @@
 /* If using the C implementation of alloca, define if you know the
    direction of stack growth for your system; otherwise it will be
    automatically deduced at run-time.
-	STACK_DIRECTION > 0 => grows toward higher addresses
-	STACK_DIRECTION < 0 => grows toward lower addresses
-	STACK_DIRECTION = 0 => direction of growth unknown */
+        STACK_DIRECTION > 0 => grows toward higher addresses
+        STACK_DIRECTION < 0 => grows toward lower addresses
+        STACK_DIRECTION = 0 => direction of growth unknown */
 /* #undef STACK_DIRECTION */
 
 /* Define to 1 if you have the ANSI C header files. */
@@ -495,6 +553,9 @@
 
 /* Using a native implementation of iconv in a separate library */
 /* #undef USE_LIBICONV_NATIVE */
+
+/* using the system-supplied PCRE library */
+/* #undef USE_SYSTEM_PCRE */
 
 /* Define to 1 if your processor stores words with the most significant byte
    first (like Motorola and SPARC, unlike Intel and VAX). */
