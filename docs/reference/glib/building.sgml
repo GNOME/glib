@@ -146,6 +146,16 @@ How to compile GLib itself
 	  e.g. POSIX threads, DCE threads or Solaris threads. 
 	</para>
       </listitem>
+      <listitem>
+	<para>
+	  GRegex uses the the <ulink url="http://www.pcre.org/">PCRE library</ulink>
+	  for regular expression matching. The default is to use the internal
+	  version of PCRE that is patched to use GLib for memory management
+	  and Unicode handling. If you prefer to use the system-supplied PCRE
+	  library  you can pass the --with-pcre=system option to configure,
+	  but it is not recommended.
+	</para>
+      </listitem>
     </itemizedlist>
 
     </refsect1>
@@ -176,6 +186,13 @@ How to compile GLib itself
           </group>
           <group>
             <arg>--with-threads=[none|posix|dce|win32]</arg>
+          </group>
+          <group>
+            <arg>--disable-regex</arg>
+            <arg>--enable-regex</arg>
+          </group>
+          <group>
+            <arg>--with-pcre=[internal|system]</arg>
           </group>
 	  <group>
              <arg>--disable-included-printf</arg>
@@ -358,6 +375,61 @@ How to compile GLib itself
               </para></listitem>
         </itemizedlist>
 
+        </para>
+      </formalpara>
+
+      <formalpara>
+        <title><systemitem>--disable-regex</systemitem> and
+          <systemitem>--enable-regex</systemitem></title>
+
+        <para>
+           Do not compile GLib with regular expression support.
+           GLib will be smaller because it will not need the
+           PCRE library. This is however not recommended, as
+           programs may need GRegex.
+        </para>
+      </formalpara>
+
+      <formalpara>
+        <title><systemitem>--with-pcre</systemitem></title>
+
+        <para>
+          Specify whether to use the internal or the system-supplied
+          PCRE library.
+          <itemizedlist>
+            <listitem><para>
+              'internal' means that GRegex will be compiled to use
+              the internal PCRE library.
+            </para></listitem>
+
+            <listitem><para>
+              'system' means that GRegex will be compiled to use
+              the system-supplied PCRE library.
+            </para></listitem>
+          </itemizedlist>
+          Using the internal PCRE is the preferred solution:
+          <itemizedlist>
+            <listitem>
+              <para>
+                System-supplied PCRE has a separated copy of the big tables
+                used for Unicode handling.
+              </para>
+            </listitem>
+            <listitem>
+              <para>
+                Some systems have PCRE libraries compiled without some needed
+                features, such as UTF-8 and Unicode support.
+              </para>
+            </listitem>
+            <listitem>
+              <para>
+                PCRE uses some global variables for memory management and
+                other features. In the rare case of a program using both
+                GRegex and PCRE (maybe indirectly through a library),
+                this variables could lead to problems when they are modified.
+              </para>
+            </listitem>
+          </itemizedlist>
         </para>
       </formalpara>
 

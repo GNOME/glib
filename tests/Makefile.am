@@ -1,6 +1,12 @@
 SUBDIRS=gobject refcount
 
-INCLUDES = -g -I$(top_srcdir) -I$(top_srcdir)/glib -I$(top_srcdir)/gmodule $(GLIB_DEBUG_FLAGS)
+if ENABLE_REGEX
+enable_regex = -DENABLE_REGEX
+else
+enable_regex =
+endif
+
+INCLUDES = -g -I$(top_srcdir) -I$(top_srcdir)/glib -I$(top_srcdir)/gmodule $(GLIB_DEBUG_FLAGS) $(enable_regex)
 
 EFENCE=
 
@@ -112,7 +118,8 @@ test_programs =					\
 	unicode-encoding			\
 	utf8-validate				\
 	utf8-pointer				\
-	uri-test
+	uri-test				\
+	regex-test
 
 test_scripts = run-markup-tests.sh run-collate-tests.sh run-bookmark-test.sh
 
@@ -183,6 +190,7 @@ unicode_collate_LDADD = $(progs_ldadd)
 utf8_validate_LDADD = $(progs_ldadd)
 utf8_pointer_LDADD = $(progs_ldadd)
 uri_test_LDADD = $(progs_ldadd)
+regex_test_LDADD = $(progs_ldadd)
 
 lib_LTLIBRARIES = libmoduletestplugin_a.la libmoduletestplugin_b.la
 

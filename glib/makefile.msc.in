@@ -17,6 +17,7 @@ all :				\
 	galias.h		\
 	galiasdef.c		\
 	gnulib\gnulib.lib	\
+	pcre\pcre.lib		\
 	libglib-2.0-0.dll \
 	glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@s.lib \
 	gspawn-win32-helper.exe	\
@@ -24,6 +25,11 @@ all :				\
 
 gnulib\gnulib.lib :
 	cd gnulib
+	nmake -f makefile.msc
+	cd ..
+
+pcre\pcre.lib :
+	cd pcre
 	nmake -f makefile.msc
 	cd ..
 
@@ -61,6 +67,7 @@ glib_OBJECTS =			\
 	gpattern.obj	\
 	gprintf.obj	\
 	grand.obj		\
+	gregex.obj		\
 	grel.obj		\
 	gscanner.obj		\
 	gsequence.obj	\
@@ -112,12 +119,12 @@ glib.res : glib.rc
 
 # create a static libary
 # static library can well have the real version number in the name
-glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@s.lib : $(glib_OBJECTS) gnulib\gnulib.lib
-	lib /out:glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@s.lib $(glib_OBJECTS) gnulib\gnulib.lib
+glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@s.lib : $(glib_OBJECTS) gnulib\gnulib.lib pcre\pcre.lib
+	lib /out:glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@s.lib $(glib_OBJECTS) gnulib\gnulib.lib pcre\pcre.lib
 
-libglib-2.0-0.dll : $(glib_OBJECTS) gnulib\gnulib.lib glib.def glib.res
+libglib-2.0-0.dll : $(glib_OBJECTS) gnulib\gnulib.lib pcre\pcre.lib glib.def glib.res
 	$(CC) $(CFLAGS) -LD -Fe$@ $(glib_OBJECTS) glib.res $(LIBICONV_LIBS) $(INTL_LIBS) \
-	gnulib\gnulib.lib $(DIRENT_LIBS) user32.lib advapi32.lib shell32.lib wsock32.lib ole32.lib ws2_32.lib \
+	gnulib\gnulib.lib pcre\pcre.lib $(DIRENT_LIBS) user32.lib advapi32.lib shell32.lib wsock32.lib ole32.lib ws2_32.lib \
 	$(LDFLAGS) /implib:glib-2.0.lib /def:glib.def
 
 gspawn-win32-helper.exe : gspawn-win32-helper.c libglib-2.0-@LT_CURRENT_MINUS_AGE@.dll

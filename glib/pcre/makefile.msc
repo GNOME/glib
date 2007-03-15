@@ -1,0 +1,49 @@
+!IFDEF DEBUG
+CRT=-MDd
+!ELSE
+CRT=-MD
+!ENDIF
+
+CFLAGS = \
+	-I ..\.. \
+	-DHAVE_CONFIG_H \
+	-DHAVE_LONG_LONG_FORMAT \
+	-DSUPPORT_UCP \
+	-DSUPPORT_UTF8 \
+	-DNEWLINE=10 \
+	-DMATCH_LIMIT=10000000 \
+	-DMATCH_LIMIT_RECURSION=10000000 \
+	-DMAX_NAME_SIZE=32 \
+	-DMAX_NAME_COUNT=10000 \
+	-DMAX_DUPLENGTH=30000 \
+	-DLINK_SIZE=2 \
+	-DEBCDIC=0 \
+	-DPOSIX_MALLOC_THRESHOLD=10
+
+OBJECTS = \
+	pcre_chartables.obj \
+	pcre_compile.obj \
+	pcre_config.obj \
+	pcre_dfa_exec.obj \
+	pcre_exec.obj \
+	pcre_fullinfo.obj \
+	pcre_get.obj \
+	pcre_globals.obj \
+	pcre_info.obj \
+	pcre_maketables.obj \
+	pcre_newline.obj \
+	pcre_ord2utf8.obj \
+	pcre_refcount.obj \
+	pcre_study.obj \
+	pcre_tables.obj \
+	pcre_try_flipped.obj \
+	pcre_ucp_searchfuncs.obj \
+	pcre_valid_utf8.obj \
+	pcre_version.obj \
+	pcre_xclass.obj \
+
+pcre.lib : $(OBJECTS)
+	lib -out:pcre.lib $(OBJECTS)
+
+.c.obj:
+	$(CC) $(CRT) $(CFLAGS) -Ox -GD -c $<

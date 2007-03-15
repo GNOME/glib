@@ -1,3 +1,17 @@
+2007-03-15  Marco Barisione <marco@barisione.org>
+
+	Add GRegex for regular expression matching.  (#50075)
+
+	* glib/Makefile.am:
+	* glib/glib-docs.sgml:
+	* glib/glib-sections.txt:
+	* glib/tmpl/glib-unused.sgml:
+	* glib/regex-syntax.sgml:
+	* glib/tmpl/gregex-unused.sgml:
+	* glib/tmpl/gregex.sgml: Add GRegex.
+
+	* glib/building.sgml: Document build options for GRegex.
+
 2007-03-14  Stefan Kost  <ensonic@users.sf.net>
 
 	* gobject/tmpl/gparamspec.sgml:

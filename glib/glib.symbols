@@ -1416,6 +1416,43 @@ g_get_codeset
 #endif
 #endif
 
+#if IN_HEADER(__G_REGEX_H__)
+#if IN_FILE(__G_REGEX_C__)
+g_regex_error_quark
+g_regex_new
+g_regex_free
+g_regex_optimize
+g_regex_copy
+g_regex_get_pattern
+g_regex_clear
+g_regex_match_simple
+g_regex_match
+g_regex_match_full
+g_regex_match_next
+g_regex_match_next_full
+g_regex_match_all
+g_regex_match_all_full
+g_regex_get_match_count
+g_regex_is_partial_match
+g_regex_fetch
+g_regex_fetch_pos
+g_regex_fetch_named
+g_regex_fetch_named_pos
+g_regex_fetch_all
+g_regex_get_string_number
+g_regex_split_simple
+g_regex_split
+g_regex_split_full
+g_regex_split_next
+g_regex_split_next_full
+g_regex_expand_references
+g_regex_replace
+g_regex_replace_literal
+g_regex_replace_eval
+g_regex_escape_string
+#endif
+#endif
+
 #if IN_HEADER(__G_WIN32_H__)
 #if IN_FILE(__G_WIN32_H__)
 #ifdef G_OS_WIN32

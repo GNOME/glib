@@ -712,6 +712,13 @@ To use this function you must configure glib with the flag
 
 @mem: the memory to check.
 
+<!-- ##### FUNCTION g_regex_error_quark ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
 <!-- ##### FUNCTION g_scanner_stat_mode ##### -->
 <para>
 Gets the file attributes.

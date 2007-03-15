@@ -1,0 +1,578 @@
+<!-- ##### SECTION Title ##### -->
+Perl-compatible regular expressions
+
+<!-- ##### SECTION Short_Description ##### -->
+matches strings against regular expressions.
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+The <function>g_regex_*()</function> functions implement regular
+expression pattern matching using syntax and semantics similar to
+Perl regular expression.
+</para>
+<para>
+Some functions accept a <parameter>start_position</parameter> argument,
+setting it differs from just passing over a shortened string and setting
+#G_REGEX_MATCH_NOTBOL in the case of a pattern that begins with any kind
+of lookbehind assertion.
+For example, consider the pattern "\Biss\B" which finds occurrences of "iss"
+in the middle of words. ("\B" matches only if the current position in the
+subject is not a word boundary.) When applied to the string "Mississipi"
+from the fourth byte, namely "issipi", it does not match, because "\B" is
+always false at the start of the subject, which is deemed to be a word
+boundary. However, if the entire string is passed , but with
+<parameter>start_position</parameter> set to 4, it finds the second
+occurrence of "iss" because it is able to look behind the starting point
+to discover that it is preceded by a letter.
+</para>
+<para>
+Note that, unless you set the #G_REGEX_RAW flag, all the strings passed
+to these functions must be encoded in UTF-8. The lengths and the positions
+inside the strings are in bytes and not in characters, so, for instance,
+"\xc3\xa0" (i.e. "&agrave;") is two bytes long but it is treated as a single
+character. If you set #G_REGEX_RAW the strings can be non-valid UTF-8
+strings and a byte is treated as a character, so "\xc3\xa0" is two bytes
+and two characters long.
+</para>
+<para>
+When matching a pattern, "\n" matches only against a "\n" character in the
+string, and "\r" matches only a "\r" character. To match any newline sequence
+use "\R". This particular group matches either the two-character sequence
+CR + LF ("\r\n"), or one of the single characters LF (linefeed, U+000A, "\n"), VT
+(vertical tab, U+000B, "\v"), FF (formfeed, U+000C, "\f"), CR (carriage return,
+U+000D, "\r"), NEL (next line, U+0085), LS (line separator, U+2028), or PS
+(paragraph separator, U+2029).
+</para>
+<para>
+The behaviour of the dot, circumflex, and dollar metacharacters are affected by
+newline characters, the default is to recognize any newline character (the same
+characters recognized by "\R"). This can be changed with #G_REGEX_NEWLINE_CR,
+#G_REGEX_NEWLINE_LF and #G_REGEX_NEWLINE_CRLF compile options,
+and with #G_REGEX_MATCH_NEWLINE_ANY, #G_REGEX_MATCH_NEWLINE_CR,
+#G_REGEX_MATCH_NEWLINE_LF and #G_REGEX_MATCH_NEWLINE_CRLF match options.
+These settings are also relevant when compiling a pattern if
+#G_REGEX_EXTENDED is set, and an unescaped "#" outside a character class is
+encountered. This indicates a comment that lasts until after the next
+newline.
+</para>
+<para>
+If you have two threads manipulating the same #GRegex, they must use a
+lock to synchronize their operation, as these functions are not threadsafe.
+Creating and manipulating different #GRegex structures from different
+threads is not a problem.
+</para>
+<para>
+The regular expressions low level functionalities are obtained through
+the excellent <ulink url="http://www.pcre.org/">PCRE</ulink> library
+written by Philip Hazel.
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### ENUM GRegexError ##### -->
+<para>
+Error codes returned by regular expressions functions.
+</para>
+
+@G_REGEX_ERROR_COMPILE: Compilation of the regular expression in <function>g_regex_new()</function> failed.
+@G_REGEX_ERROR_OPTIMIZE: Optimization of the regular expression in <function>g_regex_optimize()</function> failed.
+@G_REGEX_ERROR_REPLACE: Replacement failed due to an ill-formed replacement string.
+@G_REGEX_ERROR_MATCH: The match process failed.
+@Since: 2.14
+
+<!-- ##### MACRO G_REGEX_ERROR ##### -->
+<para>
+Error domain for regular expressions. Errors in this domain will be from the #GRegexError enumeration. See #GError for information on error domains.
+</para>
+
+@Since: 2.14
+
+
+<!-- ##### ENUM GRegexCompileFlags ##### -->
+<para>
+Flags specifying compile-time options.
+</para>
+
+@G_REGEX_CASELESS: Letters in the pattern match both upper and lower case
+letters. It be changed within a pattern by a "(?i)" option setting.
+@G_REGEX_MULTILINE: By default, GRegex treats the strings as consisting
+of a single line of characters (even if it actually contains newlines).
+The "start of line" metacharacter ("^") matches only at the start of the
+string, while the "end of line" metacharacter ("$") matches only at the
+end of the string, or before a terminating newline (unless
+#G_REGEX_DOLLAR_ENDONLY is set). When #G_REGEX_MULTILINE is set,
+the "start of line" and "end of line" constructs match immediately following
+or immediately before any newline in the string, respectively, as well
+as at the very start and end. This can be changed within a pattern by a
+"(?m)" option setting.
+@G_REGEX_DOTALL: A dot metacharater (".") in the pattern matches all
+characters, including newlines. Without it, newlines are excluded. This
+option can be changed within a pattern by a ("?s") option setting.
+@G_REGEX_EXTENDED: Whitespace data characters in the pattern are
+totally ignored except when escaped or inside a character class.
+Whitespace does not include the VT character (code 11). In addition,
+characters between an unescaped "#" outside a character class and
+the next newline character, inclusive, are also ignored. This can be
+changed within a pattern by a "(?x)" option setting.
+@G_REGEX_ANCHORED: The pattern is forced to be "anchored", that is,
+it is constrained to match only at the first matching point in the string
+that is being searched. This effect can also be achieved by appropriate
+constructs in the pattern itself such as the "^" metacharater.
+@G_REGEX_DOLLAR_ENDONLY: A dollar metacharacter ("$") in the pattern
+matches only at the end of the string. Without this option, a dollar also
+matches immediately before the final character if it is a newline (but
+not before any other newlines). This option is ignored if
+#G_REGEX_MULTILINE is set.
+@G_REGEX_UNGREEDY: Inverts the "greediness" of the
+quantifiers so that they are not greedy by default, but become greedy
+if followed by "?". It can also be set by a "(?U)" option setting within
+the pattern.
+@G_REGEX_RAW: Usually strings must be valid UTF-8 strings, using this
+flag they are considered as a raw sequence of bytes.
+@G_REGEX_NO_AUTO_CAPTURE: Disables the use of numbered capturing
+parentheses in the pattern. Any opening parenthesis that is not followed
+by "?" behaves as if it were followed by "?:" but named parentheses can
+still be used for capturing (and they acquire numbers in the usual way).
+@G_REGEX_DUPNAMES: Names used to identify capturing subpatterns need not
+be unique. This can be helpful for certain types of pattern when it is known
+that only one instance of the named subpattern can ever be matched.
+@G_REGEX_NEWLINE_CR: Usually any newline character is recognized, if this
+option is set, the only recognized newline character is '\r'.
+@G_REGEX_NEWLINE_LF: Usually any newline character is recognized, if this
+option is set, the only recognized newline character is '\n'.
+@G_REGEX_NEWLINE_CRLF: Usually any newline character is recognized, if this
+option is set, the only recognized newline character sequence is '\r\n'.
+@Since: 2.14
+
+<!-- ##### ENUM GRegexMatchFlags ##### -->
+<para>
+Flags specifying match-time options.
+</para>
+
+@G_REGEX_MATCH_ANCHORED: The pattern is forced to be "anchored", that is,
+it is constrained to match only at the first matching point in the string
+that is being searched. This effect can also be achieved by appropriate
+constructs in the pattern itself such as the "^" metacharater.
+@G_REGEX_MATCH_NOTBOL: Specifies that first character of the string is
+not the beginning of a line, so the circumflex metacharacter should not
+match before it. Setting this without G_REGEX_MULTILINE (at compile time)
+causes circumflex never to match. This option affects only the behaviour of
+the circumflex metacharacter, it does not affect "\A".
+@G_REGEX_MATCH_NOTEOL: Specifies that the end of the subject string is
+not the end of a line, so the dollar metacharacter should not match it nor
+(except in multiline mode) a newline immediately before it. Setting this
+without G_REGEX_MULTILINE (at compile time) causes dollar never to match.
+This option affects only the behaviour of the dollar metacharacter, it does
+not affect "\Z" or "\z".
+@G_REGEX_MATCH_NOTEMPTY: An empty string is not considered to be a valid
+match if this option is set. If there are alternatives in the pattern, they
+are tried. If all the alternatives match the empty string, the entire match
+fails. For example, if the pattern "a?b?" is applied to a string not beginning
+with "a" or "b", it matches the empty string at the start of the string.
+With this flag set, this match is not valid, so GRegex searches further
+into the string for occurrences of "a" or "b".
+@G_REGEX_MATCH_PARTIAL: Turns on the partial matching feature, for more
+documentation on partial matching see g_regex_is_partial_match().
+@G_REGEX_MATCH_NEWLINE_CR: Overrides the newline definition set when creating
+a new #GRegex, setting the '\r' character as line terminator.
+@G_REGEX_MATCH_NEWLINE_LF: Overrides the newline definition set when creating
+a new #GRegex, setting the '\n' character as line terminator.
+@G_REGEX_MATCH_NEWLINE_CRLF: Overrides the newline definition set when creating
+a new #GRegex, setting the '\r\n' characters as line terminator.
+@G_REGEX_MATCH_NEWLINE_ANY: Overrides the newline definition set when creating
+a new #GRegex, any newline character or character sequence is recognized.
+@Since: 2.14
+
+<!-- ##### STRUCT GRegex ##### -->
+<para>
+A GRegex is the "compiled" form of a regular expression pattern. This
+structure is opaque and its fields cannot be accessed directly.
+</para>
+
+@Since: 2.14
+
+<!-- ##### USER_FUNCTION GRegexEvalCallback ##### -->
+<para>
+Specifies the type of the function passed to g_regex_replace_eval().
+It is called for each occurance of the pattern @regex in @string, and it
+should append the replacement to @result.
+</para>
+
+<para>
+Do not call on @regex functions that modify its internal state, such as
+g_regex_match(); if you need it you can create a temporary copy of
+@regex using g_regex_copy().
+</para>
+
+@Param1: a #GRegex.
+@Param2: the string used to perform matches against.
+@Param3: a #GString containing the new string.
+@Param4: user data passed to g_regex_replace_eval().
+@Returns: %FALSE to continue the replacement process, %TRUE to stop it.
+@Since: 2.14
+
+
+<!-- ##### FUNCTION g_regex_new ##### -->
+<para>
+
+</para>
+
+@pattern: 
+@compile_options: 
+@match_options: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_regex_free ##### -->
+<para>
+
+</para>
+
+@regex: 
+
+
+<!-- ##### FUNCTION g_regex_optimize ##### -->
+<para>
+
+</para>
+
+@regex: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_regex_copy ##### -->
+<para>
+
+</para>
+
+@regex: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_regex_get_pattern ##### -->
+<para>
+
+</para>
+
+@regex: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_regex_clear ##### -->
+<para>
+
+</para>
+
+@regex: 
+
+
+<!-- ##### FUNCTION g_regex_match_simple ##### -->
+<para>
+
+</para>
+
+@pattern: 
+@string: 
+@compile_options: 
+@match_options: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_regex_match ##### -->
+<para>
+
+</para>
+
+@regex: 
+@string: 
+@match_options: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_regex_match_full ##### -->
+<para>
+
+</para>
+
+@regex: 
+@string: 
+@string_len: 
+@start_position: 
+@match_options: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_regex_match_next ##### -->
+<para>
+
+</para>
+
+@regex: 
+@string: 
+@match_options: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_regex_match_next_full ##### -->
+<para>
+
+</para>
+
+@regex: 
+@string: 
+@string_len: 
+@start_position: 
+@match_options: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_regex_match_all ##### -->
+<para>
+
+</para>
+
+@regex: 
+@string: 
+@match_options: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_regex_match_all_full ##### -->
+<para>
+
+</para>
+
+@regex: 
+@string: 
+@string_len: 
+@start_position: 
+@match_options: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_regex_get_match_count ##### -->
+<para>
+
+</para>
+
+@regex: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_regex_is_partial_match ##### -->
+<para>
+
+</para>
+
+@regex: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_regex_fetch ##### -->
+<para>
+
+</para>
+
+@regex: 
+@match_num: 
+@string: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_regex_fetch_pos ##### -->
+<para>
+
+</para>
+
+@regex: 
+@match_num: 
+@start_pos: 
+@end_pos: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_regex_fetch_named ##### -->
+<para>
+
+</para>
+
+@regex: 
+@name: 
+@string: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_regex_fetch_named_pos ##### -->
+<para>
+
+</para>
+
+@regex: 
+@name: 
+@start_pos: 
+@end_pos: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_regex_fetch_all ##### -->
+<para>
+
+</para>
+
+@regex: 
+@string: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_regex_get_string_number ##### -->
+<para>
+
+</para>
+
+@regex: 
+@name: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_regex_split_simple ##### -->
+<para>
+
+</para>
+
+@pattern: 
+@string: 
+@compile_options: 
+@match_options: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_regex_split ##### -->
+<para>
+
+</para>
+
+@regex: 
+@string: 
+@match_options: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_regex_split_full ##### -->
+<para>
+
+</para>
+
+@regex: 
+@string: 
+@string_len: 
+@start_position: 
+@match_options: 
+@max_tokens: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_regex_split_next ##### -->
+<para>
+
+</para>
+
+@regex: 
+@string: 
+@match_options: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_regex_split_next_full ##### -->
+<para>
+
+</para>
+
+@regex: 
+@string: 
+@string_len: 
+@start_position: 
+@match_options: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_regex_expand_references ##### -->
+<para>
+
+</para>
+
+@regex: 
+@string: 
+@string_to_expand: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_regex_replace ##### -->
+<para>
+
+</para>
+
+@regex: 
+@string: 
+@string_len: 
+@start_position: 
+@replacement: 
+@match_options: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_regex_replace_literal ##### -->
+<para>
+
+</para>
+
+@regex: 
+@string: 
+@string_len: 
+@start_position: 
+@replacement: 
+@match_options: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_regex_replace_eval ##### -->
+<para>
+
+</para>
+
+@regex: 
+@string: 
+@string_len: 
+@start_position: 
+@match_options: 
+@eval: 
+@user_data: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_regex_escape_string ##### -->
+<para>
+
+</para>
+
+@string: 
+@length: 
+@Returns: 
+
+

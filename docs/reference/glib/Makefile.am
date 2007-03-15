@@ -37,7 +37,9 @@ IGNORE_HFILES=			\
 	gmirroringtable.h	\
 	gscripttable.h		\
 	glib-mirroring-tab	\
-	gnulib
+	gnulib			\
+	pcre			\
+	update-pcre
 
 # Extra options to supply to gtkdoc-mkdb
 MKDB_OPTIONS=--sgml-mode --output-format=xml --ignore-files=trio
@@ -55,6 +57,7 @@ content_files =				\
 	changes.sgml			\
 	compiling.sgml			\
 	resources.sgml			\
+	regex-syntax.sgml		\
 	version.xml			\
 	glib-gettextize.xml
 

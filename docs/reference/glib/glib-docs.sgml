@@ -61,6 +61,7 @@
 <!ENTITY glib-Bookmarkfile SYSTEM "xml/bookmarkfile.xml">
 <!ENTITY glib-Base64 SYSTEM "xml/base64.xml">
 <!ENTITY glib-i18n SYSTEM "xml/i18n.xml">
+<!ENTITY glib-Regex SYSTEM "xml/gregex.xml">
 <!ENTITY glib-Version SYSTEM "xml/version.xml">
 
 <!ENTITY glib-Compiling SYSTEM "compiling.sgml">
@@ -69,6 +70,7 @@
 <!ENTITY glib-Running SYSTEM "running.sgml">
 <!ENTITY glib-Resources SYSTEM "resources.sgml">
 <!ENTITY glib-Changes SYSTEM "changes.sgml">
+<!ENTITY glib-RegexSyntax SYSTEM "regex-syntax.sgml">
 
 <!ENTITY glib-gettextize SYSTEM "glib-gettextize.xml">
 
@@ -101,6 +103,7 @@ synchronize their operation.
     &glib-Compiling;
     &glib-Running;
     &glib-Changes;
+    &glib-RegexSyntax;
     &glib-Resources;
  
   </chapter> 
@@ -151,6 +154,7 @@ synchronize their operation.
     &glib-Shell;
     &glib-Option;
     &glib-Pattern-Matching;
+    &glib-Regex;
     &glib-Markup;
     &glib-Keyfile;
     &glib-Bookmarkfile;

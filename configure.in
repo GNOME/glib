@@ -173,7 +173,7 @@ AM_CONDITIONAL(MS_LIB_AVAILABLE, [test x$ms_librarian = xyes])
 if test "$glib_native_win32" != yes; then
     # libtool option to control which symbols are exported
     # right now, symbols starting with _ are not exported
-    LIBTOOL_EXPORT_OPTIONS='-export-symbols-regex "^[[^_]].*"'
+    LIBTOOL_EXPORT_OPTIONS='-export-symbols-regex "^g.*"'
 else
     # We currently use .def files on Windows
     LIBTOOL_EXPORT_OPTIONS=
@@ -2146,6 +2146,74 @@ AC_RUN_IFELSE([AC_LANG_SOURCE([[
   [broken_poll="no (cross compiling)"])
 AC_MSG_RESULT($broken_poll)
 
+dnl *********************
+dnl *** GRegex checks ***
+dnl *********************
+PCRE_REQUIRED_VERSION=7.0
+
+# Check if we should compile GRegex
+AC_ARG_ENABLE(regex, AC_HELP_STRING([--disable-regex],
+              [disable the compilation of GRegex]),
+[case "${enableval}" in
+  yes) enable_regex=true ;;
+  no)  enable_regex=false ;;
+  *) AC_MSG_ERROR(bad value ${enableval} for --enable-regex) ;;
+esac],
+[enable_regex=true])
+
+AM_CONDITIONAL(ENABLE_REGEX, $enable_regex)
+
+if test x$enable_regex = xtrue; then
+  # Check if we should use the internal or the system-supplied pcre
+  AC_ARG_WITH(pcre,
+             [AC_HELP_STRING([--with-pcre=@<:@internal/system@:>@],
+                             [specify whether to use the internal or the
+                              system-supplied PCRE library])])
+
+  AM_CONDITIONAL(USE_SYSTEM_PCRE, [test "x$with_pcre" = xsystem])
+
+  if test "x$with_pcre" = xsystem; then
+    PKG_CHECK_MODULES(PCRE,
+                      libpcre >= $PCRE_REQUIRED_VERSION)
+    AC_CACHE_CHECK([for Unicode support in PCRE],glib_cv_pcre_has_unicode,[
+                   CFLAGS="$PCRE_CFLAGS" LDFLAGS="$PCRE_LIBS"
+                   AC_TRY_RUN([#include <pcre.h>
+                               int main () {
+                                 int support;
+                                 pcre_config (PCRE_CONFIG_UTF8, &support);
+                                 if (!support)
+                                   return 1;
+                                 pcre_config (PCRE_CONFIG_UNICODE_PROPERTIES, &support);
+                                 if (!support)
+                                   return 1;
+                                 return 0;
+                               }],
+                   glib_cv_pcre_has_unicode=yes,
+                   glib_cv_pcre_has_unicode=no,
+                   glib_cv_pcre_has_unicode=yes)])
+    if test "$glib_cv_pcre_has_unicode" = "no"; then
+      AC_MSG_ERROR([*** The system-supplied PCRE does not support Unicode properties or UTF-8.])
+    fi
+    AC_SUBST(PCRE_CFLAGS)
+    AC_SUBST(PCRE_LIBS)
+    AC_DEFINE(USE_SYSTEM_PCRE, [], [using the system-supplied PCRE library])
+  else
+    # If using gcc 4 pass -Wno-pointer-sign when compiling the internal PCRE
+    if test x"$GCC" = xyes; then
+      AC_MSG_CHECKING([whether gcc understands -Wno-pointer-sign])
+      if test [`$CC --version | sed -e 's/[^0-9]*\([0-9]\).*/\1/' -e q`] -ge 4; then
+        PCRE_WARN_CFLAGS="$PCRE_WARN_CFLAGS -Wno-pointer-sign"
+        AC_MSG_RESULT([yes]) 
+      else
+        AC_MSG_RESULT([no]) 
+      fi
+    fi
+  fi
+  AC_SUBST(PCRE_WARN_CFLAGS)
+else
+  AM_CONDITIONAL(USE_SYSTEM_PCRE, false])
+fi
+
 dnl **********************
 dnl *** Win32 API libs ***
 dnl **********************
@@ -2864,6 +2932,8 @@ Makefile
 glib/Makefile
 glib/libcharset/Makefile
 glib/gnulib/Makefile
+glib/pcre/Makefile
+glib/update-pcre/Makefile
 gmodule/Makefile
 gmodule/gmoduleconf.h
 gobject/Makefile
