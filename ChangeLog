@@ -1,5 +1,29 @@
 2007-03-15  Tor Lillqvist  <tml@novell.com>
 
+	* glib/gnulib/Makefile.am (INCLUDES): Add -I$(top_srcdir)/glib so
+	that gregex.h finds <glib.h>.
+
+	* glib/update-pcre/Makefille.am-1: Add -DGLIB_COMPILATION so that
+	we don't think g_ascii_table is dllimport.
+
+	* glib/pcre/Makefile.am: Corresponding change.
+
+	* glib/update-pcre/notdll.patch: New file. Drop
+	dllimport/dllexport magic for the pcre symbols.
+
+	* glib/update-pcre/Makefile.am: Dist it.
+
+	* glib/update-pcre/update.sh: Apply notdll.patch.
+
+	* glib/pcre/pcre.h: Corresponding change.
+
+2007-03-15  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gtypes.h: Add comment to avoid misleading people with the
+	large number of digits in G_PI etc. (#404338)
+
+2007-03-15  Tor Lillqvist  <tml@novell.com>
+
 	* config.h.win32.in: Update to match what configure produces.
 
 2007-03-15  Marco Barisione <marco@barisione.org>

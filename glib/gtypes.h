@@ -93,6 +93,13 @@ typedef const gchar *   (*GTranslateFunc)       (const gchar   *str,
 
 /* Define some mathematical constants that aren't available
  * symbolically in some strict ISO C implementations.
+ *
+ * Note that the large number of digits used in these definitions
+ * doesn't imply that GLib or current computers in general would be
+ * able to handle floating point numbers with an accuracy like this.
+ * It's mostly an exercise in futility and future proofing. For
+ * extended precision floating point support, look somewhere else
+ * than GLib.
  */
 #define G_E     2.7182818284590452353602874713526624977572470937000
 #define G_LN2   0.69314718055994530941723212145817656807550013436026

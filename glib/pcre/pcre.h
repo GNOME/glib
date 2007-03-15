@@ -60,6 +60,8 @@ circumstance. */
 /* Win32 uses DLL by default; it needs special stuff for exported functions
 when building PCRE. */
 
+/* But don't do that when building as part of GLib */
+#if 0
 #ifdef _WIN32
 #  ifdef PCRE_DEFINITION
 #    ifdef DLL_EXPORT
@@ -70,6 +72,7 @@ when building PCRE. */
 #      define PCRE_DATA_SCOPE extern __declspec(dllimport)
 #    endif
 #  endif
+#endif
 #endif
 
 /* Otherwise, we use the standard "extern". */

@@ -128,6 +128,9 @@ cp $PCRE/COPYING .
 # Use glib for memory allocation.
 patch > /dev/null < $IN/memory.patch
 
+# No dllimport/dllexport of pcre symbols
+patch > /dev/null <$IN/notdll.patch
+
 # Copy the modified version of pcre_valid_utf8.c.
 cp $IN/pcre_valid_utf8.c .
 
