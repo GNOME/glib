@@ -1,3 +1,9 @@
+2007-03-15  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gscanner.[hc]: Some optimizations, use a lookup
+	table for character classes, pre-allocate GStrings with
+	reasonable sizes.  (#415323, Charlie Brej)
+
 2007-03-14  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gkeyfile.c (g_key_file_get_double): Fix a 
