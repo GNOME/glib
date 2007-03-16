@@ -196,7 +196,7 @@ g_key_file_error_quark (void)
 static void
 g_key_file_init (GKeyFile *key_file)
 {  
-  key_file->current_group = g_new0 (GKeyFileGroup, 1);
+  key_file->current_group = g_slice_new0 (GKeyFileGroup);
   key_file->groups = g_list_prepend (NULL, key_file->current_group);
   key_file->start_group = NULL;
   key_file->parse_buffer = g_string_sized_new (128);
@@ -241,7 +241,7 @@ g_key_file_new (void)
 {
   GKeyFile *key_file;
 
-  key_file = g_new0 (GKeyFile, 1);
+  key_file = g_slice_new0 (GKeyFile);
   g_key_file_init (key_file);
 
   return key_file;
@@ -578,7 +578,7 @@ g_key_file_load_from_data_dirs (GKeyFile       *key_file,
 
   user_data_dir = g_get_user_data_dir ();
   system_data_dirs = g_get_system_data_dirs ();
-  all_data_dirs = g_new0 (gchar *, g_strv_length ((gchar **)system_data_dirs) + 2);
+  all_data_dirs = g_new (gchar *, g_strv_length ((gchar **)system_data_dirs) + 2);
 
   i = 0;
   all_data_dirs[i++] = g_strdup (user_data_dir);
@@ -586,6 +586,7 @@ g_key_file_load_from_data_dirs (GKeyFile       *key_file,
   j = 0;
   while (system_data_dirs[j] != NULL)
     all_data_dirs[i++] = g_strdup (system_data_dirs[j++]);
+  all_data_dirs[i] = NULL;
 
   found_file = FALSE;
   data_dirs = all_data_dirs;
@@ -639,7 +640,7 @@ g_key_file_free (GKeyFile *key_file)
   g_return_if_fail (key_file != NULL);
   
   g_key_file_clear (key_file);
-  g_free (key_file);
+  g_slice_free (GKeyFile, key_file);
 }
 
 /* If G_KEY_FILE_KEEP_TRANSLATIONS is not set, only returns
@@ -722,8 +723,7 @@ g_key_file_parse_comment (GKeyFile     *key_file,
   
   g_assert (key_file->current_group != NULL);
 
-  pair = g_new0 (GKeyFileKeyValuePair, 1);
-  
+  pair = g_slice_new (GKeyFileKeyValuePair);
   pair->key = NULL;
   pair->value = g_strndup (line, length);
   
@@ -1055,7 +1055,7 @@ g_key_file_get_keys (GKeyFile     *key_file,
 	num_keys++;
     }
   
-  keys = g_new0 (gchar *, num_keys + 1);
+  keys = g_new (gchar *, num_keys + 1);
 
   i = num_keys - 1;
   for (tmp = group->key_value_pairs; tmp; tmp = tmp->next)
@@ -1132,7 +1132,7 @@ g_key_file_get_groups (GKeyFile *key_file,
    * list) is always the comment group at the top,
    * which we skip
    */
-  groups = g_new0 (gchar *, num_groups);
+  groups = g_new (gchar *, num_groups);
 
   group_node = g_list_last (key_file->groups);
   
@@ -1452,7 +1452,7 @@ g_key_file_get_string_list (GKeyFile     *key_file,
     }
 
   len = g_slist_length (pieces);
-  values = g_new0 (gchar *, len + 1); 
+  values = g_new (gchar *, len + 1);
   for (p = pieces, i = 0; p; p = p->next)
     values[i++] = p->data;
   values[len] = NULL;
@@ -1594,7 +1594,7 @@ g_key_file_get_locale_string (GKeyFile     *key_file,
 
       list = _g_compute_locale_variants (locale);
 
-      languages = g_new0 (gchar *, g_slist_length (list) + 1);
+      languages = g_new (gchar *, g_slist_length (list) + 1);
       for (l = list, i = 0; l; l = l->next, i++)
 	languages[i] = l->data;
       languages[i] = NULL;
@@ -1897,7 +1897,7 @@ g_key_file_get_boolean_list (GKeyFile     *key_file,
   if (!values)
     return NULL;
 
-  bool_values = g_new0 (gboolean, num_bools);
+  bool_values = g_new (gboolean, num_bools);
 
   for (i = 0; i < num_bools; i++)
     {
@@ -2107,7 +2107,7 @@ g_key_file_get_integer_list (GKeyFile     *key_file,
   if (!values)
     return NULL;
 
-  int_values = g_new0 (gint, num_ints);
+  int_values = g_new (gint, num_ints);
 
   for (i = 0; i < num_ints; i++)
     {
@@ -2316,7 +2316,7 @@ g_key_file_get_double_list  (GKeyFile     *key_file,
   if (!values)
     return NULL;
 
-  double_values = g_new0 (gdouble, num_doubles);
+  double_values = g_new (gdouble, num_doubles);
 
   for (i = 0; i < num_doubles; i++)
     {
@@ -2443,8 +2443,7 @@ g_key_file_set_key_comment (GKeyFile             *key_file,
 
   /* Now we can add our new comment
    */
-  pair = g_new0 (GKeyFileKeyValuePair, 1);
-  
+  pair = g_slice_new (GKeyFileKeyValuePair);
   pair->key = NULL;
   pair->value = g_key_file_parse_comment_as_value (key_file, comment);
   
@@ -2485,8 +2484,7 @@ g_key_file_set_group_comment (GKeyFile             *key_file,
 
   /* Now we can add our new comment
    */
-  group->comment = g_new0 (GKeyFileKeyValuePair, 1);
-  
+  group->comment = g_slice_new (GKeyFileKeyValuePair);
   group->comment->key = NULL;
   group->comment->value = g_key_file_parse_comment_as_value (key_file, comment);
 }
@@ -2523,8 +2521,7 @@ g_key_file_set_top_comment (GKeyFile             *key_file,
   if (comment == NULL)
      return;
 
-  pair = g_new0 (GKeyFileKeyValuePair, 1);
-  
+  pair = g_slice_new (GKeyFileKeyValuePair);
   pair->key = NULL;
   pair->value = g_key_file_parse_comment_as_value (key_file, comment);
   
@@ -2902,7 +2899,7 @@ g_key_file_add_group (GKeyFile    *key_file,
       return;
     }
 
-  group = g_new0 (GKeyFileGroup, 1);
+  group = g_slice_new0 (GKeyFileGroup);
   group->name = g_strdup (group_name);
   group->lookup_map = g_hash_table_new (g_str_hash, g_str_equal);
   key_file->groups = g_list_prepend (key_file->groups, group);
@@ -2920,7 +2917,7 @@ g_key_file_key_value_pair_free (GKeyFileKeyValuePair *pair)
     {
       g_free (pair->key);
       g_free (pair->value);
-      g_free (pair);
+      g_slice_free (GKeyFileKeyValuePair, pair);
     }
 }
 
@@ -3024,7 +3021,7 @@ g_key_file_remove_group_node (GKeyFile *key_file,
     }
 
   g_free ((gchar *) group->name);
-  g_free (group);
+  g_slice_free (GKeyFileGroup, group);
   g_list_free_1 (group_node);
 }
 
@@ -3071,8 +3068,7 @@ g_key_file_add_key (GKeyFile      *key_file,
 {
   GKeyFileKeyValuePair *pair;
 
-  pair = g_new0 (GKeyFileKeyValuePair, 1);
-
+  pair = g_slice_new (GKeyFileKeyValuePair);
   pair->key = g_strdup (key);
   pair->value = g_strdup (value);
 
@@ -3327,7 +3323,7 @@ g_key_file_parse_value_as_string (GKeyFile     *key_file,
 {
   gchar *string_value, *p, *q0, *q;
 
-  string_value = g_new0 (gchar, strlen (value) + 1);
+  string_value = g_new (gchar, strlen (value) + 1);
 
   p = (gchar *) value;
   q0 = q = string_value;
@@ -3433,7 +3429,7 @@ g_key_file_parse_string_as_value (GKeyFile    *key_file,
   /* Worst case would be that every character needs to be escaped.
    * In other words every character turns to two characters
    */
-  value = g_new0 (gchar, 2 * length);
+  value = g_new (gchar, 2 * length);
 
   p = (gchar *) string;
   q = value;

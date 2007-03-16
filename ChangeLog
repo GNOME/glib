@@ -1,3 +1,8 @@
+2007-03-16  Chris Wilson  <chris@chris-wilson.co.uk>
+
+	* glib/gkeyfile.c: Convert to GSlice and check for redundant
+	clears. (#418637)
+
 2007-03-15  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gscanner.c (g_scanner_get_token_ll): Fix a typo
