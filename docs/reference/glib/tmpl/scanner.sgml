@@ -50,37 +50,26 @@ handler function is declared by #GScannerMsgFunc.
 @input_name: 
 @qdata: 
 @config: 
-@token: 
-@value: 
-@line: 
-@position: 
-@next_token: 
-@next_value: 
-@next_line: 
-@next_position: 
+@token:       token parsed by the last g_scanner_get_next_token()
+@value:       value of the last token from g_scanner_get_next_token()
+@line:        line number of the last token from g_scanner_get_next_token()
+@position:    char number of the last token from g_scanner_get_next_token()
+@next_token:    token parsed by the last g_scanner_peek_next_token()
+@next_value:    value of the last token from g_scanner_peek_next_token()
+@next_line:     line number of the last token from g_scanner_peek_next_token()
+@next_position: char number of the last token from g_scanner_peek_next_token()
 @symbol_table: 
 @input_fd: 
 @text: 
 @text_end: 
 @buffer: 
 @scope_id: 
-@msg_handler: 
-
-<!-- ##### FUNCTION g_scanner_new ##### -->
-<para>
-Creates a new #GScanner.
-The @config_templ structure specifies the initial settings of the scanner,
-which are copied into the #GScanner <structfield>config</structfield> field.
-If you pass %NULL then the default settings are used.
-</para>
-
-@config_templ: the initial scanner settings.
-@Returns: the new #GScanner.
-
+@msg_handler: function to handle GScanner message output
 
 <!-- ##### STRUCT GScannerConfig ##### -->
 <para>
-Specifies the #GScanner settings.
+Specifies the #GScanner parser configuration. Most settings can be changed during
+the parsing phase and will affect the lexical parsing of the next unpeeked token.
 </para>
 <para>
 <structfield>cset_skip_characters</structfield> specifies which characters
@@ -221,6 +210,18 @@ is searched for in the default scope in addition to the current scope
 @store_int64: 
 @padding_dummy: 
 
+<!-- ##### FUNCTION g_scanner_new ##### -->
+<para>
+Creates a new #GScanner.
+The @config_templ structure specifies the initial settings of the scanner,
+which are copied into the #GScanner <structfield>config</structfield> field.
+If you pass %NULL then the default settings are used.
+</para>
+
+@config_templ: the initial scanner settings.
+@Returns: the new #GScanner.
+
+
 <!-- ##### FUNCTION g_scanner_input_file ##### -->
 <para>
 Prepares to scan a file.
@@ -253,7 +254,7 @@ Prepares to scan a text buffer.
 
 <!-- ##### FUNCTION g_scanner_peek_next_token ##### -->
 <para>
-Gets the next token, without removing it from the input stream.
+Parses the next token, without removing it from the input stream.
 The token data is placed in the
 <structfield>next_token</structfield>,
 <structfield>next_value</structfield>,
@@ -264,10 +265,10 @@ The token data is placed in the
 Note that, while the token is not removed from the input stream (i.e.
 the next call to g_scanner_get_next_token() will return the same token),
 it will not be reevaluated. This can lead to surprising results when
-changing scope after peeking for the next token. Getting the next token
-after switching the scope will return whatever was peeked before, 
-regardless of any symbols that may have been added or removed in the
-new scope. 
+changing scope or the scanner configuration after peeking the next token.
+Getting the next token after switching the scope or configuration will
+return whatever was peeked before, regardless of any symbols that may
+have been added or removed in the new scope. 
 </para>
 
 @scanner: a #GScanner.
@@ -276,7 +277,8 @@ new scope.
 
 <!-- ##### FUNCTION g_scanner_get_next_token ##### -->
 <para>
-Gets the next token, removing it from the input stream.
+Parses the next token just like g_scanner_peek_next_token() and also
+removes it from the input stream.
 The token data is placed in the
 <structfield>token</structfield>,
 <structfield>value</structfield>,
@@ -290,7 +292,8 @@ The token data is placed in the
 
 <!-- ##### FUNCTION g_scanner_cur_line ##### -->
 <para>
-Gets the current line in the input stream (counting from 1).
+Returns the current line in the input stream (counting from 1).
+This is the line of the last token parsed via g_scanner_get_next_token().
 </para>
 
 @scanner: a #GScanner.
@@ -299,7 +302,8 @@ Gets the current line in the input stream (counting from 1).
 
 <!-- ##### FUNCTION g_scanner_cur_position ##### -->
 <para>
-Gets the current position in the current line (counting from 0).
+Returns the current position in the current line (counting from 0).
+This is the position of the last token parsed via g_scanner_get_next_token().
 </para>
 
 @scanner: a #GScanner.
