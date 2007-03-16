@@ -1,3 +1,8 @@
+2007-03-16  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gbase64.c (g_base64_decode): Warn if the input
+	is too short.  (#418862, Halton Huo)
+
 Fri Mar 16 11:24:51 2007  Tim Janik  <timj@imendio.com>
 
 	* glib/gscanner.[hc]: reverted premature commit which broke
@@ -7,6 +12,11 @@ Fri Mar 16 11:24:51 2007  Tim Janik  <timj@imendio.com>
 
 	* glib/gkeyfile.c: Convert to GSlice and check for redundant
 	clears. (#418637)
+
+2007-03-15  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gscanner.[hc]: Revert recent changes that break
+	existing users of GScanner.
 
 2007-03-15  Matthias Clasen  <mclasen@redhat.com>
 

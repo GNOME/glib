@@ -358,16 +358,19 @@ g_base64_decode (const gchar *text,
 		 gsize       *out_len)
 {
   guchar *ret;
-  gint inlen, state = 0;
+  gint input_length, state = 0;
   guint save = 0;
   
   g_return_val_if_fail (text != NULL, NULL);
   g_return_val_if_fail (out_len != NULL, NULL);
 
-  inlen = strlen (text);
-  ret = g_malloc0 (inlen * 3 / 4);
+  input_length = strlen (text);
+
+  g_return_val_if_fail (input_length > 1, NULL);
+
+  ret = g_malloc0 (input_length * 3 / 4);
   
-  *out_len = g_base64_decode_step (text, inlen, ret, &state, &save);
+  *out_len = g_base64_decode_step (text, input_length, ret, &state, &save);
   
   return ret; 
 }
