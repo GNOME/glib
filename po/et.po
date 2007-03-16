@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-01-03 03:39+0000\n"
+"POT-Creation-Date: 2007-03-16 18:02-0400\n"
 "PO-Revision-Date: 2006-09-10 17:37+0300\n"
 "Last-Translator: Ivar Smolin <okul@linux.ee>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
@@ -22,276 +22,284 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../glib/gbookmarkfile.c:716 ../glib/gbookmarkfile.c:793
-#: ../glib/gbookmarkfile.c:872 ../glib/gbookmarkfile.c:919
+#: glib/gbookmarkfile.c:704 glib/gbookmarkfile.c:781 glib/gbookmarkfile.c:860
+#: glib/gbookmarkfile.c:907
 #, c-format
 msgid "Unexpected attribute '%s' for element '%s'"
 msgstr "Ootamatu atribuut '%s' elemendile '%s'"
 
-#: ../glib/gbookmarkfile.c:727 ../glib/gbookmarkfile.c:804
-#: ../glib/gbookmarkfile.c:814 ../glib/gbookmarkfile.c:930
+#: glib/gbookmarkfile.c:715 glib/gbookmarkfile.c:792 glib/gbookmarkfile.c:802
+#: glib/gbookmarkfile.c:918
 #, c-format
 msgid "Attribute '%s' of element '%s' not found"
 msgstr "Elemendil '%2$s' ei leitud atribuuti '%1$s'"
 
-#: ../glib/gbookmarkfile.c:1103 ../glib/gbookmarkfile.c:1168
-#: ../glib/gbookmarkfile.c:1232 ../glib/gbookmarkfile.c:1242
+#: glib/gbookmarkfile.c:1091 glib/gbookmarkfile.c:1156
+#: glib/gbookmarkfile.c:1220 glib/gbookmarkfile.c:1230
 #, c-format
 msgid "Unexpected tag '%s', tag '%s' expected"
 msgstr "Ootamatu silt '%s', oodati silti '%s'"
 
-#: ../glib/gbookmarkfile.c:1128 ../glib/gbookmarkfile.c:1142
-#: ../glib/gbookmarkfile.c:1210 ../glib/gbookmarkfile.c:1262
+#: glib/gbookmarkfile.c:1116 glib/gbookmarkfile.c:1130
+#: glib/gbookmarkfile.c:1198 glib/gbookmarkfile.c:1250
 #, c-format
 msgid "Unexpected tag '%s' inside '%s'"
 msgstr "'%2$s' on ootamatu silt '%1$s'"
 
-#: ../glib/gbookmarkfile.c:1792
+#: glib/gbookmarkfile.c:1780
+#, c-format
 msgid "No valid bookmark file found in data dirs"
 msgstr "Andmekataloogidest ei leitud korrektset järjehoidjafaili"
 
-#: ../glib/gbookmarkfile.c:1993
+#: glib/gbookmarkfile.c:1981
 #, c-format
 msgid "A bookmark for URI '%s' already exists"
 msgstr "URI-le '%s' on juba järjehoidja olemas"
 
-#: ../glib/gbookmarkfile.c:2039 ../glib/gbookmarkfile.c:2196
-#: ../glib/gbookmarkfile.c:2281 ../glib/gbookmarkfile.c:2362
-#: ../glib/gbookmarkfile.c:2447 ../glib/gbookmarkfile.c:2530
-#: ../glib/gbookmarkfile.c:2608 ../glib/gbookmarkfile.c:2687
-#: ../glib/gbookmarkfile.c:2729 ../glib/gbookmarkfile.c:2826
-#: ../glib/gbookmarkfile.c:2952 ../glib/gbookmarkfile.c:3142
-#: ../glib/gbookmarkfile.c:3218 ../glib/gbookmarkfile.c:3379
-#: ../glib/gbookmarkfile.c:3454 ../glib/gbookmarkfile.c:3544
-#: ../glib/gbookmarkfile.c:3671
+#: glib/gbookmarkfile.c:2027 glib/gbookmarkfile.c:2184
+#: glib/gbookmarkfile.c:2269 glib/gbookmarkfile.c:2349
+#: glib/gbookmarkfile.c:2434 glib/gbookmarkfile.c:2517
+#: glib/gbookmarkfile.c:2595 glib/gbookmarkfile.c:2674
+#: glib/gbookmarkfile.c:2716 glib/gbookmarkfile.c:2813
+#: glib/gbookmarkfile.c:2939 glib/gbookmarkfile.c:3129
+#: glib/gbookmarkfile.c:3205 glib/gbookmarkfile.c:3368
+#: glib/gbookmarkfile.c:3443 glib/gbookmarkfile.c:3533
+#: glib/gbookmarkfile.c:3660
 #, c-format
 msgid "No bookmark found for URI '%s'"
 msgstr "URI-le '%s' ei leitud järjehoidjat"
 
-#: ../glib/gbookmarkfile.c:2371
+#: glib/gbookmarkfile.c:2358
 #, c-format
 msgid "No MIME type defined in the bookmark for URI '%s'"
 msgstr "URI '%s' järjehoidjas pole MIME tüüpe määratud"
 
-#: ../glib/gbookmarkfile.c:2456
+#: glib/gbookmarkfile.c:2443
 #, c-format
 msgid "No private flag has been defined in bookmark for URI '%s'"
 msgstr "URI '%s' järjehoidjas pole privaatlippu kirjeldatud"
 
-#: ../glib/gbookmarkfile.c:2835
+#: glib/gbookmarkfile.c:2822
 #, c-format
 msgid "No groups set in bookmark for URI '%s'"
 msgstr "URI '%s' järjehoidjas pole gruppe määratud"
 
-#: ../glib/gbookmarkfile.c:3236 ../glib/gbookmarkfile.c:3389
+#: glib/gbookmarkfile.c:3223 glib/gbookmarkfile.c:3378
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
 msgstr "Rakendus nimega '%s' pole '%s' kohta järjehoidjat registreerinud"
 
-#: ../glib/gbookmarkfile.c:3402
+#: glib/gbookmarkfile.c:3391
 #, c-format
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "Tõrge rea '%s' käivitamisel koos URI-ga '%s'"
 
-#: ../glib/gconvert.c:423 ../glib/gconvert.c:501 ../glib/giochannel.c:1150
+#: glib/gconvert.c:424 glib/gconvert.c:502 glib/giochannel.c:1148
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Teisendamine koodistikust '%s' koodistikku '%s' ei ole toetatud"
 
-#: ../glib/gconvert.c:427 ../glib/gconvert.c:505
+#: glib/gconvert.c:428 glib/gconvert.c:506
 #, c-format
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "Konverterit '%s'-st '%s'-ks pole võimalik avada"
 
-#: ../glib/gconvert.c:621 ../glib/gconvert.c:1010 ../glib/giochannel.c:1322
-#: ../glib/giochannel.c:1364 ../glib/giochannel.c:2206 ../glib/gutf8.c:943
-#: ../glib/gutf8.c:1392
+#: glib/gconvert.c:622 glib/gconvert.c:1011 glib/giochannel.c:1320
+#: glib/giochannel.c:1362 glib/giochannel.c:2204 glib/gutf8.c:949
+#: glib/gutf8.c:1398
+#, c-format
 msgid "Invalid byte sequence in conversion input"
 msgstr "Vigane baidijada sisendi teisendamisel"
 
-#: ../glib/gconvert.c:627 ../glib/gconvert.c:937 ../glib/giochannel.c:1329
-#: ../glib/giochannel.c:2218
+#: glib/gconvert.c:628 glib/gconvert.c:938 glib/giochannel.c:1327
+#: glib/giochannel.c:2216
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Viga teisendamisel: %s"
 
-#: ../glib/gconvert.c:662 ../glib/gutf8.c:939 ../glib/gutf8.c:1143
-#: ../glib/gutf8.c:1284 ../glib/gutf8.c:1388
+#: glib/gconvert.c:663 glib/gutf8.c:945 glib/gutf8.c:1149 glib/gutf8.c:1290
+#: glib/gutf8.c:1394
+#, c-format
 msgid "Partial character sequence at end of input"
 msgstr "Osaline märgijada sisendi lõpus"
 
-#: ../glib/gconvert.c:912
+#: glib/gconvert.c:913
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Taandresiimi '%s' pole võimalik teisendada kooditabelisse '%s'"
 
-#: ../glib/gconvert.c:1721
+#: glib/gconvert.c:1727
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "URI '%s' ei ole failiskeemi (\"file\") jaoks absoluutne URI"
 
-#: ../glib/gconvert.c:1731
+#: glib/gconvert.c:1737
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Kohaliku faili URI '%s' ei või sisaldada märki '#'"
 
-#: ../glib/gconvert.c:1748
+#: glib/gconvert.c:1754
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI '%s' on vigane"
 
-#: ../glib/gconvert.c:1760
+#: glib/gconvert.c:1766
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "URI '%s' hostinimi on vigane"
 
-#: ../glib/gconvert.c:1776
+#: glib/gconvert.c:1782
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI '%s' sisaldab vigaseid paomärke"
 
-#: ../glib/gconvert.c:1871
+#: glib/gconvert.c:1877
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Rajanimi '%s' ei ole absoluutne rada"
 
-#: ../glib/gconvert.c:1881
+#: glib/gconvert.c:1887
+#, c-format
 msgid "Invalid hostname"
 msgstr "Vigane hostinimi"
 
-#: ../glib/gdir.c:121 ../glib/gdir.c:141
+#: glib/gdir.c:104 glib/gdir.c:124
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "Viga kataloogi '%s' avamisel: %s"
 
-#: ../glib/gfileutils.c:572 ../glib/gfileutils.c:645
+#: glib/gfileutils.c:557 glib/gfileutils.c:630
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Ei saa eraldada %lu faili \"%s\" lugemiseks"
 
-#: ../glib/gfileutils.c:587
+#: glib/gfileutils.c:572
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Viga failist '%s' lugemisel: %s"
 
-#: ../glib/gfileutils.c:669
+#: glib/gfileutils.c:654
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Tõrge failist '%s' lugemisel: %s"
 
-#: ../glib/gfileutils.c:720 ../glib/gfileutils.c:807
+#: glib/gfileutils.c:705 glib/gfileutils.c:792
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Tõrge faili '%s' avamisel: %s"
 
-#: ../glib/gfileutils.c:737 ../glib/gmappedfile.c:133
+#: glib/gfileutils.c:722 glib/gmappedfile.c:133
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Tõrge faili '%s' atribuutide saamisel: fstat() nurjus: %s"
 
-#: ../glib/gfileutils.c:771
+#: glib/gfileutils.c:756
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Tõrge faili '%s' avamisel: fdopen() nurjus: %s"
 
-#: ../glib/gfileutils.c:905
+#: glib/gfileutils.c:890
 #, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "Tõrge faili '%s' ümbernimetamisel nimega '%s': g_rename() nurjus: %s"
 
-#: ../glib/gfileutils.c:946 ../glib/gfileutils.c:1404
+#: glib/gfileutils.c:931 glib/gfileutils.c:1389
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Tõrge faili '%s' loomisel: %s"
 
-#: ../glib/gfileutils.c:960
+#: glib/gfileutils.c:945
 #, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr "Tõrge faili '%s' avamisel kirjutamiseks: fdopen() nurjus: %s"
 
-#: ../glib/gfileutils.c:985
+#: glib/gfileutils.c:970
 #, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "Tõrge faili '%s' kirjutamisel: fwrite() nurjus: %s"
 
-#: ../glib/gfileutils.c:1004
+#: glib/gfileutils.c:989
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "Tõrge faili '%s' sulgemisel: fclose() nurjus: %s"
 
-#: ../glib/gfileutils.c:1122
+#: glib/gfileutils.c:1107
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "Olemasolevat faili '%s' pole võimalik eemaldada: g_unlink() nurjus: %s"
 
-#: ../glib/gfileutils.c:1366
+#: glib/gfileutils.c:1351
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Mall '%s' vigane, see ei tohiks sisaldada '%s'"
 
-#: ../glib/gfileutils.c:1379
+#: glib/gfileutils.c:1364
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "Mall '%s' ei sisalda XXXXXX-i"
 
-#: ../glib/gfileutils.c:1854
+#: glib/gfileutils.c:1839
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Tõrge nimeviite '%s' lugemisel: %s"
 
-#: ../glib/gfileutils.c:1875
+#: glib/gfileutils.c:1860
+#, c-format
 msgid "Symbolic links not supported"
 msgstr "Nimeviited ei ole toetatud"
 
-#: ../glib/giochannel.c:1154
+#: glib/giochannel.c:1152
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Konverterit '%s'-st '%s'-ks pole võimalik avada: %s"
 
-#: ../glib/giochannel.c:1499
+#: glib/giochannel.c:1497
+#, c-format
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "Ei saa teostada toorest lugemise g_io_channel_read_line_string'i sees"
 
-#: ../glib/giochannel.c:1546 ../glib/giochannel.c:1803
-#: ../glib/giochannel.c:1889
+#: glib/giochannel.c:1544 glib/giochannel.c:1801 glib/giochannel.c:1887
+#, c-format
 msgid "Leftover unconverted data in read buffer"
 msgstr "Lugemispuhvrisse jäi teisendamata andmeid"
 
-#: ../glib/giochannel.c:1626 ../glib/giochannel.c:1703
+#: glib/giochannel.c:1624 glib/giochannel.c:1701
+#, c-format
 msgid "Channel terminates in a partial character"
 msgstr "Kanali katkestus poole märgi pealt"
 
-#: ../glib/giochannel.c:1689
+#: glib/giochannel.c:1687
+#, c-format
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Ei saa teostada toorest lugemise g_io_channel_read_to_end'i sees"
 
-#: ../glib/gmappedfile.c:116
+#: glib/gmappedfile.c:116
 #, c-format
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "Tõrge faili '%s' avamisel: open() nurjus: %s"
 
-#: ../glib/gmappedfile.c:193
+#: glib/gmappedfile.c:193
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "Tõrge faili '%s' avamisel: mmap() nurjus: %s"
 
-#: ../glib/gmarkup.c:226
+#: glib/gmarkup.c:226
 #, c-format
 msgid "Error on line %d char %d: %s"
 msgstr "Viga real %d märgil %d: %s"
 
-#: ../glib/gmarkup.c:324
+#: glib/gmarkup.c:324
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "Viga real %d: %s"
 
-#: ../glib/gmarkup.c:428
+#: glib/gmarkup.c:428
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "Avastati tühi olem '&'; lubatud olemid on: &amp; &quot; &lt; &gt; &apos;"
 
-#: ../glib/gmarkup.c:438
+#: glib/gmarkup.c:438
 #, c-format
 msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
@@ -301,17 +309,17 @@ msgstr ""
 "Märk '%s' ei ole olemi nime alguses lubatud. Märk & alustab olemit, kui see "
 "ampersand pole mõeldud olemiks, märgi see kui &amp;"
 
-#: ../glib/gmarkup.c:472
+#: glib/gmarkup.c:472
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
 msgstr "Märk '%s' ei ole olemi nimes lubatud"
 
-#: ../glib/gmarkup.c:509
+#: glib/gmarkup.c:509
 #, c-format
 msgid "Entity name '%s' is not known"
 msgstr "Olemi nimi '%s' on tuntmatu"
 
-#: ../glib/gmarkup.c:520
+#: glib/gmarkup.c:520
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
@@ -319,7 +327,7 @@ msgstr ""
 "Olem ei lõppenud semikooloniga; kõige tõenäolisemalt ei kavatsenud sa "
 "ampersandi kasutades olemit alustada - märgi see kui &amp;"
 
-#: ../glib/gmarkup.c:573
+#: glib/gmarkup.c:573
 #, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
@@ -328,16 +336,16 @@ msgstr ""
 "Viga '%-.*s' parsimisel. See võiks olla märgiviites olev number (näiteks "
 "&#234;) - võibolla on number liiga suur"
 
-#: ../glib/gmarkup.c:598
+#: glib/gmarkup.c:598
 #, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
 msgstr "Märgiviide '%-.*s' ei teisendu lubatud märgiks"
 
-#: ../glib/gmarkup.c:613
+#: glib/gmarkup.c:613
 msgid "Empty character reference; should include a digit such as &#454;"
 msgstr "Tühi märgiviide, see peaks sisaldama numbrit, näiteks &#454;"
 
-#: ../glib/gmarkup.c:623
+#: glib/gmarkup.c:623
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -346,23 +354,23 @@ msgstr ""
 "Märgiviide ei lõpe semikooloniga. Enamasti kasutatakse ampersand märki ilma "
 "kavatsuseta olemit alustada - märgi see kui &amp;"
 
-#: ../glib/gmarkup.c:709
+#: glib/gmarkup.c:709
 msgid "Unfinished entity reference"
 msgstr "Lõpetamata viide olemile"
 
-#: ../glib/gmarkup.c:715
+#: glib/gmarkup.c:715
 msgid "Unfinished character reference"
 msgstr "Lõpetamata viide märgile"
 
-#: ../glib/gmarkup.c:958 ../glib/gmarkup.c:986 ../glib/gmarkup.c:1017
+#: glib/gmarkup.c:958 glib/gmarkup.c:986 glib/gmarkup.c:1022
 msgid "Invalid UTF-8 encoded text"
 msgstr "Vigaselt kodeeritud UTF-8 tekst"
 
-#: ../glib/gmarkup.c:1053
+#: glib/gmarkup.c:1058
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Dokument peab algama elemendiga (nt: <book>)"
 
-#: ../glib/gmarkup.c:1093
+#: glib/gmarkup.c:1098
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -370,7 +378,7 @@ msgid ""
 msgstr ""
 "Märk '%s' ei ole märgi '<' järel lubatud, see võib mitte olla elemendi nimi"
 
-#: ../glib/gmarkup.c:1157
+#: glib/gmarkup.c:1162
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
@@ -378,7 +386,7 @@ msgid ""
 msgstr ""
 "Veider märk '%s', oodatakse '>' märki, et lõpetada elemendi '%s' algussilti"
 
-#: ../glib/gmarkup.c:1246
+#: glib/gmarkup.c:1251
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -386,7 +394,7 @@ msgstr ""
 "Veider märk '%s', oodatakse '=' märki peale elemendi '%s' tunnust nimega '%"
 "s' "
 
-#: ../glib/gmarkup.c:1288
+#: glib/gmarkup.c:1293
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -397,7 +405,7 @@ msgstr ""
 "sildi algust või lõppu, ühe võimalusena ka atribuuti. Võib-olla kasutad sa "
 "atribuudi nimes vigast märki?"
 
-#: ../glib/gmarkup.c:1377
+#: glib/gmarkup.c:1382
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -406,7 +414,7 @@ msgstr ""
 "Veider märk '%s', oodatakse võrdusmärgi järel tulevat jutumärki, mis aitaks "
 "atribuudile '%s' väärtust seada (element '%s')"
 
-#: ../glib/gmarkup.c:1522
+#: glib/gmarkup.c:1527
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -415,7 +423,7 @@ msgstr ""
 "Märk '%s' ei ole märkide '</' järel lubatud, '%s' võib mitte olla elemendi "
 "nimi"
 
-#: ../glib/gmarkup.c:1562
+#: glib/gmarkup.c:1567
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -424,25 +432,25 @@ msgstr ""
 "Märk '%s' ei ole lubatud märk elemendi '%s' nime sulgemise järel, lubatud "
 "märk on '>'"
 
-#: ../glib/gmarkup.c:1573
+#: glib/gmarkup.c:1578
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "Element '%s' on suletud, avatud elemente ei ole"
 
-#: ../glib/gmarkup.c:1582
+#: glib/gmarkup.c:1587
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "Element '%s' on suletud, kuid praegu avatud element on '%s'"
 
-#: ../glib/gmarkup.c:1748
+#: glib/gmarkup.c:1753
 msgid "Document was empty or contained only whitespace"
 msgstr "Dokument on tühi või sisaldab ainult tühja ruumi"
 
-#: ../glib/gmarkup.c:1762
+#: glib/gmarkup.c:1767
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "Dokument lõppes ootamatult ilma avatud nurksulgu '<' sulgemata"
 
-#: ../glib/gmarkup.c:1770 ../glib/gmarkup.c:1814
+#: glib/gmarkup.c:1775 glib/gmarkup.c:1819
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -451,7 +459,7 @@ msgstr ""
 "Dokument lõppes ootamatult ilma, et avatud elemente sulgemata - '%s' oli "
 "viimane avatud element"
 
-#: ../glib/gmarkup.c:1778
+#: glib/gmarkup.c:1783
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -460,19 +468,19 @@ msgstr ""
 "Dokument lõppes ootamatult, sildi <%s/> lõpetamiseks loodetakse näha "
 "nurksulgu"
 
-#: ../glib/gmarkup.c:1784
+#: glib/gmarkup.c:1789
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Dokument lõppes ootamatult elemendi nime sees"
 
-#: ../glib/gmarkup.c:1789
+#: glib/gmarkup.c:1794
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Dokument lõppes ootamatult atribuudi nime sees"
 
-#: ../glib/gmarkup.c:1794
+#: glib/gmarkup.c:1799
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Dokument lõppes ootamatult elemendi avamise sildi sees"
 
-#: ../glib/gmarkup.c:1800
+#: glib/gmarkup.c:1805
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -480,96 +488,96 @@ msgstr ""
 "Dokument lõppes ootamatult peale atribuudi nime järel olevat võrdusmärki, "
 "atribuudu väärtus on puudu"
 
-#: ../glib/gmarkup.c:1807
+#: glib/gmarkup.c:1812
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Dokument lõppes ootamatult keset attribuudi väärtust"
 
-#: ../glib/gmarkup.c:1822
+#: glib/gmarkup.c:1827
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "Dokument lõppes ootamatult elementi '%s' sulgemissildi sees"
 
-#: ../glib/gmarkup.c:1828
+#: glib/gmarkup.c:1833
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "Dokument lõppes ootamatult kommentaaride või töötlemis juhiste sees"
 
-#: ../glib/gshell.c:70
+#: glib/gshell.c:70
+#, c-format
 msgid "Quoted text doesn't begin with a quotation mark"
 msgstr "Tsiteeritav tekst ei alga jutumärgiga"
 
-#: ../glib/gshell.c:160
+#: glib/gshell.c:160
+#, c-format
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr "Vastavuseta jutumärk käsureal või kestprogrammi tsiteeritud tekstis"
 
-#: ../glib/gshell.c:538
+#: glib/gshell.c:538
 #, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
 msgstr "Tekst lõppes pärast '\\' märki. (Tekst on '%s')"
 
-#: ../glib/gshell.c:545
+#: glib/gshell.c:545
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr "Tekst lõppes enne kui leiti vastav jutumärk %c jaoks. (Tekst oli '%s')"
 
-#: ../glib/gshell.c:557
+#: glib/gshell.c:557
+#, c-format
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Tekst puudus (või sisaldas ainult tühja ruumi)"
 
-#: ../glib/gspawn-win32.c:272
+#: glib/gspawn-win32.c:272
+#, c-format
 msgid "Failed to read data from child process"
 msgstr "Tõrge andmete lugemisel alamprotsessilt"
 
-#: ../glib/gspawn-win32.c:287 ../glib/gspawn.c:1379
+#: glib/gspawn-win32.c:287 glib/gspawn.c:1395
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Tõrge toru loomisel alamprotsessiga suhtlemiseks (%s)"
 
-#: ../glib/gspawn-win32.c:325 ../glib/gspawn.c:1043
+#: glib/gspawn-win32.c:325 glib/gspawn.c:1059
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Tõrge alamprotsessi torust lugemisel (%s)"
 
-#: ../glib/gspawn-win32.c:351 ../glib/gspawn.c:1248
+#: glib/gspawn-win32.c:351 glib/gspawn.c:1264
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Tõrge kataloogi '%s' muutmisel (%s)"
 
-#: ../glib/gspawn-win32.c:357 ../glib/gspawn-win32.c:577
+#: glib/gspawn-win32.c:357 glib/gspawn-win32.c:481
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Tõrge alamprotsessi käivitamisel (%s)"
 
-#: ../glib/gspawn-win32.c:467 ../glib/gspawn-win32.c:523
+#: glib/gspawn-win32.c:428
 #, c-format
 msgid "Invalid program name: %s"
 msgstr "Vigane programmi nimi: %s"
 
-#: ../glib/gspawn-win32.c:477 ../glib/gspawn-win32.c:533
-#: ../glib/gspawn-win32.c:776 ../glib/gspawn-win32.c:831
-#: ../glib/gspawn-win32.c:1366
+#: glib/gspawn-win32.c:438 glib/gspawn-win32.c:678 glib/gspawn-win32.c:1218
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr "Vigane string argumendivektoris %d: %s"
 
-#: ../glib/gspawn-win32.c:488 ../glib/gspawn-win32.c:544
-#: ../glib/gspawn-win32.c:790 ../glib/gspawn-win32.c:844
-#: ../glib/gspawn-win32.c:1399
+#: glib/gspawn-win32.c:449 glib/gspawn-win32.c:692 glib/gspawn-win32.c:1251
 #, c-format
 msgid "Invalid string in environment: %s"
 msgstr "Vigane string keskkonnamuutujates: %s"
 
-#: ../glib/gspawn-win32.c:772 ../glib/gspawn-win32.c:827
-#: ../glib/gspawn-win32.c:1347
+#: glib/gspawn-win32.c:674 glib/gspawn-win32.c:1199
 #, c-format
 msgid "Invalid working directory: %s"
 msgstr "Vigane töökataloog: %s"
 
-#: ../glib/gspawn-win32.c:886
+#: glib/gspawn-win32.c:738
 #, c-format
 msgid "Failed to execute helper program (%s)"
 msgstr "Tõrge abiprogrammi käivitamisel (%s)"
 
-#: ../glib/gspawn-win32.c:1086
+#: glib/gspawn-win32.c:938
+#, c-format
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -577,137 +585,143 @@ msgstr ""
 "Ootamatu viga, kui g_io_channel_win32_poll() funktsioon luges "
 "lapsprotsessilt andmeid"
 
-#: ../glib/gspawn.c:168
+#: glib/gspawn.c:175
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "Tõrge andmete lugemisel alamprotsessilt (%s)"
 
-#: ../glib/gspawn.c:300
+#: glib/gspawn.c:307
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr ""
 "Ootamatu funktsiooni select() viga andmete lugemisel alamprotsessilt (%s)"
 
-#: ../glib/gspawn.c:383
+#: glib/gspawn.c:390
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Ootamatu viga funktsioonis waitpid() (%s)"
 
-#: ../glib/gspawn.c:1108
+#: glib/gspawn.c:1124
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Viga poolitamisel funktsiooniga fork() (%s)"
 
-#: ../glib/gspawn.c:1258
+#: glib/gspawn.c:1274
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Tõrge alamprotsessi \"%s\" käivitamisel (%s)"
 
-#: ../glib/gspawn.c:1268
+#: glib/gspawn.c:1284
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Tõrge alamprotsessi sisendi või väljundi ümbersuunamisel (%s)"
 
-#: ../glib/gspawn.c:1277
+#: glib/gspawn.c:1293
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Tõrge alamprotsessi poolitamisel funktsiooniga fork() (%s)"
 
-#: ../glib/gspawn.c:1285
+#: glib/gspawn.c:1301
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Tundmatu viga alamprotsessi \"%s\" käivitamisel"
 
-#: ../glib/gspawn.c:1307
+#: glib/gspawn.c:1323
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Tõrge piisavate andmete lugemisel lapsprotsessi torust (%s)"
 
-#: ../glib/gutf8.c:1017
+#: glib/gutf8.c:1023
+#, c-format
 msgid "Character out of range for UTF-8"
 msgstr "Märk on väljaspool UTF-8 ulatust"
 
-#: ../glib/gutf8.c:1111 ../glib/gutf8.c:1120 ../glib/gutf8.c:1252
-#: ../glib/gutf8.c:1261 ../glib/gutf8.c:1402 ../glib/gutf8.c:1498
+#: glib/gutf8.c:1117 glib/gutf8.c:1126 glib/gutf8.c:1258 glib/gutf8.c:1267
+#: glib/gutf8.c:1408 glib/gutf8.c:1504
+#, c-format
 msgid "Invalid sequence in conversion input"
 msgstr "Vigane jada sisendi teisendamisel"
 
-#: ../glib/gutf8.c:1413 ../glib/gutf8.c:1509
+#: glib/gutf8.c:1419 glib/gutf8.c:1515
+#, c-format
 msgid "Character out of range for UTF-16"
 msgstr "Märk on väljaspool UTF-16 ulatust"
 
-#: ../glib/goption.c:495
+#: glib/goption.c:548
 msgid "Usage:"
 msgstr "Kasutamine:"
 
-#: ../glib/goption.c:495
+#: glib/goption.c:548
 msgid "[OPTION...]"
 msgstr "[VÕTI...]"
 
-#: ../glib/goption.c:586
+#: glib/goption.c:639
 msgid "Help Options:"
 msgstr "Abiteabe võtmed:"
 
-#: ../glib/goption.c:587
+#: glib/goption.c:640
 msgid "Show help options"
 msgstr "Abiteabe võtmete näitamine"
 
-#: ../glib/goption.c:592
+#: glib/goption.c:645
 msgid "Show all help options"
 msgstr "Kõikide abiteabe võtmete näitamine"
 
-#: ../glib/goption.c:642
+#: glib/goption.c:695
 msgid "Application Options:"
 msgstr "Rakenduse võtmed:"
 
-#: ../glib/goption.c:686 ../glib/goption.c:756
+#: glib/goption.c:739 glib/goption.c:809
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "Täisarvulist väärtust '%s' pole võimalik %s jaoks parsida"
 
-#: ../glib/goption.c:696 ../glib/goption.c:764
+#: glib/goption.c:749 glib/goption.c:817
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "Täisarv '%s' %s jaoks on väljaspool lubatud piire"
 
-#: ../glib/goption.c:721
+#: glib/goption.c:774
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "Arvväärtust '%s' pole võimalik %s jaoks parsida"
 
-#: ../glib/goption.c:729
+#: glib/goption.c:782
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "Arv '%s' %s jaoks on väljaspool lubatud piire"
 
-#: ../glib/goption.c:1066
+#: glib/goption.c:1119
 #, c-format
 msgid "Error parsing option %s"
 msgstr "Viga võtme parsimisel: %s"
 
-#: ../glib/goption.c:1097 ../glib/goption.c:1208
+#: glib/goption.c:1150 glib/goption.c:1261
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Puuduv argument %s'i jaoks"
 
-#: ../glib/goption.c:1597
+#: glib/goption.c:1655
 #, c-format
 msgid "Unknown option %s"
 msgstr "Tundmatu võti %s"
 
-#: ../glib/gkeyfile.c:341
+#: glib/gkeyfile.c:341
+#, c-format
 msgid "Valid key file could not be found in data dirs"
 msgstr "Sobivat võtmefaili ei leitud andmekataloogidest"
 
-#: ../glib/gkeyfile.c:376
+#: glib/gkeyfile.c:376
+#, c-format
 msgid "Not a regular file"
 msgstr "Pole tavaline fail"
 
-#: ../glib/gkeyfile.c:384
+#: glib/gkeyfile.c:384
+#, c-format
 msgid "File is empty"
 msgstr "Fail on tühi"
 
-#: ../glib/gkeyfile.c:700
+#: glib/gkeyfile.c:701
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
@@ -715,50 +729,50 @@ msgstr ""
 "Võtmefail sisaldab rida '%s', mis ei ole võti-väärtus paar, grupp ega ka "
 "kommentaar"
 
-#: ../glib/gkeyfile.c:755 ../glib/gkeyfile.c:1233 ../glib/gkeyfile.c:2456
-#: ../glib/gkeyfile.c:2579 ../glib/gkeyfile.c:2894
+#: glib/gkeyfile.c:758
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "Vigane grupi nimi: %s"
 
-#: ../glib/gkeyfile.c:774
+#: glib/gkeyfile.c:780
+#, c-format
 msgid "Key file does not start with a group"
 msgstr "Võtmefail ei alga grupiga"
 
-#: ../glib/gkeyfile.c:797 ../glib/gkeyfile.c:1235
+#: glib/gkeyfile.c:806
 #, c-format
 msgid "Invalid key name: %s"
 msgstr "Vigane võtme nimi: %s"
 
-#: ../glib/gkeyfile.c:821
+#: glib/gkeyfile.c:833
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "Võtmefail sisaldab toetamata kodeeringut '%s'"
 
-#: ../glib/gkeyfile.c:1030 ../glib/gkeyfile.c:1189 ../glib/gkeyfile.c:2394
-#: ../glib/gkeyfile.c:2463 ../glib/gkeyfile.c:2586 ../glib/gkeyfile.c:2721
-#: ../glib/gkeyfile.c:2874 ../glib/gkeyfile.c:3056 ../glib/gkeyfile.c:3113
+#: glib/gkeyfile.c:1042 glib/gkeyfile.c:1201 glib/gkeyfile.c:2402
+#: glib/gkeyfile.c:2468 glib/gkeyfile.c:2587 glib/gkeyfile.c:2722
+#: glib/gkeyfile.c:2875 glib/gkeyfile.c:3055 glib/gkeyfile.c:3111
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Võtmefail ei sisalda gruppi '%s'"
 
-#: ../glib/gkeyfile.c:1201
+#: glib/gkeyfile.c:1213
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "Võtmefail ei sisalda võtit '%s'"
 
-#: ../glib/gkeyfile.c:1307 ../glib/gkeyfile.c:1417
+#: glib/gkeyfile.c:1315 glib/gkeyfile.c:1425
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr ""
 "Võtmefail sisaldab võtit '%s', mille väärtus '%s' pole UTF-8 kodeeringus"
 
-#: ../glib/gkeyfile.c:1327 ../glib/gkeyfile.c:1437 ../glib/gkeyfile.c:1805
+#: glib/gkeyfile.c:1335 glib/gkeyfile.c:1445 glib/gkeyfile.c:1813
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "Võtmefail sisaldab võtit '%s', mille väärtus pole võimalik kasutada."
 
-#: ../glib/gkeyfile.c:2017 ../glib/gkeyfile.c:2226
+#: glib/gkeyfile.c:2025 glib/gkeyfile.c:2234
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -767,36 +781,37 @@ msgstr ""
 "Võtmefail sisaldab võtit '%s' grupis '%s' aga selle väärtust pole võimalik "
 "kasutada"
 
-#: ../glib/gkeyfile.c:2409 ../glib/gkeyfile.c:2601 ../glib/gkeyfile.c:3124
+#: glib/gkeyfile.c:2417 glib/gkeyfile.c:2602 glib/gkeyfile.c:3122
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Võtmefail ei sisalda võtit '%s' grupis '%s'"
 
-#: ../glib/gkeyfile.c:3344
+#: glib/gkeyfile.c:3361
+#, c-format
 msgid "Key file contains escape character at end of line"
 msgstr "Võtmefail sisaldab rea lõpus paomärki"
 
-#: ../glib/gkeyfile.c:3366
+#: glib/gkeyfile.c:3383
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "Võtmefail sisaldab vigast paojada '%s'"
 
-#: ../glib/gkeyfile.c:3508
+#: glib/gkeyfile.c:3525
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Väärtust '%s' pole võimalik numbrilise väärtusena kasutada."
 
-#: ../glib/gkeyfile.c:3522
+#: glib/gkeyfile.c:3539
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "Täisarvu väärtus '%s' on väljaspool lubatud piire"
 
-#: ../glib/gkeyfile.c:3555
+#: glib/gkeyfile.c:3572
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "Väärtust '%s' pole võimalik ujukomalise väärtusena kasutada."
 
-#: ../glib/gkeyfile.c:3582
+#: glib/gkeyfile.c:3596
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Väärtust '%s' pole võimalik tõeväärtusena kasutada."

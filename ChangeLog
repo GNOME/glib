@@ -1,5 +1,15 @@
 2007-03-16  Matthias Clasen  <mclasen@redhat.com>
 
+	* === Released 2.13.0 ===
+
+	* NEWS: Updates
+
+2007-03-16  Matthias Clasen  <mclasen@redhat.com>
+	
+	* glib/glib.symbols:
+	* glib/gsequence.h: Add the test function to the header,
+	since it is exported.
+
 	* glib/gbase64.c (g_base64_decode): Warn if the input
 	is too short.  (#418862, Halton Huo)
 

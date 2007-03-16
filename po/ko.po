@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.11.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-15 20:27-0400\n"
+"POT-Creation-Date: 2007-03-16 18:02-0400\n"
 "PO-Revision-Date: 2006-08-11 22:41+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: GNOME Korea <gnome-kr-hackers@lists.kldp.net>\n"
@@ -14,248 +14,253 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: glib/gbookmarkfile.c:716 glib/gbookmarkfile.c:793 glib/gbookmarkfile.c:872
-#: glib/gbookmarkfile.c:919
+#: glib/gbookmarkfile.c:704 glib/gbookmarkfile.c:781 glib/gbookmarkfile.c:860
+#: glib/gbookmarkfile.c:907
 #, c-format
 msgid "Unexpected attribute '%s' for element '%s'"
 msgstr "예상치 못하게 '%2$s' 엘리먼트에 '%1$s' 애트리뷰트가 있습니다"
 
-#: glib/gbookmarkfile.c:727 glib/gbookmarkfile.c:804 glib/gbookmarkfile.c:814
-#: glib/gbookmarkfile.c:930
+#: glib/gbookmarkfile.c:715 glib/gbookmarkfile.c:792 glib/gbookmarkfile.c:802
+#: glib/gbookmarkfile.c:918
 #, c-format
 msgid "Attribute '%s' of element '%s' not found"
 msgstr "'%2$s' 엘리먼트에 '%1$s' 애트리뷰트가 없습니다"
 
-#: glib/gbookmarkfile.c:1103 glib/gbookmarkfile.c:1168
-#: glib/gbookmarkfile.c:1232 glib/gbookmarkfile.c:1242
+#: glib/gbookmarkfile.c:1091 glib/gbookmarkfile.c:1156
+#: glib/gbookmarkfile.c:1220 glib/gbookmarkfile.c:1230
 #, c-format
 msgid "Unexpected tag '%s', tag '%s' expected"
 msgstr "예상치 못하게 '%s' 태그가 있습니다. '%s' 태그가 있어야 합니다"
 
-#: glib/gbookmarkfile.c:1128 glib/gbookmarkfile.c:1142
-#: glib/gbookmarkfile.c:1210 glib/gbookmarkfile.c:1262
+#: glib/gbookmarkfile.c:1116 glib/gbookmarkfile.c:1130
+#: glib/gbookmarkfile.c:1198 glib/gbookmarkfile.c:1250
 #, c-format
 msgid "Unexpected tag '%s' inside '%s'"
 msgstr "예상치 못하게 '%2$s' 안에 '%1$s' 태그가 있습니다"
 
-#: glib/gbookmarkfile.c:1792
+#: glib/gbookmarkfile.c:1780
 #, c-format
 msgid "No valid bookmark file found in data dirs"
 msgstr "데이터 디렉토리에 올바른 북마크 파일이 없습니다"
 
-#: glib/gbookmarkfile.c:1993
+#: glib/gbookmarkfile.c:1981
 #, c-format
 msgid "A bookmark for URI '%s' already exists"
 msgstr "'%s' URL에 대한 북마크가 이미 있습니다"
 
-#: glib/gbookmarkfile.c:2039 glib/gbookmarkfile.c:2196
-#: glib/gbookmarkfile.c:2281 glib/gbookmarkfile.c:2362
-#: glib/gbookmarkfile.c:2447 glib/gbookmarkfile.c:2530
-#: glib/gbookmarkfile.c:2608 glib/gbookmarkfile.c:2687
-#: glib/gbookmarkfile.c:2729 glib/gbookmarkfile.c:2826
-#: glib/gbookmarkfile.c:2950 glib/gbookmarkfile.c:3140
-#: glib/gbookmarkfile.c:3216 glib/gbookmarkfile.c:3369
-#: glib/gbookmarkfile.c:3434 glib/gbookmarkfile.c:3524
-#: glib/gbookmarkfile.c:3651
+#: glib/gbookmarkfile.c:2027 glib/gbookmarkfile.c:2184
+#: glib/gbookmarkfile.c:2269 glib/gbookmarkfile.c:2349
+#: glib/gbookmarkfile.c:2434 glib/gbookmarkfile.c:2517
+#: glib/gbookmarkfile.c:2595 glib/gbookmarkfile.c:2674
+#: glib/gbookmarkfile.c:2716 glib/gbookmarkfile.c:2813
+#: glib/gbookmarkfile.c:2939 glib/gbookmarkfile.c:3129
+#: glib/gbookmarkfile.c:3205 glib/gbookmarkfile.c:3368
+#: glib/gbookmarkfile.c:3443 glib/gbookmarkfile.c:3533
+#: glib/gbookmarkfile.c:3660
 #, c-format
 msgid "No bookmark found for URI '%s'"
 msgstr "'%s' URL에 대한 북마크가 없습니다"
 
-#: glib/gbookmarkfile.c:2371
+#: glib/gbookmarkfile.c:2358
 #, c-format
 msgid "No MIME type defined in the bookmark for URI '%s'"
 msgstr "'%s' URL에 대한 북마크에 MIME 타입이 없습니다"
 
-#: glib/gbookmarkfile.c:2456
+#: glib/gbookmarkfile.c:2443
 #, c-format
 msgid "No private flag has been defined in bookmark for URI '%s'"
 msgstr "'%s' URL에 대한 북마크에 개인 플래그가 없습니다"
 
-#: glib/gbookmarkfile.c:2835
+#: glib/gbookmarkfile.c:2822
 #, c-format
 msgid "No groups set in bookmark for URI '%s'"
 msgstr "'%s' URL에 대한 북마크에 그룹이 설정되어 있지 않습니다"
 
-#: glib/gbookmarkfile.c:3234 glib/gbookmarkfile.c:3379
+#: glib/gbookmarkfile.c:3223 glib/gbookmarkfile.c:3378
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
 msgstr "이름이 '%s'인 어떤 프로그램도 '%s'에 대한 북마크를 등록하지 않았습니다"
 
-#: glib/gconvert.c:404 glib/gconvert.c:482 glib/giochannel.c:1150
+#: glib/gbookmarkfile.c:3391
+#, fuzzy, c-format
+msgid "Failed to expand exec line '%s' with URI '%s'"
+msgstr "심볼릭 링크 '%s' 읽기 실패: %s"
+
+#: glib/gconvert.c:424 glib/gconvert.c:502 glib/giochannel.c:1148
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "문자셋 '%s'에서 '%s'(으)로 변환은 지원되지 않습니다"
 
-#: glib/gconvert.c:408 glib/gconvert.c:486
+#: glib/gconvert.c:428 glib/gconvert.c:506
 #, c-format
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "'%s'에서 '%s'(으)로 변환하는 변환기를 열 수 없습니다"
 
-#: glib/gconvert.c:602 glib/gconvert.c:991 glib/giochannel.c:1322
-#: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:943
-#: glib/gutf8.c:1392
+#: glib/gconvert.c:622 glib/gconvert.c:1011 glib/giochannel.c:1320
+#: glib/giochannel.c:1362 glib/giochannel.c:2204 glib/gutf8.c:949
+#: glib/gutf8.c:1398
 #, c-format
 msgid "Invalid byte sequence in conversion input"
 msgstr "변환 입력에서 잘못된 바이트 순서"
 
-#: glib/gconvert.c:608 glib/gconvert.c:918 glib/giochannel.c:1329
-#: glib/giochannel.c:2218
+#: glib/gconvert.c:628 glib/gconvert.c:938 glib/giochannel.c:1327
+#: glib/giochannel.c:2216
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "변환중 오류: %s"
 
-#: glib/gconvert.c:643 glib/gutf8.c:939 glib/gutf8.c:1143 glib/gutf8.c:1284
-#: glib/gutf8.c:1388
+#: glib/gconvert.c:663 glib/gutf8.c:945 glib/gutf8.c:1149 glib/gutf8.c:1290
+#: glib/gutf8.c:1394
 #, c-format
 msgid "Partial character sequence at end of input"
 msgstr "입력의 끝에서 부분적인 문자 순서"
 
-#: glib/gconvert.c:893
+#: glib/gconvert.c:913
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "코드셋 '%2$s'에서 대체하는 '%1$s'(으)로 변환 못함"
 
-#: glib/gconvert.c:1702
+#: glib/gconvert.c:1727
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "URI '%s'은(는) \"file\" 스키마를 사용하는 절대 경로 URI가 아닙니다"
 
-#: glib/gconvert.c:1712
+#: glib/gconvert.c:1737
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "로컬 파일 URI '%s'에는 '#'이 들어갈 수 없습니다"
 
-#: glib/gconvert.c:1729
+#: glib/gconvert.c:1754
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI '%s'이(가) 잘못되었습니다"
 
-#: glib/gconvert.c:1741
+#: glib/gconvert.c:1766
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "URI '%s'의 호스트 이름이 잘못되었습니다"
 
-#: glib/gconvert.c:1757
+#: glib/gconvert.c:1782
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI '%s'은(는) 잘못된 이스케이프 문자가 들어 있습니다"
 
-#: glib/gconvert.c:1852
+#: glib/gconvert.c:1877
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "경로이름 '%s'은(는) 절대 경로가 아닙니다"
 
-#: glib/gconvert.c:1862
+#: glib/gconvert.c:1887
 #, c-format
 msgid "Invalid hostname"
 msgstr "잘못된 호스트 이름"
 
-#: glib/gdir.c:121 glib/gdir.c:141
+#: glib/gdir.c:104 glib/gdir.c:124
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "디렉토리 '%s' 여는 중 오류 : %s"
 
-#: glib/gfileutils.c:572 glib/gfileutils.c:645
+#: glib/gfileutils.c:557 glib/gfileutils.c:630
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "파일 \"%2$s\"을(를) 읽은 %1$lu 바이트를 할당할 수 없습니다"
 
-#: glib/gfileutils.c:587
+#: glib/gfileutils.c:572
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "파일 '%s'을(를) 읽는 중 오류: %s"
 
-#: glib/gfileutils.c:669
+#: glib/gfileutils.c:654
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "파일 '%s'에서 읽기 실패 : %s"
 
-#: glib/gfileutils.c:720 glib/gfileutils.c:807
+#: glib/gfileutils.c:705 glib/gfileutils.c:792
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "파일 '%s' 열기 실패 : %s"
 
-#: glib/gfileutils.c:737 glib/gmappedfile.c:133
+#: glib/gfileutils.c:722 glib/gmappedfile.c:133
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "파일 '%s'의 속성을 가져오기 실패 : fstat() 실패: %s"
 
-#: glib/gfileutils.c:771
+#: glib/gfileutils.c:756
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "파일 '%s' 열기 실패: fdopen() 실패: %s"
 
-#: glib/gfileutils.c:905
+#: glib/gfileutils.c:890
 #, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "파일 '%s'의 이름을 '%s'(으)로 바꾸는 데 실패: g_rename() 실패: %s"
 
-#: glib/gfileutils.c:946 glib/gfileutils.c:1404
+#: glib/gfileutils.c:931 glib/gfileutils.c:1389
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "파일 '%s' 만들기 실패: %s"
 
-#: glib/gfileutils.c:960
+#: glib/gfileutils.c:945
 #, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr "파일 '%s' 쓰기 용도로 열기 실패: fdopen() 실패: %s"
 
-#: glib/gfileutils.c:985
+#: glib/gfileutils.c:970
 #, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "파일 '%s' 쓰기 실패: fwrite() 실패: %s"
 
-#: glib/gfileutils.c:1004
+#: glib/gfileutils.c:989
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "파일 '%s' 닫기 실패: fclose() 실패: %s"
 
-#: glib/gfileutils.c:1122
+#: glib/gfileutils.c:1107
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "기존의 '%s' 파일을 지울 수 없습니다: g_unlink() 실패: %s"
 
-#: glib/gfileutils.c:1366
+#: glib/gfileutils.c:1351
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "템플리트 '%s'이(가) 잘못되었습니다, '%s'이(가) 들어 있으면 안 됩니다"
 
-#: glib/gfileutils.c:1379
+#: glib/gfileutils.c:1364
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "템플리트 '%s'에 XXXXXX가 없습니다"
 
-#: glib/gfileutils.c:1854
+#: glib/gfileutils.c:1839
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "심볼릭 링크 '%s' 읽기 실패: %s"
 
-#: glib/gfileutils.c:1875
+#: glib/gfileutils.c:1860
 #, c-format
 msgid "Symbolic links not supported"
 msgstr "심볼릭 링크를 지원하지 않습니다"
 
-#: glib/giochannel.c:1154
+#: glib/giochannel.c:1152
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "`%s'에서 `%s'(으)로 변환하는 변환기를 열 수 없음: %s"
 
-#: glib/giochannel.c:1499
+#: glib/giochannel.c:1497
 #, c-format
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "g_io_channel_read_line_string으로 raw 일기를 할 수 없습니다"
 
-#: glib/giochannel.c:1546 glib/giochannel.c:1803 glib/giochannel.c:1889
+#: glib/giochannel.c:1544 glib/giochannel.c:1801 glib/giochannel.c:1887
 #, c-format
 msgid "Leftover unconverted data in read buffer"
 msgstr "읽기 버퍼에서 변환되지 않은 데이터를 남겨둠"
 
-#: glib/giochannel.c:1626 glib/giochannel.c:1703
+#: glib/giochannel.c:1624 glib/giochannel.c:1701
 #, c-format
 msgid "Channel terminates in a partial character"
 msgstr "일부 문자에서 채널 끝냄"
 
-#: glib/giochannel.c:1689
+#: glib/giochannel.c:1687
 #, c-format
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "g_io_channel_read_to_endi로 raw 읽기를 할 수 없습니다"
@@ -270,17 +275,17 @@ msgstr "파일 '%s' 열기 실패: dopen() 실패: %s"
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "파일 '%s' 매핑 실패: mmap() 실패: %s"
 
-#: glib/gmarkup.c:227
+#: glib/gmarkup.c:226
 #, c-format
 msgid "Error on line %d char %d: %s"
 msgstr "%d째 줄 %d 문자에서 오류: %s"
 
-#: glib/gmarkup.c:325
+#: glib/gmarkup.c:324
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "%d째 줄에서 오류: %s"
 
-#: glib/gmarkup.c:429
+#: glib/gmarkup.c:428
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
@@ -288,7 +293,7 @@ msgstr ""
 "&apos; 입니다"
 
 # FIXME: "escape"라는 동사를 번역?
-#: glib/gmarkup.c:439
+#: glib/gmarkup.c:438
 #, c-format
 msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
@@ -299,18 +304,18 @@ msgstr ""
 "작합니다.  이 & 기호가 엔티티에 사용되는 것이 아닌 경우에는, &amp; 라고 쓰십"
 "시오"
 
-#: glib/gmarkup.c:473
+#: glib/gmarkup.c:472
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
 msgstr "문자 '%s'은(는) 엔티티 이름에서 올바르지 않습니다"
 
-#: glib/gmarkup.c:510
+#: glib/gmarkup.c:509
 #, c-format
 msgid "Entity name '%s' is not known"
 msgstr "엔티티 이름 '%s'이(가) 알려져 있지 않습니다"
 
 # FIXME: "escape"라는 동사를 번역?
-#: glib/gmarkup.c:521
+#: glib/gmarkup.c:520
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
@@ -319,7 +324,7 @@ msgstr ""
 "고 하지 않은 곳에서 & 기호를 사용한 경우일 것입니다 - 이런 경우 &amp; 라고쓰"
 "십시오"
 
-#: glib/gmarkup.c:574
+#: glib/gmarkup.c:573
 #, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
@@ -328,16 +333,16 @@ msgstr ""
 "'%-.*s'의 구문 해석에 실패했습니다.  문자 참조에는 숫자를 써야 합니다 (예를 "
 "들어 &#234;) - 숫자가 너무 클 수도 있습니다"
 
-#: glib/gmarkup.c:599
+#: glib/gmarkup.c:598
 #, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
 msgstr "문자 참조 '%-*s'에 대응되는 문자는 허용되지 않습니다"
 
-#: glib/gmarkup.c:614
+#: glib/gmarkup.c:613
 msgid "Empty character reference; should include a digit such as &#454;"
 msgstr "문자 참조가 비어 있습니다; &#454;처럼 숫자를 써야 합니다"
 
-#: glib/gmarkup.c:624
+#: glib/gmarkup.c:623
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -347,23 +352,23 @@ msgstr ""
 "려고 하지 않은 곳에서 & 기호를 사용한 경우일 것입니다 - 이런 경우 &amp; 라고"
 "쓰십시오"
 
-#: glib/gmarkup.c:710
+#: glib/gmarkup.c:709
 msgid "Unfinished entity reference"
 msgstr "엔티티 참조가 미완성입니다"
 
-#: glib/gmarkup.c:716
+#: glib/gmarkup.c:715
 msgid "Unfinished character reference"
 msgstr "문자 참조가 미완성입니다"
 
-#: glib/gmarkup.c:959 glib/gmarkup.c:987 glib/gmarkup.c:1018
+#: glib/gmarkup.c:958 glib/gmarkup.c:986 glib/gmarkup.c:1022
 msgid "Invalid UTF-8 encoded text"
 msgstr "잘못된 UTF-8 인코딩된 텍스트"
 
-#: glib/gmarkup.c:1054
+#: glib/gmarkup.c:1058
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "문서는 엘리먼트로 시작하여야 합니다 (예 <book>)"
 
-#: glib/gmarkup.c:1094
+#: glib/gmarkup.c:1098
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -372,7 +377,7 @@ msgstr ""
 "'%s'은(는) '<' 문자 다음에 쓸 수 없습니다; 이 문자로는 엘리먼트 이름을 시작"
 "할 수 없습니다"
 
-#: glib/gmarkup.c:1158
+#: glib/gmarkup.c:1162
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
@@ -380,7 +385,7 @@ msgid ""
 msgstr ""
 "이상한 문자 '%s'.  엘리먼트 '%s'의 시작태그를 끝내는 '>'가 나타나야 합니다"
 
-#: glib/gmarkup.c:1247
+#: glib/gmarkup.c:1251
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -388,7 +393,7 @@ msgstr ""
 "이상한 문자 '%1$s'.  엘리먼트 '%3$s'의 애트리뷰트 이름 '%2$s' 다음에 '='이 나"
 "타나야 합니다"
 
-#: glib/gmarkup.c:1289
+#: glib/gmarkup.c:1293
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -399,7 +404,7 @@ msgstr ""
 "나, 애트리뷰트가 나와야 합니다; 아마도 애트리뷰트 이름에 잘못된 문자를 쓴 경"
 "우일 것입니다"
 
-#: glib/gmarkup.c:1378
+#: glib/gmarkup.c:1382
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -408,7 +413,7 @@ msgstr ""
 "이상한 문자 '%1$s'.  엘리먼트 '%3$s'의 애트리뷰트 '%2$s'의 값을 부여할 때 = "
 "기호 다음에 따옴표가 나타나야 합니다"
 
-#: glib/gmarkup.c:1523
+#: glib/gmarkup.c:1527
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -417,7 +422,7 @@ msgstr ""
 "'%s'은(는) '</' 다음에 쓸 수 있는 문자가 아닙니다; '%s'은(는) 엘리먼트 이름"
 "을 시작할 수 없습니다"
 
-#: glib/gmarkup.c:1563
+#: glib/gmarkup.c:1567
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -426,25 +431,25 @@ msgstr ""
 "'%s'은(는) 엘리먼트 '%s'을(를) 닫은 다음에 쓸 수 있는 문자가 아닙니다; '>' 문"
 "자를 쓸 수 있습니다"
 
-#: glib/gmarkup.c:1574
+#: glib/gmarkup.c:1578
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "'%s' 엘리먼트는 닫혔고, 현재 아무 엘리먼트도 열려 있지 않습니다"
 
-#: glib/gmarkup.c:1583
+#: glib/gmarkup.c:1587
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "'%s' 엘리먼트는 닫혔고, 현재 열려 있는 엘리먼트는 '%s'입니다"
 
-#: glib/gmarkup.c:1749
+#: glib/gmarkup.c:1753
 msgid "Document was empty or contained only whitespace"
 msgstr "문서가 비어있거나 공백문자만 들어 있습니다"
 
-#: glib/gmarkup.c:1763
+#: glib/gmarkup.c:1767
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "'<' 바로 다음에 문서가 갑작스럽게 끝났습니다"
 
-#: glib/gmarkup.c:1771 glib/gmarkup.c:1815
+#: glib/gmarkup.c:1775 glib/gmarkup.c:1819
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -453,7 +458,7 @@ msgstr ""
 "엘리먼트가 열려 있는 상태로 문서가 갑작스럽게 끝났습니다 - 마지막에 열려 있"
 "던 엘리먼트는 '%s'입니다"
 
-#: glib/gmarkup.c:1779
+#: glib/gmarkup.c:1783
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -461,19 +466,19 @@ msgid ""
 msgstr ""
 "문서가 갑작스럽게 끝났습니다.  <%s/> 태그를 끝내는 > 기호가 나타나야 합니다"
 
-#: glib/gmarkup.c:1785
+#: glib/gmarkup.c:1789
 msgid "Document ended unexpectedly inside an element name"
 msgstr "엘리먼트 이름에서 문서가 갑작스럽게 끝났습니다"
 
-#: glib/gmarkup.c:1790
+#: glib/gmarkup.c:1794
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "에트리뷰트 이름에서 문서가 갑작스럽게 끝났습니다"
 
-#: glib/gmarkup.c:1795
+#: glib/gmarkup.c:1799
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "엘리먼트의 열기 태그 안에서 문서가 갑작스럽게 끝났습니다."
 
-#: glib/gmarkup.c:1801
+#: glib/gmarkup.c:1805
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -481,17 +486,17 @@ msgstr ""
 "애트리뷰트 이름 다음의 = 기호 다음에서 문서가 갑작스럽게 끝났습니다; 애트리뷰"
 "트 값이 없습니다"
 
-#: glib/gmarkup.c:1808
+#: glib/gmarkup.c:1812
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "애트리뷰트 값 안에서 문서가 갑작스럽게 끝났습니다"
 
-#: glib/gmarkup.c:1823
+#: glib/gmarkup.c:1827
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "엘리먼트 '%s'의 닫기 태그 안에서 문서가 갑작스럽게 끝났습니다"
 
 # FIXME: processing instruction?
-#: glib/gmarkup.c:1829
+#: glib/gmarkup.c:1833
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "주석문 혹은 처리 안내자 태그 안에서 문서가 갑작스럽게 끝났습니다"
 
@@ -525,59 +530,57 @@ msgstr ""
 msgid "Text was empty (or contained only whitespace)"
 msgstr "텍스트가 비어 있음 (또는 공백만 들어 있음)"
 
-#: glib/gspawn-win32.c:273
+#: glib/gspawn-win32.c:272
 #, c-format
 msgid "Failed to read data from child process"
 msgstr "자식 프로세스에서 데이터 읽기 실패"
 
-#: glib/gspawn-win32.c:288 glib/gspawn.c:1361
+#: glib/gspawn-win32.c:287 glib/gspawn.c:1395
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "자식 프로세스와 통신을 위한 파이프를 만드는 중 실패 (%s)"
 
-#: glib/gspawn-win32.c:326 glib/gspawn.c:1025
+#: glib/gspawn-win32.c:325 glib/gspawn.c:1059
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "자식 파이프로 부터 읽기 실패 (%s)"
 
-#: glib/gspawn-win32.c:352 glib/gspawn.c:1230
+#: glib/gspawn-win32.c:351 glib/gspawn.c:1264
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "디렉토리 '%s'(으)로 바꾸기 실패 (%s)"
 
-#: glib/gspawn-win32.c:358 glib/gspawn-win32.c:578
+#: glib/gspawn-win32.c:357 glib/gspawn-win32.c:481
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "자식 프로세스 실행 실패 (%s)"
 
-#: glib/gspawn-win32.c:468 glib/gspawn-win32.c:524
+#: glib/gspawn-win32.c:428
 #, c-format
 msgid "Invalid program name: %s"
 msgstr "잘못된 프로그램 이름: %s"
 
-#: glib/gspawn-win32.c:478 glib/gspawn-win32.c:534 glib/gspawn-win32.c:777
-#: glib/gspawn-win32.c:832 glib/gspawn-win32.c:1367
+#: glib/gspawn-win32.c:438 glib/gspawn-win32.c:678 glib/gspawn-win32.c:1218
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr "인자에서 잘못된 문자열, %d: %s"
 
-#: glib/gspawn-win32.c:489 glib/gspawn-win32.c:545 glib/gspawn-win32.c:791
-#: glib/gspawn-win32.c:845 glib/gspawn-win32.c:1400
+#: glib/gspawn-win32.c:449 glib/gspawn-win32.c:692 glib/gspawn-win32.c:1251
 #, c-format
 msgid "Invalid string in environment: %s"
 msgstr "환경에서 잘못된 문자열: %s"
 
-#: glib/gspawn-win32.c:773 glib/gspawn-win32.c:828 glib/gspawn-win32.c:1348
+#: glib/gspawn-win32.c:674 glib/gspawn-win32.c:1199
 #, c-format
 msgid "Invalid working directory: %s"
 msgstr "잘못된 현재 디렉토리: %s"
 
-#: glib/gspawn-win32.c:887
+#: glib/gspawn-win32.c:738
 #, c-format
 msgid "Failed to execute helper program (%s)"
 msgstr "도움 프로그램 실행 실패 (%s)"
 
-#: glib/gspawn-win32.c:1087
+#: glib/gspawn-win32.c:938
 #, c-format
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
@@ -586,143 +589,143 @@ msgstr ""
 "자식 프로세스에서 데이터를 읽는중 g_io_channel_win32_poll()에서 기대되지않은 "
 "오류"
 
-#: glib/gspawn.c:165
+#: glib/gspawn.c:175
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "자식 프로세스 에서 데이터를 읽기 실패 (%s)"
 
-#: glib/gspawn.c:297
+#: glib/gspawn.c:307
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr ""
 "자식 프로세스 에서 데이터를 읽는 중 select()에서 예상되지 않은 오류 (%s)"
 
-#: glib/gspawn.c:380
+#: glib/gspawn.c:390
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "waitpid()에서 예상되지 않은 오류 (%s)"
 
-#: glib/gspawn.c:1090
+#: glib/gspawn.c:1124
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "포크 실패(%s)"
 
-#: glib/gspawn.c:1240
+#: glib/gspawn.c:1274
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "자식 프로세스 \"%s\"을(를) 실행하기 실패 (%s)"
 
-#: glib/gspawn.c:1250
+#: glib/gspawn.c:1284
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "자식 프로세스 (%s)의 입력 또는 출력의 리다이렉트 실패"
 
-#: glib/gspawn.c:1259
+#: glib/gspawn.c:1293
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "자식 프로세스 (%s)를 생성 실패"
 
-#: glib/gspawn.c:1267
+#: glib/gspawn.c:1301
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "자식 프로세스 \"%s\"을(를) 실행하는 중 알 수 없는 오류"
 
-#: glib/gspawn.c:1289
+#: glib/gspawn.c:1323
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "자식 pid 파이프에서 필요한 데이타를 읽는 데 실패했습니다 (%s)"
 
-#: glib/gutf8.c:1017
+#: glib/gutf8.c:1023
 #, c-format
 msgid "Character out of range for UTF-8"
 msgstr "UTF-8 범위 밖의 문자"
 
-#: glib/gutf8.c:1111 glib/gutf8.c:1120 glib/gutf8.c:1252 glib/gutf8.c:1261
-#: glib/gutf8.c:1402 glib/gutf8.c:1498
+#: glib/gutf8.c:1117 glib/gutf8.c:1126 glib/gutf8.c:1258 glib/gutf8.c:1267
+#: glib/gutf8.c:1408 glib/gutf8.c:1504
 #, c-format
 msgid "Invalid sequence in conversion input"
 msgstr "변환 입력에서 잘못된 순서"
 
-#: glib/gutf8.c:1413 glib/gutf8.c:1509
+#: glib/gutf8.c:1419 glib/gutf8.c:1515
 #, c-format
 msgid "Character out of range for UTF-16"
 msgstr "UTF-16 범위 밖의 문자"
 
-#: glib/goption.c:495
+#: glib/goption.c:548
 msgid "Usage:"
 msgstr "사용법:"
 
-#: glib/goption.c:495
+#: glib/goption.c:548
 msgid "[OPTION...]"
 msgstr "[옵션...]"
 
-#: glib/goption.c:586
+#: glib/goption.c:639
 msgid "Help Options:"
 msgstr "도움말 옵션:"
 
-#: glib/goption.c:587
+#: glib/goption.c:640
 msgid "Show help options"
 msgstr "도움말 옵션을 봅니다"
 
-#: glib/goption.c:592
+#: glib/goption.c:645
 msgid "Show all help options"
 msgstr "모든 도움말 옵션을 봅니다"
 
-#: glib/goption.c:642
+#: glib/goption.c:695
 msgid "Application Options:"
 msgstr "프로그램 옵션:"
 
-#: glib/goption.c:686 glib/goption.c:756
+#: glib/goption.c:739 glib/goption.c:809
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "%2$s에 대한 정수 값 '%1$s'을(를) 분석할 수 없습니다"
 
-#: glib/goption.c:696 glib/goption.c:764
+#: glib/goption.c:749 glib/goption.c:817
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "%2$s에 대한 정수 값 '%1$s'이(가) 범위를 벗어났습니다"
 
-#: glib/goption.c:721
+#: glib/goption.c:774
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "%2$s에 대한 배정도 실수 값 '%1$s'을(를) 분석할 수 없습니다"
 
-#: glib/goption.c:729
+#: glib/goption.c:782
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "%2$s에 대한 배정도 실수 값 '%1$s'이(가) 범위를 벗어났습니다"
 
-#: glib/goption.c:1066
+#: glib/goption.c:1119
 #, c-format
 msgid "Error parsing option %s"
 msgstr "옵션 읽는 중에 오류: %s"
 
-#: glib/goption.c:1097 glib/goption.c:1208
+#: glib/goption.c:1150 glib/goption.c:1261
 #, c-format
 msgid "Missing argument for %s"
 msgstr "%s에 대한 인자가 빠졌습니다"
 
-#: glib/goption.c:1597
+#: glib/goption.c:1655
 #, c-format
 msgid "Unknown option %s"
 msgstr "알 수 없는 옵션 %s"
 
-#: glib/gkeyfile.c:337
+#: glib/gkeyfile.c:341
 #, c-format
 msgid "Valid key file could not be found in data dirs"
 msgstr "데이터 디렉토리에 올바른 키 파일이 없습니다"
 
-#: glib/gkeyfile.c:372
+#: glib/gkeyfile.c:376
 #, c-format
 msgid "Not a regular file"
 msgstr "일반 파일이 아닙니다"
 
-#: glib/gkeyfile.c:380
+#: glib/gkeyfile.c:384
 #, c-format
 msgid "File is empty"
 msgstr "파일이 비었습니다"
 
-#: glib/gkeyfile.c:695
+#: glib/gkeyfile.c:701
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
@@ -730,76 +733,86 @@ msgstr ""
 "키 파일에 들어 있는 '%s' 줄은 키-값 쌍도 아니고, 그룹도 아니고, 주석도 아닙니"
 "다"
 
-#: glib/gkeyfile.c:763
+#: glib/gkeyfile.c:758
+#, fuzzy, c-format
+msgid "Invalid group name: %s"
+msgstr "잘못된 프로그램 이름: %s"
+
+#: glib/gkeyfile.c:780
 #, c-format
 msgid "Key file does not start with a group"
 msgstr "키 파일이 그룹으로 시작하지 않습니다"
 
 #: glib/gkeyfile.c:806
+#, fuzzy, c-format
+msgid "Invalid key name: %s"
+msgstr "잘못된 프로그램 이름: %s"
+
+#: glib/gkeyfile.c:833
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "키 파일에 지원하지 않는 '%s' 인코딩이 들어 있습니다"
 
-#: glib/gkeyfile.c:1013 glib/gkeyfile.c:1172 glib/gkeyfile.c:2385
-#: glib/gkeyfile.c:2450 glib/gkeyfile.c:2569 glib/gkeyfile.c:2704
-#: glib/gkeyfile.c:2857 glib/gkeyfile.c:3033 glib/gkeyfile.c:3090
+#: glib/gkeyfile.c:1042 glib/gkeyfile.c:1201 glib/gkeyfile.c:2402
+#: glib/gkeyfile.c:2468 glib/gkeyfile.c:2587 glib/gkeyfile.c:2722
+#: glib/gkeyfile.c:2875 glib/gkeyfile.c:3055 glib/gkeyfile.c:3111
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "키 파일에 '%s' 그룹이 없습니다"
 
-#: glib/gkeyfile.c:1184
+#: glib/gkeyfile.c:1213
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "키 파일에 '%s' 키가 없습니다"
 
-#: glib/gkeyfile.c:1285 glib/gkeyfile.c:1394
+#: glib/gkeyfile.c:1315 glib/gkeyfile.c:1425
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "키 파일에 있는 '%s' 키와 '%s' 값은 UTF-8이 아닙니다"
 
-#: glib/gkeyfile.c:1303 glib/gkeyfile.c:1412 glib/gkeyfile.c:1784
+#: glib/gkeyfile.c:1335 glib/gkeyfile.c:1445 glib/gkeyfile.c:1813
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "키 파일에 있는 '%s' 키의 값을 해석할 수 없습니다."
 
-#: glib/gkeyfile.c:2000 glib/gkeyfile.c:2213
+#: glib/gkeyfile.c:2025 glib/gkeyfile.c:2234
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
 "interpreted."
 msgstr "키 파일에 있는 '%2$s' 그룹의 '%1$s' 키의 값을 해석할 수 없습니다."
 
-#: glib/gkeyfile.c:2400 glib/gkeyfile.c:2584 glib/gkeyfile.c:3101
+#: glib/gkeyfile.c:2417 glib/gkeyfile.c:2602 glib/gkeyfile.c:3122
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "키 파일에 있는 '%2$s' 그룹의 '%1$s' 키가 없습니다"
 
-#: glib/gkeyfile.c:3274
+#: glib/gkeyfile.c:3361
 #, c-format
 msgid "Key file contains escape character at end of line"
 msgstr "키 파일의 줄 끝에 이스케이프 문자가 있습니다"
 
-#: glib/gkeyfile.c:3296
+#: glib/gkeyfile.c:3383
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "키 파일에 잘못된 이스케이프 시퀀스 '%s'이(가) 들어 있습니다"
 
-#: glib/gkeyfile.c:3437
+#: glib/gkeyfile.c:3525
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "값 '%s'을(를) 숫자로 해석할 수 없습니다."
 
-#: glib/gkeyfile.c:3447
+#: glib/gkeyfile.c:3539
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "정수 값 '%s'이(가) 범위를 벗어났습니다"
 
-#: glib/gkeyfile.c:3475
+#: glib/gkeyfile.c:3572
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "값 '%s'을(를) 단정도 실수로 해석할 수 없습니다."
 
-#: glib/gkeyfile.c:3495
+#: glib/gkeyfile.c:3596
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "값 '%s'을(를) 불리언 값으로 해석할 수 없습니다."

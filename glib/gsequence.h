@@ -118,4 +118,7 @@ GSequenceIter *g_sequence_range_get_midpoint (GSequenceIter            *begin,
                                               GSequenceIter            *end);
 
 
+/* Private */
+void  g_sequence_self_test_internal_to_glib_dont_use (GSequence *seq);
+
 #endif /* __G_SEQUENCE_H__ */

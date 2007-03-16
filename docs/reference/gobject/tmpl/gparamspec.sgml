@@ -149,11 +149,6 @@ can be configured.
                          parameter is guaranteed to remain valid and
                          unmodified for the lifetime of the parameter. 
                          Since 2.8
-@G_PARAM_PRIVATE: 
-@G_PARAM_STATIC_NICK:    the string used as nick when constructing the 
-                         parameter is guaranteed to remain valid and
-                         unmodified for the lifetime of the parameter. 
-                         Since 2.8
 @G_PARAM_STATIC_BLURB:   the string used as blurb when constructing the 
                          parameter is guaranteed to remain valid and 
                          unmodified for the lifetime of the parameter. 

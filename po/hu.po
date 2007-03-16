@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-17 10:53+0200\n"
+"POT-Creation-Date: 2007-03-16 18:02-0400\n"
 "PO-Revision-Date: 2006-08-26 13:25+0200\n"
 "Last-Translator: Gabor Kelemen <kelemeng@gnome.hu>\n"
 "Language-Team: Hungarian <gnome@gnome.hu>\n"
@@ -18,278 +18,297 @@ msgstr ""
 "X-Generator: KBabel 1.11.2\n"
 "Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 
-#: ../glib/gbookmarkfile.c:716 ../glib/gbookmarkfile.c:793
-#: ../glib/gbookmarkfile.c:872 ../glib/gbookmarkfile.c:919
+#: glib/gbookmarkfile.c:704 glib/gbookmarkfile.c:781 glib/gbookmarkfile.c:860
+#: glib/gbookmarkfile.c:907
 #, c-format
 msgid "Unexpected attribute '%s' for element '%s'"
 msgstr "Váratlan attribútum (\"%s\") a(z) \"%s\" elemhez"
 
-#: ../glib/gbookmarkfile.c:727 ../glib/gbookmarkfile.c:804
-#: ../glib/gbookmarkfile.c:814 ../glib/gbookmarkfile.c:930
+#: glib/gbookmarkfile.c:715 glib/gbookmarkfile.c:792 glib/gbookmarkfile.c:802
+#: glib/gbookmarkfile.c:918
 #, c-format
 msgid "Attribute '%s' of element '%s' not found"
 msgstr "A(z) \"$2%s\" elem \"$1%s\" attribútuma nem található"
 
-#: ../glib/gbookmarkfile.c:1103 ../glib/gbookmarkfile.c:1168
-#: ../glib/gbookmarkfile.c:1232 ../glib/gbookmarkfile.c:1242
+#: glib/gbookmarkfile.c:1091 glib/gbookmarkfile.c:1156
+#: glib/gbookmarkfile.c:1220 glib/gbookmarkfile.c:1230
 #, c-format
 msgid "Unexpected tag '%s', tag '%s' expected"
 msgstr "Váratlan címke: \"%s\" a várt \"%s\" helyett"
 
-#: ../glib/gbookmarkfile.c:1128 ../glib/gbookmarkfile.c:1142
-#: ../glib/gbookmarkfile.c:1210 ../glib/gbookmarkfile.c:1262
+#: glib/gbookmarkfile.c:1116 glib/gbookmarkfile.c:1130
+#: glib/gbookmarkfile.c:1198 glib/gbookmarkfile.c:1250
 #, c-format
 msgid "Unexpected tag '%s' inside '%s'"
 msgstr "Váratlan címke: \"%s\" a következőn belül: \"%s\""
 
-#: ../glib/gbookmarkfile.c:1792
+#: glib/gbookmarkfile.c:1780
+#, c-format
 msgid "No valid bookmark file found in data dirs"
 msgstr "Az adatkönyvtárakban nem található érvényes könyvjelzőfájl"
 
-#: ../glib/gbookmarkfile.c:1993
+#: glib/gbookmarkfile.c:1981
 #, c-format
 msgid "A bookmark for URI '%s' already exists"
 msgstr "Már létezik könyvjelző a következő URI címhez: \"%s\""
 
-#: ../glib/gbookmarkfile.c:2039 ../glib/gbookmarkfile.c:2196
-#: ../glib/gbookmarkfile.c:2281 ../glib/gbookmarkfile.c:2362
-#: ../glib/gbookmarkfile.c:2447 ../glib/gbookmarkfile.c:2530
-#: ../glib/gbookmarkfile.c:2608 ../glib/gbookmarkfile.c:2687
-#: ../glib/gbookmarkfile.c:2729 ../glib/gbookmarkfile.c:2826
-#: ../glib/gbookmarkfile.c:2952 ../glib/gbookmarkfile.c:3142
-#: ../glib/gbookmarkfile.c:3218 ../glib/gbookmarkfile.c:3371
-#: ../glib/gbookmarkfile.c:3436 ../glib/gbookmarkfile.c:3526
-#: ../glib/gbookmarkfile.c:3653
+#: glib/gbookmarkfile.c:2027 glib/gbookmarkfile.c:2184
+#: glib/gbookmarkfile.c:2269 glib/gbookmarkfile.c:2349
+#: glib/gbookmarkfile.c:2434 glib/gbookmarkfile.c:2517
+#: glib/gbookmarkfile.c:2595 glib/gbookmarkfile.c:2674
+#: glib/gbookmarkfile.c:2716 glib/gbookmarkfile.c:2813
+#: glib/gbookmarkfile.c:2939 glib/gbookmarkfile.c:3129
+#: glib/gbookmarkfile.c:3205 glib/gbookmarkfile.c:3368
+#: glib/gbookmarkfile.c:3443 glib/gbookmarkfile.c:3533
+#: glib/gbookmarkfile.c:3660
 #, c-format
 msgid "No bookmark found for URI '%s'"
 msgstr "Nem található könyvjelző a következő URI címhez: \"%s\""
 
-#: ../glib/gbookmarkfile.c:2371
+#: glib/gbookmarkfile.c:2358
 #, c-format
 msgid "No MIME type defined in the bookmark for URI '%s'"
 msgstr "Nincs MIME típus meghatározva a következő URI könyvjelzőjéhez: \"%s\""
 
-#: ../glib/gbookmarkfile.c:2456
+#: glib/gbookmarkfile.c:2443
 #, c-format
 msgid "No private flag has been defined in bookmark for URI '%s'"
 msgstr "Nincs magán jelző meghatározva a következő URI könyvjelzőjéhez: \"%s\""
 
-#: ../glib/gbookmarkfile.c:2835
+#: glib/gbookmarkfile.c:2822
 #, c-format
 msgid "No groups set in bookmark for URI '%s'"
 msgstr "Nincsenek csoportok beállítva a következő URI könyvjelzőjéhez: \"%s\""
 
 # FIXME: hol jön ez elő?
-#: ../glib/gbookmarkfile.c:3236 ../glib/gbookmarkfile.c:3381
+#: glib/gbookmarkfile.c:3223 glib/gbookmarkfile.c:3378
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
-msgstr "Nincs \"%s\" nevű alkalmazás regisztrálva a következő könyvjelzőjéhez: \"%s\""
+msgstr ""
+"Nincs \"%s\" nevű alkalmazás regisztrálva a következő könyvjelzőjéhez: \"%s\""
 
-#: ../glib/gconvert.c:404 ../glib/gconvert.c:482 ../glib/giochannel.c:1150
+#: glib/gbookmarkfile.c:3391
+#, fuzzy, c-format
+msgid "Failed to expand exec line '%s' with URI '%s'"
+msgstr "Nem sikerült kiolvasni a(z) \"%s\" szimbolikus linket: %s"
+
+#: glib/gconvert.c:424 glib/gconvert.c:502 glib/giochannel.c:1148
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
-msgstr "A(z) \"%s\" és \"%s\" karakterkészletek közötti átalakítás nem támogatott"
+msgstr ""
+"A(z) \"%s\" és \"%s\" karakterkészletek közötti átalakítás nem támogatott"
 
-#: ../glib/gconvert.c:408 ../glib/gconvert.c:486
+#: glib/gconvert.c:428 glib/gconvert.c:506
 #, c-format
 msgid "Could not open converter from '%s' to '%s'"
 msgstr ""
 "A(z) \"%s\" karakterkészletről \"%s\" karakterkészletre átalakító nem "
 "nyitható meg"
 
-#: ../glib/gconvert.c:602 ../glib/gconvert.c:991 ../glib/giochannel.c:1322
-#: ../glib/giochannel.c:1364 ../glib/giochannel.c:2206 ../glib/gutf8.c:943
-#: ../glib/gutf8.c:1392
+#: glib/gconvert.c:622 glib/gconvert.c:1011 glib/giochannel.c:1320
+#: glib/giochannel.c:1362 glib/giochannel.c:2204 glib/gutf8.c:949
+#: glib/gutf8.c:1398
+#, c-format
 msgid "Invalid byte sequence in conversion input"
 msgstr "Érvénytelen bájtsorrend az átalakítás bemenetében"
 
-#: ../glib/gconvert.c:608 ../glib/gconvert.c:918 ../glib/giochannel.c:1329
-#: ../glib/giochannel.c:2218
+#: glib/gconvert.c:628 glib/gconvert.c:938 glib/giochannel.c:1327
+#: glib/giochannel.c:2216
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Hiba az átalakítás során: %s"
 
-#: ../glib/gconvert.c:643 ../glib/gutf8.c:939 ../glib/gutf8.c:1143
-#: ../glib/gutf8.c:1284 ../glib/gutf8.c:1388
+#: glib/gconvert.c:663 glib/gutf8.c:945 glib/gutf8.c:1149 glib/gutf8.c:1290
+#: glib/gutf8.c:1394
+#, c-format
 msgid "Partial character sequence at end of input"
 msgstr "Részleges karaktersorozat a bemenet végén"
 
-#: ../glib/gconvert.c:893
+#: glib/gconvert.c:913
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Nem alakítható át a tartalék \"%s\" a(z) \"%s\" kódkészletre"
 
-#: ../glib/gconvert.c:1702
+#: glib/gconvert.c:1727
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "A(z) \"%s\" URI nem abszolút, a \"file\" sémát használó URI"
 
-#: ../glib/gconvert.c:1712
+#: glib/gconvert.c:1737
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "A(z) \"%s\" helyi fájl URI nem tartalmazhat \"#\" karaktert"
 
-#: ../glib/gconvert.c:1729
+#: glib/gconvert.c:1754
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "A(z) \"%s\" URI érvénytelen"
 
-#: ../glib/gconvert.c:1741
+#: glib/gconvert.c:1766
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "A(z) \"%s\" gépneve érvénytelen"
 
-#: ../glib/gconvert.c:1757
+#: glib/gconvert.c:1782
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr ""
 "A(z) \"%s\" URI érvénytelen escape-szekvencia formában megadott karaktereket "
 "tartalmaz"
 
-#: ../glib/gconvert.c:1852
+#: glib/gconvert.c:1877
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "A(z) \"%s\" elérési út neve nem abszolút útvonal"
 
-#: ../glib/gconvert.c:1862
+#: glib/gconvert.c:1887
+#, c-format
 msgid "Invalid hostname"
 msgstr "Érvénytelen gépnév"
 
-#: ../glib/gdir.c:121 ../glib/gdir.c:141
+#: glib/gdir.c:104 glib/gdir.c:124
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "Hiba a(z) \"%s\" könyvtár megnyitásakor: %s"
 
-#: ../glib/gfileutils.c:572 ../glib/gfileutils.c:645
+#: glib/gfileutils.c:557 glib/gfileutils.c:630
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Nem sikerült %lu bájtot lefoglalni a(z) \"%s\" fájl olvasásához"
 
-#: ../glib/gfileutils.c:587
+#: glib/gfileutils.c:572
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Hiba a(z) \"%s\" fájl olvasása közben: %s"
 
-#: ../glib/gfileutils.c:669
+#: glib/gfileutils.c:654
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Nem sikerült olvasni a(z) \"%s\" fájlból: %s"
 
-#: ../glib/gfileutils.c:720 ../glib/gfileutils.c:807
+#: glib/gfileutils.c:705 glib/gfileutils.c:792
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Nem sikerült megnyitni a(z) \"%s\" fájlt: %s"
 
-#: ../glib/gfileutils.c:737 ../glib/gmappedfile.c:133
+#: glib/gfileutils.c:722 glib/gmappedfile.c:133
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr ""
 "Nem sikerült lekérni a(z) \"%s\" fájl attribútumait. Az fstat() sikertelen: %"
 "s"
 
-#: ../glib/gfileutils.c:771
+#: glib/gfileutils.c:756
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Nem sikerült megnyitni a(z) \"%s\" fájlt. Az fopen() sikertelen: %s"
 
-#: ../glib/gfileutils.c:905
+#: glib/gfileutils.c:890
 #, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr ""
 "Nem sikerült átnevezni a(z) \"%s\" fájlt erre: \"%s\". A g_rename() "
 "sikertelen: %s"
 
-#: ../glib/gfileutils.c:946 ../glib/gfileutils.c:1404
+#: glib/gfileutils.c:931 glib/gfileutils.c:1389
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Nem sikerült létrehozni a(z) \"%s\" fájlt: %s"
 
-#: ../glib/gfileutils.c:960
+#: glib/gfileutils.c:945
 #, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
-msgstr "Nem sikerült írásra megnyitni a(z) \"%s\" fájlt: Az fdopen() sikertelen: %s"
+msgstr ""
+"Nem sikerült írásra megnyitni a(z) \"%s\" fájlt: Az fdopen() sikertelen: %s"
 
-#: ../glib/gfileutils.c:985
+#: glib/gfileutils.c:970
 #, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "Nem sikerült írni a(z) \"%s\" fájlt: az fwrite() sikertelen: %s"
 
-#: ../glib/gfileutils.c:1004
+#: glib/gfileutils.c:989
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "Nem sikerült lezárni a(z) \"%s\" fájlt: az fclose() sikertelen: %s"
 
-#: ../glib/gfileutils.c:1122
+#: glib/gfileutils.c:1107
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "A létező \"%s\" fájl nem távolítható el: a g_unlink() sikertelen: %s"
 
-#: ../glib/gfileutils.c:1366
+#: glib/gfileutils.c:1351
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "A(z) \"%s\" sablon érvénytelen, \"%s\" nem lehet benne"
 
-#: ../glib/gfileutils.c:1379
+#: glib/gfileutils.c:1364
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "A(z) \"%s\" sablon nem tartalmaz XXXXXX karaktersorozatot"
 
-#: ../glib/gfileutils.c:1854
+#: glib/gfileutils.c:1839
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Nem sikerült kiolvasni a(z) \"%s\" szimbolikus linket: %s"
 
-#: ../glib/gfileutils.c:1875
+#: glib/gfileutils.c:1860
+#, c-format
 msgid "Symbolic links not supported"
 msgstr "A szimbolikus linkek használata nem támogatott"
 
-#: ../glib/giochannel.c:1154
+#: glib/giochannel.c:1152
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Az átalakító a(z) \"%s\" elemről \"%s\" elemre nem nyitható meg: %s"
 
-#: ../glib/giochannel.c:1499
+#: glib/giochannel.c:1497
+#, c-format
 msgid "Can't do a raw read in g_io_channel_read_line_string"
-msgstr "Nem lehet nyers (raw) olvasást végezni a g_io_channel_read_line_string-ben"
+msgstr ""
+"Nem lehet nyers (raw) olvasást végezni a g_io_channel_read_line_string-ben"
 
-#: ../glib/giochannel.c:1546 ../glib/giochannel.c:1803
-#: ../glib/giochannel.c:1889
+#: glib/giochannel.c:1544 glib/giochannel.c:1801 glib/giochannel.c:1887
+#, c-format
 msgid "Leftover unconverted data in read buffer"
 msgstr "Át nem alakított adatok maradtak az olvasási pufferben"
 
-#: ../glib/giochannel.c:1626 ../glib/giochannel.c:1703
+#: glib/giochannel.c:1624 glib/giochannel.c:1701
+#, c-format
 msgid "Channel terminates in a partial character"
 msgstr "A csatorna töredék karakterrel ér véget"
 
-#: ../glib/giochannel.c:1689
+#: glib/giochannel.c:1687
+#, c-format
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Nem lehet nyers (raw) olvasást végezni a g_io_channel_read_to_end-ben"
 
-#: ../glib/gmappedfile.c:116
+#: glib/gmappedfile.c:116
 #, c-format
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "Nem sikerült megnyitni a(z) \"%s\" fájlt: az open() sikertelen: %s"
 
-#: ../glib/gmappedfile.c:193
+#: glib/gmappedfile.c:193
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "Nem sikerült leképezni a(z) \"%s\" fájlt: Az mmap() sikertelen: %s"
 
-#: ../glib/gmarkup.c:227
+#: glib/gmarkup.c:226
 #, c-format
 msgid "Error on line %d char %d: %s"
 msgstr "Hiba a(z) %d. sor %d. karakterénél: %s"
 
-#: ../glib/gmarkup.c:325
+#: glib/gmarkup.c:324
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "Hiba a(z) %d. sorban: %s"
 
-#: ../glib/gmarkup.c:429
-msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
-msgstr "Üres \"&;\" entitás; az érvényes entitások: &amp; &quot; &lt; &gt; &apos;"
+#: glib/gmarkup.c:428
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgstr ""
+"Üres \"&;\" entitás; az érvényes entitások: &amp; &quot; &lt; &gt; &apos;"
 
-#: ../glib/gmarkup.c:439
+#: glib/gmarkup.c:438
 #, c-format
 msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
@@ -300,17 +319,17 @@ msgstr ""
 "nevét az & karakter kezdi. Ha ez az & karakter nem lehet entitás, akkor "
 "&amp; módon kell írni."
 
-#: ../glib/gmarkup.c:473
+#: glib/gmarkup.c:472
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
 msgstr "A(z) \"%s\" karakter nem érvényes egy entitás nevén belül"
 
-#: ../glib/gmarkup.c:510
+#: glib/gmarkup.c:509
 #, c-format
 msgid "Entity name '%s' is not known"
 msgstr "A(z) \"%s\" entitásnév ismeretlen"
 
-#: ../glib/gmarkup.c:521
+#: glib/gmarkup.c:520
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
@@ -318,7 +337,7 @@ msgstr ""
 "Az entitás neve nem pontosvesszővel ért véget; valószínűleg egy &-jelet "
 "használt anélkül, hogy entitást akart volna kezdeni - írja &amp; formában."
 
-#: ../glib/gmarkup.c:574
+#: glib/gmarkup.c:573
 #, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
@@ -328,16 +347,17 @@ msgstr ""
 "egy karakterhivatkozáson (mint az &#234) belül - lehet, hogy túl nagy a "
 "számjegy"
 
-#: ../glib/gmarkup.c:599
+#: glib/gmarkup.c:598
 #, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
 msgstr "A(z) \"%-.*s\" karakterhivatkozás nem engedélyezett karaktert kódol"
 
-#: ../glib/gmarkup.c:614
+#: glib/gmarkup.c:613
 msgid "Empty character reference; should include a digit such as &#454;"
-msgstr "Üres karakterhivatkozás; számjegyet is kell tartalmaznia, például így: &#454;"
+msgstr ""
+"Üres karakterhivatkozás; számjegyet is kell tartalmaznia, például így: &#454;"
 
-#: ../glib/gmarkup.c:624
+#: glib/gmarkup.c:623
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -346,23 +366,23 @@ msgstr ""
 "A karakterhivatkozás nem pontosvesszővel ért véget; valószínűleg egy &-jelet "
 "használt anélkül, hogy entitást akart volna kezdeni - írja &amp; formában."
 
-#: ../glib/gmarkup.c:710
+#: glib/gmarkup.c:709
 msgid "Unfinished entity reference"
 msgstr "Befejezetlen entitáshivatkozás"
 
-#: ../glib/gmarkup.c:716
+#: glib/gmarkup.c:715
 msgid "Unfinished character reference"
 msgstr "Befejezetlen karakterhivatkozás"
 
-#: ../glib/gmarkup.c:959 ../glib/gmarkup.c:987 ../glib/gmarkup.c:1018
+#: glib/gmarkup.c:958 glib/gmarkup.c:986 glib/gmarkup.c:1022
 msgid "Invalid UTF-8 encoded text"
 msgstr "Érvénytelen UTF-8 kódolású szöveg"
 
-#: ../glib/gmarkup.c:1054
+#: glib/gmarkup.c:1058
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "A dokumentumnak egy elemmel kell kezdődnie (pl. <book>)"
 
-#: ../glib/gmarkup.c:1094
+#: glib/gmarkup.c:1098
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -371,7 +391,7 @@ msgstr ""
 "\"%s\" nem érvényes karakter a \"<\" karakter után; elem neve nem kezdődhet "
 "vele"
 
-#: ../glib/gmarkup.c:1158
+#: glib/gmarkup.c:1162
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
@@ -380,14 +400,15 @@ msgstr ""
 "Furcsa karakter (\"%s\") - \">\" karakternek kellett volna jönnie, hogy "
 "lezárja a(z) \"%s\" elem kezdő címkéjét"
 
-#: ../glib/gmarkup.c:1247
+#: glib/gmarkup.c:1251
 #, c-format
-msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgid ""
+"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "Furcsa karakter (\"%s\") - \"=\" karakternek kellett volna jönnie a(z) \"%s"
 "\" elem \"%s\" attribútumneve után"
 
-#: ../glib/gmarkup.c:1289
+#: glib/gmarkup.c:1293
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -398,7 +419,7 @@ msgstr ""
 "a(z) \"%s\" elem kezdő címkéje után, esetleg egy attribútumnak; lehet, hogy "
 "érvénytelen karaktert használt az attribútum nevében"
 
-#: ../glib/gmarkup.c:1378
+#: glib/gmarkup.c:1382
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -407,7 +428,7 @@ msgstr ""
 "Furcsa karakter (\"%s\") - egy nyitó idézőjelnek kellene jönnie az "
 "egyenlőségjel után, ha értéket ad a(z) \"%s\" attribútumnak \"%s\" elemben"
 
-#: ../glib/gmarkup.c:1523
+#: glib/gmarkup.c:1527
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -416,7 +437,7 @@ msgstr ""
 "\"%s\" nem érvényes karakter a \"</\" karakterek után; \"%s\" karakterrel "
 "nem kezdődhet egy elem neve"
 
-#: ../glib/gmarkup.c:1563
+#: glib/gmarkup.c:1567
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -425,25 +446,27 @@ msgstr ""
 "\"%s\" nem érvényes karakter a \"%s\" lezáró elemnév után; az engedélyezett "
 "karakter egyedül a \">\"."
 
-#: ../glib/gmarkup.c:1574
+#: glib/gmarkup.c:1578
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "A(z) \"%s\" elem le lett lezárva, jelenleg egy elem sincs nyitva"
 
-#: ../glib/gmarkup.c:1583
+#: glib/gmarkup.c:1587
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
-msgstr "A(z) \"%s\" elem le lett lezárva, de a jelenleg nyitott elem a(z) \"%s\""
+msgstr ""
+"A(z) \"%s\" elem le lett lezárva, de a jelenleg nyitott elem a(z) \"%s\""
 
-#: ../glib/gmarkup.c:1749
+#: glib/gmarkup.c:1753
 msgid "Document was empty or contained only whitespace"
 msgstr "A dokumentum üres volt, vagy csak üreshely karaktereket tartalmazott"
 
-#: ../glib/gmarkup.c:1763
+#: glib/gmarkup.c:1767
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
-msgstr "A dokumentum váratlanul véget ért egy nyitott hegyes zárójel (\"<\") után"
+msgstr ""
+"A dokumentum váratlanul véget ért egy nyitott hegyes zárójel (\"<\") után"
 
-#: ../glib/gmarkup.c:1771 ../glib/gmarkup.c:1815
+#: glib/gmarkup.c:1775 glib/gmarkup.c:1819
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -452,7 +475,7 @@ msgstr ""
 "A dokumentum váratlanul véget ért, pedig még nyitva vannak elemek - \"%s\" "
 "az utoljára megnyitott elem"
 
-#: ../glib/gmarkup.c:1779
+#: glib/gmarkup.c:1783
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -461,19 +484,19 @@ msgstr ""
 "A dokumentum váratlanul véget ért; a(z) <%s/> elemet lezáró hegyes "
 "zárójelnek kellett volna következnie"
 
-#: ../glib/gmarkup.c:1785
+#: glib/gmarkup.c:1789
 msgid "Document ended unexpectedly inside an element name"
 msgstr "A dokumentum váratlanul véget ért egy elemnéven belül"
 
-#: ../glib/gmarkup.c:1790
+#: glib/gmarkup.c:1794
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "A dokumentum váratlanul véget ért egy attribútumnéven belül"
 
-#: ../glib/gmarkup.c:1795
+#: glib/gmarkup.c:1799
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "A dokumentum váratlanul véget ért egy elemnyitó címkén belül"
 
-#: ../glib/gmarkup.c:1801
+#: glib/gmarkup.c:1805
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -481,104 +504,106 @@ msgstr ""
 "A dokumentum váratlanul véget ért egy az attribútumnevet követő "
 "egyenlőségjel után; az attribútum értéke nem lett megadva"
 
-#: ../glib/gmarkup.c:1808
+#: glib/gmarkup.c:1812
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "A dokumentum váratlanul véget ért egy attribútumértéken belül"
 
-#: ../glib/gmarkup.c:1823
+#: glib/gmarkup.c:1827
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
-msgstr "A dokumentum váratlanul véget ért a(z) \"%s\" elem lezáró címkéjén belül"
+msgstr ""
+"A dokumentum váratlanul véget ért a(z) \"%s\" elem lezáró címkéjén belül"
 
-#: ../glib/gmarkup.c:1829
+#: glib/gmarkup.c:1833
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "A dokumentum váratlanul véget ért egy megjegyzésen vagy feldolgozási "
 "utasításon belül"
 
-#: ../glib/gshell.c:70
+#: glib/gshell.c:70
+#, c-format
 msgid "Quoted text doesn't begin with a quotation mark"
 msgstr "Az idézett szöveg nem idézőjellel kezdődik"
 
-#: ../glib/gshell.c:160
+#: glib/gshell.c:160
+#, c-format
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr ""
 "Pár nélküli idézőjel a parancssorban vagy más, parancsértelmezőből idézett "
 "szövegben"
 
-#: ../glib/gshell.c:538
+#: glib/gshell.c:538
 #, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
 msgstr "A szöveg egy \"\\\" karakter után véget ért. (A szöveg: \"%s\")"
 
-#: ../glib/gshell.c:545
+#: glib/gshell.c:545
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr ""
 "A szöveg véget ért, mielőtt %c idézőjelpárja meglett volna. (A szöveg: \"%s"
 "\")"
 
-#: ../glib/gshell.c:557
+#: glib/gshell.c:557
+#, c-format
 msgid "Text was empty (or contained only whitespace)"
-msgstr "A szöveg üres volt (vagy legfeljebb üreshely-karaktereket tartalmazott)"
+msgstr ""
+"A szöveg üres volt (vagy legfeljebb üreshely-karaktereket tartalmazott)"
 
-#: ../glib/gspawn-win32.c:273
+#: glib/gspawn-win32.c:272
+#, c-format
 msgid "Failed to read data from child process"
 msgstr "Nem sikerült adatokat kiolvasni a gyermekfolyamatból"
 
-#: ../glib/gspawn-win32.c:288 ../glib/gspawn.c:1361
+#: glib/gspawn-win32.c:287 glib/gspawn.c:1395
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr ""
 "Nem sikerült csővezetéket készíteni a gyermekfolyamattal (%s) való "
 "kommunikációhoz"
 
-#: ../glib/gspawn-win32.c:326 ../glib/gspawn.c:1025
+#: glib/gspawn-win32.c:325 glib/gspawn.c:1059
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Nem sikerült olvasni a gyermek csővezetékből (%s)"
 
-#: ../glib/gspawn-win32.c:352 ../glib/gspawn.c:1230
+#: glib/gspawn-win32.c:351 glib/gspawn.c:1264
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Nem sikerült átváltani a(z) \"%s\" könyvtárra (%s)"
 
-#: ../glib/gspawn-win32.c:358 ../glib/gspawn-win32.c:578
+#: glib/gspawn-win32.c:357 glib/gspawn-win32.c:481
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Nem sikerült végrehajtani a gyermekfolyamatot (%s)"
 
-#: ../glib/gspawn-win32.c:468 ../glib/gspawn-win32.c:524
+#: glib/gspawn-win32.c:428
 #, c-format
 msgid "Invalid program name: %s"
 msgstr "Érvénytelen programnév: %s"
 
-#: ../glib/gspawn-win32.c:478 ../glib/gspawn-win32.c:534
-#: ../glib/gspawn-win32.c:777 ../glib/gspawn-win32.c:832
-#: ../glib/gspawn-win32.c:1367
+#: glib/gspawn-win32.c:438 glib/gspawn-win32.c:678 glib/gspawn-win32.c:1218
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr "Érvénytelen karaktersorozat a paraméterben a következő helyen: %d: %s"
 
-#: ../glib/gspawn-win32.c:489 ../glib/gspawn-win32.c:545
-#: ../glib/gspawn-win32.c:791 ../glib/gspawn-win32.c:845
-#: ../glib/gspawn-win32.c:1400
+#: glib/gspawn-win32.c:449 glib/gspawn-win32.c:692 glib/gspawn-win32.c:1251
 #, c-format
 msgid "Invalid string in environment: %s"
 msgstr "Érvénytelen karaktersorozat a környezetben: %s"
 
-#: ../glib/gspawn-win32.c:773 ../glib/gspawn-win32.c:828
-#: ../glib/gspawn-win32.c:1348
+#: glib/gspawn-win32.c:674 glib/gspawn-win32.c:1199
 #, c-format
 msgid "Invalid working directory: %s"
 msgstr "Érvénytelen munkakönyvtár: %s"
 
-#: ../glib/gspawn-win32.c:887
+#: glib/gspawn-win32.c:738
 #, c-format
 msgid "Failed to execute helper program (%s)"
 msgstr "Nem sikerült végrehajtani a segítő programot (%s)"
 
-#: ../glib/gspawn-win32.c:1087
+#: glib/gspawn-win32.c:938
+#, c-format
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -586,180 +611,201 @@ msgstr ""
 "Váratlan hiba, miközben a g_io_channel_win32_poll() adatokat olvasott egy "
 "gyermekfolyamatból"
 
-#: ../glib/gspawn.c:165
+#: glib/gspawn.c:175
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "Nem sikerült adatokat olvasni a gyermekfolyamatból (%s)"
 
-#: ../glib/gspawn.c:297
+#: glib/gspawn.c:307
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr ""
 "Váratlan hiba, miközben a select() adatokat próbált olvasni egy "
 "gyermekfolyamatból (%s)"
 
-#: ../glib/gspawn.c:380
+#: glib/gspawn.c:390
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Váratlan hiba a waitpid()-ben (%s)"
 
-#: ../glib/gspawn.c:1090
+#: glib/gspawn.c:1124
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Nem sikerült folyamatot indítani (%s)"
 
-#: ../glib/gspawn.c:1240
+#: glib/gspawn.c:1274
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Nem sikerült a gyermekfolyamat (\"%s\") végrehajtása (%s)"
 
-#: ../glib/gspawn.c:1250
+#: glib/gspawn.c:1284
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Nem sikerült a gyermekfolyamat ki- vagy bemenetének átirányítása (%s)"
 
-#: ../glib/gspawn.c:1259
+#: glib/gspawn.c:1293
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Nem sikerült a gyermekfolyamat elindítása (%s)"
 
-#: ../glib/gspawn.c:1267
+#: glib/gspawn.c:1301
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Ismeretlen hiba a gyermekfolyamat (\"%s\") végrehajtása közben"
 
-#: ../glib/gspawn.c:1289
+#: glib/gspawn.c:1323
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Nem sikerült elég adatot kiolvasni a gyermek pid csővezetékből (%s)"
 
-#: ../glib/gutf8.c:1017
+#: glib/gutf8.c:1023
+#, c-format
 msgid "Character out of range for UTF-8"
 msgstr "A karakter az UTF-8 tartományon kívülre esik"
 
-#: ../glib/gutf8.c:1111 ../glib/gutf8.c:1120 ../glib/gutf8.c:1252
-#: ../glib/gutf8.c:1261 ../glib/gutf8.c:1402 ../glib/gutf8.c:1498
+#: glib/gutf8.c:1117 glib/gutf8.c:1126 glib/gutf8.c:1258 glib/gutf8.c:1267
+#: glib/gutf8.c:1408 glib/gutf8.c:1504
+#, c-format
 msgid "Invalid sequence in conversion input"
 msgstr "Érvénytelen szekvencia az átalakítási bemenetben"
 
-#: ../glib/gutf8.c:1413 ../glib/gutf8.c:1509
+#: glib/gutf8.c:1419 glib/gutf8.c:1515
+#, c-format
 msgid "Character out of range for UTF-16"
 msgstr "A karakter az UTF-16 tartományon kívülre esik"
 
-#: ../glib/goption.c:495
+#: glib/goption.c:548
 msgid "Usage:"
 msgstr "Használat:"
 
-#: ../glib/goption.c:495
+#: glib/goption.c:548
 msgid "[OPTION...]"
 msgstr "[OPCIÓ...]"
 
-#: ../glib/goption.c:586
+#: glib/goption.c:639
 msgid "Help Options:"
 msgstr "Súgólehetőségek:"
 
-#: ../glib/goption.c:587
+#: glib/goption.c:640
 msgid "Show help options"
 msgstr "Súgólehetőségek megjelenítése"
 
-#: ../glib/goption.c:592
+#: glib/goption.c:645
 msgid "Show all help options"
 msgstr "Minden súgólehetőség megjelenítése"
 
-#: ../glib/goption.c:642
+#: glib/goption.c:695
 msgid "Application Options:"
 msgstr "Alkalmazás kapcsolói:"
 
-#: ../glib/goption.c:686 ../glib/goption.c:756
+#: glib/goption.c:739 glib/goption.c:809
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "Nem dolgozható fel a(z) \"%s\" egész érték a következőhöz: %s"
 
-#: ../glib/goption.c:696 ../glib/goption.c:764
+#: glib/goption.c:749 glib/goption.c:817
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "A(z) \"%s\" egész érték a tartományon kívülre esik a következőhöz: %s"
 
-#: ../glib/goption.c:721
+#: glib/goption.c:774
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
-msgstr "Nem dolgozható fel a(z) \"%s\" duplahosszúságú érték a következőhöz: %s"
+msgstr ""
+"Nem dolgozható fel a(z) \"%s\" duplahosszúságú érték a következőhöz: %s"
 
-#: ../glib/goption.c:729
+#: glib/goption.c:782
 #, c-format
 msgid "Double value '%s' for %s out of range"
-msgstr "A(z) \"%s\" duplahosszúságú érték a tartományon kívülre esik a következőhöz: %s"
+msgstr ""
+"A(z) \"%s\" duplahosszúságú érték a tartományon kívülre esik a következőhöz: "
+"%s"
 
-#: ../glib/goption.c:1066
+#: glib/goption.c:1119
 #, c-format
 msgid "Error parsing option %s"
 msgstr "Hiba a kapcsoló feldolgozása során: %s"
 
-#: ../glib/goption.c:1097 ../glib/goption.c:1208
+#: glib/goption.c:1150 glib/goption.c:1261
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Hiányzó paraméter a következőhöz: %s"
 
-#: ../glib/goption.c:1597
+#: glib/goption.c:1655
 #, c-format
 msgid "Unknown option %s"
 msgstr "Ismeretlen opció: %s"
 
-#: ../glib/gkeyfile.c:337
+#: glib/gkeyfile.c:341
+#, c-format
 msgid "Valid key file could not be found in data dirs"
 msgstr "Az adatkönyvtárakban nem található érvényes kulcsfájl"
 
-#: ../glib/gkeyfile.c:372
+#: glib/gkeyfile.c:376
+#, c-format
 msgid "Not a regular file"
 msgstr "Nem szabályos fájl"
 
-#: ../glib/gkeyfile.c:380
+#: glib/gkeyfile.c:384
+#, c-format
 msgid "File is empty"
 msgstr "A fájl üres"
 
-#: ../glib/gkeyfile.c:695
+#: glib/gkeyfile.c:701
 #, c-format
-msgid "Key file contains line '%s' which is not a key-value pair, group, or comment"
+msgid ""
+"Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr ""
 "A kulcsfájl tartalmazza a(z) \"%s\" sort, amelyik nem egy kulcs-érték pár, "
 "csoport, vagy megjegyzés"
 
-#: ../glib/gkeyfile.c:763
+#: glib/gkeyfile.c:758
+#, fuzzy, c-format
+msgid "Invalid group name: %s"
+msgstr "Érvénytelen programnév: %s"
+
+#: glib/gkeyfile.c:780
+#, c-format
 msgid "Key file does not start with a group"
 msgstr "A kulcsfájl nem csoporttal kezdődik"
 
-#: ../glib/gkeyfile.c:806
+#: glib/gkeyfile.c:806
+#, fuzzy, c-format
+msgid "Invalid key name: %s"
+msgstr "Érvénytelen programnév: %s"
+
+#: glib/gkeyfile.c:833
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "A kulcsfájl a nem támogatott \"%s\" kódolást tartalmazza"
 
-#: ../glib/gkeyfile.c:1013 ../glib/gkeyfile.c:1172 ../glib/gkeyfile.c:2385
-#: ../glib/gkeyfile.c:2450 ../glib/gkeyfile.c:2569 ../glib/gkeyfile.c:2704
-#: ../glib/gkeyfile.c:2857 ../glib/gkeyfile.c:3033 ../glib/gkeyfile.c:3090
+#: glib/gkeyfile.c:1042 glib/gkeyfile.c:1201 glib/gkeyfile.c:2402
+#: glib/gkeyfile.c:2468 glib/gkeyfile.c:2587 glib/gkeyfile.c:2722
+#: glib/gkeyfile.c:2875 glib/gkeyfile.c:3055 glib/gkeyfile.c:3111
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "A kulcsfájlból hiányzik a(z) \"%s\" csoport"
 
-#: ../glib/gkeyfile.c:1184
+#: glib/gkeyfile.c:1213
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "A kulcsfájlban nincs \"%s\" kulcs"
 
-#: ../glib/gkeyfile.c:1285 ../glib/gkeyfile.c:1394
+#: glib/gkeyfile.c:1315 glib/gkeyfile.c:1425
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr ""
 "A kulcsfájl tartalmazza a(z) \"%s\" kulcsot \"%s\" értékkel, amelyik azonban "
 "nem UTF-8"
 
-#: ../glib/gkeyfile.c:1303 ../glib/gkeyfile.c:1412 ../glib/gkeyfile.c:1784
+#: glib/gkeyfile.c:1335 glib/gkeyfile.c:1445 glib/gkeyfile.c:1813
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr ""
 "A kulcsfájl tartalmazza a(z) \"%s\" kulcsot, amelynek az értéke nem "
 "értelmezhető."
 
-#: ../glib/gkeyfile.c:2000 ../glib/gkeyfile.c:2213
+#: glib/gkeyfile.c:2025 glib/gkeyfile.c:2234
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -768,37 +814,39 @@ msgstr ""
 "A kulcsfájl tartalmazza a(z) \"%s\" kulcsot a(z) \"%s\" csoportban, amelynek "
 "értéke nem értelmezhető."
 
-#: ../glib/gkeyfile.c:2400 ../glib/gkeyfile.c:2584 ../glib/gkeyfile.c:3101
+#: glib/gkeyfile.c:2417 glib/gkeyfile.c:2602 glib/gkeyfile.c:3122
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
-msgstr "A kulcsfájl nem tartalmazza a(z) \"%s\" kulcsot a(z) \"%s\" csoportban."
+msgstr ""
+"A kulcsfájl nem tartalmazza a(z) \"%s\" kulcsot a(z) \"%s\" csoportban."
 
-#: ../glib/gkeyfile.c:3274
+#: glib/gkeyfile.c:3361
+#, c-format
 msgid "Key file contains escape character at end of line"
-msgstr "A kulcsfájl escape-szekvenciával megadott karaktert tartalmaz a sor végén"
+msgstr ""
+"A kulcsfájl escape-szekvenciával megadott karaktert tartalmaz a sor végén"
 
-#: ../glib/gkeyfile.c:3296
+#: glib/gkeyfile.c:3383
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "A kulcsfájl érvénytelen escape-szekvenciát tartalmaz (\"%s\")"
 
-#: ../glib/gkeyfile.c:3437
+#: glib/gkeyfile.c:3525
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "A(z) \"%s\" érték nem értelmezhető számként."
 
-#: ../glib/gkeyfile.c:3447
+#: glib/gkeyfile.c:3539
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "A(z) \"%s\" egész érték a tartományon kívülre esik"
 
-#: ../glib/gkeyfile.c:3475
+#: glib/gkeyfile.c:3572
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "A(z) \"%s\" érték nem értelmezhető lebegőpontos számként."
 
-#: ../glib/gkeyfile.c:3495
+#: glib/gkeyfile.c:3596
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "A(z) \"%s\" érték nem értelmezhető logikai értékként."
-

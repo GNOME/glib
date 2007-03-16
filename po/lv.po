@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-15 20:27-0400\n"
+"POT-Creation-Date: 2007-03-16 18:02-0400\n"
 "PO-Revision-Date: 2002-12-19 01:04+0200\n"
 "Last-Translator: Artis Trops <hornet@navigator.lv>\n"
 "Language-Team: Latvian <ll10nt@os.lv>\n"
@@ -14,249 +14,254 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: glib/gbookmarkfile.c:716 glib/gbookmarkfile.c:793 glib/gbookmarkfile.c:872
-#: glib/gbookmarkfile.c:919
+#: glib/gbookmarkfile.c:704 glib/gbookmarkfile.c:781 glib/gbookmarkfile.c:860
+#: glib/gbookmarkfile.c:907
 #, fuzzy, c-format
 msgid "Unexpected attribute '%s' for element '%s'"
 msgstr ""
 "Savāda rakstzīme '%s', gaidīju '=' aiz atribūta nosaukuma '%s' elementam '%s'"
 
-#: glib/gbookmarkfile.c:727 glib/gbookmarkfile.c:804 glib/gbookmarkfile.c:814
-#: glib/gbookmarkfile.c:930
+#: glib/gbookmarkfile.c:715 glib/gbookmarkfile.c:792 glib/gbookmarkfile.c:802
+#: glib/gbookmarkfile.c:918
 #, c-format
 msgid "Attribute '%s' of element '%s' not found"
 msgstr ""
 
-#: glib/gbookmarkfile.c:1103 glib/gbookmarkfile.c:1168
-#: glib/gbookmarkfile.c:1232 glib/gbookmarkfile.c:1242
+#: glib/gbookmarkfile.c:1091 glib/gbookmarkfile.c:1156
+#: glib/gbookmarkfile.c:1220 glib/gbookmarkfile.c:1230
 #, c-format
 msgid "Unexpected tag '%s', tag '%s' expected"
 msgstr ""
 
-#: glib/gbookmarkfile.c:1128 glib/gbookmarkfile.c:1142
-#: glib/gbookmarkfile.c:1210 glib/gbookmarkfile.c:1262
+#: glib/gbookmarkfile.c:1116 glib/gbookmarkfile.c:1130
+#: glib/gbookmarkfile.c:1198 glib/gbookmarkfile.c:1250
 #, c-format
 msgid "Unexpected tag '%s' inside '%s'"
 msgstr ""
 
-#: glib/gbookmarkfile.c:1792
+#: glib/gbookmarkfile.c:1780
 #, c-format
 msgid "No valid bookmark file found in data dirs"
 msgstr ""
 
-#: glib/gbookmarkfile.c:1993
+#: glib/gbookmarkfile.c:1981
 #, c-format
 msgid "A bookmark for URI '%s' already exists"
 msgstr ""
 
-#: glib/gbookmarkfile.c:2039 glib/gbookmarkfile.c:2196
-#: glib/gbookmarkfile.c:2281 glib/gbookmarkfile.c:2362
-#: glib/gbookmarkfile.c:2447 glib/gbookmarkfile.c:2530
-#: glib/gbookmarkfile.c:2608 glib/gbookmarkfile.c:2687
-#: glib/gbookmarkfile.c:2729 glib/gbookmarkfile.c:2826
-#: glib/gbookmarkfile.c:2950 glib/gbookmarkfile.c:3140
-#: glib/gbookmarkfile.c:3216 glib/gbookmarkfile.c:3369
-#: glib/gbookmarkfile.c:3434 glib/gbookmarkfile.c:3524
-#: glib/gbookmarkfile.c:3651
+#: glib/gbookmarkfile.c:2027 glib/gbookmarkfile.c:2184
+#: glib/gbookmarkfile.c:2269 glib/gbookmarkfile.c:2349
+#: glib/gbookmarkfile.c:2434 glib/gbookmarkfile.c:2517
+#: glib/gbookmarkfile.c:2595 glib/gbookmarkfile.c:2674
+#: glib/gbookmarkfile.c:2716 glib/gbookmarkfile.c:2813
+#: glib/gbookmarkfile.c:2939 glib/gbookmarkfile.c:3129
+#: glib/gbookmarkfile.c:3205 glib/gbookmarkfile.c:3368
+#: glib/gbookmarkfile.c:3443 glib/gbookmarkfile.c:3533
+#: glib/gbookmarkfile.c:3660
 #, c-format
 msgid "No bookmark found for URI '%s'"
 msgstr ""
 
-#: glib/gbookmarkfile.c:2371
+#: glib/gbookmarkfile.c:2358
 #, c-format
 msgid "No MIME type defined in the bookmark for URI '%s'"
 msgstr ""
 
-#: glib/gbookmarkfile.c:2456
+#: glib/gbookmarkfile.c:2443
 #, c-format
 msgid "No private flag has been defined in bookmark for URI '%s'"
 msgstr ""
 
-#: glib/gbookmarkfile.c:2835
+#: glib/gbookmarkfile.c:2822
 #, c-format
 msgid "No groups set in bookmark for URI '%s'"
 msgstr ""
 
-#: glib/gbookmarkfile.c:3234 glib/gbookmarkfile.c:3379
+#: glib/gbookmarkfile.c:3223 glib/gbookmarkfile.c:3378
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
 msgstr ""
 
-#: glib/gconvert.c:404 glib/gconvert.c:482 glib/giochannel.c:1150
+#: glib/gbookmarkfile.c:3391
+#, fuzzy, c-format
+msgid "Failed to expand exec line '%s' with URI '%s'"
+msgstr "Neizdevās izveidot failu '%s': %s"
+
+#: glib/gconvert.c:424 glib/gconvert.c:502 glib/giochannel.c:1148
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Konversija no rakstzīmju kopas '%s' uz '%s' nav atbalstīta"
 
-#: glib/gconvert.c:408 glib/gconvert.c:486
+#: glib/gconvert.c:428 glib/gconvert.c:506
 #, fuzzy, c-format
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "Nevarēju atvērt konvertātoru no '%s' uz '%s': %s"
 
-#: glib/gconvert.c:602 glib/gconvert.c:991 glib/giochannel.c:1322
-#: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:943
-#: glib/gutf8.c:1392
+#: glib/gconvert.c:622 glib/gconvert.c:1011 glib/giochannel.c:1320
+#: glib/giochannel.c:1362 glib/giochannel.c:2204 glib/gutf8.c:949
+#: glib/gutf8.c:1398
 #, c-format
 msgid "Invalid byte sequence in conversion input"
 msgstr "Nepareiza baitu secība konversijas ievadē"
 
-#: glib/gconvert.c:608 glib/gconvert.c:918 glib/giochannel.c:1329
-#: glib/giochannel.c:2218
+#: glib/gconvert.c:628 glib/gconvert.c:938 glib/giochannel.c:1327
+#: glib/giochannel.c:2216
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Kļūda konversējot: %s"
 
-#: glib/gconvert.c:643 glib/gutf8.c:939 glib/gutf8.c:1143 glib/gutf8.c:1284
-#: glib/gutf8.c:1388
+#: glib/gconvert.c:663 glib/gutf8.c:945 glib/gutf8.c:1149 glib/gutf8.c:1290
+#: glib/gutf8.c:1394
 #, c-format
 msgid "Partial character sequence at end of input"
 msgstr "Daļēja simbolu secība ievades beigās"
 
-#: glib/gconvert.c:893
+#: glib/gconvert.c:913
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Nevar pārveidot atkritienu '%s' uz rakstzīmju kopu '%s'"
 
-#: glib/gconvert.c:1702
+#: glib/gconvert.c:1727
 #, fuzzy, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "URI '%s' nav absolūtais URI, lietojot failu shēmu"
 
-#: glib/gconvert.c:1712
+#: glib/gconvert.c:1737
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Lokālā faila URI '%s' nedrīkst saturēt '#'"
 
-#: glib/gconvert.c:1729
+#: glib/gconvert.c:1754
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI '%s' ir nepareizs"
 
-#: glib/gconvert.c:1741
+#: glib/gconvert.c:1766
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Hostdatora nosaukuma URI '%s' ir nepareizs"
 
-#: glib/gconvert.c:1757
+#: glib/gconvert.c:1782
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI '%s' satur nepareizi izvairīgas rakstzīmes"
 
-#: glib/gconvert.c:1852
+#: glib/gconvert.c:1877
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Ceļvārds '%s' nav absolutais ceļš"
 
-#: glib/gconvert.c:1862
+#: glib/gconvert.c:1887
 #, c-format
 msgid "Invalid hostname"
 msgstr "Nepareizs hostdatora nosaukums"
 
-#: glib/gdir.c:121 glib/gdir.c:141
+#: glib/gdir.c:104 glib/gdir.c:124
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "Kļūda atverot direktoriju '%s': %s"
 
-#: glib/gfileutils.c:572 glib/gfileutils.c:645
+#: glib/gfileutils.c:557 glib/gfileutils.c:630
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Nevarēju atrast %lu baitus, lai nolasītu failu \"%s\""
 
-#: glib/gfileutils.c:587
+#: glib/gfileutils.c:572
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Kļūda nolasot failu '%s': %s"
 
-#: glib/gfileutils.c:669
+#: glib/gfileutils.c:654
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Nespēju nolasīt no faila '%s': %s"
 
-#: glib/gfileutils.c:720 glib/gfileutils.c:807
+#: glib/gfileutils.c:705 glib/gfileutils.c:792
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Nevarēju atvērt failu '%s': %s"
 
-#: glib/gfileutils.c:737 glib/gmappedfile.c:133
+#: glib/gfileutils.c:722 glib/gmappedfile.c:133
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Nevarēju dabūt faila '%s' atribūtus: fstat() neizdevās: %s"
 
-#: glib/gfileutils.c:771
+#: glib/gfileutils.c:756
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Nevarēju atvērt '%s': fdopen() neizdevās: %s"
 
-#: glib/gfileutils.c:905
+#: glib/gfileutils.c:890
 #, fuzzy, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "Nevarēju atvērt '%s': fdopen() neizdevās: %s"
 
-#: glib/gfileutils.c:946 glib/gfileutils.c:1404
+#: glib/gfileutils.c:931 glib/gfileutils.c:1389
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Neizdevās izveidot failu '%s': %s"
 
-#: glib/gfileutils.c:960
+#: glib/gfileutils.c:945
 #, fuzzy, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr "Nevarēju atvērt '%s': fdopen() neizdevās: %s"
 
-#: glib/gfileutils.c:985
+#: glib/gfileutils.c:970
 #, fuzzy, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "Nevarēju atvērt '%s': fdopen() neizdevās: %s"
 
-#: glib/gfileutils.c:1004
+#: glib/gfileutils.c:989
 #, fuzzy, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "Nevarēju atvērt '%s': fdopen() neizdevās: %s"
 
-#: glib/gfileutils.c:1122
+#: glib/gfileutils.c:1107
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr ""
 
-#: glib/gfileutils.c:1366
+#: glib/gfileutils.c:1351
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Veidne '%s' nepareizs, nedrīkstētu saturēt '%s'"
 
-#: glib/gfileutils.c:1379
+#: glib/gfileutils.c:1364
 #, fuzzy, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "Veidne '%s' nebeidzas ar XXXXXX"
 
-#: glib/gfileutils.c:1854
+#: glib/gfileutils.c:1839
 #, fuzzy, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Neizdevās izveidot failu '%s': %s"
 
-#: glib/gfileutils.c:1875
+#: glib/gfileutils.c:1860
 #, c-format
 msgid "Symbolic links not supported"
 msgstr ""
 
-#: glib/giochannel.c:1154
+#: glib/giochannel.c:1152
 #, fuzzy, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Nevarēju atvērt konvertātoru no `%s' uz '%s': %s"
 
-#: glib/giochannel.c:1499
+#: glib/giochannel.c:1497
 #, c-format
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "Nevaru izpildīt jēllasīšanu iekš g_io_channel_read_line_string"
 
-#: glib/giochannel.c:1546 glib/giochannel.c:1803 glib/giochannel.c:1889
+#: glib/giochannel.c:1544 glib/giochannel.c:1801 glib/giochannel.c:1887
 #, c-format
 msgid "Leftover unconverted data in read buffer"
 msgstr "Pāpalikušie nepārveidotie dati nolasīšanas buferī"
 
-#: glib/giochannel.c:1626 glib/giochannel.c:1703
+#: glib/giochannel.c:1624 glib/giochannel.c:1701
 #, c-format
 msgid "Channel terminates in a partial character"
 msgstr "Kanāls pārtrūkst daļējā rakstzīmē"
 
-#: glib/giochannel.c:1689
+#: glib/giochannel.c:1687
 #, c-format
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Nevaru izpildīt jēllasīšanu iekš g_io_channel_read_to_end"
@@ -271,24 +276,24 @@ msgstr "Nevarēju atvērt '%s': fdopen() neizdevās: %s"
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "Nevarēju atvērt '%s': fdopen() neizdevās: %s"
 
-#: glib/gmarkup.c:227
+#: glib/gmarkup.c:226
 #, c-format
 msgid "Error on line %d char %d: %s"
 msgstr "Kļūda rindā %d rakstzīme %d: %s"
 
-#: glib/gmarkup.c:325
+#: glib/gmarkup.c:324
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "Kļūda rindā %d: %s"
 
-#: glib/gmarkup.c:429
+#: glib/gmarkup.c:428
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "Pamanīta tukša entītija '&;'; derīgas entītijas ir: &amp; &quot; &lt; &gt; "
 "&apos;"
 
-#: glib/gmarkup.c:439
+#: glib/gmarkup.c:438
 #, c-format
 msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
@@ -299,17 +304,17 @@ msgstr ""
 "entītiju; ja šī zīme netiek atbalstīta, lai būtu entītija, aizvieto to ar "
 "&amp;"
 
-#: glib/gmarkup.c:473
+#: glib/gmarkup.c:472
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
 msgstr "Rakstzīme '%s' nav derīga entītijas nosaukumā"
 
-#: glib/gmarkup.c:510
+#: glib/gmarkup.c:509
 #, c-format
 msgid "Entity name '%s' is not known"
 msgstr "Entītijas nosaukums \"%s\" nav zināms"
 
-#: glib/gmarkup.c:521
+#: glib/gmarkup.c:520
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
@@ -317,7 +322,7 @@ msgstr ""
 "Entītija nebeidzās ar semikolu; visdrīzāk jūs lietojāt & zīmi bez nodoma "
 "sākt entītiju - aizvieto & zīmes ar &amp;"
 
-#: glib/gmarkup.c:574
+#: glib/gmarkup.c:573
 #, fuzzy, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
@@ -326,16 +331,16 @@ msgstr ""
 "Nevarēju parsēt '%s', kur vajadzētu būt ciparam iekš rakstzīmes atsauces "
 "(&#234; piemēram) - iespējams, ka cipars ir pārāk liels"
 
-#: glib/gmarkup.c:599
+#: glib/gmarkup.c:598
 #, fuzzy, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
 msgstr "Rakstzīmes atsauce '%s' nešifrē atļautu rakstzīmi"
 
-#: glib/gmarkup.c:614
+#: glib/gmarkup.c:613
 msgid "Empty character reference; should include a digit such as &#454;"
 msgstr "Tukša rakstzīmes atsauce; būtu jāiekļauj cipars, kā &#454;"
 
-#: glib/gmarkup.c:624
+#: glib/gmarkup.c:623
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -344,23 +349,23 @@ msgstr ""
 "Rakstzīmes atsauce nebeidzās ar semikolu; visdrīzāk jūs lietojāt & zīmi bez "
 "nodoma sākt entītiju - aizvieto & zīmes ar &amp;"
 
-#: glib/gmarkup.c:710
+#: glib/gmarkup.c:709
 msgid "Unfinished entity reference"
 msgstr "Nepabeigta entītijas atsauce"
 
-#: glib/gmarkup.c:716
+#: glib/gmarkup.c:715
 msgid "Unfinished character reference"
 msgstr "Nepabeigta rakstzīmes atsauce"
 
-#: glib/gmarkup.c:959 glib/gmarkup.c:987 glib/gmarkup.c:1018
+#: glib/gmarkup.c:958 glib/gmarkup.c:986 glib/gmarkup.c:1022
 msgid "Invalid UTF-8 encoded text"
 msgstr "Nepareizi kodēts UTF-8 teksts"
 
-#: glib/gmarkup.c:1054
+#: glib/gmarkup.c:1058
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Dokumentam jāsākās ar elementu (piem., <book>)"
 
-#: glib/gmarkup.c:1094
+#: glib/gmarkup.c:1098
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -369,7 +374,7 @@ msgstr ""
 "'%s' nav atļauta rakstzīme, sekojoša aiz rakstzīmes '<'; tā nedrīkst iesākt "
 "elementa vārdu."
 
-#: glib/gmarkup.c:1158
+#: glib/gmarkup.c:1162
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
@@ -378,14 +383,14 @@ msgstr ""
 "Savāda rakstzīme '%s', gaidīju '>' rakstzīmi, kas nobeigtu sākuma tagu "
 "elementam '%s'"
 
-#: glib/gmarkup.c:1247
+#: glib/gmarkup.c:1251
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "Savāda rakstzīme '%s', gaidīju '=' aiz atribūta nosaukuma '%s' elementam '%s'"
 
-#: glib/gmarkup.c:1289
+#: glib/gmarkup.c:1293
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -396,7 +401,7 @@ msgstr ""
 "tagu elementam '%s' vai fakultatīvi atribūtu; iespējams, jūs lietojāt "
 "nepareizu rakstzīmi atribūta nosaukumā"
 
-#: glib/gmarkup.c:1378
+#: glib/gmarkup.c:1382
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -405,7 +410,7 @@ msgstr ""
 "Savāda rakstzīme '%s', gaidīju atvērtās pēdiņas pēc vienādības zīmes, "
 "nosakot vērtību atribūtam '%s' no elementa '%s'"
 
-#: glib/gmarkup.c:1523
+#: glib/gmarkup.c:1527
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -414,7 +419,7 @@ msgstr ""
 "'%s' nav derīga rakstzīme, sekojot rakstzīmēm '</'; '%s' nevar sākt elementa "
 "nosaukumu"
 
-#: glib/gmarkup.c:1563
+#: glib/gmarkup.c:1567
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -423,25 +428,25 @@ msgstr ""
 "'%s' nav derīga rakstzīme, sekojot aizverošā eementa nosaukumam '%s'; "
 "atļautā rakstzīme ir '>'"
 
-#: glib/gmarkup.c:1574
+#: glib/gmarkup.c:1578
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "Elements '%s' tika aizvērts, neviens elements pašlaik nav atvērts"
 
-#: glib/gmarkup.c:1583
+#: glib/gmarkup.c:1587
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "Elements '%s' tika aizvērts, bet pašlaik atvērtais elements ir '%s'"
 
-#: glib/gmarkup.c:1749
+#: glib/gmarkup.c:1753
 msgid "Document was empty or contained only whitespace"
 msgstr "Dokuments bija tukšs vai saturēja tikai tukšu atstarpi"
 
-#: glib/gmarkup.c:1763
+#: glib/gmarkup.c:1767
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "Dokuments negaidīti izbeidzās tieši pēc atvērtās stūra iekavas '<'"
 
-#: glib/gmarkup.c:1771 glib/gmarkup.c:1815
+#: glib/gmarkup.c:1775 glib/gmarkup.c:1819
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -450,7 +455,7 @@ msgstr ""
 "Dokuments negaidīti izbeidzās ar joprojām atvērtiem elementiem - '%s' bija "
 "pēdējais atvērtais elements"
 
-#: glib/gmarkup.c:1779
+#: glib/gmarkup.c:1783
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -459,19 +464,19 @@ msgstr ""
 "Dokuments negaidīti izbeidzās, cerēju ieraudzīt aizverošo stūra iekavu, "
 "beidzoties ar tagu <%s/>"
 
-#: glib/gmarkup.c:1785
+#: glib/gmarkup.c:1789
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Dokuments negaidīti izbeidzās iekšā elementa nosaukumā"
 
-#: glib/gmarkup.c:1790
+#: glib/gmarkup.c:1794
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Dokuments negaidīti izbeidzās iekšā atribūta nosaukumā"
 
-#: glib/gmarkup.c:1795
+#: glib/gmarkup.c:1799
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Dokuments negaidīti izbeidzās elementa-atverošajā tagā."
 
-#: glib/gmarkup.c:1801
+#: glib/gmarkup.c:1805
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -479,16 +484,16 @@ msgstr ""
 "Dokuments negaidīti izbeidzās aiz vienādības zīmes, sekojot atribūta "
 "nosaukumam; nav atribūta vētības"
 
-#: glib/gmarkup.c:1808
+#: glib/gmarkup.c:1812
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Dokuments negaidīti izbeidzās kamēr iekšā atribūta vērtībā"
 
-#: glib/gmarkup.c:1823
+#: glib/gmarkup.c:1827
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "Dokuments negaidīti izbeidzās iekšā elementa '%s' aizverošajā tagā"
 
-#: glib/gmarkup.c:1829
+#: glib/gmarkup.c:1833
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Dokuments negaidīti izbeidzās iekšā komentārā vai apstrādes instrukcijā"
@@ -520,59 +525,57 @@ msgstr ""
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Teksts bija tukšs (vai saturēja tikai tukšumus)"
 
-#: glib/gspawn-win32.c:273
+#: glib/gspawn-win32.c:272
 #, c-format
 msgid "Failed to read data from child process"
 msgstr "Nevarēju nolasīt datus no bērnprocesa"
 
-#: glib/gspawn-win32.c:288 glib/gspawn.c:1361
+#: glib/gspawn-win32.c:287 glib/gspawn.c:1395
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Nevarēju izveidot programkanālu komunikācijai ar bērnprocesu (%s)"
 
-#: glib/gspawn-win32.c:326 glib/gspawn.c:1025
+#: glib/gspawn-win32.c:325 glib/gspawn.c:1059
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Nevarēju nolasīt no bērna programkanāla (%s)"
 
-#: glib/gspawn-win32.c:352 glib/gspawn.c:1230
+#: glib/gspawn-win32.c:351 glib/gspawn.c:1264
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Nevarēju pāriet uz direktoriju '%s' (%s)"
 
-#: glib/gspawn-win32.c:358 glib/gspawn-win32.c:578
+#: glib/gspawn-win32.c:357 glib/gspawn-win32.c:481
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Nevarēju izpildīt bērnprocesu (%s)"
 
-#: glib/gspawn-win32.c:468 glib/gspawn-win32.c:524
+#: glib/gspawn-win32.c:428
 #, fuzzy, c-format
 msgid "Invalid program name: %s"
 msgstr "Nepareizs hostdatora nosaukums"
 
-#: glib/gspawn-win32.c:478 glib/gspawn-win32.c:534 glib/gspawn-win32.c:777
-#: glib/gspawn-win32.c:832 glib/gspawn-win32.c:1367
+#: glib/gspawn-win32.c:438 glib/gspawn-win32.c:678 glib/gspawn-win32.c:1218
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr ""
 
-#: glib/gspawn-win32.c:489 glib/gspawn-win32.c:545 glib/gspawn-win32.c:791
-#: glib/gspawn-win32.c:845 glib/gspawn-win32.c:1400
+#: glib/gspawn-win32.c:449 glib/gspawn-win32.c:692 glib/gspawn-win32.c:1251
 #, fuzzy, c-format
 msgid "Invalid string in environment: %s"
 msgstr "Nepareiza secība konversijas ievadē "
 
-#: glib/gspawn-win32.c:773 glib/gspawn-win32.c:828 glib/gspawn-win32.c:1348
+#: glib/gspawn-win32.c:674 glib/gspawn-win32.c:1199
 #, fuzzy, c-format
 msgid "Invalid working directory: %s"
 msgstr "Kļūda atverot direktoriju '%s': %s"
 
-#: glib/gspawn-win32.c:887
+#: glib/gspawn-win32.c:738
 #, fuzzy, c-format
 msgid "Failed to execute helper program (%s)"
 msgstr "Nevarēju izpildīt palīga programmu"
 
-#: glib/gspawn-win32.c:1087
+#: glib/gspawn-win32.c:938
 #, c-format
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
@@ -580,218 +583,228 @@ msgid ""
 msgstr ""
 "Negaidīta kļūda iekš g_io_channel_win32_poll(), lasot datus no bērnprocesa"
 
-#: glib/gspawn.c:165
+#: glib/gspawn.c:175
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "Nevarēju nolasīt datus no bērnprocesa (%s)"
 
-#: glib/gspawn.c:297
+#: glib/gspawn.c:307
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr "Negaidīta kļūda iekš select(), lasot datus no bērnprocesa (%s)"
 
-#: glib/gspawn.c:380
+#: glib/gspawn.c:390
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Negaidīta kļūda waitpid() (%s)"
 
-#: glib/gspawn.c:1090
+#: glib/gspawn.c:1124
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Neizdevās sadalīt (%s)"
 
-#: glib/gspawn.c:1240
+#: glib/gspawn.c:1274
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Nevarēju izpildīt bērnprocesu \"%s\" (%s)"
 
-#: glib/gspawn.c:1250
+#: glib/gspawn.c:1284
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Nevarēju novadīt bērnprocesa (%s) izvadi vai ievadi"
 
-#: glib/gspawn.c:1259
+#: glib/gspawn.c:1293
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Nevarēju sazarot bērnprocesu (%s)"
 
-#: glib/gspawn.c:1267
+#: glib/gspawn.c:1301
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Nezināma kļūda, izpildot bērnprocesu \"%s\""
 
-#: glib/gspawn.c:1289
+#: glib/gspawn.c:1323
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr ""
 "Nevarēju nolasīt pietiekami daudz datus no bērna pid programkanāla (%s)"
 
-#: glib/gutf8.c:1017
+#: glib/gutf8.c:1023
 #, c-format
 msgid "Character out of range for UTF-8"
 msgstr "Rakstzīme nav UTF-8 laukā"
 
-#: glib/gutf8.c:1111 glib/gutf8.c:1120 glib/gutf8.c:1252 glib/gutf8.c:1261
-#: glib/gutf8.c:1402 glib/gutf8.c:1498
+#: glib/gutf8.c:1117 glib/gutf8.c:1126 glib/gutf8.c:1258 glib/gutf8.c:1267
+#: glib/gutf8.c:1408 glib/gutf8.c:1504
 #, c-format
 msgid "Invalid sequence in conversion input"
 msgstr "Nepareiza secība konversijas ievadē "
 
-#: glib/gutf8.c:1413 glib/gutf8.c:1509
+#: glib/gutf8.c:1419 glib/gutf8.c:1515
 #, c-format
 msgid "Character out of range for UTF-16"
 msgstr "Rakstzīme nav UTF-16 laukā"
 
-#: glib/goption.c:495
+#: glib/goption.c:548
 msgid "Usage:"
 msgstr ""
 
-#: glib/goption.c:495
+#: glib/goption.c:548
 msgid "[OPTION...]"
 msgstr ""
 
-#: glib/goption.c:586
+#: glib/goption.c:639
 msgid "Help Options:"
 msgstr ""
 
-#: glib/goption.c:587
+#: glib/goption.c:640
 msgid "Show help options"
 msgstr ""
 
-#: glib/goption.c:592
+#: glib/goption.c:645
 msgid "Show all help options"
 msgstr ""
 
-#: glib/goption.c:642
+#: glib/goption.c:695
 msgid "Application Options:"
 msgstr ""
 
-#: glib/goption.c:686 glib/goption.c:756
+#: glib/goption.c:739 glib/goption.c:809
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr ""
 
-#: glib/goption.c:696 glib/goption.c:764
+#: glib/goption.c:749 glib/goption.c:817
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr ""
 
-#: glib/goption.c:721
+#: glib/goption.c:774
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr ""
 
-#: glib/goption.c:729
+#: glib/goption.c:782
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr ""
 
-#: glib/goption.c:1066
+#: glib/goption.c:1119
 #, fuzzy, c-format
 msgid "Error parsing option %s"
 msgstr "Kļūda konversējot: %s"
 
-#: glib/goption.c:1097 glib/goption.c:1208
+#: glib/goption.c:1150 glib/goption.c:1261
 #, c-format
 msgid "Missing argument for %s"
 msgstr ""
 
-#: glib/goption.c:1597
+#: glib/goption.c:1655
 #, c-format
 msgid "Unknown option %s"
 msgstr ""
 
-#: glib/gkeyfile.c:337
+#: glib/gkeyfile.c:341
 #, c-format
 msgid "Valid key file could not be found in data dirs"
 msgstr ""
 
-#: glib/gkeyfile.c:372
+#: glib/gkeyfile.c:376
 #, c-format
 msgid "Not a regular file"
 msgstr ""
 
-#: glib/gkeyfile.c:380
+#: glib/gkeyfile.c:384
 #, c-format
 msgid "File is empty"
 msgstr ""
 
-#: glib/gkeyfile.c:695
+#: glib/gkeyfile.c:701
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr ""
 
-#: glib/gkeyfile.c:763
+#: glib/gkeyfile.c:758
+#, fuzzy, c-format
+msgid "Invalid group name: %s"
+msgstr "Nepareizs hostdatora nosaukums"
+
+#: glib/gkeyfile.c:780
 #, c-format
 msgid "Key file does not start with a group"
 msgstr ""
 
 #: glib/gkeyfile.c:806
+#, fuzzy, c-format
+msgid "Invalid key name: %s"
+msgstr "Nepareizs hostdatora nosaukums"
+
+#: glib/gkeyfile.c:833
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr ""
 
-#: glib/gkeyfile.c:1013 glib/gkeyfile.c:1172 glib/gkeyfile.c:2385
-#: glib/gkeyfile.c:2450 glib/gkeyfile.c:2569 glib/gkeyfile.c:2704
-#: glib/gkeyfile.c:2857 glib/gkeyfile.c:3033 glib/gkeyfile.c:3090
+#: glib/gkeyfile.c:1042 glib/gkeyfile.c:1201 glib/gkeyfile.c:2402
+#: glib/gkeyfile.c:2468 glib/gkeyfile.c:2587 glib/gkeyfile.c:2722
+#: glib/gkeyfile.c:2875 glib/gkeyfile.c:3055 glib/gkeyfile.c:3111
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr ""
 
-#: glib/gkeyfile.c:1184
+#: glib/gkeyfile.c:1213
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr ""
 
-#: glib/gkeyfile.c:1285 glib/gkeyfile.c:1394
+#: glib/gkeyfile.c:1315 glib/gkeyfile.c:1425
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr ""
 
-#: glib/gkeyfile.c:1303 glib/gkeyfile.c:1412 glib/gkeyfile.c:1784
+#: glib/gkeyfile.c:1335 glib/gkeyfile.c:1445 glib/gkeyfile.c:1813
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr ""
 
-#: glib/gkeyfile.c:2000 glib/gkeyfile.c:2213
+#: glib/gkeyfile.c:2025 glib/gkeyfile.c:2234
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
 "interpreted."
 msgstr ""
 
-#: glib/gkeyfile.c:2400 glib/gkeyfile.c:2584 glib/gkeyfile.c:3101
+#: glib/gkeyfile.c:2417 glib/gkeyfile.c:2602 glib/gkeyfile.c:3122
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr ""
 
-#: glib/gkeyfile.c:3274
+#: glib/gkeyfile.c:3361
 #, c-format
 msgid "Key file contains escape character at end of line"
 msgstr ""
 
-#: glib/gkeyfile.c:3296
+#: glib/gkeyfile.c:3383
 #, fuzzy, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "URI '%s' satur nepareizi izvairīgas rakstzīmes"
 
-#: glib/gkeyfile.c:3437
+#: glib/gkeyfile.c:3525
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr ""
 
-#: glib/gkeyfile.c:3447
+#: glib/gkeyfile.c:3539
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr ""
 
-#: glib/gkeyfile.c:3475
+#: glib/gkeyfile.c:3572
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr ""
 
-#: glib/gkeyfile.c:3495
+#: glib/gkeyfile.c:3596
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr ""

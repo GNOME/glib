@@ -716,8 +716,6 @@ you would use %G_IO_IN | %G_IO_HUP | %G_IO_ERR, and for writing you would use
 
 </para>
 
-@fd: 
-@events: 
 @revents: 
 
 <!-- ##### STRUCT GSource ##### -->

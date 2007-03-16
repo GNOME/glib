@@ -415,6 +415,7 @@ GParamSpec
 GParamSpecClass
 GParamFlags
 G_PARAM_READWRITE
+G_PARAM_STATIC_STRINGS
 G_PARAM_MASK
 G_PARAM_USER_SHIFT
 g_param_spec_ref

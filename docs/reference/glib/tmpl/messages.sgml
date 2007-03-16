@@ -116,38 +116,6 @@ A convenience function/macro to log a normal message.
 
 @...: format string, followed by parameters to insert into the format string (as with printf())
 
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...: 
-
 
 <!-- ##### MACRO g_warning ##### -->
 <para>
@@ -160,38 +128,6 @@ variable (see <ulink url="glib-running.html">Running GLib Applications</ulink>).
 </para>
 
 @...: format string, followed by parameters to insert into the format string (as with printf())
-
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...: 
 
 
 <!-- ##### MACRO g_critical ##### -->
@@ -211,38 +147,6 @@ the %G_DEBUG environment variable (see
 
 @...: format string, followed by parameters to insert into the format string (as with printf())
 
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...: 
-
 
 <!-- ##### MACRO g_error ##### -->
 <para>
@@ -256,38 +160,6 @@ assertion failure.
 
 @...: format string, followed by parameters to insert into the format string (as with printf())
 
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...: 
-
 
 <!-- ##### MACRO g_debug ##### -->
 <para>
@@ -295,38 +167,6 @@ A convenience function/macro to log a debug message.
 </para>
 
 @...: format string, followed by parameters to insert into the format string (as with printf())
-
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...:
-
-@...: 
 @Since: 2.6
 
 

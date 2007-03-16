@@ -222,6 +222,14 @@ If you pass %NULL then the default settings are used.
 @Returns: the new #GScanner.
 
 
+<!-- ##### FUNCTION g_scanner_destroy ##### -->
+<para>
+Frees all memory used by the #GScanner.
+</para>
+
+@scanner: a #GScanner.
+
+
 <!-- ##### FUNCTION g_scanner_input_file ##### -->
 <para>
 Prepares to scan a file.
@@ -290,6 +298,15 @@ The token data is placed in the
 @Returns: the type of the token.
 
 
+<!-- ##### FUNCTION g_scanner_eof ##### -->
+<para>
+Returns %TRUE if the scanner has reached the end of the file or text buffer.
+</para>
+
+@scanner: a #GScanner.
+@Returns: %TRUE if the scanner has reached the end of the file or text buffer.
+
+
 <!-- ##### FUNCTION g_scanner_cur_line ##### -->
 <para>
 Returns the current line in the input stream (counting from 1).
@@ -330,15 +347,6 @@ structure.
 
 @scanner: a #GScanner.
 @Returns: the current token value.
-
-
-<!-- ##### FUNCTION g_scanner_eof ##### -->
-<para>
-Returns %TRUE if the scanner has reached the end of the file or text buffer.
-</para>
-
-@scanner: a #GScanner.
-@Returns: %TRUE if the scanner has reached the end of the file or text buffer.
 
 
 <!-- ##### FUNCTION g_scanner_set_scope ##### -->
@@ -396,6 +404,38 @@ Removes a symbol from a scope.
 @scanner: a #GScanner.
 @scope_id: the scope id.
 @symbol: the symbol to remove.
+
+
+<!-- ##### MACRO g_scanner_add_symbol ##### -->
+<para>
+Adds a symbol to the default scope.
+</para>
+
+@scanner: a #GScanner.
+@symbol: the symbol to add.
+@value: the value of the symbol.
+@Deprecated: 2.2: Use g_scanner_scope_add_symbol() instead.
+
+
+<!-- ##### MACRO g_scanner_remove_symbol ##### -->
+<para>
+Removes a symbol from the default scope.
+</para>
+
+@scanner: a #GScanner.
+@symbol: the symbol to remove.
+@Deprecated: 2.2: Use g_scanner_scope_remove_symbol() instead.
+
+
+<!-- ##### MACRO g_scanner_foreach_symbol ##### -->
+<para>
+Calls a function for each symbol in the default scope.
+</para>
+
+@scanner: a #GScanner.
+@func: the function to call with each symbol.
+@data: data to pass to the function.
+@Deprecated: 2.2: Use g_scanner_scope_foreach_symbol() instead.
 
 
 <!-- ##### MACRO g_scanner_freeze_symbol_table ##### -->
@@ -489,45 +529,6 @@ Specifies the type of the message handler function.
   signals a warning.
 
 
-<!-- ##### FUNCTION g_scanner_destroy ##### -->
-<para>
-Frees all memory used by the #GScanner.
-</para>
-
-@scanner: a #GScanner.
-
-
-<!-- ##### ENUM GTokenType ##### -->
-<para>
-The possible types of token returned from each g_scanner_get_next_token() call.
-</para>
-
-@G_TOKEN_EOF: the end of the file.
-@G_TOKEN_LEFT_PAREN: a '(' character.
-@G_TOKEN_LEFT_CURLY: a '{' character.
-@G_TOKEN_RIGHT_CURLY: a '}' character.
-
-<!-- ##### UNION GTokenValue ##### -->
-<para>
-A union holding the value of the token.
-</para>
-
-
-<!-- ##### ENUM GErrorType ##### -->
-<para>
-The possible errors, used in the <structfield>v_error</structfield> field
-of #GTokenValue, when the token is a #G_TOKEN_ERROR.
-</para>
-
-@G_ERR_UNKNOWN: unknown error.
-@G_ERR_UNEXP_EOF: unexpected end of file.
-@G_ERR_UNEXP_EOF_IN_STRING: unterminated string constant.
-@G_ERR_UNEXP_EOF_IN_COMMENT: unterminated comment.
-@G_ERR_NON_DIGIT_IN_CONST: non-digit character in a number.
-@G_ERR_DIGIT_RADIX: digit beyond radix in a number.
-@G_ERR_FLOAT_RADIX: non-decimal floating point number.
-@G_ERR_FLOAT_MALFORMED: malformed floating point number.
-
 <!-- ##### MACRO G_CSET_a_2_z ##### -->
 <para>
 The set of lowercase ASCII alphabet characters.
@@ -570,35 +571,34 @@ Used for specifying valid identifier characters in #GScannerConfig.
 
 
 
-<!-- ##### MACRO g_scanner_add_symbol ##### -->
+<!-- ##### ENUM GTokenType ##### -->
 <para>
-Adds a symbol to the default scope.
+The possible types of token returned from each g_scanner_get_next_token() call.
 </para>
 
-@scanner: a #GScanner.
-@symbol: the symbol to add.
-@value: the value of the symbol.
-@Deprecated: 2.2: Use g_scanner_scope_add_symbol() instead.
+@G_TOKEN_EOF: the end of the file.
+@G_TOKEN_LEFT_PAREN: a '(' character.
+@G_TOKEN_LEFT_CURLY: a '{' character.
+@G_TOKEN_RIGHT_CURLY: a '}' character.
 
-
-<!-- ##### MACRO g_scanner_remove_symbol ##### -->
+<!-- ##### UNION GTokenValue ##### -->
 <para>
-Removes a symbol from the default scope.
+A union holding the value of the token.
 </para>
 
-@scanner: a #GScanner.
-@symbol: the symbol to remove.
-@Deprecated: 2.2: Use g_scanner_scope_remove_symbol() instead.
 
-
-<!-- ##### MACRO g_scanner_foreach_symbol ##### -->
+<!-- ##### ENUM GErrorType ##### -->
 <para>
-Calls a function for each symbol in the default scope.
+The possible errors, used in the <structfield>v_error</structfield> field
+of #GTokenValue, when the token is a #G_TOKEN_ERROR.
 </para>
 
-@scanner: a #GScanner.
-@func: the function to call with each symbol.
-@data: data to pass to the function.
-@Deprecated: 2.2: Use g_scanner_scope_foreach_symbol() instead.
-
+@G_ERR_UNKNOWN: unknown error.
+@G_ERR_UNEXP_EOF: unexpected end of file.
+@G_ERR_UNEXP_EOF_IN_STRING: unterminated string constant.
+@G_ERR_UNEXP_EOF_IN_COMMENT: unterminated comment.
+@G_ERR_NON_DIGIT_IN_CONST: non-digit character in a number.
+@G_ERR_DIGIT_RADIX: digit beyond radix in a number.
+@G_ERR_FLOAT_RADIX: non-decimal floating point number.
+@G_ERR_FLOAT_MALFORMED: malformed floating point number.
 

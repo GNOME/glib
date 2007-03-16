@@ -337,7 +337,7 @@ Since: 2.6
 
 
 
-<!-- ##### MACRO G_LIKELY ##### -->
+<!-- ##### FUNCTION G_LIKELY ##### -->
 <para>
 Hints the compiler that the expression is likely to evaluate to a true
 value. The compiler may use this information for optimizations.
@@ -347,8 +347,10 @@ if (G_LIKELY (random () != 1))
   g_print ("not one");
 </programlisting></informalexample>
 
-@expr: the expression
+@Returns: 
 @Since: 2.2
+<!-- # Unused Parameters # -->
+@expr: the expression
 
 
 <!-- ##### MACRO G_UNLIKELY ##### -->

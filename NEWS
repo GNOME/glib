@@ -1,3 +1,51 @@
+Overview of Changes from GLib 2.12 to GLib 2.13.0
+=================================================
+
+* Add GSequence, a list that is implemented using
+  a balanced binary tree.
+
+* Add GRegex, an implementation of Perl regular expressions,
+  based on PCRE.
+ 
+* Use Posix monotonic clocks instead of gettimeofday()
+  for GTimer when available.
+
+* Support static initialization of GQeues with G_QUEUE_INIT,
+  g_queue_init() and g_queue_clear().
+
+* Add g_string_chunk_clear() for clearing a 
+  GStringChunk.
+
+* Add g_unichar_get_script() to obtain Unicode
+  script information.
+
+* Add g_unichar_iszerowidth() to obtain information
+  about zero-width characters.
+
+* Add G_GNUC_MAY_ALIAS which wraps the gcc may_alias 
+  type attribute.
+
+* G_GNUC_INTERNAL has a working definition for the
+  Sun Studio compiler. This requires the macro to
+  be positioned before the function declaration.
+
+* The slice allocator can produce detailed debugging
+  information with G_SLICE=debug-blocks.
+
+* Modules support G_DEBUG flags resident-modules and
+  bind-now-modules.
+
+* Add G_DEFINE_DYNAMIC_TYPE() to make it easier
+  to define types in modules.
+
+* Bug fixes: too many to list them in detail here.
+
+* New and updated translations (be,bg,bn,ca,cs,de,
+  en_CA,en_GB,et,fa,fr,he,hu,it,ja,ku,lt,mg,mk,ml,
+  nb,ne,nn,pt,pt_BR,ro,sr,sr@Latn,sv,ta,uk,vi,zh_CN,
+  zh_HK,zh_TW)
+
+
 Overview of Changes from GLib 2.12.1 to GLib 2.12.2
 ===================================================
 
