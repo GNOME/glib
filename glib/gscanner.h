@@ -197,7 +197,7 @@ struct	_GScanner
   const gchar		*text_end;
   gchar			*buffer;
   guint			scope_id;
-  guint			*cset_table;
+  
   /* handler function for _warn and _error */
   GScannerMsgFunc	msg_handler;
 };

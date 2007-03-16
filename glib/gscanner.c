@@ -61,9 +61,6 @@
 )
 #define	READ_BUFFER_SIZE	(4000)
 
-#define CSET_SKIP_FLAG		(1<<0)
-#define CSET_IDENT_FIRST_FLAG	(1<<1)
-#define CSET_IDENT_NTH_FLAG	(1<<2)
 
 /* --- typedefs --- */
 typedef	struct	_GScannerKey	GScannerKey;
@@ -171,24 +168,6 @@ g_scanner_char_2_num (guchar	c,
   return -1;
 }
 
-static void
-g_scanner_cset_2_table (guint* table, guchar* cset, guint flag)
-{
-  while (*cset)
-    {
-    	table[*cset] |= flag;
-	cset++;
-    }
- return;
-}
-
-static inline guint
-g_scanner_cset_table_lookup (guint* table, guint c, guint mask)
-{
-  if (c>=256) return 0;
-  return (table[c] & mask);
-}
-
 GScanner*
 g_scanner_new (const GScannerConfig *config_templ)
 {
@@ -255,12 +234,6 @@ g_scanner_new (const GScannerConfig *config_templ)
   
   scanner->msg_handler = g_scanner_msg_handler;
   
-  scanner->cset_table = g_new0(guint, 256);
-  g_scanner_cset_2_table (scanner->cset_table, (guchar*) scanner->config->cset_skip_characters, CSET_SKIP_FLAG);
-  g_scanner_cset_2_table (scanner->cset_table, (guchar*) scanner->config->cset_identifier_first, CSET_IDENT_FIRST_FLAG);
-  g_scanner_cset_2_table (scanner->cset_table, (guchar*) scanner->config->cset_identifier_nth, CSET_IDENT_NTH_FLAG);
-
-  
   return scanner;
 }
 
@@ -309,7 +282,6 @@ g_scanner_destroy (GScanner	*scanner)
   g_scanner_free_value (&scanner->next_token, &scanner->next_value);
   g_free (scanner->config);
   g_free (scanner->buffer);
-  g_free (scanner->cset_table);
   g_free (scanner);
 }
 
@@ -893,8 +865,8 @@ g_scanner_unexp_token (GScanner		*scanner,
       if (scanner->token >= 1 && scanner->token <= 255)
 	{
 	  if ((scanner->token >= ' ' && scanner->token <= '~') ||
-	      g_scanner_cset_table_lookup (scanner->cset_table, scanner->token, 
-	      				CSET_IDENT_FIRST_FLAG | CSET_IDENT_NTH_FLAG))
+	      strchr (scanner->config->cset_identifier_first, scanner->token) ||
+	      strchr (scanner->config->cset_identifier_nth, scanner->token))
 	    _g_snprintf (token_string, token_string_len, "character `%c'", scanner->token);
 	  else
 	    _g_snprintf (token_string, token_string_len, "character `\\%o'", scanner->token);
@@ -1038,8 +1010,8 @@ g_scanner_unexp_token (GScanner		*scanner,
       if (expected_token >= 1 && expected_token <= 255)
 	{
 	  if ((expected_token >= ' ' && expected_token <= '~') ||
-	      g_scanner_cset_table_lookup (scanner->cset_table, scanner->token, 
-	      				CSET_IDENT_FIRST_FLAG | CSET_IDENT_NTH_FLAG))
+	      strchr (scanner->config->cset_identifier_first, expected_token) ||
+	      strchr (scanner->config->cset_identifier_nth, expected_token))
 	    _g_snprintf (expected_string, expected_string_len, "character `%c'", expected_token);
 	  else
 	    _g_snprintf (expected_string, expected_string_len, "character `\\%o'", expected_token);
@@ -1188,9 +1160,9 @@ g_scanner_get_token_i (GScanner	*scanner,
       g_scanner_get_token_ll (scanner, token_p, value_p, line_p, position_p);
     }
   while (((*token_p > 0 && *token_p < 256) &&
-	  g_scanner_cset_table_lookup (scanner->cset_table, *token_p, CSET_SKIP_FLAG)) ||
+	  strchr (scanner->config->cset_skip_characters, *token_p)) ||
 	 (*token_p == G_TOKEN_CHAR &&
-	  g_scanner_cset_table_lookup (scanner->cset_table, value_p->v_char, CSET_SKIP_FLAG)) ||
+	  strchr (scanner->config->cset_skip_characters, value_p->v_char)) ||
 	 (*token_p == G_TOKEN_COMMENT_MULTI &&
 	  scanner->config->skip_comment_multi) ||
 	 (*token_p == G_TOKEN_COMMENT_SINGLE &&
@@ -1286,7 +1258,7 @@ g_scanner_get_token_ll	(GScanner	*scanner,
        * might interfere with other key chars like slashes or numbers
        */
       if (config->scan_identifier &&
-	  ch && g_scanner_cset_table_lookup (scanner->cset_table, ch, CSET_IDENT_FIRST_FLAG))
+	  ch && strchr (config->cset_identifier_first, ch))
 	goto identifier_precedence;
       
       switch (ch)
@@ -1304,7 +1276,7 @@ g_scanner_get_token_ll	(GScanner	*scanner,
 	  g_scanner_get_char (scanner, line_p, position_p);
 	  token = G_TOKEN_COMMENT_MULTI;
 	  in_comment_multi = TRUE;
-	  gstring = g_string_sized_new (128);
+	  gstring = g_string_new (NULL);
 	  while ((ch = g_scanner_get_char (scanner, line_p, position_p)) != 0)
 	    {
 	      if (ch == '*' && g_scanner_peek_next_char (scanner) == '/')
@@ -1324,7 +1296,7 @@ g_scanner_get_token_ll	(GScanner	*scanner,
 	    goto default_case;
 	  token = G_TOKEN_STRING;
 	  in_string_sq = TRUE;
-	  gstring = g_string_sized_new (32);
+	  gstring = g_string_new (NULL);
 	  while ((ch = g_scanner_get_char (scanner, line_p, position_p)) != 0)
 	    {
 	      if (ch == '\'')
@@ -1343,7 +1315,7 @@ g_scanner_get_token_ll	(GScanner	*scanner,
 	    goto default_case;
 	  token = G_TOKEN_STRING;
 	  in_string_dq = TRUE;
-	  gstring = g_string_sized_new (32);
+	  gstring = g_string_new (NULL);
 	  while ((ch = g_scanner_get_char (scanner, line_p, position_p)) != 0)
 	    {
 	      if (ch == '"')
@@ -1505,9 +1477,7 @@ g_scanner_get_token_ll	(GScanner	*scanner,
 	  if (token == G_TOKEN_NONE)
 	    token = G_TOKEN_INT;
 	  
-	  gstring = g_string_sized_new (16);
-          if (dotted_float)
-            gstring = g_string_append (gstring, "0.");
+	  gstring = g_string_new (dotted_float ? "0." : "");
 	  gstring = g_string_append_c (gstring, ch);
 	  
 	  do /* while (in_number) */
@@ -1651,7 +1621,7 @@ g_scanner_get_token_ll	(GScanner	*scanner,
 	    {
 	      token = G_TOKEN_COMMENT_SINGLE;
 	      in_comment_single = TRUE;
-	      gstring = g_string_sized_new (128);
+	      gstring = g_string_new (NULL);
 	      ch = g_scanner_get_char (scanner, line_p, position_p);
 	      while (ch != 0)
 		{
@@ -1671,16 +1641,16 @@ g_scanner_get_token_ll	(GScanner	*scanner,
 		in_comment_single = FALSE;
 	    }
 	  else if (config->scan_identifier && ch &&
-		   g_scanner_cset_table_lookup (scanner->cset_table, ch, CSET_IDENT_FIRST_FLAG))
+		   strchr (config->cset_identifier_first, ch))
 	    {
 	    identifier_precedence:
 	      
 	      if (config->cset_identifier_nth && ch &&
-		  g_scanner_cset_table_lookup (scanner->cset_table,
-			  g_scanner_peek_next_char (scanner), CSET_IDENT_NTH_FLAG))
+		  strchr (config->cset_identifier_nth,
+			  g_scanner_peek_next_char (scanner)))
 		{
 		  token = G_TOKEN_IDENTIFIER;
-		  gstring = g_string_sized_new (32);
+		  gstring = g_string_new (NULL);
 		  gstring = g_string_append_c (gstring, ch);
 		  do
 		    {
@@ -1688,7 +1658,7 @@ g_scanner_get_token_ll	(GScanner	*scanner,
 		      gstring = g_string_append_c (gstring, ch);
 		      ch = g_scanner_peek_next_char (scanner);
 		    }
-		  while (ch && g_scanner_cset_table_lookup (scanner->cset_table, ch, CSET_IDENT_NTH_FLAG));
+		  while (ch && strchr (config->cset_identifier_nth, ch));
 		  ch = 0;
 		}
 	      else if (config->scan_identifier_1char)
