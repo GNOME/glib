@@ -66,7 +66,6 @@ Fri Mar 16 11:24:51 2007  Tim Janik  <timj@imendio.com>
 	* glib/gscanner.c (g_scanner_get_token_ll): Fix a typo
 	in the last commit.  (#415323, Richard Hult)
 
->>>>>>> .r5422
 2007-03-15  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gnulib/Makefile.am (INCLUDES): Add -I$(top_srcdir)/glib so
