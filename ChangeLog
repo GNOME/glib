@@ -1,3 +1,13 @@
+2007-03-17  Marco Barisione <marco@barisione.org>
+
+	* glib/update-pcre/table-reduction.patch:
+	* glib/update-pcre/make_utt.py:
+	* glib/update-pcre/utt.patch: Add forgotten files
+
+	* glib/update-pcre/update.sh: Call python directly instead of relying
+	on shebang. Also copy the changes from glib/pcre/makefile.msc to this
+	file
+
 2007-03-17  Hans Breuer  <hans@breuer.org>
 
 	* glib/makefile.msc.in glib/pcre/makefile.msc 

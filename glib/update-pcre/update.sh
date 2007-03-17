@@ -114,11 +114,10 @@ for f in $all_files; do
 done
 `
 
+all : pcre.lib
+
 pcre.lib : \$(OBJECTS)
 	lib -out:pcre.lib \$(OBJECTS)
-
-.c.obj:
-	\$(CC) \$(CRT) \$(CFLAGS) -Ox -GD -c $<
 EOF
 
 echo "Patching PCRE"
@@ -146,7 +145,7 @@ sed -i -e 's/(digitab\[\(.*\)\] & ctype_digit)/g_ascii_isdigit(\1)/' pcre_compil
 sed -i -e 's/(digitab\[\(.*\)\] & ctype_xdigit)/g_ascii_isxdigit(\1)/' pcre_compile.c
 
 # Reduce the number of relocations.
-$IN/make_utt.py
+python $IN/make_utt.py
 patch > /dev/null < $IN/utt.patch
 patch > /dev/null < $IN/table-reduction.patch
 
