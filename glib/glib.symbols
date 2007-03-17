@@ -963,7 +963,6 @@ g_sequence_iter_move
 g_sequence_iter_get_sequence
 g_sequence_iter_compare
 g_sequence_range_get_midpoint
-g_sequence_self_test_internal_to_glib_dont_use
 #endif
 #endif
 

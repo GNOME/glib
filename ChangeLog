@@ -1,3 +1,10 @@
+2007-03-17  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gsequence.[hc]:
+	* glib/glib.symbols:
+	* tests/sequence-test.c: Move the consistency
+	checks to the test.
+
 2007-03-16  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Bump version

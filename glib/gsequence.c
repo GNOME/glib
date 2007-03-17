@@ -1735,61 +1735,6 @@ node_insert_sorted (GSequenceNode            *node,
   node_insert_before (closest, new);
 }
 
-/* Self-test function */
-static int
-count_nodes (GSequenceNode *node)
-{
-  if (!node)
-    return 0;
-  
-  return count_nodes (node->left) + count_nodes (node->right) + 1;
-}
-  
-static void
-check_node (GSequenceNode *node)
-{
-  if (node)
-    {
-      g_assert (node->parent != node);
-      if (node->parent)
-	g_assert (node->parent->left == node || node->parent->right == node);
-      g_assert (node->n_nodes == count_nodes (node));
-      if (node->left)
-	  g_assert (get_priority (node) >= get_priority (node->left));
-      if (node->right)
-	  g_assert (get_priority (node) >= get_priority (node->right));
-      check_node (node->left);
-      check_node (node->right);
-    }
-}
-
-static gint
-compute_height (GSequenceNode *node)
-{
-  int left, right;
-  
-  if (!node)
-    return 0;
-
-  left = compute_height (node->left);
-  right = compute_height (node->right);
-
-  return MAX (left, right) + 1;
-}
-
-void
-g_sequence_self_test_internal_to_glib_dont_use (GSequence *seq)
-{
-  GSequenceNode *node = find_root (seq->end_node);
-  
-  check_node (node);
-   
-  node = node_get_last (node);
-  
-  g_assert (seq->end_node == node);
-  g_assert (node->data == seq);
-
-}
 
 #define __G_SEQUENCE_C__
 #include "galiasdef.c"

@@ -2,6 +2,78 @@
 #include <glib.h>
 #include <stdlib.h>
 
+/* Keep this in sync with gsequence.c !!! */
+typedef struct _GSequenceNode GSequenceNode;
+
+struct _GSequence
+{
+  GSequenceNode *       end_node;
+  GDestroyNotify        data_destroy_notify;
+  gboolean              access_prohibited;
+  GSequence *           real_sequence;
+};
+
+struct _GSequenceNode
+{
+  gint                  n_nodes;
+  GSequenceNode *       parent;
+  GSequenceNode *       left;
+  GSequenceNode *       right;
+  gpointer              data;
+};
+
+static guint
+get_priority (GSequenceNode *node)
+{
+  guint key = GPOINTER_TO_UINT (node);
+
+  key = (key << 15) - key - 1;
+  key = key ^ (key >> 12);
+  key = key + (key << 2);
+  key = key ^ (key >> 4);
+  key = key + (key << 3) + (key << 11);
+  key = key ^ (key >> 16);
+
+  return key? key : 1;
+}
+      
+static void
+check_node (GSequenceNode *node)
+{
+  if (node)
+    {
+      g_assert (node->parent != node);
+      if (node->parent)
+        g_assert (node->parent->left == node || node->parent->right == node);
+      g_assert (node->n_nodes == 1 + (node->left ? node->left->n_nodes : 0) + (node->right ? node->right->n_nodes : 0));
+      if (node->left)
+          g_assert (get_priority (node) >= get_priority (node->left));
+      if (node->right)
+          g_assert (get_priority (node) >= get_priority (node->right));
+      check_node (node->left);
+      check_node (node->right);
+    }
+}
+
+void
+g_sequence_check (GSequence *seq)
+{
+  GSequenceNode *node = seq->end_node;
+
+  while (node->parent)
+    node = node->parent;
+
+  check_node (node);
+
+  while (node->right)
+    node = node->right;
+
+  g_assert (seq->end_node == node);
+  g_assert (node->data == seq);
+
+}
+
+         
 enum {
   NEW, FREE, GET_LENGTH, FOREACH, FOREACH_RANGE, SORT, SORT_ITER,
   
@@ -35,7 +107,7 @@ typedef struct
   int		  number;
 } Item;
 
-void g_sequence_self_test_internal_to_glib_dont_use (GSequence *sequence);
+void g_sequence_check (GSequence *sequence);
 
 static Item *
 fix_pointer (gconstpointer data)
@@ -56,7 +128,7 @@ check_integrity (SequenceInfo *info)
   GSequenceIter *iter;
   int i;
   
-  g_sequence_self_test_internal_to_glib_dont_use (info->sequence);
+  g_sequence_check (info->sequence);
   
   if (g_sequence_get_length (info->sequence) != info->n_items)
     g_print ("%d %d\n",
@@ -1148,7 +1220,7 @@ test_insert_sorted_non_pointer (void)
 					 compare_iter, NULL);
 	}
 
-      g_sequence_self_test_internal_to_glib_dont_use (seq);
+      g_sequence_check (seq);
       
       g_sequence_free (seq);
     }
@@ -1168,21 +1240,21 @@ test_stable_sort (void)
   for (i = 0; i < N_ITEMS; ++i)
     {
       iters[i] = g_sequence_append (seq, GINT_TO_POINTER (3000)); 
-      g_sequence_self_test_internal_to_glib_dont_use (seq);
+      g_sequence_check (seq);
       g_assert (g_sequence_iter_get_sequence (iters[i]) == seq);
    }
 
   i = 0;
   iter = g_sequence_get_begin_iter (seq);
   g_assert (g_sequence_iter_get_sequence (iter) == seq);
-  g_sequence_self_test_internal_to_glib_dont_use (seq);
+  g_sequence_check (seq);
   while (!g_sequence_iter_is_end (iter))
     {
       g_assert (g_sequence_iter_get_sequence (iters[i]) == seq);
       g_assert (iters[i++] == iter);
       
       iter = g_sequence_iter_next (iter);
-      g_sequence_self_test_internal_to_glib_dont_use (seq);
+      g_sequence_check (seq);
     }
   
   g_sequence_sort (seq, compare, NULL);
@@ -1195,14 +1267,14 @@ test_stable_sort (void)
       g_assert (iters[i] == iter);
       
       iter = g_sequence_iter_next (iter);
-      g_sequence_self_test_internal_to_glib_dont_use (seq);
+      g_sequence_check (seq);
 
       i++;
     }
   
   for (i = N_ITEMS - 1; i >= 0; --i)
     {
-      g_sequence_self_test_internal_to_glib_dont_use (seq);
+      g_sequence_check (seq);
       g_assert (g_sequence_iter_get_sequence (iters[i]) == seq);
       g_assert (g_sequence_get_end_iter (seq) != iters[i]);
       g_sequence_sort_changed (iters[i], compare, NULL);
@@ -1215,7 +1287,7 @@ test_stable_sort (void)
       g_assert (iters[i++] == iter);
       
       iter = g_sequence_iter_next (iter);
-      g_sequence_self_test_internal_to_glib_dont_use (seq);
+      g_sequence_check (seq);
     }
 }
 
