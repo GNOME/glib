@@ -84,19 +84,20 @@ cat $IN/Makefile.am-2 >> Makefile.am
 
 # Generate makefile.msc
 cat > makefile.msc << EOF
-!IFDEF DEBUG
-CRT=-MDd
-!ELSE
-CRT=-MD
-!ENDIF
+TOP = ..\..\..
+!INCLUDE ..\..\build\win32\make.msc
 
-CFLAGS = \\
-	-I ..\\.. \\
+INCLUDES = \\
+	-I ..\.. \\
+	-I ..
+	
+DEFINES = \\
+	-DPCRE_STATIC \\
 	-DHAVE_CONFIG_H \\
 	-DHAVE_LONG_LONG_FORMAT \\
 	-DSUPPORT_UCP \\
 	-DSUPPORT_UTF8 \\
-	-DNEWLINE=10 \\
+	-DNEWLINE=-1 \\
 	-DMATCH_LIMIT=10000000 \\
 	-DMATCH_LIMIT_RECURSION=10000000 \\
 	-DMAX_NAME_SIZE=32 \\

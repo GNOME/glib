@@ -22,7 +22,8 @@
 #ifndef __G_REGEX_H__
 #define __G_REGEX_H__
 
-#include <glib.h>
+#include <glib/gerror.h>
+#include <glib/gstring.h>
 
 G_BEGIN_DECLS
 

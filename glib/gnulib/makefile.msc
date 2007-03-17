@@ -1,10 +1,8 @@
-!IFDEF DEBUG
-CRT=-MDd
-!ELSE
-CRT=-MD
-!ENDIF
+TOP = ..\..\..
+!INCLUDE ..\..\build\win32\make.msc
 
-CFLAGS = -I ..\.. -DHAVE_CONFIG_H -DHAVE_LONG_LONG_FORMAT
+INCLUDES = -I ..\.. 
+DEFINES = -DHAVE_CONFIG_H -DHAVE_LONG_LONG_FORMAT
 
 OBJECTS = \
 	asnprintf.obj \
@@ -13,8 +11,8 @@ OBJECTS = \
 	printf-parse.obj \
 	vasnprintf.obj
 
+all : gnulib.lib
+
 gnulib.lib : $(OBJECTS)
 	lib -out:gnulib.lib $(OBJECTS)
 
-.c.obj:
-	$(CC) $(CRT) $(CFLAGS) -Ox -GD -c $<

@@ -8,32 +8,54 @@ TOP = ..\..
 ################################################################
 
 INCLUDES = -FImsvc_recommended_pragmas.h -I .. -I ..\glib -I ..\gmodule
-DEFINES = -DHAVE_CONFIG_H
+DEFINES = -DHAVE_CONFIG_H -DENABLE_REGEX
 
 NONAUTOMATIC_TESTS = \
 	testglib.exe	\
 	testgdate.exe	\
 	testgdateparser.exe \
-	patterntest.exe \
 	unicode-normalize.exe \
 	unicode-collate.exe
 
 TESTS = \
+	atomic-test.exe \
 	array-test.exe	\
+	asyncqueue-test.exe \
+	base64-test.exe \
+	bit-test.exe \
+	bookmarkfile-test.exe \
+	child-test.exe \
+	completion-test.exe \
+	convert-test.exe \
 	date-test.exe	\
-	dirname-test.exe\
+	dirname-test.exe \
+	env-test.exe \
+	errorcheck-mutex-test.exe \
+	file-test.exe \
 	gio-test.exe	\
 	iochannel-test.exe \
 	hash-test.exe	\
+	keyfile-test.exe \
 	list-test.exe	\
 	mainloop-test.exe \
+	mapping-test.exe \
+	markup-escape-test.exe \
 	markup-test.exe	\
+#main?	memchunks.exe \
 	module-test.exe	\
 	node-test.exe	\
+	option-test.exe \
+	patterntest.exe \
+	printf-test.exe \
 	queue-test.exe	\
+	qsort-test.exe \
 	rand-test.exe	\
-	relation-test.exe\
+	regex-test.exe \
+	relation-test.exe \
+#_?	sequence-test.exe \
 	shell-test.exe	\
+	slice-color.exe \
+	slice-test.exe	\
 	slist-test.exe	\
 	spawn-test.exe	\
 # strfunc-test doesn't compile with MSVC
@@ -47,7 +69,9 @@ TESTS = \
 	type-test.exe	\
 	unicode-caseconv.exe \
 	unicode-encoding.exe \
-	uri-test.exe
+	utf8-validate.exe \
+	utf8-pointer.exe \
+	uri-test.exe \
 
 DLLS = \
 	libmoduletestplugin_a.dll \
@@ -59,6 +83,10 @@ all :	$(TESTS) $(NONAUTOMATIC_TESTS) $(DLLS)
 	$(CC) $(CFLAGS) -c $<
 	$(CC) $(CFLAGS) -Fe$@ $< ..\glib\glib-2.0.lib ..\gmodule\gmodule-2.0.lib ..\gthread\gthread-2.0.lib $(LDFLAGS) user32.lib /subsystem:console
 
+slice-test.exe : memchunks.obj slice-test.obj 
+	$(CC) $(CFLAGS) -Fe$@ memchunks.obj slice-test.obj \
+	..\glib\glib-2.0.lib ..\gmodule\gmodule-2.0.lib ..\gthread\gthread-2.0.lib $(LDFLAGS) user32.lib /subsystem:console
+	
 libmoduletestplugin_a.dll : libmoduletestplugin_a.obj
 	$(CC) $(CFLAGS) -LD libmoduletestplugin_a.obj ..\gmodule\gmodule-2.0.lib ..\glib\glib-2.0.lib $(LDFLAGS)
 

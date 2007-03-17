@@ -60,17 +60,20 @@ touch_mem (guint64 block_size,
            guint64 repeats)
 {
   guint64 j, accu, n = n_blocks;
+  GTimer *timer;
+  guint **memc;
+  guint **memb;
   guint **mema = g_new (guint*, n);
   for (j = 0; j < n; j++)
     mema[j] = g_slice_alloc (block_size);
-  guint **memb = g_new (guint*, n);
+  memb = g_new (guint*, n);
   for (j = 0; j < n; j++)
     memb[j] = g_slice_alloc (block_size);
-  guint **memc = g_new (guint*, n);
+  memc = g_new (guint*, n);
   for (j = 0; j < n; j++)
     memc[j] = g_slice_alloc (block_size);
 
-  GTimer *timer = g_timer_new();
+  timer = g_timer_new();
   fill_memory (mema, n, 2);
   fill_memory (memb, n, 3);
   fill_memory (memc, n, 4);
@@ -148,6 +151,9 @@ parse_memsize (const gchar *cstring)
   gchar *string = g_strstrip (mem);
   guint l = strlen (string);
   gdouble f = 0;
+  gchar *derr = NULL;
+  gdouble msize;
+
   switch (l ? string[l - 1] : 0)
     {
     case 'k':   f = 1000;               break;
@@ -159,8 +165,7 @@ parse_memsize (const gchar *cstring)
     }
   if (f)
     string[l - 1] = 0;
-  gchar *derr = NULL;
-  gdouble msize = g_ascii_strtod (string, &derr);
+  msize = g_ascii_strtod (string, &derr);
   g_free (mem);
   if (derr && *derr)
     {

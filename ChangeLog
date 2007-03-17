@@ -1,3 +1,27 @@
+2007-03-17  Hans Breuer  <hans@breuer.org>
+
+	* glib/makefile.msc.in glib/pcre/makefile.msc 
+	  glib/update-pcre/update.sh : define PCRE_STATIC to reflect the 
+	inclusion of pcre as LIB, not stand-alone DLL. Also set NEWLINE=-1
+	to match any newline by default, use of ../../build/win32/make.msc
+
+	* glib/gregex.h : minimal includes of <glib/*.H> instead of <glib.h>
+
+	* glib/gnulib/makefile.msc : make use of ../../build/win32/make.msc
+
+	* tests/regex-test.c(verbose): don't pass a string containing '%' 
+	as first parameter to g_print ()
+	(test_match) : for the unexpected case output pattern and string
+	escaped
+
+	* tests/child-test.c tests/slice-color.c : fix c99ism
+	* tests/slice-test.c : fix c99ism and gccism
+	* tests/mapping-test.c tests/base-64-tests.c : don't 
+	#include <unistd.h> unconditionally
+	* tests/option-test.c : use G_GINT64_CONSTANT() instead of direct LL
+
+	* tests/makefile.msc.in : more tests build
+
 2007-03-17  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gsequence.[hc]:
@@ -42,6 +66,7 @@ Fri Mar 16 11:24:51 2007  Tim Janik  <timj@imendio.com>
 	* glib/gscanner.c (g_scanner_get_token_ll): Fix a typo
 	in the last commit.  (#415323, Richard Hult)
 
+>>>>>>> .r5422
 2007-03-15  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gnulib/Makefile.am (INCLUDES): Add -I$(top_srcdir)/glib so

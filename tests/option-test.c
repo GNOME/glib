@@ -432,8 +432,8 @@ arg_test6 (void)
   g_assert (retval);
 
   /* Last arg specified is the one that should be stored */
-  g_assert (arg_test6_int64 == 4294967296LL);
-  g_assert (arg_test6_int64_2 == 0xfffffffffLL);
+  g_assert (arg_test6_int64 == G_GINT64_CONSTANT(4294967296));
+  g_assert (arg_test6_int64_2 == G_GINT64_CONSTANT(0xfffffffff));
 
   g_strfreev (argv);
   g_option_context_free (context);

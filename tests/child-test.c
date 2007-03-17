@@ -146,6 +146,9 @@ test_thread (gpointer data)
 int
 main (int argc, char *argv[])
 {
+#ifndef TEST_THREAD
+  GPid pid;
+#endif
 #ifdef G_OS_WIN32
   argv0 = argv[0];
   if (argc > 1 && argv[1][0] == '-' && argv[1][1] == 'c')
@@ -166,8 +169,6 @@ main (int argc, char *argv[])
 #if defined(G_THREADS_ENABLED) && ! defined(G_THREADS_IMPL_NONE)
 #ifdef TEST_THREAD
   g_thread_init (NULL);
-#else
-  GPid pid;
 #endif
   main_loop = g_main_loop_new (NULL, FALSE);
 

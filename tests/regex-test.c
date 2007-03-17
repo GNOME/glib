@@ -87,7 +87,7 @@ verbose (const gchar *format, ...)
   va_end (args);
 
   if (noisy) 
-    g_print (msg);
+    g_print ("%s", msg);
   g_free (msg);
 }
 
@@ -275,7 +275,11 @@ test_match (const gchar        *pattern,
 			      start_position, match_opts2, NULL);
   if (match != expected)
     {
-      g_print ("failed \t(unexpected %s)\n", match ? "match" : "mismatch");
+      gchar *e1 = g_strescape (pattern, NULL);
+      gchar *e2 = g_strescape (string, NULL);
+      g_print ("failed \t(unexpected %s) '%s' against '%s'\n", match ? "match" : "mismatch", e1, e2);
+      g_free (e1);
+      g_free (e2);
       g_regex_free (regex);
       return FALSE;
     }

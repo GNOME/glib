@@ -1,6 +1,10 @@
+#include "config.h"
+
 #include <glib.h>
 #include <string.h>
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
+#endif
 #include <stdlib.h>
 
 #define DATA_SIZE 1024
