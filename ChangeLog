@@ -1,3 +1,7 @@
+2007-03-18  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gregex.c: Cosmetic fixes
+
 2007-03-17  Marco Barisione <marco@barisione.org>
 
 	* glib/update-pcre/table-reduction.patch:

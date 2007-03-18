@@ -19,9 +19,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#ifdef HAVE_CONFIG_H
-# include <config.h>
-#endif
+#include <config.h>
 
 #include "gregex.h"
 
@@ -117,7 +115,7 @@ static const gchar *
 match_error (gint errcode)
 {
   switch (errcode)
-  {
+    {
     case PCRE_ERROR_NOMATCH:
       /* not an error */
       break;
@@ -265,15 +263,15 @@ regex_lazy_init_match (GRegex *regex,
 
 /** 
  * g_regex_new:
- * @pattern: the regular expression.
- * @compile_options: compile options for the regular expression.
- * @match_options: match options for the regular expression.
- * @error: return location for a #GError.
+ * @pattern: the regular expression
+ * @compile_options: compile options for the regular expression
+ * @match_options: match options for the regular expression
+ * @error: return location for a #GError
  * 
  * Compiles the regular expression to an internal form, and does the initial
  * setup of the #GRegex structure.  
  * 
- * Returns: a #GRegex structure.
+ * Returns: a #GRegex structure
  *
  * Since: 2.14
  */
@@ -360,7 +358,7 @@ g_regex_new (const gchar         *pattern,
 
 /**
  * g_regex_free:
- * @regex: a #GRegex.
+ * @regex: a #GRegex
  *
  * Frees all the memory associated with the regex structure.
  *
@@ -379,7 +377,7 @@ g_regex_free (GRegex *regex)
 
 /**
  * g_regex_copy:
- * @regex: a #GRegex structure from g_regex_new().
+ * @regex: a #GRegex structure from g_regex_new()
  *
  * Copies a #GRegex. The returned #Gregex is in the same state as after
  * a call to g_regex_clear(), so it does not contain information on the
@@ -389,8 +387,8 @@ g_regex_free (GRegex *regex)
  * @regex, and the other internal variables are created only when needed,
  * so the copy is a lightweight operation.
  *
- * Returns: a newly allocated copy of @regex, or %NULL if an error
- *          occurred.
+ * Returns: a newly-allocated copy of @regex, or %NULL if an error
+ *          occurred
  *
  * Since: 2.14
  */
@@ -410,12 +408,12 @@ g_regex_copy (const GRegex *regex)
 
 /**
  * g_regex_get_pattern:
- * @regex: a #GRegex structure.
+ * @regex: a #GRegex structure
  *
- * Gets the pattern string associated with @regex, i.e. a copy of the string passed
- * to g_regex_new().
+ * Gets the pattern string associated with @regex, i.e. a copy of 
+ * the string passed to g_regex_new().
  *
- * Returns: the pattern of @regex.
+ * Returns: the pattern of @regex
  *
  * Since: 2.14
  */
@@ -429,7 +427,7 @@ g_regex_get_pattern (const GRegex *regex)
 
 /**
  * g_regex_clear:
- * @regex: a #GRegex structure.
+ * @regex: a #GRegex structure
  *
  * Clears out the members of @regex that are holding information about the
  * last set of matches for this pattern.  g_regex_clear() needs to be
@@ -462,14 +460,14 @@ g_regex_clear (GRegex *regex)
 
 /**
  * g_regex_optimize:
- * @regex: a #GRegex structure.
- * @error: return location for a #GError.
+ * @regex: a #GRegex structure
+ * @error: return location for a #GError
  *
  * If the pattern will be used many times, then it may be worth the
  * effort to optimize it to improve the speed of matches.
  *
  * Returns: %TRUE if @regex has been optimized or was already optimized,
- *          %FALSE otherwise.
+ *          %FALSE otherwise
  *
  * Since: 2.14
  */
@@ -515,10 +513,10 @@ g_regex_optimize (GRegex  *regex,
 
 /**
  * g_regex_match_simple:
- * @pattern: the regular expression.
- * @string: the string to scan for matches.
- * @compile_options: compile options for the regular expression.
- * @match_options: match options.
+ * @pattern: the regular expression
+ * @string: the string to scan for matches
+ * @compile_options: compile options for the regular expression
+ * @match_options: match options
  *
  * Scans for a match in @string for @pattern.
  *
@@ -531,7 +529,7 @@ g_regex_optimize (GRegex  *regex,
  * once, it's more efficient to compile the pattern once with
  * g_regex_new() and then use g_regex_match().
  *
- * Returns: %TRUE is the string matched, %FALSE otherwise.
+ * Returns: %TRUE is the string matched, %FALSE otherwise
  *
  * Since: 2.14
  */
@@ -554,16 +552,16 @@ g_regex_match_simple (const gchar        *pattern,
 
 /**
  * g_regex_match:
- * @regex: a #GRegex structure from g_regex_new().
- * @string: the string to scan for matches.
- * @match_options:  match options.
+ * @regex: a #GRegex structure from g_regex_new()
+ * @string: the string to scan for matches
+ * @match_options: match options
  *
  * Scans for a match in string for the pattern in @regex. The @match_options
  * are combined with the match options specified when the @regex structure
  * was created, letting you have more flexibility in reusing #GRegex
  * structures.
  *
- * Returns: %TRUE is the string matched, %FALSE otherwise.
+ * Returns: %TRUE is the string matched, %FALSE otherwise
  *
  * Since: 2.14
  */
@@ -578,12 +576,12 @@ g_regex_match (GRegex          *regex,
 
 /**
  * g_regex_match_full:
- * @regex: a #GRegex structure from g_regex_new().
- * @string: the string to scan for matches.
- * @string_len: the length of @string, or -1 if @string is nul-terminated.
- * @start_position: starting index of the string to match.
- * @match_options:  match options.
- * @error: location to store the error occuring, or NULL to ignore errors.
+ * @regex: a #GRegex structure from g_regex_new()
+ * @string: the string to scan for matches
+ * @string_len: the length of @string, or -1 if @string is nul-terminated
+ * @start_position: starting index of the string to match
+ * @match_options: match options
+ * @error: location to store the error occuring, or %NULL to ignore errors
  *
  * Scans for a match in string for the pattern in @regex. The @match_options
  * are combined with the match options specified when the @regex structure
@@ -594,7 +592,7 @@ g_regex_match (GRegex          *regex,
  * and  setting #G_REGEX_MATCH_NOTBOL in the case of a pattern that begins
  * with any kind of lookbehind assertion, such as "\b".
  *
- * Returns: %TRUE is the string matched, %FALSE otherwise.
+ * Returns: %TRUE is the string matched, %FALSE otherwise
  *
  * Since: 2.14
  */
@@ -615,7 +613,7 @@ g_regex_match_full (GRegex          *regex,
   regex_lazy_init_match (regex, 0);
 
   if (string_len < 0)
-    string_len = strlen(string);
+    string_len = strlen (string);
 
   regex->match->string_len = string_len;
 
@@ -630,12 +628,12 @@ g_regex_match_full (GRegex          *regex,
 				     regex->pattern->match_opts | match_options,
 				     regex->match->offsets, regex->match->n_offsets);
   if (IS_PCRE_ERROR (regex->match->matches))
-  {
-    g_set_error (error, G_REGEX_ERROR, G_REGEX_ERROR_MATCH,
-		 _("Error while matching regular expression %s: %s"),
-		 regex->pattern->pattern, match_error (regex->match->matches));
-    return FALSE;
-  }
+    {
+      g_set_error (error, G_REGEX_ERROR, G_REGEX_ERROR_MATCH,
+		   _("Error while matching regular expression %s: %s"),
+		   regex->pattern->pattern, match_error (regex->match->matches));
+      return FALSE;
+    }
 
   /* set regex->match->pos to -1 so that a call to g_regex_match_next()
    * fails without a previous call to g_regex_clear(). */
@@ -646,9 +644,9 @@ g_regex_match_full (GRegex          *regex,
 
 /**
  * g_regex_match_next:
- * @regex: a #GRegex structure.
- * @string: the string to scan for matches.
- * @match_options: the match options.
+ * @regex: a #GRegex structure
+ * @string: the string to scan for matches
+ * @match_options: the match options
  *
  * Scans for the next match in @string of the pattern in @regex.
  * array.  The match options are combined with the match options set when
@@ -657,7 +655,7 @@ g_regex_match_full (GRegex          *regex,
  * You have to call g_regex_clear() to reuse the same pattern on a new
  * string.
  *
- * Returns: %TRUE is the string matched, %FALSE otherwise.
+ * Returns: %TRUE is the string matched, %FALSE otherwise
  *
  * Since: 2.14
  */
@@ -672,12 +670,12 @@ g_regex_match_next (GRegex          *regex,
 
 /**
  * g_regex_match_next_full:
- * @regex: a #GRegex structure.
- * @string: the string to scan for matches.
- * @string_len: the length of @string, or -1 if @string is nul-terminated.
- * @start_position: starting index of the string to match.
- * @match_options: the match options.
- * @error: location to store the error occuring, or NULL to ignore errors.
+ * @regex: a #GRegex structure
+ * @string: the string to scan for matches
+ * @string_len: the length of @string, or -1 if @string is nul-terminated
+ * @start_position: starting index of the string to match
+ * @match_options: the match options
+ * @error: location to store the error occuring, or %NULL to ignore errors
  *
  * Scans for the next match in @string of the pattern in @regex. Calling
  * g_regex_match_next_full() until it returns %FALSE, you can retrieve
@@ -696,7 +694,7 @@ g_regex_match_next (GRegex          *regex,
  * and  setting #G_REGEX_MATCH_NOTBOL in the case of a pattern that begins
  * with any kind of lookbehind assertion, such as "\b".
  *
- * Returns: %TRUE is the string matched, %FALSE otherwise.
+ * Returns: %TRUE is the string matched, %FALSE otherwise
  *
  * Since: 2.14
  */
@@ -736,7 +734,7 @@ g_regex_match_next_full (GRegex          *regex,
   if (regex->match->string_len == -1)
     {
       if (string_len < 0)
-        string_len = strlen(string);
+        string_len = strlen (string);
       regex->match->string_len = string_len;
 
       regex->match->pos = start_position;
@@ -753,12 +751,12 @@ g_regex_match_next_full (GRegex          *regex,
 				     regex->pattern->match_opts | match_options,
 				     regex->match->offsets, regex->match->n_offsets);
   if (IS_PCRE_ERROR (regex->match->matches))
-  {
-    g_set_error (error, G_REGEX_ERROR, G_REGEX_ERROR_MATCH,
-		 _("Error while matching regular expression %s: %s"),
-		 regex->pattern->pattern, match_error (regex->match->matches));
-    return FALSE;
-  }
+    {
+      g_set_error (error, G_REGEX_ERROR, G_REGEX_ERROR_MATCH,
+		   _("Error while matching regular expression %s: %s"),
+		   regex->pattern->pattern, match_error (regex->match->matches));
+      return FALSE;
+    }
 
   /* avoid infinite loops if regex is an empty string or something
    * equivalent */
@@ -782,16 +780,16 @@ g_regex_match_next_full (GRegex          *regex,
 
 /**
  * g_regex_match_all:
- * @regex: a #GRegex structure from g_regex_new().
- * @string: the string to scan for matches.
- * @match_options: match options.
+ * @regex: a #GRegex structure from g_regex_new()
+ * @string: the string to scan for matches
+ * @match_options: match options
  *
  * Using the standard algorithm for regular expression matching only the
  * longest match in the string is retrieved. This function uses a
  * different algorithm so it can retrieve all the possible matches.
  * For more documentation see g_regex_match_all_full().
  *
- * Returns: %TRUE is the string matched, %FALSE otherwise.
+ * Returns: %TRUE is the string matched, %FALSE otherwise
  *
  * Since: 2.14
  */
@@ -806,12 +804,12 @@ g_regex_match_all (GRegex          *regex,
 
 /**
  * g_regex_match_all_full:
- * @regex: a #GRegex structure from g_regex_new().
- * @string: the string to scan for matches.
- * @string_len: the length of @string, or -1 if @string is nul-terminated.
- * @start_position: starting index of the string to match.
- * @match_options: match options.
- * @error: location to store the error occuring, or NULL to ignore errors.
+ * @regex: a #GRegex structure from g_regex_new()
+ * @string: the string to scan for matches
+ * @string_len: the length of @string, or -1 if @string is nul-terminated
+ * @start_position: starting index of the string to match
+ * @match_options: match options
+ * @error: location to store the error occuring, or %NULL to ignore errors
  *
  * Using the standard algorithm for regular expression matching only the
  * longest match in the string is retrieved, it is not possibile to obtain
@@ -840,7 +838,7 @@ g_regex_match_all (GRegex          *regex,
  * and  setting #G_REGEX_MATCH_NOTBOL in the case of a pattern that begins
  * with any kind of lookbehind assertion, such as "\b".
  *
- * Returns: %TRUE is the string matched, %FALSE otherwise.
+ * Returns: %TRUE is the string matched, %FALSE otherwise
  *
  * Since: 2.14
  */
@@ -861,7 +859,7 @@ g_regex_match_all_full (GRegex          *regex,
   regex_lazy_init_match (regex, 0);
 
   if (string_len < 0)
-    string_len = strlen(string);
+    string_len = strlen (string);
 
   regex->match->string_len = string_len;
 
@@ -888,30 +886,30 @@ g_regex_match_all_full (GRegex          *regex,
 					 regex->match->workspace,
 					 regex->match->n_workspace);
   if (regex->match->matches == PCRE_ERROR_DFA_WSSIZE)
-  {
-    /* regex->match->workspace is too small. */
-    regex->match->n_workspace *= 2;
-    regex->match->workspace = g_realloc (regex->match->workspace,
-					 regex->match->n_workspace * sizeof(gint));
-    return g_regex_match_all_full (regex, string, string_len,
-				   start_position, match_options, error);
-  }
+    {
+      /* regex->match->workspace is too small. */
+      regex->match->n_workspace *= 2;
+      regex->match->workspace = g_realloc (regex->match->workspace,
+					   regex->match->n_workspace * sizeof (gint));
+      return g_regex_match_all_full (regex, string, string_len,
+				     start_position, match_options, error);
+    }
   else if (regex->match->matches == 0)
-  {
-    /* regex->match->offsets is too small. */
-    regex->match->n_offsets *= 2;
-    regex->match->offsets = g_realloc (regex->match->offsets,
-				       regex->match->n_offsets * sizeof(gint));
-    return g_regex_match_all_full (regex, string, string_len,
-				   start_position, match_options, error);
-  }
+    {
+      /* regex->match->offsets is too small. */
+      regex->match->n_offsets *= 2;
+      regex->match->offsets = g_realloc (regex->match->offsets,
+				         regex->match->n_offsets * sizeof (gint));
+      return g_regex_match_all_full (regex, string, string_len,
+				     start_position, match_options, error);
+    }
   else if (IS_PCRE_ERROR (regex->match->matches))
-  {
-    g_set_error (error, G_REGEX_ERROR, G_REGEX_ERROR_MATCH,
-		 _("Error while matching regular expression %s: %s"),
-		 regex->pattern->pattern, match_error (regex->match->matches));
-    return FALSE;
-  }
+    {
+      g_set_error (error, G_REGEX_ERROR, G_REGEX_ERROR_MATCH,
+		   _("Error while matching regular expression %s: %s"),
+		   regex->pattern->pattern, match_error (regex->match->matches));
+      return FALSE;
+    }
 
   /* set regex->match->pos to -1 so that a call to g_regex_match_next()
    * fails without a previous call to g_regex_clear(). */
@@ -922,7 +920,7 @@ g_regex_match_all_full (GRegex          *regex,
 
 /**
  * g_regex_get_match_count:
- * @regex: a #GRegex structure.
+ * @regex: a #GRegex structure
  *
  * Retrieves the number of matched substrings (including substring 0, that
  * is the whole matched text) in the last call to g_regex_match*(), so 1
@@ -934,7 +932,7 @@ g_regex_match_all_full (GRegex          *regex,
  * count is not that of the number of capturing parentheses but that of
  * the number of matched substrings.
  *
- * Returns:  Number of matched substrings, or -1 if an error occurred.
+ * Returns:  Number of matched substrings, or -1 if an error occurred
  *
  * Since: 2.14
  */
@@ -959,7 +957,7 @@ g_regex_get_match_count (const GRegex *regex)
 
 /**
  * g_regex_is_partial_match:
- * @regex: a #GRegex structure.
+ * @regex: a #GRegex structure
  *
  * Usually if the string passed to g_regex_match*() matches as far as
  * it goes, but is too short to match the entire pattern, %FALSE is
@@ -993,7 +991,7 @@ g_regex_get_match_count (const GRegex *regex)
  * and "(\d)+". If #G_REGEX_MATCH_PARTIAL is set for a pattern that does
  * not conform to the restrictions, matching functions return an error.
  *
- * Returns: %TRUE if the match was partial, %FALSE otherwise.
+ * Returns: %TRUE if the match was partial, %FALSE otherwise
  *
  * Since: 2.14
  */
@@ -1010,9 +1008,9 @@ g_regex_is_partial_match (const GRegex *regex)
 
 /**
  * g_regex_fetch:
- * @regex: #GRegex structure used in last match.
- * @match_num: number of the sub expression.
- * @string: the string on which the last match was made.
+ * @regex: #GRegex structure used in last match
+ * @match_num: number of the sub expression
+ * @string: the string on which the last match was made
  *
  * Retrieves the text matching the @match_num<!-- -->'th capturing parentheses.
  * 0 is the full text of the match, 1 is the first paren set, 2 the second,
@@ -1066,10 +1064,10 @@ g_regex_fetch (const GRegex *regex,
 
 /**
  * g_regex_fetch_pos:
- * @regex: #GRegex structure used in last match.
- * @match_num: number of the sub expression.
- * @start_pos: pointer to location where to store the start position.
- * @end_pos: pointer to location where to store the end position.
+ * @regex: #GRegex structure used in last match
+ * @match_num: number of the sub expression
+ * @start_pos: pointer to location where to store the start position
+ * @end_pos: pointer to location where to store the end position
  *
  * Retrieves the position of the @match_num<!-- -->'th capturing parentheses.
  * 0 is the full text of the match, 1 is the first paren set, 2 the second,
@@ -1109,23 +1107,19 @@ g_regex_fetch_pos (const GRegex *regex,
     return FALSE;
 
   if (start_pos != NULL)
-    {
-      *start_pos = regex->match->offsets[2 * match_num];
-    }
+    *start_pos = regex->match->offsets[2 * match_num];
 
   if (end_pos != NULL)
-    {
-      *end_pos = regex->match->offsets[2 * match_num + 1];
-    }
+    *end_pos = regex->match->offsets[2 * match_num + 1];
 
   return TRUE;
 }
 
 /**
  * g_regex_fetch_named:
- * @regex: #GRegex structure used in last match.
- * @name: name of the subexpression.
- * @string: the string on which the last match was made.
+ * @regex: #GRegex structure used in last match
+ * @name: name of the subexpression
+ * @string: the string on which the last match was made
  *
  * Retrieves the text matching the capturing parentheses named @name.
  *
@@ -1160,10 +1154,10 @@ g_regex_fetch_named (const GRegex *regex,
 
 /**
  * g_regex_fetch_named_pos:
- * @regex: #GRegex structure used in last match.
- * @name: name of the subexpression.
- * @start_pos: pointer to location where to store the start position.
- * @end_pos: pointer to location where to store the end position.
+ * @regex: #GRegex structure used in last match
+ * @name: name of the subexpression
+ * @start_pos: pointer to location where to store the start position
+ * @end_pos: pointer to location where to store the end position
  *
  * Retrieves the position of the capturing parentheses named @name.
  *
@@ -1194,8 +1188,8 @@ g_regex_fetch_named_pos (const GRegex *regex,
 
 /**
  * g_regex_fetch_all:
- * @regex: a #GRegex structure.
- * @string: the string on which the last match was made.
+ * @regex: a #GRegex structure
+ * @string: the string on which the last match was made
  *
  * Bundles up pointers to each of the matching substrings from a match
  * and stores them in an array of gchar pointers. The first element in
@@ -1245,8 +1239,8 @@ g_regex_fetch_all (const GRegex *regex,
 
 /**
  * g_regex_get_string_number:
- * @regex: #GRegex structure.
- * @name: name of the subexpression.
+ * @regex: #GRegex structure
+ * @name: name of the subexpression
  *
  * Retrieves the number of the subexpression named @name.
  *
@@ -1265,17 +1259,17 @@ g_regex_get_string_number (const GRegex *regex,
 
   num = pcre_get_stringnumber (regex->pattern->pcre_re, name);
   if (num == PCRE_ERROR_NOSUBSTRING)
-	  num = -1;
+    num = -1;
 
   return num;
 }
 
 /**
  * g_regex_split_simple:
- * @pattern: the regular expression.
- * @string: the string to scan for matches.
- * @compile_options: compile options for the regular expression.
- * @match_options: match options.
+ * @pattern: the regular expression
+ * @string: the string to scan for matches
+ * @compile_options: compile options for the regular expression
+ * @match_options: match options
  *
  * Breaks the string on the pattern, and returns an array of the tokens.
  * If the pattern contains capturing parentheses, then the text for each
@@ -1327,9 +1321,9 @@ g_regex_split_simple (const gchar        *pattern,
 
 /**
  * g_regex_split:
- * @regex:  a #GRegex structure.
- * @string:  the string to split with the pattern.
- * @match_options:  match time option flags.
+ * @regex: a #GRegex structure
+ * @string: the string to split with the pattern
+ * @match_options: match time option flags
  *
  * Breaks the string on the pattern, and returns an array of the tokens.
  * If the pattern contains capturing parentheses, then the text for each
@@ -1364,14 +1358,14 @@ g_regex_split (GRegex           *regex,
 
 /**
  * g_regex_split_full:
- * @regex:  a #GRegex structure.
- * @string:  the string to split with the pattern.
- * @string_len: the length of @string, or -1 if @string is nul-terminated.
- * @start_position: starting index of the string to match.
- * @match_options:  match time option flags.
+ * @regex: a #GRegex structure
+ * @string: the string to split with the pattern
+ * @string_len: the length of @string, or -1 if @string is nul-terminated
+ * @start_position: starting index of the string to match
+ * @match_options: match time option flags
  * @max_tokens: the maximum number of tokens to split @string into. If this
  *    is less than 1, the string is split completely.
- * @error: return location for a #GError.
+ * @error: return location for a #GError
  *
  * Breaks the string on the pattern, and returns an array of the tokens.
  * If the pattern contains capturing parentheses, then the text for each
@@ -1426,7 +1420,7 @@ g_regex_split_full (GRegex           *regex,
     max_tokens = G_MAXINT;
 
   if (string_len < 0)
-    string_len = strlen(string);
+    string_len = strlen (string);
 
   if (string_len - start_position == 0)
     return g_new0 (gchar *, 1);
@@ -1498,9 +1492,9 @@ g_regex_split_full (GRegex           *regex,
 
 /**
  * g_regex_split_next:
- * @regex: a #GRegex structure from g_regex_new().
- * @string:  the string to split on pattern.
- * @match_options:  match time options for the regex.
+ * @regex: a #GRegex structure from g_regex_new()
+ * @string: the string to split on pattern
+ * @match_options: match time options for the regex
  *
  * g_regex_split_next() breaks the string on pattern, and returns the
  * tokens, one per call.  If the pattern contains capturing parentheses,
@@ -1516,7 +1510,7 @@ g_regex_split_full (GRegex           *regex,
  * You have to call g_regex_clear() to reuse the same pattern on a new
  * string.
  *
- * Returns:  a gchar * to the next token of the string.
+ * Returns:  a gchar * to the next token of the string
  *
  * Since: 2.14
  */
@@ -1531,12 +1525,12 @@ g_regex_split_next (GRegex          *regex,
 
 /**
  * g_regex_split_next_full:
- * @regex: a #GRegex structure from g_regex_new().
- * @string:  the string to split on pattern.
- * @string_len: the length of @string, or -1 if @string is nul-terminated.
- * @start_position: starting index of the string to match.
- * @match_options:  match time options for the regex.
- * @error: return location for a #GError.
+ * @regex: a #GRegex structure from g_regex_new()
+ * @string: the string to split on pattern
+ * @string_len: the length of @string, or -1 if @string is nul-terminated
+ * @start_position: starting index of the string to match
+ * @match_options: match time options for the regex
+ * @error: return location for a #GError
  *
  * g_regex_split_next_full() breaks the string on pattern, and returns
  * the tokens, one per call.  If the pattern contains capturing parentheses,
@@ -1556,7 +1550,7 @@ g_regex_split_next (GRegex          *regex,
  * and  setting #G_REGEX_MATCH_NOTBOL in the case of a pattern that begins
  * with any kind of lookbehind assertion, such as "\b".
  *
- * Returns:  a gchar * to the next token of the string.
+ * Returns:  a gchar * to the next token of the string
  *
  * Since: 2.14
  */
@@ -1586,7 +1580,7 @@ g_regex_split_next_full (GRegex          *regex,
     /* if the last match was empty, g_regex_match_next_full() has moved
      * forward to avoid infinite loops, but we still need to copy that
      * character. */
-    new_pos = PREV_CHAR(regex, &string[new_pos]) - string;
+    new_pos = PREV_CHAR (regex, &string[new_pos]) - string;
 
   /* if there are delimiter substrings stored, return those one at a
    * time.  
@@ -2093,10 +2087,10 @@ interpolate_replacement (const GRegex *regex,
 
 /**
  * g_regex_expand_references:
- * @regex: #GRegex structure used in last match.
- * @string: the string on which the last match was made.
- * @string_to_expand:  the string to expand.
- * @error: location to store the error occuring, or NULL to ignore errors.
+ * @regex: #GRegex structure used in last match
+ * @string: the string on which the last match was made
+ * @string_to_expand: the string to expand
+ * @error: location to store the error occuring, or %NULL to ignore errors
  *
  * Returns a new string containing the text in @string_to_expand with
  * references expanded. References refer to the last match done with
@@ -2105,7 +2099,7 @@ interpolate_replacement (const GRegex *regex,
  * The @string_to_expand must be UTF-8 encoded even if #G_REGEX_RAW was
  * passed to g_regex_new().
  *
- * Returns: the expanded string, or %NULL if an error occurred.
+ * Returns: the expanded string, or %NULL if an error occurred
  *
  * Since: 2.14
  */
@@ -2142,13 +2136,13 @@ g_regex_expand_references (GRegex            *regex,
 
 /**
  * g_regex_replace:
- * @regex:  a #GRegex structure.
- * @string:  the string to perform matches against.
- * @string_len: the length of @string, or -1 if @string is nul-terminated.
- * @start_position: starting index of the string to match.
- * @replacement:  text to replace each match with.
- * @match_options:  options for the match.
- * @error: location to store the error occuring, or NULL to ignore errors.
+ * @regex: a #GRegex structure
+ * @string: the string to perform matches against
+ * @string_len: the length of @string, or -1 if @string is nul-terminated
+ * @start_position: starting index of the string to match
+ * @replacement: text to replace each match with
+ * @match_options: options for the match
+ * @error: location to store the error occuring, or %NULL to ignore errors
  *
  * Replaces all occurances of the pattern in @regex with the
  * replacement text. Backreferences of the form '\number' or '\g&lt;number&gt;'
@@ -2197,7 +2191,7 @@ g_regex_expand_references (GRegex            *regex,
  * and  setting #G_REGEX_MATCH_NOTBOL in the case of a pattern that begins
  * with any kind of lookbehind assertion, such as "\b".
  *
- * Returns: a newly allocated string containing the replacements.
+ * Returns: a newly allocated string containing the replacements
  *
  * Since: 2.14
  */
@@ -2255,13 +2249,13 @@ literal_replacement (const GRegex *regex,
 
 /**
  * g_regex_replace_literal:
- * @regex:  a #GRegex structure.
- * @string:  the string to perform matches against.
- * @string_len: the length of @string, or -1 if @string is nul-terminated.
- * @start_position: starting index of the string to match.
- * @replacement:  text to replace each match with.
- * @match_options:  options for the match.
- * @error: location to store the error occuring, or NULL to ignore errors.
+ * @regex: a #GRegex structure
+ * @string: the string to perform matches against
+ * @string_len: the length of @string, or -1 if @string is nul-terminated
+ * @start_position: starting index of the string to match
+ * @replacement: text to replace each match with
+ * @match_options: options for the match
+ * @error: location to store the error occuring, or %NULL to ignore errors
  *
  * Replaces all occurances of the pattern in @regex with the
  * replacement text. @replacement is replaced literally, to
@@ -2271,7 +2265,7 @@ literal_replacement (const GRegex *regex,
  * and  setting #G_REGEX_MATCH_NOTBOL in the case of a pattern that begins
  * with any kind of lookbehind assertion, such as "\b".
  *
- * Returns: a newly allocated string containing the replacements.
+ * Returns: a newly allocated string containing the replacements
  *
  * Since: 2.14
  */
@@ -2297,14 +2291,14 @@ g_regex_replace_literal (GRegex          *regex,
 
 /**
  * g_regex_replace_eval:
- * @regex: a #GRegex structure from g_regex_new().
- * @string:  string to perform matches against.
- * @string_len: the length of @string, or -1 if @string is nul-terminated.
- * @start_position: starting index of the string to match.
- * @match_options:  Options for the match.
- * @eval: a function to call for each match.
- * @user_data: user data to pass to the function.
- * @error: location to store the error occuring, or NULL to ignore errors.
+ * @regex: a #GRegex structure from g_regex_new()
+ * @string: string to perform matches against
+ * @string_len: the length of @string, or -1 if @string is nul-terminated
+ * @start_position: starting index of the string to match
+ * @match_options: options for the match
+ * @eval: a function to call for each match
+ * @user_data: user data to pass to the function
+ * @error: location to store the error occuring, or %NULL to ignore errors
  *
  * Replaces occurances of the pattern in regex with the output of @eval
  * for that occurance.
@@ -2313,7 +2307,7 @@ g_regex_replace_literal (GRegex          *regex,
  * and  setting #G_REGEX_MATCH_NOTBOL in the case of a pattern that begins
  * with any kind of lookbehind assertion, such as "\b".
  *
- * Returns: a newly allocated string containing the replacements.
+ * Returns: a newly allocated string containing the replacements
  *
  * Since: 2.14
  */
@@ -2341,7 +2335,7 @@ g_regex_replace_eval (GRegex            *regex,
   regex_lazy_init_match (regex, 0);
 
   if (string_len < 0)
-    string_len = strlen(string);
+    string_len = strlen (string);
 
   /* clear out the regex for reuse, just in case */
   g_regex_clear (regex);
@@ -2374,17 +2368,17 @@ g_regex_replace_eval (GRegex            *regex,
 
 /**
  * g_regex_escape_string:
- * @string: the string to escape.
- * @length: the length of @string, or -1 if @string is nul-terminated.
+ * @string: the string to escape
+ * @length: the length of @string, or -1 if @string is nul-terminated
  *
  * Escapes the special characters used for regular expressions in @string,
  * for instance "a.b*c" becomes "a\.b\*c". This function is useful to
  * dynamically generate regular expressions.
  *
- * @string can contain NULL characters that are replaced with "\0", in this
+ * @string can contain nul characters that are replaced with "\0", in this
  * case remember to specify the correct length of @string in @length.
  *
- * Returns: a newly allocated escaped string.
+ * Returns: a newly-allocated escaped string
  *
  * Since: 2.14
  */
@@ -2408,38 +2402,39 @@ g_regex_escape_string (const gchar *string,
     {
       switch (*p)
 	{
-          case '\0':
-	  case '\\':
-	  case '|':
-	  case '(':
-	  case ')':
-	  case '[':
-	  case ']':
-	  case '{':
-	  case '}':
-	  case '^':
-	  case '$':
-	  case '*':
-	  case '+':
-	  case '?':
-	  case '.':
-	    if (p != piece_start)
-	      /* copy the previous piece. */
-	      g_string_append_len (escaped, piece_start, p - piece_start);
-	    g_string_append_c (escaped, '\\');
-            if (*p == '\0')
-              g_string_append_c (escaped, '0');
-            else
-	      g_string_append_c (escaped, *p);
-	    piece_start = ++p;
-	    break;
-	  default:
-	    p = g_utf8_next_char (p);
-      }
+        case '\0':
+	case '\\':
+	case '|':
+	case '(':
+	case ')':
+	case '[':
+	case ']':
+	case '{':
+	case '}':
+	case '^':
+	case '$':
+	case '*':
+	case '+':
+	case '?':
+	case '.':
+	  if (p != piece_start)
+	    /* copy the previous piece. */
+	    g_string_append_len (escaped, piece_start, p - piece_start);
+	  g_string_append_c (escaped, '\\');
+          if (*p == '\0')
+            g_string_append_c (escaped, '0');
+          else
+	    g_string_append_c (escaped, *p);
+	  piece_start = ++p;
+	  break;
+	default:
+	  p = g_utf8_next_char (p);
+          break;
+        } 
   }
 
   if (piece_start < end)
-      g_string_append_len (escaped, piece_start, end - piece_start);
+    g_string_append_len (escaped, piece_start, end - piece_start);
 
   return g_string_free (escaped, FALSE);
 }
