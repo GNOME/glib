@@ -1,3 +1,7 @@
+2007-03-19  Paolo Borelli  <pborelli@katamail.com>
+
+	* glib/gutf8.c (fast_validate_len): remove unneeded checks.
+
 2007-03-18  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gregex.c: Cosmetic fixes

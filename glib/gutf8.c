@@ -1631,7 +1631,9 @@ fast_validate_len (const char *str,
   gunichar min = 0;
   const gchar *p;
 
-  for (p = str; (max_len < 0 || (p - str) < max_len) && *p; p++)
+  g_assert (max_len >= 0);
+
+  for (p = str; ((p - str) < max_len) && *p; p++)
     {
       if (*(guchar *)p < 128)
 	/* done */;
@@ -1642,7 +1644,7 @@ fast_validate_len (const char *str,
 	  last = p;
 	  if ((*(guchar *)p & 0xe0) == 0xc0) /* 110xxxxx */
 	    {
-	      if (G_UNLIKELY (max_len >= 0 && max_len - (p - str) < 2))
+	      if (G_UNLIKELY (max_len - (p - str) < 2))
 		goto error;
 	      
 	      if (G_UNLIKELY ((*(guchar *)p & 0x1e) == 0))
@@ -1655,7 +1657,7 @@ fast_validate_len (const char *str,
 	    {
 	      if ((*(guchar *)p & 0xf0) == 0xe0) /* 1110xxxx */
 		{
-		  if (G_UNLIKELY (max_len >= 0 && max_len - (p - str) < 3))
+		  if (G_UNLIKELY (max_len - (p - str) < 3))
 		    goto error;
 		  
 		  min = (1 << 11);
@@ -1664,7 +1666,7 @@ fast_validate_len (const char *str,
 		}
  	      else if ((*(guchar *)p & 0xf8) == 0xf0) /* 11110xxx */
 		{
-		  if (G_UNLIKELY (max_len >= 0 && max_len - (p - str) < 4))
+		  if (G_UNLIKELY (max_len - (p - str) < 4))
 		    goto error;
 		  
 		  min = (1 << 16);
@@ -1743,7 +1745,6 @@ g_utf8_validate (const char   *str,
   else
     return TRUE;
 }
-
 
 /**
  * g_unichar_validate:
