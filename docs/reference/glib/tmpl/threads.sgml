@@ -960,7 +960,7 @@ functions increases the depth of @mutex and returns immediately.
 Tries to lock @mutex. If @mutex is already locked by another thread,
 it immediately returns %FALSE. Otherwise it locks @mutex and returns
 %TRUE. If @mutex is already locked by the calling thread, this
-functions increases the depth of @mutex and immediately  returns %TRUE.
+functions increases the depth of @mutex and immediately returns %TRUE.
 </para>
 
 @mutex: a #GStaticRecMutex to lock.
@@ -1425,7 +1425,7 @@ done as follows:
 
     if (!current_number)
     {
-      current_number = g_new (int,1);
+      current_number = g_new (int, 1);
       *current_number = 0;
       g_private_set (current_number_key, current_number);
     }

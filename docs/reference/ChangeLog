@@ -1,3 +1,15 @@
+2007-03-18  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/tmpl/thread_pools.sgml:
+	* glib/tmpl/strings.sgml:
+	* glib/tmpl/string_chunks.sgml:
+	* glib/tmpl/spawn.sgml:
+	* glib/tmpl/patterns.sgml:
+	* glib/tmpl/modules.sgml:
+	* glib/tmpl/memory_slices.sgml:
+	* glib/tmpl/memory.sgml:
+	* glib/tmpl/gregex.sgml: Trivial cleanups
+
 2007-03-16  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.13.0 ===

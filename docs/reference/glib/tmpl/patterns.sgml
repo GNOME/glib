@@ -87,7 +87,7 @@ g_pattern_match().
 Note also that the reverse of a UTF-8 encoded string can in general 
 <emphasis>not</emphasis> be obtained by g_strreverse().
 This works only if the string doesn't contain any multibyte characters.
-Glib offers the g_utf_strreverse() function to reverse UTF-8 encoded strings.
+Glib offers the g_utf8_strreverse() function to reverse UTF-8 encoded strings.
 </para>
 
 @pspec: a #GPatternSpec.

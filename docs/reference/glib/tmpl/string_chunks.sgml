@@ -13,8 +13,8 @@ full a new block is allocated.
 </para>
 <para>
 When storing a large number of strings, string chunks are more efficient
-than using g_strdup() since fewer calls to <function>malloc()</function>
-are needed, and less memory is wasted in memory allocation overheads.
+than using g_strdup() since fewer calls to malloc() are needed, and less 
+memory is wasted in memory allocation overheads.
 </para>
 <para>
 By adding strings with g_string_chunk_insert_const() it is also possible
@@ -127,6 +127,5 @@ After calling g_string_chunk_free() it is not safe to
 access any of the strings which were contained within it.
 </para>
 
-@chunk: a #GStringChunk.
-
+@chunk: a #GStringChunk
 

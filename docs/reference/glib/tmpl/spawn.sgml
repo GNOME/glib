@@ -2,7 +2,7 @@
 Spawning Processes
 
 <!-- ##### SECTION Short_Description ##### -->
-process launching with <function>fork()</function>/<function>exec()</function>.
+process launching with fork()/exec().
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
@@ -25,22 +25,22 @@ Error codes returned by spawning processes.
 @G_SPAWN_ERROR_FORK: Fork failed due to lack of memory.
 @G_SPAWN_ERROR_READ: Read or select on pipes failed.
 @G_SPAWN_ERROR_CHDIR: Changing to working directory failed.
-@G_SPAWN_ERROR_ACCES: <function>execv()</function> returned %EACCES.
-@G_SPAWN_ERROR_PERM: <function>execv()</function> returned %EPERM.
-@G_SPAWN_ERROR_2BIG: <function>execv()</function> returned %E2BIG.
-@G_SPAWN_ERROR_NOEXEC: <function>execv()</function> returned %ENOEXEC.
-@G_SPAWN_ERROR_NAMETOOLONG: <function>execv()</function> returned %ENAMETOOLONG.
-@G_SPAWN_ERROR_NOENT: <function>execv()</function> returned %ENOENT.
-@G_SPAWN_ERROR_NOMEM: <function>execv()</function> returned %ENOMEM.
-@G_SPAWN_ERROR_NOTDIR: <function>execv()</function> returned %ENOTDIR.
-@G_SPAWN_ERROR_LOOP: <function>execv()</function> returned %ELOOP.
-@G_SPAWN_ERROR_TXTBUSY: <function>execv()</function> returned %ETXTBUSY.
-@G_SPAWN_ERROR_IO: <function>execv()</function> returned %EIO.
-@G_SPAWN_ERROR_NFILE: <function>execv()</function> returned %ENFILE.
-@G_SPAWN_ERROR_MFILE: <function>execv()</function> returned %EMFILE.
-@G_SPAWN_ERROR_INVAL: <function>execv()</function> returned %EINVAL.
-@G_SPAWN_ERROR_ISDIR: <function>execv()</function> returned %EISDIR.
-@G_SPAWN_ERROR_LIBBAD: <function>execv()</function> returned %ELIBBAD.
+@G_SPAWN_ERROR_ACCES: execv() returned %EACCES.
+@G_SPAWN_ERROR_PERM: execv() returned %EPERM.
+@G_SPAWN_ERROR_2BIG: execv() returned %E2BIG.
+@G_SPAWN_ERROR_NOEXEC: execv() returned %ENOEXEC.
+@G_SPAWN_ERROR_NAMETOOLONG: execv() returned %ENAMETOOLONG.
+@G_SPAWN_ERROR_NOENT: execv() returned %ENOENT.
+@G_SPAWN_ERROR_NOMEM: execv() returned %ENOMEM.
+@G_SPAWN_ERROR_NOTDIR: execv() returned %ENOTDIR.
+@G_SPAWN_ERROR_LOOP: execv() returned %ELOOP.
+@G_SPAWN_ERROR_TXTBUSY: execv() returned %ETXTBUSY.
+@G_SPAWN_ERROR_IO: execv() returned %EIO.
+@G_SPAWN_ERROR_NFILE: execv() returned %ENFILE.
+@G_SPAWN_ERROR_MFILE: execv() returned %EMFILE.
+@G_SPAWN_ERROR_INVAL: execv() returned %EINVAL.
+@G_SPAWN_ERROR_ISDIR: execv() returned %EISDIR.
+@G_SPAWN_ERROR_LIBBAD: execv() returned %ELIBBAD.
 @G_SPAWN_ERROR_FAILED: Some other fatal failure, <literal>error-&gt;message</literal> should explain.
 
 <!-- ##### MACRO G_SPAWN_ERROR ##### -->
@@ -59,9 +59,9 @@ Flags passed to g_spawn_sync(), g_spawn_async() and g_spawn_async_with_pipes().
 
 @G_SPAWN_LEAVE_DESCRIPTORS_OPEN: the parent's open file descriptors will be 
  inherited by the child; otherwise all descriptors except stdin/stdout/stderr 
- will be closed before calling <function>exec()</function> in the child.
+ will be closed before calling exec() in the child.
 @G_SPAWN_DO_NOT_REAP_CHILD: the child will not be automatically reaped; you 
-  must use g_child_watch_add() yourself (or call <function>waitpid()</function> 
+  must use g_child_watch_add() yourself (or call waitpid() 
   or handle <literal>SIGCHLD</literal> yourself), or the child will become a zombie.
 @G_SPAWN_SEARCH_PATH: <literal>argv[0]</literal> need not be an absolute path, 
   it will be looked for in the user's <envar>PATH</envar>.
@@ -82,9 +82,8 @@ Flags passed to g_spawn_sync(), g_spawn_async() and g_spawn_async_with_pipes().
 Specifies the type of the setup function passed to g_spawn_async(),
 g_spawn_sync() and g_spawn_async_with_pipes(). On POSIX platforms it
 is called in the child after GLib has performed all the setup it plans
-to perform but before calling <function>exec()</function>. On POSIX
-actions taken in this function will thus only affect the child, not
-the parent.
+to perform but before calling exec(). On POSIX actions taken in this 
+function will thus only affect the child, not the parent.
 </para>
 
 <para>

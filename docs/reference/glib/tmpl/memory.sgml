@@ -199,32 +199,32 @@ includes the key <link linkend="G_DEBUG">gc-friendly</link>.
 <!-- ##### MACRO g_alloca ##### -->
 <para>
 Allocates @size bytes on the stack; these bytes will be freed when the current
-stack frame is cleaned up. This macro essentially just wraps the 
-<function>alloca()</function> function present on most UNIX variants. 
-Thus it provides the same advantages and pitfalls as <function>alloca()</function>:
+stack frame is cleaned up. This macro essentially just wraps the alloca() 
+function present on most UNIX variants. 
+Thus it provides the same advantages and pitfalls as alloca():
 <variablelist>
   <varlistentry><term></term><listitem><para>
-    + <function>alloca()</function> is very fast, as on most systems it's implemented by just adjusting
+    + alloca() is very fast, as on most systems it's implemented by just adjusting
     the stack pointer register.
   </para></listitem></varlistentry>
   <varlistentry><term></term><listitem><para>
-    + It doesn't cause any memory fragmentation, within its scope, separate <function>alloca()</function>
+    + It doesn't cause any memory fragmentation, within its scope, separate alloca()
     blocks just build up and are released together at function end.
   </para></listitem></varlistentry>
   <varlistentry><term></term><listitem><para>
     - Allocation sizes have to fit into the current stack frame. For instance in a
       threaded environment on Linux, the per-thread stack size is limited to 2 Megabytes,
-      so be sparse with <function>alloca()</function> uses.
+      so be sparse with alloca() uses.
   </para></listitem></varlistentry>
   <varlistentry><term></term><listitem><para>
     - Allocation failure due to insufficient stack space is not indicated with a %NULL
-      return like e.g. with <function>malloc()</function>. Instead, most systems probably handle it the same
+      return like e.g. with malloc(). Instead, most systems probably handle it the same
       way as out of stack space situations from infinite function recursion, i.e.
       with a segmentation fault.
   </para></listitem></varlistentry>
   <varlistentry><term></term><listitem><para>
-    - Special care has to be taken when mixing <function>alloca()</function> with GNU C variable sized arrays.
-      Stack space allocated with <function>alloca()</function> in the same scope as a variable sized array
+    - Special care has to be taken when mixing alloca() with GNU C variable sized arrays.
+      Stack space allocated with alloca() in the same scope as a variable sized array
       will be freed together with the variable sized array upon exit of that scope, and
       not upon exit of the enclosing function scope.
   </para></listitem></varlistentry>
@@ -285,11 +285,12 @@ if it exists, should be prior to any use of GLib.
 <!-- ##### FUNCTION g_mem_set_vtable ##### -->
 <para>
 Sets the #GMemVTable to use for memory allocation. You can use this to provide
-custom memory allocation routines. <emphasis>This function must be called before using any other GLib functions.</emphasis> The @vtable only needs to provide <function>malloc()</function>, <function>realloc()</function>, and <function>free()</function>
-functions; GLib can provide default implementations of the others.  The <function>malloc()</function>
-and <function>realloc()</function> implementations should return %NULL on failure, GLib will handle
-error-checking for you. @vtable is copied, so need not persist after this 
-function has been called.
+custom memory allocation routines. <emphasis>This function must be called 
+before using any other GLib functions.</emphasis> The @vtable only needs to 
+provide malloc(), realloc(), and free() functions; GLib can provide default 
+implementations of the others. The malloc() and realloc() implementations 
+should return %NULL on failure, GLib will handle error-checking for you. 
+@vtable is copied, so need not persist after this function has been called.
 </para>
 
 @vtable: table of memory allocation routines.

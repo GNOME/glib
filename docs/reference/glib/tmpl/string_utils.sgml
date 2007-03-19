@@ -303,7 +303,8 @@ returns the length of the allocated string.
 
 <!-- ##### FUNCTION g_printf_string_upper_bound ##### -->
 <para>
-Calculates the maximum space needed to store the output of the sprintf() function.
+Calculates the maximum space needed to store the output of the sprintf() 
+function.
 </para>
 
 @format: the format string. See the printf() documentation.
@@ -935,5 +936,4 @@ documentation.
 @Returns: a string describing the signal.
 If the signal is unknown, it returns "unknown signal (&lt;signum&gt;)".
 The string can only be used until the next call to g_strsignal().
-
 

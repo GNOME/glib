@@ -9,8 +9,8 @@ portable method for dynamically loading 'plug-ins'.
 These functions provide a portable way to dynamically load object files
 (commonly known as 'plug-ins').
 The current implementation supports all systems that provide
-an implementation of <function>dlopen()</function> (e.g. Linux/Sun), as well as HP-UX via its
-<function>shl_load()</function> mechanism, and Windows platforms via DLLs.
+an implementation of dlopen() (e.g. Linux/Sun), as well as HP-UX via its
+shl_load() mechanism, and Windows platforms via DLLs.
 </para>
 
 <para>

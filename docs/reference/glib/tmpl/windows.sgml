@@ -30,7 +30,7 @@ macro %MAXPATHLEN, which is the maximum length of a filename
 
 <!-- ##### MACRO pipe ##### -->
 <para>
-Provided for UNIX emulation on Windows; see documentation for <function>pipe()</function>
+Provided for UNIX emulation on Windows; see documentation for pipe()
 in any UNIX manual.
 </para>
 
@@ -94,9 +94,8 @@ in any UNIX manual.
 
 <!-- ##### MACRO G_WIN32_DLLMAIN_FOR_DLL_NAME ##### -->
 <para>
-On Windows, this macro defines a <function>DllMain()</function> function 
-that stores the actual DLL name that the code being compiled will be 
-included in.
+On Windows, this macro defines a DllMain() function that stores the actual 
+DLL name that the code being compiled will be included in.
 </para>
 <para>
 On non-Windows platforms, expands to nothing.

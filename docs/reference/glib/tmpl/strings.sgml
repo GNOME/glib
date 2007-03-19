@@ -22,19 +22,12 @@ can be used for binary data with embedded nul bytes.
 <!-- ##### STRUCT GString ##### -->
 <para>
 The #GString struct contains the public fields of a #GString.
-The <structfield>str</structfield> field points to the character data.
-It may move as text is added.
-The <structfield>len</structfield> field contains the length of the string,
-not including the terminating nul byte.
-</para>
-<para>
-The <structfield>str</structfield> field is nul-terminated and so can be used as an ordinary C
-string. But it may be moved when text is appended or inserted into the
-string.
 </para>
 
-@str: 
-@len: 
+@str: points to the character data. It may move as text is added.
+The <structfield>str</structfield> field is nul-terminated and so 
+can be used as an ordinary C string. 
+@len: contains the length of the string, not including the terminating nul byte.
 @allocated_len: 
 
 <!-- ##### FUNCTION g_string_new ##### -->
@@ -309,8 +302,8 @@ Compares two strings for equality, returning %TRUE if they are equal.
 For use with #GHashTable.
 </para>
 
-@v: a #GString.
-@v2: another #GString.
+@v: a #GString
+@v2: another #GString
 @Returns: %TRUE if they strings are the same length and contain the same bytes.
 
 

@@ -30,8 +30,7 @@ Instead, libraries should use g_log(), or the convenience functions
 g_message(), g_warning() and g_error().
 </para>
 
-@format: the message format. See the <function>printf()</function>
-documentation.
+@format: the message format. See the printf() documentation.
 @Varargs: the parameters to insert into the format string.
 
 
@@ -67,8 +66,7 @@ g_printerr() should not be used from within libraries. Instead g_log() should
 be used, or the convenience functions g_message(), g_warning() and g_error().
 </para>
 
-@format: the message format. See the <function>printf()</function>
-documentation.
+@format: the message format. See the printf() documentation.
 @Varargs: the parameters to insert into the format string.
 
 

@@ -56,22 +56,18 @@ g_node_destroy().
 <para>
 The <structname>GNode</structname> struct represents one node in a
 <link linkend="glib-N-ary-Trees">N-ary Tree</link>.
-The <structfield>data</structfield> field contains the actual data of the node.
-The <structfield>next</structfield> and <structfield>prev</structfield>
-fields point to the node's siblings (a sibling is another <structname>GNode</structname> with the
-same parent).
-The <structfield>parent</structfield> field points to the parent of the <structname>GNode</structname>,
-or is %NULL if the <structname>GNode</structname> is the root of the tree.
-The <structfield>children</structfield> field points to the first child of the
-<structname>GNode</structname>. The other children are accessed by using the
-<structfield>next</structfield> pointer of each child.
+fields 
 </para>
 
-@data: 
-@next: 
-@prev: 
-@parent: 
-@children: 
+@data: contains the actual data of the node.
+@next: points to the node's next sibling (a sibling is another 
+  <structname>GNode</structname> with the same parent).
+@prev: points to the node's previous sibling.
+@parent: points to the parent of the <structname>GNode</structname>,
+  or is %NULL if the <structname>GNode</structname> is the root of the tree.
+@children: The <structfield>children</structfield> field points to the first 
+  child of the <structname>GNode</structname>. The other children are accessed 
+  by using the <structfield>next</structfield> pointer of each child.
 
 <!-- ##### FUNCTION g_node_new ##### -->
 <para>

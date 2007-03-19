@@ -80,8 +80,8 @@ written by Philip Hazel.
 Error codes returned by regular expressions functions.
 </para>
 
-@G_REGEX_ERROR_COMPILE: Compilation of the regular expression in <function>g_regex_new()</function> failed.
-@G_REGEX_ERROR_OPTIMIZE: Optimization of the regular expression in <function>g_regex_optimize()</function> failed.
+@G_REGEX_ERROR_COMPILE: Compilation of the regular expression in g_regex_new() failed.
+@G_REGEX_ERROR_OPTIMIZE: Optimization of the regular expression in g_regex_optimize() failed.
 @G_REGEX_ERROR_REPLACE: Replacement failed due to an ill-formed replacement string.
 @G_REGEX_ERROR_MATCH: The match process failed.
 @Since: 2.14

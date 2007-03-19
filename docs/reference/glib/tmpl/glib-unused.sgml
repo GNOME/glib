@@ -280,7 +280,7 @@ in any UNIX manual.
 
 <!-- ##### MACRO ftruncate ##### -->
 <para>
-Provided for UNIX emulation on Windows; see documentation for <function>ftruncate()</function>
+Provided for UNIX emulation on Windows; see documentation for ftruncate()
 in any UNIX manual.
 </para>
 

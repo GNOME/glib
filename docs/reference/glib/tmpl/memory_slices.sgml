@@ -96,7 +96,7 @@ object size used at allocation time is still available when freeing.
 <para>
 Allocates a block of memory from the slice allocator.
 The block adress handed out is guaranteed to be aligned
-to at least 2 * sizeof (void*).
+to at least <literal>2 * sizeof (void*)</literal>.
 Note that the underlying slice allocation mechanism can
 be changed with the <link linkend="G_SLICE">G_SLICE=always-malloc</link>
 environment variable.
@@ -157,8 +157,9 @@ also see <link linkend="G_SLICE">G_SLICE</link> for related debugging options.
 <!-- ##### MACRO g_slice_new ##### -->
 <para>
 A convenience macro to allocate a block of memory from the slice allocator.
-It calls g_slice_alloc() with sizeof (@type) and casts the returned pointer
-to a pointer of the given type, avoiding a type cast in the source code.
+It calls g_slice_alloc() with <literal>sizeof (@type)</literal> and casts 
+the returned pointer to a pointer of the given type, avoiding a type cast 
+in the source code.
 Note that the underlying slice allocation mechanism can
 be changed with the <link linkend="G_SLICE">G_SLICE=always-malloc</link>
 environment variable.
@@ -172,9 +173,9 @@ environment variable.
 <!-- ##### MACRO g_slice_new0 ##### -->
 <para>
 A convenience macro to allocate a block of memory from the slice allocator
-and set the memory to 0. It calls g_slice_alloc0() with sizeof (@type) and
-casts the returned pointer to a pointer of the given type, avoiding a type
-cast in the source code.
+and set the memory to 0. It calls g_slice_alloc0() with 
+<literal>sizeof (@type)</literal> and casts the returned pointer to a pointer 
+of the given type, avoiding a type cast in the source code.
 Note that the underlying slice allocation mechanism can
 be changed with the <link linkend="G_SLICE">G_SLICE=always-malloc</link>
 environment variable.
