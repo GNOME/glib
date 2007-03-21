@@ -14,6 +14,7 @@ INCLUDES = \
 	-I$(top_srcdir) \
 	-I$(srcdir) \
 	-I$(top_srcdir)/glib \
+	-I$(top_builddir)/glib \
 	@GLIB_DEBUG_FLAGS@ \
 	-DG_DISABLE_DEPRECATED \
 	-DGLIB_COMPILATION \
