@@ -1,3 +1,14 @@
+2007-03-22  Chris Wilson  <chris@chris-wilson.co.uk>
+
+	* glib/gkeyfile.c: Track whether the last key=value pair in a group
+	is a blank line and during to_data() only insert a new blank line
+	betweens group in its absence. This allows the beautification of the
+	GKeyFile and prevents newlines being inserted indefinitely. (#420686)
+
+	* tests/keyfile-test.c (test_reload_idempotency): Test that after a 
+	single beautification pass, g_key_file_to_data() does not alter its
+	input data.
+
 2007-03-21  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/pcre/Makefile.am: Make builddir != srcdir work.  (#419900)

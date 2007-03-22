@@ -89,6 +89,7 @@ struct _GKeyFileGroup
   const gchar *name;  /* NULL for above first group (which will be comments) */
 
   GKeyFileKeyValuePair *comment; /* Special comment that is stuck to the top of a group */
+  gboolean has_trailing_blank_line;
 
   GList *key_value_pairs; 
 
@@ -729,6 +730,9 @@ g_key_file_parse_comment (GKeyFile     *key_file,
   
   key_file->current_group->key_value_pairs =
     g_list_prepend (key_file->current_group->key_value_pairs, pair);
+
+  if (length == 0 || line[0] != '#')
+    key_file->current_group->has_trailing_blank_line = TRUE;
 }
 
 static void
@@ -959,6 +963,7 @@ g_key_file_to_data (GKeyFile  *key_file,
 {
   GString *data_string;
   GList *group_node, *key_file_node;
+  gboolean has_blank_line = TRUE;
 
   g_return_val_if_fail (key_file != NULL, NULL);
 
@@ -972,10 +977,13 @@ g_key_file_to_data (GKeyFile  *key_file,
 
       group = (GKeyFileGroup *) group_node->data;
 
+      /* separate groups by at least an empty line */
+      if (!has_blank_line)
+	g_string_append_c (data_string, '\n');
+      has_blank_line = group->has_trailing_blank_line;
+
       if (group->comment != NULL)
         g_string_append_printf (data_string, "%s\n", group->comment->value);
-      else if (group_node->next) /* separate groups by at least an empty line */
-        g_string_append_c (data_string, '\n');
 
       if (group->name != NULL)
         g_string_append_printf (data_string, "[%s]\n", group->name);
@@ -3074,6 +3082,7 @@ g_key_file_add_key (GKeyFile      *key_file,
 
   g_hash_table_replace (group->lookup_map, pair->key, pair);
   group->key_value_pairs = g_list_prepend (group->key_value_pairs, pair);
+  group->has_trailing_blank_line = FALSE;
   key_file->approximate_size += strlen (key) + strlen (value) + 2;
 }
 

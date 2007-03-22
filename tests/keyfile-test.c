@@ -1250,6 +1250,86 @@ test_duplicate_groups2 (void)
   g_key_file_free (keyfile);  
 }
 
+
+/* http://bugzilla.gnome.org/show_bug.cgi?id=420686 */
+static void
+test_reload_idempotency (void)
+{
+  static const gchar *original_data=""
+    "# Top comment\n"
+    "\n"
+    "# First comment\n"
+    "[first]\n"
+    "key=value\n"
+    "# A random comment in the first group\n"
+    "anotherkey=anothervalue\n"
+    "# Second comment - one line\n"
+    "[second]\n"
+    "# Third comment - two lines\n"
+    "# Third comment - two lines\n"
+    "[third]\n"
+    "blank_line=1\n"
+    "\n"
+    "blank_lines=2\n"
+    "\n\n"
+    "[fourth]\n"
+    "[fifth]\n";
+  GKeyFile *keyfile;
+  GError *error = NULL;
+  gchar *data1, *data2;
+  gsize len1, len2;
+
+  /* check that we only insert a single new line between groups */
+  keyfile = g_key_file_new ();
+  if (!g_key_file_load_from_data (keyfile,
+	                          original_data, strlen(original_data),
+	                          G_KEY_FILE_KEEP_COMMENTS,
+	                          &error)) {
+    g_print ("Failed to parse keyfile[1]: %s", error->message);
+    g_error_free (error);
+    exit (1);
+  }
+
+  data1 = g_key_file_to_data (keyfile, &len1, &error);
+  if (data1 == NULL) {
+    g_print ("Failed to extract keyfile[1]: %s", error->message);
+    g_error_free (error);
+    exit (1);
+  }
+  g_key_file_free (keyfile);
+
+  keyfile = g_key_file_new ();
+  if (!g_key_file_load_from_data (keyfile,
+	                          data1, len1,
+				  G_KEY_FILE_KEEP_COMMENTS,
+				  &error)) {
+    g_print ("Failed to parse keyfile[2]: %s", error->message);
+    g_error_free (error);
+    exit (1);
+  }
+
+  data2 = g_key_file_to_data (keyfile, &len2, &error);
+  if (data2 == NULL) {
+    g_print ("Failed to extract keyfile[2]: %s", error->message);
+    g_error_free (error);
+    exit (1);
+  }
+  g_key_file_free (keyfile);
+
+
+  if (strcmp(data1, data2) != 0) {
+    g_print ("Reloading GKeyFile is not idempotent.");
+    g_print ("original:\n%s\n---\n", original_data);
+    g_print ("pass1:\n%s\n---\n", data1);
+    g_print ("pass2:\n%s\n---\n", data2);
+    exit (1);
+  }
+
+  g_free (data2);
+  g_free (data1);
+}
+
+
 static void 
 log_func (const gchar   *log_domain,
           GLogLevelFlags log_level,
@@ -1280,6 +1360,7 @@ main (int argc, char *argv[])
   test_duplicate_groups2 ();
   test_group_names ();
   test_key_names ();
+  test_reload_idempotency ();
   
   return 0;
 }
