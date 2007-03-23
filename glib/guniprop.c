@@ -506,15 +506,13 @@ g_unichar_toupper (gunichar c)
       if (val >= 0x1000000)
 	{
 	  const gchar *p = special_case_table + val - 0x1000000;
-	  return g_utf8_get_char (p);
+          val = g_utf8_get_char (p);
 	}
-      else
-        {
-	  /* Some lowercase letters, e.g., U+000AA, FEMININE ORDINAL INDICATOR,
-	   * do not have an uppercase equivalent, in which case val will be
-	   * zero. */
-	  return val ? val : c;
-	}
+      /* Some lowercase letters, e.g., U+000AA, FEMININE ORDINAL INDICATOR,
+       * do not have an uppercase equivalent, in which case val will be
+       * zero. 
+       */
+      return val ? val : c;
     }
   else if (t == G_UNICODE_TITLECASE_LETTER)
     {
@@ -589,9 +587,11 @@ g_unichar_totitle (gunichar c)
 	  || title_table[i][2] == c)
 	return title_table[i][0];
     }
-  return (TYPE (c) == G_UNICODE_LOWERCASE_LETTER
-	  ? ATTTABLE (c >> 8, c & 0xff)
-	  : c);
+    
+  if (TYPE (c) == G_UNICODE_LOWERCASE_LETTER)
+    return g_unichar_toupper (c);
+
+  return c;
 }
 
 /**

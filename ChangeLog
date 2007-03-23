@@ -1,3 +1,10 @@
+2007-03-22  Matthias Clasen  <mclasen@redhat.com> 
+
+	Merge from trunk:
+
+	* glib/guniprop.c: Fix corner-cases of upper/lowercase conversion.
+	(#418217, Denis Jacquerye)
+
 2007-03-22  Chris Wilson  <chris@chris-wilson.co.uk>
 
 	Merge from trunk:
