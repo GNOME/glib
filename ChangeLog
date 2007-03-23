@@ -1,3 +1,8 @@
+2007-03-23  Matthias Clasen  <mclasen@redhat.com> 
+
+	* tests/gobject/Makefile.am: Handle $RANDOM missing.  (#356843,
+	Paul Jarc)
+
 2007-03-22  Matthias Clasen  <mclasen@redhat.com> 
 
 	* glib/guniprop.c: Fix corner-cases of upper/lowercase conversion.
