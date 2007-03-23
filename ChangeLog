@@ -1,3 +1,10 @@
+2007-03-23  Matthias Clasen  <mclasen@redhat.com> 
+
+	Merge from trunk:
+
+	* tests/gobject/Makefile.am: Handle $RANDOM missing.  (#356843,
+	Paul Jarc)
+
 2007-03-22  Matthias Clasen  <mclasen@redhat.com> 
 
 	Merge from trunk:
