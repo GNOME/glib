@@ -1,3 +1,8 @@
+2007-03-22  Matthias Clasen  <mclasen@redhat.com> 
+
+	* glib/guniprop.c: Fix corner-cases of upper/lowercase conversion.
+	(#418217, Denis Jacquerye)
+
 2007-03-22  Chris Wilson  <chris@chris-wilson.co.uk>
 
 	* glib/gkeyfile.c: Track whether the last key=value pair in a group
