@@ -1,3 +1,8 @@
+2007-03-27  Emmanuele Bassi  <ebassi@gnome.org>
+
+	* glib/gdate.h: Remove old comment and forward declaration of
+	struct tm: gdate.h includes time.h now.
+
 2007-03-23  Matthias Clasen  <mclasen@redhat.com> 
 
 	* tests/gobject/Makefile.am: Handle $RANDOM missing.  (#356843,

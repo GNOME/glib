@@ -47,8 +47,6 @@ typedef gint32  GTime;
 typedef guint16 GDateYear;
 typedef guint8  GDateDay;   /* day of the month */
 typedef struct _GDate GDate;
-/* make struct tm known without having to include time.h */
-struct tm;
 
 /* enum used to specify order of appearance in parsed date strings */
 typedef enum
