@@ -1,3 +1,7 @@
+2007-04-02  Ryan Lortie  <desrt@desrt.ca>
+
+	* gobject/tmpl/objects.sgml: Document ->constructed().
+
 2007-03-18  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/tmpl/thread_pools.sgml:

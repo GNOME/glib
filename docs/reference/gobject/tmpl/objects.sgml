@@ -156,6 +156,13 @@ my_singleton_constructor (GType                  type,
   of properties. Overriding @dispatch_properties_changed should be rarely 
   needed.
 @notify: the class closure for the notify signal
+@constructed: the @constructed function is called by g_object_new() as the
+  final step of the object creation process.  At the point of the call, all
+  construction properties have been set on the object.  The purpose of this
+  call is to allow for object initialisation steps that can only be performed
+  after construction properties have been set.  @constructed implementors
+  should chain up to the @constructed call of their parent class to allow it
+  to complete its initialisation.
 
 <!-- ##### STRUCT GObjectConstructParam ##### -->
 <para>
