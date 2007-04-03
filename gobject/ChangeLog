@@ -1,3 +1,19 @@
+Tue Apr  3 12:34:14 2007  Tim Janik  <timj@gtk.org>
+
+	* gobject.[hc]: invoke GObjectClass.constructed() only for newly
+	constructed objects, and invoke it while the notify queue is
+	still being frozen, after all CONSTRUCT* properties have been
+	set and before random other properties are being set.
+
+	* applied modified patch from Ryan Lortie to implement
+	GObjectClass.constructed() to fix #425324.
+
+2007-04-02  Ryan Lortie  <desrt@desrt.ca>
+
+	* gobject/gobject.h: Add 'constructed' vcall to GObjectClass.
+	* gobject/gobject.c (g_object_newv): call ->constructed() as last
+	step of object construction.
+
 2007-03-16  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.13.0 ===

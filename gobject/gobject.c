@@ -950,6 +950,10 @@ g_object_newv (GType       object_type,
   if (newly_constructed)
     g_object_notify_queue_thaw (object, nqueue);
 
+  /* run 'constructed' handler if there is one */
+  if (newly_constructed && class->constructed)
+    class->constructed (object);
+
   /* set remaining properties */
   for (i = 0; i < n_oparams; i++)
     object_set_property (object, oparams[i].pspec, oparams[i].value, nqueue);
@@ -958,6 +962,7 @@ g_object_newv (GType       object_type,
   /* release our own freeze count and handle notifications */
   if (newly_constructed || n_oparams)
     g_object_notify_queue_thaw (object, nqueue);
+
   if (unref_class)
     g_type_class_unref (unref_class);
 
