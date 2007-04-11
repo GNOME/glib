@@ -2176,7 +2176,7 @@ if test x$enable_regex = xtrue; then
     PKG_CHECK_MODULES(PCRE,
                       libpcre >= $PCRE_REQUIRED_VERSION)
     AC_CACHE_CHECK([for Unicode support in PCRE],glib_cv_pcre_has_unicode,[
-                   CFLAGS="$PCRE_CFLAGS" LDFLAGS="$PCRE_LIBS"
+                   CFLAGS="$CFLAGS $PCRE_CFLAGS" LDFLAGS="$LDFLAGS $PCRE_LIBS"
                    AC_TRY_RUN([#include <pcre.h>
                                int main () {
                                  int support;
