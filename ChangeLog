@@ -1,3 +1,13 @@
+2007-04-11  Emmanuele Bassi  <ebassi@gnome.org>
+
+	* glib/ghash.[ch]: Add g_hash_table_get_keys() and
+	g_hash_table_get_values(), API to retrieve the keys
+	and values inside an hash table in list form. (#413133)
+
+	* glib/glib.symbols: Update symbols.
+
+	* tests/hash-test.c: Exercise newly added functions.
+
 2007-04-11  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Use CFLAGS/LDFLAGS in addition to 

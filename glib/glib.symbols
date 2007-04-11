@@ -356,6 +356,8 @@ g_hash_table_find
 g_hash_table_foreach
 g_hash_table_foreach_remove
 g_hash_table_foreach_steal
+g_hash_table_get_keys
+g_hash_table_get_values
 g_hash_table_insert
 g_hash_table_lookup
 g_hash_table_lookup_extended

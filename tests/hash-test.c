@@ -342,7 +342,9 @@ main (int   argc,
   GHashTable *hash_table;
   gint i;
   gint value = 120;
-  gint *pvalue; 
+  gint *pvalue;
+  GList *keys, *values;
+  gint keys_len, values_len;
   
   hash_table = g_hash_table_new (my_hash, my_hash_equal);
   for (i = 0; i < 10000; i++)
@@ -353,6 +355,22 @@ main (int   argc,
   pvalue = g_hash_table_find (hash_table, find_first, &value);
   if (!pvalue || *pvalue != value)
     g_assert_not_reached();
+
+  keys = g_hash_table_get_keys (hash_table);
+  if (!keys)
+    g_assert_not_reached ();
+
+  values = g_hash_table_get_values (hash_table);
+  if (!values)
+    g_assert_not_reached ();
+
+  keys_len = g_list_length (keys);
+  values_len = g_list_length (values);
+  if (values_len != keys_len &&  keys_len != g_hash_table_size (hash_table))
+    g_assert_not_reached ();
+
+  g_list_free (keys);
+  g_list_free (values);
   
   g_hash_table_foreach (hash_table, my_hash_callback, NULL);
 

@@ -728,6 +728,68 @@ g_hash_table_size (GHashTable *hash_table)
   return hash_table->nnodes;
 }
 
+/**
+ * g_hash_table_get_keys:
+ * @hash_table: a #GHashTable
+ *
+ * Retrieves every key inside @hash_table. The returned data is valid
+ * until @hash_table is modified.
+ *
+ * Return value: a #GList containing all the keys inside the hash
+ *   table. The content of the list is owned by the hash table and
+ *   should not be modified or freed. Use g_list_free() when done
+ *   using the list.
+ *
+ * Since: 2.14
+ */
+GList *
+g_hash_table_get_keys (GHashTable *hash_table)
+{
+  GHashNode *node;
+  gint i;
+  GList *retval;
+  
+  g_return_val_if_fail (hash_table != NULL, NULL);
+  
+  retval = NULL;
+  for (i = 0; i < hash_table->size; i++)
+    for (node = hash_table->nodes[i]; node; node = node->next)
+      retval = g_list_prepend (retval, node->key);
+  
+  return retval;
+}
+
+/**
+ * g_hash_table_get_values:
+ * @hash_table: a #GHashTable
+ *
+ * Retrieves every value inside @hash_table. The returned data is
+ * valid until @hash_table is modified.
+ *
+ * Return value: a #GList containing all the values inside the hash
+ *   table. The content of the list is owned by the hash table and
+ *   should not be modified or freed. Use g_list_free() when done
+ *   using the list.
+ *
+ * Since: 2.14
+ */
+GList *
+g_hash_table_get_values (GHashTable *hash_table)
+{
+  GHashNode *node;
+  gint i;
+  GList *retval;
+  
+  g_return_val_if_fail (hash_table != NULL, NULL);
+  
+  retval = NULL;
+  for (i = 0; i < hash_table->size; i++)
+    for (node = hash_table->nodes[i]; node; node = node->next)
+      retval = g_list_prepend (retval, node->value);
+  
+  return retval;
+}
+
 static void
 g_hash_table_resize (GHashTable *hash_table)
 {

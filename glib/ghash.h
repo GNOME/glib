@@ -28,6 +28,7 @@
 #define __G_HASH_H__
 
 #include <glib/gtypes.h>
+#include <glib/glist.h>
 
 G_BEGIN_DECLS
 
@@ -77,6 +78,8 @@ guint	    g_hash_table_foreach_steal	   (GHashTable	   *hash_table,
 					    GHRFunc	    func,
 					    gpointer	    user_data);
 guint	    g_hash_table_size		   (GHashTable	   *hash_table);
+GList *     g_hash_table_get_keys          (GHashTable     *hash_table);
+GList *     g_hash_table_get_values        (GHashTable     *hash_table);
 
 /* keeping hash tables alive */
 GHashTable* g_hash_table_ref   		   (GHashTable 	   *hash_table);
