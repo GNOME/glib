@@ -89,7 +89,7 @@ g_spawn_error_quark (void)
  * If you are writing a GTK+ application, and the program you 
  * are spawning is a graphical application, too, then you may
  * want to use gdk_spawn_on_screen() instead to ensure that 
- * the spawned program opens its windows no the right screen.
+ * the spawned program opens its windows on the right screen.
  * </para></note>
  *
  * Return value: %TRUE on success, %FALSE if error is set
