@@ -1,3 +1,11 @@
+2007-04-15  Tor Lillqvist  <tml@novell.com>
+
+	* build: Include the build module using the svn:externals
+	mechanism.
+
+	* Makefile.am
+	* configure: Add the references to build back.
+
 2007-03-23  Matthias Clasen  <mclasen@redhat.com> 
 
 	Merge from trunk:
