@@ -1,3 +1,8 @@
+2007-04-15  Tor Lillqvist  <tml@novell.com>
+
+	* build: Include the build module using the svn:externals
+	mechanism.
+
 2007-04-11  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gspawn.c (g_spawn_async): Fix a doc typo.  (#427285, 
