@@ -3,6 +3,9 @@
 	* build: Include the build module using the svn:externals
 	mechanism.
 
+	* Makefile.am
+	* configure: Add the references to build back.
+
 2007-04-11  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gspawn.c (g_spawn_async): Fix a doc typo.  (#427285, 
