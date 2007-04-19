@@ -106,8 +106,8 @@ struct _GKeyFileKeyValuePair
 };
 
 static gint                  find_file_in_data_dirs            (const gchar            *file,
+								const gchar           **data_dirs,
 								gchar                 **output_file,
-								gchar                ***data_dirs,
 								GError                **error);
 static gboolean              g_key_file_load_from_fd           (GKeyFile               *key_file,
 								gint                    fd,
@@ -229,8 +229,9 @@ g_key_file_clear (GKeyFile *key_file)
 /**
  * g_key_file_new:
  *
- * Creates a new empty #GKeyFile object. Use g_key_file_load_from_file(),
- * g_key_file_load_from_data() or g_key_file_load_from_data_dirs() to
+ * Creates a new empty #GKeyFile object. Use
+ * g_key_file_load_from_file(), g_key_file_load_from_data(),
+ * g_key_file_load_from_dirs() or g_key_file_load_from_data_dirs() to
  * read an existing key file.
  *
  * Return value: an empty #GKeyFile.
@@ -272,16 +273,16 @@ g_key_file_set_list_separator (GKeyFile *key_file,
 /* Iterates through all the directories in *dirs trying to
  * open file.  When it successfully locates and opens a file it
  * returns the file descriptor to the open file.  It also
- * outputs the absolute path of the file in output_file and
- * leaves the unchecked directories in *dirs.
+ * outputs the absolute path of the file in output_file.
  */
 static gint
 find_file_in_data_dirs (const gchar   *file,
+                        const gchar  **dirs,
                         gchar        **output_file,
-                        gchar       ***dirs,
                         GError       **error)
 {
-  gchar **data_dirs, *data_dir, *path;
+  const gchar **data_dirs, *data_dir;
+  gchar *path;
   gint fd;
 
   path = NULL;
@@ -290,7 +291,7 @@ find_file_in_data_dirs (const gchar   *file,
   if (dirs == NULL)
     return fd;
 
-  data_dirs = *dirs;
+  data_dirs = dirs;
 
   while (data_dirs && (data_dir = *data_dirs) && fd < 0)
     {
@@ -333,14 +334,12 @@ find_file_in_data_dirs (const gchar   *file,
       data_dirs++;
     }
 
-  *dirs = data_dirs;
-
   if (fd < 0)
     {
       g_set_error (error, G_KEY_FILE_ERROR,
                    G_KEY_FILE_ERROR_NOT_FOUND,
                    _("Valid key file could not be "
-                     "found in data dirs")); 
+                     "found in search dirs"));
     }
 
   if (output_file != NULL && fd > 0)
@@ -544,6 +543,80 @@ g_key_file_load_from_data (GKeyFile       *key_file,
  * g_key_file_load_from_data_dirs:
  * @key_file: an empty #GKeyFile struct
  * @file: a relative path to a filename to open and parse
+ * @search_dirs: %NULL-terminated array of directories to search
+ * @full_path: return location for a string containing the full path
+ *   of the file, or %NULL
+ * @flags: flags from #GKeyFileFlags
+ * @error: return location for a #GError, or %NULL
+ *
+ * This function looks for a key file named @file in the paths
+ * specified in @search_dirs, loads the file into @key_file and
+ * returns the file's full path in @full_path.  If the file could not
+ * be loaded then an %error is set to either a #GFileError or
+ * #GKeyFileError.
+ *
+ * Return value: %TRUE if a key file could be loaded, %FALSE othewise
+ *
+ * Since: 2.14
+ **/
+gboolean
+g_key_file_load_from_dirs (GKeyFile       *key_file,
+                           const gchar    *file,
+                           const gchar   **search_dirs,
+                           gchar         **full_path,
+                           GKeyFileFlags   flags,
+                           GError        **error)
+{
+  GError *key_file_error = NULL;
+  const gchar **data_dirs;
+  gchar *output_path;
+  gint fd;
+  gboolean found_file;
+
+  g_return_val_if_fail (key_file != NULL, FALSE);
+  g_return_val_if_fail (!g_path_is_absolute (file), FALSE);
+  g_return_val_if_fail (search_dirs != NULL, FALSE);
+
+  found_file = FALSE;
+  data_dirs = search_dirs;
+  output_path = NULL;
+  while (*data_dirs != NULL && !found_file)
+    {
+      g_free (output_path);
+
+      fd = find_file_in_data_dirs (file, data_dirs, &output_path,
+                                   &key_file_error);
+
+      if (fd < 0)
+        {
+          if (key_file_error)
+            g_propagate_error (error, key_file_error);
+ 	  break;
+        }
+
+      found_file = g_key_file_load_from_fd (key_file, fd, flags,
+	                                    &key_file_error);
+      close (fd);
+
+      if (key_file_error)
+        {
+	  g_propagate_error (error, key_file_error);
+	  break;
+        }
+    }
+
+  if (found_file && full_path)
+    *full_path = output_path;
+  else
+    g_free (output_path);
+
+  return found_file;
+}
+
+/**
+ * g_key_file_load_from_data_dirs:
+ * @key_file: an empty #GKeyFile struct
+ * @file: a relative path to a filename to open and parse
  * @full_path: return location for a string containing the full path
  *   of the file, or %NULL
  * @flags: flags from #GKeyFileFlags 
@@ -565,15 +638,12 @@ g_key_file_load_from_data_dirs (GKeyFile       *key_file,
 				GKeyFileFlags   flags,
 				GError        **error)
 {
-  GError *key_file_error = NULL;
-  gchar **all_data_dirs, **data_dirs;
+  gchar **all_data_dirs;
   const gchar * user_data_dir;
   const gchar * const * system_data_dirs;
   gsize i, j;
-  gchar *output_path;
-  gint fd;
   gboolean found_file;
-  
+
   g_return_val_if_fail (key_file != NULL, FALSE);
   g_return_val_if_fail (!g_path_is_absolute (file), FALSE);
 
@@ -589,38 +659,12 @@ g_key_file_load_from_data_dirs (GKeyFile       *key_file,
     all_data_dirs[i++] = g_strdup (system_data_dirs[j++]);
   all_data_dirs[i] = NULL;
 
-  found_file = FALSE;
-  data_dirs = all_data_dirs;
-  output_path = NULL;
-  while (*data_dirs != NULL && !found_file)
-    {
-      g_free (output_path);
-
-      fd = find_file_in_data_dirs (file, &output_path, &data_dirs, 
-                                   &key_file_error);
-      
-      if (fd < 0)
-        {
-          if (key_file_error)
-            g_propagate_error (error, key_file_error);
- 	  break;
-        }
-
-      found_file = g_key_file_load_from_fd (key_file, fd, flags,
-	                                    &key_file_error);
-      close (fd);
-      
-      if (key_file_error)
-        {
-	  g_propagate_error (error, key_file_error);
-	  break;
-        }
-    }
-
-  if (found_file && full_path)
-    *full_path = output_path;
-  else 
-    g_free (output_path);
+  found_file = g_key_file_load_from_dirs (key_file,
+                                          file,
+                                          (const gchar **)all_data_dirs,
+                                          full_path,
+                                          flags,
+                                          error);
 
   g_strfreev (all_data_dirs);
 

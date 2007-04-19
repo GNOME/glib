@@ -1,3 +1,10 @@
+2007-04-19  William Jon McCann  <mccann@jhu.edu>
+
+	* glib/gkeyfile.[ch]: (find_file_in_data_dirs),
+	(g_key_file_load_from_dirs), (g_key_file_load_from_data_dirs):
+	Add g_key_file_load_from_dirs for looking through a search
+	path for a key-file. (#355334)
+
 2007-04-15  Tor Lillqvist  <tml@novell.com>
 
 	* build: Include the build module using the svn:externals
