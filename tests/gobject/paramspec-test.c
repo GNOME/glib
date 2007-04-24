@@ -71,6 +71,78 @@ test_param_spec_char (void)
 }
 
 static void
+test_param_spec_string (void)
+{
+  GParamSpec *pspec;
+  GValue value = { 0, };
+  gboolean modified;
+
+  pspec = g_param_spec_string ("string", "nick", "blurb",
+                               NULL, G_PARAM_READWRITE);
+  g_value_init (&value, G_TYPE_STRING);
+
+  g_value_set_string (&value, "foobar");
+  modified = g_param_value_validate (pspec, &value);
+  g_assert (!modified);
+
+  g_value_set_string (&value, "");
+  modified = g_param_value_validate (pspec, &value);
+  g_assert (!modified && g_value_get_string (&value) != NULL);
+
+  /* test ensure_non_null */
+
+  G_PARAM_SPEC_STRING (pspec)->ensure_non_null = TRUE;
+
+  g_value_set_string (&value, NULL);
+  modified = g_param_value_validate (pspec, &value);
+  g_assert (modified && g_value_get_string (&value) != NULL);
+
+  G_PARAM_SPEC_STRING (pspec)->ensure_non_null = FALSE;
+
+  /* test null_fold_if_empty */
+
+  G_PARAM_SPEC_STRING (pspec)->null_fold_if_empty = TRUE;
+
+  g_value_set_string (&value, "");
+  modified = g_param_value_validate (pspec, &value);
+  g_assert (modified && g_value_get_string (&value) == NULL);
+
+  g_value_set_static_string (&value, "");
+  modified = g_param_value_validate (pspec, &value);
+  g_assert (modified && g_value_get_string (&value) == NULL);
+
+  G_PARAM_SPEC_STRING (pspec)->null_fold_if_empty = FALSE;
+
+  /* test cset_first */
+
+  G_PARAM_SPEC_STRING (pspec)->cset_first = g_strdup ("abc");
+  G_PARAM_SPEC_STRING (pspec)->substitutor = '-';
+
+  g_value_set_string (&value, "ABC");
+  modified = g_param_value_validate (pspec, &value);
+  g_assert (modified && g_value_get_string (&value)[0] == '-');
+
+  g_value_set_static_string (&value, "ABC");
+  modified = g_param_value_validate (pspec, &value);
+  g_assert (modified && g_value_get_string (&value)[0] == '-');
+
+  /* test cset_nth */
+
+  G_PARAM_SPEC_STRING (pspec)->cset_nth = g_strdup ("abc");
+
+  g_value_set_string (&value, "aBC");
+  modified = g_param_value_validate (pspec, &value);
+  g_assert (modified && g_value_get_string (&value)[1] == '-');
+
+  g_value_set_static_string (&value, "aBC");
+  modified = g_param_value_validate (pspec, &value);
+  g_assert (modified && g_value_get_string (&value)[1] == '-');
+
+  g_value_unset (&value);
+  g_param_spec_unref (pspec);
+}
+
+static void
 test_param_spec_override (void)
 {
   GParamSpec *ospec, *pspec;
@@ -140,6 +212,7 @@ main (int argc, char *argv[])
   g_type_init (); 
   
   test_param_spec_char ();
+  test_param_spec_string ();
   test_param_spec_override ();
   test_param_spec_gtype ();
 

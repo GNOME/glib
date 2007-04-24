@@ -629,6 +629,12 @@ param_string_validate (GParamSpec *pspec,
       
       if (sspec->cset_first && !strchr (sspec->cset_first, string[0]))
 	{
+          if (value->data[1].v_uint & G_VALUE_NOCOPY_CONTENTS)
+            {
+              value->data[0].v_pointer = g_strdup (string);
+              string = value->data[0].v_pointer;
+              value->data[1].v_uint &= ~G_VALUE_NOCOPY_CONTENTS;
+            }
 	  string[0] = sspec->substitutor;
 	  changed++;
 	}
@@ -636,13 +642,23 @@ param_string_validate (GParamSpec *pspec,
 	for (s = string + 1; *s; s++)
 	  if (!strchr (sspec->cset_nth, *s))
 	    {
+              if (value->data[1].v_uint & G_VALUE_NOCOPY_CONTENTS)
+                {
+                  value->data[0].v_pointer = g_strdup (string);
+                  s = (gchar*) value->data[0].v_pointer + (s - string);
+                  string = value->data[0].v_pointer;
+                  value->data[1].v_uint &= ~G_VALUE_NOCOPY_CONTENTS;
+                }
 	      *s = sspec->substitutor;
 	      changed++;
 	    }
     }
   if (sspec->null_fold_if_empty && string && string[0] == 0)
     {
-      g_free (value->data[0].v_pointer);
+      if (!(value->data[1].v_uint & G_VALUE_NOCOPY_CONTENTS))
+        g_free (value->data[0].v_pointer);
+      else
+        value->data[1].v_uint &= ~G_VALUE_NOCOPY_CONTENTS;
       value->data[0].v_pointer = NULL;
       changed++;
       string = value->data[0].v_pointer;
