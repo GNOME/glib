@@ -1,3 +1,18 @@
+2007-04-25  Michael Natterer  <mitch@imendio.com>
+
+	Merge from trunk:
+
+	* gparamspecs.c (param_string_validate): also clear the
+	NOCOPY_CONTENTS flag when replacing NULL with the empty string.
+ 
+2007-04-24  Michael Natterer  <mitch@imendio.com>
+ 
+	Merge from trunk:
+
+	* gparamspecs.c (param_string_validate): don't free or modify
+	static strings, dup them when needed and clear the
+	G_VALUE_NOCOPY_CONTENTS flag. Fixes bug #432895.
+ 
 2007-03-08  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.12.11 ===
