@@ -1,4 +1,4 @@
-2007-04-25  Paolo Borellki  <pborelli@katamail.com>
+2007-04-25  Paolo Borelli  <pborelli@katamail.com>
 
 	* glib/gstrfuncs.c (g_strsplit): small cleanup. (#433387)
 
