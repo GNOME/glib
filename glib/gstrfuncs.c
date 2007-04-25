@@ -2288,13 +2288,10 @@ g_strsplit (const gchar *string,
       while (--max_tokens && s)
 	{
 	  gsize len;     
-	  gchar *new_string;
 
 	  len = s - remainder;
-	  new_string = g_new (gchar, len + 1);
-	  strncpy (new_string, remainder, len);
-	  new_string[len] = 0;
-	  string_list = g_slist_prepend (string_list, new_string);
+	  string_list = g_slist_prepend (string_list,
+					 g_strndup (remainder, len));
 	  n++;
 	  remainder = s + delimiter_len;
 	  s = strstr (remainder, delimiter);
