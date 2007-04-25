@@ -769,6 +769,7 @@ g_option_context_set_main_group
 g_option_context_set_summary
 g_option_context_set_translate_func
 g_option_context_set_translation_domain
+g_option_context_get_help
 g_option_group_add_entries
 g_option_group_free
 g_option_group_new
@@ -1426,6 +1427,8 @@ g_regex_free
 g_regex_optimize
 g_regex_copy
 g_regex_get_pattern
+g_regex_get_max_backref
+g_regex_get_capture_count
 g_regex_clear
 g_regex_match_simple
 g_regex_match

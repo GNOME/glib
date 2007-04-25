@@ -1,3 +1,10 @@
+2007-04-24  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/glib.symbols:
+	* glib/goption.h:
+	* glib/goption.c (g_option_context_get_help): New function to
+	get the formatted help string.  (#336089, Dom Lachowicz)
+
 2007-04-24  Michael Natterer  <mitch@imendio.com>
 
 	* gobject/gparamspecs.c (param_string_validate): don't free or
