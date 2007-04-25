@@ -665,11 +665,12 @@ param_string_validate (GParamSpec *pspec,
     }
   if (sspec->ensure_non_null && !string)
     {
+      value->data[1].v_uint &= ~G_VALUE_NOCOPY_CONTENTS;
       value->data[0].v_pointer = g_strdup ("");
       changed++;
       string = value->data[0].v_pointer;
     }
-  
+
   return changed;
 }
 
