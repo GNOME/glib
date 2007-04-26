@@ -316,6 +316,7 @@ g_rename (const gchar *oldfilename,
  *
  * A wrapper for the POSIX mkdir() function. The mkdir() function 
  * attempts to create a directory with the given name and permissions.
+ * The mode argument is ignored on Windows.
  * 
  * See the C library manual for more details about mkdir().
  *
@@ -396,8 +397,11 @@ g_chdir (const gchar *path)
  * @buf: a pointer to a <structname>stat</structname> struct, which
  *    will be filled with the file information
  *
- * A wrapper for the POSIX stat() function. The stat() function 
- * returns information about a file.
+ * A wrapper for the POSIX stat() function. The stat() function
+ * returns information about a file. On Windows the stat() function in
+ * the C library checks only the READONLY attribute and does not look
+ * at the ACL at all. Thus the protection bits in the st_mode field
+ * are a fabrication of little use.
  * 
  * See the C library manual for more details about stat().
  *
