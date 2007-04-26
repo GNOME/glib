@@ -1,3 +1,9 @@
+2007-04-27  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gstdio.c (g_mkdir): Document that the mode argument is
+	ignored on Windows
+	(g_stat): Document that st_mode is mostly useless on Windows.
+
 2007-04-24  Michael Natterer  <mitch@imendio.com>
 
 	Merge from trunk:
