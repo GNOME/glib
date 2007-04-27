@@ -70,7 +70,7 @@ typedef enum
   G_REGEX_MATCH_NEWLINE_CR    = 1 << 20,
   G_REGEX_MATCH_NEWLINE_LF    = 1 << 21,
   G_REGEX_MATCH_NEWLINE_CRLF  = G_REGEX_MATCH_NEWLINE_CR | G_REGEX_MATCH_NEWLINE_LF,
-  G_REGEX_MATCH_NEWLINE_ANY   = 1 << 22,
+  G_REGEX_MATCH_NEWLINE_ANY   = 1 << 22
 } GRegexMatchFlags;
 
 typedef struct _GRegex  GRegex;
