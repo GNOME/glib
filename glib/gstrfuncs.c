@@ -610,13 +610,12 @@ g_ascii_formatd (gchar       *buffer,
 	{
 	  *p = '.';
 	  p++;
-	  if (decimal_point_len > 1) {
-	    rest_len = strlen (p + (decimal_point_len-1));
-	    memmove (p, p + (decimal_point_len-1),
-		     rest_len);
-	    p[rest_len] = 0;
-	    
-	  }
+	  if (decimal_point_len > 1) 
+            {
+	      rest_len = strlen (p + (decimal_point_len-1));
+	      memmove (p, p + (decimal_point_len-1), rest_len);
+	      p[rest_len] = 0;
+	    }
 	}
     }
   
@@ -2428,8 +2427,8 @@ g_strfreev (gchar **str_array)
     {
       int i;
 
-      for(i = 0; str_array[i] != NULL; i++)
-	g_free(str_array[i]);
+      for (i = 0; str_array[i] != NULL; i++)
+	g_free (str_array[i]);
 
       g_free (str_array);
     }
