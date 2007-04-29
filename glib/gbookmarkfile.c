@@ -3257,7 +3257,7 @@ g_bookmark_file_set_app_info (GBookmarkFile  *bookmark,
   if (exec && exec[0] != '\0')
     {
       g_free (ai->exec);
-      ai->exec = g_strdup (exec);
+      ai->exec = g_shell_quote (exec);
     }
   
   item->modified = time (NULL);
@@ -3338,7 +3338,9 @@ expand_exec_line (const gchar *exec_fmt,
  * @error is set to #G_BOOKMARK_FILE_ERROR_URI_NOT_FOUND.  In the
  * event that no application with name @app_name has registered a bookmark
  * for @uri,  %FALSE is returned and error is set to
- * #G_BOOKMARK_FILE_ERROR_APP_NOT_REGISTERED.
+ * #G_BOOKMARK_FILE_ERROR_APP_NOT_REGISTERED. In the event that unquoting
+ * the command line fails, an error of the #G_SHELL_ERROR domain is
+ * set and %FALSE is returned.
  *
  * Return value: %TRUE on success.
  *
@@ -3383,15 +3385,29 @@ g_bookmark_file_get_app_info (GBookmarkFile  *bookmark,
   
   if (exec)
     {
-      *exec = expand_exec_line (ai->exec, uri);
+      GError *unquote_error = NULL;
+      gchar *command_line;
+      
+      command_line = g_shell_unquote (ai->exec, &unquote_error);
+      if (unquote_error)
+        {
+          g_propagate_error (unquote_error, error);
+          return FALSE;
+        }
+
+      *exec = expand_exec_line (command_line, uri);
       if (!*exec)
         {
           g_set_error (error, G_BOOKMARK_FILE_ERROR,
 		       G_BOOKMARK_FILE_ERROR_INVALID_URI,
 		       _("Failed to expand exec line '%s' with URI '%s'"),
 		     ai->exec, uri);
+          g_free (command_line);
+
           return FALSE;
         }
+      else
+        g_free (command_line);
     } 
 
   if (count)

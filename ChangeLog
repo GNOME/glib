@@ -1,3 +1,11 @@
+2007-04-29  Emmanuele Bassi  <ebassi@gnome.org>
+
+	* glib/gbookmarkfile.c:
+	(g_bookmark_file_set_app_info): Quote the passed command line...
+	
+	(g_bookmark_file_get_app_info): ... and unquote it when giving it
+	back. (#432274)
+
 2007-04-27  Matthias Clasen <mclasen@redhat.com>
 
 	* glib/gstrfuncs.c: small coding style cleanups.
