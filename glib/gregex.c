@@ -45,6 +45,7 @@
 			      G_REGEX_UNGREEDY		| \
 			      G_REGEX_RAW		| \
 			      G_REGEX_NO_AUTO_CAPTURE	| \
+			      G_REGEX_OPTIMIZE		| \
 			      G_REGEX_DUPNAMES		| \
 			      G_REGEX_NEWLINE_CR	| \
 			      G_REGEX_NEWLINE_LF	| \
@@ -63,53 +64,53 @@
 
 /* if the string is in UTF-8 use g_utf8_ functions, else use
  * use just +/- 1. */
-#define NEXT_CHAR(re, s) (((re)->pattern->compile_opts & PCRE_UTF8) ? \
+#define NEXT_CHAR(re, s) (((re)->compile_opts & PCRE_UTF8) ? \
 				g_utf8_next_char (s) : \
 				((s) + 1))
-#define PREV_CHAR(re, s) (((re)->pattern->compile_opts & PCRE_UTF8) ? \
+#define PREV_CHAR(re, s) (((re)->compile_opts & PCRE_UTF8) ? \
 				g_utf8_prev_char (s) : \
 				((s) - 1))
 
-#define WORKSPACE_INITIAL 1000
-#define OFFSETS_DFA_MIN_SIZE 21
-
-/* atomically returns the pcre_extra struct in the regex. */
-#define REGEX_GET_EXTRA(re) ((pcre_extra *)g_atomic_pointer_get (&(re)->pattern->extra))
-
-/* this struct can be shared by more regexes */
-typedef struct
+struct _GMatchInfo
 {
-  volatile guint ref_count;	/* the ref count for the immutable part */
-  gchar *pattern;		/* the pattern */
-  pcre *pcre_re;		/* compiled form of the pattern */
-  GRegexCompileFlags compile_opts;	/* options used at compile time on the pattern */
+  GRegex *regex;		/* the regex */
   GRegexMatchFlags match_opts;	/* options used at match time on the regex */
-  pcre_extra *extra;		/* data stored when g_regex_optimize() is used */
-} GRegexPattern;
-
-/* this struct is used only by a single regex */
-typedef struct
-{
   gint matches;			/* number of matching sub patterns */
   gint pos;			/* position in the string where last match left off */
   gint *offsets;		/* array of offsets paired 0,1 ; 2,3 ; 3,4 etc */
   gint n_offsets;		/* number of offsets */
   gint *workspace;		/* workspace for pcre_dfa_exec() */
   gint n_workspace;		/* number of workspace elements */
-  gssize string_len;		/* length of the string last used against */
-  GSList *delims;		/* delimiter sub strings from split next */
-  gint last_separator_end;	/* position of the last separator for split_next_full() */
-  gboolean last_match_is_empty;	/* was the last match in split_next_full() 0 bytes long? */
-} GRegexMatch;
+  const gchar *string;		/* string passed to the match function */
+  gssize string_len;		/* length of string */
+};
 
 struct _GRegex
 {
-  GRegexPattern *pattern;	/* immutable part, shared */
-  GRegexMatch *match;		/* mutable part, not shared */
+  volatile guint ref_count;	/* the ref count for the immutable part */
+  gchar *pattern;		/* the pattern */
+  pcre *pcre_re;		/* compiled form of the pattern */
+  GRegexCompileFlags compile_opts;	/* options used at compile time on the pattern */
+  GRegexMatchFlags match_opts;	/* options used at match time on the regex */
+  pcre_extra *extra;		/* data stored when G_REGEX_OPTIMIZE is used */
 };
 
 /* TRUE if ret is an error code, FALSE otherwise. */
 #define IS_PCRE_ERROR(ret) ((ret) < PCRE_ERROR_NOMATCH && (ret) != PCRE_ERROR_PARTIAL)
+
+static GRegex	*regex_ref	(GRegex *regex);
+static void	 regex_unref	(GRegex *regex);
+
+typedef struct _InterpolationData InterpolationData;
+static gboolean	 interpolate_replacement	(const GRegex *regex,
+						 const GMatchInfo *match_info,
+						 const gchar *string,
+						 GString *result,
+						 gpointer data);
+static GList	*split_replacement		(const gchar *replacement,
+						 GError **error);
+static void	 free_interpolation_data	(InterpolationData *data);
+
 
 static const gchar *
 match_error (gint errcode)
@@ -159,7 +160,7 @@ match_error (gint errcode)
     case PCRE_ERROR_DFA_UCOND:
       return _("back references as conditions are not supported for partial matching");
     case PCRE_ERROR_DFA_UMLIMIT:
-      /* the match_field field is not udes in GRegex */
+      /* the match_field field is not used in GRegex */
       break;
     case PCRE_ERROR_DFA_WSSIZE:
       /* handled expanding the workspace */
@@ -177,6 +178,505 @@ match_error (gint errcode)
   return _("unknown error");
 }
 
+
+/* GMatchInfo */
+
+static GMatchInfo *
+match_info_new (const GRegex *regex,
+		const gchar  *string,
+		gint          string_len,
+		gint          start_position,
+		gint          match_options,
+		gboolean      is_dfa)
+{
+  GMatchInfo *match_info;
+
+  if (string_len < 0)
+    string_len = strlen (string);
+
+  match_info = g_new0 (GMatchInfo, 1);
+  match_info->regex = regex_ref ((GRegex *)regex);
+  match_info->string = string;
+  match_info->string_len = string_len;
+  match_info->matches = PCRE_ERROR_NOMATCH;
+  match_info->pos = start_position;
+  match_info->match_opts = match_options;
+
+  if (is_dfa)
+    {
+      /* These values should be enough for most cases, if they are not
+       * enough g_regex_match_all_full() will expand them. */
+      match_info->n_offsets = 24;
+      match_info->n_workspace = 100;
+      match_info->workspace = g_new (gint, match_info->n_workspace);
+    }
+  else
+    {
+      gint capture_count;
+      pcre_fullinfo (regex->pcre_re, regex->extra,
+                     PCRE_INFO_CAPTURECOUNT, &capture_count);
+      match_info->n_offsets = (capture_count + 1) * 3;
+    }
+  match_info->offsets = g_new0 (gint, match_info->n_offsets);
+
+  return match_info;
+}
+
+/**
+ * g_match_info_free:
+ * @match_info: a #GMatchInfo
+ *
+ * Frees all the memory associated with the #GMatchInfo structure.
+ *
+ * Since: 2.14
+ */
+void
+g_match_info_free (GMatchInfo *match_info)
+{
+  regex_unref (match_info->regex);
+  g_free (match_info->offsets);
+  g_free (match_info->workspace);
+  g_free (match_info);
+}
+
+/**
+ * g_match_info_next:
+ * @match_info: a #GMatchInfo structure
+ * @error: location to store the error occuring, or NULL to ignore errors
+ *
+ * Scans for the next match using the same parameters of the previous
+ * call to g_regex_match_full() or g_regex_match() that returned
+ * @match_info.
+ *
+ * The match is done on the string passed to the match function, so you
+ * cannot free it before calling this function.
+ *
+ * Returns: %TRUE is the string matched, %FALSE otherwise
+ *
+ * Since: 2.14
+ */
+gboolean
+g_match_info_next (GMatchInfo  *match_info,
+		   GError     **error)
+{
+  g_return_val_if_fail (match_info != NULL, FALSE);
+  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+  g_return_val_if_fail (match_info->pos >= 0, FALSE);
+
+  match_info->matches = pcre_exec (match_info->regex->pcre_re,
+				   match_info->regex->extra,
+				   match_info->string,
+				   match_info->string_len,
+				   match_info->pos,
+				   match_info->regex->match_opts |
+				   match_info->match_opts,
+				   match_info->offsets,
+                                   match_info->n_offsets);
+  if (IS_PCRE_ERROR (match_info->matches))
+    {
+      g_set_error (error, G_REGEX_ERROR, G_REGEX_ERROR_MATCH,
+		   _("Error while matching regular expression %s: %s"),
+		   match_info->regex->pattern, match_error (match_info->matches));
+      return FALSE;
+    }
+
+  /* avoid infinite loops if the pattern is an empty string or something
+   * equivalent */
+  if (match_info->pos == match_info->offsets[1])
+    {
+      if (match_info->pos > match_info->string_len)
+	{
+	  /* we have reached the end of the string */
+	  match_info->pos = -1;
+          match_info->matches = PCRE_ERROR_NOMATCH;
+	  return FALSE;
+        }
+      match_info->pos = NEXT_CHAR (match_info->regex,
+				   &match_info->string[match_info->pos]) -
+				   match_info->string;
+    }
+  else
+    {
+      match_info->pos = match_info->offsets[1];
+    }
+
+  return match_info->matches >= 0;
+}
+
+/**
+ * g_match_info_matches:
+ * @match_info: a #GMatchInfo structure
+ *
+ * Returns: %TRUE if the previous match operation succeeded, %FALSE
+ * otherwise
+ *
+ * Since: 2.14
+ */
+gboolean
+g_match_info_matches (const GMatchInfo *match_info)
+{
+  g_return_val_if_fail (match_info != NULL, FALSE);
+
+  return match_info->matches >= 0;
+}
+
+/**
+ * g_match_info_get_match_count:
+ * @match_info: a #GMatchInfo structure
+ *
+ * Retrieves the number of matched substrings (including substring 0, that
+ * is the whole matched text), so 1 is returned if the pattern has no
+ * substrings in it and 0 is returned if the match failed.
+ *
+ * If the last match was obtained using the DFA algorithm, that is using
+ * g_regex_match_all() or g_regex_match_all_full(), the retrieved
+ * count is not that of the number of capturing parentheses but that of
+ * the number of matched substrings.
+ *
+ * Returns:  Number of matched substrings, or -1 if an error occurred
+ *
+ * Since: 2.14
+ */
+gint
+g_match_info_get_match_count (const GMatchInfo *match_info)
+{
+  g_return_val_if_fail (match_info, -1);
+
+  if (match_info->matches == PCRE_ERROR_NOMATCH)
+    /* no match */
+    return 0;
+  else if (match_info->matches < PCRE_ERROR_NOMATCH)
+    /* error */
+    return -1;
+  else
+    /* match */
+    return match_info->matches;
+}
+
+/**
+ * g_match_info_is_partial_match:
+ * @match_info: a #GMatchInfo structure
+ *
+ * Usually if the string passed to g_regex_match*() matches as far as
+ * it goes, but is too short to match the entire pattern, %FALSE is
+ * returned. There are circumstances where it might be helpful to
+ * distinguish this case from other cases in which there is no match.
+ *
+ * Consider, for example, an application where a human is required to
+ * type in data for a field with specific formatting requirements. An
+ * example might be a date in the form ddmmmyy, defined by the pattern
+ * "^\d?\d(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)\d\d$".
+ * If the application sees the user’s keystrokes one by one, and can
+ * check that what has been typed so far is potentially valid, it is
+ * able to raise an error as soon as a mistake is made.
+ *
+ * GRegex supports the concept of partial matching by means of the
+ * #G_REGEX_MATCH_PARTIAL flag. When this is set the return code for
+ * g_regex_match() or g_regex_match_full() is, as usual, %TRUE
+ * for a complete match, %FALSE otherwise. But, when this functions
+ * returns %FALSE, you can check if the match was partial calling
+ * g_match_info_is_partial_match().
+ *
+ * When using partial matching you cannot use g_match_info_fetch*().
+ *
+ * Because of the way certain internal optimizations are implemented the
+ * partial matching algorithm cannot be used with all patterns. So repeated
+ * single characters such as "a{2,4}" and repeated single metasequences such
+ * as "\d+" are not permitted if the maximum number of occurrences is
+ * greater than one. Optional items such as "\d?" (where the maximum is one)
+ * are permitted. Quantifiers with any values are permitted after
+ * parentheses, so the invalid examples above can be coded thus "(a){2,4}"
+ * and "(\d)+". If #G_REGEX_MATCH_PARTIAL is set for a pattern that does
+ * not conform to the restrictions, matching functions return an error.
+ *
+ * Returns: %TRUE if the match was partial, %FALSE otherwise
+ *
+ * Since: 2.14
+ */
+gboolean
+g_match_info_is_partial_match (const GMatchInfo *match_info)
+{
+  g_return_val_if_fail (match_info != NULL, FALSE);
+
+  return match_info->matches == PCRE_ERROR_PARTIAL;
+}
+
+/**
+ * g_match_info_expand_references:
+ * @match_info: a #GMatchInfo
+ * @string_to_expand: the string to expand
+ * @error: location to store the error occuring, or %NULL to ignore errors
+ *
+ * Returns a new string containing the text in @string_to_expand with
+ * references expanded. References refer to the last match done with
+ * @string against @regex and have the same syntax used by g_regex_replace().
+ *
+ * The @string_to_expand must be UTF-8 encoded even if #G_REGEX_RAW was
+ * passed to g_regex_new().
+ *
+ * The backreferences are extracted from the string passed to the match
+ * function, so you cannot free it before calling this function.
+ *
+ * Returns: the expanded string, or %NULL if an error occurred
+ *
+ * Since: 2.14
+ */
+gchar *
+g_match_info_expand_references (const GMatchInfo *match_info, 
+				const gchar      *string_to_expand,
+				GError          **error)
+{
+  GString *result;
+  GList *list;
+  GError *tmp_error = NULL;
+
+  g_return_val_if_fail (match_info != NULL, NULL);
+  g_return_val_if_fail (string_to_expand != NULL, NULL);
+  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+
+  list = split_replacement (string_to_expand, &tmp_error);
+  if (tmp_error != NULL)
+    {
+      g_propagate_error (error, tmp_error);
+      return NULL;
+    }
+
+  result = g_string_sized_new (strlen (string_to_expand));
+  interpolate_replacement (match_info->regex, match_info,
+			   match_info->string, result, list);
+
+  g_list_foreach (list, (GFunc)free_interpolation_data, NULL);
+  g_list_free (list);
+
+  return g_string_free (result, FALSE);
+}
+
+/**
+ * g_match_info_fetch:
+ * @match_info: #GMatchInfo structure
+ * @match_num: number of the sub expression
+ *
+ * Retrieves the text matching the @match_num<!-- -->'th capturing parentheses.
+ * 0 is the full text of the match, 1 is the first paren set, 2 the second,
+ * and so on.
+ *
+ * If @match_num is a valid sub pattern but it didn't match anything (e.g.
+ * sub pattern 1, matching "b" against "(a)?b") then an empty string is
+ * returned.
+ *
+ * If the match was obtained using the DFA algorithm, that is using
+ * g_regex_match_all() or g_regex_match_all_full(), the retrieved
+ * string is not that of a set of parentheses but that of a matched
+ * substring. Substrings are matched in reverse order of length, so 0 is
+ * the longest match.
+ *
+ * The string is fetched from the string passed to the match function,
+ * so you cannot free it before calling this function.
+ *
+ * Returns: The matched substring, or %NULL if an error occurred.
+ *          You have to free the string yourself
+ *
+ * Since: 2.14
+ */
+gchar *
+g_match_info_fetch (const GMatchInfo *match_info,
+		    gint              match_num)
+{
+  /* we cannot use pcre_get_substring() because it allocates the
+   * string using pcre_malloc(). */
+  gchar *match = NULL;
+  gint start, end;
+
+  g_return_val_if_fail (match_info != NULL, NULL);
+  g_return_val_if_fail (match_num >= 0, NULL);
+
+  /* match_num does not exist or it didn't matched, i.e. matching "b"
+   * against "(a)?b" then group 0 is empty. */
+  if (!g_match_info_fetch_pos (match_info, match_num, &start, &end))
+    match = NULL;
+  else if (start == -1)
+    match = g_strdup ("");
+  else
+    match = g_strndup (&match_info->string[start], end - start);
+
+  return match;
+}
+
+/**
+ * g_match_info_fetch_pos:
+ * @match_info: #GMatchInfo structure
+ * @match_num: number of the sub expression
+ * @start_pos: pointer to location where to store the start position
+ * @end_pos: pointer to location where to store the end position
+ *
+ * Retrieves the position of the @match_num<!-- -->'th capturing parentheses.
+ * 0 is the full text of the match, 1 is the first paren set, 2 the second,
+ * and so on.
+ *
+ * If @match_num is a valid sub pattern but it didn't match anything (e.g.
+ * sub pattern 1, matching "b" against "(a)?b") then @start_pos and @end_pos
+ * are set to -1 and %TRUE is returned.
+ *
+ * If the match was obtained using the DFA algorithm, that is using
+ * g_regex_match_all() or g_regex_match_all_full(), the retrieved
+ * position is not that of a set of parentheses but that of a matched
+ * substring. Substrings are matched in reverse order of length, so 0 is
+ * the longest match.
+ *
+ * Returns: %TRUE if the position was fetched, %FALSE otherwise. If the
+ *          position cannot be fetched, @start_pos and @end_pos are left
+ *          unchanged.
+ *
+ * Since: 2.14
+ */
+gboolean
+g_match_info_fetch_pos (const GMatchInfo *match_info,
+			gint              match_num,
+			gint             *start_pos,
+			gint             *end_pos)
+{
+  g_return_val_if_fail (match_info != NULL, FALSE);
+  g_return_val_if_fail (match_num >= 0, FALSE);
+ 
+  /* make sure the sub expression number they're requesting is less than
+   * the total number of sub expressions that were matched. */
+  if (match_num >= match_info->matches)
+    return FALSE;
+
+  if (start_pos != NULL)
+    *start_pos = match_info->offsets[2 * match_num];
+
+  if (end_pos != NULL)
+    *end_pos = match_info->offsets[2 * match_num + 1];
+
+  return TRUE;
+}
+
+/**
+ * g_match_info_fetch_named:
+ * @match_info: #GMatchInfo structure
+ * @name: name of the subexpression
+ *
+ * Retrieves the text matching the capturing parentheses named @name.
+ *
+ * If @name is a valid sub pattern name but it didn't match anything (e.g.
+ * sub pattern "X", matching "b" against "(?P&lt;X&gt;a)?b") then an empty
+ * string is returned.
+ *
+ * The string is fetched from the string passed to the match function,
+ * so you cannot free it before calling this function.
+ *
+ * Returns: The matched substring, or %NULL if an error occurred.
+ *          You have to free the string yourself
+ *
+ * Since: 2.14
+ */
+gchar *
+g_match_info_fetch_named (const GMatchInfo *match_info,
+			  const gchar      *name)
+{
+  /* we cannot use pcre_get_named_substring() because it allocates the
+   * string using pcre_malloc(). */
+  gint num;
+
+  g_return_val_if_fail (match_info != NULL, NULL);
+  g_return_val_if_fail (name != NULL, NULL);
+
+  num = g_regex_get_string_number (match_info->regex, name);
+  if (num == -1)
+    return NULL;
+  else
+    return g_match_info_fetch (match_info, num);
+}
+
+/**
+ * g_match_info_fetch_named_pos:
+ * @match_info: #GMatchInfo structure
+ * @name: name of the subexpression
+ * @start_pos: pointer to location where to store the start position
+ * @end_pos: pointer to location where to store the end position
+ *
+ * Retrieves the position of the capturing parentheses named @name.
+ *
+ * If @name is a valid sub pattern name but it didn't match anything (e.g.
+ * sub pattern "X", matching "b" against "(?P&lt;X&gt;a)?b") then @start_pos and
+ * @end_pos are set to -1 and %TRUE is returned.
+ *
+ * Returns: %TRUE if the position was fetched, %FALSE otherwise. If the
+ *          position cannot be fetched, @start_pos and @end_pos are left
+ *          unchanged.
+ *
+ * Since: 2.14
+ */
+gboolean
+g_match_info_fetch_named_pos (const GMatchInfo *match_info,
+			      const gchar      *name,
+			      gint             *start_pos,
+			      gint             *end_pos)
+{
+  gint num;
+
+  g_return_val_if_fail (match_info != NULL, FALSE);
+  g_return_val_if_fail (name != NULL, FALSE);
+ 
+  num = g_regex_get_string_number (match_info->regex, name);
+  if (num == -1)
+    return FALSE;
+
+  return g_match_info_fetch_pos (match_info, num, start_pos, end_pos);
+}
+
+/**
+ * g_match_info_fetch_all:
+ * @match_info: a #GMatchInfo structure
+ *
+ * Bundles up pointers to each of the matching substrings from a match
+ * and stores them in an array of gchar pointers. The first element in
+ * the returned array is the match number 0, i.e. the entire matched
+ * text.
+ *
+ * If a sub pattern didn't match anything (e.g. sub pattern 1, matching
+ * "b" against "(a)?b") then an empty string is inserted.
+ *
+ * If the last match was obtained using the DFA algorithm, that is using
+ * g_regex_match_all() or g_regex_match_all_full(), the retrieved
+ * strings are not that matched by sets of parentheses but that of the
+ * matched substring. Substrings are matched in reverse order of length,
+ * so the first one is the longest match.
+ *
+ * The strings are fetched from the string passed to the match function,
+ * so you cannot free it before calling this function.
+ *
+ * Returns: a %NULL-terminated array of gchar * pointers. It must be freed
+ *          using g_strfreev(). If the previous match failed %NULL is
+ *          returned.
+ *
+ * Since: 2.14
+ */
+gchar **
+g_match_info_fetch_all (const GMatchInfo *match_info)
+{
+  /* we cannot use pcre_get_substring_list() because the returned value
+   * isn't suitable for g_strfreev(). */
+  gchar **result;
+  gint i;
+
+  g_return_val_if_fail (match_info != NULL, FALSE);
+
+  if (match_info->matches < 0)
+    return NULL;
+
+  result = g_new (gchar *, match_info->matches + 1);
+  for (i = 0; i < match_info->matches; i++)
+    result[i] = g_match_info_fetch (match_info, i);
+  result[i] = NULL;
+
+  return result;
+}
+
+
+/* GRegex */
+
 GQuark
 g_regex_error_quark (void)
 {
@@ -188,77 +688,25 @@ g_regex_error_quark (void)
   return error_quark;
 }
 
-static GRegexPattern *
-regex_pattern_new (pcre              *re,
-		   const gchar       *pattern,
-		   GRegexCompileFlags compile_options,
-		   GRegexMatchFlags   match_options)
+static GRegex *
+regex_ref (GRegex *regex)
 {
-  GRegexPattern *rp = g_new0 (GRegexPattern, 1);
-  rp->ref_count = 1;
-  rp->pcre_re = re;
-  rp->pattern = g_strdup (pattern);
-  rp->compile_opts = compile_options;
-  rp->match_opts = match_options;
-  return rp;
-}
-
-static GRegexPattern *
-regex_pattern_ref (GRegexPattern *rp)
-{
-  /* increases the ref count of the immutable part of the GRegex */
-  g_atomic_int_inc ((gint*) &rp->ref_count);
-  return rp;
+  g_atomic_int_inc ((gint*) &regex->ref_count);
+  return regex;
 }
 
 static void
-regex_pattern_unref (GRegexPattern *rp)
+regex_unref (GRegex *regex)
 {
-  /* decreases the ref count of the immutable part of the GRegex
-   * and deletes it if the ref count went to 0 */
-  if (g_atomic_int_exchange_and_add ((gint *) &rp->ref_count, -1) - 1 == 0)
+  if (g_atomic_int_exchange_and_add ((gint *) &regex->ref_count, -1) - 1 == 0)
     {
-      g_free (rp->pattern);
-      if (rp->pcre_re != NULL)
-	pcre_free (rp->pcre_re);
-      if (rp->extra != NULL)
-	pcre_free (rp->extra);
-      g_free (rp);
+      g_free (regex->pattern);
+      if (regex->pcre_re != NULL)
+	pcre_free (regex->pcre_re);
+      if (regex->extra != NULL)
+	pcre_free (regex->extra);
+      g_free (regex);
     }
-}
-
-static void
-regex_match_free (GRegexMatch *rm)
-{
-  if (rm == NULL)
-    return;
-
-  g_slist_foreach (rm->delims, (GFunc) g_free, NULL);
-  g_slist_free (rm->delims);
-  g_free (rm->offsets);
-  g_free (rm->workspace);
-  g_free (rm);
-}
-
-static void
-regex_lazy_init_match (GRegex *regex,
-		       gint    min_offsets)
-{
-  gint n_offsets;
-
-  if (regex->match != NULL)
-    return;
-
-  pcre_fullinfo (regex->pattern->pcre_re,
-		 REGEX_GET_EXTRA (regex),
-		 PCRE_INFO_CAPTURECOUNT, &n_offsets);
-  n_offsets = (MAX (n_offsets, min_offsets) + 1) * 3;
-
-  regex->match = g_new0 (GRegexMatch, 1);
-  regex->match->string_len = -1;
-  regex->match->matches = -1000;
-  regex->match->n_offsets = n_offsets;
-  regex->match->offsets = g_new0 (gint, n_offsets);
 }
 
 /** 
@@ -281,9 +729,11 @@ g_regex_new (const gchar         *pattern,
 	     GRegexMatchFlags     match_options,
 	     GError             **error)
 {
+  GRegex *regex;
   pcre *re;
   const gchar *errmsg;
   gint erroffset;
+  gboolean optimize = FALSE;
   static gboolean initialized = FALSE;
   
   g_return_val_if_fail (pattern != NULL, NULL);
@@ -317,6 +767,11 @@ g_regex_new (const gchar         *pattern,
       initialized = TRUE;
     }
 
+  /* G_REGEX_OPTIMIZE has the same numeric value of PCRE_NO_UTF8_CHECK,
+   * as we do not need to wrap PCRE_NO_UTF8_CHECK. */
+  if (compile_options & G_REGEX_OPTIMIZE)
+    optimize = TRUE;
+
   /* In GRegex the string are, by default, UTF-8 encoded. PCRE
    * instead uses UTF-8 only if required with PCRE_UTF8. */
   if (compile_options & G_REGEX_RAW)
@@ -329,6 +784,14 @@ g_regex_new (const gchar         *pattern,
       /* enable utf-8 */
       compile_options |= PCRE_UTF8 | PCRE_NO_UTF8_CHECK;
       match_options |= PCRE_NO_UTF8_CHECK;
+    }
+
+  /* PCRE_NEWLINE_ANY is the default for the internal PCRE but
+   * not for the system one. */
+  if (!(compile_options & G_REGEX_NEWLINE_CR) &&
+      !(compile_options & G_REGEX_NEWLINE_LF))
+    {
+      compile_options |= PCRE_NEWLINE_ANY;
     }
 
   /* compile the pattern */
@@ -347,13 +810,31 @@ g_regex_new (const gchar         *pattern,
 
       return NULL;
     }
-  else
+
+  regex = g_new0 (GRegex, 1);
+  regex->ref_count = 1;
+  regex->pattern = g_strdup (pattern);
+  regex->pcre_re = re;
+  regex->compile_opts = compile_options;
+  regex->match_opts = match_options;
+
+  if (optimize)
     {
-      GRegex *regex = g_new0 (GRegex, 1);
-      regex->pattern = regex_pattern_new (re, pattern,
-					  compile_options, match_options);
-      return regex;
+      regex->extra = pcre_study (regex->pcre_re, 0, &errmsg);
+      if (errmsg != NULL)
+        {
+          GError *tmp_error = g_error_new (G_REGEX_ERROR,
+                                           G_REGEX_ERROR_OPTIMIZE, 
+                                           _("Error while optimizing "
+                                             "regular expression %s: %s"),
+                                           regex->pattern,
+                                           errmsg);
+          g_propagate_error (error, tmp_error);
+          return NULL;
+	}
     }
+
+  return regex;
 }
 
 /**
@@ -370,40 +851,7 @@ g_regex_free (GRegex *regex)
   if (regex == NULL)
     return;
 
-  regex_pattern_unref (regex->pattern);
-  regex_match_free (regex->match);
-  g_free (regex);
-}
-
-/**
- * g_regex_copy:
- * @regex: a #GRegex structure from g_regex_new()
- *
- * Copies a #GRegex. The returned #Gregex is in the same state as after
- * a call to g_regex_clear(), so it does not contain information on the
- * last match. If @regex is %NULL it returns %NULL.
- *
- * The returned copy shares some of its internal state with the original
- * @regex, and the other internal variables are created only when needed,
- * so the copy is a lightweight operation.
- *
- * Returns: a newly-allocated copy of @regex, or %NULL if an error
- *          occurred
- *
- * Since: 2.14
- */
-GRegex *
-g_regex_copy (const GRegex *regex)
-{
-  GRegex *copy;
-
-  if (regex == NULL)
-    return NULL;
-
-  copy = g_new0 (GRegex, 1);
-  copy->pattern = regex_pattern_ref (regex->pattern);
-
-  return copy;
+  regex_unref (regex);
 }
 
 /**
@@ -422,93 +870,7 @@ g_regex_get_pattern (const GRegex *regex)
 {
   g_return_val_if_fail (regex != NULL, NULL);
 
-  return regex->pattern->pattern;
-}
-
-/**
- * g_regex_clear:
- * @regex: a #GRegex structure
- *
- * Clears out the members of @regex that are holding information about the
- * last set of matches for this pattern.  g_regex_clear() needs to be
- * called between uses of g_regex_match_next() or g_regex_match_next_full()
- * against new target strings. 
- *
- * Since: 2.14
- */
-void
-g_regex_clear (GRegex *regex)
-{
-  g_return_if_fail (regex != NULL);
-
-  if (regex->match == NULL)
-    return;
-
-  regex->match->matches = -1000; /* an error code not used by PCRE */
-  regex->match->string_len = -1;
-  regex->match->pos = 0;
-
-  /* if the pattern was used with g_regex_split_next(), it may have
-   * delimiter offsets stored.  Free up those guys as well. */
-  if (regex->match->delims != NULL)
-    {
-      g_slist_foreach (regex->match->delims, (GFunc) g_free, NULL);
-      g_slist_free (regex->match->delims);
-      regex->match->delims = NULL;
-    }
-}
-
-/**
- * g_regex_optimize:
- * @regex: a #GRegex structure
- * @error: return location for a #GError
- *
- * If the pattern will be used many times, then it may be worth the
- * effort to optimize it to improve the speed of matches.
- *
- * Returns: %TRUE if @regex has been optimized or was already optimized,
- *          %FALSE otherwise
- *
- * Since: 2.14
- */
-gboolean
-g_regex_optimize (GRegex  *regex,
-		  GError **error)
-{
-  const gchar *errmsg;
-  pcre_extra *extra;
-  pcre_extra G_GNUC_MAY_ALIAS **extra_p;
-
-  g_return_val_if_fail (regex != NULL, FALSE);
-  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
-
-  if (REGEX_GET_EXTRA (regex) != NULL)
-    /* already optimized. */
-    return TRUE;
-
-  extra = pcre_study (regex->pattern->pcre_re, 0, &errmsg);
-
-  if (errmsg != NULL)
-    {
-      GError *tmp_error = g_error_new (G_REGEX_ERROR,
-				       G_REGEX_ERROR_OPTIMIZE, 
-				       _("Error while optimizing "
-					 "regular expression %s: %s"),
-				       regex->pattern->pattern,
-				       errmsg);
-      g_propagate_error (error, tmp_error);
-      return FALSE;
-    }
-
-  if (extra == NULL)
-    return TRUE;
-
-  extra_p = &regex->pattern->extra;
-  if (!g_atomic_pointer_compare_and_exchange ((gpointer *)extra_p, NULL, extra))
-    /* someone else has optimized the regex while this function was running */
-    pcre_free (extra);
-
-  return TRUE;
+  return regex->pattern;
 }
 
 /**
@@ -545,7 +907,7 @@ g_regex_match_simple (const gchar        *pattern,
   regex = g_regex_new (pattern, compile_options, 0, NULL);
   if (!regex)
     return FALSE;
-  result = g_regex_match_full (regex, string, -1, 0, match_options, NULL);
+  result = g_regex_match_full (regex, string, -1, 0, match_options, NULL, NULL);
   g_regex_free (regex);
   return result;
 }
@@ -555,23 +917,54 @@ g_regex_match_simple (const gchar        *pattern,
  * @regex: a #GRegex structure from g_regex_new()
  * @string: the string to scan for matches
  * @match_options: match options
+ * @match_info: pointer to location where to store the #GMatchInfo, or
+ * %NULL if you do not nedd it
  *
  * Scans for a match in string for the pattern in @regex. The @match_options
  * are combined with the match options specified when the @regex structure
  * was created, letting you have more flexibility in reusing #GRegex
  * structures.
  *
+ * A #GMatchInfo structure, used to get information on the match, is stored
+ * in @match_info if not %NULL.
+ *
+ * To retrieve all the non-overlapping matches of the pattern in string you
+ * can use g_match_info_next().
+ *
+ * <informalexample><programlisting>
+ * static void
+ * print_uppercase_words (const gchar *string)
+ * {
+ *   /&ast; Print all uppercase-only words. &ast;/
+ *   GRegex *regex;
+ *   GMatchInfo *match_info;
+ *   &nbsp;
+ *   regex = g_regex_new ("[A-Z]+", 0, 0, NULL);
+ *   g_regex_match (regex, string, 0, &match_info);
+ *   while (g_match_info_matches (match_info))
+ *     {
+ *       gchar *word = g_match_info_fetch (match_info, 0);
+ *       g_print ("Found: %s\n", word);
+ *       g_free (word);
+ *       g_match_info_next (match_info, NULL);
+ *     }
+ *   g_match_info_free (match_info);
+ *   g_regex_free (regex);
+ * }
+ * </programlisting></informalexample>
+ *
  * Returns: %TRUE is the string matched, %FALSE otherwise
  *
  * Since: 2.14
  */
 gboolean
-g_regex_match (GRegex          *regex, 
+g_regex_match (const GRegex    *regex, 
 	       const gchar     *string, 
-	       GRegexMatchFlags match_options)
+	       GRegexMatchFlags match_options,
+	       GMatchInfo     **match_info)
 {
-  return g_regex_match_full (regex, string, -1, 0,
-			     match_options, NULL);
+  return g_regex_match_full (regex, string, -1, 0, match_options,
+			     match_info, NULL);
 }
 
 /**
@@ -581,6 +974,8 @@ g_regex_match (GRegex          *regex,
  * @string_len: the length of @string, or -1 if @string is nul-terminated
  * @start_position: starting index of the string to match
  * @match_options: match options
+ * @match_info: pointer to location where to store the #GMatchInfo, or
+ * %NULL if you do not nedd it
  * @error: location to store the error occuring, or %NULL to ignore errors
  *
  * Scans for a match in string for the pattern in @regex. The @match_options
@@ -592,190 +987,71 @@ g_regex_match (GRegex          *regex,
  * and  setting #G_REGEX_MATCH_NOTBOL in the case of a pattern that begins
  * with any kind of lookbehind assertion, such as "\b".
  *
+ * A #GMatchInfo structure, used to get information on the match, is stored
+ * in @match_info if not %NULL.
+ *
+ * To retrieve all the non-overlapping matches of the pattern in string you
+ * can use g_match_info_next().
+ *
+ * <informalexample><programlisting>
+ * static void
+ * print_uppercase_words (const gchar *string)
+ * {
+ *   /&ast; Print all uppercase-only words. &ast;/
+ *   GRegex *regex;
+ *   GMatchInfo *match_info;
+ *   GError *error = NULL;
+ *   &nbsp;
+ *   regex = g_regex_new ("[A-Z]+", 0, 0, NULL);
+ *   g_regex_match_full (regex, string, -1, 0, 0, &match_info, &error);
+ *   while (g_match_info_matches (match_info))
+ *     {
+ *       gchar *word = g_match_info_fetch (match_info, 0);
+ *       g_print ("Found: %s\n", word);
+ *       g_free (word);
+ *       g_match_info_next (match_info, &error);
+ *     }
+ *   g_match_info_free (match_info);
+ *   g_regex_free (regex);
+ *   if (error != NULL)
+ *     {
+ *       g_printerr ("Error while matching: %s\n", error->message);
+ *       g_error_free (error);
+ *     }
+ * }
+ * </programlisting></informalexample>
+ *
  * Returns: %TRUE is the string matched, %FALSE otherwise
  *
  * Since: 2.14
  */
 gboolean
-g_regex_match_full (GRegex          *regex,
-		    const gchar       *string,
-		    gssize             string_len,
-		    gint               start_position,
+g_regex_match_full (const GRegex    *regex,
+		    const gchar     *string,
+		    gssize           string_len,
+		    gint             start_position,
 		    GRegexMatchFlags match_options,
-		    GError           **error)
+		    GMatchInfo     **match_info,
+		    GError         **error)
 {
+  GMatchInfo *info;
+  gboolean match_ok;
+
   g_return_val_if_fail (regex != NULL, FALSE);
   g_return_val_if_fail (string != NULL, FALSE);
   g_return_val_if_fail (start_position >= 0, FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
   g_return_val_if_fail ((match_options & ~G_REGEX_MATCH_MASK) == 0, FALSE);
 
-  regex_lazy_init_match (regex, 0);
-
-  if (string_len < 0)
-    string_len = strlen (string);
-
-  regex->match->string_len = string_len;
-
-  /* create regex->match->offsets if it does not exist */
-  regex_lazy_init_match (regex, 0);
-
-  /* perform the match */
-  regex->match->matches = pcre_exec (regex->pattern->pcre_re,
-				     REGEX_GET_EXTRA (regex),
-				     string, regex->match->string_len,
-				     start_position,
-				     regex->pattern->match_opts | match_options,
-				     regex->match->offsets, regex->match->n_offsets);
-  if (IS_PCRE_ERROR (regex->match->matches))
-    {
-      g_set_error (error, G_REGEX_ERROR, G_REGEX_ERROR_MATCH,
-		   _("Error while matching regular expression %s: %s"),
-		   regex->pattern->pattern, match_error (regex->match->matches));
-      return FALSE;
-    }
-
-  /* set regex->match->pos to -1 so that a call to g_regex_match_next()
-   * fails without a previous call to g_regex_clear(). */
-  regex->match->pos = -1;
-
-  return regex->match->matches >= 0;
-}
-
-/**
- * g_regex_match_next:
- * @regex: a #GRegex structure
- * @string: the string to scan for matches
- * @match_options: the match options
- *
- * Scans for the next match in @string of the pattern in @regex.
- * array.  The match options are combined with the match options set when
- * the @regex was created.
- *
- * You have to call g_regex_clear() to reuse the same pattern on a new
- * string.
- *
- * Returns: %TRUE is the string matched, %FALSE otherwise
- *
- * Since: 2.14
- */
-gboolean
-g_regex_match_next (GRegex          *regex, 
-		    const gchar     *string, 
-		    GRegexMatchFlags match_options)
-{
-  return g_regex_match_next_full (regex, string, -1, 0,
-				  match_options, NULL);
-}
-
-/**
- * g_regex_match_next_full:
- * @regex: a #GRegex structure
- * @string: the string to scan for matches
- * @string_len: the length of @string, or -1 if @string is nul-terminated
- * @start_position: starting index of the string to match
- * @match_options: the match options
- * @error: location to store the error occuring, or %NULL to ignore errors
- *
- * Scans for the next match in @string of the pattern in @regex. Calling
- * g_regex_match_next_full() until it returns %FALSE, you can retrieve
- * all the non-overlapping matches of the pattern in @string. Empty matches
- * are included, so matching the string "ab" with the pattern "b*" will
- * find three matches: "" at position 0, "b" from position 1 to 2 and
- * "" at position 2.
- *
- * The match options are combined with the match options set when the
- * @regex was created.
- *
- * You have to call g_regex_clear() to reuse the same pattern on a new
- * string.
- *
- * Setting @start_position differs from just passing over a shortened string
- * and  setting #G_REGEX_MATCH_NOTBOL in the case of a pattern that begins
- * with any kind of lookbehind assertion, such as "\b".
- *
- * Returns: %TRUE is the string matched, %FALSE otherwise
- *
- * Since: 2.14
- */
-gboolean
-g_regex_match_next_full (GRegex          *regex,
-			 const gchar     *string,
-			 gssize           string_len,
-			 gint             start_position,
-			 GRegexMatchFlags match_options,
-			 GError         **error)
-{
-  g_return_val_if_fail (regex != NULL, FALSE);
-  g_return_val_if_fail (string != NULL, FALSE);
-  g_return_val_if_fail (start_position >= 0, FALSE);
-  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
-  g_return_val_if_fail ((match_options & ~G_REGEX_MATCH_MASK) == 0, FALSE);
-
-  regex_lazy_init_match (regex, 0);
-
-  if (G_UNLIKELY (regex->match->pos < 0))
-    {
-      const gchar *msg = _("g_regex_match_next_full: called without a "
-                           "previous call to g_regex_clear()");
-      g_log (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL, msg);
-      g_set_error (error, G_REGEX_ERROR, G_REGEX_ERROR_MATCH, msg);
-      return FALSE;
-    }
-
-  /* if this regex hasn't been used on this string before, then we
-   * need to calculate the length of the string, and set pos to the
-   * start of it.  
-   * Knowing if this regex has been used on this string is a bit of
-   * a challenge.  For now, we require the user to call g_regex_clear()
-   * in between usages on a new string.  Not perfect, but not such a
-   * bad solution either.
-   */
-  if (regex->match->string_len == -1)
-    {
-      if (string_len < 0)
-        string_len = strlen (string);
-      regex->match->string_len = string_len;
-
-      regex->match->pos = start_position;
-    }
-
-  /* create regex->match->offsets if it does not exist */
-  regex_lazy_init_match (regex, 0);
-
-  /* perform the match */
-  regex->match->matches = pcre_exec (regex->pattern->pcre_re,
-				     REGEX_GET_EXTRA (regex),
-				     string, regex->match->string_len,
-				     regex->match->pos,
-				     regex->pattern->match_opts | match_options,
-				     regex->match->offsets, regex->match->n_offsets);
-  if (IS_PCRE_ERROR (regex->match->matches))
-    {
-      g_set_error (error, G_REGEX_ERROR, G_REGEX_ERROR_MATCH,
-		   _("Error while matching regular expression %s: %s"),
-		   regex->pattern->pattern, match_error (regex->match->matches));
-      return FALSE;
-    }
-
-  /* avoid infinite loops if regex is an empty string or something
-   * equivalent */
-  if (regex->match->pos == regex->match->offsets[1])
-    {
-      if (regex->match->pos > regex->match->string_len)
-	{
-	  /* we have reached the end of the string */
-	  regex->match->pos = -1;
-	  return FALSE;
-        }
-      regex->match->pos = NEXT_CHAR (regex, &string[regex->match->pos]) - string;
-    }
+  info = match_info_new (regex, string, string_len, start_position,
+			 match_options, FALSE);
+  match_ok = g_match_info_next (info, error);
+  if (match_info != NULL)
+    *match_info = info;
   else
-    {
-      regex->match->pos = regex->match->offsets[1];
-    }
+    g_match_info_free (info);
 
-  return regex->match->matches >= 0;
+  return match_ok;
 }
 
 /**
@@ -783,23 +1059,29 @@ g_regex_match_next_full (GRegex          *regex,
  * @regex: a #GRegex structure from g_regex_new()
  * @string: the string to scan for matches
  * @match_options: match options
+ * @match_info: pointer to location where to store the #GMatchInfo, or
+ * %NULL if you do not nedd it
  *
  * Using the standard algorithm for regular expression matching only the
  * longest match in the string is retrieved. This function uses a
  * different algorithm so it can retrieve all the possible matches.
  * For more documentation see g_regex_match_all_full().
  *
+ * A #GMatchInfo structure, used to get information on the match, is stored
+ * in @match_info if not %NULL.
+ *
  * Returns: %TRUE is the string matched, %FALSE otherwise
  *
  * Since: 2.14
  */
 gboolean
-g_regex_match_all (GRegex          *regex,
+g_regex_match_all (const GRegex    *regex,
 		   const gchar     *string,
-		   GRegexMatchFlags match_options)
+		   GRegexMatchFlags match_options,
+		   GMatchInfo     **match_info)
 {
-  return g_regex_match_all_full (regex, string, -1, 0,
-				 match_options, NULL);
+  return g_regex_match_all_full (regex, string, -1, 0, match_options,
+				 match_info, NULL);
 }
 
 /**
@@ -809,6 +1091,8 @@ g_regex_match_all (GRegex          *regex,
  * @string_len: the length of @string, or -1 if @string is nul-terminated
  * @start_position: starting index of the string to match
  * @match_options: match options
+ * @match_info: pointer to location where to store the #GMatchInfo, or
+ * %NULL if you do not nedd it
  * @error: location to store the error occuring, or %NULL to ignore errors
  *
  * Using the standard algorithm for regular expression matching only the
@@ -825,10 +1109,10 @@ g_regex_match_all (GRegex          *regex,
  * "&lt;a&gt; &lt;b&gt;" and "&lt;a&gt;".
  *
  * The number of matched strings is retrieved using
- * g_regex_get_match_count().
+ * g_match_info_get_match_count().
  * To obtain the matched strings and their position you can use,
- * respectively, g_regex_fetch() and g_regex_fetch_pos(). Note that the
- * strings are returned in reverse order of length; that is, the longest
+ * respectively, g_match_info_fetch() and g_match_info_fetch_pos(). Note that
+ * the strings are returned in reverse order of length; that is, the longest
  * matching string is given first.
  *
  * Note that the DFA algorithm is slower than the standard one and it is not
@@ -838,403 +1122,77 @@ g_regex_match_all (GRegex          *regex,
  * and  setting #G_REGEX_MATCH_NOTBOL in the case of a pattern that begins
  * with any kind of lookbehind assertion, such as "\b".
  *
+ * A #GMatchInfo structure, used to get information on the match, is stored
+ * in @match_info if not %NULL.
+ *
  * Returns: %TRUE is the string matched, %FALSE otherwise
  *
  * Since: 2.14
  */
 gboolean
-g_regex_match_all_full (GRegex          *regex,
+g_regex_match_all_full (const GRegex    *regex,
 			const gchar     *string,
 			gssize           string_len,
 			gint             start_position,
 			GRegexMatchFlags match_options,
+			GMatchInfo     **match_info,
 			GError         **error)
 {
+  GMatchInfo *info;
+  gboolean done;
+
   g_return_val_if_fail (regex != NULL, FALSE);
   g_return_val_if_fail (string != NULL, FALSE);
   g_return_val_if_fail (start_position >= 0, FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
   g_return_val_if_fail ((match_options & ~G_REGEX_MATCH_MASK) == 0, FALSE);
 
-  regex_lazy_init_match (regex, 0);
+  info = match_info_new (regex, string, string_len, start_position,
+			 match_options, TRUE);
 
-  if (string_len < 0)
-    string_len = strlen (string);
-
-  regex->match->string_len = string_len;
-
-  if (regex->match->workspace == NULL)
+  done = FALSE;
+  while (!done)
     {
-      regex->match->n_workspace = WORKSPACE_INITIAL;
-      regex->match->workspace = g_new (gint, regex->match->n_workspace);
+      done = TRUE;
+      info->matches = pcre_dfa_exec (regex->pcre_re, regex->extra,
+				     info->string, info->string_len,
+				     info->pos,
+				     regex->match_opts | match_options,
+				     info->offsets, info->n_offsets,
+				     info->workspace, info->n_workspace);
+      if (info->matches == PCRE_ERROR_DFA_WSSIZE)
+	{
+	  /* info->workspace is too small. */
+	  info->n_workspace *= 2;
+	  info->workspace = g_realloc (info->workspace,
+				       info->n_workspace * sizeof (gint));
+	  done = FALSE;
+	}
+      else if (info->matches == 0)
+	{
+	  /* info->offsets is too small. */
+	  info->n_offsets *= 2;
+	  info->offsets = g_realloc (info->offsets,
+				     info->n_offsets * sizeof (gint));
+	  done = FALSE;
+	}
+      else if (IS_PCRE_ERROR (info->matches))
+	{
+	  g_set_error (error, G_REGEX_ERROR, G_REGEX_ERROR_MATCH,
+		       _("Error while matching regular expression %s: %s"),
+		       regex->pattern, match_error (info->matches));
+	}
     }
 
-  if (regex->match->n_offsets < OFFSETS_DFA_MIN_SIZE)
-    {
-      regex->match->n_offsets = OFFSETS_DFA_MIN_SIZE;
-      regex->match->offsets = g_realloc (regex->match->offsets,
-					 regex->match->n_offsets * sizeof(gint));
-    }
+  /* set info->pos to -1 so that a call to g_match_info_next() fails. */
+  info->pos = -1;
 
-  /* perform the match */
-  regex->match->matches = pcre_dfa_exec (regex->pattern->pcre_re,
-					 REGEX_GET_EXTRA (regex), 
-					 string, regex->match->string_len,
-					 start_position,
-					 regex->pattern->match_opts | match_options,
-					 regex->match->offsets, regex->match->n_offsets,
-					 regex->match->workspace,
-					 regex->match->n_workspace);
-  if (regex->match->matches == PCRE_ERROR_DFA_WSSIZE)
-    {
-      /* regex->match->workspace is too small. */
-      regex->match->n_workspace *= 2;
-      regex->match->workspace = g_realloc (regex->match->workspace,
-					   regex->match->n_workspace * sizeof (gint));
-      return g_regex_match_all_full (regex, string, string_len,
-				     start_position, match_options, error);
-    }
-  else if (regex->match->matches == 0)
-    {
-      /* regex->match->offsets is too small. */
-      regex->match->n_offsets *= 2;
-      regex->match->offsets = g_realloc (regex->match->offsets,
-				         regex->match->n_offsets * sizeof (gint));
-      return g_regex_match_all_full (regex, string, string_len,
-				     start_position, match_options, error);
-    }
-  else if (IS_PCRE_ERROR (regex->match->matches))
-    {
-      g_set_error (error, G_REGEX_ERROR, G_REGEX_ERROR_MATCH,
-		   _("Error while matching regular expression %s: %s"),
-		   regex->pattern->pattern, match_error (regex->match->matches));
-      return FALSE;
-    }
-
-  /* set regex->match->pos to -1 so that a call to g_regex_match_next()
-   * fails without a previous call to g_regex_clear(). */
-  regex->match->pos = -1;
-
-  return regex->match->matches >= 0;
-}
-
-/**
- * g_regex_get_match_count:
- * @regex: a #GRegex structure
- *
- * Retrieves the number of matched substrings (including substring 0, that
- * is the whole matched text) in the last call to g_regex_match*(), so 1
- * is returned if the pattern has no substrings in it and 0 is returned if
- * the match failed.
- *
- * If the last match was obtained using the DFA algorithm, that is using
- * g_regex_match_all() or g_regex_match_all_full(), the retrieved
- * count is not that of the number of capturing parentheses but that of
- * the number of matched substrings.
- *
- * Returns:  Number of matched substrings, or -1 if an error occurred
- *
- * Since: 2.14
- */
-gint
-g_regex_get_match_count (const GRegex *regex)
-{
-  g_return_val_if_fail (regex != NULL, -1);
-
-  if (regex->match == NULL)
-    return -1;
-
-  if (regex->match->matches == PCRE_ERROR_NOMATCH)
-    /* no match */
-    return 0;
-  else if (regex->match->matches < PCRE_ERROR_NOMATCH)
-    /* error */
-    return -1;
+  if (match_info != NULL)
+    *match_info = info;
   else
-    /* match */
-    return regex->match->matches;
-}
+    g_match_info_free (info);
 
-/**
- * g_regex_is_partial_match:
- * @regex: a #GRegex structure
- *
- * Usually if the string passed to g_regex_match*() matches as far as
- * it goes, but is too short to match the entire pattern, %FALSE is
- * returned. There are circumstances where it might be helpful to
- * distinguish this case from other cases in which there is no match.
- *
- * Consider, for example, an application where a human is required to
- * type in data for a field with specific formatting requirements. An
- * example might be a date in the form ddmmmyy, defined by the pattern
- * "^\d?\d(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)\d\d$".
- * If the application sees the user’s keystrokes one by one, and can
- * check that what has been typed so far is potentially valid, it is
- * able to raise an error as soon as a mistake is made.
- *
- * GRegex supports the concept of partial matching by means of the
- * #G_REGEX_MATCH_PARTIAL flag. When this is set the return code for
- * g_regex_match() or g_regex_match_full() is, as usual, %TRUE
- * for a complete match, %FALSE otherwise. But, when this functions
- * returns %FALSE, you can check if the match was partial calling
- * g_regex_is_partial_match().
- *
- * When using partial matching you cannot use g_regex_fetch*().
- *
- * Because of the way certain internal optimizations are implemented the
- * partial matching algorithm cannot be used with all patterns. So repeated
- * single characters such as "a{2,4}" and repeated single metasequences such
- * as "\d+" are not permitted if the maximum number of occurrences is
- * greater than one. Optional items such as "\d?" (where the maximum is one)
- * are permitted. Quantifiers with any values are permitted after
- * parentheses, so the invalid examples above can be coded thus "(a){2,4}"
- * and "(\d)+". If #G_REGEX_MATCH_PARTIAL is set for a pattern that does
- * not conform to the restrictions, matching functions return an error.
- *
- * Returns: %TRUE if the match was partial, %FALSE otherwise
- *
- * Since: 2.14
- */
-gboolean
-g_regex_is_partial_match (const GRegex *regex)
-{
-  g_return_val_if_fail (regex != NULL, FALSE);
-
-  if (regex->match == NULL)
-    return FALSE;
-
-  return regex->match->matches == PCRE_ERROR_PARTIAL;
-}
-
-/**
- * g_regex_fetch:
- * @regex: #GRegex structure used in last match
- * @match_num: number of the sub expression
- * @string: the string on which the last match was made
- *
- * Retrieves the text matching the @match_num<!-- -->'th capturing parentheses.
- * 0 is the full text of the match, 1 is the first paren set, 2 the second,
- * and so on.
- *
- * If @match_num is a valid sub pattern but it didn't match anything (e.g.
- * sub pattern 1, matching "b" against "(a)?b") then an empty string is
- * returned.
- *
- * If the last match was obtained using the DFA algorithm, that is using
- * g_regex_match_all() or g_regex_match_all_full(), the retrieved
- * string is not that of a set of parentheses but that of a matched
- * substring. Substrings are matched in reverse order of length, so 0 is
- * the longest match.
- *
- * Returns: The matched substring, or %NULL if an error occurred.
- *          You have to free the string yourself.
- *
- * Since: 2.14
- */
-gchar *
-g_regex_fetch (const GRegex *regex,
-	       gint          match_num,
-	       const gchar  *string)
-{
-  /* we cannot use pcre_get_substring() because it allocates the
-   * string using pcre_malloc(). */
-  gchar *match = NULL;
-  gint start, end;
-
-  g_return_val_if_fail (regex != NULL, NULL);
-  g_return_val_if_fail (match_num >= 0, NULL);
-
-  if (regex->match == NULL)
-    return NULL;
-
-  if (regex->match->string_len < 0)
-    return NULL;
-
-  /* match_num does not exist or it didn't matched, i.e. matching "b"
-   * against "(a)?b" then group 0 is empty. */
-  if (!g_regex_fetch_pos (regex, match_num, &start, &end))
-    match = NULL;
-  else if (start == -1)
-    match = g_strdup ("");
-  else
-    match = g_strndup (&string[start], end - start);
-
-  return match;
-}
-
-/**
- * g_regex_fetch_pos:
- * @regex: #GRegex structure used in last match
- * @match_num: number of the sub expression
- * @start_pos: pointer to location where to store the start position
- * @end_pos: pointer to location where to store the end position
- *
- * Retrieves the position of the @match_num<!-- -->'th capturing parentheses.
- * 0 is the full text of the match, 1 is the first paren set, 2 the second,
- * and so on.
- *
- * If @match_num is a valid sub pattern but it didn't match anything (e.g.
- * sub pattern 1, matching "b" against "(a)?b") then @start_pos and @end_pos
- * are set to -1 and %TRUE is returned.
- *
- * If the last match was obtained using the DFA algorithm, that is using
- * g_regex_match_all() or g_regex_match_all_full(), the retrieved
- * position is not that of a set of parentheses but that of a matched
- * substring. Substrings are matched in reverse order of length, so 0 is
- * the longest match.
- *
- * Returns: %TRUE if the position was fetched, %FALSE otherwise. If the
- *          position cannot be fetched, @start_pos and @end_pos are left
- *          unchanged.
- *
- * Since: 2.14
- */
-gboolean
-g_regex_fetch_pos (const GRegex *regex,
-		   gint          match_num,
-		   gint         *start_pos,
-		   gint         *end_pos)
-{
-  g_return_val_if_fail (regex != NULL, FALSE);
-  g_return_val_if_fail (match_num >= 0, FALSE);
- 
-  if (regex->match == NULL)
-    return FALSE;
-
-  /* make sure the sub expression number they're requesting is less than
-   * the total number of sub expressions that were matched. */
-  if (match_num >= regex->match->matches)
-    return FALSE;
-
-  if (start_pos != NULL)
-    *start_pos = regex->match->offsets[2 * match_num];
-
-  if (end_pos != NULL)
-    *end_pos = regex->match->offsets[2 * match_num + 1];
-
-  return TRUE;
-}
-
-/**
- * g_regex_fetch_named:
- * @regex: #GRegex structure used in last match
- * @name: name of the subexpression
- * @string: the string on which the last match was made
- *
- * Retrieves the text matching the capturing parentheses named @name.
- *
- * If @name is a valid sub pattern name but it didn't match anything (e.g.
- * sub pattern "X", matching "b" against "(?P&lt;X&gt;a)?b") then an empty
- * string is returned.
- *
- * Returns: The matched substring, or %NULL if an error occurred.
- *          You have to free the string yourself.
- *
- * Since: 2.14
- */
-gchar *
-g_regex_fetch_named (const GRegex *regex,
-		     const gchar  *name,
-		     const gchar  *string)
-{
-  /* we cannot use pcre_get_named_substring() because it allocates the
-   * string using pcre_malloc(). */
-  gint num;
-
-  g_return_val_if_fail (regex != NULL, NULL);
-  g_return_val_if_fail (string != NULL, NULL);
-  g_return_val_if_fail (name != NULL, NULL);
-
-  num = g_regex_get_string_number (regex, name);
-  if (num == -1)
-    return NULL;
-  else
-    return g_regex_fetch (regex, num, string);
-}
-
-/**
- * g_regex_fetch_named_pos:
- * @regex: #GRegex structure used in last match
- * @name: name of the subexpression
- * @start_pos: pointer to location where to store the start position
- * @end_pos: pointer to location where to store the end position
- *
- * Retrieves the position of the capturing parentheses named @name.
- *
- * If @name is a valid sub pattern name but it didn't match anything (e.g.
- * sub pattern "X", matching "b" against "(?P&lt;X&gt;a)?b") then @start_pos and
- * @end_pos are set to -1 and %TRUE is returned.
- *
- * Returns: %TRUE if the position was fetched, %FALSE otherwise. If the
- *          position cannot be fetched, @start_pos and @end_pos are left
- *          unchanged.
- *
- * Since: 2.14
- */
-gboolean
-g_regex_fetch_named_pos (const GRegex *regex,
-			 const gchar  *name,
-			 gint         *start_pos,
-			 gint         *end_pos)
-{
-  gint num;
-
-  num = g_regex_get_string_number (regex, name);
-  if (num == -1)
-    return FALSE;
-
-  return g_regex_fetch_pos (regex, num, start_pos, end_pos);
-}
-
-/**
- * g_regex_fetch_all:
- * @regex: a #GRegex structure
- * @string: the string on which the last match was made
- *
- * Bundles up pointers to each of the matching substrings from a match
- * and stores them in an array of gchar pointers. The first element in
- * the returned array is the match number 0, i.e. the entire matched
- * text.
- *
- * If a sub pattern didn't match anything (e.g. sub pattern 1, matching
- * "b" against "(a)?b") then an empty string is inserted.
- *
- * If the last match was obtained using the DFA algorithm, that is using
- * g_regex_match_all() or g_regex_match_all_full(), the retrieved
- * strings are not that matched by sets of parentheses but that of the
- * matched substring. Substrings are matched in reverse order of length,
- * so the first one is the longest match.
- *
- * Returns: a %NULL-terminated array of gchar * pointers. It must be freed
- *          using g_strfreev(). If the memory can't be allocated, returns
- *          %NULL.
- *
- * Since: 2.14
- */
-gchar **
-g_regex_fetch_all (const GRegex *regex,
-		   const gchar  *string)
-{
-  /* we cannot use pcre_get_substring_list() because the returned value
-   * isn't suitable for g_strfreev(). */
-  gchar **result;
-  gint i;
-
-  g_return_val_if_fail (regex != NULL, FALSE);
-  g_return_val_if_fail (string != NULL, FALSE);
-
-  if (regex->match == NULL)
-    return NULL;
-
-  if (regex->match->matches < 0)
-    return NULL;
-
-  result = g_new (gchar *, regex->match->matches + 1);
-  for (i = 0; i < regex->match->matches; i++)
-    result[i] = g_regex_fetch (regex, i, string);
-  result[i] = NULL;
-
-  return result;
+  return info->matches >= 0;
 }
 
 /**
@@ -1244,7 +1202,7 @@ g_regex_fetch_all (const GRegex *regex,
  *
  * Retrieves the number of the subexpression named @name.
  *
- * Returns: The number of the subexpression or -1 if @name does not exists.
+ * Returns: The number of the subexpression or -1 if @name does not exists
  *
  * Since: 2.14
  */
@@ -1257,7 +1215,7 @@ g_regex_get_string_number (const GRegex *regex,
   g_return_val_if_fail (regex != NULL, -1);
   g_return_val_if_fail (name != NULL, -1);
 
-  num = pcre_get_stringnumber (regex->pattern->pcre_re, name);
+  num = pcre_get_stringnumber (regex->pcre_re, name);
   if (num == PCRE_ERROR_NOSUBSTRING)
     num = -1;
 
@@ -1298,7 +1256,7 @@ g_regex_get_string_number (const GRegex *regex,
  * For example splitting "ab c" using as a separator "\s*", you will get
  * "a", "b" and "c".
  *
- * Returns: a %NULL-terminated gchar ** array. Free it using g_strfreev().
+ * Returns: a %NULL-terminated gchar ** array. Free it using g_strfreev()
  *
  * Since: 2.14
  **/
@@ -1343,12 +1301,12 @@ g_regex_split_simple (const gchar        *pattern,
  * For example splitting "ab c" using as a separator "\s*", you will get
  * "a", "b" and "c".
  *
- * Returns: a %NULL-terminated gchar ** array. Free it using g_strfreev().
+ * Returns: a %NULL-terminated gchar ** array. Free it using g_strfreev()
  *
  * Since: 2.14
  **/
 gchar **
-g_regex_split (GRegex           *regex, 
+g_regex_split (const GRegex     *regex, 
 	       const gchar      *string, 
 	       GRegexMatchFlags  match_options)
 {
@@ -1364,7 +1322,7 @@ g_regex_split (GRegex           *regex,
  * @start_position: starting index of the string to match
  * @match_options: match time option flags
  * @max_tokens: the maximum number of tokens to split @string into. If this
- *    is less than 1, the string is split completely.
+ *    is less than 1, the string is split completely
  * @error: return location for a #GError
  *
  * Breaks the string on the pattern, and returns an array of the tokens.
@@ -1389,12 +1347,12 @@ g_regex_split (GRegex           *regex,
  * and  setting #G_REGEX_MATCH_NOTBOL in the case of a pattern that begins
  * with any kind of lookbehind assertion, such as "\b".
  *
- * Returns: a %NULL-terminated gchar ** array. Free it using g_strfreev().
+ * Returns: a %NULL-terminated gchar ** array. Free it using g_strfreev()
  *
  * Since: 2.14
  **/
 gchar **
-g_regex_split_full (GRegex           *regex, 
+g_regex_split_full (const GRegex     *regex, 
 		    const gchar      *string, 
 		    gssize            string_len,
 		    gint              start_position,
@@ -1402,11 +1360,18 @@ g_regex_split_full (GRegex           *regex,
 		    gint              max_tokens,
 		    GError          **error)
 {
-  gchar **string_list;		/* The array of char **s worked on */
-  gint pos;
-  gint tokens;
-  GList *list, *last;
   GError *tmp_error = NULL;
+  GMatchInfo *match_info;
+  GList *list, *last;
+  gint i;
+  gint token_count;
+  gboolean match_ok;
+  /* position of the last separator. */
+  gint last_separator_end;
+  /* was the last match 0 bytes long? */
+  gboolean last_match_is_empty;
+  /* the returned array of char **s */
+  gchar **string_list;
 
   g_return_val_if_fail (regex != NULL, NULL);
   g_return_val_if_fail (string != NULL, NULL);
@@ -1414,254 +1379,127 @@ g_regex_split_full (GRegex           *regex,
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
   g_return_val_if_fail ((match_options & ~G_REGEX_MATCH_MASK) == 0, NULL);
 
-  regex_lazy_init_match (regex, 0);
-
   if (max_tokens <= 0)
     max_tokens = G_MAXINT;
 
   if (string_len < 0)
     string_len = strlen (string);
 
+  /* zero-length string */
   if (string_len - start_position == 0)
     return g_new0 (gchar *, 1);
 
-  /* clear out the regex for reuse, just in case */
-  g_regex_clear (regex);
+  if (max_tokens == 1)
+    {
+      string_list = g_new0 (gchar *, 2);
+      string_list[0] = g_strndup (&string[start_position],
+				  string_len - start_position);
+      return string_list;
+    }
 
   list = NULL;
-  tokens = 0;
-  while (TRUE)
+  token_count = 0;
+  last_separator_end = start_position;
+  last_match_is_empty = FALSE;
+
+  match_ok = g_regex_match_full (regex, string, string_len, start_position,
+				 match_options, &match_info, &tmp_error);
+  while (tmp_error == NULL)
     {
-      gchar *token;
+      if (match_ok)
+        {
+          last_match_is_empty =
+                    (match_info->offsets[0] == match_info->offsets[1]);
+
+          /* we need to skip empty separators at the same position of the end
+           * of another separator. e.g. the string is "a b" and the separator
+           * is " *", so from 1 to 2 we have a match and at position 2 we have
+           * an empty match. */
+          if (last_separator_end != match_info->offsets[1])
+            {
+              gchar *token;
+              gint match_count;
+
+              token = g_strndup (string + last_separator_end,
+				 match_info->offsets[0] - last_separator_end);
+              list = g_list_prepend (list, token);
+              token_count++;
+
+              /* if there were substrings, these need to be added to
+               * the list. */
+              match_count = g_match_info_get_match_count (match_info);
+              if (match_count > 1)
+                {
+                  for (i = 1; i < match_count; i++)
+                    list = g_list_prepend (list, g_match_info_fetch (match_info, i));
+                }
+            }
+        }
+      else
+        {
+          /* if there was no match, copy to end of string. */
+          if (!last_match_is_empty)
+            {
+              gchar *token = g_strndup (string + last_separator_end,
+					match_info->string_len - last_separator_end);
+              list = g_list_prepend (list, token);
+            }
+          /* no more tokens, end the loop. */
+          break;
+        }
 
       /* -1 to leave room for the last part. */
-      if (tokens >= max_tokens - 1)
+      if (token_count >= max_tokens - 1)
 	{
 	  /* we have reached the maximum number of tokens, so we copy
 	   * the remaining part of the string. */
-	  if (regex->match->last_match_is_empty)
+	  if (last_match_is_empty)
 	    {
 	      /* the last match was empty, so we have moved one char
 	       * after the real position to avoid empty matches at the
 	       * same position. */
-	      regex->match->pos = PREV_CHAR (regex, &string[regex->match->pos]) - string;
+	      match_info->pos = PREV_CHAR (regex, &string[match_info->pos]) - string;
 	    }
 	  /* the if is needed in the case we have terminated the available
 	   * tokens, but we are at the end of the string, so there are no
 	   * characters left to copy. */
-	  if (string_len > regex->match->pos)
+	  if (string_len > match_info->pos)
 	    {
-	      token = g_strndup (string + regex->match->pos,
-				 string_len - regex->match->pos);
+	      gchar *token = g_strndup (string + match_info->pos,
+					string_len - match_info->pos);
 	      list = g_list_prepend (list, token);
 	    }
 	  /* end the loop. */
 	  break;
 	}
 
-      token = g_regex_split_next_full (regex, string, string_len, start_position,
-                                       match_options, &tmp_error);
-      if (tmp_error != NULL)
-	{
-	  g_propagate_error (error, tmp_error);
-	  g_list_foreach (list, (GFunc)g_free, NULL);
-	  g_list_free (list);
-	  regex->match->pos = -1;
-	  return NULL;
-	}
+      last_separator_end = match_info->pos;
+      if (last_match_is_empty)
+        /* if the last match was empty, g_match_info_next() has moved
+         * forward to avoid infinite loops, but we still need to copy that
+         * character. */
+        last_separator_end = PREV_CHAR (regex, &string[last_separator_end]) - string;
 
-      if (token == NULL)
-	/* no more tokens. */
-	break;
-
-      tokens++;
-      list = g_list_prepend (list, token);
+      match_ok = g_match_info_next (match_info, &tmp_error);
     }
-
-  string_list = g_new (gchar *, g_list_length (list) + 1);
-  pos = 0;
-  for (last = g_list_last (list); last; last = g_list_previous (last))
-    string_list[pos++] = last->data;
-  string_list[pos] = 0;
-
-  regex->match->pos = -1;
-  g_list_free (list);
-
-  return string_list;
-}
-
-/**
- * g_regex_split_next:
- * @regex: a #GRegex structure from g_regex_new()
- * @string: the string to split on pattern
- * @match_options: match time options for the regex
- *
- * g_regex_split_next() breaks the string on pattern, and returns the
- * tokens, one per call.  If the pattern contains capturing parentheses,
- * then the text for each of the substrings will also be returned.
- * If the pattern does not match anywhere in the string, then the whole
- * string is returned as the first token.
- *
- * A pattern that can match empty strings splits @string into separate
- * characters wherever it matches the empty string between characters.
- * For example splitting "ab c" using as a separator "\s*", you will get
- * "a", "b" and "c".
- *
- * You have to call g_regex_clear() to reuse the same pattern on a new
- * string.
- *
- * Returns:  a gchar * to the next token of the string
- *
- * Since: 2.14
- */
-gchar *
-g_regex_split_next (GRegex          *regex,
-		    const gchar     *string,
-		    GRegexMatchFlags match_options)
-{
-  return g_regex_split_next_full (regex, string, -1, 0, match_options,
-                                  NULL);
-}
-
-/**
- * g_regex_split_next_full:
- * @regex: a #GRegex structure from g_regex_new()
- * @string: the string to split on pattern
- * @string_len: the length of @string, or -1 if @string is nul-terminated
- * @start_position: starting index of the string to match
- * @match_options: match time options for the regex
- * @error: return location for a #GError
- *
- * g_regex_split_next_full() breaks the string on pattern, and returns
- * the tokens, one per call.  If the pattern contains capturing parentheses,
- * then the text for each of the substrings will also be returned.
- * If the pattern does not match anywhere in the string, then the whole
- * string is returned as the first token.
- *
- * A pattern that can match empty strings splits @string into separate
- * characters wherever it matches the empty string between characters.
- * For example splitting "ab c" using as a separator "\s*", you will get
- * "a", "b" and "c".
- *
- * You have to call g_regex_clear() to reuse the same pattern on a new
- * string.
- *
- * Setting @start_position differs from just passing over a shortened string
- * and  setting #G_REGEX_MATCH_NOTBOL in the case of a pattern that begins
- * with any kind of lookbehind assertion, such as "\b".
- *
- * Returns:  a gchar * to the next token of the string
- *
- * Since: 2.14
- */
-gchar *
-g_regex_split_next_full (GRegex          *regex,
-			 const gchar     *string,
-			 gssize           string_len,
-			 gint             start_position,
-			 GRegexMatchFlags match_options,
-			 GError         **error)
-{
-  gint new_pos;
-  gchar *token = NULL;
-  gboolean match_ok;
-  gint match_count;
-  GError *tmp_error = NULL;
-
-  g_return_val_if_fail (regex != NULL, NULL);
-  g_return_val_if_fail (string != NULL, NULL);
-  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
-  g_return_val_if_fail ((match_options & ~G_REGEX_MATCH_MASK) == 0, NULL);
-
-  regex_lazy_init_match (regex, 0);
-
-  new_pos = MAX (regex->match->pos, start_position);
-  if (regex->match->last_match_is_empty)
-    /* if the last match was empty, g_regex_match_next_full() has moved
-     * forward to avoid infinite loops, but we still need to copy that
-     * character. */
-    new_pos = PREV_CHAR (regex, &string[new_pos]) - string;
-
-  /* if there are delimiter substrings stored, return those one at a
-   * time.  
-   */
-  if (regex->match->delims != NULL)
-    {
-      token = regex->match->delims->data;
-      regex->match->delims = g_slist_remove (regex->match->delims, token);
-      return token;
-    }
-
-  if (regex->match->pos == -1)
-    /* the last call to g_regex_match_next_full() returned NULL. */
-    return NULL;
-
-  if (regex->match->string_len < 0)
-    {
-      regex->match->last_match_is_empty = FALSE;
-      /* initialize last_separator_end to start_position to skip the
-       * empty token at the beginning of the string. */
-      regex->match->last_separator_end = start_position;
-    }
-
-  /* use g_regex_match_next() to find the next occurance of the pattern
-   * in the string. We use new_pos to keep track of where the stuff
-   * up to the current match starts. Copy that token of the string off
-   * and append it to the buffer using g_strndup. */
-  match_ok = g_regex_match_next_full (regex, string, string_len,
-                                      start_position, match_options,
-                                      &tmp_error);
+  g_match_info_free (match_info);
   if (tmp_error != NULL)
     {
       g_propagate_error (error, tmp_error);
+      g_list_foreach (list, (GFunc)g_free, NULL);
+      g_list_free (list);
+      match_info->pos = -1;
       return NULL;
     }
 
-  if (match_ok)
-    {
-      regex->match->last_match_is_empty =
-		(regex->match->offsets[0] == regex->match->offsets[1]);
+  string_list = g_new (gchar *, g_list_length (list) + 1);
+  i = 0;
+  for (last = g_list_last (list); last; last = g_list_previous (last))
+    string_list[i++] = last->data;
+  string_list[i] = 0;
+  g_list_free (list);
 
-      /* we need to skip empty separators at the same position of the end
-       * of another separator. e.g. the string is "a b" and the separator
-       * is "*", so from 1 to 2 we have a match and at position 2 we have
-       * an empty match. */
-      if (regex->match->last_separator_end != regex->match->offsets[1])
-	{
-	  token = g_strndup (string + new_pos, regex->match->offsets[0] - new_pos);
-
-	  /* if there were substrings, these need to get added to the
-	   * list of delims */
-	  match_count = g_regex_get_match_count (regex);
-	  if (match_count > 1)
-	    {
-	      gint i;
-	      for (i = 1; i < match_count; i++)
-		regex->match->delims = g_slist_append (regex->match->delims,
-						       g_regex_fetch (regex, i, string));
-	    }
-
-	  regex->match->last_separator_end = regex->match->offsets[1];
-	}
-      else
-	{
-	  /* we have skipped an empty separator so we need to find the
-	   * next match. */
-	  return g_regex_split_next_full (regex, string, string_len,
-	                                  start_position, match_options,
-	                                  error);
-	}
-    }
-  else
-    {
-      /* if there was no match, copy to end of string. */
-      if (!regex->match->last_match_is_empty)
-	token = g_strndup (string + new_pos, regex->match->string_len - new_pos);
-      else
-	token = NULL;
-    }
-
-  return token;
+  return string_list;
 }
 
 enum
@@ -1685,14 +1523,14 @@ typedef enum
   CHANGE_CASE_UPPER_MASK   = CHANGE_CASE_UPPER | CHANGE_CASE_UPPER_SINGLE
 } ChangeCase;
 
-typedef struct 
+struct _InterpolationData
 {
   gchar     *text;   
   gint       type;   
   gint       num;
   gchar      c;
   ChangeCase change_case;
-} InterpolationData;
+};
 
 static void
 free_interpolation_data (InterpolationData *data)
@@ -2037,10 +1875,11 @@ string_append (GString     *string,
 }
 
 static gboolean
-interpolate_replacement (const GRegex *regex,
-			 const gchar  *string,
-			 GString      *result,
-			 gpointer      data)
+interpolate_replacement (const GRegex     *regex,
+			 const GMatchInfo *match_info,
+			 const gchar      *string,
+			 GString          *result,
+			 gpointer          data)
 {
   GList *list;
   InterpolationData *idata;
@@ -2061,16 +1900,16 @@ interpolate_replacement (const GRegex *regex,
             change_case = CHANGE_CASE_NONE;
 	  break;
 	case REPL_TYPE_NUMERIC_REFERENCE:
-	  match = g_regex_fetch (regex, idata->num, string);
-	  if (match) 
+	  match = g_match_info_fetch (match_info, idata->num);
+	  if (match)
 	    {
 	      string_append (result, match, &change_case);
 	      g_free (match);
 	    }
 	  break;
 	case REPL_TYPE_SYMBOLIC_REFERENCE:
-	  match = g_regex_fetch_named (regex, idata->text, string);
-	  if (match) 
+	  match = g_match_info_fetch_named (match_info, idata->text);
+	  if (match)
 	    {
 	      string_append (result, match, &change_case);
 	      g_free (match);
@@ -2083,55 +1922,6 @@ interpolate_replacement (const GRegex *regex,
     }
 
   return FALSE; 
-}
-
-/**
- * g_regex_expand_references:
- * @regex: #GRegex structure used in last match
- * @string: the string on which the last match was made
- * @string_to_expand: the string to expand
- * @error: location to store the error occuring, or %NULL to ignore errors
- *
- * Returns a new string containing the text in @string_to_expand with
- * references expanded. References refer to the last match done with
- * @string against @regex and have the same syntax used by g_regex_replace().
- *
- * The @string_to_expand must be UTF-8 encoded even if #G_REGEX_RAW was
- * passed to g_regex_new().
- *
- * Returns: the expanded string, or %NULL if an error occurred
- *
- * Since: 2.14
- */
-gchar *
-g_regex_expand_references (GRegex            *regex, 
-			   const gchar       *string, 
-			   const gchar       *string_to_expand,
-			   GError           **error)
-{
-  GString *result;
-  GList *list;
-  GError *tmp_error = NULL;
-
-  g_return_val_if_fail (regex != NULL, NULL);
-  g_return_val_if_fail (string != NULL, NULL);
-  g_return_val_if_fail (string_to_expand != NULL, NULL);
-  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
-
-  list = split_replacement (string_to_expand, &tmp_error);
-  if (tmp_error != NULL)
-    {
-      g_propagate_error (error, tmp_error);
-      return NULL;
-    }
-
-  result = g_string_sized_new (strlen (string_to_expand));
-  interpolate_replacement (regex, string, result, list);
-
-  g_list_foreach (list, (GFunc)free_interpolation_data, NULL);
-  g_list_free (list);
-
-  return g_string_free (result, FALSE);
 }
 
 /**
@@ -2196,7 +1986,7 @@ g_regex_expand_references (GRegex            *regex,
  * Since: 2.14
  */
 gchar *
-g_regex_replace (GRegex            *regex, 
+g_regex_replace (const GRegex      *regex, 
 		 const gchar       *string, 
 		 gssize             string_len,
 		 gint               start_position,
@@ -2238,10 +2028,11 @@ g_regex_replace (GRegex            *regex,
 }
 
 static gboolean
-literal_replacement (const GRegex *regex,
-		     const gchar  *string,
-		     GString      *result,
-		     gpointer      data)
+literal_replacement (const GRegex     *regex,
+		     const GMatchInfo *match_info,
+		     const gchar      *string,
+		     GString          *result,
+		     gpointer          data)
 {
   g_string_append (result, data);
   return FALSE;
@@ -2270,7 +2061,7 @@ literal_replacement (const GRegex *regex,
  * Since: 2.14
  */
 gchar *
-g_regex_replace_literal (GRegex          *regex,
+g_regex_replace_literal (const GRegex    *regex,
 			 const gchar     *string,
 			 gssize           string_len,
 			 gint             start_position,
@@ -2312,7 +2103,7 @@ g_regex_replace_literal (GRegex          *regex,
  * Since: 2.14
  */
 gchar *
-g_regex_replace_eval (GRegex            *regex,
+g_regex_replace_eval (const GRegex      *regex,
 		      const gchar       *string,
 		      gssize             string_len,
 		      gint               start_position,
@@ -2321,6 +2112,7 @@ g_regex_replace_eval (GRegex            *regex,
 		      gpointer           user_data,
 		      GError           **error)
 {
+  GMatchInfo *match_info;
   GString *result;
   gint str_pos = 0;
   gboolean done = FALSE;
@@ -2332,28 +2124,24 @@ g_regex_replace_eval (GRegex            *regex,
   g_return_val_if_fail (eval != NULL, NULL);
   g_return_val_if_fail ((match_options & ~G_REGEX_MATCH_MASK) == 0, NULL);
 
-  regex_lazy_init_match (regex, 0);
-
   if (string_len < 0)
     string_len = strlen (string);
-
-  /* clear out the regex for reuse, just in case */
-  g_regex_clear (regex);
 
   result = g_string_sized_new (string_len);
 
   /* run down the string making matches. */
-  while (!done &&
-	 g_regex_match_next_full (regex, string, string_len,
-				  start_position, match_options, &tmp_error))
+  g_regex_match_full (regex, string, string_len, start_position,
+		      match_options, &match_info, &tmp_error);
+  while (!done && g_match_info_matches (match_info))
     {
       g_string_append_len (result,
 			   string + str_pos,
-			   regex->match->offsets[0] - str_pos);
-      done = (*eval) (regex, string, result, user_data);
-      str_pos = regex->match->offsets[1];
+			   match_info->offsets[0] - str_pos);
+      done = (*eval) (regex, match_info, string, result, user_data);
+      str_pos = match_info->offsets[1];
+      g_match_info_next (match_info, &tmp_error);
     }
-
+  g_match_info_free (match_info);
   if (tmp_error != NULL)
     {
       g_propagate_error (error, tmp_error);
@@ -2362,7 +2150,6 @@ g_regex_replace_eval (GRegex            *regex,
     }
 
   g_string_append_len (result, string + str_pos, string_len - str_pos);
-
   return g_string_free (result, FALSE);
 }
 
