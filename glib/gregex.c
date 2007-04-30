@@ -874,6 +874,50 @@ g_regex_get_pattern (const GRegex *regex)
 }
 
 /**
+ * g_regex_get_max_backref:
+ * @regex: a #GRegex
+ *  
+ * Returns the number of the highest back reference
+ * in the pattern, or 0 if the pattern does not contain
+ * back references.
+ *
+ * Returns: the number of the highest back reference.
+ *
+ * Since: 2.14
+ */
+gint
+g_regex_get_max_backref (const GRegex *regex)
+{
+  gint value;
+
+  pcre_fullinfo (regex->pcre_re, regex->extra,
+		 PCRE_INFO_BACKREFMAX, &value);
+
+  return value;
+}
+
+/**
+ * g_regex_get_capture_count:
+ * @regex: a #GRegex
+ *
+ * Returns the number of capturing subpatterns in the pattern.
+ *
+ * Returns: the number of capturing subpatterns.
+ *
+ * Since: 2.14
+ */
+gint
+g_regex_get_capture_count (const GRegex *regex)
+{
+  gint value;
+
+  pcre_fullinfo (regex->pcre_re, regex->extra,
+		 PCRE_INFO_CAPTURECOUNT, &value);
+
+  return value;
+}
+
+/**
  * g_regex_match_simple:
  * @pattern: the regular expression
  * @string: the string to scan for matches

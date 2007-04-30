@@ -1,6 +1,12 @@
 2007-04-30  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/glib.symbols:
+	* glib/gregex.[hc]: Add g_regex_get_max_backref() and
+	g_regex_get_capture_count().  (#419371, Marco Barisione)
+	
+2007-04-30  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/glib.symbols:
 	* glib/gregex.[hc]: Split GRegex into GRegex and GMatchInfo.
 	(#419368, Marco Barisione)
 

@@ -875,6 +875,8 @@ GRegexEvalCallback
 g_regex_new
 g_regex_free
 g_regex_get_pattern
+g_regex_get_max_backref
+g_regex_get_capture_count
 g_regex_get_string_number
 g_regex_escape_string
 g_regex_match_simple

@@ -1,5 +1,9 @@
 2007-04-30  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/glib-sections.txt: Add new regex functions
+
+2007-04-30  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/glib-sections.txt: 
 	* glib/tmpl/gregex.sgml: Update for the GRegex/GMatchInfo
 	split.

@@ -90,6 +90,8 @@ GRegex		 *g_regex_new			(const gchar         *pattern,
 						 GError             **error);
 void		  g_regex_free			(GRegex              *regex);
 const gchar	 *g_regex_get_pattern		(const GRegex        *regex);
+gint		  g_regex_get_max_backref	(const GRegex        *regex);
+gint		  g_regex_get_capture_count	(const GRegex        *regex);
 gint		  g_regex_get_string_number	(const GRegex        *regex, 
 						 const gchar         *name);
 gchar		 *g_regex_escape_string		(const gchar         *string,
