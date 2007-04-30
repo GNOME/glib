@@ -47,6 +47,7 @@
 #include "gmarkup.h"
 #include "gmem.h"
 #include "gmessages.h"
+#include "gshell.h"
 #include "gslice.h"
 #include "gstdio.h"
 #include "gstring.h"
@@ -3391,7 +3392,7 @@ g_bookmark_file_get_app_info (GBookmarkFile  *bookmark,
       command_line = g_shell_unquote (ai->exec, &unquote_error);
       if (unquote_error)
         {
-          g_propagate_error (unquote_error, error);
+          g_propagate_error (error, unquote_error);
           return FALSE;
         }
 
