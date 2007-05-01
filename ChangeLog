@@ -1,5 +1,7 @@
 2007-05-01  Matthias Clasen  <mclasen@redhat.com>
 
+	* configure.in: Bump version
+
 	* === Released 2.12.12 ===
 
 	* configure.in: Bump version
