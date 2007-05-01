@@ -1,3 +1,17 @@
+Overview of Changes from GLib 2.12.11 to GLib 2.12.12
+=====================================================
+
+* Bug fixes:
+ 418862 g_base64_decode will give critical warning when first par...
+ 356843 "make check" fails if /bin/sh is pdksh
+ 418217 g_unichar_toupper/_totitle broken for single to multiple ...
+ 432895 param_string_validate() frees and modifies static strings
+ 420686 g_key_file_to_data alters original data 
+
+* Translation updates: (da,es,eu,gl,ja,ro,ru,sr,
+  sr@Latn,ta,zh_CN)
+
+
 Overview of Changes from GLib 2.12.10 to GLib 2.12.11
 =====================================================
 

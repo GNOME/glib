@@ -1,3 +1,7 @@
+2007-05-01  Matthias Clasen  <mclasen@redhat.com>
+
+	* NEWS: Updates
+
 2007-04-27  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gstdio.c (g_mkdir): Document that the mode argument is
