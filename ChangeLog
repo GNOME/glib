@@ -1,5 +1,9 @@
 2007-05-01  Matthias Clasen  <mclasen@redhat.com>
 
+	* === Released 2.12.12 ===
+
+	* configure.in: Bump version
+
 	* NEWS: Updates
 
 2007-04-27  Tor Lillqvist  <tml@novell.com>

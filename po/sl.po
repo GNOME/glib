@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-08 23:30-0500\n"
+"POT-Creation-Date: 2007-05-01 19:30-0400\n"
 "PO-Revision-Date: 2007-01-16 11:40+0100\n"
 "Last-Translator: Matej Urbančič <matej.urban@gmail.com>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
@@ -710,22 +710,22 @@ msgstr "Manjka argument za %s"
 msgid "Unknown option %s"
 msgstr "Neznana možnost %s"
 
-#: glib/gkeyfile.c:341
+#: glib/gkeyfile.c:342
 #, c-format
 msgid "Valid key file could not be found in data dirs"
 msgstr "V podatkovnih mapah ni bilo moč najti veljavne datoteke s ključem"
 
-#: glib/gkeyfile.c:376
+#: glib/gkeyfile.c:377
 #, c-format
 msgid "Not a regular file"
 msgstr "Ni običajna datoteka"
 
-#: glib/gkeyfile.c:384
+#: glib/gkeyfile.c:385
 #, c-format
 msgid "File is empty"
 msgstr "Datoteka je prazna"
 
-#: glib/gkeyfile.c:700
+#: glib/gkeyfile.c:701
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
@@ -733,50 +733,50 @@ msgstr ""
 "Datoteka s ključem vsebuje vrstico '%s', ki ni par, skupina ali komentar "
 "vrednosti ključev"
 
-#: glib/gkeyfile.c:758
+#: glib/gkeyfile.c:762
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "Neveljavno ime skupine: %s"
 
-#: glib/gkeyfile.c:780
+#: glib/gkeyfile.c:784
 #, c-format
 msgid "Key file does not start with a group"
 msgstr "Datoteka s ključem se ze začne s skupino"
 
-#: glib/gkeyfile.c:806
+#: glib/gkeyfile.c:810
 #, c-format
 msgid "Invalid key name: %s"
 msgstr "Neveljavno ime ključa: %s"
 
-#: glib/gkeyfile.c:833
+#: glib/gkeyfile.c:837
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "Datoteka s ključem vsebuje nepodprto kodiranje '%s'"
 
-#: glib/gkeyfile.c:1042 glib/gkeyfile.c:1201 glib/gkeyfile.c:2402
-#: glib/gkeyfile.c:2469 glib/gkeyfile.c:2590 glib/gkeyfile.c:2725
-#: glib/gkeyfile.c:2878 glib/gkeyfile.c:3058 glib/gkeyfile.c:3115
+#: glib/gkeyfile.c:1050 glib/gkeyfile.c:1209 glib/gkeyfile.c:2410
+#: glib/gkeyfile.c:2477 glib/gkeyfile.c:2598 glib/gkeyfile.c:2733
+#: glib/gkeyfile.c:2886 glib/gkeyfile.c:3066 glib/gkeyfile.c:3124
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Datoteka s ključem nima skupina '%s'"
 
-#: glib/gkeyfile.c:1213
+#: glib/gkeyfile.c:1221
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "Datoteka s ključem nima ključa '%s'"
 
-#: glib/gkeyfile.c:1315 glib/gkeyfile.c:1425
+#: glib/gkeyfile.c:1323 glib/gkeyfile.c:1433
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "Datoteka s ključem vsebuje ključ '%s' z vrednostjo '%s', ki ni UTF-8"
 
-#: glib/gkeyfile.c:1335 glib/gkeyfile.c:1445 glib/gkeyfile.c:1813
+#: glib/gkeyfile.c:1343 glib/gkeyfile.c:1453 glib/gkeyfile.c:1821
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr ""
 "Datoteka s ključem vsebuje ključ '%s' z vrednostjo, ki je ni moč obravnavati."
 
-#: glib/gkeyfile.c:2025 glib/gkeyfile.c:2234
+#: glib/gkeyfile.c:2033 glib/gkeyfile.c:2242
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -785,37 +785,37 @@ msgstr ""
 "Datoteka s ključem vsebuje ključ '%s' v skupini '%s' z vrednostjo, ki je ni "
 "moč obravnavati."
 
-#: glib/gkeyfile.c:2417 glib/gkeyfile.c:2605 glib/gkeyfile.c:3126
+#: glib/gkeyfile.c:2425 glib/gkeyfile.c:2613 glib/gkeyfile.c:3135
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Datoteka s ključem nima ključa '%s' v skupini '%s'"
 
-#: glib/gkeyfile.c:3365
+#: glib/gkeyfile.c:3374
 #, c-format
 msgid "Key file contains escape character at end of line"
 msgstr "Datoteka s ključem vsebuje ubežni znak na koncu vrstice"
 
-#: glib/gkeyfile.c:3387
+#: glib/gkeyfile.c:3396
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "Datoteka s ključem vsebuje neveljavne ubežne znake '%s'"
 
-#: glib/gkeyfile.c:3529
+#: glib/gkeyfile.c:3538
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Vrednosti '%s' ni moč obravnavati kot število."
 
-#: glib/gkeyfile.c:3543
+#: glib/gkeyfile.c:3552
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "Celoštevilska vrednost '%s' izven obsega"
 
-#: glib/gkeyfile.c:3576
+#: glib/gkeyfile.c:3585
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "Vrednosti '%s' ni moč obravnavati kot število s plavajočo vejico."
 
-#: glib/gkeyfile.c:3603
+#: glib/gkeyfile.c:3612
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Vrednosti '%s' ni moč obravnavati kot Boolovo vrednost."

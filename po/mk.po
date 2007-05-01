@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.glib-2-12\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-08 23:30-0500\n"
+"POT-Creation-Date: 2007-05-01 19:30-0400\n"
 "PO-Revision-Date: 2007-03-06 10:41+0100\n"
 "Last-Translator: Arangel Angov <arangel@linux.net.mk>\n"
 "Language-Team: Macedonian <ossm-members@hedona.on.net.mk>\n"
@@ -722,24 +722,24 @@ msgstr "Недостига аргумент за %s"
 msgid "Unknown option %s"
 msgstr "Непозната опција '%s'·"
 
-#: glib/gkeyfile.c:341
+#: glib/gkeyfile.c:342
 #, c-format
 msgid "Valid key file could not be found in data dirs"
 msgstr ""
 "Валидната клучна датотека неможе да биде пронајдена во директориумите со "
 "податоци"
 
-#: glib/gkeyfile.c:376
+#: glib/gkeyfile.c:377
 #, c-format
 msgid "Not a regular file"
 msgstr "Не е обична датотека"
 
-#: glib/gkeyfile.c:384
+#: glib/gkeyfile.c:385
 #, c-format
 msgid "File is empty"
 msgstr "Датотеката е празна"
 
-#: glib/gkeyfile.c:700
+#: glib/gkeyfile.c:701
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
@@ -747,52 +747,52 @@ msgstr ""
 "Клучната датотека содржи линија '%s'· која што не е пар на клучна вредност, "
 "група или коментар"
 
-#: glib/gkeyfile.c:758
+#: glib/gkeyfile.c:762
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "Невалидно име на група: %s"
 
-#: glib/gkeyfile.c:780
+#: glib/gkeyfile.c:784
 #, c-format
 msgid "Key file does not start with a group"
 msgstr "Клучната датотека не започнува со група"
 
-#: glib/gkeyfile.c:806
+#: glib/gkeyfile.c:810
 #, c-format
 msgid "Invalid key name: %s"
 msgstr "Невалидно име на клуч: %s"
 
-#: glib/gkeyfile.c:833
+#: glib/gkeyfile.c:837
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "Клучната датотека содржи неподдржан енкодинг '%s'·"
 
-#: glib/gkeyfile.c:1042 glib/gkeyfile.c:1201 glib/gkeyfile.c:2402
-#: glib/gkeyfile.c:2469 glib/gkeyfile.c:2590 glib/gkeyfile.c:2725
-#: glib/gkeyfile.c:2878 glib/gkeyfile.c:3058 glib/gkeyfile.c:3115
+#: glib/gkeyfile.c:1050 glib/gkeyfile.c:1209 glib/gkeyfile.c:2410
+#: glib/gkeyfile.c:2477 glib/gkeyfile.c:2598 glib/gkeyfile.c:2733
+#: glib/gkeyfile.c:2886 glib/gkeyfile.c:3066 glib/gkeyfile.c:3124
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Клучната датотека не ја содржи групата '%s'"
 
-#: glib/gkeyfile.c:1213
+#: glib/gkeyfile.c:1221
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "Клучната датотека не го содржи клучот '%s'"
 
-#: glib/gkeyfile.c:1315 glib/gkeyfile.c:1425
+#: glib/gkeyfile.c:1323 glib/gkeyfile.c:1433
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr ""
 "Клучната датотека го содржи клучот '%s' со вредноста '%s' која што не е UTF-8"
 
-#: glib/gkeyfile.c:1335 glib/gkeyfile.c:1445 glib/gkeyfile.c:1813
+#: glib/gkeyfile.c:1343 glib/gkeyfile.c:1453 glib/gkeyfile.c:1821
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr ""
 "Клучната датотека го содржи клучот '%s' чија што вредност неможе да биде "
 "препознаена."
 
-#: glib/gkeyfile.c:2025 glib/gkeyfile.c:2234
+#: glib/gkeyfile.c:2033 glib/gkeyfile.c:2242
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -801,37 +801,37 @@ msgstr ""
 "Клучната датотека го содржи клучот '%s' во групата '%s' која што има "
 "вредност која што неможе да биде препознаена."
 
-#: glib/gkeyfile.c:2417 glib/gkeyfile.c:2605 glib/gkeyfile.c:3126
+#: glib/gkeyfile.c:2425 glib/gkeyfile.c:2613 glib/gkeyfile.c:3135
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Клучната датотека не содржи клуч во '%s' во групата '%s'"
 
-#: glib/gkeyfile.c:3365
+#: glib/gkeyfile.c:3374
 #, c-format
 msgid "Key file contains escape character at end of line"
 msgstr "Клучната датотека содржи специјални карактери на крајот на линијата"
 
-#: glib/gkeyfile.c:3387
+#: glib/gkeyfile.c:3396
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "Клучната датотека содржи невалидни посебни карактери '%s'"
 
-#: glib/gkeyfile.c:3529
+#: glib/gkeyfile.c:3538
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Вредноста '%s' неможе да биде препознаена како број."
 
-#: glib/gkeyfile.c:3543
+#: glib/gkeyfile.c:3552
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "Целобројната вредност '%s' е надвор од опсегот"
 
-#: glib/gkeyfile.c:3576
+#: glib/gkeyfile.c:3585
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "Вредноста '%s' неможе да биде препознаена како рационален број."
 
-#: glib/gkeyfile.c:3603
+#: glib/gkeyfile.c:3612
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Вредноста '%s' не може да биде препознаена како boolean."

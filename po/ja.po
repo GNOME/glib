@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-13 00:15+0900\n"
+"POT-Creation-Date: 2007-05-01 19:30-0400\n"
 "PO-Revision-Date: 2007-01-06 17:46+0900\n"
 "Last-Translator: Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
@@ -17,279 +17,287 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../glib/gbookmarkfile.c:716 ../glib/gbookmarkfile.c:793
-#: ../glib/gbookmarkfile.c:872 ../glib/gbookmarkfile.c:919
+#: glib/gbookmarkfile.c:716 glib/gbookmarkfile.c:793 glib/gbookmarkfile.c:872
+#: glib/gbookmarkfile.c:919
 #, c-format
 msgid "Unexpected attribute '%s' for element '%s'"
 msgstr "想定外の属性 '%s' (要素 '%s') です"
 
-#: ../glib/gbookmarkfile.c:727 ../glib/gbookmarkfile.c:804
-#: ../glib/gbookmarkfile.c:814 ../glib/gbookmarkfile.c:930
+#: glib/gbookmarkfile.c:727 glib/gbookmarkfile.c:804 glib/gbookmarkfile.c:814
+#: glib/gbookmarkfile.c:930
 #, c-format
 msgid "Attribute '%s' of element '%s' not found"
 msgstr "属性 '%s' (要素 '%s') がありません"
 
-#: ../glib/gbookmarkfile.c:1103 ../glib/gbookmarkfile.c:1168
-#: ../glib/gbookmarkfile.c:1232 ../glib/gbookmarkfile.c:1242
+#: glib/gbookmarkfile.c:1103 glib/gbookmarkfile.c:1168
+#: glib/gbookmarkfile.c:1232 glib/gbookmarkfile.c:1242
 #, c-format
 msgid "Unexpected tag '%s', tag '%s' expected"
 msgstr "想定外のタグ '%s' です (想定していたタグは '%s')"
 
-#: ../glib/gbookmarkfile.c:1128 ../glib/gbookmarkfile.c:1142
-#: ../glib/gbookmarkfile.c:1210 ../glib/gbookmarkfile.c:1262
+#: glib/gbookmarkfile.c:1128 glib/gbookmarkfile.c:1142
+#: glib/gbookmarkfile.c:1210 glib/gbookmarkfile.c:1262
 #, c-format
 msgid "Unexpected tag '%s' inside '%s'"
 msgstr "想定外のタグ '%s' ('%s' 内) です"
 
-#: ../glib/gbookmarkfile.c:1792
+#: glib/gbookmarkfile.c:1792
+#, c-format
 msgid "No valid bookmark file found in data dirs"
 msgstr "データ・ディレクトリの中に妥当なブックマーク・ファイルはありません"
 
-#: ../glib/gbookmarkfile.c:1993
+#: glib/gbookmarkfile.c:1993
 #, c-format
 msgid "A bookmark for URI '%s' already exists"
 msgstr "URI が '%s' であるブックマークは既に存在します"
 
-#: ../glib/gbookmarkfile.c:2039 ../glib/gbookmarkfile.c:2196
-#: ../glib/gbookmarkfile.c:2281 ../glib/gbookmarkfile.c:2362
-#: ../glib/gbookmarkfile.c:2447 ../glib/gbookmarkfile.c:2530
-#: ../glib/gbookmarkfile.c:2608 ../glib/gbookmarkfile.c:2687
-#: ../glib/gbookmarkfile.c:2729 ../glib/gbookmarkfile.c:2826
-#: ../glib/gbookmarkfile.c:2952 ../glib/gbookmarkfile.c:3142
-#: ../glib/gbookmarkfile.c:3218 ../glib/gbookmarkfile.c:3379
-#: ../glib/gbookmarkfile.c:3454 ../glib/gbookmarkfile.c:3544
-#: ../glib/gbookmarkfile.c:3671
+#: glib/gbookmarkfile.c:2039 glib/gbookmarkfile.c:2196
+#: glib/gbookmarkfile.c:2281 glib/gbookmarkfile.c:2362
+#: glib/gbookmarkfile.c:2447 glib/gbookmarkfile.c:2530
+#: glib/gbookmarkfile.c:2608 glib/gbookmarkfile.c:2687
+#: glib/gbookmarkfile.c:2729 glib/gbookmarkfile.c:2826
+#: glib/gbookmarkfile.c:2952 glib/gbookmarkfile.c:3142
+#: glib/gbookmarkfile.c:3218 glib/gbookmarkfile.c:3379
+#: glib/gbookmarkfile.c:3454 glib/gbookmarkfile.c:3544
+#: glib/gbookmarkfile.c:3671
 #, c-format
 msgid "No bookmark found for URI '%s'"
 msgstr "URI '%s' のブックマークが見つかりませんでした"
 
-#: ../glib/gbookmarkfile.c:2371
+#: glib/gbookmarkfile.c:2371
 #, c-format
 msgid "No MIME type defined in the bookmark for URI '%s'"
 msgstr "URI '%s' のブックマークの中で MIME 型が定義されていません"
 
-#: ../glib/gbookmarkfile.c:2456
+#: glib/gbookmarkfile.c:2456
 #, c-format
 msgid "No private flag has been defined in bookmark for URI '%s'"
 msgstr ""
 "URI '%s' のブックマークの中でプライベートではないフラグが定義されています"
 
-#: ../glib/gbookmarkfile.c:2835
+#: glib/gbookmarkfile.c:2835
 #, c-format
 msgid "No groups set in bookmark for URI '%s'"
 msgstr "URI '%s' のブックマークの中にグループがありません"
 
-#: ../glib/gbookmarkfile.c:3236 ../glib/gbookmarkfile.c:3389
+#: glib/gbookmarkfile.c:3236 glib/gbookmarkfile.c:3389
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
 msgstr "アプリケーション '%s' は '%s' のブックマークを登録していません"
 
-#: ../glib/gbookmarkfile.c:3402
+#: glib/gbookmarkfile.c:3402
 #, c-format
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "実行ラインの '%s' を URI '%s' で展開できませんでした"
 
-#: ../glib/gconvert.c:423 ../glib/gconvert.c:501 ../glib/giochannel.c:1150
+#: glib/gconvert.c:423 glib/gconvert.c:501 glib/giochannel.c:1150
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "文字セット '%s' から '%s' への変換はサポートしていません"
 
-#: ../glib/gconvert.c:427 ../glib/gconvert.c:505
+#: glib/gconvert.c:427 glib/gconvert.c:505
 #, c-format
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "'%s' から '%s' へのコンバータを開けませんでした"
 
-#: ../glib/gconvert.c:621 ../glib/gconvert.c:1010 ../glib/giochannel.c:1322
-#: ../glib/giochannel.c:1364 ../glib/giochannel.c:2206 ../glib/gutf8.c:949
-#: ../glib/gutf8.c:1398
+#: glib/gconvert.c:621 glib/gconvert.c:1010 glib/giochannel.c:1322
+#: glib/giochannel.c:1364 glib/giochannel.c:2206 glib/gutf8.c:949
+#: glib/gutf8.c:1398
+#, c-format
 msgid "Invalid byte sequence in conversion input"
 msgstr "変換する入力に無効なバイトの並びがあります"
 
-#: ../glib/gconvert.c:627 ../glib/gconvert.c:937 ../glib/giochannel.c:1329
-#: ../glib/giochannel.c:2218
+#: glib/gconvert.c:627 glib/gconvert.c:937 glib/giochannel.c:1329
+#: glib/giochannel.c:2218
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "変換中にエラー: %s"
 
-#: ../glib/gconvert.c:662 ../glib/gutf8.c:945 ../glib/gutf8.c:1149
-#: ../glib/gutf8.c:1290 ../glib/gutf8.c:1394
+#: glib/gconvert.c:662 glib/gutf8.c:945 glib/gutf8.c:1149 glib/gutf8.c:1290
+#: glib/gutf8.c:1394
+#, c-format
 msgid "Partial character sequence at end of input"
 msgstr "入力の最後に不完全な文字シーケンスがあります"
 
-#: ../glib/gconvert.c:912
+#: glib/gconvert.c:912
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "フォールバック '%s' を文字セット '%s' に変換できません"
 
-#: ../glib/gconvert.c:1721
+#: glib/gconvert.c:1721
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "URI '%s' は \"file\" スキームの絶対 URI ではありません"
 
-#: ../glib/gconvert.c:1731
+#: glib/gconvert.c:1731
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "ローカル・ファイルの URI '%s' は '#' は含みません"
 
-#: ../glib/gconvert.c:1748
+#: glib/gconvert.c:1748
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI '%s' は正しくありません"
 
-#: ../glib/gconvert.c:1760
+#: glib/gconvert.c:1760
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "URI のホスト名 '%s' がおかしいです"
 
-#: ../glib/gconvert.c:1776
+#: glib/gconvert.c:1776
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI '%s' に無効なエスケープ文字が含まれています"
 
-#: ../glib/gconvert.c:1871
+#: glib/gconvert.c:1871
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "パス名 '%s' が絶対パスではありません"
 
-#: ../glib/gconvert.c:1881
+#: glib/gconvert.c:1881
+#, c-format
 msgid "Invalid hostname"
 msgstr "無効なホスト名です"
 
-#: ../glib/gdir.c:121 ../glib/gdir.c:141
+#: glib/gdir.c:121 glib/gdir.c:141
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "ディレクトリ '%s' を開く時にエラー: %s"
 
-#: ../glib/gfileutils.c:572 ../glib/gfileutils.c:645
+#: glib/gfileutils.c:572 glib/gfileutils.c:645
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "%lu バイトを確保できませんでした (ファイル \"%s\" の読み込みに必要)"
 
-#: ../glib/gfileutils.c:587
+#: glib/gfileutils.c:587
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "ファイル '%s' の読み出し中にエラー: %s"
 
-#: ../glib/gfileutils.c:669
+#: glib/gfileutils.c:669
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "ファイル '%s' を読めません: %s"
 
-#: ../glib/gfileutils.c:720 ../glib/gfileutils.c:807
+#: glib/gfileutils.c:720 glib/gfileutils.c:807
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "ファイル '%s' を開けません: %s"
 
-#: ../glib/gfileutils.c:737 ../glib/gmappedfile.c:133
+#: glib/gfileutils.c:737 glib/gmappedfile.c:133
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "ファイル '%s' の属性の取得できません: fstat() が失敗: %s"
 
-#: ../glib/gfileutils.c:771
+#: glib/gfileutils.c:771
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "ファイル '%s' を開けません: fdopen() が失敗: %s"
 
-#: ../glib/gfileutils.c:905
+#: glib/gfileutils.c:905
 #, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr ""
 "'%s' から '%s' へのファイル名の変更に失敗しました: g_rename() が失敗: %s"
 
-#: ../glib/gfileutils.c:946 ../glib/gfileutils.c:1404
+#: glib/gfileutils.c:946 glib/gfileutils.c:1404
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "ファイル '%s' の生成に失敗しました: %s"
 
-#: ../glib/gfileutils.c:960
+#: glib/gfileutils.c:960
 #, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr "ファイル '%s' を書き込みモードで開けませんでした: fdopen() が失敗: %s"
 
-#: ../glib/gfileutils.c:985
+#: glib/gfileutils.c:985
 #, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "ファイル '%s' への書き込みに失敗しました: fwrite() が失敗: %s"
 
-#: ../glib/gfileutils.c:1004
+#: glib/gfileutils.c:1004
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "ファイル '%s' を閉じれません: fclose() が失敗: %s"
 
-#: ../glib/gfileutils.c:1122
+#: glib/gfileutils.c:1122
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "既存のファイル '%s' を削除できませんでした: g_unlink() が失敗: %s"
 
-#: ../glib/gfileutils.c:1366
+#: glib/gfileutils.c:1366
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "テンプレート '%s' が正しくありません ('%s' を含めないこと)"
 
-#: ../glib/gfileutils.c:1379
+#: glib/gfileutils.c:1379
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "テンプレート '%s' に XXXXXX が含まれていません"
 
-#: ../glib/gfileutils.c:1854
+#: glib/gfileutils.c:1854
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "シンボリック・リンク '%s' の読み込みが失敗: %s"
 
-#: ../glib/gfileutils.c:1875
+#: glib/gfileutils.c:1875
+#, c-format
 msgid "Symbolic links not supported"
 msgstr "シンボリック・リンクはサポートしていません"
 
-#: ../glib/giochannel.c:1154
+#: glib/giochannel.c:1154
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "'%s' から '%s' へ変換するコンバータを開けませんでした: %s"
 
-#: ../glib/giochannel.c:1499
+#: glib/giochannel.c:1499
+#, c-format
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "g_io_channel_read_line_string では raw モードで読めません"
 
-#: ../glib/giochannel.c:1546 ../glib/giochannel.c:1803
-#: ../glib/giochannel.c:1889
+#: glib/giochannel.c:1546 glib/giochannel.c:1803 glib/giochannel.c:1889
+#, c-format
 msgid "Leftover unconverted data in read buffer"
 msgstr "変換されていないデータが読みこみバッファに残っています"
 
-#: ../glib/giochannel.c:1626 ../glib/giochannel.c:1703
+#: glib/giochannel.c:1626 glib/giochannel.c:1703
+#, c-format
 msgid "Channel terminates in a partial character"
 msgstr "チャンネルが不完全な文字で終わっています"
 
-#: ../glib/giochannel.c:1689
+#: glib/giochannel.c:1689
+#, c-format
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "g_io_channel_read_to_end では raw モードで読めません"
 
-#: ../glib/gmappedfile.c:116
+#: glib/gmappedfile.c:116
 #, c-format
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "ファイル '%s' を開けません: open() が失敗: %s"
 
-#: ../glib/gmappedfile.c:193
+#: glib/gmappedfile.c:193
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "ファイル '%s' のマップに失敗しました: mmap() が失敗: %s"
 
-#: ../glib/gmarkup.c:226
+#: glib/gmarkup.c:226
 #, c-format
 msgid "Error on line %d char %d: %s"
 msgstr "行 %d の %d 文字目でエラー: %s"
 
-#: ../glib/gmarkup.c:324
+#: glib/gmarkup.c:324
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "%d 行目でエラー: %s"
 
-#: ../glib/gmarkup.c:428
+#: glib/gmarkup.c:428
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "空のエンティティ '&;' があります; 正しいエンティティは: &amp; &quot; &lt; "
 "&gt; &apos;"
 
-#: ../glib/gmarkup.c:438
+#: glib/gmarkup.c:438
 #, c-format
 msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
@@ -300,17 +308,17 @@ msgstr ""
 "表わします。もしアンパサンドがエンティティでなければ、&amp; のようにエスケー"
 "プしてください"
 
-#: ../glib/gmarkup.c:472
+#: glib/gmarkup.c:472
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
 msgstr "文字 '%s' はエンティティ名として使えません"
 
-#: ../glib/gmarkup.c:509
+#: glib/gmarkup.c:509
 #, c-format
 msgid "Entity name '%s' is not known"
 msgstr "エンティティ名 '%s' というのは不明です"
 
-#: ../glib/gmarkup.c:520
+#: glib/gmarkup.c:520
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
@@ -319,7 +327,7 @@ msgstr ""
 "ドを使ったのではないでしょうか。アンパサンドは &amp; のようにエスケープしてく"
 "ださい"
 
-#: ../glib/gmarkup.c:573
+#: glib/gmarkup.c:573
 #, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
@@ -328,16 +336,16 @@ msgstr ""
 "'%-.*s' をパースできません。文字参照には数字が含まれなくてはなりません (例: "
 "&#234;) おそらく数字が大きすぎます"
 
-#: ../glib/gmarkup.c:598
+#: glib/gmarkup.c:598
 #, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
 msgstr "文字参照 '%-.*s' が使用可能な文字をエンコードしていません"
 
-#: ../glib/gmarkup.c:613
+#: glib/gmarkup.c:613
 msgid "Empty character reference; should include a digit such as &#454;"
 msgstr "空の文字参照です。&#454; のように数字がなくてはなりません"
 
-#: ../glib/gmarkup.c:623
+#: glib/gmarkup.c:623
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -347,23 +355,23 @@ msgstr ""
 "サンド文字を使っているのかもしれません。アンパサンドは &amp; とエスケープして"
 "ください"
 
-#: ../glib/gmarkup.c:709
+#: glib/gmarkup.c:709
 msgid "Unfinished entity reference"
 msgstr "中途半端な実体参照です"
 
-#: ../glib/gmarkup.c:715
+#: glib/gmarkup.c:715
 msgid "Unfinished character reference"
 msgstr "中途半端な文字参照です"
 
-#: ../glib/gmarkup.c:958 ../glib/gmarkup.c:986 ../glib/gmarkup.c:1022
+#: glib/gmarkup.c:958 glib/gmarkup.c:986 glib/gmarkup.c:1022
 msgid "Invalid UTF-8 encoded text"
 msgstr "UTF-8 として正しくないテキストです"
 
-#: ../glib/gmarkup.c:1058
+#: glib/gmarkup.c:1058
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "ドキュメントはエレメントで始まってなくてはなりません (例 <book>)"
 
-#: ../glib/gmarkup.c:1098
+#: glib/gmarkup.c:1098
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -372,7 +380,7 @@ msgstr ""
 "'%s' は文字 '<' に続く文字としては正しくありません。おそらくエレメント名の開"
 "始になっていません"
 
-#: ../glib/gmarkup.c:1162
+#: glib/gmarkup.c:1162
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
@@ -381,14 +389,14 @@ msgstr ""
 "おかしな文字 '%s' があります。エレメント '%s' の開始タグの最後は文字 '>' でな"
 "くてはなりません"
 
-#: ../glib/gmarkup.c:1251
+#: glib/gmarkup.c:1251
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "おかしな文字 '%s' です。属性名'%s' (エレメント '%s') の後には '=' が必要です"
 
-#: ../glib/gmarkup.c:1293
+#: glib/gmarkup.c:1293
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -399,7 +407,7 @@ msgstr ""
 "なくてはなりません。あるいは属性になります。おかしな文字を属性名に使ったのか"
 "もしれません"
 
-#: ../glib/gmarkup.c:1382
+#: glib/gmarkup.c:1382
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -408,7 +416,7 @@ msgstr ""
 "おかしな文字 '%s' です。属性 '%s' (エレメント '%s') の値を設定するには等号記"
 "号の後は引用記号で始まってなくてはなりません"
 
-#: ../glib/gmarkup.c:1527
+#: glib/gmarkup.c:1527
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -417,7 +425,7 @@ msgstr ""
 "'%s' は '</' に続く文字としては正しくありません。'%s' ではエレメント名は始"
 "まってません"
 
-#: ../glib/gmarkup.c:1567
+#: glib/gmarkup.c:1567
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -426,25 +434,25 @@ msgstr ""
 "'%s' は閉じエレメント名 '%s' に続く文字としては正しくありあません。'>' のみが"
 "使用できます"
 
-#: ../glib/gmarkup.c:1578
+#: glib/gmarkup.c:1578
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "エレメント '%s' は閉じています。エレメントは何も開かれてません"
 
-#: ../glib/gmarkup.c:1587
+#: glib/gmarkup.c:1587
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "エレメント '%s' が閉ました。しかし現在開いているエレメントは '%s' です"
 
-#: ../glib/gmarkup.c:1753
+#: glib/gmarkup.c:1753
 msgid "Document was empty or contained only whitespace"
 msgstr "ドキュメントが空か、空白だけが含まれています"
 
-#: ../glib/gmarkup.c:1767
+#: glib/gmarkup.c:1767
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "ドキュメントが開きカギカッコ '<' の直後で突然終わっています"
 
-#: ../glib/gmarkup.c:1775 ../glib/gmarkup.c:1819
+#: glib/gmarkup.c:1775 glib/gmarkup.c:1819
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -453,7 +461,7 @@ msgstr ""
 "ドキュメントが突然終わっています。エレメントが開きっぱなしです。最後に開いた"
 "エレメントは '%s' です。"
 
-#: ../glib/gmarkup.c:1783
+#: glib/gmarkup.c:1783
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -462,19 +470,19 @@ msgstr ""
 "ドキュメントが突然終わっています。閉じカギカッコでタグ <%s/> が終わっていませ"
 "ん"
 
-#: ../glib/gmarkup.c:1789
+#: glib/gmarkup.c:1789
 msgid "Document ended unexpectedly inside an element name"
 msgstr "エレメント名の途中でドキュメントが突然終わっています"
 
-#: ../glib/gmarkup.c:1794
+#: glib/gmarkup.c:1794
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "属性名の途中でドキュメントが突然終わっています"
 
-#: ../glib/gmarkup.c:1799
+#: glib/gmarkup.c:1799
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "エレメントの開始タグの途中でドキュメントが突然終わっています"
 
-#: ../glib/gmarkup.c:1805
+#: glib/gmarkup.c:1805
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -482,235 +490,243 @@ msgstr ""
 "属性名の後の等号記号の後でドキュメントが突然終わっています: 属性値がありませ"
 "ん"
 
-#: ../glib/gmarkup.c:1812
+#: glib/gmarkup.c:1812
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "ドキュメントが属性値の途中で突然終わっています"
 
-#: ../glib/gmarkup.c:1827
+#: glib/gmarkup.c:1827
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "ドキュメントがエレメント '%s' の閉じタグの途中で突然終わっています"
 
-#: ../glib/gmarkup.c:1833
+#: glib/gmarkup.c:1833
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "ドキュメントがコメントあるいはプロセシング指示子の途中で突然終わっています"
 
-#: ../glib/gshell.c:70
+#: glib/gshell.c:70
+#, c-format
 msgid "Quoted text doesn't begin with a quotation mark"
 msgstr "引用テキストが引用記号で始まっていません"
 
-#: ../glib/gshell.c:160
+#: glib/gshell.c:160
+#, c-format
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr ""
 "コマンドライン、あるいはシェルの引用テキストにおいて引用記号の対応が取れてい"
 "ません"
 
-#: ../glib/gshell.c:538
+#: glib/gshell.c:538
 #, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
 msgstr "テキストが文字 '\\' の直後に終わっています (テキストは '%s')"
 
-#: ../glib/gshell.c:545
+#: glib/gshell.c:545
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr "テキストが %c に対応する引用記号の前に終わっています (テキストは '%s')"
 
-#: ../glib/gshell.c:557
+#: glib/gshell.c:557
+#, c-format
 msgid "Text was empty (or contained only whitespace)"
 msgstr "テキストが空です (あるいは空白のみ)"
 
-#: ../glib/gspawn-win32.c:272
+#: glib/gspawn-win32.c:272
+#, c-format
 msgid "Failed to read data from child process"
 msgstr "子プロセスからデータを読み出せません"
 
-#: ../glib/gspawn-win32.c:287 ../glib/gspawn.c:1379
+#: glib/gspawn-win32.c:287 glib/gspawn.c:1379
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "子プロセスとの通信用のパイプを作成できません (%s)"
 
-#: ../glib/gspawn-win32.c:325 ../glib/gspawn.c:1043
+#: glib/gspawn-win32.c:325 glib/gspawn.c:1043
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "子パイプから読み出せません (%s) "
 
-#: ../glib/gspawn-win32.c:351 ../glib/gspawn.c:1248
+#: glib/gspawn-win32.c:351 glib/gspawn.c:1248
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "ディレクトリ '%s' へ移動できません (%s)"
 
-#: ../glib/gspawn-win32.c:357 ../glib/gspawn-win32.c:577
+#: glib/gspawn-win32.c:357 glib/gspawn-win32.c:577
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "子プロセスを起動できません (%s)"
 
-#: ../glib/gspawn-win32.c:467 ../glib/gspawn-win32.c:523
+#: glib/gspawn-win32.c:467 glib/gspawn-win32.c:523
 #, c-format
 msgid "Invalid program name: %s"
 msgstr "プログラム名が無効です: %s"
 
-#: ../glib/gspawn-win32.c:477 ../glib/gspawn-win32.c:533
-#: ../glib/gspawn-win32.c:776 ../glib/gspawn-win32.c:831
-#: ../glib/gspawn-win32.c:1366
+#: glib/gspawn-win32.c:477 glib/gspawn-win32.c:533 glib/gspawn-win32.c:776
+#: glib/gspawn-win32.c:831 glib/gspawn-win32.c:1366
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr "%d の引数ベクタに不正な文字列があります: %s"
 
-#: ../glib/gspawn-win32.c:488 ../glib/gspawn-win32.c:544
-#: ../glib/gspawn-win32.c:790 ../glib/gspawn-win32.c:844
-#: ../glib/gspawn-win32.c:1399
+#: glib/gspawn-win32.c:488 glib/gspawn-win32.c:544 glib/gspawn-win32.c:790
+#: glib/gspawn-win32.c:844 glib/gspawn-win32.c:1399
 #, c-format
 msgid "Invalid string in environment: %s"
 msgstr "環境変数に不正な文字列があります: %s"
 
-#: ../glib/gspawn-win32.c:772 ../glib/gspawn-win32.c:827
-#: ../glib/gspawn-win32.c:1347
+#: glib/gspawn-win32.c:772 glib/gspawn-win32.c:827 glib/gspawn-win32.c:1347
 #, c-format
 msgid "Invalid working directory: %s"
 msgstr "作業ディレクトリが不正です: %s"
 
-#: ../glib/gspawn-win32.c:886
+#: glib/gspawn-win32.c:886
 #, c-format
 msgid "Failed to execute helper program (%s)"
 msgstr "ヘルパー・プログラム (%s) の起動が失敗しました"
 
-#: ../glib/gspawn-win32.c:1086
+#: glib/gspawn-win32.c:1086
+#, c-format
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
 msgstr ""
 "g_io_channel_win32_poll() が子プロセスからデータを読み出す際に想定外のエラー"
 
-#: ../glib/gspawn.c:168
+#: glib/gspawn.c:168
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "子プロセスからデータを読めません (%s)"
 
-#: ../glib/gspawn.c:300
+#: glib/gspawn.c:300
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr "子プロセスからデータを読み出す際に select() で想定外のエラー (%s)"
 
-#: ../glib/gspawn.c:383
+#: glib/gspawn.c:383
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "waitpid() で想定外のエラー (%s)"
 
-#: ../glib/gspawn.c:1108
+#: glib/gspawn.c:1108
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "fork 失敗 (%s)"
 
-#: ../glib/gspawn.c:1258
+#: glib/gspawn.c:1258
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "子プロセスを起動できません \"%s\" (%s)"
 
-#: ../glib/gspawn.c:1268
+#: glib/gspawn.c:1268
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "子プロセスの出力、または入力をリダイレクトできません (%s)"
 
-#: ../glib/gspawn.c:1277
+#: glib/gspawn.c:1277
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "子プロセスを fork できません (%s)"
 
-#: ../glib/gspawn.c:1285
+#: glib/gspawn.c:1285
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "子プロセスの実行時に不明なエラー \"%s\""
 
-#: ../glib/gspawn.c:1307
+#: glib/gspawn.c:1307
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "子 pid パイプから十分なデータを読めません (%s)"
 
-#: ../glib/gutf8.c:1023
+#: glib/gutf8.c:1023
+#, c-format
 msgid "Character out of range for UTF-8"
 msgstr "UTF-8 の範囲外の文字です"
 
-#: ../glib/gutf8.c:1117 ../glib/gutf8.c:1126 ../glib/gutf8.c:1258
-#: ../glib/gutf8.c:1267 ../glib/gutf8.c:1408 ../glib/gutf8.c:1504
+#: glib/gutf8.c:1117 glib/gutf8.c:1126 glib/gutf8.c:1258 glib/gutf8.c:1267
+#: glib/gutf8.c:1408 glib/gutf8.c:1504
+#, c-format
 msgid "Invalid sequence in conversion input"
 msgstr "変換する入力で無効なシーケンスがあります"
 
-#: ../glib/gutf8.c:1419 ../glib/gutf8.c:1515
+#: glib/gutf8.c:1419 glib/gutf8.c:1515
+#, c-format
 msgid "Character out of range for UTF-16"
 msgstr "UTF-16 の範囲外の文字です"
 
-#: ../glib/goption.c:553
+#: glib/goption.c:553
 msgid "Usage:"
 msgstr "用法:"
 
-#: ../glib/goption.c:553
+#: glib/goption.c:553
 msgid "[OPTION...]"
 msgstr "[オプション...]"
 
-#: ../glib/goption.c:644
+#: glib/goption.c:644
 msgid "Help Options:"
 msgstr "ヘルプのオプション:"
 
-#: ../glib/goption.c:645
+#: glib/goption.c:645
 msgid "Show help options"
 msgstr "ヘルプのオプションを表示する"
 
-#: ../glib/goption.c:650
+#: glib/goption.c:650
 msgid "Show all help options"
 msgstr "ヘルプのオプションを全て表示する"
 
-#: ../glib/goption.c:700
+#: glib/goption.c:700
 msgid "Application Options:"
 msgstr "アプリケーションのオプション:"
 
-#: ../glib/goption.c:744 ../glib/goption.c:814
+#: glib/goption.c:744 glib/goption.c:814
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "%2$s の整数値 '%1$s' を解析できません"
 
-#: ../glib/goption.c:754 ../glib/goption.c:822
+#: glib/goption.c:754 glib/goption.c:822
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "%2$s の整数値 '%1$s' は範囲外の値です"
 
-#: ../glib/goption.c:779
+#: glib/goption.c:779
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "%2$s の実数値 '%1$s' を解析できません"
 
-#: ../glib/goption.c:787
+#: glib/goption.c:787
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "%2$s の実数値 '%1$s' は範囲外の値です"
 
-#: ../glib/goption.c:1124
+#: glib/goption.c:1124
 #, c-format
 msgid "Error parsing option %s"
 msgstr "オプション %s の解析中にエラー"
 
-#: ../glib/goption.c:1155 ../glib/goption.c:1266
+#: glib/goption.c:1155 glib/goption.c:1266
 #, c-format
 msgid "Missing argument for %s"
 msgstr "%s の引数がありません"
 
-#: ../glib/goption.c:1655
+#: glib/goption.c:1655
 #, c-format
 msgid "Unknown option %s"
 msgstr "%s は不明なオプションです"
 
-#: ../glib/gkeyfile.c:341
+#: glib/gkeyfile.c:342
+#, c-format
 msgid "Valid key file could not be found in data dirs"
 msgstr "データ・ディレクトリには妥当なキー・ファイルがありませんでした"
 
-#: ../glib/gkeyfile.c:376
+#: glib/gkeyfile.c:377
+#, c-format
 msgid "Not a regular file"
 msgstr "通常のファイルではありません"
 
-#: ../glib/gkeyfile.c:384
+#: glib/gkeyfile.c:385
+#, c-format
 msgid "File is empty"
 msgstr "ファイルが空です"
 
-#: ../glib/gkeyfile.c:700
+#: glib/gkeyfile.c:701
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
@@ -718,48 +734,49 @@ msgstr ""
 "キー・ファイルの行 '%s' がキー/値のペア、グループ、またはコメントではありませ"
 "ん"
 
-#: ../glib/gkeyfile.c:758
+#: glib/gkeyfile.c:762
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "グループ名が無効です: %s"
 
-#: ../glib/gkeyfile.c:780
+#: glib/gkeyfile.c:784
+#, c-format
 msgid "Key file does not start with a group"
 msgstr "キー・ファイルがグループで始まっていません"
 
-#: ../glib/gkeyfile.c:806
+#: glib/gkeyfile.c:810
 #, c-format
 msgid "Invalid key name: %s"
 msgstr "キーの名前が無効です: %s"
 
-#: ../glib/gkeyfile.c:833
+#: glib/gkeyfile.c:837
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "キー・ファイルにサポートしてないエンコーディング '%s' があります"
 
-#: ../glib/gkeyfile.c:1042 ../glib/gkeyfile.c:1201 ../glib/gkeyfile.c:2402
-#: ../glib/gkeyfile.c:2469 ../glib/gkeyfile.c:2590 ../glib/gkeyfile.c:2725
-#: ../glib/gkeyfile.c:2878 ../glib/gkeyfile.c:3058 ../glib/gkeyfile.c:3115
+#: glib/gkeyfile.c:1050 glib/gkeyfile.c:1209 glib/gkeyfile.c:2410
+#: glib/gkeyfile.c:2477 glib/gkeyfile.c:2598 glib/gkeyfile.c:2733
+#: glib/gkeyfile.c:2886 glib/gkeyfile.c:3066 glib/gkeyfile.c:3124
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "キー・ファイルにグループ '%s' がありません"
 
-#: ../glib/gkeyfile.c:1213
+#: glib/gkeyfile.c:1221
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "キー・ファイルにキー '%s' がありません"
 
-#: ../glib/gkeyfile.c:1315 ../glib/gkeyfile.c:1425
+#: glib/gkeyfile.c:1323 glib/gkeyfile.c:1433
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "キー・ファイルのキー '%s' の値 '%s' が UTF-8 ではありません"
 
-#: ../glib/gkeyfile.c:1335 ../glib/gkeyfile.c:1445 ../glib/gkeyfile.c:1813
+#: glib/gkeyfile.c:1343 glib/gkeyfile.c:1453 glib/gkeyfile.c:1821
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "キー・ファイルのキー '%s' の値を解釈できませんでした"
 
-#: ../glib/gkeyfile.c:2025 ../glib/gkeyfile.c:2234
+#: glib/gkeyfile.c:2033 glib/gkeyfile.c:2242
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -767,36 +784,37 @@ msgid ""
 msgstr ""
 "キー・ファイルのグループ '%2$s' にあるキー '%1$s' の値を解釈できませんでした"
 
-#: ../glib/gkeyfile.c:2417 ../glib/gkeyfile.c:2605 ../glib/gkeyfile.c:3126
+#: glib/gkeyfile.c:2425 glib/gkeyfile.c:2613 glib/gkeyfile.c:3135
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "キー・ファイルにはグループ '%2$s' のキー '%1$s' がありません"
 
-#: ../glib/gkeyfile.c:3365
+#: glib/gkeyfile.c:3374
+#, c-format
 msgid "Key file contains escape character at end of line"
 msgstr "キー・ファイルの行末にエスケープ文字が含まれています"
 
-#: ../glib/gkeyfile.c:3387
+#: glib/gkeyfile.c:3396
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "キー・ファイルに無効なエスケープ・シーケンス '%s' が含まれています"
 
-#: ../glib/gkeyfile.c:3529
+#: glib/gkeyfile.c:3538
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "値 '%s' を数値として解釈できません"
 
-#: ../glib/gkeyfile.c:3543
+#: glib/gkeyfile.c:3552
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "整数値 '%s' は範囲外の値です"
 
-#: ../glib/gkeyfile.c:3576
+#: glib/gkeyfile.c:3585
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "値 '%s' を実数値として解釈できません"
 
-#: ../glib/gkeyfile.c:3603
+#: glib/gkeyfile.c:3612
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "値 '%s' を論理値として解釈できません"

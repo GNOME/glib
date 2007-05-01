@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.glib-2-12.hi\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-08 23:30-0500\n"
+"POT-Creation-Date: 2007-05-01 19:30-0400\n"
 "PO-Revision-Date: 2006-09-04 12:16+0530\n"
 "Last-Translator: Rajesh Ranjan <rranjan@redhat.com>\n"
 "Language-Team: Hindi <fedora-trans-hi@redhat.com>\n"
@@ -702,108 +702,108 @@ msgstr "%s के लिये गुम तर्क"
 msgid "Unknown option %s"
 msgstr "अनजान विकल्प %s"
 
-#: glib/gkeyfile.c:341
+#: glib/gkeyfile.c:342
 #, c-format
 msgid "Valid key file could not be found in data dirs"
 msgstr "आंकड़ा निर्देशिका में मान्य कुंजी फाइल नहीं पायी गयी"
 
-#: glib/gkeyfile.c:376
+#: glib/gkeyfile.c:377
 #, c-format
 msgid "Not a regular file"
 msgstr "एक सामान्य फाइल नहीं"
 
-#: glib/gkeyfile.c:384
+#: glib/gkeyfile.c:385
 #, c-format
 msgid "File is empty"
 msgstr "फ़ाइल खाली है"
 
-#: glib/gkeyfile.c:700
+#: glib/gkeyfile.c:701
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr ""
 "कुंजी फाइल में '%s' पंक्ति समाहित है जो कि एक कुंजी मान जोड़ा, समूह, या टिप्पणी नहीं है"
 
-#: glib/gkeyfile.c:758
+#: glib/gkeyfile.c:762
 #, fuzzy, c-format
 msgid "Invalid group name: %s"
 msgstr "अवैध प्रोग्राम नाम: %s"
 
-#: glib/gkeyfile.c:780
+#: glib/gkeyfile.c:784
 #, c-format
 msgid "Key file does not start with a group"
 msgstr "कुंजी फाइल एक समूह के साथ शुरू नहीं होता"
 
-#: glib/gkeyfile.c:806
+#: glib/gkeyfile.c:810
 #, fuzzy, c-format
 msgid "Invalid key name: %s"
 msgstr "अवैध प्रोग्राम नाम: %s"
 
-#: glib/gkeyfile.c:833
+#: glib/gkeyfile.c:837
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "कुंजी फाइल में असमर्थित एनकोडिंग '%s' समाहित है"
 
-#: glib/gkeyfile.c:1042 glib/gkeyfile.c:1201 glib/gkeyfile.c:2402
-#: glib/gkeyfile.c:2469 glib/gkeyfile.c:2590 glib/gkeyfile.c:2725
-#: glib/gkeyfile.c:2878 glib/gkeyfile.c:3058 glib/gkeyfile.c:3115
+#: glib/gkeyfile.c:1050 glib/gkeyfile.c:1209 glib/gkeyfile.c:2410
+#: glib/gkeyfile.c:2477 glib/gkeyfile.c:2598 glib/gkeyfile.c:2733
+#: glib/gkeyfile.c:2886 glib/gkeyfile.c:3066 glib/gkeyfile.c:3124
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "कुंजी फाइल में '%s' समूह नहीं है"
 
-#: glib/gkeyfile.c:1213
+#: glib/gkeyfile.c:1221
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "कुंजी फाइल में '%s' कुंजी नहीं है"
 
-#: glib/gkeyfile.c:1315 glib/gkeyfile.c:1425
+#: glib/gkeyfile.c:1323 glib/gkeyfile.c:1433
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "कुंजी फाइल में '%s' कुंजी समाहित है '%s' मान के साथ जो UTF-8 नहीं है"
 
-#: glib/gkeyfile.c:1335 glib/gkeyfile.c:1445 glib/gkeyfile.c:1813
+#: glib/gkeyfile.c:1343 glib/gkeyfile.c:1453 glib/gkeyfile.c:1821
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "कुंजी फाइल में '%s' कुंजी है जिसके मान का विश्लेषण नहीं किया जा सकता."
 
-#: glib/gkeyfile.c:2025 glib/gkeyfile.c:2234
+#: glib/gkeyfile.c:2033 glib/gkeyfile.c:2242
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
 "interpreted."
 msgstr "कुंजी फाइल में '%s' कुंजी है '%s' समूह में जिसके मान का विश्लेषण नहीं किया जा सकता."
 
-#: glib/gkeyfile.c:2417 glib/gkeyfile.c:2605 glib/gkeyfile.c:3126
+#: glib/gkeyfile.c:2425 glib/gkeyfile.c:2613 glib/gkeyfile.c:3135
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "कुंजी फाइल में '%s' कुंजी नहीं है '%s' समूह में"
 
-#: glib/gkeyfile.c:3365
+#: glib/gkeyfile.c:3374
 #, c-format
 msgid "Key file contains escape character at end of line"
 msgstr "कुंजी फाइल में पंक्ति के अंत में एस्केप संप्रतीक रहता है"
 
-#: glib/gkeyfile.c:3387
+#: glib/gkeyfile.c:3396
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "कुंजी फाइल में '%s' अमान्य श्रृंखला समाहित है"
 
-#: glib/gkeyfile.c:3529
+#: glib/gkeyfile.c:3538
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "मान्य '%s' को एक संख्या की तरह नहीं विश्लेषित किया जा सकता."
 
-#: glib/gkeyfile.c:3543
+#: glib/gkeyfile.c:3552
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "पूर्णांक मान '%s' रेंज के बाहर है"
 
-#: glib/gkeyfile.c:3576
+#: glib/gkeyfile.c:3585
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "मान '%s' को एक फ्लोट संख्या की तरह नहीं विश्लेषित किया जा सकता."
 
-#: glib/gkeyfile.c:3603
+#: glib/gkeyfile.c:3612
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "मान '%s' को बुलियन के तौर पर विश्लेषित नहीं किया जा सकता."
