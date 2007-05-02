@@ -1,3 +1,9 @@
+2007-05-02  Marco Barisione <marco@barisione.org>
+
+	* glib/gregex.c: Made more clear that the string passed to the match
+	functions cannot be freed before using g_match_info_fetch() and
+	similar functions, and fixed a typo.
+
 2007-04-30  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/glib.symbols:

@@ -415,7 +415,7 @@ g_match_info_is_partial_match (const GMatchInfo *match_info)
  * passed to g_regex_new().
  *
  * The backreferences are extracted from the string passed to the match
- * function, so you cannot free it before calling this function.
+ * function, so you cannot call this function after freeing the string.
  *
  * Returns: the expanded string, or %NULL if an error occurred
  *
@@ -471,7 +471,7 @@ g_match_info_expand_references (const GMatchInfo *match_info,
  * the longest match.
  *
  * The string is fetched from the string passed to the match function,
- * so you cannot free it before calling this function.
+ * so you cannot call this function after freeing the string.
  *
  * Returns: The matched substring, or %NULL if an error occurred.
  *          You have to free the string yourself
@@ -564,7 +564,7 @@ g_match_info_fetch_pos (const GMatchInfo *match_info,
  * string is returned.
  *
  * The string is fetched from the string passed to the match function,
- * so you cannot free it before calling this function.
+ * so you cannot call this function after freeing the string.
  *
  * Returns: The matched substring, or %NULL if an error occurred.
  *          You have to free the string yourself
@@ -645,7 +645,7 @@ g_match_info_fetch_named_pos (const GMatchInfo *match_info,
  * so the first one is the longest match.
  *
  * The strings are fetched from the string passed to the match function,
- * so you cannot free it before calling this function.
+ * so you cannot call this function after freeing the string.
  *
  * Returns: a %NULL-terminated array of gchar * pointers. It must be freed
  *          using g_strfreev(). If the previous match failed %NULL is
@@ -962,7 +962,7 @@ g_regex_match_simple (const gchar        *pattern,
  * @string: the string to scan for matches
  * @match_options: match options
  * @match_info: pointer to location where to store the #GMatchInfo, or
- * %NULL if you do not nedd it
+ * %NULL if you do not need it
  *
  * Scans for a match in string for the pattern in @regex. The @match_options
  * are combined with the match options specified when the @regex structure
@@ -1019,7 +1019,7 @@ g_regex_match (const GRegex    *regex,
  * @start_position: starting index of the string to match
  * @match_options: match options
  * @match_info: pointer to location where to store the #GMatchInfo, or
- * %NULL if you do not nedd it
+ * %NULL if you do not need it
  * @error: location to store the error occuring, or %NULL to ignore errors
  *
  * Scans for a match in string for the pattern in @regex. The @match_options
@@ -1104,7 +1104,7 @@ g_regex_match_full (const GRegex    *regex,
  * @string: the string to scan for matches
  * @match_options: match options
  * @match_info: pointer to location where to store the #GMatchInfo, or
- * %NULL if you do not nedd it
+ * %NULL if you do not need it
  *
  * Using the standard algorithm for regular expression matching only the
  * longest match in the string is retrieved. This function uses a
@@ -1136,7 +1136,7 @@ g_regex_match_all (const GRegex    *regex,
  * @start_position: starting index of the string to match
  * @match_options: match options
  * @match_info: pointer to location where to store the #GMatchInfo, or
- * %NULL if you do not nedd it
+ * %NULL if you do not need it
  * @error: location to store the error occuring, or %NULL to ignore errors
  *
  * Using the standard algorithm for regular expression matching only the
