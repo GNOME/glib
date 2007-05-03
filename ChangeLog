@@ -1,5 +1,8 @@
 2007-05-02  Matthias Clasen <mclasen@redhat.com>
 
+	* tests/threadpool-test.c:  Stop unused threads before
+	the last test, to make the test terminate reliably.
+
 	* NEWS: Updates
 
 2007-05-02  Marco Barisione <marco@barisione.org>
