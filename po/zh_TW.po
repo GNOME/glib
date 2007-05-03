@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.12.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-16 18:02-0400\n"
+"POT-Creation-Date: 2007-05-03 00:50-0400\n"
 "PO-Revision-Date: 2007-02-27 09:08+0800\n"
 "Last-Translator: Woodman Tuen <wmtuen@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) <community@linuxhall.org>\n"
@@ -18,74 +18,74 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: glib/gbookmarkfile.c:704 glib/gbookmarkfile.c:781 glib/gbookmarkfile.c:860
-#: glib/gbookmarkfile.c:907
+#: glib/gbookmarkfile.c:705 glib/gbookmarkfile.c:782 glib/gbookmarkfile.c:861
+#: glib/gbookmarkfile.c:908
 #, c-format
 msgid "Unexpected attribute '%s' for element '%s'"
 msgstr "元素‘%2$s’中的不明屬性‘%1$s’"
 
-#: glib/gbookmarkfile.c:715 glib/gbookmarkfile.c:792 glib/gbookmarkfile.c:802
-#: glib/gbookmarkfile.c:918
+#: glib/gbookmarkfile.c:716 glib/gbookmarkfile.c:793 glib/gbookmarkfile.c:803
+#: glib/gbookmarkfile.c:919
 #, c-format
 msgid "Attribute '%s' of element '%s' not found"
 msgstr "找不到元素‘%2$s’的屬性‘%1$s’"
 
-#: glib/gbookmarkfile.c:1091 glib/gbookmarkfile.c:1156
-#: glib/gbookmarkfile.c:1220 glib/gbookmarkfile.c:1230
+#: glib/gbookmarkfile.c:1092 glib/gbookmarkfile.c:1157
+#: glib/gbookmarkfile.c:1221 glib/gbookmarkfile.c:1231
 #, c-format
 msgid "Unexpected tag '%s', tag '%s' expected"
 msgstr "不明的標籤‘%s’，應為標籤‘%s’"
 
-#: glib/gbookmarkfile.c:1116 glib/gbookmarkfile.c:1130
-#: glib/gbookmarkfile.c:1198 glib/gbookmarkfile.c:1250
+#: glib/gbookmarkfile.c:1117 glib/gbookmarkfile.c:1131
+#: glib/gbookmarkfile.c:1199 glib/gbookmarkfile.c:1251
 #, c-format
 msgid "Unexpected tag '%s' inside '%s'"
 msgstr "‘%2$s’中有不明的標籤‘%1$s’"
 
-#: glib/gbookmarkfile.c:1780
+#: glib/gbookmarkfile.c:1781
 #, c-format
 msgid "No valid bookmark file found in data dirs"
 msgstr "在資料目錄中找不到有效的書籤檔案"
 
-#: glib/gbookmarkfile.c:1981
+#: glib/gbookmarkfile.c:1982
 #, c-format
 msgid "A bookmark for URI '%s' already exists"
 msgstr "URI‘%s’的書籤已經存在"
 
-#: glib/gbookmarkfile.c:2027 glib/gbookmarkfile.c:2184
-#: glib/gbookmarkfile.c:2269 glib/gbookmarkfile.c:2349
-#: glib/gbookmarkfile.c:2434 glib/gbookmarkfile.c:2517
-#: glib/gbookmarkfile.c:2595 glib/gbookmarkfile.c:2674
-#: glib/gbookmarkfile.c:2716 glib/gbookmarkfile.c:2813
-#: glib/gbookmarkfile.c:2939 glib/gbookmarkfile.c:3129
-#: glib/gbookmarkfile.c:3205 glib/gbookmarkfile.c:3368
-#: glib/gbookmarkfile.c:3443 glib/gbookmarkfile.c:3533
-#: glib/gbookmarkfile.c:3660
+#: glib/gbookmarkfile.c:2028 glib/gbookmarkfile.c:2185
+#: glib/gbookmarkfile.c:2270 glib/gbookmarkfile.c:2350
+#: glib/gbookmarkfile.c:2435 glib/gbookmarkfile.c:2518
+#: glib/gbookmarkfile.c:2596 glib/gbookmarkfile.c:2675
+#: glib/gbookmarkfile.c:2717 glib/gbookmarkfile.c:2814
+#: glib/gbookmarkfile.c:2940 glib/gbookmarkfile.c:3130
+#: glib/gbookmarkfile.c:3206 glib/gbookmarkfile.c:3371
+#: glib/gbookmarkfile.c:3460 glib/gbookmarkfile.c:3550
+#: glib/gbookmarkfile.c:3677
 #, c-format
 msgid "No bookmark found for URI '%s'"
 msgstr "找不到 URI‘%s’的書籤"
 
-#: glib/gbookmarkfile.c:2358
+#: glib/gbookmarkfile.c:2359
 #, c-format
 msgid "No MIME type defined in the bookmark for URI '%s'"
 msgstr "URI‘%s’的書籤中沒有定義 MIME 類型"
 
-#: glib/gbookmarkfile.c:2443
+#: glib/gbookmarkfile.c:2444
 #, c-format
 msgid "No private flag has been defined in bookmark for URI '%s'"
 msgstr "URI‘%s’的書籤中沒有定義 private flag"
 
-#: glib/gbookmarkfile.c:2822
+#: glib/gbookmarkfile.c:2823
 #, c-format
 msgid "No groups set in bookmark for URI '%s'"
 msgstr "URI‘%s’的書籤中並沒有設定群組"
 
-#: glib/gbookmarkfile.c:3223 glib/gbookmarkfile.c:3378
+#: glib/gbookmarkfile.c:3224 glib/gbookmarkfile.c:3381
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
 msgstr "沒有一個名為‘%s’的應用程式註冊一個書籤給‘%s’"
 
-#: glib/gbookmarkfile.c:3391
+#: glib/gbookmarkfile.c:3404
 #, c-format
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "以 URI‘%2$s’ 展開 exec 行‘%1$s’失敗"
@@ -622,68 +622,68 @@ msgstr "轉換輸入資料時出現無效的字元次序"
 msgid "Character out of range for UTF-16"
 msgstr "字元不在 UTF-16 範圍之內"
 
-#: glib/goption.c:548
+#: glib/goption.c:572
 msgid "Usage:"
 msgstr "用法："
 
-#: glib/goption.c:548
+#: glib/goption.c:572
 msgid "[OPTION...]"
 msgstr "[選項...]"
 
-#: glib/goption.c:639
+#: glib/goption.c:676
 msgid "Help Options:"
 msgstr "說明選項："
 
-#: glib/goption.c:640
+#: glib/goption.c:677
 msgid "Show help options"
 msgstr "顯示說明的選項"
 
-#: glib/goption.c:645
+#: glib/goption.c:683
 msgid "Show all help options"
 msgstr "顯示所有的說明選項"
 
-#: glib/goption.c:695
+#: glib/goption.c:735
 msgid "Application Options:"
 msgstr "應用程式選項："
 
-#: glib/goption.c:739 glib/goption.c:809
+#: glib/goption.c:796 glib/goption.c:866
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "無法給 %2$s 解析整數值‘%1$s’"
 
-#: glib/goption.c:749 glib/goption.c:817
+#: glib/goption.c:806 glib/goption.c:874
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "%2$s 的整數值‘%1$s’超出範圍"
 
-#: glib/goption.c:774
+#: glib/goption.c:831
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "無法給 %2$s 解析雙精度浮點數‘%1$s’"
 
-#: glib/goption.c:782
+#: glib/goption.c:839
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "%2$s 的雙精度浮點數‘%1$s’超出範圍"
 
-#: glib/goption.c:1119
+#: glib/goption.c:1176
 #, c-format
 msgid "Error parsing option %s"
 msgstr "解析 %s 選項時發生錯誤"
 
-#: glib/goption.c:1150 glib/goption.c:1261
+#: glib/goption.c:1207 glib/goption.c:1318
 #, c-format
 msgid "Missing argument for %s"
 msgstr "缺少 %s 的參數"
 
-#: glib/goption.c:1655
+#: glib/goption.c:1712
 #, c-format
 msgid "Unknown option %s"
 msgstr "未知的選項 %s"
 
 #: glib/gkeyfile.c:341
-#, c-format
-msgid "Valid key file could not be found in data dirs"
+#, fuzzy, c-format
+msgid "Valid key file could not be found in search dirs"
 msgstr "在資料目錄中找不到有效的設定鍵檔案"
 
 #: glib/gkeyfile.c:376
@@ -696,92 +696,92 @@ msgstr "不是普通檔案"
 msgid "File is empty"
 msgstr "檔案是空白的"
 
-#: glib/gkeyfile.c:701
+#: glib/gkeyfile.c:746
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr "設定鍵檔案中‘%s’行並非設定鍵值配對、群組或註解"
 
-#: glib/gkeyfile.c:758
+#: glib/gkeyfile.c:806
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "無效的群組名稱：%s"
 
-#: glib/gkeyfile.c:780
+#: glib/gkeyfile.c:828
 #, c-format
 msgid "Key file does not start with a group"
 msgstr "設定鍵檔案並非以群組開頭"
 
-#: glib/gkeyfile.c:806
+#: glib/gkeyfile.c:854
 #, c-format
 msgid "Invalid key name: %s"
 msgstr "無效的設定鍵名稱：%s"
 
-#: glib/gkeyfile.c:833
+#: glib/gkeyfile.c:881
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "設定鍵檔案包含不支援的編碼‘%s’"
 
-#: glib/gkeyfile.c:1042 glib/gkeyfile.c:1201 glib/gkeyfile.c:2402
-#: glib/gkeyfile.c:2468 glib/gkeyfile.c:2587 glib/gkeyfile.c:2722
-#: glib/gkeyfile.c:2875 glib/gkeyfile.c:3055 glib/gkeyfile.c:3111
+#: glib/gkeyfile.c:1094 glib/gkeyfile.c:1253 glib/gkeyfile.c:2454
+#: glib/gkeyfile.c:2520 glib/gkeyfile.c:2639 glib/gkeyfile.c:2774
+#: glib/gkeyfile.c:2927 glib/gkeyfile.c:3107 glib/gkeyfile.c:3164
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "設定鍵檔案沒有群組‘%s’"
 
-#: glib/gkeyfile.c:1213
+#: glib/gkeyfile.c:1265
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "設定鍵檔案沒有設定鍵‘%s’"
 
-#: glib/gkeyfile.c:1315 glib/gkeyfile.c:1425
+#: glib/gkeyfile.c:1367 glib/gkeyfile.c:1477
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "設定鍵檔案包含的設定鍵‘%s’（數值為‘%s’）並非 UTF-8"
 
-#: glib/gkeyfile.c:1335 glib/gkeyfile.c:1445 glib/gkeyfile.c:1813
+#: glib/gkeyfile.c:1387 glib/gkeyfile.c:1497 glib/gkeyfile.c:1865
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "設定鍵檔案包含的設定鍵‘%s’的數值無法解譯。"
 
-#: glib/gkeyfile.c:2025 glib/gkeyfile.c:2234
+#: glib/gkeyfile.c:2077 glib/gkeyfile.c:2286
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
 "interpreted."
 msgstr "設定鍵檔案包含的群組‘%2$s’中設定鍵‘%1$s’數值無法解譯"
 
-#: glib/gkeyfile.c:2417 glib/gkeyfile.c:2602 glib/gkeyfile.c:3122
+#: glib/gkeyfile.c:2469 glib/gkeyfile.c:2654 glib/gkeyfile.c:3175
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "設定鍵檔案的群組‘%2$s’中沒有設定鍵‘%1$s’"
 
-#: glib/gkeyfile.c:3361
+#: glib/gkeyfile.c:3414
 #, c-format
 msgid "Key file contains escape character at end of line"
 msgstr "設定鍵檔案在行尾包含跳出字元"
 
-#: glib/gkeyfile.c:3383
+#: glib/gkeyfile.c:3436
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "設定鍵檔案含有不正確的「跳出字元」‘%s’"
 
-#: glib/gkeyfile.c:3525
+#: glib/gkeyfile.c:3578
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "數值‘%s’不能被解譯為數字。"
 
-#: glib/gkeyfile.c:3539
+#: glib/gkeyfile.c:3592
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "整數值‘%s’超出範圍"
 
-#: glib/gkeyfile.c:3572
+#: glib/gkeyfile.c:3625
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "數值‘%s’不能被解譯為浮點數。"
 
-#: glib/gkeyfile.c:3596
+#: glib/gkeyfile.c:3649
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "數值‘%s’不能被解譯為邏輯值。"

@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: el\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-16 18:02-0400\n"
+"POT-Creation-Date: 2007-05-03 00:50-0400\n"
 "PO-Revision-Date: 2006-02-20 12:47+0200\n"
 "Last-Translator: Kostas Papadimas <pkst@gnome.org>\n"
 "Language-Team: Greek <team@gnome.gr>\n"
@@ -22,77 +22,77 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.1\n"
 
-#: glib/gbookmarkfile.c:704 glib/gbookmarkfile.c:781 glib/gbookmarkfile.c:860
-#: glib/gbookmarkfile.c:907
+#: glib/gbookmarkfile.c:705 glib/gbookmarkfile.c:782 glib/gbookmarkfile.c:861
+#: glib/gbookmarkfile.c:908
 #, fuzzy, c-format
 msgid "Unexpected attribute '%s' for element '%s'"
 msgstr ""
 "Περίεργος χαρακτήρας  '%s',  αναμενόταν ένα  '=' μετά το όνομα γνωρίσματος '%"
 "s' του στοιχείου  '%s'"
 
-#: glib/gbookmarkfile.c:715 glib/gbookmarkfile.c:792 glib/gbookmarkfile.c:802
-#: glib/gbookmarkfile.c:918
+#: glib/gbookmarkfile.c:716 glib/gbookmarkfile.c:793 glib/gbookmarkfile.c:803
+#: glib/gbookmarkfile.c:919
 #, c-format
 msgid "Attribute '%s' of element '%s' not found"
 msgstr ""
 
-#: glib/gbookmarkfile.c:1091 glib/gbookmarkfile.c:1156
-#: glib/gbookmarkfile.c:1220 glib/gbookmarkfile.c:1230
+#: glib/gbookmarkfile.c:1092 glib/gbookmarkfile.c:1157
+#: glib/gbookmarkfile.c:1221 glib/gbookmarkfile.c:1231
 #, c-format
 msgid "Unexpected tag '%s', tag '%s' expected"
 msgstr ""
 
-#: glib/gbookmarkfile.c:1116 glib/gbookmarkfile.c:1130
-#: glib/gbookmarkfile.c:1198 glib/gbookmarkfile.c:1250
+#: glib/gbookmarkfile.c:1117 glib/gbookmarkfile.c:1131
+#: glib/gbookmarkfile.c:1199 glib/gbookmarkfile.c:1251
 #, c-format
 msgid "Unexpected tag '%s' inside '%s'"
 msgstr ""
 
-#: glib/gbookmarkfile.c:1780
+#: glib/gbookmarkfile.c:1781
 #, fuzzy, c-format
 msgid "No valid bookmark file found in data dirs"
 msgstr "Δεν μπορεί να βρεθεί έγκυρο key file στους καταλόγους δεδομένων"
 
-#: glib/gbookmarkfile.c:1981
+#: glib/gbookmarkfile.c:1982
 #, c-format
 msgid "A bookmark for URI '%s' already exists"
 msgstr ""
 
-#: glib/gbookmarkfile.c:2027 glib/gbookmarkfile.c:2184
-#: glib/gbookmarkfile.c:2269 glib/gbookmarkfile.c:2349
-#: glib/gbookmarkfile.c:2434 glib/gbookmarkfile.c:2517
-#: glib/gbookmarkfile.c:2595 glib/gbookmarkfile.c:2674
-#: glib/gbookmarkfile.c:2716 glib/gbookmarkfile.c:2813
-#: glib/gbookmarkfile.c:2939 glib/gbookmarkfile.c:3129
-#: glib/gbookmarkfile.c:3205 glib/gbookmarkfile.c:3368
-#: glib/gbookmarkfile.c:3443 glib/gbookmarkfile.c:3533
-#: glib/gbookmarkfile.c:3660
+#: glib/gbookmarkfile.c:2028 glib/gbookmarkfile.c:2185
+#: glib/gbookmarkfile.c:2270 glib/gbookmarkfile.c:2350
+#: glib/gbookmarkfile.c:2435 glib/gbookmarkfile.c:2518
+#: glib/gbookmarkfile.c:2596 glib/gbookmarkfile.c:2675
+#: glib/gbookmarkfile.c:2717 glib/gbookmarkfile.c:2814
+#: glib/gbookmarkfile.c:2940 glib/gbookmarkfile.c:3130
+#: glib/gbookmarkfile.c:3206 glib/gbookmarkfile.c:3371
+#: glib/gbookmarkfile.c:3460 glib/gbookmarkfile.c:3550
+#: glib/gbookmarkfile.c:3677
 #, c-format
 msgid "No bookmark found for URI '%s'"
 msgstr ""
 
-#: glib/gbookmarkfile.c:2358
+#: glib/gbookmarkfile.c:2359
 #, c-format
 msgid "No MIME type defined in the bookmark for URI '%s'"
 msgstr ""
 
-#: glib/gbookmarkfile.c:2443
+#: glib/gbookmarkfile.c:2444
 #, c-format
 msgid "No private flag has been defined in bookmark for URI '%s'"
 msgstr ""
 
-#: glib/gbookmarkfile.c:2822
+#: glib/gbookmarkfile.c:2823
 #, c-format
 msgid "No groups set in bookmark for URI '%s'"
 msgstr ""
 
-#: glib/gbookmarkfile.c:3223 glib/gbookmarkfile.c:3378
+#: glib/gbookmarkfile.c:3224 glib/gbookmarkfile.c:3381
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
 msgstr ""
 
 # gconf/gconf-internals.c:2416
-#: glib/gbookmarkfile.c:3391
+#: glib/gbookmarkfile.c:3404
 #, fuzzy, c-format
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "Αποτυχία ανάγνωσης συμβολικού δεσμού '%s': %s"
@@ -697,69 +697,69 @@ msgstr "Μή έγκυρη σειρά στην είσοδο μεταροπής"
 msgid "Character out of range for UTF-16"
 msgstr "Ο χαρακτήρας είναι έξω από την εμβέλεια για UTF-16"
 
-#: glib/goption.c:548
+#: glib/goption.c:572
 msgid "Usage:"
 msgstr "Χρήση:"
 
-#: glib/goption.c:548
+#: glib/goption.c:572
 msgid "[OPTION...]"
 msgstr "[ΕΠΙΛΟΓΗ...]"
 
-#: glib/goption.c:639
+#: glib/goption.c:676
 msgid "Help Options:"
 msgstr "Επιλογές βοήθειας:"
 
-#: glib/goption.c:640
+#: glib/goption.c:677
 msgid "Show help options"
 msgstr "Εμφάνιση επιλογών βοήθειας"
 
-#: glib/goption.c:645
+#: glib/goption.c:683
 msgid "Show all help options"
 msgstr "Εμφάνιση όλων των επιλογών βοήθειας"
 
-#: glib/goption.c:695
+#: glib/goption.c:735
 msgid "Application Options:"
 msgstr "Επιλογές εφαρμογής:"
 
-#: glib/goption.c:739 glib/goption.c:809
+#: glib/goption.c:796 glib/goption.c:866
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "Αδυναμία ανάλυσης integer value '%s' για %s"
 
-#: glib/goption.c:749 glib/goption.c:817
+#: glib/goption.c:806 glib/goption.c:874
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "Integer value '%s' για %s είναι εκτός εύρους"
 
-#: glib/goption.c:774
+#: glib/goption.c:831
 #, fuzzy, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "Αδυναμία ανάλυσης integer value '%s' για %s"
 
-#: glib/goption.c:782
+#: glib/goption.c:839
 #, fuzzy, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "Integer value '%s' για %s είναι εκτός εύρους"
 
 # gconf/gconftool.c:1181
-#: glib/goption.c:1119
+#: glib/goption.c:1176
 #, c-format
 msgid "Error parsing option %s"
 msgstr "Σφάλμα επιλογής ανάλυσης %s"
 
-#: glib/goption.c:1150 glib/goption.c:1261
+#: glib/goption.c:1207 glib/goption.c:1318
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Λείπει όρισμα για %s"
 
-#: glib/goption.c:1655
+#: glib/goption.c:1712
 #, c-format
 msgid "Unknown option %s"
 msgstr "Άγνωστη επιλογή %s"
 
 #: glib/gkeyfile.c:341
-#, c-format
-msgid "Valid key file could not be found in data dirs"
+#, fuzzy, c-format
+msgid "Valid key file could not be found in search dirs"
 msgstr "Δεν μπορεί να βρεθεί έγκυρο key file στους καταλόγους δεδομένων"
 
 #: glib/gkeyfile.c:376
@@ -772,7 +772,7 @@ msgstr "Δεν είναι κανονικό αρχείο"
 msgid "File is empty"
 msgstr "Το αρχείο είναι κενό"
 
-#: glib/gkeyfile.c:701
+#: glib/gkeyfile.c:746
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
@@ -780,49 +780,49 @@ msgstr ""
 "Το Key file περιέχει την γραμμή '%s' που δεν είναι key-value pair, group, ή "
 "comment"
 
-#: glib/gkeyfile.c:758
+#: glib/gkeyfile.c:806
 #, fuzzy, c-format
 msgid "Invalid group name: %s"
 msgstr "Ακατάλληλο όνομα προγράμματος: %s"
 
-#: glib/gkeyfile.c:780
+#: glib/gkeyfile.c:828
 #, c-format
 msgid "Key file does not start with a group"
 msgstr "Το Key file δεν ξεκινάει με μια ομάδα"
 
-#: glib/gkeyfile.c:806
+#: glib/gkeyfile.c:854
 #, fuzzy, c-format
 msgid "Invalid key name: %s"
 msgstr "Ακατάλληλο όνομα προγράμματος: %s"
 
-#: glib/gkeyfile.c:833
+#: glib/gkeyfile.c:881
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "Το Key file περιέχει μη υποστηριζόμενη κωδικοποίηση '%s'"
 
-#: glib/gkeyfile.c:1042 glib/gkeyfile.c:1201 glib/gkeyfile.c:2402
-#: glib/gkeyfile.c:2468 glib/gkeyfile.c:2587 glib/gkeyfile.c:2722
-#: glib/gkeyfile.c:2875 glib/gkeyfile.c:3055 glib/gkeyfile.c:3111
+#: glib/gkeyfile.c:1094 glib/gkeyfile.c:1253 glib/gkeyfile.c:2454
+#: glib/gkeyfile.c:2520 glib/gkeyfile.c:2639 glib/gkeyfile.c:2774
+#: glib/gkeyfile.c:2927 glib/gkeyfile.c:3107 glib/gkeyfile.c:3164
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Το Key file δεν έχει ομάδα '%s'"
 
-#: glib/gkeyfile.c:1213
+#: glib/gkeyfile.c:1265
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "Το Key file δεν έχει κλειδί'%s'"
 
-#: glib/gkeyfile.c:1315 glib/gkeyfile.c:1425
+#: glib/gkeyfile.c:1367 glib/gkeyfile.c:1477
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "Το Key file περιέχει ένα κλειδί '%s' με τιμή '%s' που δεν είναι UTF-8"
 
-#: glib/gkeyfile.c:1335 glib/gkeyfile.c:1445 glib/gkeyfile.c:1813
+#: glib/gkeyfile.c:1387 glib/gkeyfile.c:1497 glib/gkeyfile.c:1865
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "Το Key file περιέχει key '%s' που η τιμή του δεν μπορεί να ερμηνευθεί."
 
-#: glib/gkeyfile.c:2025 glib/gkeyfile.c:2234
+#: glib/gkeyfile.c:2077 glib/gkeyfile.c:2286
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -831,37 +831,37 @@ msgstr ""
 "Το Key file περιέχει  key '%s' στην ομάδα '%s' που η τιμή του δεν μπορεί να "
 "ερμηνευθεί."
 
-#: glib/gkeyfile.c:2417 glib/gkeyfile.c:2602 glib/gkeyfile.c:3122
+#: glib/gkeyfile.c:2469 glib/gkeyfile.c:2654 glib/gkeyfile.c:3175
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Το Key file δεν έχει  key '%s' στην ομάδα '%s'"
 
-#: glib/gkeyfile.c:3361
+#: glib/gkeyfile.c:3414
 #, c-format
 msgid "Key file contains escape character at end of line"
 msgstr "Το Key file περιέχει escape character στο τέλος της γραμμής"
 
-#: glib/gkeyfile.c:3383
+#: glib/gkeyfile.c:3436
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "To Key file περιέχει χαρακτήρες μή έγκυρα escaped '%s'"
 
-#: glib/gkeyfile.c:3525
+#: glib/gkeyfile.c:3578
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Η τιμή '%s' δεν μπορεί να ερμηνευθεί ως ένας αριθμός."
 
-#: glib/gkeyfile.c:3539
+#: glib/gkeyfile.c:3592
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "Integer value '%s' είναι εκτός εύρους"
 
-#: glib/gkeyfile.c:3572
+#: glib/gkeyfile.c:3625
 #, fuzzy, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "Η τιμή '%s' δεν μπορεί να ερμηνευθεί ως ένας αριθμός."
 
-#: glib/gkeyfile.c:3596
+#: glib/gkeyfile.c:3649
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Η τιμή '%s' δεν μπορεί να ερμηνευθεί ως  boolean."

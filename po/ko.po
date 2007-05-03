@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.11.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-16 18:02-0400\n"
+"POT-Creation-Date: 2007-05-03 00:50-0400\n"
 "PO-Revision-Date: 2006-08-11 22:41+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: GNOME Korea <gnome-kr-hackers@lists.kldp.net>\n"
@@ -14,74 +14,74 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: glib/gbookmarkfile.c:704 glib/gbookmarkfile.c:781 glib/gbookmarkfile.c:860
-#: glib/gbookmarkfile.c:907
+#: glib/gbookmarkfile.c:705 glib/gbookmarkfile.c:782 glib/gbookmarkfile.c:861
+#: glib/gbookmarkfile.c:908
 #, c-format
 msgid "Unexpected attribute '%s' for element '%s'"
 msgstr "예상치 못하게 '%2$s' 엘리먼트에 '%1$s' 애트리뷰트가 있습니다"
 
-#: glib/gbookmarkfile.c:715 glib/gbookmarkfile.c:792 glib/gbookmarkfile.c:802
-#: glib/gbookmarkfile.c:918
+#: glib/gbookmarkfile.c:716 glib/gbookmarkfile.c:793 glib/gbookmarkfile.c:803
+#: glib/gbookmarkfile.c:919
 #, c-format
 msgid "Attribute '%s' of element '%s' not found"
 msgstr "'%2$s' 엘리먼트에 '%1$s' 애트리뷰트가 없습니다"
 
-#: glib/gbookmarkfile.c:1091 glib/gbookmarkfile.c:1156
-#: glib/gbookmarkfile.c:1220 glib/gbookmarkfile.c:1230
+#: glib/gbookmarkfile.c:1092 glib/gbookmarkfile.c:1157
+#: glib/gbookmarkfile.c:1221 glib/gbookmarkfile.c:1231
 #, c-format
 msgid "Unexpected tag '%s', tag '%s' expected"
 msgstr "예상치 못하게 '%s' 태그가 있습니다. '%s' 태그가 있어야 합니다"
 
-#: glib/gbookmarkfile.c:1116 glib/gbookmarkfile.c:1130
-#: glib/gbookmarkfile.c:1198 glib/gbookmarkfile.c:1250
+#: glib/gbookmarkfile.c:1117 glib/gbookmarkfile.c:1131
+#: glib/gbookmarkfile.c:1199 glib/gbookmarkfile.c:1251
 #, c-format
 msgid "Unexpected tag '%s' inside '%s'"
 msgstr "예상치 못하게 '%2$s' 안에 '%1$s' 태그가 있습니다"
 
-#: glib/gbookmarkfile.c:1780
+#: glib/gbookmarkfile.c:1781
 #, c-format
 msgid "No valid bookmark file found in data dirs"
 msgstr "데이터 디렉토리에 올바른 북마크 파일이 없습니다"
 
-#: glib/gbookmarkfile.c:1981
+#: glib/gbookmarkfile.c:1982
 #, c-format
 msgid "A bookmark for URI '%s' already exists"
 msgstr "'%s' URL에 대한 북마크가 이미 있습니다"
 
-#: glib/gbookmarkfile.c:2027 glib/gbookmarkfile.c:2184
-#: glib/gbookmarkfile.c:2269 glib/gbookmarkfile.c:2349
-#: glib/gbookmarkfile.c:2434 glib/gbookmarkfile.c:2517
-#: glib/gbookmarkfile.c:2595 glib/gbookmarkfile.c:2674
-#: glib/gbookmarkfile.c:2716 glib/gbookmarkfile.c:2813
-#: glib/gbookmarkfile.c:2939 glib/gbookmarkfile.c:3129
-#: glib/gbookmarkfile.c:3205 glib/gbookmarkfile.c:3368
-#: glib/gbookmarkfile.c:3443 glib/gbookmarkfile.c:3533
-#: glib/gbookmarkfile.c:3660
+#: glib/gbookmarkfile.c:2028 glib/gbookmarkfile.c:2185
+#: glib/gbookmarkfile.c:2270 glib/gbookmarkfile.c:2350
+#: glib/gbookmarkfile.c:2435 glib/gbookmarkfile.c:2518
+#: glib/gbookmarkfile.c:2596 glib/gbookmarkfile.c:2675
+#: glib/gbookmarkfile.c:2717 glib/gbookmarkfile.c:2814
+#: glib/gbookmarkfile.c:2940 glib/gbookmarkfile.c:3130
+#: glib/gbookmarkfile.c:3206 glib/gbookmarkfile.c:3371
+#: glib/gbookmarkfile.c:3460 glib/gbookmarkfile.c:3550
+#: glib/gbookmarkfile.c:3677
 #, c-format
 msgid "No bookmark found for URI '%s'"
 msgstr "'%s' URL에 대한 북마크가 없습니다"
 
-#: glib/gbookmarkfile.c:2358
+#: glib/gbookmarkfile.c:2359
 #, c-format
 msgid "No MIME type defined in the bookmark for URI '%s'"
 msgstr "'%s' URL에 대한 북마크에 MIME 타입이 없습니다"
 
-#: glib/gbookmarkfile.c:2443
+#: glib/gbookmarkfile.c:2444
 #, c-format
 msgid "No private flag has been defined in bookmark for URI '%s'"
 msgstr "'%s' URL에 대한 북마크에 개인 플래그가 없습니다"
 
-#: glib/gbookmarkfile.c:2822
+#: glib/gbookmarkfile.c:2823
 #, c-format
 msgid "No groups set in bookmark for URI '%s'"
 msgstr "'%s' URL에 대한 북마크에 그룹이 설정되어 있지 않습니다"
 
-#: glib/gbookmarkfile.c:3223 glib/gbookmarkfile.c:3378
+#: glib/gbookmarkfile.c:3224 glib/gbookmarkfile.c:3381
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
 msgstr "이름이 '%s'인 어떤 프로그램도 '%s'에 대한 북마크를 등록하지 않았습니다"
 
-#: glib/gbookmarkfile.c:3391
+#: glib/gbookmarkfile.c:3404
 #, fuzzy, c-format
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "심볼릭 링크 '%s' 읽기 실패: %s"
@@ -651,68 +651,68 @@ msgstr "변환 입력에서 잘못된 순서"
 msgid "Character out of range for UTF-16"
 msgstr "UTF-16 범위 밖의 문자"
 
-#: glib/goption.c:548
+#: glib/goption.c:572
 msgid "Usage:"
 msgstr "사용법:"
 
-#: glib/goption.c:548
+#: glib/goption.c:572
 msgid "[OPTION...]"
 msgstr "[옵션...]"
 
-#: glib/goption.c:639
+#: glib/goption.c:676
 msgid "Help Options:"
 msgstr "도움말 옵션:"
 
-#: glib/goption.c:640
+#: glib/goption.c:677
 msgid "Show help options"
 msgstr "도움말 옵션을 봅니다"
 
-#: glib/goption.c:645
+#: glib/goption.c:683
 msgid "Show all help options"
 msgstr "모든 도움말 옵션을 봅니다"
 
-#: glib/goption.c:695
+#: glib/goption.c:735
 msgid "Application Options:"
 msgstr "프로그램 옵션:"
 
-#: glib/goption.c:739 glib/goption.c:809
+#: glib/goption.c:796 glib/goption.c:866
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "%2$s에 대한 정수 값 '%1$s'을(를) 분석할 수 없습니다"
 
-#: glib/goption.c:749 glib/goption.c:817
+#: glib/goption.c:806 glib/goption.c:874
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "%2$s에 대한 정수 값 '%1$s'이(가) 범위를 벗어났습니다"
 
-#: glib/goption.c:774
+#: glib/goption.c:831
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "%2$s에 대한 배정도 실수 값 '%1$s'을(를) 분석할 수 없습니다"
 
-#: glib/goption.c:782
+#: glib/goption.c:839
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "%2$s에 대한 배정도 실수 값 '%1$s'이(가) 범위를 벗어났습니다"
 
-#: glib/goption.c:1119
+#: glib/goption.c:1176
 #, c-format
 msgid "Error parsing option %s"
 msgstr "옵션 읽는 중에 오류: %s"
 
-#: glib/goption.c:1150 glib/goption.c:1261
+#: glib/goption.c:1207 glib/goption.c:1318
 #, c-format
 msgid "Missing argument for %s"
 msgstr "%s에 대한 인자가 빠졌습니다"
 
-#: glib/goption.c:1655
+#: glib/goption.c:1712
 #, c-format
 msgid "Unknown option %s"
 msgstr "알 수 없는 옵션 %s"
 
 #: glib/gkeyfile.c:341
-#, c-format
-msgid "Valid key file could not be found in data dirs"
+#, fuzzy, c-format
+msgid "Valid key file could not be found in search dirs"
 msgstr "데이터 디렉토리에 올바른 키 파일이 없습니다"
 
 #: glib/gkeyfile.c:376
@@ -725,7 +725,7 @@ msgstr "일반 파일이 아닙니다"
 msgid "File is empty"
 msgstr "파일이 비었습니다"
 
-#: glib/gkeyfile.c:701
+#: glib/gkeyfile.c:746
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
@@ -733,86 +733,86 @@ msgstr ""
 "키 파일에 들어 있는 '%s' 줄은 키-값 쌍도 아니고, 그룹도 아니고, 주석도 아닙니"
 "다"
 
-#: glib/gkeyfile.c:758
+#: glib/gkeyfile.c:806
 #, fuzzy, c-format
 msgid "Invalid group name: %s"
 msgstr "잘못된 프로그램 이름: %s"
 
-#: glib/gkeyfile.c:780
+#: glib/gkeyfile.c:828
 #, c-format
 msgid "Key file does not start with a group"
 msgstr "키 파일이 그룹으로 시작하지 않습니다"
 
-#: glib/gkeyfile.c:806
+#: glib/gkeyfile.c:854
 #, fuzzy, c-format
 msgid "Invalid key name: %s"
 msgstr "잘못된 프로그램 이름: %s"
 
-#: glib/gkeyfile.c:833
+#: glib/gkeyfile.c:881
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "키 파일에 지원하지 않는 '%s' 인코딩이 들어 있습니다"
 
-#: glib/gkeyfile.c:1042 glib/gkeyfile.c:1201 glib/gkeyfile.c:2402
-#: glib/gkeyfile.c:2468 glib/gkeyfile.c:2587 glib/gkeyfile.c:2722
-#: glib/gkeyfile.c:2875 glib/gkeyfile.c:3055 glib/gkeyfile.c:3111
+#: glib/gkeyfile.c:1094 glib/gkeyfile.c:1253 glib/gkeyfile.c:2454
+#: glib/gkeyfile.c:2520 glib/gkeyfile.c:2639 glib/gkeyfile.c:2774
+#: glib/gkeyfile.c:2927 glib/gkeyfile.c:3107 glib/gkeyfile.c:3164
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "키 파일에 '%s' 그룹이 없습니다"
 
-#: glib/gkeyfile.c:1213
+#: glib/gkeyfile.c:1265
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "키 파일에 '%s' 키가 없습니다"
 
-#: glib/gkeyfile.c:1315 glib/gkeyfile.c:1425
+#: glib/gkeyfile.c:1367 glib/gkeyfile.c:1477
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "키 파일에 있는 '%s' 키와 '%s' 값은 UTF-8이 아닙니다"
 
-#: glib/gkeyfile.c:1335 glib/gkeyfile.c:1445 glib/gkeyfile.c:1813
+#: glib/gkeyfile.c:1387 glib/gkeyfile.c:1497 glib/gkeyfile.c:1865
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "키 파일에 있는 '%s' 키의 값을 해석할 수 없습니다."
 
-#: glib/gkeyfile.c:2025 glib/gkeyfile.c:2234
+#: glib/gkeyfile.c:2077 glib/gkeyfile.c:2286
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
 "interpreted."
 msgstr "키 파일에 있는 '%2$s' 그룹의 '%1$s' 키의 값을 해석할 수 없습니다."
 
-#: glib/gkeyfile.c:2417 glib/gkeyfile.c:2602 glib/gkeyfile.c:3122
+#: glib/gkeyfile.c:2469 glib/gkeyfile.c:2654 glib/gkeyfile.c:3175
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "키 파일에 있는 '%2$s' 그룹의 '%1$s' 키가 없습니다"
 
-#: glib/gkeyfile.c:3361
+#: glib/gkeyfile.c:3414
 #, c-format
 msgid "Key file contains escape character at end of line"
 msgstr "키 파일의 줄 끝에 이스케이프 문자가 있습니다"
 
-#: glib/gkeyfile.c:3383
+#: glib/gkeyfile.c:3436
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "키 파일에 잘못된 이스케이프 시퀀스 '%s'이(가) 들어 있습니다"
 
-#: glib/gkeyfile.c:3525
+#: glib/gkeyfile.c:3578
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "값 '%s'을(를) 숫자로 해석할 수 없습니다."
 
-#: glib/gkeyfile.c:3539
+#: glib/gkeyfile.c:3592
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "정수 값 '%s'이(가) 범위를 벗어났습니다"
 
-#: glib/gkeyfile.c:3572
+#: glib/gkeyfile.c:3625
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "값 '%s'을(를) 단정도 실수로 해석할 수 없습니다."
 
-#: glib/gkeyfile.c:3596
+#: glib/gkeyfile.c:3649
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "값 '%s'을(를) 불리언 값으로 해석할 수 없습니다."

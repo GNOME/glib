@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-16 18:02-0400\n"
+"POT-Creation-Date: 2007-05-03 00:50-0400\n"
 "PO-Revision-Date: 2006-01-30 10:58+0100\n"
 "Last-Translator: Laurent Dhima <laurenti@alblinux.net>\n"
 "Language-Team: Albanian <gnome-albanian-perkthyesit@lists.sourceforge.net>\n"
@@ -14,76 +14,76 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: glib/gbookmarkfile.c:704 glib/gbookmarkfile.c:781 glib/gbookmarkfile.c:860
-#: glib/gbookmarkfile.c:907
+#: glib/gbookmarkfile.c:705 glib/gbookmarkfile.c:782 glib/gbookmarkfile.c:861
+#: glib/gbookmarkfile.c:908
 #, fuzzy, c-format
 msgid "Unexpected attribute '%s' for element '%s'"
 msgstr ""
 "U gjet simboli '%s', përkundrazi pritej një '=' mbas emrit të atributit '%s' "
 "të elementit '%s'"
 
-#: glib/gbookmarkfile.c:715 glib/gbookmarkfile.c:792 glib/gbookmarkfile.c:802
-#: glib/gbookmarkfile.c:918
+#: glib/gbookmarkfile.c:716 glib/gbookmarkfile.c:793 glib/gbookmarkfile.c:803
+#: glib/gbookmarkfile.c:919
 #, c-format
 msgid "Attribute '%s' of element '%s' not found"
 msgstr ""
 
-#: glib/gbookmarkfile.c:1091 glib/gbookmarkfile.c:1156
-#: glib/gbookmarkfile.c:1220 glib/gbookmarkfile.c:1230
+#: glib/gbookmarkfile.c:1092 glib/gbookmarkfile.c:1157
+#: glib/gbookmarkfile.c:1221 glib/gbookmarkfile.c:1231
 #, c-format
 msgid "Unexpected tag '%s', tag '%s' expected"
 msgstr ""
 
-#: glib/gbookmarkfile.c:1116 glib/gbookmarkfile.c:1130
-#: glib/gbookmarkfile.c:1198 glib/gbookmarkfile.c:1250
+#: glib/gbookmarkfile.c:1117 glib/gbookmarkfile.c:1131
+#: glib/gbookmarkfile.c:1199 glib/gbookmarkfile.c:1251
 #, c-format
 msgid "Unexpected tag '%s' inside '%s'"
 msgstr ""
 
-#: glib/gbookmarkfile.c:1780
+#: glib/gbookmarkfile.c:1781
 #, fuzzy, c-format
 msgid "No valid bookmark file found in data dirs"
 msgstr "Nuk u gjet asnjë file i vlefshëm kyçi tek directory e të dhënave"
 
-#: glib/gbookmarkfile.c:1981
+#: glib/gbookmarkfile.c:1982
 #, c-format
 msgid "A bookmark for URI '%s' already exists"
 msgstr ""
 
-#: glib/gbookmarkfile.c:2027 glib/gbookmarkfile.c:2184
-#: glib/gbookmarkfile.c:2269 glib/gbookmarkfile.c:2349
-#: glib/gbookmarkfile.c:2434 glib/gbookmarkfile.c:2517
-#: glib/gbookmarkfile.c:2595 glib/gbookmarkfile.c:2674
-#: glib/gbookmarkfile.c:2716 glib/gbookmarkfile.c:2813
-#: glib/gbookmarkfile.c:2939 glib/gbookmarkfile.c:3129
-#: glib/gbookmarkfile.c:3205 glib/gbookmarkfile.c:3368
-#: glib/gbookmarkfile.c:3443 glib/gbookmarkfile.c:3533
-#: glib/gbookmarkfile.c:3660
+#: glib/gbookmarkfile.c:2028 glib/gbookmarkfile.c:2185
+#: glib/gbookmarkfile.c:2270 glib/gbookmarkfile.c:2350
+#: glib/gbookmarkfile.c:2435 glib/gbookmarkfile.c:2518
+#: glib/gbookmarkfile.c:2596 glib/gbookmarkfile.c:2675
+#: glib/gbookmarkfile.c:2717 glib/gbookmarkfile.c:2814
+#: glib/gbookmarkfile.c:2940 glib/gbookmarkfile.c:3130
+#: glib/gbookmarkfile.c:3206 glib/gbookmarkfile.c:3371
+#: glib/gbookmarkfile.c:3460 glib/gbookmarkfile.c:3550
+#: glib/gbookmarkfile.c:3677
 #, c-format
 msgid "No bookmark found for URI '%s'"
 msgstr ""
 
-#: glib/gbookmarkfile.c:2358
+#: glib/gbookmarkfile.c:2359
 #, c-format
 msgid "No MIME type defined in the bookmark for URI '%s'"
 msgstr ""
 
-#: glib/gbookmarkfile.c:2443
+#: glib/gbookmarkfile.c:2444
 #, c-format
 msgid "No private flag has been defined in bookmark for URI '%s'"
 msgstr ""
 
-#: glib/gbookmarkfile.c:2822
+#: glib/gbookmarkfile.c:2823
 #, c-format
 msgid "No groups set in bookmark for URI '%s'"
 msgstr ""
 
-#: glib/gbookmarkfile.c:3223 glib/gbookmarkfile.c:3378
+#: glib/gbookmarkfile.c:3224 glib/gbookmarkfile.c:3381
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
 msgstr ""
 
-#: glib/gbookmarkfile.c:3391
+#: glib/gbookmarkfile.c:3404
 #, fuzzy, c-format
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "I pamundur leximi i lidhjes simbolike '%s': %s"
@@ -660,68 +660,68 @@ msgstr "Sekuencë e pavlefshme në hyrje për konvertimin"
 msgid "Character out of range for UTF-16"
 msgstr "Simboli nuk ekziston në UTF-16"
 
-#: glib/goption.c:548
+#: glib/goption.c:572
 msgid "Usage:"
 msgstr "Përdorimi:"
 
-#: glib/goption.c:548
+#: glib/goption.c:572
 msgid "[OPTION...]"
 msgstr "[OPCIONI...]"
 
-#: glib/goption.c:639
+#: glib/goption.c:676
 msgid "Help Options:"
 msgstr "Opcionet e ndihmës:"
 
-#: glib/goption.c:640
+#: glib/goption.c:677
 msgid "Show help options"
 msgstr "Shfaq opcionet e ndihmës"
 
-#: glib/goption.c:645
+#: glib/goption.c:683
 msgid "Show all help options"
 msgstr "Shfaq të gjithë opcionet e ndihmës"
 
-#: glib/goption.c:695
+#: glib/goption.c:735
 msgid "Application Options:"
 msgstr "Opcionet e programit:"
 
-#: glib/goption.c:739 glib/goption.c:809
+#: glib/goption.c:796 glib/goption.c:866
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "I pamundur analizimi i vlerës së plotë '%s' për %s"
 
-#: glib/goption.c:749 glib/goption.c:817
+#: glib/goption.c:806 glib/goption.c:874
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "Vlera integruese '%s' për %s është jashtë kufirit"
 
-#: glib/goption.c:774
+#: glib/goption.c:831
 #, fuzzy, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "I pamundur analizimi i vlerës së plotë '%s' për %s"
 
-#: glib/goption.c:782
+#: glib/goption.c:839
 #, fuzzy, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "Vlera integruese '%s' për %s është jashtë kufirit"
 
-#: glib/goption.c:1119
+#: glib/goption.c:1176
 #, c-format
 msgid "Error parsing option %s"
 msgstr "Gabim gjatë analizimit të opsionit %s"
 
-#: glib/goption.c:1150 glib/goption.c:1261
+#: glib/goption.c:1207 glib/goption.c:1318
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Mungojnë argumentë për %s"
 
-#: glib/goption.c:1655
+#: glib/goption.c:1712
 #, c-format
 msgid "Unknown option %s"
 msgstr "Opcion i panjohur %s"
 
 #: glib/gkeyfile.c:341
-#, c-format
-msgid "Valid key file could not be found in data dirs"
+#, fuzzy, c-format
+msgid "Valid key file could not be found in search dirs"
 msgstr "Nuk u gjet asnjë file i vlefshëm kyçi tek directory e të dhënave"
 
 #: glib/gkeyfile.c:376
@@ -734,56 +734,56 @@ msgstr "Nuk është një file i rregullt"
 msgid "File is empty"
 msgstr "File është bosh"
 
-#: glib/gkeyfile.c:701
+#: glib/gkeyfile.c:746
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr ""
 "Kyçi përmban rreshtin '%s' që nuk është një vlerë çift, grup apo koment kyçi"
 
-#: glib/gkeyfile.c:758
+#: glib/gkeyfile.c:806
 #, fuzzy, c-format
 msgid "Invalid group name: %s"
 msgstr "Emër i pasaktë programi: %s"
 
-#: glib/gkeyfile.c:780
+#: glib/gkeyfile.c:828
 #, c-format
 msgid "Key file does not start with a group"
 msgstr "File i kyçit nuk fillon me një grup"
 
-#: glib/gkeyfile.c:806
+#: glib/gkeyfile.c:854
 #, fuzzy, c-format
 msgid "Invalid key name: %s"
 msgstr "Emër i pasaktë programi: %s"
 
-#: glib/gkeyfile.c:833
+#: glib/gkeyfile.c:881
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "File i kyçit përmban kodifikimin e pasuportuar '%s'"
 
-#: glib/gkeyfile.c:1042 glib/gkeyfile.c:1201 glib/gkeyfile.c:2402
-#: glib/gkeyfile.c:2468 glib/gkeyfile.c:2587 glib/gkeyfile.c:2722
-#: glib/gkeyfile.c:2875 glib/gkeyfile.c:3055 glib/gkeyfile.c:3111
+#: glib/gkeyfile.c:1094 glib/gkeyfile.c:1253 glib/gkeyfile.c:2454
+#: glib/gkeyfile.c:2520 glib/gkeyfile.c:2639 glib/gkeyfile.c:2774
+#: glib/gkeyfile.c:2927 glib/gkeyfile.c:3107 glib/gkeyfile.c:3164
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "File i kyçit nuk ka grupin '%s'"
 
-#: glib/gkeyfile.c:1213
+#: glib/gkeyfile.c:1265
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "File i kyçit nuk përmban kyçin '%s'"
 
-#: glib/gkeyfile.c:1315 glib/gkeyfile.c:1425
+#: glib/gkeyfile.c:1367 glib/gkeyfile.c:1477
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "File i kyçit përmban kyçin '%s' me vlerë '%s' që nuk është në UTF-8"
 
-#: glib/gkeyfile.c:1335 glib/gkeyfile.c:1445 glib/gkeyfile.c:1813
+#: glib/gkeyfile.c:1387 glib/gkeyfile.c:1497 glib/gkeyfile.c:1865
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "File i kyçit përmban kyçin '%s' që ka një vlerë të painterpretueshme."
 
-#: glib/gkeyfile.c:2025 glib/gkeyfile.c:2234
+#: glib/gkeyfile.c:2077 glib/gkeyfile.c:2286
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -792,37 +792,37 @@ msgstr ""
 "File i kyçit përmban kyçin '%s' në grupin '%s' që ka një vlerë të "
 "painterpretueshme."
 
-#: glib/gkeyfile.c:2417 glib/gkeyfile.c:2602 glib/gkeyfile.c:3122
+#: glib/gkeyfile.c:2469 glib/gkeyfile.c:2654 glib/gkeyfile.c:3175
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "File i kyçit nuk ka kyçin '%s' në grupin '%s'"
 
-#: glib/gkeyfile.c:3361
+#: glib/gkeyfile.c:3414
 #, c-format
 msgid "Key file contains escape character at end of line"
 msgstr "File i kyçit përmban simbolin escape në fund të rreshtit"
 
-#: glib/gkeyfile.c:3383
+#: glib/gkeyfile.c:3436
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "File i kyçit përmban sekuencën e pavlefshme escape '%s'"
 
-#: glib/gkeyfile.c:3525
+#: glib/gkeyfile.c:3578
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Vlera '%s' nuk mund të interpretohet si një numër."
 
-#: glib/gkeyfile.c:3539
+#: glib/gkeyfile.c:3592
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "Vlera integruese '%s' është jashtë kufirit"
 
-#: glib/gkeyfile.c:3572
+#: glib/gkeyfile.c:3625
 #, fuzzy, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "Vlera '%s' nuk mund të interpretohet si një numër."
 
-#: glib/gkeyfile.c:3596
+#: glib/gkeyfile.c:3649
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Vlera '%s' nuk mund të interpretohet si një boolean."

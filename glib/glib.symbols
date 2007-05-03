@@ -492,6 +492,7 @@ g_key_file_get_string_list G_GNUC_MALLOC
 g_key_file_get_value G_GNUC_MALLOC
 g_key_file_has_group
 g_key_file_has_key
+g_key_file_load_from_dirs
 g_key_file_load_from_data
 g_key_file_load_from_data_dirs
 g_key_file_load_from_file

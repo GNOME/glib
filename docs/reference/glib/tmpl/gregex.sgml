@@ -245,6 +245,24 @@ should append the replacement to @result.
 @Returns: 
 
 
+<!-- ##### FUNCTION g_regex_get_max_backref ##### -->
+<para>
+
+</para>
+
+@regex: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_regex_get_capture_count ##### -->
+<para>
+
+</para>
+
+@regex: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_regex_get_string_number ##### -->
 <para>
 

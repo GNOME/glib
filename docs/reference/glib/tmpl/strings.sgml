@@ -26,7 +26,7 @@ The #GString struct contains the public fields of a #GString.
 
 @str: points to the character data. It may move as text is added.
 The <structfield>str</structfield> field is nul-terminated and so 
-can be used as an ordinary C string. 
+can be used as an ordinary C string.
 @len: contains the length of the string, not including the terminating nul byte.
 @allocated_len: 
 

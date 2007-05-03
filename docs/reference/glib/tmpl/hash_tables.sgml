@@ -262,6 +262,24 @@ which is passed to g_hash_table_foreach().
 @hash_table: 
 
 
+<!-- ##### FUNCTION g_hash_table_get_keys ##### -->
+<para>
+
+</para>
+
+@hash_table: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_hash_table_get_values ##### -->
+<para>
+
+</para>
+
+@hash_table: 
+@Returns: 
+
+
 <!-- ##### USER_FUNCTION GHRFunc ##### -->
 <para>
 Specifies the type of the function passed to g_hash_table_foreach_remove().

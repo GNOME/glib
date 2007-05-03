@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-16 18:02-0400\n"
+"POT-Creation-Date: 2007-05-03 00:50-0400\n"
 "PO-Revision-Date: 2005-11-16 11:21+0200\n"
 "Last-Translator: Vital Khilko <vk@altlinux.ru>\n"
 "Language-Team: Belarusian <i18n@mova.org>\n"
@@ -17,77 +17,77 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 # glib/gmarkup.c:1120
-#: glib/gbookmarkfile.c:704 glib/gbookmarkfile.c:781 glib/gbookmarkfile.c:860
-#: glib/gbookmarkfile.c:907
+#: glib/gbookmarkfile.c:705 glib/gbookmarkfile.c:782 glib/gbookmarkfile.c:861
+#: glib/gbookmarkfile.c:908
 #, fuzzy, c-format
 msgid "Unexpected attribute '%s' for element '%s'"
 msgstr ""
 "Дзіўны сымбаль \"%s\", чакаўся сымбаль \"=\" пасьля назвы атрыбута \"%s\" "
 "элемэнту \"%s\""
 
-#: glib/gbookmarkfile.c:715 glib/gbookmarkfile.c:792 glib/gbookmarkfile.c:802
-#: glib/gbookmarkfile.c:918
+#: glib/gbookmarkfile.c:716 glib/gbookmarkfile.c:793 glib/gbookmarkfile.c:803
+#: glib/gbookmarkfile.c:919
 #, c-format
 msgid "Attribute '%s' of element '%s' not found"
 msgstr ""
 
-#: glib/gbookmarkfile.c:1091 glib/gbookmarkfile.c:1156
-#: glib/gbookmarkfile.c:1220 glib/gbookmarkfile.c:1230
+#: glib/gbookmarkfile.c:1092 glib/gbookmarkfile.c:1157
+#: glib/gbookmarkfile.c:1221 glib/gbookmarkfile.c:1231
 #, c-format
 msgid "Unexpected tag '%s', tag '%s' expected"
 msgstr ""
 
-#: glib/gbookmarkfile.c:1116 glib/gbookmarkfile.c:1130
-#: glib/gbookmarkfile.c:1198 glib/gbookmarkfile.c:1250
+#: glib/gbookmarkfile.c:1117 glib/gbookmarkfile.c:1131
+#: glib/gbookmarkfile.c:1199 glib/gbookmarkfile.c:1251
 #, c-format
 msgid "Unexpected tag '%s' inside '%s'"
 msgstr ""
 
-#: glib/gbookmarkfile.c:1780
+#: glib/gbookmarkfile.c:1781
 #, fuzzy, c-format
 msgid "No valid bookmark file found in data dirs"
 msgstr "Дапушчальны файл ключу не адшуканы ў каталёгу даньняў"
 
-#: glib/gbookmarkfile.c:1981
+#: glib/gbookmarkfile.c:1982
 #, c-format
 msgid "A bookmark for URI '%s' already exists"
 msgstr ""
 
-#: glib/gbookmarkfile.c:2027 glib/gbookmarkfile.c:2184
-#: glib/gbookmarkfile.c:2269 glib/gbookmarkfile.c:2349
-#: glib/gbookmarkfile.c:2434 glib/gbookmarkfile.c:2517
-#: glib/gbookmarkfile.c:2595 glib/gbookmarkfile.c:2674
-#: glib/gbookmarkfile.c:2716 glib/gbookmarkfile.c:2813
-#: glib/gbookmarkfile.c:2939 glib/gbookmarkfile.c:3129
-#: glib/gbookmarkfile.c:3205 glib/gbookmarkfile.c:3368
-#: glib/gbookmarkfile.c:3443 glib/gbookmarkfile.c:3533
-#: glib/gbookmarkfile.c:3660
+#: glib/gbookmarkfile.c:2028 glib/gbookmarkfile.c:2185
+#: glib/gbookmarkfile.c:2270 glib/gbookmarkfile.c:2350
+#: glib/gbookmarkfile.c:2435 glib/gbookmarkfile.c:2518
+#: glib/gbookmarkfile.c:2596 glib/gbookmarkfile.c:2675
+#: glib/gbookmarkfile.c:2717 glib/gbookmarkfile.c:2814
+#: glib/gbookmarkfile.c:2940 glib/gbookmarkfile.c:3130
+#: glib/gbookmarkfile.c:3206 glib/gbookmarkfile.c:3371
+#: glib/gbookmarkfile.c:3460 glib/gbookmarkfile.c:3550
+#: glib/gbookmarkfile.c:3677
 #, c-format
 msgid "No bookmark found for URI '%s'"
 msgstr ""
 
-#: glib/gbookmarkfile.c:2358
+#: glib/gbookmarkfile.c:2359
 #, c-format
 msgid "No MIME type defined in the bookmark for URI '%s'"
 msgstr ""
 
-#: glib/gbookmarkfile.c:2443
+#: glib/gbookmarkfile.c:2444
 #, c-format
 msgid "No private flag has been defined in bookmark for URI '%s'"
 msgstr ""
 
-#: glib/gbookmarkfile.c:2822
+#: glib/gbookmarkfile.c:2823
 #, c-format
 msgid "No groups set in bookmark for URI '%s'"
 msgstr ""
 
-#: glib/gbookmarkfile.c:3223 glib/gbookmarkfile.c:3378
+#: glib/gbookmarkfile.c:3224 glib/gbookmarkfile.c:3381
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
 msgstr ""
 
 # glib/gfileutils.c:745
-#: glib/gbookmarkfile.c:3391
+#: glib/gbookmarkfile.c:3404
 #, fuzzy, c-format
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "Немагчыма прачытаць сымбалічную спасылку \"%s\": %s"
@@ -752,70 +752,70 @@ msgstr "Недапушчальная пасьлядоўнасьць на ўва�
 msgid "Character out of range for UTF-16"
 msgstr "Сымбаль па-за дыяпазонам UTF-16"
 
-#: glib/goption.c:548
+#: glib/goption.c:572
 msgid "Usage:"
 msgstr "Выкарыстаньне:"
 
-#: glib/goption.c:548
+#: glib/goption.c:572
 msgid "[OPTION...]"
 msgstr "[МОЖНАСЬЦЬ...]"
 
-#: glib/goption.c:639
+#: glib/goption.c:676
 msgid "Help Options:"
 msgstr "Можнасьці дапамогі:"
 
-#: glib/goption.c:640
+#: glib/goption.c:677
 msgid "Show help options"
 msgstr "Адлюстраваць можнасьці дапамогі"
 
-#: glib/goption.c:645
+#: glib/goption.c:683
 msgid "Show all help options"
 msgstr "Адлюстраваць усе можнасьці дапамогі"
 
-#: glib/goption.c:695
+#: glib/goption.c:735
 msgid "Application Options:"
 msgstr "Можнасьці дастасаваньня:"
 
-#: glib/goption.c:739 glib/goption.c:809
+#: glib/goption.c:796 glib/goption.c:866
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "Немагчыма разабраць цэлае значэньне '%s' для %s"
 
-#: glib/goption.c:749 glib/goption.c:817
+#: glib/goption.c:806 glib/goption.c:874
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "Цэлае значэньне '%s' для %s па-за межамі"
 
-#: glib/goption.c:774
+#: glib/goption.c:831
 #, fuzzy, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "Немагчыма разабраць цэлае значэньне '%s' для %s"
 
-#: glib/goption.c:782
+#: glib/goption.c:839
 #, fuzzy, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "Цэлае значэньне '%s' для %s па-за межамі"
 
 # glib/gconvert.c:597 glib/gconvert.c:813 glib/giochannel.c:1289
 # glib/giochannel.c:2175
-#: glib/goption.c:1119
+#: glib/goption.c:1176
 #, fuzzy, c-format
 msgid "Error parsing option %s"
 msgstr "Памылка ў часе пераўтварэньня: %s"
 
-#: glib/goption.c:1150 glib/goption.c:1261
+#: glib/goption.c:1207 glib/goption.c:1318
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Нестае аргумэнту для %s"
 
-#: glib/goption.c:1655
+#: glib/goption.c:1712
 #, c-format
 msgid "Unknown option %s"
 msgstr "Невядомая можнасьць %s"
 
 #: glib/gkeyfile.c:341
-#, c-format
-msgid "Valid key file could not be found in data dirs"
+#, fuzzy, c-format
+msgid "Valid key file could not be found in search dirs"
 msgstr "Дапушчальны файл ключу не адшуканы ў каталёгу даньняў"
 
 #: glib/gkeyfile.c:376
@@ -828,7 +828,7 @@ msgstr "Не зьяўляецца звычайным файлам"
 msgid "File is empty"
 msgstr "Файл пусты"
 
-#: glib/gkeyfile.c:701
+#: glib/gkeyfile.c:746
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
@@ -837,53 +837,53 @@ msgstr ""
 "групай, ці камэнтарам"
 
 # glib/gconvert.c:1729
-#: glib/gkeyfile.c:758
+#: glib/gkeyfile.c:806
 #, fuzzy, c-format
 msgid "Invalid group name: %s"
 msgstr "Недапушчальная назва праграмы: %s"
 
-#: glib/gkeyfile.c:780
+#: glib/gkeyfile.c:828
 #, c-format
 msgid "Key file does not start with a group"
 msgstr "Файл ключу не пачынаецца з групы"
 
 # glib/gconvert.c:1729
-#: glib/gkeyfile.c:806
+#: glib/gkeyfile.c:854
 #, fuzzy, c-format
 msgid "Invalid key name: %s"
 msgstr "Недапушчальная назва праграмы: %s"
 
-#: glib/gkeyfile.c:833
+#: glib/gkeyfile.c:881
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "Файл ключу ўтрымлівае кадаваньне якое не падтрымліваецца '%s'"
 
-#: glib/gkeyfile.c:1042 glib/gkeyfile.c:1201 glib/gkeyfile.c:2402
-#: glib/gkeyfile.c:2468 glib/gkeyfile.c:2587 glib/gkeyfile.c:2722
-#: glib/gkeyfile.c:2875 glib/gkeyfile.c:3055 glib/gkeyfile.c:3111
+#: glib/gkeyfile.c:1094 glib/gkeyfile.c:1253 glib/gkeyfile.c:2454
+#: glib/gkeyfile.c:2520 glib/gkeyfile.c:2639 glib/gkeyfile.c:2774
+#: glib/gkeyfile.c:2927 glib/gkeyfile.c:3107 glib/gkeyfile.c:3164
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Файл ключу не мае групу '%s'"
 
-#: glib/gkeyfile.c:1213
+#: glib/gkeyfile.c:1265
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "Файл ключу не мае ключ '%s'"
 
-#: glib/gkeyfile.c:1315 glib/gkeyfile.c:1425
+#: glib/gkeyfile.c:1367 glib/gkeyfile.c:1477
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr ""
 "Файл ключу утрымлівае ключ '%s' са значэньнем '%s' які не закадаваны UTF-8"
 
-#: glib/gkeyfile.c:1335 glib/gkeyfile.c:1445 glib/gkeyfile.c:1813
+#: glib/gkeyfile.c:1387 glib/gkeyfile.c:1497 glib/gkeyfile.c:1865
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr ""
 "Файл ключу утрымлівае ключ '%s' які мае значэньне што не можа быць "
 "інтэрпрэтаванае."
 
-#: glib/gkeyfile.c:2025 glib/gkeyfile.c:2234
+#: glib/gkeyfile.c:2077 glib/gkeyfile.c:2286
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -892,38 +892,38 @@ msgstr ""
 "Файл ключу утрымлівае ключ '%s' у групе '%s' які мае значэньне што не можа "
 "быць інтэрпрэтаванае."
 
-#: glib/gkeyfile.c:2417 glib/gkeyfile.c:2602 glib/gkeyfile.c:3122
+#: glib/gkeyfile.c:2469 glib/gkeyfile.c:2654 glib/gkeyfile.c:3175
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Файл ключу не мае ключ '%s' у групе '%s'"
 
-#: glib/gkeyfile.c:3361
+#: glib/gkeyfile.c:3414
 #, c-format
 msgid "Key file contains escape character at end of line"
 msgstr "Файл ключу ўтрымлівае пасьлядоўнасьць завяршэньня ў канцы радку"
 
 # glib/gconvert.c:1648
-#: glib/gkeyfile.c:3383
+#: glib/gkeyfile.c:3436
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "Файл ключу утрымлівае недапушчальную пасьлядоўнасьць завяршэньня '%s'"
 
-#: glib/gkeyfile.c:3525
+#: glib/gkeyfile.c:3578
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Значэньне '%s' не можа быць інтэрпрэтаванае як лік."
 
-#: glib/gkeyfile.c:3539
+#: glib/gkeyfile.c:3592
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "Цэлае значэньне '%s' па-за межамі"
 
-#: glib/gkeyfile.c:3572
+#: glib/gkeyfile.c:3625
 #, fuzzy, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "Значэньне '%s' не можа быць інтэрпрэтаванае як лік."
 
-#: glib/gkeyfile.c:3596
+#: glib/gkeyfile.c:3649
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Значэньне '%s' не можа быць інтэрпрэтаванае як булева."

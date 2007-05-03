@@ -309,6 +309,17 @@ strings, for <option>--help</option> output.
 @Returns: 
 
 
+<!-- ##### FUNCTION g_option_context_get_help ##### -->
+<para>
+
+</para>
+
+@context: 
+@main_help: 
+@group: 
+@Returns: 
+
+
 <!-- ##### ENUM GOptionArg ##### -->
 <para>
 The #GOptionArg enum values determine which type of extra argument the
