@@ -1,3 +1,7 @@
+2007-05-02  Matthias Clasen <mclasen@redhat.com>
+
+	* NEWS: Updates
+
 2007-05-02  Marco Barisione <marco@barisione.org>
 
 	* glib/gregex.c: Made more clear that the string passed to the match

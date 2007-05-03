@@ -1,3 +1,32 @@
+Overview of Changes from GLib 2.13.0 to GLib 2.13.1
+===================================================
+
+* GRegex:
+ - Portability fixes
+ - Split into immutable GRegex and GMatchInfo
+ - Add g_regex_get_max_backref() and g_regex_get_capture_count()
+   to obtain information about the compiled regex
+
+* GKeyFile:
+ - Fix roundtrip problems
+ - Add g_key_file_load_from_dirs()
+
+* Unicode support:
+ - Fix corner cases in case conversion routines
+
+* GOption:
+  - Add a function to get the formatted help string
+
+* GHash:
+ - Add new functions g_hash_table_get_keys() and
+   g_hash_table_get_values() to retrieve the keys and
+   values in list form
+
+* Updated transations:
+  Simplified Chinese (zh_CN)
+  Arabic (ar)
+
+
 Overview of Changes from GLib 2.12 to GLib 2.13.0
 =================================================
 
