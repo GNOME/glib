@@ -1,3 +1,10 @@
+2007-05-03  Behdad Esfahbod  <behdad@gnome.org>
+
+	* glib/glib.symbols:
+	* glib/gunicode.h:
+	* glib/guniprop.c (g_unichar_ismark):
+	Add g_unichar_ismark(). Patch from Yevgen Muntyan. Fixes #339991.
+
 2007-05-03  Matthias Clasen <mclasen@redhat.com>
 
 	* configure.in: Bump version
