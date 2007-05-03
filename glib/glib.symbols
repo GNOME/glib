@@ -1305,6 +1305,7 @@ g_unichar_iszerowidth G_GNUC_CONST
 g_unichar_tolower G_GNUC_CONST
 g_unichar_totitle G_GNUC_CONST
 g_unichar_toupper G_GNUC_CONST
+g_unichar_ismark G_GNUC_CONST
 g_unichar_get_mirror_char
 g_unichar_get_script
 g_unichar_digit_value G_GNUC_CONST

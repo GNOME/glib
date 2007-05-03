@@ -289,6 +289,30 @@ g_unichar_isspace (gunichar c)
 }
 
 /**
+ * g_unichar_ismark:
+ * @c: a Unicode character
+ *
+ * Determines whether a character is a mark (non-spacing mark,
+ * combining mark, or enclosing mark in Unicode speak).
+ * Given some UTF-8 text, obtain a character value
+ * with g_utf8_get_char().
+ *
+ * Note: in most cases where isalpha characters are allowed,
+ * ismark characters should be allowed to as they are essential
+ * for writing most European languages as well as many non-Latin
+ * scripts.
+ *
+ * Return value: %TRUE if @c is a mark character
+ *
+ * Since: 2.14
+ **/
+gboolean
+g_unichar_ismark (gunichar c)
+{
+  return ISMARK (TYPE (c));
+}
+
+/**
  * g_unichar_isupper:
  * @c: a Unicode character
  * 

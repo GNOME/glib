@@ -1,3 +1,9 @@
+2007-05-03  Behdad Esfahbod  <behdad@gnome.org>
+
+	* glib/glib-sections.txt:
+	* glib/tmpl/messages.sgml:
+	Add g_unichar_ismark().
+
 2007-05-03  Matthias Clasen <mclasen@redhat.com>
 
 	* === Released 2.13.1 ===
