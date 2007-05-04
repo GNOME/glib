@@ -1,3 +1,11 @@
+2007-05-04  Dan Winship  <danw@novell.com>
+
+	* glib/gkeyfile.c (g_key_file_get_boolean)
+	(g_key_file_get_boolean_list, g_key_file_get_integer)
+	(g_key_file_get_integer_list, g_key_file_get_double)
+	(g_key_file_get_double_list): Document the error return values
+	rather than calling them undefined. #435885.
+
 2007-05-03  Behdad Esfahbod  <behdad@gnome.org>
 
 	* glib/glib.symbols:

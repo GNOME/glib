@@ -1819,13 +1819,14 @@ g_key_file_set_locale_string_list (GKeyFile            *key_file,
  * Returns the value associated with @key under @group_name as a
  * boolean. 
  *
- * If @key cannot be found then the return value is undefined and
- * @error is set to #G_KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if
- * the value associated with @key cannot be interpreted as a boolean
- * then the return value is also undefined and @error is set to
- * #G_KEY_FILE_ERROR_INVALID_VALUE.
+ * If @key cannot be found then %FALSE is returned and @error is set
+ * to #G_KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the value
+ * associated with @key cannot be interpreted as a boolean then %FALSE
+ * is returned and @error is set to #G_KEY_FILE_ERROR_INVALID_VALUE.
  *
- * Return value: the value associated with the key as a boolean
+ * Return value: the value associated with the key as a boolean, or
+ * %FALSE if the key was not found or could not be parsed.
+ *
  * Since: 2.6
  **/
 gboolean
@@ -1912,13 +1913,13 @@ g_key_file_set_boolean (GKeyFile    *key_file,
  * Returns the values associated with @key under @group_name as
  * booleans. If @group_name is %NULL, the start_group is used.
  *
- * If @key cannot be found then the return value is undefined and
- * @error is set to #G_KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if
- * the values associated with @key cannot be interpreted as booleans
- * then the return value is also undefined and @error is set to
- * #G_KEY_FILE_ERROR_INVALID_VALUE.
+ * If @key cannot be found then %NULL is returned and @error is set to
+ * #G_KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the values associated
+ * with @key cannot be interpreted as booleans then %NULL is returned
+ * and @error is set to #G_KEY_FILE_ERROR_INVALID_VALUE.
  *
- * Return value: the values associated with the key as a boolean
+ * Return value: the values associated with the key as a list of
+ * booleans, or %NULL if the key was not found or could not be parsed.
  * 
  * Since: 2.6
  **/
@@ -2028,13 +2029,13 @@ g_key_file_set_boolean_list (GKeyFile    *key_file,
  * Returns the value associated with @key under @group_name as an
  * integer. If @group_name is %NULL, the start_group is used.
  *
- * If @key cannot be found then the return value is undefined and
- * @error is set to #G_KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if
- * the value associated with @key cannot be interpreted as an integer
- * then the return value is also undefined and @error is set to
- * #G_KEY_FILE_ERROR_INVALID_VALUE.
+ * If @key cannot be found then 0 is returned and @error is set to
+ * #G_KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the value associated
+ * with @key cannot be interpreted as an integer then 0 is returned
+ * and @error is set to #G_KEY_FILE_ERROR_INVALID_VALUE.
  *
- * Return value: the value associated with the key as an integer.
+ * Return value: the value associated with the key as an integer, or
+ * 0 if the key was not found or could not be parsed.
  *
  * Since: 2.6
  **/
@@ -2124,13 +2125,13 @@ g_key_file_set_integer (GKeyFile    *key_file,
  * Returns the values associated with @key under @group_name as
  * integers. 
  *
- * If @key cannot be found then the return value is undefined and
- * @error is set to #G_KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if
- * the values associated with @key cannot be interpreted as integers
- * then the return value is also undefined and @error is set to
- * #G_KEY_FILE_ERROR_INVALID_VALUE.
+ * If @key cannot be found then %NULL is returned and @error is set to
+ * #G_KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the values associated
+ * with @key cannot be interpreted as integers then %NULL is returned
+ * and @error is set to #G_KEY_FILE_ERROR_INVALID_VALUE.
  *
- * Return value: the values associated with the key as a integer
+ * Return value: the values associated with the key as a list of
+ * integers, or %NULL if the key was not found or could not be parsed.
  *
  * Since: 2.6
  **/
@@ -2237,13 +2238,13 @@ g_key_file_set_integer_list (GKeyFile     *key_file,
  * Returns the value associated with @key under @group_name as a
  * double. If @group_name is %NULL, the start_group is used.
  *
- * If @key cannot be found then the return value is undefined and
- * @error is set to #G_KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if
- * the value associated with @key cannot be interpreted as a double
- * then the return value is also undefined and @error is set to
- * #G_KEY_FILE_ERROR_INVALID_VALUE.
+ * If @key cannot be found then 0.0 is returned and @error is set to
+ * #G_KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the value associated
+ * with @key cannot be interpreted as a double then 0.0 is returned
+ * and @error is set to #G_KEY_FILE_ERROR_INVALID_VALUE.
  *
- * Return value: the value associated with the key as a double.
+ * Return value: the value associated with the key as a double, or
+ * 0.0 if the key was not found or could not be parsed.
  *
  * Since: 2.12
  **/
@@ -2333,13 +2334,13 @@ g_key_file_set_double  (GKeyFile    *key_file,
  * Returns the values associated with @key under @group_name as
  * doubles. If @group_name is %NULL, the start group is used.
  *
- * If @key cannot be found then the return value is undefined and
- * @error is set to #G_KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if
- * the values associated with @key cannot be interpreted as doubles
- * then the return value is also undefined and @error is set to
- * #G_KEY_FILE_ERROR_INVALID_VALUE.
+ * If @key cannot be found then %NULL is returned and @error is set to
+ * #G_KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the values associated
+ * with @key cannot be interpreted as doubles then %NULL is returned
+ * and @error is set to #G_KEY_FILE_ERROR_INVALID_VALUE.
  *
- * Return value: the values associated with the key as a double
+ * Return value: the values associated with the key as a list of
+ * doubles, or %NULL if the key was not found or could not be parsed.
  *
  * Since: 2.12
  **/
