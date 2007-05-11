@@ -378,7 +378,8 @@ Flags which modify individual options.
 If a long option in the main group has this name, it is not treated as a 
 regular option. Instead it collects all non-option arguments which would
 otherwise be left in <literal>argv</literal>. The option must be of type
-%G_OPTION_ARG_STRING_ARRAY or %G_OPTION_ARG_FILENAME_ARRAY.
+%G_OPTION_ARG_CALLBACK, %G_OPTION_ARG_STRING_ARRAY
+or %G_OPTION_ARG_FILENAME_ARRAY.
 </para>
 
 <para>

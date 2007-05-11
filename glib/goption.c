@@ -1355,7 +1355,8 @@ parse_remaining_arg (GOptionContext *context,
       if (group->entries[j].long_name[0])
 	continue;
 
-      g_return_val_if_fail (group->entries[j].arg == G_OPTION_ARG_STRING_ARRAY ||
+      g_return_val_if_fail (group->entries[j].arg == G_OPTION_ARG_CALLBACK ||
+                            group->entries[j].arg == G_OPTION_ARG_STRING_ARRAY ||
 			    group->entries[j].arg == G_OPTION_ARG_FILENAME_ARRAY, FALSE);
       
       add_pending_null (context, &((*argv)[*index]), NULL);

@@ -1,3 +1,10 @@
+2007-05-11  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/goption.c: Allow G_OPTION_ARG_CALLBACK for 
+	G_OPTION_REMAINING.  (#437297, Dave Benson)
+
+	* tests/option-test.c: Add a test for this.
+
 2007-05-04  Dan Winship  <danw@novell.com>
 
 	* glib/gkeyfile.c (g_key_file_get_boolean)
