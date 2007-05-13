@@ -281,7 +281,7 @@ static gboolean
 make_pipe (gint     p[2],
            GError **error)
 {
-  if (pipe (p) < 0)
+  if (_pipe (p, 4096, _O_BINARY) < 0)
     {
       g_set_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_FAILED,
                    _("Failed to create pipe for communicating with child process (%s)"),

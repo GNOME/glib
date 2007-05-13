@@ -1,3 +1,15 @@
+2007-05-13  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gwin32.h: Drop the pipe() macro. Defining macros outside of
+	its namespace that look like POSIX functions is not GLib's
+	business in my opinion. This means pipe()-using code that has
+	relied on this definition will need changing to call _pipe() on
+	Windows, and make the decision itself on what size pipe buffer to
+	use, and whether to use text or binary mode, and whether the pipe
+	handles should be inheritable or not.
+
+	* glib/gspawn-win32.c (make_pipe): Use _pipe() instead of pipe().
+
 2007-05-11  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/goption.c: Allow G_OPTION_ARG_CALLBACK for 

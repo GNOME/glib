@@ -42,7 +42,10 @@ G_BEGIN_DECLS
 /*
  * To get prototypes for the following POSIXish functions, you have to
  * include the indicated non-POSIX headers. The functions are defined
- * in OLDNAMES.LIB (MSVC) or -lmoldname-msvc (mingw32).
+ * in OLDNAMES.LIB (MSVC) or -lmoldname-msvc (mingw32). But note that
+ * for POSIX functions that take or return file names in the system
+ * codepage, in many cases you would want to use the GLib wrappers in
+ * gstdio.h and UTF-8 instead.
  *
  * getcwd: <direct.h> (MSVC), <io.h> (mingw32)
  * getpid: <process.h>
@@ -50,11 +53,8 @@ G_BEGIN_DECLS
  * unlink: <stdio.h> or <io.h>
  * open, read, write, lseek, close: <io.h>
  * rmdir: <io.h>
- * pipe: <io.h>
+ * pipe: <io.h> (actually, _pipe())
  */
-
-/* pipe is not in OLDNAMES.LIB or -lmoldname-msvc. */
-#define pipe(phandles)	_pipe (phandles, 4096, _O_BINARY)
 
 /* For some POSIX functions that are not provided by the MS runtime,
  * we provide emulation functions in glib, which are prefixed with
