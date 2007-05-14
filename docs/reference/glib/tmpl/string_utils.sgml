@@ -913,13 +913,14 @@ together, with @separator between them.
 <!-- ##### FUNCTION g_strerror ##### -->
 <para>
 Returns a string corresponding to the given error code, e.g. "no such process".
-This function is included since not all platforms support the 
+You should use this function in preference to strerror(), because it returns a
+string in UTF-8 encoding, and since not all platforms support the 
 strerror() function.
 </para>
 
 @errnum: the system error number. See the standard C %errno
 documentation.
-@Returns: a string describing the error code.
+@Returns: a UTF-8 string describing the error code.
 If the error code is unknown, it returns "unknown error (&lt;code&gt;)".
 The string can only be used until the next call to g_strerror().
 
@@ -927,13 +928,14 @@ The string can only be used until the next call to g_strerror().
 <!-- ##### FUNCTION g_strsignal ##### -->
 <para>
 Returns a string describing the given signal, e.g. "Segmentation fault".
-This function is included since not all platforms support the
+You should use this function in preference to strsignal(), because it returns a
+string in UTF-8 encoding, and since not all platforms support the
 strsignal() function.
 </para>
 
 @signum: the signal number. See the <literal>signal</literal>
 documentation.
-@Returns: a string describing the signal.
+@Returns: a UTF-8 string describing the signal.
 If the signal is unknown, it returns "unknown signal (&lt;signum&gt;)".
 The string can only be used until the next call to g_strsignal().
 

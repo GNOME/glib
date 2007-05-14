@@ -1,3 +1,8 @@
+2007-05-14  Christian Persch  <chpe@gnome.org>
+
+	* docs/reference/glib/tmpl/string_utils.sgml: Improve g_strerror and
+	g_strsignal docs. Bug #438293.
+
 2007-05-13  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gwin32.h: Drop the pipe() macro. Defining macros outside of
