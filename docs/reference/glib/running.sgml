@@ -255,6 +255,21 @@ is 20.
 </para>
 </refsect2>
 
-</refsect1>
+<refsect2>
+<title>Memory statistics</title>
 
+<para>
+g_mem_profile() will output a summary g_malloc() memory usage, if memory
+profiling has been enabled by calling 
+<literal>g_mem_set_vtable (glib_mem_profiler_table)</literal> upon startup.
+</para>
+
+<para>
+If GLib has been configured with <option>--enable-debug=yes</option>,
+then g_slice_debug_tree_statistics() can be called in a debugger to 
+output details about the memory usage of the slice allocator.
+</para>
+
+</refsect2>
+</refsect1>
 </refentry>
