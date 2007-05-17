@@ -278,7 +278,7 @@ stderr is used for levels %G_LOG_LEVEL_ERROR, %G_LOG_LEVEL_CRITICAL,
 
 <!-- ##### FUNCTION g_log_set_default_handler ##### -->
 <para>
-Installs a default log handler which is used is used if no 
+Installs a default log handler which is used if no 
 log handler has been set for the particular log domain
 and log level combination. By default, GLib uses 
 g_log_default_handler() as default log handler.
