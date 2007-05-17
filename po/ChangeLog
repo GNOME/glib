@@ -1,3 +1,7 @@
+2007-05-17  Matthias Clasen  <mclasen@redhat.com>
+
+	* POTFILES.in: Add gregex.c (#436955, Philip Withnall)
+
 2007-05-17  Theppitak Karoonboonyanan  <thep@linux.thai.net>
 
 	* th.po: Updated Thai translation.
