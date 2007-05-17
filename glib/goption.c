@@ -205,8 +205,8 @@ g_option_error_quark (void)
  * program functionality that should be displayed as a paragraph
  * below the usage line, use g_option_context_set_summary().
  *
- * Note that the @parameter_string is translated (see 
- * g_option_context_set_translate_func()).
+ * Note that the @parameter_string is translated (see
+ * g_option_context_set_translate_func()). 
  *
  * Returns: a newly created #GOptionContext, which must be
  *    freed with g_option_context_free() after use.
@@ -2042,7 +2042,7 @@ g_option_group_set_translation_domain (GOptionGroup *group,
  * If @func is %NULL, strings are not translated.
  *
  * Note that option groups have their own translation functions, 
- * this function only affects the @parameter_string (see g_option_context_nex()), 
+ * this function only affects the @parameter_string (see g_option_context_new()), 
  * the summary (see g_option_context_set_summary()) and the description 
  * (see g_option_context_set_description()).
  *
@@ -2100,7 +2100,7 @@ g_option_context_set_translation_domain (GOptionContext *context,
  * program functionality. 
  *
  * Note that the summary is translated (see 
- * g_option_context_set_translate_func()).
+ * g_option_context_set_translate_func(), g_option_context_set_translation_domain()).
  *
  * Since: 2.12
  */

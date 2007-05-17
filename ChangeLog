@@ -1,5 +1,10 @@
 2007-05-17  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/goption.c (g_option_context_set_translate_func): Fix
+	a doc typo.  (#439232, Vincent Untz)
+
+2007-05-17  Matthias Clasen  <mclasen@redhat.com>
+
 	* configure.in: Move the compiler-dependency in the G_GNUC_INTERNAL
 	definition from configure-time to runtime (of the compiler).
 	(#438869, Damien Carbery)
