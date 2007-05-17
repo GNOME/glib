@@ -1,3 +1,9 @@
+2007-05-17  Matthias Clasen <mclasen@redhat.com>
+
+	* gtype.h: Move G_GNUC_INTERNAL before function
+	declarations to fix compilation with sun studio.  (#438873,
+	Damien Carbery)
+
 2007-05-03  Matthias Clasen <mclasen@redhat.com>
 
 	* === Released 2.13.1 ===

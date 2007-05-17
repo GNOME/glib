@@ -103,10 +103,10 @@ GLogLevelFlags  g_log_set_fatal_mask    (const gchar    *log_domain,
 GLogLevelFlags  g_log_set_always_fatal  (GLogLevelFlags  fatal_mask);
 
 /* internal */
-void	_g_log_fallback_handler	(const gchar   *log_domain,
-				 GLogLevelFlags log_level,
-				 const gchar   *message,
-				 gpointer       unused_data) G_GNUC_INTERNAL;
+G_GNUC_INTERNAL void	_g_log_fallback_handler	(const gchar   *log_domain,
+						 GLogLevelFlags log_level,
+						 const gchar   *message,
+						 gpointer       unused_data);
 
 /* Internal functions, used to implement the following macros */
 void g_return_if_fail_warning (const char *log_domain,
