@@ -1,3 +1,7 @@
+2007-05-17  Michael Natterer  <mitch@imendio.com>
+
+	* configure.in: hotfix: revert last change to fix the build on OS X.
+
 2007-05-17  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/goption.c (g_option_context_set_translate_func): Fix
