@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: glib 2.7.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-05-03 00:50-0400\n"
-"PO-Revision-Date: 2006-08-06 08:36+0700\n"
+"PO-Revision-Date: 2007-05-17 17:20+0700\n"
 "Last-Translator: Theppitak Karoonboonyanan <thep@linux.thai.net>\n"
 "Language-Team: Thai <l10n@opentle.org>\n"
 "MIME-Version: 1.0\n"
@@ -84,9 +84,9 @@ msgid "No application with name '%s' registered a bookmark for '%s'"
 msgstr "ไม่มีโปรแกรมประยุกต์ชื่อ '%s' ที่ลงทะเบียนที่คั่นหน้าสำหรับ '%s' ไว้"
 
 #: glib/gbookmarkfile.c:3404
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to expand exec line '%s' with URI '%s'"
-msgstr "อ่านลิงก์สัญลักษณ์ '%s' ไม่สำเร็จ: %s"
+msgstr "กระจายบรรทัดคำสั่ง '%s' ด้วย URI '%s' ไม่สำเร็จ"
 
 #: glib/gconvert.c:424 glib/gconvert.c:502 glib/giochannel.c:1148
 #, c-format
@@ -684,9 +684,9 @@ msgid "Unknown option %s"
 msgstr "ไม่รู้จักตัวเลือก %s"
 
 #: glib/gkeyfile.c:341
-#, fuzzy, c-format
+#, c-format
 msgid "Valid key file could not be found in search dirs"
-msgstr "ไม่พบแฟ้มคีย์ในไดเรกทอรีข้อมูลทั้งหลาย"
+msgstr "ไม่พบแฟ้มคีย์ที่ใช้การได้ในไดเรกทอรีแหล่งค้นหา"
 
 #: glib/gkeyfile.c:376
 #, c-format
@@ -705,9 +705,9 @@ msgid ""
 msgstr "แฟ้มคีย์มีบรรทัด '%s' ซึ่งไม่ใช่รูปแบบคู่คีย์-ค่า, กลุ่ม, หรือหมายเหตุ ที่ถูกต้อง"
 
 #: glib/gkeyfile.c:806
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid group name: %s"
-msgstr "ชื่อโปรแกรมผิดรูปแบบ: %s"
+msgstr "ชื่อกลุ่มผิดรูปแบบ: %s"
 
 #: glib/gkeyfile.c:828
 #, c-format
@@ -715,9 +715,9 @@ msgid "Key file does not start with a group"
 msgstr "แฟ้มคีย์ไม่ได้ขึ้นต้นด้วยกลุ่ม"
 
 #: glib/gkeyfile.c:854
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid key name: %s"
-msgstr "ชื่อโปรแกรมผิดรูปแบบ: %s"
+msgstr "ชื่อคีย์ผิดรูปแบบ: %s"
 
 #: glib/gkeyfile.c:881
 #, c-format
