@@ -2509,11 +2509,15 @@ _______EOF
 
 	fi
 
+	if test x$g_have_gnuc_visibility = xyes; then
+		cat >>$outfile <<_______EOF
+#define G_HAVE_GNUC_VISIBILITY 1
+_______EOF
+	fi
 		cat >>$outfile <<_______EOF
 #if __GNUC__ == 2 && __GNUC_MINOR__ == 95
 #define G_GNUC_INTERNAL
 #elif defined (__GNUC__) && ((__GNUC__ * 100 + __GNUC_MINOR__) >= 303)
-#define G_HAVE_GNUC_VISIBILITY 1
 #define G_GNUC_INTERNAL __attribute__((visibility("hidden")))
 #elif defined(__SUNPRO_C) && (__SUNPRO_C >= 0x550)
 #define G_GNUC_INTERNAL __hidden

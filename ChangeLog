@@ -1,5 +1,10 @@
 2007-05-18  Matthias Clasen  <mclasen@redhat.com>
 
+	* configure.in: Try again to move the compiler-dependency
+	of G_GNUC_INTERNAL to runtime.
+
+2007-05-18  Matthias Clasen  <mclasen@redhat.com>
+
 	* configure.in: Don't let PERL_PATH be ''.  (#356769, Joseph Sacco)
 
 2007-05-17  Michael Natterer  <mitch@imendio.com>
