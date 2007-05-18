@@ -1,4 +1,4 @@
-2007-05-18  Michael Natterer  <mitch@imendio.com>
+2007-05-18  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Don't let PERL_PATH be ''.  (#356769, Joseph Sacco)
 
