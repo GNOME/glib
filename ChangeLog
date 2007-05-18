@@ -1,3 +1,7 @@
+2007-05-18  Michael Natterer  <mitch@imendio.com>
+
+	* configure.in: Don't let PERL_PATH be ''.  (#356769, Joseph Sacco)
+
 2007-05-17  Michael Natterer  <mitch@imendio.com>
 
 	* configure.in: hotfix: revert last change to fix the build on OS X.
