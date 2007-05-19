@@ -1,3 +1,7 @@
+2007-05-19  Ignacio Casal Quinteiro  <nacho.resa@gmail.com>
+
+	* gl.po: Updated Galician Translation.
+
 2007-05-17  Matthias Clasen  <mclasen@redhat.com>
 
 	* POTFILES.in: Add gregex.c (#436955, Philip Withnall)
