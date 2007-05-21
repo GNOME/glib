@@ -8,22 +8,22 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.7.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-05-03 00:50-0400\n"
-"PO-Revision-Date: 2007-05-17 17:20+0700\n"
+"POT-Creation-Date: 2007-05-21 18:02+0700\n"
+"PO-Revision-Date: 2007-05-21 18:31+0700\n"
 "Last-Translator: Theppitak Karoonboonyanan <thep@linux.thai.net>\n"
 "Language-Team: Thai <l10n@opentle.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: glib/gbookmarkfile.c:705 glib/gbookmarkfile.c:782 glib/gbookmarkfile.c:861
-#: glib/gbookmarkfile.c:908
+#: glib/gbookmarkfile.c:705 glib/gbookmarkfile.c:782
+#: glib/gbookmarkfile.c:861 glib/gbookmarkfile.c:908
 #, c-format
 msgid "Unexpected attribute '%s' for element '%s'"
 msgstr "พบแอตทริบิวต์ '%s' ที่ไม่ต้องการ สำหรับอิลิเมนต์ '%s'"
 
-#: glib/gbookmarkfile.c:716 glib/gbookmarkfile.c:793 glib/gbookmarkfile.c:803
-#: glib/gbookmarkfile.c:919
+#: glib/gbookmarkfile.c:716 glib/gbookmarkfile.c:793
+#: glib/gbookmarkfile.c:803 glib/gbookmarkfile.c:919
 #, c-format
 msgid "Attribute '%s' of element '%s' not found"
 msgstr "ไม่พบแอตทริบิวต์ '%s' สำหรับอิลิเมนต์ '%s'"
@@ -41,7 +41,6 @@ msgid "Unexpected tag '%s' inside '%s'"
 msgstr "พบแท็ก '%s' ที่ไม่ต้องการภายใน '%s'"
 
 #: glib/gbookmarkfile.c:1781
-#, c-format
 msgid "No valid bookmark file found in data dirs"
 msgstr "ไม่พบแฟ้มที่คั่นหน้าที่ใช้การได้ในไดเรกทอรีข้อมูล"
 
@@ -71,7 +70,7 @@ msgstr "ไม่ได้กำหนดชนิด MIME ไว้ในที
 #: glib/gbookmarkfile.c:2444
 #, c-format
 msgid "No private flag has been defined in bookmark for URI '%s'"
-msgstr "ไม่ได้กำหนดแฟล็กความเป็นส่วนตัวไว้ในที่คั่นหน้าสำหรับ URI '%s'"
+msgstr "ไม่ได้กำหนดแฟล็กส่วนตัวไว้ในที่คั่นหน้าสำหรับ URI '%s'"
 
 #: glib/gbookmarkfile.c:2823
 #, c-format
@@ -101,7 +100,6 @@ msgstr "ไม่สามารถเปิดตัวแปลงรหัส
 #: glib/gconvert.c:622 glib/gconvert.c:1011 glib/giochannel.c:1320
 #: glib/giochannel.c:1362 glib/giochannel.c:2204 glib/gutf8.c:949
 #: glib/gutf8.c:1398
-#, c-format
 msgid "Invalid byte sequence in conversion input"
 msgstr "มีลำดับไบต์ที่ไม่ถูกต้องในข้อมูลที่ป้อนให้ตัวแปลงรหัส"
 
@@ -111,9 +109,8 @@ msgstr "มีลำดับไบต์ที่ไม่ถูกต้อง
 msgid "Error during conversion: %s"
 msgstr "เกิดข้อผิดพลาดระหว่างแปลงรหัส: %s"
 
-#: glib/gconvert.c:663 glib/gutf8.c:945 glib/gutf8.c:1149 glib/gutf8.c:1290
-#: glib/gutf8.c:1394
-#, c-format
+#: glib/gconvert.c:663 glib/gutf8.c:945 glib/gutf8.c:1149
+#: glib/gutf8.c:1290 glib/gutf8.c:1394
 msgid "Partial character sequence at end of input"
 msgstr "มีลำดับไบต์ไม่เต็มอักขระอยู่ที่ท้ายข้อมูลเข้า"
 
@@ -153,7 +150,6 @@ msgid "The pathname '%s' is not an absolute path"
 msgstr "ชื่อพาธ '%s' ไม่ใช่พาธเต็ม"
 
 #: glib/gconvert.c:1887
-#, c-format
 msgid "Invalid hostname"
 msgstr "ชื่อโฮสต์ผิดรูปแบบ"
 
@@ -238,7 +234,6 @@ msgid "Failed to read the symbolic link '%s': %s"
 msgstr "อ่านลิงก์สัญลักษณ์ '%s' ไม่สำเร็จ: %s"
 
 #: glib/gfileutils.c:1860
-#, c-format
 msgid "Symbolic links not supported"
 msgstr "ไม่สนับสนุนลิงก์สัญลักษณ์"
 
@@ -248,22 +243,19 @@ msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "ไม่สามารถเปิดตัวแปลงรหัสอักขระจาก '%s' ไปเป็น '%s' ได้: %s"
 
 #: glib/giochannel.c:1497
-#, c-format
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "ไม่สามารถอ่านข้อมูลแบบดิบใน g_io_channel_read_line_string"
 
-#: glib/giochannel.c:1544 glib/giochannel.c:1801 glib/giochannel.c:1887
-#, c-format
+#: glib/giochannel.c:1544 glib/giochannel.c:1801
+#: glib/giochannel.c:1887
 msgid "Leftover unconverted data in read buffer"
 msgstr "มีข้อมูลตกค้างไม่ได้แปลงอยู่ในบัฟเฟอร์สำหรับอ่าน"
 
 #: glib/giochannel.c:1624 glib/giochannel.c:1701
-#, c-format
 msgid "Channel terminates in a partial character"
 msgstr "แชนเนลจบด้วยข้อมูลไม่เต็มอักขระ"
 
 #: glib/giochannel.c:1687
-#, c-format
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "ไม่สามารถอ่านข้อมูลแบบดิบใน g_io_channel_read_to_end"
 
@@ -480,13 +472,119 @@ msgstr "เอกสารจบแบบผิดปกติระหว่า
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "เอกสารจบแบบผิดปกติระหว่างกลางหมายเหตุหรือคำสั่งประมวลผล"
 
-#: glib/gshell.c:70
+#: glib/gregex.c:130
+msgid "corrupted object"
+msgstr "ออบเจกต์เสียหาย"
+
+#: glib/gregex.c:132
+msgid "internal error or corrupted object"
+msgstr "ข้อผิดพลาดภายในหรือออบเจกต์เสียหาย"
+
+#: glib/gregex.c:134
+msgid "out of memory"
+msgstr "หน่วยความจำเต็ม"
+
+#: glib/gregex.c:139
+msgid "backtracking limit reached"
+msgstr "เกินขอบเขตการถอยคืน"
+
+#: glib/gregex.c:151 glib/gregex.c:159
+msgid "the pattern contains items not supported for partial matching"
+msgstr "แพตเทิร์นมีรายการที่ไม่รองรับในการจับคู่ทีละส่วน"
+
+#: glib/gregex.c:153
+msgid "internal error"
+msgstr "ข้อผิดพลาดภายใน"
+
+#: glib/gregex.c:161
+msgid "back references as conditions are not supported for partial matching"
+msgstr "ไม่รองรับการใช้การอ้างอิงย้อนกลับเป็นเงื่อนไขในการจับคู่ทีละส่วน"
+
+#: glib/gregex.c:170
+msgid "recursion limit reached"
+msgstr "เกินขอบเขตการเรียกตัวเอง"
+
+#: glib/gregex.c:172
+msgid "workspace limit for empty substrings reached"
+msgstr "เกินขอบเขตพื้นที่ทำงานสำหรับสตริงย่อยเปล่า"
+
+#: glib/gregex.c:174
+msgid "invalid combination of newline flags"
+msgstr "ชุดของแฟล็กการขึ้นบรรทัดใหม่มีค่าไม่เข้ากัน"
+
+#: glib/gregex.c:178
+msgid "unknown error"
+msgstr "ข้อผิดพลาดไม่ทราบสาเหตุ"
+
+#: glib/gregex.c:278 glib/gregex.c:1226
 #, c-format
+msgid "Error while matching regular expression %s: %s"
+msgstr "เกิดข้อผิดพลาดขณะจับคู่นิพจน์เรกกิวลาร์ %s: %s"
+
+#: glib/gregex.c:752
+msgid "PCRE library is compiled without UTF8 support"
+msgstr "ไลบรารี PCRE ถูกคอมไพล์มาแบบไม่สนับสนุน UTF8"
+
+#: glib/gregex.c:761
+msgid "PCRE library is compiled without UTF8 properties support"
+msgstr "ไลบรารี PCRE ถูกคอมไพล์มาแบบไม่สนับสนุนคุณสมบัติ UTF8"
+
+#: glib/gregex.c:806
+#, c-format
+msgid "Error while compiling regular expression %s at char %d: %s"
+msgstr "เกิดข้อผิดพลาดขณะแจงนิพจน์เรกกิวลาร์ %s ที่อักขระที่ %d: %s"
+
+#: glib/gregex.c:828
+#, c-format
+msgid "Error while optimizing regular expression %s: %s"
+msgstr "เกิดข้อผิดพลาดขณะออปติไมซ์นิพจน์เรกกิวลาร์ %s: %s"
+
+#: glib/gregex.c:1652
+msgid "hexadecimal digit or '}' expected"
+msgstr "ต้องการเลขฐานสิบหกหรือ '}'"
+
+#: glib/gregex.c:1668
+msgid "hexadecimal digit expected"
+msgstr "ต้องการเลขฐานสิบหก"
+
+#: glib/gregex.c:1708
+msgid "missing '<' in symbolic reference"
+msgstr "ไม่มี '<' ในตัวอ้างอิงสัญลักษณ์"
+
+#: glib/gregex.c:1717
+msgid "unfinished symbolic reference"
+msgstr "ตัวอ้างอิงสัญลักษณ์ไม่สมบูรณ์"
+
+#: glib/gregex.c:1724
+msgid "zero-length symbolic reference"
+msgstr "ตัวอ้างอิงสัญลักษณ์มีความยาวเป็นศูนย์"
+
+#: glib/gregex.c:1735
+msgid "digit expected"
+msgstr "ต้องการตัวเลข"
+
+#: glib/gregex.c:1753
+msgid "illegal symbolic reference"
+msgstr "ตัวอ้างอิงสัญลักษณ์ไม่ถูกต้อง"
+
+#: glib/gregex.c:1815
+msgid "stray final '\\'"
+msgstr "'\\' ปราศจากข้อมูลอยู่ที่ท้ายสตริง"
+
+#: glib/gregex.c:1819
+msgid "unknown escape sequence"
+msgstr "ลำดับอักขระหลีกไม่รู้จัก"
+
+#: glib/gregex.c:1829
+#, c-format
+msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
+msgstr "เกิดข้อผิดพลาดขณะแจงข้อความสำหรับแทนที่ \"%s\" ที่อักขระที่ %lu: %s"
+
+#: glib/gshell.c:70
 msgid "Quoted text doesn't begin with a quotation mark"
 msgstr "ข้อความคำพูดไม่ได้ขึ้นต้นด้วยอัญประกาศ"
 
 #: glib/gshell.c:160
-#, c-format
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr "พบอัญประกาศไม่เข้าคู่ในบรรทัดคำสั่งหรือข้อความคำพูดของเชลล์"
 
@@ -501,12 +599,10 @@ msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr "ข้อความจบเสียก่อนจะพบอัญประกาศที่เข้าคู่กับ %c (ข้อความที่ว่าคือ '%s')"
 
 #: glib/gshell.c:557
-#, c-format
 msgid "Text was empty (or contained only whitespace)"
 msgstr "ข้อความว่างเปล่า (หรือมีแต่อักขระช่องว่าง)"
 
 #: glib/gspawn-win32.c:272
-#, c-format
 msgid "Failed to read data from child process"
 msgstr "อ่านข้อมูลจากโพรเซสลูกไม่สำเร็จ"
 
@@ -535,12 +631,14 @@ msgstr "ดำเนินงานโพรเซสลูกไม่สำเ
 msgid "Invalid program name: %s"
 msgstr "ชื่อโปรแกรมผิดรูปแบบ: %s"
 
-#: glib/gspawn-win32.c:438 glib/gspawn-win32.c:678 glib/gspawn-win32.c:1218
+#: glib/gspawn-win32.c:438 glib/gspawn-win32.c:678
+#: glib/gspawn-win32.c:1218
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr "สตริงผิดรูปแบบในเวกเตอร์ของอาร์กิวเมนต์ที่ตำแหน่ง %d: %s"
 
-#: glib/gspawn-win32.c:449 glib/gspawn-win32.c:692 glib/gspawn-win32.c:1251
+#: glib/gspawn-win32.c:449 glib/gspawn-win32.c:692
+#: glib/gspawn-win32.c:1251
 #, c-format
 msgid "Invalid string in environment: %s"
 msgstr "สตริงผิดรูปแบบในตัวแปรสภาพแวดล้อม: %s"
@@ -556,7 +654,6 @@ msgid "Failed to execute helper program (%s)"
 msgstr "ดำเนินงานโปรแกรมช่วยไม่สำเร็จ (%s)"
 
 #: glib/gspawn-win32.c:938
-#, c-format
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -609,18 +706,15 @@ msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "อ่านข้อมูลจากไปป์จากโพรเซสลูกได้ไม่เพียงพอ (%s)"
 
 #: glib/gutf8.c:1023
-#, c-format
 msgid "Character out of range for UTF-8"
 msgstr "อักขระอยู่นอกช่วงของ UTF-8"
 
-#: glib/gutf8.c:1117 glib/gutf8.c:1126 glib/gutf8.c:1258 glib/gutf8.c:1267
-#: glib/gutf8.c:1408 glib/gutf8.c:1504
-#, c-format
+#: glib/gutf8.c:1117 glib/gutf8.c:1126 glib/gutf8.c:1258
+#: glib/gutf8.c:1267 glib/gutf8.c:1408 glib/gutf8.c:1504
 msgid "Invalid sequence in conversion input"
 msgstr "มีลำดับข้อมูลที่ไม่ถูกต้องในข้อมูลที่ป้อนให้ตัวแปลงรหัส"
 
 #: glib/gutf8.c:1419 glib/gutf8.c:1515
-#, c-format
 msgid "Character out of range for UTF-16"
 msgstr "อักขระอยู่นอกช่วงของ UTF-16"
 
@@ -678,23 +772,20 @@ msgstr "เกิดข้อผิดพลาดระหว่างแจง
 msgid "Missing argument for %s"
 msgstr "ขาดอาร์กิวเมนต์สำหรับ %s"
 
-#: glib/goption.c:1712
+#: glib/goption.c:1713
 #, c-format
 msgid "Unknown option %s"
 msgstr "ไม่รู้จักตัวเลือก %s"
 
 #: glib/gkeyfile.c:341
-#, c-format
 msgid "Valid key file could not be found in search dirs"
 msgstr "ไม่พบแฟ้มคีย์ที่ใช้การได้ในไดเรกทอรีแหล่งค้นหา"
 
 #: glib/gkeyfile.c:376
-#, c-format
 msgid "Not a regular file"
 msgstr "ไม่ใช่แฟ้มปกติ"
 
 #: glib/gkeyfile.c:384
-#, c-format
 msgid "File is empty"
 msgstr "แฟ้มว่างเปล่า"
 
@@ -710,7 +801,6 @@ msgid "Invalid group name: %s"
 msgstr "ชื่อกลุ่มผิดรูปแบบ: %s"
 
 #: glib/gkeyfile.c:828
-#, c-format
 msgid "Key file does not start with a group"
 msgstr "แฟ้มคีย์ไม่ได้ขึ้นต้นด้วยกลุ่ม"
 
@@ -724,9 +814,9 @@ msgstr "ชื่อคีย์ผิดรูปแบบ: %s"
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "แฟ้มคีย์มีเนื้อหาเป็นรหัสอักขระ '%s' ซึ่งไม่สนับสนุน"
 
-#: glib/gkeyfile.c:1094 glib/gkeyfile.c:1253 glib/gkeyfile.c:2454
-#: glib/gkeyfile.c:2520 glib/gkeyfile.c:2639 glib/gkeyfile.c:2774
-#: glib/gkeyfile.c:2927 glib/gkeyfile.c:3107 glib/gkeyfile.c:3164
+#: glib/gkeyfile.c:1094 glib/gkeyfile.c:1253 glib/gkeyfile.c:2455
+#: glib/gkeyfile.c:2521 glib/gkeyfile.c:2640 glib/gkeyfile.c:2775
+#: glib/gkeyfile.c:2928 glib/gkeyfile.c:3108 glib/gkeyfile.c:3165
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "แฟ้มคีย์ไม่มีกลุ่ม '%s'"
@@ -741,49 +831,48 @@ msgstr "แฟ้มคีย์ไม่มีคีย์ '%s'"
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "แฟ้มคีย์มีคีย์ '%s' ซึ่งมีค่า '%s' ซึ่งไม่ใช่รูปแบบ UTF-8"
 
-#: glib/gkeyfile.c:1387 glib/gkeyfile.c:1497 glib/gkeyfile.c:1865
+#: glib/gkeyfile.c:1387 glib/gkeyfile.c:1497 glib/gkeyfile.c:1866
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "แฟ้มคีย์มีคีย์ '%s' ซึ่งมีค่าที่ไม่สามารถตีความได้"
 
-#: glib/gkeyfile.c:2077 glib/gkeyfile.c:2286
+#: glib/gkeyfile.c:2078 glib/gkeyfile.c:2287
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
 "interpreted."
 msgstr "แฟ้มคีย์มีคีย์ '%s' ในกลุ่ม '%s' ซึ่งมีค่าที่ไม่สามารถตีความได้"
 
-#: glib/gkeyfile.c:2469 glib/gkeyfile.c:2654 glib/gkeyfile.c:3175
+#: glib/gkeyfile.c:2470 glib/gkeyfile.c:2655 glib/gkeyfile.c:3176
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "แฟ้มคีย์ไม่มีคีย์ '%s' ในกลุ่ม '%s'"
 
-#: glib/gkeyfile.c:3414
-#, c-format
+#: glib/gkeyfile.c:3415
 msgid "Key file contains escape character at end of line"
 msgstr "แฟ้มคีย์มีอักขระหลีกที่ท้ายบรรทัด"
 
-#: glib/gkeyfile.c:3436
+#: glib/gkeyfile.c:3437
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "แฟ้มคีย์มีลำดับหลีก '%s' ที่ไม่ถูกต้อง"
 
-#: glib/gkeyfile.c:3578
+#: glib/gkeyfile.c:3579
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "ค่า '%s' ไม่สามารถตีความเป็นตัวเลขได้"
 
-#: glib/gkeyfile.c:3592
+#: glib/gkeyfile.c:3593
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "ค่าจำนวนเต็ม '%s' ออกนอกช่วง"
 
-#: glib/gkeyfile.c:3625
+#: glib/gkeyfile.c:3626
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "ค่า '%s' ไม่สามารถตีความเป็นตัวเลข float ได้"
 
-#: glib/gkeyfile.c:3649
+#: glib/gkeyfile.c:3650
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "ค่า '%s' ไม่สามารถตีความเป็นบูลีนได้"
