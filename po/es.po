@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.es\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-05-03 06:08+0100\n"
-"PO-Revision-Date: 2007-05-03 20:53+0200\n"
+"POT-Creation-Date: 2007-05-18 03:33+0100\n"
+"PO-Revision-Date: 2007-05-22 19:32+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Spanish <traductores@es.gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -507,6 +507,114 @@ msgstr ""
 "El documento termina inesperadamente dentro de un comentario o instrucción "
 "de proceso"
 
+#: ../glib/gregex.c:130
+msgid "corrupted object"
+msgstr "objeto corrupto"
+
+#: ../glib/gregex.c:132
+msgid "internal error or corrupted object"
+msgstr "error interno u objeto corrupto"
+
+#: ../glib/gregex.c:134
+msgid "out of memory"
+msgstr "sin memoria"
+
+#: ../glib/gregex.c:139
+msgid "backtracking limit reached"
+msgstr ""
+
+#: ../glib/gregex.c:151 ../glib/gregex.c:159
+msgid "the pattern contains items not supported for partial matching"
+msgstr "el patrón contiene elementos no soportados para una coincidencia parcial"
+
+#: ../glib/gregex.c:153
+msgid "internal error"
+msgstr "error interno"
+
+#: ../glib/gregex.c:161
+msgid "back references as conditions are not supported for partial matching"
+msgstr ""
+
+#: ../glib/gregex.c:170
+msgid "recursion limit reached"
+msgstr "se alcanzó el límite de recursividad"
+
+#: ../glib/gregex.c:172
+msgid "workspace limit for empty substrings reached"
+msgstr ""
+
+#: ../glib/gregex.c:174
+msgid "invalid combination of newline flags"
+msgstr ""
+
+#: ../glib/gregex.c:178
+msgid "unknown error"
+msgstr "error desconocido"
+
+#: ../glib/gregex.c:278 ../glib/gregex.c:1226
+#, c-format
+msgid "Error while matching regular expression %s: %s"
+msgstr "Error al coincidir con la expresión regular %s: %s"
+
+#: ../glib/gregex.c:752
+msgid "PCRE library is compiled without UTF8 support"
+msgstr "La biblioteca PCRE está compilada sin soporte para UTF8"
+
+#: ../glib/gregex.c:761
+msgid "PCRE library is compiled without UTF8 properties support"
+msgstr "La biblioteca PCRE está compilada sin soporte para las propiedades de UTF8"
+
+#: ../glib/gregex.c:806
+#, c-format
+msgid "Error while compiling regular expression %s at char %d: %s"
+msgstr "Error al compilar la expresión regular %s en el carácter %d: %s"
+
+#: ../glib/gregex.c:828
+#, c-format
+msgid "Error while optimizing regular expression %s: %s"
+msgstr "Error al optimizar la expresión regular %s: %s"
+
+#: ../glib/gregex.c:1652
+msgid "hexadecimal digit or '}' expected"
+msgstr "se esperaba un dígito hexadecimal o «}»"
+
+#: ../glib/gregex.c:1668
+msgid "hexadecimal digit expected"
+msgstr "se esperaba un dígito hexadecimal"
+
+#: ../glib/gregex.c:1708
+msgid "missing '<' in symbolic reference"
+msgstr "falta «<» en la referencia simbólica"
+
+#: ../glib/gregex.c:1717
+msgid "unfinished symbolic reference"
+msgstr "referencia de símbolo sin terminar"
+
+#: ../glib/gregex.c:1724
+msgid "zero-length symbolic reference"
+msgstr "referencia simbólica de longitud cero"
+
+#: ../glib/gregex.c:1735
+msgid "digit expected"
+msgstr "se esperaba un dígito"
+
+#: ../glib/gregex.c:1753
+msgid "illegal symbolic reference"
+msgstr "referencia simbólica ilegal"
+
+#: ../glib/gregex.c:1815
+msgid "stray final '\\'"
+msgstr ""
+
+#: ../glib/gregex.c:1819
+msgid "unknown escape sequence"
+msgstr "secuencia de escape desconocida"
+
+#: ../glib/gregex.c:1829
+#, c-format
+msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
+msgstr "Error al analizar el texto de reemplazo «%s» en el carácter %lu: %s"
+
 #: ../glib/gshell.c:70
 msgid "Quoted text doesn't begin with a quotation mark"
 msgstr "El texto entrecomillado no empieza por un signo de comilla"
@@ -706,14 +814,16 @@ msgstr "Error al analizar la opción: %s"
 msgid "Missing argument for %s"
 msgstr "Falta un argumento para %s"
 
-#: ../glib/goption.c:1712
+#: ../glib/goption.c:1713
 #, c-format
 msgid "Unknown option %s"
 msgstr "Opción desconocida %s"
 
 #: ../glib/gkeyfile.c:341
 msgid "Valid key file could not be found in search dirs"
-msgstr "No se pudo encontrar la clave de archivo válida en los directorios de búsqueda"
+msgstr ""
+"No se pudo encontrar la clave de archivo válida en los directorios de "
+"búsqueda"
 
 #: ../glib/gkeyfile.c:376
 msgid "Not a regular file"
@@ -749,9 +859,9 @@ msgstr "Nombre de clave no válida: %s"
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "El archivo de clavess contiene una codificación «%s» no soportada"
 
-#: ../glib/gkeyfile.c:1094 ../glib/gkeyfile.c:1253 ../glib/gkeyfile.c:2454
-#: ../glib/gkeyfile.c:2520 ../glib/gkeyfile.c:2639 ../glib/gkeyfile.c:2774
-#: ../glib/gkeyfile.c:2927 ../glib/gkeyfile.c:3107 ../glib/gkeyfile.c:3164
+#: ../glib/gkeyfile.c:1094 ../glib/gkeyfile.c:1253 ../glib/gkeyfile.c:2455
+#: ../glib/gkeyfile.c:2521 ../glib/gkeyfile.c:2640 ../glib/gkeyfile.c:2775
+#: ../glib/gkeyfile.c:2928 ../glib/gkeyfile.c:3108 ../glib/gkeyfile.c:3165
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "El archivo de claves no tiene el grupo «%s»"
@@ -768,14 +878,14 @@ msgstr ""
 "El archivo de claves contiene la clave  «%s» con el valor «%s» el cual no es "
 "UTF-8"
 
-#: ../glib/gkeyfile.c:1387 ../glib/gkeyfile.c:1497 ../glib/gkeyfile.c:1865
+#: ../glib/gkeyfile.c:1387 ../glib/gkeyfile.c:1497 ../glib/gkeyfile.c:1866
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr ""
 "El archivo de claves contiene la clave «%s» que tiene un valor que no puede "
 "interpretarse."
 
-#: ../glib/gkeyfile.c:2077 ../glib/gkeyfile.c:2286
+#: ../glib/gkeyfile.c:2078 ../glib/gkeyfile.c:2287
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -784,36 +894,36 @@ msgstr ""
 "El archivo de claves contiene la clave «%s» en el grupo «%s» que tiene un "
 "valor que no puede interpretarse."
 
-#: ../glib/gkeyfile.c:2469 ../glib/gkeyfile.c:2654 ../glib/gkeyfile.c:3175
+#: ../glib/gkeyfile.c:2470 ../glib/gkeyfile.c:2655 ../glib/gkeyfile.c:3176
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "El archivo de claves no tiene la clave «%s» en el grupo «%s»"
 
-#: ../glib/gkeyfile.c:3414
+#: ../glib/gkeyfile.c:3415
 msgid "Key file contains escape character at end of line"
 msgstr "El archivo de claves contiene un carácter de escape al final de la línea"
 
-#: ../glib/gkeyfile.c:3436
+#: ../glib/gkeyfile.c:3437
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "El archivo de claves contiene la secuencia de escape inválida «%s»"
 
-#: ../glib/gkeyfile.c:3578
+#: ../glib/gkeyfile.c:3579
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "El valor «%s» no puede interpretarse como un número."
 
-#: ../glib/gkeyfile.c:3592
+#: ../glib/gkeyfile.c:3593
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "El valor entero «%s» está fuera de rango"
 
-#: ../glib/gkeyfile.c:3625
+#: ../glib/gkeyfile.c:3626
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "El valor «%s» no puede interpretarse como un número de coma flotante."
 
-#: ../glib/gkeyfile.c:3649
+#: ../glib/gkeyfile.c:3650
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "El valor «%s» no puede interpretarse como un booleano."
