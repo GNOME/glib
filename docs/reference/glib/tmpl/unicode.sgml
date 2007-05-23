@@ -93,6 +93,15 @@ will correctly interpret surrogate pairs.</footnote>.
 @Returns: 
 
 
+<!-- ##### FUNCTION g_unichar_isdefined ##### -->
+<para>
+
+</para>
+
+@c: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_unichar_isdigit ##### -->
 <para>
 
@@ -112,6 +121,15 @@ will correctly interpret surrogate pairs.</footnote>.
 
 
 <!-- ##### FUNCTION g_unichar_islower ##### -->
+<para>
+
+</para>
+
+@c: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_unichar_ismark ##### -->
 <para>
 
 </para>
@@ -147,6 +165,15 @@ will correctly interpret surrogate pairs.</footnote>.
 @Returns: 
 
 
+<!-- ##### FUNCTION g_unichar_istitle ##### -->
+<para>
+
+</para>
+
+@c: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_unichar_isupper ##### -->
 <para>
 
@@ -157,24 +184,6 @@ will correctly interpret surrogate pairs.</footnote>.
 
 
 <!-- ##### FUNCTION g_unichar_isxdigit ##### -->
-<para>
-
-</para>
-
-@c: 
-@Returns: 
-
-
-<!-- ##### FUNCTION g_unichar_istitle ##### -->
-<para>
-
-</para>
-
-@c: 
-@Returns: 
-
-
-<!-- ##### FUNCTION g_unichar_isdefined ##### -->
 <para>
 
 </para>

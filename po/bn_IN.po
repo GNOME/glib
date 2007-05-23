@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: bn_IN\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-05-03 00:50-0400\n"
+"POT-Creation-Date: 2007-05-22 23:54-0400\n"
 "PO-Revision-Date: 2006-07-17 15:24+0530\n"
 "Last-Translator: Runa Bhattacharjee <runabh@gmail.com>\n"
 "Language-Team: Bangla (INDIA) <gnome-translation@bengalinux.org>\n"
@@ -504,6 +504,115 @@ msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "কোনো মন্তব্য অথবা প্রক্রিয়াকরণের নির্দেশের মধ্যে ডকুমেন্ট অপ্রত্যাশিতরূপে সমাপ্ত হয়েছে"
 
+#: glib/gregex.c:130
+msgid "corrupted object"
+msgstr ""
+
+#: glib/gregex.c:132
+msgid "internal error or corrupted object"
+msgstr ""
+
+#: glib/gregex.c:134
+msgid "out of memory"
+msgstr ""
+
+#: glib/gregex.c:139
+msgid "backtracking limit reached"
+msgstr ""
+
+#: glib/gregex.c:151 glib/gregex.c:159
+msgid "the pattern contains items not supported for partial matching"
+msgstr ""
+
+#: glib/gregex.c:153
+msgid "internal error"
+msgstr ""
+
+#: glib/gregex.c:161
+msgid "back references as conditions are not supported for partial matching"
+msgstr ""
+
+#: glib/gregex.c:170
+msgid "recursion limit reached"
+msgstr ""
+
+#: glib/gregex.c:172
+msgid "workspace limit for empty substrings reached"
+msgstr ""
+
+#: glib/gregex.c:174
+msgid "invalid combination of newline flags"
+msgstr ""
+
+#: glib/gregex.c:178
+msgid "unknown error"
+msgstr ""
+
+#: glib/gregex.c:278 glib/gregex.c:1226
+#, c-format
+msgid "Error while matching regular expression %s: %s"
+msgstr ""
+
+#: glib/gregex.c:752
+msgid "PCRE library is compiled without UTF8 support"
+msgstr ""
+
+#: glib/gregex.c:761
+msgid "PCRE library is compiled without UTF8 properties support"
+msgstr ""
+
+#: glib/gregex.c:806
+#, fuzzy, c-format
+msgid "Error while compiling regular expression %s at char %d: %s"
+msgstr "পংক্তি %d অক্ষর %d'এ ত্রুটি: %s"
+
+#: glib/gregex.c:828
+#, c-format
+msgid "Error while optimizing regular expression %s: %s"
+msgstr ""
+
+#: glib/gregex.c:1652
+msgid "hexadecimal digit or '}' expected"
+msgstr ""
+
+#: glib/gregex.c:1668
+msgid "hexadecimal digit expected"
+msgstr ""
+
+#: glib/gregex.c:1708
+msgid "missing '<' in symbolic reference"
+msgstr ""
+
+#: glib/gregex.c:1717
+#, fuzzy
+msgid "unfinished symbolic reference"
+msgstr "স্বত্বার রেফারেন্স অসম্পূর্ণ"
+
+#: glib/gregex.c:1724
+msgid "zero-length symbolic reference"
+msgstr ""
+
+#: glib/gregex.c:1735
+msgid "digit expected"
+msgstr ""
+
+#: glib/gregex.c:1753
+msgid "illegal symbolic reference"
+msgstr ""
+
+#: glib/gregex.c:1815
+msgid "stray final '\\'"
+msgstr ""
+
+#: glib/gregex.c:1819
+msgid "unknown escape sequence"
+msgstr ""
+
+#: glib/gregex.c:1829
+#, c-format
+msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
+msgstr ""
+
 #: glib/gshell.c:70
 #, c-format
 msgid "Quoted text doesn't begin with a quotation mark"
@@ -702,7 +811,7 @@ msgstr "%s বিকল্প পার্স করতে ব্যর্থ"
 msgid "Missing argument for %s"
 msgstr "%s'র আর্গুমেন্ট অনুপস্থিত"
 
-#: glib/goption.c:1712
+#: glib/goption.c:1713
 #, c-format
 msgid "Unknown option %s"
 msgstr "অজানা বিকল্প %s"
@@ -748,9 +857,9 @@ msgstr "প্রোগ্রামের নাম অবৈধ: %s"
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "কি-ফাইলের মধ্যে অসমর্থিত এনকোডিং '%s'"
 
-#: glib/gkeyfile.c:1094 glib/gkeyfile.c:1253 glib/gkeyfile.c:2454
-#: glib/gkeyfile.c:2520 glib/gkeyfile.c:2639 glib/gkeyfile.c:2774
-#: glib/gkeyfile.c:2927 glib/gkeyfile.c:3107 glib/gkeyfile.c:3164
+#: glib/gkeyfile.c:1094 glib/gkeyfile.c:1253 glib/gkeyfile.c:2455
+#: glib/gkeyfile.c:2521 glib/gkeyfile.c:2640 glib/gkeyfile.c:2775
+#: glib/gkeyfile.c:2928 glib/gkeyfile.c:3108 glib/gkeyfile.c:3165
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "কি-ফাইলের মধ্যে কোনো সংকলন অনুপস্থিত '%s'"
@@ -766,12 +875,12 @@ msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr ""
 "কি-ফাইলের মধ্যে '%2$s' মান সহ  '%1$s' কি উপস্থিত রয়েছে যা UTF-8 বিন্যাসে নেই।"
 
-#: glib/gkeyfile.c:1387 glib/gkeyfile.c:1497 glib/gkeyfile.c:1865
+#: glib/gkeyfile.c:1387 glib/gkeyfile.c:1497 glib/gkeyfile.c:1866
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "কি-ফাইলের মধ্যে '%s' কি উপস্থিত রয়েছে যার মান ব্যাখ্যা করা সম্ভব নয়।"
 
-#: glib/gkeyfile.c:2077 glib/gkeyfile.c:2286
+#: glib/gkeyfile.c:2078 glib/gkeyfile.c:2287
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -780,37 +889,37 @@ msgstr ""
 "কি-ফাইলের মধ্যে '%2$s' সংকলনে '%1$s' কি উপস্থিত রয়েছে যার মান ব্যাখ্যা করা সম্ভব "
 "নয়।"
 
-#: glib/gkeyfile.c:2469 glib/gkeyfile.c:2654 glib/gkeyfile.c:3175
+#: glib/gkeyfile.c:2470 glib/gkeyfile.c:2655 glib/gkeyfile.c:3176
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "কি-ফাইলের মধ্যে '%2$s' সংকলনে '%1$s' কি উপস্থিত নেই"
 
-#: glib/gkeyfile.c:3414
+#: glib/gkeyfile.c:3415
 #, c-format
 msgid "Key file contains escape character at end of line"
 msgstr "কি-ফাইলের মধ্যে পংক্তির অবশেষে এস্কেপ অক্ষর উপস্থিত রয়েছে"
 
-#: glib/gkeyfile.c:3436
+#: glib/gkeyfile.c:3437
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "কি-ফাইলের মধ্যে অবৈধ এস্কেপ ধারা উপস্থিত রয়েছে '%s'"
 
-#: glib/gkeyfile.c:3578
+#: glib/gkeyfile.c:3579
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "'%s' মান কোনো সংখ্যারূপে ব্যাখ্যা করা সম্ভব নয়।"
 
-#: glib/gkeyfile.c:3592
+#: glib/gkeyfile.c:3593
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "'%s' পূর্ণসংখ্যা মান সীমা বহির্ভূত"
 
-#: glib/gkeyfile.c:3625
+#: glib/gkeyfile.c:3626
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "'%s' মান float সংখ্যা রূপে ব্যাখ্যা করা সম্ভব নয়।"
 
-#: glib/gkeyfile.c:3649
+#: glib/gkeyfile.c:3650
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "'%s' মান বুলিয়ান রূপে ব্যাখ্যা করা সম্ভব নয়।"

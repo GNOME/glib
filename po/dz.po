@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.dz\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-05-03 00:50-0400\n"
+"POT-Creation-Date: 2007-05-22 23:54-0400\n"
 "PO-Revision-Date: 2006-08-09 10:23+0530\n"
 "Last-Translator: Mindu Dorji\n"
 "Language-Team: DZONGKHA <pgeyleg@dit.gov.bt>\n"
@@ -500,6 +500,115 @@ msgstr "ཡིག་ཆ་དེ་ ཆ་ཤས་ ’%s’ གི་དོན�
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "ཡིག་ཆ་དེ་ བསམ་བཀོད་ ཡང་ན་ ལས་སྦྱོར་བཀོད་རྒྱ་ཅིག་གི་ནང་ན་ རེ་བ་མེད་པར་ རྫོགས་སོ་ནུག"
 
+#: glib/gregex.c:130
+msgid "corrupted object"
+msgstr ""
+
+#: glib/gregex.c:132
+msgid "internal error or corrupted object"
+msgstr ""
+
+#: glib/gregex.c:134
+msgid "out of memory"
+msgstr ""
+
+#: glib/gregex.c:139
+msgid "backtracking limit reached"
+msgstr ""
+
+#: glib/gregex.c:151 glib/gregex.c:159
+msgid "the pattern contains items not supported for partial matching"
+msgstr ""
+
+#: glib/gregex.c:153
+msgid "internal error"
+msgstr ""
+
+#: glib/gregex.c:161
+msgid "back references as conditions are not supported for partial matching"
+msgstr ""
+
+#: glib/gregex.c:170
+msgid "recursion limit reached"
+msgstr ""
+
+#: glib/gregex.c:172
+msgid "workspace limit for empty substrings reached"
+msgstr ""
+
+#: glib/gregex.c:174
+msgid "invalid combination of newline flags"
+msgstr ""
+
+#: glib/gregex.c:178
+msgid "unknown error"
+msgstr ""
+
+#: glib/gregex.c:278 glib/gregex.c:1226
+#, c-format
+msgid "Error while matching regular expression %s: %s"
+msgstr ""
+
+#: glib/gregex.c:752
+msgid "PCRE library is compiled without UTF8 support"
+msgstr ""
+
+#: glib/gregex.c:761
+msgid "PCRE library is compiled without UTF8 properties support"
+msgstr ""
+
+#: glib/gregex.c:806
+#, fuzzy, c-format
+msgid "Error while compiling regular expression %s at char %d: %s"
+msgstr "གྱལ་རིམ་%d ཡིག་འབྲུ་ %d:%s ལུ་འཛོལ་བ།"
+
+#: glib/gregex.c:828
+#, c-format
+msgid "Error while optimizing regular expression %s: %s"
+msgstr ""
+
+#: glib/gregex.c:1652
+msgid "hexadecimal digit or '}' expected"
+msgstr ""
+
+#: glib/gregex.c:1668
+msgid "hexadecimal digit expected"
+msgstr ""
+
+#: glib/gregex.c:1708
+msgid "missing '<' in symbolic reference"
+msgstr ""
+
+#: glib/gregex.c:1717
+#, fuzzy
+msgid "unfinished symbolic reference"
+msgstr "མཇུག་མ་བསྡུ་བའི་ ངོ་བོའི་གཞི་བསྟུན།"
+
+#: glib/gregex.c:1724
+msgid "zero-length symbolic reference"
+msgstr ""
+
+#: glib/gregex.c:1735
+msgid "digit expected"
+msgstr ""
+
+#: glib/gregex.c:1753
+msgid "illegal symbolic reference"
+msgstr ""
+
+#: glib/gregex.c:1815
+msgid "stray final '\\'"
+msgstr ""
+
+#: glib/gregex.c:1819
+msgid "unknown escape sequence"
+msgstr ""
+
+#: glib/gregex.c:1829
+#, c-format
+msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
+msgstr ""
+
 #: glib/gshell.c:70
 #, c-format
 msgid "Quoted text doesn't begin with a quotation mark"
@@ -705,7 +814,7 @@ msgstr "གདམ་ཁ་%s མིང་དཔྱད་འབད་ནི་ལ
 msgid "Missing argument for %s"
 msgstr "%s གི་དོན་ལུ་ སྒྲུབ་རྟགས་བརླག་སྟོར་ཞུགས་ནུག"
 
-#: glib/goption.c:1712
+#: glib/goption.c:1713
 #, c-format
 msgid "Unknown option %s"
 msgstr "ཤེས་མ་ཚུགས་པའི་གདམ་ཁ་ %s།"
@@ -751,9 +860,9 @@ msgstr "ནུས་མེད་ལསརིམ་མིང་:%s།"
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "ལྡེ་མིག་ཡིག་སྣོད་ནང་ལུ་ རྒྱབ་སྐྱོར་མེད་པའི་ ཨིན་ཀོ་ཌིང་'%s'ཡོད།"
 
-#: glib/gkeyfile.c:1094 glib/gkeyfile.c:1253 glib/gkeyfile.c:2454
-#: glib/gkeyfile.c:2520 glib/gkeyfile.c:2639 glib/gkeyfile.c:2774
-#: glib/gkeyfile.c:2927 glib/gkeyfile.c:3107 glib/gkeyfile.c:3164
+#: glib/gkeyfile.c:1094 glib/gkeyfile.c:1253 glib/gkeyfile.c:2455
+#: glib/gkeyfile.c:2521 glib/gkeyfile.c:2640 glib/gkeyfile.c:2775
+#: glib/gkeyfile.c:2928 glib/gkeyfile.c:3108 glib/gkeyfile.c:3165
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "ལྡེ་མིག་ཡིག་སྣོད་ནང་ལུ་ སྡེ་ཚན་ '%s' མིན་འདུག།"
@@ -768,49 +877,49 @@ msgstr "ལྡེ་མིག་ཡིག་སྣོད་ནང་ ལྡེ�
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "ལྡེ་མིག་ཡིག་སྣོད་ནང་ལུ་ ཡུ་ཊི་ཨེཕ་-༨ མེད་པའི་ ལྡེ་མིག་'%s' བེ་ལུ་'%s' དང་བཅསཔ་སྦེ་འདུག"
 
-#: glib/gkeyfile.c:1387 glib/gkeyfile.c:1497 glib/gkeyfile.c:1865
+#: glib/gkeyfile.c:1387 glib/gkeyfile.c:1497 glib/gkeyfile.c:1866
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "ལྡེ་མིག་ཡིག་སྣོད་ནང་ལུ་ ཁ་བསྒྱུར་འབད་མ་ཚུགས་པའི་ བེ་ལུ་ཡོད་མི་ ལྡེ་མིག་ '%s'འདུག"
 
-#: glib/gkeyfile.c:2077 glib/gkeyfile.c:2286
+#: glib/gkeyfile.c:2078 glib/gkeyfile.c:2287
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
 "interpreted."
 msgstr "ལྡེ་མིག་ཡིག་སྣོད་ནང་ལུ་ ཁ་བསྒྱུར་འབད་མ་ཚུགས་པའི་ ལྡེ་མིག་'%s'སྡེ་ཚན་'%s' ནང་འདུག།"
 
-#: glib/gkeyfile.c:2469 glib/gkeyfile.c:2654 glib/gkeyfile.c:3175
+#: glib/gkeyfile.c:2470 glib/gkeyfile.c:2655 glib/gkeyfile.c:3176
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "ལྡེ་མིག་ཡིག་སྣོད་དེ་ལུ་ ལྡེ་མིག་'%s' སྡེ་ཚན་'%s' ནང་མིན་འདུག"
 
-#: glib/gkeyfile.c:3414
+#: glib/gkeyfile.c:3415
 #, c-format
 msgid "Key file contains escape character at end of line"
 msgstr "ལྡེ་མིག་ཡིག་སྣོད་ནང་ལུ་ གྱལ་རིམ་མཇུག་ལུ་ གྲོས་ཐར་འབད་མི་ཡིག་འབྲུ་འདུག"
 
-#: glib/gkeyfile.c:3436
+#: glib/gkeyfile.c:3437
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "ལྡེ་མིག་ཡིག་སྣོད་ནང་ལུ་ ནུས་མེད་གྲོས་ཐར་འབྱུང་རིམ་ '%s' འདུག"
 
-#: glib/gkeyfile.c:3578
+#: glib/gkeyfile.c:3579
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "བེ་ལུ་'%s'དེ་ ཨང་གྲངས་ཅིག་སྦེ་ ཁ་བསྒྱུར་འབད་མི་ཚུགས།"
 
-#: glib/gkeyfile.c:3592
+#: glib/gkeyfile.c:3593
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "ཧྲིལ་ཨང་བེ་ལུ་ ’%s’ དེ་ ཁྱབ་ཚད་ཀྱི་ཕྱི་ཁར་ཨིན་པས།"
 
-#: glib/gkeyfile.c:3625
+#: glib/gkeyfile.c:3626
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "བེ་ལུ་'%s'དེ་ འཕུར་ལྡིང་ཨང་གྲངས་ཅིག་སྦེ་ ཁ་བསྒྱུར་འབད་མི་ཚུགས།"
 
-#: glib/gkeyfile.c:3649
+#: glib/gkeyfile.c:3650
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "བེ་ལུ་'%s'དེ་ བུ་ལིན་ཅིག་སྦེ་ ཁ་བསྒྱུར་འབད་མི་ཚུགས།"

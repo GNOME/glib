@@ -868,6 +868,14 @@ in any UNIX manual.
 </para>
 
 
+<!-- ##### MACRO pipe ##### -->
+<para>
+Provided for UNIX emulation on Windows; see documentation for pipe()
+in any UNIX manual.
+</para>
+
+@phandles: file descriptors, the first one for reading, the second one for writing.
+
 <!-- ##### MACRO popen ##### -->
 <para>
 

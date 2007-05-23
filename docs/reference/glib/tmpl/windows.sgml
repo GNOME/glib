@@ -28,15 +28,6 @@ macro %MAXPATHLEN, which is the maximum length of a filename
 
 
 
-<!-- ##### MACRO pipe ##### -->
-<para>
-Provided for UNIX emulation on Windows; see documentation for pipe()
-in any UNIX manual.
-</para>
-
-@phandles: file descriptors, the first one for reading, the second one for writing.
-
-
 <!-- ##### FUNCTION g_win32_error_message ##### -->
 <para>
 

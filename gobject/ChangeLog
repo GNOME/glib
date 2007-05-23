@@ -1,3 +1,7 @@
+2007-05-22  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.13.2 ===
+
 2007-05-17  Matthias Clasen <mclasen@redhat.com>
 
 	* gtype.h: Move G_GNUC_INTERNAL before function

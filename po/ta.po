@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.glib-2-12.ta\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-05-03 00:50-0400\n"
+"POT-Creation-Date: 2007-05-22 23:54-0400\n"
 "PO-Revision-Date: 2006-08-30 16:06+0530\n"
 "Last-Translator: Felix <ifelix25@gmail.com>\n"
 "Language-Team: Tamil <ta@li.org>\n"
@@ -503,6 +503,115 @@ msgstr "'%s' என்னும் மூடு-அடையாள ஒட்ட�
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "ஆவணம் திடீரென குறிப்புரையுல் அல்லது செயலாக்கம் ஆணையுல் முடிவடைந்தது"
 
+#: glib/gregex.c:130
+msgid "corrupted object"
+msgstr ""
+
+#: glib/gregex.c:132
+msgid "internal error or corrupted object"
+msgstr ""
+
+#: glib/gregex.c:134
+msgid "out of memory"
+msgstr ""
+
+#: glib/gregex.c:139
+msgid "backtracking limit reached"
+msgstr ""
+
+#: glib/gregex.c:151 glib/gregex.c:159
+msgid "the pattern contains items not supported for partial matching"
+msgstr ""
+
+#: glib/gregex.c:153
+msgid "internal error"
+msgstr ""
+
+#: glib/gregex.c:161
+msgid "back references as conditions are not supported for partial matching"
+msgstr ""
+
+#: glib/gregex.c:170
+msgid "recursion limit reached"
+msgstr ""
+
+#: glib/gregex.c:172
+msgid "workspace limit for empty substrings reached"
+msgstr ""
+
+#: glib/gregex.c:174
+msgid "invalid combination of newline flags"
+msgstr ""
+
+#: glib/gregex.c:178
+msgid "unknown error"
+msgstr ""
+
+#: glib/gregex.c:278 glib/gregex.c:1226
+#, c-format
+msgid "Error while matching regular expression %s: %s"
+msgstr ""
+
+#: glib/gregex.c:752
+msgid "PCRE library is compiled without UTF8 support"
+msgstr ""
+
+#: glib/gregex.c:761
+msgid "PCRE library is compiled without UTF8 properties support"
+msgstr ""
+
+#: glib/gregex.c:806
+#, fuzzy, c-format
+msgid "Error while compiling regular expression %s at char %d: %s"
+msgstr "%d வரியில் %d வரியுருவில் பிழை: %s"
+
+#: glib/gregex.c:828
+#, c-format
+msgid "Error while optimizing regular expression %s: %s"
+msgstr ""
+
+#: glib/gregex.c:1652
+msgid "hexadecimal digit or '}' expected"
+msgstr ""
+
+#: glib/gregex.c:1668
+msgid "hexadecimal digit expected"
+msgstr ""
+
+#: glib/gregex.c:1708
+msgid "missing '<' in symbolic reference"
+msgstr ""
+
+#: glib/gregex.c:1717
+#, fuzzy
+msgid "unfinished symbolic reference"
+msgstr "முடிவடையாத உள்ளீட்பு மேற்கோள்"
+
+#: glib/gregex.c:1724
+msgid "zero-length symbolic reference"
+msgstr ""
+
+#: glib/gregex.c:1735
+msgid "digit expected"
+msgstr ""
+
+#: glib/gregex.c:1753
+msgid "illegal symbolic reference"
+msgstr ""
+
+#: glib/gregex.c:1815
+msgid "stray final '\\'"
+msgstr ""
+
+#: glib/gregex.c:1819
+msgid "unknown escape sequence"
+msgstr ""
+
+#: glib/gregex.c:1829
+#, c-format
+msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
+msgstr ""
+
 #: glib/gshell.c:70
 #, c-format
 msgid "Quoted text doesn't begin with a quotation mark"
@@ -703,7 +812,7 @@ msgstr "கூறிடும் போது பிழை: %s"
 msgid "Missing argument for %s"
 msgstr " %sக்கான விடுபட்ட மதிப்புரு"
 
-#: glib/goption.c:1712
+#: glib/goption.c:1713
 #, c-format
 msgid "Unknown option %s"
 msgstr "தெரியாத விருப்பம் %s"
@@ -750,9 +859,9 @@ msgstr "தவறான நிரல் பெயர்: %s"
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "விசை கோப்பு துணையில்லாத குறிமுறையை கொண்டுள்ளது '%s'"
 
-#: glib/gkeyfile.c:1094 glib/gkeyfile.c:1253 glib/gkeyfile.c:2454
-#: glib/gkeyfile.c:2520 glib/gkeyfile.c:2639 glib/gkeyfile.c:2774
-#: glib/gkeyfile.c:2927 glib/gkeyfile.c:3107 glib/gkeyfile.c:3164
+#: glib/gkeyfile.c:1094 glib/gkeyfile.c:1253 glib/gkeyfile.c:2455
+#: glib/gkeyfile.c:2521 glib/gkeyfile.c:2640 glib/gkeyfile.c:2775
+#: glib/gkeyfile.c:2928 glib/gkeyfile.c:3108 glib/gkeyfile.c:3165
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "விசை கோப்பு குழுவினை கொண்டிருக்கவில்லை '%s'"
@@ -767,12 +876,12 @@ msgstr " '%s' விசையை விசை கோப்பு கொண்ட
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr " '%s'மதிப்பினை உடைய '%s'விசை விசை கோப்பு கொண்டுள்ளது, இது UTF-8 அல்ல"
 
-#: glib/gkeyfile.c:1387 glib/gkeyfile.c:1497 glib/gkeyfile.c:1865
+#: glib/gkeyfile.c:1387 glib/gkeyfile.c:1497 glib/gkeyfile.c:1866
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "%s'விசையை விசை கோப்பு கொண்டுள்ளது அது கொண்டுள்ள மதிப்பினை மாற்ற முடியாது."
 
-#: glib/gkeyfile.c:2077 glib/gkeyfile.c:2286
+#: glib/gkeyfile.c:2078 glib/gkeyfile.c:2287
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -781,37 +890,37 @@ msgstr ""
 "'%s'குழுவில் %s'விசையை விசை கோப்பு கொண்டுள்ளது அது கொண்டுள்ள மதிப்பினை மாற்ற "
 "முடியாது."
 
-#: glib/gkeyfile.c:2469 glib/gkeyfile.c:2654 glib/gkeyfile.c:3175
+#: glib/gkeyfile.c:2470 glib/gkeyfile.c:2655 glib/gkeyfile.c:3176
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "'%s' குழுவில் '%s' விசையை விசை கோப்பு கொண்டிருக்கவில்லை"
 
-#: glib/gkeyfile.c:3414
+#: glib/gkeyfile.c:3415
 #, c-format
 msgid "Key file contains escape character at end of line"
 msgstr "கடைசி வரியில் விசை கோப்பு விடுபடு எழுத்தினை கொண்டுள்ளது"
 
-#: glib/gkeyfile.c:3436
+#: glib/gkeyfile.c:3437
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "விசை கோப்பு தவறான விடுபடு வரிசையை கொண்டுள்ளது '%s'"
 
-#: glib/gkeyfile.c:3578
+#: glib/gkeyfile.c:3579
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "மதிப்பு '%s' ஒரு எண்ணாக செயல்பட முடியாது."
 
-#: glib/gkeyfile.c:3592
+#: glib/gkeyfile.c:3593
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "இயல் எண் மதிப்பு '%s' வரையறையை தாண்டியுள்ளது"
 
-#: glib/gkeyfile.c:3625
+#: glib/gkeyfile.c:3626
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "மதிப்பு '%s' தசம எண்ணாக செயல்பட முடியாது."
 
-#: glib/gkeyfile.c:3649
+#: glib/gkeyfile.c:3650
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "மதிப்பு '%s' பூலியனாக செயல்பட முடியாது."

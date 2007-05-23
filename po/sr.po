@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-05-03 00:50-0400\n"
+"POT-Creation-Date: 2007-05-22 23:54-0400\n"
 "PO-Revision-Date: 2006-01-31 23:39+0100\n"
 "Last-Translator: Слободан Д. Средојевић <slobo@akrep.be>\n"
 "Language-Team: Serbian (sr) <gnom@prevod.org>\n"
@@ -505,6 +505,115 @@ msgstr "Документ завршен неочекивано усред зав
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "Документ завршен неочекивано усред примедбе или упута за обраду"
 
+#: glib/gregex.c:130
+msgid "corrupted object"
+msgstr ""
+
+#: glib/gregex.c:132
+msgid "internal error or corrupted object"
+msgstr ""
+
+#: glib/gregex.c:134
+msgid "out of memory"
+msgstr ""
+
+#: glib/gregex.c:139
+msgid "backtracking limit reached"
+msgstr ""
+
+#: glib/gregex.c:151 glib/gregex.c:159
+msgid "the pattern contains items not supported for partial matching"
+msgstr ""
+
+#: glib/gregex.c:153
+msgid "internal error"
+msgstr ""
+
+#: glib/gregex.c:161
+msgid "back references as conditions are not supported for partial matching"
+msgstr ""
+
+#: glib/gregex.c:170
+msgid "recursion limit reached"
+msgstr ""
+
+#: glib/gregex.c:172
+msgid "workspace limit for empty substrings reached"
+msgstr ""
+
+#: glib/gregex.c:174
+msgid "invalid combination of newline flags"
+msgstr ""
+
+#: glib/gregex.c:178
+msgid "unknown error"
+msgstr ""
+
+#: glib/gregex.c:278 glib/gregex.c:1226
+#, c-format
+msgid "Error while matching regular expression %s: %s"
+msgstr ""
+
+#: glib/gregex.c:752
+msgid "PCRE library is compiled without UTF8 support"
+msgstr ""
+
+#: glib/gregex.c:761
+msgid "PCRE library is compiled without UTF8 properties support"
+msgstr ""
+
+#: glib/gregex.c:806
+#, fuzzy, c-format
+msgid "Error while compiling regular expression %s at char %d: %s"
+msgstr "Грешка у %d. реду, %d. знак: %s"
+
+#: glib/gregex.c:828
+#, c-format
+msgid "Error while optimizing regular expression %s: %s"
+msgstr ""
+
+#: glib/gregex.c:1652
+msgid "hexadecimal digit or '}' expected"
+msgstr ""
+
+#: glib/gregex.c:1668
+msgid "hexadecimal digit expected"
+msgstr ""
+
+#: glib/gregex.c:1708
+msgid "missing '<' in symbolic reference"
+msgstr ""
+
+#: glib/gregex.c:1717
+#, fuzzy
+msgid "unfinished symbolic reference"
+msgstr "Недовршена референца ентитета"
+
+#: glib/gregex.c:1724
+msgid "zero-length symbolic reference"
+msgstr ""
+
+#: glib/gregex.c:1735
+msgid "digit expected"
+msgstr ""
+
+#: glib/gregex.c:1753
+msgid "illegal symbolic reference"
+msgstr ""
+
+#: glib/gregex.c:1815
+msgid "stray final '\\'"
+msgstr ""
+
+#: glib/gregex.c:1819
+msgid "unknown escape sequence"
+msgstr ""
+
+#: glib/gregex.c:1829
+#, c-format
+msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
+msgstr ""
+
 #: glib/gshell.c:70
 #, c-format
 msgid "Quoted text doesn't begin with a quotation mark"
@@ -707,7 +816,7 @@ msgstr "Грешка при рашчлањивању могућности %s"
 msgid "Missing argument for %s"
 msgstr "Недостаје аргумент за %s"
 
-#: glib/goption.c:1712
+#: glib/goption.c:1713
 #, c-format
 msgid "Unknown option %s"
 msgstr "Непозната опција %s"
@@ -755,9 +864,9 @@ msgstr "Неисправно име кључа: %s"
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "Датотека са кључевима садржи неподржано кодирање „%s“"
 
-#: glib/gkeyfile.c:1094 glib/gkeyfile.c:1253 glib/gkeyfile.c:2454
-#: glib/gkeyfile.c:2520 glib/gkeyfile.c:2639 glib/gkeyfile.c:2774
-#: glib/gkeyfile.c:2927 glib/gkeyfile.c:3107 glib/gkeyfile.c:3164
+#: glib/gkeyfile.c:1094 glib/gkeyfile.c:1253 glib/gkeyfile.c:2455
+#: glib/gkeyfile.c:2521 glib/gkeyfile.c:2640 glib/gkeyfile.c:2775
+#: glib/gkeyfile.c:2928 glib/gkeyfile.c:3108 glib/gkeyfile.c:3165
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Датотека са кључевима нема групу „%s“"
@@ -772,12 +881,12 @@ msgstr "Датотека са кључевима нема кључ „%s“"
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "Датотека са кључевима садржи кључ „%s“ вредности „%s“ што није УТФ-8"
 
-#: glib/gkeyfile.c:1387 glib/gkeyfile.c:1497 glib/gkeyfile.c:1865
+#: glib/gkeyfile.c:1387 glib/gkeyfile.c:1497 glib/gkeyfile.c:1866
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "Датотека са кључевима садржи кључ „%s“ неразумљиве вредности."
 
-#: glib/gkeyfile.c:2077 glib/gkeyfile.c:2286
+#: glib/gkeyfile.c:2078 glib/gkeyfile.c:2287
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -785,37 +894,37 @@ msgid ""
 msgstr ""
 "Датотека са кључевима садржи кључ „%s“ у групи „%s“ неразумљиве вредности."
 
-#: glib/gkeyfile.c:2469 glib/gkeyfile.c:2654 glib/gkeyfile.c:3175
+#: glib/gkeyfile.c:2470 glib/gkeyfile.c:2655 glib/gkeyfile.c:3176
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Датотека са кључевима не садржи кључ „%s“ у групи „%s“"
 
-#: glib/gkeyfile.c:3414
+#: glib/gkeyfile.c:3415
 #, c-format
 msgid "Key file contains escape character at end of line"
 msgstr "Датотека са кључевима садржи знак истицања на крају реда"
 
-#: glib/gkeyfile.c:3436
+#: glib/gkeyfile.c:3437
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "Датотека са кључевима садржи недозвољен низ истицања „%s“"
 
-#: glib/gkeyfile.c:3578
+#: glib/gkeyfile.c:3579
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Вредност „%s“ се не може сматрати бројем."
 
-#: glib/gkeyfile.c:3592
+#: glib/gkeyfile.c:3593
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "Целобројна вредност „%s“ је изван опсега"
 
-#: glib/gkeyfile.c:3625
+#: glib/gkeyfile.c:3626
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "Вредност „%s“ се не може сматрати реалним бројем једноструке тачности."
 
-#: glib/gkeyfile.c:3649
+#: glib/gkeyfile.c:3650
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Вредност „%s“ се не може сматрати истинитосном."
