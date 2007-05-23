@@ -8,7 +8,7 @@ interfaces for such runtime functionality as an event loop, threads,
 dynamic loading, and an object system.
 
 The official ftp site is:
-  ftp://ftp.gtk.org/pub/gtk
+  ftp://ftp.gtk.org/pub/glib
 
 The official web site is:
   http://www.gtk.org/
