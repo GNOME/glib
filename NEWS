@@ -1,3 +1,22 @@
+Overview of Changes from GLib 2.13.1 to GLib 2.13.2
+===================================================
+
+* Unicode support:
+ - Add g_unichar_ismark()
+
+* GOption:
+ - Allow to use callbacks for remaining args
+
+* Updated translations:
+  Belarusian Latin (be@latin)
+  British English (en_GB)
+  Galician (gl)
+  Norwegian bokmål (nb)
+  Oriya (or)
+  Spanish (es)
+  Thai (th)
+
+
 Overview of Changes from GLib 2.13.0 to GLib 2.13.1
 ===================================================
 
