@@ -1,3 +1,8 @@
+2007-05-25  Behdad Esfahbod  <behdad@gnome.org>
+
+	* glib/guniprop.c (g_unichar_iswide), (g_unichar_iswide_cjk):
+	Update to Markus Kuhn's updated wcwidth for Unicode 5.0.
+
 2007-05-01  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Bump version
