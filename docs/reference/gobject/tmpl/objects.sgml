@@ -1100,7 +1100,7 @@ This functions should only be called from object system implementations.
 
 <!-- ##### MACRO G_OBJECT_WARN_INVALID_PROPERTY_ID ##### -->
 <para>
-This macros should be used to emit a standard warning about unexpected 
+This macro should be used to emit a standard warning about unexpected 
 properties in set_property() and get_property() implementations.
 </para>
 
