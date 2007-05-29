@@ -573,6 +573,7 @@ test_sub_pattern (const gchar *pattern,
 
 static gboolean
 test_named_sub_pattern (const gchar *pattern,
+			GRegexCompileFlags flags,
 			const gchar *string,
 			gint         start_position,
 			const gchar *sub_name,
@@ -588,7 +589,7 @@ test_named_sub_pattern (const gchar *pattern,
   verbose ("fetching sub-pattern \"%s\" from \"%s\" (pattern: \"%s\") \t",
 	   sub_name, string, pattern);
 
-  regex = g_regex_new (pattern, 0, 0, NULL);
+  regex = g_regex_new (pattern, flags, 0, NULL);
 
   g_regex_match_full (regex, string, -1, start_position, 0, &match_info, NULL);
   sub_expr = g_match_info_fetch_named (match_info, sub_name);
@@ -621,8 +622,18 @@ test_named_sub_pattern (const gchar *pattern,
 #define TEST_NAMED_SUB_PATTERN(pattern, string, start_position, sub_name, \
 			       expected_sub, expected_start, expected_end) { \
   total++; \
-  if (test_named_sub_pattern (pattern, string, start_position, sub_name, \
+  if (test_named_sub_pattern (pattern, 0, string, start_position, sub_name, \
 			      expected_sub, expected_start, expected_end)) \
+    PASS; \
+  else \
+    FAIL; \
+}
+
+#define TEST_NAMED_SUB_PATTERN_DUPNAMES(pattern, string, start_position, sub_name, \
+					expected_sub, expected_start, expected_end) { \
+  total++; \
+  if (test_named_sub_pattern (pattern, G_REGEX_DUPNAMES, string, start_position, \
+			      sub_name, expected_sub, expected_start, expected_end)) \
     PASS; \
   else \
     FAIL; \
@@ -1765,6 +1776,14 @@ main (int argc, char *argv[])
   TEST_NAMED_SUB_PATTERN("a(?P<A>.)(?P<B>.)?", "a" EGRAVE "x", 0, "B", "x", 3, 4);
   TEST_NAMED_SUB_PATTERN("(?P<A>a)?(?P<B>b)", "b", 0, "A", "", -1, -1);
   TEST_NAMED_SUB_PATTERN("(?P<A>a)?(?P<B>b)", "b", 0, "B", "b", 0, 1);
+
+  /* TEST_NAMED_SUB_PATTERN_DUPNAMES(pattern, string, start_position, sub_name,
+   *				     expected_sub, expected_start, expected_end) */
+  TEST_NAMED_SUB_PATTERN_DUPNAMES("(?P<N>a)|(?P<N>b)", "ab", 0, "N", "a", 0, 1);
+  TEST_NAMED_SUB_PATTERN_DUPNAMES("(?P<N>aa)|(?P<N>a)", "aa", 0, "N", "aa", 0, 2);
+  TEST_NAMED_SUB_PATTERN_DUPNAMES("(?P<N>aa)(?P<N>a)", "aaa", 0, "N", "aa", 0, 2);
+  TEST_NAMED_SUB_PATTERN_DUPNAMES("(?P<N>x)|(?P<N>a)", "a", 0, "N", "a", 0, 1);
+  TEST_NAMED_SUB_PATTERN_DUPNAMES("(?P<N>x)y|(?P<N>a)b", "ab", 0, "N", "a", 0, 1);
 
   /* TEST_FETCH_ALL#(pattern, string, ...) */
   TEST_FETCH_ALL0("a", "");

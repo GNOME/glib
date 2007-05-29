@@ -552,6 +552,42 @@ g_match_info_fetch_pos (const GMatchInfo *match_info,
   return TRUE;
 }
 
+/*
+ * Returns number of first matched subpattern with name @name.
+ * There may be more than one in case when DUPNAMES is used,
+ * and not all subpatterns with that name match;
+ * pcre_get_stringnumber() does not work in that case.
+ */
+static gint
+get_matched_substring_number (const GMatchInfo *match_info,
+			      const gchar      *name)
+{
+  gint entrysize;
+  gchar *first, *last;
+  guchar *entry;
+
+  if ((match_info->regex->compile_opts & G_REGEX_DUPNAMES) == 0)
+    return pcre_get_stringnumber (match_info->regex->pcre_re, name);
+
+  /* This code is copied from pcre_get.c: get_first_set() */
+  entrysize = pcre_get_stringtable_entries (match_info->regex->pcre_re, 
+					    name,
+					    &first,
+					    &last);
+
+  if (entrysize <= 0)
+    return entrysize;
+
+  for (entry = (guchar*) first; entry <= (guchar*) last; entry += entrysize)
+    {
+      gint n = (entry[0] << 8) + entry[1];
+      if (match_info->offsets[n*2] >= 0)
+	return n;
+    }
+
+  return (first[0] << 8) + first[1];
+}
+
 /**
  * g_match_info_fetch_named:
  * @match_info: #GMatchInfo structure
@@ -582,8 +618,8 @@ g_match_info_fetch_named (const GMatchInfo *match_info,
   g_return_val_if_fail (match_info != NULL, NULL);
   g_return_val_if_fail (name != NULL, NULL);
 
-  num = g_regex_get_string_number (match_info->regex, name);
-  if (num == -1)
+  num = get_matched_substring_number (match_info, name);
+  if (num < 0)
     return NULL;
   else
     return g_match_info_fetch (match_info, num);
@@ -618,9 +654,9 @@ g_match_info_fetch_named_pos (const GMatchInfo *match_info,
 
   g_return_val_if_fail (match_info != NULL, FALSE);
   g_return_val_if_fail (name != NULL, FALSE);
- 
-  num = g_regex_get_string_number (match_info->regex, name);
-  if (num == -1)
+
+  num = get_matched_substring_number (match_info, name);
+  if (num < 0)
     return FALSE;
 
   return g_match_info_fetch_pos (match_info, num, start_pos, end_pos);

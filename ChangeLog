@@ -1,3 +1,9 @@
+2007-05-29  Marco Barisione <marco@barisione.org>
+
+	* glib/gregex.c: Fix g_regex_fetch_named() and
+	g_regex_fetch_named_pos() when G_REGEX_DUPNAMES is used  (#434358,
+	Yevgen Muntyan and #419376, Marco Barisione, patch by Yevgen Muntyan)
+
 2007-05-25  Behdad Esfahbod  <behdad@gnome.org>
 
 	* glib/guniprop.c (g_unichar_iswide), (g_unichar_iswide_cjk):
