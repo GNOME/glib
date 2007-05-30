@@ -214,6 +214,33 @@ void      g_key_file_remove_group           (GKeyFile             *key_file,
 					     const gchar          *group_name,
 					     GError              **error);
 
+/* Defines for handling freedesktop.org Desktop files */
+#define G_KEY_FILE_DESKTOP_GROUP                "Desktop Entry"
+
+#define G_KEY_FILE_DESKTOP_KEY_TYPE             "Type"
+#define G_KEY_FILE_DESKTOP_KEY_VERSION          "Version"
+#define G_KEY_FILE_DESKTOP_KEY_NAME             "Name"
+#define G_KEY_FILE_DESKTOP_KEY_GENERIC_NAME     "GenericName"
+#define G_KEY_FILE_DESKTOP_KEY_NO_DISPLAY       "NoDisplay"
+#define G_KEY_FILE_DESKTOP_KEY_COMMENT          "Comment"
+#define G_KEY_FILE_DESKTOP_KEY_ICON             "Icon"
+#define G_KEY_FILE_DESKTOP_KEY_HIDDEN           "Hidden"
+#define G_KEY_FILE_DESKTOP_KEY_ONLY_SHOW_IN     "OnlyShowIn"
+#define G_KEY_FILE_DESKTOP_KEY_NOT_SHOW_IN      "NotShowIn"
+#define G_KEY_FILE_DESKTOP_KEY_TRY_EXEC         "TryExec"
+#define G_KEY_FILE_DESKTOP_KEY_EXEC             "Exec"
+#define G_KEY_FILE_DESKTOP_KEY_PATH             "Path"
+#define G_KEY_FILE_DESKTOP_KEY_TERMINAL         "Terminal"
+#define G_KEY_FILE_DESKTOP_KEY_MIME_TYPE        "MimeType"
+#define G_KEY_FILE_DESKTOP_KEY_CATEGORIES       "Categories"
+#define G_KEY_FILE_DESKTOP_KEY_STARTUP_NOTIFY   "StartupNotify"
+#define G_KEY_FILE_DESKTOP_KEY_STARTUP_WM_CLASS "StartupWMClass"
+#define G_KEY_FILE_DESKTOP_KEY_URL              "URL"
+
+#define G_KEY_FILE_DESKTOP_TYPE_APPLICATION     "Application"
+#define G_KEY_FILE_DESKTOP_TYPE_LINK            "Link"
+#define G_KEY_FILE_DESKTOP_TYPE_DIRECTORY       "Directory"
+
 G_END_DECLS
 
 #endif /* __G_KEY_FILE_H__ */

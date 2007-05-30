@@ -1,3 +1,8 @@
+2007-05-30  Dan Winship  <danw@novell.com>
+
+	* glib/gkeyfile.h: add defines for desktop file handling. #339225,
+	original patch from Vincent Untz.
+
 2007-05-29  Cody Russell  <bratsche@gnome.org>
 
 	* configure.in: Fix a sed script that doesn't correctly detect

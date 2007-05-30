@@ -601,3 +601,285 @@ Flags which influence the parsing.
 @error: 
 
 
+<!-- ##### MACRO G_KEY_FILE_DESKTOP_GROUP ##### -->
+<para>
+The name of the main group of a desktop entry file, as defined in the
+<ulink url="http://freedesktop.org/Standards/desktop-entry-spec">Desktop
+Entry Specification</ulink>. Consult the specification for more
+details about the meanings of the keys below.
+</para>
+
+@Since: 2.14
+
+
+<!-- ##### MACRO G_KEY_FILE_DESKTOP_KEY_TYPE ##### -->
+<para>
+A key under <link
+linkend="G-KEY-FILE-DESKTOP-GROUP:CAPS"><literal>G_KEY_FILE_DESKTOP_GROUP</literal></link>
+whose value is a string giving the type of the desktop entry. Usually
+<link linkend="G-KEY-FILE-DESKTOP-TYPE-APPLICATION:CAPS"><literal>G_KEY_FILE_DESKTOP_TYPE_APPLICATION</literal></link>,
+<link linkend="G-KEY-FILE-DESKTOP-TYPE-LINK:CAPS"><literal>G_KEY_FILE_DESKTOP_TYPE_LINK</literal></link>, or
+<link linkend="G-KEY-FILE-DESKTOP-TYPE-DIRECTORY:CAPS"><literal>G_KEY_FILE_DESKTOP_TYPE_DIRECTORY</literal></link>.
+</para>
+
+@Since: 2.14
+
+
+
+<!-- ##### MACRO G_KEY_FILE_DESKTOP_KEY_VERSION ##### -->
+<para>
+A key under <link
+linkend="G-KEY-FILE-DESKTOP-GROUP:CAPS"><literal>G_KEY_FILE_DESKTOP_GROUP</literal></link>
+whose value is a string giving the version of the Desktop
+Entry Specification used for the desktop entry file.
+</para>
+
+@Since: 2.14
+
+
+
+<!-- ##### MACRO G_KEY_FILE_DESKTOP_KEY_NAME ##### -->
+<para>
+A key under <link
+linkend="G-KEY-FILE-DESKTOP-GROUP:CAPS"><literal>G_KEY_FILE_DESKTOP_GROUP</literal></link>
+whose value is a localized string giving the specific name of the
+desktop entry.
+</para>
+
+@Since: 2.14
+
+
+
+<!-- ##### MACRO G_KEY_FILE_DESKTOP_KEY_GENERIC_NAME ##### -->
+<para>
+A key under <link
+linkend="G-KEY-FILE-DESKTOP-GROUP:CAPS"><literal>G_KEY_FILE_DESKTOP_GROUP</literal></link>
+whose value is a localized string giving the generic name of the
+desktop entry.
+</para>
+
+@Since: 2.14
+
+
+
+<!-- ##### MACRO G_KEY_FILE_DESKTOP_KEY_NO_DISPLAY ##### -->
+<para>
+A key under <link
+linkend="G-KEY-FILE-DESKTOP-GROUP:CAPS"><literal>G_KEY_FILE_DESKTOP_GROUP</literal></link>
+whose value is a boolean stating whether the desktop entry should be
+shown in menus.
+</para>
+
+@Since: 2.14
+
+
+
+<!-- ##### MACRO G_KEY_FILE_DESKTOP_KEY_COMMENT ##### -->
+<para>
+A key under <link
+linkend="G-KEY-FILE-DESKTOP-GROUP:CAPS"><literal>G_KEY_FILE_DESKTOP_GROUP</literal></link>
+whose value is a localized string giving the tooltip for the desktop
+entry.
+</para>
+
+@Since: 2.14
+
+
+
+<!-- ##### MACRO G_KEY_FILE_DESKTOP_KEY_ICON ##### -->
+<para>
+A key under <link
+linkend="G-KEY-FILE-DESKTOP-GROUP:CAPS"><literal>G_KEY_FILE_DESKTOP_GROUP</literal></link>
+whose value is a localized string giving the name of the icon to be
+displayed for the desktop entry.
+</para>
+
+@Since: 2.14
+
+
+
+<!-- ##### MACRO G_KEY_FILE_DESKTOP_KEY_HIDDEN ##### -->
+<para>
+A key under <link
+linkend="G-KEY-FILE-DESKTOP-GROUP:CAPS"><literal>G_KEY_FILE_DESKTOP_GROUP</literal></link>
+whose value is a boolean stating whether the desktop entry has been
+deleted by the user.
+</para>
+
+@Since: 2.14
+
+
+
+<!-- ##### MACRO G_KEY_FILE_DESKTOP_KEY_ONLY_SHOW_IN ##### -->
+<para>
+A key under <link
+linkend="G-KEY-FILE-DESKTOP-GROUP:CAPS"><literal>G_KEY_FILE_DESKTOP_GROUP</literal></link>
+whose value is a list of strings identifying the environments that
+should display the desktop entry.
+</para>
+
+@Since: 2.14
+
+
+
+<!-- ##### MACRO G_KEY_FILE_DESKTOP_KEY_NOT_SHOW_IN ##### -->
+<para>
+A key under <link
+linkend="G-KEY-FILE-DESKTOP-GROUP:CAPS"><literal>G_KEY_FILE_DESKTOP_GROUP</literal></link>
+whose value is a list of strings identifying the environments that
+should not display the desktop entry.
+</para>
+
+@Since: 2.14
+
+
+
+<!-- ##### MACRO G_KEY_FILE_DESKTOP_KEY_TRY_EXEC ##### -->
+<para>
+A key under <link
+linkend="G-KEY-FILE-DESKTOP-GROUP:CAPS"><literal>G_KEY_FILE_DESKTOP_GROUP</literal></link>
+whose value is a string giving the file name of a binary on disk
+used to determine if the program is actually installed. It is only
+valid for desktop entries with the <literal>Application</literal>
+type.
+</para>
+
+@Since: 2.14
+
+
+
+<!-- ##### MACRO G_KEY_FILE_DESKTOP_KEY_EXEC ##### -->
+<para>
+A key under <link
+linkend="G-KEY-FILE-DESKTOP-GROUP:CAPS"><literal>G_KEY_FILE_DESKTOP_GROUP</literal></link>
+whose value is a string giving the command line to execute. It is only
+valid for desktop entries with the <literal>Application</literal>
+type.
+</para>
+
+@Since: 2.14
+
+
+
+<!-- ##### MACRO G_KEY_FILE_DESKTOP_KEY_PATH ##### -->
+<para>
+A key under <link
+linkend="G-KEY-FILE-DESKTOP-GROUP:CAPS"><literal>G_KEY_FILE_DESKTOP_GROUP</literal></link>
+whose value is a string containing the working directory to run the
+program in. It is only valid for desktop entries with the
+<literal>Application</literal> type.
+</para>
+
+@Since: 2.14
+
+
+
+<!-- ##### MACRO G_KEY_FILE_DESKTOP_KEY_TERMINAL ##### -->
+<para>
+A key under <link
+linkend="G-KEY-FILE-DESKTOP-GROUP:CAPS"><literal>G_KEY_FILE_DESKTOP_GROUP</literal></link>
+whose value is a boolean stating whether the program should be
+run in a terminal window. It is only valid for desktop entries with
+the <literal>Application</literal> type.
+</para>
+
+@Since: 2.14
+
+
+
+<!-- ##### MACRO G_KEY_FILE_DESKTOP_KEY_MIME_TYPE ##### -->
+<para>
+A key under <link
+linkend="G-KEY-FILE-DESKTOP-GROUP:CAPS"><literal>G_KEY_FILE_DESKTOP_GROUP</literal></link>
+whose value is a list of strings giving the MIME types supported
+by this desktop entry.
+</para>
+
+@Since: 2.14
+
+
+
+<!-- ##### MACRO G_KEY_FILE_DESKTOP_KEY_CATEGORIES ##### -->
+<para>
+A key under <link
+linkend="G-KEY-FILE-DESKTOP-GROUP:CAPS"><literal>G_KEY_FILE_DESKTOP_GROUP</literal></link>
+whose value is a list of strings giving the categories in which the
+desktop entry should be shown in a menu.
+</para>
+
+@Since: 2.14
+
+
+
+<!-- ##### MACRO G_KEY_FILE_DESKTOP_KEY_STARTUP_NOTIFY ##### -->
+<para>
+A key under <link
+linkend="G-KEY-FILE-DESKTOP-GROUP:CAPS"><literal>G_KEY_FILE_DESKTOP_GROUP</literal></link>
+whose value is a boolean stating whether the application supports
+the <ulink
+url="http://www.freedesktop.org/Standards/startup-notification-spec">Startup
+Notification Protocol Specification</ulink>.
+</para>
+
+@Since: 2.14
+
+
+
+<!-- ##### MACRO G_KEY_FILE_DESKTOP_KEY_STARTUP_WM_CLASS ##### -->
+<para>
+A key under <link
+linkend="G-KEY-FILE-DESKTOP-GROUP:CAPS"><literal>G_KEY_FILE_DESKTOP_GROUP</literal></link>
+whose value is string identifying the WM class or name hint of a
+window that the application will create, which can be used to emulate
+Startup Notification with older applications.
+</para>
+
+@Since: 2.14
+
+
+
+<!-- ##### MACRO G_KEY_FILE_DESKTOP_KEY_URL ##### -->
+<para>
+A key under <link
+linkend="G-KEY-FILE-DESKTOP-GROUP:CAPS"><literal>G_KEY_FILE_DESKTOP_GROUP</literal></link>
+whose value is a string giving the URL to access. It is only valid
+for desktop entries with the <literal>Link</literal> type.
+</para>
+
+@Since: 2.14
+
+
+
+<!-- ##### MACRO G_KEY_FILE_DESKTOP_TYPE_APPLICATION ##### -->
+<para>
+The value of the <link
+linkend="G-KEY-FILE-DESKTOP-KEY-TYPE:CAPS"><literal>G_KEY_FILE_DESKTOP_KEY_TYPE</literal></link>
+key for desktop entries representing applications.
+</para>
+
+@Since: 2.14
+
+
+
+<!-- ##### MACRO G_KEY_FILE_DESKTOP_TYPE_LINK ##### -->
+<para>
+The value of the <link
+linkend="G-KEY-FILE-DESKTOP-KEY-TYPE:CAPS"><literal>G_KEY_FILE_DESKTOP_KEY_TYPE</literal></link>
+key for desktop entries representing links to documents.
+</para>
+
+@Since: 2.14
+
+
+
+<!-- ##### MACRO G_KEY_FILE_DESKTOP_TYPE_DIRECTORY ##### -->
+<para>
+The value of the <link
+linkend="G-KEY-FILE-DESKTOP-KEY-TYPE:CAPS"><literal>G_KEY_FILE_DESKTOP_KEY_TYPE</literal></link>
+key for desktop entries representing directories.
+</para>
+
+@Since: 2.14
+
+
+
