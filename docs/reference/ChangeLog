@@ -1,9 +1,14 @@
+2007-05-30  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/tmpl/i18n.sgml: Add some hints about
+	xgettext invokation.
+
 2007-05-30  Dan Winship  <danw@novell.com>
 
 	* glib/glib-sections.txt: 
 	* glib/tmpl/keyfile.sgml: add G_KEY_FILE_DESKTOP_* macros
 
-2007-05-2626  Matthias Clasen  <mclasen@redhat.com>
+2007-05-26  Matthias Clasen  <mclasen@redhat.com>
 
 	* gobject/tmpl/objects.sgml: Fix a typo
 

@@ -20,6 +20,8 @@ the GETTEXT_PACKAGE macro suitably for your library:
 &num;define GETTEXT_PACKAGE "gtk20"
 &num;include &lt;glib/gi18n-lib.h&gt;
 </programlisting></informalexample>
+The gettext manual covers details of how to set up message extraction
+with xgettext.
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
@@ -54,6 +56,10 @@ differently depending on whether it's the name of a character set or a
 language. This could be solved by using "charset|Russian" and 
 "language|Russian".
 </para>
+<note><para>
+If you are using the Q_() macro, you need to make sure that you 
+pass <option>--keyword=Q_</option> to xgettext when extracting messages.
+</para></note>
 
 @String: the string to be translated, with a '|'-separated prefix which 
   must not be translated
