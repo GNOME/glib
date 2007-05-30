@@ -1,3 +1,9 @@
+2007-05-29  Cody Russell  <bratsche@gnome.org>
+
+	* configure.in: Fix a sed script that doesn't correctly detect
+	i586-mingw32-gcc-3.4 compiler, and was causing -Wno-pointer-sign
+	errors when building with that compiler. (#440896, Yevgen Muntyan)
+
 2007-05-29  Marco Barisione <marco@barisione.org>
 
 	* glib/gregex.c: Fix g_regex_fetch_named() and

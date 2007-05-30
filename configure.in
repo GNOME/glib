@@ -2201,13 +2201,12 @@ if test x$enable_regex = xtrue; then
   else
     # If using gcc 4 pass -Wno-pointer-sign when compiling the internal PCRE
     if test x"$GCC" = xyes; then
-      AC_MSG_CHECKING([whether gcc understands -Wno-pointer-sign])
-      if test [`$CC --version | sed -e 's/[^0-9]*\([0-9]\).*/\1/' -e q`] -ge 4; then
-        PCRE_WARN_CFLAGS="$PCRE_WARN_CFLAGS -Wno-pointer-sign"
-        AC_MSG_RESULT([yes]) 
-      else
-        AC_MSG_RESULT([no]) 
-      fi
+      AC_MSG_CHECKING([whether compiler understands -Wno-pointer-sign])
+      save_CFLAGS="$CFLAGS"
+      CFLAGS="$CFLAGS -Wno-pointer-sign"
+      AC_TRY_COMPILE([],[],[PCRE_WARN_CFLAGS="$PCRE_WARN_CFLAGS -Wno-pointer-sign"
+			    AC_MSG_RESULT(yes)],[AC_MSG_RESULT(no)])
+      CFLAGS="$save_CFLAGS"
     fi
   fi
   AC_SUBST(PCRE_WARN_CFLAGS)
