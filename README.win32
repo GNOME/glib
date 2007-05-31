@@ -19,7 +19,7 @@ have been used successfully.
 
 But note that to just *use* GLib on Windows, there is no need to build
 it yourself. Prepackaged runtime and developer packages are available
-from the webiste above. On Unix, it is quite normal that system admins
+from the website above. On Unix, it is quite normal that system admins
 build and install libraries like GLib themselves without bothering to
 look for prebuilt packages, especially if prebuilt packages tend to
 use installation paths that don't conform to local customs.
