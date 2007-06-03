@@ -1,3 +1,7 @@
+2007-06-03  Matthias Clasen <mclasen@redhat.com>
+
+	* NEWS: Updates
+
 2007-06-03  Yevgen Muntyan  <muntyan@tamu.edu>
 
 	* glib/gregex.c:

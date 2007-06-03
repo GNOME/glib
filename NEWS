@@ -1,3 +1,22 @@
+Overview of Changes from GLib 2.13.2 to GLib 2.13.3
+===================================================
+
+* GKeyFile:
+ - Added defines for easier handling of desktop files
+
+* Unicode support:
+ - Update g_unichar_iswide_cjk for Unicode 5.0
+
+* Bugs fixed:
+ 419376 Functions using named subpatterns behave inconsistently w...
+ 434358 g_regex_fetch_named() and g_regex_fetch_named_pos() are b...
+ 423708 typo in the README.win32 file see patch below
+ 339225 Add new defines for easier handling of .desktop files 
+
+* Updated translations:
+ Estonian (et)
+
+
 Overview of Changes from GLib 2.13.1 to GLib 2.13.2
 ===================================================
 
