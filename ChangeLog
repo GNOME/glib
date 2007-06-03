@@ -1,11 +1,19 @@
+2007-06-03  Yevgen Muntyan  <muntyan@tamu.edu>
+
+	* glib/gregex.c: fixed g_regex_fetch_named* for cases when (?J)
+	is used inside a pattern (#442265, comment #12).
+	* tests/regex-test.c: Test it.
+
 2007-06-03  Matthias Clasen <mclasen@redhat.com>
 
 	* NEWS: Updates
 
 2007-06-03  Yevgen Muntyan  <muntyan@tamu.edu>
 
+	Some API additions and changes (#442265).
+
 	* glib/gregex.c:
-	* glib/gregex.h: New functions: g_regex_ref(), g_regex_unref() which
+	* glib/gregex.h: new functions: g_regex_ref(), g_regex_unref() which
 	replaces g_regex_free(); g_match_info_get_regex(), g_match_info_get_string();
 	g_regex_check_replacement().
 	Made g_match_info_expand_references() accept NULL; changed GRegexEvalCallback
