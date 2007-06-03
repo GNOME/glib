@@ -98,13 +98,9 @@ struct _GRegex
 /* TRUE if ret is an error code, FALSE otherwise. */
 #define IS_PCRE_ERROR(ret) ((ret) < PCRE_ERROR_NOMATCH && (ret) != PCRE_ERROR_PARTIAL)
 
-static GRegex	*regex_ref	(GRegex *regex);
-static void	 regex_unref	(GRegex *regex);
-
 typedef struct _InterpolationData InterpolationData;
-static gboolean	 interpolate_replacement	(const GRegex *regex,
-						 const GMatchInfo *match_info,
-						 const gchar *string,
+static gboolean	 interpolation_list_needs_match	(GList *list);
+static gboolean	 interpolate_replacement	(const GMatchInfo *match_info,
 						 GString *result,
 						 gpointer data);
 static GList	*split_replacement		(const gchar *replacement,
@@ -195,7 +191,7 @@ match_info_new (const GRegex *regex,
     string_len = strlen (string);
 
   match_info = g_new0 (GMatchInfo, 1);
-  match_info->regex = regex_ref ((GRegex *)regex);
+  match_info->regex = g_regex_ref ((GRegex *)regex);
   match_info->string = string;
   match_info->string_len = string_len;
   match_info->matches = PCRE_ERROR_NOMATCH;
@@ -223,6 +219,44 @@ match_info_new (const GRegex *regex,
 }
 
 /**
+ * g_match_info_get_regex:
+ * @match_info: a #GMatchInfo
+ *
+ * Returns #GRegex object used in @match_info. It belongs to glib
+ * and must not be freed. Use g_regex_ref() if you need to keep it
+ * after you free @match_info object.
+ *
+ * Returns: #GRegex object used in @match_info
+ *
+ * Since: 2.14
+ */
+GRegex *
+g_match_info_get_regex (const GMatchInfo *match_info)
+{
+  g_return_val_if_fail (match_info != NULL, NULL);
+  return match_info->regex;
+}
+
+/**
+ * g_match_info_get_string:
+ * @match_info: a #GMatchInfo
+ *
+ * Returns the string searched with @match_info. This is the
+ * string passed to g_regex_match() or g_regex_replace() so
+ * you may not free it before calling this function.
+ *
+ * Returns: the string searched with @match_info
+ *
+ * Since: 2.14
+ */
+const gchar *
+g_match_info_get_string (const GMatchInfo *match_info)
+{
+  g_return_val_if_fail (match_info != NULL, NULL);
+  return match_info->string;
+}
+
+/**
  * g_match_info_free:
  * @match_info: a #GMatchInfo
  *
@@ -233,10 +267,13 @@ match_info_new (const GRegex *regex,
 void
 g_match_info_free (GMatchInfo *match_info)
 {
-  regex_unref (match_info->regex);
-  g_free (match_info->offsets);
-  g_free (match_info->workspace);
-  g_free (match_info);
+  if (match_info)
+    {
+      g_regex_unref (match_info->regex);
+      g_free (match_info->offsets);
+      g_free (match_info->workspace);
+      g_free (match_info);
+    }
 }
 
 /**
@@ -403,19 +440,27 @@ g_match_info_is_partial_match (const GMatchInfo *match_info)
 
 /**
  * g_match_info_expand_references:
- * @match_info: a #GMatchInfo
+ * @match_info: a #GMatchInfo or %NULL
  * @string_to_expand: the string to expand
  * @error: location to store the error occuring, or %NULL to ignore errors
  *
  * Returns a new string containing the text in @string_to_expand with
- * references expanded. References refer to the last match done with
- * @string against @regex and have the same syntax used by g_regex_replace().
+ * references and escape sequences expanded. References refer to the last
+ * match done with @string against @regex and have the same syntax used by
+ * g_regex_replace().
  *
  * The @string_to_expand must be UTF-8 encoded even if #G_REGEX_RAW was
  * passed to g_regex_new().
  *
  * The backreferences are extracted from the string passed to the match
  * function, so you cannot call this function after freeing the string.
+ *
+ * @match_info may be %NULL in which case @string_to_expand must not
+ * contain references. For instance "foo\n" does not refer to an actual
+ * pattern and '\n' merely will be replaced with \n character,
+ * while to expand "\0" (whole match) one needs the result of a match.
+ * Use g_regex_check_replacement() to find out whether @string_to_expand
+ * contains references.
  *
  * Returns: the expanded string, or %NULL if an error occurred
  *
@@ -430,7 +475,6 @@ g_match_info_expand_references (const GMatchInfo *match_info,
   GList *list;
   GError *tmp_error = NULL;
 
-  g_return_val_if_fail (match_info != NULL, NULL);
   g_return_val_if_fail (string_to_expand != NULL, NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
@@ -441,9 +485,16 @@ g_match_info_expand_references (const GMatchInfo *match_info,
       return NULL;
     }
 
+  if (!match_info && interpolation_list_needs_match (list))
+    {
+      g_critical ("String '%s' contains references to the match, can't "
+		  "expand references without GMatchInfo object",
+		  string_to_expand);
+      return NULL;
+    }
+
   result = g_string_sized_new (strlen (string_to_expand));
-  interpolate_replacement (match_info->regex, match_info,
-			   match_info->string, result, list);
+  interpolate_replacement (match_info, result, list);
 
   g_list_foreach (list, (GFunc)free_interpolation_data, NULL);
   g_list_free (list);
@@ -724,16 +775,38 @@ g_regex_error_quark (void)
   return error_quark;
 }
 
-static GRegex *
-regex_ref (GRegex *regex)
+/**
+ * g_regex_ref:
+ * @regex: a #GRegex
+ *
+ * Increases reference count of @regex by 1.
+ *
+ * Returns: @regex
+ *
+ * Since: 2.14
+ */
+GRegex *
+g_regex_ref (GRegex *regex)
 {
+  g_return_val_if_fail (regex != NULL, NULL);
   g_atomic_int_inc ((gint*) &regex->ref_count);
   return regex;
 }
 
-static void
-regex_unref (GRegex *regex)
+/**
+ * g_regex_unref:
+ * @regex: a #GRegex
+ *
+ * Decreases reference count of @regex by 1. When reference count drops
+ * to zero, it frees all the memory associated with the regex structure.
+ *
+ * Since: 2.14
+ */
+void
+g_regex_unref (GRegex *regex)
 {
+  g_return_if_fail (regex != NULL);
+
   if (g_atomic_int_exchange_and_add ((gint *) &regex->ref_count, -1) - 1 == 0)
     {
       g_free (regex->pattern);
@@ -755,7 +828,8 @@ regex_unref (GRegex *regex)
  * Compiles the regular expression to an internal form, and does the initial
  * setup of the #GRegex structure.  
  * 
- * Returns: a #GRegex structure
+ * Returns: a #GRegex structure. Call g_regex_unref() when you are done
+ * with it.
  *
  * Since: 2.14
  */
@@ -874,23 +948,6 @@ g_regex_new (const gchar         *pattern,
 }
 
 /**
- * g_regex_free:
- * @regex: a #GRegex
- *
- * Frees all the memory associated with the regex structure.
- *
- * Since: 2.14
- */
-void
-g_regex_free (GRegex *regex)
-{
-  if (regex == NULL)
-    return;
-
-  regex_unref (regex);
-}
-
-/**
  * g_regex_get_pattern:
  * @regex: a #GRegex structure
  *
@@ -988,7 +1045,7 @@ g_regex_match_simple (const gchar        *pattern,
   if (!regex)
     return FALSE;
   result = g_regex_match_full (regex, string, -1, 0, match_options, NULL, NULL);
-  g_regex_free (regex);
+  g_regex_unref (regex);
   return result;
 }
 
@@ -1006,7 +1063,9 @@ g_regex_match_simple (const gchar        *pattern,
  * structures.
  *
  * A #GMatchInfo structure, used to get information on the match, is stored
- * in @match_info if not %NULL.
+ * in @match_info if not %NULL. Note that if @match_info is not %NULL then
+ * it is created even if the function returns %FALSE, i.e. you must free it
+ * regardless if regular expression actually matched.
  *
  * To retrieve all the non-overlapping matches of the pattern in string you
  * can use g_match_info_next().
@@ -1029,7 +1088,7 @@ g_regex_match_simple (const gchar        *pattern,
  *       g_match_info_next (match_info, NULL);
  *     }
  *   g_match_info_free (match_info);
- *   g_regex_free (regex);
+ *   g_regex_unref (regex);
  * }
  * </programlisting></informalexample>
  *
@@ -1068,7 +1127,13 @@ g_regex_match (const GRegex    *regex,
  * with any kind of lookbehind assertion, such as "\b".
  *
  * A #GMatchInfo structure, used to get information on the match, is stored
- * in @match_info if not %NULL.
+ * in @match_info if not %NULL. Note that if @match_info is not %NULL then
+ * it is created even if the function returns %FALSE, i.e. you must free it
+ * regardless if regular expression actually matched.
+ *
+ * @string is not copied and is used in #GMatchInfo internally. If you use
+ * any #GMatchInfo method (except g_match_info_free()) after freeing or
+ * modifying @string then the behaviour is undefined.
  *
  * To retrieve all the non-overlapping matches of the pattern in string you
  * can use g_match_info_next().
@@ -1092,7 +1157,7 @@ g_regex_match (const GRegex    *regex,
  *       g_match_info_next (match_info, &error);
  *     }
  *   g_match_info_free (match_info);
- *   g_regex_free (regex);
+ *   g_regex_unref (regex);
  *   if (error != NULL)
  *     {
  *       g_printerr ("Error while matching: %s\n", error->message);
@@ -1148,7 +1213,9 @@ g_regex_match_full (const GRegex    *regex,
  * For more documentation see g_regex_match_all_full().
  *
  * A #GMatchInfo structure, used to get information on the match, is stored
- * in @match_info if not %NULL.
+ * in @match_info if not %NULL. Note that if @match_info is not %NULL then
+ * it is created even if the function returns %FALSE, i.e. you must free it
+ * regardless if regular expression actually matched.
  *
  * Returns: %TRUE is the string matched, %FALSE otherwise
  *
@@ -1203,7 +1270,9 @@ g_regex_match_all (const GRegex    *regex,
  * with any kind of lookbehind assertion, such as "\b".
  *
  * A #GMatchInfo structure, used to get information on the match, is stored
- * in @match_info if not %NULL.
+ * in @match_info if not %NULL. Note that if @match_info is not %NULL then
+ * it is created even if the function returns %FALSE, i.e. you must free it
+ * regardless if regular expression actually matched.
  *
  * Returns: %TRUE is the string matched, %FALSE otherwise
  *
@@ -1353,7 +1422,7 @@ g_regex_split_simple (const gchar        *pattern,
   if (!regex)
     return NULL;
   result = g_regex_split_full (regex, string, -1, 0, match_options, 0, NULL);
-  g_regex_free (regex);
+  g_regex_unref (regex);
   return result;
 }
 
@@ -1955,9 +2024,7 @@ string_append (GString     *string,
 }
 
 static gboolean
-interpolate_replacement (const GRegex     *regex,
-			 const GMatchInfo *match_info,
-			 const gchar      *string,
+interpolate_replacement (const GMatchInfo *match_info,
 			 GString          *result,
 			 gpointer          data)
 {
@@ -2002,6 +2069,28 @@ interpolate_replacement (const GRegex     *regex,
     }
 
   return FALSE; 
+}
+
+/* whether actual match_info is needed for replacement, i.e.
+ * whether there are references
+ */
+static gboolean
+interpolation_list_needs_match (GList *list)
+{
+  while (list != NULL)
+    {
+      InterpolationData *data = list->data;
+
+      if (data->type == REPL_TYPE_SYMBOLIC_REFERENCE ||
+          data->type == REPL_TYPE_NUMERIC_REFERENCE)
+        {
+	  return TRUE;
+        }
+
+      list = list->next;
+    }
+
+  return FALSE;
 }
 
 /**
@@ -2108,9 +2197,7 @@ g_regex_replace (const GRegex      *regex,
 }
 
 static gboolean
-literal_replacement (const GRegex     *regex,
-		     const GMatchInfo *match_info,
-		     const gchar      *string,
+literal_replacement (const GMatchInfo *match_info,
 		     GString          *result,
 		     gpointer          data)
 {
@@ -2217,7 +2304,7 @@ g_regex_replace_eval (const GRegex      *regex,
       g_string_append_len (result,
 			   string + str_pos,
 			   match_info->offsets[0] - str_pos);
-      done = (*eval) (regex, match_info, string, result, user_data);
+      done = (*eval) (match_info, result, user_data);
       str_pos = match_info->offsets[1];
       g_match_info_next (match_info, &tmp_error);
     }
@@ -2231,6 +2318,51 @@ g_regex_replace_eval (const GRegex      *regex,
 
   g_string_append_len (result, string + str_pos, string_len - str_pos);
   return g_string_free (result, FALSE);
+}
+
+/**
+ * g_regex_check_replacement:
+ * @replacement: the replacement string
+ * @has_references: location to store information about
+ * references in @replacement or %NULL
+ * @error: location to store error
+ *
+ * Checks whether @replacement is a valid replacement string (see g_regex_replace()),
+ * i.e. that all escape sequences in it are valid.
+ *
+ * If @has_references is not %NULL then @replacement is checked for
+ * pattern references. For instance, replacement text 'foo\n'
+ * does not contain references and may be evaluated without information
+ * about actual match, but '\0\1' (whole match followed by first subpattern)
+ * requires valid #GMatchInfo object.
+ *
+ * Returns: whether @replacement is a valid replacement string
+ *
+ * Since: 2.14
+ */
+gboolean
+g_regex_check_replacement (const gchar  *replacement,
+			   gboolean     *has_references,
+			   GError      **error)
+{
+  GList *list;
+  GError *tmp = NULL;
+
+  list = split_replacement (replacement, &tmp);
+
+  if (tmp)
+  {
+    g_propagate_error (error, tmp);
+    return FALSE;
+  }
+
+  if (has_references)
+    *has_references = interpolation_list_needs_match (list);
+
+  g_list_foreach (list, (GFunc) free_interpolation_data, NULL);
+  g_list_free (list);
+
+  return TRUE;
 }
 
 /**

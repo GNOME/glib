@@ -112,13 +112,11 @@ test_new (const gchar        *pattern,
     {
       g_print ("failed \t(pattern: \"%s\")\n",
 	       pattern);
-      g_regex_free (regex);
+      g_regex_unref (regex);
       return FALSE;
     }
 
-  g_regex_free (regex);
-  /* Free a null string. */
-  g_regex_free (NULL);
+  g_regex_unref (regex);
 
   verbose ("passed\n");
   return TRUE;
@@ -146,7 +144,7 @@ test_new_fail (const gchar        *pattern,
     {
       g_print ("failed \t(pattern: \"%s\", compile: %d)\n",
 	       pattern, compile_opts);
-      g_regex_free (regex);
+      g_regex_unref (regex);
       return FALSE;
     }
 
@@ -220,7 +218,7 @@ test_match (const gchar        *pattern,
       g_print ("failed \t(unexpected %s) '%s' against '%s'\n", match ? "match" : "mismatch", e1, e2);
       g_free (e1);
       g_free (e2);
-      g_regex_free (regex);
+      g_regex_unref (regex);
       return FALSE;
     }
 
@@ -231,12 +229,12 @@ test_match (const gchar        *pattern,
 	{
 	  g_print ("failed \t(pattern: \"%s\", string: \"%s\")\n",
 		   pattern, string);
-	  g_regex_free (regex);
+	  g_regex_unref (regex);
 	  return FALSE;
 	}
     }
 
-  g_regex_free (regex);
+  g_regex_unref (regex);
 
   verbose ("passed (%s)\n", match ? "match" : "nomatch");
   return TRUE;
@@ -319,6 +317,8 @@ test_match_next (const gchar *pattern,
       matches = g_slist_prepend (matches, match);
       g_match_info_next (match_info, NULL);
     }
+  g_assert (regex == g_match_info_get_regex (match_info));
+  g_assert (string == g_match_info_get_string (match_info));
   g_match_info_free (match_info);
   matches = g_slist_reverse (matches);
 
@@ -366,7 +366,7 @@ exit:
       verbose ("passed (%d %s)\n", count, count == 1 ? "match" : "matches");
     }
 
-  g_regex_free (regex);
+  g_regex_unref (regex);
   g_slist_foreach (expected, free_match, NULL);
   g_slist_free (expected);
   g_slist_foreach (matches, free_match, NULL);
@@ -450,7 +450,7 @@ test_match_count (const gchar      *pattern,
     }
 
   g_match_info_free (match_info);
-  g_regex_free (regex);
+  g_regex_unref (regex);
 
   verbose ("passed\n");
   return TRUE;
@@ -481,26 +481,26 @@ test_partial (const gchar *pattern,
   if (expected != g_match_info_is_partial_match (match_info))
     {
       g_print ("failed \t(got %d, expected: %d)\n", !expected, expected);
-      g_regex_free (regex);
+      g_regex_unref (regex);
       return FALSE;
     }
 
   if (expected && g_match_info_fetch_pos (match_info, 0, NULL, NULL))
     {
       g_print ("failed \t(got sub-pattern 0)\n");
-      g_regex_free (regex);
+      g_regex_unref (regex);
       return FALSE;
     }
 
   if (expected && g_match_info_fetch_pos (match_info, 1, NULL, NULL))
     {
       g_print ("failed \t(got sub-pattern 1)\n");
-      g_regex_free (regex);
+      g_regex_unref (regex);
       return FALSE;
     }
 
   g_match_info_free (match_info);
-  g_regex_free (regex);
+  g_regex_unref (regex);
 
   verbose ("passed\n");
   return TRUE;
@@ -540,7 +540,7 @@ test_sub_pattern (const gchar *pattern,
       g_print ("failed \t(got \"%s\", expected \"%s\")\n",
 	       sub_expr, expected_sub);
       g_free (sub_expr);
-      g_regex_free (regex);
+      g_regex_unref (regex);
       return FALSE;
     }
   g_free (sub_expr);
@@ -550,12 +550,12 @@ test_sub_pattern (const gchar *pattern,
     {
       g_print ("failed \t(got [%d, %d], expected [%d, %d])\n",
 	       start, end, expected_start, expected_end);
-      g_regex_free (regex);
+      g_regex_unref (regex);
       return FALSE;
     }
 
   g_match_info_free (match_info);
-  g_regex_free (regex);
+  g_regex_unref (regex);
 
   verbose ("passed\n");
   return TRUE;
@@ -598,7 +598,7 @@ test_named_sub_pattern (const gchar *pattern,
       g_print ("failed \t(got \"%s\", expected \"%s\")\n",
 	       sub_expr, expected_sub);
       g_free (sub_expr);
-      g_regex_free (regex);
+      g_regex_unref (regex);
       return FALSE;
     }
   g_free (sub_expr);
@@ -608,12 +608,12 @@ test_named_sub_pattern (const gchar *pattern,
     {
       g_print ("failed \t(got [%d, %d], expected [%d, %d])\n",
 	       start, end, expected_start, expected_end);
-      g_regex_free (regex);
+      g_regex_unref (regex);
       return FALSE;
     }
 
   g_match_info_free (match_info);
-  g_regex_free (regex);
+  g_regex_unref (regex);
 
   verbose ("passed\n");
   return TRUE;
@@ -704,7 +704,7 @@ test_fetch_all (const gchar *pattern,
 
 exit:
   g_match_info_free (match_info);
-  g_regex_free (regex);
+  g_regex_unref (regex);
   g_slist_foreach (expected, (GFunc)g_free, NULL);
   g_slist_free (expected);
   g_strfreev (matches);
@@ -907,7 +907,7 @@ test_split_full (const gchar *pattern,
 	   token_count == 1 ? "token" : "tokens");
 
 exit:
-  g_regex_free (regex);
+  g_regex_unref (regex);
   g_slist_foreach (expected, (GFunc)g_free, NULL);
   g_slist_free (expected);
   g_strfreev (tokens);
@@ -976,7 +976,7 @@ test_split (const gchar *pattern,
 	   token_count == 1 ? "token" : "tokens");
 
 exit:
-  g_regex_free (regex);
+  g_regex_unref (regex);
   g_slist_foreach (expected, (GFunc)g_free, NULL);
   g_slist_free (expected);
   g_strfreev (tokens);
@@ -1049,33 +1049,77 @@ exit:
 }
 
 static gboolean
+test_check_replacement (const gchar *string_to_expand,
+			gboolean     expected,
+			gboolean     expected_refs)
+{
+  gboolean result;
+  gboolean has_refs;
+
+  verbose ("checking replacement string \"%s\" \t", string_to_expand);
+
+  result = g_regex_check_replacement (string_to_expand, &has_refs, NULL);
+  if (expected != result)
+    {
+      g_print ("failed \t(got \"%s\", expected \"%s\")\n", 
+	       result ? "TRUE" : "FALSE",
+	       expected ? "TRUE" : "FALSE");
+      return FALSE;
+    }
+
+  if (expected && expected_refs != has_refs)
+    {
+      g_print ("failed \t(got has_references \"%s\", expected \"%s\")\n", 
+	       has_refs ? "TRUE" : "FALSE",
+	       expected_refs ? "TRUE" : "FALSE");
+      return FALSE;
+    }
+
+  verbose ("passed\n");
+  return TRUE;
+}
+
+#define TEST_CHECK_REPLACEMENT(string_to_expand, expected, expected_refs) { \
+  total++; \
+  if (test_check_replacement (string_to_expand, expected, expected_refs)) \
+    PASS; \
+  else \
+    FAIL; \
+}
+static gboolean
 test_expand (const gchar *pattern,
 	     const gchar *string,
 	     const gchar *string_to_expand,
 	     gboolean     raw,
 	     const gchar *expected)
 {
-  GRegex *regex;
-  GMatchInfo *match_info;
+  GRegex *regex = NULL;
+  GMatchInfo *match_info = NULL;
   gchar *res;
   
   verbose ("expanding the references in \"%s\" (pattern: \"%s\", string: \"%s\") \t",
 	   string_to_expand, pattern, string);
 
-  regex = g_regex_new (pattern, raw ? G_REGEX_RAW : 0, 0, NULL);
-  g_regex_match (regex, string, 0, &match_info);
+  if (pattern)
+    {
+      regex = g_regex_new (pattern, raw ? G_REGEX_RAW : 0, 0, NULL);
+      g_regex_match (regex, string, 0, &match_info);
+    }
+
   res = g_match_info_expand_references (match_info, string_to_expand, NULL);
   if (!streq (res, expected))
     {
       g_print ("failed \t(got \"%s\", expected \"%s\")\n", res, expected);
       g_free (res);
-      g_regex_free (regex);
+      g_match_info_free (match_info);
+      g_regex_unref (regex);
       return FALSE;
     }
 
   g_free (res);
   g_match_info_free (match_info);
-  g_regex_free (regex);
+  if (regex)
+    g_regex_unref (regex);
 
   verbose ("passed\n");
   return TRUE;
@@ -1108,12 +1152,12 @@ test_replace (const gchar *pattern,
     {
       g_print ("failed \t(got \"%s\", expected \"%s\")\n", res, expected);
       g_free (res);
-      g_regex_free (regex);
+      g_regex_unref (regex);
       return FALSE;
     }
 
   g_free (res);
-  g_regex_free (regex);
+  g_regex_unref (regex);
 
   verbose ("passed\n");
   return TRUE;
@@ -1147,12 +1191,12 @@ test_replace_lit (const gchar *pattern,
     {
       g_print ("failed \t(got \"%s\", expected \"%s\")\n", res, expected);
       g_free (res);
-      g_regex_free (regex);
+      g_regex_unref (regex);
       return FALSE;
     }
 
   g_free (res);
-  g_regex_free (regex);
+  g_regex_unref (regex);
 
   verbose ("passed\n");
   return TRUE;
@@ -1179,7 +1223,7 @@ test_get_string_number (const gchar *pattern,
 
   regex = g_regex_new (pattern, 0, 0, NULL);
   num = g_regex_get_string_number (regex, name);
-  g_regex_free (regex);
+  g_regex_unref (regex);
 
   if (num != expected_num)
     {
@@ -1336,7 +1380,7 @@ exit:
     }
 
   g_match_info_free (match_info);
-  g_regex_free (regex);
+  g_regex_unref (regex);
   g_slist_foreach (expected, free_match, NULL);
   g_slist_free (expected);
 
@@ -1442,7 +1486,7 @@ exit:
     }
 
   g_match_info_free (match_info);
-  g_regex_free (regex);
+  g_regex_unref (regex);
   g_slist_foreach (expected, free_match, NULL);
   g_slist_free (expected);
 
@@ -1852,6 +1896,17 @@ main (int argc, char *argv[])
   TEST_SPLIT3(" *", "ab c", 0, 3, "a", "b", "c");
   TEST_SPLIT3(" *", "ab c", 0, 4, "a", "b", "c");
 
+  /* TEST_CHECK_REPLACEMENT(string_to_expand, expected, expected_refs) */
+  TEST_CHECK_REPLACEMENT("", TRUE, FALSE);
+  TEST_CHECK_REPLACEMENT("a", TRUE, FALSE);
+  TEST_CHECK_REPLACEMENT("\\t\\n\\v\\r\\f\\a\\b\\\\\\x{61}", TRUE, FALSE);
+  TEST_CHECK_REPLACEMENT("\\0", TRUE, TRUE);
+  TEST_CHECK_REPLACEMENT("\\n\\2", TRUE, TRUE);
+  TEST_CHECK_REPLACEMENT("\\g<foo>", TRUE, TRUE);
+  /* Invalid strings */
+  TEST_CHECK_REPLACEMENT("\\Q", FALSE, FALSE);
+  TEST_CHECK_REPLACEMENT("x\\Ay", FALSE, FALSE);
+
   /* TEST_EXPAND(pattern, string, string_to_expand, raw, expected) */
   TEST_EXPAND("a", "a", "", FALSE, "");
   TEST_EXPAND("a", "a", "\\0", FALSE, "a");
@@ -1918,6 +1973,12 @@ main (int argc, char *argv[])
   TEST_EXPAND("", "", "\\", FALSE, NULL);
   TEST_EXPAND("a", "a", "\\x{61", FALSE, NULL);
   TEST_EXPAND("a", "a", "\\x6X", FALSE, NULL);
+  /* Pattern-less. */
+  TEST_EXPAND(NULL, NULL, "", FALSE, "");
+  TEST_EXPAND(NULL, NULL, "\\n", FALSE, "\n");
+  /* Invalid strings */
+  TEST_EXPAND(NULL, NULL, "\\Q", FALSE, NULL);
+  TEST_EXPAND(NULL, NULL, "x\\Ay", FALSE, NULL);
 
   /* TEST_REPLACE(pattern, string, start_position, replacement, expected) */
   TEST_REPLACE("a", "ababa", 0, "A", "AbAbA");

@@ -1,3 +1,19 @@
+2007-06-03  Yevgen Muntyan  <muntyan@tamu.edu>
+
+	* glib/gregex.c:
+	* glib/gregex.h: New functions: g_regex_ref(), g_regex_unref() which
+	replaces g_regex_free(); g_match_info_get_regex(), g_match_info_get_string();
+	g_regex_check_replacement().
+	Made g_match_info_expand_references() accept NULL; changed GRegexEvalCallback
+	to take only arguments which are likely to be actualy used.
+
+	* docs/reference/glib/glib-sections.txt:
+	* glib/glib.symbols: Added new functions.
+
+	* tests/regex-test.c: Test them.
+
+	* docs/reference/glib/tmpl/gregex.sgml: Updated GRegexEvalCallback docs.
+
 2007-05-31  Matthias Clasen <mclasen@redhat.com>
 
 	* README.win32: Fix a typo.  (#423708, Olivier Delhomme)

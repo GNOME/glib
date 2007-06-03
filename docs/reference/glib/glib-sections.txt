@@ -873,7 +873,8 @@ GRegexMatchFlags
 GRegex
 GRegexEvalCallback
 g_regex_new
-g_regex_free
+g_regex_ref
+g_regex_unref
 g_regex_get_pattern
 g_regex_get_max_backref
 g_regex_get_capture_count
@@ -890,7 +891,10 @@ g_regex_split_full
 g_regex_replace
 g_regex_replace_literal
 g_regex_replace_eval
+g_regex_check_replacement
 GMatchInfo
+g_match_info_get_regex
+g_match_info_get_string
 g_match_info_free
 g_match_info_next
 g_match_info_get_match_count

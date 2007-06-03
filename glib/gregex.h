@@ -77,18 +77,17 @@ typedef enum
 typedef struct _GRegex		GRegex;
 typedef struct _GMatchInfo	GMatchInfo;
 
-typedef gboolean (*GRegexEvalCallback)		(const GRegex *,
-						 const GMatchInfo *,
-						 const gchar *,
-						 GString *,
-						 gpointer);
+typedef gboolean (*GRegexEvalCallback)		(const GMatchInfo *match_info,
+						 GString          *result,
+						 gpointer          user_data);
 
 
 GRegex		 *g_regex_new			(const gchar         *pattern,
 						 GRegexCompileFlags   compile_options,
 						 GRegexMatchFlags     match_options,
 						 GError             **error);
-void		  g_regex_free			(GRegex              *regex);
+GRegex           *g_regex_ref			(GRegex              *regex);
+void		  g_regex_unref			(GRegex              *regex);
 const gchar	 *g_regex_get_pattern		(const GRegex        *regex);
 gint		  g_regex_get_max_backref	(const GRegex        *regex);
 gint		  g_regex_get_capture_count	(const GRegex        *regex);
@@ -164,8 +163,14 @@ gchar		 *g_regex_replace_eval		(const GRegex        *regex,
 						 GRegexEvalCallback   eval,
 						 gpointer             user_data,
 						 GError             **error);
+gboolean	  g_regex_check_replacement	(const gchar         *replacement,
+						 gboolean            *has_references,
+						 GError             **error);
 
 /* Match info */
+GRegex		 *g_match_info_get_regex	(const GMatchInfo    *match_info);
+const gchar      *g_match_info_get_string       (const GMatchInfo    *match_info);
+
 void		  g_match_info_free		(GMatchInfo          *match_info);
 gboolean	  g_match_info_next		(GMatchInfo          *match_info,
 						 GError             **error);
