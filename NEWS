@@ -7,14 +7,26 @@ Overview of Changes from GLib 2.13.2 to GLib 2.13.3
 * Unicode support:
  - Update g_unichar_iswide_cjk for Unicode 5.0
 
+* Regular expression support:
+ - GRegex structs can now be ref-counted
+ - Some new functions for dealing with incremental 
+   replacement have been added
+ - The GRegexEvalCallback signature has been changed
+
+* g_get_user_special_dir() has been added to support
+  xdg-user-dirs
+
 * Bugs fixed:
  419376 Functions using named subpatterns behave inconsistently w...
  434358 g_regex_fetch_named() and g_regex_fetch_named_pos() are b...
  423708 typo in the README.win32 file see patch below
  339225 Add new defines for easier handling of .desktop files 
+ 442265 API additions/changes for GRegex
+ 432651 Add a glib-ish xdg_user_dir_lookup
 
 * Updated translations:
  Estonian (et)
+ Norwegian bokmål (nb)
 
 
 Overview of Changes from GLib 2.13.1 to GLib 2.13.2

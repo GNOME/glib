@@ -1,4 +1,8 @@
 2007-06-04  Matthias Clasen  <mclasen@redhat.com>
+
+	* NEWS: Updates
+
+2007-06-04  Matthias Clasen  <mclasen@redhat.com>
 	
 	Add support for a number of special directories, as 
 	defined by the xdg-user-dirs specification.  (#432651,
