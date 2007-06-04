@@ -145,6 +145,43 @@ G_CONST_RETURN gchar* G_CONST_RETURN * g_get_system_config_dirs (void);
 
 G_CONST_RETURN gchar* G_CONST_RETURN * g_get_language_names (void);
 
+/**
+ * GUserDirectory:
+ *
+ * These are logical ids for special directories which are defined
+ * depending on the platform used. You should use g_get_user_special_dir()
+ * to retrieve the full path associated to the logical id.
+ *
+ * The #GUserDirectory enumeration can be extended at later date. Not
+ * every platform has a directory for every logical id in this
+ * enumeration.
+ *
+ * @G_USER_DIRECTORY_DESKTOP: the user's Desktop directory
+ * @G_USER_DIRECTORY_DOCUMENTS: the user's Documents directory
+ * @G_USER_DIRECTORY_DOWNLOAD: the user's Downloads directory
+ * @G_USER_DIRECTORY_MUSIC: the user's Music directory
+ * @G_USER_DIRECTORY_PICTURES: the user's Pictures directory
+ * @G_USER_DIRECTORY_PUBLIC_SHARE: the user's shared directory
+ * @G_USER_DIRECTORY_TEMPLATES: the user's Templates directory
+ * @G_USER_DIRECTORY_VIDEOS: the user's Movies directory
+ *
+ * Since: 2.14
+ */
+typedef enum {
+  G_USER_DIRECTORY_DESKTOP,
+  G_USER_DIRECTORY_DOCUMENTS,
+  G_USER_DIRECTORY_DOWNLOAD,
+  G_USER_DIRECTORY_MUSIC,
+  G_USER_DIRECTORY_PICTURES,
+  G_USER_DIRECTORY_PUBLIC_SHARE,
+  G_USER_DIRECTORY_TEMPLATES,
+  G_USER_DIRECTORY_VIDEOS,
+
+  G_USER_N_DIRECTORIES
+} GUserDirectory;
+
+G_CONST_RETURN gchar* g_get_user_special_dir (GUserDirectory directory);
+
 typedef struct _GDebugKey	GDebugKey;
 struct _GDebugKey
 {

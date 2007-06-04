@@ -145,11 +145,21 @@ case $host in
     ;;
 esac
 
-
 AC_MSG_RESULT([$glib_native_win32])
+
+glib_have_carbon=no
+AC_MSG_CHECKING([for Mac OS X Carbon support])
+AC_TRY_CPP([
+#include <Carbon/Carbon.h>
+#include <CoreServices/CoreServices.h>
+], glib_have_carbon=yes)
+
+AC_MSG_RESULT([$glib_have_carbon])
+
 AM_CONDITIONAL(OS_WIN32, [test "$glib_native_win32" = "yes"])
 AM_CONDITIONAL(OS_UNIX, [test "$glib_native_win32" != "yes"])
 AM_CONDITIONAL(OS_LINUX, [test "$glib_os_linux" = "yes"])
+AM_CONDITIONAL(OS_CARBON, [test "$glib_have_carbon" = "yes"])
 AC_SUBST(GLIB_DEF)
 AC_SUBST(GMODULE_DEF)
 AC_SUBST(GOBJECT_DEF)
@@ -179,6 +189,12 @@ else
     LIBTOOL_EXPORT_OPTIONS=
 fi
 AC_SUBST(LIBTOOL_EXPORT_OPTIONS)
+
+if test "x$glib_have_carbon" = "xyes"; then
+  AC_DEFINE(HAVE_CARBON, 1, [define to 1 if Carbon is available])
+  LDFLAGS="$LDFLAGS -framework Carbon"
+fi
+
 
 dnl declare --enable-* args and collect ac_help strings
 AC_ARG_ENABLE(debug,

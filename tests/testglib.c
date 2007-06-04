@@ -596,6 +596,14 @@ main (int   argc,
   sv = (gchar **) g_get_language_names ();
   g_print ("languages: %s\n", s ? g_strjoinv (":", sv) : "NULL!");
 
+  /* special dirs */
+  s = g_get_user_special_dir (G_USER_DIRECTORY_DESKTOP);
+  g_print ("user_special[DESKTOP]: %s\n", s ? s : "NULL!");
+  s = g_get_user_special_dir (G_USER_DIRECTORY_DOCUMENTS);
+  g_print ("user_special[DOCUMENTS]: %s\n", s ? s : "NULL!");
+  s = g_get_user_special_dir (G_USER_DIRECTORY_PUBLIC_SHARE);
+  g_print ("user_special[PUBLIC_SHARE]: %s\n", s ? s : "NULL!");
+
   /* type sizes */
   g_print ("checking size of gint8: %"    G_GSIZE_FORMAT, sizeof (gint8));
   TEST (NULL, sizeof (gint8) == 1);

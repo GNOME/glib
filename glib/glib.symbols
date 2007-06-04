@@ -1397,6 +1397,7 @@ g_get_tmp_dir_utf8
 g_get_user_cache_dir
 g_get_user_config_dir
 g_get_user_data_dir
+g_get_user_special_dir
 g_get_user_name PRIVATE
 #ifdef G_OS_WIN32
 g_get_user_name_utf8

@@ -1,3 +1,19 @@
+2007-06-04  Matthias Clasen  <mclasen@redhat.com>
+	
+	Add support for a number of special directories, as 
+	defined by the xdg-user-dirs specification.  (#432651,
+	Bastien Nocera, Emmanuele Bassi, Michael Natterer)
+
+	* glib/glib.symbols:
+	* glib/gutils.[hc]: Add the GUserDirectory enum and
+	g_get_user_special_dir(), with implementations based
+	on the xdg-user-dirs spec and on native interfaces
+	for Win32 and Carbon.
+	
+	* configure.in: Add Carbon checks.
+
+	* tests/tetsglib.c: Test g_get_user_special_dir().
+	
 2007-06-03  Yevgen Muntyan  <muntyan@tamu.edu>
 
 	* glib/gregex.c: fixed g_regex_fetch_named* for cases when (?J)

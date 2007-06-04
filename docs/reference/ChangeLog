@@ -1,3 +1,9 @@
+2007-06-04  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/glib-sections.txt:
+	* glib/tmpl/misc_utils.sgml: Add g_get_special_user_dir()
+	and GUserDirectory.
+
 2007-05-30  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/tmpl/i18n.sgml: Add some hints about

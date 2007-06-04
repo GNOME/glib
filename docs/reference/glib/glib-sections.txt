@@ -1388,6 +1388,8 @@ g_get_real_name
 g_get_user_cache_dir
 g_get_user_data_dir
 g_get_user_config_dir
+GUserDirectory
+g_get_user_special_dir
 g_get_system_data_dirs
 g_get_system_config_dirs
 
