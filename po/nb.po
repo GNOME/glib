@@ -553,8 +553,8 @@ msgstr "PCRE-biblioteket er kompilert uten støtte for UTF8-egenskaper"
 
 #: ../glib/gregex.c:928
 #, c-format
-msgid "Error while compiling regular expression %s at char %d: %s"
-msgstr "Feil under sammensetting av regulært utrykk ved tegn %d: %s"
+#msgid "Error while compiling regular expression %s at char %d: %s"
+#msgstr "Feil under sammensetting av regulært utrykk ved tegn %d: %s"
 
 #: ../glib/gregex.c:950
 #, c-format
