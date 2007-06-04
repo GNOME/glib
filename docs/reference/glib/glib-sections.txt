@@ -330,6 +330,7 @@ G_GNUC_PRETTY_FUNCTION
 G_GNUC_NO_INSTRUMENT
 G_HAVE_GNUC_VISIBILITY
 G_GNUC_INTERNAL
+G_GNUC_MAY_ALIAS
 
 <SUBSECTION>
 G_LIKELY
@@ -896,6 +897,7 @@ GMatchInfo
 g_match_info_get_regex
 g_match_info_get_string
 g_match_info_free
+g_match_info_matches
 g_match_info_next
 g_match_info_get_match_count
 g_match_info_is_partial_match

@@ -625,7 +625,6 @@ whose value is a string giving the type of the desktop entry. Usually
 @Since: 2.14
 
 
-
 <!-- ##### MACRO G_KEY_FILE_DESKTOP_KEY_VERSION ##### -->
 <para>
 A key under <link
@@ -635,7 +634,6 @@ Entry Specification used for the desktop entry file.
 </para>
 
 @Since: 2.14
-
 
 
 <!-- ##### MACRO G_KEY_FILE_DESKTOP_KEY_NAME ##### -->
@@ -649,7 +647,6 @@ desktop entry.
 @Since: 2.14
 
 
-
 <!-- ##### MACRO G_KEY_FILE_DESKTOP_KEY_GENERIC_NAME ##### -->
 <para>
 A key under <link
@@ -659,7 +656,6 @@ desktop entry.
 </para>
 
 @Since: 2.14
-
 
 
 <!-- ##### MACRO G_KEY_FILE_DESKTOP_KEY_NO_DISPLAY ##### -->
@@ -673,7 +669,6 @@ shown in menus.
 @Since: 2.14
 
 
-
 <!-- ##### MACRO G_KEY_FILE_DESKTOP_KEY_COMMENT ##### -->
 <para>
 A key under <link
@@ -683,7 +678,6 @@ entry.
 </para>
 
 @Since: 2.14
-
 
 
 <!-- ##### MACRO G_KEY_FILE_DESKTOP_KEY_ICON ##### -->
@@ -697,7 +691,6 @@ displayed for the desktop entry.
 @Since: 2.14
 
 
-
 <!-- ##### MACRO G_KEY_FILE_DESKTOP_KEY_HIDDEN ##### -->
 <para>
 A key under <link
@@ -707,7 +700,6 @@ deleted by the user.
 </para>
 
 @Since: 2.14
-
 
 
 <!-- ##### MACRO G_KEY_FILE_DESKTOP_KEY_ONLY_SHOW_IN ##### -->
@@ -721,7 +713,6 @@ should display the desktop entry.
 @Since: 2.14
 
 
-
 <!-- ##### MACRO G_KEY_FILE_DESKTOP_KEY_NOT_SHOW_IN ##### -->
 <para>
 A key under <link
@@ -731,7 +722,6 @@ should not display the desktop entry.
 </para>
 
 @Since: 2.14
-
 
 
 <!-- ##### MACRO G_KEY_FILE_DESKTOP_KEY_TRY_EXEC ##### -->
@@ -747,7 +737,6 @@ type.
 @Since: 2.14
 
 
-
 <!-- ##### MACRO G_KEY_FILE_DESKTOP_KEY_EXEC ##### -->
 <para>
 A key under <link
@@ -758,7 +747,6 @@ type.
 </para>
 
 @Since: 2.14
-
 
 
 <!-- ##### MACRO G_KEY_FILE_DESKTOP_KEY_PATH ##### -->
@@ -773,7 +761,6 @@ program in. It is only valid for desktop entries with the
 @Since: 2.14
 
 
-
 <!-- ##### MACRO G_KEY_FILE_DESKTOP_KEY_TERMINAL ##### -->
 <para>
 A key under <link
@@ -784,7 +771,6 @@ the <literal>Application</literal> type.
 </para>
 
 @Since: 2.14
-
 
 
 <!-- ##### MACRO G_KEY_FILE_DESKTOP_KEY_MIME_TYPE ##### -->
@@ -798,7 +784,6 @@ by this desktop entry.
 @Since: 2.14
 
 
-
 <!-- ##### MACRO G_KEY_FILE_DESKTOP_KEY_CATEGORIES ##### -->
 <para>
 A key under <link
@@ -808,7 +793,6 @@ desktop entry should be shown in a menu.
 </para>
 
 @Since: 2.14
-
 
 
 <!-- ##### MACRO G_KEY_FILE_DESKTOP_KEY_STARTUP_NOTIFY ##### -->
@@ -824,7 +808,6 @@ Notification Protocol Specification</ulink>.
 @Since: 2.14
 
 
-
 <!-- ##### MACRO G_KEY_FILE_DESKTOP_KEY_STARTUP_WM_CLASS ##### -->
 <para>
 A key under <link
@@ -835,7 +818,6 @@ Startup Notification with older applications.
 </para>
 
 @Since: 2.14
-
 
 
 <!-- ##### MACRO G_KEY_FILE_DESKTOP_KEY_URL ##### -->
@@ -849,7 +831,6 @@ for desktop entries with the <literal>Link</literal> type.
 @Since: 2.14
 
 
-
 <!-- ##### MACRO G_KEY_FILE_DESKTOP_TYPE_APPLICATION ##### -->
 <para>
 The value of the <link
@@ -858,7 +839,6 @@ key for desktop entries representing applications.
 </para>
 
 @Since: 2.14
-
 
 
 <!-- ##### MACRO G_KEY_FILE_DESKTOP_TYPE_LINK ##### -->
@@ -871,7 +851,6 @@ key for desktop entries representing links to documents.
 @Since: 2.14
 
 
-
 <!-- ##### MACRO G_KEY_FILE_DESKTOP_TYPE_DIRECTORY ##### -->
 <para>
 The value of the <link
@@ -880,6 +859,5 @@ key for desktop entries representing directories.
 </para>
 
 @Since: 2.14
-
 
 

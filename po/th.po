@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.7.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-05-22 23:54-0400\n"
+"POT-Creation-Date: 2007-06-04 11:24-0400\n"
 "PO-Revision-Date: 2007-05-21 18:31+0700\n"
 "Last-Translator: Theppitak Karoonboonyanan <thep@linux.thai.net>\n"
 "Language-Team: Thai <l10n@opentle.org>\n"
@@ -480,110 +480,110 @@ msgstr "เอกสารจบแบบผิดปกติระหว่า
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "เอกสารจบแบบผิดปกติระหว่างกลางหมายเหตุหรือคำสั่งประมวลผล"
 
-#: glib/gregex.c:130
+#: glib/gregex.c:126
 msgid "corrupted object"
 msgstr "ออบเจกต์เสียหาย"
 
-#: glib/gregex.c:132
+#: glib/gregex.c:128
 msgid "internal error or corrupted object"
 msgstr "ข้อผิดพลาดภายในหรือออบเจกต์เสียหาย"
 
-#: glib/gregex.c:134
+#: glib/gregex.c:130
 msgid "out of memory"
 msgstr "หน่วยความจำเต็ม"
 
-#: glib/gregex.c:139
+#: glib/gregex.c:135
 msgid "backtracking limit reached"
 msgstr "เกินขอบเขตการถอยคืน"
 
-#: glib/gregex.c:151 glib/gregex.c:159
+#: glib/gregex.c:147 glib/gregex.c:155
 msgid "the pattern contains items not supported for partial matching"
 msgstr "แพตเทิร์นมีรายการที่ไม่รองรับในการจับคู่ทีละส่วน"
 
-#: glib/gregex.c:153
+#: glib/gregex.c:149
 msgid "internal error"
 msgstr "ข้อผิดพลาดภายใน"
 
-#: glib/gregex.c:161
+#: glib/gregex.c:157
 msgid "back references as conditions are not supported for partial matching"
 msgstr "ไม่รองรับการใช้การอ้างอิงย้อนกลับเป็นเงื่อนไขในการจับคู่ทีละส่วน"
 
-#: glib/gregex.c:170
+#: glib/gregex.c:166
 msgid "recursion limit reached"
 msgstr "เกินขอบเขตการเรียกตัวเอง"
 
-#: glib/gregex.c:172
+#: glib/gregex.c:168
 msgid "workspace limit for empty substrings reached"
 msgstr "เกินขอบเขตพื้นที่ทำงานสำหรับสตริงย่อยเปล่า"
 
-#: glib/gregex.c:174
+#: glib/gregex.c:170
 msgid "invalid combination of newline flags"
 msgstr "ชุดของแฟล็กการขึ้นบรรทัดใหม่มีค่าไม่เข้ากัน"
 
-#: glib/gregex.c:178
+#: glib/gregex.c:174
 msgid "unknown error"
 msgstr "ข้อผิดพลาดไม่ทราบสาเหตุ"
 
-#: glib/gregex.c:278 glib/gregex.c:1226
+#: glib/gregex.c:315 glib/gregex.c:1343
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "เกิดข้อผิดพลาดขณะจับคู่นิพจน์เรกกิวลาร์ %s: %s"
 
-#: glib/gregex.c:752
+#: glib/gregex.c:874
 msgid "PCRE library is compiled without UTF8 support"
 msgstr "ไลบรารี PCRE ถูกคอมไพล์มาแบบไม่สนับสนุน UTF8"
 
-#: glib/gregex.c:761
+#: glib/gregex.c:883
 msgid "PCRE library is compiled without UTF8 properties support"
 msgstr "ไลบรารี PCRE ถูกคอมไพล์มาแบบไม่สนับสนุนคุณสมบัติ UTF8"
 
-#: glib/gregex.c:806
+#: glib/gregex.c:928
 #, c-format
 msgid "Error while compiling regular expression %s at char %d: %s"
 msgstr "เกิดข้อผิดพลาดขณะแจงนิพจน์เรกกิวลาร์ %s ที่อักขระที่ %d: %s"
 
-#: glib/gregex.c:828
+#: glib/gregex.c:950
 #, c-format
 msgid "Error while optimizing regular expression %s: %s"
 msgstr "เกิดข้อผิดพลาดขณะออปติไมซ์นิพจน์เรกกิวลาร์ %s: %s"
 
-#: glib/gregex.c:1652
+#: glib/gregex.c:1769
 msgid "hexadecimal digit or '}' expected"
 msgstr "ต้องการเลขฐานสิบหกหรือ '}'"
 
-#: glib/gregex.c:1668
+#: glib/gregex.c:1785
 msgid "hexadecimal digit expected"
 msgstr "ต้องการเลขฐานสิบหก"
 
-#: glib/gregex.c:1708
+#: glib/gregex.c:1825
 msgid "missing '<' in symbolic reference"
 msgstr "ไม่มี '<' ในตัวอ้างอิงสัญลักษณ์"
 
-#: glib/gregex.c:1717
+#: glib/gregex.c:1834
 msgid "unfinished symbolic reference"
 msgstr "ตัวอ้างอิงสัญลักษณ์ไม่สมบูรณ์"
 
-#: glib/gregex.c:1724
+#: glib/gregex.c:1841
 msgid "zero-length symbolic reference"
 msgstr "ตัวอ้างอิงสัญลักษณ์มีความยาวเป็นศูนย์"
 
-#: glib/gregex.c:1735
+#: glib/gregex.c:1852
 msgid "digit expected"
 msgstr "ต้องการตัวเลข"
 
-#: glib/gregex.c:1753
+#: glib/gregex.c:1870
 msgid "illegal symbolic reference"
 msgstr "ตัวอ้างอิงสัญลักษณ์ไม่ถูกต้อง"
 
-#: glib/gregex.c:1815
+#: glib/gregex.c:1932
 msgid "stray final '\\'"
 msgstr "'\\' ปราศจากข้อมูลอยู่ที่ท้ายสตริง"
 
-#: glib/gregex.c:1819
+#: glib/gregex.c:1936
 msgid "unknown escape sequence"
 msgstr "ลำดับอักขระหลีกไม่รู้จัก"
 
-#: glib/gregex.c:1829
+#: glib/gregex.c:1946
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr "เกิดข้อผิดพลาดขณะแจงข้อความสำหรับแทนที่ \"%s\" ที่อักขระที่ %lu: %s"

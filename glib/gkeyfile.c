@@ -540,7 +540,7 @@ g_key_file_load_from_data (GKeyFile       *key_file,
 }
 
 /**
- * g_key_file_load_from_data_dirs:
+ * g_key_file_load_from_dirs:
  * @key_file: an empty #GKeyFile struct
  * @file: a relative path to a filename to open and parse
  * @search_dirs: %NULL-terminated array of directories to search

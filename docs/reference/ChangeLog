@@ -1,4 +1,8 @@
 2007-06-04  Matthias Clasen  <mclasen@redhat.com>
+	
+	* === Released 2.13.3 ===
+
+2007-06-04  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/glib-sections.txt:
 	* glib/tmpl/misc_utils.sgml: Add g_get_special_user_dir()

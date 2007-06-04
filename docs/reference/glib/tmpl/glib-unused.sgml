@@ -719,6 +719,13 @@ To use this function you must configure glib with the flag
 
 @Returns: 
 
+<!-- ##### FUNCTION g_regex_free ##### -->
+<para>
+
+</para>
+
+@regex: 
+
 <!-- ##### FUNCTION g_scanner_stat_mode ##### -->
 <para>
 Gets the file attributes.

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib (HEAD)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-05-22 23:54-0400\n"
+"POT-Creation-Date: 2007-06-04 11:24-0400\n"
 "PO-Revision-Date: 2006-08-09 00:29+0200 \n"
 "Last-Translator: Tino Meinen <a.t.meinen@chello.nl>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -523,111 +523,111 @@ msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Het document eindigde onverwacht in commentaar of een bewerkingsinstructie"
 
-#: glib/gregex.c:130
+#: glib/gregex.c:126
 msgid "corrupted object"
 msgstr ""
 
-#: glib/gregex.c:132
+#: glib/gregex.c:128
 msgid "internal error or corrupted object"
 msgstr ""
 
-#: glib/gregex.c:134
+#: glib/gregex.c:130
 msgid "out of memory"
 msgstr ""
 
-#: glib/gregex.c:139
+#: glib/gregex.c:135
 msgid "backtracking limit reached"
 msgstr ""
 
-#: glib/gregex.c:151 glib/gregex.c:159
+#: glib/gregex.c:147 glib/gregex.c:155
 msgid "the pattern contains items not supported for partial matching"
 msgstr ""
 
-#: glib/gregex.c:153
+#: glib/gregex.c:149
 msgid "internal error"
 msgstr ""
 
-#: glib/gregex.c:161
+#: glib/gregex.c:157
 msgid "back references as conditions are not supported for partial matching"
 msgstr ""
 
-#: glib/gregex.c:170
+#: glib/gregex.c:166
 msgid "recursion limit reached"
 msgstr ""
 
-#: glib/gregex.c:172
+#: glib/gregex.c:168
 msgid "workspace limit for empty substrings reached"
 msgstr ""
 
-#: glib/gregex.c:174
+#: glib/gregex.c:170
 msgid "invalid combination of newline flags"
 msgstr ""
 
-#: glib/gregex.c:178
+#: glib/gregex.c:174
 msgid "unknown error"
 msgstr ""
 
-#: glib/gregex.c:278 glib/gregex.c:1226
+#: glib/gregex.c:315 glib/gregex.c:1343
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr ""
 
-#: glib/gregex.c:752
+#: glib/gregex.c:874
 msgid "PCRE library is compiled without UTF8 support"
 msgstr ""
 
-#: glib/gregex.c:761
+#: glib/gregex.c:883
 msgid "PCRE library is compiled without UTF8 properties support"
 msgstr ""
 
-#: glib/gregex.c:806
+#: glib/gregex.c:928
 #, fuzzy, c-format
 msgid "Error while compiling regular expression %s at char %d: %s"
 msgstr "Fout in regel %d teken %d: %s"
 
-#: glib/gregex.c:828
+#: glib/gregex.c:950
 #, c-format
 msgid "Error while optimizing regular expression %s: %s"
 msgstr ""
 
-#: glib/gregex.c:1652
+#: glib/gregex.c:1769
 msgid "hexadecimal digit or '}' expected"
 msgstr ""
 
-#: glib/gregex.c:1668
+#: glib/gregex.c:1785
 msgid "hexadecimal digit expected"
 msgstr ""
 
-#: glib/gregex.c:1708
+#: glib/gregex.c:1825
 msgid "missing '<' in symbolic reference"
 msgstr ""
 
-#: glib/gregex.c:1717
+#: glib/gregex.c:1834
 #, fuzzy
 msgid "unfinished symbolic reference"
 msgstr "Onbeëindigde entiteitreferentie"
 
-#: glib/gregex.c:1724
+#: glib/gregex.c:1841
 msgid "zero-length symbolic reference"
 msgstr ""
 
-#: glib/gregex.c:1735
+#: glib/gregex.c:1852
 msgid "digit expected"
 msgstr ""
 
-#: glib/gregex.c:1753
+#: glib/gregex.c:1870
 msgid "illegal symbolic reference"
 msgstr ""
 
-#: glib/gregex.c:1815
+#: glib/gregex.c:1932
 msgid "stray final '\\'"
 msgstr ""
 
-#: glib/gregex.c:1819
+#: glib/gregex.c:1936
 msgid "unknown escape sequence"
 msgstr ""
 
-#: glib/gregex.c:1829
+#: glib/gregex.c:1946
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr ""
