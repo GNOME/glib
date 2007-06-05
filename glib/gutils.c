@@ -2008,26 +2008,10 @@ g_get_user_data_dir (void)
   return data_dir;
 }
 
-/**
- * g_get_user_config_dir:
- * 
- * Returns a base directory in which to store user-specific application 
- * configuration information such as user preferences and settings. 
- *
- * On UNIX platforms this is determined using the mechanisms described in
- * the <ulink url="http://www.freedesktop.org/Standards/basedir-spec">
- * XDG Base Directory Specification</ulink>
- * 
- * Return value: a string owned by GLib that must not be modified 
- *               or freed.
- * Since: 2.6
- **/
-G_CONST_RETURN gchar*
-g_get_user_config_dir (void)
+static void
+g_init_user_config_dir (void)
 {
-  gchar *config_dir;  
-
-  G_LOCK (g_utils_global);
+  gchar *config_dir;
 
   if (!g_user_config_dir)
     {
@@ -2048,14 +2032,35 @@ g_get_user_config_dir (void)
 	  else
 	    config_dir = g_build_filename (g_tmp_dir, g_user_name, ".config", NULL);
 	}
+
       g_user_config_dir = config_dir;
     }
-  else
-    config_dir = g_user_config_dir;
+}
+
+/**
+ * g_get_user_config_dir:
+ * 
+ * Returns a base directory in which to store user-specific application 
+ * configuration information such as user preferences and settings. 
+ *
+ * On UNIX platforms this is determined using the mechanisms described in
+ * the <ulink url="http://www.freedesktop.org/Standards/basedir-spec">
+ * XDG Base Directory Specification</ulink>
+ * 
+ * Return value: a string owned by GLib that must not be modified 
+ *               or freed.
+ * Since: 2.6
+ **/
+G_CONST_RETURN gchar*
+g_get_user_config_dir (void)
+{
+  G_LOCK (g_utils_global);
+
+  g_init_user_config_dir ();
 
   G_UNLOCK (g_utils_global);
 
-  return config_dir;
+  return g_user_config_dir;
 }
 
 /**
@@ -2221,7 +2226,7 @@ maybe_expire_user_special_dirs (void)
 
   g_user_special_dirs_stat_time = now;
 
-  config_file = g_build_filename (g_get_user_config_dir (),
+  config_file = g_build_filename (g_user_config_dir,
                                   "user-dirs.dirs",
                                   NULL);
   
@@ -2245,6 +2250,9 @@ maybe_expire_user_special_dirs (void)
 out:
   g_free (config_file);
 }
+
+
+static void g_init_user_config_dir (void);
 
 /* adapted from xdg-user-dir-lookup.c
  *
@@ -2278,7 +2286,8 @@ load_user_special_dirs (void)
   gchar **lines;
   gint n_lines, i;
   
-  config_file = g_build_filename (g_get_user_config_dir (),
+  g_init_user_config_dir ();
+  config_file = g_build_filename (g_user_config_dir,
                                   "user-dirs.dirs",
                                   NULL);
   
@@ -2387,7 +2396,10 @@ load_user_special_dirs (void)
         d[len - 1] = 0;
       
       if (is_relative)
-        g_user_special_dirs[directory] = g_build_filename (g_get_home_dir (), d, NULL);
+        {
+          g_get_any_init ();
+          g_user_special_dirs[directory] = g_build_filename (g_home_dir, d, NULL);
+        }
       else
 	g_user_special_dirs[directory] = g_strdup (d);
     }

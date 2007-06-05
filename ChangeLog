@@ -1,3 +1,8 @@
+2007-06-05  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gutils.c (g_get_user_special_dir): Don't deadlock
+	when running with threads.  (#444121, Christian Persch)
+
 2007-06-05  Vincent Untz  <vuntz@gnome.org>
 
 	* glib/goption.c: (g_option_context_get_help): don't replace the usage
