@@ -573,14 +573,14 @@ g_option_context_get_help (GOptionContext *context,
 
   if (rest_description)
     {
-      g_string_printf (string, " ");
-      g_string_printf (string, rest_description);
+      g_string_append (string, " ");
+      g_string_append (string, rest_description);
     }
 
   if (context->parameter_string)
     {
-      g_string_printf (string, " ");
-      g_string_printf (string, TRANSLATE (context, context->parameter_string));
+      g_string_append (string, " ");
+      g_string_append (string, TRANSLATE (context, context->parameter_string));
     }
 
   g_string_append (string, "\n\n");
