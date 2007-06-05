@@ -1,3 +1,8 @@
+2007-06-05  Behdad Esfahbod  <behdad@gnome.org>
+
+	* glib/gutf8.c: Add not to g_utf8_get_char_validated() about
+	nul-terminated strings.
+
 2007-06-05  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gutils.c (g_get_user_special_dir): Don't deadlock
