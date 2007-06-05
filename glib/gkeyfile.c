@@ -3267,7 +3267,7 @@ g_key_file_is_group_name (const gchar *name)
 
   p = q = (gchar *) name;
   while (*q && *q != ']' && *q != '[' && !g_ascii_iscntrl (*q))
-    q = g_utf8_next_char (q);
+    q = g_utf8_find_next_char (q, NULL);
   
   if (*q != '\0' || q == p)
     return FALSE;
@@ -3288,7 +3288,7 @@ g_key_file_is_key_name (const gchar *name)
    * since gnome-vfs uses mime-types as keys in its cache.
    */
   while (*q && *q != '=' && *q != '[' && *q != ']')
-    q = g_utf8_next_char (q);
+    q = g_utf8_find_next_char (q, NULL);
   
   /* No empty keys, please */
   if (q == p)
@@ -3305,8 +3305,8 @@ g_key_file_is_key_name (const gchar *name)
   if (*q == '[')
     {
       q++;
-      while (*q && (g_unichar_isalnum (g_utf8_get_char (q)) || *q == '-' || *q == '_' || *q == '.' || *q == '@'))
-        q = g_utf8_next_char (q);
+      while (*q && (g_unichar_isalnum (g_utf8_get_char_validated (q, -1)) || *q == '-' || *q == '_' || *q == '.' || *q == '@'))
+        q = g_utf8_find_next_char (q, NULL);
 
       if (*q != ']')
         return FALSE;     
@@ -3335,15 +3335,15 @@ g_key_file_line_is_group (const gchar *line)
   p++;
 
   while (*p && *p != ']')
-    p = g_utf8_next_char (p);
+    p = g_utf8_find_next_char (p, NULL);
 
   if (*p != ']')
     return FALSE;
  
   /* silently accept whitespace after the ] */
-  p = g_utf8_next_char (p);
+  p = g_utf8_find_next_char (p, NULL);
   while (*p == ' ' || *p == '\t')
-    p = g_utf8_next_char (p);
+    p = g_utf8_find_next_char (p, NULL);
      
   if (*p)
     return FALSE;
@@ -3565,7 +3565,7 @@ g_key_file_parse_value_as_integer (GKeyFile     *key_file,
 				   GError      **error)
 {
   gchar *end_of_valid_int;
-  glong long_value;
+ glong long_value;
   gint int_value;
 
   errno = 0;

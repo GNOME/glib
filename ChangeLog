@@ -1,3 +1,9 @@
+2007-06-05  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gkeyfile.c (g_key_file_is_key_name):
+	(g_key_file_is_group_name): Don't assume the string is
+	valid UTF-8, since it may be user data.  (#444161, Ben Combee)
+
 2007-06-05  Behdad Esfahbod  <behdad@gnome.org>
 
 	* glib/gutf8.c: Add not to g_utf8_get_char_validated() about
