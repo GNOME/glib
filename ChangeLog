@@ -1,5 +1,9 @@
 2007-06-05  Matthias Clasen  <mclasen@redhat.com>
 
+	* NEWS: Updates
+
+2007-06-05  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/gkeyfile.c (g_key_file_is_key_name):
 	(g_key_file_is_group_name): Don't assume the string is
 	valid UTF-8, since it may be user data.  (#444161, Ben Combee)
