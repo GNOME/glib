@@ -87,6 +87,12 @@
 #  include <direct.h>
 #  include <shlobj.h>
    /* older SDK (e.g. msvc 5.0) does not have these*/
+#  ifndef CSIDL_MYMUSIC
+#    define CSIDL_MYMUSIC 13
+#  endif
+#  ifndef CSIDL_MYVIDEO
+#    define CSIDL_MYVIDEO 14
+#  endif
 #  ifndef CSIDL_INTERNET_CACHE
 #    define CSIDL_INTERNET_CACHE 32
 #  endif
@@ -2172,7 +2178,7 @@ static void
 load_user_special_dirs (void)
 {
   g_user_special_dirs[G_USER_DIRECTORY_DESKTOP] = get_special_folder (CSIDL_DESKTOPDIRECTORY);
-  g_user_special_dirs[G_USER_DIRECTORY_DOCUMENTS] = get_special_folder (CSIDL_MYDOCUMENTS);
+  g_user_special_dirs[G_USER_DIRECTORY_DOCUMENTS] = get_special_folder (CSIDL_PERSONAL);
   g_user_special_dirs[G_USER_DIRECTORY_DOWNLOAD] = get_special_folder (CSIDL_DESKTOPDIRECTORY); /* XXX correct ? */
   g_user_special_dirs[G_USER_DIRECTORY_MUSIC] = get_special_folder (CSIDL_MYMUSIC);
   g_user_special_dirs[G_USER_DIRECTORY_PICTURES] = get_special_folder (CSIDL_MYPICTURES);
@@ -2267,7 +2273,7 @@ static void g_init_user_config_dir (void);
  * subject to the following conditions: 
  *
  * The above copyright notice and this permission notice shall be
-/* included in all copies or substantial portions of the Software. 
+ * included in all copies or substantial portions of the Software. 
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
  * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF

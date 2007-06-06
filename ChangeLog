@@ -1,3 +1,10 @@
+2007-06-06  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gutils.c: Add definitions for more CSIDL_* constants in
+	case missing from headers. Use CSIDL_PERSONAL instead of
+	CSIDL_MYDOCUMENTS as CSIDL_MYDOCUMENTS seems to be a new thing
+	that doesn't work in XP SP2 even.
+
 2007-06-06  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gutils.c (g_get_user_special_dir): Fall back to
