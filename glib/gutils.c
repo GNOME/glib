@@ -2436,7 +2436,15 @@ g_get_user_special_dir (GUserDirectory directory)
   if (g_user_special_dirs == NULL)
     {
       g_user_special_dirs = g_new0 (gchar *, G_USER_N_DIRECTORIES);
+
       load_user_special_dirs ();
+
+      /* Special-case desktop for historical compatibility */
+      if (g_user_special_dirs[G_USER_DIRECTORY_DESKTOP] == NULL)
+        {
+          g_get_any_init ();
+          g_user_special_dirs[directory] = g_build_filename (g_home_dir, "Desktop", NULL);
+        }
     }
 
   G_UNLOCK (g_utils_global);
