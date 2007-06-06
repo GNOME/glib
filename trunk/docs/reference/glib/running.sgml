@@ -1,0 +1,275 @@
+<refentry id="glib-running" revision="17 Jan 2002">
+<refmeta>
+<refentrytitle>Running GLib Applications</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>GLib Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>Running GLib Applications</refname>
+<refpurpose>
+How to run and debug your GLib application
+</refpurpose>
+</refnamediv>
+
+<refsect1>
+<title>Running and debugging GLib Applications</title>
+
+<refsect2>
+<title>Environment variables</title>
+
+<para> 
+GLib inspects a few of environment variables in addition to standard
+variables like <envar>LANG</envar>, <envar>PATH</envar> or <envar>HOME</envar>. 
+</para>
+
+<formalpara id="G_FILENAME_ENCODING">
+  <title><envar>G_FILENAME_ENCODING</envar></title>
+
+  <para>
+    This environment variable can be set to a comma-separated list of character
+    set names. GLib assumes that filenames are encoded in the first character 
+    set from that list rather than in UTF-8. The special token "@locale" can be
+    used to specify the character set for the current locale.
+  </para>
+</formalpara>
+
+<formalpara id="G_BROKEN_FILENAMES">
+  <title><envar>G_BROKEN_FILENAMES</envar></title>
+
+  <para>
+    If this environment variable is set, GLib assumes that filenames are in 
+    the locale encoding rather than in UTF-8. G_FILENAME_ENCODING takes
+    priority over G_BROKEN_FILENAMES. 
+  </para>
+</formalpara>
+
+<formalpara id="G_MESSAGES_PREFIXED">
+  <title><envar>G_MESSAGES_PREFIXED</envar></title>
+
+  <para>
+    A list of log levels for which messages should be prefixed by the 
+    program name and PID of the application. The default is to prefix
+    everything except <literal>G_LOG_LEVEL_MESSAGE</literal> and <literal>G_LOG_LEVEL_INFO</literal>. 
+  </para>
+</formalpara>
+
+<formalpara id="G_DEBUG">
+  <title><envar>G_DEBUG</envar></title>
+  <para>
+    If GLib has been configured with <option>--enable-debug=yes</option>,
+    this variable can be set to a list of debug options, which cause GLib
+    to print out different types of debugging information.
+    <variablelist>
+      <varlistentry>
+        <term>fatal_warnings</term>
+        <listitem><para>Causes GLib to abort the program at the first call
+           to <link linkend="g-warning">g_warning</link>() or
+	   <link linkend="g-critical">g_critical</link>(). This option is 
+           special in that it doesn't require GLib to be configured with 
+           debugging support.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>fatal_criticals</term>
+        <listitem><para>Causes GLib to abort the program at the first call
+           to <link linkend="g-critical">g_critical</link>(). This option is 
+           special in that it doesn't require GLib to be configured with 
+           debugging support.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>gc-friendly</term>
+	<listitem>
+		<para>
+		  Newly allocated memory that isn't directly initialized, as well
+		  as memory being freed will be reset to 0. The point here is to
+		  allow memory checkers and similar programs that use bohem GC alike
+		  algorithms to produce more accurate results.
+		  This option is special in that it doesn't require GLib to be
+		  configured with debugging support.
+		</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>resident-modules</term>
+	<listitem>
+	  <para>
+	    All modules loaded by GModule will be made resident. This can be useful
+	    for tracking memory leaks in modules which are later unloaded; but it can
+	    also hide bugs where code is accessed after the module would have normally
+	    been unloaded.
+	    This option is special in that it doesn't require GLib to be
+ 	    configured with debugging support.
+	  </para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>bind-now-modules</term>
+	<listitem>
+	  <para>
+	    All modules loaded by GModule will bind their symbols at load time, even
+	    when the code uses %G_MODULE_BIND_LAZY.
+	    This option is special in that it doesn't require GLib to be
+ 	    configured with debugging support.
+	  </para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </para>
+</formalpara>
+
+<formalpara id="G_SLICE">
+	<title><envar>G_SLICE</envar></title>
+	<para>
+	  This environment variable allows reconfiguration of the GSlice
+	  memory allocator.
+	  <variablelist>
+	    <varlistentry>
+	      <term>always-malloc</term>
+	      <listitem>
+		<para>
+		  This will cause all slices allocated through g_slice_alloc() and
+		  released by g_slice_free1() to be actually allocated via direct
+		  calls to g_malloc() and g_free().
+		  This is most useful for memory checkers and similar programs that
+		  use Bohem GC alike algorithms to produce more accurate results.
+		  It can also be in conjunction with debugging features of the system's
+		  malloc implementation such as glibc's MALLOC_CHECK_=2 to debug
+		  erroneous slice allocation code, allthough <literal>debug-blocks</literal>
+		  usually is a better suited debugging tool.
+		</para>
+	      </listitem>
+	    </varlistentry>
+	    <varlistentry>
+	      <term>debug-blocks</term>
+	      <listitem>
+		<para>
+		  Using this option (present since GLib-2.13) engages extra code
+		  which performs sanity checks on the released memory slices.
+		  Invalid slice adresses or slice sizes will be reported and lead to
+		  a program halt.
+		  This option should only be used in debugging scenarios, because it
+		  significantly degrades GSlice performance. Extra per slice memory
+		  is requied to do the necessary bookeeping, and multi-thread scalability
+		  is given up to perform global slice validation.
+		  This option is mostly useful in scenarios where program crashes are encountered
+		  while GSlice is in use, but crashes cannot be reproduced with G_SLICE=always-malloc.
+		  A potential cause for such a situation that will be caught by G_SLICE=debug-blocks
+		  is e.g.:
+		  <programlisting>
+		    void *slist = g_slist_alloc(); /* void* gives up type-safety */
+		    g_list_free (slist);           /* corruption: sizeof (GSList) != sizeof (GList) */
+		  </programlisting>
+		</para>
+	      </listitem>
+	    </varlistentry>
+	  </variablelist>
+	</para>
+</formalpara>
+
+<formalpara id="G_RANDOM_VERSION">
+  <title><envar>G_RANDOM_VERSION</envar></title>
+
+  <para>
+    If this environment variable is set to '2.0', the outdated
+    pseudo-random number seeding and generation algorithms from
+    GLib-2.0 are used instead of the new better ones. Use the GLib-2.0
+    algorithms only if you have sequences of numbers generated with
+    Glib-2.0 that you need to reproduce exactly.  
+  </para>
+</formalpara> 
+
+<formalpara id="LIBCHARSET_ALIAS_DIR">
+  <title><envar>LIBCHARSET_ALIAS_DIR</envar></title>
+
+  <para>
+    Allows to specify a nonstandard location for the 
+    <filename>charset.aliases</filename> file that is used by the
+    character set conversion routines. The default location is the 
+    <replaceable>libdir</replaceable> specified at compilation time.
+  </para>
+</formalpara> 
+
+<formalpara id="G_WIN32_PRETEND_WIN9X">
+  <title><envar>G_WIN32_PRETEND_WIN9X</envar></title>
+
+  <para>
+    Setting this variable to any value forces g_win32_get_windows_version()
+    to return a version code for Windows 9x. This is mainly an internal 
+    debugging aid for GTK+ and GLib developers, to be able to check the 
+    code paths for Windows 9x.
+  </para>
+</formalpara> 
+
+</refsect2>
+
+<refsect2 id="setlocale">
+<title>Locale</title>
+
+<para>
+A number of interfaces in GLib depend on the current locale in which
+an application is running. Therefore, most GLib-using applications should
+call <function>setlocale (LC_ALL, "")</function> to set up the current 
+locale.
+</para>
+
+</refsect2>
+
+<refsect2>
+<title>Traps and traces</title>
+
+<para>
+<indexterm><primary>g_trap_free_size</primary></indexterm>
+<indexterm><primary>g_trap_realloc_size</primary></indexterm>
+<indexterm><primary>g_trap_malloc_size</primary></indexterm>
+Some code portions contain trap variables that can be set during debugging 
+time if GLib has been configured with <option>--enable-debug=yes</option>. 
+Such traps lead to immediate code halts to examine the current program state 
+and backtrace.
+</para>
+
+<para>
+Currently, the following trap variables exist:
+<programlisting>
+static volatile gulong g_trap_free_size;
+static volatile gulong g_trap_realloc_size;
+static volatile gulong g_trap_malloc_size;
+</programlisting>
+If set to a size > 0, <link linkend="g-free">g_free</link>(), 
+<link linkend="g-realloc">g_realloc</link>() and 
+<link linkend="g-malloc">g_malloc</link>() will be intercepted if the size 
+matches the size of the corresponding memory block. This will only work with 
+<literal>g_mem_set_vtable (glib_mem_profiler_table)</literal> upon startup 
+though, because memory profiling is required to match on the memory block sizes.
+</para>
+<para>
+Note that many modern debuggers support conditional breakpoints, which achieve
+pretty much the same. E.g. in gdb, you can do
+<programlisting>
+break g_malloc
+condition 1 n_bytes == 20
+</programlisting>
+to break only on g_malloc() calls where the size of the allocated memory block
+is 20. 
+</para>
+</refsect2>
+
+<refsect2>
+<title>Memory statistics</title>
+
+<para>
+g_mem_profile() will output a summary g_malloc() memory usage, if memory
+profiling has been enabled by calling 
+<literal>g_mem_set_vtable (glib_mem_profiler_table)</literal> upon startup.
+</para>
+
+<para>
+If GLib has been configured with <option>--enable-debug=yes</option>,
+then g_slice_debug_tree_statistics() can be called in a debugger to 
+output details about the memory usage of the slice allocator.
+</para>
+
+</refsect2>
+</refsect1>
+</refentry>

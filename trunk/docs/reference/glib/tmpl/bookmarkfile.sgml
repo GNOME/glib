@@ -1,0 +1,552 @@
+<!-- ##### SECTION Title ##### -->
+Bookmark file parser
+
+<!-- ##### SECTION Short_Description ##### -->
+parses files containing bookmarks
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+#GBookmarkFile lets you parse, edit or create files containing bookmarks
+to URI, along with some meta-data about the resource pointed by the URI like
+its MIME type, the application that is registering the bookmark and the
+icon that should be used to represent the bookmark. The data is stored using
+the
+<ulink url="http://www.gnome.org/~ebassi/bookmark-spec">Desktop Bookmark
+Specification</ulink>.
+</para>
+
+<para>
+The syntax of the bookmark files is described in detail inside the Desktop
+Bookmark Specification, here is a quick summary: bookmark files use a sub-class
+of the
+<ulink url="">XML Bookmark Exchange Language</ulink> specification, consisting
+of valid UTF-8 encoded XML, under the <literal>xbel</literal> root element;
+each bookmark is stored inside a <literal>bookmark</literal> element, using
+its URI: no relative paths can be used inside a bookmark file. The bookmark
+may have a user defined title and description, to be used instead of the URI.
+Under the <literal>metadata</literal> element, with its <literal>owner</literal>
+attribute set to <literal>http://freedesktop.org</literal>, is stored the
+meta-data about a resource pointed by its URI. The meta-data consists of
+the resource's MIME type; the applications that have registered a bookmark;
+the groups to which a bookmark belongs to; a visibility flag, used to set
+the bookmark as "private" to the applications and groups that has it
+registered; the URI and MIME type of an icon, to be used when displaying the
+bookmark inside a GUI.
+</para>
+
+<informalexample><programlisting>
+<![CDATA[
+<?xml version="1.0"?>
+<!DOCTYPE xbel PUBLIC 
+  "+//IDN python.org//DTD XML Bookmark Exchange Language 1.0//EN//XML"
+  "http://www.python.org/topics/xml/dtds/xbel-1.0.dtd">
+<xbel version="1.0"
+      xmlns:mime="http://www.freedesktop.org/standards/shared-mime-info"
+      xmlns:bookmark="http://www.freedesktop.org/standards/desktop-bookmarks">
+  <bookmark href="file:///home/ebassi/bookmark-spec/bookmark-spec.xml">
+    <title>Desktop Bookmarks Spec</title>
+    <info>
+      <metadata owner="http://freedesktop.org">
+        <mime:mime-type>text/xml</mime:mime-type>
+	<bookmark:applications>
+          <bookmark:application name="GEdit" count="2" exec="gedit %u" timestamp="1115726763"/>
+          <bookmark:application name="GViM" count="7" exec="gvim %f" timestamp="1115726812"/>
+	</bookmark:applications>
+	<bookmark:groups>
+	  <bookmark:group>Editors</bookmark:group>
+	</bookmark:groups>
+      </metadata>
+    </info>
+  </bookmark>
+</xbel>
+]]>
+</programlisting></informalexample>
+
+<para>
+A bookmark file might contain more than one bookmark; each bookmark is accessed
+through its URI.
+</para>
+
+<para>
+The important caveat of bookmark files is that when you add a new bookmark you
+must also add the application that is registering it, using
+g_bookmark_file_add_application() or g_bookmark_file_set_app_info(). If a
+bookmark has no applications then it won't be dumped when creating the
+on disk representation, using g_bookmark_file_to_data() or
+g_bookmark_file_to_file().
+</para>
+
+<para>
+The #GBookmarkFile parser was added in GLib 2.12.
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### STRUCT GBookmarkFile ##### -->
+<para>
+The <structname>GBookmarkFile</structname> struct contains only private data
+and should not be used directly.
+</para>
+
+
+<!-- ##### MACRO G_BOOKMARK_FILE_ERROR ##### -->
+<para>
+Error domain for bookmark file parsing. Errors in this domain will be
+from the #GBookmarkFileError enumeration. See #GError for informations
+on error domains.
+</para>
+
+
+
+<!-- ##### ENUM GBookmarkFileError ##### -->
+<para>
+Error codes returned by bookmark file parsing.
+</para>
+
+@G_BOOKMARK_FILE_ERROR_INVALID_URI: URI was ill-formed
+@G_BOOKMARK_FILE_ERROR_INVALID_VALUE: a requested field was not found
+@G_BOOKMARK_FILE_ERROR_APP_NOT_REGISTERED: a requested application did not
+register a bookmark
+@G_BOOKMARK_FILE_ERROR_URI_NOT_FOUND: a requested URI was not found
+@G_BOOKMARK_FILE_ERROR_READ: document was ill formed
+@G_BOOKMARK_FILE_ERROR_UNKNOWN_ENCODING: the text being parsed was in an
+unknown encoding
+@G_BOOKMARK_FILE_ERROR_WRITE: an error occurred while writing
+@G_BOOKMARK_FILE_ERROR_FILE_NOT_FOUND: requested file was not found
+
+<!-- ##### FUNCTION g_bookmark_file_new ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION g_bookmark_file_free ##### -->
+<para>
+
+</para>
+
+@bookmark: 
+
+
+<!-- ##### FUNCTION g_bookmark_file_load_from_file ##### -->
+<para>
+
+</para>
+
+@bookmark: 
+@filename: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_bookmark_file_load_from_data ##### -->
+<para>
+
+</para>
+
+@bookmark: 
+@data: 
+@length: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_bookmark_file_load_from_data_dirs ##### -->
+<para>
+
+</para>
+
+@bookmark: 
+@file: 
+@full_path: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_bookmark_file_to_data ##### -->
+<para>
+
+</para>
+
+@bookmark: 
+@length: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_bookmark_file_to_file ##### -->
+<para>
+
+</para>
+
+@bookmark: 
+@filename: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_bookmark_file_has_item ##### -->
+<para>
+
+</para>
+
+@bookmark: 
+@uri: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_bookmark_file_has_group ##### -->
+<para>
+
+</para>
+
+@bookmark: 
+@uri: 
+@group: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_bookmark_file_has_application ##### -->
+<para>
+
+</para>
+
+@bookmark: 
+@uri: 
+@name: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_bookmark_file_get_size ##### -->
+<para>
+
+</para>
+
+@bookmark: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_bookmark_file_get_uris ##### -->
+<para>
+
+</para>
+
+@bookmark: 
+@length: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_bookmark_file_get_title ##### -->
+<para>
+
+</para>
+
+@bookmark: 
+@uri: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_bookmark_file_get_description ##### -->
+<para>
+
+</para>
+
+@bookmark: 
+@uri: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_bookmark_file_get_mime_type ##### -->
+<para>
+
+</para>
+
+@bookmark: 
+@uri: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_bookmark_file_get_is_private ##### -->
+<para>
+
+</para>
+
+@bookmark: 
+@uri: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_bookmark_file_get_icon ##### -->
+<para>
+
+</para>
+
+@bookmark: 
+@uri: 
+@href: 
+@mime_type: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_bookmark_file_get_added ##### -->
+<para>
+
+</para>
+
+@bookmark: 
+@uri: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_bookmark_file_get_modified ##### -->
+<para>
+
+</para>
+
+@bookmark: 
+@uri: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_bookmark_file_get_visited ##### -->
+<para>
+
+</para>
+
+@bookmark: 
+@uri: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_bookmark_file_get_groups ##### -->
+<para>
+
+</para>
+
+@bookmark: 
+@uri: 
+@length: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_bookmark_file_get_applications ##### -->
+<para>
+
+</para>
+
+@bookmark: 
+@uri: 
+@length: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_bookmark_file_get_app_info ##### -->
+<para>
+
+</para>
+
+@bookmark: 
+@uri: 
+@name: 
+@exec: 
+@count: 
+@stamp: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_bookmark_file_set_title ##### -->
+<para>
+
+</para>
+
+@bookmark: 
+@uri: 
+@title: 
+
+
+<!-- ##### FUNCTION g_bookmark_file_set_description ##### -->
+<para>
+
+</para>
+
+@bookmark: 
+@uri: 
+@description: 
+
+
+<!-- ##### FUNCTION g_bookmark_file_set_mime_type ##### -->
+<para>
+
+</para>
+
+@bookmark: 
+@uri: 
+@mime_type: 
+
+
+<!-- ##### FUNCTION g_bookmark_file_set_is_private ##### -->
+<para>
+
+</para>
+
+@bookmark: 
+@uri: 
+@is_private: 
+
+
+<!-- ##### FUNCTION g_bookmark_file_set_icon ##### -->
+<para>
+
+</para>
+
+@bookmark: 
+@uri: 
+@href: 
+@mime_type: 
+
+
+<!-- ##### FUNCTION g_bookmark_file_set_added ##### -->
+<para>
+
+</para>
+
+@bookmark: 
+@uri: 
+@added: 
+
+
+<!-- ##### FUNCTION g_bookmark_file_set_groups ##### -->
+<para>
+
+</para>
+
+@bookmark: 
+@uri: 
+@groups: 
+@length: 
+
+
+<!-- ##### FUNCTION g_bookmark_file_set_modified ##### -->
+<para>
+
+</para>
+
+@bookmark: 
+@uri: 
+@modified: 
+
+
+<!-- ##### FUNCTION g_bookmark_file_set_visited ##### -->
+<para>
+
+</para>
+
+@bookmark: 
+@uri: 
+@visited: 
+
+
+<!-- ##### FUNCTION g_bookmark_file_set_app_info ##### -->
+<para>
+
+</para>
+
+@bookmark: 
+@uri: 
+@name: 
+@exec: 
+@count: 
+@stamp: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_bookmark_file_add_group ##### -->
+<para>
+
+</para>
+
+@bookmark: 
+@uri: 
+@group: 
+
+
+<!-- ##### FUNCTION g_bookmark_file_add_application ##### -->
+<para>
+
+</para>
+
+@bookmark: 
+@uri: 
+@name: 
+@exec: 
+
+
+<!-- ##### FUNCTION g_bookmark_file_remove_group ##### -->
+<para>
+
+</para>
+
+@bookmark: 
+@uri: 
+@group: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_bookmark_file_remove_application ##### -->
+<para>
+
+</para>
+
+@bookmark: 
+@uri: 
+@name: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_bookmark_file_remove_item ##### -->
+<para>
+
+</para>
+
+@bookmark: 
+@uri: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_bookmark_file_move_item ##### -->
+<para>
+
+</para>
+
+@bookmark: 
+@old_uri: 
+@new_uri: 
+@error: 
+@Returns: 
+
+

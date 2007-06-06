@@ -1,0 +1,948 @@
+# translation of glib.po to Basque
+# Copyright (C) 2004, 2005, 2006 Free Software Foundation, Inc.
+# Joseba Bidaurrazaga van Dierdonck <jepibi-san@ej-gv.es>, 2001.
+# Hizkuntza Politikarako Sailburuordetza <hizpol@ej-gv.es>, 2004.
+# Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>, 2004, 2005, 2006.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: eu\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-06-06 00:23-0400\n"
+"PO-Revision-Date: 2006-08-08 09:50+0000\n"
+"Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>\n"
+"Language-Team: Basque <itzulpena@euskalgnu.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.10.2\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"\n"
+
+#: glib/gbookmarkfile.c:705 glib/gbookmarkfile.c:782 glib/gbookmarkfile.c:861
+#: glib/gbookmarkfile.c:908
+#, c-format
+msgid "Unexpected attribute '%s' for element '%s'"
+msgstr "'%2$s' elementuaren ustegabeko '%1$s'atributua"
+
+#: glib/gbookmarkfile.c:716 glib/gbookmarkfile.c:793 glib/gbookmarkfile.c:803
+#: glib/gbookmarkfile.c:919
+#, c-format
+msgid "Attribute '%s' of element '%s' not found"
+msgstr "'%2$s' elementuaren '%1$s' atributua ez da aurkitu"
+
+#: glib/gbookmarkfile.c:1092 glib/gbookmarkfile.c:1157
+#: glib/gbookmarkfile.c:1221 glib/gbookmarkfile.c:1231
+#, c-format
+msgid "Unexpected tag '%s', tag '%s' expected"
+msgstr "Ustegabeko '%s' etiketa, '%s' espero zen"
+
+#: glib/gbookmarkfile.c:1117 glib/gbookmarkfile.c:1131
+#: glib/gbookmarkfile.c:1199 glib/gbookmarkfile.c:1251
+#, c-format
+msgid "Unexpected tag '%s' inside '%s'"
+msgstr "'%2$s' barruan ustegabeko '%1$s' etiketa"
+
+#: glib/gbookmarkfile.c:1781
+#, c-format
+msgid "No valid bookmark file found in data dirs"
+msgstr ""
+"Ezin izan da balioko laster-marken fitxategia aurkitu datuen direktorioan"
+
+#: glib/gbookmarkfile.c:1982
+#, c-format
+msgid "A bookmark for URI '%s' already exists"
+msgstr "'%s' URIaren laster-marka badago lehenedik ere"
+
+#: glib/gbookmarkfile.c:2028 glib/gbookmarkfile.c:2185
+#: glib/gbookmarkfile.c:2270 glib/gbookmarkfile.c:2350
+#: glib/gbookmarkfile.c:2435 glib/gbookmarkfile.c:2518
+#: glib/gbookmarkfile.c:2596 glib/gbookmarkfile.c:2675
+#: glib/gbookmarkfile.c:2717 glib/gbookmarkfile.c:2814
+#: glib/gbookmarkfile.c:2940 glib/gbookmarkfile.c:3130
+#: glib/gbookmarkfile.c:3206 glib/gbookmarkfile.c:3371
+#: glib/gbookmarkfile.c:3460 glib/gbookmarkfile.c:3550
+#: glib/gbookmarkfile.c:3677
+#, c-format
+msgid "No bookmark found for URI '%s'"
+msgstr "Ez da '%s' URIaren laster-markarik aurkitu"
+
+#: glib/gbookmarkfile.c:2359
+#, c-format
+msgid "No MIME type defined in the bookmark for URI '%s'"
+msgstr "Ez dago '%s' URIaren laster-markan MIME-motarik definituta"
+
+#: glib/gbookmarkfile.c:2444
+#, c-format
+msgid "No private flag has been defined in bookmark for URI '%s'"
+msgstr "'%s' URIaren laster-markan ez dago bandera pribaturik definituta"
+
+#: glib/gbookmarkfile.c:2823
+#, c-format
+msgid "No groups set in bookmark for URI '%s'"
+msgstr "'%s' URIaren laster-markan ez dago talderik ezarrita"
+
+#: glib/gbookmarkfile.c:3224 glib/gbookmarkfile.c:3381
+#, c-format
+msgid "No application with name '%s' registered a bookmark for '%s'"
+msgstr "'%s' izeneko aplikaziorik ez du erregistratu laster-markarik '%s'(e)n"
+
+#: glib/gbookmarkfile.c:3404
+#, fuzzy, c-format
+msgid "Failed to expand exec line '%s' with URI '%s'"
+msgstr "Ezin izan da '%s' esteka sinbolikorik irakurri: %s"
+
+#: glib/gconvert.c:424 glib/gconvert.c:502 glib/giochannel.c:1148
+#, c-format
+msgid "Conversion from character set '%s' to '%s' is not supported"
+msgstr "'%s' karaktere-multzoa '%s' bihurtzea ez da onartzen"
+
+#: glib/gconvert.c:428 glib/gconvert.c:506
+#, c-format
+msgid "Could not open converter from '%s' to '%s'"
+msgstr "Ezin izan da '%s'(e)tik %s(e)rako bihurtzailea ireki"
+
+#: glib/gconvert.c:622 glib/gconvert.c:1011 glib/giochannel.c:1320
+#: glib/giochannel.c:1362 glib/giochannel.c:2204 glib/gutf8.c:950
+#: glib/gutf8.c:1399
+#, c-format
+msgid "Invalid byte sequence in conversion input"
+msgstr "Byten sekuentzia baliogabea bihurketa-sarreran"
+
+#: glib/gconvert.c:628 glib/gconvert.c:938 glib/giochannel.c:1327
+#: glib/giochannel.c:2216
+#, c-format
+msgid "Error during conversion: %s"
+msgstr "Errorea bihurtzean: %s"
+
+#: glib/gconvert.c:663 glib/gutf8.c:946 glib/gutf8.c:1150 glib/gutf8.c:1291
+#: glib/gutf8.c:1395
+#, c-format
+msgid "Partial character sequence at end of input"
+msgstr "Karaktere-sekuentzia partziala sarreraren amaieran"
+
+#: glib/gconvert.c:913
+#, c-format
+msgid "Cannot convert fallback '%s' to codeset '%s'"
+msgstr "Ezin da '%s' atzerapena '%s' kode-multzo bihurtu"
+
+#: glib/gconvert.c:1727
+#, c-format
+msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
+msgstr "'%s' URIa ez da \"fitxategi\"-eskema erabiltzen duen URI absolutua "
+
+#: glib/gconvert.c:1737
+#, c-format
+msgid "The local file URI '%s' may not include a '#'"
+msgstr "Baliteke '%s' URI fitxategi lokalak '#' ez edukitzea"
+
+#: glib/gconvert.c:1754
+#, c-format
+msgid "The URI '%s' is invalid"
+msgstr "'%s' URI baliogabea da"
+
+#: glib/gconvert.c:1766
+#, c-format
+msgid "The hostname of the URI '%s' is invalid"
+msgstr "'%s' URIaren ostalari-izena baliogabea da"
+
+#: glib/gconvert.c:1782
+#, c-format
+msgid "The URI '%s' contains invalidly escaped characters"
+msgstr "'%s' URIak ihes-karaktere baliogabeak ditu"
+
+#: glib/gconvert.c:1877
+#, c-format
+msgid "The pathname '%s' is not an absolute path"
+msgstr "'%s' bide-izena ez da bide-izen absolutua"
+
+#
+#: glib/gconvert.c:1887
+#, c-format
+msgid "Invalid hostname"
+msgstr "Ostalari-izen baliogabea"
+
+#: glib/gdir.c:104 glib/gdir.c:124
+#, c-format
+msgid "Error opening directory '%s': %s"
+msgstr "Errorea '%s' direktorioa irekitzean: %s "
+
+#: glib/gfileutils.c:557 glib/gfileutils.c:630
+#, c-format
+msgid "Could not allocate %lu bytes to read file \"%s\""
+msgstr "Ezin izan dira %lu byte esleitu \"%s\" fitxategia irakurtzeko"
+
+#: glib/gfileutils.c:572
+#, c-format
+msgid "Error reading file '%s': %s"
+msgstr "Errorea '%s' fitxategia irakurtzean: %s "
+
+#: glib/gfileutils.c:654
+#, c-format
+msgid "Failed to read from file '%s': %s"
+msgstr "Ezin izan da '%s' fitxategitik irakurri: %s "
+
+#: glib/gfileutils.c:705 glib/gfileutils.c:792
+#, c-format
+msgid "Failed to open file '%s': %s"
+msgstr "Ezin izan da '%s' fitxategia ireki: %s "
+
+#: glib/gfileutils.c:722 glib/gmappedfile.c:133
+#, c-format
+msgid "Failed to get attributes of file '%s': fstat() failed: %s"
+msgstr ""
+"Ezin izan dira '%s' fitxategiko atributuak lortu: fstat()-(e)k huts egin du: "
+"%s"
+
+#: glib/gfileutils.c:756
+#, c-format
+msgid "Failed to open file '%s': fdopen() failed: %s"
+msgstr "Ezin izan da '%s' fitxategia ireki: fdopen()-(e)k huts egin du: %s"
+
+#: glib/gfileutils.c:890
+#, c-format
+msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
+msgstr ""
+"Ezin izan da '%s' fitxategia '%s' gisa berrizendatu: g_rename()k huts egin "
+"du: %s"
+
+#: glib/gfileutils.c:931 glib/gfileutils.c:1389
+#, c-format
+msgid "Failed to create file '%s': %s"
+msgstr "Ezin izan da '%s' fitxategia sortu: %s "
+
+#: glib/gfileutils.c:945
+#, c-format
+msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
+msgstr ""
+"Ezin izan da '%s' fitxategia idazteko ireki: fdopen()-(e)k huts egin du: %s"
+
+#: glib/gfileutils.c:970
+#, c-format
+msgid "Failed to write file '%s': fwrite() failed: %s"
+msgstr "Ezin izan da '%s' fitxategia idatzi: fwrite()-k huts egin du: %s"
+
+#: glib/gfileutils.c:989
+#, c-format
+msgid "Failed to close file '%s': fclose() failed: %s"
+msgstr "Ezin izan da '%s' fitxategia itxi: fclose()-k huts egin du: %s"
+
+#: glib/gfileutils.c:1107
+#, c-format
+msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
+msgstr "'%s' fitxategia ezin izan da kendu: g_unlik()ek huts egin du: %s"
+
+#: glib/gfileutils.c:1351
+#, c-format
+msgid "Template '%s' invalid, should not contain a '%s'"
+msgstr "'%s' txantiloia baliogabea da, ez luke '%s' eduki behar"
+
+#: glib/gfileutils.c:1364
+#, c-format
+msgid "Template '%s' doesn't contain XXXXXX"
+msgstr "'%s' txantiloiak ez dauka: XXXXXX"
+
+#: glib/gfileutils.c:1839
+#, c-format
+msgid "Failed to read the symbolic link '%s': %s"
+msgstr "Ezin izan da '%s' esteka sinbolikorik irakurri: %s"
+
+#: glib/gfileutils.c:1860
+#, c-format
+msgid "Symbolic links not supported"
+msgstr "Esteka sinbolikoak ez dira onartzen"
+
+#: glib/giochannel.c:1152
+#, c-format
+msgid "Could not open converter from '%s' to '%s': %s"
+msgstr "Ezin izan da `%s'(e)tik `%s'(e)rako bihurtzailea ireki: %s"
+
+#: glib/giochannel.c:1497
+#, c-format
+msgid "Can't do a raw read in g_io_channel_read_line_string"
+msgstr "Ezin dira datu gordinak irakurri g_io_channel_read_line_string-en"
+
+#: glib/giochannel.c:1544 glib/giochannel.c:1801 glib/giochannel.c:1887
+#, c-format
+msgid "Leftover unconverted data in read buffer"
+msgstr "Irakurketa-bufferrean geratu diren bihurtu gabeko datuak"
+
+#: glib/giochannel.c:1624 glib/giochannel.c:1701
+#, c-format
+msgid "Channel terminates in a partial character"
+msgstr "Kanala karaktere partzial batean bukatzen da"
+
+#: glib/giochannel.c:1687
+#, c-format
+msgid "Can't do a raw read in g_io_channel_read_to_end"
+msgstr "Ezin dira datu gordinak irakurri g_io_channel_read_to_end-etik"
+
+#: glib/gmappedfile.c:116
+#, c-format
+msgid "Failed to open file '%s': open() failed: %s"
+msgstr "Ezin izan da '%s' fitxategia ireki: open()-ek huts egin du: %s"
+
+#: glib/gmappedfile.c:193
+#, c-format
+msgid "Failed to map file '%s': mmap() failed: %s"
+msgstr "Ezin izan da '%s' fitxategi-mapa ireki: mmap()-ek huts egin du: %s"
+
+#: glib/gmarkup.c:226
+#, c-format
+msgid "Error on line %d char %d: %s"
+msgstr "Errorea %d lerroko %d karakterean: %s "
+
+#: glib/gmarkup.c:324
+#, c-format
+msgid "Error on line %d: %s"
+msgstr "Errorea %d lerroan: %s "
+
+#: glib/gmarkup.c:428
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgstr ""
+"'&;' entitatea hutsik dago; baliozko entitateak hauek dira: &amp; &quot; "
+"&lt; &gt; &apos;"
+
+#: glib/gmarkup.c:438
+#, c-format
+msgid ""
+"Character '%s' is not valid at the start of an entity name; the & character "
+"begins an entity; if this ampersand isn't supposed to be an entity, escape "
+"it as &amp;"
+msgstr ""
+"'%s' karakterea ezin da jarri entitate-izenen hasieran; & karaktereak "
+"entitate bat hasten du; & ikurrak entitatea izan behar ez badu, izenda "
+"ezazu  &amp;"
+
+#: glib/gmarkup.c:472
+#, c-format
+msgid "Character '%s' is not valid inside an entity name"
+msgstr "'%s' karakterea ezin da erabili entitate-izenen barruan"
+
+#: glib/gmarkup.c:509
+#, c-format
+msgid "Entity name '%s' is not known"
+msgstr "'%s' entitate-izena ezezaguna da"
+
+#: glib/gmarkup.c:520
+msgid ""
+"Entity did not end with a semicolon; most likely you used an ampersand "
+"character without intending to start an entity - escape ampersand as &amp;"
+msgstr ""
+"Entitatea ez da puntu eta komaz bukatzen; normalean & ikurra erabiltzen da "
+"entitatea hasteko asmorik gabe; izendatu & karakterea &amp; gisa;"
+
+#: glib/gmarkup.c:573
+#, c-format
+msgid ""
+"Failed to parse '%-.*s', which should have been a digit inside a character "
+"reference (&#234; for example) - perhaps the digit is too large"
+msgstr ""
+"Ezin izan da '%-.*s' analizatu, digitu bat izan behar zuen karaktere-"
+"erreferentzia baten barruan (&#234; adibidez); agian digitua handiegia da"
+
+#: glib/gmarkup.c:598
+#, c-format
+msgid "Character reference '%-.*s' does not encode a permitted character"
+msgstr ""
+"'%-.*s' karaktere-erreferentziak ez du baimendutako karaktere bat kodetzen"
+
+#: glib/gmarkup.c:613
+msgid "Empty character reference; should include a digit such as &#454;"
+msgstr ""
+"Karaktere-erreferentzia hutsa, digitu bat eduki beharko luke; adibidez &#454;"
+
+#: glib/gmarkup.c:623
+msgid ""
+"Character reference did not end with a semicolon; most likely you used an "
+"ampersand character without intending to start an entity - escape ampersand "
+"as &amp;"
+msgstr ""
+"Karaktere-erreferentzia ez da puntu eta komaz bukatzen; ziurrenik & ikurra "
+"erabiliko zenuen entitatea hasteko asmorik gabe. Izendatu & karakterea &amp; "
+"gisa;"
+
+#: glib/gmarkup.c:709
+msgid "Unfinished entity reference"
+msgstr "Amaitu gabeko entitate-erreferentzia"
+
+#: glib/gmarkup.c:715
+msgid "Unfinished character reference"
+msgstr "Amaitu gabeko karaktere-erreferentzia"
+
+#: glib/gmarkup.c:958 glib/gmarkup.c:986 glib/gmarkup.c:1022
+msgid "Invalid UTF-8 encoded text"
+msgstr "UTF-8 gisa kodetutako testu baliogabea"
+
+#: glib/gmarkup.c:1058
+msgid "Document must begin with an element (e.g. <book>)"
+msgstr "Dokumentuak elementu batez hasi behar du (adibidez, <book>)"
+
+#: glib/gmarkup.c:1098
+#, c-format
+msgid ""
+"'%s' is not a valid character following a '<' character; it may not begin an "
+"element name"
+msgstr ""
+"'%s' ez da karaktere balioduna '<' karakterearen atzetik; baliteke elementu "
+"baten izena ez hastea"
+
+#: glib/gmarkup.c:1162
+#, c-format
+msgid ""
+"Odd character '%s', expected a '>' character to end the start tag of element "
+"'%s'"
+msgstr ""
+"'%s' karaktere bitxia, '>' karakterea espero zen '%s' elementuaren hasiera-"
+"etiketa amaitzeko"
+
+#: glib/gmarkup.c:1251
+#, c-format
+msgid ""
+"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgstr ""
+"'%s' karaktere bitxia, '=' espero zen '$2%s' elementuaren '$1%s' "
+"atributuaren ondoren"
+
+#: glib/gmarkup.c:1293
+#, c-format
+msgid ""
+"Odd character '%s', expected a '>' or '/' character to end the start tag of "
+"element '%s', or optionally an attribute; perhaps you used an invalid "
+"character in an attribute name"
+msgstr ""
+"'%s' karaktere bitxia, '>' edo '/' karakterea espero zen '%s' elementuaren "
+"hasiera-etiketa bukatzeko, edo bestela atributu bat. Agian karaktere  "
+"baliogabea erabili duzu atributu-izen batean"
+
+#: glib/gmarkup.c:1382
+#, c-format
+msgid ""
+"Odd character '%s', expected an open quote mark after the equals sign when "
+"giving value for attribute '%s' of element '%s'"
+msgstr ""
+"'%s' karaktere bitxia, komatxo irekia espero zen berdin ikurraren ondoren "
+"'$2%s' elementuaren '$1%s' atributuari balioa ematean"
+
+#: glib/gmarkup.c:1527
+#, c-format
+msgid ""
+"'%s' is not a valid character following the characters '</'; '%s' may not "
+"begin an element name"
+msgstr ""
+"'%s' ez da karaktere balioduna '</'; karaktereen atzetik; baliteke '%s'e(k) "
+"elementu baten izena ez hastea"
+
+#: glib/gmarkup.c:1567
+#, c-format
+msgid ""
+"'%s' is not a valid character following the close element name '%s'; the "
+"allowed character is '>'"
+msgstr ""
+"'%s' karaktere baliogabea da '%s' itxiera-elementuaren izenaren atzetik; "
+"baimendutako karakterea '>' da"
+
+#: glib/gmarkup.c:1578
+#, c-format
+msgid "Element '%s' was closed, no element is currently open"
+msgstr "'%s' elementua itxi egin da, unean ez dago elementurik irekita"
+
+#: glib/gmarkup.c:1587
+#, c-format
+msgid "Element '%s' was closed, but the currently open element is '%s'"
+msgstr "'%s' elementua itxi egin da, baina unean '%s' elementua dago irekita"
+
+#: glib/gmarkup.c:1753
+msgid "Document was empty or contained only whitespace"
+msgstr "Dokumentua hutsik dago edo zuriuneak bakarrik ditu"
+
+#: glib/gmarkup.c:1767
+msgid "Document ended unexpectedly just after an open angle bracket '<'"
+msgstr "Dokumentua ustekabean itxi da angelu-parentesi ireki baten ondoren '<'"
+
+#: glib/gmarkup.c:1775 glib/gmarkup.c:1819
+#, c-format
+msgid ""
+"Document ended unexpectedly with elements still open - '%s' was the last "
+"element opened"
+msgstr ""
+"Dokumentua ustekabean amaitu da oraindik irekita zeuden elementuekin. '%s' "
+"irekitako azken elementua da"
+
+#: glib/gmarkup.c:1783
+#, c-format
+msgid ""
+"Document ended unexpectedly, expected to see a close angle bracket ending "
+"the tag <%s/>"
+msgstr ""
+"Dokumentua ustekabean amaitu da, angelu-parentesi itxia ikustea espero nuen  "
+"<%s/> etiketa amaitzen"
+
+#: glib/gmarkup.c:1789
+msgid "Document ended unexpectedly inside an element name"
+msgstr "Dokumentua ustekabean amaitu da elementu-izen baten barruan"
+
+#: glib/gmarkup.c:1794
+msgid "Document ended unexpectedly inside an attribute name"
+msgstr "Dokumentua ustekabean amaitu da atributu-izen baten barruan"
+
+#: glib/gmarkup.c:1799
+msgid "Document ended unexpectedly inside an element-opening tag."
+msgstr ""
+"Dokumentua ustekabean amaitu da elementua irekitzeko etiketa baten barruan."
+
+#: glib/gmarkup.c:1805
+msgid ""
+"Document ended unexpectedly after the equals sign following an attribute "
+"name; no attribute value"
+msgstr ""
+"Dokumentua ustekabean amaitu da atributu-izen baten ondorengo berdin "
+"ikurraren atzetik; ez dago atributu-baliorik"
+
+#: glib/gmarkup.c:1812
+msgid "Document ended unexpectedly while inside an attribute value"
+msgstr "Dokumentua ustekabean amaitu da atributu-balio baten barruan"
+
+#: glib/gmarkup.c:1827
+#, c-format
+msgid "Document ended unexpectedly inside the close tag for element '%s'"
+msgstr ""
+"Dokumentua ustekabean amaitu da '%s' elementuaren itxiera-etiketaren barruan"
+
+#: glib/gmarkup.c:1833
+msgid "Document ended unexpectedly inside a comment or processing instruction"
+msgstr ""
+"Dokumentua ustekabean amaitu da iruzkin baten barruan edo prozesatzen ari "
+"zen instrukzio baten barruan"
+
+#: glib/gregex.c:126
+msgid "corrupted object"
+msgstr ""
+
+#: glib/gregex.c:128
+msgid "internal error or corrupted object"
+msgstr ""
+
+#: glib/gregex.c:130
+msgid "out of memory"
+msgstr ""
+
+#: glib/gregex.c:135
+msgid "backtracking limit reached"
+msgstr ""
+
+#: glib/gregex.c:147 glib/gregex.c:155
+msgid "the pattern contains items not supported for partial matching"
+msgstr ""
+
+#: glib/gregex.c:149
+msgid "internal error"
+msgstr ""
+
+#: glib/gregex.c:157
+msgid "back references as conditions are not supported for partial matching"
+msgstr ""
+
+#: glib/gregex.c:166
+msgid "recursion limit reached"
+msgstr ""
+
+#: glib/gregex.c:168
+msgid "workspace limit for empty substrings reached"
+msgstr ""
+
+#: glib/gregex.c:170
+msgid "invalid combination of newline flags"
+msgstr ""
+
+#: glib/gregex.c:174
+msgid "unknown error"
+msgstr ""
+
+#: glib/gregex.c:315 glib/gregex.c:1343
+#, c-format
+msgid "Error while matching regular expression %s: %s"
+msgstr ""
+
+#: glib/gregex.c:874
+msgid "PCRE library is compiled without UTF8 support"
+msgstr ""
+
+#: glib/gregex.c:883
+msgid "PCRE library is compiled without UTF8 properties support"
+msgstr ""
+
+#: glib/gregex.c:928
+#, fuzzy, c-format
+msgid "Error while compiling regular expression %s at char %d: %s"
+msgstr "Errorea %d lerroko %d karakterean: %s "
+
+#: glib/gregex.c:950
+#, c-format
+msgid "Error while optimizing regular expression %s: %s"
+msgstr ""
+
+#: glib/gregex.c:1769
+msgid "hexadecimal digit or '}' expected"
+msgstr ""
+
+#: glib/gregex.c:1785
+msgid "hexadecimal digit expected"
+msgstr ""
+
+#: glib/gregex.c:1825
+msgid "missing '<' in symbolic reference"
+msgstr ""
+
+#: glib/gregex.c:1834
+#, fuzzy
+msgid "unfinished symbolic reference"
+msgstr "Amaitu gabeko entitate-erreferentzia"
+
+#: glib/gregex.c:1841
+msgid "zero-length symbolic reference"
+msgstr ""
+
+#: glib/gregex.c:1852
+msgid "digit expected"
+msgstr ""
+
+#: glib/gregex.c:1870
+msgid "illegal symbolic reference"
+msgstr ""
+
+#: glib/gregex.c:1932
+msgid "stray final '\\'"
+msgstr ""
+
+#: glib/gregex.c:1936
+msgid "unknown escape sequence"
+msgstr ""
+
+#: glib/gregex.c:1946
+#, c-format
+msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
+msgstr ""
+
+#: glib/gshell.c:70
+#, c-format
+msgid "Quoted text doesn't begin with a quotation mark"
+msgstr "Komatxo arteko testua ez da komatxoekin hasten"
+
+#: glib/gshell.c:160
+#, c-format
+msgid "Unmatched quotation mark in command line or other shell-quoted text"
+msgstr ""
+"Bat ez datozen komatxoak daude komando-lerroan edo shell-ak aipatutako beste "
+"testu batean"
+
+#: glib/gshell.c:538
+#, c-format
+msgid "Text ended just after a '\\' character. (The text was '%s')"
+msgstr "Testua '\\' karakterearen atzetik amaitu da (testua '%s' zen)"
+
+#: glib/gshell.c:545
+#, c-format
+msgid "Text ended before matching quote was found for %c. (The text was '%s')"
+msgstr ""
+"Testua %c(r)en komatxoak aurkitu baino lehen amaitu da (testua '%s' zen)"
+
+#: glib/gshell.c:557
+#, c-format
+msgid "Text was empty (or contained only whitespace)"
+msgstr "Testua hutsik dago (edo zuriuneak bakarrik ditu)"
+
+#: glib/gspawn-win32.c:272
+#, c-format
+msgid "Failed to read data from child process"
+msgstr "Ezin izan da daturik irakurri prozesu umetik"
+
+#: glib/gspawn-win32.c:287 glib/gspawn.c:1395
+#, c-format
+msgid "Failed to create pipe for communicating with child process (%s)"
+msgstr "Ezin izan da kanalizazioa sortu prozesu umearekin komunikatzeko (%s) "
+
+#: glib/gspawn-win32.c:325 glib/gspawn.c:1059
+#, c-format
+msgid "Failed to read from child pipe (%s)"
+msgstr "Ezin izan da kanalizazio umetik irakurri (%s) "
+
+#: glib/gspawn-win32.c:351 glib/gspawn.c:1264
+#, c-format
+msgid "Failed to change to directory '%s' (%s)"
+msgstr "Ezin izan da `%s' direktoriora aldatu (%s) "
+
+#: glib/gspawn-win32.c:357 glib/gspawn-win32.c:481
+#, c-format
+msgid "Failed to execute child process (%s)"
+msgstr "Ezin izan da prozesu umea exekutatu (%s) "
+
+#
+#: glib/gspawn-win32.c:428
+#, c-format
+msgid "Invalid program name: %s"
+msgstr "Programaren izen baliogabea: %s"
+
+#: glib/gspawn-win32.c:438 glib/gspawn-win32.c:678 glib/gspawn-win32.c:1218
+#, c-format
+msgid "Invalid string in argument vector at %d: %s"
+msgstr "Kate baliogabea %d(e)ko bektorearen argumentuan: %s"
+
+#: glib/gspawn-win32.c:449 glib/gspawn-win32.c:692 glib/gspawn-win32.c:1251
+#, c-format
+msgid "Invalid string in environment: %s"
+msgstr "Kate baliogabea ingurunean: %s"
+
+#: glib/gspawn-win32.c:674 glib/gspawn-win32.c:1199
+#, c-format
+msgid "Invalid working directory: %s"
+msgstr "Laneko direktorio baliogabea: %s "
+
+#
+#: glib/gspawn-win32.c:738
+#, c-format
+msgid "Failed to execute helper program (%s)"
+msgstr "Ezin izan da laguntza-programa exekutatu (%s)"
+
+#: glib/gspawn-win32.c:938
+#, c-format
+msgid ""
+"Unexpected error in g_io_channel_win32_poll() reading data from a child "
+"process"
+msgstr ""
+"Ustekabeko errorea gertatu da g_io_channel_win32_poll()-en prozesu umetik "
+"datuak irakurtzean"
+
+#: glib/gspawn.c:175
+#, c-format
+msgid "Failed to read data from child process (%s)"
+msgstr "Ezin izan da daturik irakurri prozesu umetik (%s) "
+
+#: glib/gspawn.c:307
+#, c-format
+msgid "Unexpected error in select() reading data from a child process (%s)"
+msgstr "Ustekabeko errorea select()-en, datuak prozesu umetik irakurtzen (%s) "
+
+#: glib/gspawn.c:390
+#, c-format
+msgid "Unexpected error in waitpid() (%s)"
+msgstr "Ustekabeko errorea waitpid()-en (%s)"
+
+#: glib/gspawn.c:1124
+#, c-format
+msgid "Failed to fork (%s)"
+msgstr "Ezin da sardetu (%s) "
+
+#: glib/gspawn.c:1274
+#, c-format
+msgid "Failed to execute child process \"%s\" (%s)"
+msgstr "Ezin izan da \"%s\" prozesu umea exekutatu (%s) "
+
+#: glib/gspawn.c:1284
+#, c-format
+msgid "Failed to redirect output or input of child process (%s)"
+msgstr "Ezin izan da prozesu umearen irteera edo sarrera birbideratu (%s) "
+
+#: glib/gspawn.c:1293
+#, c-format
+msgid "Failed to fork child process (%s)"
+msgstr "Ezin izan da prozesu umea sardetu (%s)"
+
+#: glib/gspawn.c:1301
+#, c-format
+msgid "Unknown error executing child process \"%s\""
+msgstr "Errore ezezaguna \"%s\" prozesu umea exekutatzean"
+
+#: glib/gspawn.c:1323
+#, c-format
+msgid "Failed to read enough data from child pid pipe (%s)"
+msgstr "Ezin izan da nahikoa datu irakurri pid kanalizazio umetik (%s) "
+
+#: glib/gutf8.c:1024
+#, c-format
+msgid "Character out of range for UTF-8"
+msgstr "Karakterea honako barrutitik kanpo UTF-8 formaturako"
+
+#: glib/gutf8.c:1118 glib/gutf8.c:1127 glib/gutf8.c:1259 glib/gutf8.c:1268
+#: glib/gutf8.c:1409 glib/gutf8.c:1505
+#, c-format
+msgid "Invalid sequence in conversion input"
+msgstr "Sekuentzia baliogabea bihurketa-sarreran"
+
+#: glib/gutf8.c:1420 glib/gutf8.c:1516
+#, c-format
+msgid "Character out of range for UTF-16"
+msgstr "Karakterea honako barrutitik kanpo UTF-16 formaturako"
+
+#: glib/goption.c:572
+msgid "Usage:"
+msgstr "Erabilera:"
+
+#: glib/goption.c:572
+msgid "[OPTION...]"
+msgstr "[AUKERA...]"
+
+#: glib/goption.c:676
+msgid "Help Options:"
+msgstr "Laguntzako aukerak:"
+
+#: glib/goption.c:677
+msgid "Show help options"
+msgstr "Erakutsi laguntzako aukerak"
+
+#: glib/goption.c:683
+msgid "Show all help options"
+msgstr "Erakutsi laguntzako aukera guztiak"
+
+#: glib/goption.c:735
+msgid "Application Options:"
+msgstr "Aplikazio-aukerak:"
+
+#: glib/goption.c:796 glib/goption.c:866
+#, c-format
+msgid "Cannot parse integer value '%s' for %s"
+msgstr "Ezin da '%2$s'(r)en '%1$s' osoko balioa analizatu"
+
+#: glib/goption.c:806 glib/goption.c:874
+#, c-format
+msgid "Integer value '%s' for %s out of range"
+msgstr "%2$s(r)en '%1$s' osoko balioa barrutitik kanpo"
+
+#: glib/goption.c:831
+#, c-format
+msgid "Cannot parse double value '%s' for %s"
+msgstr "Ezin da '%2$s'(r)en '%1$s' balio bikoitza analizatu"
+
+#: glib/goption.c:839
+#, c-format
+msgid "Double value '%s' for %s out of range"
+msgstr "%2$s(r)en '%1$s' balio bikoitza barrutitik kanpo"
+
+#: glib/goption.c:1176
+#, c-format
+msgid "Error parsing option %s"
+msgstr "Errorea %s aukera analizatzean"
+
+#: glib/goption.c:1207 glib/goption.c:1318
+#, c-format
+msgid "Missing argument for %s"
+msgstr "%s(e)ko argumentua falta da"
+
+#: glib/goption.c:1713
+#, c-format
+msgid "Unknown option %s"
+msgstr "%s aukera ezezaguna"
+
+#: glib/gkeyfile.c:341
+#, fuzzy, c-format
+msgid "Valid key file could not be found in search dirs"
+msgstr "Ezin izan da balioko gakoa datuen direktorioan aurkitu"
+
+#: glib/gkeyfile.c:376
+#, c-format
+msgid "Not a regular file"
+msgstr "Ez da fitxategi arrunta"
+
+#: glib/gkeyfile.c:384
+#, c-format
+msgid "File is empty"
+msgstr "Fitxategia hutsik dago"
+
+#: glib/gkeyfile.c:746
+#, c-format
+msgid ""
+"Key file contains line '%s' which is not a key-value pair, group, or comment"
+msgstr ""
+"Gako-fitxategiak '%s' lerroa du, gako-balioa bikotea, taldea edo iruzkinik "
+"ez daukalarik"
+
+#
+#: glib/gkeyfile.c:806
+#, fuzzy, c-format
+msgid "Invalid group name: %s"
+msgstr "Programaren izen baliogabea: %s"
+
+#: glib/gkeyfile.c:828
+#, c-format
+msgid "Key file does not start with a group"
+msgstr "Gako-fitxategiak ez da talde batekin hasten"
+
+#
+#: glib/gkeyfile.c:854
+#, fuzzy, c-format
+msgid "Invalid key name: %s"
+msgstr "Programaren izen baliogabea: %s"
+
+#: glib/gkeyfile.c:881
+#, c-format
+msgid "Key file contains unsupported encoding '%s'"
+msgstr "Gako-fitxategiak onartzen ez den '%s' kodeketa du"
+
+#: glib/gkeyfile.c:1094 glib/gkeyfile.c:1253 glib/gkeyfile.c:2455
+#: glib/gkeyfile.c:2521 glib/gkeyfile.c:2640 glib/gkeyfile.c:2775
+#: glib/gkeyfile.c:2928 glib/gkeyfile.c:3108 glib/gkeyfile.c:3165
+#, c-format
+msgid "Key file does not have group '%s'"
+msgstr "Gako-fitxategiak ez dauka '%s' taldea"
+
+#: glib/gkeyfile.c:1265
+#, c-format
+msgid "Key file does not have key '%s'"
+msgstr "Gako-fitxategiak ez dauka '%s' gakoa"
+
+#: glib/gkeyfile.c:1367 glib/gkeyfile.c:1477
+#, c-format
+msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
+msgstr "Gako-fitxategiak '%s' gakoa dauka (%s balioduna) baina ez da UTF-8"
+
+#: glib/gkeyfile.c:1387 glib/gkeyfile.c:1497 glib/gkeyfile.c:1866
+#, c-format
+msgid "Key file contains key '%s' which has value that cannot be interpreted."
+msgstr ""
+"Gako-fitxategiak '%s' gakoa dauka, baina dagokion balioa ezin da "
+"interpretatu."
+
+#: glib/gkeyfile.c:2078 glib/gkeyfile.c:2287
+#, c-format
+msgid ""
+"Key file contains key '%s' in group '%s' which has value that cannot be "
+"interpreted."
+msgstr ""
+"Gako-fitxategiak '%s' gakoa dauka ('%s taldean), baina dagokion balioa ezin "
+"da interpretatu."
+
+#: glib/gkeyfile.c:2470 glib/gkeyfile.c:2655 glib/gkeyfile.c:3176
+#, c-format
+msgid "Key file does not have key '%s' in group '%s'"
+msgstr "Gako-fitxategiak ez dauka '%s' gakoa ('%s' taldean)"
+
+#: glib/gkeyfile.c:3415
+#, c-format
+msgid "Key file contains escape character at end of line"
+msgstr "Gako-fitxategiak ihes-karakterea dauka lerro amaieran"
+
+#: glib/gkeyfile.c:3437
+#, c-format
+msgid "Key file contains invalid escape sequence '%s'"
+msgstr "Gako-fitxategiak '%s' ihes-sekuentzia baliogabea dauka"
+
+#: glib/gkeyfile.c:3579
+#, c-format
+msgid "Value '%s' cannot be interpreted as a number."
+msgstr "'%s' balioa ezin da zenbaki gisa interpretatu"
+
+#: glib/gkeyfile.c:3593
+#, c-format
+msgid "Integer value '%s' out of range"
+msgstr "'%s' osoko balioa barrutitik kanpo"
+
+#: glib/gkeyfile.c:3626
+#, c-format
+msgid "Value '%s' cannot be interpreted as a float number."
+msgstr "'%s' balioa ezin da zenbaki mugikor gisa interpretatu."
+
+#: glib/gkeyfile.c:3650
+#, c-format
+msgid "Value '%s' cannot be interpreted as a boolean."
+msgstr "'%s' balioa ezin da bolear gisa interpretatu"

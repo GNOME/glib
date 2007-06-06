@@ -1,0 +1,936 @@
+# translation of glib to Kinyarwanda.
+# Copyright (C) 2005 Free Software Foundation, Inc.
+# This file is distributed under the same license as the glib package.
+# Steve Murphy <murf@e-tools.com>, 2005
+# Steve performed initial rough translation from compendium built from translations provided by the following translators:
+# Philibert Ndandali  <ndandali@yahoo.fr>, 2005.
+# Viateur MUGENZI <muvia1@yahoo.fr>, 2005.
+# Noëlla Mupole <s24211045@tuks.co.za>, 2005.
+# Carole Karema <karemacarole@hotmail.com>, 2005.
+# JEAN BAPTISTE NGENDAHAYO <ngenda_denis@yahoo.co.uk>, 2005.
+# Augustin KIBERWA  <akiberwa@yahoo.co.uk>, 2005.
+# Donatien NSENGIYUMVA <ndonatienuk@yahoo.co.uk>, 2005..
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: glib 2.12\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-06-06 00:23-0400\n"
+"PO-Revision-Date: 2005-03-28 19:34-0700\n"
+"Last-Translator: Steve Murphy <murf@e-tools.com>\n"
+"Language-Team: Kinyarwanda <translation-team-rw@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: glib/gbookmarkfile.c:705 glib/gbookmarkfile.c:782 glib/gbookmarkfile.c:861
+#: glib/gbookmarkfile.c:908
+#, fuzzy, c-format
+msgid "Unexpected attribute '%s' for element '%s'"
+msgstr "Inyuguti Ikitezwe: a Nyuma Ikiranga Izina: Bya Ikigize:"
+
+#: glib/gbookmarkfile.c:716 glib/gbookmarkfile.c:793 glib/gbookmarkfile.c:803
+#: glib/gbookmarkfile.c:919
+#, c-format
+msgid "Attribute '%s' of element '%s' not found"
+msgstr ""
+
+#: glib/gbookmarkfile.c:1092 glib/gbookmarkfile.c:1157
+#: glib/gbookmarkfile.c:1221 glib/gbookmarkfile.c:1231
+#, c-format
+msgid "Unexpected tag '%s', tag '%s' expected"
+msgstr ""
+
+#: glib/gbookmarkfile.c:1117 glib/gbookmarkfile.c:1131
+#: glib/gbookmarkfile.c:1199 glib/gbookmarkfile.c:1251
+#, c-format
+msgid "Unexpected tag '%s' inside '%s'"
+msgstr ""
+
+#: glib/gbookmarkfile.c:1781
+#, fuzzy, c-format
+msgid "No valid bookmark file found in data dirs"
+msgstr "Urufunguzo IDOSIYE OYA Byabonetse in Ibyatanzwe"
+
+#: glib/gbookmarkfile.c:1982
+#, c-format
+msgid "A bookmark for URI '%s' already exists"
+msgstr ""
+
+#: glib/gbookmarkfile.c:2028 glib/gbookmarkfile.c:2185
+#: glib/gbookmarkfile.c:2270 glib/gbookmarkfile.c:2350
+#: glib/gbookmarkfile.c:2435 glib/gbookmarkfile.c:2518
+#: glib/gbookmarkfile.c:2596 glib/gbookmarkfile.c:2675
+#: glib/gbookmarkfile.c:2717 glib/gbookmarkfile.c:2814
+#: glib/gbookmarkfile.c:2940 glib/gbookmarkfile.c:3130
+#: glib/gbookmarkfile.c:3206 glib/gbookmarkfile.c:3371
+#: glib/gbookmarkfile.c:3460 glib/gbookmarkfile.c:3550
+#: glib/gbookmarkfile.c:3677
+#, c-format
+msgid "No bookmark found for URI '%s'"
+msgstr ""
+
+#: glib/gbookmarkfile.c:2359
+#, c-format
+msgid "No MIME type defined in the bookmark for URI '%s'"
+msgstr ""
+
+#: glib/gbookmarkfile.c:2444
+#, c-format
+msgid "No private flag has been defined in bookmark for URI '%s'"
+msgstr ""
+
+#: glib/gbookmarkfile.c:2823
+#, c-format
+msgid "No groups set in bookmark for URI '%s'"
+msgstr ""
+
+#: glib/gbookmarkfile.c:3224 glib/gbookmarkfile.c:3381
+#, c-format
+msgid "No application with name '%s' registered a bookmark for '%s'"
+msgstr ""
+
+#: glib/gbookmarkfile.c:3404
+#, fuzzy, c-format
+msgid "Failed to expand exec line '%s' with URI '%s'"
+msgstr "Kuri Gusoma Ihuza"
+
+#: glib/gconvert.c:424 glib/gconvert.c:502 glib/giochannel.c:1148
+#, fuzzy, c-format
+msgid "Conversion from character set '%s' to '%s' is not supported"
+msgstr "Bivuye Inyuguti Gushyiraho Kuri ni OYA"
+
+#: glib/gconvert.c:428 glib/gconvert.c:506
+#, fuzzy, c-format
+msgid "Could not open converter from '%s' to '%s'"
+msgstr "OYA Gufungura Bivuye Kuri"
+
+#: glib/gconvert.c:622 glib/gconvert.c:1011 glib/giochannel.c:1320
+#: glib/giochannel.c:1362 glib/giochannel.c:2204 glib/gutf8.c:950
+#: glib/gutf8.c:1399
+#, fuzzy, c-format
+msgid "Invalid byte sequence in conversion input"
+msgstr "Bayite in Ihindurangero Iyinjiza"
+
+#: glib/gconvert.c:628 glib/gconvert.c:938 glib/giochannel.c:1327
+#: glib/giochannel.c:2216
+#, fuzzy, c-format
+msgid "Error during conversion: %s"
+msgstr "Ihindurangero"
+
+#: glib/gconvert.c:663 glib/gutf8.c:946 glib/gutf8.c:1150 glib/gutf8.c:1291
+#: glib/gutf8.c:1395
+#, fuzzy, c-format
+msgid "Partial character sequence at end of input"
+msgstr "Inyuguti ku Impera Bya Iyinjiza"
+
+#: glib/gconvert.c:913
+#, fuzzy, c-format
+msgid "Cannot convert fallback '%s' to codeset '%s'"
+msgstr "GUHINDURA Kuri"
+
+#: glib/gconvert.c:1727
+#, fuzzy, c-format
+msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
+msgstr "ni OYA ikoresha IDOSIYE Igishusho"
+
+#: glib/gconvert.c:1737
+#, fuzzy, c-format
+msgid "The local file URI '%s' may not include a '#'"
+msgstr "IDOSIYE Gicurasi OYA Gushyiramo a"
+
+#: glib/gconvert.c:1754
+#, fuzzy, c-format
+msgid "The URI '%s' is invalid"
+msgstr "ni Sibyo"
+
+#: glib/gconvert.c:1766
+#, fuzzy, c-format
+msgid "The hostname of the URI '%s' is invalid"
+msgstr "Izina ry'inturo: Bya ni Sibyo"
+
+#: glib/gconvert.c:1782
+#, fuzzy, c-format
+msgid "The URI '%s' contains invalidly escaped characters"
+msgstr "Kirimo Inyuguti"
+
+#: glib/gconvert.c:1877
+#, fuzzy, c-format
+msgid "The pathname '%s' is not an absolute path"
+msgstr "ni OYA Inzira"
+
+#: glib/gconvert.c:1887
+#, fuzzy, c-format
+msgid "Invalid hostname"
+msgstr "Izina ry'inturo:"
+
+#: glib/gdir.c:104 glib/gdir.c:124
+#, fuzzy, c-format
+msgid "Error opening directory '%s': %s"
+msgstr "Gufungura %s%S bushyinguro"
+
+#: glib/gfileutils.c:557 glib/gfileutils.c:630
+#, fuzzy, c-format
+msgid "Could not allocate %lu bytes to read file \"%s\""
+msgstr "OYA Bayite Kuri Gusoma IDOSIYE"
+
+# svtools/source\misc\errtxt.src:RID_ERRHDL.ERRCODE_SFX_DOLOADFAILED.text
+#: glib/gfileutils.c:572
+#, fuzzy, c-format
+msgid "Error reading file '%s': %s"
+msgstr "Ikosa mu gusoma idosiye"
+
+#: glib/gfileutils.c:654
+#, fuzzy, c-format
+msgid "Failed to read from file '%s': %s"
+msgstr "Kuri Gusoma Bivuye IDOSIYE"
+
+#: glib/gfileutils.c:705 glib/gfileutils.c:792
+#, fuzzy, c-format
+msgid "Failed to open file '%s': %s"
+msgstr "Kuri Gufungura IDOSIYE"
+
+#: glib/gfileutils.c:722 glib/gmappedfile.c:133
+#, fuzzy, c-format
+msgid "Failed to get attributes of file '%s': fstat() failed: %s"
+msgstr "Kuri Kubona Ibiranga Bya IDOSIYE Byanze"
+
+#: glib/gfileutils.c:756
+#, fuzzy, c-format
+msgid "Failed to open file '%s': fdopen() failed: %s"
+msgstr "Kuri Gufungura IDOSIYE Byanze"
+
+#: glib/gfileutils.c:890
+#, fuzzy, c-format
+msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
+msgstr "Kuri Guhindura izina IDOSIYE Kuri Byanze"
+
+#: glib/gfileutils.c:931 glib/gfileutils.c:1389
+#, fuzzy, c-format
+msgid "Failed to create file '%s': %s"
+msgstr "Kuri Kurema IDOSIYE"
+
+#: glib/gfileutils.c:945
+#, fuzzy, c-format
+msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
+msgstr "Kuri Gufungura IDOSIYE kugirango Byanze"
+
+#: glib/gfileutils.c:970
+#, fuzzy, c-format
+msgid "Failed to write file '%s': fwrite() failed: %s"
+msgstr "Kuri IDOSIYE Byanze"
+
+#: glib/gfileutils.c:989
+#, fuzzy, c-format
+msgid "Failed to close file '%s': fclose() failed: %s"
+msgstr "Kuri Gufunga IDOSIYE Byanze"
+
+#: glib/gfileutils.c:1107
+#, fuzzy, c-format
+msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
+msgstr "IDOSIYE OYA Cyavanyweho Byanze"
+
+#: glib/gfileutils.c:1351
+#, fuzzy, c-format
+msgid "Template '%s' invalid, should not contain a '%s'"
+msgstr "Sibyo OYA a"
+
+#: glib/gfileutils.c:1364
+#, fuzzy, c-format
+msgid "Template '%s' doesn't contain XXXXXX"
+msgstr "Impera Na:"
+
+#: glib/gfileutils.c:1839
+#, fuzzy, c-format
+msgid "Failed to read the symbolic link '%s': %s"
+msgstr "Kuri Gusoma Ihuza"
+
+#: glib/gfileutils.c:1860
+#, fuzzy, c-format
+msgid "Symbolic links not supported"
+msgstr "amahuza OYA"
+
+#: glib/giochannel.c:1152
+#, fuzzy, c-format
+msgid "Could not open converter from '%s' to '%s': %s"
+msgstr "OYA Gufungura Bivuye Kuri"
+
+#: glib/giochannel.c:1497
+#, fuzzy, c-format
+msgid "Can't do a raw read in g_io_channel_read_line_string"
+msgstr "a Gusoma in"
+
+#: glib/giochannel.c:1544 glib/giochannel.c:1801 glib/giochannel.c:1887
+#, fuzzy, c-format
+msgid "Leftover unconverted data in read buffer"
+msgstr "Ibyatanzwe in Gusoma"
+
+#: glib/giochannel.c:1624 glib/giochannel.c:1701
+#, fuzzy, c-format
+msgid "Channel terminates in a partial character"
+msgstr "in a Bituzuye Inyuguti"
+
+#: glib/giochannel.c:1687
+#, fuzzy, c-format
+msgid "Can't do a raw read in g_io_channel_read_to_end"
+msgstr "a Gusoma in"
+
+#: glib/gmappedfile.c:116
+#, fuzzy, c-format
+msgid "Failed to open file '%s': open() failed: %s"
+msgstr "Kuri Gufungura IDOSIYE Byanze"
+
+#: glib/gmappedfile.c:193
+#, fuzzy, c-format
+msgid "Failed to map file '%s': mmap() failed: %s"
+msgstr "Kuri Gufungura IDOSIYE Byanze"
+
+#: glib/gmarkup.c:226
+#, fuzzy, c-format
+msgid "Error on line %d char %d: %s"
+msgstr "ku Umurongo INYUGUTI"
+
+#: glib/gmarkup.c:324
+#, fuzzy, c-format
+msgid "Error on line %d: %s"
+msgstr "ku Umurongo"
+
+#: glib/gmarkup.c:428
+#, fuzzy
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgstr "Byemewe"
+
+#: glib/gmarkup.c:438
+#, fuzzy, c-format
+msgid ""
+"Character '%s' is not valid at the start of an entity name; the & character "
+"begins an entity; if this ampersand isn't supposed to be an entity, escape "
+"it as &amp;"
+msgstr "ni OYA Byemewe ku Gutangira Bya Izina: Inyuguti NIBA iyi Kuri Nka"
+
+#: glib/gmarkup.c:472
+#, fuzzy, c-format
+msgid "Character '%s' is not valid inside an entity name"
+msgstr "ni OYA Byemewe Mo Imbere Izina:"
+
+#: glib/gmarkup.c:509
+#, fuzzy, c-format
+msgid "Entity name '%s' is not known"
+msgstr "Izina: ni OYA"
+
+#: glib/gmarkup.c:520
+#, fuzzy
+msgid ""
+"Entity did not end with a semicolon; most likely you used an ampersand "
+"character without intending to start an entity - escape ampersand as &amp;"
+msgstr "OYA Impera Na: a Akabago n'Akitso Inyuguti Kuri Gutangira Nka"
+
+#: glib/gmarkup.c:573
+#, fuzzy, c-format
+msgid ""
+"Failed to parse '%-.*s', which should have been a digit inside a character "
+"reference (&#234; for example) - perhaps the digit is too large"
+msgstr "Kuri a Mo Imbere a Inyuguti Indango kugirango Urugero ni Binini"
+
+#: glib/gmarkup.c:598
+#, fuzzy, c-format
+msgid "Character reference '%-.*s' does not encode a permitted character"
+msgstr "Indango OYA a Inyuguti"
+
+#: glib/gmarkup.c:613
+#, fuzzy
+msgid "Empty character reference; should include a digit such as &#454;"
+msgstr "Inyuguti Indango Gushyiramo a Nka"
+
+#: glib/gmarkup.c:623
+#, fuzzy
+msgid ""
+"Character reference did not end with a semicolon; most likely you used an "
+"ampersand character without intending to start an entity - escape ampersand "
+"as &amp;"
+msgstr "Indango OYA Impera Na: a Akabago n'Akitso Inyuguti Kuri Gutangira Nka"
+
+#: glib/gmarkup.c:709
+#, fuzzy
+msgid "Unfinished entity reference"
+msgstr "Indango"
+
+#: glib/gmarkup.c:715
+#, fuzzy
+msgid "Unfinished character reference"
+msgstr "Inyuguti Indango"
+
+#: glib/gmarkup.c:958 glib/gmarkup.c:986 glib/gmarkup.c:1022
+#, fuzzy
+msgid "Invalid UTF-8 encoded text"
+msgstr "8 Umwandiko"
+
+#: glib/gmarkup.c:1058
+#, fuzzy
+msgid "Document must begin with an element (e.g. <book>)"
+msgstr "g."
+
+#: glib/gmarkup.c:1098
+#, fuzzy, c-format
+msgid ""
+"'%s' is not a valid character following a '<' character; it may not begin an "
+"element name"
+msgstr "'%s'ni OYA a Byemewe Inyuguti a Inyuguti Gicurasi OYA Ikigize: Izina:"
+
+#: glib/gmarkup.c:1162
+#, fuzzy, c-format
+msgid ""
+"Odd character '%s', expected a '>' character to end the start tag of element "
+"'%s'"
+msgstr ""
+"Inyuguti Ikitezwe: a Inyuguti Kuri Impera Gutangira Itagi: Bya Ikigize:"
+
+#: glib/gmarkup.c:1251
+#, fuzzy, c-format
+msgid ""
+"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgstr "Inyuguti Ikitezwe: a Nyuma Ikiranga Izina: Bya Ikigize:"
+
+#: glib/gmarkup.c:1293
+#, fuzzy, c-format
+msgid ""
+"Odd character '%s', expected a '>' or '/' character to end the start tag of "
+"element '%s', or optionally an attribute; perhaps you used an invalid "
+"character in an attribute name"
+msgstr ""
+"Inyuguti Ikitezwe: a Cyangwa Inyuguti Kuri Impera Gutangira Itagi: Bya "
+"Ikigize: Cyangwa Ikiranga Sibyo Inyuguti in Ikiranga Izina:"
+
+#: glib/gmarkup.c:1382
+#, fuzzy, c-format
+msgid ""
+"Odd character '%s', expected an open quote mark after the equals sign when "
+"giving value for attribute '%s' of element '%s'"
+msgstr ""
+"Inyuguti Ikitezwe: Gufungura Gushyiraho akugarizo Ikimenyetso Nyuma "
+"IKIMENYETSO Ryari: Agaciro kugirango Ikiranga Bya Ikigize:"
+
+#: glib/gmarkup.c:1527
+#, fuzzy, c-format
+msgid ""
+"'%s' is not a valid character following the characters '</'; '%s' may not "
+"begin an element name"
+msgstr "'%s'ni OYA a Byemewe Inyuguti Inyuguti Gicurasi OYA Ikigize: Izina:"
+
+#: glib/gmarkup.c:1567
+#, fuzzy, c-format
+msgid ""
+"'%s' is not a valid character following the close element name '%s'; the "
+"allowed character is '>'"
+msgstr "'%s'ni OYA a Byemewe Inyuguti Gufunga Ikigize: Izina: Inyuguti ni"
+
+#: glib/gmarkup.c:1578
+#, fuzzy, c-format
+msgid "Element '%s' was closed, no element is currently open"
+msgstr "Oya Ikigize: ni Gufungura"
+
+#: glib/gmarkup.c:1587
+#, fuzzy, c-format
+msgid "Element '%s' was closed, but the currently open element is '%s'"
+msgstr "Gufungura Ikigize: ni"
+
+#: glib/gmarkup.c:1753
+#, fuzzy
+msgid "Document was empty or contained only whitespace"
+msgstr "ubusa Cyangwa"
+
+#: glib/gmarkup.c:1767
+#, fuzzy
+msgid "Document ended unexpectedly just after an open angle bracket '<'"
+msgstr "Nyuma Gufungura Imfuruka"
+
+#: glib/gmarkup.c:1775 glib/gmarkup.c:1819
+#, fuzzy, c-format
+msgid ""
+"Document ended unexpectedly with elements still open - '%s' was the last "
+"element opened"
+msgstr "Na: Ibintu Gufungura Iheruka Ikigize:"
+
+#: glib/gmarkup.c:1783
+#, fuzzy, c-format
+msgid ""
+"Document ended unexpectedly, expected to see a close angle bracket ending "
+"the tag <%s/>"
+msgstr "Ikitezwe: Kuri a Gufunga Imfuruka Itagi:"
+
+#: glib/gmarkup.c:1789
+#, fuzzy
+msgid "Document ended unexpectedly inside an element name"
+msgstr "Mo Imbere Ikigize: Izina:"
+
+#: glib/gmarkup.c:1794
+#, fuzzy
+msgid "Document ended unexpectedly inside an attribute name"
+msgstr "Mo Imbere Ikiranga Izina:"
+
+#: glib/gmarkup.c:1799
+#, fuzzy
+msgid "Document ended unexpectedly inside an element-opening tag."
+msgstr "Mo Imbere Ikigize: Gufungura%S Itagi:"
+
+#: glib/gmarkup.c:1805
+#, fuzzy
+msgid ""
+"Document ended unexpectedly after the equals sign following an attribute "
+"name; no attribute value"
+msgstr "Nyuma IKIMENYETSO Ikiranga Izina: Oya Ikiranga Agaciro"
+
+#: glib/gmarkup.c:1812
+#, fuzzy
+msgid "Document ended unexpectedly while inside an attribute value"
+msgstr "Mo Imbere Ikiranga Agaciro"
+
+#: glib/gmarkup.c:1827
+#, fuzzy, c-format
+msgid "Document ended unexpectedly inside the close tag for element '%s'"
+msgstr "Mo Imbere Gufunga Itagi: kugirango Ikigize:"
+
+#: glib/gmarkup.c:1833
+#, fuzzy
+msgid "Document ended unexpectedly inside a comment or processing instruction"
+msgstr "Mo Imbere a Icyo wongeraho Cyangwa Inonosora"
+
+#: glib/gregex.c:126
+msgid "corrupted object"
+msgstr ""
+
+#: glib/gregex.c:128
+msgid "internal error or corrupted object"
+msgstr ""
+
+#: glib/gregex.c:130
+msgid "out of memory"
+msgstr ""
+
+#: glib/gregex.c:135
+msgid "backtracking limit reached"
+msgstr ""
+
+#: glib/gregex.c:147 glib/gregex.c:155
+msgid "the pattern contains items not supported for partial matching"
+msgstr ""
+
+#: glib/gregex.c:149
+msgid "internal error"
+msgstr ""
+
+#: glib/gregex.c:157
+msgid "back references as conditions are not supported for partial matching"
+msgstr ""
+
+#: glib/gregex.c:166
+msgid "recursion limit reached"
+msgstr ""
+
+#: glib/gregex.c:168
+msgid "workspace limit for empty substrings reached"
+msgstr ""
+
+#: glib/gregex.c:170
+msgid "invalid combination of newline flags"
+msgstr ""
+
+#: glib/gregex.c:174
+msgid "unknown error"
+msgstr ""
+
+#: glib/gregex.c:315 glib/gregex.c:1343
+#, c-format
+msgid "Error while matching regular expression %s: %s"
+msgstr ""
+
+#: glib/gregex.c:874
+msgid "PCRE library is compiled without UTF8 support"
+msgstr ""
+
+#: glib/gregex.c:883
+msgid "PCRE library is compiled without UTF8 properties support"
+msgstr ""
+
+#: glib/gregex.c:928
+#, fuzzy, c-format
+msgid "Error while compiling regular expression %s at char %d: %s"
+msgstr "ku Umurongo INYUGUTI"
+
+#: glib/gregex.c:950
+#, c-format
+msgid "Error while optimizing regular expression %s: %s"
+msgstr ""
+
+#: glib/gregex.c:1769
+msgid "hexadecimal digit or '}' expected"
+msgstr ""
+
+#: glib/gregex.c:1785
+msgid "hexadecimal digit expected"
+msgstr ""
+
+#: glib/gregex.c:1825
+msgid "missing '<' in symbolic reference"
+msgstr ""
+
+#: glib/gregex.c:1834
+#, fuzzy
+msgid "unfinished symbolic reference"
+msgstr "Indango"
+
+#: glib/gregex.c:1841
+msgid "zero-length symbolic reference"
+msgstr ""
+
+#: glib/gregex.c:1852
+msgid "digit expected"
+msgstr ""
+
+#: glib/gregex.c:1870
+msgid "illegal symbolic reference"
+msgstr ""
+
+#: glib/gregex.c:1932
+msgid "stray final '\\'"
+msgstr ""
+
+#: glib/gregex.c:1936
+msgid "unknown escape sequence"
+msgstr ""
+
+#: glib/gregex.c:1946
+#, c-format
+msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
+msgstr ""
+
+#: glib/gshell.c:70
+#, fuzzy, c-format
+msgid "Quoted text doesn't begin with a quotation mark"
+msgstr "Umwandiko Na: a Gusubiramo ibyavuzwe Ikimenyetso"
+
+#: glib/gshell.c:160
+#, fuzzy, c-format
+msgid "Unmatched quotation mark in command line or other shell-quoted text"
+msgstr ""
+"Gusubiramo ibyavuzwe Ikimenyetso in Komandi: Umurongo Cyangwa Ikindi "
+"Igikonoshwa Umwandiko"
+
+#: glib/gshell.c:538
+#, fuzzy, c-format
+msgid "Text ended just after a '\\' character. (The text was '%s')"
+msgstr "Nyuma a Inyuguti Umwandiko"
+
+#: glib/gshell.c:545
+#, fuzzy, c-format
+msgid "Text ended before matching quote was found for %c. (The text was '%s')"
+msgstr "Mbere Gushyiraho akugarizo Byabonetse kugirango Umwandiko"
+
+#: glib/gshell.c:557
+#, fuzzy, c-format
+msgid "Text was empty (or contained only whitespace)"
+msgstr "ubusa Cyangwa"
+
+#: glib/gspawn-win32.c:272
+#, fuzzy, c-format
+msgid "Failed to read data from child process"
+msgstr "Kuri Gusoma Ibyatanzwe Bivuye"
+
+#: glib/gspawn-win32.c:287 glib/gspawn.c:1395
+#, fuzzy, c-format
+msgid "Failed to create pipe for communicating with child process (%s)"
+msgstr "Kuri Kurema kugirango Na:"
+
+#: glib/gspawn-win32.c:325 glib/gspawn.c:1059
+#, fuzzy, c-format
+msgid "Failed to read from child pipe (%s)"
+msgstr "Kuri Gusoma Bivuye"
+
+#: glib/gspawn-win32.c:351 glib/gspawn.c:1264
+#, fuzzy, c-format
+msgid "Failed to change to directory '%s' (%s)"
+msgstr "Kuri Guhindura>> Kuri bushyinguro"
+
+#: glib/gspawn-win32.c:357 glib/gspawn-win32.c:481
+#, fuzzy, c-format
+msgid "Failed to execute child process (%s)"
+msgstr "Kuri Gukora"
+
+#: glib/gspawn-win32.c:428
+#, fuzzy, c-format
+msgid "Invalid program name: %s"
+msgstr "Izina ry'inturo:"
+
+#: glib/gspawn-win32.c:438 glib/gspawn-win32.c:678 glib/gspawn-win32.c:1218
+#, c-format
+msgid "Invalid string in argument vector at %d: %s"
+msgstr ""
+
+#: glib/gspawn-win32.c:449 glib/gspawn-win32.c:692 glib/gspawn-win32.c:1251
+#, fuzzy, c-format
+msgid "Invalid string in environment: %s"
+msgstr "in Ihindurangero Iyinjiza"
+
+#: glib/gspawn-win32.c:674 glib/gspawn-win32.c:1199
+#, fuzzy, c-format
+msgid "Invalid working directory: %s"
+msgstr "Gufungura %s%S bushyinguro"
+
+#: glib/gspawn-win32.c:738
+#, fuzzy, c-format
+msgid "Failed to execute helper program (%s)"
+msgstr "Kuri Gukora Porogaramu"
+
+#: glib/gspawn-win32.c:938
+#, fuzzy, c-format
+msgid ""
+"Unexpected error in g_io_channel_win32_poll() reading data from a child "
+"process"
+msgstr "Ikosa in Ibyatanzwe Bivuye a"
+
+#: glib/gspawn.c:175
+#, fuzzy, c-format
+msgid "Failed to read data from child process (%s)"
+msgstr "Kuri Gusoma Ibyatanzwe Bivuye"
+
+#: glib/gspawn.c:307
+#, fuzzy, c-format
+msgid "Unexpected error in select() reading data from a child process (%s)"
+msgstr "Ikosa in Guhitamo Ibyatanzwe Bivuye a"
+
+#: glib/gspawn.c:390
+#, fuzzy, c-format
+msgid "Unexpected error in waitpid() (%s)"
+msgstr "Ikosa in"
+
+#: glib/gspawn.c:1124
+#, fuzzy, c-format
+msgid "Failed to fork (%s)"
+msgstr "Kuri"
+
+#: glib/gspawn.c:1274
+#, fuzzy, c-format
+msgid "Failed to execute child process \"%s\" (%s)"
+msgstr "Kuri Gukora"
+
+#: glib/gspawn.c:1284
+#, fuzzy, c-format
+msgid "Failed to redirect output or input of child process (%s)"
+msgstr "Kuri Ibisohoka Cyangwa Iyinjiza Bya"
+
+#: glib/gspawn.c:1293
+#, fuzzy, c-format
+msgid "Failed to fork child process (%s)"
+msgstr "Kuri"
+
+#: glib/gspawn.c:1301
+#, fuzzy, c-format
+msgid "Unknown error executing child process \"%s\""
+msgstr "Ikosa Gukora: %s%s"
+
+#: glib/gspawn.c:1323
+#, fuzzy, c-format
+msgid "Failed to read enough data from child pid pipe (%s)"
+msgstr "Kuri Gusoma Ibyatanzwe Bivuye"
+
+#: glib/gutf8.c:1024
+#, fuzzy, c-format
+msgid "Character out of range for UTF-8"
+msgstr "Inyuma Bya Urutonde kugirango 8"
+
+#: glib/gutf8.c:1118 glib/gutf8.c:1127 glib/gutf8.c:1259 glib/gutf8.c:1268
+#: glib/gutf8.c:1409 glib/gutf8.c:1505
+#, fuzzy, c-format
+msgid "Invalid sequence in conversion input"
+msgstr "in Ihindurangero Iyinjiza"
+
+#: glib/gutf8.c:1420 glib/gutf8.c:1516
+#, fuzzy, c-format
+msgid "Character out of range for UTF-16"
+msgstr "Inyuma Bya Urutonde kugirango"
+
+# crashrep/source\all\crashrep.lng:%MSG_CMDLINE_USAGE%.text
+#: glib/goption.c:572
+msgid "Usage:"
+msgstr "Ikoresha:"
+
+#: glib/goption.c:572
+msgid "[OPTION...]"
+msgstr ""
+
+#: glib/goption.c:676
+msgid "Help Options:"
+msgstr ""
+
+#: glib/goption.c:677
+#, fuzzy
+msgid "Show help options"
+msgstr "Ifashayobora Amahitamo"
+
+#: glib/goption.c:683
+#, fuzzy
+msgid "Show all help options"
+msgstr "Byose Ifashayobora Amahitamo"
+
+#: glib/goption.c:735
+msgid "Application Options:"
+msgstr ""
+
+#: glib/goption.c:796 glib/goption.c:866
+#, fuzzy, c-format
+msgid "Cannot parse integer value '%s' for %s"
+msgstr "Umubare wuzuye Agaciro kugirango"
+
+#: glib/goption.c:806 glib/goption.c:874
+#, fuzzy, c-format
+msgid "Integer value '%s' for %s out of range"
+msgstr "Agaciro kugirango Inyuma Bya Urutonde"
+
+#: glib/goption.c:831
+#, fuzzy, c-format
+msgid "Cannot parse double value '%s' for %s"
+msgstr "Umubare wuzuye Agaciro kugirango"
+
+#: glib/goption.c:839
+#, fuzzy, c-format
+msgid "Double value '%s' for %s out of range"
+msgstr "Agaciro kugirango Inyuma Bya Urutonde"
+
+#: glib/goption.c:1176
+#, fuzzy, c-format
+msgid "Error parsing option %s"
+msgstr "Ihindurangero"
+
+#: glib/goption.c:1207 glib/goption.c:1318
+#, c-format
+msgid "Missing argument for %s"
+msgstr ""
+
+#: glib/goption.c:1713
+#, fuzzy, c-format
+msgid "Unknown option %s"
+msgstr "Ihitamo ritazwi:"
+
+#: glib/gkeyfile.c:341
+#, fuzzy, c-format
+msgid "Valid key file could not be found in search dirs"
+msgstr "Urufunguzo IDOSIYE OYA Byabonetse in Ibyatanzwe"
+
+#: glib/gkeyfile.c:376
+#, fuzzy, c-format
+msgid "Not a regular file"
+msgstr "a Ibisanzwe IDOSIYE"
+
+#: glib/gkeyfile.c:384
+#, fuzzy, c-format
+msgid "File is empty"
+msgstr "Idosiye ni ubusa"
+
+#: glib/gkeyfile.c:746
+#, fuzzy, c-format
+msgid ""
+"Key file contains line '%s' which is not a key-value pair, group, or comment"
+msgstr ""
+"IDOSIYE Kirimo Umurongo ni OYA a Urufunguzo Agaciro Itsinda Cyangwa Icyo "
+"wongeraho"
+
+#: glib/gkeyfile.c:806
+#, fuzzy, c-format
+msgid "Invalid group name: %s"
+msgstr "Izina ry'inturo:"
+
+#: glib/gkeyfile.c:828
+#, fuzzy, c-format
+msgid "Key file does not start with a group"
+msgstr "IDOSIYE OYA Gutangira Na: a Itsinda"
+
+#: glib/gkeyfile.c:854
+#, fuzzy, c-format
+msgid "Invalid key name: %s"
+msgstr "Izina ry'inturo:"
+
+#: glib/gkeyfile.c:881
+#, fuzzy, c-format
+msgid "Key file contains unsupported encoding '%s'"
+msgstr "IDOSIYE Kirimo Imisobekere:"
+
+#: glib/gkeyfile.c:1094 glib/gkeyfile.c:1253 glib/gkeyfile.c:2455
+#: glib/gkeyfile.c:2521 glib/gkeyfile.c:2640 glib/gkeyfile.c:2775
+#: glib/gkeyfile.c:2928 glib/gkeyfile.c:3108 glib/gkeyfile.c:3165
+#, fuzzy, c-format
+msgid "Key file does not have group '%s'"
+msgstr "IDOSIYE OYA Itsinda"
+
+#: glib/gkeyfile.c:1265
+#, fuzzy, c-format
+msgid "Key file does not have key '%s'"
+msgstr "IDOSIYE OYA Urufunguzo"
+
+#: glib/gkeyfile.c:1367 glib/gkeyfile.c:1477
+#, fuzzy, c-format
+msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
+msgstr "IDOSIYE Kirimo Urufunguzo Na: Agaciro ni OYA 8"
+
+#: glib/gkeyfile.c:1387 glib/gkeyfile.c:1497 glib/gkeyfile.c:1866
+#, fuzzy, c-format
+msgid "Key file contains key '%s' which has value that cannot be interpreted."
+msgstr "IDOSIYE Kirimo Urufunguzo Agaciro"
+
+#: glib/gkeyfile.c:2078 glib/gkeyfile.c:2287
+#, fuzzy, c-format
+msgid ""
+"Key file contains key '%s' in group '%s' which has value that cannot be "
+"interpreted."
+msgstr "IDOSIYE Kirimo Urufunguzo in Itsinda Agaciro"
+
+#: glib/gkeyfile.c:2470 glib/gkeyfile.c:2655 glib/gkeyfile.c:3176
+#, fuzzy, c-format
+msgid "Key file does not have key '%s' in group '%s'"
+msgstr "IDOSIYE OYA Urufunguzo in Itsinda"
+
+#: glib/gkeyfile.c:3415
+#, fuzzy, c-format
+msgid "Key file contains escape character at end of line"
+msgstr "IDOSIYE Kirimo Inyuguti ku Impera Bya Umurongo"
+
+#: glib/gkeyfile.c:3437
+#, fuzzy, c-format
+msgid "Key file contains invalid escape sequence '%s'"
+msgstr "IDOSIYE Kirimo Sibyo"
+
+#: glib/gkeyfile.c:3579
+#, fuzzy, c-format
+msgid "Value '%s' cannot be interpreted as a number."
+msgstr "Nka a Umubare"
+
+#: glib/gkeyfile.c:3593
+#, fuzzy, c-format
+msgid "Integer value '%s' out of range"
+msgstr "Agaciro kugirango Inyuma Bya Urutonde"
+
+#: glib/gkeyfile.c:3626
+#, fuzzy, c-format
+msgid "Value '%s' cannot be interpreted as a float number."
+msgstr "Nka a Umubare"
+
+#: glib/gkeyfile.c:3650
+#, fuzzy, c-format
+msgid "Value '%s' cannot be interpreted as a boolean."
+msgstr "Nka a Icyungo"
+
+#, fuzzy
+#~ msgid "Could not change file mode: fork() failed: %s"
+#~ msgstr "Kuri Gufunga IDOSIYE Byanze"
+
+#, fuzzy
+#~ msgid "Could not change file mode: waitpid() failed: %s"
+#~ msgstr "Kuri IDOSIYE Byanze"
+
+#, fuzzy
+#~ msgid "Could not change file mode: chmod() failed: %s"
+#~ msgstr "Kuri Gufunga IDOSIYE Byanze"
+
+#, fuzzy
+#~ msgid "Conversion from character set `%s' to `%s' is not supported"
+#~ msgstr "Bivuye Inyuguti Gushyiraho Kuri ni OYA"

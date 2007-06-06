@@ -1,0 +1,309 @@
+<!-- ##### SECTION Title ##### -->
+Strings
+
+<!-- ##### SECTION Short_Description ##### -->
+text buffers which grow automatically as text is added.
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+A #GString is similar to a standard C string, except that it grows automatically
+as text is appended or inserted. Also, it stores the length of the string, so
+can be used for binary data with embedded nul bytes.
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### STRUCT GString ##### -->
+<para>
+The #GString struct contains the public fields of a #GString.
+</para>
+
+@str: points to the character data. It may move as text is added.
+The <structfield>str</structfield> field is nul-terminated and so 
+can be used as an ordinary C string.
+@len: contains the length of the string, not including the terminating nul byte.
+@allocated_len: 
+
+<!-- ##### FUNCTION g_string_new ##### -->
+<para>
+
+</para>
+
+@init: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_string_new_len ##### -->
+<para>
+
+</para>
+
+@init: 
+@len: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_string_sized_new ##### -->
+<para>
+
+</para>
+
+@dfl_size: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_string_assign ##### -->
+<para>
+
+</para>
+
+@string: 
+@rval: 
+@Returns: 
+
+
+<!-- ##### MACRO g_string_sprintf ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO g_string_sprintfa ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION g_string_printf ##### -->
+<para>
+
+</para>
+
+@string: 
+@format: 
+@Varargs: 
+
+
+<!-- ##### FUNCTION g_string_append_printf ##### -->
+<para>
+
+</para>
+
+@string: 
+@format: 
+@Varargs: 
+
+
+<!-- ##### FUNCTION g_string_append ##### -->
+<para>
+
+</para>
+
+@string: 
+@val: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_string_append_c ##### -->
+<para>
+
+</para>
+
+@string: 
+@c: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_string_append_unichar ##### -->
+<para>
+
+</para>
+
+@string: 
+@wc: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_string_append_len ##### -->
+<para>
+
+</para>
+
+@string: 
+@val: 
+@len: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_string_prepend ##### -->
+<para>
+
+</para>
+
+@string: 
+@val: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_string_prepend_c ##### -->
+<para>
+
+</para>
+
+@string: 
+@c: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_string_prepend_unichar ##### -->
+<para>
+
+</para>
+
+@string: 
+@wc: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_string_prepend_len ##### -->
+<para>
+
+</para>
+
+@string: 
+@val: 
+@len: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_string_insert ##### -->
+<para>
+
+</para>
+
+@string: 
+@pos: 
+@val: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_string_insert_c ##### -->
+<para>
+
+</para>
+
+@string: a #GString.
+@pos: the position to insert the byte.
+@c: the byte to insert.
+@Returns: the #GString.
+
+
+<!-- ##### FUNCTION g_string_insert_unichar ##### -->
+<para>
+
+</para>
+
+@string: 
+@pos: 
+@wc: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_string_insert_len ##### -->
+<para>
+
+</para>
+
+@string: 
+@pos: 
+@val: 
+@len: 
+@Returns: 
+o
+
+
+<!-- ##### FUNCTION g_string_erase ##### -->
+<para>
+
+</para>
+
+@string: 
+@pos: 
+@len: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_string_truncate ##### -->
+<para>
+
+</para>
+
+@string: 
+@len: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_string_set_size ##### -->
+<para>
+
+</para>
+
+@string: 
+@len: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_string_free ##### -->
+<para>
+
+</para>
+
+@string: 
+@free_segment: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_string_up ##### -->
+<para>
+</para>
+
+@string: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_string_down ##### -->
+<para>
+</para>
+
+@string: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_string_hash ##### -->
+<para>
+
+</para>
+
+@str: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_string_equal ##### -->
+<para>
+Compares two strings for equality, returning %TRUE if they are equal. 
+For use with #GHashTable.
+</para>
+
+@v: a #GString
+@v2: another #GString
+@Returns: %TRUE if they strings are the same length and contain the same bytes.
+
+

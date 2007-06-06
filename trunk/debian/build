@@ -1,0 +1,62 @@
+#!/usr/bin/perl -w
+
+				# Adjust debian/changelog and build a new
+				# Debian package of a CVS archive.
+
+				# Written 17 November 1998 by Ben Gertzfield
+				# <che@debian.org>
+
+				# This work is released under the GNU
+				# General Public License, version 2 or
+				# later.
+
+use strict;
+use diagnostics;
+use File::Copy;
+
+my $maintainer = 'Ben Gertzfield <che@debian.org>';
+
+my @date = localtime;
+
+my $datestr = sprintf("%d%.2d%.2d", $date[5] + 1900, $date[4] + 1, $date[3]);
+my $revision = '01';
+
+open (CHANGELOG, 'debian/changelog') or die "Couldn't open debian/changelog: $!\n";
+
+$_ = <CHANGELOG>;
+chomp;
+
+close CHANGELOG;
+
+my ($package, $last_date, $last_revision) = /^(.*?) \((.*?)\.(.*)?\)/;
+
+if ($last_date eq $datestr) {
+  $revision = sprintf("%.2d", $last_revision + 1);
+}
+
+my $new_version = "$datestr.$revision";
+
+copy('debian/changelog', 'debian/changelog.old') or die "Couldn't copy debian/changelog to debian/changelog.old: $!\n";
+
+open(NEWCHANGELOG, ">debian/changelog") or die "Couldn't open debian/changelog for writing: $!\n";
+
+print NEWCHANGELOG "$package ($new_version) unstable; urgency=low\n\n  * CVS snapshot build at " . scalar localtime() . "\n\n -- $maintainer  " . `date -R` . "\n";
+
+open(OLDCHANGELOG, "debian/changelog.old") or die "Couldn't open debian/changelog.old: $!\n";
+
+while (<OLDCHANGELOG>) {
+  print NEWCHANGELOG;
+}
+
+close OLDCHANGELOG;
+close NEWCHANGELOG;
+
+unlink('debian/changelog.old') or die "Couldn't unlink debian/changelog.old: $!\n";
+
+open(NEWVERSION, '>debian/version') or die "Couldn't open debian/version for writing: $!\n";
+print NEWVERSION "$new_version\n";
+close NEWVERSION;
+
+system('dpkg-buildpackage -b -rfakeroot -us -uc');
+unlink 'debian/version' or die "Couldn't unlink debian/version: $!\n";
+

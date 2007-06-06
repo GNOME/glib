@@ -1,0 +1,234 @@
+<!-- ##### SECTION Title ##### -->
+Basic Types
+
+<!-- ##### SECTION Short_Description ##### -->
+standard GLib types, defined for ease-of-use and portability.
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+GLib defines a number of commonly used types, which can be divided into
+4 groups:
+
+<itemizedlist>
+<listitem><para>
+New types which are not part of standard C - #gboolean, #gsize, #gssize.
+</para></listitem>
+
+<listitem><para>
+Integer types which are guaranteed to be the same size across all platforms -
+#gint8, #guint8, #gint16, #guint16, #gint32, #guint32, #gint64, #guint64.
+</para></listitem>
+
+<listitem><para>
+Types which are easier to use than their standard C counterparts -
+#gpointer, #gconstpointer, #guchar, #guint, #gushort, #gulong.
+</para></listitem>
+
+<listitem><para>
+Types which correspond exactly to standard C types, but are included
+for completeness - #gchar, #gint, #gshort, #glong, #gfloat, #gdouble.
+</para></listitem>
+</itemizedlist>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### TYPEDEF gboolean ##### -->
+<para>
+A standard <type>boolean</type> type.
+Variables of this type should only contain the value %TRUE or %FALSE.
+</para>
+
+
+<!-- ##### TYPEDEF gpointer ##### -->
+<para>
+An untyped pointer.
+#gpointer looks better and is easier to use than <type>void*</type>.
+</para>
+
+
+<!-- ##### TYPEDEF gconstpointer ##### -->
+<para>
+An untyped pointer to constant data.
+The data pointed to should not be changed.
+</para>
+<para>
+This is typically used in function prototypes to indicate that the
+data pointed to will not be altered by the function.
+</para>
+
+
+<!-- ##### TYPEDEF gchar ##### -->
+<para>
+Corresponds to the standard C <type>char</type> type.
+</para>
+
+
+<!-- ##### TYPEDEF guchar ##### -->
+<para>
+Corresponds to the standard C <type>unsigned char</type> type.
+</para>
+
+
+<!-- ##### TYPEDEF gint ##### -->
+<para>
+Corresponds to the standard C <type>int</type> type.
+Values of this type can range from #G_MININT to #G_MAXINT.
+</para>
+
+
+<!-- ##### TYPEDEF guint ##### -->
+<para>
+Corresponds to the standard C <type>unsigned int</type> type.
+Values of this type can range from 0 to #G_MAXUINT.
+</para>
+
+
+<!-- ##### TYPEDEF gshort ##### -->
+<para>
+Corresponds to the standard C <type>short</type> type.
+Values of this type can range from #G_MINSHORT to #G_MAXSHORT.
+</para>
+
+
+<!-- ##### TYPEDEF gushort ##### -->
+<para>
+Corresponds to the standard C <type>unsigned short</type> type.
+Values of this type can range from 0 to #G_MAXUSHORT.
+</para>
+
+
+<!-- ##### TYPEDEF glong ##### -->
+<para>
+Corresponds to the standard C <type>long</type> type.
+Values of this type can range from #G_MINLONG to #G_MAXLONG.
+</para>
+
+
+<!-- ##### TYPEDEF gulong ##### -->
+<para>
+Corresponds to the standard C <type>unsigned long</type> type.
+Values of this type can range from 0 to #G_MAXULONG.
+</para>
+
+
+<!-- ##### TYPEDEF gint8 ##### -->
+<para>
+A signed integer guaranteed to be 8 bits on all platforms.
+Values of this type can range from -128 to 127.
+</para>
+
+
+<!-- ##### TYPEDEF guint8 ##### -->
+<para>
+An unsigned integer guaranteed to be 8 bits on all platforms.
+Values of this type can range from 0 to 255.
+</para>
+
+
+<!-- ##### TYPEDEF gint16 ##### -->
+<para>
+A signed integer guaranteed to be 16 bits on all platforms.
+Values of this type can range from -32,768 to 32,767.
+</para>
+
+
+<!-- ##### TYPEDEF guint16 ##### -->
+<para>
+An unsigned integer guaranteed to be 16 bits on all platforms.
+Values of this type can range from 0 to 65,535.
+</para>
+
+
+<!-- ##### TYPEDEF gint32 ##### -->
+<para>
+A signed integer guaranteed to be 32 bits on all platforms.
+Values of this type can range from -2,147,483,648 to 2,147,483,647.
+</para>
+
+
+<!-- ##### TYPEDEF guint32 ##### -->
+<para>
+An unsigned integer guaranteed to be 32 bits on all platforms.
+Values of this type can range from 0 to 4,294,967,295.
+</para>
+
+
+<!-- ##### MACRO G_HAVE_GINT64 ##### -->
+<para>
+This macro is defined if 64-bit signed and unsigned integers are available
+on the platform. 
+</para>
+
+@Deprecated: GLib requires 64-bit integer support since version 2.0, therefore
+%G_HAVE_GINT64 is <emphasis>always</emphasis> defined.
+
+
+<!-- ##### TYPEDEF gint64 ##### -->
+<para>
+A signed integer guaranteed to be 64 bits on all platforms.
+Values of this type can range from -9,223,372,036,854,775,808 to
+9,223,372,036,854,775,807.
+</para>
+
+
+<!-- ##### FUNCTION guint64 ##### -->
+<para>
+An unsigned integer guaranteed to be 64 bits on all platforms.
+Values of this type can range from 0 to 18,446,744,073,709,551,615.
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO G_GINT64_CONSTANT ##### -->
+<para>
+This macro is used to insert 64-bit integer literals into the source code.
+</para>
+
+@val: a literal integer value, e.g. 0x1d636b02300a7aa7U.
+
+
+<!-- ##### MACRO G_GUINT64_CONSTANT ##### -->
+<para>
+This macro is used to insert 64-bit unsigned integer literals into the 
+source code.
+</para>
+
+@val: a literal integer value, e.g. 0x1d636b02300a7aa7U.
+@Since: 2.10
+
+
+<!-- ##### TYPEDEF gfloat ##### -->
+<para>
+Corresponds to the standard C <type>float</type> type.
+Values of this type can range from -#G_MAXFLOAT to #G_MAXFLOAT.
+</para>
+
+
+<!-- ##### TYPEDEF gdouble ##### -->
+<para>
+Corresponds to the standard C <type>double</type> type.
+Values of this type can range from -#G_MAXDOUBLE to #G_MAXDOUBLE.
+</para>
+
+
+<!-- ##### TYPEDEF gsize ##### -->
+<para>
+An unsigned 32-bit integer intended to represent sizes of data structures.
+</para>
+
+
+<!-- ##### TYPEDEF gssize ##### -->
+<para>
+A signed 32-bit integer intended to represent sizes of data structures.
+</para>
+
+

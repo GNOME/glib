@@ -1,0 +1,1037 @@
+<!-- ##### SECTION Title ##### -->
+The Main Event Loop
+
+<!-- ##### SECTION Short_Description ##### -->
+manages all available sources of events.
+
+<!-- ##### SECTION Long_Description ##### -->
+  <para>
+    The main event loop manages all the available sources of events for
+    GLib and GTK+ applications. These events can come from any number of
+    different types of sources such as file descriptors (plain files,
+    pipes or sockets) and timeouts.  New types of event sources can also
+    be added using g_source_attach().
+  </para>
+  <para>
+    To allow multiple independent sets of sources to be handled in
+    different threads, each source is associated with a #GMainContext.
+    A #GMainContext can only be running in a single thread, but
+    sources can be added to it and removed from it from other threads.
+  </para>
+  <para>
+    Each event source is assigned a priority.  The default priority,
+    #G_PRIORITY_DEFAULT, is 0.  Values less than 0 denote higher
+    priorities.  Values greater than 0 denote lower priorities.  Events
+    from high priority sources are always processed before events from
+    lower priority sources.
+  </para>
+  <para>
+    Idle functions can also be added, and assigned a priority. These will
+    be run whenever no events with a higher priority are ready to be
+    processed.
+  </para>
+  <para>
+    The #GMainLoop data type represents a main event loop.  A #GMainLoop
+    is created with g_main_loop_new(). After adding the initial event sources,
+    g_main_loop_run() is called. This continuously checks for new events from
+    each of the event sources and dispatches them.  Finally, the
+    processing of an event from one of the sources leads to a call to
+    g_main_loop_quit() to exit the main loop, and g_main_loop_run() returns.
+  </para>
+  <para>
+    It is possible to create new instances of #GMainLoop recursively.
+    This is often used in GTK+ applications when showing modal dialog
+    boxes. Note that event sources are associated with a particular
+    #GMainContext, and will be checked and dispatched for all main
+    loops associated with that #GMainContext.
+  </para>
+  <para>
+    GTK+ contains wrappers of some of these functions, e.g. gtk_main(),
+    gtk_main_quit() and gtk_events_pending(). 
+  </para>
+  <refsect2>
+    <title>Creating new sources types</title>
+    <para>
+      One of the unusual features of the GTK+ main loop functionality
+      is that new types of event source can be created and used in
+      addition to the builtin type of event source. A new event source
+      type is used for handling GDK events. A new source type is
+      created by <firstterm>deriving</firstterm> from the #GSource
+      structure. The derived type of source is represented by a
+      structure that has the #GSource structure as a first element,
+      and other elements specific to the new source type. To create
+      an instance of the new source type, call g_source_new() passing
+      in the size of the derived structure and a table of functions.
+      These #GSourceFuncs determine the behavior of the new source
+      types.
+    </para>
+    <para>
+      New source types basically interact with with the main context
+      in two ways. Their prepare function in #GSourceFuncs can set
+      a timeout to determine the maximum amount of time that the
+      main loop will sleep before checking the source again.  In
+      addition, or as well, the source can add file descriptors to
+      the set that the main context checks using g_source_add_poll().
+    </para>
+  </refsect2>
+  <refsect2>
+    <title>Customizing the main loop iteration</title>
+    <para>
+      Single iterations of a #GMainContext can be run with
+      g_main_context_iteration(). In some cases, more detailed control
+      of exactly how the details of the main loop work is desired,
+      for instance, when integrating the #GMainLoop with an external
+      main loop. In such cases, you can call the component functions
+      of g_main_context_iteration() directly. These functions
+      are g_main_context_prepare(), g_main_context_query(),
+      g_main_context_check() and g_main_context_dispatch().
+    </para>
+    <para>
+      The operation of these functions can best be seen in terms
+      of a state diagram, as shown in <xref linkend="mainloop-states"/>.
+    </para>
+    <figure id="mainloop-states">
+      <title>States of a Main Context</title>
+      <graphic fileref="mainloop-states.gif" format="GIF"></graphic>
+    </figure>
+  </refsect2>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### STRUCT GMainLoop ##### -->
+<para>
+The <structname>GMainLoop</structname> struct is an opaque data type 
+representing the main event loop of a GLib or GTK+ application.
+</para>
+
+
+<!-- ##### FUNCTION g_main_loop_new ##### -->
+<para>
+
+</para>
+
+@context: 
+@is_running: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_main_loop_ref ##### -->
+<para>
+
+</para>
+
+@loop: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_main_loop_unref ##### -->
+<para>
+
+</para>
+
+@loop: 
+
+
+<!-- ##### FUNCTION g_main_loop_run ##### -->
+<para>
+
+</para>
+
+@loop: 
+
+
+<!-- ##### FUNCTION g_main_loop_quit ##### -->
+<para>
+
+</para>
+
+@loop: 
+
+
+<!-- ##### FUNCTION g_main_loop_is_running ##### -->
+<para>
+
+</para>
+
+@loop: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_main_loop_get_context ##### -->
+<para>
+
+</para>
+
+@loop: 
+@Returns: 
+
+
+<!-- ##### MACRO g_main_new ##### -->
+<para>
+Creates a new #GMainLoop for the default main loop. 
+</para>
+
+@is_running: set to %TRUE to indicate that the loop is running. This is not
+very important since calling g_main_run() will set this to %TRUE anyway.
+@Returns: a new #GMainLoop.
+@Deprecated: 2.2: Use g_main_loop_new() instead.
+
+
+<!-- ##### MACRO g_main_destroy ##### -->
+<para>
+Frees the memory allocated for the #GMainLoop. 
+</para>
+
+@loop: a #GMainLoop.
+@Deprecated: 2.2: Use g_main_loop_unref() instead.
+
+
+<!-- ##### MACRO g_main_run ##### -->
+<para>
+Runs a main loop until it stops running. 
+</para>
+
+@loop: a #GMainLoop.
+@Deprecated: 2.2: Use g_main_loop_run() instead.
+
+
+<!-- ##### MACRO g_main_quit ##### -->
+<para>
+Stops the #GMainLoop. If g_main_run() was called to run the #GMainLoop,
+it will now return. 
+</para>
+
+@loop: a #GMainLoop.
+@Deprecated: 2.2: Use g_main_loop_quit() instead.
+
+
+<!-- ##### MACRO g_main_is_running ##### -->
+<para>
+Checks if the main loop is running. 
+</para>
+
+@loop: a #GMainLoop.
+@Returns: %TRUE if the main loop is running.
+@Deprecated: 2.2: USe g_main_loop_is_running() instead.
+
+
+<!-- ##### MACRO G_PRIORITY_HIGH ##### -->
+<para>
+Use this for high priority event sources.
+It is not used within GLib or GTK+.
+</para>
+
+
+
+<!-- ##### MACRO G_PRIORITY_DEFAULT ##### -->
+<para>
+Use this for default priority event sources.
+In GLib this priority is used when adding timeout functions with
+g_timeout_add().
+In GDK this priority is used for events from the X server.
+</para>
+
+
+
+<!-- ##### MACRO G_PRIORITY_HIGH_IDLE ##### -->
+<para>
+Use this for high priority idle functions.
+GTK+ uses #G_PRIORITY_HIGH_IDLE + 10 for resizing operations, and
+#G_PRIORITY_HIGH_IDLE + 20 for redrawing operations. (This is done to
+ensure that any pending resizes are processed before any pending redraws,
+so that widgets are not redrawn twice unnecessarily.)
+</para>
+
+
+
+<!-- ##### MACRO G_PRIORITY_DEFAULT_IDLE ##### -->
+<para>
+Use this for default priority idle functions.
+In GLib this priority is used when adding idle functions with g_idle_add().
+</para>
+
+
+
+<!-- ##### MACRO G_PRIORITY_LOW ##### -->
+<para>
+Use this for very low priority background tasks.
+It is not used within GLib or GTK+.
+</para>
+
+
+
+<!-- ##### STRUCT GMainContext ##### -->
+<para>
+The <structname>GMainContext</structname> struct is an opaque data type 
+representing a set of sources to be handled in a main loop. 
+</para>
+
+
+<!-- ##### FUNCTION g_main_context_new ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION g_main_context_ref ##### -->
+<para>
+
+</para>
+
+@context: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_main_context_unref ##### -->
+<para>
+
+</para>
+
+@context: 
+
+
+<!-- ##### FUNCTION g_main_context_default ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION g_main_context_iteration ##### -->
+<para>
+
+</para>
+
+@context: 
+@may_block: 
+@Returns: 
+
+
+<!-- ##### MACRO g_main_iteration ##### -->
+<para>
+Runs a single iteration for the default #GMainContext.
+</para>
+
+@may_block: set to %TRUE if it should block (i.e. wait) until an event source
+becomes ready. It will return after an event source has been processed.
+If set to %FALSE it will return immediately if no event source is ready to be
+processed.
+@Returns: %TRUE if more events are pending.
+@Deprecated: 2.2: Use g_main_context_iteration() instead.
+
+
+<!-- ##### FUNCTION g_main_context_pending ##### -->
+<para>
+
+</para>
+
+@context: 
+@Returns: 
+
+
+<!-- ##### MACRO g_main_pending ##### -->
+<para>
+Checks if any events are pending for the default #GMainContext
+(i.e. ready to be processed).  
+</para>
+
+@Returns: %TRUE if any events are pending.
+@Deprecated: 2.2: Use g_main_context_pending() instead.
+
+
+<!-- ##### FUNCTION g_main_context_find_source_by_id ##### -->
+<para>
+
+</para>
+
+@context: 
+@source_id: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_main_context_find_source_by_user_data ##### -->
+<para>
+
+</para>
+
+@context: 
+@user_data: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_main_context_find_source_by_funcs_user_data ##### -->
+<para>
+
+</para>
+
+@context: 
+@funcs: 
+@user_data: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_main_context_wakeup ##### -->
+<para>
+
+</para>
+
+@context: 
+
+
+<!-- ##### FUNCTION g_main_context_acquire ##### -->
+<para>
+
+</para>
+
+@context: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_main_context_release ##### -->
+<para>
+
+</para>
+
+@context: 
+
+
+<!-- ##### FUNCTION g_main_context_is_owner ##### -->
+<para>
+
+</para>
+
+@context: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_main_context_wait ##### -->
+<para>
+
+</para>
+
+@context: 
+@cond: 
+@mutex: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_main_context_prepare ##### -->
+<para>
+
+</para>
+
+@context: 
+@priority: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_main_context_query ##### -->
+<para>
+
+</para>
+
+@context: 
+@max_priority: 
+@timeout_: 
+@fds: 
+@n_fds: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_main_context_check ##### -->
+<para>
+
+</para>
+
+@context: 
+@max_priority: 
+@fds: 
+@n_fds: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_main_context_dispatch ##### -->
+<para>
+
+</para>
+
+@context: 
+
+
+<!-- ##### FUNCTION g_main_context_set_poll_func ##### -->
+<para>
+
+</para>
+
+@context: 
+@func: 
+
+
+<!-- ##### FUNCTION g_main_context_get_poll_func ##### -->
+<para>
+
+</para>
+
+@context: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION GPollFunc ##### -->
+<para>
+Specifies the type of function passed to g_main_context_set_poll_func().
+The semantics of the function should match those of the
+<function>poll()</function> system call.
+</para>
+
+@ufds: an array of #GPollFD elements.
+@nfsd: the number of elements in @ufds.
+@timeout_: the maximum time to wait for an event of the file descriptors.
+          A negative value indicates an infinite timeout.
+@Returns: the number of #GPollFD elements which have events or errors reported,
+or -1 if an error occurred.
+
+
+<!-- ##### FUNCTION g_main_context_add_poll ##### -->
+<para>
+
+</para>
+
+@context: 
+@fd: 
+@priority: 
+
+
+<!-- ##### FUNCTION g_main_context_remove_poll ##### -->
+<para>
+
+</para>
+
+@context: 
+@fd: 
+
+
+<!-- ##### FUNCTION g_main_depth ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION g_main_current_source ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO g_main_set_poll_func ##### -->
+<para>
+Sets the function to use for the handle polling of file descriptors
+for the default main context. 
+</para>
+
+@func: the function to call to poll all file descriptors.
+@Deprecated: 2.2: Use g_main_context_set_poll_func() instead.
+
+
+<!-- ##### FUNCTION g_timeout_source_new ##### -->
+<para>
+
+</para>
+
+@interval: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_timeout_source_new_seconds ##### -->
+<para>
+
+</para>
+
+@interval: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_timeout_add ##### -->
+<para>
+</para>
+
+@interval: 
+@function: 
+@data: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_timeout_add_full ##### -->
+<para>
+</para>
+
+@priority: 
+@interval: 
+@function: 
+@data: 
+@notify: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_timeout_add_seconds ##### -->
+<para>
+
+</para>
+
+@interval: 
+@function: 
+@data: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_idle_source_new ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION g_idle_add ##### -->
+<para>
+</para>
+
+@function: 
+@data: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_idle_add_full ##### -->
+<para>
+</para>
+
+@priority: 
+@function: 
+@data: 
+@notify: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_idle_remove_by_data ##### -->
+<para>
+</para>
+
+@data: 
+@Returns: 
+
+
+<!-- ##### TYPEDEF GPid ##### -->
+<para>
+A type which is used to hold a process identification. 
+On Unix, processes are identified by a process id (an 
+integer), while Windows uses process handles (which are 
+pointers).
+</para>
+
+
+<!-- ##### USER_FUNCTION GChildWatchFunc ##### -->
+<para>
+The type of functions to be called when a child exists.
+</para>
+
+@pid: the process id of the child process
+@status: Status information about the child process,
+  see waitpid(2) for more information about this field
+@data: user data passed to g_child_watch_add()
+
+
+<!-- ##### FUNCTION g_child_watch_source_new ##### -->
+<para>
+
+</para>
+
+@pid: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_child_watch_add ##### -->
+<para>
+
+</para>
+
+@pid: 
+@function: 
+@data: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_child_watch_add_full ##### -->
+<para>
+
+</para>
+
+@priority: 
+@pid: 
+@function: 
+@data: 
+@notify: 
+@Returns: 
+
+
+<!-- ##### STRUCT GPollFD ##### -->
+<para>
+
+<informaltable pgwide="1" frame="none" role="struct">
+<tgroup cols="2"><colspec colwidth="2*"/><colspec colwidth="8*"/>
+<tbody>
+
+<row>
+<entry>#gint fd;</entry>
+<entry>the file descriptor to poll (or a <type>HANDLE</type> on Win32 platforms).</entry>
+</row>
+
+<row>
+<entry>#gushort events;</entry>
+<entry>a bitwise combination of flags from #GIOCondition, specifying which
+events should be polled for. Typically for reading from a file descriptor
+you would use %G_IO_IN | %G_IO_HUP | %G_IO_ERR, and for writing you would use
+%G_IO_OUT | %G_IO_ERR.
+</entry>
+</row>
+
+<row>
+<entry>#gushort revents;</entry>
+<entry>a bitwise combination of flags from #GIOCondition, returned from the
+<function>poll()</function> function to indicate which events occurred.
+</entry>
+</row>
+</tbody></tgroup></informaltable>
+
+</para>
+
+@revents: 
+
+<!-- ##### STRUCT GSource ##### -->
+<para>
+The <structname>GSource</structname> struct is an opaque data type representing
+an event source.
+</para>
+
+
+<!-- ##### USER_FUNCTION GSourceDummyMarshal ##### -->
+<para>
+This is just a placeholder for #GClosureMarshal, which cannot be used here
+for dependency reasons.
+</para>
+
+
+
+<!-- ##### STRUCT GSourceFuncs ##### -->
+<para>
+The #GSourceFuncs struct contains a table of functions used to handle
+event sources in a generic manner.
+
+<informaltable pgwide="1" frame="none" role="struct">
+<tgroup cols="2"><colspec colwidth="2*"/><colspec colwidth="8*"/>
+<tbody>
+
+<row>
+<entry>prepare</entry>
+<entry>
+Called before all the file descriptors are polled.
+If the source can determine that it is ready here (without waiting for the
+results of the <function>poll()</function> call) it should return %TRUE.
+It can also return a @timeout_ value which should be the maximum timeout
+(in milliseconds) which should be passed to the <function>poll()</function> call.
+The actual timeout used will be -1 if all sources returned -1, or it will
+be the minimum of all the @timeout_ values returned which were >= 0.
+</entry>
+</row>
+
+<row>
+<entry>check</entry>
+<entry>
+Called after all the file descriptors are polled.
+The source should return %TRUE if it is ready to be dispatched.
+Note that some time may have passed since the previous prepare function was
+called, so the source should be checked again here.
+</entry>
+</row>
+
+<row>
+<entry>dispatch</entry>
+<entry>
+Called to dispatch the event source, after it has returned %TRUE in
+either its @prepare or its @check function. The @dispatch function is
+passed in a callback function and data. The callback function may be
+%NULL if the source was never connected to a callback using
+g_source_set_callback(). The @dispatch function should call the
+callback function with @user_data and whatever additional parameters are
+needed for this type of event source.
+</entry>
+</row>
+
+<row>
+<entry>finalize</entry>
+<entry>
+Called when the source is finalized.
+</entry>
+</row>
+</tbody></tgroup></informaltable>
+</para>
+
+<para>
+For idle sources, the prepare and check functions always return %TRUE to
+indicate that the source is always ready to be processed.
+The prepare function also returns a timeout value of 0 to ensure that the
+<function>poll()</function> call doesn't block (since that would be time 
+wasted which could have been spent running the idle function).
+</para>
+<para>
+For timeout sources, the prepare and check functions both return %TRUE if the
+timeout interval has expired. The prepare function also returns a timeout 
+value to ensure that the <function>poll()</function> call doesn't block too 
+long and miss the next timeout.
+</para>
+<para>
+For file descriptor sources, the prepare function typically returns %FALSE,
+since it must wait until <function>poll()</function> has been called before 
+it knows whether any events need to be processed. It sets the returned 
+timeout to -1 to indicate that it doesn't mind how long the 
+<function>poll()</function> call blocks.
+In the check function, it tests the results of the <function>poll()</function>
+call to see if the required condition has been met, and returns %TRUE if so.
+</para>
+
+@prepare: 
+@check: 
+@dispatch: 
+@finalize: 
+@closure_callback: 
+@closure_marshal: 
+
+<!-- ##### STRUCT GSourceCallbackFuncs ##### -->
+<para>
+The <structname>GSourceCallbackFuncs</structname> struct contains
+functions for managing callback objects. 
+</para>
+
+@ref: Called when a reference is added to the callback object.
+@unref: Called when a reference to the callback object is dropped.
+@get: Called to extract the callback function and data from the callback object.
+
+<!-- ##### FUNCTION g_source_new ##### -->
+<para>
+
+</para>
+
+@source_funcs: 
+@struct_size: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_source_ref ##### -->
+<para>
+
+</para>
+
+@source: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_source_unref ##### -->
+<para>
+
+</para>
+
+@source: 
+
+
+<!-- ##### FUNCTION g_source_set_funcs ##### -->
+<para>
+
+</para>
+
+@source: 
+@funcs: 
+
+
+<!-- ##### FUNCTION g_source_attach ##### -->
+<para>
+
+</para>
+
+@source: 
+@context: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_source_destroy ##### -->
+<para>
+
+</para>
+
+@source: 
+
+
+<!-- ##### FUNCTION g_source_is_destroyed ##### -->
+<para>
+
+</para>
+
+@source: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_source_set_priority ##### -->
+<para>
+
+</para>
+
+@source: 
+@priority: 
+
+
+<!-- ##### FUNCTION g_source_get_priority ##### -->
+<para>
+
+</para>
+
+@source: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_source_set_can_recurse ##### -->
+<para>
+
+</para>
+
+@source: 
+@can_recurse: 
+
+
+<!-- ##### FUNCTION g_source_get_can_recurse ##### -->
+<para>
+
+</para>
+
+@source: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_source_get_id ##### -->
+<para>
+
+</para>
+
+@source: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_source_get_context ##### -->
+<para>
+
+</para>
+
+@source: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_source_set_callback ##### -->
+<para>
+
+</para>
+
+@source: 
+@func: 
+@data: 
+@notify: 
+
+
+<!-- ##### USER_FUNCTION GSourceFunc ##### -->
+<para>
+Specifies the type of function passed to g_timeout_add(), g_timeout_add_full(),
+g_idle_add(), and g_idle_add_full().
+</para>
+
+@data: data passed to the function, set when the source was created with one
+of the above functions.
+@Returns: it should return %FALSE if the source should be removed.
+
+
+<!-- ##### FUNCTION g_source_set_callback_indirect ##### -->
+<para>
+
+</para>
+
+@source: 
+@callback_data: 
+@callback_funcs: 
+
+
+<!-- ##### FUNCTION g_source_add_poll ##### -->
+<para>
+
+</para>
+
+@source: 
+@fd: 
+
+
+<!-- ##### FUNCTION g_source_remove_poll ##### -->
+<para>
+
+</para>
+
+@source: 
+@fd: 
+
+
+<!-- ##### FUNCTION g_source_get_current_time ##### -->
+<para>
+
+</para>
+
+@source: 
+@timeval: 
+
+
+<!-- ##### FUNCTION g_source_remove ##### -->
+<para>
+</para>
+
+@tag: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_source_remove_by_funcs_user_data ##### -->
+<para>
+</para>
+
+@funcs: 
+@user_data: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_source_remove_by_user_data ##### -->
+<para>
+</para>
+
+@user_data: 
+@Returns: 
+
+<!--
+Local variables:
+mode: sgml
+sgml-parent-document: ("../glib-docs.sgml" "book" "refsect2" "")
+End:
+-->
+
+

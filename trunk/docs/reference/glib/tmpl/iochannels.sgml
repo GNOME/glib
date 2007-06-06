@@ -1,0 +1,682 @@
+<!-- ##### SECTION Title ##### -->
+IO Channels
+
+<!-- ##### SECTION Short_Description ##### -->
+portable support for using files, pipes and sockets.
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+The #GIOChannel data type aims to provide a portable method for using file
+descriptors, pipes, and sockets, and integrating them into the
+<link linkend="glib-The-Main-Event-Loop">main event loop</link>.
+Currently full support is available on UNIX platforms, support for
+Windows is only partially complete.
+</para>
+<para>
+To create a new #GIOChannel on UNIX systems use g_io_channel_unix_new().
+This works for plain file descriptors, pipes and sockets.
+Alternatively, a channel can be created for a file in a system independent
+manner using g_io_channel_new_file().
+</para>
+<para>
+Once a #GIOChannel has been created, it can be used in a generic manner
+with the functions g_io_channel_read_chars(), g_io_channel_write_chars(),
+g_io_channel_seek_position(), and g_io_channel_shutdown().
+</para>
+<para>
+To add a #GIOChannel to the 
+<link linkend="glib-The-Main-Event-Loop">main event loop</link>
+use g_io_add_watch() or g_io_add_watch_full(). Here you specify which events
+you are interested in on the #GIOChannel, and provide a function to be
+called whenever these events occur.
+</para>
+<para>
+#GIOChannel instances are created with an initial reference count of 1.
+g_io_channel_ref() and g_io_channel_unref() can be used to increment or
+decrement the reference count respectively. When the reference count falls
+to 0, the #GIOChannel is freed. (Though it isn't closed automatically,
+unless it was created using g_io_channel_new_from_file().)
+Using g_io_add_watch() or g_io_add_watch_full() increments a channel's
+reference count.
+</para>
+<para>
+The new functions g_io_channel_read_chars(), g_io_channel_read_line(),
+g_io_channel_read_line_string(), g_io_channel_read_to_end(),
+g_io_channel_write_chars(), g_io_channel_seek_position(),
+and g_io_channel_flush() should not be mixed with the
+deprecated functions g_io_channel_read(), g_io_channel_write(),
+and g_io_channel_seek() on the same channel.
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+<variablelist>
+
+<varlistentry>
+<term>gtk_input_add_full(), gtk_input_remove(), gdk_input_add(),
+gdk_input_add_full(), gdk_input_remove()</term>
+<listitem><para>
+Convenience functions for creating #GIOChannel instances and adding them to the
+<link linkend="glib-The-Main-Event-Loop">main event loop</link>.
+</para></listitem>
+</varlistentry>
+
+</variablelist>
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### STRUCT GIOChannel ##### -->
+<para>
+A data structure representing an IO Channel. The fields should be considered
+private and should only be accessed with the following functions.
+</para>
+
+
+<!-- ##### FUNCTION g_io_channel_unix_new ##### -->
+<para>
+Creates a new #GIOChannel given a file descriptor.
+On UNIX systems this works for plain files, pipes, and sockets.
+</para>
+<para>
+The returned #GIOChannel has a reference count of 1.
+</para>
+<para>
+The default encoding for #GIOChannel is UTF-8. If your application
+is reading output from a command using via pipe, you may need to
+set the encoding to the encoding of the current locale (see
+g_get_charset()) with the g_io_channel_set_encoding() function.
+</para>
+<para>
+If you want to read raw binary data without interpretation, then
+call the g_io_channel_set_encoding() function with %NULL for the
+encoding argument.
+</para>
+<para>
+This function is available in GLib on Windows, too, but you should
+avoid using it on Windows. The domain of file descriptors and sockets
+overlap. There is no way for GLib to know which one you mean in case
+the argument you pass to this function happens to be both a valid file
+descriptor and socket. If that happens a warning is issued, and GLib
+assumes that it is the file descriptor you mean.
+</para>
+
+@fd: a file descriptor.
+@Returns: a new #GIOChannel.
+
+
+<!-- ##### FUNCTION g_io_channel_unix_get_fd ##### -->
+<para>
+Returns the file descriptor of the #GIOChannel.
+</para>
+<para>
+On Windows this function returns the file descriptor or socket of the #GIOChannel.
+</para>
+
+@channel: a #GIOChannel, created with g_io_channel_unix_new().
+@Returns: the file descriptor of the #GIOChannel.
+
+
+<!-- ##### FUNCTION g_io_channel_win32_new_fd ##### -->
+<para>
+Creates a new #GIOChannel given a file descriptor on Windows. This works for
+file descriptors from the C runtime.
+</para>
+<para>
+This function works for file descriptors as returned by the open(),
+creat(), pipe() and fileno() calls in the Microsoft C runtime. In
+order to meaningfully use this function your code should use the same
+C runtime as GLib uses, which is msvcrt.dll. Note that in current
+Microsoft compilers it is near impossible to convince it to build code
+that would use msvcrt.dll. The last Microsoft compiler version that
+supported using msvcrt.dll as the C runtime was version 6. The GNU
+compiler and toolchain for Windows, also known as Mingw, fully
+supports msvcrt.dll.
+</para>
+<para>
+If you have created a #GIOChannel for a file descriptor and started
+watching (polling) it, you shouldn't call read() on the file
+descriptor. This is because adding polling for a file descriptor is
+implemented in GLib on Windows by starting a thread that sits blocked
+in a read() from the file descriptor most of the time. All reads from
+the file descriptor should be done by this internal GLib thread. Your
+code should call only g_io_channel_read().
+</para>
+<para>
+This function is available only in GLib on Windows.
+</para>
+
+@fd: a C library file descriptor.
+@Returns: a new #GIOChannel.
+
+
+<!-- ##### FUNCTION g_io_channel_win32_new_socket ##### -->
+<para>
+Creates a new #GIOChannel given a socket on Windows.
+</para>
+<para>
+This function works for sockets created by Winsock. It's available
+only in GLib on Windows.
+</para>
+<para>
+Polling a #GSource created to watch a channel for a socket puts the
+socket in non-blocking mode. This is a side-effect of the
+implementation and unavoidable.
+</para>
+
+@socket: 
+@Returns: a new #GIOChannel.
+<!-- # Unused Parameters # -->
+@fd: a Winsock socket.
+
+
+<!-- ##### FUNCTION g_io_channel_win32_new_messages ##### -->
+<para>
+Creates a new #GIOChannel given a window handle on Windows.
+</para>
+<para>
+This function creates a #GIOChannel that can be used to poll for
+Windows messages for the window in question.
+</para>
+
+@hwnd: a window handle.
+@Returns: a new #GIOChannel.
+
+
+<!-- ##### FUNCTION g_io_channel_init ##### -->
+<para>
+Initializes a #GIOChannel struct. This is called by each of the above functions
+when creating a #GIOChannel, and so is not often needed by the application
+programmer (unless you are creating a new type of #GIOChannel).
+</para>
+
+@channel: a #GIOChannel.
+
+
+<!-- ##### FUNCTION g_io_channel_new_file ##### -->
+<para>
+</para>
+
+@filename: 
+@mode: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_io_channel_read_chars ##### -->
+<para>
+
+</para>
+
+@channel: 
+@buf: 
+@count: 
+@bytes_read: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_io_channel_read_unichar ##### -->
+<para>
+
+</para>
+
+@channel: 
+@thechar: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_io_channel_read_line ##### -->
+<para>
+
+</para>
+
+@channel: 
+@str_return: 
+@length: 
+@terminator_pos: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_io_channel_read_line_string ##### -->
+<para>
+
+</para>
+
+@channel: 
+@buffer: 
+@terminator_pos: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_io_channel_read_to_end ##### -->
+<para>
+
+</para>
+
+@channel: 
+@str_return: 
+@length: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_io_channel_write_chars ##### -->
+<para>
+
+</para>
+
+@channel: 
+@buf: 
+@count: 
+@bytes_written: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_io_channel_write_unichar ##### -->
+<para>
+
+</para>
+
+@channel: 
+@thechar: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_io_channel_flush ##### -->
+<para>
+
+</para>
+
+@channel: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_io_channel_seek_position ##### -->
+<para>
+
+</para>
+
+@channel: 
+@offset: 
+@type: 
+@error: 
+@Returns: 
+
+
+<!-- ##### ENUM GSeekType ##### -->
+<para>
+An enumeration specifying the base position for a g_io_channel_seek_position()
+operation.
+</para>
+
+@G_SEEK_CUR: the current position in the file.
+@G_SEEK_SET: the start of the file.
+@G_SEEK_END: the end of the file.
+
+<!-- ##### FUNCTION g_io_channel_shutdown ##### -->
+<para>
+
+</para>
+
+@channel: 
+@flush: 
+@err: 
+@Returns: 
+
+
+<!-- ##### ENUM GIOStatus ##### -->
+<para>
+Stati returned by most of the #GIOFuncs functions. 
+</para>
+
+@G_IO_STATUS_ERROR: An error occurred.
+@G_IO_STATUS_NORMAL: Success.
+@G_IO_STATUS_EOF: End of file.
+@G_IO_STATUS_AGAIN: Resource temporarily unavailable.
+
+<!-- ##### ENUM GIOChannelError ##### -->
+<para>
+Error codes returned by #GIOChannel operations.
+</para>
+
+@G_IO_CHANNEL_ERROR_FBIG: File too large.
+@G_IO_CHANNEL_ERROR_INVAL: Invalid argument.
+@G_IO_CHANNEL_ERROR_IO: IO error.
+@G_IO_CHANNEL_ERROR_ISDIR: File is a directory.
+@G_IO_CHANNEL_ERROR_NOSPC: No space left on device.
+@G_IO_CHANNEL_ERROR_NXIO: No such device or address.
+@G_IO_CHANNEL_ERROR_OVERFLOW: Value too large for defined datatype.
+@G_IO_CHANNEL_ERROR_PIPE: Broken pipe.
+@G_IO_CHANNEL_ERROR_FAILED: Some other error.
+
+<!-- ##### MACRO G_IO_CHANNEL_ERROR ##### -->
+<para>
+Error domain for #GIOChannel operations. Errors in this domain will
+be from the #GIOChannelError enumeration. See #GError for information on
+error domains.
+</para>
+
+
+
+<!-- ##### FUNCTION g_io_channel_error_from_errno ##### -->
+<para>
+
+</para>
+
+@en: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_io_channel_ref ##### -->
+<para>
+Increments the reference count of a #GIOChannel.
+</para>
+
+@channel: a #GIOChannel.
+@Returns:  the @channel that was passed in (since 2.6)
+
+
+<!-- ##### FUNCTION g_io_channel_unref ##### -->
+<para>
+Decrements the reference count of a #GIOChannel.
+</para>
+
+@channel: a #GIOChannel.
+
+
+<!-- ##### FUNCTION g_io_create_watch ##### -->
+<para>
+Creates a #GSource that's dispatched when @condition is met for the given
+@channel. For example, if condition is #G_IO_IN, the source will be dispatched
+when there's data available for reading.  g_io_add_watch() is a simpler
+interface to this same functionality, for the case where you want to add the
+source to the default main loop at the default priority.
+</para>
+<para>
+On Windows, polling a #GSource created to watch a channel for a socket
+puts the socket in non-blocking mode. This is a side-effect of the
+implementation and unavoidable.
+</para>
+
+@channel: a #GIOChannel to watch
+@condition: conditions to watch for
+@Returns: a new #GSource
+
+
+<!-- ##### FUNCTION g_io_add_watch ##### -->
+<para>
+Adds the #GIOChannel into the
+<link linkend="glib-The-Main-Event-Loop">main event loop</link>
+with the default priority.
+</para>
+
+@channel: a #GIOChannel.
+@condition: the condition to watch for.
+@func: the function to call when the condition is satisfied.
+@user_data: user data to pass to @func.
+@Returns: the event source id.
+
+
+<!-- ##### FUNCTION g_io_add_watch_full ##### -->
+<para>
+Adds the #GIOChannel into the
+<link linkend="glib-The-Main-Event-Loop">main event loop</link>
+with the given priority.
+</para>
+
+@channel: a #GIOChannel.
+@priority: the priority of the #GIOChannel source.
+@condition: the condition to watch for.
+@func: the function to call when the condition is satisfied.
+@user_data: user data to pass to @func.
+@notify: the function to call when the source is removed.
+@Returns: the event source id.
+
+
+<!-- ##### ENUM GIOCondition ##### -->
+<para>
+A bitwise combination representing a condition to watch for on an event
+source.
+</para>
+
+@G_IO_IN: There is data to read.
+@G_IO_OUT: Data can be written (without blocking).
+@G_IO_PRI: There is urgent data to read.
+@G_IO_ERR: Error condition.
+@G_IO_HUP: Hung up (the connection has been broken, usually for pipes 
+           and sockets).
+@G_IO_NVAL: Invalid request. The file descriptor is not open.
+
+<!-- ##### USER_FUNCTION GIOFunc ##### -->
+<para>
+Specifies the type of function passed to g_io_add_watch() or
+g_io_add_watch_full(), which is called when the requested condition on a
+#GIOChannel is satisfied.
+</para>
+
+@source: the #GIOChannel event source.
+@condition: the condition which has been satisfied.
+@data: user data set in g_io_add_watch() or g_io_add_watch_full().
+@Returns: the function should return %FALSE if the event source should be
+removed.
+
+
+<!-- ##### STRUCT GIOFuncs ##### -->
+<para>
+A table of functions used to handle different types of #GIOChannel in a
+generic way.
+</para>
+
+@io_read: 
+@io_write: 
+@io_seek: 
+@io_close: 
+@io_create_watch: 
+@io_free: 
+@io_set_flags: 
+@io_get_flags: 
+
+<!-- ##### FUNCTION g_io_channel_get_buffer_size ##### -->
+<para>
+
+</para>
+
+@channel: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_io_channel_set_buffer_size ##### -->
+<para>
+
+</para>
+
+@channel: 
+@size: 
+
+
+<!-- ##### FUNCTION g_io_channel_get_buffer_condition ##### -->
+<para>
+
+</para>
+
+@channel: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_io_channel_get_flags ##### -->
+<para>
+
+</para>
+
+@channel: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_io_channel_set_flags ##### -->
+<para>
+
+</para>
+
+@channel: 
+@flags: 
+@error: 
+@Returns: 
+
+
+<!-- ##### ENUM GIOFlags ##### -->
+<para>
+Specifies properties of a #GIOChannel. Some of the flags can only
+be read with g_io_channel_get_flags(), but not changed with
+g_io_channel_set_flags(). 
+</para>
+
+@G_IO_FLAG_APPEND: turns on append mode, corresponds to %O_APPEND (see the 
+   documentation of the UNIX <function>open()</function> syscall).
+@G_IO_FLAG_NONBLOCK: turns on nonblocking mode, corresponds to 
+   %O_NONBLOCK/%O_NDELAY (see the documentation of the UNIX 
+   <function>open()</function> syscall).
+@G_IO_FLAG_IS_READABLE: indicates that the io channel is readable. This flag 
+   can not be changed.
+@G_IO_FLAG_IS_WRITEABLE: indicates that the io channel is writable. This flag 
+   can not be changed.
+@G_IO_FLAG_IS_SEEKABLE: indicates that the io channel is seekable, i.e. that 
+   g_io_channel_seek_position() can be used on it. This flag can not be changed.
+@G_IO_FLAG_MASK: 
+@G_IO_FLAG_GET_MASK: 
+@G_IO_FLAG_SET_MASK: 
+
+<!-- ##### FUNCTION g_io_channel_get_line_term ##### -->
+<para>
+
+</para>
+
+@channel: 
+@length: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_io_channel_set_line_term ##### -->
+<para>
+
+</para>
+
+@channel: 
+@line_term: 
+@length: 
+
+
+<!-- ##### FUNCTION g_io_channel_get_buffered ##### -->
+<para>
+
+</para>
+
+@channel: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_io_channel_set_buffered ##### -->
+<para>
+
+</para>
+
+@channel: 
+@buffered: 
+
+
+<!-- ##### FUNCTION g_io_channel_get_encoding ##### -->
+<para>
+
+</para>
+
+@channel: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_io_channel_set_encoding ##### -->
+<para>
+
+</para>
+
+@channel: 
+@encoding: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_io_channel_get_close_on_unref ##### -->
+<para>
+
+</para>
+
+@channel: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_io_channel_set_close_on_unref ##### -->
+<para>
+
+</para>
+
+@channel: 
+@do_close: 
+
+
+<!-- ##### FUNCTION g_io_channel_read ##### -->
+<para>
+</para>
+
+@channel: 
+@buf: 
+@count: 
+@bytes_read: 
+@Returns: 
+
+
+<!-- ##### ENUM GIOError ##### -->
+<para>
+#GIOError is only used by the deprecated functions g_io_channel_read(),
+g_io_channel_write(), and g_io_channel_seek().
+</para>
+
+@G_IO_ERROR_NONE: no error
+@G_IO_ERROR_AGAIN: an EAGAIN error occurred
+@G_IO_ERROR_INVAL: an EINVAL error occurred
+@G_IO_ERROR_UNKNOWN: another error occurred
+
+<!-- ##### FUNCTION g_io_channel_write ##### -->
+<para>
+</para>
+
+@channel: 
+@buf: 
+@count: 
+@bytes_written: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_io_channel_seek ##### -->
+<para>
+</para>
+
+@channel: 
+@offset: 
+@type.
+@type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_io_channel_close ##### -->
+<para>
+</para>
+
+@channel: 
+
+

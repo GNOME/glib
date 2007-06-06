@@ -1,0 +1,532 @@
+<!-- ##### SECTION Title ##### -->
+GParamSpec
+
+<!-- ##### SECTION Short_Description ##### -->
+Metadata for parameter specifications
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+#GParamSpec is an object structure that encapsulates the metadata
+required to specify parameters, such as e.g. #GObject properties.
+</para>
+<para id="canonical-parameter-name">
+Parameter names need to start with a letter (a-z or A-Z). Subsequent
+characters can be letters, numbers or a '-'.
+All other characters are replaced by a '-' during construction.
+The result of this replacement is called the canonical name of the
+parameter.
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+g_object_class_install_property(), g_object_set(), g_object_get(),
+g_object_set_property(), g_object_get_property(), g_value_register_transform_func()
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### MACRO G_TYPE_IS_PARAM ##### -->
+<para>
+Returns whether @type "is a" %G_TYPE_PARAM.
+</para>
+
+@type: a #GType ID
+
+
+<!-- ##### MACRO G_PARAM_SPEC ##### -->
+<para>
+Casts a derived #GParamSpec object (e.g. of type #GParamSpecInt) into
+a #GParamSpec object.
+</para>
+
+@pspec: a valid #GParamSpec
+
+
+<!-- ##### MACRO G_IS_PARAM_SPEC ##### -->
+<para>
+Checks whether @pspec "is a" valid #GParamSpec structure of type %G_TYPE_PARAM
+or derived.
+</para>
+
+@pspec: a #GParamSpec
+
+
+<!-- ##### MACRO G_PARAM_SPEC_CLASS ##### -->
+<para>
+Casts a derived #GParamSpecClass structure into a #GParamSpecClass structure.
+</para>
+
+@pclass: a valid #GParamSpecClass
+
+
+<!-- ##### MACRO G_IS_PARAM_SPEC_CLASS ##### -->
+<para>
+Checks whether @pclass "is a" valid #GParamSpecClass structure of type 
+%G_TYPE_PARAM or derived.
+</para>
+
+@pclass: a #GParamSpecClass
+
+
+<!-- ##### MACRO G_PARAM_SPEC_GET_CLASS ##### -->
+<para>
+Retrieves the #GParamSpecClass of a #GParamSpec.
+</para>
+
+@pspec: a valid #GParamSpec
+
+
+<!-- ##### MACRO G_PARAM_SPEC_TYPE ##### -->
+<para>
+Retrieves the #GType of this @pspec.
+</para>
+
+@pspec: a valid #GParamSpec
+
+
+<!-- ##### MACRO G_PARAM_SPEC_TYPE_NAME ##### -->
+<para>
+Retrieves the #GType name of this @pspec.
+</para>
+
+@pspec: a valid #GParamSpec
+
+
+<!-- ##### MACRO G_PARAM_SPEC_VALUE_TYPE ##### -->
+<para>
+Retrieves the #GType to initialize a #GValue for this parameter.
+</para>
+
+@pspec: a valid #GParamSpec
+
+
+<!-- ##### STRUCT GParamSpec ##### -->
+<para>
+All fields of the <structname>GParamSpec</structname> struct are private and
+should not be used directly, except for the following:
+</para>
+
+@g_type_instance: private #GTypeInstance portion
+@name:            name of this parameter
+@flags:           #GParamFlags flags for this parameter
+@value_type:      the #GValue type for this parameter
+@owner_type:      #GType type that uses (introduces) this paremeter
+
+<!-- ##### STRUCT GParamSpecClass ##### -->
+<para>
+The class structure for the <structname>GParamSpec</structname> type.
+Normally, <structname>GParamSpec</structname> classes are filled by
+g_param_type_register_static().
+</para>
+
+@g_type_class: the parent class
+@value_type: the #GValue type for this parameter
+@finalize: The instance finalization function (optional), should chain 
+  up to the finalize method of the parent class.
+@value_set_default: Resets a @value to the default value for this type
+  (recommended, the default is g_value_reset()), see 
+  g_param_value_set_default().
+@value_validate: Ensures that the contents of @value comply with the 
+  specifications set out by this type (optional), see 
+  g_param_value_set_validate().
+@values_cmp: Compares @value1 with @value2 according to this type
+  (recommended, the default is memcmp()), see g_param_values_cmp().
+
+<!-- ##### ENUM GParamFlags ##### -->
+<para>
+Through the #GParamFlags flag values, certain aspects of parameters
+can be configured.
+</para>
+
+@G_PARAM_READABLE:       the parameter is readable
+@G_PARAM_WRITABLE:       the parameter is writable
+@G_PARAM_CONSTRUCT:      the parameter will be set upon object construction
+@G_PARAM_CONSTRUCT_ONLY: the parameter will only be set upon object construction
+@G_PARAM_LAX_VALIDATION: upon parameter conversion (see g_param_value_convert())
+                         strict validation is not required
+@G_PARAM_STATIC_NAME:    the string used as name when constructing the 
+                         parameter is guaranteed to remain valid and
+                         unmodified for the lifetime of the parameter. 
+                         Since 2.8
+@G_PARAM_STATIC_BLURB:   the string used as blurb when constructing the 
+                         parameter is guaranteed to remain valid and 
+                         unmodified for the lifetime of the parameter. 
+                         Since 2.8
+
+<!-- ##### MACRO G_PARAM_READWRITE ##### -->
+<para>
+#GParamFlags value alias for %G_PARAM_READABLE | %G_PARAM_WRITABLE.
+</para>
+
+
+
+<!-- ##### MACRO G_PARAM_STATIC_STRINGS ##### -->
+<para>
+#GParamFlags value alias for %G_PARAM_STATIC_NAME | %G_PARAM_STATIC_NICK | %G_PARAM_STATIC_BLURB.
+</para>
+
+
+
+<!-- ##### MACRO G_PARAM_MASK ##### -->
+<para>
+Mask containing the bits of #GParamSpec.flags which are reserved for GLib.
+</para>
+
+
+
+<!-- ##### MACRO G_PARAM_USER_SHIFT ##### -->
+<para>
+Minimum shift count to be used for user defined flags, to be stored in
+#GParamSpec.flags.
+</para>
+
+
+
+<!-- ##### FUNCTION g_param_spec_ref ##### -->
+<para>
+Increments the reference count of @pspec.
+</para>
+
+@pspec:   a valid #GParamSpec
+@Returns: the #GParamSpec that was passed into this function
+
+
+<!-- ##### FUNCTION g_param_spec_unref ##### -->
+<para>
+Decrements the reference count of a @pspec.
+</para>
+
+@pspec: a valid #GParamSpec
+
+
+<!-- ##### FUNCTION g_param_spec_sink ##### -->
+<para>
+The initial reference count of a newly created #GParamSpec is 1, even 
+though no one has explicitly called g_param_spec_ref() on it yet. So the 
+initial reference count is flagged as "floating", until someone calls 
+<literal>g_param_spec_ref (pspec); g_param_spec_sink (pspec);</literal>
+in sequence on it, taking over the initial reference count (thus
+ending up with a @pspec that has a reference count of 1 still, but is
+not flagged "floating" anymore).
+</para>
+
+@pspec: a valid #GParamSpec
+
+
+<!-- ##### FUNCTION g_param_spec_ref_sink ##### -->
+<para>
+Convenience function to ref and sink a #GParamSpec.
+</para>
+
+@pspec: a valid #GParamSpec
+@Returns: the #GParamSpec that was passed into this function
+@Since: 2.10
+
+
+<!-- ##### FUNCTION g_param_value_set_default ##### -->
+<para>
+Sets @value to its default value as specified in @pspec.
+</para>
+
+@pspec: a valid #GParamSpec
+@value: a #GValue of correct type for @pspec
+
+
+<!-- ##### FUNCTION g_param_value_defaults ##### -->
+<para>
+Checks whether @value contains the default value as specified in @pspec.
+</para>
+
+@pspec:   a valid #GParamSpec
+@value:   a #GValue of correct type for @pspec
+@Returns: whether @value contains the canonical default for this @pspec
+
+
+<!-- ##### FUNCTION g_param_value_validate ##### -->
+<para>
+Ensures that the contents of @value comply with the specifications
+set out by @pspec. For example, a #GParamSpecInt might require
+that integers stored in @value may not be smaller than -42 and not be
+greater than +42. If @value contains an integer outside of this range,
+it is modified accordingly, so the resulting value will fit into the
+range -42 .. +42.
+</para>
+
+@pspec:   a valid #GParamSpec
+@value:   a #GValue of correct type for @pspec
+@Returns: whether modifying @value was necessary to ensure validity
+
+
+<!-- ##### FUNCTION g_param_value_convert ##### -->
+<para>
+Transforms @src_value into @dest_value if possible, and then validates 
+@dest_value, in order for it to conform to @pspec.
+If @strict_validation is %TRUE this function will only succeed if
+the transformed @dest_value complied to @pspec without modifications.
+
+See also g_value_type_transformable(), g_value_transform() and
+g_param_value_validate().
+</para>
+
+@pspec:             a valid #GParamSpec
+@src_value:         souce #GValue
+@dest_value:        destination #GValue of correct type for @pspec
+@strict_validation: %TRUE requires @dest_value to conform to @pspec without modifications
+@Returns:           %TRUE if transformation and validation were successful,
+                    %FALSE otherwise and @dest_value is left untouched.
+
+
+<!-- ##### FUNCTION g_param_values_cmp ##### -->
+<para>
+Compares @value1 with @value2 according to @pspec, and return -1, 0 or +1,
+if @value1 is found to be less than, equal to or greater than @value2, 
+respectively.
+</para>
+
+@pspec:   a valid #GParamSpec
+@value1:  a #GValue of correct type for @pspec
+@value2:  a #GValue of correct type for @pspec
+@Returns: -1, 0 or +1, for a less than, equal to or greater than result
+
+
+<!-- ##### FUNCTION g_param_spec_get_name ##### -->
+<para>
+Returns the name of a #GParamSpec.
+</para>
+
+@pspec: a valid #GParamSpec
+@Returns: the name of @pspec.
+
+
+<!-- ##### FUNCTION g_param_spec_get_nick ##### -->
+<para>
+Returns the nickname of a #GParamSpec.
+</para>
+
+@pspec: a valid #GParamSpec
+@Returns: the nickname of @pspec.
+
+
+<!-- ##### FUNCTION g_param_spec_get_blurb ##### -->
+<para>
+Returns the short description of a #GParamSpec.
+</para>
+
+@pspec: a valid #GParamSpec
+@Returns: the short description of @pspec.
+
+
+<!-- ##### FUNCTION g_param_spec_get_qdata ##### -->
+<para>
+Gets back user data pointers stored via g_param_spec_set_qdata().
+</para>
+
+@pspec: a valid #GParamSpec
+@quark: a #GQuark, naming the user data pointer
+@Returns: the user data pointer set, or %NULL
+
+
+<!-- ##### FUNCTION g_param_spec_set_qdata ##### -->
+<para>
+Sets an opaque, named pointer on a #GParamSpec. The name is specified 
+through a #GQuark (retrieved e.g. via g_quark_from_static_string()), and 
+the pointer can be gotten back from the @pspec with g_param_spec_get_qdata().
+Setting a previously set user data pointer, overrides (frees)
+the old pointer set, using %NULL as pointer essentially
+removes the data stored.
+</para>
+
+@pspec: the #GParamSpec to set store a user data pointer
+@quark: a #GQuark, naming the user data pointer
+@data: an opaque user data pointer
+
+
+<!-- ##### FUNCTION g_param_spec_set_qdata_full ##### -->
+<para>
+This function works like g_param_spec_set_qdata(), but in addition, 
+a <literal>void (*destroy) (gpointer)</literal> function may be 
+specified which is called with @data as argument when the @pspec is 
+finalized, or the data is being overwritten by a call to 
+g_param_spec_set_qdata() with the same @quark.
+</para>
+
+@pspec:   the #GParamSpec to set store a user data pointer
+@quark:   a #GQuark, naming the user data pointer
+@data:    an opaque user data pointer
+@destroy: function to invoke with @data as argument, when @data needs to
+          be freed
+
+
+<!-- ##### FUNCTION g_param_spec_steal_qdata ##### -->
+<para>
+Gets back user data pointers stored via g_param_spec_set_qdata() and 
+removes the @data from @pspec without invoking it's destroy() function 
+(if any was set).
+Usually, calling this function is only required to update
+user data pointers with a destroy notifier.
+</para>
+
+@pspec: the #GParamSpec to get a stored user data pointer from
+@quark: a #GQuark, naming the user data pointer
+@Returns: the user data pointer set, or %NULL
+
+
+<!-- ##### FUNCTION g_param_spec_get_redirect_target ##### -->
+<para>
+If the paramspec redirects operations to another paramspec,
+returns that paramspec. Redirect is used typically for
+providing a new implementation of a property in a derived
+type while preserving all the properties from the parent
+type. Redirection is established by creating a property
+of type #GParamSpecOverride. See g_object_override_property()
+for an example of the use of this capability.
+</para>
+
+@pspec: a #GParamSpec
+@Returns: paramspec to which requests on this paramspec should
+  be redirected, or %NULL if none.
+@Since: 2.4
+
+
+<!-- ##### FUNCTION g_param_spec_internal ##### -->
+<para>
+Creates a new #GParamSpec instance.
+</para>
+<para>
+A property name consists of segments consisting of ASCII letters and
+digits, separated by either the '-' or '_' character. The first
+character of a property name must be a letter. Names which violate these
+rules lead to undefined behaviour. 
+</para>
+<para>
+When creating and looking up a #GParamSpec, either separator can be used, 
+but they cannot be mixed. Using '-' is considerably more efficient and in 
+fact required when using property names as detail strings for signals.
+</para>
+
+@param_type: the #GType for the property; must be derived from #G_TYPE_PARAM
+@name: the canonical name of the property
+@nick: the nickname of the property
+@blurb: a short description of the property
+@flags: a combination of #GParamFlags
+@Returns: a newly allocated #GParamSpec instance
+
+
+<!-- ##### STRUCT GParamSpecTypeInfo ##### -->
+<para>
+This structure is used to provide the type system with the information
+required to initialize and destruct (finalize) a parameter's class and
+instances thereof.
+The initialized structure is passed to the g_param_type_register_static() 
+The type system will perform a deep copy of this structure, so it's memory 
+does not need to be persistent across invocation of 
+g_param_type_register_static().
+</para>
+
+@instance_size: Size of the instance (object) structure.
+@n_preallocs: Prior to GLib 2.10, it specified the number of pre-allocated (cached) instances to reserve memory for (0 indicates no caching). Since GLib 2.10, it is ignored, since instances are allocated with the <link linkend="glib-Memory-Slices">slice allocator</link> now.
+@instance_init: Location of the instance initialization function (optional).
+@value_type: The #GType of values conforming to this #GParamSpec
+@finalize: The instance finalization function (optional).
+@value_set_default: Resets a @value to the default value for @pspec 
+  (recommended, the default is g_value_reset()), see 
+  g_param_value_set_default().
+@value_validate: Ensures that the contents of @value comply with the 
+  specifications set out by @pspec (optional), see 
+  g_param_value_set_validate().
+@values_cmp: Compares @value1 with @value2 according to @pspec 
+  (recommended, the default is memcmp()), see g_param_values_cmp().
+
+<!-- ##### FUNCTION g_param_type_register_static ##### -->
+<para>
+Registers @name as the name of a new static type derived from
+#G_TYPE_PARAM. The type system uses the information contained in the
+#GParamSpecTypeInfo structure pointed to by @info to manage the #GParamSpec 
+type and its instances. 
+</para>
+
+@name: 0-terminated string used as the name of the new #GParamSpec type.
+@pspec_info: The #GParamSpecTypeInfo for this #GParamSpec type.
+@Returns: The new type identifier.
+
+
+<!-- ##### STRUCT GParamSpecPool ##### -->
+<para>
+A #GParamSpecPool maintains a collection of #GParamSpec<!-- -->s which can be
+quickly accessed by owner and name. The implementation of the #GObject property
+system uses such a pool to store the #GParamSpecs of the properties all object
+types. 
+</para>
+
+
+<!-- ##### FUNCTION g_param_spec_pool_new ##### -->
+<para>
+Creates a new #GParamSpecPool.
+</para>
+<para>
+If @type_prefixing is %TRUE, lookups in the newly created pool will
+allow to specify the owner as a colon-separated prefix of the property name, 
+like "GtkContainer:border-width". This feature is deprecated, so you should 
+always set @type_prefixing to %FALSE.
+</para>
+
+@type_prefixing: Whether the pool will support type-prefixed property names.
+@Returns: a newly allocated #GParamSpecPool.
+
+
+<!-- ##### FUNCTION g_param_spec_pool_insert ##### -->
+<para>
+Inserts a #GParamSpec in the pool.
+</para>
+
+@pool: a #GParamSpecPool.
+@pspec: the #GParamSpec to insert
+@owner_type: a #GType identifying the owner of @pspec
+
+
+<!-- ##### FUNCTION g_param_spec_pool_remove ##### -->
+<para>
+Removes a #GParamSpec from the pool.
+</para>
+
+@pool: a #GParamSpecPool
+@pspec: the #GParamSpec to remove
+
+
+<!-- ##### FUNCTION g_param_spec_pool_lookup ##### -->
+<para>
+Looks up a #GParamSpec in the pool.
+</para>
+
+@pool: a #GParamSpecPool
+@param_name: the name to look for
+@owner_type: the owner to look for
+@walk_ancestors: If %TRUE, also try to find a #GParamSpec with @param_name 
+  owned by an ancestor of @owner_type.
+@Returns: The found #GParamSpec, or %NULL if no matching #GParamSpec was found.
+
+
+<!-- ##### FUNCTION g_param_spec_pool_list ##### -->
+<para>
+Gets an array of all #GParamSpec<!-- -->s owned by @owner_type in the pool. 
+</para>
+
+@pool: a #GParamSpecPool
+@owner_type: the owner to look for
+@n_pspecs_p: return location for the length of the returned array
+@Returns: a newly allocated array containing pointers to all 
+  #GParamSpec<!-- -->s owned by @owner_type in the pool
+
+
+<!-- ##### FUNCTION g_param_spec_pool_list_owned ##### -->
+<para>
+Gets an #GList of all #GParamSpec<!-- -->s owned by @owner_type in the pool. 
+</para>
+
+@pool: a #GParamSpecPool
+@owner_type: the owner to look for
+@Returns: a #GList of all #GParamSpec<!-- -->s owned by @owner_type in 
+  the pool#GParamSpec<!-- -->s.
+
+

@@ -1,0 +1,377 @@
+<!-- ##### SECTION ./tmpl/param_specs.sgml:Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION ./tmpl/param_specs.sgml:See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION ./tmpl/param_specs.sgml:Short_Description ##### -->
+
+
+
+<!-- ##### SECTION ./tmpl/param_specs.sgml:Title ##### -->
+Parameter Specifications
+
+
+<!-- ##### STRUCT GBoxed ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### USER_FUNCTION GBoxedInitFunc ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+<!-- ##### STRUCT GParamSpecClosure ##### -->
+<para>
+
+</para>
+
+@parent_instance: 
+
+<!-- ##### ENUM GTypeFundamentals ##### -->
+<para>
+The predefined identifiers of the reserved fundamental types.
+</para>
+
+@G_TYPE_INVALID: 		Usually a return value indicating an error.
+@G_TYPE_NONE: 			A synonym for the "void" type in C.
+@G_TYPE_INTERFACE: 		Root type of all interface types.
+@G_TYPE_CHAR: 			Identifier for the built-in type "gchar".
+@G_TYPE_UCHAR: 			Identifier for the built-in type "guchar".
+@G_TYPE_BOOLEAN: 		Identifier for the built-in type "gboolean".
+@G_TYPE_INT: 			Identifier for the built-in type "gint".
+@G_TYPE_UINT: 			Identifier for the built-in type "guint".
+@G_TYPE_LONG: 			Identifier for the built-in type "glong".
+@G_TYPE_ULONG: 			Identifier for the built-in type "gulong".
+@G_TYPE_INT64: 
+@G_TYPE_UINT64: 
+@G_TYPE_ENUM: 			Identifier for the "#GEnum" type.
+@G_TYPE_FLAGS: 			Identifier for the "#GFlags" type.
+@G_TYPE_FLOAT: 			Identifier for the built-in type "gfloat".
+@G_TYPE_DOUBLE: 		Identifier for the built-in type "gdouble".
+@G_TYPE_STRING: 		Identifier for a pointer to a null-terminated string "gchar*".
+@G_TYPE_POINTER: 		Identifier for anonymous pointers "void*".
+@G_TYPE_BOXED: 			Identifier for the "#GBoxed" type.
+@G_TYPE_PARAM: 			Identifier for the "#GParam" type.
+@G_TYPE_OBJECT: 		Identifier for the "#GObject" type.
+@G_TYPE_RESERVED_BSE_FIRST: 	First fundamental type ID reserved for BSE.
+@G_TYPE_RESERVED_BSE_LAST: 	Last fundamental type ID reserved for BSE.
+@G_TYPE_RESERVED_LAST_FUNDAMENTAL: 
+@G_TYPE_CONSTANT_TYPES: 
+@G_TYPE_CLOSURE: 
+@G_TYPE_VALUE: 
+@G_TYPE_VALUE_ARRAY: 
+@G_TYPE_GSTRING: 
+@G_TYPE_PARAM_CHAR: 
+@G_TYPE_PARAM_UCHAR: 
+@G_TYPE_PARAM_BOOLEAN: 
+@G_TYPE_PARAM_INT: 
+@G_TYPE_PARAM_UINT: 
+@G_TYPE_PARAM_LONG: 
+@G_TYPE_PARAM_ULONG: 
+@G_TYPE_PARAM_INT64: 
+@G_TYPE_PARAM_UINT64: 
+@G_TYPE_PARAM_UNICHAR: 
+@G_TYPE_PARAM_ENUM: 
+@G_TYPE_PARAM_FLAGS: 
+@G_TYPE_PARAM_FLOAT: 
+@G_TYPE_PARAM_DOUBLE: 
+@G_TYPE_PARAM_STRING: 
+@G_TYPE_PARAM_PARAM: 
+@G_TYPE_PARAM_BOXED: 
+@G_TYPE_PARAM_POINTER: 
+@G_TYPE_PARAM_VALUE_ARRAY: 
+@G_TYPE_PARAM_CLOSURE: 
+@G_TYPE_PARAM_OBJECT: 
+
+<!-- ##### MACRO G_INITIALLY_UNOWNED ##### -->
+<para>
+Casts a #GInitiallyUnowned or derived pointer into a (GInitiallyUnowned*) 
+pointer. Depending on the current debugging level, this function may invoke
+certain runtime checks to identify invalid casts.
+</para>
+
+@object: Object which is subject to casting
+
+<!-- ##### MACRO G_INITIALLY_UNOWNED_CLASS ##### -->
+<para>
+Casts a derived #GInitiallyUnownedClass structure into a 
+#GInitiallyUnownedClass structure.
+</para>
+
+@class: a valid #GInitiallyUnownedClass
+
+<!-- ##### MACRO G_INITIALLY_UNOWNED_GET_CLASS ##### -->
+<para>
+Returns the class structure associated to a #GInitiallyUnowned instance.
+</para>
+
+@object: a #GInitiallyUnowned instance
+
+<!-- ##### MACRO G_IS_INITIALLY_UNOWNED ##### -->
+<para>
+Checks whether a valid #GTypeInstance pointer is of type 
+%G_TYPE_INITIALLY_UNOWNED.
+</para>
+
+@object: Instance to check for being a %G_TYPE_INITIALLY_UNOWNED.
+
+<!-- ##### MACRO G_IS_INITIALLY_UNOWNED_CLASS ##### -->
+<para>
+Checks whether @class "is a" valid #GInitiallyUnownedClass structure of type
+%G_TYPE_INITIALLY_UNOWNED or derived.
+</para>
+
+@class: a #GInitiallyUnownedClass
+
+<!-- ##### MACRO G_IS_PARAM_SPEC_CLOSURE ##### -->
+<para>
+
+</para>
+
+@pspec: 
+
+<!-- ##### MACRO G_PARAM_SPEC_CLOSURE ##### -->
+<para>
+
+</para>
+
+@pspec: 
+
+<!-- ##### MACRO G_TYPE_FUNDAMENTAL_LAST ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO G_TYPE_FUNDAMENTAL_SHIFT ##### -->
+<para>
+Shift value used in converting numbers to type IDs.
+</para>
+
+
+<!-- ##### FUNCTION g_closure_add_fnotify ##### -->
+<para>
+
+</para>
+
+@closure: 
+@notify_data: 
+@notify_func: 
+
+<!-- ##### FUNCTION g_closure_add_inotify ##### -->
+<para>
+
+</para>
+
+@closure: 
+@notify_data: 
+@notify_func: 
+
+<!-- ##### FUNCTION g_closure_remove_fnotify ##### -->
+<para>
+
+</para>
+
+@closure: 
+@notify_data: 
+@notify_func: 
+
+<!-- ##### FUNCTION g_closure_remove_inotify ##### -->
+<para>
+
+</para>
+
+@closure: 
+@notify_data: 
+@notify_func: 
+
+<!-- ##### FUNCTION g_param_spec_closure ##### -->
+<para>
+
+</para>
+
+@name: 
+@nick: 
+@blurb: 
+@flags: 
+@Returns: 
+
+<!-- ##### FUNCTION g_param_spec_string_c ##### -->
+<para>
+
+</para>
+
+@name: 
+@nick: 
+@blurb: 
+@default_value: 
+@flags: 
+@Returns: 
+
+<!-- ##### FUNCTION g_signal_add_emission_hook_full ##### -->
+<para>
+
+</para>
+
+@signal_id: 
+@closure: 
+@Returns: 
+
+<!-- ##### FUNCTION g_signal_handlers_destroy ##### -->
+<para>
+
+</para>
+
+@instance: 
+
+<!-- ##### MACRO g_signal_newc ##### -->
+<para>
+
+</para>
+
+@Returns: 
+@signal_name: 
+@itype: 
+@signal_flags: 
+@class_offset: 
+@accumulator: 
+@accu_data: 
+@c_marshaller: 
+@return_type: 
+@n_params: 
+@Varargs: 
+
+<!-- ##### FUNCTION g_type_check_class_cast ##### -->
+<para>
+</para>
+
+@g_class: 
+@is_a_type: 
+@Returns: 
+
+<!-- ##### FUNCTION g_type_check_flags ##### -->
+<para>
+Determines whether a given set of #GTypeFlags and #GTypeFundamentalFlags
+are set for @type.
+</para>
+
+@type: 	  The type to check for flags.
+@flags:   Bitwise combination of #GTypeFlags and #GTypeFundamentalFlags.
+@Returns: #TRUE if all @flags are set for @type, #FALSE otherwise.
+
+<!-- ##### FUNCTION g_type_check_instance ##### -->
+<para>
+Private helper function to aid implementation of the G_TYPE_CHECK_INSTANCE()
+macro.
+</para>
+
+@instance: A valid #GTypeInstance structure.
+@Returns:  #TRUE if @instance is valid, #FALSE otherwise.
+
+<!-- ##### FUNCTION g_type_check_instance_cast ##### -->
+<para>
+</para>
+
+@instance: 
+@iface_type: 
+@Returns: 
+
+<!-- ##### FUNCTION g_type_check_value ##### -->
+<para>
+</para>
+
+@value: 
+@Returns: 
+
+<!-- ##### FUNCTION g_type_class_is_a ##### -->
+<para>
+</para>
+
+@g_class: 
+@is_a_type: 
+@Returns: 
+
+<!-- ##### FUNCTION g_type_fundamental_last ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+<!-- ##### FUNCTION g_type_instance_is_a ##### -->
+<para>
+Determines if @instance adheres to the interface exported
+by @iface_type. @iface_type is either a type that @instance
+is derived from, or an interface type that is supported by
+the anchestry of @instance.
+</para>
+
+@instance: 	A valid #GTypeInstance structure.
+@iface_type: 	A #GType value.
+@Returns: 	#TRUE if @instance conforms to @iface_type, #FALSE otherwise.
+
+<!-- ##### FUNCTION g_type_test_flags ##### -->
+<para>
+
+</para>
+
+@type: 
+@flags: 
+@Returns: 
+
+<!-- ##### FUNCTION g_type_value_is_a ##### -->
+<para>
+Determines if @value is a #GValue whose type conforms to @type.
+</para>
+
+@value: 	  A valid #GValue structure.
+@type:    A #GType value.
+@Returns: #TRUE if @value is a #GValue of @type or #FALSE if not.
+
+<!-- ##### FUNCTION g_value_convert ##### -->
+<para>
+
+</para>
+
+@src_value: 
+@dest_value: 
+@Returns: 
+
+<!-- ##### FUNCTION g_value_register_exchange_func ##### -->
+<para>
+
+</para>
+
+@value_type1: 
+@value_type2: 
+@func: 
+
+<!-- ##### FUNCTION g_value_types_exchangable ##### -->
+<para>
+
+</para>
+
+@value_type1: 
+@value_type2: 
+@Returns: 
+
+<!-- ##### FUNCTION g_values_exchange ##### -->
+<para>
+
+</para>
+
+@value1: 
+@value2: 
+@Returns: 
+

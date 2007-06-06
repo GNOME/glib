@@ -1,0 +1,201 @@
+.\" ** You probably do not want to edit this file directly **
+.\" It was generated using the DocBook XSL Stylesheets (version 1.69.1).
+.\" Instead of manually editing it, you probably should edit the DocBook XML
+.\" source for it and then use the DocBook XSL Stylesheets to regenerate it.
+.TH "GLIB\-GENMARSHAL" "1" "08/22/2005" "" ""
+.\" disable hyphenation
+.nh
+.\" disable justification (adjust text to left margin only)
+.ad l
+.SH "NAME"
+glib\-genmarshal \- C code marshaller generation utility for GLib closures
+.SH "SYNOPSIS"
+.HP 16
+\fBglib\-genmarshal\fR [options...] [files...]
+.SH "DESCRIPTION"
+.PP
+\fBglib\-genmarshal\fR
+is a small utility that generates C code marshallers for callback functions of the GClosure mechanism in the GObject sublibrary of GLib. The marshaller functions have a standard signature, they get passed in the invoking closure, an array of value structures holding the callback function parameters and a value structure for the return value of the callback. The marshaller is then responsible to call the respective C code function of the closure with all the parameters on the stack and to collect its return value.
+.SH "INVOCATION"
+.PP
+\fBglib\-genmarshal\fR
+takes a list of marshallers to generate as input. The marshaller list is either read from standard input or from files passed as additional arguments on the command line.
+.SS "Options"
+.TP
+\fB\-\-header\fR
+Generate header file contents of the marshallers.
+.TP
+\fB\-\-body\fR
+Generate C code file contents of the marshallers.
+.TP
+\fB\-\-prefix=string\fR, \fB\-\-prefix string\fR
+Specify marshaller prefix. The default prefix is
+`g_cclosure_marshal'.
+.TP
+\fB\-\-skip\-source\fR
+Skip source location remarks in generated comments.
+.TP
+\fB\-\-nostdinc\fR
+Do not use the standard marshallers of the GObject library, and skip
+\fIgmarshal.h\fR
+include directive in generated header files.
+.TP
+\fB\-\-g\-fatal\-warnings\fR
+Make warnings fatal, that is, exit immediately once a warning occurs.
+.TP
+\fB\-h\fR, \fB\-\-help\fR
+Print brief help and exit.
+.TP
+\fB\-v\fR, \fB\-\-version\fR
+Print version and exit.
+.SS "Marshaller list format"
+.PP
+The marshaller lists are processed line by line, a line can contain a comment in the form of
+.sp
+.nf
+# this is a comment
+.fi
+.sp
+or a marshaller specification of the form
+.sp
+.nf
+\fIRTYPE\fR:\fIPTYPE\fR
+\fIRTYPE\fR:\fIPTYPE\fR,\fIPTYPE\fR
+\fIRTYPE\fR:\fIPTYPE\fR,\fIPTYPE\fR,\fIPTYPE\fR
+.fi
+.sp
+(up to 16
+\fIPTYPE\fRs may be present).
+.PP
+The
+\fIRTYPE\fR
+part specifies the callback's return type and the
+\fIPTYPE\fRs right to the colon specify the callback's parameter list, except for the first and the last arguments which are always pointers.
+.SS "Parameter types"
+.PP
+Currently, the following types are supported:
+.TP
+\fIVOID\fR
+indicates no return type, or no extra parameters. If
+\fIVOID\fR
+is used as the parameter list, no additional parameters may be present.
+.TP
+\fIBOOLEAN\fR
+for boolean types (gboolean)
+.TP
+\fICHAR\fR
+for signed char types (gchar)
+.TP
+\fIUCHAR\fR
+for unsigned char types (guchar)
+.TP
+\fIINT\fR
+for signed integer types (gint)
+.TP
+\fIUINT\fR
+for unsigned integer types (guint)
+.TP
+\fILONG\fR
+for signed long integer types (glong)
+.TP
+\fIULONG\fR
+for unsigned long integer types (gulong)
+.TP
+\fIINT64\fR
+for signed 64bit integer types (gint64)
+.TP
+\fIUINT64\fR
+for unsigned 64bit integer types (guint64)
+.TP
+\fIENUM\fR
+for enumeration types (gint)
+.TP
+\fIFLAGS\fR
+for flag enumeration types (guint)
+.TP
+\fIFLOAT\fR
+for single\-precision float types (gfloat)
+.TP
+\fIDOUBLE\fR
+for double\-precision float types (gdouble)
+.TP
+\fISTRING\fR
+for string types (gchar*)
+.TP
+\fIBOXED\fR
+for boxed (anonymous but reference counted) types (GBoxed*)
+.TP
+\fIPARAM\fR
+for GParamSpec or derived types (GParamSpec*)
+.TP
+\fIPOINTER\fR
+for anonymous pointer types (gpointer)
+.TP
+\fIOBJECT\fR
+for GObject or derived types (GObject*)
+.TP
+\fINONE\fR
+deprecated alias for
+\fIVOID\fR
+.TP
+\fIBOOL\fR
+deprecated alias for
+\fIBOOLEAN\fR
+.SH "EXAMPLE"
+.PP
+To generate marshallers for the following callback functions:
+.sp
+.nf
+void   foo (gpointer data1,
+            gpointer data2);
+void   bar (gpointer data1,
+            gint     param1,
+            gpointer data2);
+gfloat baz (gpointer data1,
+            gboolean param1,
+            guchar   param2,
+            gpointer data2);
+.fi
+.PP
+The marshaller list has to look like this:
+.sp
+.nf
+VOID:VOID
+VOID:INT
+FLOAT:BOOLEAN,UCHAR
+.fi
+.PP
+The generated marshallers have the arguments encoded in their function name. For this particular list, they are
+.sp
+.nf
+g_cclosure_marshal_VOID__VOID(),
+g_cclosure_marshal_VOID__INT(), 
+g_cclosure_marshal_FLOAT__BOOLEAN_UCHAR().
+.fi
+.PP
+They can be used directly for GClosures or be passed in as the GSignalCMarshaller c_marshaller; argument upon creation of signals:
+.sp
+.nf
+GClosure *cc_foo, *cc_bar, *cc_baz;
+
+cc_foo = g_cclosure_new (NULL, foo, NULL);
+g_closure_set_marshal (cc_foo, g_cclosure_marshal_VOID__VOID);
+cc_bar = g_cclosure_new (NULL, bar, NULL);
+g_closure_set_marshal (cc_bar, g_cclosure_marshal_VOID__INT);
+cc_baz = g_cclosure_new (NULL, baz, NULL);
+g_closure_set_marshal (cc_baz, g_cclosure_marshal_FLOAT__BOOLEAN_UCHAR);
+.fi
+.SH "SEE ALSO"
+.PP
+\fBglib\-mkenums\fR(1)
+.SH "BUGS"
+.PP
+None known yet.
+.SH "AUTHOR"
+.PP
+\fBglib\-genmarshal\fR
+has been written by Tim Janik
+<timj@gtk.org>.
+.PP
+This manual page was provided by Tim Janik
+<timj@gtk.org>.

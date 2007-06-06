@@ -1,0 +1,1788 @@
+<!-- ##### SECTION Title ##### -->
+Parameters and Values
+
+<!-- ##### SECTION Short_Description ##### -->
+Standard Parameter and Value Types
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+#GValue provides an abstract container structure which can be copied,
+transformed and compared while holding a value of any (derived) type, which
+is registered as a #GType with a #GTypeValueTable in its #GTypeInfo structure.
+Parameter specifications for most value types can be created as
+#GParamSpec derived instances, to implement e.g. #GObject properties which
+operate on #GValue containers.
+</para>
+<para>
+Parameter names need to start with a letter (a-z or A-Z). Subsequent
+characters can be letters, numbers or a '-'.
+All other characters are replaced by a '-' during construction.
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+#GParamSpec, #GValue, g_object_class_install_property().
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### MACRO G_IS_PARAM_SPEC_BOOLEAN ##### -->
+<para>
+Return whether the given #GParamSpec is of type %G_TYPE_PARAM_BOOLEAN.
+</para>
+
+@pspec: a valid #GParamSpec instance
+
+
+<!-- ##### MACRO G_PARAM_SPEC_BOOLEAN ##### -->
+<para>
+Cast a #GParamSpec instance into a #GParamSpecBoolean.
+</para>
+
+@pspec: a valid #GParamSpec instance
+
+
+<!-- ##### MACRO G_VALUE_HOLDS_BOOLEAN ##### -->
+<para>
+Return whether the given #GValue can hold values of type %G_TYPE_BOOLEAN.
+</para>
+
+@value: a valid #GValue structure
+
+
+<!-- ##### MACRO G_TYPE_PARAM_BOOLEAN ##### -->
+<para>
+The #GType of #GParamSpecBoolean.
+</para>
+
+
+
+<!-- ##### STRUCT GParamSpecBoolean ##### -->
+<para>
+A #GParamSpec derived structure that contains the meta data for boolean properties.
+</para>
+
+@parent_instance: private #GParamSpec portion
+@default_value:   default value for the property specified
+
+<!-- ##### FUNCTION g_param_spec_boolean ##### -->
+<para>
+Creates a new #GParamSpecBoolean instance specifying a %G_TYPE_BOOLEAN 
+property.
+</para>
+<para> 
+See g_param_spec_internal() for details on property names.
+</para>
+
+@name:          canonical name of the property specified
+@nick:          nick name for the property specified
+@blurb:         description of the property specified
+@default_value: default value for the property specified
+@flags:         flags for the property specified
+@Returns: a newly created parameter specification
+
+
+<!-- ##### FUNCTION g_value_set_boolean ##### -->
+<para>
+Set the contents of a %G_TYPE_BOOLEAN #GValue to @v_boolean.
+</para>
+
+@value:     a valid #GValue of type %G_TYPE_BOOLEAN
+@v_boolean: boolean value to be set
+
+
+<!-- ##### FUNCTION g_value_get_boolean ##### -->
+<para>
+Get the contents of a %G_TYPE_BOOLEAN #GValue.
+</para>
+
+@value:   a valid #GValue of type %G_TYPE_BOOLEAN
+@Returns: boolean contents of @value
+
+
+<!-- ##### MACRO G_IS_PARAM_SPEC_CHAR ##### -->
+<para>
+Return whether the given #GParamSpec is of type %G_TYPE_PARAM_CHAR.
+</para>
+
+@pspec: a valid #GParamSpec instance
+
+
+<!-- ##### MACRO G_PARAM_SPEC_CHAR ##### -->
+<para>
+Cast a #GParamSpec instance into a #GParamSpecChar.
+</para>
+
+@pspec: a valid #GParamSpec instance
+
+
+<!-- ##### MACRO G_VALUE_HOLDS_CHAR ##### -->
+<para>
+Return whether the given #GValue can hold values of type %G_TYPE_CHAR.
+</para>
+
+@value: a valid #GValue structure
+
+
+<!-- ##### MACRO G_TYPE_PARAM_CHAR ##### -->
+<para>
+The #GType of #GParamSpecChar.
+</para>
+
+
+
+<!-- ##### STRUCT GParamSpecChar ##### -->
+<para>
+A #GParamSpec derived structure that contains the meta data for character properties.
+</para>
+
+@parent_instance: private #GParamSpec portion
+@minimum:         minimum value for the property specified
+@maximum:         maximum value for the property specified
+@default_value:   default value for the property specified
+
+<!-- ##### FUNCTION g_param_spec_char ##### -->
+<para>
+Creates a new #GParamSpecChar instance specifying a %G_TYPE_CHAR property.
+</para>
+
+@name:          canonical name of the property specified
+@nick:          nick name for the property specified
+@blurb:         description of the property specified
+@minimum:       minimum value for the property specified
+@maximum:       maximum value for the property specified
+@default_value: default value for the property specified
+@flags:         flags for the property specified
+@Returns: a newly created parameter specification
+
+
+<!-- ##### FUNCTION g_value_set_char ##### -->
+<para>
+Set the contents of a %G_TYPE_CHAR #GValue to @v_char.
+</para>
+
+@value:  a valid #GValue of type %G_TYPE_CHAR
+@v_char: character value to be set
+
+
+<!-- ##### FUNCTION g_value_get_char ##### -->
+<para>
+Get the contents of a %G_TYPE_CHAR #GValue.
+</para>
+
+@value:   a valid #GValue of type %G_TYPE_CHAR
+@Returns: character contents of @value
+
+
+<!-- ##### MACRO G_IS_PARAM_SPEC_UCHAR ##### -->
+<para>
+Return whether the given #GParamSpec is of type %G_TYPE_PARAM_UCHAR.
+</para>
+
+@pspec: a valid #GParamSpec instance
+
+
+<!-- ##### MACRO G_PARAM_SPEC_UCHAR ##### -->
+<para>
+Cast a #GParamSpec instance into a #GParamSpecUChar.
+</para>
+
+@pspec: a valid #GParamSpec instance
+
+
+<!-- ##### MACRO G_VALUE_HOLDS_UCHAR ##### -->
+<para>
+Return whether the given #GValue can hold values of type %G_TYPE_UCHAR.
+</para>
+
+@value: a valid #GValue structure
+
+
+<!-- ##### MACRO G_TYPE_PARAM_UCHAR ##### -->
+<para>
+The #GType of #GParamSpecUChar.
+</para>
+
+
+
+<!-- ##### STRUCT GParamSpecUChar ##### -->
+<para>
+A #GParamSpec derived structure that contains the meta data for unsigned character properties.
+</para>
+
+@parent_instance: private #GParamSpec portion
+@minimum:         minimum value for the property specified
+@maximum:         maximum value for the property specified
+@default_value:   default value for the property specified
+
+<!-- ##### FUNCTION g_param_spec_uchar ##### -->
+<para>
+Creates a new #GParamSpecUChar instance specifying a %G_TYPE_UCHAR property.
+</para>
+
+@name:          canonical name of the property specified
+@nick:          nick name for the property specified
+@blurb:         description of the property specified
+@minimum:       minimum value for the property specified
+@maximum:       maximum value for the property specified
+@default_value: default value for the property specified
+@flags:         flags for the property specified
+@Returns: a newly created parameter specification
+
+
+<!-- ##### FUNCTION g_value_set_uchar ##### -->
+<para>
+Set the contents of a %G_TYPE_UCHAR #GValue to @v_uchar.
+</para>
+
+@value:   a valid #GValue of type %G_TYPE_UCHAR
+@v_uchar: unsigned character value to be set
+
+
+<!-- ##### FUNCTION g_value_get_uchar ##### -->
+<para>
+Get the contents of a %G_TYPE_UCHAR #GValue.
+</para>
+
+@value:   a valid #GValue of type %G_TYPE_UCHAR
+@Returns: unsigned character contents of @value
+
+
+<!-- ##### MACRO G_IS_PARAM_SPEC_INT ##### -->
+<para>
+Return whether the given #GParamSpec is of type %G_TYPE_PARAM_INT.
+</para>
+
+@pspec: a valid #GParamSpec instance
+
+
+<!-- ##### MACRO G_PARAM_SPEC_INT ##### -->
+<para>
+Cast a #GParamSpec instance into a #GParamSpecInt.
+</para>
+
+@pspec: a valid #GParamSpec instance
+
+
+<!-- ##### MACRO G_VALUE_HOLDS_INT ##### -->
+<para>
+Return whether the given #GValue can hold values of type %G_TYPE_INT.
+</para>
+
+@value: a valid #GValue structure
+
+
+<!-- ##### MACRO G_TYPE_PARAM_INT ##### -->
+<para>
+The #GType of #GParamSpecInt.
+</para>
+
+
+
+<!-- ##### STRUCT GParamSpecInt ##### -->
+<para>
+A #GParamSpec derived structure that contains the meta data for integer properties.
+</para>
+
+@parent_instance: private #GParamSpec portion
+@minimum:         minimum value for the property specified
+@maximum:         maximum value for the property specified
+@default_value:   default value for the property specified
+
+<!-- ##### FUNCTION g_param_spec_int ##### -->
+<para>
+Creates a new #GParamSpecInt instance specifying a %G_TYPE_INT property.
+</para>
+<para>
+See g_param_spec_internal() for details on property names.
+</para>
+
+@name:          canonical name of the property specified
+@nick:          nick name for the property specified
+@blurb:         description of the property specified
+@minimum:       minimum value for the property specified
+@maximum:       maximum value for the property specified
+@default_value: default value for the property specified
+@flags:         flags for the property specified
+@Returns: a newly created parameter specification
+
+
+<!-- ##### FUNCTION g_value_set_int ##### -->
+<para>
+Set the contents of a %G_TYPE_INT #GValue to @v_int.
+</para>
+
+@value: a valid #GValue of type %G_TYPE_INT
+@v_int: integer value to be set
+
+
+<!-- ##### FUNCTION g_value_get_int ##### -->
+<para>
+Get the contents of a %G_TYPE_INT #GValue.
+</para>
+
+@value:   a valid #GValue of type %G_TYPE_INT
+@Returns: integer contents of @value
+
+
+<!-- ##### MACRO G_IS_PARAM_SPEC_UINT ##### -->
+<para>
+Return whether the given #GParamSpec is of type %G_TYPE_PARAM_UINT.
+</para>
+
+@pspec: a valid #GParamSpec instance
+
+
+<!-- ##### MACRO G_PARAM_SPEC_UINT ##### -->
+<para>
+Cast a #GParamSpec instance into a #GParamSpecUInt.
+</para>
+
+@pspec: a valid #GParamSpec instance
+
+
+<!-- ##### MACRO G_VALUE_HOLDS_UINT ##### -->
+<para>
+Return whether the given #GValue can hold values of type %G_TYPE_UINT.
+</para>
+
+@value: a valid #GValue structure
+
+
+<!-- ##### MACRO G_TYPE_PARAM_UINT ##### -->
+<para>
+The #GType of #GParamSpecUInt.
+</para>
+
+
+
+<!-- ##### STRUCT GParamSpecUInt ##### -->
+<para>
+A #GParamSpec derived structure that contains the meta data for unsigned integer properties.
+</para>
+
+@parent_instance: private #GParamSpec portion
+@minimum:         minimum value for the property specified
+@maximum:         maximum value for the property specified
+@default_value:   default value for the property specified
+
+<!-- ##### FUNCTION g_param_spec_uint ##### -->
+<para>
+Creates a new #GParamSpecUInt instance specifying a %G_TYPE_UINT property.
+</para>
+<para>
+See g_param_spec_internal() for details on property names.
+</para>
+
+@name:          canonical name of the property specified
+@nick:          nick name for the property specified
+@blurb:         description of the property specified
+@minimum:       minimum value for the property specified
+@maximum:       maximum value for the property specified
+@default_value: default value for the property specified
+@flags:         flags for the property specified
+@Returns:  a newly created parameter specification
+
+
+<!-- ##### FUNCTION g_value_set_uint ##### -->
+<para>
+Set the contents of a %G_TYPE_UINT #GValue to @v_uint.
+</para>
+
+@value:  a valid #GValue of type %G_TYPE_UINT
+@v_uint: unsigned integer value to be set
+
+
+<!-- ##### FUNCTION g_value_get_uint ##### -->
+<para>
+Get the contents of a %G_TYPE_UINT #GValue.
+</para>
+
+@value:   a valid #GValue of type %G_TYPE_UINT
+@Returns: unsigned integer contents of @value
+
+
+<!-- ##### MACRO G_IS_PARAM_SPEC_LONG ##### -->
+<para>
+Return whether the given #GParamSpec is of type %G_TYPE_PARAM_LONG.
+</para>
+
+@pspec: a valid #GParamSpec instance
+
+
+<!-- ##### MACRO G_PARAM_SPEC_LONG ##### -->
+<para>
+Cast a #GParamSpec instance into a #GParamSpecLong.
+</para>
+
+@pspec: a valid #GParamSpec instance
+
+
+<!-- ##### MACRO G_VALUE_HOLDS_LONG ##### -->
+<para>
+Return whether the given #GValue can hold values of type %G_TYPE_LONG.
+</para>
+
+@value: a valid #GValue structure
+
+
+<!-- ##### MACRO G_TYPE_PARAM_LONG ##### -->
+<para>
+The #GType of #GParamSpecLong.
+</para>
+
+
+
+<!-- ##### STRUCT GParamSpecLong ##### -->
+<para>
+A #GParamSpec derived structure that contains the meta data for long integer properties.
+</para>
+
+@parent_instance: private #GParamSpec portion
+@minimum:         minimum value for the property specified
+@maximum:         maximum value for the property specified
+@default_value:   default value for the property specified
+
+<!-- ##### FUNCTION g_param_spec_long ##### -->
+<para>
+Creates a new #GParamSpecLong instance specifying a %G_TYPE_LONG property.
+</para>
+<para> 
+See g_param_spec_internal() for details on property names.
+</para>
+
+@name:          canonical name of the property specified
+@nick:          nick name for the property specified
+@blurb:         description of the property specified
+@minimum:       minimum value for the property specified
+@maximum:       maximum value for the property specified
+@default_value: default value for the property specified
+@flags:         flags for the property specified
+@Returns: a newly created parameter specification
+
+
+<!-- ##### FUNCTION g_value_set_long ##### -->
+<para>
+Set the contents of a %G_TYPE_LONG #GValue to @v_long.
+</para>
+
+@value:  a valid #GValue of type %G_TYPE_LONG
+@v_long: long integer value to be set
+
+
+<!-- ##### FUNCTION g_value_get_long ##### -->
+<para>
+Get the contents of a %G_TYPE_LONG #GValue.
+</para>
+
+@value:   a valid #GValue of type %G_TYPE_LONG
+@Returns: long integer contents of @value
+
+
+<!-- ##### MACRO G_IS_PARAM_SPEC_ULONG ##### -->
+<para>
+Return whether the given #GParamSpec is of type %G_TYPE_PARAM_ULONG.
+</para>
+
+@pspec: a valid #GParamSpec instance
+
+
+<!-- ##### MACRO G_PARAM_SPEC_ULONG ##### -->
+<para>
+Cast a #GParamSpec instance into a #GParamSpecULong.
+</para>
+
+@pspec: a valid #GParamSpec instance
+
+
+<!-- ##### MACRO G_VALUE_HOLDS_ULONG ##### -->
+<para>
+Return whether the given #GValue can hold values of type %G_TYPE_ULONG.
+</para>
+
+@value: a valid #GValue structure
+
+
+<!-- ##### MACRO G_TYPE_PARAM_ULONG ##### -->
+<para>
+The #GType of #GParamSpecULong.
+</para>
+
+
+
+<!-- ##### STRUCT GParamSpecULong ##### -->
+<para>
+A #GParamSpec derived structure that contains the meta data for unsigned long integer properties.
+</para>
+
+@parent_instance: private #GParamSpec portion
+@minimum:         minimum value for the property specified
+@maximum:         maximum value for the property specified
+@default_value:   default value for the property specified
+
+<!-- ##### FUNCTION g_param_spec_ulong ##### -->
+<para>
+Creates a new #GParamSpecULong instance specifying a %G_TYPE_ULONG property.
+</para>
+<para>
+See g_param_spec_internal() for details on property names.
+</para>
+
+@name:          canonical name of the property specified
+@nick:          nick name for the property specified
+@blurb:         description of the property specified
+@minimum:       minimum value for the property specified
+@maximum:       maximum value for the property specified
+@default_value: default value for the property specified
+@flags:         flags for the property specified
+@Returns:   a newly created parameter specification
+
+
+<!-- ##### FUNCTION g_value_set_ulong ##### -->
+<para>
+Set the contents of a %G_TYPE_ULONG #GValue to @v_ulong.
+</para>
+
+@value:   a valid #GValue of type %G_TYPE_ULONG
+@v_ulong: unsigned long integer value to be set
+
+
+<!-- ##### FUNCTION g_value_get_ulong ##### -->
+<para>
+Get the contents of a %G_TYPE_ULONG #GValue.
+</para>
+
+@value:   a valid #GValue of type %G_TYPE_ULONG
+@Returns: unsigned long integer contents of @value
+
+
+<!-- ##### MACRO G_IS_PARAM_SPEC_INT64 ##### -->
+<para>
+Return whether the given #GParamSpec is of type %G_TYPE_PARAM_INT64.
+</para>
+
+@pspec: a valid #GParamSpec instance
+
+
+<!-- ##### MACRO G_PARAM_SPEC_INT64 ##### -->
+<para>
+Cast a #GParamSpec instance into a #GParamSpecInt64.
+</para>
+
+@pspec: a valid #GParamSpec instance
+
+
+<!-- ##### MACRO G_VALUE_HOLDS_INT64 ##### -->
+<para>
+Return whether the given #GValue can hold values of type %G_TYPE_INT64.
+</para>
+
+@value: a valid #GValue structure
+
+
+<!-- ##### MACRO G_TYPE_PARAM_INT64 ##### -->
+<para>
+The #GType of #GParamSpecInt64.
+</para>
+
+
+
+<!-- ##### STRUCT GParamSpecInt64 ##### -->
+<para>
+A #GParamSpec derived structure that contains the meta data for 64bit integer properties.
+</para>
+
+@parent_instance: private #GParamSpec portion
+@minimum:         minimum value for the property specified
+@maximum:         maximum value for the property specified
+@default_value:   default value for the property specified
+
+<!-- ##### FUNCTION g_param_spec_int64 ##### -->
+<para>
+Creates a new #GParamSpecInt64 instance specifying a %G_TYPE_INT64 property.
+</para>
+<para>
+See g_param_spec_internal() for details on property names.
+</para>
+
+@name:          canonical name of the property specified
+@nick:          nick name for the property specified
+@blurb:         description of the property specified
+@minimum:       minimum value for the property specified
+@maximum:       maximum value for the property specified
+@default_value: default value for the property specified
+@flags:         flags for the property specified
+@Returns: a newly created parameter specification
+
+
+<!-- ##### FUNCTION g_value_set_int64 ##### -->
+<para>
+Set the contents of a %G_TYPE_INT64 #GValue to @v_int64.
+</para>
+
+@value:  a valid #GValue of type %G_TYPE_INT64
+@v_int64: 64bit integer value to be set
+
+
+<!-- ##### FUNCTION g_value_get_int64 ##### -->
+<para>
+Get the contents of a %G_TYPE_INT64 #GValue.
+</para>
+
+@value:   a valid #GValue of type %G_TYPE_INT64
+@Returns: 64bit integer contents of @value
+
+
+<!-- ##### MACRO G_IS_PARAM_SPEC_UINT64 ##### -->
+<para>
+Return whether the given #GParamSpec is of type %G_TYPE_PARAM_UINT64.
+</para>
+
+@pspec: a valid #GParamSpec instance
+
+
+<!-- ##### MACRO G_PARAM_SPEC_UINT64 ##### -->
+<para>
+Cast a #GParamSpec instance into a #GParamSpecUInt64.
+</para>
+
+@pspec: a valid #GParamSpec instance
+
+
+<!-- ##### MACRO G_VALUE_HOLDS_UINT64 ##### -->
+<para>
+Return whether the given #GValue can hold values of type %G_TYPE_UINT64.
+</para>
+
+@value: a valid #GValue structure
+
+
+<!-- ##### MACRO G_TYPE_PARAM_UINT64 ##### -->
+<para>
+The #GType of #GParamSpecUInt64.
+</para>
+
+
+
+<!-- ##### STRUCT GParamSpecUInt64 ##### -->
+<para>
+A #GParamSpec derived structure that contains the meta data for unsigned 64bit integer properties.
+</para>
+
+@parent_instance: private #GParamSpec portion
+@minimum:         minimum value for the property specified
+@maximum:         maximum value for the property specified
+@default_value:   default value for the property specified
+
+<!-- ##### FUNCTION g_param_spec_uint64 ##### -->
+<para>
+Creates a new #GParamSpecUInt64 instance specifying a %G_TYPE_UINT64 
+property.
+</para>
+<para>
+See g_param_spec_internal() for details on property names.
+</para>
+
+@name:          canonical name of the property specified
+@nick:          nick name for the property specified
+@blurb:         description of the property specified
+@minimum:       minimum value for the property specified
+@maximum:       maximum value for the property specified
+@default_value: default value for the property specified
+@flags:         flags for the property specified
+@Returns: a newly created parameter specification
+
+
+<!-- ##### FUNCTION g_value_set_uint64 ##### -->
+<para>
+Set the contents of a %G_TYPE_UINT64 #GValue to @v_uint64.
+</para>
+
+@value:   a valid #GValue of type %G_TYPE_UINT64
+@v_uint64: unsigned 64bit integer value to be set
+
+
+<!-- ##### FUNCTION g_value_get_uint64 ##### -->
+<para>
+Get the contents of a %G_TYPE_UINT64 #GValue.
+</para>
+
+@value:   a valid #GValue of type %G_TYPE_UINT64
+@Returns: unsigned 64bit integer contents of @value
+
+
+<!-- ##### MACRO G_IS_PARAM_SPEC_FLOAT ##### -->
+<para>
+Return whether the given #GParamSpec is of type %G_TYPE_PARAM_FLOAT.
+</para>
+
+@pspec: a valid #GParamSpec instance
+
+
+<!-- ##### MACRO G_PARAM_SPEC_FLOAT ##### -->
+<para>
+Cast a #GParamSpec instance into a #GParamSpecFloat.
+</para>
+
+@pspec: a valid #GParamSpec instance
+
+
+<!-- ##### MACRO G_VALUE_HOLDS_FLOAT ##### -->
+<para>
+Return whether the given #GValue can hold values of type %G_TYPE_FLOAT.
+</para>
+
+@value: a valid #GValue structure
+
+
+<!-- ##### MACRO G_TYPE_PARAM_FLOAT ##### -->
+<para>
+The #GType of #GParamSpecFloat.
+</para>
+
+
+
+<!-- ##### STRUCT GParamSpecFloat ##### -->
+<para>
+A #GParamSpec derived structure that contains the meta data for float properties.
+</para>
+
+@parent_instance: private #GParamSpec portion
+@minimum:         minimum value for the property specified
+@maximum:         maximum value for the property specified
+@default_value:   default value for the property specified
+@epsilon:         values closer than @epsilon will be considered identical
+                  by g_param_values_cmp(); the default value is 1e-30.
+
+<!-- ##### FUNCTION g_param_spec_float ##### -->
+<para>
+Creates a new #GParamSpecFloat instance specifying a %G_TYPE_FLOAT property.
+</para>
+<para> 
+See g_param_spec_internal() for details on property names.
+</para>
+
+@name:          canonical name of the property specified
+@nick:          nick name for the property specified
+@blurb:         description of the property specified
+@minimum:       minimum value for the property specified
+@maximum:       maximum value for the property specified
+@default_value: default value for the property specified
+@flags:         flags for the property specified
+@Returns: a newly created parameter specification
+
+
+<!-- ##### FUNCTION g_value_set_float ##### -->
+<para>
+Set the contents of a %G_TYPE_FLOAT #GValue to @v_float.
+</para>
+
+@value:     a valid #GValue of type %G_TYPE_FLOAT
+@v_float: float value to be set
+
+
+<!-- ##### FUNCTION g_value_get_float ##### -->
+<para>
+Get the contents of a %G_TYPE_FLOAT #GValue.
+</para>
+
+@value:   a valid #GValue of type %G_TYPE_FLOAT
+@Returns: float contents of @value
+
+
+<!-- ##### MACRO G_IS_PARAM_SPEC_DOUBLE ##### -->
+<para>
+Return whether the given #GParamSpec is of type %G_TYPE_PARAM_DOUBLE.
+</para>
+
+@pspec: a valid #GParamSpec instance
+
+
+<!-- ##### MACRO G_PARAM_SPEC_DOUBLE ##### -->
+<para>
+Cast a #GParamSpec instance into a #GParamSpecDouble.
+</para>
+
+@pspec: a valid #GParamSpec instance
+
+
+<!-- ##### MACRO G_VALUE_HOLDS_DOUBLE ##### -->
+<para>
+Return whether the given #GValue can hold values of type %G_TYPE_DOUBLE.
+</para>
+
+@value: a valid #GValue structure
+
+
+<!-- ##### MACRO G_TYPE_PARAM_DOUBLE ##### -->
+<para>
+The #GType of #GParamSpecDouble.
+</para>
+
+
+
+<!-- ##### STRUCT GParamSpecDouble ##### -->
+<para>
+A #GParamSpec derived structure that contains the meta data for double properties.
+</para>
+
+@parent_instance: private #GParamSpec portion
+@minimum:         minimum value for the property specified
+@maximum:         maximum value for the property specified
+@default_value:   default value for the property specified
+@epsilon:         values closer than @epsilon will be considered identical
+                  by g_param_values_cmp(); the default value is 1e-90.
+
+<!-- ##### FUNCTION g_param_spec_double ##### -->
+<para>
+Creates a new #GParamSpecDouble instance specifying a %G_TYPE_DOUBLE 
+property.
+</para>
+<para> 
+See g_param_spec_internal() for details on property names.
+</para>
+
+@name:          canonical name of the property specified
+@nick:          nick name for the property specified
+@blurb:         description of the property specified
+@minimum:       minimum value for the property specified
+@maximum:       maximum value for the property specified
+@default_value: default value for the property specified
+@flags:         flags for the property specified
+@Returns:  a newly created parameter specification
+
+
+<!-- ##### FUNCTION g_value_set_double ##### -->
+<para>
+Set the contents of a %G_TYPE_DOUBLE #GValue to @v_double.
+</para>
+
+@value:     a valid #GValue of type %G_TYPE_DOUBLE
+@v_double: double value to be set
+
+
+<!-- ##### FUNCTION g_value_get_double ##### -->
+<para>
+Get the contents of a %G_TYPE_DOUBLE #GValue.
+</para>
+
+@value:   a valid #GValue of type %G_TYPE_DOUBLE
+@Returns: double contents of @value
+
+
+<!-- ##### MACRO G_IS_PARAM_SPEC_ENUM ##### -->
+<para>
+Returns whether the given #GParamSpec is of type %G_TYPE_PARAM_ENUM.
+</para>
+
+@pspec: a valid #GParamSpec instance
+
+
+<!-- ##### MACRO G_PARAM_SPEC_ENUM ##### -->
+<para>
+Cast a #GParamSpec instance into a #GParamSpecEnum.
+</para>
+
+@pspec: a valid #GParamSpec instance
+
+
+<!-- ##### MACRO G_VALUE_HOLDS_ENUM ##### -->
+<para>
+Return whether the given #GValue can hold values derived from type %G_TYPE_ENUM.
+</para>
+
+@value: a valid #GValue structure
+
+
+<!-- ##### MACRO G_TYPE_PARAM_ENUM ##### -->
+<para>
+The #GType of #GParamSpecEnum.
+</para>
+
+
+
+<!-- ##### STRUCT GParamSpecEnum ##### -->
+<para>
+A #GParamSpec derived structure that contains the meta data for enum 
+properties.
+</para>
+
+@parent_instance: private #GParamSpec portion
+@enum_class: the #GEnumClass for the enum
+@default_value:   default value for the property specified
+
+<!-- ##### FUNCTION g_param_spec_enum ##### -->
+<para>
+Creates a new #GParamSpecEnum instance specifying a %G_TYPE_ENUM
+property.
+</para>
+<para> 
+See g_param_spec_internal() for details on property names.
+</para>
+
+@name:          canonical name of the property specified
+@nick:          nick name for the property specified
+@blurb:         description of the property specified
+@enum_type:     a #GType derived from %G_TYPE_ENUM
+@default_value: default value for the property specified
+@flags:         flags for the property specified
+@Returns:  a newly created parameter specification
+
+
+<!-- ##### FUNCTION g_value_set_enum ##### -->
+<para>
+Set the contents of a %G_TYPE_ENUM #GValue to @v_enum.
+</para>
+
+@value:  a valid #GValue whose type is derived from %G_TYPE_ENUM
+@v_enum: enum value to be set
+
+
+<!-- ##### FUNCTION g_value_get_enum ##### -->
+<para>
+Get the contents of a %G_TYPE_ENUM #GValue.
+</para>
+
+@value:   a valid #GValue whose type is derived from %G_TYPE_ENUM
+@Returns: enum contents of @value
+
+
+<!-- ##### MACRO G_IS_PARAM_SPEC_FLAGS ##### -->
+<para>
+Returns whether the given #GParamSpec is of type %G_TYPE_PARAM_FLAGS.
+</para>
+
+@pspec:  a valid #GParamSpec instance
+
+
+<!-- ##### MACRO G_PARAM_SPEC_FLAGS ##### -->
+<para>
+Cast a #GParamSpec instance into a #GParamSpecFlags.
+</para>
+
+@pspec: a valid #GParamSpec instance
+
+
+<!-- ##### MACRO G_VALUE_HOLDS_FLAGS ##### -->
+<para>
+Returns whether the given #GValue can hold values derived from type %G_TYPE_FLAGS.
+</para>
+
+@value: a valid #GValue structure
+
+
+<!-- ##### MACRO G_TYPE_PARAM_FLAGS ##### -->
+<para>
+The #GType of #GParamSpecFlags.
+</para>
+
+
+
+<!-- ##### STRUCT GParamSpecFlags ##### -->
+<para>
+A #GParamSpec derived structure that contains the meta data for flags
+properties.
+</para>
+
+@parent_instance: private #GParamSpec portion
+@flags_class: the #GFlagsClass for the flags
+@default_value:   default value for the property specified
+
+<!-- ##### FUNCTION g_param_spec_flags ##### -->
+<para>
+Creates a new #GParamSpecEnum instance specifying a %G_TYPE_FLAGS
+property.
+</para>
+<para> 
+See g_param_spec_internal() for details on property names.
+</para>
+
+@name:          canonical name of the property specified
+@nick:          nick name for the property specified
+@blurb:         description of the property specified
+@flags_type:     a #GType derived from %G_TYPE_FLAGS
+@default_value: default value for the property specified
+@flags:         flags for the property specified
+@Returns:  a newly created parameter specification
+
+
+<!-- ##### FUNCTION g_value_set_flags ##### -->
+<para>
+Set the contents of a %G_TYPE_FLAGS #GValue to @v_flags.
+</para>
+
+@value:  a valid #GValue whose type is derived from %G_TYPE_FLAGS
+@v_flags: flags value to be set
+
+
+<!-- ##### FUNCTION g_value_get_flags ##### -->
+<para>
+Get the contents of a %G_TYPE_FLAGS #GValue.
+</para>
+
+@value:   a valid #GValue whose type is derived from %G_TYPE_FLAGS
+@Returns: flags contents of @value
+
+
+<!-- ##### MACRO G_IS_PARAM_SPEC_STRING ##### -->
+<para>
+Returns whether the given #GParamSpec is of type %G_TYPE_PARAM_STRING.
+</para>
+
+@pspec: a valid #GParamSpec instance
+
+
+<!-- ##### MACRO G_PARAM_SPEC_STRING ##### -->
+<para>
+Casts a #GParamSpec instance into a #GParamSpecString.
+</para>
+
+@pspec: a valid #GParamSpec instance
+
+
+<!-- ##### MACRO G_VALUE_HOLDS_STRING ##### -->
+<para>
+Return whether the given #GValue can hold values of type %G_TYPE_STRING.
+</para>
+
+@value: a valid #GValue structure
+
+
+<!-- ##### MACRO G_TYPE_PARAM_STRING ##### -->
+<para>
+The #GType of #GParamSpecString.
+</para>
+
+
+
+<!-- ##### STRUCT GParamSpecString ##### -->
+<para>
+A #GParamSpec derived structure that contains the meta data for string
+properties.
+</para>
+
+@parent_instance: private #GParamSpec portion
+@default_value:   default value for the property specified
+@cset_first: a string containing the allowed values for the first byte
+@cset_nth: a string containing the allowed values for the subsequent bytes
+@substitutor: the replacement byte for bytes which don't match @cset_first or @cset_nth.
+@null_fold_if_empty: replace empty string by %NULL
+@ensure_non_null:  replace %NULL strings by an empty string
+
+<!-- ##### TYPEDEF gchararray ##### -->
+<para>
+A C representable type name for #G_TYPE_STRING.
+</para>
+
+
+<!-- ##### FUNCTION g_param_spec_string ##### -->
+<para>
+Creates a new #GParamSpecString instance.
+</para>
+<para> 
+See g_param_spec_internal() for details on property names.
+</para>
+
+@name:          canonical name of the property specified
+@nick:          nick name for the property specified
+@blurb:         description of the property specified
+@default_value: default value for the property specified
+@flags:         flags for the property specified
+@Returns:  a newly created parameter specification
+
+
+<!-- ##### FUNCTION g_value_set_string ##### -->
+<para>
+Set the contents of a %G_TYPE_STRING #GValue to @v_string.
+</para>
+
+@value:  a valid #GValue of type %G_TYPE_STRING
+@v_string: string to be set
+
+
+<!-- ##### FUNCTION g_value_set_static_string ##### -->
+<para>
+Set the contents of a %G_TYPE_STRING #GValue to @v_string.
+The string is assumed to be static, and is thus not duplicated
+when setting the #GValue.
+</para>
+
+@value:  a valid #GValue of type %G_TYPE_STRING
+@v_string: static string to be set
+
+
+<!-- ##### FUNCTION g_value_take_string ##### -->
+<para>
+Sets the contents of a %G_TYPE_STRING #GValue to @v_string.
+</para>
+
+@value:   a valid #GValue of type %G_TYPE_STRING
+@v_string: duplicated unowned string to be set
+@Since: 2.4
+
+
+<!-- ##### FUNCTION g_value_set_string_take_ownership ##### -->
+<para>
+This is an internal function introduced mainly for C marshallers.
+</para>
+
+@value:   a valid #GValue of type %G_TYPE_STRING
+@v_string: duplicated unowned string to be set
+@Deprecated: 2.4: Use g_value_take_string() instead.
+
+
+<!-- ##### FUNCTION g_value_get_string ##### -->
+<para>
+Get the contents of a %G_TYPE_STRING #GValue.
+</para>
+
+@value:   a valid #GValue of type %G_TYPE_STRING
+@Returns: string content of @value
+
+
+<!-- ##### FUNCTION g_value_dup_string ##### -->
+<para>
+Get a copy the contents of a %G_TYPE_STRING #GValue.
+</para>
+
+@value:   a valid #GValue of type %G_TYPE_STRING
+@Returns: a newly allocated copy of the string content of @value
+
+
+<!-- ##### MACRO G_IS_PARAM_SPEC_PARAM ##### -->
+<para>
+Returns whether the given #GParamSpec is of type %G_TYPE_PARAM_PARAM.
+</para>
+
+@pspec: a valid #GParamSpec instance
+
+
+<!-- ##### MACRO G_PARAM_SPEC_PARAM ##### -->
+<para>
+Casts a #GParamSpec instance into a #GParamSpecParam.
+</para>
+
+@pspec: a valid #GParamSpec instance
+
+
+<!-- ##### MACRO G_VALUE_HOLDS_PARAM ##### -->
+<para>
+Return whether the given #GValue can hold values derived from type %G_TYPE_PARAM.
+</para>
+
+@value: a valid #GValue structure
+
+
+<!-- ##### MACRO G_TYPE_PARAM_PARAM ##### -->
+<para>
+The #GType of #GParamSpecParam.
+</para>
+
+
+
+<!-- ##### STRUCT GParamSpecParam ##### -->
+<para>
+A #GParamSpec derived structure that contains the meta data for %G_TYPE_PARAM
+properties.
+</para>
+
+@parent_instance: private #GParamSpec portion
+
+<!-- ##### FUNCTION g_param_spec_param ##### -->
+<para>
+Creates a new #GParamSpecParam instance specifying a %G_TYPE_PARAM
+property.
+</para>
+<para> 
+See g_param_spec_internal() for details on property names.
+</para>
+
+@name:          canonical name of the property specified
+@nick:          nick name for the property specified
+@blurb:         description of the property specified
+@param_type:    a #GType derived from %G_TYPE_PARAM
+@flags:         flags for the property specified
+@Returns:  a newly created parameter specification
+<!-- # Unused Parameters # -->
+@default_value: default value for the property specified
+
+
+<!-- ##### FUNCTION g_value_set_param ##### -->
+<para>
+Set the contents of a %G_TYPE_PARAM #GValue to @param.
+</para>
+
+@value:  a valid #GValue of type %G_TYPE_PARAM
+@param: the #GParamSpec to be set
+
+
+<!-- ##### FUNCTION g_value_take_param ##### -->
+<para>
+Sets the contents of a %G_TYPE_PARAM #GValue to @param and
+takes over the ownership of the callers reference to @param; 
+the caller doesn't have to unref it any more.
+</para>
+
+@value:  a valid #GValue of type %G_TYPE_PARAM
+@param: the #GParamSpec to be set
+@Since: 2.4
+
+
+<!-- ##### FUNCTION g_value_set_param_take_ownership ##### -->
+<para>
+This is an internal function introduced mainly for C marshallers.
+</para>
+
+@value:  a valid #GValue of type %G_TYPE_PARAM
+@param: the #GParamSpec to be set
+@Deprecated: 2.4: Use g_value_take_param() instead.
+
+
+<!-- ##### FUNCTION g_value_get_param ##### -->
+<para>
+Get the contents of a %G_TYPE_PARAM #GValue.
+</para>
+
+@value: a valid #GValue whose type is derived from %G_TYPE_PARAM
+@Returns: #GParamSpec content of @value
+
+
+<!-- ##### FUNCTION g_value_dup_param ##### -->
+<para>
+Get the contents of a %G_TYPE_PARAM #GValue, increasing its reference count.
+</para>
+
+@value: a valid #GValue whose type is derived from %G_TYPE_PARAM
+@Returns: #GParamSpec content of @value, should be unreferenced when no longer needed.
+
+
+<!-- ##### MACRO G_IS_PARAM_SPEC_BOXED ##### -->
+<para>
+Return whether the given #GParamSpec is of type %G_TYPE_PARAM_BOXED.
+</para>
+
+@pspec: a valid #GParamSpec instance
+
+
+<!-- ##### MACRO G_PARAM_SPEC_BOXED ##### -->
+<para>
+Cast a #GParamSpec instance into a #GParamSpecBoxed.
+</para>
+
+@pspec: a valid #GParamSpec instance
+
+
+<!-- ##### MACRO G_VALUE_HOLDS_BOXED ##### -->
+<para>
+Return whether the given #GValue can hold values derived from type %G_TYPE_BOXED.
+</para>
+
+@value: a valid #GValue structure
+
+
+<!-- ##### MACRO G_TYPE_PARAM_BOXED ##### -->
+<para>
+The #GType of #GParamSpecBoxed.
+</para>
+
+
+
+<!-- ##### STRUCT GParamSpecBoxed ##### -->
+<para>
+A #GParamSpec derived structure that contains the meta data for boxed properties.
+</para>
+
+@parent_instance: private #GParamSpec portion
+
+<!-- ##### FUNCTION g_param_spec_boxed ##### -->
+<para>
+Creates a new #GParamSpecBoxed instance specifying a %G_TYPE_BOXED 
+derived property.
+</para>
+<para> 
+See g_param_spec_internal() for details on property names.
+</para>
+
+@name:          canonical name of the property specified
+@nick:          nick name for the property specified
+@blurb:         description of the property specified
+@boxed_type:    %G_TYPE_BOXED derived type of this property
+@flags:         flags for the property specified
+@Returns: a newly created parameter specification
+
+
+<!-- ##### FUNCTION g_value_set_boxed ##### -->
+<para>
+Set the contents of a %G_TYPE_BOXED derived #GValue to @v_boxed.
+</para>
+
+@value:   a valid #GValue of %G_TYPE_BOXED derived type
+@v_boxed: boxed value to be set
+
+
+<!-- ##### FUNCTION g_value_set_static_boxed ##### -->
+<para>
+Set the contents of a %G_TYPE_BOXED derived #GValue to @v_boxed.
+The boxed value is assumed to be static, and is thus not duplicated
+when setting the #GValue.
+</para>
+
+@value:   a valid #GValue of %G_TYPE_BOXED derived type
+@v_boxed: static boxed value to be set
+
+
+<!-- ##### FUNCTION g_value_take_boxed ##### -->
+<para>
+Sets the contents of a %G_TYPE_BOXED derived #GValue to @v_boxed and
+takes over the ownership of the callers reference to @v_boxed; 
+the caller doesn't have to unref it any more.
+</para>
+
+@value: a valid #GValue of %G_TYPE_BOXED derived type
+@v_boxed: duplicated unowned boxed value to be set
+@Since: 2.4
+
+
+<!-- ##### FUNCTION g_value_set_boxed_take_ownership ##### -->
+<para>
+This is an internal function introduced mainly for C marshallers.
+</para>
+
+@value:   a valid #GValue of %G_TYPE_BOXED derived type
+@v_boxed: duplicated unowned boxed value to be set
+@Deprecated: 2.4: Use g_value_take_boxed() instead.
+
+
+<!-- ##### FUNCTION g_value_get_boxed ##### -->
+<para>
+Get the contents of a %G_TYPE_BOXED derived #GValue.
+</para>
+
+@value:   a valid #GValue of %G_TYPE_BOXED derived type
+@Returns: boxed contents of @value
+
+
+<!-- ##### FUNCTION g_value_dup_boxed ##### -->
+<para>
+Get the contents of a %G_TYPE_BOXED derived #GValue.
+Upon getting, the boxed value is duplicated and needs to be
+later freed with g_boxed_free(), e.g. like: g_boxed_free (G_VALUE_TYPE (@value), return_value);
+</para>
+
+@value:   a valid #GValue of %G_TYPE_BOXED derived type
+@Returns: boxed contents of @value
+
+
+<!-- ##### MACRO G_IS_PARAM_SPEC_POINTER ##### -->
+<para>
+Returns whether the given #GParamSpec is of type %G_TYPE_PARAM_POINTER.
+</para>
+
+@pspec: a valid #GParamSpec instance
+
+
+<!-- ##### MACRO G_PARAM_SPEC_POINTER ##### -->
+<para>
+Casts a #GParamSpec instance into a #GParamSpecPointer.
+</para>
+
+@pspec: a valid #GParamSpec instance
+
+
+<!-- ##### MACRO G_VALUE_HOLDS_POINTER ##### -->
+<para>
+Return whether the given #GValue can hold values of type %G_TYPE_POINTER.
+</para>
+
+@value: a valid #GValue structure
+
+
+<!-- ##### MACRO G_TYPE_PARAM_POINTER ##### -->
+<para>
+The #GType of #GParamSpecPointer.
+</para>
+
+
+
+<!-- ##### STRUCT GParamSpecPointer ##### -->
+<para>
+A #GParamSpec derived structure that contains the meta data for pointer properties.
+</para>
+
+@parent_instance: private #GParamSpec portion
+
+<!-- ##### FUNCTION g_param_spec_pointer ##### -->
+<para>
+Creates a new #GParamSpecPoiner instance specifying a pointer property.
+</para>
+<para> 
+See g_param_spec_internal() for details on property names.
+</para>
+
+@name:          canonical name of the property specified
+@nick:          nick name for the property specified
+@blurb:         description of the property specified
+@flags:         flags for the property specified
+@Returns: a newly created parameter specification
+
+
+<!-- ##### FUNCTION g_value_set_pointer ##### -->
+<para>
+Set the contents of a pointer #GValue to @v_pointer.
+</para>
+
+@value:   a valid #GValue of %G_TYPE_POINTER
+@v_pointer: pointer value to be set
+
+
+<!-- ##### FUNCTION g_value_get_pointer ##### -->
+<para>
+Get the contents of a pointer #GValue.
+</para>
+
+@value:   a valid #GValue of %G_TYPE_POINTER
+@Returns: pointer contents of @value
+
+
+<!-- ##### MACRO G_IS_PARAM_SPEC_OBJECT ##### -->
+<para>
+Returns whether the given #GParamSpec is of type %G_TYPE_PARAM_OBJECT.
+</para>
+
+@pspec: a valid #GParamSpec instance
+
+
+<!-- ##### MACRO G_PARAM_SPEC_OBJECT ##### -->
+<para>
+Casts a #GParamSpec instance into a #GParamSpecObject.
+</para>
+
+@pspec: a valid #GParamSpec instance
+
+
+<!-- ##### MACRO G_VALUE_HOLDS_OBJECT ##### -->
+<para>
+Return whether the given #GValue can hold values derived from type %G_TYPE_OBJECT.
+</para>
+
+@value: a valid #GValue structure
+
+
+<!-- ##### MACRO G_TYPE_PARAM_OBJECT ##### -->
+<para>
+The #GType of #GParamSpecObject.
+</para>
+
+
+
+<!-- ##### STRUCT GParamSpecObject ##### -->
+<para>
+A #GParamSpec derived structure that contains the meta data for object properties.
+</para>
+
+@parent_instance: private #GParamSpec portion
+
+<!-- ##### FUNCTION g_param_spec_object ##### -->
+<para>
+Creates a new #GParamSpecBoxed instance specifying a %G_TYPE_OBJECT 
+derived property.
+</para>
+<para> 
+See g_param_spec_internal() for details on property names.
+</para>
+
+@name:          canonical name of the property specified
+@nick:          nick name for the property specified
+@blurb:         description of the property specified
+@object_type:   %G_TYPE_OBJECT derived type of this property
+@flags:         flags for the property specified
+@Returns: a newly created parameter specification
+
+
+<!-- ##### FUNCTION g_value_set_object ##### -->
+<para>
+Set the contents of a %G_TYPE_OBJECT derived #GValue to @v_object.
+</para>
+
+@value:   a valid #GValue of %G_TYPE_OBJECT derived type
+@v_object: object value to be set
+
+
+<!-- ##### FUNCTION g_value_take_object ##### -->
+<para>
+Sets the contents of a %G_TYPE_OBJECT derived #GValue to @v_object 
+and takes over the ownership of the callers reference to @v_object; 
+the caller doesn't have to unref it any more.
+</para>
+
+@value:  a valid #GValue of %G_TYPE_OBJECT derived type
+@v_object: object value to be set
+@Since: 2.4
+
+
+<!-- ##### FUNCTION g_value_set_object_take_ownership ##### -->
+<para>
+This is an internal function introduced mainly for C marshallers.
+</para>
+
+@value:  a valid #GValue of %G_TYPE_OBJECT derived type
+@v_object: object value to be set
+@Deprecated: 2.4: Use g_value_take_object() instead.
+
+
+<!-- ##### FUNCTION g_value_get_object ##### -->
+<para>
+Get the contents of a %G_TYPE_OBJECT derived #GValue.
+</para>
+
+@value:   a valid #GValue of %G_TYPE_OBJECT derived type
+@Returns: object contents of @value
+
+
+<!-- ##### FUNCTION g_value_dup_object ##### -->
+<para>
+Get the contents of a %G_TYPE_OBJECT derived #GValue, increasing its reference count.
+</para>
+
+@value: a valid #GValue whose type is derived from %G_TYPE_OBJECT
+@Returns: object content of @value, should be unreferenced when no longer needed.
+
+
+<!-- ##### MACRO G_IS_PARAM_SPEC_UNICHAR ##### -->
+<para>
+Return whether the given #GParamSpec is of type %G_TYPE_PARAM_UNICHAR.
+</para>
+
+@pspec: a valid #GParamSpec instance
+
+
+<!-- ##### MACRO G_PARAM_SPEC_UNICHAR ##### -->
+<para>
+Cast a #GParamSpec instance into a #GParamSpecUnichar.
+</para>
+
+@pspec: a valid #GParamSpec instance
+
+
+<!-- ##### MACRO G_TYPE_PARAM_UNICHAR ##### -->
+<para>
+The #GType of #GParamSpecUnichar.
+</para>
+
+
+
+<!-- ##### STRUCT GParamSpecUnichar ##### -->
+<para>
+A #GParamSpec derived structure that contains the meta data for unichar (unsigned integer) properties.
+</para>
+
+@parent_instance: private #GParamSpec portion
+@default_value:   default value for the property specified
+
+<!-- ##### FUNCTION g_param_spec_unichar ##### -->
+<para>
+Creates a new #GParamSpecUnichar instance specifying a %G_TYPE_UINT 
+property. #GValue structures for this property can be accessed with 
+g_value_set_uint() and g_value_get_uint().
+</para>
+<para>
+See g_param_spec_internal() for details on property names.
+</para>
+
+@name:          canonical name of the property specified
+@nick:          nick name for the property specified
+@blurb:         description of the property specified
+@default_value: default value for the property specified
+@flags:         flags for the property specified
+@Returns: a newly created parameter specification
+
+
+<!-- ##### MACRO G_IS_PARAM_SPEC_VALUE_ARRAY ##### -->
+<para>
+Return whether the given #GParamSpec is of type %G_TYPE_PARAM_VALUE_ARRAY.
+</para>
+
+@pspec: a valid #GParamSpec instance
+
+
+<!-- ##### MACRO G_PARAM_SPEC_VALUE_ARRAY ##### -->
+<para>
+Cast a #GParamSpec instance into a #GParamSpecValueArray.
+</para>
+
+@pspec: a valid #GParamSpec instance
+
+
+<!-- ##### MACRO G_TYPE_PARAM_VALUE_ARRAY ##### -->
+<para>
+The #GType of #GParamSpecValueArray.
+</para>
+
+
+
+<!-- ##### STRUCT GParamSpecValueArray ##### -->
+<para>
+A #GParamSpec derived structure that contains the meta data for #GValueArray properties.
+</para>
+
+@parent_instance:  private #GParamSpec portion
+@element_spec:     a #GParamSpec describing the elements contained in arrays of this property, may be %NULL
+@fixed_n_elements: if greater than 0, arrays of this property will always have this many elements
+
+<!-- ##### FUNCTION g_param_spec_value_array ##### -->
+<para>
+Creates a new #GParamSpecValueArray instance specifying a 
+%G_TYPE_VALUE_ARRAY property. %G_TYPE_VALUE_ARRAY is a %G_TYPE_BOXED 
+type, as such, #GValue structures for this property can be accessed 
+with g_value_set_boxed() and g_value_get_boxed().
+</para>
+<para>
+See g_param_spec_internal() for details on property names.
+</para>
+
+@name:          canonical name of the property specified
+@nick:          nick name for the property specified
+@blurb:         description of the property specified
+@element_spec:  a #GParamSpec describing the elements contained in 
+                arrays of this property, may be %NULL
+@flags:         flags for the property specified
+@Returns: a newly created parameter specification
+
+
+<!-- ##### MACRO G_IS_PARAM_SPEC_OVERRIDE ##### -->
+<para>
+Returns whether the given #GParamSpec is of type %G_TYPE_PARAM_OVERRIDE.
+</para>
+
+@pspec: a #GParamSpec
+@Since: 2.4
+
+
+<!-- ##### MACRO G_PARAM_SPEC_OVERRIDE ##### -->
+<para>
+Casts a #GParamSpec into a #GParamSpecOverride.
+</para>
+
+@pspec:  a #GParamSpec
+@Since: 2.4
+
+
+<!-- ##### MACRO G_TYPE_PARAM_OVERRIDE ##### -->
+<para>
+The #GType of #GParamSpecOverride.
+</para>
+
+@Since: 2.4
+
+
+<!-- ##### STRUCT GParamSpecOverride ##### -->
+<para>
+This is a type of #GParamSpec type that simply redirects operations to
+another paramspec.  All operations other than getting or
+setting the value are redirected, including accessing the nick and
+blurb, validating a value, and so forth. See
+g_param_spec_get_redirect_target() for retrieving the overidden
+property. #GParamSpecOverride is used in implementing
+g_object_class_override_property(), and will not be directly useful
+unless you are implementing a new base type similar to GObject.
+</para>
+
+@Since: 2.4
+
+<!-- ##### FUNCTION g_param_spec_override ##### -->
+<para>
+Creates a new property of type #GParamSpecOverride. This is used
+to direct operations to another paramspec, and will not be directly
+useful unless you are implementing a new base type similar to GObject.
+</para>
+
+@name: the name of the property.
+@overridden: The property that is being overridden
+@Returns: the newly created #GParamSpec
+@Since: 2.4
+
+
+<!-- ##### MACRO G_IS_PARAM_SPEC_GTYPE ##### -->
+<para>
+Returns whether the given #GParamSpec is of type %G_TYPE_PARAM_GTYPE.
+</para>
+
+@pspec: a #GParamSpec
+@Since: 2.10
+
+
+<!-- ##### MACRO G_PARAM_SPEC_GTYPE ##### -->
+<para>
+Casts a #GParamSpec into a #GParamSpecGType.
+</para>
+
+@pspec:  a #GParamSpec
+@Since: 2.10
+
+
+<!-- ##### MACRO G_VALUE_HOLDS_GTYPE ##### -->
+<para>
+Returns whether the given #GValue can hold values of type %G_TYPE_GTYPE.
+</para>
+
+@value:  a valid #GValue structure
+@Since: 2.12
+
+
+<!-- ##### MACRO G_TYPE_PARAM_GTYPE ##### -->
+<para>
+The #GType of #GParamSpecGType.
+</para>
+
+@Since: 2.10
+
+
+<!-- ##### STRUCT GParamSpecGType ##### -->
+<para>
+A #GParamSpec derived structure that contains the meta data for #GType properties.
+</para>
+
+@parent_instance:  private #GParamSpec portion
+@is_a_type:        a #GType whose subtypes can occur as values
+@Since: 2.10
+
+<!-- ##### FUNCTION g_param_spec_gtype ##### -->
+<para>
+Creates a new #GParamSpecGType instance specifying a 
+%G_TYPE_GTYPE property. 
+</para>
+<para>
+See g_param_spec_internal() for details on property names.
+</para>
+
+@name:          canonical name of the property specified
+@nick:          nick name for the property specified
+@blurb:         description of the property specified
+@is_a_type:     a #GType whose subtypes are allowed as values
+                of the property (use %G_TYPE_NONE for any type)
+@flags:         flags for the property specified
+@Returns: a newly created parameter specification
+@Since: 2.10
+
+
+<!-- ##### FUNCTION g_value_get_gtype ##### -->
+<para>
+Get the contents of a %G_TYPE_GTYPE #GValue.
+</para>
+
+@value: a valid #GValue of type %G_TYPE_GTYPE
+@Returns: the #GType stored in @value
+@Since: 2.12
+
+
+<!-- ##### FUNCTION g_value_set_gtype ##### -->
+<para>
+Set the contents of a %G_TYPE_GTYPE #GValue to @v_gtype.
+</para>
+
+@value: a valid #GValue of type %G_TYPE_GTYPE
+@v_gtype: #GType to be set
+@Since: 2.12
+
+

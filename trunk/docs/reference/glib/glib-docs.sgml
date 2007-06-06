@@ -1,0 +1,223 @@
+<?xml version="1.0"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
+<!ENTITY glib-Basic-Types SYSTEM "xml/types.xml">
+<!ENTITY glib-Limits-of-Basic-Types SYSTEM "xml/limits.xml">
+<!ENTITY glib-Standard-Macros SYSTEM "xml/macros.xml">
+<!ENTITY glib-Type-Conversion-Macros SYSTEM "xml/type_conversion.xml">
+<!ENTITY glib-Byte-Order-Macros SYSTEM "xml/byte_order.xml">
+<!ENTITY glib-Numerical-Definitions SYSTEM "xml/numerical.xml">
+<!ENTITY glib-Miscellaneous-Macros SYSTEM "xml/macros_misc.xml">
+<!ENTITY glib-Atomic-Operations SYSTEM "xml/atomic_operations.xml">
+<!ENTITY glib-Memory-Allocation SYSTEM "xml/memory.xml">
+<!ENTITY glib-Error-Reporting SYSTEM "xml/error_reporting.xml">
+<!ENTITY glib-Warnings-and-Assertions SYSTEM "xml/warnings.xml">
+<!ENTITY glib-Message-Logging SYSTEM "xml/messages.xml">
+<!ENTITY glib-Pattern-Matching SYSTEM "xml/patterns.xml">
+<!ENTITY glib-Timers SYSTEM "xml/timers.xml">
+<!ENTITY glib-String-Utility-Functions SYSTEM "xml/string_utils.xml">
+<!ENTITY glib-Character-Set-Conversion SYSTEM "xml/conversions.xml">
+<!ENTITY glib-Unicode-Manipulation SYSTEM "xml/unicode.xml">
+<!ENTITY glib-Random-Numbers SYSTEM "xml/random_numbers.xml">
+<!ENTITY glib-Miscellaneous-Utility-Functions SYSTEM "xml/misc_utils.xml">
+<!ENTITY glib-Date-and-Time-Functions SYSTEM "xml/date.xml">
+<!ENTITY glib-The-Main-Event-Loop SYSTEM "xml/main.xml">
+<!ENTITY glib-Threads SYSTEM "xml/threads.xml">
+<!ENTITY glib-Thread-Pools SYSTEM "xml/thread_pools.xml">
+<!ENTITY glib-Async-Queues SYSTEM "xml/async_queues.xml">
+<!ENTITY glib-IO-Channels SYSTEM "xml/iochannels.xml">
+<!ENTITY glib-Hook-Functions SYSTEM "xml/hooks.xml">
+<!ENTITY glib-Lexical-Scanner SYSTEM "xml/scanner.xml">
+<!ENTITY glib-Dynamic-Loading-of-Modules SYSTEM "xml/modules.xml">
+<!ENTITY glib-Automatic-String-Completion SYSTEM "xml/completion.xml">
+<!ENTITY glib-Windows-Compatibility-Functions SYSTEM "xml/windows.xml">
+<!ENTITY glib-Memory-Chunks SYSTEM "xml/memory_chunks.xml">
+<!ENTITY glib-Memory-Slices SYSTEM "xml/memory_slices.xml">
+<!ENTITY glib-Doubly-Linked-Lists SYSTEM "xml/linked_lists_double.xml">
+<!ENTITY glib-Singly-Linked-Lists SYSTEM "xml/linked_lists_single.xml">
+<!ENTITY glib-Double-ended-Queues SYSTEM "xml/queue.xml">
+<!ENTITY glib-Sequences SYSTEM "xml/sequence.xml">
+<!ENTITY glib-Trash-Stacks SYSTEM "xml/trash_stack.xml">
+<!ENTITY glib-Hash-Tables SYSTEM "xml/hash_tables.xml">
+<!ENTITY glib-Strings SYSTEM "xml/strings.xml">
+<!ENTITY glib-String-Chunks SYSTEM "xml/string_chunks.xml">
+<!ENTITY glib-Arrays SYSTEM "xml/arrays.xml">
+<!ENTITY glib-Pointer-Arrays SYSTEM "xml/arrays_pointer.xml">
+<!ENTITY glib-Byte-Arrays SYSTEM "xml/arrays_byte.xml">
+<!ENTITY glib-Balanced-Binary-Trees SYSTEM "xml/trees-binary.xml">
+<!ENTITY glib-N-ary-Trees SYSTEM "xml/trees-nary.xml">
+<!ENTITY glib-Quarks SYSTEM "xml/quarks.xml">
+<!ENTITY glib-Keyed-Data-Lists SYSTEM "xml/datalist.xml">
+<!ENTITY glib-Datasets SYSTEM "xml/datasets.xml">
+<!ENTITY glib-Relations-and-Tuples SYSTEM "xml/relations.xml">
+<!ENTITY glib-Caches SYSTEM "xml/caches.xml">
+<!ENTITY glib-Memory-Allocators SYSTEM "xml/allocators.xml">
+<!ENTITY glib-Spawn SYSTEM "xml/spawn.xml">
+<!ENTITY glib-Fileutils SYSTEM "xml/fileutils.xml">
+<!ENTITY glib-Shell SYSTEM "xml/shell.xml">
+<!ENTITY glib-Option SYSTEM "xml/option.xml">
+<!ENTITY glib-Markup SYSTEM "xml/markup.xml">
+<!ENTITY glib-Keyfile SYSTEM "xml/keyfile.xml">
+<!ENTITY glib-Bookmarkfile SYSTEM "xml/bookmarkfile.xml">
+<!ENTITY glib-Base64 SYSTEM "xml/base64.xml">
+<!ENTITY glib-i18n SYSTEM "xml/i18n.xml">
+<!ENTITY glib-Regex SYSTEM "xml/gregex.xml">
+<!ENTITY glib-Version SYSTEM "xml/version.xml">
+
+<!ENTITY glib-Compiling SYSTEM "compiling.sgml">
+<!ENTITY glib-Building SYSTEM "building.sgml">
+<!ENTITY glib-Cross SYSTEM "cross.sgml">
+<!ENTITY glib-Running SYSTEM "running.sgml">
+<!ENTITY glib-Resources SYSTEM "resources.sgml">
+<!ENTITY glib-Changes SYSTEM "changes.sgml">
+<!ENTITY glib-RegexSyntax SYSTEM "regex-syntax.sgml">
+
+<!ENTITY glib-gettextize SYSTEM "glib-gettextize.xml">
+
+<!ENTITY version SYSTEM "version.xml">
+]>
+<book id="index">
+  <bookinfo>
+    <title>GLib Reference Manual</title>
+    <releaseinfo>for GLib &version;</releaseinfo>
+  </bookinfo>
+
+  <chapter id="glib">
+    <title>GLib Overview</title>
+    <para>
+GLib is a general-purpose utility library, which provides many useful data 
+types, macros, type conversions, string utilities, file utilities, a main 
+loop abstraction, and so on. It works on many UNIX-like platforms, Windows,
+OS/2 and BeOS. GLib is released under the GNU Library General Public License 
+(GNU LGPL). 
+    </para>
+    <para>
+The general policy of GLib is that all functions are invisibly threadsafe with the 
+exception of data structure manipulation functions, where, if you have two threads
+manipulating the <emphasis>same</emphasis> data structure, they must use a lock to
+synchronize their operation.
+    </para>
+
+    &glib-Building;
+    &glib-Cross;
+    &glib-Compiling;
+    &glib-Running;
+    &glib-Changes;
+    &glib-RegexSyntax;
+    &glib-Resources;
+ 
+  </chapter> 
+
+  <chapter id="glib-fundamentals">
+    <title>GLib Fundamentals</title>
+    &glib-Version;
+    &glib-Basic-Types;
+    &glib-Limits-of-Basic-Types;
+    &glib-Standard-Macros;
+    &glib-Type-Conversion-Macros;
+    &glib-Byte-Order-Macros;
+    &glib-Numerical-Definitions;
+    &glib-Miscellaneous-Macros;
+    &glib-Atomic-Operations;
+  </chapter>
+
+  <chapter id="glib-core">
+    <title>GLib Core Application Support</title>
+    &glib-The-Main-Event-Loop;
+    &glib-Threads;
+    &glib-Thread-Pools;
+    &glib-Async-Queues;
+    &glib-Dynamic-Loading-of-Modules;
+    &glib-Memory-Allocation;
+    &glib-IO-Channels;
+    &glib-Error-Reporting;
+    &glib-Warnings-and-Assertions;
+    &glib-Message-Logging;
+  </chapter>
+
+  <chapter id="glib-utilities">
+    <title>GLib Utilities</title>
+    &glib-String-Utility-Functions;
+    &glib-Character-Set-Conversion;
+    &glib-Unicode-Manipulation;
+    &glib-Base64;
+    &glib-i18n;
+    &glib-Date-and-Time-Functions;
+    &glib-Random-Numbers;   
+    &glib-Hook-Functions;
+    &glib-Miscellaneous-Utility-Functions;
+    &glib-Lexical-Scanner;
+    &glib-Automatic-String-Completion;
+    &glib-Timers;
+    &glib-Spawn;
+    &glib-Fileutils;
+    &glib-Shell;
+    &glib-Option;
+    &glib-Pattern-Matching;
+    &glib-Regex;
+    &glib-Markup;
+    &glib-Keyfile;
+    &glib-Bookmarkfile;
+    &glib-Windows-Compatibility-Functions;
+  </chapter>
+
+  <chapter id="glib-data-types">
+    <title>GLib Data Types</title>
+    &glib-Memory-Slices;
+    &glib-Memory-Chunks;
+    &glib-Doubly-Linked-Lists;
+    &glib-Singly-Linked-Lists;
+    &glib-Double-ended-Queues;
+    &glib-Sequences;
+    &glib-Trash-Stacks;
+    &glib-Hash-Tables;
+    &glib-Strings;
+    &glib-String-Chunks;
+    &glib-Arrays;
+    &glib-Pointer-Arrays;
+    &glib-Byte-Arrays;
+    &glib-Balanced-Binary-Trees;
+    &glib-N-ary-Trees;
+    &glib-Quarks;
+    &glib-Keyed-Data-Lists;
+    &glib-Datasets;
+    &glib-Relations-and-Tuples;
+    &glib-Caches;
+    &glib-Memory-Allocators;
+  </chapter>
+
+  <chapter id="tools">
+    <title>GLib Tools</title>
+
+    &glib-gettextize;
+  </chapter>
+
+  <index>
+    <title>Index</title>
+  </index>
+  <index role="deprecated">
+    <title>Index of deprecated symbols</title>
+  </index>
+  <index role="2.2">
+    <title>Index of new symbols in 2.2</title>
+  </index>
+  <index role="2.4">
+    <title>Index of new symbols in 2.4</title>
+  </index>  
+  <index role="2.6">
+    <title>Index of new symbols in 2.6</title>
+  </index>  
+  <index role="2.8">
+    <title>Index of new symbols in 2.8</title>
+  </index>  
+  <index role="2.10">
+    <title>Index of new symbols in 2.10</title>
+  </index>  
+  <index role="2.12">
+    <title>Index of new symbols in 2.12</title>
+  </index>  
+  <index role="2.14">
+    <title>Index of new symbols in 2.14</title>
+  </index>  
+
+</book>

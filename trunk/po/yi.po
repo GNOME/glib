@@ -1,0 +1,944 @@
+# Yiddish version
+# Copyright (C) 2003 Free Software Foundation, Inc.
+# Raphael Finkel <raphael@cs.uky.edu>, 2003.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-06-06 00:23-0400\n"
+"PO-Revision-Date: 2003-03-19\n"
+"Last-Translator: Raphael Finkel <raphael@cs.uky.edu>\n"
+"Language-Team: Yiddish <raphael@cs.uky.edu>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: glib/gbookmarkfile.c:705 glib/gbookmarkfile.c:782 glib/gbookmarkfile.c:861
+#: glib/gbookmarkfile.c:908
+#, fuzzy, c-format
+msgid "Unexpected attribute '%s' for element '%s'"
+msgstr ""
+"מאָדנע שריפֿטצײכן '%s'; דערװאַרט אַ '=' שריפֿטצײכן נאָך אַטריבוט־נאָמען %s פֿונעם "
+"עלעמענט '%s'"
+
+#: glib/gbookmarkfile.c:716 glib/gbookmarkfile.c:793 glib/gbookmarkfile.c:803
+#: glib/gbookmarkfile.c:919
+#, c-format
+msgid "Attribute '%s' of element '%s' not found"
+msgstr ""
+
+#: glib/gbookmarkfile.c:1092 glib/gbookmarkfile.c:1157
+#: glib/gbookmarkfile.c:1221 glib/gbookmarkfile.c:1231
+#, c-format
+msgid "Unexpected tag '%s', tag '%s' expected"
+msgstr ""
+
+#: glib/gbookmarkfile.c:1117 glib/gbookmarkfile.c:1131
+#: glib/gbookmarkfile.c:1199 glib/gbookmarkfile.c:1251
+#, c-format
+msgid "Unexpected tag '%s' inside '%s'"
+msgstr ""
+
+#: glib/gbookmarkfile.c:1781
+#, c-format
+msgid "No valid bookmark file found in data dirs"
+msgstr ""
+
+#: glib/gbookmarkfile.c:1982
+#, c-format
+msgid "A bookmark for URI '%s' already exists"
+msgstr ""
+
+#: glib/gbookmarkfile.c:2028 glib/gbookmarkfile.c:2185
+#: glib/gbookmarkfile.c:2270 glib/gbookmarkfile.c:2350
+#: glib/gbookmarkfile.c:2435 glib/gbookmarkfile.c:2518
+#: glib/gbookmarkfile.c:2596 glib/gbookmarkfile.c:2675
+#: glib/gbookmarkfile.c:2717 glib/gbookmarkfile.c:2814
+#: glib/gbookmarkfile.c:2940 glib/gbookmarkfile.c:3130
+#: glib/gbookmarkfile.c:3206 glib/gbookmarkfile.c:3371
+#: glib/gbookmarkfile.c:3460 glib/gbookmarkfile.c:3550
+#: glib/gbookmarkfile.c:3677
+#, c-format
+msgid "No bookmark found for URI '%s'"
+msgstr ""
+
+#: glib/gbookmarkfile.c:2359
+#, c-format
+msgid "No MIME type defined in the bookmark for URI '%s'"
+msgstr ""
+
+#: glib/gbookmarkfile.c:2444
+#, c-format
+msgid "No private flag has been defined in bookmark for URI '%s'"
+msgstr ""
+
+#: glib/gbookmarkfile.c:2823
+#, c-format
+msgid "No groups set in bookmark for URI '%s'"
+msgstr ""
+
+#: glib/gbookmarkfile.c:3224 glib/gbookmarkfile.c:3381
+#, c-format
+msgid "No application with name '%s' registered a bookmark for '%s'"
+msgstr ""
+
+#: glib/gbookmarkfile.c:3404
+#, fuzzy, c-format
+msgid "Failed to expand exec line '%s' with URI '%s'"
+msgstr "ניט געקענט שאַפֿן טעקע %s: %s"
+
+#: glib/gconvert.c:424 glib/gconvert.c:502 glib/giochannel.c:1148
+#, c-format
+msgid "Conversion from character set '%s' to '%s' is not supported"
+msgstr "פֿאַרװאַנדלונג פֿון קאָדירונג %s צו %s ניט געשטיצט"
+
+#: glib/gconvert.c:428 glib/gconvert.c:506
+#, fuzzy, c-format
+msgid "Could not open converter from '%s' to '%s'"
+msgstr "ניט געקענט עפֿענען פֿאַרװאַנדלער פֿון %s צו %s: %s"
+
+#: glib/gconvert.c:622 glib/gconvert.c:1011 glib/giochannel.c:1320
+#: glib/giochannel.c:1362 glib/giochannel.c:2204 glib/gutf8.c:950
+#: glib/gutf8.c:1399
+#, c-format
+msgid "Invalid byte sequence in conversion input"
+msgstr "אומלעקסיק אַכטעלע־סעײַװענץ אין פֿאַרװאַנדלונג אַרױסשרײַב"
+
+#: glib/gconvert.c:628 glib/gconvert.c:938 glib/giochannel.c:1327
+#: glib/giochannel.c:2216
+#, c-format
+msgid "Error during conversion: %s"
+msgstr "דורכפֿאַל בשעת פֿאַרװאַנדלונג: %s"
+
+#: glib/gconvert.c:663 glib/gutf8.c:946 glib/gutf8.c:1150 glib/gutf8.c:1291
+#: glib/gutf8.c:1395
+#, c-format
+msgid "Partial character sequence at end of input"
+msgstr "האַלבע כאַראַקטער־סעקװענץ צום סוף פֿון אַרײַנשרײַב"
+
+#: glib/gconvert.c:913
+#, c-format
+msgid "Cannot convert fallback '%s' to codeset '%s'"
+msgstr "ניט געקענט פֿאַרװאַנדלען גרונטבאַטרעף %s צו קאָדירונג %s"
+
+#: glib/gconvert.c:1727
+#, fuzzy, c-format
+msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
+msgstr "דער URI %s איז ניט אַבסאָלוט לױט דער טעקע־סכעמע"
+
+#: glib/gconvert.c:1737
+#, c-format
+msgid "The local file URI '%s' may not include a '#'"
+msgstr "דער לאָקאַלער טעקע־URI %s טאָר ניט כּולל זײַן אַ '#'"
+
+#: glib/gconvert.c:1754
+#, c-format
+msgid "The URI '%s' is invalid"
+msgstr "דער URI %s איז אומלעקסיק"
+
+#: glib/gconvert.c:1766
+#, c-format
+msgid "The hostname of the URI '%s' is invalid"
+msgstr "דער מאַשין־נאָמען פֿונעם URI %s איז אומלעקסיק"
+
+#: glib/gconvert.c:1782
+#, c-format
+msgid "The URI '%s' contains invalidly escaped characters"
+msgstr "דער URI %s איז כּולל אומלעקסיקע פּליטה־כאַראַקטערס"
+
+#: glib/gconvert.c:1877
+#, c-format
+msgid "The pathname '%s' is not an absolute path"
+msgstr "די פּאַפּקע־רשימה %s איז ניט אַבסאָלוט"
+
+#: glib/gconvert.c:1887
+#, c-format
+msgid "Invalid hostname"
+msgstr "אומלעקסיקער מאַשין־נאָמען"
+
+#: glib/gdir.c:104 glib/gdir.c:124
+#, c-format
+msgid "Error opening directory '%s': %s"
+msgstr "דורכפֿאַל אין עפֿענען פּאַפּקע %s: %s"
+
+#: glib/gfileutils.c:557 glib/gfileutils.c:630
+#, c-format
+msgid "Could not allocate %lu bytes to read file \"%s\""
+msgstr "ניט געקענט אױסטײלן %lu אַכטעלעך צו לײענען טעקע %s"
+
+#: glib/gfileutils.c:572
+#, c-format
+msgid "Error reading file '%s': %s"
+msgstr "דורכפֿאַל אין לײענען טעקע %s: %s"
+
+#: glib/gfileutils.c:654
+#, c-format
+msgid "Failed to read from file '%s': %s"
+msgstr "ניט געקענט לײענען טעקע %s: %s"
+
+#: glib/gfileutils.c:705 glib/gfileutils.c:792
+#, c-format
+msgid "Failed to open file '%s': %s"
+msgstr "ניט געקענט עפֿענען טעקע '%s': %s"
+
+#: glib/gfileutils.c:722 glib/gmappedfile.c:133
+#, c-format
+msgid "Failed to get attributes of file '%s': fstat() failed: %s"
+msgstr "ניט געקענט באַקומען אַטריבוטן פֿון טעקע %s: fstat() איז דורכגעפֿאַלן: %s"
+
+#: glib/gfileutils.c:756
+#, c-format
+msgid "Failed to open file '%s': fdopen() failed: %s"
+msgstr "ניט געקענט עפֿענען טעקע %s: fdopen() איז דורכגעפֿאַלן: %s"
+
+#: glib/gfileutils.c:890
+#, fuzzy, c-format
+msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
+msgstr "ניט געקענט עפֿענען טעקע %s: fdopen() איז דורכגעפֿאַלן: %s"
+
+#: glib/gfileutils.c:931 glib/gfileutils.c:1389
+#, c-format
+msgid "Failed to create file '%s': %s"
+msgstr "ניט געקענט שאַפֿן טעקע %s: %s"
+
+#: glib/gfileutils.c:945
+#, fuzzy, c-format
+msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
+msgstr "ניט געקענט עפֿענען טעקע %s: fdopen() איז דורכגעפֿאַלן: %s"
+
+#: glib/gfileutils.c:970
+#, fuzzy, c-format
+msgid "Failed to write file '%s': fwrite() failed: %s"
+msgstr "ניט געקענט עפֿענען טעקע %s: fdopen() איז דורכגעפֿאַלן: %s"
+
+#: glib/gfileutils.c:989
+#, fuzzy, c-format
+msgid "Failed to close file '%s': fclose() failed: %s"
+msgstr "ניט געקענט עפֿענען טעקע %s: fdopen() איז דורכגעפֿאַלן: %s"
+
+#: glib/gfileutils.c:1107
+#, c-format
+msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
+msgstr ""
+
+#: glib/gfileutils.c:1351
+#, c-format
+msgid "Template '%s' invalid, should not contain a '%s'"
+msgstr "מוסטער %s אומלעקסיק, טאָר ניט כּולל זײַן %s"
+
+#: glib/gfileutils.c:1364
+#, fuzzy, c-format
+msgid "Template '%s' doesn't contain XXXXXX"
+msgstr "מוסטער %s ענדיקט זיך ניט מיט XXXXXX"
+
+#: glib/gfileutils.c:1839
+#, fuzzy, c-format
+msgid "Failed to read the symbolic link '%s': %s"
+msgstr "ניט געקענט שאַפֿן טעקע %s: %s"
+
+#: glib/gfileutils.c:1860
+#, c-format
+msgid "Symbolic links not supported"
+msgstr ""
+
+#: glib/giochannel.c:1152
+#, fuzzy, c-format
+msgid "Could not open converter from '%s' to '%s': %s"
+msgstr "ניט געקענט עפֿענען פֿאַרװאַנדלער פֿון %s צו %s: %s"
+
+#: glib/giochannel.c:1497
+#, c-format
+msgid "Can't do a raw read in g_io_channel_read_line_string"
+msgstr "ניט געקענט מאַכן אַ רױ־לײען אין g_io_channel_read_line_string"
+
+#: glib/giochannel.c:1544 glib/giochannel.c:1801 glib/giochannel.c:1887
+#, c-format
+msgid "Leftover unconverted data in read buffer"
+msgstr "איבעריקע ניט־פֿאַרװאַנדלטע דאַטן אין לײען־באַהאַלטאָרט"
+
+#: glib/giochannel.c:1624 glib/giochannel.c:1701
+#, c-format
+msgid "Channel terminates in a partial character"
+msgstr "קאַנאַל ענדיקט זיך מיט אַ האַלבן שריפֿטצײכן"
+
+#: glib/giochannel.c:1687
+#, c-format
+msgid "Can't do a raw read in g_io_channel_read_to_end"
+msgstr "ניט געקענט מאַכן אַ רױ־לײען אין g_io_channel_read_to_end"
+
+#: glib/gmappedfile.c:116
+#, fuzzy, c-format
+msgid "Failed to open file '%s': open() failed: %s"
+msgstr "ניט געקענט עפֿענען טעקע %s: fdopen() איז דורכגעפֿאַלן: %s"
+
+#: glib/gmappedfile.c:193
+#, fuzzy, c-format
+msgid "Failed to map file '%s': mmap() failed: %s"
+msgstr "ניט געקענט עפֿענען טעקע %s: fdopen() איז דורכגעפֿאַלן: %s"
+
+#: glib/gmarkup.c:226
+#, c-format
+msgid "Error on line %d char %d: %s"
+msgstr "דורכפֿאַל אױף שורה %d פּאָזיציע %d: %s"
+
+#: glib/gmarkup.c:324
+#, c-format
+msgid "Error on line %d: %s"
+msgstr "דורכפֿאַל אױף שורה %d: %s"
+
+#: glib/gmarkup.c:428
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgstr ""
+"לײדיקער אײנס '&;' געזען; לעקסיקע אײנסן זײַנען: &amp; &quot; &lt; &gt; &apos;"
+
+#: glib/gmarkup.c:438
+#, c-format
+msgid ""
+"Character '%s' is not valid at the start of an entity name; the & character "
+"begins an entity; if this ampersand isn't supposed to be an entity, escape "
+"it as &amp;"
+msgstr ""
+"שריפֿטצײכן %s איז ניט לעקסיק צום אָנהײב פֿון אַן אײנסנאָמען; דער & שריפֿטצײכן הײבט "
+"אַן אײנס אָן; אױב מיט דעם דאָזיקן & מײנט מען ניט קײן אײנס, נאָרמאַליר אים װי &amp;"
+
+#: glib/gmarkup.c:472
+#, c-format
+msgid "Character '%s' is not valid inside an entity name"
+msgstr "שריפֿטצײכן %s איז אומלעקסיק אין מיטן פֿון אַן אײנסנאָמען"
+
+#: glib/gmarkup.c:509
+#, c-format
+msgid "Entity name '%s' is not known"
+msgstr "אײנסנאָמען %s איז ניט באַקאַנט"
+
+#: glib/gmarkup.c:520
+msgid ""
+"Entity did not end with a semicolon; most likely you used an ampersand "
+"character without intending to start an entity - escape ampersand as &amp;"
+msgstr ""
+"אײנס האָט זיך ניט געענדיקט מיט קײן \";\". מסתּמא האָט מען געשריבן אַן & "
+"שריפֿטצײכן אָן דער כּװנה אָנצוהײבן אַן אײנס.  נאָרמאַליר & װי &amp;"
+
+#: glib/gmarkup.c:573
+#, fuzzy, c-format
+msgid ""
+"Failed to parse '%-.*s', which should have been a digit inside a character "
+"reference (&#234; for example) - perhaps the digit is too large"
+msgstr ""
+"דורכפֿאַל אין אַנאַליזירן '%s', װאָס זאָל האָבן אַ ציפֿער אין דער שריפֿטצײכן־רעפֿערענץ "
+"(למשל &#234;); אפֿשר איז דער ציפֿער צו גרױס"
+
+#: glib/gmarkup.c:598
+#, fuzzy, c-format
+msgid "Character reference '%-.*s' does not encode a permitted character"
+msgstr "שריפֿטצײכן־רעפֿערענץ '%s' קאָדירט ניט קײן דערלאָזטן שריפֿטצײכן"
+
+#: glib/gmarkup.c:613
+msgid "Empty character reference; should include a digit such as &#454;"
+msgstr "נוליקע שריפֿטצײכן־רעפֿערענץ; מוז כּולל זײַן אַ ציפֿער, װי &#454;"
+
+#: glib/gmarkup.c:623
+msgid ""
+"Character reference did not end with a semicolon; most likely you used an "
+"ampersand character without intending to start an entity - escape ampersand "
+"as &amp;"
+msgstr ""
+"שריפֿטצײכן־רעפֿערענץ האָט זיך ניט געענדיקט מיט קײן \";\". מסתּמא האָט מען געשריבן "
+"אַן & שריפֿטצײכן אָן דער כּװנה אָנצוהײבן אַן אײנס.  נאָרמאַליר & װי &amp;"
+
+#: glib/gmarkup.c:709
+msgid "Unfinished entity reference"
+msgstr "ניט־געענדיקט אײנס־רעפֿערענץ"
+
+#: glib/gmarkup.c:715
+msgid "Unfinished character reference"
+msgstr "ניט־געענדיקט שריפֿטצײכן־רעפֿערענץ"
+
+#: glib/gmarkup.c:958 glib/gmarkup.c:986 glib/gmarkup.c:1022
+msgid "Invalid UTF-8 encoded text"
+msgstr "אומלעקסיק UTF־8 קאָדירטער טעקסט"
+
+#: glib/gmarkup.c:1058
+msgid "Document must begin with an element (e.g. <book>)"
+msgstr "דאָקומענט מוז אָנהײבן מיט אַן עלעמענט (װי למשל <book>)"
+
+#: glib/gmarkup.c:1098
+#, c-format
+msgid ""
+"'%s' is not a valid character following a '<' character; it may not begin an "
+"element name"
+msgstr ""
+"'%s' איך ניט קײן לעקסיקער שריפֿטצײכן נאָך אַ '‪<‬' שריפֿטצײכן;עס טאָר ניט אָנהײבן "
+"קײן אײנסנאָמען"
+
+#: glib/gmarkup.c:1162
+#, c-format
+msgid ""
+"Odd character '%s', expected a '>' character to end the start tag of element "
+"'%s'"
+msgstr ""
+"מאָדנע שריפֿטצײכן '%s'; דערװאַרט אַ '‪>‬' שריפֿטצײכן צו ענדיקן דעם אָנהײב־הענטל "
+"פֿונעם עלעמענט '%s'"
+
+#: glib/gmarkup.c:1251
+#, c-format
+msgid ""
+"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgstr ""
+"מאָדנע שריפֿטצײכן '%s'; דערװאַרט אַ '=' שריפֿטצײכן נאָך אַטריבוט־נאָמען %s פֿונעם "
+"עלעמענט '%s'"
+
+#: glib/gmarkup.c:1293
+#, c-format
+msgid ""
+"Odd character '%s', expected a '>' or '/' character to end the start tag of "
+"element '%s', or optionally an attribute; perhaps you used an invalid "
+"character in an attribute name"
+msgstr ""
+"מאָדנע שריפֿטצײכן '%s'; דערװאַרט אַ '‪>‬' אָדער '/' שריפֿטצײכן צו ענדיקן דעם "
+"אָנהײב־הענטל פֿונעם עלעמענט '%s'; אפֿשר האָט מען געלײגט אַן אומלעקסיקן שריפֿטצײכן "
+"אין אַן אַטריבוט־נאָמען"
+
+#: glib/gmarkup.c:1382
+#, c-format
+msgid ""
+"Odd character '%s', expected an open quote mark after the equals sign when "
+"giving value for attribute '%s' of element '%s'"
+msgstr ""
+"מאָדנע שריפֿטצײכן '%s'; דערװאַרט אַ '\"' נאָך דעם '=' צו באַשטעטיקן דעם באַטרעף פֿון "
+"אַטריבוט '%s' פֿונעם עלעמענט '%s'"
+
+#: glib/gmarkup.c:1527
+#, c-format
+msgid ""
+"'%s' is not a valid character following the characters '</'; '%s' may not "
+"begin an element name"
+msgstr ""
+"'%s' איז ניט קײן לעקסיקער שריפֿטצײכן נאָך די שריפֿטצײכנס '‪</‬'; '%s' טאָר ניט "
+"אָנהײבן קײן עלעמענט־נאָמען"
+
+#: glib/gmarkup.c:1567
+#, c-format
+msgid ""
+"'%s' is not a valid character following the close element name '%s'; the "
+"allowed character is '>'"
+msgstr ""
+"'%s' איז ניט קײן לעקסיקער שריפֿטצײכן נאָך דעם שלאָס־עלעמענט נאָמען '%s'; מען מוז "
+"שטעלן '‪>‬'"
+
+#: glib/gmarkup.c:1578
+#, c-format
+msgid "Element '%s' was closed, no element is currently open"
+msgstr "עלעמענט '%s' איז פֿאַרמאַכט; קײן עלעמענט איז דערװײַל אָפֿן"
+
+#: glib/gmarkup.c:1587
+#, c-format
+msgid "Element '%s' was closed, but the currently open element is '%s'"
+msgstr "עלעמענט '%s' איז פֿאַרמאַכט; דער איצטיקער אָפֿענער עלעמענט איז '%s'"
+
+#: glib/gmarkup.c:1753
+msgid "Document was empty or contained only whitespace"
+msgstr "דאָקומענט איז פּוסט אָדער איז כּולל בלױז לײדיק אָרט"
+
+#: glib/gmarkup.c:1767
+msgid "Document ended unexpectedly just after an open angle bracket '<'"
+msgstr "דאָקומענט ענדיקט זיך אומגעריכטערהײט נאָך אַן עפֿן־צײכן '‪<‬'"
+
+#: glib/gmarkup.c:1775 glib/gmarkup.c:1819
+#, c-format
+msgid ""
+"Document ended unexpectedly with elements still open - '%s' was the last "
+"element opened"
+msgstr ""
+"דאָקומענט ענדיקט זיך אומגעריכטערהײט מיט אָפֿענע עלעמענטן; '%s' איז געװען דער "
+"לעצט־געעפֿנטער עלעמענט"
+
+#: glib/gmarkup.c:1783
+#, c-format
+msgid ""
+"Document ended unexpectedly, expected to see a close angle bracket ending "
+"the tag <%s/>"
+msgstr ""
+"דאָקומענט ענדיקט זיך אומגעריכטערהײט; דערװאַרט אַ שלאָס־צײכן '‪>‬' צו ענדיקן דעם "
+"הענטל ‪<%s/>‬"
+
+#: glib/gmarkup.c:1789
+msgid "Document ended unexpectedly inside an element name"
+msgstr "דאָקומענט ענדיקט זיך אומגעריכטערהײט אין דרינען פֿון אַן עלעמענט־נאָמען"
+
+#: glib/gmarkup.c:1794
+msgid "Document ended unexpectedly inside an attribute name"
+msgstr "דאָקומענט ענדיקט זיך אומגעריכטערהײט אין דרינען פֿון אַן אַטריבוט־נאָמען"
+
+#: glib/gmarkup.c:1799
+msgid "Document ended unexpectedly inside an element-opening tag."
+msgstr "דאָקומענט ענדיקט זיך אומגעריכטערהײט אין דרינען פֿון אַן עלעמענט־עפֿן הענטל"
+
+#: glib/gmarkup.c:1805
+msgid ""
+"Document ended unexpectedly after the equals sign following an attribute "
+"name; no attribute value"
+msgstr ""
+"דאָקומענט ענדיקט זיך אומגעריכטערהײט נאָך דעם '=' שריפֿטצײכן נאָך אַן "
+"אַטריבוט־נאָמען אָן קײן אַטריבוט־באַטרעף"
+
+#: glib/gmarkup.c:1812
+msgid "Document ended unexpectedly while inside an attribute value"
+msgstr "דאָקומענט ענדיקט זיך אומגעריכטערהײט אין דרינען פֿון אַן אַטריבוט־באַטרעף"
+
+#: glib/gmarkup.c:1827
+#, c-format
+msgid "Document ended unexpectedly inside the close tag for element '%s'"
+msgstr ""
+"דאָקומענט ענדיקט זיך אומגעריכטערהײט אין דרינען פֿון דעם שלאָס־הענטל פֿון עלעמענט "
+"'%s'"
+
+#: glib/gmarkup.c:1833
+msgid "Document ended unexpectedly inside a comment or processing instruction"
+msgstr ""
+"דאָקומענט ענדיקט זיך אומגעריכטערהײט אין דרינען פֿון אַ קאָמענטאַר אָדער אַ "
+"באַאַרבעטן־באַפֿעל"
+
+#: glib/gregex.c:126
+msgid "corrupted object"
+msgstr ""
+
+#: glib/gregex.c:128
+msgid "internal error or corrupted object"
+msgstr ""
+
+#: glib/gregex.c:130
+msgid "out of memory"
+msgstr ""
+
+#: glib/gregex.c:135
+msgid "backtracking limit reached"
+msgstr ""
+
+#: glib/gregex.c:147 glib/gregex.c:155
+msgid "the pattern contains items not supported for partial matching"
+msgstr ""
+
+#: glib/gregex.c:149
+msgid "internal error"
+msgstr ""
+
+#: glib/gregex.c:157
+msgid "back references as conditions are not supported for partial matching"
+msgstr ""
+
+#: glib/gregex.c:166
+msgid "recursion limit reached"
+msgstr ""
+
+#: glib/gregex.c:168
+msgid "workspace limit for empty substrings reached"
+msgstr ""
+
+#: glib/gregex.c:170
+msgid "invalid combination of newline flags"
+msgstr ""
+
+#: glib/gregex.c:174
+msgid "unknown error"
+msgstr ""
+
+#: glib/gregex.c:315 glib/gregex.c:1343
+#, c-format
+msgid "Error while matching regular expression %s: %s"
+msgstr ""
+
+#: glib/gregex.c:874
+msgid "PCRE library is compiled without UTF8 support"
+msgstr ""
+
+#: glib/gregex.c:883
+msgid "PCRE library is compiled without UTF8 properties support"
+msgstr ""
+
+#: glib/gregex.c:928
+#, fuzzy, c-format
+msgid "Error while compiling regular expression %s at char %d: %s"
+msgstr "דורכפֿאַל אױף שורה %d פּאָזיציע %d: %s"
+
+#: glib/gregex.c:950
+#, c-format
+msgid "Error while optimizing regular expression %s: %s"
+msgstr ""
+
+#: glib/gregex.c:1769
+msgid "hexadecimal digit or '}' expected"
+msgstr ""
+
+#: glib/gregex.c:1785
+msgid "hexadecimal digit expected"
+msgstr ""
+
+#: glib/gregex.c:1825
+msgid "missing '<' in symbolic reference"
+msgstr ""
+
+#: glib/gregex.c:1834
+#, fuzzy
+msgid "unfinished symbolic reference"
+msgstr "ניט־געענדיקט אײנס־רעפֿערענץ"
+
+#: glib/gregex.c:1841
+msgid "zero-length symbolic reference"
+msgstr ""
+
+#: glib/gregex.c:1852
+msgid "digit expected"
+msgstr ""
+
+#: glib/gregex.c:1870
+msgid "illegal symbolic reference"
+msgstr ""
+
+#: glib/gregex.c:1932
+msgid "stray final '\\'"
+msgstr ""
+
+#: glib/gregex.c:1936
+msgid "unknown escape sequence"
+msgstr ""
+
+#: glib/gregex.c:1946
+#, c-format
+msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
+msgstr ""
+
+#: glib/gshell.c:70
+#, c-format
+msgid "Quoted text doesn't begin with a quotation mark"
+msgstr "ציטירטער טעקסט הײבט ניט אָן מיט קײן גענדזן־פֿיסל"
+
+#: glib/gshell.c:160
+#, c-format
+msgid "Unmatched quotation mark in command line or other shell-quoted text"
+msgstr "גענדזן־פֿיסל אָן אַ זיװג אין באַפֿעל־שורה אָדער אַנדער ציטירטן טעקסט"
+
+#: glib/gshell.c:538
+#, c-format
+msgid "Text ended just after a '\\' character. (The text was '%s')"
+msgstr ""
+"טעקסט האָט זיך געענדיקט באַלד נאָך אַ '\\' שריפֿטצײכן.  (דער טעקסט איז געװען '%s')"
+
+#: glib/gshell.c:545
+#, c-format
+msgid "Text ended before matching quote was found for %c. (The text was '%s')"
+msgstr ""
+"טעקסט האָט זיך געענדיקט אײדער אַ זיװג צו דעם גענדזן־פֿיסל ‪%c‬.  (דער טעקסט איז "
+"געװען '%s')"
+
+#: glib/gshell.c:557
+#, c-format
+msgid "Text was empty (or contained only whitespace)"
+msgstr "טעקסט איז געװען פּוסט (אָדער איז כּולל בלױס לײדיק אָרט)"
+
+#: glib/gspawn-win32.c:272
+#, c-format
+msgid "Failed to read data from child process"
+msgstr "ניט געקענט לײענען דאַטן פֿון קינדפּראָצעס"
+
+#: glib/gspawn-win32.c:287 glib/gspawn.c:1395
+#, c-format
+msgid "Failed to create pipe for communicating with child process (%s)"
+msgstr "דורכפֿאַל אין שאַפֿן רער צוליב קאָמוניקירן מיט קינדפּראָצעס (%s)"
+
+#: glib/gspawn-win32.c:325 glib/gspawn.c:1059
+#, c-format
+msgid "Failed to read from child pipe (%s)"
+msgstr "דורכפֿאַל אין לײענע פֿון אַ ינדרער (%s)"
+
+#: glib/gspawn-win32.c:351 glib/gspawn.c:1264
+#, c-format
+msgid "Failed to change to directory '%s' (%s)"
+msgstr "דורכפֿאַל אין זיך קערן צו פּאַפּקע '%s' (%s)"
+
+#: glib/gspawn-win32.c:357 glib/gspawn-win32.c:481
+#, c-format
+msgid "Failed to execute child process (%s)"
+msgstr "דורכפֿאַל אין באַאַרבעטן קינדפּראָצעס (%s)"
+
+#: glib/gspawn-win32.c:428
+#, fuzzy, c-format
+msgid "Invalid program name: %s"
+msgstr "אומלעקסיקער מאַשין־נאָמען"
+
+#: glib/gspawn-win32.c:438 glib/gspawn-win32.c:678 glib/gspawn-win32.c:1218
+#, c-format
+msgid "Invalid string in argument vector at %d: %s"
+msgstr ""
+
+#: glib/gspawn-win32.c:449 glib/gspawn-win32.c:692 glib/gspawn-win32.c:1251
+#, fuzzy, c-format
+msgid "Invalid string in environment: %s"
+msgstr "אומלעקסיקער סעקװענץ אין פֿאַרװאַנדל־אַרײַנשרײַב"
+
+#: glib/gspawn-win32.c:674 glib/gspawn-win32.c:1199
+#, fuzzy, c-format
+msgid "Invalid working directory: %s"
+msgstr "דורכפֿאַל אין עפֿענען פּאַפּקע %s: %s"
+
+#: glib/gspawn-win32.c:738
+#, fuzzy, c-format
+msgid "Failed to execute helper program (%s)"
+msgstr "דורכפֿאַל אין באַאַרבעטן הילף־פּראָגראַם"
+
+#: glib/gspawn-win32.c:938
+#, c-format
+msgid ""
+"Unexpected error in g_io_channel_win32_poll() reading data from a child "
+"process"
+msgstr ""
+"אומדערװאַרטער דורכפֿאַל אין g_io_channel_win32_poll() בשעת לײענען דאַטן פֿון אַ "
+"קינדפּראָצעס"
+
+#: glib/gspawn.c:175
+#, c-format
+msgid "Failed to read data from child process (%s)"
+msgstr "דורכפֿאַל אין לײענען דאַטן פֿון אַ קינדפּראָצעס (%s)"
+
+#: glib/gspawn.c:307
+#, c-format
+msgid "Unexpected error in select() reading data from a child process (%s)"
+msgstr "אומדערװאַרטער דורכפֿאַל אין select() לײענען דאַטן פֿון אַ קינדפּראָצעס (%s)"
+
+#: glib/gspawn.c:390
+#, c-format
+msgid "Unexpected error in waitpid() (%s)"
+msgstr "אומדערװאַרטער דורכפֿאַל אין waitpid() (%s)"
+
+#: glib/gspawn.c:1124
+#, c-format
+msgid "Failed to fork (%s)"
+msgstr "דורכפֿאַל אין קלאָנירן (%s)"
+
+#: glib/gspawn.c:1274
+#, c-format
+msgid "Failed to execute child process \"%s\" (%s)"
+msgstr "דורכפֿאַל אין באַאַרבעטן קינדפּראָצעס \"%s\" (%s)"
+
+#: glib/gspawn.c:1284
+#, c-format
+msgid "Failed to redirect output or input of child process (%s)"
+msgstr "דורכפֿאַל אין װידערצילן אַרױסשרײַב אָדער אַרײַנשרײַב פֿון קינדפּראָצעס (%s)"
+
+#: glib/gspawn.c:1293
+#, c-format
+msgid "Failed to fork child process (%s)"
+msgstr "דורכפֿאַל אין קלאָנירן קינדפּראָצעס (%s)"
+
+#: glib/gspawn.c:1301
+#, c-format
+msgid "Unknown error executing child process \"%s\""
+msgstr "אומבאַקאַנטער דורכפֿאַל אין באַאַרבעטן קינדפּראָצעס \"%s\""
+
+#: glib/gspawn.c:1323
+#, c-format
+msgid "Failed to read enough data from child pid pipe (%s)"
+msgstr "דורכפֿאַל אין לײענען גענוג דאַטן פֿון קינד pid-רער (%s)"
+
+#: glib/gutf8.c:1024
+#, c-format
+msgid "Character out of range for UTF-8"
+msgstr "שריפֿטצײכן ניט אין דער UTF־8 גאַמע"
+
+#: glib/gutf8.c:1118 glib/gutf8.c:1127 glib/gutf8.c:1259 glib/gutf8.c:1268
+#: glib/gutf8.c:1409 glib/gutf8.c:1505
+#, c-format
+msgid "Invalid sequence in conversion input"
+msgstr "אומלעקסיקער סעקװענץ אין פֿאַרװאַנדל־אַרײַנשרײַב"
+
+#: glib/gutf8.c:1420 glib/gutf8.c:1516
+#, c-format
+msgid "Character out of range for UTF-16"
+msgstr "שריפֿטצײכן ניט אין דער UTF־16 גאַמע"
+
+#: glib/goption.c:572
+msgid "Usage:"
+msgstr ""
+
+#: glib/goption.c:572
+msgid "[OPTION...]"
+msgstr ""
+
+#: glib/goption.c:676
+msgid "Help Options:"
+msgstr ""
+
+#: glib/goption.c:677
+msgid "Show help options"
+msgstr ""
+
+#: glib/goption.c:683
+msgid "Show all help options"
+msgstr ""
+
+#: glib/goption.c:735
+msgid "Application Options:"
+msgstr ""
+
+#: glib/goption.c:796 glib/goption.c:866
+#, c-format
+msgid "Cannot parse integer value '%s' for %s"
+msgstr ""
+
+#: glib/goption.c:806 glib/goption.c:874
+#, c-format
+msgid "Integer value '%s' for %s out of range"
+msgstr ""
+
+#: glib/goption.c:831
+#, c-format
+msgid "Cannot parse double value '%s' for %s"
+msgstr ""
+
+#: glib/goption.c:839
+#, c-format
+msgid "Double value '%s' for %s out of range"
+msgstr ""
+
+#: glib/goption.c:1176
+#, fuzzy, c-format
+msgid "Error parsing option %s"
+msgstr "דורכפֿאַל בשעת פֿאַרװאַנדלונג: %s"
+
+#: glib/goption.c:1207 glib/goption.c:1318
+#, c-format
+msgid "Missing argument for %s"
+msgstr ""
+
+#: glib/goption.c:1713
+#, c-format
+msgid "Unknown option %s"
+msgstr ""
+
+#: glib/gkeyfile.c:341
+#, c-format
+msgid "Valid key file could not be found in search dirs"
+msgstr ""
+
+#: glib/gkeyfile.c:376
+#, c-format
+msgid "Not a regular file"
+msgstr ""
+
+#: glib/gkeyfile.c:384
+#, c-format
+msgid "File is empty"
+msgstr ""
+
+#: glib/gkeyfile.c:746
+#, c-format
+msgid ""
+"Key file contains line '%s' which is not a key-value pair, group, or comment"
+msgstr ""
+
+#: glib/gkeyfile.c:806
+#, fuzzy, c-format
+msgid "Invalid group name: %s"
+msgstr "אומלעקסיקער מאַשין־נאָמען"
+
+#: glib/gkeyfile.c:828
+#, c-format
+msgid "Key file does not start with a group"
+msgstr ""
+
+#: glib/gkeyfile.c:854
+#, fuzzy, c-format
+msgid "Invalid key name: %s"
+msgstr "אומלעקסיקער מאַשין־נאָמען"
+
+#: glib/gkeyfile.c:881
+#, c-format
+msgid "Key file contains unsupported encoding '%s'"
+msgstr ""
+
+#: glib/gkeyfile.c:1094 glib/gkeyfile.c:1253 glib/gkeyfile.c:2455
+#: glib/gkeyfile.c:2521 glib/gkeyfile.c:2640 glib/gkeyfile.c:2775
+#: glib/gkeyfile.c:2928 glib/gkeyfile.c:3108 glib/gkeyfile.c:3165
+#, c-format
+msgid "Key file does not have group '%s'"
+msgstr ""
+
+#: glib/gkeyfile.c:1265
+#, c-format
+msgid "Key file does not have key '%s'"
+msgstr ""
+
+#: glib/gkeyfile.c:1367 glib/gkeyfile.c:1477
+#, c-format
+msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
+msgstr ""
+
+#: glib/gkeyfile.c:1387 glib/gkeyfile.c:1497 glib/gkeyfile.c:1866
+#, c-format
+msgid "Key file contains key '%s' which has value that cannot be interpreted."
+msgstr ""
+
+#: glib/gkeyfile.c:2078 glib/gkeyfile.c:2287
+#, c-format
+msgid ""
+"Key file contains key '%s' in group '%s' which has value that cannot be "
+"interpreted."
+msgstr ""
+
+#: glib/gkeyfile.c:2470 glib/gkeyfile.c:2655 glib/gkeyfile.c:3176
+#, c-format
+msgid "Key file does not have key '%s' in group '%s'"
+msgstr ""
+
+#: glib/gkeyfile.c:3415
+#, c-format
+msgid "Key file contains escape character at end of line"
+msgstr ""
+
+#: glib/gkeyfile.c:3437
+#, fuzzy, c-format
+msgid "Key file contains invalid escape sequence '%s'"
+msgstr "דער URI %s איז כּולל אומלעקסיקע פּליטה־כאַראַקטערס"
+
+#: glib/gkeyfile.c:3579
+#, c-format
+msgid "Value '%s' cannot be interpreted as a number."
+msgstr ""
+
+#: glib/gkeyfile.c:3593
+#, c-format
+msgid "Integer value '%s' out of range"
+msgstr ""
+
+#: glib/gkeyfile.c:3626
+#, c-format
+msgid "Value '%s' cannot be interpreted as a float number."
+msgstr ""
+
+#: glib/gkeyfile.c:3650
+#, c-format
+msgid "Value '%s' cannot be interpreted as a boolean."
+msgstr ""
+
+#, fuzzy
+#~ msgid "Could not change file mode: fork() failed: %s"
+#~ msgstr "ניט געקענט עפֿענען טעקע %s: fdopen() איז דורכגעפֿאַלן: %s"
+
+#, fuzzy
+#~ msgid "Could not change file mode: waitpid() failed: %s"
+#~ msgstr "ניט געקענט אױסטײלן %lu אַכטעלעך צו לײענען טעקע %s"
+
+#, fuzzy
+#~ msgid "Could not change file mode: chmod() failed: %s"
+#~ msgstr "ניט געקענט עפֿענען טעקע %s: fdopen() איז דורכגעפֿאַלן: %s"
+
+#~ msgid "Conversion from character set `%s' to `%s' is not supported"
+#~ msgstr "פֿאַרװאַנדלען פֿון שריפֿטצײכן־געזעמל %s צו %s איז ניט געשטיצט"
+
+#~ msgid "Incorrect message size"
+#~ msgstr "ניט־ריכטיקע אָנזאָגגרײס"
+
+#~ msgid "Socket error"
+#~ msgstr "סאָקעט־דורכפֿאַל"
