@@ -493,6 +493,15 @@ This structure is opaque and its fields cannot be accessed directly.
 @match_info: 
 
 
+<!-- ##### FUNCTION g_match_info_matches ##### -->
+<para>
+
+</para>
+
+@match_info: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_match_info_next ##### -->
 <para>
 

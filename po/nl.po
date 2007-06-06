@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib (HEAD)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-06-04 11:24-0400\n"
+"POT-Creation-Date: 2007-06-06 00:23-0400\n"
 "PO-Revision-Date: 2006-08-09 00:29+0200 \n"
 "Last-Translator: Tino Meinen <a.t.meinen@chello.nl>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -108,8 +108,8 @@ msgstr ""
 "Kon het conversieprogramma voor omzetten van '%s' naar '%s' niet openen"
 
 #: glib/gconvert.c:622 glib/gconvert.c:1011 glib/giochannel.c:1320
-#: glib/giochannel.c:1362 glib/giochannel.c:2204 glib/gutf8.c:949
-#: glib/gutf8.c:1398
+#: glib/giochannel.c:1362 glib/giochannel.c:2204 glib/gutf8.c:950
+#: glib/gutf8.c:1399
 #, c-format
 msgid "Invalid byte sequence in conversion input"
 msgstr "Ongeldige bytereeks in conversie-invoer"
@@ -120,8 +120,8 @@ msgstr "Ongeldige bytereeks in conversie-invoer"
 msgid "Error during conversion: %s"
 msgstr "Fout tijdens omzetten: %s"
 
-#: glib/gconvert.c:663 glib/gutf8.c:945 glib/gutf8.c:1149 glib/gutf8.c:1290
-#: glib/gutf8.c:1394
+#: glib/gconvert.c:663 glib/gutf8.c:946 glib/gutf8.c:1150 glib/gutf8.c:1291
+#: glib/gutf8.c:1395
 #, c-format
 msgid "Partial character sequence at end of input"
 msgstr "Onvolledige tekenreeks aan het eind van de invoer"
@@ -771,18 +771,18 @@ msgstr "Onbekende fout bij het uitvoeren van dochterproces \"%s\""
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Lezen van voldoende data van pijplijn dochter-pid is mislukt (%s)"
 
-#: glib/gutf8.c:1023
+#: glib/gutf8.c:1024
 #, c-format
 msgid "Character out of range for UTF-8"
 msgstr "Teken valt buiten van bereik van UTF-8"
 
-#: glib/gutf8.c:1117 glib/gutf8.c:1126 glib/gutf8.c:1258 glib/gutf8.c:1267
-#: glib/gutf8.c:1408 glib/gutf8.c:1504
+#: glib/gutf8.c:1118 glib/gutf8.c:1127 glib/gutf8.c:1259 glib/gutf8.c:1268
+#: glib/gutf8.c:1409 glib/gutf8.c:1505
 #, c-format
 msgid "Invalid sequence in conversion input"
 msgstr "Ongeldige reeks in conversie-invoer"
 
-#: glib/gutf8.c:1419 glib/gutf8.c:1515
+#: glib/gutf8.c:1420 glib/gutf8.c:1516
 #, c-format
 msgid "Character out of range for UTF-16"
 msgstr "Teken valt buiten bereik van UTF-16"

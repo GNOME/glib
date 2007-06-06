@@ -337,6 +337,13 @@ Since: 2.6
 
 
 
+<!-- ##### MACRO G_GNUC_MAY_ALIAS ##### -->
+<para>
+
+</para>
+
+
+
 <!-- ##### FUNCTION G_LIKELY ##### -->
 <para>
 Hints the compiler that the expression is likely to evaluate to a true
