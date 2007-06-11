@@ -1400,8 +1400,6 @@ static  gchar   *g_user_config_dir = NULL;
 static  gchar  **g_system_config_dirs = NULL;
 
 static  gchar  **g_user_special_dirs = NULL;
-static  time_t   g_user_special_dirs_mtime = (time_t) -1;
-static  time_t   g_user_special_dirs_stat_time = (time_t) -1;
 
 /* fifteen minutes of fame for everybody */
 #define G_USER_DIRS_EXPIRE      15 * 60
@@ -2188,77 +2186,9 @@ load_user_special_dirs (void)
 }
 #endif /* G_OS_WIN32 */
 
-#if defined(G_OS_WIN32) || defined(HAVE_CARBON)
-static void 
-maybe_expire_user_special_dirs (void)
-{
-  /* expire the user dirs after G_USER_DIRS_EXPIRE seconds */
-  time_t now;
-
-  time (&now);
-  if (now > g_user_special_dirs_mtime + G_USER_DIRS_EXPIRE &&
-      g_user_special_dirs)
-    {
-      gint i;
-
-      for (i = 0; i < G_USER_N_DIRECTORIES; i++)
-        g_free (g_user_special_dirs[i]);
-
-      g_free (g_user_special_dirs);
-      g_user_special_dirs = NULL;
-    }
-
-  if (g_user_special_dirs == NULL)
-    g_user_special_dirs_mtime = now;
-}
-#endif
+static void g_init_user_config_dir (void);
 
 #if defined(G_OS_UNIX) && !defined(HAVE_CARBON)
-
-/* expire g_user_special_dirs if the config file
- * was modified between different reads
- */
-static void
-maybe_expire_user_special_dirs (void)
-{
-  gchar *config_file;
-  struct stat stat_buf;
-  time_t now;
-
-  /* don't stat() the file more often than necessary */
-  time (&now);
-  if (now < g_user_special_dirs_stat_time + 5)
-    return;
-
-  g_user_special_dirs_stat_time = now;
-
-  config_file = g_build_filename (g_user_config_dir,
-                                  "user-dirs.dirs",
-                                  NULL);
-  
-  if (stat (config_file, &stat_buf) < 0)
-    goto out;
-
-  if (stat_buf.st_mtime != g_user_special_dirs_mtime &&
-      g_user_special_dirs != NULL)
-    {
-      gint i;
-
-      for (i = 0; i < G_USER_N_DIRECTORIES; i++)
-        g_free (g_user_special_dirs[i]);
-
-      g_free (g_user_special_dirs);
-      g_user_special_dirs = NULL;
-    }
-
-    g_user_special_dirs_mtime = stat_buf.st_mtime;
-
-out:
-  g_free (config_file);
-}
-
-
-static void g_init_user_config_dir (void);
 
 /* adapted from xdg-user-dir-lookup.c
  *
@@ -2424,6 +2354,10 @@ load_user_special_dirs (void)
  *
  * On Unix this is done using the XDG special user directories.
  *
+ * Depending on the platform, the user might be able to change the path
+ * of the special directory without requiring the session to restart; GLib
+ * will not reflect any change once the special directories are loaded.
+ *
  * Return value: the path to the specified special directory, or %NULL
  *   if the logical id was not found. The returned string is owned by
  *   GLib and should not be modified or freed.
@@ -2438,8 +2372,7 @@ g_get_user_special_dir (GUserDirectory directory)
 
   G_LOCK (g_utils_global);
 
-  maybe_expire_user_special_dirs ();
-  if (g_user_special_dirs == NULL)
+  if (G_UNLIKELY (g_user_special_dirs == NULL))
     {
       g_user_special_dirs = g_new0 (gchar *, G_USER_N_DIRECTORIES);
 
@@ -2449,7 +2382,9 @@ g_get_user_special_dir (GUserDirectory directory)
       if (g_user_special_dirs[G_USER_DIRECTORY_DESKTOP] == NULL)
         {
           g_get_any_init ();
-          g_user_special_dirs[G_USER_DIRECTORY_DESKTOP] = g_build_filename (g_home_dir, "Desktop", NULL);
+
+          g_user_special_dirs[G_USER_DIRECTORY_DESKTOP] =
+            g_build_filename (g_home_dir, "Desktop", NULL);
         }
     }
 
