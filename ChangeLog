@@ -1,3 +1,10 @@
+2007-06-11  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gwin32.c (g_win32_get_package_installation_directory)
+	(g_win32_get_package_installation_subdirectory): Update doc
+	comments. Mention that it is not recommeded to use the Registry
+	features.
+
 2007-06-06  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gutils.c: Add definitions for more CSIDL_* constants in
