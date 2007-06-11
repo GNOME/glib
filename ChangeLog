@@ -1,3 +1,10 @@
+2007-06-11  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gwin32.c (g_win32_get_package_installation_directory)
+	(g_win32_get_package_installation_subdirectory): Update doc
+	comments. Mention that it is not recommeded to use the Registry
+	features.
+
 2007-05-25  Behdad Esfahbod  <behdad@gnome.org>
 
 	* glib/guniprop.c (g_unichar_iswide), (g_unichar_iswide_cjk):

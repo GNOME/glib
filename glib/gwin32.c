@@ -323,15 +323,25 @@ get_package_directory_from_module (gchar *module_name)
  * @dll_name: The name of a DLL that a package provides, or %NULL, in UTF-8
  *
  * Try to determine the installation directory for a software package.
- * Typically used by GNU software packages.
  *
  * @package should be a short identifier for the package. Typically it
  * is the same identifier as used for
- * <literal>GETTEXT_PACKAGE</literal> in software configured according
- * to GNU standards. The function first looks in the Windows Registry
- * for the value <literal>&num;InstallationDirectory</literal> in the key
+ * <literal>GETTEXT_PACKAGE</literal> in software configured using GNU
+ * autotools. The function first looks in the Windows Registry for the
+ * value <literal>&num;InstallationDirectory</literal> in the key
  * <literal>&num;HKLM\Software\@package</literal>, and if that value
  * exists and is a string, returns that.
+ *
+ * It is strongly recommended that packagers of GLib-using libraries
+ * for Windows do not store installation paths in the Registry to be
+ * used by this function as that interfers with having several
+ * parallel installations of the library. Parallel installations of
+ * different versions of some GLib-using library, or GLib itself,
+ * might well be desirable for various reasons.
+ *
+ * For the same reason it is recommeded to always pass %NULL as
+ * @package to this function, to avoid the temptation to use the
+ * Registry.
  *
  * If @package is %NULL, or the above value isn't found in the
  * Registry, but @dll_name is non-%NULL, it should name a DLL loaded
@@ -492,7 +502,10 @@ g_win32_get_package_installation_directory (gchar *package,
  * Returns a newly-allocated string containing the path of the
  * subdirectory @subdir in the return value from calling
  * g_win32_get_package_installation_directory() with the @package and
- * @dll_name parameters. 
+ * @dll_name parameters. See the documentation for
+ * g_win32_get_package_installation_directory() for more details. In
+ * particular, note that it is recomended to always pass NULL as
+ * @package.
  *
  * Returns: a string containing the complete path to @subdir inside
  * the installation directory of @package. The returned string is in
