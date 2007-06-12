@@ -255,22 +255,22 @@ GLIB_VAR const gchar * const g_utf8_skip;
 
 #define g_utf8_next_char(p) (char *)((p) + g_utf8_skip[*(const guchar *)(p)])
 
-gunichar g_utf8_get_char           (const gchar  *p);
+gunichar g_utf8_get_char           (const gchar  *p) G_GNUC_PURE;
 gunichar g_utf8_get_char_validated (const  gchar *p,
-				    gssize        max_len);
+				    gssize        max_len) G_GNUC_PURE;
 
 gchar*   g_utf8_offset_to_pointer (const gchar *str,
-                                   glong        offset);  
+                                   glong        offset) G_GNUC_PURE;
 glong    g_utf8_pointer_to_offset (const gchar *str,      
-				   const gchar *pos);
-gchar*   g_utf8_prev_char         (const gchar *p);
+				   const gchar *pos) G_GNUC_PURE;
+gchar*   g_utf8_prev_char         (const gchar *p) G_GNUC_PURE;
 gchar*   g_utf8_find_next_char    (const gchar *p,
-				   const gchar *end);
+				   const gchar *end) G_GNUC_PURE;
 gchar*   g_utf8_find_prev_char    (const gchar *str,
-				   const gchar *p);
+				   const gchar *p) G_GNUC_PURE;
 
 glong g_utf8_strlen (const gchar *p,  
-		     gssize       max);        
+		     gssize       max) G_GNUC_PURE;
 
 /* Copies n characters from src to dest */
 gchar* g_utf8_strncpy (gchar       *dest,
@@ -338,7 +338,7 @@ gboolean g_utf8_validate (const gchar  *str,
                           const gchar **end);
 
 /* Validate a Unicode character */
-gboolean g_unichar_validate (gunichar ch);
+gboolean g_unichar_validate (gunichar ch) G_GNUC_CONST;
 
 gchar *g_utf8_strup   (const gchar *str,
 		       gssize       len) G_GNUC_MALLOC;
@@ -363,7 +363,7 @@ gchar *g_utf8_normalize (const gchar   *str,
 			 GNormalizeMode mode) G_GNUC_MALLOC;
 
 gint   g_utf8_collate     (const gchar *str1,
-			   const gchar *str2);
+			   const gchar *str2) G_GNUC_PURE;
 gchar *g_utf8_collate_key (const gchar *str,
 			   gssize       len) G_GNUC_MALLOC;
 gchar *g_utf8_collate_key_for_filename (const gchar *str,
@@ -372,7 +372,7 @@ gchar *g_utf8_collate_key_for_filename (const gchar *str,
 gboolean g_unichar_get_mirror_char (gunichar ch,
                                     gunichar *mirrored_ch);
 
-GUnicodeScript g_unichar_get_script (gunichar ch);
+GUnicodeScript g_unichar_get_script (gunichar ch) G_GNUC_CONST;
 
 
 /* private */
