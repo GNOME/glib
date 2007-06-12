@@ -507,112 +507,111 @@ msgstr "Document ended unexpectedly inside a comment or processing instruction"
 
 #: glib/gregex.c:126
 msgid "corrupted object"
-msgstr ""
+msgstr "corrupted object"
 
 #: glib/gregex.c:128
 msgid "internal error or corrupted object"
-msgstr ""
+msgstr "internal error or corrupted object"
 
 #: glib/gregex.c:130
 msgid "out of memory"
-msgstr ""
+msgstr "out of memory"
 
 #: glib/gregex.c:135
 msgid "backtracking limit reached"
-msgstr ""
+msgstr "backtracking limit reached"
 
 #: glib/gregex.c:147 glib/gregex.c:155
 msgid "the pattern contains items not supported for partial matching"
-msgstr ""
+msgstr "the pattern contains items not supported for partial matching"
 
 #: glib/gregex.c:149
 msgid "internal error"
-msgstr ""
+msgstr "internal error"
 
 #: glib/gregex.c:157
 msgid "back references as conditions are not supported for partial matching"
-msgstr ""
+msgstr "back references as conditions are not supported for partial matching"
 
 #: glib/gregex.c:166
 msgid "recursion limit reached"
-msgstr ""
+msgstr "recursion limit reached"
 
 #: glib/gregex.c:168
 msgid "workspace limit for empty substrings reached"
-msgstr ""
+msgstr "workspace limit for empty substrings reached"
 
 #: glib/gregex.c:170
 msgid "invalid combination of newline flags"
-msgstr ""
+msgstr "invalid combination of newline flags"
 
 #: glib/gregex.c:174
 msgid "unknown error"
-msgstr ""
+msgstr "unknown error"
 
 #: glib/gregex.c:315 glib/gregex.c:1343
 #, c-format
 msgid "Error while matching regular expression %s: %s"
-msgstr ""
+msgstr "Error while matching regular expression %s: %s"
 
 #: glib/gregex.c:874
 msgid "PCRE library is compiled without UTF8 support"
-msgstr ""
+msgstr "PCRE library is compiled without UTF8 support"
 
 #: glib/gregex.c:883
 msgid "PCRE library is compiled without UTF8 properties support"
-msgstr ""
+msgstr "PCRE library is compiled without UTF8 properties support"
 
 #: glib/gregex.c:928
-#, fuzzy, c-format
+#, c-format
 msgid "Error while compiling regular expression %s at char %d: %s"
-msgstr "Error on line %d char %d: %s"
+msgstr "Error while compiling regular expression %s at char %d: %s"
 
 #: glib/gregex.c:950
 #, c-format
 msgid "Error while optimizing regular expression %s: %s"
-msgstr ""
+msgstr "Error while optimizing regular expression %s: %s"
 
 #: glib/gregex.c:1769
 msgid "hexadecimal digit or '}' expected"
-msgstr ""
+msgstr "hexadecimal digit or '}' expected"
 
 #: glib/gregex.c:1785
 msgid "hexadecimal digit expected"
-msgstr ""
+msgstr "hexadecimal digit expected"
 
 #: glib/gregex.c:1825
 msgid "missing '<' in symbolic reference"
-msgstr ""
+msgstr "missing '<' in symbolic reference"
 
 #: glib/gregex.c:1834
-#, fuzzy
 msgid "unfinished symbolic reference"
-msgstr "Unfinished entity reference"
+msgstr "unfinished symbolic reference"
 
 #: glib/gregex.c:1841
 msgid "zero-length symbolic reference"
-msgstr ""
+msgstr "zero-length symbolic reference"
 
 #: glib/gregex.c:1852
 msgid "digit expected"
-msgstr ""
+msgstr "digit expected"
 
 #: glib/gregex.c:1870
 msgid "illegal symbolic reference"
-msgstr ""
+msgstr "illegal symbolic reference"
 
 #: glib/gregex.c:1932
 msgid "stray final '\\'"
-msgstr ""
+msgstr "stray final '\\'"
 
 #: glib/gregex.c:1936
 msgid "unknown escape sequence"
-msgstr ""
+msgstr "unknown escape sequence"
 
 #: glib/gregex.c:1946
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
-msgstr ""
+msgstr "Error while parsing replacement text \"%s\" at char %lu: %s"
 
 #: glib/gshell.c:70
 #, c-format
@@ -819,9 +818,9 @@ msgid "Unknown option %s"
 msgstr "Unknown option %s"
 
 #: glib/gkeyfile.c:341
-#, fuzzy, c-format
+#, c-format
 msgid "Valid key file could not be found in search dirs"
-msgstr "Valid key file could not be found in data dirs"
+msgstr "Valid key file could not be found in search dirs"
 
 #: glib/gkeyfile.c:376
 #, c-format
