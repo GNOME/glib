@@ -1,7 +1,7 @@
 2007-06-13  Behdad Esfahbod  <behdad@gnome.org>
 
 	* glib/pltcheck.sh: Whitelist g_atomic_{int,pointer}_[gs]et() as
-	we don't alias them intentionally.
+	we don't alias them intentionally. (#354522)
 
 2007-06-13  Sven Neumann  <sven@gimp.org>
 
