@@ -1,3 +1,9 @@
+2007-06-13  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/tmpl/warnings.sgml: Add some verbiage about
+	intended use cases for the g_return macros, inspired
+	by a bugzilla comment by Havoc Pennington.
+
 2007-06-05  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.13.4 ===
