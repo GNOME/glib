@@ -815,6 +815,16 @@ g_slice_alloc0 (gsize mem_size)
   return mem;
 }
 
+gpointer
+g_slice_copy (gsize    mem_size,
+              gpointer mem_block)
+{
+  gpointer mem = g_slice_alloc (mem_size);
+  if (mem)
+    memcpy (mem, mem_block, mem_size);
+  return mem;
+}
+
 void
 g_slice_free1 (gsize    mem_size,
                gpointer mem_block)

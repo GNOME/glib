@@ -684,6 +684,7 @@ g_blow_chunks
 #if IN_FILE(__G_SLICE_C__)
 g_slice_alloc G_GNUC_MALLOC
 g_slice_alloc0 G_GNUC_MALLOC
+g_slice_copy G_GNUC_MALLOC
 g_slice_free1
 g_slice_free_chain_with_offset
 g_slice_set_config

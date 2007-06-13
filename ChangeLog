@@ -1,3 +1,9 @@
+2007-06-13  Sven Neumann  <sven@gimp.org>
+
+	* glib/gslice.[ch] added g_slice_copy() and g_slice_dup() (#442029).
+
+	* glib/glib.symbols: updated.
+
 2007-06-12  Behdad Esfahbod  <behdad@gnome.org>
 
 	* glib/gunicode.h: Add more G_GNUC_CONST and G_GNUC_PURE.
