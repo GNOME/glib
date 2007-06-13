@@ -121,6 +121,18 @@ environment variable.
 @Since: 2.10
 
 
+<!-- ##### FUNCTION g_slice_copy ##### -->
+<para>
+Allocates a block of memory from the slice allocator and copies
+@block_size bytes into it from @mem_block.
+</para>
+
+@block_size: the number of bytes to allocate
+@mem_block: the memory to copy
+@Returns: a pointer to the allocated memory block
+@Since: 2.14
+
+
 <!-- ##### FUNCTION g_slice_free1 ##### -->
 <para>
 Frees a block of memory. The memory must have been allocated via
@@ -184,6 +196,23 @@ environment variable.
 @type: the type to allocate, typically a structure name
 @Returns: a pointer to the allocated block, cast to a pointer to @type.
 @Since: 2.10
+
+
+<!-- ##### MACRO g_slice_dup ##### -->
+<para>
+A convenience macro to duplicate a block of memory using the slice allocator.
+It calls g_slice_copy() with <literal>sizeof (@type)</literal> and casts 
+the returned pointer to a pointer of the given type, avoiding a type cast 
+in the source code.
+Note that the underlying slice allocation mechanism can
+be changed with the <link linkend="G_SLICE">G_SLICE=always-malloc</link>
+environment variable.
+</para>
+
+@type: the type to duplicate, typically a structure name
+@mem: the memory to copy into the allocated block
+@Returns: a pointer to the allocated block, cast to a pointer to @type.
+@Since: 2.14
 
 
 <!-- ##### MACRO g_slice_free ##### -->

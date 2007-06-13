@@ -1735,12 +1735,14 @@ g_mem_chunk_print
 <FILE>memory_slices</FILE>
 g_slice_alloc
 g_slice_alloc0
+g_slice_copy
 g_slice_free1
 g_slice_free_chain_with_offset
 
 <SUBSECTION>
 g_slice_new
 g_slice_new0
+g_slice_dup
 g_slice_free
 g_slice_free_chain
 
