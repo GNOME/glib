@@ -3671,8 +3671,8 @@ g_timeout_add (guint32        interval,
  *
  * The grouping of timers to fire at the same time results in a more power
  * and CPU efficient behavior so if your timer is in multiples of seconds
- * and you don't require the first timer exactly 1 second from now, the
- * use of g_timeout_add_second() is prefered over g_timeout_add().
+ * and you don't require the first timer exactly one second from now, the
+ * use of g_timeout_add_seconds() is preferred over g_timeout_add().
  *
  * Return value: the ID (greater than 0) of the event source.
  *
