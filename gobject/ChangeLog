@@ -1,3 +1,8 @@
+Thu Jun 14 22:33:11 2007  Tim Janik  <timj@imendio.com>
+
+	* gparamspecs.c (g_param_spec_types_init): work around SGI IDO cc,
+	fixes #363986.
+
 2007-06-05  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.13.4 ===
