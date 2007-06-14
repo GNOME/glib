@@ -1,3 +1,9 @@
+Thu Jun 14 23:32:00 2007  Tim Janik  <timj@gtk.org>
+
+	* gtype.h: always define GType unconditionally in terms of gsize,
+	there's no need to jump through a glong hoop ever and this fixes
+	the printf modifier to %zu.
+
 Thu Jun 14 22:33:11 2007  Tim Janik  <timj@imendio.com>
 
 	* gparamspecs.c (g_param_spec_types_init): work around SGI IDO cc,
