@@ -1260,17 +1260,54 @@ g_string_up (GString *string)
   return string;
 }
 
-static void
-g_string_append_printf_internal (GString     *string,
-				 const gchar *fmt,
-				 va_list      args)
+/**
+ * g_string_append_vprintf:
+ * @string: a #GString.
+ * @format: the string format. See the printf() documentation.
+ * @args: the list of arguments to insert in the output.
+ *
+ * Appends a formatted string onto the end of a #GString.
+ * This function is is similar to g_string_append_printf()
+ * except that the arguments to the format string are passed
+ * as a va_list.
+ *
+ * Since: 2.14
+ */
+void
+g_string_append_vprintf (GString     *string,
+			 const gchar *fmt,
+			 va_list      args)
 {
-  gchar *buffer;
-  gint length;
-  
-  length = g_vasprintf (&buffer, fmt, args);
-  g_string_append_len (string, buffer, length);
-  g_free (buffer);
+  gsize length;
+
+  g_return_if_fail (string != NULL);
+  g_return_if_fail (fmt != NULL);
+
+  length = g_printf_string_upper_bound (fmt, args);
+  g_string_maybe_expand (string, length);
+  length = g_vsnprintf (string->str + string->len, length, fmt, args);
+  string->len += length;
+}
+
+/**
+ * g_string_vprintf:
+ * @string: a #GString.
+ * @format: the string format. See the printf() documentation.
+ * @Varargs: the parameters to insert into the format string.
+ *
+ * Writes a formatted string into a #GString.  This function
+ * is similar to g_string_printf() except that the arguments to
+ * the format string are passed as a va_list.
+ *
+ * Since: 2.14
+ */
+void
+g_string_vprintf (GString     *string,
+		  const gchar *fmt,
+		  va_list      args)
+{
+  g_string_truncate (string, 0);
+  g_string_append_vprintf (string, fmt, args);
 }
 
 /**
@@ -1310,7 +1347,7 @@ g_string_printf (GString *string,
   g_string_truncate (string, 0);
 
   va_start (args, fmt);
-  g_string_append_printf_internal (string, fmt, args);
+  g_string_append_vprintf (string, fmt, args);
   va_end (args);
 }
 
@@ -1346,7 +1383,7 @@ g_string_append_printf (GString *string,
   va_list args;
 
   va_start (args, fmt);
-  g_string_append_printf_internal (string, fmt, args);
+  g_string_append_vprintf (string, fmt, args);
   va_end (args);
 }
 

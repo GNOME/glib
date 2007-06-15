@@ -1124,6 +1124,7 @@ g_string_append
 g_string_append_len
 g_string_append_printf G_GNUC_PRINTF(2,3)
 g_string_append_unichar
+g_string_append_vprintf
 g_string_ascii_down
 g_string_ascii_up
 g_string_assign
@@ -1157,6 +1158,7 @@ g_string_truncate
 g_string_down
 g_string_up
 #endif
+g_string_vprintf
 #ifdef INCLUDE_INTERNAL_SYMBOLS
  /* these are not internal, but we don't want to alias them */
 g_string_append_c

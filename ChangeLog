@@ -1,3 +1,12 @@
+2007-06-14  Ryan Lortie  <desrt@desrt.ca>
+
+	* docs/reference/glib/glib-sections.txt:
+	* glib/glib/symbols:
+	* glib/gstring.[ch] (g_string_printf_internal): Improve
+	performance by removing the use of an intermediate g_malloc'd
+	buffer.  Rename to g_string_append_vprintf, document, and expose
+	along with g_string_vprintf as new public API (#57693).
+
 2007-06-15  Mathias Hasselmann  <mathias.hasselmann@gmx.de>
 
 	* build, tests/string-test.c, glib/glib.symbols, 

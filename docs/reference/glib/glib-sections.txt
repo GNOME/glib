@@ -2018,6 +2018,8 @@ g_string_sized_new
 g_string_assign
 g_string_sprintf
 g_string_sprintfa
+g_string_vprintf
+g_string_append_vprintf
 g_string_printf
 g_string_append_printf
 g_string_append
