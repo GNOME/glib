@@ -1,3 +1,8 @@
+2007-06-14  Cody Russell  <bratsche@gnome.org>
+
+	* gobject/gtype.c (g_type_class_add_private): Check for 0-sized
+	private data. (#443869)
+
 2007-06-14  Matthias Clasen  <mclasen@redhat.com>
 	
 	* glib/gmain.c (g_timeout_add_seconds): Fix doc typos.  (#447534,
