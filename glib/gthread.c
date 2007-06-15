@@ -230,7 +230,10 @@ g_static_mutex_free (GStaticMutex* mutex)
   g_return_if_fail (mutex);
 
   /* The runtime_mutex is the first (or only) member of GStaticMutex,
-   * see both versions (of glibconfig.h) in configure.in */
+   * see both versions (of glibconfig.h) in configure.in. Note, that
+   * this variable is NULL, if g_thread_init() hasn't been called or
+   * if we're using the default thread implementation and it provides
+   * static mutexes. */
   runtime_mutex = ((GMutex**)mutex);
 
   if (*runtime_mutex)

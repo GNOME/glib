@@ -1,3 +1,13 @@
+2007-06-15  Sebastian Wilhelmi  <wilhelmi@google.com>
+
+	* docs/reference/glib/tmpl/threads.sgml: Extended the comments on
+	those functions, that are NOOPs, before g_thread_init() has been
+	called. (#447583)
+
+	* glib/gthread.c (g_static_mutex_free): Clarified comment to
+	remind myself, tha calling g_static_mutex_free() before
+	g_thread_init() is safe.
+
 2007-06-15  Cody Russell  <bratsche@gnome.org>
 
 	* docs/reference/gobject/tmpl/gboxed.sgml:

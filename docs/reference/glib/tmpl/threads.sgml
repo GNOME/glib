@@ -714,8 +714,11 @@ platforms.
 </para>
 
 <para>
-All of the <function>g_static_mutex_*</function> functions can also be 
-used even if g_thread_init() has not yet been called.
+All of the <function>g_static_mutex_*</function> functions apart from
+<function>g_static_mutex_get_mutex</function> can also be used even if
+g_thread_init() has not yet been called. Then they do nothing, apart
+from <function>g_static_mutex_trylock</function>, which does nothing
+but returning %TRUE.
 </para>
 
 <note>
@@ -911,8 +914,10 @@ the following functions.
 </para>
 
 <para>
-All of the <function>g_static_rec_mutex_*</function> functions can
-be used even if g_thread_init() has not been called.
+All of the <function>g_static_rec_mutex_*</function> functions can be
+used even if g_thread_init() has not been called. Then they do
+nothing, apart from <function>g_static_rec_mutex_trylock</function>,
+which does nothing but returning %TRUE.
 </para>
 
 
@@ -969,7 +974,7 @@ functions increases the depth of @mutex and immediately returns %TRUE.
 
 <!-- ##### FUNCTION g_static_rec_mutex_unlock ##### -->
 <para>
-Unlocks @mutex. Another thread can will be allowed to lock @mutex only
+Unlocks @mutex. Another thread will be allowed to lock @mutex only
 when it has been unlocked as many times as it had been locked
 before. If @mutex is completely unlocked and another thread is blocked
 in a g_static_rec_mutex_lock() call for @mutex, it will be woken and
@@ -1094,7 +1099,9 @@ the following functions.
 
 <para>
 All of the <function>g_static_rw_lock_*</function> functions can be 
-used even if g_thread_init() has not been called.
+used even if g_thread_init() has not been called. Then they do
+nothing, apart from <function>g_static_rw_lock_*_trylock</function>,
+which does nothing but returning %TRUE.
 </para>
 
 <note>
