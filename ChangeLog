@@ -1,3 +1,12 @@
+2007-06-15  Cody Russell  <bratsche@gnome.org>
+
+	* docs/reference/gobject/tmpl/gboxed.sgml:
+	* docs/reference/gobject/gobject-sections.txt:
+	* glib/gregex.c:
+	* gobject/gboxed.[ch]:
+	* gobject/gobject.symbols: Added GRegex boxed type.
+	(#445065, Carlos Garnacho)
+
 2007-06-15  Sebastian Wilhelmi  <wilhelmi@google.com>
 
 	* glib/gregex.c: Replaced & by &amp; in <programlisting> to make

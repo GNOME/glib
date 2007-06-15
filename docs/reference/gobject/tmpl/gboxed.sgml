@@ -139,6 +139,15 @@ g_strfreev (writers);
 @Since: 2.4
 
 
+<!-- ##### MACRO G_TYPE_REGEX ##### -->
+<para>
+The #GType for a boxed type holding a #GRegex reference.
+</para>
+
+@Since: 2.14
+
+
+
 <!-- ##### TYPEDEF GStrv ##### -->
 <para>
 A C representable type name for #G_TYPE_STRV.

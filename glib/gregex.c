@@ -410,8 +410,8 @@ g_match_info_get_match_count (const GMatchInfo *match_info)
  * GRegex supports the concept of partial matching by means of the
  * #G_REGEX_MATCH_PARTIAL flag. When this is set the return code for
  * g_regex_match() or g_regex_match_full() is, as usual, %TRUE
- * for a complete match, %FALSE otherwise. But, when this functions
- * returns %FALSE, you can check if the match was partial calling
+ * for a complete match, %FALSE otherwise. But, when these functions
+ * return %FALSE, you can check if the match was partial calling
  * g_match_info_is_partial_match().
  *
  * When using partial matching you cannot use g_match_info_fetch*().

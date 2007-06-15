@@ -241,6 +241,17 @@ g_hash_table_get_type (void)
   return type_id;
 }
 
+GType
+g_regex_get_type (void)
+{
+  static GType type_id = 0;
+  if (!type_id)
+    type_id = g_boxed_type_register_static (g_intern_static_string ("GRegex"),
+					    (GBoxedCopyFunc) g_regex_ref,
+					    (GBoxedFreeFunc) g_regex_unref);
+  return type_id;
+}
+
 static void
 boxed_proxy_value_init (GValue *value)
 {

@@ -339,6 +339,7 @@ G_TYPE_HASH_TABLE
 G_TYPE_DATE
 G_TYPE_GSTRING
 G_TYPE_STRV
+G_TYPE_REGEX
 GStrv
 
 <SUBSECTION Standard>
@@ -349,6 +350,7 @@ g_gstring_get_type
 g_strv_get_type
 g_date_get_type
 g_hash_table_get_type
+g_regex_get_type
 </SECTION>
 
 <SECTION>
