@@ -1143,6 +1143,8 @@ g_string_insert_len
 g_string_insert_unichar
 g_string_new
 g_string_new_len
+g_string_overwrite
+g_string_overwrite_len
 g_string_prepend
 g_string_prepend_c
 g_string_prepend_len

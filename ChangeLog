@@ -1,3 +1,9 @@
+2007-06-15  Mathias Hasselmann  <mathias.hasselmann@gmx.de>
+
+	* build, tests/string-test.c, glib/glib.symbols, 
+	glib/gstring.c, glib/gstring.h: Introduce g_string_overwrite(_len)?
+	for overwriting parts of strings (#368686, Samuel Cormier-Iijima)
+
 2007-06-14  Cody Russell  <bratsche@gnome.org>
 
 	* gobject/gtype.c (g_type_class_add_private): Check for 0-sized

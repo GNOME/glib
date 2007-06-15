@@ -105,6 +105,13 @@ GString*     g_string_insert_c          (GString	 *string,
 GString*     g_string_insert_unichar    (GString	 *string,
 					 gssize		  pos,    
 					 gunichar	  wc);
+GString*     g_string_overwrite         (GString	 *string,
+					 gsize		  pos,    
+					 const gchar	 *val);
+GString*     g_string_overwrite_len     (GString	 *string,
+					 gsize		  pos,    
+					 const gchar	 *val,
+					 gssize           len);
 GString*     g_string_erase	        (GString	 *string,
 					 gssize		  pos,
 					 gssize		  len);

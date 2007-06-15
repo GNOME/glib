@@ -257,7 +257,27 @@ main (int   argc,
   g_assert (g_string_equal(string1, string2));
   g_string_free (string1, TRUE);
   g_string_free (string2, TRUE);
-  
+
+  /* overwriting functions */
+  string1 = g_string_new ("testing");
+
+  g_string_overwrite (string1, 4, " and expand");
+  g_assert (15 == string1->len);
+  g_assert ('\0' == string1->str[15]);
+  g_assert (g_str_equal ("test and expand", string1->str));
+
+  g_string_overwrite (string1, 5, "NOT-");
+  g_assert (15 == string1->len);
+  g_assert ('\0' == string1->str[15]);
+  g_assert (g_str_equal ("test NOT-expand", string1->str));
+
+  g_string_overwrite_len (string1, 9, "blablabla", 6);
+  g_assert (15 == string1->len);
+  g_assert ('\0' == string1->str[15]);
+  g_assert (g_str_equal ("test NOT-blabla", string1->str));
+
+  g_string_free (string1, TRUE);
+
   /* Check handling of embedded ASCII 0 (NUL) characters in GString. */
   string1 = g_string_new ("fiddle");
   string2 = g_string_new ("fiddle");

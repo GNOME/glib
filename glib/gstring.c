@@ -1023,6 +1023,76 @@ g_string_insert_unichar (GString *string,
 }
 
 /**
+ * g_string_overwrite:
+ * @string: a #GString
+ * @pos: the position at which to start overwriting
+ * @val: the string that will overwrite the @string starting at @pos
+ * 
+ * Overwrites part of a string, lengthening it if necessary.
+ * 
+ * Return value: @string
+ *
+ * Since: 2.14
+ **/
+GString *
+g_string_overwrite (GString     *string,
+		    gsize        pos,
+		    const gchar *val)
+{
+  g_return_val_if_fail (val != NULL, string);
+  return g_string_overwrite_len (string, pos, val, strlen (val));
+}
+
+/**
+ * g_string_overwrite_len:
+ * @string: a #GString
+ * @pos: the position at which to start overwriting
+ * @val: the string that will overwrite the @string starting at @pos
+ * @len: the number of bytes to write from @val
+ * 
+ * Overwrites part of a string, lengthening it if necessary. This function
+ * will work with embedded NULLs.
+ * 
+ * Return value: @string
+ *
+ * Since: 2.14
+ **/
+GString *
+g_string_overwrite_len (GString       *string,
+			gsize          pos,
+			const gchar   *val,
+			gssize         len)
+{
+  gsize end;
+
+  g_return_val_if_fail (string != NULL, NULL);
+
+  if (!len)
+    return string;
+
+  g_return_val_if_fail (val != NULL, string);
+  g_return_val_if_fail (pos <= string->len, string);
+
+  if (len < 0)
+    len = strlen (val);
+
+  end = pos + len;
+
+  if (end > string->len)
+    g_string_maybe_expand (string, end - string->len);
+
+  memcpy (string->str + pos, val, len);
+
+  if (end > string->len)
+    {
+      string->str[end] = '\0';
+      string->len = end;
+    }
+
+  return string;
+}
+
+/**
  * g_string_erase:
  * @string: a #GString
  * @pos: the position of the content to remove
