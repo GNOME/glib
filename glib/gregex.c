@@ -1091,7 +1091,7 @@ g_regex_match_simple (const gchar        *pattern,
  *   GMatchInfo *match_info;
  *   &nbsp;
  *   regex = g_regex_new ("[A-Z]+", 0, 0, NULL);
- *   g_regex_match (regex, string, 0, &match_info);
+ *   g_regex_match (regex, string, 0, &amp;match_info);
  *   while (g_match_info_matches (match_info))
  *     {
  *       gchar *word = g_match_info_fetch (match_info, 0);
@@ -1160,13 +1160,13 @@ g_regex_match (const GRegex    *regex,
  *   GError *error = NULL;
  *   &nbsp;
  *   regex = g_regex_new ("[A-Z]+", 0, 0, NULL);
- *   g_regex_match_full (regex, string, -1, 0, 0, &match_info, &error);
+ *   g_regex_match_full (regex, string, -1, 0, 0, &amp;match_info, &amp;error);
  *   while (g_match_info_matches (match_info))
  *     {
  *       gchar *word = g_match_info_fetch (match_info, 0);
  *       g_print ("Found: %s\n", word);
  *       g_free (word);
- *       g_match_info_next (match_info, &error);
+ *       g_match_info_next (match_info, &amp;error);
  *     }
  *   g_match_info_free (match_info);
  *   g_regex_unref (regex);

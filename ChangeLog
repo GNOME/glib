@@ -1,3 +1,8 @@
+2007-06-15  Sebastian Wilhelmi  <wilhelmi@google.com>
+
+	* glib/gregex.c: Replaced & by &amp; in <programlisting> to make
+	gtk-doc happy.
+
 2007-06-14  Ryan Lortie  <desrt@desrt.ca>
 
 	* docs/reference/glib/glib-sections.txt:
