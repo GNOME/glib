@@ -1,3 +1,10 @@
+2007-06-15  Cody Russell  <cody@jhu.edu>
+
+	Merge from trunk:
+
+	* gobject/gtype.c (g_type_class_add_private): Check for 0-sized
+	private data. (#443869)
+
 2007-06-11  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gwin32.c (g_win32_get_package_installation_directory)

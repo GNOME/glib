@@ -3483,6 +3483,8 @@ g_type_class_add_private (gpointer g_class,
   TypeNode *node = lookup_type_node_I (instance_type);
   gsize offset;
 
+  g_return_if_fail (private_size > 0);
+
   if (!node || !node->is_instantiatable || !node->data || node->data->class.class != g_class)
     {
       g_warning ("cannot add private field to invalid (non-instantiatable) type '%s'",
