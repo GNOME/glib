@@ -1278,12 +1278,16 @@ g_string_append_vprintf (GString     *string,
 			 const gchar *fmt,
 			 va_list      args)
 {
+  va_list sneak;
   gsize length;
 
   g_return_if_fail (string != NULL);
   g_return_if_fail (fmt != NULL);
 
-  length = g_printf_string_upper_bound (fmt, args);
+  G_VA_COPY (sneak, args);
+  length = g_printf_string_upper_bound (fmt, sneak);
+  va_end (sneak);
+
   g_string_maybe_expand (string, length);
   length = g_vsnprintf (string->str + string->len, length, fmt, args);
   string->len += length;

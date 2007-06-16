@@ -1,3 +1,8 @@
+2007-06-16  Mathias Hasselmann  <mathias.hasselmann@gmx.de>
+
+	* glib/gstring.c: Correctly use g_printf_string_upper_bound
+	in g_string_append_vprintf. Fixes #447933.
+
 2007-06-15  Sebastian Wilhelmi  <wilhelmi@google.com>
 
 	* docs/reference/glib/tmpl/threads.sgml: Extended the comments on
