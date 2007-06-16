@@ -1,3 +1,8 @@
+2007-06-16  Emmanuele Bassi  <ebassi@gnome.org>
+
+	* glib/tmpl/macros.sgml: Document the undefined behaviour of
+	CLAMP() if low > high. (#448260)
+
 2007-06-13  Sven Neumann  <sven@gimp.org>
 
 	* glib/glib-sections.txt

@@ -148,7 +148,8 @@ ABS(10) is also 10.
 
 <!-- ##### MACRO CLAMP ##### -->
 <para>
-Ensures that @x is between the limits set by @low and @high.
+Ensures that @x is between the limits set by @low and @high. If @low is
+greater than @high the result is undefined.
 </para>
 <para>
 For example,
