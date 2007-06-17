@@ -1,3 +1,9 @@
+2007-06-17  Behdad Esfahbod  <behdad@gnome.org>
+
+	* glib/gdataset.c (g_quark_from_string),
+	(g_quark_from_static_string): Accept NULL and return GQuark
+	value of zero. (#446859)
+
 2007-06-16  Mathias Hasselmann  <mathias.hasselmann@gmx.de>
 
 	* glib/gstring.c: Correctly use g_printf_string_upper_bound

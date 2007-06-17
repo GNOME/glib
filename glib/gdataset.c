@@ -635,7 +635,8 @@ g_quark_from_string (const gchar *string)
 {
   GQuark quark;
   
-  g_return_val_if_fail (string != NULL, 0);
+  if (!string)
+    return 0;
   
   G_LOCK (g_quark_global);
   quark = g_quark_from_string_internal (string, TRUE);
@@ -649,7 +650,8 @@ g_quark_from_static_string (const gchar *string)
 {
   GQuark quark;
   
-  g_return_val_if_fail (string != NULL, 0);
+  if (!string)
+    return 0;
   
   G_LOCK (g_quark_global);
   quark = g_quark_from_string_internal (string, FALSE);
