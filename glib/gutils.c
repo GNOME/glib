@@ -1769,9 +1769,28 @@ g_get_real_name (void)
  *
  * Note that in contrast to traditional UNIX tools, this function 
  * prefers <filename>passwd</filename> entries over the <envar>HOME</envar> 
- * environment variable.
+ * environment variable. 
  *
- * Returns: the current user's home directory.
+ * One of the reasons for this decision is that applications in many 
+ * cases need special handling to deal with the case where 
+ * <envar>HOME</envar> is
+ * <simplelist>
+ *   <member>Not owned by the user</member>
+ *   <member>Not writeable</member>
+ *   <member>Not even readable</member>
+ * </simplelist>
+ * Since applications are in general <emphasis>not</emphasis> written 
+ * to deal with these situations it was considered better to make 
+ * g_get_homedir() not pay attention to <envar>HOME</envar> and to 
+ * return the real home directory for the user. If applications
+ * want to pay attention to <envar>HOME</envar>, they can do:
+ * <informalexample><programlisting>
+ *  const char *homedir = g_getenv ("HOME");
+ *   if (!homedir)
+ *      homedir = g_get_homedir (<!-- -->);
+ * </programlisting></informalexample>
+ *
+ * Returns: the current user's home directory
  */
 G_CONST_RETURN gchar*
 g_get_home_dir (void)

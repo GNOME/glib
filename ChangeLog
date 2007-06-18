@@ -1,5 +1,9 @@
 2007-06-18  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gutils.c (g_get_home_dir): Add some motivation.
+
+2007-06-18  Matthias Clasen  <mclasen@redhat.com>
+
 	* configure.in: Bump version
 
 	* === Released 2.13.5 ===
