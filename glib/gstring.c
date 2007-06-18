@@ -1278,19 +1278,15 @@ g_string_append_vprintf (GString     *string,
 			 const gchar *fmt,
 			 va_list      args)
 {
-  va_list sneak;
-  gsize length;
-
+  gchar *buffer;
+  gint length;
+  
   g_return_if_fail (string != NULL);
   g_return_if_fail (fmt != NULL);
 
-  G_VA_COPY (sneak, args);
-  length = g_printf_string_upper_bound (fmt, sneak);
-  va_end (sneak);
-
-  g_string_maybe_expand (string, length);
-  length = g_vsnprintf (string->str + string->len, length, fmt, args);
-  string->len += length;
+  length = g_vasprintf (&buffer, fmt, args);
+  g_string_append_len (string, buffer, length);
+  g_free (buffer);
 }
 
 /**

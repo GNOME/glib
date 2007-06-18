@@ -1,3 +1,9 @@
+2007-06-18  Mathias Hasselmann  <mathias.hasselmann@gmx.de>
+
+	* glib/gstring.c: Restore old behaviour of 
+	g_string_append_vprintf: g_vasprintf seems to be faster
+	than g_printf_string_upper_bound (#57693).
+
 2007-06-18  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gutils.c (g_get_home_dir): Add some motivation.
