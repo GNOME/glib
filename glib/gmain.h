@@ -295,32 +295,37 @@ gboolean g_source_remove_by_funcs_user_data  (GSourceFuncs  *funcs,
 					      gpointer       user_data);
 
 /* Idles, child watchers and timeouts */
-guint    g_timeout_add_full     (gint            priority,
-				 guint           interval,
-				 GSourceFunc     function,
-				 gpointer        data,
-				 GDestroyNotify  notify);
-guint    g_timeout_add          (guint           interval,
-				 GSourceFunc     function,
-				 gpointer        data);
-guint    g_timeout_add_seconds  (guint           interval,
-				 GSourceFunc     function,
-				 gpointer        data);
-guint    g_child_watch_add_full (gint            priority,
-				 GPid            pid,
-				 GChildWatchFunc function,
-				 gpointer        data,
-				 GDestroyNotify  notify);
-guint    g_child_watch_add      (GPid            pid,
-				 GChildWatchFunc function,
-				 gpointer        data);
-guint    g_idle_add             (GSourceFunc     function,
-				 gpointer        data);
-guint    g_idle_add_full        (gint            priority,
-				 GSourceFunc     function,
-				 gpointer        data,
-				 GDestroyNotify  notify);
-gboolean g_idle_remove_by_data  (gpointer        data);
+guint    g_timeout_add_full         (gint            priority,
+				     guint           interval,
+				     GSourceFunc     function,
+				     gpointer        data,
+				     GDestroyNotify  notify);
+guint    g_timeout_add              (guint           interval,
+				     GSourceFunc     function,
+				     gpointer        data);
+guint    g_timeout_add_seconds_full (gint            priority,
+                                     guint           interval,
+                                     GSourceFunc     function,
+                                     gpointer        data,
+                                     GDestroyNotify  notify);
+guint    g_timeout_add_seconds      (guint           interval,
+				     GSourceFunc     function,
+				     gpointer        data);
+guint    g_child_watch_add_full     (gint            priority,
+				     GPid            pid,
+				     GChildWatchFunc function,
+				     gpointer        data,
+				     GDestroyNotify  notify);
+guint    g_child_watch_add          (GPid            pid,
+				     GChildWatchFunc function,
+				     gpointer        data);
+guint    g_idle_add                 (GSourceFunc     function,
+				     gpointer        data);
+guint    g_idle_add_full            (gint            priority,
+				     GSourceFunc     function,
+				     gpointer        data,
+				     GDestroyNotify  notify);
+gboolean g_idle_remove_by_data      (gpointer        data);
 
 /* Hook for GClosure / GSource integration. Don't touch */
 GLIB_VAR GSourceFuncs g_timeout_funcs;

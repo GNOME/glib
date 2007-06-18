@@ -1,3 +1,7 @@
+2007-06-18  Emmanuele Bassi  <ebassi@gnome.org>
+
+	* glib/glib-sections.txt: Add g_timeout_add_seconds_full().
+
 2007-06-17  Behdad Esfahbod  <behdad@gnome.org>
 
 	* glib/tmpl/quarks.sgml:

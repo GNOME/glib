@@ -3560,13 +3560,13 @@ g_timeout_source_new_seconds (guint interval)
 
 /**
  * g_timeout_add_full:
- * @priority: the priority of the idle source. Typically this will be in the
- *            range between #G_PRIORITY_DEFAULT_IDLE and #G_PRIORITY_HIGH_IDLE.
+ * @priority: the priority of the timeout source. Typically this will be in
+ *            the range between #G_PRIORITY_DEFAULT and #G_PRIORITY_HIGH.
  * @interval: the time between calls to the function, in milliseconds
  *             (1/1000ths of a second)
  * @function: function to call
  * @data:     data to pass to @function
- * @notify:   function to call when the idle is removed, or %NULL
+ * @notify:   function to call when the timeout is removed, or %NULL
  * 
  * Sets a function to be called at regular intervals, with the given
  * priority.  The function is called repeatedly until it returns
@@ -3643,15 +3643,18 @@ g_timeout_add (guint32        interval,
 }
 
 /**
- * g_timeout_add_seconds:
+ * g_timeout_add_seconds_full:
+ * @priority: the priority of the timeout source. Typically this will be in
+ *            the range between #G_PRIORITY_DEFAULT and #G_PRIORITY_HIGH.
  * @interval: the time between calls to the function, in seconds
  * @function: function to call
  * @data:     data to pass to @function
+ * @notify:   function to call when the timeout is removed, or %NULL
  *
- * Sets a function to be called at regular intervals, with the default
- * priority, #G_PRIORITY_DEFAULT.  The function is called repeatedly
- * until it returns %FALSE, at which point the timeout is automatically
- * destroyed and the function will not be called again.
+ * Sets a function to be called at regular intervals, with @priority.
+ * The function is called repeatedly until it returns %FALSE, at which
+ * point the timeout is automatically destroyed and the function will
+ * not be called again.
  *
  * Unlike g_timeout_add(), this function operates at whole second granularity.
  * The initial starting point of the timer is determined by the implementation
@@ -3679,9 +3682,11 @@ g_timeout_add (guint32        interval,
  * Since: 2.14
  **/
 guint
-g_timeout_add_seconds (guint32        interval,
-	       GSourceFunc    function,
-	       gpointer       data)
+g_timeout_add_seconds_full (gint           priority,
+                            guint32        interval,
+                            GSourceFunc    function,
+                            gpointer       data,
+                            GDestroyNotify notify)
 {
   GSource *source;
   guint id;
@@ -3690,13 +3695,43 @@ g_timeout_add_seconds (guint32        interval,
 
   source = g_timeout_source_new_seconds (interval);
 
-  g_source_set_callback (source, function, data, NULL);
+  if (priority != G_PRIORITY_DEFAULT)
+    g_source_set_priority (source, priority);
+
+  g_source_set_callback (source, function, data, notify);
   id = g_source_attach (source, NULL);
   g_source_unref (source);
 
   return id;
 }
 
+/**
+ * g_timeout_add_seconds:
+ * @interval: the time between calls to the function, in seconds
+ * @function: function to call
+ * @data: data to pass to @function
+ *
+ * Sets a function to be called at regular intervals with the default
+ * priority, #G_PRIORITY_DEFAULT. The function is called repeatedly until
+ * it returns %FALSE, at which point the timeout is automatically destroyed
+ * and the function will not be called again.
+ *
+ * See g_timeout_add_seconds_full() for the differences between
+ * g_timeout_add() and g_timeout_add_seconds().
+ *
+ * Return value: the ID (greater than 0) of the event source.
+ *
+ * Since: 2.14
+ **/
+guint
+g_timeout_add_seconds (guint       interval,
+                       GSourceFunc function,
+                       gpointer    data)
+{
+  g_return_val_if_fail (function != NULL, 0);
+
+  return g_timeout_add_seconds_full (G_PRIORITY_DEFAULT, interval, function, data, NULL);
+}
 
 /* Child watch functions */
 

@@ -1,3 +1,11 @@
+2007-06-18  Emmanuele Bassi  <ebassi@gnome.org>
+
+	* glib/gmain.h:
+	* glib/gmain.c:
+	* glib/glib.symbols: Add g_timeout_add_seconds_full() variant
+	to g_timeout_add_seconds(), accepting a destroy notification
+	function and a priority. (#448819)
+
 2007-06-17  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gutils (g_get_current_dir): Prevent segfaults on
