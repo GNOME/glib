@@ -1,3 +1,39 @@
+Overview of Changes from GLib 2.13.4 to GLib 2.13.5
+===================================================
+
+* xdg-user-dirs support: 
+ - the Desktop directory is guaranteed to be defined
+ - user-dirs.dirs is no longer reloaded on changes
+
+* Slice allocator: 
+ - new api to duplicate slices
+
+* Regular expression support:
+ - GRegex is a boxed type now
+
+* Bugs fixed:
+ 44793 make check failing in trunk
+ 354522 Small problem with PLT hiding 6 symbols
+ 363986 glib 2.12.4 does not compile with SGI IDO cc
+ 443869 g_type_class_add_private doesn't warn when adding 0-sized...
+ 446859 Legitimately return 0 for g_quark_from_string(NULL)
+ 447534 Small typo in g_timeout_add_seconds() doc
+ 447583 GStaticRWLock
+ 447935 g_get_current_dir SIGSEGV on long path
+ 448260 CLAMP has surprising result if low > high
+ 57693 	g_string_vprintf()
+ 442029 add g_slice_dup()
+ 445065 Add GRegex boxed type
+ 448819 Add full version of g_timeout_add_seconds()
+
+* Updated translations: 
+ Swedish (sv)
+ Oriya (or)
+ Hebrew (he)
+ Spanish (es)
+ Estonian (et)
+
+ 
 Overview of Changes from GLib 2.13.3 to GLib 2.13.4
 ===================================================
 
