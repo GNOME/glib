@@ -964,6 +964,7 @@ g_get_current_dir (void)
 #else	/* !sun || !HAVE_GETCWD */
   while (max_len < G_MAXULONG / 2)
     {
+      g_free (buffer);
       buffer = g_new (gchar, max_len + 1);
       *buffer = 0;
       dir = getcwd (buffer, max_len);
@@ -971,7 +972,6 @@ g_get_current_dir (void)
       if (dir || errno != ERANGE)
 	break;
 
-      g_free (buffer);
       max_len *= 2;
     }
 #endif	/* !sun || !HAVE_GETCWD */

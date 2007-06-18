@@ -1,3 +1,8 @@
+2007-06-17  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gutils (g_get_current_dir): Prevent segfaults on
+	long paths.  (#447935, Robby Griffin)
+
 2007-06-17  Behdad Esfahbod  <behdad@gnome.org>
 
 	* glib/gdataset.c (g_quark_from_string),
@@ -16,7 +21,7 @@
 	called. (#447583)
 
 	* glib/gthread.c (g_static_mutex_free): Clarified comment to
-	remind myself, tha calling g_static_mutex_free() before
+	remind myself, that calling g_static_mutex_free() before
 	g_thread_init() is safe.
 
 2007-06-15  Cody Russell  <bratsche@gnome.org>
