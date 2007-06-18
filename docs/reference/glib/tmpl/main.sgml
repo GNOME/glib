@@ -596,6 +596,19 @@ for the default main context.
 @Returns: 
 
 
+<!-- ##### FUNCTION g_timeout_add_seconds_full ##### -->
+<para>
+
+</para>
+
+@priority: 
+@interval: 
+@function: 
+@data: 
+@notify: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_idle_source_new ##### -->
 <para>
 

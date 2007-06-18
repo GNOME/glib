@@ -82,6 +82,26 @@ can be used as an ordinary C string.
 
 
 
+<!-- ##### FUNCTION g_string_vprintf ##### -->
+<para>
+
+</para>
+
+@string: 
+@format: 
+@args: 
+
+
+<!-- ##### FUNCTION g_string_append_vprintf ##### -->
+<para>
+
+</para>
+
+@string: 
+@format: 
+@args: 
+
+
 <!-- ##### FUNCTION g_string_printf ##### -->
 <para>
 

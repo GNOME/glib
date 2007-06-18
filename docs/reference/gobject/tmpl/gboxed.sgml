@@ -147,7 +147,6 @@ The #GType for a boxed type holding a #GRegex reference.
 @Since: 2.14
 
 
-
 <!-- ##### TYPEDEF GStrv ##### -->
 <para>
 A C representable type name for #G_TYPE_STRV.

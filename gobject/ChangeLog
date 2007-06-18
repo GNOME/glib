@@ -1,3 +1,7 @@
+2007-06-18  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.13.5 ===
+
 Thu Jun 14 23:32:00 2007  Tim Janik  <timj@gtk.org>
 
 	* gtype.h: always define GType unconditionally in terms of gsize,
