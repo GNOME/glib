@@ -1,3 +1,8 @@
+2007-06-22  I. Felix <ifelix@svn.gnome.org>
+
+	* si.po:  Sinhala Translation updated by Danishka Navin
+	* LINGUAS: Added Sinhala (si) to The List of Languages.
+
 2007-06-18  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.13.5 ===
