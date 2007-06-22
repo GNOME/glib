@@ -88,7 +88,11 @@ G_BEGIN_DECLS
 
 /* Typedefs
  */
+#if     GLIB_SIZEOF_SIZE_T != GLIB_SIZEOF_LONG || !defined __cplusplus
 typedef gsize                           GType;
+#else   /* for historic reasons, C++ links against gulong GTypes */
+typedef gulong                          GType;
+#endif
 typedef struct _GValue                  GValue;
 typedef union  _GTypeCValue             GTypeCValue;
 typedef struct _GTypePlugin             GTypePlugin;
