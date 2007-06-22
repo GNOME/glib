@@ -1,3 +1,7 @@
+2007-06-22  Mathias Hasselmann  <mathias.hasselmann@gmx.de>
+
+	* glib/gstring.c: Use memcpy in g_string_append_vprintf (#57693).
+
 2007-06-18  Mathias Hasselmann  <mathias.hasselmann@gmx.de>
 
 	* glib/gstring.c: Restore old behaviour of 

@@ -1278,15 +1278,21 @@ g_string_append_vprintf (GString     *string,
 			 const gchar *fmt,
 			 va_list      args)
 {
-  gchar *buffer;
-  gint length;
+  gchar *buf;
+  gint len;
   
   g_return_if_fail (string != NULL);
   g_return_if_fail (fmt != NULL);
 
-  length = g_vasprintf (&buffer, fmt, args);
-  g_string_append_len (string, buffer, length);
-  g_free (buffer);
+  len = g_vasprintf (&buf, fmt, args);
+
+  if (len >= 0)
+    {
+      g_string_maybe_expand (string, len);
+      memcpy (string->str + string->len, buf, len + 1);
+      string->len += len;
+      g_free (buf);
+    }
 }
 
 /**
