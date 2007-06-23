@@ -1,3 +1,10 @@
+2007-06-23  Emmanuele Bassi  <ebassi@gnome.org>
+
+	* glib/tmpl/memory.sgml: Add a clarification about pairing the
+	memory allocation and free functions, and not mix system's
+	malloc/free with the corresponding GLib ones. (#450216, Hubert
+	Figuiere)
+
 2007-06-18  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.13.5 ===
