@@ -660,6 +660,9 @@ g_hash_table_foreach_remove_or_steal (GHashTable *hash_table,
  * be modified while iterating over it (you can't add/remove
  * items). To remove all items matching a predicate, use
  * g_hash_table_foreach_remove().
+ *
+ * See g_hash_table_find() for performance caveats for linear
+ * order searches in contrast to g_hash_table_lookup().
  **/
 void
 g_hash_table_foreach (GHashTable *hash_table,
@@ -686,10 +689,19 @@ g_hash_table_foreach (GHashTable *hash_table,
  * Calls the given function for key/value pairs in the #GHashTable until 
  * @predicate returns %TRUE.  The function is passed the key and value of 
  * each pair, and the given @user_data parameter. The hash table may not
- * be modified while iterating over it (you can't add/remove items). 
+ * be modified while iterating over it (you can't add/remove items).
  *
- * Return value: The value of the first key/value pair is returned, for which 
- * func evaluates to %TRUE. If no pair with the requested property is found, 
+ * Note, that hash tables are really only optimized for forward lookups,
+ * i.e. g_hash_table_lookup().
+ * So code that frequently issues g_hash_table_find() or
+ * g_hash_table_foreach() (e.g. in the order of once per every entry in a
+ * hash table) should probably be reworked to use additional or different
+ * data structures for reverse lookups (keep in mind that an O(n) find/foreach
+ * operation issued for all n values in a hash table ends up needing O(n*n)
+ * operations).
+ *
+ * Return value: The value of the first key/value pair is returned, for which
+ * func evaluates to %TRUE. If no pair with the requested property is found,
  * %NULL is returned.
  *
  * Since: 2.4
