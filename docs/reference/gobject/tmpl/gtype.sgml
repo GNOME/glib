@@ -1235,7 +1235,7 @@ instances (if not abstract).  The value of @flags determines the nature
 Registers @type_name as the name of a new static type derived from
 @parent_type.  The value of @flags determines the nature (e.g. 
 abstract or not) of the type. It works by filling a #GTypeInfo 
-struct and calling g_type_info_register_static().
+struct and calling g_type_register_static().
 </para>
 
 @parent_type: 	Type from which this type will be derived.
