@@ -1,3 +1,7 @@
+Fri Jun 29 2007  Matthias Clasen  <mclasen@redhat.com>
+
+	* NEWS: Updates
+
 Mon Jun 25 16:43:13 2007  Tim Janik  <timj@gtk.org>
 
 	* glib/ghash.c: g_hash_table_find(), g_hash_table_foreach():

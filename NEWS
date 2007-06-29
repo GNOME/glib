@@ -1,3 +1,18 @@
+Overview of Changes from GLib 2.13.5 to GLib 2.13.6
+===================================================
+
+* Reintroduce a GType typedef whose removal in 2.13.5
+  caused trouble for C++ bindings
+
+* Bugs fixed:
+ 450216 docs not explicit enough about g_free()
+ 451459 g_type_register_static_simple calls g_type_register_static
+
+* Updated translations
+ Norwegian bokmål (nb)
+ Sinhala (si)
+
+
 Overview of Changes from GLib 2.13.4 to GLib 2.13.5
 ===================================================
 
