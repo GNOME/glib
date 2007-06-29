@@ -1,3 +1,4 @@
+glib/gatomic.c
 glib/gbookmarkfile.c
 glib/gconvert.c
 glib/gdir.c
