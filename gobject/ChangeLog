@@ -1,3 +1,7 @@
+Fri Jun 29 2007  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.13.6 ===
+
 Fri Jun 22 11:31:27 2007  Tim Janik  <timj@gtk.org>
 
 	* gtype.h: reintroduce typedef gulong GType; for C++, to avoid

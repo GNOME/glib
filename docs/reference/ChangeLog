@@ -1,3 +1,7 @@
+Fri Jun 29 2007  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.13.6 ===
+
 Wed Jun 27 11:43:01 2007  Tim Janik  <timj@gtk.org>
 
 	* gobject/tmpl/gtype.sgml (initializers): typo fix, #451459.
