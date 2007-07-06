@@ -1,3 +1,19 @@
+2007-07-06  Tor Lillqvist  <tml@novell.com>
+
+	* glib/giowin32.c (g_io_win32_check): When WSAEnumNetworkEvents()
+	signals FD_CONNECT that means that the connection attempt
+	finished, either successfully or failed. Test explicitly whether
+	the connnection succeeded and set either G_IO_OUT if it did,
+	G_IO_ERR|G_IO_HUP if it failed.
+
+	Make sure we never set both G_IO_OUT and G_IO_HUP simultaneously
+	because in Unix poll(2) POLLOUT and POLLHUP are mutually
+	exclusive.
+
+	Ignore whether the caller wants to watch G_IO_HUP or not. Always
+	select for FD_CLOSE because Unix poll(2) also ignores whether
+	POLLHUP in set the requested events bitmask or not.
+
 Fri Jun 29 2007  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Bump version

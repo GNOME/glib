@@ -822,8 +822,7 @@ g_io_win32_prepare (GSource *source,
 	event_mask |= (FD_READ | FD_ACCEPT);
       if (watch->condition & G_IO_OUT)
 	event_mask |= (FD_WRITE | FD_CONNECT);
-      if (watch->condition & G_IO_HUP)
-	event_mask |= FD_CLOSE;
+      event_mask |= FD_CLOSE;
 
       if (channel->event_mask != event_mask /* || channel->event != watch->pollfd.fd*/)
 	{
@@ -936,13 +935,32 @@ g_io_win32_check (GSource *source)
       watch->pollfd.revents = 0;
       if (channel->last_events & (FD_READ | FD_ACCEPT))
 	watch->pollfd.revents |= G_IO_IN;
-      if (channel->last_events & (FD_WRITE | FD_CONNECT))
+      if (channel->last_events & FD_WRITE)
 	watch->pollfd.revents |= G_IO_OUT;
-      if (watch->pollfd.revents == 0 && (channel->last_events & (FD_CLOSE)))
-	watch->pollfd.revents |= G_IO_HUP;
+      else
+	{
+	  /* We have called WSAEnumNetworkEvents() above but it didn't
+	   * set FD_WRITE.
+	   */
+	  if (events.lNetworkEvents & FD_CONNECT)
+	    {
+	      if (events.iErrorCode[FD_CONNECT_BIT] == 0)
+		watch->pollfd.revents |= G_IO_OUT;
+	      else
+		watch->pollfd.revents |= (G_IO_HUP | G_IO_ERR);
+	    }
+	  if (watch->pollfd.revents == 0 && (channel->last_events & (FD_CLOSE)))
+	    watch->pollfd.revents |= G_IO_HUP;
+	}
 
-      if (!channel->write_would_have_blocked && (channel->event_mask & FD_WRITE))
-	watch->pollfd.revents |= G_IO_OUT; /* This sucks but... */
+      /* Regardless of WSAEnumNetworkEvents() result, if watching for
+       * writability, unless last write would have blocked set
+       * G_IO_OUT. But never set both G_IO_OUT and G_IO_HUP.
+       */
+      if (!(watch->pollfd.revents & G_IO_HUP) &&
+	  !channel->write_would_have_blocked &&
+	  (channel->event_mask & FD_WRITE))
+	watch->pollfd.revents |= G_IO_OUT;
 
       return ((watch->pollfd.revents | buffer_condition) & watch->condition);
 
