@@ -1,3 +1,11 @@
+2007-07-09  Matthias Clasen <mclasen@redhat.com>
+
+	* tmpl/modules.sgml: Remove duplicate paragraph.
+	(#45786, Ruben Vermeersch)
+
+	* tmpl/modules.sgml: Remove duplicate code from
+	an example. (#454785, Ruben Vermeersch)
+
 Mon Jul  9 10:23:53 2007  Tim Janik  <timj@imendio.com>
 
 	* gobject/tmpl/gclosure.sgml: GClosure docu fixes from Guillaume
