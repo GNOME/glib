@@ -208,7 +208,7 @@ glib_DEFUN([GLIB_WITH_NLS],
 	  AC_CHECK_FUNCS(dcgettext)
 	  MSGFMT_OPTS=
 	  AC_MSG_CHECKING([if msgfmt accepts -c])
-	  GLIB_RUN_PROG([msgfmt -c -o /dev/null],[
+	  GLIB_RUN_PROG([$MSGFMT -c -o /dev/null],[
 msgid ""
 msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
