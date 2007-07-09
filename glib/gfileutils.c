@@ -920,11 +920,12 @@ write_to_temp_file (const gchar *contents,
 
   errno = 0;
   fd = create_temp_file (tmp_name, 0666);
+  save_errno = errno;
+
   display_name = g_filename_display_name (tmp_name);
       
   if (fd == -1)
     {
-      save_errno = errno;
       g_set_error (err,
 		   G_FILE_ERROR,
 		   g_file_error_from_errno (save_errno),
