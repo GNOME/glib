@@ -1,3 +1,9 @@
+2007-07-09  Loïc Minier  <lool@dooz.org>
+
+	* tests/refcount/closures.c: (main): Output newlines after thousand
+	iterations of the inner-loop of the closures test; this helps having
+	smaller lines and continuously outputting new lines.  (#447048).
+
 2007-07-09  Ryan Lortie  <desrt@desrt.ca>
 
 	* glib/gfileutils.c (write_to_temp_file): save errno to prevent it

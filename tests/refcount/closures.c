@@ -263,7 +263,7 @@ main (int    argc,
       test_emissions (object);
       if (++count % 10000 == 0)
         {
-          g_printerr (".");
+          g_printerr (".\n");
           g_thread_yield(); /* force context switch */
         }
     }
