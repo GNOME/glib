@@ -1,3 +1,7 @@
+2007-07-09  Matthias Clasen  <mclasen@redhat.com>
+
+	* NEWS: Updates
+
 2007-07-09  Loïc Minier  <lool@dooz.org>
 
 	* tests/refcount/closures.c: (main): Output newlines after thousand
