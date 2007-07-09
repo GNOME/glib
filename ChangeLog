@@ -1,3 +1,10 @@
+2007-07-09  Matthias Clasen  <mclasen@redhat.com>
+
+	Merge from trunk:
+
+	* m4macros/glib-gettext.m4: Fix a small problem with
+	msgfmt -c detection.  (#341988, Laszlo Peter)
+
 2007-07-07  Matthias Clasen  <mclasen@redhat.com>
 
 	Merge from trunk:
