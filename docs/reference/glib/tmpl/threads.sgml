@@ -1727,7 +1727,7 @@ The argument value_location must point to a static 0-initialized variable
 that will be set to a value other than 0 at the end of the initialization section.
 In combination with g_once_init_leave() and the unique address value_location,
 it can be ensured that an initialization section will be executed only once
-during a programs life time, and that concurrent threads are blocked until
+during a program's life time, and that concurrent threads are blocked until
 initialization completed. To be used in constructs like this:
 </para>
 
@@ -1740,12 +1740,13 @@ if (g_once_init_enter (&initialization_value))              // section start
     gsize setup_value = 42; // initialization code here
     g_once_init_leave (&initialization_value, setup_value); // section end
   }
+// use initialization_value here
 </programlisting>
 </informalexample>
 </para>
 
 @value_location: location of a static initializable variable containing 0.
-@Returns: %TRUE if the initialization section should be netered, %FALSE and blocks otheriwse
+@Returns: %TRUE if the initialization section should be entered, %FALSE and blocks otheriwse
 @Since: 2.14
 
 <!-- ##### FUNCTION g_once_init_leave ##### -->
