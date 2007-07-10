@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.12.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-06-29 13:30-0400\n"
-"PO-Revision-Date: 2007-01-08 11:19+0100\n"
+"POT-Creation-Date: 2007-07-10 22:35+0200\n"
+"PO-Revision-Date: 2007-07-10 22:51+0200\n"
 "Last-Translator: Luca Ferretti <elle.uca@libero.it>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
@@ -208,27 +208,27 @@ msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr ""
 "Cambio di nome del file \"%s\" in \"%s\" fallito: g_rename() fallita: %s"
 
-#: glib/gfileutils.c:931 glib/gfileutils.c:1389
+#: glib/gfileutils.c:932 glib/gfileutils.c:1390
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Creazione del file \"%s\" fallita: %s"
 
-#: glib/gfileutils.c:945
+#: glib/gfileutils.c:946
 #, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr "Apertura del file \"%s\" in scrittura fallita: fdopen() fallita: %s"
 
-#: glib/gfileutils.c:970
+#: glib/gfileutils.c:971
 #, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "Scrittura del file \"%s\" fallita: fwrite() fallita: %s"
 
-#: glib/gfileutils.c:989
+#: glib/gfileutils.c:990
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "Chiusura del file \"%s\" fallita: fclose() fallita: %s"
 
-#: glib/gfileutils.c:1107
+#: glib/gfileutils.c:1108
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr ""
@@ -240,22 +240,22 @@ msgstr ""
 #    c[1] = dir_separator;
 #    c[2] = '\0';
 #
-#: glib/gfileutils.c:1351
+#: glib/gfileutils.c:1352
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Il modello \"%s\" non è valido, non dovrebbe contenere un \"%s\""
 
-#: glib/gfileutils.c:1364
+#: glib/gfileutils.c:1365
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "Il modello \"%s\" non contiene XXXXXX"
 
-#: glib/gfileutils.c:1839
+#: glib/gfileutils.c:1840
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Lettura del collegamento simbolico \"%s\" fallita: %s"
 
-#: glib/gfileutils.c:1860
+#: glib/gfileutils.c:1861
 #, c-format
 msgid "Symbolic links not supported"
 msgstr "Collegamenti simbolici non supportati"
@@ -475,7 +475,7 @@ msgstr ""
 "Il documento è terminato in modo inatteso subito dopo una parentesi angolare "
 "d'apertura '<'"
 
-#: glib/gmarkup.c:1775 glib/gmarkup.c:1819
+#: glib/gmarkup.c:1775 glib/gmarkup.c:1820
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -498,18 +498,18 @@ msgid "Document ended unexpectedly inside an element name"
 msgstr ""
 "Il documento è terminato in modo inatteso all'interno di un nome di elemento"
 
-#: glib/gmarkup.c:1794
+#: glib/gmarkup.c:1795
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr ""
 "Il documento è terminato in modo inatteso all'interno di un nome di attributo"
 
-#: glib/gmarkup.c:1799
+#: glib/gmarkup.c:1800
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr ""
 "Il documento è terminato in modo inatteso all'interno di un tag di apertura "
 "elemento."
 
-#: glib/gmarkup.c:1805
+#: glib/gmarkup.c:1806
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -517,20 +517,20 @@ msgstr ""
 "Il documento è terminato in modo inatteso dopo il segno di uguale che segue "
 "un nome di attributo; l'attributo non ha un valore"
 
-#: glib/gmarkup.c:1812
+#: glib/gmarkup.c:1813
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr ""
 "Il documento è terminato in modo inatteso all'interno di un valore di "
 "attributo"
 
-#: glib/gmarkup.c:1827
+#: glib/gmarkup.c:1829
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr ""
 "Il documento è terminato inaspettatamente all'interno del tag di chiusura "
 "per l'elemento \"%s\""
 
-#: glib/gmarkup.c:1833
+#: glib/gmarkup.c:1835
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Il documento è terminato in modo inatteso all'interno di un commento o "
@@ -538,15 +538,15 @@ msgstr ""
 
 #: glib/gregex.c:126
 msgid "corrupted object"
-msgstr ""
+msgstr "oggetto corrotto"
 
 #: glib/gregex.c:128
 msgid "internal error or corrupted object"
-msgstr ""
+msgstr "errore interno oppure oggetto corrotto"
 
 #: glib/gregex.c:130
 msgid "out of memory"
-msgstr ""
+msgstr "memoria esaurita"
 
 #: glib/gregex.c:135
 msgid "backtracking limit reached"
@@ -555,10 +555,11 @@ msgstr ""
 #: glib/gregex.c:147 glib/gregex.c:155
 msgid "the pattern contains items not supported for partial matching"
 msgstr ""
+"il modello contiene elementi non supportati per la corrispondenza parziale"
 
 #: glib/gregex.c:149
 msgid "internal error"
-msgstr ""
+msgstr "errore interno"
 
 #: glib/gregex.c:157
 msgid "back references as conditions are not supported for partial matching"
@@ -566,84 +567,86 @@ msgstr ""
 
 #: glib/gregex.c:166
 msgid "recursion limit reached"
-msgstr ""
+msgstr "raggiunto limite di ricorsione"
 
 #: glib/gregex.c:168
 msgid "workspace limit for empty substrings reached"
 msgstr ""
 
+# in fondo è cosa avanzata, no?
 #: glib/gregex.c:170
 msgid "invalid combination of newline flags"
-msgstr ""
+msgstr "combinazione non valida di flag newline"
 
 #: glib/gregex.c:174
 msgid "unknown error"
-msgstr ""
+msgstr "errore sconosciuto"
 
 #: glib/gregex.c:315 glib/gregex.c:1343
 #, c-format
 msgid "Error while matching regular expression %s: %s"
-msgstr ""
+msgstr "Errore nel cercare corrispondenza per l'espressione regolare %s: %s"
 
 #: glib/gregex.c:874
 msgid "PCRE library is compiled without UTF8 support"
-msgstr ""
+msgstr "La libreria PCRE è compilata senza supporto per UTF-8"
 
 #: glib/gregex.c:883
 msgid "PCRE library is compiled without UTF8 properties support"
-msgstr ""
+msgstr "La libreria PCRE è compilata senza supporto per le proprietà UTF-8"
 
 #: glib/gregex.c:928
-#, fuzzy, c-format
+#, c-format
 msgid "Error while compiling regular expression %s at char %d: %s"
-msgstr "Errore alla riga %d carattere %d: %s"
+msgstr "Errore durante la compilazione dell'espressione regolare %s al carattere %d: %s"
 
 #: glib/gregex.c:950
 #, c-format
 msgid "Error while optimizing regular expression %s: %s"
-msgstr ""
+msgstr "Errore durante l'ottimizzazione dell'espressione regolare %s: %s"
 
 #: glib/gregex.c:1769
 msgid "hexadecimal digit or '}' expected"
-msgstr ""
+msgstr "attesa cifra esadecimale o '}'"
 
 #: glib/gregex.c:1785
 msgid "hexadecimal digit expected"
-msgstr ""
+msgstr "attesa cifra esadecimale"
 
 #: glib/gregex.c:1825
 msgid "missing '<' in symbolic reference"
-msgstr ""
+msgstr "'<' mancante nel riferimento simbolico"
 
 #: glib/gregex.c:1834
-#, fuzzy
 msgid "unfinished symbolic reference"
-msgstr "Riferimento a entità non terminato"
+msgstr "riferimento simbolico non terminato"
 
 #: glib/gregex.c:1841
 msgid "zero-length symbolic reference"
-msgstr ""
+msgstr "riferimento simbolico di lunghezza zero"
 
 #: glib/gregex.c:1852
 msgid "digit expected"
-msgstr ""
+msgstr "attesa cifra"
 
 #: glib/gregex.c:1870
 msgid "illegal symbolic reference"
-msgstr ""
+msgstr "riferimento simbolico non lecito"
 
+# mancante? ma in originale non è missing, è stray
 #: glib/gregex.c:1932
 msgid "stray final '\\'"
-msgstr ""
+msgstr "'\\' finale smarrito"
 
 #: glib/gregex.c:1936
 msgid "unknown escape sequence"
-msgstr ""
+msgstr "sequenza di escape sconosciuta"
 
+# da sostituire crea confusione...
 #: glib/gregex.c:1946
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
-msgstr ""
+msgstr "Errore durante l'analisi del testo di sostituzione \"%s\" al carattere %lu: %s"
 
 #: glib/gshell.c:70
 #, c-format
@@ -861,9 +864,9 @@ msgstr "Opzione %s sconoscuta"
 #
 # Ad esempio i file .themes per i temi del desktop e delle icone.
 #: glib/gkeyfile.c:341
-#, fuzzy, c-format
+#, c-format
 msgid "Valid key file could not be found in search dirs"
-msgstr "Impossibile trovare un file chiavi valido nelle directory dei dati"
+msgstr "Impossibile trovare un file chiavi valido nelle directory di ricerca"
 
 #: glib/gkeyfile.c:376
 #, c-format
