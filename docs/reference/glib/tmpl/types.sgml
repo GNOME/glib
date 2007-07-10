@@ -222,13 +222,16 @@ Values of this type can range from -#G_MAXDOUBLE to #G_MAXDOUBLE.
 
 <!-- ##### TYPEDEF gsize ##### -->
 <para>
-An unsigned 32-bit integer intended to represent sizes of data structures.
+An unsigned integer type of the result of the sizeof operator, corresponding
+to the size_t type defined in C99. This type is wide enough to hold the numeric
+value of a pointer, so it is usually 32bit wide on a 32bit platform and
+64bit wide on a 64bit platform.
 </para>
 
 
 <!-- ##### TYPEDEF gssize ##### -->
 <para>
-A signed 32-bit integer intended to represent sizes of data structures.
+A signed variant of gsize, corresponding to the ssize_t defined on most platforms.
 </para>
 
 
