@@ -1720,3 +1720,42 @@ get_debug_flags ()
 @Since: 2.4
 
 
+<!-- ##### FUNCTION g_once_init_enter ##### -->
+<para>
+Function to be called when starting a critical initialization section.
+The argument value_location must point to a static 0-initialized variable
+that will be set to a value other than 0 at the end of the initialization section.
+In combination with g_once_init_leave() and the unique address value_location,
+it can be ensured that an initialization section will be executed only once
+during a programs life time, and that concurrent threads are blocked until
+initialization completed. To be used in constructs like this:
+</para>
+
+<para>
+<informalexample>
+<programlisting>
+static gsize initialization_value = 0;
+if (g_once_init_enter (&initialization_value))              // section start
+  {
+    gsize setup_value = 42; // initialization code here
+    g_once_init_leave (&initialization_value, setup_value); // section end
+  }
+</programlisting>
+</informalexample>
+</para>
+
+@value_location: location of a static initializable variable containing 0.
+@Returns: %TRUE if the initialization section should be netered, %FALSE and blocks otheriwse
+@Since: 2.14
+
+<!-- ##### FUNCTION g_once_init_leave ##### -->
+<para>
+Counterpart to g_once_init_enter(). Expects a location of a static 0-initialized
+initialization variable, and an initialization value other than 0. Sets the variable
+to the initialization value, and releases concurrent threads blocking in
+g_once_init_enter() on this initialization variable.
+</para>
+
+@value_location: location of a static initializable variable containing 0.
+@initialization_value: new non-0 value for *@value_location:
+@Since: 2.14

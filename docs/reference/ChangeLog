@@ -1,3 +1,7 @@
+Tue Jul 10 12:31:04 2007  Tim Janik  <timj@imendio.com>
+
+	* glib/tmpl/threads.sgml: document g_once_init_enter and g_once_init_leave.
+
 2007-07-09  Matthias Clasen <mclasen@redhat.com>
 
 	* tmpl/modules.sgml: Remove duplicate paragraph.
