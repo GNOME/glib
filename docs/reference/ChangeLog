@@ -1,3 +1,7 @@
+Tue Jul 10 13:04:03 2007  Tim Janik  <timj@imendio.com>
+
+	* minor docu build fixes.
+
 Tue Jul 10 12:31:04 2007  Tim Janik  <timj@imendio.com>
 
 	* glib/tmpl/threads.sgml: document g_once_init_enter and g_once_init_leave.

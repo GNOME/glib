@@ -610,6 +610,8 @@ GOnce
 GOnceStatus
 G_ONCE_INIT
 g_once
+g_once_init_enter
+g_once_init_leave
 
 <SUBSECTION Private>
 G_THREAD_ECF

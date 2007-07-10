@@ -1735,10 +1735,10 @@ initialization completed. To be used in constructs like this:
 <informalexample>
 <programlisting>
 static gsize initialization_value = 0;
-if (g_once_init_enter (&initialization_value))              // section start
+if (g_once_init_enter (&amp;initialization_value))              // section start
   {
     gsize setup_value = 42; // initialization code here
-    g_once_init_leave (&initialization_value, setup_value); // section end
+    g_once_init_leave (&amp;initialization_value, setup_value); // section end
   }
 // use initialization_value here
 </programlisting>
@@ -1748,6 +1748,7 @@ if (g_once_init_enter (&initialization_value))              // section start
 @value_location: location of a static initializable variable containing 0.
 @Returns: %TRUE if the initialization section should be entered, %FALSE and blocks otheriwse
 @Since: 2.14
+
 
 <!-- ##### FUNCTION g_once_init_leave ##### -->
 <para>
@@ -1760,3 +1761,5 @@ g_once_init_enter() on this initialization variable.
 @value_location: location of a static initializable variable containing 0.
 @initialization_value: new non-0 value for *@value_location:
 @Since: 2.14
+
+
