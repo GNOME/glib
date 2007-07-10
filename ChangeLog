@@ -1,3 +1,8 @@
+2007-07-10  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/pltcheck.sh: Add g_once_init_enter to the whitelist of
+	symbols allowed to have a local PLT entry, to fix 'make check'.
+
 Tue Jul 10 12:24:35 2007  Tim Janik  <timj@imendio.com>
 
 	* glib/gthread.[hc]: implemented g_once_init_enter(),
