@@ -1,3 +1,9 @@
+Tue Jul 10 12:31:50 2007  Tim Janik  <timj@imendio.com>
+
+	* gtype.h: use g_once_init_enter/g_once_init_leave to guard critical
+	initialization section of *_get_type implementations in G_DEFINE_TYPE,
+	bug #65041.
+
 Fri Jun 29 2007  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.13.6 ===

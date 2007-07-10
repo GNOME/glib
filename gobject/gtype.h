@@ -368,23 +368,24 @@ static void     type_name##_class_intern_init (gpointer klass) \
 GType \
 type_name##_get_type (void) \
 { \
-  static GType g_define_type_id = 0; \
-  if (G_UNLIKELY (g_define_type_id == 0)) \
+  static volatile gsize g_define_type_id__volatile = 0; \
+  if (g_once_init_enter (&g_define_type_id__volatile))  \
     { \
-      g_define_type_id = \
+      GType g_define_type_id = \
         g_type_register_static_simple (TYPE_PARENT, \
                                        g_intern_static_string (#TypeName), \
                                        sizeof (TypeName##Class), \
-                                       (GClassInitFunc)type_name##_class_intern_init, \
+                                       (GClassInitFunc) type_name##_class_intern_init, \
                                        sizeof (TypeName), \
-                                       (GInstanceInitFunc)type_name##_init, \
+                                       (GInstanceInitFunc) type_name##_init, \
                                        (GTypeFlags) flags); \
       { /* custom code follows */
 #define _G_DEFINE_TYPE_EXTENDED_END()	\
         /* following custom code */	\
       }					\
+      g_once_init_leave (&g_define_type_id__volatile, g_define_type_id); \
     }					\
-  return g_define_type_id;		\
+  return g_define_type_id__volatile;	\
 } /* closes type_name##_get_type() */
 
 
