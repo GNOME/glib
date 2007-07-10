@@ -32,6 +32,10 @@
  * MT safe
  */
 
+/* implement gthread.h's inline functions */
+#define G_IMPLEMENT_INLINES 1
+#define __G_THREAD_C__
+
 #include "config.h"
 
 #include "glib.h"
@@ -121,6 +125,7 @@ static GCond    *g_once_cond = NULL;
 static GPrivate *g_thread_specific_private = NULL;
 static GRealThread *g_thread_all_threads = NULL;
 static GSList   *g_thread_free_indeces = NULL;
+static GSList*   g_once_init_list = NULL;
 
 G_LOCK_DEFINE_STATIC (g_thread);
 
@@ -192,6 +197,41 @@ g_once_impl (GOnce       *once,
   g_mutex_unlock (g_once_mutex);
 
   return once->retval;
+}
+
+gboolean
+g_once_init_enter_impl (volatile gsize *value_location)
+{
+  gboolean need_init;
+  g_mutex_lock (g_once_mutex);
+  if (!g_once_init_list || !g_slist_find (g_once_init_list, (void*) value_location))
+    {
+      g_once_init_list = g_slist_prepend (g_once_init_list, (void*) value_location);
+      need_init = TRUE;
+    }
+  else
+    {
+      while (g_slist_find (g_once_init_list, (void*) value_location))
+        g_cond_wait (g_once_cond, g_once_mutex);
+      need_init = FALSE;
+    }
+  g_mutex_unlock (g_once_mutex);
+  return need_init;
+}
+
+void
+g_once_init_leave (volatile gsize *value_location,
+                   gsize           initialization_value)
+{
+  g_return_if_fail (g_atomic_pointer_get (value_location) == 0);
+  g_return_if_fail (initialization_value != 0);
+  g_return_if_fail (g_once_init_list != NULL);
+
+  g_atomic_pointer_set (value_location, initialization_value);
+  g_mutex_lock (g_once_mutex);
+  g_once_init_list = g_slist_remove (g_once_init_list, (void*) value_location);
+  g_cond_broadcast (g_once_cond);
+  g_mutex_unlock (g_once_mutex);
 }
 
 void

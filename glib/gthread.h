@@ -29,7 +29,8 @@
 
 #include <glib/gerror.h>
 #include <glib/gtypes.h>
-#include <glib/gatomic.h>  /* for g_atomic_pointer_get */
+#include <glib/gutils.h>        /* for G_INLINE_FUNC */
+#include <glib/gatomic.h>       /* for g_atomic_pointer_get */
 
 G_BEGIN_DECLS
 
@@ -321,7 +322,23 @@ gpointer g_once_impl (GOnce *once, GThreadFunc func, gpointer arg);
    (once)->retval : \
    g_once_impl ((once), (func), (arg)))
 #endif /* G_ATOMIC_OP_MEMORY_BARRIER_NEEDED */
-    
+
+/* initialize-once guards, keyed by value_location */
+G_INLINE_FUNC gboolean  g_once_init_enter       (volatile gsize *value_location);
+gboolean                g_once_init_enter_impl  (volatile gsize *value_location);
+void                    g_once_init_leave       (volatile gsize *value_location,
+                                                 gsize           initialization_value);
+#if defined (G_CAN_INLINE) || defined (__G_THREAD_C__)
+G_INLINE_FUNC gboolean
+g_once_init_enter (volatile gsize *value_location)
+{
+  if G_LIKELY (g_atomic_pointer_get (value_location) !=0)
+    return FALSE;
+  else
+    return g_once_init_enter_impl (value_location);
+}
+#endif /* G_CAN_INLINE || __G_THREAD_C__ */
+
 /* these are some convenience macros that expand to nothing if GLib
  * was configured with --disable-threads. for using StaticMutexes,
  * you define them with G_LOCK_DEFINE_STATIC (name) or G_LOCK_DEFINE (name)

@@ -1,3 +1,11 @@
+Tue Jul 10 12:24:35 2007  Tim Janik  <timj@imendio.com>
+
+	* glib/gthread.[hc]: implemented g_once_init_enter(),
+	g_once_init_enter_impl() and g_once_init_leave(), based on a patch by
+	Antoine Tremblay, fixes #65041.
+	adapted exported inline function mechanism from gutils.[hc] for inlining
+	g_once_init_enter_impl() in gthread.[hc].
+
 2007-07-09  Matthias Clasen  <mclasen@redhat.com>
 
 	* NEWS: Updates

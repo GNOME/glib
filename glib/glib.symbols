@@ -1172,7 +1172,10 @@ g_str_hash
 #if IN_HEADER(__G_THREAD_H__)
 #if IN_FILE(__G_THREAD_C__)
 g_once_impl
+g_once_init_enter_impl
+g_once_init_leave
 #ifdef INCLUDE_INTERNAL_SYMBOLS
+g_once_init_enter
 g_thread_init_glib
 #endif
 #ifdef INCLUDE_VARIABLES
