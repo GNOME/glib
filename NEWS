@@ -1,15 +1,19 @@
 Overview of Changes from GLib 2.13.6 to GLib 2.13.6
 ===================================================
 
+* New functions g_once_init_enter() and g_once_init_leave() make
+  it easier to write threadsafe one-time initialization functions 
+ 
 * Bugs fixed:
  454473 Simple XML Subset Parser terminates on invalid XML
- 448484 GtkAccelGroup forgets to remove closure invalidate notifi...
+ 445813 g_module_open error, add file name
  453796 errno gets clobbered by g_filename_display_name
  341988 don't use "-c" with msgfmt in Makefile.in.in
  447048 Please produce slightly more output during long tests
  454785 GModule documentation lists same block of code twice.
  454786 GModule documentation lists same paragraph twice.
  383155 small docs quirks in gobject/closure API documentation
+ 65041  _get_type() functions aren't thread safe
 
 * Updated translations
  Assamese (as)

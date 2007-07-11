@@ -2,7 +2,7 @@
 
 	* gmodule.c (g_module_open): Include the module file 
 	name to the error message given when module initialization 
-	fails.  (#448484, Gustavo Carneiro)
+	fails.  (#445813, Gustavo Carneiro)
 
 Fri Jun 29 2007  Matthias Clasen  <mclasen@redhat.com>
 
