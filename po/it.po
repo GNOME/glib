@@ -1,14 +1,9 @@
-# Italian translation for GLIB
-# Copyright (C) 2002 Free Software Foundation, Inc.
-# Christopher R. Gabriel <cgabriel@pluto.linux.it> , 2002
-# Luca Ferretti <elle.uca@libero.it>, 2004-2006
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.12.x\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-07-10 22:35+0200\n"
-"PO-Revision-Date: 2007-07-10 22:51+0200\n"
+"PO-Revision-Date: 2007-07-11 21:41+0200\n"
 "Last-Translator: Luca Ferretti <elle.uca@libero.it>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
@@ -550,7 +545,7 @@ msgstr "memoria esaurita"
 
 #: glib/gregex.c:135
 msgid "backtracking limit reached"
-msgstr ""
+msgstr "raggiunto limite di backtracking"
 
 #: glib/gregex.c:147 glib/gregex.c:155
 msgid "the pattern contains items not supported for partial matching"
@@ -563,20 +558,21 @@ msgstr "errore interno"
 
 #: glib/gregex.c:157
 msgid "back references as conditions are not supported for partial matching"
-msgstr ""
+msgstr "per la corrispondenza parziale non sono supportati i riferimenti all'indietro come condizioni"
 
 #: glib/gregex.c:166
 msgid "recursion limit reached"
 msgstr "raggiunto limite di ricorsione"
 
+# oppure lasciare workspace non tradotto?
 #: glib/gregex.c:168
+#, fuzzy
 msgid "workspace limit for empty substrings reached"
-msgstr ""
+msgstr "raggiunto limite dello spazio di lavoro per sottostringhe vuote"
 
-# in fondo è cosa avanzata, no?
-#: glib/gregex.c:170
+#: glib/gregex.c:170#
 msgid "invalid combination of newline flags"
-msgstr "combinazione non valida di flag newline"
+msgstr "combinazione non valida di flag di fine riga"
 
 #: glib/gregex.c:174
 msgid "unknown error"
@@ -633,10 +629,14 @@ msgstr "attesa cifra"
 msgid "illegal symbolic reference"
 msgstr "riferimento simbolico non lecito"
 
-# mancante? ma in originale non è missing, è stray
+# significa che il testo finisce con una barra rovesciata, è il
+# carattere successivo che manca
+#
+# Quindi "isolato" o "staccato" o al limite "accindetale", "casuale"
 #: glib/gregex.c:1932
+#, fuzzy
 msgid "stray final '\\'"
-msgstr "'\\' finale smarrito"
+msgstr "'\\' finale isolato"
 
 #: glib/gregex.c:1936
 msgid "unknown escape sequence"
@@ -656,9 +656,7 @@ msgstr "Il testo citato non inizia con un carattere di quoting"
 #: glib/gshell.c:160
 #, c-format
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
-msgstr ""
-"Carattere di quoting non accoppitato nella riga di comando o nel testo con "
-"quoting di shell"
+msgstr "Carattere di quoting non accoppiato nella riga di comando o nel testo con quoting di shell"
 
 #: glib/gshell.c:538
 #, c-format
@@ -682,26 +680,29 @@ msgstr "Il testo era vuoto (oppure conteneva unicamente spazi bianchi)"
 msgid "Failed to read data from child process"
 msgstr "Lettura di dati dal processo figlio fallita"
 
+# (%s) è in fondo perché risolto in g_strerror (gint)
 #: glib/gspawn-win32.c:287 glib/gspawn.c:1395
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
-msgstr ""
-"Creazione della pipe per comunicare con il processo figlio (%s) fallita"
+msgstr "Creazione della pipe per comunicare con il processo figlio fallita (%s)"
 
+# (%s) è in fondo perché risolto in g_strerror (gint)
 #: glib/gspawn-win32.c:325 glib/gspawn.c:1059
 #, c-format
 msgid "Failed to read from child pipe (%s)"
-msgstr "Lettura dalla pipe figlia (%s) fallita"
+msgstr "Lettura dalla pipe figlia fallita (%s)"
 
+# (%s) è in fondo perché risolto in g_strerror (gint)
 #: glib/gspawn-win32.c:351 glib/gspawn.c:1264
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
-msgstr "Cambio della directory in \"%s\" (%s) fallita"
+msgstr "Cambio della directory in \"%s\" fallita (%s)"
 
+# (%s) è in fondo perché risolto in g_strerror (gint)
 #: glib/gspawn-win32.c:357 glib/gspawn-win32.c:481
 #, c-format
 msgid "Failed to execute child process (%s)"
-msgstr "Esecuzione del processo figlio (%s) fallita"
+msgstr "Esecuzione del processo figlio fallita (%s)"
 
 #: glib/gspawn-win32.c:428
 #, c-format
@@ -723,10 +724,11 @@ msgstr "Stringa non valida nell'ambiente: %s"
 msgid "Invalid working directory: %s"
 msgstr "Directory di lavoro non valida: %s"
 
+# (%s) è in fondo perché risolto in g_strerror (gint)
 #: glib/gspawn-win32.c:738
 #, c-format
 msgid "Failed to execute helper program (%s)"
-msgstr "Esecuzione del programma helper (%s) fallita"
+msgstr "Esecuzione del programma helper fallita (%s)"
 
 #: glib/gspawn-win32.c:938
 #, c-format
@@ -737,53 +739,59 @@ msgstr ""
 "Errore inatteso in g_io_channel_win32_poll() nel leggere i dati da un "
 "processo figlio"
 
+# (%s) è in fondo perché risolto in g_strerror (gint)
 #: glib/gspawn.c:175
 #, c-format
 msgid "Failed to read data from child process (%s)"
-msgstr "Lettura dei dati dal processo figlio (%s) fallita"
+msgstr "Lettura dei dati dal processo figlio fallita (%s)"
 
+# (%s) è in fondo perché risolto in g_strerror (gint)
 #: glib/gspawn.c:307
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr ""
 "Errore inatteso in select() nel leggere i dati da un processo figlio (%s)"
 
+# (%s) è in fondo perché risolto in g_strerror (gint)
 #: glib/gspawn.c:390
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Errore inatteso in waitpid() (%s)"
 
+# (%s) è in fondo perché risolto in g_strerror (gint)
 #: glib/gspawn.c:1124
 #, c-format
 msgid "Failed to fork (%s)"
-msgstr "Esecuzione di fork (%s) fallita"
+msgstr "Esecuzione di fork fallita (%s)"
 
+# (%s) è in fondo perché risolto in g_strerror (gint)
 #: glib/gspawn.c:1274
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
-msgstr "Esecuzione del processo figlio \"%s\" (%s) fallita"
+msgstr "Esecuzione del processo figlio \"%s\" fallita (%s)"
 
+# (%s) è in fondo perché risolto in g_strerror (gint)
 #: glib/gspawn.c:1284
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
-msgstr "Redirezione dell'output o input del processo figlio (%s) fallita"
+msgstr "Redirezione dell'output o input del processo figlio fallita (%s)"
 
+# (%s) è in fondo perché risolto in g_strerror (gint)
 #: glib/gspawn.c:1293
 #, c-format
 msgid "Failed to fork child process (%s)"
-msgstr "Esecuzione del fork per processo figlio (%s) fallita"
+msgstr "Esecuzione del fork per processo figlio fallita (%s)"
 
 #: glib/gspawn.c:1301
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Errore sconosciuto nell'eseguire il processo figlio \"%s\""
 
+# (%s) è in fondo perché risolto in g_strerror (gint)
 #: glib/gspawn.c:1323
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
-msgstr ""
-"Lettura di una quantità di dati sufficiente dalla pipe del processo figlio (%"
-"s) fallita"
+msgstr "Lettura di una quantità di dati sufficiente dalla pipe del processo figlio fallita (%s)"
 
 #: glib/gutf8.c:1024
 #, c-format
@@ -858,7 +866,7 @@ msgstr "Argomento mancante per %s"
 #: glib/goption.c:1713
 #, c-format
 msgid "Unknown option %s"
-msgstr "Opzione %s sconoscuta"
+msgstr "Opzione %s sconosciuta"
 
 # key files sono, per glib, file di impostazioni in stile Windows INI
 #
