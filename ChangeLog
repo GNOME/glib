@@ -1,3 +1,15 @@
+Thu Jul 12 15:46:40 2007  Tim Janik  <timj@imendio.com>
+
+	* glib/gslice.c: migrate per-thread magazine caches from single-thread
+	scenario to first thread using GSlice after g_thread_init(); based on
+	a patch by Tor Lillqvist, fixes #331853.
+	removed warning about g_thread_init() being called after other glib
+	functions (in particular g_slice* calls), because GSlice can cope
+	with this now and the rest of glib is believed to cope as well.
+
+	* tests/slice-threadinit.c: new test program which tests GSlice working
+	across g_thread_init() calls.
+
 2007-07-10  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/pltcheck.sh: Add g_once_init_enter to the whitelist of

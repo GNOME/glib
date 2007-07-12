@@ -104,6 +104,7 @@ test_programs =					\
 	slist-test				\
 	slice-test				\
 	slice-color				\
+	slice-threadinit			\
 	spawn-test				\
 	$(spawn_test_win32_gui)			\
 	strfunc-test				\
@@ -175,6 +176,8 @@ slice_test_SOURCES = slice-test.c memchunks.c
 slice_test_LDADD = $(thread_ldadd)
 slice_color_SOURCES = slice-color.c memchunks.c
 slice_color_LDADD = $(thread_ldadd)
+slice_threadinit_SOURCES = slice-threadinit.c
+slice_threadinit_LDADD = $(thread_ldadd)
 spawn_test_LDADD = $(progs_ldadd)
 strfunc_test_LDADD = $(progs_ldadd)
 string_test_LDADD = $(progs_ldadd)

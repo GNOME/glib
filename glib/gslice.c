@@ -372,20 +372,14 @@ void
 _g_slice_thread_init_nomessage (void)
 {
   /* we may not use g_error() or friends here */
-  if (sys_page_size)
-    {
-      const char *pname;
-
-      /* mem_error ("g_thread_init() must be called before GSlice is used, memory corrupted..."); */
-      fputs ("\n***MEMORY-WARNING***: ", stderr);
-      pname = g_get_prgname();
-      fprintf (stderr, "%s[%u]: GSlice: ", pname ? pname : "", getpid());
-      fputs ("g_thread_init() must be called before all other GLib functions; "
-             "memory corruption due to late invocation of g_thread_init() has been detected; "
-             "this program is likely to crash, leak or unexpectedly abort soon...\n", stderr);
-    }
   if (!sys_page_size)
     g_slice_init_nomessage();
+  else
+    {
+      /* g_slice_init_nomessage() has been called already, probably due
+       * to a g_slice_alloc1() before g_thread_init().
+       */
+    }
   private_thread_memory = g_private_new (private_thread_memory_cleanup);
   allocator->magazine_mutex = g_mutex_new();
   allocator->slab_mutex = g_mutex_new();
@@ -429,11 +423,38 @@ thread_memory_from_self (void)
   ThreadMemory *tmem = g_private_get (private_thread_memory);
   if (G_UNLIKELY (!tmem))
     {
-      const guint n_magazines = MAX_SLAB_INDEX (allocator);
-      tmem = g_malloc0 (sizeof (ThreadMemory) + sizeof (Magazine) * 2 * n_magazines);
-      tmem->magazine1 = (Magazine*) (tmem + 1);
-      tmem->magazine2 = &tmem->magazine1[n_magazines];
+      static ThreadMemory *single_thread_memory = NULL;   /* remember single-thread info for multi-threaded case */
+      if (single_thread_memory && g_thread_supported ())
+        {
+          g_mutex_lock (allocator->slab_mutex);
+          if (single_thread_memory)
+            {
+              /* GSlice has been used before g_thread_init(), and now
+               * we are running threaded. to cope with it, use the saved
+               * thread memory structure from when we weren't threaded.
+               */
+              tmem = single_thread_memory;
+              single_thread_memory = NULL;      /* slab_mutex protected when multi-threaded */
+            }
+          g_mutex_unlock (allocator->slab_mutex);
+        }
+      if (!tmem)
+	{
+          const guint n_magazines = MAX_SLAB_INDEX (allocator);
+	  tmem = g_malloc0 (sizeof (ThreadMemory) + sizeof (Magazine) * 2 * n_magazines);
+	  tmem->magazine1 = (Magazine*) (tmem + 1);
+	  tmem->magazine2 = &tmem->magazine1[n_magazines];
+	}
+      /* g_private_get/g_private_set works in the single-threaded xor the multi-
+       * threaded case. but not *across* g_thread_init(), after multi-thread
+       * initialization it returns NULL for previously set single-thread data.
+       */
       g_private_set (private_thread_memory, tmem);
+      /* save single-thread thread memory structure, in case we need to
+       * pick it up again after multi-thread initialization happened.
+       */
+      if (!single_thread_memory && !g_thread_supported ())
+        single_thread_memory = tmem;            /* no slab_mutex created yet */
     }
   return tmem;
 }
