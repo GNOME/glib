@@ -1,6 +1,11 @@
 Overview of Changes from GLib 2.13.6 to GLib 2.13.6
 ===================================================
 
+* The memory corruption warning from the slice allocator that
+  occurred when threads were initialized after the slice allocator
+  has been removed, as the slice allocator now works fine
+  in this scenario.
+
 * New functions g_once_init_enter() and g_once_init_leave() make
   it easier to write threadsafe one-time initialization functions 
  
