@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.12.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-10 22:35+0200\n"
+"POT-Creation-Date: 2007-07-12 13:33-0400\n"
 "PO-Revision-Date: 2007-07-11 21:41+0200\n"
 "Last-Translator: Luca Ferretti <elle.uca@libero.it>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -558,7 +558,9 @@ msgstr "errore interno"
 
 #: glib/gregex.c:157
 msgid "back references as conditions are not supported for partial matching"
-msgstr "per la corrispondenza parziale non sono supportati i riferimenti all'indietro come condizioni"
+msgstr ""
+"per la corrispondenza parziale non sono supportati i riferimenti "
+"all'indietro come condizioni"
 
 #: glib/gregex.c:166
 msgid "recursion limit reached"
@@ -570,7 +572,7 @@ msgstr "raggiunto limite di ricorsione"
 msgid "workspace limit for empty substrings reached"
 msgstr "raggiunto limite dello spazio di lavoro per sottostringhe vuote"
 
-#: glib/gregex.c:170#
+#: glib/gregex.c:170
 msgid "invalid combination of newline flags"
 msgstr "combinazione non valida di flag di fine riga"
 
@@ -594,7 +596,9 @@ msgstr "La libreria PCRE è compilata senza supporto per le proprietà UTF-8"
 #: glib/gregex.c:928
 #, c-format
 msgid "Error while compiling regular expression %s at char %d: %s"
-msgstr "Errore durante la compilazione dell'espressione regolare %s al carattere %d: %s"
+msgstr ""
+"Errore durante la compilazione dell'espressione regolare %s al carattere %d: "
+"%s"
 
 #: glib/gregex.c:950
 #, c-format
@@ -646,7 +650,9 @@ msgstr "sequenza di escape sconosciuta"
 #: glib/gregex.c:1946
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
-msgstr "Errore durante l'analisi del testo di sostituzione \"%s\" al carattere %lu: %s"
+msgstr ""
+"Errore durante l'analisi del testo di sostituzione \"%s\" al carattere %lu: %"
+"s"
 
 #: glib/gshell.c:70
 #, c-format
@@ -656,7 +662,9 @@ msgstr "Il testo citato non inizia con un carattere di quoting"
 #: glib/gshell.c:160
 #, c-format
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
-msgstr "Carattere di quoting non accoppiato nella riga di comando o nel testo con quoting di shell"
+msgstr ""
+"Carattere di quoting non accoppiato nella riga di comando o nel testo con "
+"quoting di shell"
 
 #: glib/gshell.c:538
 #, c-format
@@ -684,7 +692,8 @@ msgstr "Lettura di dati dal processo figlio fallita"
 #: glib/gspawn-win32.c:287 glib/gspawn.c:1395
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
-msgstr "Creazione della pipe per comunicare con il processo figlio fallita (%s)"
+msgstr ""
+"Creazione della pipe per comunicare con il processo figlio fallita (%s)"
 
 # (%s) è in fondo perché risolto in g_strerror (gint)
 #: glib/gspawn-win32.c:325 glib/gspawn.c:1059
@@ -791,7 +800,9 @@ msgstr "Errore sconosciuto nell'eseguire il processo figlio \"%s\""
 #: glib/gspawn.c:1323
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
-msgstr "Lettura di una quantità di dati sufficiente dalla pipe del processo figlio fallita (%s)"
+msgstr ""
+"Lettura di una quantità di dati sufficiente dalla pipe del processo figlio "
+"fallita (%s)"
 
 #: glib/gutf8.c:1024
 #, c-format

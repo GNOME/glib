@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-06-29 13:30-0400\n"
+"POT-Creation-Date: 2007-07-12 13:33-0400\n"
 "PO-Revision-Date: 2006-02-01 18:37+0200\n"
 "Last-Translator: Leonid Kanter <leon@asplinux.ru>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
@@ -208,47 +208,47 @@ msgstr "Сбой при открытии файла \"%s\": сбой в функ
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "Не удается переименовать файл '%s' в '%s': сбой функции g_rename(): %s"
 
-#: glib/gfileutils.c:931 glib/gfileutils.c:1389
+#: glib/gfileutils.c:932 glib/gfileutils.c:1390
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Произошёл сбой при создании файла \"%s\": %s"
 
-#: glib/gfileutils.c:945
+#: glib/gfileutils.c:946
 #, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr "Не удается открыть файл \"%s\" для записи: сбой в функции fdopen(): %s"
 
-#: glib/gfileutils.c:970
+#: glib/gfileutils.c:971
 #, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "Не удается записать файл \"%s\": сбой в функции fwrite(): %s"
 
-#: glib/gfileutils.c:989
+#: glib/gfileutils.c:990
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "Не удается закрыть файл \"%s\": сбой в функции fclose(): %s"
 
-#: glib/gfileutils.c:1107
+#: glib/gfileutils.c:1108
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "Существующий файл '%s' не может быть удалён: сбой g_unlink(): %s"
 
-#: glib/gfileutils.c:1351
+#: glib/gfileutils.c:1352
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Шаблон \"%s\" недопустим: он не должен содержать \"%s\""
 
-#: glib/gfileutils.c:1364
+#: glib/gfileutils.c:1365
 #, fuzzy, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "Шаблон \"%s\" не заканчивается на XXXXXX"
 
-#: glib/gfileutils.c:1839
+#: glib/gfileutils.c:1840
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Произошёл сбой при чтении символической ссылки \"%s\": %s"
 
-#: glib/gfileutils.c:1860
+#: glib/gfileutils.c:1861
 #, c-format
 msgid "Symbolic links not supported"
 msgstr "Символические ссылки не поддерживаются"
@@ -469,7 +469,7 @@ msgstr ""
 "Документ непредвиденно окончился сразу же после открывающей угловой скобки "
 "\"<\""
 
-#: glib/gmarkup.c:1775 glib/gmarkup.c:1819
+#: glib/gmarkup.c:1775 glib/gmarkup.c:1820
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -491,15 +491,15 @@ msgstr ""
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Документ непредвиденно окончился внутри имени элемента"
 
-#: glib/gmarkup.c:1794
+#: glib/gmarkup.c:1795
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Документ непредвиденно окончился внутри имени атрибута"
 
-#: glib/gmarkup.c:1799
+#: glib/gmarkup.c:1800
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Документ непредвиденно окончился внутри открывающего элемент тэга"
 
-#: glib/gmarkup.c:1805
+#: glib/gmarkup.c:1806
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -507,17 +507,17 @@ msgstr ""
 "Документ непредвиденно окончился после знака равенства, следующего за именем "
 "атрибута; значение атрибута не указано"
 
-#: glib/gmarkup.c:1812
+#: glib/gmarkup.c:1813
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Документ непредвиденно окончился внутри значения атрибута"
 
-#: glib/gmarkup.c:1827
+#: glib/gmarkup.c:1829
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr ""
 "Документ непредвиденно окончился внутри закрывающего элемент тэга \"%s\""
 
-#: glib/gmarkup.c:1833
+#: glib/gmarkup.c:1835
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Документ непредвиденно окончился внутри комментария или инструкции обработки"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.9.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-06-29 13:30-0400\n"
+"POT-Creation-Date: 2007-07-12 13:33-0400\n"
 "PO-Revision-Date: 2006-04-10 04:12+0200\n"
 "Last-Translator: Gia Shervashidze <giasher@telenet.ge>\n"
 "Language-Team: Georgian <ka@li.org>\n"
@@ -202,47 +202,47 @@ msgstr "ფაილის \"%s\" გახსნის შეცდომა: �
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "ვერ მოხერხდა '%s' ფაილის გადარქმევა - '%s': g_rename() ვერ შედგა: %s"
 
-#: glib/gfileutils.c:931 glib/gfileutils.c:1389
+#: glib/gfileutils.c:932 glib/gfileutils.c:1390
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "ვერ ვქმნი '%s' ფაილს: %s"
 
-#: glib/gfileutils.c:945
+#: glib/gfileutils.c:946
 #, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr "ვერ ვხსნი '%s' ფაილს ჩასაწერად: fdopen() ვერ შედგა: %s"
 
-#: glib/gfileutils.c:970
+#: glib/gfileutils.c:971
 #, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "ვერ ვწერ '%s' ფაილს: fwrite() ვერ შედგა: %s"
 
-#: glib/gfileutils.c:989
+#: glib/gfileutils.c:990
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "ვერ ვხურავ '%s' ფაილს: fclose() ვერ შედგა: %s"
 
-#: glib/gfileutils.c:1107
+#: glib/gfileutils.c:1108
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "არსებული '%s' ფაილი ვერ ამოიშლება: g_unlink() ვერ შედგა: %s"
 
-#: glib/gfileutils.c:1351
+#: glib/gfileutils.c:1352
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "თარგი '%s' მცდარია და '%s'-ს არ უნდა შეიცავდეს"
 
-#: glib/gfileutils.c:1364
+#: glib/gfileutils.c:1365
 #, fuzzy, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr " '%s' არ მთავრდება კონტექსტით XXXXXX"
 
-#: glib/gfileutils.c:1839
+#: glib/gfileutils.c:1840
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "სიმბოლური ბმის \"%s\" წაკითხვის შეცდომა: %s"
 
-#: glib/gfileutils.c:1860
+#: glib/gfileutils.c:1861
 #, c-format
 msgid "Symbolic links not supported"
 msgstr "სიმბოლური ბმების გამოყენება არაა რეალიზებული"
@@ -453,7 +453,7 @@ msgstr "დოკუმენტი ცარიელია ან მხოლ
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "დოკუმენტი დასრულდა უშუალოდ კუთხოვანი ფრჩხილის \"<\" შემდეგ"
 
-#: glib/gmarkup.c:1775 glib/gmarkup.c:1819
+#: glib/gmarkup.c:1775 glib/gmarkup.c:1820
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -474,15 +474,15 @@ msgstr ""
 msgid "Document ended unexpectedly inside an element name"
 msgstr "დოკუმენტი მოულოდნელად დასრულდა ელემენტის სახელის შიგნით"
 
-#: glib/gmarkup.c:1794
+#: glib/gmarkup.c:1795
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "დოკუმენტი მოულოდნელად დასრულდა ატრიბუტის სახელის შიგნით"
 
-#: glib/gmarkup.c:1799
+#: glib/gmarkup.c:1800
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "დოკუმენტი მოულოდნელად დასრულდა ელემენტის გამხსნელი ჭდის შიგნით."
 
-#: glib/gmarkup.c:1805
+#: glib/gmarkup.c:1806
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -490,16 +490,16 @@ msgstr ""
 "დოკუმენტი მოულოდნელად დასრულდა ატრიბუტის სახელის შემდგომი ტოლობის ნიშნის "
 "შემდეგ; ატრიბუტის მნიშვნელობა არ მითითებულა"
 
-#: glib/gmarkup.c:1812
+#: glib/gmarkup.c:1813
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "დოკუმენტი მოულოდნელად დასრულდა ატრიბუტის მნიშვნელობის შიგნით"
 
-#: glib/gmarkup.c:1827
+#: glib/gmarkup.c:1829
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "დოკუმენტი მოულოდნელად დასრულდა ელემენტის \"%s\" ჩამკეტი ჭდის შიგნით"
 
-#: glib/gmarkup.c:1833
+#: glib/gmarkup.c:1835
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "დოკუმენტი მოულოდნელად დასრულდა კომენტარის ან დამუშავების ინსტრუქციის შიგნით"

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-06-29 13:30-0400\n"
+"POT-Creation-Date: 2007-07-12 13:33-0400\n"
 "PO-Revision-Date: 2005-12-01 17:31+0800\n"
 "Last-Translator: Eric Pareja <xenos@upm.edu.ph>\n"
 "Language-Team: Tagalog <debian-tl@banwa.upm.edu.ph>\n"
@@ -203,48 +203,48 @@ msgstr ""
 "Bigo ang papalit ng pangalan ng talaksang '%s' sa '%s': bigo ang g_rename(): "
 "%s"
 
-#: glib/gfileutils.c:931 glib/gfileutils.c:1389
+#: glib/gfileutils.c:932 glib/gfileutils.c:1390
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Sawi ang paglikha ng talaksang '%s': %s"
 
-#: glib/gfileutils.c:945
+#: glib/gfileutils.c:946
 #, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr ""
 "Bigo ang pagbukas ng talaksang '%s' para sa pagsusulat: bigo ang fdopen(): %s"
 
-#: glib/gfileutils.c:970
+#: glib/gfileutils.c:971
 #, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "Bigo sa pagsusulat ng talaksang '%s': bigo ang fwrite(): %s"
 
-#: glib/gfileutils.c:989
+#: glib/gfileutils.c:990
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "Bigo ang pagsara ng talaksang '%s': bigo ang fclose(): %s"
 
-#: glib/gfileutils.c:1107
+#: glib/gfileutils.c:1108
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "Hindi matanggal ang talaksang '%s': bigo ang g_unlink(): %s"
 
-#: glib/gfileutils.c:1351
+#: glib/gfileutils.c:1352
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Hindi tanggap ang template '%s', wala dapat na '%s'"
 
-#: glib/gfileutils.c:1364
+#: glib/gfileutils.c:1365
 #, fuzzy, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "Hindi XXXXXX ang dulo ng template '%s'"
 
-#: glib/gfileutils.c:1839
+#: glib/gfileutils.c:1840
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Sawi ang pagbasa ng symbolic link '%s': %s"
 
-#: glib/gfileutils.c:1860
+#: glib/gfileutils.c:1861
 #, c-format
 msgid "Symbolic links not supported"
 msgstr "Hindi suportado ang mga symbolic link"
@@ -466,7 +466,7 @@ msgstr ""
 "Nagwakas ng hindi inaasahan ang dokumento matapos lamang ng pangbukas na "
 "angle bracket '<'"
 
-#: glib/gmarkup.c:1775 glib/gmarkup.c:1819
+#: glib/gmarkup.c:1775 glib/gmarkup.c:1820
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -489,18 +489,18 @@ msgid "Document ended unexpectedly inside an element name"
 msgstr ""
 "Nagwakas ng hindi inaasahan ang dokumento sa loob ng pangalan ng elemento"
 
-#: glib/gmarkup.c:1794
+#: glib/gmarkup.c:1795
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr ""
 "Nagwakas ng hindi inaasahan ang dokumento sa loob ng pangalan ng attribute"
 
-#: glib/gmarkup.c:1799
+#: glib/gmarkup.c:1800
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr ""
 "Nagwakas ng hindi inaasahan ang dokumento sa loob ng pagbukas na tag ng "
 "elemento."
 
-#: glib/gmarkup.c:1805
+#: glib/gmarkup.c:1806
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -508,20 +508,20 @@ msgstr ""
 "Nagwakas ng hindi inaasahan ang dokumento matapos ang equal sign na sumunod "
 "sa pangalan ng attribute; walang halaga ang attribute"
 
-#: glib/gmarkup.c:1812
+#: glib/gmarkup.c:1813
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr ""
 "Nagwakas ng hindi inaasahan ang dokumento habang nasa loob ng halagang "
 "attribute"
 
-#: glib/gmarkup.c:1827
+#: glib/gmarkup.c:1829
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr ""
 "Nagwakas ang dokumento ng hindi inaasahan sa loob ng tag ng pagsara para sa "
 "elementong '%s'"
 
-#: glib/gmarkup.c:1833
+#: glib/gmarkup.c:1835
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Nagwakas ang dokumento ng hindi inaasahan sa loob ng komento o utos ng "

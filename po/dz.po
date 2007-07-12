@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.dz\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-06-29 13:30-0400\n"
+"POT-Creation-Date: 2007-07-12 13:33-0400\n"
 "PO-Revision-Date: 2006-08-09 10:23+0530\n"
 "Last-Translator: Mindu Dorji\n"
 "Language-Team: DZONGKHA <pgeyleg@dit.gov.bt>\n"
@@ -200,47 +200,47 @@ msgstr "ཡིག་སྣོད་ ’%s’:fdopen() ཁ་ཕྱེ་མ་�
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "ཡིག་སྣོད་ ’%s’ལས་'%s' ལུ་ བསྐྱར་མིང་བཏགས་མ་ཚུགས། g_rename() གིས་ %s ལུ་མ་བཏུབ།"
 
-#: glib/gfileutils.c:931 glib/gfileutils.c:1389
+#: glib/gfileutils.c:932 glib/gfileutils.c:1390
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "ཡིག་སྣོད་ ’%s’:%s གསར་བསྐྲུན་འབད་མ་ཚུགས།"
 
-#: glib/gfileutils.c:945
+#: glib/gfileutils.c:946
 #, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr "ཡིག་སྣོད་’%s’ འབྲི་ནིའི་དོན་ལུ་ ཁ་ཕྱེ་མ་ཚུགས་: fdopen() མ་བཏུབ་:%s།"
 
-#: glib/gfileutils.c:970
+#: glib/gfileutils.c:971
 #, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "ཡིག་སྣོད་ ’%s’འབྲི་མ་ཚུགས་: fwrite() མ་བཏུབ་:%s།"
 
-#: glib/gfileutils.c:989
+#: glib/gfileutils.c:990
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "ཡིག་སྣོད་ ’%s’ཁ་བསྡམས་མ་ཚུགས་: fclose() མ་བཏུབ་:%s།"
 
-#: glib/gfileutils.c:1107
+#: glib/gfileutils.c:1108
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "ཡོད་བཞིན་པའི་ཡིག་སྣོད་'%s' དེ་ རྩ་བསྐྲད་གཏང་མ་ཚུགས་: g_unlink() མ་བཏུབ་:%s"
 
-#: glib/gfileutils.c:1351
+#: glib/gfileutils.c:1352
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "ཊེམ་པེ་ལེཊི་ '%s' དེ་ནུས་མེད་ཨིན། དེ་ནང་ '%s' འབད་མི་ བཞག་ནི་མི་འོང༌།"
 
-#: glib/gfileutils.c:1364
+#: glib/gfileutils.c:1365
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "ཊེམ་པེལེཊི་ ’%s’ འབད་མི་དེ་ནང་ XXXXXX མིན་འདུག།"
 
-#: glib/gfileutils.c:1839
+#: glib/gfileutils.c:1840
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "བརྡ་མཚོན་འགྲེལ་ལམ་ ’%s’:%s ལྷག་མ་ཚུགས།"
 
-#: glib/gfileutils.c:1860
+#: glib/gfileutils.c:1861
 #, c-format
 msgid "Symbolic links not supported"
 msgstr "བརྡ་མཚོན་འགྲེལ་ལམ་ལུ་ རྒྱབ་སྐྱོར་མིན་འདུག"
@@ -449,7 +449,7 @@ msgstr "ཡིག་ཆ་དེ་སྟོང་པའམ་ ཡང་ཅི�
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "ཡིག་ཆ་དེ་ ཟུར་ཁུག་གུག་ཤད་ ’<’ ཅིག་གི་ཤུལ་ལས་ རེ་བ་མེད་པར་ རྫོགས་སོ་ཡི།"
 
-#: glib/gmarkup.c:1775 glib/gmarkup.c:1819
+#: glib/gmarkup.c:1775 glib/gmarkup.c:1820
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -471,15 +471,15 @@ msgstr ""
 msgid "Document ended unexpectedly inside an element name"
 msgstr "ཡིག་ཆ་དེ་ ཆ་ཤས་ཅིག་གི་ མིང་གི་ནང་ན་ རེ་བ་མེད་པར་རྫོགས་སོ་ནུག"
 
-#: glib/gmarkup.c:1794
+#: glib/gmarkup.c:1795
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "ཡིག་ཆ་དེ་ ཁྱད་ཆོས་ཀྱི་མིང་ཅིག་གི་ནང་ན་ རེ་བ་མེད་པར་རྫོགས་སོ་ནུག"
 
-#: glib/gmarkup.c:1799
+#: glib/gmarkup.c:1800
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "ཡིག་ཆ་དེ་ ཆ་ཤས་ཁ་ཕྱེ་ནིའི་ ངོ་རྟགས་ཅིག་གི་ནང་ན་ རེ་བ་མེད་པར་ རྫོགས་སོ་ནུག"
 
-#: glib/gmarkup.c:1805
+#: glib/gmarkup.c:1806
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -487,16 +487,16 @@ msgstr ""
 "ཡིག་ཆ་དེ་ ཁྱད་ཆོས་ཀྱི་མིང་ཅིག་གི་ཤུལ་ལས་ མཉམ་རྟགས་ཀྱི་རྗེས་སུ་ རེ་བ་མེད་པར་ རྫོགས་སོ་ནུག ཁྱད་ཆོས་ཀྱི་བེ་"
 "ལུ་མིན་འདུག"
 
-#: glib/gmarkup.c:1812
+#: glib/gmarkup.c:1813
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "ཡིག་ཆ་དེ་ ཁྱད་ཆོས་ཀྱི་ བེ་ལུ་ཅིག་གི་ནང་ན་སྡོད་པའི་སྐབས་ལུ་ རེ་བ་མེད་པར་ རྫོགས་སོ་ནུག"
 
-#: glib/gmarkup.c:1827
+#: glib/gmarkup.c:1829
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "ཡིག་ཆ་དེ་ ཆ་ཤས་ ’%s’ གི་དོན་ལུ་ ཁ་བསྡམ་ངོ་རྟགས་ནང་ན་ རེ་བ་མེད་པར་ རྫོགས་སོ་ནུག"
 
-#: glib/gmarkup.c:1833
+#: glib/gmarkup.c:1835
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "ཡིག་ཆ་དེ་ བསམ་བཀོད་ ཡང་ན་ ལས་སྦྱོར་བཀོད་རྒྱ་ཅིག་གི་ནང་ན་ རེ་བ་མེད་པར་ རྫོགས་སོ་ནུག"
 

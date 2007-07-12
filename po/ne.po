@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.glib-2-10.ne\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-06-29 13:30-0400\n"
+"POT-Creation-Date: 2007-07-12 13:33-0400\n"
 "PO-Revision-Date: 2006-04-27 00:00+0545\n"
 "Last-Translator: Shyam Krishna Bal <shyamkrishna_bal@yahoo.com>\n"
 "Language-Team: Nepali <info@mpp.org.np>\n"
@@ -202,47 +202,47 @@ msgstr "'%s' फाइल खोल्न असफल : fdopen() खोल्�
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "फाइल '%s लाई '%s' मा पुन: नामकरण गर्न असफल:g_rename() असफल: %s"
 
-#: glib/gfileutils.c:931 glib/gfileutils.c:1389
+#: glib/gfileutils.c:932 glib/gfileutils.c:1390
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "'%s' फाइल सिर्जना गर्न असफल: %s"
 
-#: glib/gfileutils.c:945
+#: glib/gfileutils.c:946
 #, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr "लेख्नका लागि '%s' फाइल खोल्न असफल : fdopen() असफल : %s"
 
-#: glib/gfileutils.c:970
+#: glib/gfileutils.c:971
 #, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "'%s' फाइल लेख्न असफल : fलेख्न() असफल : %s"
 
-#: glib/gfileutils.c:989
+#: glib/gfileutils.c:990
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "'%s' फाइल बन्द गर्न असफल : fबन्द गर्न()  असफल : %s"
 
-#: glib/gfileutils.c:1107
+#: glib/gfileutils.c:1108
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "अवस्थित फाइल '%s' हटाउन सकिएन:g_unlink() असफल: %s"
 
-#: glib/gfileutils.c:1351
+#: glib/gfileutils.c:1352
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "'%s ' टेम्प्लेट अवैध, एउटा '%s' सम्मिलित हुनु हुँदैन"
 
-#: glib/gfileutils.c:1364
+#: glib/gfileutils.c:1365
 #, fuzzy, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "'%s' टेम्प्लेट XXXXXX संगसमाप्त हुँदैन"
 
-#: glib/gfileutils.c:1839
+#: glib/gfileutils.c:1840
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "सांकेतिक सम्बन्ध '%s' पढ्न असफल: %s"
 
-#: glib/gfileutils.c:1860
+#: glib/gfileutils.c:1861
 #, c-format
 msgid "Symbolic links not supported"
 msgstr "सांकेतिक सम्बन्ध समर्थन गरिएन"
@@ -450,7 +450,7 @@ msgstr "कागजात खाली छ वा सेतो खाली स
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "एउटा खुल्ला कोण कोष्ठ पछि '<' कागजात अनपेक्षित रूपले समाप्त भयो।"
 
-#: glib/gmarkup.c:1775 glib/gmarkup.c:1819
+#: glib/gmarkup.c:1775 glib/gmarkup.c:1820
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -470,15 +470,15 @@ msgstr ""
 msgid "Document ended unexpectedly inside an element name"
 msgstr "तत्व नाम भित्र कागजात अपेक्षित रूपले समाप्त भयो।"
 
-#: glib/gmarkup.c:1794
+#: glib/gmarkup.c:1795
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "विशेषता नाम भित्र कागजात अपेक्षित रूपले समाप्त भयो।"
 
-#: glib/gmarkup.c:1799
+#: glib/gmarkup.c:1800
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "तत्व-खुल्ला ट्याग भित्र कागजात अपेक्षित रूपले समाप्त भयो।"
 
-#: glib/gmarkup.c:1805
+#: glib/gmarkup.c:1806
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -486,16 +486,16 @@ msgstr ""
 "बिशेषता नाम पछ्याउन बराबर चिन्ह पछि कागजातपत्र अप्रत्याशित रूपले समाप्त भयो; गुण मान "
 "होइन"
 
-#: glib/gmarkup.c:1812
+#: glib/gmarkup.c:1813
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "गुण मान भित्र भएको बेला कागजपत्र अप्रत्याशित रूपले समाप्त भयो"
 
-#: glib/gmarkup.c:1827
+#: glib/gmarkup.c:1829
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "तत्व '%s' का लागि बन्द ट्याग भित्र कागजात अनपेक्षित रूपले समाप्त भयो।"
 
-#: glib/gmarkup.c:1833
+#: glib/gmarkup.c:1835
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "एउटा टिप्पणी वा प्रक्रिया निर्देशन भित्र कागजपत्र अप्रत्याशित रूपले समाप्त भयो"
 
