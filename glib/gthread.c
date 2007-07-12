@@ -223,11 +223,11 @@ void
 g_once_init_leave (volatile gsize *value_location,
                    gsize           initialization_value)
 {
-  g_return_if_fail (g_atomic_pointer_get (value_location) == 0);
+  g_return_if_fail (g_atomic_pointer_get ((void*) value_location) == 0);
   g_return_if_fail (initialization_value != 0);
   g_return_if_fail (g_once_init_list != NULL);
 
-  g_atomic_pointer_set (value_location, initialization_value);
+  g_atomic_pointer_set ((void*) value_location, (void*) initialization_value);
   g_mutex_lock (g_once_mutex);
   g_once_init_list = g_slist_remove (g_once_init_list, (void*) value_location);
   g_cond_broadcast (g_once_cond);
@@ -255,7 +255,7 @@ g_static_mutex_get_mutex_impl (GMutex** mutex)
   g_mutex_lock (g_once_mutex);
 
   if (!(*mutex))
-    g_atomic_pointer_set (mutex, g_mutex_new());
+    g_atomic_pointer_set ((void*) mutex, g_mutex_new());
 
   g_mutex_unlock (g_once_mutex);
 
