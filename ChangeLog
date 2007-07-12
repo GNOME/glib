@@ -1,3 +1,9 @@
+Thu Jul 12 17:31:08 2007  Tim Janik  <timj@imendio.com>
+
+	* tests/slice-concurrent.c: beautified output somewhat. fixed long
+	sleeps by reducing sleep accumulating and using randomized re-scheduling
+	(which works on UP and SMP). increased possible blocksizes.
+
 Thu Jul 12 17:26:05 2007  Tim Janik  <timj@imendio.com>
 
 	* tests/slice-concurrent.c: added GSLice test from Stefan Westerfeld,

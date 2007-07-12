@@ -1,5 +1,6 @@
 /* test for gslice cross thread allocation/free
  * Copyright (C) 2006 Stefan Westerfeld
+ * Copyright (C) 2007 Tim Janik
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,7 +23,7 @@
 
 #define N_THREADS	8
 #define N_ALLOCS	50000
-#define MAX_BLOCK_SIZE  32
+#define MAX_BLOCK_SIZE  64
 
 struct ThreadData
 {
@@ -41,19 +42,20 @@ thread_func (void *arg)
 {
   struct ThreadData *td = arg;
   int i;
-  g_print ("Thread %d starting\n", td->thread_id);
+  // g_print ("Thread %d starting\n", td->thread_id);
   for (i = 0; i < N_ALLOCS; i++)
     {
       if (rand() % (N_ALLOCS / 20) == 0)
-	g_print ("%d", td->thread_id);
+	g_print ("%c", 'a' - 1 + td->thread_id);
 
+      /* allocate block of random size and randomly fill */
       int   bytes = rand() % MAX_BLOCK_SIZE + 1;
       char *mem = g_slice_alloc (bytes);
-      
       int f;
       for (f = 0; f < bytes; f++)
 	mem[f] = rand();
 
+      /* associate block with random thread */
       int t = rand() % N_THREADS;
       g_mutex_lock (tdata[t].to_free_mutex);
       tdata[t].to_free[tdata[t].n_to_free] = mem;
@@ -61,8 +63,16 @@ thread_func (void *arg)
       tdata[t].n_to_free++;
       g_mutex_unlock (tdata[t].to_free_mutex);
 
-      usleep (rand() % 1000);
+      /* shuffle thread execution order every once in a while */
+      if (rand() % 97 == 0)
+        {
+          if (rand() % 2)
+            g_thread_yield();   /* concurrent shuffling for single core */
+          else
+            g_usleep (1000);    /* concurrent shuffling for multi core */
+        }
 
+      /* free a block associated with this thread */
       g_mutex_lock (td->to_free_mutex);
       if (td->n_to_free > 0)
 	{
@@ -80,8 +90,9 @@ int
 main()
 {
   int t;
+
   g_thread_init (NULL);
-  
+
   for (t = 0; t < N_THREADS; t++)
     {
       tdata[t].thread_id = t + 1;
@@ -89,6 +100,7 @@ main()
       tdata[t].n_freed = 0;
       tdata[t].to_free_mutex = g_mutex_new();
     }
+  g_print ("Starting %d threads for concurrent GSlice usage...\n", N_THREADS);
   for (t = 0; t < N_THREADS; t++)
     {
       tdata[t].gthread   = g_thread_create (thread_func, &tdata[t], TRUE, NULL);
