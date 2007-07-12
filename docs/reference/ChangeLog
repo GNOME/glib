@@ -1,3 +1,8 @@
+Thu Jul 12 15:45:27 2007  Tim Janik  <timj@imendio.com>
+
+	* glib/tmpl/threads.sgml: document major caveat of g_private_set/g_private_get,
+	i.e. not retaining private data across g_thread_init.
+
 Tue Jul 10 13:11:55 2007  Tim Janik  <timj@imendio.com>
 
 	* glib/tmpl/types.sgml: corrected descriptions of gsize and gssize.

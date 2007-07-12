@@ -1506,8 +1506,12 @@ current @private_key and thread yet, this pointer will be %NULL.
 </para>
 
 <para>
-This function can be used even if g_thread_init() has not yet been
-called, and, in that case, will return the value of @private_key casted to #gpointer.
+This function can be used even if g_thread_init() has not yet been called, and,
+in that case, will return the value of @private_key casted to #gpointer.
+Note however, that private data set <emphasis>before</emphasis> g_thread_init() will
+<emphasis>not</emphasis> be retained <emphasis>after</emphasis> the call. Instead, %NULL
+will be returned in all threads directly after g_thread_init(), regardless of
+any g_private_set() calls issued before threading system intialization.
 </para>
 
 @private_key: a #GPrivate.
@@ -1523,6 +1527,7 @@ Sets the pointer keyed to @private_key for the current thread.
 <para>
 This function can be used even if g_thread_init() has not yet been
 called, and, in that case, will set @private_key to @data casted to #GPrivate*.
+See g_private_get() for resulting caveats.
 </para>
 
 @private_key: a #GPrivate.
