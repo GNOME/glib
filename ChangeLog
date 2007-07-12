@@ -1,3 +1,8 @@
+Fri Jul 13 01:01:46 2007  Tim Janik  <timj@imendio.com>
+
+	* glib/gthread.[hc]: more atomic ops pointer cast fixes. this time it'll
+	work with atomic op macros *and* atomic op functions.
+
 Fri Jul 13 00:50:40 2007  Tim Janik  <timj@imendio.com>
 
 	* glib/gthread.[hc]: fixed missing pointer casts when using atomic ops.
