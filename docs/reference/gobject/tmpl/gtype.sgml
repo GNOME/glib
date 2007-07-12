@@ -647,8 +647,11 @@ Similar to g_type_init(), but additionally sets debug flags.
 
 <!-- ##### FUNCTION g_type_name ##### -->
 <para>
-Returns the unique name that is assigned to a type ID (this is the preferred method
-to find out whether a specific type has been registered for the passed in ID yet).
+    Returns the unique name that is assigned to a type ID.
+    Note that this function (like all other GType API) cannot cope with invalid
+    type IDs. %G_TYPE_INVALID may be passed to this function, as may be any other
+    validly registered type ID, but randomized type IDs should not be passed in and
+    will most likely lead to a crash.
 </para>
 
 @type: 		Type to return name for.
