@@ -104,6 +104,7 @@ test_programs =					\
 	slist-test				\
 	slice-test				\
 	slice-color				\
+	slice-concurrent			\
 	slice-threadinit			\
 	spawn-test				\
 	$(spawn_test_win32_gui)			\
@@ -176,6 +177,8 @@ slice_test_SOURCES = slice-test.c memchunks.c
 slice_test_LDADD = $(thread_ldadd)
 slice_color_SOURCES = slice-color.c memchunks.c
 slice_color_LDADD = $(thread_ldadd)
+slice_concurrent_SOURCES = slice-concurrent.c
+slice_concurrent_LDADD = $(thread_ldadd)
 slice_threadinit_SOURCES = slice-threadinit.c
 slice_threadinit_LDADD = $(thread_ldadd)
 spawn_test_LDADD = $(progs_ldadd)
