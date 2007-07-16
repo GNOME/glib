@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-05-01 19:30-0400\n"
+"POT-Creation-Date: 2007-07-16 15:09-0400\n"
 "PO-Revision-Date: 2003-03-19\n"
 "Last-Translator: Raphael Finkel <raphael@cs.uky.edu>\n"
 "Language-Team: Yiddish <raphael@cs.uky.edu>\n"
@@ -446,7 +446,7 @@ msgstr "דאָקומענט איז פּוסט אָדער איז כּולל בלױ
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "דאָקומענט ענדיקט זיך אומגעריכטערהײט נאָך אַן עפֿן־צײכן '‪<‬'"
 
-#: glib/gmarkup.c:1775 glib/gmarkup.c:1819
+#: glib/gmarkup.c:1775 glib/gmarkup.c:1820
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -468,15 +468,15 @@ msgstr ""
 msgid "Document ended unexpectedly inside an element name"
 msgstr "דאָקומענט ענדיקט זיך אומגעריכטערהײט אין דרינען פֿון אַן עלעמענט־נאָמען"
 
-#: glib/gmarkup.c:1794
+#: glib/gmarkup.c:1795
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "דאָקומענט ענדיקט זיך אומגעריכטערהײט אין דרינען פֿון אַן אַטריבוט־נאָמען"
 
-#: glib/gmarkup.c:1799
+#: glib/gmarkup.c:1800
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "דאָקומענט ענדיקט זיך אומגעריכטערהײט אין דרינען פֿון אַן עלעמענט־עפֿן הענטל"
 
-#: glib/gmarkup.c:1805
+#: glib/gmarkup.c:1806
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -484,18 +484,18 @@ msgstr ""
 "דאָקומענט ענדיקט זיך אומגעריכטערהײט נאָך דעם '=' שריפֿטצײכן נאָך אַן "
 "אַטריבוט־נאָמען אָן קײן אַטריבוט־באַטרעף"
 
-#: glib/gmarkup.c:1812
+#: glib/gmarkup.c:1813
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "דאָקומענט ענדיקט זיך אומגעריכטערהײט אין דרינען פֿון אַן אַטריבוט־באַטרעף"
 
-#: glib/gmarkup.c:1827
+#: glib/gmarkup.c:1829
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr ""
 "דאָקומענט ענדיקט זיך אומגעריכטערהײט אין דרינען פֿון דעם שלאָס־הענטל פֿון עלעמענט "
 "'%s'"
 
-#: glib/gmarkup.c:1833
+#: glib/gmarkup.c:1835
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "דאָקומענט ענדיקט זיך אומגעריכטערהײט אין דרינען פֿון אַ קאָמענטאַר אָדער אַ "

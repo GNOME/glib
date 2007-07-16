@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-05-01 19:30-0400\n"
+"POT-Creation-Date: 2007-07-16 15:09-0400\n"
 "PO-Revision-Date: 2004-03-13 13:03+CET\n"
 "Last-Translator: auto\n"
 "Language-Team: Croatian <lokalizacija@linux.hr>\n"
@@ -443,7 +443,7 @@ msgstr "Dokument je bio prazan ili je sadržavao samo znakove prazne znakove"
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "Dokument je završio neočekivano nakon otvaranja zagrade '<'"
 
-#: glib/gmarkup.c:1775 glib/gmarkup.c:1819
+#: glib/gmarkup.c:1775 glib/gmarkup.c:1820
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -465,15 +465,15 @@ msgstr ""
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Dokument je završio neočekivano unutar imena elementa"
 
-#: glib/gmarkup.c:1794
+#: glib/gmarkup.c:1795
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Dokument je završio neočekivano unutar imena atributa"
 
-#: glib/gmarkup.c:1799
+#: glib/gmarkup.c:1800
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Dokument je završio neočekivano unutar taga koji započinje element"
 
-#: glib/gmarkup.c:1805
+#: glib/gmarkup.c:1806
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -481,17 +481,17 @@ msgstr ""
 "Dokument je završio neočekivano nakon što je znak jednakosti slijedioime "
 "atributa; nema vrijednosti atributa"
 
-#: glib/gmarkup.c:1812
+#: glib/gmarkup.c:1813
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Dokument je završio neočekivano unutar vrijednosti atributa"
 
-#: glib/gmarkup.c:1827
+#: glib/gmarkup.c:1829
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr ""
 "Dokument je završio neočekivano unutar taga koji završava za element '%s'"
 
-#: glib/gmarkup.c:1833
+#: glib/gmarkup.c:1835
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Dokument je završio neočekivano unutar komentara ili izvršavanja instrukcije"

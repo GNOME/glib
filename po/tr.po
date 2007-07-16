@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-05-01 19:30-0400\n"
+"POT-Creation-Date: 2007-07-16 15:09-0400\n"
 "PO-Revision-Date: 2006-08-08 17:47+0200\n"
 "Last-Translator: Onur Can Çakmak <onur.cakmak@gmail.com>\n"
 "Language-Team: Turkish <gnome-turk@gnome.org>\n"
@@ -458,7 +458,7 @@ msgstr ""
 "Belge açık açı parantezi '<' işaretinden hemen sonra beklenmedik bir şekilde "
 "bitti"
 
-#: glib/gmarkup.c:1775 glib/gmarkup.c:1819
+#: glib/gmarkup.c:1775 glib/gmarkup.c:1820
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -480,15 +480,15 @@ msgstr ""
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Belge bir öğe isminin içinde beklenmedik bir şekilde bitti"
 
-#: glib/gmarkup.c:1794
+#: glib/gmarkup.c:1795
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Belge bir öznitelik ismi içinde beklenmedik bir şekilde bitti"
 
-#: glib/gmarkup.c:1799
+#: glib/gmarkup.c:1800
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Belge bir öğe-açma etiketi içinde beklenmedik bir şekilde bitti."
 
-#: glib/gmarkup.c:1805
+#: glib/gmarkup.c:1806
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -496,17 +496,17 @@ msgstr ""
 "Belge öznitelik adını takip eden eşittir isaretinden sonra beklenmedik bir "
 "şekilde bitti; öznitelik degeri yok"
 
-#: glib/gmarkup.c:1812
+#: glib/gmarkup.c:1813
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Belge bir öznitelik değeri içinde iken beklenmedik bir şekilde bitti"
 
-#: glib/gmarkup.c:1827
+#: glib/gmarkup.c:1829
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr ""
 "Belge, '%s' öğesinin kapama etiketi içinde beklenmedik bir şekilde bitti"
 
-#: glib/gmarkup.c:1833
+#: glib/gmarkup.c:1835
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Belge bir yorum veya işlem talimatı içindeyken beklenmedik bir şekilde bitti"

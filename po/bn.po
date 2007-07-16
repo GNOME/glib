@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-05-01 19:30-0400\n"
+"POT-Creation-Date: 2007-07-16 15:09-0400\n"
 "PO-Revision-Date: 2006-08-31 21:21+0600\n"
 "Last-Translator: Khandakar Mujahidul Islam <suzan@bengalinux.org>\n"
 "Language-Team: Bengali <gnome-translation@bengalinux.org>\n"
@@ -445,7 +445,7 @@ msgstr "ডকুউমেন্ট শূণ্য ছিল অথবা স�
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "একটি কোণ বন্ধনী '<' খোলা থাকায় নথী অপ্রত্যাশিতভাবে শেষ হয়েছে"
 
-#: glib/gmarkup.c:1775 glib/gmarkup.c:1819
+#: glib/gmarkup.c:1775 glib/gmarkup.c:1820
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -466,15 +466,15 @@ msgstr ""
 msgid "Document ended unexpectedly inside an element name"
 msgstr "একটি এলিমেন্ট নাম অভ্যন্তরে নথী অপ্রত্যাশিতভাবে শেষ হয়েছে"
 
-#: glib/gmarkup.c:1794
+#: glib/gmarkup.c:1795
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "একটি বৈশিষ্ট্য নাম অভ্যন্তরে নথী অপ্রত্যাশিতভাবে শেষ হয়েছে"
 
-#: glib/gmarkup.c:1799
+#: glib/gmarkup.c:1800
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "একটি এলিমেন্ট-ওপেনিং ট্যাগ অভ্যন্তরে নথী অপ্রত্যাশিতভাবে শেষ হয়েছে"
 
-#: glib/gmarkup.c:1805
+#: glib/gmarkup.c:1806
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -482,16 +482,16 @@ msgstr ""
 "বৈশিষ্ট্য নাম অনুসরণকরী সমান চিহ্নের পর নথী অপ্রত্যাশিতভাবে শেষ হয়েছে; কোন বৈশিষ্ট্য "
 "মান নয়"
 
-#: glib/gmarkup.c:1812
+#: glib/gmarkup.c:1813
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "একটি বৈশিষ্ট্য মান এর অভ্যন্তরে নথী অপ্রত্যাশিতভাবে শেষ হয়েছে"
 
-#: glib/gmarkup.c:1827
+#: glib/gmarkup.c:1829
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "নথী অপ্রত্যাশিতভাবে শেষ হয়েছে উপাদান '%s' এর বন্ধ ট্যাগ এর অভ্যন্তরে"
 
-#: glib/gmarkup.c:1833
+#: glib/gmarkup.c:1835
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "নথী অপ্রত্যাশিতভাবে শেষ হয়েছে একটি মন্তব্য বা প্রসেসরত নির্দেশের অভ্যন্তরে"
 

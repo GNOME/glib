@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib glib-2-12\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-05-01 19:30-0400\n"
+"POT-Creation-Date: 2007-07-16 15:09-0400\n"
 "PO-Revision-Date: 2007-03-05 20:15+0100\n"
 "Last-Translator: Laurent Dhima <laurenti@alblinux.net>\n"
 "Language-Team: albanian <gnome-albanian-perkthyesit@lists.sourceforge.net>\n"
@@ -455,7 +455,7 @@ msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr ""
 "Dokumenti u mbyll papritur, menjëherë pas hapjes së kllapës këndore '<'"
 
-#: glib/gmarkup.c:1775 glib/gmarkup.c:1819
+#: glib/gmarkup.c:1775 glib/gmarkup.c:1820
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -475,15 +475,15 @@ msgstr "Dokumenti u mbyll papritur, pritet simboli i mbylljes për tag-un <%s/>"
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Dokumenti përfundoi papritur në brendësi të emrit të një elementi"
 
-#: glib/gmarkup.c:1794
+#: glib/gmarkup.c:1795
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Dokumenti u mbyll papritur në brendësi të emrit të një atributi"
 
-#: glib/gmarkup.c:1799
+#: glib/gmarkup.c:1800
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Dokumenti u mbyll papritur brënda një tag-u hapës të elementit"
 
-#: glib/gmarkup.c:1805
+#: glib/gmarkup.c:1806
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -491,17 +491,17 @@ msgstr ""
 "Dokumenti u mbyll papritur mbas shenjës së barazimit që vjen mbas emrit të "
 "një atributi; atributi nuk ka vlerë"
 
-#: glib/gmarkup.c:1812
+#: glib/gmarkup.c:1813
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Dokumenti u mbyll papritur në brendësi të vlerës së një atributi"
 
-#: glib/gmarkup.c:1827
+#: glib/gmarkup.c:1829
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr ""
 "Dokumenti u mbyll papritur në brendësi të tag-ut mbyllës të elementit '%s'"
 
-#: glib/gmarkup.c:1833
+#: glib/gmarkup.c:1835
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Dokumenti u mbyll papritur në brendësi të një komenti apo instruksioni "

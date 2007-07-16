@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.12.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-05-01 19:30-0400\n"
+"POT-Creation-Date: 2007-07-16 15:09-0400\n"
 "PO-Revision-Date: 2007-03-04 15:25+0100\n"
 "Last-Translator: Luca Ferretti <elle.uca@libero.it>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -475,7 +475,7 @@ msgstr ""
 "Il documento è terminato in modo inatteso subito dopo una parentesi angolare "
 "d'apertura '<'"
 
-#: glib/gmarkup.c:1775 glib/gmarkup.c:1819
+#: glib/gmarkup.c:1775 glib/gmarkup.c:1820
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -498,18 +498,18 @@ msgid "Document ended unexpectedly inside an element name"
 msgstr ""
 "Il documento è terminato in modo inatteso all'interno di un nome di elemento"
 
-#: glib/gmarkup.c:1794
+#: glib/gmarkup.c:1795
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr ""
 "Il documento è terminato in modo inatteso all'interno di un nome di attributo"
 
-#: glib/gmarkup.c:1799
+#: glib/gmarkup.c:1800
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr ""
 "Il documento è terminato in modo inatteso all'interno di un tag di apertura "
 "elemento."
 
-#: glib/gmarkup.c:1805
+#: glib/gmarkup.c:1806
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -517,20 +517,20 @@ msgstr ""
 "Il documento è terminato in modo inatteso dopo il segno di uguale che segue "
 "un nome di attributo; l'attributo non ha un valore"
 
-#: glib/gmarkup.c:1812
+#: glib/gmarkup.c:1813
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr ""
 "Il documento è terminato in modo inatteso all'interno di un valore di "
 "attributo"
 
-#: glib/gmarkup.c:1827
+#: glib/gmarkup.c:1829
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr ""
 "Il documento è terminato inaspettatamente all'interno del tag di chiusura "
 "per l'elemento \"%s\""
 
-#: glib/gmarkup.c:1833
+#: glib/gmarkup.c:1835
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Il documento è terminato in modo inatteso all'interno di un commento o "

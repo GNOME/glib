@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-05-01 19:30-0400\n"
+"POT-Creation-Date: 2007-07-16 15:09-0400\n"
 "PO-Revision-Date: 2007-01-04 15:33+0100\n"
 "Last-Translator: Hendrik Richter <hendrikr@gnome.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
@@ -470,7 +470,7 @@ msgstr "Dokument ist leer oder enthält nur Leerraum"
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "Dokument endete unerwartet nach einer offenen spitzen Klammer »<«"
 
-#: glib/gmarkup.c:1775 glib/gmarkup.c:1819
+#: glib/gmarkup.c:1775 glib/gmarkup.c:1820
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -492,15 +492,15 @@ msgstr ""
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Dokument endete unerwartet innerhalb eines Elementnamens"
 
-#: glib/gmarkup.c:1794
+#: glib/gmarkup.c:1795
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Dokument endete unerwartet innerhalb eines Attributnamens"
 
-#: glib/gmarkup.c:1799
+#: glib/gmarkup.c:1800
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Dokument endete unerwartet innerhalb eines Element-öffnenden Tags."
 
-#: glib/gmarkup.c:1805
+#: glib/gmarkup.c:1806
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -508,18 +508,18 @@ msgstr ""
 "Dokument endete unerwartet nach dem Gleichheitszeichen, das einem "
 "Attributnamen folgt; kein Attributwert"
 
-#: glib/gmarkup.c:1812
+#: glib/gmarkup.c:1813
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Dokument endete unerwartet innerhalb eines Attributwertes"
 
-#: glib/gmarkup.c:1827
+#: glib/gmarkup.c:1829
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr ""
 "Dokument endete unerwartet innerhalb eines schließenden Tags für das Element "
 "»%s«"
 
-#: glib/gmarkup.c:1833
+#: glib/gmarkup.c:1835
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Dokument endete unerwartet innerhalb eines Kommentars oder "

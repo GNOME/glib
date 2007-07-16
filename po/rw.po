@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.12\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-05-01 19:30-0400\n"
+"POT-Creation-Date: 2007-07-16 15:09-0400\n"
 "PO-Revision-Date: 2005-03-28 19:34-0700\n"
 "Last-Translator: Steve Murphy <murf@e-tools.com>\n"
 "Language-Team: Kinyarwanda <translation-team-rw@lists.sourceforge.net>\n"
@@ -445,7 +445,7 @@ msgstr "ubusa Cyangwa"
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "Nyuma Gufungura Imfuruka"
 
-#: glib/gmarkup.c:1775 glib/gmarkup.c:1819
+#: glib/gmarkup.c:1775 glib/gmarkup.c:1820
 #, fuzzy, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -464,34 +464,34 @@ msgstr "Ikitezwe: Kuri a Gufunga Imfuruka Itagi:"
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Mo Imbere Ikigize: Izina:"
 
-#: glib/gmarkup.c:1794
+#: glib/gmarkup.c:1795
 #, fuzzy
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Mo Imbere Ikiranga Izina:"
 
-#: glib/gmarkup.c:1799
+#: glib/gmarkup.c:1800
 #, fuzzy
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Mo Imbere Ikigize: Gufungura%S Itagi:"
 
-#: glib/gmarkup.c:1805
+#: glib/gmarkup.c:1806
 #, fuzzy
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
 msgstr "Nyuma IKIMENYETSO Ikiranga Izina: Oya Ikiranga Agaciro"
 
-#: glib/gmarkup.c:1812
+#: glib/gmarkup.c:1813
 #, fuzzy
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Mo Imbere Ikiranga Agaciro"
 
-#: glib/gmarkup.c:1827
+#: glib/gmarkup.c:1829
 #, fuzzy, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "Mo Imbere Gufunga Itagi: kugirango Ikigize:"
 
-#: glib/gmarkup.c:1833
+#: glib/gmarkup.c:1835
 #, fuzzy
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "Mo Imbere a Icyo wongeraho Cyangwa Inonosora"
