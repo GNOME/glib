@@ -1,3 +1,16 @@
+Overview of Changes from GLib 2.12.12 to GLib 2.12.13
+=====================================================
+
+* Unicode support:
+ - Update to Markus Kuhn's updated wcwidth for Unicode 5.0
+
+* Bugs fixed:
+ 454473 Simple XML Subset Parser terminates on invalid XML
+ 443869 g_type_class_add_private doesn't warn when adding 0-sized...
+ 447583 GStaticRWLock
+ 341988 don't use "-c" with msgfmt in Makefile.in.in 
+
+
 Overview of Changes from GLib 2.12.11 to GLib 2.12.12
 =====================================================
 
