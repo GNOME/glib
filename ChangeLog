@@ -1,3 +1,12 @@
+2007-07-19  Behdad Esfahbod  <behdad@gnome.org>
+
+	* glib/glib.symbols:
+	* glib/gunicode.h:
+	* glib/gunicodeprivate.h:
+	* glib/gunidecomp.c (g_unichar_combining_class):
+	* glib/guniprop.c (has_more_above):
+	Make g_unichar_combining_class() public. (#453998)
+
 Fri Jul 13 01:01:46 2007  Tim Janik  <timj@imendio.com>
 
 	* glib/gthread.[hc]: more atomic ops pointer cast fixes. this time it'll

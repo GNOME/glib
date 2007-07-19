@@ -1291,6 +1291,7 @@ g_utf8_collate_key_for_filename G_GNUC_MALLOC
 #if IN_FILE(__G_UNIDECOMP_C__)
 g_unicode_canonical_decomposition G_GNUC_MALLOC
 g_unicode_canonical_ordering
+g_unicode_combining_class
 g_utf8_normalize
 #endif
 #endif

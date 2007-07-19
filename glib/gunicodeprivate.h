@@ -29,7 +29,6 @@ G_GNUC_INTERNAL gunichar *_g_utf8_normalize_wc
 				(const gchar    *str,
 				gssize          max_len,
 				GNormalizeMode  mode);
-G_GNUC_INTERNAL gint      _g_unichar_combining_class (gunichar uc);
 
 G_END_DECLS
 

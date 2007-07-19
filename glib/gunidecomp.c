@@ -47,8 +47,18 @@
       ? CC_PART2 (((Char) - 0xe0000) >> 8, (Char) & 0xff) \
       : 0))
 
+/**
+ * g_unichar_combining_class:
+ * @c: a Unicode character
+ * 
+ * Determines the canonical combining class of a Unicode character.
+ * 
+ * Return value: the combining class of the character.
+ *
+ * Since: 2.14
+ **/
 gint
-_g_unichar_combining_class (gunichar uc)
+g_unichar_combining_class (gunichar uc)
 {
   return COMBINING_CLASS (uc);
 }

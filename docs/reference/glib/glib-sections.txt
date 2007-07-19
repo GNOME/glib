@@ -2420,6 +2420,7 @@ GUnicodeType
 g_unichar_type
 GUnicodeBreakType
 g_unichar_break_type
+g_unichar_combining_class
 g_unicode_canonical_ordering
 g_unicode_canonical_decomposition
 g_unichar_get_mirror_char

@@ -236,6 +236,9 @@ GUnicodeType g_unichar_type (gunichar c) G_GNUC_CONST;
 /* Return the line break property for a given character */
 GUnicodeBreakType g_unichar_break_type (gunichar c) G_GNUC_CONST;
 
+/* Returns the combining class for a given character */
+gint g_unichar_combining_class (gunichar uc); G_GNUC_CONST;
+
 
 /* Compute canonical ordering of a string in-place.  This rearranges
    decomposed characters in the string according to their combining

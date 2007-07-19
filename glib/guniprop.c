@@ -970,7 +970,7 @@ has_more_above (const gchar *str)
 
   while (*p)
     {
-      combining_class = _g_unichar_combining_class (g_utf8_get_char (p));
+      combining_class = g_unichar_combining_class (g_utf8_get_char (p));
       if (combining_class == 230)
         return TRUE;
       else if (combining_class == 0)
