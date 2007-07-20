@@ -1,3 +1,9 @@
+2007-07-20  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/tmpl/limits.sgml:
+	* glib/tmpl/types.sgml:
+	* glib/glib-sections.txt: Add new functions
+
 2007-07-19  Behdad Esfahbod  <behdad@gnome.org>
 
 	* glib/glib-sections.txt:
