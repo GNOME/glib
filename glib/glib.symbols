@@ -1175,8 +1175,8 @@ g_once_impl
 g_once_init_enter_impl
 g_once_init_leave
 #ifdef INCLUDE_INTERNAL_SYMBOLS
-g_once_init_enter
 g_thread_init_glib
+g_once_init_enter
 #endif
 #ifdef INCLUDE_VARIABLES
 g_thread_functions_for_glib_use
@@ -1291,7 +1291,7 @@ g_utf8_collate_key_for_filename G_GNUC_MALLOC
 #if IN_FILE(__G_UNIDECOMP_C__)
 g_unicode_canonical_decomposition G_GNUC_MALLOC
 g_unicode_canonical_ordering
-g_unicode_combining_class
+g_unichar_combining_class G_GNUC_CONST
 g_utf8_normalize
 #endif
 #endif
