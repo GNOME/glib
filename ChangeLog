@@ -1,3 +1,9 @@
+2007-07-20  Alexander Larsson  <alexl@redhat.com>
+
+        * configure.in:
+	Add goffset type (64bit file size)
+	Add G_MAXSSIZE and G_MINSSIZE
+
 2007-07-20  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/glib.symbols: Fix the build.

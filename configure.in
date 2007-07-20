@@ -2428,6 +2428,13 @@ typedef unsigned $glib_size_type_define gsize;
 #define G_GSIZE_FORMAT $gsize_format
 
 #define G_MAXSIZE	G_MAXU$glib_msize_type
+#define G_MINSSIZE	G_MIN$glib_msize_type
+#define G_MAXSSIZE	G_MAX$glib_msize_type
+
+typedef gint64 goffset;
+#define G_MINOFFSET	G_MININT64
+#define G_MAXOFFSET	G_MAXINT64
+
 _______EOF
 
 	if test -z "$glib_unknown_void_p"; then
