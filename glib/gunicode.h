@@ -237,7 +237,7 @@ GUnicodeType g_unichar_type (gunichar c) G_GNUC_CONST;
 GUnicodeBreakType g_unichar_break_type (gunichar c) G_GNUC_CONST;
 
 /* Returns the combining class for a given character */
-gint g_unichar_combining_class (gunichar uc); G_GNUC_CONST;
+gint g_unichar_combining_class (gunichar uc) G_GNUC_CONST;
 
 
 /* Compute canonical ordering of a string in-place.  This rearranges
