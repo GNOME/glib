@@ -2,7 +2,7 @@
 Basic Types
 
 <!-- ##### SECTION Short_Description ##### -->
-standard GLib types, defined for ease-of-use and portability.
+standard GLib types, defined for ease-of-use and portability
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
@@ -179,13 +179,11 @@ Values of this type can range from -9,223,372,036,854,775,808 to
 </para>
 
 
-<!-- ##### FUNCTION guint64 ##### -->
+<!-- ##### TYPEDEF guint64 ##### -->
 <para>
 An unsigned integer guaranteed to be 64 bits on all platforms.
 Values of this type can range from 0 to 18,446,744,073,709,551,615.
 </para>
-
-@Returns: 
 
 
 <!-- ##### MACRO G_GINT64_CONSTANT ##### -->
@@ -240,7 +238,5 @@ A signed variant of gsize, corresponding to the ssize_t defined on most platform
 A signed integer type that is used for file offsets, corresponding to the 
 C99 type off64_t.
 </para>
-
-@Since: 2.14
 
 

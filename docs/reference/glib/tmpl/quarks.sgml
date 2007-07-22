@@ -2,7 +2,7 @@
 Quarks
 
 <!-- ##### SECTION Short_Description ##### -->
-a 2-way association between a string and a unique integer identifier.
+a 2-way association between a string and a unique integer identifier
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>

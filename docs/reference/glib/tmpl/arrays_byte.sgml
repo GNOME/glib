@@ -2,7 +2,7 @@
 Byte Arrays
 
 <!-- ##### SECTION Short_Description ##### -->
-arrays of bytes, which grow automatically as elements are added.
+arrays of bytes, which grow automatically as elements are added
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>

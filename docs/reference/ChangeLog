@@ -1,4 +1,8 @@
 2007-07-21  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/glib-sections.txt: Additions
+
+2007-07-21  Matthias Clasen  <mclasen@redhat.com>
 	
 	* glib/tmpl/fileutils.sgml: Fix an inaccuracy in the
 	G_FILE_TEST_IS_REGULAR docs, pointed out by

@@ -2,7 +2,7 @@
 Memory Chunks
 
 <!-- ##### SECTION Short_Description ##### -->
-deprecated way to allocate groups of equal-sized chunks of memory.
+deprecated way to allocate groups of equal-sized chunks of memory
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>

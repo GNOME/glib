@@ -2,7 +2,7 @@
 Glob-style pattern matching
 
 <!-- ##### SECTION Short_Description ##### -->
-matches strings against patterns containing '*' (wildcard) and '?' (joker).
+matches strings against patterns containing '*' (wildcard) and '?' (joker)
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>

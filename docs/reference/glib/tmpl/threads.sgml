@@ -4,7 +4,7 @@ Threads
 <!-- ##### SECTION Short_Description ##### -->
 
 thread abstraction; including threads, different mutexes, conditions
-and thread private data.
+and thread private data
 
 <!-- ##### SECTION Long_Description ##### -->
 

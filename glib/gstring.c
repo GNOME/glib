@@ -58,14 +58,14 @@ struct _GStringChunk
 
 /**
  * g_str_equal:
- * @v1: a key. 
- * @v2: a key to compare with @v1.
+ * @v1: a key
+ * @v2: a key to compare with @v1
  * 
  * Compares two strings for byte-by-byte equality and returns %TRUE 
  * if they are equal. It can be passed to g_hash_table_new() as the 
  * @key_equal_func parameter, when using strings as keys in a #GHashTable.
  *
- * Returns: %TRUE if the two keys match.
+ * Returns: %TRUE if the two keys match
  */
 gboolean
 g_str_equal (gconstpointer v1,
@@ -79,13 +79,13 @@ g_str_equal (gconstpointer v1,
 
 /**
  * g_str_hash:
- * @v: a string key.
+ * @v: a string key
  *
  * Converts a string to a hash value.
- * It can be passed to g_hash_table_new() as the @hash_func parameter, 
- * when using strings as keys in a #GHashTable.
+ * It can be passed to g_hash_table_new() as the @hash_func 
+ * parameter, when using strings as keys in a #GHashTable.
  *
- * Returns: a hash value corresponding to the key.
+ * Returns: a hash value corresponding to the key
  */
 guint
 g_str_hash (gconstpointer v)
@@ -232,7 +232,7 @@ g_string_chunk_clear (GStringChunk *chunk)
  * duplicates.
  * 
  * Returns: a pointer to the copy of @string within 
- *          the #GStringChunk.
+ *          the #GStringChunk
  */
 gchar*
 g_string_chunk_insert (GStringChunk *chunk,
@@ -245,12 +245,12 @@ g_string_chunk_insert (GStringChunk *chunk,
 
 /**
  * g_string_chunk_insert_const:
- * @chunk:  a #GStringChunk
+ * @chunk: a #GStringChunk
  * @string: the string to add
  * 
- * Adds a copy of @string to the #GStringChunk, unless 
- * the same string has already been added to the #GStringChunk 
- * with g_string_chunk_insert_const().
+ * Adds a copy of @string to the #GStringChunk, unless the same 
+ * string has already been added to the #GStringChunk with 
+ * g_string_chunk_insert_const().
  * 
  * This function is useful if you need to copy a large number 
  * of strings but do not want to waste space storing duplicates. 
@@ -292,16 +292,17 @@ g_string_chunk_insert_const (GStringChunk *chunk,
  * @chunk: a #GStringChunk
  * @string: bytes to insert
  * @len: number of bytes of @string to insert, or -1 to insert a 
- *     nul-terminated string. 
+ *     nul-terminated string 
  * 
- * Adds a copy of the first @len bytes of @string to the #GStringChunk. The
- * copy is nul-terminated.
+ * Adds a copy of the first @len bytes of @string to the #GStringChunk. 
+ * The copy is nul-terminated.
  * 
  * Since this function does not stop at nul bytes, it is the caller's
- * responsibility to ensure that @string has at least @len addressable bytes.
+ * responsibility to ensure that @string has at least @len addressable 
+ * bytes.
  *
- * The characters in the returned string can be changed, if necessary, though
- * you should not change anything after the end of the string.
+ * The characters in the returned string can be changed, if necessary, 
+ * though you should not change anything after the end of the string.
  * 
  * Return value: a pointer to the copy of @string within the #GStringChunk
  * 
@@ -362,14 +363,14 @@ g_string_maybe_expand (GString* string,
 /**
  * g_string_sized_new:
  * @dfl_size: the default size of the space allocated to 
- *            hold the string.
+ *            hold the string
  *
  * Creates a new #GString, with enough space for @dfl_size 
  * bytes. This is useful if you are going to add a lot of 
  * text to the string and don't want it to be reallocated 
  * too often.
  *
- * Returns: the new #GString.
+ * Returns: the new #GString
  */
 GString*
 g_string_sized_new (gsize dfl_size)    
@@ -388,11 +389,11 @@ g_string_sized_new (gsize dfl_size)
 
 /**
  * g_string_new:
- * @init: the initial text to copy into the string.
+ * @init: the initial text to copy into the string
  * 
  * Creates a new #GString, initialized with the given string.
  *
- * Returns: the new #GString.
+ * Returns: the new #GString
  */
 GString*
 g_string_new (const gchar *init)
@@ -416,18 +417,18 @@ g_string_new (const gchar *init)
 
 /**
  * g_string_new_len:
- * @init: initial contents of string.
- * @len: length of @init to use.
+ * @init: initial contents of the string
+ * @len: length of @init to use
  *
- * Creates a new #GString with @len bytes of the 
- * @init buffer.  Because a length is provided, @init 
- * need not be nul-terminated, and can contain embedded 
- * nul bytes.
+ * Creates a new #GString with @len bytes of the @init buffer.  
+ * Because a length is provided, @init need not be nul-terminated,
+ * and can contain embedded nul bytes.
  *
  * Since this function does not stop at nul bytes, it is the caller's
- * responsibility to ensure that @init has at least @len addressable bytes.
+ * responsibility to ensure that @init has at least @len addressable 
+ * bytes.
  *
- * Returns: a new #GString.
+ * Returns: a new #GString
  */
 GString*
 g_string_new_len (const gchar *init,
@@ -488,8 +489,8 @@ g_string_free (GString *string,
  * Compares two strings for equality, returning %TRUE if they are equal. 
  * For use with #GHashTable.
  *
- * Returns: %TRUE if they strings are the same 
- *          length and contain the same bytes.
+ * Returns: %TRUE if they strings are the same length and contain the 
+ *   same bytes
  */
 gboolean
 g_string_equal (const GString *v,
@@ -552,7 +553,7 @@ g_string_hash (const GString *str)
  * the standard strcpy() function, except that you do not 
  * have to worry about having enough space to copy the string.
  *
- * Returns: the destination #GString.
+ * Returns: @string
  */
 GString*
 g_string_assign (GString     *string,
@@ -576,11 +577,11 @@ g_string_assign (GString     *string,
 /**
  * g_string_truncate:
  * @string: a #GString
- * @len: the new size of the #GString
+ * @len: the new size of @string
  *
  * Cuts off the end of the GString, leaving the first @len bytes. 
  *
- * Returns: the #GString
+ * Returns: @string
  */
 GString*
 g_string_truncate (GString *string,
@@ -635,10 +636,11 @@ g_string_set_size (GString *string,
  * nuls and need not be nul-terminated. If @pos is -1, 
  * bytes are inserted at the end of the string.
  *
- * Since this function does not stop at nul bytes, it is the caller's
- * responsibility to ensure that @val has at least @len addressable bytes.
+ * Since this function does not stop at nul bytes, it is 
+ * the caller's responsibility to ensure that @val has at 
+ * least @len addressable bytes.
  *
- * Returns: the #GString
+ * Returns: @string
  */
 GString*
 g_string_insert_len (GString     *string,
@@ -713,12 +715,13 @@ g_string_insert_len (GString     *string,
 
 /**
  * g_string_append:
- * @string: a #GString.
- * @val: the string to append onto the end of the #GString.
+ * @string: a #GString
+ * @val: the string to append onto the end of @string
  * 
- * Adds a string onto the end of a #GString, expanding it if necessary.
+ * Adds a string onto the end of a #GString, expanding 
+ * it if necessary.
  *
- * Returns: the #GString.
+ * Returns: @string
  */
 GString*
 g_string_append (GString     *string,
@@ -734,16 +737,17 @@ g_string_append (GString     *string,
  * g_string_append_len:
  * @string: a #GString
  * @val: bytes to append
- * @len: number of bytes of @val to use.
+ * @len: number of bytes of @val to use
  * 
- * Appends @len bytes of @val to @string. 
- * Because @len is provided, @val may contain 
- * embedded nuls and need not be nul-terminated.
+ * Appends @len bytes of @val to @string. Because @len is 
+ * provided, @val may contain embedded nuls and need not 
+ * be nul-terminated.
  * 
- * Since this function does not stop at nul bytes, it is the caller's
- * responsibility to ensure that @val has at least @len addressable bytes.
+ * Since this function does not stop at nul bytes, it is 
+ * the caller's responsibility to ensure that @val has at 
+ * least @len addressable bytes.
  *
- * Returns: the #GString
+ * Returns: @string
  */
 GString*
 g_string_append_len (GString	 *string,
@@ -758,12 +762,13 @@ g_string_append_len (GString	 *string,
 
 /**
  * g_string_append_c:
- * @string: a #GString.
- * @c: the byte to append onto the end of the #GString.
+ * @string: a #GString
+ * @c: the byte to append onto the end of @string
  *
- * Adds a byte onto the end of a #GString, expanding it if necessary.
+ * Adds a byte onto the end of a #GString, expanding 
+ * it if necessary.
  * 
- * Returns: the #GString.
+ * Returns: @string
  */
 #undef g_string_append_c
 GString*
@@ -797,12 +802,12 @@ g_string_append_unichar (GString  *string,
 /**
  * g_string_prepend:
  * @string: a #GString
- * @val: the string to prepend on the start of the #GString
+ * @val: the string to prepend on the start of @string
  *
  * Adds a string on to the start of a #GString, 
  * expanding it if necessary.
  *
- * Returns: the #GString
+ * Returns: @string
  */
 GString*
 g_string_prepend (GString     *string,
@@ -824,10 +829,11 @@ g_string_prepend (GString     *string,
  * Because @len is provided, @val may contain 
  * embedded nuls and need not be nul-terminated.
  *
- * Since this function does not stop at nul bytes, it is the caller's
- * responsibility to ensure that @val has at least @len addressable bytes.
+ * Since this function does not stop at nul bytes, 
+ * it is the caller's responsibility to ensure that 
+ * @val has at least @len addressable bytes.
  *
- * Returns: the #GString passed in
+ * Returns: @string
  */
 GString*
 g_string_prepend_len (GString	  *string,
@@ -848,7 +854,7 @@ g_string_prepend_len (GString	  *string,
  * Adds a byte onto the start of a #GString, 
  * expanding it if necessary.
  *
- * Returns: the #GString
+ * Returns: @string
  */
 GString*
 g_string_prepend_c (GString *string,
@@ -861,13 +867,13 @@ g_string_prepend_c (GString *string,
 
 /**
  * g_string_prepend_unichar:
- * @string: a #GString.
- * @wc: a Unicode character.
+ * @string: a #GString
+ * @wc: a Unicode character
  * 
  * Converts a Unicode character into UTF-8, and prepends it
  * to the string.
  * 
- * Return value: @string.
+ * Return value: @string
  **/
 GString*
 g_string_prepend_unichar (GString  *string,
@@ -887,7 +893,7 @@ g_string_prepend_unichar (GString  *string,
  * Inserts a copy of a string into a #GString, 
  * expanding it if necessary.
  *
- * Returns: the #GString
+ * Returns: @string
  */
 GString*
 g_string_insert (GString     *string,
@@ -910,7 +916,7 @@ g_string_insert (GString     *string,
  *
  * Inserts a byte into a #GString, expanding it if necessary.
  * 
- * Returns: the #GString
+ * Returns: @string
  */
 GString*
 g_string_insert_c (GString *string,
@@ -943,7 +949,7 @@ g_string_insert_c (GString *string,
  * g_string_insert_unichar:
  * @string: a #GString
  * @pos: the position at which to insert character, or -1 to
- *       append at the end of the string.
+ *       append at the end of the string
  * @wc: a Unicode character
  * 
  * Converts a Unicode character into UTF-8, and insert it
@@ -1050,18 +1056,18 @@ g_string_overwrite (GString     *string,
  * @val: the string that will overwrite the @string starting at @pos
  * @len: the number of bytes to write from @val
  * 
- * Overwrites part of a string, lengthening it if necessary. This function
- * will work with embedded NULLs.
+ * Overwrites part of a string, lengthening it if necessary. 
+ * This function will work with embedded nuls.
  * 
  * Return value: @string
  *
  * Since: 2.14
  **/
 GString *
-g_string_overwrite_len (GString       *string,
-			gsize          pos,
-			const gchar   *val,
-			gssize         len)
+g_string_overwrite_len (GString     *string,
+			gsize        pos,
+			const gchar *val,
+			gssize       len)
 {
   gsize end;
 
@@ -1102,7 +1108,7 @@ g_string_overwrite_len (GString       *string,
  * Removes @len bytes from a #GString, starting at position @pos.
  * The rest of the #GString is shifted down to fill the gap.
  *
- * Returns: the #GString
+ * Returns: @string
  */
 GString*
 g_string_erase (GString *string,
@@ -1138,7 +1144,7 @@ g_string_erase (GString *string,
  * 
  * Return value: passed-in @string pointer, with all the upper case
  *               characters converted to lower case in place, with
- *               semantics that exactly match g_ascii_tolower.
+ *               semantics that exactly match g_ascii_tolower().
  **/
 GString*
 g_string_ascii_down (GString *string)
@@ -1169,7 +1175,7 @@ g_string_ascii_down (GString *string)
  * 
  * Return value: passed-in @string pointer, with all the lower case
  *               characters converted to upper case in place, with
- *               semantics that exactly match g_ascii_toupper.
+ *               semantics that exactly match g_ascii_toupper().
  **/
 GString*
 g_string_ascii_up (GString *string)
@@ -1200,9 +1206,9 @@ g_string_ascii_up (GString *string)
  *
  * Returns: the #GString.
  *
- * Deprecated:2.2: This function uses the locale-specific tolower() function, 
- * which is almost never the right thing. Use g_string_ascii_down() or 
- * g_utf8_strdown() instead.
+ * Deprecated:2.2: This function uses the locale-specific 
+ *   tolower() function, which is almost never the right thing. 
+ *   Use g_string_ascii_down() or g_utf8_strdown() instead.
  */
 GString*
 g_string_down (GString *string)
@@ -1232,11 +1238,11 @@ g_string_down (GString *string)
  * 
  * Converts a #GString to uppercase.
  * 
- * Return value: the #GString
+ * Return value: @string
  *
- * Deprecated:2.2: This function uses the locale-specific toupper() function, 
- * which is almost never the right thing. Use g_string_ascii_up() or 
- * g_utf8_strup() instead.
+ * Deprecated:2.2: This function uses the locale-specific 
+ *   toupper() function, which is almost never the right thing. 
+ *   Use g_string_ascii_up() or g_utf8_strup() instead.
  **/
 GString*
 g_string_up (GString *string)
@@ -1262,9 +1268,9 @@ g_string_up (GString *string)
 
 /**
  * g_string_append_vprintf:
- * @string: a #GString.
- * @format: the string format. See the printf() documentation.
- * @args: the list of arguments to insert in the output.
+ * @string: a #GString
+ * @format: the string format. See the printf() documentation
+ * @args: the list of arguments to insert in the output
  *
  * Appends a formatted string onto the end of a #GString.
  * This function is is similar to g_string_append_printf()
@@ -1275,16 +1281,16 @@ g_string_up (GString *string)
  */
 void
 g_string_append_vprintf (GString     *string,
-			 const gchar *fmt,
+			 const gchar *format,
 			 va_list      args)
 {
   gchar *buf;
   gint len;
   
   g_return_if_fail (string != NULL);
-  g_return_if_fail (fmt != NULL);
+  g_return_if_fail (format != NULL);
 
-  len = g_vasprintf (&buf, fmt, args);
+  len = g_vasprintf (&buf, format, args);
 
   if (len >= 0)
     {
@@ -1297,30 +1303,30 @@ g_string_append_vprintf (GString     *string,
 
 /**
  * g_string_vprintf:
- * @string: a #GString.
- * @format: the string format. See the printf() documentation.
- * @Varargs: the parameters to insert into the format string.
+ * @string: a #GString
+ * @format: the string format. See the printf() documentation
+ * @args: the parameters to insert into the format string
  *
- * Writes a formatted string into a #GString.  This function
- * is similar to g_string_printf() except that the arguments to
- * the format string are passed as a va_list.
+ * Writes a formatted string into a #GString. 
+ * This function is similar to g_string_printf() except that 
+ * the arguments to the format string are passed as a va_list.
  *
  * Since: 2.14
  */
 void
 g_string_vprintf (GString     *string,
-		  const gchar *fmt,
+		  const gchar *format,
 		  va_list      args)
 {
   g_string_truncate (string, 0);
-  g_string_append_vprintf (string, fmt, args);
+  g_string_append_vprintf (string, format, args);
 }
 
 /**
  * g_string_sprintf:
- * @string: a #GString.
- * @format: the string format. See the sprintf() documentation.
- * @Varargs: the parameters to insert into the format string.
+ * @string: a #GString
+ * @format: the string format. See the sprintf() documentation
+ * @Varargs: the parameters to insert into the format string
  *
  * Writes a formatted string into a #GString.
  * This is similar to the standard sprintf() function,
@@ -1333,9 +1339,9 @@ g_string_vprintf (GString     *string,
 
 /**
  * g_string_printf:
- * @string: a #GString.
- * @format: the string format. See the printf() documentation.
- * @Varargs: the parameters to insert into the format string.
+ * @string: a #GString
+ * @format: the string format. See the printf() documentation
+ * @Varargs: the parameters to insert into the format string
  *
  * Writes a formatted string into a #GString.
  * This is similar to the standard sprintf() function,
@@ -1344,52 +1350,51 @@ g_string_vprintf (GString     *string,
  * #GString are destroyed.
  */
 void
-g_string_printf (GString *string,
-		 const gchar *fmt,
+g_string_printf (GString     *string,
+		 const gchar *format,
 		 ...)
 {
   va_list args;
 
   g_string_truncate (string, 0);
 
-  va_start (args, fmt);
-  g_string_append_vprintf (string, fmt, args);
+  va_start (args, format);
+  g_string_append_vprintf (string, format, args);
   va_end (args);
 }
 
 /**
  * g_string_sprintfa:
- * @string: a #GString.
- * @format: the string format. See the sprintf() documentation.
- * @Varargs: the parameters to insert into the format string.
+ * @string: a #GString
+ * @format: the string format. See the sprintf() documentation
+ * @Varargs: the parameters to insert into the format string
  *
  * Appends a formatted string onto the end of a #GString.
  * This function is is similar to g_string_sprintf() except that
  * the text is appended to the #GString. 
  *
- * Deprecated: This function has been renamed to 
- * g_string_append_printf().
+ * Deprecated: This function has been renamed to g_string_append_printf()
  */
 
 /**
  * g_string_append_printf:
- * @string: a #GString.
- * @format: the string format. See the printf() documentation.
- * @Varargs: the parameters to insert into the format string.
+ * @string: a #GString
+ * @format: the string format. See the printf() documentation
+ * @Varargs: the parameters to insert into the format string
  *
  * Appends a formatted string onto the end of a #GString.
  * This function is is similar to g_string_printf() except 
  * that the text is appended to the #GString.
  */
 void
-g_string_append_printf (GString *string,
-			const gchar *fmt,
+g_string_append_printf (GString     *string,
+			const gchar *format,
 			...)
 {
   va_list args;
 
-  va_start (args, fmt);
-  g_string_append_vprintf (string, fmt, args);
+  va_start (args, format);
+  g_string_append_vprintf (string, format, args);
   va_end (args);
 }
 

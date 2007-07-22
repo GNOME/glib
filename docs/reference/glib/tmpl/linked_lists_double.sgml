@@ -3,7 +3,7 @@ Doubly-Linked Lists
 
 <!-- ##### SECTION Short_Description ##### -->
 linked lists containing integer values or pointers to data, with the ability
-to iterate over the list in both directions.
+to iterate over the list in both directions
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>

@@ -2,7 +2,7 @@
 The Main Event Loop
 
 <!-- ##### SECTION Short_Description ##### -->
-manages all available sources of events.
+manages all available sources of events
 
 <!-- ##### SECTION Long_Description ##### -->
   <para>

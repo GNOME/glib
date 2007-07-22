@@ -3,7 +3,7 @@ Pointer Arrays
 
 <!-- ##### SECTION Short_Description ##### -->
 arrays of pointers to any type of data, which grow automatically as new
-elements are added.
+elements are added
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>

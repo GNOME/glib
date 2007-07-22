@@ -2,7 +2,7 @@
 Memory Allocators
 
 <!-- ##### SECTION Short_Description ##### -->
-deprecated way to allocate chunks of memory for #GList, #GSList and #GNode.
+deprecated way to allocate chunks of memory for GList, GSList and GNode
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>

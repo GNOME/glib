@@ -214,6 +214,20 @@ Flags which influence the parsing.
 @Returns: 
 
 
+<!-- ##### FUNCTION g_key_file_load_from_dirs ##### -->
+<para>
+
+</para>
+
+@key_file: 
+@file: 
+@search_dirs: 
+@full_path: 
+@flags: 
+@error: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_key_file_to_data ##### -->
 <para>
 

@@ -2,7 +2,7 @@
 Keyed Data Lists
 
 <!-- ##### SECTION Short_Description ##### -->
-lists of data elements which are accessible by a string or #GQuark identifier.
+lists of data elements which are accessible by a string or GQuark identifier
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>

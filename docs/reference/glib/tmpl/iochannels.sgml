@@ -2,7 +2,7 @@
 IO Channels
 
 <!-- ##### SECTION Short_Description ##### -->
-portable support for using files, pipes and sockets.
+portable support for using files, pipes and sockets
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
@@ -120,8 +120,8 @@ On Windows this function returns the file descriptor or socket of the #GIOChanne
 
 <!-- ##### FUNCTION g_io_channel_win32_new_fd ##### -->
 <para>
-Creates a new #GIOChannel given a file descriptor on Windows. This works for
-file descriptors from the C runtime.
+Creates a new #GIOChannel given a file descriptor on Windows. 
+This works for file descriptors from the C runtime.
 </para>
 <para>
 This function works for file descriptors as returned by the open(),
@@ -156,19 +156,17 @@ This function is available only in GLib on Windows.
 Creates a new #GIOChannel given a socket on Windows.
 </para>
 <para>
-This function works for sockets created by Winsock. It's available
-only in GLib on Windows.
+This function works for sockets created by Winsock. 
+It's available only in GLib on Windows.
 </para>
 <para>
-Polling a #GSource created to watch a channel for a socket puts the
-socket in non-blocking mode. This is a side-effect of the
-implementation and unavoidable.
+Polling a #GSource created to watch a channel for a socket 
+puts the socket in non-blocking mode. This is a side-effect 
+of the implementation and unavoidable.
 </para>
 
-@socket: 
-@Returns: a new #GIOChannel.
-<!-- # Unused Parameters # -->
-@fd: a Winsock socket.
+@socket: a Winsock socket
+@Returns: a new #GIOChannel
 
 
 <!-- ##### FUNCTION g_io_channel_win32_new_messages ##### -->
@@ -186,12 +184,13 @@ Windows messages for the window in question.
 
 <!-- ##### FUNCTION g_io_channel_init ##### -->
 <para>
-Initializes a #GIOChannel struct. This is called by each of the above functions
-when creating a #GIOChannel, and so is not often needed by the application
-programmer (unless you are creating a new type of #GIOChannel).
+Initializes a #GIOChannel struct. This is called by each of the 
+above functions when creating a #GIOChannel, and so is not often 
+needed by the application programmer (unless you are creating a 
+new type of #GIOChannel).
 </para>
 
-@channel: a #GIOChannel.
+@channel: a #GIOChannel
 
 
 <!-- ##### FUNCTION g_io_channel_new_file ##### -->
@@ -418,11 +417,11 @@ Adds the #GIOChannel into the
 with the default priority.
 </para>
 
-@channel: a #GIOChannel.
-@condition: the condition to watch for.
-@func: the function to call when the condition is satisfied.
-@user_data: user data to pass to @func.
-@Returns: the event source id.
+@channel: a #GIOChannel
+@condition: the condition to watch for
+@func: the function to call when the condition is satisfied
+@user_data: user data to pass to @func
+@Returns: the event source id
 
 
 <!-- ##### FUNCTION g_io_add_watch_full ##### -->
@@ -432,19 +431,19 @@ Adds the #GIOChannel into the
 with the given priority.
 </para>
 
-@channel: a #GIOChannel.
-@priority: the priority of the #GIOChannel source.
-@condition: the condition to watch for.
-@func: the function to call when the condition is satisfied.
-@user_data: user data to pass to @func.
-@notify: the function to call when the source is removed.
-@Returns: the event source id.
+@channel: a #GIOChannel
+@priority: the priority of the #GIOChannel source
+@condition: the condition to watch for
+@func: the function to call when the condition is satisfied
+@user_data: user data to pass to @func
+@notify: the function to call when the source is removed
+@Returns: the event source id
 
 
 <!-- ##### ENUM GIOCondition ##### -->
 <para>
-A bitwise combination representing a condition to watch for on an event
-source.
+A bitwise combination representing a condition to watch for on 
+an event source.
 </para>
 
 @G_IO_IN: There is data to read.
@@ -458,21 +457,21 @@ source.
 <!-- ##### USER_FUNCTION GIOFunc ##### -->
 <para>
 Specifies the type of function passed to g_io_add_watch() or
-g_io_add_watch_full(), which is called when the requested condition on a
-#GIOChannel is satisfied.
+g_io_add_watch_full(), which is called when the requested 
+condition on a #GIOChannel is satisfied.
 </para>
 
-@source: the #GIOChannel event source.
-@condition: the condition which has been satisfied.
-@data: user data set in g_io_add_watch() or g_io_add_watch_full().
-@Returns: the function should return %FALSE if the event source should be
-removed.
+@source: the #GIOChannel event source
+@condition: the condition which has been satisfied
+@data: user data set in g_io_add_watch() or g_io_add_watch_full()
+@Returns: the function should return %FALSE if the event source 
+  should be removed
 
 
 <!-- ##### STRUCT GIOFuncs ##### -->
 <para>
-A table of functions used to handle different types of #GIOChannel in a
-generic way.
+A table of functions used to handle different types of #GIOChannel 
+in a generic way.
 </para>
 
 @io_read: 
@@ -538,17 +537,18 @@ be read with g_io_channel_get_flags(), but not changed with
 g_io_channel_set_flags(). 
 </para>
 
-@G_IO_FLAG_APPEND: turns on append mode, corresponds to %O_APPEND (see the 
-   documentation of the UNIX <function>open()</function> syscall).
+@G_IO_FLAG_APPEND: turns on append mode, corresponds to %O_APPEND 
+  (see the documentation of the UNIX open() syscall).
 @G_IO_FLAG_NONBLOCK: turns on nonblocking mode, corresponds to 
-   %O_NONBLOCK/%O_NDELAY (see the documentation of the UNIX 
-   <function>open()</function> syscall).
-@G_IO_FLAG_IS_READABLE: indicates that the io channel is readable. This flag 
-   can not be changed.
-@G_IO_FLAG_IS_WRITEABLE: indicates that the io channel is writable. This flag 
-   can not be changed.
-@G_IO_FLAG_IS_SEEKABLE: indicates that the io channel is seekable, i.e. that 
-   g_io_channel_seek_position() can be used on it. This flag can not be changed.
+  %O_NONBLOCK/%O_NDELAY (see the documentation of the UNIX open() 
+  syscall).
+@G_IO_FLAG_IS_READABLE: indicates that the io channel is readable. 
+  This flag can not be changed.
+@G_IO_FLAG_IS_WRITEABLE: indicates that the io channel is writable. 
+  This flag can not be changed.
+@G_IO_FLAG_IS_SEEKABLE: indicates that the io channel is seekable, 
+  i.e. that g_io_channel_seek_position() can be used on it. 
+  This flag can not be changed.
 @G_IO_FLAG_MASK: 
 @G_IO_FLAG_GET_MASK: 
 @G_IO_FLAG_SET_MASK: 

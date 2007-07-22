@@ -2,8 +2,7 @@
 Type Conversion Macros
 
 <!-- ##### SECTION Short_Description ##### -->
-
-portably storing integers in pointer variables.
+portably storing integers in pointer variables
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>

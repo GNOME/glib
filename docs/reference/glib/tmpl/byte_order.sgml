@@ -2,7 +2,7 @@
 Byte Order Macros
 
 <!-- ##### SECTION Short_Description ##### -->
-a portable way to convert between different byte orders.
+a portable way to convert between different byte orders
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>

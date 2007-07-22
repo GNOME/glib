@@ -3,7 +3,7 @@ Singly-Linked Lists
 
 <!-- ##### SECTION Short_Description ##### -->
 linked lists containing integer values or pointers to data, limited to
-iterating over the list in one direction.
+iterating over the list in one direction
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>

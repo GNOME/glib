@@ -2,7 +2,7 @@
 Memory Slices
 
 <!-- ##### SECTION Short_Description ##### -->
-efficient way to allocate groups of equal-sized chunks of memory.
+efficient way to allocate groups of equal-sized chunks of memory
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>

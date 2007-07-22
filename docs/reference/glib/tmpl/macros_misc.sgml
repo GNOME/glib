@@ -2,7 +2,7 @@
 Miscellaneous Macros
 
 <!-- ##### SECTION Short_Description ##### -->
-specialized macros which are not used often.
+specialized macros which are not used often
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
@@ -354,10 +354,9 @@ if (G_LIKELY (random () != 1))
   g_print ("not one");
 </programlisting></informalexample>
 
-@Returns: 
-@Since: 2.2
-<!-- # Unused Parameters # -->
 @expr: the expression
+@Returns: the value of @expr
+@Since: 2.2
 
 
 <!-- ##### MACRO G_UNLIKELY ##### -->
@@ -371,6 +370,7 @@ if (G_UNLIKELY (random () == 1))
 </programlisting></informalexample>
 
 @expr: the expression
+@Returns: the value of @expr
 @Since: 2.2
 
 

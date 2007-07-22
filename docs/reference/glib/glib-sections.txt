@@ -39,6 +39,7 @@ gdouble
 <SUBSECTION>
 gsize
 gssize
+goffset
 
 <SUBSECTION Private>
 GLIB_SIZEOF_VOID_P
@@ -85,6 +86,12 @@ G_MAXUINT64
 
 <SUBSECTION>
 G_MAXSIZE
+G_MINSSIZE
+G_MAXSSIZE
+
+<SUBSECTION>
+G_MINOFFSET
+G_MAXOFFSET
 
 <SUBSECTION>
 G_MINFLOAT
@@ -630,6 +637,7 @@ g_thread_functions_for_glib_use
 g_thread_init_glib
 g_thread_error_quark
 g_once_impl
+g_once_init_enter_impl
 atexit
 g_system_thread_assign
 g_system_thread_equal
@@ -1520,6 +1528,7 @@ g_key_file_set_list_separator
 g_key_file_load_from_file
 g_key_file_load_from_data
 g_key_file_load_from_data_dirs
+g_key_file_load_from_dirs
 g_key_file_to_data
 g_key_file_get_start_group
 g_key_file_get_groups
@@ -1683,7 +1692,6 @@ g_completion_free
 <TITLE>Windows Compatibility Functions</TITLE>
 <FILE>windows</FILE>
 MAXPATHLEN
-pipe
 
 g_win32_error_message
 g_win32_getlocale
@@ -2037,6 +2045,8 @@ g_string_insert
 g_string_insert_c
 g_string_insert_unichar
 g_string_insert_len
+g_string_overwrite
+g_string_overwrite_len
 g_string_erase
 g_string_truncate
 g_string_set_size

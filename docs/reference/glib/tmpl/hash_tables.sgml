@@ -3,7 +3,7 @@ Hash Tables
 
 <!-- ##### SECTION Short_Description ##### -->
 associations between keys and values so that given a key the value
-can be found quickly.
+can be found quickly
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>

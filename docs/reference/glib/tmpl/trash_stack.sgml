@@ -2,7 +2,7 @@
 Trash Stacks
 
 <!-- ##### SECTION Short_Description ##### -->
-maintain a stack of unused allocated memory chunks.
+maintain a stack of unused allocated memory chunks
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>

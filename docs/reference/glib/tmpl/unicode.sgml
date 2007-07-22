@@ -2,7 +2,7 @@
 Unicode Manipulation
 
 <!-- ##### SECTION Short_Description ##### -->
-functions operating on Unicode characters and UTF-8 strings.
+functions operating on Unicode characters and UTF-8 strings
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
@@ -366,6 +366,15 @@ See <ulink url="http://www.unicode.org/unicode/reports/tr14/"
 </para>
 
 @c: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_unichar_combining_class ##### -->
+<para>
+
+</para>
+
+@uc: 
 @Returns: 
 
 
