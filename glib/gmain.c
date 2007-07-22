@@ -3361,13 +3361,13 @@ g_timeout_set_expiration (GTimeoutSource *timeout_source,
        * address first, that has a UUID in it. If there is no dbus, use the
        * hostname for hashing.
        */
-      const char *session_bus_address = getenv("DBUS_SESSION_BUS_ADDRESS");
+      const char *session_bus_address = g_getenv ("DBUS_SESSION_BUS_ADDRESS");
       if (!session_bus_address)
-         session_bus_address = getenv("HOSTNAME");
+        session_bus_address = g_getenv ("HOSTNAME");
       if (session_bus_address)
-         timer_perturb = g_str_hash(session_bus_address);
+        timer_perturb = g_str_hash (session_bus_address);
       else
-         timer_perturb = 0;
+        timer_perturb = 0;
     }
   if (timeout_source->granularity)
     {
@@ -3384,10 +3384,10 @@ g_timeout_set_expiration (GTimeoutSource *timeout_source,
 
       timeout_source->expiration.tv_usec -= perturb;
       if (timeout_source->expiration.tv_usec < 0)
-      {
+        {
           timeout_source->expiration.tv_usec += 1000000;
           timeout_source->expiration.tv_sec--;
-      }
+        }
 
       remainder = timeout_source->expiration.tv_usec % gran;
       if (remainder >= gran/4) /* round up */
@@ -3406,8 +3406,8 @@ g_timeout_set_expiration (GTimeoutSource *timeout_source,
 }
 
 static gboolean
-g_timeout_prepare  (GSource  *source,
-		    gint     *timeout)
+g_timeout_prepare (GSource *source,
+		   gint    *timeout)
 {
   glong sec;
   glong msec;
@@ -3459,7 +3459,7 @@ g_timeout_prepare  (GSource  *source,
 }
 
 static gboolean 
-g_timeout_check (GSource  *source)
+g_timeout_check (GSource *source)
 {
   GTimeVal current_time;
   GTimeoutSource *timeout_source = (GTimeoutSource *)source;
@@ -3472,9 +3472,9 @@ g_timeout_check (GSource  *source)
 }
 
 static gboolean
-g_timeout_dispatch (GSource    *source,
-		    GSourceFunc callback,
-		    gpointer    user_data)
+g_timeout_dispatch (GSource     *source,
+		    GSourceFunc  callback,
+		    gpointer     user_data)
 {
   GTimeoutSource *timeout_source = (GTimeoutSource *)source;
 
@@ -3534,6 +3534,7 @@ g_timeout_source_new (guint interval)
  * The source will not initially be associated with any #GMainContext
  * and must be added to one with g_source_attach() before it will be
  * executed.
+ *
  * The scheduling granularity/accuracy of this timeout source will be
  * in seconds.
  *
