@@ -1,3 +1,9 @@
+2007-07-21  Matthias Clasen  <mclasen@redhat.com>
+	
+	* glib/tmpl/fileutils.sgml: Fix an inaccuracy in the
+	G_FILE_TEST_IS_REGULAR docs, pointed out by
+	Vincent Untz.  (#417068)
+
 2007-07-20  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/tmpl/limits.sgml:

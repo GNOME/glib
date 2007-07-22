@@ -141,11 +141,14 @@ error domains.
 A test to perform on a file using g_file_test().
 </para>
 
-@G_FILE_TEST_IS_REGULAR: %TRUE if the file is a regular file (not a symlink or directory)
+@G_FILE_TEST_IS_REGULAR: %TRUE if the file is a regular file (not a directory).
+    Note that this test will also return %TRUE if the tested file is a symlink
+    to a regular file. 
 @G_FILE_TEST_IS_SYMLINK: %TRUE if the file is a symlink.
 @G_FILE_TEST_IS_DIR: %TRUE if the file is a directory.
 @G_FILE_TEST_IS_EXECUTABLE: %TRUE if the file is executable.
-@G_FILE_TEST_EXISTS: %TRUE if the file exists. It may or may not be a regular file.
+@G_FILE_TEST_EXISTS: %TRUE if the file exists. 
+    It may or may not be a regular file.
 
 <!-- ##### FUNCTION g_file_error_from_errno ##### -->
 <para>
