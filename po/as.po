@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: as\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-07-12 13:33-0400\n"
-"PO-Revision-Date: 2007-07-06 17:20+0530\n"
+"PO-Revision-Date: 2007-07-25 15:21+0530\n"
 "Last-Translator: Amitakhya Phukan <amitakhya@svn.gnome.org>\n"
 "Language-Team: Assamese\n"
 "MIME-Version: 1.0\n"
@@ -251,47 +251,46 @@ msgstr "'%s' ৰ পৰা '%s' লৈ সলনি কৰা যন্ত্ৰ
 #: glib/giochannel.c:1497
 #, c-format
 msgid "Can't do a raw read in g_io_channel_read_line_string"
-msgstr ""
+msgstr "g_io_channel_read_line_string ত raw read কৰিব নোৱাৰি"
 
 #: glib/giochannel.c:1544 glib/giochannel.c:1801 glib/giochannel.c:1887
 #, c-format
 msgid "Leftover unconverted data in read buffer"
-msgstr ""
+msgstr "read প্ৰশমকত অৱশিষ্ট অপৰিবৰ্ত্তিত তথ্য আছে"
 
 #: glib/giochannel.c:1624 glib/giochannel.c:1701
 #, c-format
 msgid "Channel terminates in a partial character"
-msgstr ""
+msgstr "ছেনেল অসম্পূৰ্ণ আখৰত অন্ত হয়"
 
 #: glib/giochannel.c:1687
 #, c-format
 msgid "Can't do a raw read in g_io_channel_read_to_end"
-msgstr ""
+msgstr "g_io_channel_read_to_end ত এটা raw read কৰিব নোৱাৰি"
 
 #: glib/gmappedfile.c:116
 #, c-format
 msgid "Failed to open file '%s': open() failed: %s"
-msgstr ""
+msgstr "'%s' নথিপত্ৰ খোলোঁতে বিফল: open() বিফল: %s"
 
 #: glib/gmappedfile.c:193
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
-msgstr ""
+msgstr "'%s' নথিপত্ৰ map কৰোঁতে বিফল: mmap() বিফল: %s"
 
 #: glib/gmarkup.c:226
 #, c-format
 msgid "Error on line %d char %d: %s"
-msgstr ""
+msgstr "%d শাৰীৰ %d আখৰত ভুল: %s"
 
 #: glib/gmarkup.c:324
 #, c-format
 msgid "Error on line %d: %s"
-msgstr ""
+msgstr "%d শাৰীত ভুল: %s"
 
 #: glib/gmarkup.c:428
-msgid ""
-"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
-msgstr ""
+msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgstr "ৰিক্ত পদাৰ্থ '&;' দেখা গ'ল; বৈধ পদাৰ্থসমূহ হ'ল: &amp; &quot; &lt; &gt; &apos;"
 
 #: glib/gmarkup.c:438
 #, c-format
@@ -299,62 +298,62 @@ msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
 "begins an entity; if this ampersand isn't supposed to be an entity, escape "
 "it as &amp;"
-msgstr ""
+msgstr "'%s' আখৰ পদাৰ্থৰ নামৰ আৰম্ভনিৰ বাবে বৈধ নহয়; & আখৰে এটা পদাৰ্থ আৰম্ভ কৰে; যদি এই এম্পাৰছেন্দ এটা পদাৰ্থ হ'ব নালাগে, তাক &amp; হিচাপে নিৰ্গমন কৰক"
 
 #: glib/gmarkup.c:472
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
-msgstr ""
+msgstr "'%s' আখৰ পদাৰ্থৰ নামৰ ভিতৰত বৈধ নহয়"
 
 #: glib/gmarkup.c:509
 #, c-format
 msgid "Entity name '%s' is not known"
-msgstr ""
+msgstr "পদাৰ্থৰ নাম '%s' অজ্ঞাত"
 
 #: glib/gmarkup.c:520
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
-msgstr ""
+msgstr "পদাৰ্থ এটা ছেমিকলনেৰে অন্ত ন'হ'ল; পদাৰ্থ এটা আৰম্ভ কৰিব নিবিচাৰিও অতি সম্ভৱ আপুনি এটা এম্পাৰছেন্দ আখৰ ব্যৱহাৰ কৰিছে - এম্পাৰছেন্দক &amp; হিচাপে নিৰ্গমন কৰক"
 
 #: glib/gmarkup.c:573
 #, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
-msgstr ""
+msgstr "'%-.*s' বিশ্লেষণ কৰোঁতে ভুল, যি কোনো আখৰৰ উল্লেখৰ ভিতৰৰ এটা সংখ্যা হ'ব লাগিছিল (&#২৩৪; যেনে) - হয়তো সংখ্যাটো বৰ ডাঙৰ"
 
 #: glib/gmarkup.c:598
 #, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
-msgstr ""
+msgstr "আখৰৰ উল্লেখ থকা '%-.*s' এ এটা আজ্ঞা থকা আখৰক সাঙ্কেতিক লিপিলৈ পৰিবৰ্তিত নকৰে"
 
 #: glib/gmarkup.c:613
 msgid "Empty character reference; should include a digit such as &#454;"
-msgstr ""
+msgstr "ৰিক্ত আখৰৰ সঙ্কেত; এটা সংখ্যা থাকিব লাগে যেনে &#৪৫৪;"
 
 #: glib/gmarkup.c:623
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
 "as &amp;"
-msgstr ""
+msgstr "আখৰৰ উল্লেখ এটা ছেমিকলনেৰে অন্ত ন'হ'ল; পদাৰ্থ এটা আৰম্ভ কৰিব নিবিচাৰিও অতি সম্ভৱ আপুনি এটা এম্পাৰছেন্দ আখৰ ব্যৱহাৰ কৰিছে - এম্পাৰছেন্দক &amp; হিচাপে নিৰ্গমন কৰক"
 
 #: glib/gmarkup.c:709
 msgid "Unfinished entity reference"
-msgstr ""
+msgstr "অসম্পূৰ্ণ পদাৰ্থৰ উল্লেখ"
 
 #: glib/gmarkup.c:715
 msgid "Unfinished character reference"
-msgstr ""
+msgstr "অসম্পূৰ্ণ আখৰৰ উল্লেখ"
 
 #: glib/gmarkup.c:958 glib/gmarkup.c:986 glib/gmarkup.c:1022
 msgid "Invalid UTF-8 encoded text"
-msgstr ""
+msgstr "অবৈধ UTF-8 সাঙ্কেতিক লিপি"
 
 #: glib/gmarkup.c:1058
 msgid "Document must begin with an element (e.g. <book>)"
-msgstr ""
+msgstr "প্ৰলেক্ষ এটা পদাৰ্থৰ সৈতে আৰম্ভ হ'ব লাগিব (যেনে <book>)"
 
 #: glib/gmarkup.c:1098
 #, c-format
@@ -372,8 +371,7 @@ msgstr ""
 
 #: glib/gmarkup.c:1251
 #, c-format
-msgid ""
-"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 
 #: glib/gmarkup.c:1293
@@ -416,57 +414,68 @@ msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr ""
 
 #: glib/gmarkup.c:1753
+#, fuzzy
 msgid "Document was empty or contained only whitespace"
-msgstr ""
+msgstr "প্ৰলেক্ষ"
 
 #: glib/gmarkup.c:1767
+#, fuzzy
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
-msgstr ""
+msgstr "প্ৰলেক্ষ"
 
 #: glib/gmarkup.c:1775 glib/gmarkup.c:1820
 #, c-format
+#, fuzzy
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
 "element opened"
-msgstr ""
+msgstr "প্ৰলেক্ষ"
 
 #: glib/gmarkup.c:1783
 #, c-format
+#, fuzzy
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
 "the tag <%s/>"
-msgstr ""
+msgstr "প্ৰলেক্ষ"
 
 #: glib/gmarkup.c:1789
+#, fuzzy
 msgid "Document ended unexpectedly inside an element name"
-msgstr ""
+msgstr "প্ৰলেক্ষ"
 
 #: glib/gmarkup.c:1795
+#, fuzzy
 msgid "Document ended unexpectedly inside an attribute name"
-msgstr ""
+msgstr "প্ৰলেক্ষ"
 
 #: glib/gmarkup.c:1800
+#, fuzzy
 msgid "Document ended unexpectedly inside an element-opening tag."
-msgstr ""
+msgstr "প্ৰলেক্ষ."
 
 #: glib/gmarkup.c:1806
+#, fuzzy
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
-msgstr ""
+msgstr "প্ৰলেক্ষ"
 
 #: glib/gmarkup.c:1813
+#, fuzzy
 msgid "Document ended unexpectedly while inside an attribute value"
-msgstr ""
+msgstr "প্ৰলেক্ষ"
 
 #: glib/gmarkup.c:1829
 #, c-format
+#, fuzzy
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
-msgstr ""
+msgstr "প্ৰলেক্ষ"
 
 #: glib/gmarkup.c:1835
+#, fuzzy
 msgid "Document ended unexpectedly inside a comment or processing instruction"
-msgstr ""
+msgstr "প্ৰলেক্ষ"
 
 #: glib/gregex.c:126
 msgid "corrupted object"
@@ -795,8 +804,7 @@ msgstr ""
 
 #: glib/gkeyfile.c:746
 #, c-format
-msgid ""
-"Key file contains line '%s' which is not a key-value pair, group, or comment"
+msgid "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr ""
 
 #: glib/gkeyfile.c:806
@@ -882,3 +890,4 @@ msgstr ""
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr ""
+
