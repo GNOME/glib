@@ -181,7 +181,7 @@ msgstr ""
 #: glib/gfileutils.c:705 glib/gfileutils.c:792
 #, c-format
 msgid "Failed to open file '%s': %s"
-msgstr "Impossible de dubrir le fichièr '%s' : %s"
+msgstr "Impossible de dobrir le fichièr '%s' : %s"
 
 #: glib/gfileutils.c:722 glib/gmappedfile.c:133
 #, c-format
@@ -625,11 +625,11 @@ msgstr "Opcions de l'ajuda :"
 
 #: glib/goption.c:677
 msgid "Show help options"
-msgstr "Mostrar las opcions de l'ajuda"
+msgstr "Visualizar las opcions de l'ajuda"
 
 #: glib/goption.c:683
 msgid "Show all help options"
-msgstr "Mostrar totas las opcions de l'ajuda"
+msgstr "Visualizar totas las opcions de l'ajuda"
 
 #: glib/goption.c:735
 msgid "Application Options:"
