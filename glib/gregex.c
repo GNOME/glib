@@ -922,13 +922,6 @@ g_regex_new (const gchar         *pattern,
       compile_options |= PCRE_NEWLINE_ANY;
     }
 
-  g_print ("compile opts: %x\n", compile_options);
-  if (compile_options & PCRE_UTF8)
-    g_print ("\tPCRE_UTF8\n");
-  if (compile_options & PCRE_NO_UTF8_CHECK)
-    g_print ("\tPCRE_NO_UTF8_CHECK\n");
-  if (compile_options & PCRE_NEWLINE_ANY)
-    g_print ("\tPCRE_NEWLINE_ANY\n");
   /* compile the pattern */
   re = pcre_compile (pattern, compile_options, &errmsg, &erroffset, NULL);
 

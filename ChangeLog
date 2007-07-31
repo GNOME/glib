@@ -1,3 +1,7 @@
+2007-07-31  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gregex.c: Remove debug spew
+
 2007-07-21  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gunidecomp.c:
