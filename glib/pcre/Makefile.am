@@ -9,7 +9,7 @@ INCLUDES = \
 	-DMAX_NAME_COUNT=10000 \
 	-DMAX_DUPLENGTH=30000 \
 	-DLINK_SIZE=2 \
-	-DEBCDIC=0 \
+	-UEBCDIC \
 	-DPOSIX_MALLOC_THRESHOLD=10 \
 	-I$(top_srcdir) \
 	-I$(srcdir) \

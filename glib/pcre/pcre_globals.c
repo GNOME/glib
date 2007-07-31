@@ -6,7 +6,7 @@
 and semantics are as close as possible to those of the Perl 5 language.
 
                        Written by Philip Hazel
-           Copyright (c) 1997-2006 University of Cambridge
+           Copyright (c) 1997-2007 University of Cambridge
 
 -----------------------------------------------------------------------------
 Redistribution and use in source and binary forms, with or without
@@ -46,14 +46,8 @@ indirection. These values can be changed by the caller, but are shared between
 all threads. However, when compiling for Virtual Pascal, things are done
 differently, and global variables are not used (see pcre.in). */
 
-
 #include "pcre_internal.h"
 
-
-#ifdef __cplusplus
-extern "C" int   (*pcre_callout)(pcre_callout_block *) = NULL;
-#else
-int   (*pcre_callout)(pcre_callout_block *) = NULL;
-#endif
+PCRE_EXP_DATA_DEFN int   (*pcre_callout)(pcre_callout_block *) = NULL;
 
 /* End of pcre_globals.c */

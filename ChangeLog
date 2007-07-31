@@ -1,5 +1,9 @@
 2007-07-31  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/pcre/*: Update the internal PCRE to 7.2
+
+2007-07-31  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/pltcheck.sh: Fix some glitches
 
 	* glib/gregex.c: Remove debug spew
