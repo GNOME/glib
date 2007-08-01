@@ -1,5 +1,9 @@
 2007-08-01  Tor Lillqvist  <tml@novell.com>
 
+	* glib/update-pcre/notdll.patch: Update so it applies again.
+
+	* glib/pcre/pcre.h: Corresponding change.
+
 	* glib/gutils.c (get_special_folder): Drop leftover use of a
 	union.
 

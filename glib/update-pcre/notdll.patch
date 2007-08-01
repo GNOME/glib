@@ -1,19 +1,19 @@
 --- pcre/pcre.h	2006-07-05 13:28:01.000000000 +0200
 +++ pcre/pcre.h	2006-07-05 13:28:01.000000000 +0200
-@@ -60,6 +60,8 @@
- /* Win32 uses DLL by default; it needs special stuff for exported functions
- when building PCRE. */
+@@ -51,13 +51,16 @@
+ export setting is defined in pcre_internal.h, which includes this file. So we
+ don't change an existing definition of PCRE_EXP_DECL. */
  
 +/* But don't do that when building as part of GLib */
 +#if 0
- #ifdef _WIN32
- #  ifdef PCRE_DEFINITION
- #    ifdef DLL_EXPORT
-@@ -71,6 +71,7 @@
+ #ifndef PCRE_EXP_DECL
+ #  ifdef _WIN32
+ #    ifndef PCRE_STATIC
+ #      define PCRE_EXP_DECL extern __declspec(dllimport)
  #    endif
  #  endif
  #endif
 +#endif
  
- /* Otherwise, we use the standard "extern". */
+ /* By default, we use the standard "extern" declarations. */
  

@@ -51,12 +51,15 @@ imported have to be identified as such. When building PCRE, the appropriate
 export setting is defined in pcre_internal.h, which includes this file. So we
 don't change an existing definition of PCRE_EXP_DECL. */
 
+/* But don't do that when building as part of GLib */
+#if 0
 #ifndef PCRE_EXP_DECL
 #  ifdef _WIN32
 #    ifndef PCRE_STATIC
 #      define PCRE_EXP_DECL extern __declspec(dllimport)
 #    endif
 #  endif
+#endif
 #endif
 
 /* By default, we use the standard "extern" declarations. */
