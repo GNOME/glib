@@ -1,5 +1,8 @@
 2007-08-01  Tor Lillqvist  <tml@novell.com>
 
+	* glib/gutils.c (get_special_folder): Drop leftover use of a
+	union.
+
 	* glibconfig.h.win32.in: Update to match what configure produces.
 
 2007-07-31  Matthias Clasen  <mclasen@redhat.com>

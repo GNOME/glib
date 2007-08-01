@@ -1409,10 +1409,7 @@ static  gchar  **g_user_special_dirs = NULL;
 static gchar *
 get_special_folder (int csidl)
 {
-  union {
-    char c[MAX_PATH+1];
-    wchar_t wc[MAX_PATH+1];
-  } path;
+  wchar_t path[MAX_PATH+1];
   HRESULT hr;
   LPITEMIDLIST pidl = NULL;
   BOOL b;
@@ -1421,9 +1418,9 @@ get_special_folder (int csidl)
   hr = SHGetSpecialFolderLocation (NULL, csidl, &pidl);
   if (hr == S_OK)
     {
-      b = SHGetPathFromIDListW (pidl, path.wc);
+      b = SHGetPathFromIDListW (pidl, path);
       if (b)
-	retval = g_utf16_to_utf8 (path.wc, -1, NULL, NULL, NULL);
+	retval = g_utf16_to_utf8 (path, -1, NULL, NULL, NULL);
       CoTaskMemFree (pidl);
     }
   return retval;
