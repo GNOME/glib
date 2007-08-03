@@ -296,11 +296,13 @@ gboolean
 g_match_info_next (GMatchInfo  *match_info,
 		   GError     **error)
 {
+  gint opts;
+
   g_return_val_if_fail (match_info != NULL, FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
   g_return_val_if_fail (match_info->pos >= 0, FALSE);
 
-  gint opts = match_info->regex->match_opts | match_info->match_opts;
+  opts = match_info->regex->match_opts | match_info->match_opts;
  
   match_info->matches = pcre_exec (match_info->regex->pcre_re,
 				   match_info->regex->extra,

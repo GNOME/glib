@@ -1,5 +1,9 @@
 2007-08-03  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gregex.c: Fix a C99ism.  (#462549, Kazuki IWAMOTO)
+
+2007-08-03  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/gregex.c: Handle J changes in the pattern
 	correctly.  (#444765, Yevgen Muntyan)
 
