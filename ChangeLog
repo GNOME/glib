@@ -1,5 +1,10 @@
 2007-08-03  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gregex.c: Revert the J handling change,
+	since it doesn't work.
+
+2007-08-03  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/gregex.c: Fix a C99ism.  (#462549, Kazuki IWAMOTO)
 
 2007-08-03  Matthias Clasen  <mclasen@redhat.com>
