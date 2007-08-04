@@ -1,5 +1,9 @@
 2007-08-03  Matthias Clasen  <mclasen@redhat.com>
 
+	* configure.in: Bump version to 2.14.0
+
+2007-08-03  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/gregex.c: Revert the J handling change,
 	since it doesn't work.
 
