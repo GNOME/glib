@@ -86,7 +86,7 @@ gettextdir = $(datadir)/glib-2.0/gettext
 gettext_SCRIPTS = mkinstalldirs
 
 # build documentation when doing distcheck
-DISTCHECK_CONFIGURE_FLAGS = --enable-gtk-doc
+DISTCHECK_CONFIGURE_FLAGS = --enable-debug --enable-gtk-doc --enable-man
 
 DISTCLEANFILES = glibconfig-sysdefs.h glibconfig.h stamp-gc-h
 

@@ -1,5 +1,7 @@
 2007-08-03  Matthias Clasen  <mclasen@redhat.com>
 
+	* === Released 2.14.0 ===
+
 	* NEWS: Updates
 
 	* configure.in: Bump version to 2.14.0

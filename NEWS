@@ -10,6 +10,7 @@ Overview of Changes from GLib 2.13.7 to GLib 2.14.0
 * Bugs fixed:
  453998 Make _g_unichar_combining_class() public
  462549 gregex.c: variable is declared at middle of block
+ 417068 g_file_test doc inconsistency
 
 * Updated translations:
  Assamese (as)

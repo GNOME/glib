@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.es\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-12 13:33-0400\n"
+"POT-Creation-Date: 2007-08-03 21:54-0400\n"
 "PO-Revision-Date: 2007-06-29 20:16+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Spanish <traductores@es.gnome.org>\n"
@@ -567,67 +567,67 @@ msgstr "combinación de banderas de nueva línea inválidas"
 msgid "unknown error"
 msgstr "error desconocido"
 
-#: glib/gregex.c:315 glib/gregex.c:1343
+#: glib/gregex.c:319 glib/gregex.c:1354
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "Error al coincidir con la expresión regular %s: %s"
 
-#: glib/gregex.c:874
+#: glib/gregex.c:882
 msgid "PCRE library is compiled without UTF8 support"
 msgstr "La biblioteca PCRE está compilada sin soporte para UTF8"
 
-#: glib/gregex.c:883
+#: glib/gregex.c:891
 msgid "PCRE library is compiled without UTF8 properties support"
 msgstr ""
 "La biblioteca PCRE está compilada sin soporte para las propiedades de UTF8"
 
-#: glib/gregex.c:928
+#: glib/gregex.c:936
 #, c-format
 msgid "Error while compiling regular expression %s at char %d: %s"
 msgstr "Error al compilar la expresión regular %s en el carácter %d: %s"
 
-#: glib/gregex.c:950
+#: glib/gregex.c:958
 #, c-format
 msgid "Error while optimizing regular expression %s: %s"
 msgstr "Error al optimizar la expresión regular %s: %s"
 
-#: glib/gregex.c:1769
+#: glib/gregex.c:1782
 msgid "hexadecimal digit or '}' expected"
 msgstr "se esperaba un dígito hexadecimal o «}»"
 
-#: glib/gregex.c:1785
+#: glib/gregex.c:1798
 msgid "hexadecimal digit expected"
 msgstr "se esperaba un dígito hexadecimal"
 
-#: glib/gregex.c:1825
+#: glib/gregex.c:1838
 msgid "missing '<' in symbolic reference"
 msgstr "falta «<» en la referencia simbólica"
 
-#: glib/gregex.c:1834
+#: glib/gregex.c:1847
 msgid "unfinished symbolic reference"
 msgstr "referencia de símbolo sin terminar"
 
-#: glib/gregex.c:1841
+#: glib/gregex.c:1854
 msgid "zero-length symbolic reference"
 msgstr "referencia simbólica de longitud cero"
 
-#: glib/gregex.c:1852
+#: glib/gregex.c:1865
 msgid "digit expected"
 msgstr "se esperaba un dígito"
 
-#: glib/gregex.c:1870
+#: glib/gregex.c:1883
 msgid "illegal symbolic reference"
 msgstr "referencia simbólica ilegal"
 
-#: glib/gregex.c:1932
+#: glib/gregex.c:1945
 msgid "stray final '\\'"
 msgstr "«\\» al final de la cadena"
 
-#: glib/gregex.c:1936
+#: glib/gregex.c:1949
 msgid "unknown escape sequence"
 msgstr "secuencia de escape desconocida"
 
-#: glib/gregex.c:1946
+#: glib/gregex.c:1959
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr "Error al analizar el texto de reemplazo «%s» en el carácter %lu: %s"

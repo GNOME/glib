@@ -354,9 +354,10 @@ if (G_LIKELY (random () != 1))
   g_print ("not one");
 </programlisting></informalexample>
 
-@expr: the expression
 @Returns: the value of @expr
 @Since: 2.2
+<!-- # Unused Parameters # -->
+@expr: the expression
 
 
 <!-- ##### MACRO G_UNLIKELY ##### -->

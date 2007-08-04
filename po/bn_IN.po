@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-12 13:33-0400\n"
+"POT-Creation-Date: 2007-08-03 21:54-0400\n"
 "PO-Revision-Date: 2007-07-10 12:49+0530\n"
 "Last-Translator: Runa Bhattacharjee <runabh@gmail.com>\n"
 "Language-Team: Bengali (India) <en@li.org>\n"
@@ -549,66 +549,66 @@ msgstr "নতুন পংক্তি চিহ্নকারী ফ্ল্
 msgid "unknown error"
 msgstr "অজানা সমস্যা"
 
-#: glib/gregex.c:315 glib/gregex.c:1343
+#: glib/gregex.c:319 glib/gregex.c:1354
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "রেগুলার এক্সপ্রেশন %s-র মিল অনুসন্ধানে সমস্যা: %s"
 
-#: glib/gregex.c:874
+#: glib/gregex.c:882
 msgid "PCRE library is compiled without UTF8 support"
 msgstr "PCRE লাইব্রেরি UTF8 সমর্থন বিনা কম্পাইল করা হয়েছে"
 
-#: glib/gregex.c:883
+#: glib/gregex.c:891
 msgid "PCRE library is compiled without UTF8 properties support"
 msgstr "PCRE লাইব্রেরি UTF8 বৈশিষ্ট্যের সমর্থন বিনা কম্পাইল করা হয়েছে"
 
-#: glib/gregex.c:928
+#: glib/gregex.c:936
 #, c-format
 msgid "Error while compiling regular expression %s at char %d: %s"
 msgstr "রেগুলার এক্সপ্রেশন %s, %d অক্ষরে কম্পাইল করতে সমস্যা: %s"
 
-#: glib/gregex.c:950
+#: glib/gregex.c:958
 #, c-format
 msgid "Error while optimizing regular expression %s: %s"
 msgstr "রেগুলার এক্সপ্রেশন %s-র সর্বোত্তম ব্যবহারে সমস্যা: %s"
 
-#: glib/gregex.c:1769
+#: glib/gregex.c:1782
 msgid "hexadecimal digit or '}' expected"
 msgstr "হেক্সাডেসিমাল সংখ্যা অথবা '}' প্রত্যাশিত"
 
-#: glib/gregex.c:1785
+#: glib/gregex.c:1798
 msgid "hexadecimal digit expected"
 msgstr "হেক্সাডেসিমাল সংখ্যা প্রত্যাশিত"
 
-#: glib/gregex.c:1825
+#: glib/gregex.c:1838
 msgid "missing '<' in symbolic reference"
 msgstr "সিম্বলিক রেফারেন্সের মধ্যে '<' অনুপস্থিত"
 
-#: glib/gregex.c:1834
+#: glib/gregex.c:1847
 msgid "unfinished symbolic reference"
 msgstr "সিম্বলিক রেফারেন্স অসম্পূর্ণ"
 
-#: glib/gregex.c:1841
+#: glib/gregex.c:1854
 msgid "zero-length symbolic reference"
 msgstr "সিম্বলিক রেফারেন্সের মধ্যে অক্ষর সংখ্যা শূণ্য"
 
-#: glib/gregex.c:1852
+#: glib/gregex.c:1865
 msgid "digit expected"
 msgstr "সংখ্যা প্রত্যাশিত"
 
-#: glib/gregex.c:1870
+#: glib/gregex.c:1883
 msgid "illegal symbolic reference"
 msgstr "অবৈধ সিম্বলিক রেফারেন্স"
 
-#: glib/gregex.c:1932
+#: glib/gregex.c:1945
 msgid "stray final '\\'"
 msgstr "অন্তে অপ্রত্যাশিত '\\'"
 
-#: glib/gregex.c:1936
+#: glib/gregex.c:1949
 msgid "unknown escape sequence"
 msgstr "অজানা এস্কেপ সিকোয়েন্স"
 
-#: glib/gregex.c:1946
+#: glib/gregex.c:1959
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr "প্রতিস্থাপনার টেক্সট \"%s\", %lu অক্ষরে পার্স করতে সমস্যা: %s"

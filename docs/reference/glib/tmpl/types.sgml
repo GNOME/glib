@@ -179,11 +179,13 @@ Values of this type can range from -9,223,372,036,854,775,808 to
 </para>
 
 
-<!-- ##### TYPEDEF guint64 ##### -->
+<!-- ##### FUNCTION guint64 ##### -->
 <para>
 An unsigned integer guaranteed to be 64 bits on all platforms.
 Values of this type can range from 0 to 18,446,744,073,709,551,615.
 </para>
+
+@Returns: 
 
 
 <!-- ##### MACRO G_GINT64_CONSTANT ##### -->

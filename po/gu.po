@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.gu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-12 13:33-0400\n"
+"POT-Creation-Date: 2007-08-03 21:54-0400\n"
 "PO-Revision-Date: 2007-07-04 15:31+0530\n"
 "Last-Translator: Ankit Patel <ankit@redhat.com>\n"
 "Language-Team: Gujarati <fedora-trans-gu@redhat.com>\n"
@@ -537,66 +537,66 @@ msgstr "નવીલીટી ફ્લેગોનું અયોગ્ય જ
 msgid "unknown error"
 msgstr "અજ્ઞાત ભૂલ"
 
-#: glib/gregex.c:315 glib/gregex.c:1343
+#: glib/gregex.c:319 glib/gregex.c:1354
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "નિયમિત સમીકરણ %s સરખાવતી વખતે ભૂલ: %s"
 
-#: glib/gregex.c:874
+#: glib/gregex.c:882
 msgid "PCRE library is compiled without UTF8 support"
 msgstr "PCRE લાઈબ્રેરી UTF8 આધાર વિના કમ્પાઈલ થયેલ છે"
 
-#: glib/gregex.c:883
+#: glib/gregex.c:891
 msgid "PCRE library is compiled without UTF8 properties support"
 msgstr "PCRE લાઈબ્રેરી UTF8 ગુણધર્મો આધાર વિના કમ્પાઈલ થયેલ છે"
 
-#: glib/gregex.c:928
+#: glib/gregex.c:936
 #, c-format
 msgid "Error while compiling regular expression %s at char %d: %s"
 msgstr "નિયમિત સમીકરણ %s ને કમ્પાઈલ કરવામાં અક્ષર %d આગળ ભૂલ: %s"
 
-#: glib/gregex.c:950
+#: glib/gregex.c:958
 #, c-format
 msgid "Error while optimizing regular expression %s: %s"
 msgstr "નિયમિત સમીકરણ %s શ્રેષ્ઠ બનાવતી વખતે ભૂલ: %s"
 
-#: glib/gregex.c:1769
+#: glib/gregex.c:1782
 msgid "hexadecimal digit or '}' expected"
 msgstr "હેક્ઝાડેસીમલ અંક અથવા '}' ઈચ્છિત છે"
 
-#: glib/gregex.c:1785
+#: glib/gregex.c:1798
 msgid "hexadecimal digit expected"
 msgstr "હેક્ઝાડેસીમલ અંક ઈચ્છિત છે"
 
-#: glib/gregex.c:1825
+#: glib/gregex.c:1838
 msgid "missing '<' in symbolic reference"
 msgstr "સંજ્ઞાકીય સંદર્ભમાં '<' ગુમ થયેલ છે"
 
-#: glib/gregex.c:1834
+#: glib/gregex.c:1847
 msgid "unfinished symbolic reference"
 msgstr "અપૂર્ણ સંજ્ઞાકીય સંદર્ભ"
 
-#: glib/gregex.c:1841
+#: glib/gregex.c:1854
 msgid "zero-length symbolic reference"
 msgstr "શૂન્ય-લંબાઈ સંજ્ઞાકીય સંદર્ભ"
 
-#: glib/gregex.c:1852
+#: glib/gregex.c:1865
 msgid "digit expected"
 msgstr "અંક ઈચ્છિત"
 
-#: glib/gregex.c:1870
+#: glib/gregex.c:1883
 msgid "illegal symbolic reference"
 msgstr "અયોગ્ય સંજ્ઞાકીય સંદર્ભ"
 
-#: glib/gregex.c:1932
+#: glib/gregex.c:1945
 msgid "stray final '\\'"
 msgstr "સ્ટ્રે અંત '\\'"
 
-#: glib/gregex.c:1936
+#: glib/gregex.c:1949
 msgid "unknown escape sequence"
 msgstr "અજ્ઞાત એસ્કેપ ક્રમ"
 
-#: glib/gregex.c:1946
+#: glib/gregex.c:1959
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr "બદલી લખાણ \"%s\" નું પદચ્છેદન કરતી વખતે અક્ષર %lu આગળ ભૂલ: %s"
