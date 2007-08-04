@@ -1,4 +1,28 @@
-Overview of Changes from GLib 2.13.6 to GLib 2.13.6
+Overview of Changes from GLib 2.13.7 to GLib 2.14.0
+===================================================
+
+* Last-minute API additions:
+ - Make g_unichar_combining_class public
+ - Add goffset type, add G_MAXSSIZE and G_MINSSIZE
+
+* Update PCRE to 7.2
+
+* Bugs fixed:
+ 453998 Make _g_unichar_combining_class() public
+ 462549 gregex.c: variable is declared at middle of block
+
+* Updated translations:
+ Assamese (as)
+ Basque (eu)
+ Kannada (kn)
+ Malayalam (ml)
+ Dutch (nl)
+ Polish (pl)
+ Brazilian Portugese (pt_BR)
+ Turkish (tr)
+
+
+Overview of Changes from GLib 2.13.6 to GLib 2.13.7
 ===================================================
 
 * The memory corruption warning from the slice allocator that
