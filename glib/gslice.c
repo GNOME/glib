@@ -1410,10 +1410,10 @@ smc_tree_remove (SmcKType key)
   return found_one;
 }
 
+#ifdef G_ENABLE_DEBUG
 void
 g_slice_debug_tree_statistics (void)
 {
-#ifdef G_ENABLE_DEBUG
   g_mutex_lock (smc_tree_mutex);
   if (smc_tree_root)
     {
@@ -1469,8 +1469,8 @@ g_slice_debug_tree_statistics (void)
    * GSlice: MemChecker: 504.900474 branches per trunk, 98.81% utilization
    * GSlice: MemChecker: 4.965039 entries per branch, 1 minimum, 37 maximum
    */
-#endif /* G_ENABLE_DEBUG */
 }
+#endif /* G_ENABLE_DEBUG */
 
 #define __G_SLICE_C__
 #include "galiasdef.c"
