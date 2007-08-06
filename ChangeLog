@@ -1,3 +1,9 @@
+2007-08-06  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gslice.c: Move the G_ENABLE_DEBUG ifdef inside
+	g_slice_debug_tree_statistics() so that the function exists (but
+	doesn't do anything) also in a non-debug build. (#440544)
+
 2007-08-03  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Bump version
