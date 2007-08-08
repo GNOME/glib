@@ -36,6 +36,7 @@ galiasdef.c: glib.symbols
 
 if OS_LINUX
 if HAVE_GNUC_VISIBILITY
+TESTS_ENVIRONMENT = GLIB_DEBUG_FLAGS="$(GLIB_DEBUG_FLAGS)"
 TESTS = abicheck.sh pltcheck.sh
 endif
 endif
