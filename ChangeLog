@@ -1,3 +1,7 @@
+2007-08-07  Matthias Clasen  <mclasen@redhat.com>
+
+	* MAINTAINERS: Update for new format regulations
+
 2007-08-03  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Bump version
