@@ -381,7 +381,7 @@ returns that paramspec. Redirect is used typically for
 providing a new implementation of a property in a derived
 type while preserving all the properties from the parent
 type. Redirection is established by creating a property
-of type #GParamSpecOverride. See g_object_override_property()
+of type #GParamSpecOverride. See g_object_class_override_property()
 for an example of the use of this capability.
 </para>
 

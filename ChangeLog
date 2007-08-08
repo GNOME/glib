@@ -1,3 +1,7 @@
+2007-08-08  Tristan Van Berkom <tvb@gnome.org>
+
+	* docs/reference/gobject/tmpl/gparamspec.sgml: Fixed minor typo in docs.
+
 2007-08-07  Matthias Clasen  <mclasen@redhat.com>
 
 	* MAINTAINERS: Update for new format regulations
