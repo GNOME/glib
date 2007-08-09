@@ -691,8 +691,10 @@ g_slice_free_chain_with_offset
 g_slice_set_config
 g_slice_get_config
 g_slice_get_config_state
+#ifdef G_ENABLE_DEBUG
 #ifdef INCLUDE_INTERNAL_SYMBOLS
 g_slice_debug_tree_statistics
+#endif
 #endif
 #endif
 #endif
