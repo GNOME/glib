@@ -1,5 +1,14 @@
 2007-08-08  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gmarkup.c (append_escaped_text): Handle restricted
+	characters by converting them to numeric character 
+	entities.  (#464145, Andreas Monitzer)
+
+	* tests/markup-escape-test.c: Add tests for restricted
+	characters and numeric character entities. 
+
+2007-08-08  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/glib.symbols:
 	* glib/Makefile.am:
 	* glib/abicheck.sh: Make it work regardless of --enable-debug

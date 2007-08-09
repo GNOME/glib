@@ -955,7 +955,7 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
               set_error (context,
                          error,
                          G_MARKUP_ERROR_BAD_UTF8,
-                         _("Invalid UTF-8 encoded text"));
+                         _("Invalid UTF-8 encoded text - overlong sequence"));
             }
           
           goto finished;
@@ -983,7 +983,7 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
       set_error (context,
                  error,
                  G_MARKUP_ERROR_BAD_UTF8,
-                 _("Invalid UTF-8 encoded text"));
+                 _("Invalid UTF-8 encoded text - not a start char"));
       goto finished;
     }
 
@@ -1019,7 +1019,9 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
       set_error (context,
                  error,
                  G_MARKUP_ERROR_BAD_UTF8,
-                 _("Invalid UTF-8 encoded text"));
+                 _("Invalid UTF-8 encoded text - not valid '%s'"),
+                 g_strndup (context->current_text,
+                            context->current_text_len));
       goto finished;
     }
 
@@ -1900,6 +1902,7 @@ append_escaped_text (GString     *str,
 {
   const gchar *p;
   const gchar *end;
+  gunichar c;
 
   p = text;
   end = text + length;
@@ -1932,7 +1935,15 @@ append_escaped_text (GString     *str,
           break;
 
         default:
-          g_string_append_len (str, p, next - p);
+          c = g_utf8_get_char (p);
+          if ((0x1 <= c && c <= 0x8) ||
+              (0xb <= c && c  <= 0xc) ||
+              (0xe <= c && c <= 0x1f) ||
+              (0x7f <= c && c <= 0x84) ||
+              (0x86 <= c && c <= 0x9f))
+            g_string_append_printf (str, "&#x%x;", c);
+          else
+            g_string_append_len (str, p, next - p);
           break;
         }
 

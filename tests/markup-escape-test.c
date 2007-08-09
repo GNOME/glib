@@ -27,6 +27,24 @@ test (const gchar *original,
 }
 
 static void
+test_unichar (gunichar c, 
+              gboolean entity)
+{
+  gint len;
+  gchar outbuf[7], expected[12];
+
+  len = g_unichar_to_utf8 (c, outbuf);
+  outbuf[len] = 0;
+
+  if (entity)
+    g_snprintf (expected, 12, "&#x%x;", c);
+  else
+    strcpy (expected, outbuf);
+
+  test (outbuf, expected);
+}
+
+static void
 test_format (const gchar *format,
 	     const gchar *expected,
 	     ...)
@@ -67,6 +85,25 @@ int main (int argc, char **argv)
   test ("A&&", "A&amp;&amp;");
   test ("A&&A", "A&amp;&amp;A");
   test ("A&A&A", "A&amp;A&amp;A");
+  test ("A&#23;A", "A&amp;#23;A");
+  test ("A&#xa;A", "A&amp;#xa;A");
+  test_unichar (0x1, TRUE);
+  test_unichar (0x8, TRUE);
+  test_unichar (0x9, FALSE);
+  test_unichar (0xa, FALSE);
+  test_unichar (0xb, TRUE);
+  test_unichar (0xc, TRUE);
+  test_unichar (0xd, FALSE);
+  test_unichar (0xe, TRUE);
+  test_unichar (0x1f, TRUE);
+  test_unichar (0x20, FALSE);
+  test_unichar (0x7e, FALSE);
+  test_unichar (0x7f, TRUE);
+  test_unichar (0x84, TRUE);
+  test_unichar (0x85, FALSE);
+  test_unichar (0x86, TRUE);
+  test_unichar (0x9f, TRUE);
+  test_unichar (0xa0, FALSE);
   
   /* Tests for g_markup_printf_escaped() */
   test_format ("A", "A");
