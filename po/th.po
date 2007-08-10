@@ -6,24 +6,24 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: glib 2.7.1\n"
+"Project-Id-Version: glib 2.14.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-03 21:54-0400\n"
-"PO-Revision-Date: 2007-05-21 18:31+0700\n"
+"POT-Creation-Date: 2007-08-10 15:09+0700\n"
+"PO-Revision-Date: 2007-08-10 15:21+0700\n"
 "Last-Translator: Theppitak Karoonboonyanan <thep@linux.thai.net>\n"
-"Language-Team: Thai <l10n@opentle.org>\n"
+"Language-Team: Thai <thai-l10n@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: glib/gbookmarkfile.c:705 glib/gbookmarkfile.c:782 glib/gbookmarkfile.c:861
-#: glib/gbookmarkfile.c:908
+#: glib/gbookmarkfile.c:705 glib/gbookmarkfile.c:782
+#: glib/gbookmarkfile.c:861 glib/gbookmarkfile.c:908
 #, c-format
 msgid "Unexpected attribute '%s' for element '%s'"
 msgstr "พบแอตทริบิวต์ '%s' ที่ไม่ต้องการ สำหรับอิลิเมนต์ '%s'"
 
-#: glib/gbookmarkfile.c:716 glib/gbookmarkfile.c:793 glib/gbookmarkfile.c:803
-#: glib/gbookmarkfile.c:919
+#: glib/gbookmarkfile.c:716 glib/gbookmarkfile.c:793
+#: glib/gbookmarkfile.c:803 glib/gbookmarkfile.c:919
 #, c-format
 msgid "Attribute '%s' of element '%s' not found"
 msgstr "ไม่พบแอตทริบิวต์ '%s' สำหรับอิลิเมนต์ '%s'"
@@ -111,8 +111,8 @@ msgstr "มีลำดับไบต์ที่ไม่ถูกต้อง
 msgid "Error during conversion: %s"
 msgstr "เกิดข้อผิดพลาดระหว่างแปลงรหัส: %s"
 
-#: glib/gconvert.c:663 glib/gutf8.c:946 glib/gutf8.c:1150 glib/gutf8.c:1291
-#: glib/gutf8.c:1395
+#: glib/gconvert.c:663 glib/gutf8.c:946 glib/gutf8.c:1150
+#: glib/gutf8.c:1291 glib/gutf8.c:1395
 #, c-format
 msgid "Partial character sequence at end of input"
 msgstr "มีลำดับไบต์ไม่เต็มอักขระอยู่ที่ท้ายข้อมูลเข้า"
@@ -252,7 +252,8 @@ msgstr "ไม่สามารถเปิดตัวแปลงรหัส
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "ไม่สามารถอ่านข้อมูลแบบดิบใน g_io_channel_read_line_string"
 
-#: glib/giochannel.c:1544 glib/giochannel.c:1801 glib/giochannel.c:1887
+#: glib/giochannel.c:1544 glib/giochannel.c:1801
+#: glib/giochannel.c:1887
 #, c-format
 msgid "Leftover unconverted data in read buffer"
 msgstr "มีข้อมูลตกค้างไม่ได้แปลงอยู่ในบัฟเฟอร์สำหรับอ่าน"
@@ -355,36 +356,45 @@ msgstr "ตัวอ้างอิงเอนทิตีไม่สมบู
 msgid "Unfinished character reference"
 msgstr "ตัวอ้างอิงอักขระไม่สมบูรณ์"
 
-#: glib/gmarkup.c:958 glib/gmarkup.c:986 glib/gmarkup.c:1022
-msgid "Invalid UTF-8 encoded text"
-msgstr "ข้อความลงรหัส UTF-8 ไม่ถูกต้อง"
+#: glib/gmarkup.c:958
+msgid "Invalid UTF-8 encoded text - overlong sequence"
+msgstr "ข้อความลงรหัส UTF-8 ไม่ถูกต้อง - ลำดับซ้อนเหลื่อมกัน"
 
-#: glib/gmarkup.c:1058
+#: glib/gmarkup.c:986
+msgid "Invalid UTF-8 encoded text - not a start char"
+msgstr "ข้อความลงรหัส UTF-8 ไม่ถูกต้อง - ไม่ได้เริ่มด้วยไบต์ที่เป็นต้นอักขระ"
+
+#: glib/gmarkup.c:1022
+#, c-format
+msgid "Invalid UTF-8 encoded text - not valid '%s'"
+msgstr "ข้อความลงรหัส UTF-8 ไม่ถูกต้อง - ข้อความที่ผิด: '%s'"
+
+#: glib/gmarkup.c:1060
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "เอกสารต้องเริ่มด้วยอิลิเมนต์ (เช่น <book>)"
 
-#: glib/gmarkup.c:1098
+#: glib/gmarkup.c:1100
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
 msgstr "'%s' ไม่ใช่อักขระที่ใช้ตามหลัง '<' ได้ จึงไม่สามารถใช้ขึ้นต้นชื่ออิลิเมนต์ได้"
 
-#: glib/gmarkup.c:1162
+#: glib/gmarkup.c:1164
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
 "'%s'"
 msgstr "พบอักขระแปลกปลอม '%s' ในขณะที่มองหาอักขระ '>' ที่จะมาปิดแท็กตั้งต้นอิลิเมนต์ '%s'"
 
-#: glib/gmarkup.c:1251
+#: glib/gmarkup.c:1253
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "พบอักขระแปลกปลอม '%s' ในขณะที่กำลังมองหา '=' หลังชื่อแอตทริบิวต์ '%s' ของอิลิเมนต์ '%s'"
 
-#: glib/gmarkup.c:1293
+#: glib/gmarkup.c:1295
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -394,7 +404,7 @@ msgstr ""
 "พบอักขระแปลกปลอม '%s' ในขณะที่กำลังมองหา '>' หรือ '/' ที่จะมาปิดแท็กตั้งต้นของอิลิเมนต์ '%"
 "s' หรือไม่ก็เป็นแอตทริบิวต์ เป็นไปได้ว่าคุณกำลังใช้อักขระที่ใช้ไม่ได้ในชื่อแอตทริบิวต์"
 
-#: glib/gmarkup.c:1382
+#: glib/gmarkup.c:1384
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -403,80 +413,80 @@ msgstr ""
 "พบอักขระแปลกปลอม '%s' ในขณะที่กำลังมองหาอัญประกาศเปิดหลัง '=' "
 "ในการกำหนดค่าให้กับแอตทริบิวต์ '%s' ของอิลิเมนต์ '%s'"
 
-#: glib/gmarkup.c:1527
+#: glib/gmarkup.c:1529
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 msgstr "'%s' ไม่ใช่อักขระที่ตามหลัง '</' ได้ '%s' ไม่สามารถใช้ขึ้นต้นชื่ออิลิเมนต์ได้"
 
-#: glib/gmarkup.c:1567
+#: glib/gmarkup.c:1569
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 msgstr "'%s' ไม่ใช่อักขระที่ใช้ตามหลังชื่ออิลิเมนต์ '%s' ในแท็กปิดได้ อักขระเดียวที่อนุญาตคือ '>'"
 
-#: glib/gmarkup.c:1578
+#: glib/gmarkup.c:1580
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "พบการปิดอิลิเมนต์ '%s' แต่ไม่มีอิลิเมนต์ใดเปิดอยู่"
 
-#: glib/gmarkup.c:1587
+#: glib/gmarkup.c:1589
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "พบการปิดอิลิเมนต์ '%s' แต่อิลิเมนต์ที่เปิดอยู่คือ '%s'"
 
-#: glib/gmarkup.c:1753
+#: glib/gmarkup.c:1755
 msgid "Document was empty or contained only whitespace"
 msgstr "เอกสารว่างเปล่า หรือมีแต่อักขระช่องว่าง"
 
-#: glib/gmarkup.c:1767
+#: glib/gmarkup.c:1769
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "เอกสารจบแบบผิดปกติหลังจากวงเล็บแหลม '<'"
 
-#: glib/gmarkup.c:1775 glib/gmarkup.c:1820
+#: glib/gmarkup.c:1777 glib/gmarkup.c:1822
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
 "element opened"
 msgstr "เอกสารจบแบบผิดปกติ โดยยังมีอิลิเมนต์เปิดอยู่ - '%s' คืออิลิเมนต์ที่เปิดล่าสุด"
 
-#: glib/gmarkup.c:1783
+#: glib/gmarkup.c:1785
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
 "the tag <%s/>"
 msgstr "เอกสารจบแบบผิดปกติ ในขณะที่กำลังมองหาวงเล็บแหลมที่จะมาปิดแท็ก <%s/>"
 
-#: glib/gmarkup.c:1789
+#: glib/gmarkup.c:1791
 msgid "Document ended unexpectedly inside an element name"
 msgstr "เอกสารจบแบบผิดปกติระหว่างกลางชื่ออิลิเมนต์"
 
-#: glib/gmarkup.c:1795
+#: glib/gmarkup.c:1797
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "เอกสารจบแบบผิดปกติระหว่างกลางชื่อแอตทริบิวต์"
 
-#: glib/gmarkup.c:1800
+#: glib/gmarkup.c:1802
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "เอกสารจบแบบผิดปกติระหว่างกลางแท็กเปิดอิลิเมนต์"
 
-#: glib/gmarkup.c:1806
+#: glib/gmarkup.c:1808
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
 msgstr "เอกสารจบแบบผิดปกติหลังจากเครื่องหมาย '=' หลังชื่อแอตทริบิวต์ โดยไม่มีค่าของแอตทริบิวต์"
 
-#: glib/gmarkup.c:1813
+#: glib/gmarkup.c:1815
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "เอกสารจบแบบผิดปกติระหว่างกลางค่าแอตทริบิวต์"
 
-#: glib/gmarkup.c:1829
+#: glib/gmarkup.c:1831
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "เอกสารจบแบบผิดปกติระหว่างกลางแท็กปิดสำหรับอิลิเมนต์ '%s'"
 
-#: glib/gmarkup.c:1835
+#: glib/gmarkup.c:1837
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "เอกสารจบแบบผิดปกติระหว่างกลางหมายเหตุหรือคำสั่งประมวลผล"
 
@@ -643,12 +653,14 @@ msgstr "ดำเนินงานโพรเซสลูกไม่สำเ
 msgid "Invalid program name: %s"
 msgstr "ชื่อโปรแกรมผิดรูปแบบ: %s"
 
-#: glib/gspawn-win32.c:438 glib/gspawn-win32.c:678 glib/gspawn-win32.c:1218
+#: glib/gspawn-win32.c:438 glib/gspawn-win32.c:678
+#: glib/gspawn-win32.c:1218
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr "สตริงผิดรูปแบบในเวกเตอร์ของอาร์กิวเมนต์ที่ตำแหน่ง %d: %s"
 
-#: glib/gspawn-win32.c:449 glib/gspawn-win32.c:692 glib/gspawn-win32.c:1251
+#: glib/gspawn-win32.c:449 glib/gspawn-win32.c:692
+#: glib/gspawn-win32.c:1251
 #, c-format
 msgid "Invalid string in environment: %s"
 msgstr "สตริงผิดรูปแบบในตัวแปรสภาพแวดล้อม: %s"
@@ -721,8 +733,8 @@ msgstr "อ่านข้อมูลจากไปป์จากโพรเ
 msgid "Character out of range for UTF-8"
 msgstr "อักขระอยู่นอกช่วงของ UTF-8"
 
-#: glib/gutf8.c:1118 glib/gutf8.c:1127 glib/gutf8.c:1259 glib/gutf8.c:1268
-#: glib/gutf8.c:1409 glib/gutf8.c:1505
+#: glib/gutf8.c:1118 glib/gutf8.c:1127 glib/gutf8.c:1259
+#: glib/gutf8.c:1268 glib/gutf8.c:1409 glib/gutf8.c:1505
 #, c-format
 msgid "Invalid sequence in conversion input"
 msgstr "มีลำดับข้อมูลที่ไม่ถูกต้องในข้อมูลที่ป้อนให้ตัวแปลงรหัส"
