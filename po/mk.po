@@ -1,18 +1,22 @@
-# translation of glib.HEAD.mk.po to Macedonian
+# translation of gconf.HEAD.mk.po to
+# translation of gconf.HEAD.mk.po to Macedonian
+# translation of gconf.HEAD.mk.po to
 # This file is distributed under the same license as the PACKAGE package.
-# Copyright (C) 2005 THE PACKAGE'S COPYRIGHT HOLDER.
+# Copyright (C) 2005 THE PACKAGE'S COPYRIGHT HOLDER
 #
-# Ivan Stojmirov <stojmir@linux.net.mk>, 2002.
-# Arangel Angov <ufo@linux.net.mk>, 2004, 2005, 2006.
+# Ivan Stojmirov <stojmir@linux.net.mk>, 2002,2003.
+# Jovan Kostovski <chombium@freemail.com.mk>, 2003.
+# Misa Popovic <stomak81@freemail.com.mk>, 2003.
+# Vladislav Bidikov <bidikovi@mail.com.mk>, 2003.
 # Арангел Ангов <ufo@linux.net.mk>, 2005.
+# Arangel Angov <ufo@linux.net.mk>, 2005, 2006.
 # Jovan Naumovski <jovan@lugola.net>, 2006, 2007.
-# Arangel Angov <arangel@linux.net.mk>, 2007.
 msgid ""
 msgstr ""
-"Project-Id-Version: glib.HEAD.mk\n"
+"Project-Id-Version: gconf.HEAD.mk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-09 03:58+0100\n"
-"PO-Revision-Date: 2007-08-12 03:17+0200\n"
+"POT-Creation-Date: 2007-06-24 03:28+0100\n"
+"PO-Revision-Date: 2007-08-12 03:10+0200\n"
 "Last-Translator: Jovan Naumovski <jovan@lugola.net>\n"
 "Language-Team: Macedonian <ossm-members@hedona.on.net.mk>\n"
 "MIME-Version: 1.0\n"
@@ -20,900 +24,2565 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
 
-#: ../glib/gbookmarkfile.c:705 ../glib/gbookmarkfile.c:782
-#: ../glib/gbookmarkfile.c:861 ../glib/gbookmarkfile.c:908
+#: ../backends/evoldap-backend.c:159
 #, c-format
-msgid "Unexpected attribute '%s' for element '%s'"
-msgstr "Неочекуван атрибут „%s“ за елементот „%s“"
+msgid "Failed to get configuration file path from '%s'"
+msgstr "Не успеав да добијам конфигурациска патека од „%s“"
 
-#: ../glib/gbookmarkfile.c:716 ../glib/gbookmarkfile.c:793
-#: ../glib/gbookmarkfile.c:803 ../glib/gbookmarkfile.c:919
+#: ../backends/evoldap-backend.c:170
 #, c-format
-msgid "Attribute '%s' of element '%s' not found"
-msgstr "Атрибутот „%s“ на елементот „%s“ не е пронајден"
+msgid "Created Evolution/LDAP source using configuration file '%s'"
+msgstr "Креирав Еволушн/LDAP извор користејќи ја конфигурациската датотека „%s“"
 
-#: ../glib/gbookmarkfile.c:1092 ../glib/gbookmarkfile.c:1157
-#: ../glib/gbookmarkfile.c:1221 ../glib/gbookmarkfile.c:1231
+#: ../backends/evoldap-backend.c:446
 #, c-format
-msgid "Unexpected tag '%s', tag '%s' expected"
-msgstr "Неочекувана етикета „%s“, се очекуваше „%s“"
+msgid "Unable to parse XML file '%s'"
+msgstr "Не можам да ја парсирам XML датотека „%s“"
 
-#: ../glib/gbookmarkfile.c:1117 ../glib/gbookmarkfile.c:1131
-#: ../glib/gbookmarkfile.c:1199 ../glib/gbookmarkfile.c:1251
+#: ../backends/evoldap-backend.c:455
 #, c-format
-msgid "Unexpected tag '%s' inside '%s'"
-msgstr "Неочекувана етикета „%s“ во „%s“"
+msgid "Config file '%s' is empty"
+msgstr "Конфигурациската датотека „%s“ е празна"
 
-#: ../glib/gbookmarkfile.c:1781
-msgid "No valid bookmark file found in data dirs"
-msgstr "Не е пронајдена валидна датотека за обележувач во дирекориумите со податоци"
-
-#: ../glib/gbookmarkfile.c:1982
+#: ../backends/evoldap-backend.c:466
 #, c-format
-msgid "A bookmark for URI '%s' already exists"
-msgstr "Обележувач за URI „%s“ веќе постои"
+msgid "Root node of '%s' must be <evoldap>, not <%s>"
+msgstr "Root точката на „%s“ мора да биде <evoldap>, наместо <%s>"
 
-#: ../glib/gbookmarkfile.c:2028 ../glib/gbookmarkfile.c:2185
-#: ../glib/gbookmarkfile.c:2270 ../glib/gbookmarkfile.c:2350
-#: ../glib/gbookmarkfile.c:2435 ../glib/gbookmarkfile.c:2518
-#: ../glib/gbookmarkfile.c:2596 ../glib/gbookmarkfile.c:2675
-#: ../glib/gbookmarkfile.c:2717 ../glib/gbookmarkfile.c:2814
-#: ../glib/gbookmarkfile.c:2940 ../glib/gbookmarkfile.c:3130
-#: ../glib/gbookmarkfile.c:3206 ../glib/gbookmarkfile.c:3371
-#: ../glib/gbookmarkfile.c:3460 ../glib/gbookmarkfile.c:3550
-#: ../glib/gbookmarkfile.c:3677
+#: ../backends/evoldap-backend.c:504
 #, c-format
-msgid "No bookmark found for URI '%s'"
-msgstr "Не е пронајден обележувач за URI „%s“"
+msgid "No <template> specified in '%s'"
+msgstr "Не е одреден <template> во „%s“"
 
-#: ../glib/gbookmarkfile.c:2359
+#: ../backends/evoldap-backend.c:511
 #, c-format
-msgid "No MIME type defined in the bookmark for URI '%s'"
-msgstr "Не е дефиниран MIME тип во обележувачот за URI „%s“"
+msgid "No \"filter\" attribute specified on <template> in '%s'"
+msgstr "Нема атрибут за \"филтер\" одреден на <template> во „%s“"
 
-#: ../glib/gbookmarkfile.c:2444
+#: ../backends/evoldap-backend.c:572
 #, c-format
-msgid "No private flag has been defined in bookmark for URI '%s'"
-msgstr "Не е дефинирано приватно знаме за обележувачот за URI „%s“"
+msgid "No LDAP server or base DN specified in '%s'"
+msgstr "Нема одреден LDAP сервер или име на домен за „%s“"
 
-#: ../glib/gbookmarkfile.c:2823
+#: ../backends/evoldap-backend.c:578
 #, c-format
-msgid "No groups set in bookmark for URI '%s'"
-msgstr "Не се поставени групи во обележувачот за URI „%s“"
+msgid "Contacting LDAP server: host '%s', port '%d', base DN '%s'"
+msgstr "Го контактирам LDAP серверот: хост „%s“, порта '%d', основен DN „%s“"
 
-#: ../glib/gbookmarkfile.c:3224 ../glib/gbookmarkfile.c:3381
+#: ../backends/evoldap-backend.c:584
 #, c-format
-msgid "No application with name '%s' registered a bookmark for '%s'"
-msgstr "Нема апликација со име „%s“ која регистрирала обележувач за „%s“"
+msgid "Failed to contact LDAP server: %s"
+msgstr "Не успеав да го контактирам LDAP серверот: %s"
 
-#: ../glib/gbookmarkfile.c:3404
+#: ../backends/evoldap-backend.c:671
 #, c-format
-msgid "Failed to expand exec line '%s' with URI '%s'"
-msgstr "Не успеав да ја проширам линијата за извршување „%s“ со URI „%s“"
+msgid "Searching for entries using filter: %s"
+msgstr "Пребарувам записи со помош на филтерот: %s"
 
-#: ../glib/gconvert.c:424 ../glib/gconvert.c:502 ../glib/giochannel.c:1148
+#: ../backends/evoldap-backend.c:684
 #, c-format
-msgid "Conversion from character set '%s' to '%s' is not supported"
-msgstr "Конвертирањето од  %s' во „%s“ не е поддржано"
+msgid "Error querying LDAP server: %s"
+msgstr "Грешка при барањето на LDAP сервер: %s"
 
-#: ../glib/gconvert.c:428 ../glib/gconvert.c:506
+#: ../backends/evoldap-backend.c:694
 #, c-format
-msgid "Could not open converter from '%s' to '%s'"
-msgstr "Не можам да го отворам конверторот од „%s“ до „%s“"
+msgid "Got %d entries using filter: %s"
+msgstr "Најдов %d записи со поош на филтерот: %s"
 
-#: ../glib/gconvert.c:622 ../glib/gconvert.c:1011 ../glib/giochannel.c:1320
-#: ../glib/giochannel.c:1362 ../glib/giochannel.c:2204 ../glib/gutf8.c:950
-#: ../glib/gutf8.c:1399
-msgid "Invalid byte sequence in conversion input"
-msgstr "Невалидна секвенца на бајти во влезот на конвертирањето"
-
-#: ../glib/gconvert.c:628 ../glib/gconvert.c:938 ../glib/giochannel.c:1327
-#: ../glib/giochannel.c:2216
+#: ../backends/gconf-merge-tree.c:59
 #, c-format
-msgid "Error during conversion: %s"
-msgstr "Грешка при конвертирање: %s"
+msgid "Cannot find directory %s\n"
+msgstr "Не можам да го најдам директориумот %s\n"
 
-#: ../glib/gconvert.c:663 ../glib/gutf8.c:946 ../glib/gutf8.c:1150
-#: ../glib/gutf8.c:1291 ../glib/gutf8.c:1395
-msgid "Partial character sequence at end of input"
-msgstr "Парцијална секвенца на карактер на крајот од влезот"
-
-#: ../glib/gconvert.c:913
+#: ../backends/gconf-merge-tree.c:75
 #, c-format
-msgid "Cannot convert fallback '%s' to codeset '%s'"
-msgstr "Не можам да го конвертирам „%s“ во енкодингот „%s“"
+msgid "Error saving GConf tree to '%s': %s\n"
+msgstr "Грешка при зачувување на GConf дрво во „%s“: %s\n"
 
-#: ../glib/gconvert.c:1727
+#: ../backends/gconf-merge-tree.c:101
 #, c-format
-msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
-msgstr "„%s“ не е апсолутна адреса која што ја користи шемата на датотеката"
+msgid "Usage: %s <dir>\n"
+msgstr "Употреба: %s <директориум>\n"
 
-#: ../glib/gconvert.c:1737
-#, c-format
-msgid "The local file URI '%s' may not include a '#'"
-msgstr "Локалното URI „%s“ може да не користи '#'"
-
-#: ../glib/gconvert.c:1754
-#, c-format
-msgid "The URI '%s' is invalid"
-msgstr "„%s“ е невалиден URI"
-
-#: ../glib/gconvert.c:1766
-#, c-format
-msgid "The hostname of the URI '%s' is invalid"
-msgstr "Името на хостот на URI %s е невалидно"
-
-#: ../glib/gconvert.c:1782
-#, c-format
-msgid "The URI '%s' contains invalidly escaped characters"
-msgstr "„%s“ содржи невалидни посебни карактери"
-
-#: ../glib/gconvert.c:1877
-#, c-format
-msgid "The pathname '%s' is not an absolute path"
-msgstr "Патеката „%s“ не е апсолутна патека"
-
-#: ../glib/gconvert.c:1887
-msgid "Invalid hostname"
-msgstr "Невалидно име на хост"
-
-#: ../glib/gdir.c:104 ../glib/gdir.c:124
-#, c-format
-msgid "Error opening directory '%s': %s"
-msgstr "Грешка при отворање на директориумот „%s“: %s"
-
-#: ../glib/gfileutils.c:557 ../glib/gfileutils.c:630
-#, c-format
-msgid "Could not allocate %lu bytes to read file \"%s\""
-msgstr "Не можам да алоцирам %lu бајти за да ја прочитам датотеката \"%s\""
-
-#: ../glib/gfileutils.c:572
-#, c-format
-msgid "Error reading file '%s': %s"
-msgstr "Грешка при читањето на датотеката „%s“: %s"
-
-#: ../glib/gfileutils.c:654
-#, c-format
-msgid "Failed to read from file '%s': %s"
-msgstr "Не успеав да прочитам од датотеката „%s“: %s"
-
-#: ../glib/gfileutils.c:705 ../glib/gfileutils.c:792
-#, c-format
-msgid "Failed to open file '%s': %s"
-msgstr "Не успеав да ја отворам датотеката „%s“: %s"
-
-#: ../glib/gfileutils.c:722 ../glib/gmappedfile.c:133
-#, c-format
-msgid "Failed to get attributes of file '%s': fstat() failed: %s"
-msgstr "Не успеав да ги добијам атрибутите на датотеката „%s“: fstat() failed: %s"
-
-#: ../glib/gfileutils.c:756
-#, c-format
-msgid "Failed to open file '%s': fdopen() failed: %s"
-msgstr "Не успеав да ја отворам датотеката „%s“: fdopen() failed: %s"
-
-#: ../glib/gfileutils.c:890
-#, c-format
-msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
-msgstr "Не успеав да ја реименувам датотеката „%s“ во „%s“: g_rename() не успеа: %s"
-
-#: ../glib/gfileutils.c:932 ../glib/gfileutils.c:1390
-#, c-format
-msgid "Failed to create file '%s': %s"
-msgstr "Не успеав да ја креирам датотеката „%s“: %s"
-
-#: ../glib/gfileutils.c:946
-#, c-format
-msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
-msgstr "Не успеав да ја отворам датотеката „%s“ за запишување: fdopen() не успеа: %s"
-
-#: ../glib/gfileutils.c:971
-#, c-format
-msgid "Failed to write file '%s': fwrite() failed: %s"
-msgstr "Не успеав да запишам во датотеката „%s“: fwrite() не успеа: %s"
-
-#: ../glib/gfileutils.c:990
-#, c-format
-msgid "Failed to close file '%s': fclose() failed: %s"
-msgstr "Не успеав да ја затворам датотeката „%s“: fclose() не успеа: %s"
-
-#: ../glib/gfileutils.c:1108
-#, c-format
-msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
-msgstr ""
-"Постоечката датотека „%s“ не може да биде отстранета: g_unlink()·не успеа "
-"за: %s"
-
-#: ../glib/gfileutils.c:1352
-#, c-format
-msgid "Template '%s' invalid, should not contain a '%s'"
-msgstr "Мострата „%s“ е невалидна, не треба да содржи „%s“"
-
-#: ../glib/gfileutils.c:1365
-#, c-format
-msgid "Template '%s' doesn't contain XXXXXX"
-msgstr "Мострата „%s“ не содржи со XXXXXX"
-
-#: ../glib/gfileutils.c:1840
-#, c-format
-msgid "Failed to read the symbolic link '%s': %s"
-msgstr "Не успеав да ја прочитам симболичката врска „%s“: %s"
-
-#: ../glib/gfileutils.c:1861
-msgid "Symbolic links not supported"
-msgstr "Симболичките врски не се поддржани"
-
-#: ../glib/giochannel.c:1152
-#, c-format
-msgid "Could not open converter from '%s' to '%s': %s"
-msgstr "Не можам да го отворам конверторот од „%s“ до „%s“: %s"
-
-#: ../glib/giochannel.c:1497
-msgid "Can't do a raw read in g_io_channel_read_line_string"
-msgstr "Не можам да направам грубо читање во g_io_channel_read_line_string"
-
-#: ../glib/giochannel.c:1544 ../glib/giochannel.c:1801
-#: ../glib/giochannel.c:1887
-msgid "Leftover unconverted data in read buffer"
-msgstr "Преостанати неконвертирани податоци во баферот за читање"
-
-#: ../glib/giochannel.c:1624 ../glib/giochannel.c:1701
-msgid "Channel terminates in a partial character"
-msgstr "Каналот се терминира во парцијален карактер"
-
-#: ../glib/giochannel.c:1687
-msgid "Can't do a raw read in g_io_channel_read_to_end"
-msgstr "Неможам да читам во g_io_channel_read_to_end"
-
-#: ../glib/gmappedfile.c:116
-#, c-format
-msgid "Failed to open file '%s': open() failed: %s"
-msgstr "Не успеав да ја отворам датотеката „%s“: open() не успеа: %s"
-
-#: ../glib/gmappedfile.c:193
-#, c-format
-msgid "Failed to map file '%s': mmap() failed: %s"
-msgstr "Не успеав да ја означам датотеката „%s“: mmap() не успеа: %s"
-
-#: ../glib/gmarkup.c:226
-#, c-format
-msgid "Error on line %d char %d: %s"
-msgstr "Грешка на линија %d char %d: %s"
-
-#: ../glib/gmarkup.c:324
-#, c-format
-msgid "Error on line %d: %s"
-msgstr "Грешка на линија %d: %s"
-
-#: ../glib/gmarkup.c:428
-msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
-msgstr ""
-"Празен ентитет '&;' видени; валидни ентитети се: &amp; &quot; &lt; &gt; "
-"&apos;"
-
-#: ../glib/gmarkup.c:438
+#: ../backends/gconf-merge-tree.c:107
 #, c-format
 msgid ""
-"Character '%s' is not valid at the start of an entity name; the & character "
-"begins an entity; if this ampersand isn't supposed to be an entity, escape "
-"it as &amp;"
+"Usage: %s <dir>\n"
+"  Merges a markup backend filesystem hierarchy like:\n"
+"    dir/%%gconf.xml\n"
+"        subdir1/%%gconf.xml\n"
+"        subdir2/%%gconf.xml\n"
+"  to:\n"
+"    dir/%%gconf-tree.xml\n"
 msgstr ""
-"Карактерот „%s“ претставува невалиден почеток на име на ентитет, карактерот "
-"& го започнува ентитетот;"
+"Употреба: %s <директориум>\n"
+"  Merges a markup backend filesystem hierarchy like:\n"
+"    dir/%%gconf.xml\n"
+"        subdir1/%%gconf.xml\n"
+"        subdir2/%%gconf.xml\n"
+"  to:\n"
+"    dir/%%gconf-tree.xml\n"
 
-#: ../glib/gmarkup.c:472
+#: ../backends/markup-backend.c:164
+msgid "Unloading text markup backend module."
+msgstr "Го девчитувам модулот на бекендот за обележување на текст."
+
+#: ../backends/markup-backend.c:227 ../backends/xml-backend.c:288
 #, c-format
-msgid "Character '%s' is not valid inside an entity name"
-msgstr "Карактерот „%s“ не е валиден внатре во името на ентитетот"
+msgid "Couldn't find the XML root directory in the address `%s'"
+msgstr "Не можев да го пронајдам XML root директориумот во адресата `%s'"
 
-#: ../glib/gmarkup.c:509
+#: ../backends/markup-backend.c:284 ../backends/xml-backend.c:343
 #, c-format
-msgid "Entity name '%s' is not known"
-msgstr "Името на ентитетот „%s“ е познато"
+msgid "Could not make directory `%s': %s"
+msgstr "Не можев да го направам директориумот `%s': %s"
 
-#: ../glib/gmarkup.c:520
+#: ../backends/markup-backend.c:391 ../backends/xml-backend.c:442
+#, c-format
+msgid "Can't read from or write to the XML root directory in the address \"%s\""
+msgstr "Не можам да читам или пишувам во XML root директориумот во адресата \"%s\""
+
+#: ../backends/markup-backend.c:402 ../backends/xml-backend.c:452
+#, c-format
+msgid "Directory/file permissions for XML source at root %s are: %o/%o"
+msgstr "Директориум/датотека дозволите за XML сорс на root %s се: %o/%o"
+
+#: ../backends/markup-backend.c:741 ../backends/xml-backend.c:683
 msgid ""
-"Entity did not end with a semicolon; most likely you used an ampersand "
-"character without intending to start an entity - escape ampersand as &amp;"
+"Remove directory operation is no longer supported, just remove all the "
+"values in the directory"
 msgstr ""
-"Ентитетот не заврши со полуколоната; најверојатно сте користеле симбол без "
-"намера да започнете ентитет - избегнете го симболот со &amp;"
+"Операцијата за отстранување на директориумот не е повеќе поддржана, само "
+"отстранете ги сите вредности од директориумот"
 
-#: ../glib/gmarkup.c:573
+#: ../backends/markup-backend.c:827 ../backends/xml-backend.c:769
 #, c-format
-msgid ""
-"Failed to parse '%-.*s', which should have been a digit inside a character "
-"reference (&#234; for example) - perhaps the digit is too large"
+msgid "Could not open lock directory for %s to remove locks: %s\n"
+msgstr "Не можев да го отворам лок директориумот за %s да ги отстрани бравите: %s\n"
+
+#: ../backends/markup-backend.c:840 ../backends/xml-backend.c:782
+#, c-format
+msgid "Could not remove file %s: %s\n"
+msgstr "Не можев да ја отстранам датотеката %s: %s\n"
+
+#: ../backends/markup-backend.c:861
+msgid "Initializing Markup backend module"
+msgstr "Иницијализирам бекенд модул за обележување"
+
+#: ../backends/markup-backend.c:938 ../backends/xml-backend.c:880
+#, c-format
+msgid "Failed to give up lock on XML directory \"%s\": %s"
+msgstr "Не успеав да го откажам заклучувањето на XML директориумот \"%s\": %s"
+
+#: ../backends/markup-tree.c:397
+msgid "Failed to write some configuration data to disk\n"
+msgstr "Не успеав да запишам некои конфигурациски податоци на дискот\n"
+
+#: ../backends/markup-tree.c:920 ../backends/xml-dir.c:1273
+#, c-format
+msgid "Could not make directory \"%s\": %s"
+msgstr "Не можев да направам директориум \"%s\": %s"
+
+#: ../backends/markup-tree.c:960 ../backends/markup-tree.c:967
+#, c-format
+msgid "Could not remove \"%s\": %s\n"
+msgstr "Не можев да отстранам %s: %s\n"
+
+#: ../backends/markup-tree.c:1168
+#, c-format
+msgid "Failed to write \"%s\": %s\n"
+msgstr "Не успеав да запишам \"%s\": %s\n"
+
+#: ../backends/markup-tree.c:1376
+#, c-format
+msgid "Failed to load file \"%s\": %s"
+msgstr "Не успеав да ја вчитам датотеката \"%s\": %s"
+
+#: ../backends/markup-tree.c:1968
+#, c-format
+msgid "Line %d character %d: %s"
+msgstr "Линија %d буква или број %d: %s"
+
+#: ../backends/markup-tree.c:2187
+#, c-format
+msgid "Attribute \"%s\" repeated twice on the same <%s> element"
+msgstr "Атрибутот\"%s\" се повторува два пати во ист <%s> елемент"
+
+#: ../backends/markup-tree.c:2204 ../backends/markup-tree.c:2228
+#, c-format
+msgid "Attribute \"%s\" is invalid on <%s> element in this context"
+msgstr "Атрибутот \"%s\" е невалиден во <%s> елементот во овој контекст"
+
+#: ../backends/markup-tree.c:2253 ../gconf/gconf-value.c:112
+#, c-format
+msgid "Didn't understand `%s' (expected integer)"
+msgstr "Не разбрав `%s' (очекував цел број)"
+
+#: ../backends/markup-tree.c:2260 ../gconf/gconf-value.c:122
+#, c-format
+msgid "Integer `%s' is too large or small"
+msgstr "Цел број `%s' е преголем или премалl"
+
+#: ../backends/markup-tree.c:2292 ../gconf/gconf-value.c:187
+#, c-format
+msgid "Didn't understand `%s' (expected true or false)"
+msgstr "Не разбрав `%s' (очекував точно или неточно)"
+
+#: ../backends/markup-tree.c:2316 ../gconf/gconf-value.c:143
+#, c-format
+msgid "Didn't understand `%s' (expected real number)"
+msgstr "Не разбрав `%s' (очекував реален број)"
+
+#: ../backends/markup-tree.c:2386 ../backends/markup-tree.c:2415
+#: ../backends/markup-tree.c:2455 ../backends/markup-tree.c:2479
+#: ../backends/markup-tree.c:2487 ../backends/markup-tree.c:2542
+#: ../backends/markup-tree.c:2607 ../backends/markup-tree.c:2719
+#: ../backends/markup-tree.c:2787 ../backends/markup-tree.c:2845
+#: ../backends/markup-tree.c:2995
+#, c-format
+msgid "No \"%s\" attribute on element <%s>"
+msgstr "Нема \"%s\" атрибут или елемент <%s>"
+
+#: ../backends/markup-tree.c:2395
+#, c-format
+msgid "Unknown value \"%s\" for \"%s\" attribute on element <%s>"
+msgstr "Непозната вредност \"%s\" за \"%s\" атрибутот во елементот <%s>"
+
+#: ../backends/markup-tree.c:2429
+#, c-format
+msgid "Invalid ltype \"%s\" on <%s>"
+msgstr "Невалиден тип \"%s\" на <%s>"
+
+#: ../backends/markup-tree.c:2509
+#, c-format
+msgid "Invalid first-element type \"%s\" on <%s>"
+msgstr "Невалиден прв тип на елемент \"%s\" во <%s>"
+
+#: ../backends/markup-tree.c:2523
+#, c-format
+msgid "Invalid cdr_type \"%s\" on <%s>"
+msgstr "Невалиден тип на _cdr \"%s\" on <%s>"
+
+#: ../backends/markup-tree.c:2559
+#, c-format
+msgid "Invalid list_type \"%s\" on <%s>"
+msgstr "Невалиден тип на листа \"%s\" во <%s>"
+
+#: ../backends/markup-tree.c:2926
+msgid "Two <default> elements below a <local_schema>"
+msgstr "Два <стандардни> елементи под <локална_шема>"
+
+#: ../backends/markup-tree.c:2941
+msgid "Two <longdesc> elements below a <local_schema>"
+msgstr "Два <longdesc> елементи под <локална_шема>"
+
+#: ../backends/markup-tree.c:2948
+#, c-format
+msgid "Element <%s> is not allowed below <%s>"
+msgstr "Елементот <%s> нема дозвола да оди под <%s>"
+
+#: ../backends/markup-tree.c:2973 ../backends/markup-tree.c:3078
+#: ../backends/markup-tree.c:3132 ../backends/markup-tree.c:3183
+#, c-format
+msgid "<%s> provided but current element does not have type %s"
+msgstr "<%s> понуди но тековниот елемент го нема типот %s"
+
+#: ../backends/markup-tree.c:3056
+msgid "Two <car> elements given for same pair"
+msgstr "Два дадени <car> елемента за истиот пар"
+
+#: ../backends/markup-tree.c:3070
+msgid "Two <cdr> elements given for same pair"
+msgstr "Два дадени <cdr> елемента за истиот пар"
+
+#: ../backends/markup-tree.c:3124
+#, c-format
+msgid "<li> has wrong type %s"
+msgstr "<li> има погрешен тип %s"
+
+#: ../backends/markup-tree.c:3155
+#, c-format
+msgid "<%s> provided but parent <entry> does not have a value"
+msgstr "<%s> понуди но родителскиот <entry> нема вредност"
+
+#: ../backends/markup-tree.c:3196 ../backends/markup-tree.c:3219
+#: ../backends/markup-tree.c:3241 ../backends/markup-tree.c:3258
+#, c-format
+msgid "Element <%s> is not allowed inside current element"
+msgstr "Елементот <%s> нема дозвола да влезе во моменталниот елемент"
+
+#: ../backends/markup-tree.c:3290
+#, c-format
+msgid "Outermost element in menu file must be <gconf> not <%s>"
+msgstr "Елементот во датотеката за мени мора да биде <gconf> наместо <%s>"
+
+#: ../backends/markup-tree.c:3310 ../backends/markup-tree.c:3332
+#: ../backends/markup-tree.c:3337
+#, c-format
+msgid "Element <%s> is not allowed inside a <%s> element"
+msgstr "Елементот <%s> нема дозвола да влезе во <%s> елементот"
+
+#: ../backends/markup-tree.c:3481
+#, c-format
+msgid "No text is allowed inside element <%s>"
+msgstr "Не е дозволен текст внатре во елементот <%s>"
+
+#: ../backends/markup-tree.c:3598 ../backends/markup-tree.c:4378
+#: ../backends/markup-tree.c:4396
+#, c-format
+msgid "Failed to open \"%s\": %s\n"
+msgstr "Не успеав да отворам \"%s\": %s\n"
+
+#: ../backends/markup-tree.c:3628
+#, c-format
+msgid "Error reading \"%s\": %s\n"
+msgstr "Грешка при читањето на \"%s\": %s\n"
+
+#: ../backends/markup-tree.c:4483
+#, c-format
+msgid "Error writing file \"%s\": %s"
+msgstr "Грешка при запишување во датотеката\"%s\": %s"
+
+#: ../backends/markup-tree.c:4512
+#, c-format
+msgid "Failed to move temporary file \"%s\" to final location \"%s\": %s"
 msgstr ""
-"Не успеав да парасирам '%-.*s', кое што требаше да биде параметар за "
-"внатрешен дигитален карактер (на пример, &#234) - најверојатно бројот е "
-"преголем"
+"Не успеав да ја преместам привремената датотека \"%s\" до финалната локација "
+"\"%s\": %s"
 
-#: ../glib/gmarkup.c:598
+#: ../backends/xml-backend.c:239
+msgid "Unloading XML backend module."
+msgstr "Го одвчитувам XML позадинскиот модул."
+
+#: ../backends/xml-backend.c:618
 #, c-format
-msgid "Character reference '%-.*s' does not encode a permitted character"
-msgstr "Параметарот на карактерот '%-.*s' не енкодира забранет карактер"
+msgid "Error syncing the XML backend directory cache: %s"
+msgstr "Грешка синхронизирајќи го XML позадински директориски кеш: %s"
 
-#: ../glib/gmarkup.c:613
-msgid "Empty character reference; should include a digit such as &#454;"
-msgstr "Параметар за празен карактер; треба да содржи бројка како што е &#454;"
+#: ../backends/xml-backend.c:809
+msgid "Initializing XML backend module"
+msgstr "Иницијализирам XML позадински модул "
 
-#: ../glib/gmarkup.c:623
-msgid ""
-"Character reference did not end with a semicolon; most likely you used an "
-"ampersand character without intending to start an entity - escape ampersand "
-"as &amp;"
-msgstr ""
-"Референцата за карактерите не заврши со полуколона; најверојатно сте "
-"користеле симбол без намера да започнете ентитет - одбегнете го симболот со "
-"&amp;"
+#: ../backends/xml-cache.c:286
+msgid "Failed to sync XML cache contents to disk"
+msgstr "Не успеав да синхронизирам XML кеш содржина на диск"
 
-#: ../glib/gmarkup.c:709
-msgid "Unfinished entity reference"
-msgstr "Недовршен параметар за ентитет"
-
-#: ../glib/gmarkup.c:715
-msgid "Unfinished character reference"
-msgstr "Недовршен параметар за карактер"
-
-#: ../glib/gmarkup.c:958
-msgid "Invalid UTF-8 encoded text - overlong sequence"
-msgstr "Невалиден UTF-8 енкодиран текст - предолга секвенца"
-
-#: ../glib/gmarkup.c:986
-msgid "Invalid UTF-8 encoded text - not a start char"
-msgstr "Невалиден UTF-8 енкодиран текст - нема почетен знак"
-
-#: ../glib/gmarkup.c:1022
-#, c-format
-msgid "Invalid UTF-8 encoded text - not valid '%s'"
-msgstr "Невалиден UTF-8 енкодиран текст - невалидно „%s“"
-
-#: ../glib/gmarkup.c:1060
-msgid "Document must begin with an element (e.g. <book>)"
-msgstr "Документите мора да започнуваат со елемент (пр. <book>)"
-
-#: ../glib/gmarkup.c:1100
-#, c-format
-msgid ""
-"'%s' is not a valid character following a '<' character; it may not begin an "
-"element name"
-msgstr "„%s“ не е валиден карактер по '<' карактер; не може да започне име на елемент"
-
-#: ../glib/gmarkup.c:1164
-#, c-format
-msgid ""
-"Odd character '%s', expected a '>' character to end the start tag of element "
-"'%s'"
-msgstr ""
-"Чуден карактер „%s“, очекував '>' карактер да го заврши почетниот таг на "
-"елементот „%s“"
-
-#: ../glib/gmarkup.c:1253
-#, c-format
-msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
-msgstr ""
-"Чуден карактер „%s“, очекував '=' по името на атрибутот „%s“ од елементот '%"
-"s'"
-
-#: ../glib/gmarkup.c:1295
-#, c-format
-msgid ""
-"Odd character '%s', expected a '>' or '/' character to end the start tag of "
-"element '%s', or optionally an attribute; perhaps you used an invalid "
-"character in an attribute name"
-msgstr ""
-"Чуден карактер „%s“, очекував '>' или '/' за да го затворам почетниот таг на "
-"елементот „%s“; можеби сте користеле невалиден карактер во името на атрибутот"
-
-#: ../glib/gmarkup.c:1384
-#, c-format
-msgid ""
-"Odd character '%s', expected an open quote mark after the equals sign when "
-"giving value for attribute '%s' of element '%s'"
-msgstr ""
-"Чуден карактер „%s“, се очекува отворен забележан цитат по еднаквите знаци "
-"кога се даваат вредности за атрибутот „%s“· од елементот „%s“·"
-
-#: ../glib/gmarkup.c:1529
-#, c-format
-msgid ""
-"'%s' is not a valid character following the characters '</'; '%s' may not "
-"begin an element name"
-msgstr ""
-"„%s“ не е валиден карактер, по карактерите </';·„%s“·не може да започне име "
-"на елемент"
-
-#: ../glib/gmarkup.c:1569
-#, c-format
-msgid ""
-"'%s' is not a valid character following the close element name '%s'; the "
-"allowed character is '>'"
-msgstr ""
-"„%s“·не е валиден карактер што би можел да доје по името на елементот „%s“, "
-"дозволениот карактер е '>'"
-
-#: ../glib/gmarkup.c:1580
-#, c-format
-msgid "Element '%s' was closed, no element is currently open"
-msgstr "Елементот „%s“ е затворен. Во моментов не е отворен ниеден елемент"
-
-#: ../glib/gmarkup.c:1589
-#, c-format
-msgid "Element '%s' was closed, but the currently open element is '%s'"
-msgstr "Елементот „%s“ е затворен, но тековно отворениот елемент е „%s“"
-
-#: ../glib/gmarkup.c:1755
-msgid "Document was empty or contained only whitespace"
-msgstr "Документот е празен или содржи само празни места"
-
-#: ../glib/gmarkup.c:1769
-msgid "Document ended unexpectedly just after an open angle bracket '<'"
-msgstr "Документот заврши неочекувано веднаш по заградата за отворениот агол '<'"
-
-#: ../glib/gmarkup.c:1777 ../glib/gmarkup.c:1822
-#, c-format
-msgid ""
-"Document ended unexpectedly with elements still open - '%s' was the last "
-"element opened"
-msgstr ""
-"Документот заврши неочекувано со сеуште отворени елементи - „%s“ беше "
-"последниот отворен елемент"
-
-#: ../glib/gmarkup.c:1785
-#, c-format
-msgid ""
-"Document ended unexpectedly, expected to see a close angle bracket ending "
-"the tag <%s/>"
-msgstr ""
-"Документот заврши неочекувано, очекував да видам го видам аголот на "
-"заградата за затворање на тагот <%s/>"
-
-#: ../glib/gmarkup.c:1791
-msgid "Document ended unexpectedly inside an element name"
-msgstr "Документот заврши неочекувано внатре во иметп на елементот"
-
-#: ../glib/gmarkup.c:1797
-msgid "Document ended unexpectedly inside an attribute name"
-msgstr "Документот заврши неочекувано внатре во името на атрибутот"
-
-#: ../glib/gmarkup.c:1802
-msgid "Document ended unexpectedly inside an element-opening tag."
-msgstr "Документот заврши неочекувано внатре во тагот за отворање на елементи."
-
-#: ../glib/gmarkup.c:1808
-msgid ""
-"Document ended unexpectedly after the equals sign following an attribute "
-"name; no attribute value"
-msgstr "Нема вредност за атрибутот"
-
-#: ../glib/gmarkup.c:1815
-msgid "Document ended unexpectedly while inside an attribute value"
-msgstr "Документот заврши неочекувано додека беше внатре во вредноста на атрибутот"
-
-#: ../glib/gmarkup.c:1831
-#, c-format
-msgid "Document ended unexpectedly inside the close tag for element '%s'"
-msgstr "Документот заврши неочекувано внатре во тагот за затворање на елементи „%s“"
-
-#: ../glib/gmarkup.c:1837
-msgid "Document ended unexpectedly inside a comment or processing instruction"
-msgstr ""
-"Документот заврши неочекувано внатре во коментар или инструкција за "
-"процесирање"
-
-#: ../glib/gregex.c:126
-msgid "corrupted object"
-msgstr "корумпиран објект"
-
-#: ../glib/gregex.c:128
-msgid "internal error or corrupted object"
-msgstr "интерна грешка или корумпиран објект"
-
-#: ../glib/gregex.c:130
-msgid "out of memory"
-msgstr "нема повеќе меморија"
-
-#: ../glib/gregex.c:135
-msgid "backtracking limit reached"
-msgstr "ограничувањето за следење е достигнато"
-
-#: ../glib/gregex.c:147 ../glib/gregex.c:155
-msgid "the pattern contains items not supported for partial matching"
-msgstr "шаблонот содржи предмети кои не се поддржани за парцијално совпаѓање"
-
-#: ../glib/gregex.c:149
-msgid "internal error"
-msgstr "внатрешна грешка"
-
-#: ../glib/gregex.c:157
-msgid "back references as conditions are not supported for partial matching"
-msgstr "задните референци не се поддржани како услови за парцијално совпаѓање"
-
-#: ../glib/gregex.c:166
-msgid "recursion limit reached"
-msgstr "достигнато е ограничувањето за рекурзија"
-
-#: ../glib/gregex.c:168
-msgid "workspace limit for empty substrings reached"
-msgstr "достигнато е ограничувањето за празни поднизи за работните простори"
-
-#: ../glib/gregex.c:170
-msgid "invalid combination of newline flags"
-msgstr "невалидна комбинација од ознаки за нов ред"
-
-#: ../glib/gregex.c:174
-msgid "unknown error"
-msgstr "непозната грешка"
-
-#: ../glib/gregex.c:319 ../glib/gregex.c:1354
-#, c-format
-msgid "Error while matching regular expression %s: %s"
-msgstr "Грешка при совпаѓањето на регуларни изрази %s: %s"
-
-#: ../glib/gregex.c:882
-msgid "PCRE library is compiled without UTF8 support"
-msgstr "PCRE библиотеката е компајлирана без UTF-8 поддршка"
-
-#: ../glib/gregex.c:891
-msgid "PCRE library is compiled without UTF8 properties support"
-msgstr "PCRE библиотеката е компајлирана без поддршка за својствата на UTF8"
-
-#: ../glib/gregex.c:936
-#, c-format
-msgid "Error while compiling regular expression %s at char %d: %s"
-msgstr "Грешка при компајлирање на регуларниот израз %s кај знакот %d: %s"
-
-#: ../glib/gregex.c:958
-#, c-format
-msgid "Error while optimizing regular expression %s: %s"
-msgstr "Грешка во оптимизирањето на регуларниот израз %s: %s"
-
-#: ../glib/gregex.c:1782
-msgid "hexadecimal digit or '}' expected"
-msgstr "Се очекува хексдецимална цифра или „}“"
-
-#: ../glib/gregex.c:1798
-msgid "hexadecimal digit expected"
-msgstr "Се очекува хексдецимална цифра"
-
-#: ../glib/gregex.c:1838
-msgid "missing '<' in symbolic reference"
-msgstr "недостасува „<“ во симболичката референца"
-
-#: ../glib/gregex.c:1847
-msgid "unfinished symbolic reference"
-msgstr "Недовршена симболичка референца"
-
-#: ../glib/gregex.c:1854
-msgid "zero-length symbolic reference"
-msgstr "симболичка референца со нулта должина"
-
-#: ../glib/gregex.c:1865
-msgid "digit expected"
-msgstr "се очекува цифра"
-
-#: ../glib/gregex.c:1883
-msgid "illegal symbolic reference"
-msgstr "нелегална симболичка референца"
-
-#: ../glib/gregex.c:1945
-msgid "stray final '\\'"
-msgstr "занемари го финалното „\\“"
-
-#: ../glib/gregex.c:1949
-msgid "unknown escape sequence"
-msgstr "непозната излезна секвенца"
-
-#: ../glib/gregex.c:1959
-#, c-format
-msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
-msgstr "Грешка при парсирањето на текстот за замена „%s“ на знакот %lu: %s"
-
-#: ../glib/gshell.c:70
-msgid "Quoted text doesn't begin with a quotation mark"
-msgstr "Цитираниот текст не започнува со знакот за цитирање"
-
-#: ../glib/gshell.c:160
-msgid "Unmatched quotation mark in command line or other shell-quoted text"
-msgstr ""
-"Несовпаѓачки знак за цитирање на командната линија или друг текст цитиран во "
-"школка"
-
-#: ../glib/gshell.c:538
-#, c-format
-msgid "Text ended just after a '\\' character. (The text was '%s')"
-msgstr "Текстот заврши веднаш по '\\' карактер. (Текстот беше „%s“)"
-
-#: ../glib/gshell.c:545
-#, c-format
-msgid "Text ended before matching quote was found for %c. (The text was '%s')"
-msgstr ""
-"Текстот заврши пред да биде пронајден совпаѓачки цитат за %c. (Текстот беше "
-"„%s“)"
-
-#: ../glib/gshell.c:557
-msgid "Text was empty (or contained only whitespace)"
-msgstr "Текстот беше празен (или содржеше само празни места)"
-
-#: ../glib/gspawn-win32.c:272
-msgid "Failed to read data from child process"
-msgstr "Не успеав да ги прочитам податоците од подпроцесот"
-
-#: ../glib/gspawn-win32.c:287 ../glib/gspawn.c:1395
-#, c-format
-msgid "Failed to create pipe for communicating with child process (%s)"
-msgstr "Не успеав да креирам цевка за комуникација со другите подпроцеси (%s)"
-
-#: ../glib/gspawn-win32.c:325 ../glib/gspawn.c:1059
-#, c-format
-msgid "Failed to read from child pipe (%s)"
-msgstr "Не успеав да прочитам од под-цевката (%s)"
-
-#: ../glib/gspawn-win32.c:351 ../glib/gspawn.c:1264
-#, c-format
-msgid "Failed to change to directory '%s' (%s)"
-msgstr "Не успеав да го променам директориумот„%s“ (%s)"
-
-#: ../glib/gspawn-win32.c:357 ../glib/gspawn-win32.c:481
-#, c-format
-msgid "Failed to execute child process (%s)"
-msgstr "Не успеав да го извршам подпроцесот (%s)"
-
-#: ../glib/gspawn-win32.c:428
-#, c-format
-msgid "Invalid program name: %s"
-msgstr "Невалидно име на програма: %s"
-
-#: ../glib/gspawn-win32.c:438 ../glib/gspawn-win32.c:678
-#: ../glib/gspawn-win32.c:1218
-#, c-format
-msgid "Invalid string in argument vector at %d: %s"
-msgstr "Невалиден стринг во аргументот за векторот кај %d: %s"
-
-#: ../glib/gspawn-win32.c:449 ../glib/gspawn-win32.c:692
-#: ../glib/gspawn-win32.c:1251
-#, c-format
-msgid "Invalid string in environment: %s"
-msgstr "Невалиден стринг во околината: %s"
-
-#: ../glib/gspawn-win32.c:674 ../glib/gspawn-win32.c:1199
-#, c-format
-msgid "Invalid working directory: %s"
-msgstr "Невалиден работен директориум: %s"
-
-#: ../glib/gspawn-win32.c:738
-#, c-format
-msgid "Failed to execute helper program (%s)"
-msgstr "Не успеав да ја извршам програмата за помош (%s)"
-
-#: ../glib/gspawn-win32.c:938
-msgid ""
-"Unexpected error in g_io_channel_win32_poll() reading data from a child "
-"process"
-msgstr ""
-"Неочекувана грешка во g_io_channel_win32_poll() при читање на податоциод "
-"подпроцесот"
-
-#: ../glib/gspawn.c:175
-#, c-format
-msgid "Failed to read data from child process (%s)"
-msgstr "Не успеав да ги прочитам податоците од подпроцесите (%s)"
-
-#: ../glib/gspawn.c:307
-#, c-format
-msgid "Unexpected error in select() reading data from a child process (%s)"
-msgstr "Неочекувана грешка во select() при читањето на податоци од подпроцесот (%s)"
-
-#: ../glib/gspawn.c:390
-#, c-format
-msgid "Unexpected error in waitpid() (%s)"
-msgstr "Неочекувана грешка во waitpid() (%s)"
-
-#: ../glib/gspawn.c:1124
-#, c-format
-msgid "Failed to fork (%s)"
-msgstr "Не успеав да форкувам (%s)"
-
-#: ../glib/gspawn.c:1274
-#, c-format
-msgid "Failed to execute child process \"%s\" (%s)"
-msgstr "Не успеав да го извршам подпроцесот \"%s\" (%s)"
-
-#: ../glib/gspawn.c:1284
-#, c-format
-msgid "Failed to redirect output or input of child process (%s)"
-msgstr "Не успеав да го пренасочам излезот или влезот на подпроцесот (%s)"
-
-#: ../glib/gspawn.c:1293
-#, c-format
-msgid "Failed to fork child process (%s)"
-msgstr "Не успеав да го форкувам подпроцесот (%s)"
-
-#: ../glib/gspawn.c:1301
-#, c-format
-msgid "Unknown error executing child process \"%s\""
-msgstr "Непозната грешка при извршувањето на подпроцесот \"%s\""
-
-#: ../glib/gspawn.c:1323
-#, c-format
-msgid "Failed to read enough data from child pid pipe (%s)"
-msgstr "Не успеав да прочитам доволно податоци од pid подцевката (%s)"
-
-#: ../glib/gutf8.c:1024
-msgid "Character out of range for UTF-8"
-msgstr "Карактерот е надвор од опсегот за UTF-8"
-
-#: ../glib/gutf8.c:1118 ../glib/gutf8.c:1127 ../glib/gutf8.c:1259
-#: ../glib/gutf8.c:1268 ../glib/gutf8.c:1409 ../glib/gutf8.c:1505
-msgid "Invalid sequence in conversion input"
-msgstr "Невалидна секвенца во излезот од конвертирањето"
-
-#: ../glib/gutf8.c:1420 ../glib/gutf8.c:1516
-msgid "Character out of range for UTF-16"
-msgstr "Карактерот е надвор од опсег за UTF-16"
-
-#: ../glib/goption.c:572
-msgid "Usage:"
-msgstr "Употреба:"
-
-#: ../glib/goption.c:572
-msgid "[OPTION...]"
-msgstr "[ОПЦИЈА...]"
-
-#: ../glib/goption.c:676
-msgid "Help Options:"
-msgstr "Опции за помош:"
-
-#: ../glib/goption.c:677
-msgid "Show help options"
-msgstr "Покажи ги сите опции за помош"
-
-#: ../glib/goption.c:683
-msgid "Show all help options"
-msgstr "Покажи ги сите опции за помош"
-
-#: ../glib/goption.c:735
-msgid "Application Options:"
-msgstr "Опции на апликацијата:"
-
-#: ../glib/goption.c:796 ../glib/goption.c:866
-#, c-format
-msgid "Cannot parse integer value '%s' for %s"
-msgstr "Не можам да парсирам вредност за целобројната вредност „%s“ за %s"
-
-#: ../glib/goption.c:806 ../glib/goption.c:874
-#, c-format
-msgid "Integer value '%s' for %s out of range"
-msgstr "Вредноста на целиот број „%s“ за %s е надвор од опсегот"
-
-#: ../glib/goption.c:831
-#, c-format
-msgid "Cannot parse double value '%s' for %s"
-msgstr "Не можам да ја анализирам целобројната вредност „%s“ за %s"
-
-#: ../glib/goption.c:839
-#, c-format
-msgid "Double value '%s' for %s out of range"
-msgstr "Вредноста на целиот број „%s“ за %s е надвор од опсегот"
-
-#: ../glib/goption.c:1176
-#, c-format
-msgid "Error parsing option %s"
-msgstr "Грешка при парсирањето на опцијата %s"
-
-#: ../glib/goption.c:1207 ../glib/goption.c:1318
-#, c-format
-msgid "Missing argument for %s"
-msgstr "Недостига аргумент за %s"
-
-#: ../glib/goption.c:1713
-#, c-format
-msgid "Unknown option %s"
-msgstr "Непозната опција „%s“·"
-
-#: ../glib/gkeyfile.c:341
-msgid "Valid key file could not be found in search dirs"
-msgstr "Не е пронајден валиден клуч во директориумите за пребарување"
-
-#: ../glib/gkeyfile.c:376
-msgid "Not a regular file"
-msgstr "Не е обична датотека"
-
-#: ../glib/gkeyfile.c:384
-msgid "File is empty"
-msgstr "Датотеката е празна"
-
-#: ../glib/gkeyfile.c:746
-#, c-format
-msgid "Key file contains line '%s' which is not a key-value pair, group, or comment"
-msgstr ""
-"Клучната датотека содржи линија „%s“· која што не е пар на клучна вредност, "
-"група или коментар"
-
-#: ../glib/gkeyfile.c:806
-#, c-format
-msgid "Invalid group name: %s"
-msgstr "Невалидно име на група: %s"
-
-#: ../glib/gkeyfile.c:828
-msgid "Key file does not start with a group"
-msgstr "Клучната датотека не започнува со група"
-
-#: ../glib/gkeyfile.c:854
-#, c-format
-msgid "Invalid key name: %s"
-msgstr "Невалидно име на клуч: %s"
-
-#: ../glib/gkeyfile.c:881
-#, c-format
-msgid "Key file contains unsupported encoding '%s'"
-msgstr "Клучната датотека содржи неподдржан енкодинг „%s“·"
-
-#: ../glib/gkeyfile.c:1094 ../glib/gkeyfile.c:1253 ../glib/gkeyfile.c:2455
-#: ../glib/gkeyfile.c:2521 ../glib/gkeyfile.c:2640 ../glib/gkeyfile.c:2775
-#: ../glib/gkeyfile.c:2928 ../glib/gkeyfile.c:3108 ../glib/gkeyfile.c:3165
-#, c-format
-msgid "Key file does not have group '%s'"
-msgstr "Клучната датотека не ја содржи групата „%s“"
-
-#: ../glib/gkeyfile.c:1265
-#, c-format
-msgid "Key file does not have key '%s'"
-msgstr "Клучната датотека не го содржи клучот „%s“"
-
-#: ../glib/gkeyfile.c:1367 ../glib/gkeyfile.c:1477
-#, c-format
-msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
-msgstr "Клучната датотека го содржи клучот „%s“ со вредноста „%s“ која што не е UTF-8"
-
-#: ../glib/gkeyfile.c:1387 ../glib/gkeyfile.c:1497 ../glib/gkeyfile.c:1866
-#, c-format
-msgid "Key file contains key '%s' which has value that cannot be interpreted."
-msgstr ""
-"Клучната датотека го содржи клучот „%s“ чија што вредност неможе да биде "
-"препознаена."
-
-#: ../glib/gkeyfile.c:2078 ../glib/gkeyfile.c:2287
+#: ../backends/xml-cache.c:316
 #, c-format
 msgid ""
-"Key file contains key '%s' in group '%s' which has value that cannot be "
-"interpreted."
+"Unable to remove directory `%s' from the XML backend cache, because it has "
+"not been successfully synced to disk"
 msgstr ""
-"Клучната датотека го содржи клучот „%s“ во групата „%s“ која што има "
-"вредност која што неможе да биде препознаена."
+"Не можев да го отстранам директориумот `%s' од XML позадинскиот кеш, бидејќи "
+"не бил успешно синхронизиран на диск"
 
-#: ../glib/gkeyfile.c:2470 ../glib/gkeyfile.c:2655 ../glib/gkeyfile.c:3176
+#: ../backends/xml-dir.c:169
 #, c-format
-msgid "Key file does not have key '%s' in group '%s'"
-msgstr "Клучната датотека не содржи клуч во „%s“ во групата „%s“"
+msgid "Could not stat `%s': %s"
+msgstr "Не можев да проценам `%s': %s"
 
-#: ../glib/gkeyfile.c:3415
-msgid "Key file contains escape character at end of line"
-msgstr "Клучната датотека содржи специјални карактери на крајот на линијата"
-
-#: ../glib/gkeyfile.c:3437
+#: ../backends/xml-dir.c:179
 #, c-format
-msgid "Key file contains invalid escape sequence '%s'"
-msgstr "Клучната датотека содржи невалидни посебни карактери „%s“"
+msgid "XML filename `%s' is a directory"
+msgstr "XML име на датотеката `%s' е директориум"
 
-#: ../glib/gkeyfile.c:3579
+#: ../backends/xml-dir.c:416 ../backends/xml-dir.c:425
 #, c-format
-msgid "Value '%s' cannot be interpreted as a number."
-msgstr "Вредноста „%s“ неможе да биде препознаена како број."
+msgid "Failed to delete \"%s\": %s"
+msgstr "Не успеав да избришам \"%s\": %s"
 
-#: ../glib/gkeyfile.c:3593
+#: ../backends/xml-dir.c:471
 #, c-format
-msgid "Integer value '%s' out of range"
-msgstr "Целобројната вредност „%s“ е надвор од опсегот"
+msgid "Failed to write file `%s': %s"
+msgstr "Не успеав да напишам датотека `%s': %s"
 
-#: ../glib/gkeyfile.c:3626
+#: ../backends/xml-dir.c:485 ../backends/xml-dir.c:521
 #, c-format
-msgid "Value '%s' cannot be interpreted as a float number."
-msgstr "Вредноста „%s“ неможе да биде препознаена како рационален број."
+msgid "Failed to set mode on `%s': %s"
+msgstr "Не успав да наместам модул на `%s': %s"
 
-#: ../glib/gkeyfile.c:3650
+#: ../backends/xml-dir.c:496
 #, c-format
-msgid "Value '%s' cannot be interpreted as a boolean."
-msgstr "Вредноста „%s“ не може да биде препознаена како boolean."
+msgid "Failed to write XML data to `%s': %s"
+msgstr "Не успеав да напишам XML податоци на `%s': %s"
+
+#: ../backends/xml-dir.c:506 ../backends/xml-dir.c:1297
+#, c-format
+msgid "Failed to close file `%s': %s"
+msgstr "Не успеав да ја затворам датотеката `%s': %s"
+
+#: ../backends/xml-dir.c:536 ../backends/xml-dir.c:546
+#, c-format
+msgid "Failed to rename `%s' to `%s': %s"
+msgstr "Не успеав да го преименувам `%s' во `%s': %s"
+
+#: ../backends/xml-dir.c:552
+#, c-format
+msgid "Failed to restore `%s' from `%s': %s"
+msgstr "Не успеав да повратам `%s' од `%s': %s"
+
+#: ../backends/xml-dir.c:564
+#, c-format
+msgid "Failed to delete old file `%s': %s"
+msgstr "Не успеав да ја избришам старата датотека `%s': %s"
+
+#. These are all fatal errors
+#: ../backends/xml-dir.c:996
+#, c-format
+msgid "Failed to stat `%s': %s"
+msgstr "Не успеав да проценам `%s': %s"
+
+#: ../backends/xml-dir.c:1170
+#, c-format
+msgid "Duplicate entry `%s' in `%s', ignoring"
+msgstr "Удвои влез `%s' во `%s', занемарувам"
+
+#: ../backends/xml-dir.c:1192
+#, c-format
+msgid "Entry with no name in XML file `%s', ignoring"
+msgstr "Влез безиме во XML датотека `%s', занемарувам"
+
+#: ../backends/xml-dir.c:1200
+#, c-format
+msgid "A toplevel node in XML file `%s' is <%s> rather than <entry>, ignoring"
+msgstr ""
+"Јазол од највисоко ниво во XML датотека `%s' е <%s> наместо <entry>, "
+"занемарувма"
+
+#: ../backends/xml-dir.c:1289
+#, c-format
+msgid "Failed to create file `%s': %s"
+msgstr "Не успеав да направам датотека `%s': %s"
+
+#: ../backends/xml-dir.c:1388
+#, c-format
+msgid "Failed to parse XML file \"%s\""
+msgstr "Не успеав да ја разложам XML датотеката \"%s\""
+
+#. There was an error
+#: ../backends/xml-entry.c:154
+#, c-format
+msgid "Ignoring XML node with name `%s': %s"
+msgstr "Го занемарувам XML јазолот со име `%s': %s"
+
+#: ../backends/xml-entry.c:332
+#, c-format
+msgid "Ignoring schema name `%s', invalid: %s"
+msgstr "Занемарувам име на шема`%s', невалидно: %s"
+
+#: ../backends/xml-entry.c:380
+#, c-format
+msgid "Ignoring XML node `%s': %s"
+msgstr "Занемарувам XML јазол `%s': %s"
+
+#: ../backends/xml-entry.c:732
+#, c-format
+msgid "Failed reading default value for schema: %s"
+msgstr "Не успеав да ја прочитам стандардната вредност за шемата: %s"
+
+#: ../backends/xml-entry.c:952
+#, c-format
+msgid "No \"type\" attribute for <%s> node"
+msgstr "Нема \"type\" атрибут за <%s> јазолот"
+
+#: ../backends/xml-entry.c:966
+#, c-format
+msgid "A node has unknown \"type\" attribute `%s', ignoring"
+msgstr "Јазол има непознат \"type\" атрибут `%s', занемарувам"
+
+#: ../backends/xml-entry.c:981
+msgid "No \"value\" attribute for node"
+msgstr "Нема \"value\" атрибут за јазол"
+
+#: ../backends/xml-entry.c:1029 ../backends/xml-entry.c:1105
+#, c-format
+msgid "Didn't understand XML node <%s> inside an XML list node"
+msgstr "Не го разбрав XML јазолот <%s> во внатрешноста на XML јазол на листа"
+
+#: ../backends/xml-entry.c:1063
+msgid "Invalid type (list, pair, or unknown) in a list node"
+msgstr "Невалиден тип (листа, пар или непознато) во јазол на листа"
+
+#: ../backends/xml-entry.c:1086
+#, c-format
+msgid "Bad XML node: %s"
+msgstr "Лош XML јазол: %s"
+
+#: ../backends/xml-entry.c:1094
+#, c-format
+msgid "List contains a badly-typed node (%s, should be %s)"
+msgstr "Листата содржи лошо напишан јазол (%s, треба да биде %s)"
+
+#: ../backends/xml-entry.c:1146
+#, c-format
+msgid "Ignoring bad car from XML pair: %s"
+msgstr "Занемарувам лош car од XML пар: %s"
+
+#: ../backends/xml-entry.c:1155 ../backends/xml-entry.c:1178
+msgid "parsing XML file: lists and pairs may not be placed inside a pair"
+msgstr ""
+"разложувам XML датотека: листите и паровите може и да не бидат сместени во "
+"пар"
+
+#: ../backends/xml-entry.c:1168
+#, c-format
+msgid "Ignoring bad cdr from XML pair: %s"
+msgstr "Занемарувам лош cdr од XML пар: %s"
+
+#: ../backends/xml-entry.c:1187
+#, c-format
+msgid "Didn't understand XML node <%s> inside an XML pair node"
+msgstr "Не разбрав XML јазол <%s> во внатрешноста на XML парен јазол"
+
+#: ../backends/xml-entry.c:1205
+msgid "Didn't find car and cdr for XML pair node"
+msgstr "Не пронајдов car и cdr за XML јазол на пар"
+
+#: ../backends/xml-entry.c:1211
+msgid "Missing cdr from pair of values in XML file"
+msgstr "Недостасува cdr од пар вредности во XML датотека"
+
+#: ../backends/xml-entry.c:1218
+msgid "Missing car from pair of values in XML file"
+msgstr "Недостасува карактер од пар вредности во XML датотека"
+
+#: ../backends/xml-entry.c:1223
+msgid "Missing both car and cdr values from pair in XML file"
+msgstr "Недостасуваат и car и cdr вредности од пар во XML датотека"
+
+#: ../gconf/gconf-backend.c:62
+#, c-format
+msgid "`%c' is an invalid character in a configuration storage address"
+msgstr "`%c' е невалидна буква или бројка во конфигурациска адреса за складирање"
+
+#. -- end debug only
+#: ../gconf/gconf-backend.c:216
+#, c-format
+msgid "No such file `%s'\n"
+msgstr "Не постои таква датотека `%s'\n"
+
+#: ../gconf/gconf-backend.c:261
+#, c-format
+msgid "Backend `%s' failed return a vtable\n"
+msgstr "Бекендот `%s' не успеа да врати vtable\n"
+
+#: ../gconf/gconf-backend.c:276
+#, c-format
+msgid "Backend `%s' missing required vtable member `%s'\n"
+msgstr "На бекендот`%s' му недостасува бараниот vtable член `%s'\n"
+
+#: ../gconf/gconf-backend.c:302
+#, c-format
+msgid "Bad address `%s': %s"
+msgstr "Bad address `%s': %s"
+
+#: ../gconf/gconf-backend.c:312
+#, c-format
+msgid "Bad address `%s'"
+msgstr "Лоша адреса `%s'"
+
+#: ../gconf/gconf-backend.c:337
+msgid "GConf won't work without dynamic module support (gmodule)"
+msgstr "GConf нема да работи без поддршка динамични модули (gmodule)"
+
+#: ../gconf/gconf-backend.c:346
+#, c-format
+msgid "Error opening module `%s': %s\n"
+msgstr "Грешка отворајќи модул `%s': %s\n"
+
+#: ../gconf/gconf-backend.c:357
+#, c-format
+msgid "Error initializing module `%s': %s\n"
+msgstr "Грешка при иницијализирање на модулот `%s': %s\n"
+
+#: ../gconf/gconf-backend.c:388
+#, c-format
+msgid "Couldn't locate backend module for `%s'"
+msgstr "Не можав да пронајдам позадински модул за `%s'"
+
+#: ../gconf/gconf-backend.c:425
+msgid "Failed to shut down backend"
+msgstr "Не успеав да ја исклучам позадината"
+
+#: ../gconf/gconf-client.c:344 ../gconf/gconf-client.c:362
+#, c-format
+msgid "GConf Error: %s\n"
+msgstr "GConf грешка: %s\n"
+
+#: ../gconf/gconf-client.c:912
+#, c-format
+msgid "GConf warning: failure listing pairs in `%s': %s"
+msgstr "GConf предупредување: неуспешно листање парови во `%s': %s"
+
+#: ../gconf/gconf-client.c:1197
+#, c-format
+msgid "Expected `%s' got `%s' for key %s"
+msgstr "Очекувано `%s' добиено `%s' за клуч %s"
+
+#: ../gconf/gconf-database.c:211
+msgid "Received invalid value in set request"
+msgstr "Примена невалидна вредност во барањето за сетирање"
+
+#: ../gconf/gconf-database.c:219
+#, c-format
+msgid "Couldn't make sense of CORBA value received in set request for key `%s'"
+msgstr "Немаше смисла CORBA вредноста добиена од барањето за сетирање на клуч `%s'"
+
+#: ../gconf/gconf-database.c:502
+msgid "Received request to drop all cached data"
+msgstr "Добиено е барање за да се отфрли сите кеширани податоци"
+
+#: ../gconf/gconf-database.c:519
+msgid "Received request to sync synchronously"
+msgstr "Добиено барање да синхроно синхронизирање"
+
+#: ../gconf/gconf-database.c:807
+msgid "Fatal error: failed to get object reference for ConfigDatabase"
+msgstr "Фатална грешка: не успеав да добијам објект референца за ConfigDatabase"
+
+#: ../gconf/gconf-database.c:973
+#, c-format
+msgid "Failed to sync one or more sources: %s"
+msgstr "Не успеав да синхронизирам еден или повеќе сорсови: %s"
+
+#: ../gconf/gconf-database.c:1046
+#, c-format
+msgid ""
+"Error obtaining new value for `%s' after change notification from backend `%"
+"s': %s"
+msgstr ""
+"Грешка при добивање на вредноста за `%s' по менувањето на известувањето од "
+"бекендот `%s': %s"
+
+#: ../gconf/gconf-database.c:1119
+#, c-format
+msgid ""
+"Failed to log addition of listener %s (%s);will not be able to restore this "
+"listener on gconfd restart, resulting in unreliable notification of "
+"configuration changes."
+msgstr ""
+"Не успеав да логирам додаток за слушач %s (%s);нема да можам да го повратам "
+"овој слушач на gconfd рестарт, резултирајќи во неверодостојни забелешки на "
+"промените во конфигурирањето."
+
+#: ../gconf/gconf-database.c:1153
+#, c-format
+msgid "Listener ID %lu doesn't exist"
+msgstr "ID на слушачот %lu не постои"
+
+#: ../gconf/gconf-database.c:1167
+#, c-format
+msgid ""
+"Failed to log removal of listener to logfile (most likely harmless, may "
+"result in a notification weirdly reappearing): %s"
+msgstr ""
+"Не успеав да логирам отстранување на слушач во лог датотеката (веројатно "
+"безопасно, може да резултира во забелешка која чудно повторно ќе се "
+"појавува): %s"
+
+#: ../gconf/gconf-database.c:1299 ../gconf/gconf-sources.c:1697
+#, c-format
+msgid "Error getting value for `%s': %s"
+msgstr "Грешка во земањето вредност за `%s': %s"
+
+#: ../gconf/gconf-database.c:1349
+#, c-format
+msgid "Error setting value for `%s': %s"
+msgstr "Грешка местењето вредност за `%s': %s"
+
+#: ../gconf/gconf-database.c:1397
+#, c-format
+msgid "Error unsetting `%s': %s"
+msgstr "Грешка при одсетирање `%s': %s"
+
+#: ../gconf/gconf-database.c:1426
+#, c-format
+msgid "Error getting default value for `%s': %s"
+msgstr "Грешка земајќи стандардна вредност за `%s': %s"
+
+#: ../gconf/gconf-database.c:1484
+#, c-format
+msgid "Error unsetting \"%s\": %s"
+msgstr "Грешка одсетирајќи \"%s\": %s"
+
+#: ../gconf/gconf-database.c:1515
+#, c-format
+msgid "Error getting new value for \"%s\": %s"
+msgstr "Грешка земајќи нова вредност за \"%s\": %s"
+
+#: ../gconf/gconf-database.c:1570
+#, c-format
+msgid "Error checking existence of `%s': %s"
+msgstr "Грешка проверувајќи пшостоење на `%s': %s"
+
+#: ../gconf/gconf-database.c:1594
+#, c-format
+msgid "Error removing directory \"%s\": %s"
+msgstr "Грешка при отстранување на директориумот \"%s\": %s"
+
+#: ../gconf/gconf-database.c:1621
+#, c-format
+msgid "Failed to get all entries in `%s': %s"
+msgstr "Не успеав да ги земам сите влезови во `%s': %s"
+
+#: ../gconf/gconf-database.c:1647
+#, c-format
+msgid "Error listing dirs in `%s': %s"
+msgstr "Грешка листајќи ги директориумите во `%s': %s"
+
+#: ../gconf/gconf-database.c:1668
+#, c-format
+msgid "Error setting schema for `%s': %s"
+msgstr "Грешка местејќи ја шемата за `%s': %s"
+
+#: ../gconf/gconf-error.c:25
+msgid "Success"
+msgstr "Успех"
+
+#: ../gconf/gconf-error.c:26
+msgid "Failed"
+msgstr "Неуспешно"
+
+#: ../gconf/gconf-error.c:27
+msgid "Configuration server couldn't be contacted"
+msgstr "Не можеше да се стапи во контакт со конфигурацискиот сервер"
+
+#: ../gconf/gconf-error.c:28
+msgid "Permission denied"
+msgstr "Недозволен пристап."
+
+#: ../gconf/gconf-error.c:29
+msgid "Couldn't resolve address for configuration source"
+msgstr "Не можев да ја разрешам адресата за конфигурацискиот извор"
+
+#: ../gconf/gconf-error.c:30
+msgid "Bad key or directory name"
+msgstr "Лош клуч или име на директориумот"
+
+#: ../gconf/gconf-error.c:31
+msgid "Parse error"
+msgstr "Грешка во разложување"
+
+#: ../gconf/gconf-error.c:32
+msgid "Corrupt data in configuration source database"
+msgstr "Кормпирани податоци во базата на податоци за конфигурацискиот извор"
+
+#: ../gconf/gconf-error.c:33
+msgid "Type mismatch"
+msgstr "Тип лошType mismatch"
+
+#: ../gconf/gconf-error.c:34
+msgid "Key operation on directory"
+msgstr "Клучна операција на директориумот"
+
+#: ../gconf/gconf-error.c:35
+msgid "Directory operation on key"
+msgstr "Директориумска операција на клуч"
+
+#: ../gconf/gconf-error.c:36
+msgid "Can't overwrite existing read-only value"
+msgstr "Не можам да пребришам постоечка само-читај вредност"
+
+#: ../gconf/gconf-error.c:37
+msgid "Object Activation Framework error"
+msgstr "Object Activation Framework грешка"
+
+#: ../gconf/gconf-error.c:38
+msgid "Operation not allowed without configuration server"
+msgstr "Операцијата не е дозволена без кофигурациски сервер"
+
+#: ../gconf/gconf-error.c:39
+msgid "Failed to get a lock"
+msgstr "Не успеав да земам заклучна датотека"
+
+#: ../gconf/gconf-error.c:40
+msgid "No database available to save your configuration"
+msgstr "Нема достапна база на податоци за да се зачува Вашата конфигурација"
+
+#: ../gconf/gconf-internals.c:91
+#, c-format
+msgid "No '/' in key \"%s\""
+msgstr "Нема '/' во клучот \"%s\""
+
+#: ../gconf/gconf-internals.c:178
+#, c-format
+msgid "Invalid UTF-8 in string value in '%s'"
+msgstr "Невалидно UTF-8 во стринг вредноста во „%s“"
+
+#: ../gconf/gconf-internals.c:237
+msgid "Couldn't interpret CORBA value for list element"
+msgstr "Не можев да ја интерпретирам CORBA вредноста за елементот од листа"
+
+#: ../gconf/gconf-internals.c:239
+#, c-format
+msgid "Incorrect type for list element in %s"
+msgstr "Неточен тип за елемент на листа во %s"
+
+#: ../gconf/gconf-internals.c:252
+msgid "Received list from gconfd with a bad list type"
+msgstr "Добиена листа од gconfd со лош тип на листа"
+
+#: ../gconf/gconf-internals.c:433
+msgid "Failed to convert object to IOR"
+msgstr "Не успеав да претворам објект во IOR"
+
+#: ../gconf/gconf-internals.c:570
+msgid "Invalid UTF-8 in locale for schema"
+msgstr "Невалиден UTF-8 во локале за шема"
+
+#: ../gconf/gconf-internals.c:578
+msgid "Invalid UTF-8 in short description for schema"
+msgstr "Невалиден UTF-8 во краткиот опис за шема"
+
+#: ../gconf/gconf-internals.c:586
+msgid "Invalid UTF-8 in long description for schema"
+msgstr "Невалиден UTF-8 во долгиот опис за шема"
+
+#: ../gconf/gconf-internals.c:594
+msgid "Invalid UTF-8 in owner for schema"
+msgstr "Невалиден UTF-8 во сопственикот за шема"
+
+#: ../gconf/gconf-internals.c:839
+#, c-format
+msgid "Couldn't open path file `%s': %s\n"
+msgstr "Не можев да го отворам патот до датотеката `%s': %s\n"
+
+#: ../gconf/gconf-internals.c:895
+#, c-format
+msgid "Adding source `%s'\n"
+msgstr "Додавам код `%s'\n"
+
+#: ../gconf/gconf-internals.c:910
+#, c-format
+msgid "Read error on file `%s': %s\n"
+msgstr "Читачка грешка на датотеката `%s': %s\n"
+
+#: ../gconf/gconf-internals.c:1243 ../gconf/gconf-internals.c:1309
+#: ../gconf/gconf-value.c:156 ../gconf/gconf-value.c:255
+#: ../gconf/gconf-value.c:397 ../gconf/gconf-value.c:1672
+msgid "Text contains invalid UTF-8"
+msgstr "Текстот содржи невалиден UTF-8"
+
+#: ../gconf/gconf-internals.c:1394
+#, c-format
+msgid "Expected list, got %s"
+msgstr "Очекував листа, добив %s"
+
+#: ../gconf/gconf-internals.c:1404
+#, c-format
+msgid "Expected list of %s, got list of %s"
+msgstr "Очекував листа од %s, добив листа од %s"
+
+#: ../gconf/gconf-internals.c:1532
+#, c-format
+msgid "Expected pair, got %s"
+msgstr "Очекував пар, добив %s"
+
+#: ../gconf/gconf-internals.c:1546
+#, c-format
+msgid "Expected (%s,%s) pair, got a pair with one or both values missing"
+msgstr ""
+"Очекував (%s,%s) пар, добив пар каде едната или обете вредностиa "
+"недостасуваат"
+
+#: ../gconf/gconf-internals.c:1562
+#, c-format
+msgid "Expected pair of type (%s,%s) got type (%s,%s)"
+msgstr "Очекував пар од типот (%s,%s) добив тип (%s,%s)"
+
+#: ../gconf/gconf-internals.c:1678
+msgid "Quoted string doesn't begin with a quotation mark"
+msgstr "Цитираниот стринг не почнува си наводници"
+
+#: ../gconf/gconf-internals.c:1739
+msgid "Quoted string doesn't end with a quotation mark"
+msgstr "Цитираниот текст не завршува со наводници"
+
+#: ../gconf/gconf-internals.c:1857
+msgid "Encoded value is not valid UTF-8"
+msgstr "Кодиранита вредност не е валиден UTF-8"
+
+#: ../gconf/gconf-internals.c:2341
+#, c-format
+msgid "Could not lock temporary file '%s': %s"
+msgstr "Не можев да ја заклучам привремената датотека „%s“: %s"
+
+#: ../gconf/gconf-internals.c:2368
+#, c-format
+msgid "Could not create file '%s', probably because it already exists"
+msgstr "Не можев да ја креирам датотеката „%s“, веројатно бидејќи веќе постои"
+
+#: ../gconf/gconf-internals.c:2436
+#, c-format
+msgid "Failed to create or open '%s'"
+msgstr "Не успеав да креирам или отворам „%s“"
+
+#: ../gconf/gconf-internals.c:2446
+#, c-format
+msgid ""
+"Failed to lock '%s': probably another process has the lock, or your "
+"operating system has NFS file locking misconfigured (%s)"
+msgstr ""
+"Не успеав да заклучам „%s“: веројатно затоа што друг процес ја има бравата, "
+"или Вашиот оперативен систем има лошо конфигуриран NFS датотечно заклучување "
+"(%s)"
+
+#: ../gconf/gconf-internals.c:2466
+#, c-format
+msgid "Failed to remove '%s': %s"
+msgstr "Не успеав да отстранам „%s“: %s"
+
+#: ../gconf/gconf-internals.c:2490
+#, c-format
+msgid "IOR file '%s' not opened successfully, no gconfd located: %s"
+msgstr "IOR датотека „%s“ не е отворена успешно, не е пронајден gconfd: %s"
+
+#: ../gconf/gconf-internals.c:2520
+#, c-format
+msgid "gconftool or other non-gconfd process has the lock file '%s'"
+msgstr "gconftool или некој друг не-gconfd процес има лок датотека „%s“"
+
+#: ../gconf/gconf-internals.c:2537
+msgid "couldn't contact ORB to resolve existing gconfd object reference"
+msgstr ""
+"не можев да го контактирам ORB за да разрешам постоечка gconfd објект "
+"референца"
+
+#: ../gconf/gconf-internals.c:2547
+#, c-format
+msgid "Failed to convert IOR '%s' to an object reference"
+msgstr "Не успев да претворам IOR „%s“ до објект референца"
+
+#: ../gconf/gconf-internals.c:2599
+#, c-format
+msgid "couldn't create directory `%s': %s"
+msgstr "не можев да креирам директориум `%s': %s"
+
+#: ../gconf/gconf-internals.c:2656
+#, c-format
+msgid "Can't write to file `%s': %s"
+msgstr "Не можам да пишувам во датотеката `%s': %s"
+
+#: ../gconf/gconf-internals.c:2697
+#, c-format
+msgid "We didn't have the lock on file `%s', but we should have"
+msgstr "Ја немавме бравата на датотеката `%s', но би требало да имаме"
+
+#: ../gconf/gconf-internals.c:2720
+#, c-format
+msgid "Failed to link '%s' to '%s': %s"
+msgstr "Не успеав да поврзам „%s“ со „%s“: %s"
+
+#: ../gconf/gconf-internals.c:2732
+#, c-format
+msgid "Failed to remove lock file `%s': %s"
+msgstr "Не успеав да отстранам лок датотека `%s': %s"
+
+#: ../gconf/gconf-internals.c:2755
+#, c-format
+msgid "Failed to clean up file '%s': %s"
+msgstr "Не успеав да ја исчистам датотеката „%s“: %s"
+
+#: ../gconf/gconf-internals.c:2771
+#, c-format
+msgid "Failed to remove lock directory `%s': %s"
+msgstr "Не успеав да го отстранам лок директориумот `%s': %s"
+
+#: ../gconf/gconf-internals.c:2813
+#, c-format
+msgid "Failed to unlink lock file %s: %s\n"
+msgstr "Не успеав да ја одврзам лок датотеката %s: %s\n"
+
+#: ../gconf/gconf-internals.c:2984 ../gconf/gconfd.c:570
+#, c-format
+msgid "Failed to stat %s: %s"
+msgstr "Не успеав да проценам %s: %s"
+
+#: ../gconf/gconf-internals.c:3006
+#, c-format
+msgid "Server ping error: %s"
+msgstr "Сервер пинг грешка: %s"
+
+#: ../gconf/gconf-internals.c:3031
+#, c-format
+msgid "Failed to create pipe for communicating with spawned gconf daemon: %s\n"
+msgstr "Не успеав да креирам цевка за комуникација со накотен gconf даемон: %s\n"
+
+#: ../gconf/gconf-internals.c:3055
+#, c-format
+msgid "Failed to launch configuration server: %s\n"
+msgstr "Не успеав да го лансирам конфигурацискиот сервер: %s\n"
+
+#: ../gconf/gconf-internals.c:3085
+#, c-format
+msgid ""
+"Failed to contact configuration server; some possible causes are that you "
+"need to enable TCP/IP networking for ORBit, or you have stale NFS locks due "
+"to a system crash. See http://www.gnome.org/projects/gconf/ for information. "
+"(Details - %s)"
+msgstr ""
+"Не успеав да го контактирам конфигурацискиот сервер; некои можни причини се "
+"дека треба да вклучите TCP/IP вмрежување за ORBit, или имате заостанати NFS "
+"брави заради паѓање на системот Видете http://www.gnome.org/projects/gconf/ "
+"за информации. (Детали - %s)"
+
+#: ../gconf/gconf-internals.c:3086
+msgid "none"
+msgstr "ништо"
+
+#: ../gconf/gconf-sanity-check.c:48
+msgid "- Sanity checks for GConf"
+msgstr "- Проверка на исправност на GConf"
+
+#: ../gconf/gconf-sanity-check.c:57 ../gconf/gconftool.c:616
+#, c-format
+msgid ""
+"Error while parsing options: %s.\n"
+"Run '%s --help' to see a full list of available command line options.\n"
+msgstr ""
+"Грешка на опцијата: %s.\n"
+"Извршeте '%s --помош' за да видите целосна листа на достапни опции за "
+"командни линии.\n"
+
+#: ../gconf/gconf-sanity-check.c:128 ../gconf/gconf-sanity-check.c:153
+#, c-format
+msgid ""
+"Please contact your system administrator to resolve the following problem:\n"
+"Could not open or create the file \"%s\"; this indicates that there may be a "
+"problem with your configuration, as many programs will need to create files "
+"in your home directory. The error was \"%s\" (errno = %d)."
+msgstr ""
+"Ве молам контактирајте го систем администраторот за да го разрешите следниот "
+"проблем:\n"
+"Не можев да отворам или ја креирам датотеката \"%s\"; ова значи дека може да "
+"има проблем со Вашата конфигурација, како што многу програми ќе треба да "
+"создадат датотеки во Вашиот домашен директориум. Грешката беше \"%s\" (errno "
+"= %d)."
+
+#: ../gconf/gconf-sanity-check.c:167
+#, c-format
+msgid ""
+"Please contact your system administrator to resolve the following problem:\n"
+"Could not lock the file \"%s\"; this indicates that there may be a problem "
+"with your operating system configuration. If you have an NFS-mounted home "
+"directory, either the client or the server may be set up incorrectly. See "
+"the rpc.statd and rpc.lockd documentation. A common cause of this error is "
+"that the \"nfslock\" service has been disabled.The error was \"%s\" (errno = "
+"%d)."
+msgstr ""
+"Ве молам контактирајте го систем администраторот за да го разрешите следниот "
+"проблем:\n"
+"Не можев да ја заклучам датотеката \"%s\"; ова значи дека може да има "
+"проблем со Вашата кофигурација на оперативниот систем. Доколку имате  NFS-"
+"прикачен домашен директориум, или клиентот или серверот можеби се наместени "
+"погрешно. Видете ги rpc.statd и rpc.lockd документациите. Вообичаена причина "
+"за оваа грешка е дека \"nfslock\" сервисот е исклучен. Грешката беше  \"%s"
+"\" (errno = %d)."
+
+#: ../gconf/gconf-sanity-check.c:184
+#, c-format
+msgid "Can't remove file %s: %s\n"
+msgstr "Не можам да ја отстранам датотеката %s: %s\n"
+
+#: ../gconf/gconf-sanity-check.c:220
+#, c-format
+msgid ""
+"Please contact your system administrator to resolve the following problem:\n"
+"No configuration sources in the configuration file \"%s\"; this means that "
+"preferences and other settings can't be saved. %s%s"
+msgstr ""
+"Ве молам контактирајте го систем администраторот за да го разрешите следниот "
+"проблем:\n"
+"Нема конфигурациски кодови во конфигурациската датотека \"%s\"; ова значи "
+"дека параметрите и другите поставки не можат да бидат зачувани. %s%s"
+
+#: ../gconf/gconf-sanity-check.c:223
+msgid "Error reading the file: "
+msgstr "Грешка читајќи ја датотеката: "
+
+#: ../gconf/gconf-sanity-check.c:246
+#, c-format
+msgid ""
+"Please contact your system administrator to resolve the following problem:\n"
+"Could not resolve the address \"%s\" in the configuration file \"%s\": %s"
+msgstr ""
+"Ве молам контактирајте го систем администраторот за да го разрешите следниот "
+"проблем:\n"
+"Не можев да ја разрешам адресата \"%s\" во конфигурациската датотека \"%s\": "
+"%s"
+
+#: ../gconf/gconf-sanity-check.c:307
+msgid ""
+"The files that contain your preference settings are currently in use.\n"
+"\n"
+"You might be logged in to a session from another computer, and the other "
+"login session is using your preference settings files.\n"
+"\n"
+"You can continue to use the current session, but this might cause temporary "
+"problems with the preference settings in the other session.\n"
+"\n"
+"Do you want to continue?"
+msgstr ""
+"Датотеките кои ги содржат Вашите параметарски поставки се моментално во "
+"употреба.\n"
+"\n"
+"Можеби сте логирани во сесија од друг компјутер, и другата логин сесија ги "
+"употребува Вашите датотеки со параметарски поставки.\n"
+"\n"
+"Можете да продолжите со постојната сесија, но ова може да предизвика "
+"моментални проблеми со параметарските поставки во другата сесија.\n"
+"\n"
+"Сакате ли да продолжите?"
+
+#: ../gconf/gconf-sanity-check.c:328
+msgid "_Log Out"
+msgstr "_Одлогирање"
+
+#: ../gconf/gconf-sanity-check.c:330
+msgid "_Continue"
+msgstr "_Продолжи"
+
+#: ../gconf/gconf-sanity-check.c:343
+#, c-format
+msgid "%s Continue (y/n)?"
+msgstr "%s Продолжи (y/n)?"
+
+#: ../gconf/gconf-schema.c:217 ../gconf/gconf-schema.c:225
+#: ../gconf/gconf-schema.c:233 ../gconf/gconf-schema.c:241
+msgid "Schema contains invalid UTF-8"
+msgstr "Схемата содржи невалиден UTF-8"
+
+#: ../gconf/gconf-schema.c:250
+msgid "Schema specifies type list but doesn't specify the type of the list elements"
+msgstr "Схема определува тип на листа но не определува тип на елементи на листата"
+
+#: ../gconf/gconf-schema.c:260
+msgid ""
+"Schema specifies type pair but doesn't specify the type of the car/cdr "
+"elements"
+msgstr "Шема определува тип на парови но не определува тип на car/cdr елементи"
+
+#: ../gconf/gconf-sources.c:371
+#, c-format
+msgid "Failed to load source \"%s\": %s"
+msgstr "Не успеав да го вчитам кодот \"%s\": %s"
+
+#: ../gconf/gconf-sources.c:411
+#, c-format
+msgid "Resolved address \"%s\" to a writable configuration source at position %d"
+msgstr "Адресата \"%s\" е преведена во конфиурациски изворен код на позицијата %d"
+
+#: ../gconf/gconf-sources.c:417
+#, c-format
+msgid "Resolved address \"%s\" to a read-only configuration source at position %d"
+msgstr ""
+"Адресата \"%s\" е преведена до „само-читај“ конфигурациски извор на "
+"позицијата %d"
+
+#: ../gconf/gconf-sources.c:424
+#, c-format
+msgid "Resolved address \"%s\" to a partially writable config source at position %d"
+msgstr "Разрешена адреса \"%s\" до делумно пишлив конфиг код на позиција %d"
+
+#: ../gconf/gconf-sources.c:433
+msgid ""
+"None of the resolved addresses are writable; saving configuration settings "
+"will not be possible"
+msgstr ""
+"Ниедна од разрешените адреси не е пишлива, зачувувањето на конфигурациски "
+"поставки е неможно"
+
+#: ../gconf/gconf-sources.c:650
+#, c-format
+msgid "Schema `%s' specified for `%s' stores a non-schema value"
+msgstr "Шемата %s' определена за `%s' содржи не-шема вредност"
+
+#: ../gconf/gconf-sources.c:712
+msgid "The '/' name can only be a directory, not a key"
+msgstr "'/' името може да биде само директориум, не клуч"
+
+#: ../gconf/gconf-sources.c:754
+#, c-format
+msgid ""
+"Value for `%s' set in a read-only source at the front of your configuration "
+"path"
+msgstr ""
+"Вредноста за `%s' е поставена во само-читај код на почетокот на Вашата "
+"конфигурациска патека"
+
+#: ../gconf/gconf-sources.c:766
+#, c-format
+msgid ""
+"Unable to store a value at key '%s', as the configuration server has no "
+"writable databases. There are some common causes of this problem: 1) your "
+"configuration path file %s/path doesn't contain any databases or wasn't "
+"found 2) somehow we mistakenly created two gconfd processes 3) your "
+"operating system is misconfigured so NFS file locking doesn't work in your "
+"home directory or 4) your NFS client machine crashed and didn't properly "
+"notify the server on reboot that file locks should be dropped. If you have "
+"two gconfd processes (or had two at the time the second was launched), "
+"logging out, killing all copies of gconfd, and logging back in may help. If "
+"you have stale locks, remove ~/.gconf*/*lock. Perhaps the problem is that "
+"you attempted to use GConf from two machines at once, and ORBit still has "
+"its default configuration that prevents remote CORBA connections - put "
+"\"ORBIIOPIPv4=1\" in /etc/orbitrc. As always, check the user.* syslog for "
+"details on problems gconfd encountered. There can only be one gconfd per "
+"home directory, and it must own a lockfile in ~/.gconfd and also lockfiles "
+"in individual storage locations such as ~/.gconf"
+msgstr ""
+"Не можев да зачувам вредност на клуч „%s“, затоа што конфигурацискиот сервер "
+"нема пишлива адреса. Има некои вообичаени причини за овој проблем: 1) Вашата "
+"патека на конфигурациска датотека %s/path не содржи бази на податоци или не "
+"била пронајдена 2) некако по грешка сме создале два gconfd процеса 3) Вашиот "
+"оперативен систем е лошо конфигуриран па NFS датотечното заклучување не "
+"работи во Вашиот домашен директориум или 4) Вашата NFS клиент машина паднала "
+"и неправилно го известила серверот на рестартирање дека датотечните брави "
+"треба да се отфрлат. Ако имате два gconfd процеси (или имале два во моментот "
+"кога вториот се лансирал), одлогирајќи се, убивајќи ги сите копии од gconfd, "
+"и логирајќи се повторно може да помогне. Ако имате заостанати брави, "
+"отстранете ~/.gconf*/*lock. Можеби проблемот е дека сте се обиделе да "
+"користите GConf од две машини одеднаш, а ORBit сеуште ги има сопствените "
+"стандардни конфигурации кои оневозможуваат оддалечени CORBA врски - ставете "
+"\"ORBIIOPIPv4=1\" in /etc/orbitrc. Како и секогаш проверете го user.* syslog "
+"за детали од проблеми на кои gconfd налетал. Може да има само еден gconfd по "
+"домашен директориум, и мора да поседува локдатотека во ~/.gconfd и исто "
+"локдатотеки во во посебни локации за сместување како ~/.gconf"
+
+#: ../gconf/gconf-sources.c:1570
+#, c-format
+msgid "Error finding metainfo: %s"
+msgstr "Грешка наоѓајќи метаинформација: %s"
+
+#: ../gconf/gconf-sources.c:1639
+#, c-format
+msgid "Error getting metainfo: %s"
+msgstr "Грешка земајќи метаинфо: %s"
+
+#: ../gconf/gconf-sources.c:1663
+#, c-format
+msgid "Key `%s' listed as schema for key `%s' actually stores type `%s'"
+msgstr "Клуч `%s' наведен како шема за клуч `%s' всушност зачувува сместува тип `%s'"
+
+#: ../gconf/gconf-value.c:263
+#, c-format
+msgid "Didn't understand `%s' (list must start with a '[')"
+msgstr "Не разбрав `%s' (листата мора да започне со '[')"
+
+#: ../gconf/gconf-value.c:276
+#, c-format
+msgid "Didn't understand `%s' (list must end with a ']')"
+msgstr "Не разбрав `%s' (листата мора да заврши со ']')"
+
+#: ../gconf/gconf-value.c:327
+#, c-format
+msgid "Didn't understand `%s' (extra unescaped ']' found inside list)"
+msgstr "Не разбрав `%s' (екстра неескејпирани ']' најдени во листата)"
+
+#: ../gconf/gconf-value.c:358 ../gconf/gconf-value.c:519
+#, c-format
+msgid "Didn't understand `%s' (extra trailing characters)"
+msgstr "Не разбрав `%s' (екстра карактери што се влечат)"
+
+#: ../gconf/gconf-value.c:405
+#, c-format
+msgid "Didn't understand `%s' (pair must start with a '(')"
+msgstr "Не разбрав `%s' (пар мора да почне со '(')"
+
+#: ../gconf/gconf-value.c:418
+#, c-format
+msgid "Didn't understand `%s' (pair must end with a ')')"
+msgstr "Не разбрав `%s' (пар мора да завpши со ')')"
+
+#: ../gconf/gconf-value.c:448 ../gconf/gconf-value.c:534
+#, c-format
+msgid "Didn't understand `%s' (wrong number of elements)"
+msgstr "Не разбрав `%s' (погрешен број на елементи)"
+
+#: ../gconf/gconf-value.c:488
+#, c-format
+msgid "Didn't understand `%s' (extra unescaped ')' found inside pair)"
+msgstr "Не разбрав `%s' (екстра неескејпирани ')' најдено внатре во пар)"
+
+#: ../gconf/gconf.c:95
+msgid "Key is NULL"
+msgstr "Клучот е NULL"
+
+#: ../gconf/gconf.c:102
+#, c-format
+msgid "\"%s\": %s"
+msgstr "\"%s\": %s"
+
+#: ../gconf/gconf.c:423
+#, c-format
+msgid "Server couldn't resolve the address `%s'"
+msgstr "Серверот не можеше да ја разреши адресата `%s'"
+
+#: ../gconf/gconf.c:801
+msgid "Can't add notifications to a local configuration source"
+msgstr "Не можам да додадам забелешки на локален конфигурациски код"
+
+#: ../gconf/gconf.c:2251
+#, c-format
+msgid "Adding client to server's list failed, CORBA error: %s"
+msgstr "Додавањето на клинт кон листата на серверот не успеа, CORBA грешка: %s"
+
+#: ../gconf/gconf.c:2623
+msgid "Must begin with a slash (/)"
+msgstr "Мора да започне со коса црта (/)"
+
+#: ../gconf/gconf.c:2645
+msgid "Can't have two slashes (/) in a row"
+msgstr "Не може да има две коси црти (/) една по друга"
+
+#: ../gconf/gconf.c:2647
+msgid "Can't have a period (.) right after a slash (/)"
+msgstr "Не може да се стави точка (.) веднаш после коса црта (/)"
+
+#: ../gconf/gconf.c:2667
+#, c-format
+msgid "'\\%o' is not an ASCII character, so isn't allowed in key names"
+msgstr "„\\%o“ не е ASCII знак, така да не е дозволено во главни имиња"
+
+#: ../gconf/gconf.c:2677
+#, c-format
+msgid "`%c' is an invalid character in key/directory names"
+msgstr "`%c' не е валиден карактер во главни/директориумски имиња"
+
+#: ../gconf/gconf.c:2691
+msgid "Key/directory may not end with a slash (/)"
+msgstr "Глано име/директориум не смее да заврши со коса црта (/)"
+
+#: ../gconf/gconf.c:3062
+#, c-format
+msgid "Failure shutting down config server: %s"
+msgstr "Неуспех исклучувајќи го конфиг серверот: %s"
+
+#: ../gconf/gconf.c:3123
+#, c-format
+msgid "Expected float, got %s"
+msgstr "Очекував лебди, добив %s"
+
+#: ../gconf/gconf.c:3158
+#, c-format
+msgid "Expected int, got %s"
+msgstr "Очекував целобројно, добив %s"
+
+#: ../gconf/gconf.c:3193
+#, c-format
+msgid "Expected string, got %s"
+msgstr "Очекував стринг, добив %s"
+
+#: ../gconf/gconf.c:3227
+#, c-format
+msgid "Expected bool, got %s"
+msgstr "Очекував bool, добив %s"
+
+#: ../gconf/gconf.c:3260
+#, c-format
+msgid "Expected schema, got %s"
+msgstr "Очекував шема, добив %s"
+
+#: ../gconf/gconf.c:3599
+#, c-format
+msgid "CORBA error: %s"
+msgstr "CORBA грешка: %s"
+
+#: ../gconf/gconfd.c:302
+msgid "Shutdown request received"
+msgstr "Барањето за исклучување е примено"
+
+#: ../gconf/gconfd.c:334
+msgid ""
+"gconfd compiled with debugging; trying to load gconf.path from the source "
+"directory"
+msgstr ""
+"gconfd компајлирано со дебагирање; се обидувам да вчитам gconf.path од "
+"изворниот директориум"
+
+#: ../gconf/gconfd.c:354
+#, c-format
+msgid "No configuration files found, trying to use the default config source `%s'"
+msgstr ""
+"Не беа пронајдени конфигурациски датотеки, се обидувам да користам "
+"стандарден конфиг код `%s'"
+
+#. We want to stay alive but do nothing, because otherwise every
+#. request would result in another failed gconfd being spawned.
+#.
+#: ../gconf/gconfd.c:362
+#, c-format
+msgid ""
+"No configuration sources in the source path, configuration won't be saved; "
+"edit %s%s"
+msgstr ""
+"Нема конфигурациски изворни кодови во изворната патека, конфигурацијата нема "
+"да биде зачувана; уредете го %s%s"
+
+#: ../gconf/gconfd.c:375
+#, c-format
+msgid "Error loading some config sources: %s"
+msgstr "Грешка вчитувајќи некои конфиг кодови: %s"
+
+#: ../gconf/gconfd.c:387
+msgid ""
+"No config source addresses successfully resolved, can't load or store config "
+"data"
+msgstr ""
+"Не беше успешно резолвирана конфиг сорс, не можам да вчитам или зачувам "
+"конфиг податоци"
+
+#: ../gconf/gconfd.c:404
+msgid ""
+"No writable config sources successfully resolved, may not be able to save "
+"some configuration changes"
+msgstr ""
+"Немаше успешно резолвирани конфиг кодови, можеби нема да може да се зачуваат "
+"некои конфигурациски промени"
+
+#: ../gconf/gconfd.c:433
+#, c-format
+msgid "Received signal %d, dumping core. Please report a GConf bug."
+msgstr ""
+"Добиен сигнал %d, чувам слика од меморијата. Ве молам пријавете грешка во  "
+"GConf ."
+
+#: ../gconf/gconfd.c:439
+#, c-format
+msgid "Received signal %d. Please report a GConf bug."
+msgstr "Добиен сигнал %d. Ве молам пријавете грешка за GConf."
+
+#: ../gconf/gconfd.c:459
+#, c-format
+msgid "Received signal %d, shutting down abnormally. Please file a GConf bug report."
+msgstr "Добиен сигнал %d, абнормално исклучување. Молам доставете GConf баг извештај."
+
+#: ../gconf/gconfd.c:475
+#, c-format
+msgid "Received signal %d, shutting down cleanly"
+msgstr "Примен сигнал %d, исклучувам чисто"
+
+#: ../gconf/gconfd.c:563
+#, c-format
+msgid "Failed to open %s: %s"
+msgstr "Неможеше да се отвори %s: %s"
+
+#: ../gconf/gconfd.c:579
+#, c-format
+msgid "Owner of %s is not the current user"
+msgstr "Сопственикот на %s не е моменталниот корисник"
+
+#: ../gconf/gconfd.c:587
+#, c-format
+msgid "Bad permissions %lo on directory %s"
+msgstr "Лоши пермисии %lo на директориумот %s"
+
+#. openlog() does not copy logname - what total brokenness.
+#. So we free it at the end of main()
+#: ../gconf/gconfd.c:679
+#, c-format
+msgid "starting (version %s), pid %u user '%s'"
+msgstr "почнувам (верзија %s), pid %u корисник „%s“"
+
+#: ../gconf/gconfd.c:736
+msgid "Failed to get object reference for ConfigServer"
+msgstr "Не успеав да земам објект референца за ConfigServer"
+
+#: ../gconf/gconfd.c:749
+#, c-format
+msgid "Failed to create %s: %s"
+msgstr "Не успеав да создадам %s: %s"
+
+#: ../gconf/gconfd.c:756
+#, c-format
+msgid "Directory %s has a problem, gconfd can't use it"
+msgstr "Директориумот %s има проблем, gconfd не може да го употребува"
+
+#: ../gconf/gconfd.c:788
+#, c-format
+msgid ""
+"Failed to write byte to pipe file descriptor %d so client program may hang: %"
+"s"
+msgstr "Не успеав да напишам бајт на цевка fd %d програмата клиент може да падне: %s"
+
+#: ../gconf/gconfd.c:798
+#, c-format
+msgid "Failed to get lock for daemon, exiting: %s"
+msgstr "Неуспешен обид за заклучување на даемонот, излегувам: %s"
+
+#: ../gconf/gconfd.c:836
+#, c-format
+msgid "Error releasing lockfile: %s"
+msgstr "Грешка издавајќи локдатотеки: %s"
+
+#: ../gconf/gconfd.c:844
+msgid "Exiting"
+msgstr "Езлегување"
+
+#: ../gconf/gconfd.c:869
+msgid "SIGHUP received, reloading all databases"
+msgstr "Примив SIGHUP, повторно ги вчитувам сите бази на податоци."
+
+#: ../gconf/gconfd.c:886
+msgid "GConf server is not in use, shutting down."
+msgstr "GConf серверот не е во употреба, исклучувам."
+
+#: ../gconf/gconfd.c:1212
+#, c-format
+msgid "Error obtaining new value for `%s': %s"
+msgstr "Грешка при земање на нова вредност за `%s': %s"
+
+#: ../gconf/gconfd.c:1340
+#, c-format
+msgid "Returning exception: %s"
+msgstr "Враќам исклучок: %s"
+
+#: ../gconf/gconfd.c:1446
+#, c-format
+msgid ""
+"Failed to open gconfd logfile; won't be able to restore listeners after "
+"gconfd shutdown (%s)"
+msgstr ""
+"Не успеав да отворам gconfd лог датотека; нема да можам да ги повратам "
+"слушачите после gconfd исклучување (%s)"
+
+#: ../gconf/gconfd.c:1481
+#, c-format
+msgid "Failed to close gconfd logfile; data may not have been properly saved (%s)"
+msgstr ""
+"Не успеав да ја затворам gconfd лог датотеката; податоците можеби не се "
+"зачувани правилно (%s)"
+
+#: ../gconf/gconfd.c:1543
+#, c-format
+msgid "Could not open saved state file '%s' for writing: %s"
+msgstr "Не можам да ја отворам зачуваната статусна датотека „%s“ за пишување: %s"
+
+#: ../gconf/gconfd.c:1557
+#, c-format
+msgid "Could not write saved state file '%s' fd: %d: %s"
+msgstr "Не можам да пишувам на зачувана статусна датотека „%s“ fd: %d: %s"
+
+#: ../gconf/gconfd.c:1566
+#, c-format
+msgid "Failed to close new saved state file '%s': %s"
+msgstr "Не успеав да затворам нова зачувана статусна датотека „%s“: %s"
+
+#: ../gconf/gconfd.c:1580
+#, c-format
+msgid "Could not move aside old saved state file '%s': %s"
+msgstr "Не можам да ја тргнам на страна старата зачувана статусна датотека „%s“: %s"
+
+#: ../gconf/gconfd.c:1590
+#, c-format
+msgid "Failed to move new save state file into place: %s"
+msgstr "Не успеав да ја поместам новата зачуваната state датотека на место: %s"
+
+#: ../gconf/gconfd.c:1599
+#, c-format
+msgid "Failed to restore original saved state file that had been moved to '%s': %s"
+msgstr ""
+"Не успеав да ја поврата оригиналната зачувана state датотека која беше "
+"поместена во „%s“: %s"
+
+#: ../gconf/gconfd.c:2078
+#, c-format
+msgid "Unable to restore a listener on address '%s', couldn't resolve the database"
+msgstr ""
+"Не можам да повратам слушач на адреса „%s“, не можам да ја резолвирам базата "
+"на податоци"
+
+#: ../gconf/gconfd.c:2114
+#, c-format
+msgid "Error reading saved state file: %s"
+msgstr "Грешка читајќи зачувана state датотека: %s"
+
+#: ../gconf/gconfd.c:2164
+#, c-format
+msgid "Unable to open saved state file '%s': %s"
+msgstr "Не можев да ја отворам зачуваната state датотека „%s“: %s"
+
+#: ../gconf/gconfd.c:2283
+#, c-format
+msgid ""
+"Failed to log addition of listener to gconfd logfile; won't be able to re-"
+"add the listener if gconfd exits or shuts down (%s)"
+msgstr ""
+"Не успеав да логирам додавање на слушач во gconfd лог датотека; нема да "
+"можам повторно да го додам слушачот доколку gconfd излезе или исклучи (%s)"
+
+#: ../gconf/gconfd.c:2288
+#, c-format
+msgid ""
+"Failed to log removal of listener to gconfd logfile; might erroneously re-"
+"add the listener if gconfd exits or shuts down (%s)"
+msgstr ""
+"Не успеав да логирам одстранување на слушач во gconfd лог датотека; може "
+"неточно повторно да се додаде слушач доколку ако gconfd излезе или се "
+"исклучи (%s)"
+
+#: ../gconf/gconfd.c:2311 ../gconf/gconfd.c:2485
+#, c-format
+msgid "Failed to get IOR for client: %s"
+msgstr "Не успеав да земам IOR за клиент: %s"
+
+#: ../gconf/gconfd.c:2326
+#, c-format
+msgid "Failed to open saved state file: %s"
+msgstr "Не успеав да отворам зачувана статусна датотека: %s"
+
+#: ../gconf/gconfd.c:2339
+#, c-format
+msgid "Failed to write client add to saved state file: %s"
+msgstr "Не успеав да запишам додавање клиент во зачувана state датотека: %s"
+
+#: ../gconf/gconfd.c:2347
+#, c-format
+msgid "Failed to flush client add to saved state file: %s"
+msgstr "Не успеав да ослободам додавање клиент во зачуван state датотека: %s"
+
+#: ../gconf/gconfd.c:2446
+msgid "Some client removed itself from the GConf server when it hadn't been added."
+msgstr "Некој клиент самиот се одстранил од GConf серверот кога не бил додаден."
+
+#: ../gconf/gconftool.c:90
+msgid "Set a key to a value and sync. Use with --type."
+msgstr "Намести клуч за вредност и синхронизација. Употреби со --type."
+
+#: ../gconf/gconftool.c:99
+msgid "Print the value of a key to standard output."
+msgstr "Печати ја вредноста на клучот до стандарден излез."
+
+#: ../gconf/gconftool.c:109
+msgid "Unset the keys on the command line"
+msgstr "Одподеси ги клучевите на командната линија"
+
+#: ../gconf/gconftool.c:118
+msgid ""
+"Recursively unset all keys at or below the key/directory names on the "
+"command line"
+msgstr ""
+"Рекурзивно размести ги сите клучеви на или под главните/директориумски имиња "
+"на командната линија"
+
+#: ../gconf/gconftool.c:127
+msgid "Print all key/value pairs in a directory."
+msgstr "Печати ги сите клуч/вредност парови во директориумот."
+
+#: ../gconf/gconftool.c:136
+msgid "Print all subdirectories in a directory."
+msgstr "Печати ги сите поддиректориуми во директориумот."
+
+#: ../gconf/gconftool.c:145
+msgid "Print all subdirectories and entries under a directory, recursively."
+msgstr "Печати ги сите поддиректориуми и записи под директориуми, рекурзивно."
+
+#: ../gconf/gconftool.c:154
+msgid "Search for a key, recursively."
+msgstr "Барај клуч, рекурзивно."
+
+#: ../gconf/gconftool.c:163
+msgid "Get the short doc string for a key"
+msgstr "Земи го краткиот doc стринг за клуч"
+
+#: ../gconf/gconftool.c:172
+msgid "Get the long doc string for a key"
+msgstr "Земи го долгиот doc стринг за клуч"
+
+#: ../gconf/gconftool.c:181
+msgid "Return 0 if the directory exists, 2 if it does not."
+msgstr "Врати 0 ако директориумот постои, 2 ако не постои."
+
+#: ../gconf/gconftool.c:190
+msgid "Ignore schema defaults when reading values."
+msgstr "Игнорирај стандардни шеми кога читаш вредности."
+
+#: ../gconf/gconftool.c:205
+msgid ""
+"Dump to standard output an XML description of all entries under a directory, "
+"recursively."
+msgstr ""
+"Рекурзивно отфрли до стандарден излез XML опис од сите записи под "
+"директориум."
+
+#: ../gconf/gconftool.c:214
+msgid ""
+"Load from the specified file an XML description of values and set them "
+"relative to a directory."
+msgstr ""
+"Вчитај од определената датотека XML опис на вредности и намести ги во однос "
+"на директориумот."
+
+#: ../gconf/gconftool.c:223
+msgid "Unload a set of values described in an XML file."
+msgstr "Девчитај група на вредности опишани во XML датотеки."
+
+#: ../gconf/gconftool.c:238
+msgid "Get the name of the default source"
+msgstr "Земи го името на стандардниот извор"
+
+#: ../gconf/gconftool.c:247
+msgid "Shut down gconfd. DON'T USE THIS OPTION WITHOUT GOOD REASON."
+msgstr "Исклучи го gconfd. НЕ ЈА УПОТРЕБУВАЈ ОВАА ОПЦИЈА БЕЗ ДОБРА ПРИЧИНА."
+
+#: ../gconf/gconftool.c:256
+msgid "Return 0 if gconfd is running, 2 if not."
+msgstr "Врати 0 ако gconfd работи, 2 ако не."
+
+#: ../gconf/gconftool.c:265
+msgid ""
+"Launch the config server (gconfd). (Normally happens automatically when "
+"needed.)"
+msgstr ""
+"Лансирај го config серверот (gconfd). (Обично се случува автоматски кога е "
+"потребно.)"
+
+#: ../gconf/gconftool.c:280
+msgid ""
+"Specify the type of the value being set, or the type of the value a schema "
+"describes. Unique abbreviations OK."
+msgstr ""
+"Определи го типот на вредноста која се дава, или типот на вредност кој "
+"шемата го опишува. Уникатни кратенки ОК."
+
+#: ../gconf/gconftool.c:281
+msgid "int|bool|float|string|list|pair"
+msgstr "цел бр.|bool|лебди|стринг|листа|пар"
+
+#: ../gconf/gconftool.c:289
+msgid "Print the data type of a key to standard output."
+msgstr "Печати го податочниот тип од клучот во стандарден излез."
+
+#: ../gconf/gconftool.c:298
+msgid "Get the number of elements in a list key."
+msgstr "Земи го бројот на елементи во клуч листа."
+
+#: ../gconf/gconftool.c:307
+msgid "Get a specific element from a list key, numerically indexed."
+msgstr "Земи специфичен елемент од клуч листа, броево индексирани"
+
+#: ../gconf/gconftool.c:316
+msgid ""
+"Specify the type of the list value being set, or the type of the value a "
+"schema describes. Unique abbreviations OK."
+msgstr ""
+"Определи го типот на вредност на листата кој се дава или типот на вредност "
+"кој шемата го опишува. Уникатни кратенки ОК."
+
+#: ../gconf/gconftool.c:317 ../gconf/gconftool.c:326 ../gconf/gconftool.c:335
+msgid "int|bool|float|string"
+msgstr "int|bool|лебди|стринг"
+
+#: ../gconf/gconftool.c:325
+msgid ""
+"Specify the type of the car pair value being set, or the type of the value a "
+"schema describes. Unique abbreviations OK."
+msgstr ""
+"Определи го типот на вредност на car пар кој се дава или типот на вредност "
+"кој шемата го опишува. Уникатни кратенки ОК."
+
+#: ../gconf/gconftool.c:334
+msgid ""
+"Specify the type of the cdr pair value being set, or the type of the value a "
+"schema describes. Unique abbreviations OK."
+msgstr ""
+"Определи го типот на вредност за cdr пар која се дава или типот на вредност "
+"кој шемата го опишува.Уникатни кратенки OK."
+
+#: ../gconf/gconftool.c:349
+msgid "Specify a schema file to be installed"
+msgstr "Определи шема датотека за инсталација"
+
+#: ../gconf/gconftool.c:350
+msgid "FILENAME"
+msgstr "ИМЕ НА ДАТОТЕКА"
+
+#: ../gconf/gconftool.c:358
+msgid "Specify a configuration source to use rather than the default path"
+msgstr "Определи конфигурациски извор за употреба наместо стандардната патека"
+
+#: ../gconf/gconftool.c:359
+msgid "SOURCE"
+msgstr "ИЗВОР"
+
+#: ../gconf/gconftool.c:367
+msgid ""
+"Access the config database directly, bypassing server. Requires that gconfd "
+"is not running."
+msgstr ""
+"Пристапи на конфиг базата на податоци директно, одминувајќи го серверот. "
+"Потребно е gconfd да не работи."
+
+#: ../gconf/gconftool.c:376
+msgid ""
+"Properly installs schema files on the command line into the database. "
+"GCONF_CONFIG_SOURCE environment variable should be set to a non-default "
+"config source or set to the empty string to use the default."
+msgstr ""
+"Правилно ги инсталира шема датотеките на командната линија во базата на "
+"податоци. GCONF_CONFIG_SOURCE околинската променлива треба да се намести на "
+"не-стандарден конфиг код или наместен на празен стринг за да се употреби "
+"стандардното."
+
+#: ../gconf/gconftool.c:385
+msgid ""
+"Properly uninstalls schema files on the command line from the database. "
+"GCONF_CONFIG_SOURCE environment variable should be set to a non-default "
+"config source or set to the empty string to use the default."
+msgstr ""
+"Правилно ги деинсталира шема датотеките на командната линија од базата на "
+"податоци. GCONF_CONFIG_SOURCE околинската променлива треба да се намести на "
+"не-стандарден конфиг код или наместен на празен стринг за да се употреби "
+"стандардното."
+
+#: ../gconf/gconftool.c:400
+msgid ""
+"Torture-test an application by setting and unsetting a bunch of values of "
+"different types for keys on the command line."
+msgstr ""
+"Тортура-тестирај апликација со доделување и одземање куп вредности од "
+"различен тип на клучеви на командната линија."
+
+#: ../gconf/gconftool.c:409
+msgid ""
+"Torture-test an application by setting and unsetting a bunch of keys inside "
+"the directories on the command line."
+msgstr ""
+"Тортура-тестирај апликација со доделување и одземање куп клучеви во "
+"директориумите на командната линија."
+
+#: ../gconf/gconftool.c:424
+msgid ""
+"Set a schema and sync. Use with --short-desc, --long-desc, --owner, and --"
+"type."
+msgstr ""
+"Намести шема и синхронизација. Употребете со --short-desc, --long-desc, --"
+"owner и --type."
+
+#: ../gconf/gconftool.c:433
+msgid "Specify a short half-line description to go in a schema."
+msgstr "Определи краток пола-линијски опис за во шема."
+
+#: ../gconf/gconftool.c:434 ../gconf/gconftool.c:443
+msgid "DESCRIPTION"
+msgstr "ОПИС"
+
+#: ../gconf/gconftool.c:442
+msgid "Specify a several-line description to go in a schema."
+msgstr "Определи неколку-линиски опис за во шема."
+
+#: ../gconf/gconftool.c:451
+msgid "Specify the owner of a schema"
+msgstr "Определи го сопственикот на шемата"
+
+#: ../gconf/gconftool.c:452
+msgid "OWNER"
+msgstr "СОПСТВЕНИК"
+
+#: ../gconf/gconftool.c:460
+msgid "Get the name of the schema applied to this key"
+msgstr "Земи го името на шемата применета на овој клуч"
+
+#: ../gconf/gconftool.c:469
+msgid "Specify the schema name followed by the key to apply the schema name to"
+msgstr ""
+"Определи го името на шемата следено од клучот за да се примени името на "
+"шемата на"
+
+#: ../gconf/gconftool.c:478
+msgid "Remove any schema name applied to the given keys"
+msgstr "Одстрани било кое име на шема применето на дадените клучеви"
+
+#: ../gconf/gconftool.c:493
+msgid "Print version"
+msgstr "Печатлива верзија"
+
+#: ../gconf/gconftool.c:502
+msgid "[FILE...]|[KEY...]|[DIR...]"
+msgstr "[ДАТОТЕКА...]|[КЛУЧ...]|[ДИРЕКТОРИУМ...]"
+
+#: ../gconf/gconftool.c:562
+msgid "- Tool to manipulate a GConf configuration"
+msgstr "- Алатка за манипулирање на конфигурациите на GConf"
+
+#: ../gconf/gconftool.c:567
+msgid "Client options:"
+msgstr "Опции за клиент:"
+
+#: ../gconf/gconftool.c:567
+msgid "Show client options"
+msgstr "Прикажи опции за клиент"
+
+#: ../gconf/gconftool.c:572
+msgid "Key type options:"
+msgstr "Опции за типови на клучеви:"
+
+#: ../gconf/gconftool.c:572
+msgid "Show key type options"
+msgstr "Прикажи опции за типови на копчиња"
+
+#: ../gconf/gconftool.c:577
+msgid "Load/Save options:"
+msgstr "Опции за вчитување/зачувување:"
+
+#: ../gconf/gconftool.c:577
+msgid "Show load/save options"
+msgstr "Прикажи опции за вчитување/зачувување"
+
+#: ../gconf/gconftool.c:582
+msgid "Server options:"
+msgstr "Опции за сервер:"
+
+#: ../gconf/gconftool.c:582
+msgid "Show server options"
+msgstr "Прикажи опции за сервер"
+
+#: ../gconf/gconftool.c:587
+msgid "Installation options:"
+msgstr "Опции за инсталација:"
+
+#: ../gconf/gconftool.c:587
+msgid "Show installation options"
+msgstr "Прикажи опции за инсталација"
+
+#: ../gconf/gconftool.c:592
+msgid "Test options:"
+msgstr "Опции за тест:"
+
+#: ../gconf/gconftool.c:592
+msgid "Show test options"
+msgstr "Прикажи опции за тест"
+
+#: ../gconf/gconftool.c:597
+msgid "Schema options:"
+msgstr "Опции за шеми:"
+
+#: ../gconf/gconftool.c:597
+msgid "Show schema options"
+msgstr "Прикажи опции за шеми"
+
+#: ../gconf/gconftool.c:606
+#, c-format
+msgid "Run '%s --help' to see a full list of available command line options.\n"
+msgstr ""
+"Извршете „%s --help“ за да видите целосна листа на достапни опции за "
+"командни линии.\n"
+
+#: ../gconf/gconftool.c:634
+msgid "Can't get and set/unset simultaneously\n"
+msgstr "Не можам да земам и наместам/сменам симултано\n"
+
+#: ../gconf/gconftool.c:644
+msgid "Can't set and get/unset simultaneously\n"
+msgstr "Не можам да наместам и земам/сменам симултано\n"
+
+#: ../gconf/gconftool.c:651
+msgid "Can't get type and set/unset simultaneously\n"
+msgstr "Не можам да земам тип и наместам/сменам симултано\n"
+
+#: ../gconf/gconftool.c:662
+msgid "Can't use --all-entries with --get or --set\n"
+msgstr "Не можам да користам --all-entries со --get или --set\n"
+
+#: ../gconf/gconftool.c:673
+msgid "Can't use --all-dirs with --get or --set\n"
+msgstr "Не можам да користам --all-dirs со --get или --set\n"
+
+#: ../gconf/gconftool.c:687
+msgid ""
+"--recursive-list should not be used with --get, --set, --unset, --all-"
+"entries, --all-dirs, or --search-key\n"
+msgstr ""
+"--recursive-list не треба да се користи со -get, --set, --unset, --all-"
+"entries, --all-dirs или --search-key\n"
+
+#: ../gconf/gconftool.c:701
+msgid ""
+"--set_schema should not be used with --get, --set, --unset, --all-entries, --"
+"all-dirs, or --search-key\n"
+msgstr ""
+"--set_schema не треба да се користи со --get, --set, --unset, --all-entries, --"
+"all-dirs или --search-key\n"
+
+#: ../gconf/gconftool.c:707
+msgid "Value type is only relevant when setting a value\n"
+msgstr "Типот на вредност е релевантен само кога се доделува вредност\n"
+
+#: ../gconf/gconftool.c:713
+msgid "Must specify a type when setting a value\n"
+msgstr "Мора да се определи тип кога се доделува вредност\n"
+
+#: ../gconf/gconftool.c:721
+msgid ""
+"--ignore-schema-defaults is only relevant with --get, --all-entries, --dump, "
+"--recursive-list, --get-list-size or --get-list-element\n"
+msgstr ""
+"--ignore-schema-defaults is only relevant with --get, --all-entries, --dump, "
+"--recursive-list, --get-list-size or --get-list-element\n"
+
+#: ../gconf/gconftool.c:733 ../gconf/gconftool.c:746 ../gconf/gconftool.c:759
+#: ../gconf/gconftool.c:773 ../gconf/gconftool.c:786 ../gconf/gconftool.c:799
+#: ../gconf/gconftool.c:813
+#, c-format
+msgid "%s option must be used by itself.\n"
+msgstr "Опцијата %s мора да биде употребена од самата себе.\n"
+
+#: ../gconf/gconftool.c:822
+msgid "You must specify a config source with --config-source when using --direct\n"
+msgstr ""
+"Мора да се определи конфиг извор со --config-source кога се употребува --"
+"direct\n"
+
+#: ../gconf/gconftool.c:828
+#, c-format
+msgid "Failed to init GConf: %s\n"
+msgstr "Не успеа да го иницијализира GConf: %s\n"
+
+#: ../gconf/gconftool.c:856
+msgid "GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL is set, not installing schemas\n"
+msgstr "GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL е наместен, не се инсталираат шеми\n"
+
+#: ../gconf/gconftool.c:863
+msgid "GCONF_DISABLE_MAKEFILE_SCHEMA_UNINSTALL is set, not uninstalling schemas\n"
+msgstr "GCONF_DISABLE_MAKEFILE_SCHEMA_UNINSTALL е наместен, не деинсталирам схеми\n"
+
+#: ../gconf/gconftool.c:876
+msgid "Must set the GCONF_CONFIG_SOURCE environment variable\n"
+msgstr "Мора да се сетира GCONF_CONFIG_SOURCE околинска нредба\n"
+
+#: ../gconf/gconftool.c:911
+#, c-format
+msgid "Failed to access configuration source(s): %s\n"
+msgstr "Грешка при пристап на конфигурационите изворни датотеки: %s\n"
+
+#: ../gconf/gconftool.c:1198
+#, c-format
+msgid "Shutdown error: %s\n"
+msgstr "Грешка при исклучување: %s\n"
+
+#: ../gconf/gconftool.c:1241
+msgid "Must specify one or more directories to recursively list.\n"
+msgstr "Мора да одредите еден или повеќе директориуми за рекурзивно да листате.\n"
+
+#: ../gconf/gconftool.c:1272 ../gconf/gconftool.c:1433
+#: ../gconf/gconftool.c:1699
+#, c-format
+msgid "Failure listing entries in `%s': %s\n"
+msgstr "Неупех листајќи ги влезовите во `%s': %s\n"
+
+#: ../gconf/gconftool.c:1292 ../gconf/gconftool.c:1452
+msgid "(no value set)"
+msgstr "(не е доделена вредност)"
+
+#: ../gconf/gconftool.c:1342
+msgid "Must specify a key pattern to search for.\n"
+msgstr "Мора да се одреди шаблон на клуч за барање.\n"
+
+#: ../gconf/gconftool.c:1391
+msgid "Must specify one or more directories to dump.\n"
+msgstr "Мора да одредите еден или повеќе директориуми за да отфрлите.\n"
+
+#: ../gconf/gconftool.c:1758
+#, c-format
+msgid "Failed to spawn the config server (gconfd): %s\n"
+msgstr "Неуспех да се накоти конфиг серверот (gconfd): %s\n"
+
+#: ../gconf/gconftool.c:1787
+msgid "Must specify a key or keys to get\n"
+msgstr "Мора да се определи клуч или клучеви за да се земе\n"
+
+#: ../gconf/gconftool.c:1822
+#, c-format
+msgid "Type: %s\n"
+msgstr "Тип: %s\n"
+
+#: ../gconf/gconftool.c:1823
+#, c-format
+msgid "List Type: %s\n"
+msgstr "Тип на листа: %s\n"
+
+#: ../gconf/gconftool.c:1824
+#, c-format
+msgid "Car Type: %s\n"
+msgstr "Car тип: %s\n"
+
+#: ../gconf/gconftool.c:1825
+#, c-format
+msgid "Cdr Type: %s\n"
+msgstr "Cdr тип: %s\n"
+
+#: ../gconf/gconftool.c:1830
+#, c-format
+msgid "Default Value: %s\n"
+msgstr "Стандардна вредност: %s\n"
+
+#: ../gconf/gconftool.c:1830 ../gconf/gconftool.c:1832
+#: ../gconf/gconftool.c:1833 ../gconf/gconftool.c:1834
+msgid "Unset"
+msgstr "Одподеси"
+
+#: ../gconf/gconftool.c:1832
+#, c-format
+msgid "Owner: %s\n"
+msgstr "Сопственик: %s\n"
+
+#: ../gconf/gconftool.c:1833
+#, c-format
+msgid "Short Desc: %s\n"
+msgstr "Краток опис: %s\n"
+
+#: ../gconf/gconftool.c:1834
+#, c-format
+msgid "Long Desc: %s\n"
+msgstr "Долг опис: %s\n"
+
+#: ../gconf/gconftool.c:1843 ../gconf/gconftool.c:2067
+#: ../gconf/gconftool.c:2101 ../gconf/gconftool.c:2146
+#: ../gconf/gconftool.c:2291
+#, c-format
+msgid "No value set for `%s'\n"
+msgstr "Не е доделена вредност за `%s'\n"
+
+#: ../gconf/gconftool.c:1847 ../gconf/gconftool.c:2071
+#: ../gconf/gconftool.c:2105 ../gconf/gconftool.c:2150
+#: ../gconf/gconftool.c:2295
+#, c-format
+msgid "Failed to get value for `%s': %s\n"
+msgstr "Не успеав да земам вредност за `%s': %s\n"
+
+#: ../gconf/gconftool.c:1890 ../gconf/gconftool.c:1902
+#, c-format
+msgid "Don't understand type `%s'\n"
+msgstr "Не го разбирам типот `%s'\n"
+
+#: ../gconf/gconftool.c:1914
+msgid "Must specify alternating keys/values as arguments\n"
+msgstr "Мора да се определат алтернативни клучеви/вредности како аргуметни\n"
+
+#: ../gconf/gconftool.c:1934
+#, c-format
+msgid "No value to set for key: `%s'\n"
+msgstr "Нема вредност да се додели за клучот: `%s'\n"
+
+#: ../gconf/gconftool.c:1962
+msgid "Cannot set schema as value\n"
+msgstr "Не можам да неместам шема како вредност\n"
+
+#: ../gconf/gconftool.c:1972
+msgid "When setting a list you must specify a primitive list-type\n"
+msgstr "Кога се мести листа мора да се определи примитивен тип на листа\n"
+
+#: ../gconf/gconftool.c:1986
+msgid "When setting a pair you must specify a primitive car-type and cdr-type\n"
+msgstr "Кога се мести пар мора да се определи примитивен car-тип и cdr-тип\n"
+
+#: ../gconf/gconftool.c:2001
+#, c-format
+msgid "Error: %s\n"
+msgstr "Грешка: %s\n"
+
+#: ../gconf/gconftool.c:2014 ../gconf/gconftool.c:3046
+#, c-format
+msgid "Error setting value: %s\n"
+msgstr "Грешка доделувајќи вредност: %s\n"
+
+#: ../gconf/gconftool.c:2032
+#, c-format
+msgid "Error syncing: %s\n"
+msgstr "Грешка синхронизирајќи: %s\n"
+
+#: ../gconf/gconftool.c:2047
+msgid "Must specify a key or keys to get type\n"
+msgstr "Мора да се определи клуч или клучеви за да се земе тип\n"
+
+#: ../gconf/gconftool.c:2091
+msgid "Must specify a key to lookup size of.\n"
+msgstr "Мора да се определи клуч за да се побара големина на.\n"
+
+#: ../gconf/gconftool.c:2116 ../gconf/gconftool.c:2161
+#, c-format
+msgid "Key %s is not a list.\n"
+msgstr "Клучот %s не е листа.\n"
+
+#: ../gconf/gconftool.c:2136
+msgid "Must specify a key from which to get list element.\n"
+msgstr "Мора да се определи клуч од каде ќе се земе елемент од листа.\n"
+
+#: ../gconf/gconftool.c:2167
+msgid "Must specify list index.\n"
+msgstr "Мора да се назначи индекс на листата.\n"
+
+#: ../gconf/gconftool.c:2174
+msgid "List index must be non-negative.\n"
+msgstr "Индексот на листата треба да виде не-негативен.\n"
+
+#: ../gconf/gconftool.c:2183
+msgid "List index is out of bounds.\n"
+msgstr "Индексот на листата е надвор од границите.\n"
+
+#: ../gconf/gconftool.c:2209
+msgid "Must specify a key or keys on the command line\n"
+msgstr "Мора да се назначи клуч или клучеви на командната линија\n"
+
+#: ../gconf/gconftool.c:2229
+#, c-format
+msgid "No schema known for `%s'\n"
+msgstr "Не е позната шема за `%s'\n"
+
+#: ../gconf/gconftool.c:2262
+#, c-format
+msgid "No doc string stored in schema at '%s'\n"
+msgstr "Нема складиран doc стринг во шема на „%s“\n"
+
+#: ../gconf/gconftool.c:2267
+#, c-format
+msgid "Error getting schema at '%s': %s\n"
+msgstr "Грешка земајќи ја шемата на „%s“: %s\n"
+
+#: ../gconf/gconftool.c:2274
+#, c-format
+msgid "No schema stored at '%s'\n"
+msgstr "Нема складирана шема на „%s“\n"
+
+#: ../gconf/gconftool.c:2277
+#, c-format
+msgid "Value at '%s' is not a schema\n"
+msgstr "Вредноста на at „%s“ не е шема\n"
+
+#: ../gconf/gconftool.c:2333
+msgid "Must specify a schema name followed by the key name to apply it to\n"
+msgstr "Мора да се назначи име на шема следено од клучното име за да му се примени\n"
+
+#: ../gconf/gconftool.c:2340
+#, c-format
+msgid "Error associating schema name '%s' with key name '%s': %s\n"
+msgstr "Грешка асоцирајќи име на шема „%s“ со главното име „%s“: %s\n"
+
+#: ../gconf/gconftool.c:2358
+msgid "Must specify keys to unapply schema from\n"
+msgstr "Мора да се одреди клуч за да се побара големина на.\n"
+
+#: ../gconf/gconftool.c:2368
+#, c-format
+msgid "Error removing schema name from '%s': %s\n"
+msgstr "Грешка отстранувајќи име на шема од „%s“: %s\n"
+
+#: ../gconf/gconftool.c:2393
+msgid "Must specify key (schema name) as the only argument\n"
+msgstr "Мора да се назначи клуч (име на шема) како единствен аргумент\n"
+
+#: ../gconf/gconftool.c:2435
+msgid "List type must be a primitive type: string, int, float or bool\n"
+msgstr ""
+"Типот на листата мора да биде примитивен тип: стринг, цел број, лебди или "
+"bool\n"
+
+#: ../gconf/gconftool.c:2455
+msgid "Pair car type must be a primitive type: string, int, float or bool\n"
+msgstr "Пар car типот мора да биде примитивен тип: стринг, цел број, лебди или bool\n"
+
+#: ../gconf/gconftool.c:2475
+msgid "Pair cdr type must be a primitive type: string, int, float or bool\n"
+msgstr "Пар cdr типот мора да биде примитивен тип: стринг, цел број, лебди или bool\n"
+
+#: ../gconf/gconftool.c:2490
+#, c-format
+msgid "Error setting value: %s"
+msgstr "Грешка доделувајќи вредност: %s"
+
+#: ../gconf/gconftool.c:2504
+#, c-format
+msgid "Error syncing: %s"
+msgstr "Грешка синхронизирајќи: %s"
+
+#: ../gconf/gconftool.c:2519
+msgid "Must specify one or more directories to get key/value pairs from.\n"
+msgstr ""
+"Мора да се назначи еден или повеќе директориуми за од каде да се земат клуч/"
+"вредност парови.\n"
+
+#: ../gconf/gconftool.c:2533
+msgid "Must specify one or more keys to unset.\n"
+msgstr "Мора да се назначат еден или повеќе клучеви за да се одподеси.\n"
+
+#: ../gconf/gconftool.c:2544
+#, c-format
+msgid "Error unsetting `%s': %s\n"
+msgstr "Грешка одподесувајќи `%s': %s\n"
+
+#: ../gconf/gconftool.c:2564
+msgid "Must specify one or more keys to recursively unset.\n"
+msgstr "Мора да се назначи еден или повеќе клучеви за рекурзивно да се одподеси.\n"
+
+#: ../gconf/gconftool.c:2578
+#, c-format
+msgid "Failure during recursive unset of \"%s\": %s\n"
+msgstr "Неуспех за време на рекурзивно одподесување на \"%s\": %s\n"
+
+#: ../gconf/gconftool.c:2598
+msgid "Must specify one or more directories to get subdirs from.\n"
+msgstr ""
+"Мора да се назначат еден или повеќе директориуми од каде да се земат "
+"поддиректориумите.\n"
+
+#: ../gconf/gconftool.c:2632
+#, c-format
+msgid "Error listing dirs: %s\n"
+msgstr "Грешка листајќи дир.: %s\n"
+
+#: ../gconf/gconftool.c:2768
+msgid "WARNING: must specify both a <car> and a <cdr> in a <pair>\n"
+msgstr "ПРЕДУПРЕДУВАЊЕ: мора да се назначат и <car> и <cdr> во <pair>\n"
+
+#: ../gconf/gconftool.c:2795
+#, c-format
+msgid "WARNING: key specified (%s) for schema under a <value> - ignoring\n"
+msgstr "ПРЕДУПРЕДУВАЊЕ: клучот назначен (%s) за шема под <value> - занемарувам\n"
+
+#: ../gconf/gconftool.c:2828
+msgid "WARNING: must have a child node under <value>\n"
+msgstr "ПРЕДУПРЕДУВАЊЕ: мора да има child јазол под <value>\n"
+
+#: ../gconf/gconftool.c:2834
+#, c-format
+msgid "WARNING: node <%s> not understood\n"
+msgstr "ПРЕДУПРЕДУВАЊЕ: јазол <%s> не е разбран\n"
+
+#: ../gconf/gconftool.c:2852
+#, c-format
+msgid "WARNING: Failed to parse int value `%s'\n"
+msgstr "ПРЕДУПРЕДУВАЊЕ: Не успеав да ја разложам вредноста на целиот број `%s'\n"
+
+#: ../gconf/gconftool.c:2873
+#, c-format
+msgid "WARNING: Failed to parse float value `%s'\n"
+msgstr "ПРЕДУПРЕДУВАЊЕ: Не успеав да ја разложам лебдечката вредност `%s'\n"
+
+#: ../gconf/gconftool.c:2895
+#, c-format
+msgid "WARNING: Failed to parse string value `%s'\n"
+msgstr "ПРЕДУПРЕДУВАЊЕ: Не успеав да ја разложам вредноста на стрингот `%s'\n"
+
+#: ../gconf/gconftool.c:2916
+#, c-format
+msgid "WARNING: Failed to parse boolean value `%s'\n"
+msgstr "ПРЕДУПРЕДУВАЊЕ: Не успеав да ја разложам boolean вредноста `%s'\n"
+
+#: ../gconf/gconftool.c:3025 ../gconf/gconftool.c:3567
+#, c-format
+msgid "WARNING: failed to associate schema `%s' with key `%s': %s\n"
+msgstr ""
+"ПРЕДУПРЕДУВАЊЕ: не успеав да асоцирам ја асоцирам шемата `%s' со клуч `%s': %"
+"s\n"
+
+#: ../gconf/gconftool.c:3140
+#, c-format
+msgid "WARNING: invalid or missing type for schema (%s)\n"
+msgstr "ПРЕДУПРЕДУВАЊЕ: невалиден или изгубен тип за шема (%s)\n"
+
+#: ../gconf/gconftool.c:3149
+#, c-format
+msgid "WARNING: invalid or missing list_type for schema (%s)\n"
+msgstr "ПРЕДУПРЕДУВАЊЕ: невалиден или изгубен list_type за шемата (%s)\n"
+
+#: ../gconf/gconftool.c:3160 ../gconf/gconftool.c:3190
+#: ../gconf/gconftool.c:3219
+#, c-format
+msgid "WARNING: Failed to parse default value `%s' for schema (%s)\n"
+msgstr ""
+"ПРЕДУПРЕДУВАЊЕ: Не успеав да разложам стандардната вредност `%s' за шемата (%"
+"s)\n"
+
+#: ../gconf/gconftool.c:3178
+#, c-format
+msgid "WARNING: invalid or missing car_type or cdr_type for schema (%s)\n"
+msgstr "ПРЕДУПРЕДУВАЊЕ: невалиден или изгубен car_type или cdr_type заr шема (%s)\n"
+
+#: ../gconf/gconftool.c:3203
+msgid "WARNING: You cannot set a default value for a schema\n"
+msgstr "ПРЕДУПРЕДУВАЊЕ: Не може да се постави стандардна вредност за шема\n"
+
+#: ../gconf/gconftool.c:3232
+msgid "WARNING: gconftool internal error, unknown GConfValueType\n"
+msgstr "ПРЕДУПРЕДУВАЊЕ: gconftool внатрешна грешка, непознат GConfValue тип\n"
+
+#: ../gconf/gconftool.c:3280 ../gconf/gconftool.c:3301
+#: ../gconf/gconftool.c:3322 ../gconf/gconftool.c:3343
+#, c-format
+msgid "WARNING: failed to parse type name `%s'\n"
+msgstr "ПРЕДУПРЕДУВАЊЕ: не успеав да разложам име на тип `%s'\n"
+
+#: ../gconf/gconftool.c:3297
+#, c-format
+msgid "WARNING: list_type can only be int, float, string or bool and not `%s'\n"
+msgstr ""
+"ПРЕДУПРЕДУВАЊЕ: list_type може да биде само цел број, лебди, стринг или bool "
+"и not `%s'\n"
+
+#: ../gconf/gconftool.c:3318
+#, c-format
+msgid "WARNING: car_type can only be int, float, string or bool and not `%s'\n"
+msgstr ""
+"ПРЕДУПРЕДУВАЊЕ: car_type може да биде само цел број, лебди, стринг или bool "
+"и not `%s'\n"
+
+#: ../gconf/gconftool.c:3339
+#, c-format
+msgid "WARNING: cdr_type can only be int, float, string or bool and not `%s'\n"
+msgstr ""
+"ПРЕДУПРЕДУВАЊЕ: cdr_type може да биде само цел број, лебди, стринг или bool "
+"и not `%s'\n"
+
+#: ../gconf/gconftool.c:3379
+msgid "WARNING: empty <applyto> node"
+msgstr "ПРЕДУПРЕДУВАЊЕ: празен <applyto> јазол"
+
+#: ../gconf/gconftool.c:3382 ../gconf/gconftool.c:3640
+#, c-format
+msgid "WARNING: node <%s> not understood below <schema>\n"
+msgstr "ПРЕДУПРЕДУВАЊЕ: јазол <%s> не е разбран подолу <schema>\n"
+
+#: ../gconf/gconftool.c:3393
+msgid "WARNING: no <list_type> specified for schema of type list\n"
+msgstr "ПРЕДУПРЕДУВАЊЕ: нема <list_type> назначен за шема од тип на листа\n"
+
+#: ../gconf/gconftool.c:3399
+msgid "WARNING: no <car_type> specified for schema of type pair\n"
+msgstr "ПРЕДУПРЕДУВАЊЕ: нема <car_type> назначен за шема од тип на пар\n"
+
+#: ../gconf/gconftool.c:3405
+msgid "WARNING: no <cdr_type> specified for schema of type pair\n"
+msgstr "ПРЕДУПРЕДУВАЊЕ: нема <cdr_type> назначен за шема од тип на пар\n"
+
+#: ../gconf/gconftool.c:3434
+msgid "WARNING: <locale> node has no `name=\"locale\"' attribute, ignoring\n"
+msgstr ""
+"ПРЕДУПРЕДУВАЊЕ: <locale> јазолот нема `name=\"locale\"' атрибут, "
+"занемарувам\n"
+
+#: ../gconf/gconftool.c:3440
+#, c-format
+msgid "WARNING: multiple <locale> nodes for locale `%s', ignoring all past first\n"
+msgstr ""
+"ПРЕДУПРЕДУВАЊЕ: повеќе <locale> јазли за локале `%s', занемарувам сите после "
+"првиот\n"
+
+#: ../gconf/gconftool.c:3538
+#, c-format
+msgid "WARNING: Invalid node <%s> in a <locale> node\n"
+msgstr "ПРЕДУПРЕДУВАЊЕ: Невалиден јазол <%s> во <locale> јазол\n"
+
+#: ../gconf/gconftool.c:3575
+#, c-format
+msgid "Attached schema `%s' to key `%s'\n"
+msgstr "Закачена шема `%s' на клуч `%s'\n"
+
+#: ../gconf/gconftool.c:3649
+msgid "You must have at least one <locale> entry in a <schema>\n"
+msgstr "Мора да има барем еден <locale> влез во <schema>\n"
+
+#: ../gconf/gconftool.c:3684
+#, c-format
+msgid "WARNING: failed to install schema `%s' locale `%s': %s\n"
+msgstr "ПРЕДУПРЕДУВАЊЕ: не успеав да инсталирам шема `%s' локале `%s': %s\n"
+
+#: ../gconf/gconftool.c:3692
+#, c-format
+msgid "Installed schema `%s' for locale `%s'\n"
+msgstr "Инсталирана шема `%s' за локале `%s'\n"
+
+#: ../gconf/gconftool.c:3702
+#, c-format
+msgid "WARNING: failed to uninstall schema `%s' locale `%s': %s\n"
+msgstr "ПРЕДУПРЕДУВАЊЕ: не успеав да унинсталирам шема `%s' локале `%s': %s\n"
+
+#: ../gconf/gconftool.c:3710
+#, c-format
+msgid "Uninstalled schema `%s' from locale `%s'\n"
+msgstr "Унинсталирана шема `%s' од локале `%s'\n"
+
+#: ../gconf/gconftool.c:3748
+msgid "WARNING: no key specified for schema\n"
+msgstr "ПРЕДУПРЕДУВАЊЕ: немаше назначено клуч за шема\n"
+
+#: ../gconf/gconftool.c:3789
+#, c-format
+msgid "WARNING: node <%s> not understood below <%s>\n"
+msgstr "ПРЕДУПРЕДУВАЊЕ: јазол <%s> не е разбран долу <%s>\n"
+
+#: ../gconf/gconftool.c:3821
+#, c-format
+msgid "Failed to open `%s': %s\n"
+msgstr "Не успеав да отворам `%s': %s\n"
+
+#: ../gconf/gconftool.c:3828
+#, c-format
+msgid "Document `%s' is empty?\n"
+msgstr "Документот `%s' е празен?\n"
+
+#: ../gconf/gconftool.c:3840
+#, c-format
+msgid "Document `%s' has the wrong type of root node (<%s>, should be <%s>)\n"
+msgstr "Документот `%s' има погрешен тип на root јазол (<%s>, треба да биде <%s>)\n"
+
+#: ../gconf/gconftool.c:3853
+#, c-format
+msgid "Document `%s' has no top level <%s> node\n"
+msgstr "Документот `%s' нема јазол од највиоко ниво <%s>\n"
+
+#: ../gconf/gconftool.c:3867
+#, c-format
+msgid "WARNING: node <%s> below <%s> not understood\n"
+msgstr "ПРЕДУПРЕДУВАЊЕ: јазолот <%s> долу <%s> не е разбран\n"
+
+#: ../gconf/gconftool.c:3888
+#, c-format
+msgid "Error syncing config data: %s"
+msgstr "Грешка при синхронизација на конфигурационите податоци: %s"
+
+#: ../gconf/gconftool.c:3904
+msgid "Must specify some schema files to install\n"
+msgstr "Мора да назначите некои шема датотеки за да инсталирате\n"
+
+#: ../gconf/gconftool.c:3932
+#, c-format
+msgid ""
+"\n"
+"%s\n"
+msgstr ""
+"\n"
+"%s\n"
+
+#: ../gconf/gconftool.c:3952
+#, c-format
+msgid "Failed to unset breakage key %s: %s\n"
+msgstr "Не успеав да сменам breakage клуч %s: %s\n"
+
+#: ../gconf/gconftool.c:4078
+msgid "Must specify some keys to break\n"
+msgstr "Мора да назначите нокои клучеви за кршење\n"
+
+#: ../gconf/gconftool.c:4084
+#, c-format
+msgid ""
+"Trying to break your application by setting bad values for key:\n"
+"  %s\n"
+msgstr ""
+"Се обидувам да ја скршам Вашата аплијација доделувајќи лоши вредности за "
+"клуч:\n"
+"  %s\n"
+
+#: ../gconf/gconftool.c:4102
+msgid "Must specify some directories to break\n"
+msgstr "Мора да назначите некои директориуми за кршење\n"
+
+#: ../gconf/gconftool.c:4121
+#, c-format
+msgid ""
+"Trying to break your application by setting bad values for keys in "
+"directory:\n"
+"  %s\n"
+msgstr ""
+"Се обидувам да ја скршам Вашата аплијација доделувајќи лоши вредности за "
+"клучевите во директориумот:\n"
+"  %s\n"
 
