@@ -579,7 +579,7 @@ g_thread_cleanup (gpointer data)
 
 	  /* Just to make sure, this isn't used any more */
 	  g_system_thread_assign (thread->system_thread, zero_thread);
-	  g_free (thread);
+          g_free (thread);
 	}
     }
 }
@@ -662,8 +662,11 @@ g_thread_create_full (GThreadFunc 		 func,
   G_THREAD_UF (thread_create, (g_thread_create_proxy, result,
 			       stack_size, joinable, bound, priority,
 			       &result->system_thread, &local_error));
-  result->next = g_thread_all_threads;
-  g_thread_all_threads = result;
+  if (!local_error)
+    {
+      result->next = g_thread_all_threads;
+      g_thread_all_threads = result;
+    }
   G_UNLOCK (g_thread);
 
   if (local_error)

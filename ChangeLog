@@ -1,3 +1,8 @@
+Mon Aug 13 14:18:22 2007  Tim Janik  <timj@imendio.com>
+
+	* glib/gthread.c (g_thread_create_full): prevent linking a freed
+	GThread	structure into global thread list in error cases.
+
 2007-08-08  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gmarkup.c (append_escaped_text): Handle restricted
