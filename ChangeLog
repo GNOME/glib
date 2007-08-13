@@ -1,3 +1,7 @@
+Mon Aug 13 14:30:15 2007  Tim Janik  <timj@imendio.com>
+
+	* tests/onceinit.c (main): fixed array size typo.
+
 Mon Aug 13 14:21:44 2007  Tim Janik  <timj@imendio.com>
 
 	* tests/onceinit.c: test g_once_init_*() before and after

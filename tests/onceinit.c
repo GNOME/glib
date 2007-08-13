@@ -110,7 +110,7 @@ int
 main (int   argc,
       char *argv[])
 {
-  GThread *threads[11];
+  GThread *threads[N_THREADS];
   int i;
   /* test simple initializer */
   initializer1();
