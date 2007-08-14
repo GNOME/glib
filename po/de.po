@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-14 14:15+0200\n"
-"PO-Revision-Date: 2007-08-14 14:16+0200\n"
+"POT-Creation-Date: 2007-08-14 14:28+0200\n"
+"PO-Revision-Date: 2007-08-14 14:28+0200\n"
 "Last-Translator: Hendrik Richter <hendrikr@gnome.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -372,19 +372,17 @@ msgid "Unfinished character reference"
 msgstr "Unvollendete Zeichenreferenz"
 
 #: ../glib/gmarkup.c:958
-#, fuzzy
 msgid "Invalid UTF-8 encoded text - overlong sequence"
-msgstr "Ungültiger UTF-8-kodierter Text"
+msgstr "Ungültiger UTF-8-kodierter Text - überlange Sequenz"
 
 #: ../glib/gmarkup.c:986
-#, fuzzy
 msgid "Invalid UTF-8 encoded text - not a start char"
-msgstr "Ungültiger UTF-8-kodierter Text"
+msgstr "Ungültiger UTF-8-kodierter Text - Kein Anfangszeichen"
 
 #: ../glib/gmarkup.c:1022
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid UTF-8 encoded text - not valid '%s'"
-msgstr "Ungültiger UTF-8-kodierter Text"
+msgstr "Ungültiger UTF-8-kodierter Text - »%s« ist nicht gültig"
 
 #: ../glib/gmarkup.c:1060
 msgid "Document must begin with an element (e.g. <book>)"
@@ -530,112 +528,116 @@ msgstr ""
 
 #: ../glib/gregex.c:126
 msgid "corrupted object"
-msgstr ""
+msgstr "Beschädigtes Objekt"
 
 #: ../glib/gregex.c:128
 msgid "internal error or corrupted object"
-msgstr ""
+msgstr "Interner Fehler oder beschädigtes Objekt"
 
 #: ../glib/gregex.c:130
 msgid "out of memory"
-msgstr ""
+msgstr "Nicht genügend freier Speicher"
 
 #: ../glib/gregex.c:135
 msgid "backtracking limit reached"
-msgstr ""
+msgstr "Backtracking-Limit wurde erreicht"
 
 #: ../glib/gregex.c:147 ../glib/gregex.c:155
 msgid "the pattern contains items not supported for partial matching"
 msgstr ""
+"Der Ausdruck enthält Elemente, die teilweise Übereinstimmung nicht "
+"unterstützen"
 
 #: ../glib/gregex.c:149
 msgid "internal error"
-msgstr ""
+msgstr "Interner Fehler"
 
 #: ../glib/gregex.c:157
 msgid "back references as conditions are not supported for partial matching"
 msgstr ""
+"Rückreferenzen als Bedingungen werden für teilweise Übereinstimmung nicht "
+"unterstützt"
 
 #: ../glib/gregex.c:166
 msgid "recursion limit reached"
-msgstr ""
+msgstr "Rekursionslimit wurde erreicht"
 
 #: ../glib/gregex.c:168
 msgid "workspace limit for empty substrings reached"
-msgstr ""
+msgstr "Arbeitsplatzlimit für leere Teilstrings wurde erreicht"
 
 #: ../glib/gregex.c:170
 msgid "invalid combination of newline flags"
-msgstr ""
+msgstr "Ungültige Kombination von newline-Markierungen"
 
 #: ../glib/gregex.c:174
 msgid "unknown error"
-msgstr ""
+msgstr "Unbekannter Fehler"
 
 #: ../glib/gregex.c:319 ../glib/gregex.c:1354
 #, c-format
 msgid "Error while matching regular expression %s: %s"
-msgstr ""
+msgstr "Fehler beim Anwenden des regulären Ausdrucks %s: %s"
 
 #: ../glib/gregex.c:882
 msgid "PCRE library is compiled without UTF8 support"
-msgstr ""
+msgstr "PCRE-Bibliothek wurde ohne UTF8-Unterstützung kompilliert"
 
 #: ../glib/gregex.c:891
 msgid "PCRE library is compiled without UTF8 properties support"
 msgstr ""
+"PCRE-Bibliothek wurde ohne Unterstützung für UTF8-Eigenschaften kompilliert"
 
 #: ../glib/gregex.c:936
-#, fuzzy, c-format
+#, c-format
 msgid "Error while compiling regular expression %s at char %d: %s"
-msgstr "Fehler in Zeile %d, Zeichen %d: %s"
+msgstr "Fehler beim Kompillieren des regulären Ausdrucks %s an Zeichen %d: %s"
 
 #: ../glib/gregex.c:958
 #, c-format
 msgid "Error while optimizing regular expression %s: %s"
-msgstr ""
+msgstr "Fehler beim Optimieren des regulären Ausdrucks %s: %s"
 
 #: ../glib/gregex.c:1782
 msgid "hexadecimal digit or '}' expected"
-msgstr ""
+msgstr "Hexadezimalzahl oder »}« erwartet"
 
 #: ../glib/gregex.c:1798
 msgid "hexadecimal digit expected"
-msgstr ""
+msgstr "Hexadezimalzahl erwartet"
 
 #: ../glib/gregex.c:1838
 msgid "missing '<' in symbolic reference"
-msgstr ""
+msgstr "Fehlendes »<» in symbolischer Referenz"
 
 #: ../glib/gregex.c:1847
-#, fuzzy
 msgid "unfinished symbolic reference"
-msgstr "Unvollendete Entitätsreferenz"
+msgstr "Unvollendete symbolische Referenz"
 
 #: ../glib/gregex.c:1854
 msgid "zero-length symbolic reference"
-msgstr ""
+msgstr "Symbolische Referenz der Länge 0"
 
 #: ../glib/gregex.c:1865
 msgid "digit expected"
-msgstr ""
+msgstr "Ziffer erwartet"
 
 #: ../glib/gregex.c:1883
 msgid "illegal symbolic reference"
-msgstr ""
+msgstr "Illegale symbolische Referenz"
 
 #: ../glib/gregex.c:1945
 msgid "stray final '\\'"
-msgstr ""
+msgstr "Verirrtes abschließendes »\\«"
 
 #: ../glib/gregex.c:1949
 msgid "unknown escape sequence"
-msgstr ""
+msgstr "Unbekannte Escape-Sequenz"
 
 #: ../glib/gregex.c:1959
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
-msgstr ""
+msgstr "Fehler beim Verarbeiten des Ersetzungstextes »%s« an Zeichen %lu: %s"
 
 #: ../glib/gshell.c:70
 msgid "Quoted text doesn't begin with a quotation mark"
@@ -846,11 +848,9 @@ msgid "Unknown option %s"
 msgstr "Unbekannte Option %s"
 
 #: ../glib/gkeyfile.c:341
-#, fuzzy
 msgid "Valid key file could not be found in search dirs"
 msgstr ""
-"Es wurde keine gültige Schlüsselwertedatei in den Datenverzeichnissen "
-"gefunden"
+"Es wurde keine gültige Schlüsselwertedatei in den Suchverzeichnissen gefunden"
 
 #: ../glib/gkeyfile.c:376
 msgid "Not a regular file"
