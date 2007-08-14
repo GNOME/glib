@@ -21,11 +21,11 @@
 #include <glib.h>
 #include <stdlib.h>
 
-#define N_THREADS               (11)
+#define N_THREADS               (13)
 
 static GMutex      *tmutex = NULL;
 static GCond       *tcond = NULL;
-static volatile int tmain_call_count = 0;
+static volatile int thread_call_count = 0;
 static char         dummy_value = 'x';
 
 static void
@@ -102,9 +102,11 @@ tmain_call_initializer3 (gpointer user_data)
   //g_printf ("[");
   initializer3();
   //g_printf ("]\n");
-  g_atomic_int_exchange_and_add (&tmain_call_count, 1);
+  g_atomic_int_exchange_and_add (&thread_call_count, 1);
   return NULL;
 }
+
+static void*     stress_concurrent_initializers (void*);
 
 int
 main (int   argc,
@@ -132,7 +134,7 @@ main (int   argc,
   /* concurrently call initializer3() */
   g_cond_broadcast (tcond);
   /* loop until all threads passed the call to initializer3() */
-  while (g_atomic_int_get (&tmain_call_count) < i)
+  while (g_atomic_int_get (&thread_call_count) < i)
     {
       if (rand() % 2)
         g_thread_yield();   /* concurrent shuffling for single core */
@@ -140,5 +142,133 @@ main (int   argc,
         g_usleep (1000);    /* concurrent shuffling for multi core */
       g_cond_broadcast (tcond);
     }
+  /* call multiple (unoptimized) initializers from multiple threads */
+  g_mutex_lock (tmutex);
+  g_atomic_int_set (&thread_call_count, 0);
+  for (i = 0; i < N_THREADS; i++)
+    g_thread_create (stress_concurrent_initializers, 0, FALSE, NULL);
+  g_mutex_unlock (tmutex);
+  while (g_atomic_int_get (&thread_call_count) < 256 * 4 * N_THREADS)
+    g_usleep (50 * 1000);       /* wait for all 5 threads to complete */
   return 0;
+}
+
+/* get rid of g_once_init_enter-optimizations in the below definitions
+ * to uncover possible races in the g_once_init_enter_impl()/
+ * g_once_init_leave() implementations
+ */
+#define g_once_init_enter       g_once_init_enter_impl
+
+/* define 16 * 16 simple initializers */
+#define DEFINE_TEST_INITIALIZER(N)                      \
+      static void                                       \
+      test_initializer_##N (void)                       \
+      {                                                 \
+        static volatile gsize initialized = 0;          \
+        if (g_once_init_enter (&initialized))           \
+          {                                             \
+            g_free (g_strdup_printf ("cpuhog%5d", 1));  \
+            g_free (g_strdup_printf ("cpuhog%6d", 2));  \
+            g_free (g_strdup_printf ("cpuhog%7d", 3));  \
+            g_once_init_leave (&initialized, 1);        \
+          }                                             \
+      }
+#define DEFINE_16_TEST_INITIALIZERS(P)                  \
+                DEFINE_TEST_INITIALIZER (P##0)          \
+                DEFINE_TEST_INITIALIZER (P##1)          \
+                DEFINE_TEST_INITIALIZER (P##2)          \
+                DEFINE_TEST_INITIALIZER (P##3)          \
+                DEFINE_TEST_INITIALIZER (P##4)          \
+                DEFINE_TEST_INITIALIZER (P##5)          \
+                DEFINE_TEST_INITIALIZER (P##6)          \
+                DEFINE_TEST_INITIALIZER (P##7)          \
+                DEFINE_TEST_INITIALIZER (P##8)          \
+                DEFINE_TEST_INITIALIZER (P##9)          \
+                DEFINE_TEST_INITIALIZER (P##a)          \
+                DEFINE_TEST_INITIALIZER (P##b)          \
+                DEFINE_TEST_INITIALIZER (P##c)          \
+                DEFINE_TEST_INITIALIZER (P##d)          \
+                DEFINE_TEST_INITIALIZER (P##e)          \
+                DEFINE_TEST_INITIALIZER (P##f)
+#define DEFINE_256_TEST_INITIALIZERS(P)                 \
+                DEFINE_16_TEST_INITIALIZERS (P##_0)     \
+                DEFINE_16_TEST_INITIALIZERS (P##_1)     \
+                DEFINE_16_TEST_INITIALIZERS (P##_2)     \
+                DEFINE_16_TEST_INITIALIZERS (P##_3)     \
+                DEFINE_16_TEST_INITIALIZERS (P##_4)     \
+                DEFINE_16_TEST_INITIALIZERS (P##_5)     \
+                DEFINE_16_TEST_INITIALIZERS (P##_6)     \
+                DEFINE_16_TEST_INITIALIZERS (P##_7)     \
+                DEFINE_16_TEST_INITIALIZERS (P##_8)     \
+                DEFINE_16_TEST_INITIALIZERS (P##_9)     \
+                DEFINE_16_TEST_INITIALIZERS (P##_a)     \
+                DEFINE_16_TEST_INITIALIZERS (P##_b)     \
+                DEFINE_16_TEST_INITIALIZERS (P##_c)     \
+                DEFINE_16_TEST_INITIALIZERS (P##_d)     \
+                DEFINE_16_TEST_INITIALIZERS (P##_e)     \
+                DEFINE_16_TEST_INITIALIZERS (P##_f)
+
+/* list 16 * 16 simple initializers */
+#define LIST_16_TEST_INITIALIZERS(P)                    \
+                test_initializer_##P##0,                \
+                test_initializer_##P##1,                \
+                test_initializer_##P##2,                \
+                test_initializer_##P##3,                \
+                test_initializer_##P##4,                \
+                test_initializer_##P##5,                \
+                test_initializer_##P##6,                \
+                test_initializer_##P##7,                \
+                test_initializer_##P##8,                \
+                test_initializer_##P##9,                \
+                test_initializer_##P##a,                \
+                test_initializer_##P##b,                \
+                test_initializer_##P##c,                \
+                test_initializer_##P##d,                \
+                test_initializer_##P##e,                \
+                test_initializer_##P##f
+#define LIST_256_TEST_INITIALIZERS(P)                   \
+                LIST_16_TEST_INITIALIZERS (P##_0),      \
+                LIST_16_TEST_INITIALIZERS (P##_1),      \
+                LIST_16_TEST_INITIALIZERS (P##_2),      \
+                LIST_16_TEST_INITIALIZERS (P##_3),      \
+                LIST_16_TEST_INITIALIZERS (P##_4),      \
+                LIST_16_TEST_INITIALIZERS (P##_5),      \
+                LIST_16_TEST_INITIALIZERS (P##_6),      \
+                LIST_16_TEST_INITIALIZERS (P##_7),      \
+                LIST_16_TEST_INITIALIZERS (P##_8),      \
+                LIST_16_TEST_INITIALIZERS (P##_9),      \
+                LIST_16_TEST_INITIALIZERS (P##_a),      \
+                LIST_16_TEST_INITIALIZERS (P##_b),      \
+                LIST_16_TEST_INITIALIZERS (P##_c),      \
+                LIST_16_TEST_INITIALIZERS (P##_d),      \
+                LIST_16_TEST_INITIALIZERS (P##_e),      \
+                LIST_16_TEST_INITIALIZERS (P##_f)
+
+/* define 4 * 256 initializers */
+DEFINE_256_TEST_INITIALIZERS (stress1);
+DEFINE_256_TEST_INITIALIZERS (stress2);
+DEFINE_256_TEST_INITIALIZERS (stress3);
+DEFINE_256_TEST_INITIALIZERS (stress4);
+
+/* call the above 1024 initializers */
+static void*
+stress_concurrent_initializers (void *user_data)
+{
+  static void (*initializers[]) (void) = {
+    LIST_256_TEST_INITIALIZERS (stress1),
+    LIST_256_TEST_INITIALIZERS (stress2),
+    LIST_256_TEST_INITIALIZERS (stress3),
+    LIST_256_TEST_INITIALIZERS (stress4),
+  };
+  int i;
+  /* sync to main thread */
+  g_mutex_lock (tmutex);
+  g_mutex_unlock (tmutex);
+  /* initialize concurrently */
+  for (i = 0; i < G_N_ELEMENTS (initializers); i++)
+    {
+      initializers[i]();
+      g_atomic_int_exchange_and_add (&thread_call_count, 1);
+    }
+  return NULL;
 }

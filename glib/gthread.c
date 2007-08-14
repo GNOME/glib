@@ -202,18 +202,19 @@ g_once_impl (GOnce       *once,
 gboolean
 g_once_init_enter_impl (volatile gsize *value_location)
 {
-  gboolean need_init;
+  gboolean need_init = FALSE;
   g_mutex_lock (g_once_mutex);
-  if (!g_once_init_list || !g_slist_find (g_once_init_list, (void*) value_location))
+  if (g_atomic_pointer_get ((void**) value_location) == 0)
     {
-      g_once_init_list = g_slist_prepend (g_once_init_list, (void*) value_location);
-      need_init = TRUE;
-    }
-  else
-    {
-      while (g_slist_find (g_once_init_list, (void*) value_location))
-        g_cond_wait (g_once_cond, g_once_mutex);
-      need_init = FALSE;
+      if (!g_slist_find (g_once_init_list, (void*) value_location))
+        {
+          need_init = TRUE;
+          g_once_init_list = g_slist_prepend (g_once_init_list, (void*) value_location);
+        }
+      else
+        do
+          g_cond_wait (g_once_cond, g_once_mutex);
+        while (g_slist_find (g_once_init_list, (void*) value_location));
     }
   g_mutex_unlock (g_once_mutex);
   return need_init;

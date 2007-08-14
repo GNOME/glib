@@ -1,3 +1,12 @@
+Tue Aug 14 02:06:10 2007  Tim Janik  <timj@imendio.com>
+
+	* glib/gthread.c (g_once_init_enter_impl): prevent race covered
+	by g_once_init_enter(), by checking for previous initializations
+	before entering initialisation branch.
+
+	* tests/onceinit.c: added multi-thread/multi-initializer stress test
+	using unoptimized g_once_init_enter_impl().
+
 Mon Aug 13 14:30:15 2007  Tim Janik  <timj@imendio.com>
 
 	* tests/onceinit.c (main): fixed array size typo.
