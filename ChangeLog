@@ -1,3 +1,10 @@
+2007-08-14  Cody Russell  <bratsche@gnome.org>
+
+	* gobject/gsignal.c: g_type_default_interface_ref() was not
+	ensuring working g_signal_list_ids.  Added checks for
+	!G_TYPE_IS_INTERFACE (itype).
+	(#465625, by some guy who calls himself Yeti)
+
 Tue Aug 14 02:06:10 2007  Tim Janik  <timj@imendio.com>
 
 	* glib/gthread.c (g_once_init_enter_impl): prevent race covered

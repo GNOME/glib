@@ -1058,10 +1058,10 @@ g_signal_list_ids (GType  itype,
       if (!g_type_name (itype))
 	g_warning (G_STRLOC ": unable to list signals for invalid type id `%lu'",
 		   itype);
-      else if (!G_TYPE_IS_INSTANTIATABLE (itype))
+      else if (!G_TYPE_IS_INSTANTIATABLE (itype) && !G_TYPE_IS_INTERFACE (itype))
 	g_warning (G_STRLOC ": unable to list signals of non instantiatable type `%s'",
 		   g_type_name (itype));
-      else if (!g_type_class_peek (itype))
+      else if (!g_type_class_peek (itype) && !G_TYPE_IS_INTERFACE (itype))
 	g_warning (G_STRLOC ": unable to list signals of unloaded type `%s'",
 		   g_type_name (itype));
     }
