@@ -80,7 +80,7 @@ files commonly met on Windows, but there are some important differences:
  key files use the '#' character.
 </para></listitem>
 <listitem><para>
-Key files allow only comments before the first group.
+Key files do not allow for ungrouped keys meaning only comments can precede the first group.
 </para></listitem>
 <listitem><para>
 Key files are always encoded in UTF-8.
