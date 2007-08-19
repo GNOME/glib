@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 2.14\n"
+"Project-Id-Version: 2.20\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-05 14:57+0100\n"
-"PO-Revision-Date: 2007-08-05 15:05+0000\n"
+"POT-Creation-Date: 2007-08-19 23:35+0100\n"
+"PO-Revision-Date: 2007-08-19 23:40+0000\n"
 "Last-Translator: Duarte Loreto <happyguy_pt@hotmail.com>\n"
 "Language-Team: Portuguese <gnome_pt@yahoogroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -355,15 +355,24 @@ msgstr "Referência de entidade por terminar"
 msgid "Unfinished character reference"
 msgstr "Referência de caracter por terminar"
 
-#: ../glib/gmarkup.c:958 ../glib/gmarkup.c:986 ../glib/gmarkup.c:1022
-msgid "Invalid UTF-8 encoded text"
-msgstr "Texto codificado UTF-8 inválido"
+#: ../glib/gmarkup.c:958
+msgid "Invalid UTF-8 encoded text - overlong sequence"
+msgstr "Texto codificado UTF-8 inválido - sequência demasiado extensa"
 
-#: ../glib/gmarkup.c:1058
+#: ../glib/gmarkup.c:986
+msgid "Invalid UTF-8 encoded text - not a start char"
+msgstr "Texto codificado UTF-8 inválido - não é um caracter inicial"
+
+#: ../glib/gmarkup.c:1022
+#, c-format
+msgid "Invalid UTF-8 encoded text - not valid '%s'"
+msgstr "Texto codificado UTF-8 inválido - '%s' inválido"
+
+#: ../glib/gmarkup.c:1060
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Documento tem de começar com um elemento (ex. <book>)"
 
-#: ../glib/gmarkup.c:1098
+#: ../glib/gmarkup.c:1100
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -372,7 +381,7 @@ msgstr ""
 "'%s' não é um caracter válido após um caracter '<'; não pode iniciar um nome "
 "de elemento"
 
-#: ../glib/gmarkup.c:1162
+#: ../glib/gmarkup.c:1164
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
@@ -381,7 +390,7 @@ msgstr ""
 "Caracter estranho '%s', era esperado um caracter '>' para terminar a "
 "etiqueta inicial do elemento '%s'"
 
-#: ../glib/gmarkup.c:1251
+#: ../glib/gmarkup.c:1253
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -389,7 +398,7 @@ msgstr ""
 "Caracter estranho '%s', era esperado um '=' após o nome do atributo '%s' do "
 "elemento '%s'"
 
-#: ../glib/gmarkup.c:1293
+#: ../glib/gmarkup.c:1295
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -400,7 +409,7 @@ msgstr ""
 "etiqueta inicial do elemento '%s', ou opcionalmente um atributo; talvez "
 "tenha sido utilizado um caracter inválido no nome de um atributo"
 
-#: ../glib/gmarkup.c:1382
+#: ../glib/gmarkup.c:1384
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -409,7 +418,7 @@ msgstr ""
 "Caracter estranho '%s', era esperada uma abertura de aspa após o sinal de "
 "igual ao atribuir valor ao atributo '%s' do elemento '%s'"
 
-#: ../glib/gmarkup.c:1527
+#: ../glib/gmarkup.c:1529
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -418,7 +427,7 @@ msgstr ""
 "'%s' não é um caracter válido após os caracteres '</'; '%s' não pode iniciar "
 "o nome de um elemento"
 
-#: ../glib/gmarkup.c:1567
+#: ../glib/gmarkup.c:1569
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -427,25 +436,25 @@ msgstr ""
 "'%s' não é um caracter válido após o nome do elemento de fecho '%s'; o "
 "caracter permitido é '>'"
 
-#: ../glib/gmarkup.c:1578
+#: ../glib/gmarkup.c:1580
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "Elemento '%s' foi fechado, nenhum elemento está actualmente aberto"
 
-#: ../glib/gmarkup.c:1587
+#: ../glib/gmarkup.c:1589
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "Elemento '%s' foi fechado, mas o elemento actualmente aberto é '%s'"
 
-#: ../glib/gmarkup.c:1753
+#: ../glib/gmarkup.c:1755
 msgid "Document was empty or contained only whitespace"
 msgstr "Documento estava vazio ou apenas continha espaços"
 
-#: ../glib/gmarkup.c:1767
+#: ../glib/gmarkup.c:1769
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "Documento terminou inesperadamente logo após um caracter menor que '<'"
 
-#: ../glib/gmarkup.c:1775 ../glib/gmarkup.c:1820
+#: ../glib/gmarkup.c:1777 ../glib/gmarkup.c:1822
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -454,7 +463,7 @@ msgstr ""
 "Documento terminou inesperadamente com elementos ainda abertos - '%s' foi o "
 "último elemento aberto"
 
-#: ../glib/gmarkup.c:1783
+#: ../glib/gmarkup.c:1785
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -463,21 +472,21 @@ msgstr ""
 "Documento terminou inesperadamente, era esperado um maior que '>' para "
 "terminar a etiqueta <%s/>"
 
-#: ../glib/gmarkup.c:1789
+#: ../glib/gmarkup.c:1791
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Documento terminou inesperadamente dentro do nome de um elemento"
 
-#: ../glib/gmarkup.c:1795
+#: ../glib/gmarkup.c:1797
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Documento terminou inesperadamente dentro do nome de um atributo"
 
-#: ../glib/gmarkup.c:1800
+#: ../glib/gmarkup.c:1802
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr ""
 "Documento terminou inesperadamente dentro da etiqueta de abertura de um "
 "elemento."
 
-#: ../glib/gmarkup.c:1806
+#: ../glib/gmarkup.c:1808
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -485,18 +494,18 @@ msgstr ""
 "Documento terminou inesperadamente após o sinal de igual posterior a um nome "
 "de atributo; nenhum valor de atributo"
 
-#: ../glib/gmarkup.c:1813
+#: ../glib/gmarkup.c:1815
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Documento terminou inesperadamente dentro do valor de um atributo"
 
-#: ../glib/gmarkup.c:1829
+#: ../glib/gmarkup.c:1831
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr ""
 "Documento terminou inesperadamente dentro da etiqueta de fecho do elemento '%"
 "s'"
 
-#: ../glib/gmarkup.c:1835
+#: ../glib/gmarkup.c:1837
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Documento terminou inesperadamente dentro de um comentário ou instrução de "
