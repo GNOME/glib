@@ -160,7 +160,7 @@ msgid "Error opening directory '%s': %s"
 msgstr "ಕಡತ ಕೋಶ '%s' ವನ್ನು ತೆರೆಯುವಲ್ಲಿ ದೋಷ: %s"
 
 #: ../glib/gfileutils.c:557 ../glib/gfileutils.c:630
-#, c-format
+#, fuzzy, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "\"%s\" ಕಡತವನ್ನು ಓದಲು %lu ಅಷ್ಟಕಗಳನ್ನು(bytes) ನಿಯೋಜಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
@@ -541,7 +541,7 @@ msgid "PCRE library is compiled without UTF8 properties support"
 msgstr "UTF8 ಗುಣಲಕ್ಷಣಗಳ ಬೆಂಬಲವಿಲ್ಲದೆ PCRE ಭಂಡಾರವು ಸಂಕಲಿತಗೊಂಡಿದೆ"
 
 #: ../glib/gregex.c:934
-#, c-format
+#, fuzzy, c-format
 msgid "Error while compiling regular expression %s at char %d: %s"
 msgstr "%d ನಲ್ಲಿ ಸಾಮಾನ್ಯ ನಿರೂಪಣೆಯ %s ಅನ್ನು ಸಂಕಲಿಸುವಲ್ಲಿ ದೋಷ ಕಂಡುಬಂದಿದೆ: %s"
 
