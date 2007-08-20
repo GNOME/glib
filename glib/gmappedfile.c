@@ -72,7 +72,7 @@ struct _GMappedFile
 /**
  * g_mapped_file_new:
  * @filename: The path of the file to load, in the GLib filename encoding
- * @writable: wether the mapping should be writable
+ * @writable: whether the mapping should be writable
  * @error: return location for a #GError, or %NULL
  *
  * Maps a file into memory. On UNIX, this is using the mmap() function.

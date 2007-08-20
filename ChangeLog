@@ -1,3 +1,10 @@
+2007-08-20  Behdad Esfahbod  <behdad@gnome.org>
+
+	* glib/gmappedfile.c:
+	* glib/gregex.c:
+	* glib/gstdio.c:
+	Fix typos (#468694).
+
 2007-08-14  Cody Russell  <bratsche@gnome.org>
 
 	* gobject/gsignal.c: g_type_default_interface_ref() was not

@@ -349,7 +349,7 @@ g_match_info_next (GMatchInfo  *match_info,
  * g_match_info_matches:
  * @match_info: a #GMatchInfo structure
  *
- * Returns wether the previous match operation succeeded.
+ * Returns whether the previous match operation succeeded.
  * 
  * Returns: %TRUE if the previous match operation succeeded, 
  *   %FALSE otherwise
