@@ -1,5 +1,10 @@
 2007-08-20  Behdad Esfahbod  <behdad@gnome.org>
 
+	* glib/tmpl/unicode.sgml: Document that GUnicodeScript is
+	interchangeable with PangoScript.
+
+2007-08-20  Behdad Esfahbod  <behdad@gnome.org>
+
 	* glib/tmpl/spawn.sgml:
 	Fix typos (#468694).
 

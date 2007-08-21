@@ -411,7 +411,8 @@ See <ulink url="http://www.unicode.org/unicode/reports/tr14/"
 <para>
 The #GUnicodeScript enumeration identifies different writing
 systems. The values correspond to the names as defined in the
-Unicode standard. The enumeration has been added in GLib 2.14. 
+Unicode standard. The enumeration has been added in GLib 2.14,
+and is interchangeable with #PangoScript.
 Note that new types may be added in the future. Applications 
 should be ready to handle unknown values.
 See <ulink

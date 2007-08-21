@@ -1286,6 +1286,9 @@ g_unichar_get_script_bsearch (gunichar ch)
  * by Unicode Standard Annex #24). No check is made for @ch being a
  * valid Unicode character; if you pass in invalid character, the
  * result is undefined.
+ *
+ * This function is equivalent to pango_script_for_unichar() and the
+ * two are interchangeable.
  * 
  * Return value: the #GUnicodeScript for the character.
  *

@@ -1,5 +1,10 @@
 2007-08-20  Behdad Esfahbod  <behdad@gnome.org>
 
+	* glib/guniprop.c: Document that g_unichar_get_script() is
+	equivalent to pango_script_for_unichar().
+
+2007-08-20  Behdad Esfahbod  <behdad@gnome.org>
+
 	* glib/gmappedfile.c:
 	* glib/gregex.c:
 	* glib/gstdio.c:
