@@ -1,3 +1,8 @@
+2007-08-22  Cody Russell  <bratsche@gnome.org>
+
+	* glib/gprintf.c: Document g_snprintf to return "bytes" rather
+	than "characters".
+
 2007-08-20  Behdad Esfahbod  <behdad@gnome.org>
 
 	* glib/guniprop.c: Document that g_unichar_get_script() is

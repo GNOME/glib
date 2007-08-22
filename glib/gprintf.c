@@ -145,7 +145,7 @@ g_sprintf (gchar       *string,
  * The format string may contain positional parameters, as specified in 
  * the Single Unix Specification.
  *
- * Returns: the number of characters which would be produced if the buffer 
+ * Returns: the number of bytes which would be produced if the buffer 
  *     was large enough.
  **/
 gint
