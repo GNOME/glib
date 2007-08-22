@@ -40,7 +40,7 @@
  * An implementation of the standard printf() function which supports 
  * positional parameters, as specified in the Single Unix Specification.
  *
- * Returns: the number of characters printed.
+ * Returns: the number of bytes printed.
  *
  * Since: 2.2
  **/
@@ -68,7 +68,7 @@ g_printf (gchar const *format,
  * An implementation of the standard fprintf() function which supports 
  * positional parameters, as specified in the Single Unix Specification.
  *
- * Returns: the number of characters printed.
+ * Returns: the number of bytes printed.
  *
  * Since: 2.2
  **/
@@ -99,7 +99,7 @@ g_fprintf (FILE        *file,
  * An implementation of the standard sprintf() function which supports 
  * positional parameters, as specified in the Single Unix Specification.
  *
- * Returns: the number of characters printed.
+ * Returns: the number of bytes printed.
  *
  * Since: 2.2
  **/
@@ -121,7 +121,7 @@ g_sprintf (gchar       *string,
 /**
  * g_snprintf:
  * @string: the buffer to hold the output.
- * @n: the maximum number of characters to produce (including the 
+ * @n: the maximum number of bytes to produce (including the 
  *     terminating nul character).
  * @format: a standard printf() format string, but notice 
  *          <link linkend="string-precision">string precision pitfalls</link>.
@@ -173,7 +173,7 @@ g_snprintf (gchar	*string,
  * An implementation of the standard vprintf() function which supports 
  * positional parameters, as specified in the Single Unix Specification.
  *
- * Returns: the number of characters printed.
+ * Returns: the number of bytes printed.
  *
  * Since: 2.2
  **/
@@ -196,7 +196,7 @@ g_vprintf (gchar const *format,
  * An implementation of the standard fprintf() function which supports 
  * positional parameters, as specified in the Single Unix Specification.
  *
- * Returns: the number of characters printed.
+ * Returns: the number of bytes printed.
  *
  * Since: 2.2
  **/
@@ -220,7 +220,7 @@ g_vfprintf (FILE        *file,
  * An implementation of the standard vsprintf() function which supports 
  * positional parameters, as specified in the Single Unix Specification.
  *
- * Returns: the number of characters printed.
+ * Returns: the number of bytes printed.
  *
  * Since: 2.2
  **/
@@ -238,7 +238,7 @@ g_vsprintf (gchar	 *string,
 /** 
  * g_vsnprintf:
  * @string: the buffer to hold the output.
- * @n: the maximum number of characters to produce (including the 
+ * @n: the maximum number of bytes to produce (including the 
  *     terminating nul character).
  * @format: a standard printf() format string, but notice 
  *          <link linkend="string-precision">string precision pitfalls</link>.
@@ -262,7 +262,7 @@ g_vsprintf (gchar	 *string,
  * The format string may contain positional parameters, as specified in 
  * the Single Unix Specification.
  *
- * Returns: the number of characters which would be produced if the buffer 
+ * Returns: the number of bytes which would be produced if the buffer 
  *  was large enough.
  */
 gint
@@ -290,7 +290,7 @@ g_vsnprintf (gchar	 *string,
  * string to hold the output, instead of putting the output in a buffer 
  * you allocate in advance.
  *
- * Returns: the number of characters printed.
+ * Returns: the number of bytes printed.
  *
  * Since: 2.4
  **/
