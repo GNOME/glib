@@ -29,15 +29,15 @@ G_BEGIN_DECLS
 
 /* slices - fast allocation/release of small memory blocks
  */
-gpointer g_slice_alloc          	(gsize	  block_size) G_GNUC_MALLOC;
-gpointer g_slice_alloc0         	(gsize    block_size) G_GNUC_MALLOC;
-gpointer g_slice_copy                   (gsize    block_size,
-                                         gpointer mem_block) G_GNUC_MALLOC;
-void     g_slice_free1          	(gsize    block_size,
-					 gpointer mem_block);
-void     g_slice_free_chain_with_offset (gsize    block_size,
-					 gpointer mem_chain,
-					 gsize    next_offset);
+gpointer g_slice_alloc          	(gsize	       block_size) G_GNUC_MALLOC;
+gpointer g_slice_alloc0         	(gsize         block_size) G_GNUC_MALLOC;
+gpointer g_slice_copy                   (gsize         block_size,
+                                         gconstpointer mem_block) G_GNUC_MALLOC;
+void     g_slice_free1          	(gsize         block_size,
+					 gpointer      mem_block);
+void     g_slice_free_chain_with_offset (gsize         block_size,
+					 gpointer      mem_chain,
+					 gsize         next_offset);
 #define  g_slice_new(type)      ((type*) g_slice_alloc (sizeof (type)))
 #define  g_slice_new0(type)     ((type*) g_slice_alloc0 (sizeof (type)))
 /* MemoryBlockType *

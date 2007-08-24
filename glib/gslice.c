@@ -837,8 +837,8 @@ g_slice_alloc0 (gsize mem_size)
 }
 
 gpointer
-g_slice_copy (gsize    mem_size,
-              gpointer mem_block)
+g_slice_copy (gsize         mem_size,
+              gconstpointer mem_block)
 {
   gpointer mem = g_slice_alloc (mem_size);
   if (mem)
