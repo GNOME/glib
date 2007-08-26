@@ -1,10 +1,15 @@
+2007-08-26  Raphael Higino  <raphaelh@svn.gnome.org>
+
+	* pt_BR.po: Updated Brazilian Portuguese translation
+	by Vladimir Melo <vladimirmelo@foresightlinux.org>.
+
 2007-08-20  Claude Paroz  <claude@2xlibre.net>
 
 	* kn.po: Make 2 strings fuzzy to make msgfmt pass (and glib compile again!)
 
 2007-08-20  Pramod Raghavendra <pramodleo@yahoo.co.uk>
 
-        * kn.po: Updated Kannada translation by Shankar Prasad.
+	* kn.po: Updated Kannada translation by Shankar Prasad.
 
 2007-08-19  Duarte Loreto <happyguy_pt@hotmail,com>
 
