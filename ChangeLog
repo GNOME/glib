@@ -1,3 +1,8 @@
+Wed Aug 29 12:08:40 2007  Tim Janik  <timj@imendio.com>
+
+	* glib/gthread.h (g_once_init_enter): fixed compiler warning about
+	loosing volatile qualifier, bug #457641.
+
 2007-08-24  Michael Natterer  <mitch@imendio.com>
 
 	* glib/gslice.[ch]: make g_slice_copy() take a gconstpointer
