@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.12.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-30 00:46+0200\n"
-"PO-Revision-Date: 2007-08-30 00:44+0200\n"
+"POT-Creation-Date: 2007-09-03 12:06+0200\n"
+"PO-Revision-Date: 2007-09-03 12:07+0200\n"
 "Last-Translator: Stéphane Raimbault <stephane.raimbault@gmail.com>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "MIME-Version: 1.0\n"
@@ -815,11 +815,11 @@ msgstr "Options de l'aide :"
 
 #: ../glib/goption.c:677
 msgid "Show help options"
-msgstr "Afficher les options de l'aide"
+msgstr "Affiche les options de l'aide"
 
 #: ../glib/goption.c:683
 msgid "Show all help options"
-msgstr "Afficher toutes les options de l'aide"
+msgstr "Affiche toutes les options de l'aide"
 
 #: ../glib/goption.c:735
 msgid "Application Options:"
