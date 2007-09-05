@@ -1,3 +1,7 @@
+2007-09-05  Behdad Esfahbod  <behdad@gnome.org>
+
+	* glib/gregex.c: Fix header inclusion. (#473879, Peter Kjellerstedt)
+
 Wed Aug 29 12:08:40 2007  Tim Janik  <timj@imendio.com>
 
 	* glib/gthread.h (g_once_init_enter): fixed compiler warning about

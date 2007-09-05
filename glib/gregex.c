@@ -19,13 +19,13 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include <config.h>
+#include "config.h"
 
-#include "gregex.h"
-
-#include <glib.h>
-#include <glib/gi18n.h>
 #include <string.h>
+
+#include "glib.h"
+#include "glibintl.h"
+#include "gregex.h"
 
 #ifdef USE_SYSTEM_PCRE
 #include <pcre.h>
