@@ -233,7 +233,9 @@ If @prg_name is %NULL, g_get_prgname() is called to get the program name
 
 <!-- ##### MACRO G_BREAKPOINT ##### -->
 <para>
-Inserts a breakpoint instruction into the code (on x86 machines only).
+Inserts a breakpoint instruction into the code.  On x86 and alpha systems
+this is implemented as a soft interrupt and on other architectures it raises
+a %SIGTRAP signal.
 </para>
 
 

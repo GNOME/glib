@@ -1,3 +1,14 @@
+2007-09-09  Behdad Esfahbod  <behdad@gnome.org>
+
+	* glib/tmpl/warnings.sgml: Improve G_BREAKPOINT docs. (#474899)
+
+2007-09-05  Behdad Esfahbod  <behdad@gnome.org>
+
+	* glib/tmpl/glib-unused.sgml:
+	* glib/tmpl/macros_misc.sgml:
+	* glib/tmpl/main.sgml:
+	* gobject/tmpl/gparamspec.sgml:
+
 Tue Aug 28 19:04:12 2007  Tim Janik  <timj@gtk.org>
 
 	* glib/tmpl/memory_slices.sgml: clarified alignment
