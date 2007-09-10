@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.12.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-31 22:32+0200\n"
-"PO-Revision-Date: 2007-08-31 22:33+0200\n"
+"POT-Creation-Date: 2007-09-10 18:00+0200\n"
+"PO-Revision-Date: 2007-09-10 18:03+0200\n"
 "Last-Translator: Luca Ferretti <elle.uca@libero.it>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
@@ -376,19 +376,17 @@ msgstr "Riferimento a entità non terminato"
 msgid "Unfinished character reference"
 msgstr "Riferimento a carattere non terminato"
 
-# è solo una prova...
 #: ../glib/gmarkup.c:958
-#, fuzzy
 msgid "Invalid UTF-8 encoded text - overlong sequence"
-msgstr "Testo in codifica UTF-8 non valido - sequenza ultralunga"
+msgstr "Testo in codifica UTF-8 non valido - sequenza troppo lunga"
 
+# anche gradevole "di apertura" come da discussione su TP
 #: ../glib/gmarkup.c:986
-#, fuzzy
 msgid "Invalid UTF-8 encoded text - not a start char"
 msgstr "Testo in codifica UTF-8 non valido - non è un carattere di avvio"
 
 #: ../glib/gmarkup.c:1022
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid UTF-8 encoded text - not valid '%s'"
 msgstr "Testo in codifica UTF-8 non valido - '%s' non valido"
 
@@ -544,104 +542,104 @@ msgstr ""
 "Il documento è terminato in modo inatteso all'interno di un commento o "
 "istruzione di processo"
 
-#: ../glib/gregex.c:126
+#: ../glib/gregex.c:131
 msgid "corrupted object"
 msgstr "oggetto corrotto"
 
-#: ../glib/gregex.c:128
+#: ../glib/gregex.c:133
 msgid "internal error or corrupted object"
 msgstr "errore interno oppure oggetto corrotto"
 
-#: ../glib/gregex.c:130
+#: ../glib/gregex.c:135
 msgid "out of memory"
 msgstr "memoria esaurita"
 
-#: ../glib/gregex.c:135
+#: ../glib/gregex.c:140
 msgid "backtracking limit reached"
 msgstr "raggiunto limite di backtracking"
 
-#: ../glib/gregex.c:147 ../glib/gregex.c:155
+#: ../glib/gregex.c:152 ../glib/gregex.c:160
 msgid "the pattern contains items not supported for partial matching"
 msgstr ""
 "il modello contiene elementi non supportati per la corrispondenza parziale"
 
-#: ../glib/gregex.c:149
+#: ../glib/gregex.c:154
 msgid "internal error"
 msgstr "errore interno"
 
-#: ../glib/gregex.c:157
+#: ../glib/gregex.c:162
 msgid "back references as conditions are not supported for partial matching"
 msgstr ""
 "per la corrispondenza parziale non sono supportati i riferimenti "
 "all'indietro come condizioni"
 
-#: ../glib/gregex.c:166
+#: ../glib/gregex.c:171
 msgid "recursion limit reached"
 msgstr "raggiunto limite di ricorsione"
 
 # oppure lasciare workspace non tradotto?
-#: ../glib/gregex.c:168
+#: ../glib/gregex.c:173
 msgid "workspace limit for empty substrings reached"
 msgstr "raggiunto limite dello spazio di lavoro per sottostringhe vuote"
 
-#: ../glib/gregex.c:170
+#: ../glib/gregex.c:175
 msgid "invalid combination of newline flags"
 msgstr "combinazione non valida di flag di fine riga"
 
-#: ../glib/gregex.c:174
+#: ../glib/gregex.c:179
 msgid "unknown error"
 msgstr "errore sconosciuto"
 
-#: ../glib/gregex.c:319 ../glib/gregex.c:1354
+#: ../glib/gregex.c:324 ../glib/gregex.c:1359
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "Errore nel cercare corrispondenza per l'espressione regolare %s: %s"
 
-#: ../glib/gregex.c:882
+#: ../glib/gregex.c:887
 msgid "PCRE library is compiled without UTF8 support"
 msgstr "La libreria PCRE è compilata senza supporto per UTF-8"
 
-#: ../glib/gregex.c:891
+#: ../glib/gregex.c:896
 msgid "PCRE library is compiled without UTF8 properties support"
 msgstr "La libreria PCRE è compilata senza supporto per le proprietà UTF-8"
 
-#: ../glib/gregex.c:936
+#: ../glib/gregex.c:941
 #, c-format
 msgid "Error while compiling regular expression %s at char %d: %s"
 msgstr ""
 "Errore durante la compilazione dell'espressione regolare %s al carattere %d: "
 "%s"
 
-#: ../glib/gregex.c:958
+#: ../glib/gregex.c:963
 #, c-format
 msgid "Error while optimizing regular expression %s: %s"
 msgstr "Errore durante l'ottimizzazione dell'espressione regolare %s: %s"
 
-#: ../glib/gregex.c:1782
+#: ../glib/gregex.c:1787
 msgid "hexadecimal digit or '}' expected"
 msgstr "attesa cifra esadecimale o '}'"
 
-#: ../glib/gregex.c:1798
+#: ../glib/gregex.c:1803
 msgid "hexadecimal digit expected"
 msgstr "attesa cifra esadecimale"
 
-#: ../glib/gregex.c:1838
+#: ../glib/gregex.c:1843
 msgid "missing '<' in symbolic reference"
 msgstr "'<' mancante nel riferimento simbolico"
 
-#: ../glib/gregex.c:1847
+#: ../glib/gregex.c:1852
 msgid "unfinished symbolic reference"
 msgstr "riferimento simbolico non terminato"
 
-#: ../glib/gregex.c:1854
+#: ../glib/gregex.c:1859
 msgid "zero-length symbolic reference"
 msgstr "riferimento simbolico di lunghezza zero"
 
-#: ../glib/gregex.c:1865
+#: ../glib/gregex.c:1870
 msgid "digit expected"
 msgstr "attesa cifra"
 
-#: ../glib/gregex.c:1883
+#: ../glib/gregex.c:1888
 msgid "illegal symbolic reference"
 msgstr "riferimento simbolico non lecito"
 
@@ -649,16 +647,16 @@ msgstr "riferimento simbolico non lecito"
 # carattere successivo che manca
 #
 # Quindi "isolato" o "staccato" o al limite "accindetale", "casuale"
-#: ../glib/gregex.c:1945
+#: ../glib/gregex.c:1950
 msgid "stray final '\\'"
 msgstr "'\\' finale isolato"
 
-#: ../glib/gregex.c:1949
+#: ../glib/gregex.c:1954
 msgid "unknown escape sequence"
 msgstr "sequenza di escape sconosciuta"
 
 # da sostituire crea confusione...
-#: ../glib/gregex.c:1959
+#: ../glib/gregex.c:1964
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr ""
