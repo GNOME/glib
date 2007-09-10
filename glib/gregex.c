@@ -630,20 +630,8 @@ get_matched_substring_number (const GMatchInfo *match_info,
   gchar *first, *last;
   guchar *entry;
 
-  /*
-   * FIXME: (?J) may be used inside the pattern as the equivalent of
-   * DUPNAMES compile option. In this case we can't know about it,
-   * and pcre doesn't tell us about it either, it uses private flag
-   * PCRE_JCHANGED for this. So we have to always search string
-   * table, unlike pcre which uses pcre_get_stringnumber() shortcut
-   * when possible. It shouldn't be actually bad since
-   * pcre_get_stringtable_entries() uses binary search; still would 
-   * be better to fix it, to be not worse than pcre.
-   */
-#if 0
-  if ((match_info->regex->compile_opts & G_REGEX_DUPNAMES) == 0)
+  if (!(match_info->regex->compile_opts & G_REGEX_DUPNAMES))
     return pcre_get_stringnumber (match_info->regex->pcre_re, name);
-#endif
 
   /* This code is copied from pcre_get.c: get_first_set() */
   entrysize = pcre_get_stringtable_entries (match_info->regex->pcre_re, 
@@ -870,7 +858,7 @@ g_regex_new (const gchar         *pattern,
   gint erroffset;
   gboolean optimize = FALSE;
   static gboolean initialized = FALSE;
-  
+
   g_return_val_if_fail (pattern != NULL, NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
   g_return_val_if_fail ((compile_options & ~G_REGEX_COMPILE_MASK) == 0, NULL);
@@ -944,6 +932,19 @@ g_regex_new (const gchar         *pattern,
       g_propagate_error (error, tmp_error);
 
       return NULL;
+    }
+
+  /* For options set at the beginning of the pattern, pcre puts them into
+   * compile options, e.g. "(?i)foo" will make the pcre structure store
+   * PCRE_CASELESS even though it wasn't explicitly given for compilation. */
+  pcre_fullinfo (re, NULL, PCRE_INFO_OPTIONS, &compile_options);
+
+  if (!(compile_options & G_REGEX_DUPNAMES))
+    {
+      gboolean jchanged = FALSE;
+      pcre_fullinfo (re, NULL, PCRE_INFO_JCHANGED, &jchanged);
+      if (jchanged)
+	compile_options |= G_REGEX_DUPNAMES;
     }
 
   regex = g_new0 (GRegex, 1);
