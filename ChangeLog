@@ -2,6 +2,7 @@
 
 	* glib/gregex.c: define PCRE_ERROR_NULLWSLIMIT if it's not defined by
 	PCRE, has PCRE 7.3 removed this definition. (#475474)
+	* configure.in: bump PCRE requirement to version 7.2.
 
 2007-09-05  Behdad Esfahbod  <behdad@gnome.org>
 
