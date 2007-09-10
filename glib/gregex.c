@@ -92,7 +92,7 @@ struct _GMatchInfo
 
 struct _GRegex
 {
-  volatile guint ref_count;	/* the ref count for the immutable part */
+  volatile gint ref_count;	/* the ref count for the immutable part */
   gchar *pattern;		/* the pattern */
   pcre *pcre_re;		/* compiled form of the pattern */
   GRegexCompileFlags compile_opts;	/* options used at compile time on the pattern */
@@ -802,7 +802,7 @@ GRegex *
 g_regex_ref (GRegex *regex)
 {
   g_return_val_if_fail (regex != NULL, NULL);
-  g_atomic_int_inc ((gint*) &regex->ref_count);
+  g_atomic_int_inc (&regex->ref_count);
   return regex;
 }
 
@@ -820,7 +820,7 @@ g_regex_unref (GRegex *regex)
 {
   g_return_if_fail (regex != NULL);
 
-  if (g_atomic_int_exchange_and_add ((gint *) &regex->ref_count, -1) - 1 == 0)
+  if (g_atomic_int_exchange_and_add (&regex->ref_count, -1) - 1 == 0)
     {
       g_free (regex->pattern);
       if (regex->pcre_re != NULL)

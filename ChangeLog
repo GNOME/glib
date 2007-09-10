@@ -6,6 +6,8 @@
 	* glib/gregex.c: use pcre_get_stringnumber() in
 	get_matched_substring_number() if G_REGEX_DUPNAMES was not set.
 	(#444765, Yevgen Muntyan)
+	* glib/gregex.c: change the type of ref_count from guint to gint, so
+	we can remove some ugly casts.
 
 2007-09-05  Behdad Esfahbod  <behdad@gnome.org>
 
