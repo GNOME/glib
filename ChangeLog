@@ -1,3 +1,8 @@
+2007-09-10  Marco Barisione <marco@barisione.org>
+
+	* glib/gregex.c: define PCRE_ERROR_NULLWSLIMIT if it's not defined by
+	PCRE, has PCRE 7.3 removed this definition. (#475474)
+
 2007-09-05  Behdad Esfahbod  <behdad@gnome.org>
 
 	* glib/gregex.c: Fix header inclusion. (#473879, Peter Kjellerstedt)

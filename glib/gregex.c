@@ -33,6 +33,11 @@
 #include "pcre/pcre.h"
 #endif
 
+/* PCRE 7.3 does not contain the definition of PCRE_ERROR_NULLWSLIMIT */
+#ifndef PCRE_ERROR_NULLWSLIMIT
+#define PCRE_ERROR_NULLWSLIMIT (-22)
+#endif
+
 #include "galias.h"
 
 /* Mask of all the possible values for GRegexCompileFlags. */
