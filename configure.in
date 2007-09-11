@@ -2213,7 +2213,7 @@ if test x$enable_regex = xtrue; then
                    glib_cv_pcre_has_unicode=yes,
                    glib_cv_pcre_has_unicode=no,
                    glib_cv_pcre_has_unicode=yes)
-                   CFLAGS="$lib_save_CFLAGS"
+                   CFLAGS="$glib_save_CFLAGS"
                    LDFLAGS="$glib_save_LDFLAGS"
 	])
     if test "$glib_cv_pcre_has_unicode" = "no"; then

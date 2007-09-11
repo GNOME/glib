@@ -4,6 +4,9 @@
 	* configure.in: propagate the pcre flags to libglib and not to all
 	parts of glib. (#475854, dmacks@netspace.org)
 
+	* configure.in: fix a typo in the previous commit. (#475854, comment
+	#4)
+
 2007-09-11  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Define G_ATOMIC_ARM.
