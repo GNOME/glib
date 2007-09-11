@@ -1,3 +1,8 @@
+2007-09-11  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/tmpl/error_reporting.sgml: Add an example.  (#474229,
+	Rob Bradford)
+
 2007-09-09  Behdad Esfahbod  <behdad@gnome.org>
 
 	* glib/tmpl/warnings.sgml: Improve G_BREAKPOINT docs. (#474899)

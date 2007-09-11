@@ -241,9 +241,18 @@ Error domains and codes are conventionally named as follows:
 <itemizedlist>
 <listitem>
 <para>
-The error domain is called
+The error domain is called 
 <literal>&lt;NAMESPACE&gt;_&lt;MODULE&gt;_ERROR</literal>, for example
-%G_EXEC_ERROR or %G_THREAD_ERROR.
+%G_SPAWN_ERROR or %G_THREAD_ERROR:
+<informalexample><programlisting>
+#define G_SPAWN_ERROR g_spawn_error_quark (<!-- -->)
+
+GQuark
+g_spawn_error_quark (void)
+{
+  return g_quark_from_static_string ("g-spawn-error-quark");
+}
+</programlisting></informalexample>
 </para>
 </listitem>
 <listitem>
