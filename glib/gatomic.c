@@ -3,6 +3,7 @@
  *
  * g_atomic_*: atomic operations.
  * Copyright (C) 2003 Sebastian Wilhelmi
+ * Copyright (C) 2007 Nokia Corporation
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,7 +20,11 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
- 
+
+#if defined (G_ATOMIC_ARM)
+#include <sched.h>
+#endif
+
 #include "config.h"
 
 #include "glib.h"
@@ -482,7 +487,98 @@ g_atomic_pointer_compare_and_exchange (volatile gpointer *atomic,
 #  else /* What's that */
 #    error "Your system has an unsupported pointer size"
 #  endif /* GLIB_SIZEOF_VOID_P */
-# else /* !G_ATOMIC_IA64 */
+# elif defined (G_ATOMIC_ARM)
+static volatile int atomic_spin = 0;
+
+static int atomic_spin_trylock (void)
+{
+  int result;
+
+  asm volatile (
+    "swp %0, %1, [%2]\n"
+    : "=&r,&r" (result)
+    : "r,0" (1), "r,r" (&atomic_spin)
+    : "memory");
+  if (result == 0)
+    return 0;
+  else
+    return -1;
+}
+
+static void atomic_spin_lock (void)
+{
+  while (atomic_spin_trylock())
+    sched_yield();
+}
+
+static void atomic_spin_unlock (void)
+{
+  atomic_spin = 0;
+}
+
+gint
+g_atomic_int_exchange_and_add (volatile gint *atomic, 
+			       gint           val)
+{
+  gint result;
+ 
+  atomic_spin_lock();  
+  result = *atomic;
+  *atomic += val;
+  atomic_spin_unlock();
+
+  return result;
+}
+
+void
+g_atomic_int_add (volatile gint *atomic,
+		  gint           val)
+{
+  atomic_spin_lock();
+  *atomic += val;
+  atomic_spin_unlock();
+}
+
+gboolean
+g_atomic_int_compare_and_exchange (volatile gint *atomic, 
+				   gint           oldval, 
+				   gint           newval)
+{
+  gboolean result;
+
+  atomic_spin_lock();
+  if (*atomic == oldval)
+    {
+      result = TRUE;
+      *atomic = newval;
+    }
+  else
+    result = FALSE;
+  atomic_spin_unlock();
+
+  return result;
+}
+
+gboolean
+g_atomic_pointer_compare_and_exchange (volatile gpointer *atomic, 
+				       gpointer           oldval, 
+				       gpointer           newval)
+{
+  gboolean result;
+ 
+  atomic_spin_lock();
+  if (*atomic == oldval)
+    {
+      result = TRUE;
+      *atomic = newval;
+    }
+  else
+    result = FALSE;
+  atomic_spin_unlock();
+
+  return result;
+}
+# else /* !G_ATOMIC_ARM */
 #  define DEFINE_WITH_MUTEXES
 # endif /* G_ATOMIC_IA64 */
 #else /* !__GNUC__ */

@@ -228,9 +228,6 @@ if test "x$enable_threads" != "xyes"; then
   enable_threads=no
 fi
 
-AC_DEFINE_UNQUOTED(G_COMPILED_WITH_DEBUGGING, ["${enable_debug}"],
-	[Whether glib was compiled with debugging enabled])
-
 AC_MSG_CHECKING([whether to enable garbage collector friendliness])
 if test "x$enable_gc_friendly" = "xyes"; then
   AC_DEFINE(ENABLE_GC_FRIENDLY_DEFAULT, 1, [Whether to enable GC friendliness by default])
@@ -2100,6 +2097,12 @@ if test x"$GCC" = xyes; then
 		   	 [s390 atomic implementation])
       glib_memory_barrier_needed=no
       ;;	
+    arm*)
+      AC_MSG_RESULT([arm])
+      AC_DEFINE_UNQUOTED(G_ATOMIC_ARM, 1,
+                         [arm atomic implementation])
+      glib_memory_barrier_needed=no
+      ;;
     *)
       AC_MSG_RESULT([none])
       glib_memory_barrier_needed=yes
