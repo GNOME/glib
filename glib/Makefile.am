@@ -22,7 +22,7 @@ SUBDIRS = libcharset $(PRINTF_SUBDIR) $(MAYBE_PCRE) update-pcre
 
 DIST_SUBDIRS = libcharset gnulib pcre update-pcre
 
-INCLUDES = -I$(top_srcdir) -DG_LOG_DOMAIN=\"GLib\" \
+INCLUDES = -I$(top_srcdir) $(pcre_inc) -DG_LOG_DOMAIN=\"GLib\" \
 	$(GLIB_DEBUG_FLAGS) -DG_DISABLE_DEPRECATED -DGLIB_COMPILATION 
 
 glib.def: glib.symbols
@@ -261,11 +261,14 @@ endif
 if ENABLE_REGEX
 if USE_SYSTEM_PCRE
 pcre_lib = $(PCRE_LIBS)
+pcre_inc = $(PCRE_CFLAGS)
 else
 pcre_lib = pcre/libpcre.la
+pcre_inc =
 endif
 else
 pcre_lib =
+pcre_inc =
 endif
 
 libglib_2_0_la_LIBADD = libcharset/libcharset.la $(printf_la) @GIO@ @GSPAWN@ @PLATFORMDEP@ @ICONV_LIBS@ @G_LIBS_EXTRA@ $(pcre_lib)

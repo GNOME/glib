@@ -1,3 +1,9 @@
+2007-09-11  Marco Barisione <marco@barisione.org>
+
+	* glib/Makefile.am:
+	* configure.in: propagate the pcre flags to libglib and not to all
+	parts of glib. (#475854, dmacks@netspace.org)
+
 2007-09-11  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Define G_ATOMIC_ARM.
