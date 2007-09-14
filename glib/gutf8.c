@@ -1782,12 +1782,11 @@ g_unichar_validate (gunichar ch)
  * Since: 2.2
  */
 gchar *
-g_utf8_strreverse (const gchar *str, 
-		   gssize len)
+g_utf8_strreverse (const gchar *str,
+		   gssize       len)
 {
-  gchar *result;
+  gchar *r, *result;
   const gchar *p;
-  gchar *m, *r, skip;
 
   if (len < 0)
     len = strlen (str);
@@ -1795,9 +1794,9 @@ g_utf8_strreverse (const gchar *str,
   result = g_new (gchar, len + 1);
   r = result + len;
   p = str;
-  while (*p) 
+  while (r > result)
     {
-      skip = g_utf8_skip[*(guchar*)p];
+      gchar *m, skip = g_utf8_skip[*(guchar*) p];
       r -= skip;
       for (m = r; skip; skip--)
         *m++ = *p++;

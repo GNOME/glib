@@ -1,3 +1,9 @@
+2007-09-14 15:07:28  Tim Janik  <timj@gtk.org>
+
+	* glib/gutf8.c (g_utf8_strreverse): applied fix for bug #476840.
+
+	* tests/utf8-pointer.c (test_misc): added test for g_utf8_strreverse().
+
 2007-09-11  Marco Barisione <marco@barisione.org>
 
 	* glib/Makefile.am:

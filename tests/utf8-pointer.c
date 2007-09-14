@@ -90,10 +90,23 @@ test_length (void)
   g_assert (g_utf8_strlen ("a\340\250\201c", 5) == 3);
 }
 
+static void
+test_misc (void)
+{
+  char *s;
+  s = g_utf8_strreverse ("1234", -1);
+  g_assert (strcmp (s, "4321") == 0);
+  g_free (s);
+  s = g_utf8_strreverse ("1234", 3);
+  g_assert (strcmp (s, "321") == 0);
+  g_free (s);
+}
+
 int main (int argc, char *argv[])
 {
   test_utf8 (longline);
   test_length ();
-
+  test_misc ();
+  
   return 0;
 }
