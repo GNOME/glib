@@ -68,18 +68,23 @@ flags).
 
 <!-- ##### ENUM GLogLevelFlags ##### -->
 <para>
-Flags specifying the level of log messages.
+Flags specifying the level of log messages. It is possible to change
+how GLib treats messages of the various levels using g_log_set_handler()
+and g_log_set_fatal_mask().
 </para>
 
-@G_LOG_FLAG_RECURSION: 
-@G_LOG_FLAG_FATAL: 
-@G_LOG_LEVEL_ERROR: 
-@G_LOG_LEVEL_CRITICAL: 
-@G_LOG_LEVEL_WARNING: 
-@G_LOG_LEVEL_MESSAGE: 
-@G_LOG_LEVEL_INFO: 
-@G_LOG_LEVEL_DEBUG: 
-@G_LOG_LEVEL_MASK: 
+@G_LOG_FLAG_RECURSION: internal flag
+@G_LOG_FLAG_FATAL: internal flag
+@G_LOG_LEVEL_ERROR: log level for errors, see g_error(). 
+  This level is also used for messages produced by g_assert().
+@G_LOG_LEVEL_CRITICAL: log level for critical messages, see g_critical().
+  This level is also used for messages produced by g_return_if_fail() and 
+  g_return_val_if_fail().
+@G_LOG_LEVEL_WARNING: log level for warnings, see g_warning()
+@G_LOG_LEVEL_MESSAGE: log level for messages, see g_message()
+@G_LOG_LEVEL_INFO: log level for informational messages
+@G_LOG_LEVEL_DEBUG: log level for debug messages, see g_debug()
+@G_LOG_LEVEL_MASK: a mask including all log levels.
 
 <!-- ##### FUNCTION g_log ##### -->
 <para>

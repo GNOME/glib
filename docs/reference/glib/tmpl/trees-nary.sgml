@@ -251,9 +251,9 @@ including g_node_traverse() and g_node_find().
 @G_TRAVERSE_NON_LEAVES: only non-leaf nodes should be visited. This name 
   has been introduced in 2.6, for older version use %G_TRAVERSE_NON_LEAFS.
 @G_TRAVERSE_ALL: all nodes should be visited.
-@G_TRAVERSE_MASK: 
-@G_TRAVERSE_LEAFS: identical to %G_TRAVERSE_LEAVES
-@G_TRAVERSE_NON_LEAFS: identical to %G_TRAVERSE_NON_LEAVES
+@G_TRAVERSE_MASK: a mask of all traverse flags.
+@G_TRAVERSE_LEAFS: identical to %G_TRAVERSE_LEAVES.
+@G_TRAVERSE_NON_LEAFS: identical to %G_TRAVERSE_NON_LEAVES.
 
 <!-- ##### USER_FUNCTION GNodeTraverseFunc ##### -->
 <para>
