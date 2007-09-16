@@ -14,6 +14,8 @@ Overview of Changes from GLib 2.14.0 to GLib 2.14.1
  468694 Typoes in documentation
  469051 g_snprintf () talks about characters where it probably me...
  457601 Missing arch specific atomic implementation
+ 475923 Missing pcre flags when static-linking against glib
+ 475619 glibthread-2.0.la does not list -lpthread
 
 * Updated translations:
  Bulgarian (bg)
