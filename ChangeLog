@@ -1,5 +1,10 @@
 2007-09-16  Matthias Clasen  <mclasen@redhat.com>
 
+	* configure.in: Replace -pthread by -lpthread for 
+	Freebsd, too.  (#475619, Roy Marples)
+
+2007-09-16  Matthias Clasen  <mclasen@redhat.com>
+
 	* configure.in: When compiling against system pcre, 
 	add a private dependency to the pc file. This should
 	fix static builds with system pcre.  (#475923)

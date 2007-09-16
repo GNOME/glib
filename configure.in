@@ -1961,9 +1961,10 @@ fi
 # 
 #  a) GCC < 3.3 for Linux doesn't include -lpthread when
 #     building shared libraries with linux.
+#  b) FreeBSD doesn't do this either.
 #
 case $host in
-  *-*-linux*)
+  *-*-freebsd*|*-*-linux*)
     G_THREAD_LIBS_FOR_GTHREAD="`echo $G_THREAD_LIBS | sed s/-pthread/-lpthread/`"
     ;;
   *) 	 
