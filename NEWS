@@ -1,3 +1,54 @@
+Overview of Changes from GLib 2.14.0 to GLib 2.14.1
+===================================================
+
+* Bugs fixed:
+ 476840 Invocation of the interface "g_utf8_strreverse" crashes f...
+ 444765 Fix FIXME in gregex.c when new pcre is out
+ 464145 g_markup_escape_text Produces Invalid XML
+ 465625 g_type_default_interface_ref() does not ensure working g_...
+ 466768 Clearify that comments can be put anywhere in a Key-file.
+ 474229 The GError documentation should give convention for the G...
+ 474899 G_BREAKPOINT() docs inaccurate
+ 475854 Overuse of -lpcre when using system pcre
+ 473879 Incorrect includes in gregex.c
+ 468694 Typoes in documentation
+ 469051 g_snprintf () talks about characters where it probably me...
+ 457601 Missing arch specific atomic implementation
+
+* Updated translations:
+ Bulgarian (bg)
+ Catalan (ca)
+ Danish (da)
+ German (de)
+ Canadian English (en_CA)
+ British English (en_GB)
+ Spanish (es)
+ Estonian (et)
+ Finnish (fi)
+ French (fr)
+ Gujarati (gu)
+ Hungarian (hu)
+ Italian (it)
+ Georgian (ka)
+ Kannada (kn)
+ Lithuanian (lt)
+ Makedonian (mk)
+ Norwegian (nb)
+ Dutch (nl)
+ Polish (pl)
+ Portugese (pt)
+ Brazilian Portugese (pt_BR)
+ Romanian (ro)
+ Russian (ru)
+ Albanian (sq)
+ Serbian (sr, sr@Latn)
+ Swedish (sv)
+ Tamil (ta)
+ Thai (th)
+ Ukrainian (uk)
+ Vietnamese (vi)
+
+
 Overview of Changes from GLib 2.13.7 to GLib 2.14.0
 ===================================================
 

@@ -1,3 +1,7 @@
+2007-09-16  Matthias Clasen  <mclasen@redhat.com>
+
+	* NEWS: Updates
+
 2007-09-14 15:07:28  Tim Janik  <timj@gtk.org>
 
 	* glib/gutf8.c (g_utf8_strreverse): applied fix for bug #476840.
