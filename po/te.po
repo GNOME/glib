@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLIB\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-03 21:54-0400\n"
+"POT-Creation-Date: 2007-09-16 14:50-0400\n"
 "PO-Revision-Date: 2004-12-13 20:16+0100\n"
 "Last-Translator: రమణ సాయి <rmn_sai@yahoo.com>\n"
 "Language-Team: Free Software Foundation, Andhra Pradesh <fsfap@gnu.org.in>\n"
@@ -357,15 +357,26 @@ msgstr " పూర్తికాని వ్యష్టినివెదన 
 msgid "Unfinished character reference"
 msgstr " అక్షర నివేదన పూర్తికాలేదు "
 
-#: glib/gmarkup.c:958 glib/gmarkup.c:986 glib/gmarkup.c:1022
-msgid "Invalid UTF-8 encoded text"
+#: glib/gmarkup.c:958
+#, fuzzy
+msgid "Invalid UTF-8 encoded text - overlong sequence"
 msgstr "నిస్సారమైన యుటిఎఫ్-8 ఎన్ కోడెడ్ పాఠం"
 
-#: glib/gmarkup.c:1058
+#: glib/gmarkup.c:986
+#, fuzzy
+msgid "Invalid UTF-8 encoded text - not a start char"
+msgstr "నిస్సారమైన యుటిఎఫ్-8 ఎన్ కోడెడ్ పాఠం"
+
+#: glib/gmarkup.c:1022
+#, fuzzy, c-format
+msgid "Invalid UTF-8 encoded text - not valid '%s'"
+msgstr "నిస్సారమైన యుటిఎఫ్-8 ఎన్ కోడెడ్ పాఠం"
+
+#: glib/gmarkup.c:1060
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "పత్రం తప్పనిసరిగా ఒక మూలకంతో ప్రారంభమవలెను (ఉదా. <బుక్>)"
 
-#: glib/gmarkup.c:1098
+#: glib/gmarkup.c:1100
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -373,20 +384,20 @@ msgid ""
 msgstr ""
 "  '<' తో ప్రారంభమగు '%s' అనునది సరరిఐన అక్షరం కాదు ; యిది మూలక నామంతో ప్రారంభమవలేదు.  "
 
-#: glib/gmarkup.c:1162
+#: glib/gmarkup.c:1164
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
 "'%s'"
 msgstr "బేసి అక్షరము '%s', ఊహించిన '>' అక్షరము చివరి ప్రారంభ బొందు మూతకం '%s'"
 
-#: glib/gmarkup.c:1251
+#: glib/gmarkup.c:1253
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr "బేసి అక్షరము '%s', ఊహించిన '=' తర్వాత '%s'  ఆపాదించు నామం '%s' మూలకం "
 
-#: glib/gmarkup.c:1293
+#: glib/gmarkup.c:1295
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -396,7 +407,7 @@ msgstr ""
 "'%s' ఊహించిన బేసి అక్షరము '>' లేక '/' చివరి ర్రంభ బొందు అక్షరము మాలకం %sలేక ఇచ్చాపూర్వక "
 "ఆపాదన; దాదాపుగా ఆపాదన నామంలో అనర్హమైన అక్షరం ఉపమెగించినావు"
 
-#: glib/gmarkup.c:1382
+#: glib/gmarkup.c:1384
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -404,14 +415,14 @@ msgid ""
 msgstr ""
 "బేసి అక్షరము '%s', ఊహించిన తెరచిన క్వోట్ చిహ్నం తరాత ఇచ్చిన ఆపాదన విలువ  '%s' మూతకము '%s'"
 
-#: glib/gmarkup.c:1527
+#: glib/gmarkup.c:1529
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 msgstr "  '</' వెంటనే ప్రారంభమగు '%s' నిసారమైన అక్షరము  ; '%s' తో మూలకనామం ప్రారంభమవరాదు "
 
-#: glib/gmarkup.c:1567
+#: glib/gmarkup.c:1569
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -420,26 +431,26 @@ msgstr ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 
-#: glib/gmarkup.c:1578
+#: glib/gmarkup.c:1580
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr " '%s' మూలకం మూయబడినది, ప్రస్ధుతం ఏ మూలకము తెరచియుండలెదు "
 
 # ../glib/gmarkup.c:1588
-#: glib/gmarkup.c:1587
+#: glib/gmarkup.c:1589
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "'%s' మూలకం మూయబడినది, కాని ప్రస్ధుతం తెరువ బడిన మూలకం '%s'"
 
-#: glib/gmarkup.c:1753
+#: glib/gmarkup.c:1755
 msgid "Document was empty or contained only whitespace"
 msgstr " పత్రం ఖాలిగా ఉన్నది లేక ఒక వైట్ స్పేస్ కలిగి యున్నది.  "
 
-#: glib/gmarkup.c:1767
+#: glib/gmarkup.c:1769
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "పత్రం చివర కోణ కుండలీకరణము'<' వెంటనె అనవసరముగా ముగింపు అయినది"
 
-#: glib/gmarkup.c:1775 glib/gmarkup.c:1820
+#: glib/gmarkup.c:1777 glib/gmarkup.c:1822
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -447,7 +458,7 @@ msgid ""
 msgstr ""
 "మూలకములు ఇంకను తెరచియున్న పత్రం ఊహించని విధంగా అంతమైనది- '%s' చివరిది మూలకము తెరచబడినది"
 
-#: glib/gmarkup.c:1783
+#: glib/gmarkup.c:1785
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -455,19 +466,19 @@ msgid ""
 msgstr ""
 "పత్రం ఊహించని విధంగా అంతమైనది,మూసిన కోణకుండశికరణం అంతము చూచుటకు ఊహించబడినది బొందు <%s/>"
 
-#: glib/gmarkup.c:1789
+#: glib/gmarkup.c:1791
 msgid "Document ended unexpectedly inside an element name"
 msgstr " పత్రం చివర ఊహించని మూలకనామం కలదు "
 
-#: glib/gmarkup.c:1795
+#: glib/gmarkup.c:1797
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "పత్రం చివర ఊహించని ఆపాదననామం కలదు"
 
-#: glib/gmarkup.c:1800
+#: glib/gmarkup.c:1802
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "పత్రం చివర ఊహించని తెరచిన బొందు కలదు."
 
-#: glib/gmarkup.c:1806
+#: glib/gmarkup.c:1808
 #, fuzzy
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
@@ -475,124 +486,124 @@ msgid ""
 msgstr ""
 " '=' చిహ్నము తర్వాత క్రింద కనబరిచిన ఆపాదన పాఠం చివర ఊహించకుండా ఉన్నది. నామం; ఆపాదన విలువ లేదు."
 
-#: glib/gmarkup.c:1813
+#: glib/gmarkup.c:1815
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr " లోపల ఆపాదన విలువ ఉన్నపుడు పాఠం ఊహించకుండా ముగింపు అయినది "
 
-#: glib/gmarkup.c:1829
+#: glib/gmarkup.c:1831
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr " '%s'మూలకము యోక్క మూసిన బొందు ఊహించకుండా పాఠం ముగింపు అయినది "
 
-#: glib/gmarkup.c:1835
+#: glib/gmarkup.c:1837
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr " లోపల వ్యాఖ్య క్రమగతి ఆదేశం ఉండగా ఊహించకుండా పాఠం ముగింపు  అయినది "
 
-#: glib/gregex.c:126
+#: glib/gregex.c:131
 msgid "corrupted object"
 msgstr ""
 
-#: glib/gregex.c:128
+#: glib/gregex.c:133
 msgid "internal error or corrupted object"
 msgstr ""
 
-#: glib/gregex.c:130
+#: glib/gregex.c:135
 msgid "out of memory"
 msgstr ""
 
-#: glib/gregex.c:135
+#: glib/gregex.c:140
 msgid "backtracking limit reached"
 msgstr ""
 
-#: glib/gregex.c:147 glib/gregex.c:155
+#: glib/gregex.c:152 glib/gregex.c:160
 msgid "the pattern contains items not supported for partial matching"
 msgstr ""
 
-#: glib/gregex.c:149
+#: glib/gregex.c:154
 msgid "internal error"
 msgstr ""
 
-#: glib/gregex.c:157
+#: glib/gregex.c:162
 msgid "back references as conditions are not supported for partial matching"
 msgstr ""
 
-#: glib/gregex.c:166
+#: glib/gregex.c:171
 msgid "recursion limit reached"
 msgstr ""
 
-#: glib/gregex.c:168
+#: glib/gregex.c:173
 msgid "workspace limit for empty substrings reached"
 msgstr ""
 
-#: glib/gregex.c:170
+#: glib/gregex.c:175
 msgid "invalid combination of newline flags"
 msgstr ""
 
-#: glib/gregex.c:174
+#: glib/gregex.c:179
 msgid "unknown error"
 msgstr ""
 
-#: glib/gregex.c:319 glib/gregex.c:1354
+#: glib/gregex.c:324 glib/gregex.c:1360
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr ""
 
-#: glib/gregex.c:882
+#: glib/gregex.c:875
 msgid "PCRE library is compiled without UTF8 support"
 msgstr ""
 
-#: glib/gregex.c:891
+#: glib/gregex.c:884
 msgid "PCRE library is compiled without UTF8 properties support"
 msgstr ""
 
-#: glib/gregex.c:936
+#: glib/gregex.c:929
 #, fuzzy, c-format
 msgid "Error while compiling regular expression %s at char %d: %s"
 msgstr " %d క్యార్ %d వరుసలో దోషం కలదు  : %s"
 
-#: glib/gregex.c:958
+#: glib/gregex.c:964
 #, c-format
 msgid "Error while optimizing regular expression %s: %s"
 msgstr ""
 
-#: glib/gregex.c:1782
+#: glib/gregex.c:1788
 msgid "hexadecimal digit or '}' expected"
 msgstr ""
 
-#: glib/gregex.c:1798
+#: glib/gregex.c:1804
 msgid "hexadecimal digit expected"
 msgstr ""
 
-#: glib/gregex.c:1838
+#: glib/gregex.c:1844
 msgid "missing '<' in symbolic reference"
 msgstr ""
 
-#: glib/gregex.c:1847
+#: glib/gregex.c:1853
 #, fuzzy
 msgid "unfinished symbolic reference"
 msgstr " పూర్తికాని వ్యష్టినివెదన  "
 
-#: glib/gregex.c:1854
+#: glib/gregex.c:1860
 msgid "zero-length symbolic reference"
 msgstr ""
 
-#: glib/gregex.c:1865
+#: glib/gregex.c:1871
 msgid "digit expected"
 msgstr ""
 
-#: glib/gregex.c:1883
+#: glib/gregex.c:1889
 msgid "illegal symbolic reference"
 msgstr ""
 
-#: glib/gregex.c:1945
+#: glib/gregex.c:1951
 msgid "stray final '\\'"
 msgstr ""
 
-#: glib/gregex.c:1949
+#: glib/gregex.c:1955
 msgid "unknown escape sequence"
 msgstr ""
 
-#: glib/gregex.c:1959
+#: glib/gregex.c:1965
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr ""

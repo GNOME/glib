@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.glib-2-4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-03 21:54-0400\n"
+"POT-Creation-Date: 2007-09-16 14:50-0400\n"
 "PO-Revision-Date: 2004-05-17 01:30+0000\n"
 "Last-Translator: Kenan Hadžiavdić <kenanh@frisurf.no>\n"
 "Language-Team: Bosnian <lokal@lugbih.org>\n"
@@ -359,15 +359,26 @@ msgstr "Nedovršena referenca entiteta"
 msgid "Unfinished character reference"
 msgstr "Nedovršena referenca znaka"
 
-#: glib/gmarkup.c:958 glib/gmarkup.c:986 glib/gmarkup.c:1022
-msgid "Invalid UTF-8 encoded text"
+#: glib/gmarkup.c:958
+#, fuzzy
+msgid "Invalid UTF-8 encoded text - overlong sequence"
 msgstr "Neispravno UTF-8 kodirani tekst"
 
-#: glib/gmarkup.c:1058
+#: glib/gmarkup.c:986
+#, fuzzy
+msgid "Invalid UTF-8 encoded text - not a start char"
+msgstr "Neispravno UTF-8 kodirani tekst"
+
+#: glib/gmarkup.c:1022
+#, fuzzy, c-format
+msgid "Invalid UTF-8 encoded text - not valid '%s'"
+msgstr "Neispravno UTF-8 kodirani tekst"
+
+#: glib/gmarkup.c:1060
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Dokument mora početi elementom (npr. <book>)"
 
-#: glib/gmarkup.c:1098
+#: glib/gmarkup.c:1100
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -376,7 +387,7 @@ msgstr ""
 "'%s' je nevažeći prateći znak nakon znaka '<'; ne može započeti naziv "
 "elementa"
 
-#: glib/gmarkup.c:1162
+#: glib/gmarkup.c:1164
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
@@ -385,13 +396,13 @@ msgstr ""
 "Čudan znak '%s', očekivan znak '>' radi okončanja početne oznake elementa '%"
 "s'"
 
-#: glib/gmarkup.c:1251
+#: glib/gmarkup.c:1253
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr "Čudan znak '%s', očekivan znak '=' nakon osobine '%s' elementa '%s'"
 
-#: glib/gmarkup.c:1293
+#: glib/gmarkup.c:1295
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -402,7 +413,7 @@ msgstr ""
 "elementa '%s' ili eventualno osobine; možda je korišten nevažeći znak u "
 "imenu osobine"
 
-#: glib/gmarkup.c:1382
+#: glib/gmarkup.c:1384
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -411,7 +422,7 @@ msgstr ""
 "Čudan znak '%s', očekivan navodni znak nakon znaka jednakosti pri davanju "
 "vrijednosti osobini '%s' elementa '%s'"
 
-#: glib/gmarkup.c:1527
+#: glib/gmarkup.c:1529
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -420,7 +431,7 @@ msgstr ""
 "'%s' je nevažeći prateći znak nakon znakova '</'; '%s' ne može započeti "
 "naziv elementa"
 
-#: glib/gmarkup.c:1567
+#: glib/gmarkup.c:1569
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -429,25 +440,25 @@ msgstr ""
 "'%s' je nevažeći prateći znak nakon zatvaranja elementa '%s'; dopušteni znak "
 "je '>'"
 
-#: glib/gmarkup.c:1578
+#: glib/gmarkup.c:1580
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "Element '%s' je zatvoren, trenutno nema otvorenih elemenata"
 
-#: glib/gmarkup.c:1587
+#: glib/gmarkup.c:1589
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "Element '%s' je zatvoren ali trenutno je otvoren element '%s'"
 
-#: glib/gmarkup.c:1753
+#: glib/gmarkup.c:1755
 msgid "Document was empty or contained only whitespace"
 msgstr "Dokument je bio prazan ili je sadržavao samo prazna polja"
 
-#: glib/gmarkup.c:1767
+#: glib/gmarkup.c:1769
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "Neočekivan kraj dokumenta nakon otvorene zagrade '<'"
 
-#: glib/gmarkup.c:1775 glib/gmarkup.c:1820
+#: glib/gmarkup.c:1777 glib/gmarkup.c:1822
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -456,7 +467,7 @@ msgstr ""
 "Neočekivan kraj dokumenta uz još otvorene elemente - element '%s' je otvoren "
 "posljednji"
 
-#: glib/gmarkup.c:1783
+#: glib/gmarkup.c:1785
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -465,19 +476,19 @@ msgstr ""
 "Neočekivan kraj dokumenta, očekivano zatvaranje zagrade radi okončanja "
 "oznake <%s/>"
 
-#: glib/gmarkup.c:1789
+#: glib/gmarkup.c:1791
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Neočekivan kraj dokumenta unutar imena elementa"
 
-#: glib/gmarkup.c:1795
+#: glib/gmarkup.c:1797
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Neočekivan kraj dokumenta unutar imena osobine"
 
-#: glib/gmarkup.c:1800
+#: glib/gmarkup.c:1802
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Neočekivan kraj dokumenta unutar oznake za otvaranje elementa"
 
-#: glib/gmarkup.c:1806
+#: glib/gmarkup.c:1808
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -485,125 +496,125 @@ msgstr ""
 "Neočekivan kraj dokumenta nakon pratećeg znaka jednakosti iza naziva  "
 "osobine; nedostaje vrijednost osobine"
 
-#: glib/gmarkup.c:1813
+#: glib/gmarkup.c:1815
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Neočekivan kraj dokumenta unutar vrijednosti atributa"
 
-#: glib/gmarkup.c:1829
+#: glib/gmarkup.c:1831
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "Neočekivan kraj dokumenta unutar oznake za zatvaranje elementa '%s'"
 
-#: glib/gmarkup.c:1835
+#: glib/gmarkup.c:1837
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Neočekivan kraj dokumenta unutar komentara ili instrukcije procesiranja"
 
-#: glib/gregex.c:126
+#: glib/gregex.c:131
 msgid "corrupted object"
 msgstr ""
 
-#: glib/gregex.c:128
+#: glib/gregex.c:133
 msgid "internal error or corrupted object"
 msgstr ""
 
-#: glib/gregex.c:130
+#: glib/gregex.c:135
 msgid "out of memory"
 msgstr ""
 
-#: glib/gregex.c:135
+#: glib/gregex.c:140
 msgid "backtracking limit reached"
 msgstr ""
 
-#: glib/gregex.c:147 glib/gregex.c:155
+#: glib/gregex.c:152 glib/gregex.c:160
 msgid "the pattern contains items not supported for partial matching"
 msgstr ""
 
-#: glib/gregex.c:149
+#: glib/gregex.c:154
 msgid "internal error"
 msgstr ""
 
-#: glib/gregex.c:157
+#: glib/gregex.c:162
 msgid "back references as conditions are not supported for partial matching"
 msgstr ""
 
-#: glib/gregex.c:166
+#: glib/gregex.c:171
 msgid "recursion limit reached"
 msgstr ""
 
-#: glib/gregex.c:168
+#: glib/gregex.c:173
 msgid "workspace limit for empty substrings reached"
 msgstr ""
 
-#: glib/gregex.c:170
+#: glib/gregex.c:175
 msgid "invalid combination of newline flags"
 msgstr ""
 
-#: glib/gregex.c:174
+#: glib/gregex.c:179
 msgid "unknown error"
 msgstr ""
 
-#: glib/gregex.c:319 glib/gregex.c:1354
+#: glib/gregex.c:324 glib/gregex.c:1360
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr ""
 
-#: glib/gregex.c:882
+#: glib/gregex.c:875
 msgid "PCRE library is compiled without UTF8 support"
 msgstr ""
 
-#: glib/gregex.c:891
+#: glib/gregex.c:884
 msgid "PCRE library is compiled without UTF8 properties support"
 msgstr ""
 
-#: glib/gregex.c:936
+#: glib/gregex.c:929
 #, fuzzy, c-format
 msgid "Error while compiling regular expression %s at char %d: %s"
 msgstr "Greška u %d. redu, znak %d: %s"
 
-#: glib/gregex.c:958
+#: glib/gregex.c:964
 #, c-format
 msgid "Error while optimizing regular expression %s: %s"
 msgstr ""
 
-#: glib/gregex.c:1782
+#: glib/gregex.c:1788
 msgid "hexadecimal digit or '}' expected"
 msgstr ""
 
-#: glib/gregex.c:1798
+#: glib/gregex.c:1804
 msgid "hexadecimal digit expected"
 msgstr ""
 
-#: glib/gregex.c:1838
+#: glib/gregex.c:1844
 msgid "missing '<' in symbolic reference"
 msgstr ""
 
-#: glib/gregex.c:1847
+#: glib/gregex.c:1853
 #, fuzzy
 msgid "unfinished symbolic reference"
 msgstr "Nedovršena referenca entiteta"
 
-#: glib/gregex.c:1854
+#: glib/gregex.c:1860
 msgid "zero-length symbolic reference"
 msgstr ""
 
-#: glib/gregex.c:1865
+#: glib/gregex.c:1871
 msgid "digit expected"
 msgstr ""
 
-#: glib/gregex.c:1883
+#: glib/gregex.c:1889
 msgid "illegal symbolic reference"
 msgstr ""
 
-#: glib/gregex.c:1945
+#: glib/gregex.c:1951
 msgid "stray final '\\'"
 msgstr ""
 
-#: glib/gregex.c:1949
+#: glib/gregex.c:1955
 msgid "unknown escape sequence"
 msgstr ""
 
-#: glib/gregex.c:1959
+#: glib/gregex.c:1965
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr ""

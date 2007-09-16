@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-03 21:54-0400\n"
+"POT-Creation-Date: 2007-09-16 14:50-0400\n"
 "PO-Revision-Date: 2005-05-30 01:07-0800\n"
 "Last-Translator: Бадрал <badral@openmn.org>\n"
 "Language-Team: Mongolian <openmn-translation@lists.sf.net>\n"
@@ -369,15 +369,26 @@ msgstr "Төгсгөлгүй абт холбоос"
 msgid "Unfinished character reference"
 msgstr "Төгсгөлгүй тэмдэгт холбоос"
 
-#: glib/gmarkup.c:958 glib/gmarkup.c:986 glib/gmarkup.c:1022
-msgid "Invalid UTF-8 encoded text"
+#: glib/gmarkup.c:958
+#, fuzzy
+msgid "Invalid UTF-8 encoded text - overlong sequence"
 msgstr "Хүчингүй UTF-8-р кодлогдсон текст"
 
-#: glib/gmarkup.c:1058
+#: glib/gmarkup.c:986
+#, fuzzy
+msgid "Invalid UTF-8 encoded text - not a start char"
+msgstr "Хүчингүй UTF-8-р кодлогдсон текст"
+
+#: glib/gmarkup.c:1022
+#, fuzzy, c-format
+msgid "Invalid UTF-8 encoded text - not valid '%s'"
+msgstr "Хүчингүй UTF-8-р кодлогдсон текст"
+
+#: glib/gmarkup.c:1060
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Баримт ямар нэгэн элементээр эхлэх ёстой (Ж.нь <book>)"
 
-#: glib/gmarkup.c:1098
+#: glib/gmarkup.c:1100
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -386,7 +397,7 @@ msgstr ""
 "»%s« нь »<«-тэмдэгтийн арын хүчингүй тэмдэгт; Энэ нь элементийн нэрээр эхэлж "
 "болохгүй."
 
-#: glib/gmarkup.c:1162
+#: glib/gmarkup.c:1164
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
@@ -395,7 +406,7 @@ msgstr ""
 "Сонин тэмдэгт »%s«, »%s« элементийн эхлэлийн тагийг хаахад »>« тэмдэгт дутуу "
 "байна"
 
-#: glib/gmarkup.c:1251
+#: glib/gmarkup.c:1253
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -403,7 +414,7 @@ msgstr ""
 "Сонин тэмдэгт »%s«, »%s« элементийн »%s« аттрибутын нэрийн дараа »=« "
 "хүлээгдэж байна"
 
-#: glib/gmarkup.c:1293
+#: glib/gmarkup.c:1295
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -414,7 +425,7 @@ msgstr ""
 "нэр эсвэл харин »>« эсвэл »/« тэмдэгт хүлээгдэж байна; Магадгүй та "
 "аттрибутын нэрэндээ хүчингүй тэмдэгт хэрэглэжээ"
 
-#: glib/gmarkup.c:1382
+#: glib/gmarkup.c:1384
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -423,7 +434,7 @@ msgstr ""
 "Сонин тэмдэгт »%s«; »%s« элементийн »%s« аттрибутын хувьд өгсөн утга "
 "тэнцүүгийн тэмдэгийн дараах хашилтыг хүлээж байна"
 
-#: glib/gmarkup.c:1527
+#: glib/gmarkup.c:1529
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -432,7 +443,7 @@ msgstr ""
 "»%s« хүчингүй тэмдэгт, хэрвээ энэ нь »</« тэмдэгтийн ард орвол; »%s« "
 "ньэлементийн нэрээр эхэлж болохгүй"
 
-#: glib/gmarkup.c:1567
+#: glib/gmarkup.c:1569
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -441,25 +452,25 @@ msgstr ""
 "»%s« хүчингүй тэмдэгт, хэрвээ энэ нь хааж буй »%s« элементийн нэрийн ард "
 "байгаа бол; »>« тэмдэгт хүчинтэй"
 
-#: glib/gmarkup.c:1578
+#: glib/gmarkup.c:1580
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "»%s« элемент хаагдсан, Одоогоор ямарч элемент нээлттэй бус байна"
 
-#: glib/gmarkup.c:1587
+#: glib/gmarkup.c:1589
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "»%s« элемент хаагдсан, харин одоогоор »%s« элемент нээлттэй байна"
 
-#: glib/gmarkup.c:1753
+#: glib/gmarkup.c:1755
 msgid "Document was empty or contained only whitespace"
 msgstr "Баримт хоосон эсвэл зүгээр цагаан зай агуулж байна"
 
-#: glib/gmarkup.c:1767
+#: glib/gmarkup.c:1769
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "Баримт нээлттэй өнцөгтэй хаалт »<« -н дараа гэнэт төгсөв"
 
-#: glib/gmarkup.c:1775 glib/gmarkup.c:1820
+#: glib/gmarkup.c:1777 glib/gmarkup.c:1822
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -468,7 +479,7 @@ msgstr ""
 "Баримт нээлттэй элементүүдтэйгээр гэнэтийн байдлаар төгсөв - »%s« сүүлчийн "
 "нээлттэй элемент нь"
 
-#: glib/gmarkup.c:1783
+#: glib/gmarkup.c:1785
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -477,21 +488,21 @@ msgstr ""
 "Баримт гэнэтийн байдлаар төгсөв, таг <%s/> -г хаах өнцөгтэй хаалт "
 "»>«хүлээгдэж байна"
 
-#: glib/gmarkup.c:1789
+#: glib/gmarkup.c:1791
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Баримт нэгэн элементийн нэрийн дотор гэнэтийн байдлаар төгсөв"
 
-#: glib/gmarkup.c:1795
+#: glib/gmarkup.c:1797
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Баримт нэгэн аттрибут нэрийн дотор гэнэтийн байдлаар төгсөв"
 
-#: glib/gmarkup.c:1800
+#: glib/gmarkup.c:1802
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr ""
 "Баримт нээгдэж буй тагийн нэгэн элементийн нэрийн дотор гэнэтийн байдлаар "
 "төгсөв."
 
-#: glib/gmarkup.c:1806
+#: glib/gmarkup.c:1808
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -499,127 +510,127 @@ msgstr ""
 "Баримт аттрибут нэрийн дараах тэнцүүгийн тэмдэгийн дараа гэнэтийн байдлаар "
 "төгсөв; аттрибутын утга алга"
 
-#: glib/gmarkup.c:1813
+#: glib/gmarkup.c:1815
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Баримт нэгэн аттрибутын утгын дотор гэнэтийн байдлаар төгсөв"
 
-#: glib/gmarkup.c:1829
+#: glib/gmarkup.c:1831
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr ""
 "Баримт гэнэтийн байдлаар нэгэн хаагдаж буй »%s« элементийн тагийн дотор "
 "төгсөв"
 
-#: glib/gmarkup.c:1835
+#: glib/gmarkup.c:1837
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Баримт тайлбар эсвэл заавар боловсруулалтын дотор гэнэтийн байдлаар төгсөв"
 
-#: glib/gregex.c:126
+#: glib/gregex.c:131
 msgid "corrupted object"
 msgstr ""
 
-#: glib/gregex.c:128
+#: glib/gregex.c:133
 msgid "internal error or corrupted object"
 msgstr ""
 
-#: glib/gregex.c:130
+#: glib/gregex.c:135
 msgid "out of memory"
 msgstr ""
 
-#: glib/gregex.c:135
+#: glib/gregex.c:140
 msgid "backtracking limit reached"
 msgstr ""
 
-#: glib/gregex.c:147 glib/gregex.c:155
+#: glib/gregex.c:152 glib/gregex.c:160
 msgid "the pattern contains items not supported for partial matching"
 msgstr ""
 
-#: glib/gregex.c:149
+#: glib/gregex.c:154
 msgid "internal error"
 msgstr ""
 
-#: glib/gregex.c:157
+#: glib/gregex.c:162
 msgid "back references as conditions are not supported for partial matching"
 msgstr ""
 
-#: glib/gregex.c:166
+#: glib/gregex.c:171
 msgid "recursion limit reached"
 msgstr ""
 
-#: glib/gregex.c:168
+#: glib/gregex.c:173
 msgid "workspace limit for empty substrings reached"
 msgstr ""
 
-#: glib/gregex.c:170
+#: glib/gregex.c:175
 msgid "invalid combination of newline flags"
 msgstr ""
 
-#: glib/gregex.c:174
+#: glib/gregex.c:179
 msgid "unknown error"
 msgstr ""
 
-#: glib/gregex.c:319 glib/gregex.c:1354
+#: glib/gregex.c:324 glib/gregex.c:1360
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr ""
 
-#: glib/gregex.c:882
+#: glib/gregex.c:875
 msgid "PCRE library is compiled without UTF8 support"
 msgstr ""
 
-#: glib/gregex.c:891
+#: glib/gregex.c:884
 msgid "PCRE library is compiled without UTF8 properties support"
 msgstr ""
 
-#: glib/gregex.c:936
+#: glib/gregex.c:929
 #, fuzzy, c-format
 msgid "Error while compiling regular expression %s at char %d: %s"
 msgstr "%d мөрөнд %d тэмдэгт алдаатай байна: %s"
 
-#: glib/gregex.c:958
+#: glib/gregex.c:964
 #, c-format
 msgid "Error while optimizing regular expression %s: %s"
 msgstr ""
 
-#: glib/gregex.c:1782
+#: glib/gregex.c:1788
 msgid "hexadecimal digit or '}' expected"
 msgstr ""
 
-#: glib/gregex.c:1798
+#: glib/gregex.c:1804
 msgid "hexadecimal digit expected"
 msgstr ""
 
-#: glib/gregex.c:1838
+#: glib/gregex.c:1844
 msgid "missing '<' in symbolic reference"
 msgstr ""
 
-#: glib/gregex.c:1847
+#: glib/gregex.c:1853
 #, fuzzy
 msgid "unfinished symbolic reference"
 msgstr "Төгсгөлгүй абт холбоос"
 
-#: glib/gregex.c:1854
+#: glib/gregex.c:1860
 msgid "zero-length symbolic reference"
 msgstr ""
 
-#: glib/gregex.c:1865
+#: glib/gregex.c:1871
 msgid "digit expected"
 msgstr ""
 
-#: glib/gregex.c:1883
+#: glib/gregex.c:1889
 msgid "illegal symbolic reference"
 msgstr ""
 
-#: glib/gregex.c:1945
+#: glib/gregex.c:1951
 msgid "stray final '\\'"
 msgstr ""
 
-#: glib/gregex.c:1949
+#: glib/gregex.c:1955
 msgid "unknown escape sequence"
 msgstr ""
 
-#: glib/gregex.c:1959
+#: glib/gregex.c:1965
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr ""

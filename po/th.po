@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.14.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-10 15:09+0700\n"
+"POT-Creation-Date: 2007-09-16 14:50-0400\n"
 "PO-Revision-Date: 2007-08-10 15:21+0700\n"
 "Last-Translator: Theppitak Karoonboonyanan <thep@linux.thai.net>\n"
 "Language-Team: Thai <thai-l10n@googlegroups.com>\n"
@@ -16,14 +16,14 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: glib/gbookmarkfile.c:705 glib/gbookmarkfile.c:782
-#: glib/gbookmarkfile.c:861 glib/gbookmarkfile.c:908
+#: glib/gbookmarkfile.c:705 glib/gbookmarkfile.c:782 glib/gbookmarkfile.c:861
+#: glib/gbookmarkfile.c:908
 #, c-format
 msgid "Unexpected attribute '%s' for element '%s'"
 msgstr "พบแอตทริบิวต์ '%s' ที่ไม่ต้องการ สำหรับอิลิเมนต์ '%s'"
 
-#: glib/gbookmarkfile.c:716 glib/gbookmarkfile.c:793
-#: glib/gbookmarkfile.c:803 glib/gbookmarkfile.c:919
+#: glib/gbookmarkfile.c:716 glib/gbookmarkfile.c:793 glib/gbookmarkfile.c:803
+#: glib/gbookmarkfile.c:919
 #, c-format
 msgid "Attribute '%s' of element '%s' not found"
 msgstr "ไม่พบแอตทริบิวต์ '%s' สำหรับอิลิเมนต์ '%s'"
@@ -111,8 +111,8 @@ msgstr "มีลำดับไบต์ที่ไม่ถูกต้อง
 msgid "Error during conversion: %s"
 msgstr "เกิดข้อผิดพลาดระหว่างแปลงรหัส: %s"
 
-#: glib/gconvert.c:663 glib/gutf8.c:946 glib/gutf8.c:1150
-#: glib/gutf8.c:1291 glib/gutf8.c:1395
+#: glib/gconvert.c:663 glib/gutf8.c:946 glib/gutf8.c:1150 glib/gutf8.c:1291
+#: glib/gutf8.c:1395
 #, c-format
 msgid "Partial character sequence at end of input"
 msgstr "มีลำดับไบต์ไม่เต็มอักขระอยู่ที่ท้ายข้อมูลเข้า"
@@ -252,8 +252,7 @@ msgstr "ไม่สามารถเปิดตัวแปลงรหัส
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "ไม่สามารถอ่านข้อมูลแบบดิบใน g_io_channel_read_line_string"
 
-#: glib/giochannel.c:1544 glib/giochannel.c:1801
-#: glib/giochannel.c:1887
+#: glib/giochannel.c:1544 glib/giochannel.c:1801 glib/giochannel.c:1887
 #, c-format
 msgid "Leftover unconverted data in read buffer"
 msgstr "มีข้อมูลตกค้างไม่ได้แปลงอยู่ในบัฟเฟอร์สำหรับอ่าน"
@@ -490,110 +489,110 @@ msgstr "เอกสารจบแบบผิดปกติระหว่า
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "เอกสารจบแบบผิดปกติระหว่างกลางหมายเหตุหรือคำสั่งประมวลผล"
 
-#: glib/gregex.c:126
+#: glib/gregex.c:131
 msgid "corrupted object"
 msgstr "ออบเจกต์เสียหาย"
 
-#: glib/gregex.c:128
+#: glib/gregex.c:133
 msgid "internal error or corrupted object"
 msgstr "ข้อผิดพลาดภายในหรือออบเจกต์เสียหาย"
 
-#: glib/gregex.c:130
+#: glib/gregex.c:135
 msgid "out of memory"
 msgstr "หน่วยความจำเต็ม"
 
-#: glib/gregex.c:135
+#: glib/gregex.c:140
 msgid "backtracking limit reached"
 msgstr "เกินขอบเขตการถอยคืน"
 
-#: glib/gregex.c:147 glib/gregex.c:155
+#: glib/gregex.c:152 glib/gregex.c:160
 msgid "the pattern contains items not supported for partial matching"
 msgstr "แพตเทิร์นมีรายการที่ไม่รองรับในการจับคู่ทีละส่วน"
 
-#: glib/gregex.c:149
+#: glib/gregex.c:154
 msgid "internal error"
 msgstr "ข้อผิดพลาดภายใน"
 
-#: glib/gregex.c:157
+#: glib/gregex.c:162
 msgid "back references as conditions are not supported for partial matching"
 msgstr "ไม่รองรับการใช้การอ้างอิงย้อนกลับเป็นเงื่อนไขในการจับคู่ทีละส่วน"
 
-#: glib/gregex.c:166
+#: glib/gregex.c:171
 msgid "recursion limit reached"
 msgstr "เกินขอบเขตการเรียกตัวเอง"
 
-#: glib/gregex.c:168
+#: glib/gregex.c:173
 msgid "workspace limit for empty substrings reached"
 msgstr "เกินขอบเขตพื้นที่ทำงานสำหรับสตริงย่อยเปล่า"
 
-#: glib/gregex.c:170
+#: glib/gregex.c:175
 msgid "invalid combination of newline flags"
 msgstr "ชุดของแฟล็กการขึ้นบรรทัดใหม่มีค่าไม่เข้ากัน"
 
-#: glib/gregex.c:174
+#: glib/gregex.c:179
 msgid "unknown error"
 msgstr "ข้อผิดพลาดไม่ทราบสาเหตุ"
 
-#: glib/gregex.c:319 glib/gregex.c:1354
+#: glib/gregex.c:324 glib/gregex.c:1360
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "เกิดข้อผิดพลาดขณะจับคู่นิพจน์เรกกิวลาร์ %s: %s"
 
-#: glib/gregex.c:882
+#: glib/gregex.c:875
 msgid "PCRE library is compiled without UTF8 support"
 msgstr "ไลบรารี PCRE ถูกคอมไพล์มาแบบไม่สนับสนุน UTF8"
 
-#: glib/gregex.c:891
+#: glib/gregex.c:884
 msgid "PCRE library is compiled without UTF8 properties support"
 msgstr "ไลบรารี PCRE ถูกคอมไพล์มาแบบไม่สนับสนุนคุณสมบัติ UTF8"
 
-#: glib/gregex.c:936
+#: glib/gregex.c:929
 #, c-format
 msgid "Error while compiling regular expression %s at char %d: %s"
 msgstr "เกิดข้อผิดพลาดขณะแจงนิพจน์เรกกิวลาร์ %s ที่อักขระที่ %d: %s"
 
-#: glib/gregex.c:958
+#: glib/gregex.c:964
 #, c-format
 msgid "Error while optimizing regular expression %s: %s"
 msgstr "เกิดข้อผิดพลาดขณะออปติไมซ์นิพจน์เรกกิวลาร์ %s: %s"
 
-#: glib/gregex.c:1782
+#: glib/gregex.c:1788
 msgid "hexadecimal digit or '}' expected"
 msgstr "ต้องการเลขฐานสิบหกหรือ '}'"
 
-#: glib/gregex.c:1798
+#: glib/gregex.c:1804
 msgid "hexadecimal digit expected"
 msgstr "ต้องการเลขฐานสิบหก"
 
-#: glib/gregex.c:1838
+#: glib/gregex.c:1844
 msgid "missing '<' in symbolic reference"
 msgstr "ไม่มี '<' ในตัวอ้างอิงสัญลักษณ์"
 
-#: glib/gregex.c:1847
+#: glib/gregex.c:1853
 msgid "unfinished symbolic reference"
 msgstr "ตัวอ้างอิงสัญลักษณ์ไม่สมบูรณ์"
 
-#: glib/gregex.c:1854
+#: glib/gregex.c:1860
 msgid "zero-length symbolic reference"
 msgstr "ตัวอ้างอิงสัญลักษณ์มีความยาวเป็นศูนย์"
 
-#: glib/gregex.c:1865
+#: glib/gregex.c:1871
 msgid "digit expected"
 msgstr "ต้องการตัวเลข"
 
-#: glib/gregex.c:1883
+#: glib/gregex.c:1889
 msgid "illegal symbolic reference"
 msgstr "ตัวอ้างอิงสัญลักษณ์ไม่ถูกต้อง"
 
-#: glib/gregex.c:1945
+#: glib/gregex.c:1951
 msgid "stray final '\\'"
 msgstr "'\\' ปราศจากข้อมูลอยู่ที่ท้ายสตริง"
 
-#: glib/gregex.c:1949
+#: glib/gregex.c:1955
 msgid "unknown escape sequence"
 msgstr "ลำดับอักขระหลีกไม่รู้จัก"
 
-#: glib/gregex.c:1959
+#: glib/gregex.c:1965
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr "เกิดข้อผิดพลาดขณะแจงข้อความสำหรับแทนที่ \"%s\" ที่อักขระที่ %lu: %s"
@@ -653,14 +652,12 @@ msgstr "ดำเนินงานโพรเซสลูกไม่สำเ
 msgid "Invalid program name: %s"
 msgstr "ชื่อโปรแกรมผิดรูปแบบ: %s"
 
-#: glib/gspawn-win32.c:438 glib/gspawn-win32.c:678
-#: glib/gspawn-win32.c:1218
+#: glib/gspawn-win32.c:438 glib/gspawn-win32.c:678 glib/gspawn-win32.c:1218
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr "สตริงผิดรูปแบบในเวกเตอร์ของอาร์กิวเมนต์ที่ตำแหน่ง %d: %s"
 
-#: glib/gspawn-win32.c:449 glib/gspawn-win32.c:692
-#: glib/gspawn-win32.c:1251
+#: glib/gspawn-win32.c:449 glib/gspawn-win32.c:692 glib/gspawn-win32.c:1251
 #, c-format
 msgid "Invalid string in environment: %s"
 msgstr "สตริงผิดรูปแบบในตัวแปรสภาพแวดล้อม: %s"
@@ -733,8 +730,8 @@ msgstr "อ่านข้อมูลจากไปป์จากโพรเ
 msgid "Character out of range for UTF-8"
 msgstr "อักขระอยู่นอกช่วงของ UTF-8"
 
-#: glib/gutf8.c:1118 glib/gutf8.c:1127 glib/gutf8.c:1259
-#: glib/gutf8.c:1268 glib/gutf8.c:1409 glib/gutf8.c:1505
+#: glib/gutf8.c:1118 glib/gutf8.c:1127 glib/gutf8.c:1259 glib/gutf8.c:1268
+#: glib/gutf8.c:1409 glib/gutf8.c:1505
 #, c-format
 msgid "Invalid sequence in conversion input"
 msgstr "มีลำดับข้อมูลที่ไม่ถูกต้องในข้อมูลที่ป้อนให้ตัวแปลงรหัส"

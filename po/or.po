@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.or\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-03 21:54-0400\n"
+"POT-Creation-Date: 2007-09-16 14:50-0400\n"
 "PO-Revision-Date: 2007-06-11 18:17+0530\n"
 "Last-Translator: Subhransu Behera <arya_subhransu@yahoo.co.in>\n"
 "Language-Team: Oriya <oriya-group@lists.sarovar.org>\n"
@@ -362,15 +362,26 @@ msgstr "ଅସମାପ୍ତ ବସ୍ତୁ ରେଫରେନ୍ସ"
 msgid "Unfinished character reference"
 msgstr "ଅସମାପ୍ତ ଅକ୍ଷର ରେଫରେନ୍ସ"
 
-#: glib/gmarkup.c:958 glib/gmarkup.c:986 glib/gmarkup.c:1022
-msgid "Invalid UTF-8 encoded text"
+#: glib/gmarkup.c:958
+#, fuzzy
+msgid "Invalid UTF-8 encoded text - overlong sequence"
 msgstr "ଅବୈଧ ଇଉ.ଟି.ଏଫ.-୮ ସାଙ୍କେତିକ ପାଠ୍ଯ"
 
-#: glib/gmarkup.c:1058
+#: glib/gmarkup.c:986
+#, fuzzy
+msgid "Invalid UTF-8 encoded text - not a start char"
+msgstr "ଅବୈଧ ଇଉ.ଟି.ଏଫ.-୮ ସାଙ୍କେତିକ ପାଠ୍ଯ"
+
+#: glib/gmarkup.c:1022
+#, fuzzy, c-format
+msgid "Invalid UTF-8 encoded text - not valid '%s'"
+msgstr "ଅବୈଧ ଇଉ.ଟି.ଏଫ.-୮ ସାଙ୍କେତିକ ପାଠ୍ଯ"
+
+#: glib/gmarkup.c:1060
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "ଦଲିଲ ଗୋଟିଏ ଉପାଦାନରେ ଆରମ୍ଭ ହେବା ଉଚିତ (ଉଦାହରଣ ସ୍ବରୂପ <book>)"
 
-#: glib/gmarkup.c:1098
+#: glib/gmarkup.c:1100
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -378,7 +389,7 @@ msgid ""
 msgstr ""
 "'<' ଅକ୍ଷର ପଛରେ ଆସୁଥିବା '%s' ଅକ୍ଷର ବୈଧ ନୁହେଁ; ଏହା ଗୋଟିଏ ବସ୍ତୁର ନାମକୁ ଆରମ୍ଭ କରିପାରିବ ନାହିଁ"
 
-#: glib/gmarkup.c:1162
+#: glib/gmarkup.c:1164
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
@@ -386,14 +397,14 @@ msgid ""
 msgstr ""
 "ବିଚିତ୍ର ଅକ୍ଷର '%s', '%s' ଉପାଦାନର ପ୍ରାରମ୍ଭ ସୂଚକକୁ ସମାପ୍ତ କରିବା ପାଇଁ '>' ଅକ୍ଷର ପ୍ରତ୍ଯାଶିତ ଥିଲା"
 
-#: glib/gmarkup.c:1251
+#: glib/gmarkup.c:1253
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "ବିଚିତ୍ର ଅକ୍ଷର '%1$s', '%3$s' ଉପାଦାନର ଗୋଟିଏ ଗୁଣର ନାମ '%2$s' ପରେ '=' ପ୍ରତ୍ଯାଶିତ ଥିଲା"
 
-#: glib/gmarkup.c:1293
+#: glib/gmarkup.c:1295
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -404,7 +415,7 @@ msgstr ""
 "ପ୍ରତ୍ଯାଶିତ ଥିଲା, ଅଥବା ଇଚ୍ଛାଧୀନ ଭାବରେ ଗୋଟିଏ ଗୁଣ; ବୋଧହୁଏ ଆପଣ ଗୋଟିଏ ଗୁଣର ନାମରେ ଏକ ଅବୈଧ "
 "ଅକ୍ଷର ବ୍ଯବହାର କରିଛନ୍ତି"
 
-#: glib/gmarkup.c:1382
+#: glib/gmarkup.c:1384
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -413,7 +424,7 @@ msgstr ""
 "ବିଚିତ୍ର ଅକ୍ଷର '%1$s', ସମାନ ଚିହ୍ନ ପରେ '%3$s' ଉପାଦାନର '%2$s' ଗୁଣର ମୂଲ୍ଯ ଦେବା ପାଇଁ ଗୋଟିଏ "
 "ଖୋଲା ଉଦ୍ଧ୍ରୁତି ଚିହ୍ନ ପ୍ରତ୍ଯାଶିତ ଥିଲା"
 
-#: glib/gmarkup.c:1527
+#: glib/gmarkup.c:1529
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -422,7 +433,7 @@ msgstr ""
 "'</' ଅକ୍ଷରଗୁଡ଼ିକ ପଛରେ ଆସୁଥିବା '%s' ଅକ୍ଷର ବୈଧ ନୁହେଁ; '%s' ଗୋଟିଏ ଉପାଦାନର ନାମର ଆରମ୍ଭ "
 "କରିପାରିବ ନାହିଁ"
 
-#: glib/gmarkup.c:1567
+#: glib/gmarkup.c:1569
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -430,25 +441,25 @@ msgid ""
 msgstr ""
 "ବନ୍ଦ ଉପାଦାନ ନାମ '%2$s' ପଛରେ ଆସୁଥିବା '%1$s' ଅକ୍ଷର ବୈଧ ନୁହେଁ;  ଅନୁମତ ଅକ୍ଷର ହେଲା '>'"
 
-#: glib/gmarkup.c:1578
+#: glib/gmarkup.c:1580
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "ଉପାଦାନ '%s' ବନ୍ଦ କରାଯାଇଥିଲା, ବର୍ତ୍ତମାନ କୌଣସି ଉପାଦାନ ଖୋଲା ନାହିଁ"
 
-#: glib/gmarkup.c:1587
+#: glib/gmarkup.c:1589
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "ଉପାଦାନ '%s' ବନ୍ଦ କରାଯାଇଥିଲା, କିନ୍ତୁ ବର୍ତ୍ତମାନ '%s' ଉପାଦାନଟି ଖୋଲା ଅଛି"
 
-#: glib/gmarkup.c:1753
+#: glib/gmarkup.c:1755
 msgid "Document was empty or contained only whitespace"
 msgstr "ଦଲିଲ ଖାଲି ଥିଲା ବା କେବଳ ଖାଲି ଯାଗା ଧାରଣ କରିଥିଲା"
 
-#: glib/gmarkup.c:1767
+#: glib/gmarkup.c:1769
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "ଦଲିଲଟି ଗୋଟିଏ କୌଣିକ ବନ୍ଧନୀ '<'ର ଠିକ ପରେ ଅପ୍ରତ୍ଯାଶିତ ଭାବରେ ସମାପ୍ତ ହୋଇ ଗଲା"
 
-#: glib/gmarkup.c:1775 glib/gmarkup.c:1820
+#: glib/gmarkup.c:1777 glib/gmarkup.c:1822
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -457,7 +468,7 @@ msgstr ""
 "ଉପାଦାନଗୁଡ଼ିକ ଖୋଲା ଥାଇ ଦଲିଲଟି ଅପ୍ରତ୍ଯାଶିତ ଭାବରେ ସମାପ୍ତ ହୋଇ ଗଲା'%s' ଉପାଦାନ ସର୍ବଶେଷ ଖୋଲା "
 "ଥିଲା"
 
-#: glib/gmarkup.c:1783
+#: glib/gmarkup.c:1785
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -466,19 +477,19 @@ msgstr ""
 "ଦଲିଲଟି ଅପ୍ରତ୍ଯାଶିତ ଭାବରେ ସମାପ୍ତ ହୋଇ ଗଲା, <%s/> ସୂଚକ  ସମାପ୍ତ କରିବା ପାଇଁ ଗୋଟିଏ ବନ୍ଦ କୌଣିକ "
 "ବନ୍ଧନୀ ପ୍ରତ୍ଯାଶିତ ଥିଲା"
 
-#: glib/gmarkup.c:1789
+#: glib/gmarkup.c:1791
 msgid "Document ended unexpectedly inside an element name"
 msgstr "ଉପାଦାନର ନାମ ମଧ୍ଯରେ ଦଲିଲଟି ଅପ୍ରତ୍ଯାଶିତ ଭାବରେ ସମାପ୍ତ ହୋଇ ଗଲା"
 
-#: glib/gmarkup.c:1795
+#: glib/gmarkup.c:1797
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "ଗୁଣର ନାମ ମଧ୍ଯରେ ଦଲିଲଟି ଅପ୍ରତ୍ଯାଶିତ ଭାବରେ ସମାପ୍ତ ହୋଇ ଗଲା"
 
-#: glib/gmarkup.c:1800
+#: glib/gmarkup.c:1802
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "ଉପାଦାନ ଆରମ୍ଭର ସୂଚକ ମଧ୍ଯରେ ଦଲିଲଟି ଅପ୍ରତ୍ଯାଶିତ ଭାବରେ ସମାପ୍ତ ହୋଇ ଗଲା"
 
-#: glib/gmarkup.c:1806
+#: glib/gmarkup.c:1808
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -486,123 +497,123 @@ msgstr ""
 "ଗୁଣର ନାମ ପଛରେ ଆସୁଥିବା ସମାନ ଚିହ୍ନ ପରେ ଦଲିଲଟି ଅପ୍ରତ୍ଯାଶିତ ଭାବରେ ସମାପ୍ତ ହୋଇ ଗଲା; ଗୁଣର କିଛି "
 "ମୂଲ୍ଯ ନାହିଁ"
 
-#: glib/gmarkup.c:1813
+#: glib/gmarkup.c:1815
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "ଗୁଣର ମୂଲ୍ଯ ମଧ୍ଯରେ ଦଲିଲଟି ଅପ୍ରତ୍ଯାଶିତ ଭାବରେ ସମାପ୍ତ ହୋଇ ଗଲା"
 
-#: glib/gmarkup.c:1829
+#: glib/gmarkup.c:1831
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "'%s' ଉପାଦାନର ବନ୍ଦ ସୂଚକ ମଧ୍ଯରେ ଦଲିଲଟି ଅପ୍ରତ୍ଯାଶିତ ଭାବରେ ସମାପ୍ତ ହୋଇ ଗଲା"
 
-#: glib/gmarkup.c:1835
+#: glib/gmarkup.c:1837
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "ଟିପ୍ପଣୀ ବା ସଂସାଧନ ସାଧନ ମଧ୍ଯରେ ଦଲିଲଟି ଅପ୍ରତ୍ଯାଶିତ ଭାବରେ ସମାପ୍ତ ହୋଇ ଗଲା"
 
-#: glib/gregex.c:126
+#: glib/gregex.c:131
 msgid "corrupted object"
 msgstr "ଭ୍ରଷ୍ଟ ବସ୍ତୁ"
 
-#: glib/gregex.c:128
+#: glib/gregex.c:133
 msgid "internal error or corrupted object"
 msgstr "ଆଭ୍ଯନ୍ତରୀଣ ତୃଟି କିମ୍ବା ଭ୍ରଷ୍ଟ ବସ୍ତୁ"
 
-#: glib/gregex.c:130
+#: glib/gregex.c:135
 msgid "out of memory"
 msgstr "ସ୍ମୃତି ପରିସର ବାହାରେ"
 
-#: glib/gregex.c:135
+#: glib/gregex.c:140
 msgid "backtracking limit reached"
 msgstr "ପଶ୍ଚାତ ଅନୁମାର୍ଗଣ ସୀମା ପହଞ୍ଚି ଯାଇଛି"
 
-#: glib/gregex.c:147 glib/gregex.c:155
+#: glib/gregex.c:152 glib/gregex.c:160
 msgid "the pattern contains items not supported for partial matching"
 msgstr "ଏହି ଶୈଳୀ ଆଂଶିକ ମେଳନ ପାଇଁ ସମର୍ଥିତ ନ ଥିବା ବସ୍ତୁ ମାନଙ୍କୁ ଧାରଣ କରିଥାଏ"
 
-#: glib/gregex.c:149
+#: glib/gregex.c:154
 msgid "internal error"
 msgstr "ଆଭ୍ଯନ୍ତରୀଣ ତୃଟି"
 
-#: glib/gregex.c:157
+#: glib/gregex.c:162
 msgid "back references as conditions are not supported for partial matching"
 msgstr "ଆଂଶିକ ମେଳନ ପାଇଁ ସର୍ତ୍ତ ରୂପରେ ପଶ୍ଚାତ ନିର୍ଦ୍ଦେଶ ମାନ ସମର୍ଥିତ ନୁହଁନ୍ତି"
 
-#: glib/gregex.c:166
+#: glib/gregex.c:171
 msgid "recursion limit reached"
 msgstr "ପୁନରାବର୍ତ୍ତନ ସୀମା ପହଞ୍ଚିଯାଇଛି"
 
-#: glib/gregex.c:168
+#: glib/gregex.c:173
 msgid "workspace limit for empty substrings reached"
 msgstr "ଶୂନ୍ଯ ଉପବାକ୍ଯଖଣ୍ଡ କାର୍ଯ୍ଯସ୍ଥଳୀ ପରିସୀମା ଶେଷ ହୋଇଯାଇଛି"
 
-#: glib/gregex.c:170
+#: glib/gregex.c:175
 msgid "invalid combination of newline flags"
 msgstr "ନୂତନ ଧାଡି ପତାକା ମାନଙ୍କ ପାଇଁ ଅବୈଧ ମିଶ୍ରଣ"
 
-#: glib/gregex.c:174
+#: glib/gregex.c:179
 msgid "unknown error"
 msgstr "ଅଜଣା ତୃଟି"
 
-#: glib/gregex.c:319 glib/gregex.c:1354
+#: glib/gregex.c:324 glib/gregex.c:1360
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "%s ନିୟମିତ ପରିପ୍ରକାଶକୁ ମିଳାଇବା ସମୟରେ ତୃଟି: %s"
 
-#: glib/gregex.c:882
+#: glib/gregex.c:875
 msgid "PCRE library is compiled without UTF8 support"
 msgstr "PCRE ଲାଇବ୍ରେରୀକୁ UTF8 ସମର୍ଥନ ବିନା ସଙ୍କଳନ କରାଯାଇଛି"
 
-#: glib/gregex.c:891
+#: glib/gregex.c:884
 msgid "PCRE library is compiled without UTF8 properties support"
 msgstr "PCRE ଲାଇବ୍ରେରୀକୁ UTF8 ଗୁଣଧର୍ମ ସମର୍ଥନ ବିନା ସଙ୍କଳନ କରାଯାଇଛି"
 
-#: glib/gregex.c:936
+#: glib/gregex.c:929
 #, c-format
 msgid "Error while compiling regular expression %s at char %d: %s"
 msgstr "%s ନିୟମିତ ପରିପ୍ରକାଶକୁ %d ଅକ୍ଷରରେ ସଙ୍କଳନ କରିବା ସମୟରେ ତୃଟି: %s"
 
-#: glib/gregex.c:958
+#: glib/gregex.c:964
 #, c-format
 msgid "Error while optimizing regular expression %s: %s"
 msgstr "%s ନିୟମିତ ପରିପ୍ରକାଶକୁ ଅନୁକୂଳତମ କରିବା ସମୟରେ ତୃଟି: %s"
 
-#: glib/gregex.c:1782
+#: glib/gregex.c:1788
 msgid "hexadecimal digit or '}' expected"
 msgstr "ଷୋଡଶାଧାରୀ ଅଙ୍କ କିମ୍ବା '}' ଆଶା କରାଯାଉଥିଲା"
 
-#: glib/gregex.c:1798
+#: glib/gregex.c:1804
 msgid "hexadecimal digit expected"
 msgstr "ଷୋଡଶାଧାରୀ ଅଙ୍କ ଆଶା କରାଯାଉଥିଲା"
 
-#: glib/gregex.c:1838
+#: glib/gregex.c:1844
 msgid "missing '<' in symbolic reference"
 msgstr "ପ୍ରତୀକାତ୍ମକ ନିର୍ଦ୍ଦେଶରେ '<' ଅନୁପସ୍ଥିତ"
 
-#: glib/gregex.c:1847
+#: glib/gregex.c:1853
 msgid "unfinished symbolic reference"
 msgstr "ଅସମାପ୍ତ ପ୍ରତୀକାତ୍ମକ ନିର୍ଦ୍ଦେଶ"
 
-#: glib/gregex.c:1854
+#: glib/gregex.c:1860
 msgid "zero-length symbolic reference"
 msgstr "ଶୂନ୍ଯ ଲମ୍ବ ବିଶିଷ୍ଟ ପ୍ରତୀକାତ୍ମକ ନିର୍ଦ୍ଦେଶ"
 
-#: glib/gregex.c:1865
+#: glib/gregex.c:1871
 msgid "digit expected"
 msgstr "ଅଙ୍କ ଆଶା କରାଯାଉଥିଲା"
 
-#: glib/gregex.c:1883
+#: glib/gregex.c:1889
 msgid "illegal symbolic reference"
 msgstr "ଅବୈଧ ପ୍ରତୀକାତ୍ମକ ନିର୍ଦ୍ଦେଶ"
 
-#: glib/gregex.c:1945
+#: glib/gregex.c:1951
 msgid "stray final '\\'"
 msgstr "ପଥଭ୍ରଷ୍ଟ ନିର୍ଣ୍ଣୟ '\\'"
 
-#: glib/gregex.c:1949
+#: glib/gregex.c:1955
 msgid "unknown escape sequence"
 msgstr "ଅଜଣା ପଳାୟନ ସଂପ୍ରତୀକ"
 
-#: glib/gregex.c:1959
+#: glib/gregex.c:1965
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr "ପରିବର୍ତ୍ତିତ ପାଠ୍ଯ \"%s\" ର %lu ଅକ୍ଷରରେ ବିଶ୍ଳଷଣ କରିବା ସମୟରେ ତୃଟି: %s"

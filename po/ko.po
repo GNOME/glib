@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-03 21:54-0400\n"
+"POT-Creation-Date: 2007-09-16 14:50-0400\n"
 "PO-Revision-Date: 2007-07-04 03:16+0900\n"
 "Last-Translator: Eunju Kim <eukim@redhat.com>\n"
 "Language-Team: GNOME Korea <gnome-kr-hackers@lists.kldp.net>\n"
@@ -363,15 +363,26 @@ msgstr "엔티티 참조가 미완성입니다"
 msgid "Unfinished character reference"
 msgstr "문자 참조가 미완성입니다"
 
-#: glib/gmarkup.c:958 glib/gmarkup.c:986 glib/gmarkup.c:1022
-msgid "Invalid UTF-8 encoded text"
+#: glib/gmarkup.c:958
+#, fuzzy
+msgid "Invalid UTF-8 encoded text - overlong sequence"
 msgstr "잘못된 UTF-8 인코딩된 텍스트"
 
-#: glib/gmarkup.c:1058
+#: glib/gmarkup.c:986
+#, fuzzy
+msgid "Invalid UTF-8 encoded text - not a start char"
+msgstr "잘못된 UTF-8 인코딩된 텍스트"
+
+#: glib/gmarkup.c:1022
+#, fuzzy, c-format
+msgid "Invalid UTF-8 encoded text - not valid '%s'"
+msgstr "잘못된 UTF-8 인코딩된 텍스트"
+
+#: glib/gmarkup.c:1060
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "문서는 엘리먼트로 시작하여야 합니다 (예 <book>)"
 
-#: glib/gmarkup.c:1098
+#: glib/gmarkup.c:1100
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -380,7 +391,7 @@ msgstr ""
 "'%s'은(는) '<' 문자 다음에 쓸 수 없습니다; 이 문자로는 엘리먼트 이름을 시작"
 "할 수 없습니다"
 
-#: glib/gmarkup.c:1162
+#: glib/gmarkup.c:1164
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
@@ -388,7 +399,7 @@ msgid ""
 msgstr ""
 "이상한 문자 '%s'.  엘리먼트 '%s'의 시작태그를 끝내는 '>'가 나타나야 합니다"
 
-#: glib/gmarkup.c:1251
+#: glib/gmarkup.c:1253
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -396,7 +407,7 @@ msgstr ""
 "이상한 문자 '%1$s'.  엘리먼트 '%3$s'의 애트리뷰트 이름 '%2$s' 다음에 '='이 나"
 "타나야 합니다"
 
-#: glib/gmarkup.c:1293
+#: glib/gmarkup.c:1295
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -407,7 +418,7 @@ msgstr ""
 "나, 애트리뷰트가 나와야 합니다; 아마도 애트리뷰트 이름에 잘못된 문자를 쓴 경"
 "우일 것입니다"
 
-#: glib/gmarkup.c:1382
+#: glib/gmarkup.c:1384
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -416,7 +427,7 @@ msgstr ""
 "이상한 문자 '%1$s'.  엘리먼트 '%3$s'의 애트리뷰트 '%2$s'의 값을 부여할 때 = "
 "기호 다음에 따옴표가 나타나야 합니다"
 
-#: glib/gmarkup.c:1527
+#: glib/gmarkup.c:1529
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -425,7 +436,7 @@ msgstr ""
 "'%s'은(는) '</' 다음에 쓸 수 있는 문자가 아닙니다; '%s'은(는) 엘리먼트 이름"
 "을 시작할 수 없습니다"
 
-#: glib/gmarkup.c:1567
+#: glib/gmarkup.c:1569
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -434,25 +445,25 @@ msgstr ""
 "'%s'은(는) 엘리먼트 '%s'을(를) 닫은 다음에 쓸 수 있는 문자가 아닙니다; '>' 문"
 "자를 쓸 수 있습니다"
 
-#: glib/gmarkup.c:1578
+#: glib/gmarkup.c:1580
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "'%s' 엘리먼트는 닫혔고, 현재 아무 엘리먼트도 열려 있지 않습니다"
 
-#: glib/gmarkup.c:1587
+#: glib/gmarkup.c:1589
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "'%s' 엘리먼트는 닫혔고, 현재 열려 있는 엘리먼트는 '%s'입니다"
 
-#: glib/gmarkup.c:1753
+#: glib/gmarkup.c:1755
 msgid "Document was empty or contained only whitespace"
 msgstr "문서가 비어있거나 공백문자만 들어 있습니다"
 
-#: glib/gmarkup.c:1767
+#: glib/gmarkup.c:1769
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "'<' 바로 다음에 문서가 갑작스럽게 끝났습니다"
 
-#: glib/gmarkup.c:1775 glib/gmarkup.c:1820
+#: glib/gmarkup.c:1777 glib/gmarkup.c:1822
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -461,7 +472,7 @@ msgstr ""
 "엘리먼트가 열려 있는 상태로 문서가 갑작스럽게 끝났습니다 - 마지막에 열려 있"
 "던 엘리먼트는 '%s'입니다"
 
-#: glib/gmarkup.c:1783
+#: glib/gmarkup.c:1785
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -469,19 +480,19 @@ msgid ""
 msgstr ""
 "문서가 갑작스럽게 끝났습니다.  <%s/> 태그를 끝내는 > 기호가 나타나야 합니다"
 
-#: glib/gmarkup.c:1789
+#: glib/gmarkup.c:1791
 msgid "Document ended unexpectedly inside an element name"
 msgstr "엘리먼트 이름에서 문서가 갑작스럽게 끝났습니다"
 
-#: glib/gmarkup.c:1795
+#: glib/gmarkup.c:1797
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "에트리뷰트 이름에서 문서가 갑작스럽게 끝났습니다"
 
-#: glib/gmarkup.c:1800
+#: glib/gmarkup.c:1802
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "엘리먼트의 열기 태그 안에서 문서가 갑작스럽게 끝났습니다."
 
-#: glib/gmarkup.c:1806
+#: glib/gmarkup.c:1808
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -489,125 +500,125 @@ msgstr ""
 "애트리뷰트 이름 다음의 = 기호 다음에서 문서가 갑작스럽게 끝났습니다; 애트리뷰"
 "트 값이 없습니다"
 
-#: glib/gmarkup.c:1813
+#: glib/gmarkup.c:1815
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "애트리뷰트 값 안에서 문서가 갑작스럽게 끝났습니다"
 
-#: glib/gmarkup.c:1829
+#: glib/gmarkup.c:1831
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "엘리먼트 '%s'의 닫기 태그 안에서 문서가 갑작스럽게 끝났습니다"
 
 # FIXME: processing instruction?
-#: glib/gmarkup.c:1835
+#: glib/gmarkup.c:1837
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "주석문 혹은 처리 안내자 태그 안에서 문서가 갑작스럽게 끝났습니다"
 
-#: glib/gregex.c:126
+#: glib/gregex.c:131
 msgid "corrupted object"
 msgstr "개체가 손상되었습니다"
 
-#: glib/gregex.c:128
+#: glib/gregex.c:133
 msgid "internal error or corrupted object"
 msgstr "내부 오류 또는 개체가 손상되었습니다"
 
-#: glib/gregex.c:130
+#: glib/gregex.c:135
 msgid "out of memory"
 msgstr "메모리 부족"
 
-#: glib/gregex.c:135
+#: glib/gregex.c:140
 msgid "backtracking limit reached"
 msgstr "역추적 최대값에 도달했습니다"
 
-#: glib/gregex.c:147 glib/gregex.c:155
+#: glib/gregex.c:152 glib/gregex.c:160
 msgid "the pattern contains items not supported for partial matching"
 msgstr "패턴 안에 부분 매치에서 지원하지 않는 항목이 들어 있습니다."
 
-#: glib/gregex.c:149
+#: glib/gregex.c:154
 msgid "internal error"
 msgstr "내부 오류"
 
-#: glib/gregex.c:157
+#: glib/gregex.c:162
 msgid "back references as conditions are not supported for partial matching"
 msgstr "후위 참조를 조건으로 사용하면 부분 매치에서 지원하지 않습니다."
 
-#: glib/gregex.c:166
+#: glib/gregex.c:171
 msgid "recursion limit reached"
 msgstr "재귀 최대값에 도달했습니다"
 
-#: glib/gregex.c:168
+#: glib/gregex.c:173
 msgid "workspace limit for empty substrings reached"
 msgstr "비어있는 부분 문자열에 대해 작업 공간 최대값에 도달했습니다"
 
-#: glib/gregex.c:170
+#: glib/gregex.c:175
 msgid "invalid combination of newline flags"
 msgstr "줄바꿈 플래그의 조합이 잘못되었습니다"
 
-#: glib/gregex.c:174
+#: glib/gregex.c:179
 msgid "unknown error"
 msgstr "알 수 없는 오류"
 
-#: glib/gregex.c:319 glib/gregex.c:1354
+#: glib/gregex.c:324 glib/gregex.c:1360
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "정규 표현식 %s을(를) 맞추는 도중 오류가 발생했습니다: %s"
 
-#: glib/gregex.c:882
+#: glib/gregex.c:875
 msgid "PCRE library is compiled without UTF8 support"
 msgstr "PCRE 라이브러리가 UTF8 지원 없이 컴파일되었습니다"
 
-#: glib/gregex.c:891
+#: glib/gregex.c:884
 msgid "PCRE library is compiled without UTF8 properties support"
 msgstr "PCRE 라이브러리는 UTF8 속성을 지원하지 않고 컴파일되었습니다"
 
-#: glib/gregex.c:936
+#: glib/gregex.c:929
 #, c-format
 msgid "Error while compiling regular expression %s at char %d: %s"
 msgstr ""
 "정규 표현식 %s을(를) 컴파일하는 중 %d번째 문자에서 오류가 발생했습니다: %s"
 
-#: glib/gregex.c:958
+#: glib/gregex.c:964
 #, c-format
 msgid "Error while optimizing regular expression %s: %s"
 msgstr "정규 표현식 %s을(를) 최적화하는 도중 오류 발생: %s"
 
-#: glib/gregex.c:1782
+#: glib/gregex.c:1788
 msgid "hexadecimal digit or '}' expected"
 msgstr "16 진수 또는 '}'가 있어야 합니다"
 
-#: glib/gregex.c:1798
+#: glib/gregex.c:1804
 msgid "hexadecimal digit expected"
 msgstr "16 진수가 있어야 합니다"
 
-#: glib/gregex.c:1838
+#: glib/gregex.c:1844
 msgid "missing '<' in symbolic reference"
 msgstr "심볼 참조에 '<' 기호가 없습니다"
 
-#: glib/gregex.c:1847
+#: glib/gregex.c:1853
 msgid "unfinished symbolic reference"
 msgstr "심볼 참조가 끝나지 않았습니다"
 
-#: glib/gregex.c:1854
+#: glib/gregex.c:1860
 msgid "zero-length symbolic reference"
 msgstr "심볼 참조에 내용이 없습니다"
 
-#: glib/gregex.c:1865
+#: glib/gregex.c:1871
 msgid "digit expected"
 msgstr "숫자가 있어야 합니다"
 
-#: glib/gregex.c:1883
+#: glib/gregex.c:1889
 msgid "illegal symbolic reference"
 msgstr "심볼 참조가 잘못되었습니다"
 
-#: glib/gregex.c:1945
+#: glib/gregex.c:1951
 msgid "stray final '\\'"
 msgstr "마지막 '\\'가 없습니다"
 
-#: glib/gregex.c:1949
+#: glib/gregex.c:1955
 msgid "unknown escape sequence"
 msgstr "알 수 없는 이스케이프 시퀀스"
 
-#: glib/gregex.c:1959
+#: glib/gregex.c:1965
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr "\"%s\" 대체 문자열을 읽는 중 %lu번째 문자에서 오류가 발생했습니다: %s"
