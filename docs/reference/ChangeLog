@@ -1,3 +1,7 @@
+2007-09-16  Matthias Clasen  <mclasen@redhat.com>
+	
+	* glib/Makefile.am: Remove reference to trio
+
 2007-09-11  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/tmpl/error_reporting.sgml: Add an example.  (#474229,
