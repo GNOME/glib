@@ -2222,6 +2222,8 @@ if test x$enable_regex = xtrue; then
     AC_SUBST(PCRE_CFLAGS)
     AC_SUBST(PCRE_LIBS)
     AC_DEFINE(USE_SYSTEM_PCRE, [], [using the system-supplied PCRE library])
+    PCRE_REQUIRES=libpcre
+    AC_SUBST(PCRE_REQUIRES)
   else
     # If using gcc 4 pass -Wno-pointer-sign when compiling the internal PCRE
     if test x"$GCC" = xyes; then

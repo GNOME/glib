@@ -1,5 +1,13 @@
 2007-09-16  Matthias Clasen  <mclasen@redhat.com>
 
+	* configure.in: When compiling against system pcre, 
+	add a private dependency to the pc file. This should
+	fix static builds with system pcre.  (#475923)
+
+	* glib-2.0.pc.in: Add a Requires.private line
+
+2007-09-16  Matthias Clasen  <mclasen@redhat.com>
+
 	* NEWS: Updates
 
 2007-09-14 15:07:28  Tim Janik  <timj@gtk.org>
