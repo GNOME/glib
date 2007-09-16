@@ -147,15 +147,6 @@ G_CONST_RETURN gchar* G_CONST_RETURN * g_get_language_names (void);
 
 /**
  * GUserDirectory:
- *
- * These are logical ids for special directories which are defined
- * depending on the platform used. You should use g_get_user_special_dir()
- * to retrieve the full path associated to the logical id.
- *
- * The #GUserDirectory enumeration can be extended at later date. Not
- * every platform has a directory for every logical id in this
- * enumeration.
- *
  * @G_USER_DIRECTORY_DESKTOP: the user's Desktop directory
  * @G_USER_DIRECTORY_DOCUMENTS: the user's Documents directory
  * @G_USER_DIRECTORY_DOWNLOAD: the user's Downloads directory
@@ -164,6 +155,15 @@ G_CONST_RETURN gchar* G_CONST_RETURN * g_get_language_names (void);
  * @G_USER_DIRECTORY_PUBLIC_SHARE: the user's shared directory
  * @G_USER_DIRECTORY_TEMPLATES: the user's Templates directory
  * @G_USER_DIRECTORY_VIDEOS: the user's Movies directory
+ * @G_USER_N_DIRECTORIES: the number of enum values
+ *
+ * These are logical ids for special directories which are defined
+ * depending on the platform used. You should use g_get_user_special_dir()
+ * to retrieve the full path associated to the logical id.
+ *
+ * The #GUserDirectory enumeration can be extended at later date. Not
+ * every platform has a directory for every logical id in this
+ * enumeration.
  *
  * Since: 2.14
  */
