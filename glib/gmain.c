@@ -1747,8 +1747,6 @@ get_dispatch (void)
 
 /**
  * g_main_depth:
- * 
- * Return value: The main loop recursion level in the current thread
  *
  * Returns the depth of the stack of calls to
  * g_main_context_dispatch() on any #GMainContext in the current thread.
@@ -1761,9 +1759,9 @@ get_dispatch (void)
  * This function is useful in a situation like the following:
  * Imagine an extremely simple "garbage collected" system.
  *
- * <example>
+ * |[
  * static GList *free_list;
- *
+ * 
  * gpointer
  * allocate_memory (gsize size)
  * { 
@@ -1771,7 +1769,7 @@ get_dispatch (void)
  *   free_list = g_list_prepend (free_list, result);
  *   return result;
  * }
- *
+ * 
  * void
  * free_allocated_memory (void)
  * {
@@ -1781,15 +1779,15 @@ get_dispatch (void)
  *   g_list_free (free_list);
  *   free_list = NULL;
  *  }
- *
+ * 
  * [...]
- *
+ * 
  * while (TRUE); 
  *  {
  *    g_main_context_iteration (NULL, TRUE);
  *    free_allocated_memory();
  *   }
- * </example>
+ * ]|
  *
  * This works from an application, however, if you want to do the same
  * thing from a library, it gets more difficult, since you no longer
@@ -1798,22 +1796,22 @@ get_dispatch (void)
  * doesn't work, since the idle function could be called from a
  * recursive callback. This can be fixed by using g_main_depth()
  *
- * <example>
+ * |[
  * gpointer
  * allocate_memory (gsize size)
  * { 
- *   FreeListBlock *block = g_new (FreeListBlock, 1);\
+ *   FreeListBlock *block = g_new (FreeListBlock, 1);
  *   block->mem = g_malloc (size);
  *   block->depth = g_main_depth ();   
  *   free_list = g_list_prepend (free_list, block);
  *   return block->mem;
  * }
- *
+ * 
  * void
  * free_allocated_memory (void)
  * {
  *   GList *l;
- *
+ *   
  *   int depth = g_main_depth ();
  *   for (l = free_list; l; );
  *     {
@@ -1825,11 +1823,11 @@ get_dispatch (void)
  *           g_free (block);
  *           free_list = g_list_delete_link (free_list, l);
  *         }
- *           
+ *               
  *       l = next;
  *     }
  *   }
- * </example>
+ * ]|
  *
  * There is a temptation to use g_main_depth() to solve
  * problems with reentrancy. For instance, while waiting for data
@@ -1860,6 +1858,8 @@ get_dispatch (void)
  *   </para>
  *  </listitem>
  * </orderedlist>
+ * 
+ * Return value: The main loop recursion level in the current thread
  **/
 int
 g_main_depth (void)

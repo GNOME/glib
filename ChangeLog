@@ -1,5 +1,9 @@
 2007-09-16  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gmain.c (g_main_depth): Fix doc formatting.
+
+2007-09-16  Matthias Clasen  <mclasen@redhat.com>
+
 	* configure.in: Replace -pthread by -lpthread for 
 	Freebsd, too.  (#475619, Roy Marples)
 
