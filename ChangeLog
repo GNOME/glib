@@ -1,3 +1,8 @@
+2007-09-19  Behdad Esfahbod  <behdad@gnome.org>
+
+	* glib/ghook.c (g_hook_free): Check for NULL finalizer. (#476849, Areg
+	Beketovski)
+
 2007-09-19  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Bump version

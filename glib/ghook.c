@@ -130,7 +130,8 @@ g_hook_free (GHookList *hook_list,
   g_return_if_fail (G_HOOK_IS_UNLINKED (hook));
   g_return_if_fail (!G_HOOK_IN_CALL (hook));
 
-  hook_list->finalize_hook (hook_list, hook);
+  if(hook_list->finalize_hook != NULL)
+      hook_list->finalize_hook (hook_list, hook);
   g_slice_free1 (hook_list->hook_size, hook);
 }
 
