@@ -132,7 +132,7 @@ How to compile GLib itself
       <listitem>
 	<para>
 	  The libintl library from the <ulink
-	  url="http://www.gtk.org/software/gettext">GNU gettext
+	  url="http://www.gnu.org/software/gettext">GNU gettext
 	  package</ulink> is needed if your system doesn't have the
 	  <function>gettext()</function> functionality for handling
 	  message translation databases.
