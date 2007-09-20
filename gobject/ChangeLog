@@ -1,3 +1,9 @@
+2007-09-20  Carlos Garnacho  <carlos@imendio.com>
+
+	* gtypemodule.h: make sure we define GType g_define_type_id in
+	G_G_DEFINE_DYNAMIC_TYPE_EXTENDED so it works together with
+	G_IMPLEMENT_INTERFACE. (#478459)
+
 2007-09-19  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.14.1 ===

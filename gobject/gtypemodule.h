@@ -86,6 +86,7 @@ type_name##_get_type (void) \
 static void \
 type_name##_register_type (GTypeModule *type_module) \
 { \
+  GType g_define_type_id; \
   const GTypeInfo g_define_type_info = { \
     sizeof (TypeName##Class), \
     (GBaseInitFunc) NULL, \
@@ -103,6 +104,7 @@ type_name##_register_type (GTypeModule *type_module) \
 						     #TypeName, \
 						     &g_define_type_info, \
 						     (GTypeFlags) flags); \
+  g_define_type_id = type_name##_type_id; \
   { CODE ; } \
 }
 
