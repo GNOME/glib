@@ -1,3 +1,8 @@
+2007-10-04  Tor Lillqvist  <tml@novell.com>
+
+	* glibconfig.h.win32.in: Always define G_CAN_INLINE. Even MSVC6 is
+	capable of inlining. (#483337, Steve Lhomme)
+
 2007-09-19  Behdad Esfahbod  <behdad@gnome.org>
 
 	* glib/ghook.c (g_hook_free): Check for NULL finalizer. (#476849, Areg

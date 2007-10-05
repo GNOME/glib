@@ -120,9 +120,7 @@ typedef gint64 goffset;
 #endif /* !_MSC_VER and !__DMC__ */
 #endif	/* !__cplusplus */
 
-#if defined(__cplusplus) || !defined(_MSC_VER)
 #define G_CAN_INLINE	1
-#endif
 
 #ifndef _MSC_VER
 #define G_HAVE_ISO_VARARGS 1
