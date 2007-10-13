@@ -1,3 +1,13 @@
+2007-10-13  Sven Herzberg  <herzi@gnome-de.org>
+
+	Reviewed by Tim Janik.
+
+	Created marshallers that don't throw gcc warnings when compiling with
+	-WUnused (fixes #359165).
+
+	* gobject/glib-genmarshal.c: decorate return_value and invocation_hint
+	with G_GNUC_UNUSED
+
 2007-10-04  Tor Lillqvist  <tml@novell.com>
 
 	* glibconfig.h.win32.in: Always define G_CAN_INLINE. Even MSVC6 is

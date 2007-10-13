@@ -373,10 +373,10 @@ generate_marshal (const gchar *signame,
       g_fprintf (fout, "void\n");
       ind = g_fprintf (fout, "%s_%s (", marshaller_prefix, signame);
       g_fprintf (fout,   "GClosure     *closure,\n");
-      g_fprintf (fout, "%sGValue       *return_value,\n", indent (ind));
+      g_fprintf (fout, "%sGValue       *return_value G_GNUC_UNUSED,\n", indent (ind));
       g_fprintf (fout, "%sguint         n_param_values,\n", indent (ind));
       g_fprintf (fout, "%sconst GValue *param_values,\n", indent (ind));
-      g_fprintf (fout, "%sgpointer      invocation_hint,\n", indent (ind));
+      g_fprintf (fout, "%sgpointer      invocation_hint G_GNUC_UNUSED,\n", indent (ind));
       g_fprintf (fout, "%sgpointer      marshal_data)\n", indent (ind));
       g_fprintf (fout, "{\n");
 
