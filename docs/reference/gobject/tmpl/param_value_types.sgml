@@ -1504,6 +1504,19 @@ See g_param_spec_internal() for details on property names.
 <para>
 Set the contents of a %G_TYPE_OBJECT derived #GValue to @v_object.
 </para>
+<para>
+g_value_set_object() increases the reference count of @v_object
+(the #GValue holds a reference to @v_object).
+If you do not wish to increase the reference count of the object
+(i.e. you wish to pass your current reference to the #GValue because you no
+longer need it),
+use g_value_take_object() instead.
+</para>
+<para>
+It is important that your #GValue holds a reference to @v_object (either its
+own, or one it has taken) to ensure that the object won't be destroyed while
+the #GValue still exists).
+</para>
 
 @value:   a valid #GValue of %G_TYPE_OBJECT derived type
 @v_object: object value to be set
@@ -1513,7 +1526,12 @@ Set the contents of a %G_TYPE_OBJECT derived #GValue to @v_object.
 <para>
 Sets the contents of a %G_TYPE_OBJECT derived #GValue to @v_object 
 and takes over the ownership of the callers reference to @v_object; 
-the caller doesn't have to unref it any more.
+the caller doesn't have to unref it any more (i.e. the reference
+count of the object is not increased).
+</para>
+<para>
+If you want the #GValue to hold its own reference to @v_object, use
+g_value_set_object() instead.
 </para>
 
 @value:  a valid #GValue of %G_TYPE_OBJECT derived type

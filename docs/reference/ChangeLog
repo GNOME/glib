@@ -1,3 +1,9 @@
+2007-10-16  Matthias Clasen  <mclasen@redhat.com>
+
+	* gobject/tmpl/param_value_types.sgml: Add some discussion on 
+	g_value_set_object() vs g_value_take_object().  (#477957, Davyd
+	Madeley)
+
 2007-09-19  Behdad Esfahbod  <behdad@gnome.org>
 
 	* glib/building.sgml: Fix gettext URL. (#478349, kraai ftbfs.org)
