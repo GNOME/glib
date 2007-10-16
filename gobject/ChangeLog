@@ -1,3 +1,7 @@
+2007-10-16  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.14.2 ===
+
 2007-09-20  Carlos Garnacho  <carlos@imendio.com>
 
 	* gtypemodule.h: make sure we define GType g_define_type_id in

@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-16 14:50-0400\n"
+"POT-Creation-Date: 2007-10-16 02:15-0400\n"
 "PO-Revision-Date: 2007-09-06 21:11+0100\n"
 "Last-Translator: Goran Rakić <grakic@devbase.net>\n"
 "Language-Team: Serbian (sr) <gnom@prevod.org>\n"
@@ -656,17 +656,17 @@ msgstr "Sadržaj prazan (ili sadrži samo beline)"
 msgid "Failed to read data from child process"
 msgstr "Neuspelo čitanje podataka iz potprocesa"
 
-#: glib/gspawn-win32.c:287 glib/gspawn.c:1395
+#: glib/gspawn-win32.c:287 glib/gspawn.c:1450
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Neuspelo stvaranje cevke za vezu sa potprocesom (%s)"
 
-#: glib/gspawn-win32.c:325 glib/gspawn.c:1059
+#: glib/gspawn-win32.c:325 glib/gspawn.c:1114
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Neuspelo čitanje iz podređene cevke (%s)"
 
-#: glib/gspawn-win32.c:351 glib/gspawn.c:1264
+#: glib/gspawn-win32.c:351 glib/gspawn.c:1319
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Neuspelo pristupanje direktorijumu „%s“ (%s)"
@@ -710,48 +710,48 @@ msgstr ""
 "Neočekivana greška dok su u g_io_channel_win32_poll() čitani podaci iz "
 "potprocesa"
 
-#: glib/gspawn.c:175
+#: glib/gspawn.c:180
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "Neuspelo čitanje podataka od potprocesa (%s)"
 
-#: glib/gspawn.c:307
+#: glib/gspawn.c:312
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr "Neočekivana greška u select() pri čitanju podataka iz potprocesa (%s)"
 
-#: glib/gspawn.c:390
+#: glib/gspawn.c:395
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Neočekivana greška u waitpid() (%s)"
 
 # za sada ovako, možda grananje, umnožavanje? viljuškanje ;-)
-#: glib/gspawn.c:1124
+#: glib/gspawn.c:1179
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Neuspeo fork() (%s)"
 
-#: glib/gspawn.c:1274
+#: glib/gspawn.c:1329
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Neuspelo izvršavanje potprocesa „%s“ (%s)"
 
-#: glib/gspawn.c:1284
+#: glib/gspawn.c:1339
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Neuspelo preusmeravanje ulaza ili izlaza potprocesa (%s)"
 
-#: glib/gspawn.c:1293
+#: glib/gspawn.c:1348
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Neuspeo fork() potprocesa (%s)"
 
-#: glib/gspawn.c:1301
+#: glib/gspawn.c:1356
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Nepoznata greška pri izvršavanju potprocesa „%s“"
 
-#: glib/gspawn.c:1323
+#: glib/gspawn.c:1378
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Nije uspeo da pročita dovoljno podataka iz cevke ka potprocesu (%s)"

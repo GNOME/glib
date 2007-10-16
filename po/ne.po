@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.glib-2-10.ne\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-16 14:50-0400\n"
+"POT-Creation-Date: 2007-10-16 02:15-0400\n"
 "PO-Revision-Date: 2006-04-27 00:00+0545\n"
 "Last-Translator: Shyam Krishna Bal <shyamkrishna_bal@yahoo.com>\n"
 "Language-Team: Nepali <info@mpp.org.np>\n"
@@ -649,17 +649,17 @@ msgstr "पाठ खाली थियो (वा सेतो खाली �
 msgid "Failed to read data from child process"
 msgstr "शाखा प्रक्रियाबाट डेटा पढ्न असफल भयो"
 
-#: glib/gspawn-win32.c:287 glib/gspawn.c:1395
+#: glib/gspawn-win32.c:287 glib/gspawn.c:1450
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "शाखा प्रक्रिया (%s)सँग कुराकानीका लागि पाइप सिर्जना गर्न असफल"
 
-#: glib/gspawn-win32.c:325 glib/gspawn.c:1059
+#: glib/gspawn-win32.c:325 glib/gspawn.c:1114
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "शाखा प्रक्रिया (%s)बाट पढ्न असफल"
 
-#: glib/gspawn-win32.c:351 glib/gspawn.c:1264
+#: glib/gspawn-win32.c:351 glib/gspawn.c:1319
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "डाइरेक्टरी '%s' (%s) मा परिवर्तन गर्न असफल"
@@ -701,47 +701,47 @@ msgid ""
 "process"
 msgstr "शाखा प्रक्रियाबाट डेटा पढ्दा g_io_channel_win32_poll() अनपेक्षित त्रुटि"
 
-#: glib/gspawn.c:175
+#: glib/gspawn.c:180
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "शाखा प्रक्रिया (%s) बाट डेटा पढ्न असफल"
 
-#: glib/gspawn.c:307
+#: glib/gspawn.c:312
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr "शाखा प्रक्रिया (%s) बाट डेटा पढ्दा () चयनमा अनपेक्षित त्रुटि"
 
-#: glib/gspawn.c:390
+#: glib/gspawn.c:395
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "waitpid() (%s) मा अनपेक्षित त्रुटि"
 
-#: glib/gspawn.c:1124
+#: glib/gspawn.c:1179
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "(%s) फोर्क गर्न असफल"
 
-#: glib/gspawn.c:1274
+#: glib/gspawn.c:1329
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "शाखा प्रक्रिया \"%s\" (%s) कार्यान्वयन गर्न असफल"
 
-#: glib/gspawn.c:1284
+#: glib/gspawn.c:1339
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "शाखा प्रक्रिया (%s) को निर्गत वा आगत पुन:निर्देशिन गर्न असफल"
 
-#: glib/gspawn.c:1293
+#: glib/gspawn.c:1348
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "शाखा प्रक्रिया (%s) फोर्क गर्न असफल"
 
-#: glib/gspawn.c:1301
+#: glib/gspawn.c:1356
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "शाखा प्रक्रिया \"%s\" कार्यान्वयन गर्दा अज्ञात त्रुटि"
 
-#: glib/gspawn.c:1323
+#: glib/gspawn.c:1378
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "शाखा पिड पाईप (%s) बाट प्रशस्त डेटाहरू पढ्न असफल"

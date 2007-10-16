@@ -150,7 +150,7 @@ can be configured.
                          unmodified for the lifetime of the parameter. 
                          Since 2.8
 @G_PARAM_PRIVATE:        Old name for the %G_PARAM_STATIC_NAME flag. 
-                         Deprecated since 2.8. 
+                         Deprecated since 2.8.
 @G_PARAM_STATIC_NICK:    the string used as nick when constructing the 
                          parameter is guaranteed to remain valid and 
                          unmodified for the lifetime of the parameter. 

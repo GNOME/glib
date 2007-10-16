@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.dz\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-16 14:50-0400\n"
+"POT-Creation-Date: 2007-10-16 02:15-0400\n"
 "PO-Revision-Date: 2006-08-09 10:23+0530\n"
 "Last-Translator: Mindu Dorji\n"
 "Language-Team: DZONGKHA <pgeyleg@dit.gov.bt>\n"
@@ -654,18 +654,18 @@ msgstr "ཚིག་ཡིག་དེ་ སྟོང་པའམ་ (ཡང་
 msgid "Failed to read data from child process"
 msgstr "ཆ་ལག་ལས་སྦྱོར་ནང་ལས་ གནད་སྡུད་ལྷག་མ་ཚུགས། "
 
-#: glib/gspawn-win32.c:287 glib/gspawn.c:1395
+#: glib/gspawn-win32.c:287 glib/gspawn.c:1450
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr ""
 "ཆ་ལག་ལས་སྦྱོར་ (%s) དང་གཅིག་ཁར་ རྒྱུད་འབྲེལ་འཐབ་ནིའི་དོན་ལུ་ རྒྱུད་དུང་གསར་བསྐྲུན་འབད་མ་ཚུགས།"
 
-#: glib/gspawn-win32.c:325 glib/gspawn.c:1059
+#: glib/gspawn-win32.c:325 glib/gspawn.c:1114
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "ཆ་ལག་རྒྱུད་དུང་ (%s) ནང་ལས་ ལྷག་མ་ཚུགས།"
 
-#: glib/gspawn-win32.c:351 glib/gspawn.c:1264
+#: glib/gspawn-win32.c:351 glib/gspawn.c:1319
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "སྣོད་ཐོ་’%s’ (%s)ལུ་ བསྒྱུར་བཅོས་འབད་མ་ཚུགས། "
@@ -709,48 +709,48 @@ msgstr ""
 "ཆ་ལག་ལས་སྦྱོར་ནང་ལས་ གནད་སྡུད་ལྷག་ནི་ལུ་ རེ་བ་མེད་པའི་འཛོལ་བ་ g_io_channel_win32_poll() "
 "ཚུ་འདུག"
 
-#: glib/gspawn.c:175
+#: glib/gspawn.c:180
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "ཆ་ལག་ལས་སྦྱོར་ (%s) ནང་ལས་ གནད་སྡུད་ལྷག་མ་ཚུགས།"
 
-#: glib/gspawn.c:307
+#: glib/gspawn.c:312
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr ""
 "སེལ་འཐུ་() ནང་ལུ་ རེ་བ་མེད་པའི་འཛོལ་བ་བྱུང་སྟེ་ ཆ་ལག་ལས་སྦྱོར་ (%s) ནང་ལས་ གནད་སྡུད་ལྷག་དོ།"
 
-#: glib/gspawn.c:390
+#: glib/gspawn.c:395
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "ཝེཊི་པིཌི་ () (%s) ནང་ལུ་ རེ་བ་མེད་པའི་འཛོལ་བ། "
 
-#: glib/gspawn.c:1124
+#: glib/gspawn.c:1179
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "(%s) ལུ་ ཁ་སྤེལ་མ་ཚུགས།"
 
-#: glib/gspawn.c:1274
+#: glib/gspawn.c:1329
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "ཆ་ལག་ལས་སྦྱོར་ \"%s\" (%s) ལག་ལེན་འཐབ་མ་ཚུགས།"
 
-#: glib/gspawn.c:1284
+#: glib/gspawn.c:1339
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "ཆ་ལག་ལས་སྦྱོར་ (%s) གི་ ཨའུཊི་པུཊི་ ཡང་ཅིན་ ཨིན་པུཊི་ ལོག་གཏང་མ་ཚུགས།"
 
-#: glib/gspawn.c:1293
+#: glib/gspawn.c:1348
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "ཆ་ལག་ལས་སྦྱོར་ (%s) ཁ་སྤེལ་མ་ཚུགས།"
 
-#: glib/gspawn.c:1301
+#: glib/gspawn.c:1356
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "མ་ཤེས་པའི་འཛོལ་བ་ཅིག་གིས ཆ་ལག་ལས་སྦྱོར་ \"%s\" ལག་ལེན་འཐབ་དོ།"
 
-#: glib/gspawn.c:1323
+#: glib/gspawn.c:1378
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "ཆ་ལག་ པིཨའི་ཌི་ རྒྱུད་དུང་ (%s) ནང་ལས་ གནད་སྡུད་ལངམ་ ལྷག་མ་ཚུགས།"
