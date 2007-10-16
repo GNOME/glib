@@ -1,3 +1,22 @@
+Overview of Changes from GLib 2.14.1 to GLib 2.14.2
+===================================================
+
+* Bugs fixed:
+ 476849 Invocation of the interface "g_hook_free" fails in certai...
+ 359165 marshallers can throw warnings with -Wunused
+ 477957 more discussion on g_value_set_object vs. g_value_take_ob...
+ 478459 G_DEFINE_DYNAMIC_TYPE_EXTENDED doesn't work with G_IMPLEM...
+ 483337 inline is disabled for MSVC when compiling C code
+ 478349 Broken link to gettext website
+ 469231 g_spawn optimization for setting all open fds to CLOEXEC 
+
+* Updated translations:
+Arabic (ar)
+Galician (gl)
+Hebrew (he)
+Korean (ko)
+
+
 Overview of Changes from GLib 2.14.0 to GLib 2.14.1
 ===================================================
 

@@ -1,5 +1,7 @@
 2007-10-16  Matthias Clasen  <mclasen@redhat.com>
 
+	* NEWS: Updates
+
 	* configure.in: Check for sys/resource.h
 
 	* glib/gspawn.c: Improve the fdwalk implementation on Linux
