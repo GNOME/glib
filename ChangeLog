@@ -1,3 +1,11 @@
+2007-10-16  Matthias Clasen  <mclasen@redhat.com>
+
+	* configure.in: Check for sys/resource.h
+
+	* glib/gspawn.c: Improve the fdwalk implementation on Linux
+	to only walk over actually open file descriptors. (#469231, 
+	Lennart Poettering)
+
 2007-10-13  Sven Herzberg  <herzi@gnome-de.org>
 
 	Reviewed by Tim Janik.
