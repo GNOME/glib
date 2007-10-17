@@ -170,6 +170,8 @@ can be configured.
 <!-- ##### MACRO G_PARAM_STATIC_STRINGS ##### -->
 <para>
 #GParamFlags value alias for %G_PARAM_STATIC_NAME | %G_PARAM_STATIC_NICK | %G_PARAM_STATIC_BLURB.
+
+Since 2.13.0
 </para>
 
 
