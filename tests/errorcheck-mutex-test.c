@@ -15,7 +15,7 @@ locking_thread (gpointer mutex)
 }
 
 static void
-lock_locked_mutex ()
+lock_locked_mutex (void)
 {
   GMutex* mutex = g_mutex_new ();
   g_mutex_lock (mutex);
@@ -23,7 +23,7 @@ lock_locked_mutex ()
 }
 
 static void
-trylock_locked_mutex ()
+trylock_locked_mutex (void)
 {
   GMutex* mutex = g_mutex_new ();
   g_mutex_lock (mutex);
@@ -31,7 +31,7 @@ trylock_locked_mutex ()
 }
 
 static void
-unlock_unlocked_mutex ()
+unlock_unlocked_mutex (void)
 {
   GMutex* mutex = g_mutex_new ();
   g_mutex_lock (mutex);
@@ -40,7 +40,7 @@ unlock_unlocked_mutex ()
 }
 
 static void
-free_locked_mutex ()
+free_locked_mutex (void)
 {
   GMutex* mutex = g_mutex_new ();
   g_mutex_lock (mutex);
@@ -48,7 +48,7 @@ free_locked_mutex ()
 }
 
 static void
-wait_on_unlocked_mutex ()
+wait_on_unlocked_mutex (void)
 {
   GMutex* mutex = g_mutex_new ();
   GCond* cond = g_cond_new ();
@@ -56,7 +56,7 @@ wait_on_unlocked_mutex ()
 }
 
 static void
-wait_on_otherwise_locked_mutex ()
+wait_on_otherwise_locked_mutex (void)
 {
   GMutex* mutex = g_mutex_new ();
   GCond* cond = g_cond_new ();
@@ -67,7 +67,7 @@ wait_on_otherwise_locked_mutex ()
 }
 
 static void
-timed_wait_on_unlocked_mutex ()
+timed_wait_on_unlocked_mutex (void)
 {
   GMutex* mutex = g_mutex_new ();
   GCond* cond = g_cond_new ();
@@ -75,7 +75,7 @@ timed_wait_on_unlocked_mutex ()
 }
 
 static void
-timed_wait_on_otherwise_locked_mutex ()
+timed_wait_on_otherwise_locked_mutex (void)
 {
   GMutex* mutex = g_mutex_new ();
   GCond* cond = g_cond_new ();

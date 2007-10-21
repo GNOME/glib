@@ -1095,7 +1095,7 @@ g_utf16_to_utf8 (const gunichar2  *str,
   gint n_bytes;
   gunichar high_surrogate;
 
-  g_return_val_if_fail (str != 0, NULL);
+  g_return_val_if_fail (str != NULL, NULL);
 
   n_bytes = 0;
   in = str;
@@ -1236,7 +1236,7 @@ g_utf16_to_ucs4 (const gunichar2  *str,
   gint n_bytes;
   gunichar high_surrogate;
 
-  g_return_val_if_fail (str != 0, NULL);
+  g_return_val_if_fail (str != NULL, NULL);
 
   n_bytes = 0;
   in = str;

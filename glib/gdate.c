@@ -1823,8 +1823,8 @@ g_date_strftime (gchar       *s,
 
   g_return_val_if_fail (g_date_valid (d), 0);
   g_return_val_if_fail (slen > 0, 0); 
-  g_return_val_if_fail (format != 0, 0);
-  g_return_val_if_fail (s != 0, 0);
+  g_return_val_if_fail (format != NULL, 0);
+  g_return_val_if_fail (s != NULL, 0);
 
   g_date_to_struct_tm (d, &tm);
 

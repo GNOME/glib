@@ -761,7 +761,7 @@ g_match_info_fetch_all (const GMatchInfo *match_info)
   gchar **result;
   gint i;
 
-  g_return_val_if_fail (match_info != NULL, FALSE);
+  g_return_val_if_fail (match_info != NULL, NULL);
 
   if (match_info->matches < 0)
     return NULL;
@@ -1676,7 +1676,7 @@ g_regex_split_full (const GRegex      *regex,
   i = 0;
   for (last = g_list_last (list); last; last = g_list_previous (last))
     string_list[i++] = last->data;
-  string_list[i] = 0;
+  string_list[i] = NULL;
   g_list_free (list);
 
   return string_list;

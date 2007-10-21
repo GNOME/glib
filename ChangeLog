@@ -1,3 +1,18 @@
+2007-10-21  Behdad Esfahbod  <behdad@gnome.org>
+
+	* glib/gdate.c (g_date_strftime):
+	* glib/gmain.c (g_main_context_check):
+	* glib/gregex.c (g_match_info_fetch_all), (g_regex_split_full):
+	* glib/gthread.c (g_once_init_enter_impl), (g_once_init_leave):
+	* glib/gthread.h:
+	* glib/gutf8.c (g_utf16_to_utf8), (g_utf16_to_ucs4):
+	* tests/errorcheck-mutex-test.c (lock_locked_mutex),
+	(trylock_locked_mutex), (unlock_unlocked_mutex),
+	(free_locked_mutex), (wait_on_unlocked_mutex),
+	(wait_on_otherwise_locked_mutex), (timed_wait_on_unlocked_mutex),
+	(timed_wait_on_otherwise_locked_mutex):
+	Fix warnings from sparse. (#487491, Kjartan Maraas)
+
 2007-10-17  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Bump version

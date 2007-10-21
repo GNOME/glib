@@ -2529,7 +2529,7 @@ g_main_context_check (GMainContext *context,
   if (context->poll_changed)
     {
       UNLOCK_CONTEXT (context);
-      return 0;
+      return FALSE;
     }
 #endif /* G_THREADS_ENABLED */
   
