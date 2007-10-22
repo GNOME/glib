@@ -3143,7 +3143,7 @@ _g_utils_thread_init (void)
  * use system codepage as bindtextdomain() doesn't have a UTF-8
  * interface.
  */
-static const gchar *
+static gchar *
 _glib_get_locale_dir (void)
 {
   gchar *dir, *cp_dir;
@@ -3170,7 +3170,6 @@ _glib_get_locale_dir (void)
 }
 
 #undef GLIB_LOCALE_DIR
-#define GLIB_LOCALE_DIR _glib_get_locale_dir ()
 
 #endif /* G_OS_WIN32 */
 
@@ -3181,7 +3180,13 @@ _glib_gettext (const gchar *str)
 
   if (!_glib_gettext_initialized)
     {
+#ifdef G_OS_WIN32
+      gchar *tmp = _glib_get_locale_dir();
+      bindtextdomain(GETTEXT_PACKAGE, tmp);
+      g_free(tmp);
+#else
       bindtextdomain(GETTEXT_PACKAGE, GLIB_LOCALE_DIR);
+#endif
 #    ifdef HAVE_BIND_TEXTDOMAIN_CODESET
       bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
 #    endif

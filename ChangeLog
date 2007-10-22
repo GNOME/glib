@@ -1,3 +1,8 @@
+2007-10-22  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gutils.c (_glib_gettext): Plug small one-time leak on
+	Windows. (#488068, Daniel Atallah)
+
 2007-10-21  Behdad Esfahbod  <behdad@gnome.org>
 
 	* glib/gdate.c (g_date_strftime):
