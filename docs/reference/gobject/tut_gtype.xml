@@ -159,9 +159,9 @@ static void test_object (void)
   GObject *obj;
   GValue obj_vala = {0, };
   GValue obj_valb = {0, };
-  obj = g_object_new (MAMAN_BAR_TYPE, NULL);
+  obj = g_object_new (MAMAN_TYPE_BAR, NULL);
 
-  g_value_init (&amp;obj_vala, MAMAN_BAR_TYPE);
+  g_value_init (&amp;obj_vala, MAMAN_TYPE_BAR);
   g_value_set_object (&amp;obj_vala, obj);
 
   g_value_init (&amp;obj_valb, G_TYPE_OBJECT);
@@ -169,7 +169,7 @@ static void test_object (void)
   /* g_value_copy's semantics for G_TYPE_OBJECT types is to copy the reference.
      This function thus calls g_object_ref.
      It is interesting to note that the assignment works here because
-     MAMAN_BAR_TYPE is a G_TYPE_OBJECT.
+     MAMAN_TYPE_BAR is a G_TYPE_OBJECT.
    */
   g_value_copy (&amp;obj_vala, &amp;obj_valb);
 
@@ -246,10 +246,10 @@ struct _GTypeValueTable
             prefix all your function names with <emphasis>maman_</emphasis>.
             For example: <function>maman_object_method</function>.
           </para></listitem>
-          <listitem><para>Create a macro named <function>PREFIX_OBJECT_TYPE</function> which always 
+          <listitem><para>Create a macro named <function>PREFIX_TYPE_OBJECT</function> which always 
             returns the GType for the associated object type. For an object of type 
             <emphasis>Bar</emphasis> in a libray prefixed by <emphasis>maman</emphasis>, 
-            use: <function>MAMAN_BAR_TYPE</function>.
+            use: <function>MAMAN_TYPE_BAR</function>.
             It is common although not a convention to implement this macro using either a global 
             static variable or a function named <function>prefix_object_get_type</function>.
             We will follow the function pattern wherever possible in this document.
@@ -288,12 +288,12 @@ struct _GTypeValueTable
         macros are provided in <filename>gtype.h</filename>. For the example we used above, we would 
         write the following trivial code to declare the macros:
 <programlisting>
-#define MAMAN_BAR_TYPE                  (maman_bar_get_type ())
-#define MAMAN_BAR(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), MAMAN_BAR_TYPE, MamanBar))
-#define MAMAN_BAR_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), MAMAN_BAR_TYPE, MamanBarClass))
-#define MAMAN_IS_BAR(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), MAMAN_BAR_TYPE))
-#define MAMAN_IS_BAR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), MAMAN_BAR_TYPE))
-#define MAMAN_BAR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), MAMAN_BAR_TYPE, MamanBarClass))
+#define MAMAN_TYPE_BAR                  (maman_bar_get_type ())
+#define MAMAN_BAR(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), MAMAN_TYPE_BAR, MamanBar))
+#define MAMAN_BAR_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), MAMAN_TYPE_BAR, MamanBarClass))
+#define MAMAN_IS_BAR(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), MAMAN_TYPE_BAR))
+#define MAMAN_IS_BAR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), MAMAN_TYPE_BAR))
+#define MAMAN_BAR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), MAMAN_TYPE_BAR, MamanBarClass))
 </programlisting>
         <note><simpara>Stick to the naming <varname>klass</varname> as <varname>class</varname> is a registered c++ keyword.</simpara></note>
       </para>
@@ -315,6 +315,14 @@ GType maman_bar_get_type (void)
   }
   return type;
 }
+</programlisting>
+      </para>
+
+      <para>
+        When having no special requirements you also can use the <function>G_DEFINE_TYPE</function>
+	macro:
+<programlisting>
+G_DEFINE_TYPE (MamanBar, maman_bar, G_TYPE_OBJECT)
 </programlisting>
       </para>
 
@@ -404,7 +412,7 @@ typedef struct {
   void (*do_action_public_pure_virtual) (MamanBar *self, guint8 i);
 } MamanBarClass;
 
-#define MAMAN_BAR_TYPE (maman_bar_get_type ())
+#define MAMAN_TYPE_BAR (maman_bar_get_type ())
 
 GType 
 maman_bar_get_type (void)

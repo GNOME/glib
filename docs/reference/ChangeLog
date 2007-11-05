@@ -1,3 +1,8 @@
+2007-11-05  Mathias Hasselmann  <mathias@openismus.com>
+
+	* docs/reference/gobject/tut_gtype.xml: Use correct naming conventions
+	when explaining maman_bar_get_type(). (#493688) Mention G_DEFINE_TYPE.
+
 2007-10-16  Matthias Clasen  <mclasen@redhat.com>
 
 	* gobject/tmpl/gparamspec.sgml: Small update  (#477704, Ross Burton)
