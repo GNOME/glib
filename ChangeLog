@@ -1,3 +1,21 @@
+2007-11-07  Tor Lillqvist  <tml@novell.com>
+
+	* glib/update-pcre/notdll.patch: Not needed, just use -DPCRE_STATIC.
+
+	* glib/update-pcre/Makefile.am: Drop notdll.patch.
+
+	* glib/update-pcre/Makefile.am-1
+	* glib/update-pcre/update.sh
+	* glib/pcre/Makefile.am
+	* glib/Makefile.am: Use -DPCRE_STATIC.
+
+	* tests/gio-test.c
+	* tests/mainloop-test.c
+	* tests/spawn-test.c: #define pipe(fds) _pipe(fds, 4096,
+	_O_BINARY) on Windows
+
+	* tests/regex-test.c (test_expand): Don't print NULL with %s.
+
 2007-11-07  Matthias Clasen <mclasen@redhat.com>
 
 	* configure.in: Bump version

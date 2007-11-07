@@ -10,6 +10,7 @@ INCLUDES = \
 	-DMAX_DUPLENGTH=30000 \
 	-DLINK_SIZE=2 \
 	-DPOSIX_MALLOC_THRESHOLD=10 \
+	-DPCRE_STATIC \
 	-I$(top_srcdir) \
 	-I$(srcdir) \
 	-I$(top_srcdir)/glib \

@@ -12,6 +12,7 @@
 #ifdef G_OS_WIN32
 #include <fcntl.h>		/* For _O_BINARY used by pipe() macro */
 #include <io.h>			/* for _pipe() */
+#define pipe(fds) _pipe(fds, 4096, _O_BINARY)
 #endif
 
 #define ITERS 10000

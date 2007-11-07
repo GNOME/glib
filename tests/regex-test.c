@@ -1098,7 +1098,9 @@ test_expand (const gchar *pattern,
   gchar *res;
   
   verbose ("expanding the references in \"%s\" (pattern: \"%s\", string: \"%s\") \t",
-	   string_to_expand, pattern, string);
+	   string_to_expand,
+	   pattern ? pattern : "(null)",
+	   string ? string : "(null)");
 
   if (pattern)
     {
