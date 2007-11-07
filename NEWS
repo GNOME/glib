@@ -1,3 +1,21 @@
+Overview of Changes from GLib 2.14.2 to GLib 2.14.3
+===================================================
+
+* Update PCRE to 7.4
+
+* Bugs fixed:
+ 487491 Fix some warnings from sparse
+ 488068 Small (one-time) memory leak in glib_gettext initialization
+ 493688 TYPE macro "_get_type ()" is documented wrong
+
+* Updated translations:
+ Arabic (ar)
+ Belarusian Latin (be@latin)
+ Estonian (et)
+ Irish (ga)
+ Slovenian (sl)
+
+ 
 Overview of Changes from GLib 2.14.1 to GLib 2.14.2
 ===================================================
 
