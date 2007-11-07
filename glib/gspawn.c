@@ -448,7 +448,7 @@ g_spawn_sync (const gchar          *working_directory,
  * On Windows, note that all the string or string vector arguments to
  * this function and the other g_spawn*() functions are in UTF-8, the
  * GLib file name encoding. Unicode characters that are not part of
- * the system codepage passed in argument vectors will be correctly
+ * the system codepage passed in these arguments will be correctly
  * available in the spawned program only if it uses wide character API
  * to retrieve its command line. For C programs built with Microsoft's
  * tools it is enough to make the program have a wmain() instead of

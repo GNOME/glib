@@ -1,5 +1,10 @@
 2007-11-07  Matthias Clasen <mclasen@redhat.com>
 
+	* glib/gspawn.c (g_spawn_async_with_pipes): Slightly improve
+	the wording of the docs.  (#492677, Areg Beketovski)
+
+2007-11-07  Matthias Clasen <mclasen@redhat.com>
+
 	* glib/pcre/Makefile.am: Add an include to fix builddir != srcdir
 	builds.  (#494602, Yevgen Muntyan)
 
