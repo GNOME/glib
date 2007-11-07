@@ -49,6 +49,7 @@ libpcre_la_SOURCES = \
 	pcre.h \
 	pcre_internal.h \
 	ucp.h \
+	ucpinternal.h \
 	$(libpcre_headers)
 
 libpcre_la_LIBADD = $(DEP_LIBS)

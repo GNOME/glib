@@ -1,3 +1,7 @@
+2007-11-07  Matthias Clasen <mclasen@redhat.com>
+
+	* === Released 2.14.3 ===
+
 2007-11-05  Mathias Hasselmann  <mathias@openismus.com>
 
 	* docs/reference/gobject/tut_gtype.xml: Use correct naming conventions
