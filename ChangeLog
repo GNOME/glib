@@ -1,3 +1,8 @@
+2007-11-07  Matthias Clasen <mclasen@redhat.com>
+
+	* glib/pcre/Makefile.am: Add an include to fix builddir != srcdir
+	builds.  (#494602, Yevgen Muntyan)
+
 2007-11-07  Tor Lillqvist  <tml@novell.com>
 
 	* glib/update-pcre/notdll.patch: Not needed, just use -DPCRE_STATIC.
