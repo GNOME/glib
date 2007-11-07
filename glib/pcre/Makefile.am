@@ -9,12 +9,10 @@ INCLUDES = \
 	-DMAX_NAME_COUNT=10000 \
 	-DMAX_DUPLENGTH=30000 \
 	-DLINK_SIZE=2 \
-	-UEBCDIC \
 	-DPOSIX_MALLOC_THRESHOLD=10 \
 	-I$(top_srcdir) \
 	-I$(srcdir) \
 	-I$(top_srcdir)/glib \
-	-I$(top_builddir)/glib \
 	@GLIB_DEBUG_FLAGS@ \
 	-DG_DISABLE_DEPRECATED \
 	-DGLIB_COMPILATION \
@@ -28,8 +26,8 @@ noinst_LTLIBRARIES = libpcre.la
 libpcre_headers =
 
 libpcre_la_SOURCES = \
-	pcre_chartables.c \
 	pcre_compile.c \
+	pcre_chartables.c \
 	pcre_config.c \
 	pcre_dfa_exec.c \
 	pcre_exec.c \
@@ -51,7 +49,6 @@ libpcre_la_SOURCES = \
 	pcre.h \
 	pcre_internal.h \
 	ucp.h \
-	ucpinternal.h \
 	$(libpcre_headers)
 
 libpcre_la_LIBADD = $(DEP_LIBS)

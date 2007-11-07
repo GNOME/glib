@@ -42,33 +42,45 @@ POSSIBILITY OF SUCH DAMAGE.
 /* The current PCRE version information. */
 
 #define PCRE_MAJOR          7
-#define PCRE_MINOR          2
+#define PCRE_MINOR          4
 #define PCRE_PRERELEASE     
-#define PCRE_DATE           2007-06-19
+#define PCRE_DATE           2007-09-21
 
 /* When an application links to a PCRE DLL in Windows, the symbols that are
 imported have to be identified as such. When building PCRE, the appropriate
 export setting is defined in pcre_internal.h, which includes this file. So we
-don't change an existing definition of PCRE_EXP_DECL. */
+don't change existing definitions of PCRE_EXP_DECL and PCRECPP_EXP_DECL. */
 
-/* But don't do that when building as part of GLib */
-#if 0
-#ifndef PCRE_EXP_DECL
-#  ifdef _WIN32
-#    ifndef PCRE_STATIC
-#      define PCRE_EXP_DECL extern __declspec(dllimport)
+#if defined(_WIN32) && !defined(PCRE_STATIC)
+#  ifndef PCRE_EXP_DECL
+#    define PCRE_EXP_DECL  extern __declspec(dllimport)
+#  endif
+#  ifdef __cplusplus
+#    ifndef PCRECPP_EXP_DECL
+#      define PCRECPP_EXP_DECL  extern __declspec(dllimport)
+#    endif
+#    ifndef PCRECPP_EXP_DEFN
+#      define PCRECPP_EXP_DEFN  __declspec(dllimport)
 #    endif
 #  endif
-#endif
 #endif
 
 /* By default, we use the standard "extern" declarations. */
 
 #ifndef PCRE_EXP_DECL
 #  ifdef __cplusplus
-#    define PCRE_EXP_DECL       extern "C"
+#    define PCRE_EXP_DECL  extern "C"
 #  else
-#    define PCRE_EXP_DECL       extern
+#    define PCRE_EXP_DECL  extern
+#  endif
+#endif
+
+#ifdef __cplusplus
+#  ifndef PCRECPP_EXP_DECL
+#    define PCRECPP_EXP_DECL  extern
+#  endif
+#  ifndef PCRECPP_EXP_DEFN
+#    define PCRECPP_EXP_DEFN
 #  endif
 #endif
 
@@ -110,6 +122,8 @@ extern "C" {
 #define PCRE_NEWLINE_CRLF       0x00300000
 #define PCRE_NEWLINE_ANY        0x00400000
 #define PCRE_NEWLINE_ANYCRLF    0x00500000
+#define PCRE_BSR_ANYCRLF        0x00800000
+#define PCRE_BSR_UNICODE        0x01000000
 
 /* Exec-time and get/set-time error codes */
 
@@ -135,7 +149,7 @@ extern "C" {
 #define PCRE_ERROR_DFA_WSSIZE     (-19)
 #define PCRE_ERROR_DFA_RECURSE    (-20)
 #define PCRE_ERROR_RECURSIONLIMIT (-21)
-#define PCRE_ERROR_NULLWSLIMIT    (-22)
+#define PCRE_ERROR_NULLWSLIMIT    (-22)  /* No longer actually used */
 #define PCRE_ERROR_BADNEWLINE     (-23)
 
 /* Request types for pcre_fullinfo() */
@@ -155,6 +169,7 @@ extern "C" {
 #define PCRE_INFO_DEFAULT_TABLES    11
 #define PCRE_INFO_OKPARTIAL         12
 #define PCRE_INFO_JCHANGED          13
+#define PCRE_INFO_HASCRORLF         14
 
 /* Request types for pcre_config(). Do not re-arrange, in order to remain
 compatible. */
@@ -167,6 +182,7 @@ compatible. */
 #define PCRE_CONFIG_STACKRECURSE            5
 #define PCRE_CONFIG_UNICODE_PROPERTIES      6
 #define PCRE_CONFIG_MATCH_LIMIT_RECURSION   7
+#define PCRE_CONFIG_BSR                     8
 
 /* Bit flags for the pcre_extra structure. Do not re-arrange or redefine
 these bits, just add new ones on the end, in order to remain compatible. */
@@ -225,6 +241,13 @@ typedef struct pcre_callout_block {
   int          next_item_length;  /* Length of next item in the pattern */
   /* ------------------------------------------------------------------ */
 } pcre_callout_block;
+
+
+/* Indirection for store get and free functions. These can be set to
+alternative malloc/free functions if required. Special ones are used in the
+non-recursive case for "frames". There is also an optional callout function
+that is triggered by the (?) regex item. For Virtual Pascal, these definitions
+have to take another form. */
 
 #include "glib.h"
 #include "galias.h"

@@ -44,6 +44,10 @@ uses macros to change their names from _pcre_xxx to xxxx, thereby avoiding name
 clashes with the library. */
 
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include "pcre_internal.h"
 
 
@@ -83,131 +87,137 @@ const uschar _pcre_utf8_table4[] = {
   2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
   3,3,3,3,3,3,3,3,4,4,4,4,5,5,5,5 };
 
-/* This table translates Unicode property names into type and code values. It
-is searched by binary chop, so must be in collating sequence of name. */
+/* The pcre_utt[] table below translates Unicode property names into type and
+code values. It is searched by binary chop, so must be in collating sequence of
+name. Originally, the table contained pointers to the name strings in the first
+field of each entry. However, that leads to a large number of relocations when
+a shared library is dynamically loaded. A significant reduction is made by
+putting all the names into a single, large string and then using offsets in the
+table itself. Maintenance is more error-prone, but frequent changes to this
+data is unlikely. */
 
-const char _pcre_ucp_names[] =
-  "Any\0" 
-  "Arabic\0" 
-  "Armenian\0" 
-  "Balinese\0" 
-  "Bengali\0" 
-  "Bopomofo\0" 
-  "Braille\0" 
-  "Buginese\0" 
-  "Buhid\0" 
-  "C\0" 
-  "Canadian_Aboriginal\0" 
-  "Cc\0" 
-  "Cf\0" 
-  "Cherokee\0" 
-  "Cn\0" 
-  "Co\0" 
-  "Common\0" 
-  "Coptic\0" 
-  "Cs\0" 
-  "Cuneiform\0" 
-  "Cypriot\0" 
-  "Cyrillic\0" 
-  "Deseret\0" 
-  "Devanagari\0" 
-  "Ethiopic\0" 
-  "Georgian\0" 
-  "Glagolitic\0" 
-  "Gothic\0" 
-  "Greek\0" 
-  "Gujarati\0" 
-  "Gurmukhi\0" 
-  "Han\0" 
-  "Hangul\0" 
-  "Hanunoo\0" 
-  "Hebrew\0" 
-  "Hiragana\0" 
-  "Inherited\0" 
-  "Kannada\0" 
-  "Katakana\0" 
-  "Kharoshthi\0" 
-  "Khmer\0" 
-  "L\0" 
-  "L&\0" 
-  "Lao\0" 
-  "Latin\0" 
-  "Limbu\0" 
-  "Linear_B\0" 
-  "Ll\0" 
-  "Lm\0" 
-  "Lo\0" 
-  "Lt\0" 
-  "Lu\0" 
-  "M\0" 
-  "Malayalam\0" 
-  "Mc\0" 
-  "Me\0" 
-  "Mn\0" 
-  "Mongolian\0" 
-  "Myanmar\0" 
-  "N\0" 
-  "Nd\0" 
-  "New_Tai_Lue\0" 
-  "Nko\0" 
-  "Nl\0" 
-  "No\0" 
-  "Ogham\0" 
-  "Old_Italic\0" 
-  "Old_Persian\0" 
-  "Oriya\0" 
-  "Osmanya\0" 
-  "P\0" 
-  "Pc\0" 
-  "Pd\0" 
-  "Pe\0" 
-  "Pf\0" 
-  "Phags_Pa\0" 
-  "Phoenician\0" 
-  "Pi\0" 
-  "Po\0" 
-  "Ps\0" 
-  "Runic\0" 
-  "S\0" 
-  "Sc\0" 
-  "Shavian\0" 
-  "Sinhala\0" 
-  "Sk\0" 
-  "Sm\0" 
-  "So\0" 
-  "Syloti_Nagri\0" 
-  "Syriac\0" 
-  "Tagalog\0" 
-  "Tagbanwa\0" 
-  "Tai_Le\0" 
-  "Tamil\0" 
-  "Telugu\0" 
-  "Thaana\0" 
-  "Thai\0" 
-  "Tibetan\0" 
-  "Tifinagh\0" 
-  "Ugaritic\0" 
-  "Yi\0" 
-  "Z\0" 
-  "Zl\0" 
-  "Zp\0" 
+const char _pcre_utt_names[] =
+  "Any\0"
+  "Arabic\0"
+  "Armenian\0"
+  "Balinese\0"
+  "Bengali\0"
+  "Bopomofo\0"
+  "Braille\0"
+  "Buginese\0"
+  "Buhid\0"
+  "C\0"
+  "Canadian_Aboriginal\0"
+  "Cc\0"
+  "Cf\0"
+  "Cherokee\0"
+  "Cn\0"
+  "Co\0"
+  "Common\0"
+  "Coptic\0"
+  "Cs\0"
+  "Cuneiform\0"
+  "Cypriot\0"
+  "Cyrillic\0"
+  "Deseret\0"
+  "Devanagari\0"
+  "Ethiopic\0"
+  "Georgian\0"
+  "Glagolitic\0"
+  "Gothic\0"
+  "Greek\0"
+  "Gujarati\0"
+  "Gurmukhi\0"
+  "Han\0"
+  "Hangul\0"
+  "Hanunoo\0"
+  "Hebrew\0"
+  "Hiragana\0"
+  "Inherited\0"
+  "Kannada\0"
+  "Katakana\0"
+  "Kharoshthi\0"
+  "Khmer\0"
+  "L\0"
+  "L&\0"
+  "Lao\0"
+  "Latin\0"
+  "Limbu\0"
+  "Linear_B\0"
+  "Ll\0"
+  "Lm\0"
+  "Lo\0"
+  "Lt\0"
+  "Lu\0"
+  "M\0"
+  "Malayalam\0"
+  "Mc\0"
+  "Me\0"
+  "Mn\0"
+  "Mongolian\0"
+  "Myanmar\0"
+  "N\0"
+  "Nd\0"
+  "New_Tai_Lue\0"
+  "Nko\0"
+  "Nl\0"
+  "No\0"
+  "Ogham\0"
+  "Old_Italic\0"
+  "Old_Persian\0"
+  "Oriya\0"
+  "Osmanya\0"
+  "P\0"
+  "Pc\0"
+  "Pd\0"
+  "Pe\0"
+  "Pf\0"
+  "Phags_Pa\0"
+  "Phoenician\0"
+  "Pi\0"
+  "Po\0"
+  "Ps\0"
+  "Runic\0"
+  "S\0"
+  "Sc\0"
+  "Shavian\0"
+  "Sinhala\0"
+  "Sk\0"
+  "Sm\0"
+  "So\0"
+  "Syloti_Nagri\0"
+  "Syriac\0"
+  "Tagalog\0"
+  "Tagbanwa\0"
+  "Tai_Le\0"
+  "Tamil\0"
+  "Telugu\0"
+  "Thaana\0"
+  "Thai\0"
+  "Tibetan\0"
+  "Tifinagh\0"
+  "Ugaritic\0"
+  "Yi\0"
+  "Z\0"
+  "Zl\0"
+  "Zp\0"
   "Zs\0";
 
 const ucp_type_table _pcre_utt[] = {
-  { 0, PT_ANY, 0 },
-  { 4, PT_SC, ucp_Arabic },
-  { 11, PT_SC, ucp_Armenian },
-  { 20, PT_SC, ucp_Balinese },
-  { 29, PT_SC, ucp_Bengali },
-  { 37, PT_SC, ucp_Bopomofo },
-  { 46, PT_SC, ucp_Braille },
-  { 54, PT_SC, ucp_Buginese },
-  { 63, PT_SC, ucp_Buhid },
-  { 69, PT_GC, ucp_C },
-  { 71, PT_SC, ucp_Canadian_Aboriginal },
-  { 91, PT_PC, ucp_Cc },
-  { 94, PT_PC, ucp_Cf },
-  { 97, PT_SC, ucp_Cherokee },
+  { 0,   PT_ANY, 0 },
+  { 4,   PT_SC, ucp_Arabic },
+  { 11,  PT_SC, ucp_Armenian },
+  { 20,  PT_SC, ucp_Balinese },
+  { 29,  PT_SC, ucp_Bengali },
+  { 37,  PT_SC, ucp_Bopomofo },
+  { 46,  PT_SC, ucp_Braille },
+  { 54,  PT_SC, ucp_Buginese },
+  { 63,  PT_SC, ucp_Buhid },
+  { 69,  PT_GC, ucp_C },
+  { 71,  PT_SC, ucp_Canadian_Aboriginal },
+  { 91,  PT_PC, ucp_Cc },
+  { 94,  PT_PC, ucp_Cf },
+  { 97,  PT_SC, ucp_Cherokee },
   { 106, PT_PC, ucp_Cn },
   { 109, PT_PC, ucp_Co },
   { 112, PT_SC, ucp_Common },
