@@ -1,4 +1,9 @@
 2007-11-07  Matthias Clasen <mclasen@redhat.com>
+
+	* glib/gkeyfile.[hc]: Make some functions that take
+	a GError return boolean instead of void.  (#375651, Matt Barnes)
+
+2007-11-07  Matthias Clasen <mclasen@redhat.com>
 	
 	* autogen.sh: Use automake 1.9
 
