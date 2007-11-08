@@ -665,6 +665,9 @@ g_main_context_unref (GMainContext *context)
   else
     main_contexts_without_pipe = g_slist_remove (main_contexts_without_pipe, 
 						 context);
+
+  if (context->cond != NULL)
+    g_cond_free (context->cond);
 #endif
   
   g_free (context);
