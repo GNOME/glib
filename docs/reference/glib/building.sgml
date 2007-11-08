@@ -148,7 +148,7 @@ How to compile GLib itself
       </listitem>
       <listitem>
 	<para>
-	  GRegex uses the the <ulink url="http://www.pcre.org/">PCRE library</ulink>
+	  GRegex uses the <ulink url="http://www.pcre.org/">PCRE library</ulink>
 	  for regular expression matching. The default is to use the internal
 	  version of PCRE that is patched to use GLib for memory management
 	  and Unicode handling. If you prefer to use the system-supplied PCRE

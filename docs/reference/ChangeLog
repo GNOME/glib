@@ -1,5 +1,9 @@
 2007-11-07  Matthias Clasen <mclasen@redhat.com>
 
+	* glib/building.sgml: Fix a typo
+
+2007-11-07  Matthias Clasen <mclasen@redhat.com>
+
 	* === Released 2.14.3 ===
 
 2007-11-05  Mathias Hasselmann  <mathias@openismus.com>
