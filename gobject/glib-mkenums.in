@@ -215,7 +215,7 @@ sub read_template_file {
 if (!defined $ARGV[0]) {
     usage;
 }
-while ($_ = $ARGV[0], /^-/) {
+while ($_=$ARGV[0],/^-/) {
     shift;
     last if /^--$/;
     if (/^--template$/)              { read_template_file (shift); }
@@ -230,6 +230,7 @@ while ($_ = $ARGV[0], /^-/) {
     elsif (/^--help$/ || /^-h$/)     { usage; }
     elsif (/^--version$/ || /^-v$/)  { version; }
     else { usage; }
+    last if not defined($ARGV[0]);
 }
 
 # put auto-generation comment
