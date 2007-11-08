@@ -1,5 +1,9 @@
 2007-11-07  Matthias Clasen <mclasen@redhat.com>
 
+	* branch for 2.14
+
+2007-11-07  Matthias Clasen <mclasen@redhat.com>
+
 	* glib/gspawn.c (g_spawn_async_with_pipes): Slightly improve
 	the wording of the docs.  (#492677, Areg Beketovski)
 
