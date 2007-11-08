@@ -1,5 +1,13 @@
 2007-11-08  Matthias Clasen <mclasen@redhat.com>
 
+	* configure.in:
+	* m4macros/glib-2.0.m4: Require pkg-config 0.16 in configure
+	and in AM_PATH_GLIB_2_0 to be consistent with the use of
+	PKG_PROG_PKG_CONFIG which was introduced in 0.16.  (#418778,
+	Loïc Minier)
+
+2007-11-08  Matthias Clasen <mclasen@redhat.com>
+
 	* glib/gstrfuncs.c (g_parse_long_long): Don't leave
 	out parameters uninitialized.  (#490061, Benjamin Otte)
 
