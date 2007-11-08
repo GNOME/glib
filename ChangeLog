@@ -1,4 +1,6 @@
 2007-11-07  Matthias Clasen <mclasen@redhat.com>
+	
+	* autogen.sh: Use automake 1.9
 
 	* acinclude.m4:
 	* configure.in: Move some inter-*.m4 includes from
