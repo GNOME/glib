@@ -24,6 +24,7 @@
 #include <stdarg.h>
 
 #include <glib/gerror.h>
+#include <glib/gslist.h>
 
 G_BEGIN_DECLS
 
