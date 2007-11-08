@@ -1,5 +1,12 @@
 2007-11-07  Matthias Clasen <mclasen@redhat.com>
 
+	* glib/glib.symbols:
+	* glib/gmarkup.[hc] (g_markup_parse_context_get_element_stack): 
+	New function, to get the stack of open elements.  (#452887,
+	Ryan Lortie)
+
+2007-11-07  Matthias Clasen <mclasen@redhat.com>
+
 	* glib/gkeyfile.[hc]: Make some functions that take
 	a GError return boolean instead of void.  (#375651, Matt Barnes)
 

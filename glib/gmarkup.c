@@ -1856,6 +1856,10 @@ g_markup_parse_context_end_parse (GMarkupParseContext *context,
  *
  * Retrieves the name of the currently open element.
  *
+ * If called from the start_element or end_element handlers this will
+ * give the element_name as passed to those functions. For the parent
+ * elements, see g_markup_parse_context_get_element_stack().
+ *
  * Since: 2.2
  **/
 G_CONST_RETURN gchar *
@@ -1868,6 +1872,33 @@ g_markup_parse_context_get_element (GMarkupParseContext *context)
   else
     return current_element (context);
 } 
+
+/**
+ * g_markup_parse_context_get_element_stack:
+ * @context: a #GMarkupParseContext
+ *
+ * Retrieves the element stack from the internal state of the parser.
+ * The returned #GSList is a list of strings where the first item is
+ * the currently open tag (as would be returned by
+ * g_markup_parse_context_get_element()) and the next item is its
+ * immediate parent.
+ *
+ * This function is intended to be used in the start_element and
+ * end_element handlers where g_markup_parse_context_get_element()
+ * would merely return the name of the element that is being
+ * processed.
+ *
+ * Returns: the element stack, which must not be modified
+ *
+ * Since 2.16
+ **/
+G_CONST_RETURN GSList *
+g_markup_parse_context_get_element_stack (GMarkupParseContext *context)
+{
+  g_return_val_if_fail (context != NULL, NULL);
+
+  return context->tag_stack;
+}
 
 /**
  * g_markup_parse_context_get_position:

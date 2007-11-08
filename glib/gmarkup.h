@@ -109,6 +109,7 @@ gboolean             g_markup_parse_context_parse (GMarkupParseContext *context,
 gboolean             g_markup_parse_context_end_parse (GMarkupParseContext *context,
                                                        GError             **error);
 G_CONST_RETURN gchar *g_markup_parse_context_get_element (GMarkupParseContext *context);
+G_CONST_RETURN GSList *g_markup_parse_context_get_element_stack (GMarkupParseContext *context);
 
 /* For user-constructed error messages, has no precise semantics */
 void                 g_markup_parse_context_get_position (GMarkupParseContext *context,
