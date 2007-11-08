@@ -31,7 +31,7 @@ AC_ARG_ENABLE(glibtest, [  --disable-glibtest      do not try to compile and run
       esac
   done
 
-  PKG_PROG_PKG_CONFIG([0.7])
+  PKG_PROG_PKG_CONFIG([0.16])
 
   no_glib=""
 
