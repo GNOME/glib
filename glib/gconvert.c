@@ -573,13 +573,13 @@ g_convert_with_iconv (const gchar *str,
   gchar *dest;
   gchar *outp;
   const gchar *p;
-  const gchar *shift_p = NULL;
   gsize inbytes_remaining;
   gsize outbytes_remaining;
   gsize err;
   gsize outbuf_size;
   gboolean have_error = FALSE;
   gboolean done = FALSE;
+  gboolean reset = FALSE;
   
   g_return_val_if_fail (converter != (GIConv) -1, NULL);
      
@@ -595,7 +595,10 @@ g_convert_with_iconv (const gchar *str,
 
   while (!done && !have_error)
     {
-      err = g_iconv (converter, (char **)&p, &inbytes_remaining, &outp, &outbytes_remaining);
+      if (reset)
+        err = g_iconv (converter, NULL, &inbytes_remaining, &outp, &outbytes_remaining);
+      else
+        err = g_iconv (converter, (char **)&p, &inbytes_remaining, &outp, &outbytes_remaining);
 
       if (err == (gsize) -1)
 	{
@@ -633,20 +636,16 @@ g_convert_with_iconv (const gchar *str,
 	}
       else 
 	{
-	  if (!shift_p)
+	  if (!reset)
 	    {
 	      /* call g_iconv with NULL inbuf to cleanup shift state */
-	      shift_p = p;
-	      p = NULL;
+	      reset = TRUE;
 	      inbytes_remaining = 0;
 	    }
 	  else
 	    done = TRUE;
 	}
     }
-
-  if (shift_p)
-    p = shift_p;
 
   *outp = '\0';
   

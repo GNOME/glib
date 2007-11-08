@@ -1,5 +1,10 @@
 2007-11-08  Matthias Clasen <mclasen@redhat.com>
 
+	* glib/gconvert.c (g_convert_with_iconv): Try harder to reset
+	shift state with AIX iconv().  (#467537)
+
+2007-11-08  Matthias Clasen <mclasen@redhat.com>
+
 	* configure.in:
 	* m4macros/glib-2.0.m4: Require pkg-config 0.16 in configure
 	and in AM_PATH_GLIB_2_0 to be consistent with the use of
