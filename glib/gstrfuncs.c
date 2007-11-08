@@ -650,9 +650,12 @@ g_parse_long_long (const gchar *nptr,
   
   g_return_val_if_fail (nptr != NULL, 0);
   
+  *negative = FALSE;
   if (base == 1 || base > 36)
     {
       errno = EINVAL;
+      if (endptr)
+	*endptr = nptr;
       return 0;
     }
   
@@ -666,7 +669,6 @@ g_parse_long_long (const gchar *nptr,
     goto noconv;
   
   /* Check for a sign.  */
-  *negative = FALSE;
   if (*s == '-')
     {
       *negative = TRUE;

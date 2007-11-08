@@ -1,3 +1,8 @@
+2007-11-08  Matthias Clasen <mclasen@redhat.com>
+
+	* glib/gstrfuncs.c (g_parse_long_long): Don't leave
+	out parameters uninitialized.  (#490061, Benjamin Otte)
+
 2007-11-07  Matthias Clasen <mclasen@redhat.com>
 
 	* glib/gmain.c (g_main_context_unref): Don't leak the
