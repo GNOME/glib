@@ -1,3 +1,10 @@
 2007-11-07  Matthias Clasen <mclasen@redhat.com>
 
+	* acinclude.m4:
+	* configure.in: Move some inter-*.m4 includes from
+	configure.in to acinclude.m4 to avoid warnings when
+	using automake 1.9.  (#449937)
+
+2007-11-07  Matthias Clasen <mclasen@redhat.com>
+
 	=== Branch for 2.14 ===

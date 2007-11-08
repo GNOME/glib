@@ -446,3 +446,7 @@ AC_DEFUN([jm_AC_HEADER_INTTYPES_H],
 ])
 
 
+m4_include(acglib.m4)dnl
+m4_include(glib/libcharset/codeset.m4)dnl
+m4_include(glib/libcharset/glibc21.m4)dnl
+m4_include(m4macros/glib-gettext.m4)dnl
