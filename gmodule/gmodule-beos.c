@@ -23,6 +23,7 @@
 /* 
  * MT safe
  */
+#include "config.h"
 
 #include <be/kernel/image.h> /* image (aka DSO) handling functions... */
 

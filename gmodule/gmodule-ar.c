@@ -24,6 +24,9 @@
 /* because we are compatible with archive format only since AIX 4.3 */
 
 #define __AR_BIG__
+
+#include "config.h"
+
 #include <ar.h>
 #include <stdlib.h>
 

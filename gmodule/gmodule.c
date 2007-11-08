@@ -28,10 +28,7 @@
  * MT safe
  */
 
-#include <config.h>
-#include "gmoduleconf.h"
-#include "gstdio.h"
-#include "gmodule.h"
+#include "config.h"
 
 #include <errno.h>
 #include <string.h>
@@ -45,6 +42,9 @@
 #include <io.h>		/* For open() and close() prototypes. */
 #endif
 
+#include "gmoduleconf.h"
+#include "gstdio.h"
+#include "gmodule.h"
 
 /* We maintain a list of modules, so we can reference count them.
  * That's needed because some platforms don't support refernce counts on

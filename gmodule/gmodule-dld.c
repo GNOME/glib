@@ -27,6 +27,7 @@
 /* 
  * MT safe
  */
+#include "config.h"
 
 #include <dl.h>
 
