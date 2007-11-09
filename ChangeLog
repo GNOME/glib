@@ -1,5 +1,10 @@
 2007-11-08  Matthias Clasen <mclasen@redhat.com>
 
+	* glib/goption.c (g_option_context_new): Improve the docs.
+	(#436293, Vincent Untz)
+
+2007-11-08  Matthias Clasen <mclasen@redhat.com>
+
 	* glib/gmain.c (g_main_loop_quit): Expand the docs 
 	a bit.  (#317775, Søren Sandmann)
 
