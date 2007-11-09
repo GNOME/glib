@@ -1,5 +1,9 @@
 2007-11-08  Matthias Clasen <mclasen@redhat.com>
 
+	* glib/tmpl/hooks.sgml: Cleanups and fixes
+
+2007-11-08  Matthias Clasen <mclasen@redhat.com>
+
 	* glib/tmpl/thread_pools.sgml: Fix the GThreadPool docs. 
 	(#491959, Areg Beketovski)
 
