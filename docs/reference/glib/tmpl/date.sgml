@@ -81,8 +81,8 @@ Similar to the <structname>struct timeval</structname> returned by
 the <function>gettimeofday()</function> UNIX call.
 </para>
 
-@tv_sec: seconds.
-@tv_usec: microseconds.
+@tv_sec: seconds
+@tv_usec: microseconds
 
 <!-- ##### FUNCTION g_get_current_time ##### -->
 <para>
@@ -100,7 +100,7 @@ depending on hardware and operating system; don't rely on the exact
 length of the sleep.
 </para>
 
-@microseconds: number of microseconds to pause.
+@microseconds: number of microseconds to pause
 
 
 <!-- ##### FUNCTION g_time_val_add ##### -->
@@ -203,19 +203,19 @@ Enumeration representing a month; values are #G_DATE_JANUARY,
 #G_DATE_FEBRUARY, etc. #G_DATE_BAD_MONTH is the invalid value.
 </para>
 
-@G_DATE_BAD_MONTH: invalid value.
-@G_DATE_JANUARY: January.
-@G_DATE_FEBRUARY: February.
-@G_DATE_MARCH: March.
-@G_DATE_APRIL: April.
-@G_DATE_MAY: May.
-@G_DATE_JUNE: June.
-@G_DATE_JULY: July.
-@G_DATE_AUGUST: August.
-@G_DATE_SEPTEMBER: September.
-@G_DATE_OCTOBER: October.
-@G_DATE_NOVEMBER: November.
-@G_DATE_DECEMBER: December.
+@G_DATE_BAD_MONTH: invalid value
+@G_DATE_JANUARY: January
+@G_DATE_FEBRUARY: February
+@G_DATE_MARCH: March
+@G_DATE_APRIL: April
+@G_DATE_MAY: May
+@G_DATE_JUNE: June
+@G_DATE_JULY: July
+@G_DATE_AUGUST: August
+@G_DATE_SEPTEMBER: September
+@G_DATE_OCTOBER: October
+@G_DATE_NOVEMBER: November
+@G_DATE_DECEMBER: December
 
 <!-- ##### TYPEDEF GDateYear ##### -->
 <para>
@@ -231,14 +231,14 @@ Enumeration representing a day of the week; #G_DATE_MONDAY,
 #G_DATE_TUESDAY, etc. #G_DATE_BAD_WEEKDAY is an invalid weekday.
 </para>
 
-@G_DATE_BAD_WEEKDAY: invalid value.
-@G_DATE_MONDAY: Monday.
-@G_DATE_TUESDAY: Tuesday.
-@G_DATE_WEDNESDAY: Wednesday.
-@G_DATE_THURSDAY: Thursday.
-@G_DATE_FRIDAY: Friday.
-@G_DATE_SATURDAY: Saturday.
-@G_DATE_SUNDAY: Sunday.
+@G_DATE_BAD_WEEKDAY: invalid value
+@G_DATE_MONDAY: Monday
+@G_DATE_TUESDAY: Tuesday
+@G_DATE_WEDNESDAY: Wednesday
+@G_DATE_THURSDAY: Thursday
+@G_DATE_FRIDAY: Friday
+@G_DATE_SATURDAY: Saturday
+@G_DATE_SUNDAY: Sunday
 
 <!-- ##### MACRO G_DATE_BAD_DAY ##### -->
 <para>
@@ -268,7 +268,7 @@ be cleared (as if you'd called g_date_clear()) but invalid (it won't
 represent an existing day). Free the return value with g_date_free().
 </para>
 
-@Returns: a newly-allocated #GDate.
+@Returns: a newly-allocated #GDate
 
 
 <!-- ##### FUNCTION g_date_new_dmy ##### -->
@@ -278,10 +278,10 @@ day-month-year triplet you pass in represents an existing day, the
 returned date will be valid.
 </para>
 
-@day: day of the month.
-@month: month of the year.
+@day: day of the month
+@month: month of the year
 @year: year
-@Returns: a newly-allocated #GDate initialized with @day, @month, and @year.
+@Returns: a newly-allocated #GDate initialized with @day, @month, and @year
 
 
 <!-- ##### FUNCTION g_date_new_julian ##### -->
@@ -291,8 +291,8 @@ Julian day number you pass in is valid (greater than 0, less than an
 unreasonably large number), the returned date will be valid.
 </para>
 
-@julian_day: days since January 1, Year 1.
-@Returns: a newly-allocated #GDate initialized with @julian_day.
+@julian_day: days since January 1, Year 1
+@Returns: a newly-allocated #GDate initialized with @julian_day
 
 
 <!-- ##### FUNCTION g_date_clear ##### -->
@@ -303,8 +303,8 @@ not contain garbage. Useful to init a date declared on the stack.
 Validity can be tested with g_date_valid().
 </para>
 
-@date: pointer to one or more dates to clear.
-@n_dates: number of dates to clear.
+@date: pointer to one or more dates to clear
+@n_dates: number of dates to clear
 
 
 <!-- ##### FUNCTION g_date_free ##### -->
@@ -312,7 +312,7 @@ Validity can be tested with g_date_valid().
 Frees a #GDate returned from g_date_new().
 </para>
 
-@date: a #GDate.
+@date: a #GDate
 
 
 <!-- ##### FUNCTION g_date_set_day ##### -->
@@ -321,8 +321,8 @@ Sets the day of the month for a #GDate. If the resulting day-month-year
 triplet is invalid, the date will be invalid.
 </para>
 
-@date: a #GDate.
-@day: day to set.
+@date: a #GDate
+@day: day to set
 
 
 <!-- ##### FUNCTION g_date_set_month ##### -->
@@ -331,8 +331,8 @@ Sets the month of the year for a #GDate.  If the resulting
 day-month-year triplet is invalid, the date will be invalid.
 </para>
 
-@date: a #GDate.
-@month: month to set.
+@date: a #GDate
+@month: month to set
 
 
 <!-- ##### FUNCTION g_date_set_year ##### -->
@@ -341,8 +341,8 @@ Sets the year for a #GDate. If the resulting day-month-year triplet is
 invalid, the date will be invalid.
 </para>
 
-@date: a #GDate.
-@year: year to set.
+@date: a #GDate
+@year: year to set
 
 
 <!-- ##### FUNCTION g_date_set_dmy ##### -->
@@ -352,10 +352,10 @@ triplet must be valid; if you aren't sure it is, call g_date_valid_dmy() to
 check before you set it.
 </para>
 
-@date: a #GDate.
-@day: day.
-@month: month.
-@y: year.
+@date: a #GDate
+@day: day
+@month: month
+@y: year
 
 
 <!-- ##### FUNCTION g_date_set_julian ##### -->
@@ -363,8 +363,8 @@ check before you set it.
 Sets the value of a #GDate from a Julian day number.
 </para>
 
-@date: a #GDate.
-@julian_date: Julian day number (days since January 1, Year 1).
+@date: a #GDate
+@julian_date: Julian day number (days since January 1, Year 1)
 
 
 <!-- ##### FUNCTION g_date_set_time ##### -->
@@ -411,8 +411,8 @@ user means by a given string (and it does work pretty well in that
 capacity).
 </para>
 
-@date: a #GDate to fill in.
-@str: string to parse.
+@date: a #GDate to fill in
+@str: string to parse
 
 
 <!-- ##### FUNCTION g_date_add_days ##### -->
@@ -421,8 +421,8 @@ Increments a date some number of days. To move forward by weeks, add
 weeks*7 days. The date must be valid.
 </para>
 
-@date: a #GDate to increment.
-@n_days: number of days to move the date forward.
+@date: a #GDate to increment
+@n_days: number of days to move the date forward
 
 
 <!-- ##### FUNCTION g_date_subtract_days ##### -->
@@ -431,8 +431,8 @@ Moves a date some number of days into the past. To move by weeks, just
 move by weeks*7 days. The date must be valid.
 </para>
 
-@date: a #GDate to decrement.
-@n_days: number of days to move.
+@date: a #GDate to decrement
+@n_days: number of days to move
 
 
 <!-- ##### FUNCTION g_date_add_months ##### -->
@@ -443,8 +443,8 @@ the destination month may not have the current day in it). The date
 must be valid.
 </para>
 
-@date: a #GDate to increment.
-@n_months: number of months to move forward.
+@date: a #GDate to increment
+@n_months: number of months to move forward
 
 
 <!-- ##### FUNCTION g_date_subtract_months ##### -->
@@ -454,8 +454,8 @@ the month doesn't exist in the destination month, the day of the month
 may change. The date must be valid.
 </para>
 
-@date: a #GDate to decrement.
-@n_months: number of months to move.
+@date: a #GDate to decrement
+@n_months: number of months to move
 
 
 <!-- ##### FUNCTION g_date_add_years ##### -->
@@ -465,8 +465,8 @@ and the destination year is not a leap year, the date will be changed
 to February 28. The date must be valid.
 </para>
 
-@date: a #GDate to increment.
-@n_years: number of years to move forward.
+@date: a #GDate to increment
+@n_years: number of years to move forward
 
 
 <!-- ##### FUNCTION g_date_subtract_years ##### -->
@@ -477,8 +477,8 @@ move to a non-leap-year) then the day is changed to February 29. The date
 must be valid.
 </para>
 
-@date: a #GDate to decrement.
-@n_years: number of years to move.
+@date: a #GDate to decrement
+@n_years: number of years to move
 
 
 <!-- ##### FUNCTION g_date_days_between ##### -->
@@ -488,21 +488,21 @@ If @date2 is prior to @date1, the returned value is negative.
 Both dates must be valid.
 </para>
 
-@date1: the first date.
-@date2: the second date.
-@Returns: the number of days between @date1 and @date2.
+@date1: the first date
+@date2: the second date
+@Returns: the number of days between @date1 and @date2
 
 
 <!-- ##### FUNCTION g_date_compare ##### -->
 <para>
-<function>qsort()</function>-style comparsion function for dates. Both
+qsort()-style comparsion function for dates. Both
 dates must be valid.
 </para>
 
-@lhs: first date to compare.
-@rhs: second date to compare.
+@lhs: first date to compare
+@rhs: second date to compare
 @Returns: 0 for equal, less than zero if @lhs is less than @rhs,
-greater than zero if @lhs is greater than @rhs.
+    greater than zero if @lhs is greater than @rhs
 
 
 <!-- ##### FUNCTION g_date_clamp ##### -->
@@ -513,9 +513,9 @@ Either @min_date and @max_date may be %NULL.  All non-%NULL dates
 must be valid.
 </para>
 
-@date: a #GDate to clamp.
-@min_date: minimum accepted value for @date.
-@max_date: maximum accepted value for @date.
+@date: a #GDate to clamp
+@min_date: minimum accepted value for @date
+@max_date: maximum accepted value for @date
 
 
 <!-- ##### FUNCTION g_date_order ##### -->
@@ -524,8 +524,8 @@ Checks if @date1 is less than or equal to @date2,
 and swap the values if this is not the case.
 </para>
 
-@date1: the first date.
-@date2: the second date.
+@date1: the first date
+@date2: the second date
 
 
 <!-- ##### FUNCTION g_date_get_day ##### -->
@@ -533,8 +533,8 @@ and swap the values if this is not the case.
 Returns the day of the month. The date must be valid.
 </para>
 
-@date: a #GDate to extract the day of the month from.
-@Returns: day of the month.
+@date: a #GDate to extract the day of the month from
+@Returns: day of the month
 
 
 <!-- ##### FUNCTION g_date_get_month ##### -->
@@ -542,8 +542,8 @@ Returns the day of the month. The date must be valid.
 Returns the month of the year. The date must be valid.
 </para>
 
-@date: a #GDate to get the month from.
-@Returns: month of the year as a #GDateMonth.
+@date: a #GDate to get the month from
+@Returns: month of the year as a #GDateMonth
 
 
 <!-- ##### FUNCTION g_date_get_year ##### -->
@@ -551,8 +551,8 @@ Returns the month of the year. The date must be valid.
 Returns the year of a #GDate. The date must be valid.
 </para>
 
-@date: a #GDate.
-@Returns: year in which the date falls.
+@date: a #GDate
+@Returns: year in which the date falls
 
 
 <!-- ##### FUNCTION g_date_get_julian ##### -->
@@ -563,8 +563,8 @@ January 1, Year 1 is Julian day 1; January 2, Year 1 is Julian day 2,
 etc. The date must be valid.
 </para>
 
-@date: a #GDate to extract the Julian day from.
-@Returns: Julian day.
+@date: a #GDate to extract the Julian day from
+@Returns: Julian day
 
 
 <!-- ##### FUNCTION g_date_get_weekday ##### -->
@@ -582,8 +582,8 @@ Returns the day of the year, where Jan 1 is the first day of the
 year. The date must be valid.
 </para>
 
-@date: a #GDate to extract day of year from.
-@Returns: day of the year.
+@date: a #GDate to extract day of year from
+@Returns: day of the year
 
 
 <!-- ##### FUNCTION g_date_get_days_in_month ##### -->
@@ -591,9 +591,9 @@ year. The date must be valid.
 Returns the number of days in a month, taking leap years into account.
 </para>
 
-@month: month.
-@year: year.
-@Returns: number of days in @month during the @year.
+@month: month
+@year: year
+@Returns: number of days in @month during the @year
 
 
 <!-- ##### FUNCTION g_date_is_first_of_month ##### -->
@@ -601,8 +601,8 @@ Returns the number of days in a month, taking leap years into account.
 Returns %TRUE if the date is on the first of a month. The date must be valid.
 </para>
 
-@date: a #GDate to check.
-@Returns: %TRUE if the date is the first of the month.
+@date: a #GDate to check
+@Returns: %TRUE if the date is the first of the month
 
 
 <!-- ##### FUNCTION g_date_is_last_of_month ##### -->
@@ -610,8 +610,8 @@ Returns %TRUE if the date is on the first of a month. The date must be valid.
 Returns %TRUE if the date is the last day of the month. The date must be valid.
 </para>
 
-@date: a #GDate to check.
-@Returns: %TRUE if the date is the last day of the month.
+@date: a #GDate to check
+@Returns: %TRUE if the date is the last day of the month
 
 
 <!-- ##### FUNCTION g_date_is_leap_year ##### -->
@@ -619,8 +619,8 @@ Returns %TRUE if the date is the last day of the month. The date must be valid.
 Returns %TRUE if the year is a leap year.
 </para>
 
-@year: year to check.
-@Returns: %TRUE if the year is a leap year.
+@year: year to check
+@Returns: %TRUE if the year is a leap year
 
 
 <!-- ##### FUNCTION g_date_get_monday_week_of_year ##### -->
@@ -630,8 +630,8 @@ Monday. If the date is before the first Monday of the year, return
 0. The date must be valid.
 </para>
 
-@date: a #GDate.
-@Returns: week of the year.
+@date: a #GDate
+@Returns: week of the year
 
 
 <!-- ##### FUNCTION g_date_get_monday_weeks_in_year ##### -->
@@ -644,8 +644,8 @@ the year, i.e. there are 53 Mondays if one of the extra days happens
 to be a Monday.)
 </para>
 
-@year: a year.
-@Returns: number of Mondays in the year.
+@year: a year
+@Returns: number of Mondays in the year
 
 
 <!-- ##### FUNCTION g_date_get_sunday_week_of_year ##### -->
@@ -655,8 +655,8 @@ are understood to being on Sunday. The date must be valid. Can return 0 if
 the day is before the first Sunday of the year.
 </para>
 
-@date: a #GDate.
-@Returns: week number.
+@date: a #GDate
+@Returns: week number
 
 
 <!-- ##### FUNCTION g_date_get_sunday_weeks_in_year ##### -->
@@ -669,8 +669,8 @@ the year, i.e. there are 53 Sundays if one of the extra days happens
 to be a Sunday.)
 </para>
 
-@year: year to count weeks in.
-@Returns: number of weeks.
+@year: year to count weeks in
+@Returns: number of weeks
 
 
 <!-- ##### FUNCTION g_date_get_iso8601_week_of_year ##### -->
@@ -699,11 +699,11 @@ expect that using g_date_strftime() would make the %F provided by the C99
 strftime() work on Windows where the C library only complies to C89.
 </para>
 
-@s: destination buffer.
-@slen: buffer size.
-@format: format string.
-@date: valid #GDate.
-@Returns: number of characters written to the buffer, or 0 the buffer was too small.
+@s: destination buffer
+@slen: buffer size
+@format: format string
+@date: valid #GDate
+@Returns: number of characters written to the buffer, or 0 the buffer was too small
 
 
 <!-- ##### FUNCTION g_date_to_struct_tm ##### -->
@@ -724,8 +724,8 @@ contain garbage; it should have been initialized with g_date_clear()
 if it wasn't allocated by one of the g_date_new() variants.
 </para>
 
-@date: a #GDate to check.
-@Returns: Whether the date is valid.
+@date: a #GDate to check
+@Returns: Whether the date is valid
 
 
 <!-- ##### FUNCTION g_date_valid_day ##### -->
@@ -734,8 +734,8 @@ Returns %TRUE if the day of the month is valid (a day is valid if it's
 between 1 and 31 inclusive).
 </para>
 
-@day: day to check.
-@Returns: %TRUE if the day is valid.
+@day: day to check
+@Returns: %TRUE if the day is valid
 
 
 <!-- ##### FUNCTION g_date_valid_month ##### -->
@@ -744,8 +744,8 @@ Returns %TRUE if the month value is valid. The 12 #GDateMonth
 enumeration values are the only valid months.
 </para>
 
-@month: month.
-@Returns: %TRUE if the month is valid.
+@month: month
+@Returns: %TRUE if the month is valid
 
 
 <!-- ##### FUNCTION g_date_valid_year ##### -->
@@ -754,8 +754,8 @@ Returns %TRUE if the year is valid. Any year greater than 0 is valid,
 though there is a 16-bit limit to what #GDate will understand.
 </para>
 
-@year: year.
-@Returns: %TRUE if the year is valid.
+@year: year
+@Returns: %TRUE if the year is valid
 
 
 <!-- ##### FUNCTION g_date_valid_dmy ##### -->
@@ -765,29 +765,29 @@ in the range of days #GDate understands (Year 1 or later, no more than
 a few thousand years in the future).
 </para>
 
-@day: day.
-@month: month.
-@year: year.
-@Returns: %TRUE if the date is a valid one.
+@day: day
+@month: month
+@year: year
+@Returns: %TRUE if the date is a valid one
 
 
 <!-- ##### FUNCTION g_date_valid_julian ##### -->
 <para>
-Returns %TRUE if the Julian day is valid. Anything greater than zero is basically a
-valid Julian, though there is a 32-bit limit.
+Returns %TRUE if the Julian day is valid. Anything greater than zero 
+is basically a valid Julian, though there is a 32-bit limit.
 </para>
 
-@julian_date: Julian day to check.
-@Returns: %TRUE if the Julian day is valid.
+@julian_date: Julian day to check
+@Returns: %TRUE if the Julian day is valid
 
 
 <!-- ##### FUNCTION g_date_valid_weekday ##### -->
 <para>
-Returns %TRUE if the weekday is valid. The 7 #GDateWeekday enumeration
+Returns %TRUE if the weekday is valid. The seven #GDateWeekday enumeration
 values are the only valid weekdays.
 </para>
 
-@weekday: weekday.
-@Returns: %TRUE if the weekday is valid.
+@weekday: weekday
+@Returns: %TRUE if the weekday is valid
 
 
