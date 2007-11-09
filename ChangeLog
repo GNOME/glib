@@ -1,5 +1,8 @@
 2007-11-08  Matthias Clasen <mclasen@redhat.com>
 
+	* mkinstalldirs: Temporarily add this script, to fix building
+	from svn.
+
 	* Makefile.am: Use MKDIRS_P instead of mkinstalldirs.
 
 2007-11-08  Matthias Clasen <mclasen@redhat.com>
