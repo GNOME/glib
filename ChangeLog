@@ -1,9 +1,12 @@
 2007-11-08  Matthias Clasen <mclasen@redhat.com>
+	
+	* autogen.sh: Accept automake 1.10, too
 
 	* mkinstalldirs: Temporarily add this script, to fix building
 	from svn.
 
-	* Makefile.am: Use MKDIRS_P instead of mkinstalldirs.
+	* Makefile.am: Use MKDIRS_P instead of mkinstalldirs, add
+	ChangeLog.pre-2-14 and mkinstalldirs to EXTRA_DIST.
 
 2007-11-08  Matthias Clasen <mclasen@redhat.com>
 
