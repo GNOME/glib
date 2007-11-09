@@ -2125,7 +2125,7 @@ next_valid_source (GMainContext *context,
  * @context: a #GMainContext
  * 
  * Tries to become the owner of the specified context.
- * If some other context is the owner of the context,
+ * If some other thread is the owner of the context,
  * returns %FALSE immediately. Ownership is properly
  * recursive: the owner can require ownership again
  * and will release ownership when g_main_context_release()
