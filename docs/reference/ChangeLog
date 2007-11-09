@@ -1,6 +1,12 @@
+2007-11-08  Matthias Clasen <mclasen@redhat.com>
+
+	* glib/tmpl/thread_pools.sgml: Fix the GThreadPool docs. 
+	(#491959, Areg Beketovski)
+
 2007-11-07  Matthias Clasen <mclasen@redhat.com>
 
 	* glib/glib-sections.txt: Add g_markup_parse_context_get_element_stack
+
 2007-11-07  Matthias Clasen <mclasen@redhat.com>
 
 	* glib/building.sgml: Fix a typo
