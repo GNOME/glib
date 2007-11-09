@@ -10,6 +10,7 @@ INCLUDES = -DG_LOG_DOMAIN=g_log_domain_glib @GLIB_DEBUG_FLAGS@ \
 	-DG_DISABLE_DEPRECATED -DGLIB_COMPILATION
 
 EXTRA_DIST = 			\
+	ChangeLog.pre-2-14	\
 	ChangeLog.pre-2-12	\
 	ChangeLog.pre-2-10	\
 	ChangeLog.pre-2-8	\
@@ -28,6 +29,7 @@ EXTRA_DIST = 			\
 	HACKING			\
 	MAINTAINERS		\
 	autogen.sh		\
+	mkinstalldirs		\
 	makefile.msc		\
 	glibconfig.h.win32.in	\
 	msvc_recommended_pragmas.h \
@@ -55,13 +57,7 @@ BUILT_EXTRA_DIST = 		\
 	gtk-doc.make
 
 configexecincludedir = $(libdir)/glib-2.0/include
-#configexecinclude_DATA = glibconfig.h
-
-install-exec-local: glibconfig.h
-	$(MKDIR_P) $(DESTDIR)$(configexecincludedir)
-	file=$(DESTDIR)$(configexecincludedir)/glibconfig.h; \
-	if test -r $$file && cmp -s glibconfig.h $$file; then :; \
-	else $(INSTALL_DATA) glibconfig.h $$file; fi
+configexecinclude_DATA = glibconfig.h
 
 uninstall-local:
 	rm -f $(DESTDIR)$(configexecincludedir)/glibconfig.h

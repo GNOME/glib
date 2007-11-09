@@ -44,7 +44,7 @@ endif
 
 BUILT_SOURCES = galias.h galiasdef.c
 
-MIRRORING_TAB_SOURCES = 			\
+MIRRORING_TAB_SOURCE = 				\
 	glib-mirroring-tab/Makefile 		\
 	glib-mirroring-tab/gen-mirroring-tab.c	\
 	glib-mirroring-tab/packtab.h		\
@@ -63,7 +63,7 @@ EXTRA_DIST = 			\
 	glib.symbols		\
 	gregex.c		\
 	gregex.h		\
-	$(MIRRORING_TAB_SOURCES)
+	$(MIRRORING_TAB_SOURCE)
 
 # These may be in the builddir too
 BUILT_EXTRA_DIST = 		\

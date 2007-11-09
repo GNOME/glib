@@ -1,5 +1,16 @@
 2007-11-09  Matthias Clasen <mclasen@redhat.com>
 
+	* configure.in: Add AM_PROG_CC_C_O.
+
+	* Makefile.am: Remove the install-exec-local hook and use
+	configexecincludedir_DATA instead, in an attempt to avoid
+	automake 1.9 <> 1.10 incompatibilities.
+
+	* glib/Makefile.am: Rename MIRRORING_TAB_SOURCES, since
+	automake 1.10 complains.
+
+2007-11-09  Matthias Clasen <mclasen@redhat.com>
+
 	* glib/gspawn.c (g_spawn_sync): Improve the docs.  (#491968,
 	Areg Beketovski)
 
