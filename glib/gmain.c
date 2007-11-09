@@ -719,7 +719,7 @@ _g_main_thread_init (void)
 /**
  * g_main_context_new:
  * 
- * Creates a new #GMainContext strcuture
+ * Creates a new #GMainContext structure.
  * 
  * Return value: the new #GMainContext
  **/
@@ -2176,7 +2176,7 @@ g_main_context_acquire (GMainContext *context)
  * 
  * Releases ownership of a context previously acquired by this thread
  * with g_main_context_acquire(). If the context was acquired multiple
- * times, the only release ownership when g_main_context_release()
+ * times, the ownership will be released only when g_main_context_release()
  * is called as many times as it was acquired.
  **/
 void

@@ -1,7 +1,8 @@
 2007-11-08  Matthias Clasen <mclasen@redhat.com>
 
-	* glib/gmain.c (g_main_context_release): Fix the doc
-	wording.  (#491957, Areg Beketovski)
+	* glib/gmain.c (g_main_context_release): 
+	(g_main_context_new): Fix the doc wording.  (#491957, 
+	Areg Beketovski)
 
 2007-11-08  Matthias Clasen <mclasen@redhat.com>
 
