@@ -1,5 +1,9 @@
 2007-11-08  Matthias Clasen <mclasen@redhat.com>
 
+	* Makefile.am: Use MKDIRS_P instead of mkinstalldirs.
+
+2007-11-08  Matthias Clasen <mclasen@redhat.com>
+
 	* glib/gmarkup.h: Include gslist.h. Pointed out by Michael Natterer.
 
 2007-11-08  Matthias Clasen <mclasen@redhat.com>

@@ -58,7 +58,7 @@ configexecincludedir = $(libdir)/glib-2.0/include
 #configexecinclude_DATA = glibconfig.h
 
 install-exec-local: glibconfig.h
-	$(mkinstalldirs) $(DESTDIR)$(configexecincludedir)
+	$(MKDIR_P) $(DESTDIR)$(configexecincludedir)
 	file=$(DESTDIR)$(configexecincludedir)/glibconfig.h; \
 	if test -r $$file && cmp -s glibconfig.h $$file; then :; \
 	else $(INSTALL_DATA) glibconfig.h $$file; fi
