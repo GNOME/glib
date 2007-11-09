@@ -29,6 +29,7 @@
  */
 
 #include "config.h"
+#include "glibconfig.h"
 
 #include <errno.h>
 #include <string.h>
@@ -38,7 +39,7 @@
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
-#if defined (G_OS_WIN32)
+#ifdef G_OS_WIN32
 #include <io.h>		/* For open() and close() prototypes. */
 #endif
 
