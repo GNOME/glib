@@ -106,7 +106,7 @@ Calls all of the #GHook functions in a #GHookList.
 <!-- ##### FUNCTION g_hook_list_invoke_check ##### -->
 <para>
 Calls all of the #GHook functions in a #GHookList.
-Any function which returns %TRUE is removed from the #GHookList.
+Any function which returns %FALSE is removed from the #GHookList.
 </para>
 
 @hook_list: a #GHookList
