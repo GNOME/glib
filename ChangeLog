@@ -1,5 +1,10 @@
 2007-11-08  Matthias Clasen <mclasen@redhat.com>
 
+	* glib/gmain.c (g_main_context_release): Fix the doc
+	wording.  (#491957, Areg Beketovski)
+
+2007-11-08  Matthias Clasen <mclasen@redhat.com>
+
 	* glib/gutils.c (g_set_application_name): Add a missing
 	since tag.  (#464259, Mark Doliner)
 

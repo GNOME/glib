@@ -1958,6 +1958,7 @@ g_get_application_name (void)
  * The application name will be used in contexts such as error messages,
  * or when displaying an application's name in the task list.
  * 
+ * Since: 2.2
  **/
 void
 g_set_application_name (const gchar *application_name)
