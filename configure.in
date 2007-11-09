@@ -7,6 +7,10 @@ dnl *** include special GLib macros ***
 dnl ***********************************
 
 m4_define(glib_configure_in)
+m4_include(acglib.m4)dnl 	 
+m4_include(glib/libcharset/codeset.m4)dnl 	 
+m4_include(glib/libcharset/glibc21.m4)dnl 	 
+m4_include(m4macros/glib-gettext.m4)dnl
 
 #
 # The following version number definitions apply to GLib, GModule, GObject 
