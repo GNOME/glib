@@ -1,5 +1,6 @@
 2007-11-08  Matthias Clasen <mclasen@redhat.com>
 
+	* glib/tmpl/memory.sgml
 	* glib/tmpl/hooks.sgml: Cleanups and fixes
 
 2007-11-08  Matthias Clasen <mclasen@redhat.com>

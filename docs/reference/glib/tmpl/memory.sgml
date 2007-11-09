@@ -46,9 +46,9 @@ it is normally unnecessary to cast it explicitly, and doing
 so might hide memory allocation errors.
 </para>
 
-@struct_type: the type of the elements to allocate.
-@n_structs: the number of elements to allocate.
-@Returns: a pointer to the allocated memory, cast to a pointer to @struct_type.
+@struct_type: the type of the elements to allocate
+@n_structs: the number of elements to allocate
+@Returns: a pointer to the allocated memory, cast to a pointer to @struct_type
 
 
 <!-- ##### MACRO g_new0 ##### -->
@@ -75,10 +75,10 @@ Reallocates the memory pointed to by @mem, so that it now has space for
 the memory, which may have been moved.
 </para>
 
-@struct_type: the type of the elements to allocate.
-@mem: the currently allocated memory.
-@n_structs: the number of elements to allocate.
-@Returns: a pointer to the new allocated memory, cast to a pointer to @struct_type.
+@struct_type: the type of the elements to allocate
+@mem: the currently allocated memory
+@n_structs: the number of elements to allocate
+@Returns: a pointer to the new allocated memory, cast to a pointer to @struct_type
 
 
 <!-- ##### MACRO g_try_new ##### -->
@@ -89,9 +89,9 @@ The returned pointer is cast to a pointer to the given type.
 If @n_structs is 0 it returns %NULL.
 </para>
 
-@struct_type: the type of the elements to allocate.
-@n_structs: the number of elements to allocate.
-@Returns: a pointer to the allocated memory, cast to a pointer to @struct_type.
+@struct_type: the type of the elements to allocate
+@n_structs: the number of elements to allocate
+@Returns: a pointer to the allocated memory, cast to a pointer to @struct_type
 @Since: 2.8
 
 
@@ -104,9 +104,9 @@ The returned pointer is cast to a pointer to the given type.
 If @n_counts is 0 it returns %NULL.
 </para>
 
-@struct_type: the type of the elements to allocate.
-@n_structs: the number of elements to allocate.
-@Returns: a pointer to the allocated memory, cast to a pointer to @struct_type.
+@struct_type: the type of the elements to allocate
+@n_structs: the number of elements to allocate
+@Returns: a pointer to the allocated memory, cast to a pointer to @struct_type
 @Since: 2.8
 
 
@@ -118,10 +118,10 @@ failure. Contrast with g_renew(), which aborts the program on failure.
 It returns the new address of the memory, which may have been moved.
 </para>
 
-@struct_type: the type of the elements to allocate.
-@mem: the currently allocated memory.
-@n_structs: the number of elements to allocate.
-@Returns: a pointer to the new allocated memory, cast to a pointer to @struct_type.
+@struct_type: the type of the elements to allocate
+@mem: the currently allocated memory
+@n_structs: the number of elements to allocate
+@Returns: a pointer to the new allocated memory, cast to a pointer to @struct_type
 @Since: 2.8
 
 
@@ -131,8 +131,8 @@ Allocates @n_bytes bytes of memory.
 If @n_bytes is 0 it returns %NULL.
 </para>
 
-@n_bytes: the number of bytes to allocate.
-@Returns: a pointer to the allocated memory.
+@n_bytes: the number of bytes to allocate
+@Returns: a pointer to the allocated memory
 
 
 <!-- ##### FUNCTION g_malloc0 ##### -->
@@ -141,8 +141,8 @@ Allocates @n_bytes bytes of memory, initialized to 0's.
 If @n_bytes is 0 it returns %NULL.
 </para>
 
-@n_bytes: the number of bytes to allocate.
-@Returns: a pointer to the allocated memory.
+@n_bytes: the number of bytes to allocate
+@Returns: a pointer to the allocated memory
 
 
 <!-- ##### FUNCTION g_realloc ##### -->
@@ -150,12 +150,13 @@ If @n_bytes is 0 it returns %NULL.
 Reallocates the memory pointed to by @mem, so that it now has space for
 @n_bytes bytes of memory. It returns the new address of the memory, which may
 have been moved. @mem may be %NULL, in which case it's considered to 
-have zero-length. @n_bytes may be 0, in which case %NULL will be returned.
+have zero-length. @n_bytes may be 0, in which case %NULL will be returned
+and @mem will be freed unless it is %NULL.
 </para>
 
-@mem: the memory to reallocate.
-@n_bytes: new size of the memory in bytes.
-@Returns: the new address of the allocated memory.
+@mem: the memory to reallocate
+@n_bytes: new size of the memory in bytes
+@Returns: the new address of the allocated memory
 
 
 <!-- ##### FUNCTION g_try_malloc ##### -->
@@ -174,8 +175,8 @@ Attempts to allocate @n_bytes, initialized to 0's, and returns %NULL on
 failure. Contrast with g_malloc0(), which aborts the program on failure.
 </para>
 
-@n_bytes: number of bytes to allocate.
-@Returns: the allocated memory, or %NULL.
+@n_bytes: number of bytes to allocate
+@Returns: the allocated memory, or %NULL
 @Since: 2.8
 
 
@@ -197,7 +198,7 @@ Frees the memory pointed to by @mem.
 If @mem is %NULL it simply returns.
 </para>
 
-@mem: the memory to free.
+@mem: the memory to free
 
 
 <!-- ##### VARIABLE g_mem_gc_friendly ##### -->
@@ -339,6 +340,3 @@ still in use.
 Note that this function will not output anything unless you have
 previously installed the #glib_mem_profiler_table with g_mem_set_vtable().
 </para>
-
-
-
