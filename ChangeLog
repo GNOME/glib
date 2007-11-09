@@ -1,3 +1,8 @@
+2007-11-09  Matthias Clasen <mclasen@redhat.com>
+
+	* glib/gspawn.c (g_spawn_sync): Improve the docs.  (#491968,
+	Areg Beketovski)
+
 2007-11-08  Matthias Clasen <mclasen@redhat.com>
 
 	* glib/gmain.c (g_main_context_release): 
