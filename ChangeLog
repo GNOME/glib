@@ -1,5 +1,10 @@
 2007-11-08  Matthias Clasen <mclasen@redhat.com>
 
+	* glib/gutils.c (g_set_application_name): Add a missing
+	since tag.  (#464259, Mark Doliner)
+
+2007-11-08  Matthias Clasen <mclasen@redhat.com>
+
 	* glib/goption.c (g_option_context_new): Improve the docs.
 	(#436293, Vincent Untz)
 
