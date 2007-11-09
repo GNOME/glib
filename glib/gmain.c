@@ -2914,7 +2914,10 @@ g_main_loop_run (GMainLoop *loop)
  * @loop: a #GMainLoop
  * 
  * Stops a #GMainLoop from running. Any calls to g_main_loop_run()
- * for the loop will return.
+ * for the loop will return. 
+ *
+ * Note that sources that have already been dispatched when 
+ * g_main_loop_quit() is called will still be executed.
  **/
 void 
 g_main_loop_quit (GMainLoop *loop)
