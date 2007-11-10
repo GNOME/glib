@@ -437,7 +437,7 @@ g_key_file_load_from_fd (GKeyFile       *key_file,
 /**
  * g_key_file_load_from_file:
  * @key_file: an empty #GKeyFile struct
- * @file: the path of a filename to load, in the GLib file name encoding
+ * @file: the path of a filename to load, in the GLib filename encoding
  * @flags: flags from #GKeyFileFlags
  * @error: return location for a #GError, or %NULL
  *
@@ -445,7 +445,8 @@ g_key_file_load_from_fd (GKeyFile       *key_file,
  * If the file could not be loaded then %error is set to 
  * either a #GFileError or #GKeyFileError.
  *
- * Return value: %TRUE if a key file could be loaded, %FALSE othewise
+ * Return value: %TRUE if a key file could be loaded, %FALSE otherwise
+ *
  * Since: 2.6
  **/
 gboolean
@@ -485,16 +486,16 @@ g_key_file_load_from_file (GKeyFile       *key_file,
 /**
  * g_key_file_load_from_data:
  * @key_file: an empty #GKeyFile struct
- * @data: key file loaded in memory.
+ * @data: key file loaded in memory
  * @length: the length of @data in bytes
  * @flags: flags from #GKeyFileFlags
  * @error: return location for a #GError, or %NULL
  *
- * Loads a key file from memory into an empty #GKeyFile structure.  If
- * the object cannot be created then %error is set to a
- * #GKeyFileError. 
+ * Loads a key file from memory into an empty #GKeyFile structure.  
+ * If the object cannot be created then %error is set to a #GKeyFileError. 
  *
- * Return value: %TRUE if a key file could be loaded, %FALSE othewise
+ * Return value: %TRUE if a key file could be loaded, %FALSE otherwise
+ *
  * Since: 2.6
  **/
 gboolean
@@ -555,7 +556,7 @@ g_key_file_load_from_data (GKeyFile       *key_file,
  * be loaded then an %error is set to either a #GFileError or
  * #GKeyFileError.
  *
- * Return value: %TRUE if a key file could be loaded, %FALSE othewise
+ * Return value: %TRUE if a key file could be loaded, %FALSE otherwise
  *
  * Since: 2.14
  **/
@@ -1066,8 +1067,8 @@ g_key_file_to_data (GKeyFile  *key_file,
  * be found, %NULL is returned and @error is set to
  * #G_KEY_FILE_ERROR_GROUP_NOT_FOUND.
  *
- * Return value: a newly-allocated %NULL-terminated array of
- * strings. Use g_strfreev() to free it.
+ * Return value: a newly-allocated %NULL-terminated array of strings. 
+ *     Use g_strfreev() to free it.
  *
  * Since: 2.6
  **/
@@ -1157,9 +1158,9 @@ g_key_file_get_start_group (GKeyFile *key_file)
  * @key_file: a #GKeyFile
  * @length: return location for the number of returned groups, or %NULL
  *
- * Returns all groups in the key file loaded with @key_file.  The
- * array of returned groups will be %NULL-terminated, so @length may
- * optionally be %NULL.
+ * Returns all groups in the key file loaded with @key_file.  
+ * The array of returned groups will be %NULL-terminated, so 
+ * @length may optionally be %NULL.
  *
  * Return value: a newly-allocated %NULL-terminated array of strings. 
  *   Use g_strfreev() to free it.
@@ -1274,9 +1275,9 @@ g_key_file_get_value (GKeyFile     *key_file,
  * @key: a key
  * @value: a string
  *
- * Associates a new value with @key under @group_name.  If @key
- * cannot be found then it is created. If @group_name cannot be
- * found then it is created.
+ * Associates a new value with @key under @group_name.  
+ * If @key cannot be found then it is created. 
+ * If @group_name cannot be found then it is created.
  *
  * Since: 2.6
  **/
@@ -1403,9 +1404,9 @@ g_key_file_get_string (GKeyFile     *key_file,
  * @key: a key
  * @string: a string
  *
- * Associates a new string value with @key under @group_name.  If
- * @key cannot be found then it is created.  If @group_name
- * cannot be found then it is created.
+ * Associates a new string value with @key under @group_name.  
+ * If @key cannot be found then it is created.  
+ * If @group_name cannot be found then it is created.
  *
  * Since: 2.6
  **/
@@ -1526,8 +1527,8 @@ g_key_file_get_string_list (GKeyFile     *key_file,
  * @length: number of locale string values in @list
  *
  * Associates a list of string values for @key under @group_name.
- * If @key cannot be found then it is created.  If @group_name 
- * cannot be found then it is created.
+ * If @key cannot be found then it is created.  
+ * If @group_name cannot be found then it is created.
  *
  * Since: 2.6
  **/
@@ -1568,9 +1569,8 @@ g_key_file_set_string_list (GKeyFile            *key_file,
  * @locale: a locale
  * @string: a string
  *
- * Associates a string value for @key and @locale under
- * @group_name.  If the translation for @key cannot be found 
- * then it is created.
+ * Associates a string value for @key and @locale under @group_name.  
+ * If the translation for @key cannot be found then it is created.
  *
  * Since: 2.6
  **/
@@ -1609,8 +1609,8 @@ extern GSList *_g_compute_locale_variants (const gchar *locale);
  * translated in the given @locale if available.  If @locale is
  * %NULL then the current locale is assumed. 
  *
- * If @key cannot be found then %NULL is returned and @error is set to
- * #G_KEY_FILE_ERROR_KEY_NOT_FOUND. If the value associated
+ * If @key cannot be found then %NULL is returned and @error is set 
+ * to #G_KEY_FILE_ERROR_KEY_NOT_FOUND. If the value associated
  * with @key cannot be interpreted or no suitable translation can
  * be found then the untranslated value is returned.
  *
@@ -1706,11 +1706,12 @@ g_key_file_get_locale_string (GKeyFile     *key_file,
  * translated in the given @locale if available.  If @locale is
  * %NULL then the current locale is assumed.
 
- * If @key cannot be found then %NULL is returned and @error is set to
- * #G_KEY_FILE_ERROR_KEY_NOT_FOUND. If the values associated
+ * If @key cannot be found then %NULL is returned and @error is set 
+ * to #G_KEY_FILE_ERROR_KEY_NOT_FOUND. If the values associated
  * with @key cannot be interpreted or no suitable translations
- * can be found then the untranslated values are returned.
- * The returned array is %NULL-terminated, so @length may optionally be %NULL.
+ * can be found then the untranslated values are returned. The 
+ * returned array is %NULL-terminated, so @length may optionally 
+ * be %NULL.
  *
  * Return value: a newly allocated %NULL-terminated string array
  *   or %NULL if the key isn't found. The string array should be freed
@@ -1824,8 +1825,8 @@ g_key_file_set_locale_string_list (GKeyFile            *key_file,
  * associated with @key cannot be interpreted as a boolean then %FALSE
  * is returned and @error is set to #G_KEY_FILE_ERROR_INVALID_VALUE.
  *
- * Return value: the value associated with the key as a boolean, or
- * %FALSE if the key was not found or could not be parsed.
+ * Return value: the value associated with the key as a boolean, 
+ *    or %FALSE if the key was not found or could not be parsed.
  *
  * Since: 2.6
  **/
@@ -1919,7 +1920,7 @@ g_key_file_set_boolean (GKeyFile    *key_file,
  * and @error is set to #G_KEY_FILE_ERROR_INVALID_VALUE.
  *
  * Return value: the values associated with the key as a list of
- * booleans, or %NULL if the key was not found or could not be parsed.
+ *    booleans, or %NULL if the key was not found or could not be parsed.
  * 
  * Since: 2.6
  **/
@@ -1983,8 +1984,8 @@ g_key_file_get_boolean_list (GKeyFile     *key_file,
  * @list: an array of boolean values
  * @length: length of @list
  *
- * Associates a list of boolean values with @key under
- * @group_name.  If @key cannot be found then it is created.
+ * Associates a list of boolean values with @key under @group_name.  
+ * If @key cannot be found then it is created.
  * If @group_name is %NULL, the start_group is used.
  *
  * Since: 2.6
@@ -2027,7 +2028,7 @@ g_key_file_set_boolean_list (GKeyFile    *key_file,
  * @error: return location for a #GError
  *
  * Returns the value associated with @key under @group_name as an
- * integer. If @group_name is %NULL, the start_group is used.
+ * integer. If @group_name is %NULL, the start group is used.
  *
  * If @key cannot be found then 0 is returned and @error is set to
  * #G_KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the value associated
@@ -2035,7 +2036,7 @@ g_key_file_set_boolean_list (GKeyFile    *key_file,
  * and @error is set to #G_KEY_FILE_ERROR_INVALID_VALUE.
  *
  * Return value: the value associated with the key as an integer, or
- * 0 if the key was not found or could not be parsed.
+ *     0 if the key was not found or could not be parsed.
  *
  * Since: 2.6
  **/
@@ -2131,7 +2132,7 @@ g_key_file_set_integer (GKeyFile    *key_file,
  * and @error is set to #G_KEY_FILE_ERROR_INVALID_VALUE.
  *
  * Return value: the values associated with the key as a list of
- * integers, or %NULL if the key was not found or could not be parsed.
+ *     integers, or %NULL if the key was not found or could not be parsed.
  *
  * Since: 2.6
  **/
@@ -2193,17 +2194,17 @@ g_key_file_get_integer_list (GKeyFile     *key_file,
  * @list: an array of integer values
  * @length: number of integer values in @list
  *
- * Associates a list of integer values with @key under
- * @group_name.  If @key cannot be found then it is created.
+ * Associates a list of integer values with @key under @group_name.  
+ * If @key cannot be found then it is created.
  *
  * Since: 2.6
  **/
 void
-g_key_file_set_integer_list (GKeyFile     *key_file,
-			     const gchar  *group_name,
-			     const gchar  *key,
-			     gint          list[],
-			     gsize         length)
+g_key_file_set_integer_list (GKeyFile    *key_file,
+			     const gchar *group_name,
+			     const gchar *key,
+			     gint         list[],
+			     gsize        length)
 {
   GString *values;
   gsize i;
@@ -2244,7 +2245,7 @@ g_key_file_set_integer_list (GKeyFile     *key_file,
  * and @error is set to #G_KEY_FILE_ERROR_INVALID_VALUE.
  *
  * Return value: the value associated with the key as a double, or
- * 0.0 if the key was not found or could not be parsed.
+ *     0.0 if the key was not found or could not be parsed.
  *
  * Since: 2.12
  **/
@@ -2304,8 +2305,8 @@ g_key_file_get_double  (GKeyFile     *key_file,
  * @value: an double value
  *
  * Associates a new double value with @key under @group_name.
- * If @key cannot be found then it is created. If @group_name
- * is %NULL, the start group is used.
+ * If @key cannot be found then it is created. 
+ * If @group_name is %NULL, the start group is used.
  *
  * Since: 2.12
  **/
@@ -2340,7 +2341,7 @@ g_key_file_set_double  (GKeyFile    *key_file,
  * and @error is set to #G_KEY_FILE_ERROR_INVALID_VALUE.
  *
  * Return value: the values associated with the key as a list of
- * doubles, or %NULL if the key was not found or could not be parsed.
+ *     doubles, or %NULL if the key was not found or could not be parsed.
  *
  * Since: 2.12
  **/
@@ -2409,11 +2410,11 @@ g_key_file_get_double_list  (GKeyFile     *key_file,
  * Since: 2.12
  **/
 void
-g_key_file_set_double_list (GKeyFile     *key_file,
-			    const gchar  *group_name,
-			    const gchar  *key,
-			    gdouble       list[],
-			    gsize         length)
+g_key_file_set_double_list (GKeyFile    *key_file,
+			    const gchar *group_name,
+			    const gchar *key,
+			    gdouble      list[],
+			    gsize        length)
 {
   GString *values;
   gsize i;
@@ -2597,10 +2598,9 @@ g_key_file_set_top_comment (GKeyFile     *key_file,
  * @error: return location for a #GError
  *
  * Places a comment above @key from @group_name.
- * If @key is %NULL then @comment will be written
- * above @group_name.  If both @key and @group_name
- * are NULL, then @comment will be written above
- * the first group in the file.
+ * If @key is %NULL then @comment will be written above @group_name.  
+ * If both @key and @group_name  are %NULL, then @comment will be 
+ * written above the first group in the file.
  *
  * Returns: %TRUE if the comment was written, %FALSE otherwise
  *
@@ -2832,10 +2832,9 @@ g_key_file_get_top_comment (GKeyFile  *key_file,
  * @error: return location for a #GError
  *
  * Retrieves a comment above @key from @group_name.
- * @group_name. If @key is %NULL then @comment will
- * be read from above @group_name.  If both @key
- * and @group_name are NULL, then @comment will
- * be read from above the first group in the file.
+ * If @key is %NULL then @comment will be read from above 
+ * @group_name. If both @key and @group_name are %NULL, then 
+ * @comment will be read from above the first group in the file.
  *
  * Returns: a comment that should be freed with g_free()
  *
@@ -2865,9 +2864,8 @@ g_key_file_get_comment (GKeyFile     *key_file,
  * @error: return location for a #GError
  *
  * Removes a comment above @key from @group_name.
- * @group_name. If @key is %NULL then @comment will
- * be written above @group_name.  If both @key
- * and @group_name are NULL, then @comment will
+ * If @key is %NULL then @comment will be written above @group_name. 
+ * If both @key and @group_name are %NULL, then @comment will
  * be written above the first group in the file.
  *
  * Returns: %TRUE if the comment was removed, %FALSE otherwise

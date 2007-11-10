@@ -1,5 +1,10 @@
 2007-11-09  Matthias Clasen <mclasen@redhat.com>
 
+	* glib/gkeyfile.c: Coding style cleanups and doc 
+	improvements.  (#491979, Areg Beketovski)
+
+2007-11-09  Matthias Clasen <mclasen@redhat.com>
+
 	* glib/giochannel.c: Coding style cleanups and doc 
 	improvements.  (#491975, Areg Beketovski)
 
