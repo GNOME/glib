@@ -2864,9 +2864,9 @@ g_key_file_get_comment (GKeyFile     *key_file,
  * @error: return location for a #GError
  *
  * Removes a comment above @key from @group_name.
- * If @key is %NULL then @comment will be written above @group_name. 
+ * If @key is %NULL then @comment will be removed above @group_name. 
  * If both @key and @group_name are %NULL, then @comment will
- * be written above the first group in the file.
+ * be removed above the first group in the file.
  *
  * Returns: %TRUE if the comment was removed, %FALSE otherwise
  *
