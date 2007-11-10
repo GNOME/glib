@@ -1,5 +1,8 @@
 2007-11-09  Matthias Clasen <mclasen@redhat.com>
 
+	* glib/tmpl/date.sgml: Add a footnote explaining leap years.
+	(#491982, Areg Beketovski)
+
 	* glib/tmpl/date.sgml: Improve g_date_clamp docs.  (#491970,
 	Areg Beketovski)
 
