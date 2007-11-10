@@ -1,5 +1,8 @@
 2007-11-09  Matthias Clasen <mclasen@redhat.com>
 
+	* glib/tmpl/patterns.sgml: Add a warning about strlen vs
+	g_utf8_strlen.  (#455725, Michael Rasmussen)
+
 	* glib/tmpl/date.sgml: Add a footnote explaining leap years.
 	(#491982, Areg Beketovski)
 
