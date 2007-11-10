@@ -1,5 +1,9 @@
 2007-11-09  Matthias Clasen <mclasen@redhat.com>
 
+	* glib/gdate.c: Coding style fixes.
+
+2007-11-09  Matthias Clasen <mclasen@redhat.com>
+
 	* configure.in: Add AM_PROG_CC_C_O.
 
 	* Makefile.am: Remove the install-exec-local hook and use

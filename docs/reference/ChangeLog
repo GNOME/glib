@@ -1,3 +1,8 @@
+2007-11-09  Matthias Clasen <mclasen@redhat.com>
+
+	* glib/tmpl/date.sgml: Improve g_date_clamp docs.  (#491970,
+	Areg Beketovski)
+
 2007-11-08  Matthias Clasen <mclasen@redhat.com>
 
 	* glib/tmpl/memory.sgml

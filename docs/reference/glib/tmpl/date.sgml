@@ -509,6 +509,7 @@ dates must be valid.
 <para>
 If @date is prior to @min_date, sets @date equal to @min_date.
 If @date falls after @max_date, sets @date equal to @max_date.
+Otherwise, @date is unchanged.
 Either @min_date and @max_date may be %NULL.  All non-%NULL dates
 must be valid.
 </para>
