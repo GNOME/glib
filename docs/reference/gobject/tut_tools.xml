@@ -30,7 +30,7 @@
       Yet another tool that you may find helpful when working with
       GObjects is <ulink
       url="http://sourceforge.net/projects/g-inspector">G-Inspector</ulink>. It
-      is able to display Glib/Gtk+ objects and their properties.
+      is able to display GLib/GTK+ objects and their properties.
     </para>
 </chapter>
 
@@ -47,8 +47,8 @@
     which can be used to automate the task of tracking down the location
     of invalid code with regard to reference counting. This application 
     intercepts the reference counting calls and tries to detect invalid behavior. 
-    It suports a filter-rule mechanism to let you trace only the objects you are 
-    interested in and it can be used together with gdb.
+    It supports a filter-rule mechanism to let you trace only the objects you are 
+    interested in and it can be used together with GDB.
   </para>
   <para>
     <indexterm><primary>g_trap_object_ref</primary></indexterm>
@@ -66,14 +66,14 @@ static volatile GObject *g_trap_object_ref;
 <chapter id="tools-gtkdoc">
   <title>Writing API docs</title>
 
-  <para>The API documentation for most of the Glib, GObject, GTK+ and GNOME
+  <para>The API documentation for most of the GLib, GObject, GTK+ and GNOME
   libraries is built with a combination of complex tools. Typically, the part of 
   the documentation which describes the behavior of each function is extracted
   from the specially-formatted source code comments by a tool named gtk-doc which
-  generates docbook xml and merges this docbook xml with a set of master xml 
-  docbook files. These xml docbook files are finally processed with xsltproc
-  (a small program part of the libxslt library) to generate the final html
-  output. Other tools can be used to generate pdf output from the source xml.
+  generates DocBook XML and merges this DocBook XML with a set of master XML 
+  DocBook files. These XML DocBook files are finally processed with xsltproc
+  (a small program part of the libxslt library) to generate the final HTML
+  output. Other tools can be used to generate PDF output from the source XML.
   The following code excerpt shows what these comments look like.
 <programlisting>
 /**
@@ -92,9 +92,9 @@ gtk_widget_freeze_child_notify (GtkWidget *widget)
 </programlisting>
   </para>
   <para>
-  The great thoroughful 
+  Thorough
   <ulink url="http://developer.gnome.org/arch/doc/authors.html">documentation</ulink> 
-  on how to setup and use gtk-doc in your
-  project is provided on the gnome developer website.
+  on how to set up and use gtk-doc in your
+  project is provided on the GNOME developer website.
   </para>
 </chapter>

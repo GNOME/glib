@@ -7,7 +7,7 @@
 
     <para>
       Closures are central to the concept of asynchronous signal delivery
-      which is widely used throughout GTK+ and GNOME applications. A Closure is an 
+      which is widely used throughout GTK+ and GNOME applications. A closure is an 
       abstraction, a generic representation of a callback. It is a small structure
       which contains three objects:
       <itemizedlist>
@@ -32,12 +32,12 @@ return_type function_callback (... , gpointer user_data);
       closure implementations: there exists a different Closure implementation for
       each separate runtime which wants to use the GObject type system.
       <footnote><para>
-        In Practice, Closures sit at the boundary of language runtimes: if you are
-        writing python code and one of your Python callback receives a signal from
-        one of GTK+ widgets, the C code in GTK+ needs to execute your Python
-        code. The Closure invoked by the GTK+ object invokes the Python callback:
+        In practice, closures sit at the boundary of language runtimes: if you are
+        writing Python code and one of your Python callbacks receives a signal from
+        a GTK+ widget, the C code in GTK+ needs to execute your Python
+        code. The closure invoked by the GTK+ object invokes the Python callback:
         it behaves as a normal C object for GTK+ and as a normal Python object for
-        python code.
+        Python code.
       </para></footnote>
       The GObject library provides a simple <type><link linkend="GCClosure">GCClosure</link></type> type which
       is a specific implementation of closures to be used with C/C++ callbacks.
@@ -48,7 +48,7 @@ return_type function_callback (... , gpointer user_data);
         <listitem><para>
           Invocation (<function><link linkend="g-closure-invoke">g_closure_invoke</link></function>): this is what closures 
           were created for: they hide the details of callback invocation from the
-          callback invocator.</para>
+          callback invoker.</para>
         </listitem>
         <listitem><para>
           Notification: the closure notifies listeners of certain events such as
@@ -57,12 +57,12 @@ return_type function_callback (... , gpointer user_data);
           (finalization notification), <function><link linkend="g-closure-add-invalidate-notifier">g_closure_add_invalidate_notifier</link></function> 
           (invalidation notification) and 
           <function><link linkend="g-closure-add-marshal-guards">g_closure_add_marshal_guards</link></function> (invocation notification).
-          There exist symmetric de-registration functions for finalization and invalidation
+          There exist symmetric deregistration functions for finalization and invalidation
           events (<function><link linkend="g-closure-remove-finalize-notifier">g_closure_remove_finalize_notifier</link></function> and
           <function><link linkend="g-closure-remove-invalidate-notifier">g_closure_remove_invalidate_notifier</link></function>) but not for the invocation 
           process.
           <footnote><para>
-            Closures are refcounted and notify listeners of their destruction in a two-stage
+            Closures are reference counted and notify listeners of their destruction in a two-stage
             process: the invalidation notifiers are invoked before the finalization notifiers.
           </para></footnote></para>
         </listitem>
@@ -74,7 +74,7 @@ return_type function_callback (... , gpointer user_data);
 
       <para>
         If you are using C or C++
-        to connect a callback to a given event, you will either use the simple <type><link linkend="GCClosure">GCClosure</link></type>s
+        to connect a callback to a given event, you will either use simple <type><link linkend="GCClosure">GCClosure</link></type>s
         which have a pretty minimal API or the even simpler <function><link linkend="g-signal-connect">g_signal_connect</link></function> 
         functions (which will be presented a bit later :).
 <programlisting>
@@ -106,10 +106,10 @@ GClosure* g_signal_type_cclosure_new (GType  itype,
     </sect2>
 
     <sect2>
-      <title>non-C closures (for the fearless).</title>
+      <title>Non-C closures (for the fearless)</title>
 
       <para>
-        As was explained above, Closures hide the details of callback invocation. In C,
+        As was explained above, closures hide the details of callback invocation. In C,
         callback invocation is just like function invocation: it is a matter of creating
         the correct stack frame for the called function and executing a <emphasis>call</emphasis>
         assembly instruction.
@@ -156,12 +156,12 @@ g_cclosure_marshal_VOID__INT (GClosure     *closure,
   
       <para>
         Of course, there exist other kinds of marshallers. For example, James Henstridge 
-        wrote a generic Python marshaller which is used by all python Closures (a python closure
-        is used to have python-based callback be invoked by the closure invocation process).
-        This python marshaller transforms the input GValue list representing the function 
-        parameters into a Python tuple which is the equivalent structure in python (you can
+        wrote a generic Python marshaller which is used by all Python closures (a Python closure
+        is used to have Python-based callback be invoked by the closure invocation process).
+        This Python marshaller transforms the input GValue list representing the function 
+        parameters into a Python tuple which is the equivalent structure in Python (you can
         look in <function>pyg_closure_marshal</function> in <filename>pygtype.c</filename>
-        in the <emphasis>pygobject</emphasis> module in GNOME cvs server).
+        in the <emphasis>pygobject</emphasis> module in the GNOME Subversion server).
       </para>
 
     </sect2>

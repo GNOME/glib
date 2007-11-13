@@ -3,7 +3,7 @@
   <title>The GObject base class</title>
 
   <para>
-    The two previous chapters discussed the details of Glib's Dynamic Type System
+    The two previous chapters discussed the details of GLib's Dynamic Type System
     and its signal control system. The GObject library also contains an implementation
     for a base fundamental type named <type><link linkend="GObject">GObject</link></type>.
   </para>
@@ -16,13 +16,13 @@
       <listitem><para>Generic per-object properties with set/get function pairs</para></listitem>
       <listitem><para>Easy use of signals</para></listitem>
     </itemizedlist>
-    All the GNOME libraries which use the GLib type system (like Gtk+ and GStreamer)
+    All the GNOME libraries which use the GLib type system (like GTK+ and GStreamer)
     inherit from <type><link linkend="GObject">GObject</link></type> which is why it is important to understand
     the details of how it works.
   </para>
 
-  <sect1 id="gobject-instanciation">
-    <title>Object instanciation</title>
+  <sect1 id="gobject-instantiation">
+    <title>Object instantiation</title>
 
     <para>
       The <function><link linkend="g-object-new">g_object_new</link></function> family of functions can be used to instantiate any
@@ -162,7 +162,7 @@ MamanBar *bar = g_object_new (MAMAN_TYPE_BAR, NULL);
       is how we can find the parent constructor. An approach (used in GTK+ source code) would be
       to save the original constructor in a static variable from <function>maman_bar_class_init</function>
       and then to re-use it from <function>maman_bar_constructor</function>. This is clearly possible
-      and very simple but I was told it was not nice and the prefered way is to use the 
+      and very simple but I was told it was not nice and the preferred way is to use the 
       <function><link linkend="g-type-class-peek">g_type_class_peek</link></function> and <function><link linkend="g-type-class-peek-parent">g_type_class_peek_parent</link></function> functions.
     </para>
 
@@ -174,7 +174,7 @@ MamanBar *bar = g_object_new (MAMAN_TYPE_BAR, NULL);
       was registered. After instance_init returns, the object is fully initialized and should be 
       ready to answer any user-request. When <function><link linkend="g-type-create-instance">g_type_create_instance</link></function>
       returns, <function>g_object_constructor</function> sets the construction properties
-      (ie: the properties which were given to <function><link linkend="g-object-new">g_object_new</link></function>) and returns
+      (i.e. the properties which were given to <function><link linkend="g-object-new">g_object_new</link></function>) and returns
       to the user's constructor which is then allowed to do useful instance initialization...
     </para>
 
@@ -325,7 +325,7 @@ void        g_object_run_dispose              (GObject              *object);
         increase and decrease the reference count.These functions are thread-safe as of GLib 2.8.
         The reference count is, unsurprisingly, initialized to one by 
         <function><link linkend="g-object-new">g_object_new</link></function> which means that the caller
-        is currenly the sole owner of the newly-created reference.
+        is currently the sole owner of the newly-created reference.
         When the reference count reaches zero, that is, 
         when <function><link linkend="g-object-unref">g_object_unref</link></function> is called by the last client holding
         a reference to the object, the <emphasis>dispose</emphasis> and the 
@@ -515,7 +515,7 @@ void        g_object_run_dispose              (GObject              *object);
     <para>
       One of GObject's nice features is its generic get/set mechanism for object
       properties. When an object
-      is instanciated, the object's class_init handler should be used to register
+      is instantiated, the object's class_init handler should be used to register
       the object's properties with <function><link linkend="g-object-class-install-property">g_object_class_install_property</link></function>
       (implemented in <filename>gobject.c</filename>).
     </para>
@@ -657,7 +657,7 @@ g_object_set_property (G_OBJECT (bar), "papa-number", &amp;val);
           relying on these transformations.
         </para>
       </footnote>
-      which matches and conversion will be caried out if needed.
+      which matches and conversion will be carried out if needed.
     </para>
   
     <para>
@@ -704,12 +704,12 @@ g_object_set_property (G_OBJECT (bar), "papa-number", &amp;val);
       property modifications through the "notify" signal. It is important to remember that
       even if properties are changed while property change notification is frozen, the "notify"
       signal will be emitted once for each of these changed properties as soon as the property
-      change notification is thawn: no property change is lost for the "notify" signal. Signal
+      change notification is thawed: no property change is lost for the "notify" signal. Signal
       can only be delayed by the notification freezing mechanism.
     </para>
     
     <para>
-      It sounds like a tedious task to set up GValues everytime when one wants to modify a property.
+      It sounds like a tedious task to set up GValues every time when one wants to modify a property.
       In practice one will rarely do this. The functions <function><link linkend="g-object-set-property">g_object_set_property</link></function>
       and <function><link linkend="g-object-get-property">g_object_get_property</link></function>
       are meant to be used by language bindings. For application there is an easier way and
@@ -760,7 +760,7 @@ g_object_set (G_OBJECT (foo),
     
     </sect2>
 
-<!-- @todo tell here about how to pass use handle properties in derived classe -->
+<!-- @todo tell here about how to pass use handle properties in derived classes -->
 
   </sect1>
 

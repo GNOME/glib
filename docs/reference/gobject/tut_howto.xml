@@ -2,20 +2,20 @@
 <partintro>
   <para>
     This chapter tries to answer the real-life questions of users and presents
-    the most common scenario use-cases I could come up with.
-    The use-cases are presented from most likely to less likely.
+    the most common scenario use cases I could come up with.
+    The use cases are presented from most likely to less likely.
   </para>
 </partintro>
 
 <chapter id="howto-gobject">
-  <title>How To define and implement a new GObject?</title>
+  <title>How to define and implement a new GObject</title>
   
   <para>
-    Clearly, this is one of the most common question people ask: they just want to crank code and 
+    Clearly, this is one of the most common questions people ask: they just want to crank code and 
     implement a subclass of a GObject. Sometimes because they want to create their own class hierarchy,
     sometimes because they want to subclass one of GTK+'s widget. This chapter will focus on the 
     implementation of a subtype of GObject.  The sample source code
-    associated to this section can be found in the documentation's source tarball, in the 
+    associated with this section can be found in the documentation's source tarball, in the 
     <filename>sample/gobject</filename> directory:
     <itemizedlist>
       <listitem><para><filename>maman-bar.{h|c}</filename>: this is the source for a object which derives from 
@@ -42,7 +42,7 @@
       which is followed not only by GTK+'s code but also by most users of GObject. If you feel the need 
       not to obey the rules stated below, think about it twice:
       <itemizedlist>
-        <listitem><para>If your users are a bit accustomed to GTK+ code or any Glib code, they will
+        <listitem><para>If your users are a bit accustomed to GTK+ code or any GLib code, they will
             be a bit surprised and getting used to the conventions you decided upon will take time (money) and
             will make them grumpy (not a good thing)
           </para></listitem>
@@ -84,7 +84,7 @@
 
     <para>
       The basic conventions for any header which exposes a GType are described in 
-      <xref linkend="gtype-conventions"/>. Most GObject-based code also obeys onf of the following
+      <xref linkend="gtype-conventions"/>. Most GObject-based code also obeys one of of the following
       conventions: pick one and stick to it.
       <itemizedlist>
         <listitem><para>
@@ -121,7 +121,7 @@ struct _MamanBarClass {
   /* class members */
 };
 
-/* used by MAMAN_BAR_TYPE */
+/* used by MAMAN_TYPE_BAR */
 GType maman_bar_get_type (void);
 
 /*
@@ -181,13 +181,13 @@ maman_bar_init (GTypeInstance *instance, gpointer g_class) {
           </para></listitem>
 
           <listitem><para>
-            A similar alternative, available since Glib version 2.4, is to define a private structure in the .c file,
+            A similar alternative, available since GLib version 2.4, is to define a private structure in the .c file,
             declare it as a private structure in <function>maman_bar_class_init</function> using 
             <function><link linkend="g-type-class-add-private">g_type_class_add_private</link></function>.
             Instead of allocating memory in <function>maman_bar_init</function> a pointer to the private memory area is
             stored in the instance to allow convenient access to this structure.
             A private structure will then be attached to each newly created object by the GObject system.
-            You dont need to free or allocate the private structure, only the objects or pointers that it may contain.
+            You don't need to free or allocate the private structure, only the objects or pointers that it may contain.
             Another advantage of this to the previous version is that is lessens memory fragmentation,
             as the public and private parts of the instance memory are allocated at once.
 <programlisting>
@@ -208,7 +208,7 @@ maman_bar_class_init (MamanBarClass *klass)
 static void
 maman_bar_init (GTypeInstance *instance, gpointer g_class) {
   MamanBar *self = MAMAN_BAR (instance);
-  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, MAMAN_BAR_TYPE, MamanBarPrivate);
+  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, MAMAN_TYPE_BAR, MamanBarPrivate);
   /* do stuff */
 }
 </programlisting>
@@ -308,7 +308,7 @@ maman_bar_get_type (void)
 
     <para>
       <xref linkend="gobject-construction-table"/> shows what user-provided functions
-      are invoked during object instanciation and in which order they are invoked.
+      are invoked during object instantiation and in which order they are invoked.
       A user looking for the equivalent of the simple C++ constructor function should use
       the instance_init method. It will be invoked after all the parent's instance_init
       functions have been invoked. It cannot take arbitrary construction parameters 
@@ -333,7 +333,7 @@ maman_bar_init (GTypeInstance   *instance,
   self->private = g_new0 (MamanBarPrivate, 1);
 
   /* initialize all public and private members to reasonable default values. */
-  /* If you need specific consruction properties to complete initialization,
+  /* If you need specific construction properties to complete initialization,
    * delay initialization completion until the property is set. 
    */
 }
@@ -386,7 +386,7 @@ bar_class_init (MamanBarClass *klass)
 
       <para>Some people sometimes need to construct their object but only after the construction properties
       have been set. This is possible through the use of the constructor class method as described in
-      <xref linkend="gobject-instanciation"/>. However, I have yet to see <emphasis>any</emphasis> reasonable
+      <xref linkend="gobject-instantiation"/>. However, I have yet to see <emphasis>any</emphasis> reasonable
       use of this feature. As such, to initialize your object instances, use by default the base_init function
       and construction properties.
       </para>
@@ -685,21 +685,21 @@ maman_bar_subtype_class_init (MamanBarSubTypeClass *klass)
       <itemizedlist>
         <listitem><para>You need to change the behaviour of a class without modifying its code. You create
           a subclass to inherit its implementation, re-implement a public virtual method to modify the behaviour
-          slightly and chain up to ensure that the previous behaviour is not really modifed, just extended.
+          slightly and chain up to ensure that the previous behaviour is not really modified, just extended.
           </para></listitem>
         <listitem><para>You are lazy, you have access to the source code of the parent class but you don't want 
           to modify it to add method calls to new specialized method calls: it is faster to hack the child class
           to chain up than to modify the parent to call down.</para></listitem>
-        <listitem><para>You need to implement the Chain Of Responsability pattern: each object of the inheritance
-          tree chains up to its parent (typically, at the begining or the end of the method) to ensure that
+        <listitem><para>You need to implement the Chain Of Responsibility pattern: each object of the inheritance
+          tree chains up to its parent (typically, at the beginning or the end of the method) to ensure that
           they each handler is run in turn.</para></listitem>
       </itemizedlist>
       I am personally not really convinced any of the last two uses are really a good idea but since this
-      programming idiom is often used, this section attemps to explain how to implement it.
+      programming idiom is often used, this section attempts to explain how to implement it.
     </para>
 
     <para>
-      To explicitely chain up to the implementation of the virtual method in the parent class, 
+      To explicitly chain up to the implementation of the virtual method in the parent class, 
       you first need a handle to the original parent class structure. This pointer can then be used to 
       access the original class function pointer and invoke it directly.
       <footnote>
@@ -746,10 +746,10 @@ b_method_to_call (B *obj, int a)
 
 
 <chapter id="howto-interface">
-  <title>How To define and implement Interfaces?</title>
+  <title>How to define and implement interfaces</title>
 
   <sect1 id="howto-interface-define">
-    <title>How To define Interfaces?</title>
+    <title>How to define interfaces</title>
   
   <para>
     The bulk of interface definition has already been shown in <xref linkend="gtype-non-instantiable-classed"/>
@@ -814,7 +814,7 @@ void maman_ibaz_do_action (MamanIbaz *self);
       to make sure not to run the initialization code twice (as described in
       <xref linkend="gtype-non-instantiable-classed-init"/>, 
       <function>base_init</function> is run once for each interface implementation 
-      instanciation)</para></listitem>
+      instantiation)</para></listitem>
       <listitem><para><function>maman_ibaz_do_action</function> dereferences the class
       structure to access its associated class function and calls it.
       </para></listitem>
@@ -1089,7 +1089,7 @@ maman_bar_get_type (void)
     <title>Interface Properties</title>
   
     <para>
-      Starting from version 2.4 of glib, GObject interfaces can also have properties. 
+      Starting from version 2.4 of GLib, GObject interfaces can also have properties. 
       Declaration of the interface properties is similar to declaring the properties of 
       ordinary GObject types as explained in <xref linkend="gobject-properties"/>, 
       except that <function><link linkend="g-object-interface-install-property">g_object_interface_install_property</link></function> is used to 
@@ -1135,7 +1135,7 @@ maman_ibaz_base_init (gpointer g_iface)
   
     <para>
       One point worth noting is that the declared property wasn't assigned an 
-      integer ID. The reason being that integer IDs of properities are utilized only 
+      integer ID. The reason being that integer IDs of properties are utilized only 
       inside the get and set methods and since interfaces do not implement properties,
       there is no need to assign integer IDs to interface properties.
     </para>
@@ -1146,7 +1146,7 @@ maman_ibaz_base_init (gpointer g_iface)
       explained in <xref linkend="gobject-properties"/>, except for one small
       change: it shall declare the properties of the interface it implements using 
       <function><link linkend="g-object-class-override-property">g_object_class_override_property</link></function> instead of 
-      <function><link linkend="g-object-class-install-property">g_object_class_install_property</link></function>. The following code snipet 
+      <function><link linkend="g-object-class-install-property">g_object_class_install_property</link></function>. The following code snippet 
       shows the modifications needed in the <type>MamanBaz</type> declaration and 
       implementation above:
 <programlisting>
@@ -1260,14 +1260,14 @@ maman_baz_get_property (GObject * object, guint prop_id,
 <!-- End Howto Interfaces -->
 
 <chapter id="howto-signals">
-  <title>Howto create and use signals</title>
+  <title>How to create and use signals</title>
 
 
   <para>
     The signal system which was built in GType is pretty complex and flexible: it is possible for its users
     to connect at runtime any number of callbacks (implemented in any language for which a binding exists)
     <footnote>
-      <para>A python callback can be connected to any signal on any C-based GObject.
+      <para>A Python callback can be connected to any signal on any C-based GObject.
       </para>
     </footnote>
 
@@ -1311,7 +1311,7 @@ klass->write_signal_id =
                  0     /* n_params */,
                  NULL  /* param_types */);
 </programlisting>
-      and the signal is emited in <function>maman_file_write</function>:
+      and the signal is emitted in <function>maman_file_write</function>:
 <programlisting>
 void maman_file_write (MamanFile *self, guint8 *buffer, guint32 size)
 {
@@ -1330,7 +1330,7 @@ void maman_file_write (MamanFile *self, guint8 *buffer, guint32 size)
       The signature of the signal handler in the above example is defined as
       <function>g_cclosure_marshal_VOID__VOID</function>. Its name follows
       a simple convention which encodes the function parameter and return value
-      types in the function name. Specifically, the value infront of the double 
+      types in the function name. Specifically, the value in front of the double 
       underscore is the type of the return value, while the value(s) after the 
       double underscore denote the parameter types.
       The header <filename>gobject/gmarshal.h</filename> defines a set of commonly
@@ -1357,7 +1357,7 @@ void maman_file_write (MamanFile *self, guint8 *buffer, guint32 size)
     <para>
       The first step to implement this idea is to change the signature of the signal: we need to pass
       around the buffer to write and its size. To do this, we use our own marshaller which will be generated
-      through glib's genmarshall tool. We thus create a file named <filename>marshall.list</filename> which contains
+      through GLib's genmarshall tool. We thus create a file named <filename>marshall.list</filename> which contains
       the following single line:
 <programlisting>
 VOID:POINTER,UINT
@@ -1488,11 +1488,11 @@ Complex Write event after: 0xbfffe280, 50
         there is a much <emphasis>simpler</emphasis> 
         <footnote>
           <para>I personally think that this method is horribly mind-twisting: it adds a new indirection
-          which unecessarily complicates the overall code path. However, because this method is widely used
+          which unnecessarily complicates the overall code path. However, because this method is widely used
           by all of GTK+ and GObject code, readers need to understand it. The reason why this is done that way
           in most of GTK+ is related to the fact that the ancestor of GObject did not provide any other way to
           create a signal with a default handler than this one. Some people have tried to justify that it is done
-          that way because it is better, faster (I am extremly doubtfull about the faster bit. As a matter of fact,
+          that way because it is better, faster (I am extremely doubtful about the faster bit. As a matter of fact,
           the better bit also mystifies me ;-). I have the feeling no one really knows and everyone does it
           because they copy/pasted code from code which did the same. It is probably better to leave this 
           specific trivia to hacker legends domain...
@@ -1527,7 +1527,7 @@ struct _MamanFileSimpleClass {
   void (*write) (MamanFileSimple *self, guint8 *buffer, guint size);
 };
 </programlisting>
-        The <function>write</function> function pointer is initialied in the class_init function of the object
+        The <function>write</function> function pointer is initialized in the class_init function of the object
         to <function>default_write_signal_handler</function>:
 <programlisting>
 static void
@@ -1565,7 +1565,7 @@ klass->write_signal_id =
      </para>
 
      <para>
-       While the complete code for this type of default handler looks less clutered as shown in 
+       While the complete code for this type of default handler looks less cluttered as shown in 
        <filename>sample/signal/maman-file-simple.{h|c}</filename>, it contains numerous subtleties.
        The main subtle point which everyone must be aware of is that the signature of the default 
        handler created that way does not have a user_data argument: 
@@ -1600,7 +1600,7 @@ klass->write_signal_id =
       <itemizedlist>
          <listitem><para>stop the emission of the signal at anytime</para></listitem>
          <listitem><para>override the default handler of the signal if it is stored as a function
-           pointer in the class structure (which is the prefered way to create a default signal handler,
+           pointer in the class structure (which is the preferred way to create a default signal handler,
            as discussed in the previous section).</para></listitem>
        </itemizedlist> 
     </para>
