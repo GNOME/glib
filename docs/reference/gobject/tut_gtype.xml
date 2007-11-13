@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding="ISO-8859-1"?>
   <chapter id="chapter-gtype">
-    <title>The Glib Dynamic Type System</title>
+    <title>The GLib Dynamic Type System</title>
 
       <para>
-        A type, as manipulated by the Glib type system, is much more generic than what
+        A type, as manipulated by the GLib type system, is much more generic than what
         is usually understood as an Object type. It is best explained by looking at the 
         structure and the functions used to register new types in the type system.
         <programlisting>
@@ -53,7 +53,7 @@ GType g_type_register_fundamental (GType                       type_id,
         new fundamental types.
         <footnote>
           <para>
-            Please, note that there exist another registration function: the 
+            Please note that there exists another registration function: the 
             <function><link linkend="g-type-register-dynamic">g_type_register_dynamic</link></function>. We will not discuss this
             function here since its use is very similar to the <function>_static</function> 
             version.
@@ -71,7 +71,7 @@ GType g_type_register_fundamental (GType                       type_id,
       </para>
 
       <para>
-        Fundamental and non-Fundamental types are defined by:
+        Fundamental and non-fundamental types are defined by:
         <itemizedlist>
           <listitem><para>
             class size: the class_size field in <type><link linkend="GTypeInfo">GTypeInfo</link></type>.
@@ -89,7 +89,7 @@ GType g_type_register_fundamental (GType                       type_id,
             <type><link linkend="GTypeInfo">GTypeInfo</link></type>.
           </para></listitem>
           <listitem><para>
-            instanciation policy (C++ type of new operator): the n_preallocs
+            instantiation policy (C++ type of new operator): the n_preallocs
             field in <type><link linkend="GTypeInfo">GTypeInfo</link></type>.
           </para></listitem>
           <listitem><para>
@@ -102,7 +102,7 @@ GType g_type_register_fundamental (GType                       type_id,
         </itemizedlist>
         Fundamental types are also defined by a set of <type><link linkend="GTypeFundamentalFlags">GTypeFundamentalFlags</link></type> 
         which are stored in a <type><link linkend="GTypeFundamentalInfo">GTypeFundamentalInfo</link></type>.
-        Non-Fundamental types are furthermore defined by the type of their parent which is
+        Non-fundamental types are furthermore defined by the type of their parent which is
         passed as the parent_type parameter to <function><link linkend="g-type-register-static">g_type_register_static</link></function>
         and <function><link linkend="g-type-register-dynamic">g_type_register_dynamic</link></function>.
       </para>
@@ -111,7 +111,7 @@ GType g_type_register_fundamental (GType                       type_id,
         <title>Copy functions</title>
 
         <para>
-          The major common point between <emphasis>all</emphasis> glib types (fundamental and 
+          The major common point between <emphasis>all</emphasis> GLib types (fundamental and 
           non-fundamental, classed and non-classed, instantiable and non-instantiable) is that
           they can all be manipulated through a single API to copy/assign them.
         </para>
@@ -177,7 +177,7 @@ static void test_object (void)
   g_object_unref (G_OBJECT (obj));
 }
 </programlisting>
-          The important point about the above code is that the exact semantic of the copy calls
+          The important point about the above code is that the exact semantics of the copy calls
           is undefined since they depend on the implementation of the copy function. Certain 
           copy functions might decide to allocate a new chunk of memory and then to copy the 
           data from the source to the destination. Others might want to simply increment
@@ -215,7 +215,7 @@ struct _GTypeValueTable
           you will ever need to specify a value_table during type registration
           because these value_tables are inherited from the parent types for
           non-fundamental types which means that unless you want to write a 
-          fundamental type (not a great idea !), you will not need to provide
+          fundamental type (not a great idea!), you will not need to provide
           a new value_table since you will inherit the value_table structure
           from your parent type.
         </para>
@@ -238,7 +238,7 @@ struct _GTypeValueTable
             If your library (or application) is named <emphasis>Maman</emphasis>,
             <footnote>
               <para>
-                <emphasis>Maman</emphasis> is the french word for <emphasis>mum</emphasis>
+                <emphasis>Maman</emphasis> is the French word for <emphasis>mum</emphasis>
                 or <emphasis>mother</emphasis> - nothing more and nothing less.
               </para>
             </footnote>
@@ -329,7 +329,7 @@ G_DEFINE_TYPE (MamanBar, maman_bar, G_TYPE_OBJECT)
       </sect1>
 
       <sect1 id="gtype-non-instantiable">
-        <title>Non-Instantiable non-classed fundamental types</title>
+        <title>Non-instantiable non-classed fundamental types</title>
 
         <para>
           A lot of types are not instantiable by the type system and do not have
@@ -372,7 +372,7 @@ G_DEFINE_TYPE (MamanBar, maman_bar, G_TYPE_OBJECT)
 
         <para>
           Having non-instantiable types might seem a bit useless: what good is a type
-          if you cannot instanciate an instance of that type ? Most of these types
+          if you cannot instantiate an instance of that type ? Most of these types
           are used in conjunction with <type><link linkend="GValue">GValue</link></type>s: a GValue is initialized
           with an integer or a string and it is passed around by using the registered 
           type's value_table. <type><link linkend="GValue">GValue</link></type>s (and by extension these trivial fundamental
@@ -390,7 +390,7 @@ G_DEFINE_TYPE (MamanBar, maman_bar, G_TYPE_OBJECT)
           Although <type><link linkend="GObject">GObject</link></type>s (detailed in <xref linkend="chapter-gobject"/>) 
           are the most well known type of instantiable
           classed types, other kinds of similar objects used as the base of an inheritance 
-          hierarchy have been externally developped and they are all built on the fundamental
+          hierarchy have been externally developed and they are all built on the fundamental
           features described below.
         </para>
 
@@ -515,14 +515,14 @@ B *b;
           <title>Initialization and Destruction</title>
 
           <para>
-            Instanciation of these types can be done with 
+            instantiation of these types can be done with 
             <function><link linkend="g-type-create-instance">g_type_create_instance</link></function>:
 <programlisting>
 GTypeInstance* g_type_create_instance (GType          type);
 void           g_type_free_instance   (GTypeInstance *instance);
 </programlisting>
-            <function><link linkend="g-type-create-instance">g_type_create_instance</link></function> will lookup the type information
-            structure associated to the type requested. Then, the instance size and instanciation
+            <function><link linkend="g-type-create-instance">g_type_create_instance</link></function> will look up the type information
+            structure associated to the type requested. Then, the instance size and instantiation
             policy (if the n_preallocs field is set to a non-zero value, the type system allocates
             the object's instance structures in chunks rather than mallocing for every instance)
             declared by the user are used to get a buffer to hold the object's instance
@@ -569,7 +569,7 @@ void           g_type_free_instance   (GTypeInstance *instance);
                     (in <filename>gtype.c</filename>.
               </para>
             </footnote>
-            (the concept of destruction is sometimes partly refered to as finalization 
+            (the concept of destruction is sometimes partly referred to as finalization 
             in GType) is the symmetric process of the initialization: interfaces are 
             destroyed first. 
             Then, the most derived 
@@ -581,27 +581,19 @@ void           g_type_free_instance   (GTypeInstance *instance);
 
           <para>
             As many readers have now understood it, the base initialization/finalization process is
-            very similar to the C++ Constructor/Destructor paradigm. The practical details are quite different
-            though and it is important not to get confused by the superficial similarities. Typically, what 
-            most users have grown to know as a C++ constructor (that is, a list of
-            object methods invoked on the object instance once for each type of the inheritance hierachy) does
-            not exist in GType and must be built on top of the facilities offered by GType. Similarly,
+            very similar to the C++ constructor/destructor paradigm. The practical details are different
+            though and it is important not to get confused by superficial similarities. 
             GTypes have no instance destruction mechanism. It is
             the user's responsibility to implement correct destruction semantics on top
             of the existing GType code. (this is what GObject does. See 
             <xref linkend="chapter-gobject"/>)
-          </para>
-    
-          <para>
-           For example, if the object B which derives from A is instantiated, GType will only invoke the 
-           instance_init callback of object B while a C++ runtime will invoke the constructor of the object 
-           type A first and then of the object type B. Furthermore, the C++ code equivalent to the base_init 
+           Furthermore, C++ code equivalent to the base_init 
            and class_init callbacks of GType is usually not needed because C++ cannot really create object 
            types at runtime.
           </para>
 
           <para>
-            The instanciation/finalization process can be summarized as follows:
+            The instantiation/finalization process can be summarized as follows:
             <table id="gtype-init-fini-table">
               <title>GType Instantiation/Finalization</title>
               <tgroup cols="3">
@@ -666,15 +658,15 @@ void           g_type_free_instance   (GTypeInstance *instance);
       </sect1>
 
       <sect1 id="gtype-non-instantiable-classed">
-        <title>Non-instantiable classed types: Interfaces.</title>
+        <title>Non-instantiable classed types: interfaces</title>
 
         <para>
-          GType's Interfaces are very similar to Java's interfaces. They allow
+          GType's interfaces are very similar to Java's interfaces. They allow
           to describe a common API that several classes will adhere to.
-          Imagine the play, pause and stop buttons on hifi equipment - those can
-          be seen as a playback interface. Once you know what the do, you can
-          control your cd-player, mp3-player or anything that uses these symbols.
-          To declare an interfacce you have to register a non-instantiable
+          Imagine the play, pause and stop buttons on hi-fi equipment - those can
+          be seen as a playback interface. Once you know what they do, you can
+          control your CD player, MP3 player or anything that uses these symbols.
+          To declare an interface you have to register a non-instantiable
           classed type which derives from 
           <type><link linkend="GTypeInterface">GTypeInterface</link></type>. The following piece of code declares such an interface.
 <programlisting>
@@ -886,7 +878,7 @@ maman_ibaz_base_init (gpointer g_iface)
               </tbody>
             </tgroup>
           </table>
-          It is highly unlikely (ie: I do not know of <emphasis>anyone</emphasis> who actually 
+          It is highly unlikely (i.e. I do not know of <emphasis>anyone</emphasis> who actually 
           used it) you will ever need other more fancy things such as the ones described in the
           following section (<xref linkend="gtype-non-instantiable-classed-dest"/>).
         </para>

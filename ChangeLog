@@ -1,3 +1,20 @@
+2007-11-13  Cody Russell  <bratsche@gnome.org>
+
+	Merge from trunk:
+
+	* docs/reference/gobject/gobject-docs.sgml:
+	* docs/reference/gobject/tut_gsignal.xml:
+	* docs/reference/gobject/tut_gtype.xml:
+	* docs/reference/gobject/tut_intro.xml:
+	* docs/reference/gobject/tut_tools.xml:
+	* docs/reference/gobject/tut_howto.xml:
+	* docs/reference/gobject/tut_gobject.xml: Documentation fixes.
+	Recommend macro type names such as NAUTILUS_TYPE_WINDOW (not
+	NAUTILUS_WINDOW_TYPE).  Fixed text which erroneously stated that 
+	superclass initializers don't run when an object is 
+	instantiated.  Fixed numerous spelling mistakes.  Minor grammar 
+	edits. (#490637, Adam Dingle)
+
 2007-11-09  Matthias Clasen <mclasen@redhat.com>
 
 	* configure.in: Revert an accidental merge, noticed by Fred Peters.
