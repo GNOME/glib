@@ -221,20 +221,34 @@ set_error (GMarkupParseContext *context,
   s = g_strdup_vprintf (format, args);
   va_end (args);
 
-  tmp_error = g_error_new (G_MARKUP_ERROR,
-                           code,
-                           _("Error on line %d char %d: %s"),
-                           context->line_number,
-                           context->char_number,
-                           s);
-
+  tmp_error = g_error_new_literal (G_MARKUP_ERROR, code, s);
   g_free (s);
+
+  g_prefix_error (&tmp_error,
+                  _("Error on line %d char %d: "),
+                  context->line_number,
+                  context->char_number);
 
   mark_error (context, tmp_error);
 
   g_propagate_error (error, tmp_error);
 }
 
+static void
+propagate_error (GMarkupParseContext  *context,
+                 GError              **dest,
+                 GError               *src)
+{
+  if (context->flags & G_MARKUP_PREFIX_ERROR_POSITION)
+    g_prefix_error (&src,
+                    _("Error on line %d char %d: "),
+                    context->line_number,
+                    context->char_number);
+
+  mark_error (context, src);
+
+  g_propagate_error (dest, src);
+}
 
 /* To make these faster, we first use the ascii-only tests, then check
  * for the usual non-alnum name-end chars, and only then call the
@@ -1347,10 +1361,7 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
                             context->attr_values[0] == NULL);
                   
                   if (tmp_error != NULL)
-                    {
-                      mark_error (context, tmp_error);
-                      g_propagate_error (error, tmp_error);
-                    }
+                    propagate_error (context, error, tmp_error);
                 }
             }
           break;
@@ -1500,10 +1511,7 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
                       context->start = context->iter;
                     }
                   else
-                    {
-                      mark_error (context, tmp_error);
-                      g_propagate_error (error, tmp_error);
-                    }
+                    propagate_error (context, error, tmp_error);
                 }
 
               truncate_partial (context);
@@ -1613,10 +1621,7 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
 							    context->tag_stack);
 		  
 		  if (tmp_error)
-                    {
-                      mark_error (context, tmp_error);
-                      g_propagate_error (error, tmp_error);
-                    }
+                    propagate_error (context, error, tmp_error);
                 }
 	      
               g_free (close_name);
@@ -1700,10 +1705,7 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
                   context->start = context->iter; /* could begin text */
                 }
               else
-                {
-                  mark_error (context, tmp_error);
-                  g_propagate_error (error, tmp_error);
-                }
+                propagate_error (context, error, tmp_error);
             }
           break;
 
