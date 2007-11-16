@@ -1,3 +1,11 @@
+2006-11-15  Ryan Lortie  <desrt@desrt.ca>
+
+	* docs/reference/glib/glib-sections.txt:
+	* glib/glib.symbols:
+	* glib/gerror.h:
+	* glib/gerror.c: new functions g_prefix_error and
+	g_propagate_prefixed_error.
+
 2007-11-13  Cody Russell  <bratsche@gnome.org>
 
 	* docs/reference/gobject/gobject-docs.sgml:

@@ -257,5 +257,82 @@ g_clear_error (GError **err)
     }
 }
 
+static void
+g_error_add_prefix (gchar       **string,
+                    const gchar  *format,
+                    va_list       ap)
+{
+  gchar *oldstring;
+  gchar *prefix;
+
+  prefix = g_strdup_vprintf (format, ap);
+  oldstring = *string;
+  *string = g_strjoin ("", prefix, oldstring, NULL);
+  g_free (oldstring);
+  g_free (prefix);
+}
+
+/**
+ * g_prefix_error:
+ * @err: a return location for a #GError, or %NULL
+ * @format: printf()-style format string
+ * ...: arguments to @format
+ *
+ * Formats a string according to @format and
+ * prefix it to an existing error message.  If
+ * @err is %NULL (ie: no error variable) then do
+ * nothing.
+ *
+ * If *@err is %NULL (ie: an error variable is
+ * present but there is no error condition) then
+ * also do nothing.  Whether or not it makes
+ * sense to take advantage of this feature is up
+ * to you.
+ **/
+void
+g_prefix_error (GError      **err,
+                const gchar  *format,
+                ...)
+{
+  if (err && *err)
+    {
+      va_list ap;
+
+      va_start (ap, format);
+      g_error_add_prefix (&(*err)->message, format, ap);
+      va_end (ap);
+    }
+}
+
+/**
+ * g_propagate_prefixed_error:
+ * @dest: error return location
+ * @src: error to move into the return location
+ * @format: printf()-style format string
+ * ...: arguments to @format
+ * 
+ * If @dest is %NULL, free @src; otherwise,
+ * moves @src into *@dest. *@dest must be %NULL.
+ * After the move, add a prefix as with 
+ * g_prefix_error().
+ **/
+void
+g_propagate_prefixed_error (GError      **dest,
+                            GError       *src,
+                            const gchar  *format,
+                            ...)
+{
+  g_propagate_error (dest, src);
+
+  if (dest && *dest)
+    {
+      va_list ap;
+
+      va_start (ap, format);
+      g_error_add_prefix (&(*dest)->message, format, ap);
+      va_end (ap);
+    }
+}
+
 #define __G_ERROR_C__
 #include "galiasdef.c"

@@ -67,6 +67,16 @@ void     g_propagate_error     (GError       **dest,
 /* if (err && *err) { g_error_free(*err); *err = NULL; } */
 void     g_clear_error         (GError       **err);
 
+/* if (err) prefix the formatted string to the ->message */
+void     g_prefix_error               (GError       **err,
+                                       const gchar   *format,
+                                       ...) G_GNUC_PRINTF (2, 3);
+
+/* g_propagate_error then g_error_prefix on dest */
+void     g_propagate_prefixed_error   (GError       **dest,
+                                       GError        *src,
+                                       const gchar   *format,
+                                       ...) G_GNUC_PRINTF (3, 4);
 
 G_END_DECLS
 
