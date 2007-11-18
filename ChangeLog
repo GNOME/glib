@@ -1,4 +1,13 @@
-2006-11-15  Ryan Lortie  <desrt@desrt.ca>
+2007-11-18  Matthias Clasen  <mclasen@redhat.com>
+
+	* configure.in: Check whether assembler supports numerical local
+	labels.  
+
+	* glib/gatomic.c: Fix powerpc implementation of atomic ops for 
+	platforms where the assembler doesn't support numerical local
+	labels.  (#445362)
+
+2007-11-15  Ryan Lortie  <desrt@desrt.ca>
 
 	* docs/reference/glib/tmpl/markup.sgml:
 	* glib/gmarkup.h:
@@ -8,7 +17,7 @@
 
 	Closes #496046.
 
-2006-11-15  Ryan Lortie  <desrt@desrt.ca>
+2007-11-15  Ryan Lortie  <desrt@desrt.ca>
 
 	* docs/reference/glib/glib-sections.txt:
 	* glib/glib.symbols:
