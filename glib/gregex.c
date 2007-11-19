@@ -858,6 +858,7 @@ g_regex_new (const gchar         *pattern,
   gint erroffset;
   gboolean optimize = FALSE;
   static gboolean initialized = FALSE;
+  unsigned long int pcre_compile_options;
 
   g_return_val_if_fail (pattern != NULL, NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
@@ -942,7 +943,8 @@ g_regex_new (const gchar         *pattern,
   /* For options set at the beginning of the pattern, pcre puts them into
    * compile options, e.g. "(?i)foo" will make the pcre structure store
    * PCRE_CASELESS even though it wasn't explicitly given for compilation. */
-  pcre_fullinfo (re, NULL, PCRE_INFO_OPTIONS, &compile_options);
+  pcre_fullinfo (re, NULL, PCRE_INFO_OPTIONS, &pcre_compile_options);
+  compile_options = pcre_compile_options;
 
   if (!(compile_options & G_REGEX_DUPNAMES))
     {
