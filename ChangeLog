@@ -1,5 +1,10 @@
 2007-11-18  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gbase64.c: Documentation improvements.  (#496518,
+	Stefan Schulze Frielinghaus)
+
+2007-11-18  Matthias Clasen  <mclasen@redhat.com>
+
 	* configure.in: Check whether assembler supports numerical local
 	labels.  
 

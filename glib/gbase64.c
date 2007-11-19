@@ -217,7 +217,8 @@ g_base64_encode_close (gboolean  break_lines,
  * representation.
  *
  * Return value: a newly allocated, zero-terminated Base-64 encoded
- *               string representing @data.
+ *               string representing @data. The returned string must 
+ *               be freed with g_free().
  *
  * Since: 2.12
  */
@@ -349,7 +350,8 @@ g_base64_decode_step (const gchar  *in,
  * Decode a sequence of Base-64 encoded text into binary data
  *
  * Return value: a newly allocated buffer containing the binary data
- *               that @text represents
+ *               that @text represents. The returned buffer must
+ *               be freed with g_free().
  *
  * Since: 2.12
  */
