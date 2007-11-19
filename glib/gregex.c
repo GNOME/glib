@@ -924,11 +924,16 @@ g_regex_new (const gchar         *pattern,
    * immediately */
   if (re == NULL)
     {
-      GError *tmp_error = g_error_new (G_REGEX_ERROR, 
-				       G_REGEX_ERROR_COMPILE,
-				       _("Error while compiling regular "
-					 "expression %s at char %d: %s"),
-				       pattern, erroffset, errmsg);
+      GError *tmp_error;
+
+      /* PCRE uses byte offsets but we want to show character offsets */
+      erroffset = g_utf8_pointer_to_offset (pattern, &pattern[erroffset]);
+
+      tmp_error = g_error_new (G_REGEX_ERROR, 
+			       G_REGEX_ERROR_COMPILE,
+			       _("Error while compiling regular "
+				 "expression %s at char %d: %s"),
+			       pattern, erroffset, errmsg);
       g_propagate_error (error, tmp_error);
 
       return NULL;
