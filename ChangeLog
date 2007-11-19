@@ -1,3 +1,10 @@
+2007-11-19  Marco Barisione  <marco@barisione.org>
+
+	Merge from trunk:
+
+	* glib/gregex.c: When the compilation of a pattern fails in the error
+	message use the character offset and not the byte offset.
+
 2007-11-13  Cody Russell  <bratsche@gnome.org>
 
 	Merge from trunk:
