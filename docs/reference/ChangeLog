@@ -1,3 +1,8 @@
+2007-11-18  Matthias Clasen <mclasen@redhat.com>
+
+	* glib/tmpl/option.sgml: Update the example to demonstrate
+	error handling.  (#497033, Matti Katila)
+
 2007-11-09  Matthias Clasen <mclasen@redhat.com>
 
 	* glib/tmpl/patterns.sgml: Add a warning about strlen vs
