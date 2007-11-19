@@ -3,6 +3,9 @@
 	* glib/gregex.c: When the compilation of a pattern fails in the error
 	message use the character offset and not the byte offset.
 
+	* glib/gregex.c: Pass an unsigned long instead of an int to
+	pcre_fullinfo() to avoid problems on 64-bit systems
+
 2007-11-19 10:30:33  Tim Janik  <timj@imendio.com>
 
 	* configure.in: updated version number to 2.15.0 for development.
