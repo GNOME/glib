@@ -19,13 +19,14 @@
  * if advised of the possibility of such damage.
  */
 #include <glib/gtestframework.h>
+#include <stdlib.h>
 
 /* test assertion variants */
 static void
 test_assertions (void)
 {
   g_assert_cmpint (1, >, 0);
-  g_assert_cmpint (2, ==, 2);
+  g_assert_cmphex (2, ==, 2);
   g_assert_cmpfloat (3.3, !=, 7);
   g_assert_cmpfloat (7, <=, 3 + 4);
   g_assert (TRUE);
@@ -42,13 +43,54 @@ test_assertions (void)
   g_assert_cmpstr ("fzz", ==, "fzz");
 }
 
+/* fork out for a failing test */
+static void
+test_fork_fail (void)
+{
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
+    {
+      g_assert_not_reached();
+    }
+  g_test_trap_assert_failed();
+  g_test_trap_assert_stderr ("*ERROR*test_fork_fail*should not be reached*");
+}
+
+/* fork out to assert stdout and stderr patterns */
+static void
+test_fork_patterns (void)
+{
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT | G_TEST_TRAP_SILENCE_STDERR))
+    {
+      g_print ("some stdout text: somagic17\n");
+      g_printerr ("some stderr text: semagic43\n");
+      exit (0);
+    }
+  g_test_trap_assert_passed();
+  g_test_trap_assert_stdout ("*somagic17*");
+  g_test_trap_assert_stderr ("*semagic43*");
+}
+
+/* fork out for a timeout test */
+static void
+test_fork_timeout (void)
+{
+  /* allow child to run for only a fraction of a second */
+  if (g_test_trap_fork (0.11 * 1000000, 0))
+    {
+      /* loop and sleep forever */
+      while (TRUE)
+        g_usleep (1000 * 1000);
+    }
+  g_test_trap_assert_failed();
+  g_assert (g_test_trap_reached_timeout());
+}
+
 /* run a test with fixture setup and teardown */
 typedef struct {
   guint  seed;
   guint  prime;
   gchar *msg;
 } Fixturetest;
-
 static void
 fixturetest_setup (Fixturetest *fix)
 {
@@ -56,7 +98,6 @@ fixturetest_setup (Fixturetest *fix)
   fix->prime = 19;
   fix->msg = g_strdup_printf ("%d", fix->prime);
 }
-
 static void
 fixturetest_test (Fixturetest *fix)
 {
@@ -65,7 +106,6 @@ fixturetest_test (Fixturetest *fix)
   prime = g_ascii_strtoull (fix->msg, NULL, 0);
   g_assert_cmpint (prime, ==, fix->prime);
 }
-
 static void
 fixturetest_teardown (Fixturetest *fix)
 {
@@ -83,6 +123,13 @@ main (int   argc,
   g_test_suite_add_suite (rootsuite, miscsuite);
   GTestSuite *forksuite = g_test_create_suite ("fork");
   g_test_suite_add_suite (rootsuite, forksuite);
+
+  tc = g_test_create_case ("fail assertion", 0, NULL, test_fork_fail, NULL);
+  g_test_suite_add (forksuite, tc);
+  tc = g_test_create_case ("patterns", 0, NULL, test_fork_patterns, NULL);
+  g_test_suite_add (forksuite, tc);
+  tc = g_test_create_case ("timeout", 0, NULL, test_fork_timeout, NULL);
+  g_test_suite_add (forksuite, tc);
 
   tc = g_test_create_case ("assertions", 0, NULL, test_assertions, NULL);
   g_test_suite_add (miscsuite, tc);
