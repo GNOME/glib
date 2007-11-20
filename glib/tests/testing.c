@@ -112,6 +112,42 @@ fixturetest_teardown (Fixturetest *fix)
   g_free (fix->msg);
 }
 
+static struct {
+  int bit, vint1, vint2, irange;
+  long double vdouble, drange;
+} shared_rand_state;
+
+static void
+test_rand1 (void)
+{
+  shared_rand_state.bit = g_test_rand_bit();
+  shared_rand_state.vint1 = g_test_rand_int();
+  shared_rand_state.vint2 = g_test_rand_int();
+  g_assert_cmpint (shared_rand_state.vint1, !=, shared_rand_state.vint2);
+  shared_rand_state.irange = g_test_rand_int_range (17, 35);
+  g_assert_cmpint (shared_rand_state.irange, >=, 17);
+  g_assert_cmpint (shared_rand_state.irange, <=, 35);
+  shared_rand_state.vdouble = g_test_rand_double();
+  shared_rand_state.drange = g_test_rand_double_range (-999, +17);
+  g_assert_cmpfloat (shared_rand_state.drange, >=, -999);
+  g_assert_cmpfloat (shared_rand_state.drange, <=, +17);
+}
+
+static void
+test_rand2 (void)
+{
+  /* this test only works if run after test1.
+   * we do this to check that random number generators
+   * are reseeded upon fixture setup.
+   */
+  g_assert_cmpint (shared_rand_state.bit, ==, g_test_rand_bit());
+  g_assert_cmpint (shared_rand_state.vint1, ==, g_test_rand_int());
+  g_assert_cmpint (shared_rand_state.vint2, ==, g_test_rand_int());
+  g_assert_cmpint (shared_rand_state.irange, ==, g_test_rand_int_range (17, 35));
+  g_assert_cmpfloat (shared_rand_state.vdouble, ==, g_test_rand_double());
+  g_assert_cmpfloat (shared_rand_state.drange, ==, g_test_rand_double_range (-999, +17));
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -123,6 +159,8 @@ main (int   argc,
   g_test_suite_add_suite (rootsuite, miscsuite);
   GTestSuite *forksuite = g_test_create_suite ("fork");
   g_test_suite_add_suite (rootsuite, forksuite);
+  GTestSuite *randsuite = g_test_create_suite ("rand");
+  g_test_suite_add_suite (rootsuite, randsuite);
 
   tc = g_test_create_case ("fail assertion", 0, NULL, test_fork_fail, NULL);
   g_test_suite_add (forksuite, tc);
@@ -130,6 +168,11 @@ main (int   argc,
   g_test_suite_add (forksuite, tc);
   tc = g_test_create_case ("timeout", 0, NULL, test_fork_timeout, NULL);
   g_test_suite_add (forksuite, tc);
+
+  tc = g_test_create_case ("rand-1", 0, NULL, test_rand1, NULL);
+  g_test_suite_add (randsuite, tc);
+  tc = g_test_create_case ("rand-2", 0, NULL, test_rand2, NULL);
+  g_test_suite_add (randsuite, tc);
 
   tc = g_test_create_case ("assertions", 0, NULL, test_assertions, NULL);
   g_test_suite_add (miscsuite, tc);
