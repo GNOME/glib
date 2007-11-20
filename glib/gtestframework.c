@@ -18,6 +18,7 @@
  */
 #include "config.h"
 #include "gtestframework.h"
+#include "galias.h"
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <fcntl.h>
@@ -1258,3 +1259,6 @@ g_test_log_msg_free (GTestLogMsg *tmsg)
   g_free (tmsg->nums);
   g_free (tmsg);
 }
+
+#define __G_TESTFRAMEWORK_C__
+#include "galiasdef.c"

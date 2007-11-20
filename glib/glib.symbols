@@ -1240,6 +1240,46 @@ g_thread_pool_set_sort_function
 #endif
 #endif
 
+#if IN_HEADER(__G_TESTFRAMEWORK_H__)
+#if IN_FILE(__G_TESTFRAMEWORK_C__)
+g_assertion_message
+g_assertion_message_cmpnum
+g_assertion_message_cmpstr
+g_assertion_message_expr
+g_strcmp0
+g_test_add_func
+g_test_add_vtable
+g_test_create_case
+g_test_create_suite
+g_test_get_root
+g_test_init
+g_test_log_buffer_free
+g_test_log_buffer_new
+g_test_log_buffer_pop
+g_test_log_buffer_push
+g_test_log_msg_free
+g_test_log_type_name
+g_test_maximized_result
+g_test_minimized_result
+g_test_queue_free
+g_test_rand_double
+g_test_rand_double_range
+g_test_rand_int
+g_test_rand_int_range
+g_test_run
+g_test_run_suite
+g_test_suite_add
+g_test_suite_add_suite
+g_test_timer_elapsed
+g_test_timer_last
+g_test_timer_start
+g_test_trap_assertions
+g_test_trap_fork
+g_test_trap_has_passed
+g_test_trap_reached_timeout
+#endif
+#endif
+
 #if IN_HEADER(__G_TIMER_H__)
 #if IN_FILE(__G_TIMER_C__)
 g_timer_continue
