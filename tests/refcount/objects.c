@@ -2,12 +2,12 @@
 #include <glib.h>
 #include <glib-object.h>
 
-#define G_TYPE_TEST               (g_test_get_type ())
-#define G_TEST(test)              (G_TYPE_CHECK_INSTANCE_CAST ((test), G_TYPE_TEST, GTest))
-#define G_IS_TEST(test)           (G_TYPE_CHECK_INSTANCE_TYPE ((test), G_TYPE_TEST))
-#define G_TEST_CLASS(tclass)      (G_TYPE_CHECK_CLASS_CAST ((tclass), G_TYPE_TEST, GTestClass))
-#define G_IS_TEST_CLASS(tclass)   (G_TYPE_CHECK_CLASS_TYPE ((tclass), G_TYPE_TEST))
-#define G_TEST_GET_CLASS(test)    (G_TYPE_INSTANCE_GET_CLASS ((test), G_TYPE_TEST, GTestClass))
+#define G_TYPE_TEST               (my_test_get_type ())
+#define MY_TEST(test)              (G_TYPE_CHECK_INSTANCE_CAST ((test), G_TYPE_TEST, GTest))
+#define MY_IS_TEST(test)           (G_TYPE_CHECK_INSTANCE_TYPE ((test), G_TYPE_TEST))
+#define MY_TEST_CLASS(tclass)      (G_TYPE_CHECK_CLASS_CAST ((tclass), G_TYPE_TEST, GTestClass))
+#define MY_IS_TEST_CLASS(tclass)   (G_TYPE_CHECK_CLASS_TYPE ((tclass), G_TYPE_TEST))
+#define MY_TEST_GET_CLASS(test)    (G_TYPE_INSTANCE_GET_CLASS ((test), G_TYPE_TEST, GTestClass))
 
 typedef struct _GTest GTest;
 typedef struct _GTestClass GTestClass;
@@ -22,17 +22,17 @@ struct _GTestClass
   GObjectClass parent_class;
 };
 
-static GType g_test_get_type (void);
+static GType my_test_get_type (void);
 static volatile gboolean stopping;
 
-static void g_test_class_init (GTestClass * klass);
-static void g_test_init (GTest * test);
-static void g_test_dispose (GObject * object);
+static void my_test_class_init (GTestClass * klass);
+static void my_test_init (GTest * test);
+static void my_test_dispose (GObject * object);
 
 static GObjectClass *parent_class = NULL;
 
 static GType
-g_test_get_type (void)
+my_test_get_type (void)
 {
   static GType test_type = 0;
 
@@ -41,12 +41,12 @@ g_test_get_type (void)
       sizeof (GTestClass),
       NULL,
       NULL,
-      (GClassInitFunc) g_test_class_init,
+      (GClassInitFunc) my_test_class_init,
       NULL,
       NULL,
       sizeof (GTest),
       0,
-      (GInstanceInitFunc) g_test_init,
+      (GInstanceInitFunc) my_test_init,
       NULL
     };
 
@@ -57,7 +57,7 @@ g_test_get_type (void)
 }
 
 static void
-g_test_class_init (GTestClass * klass)
+my_test_class_init (GTestClass * klass)
 {
   GObjectClass *gobject_class;
 
@@ -65,21 +65,21 @@ g_test_class_init (GTestClass * klass)
 
   parent_class = g_type_class_ref (G_TYPE_OBJECT);
 
-  gobject_class->dispose = g_test_dispose;
+  gobject_class->dispose = my_test_dispose;
 }
 
 static void
-g_test_init (GTest * test)
+my_test_init (GTest * test)
 {
   g_print ("init %p\n", test);
 }
 
 static void
-g_test_dispose (GObject * object)
+my_test_dispose (GObject * object)
 {
   GTest *test;
 
-  test = G_TEST (object);
+  test = MY_TEST (object);
 
   g_print ("dispose %p!\n", object);
 
@@ -87,7 +87,7 @@ g_test_dispose (GObject * object)
 }
 
 static void
-g_test_do_refcount (GTest * test)
+my_test_do_refcount (GTest * test)
 {
   g_object_ref (test); 
   g_object_unref (test); 
@@ -99,7 +99,7 @@ run_thread (GTest * test)
   gint i = 1;
 
   while (!stopping) {
-    g_test_do_refcount (test);
+    my_test_do_refcount (test);
     if ((i++ % 10000) == 0) {
       g_print (".");
       g_thread_yield(); /* force context switch */

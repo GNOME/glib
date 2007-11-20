@@ -2,12 +2,12 @@
 #include <glib.h>
 #include <glib-object.h>
 
-#define G_TYPE_TEST               (g_test_get_type ())
-#define G_TEST(test)              (G_TYPE_CHECK_INSTANCE_CAST ((test), G_TYPE_TEST, GTest))
-#define G_IS_TEST(test)           (G_TYPE_CHECK_INSTANCE_TYPE ((test), G_TYPE_TEST))
-#define G_TEST_CLASS(tclass)      (G_TYPE_CHECK_CLASS_CAST ((tclass), G_TYPE_TEST, GTestClass))
-#define G_IS_TEST_CLASS(tclass)   (G_TYPE_CHECK_CLASS_TYPE ((tclass), G_TYPE_TEST))
-#define G_TEST_GET_CLASS(test)    (G_TYPE_INSTANCE_GET_CLASS ((test), G_TYPE_TEST, GTestClass))
+#define G_TYPE_TEST                (my_test_get_type ())
+#define MY_TEST(test)              (G_TYPE_CHECK_INSTANCE_CAST ((test), G_TYPE_TEST, GTest))
+#define MY_IS_TEST(test)           (G_TYPE_CHECK_INSTANCE_TYPE ((test), G_TYPE_TEST))
+#define MY_TEST_CLASS(tclass)      (G_TYPE_CHECK_CLASS_CAST ((tclass), G_TYPE_TEST, GTestClass))
+#define MY_IS_TEST_CLASS(tclass)   (G_TYPE_CHECK_CLASS_TYPE ((tclass), G_TYPE_TEST))
+#define MY_TEST_GET_CLASS(test)    (G_TYPE_INSTANCE_GET_CLASS ((test), G_TYPE_TEST, GTestClass))
 
 static GRand *rand;
 
@@ -29,7 +29,7 @@ struct _GTestClass
   void (*test_signal2) (GTest * test, gint an_int);
 };
 
-static GType g_test_get_type (void);
+static GType my_test_get_type (void);
 static volatile gboolean stopping;
 
 /* Element signals and args */
@@ -47,23 +47,23 @@ enum
   ARG_TEST_PROP
 };
 
-static void g_test_class_init (GTestClass * klass);
-static void g_test_init (GTest * test);
-static void g_test_dispose (GObject * object);
+static void my_test_class_init (GTestClass * klass);
+static void my_test_init (GTest * test);
+static void my_test_dispose (GObject * object);
 
 static void signal2_handler (GTest * test, gint anint);
 
-static void g_test_set_property (GObject * object, guint prop_id,
+static void my_test_set_property (GObject * object, guint prop_id,
     const GValue * value, GParamSpec * pspec);
-static void g_test_get_property (GObject * object, guint prop_id,
+static void my_test_get_property (GObject * object, guint prop_id,
     GValue * value, GParamSpec * pspec);
 
 static GObjectClass *parent_class = NULL;
 
-static guint g_test_signals[LAST_SIGNAL] = { 0 };
+static guint my_test_signals[LAST_SIGNAL] = { 0 };
 
 static GType
-g_test_get_type (void)
+my_test_get_type (void)
 {
   static GType test_type = 0;
 
@@ -72,12 +72,12 @@ g_test_get_type (void)
       sizeof (GTestClass),
       NULL,
       NULL,
-      (GClassInitFunc) g_test_class_init,
+      (GClassInitFunc) my_test_class_init,
       NULL,
       NULL,
       sizeof (GTest),
       0,
-      (GInstanceInitFunc) g_test_init,
+      (GInstanceInitFunc) my_test_init,
       NULL
     };
 
@@ -90,7 +90,7 @@ g_test_get_type (void)
 }
 
 static void
-g_test_class_init (GTestClass * klass)
+my_test_class_init (GTestClass * klass)
 {
   GObjectClass *gobject_class;
 
@@ -101,15 +101,15 @@ g_test_class_init (GTestClass * klass)
   if (!g_thread_supported ())
     g_thread_init (NULL);
 
-  gobject_class->dispose = g_test_dispose;
-  gobject_class->set_property = g_test_set_property;
-  gobject_class->get_property = g_test_get_property;
+  gobject_class->dispose = my_test_dispose;
+  gobject_class->set_property = my_test_set_property;
+  gobject_class->get_property = my_test_get_property;
 
-  g_test_signals[TEST_SIGNAL1] =
+  my_test_signals[TEST_SIGNAL1] =
       g_signal_new ("test-signal1", G_TYPE_FROM_CLASS (klass),
       G_SIGNAL_RUN_LAST, G_STRUCT_OFFSET (GTestClass, test_signal1), NULL,
       NULL, g_cclosure_marshal_VOID__INT, G_TYPE_NONE, 1, G_TYPE_INT);
-  g_test_signals[TEST_SIGNAL2] =
+  my_test_signals[TEST_SIGNAL2] =
       g_signal_new ("test-signal2", G_TYPE_FROM_CLASS (klass),
       G_SIGNAL_RUN_LAST, G_STRUCT_OFFSET (GTestClass, test_signal2), NULL,
       NULL, g_cclosure_marshal_VOID__INT, G_TYPE_NONE, 1, G_TYPE_INT);
@@ -122,7 +122,7 @@ g_test_class_init (GTestClass * klass)
 }
 
 static void
-g_test_init (GTest * test)
+my_test_init (GTest * test)
 {
   g_print ("init %p\n", test);
 
@@ -130,11 +130,11 @@ g_test_init (GTest * test)
 }
 
 static void
-g_test_dispose (GObject * object)
+my_test_dispose (GObject * object)
 {
   GTest *test;
 
-  test = G_TEST (object);
+  test = MY_TEST (object);
 
   g_print ("dispose %p!\n", object);
 
@@ -142,12 +142,12 @@ g_test_dispose (GObject * object)
 }
 
 static void
-g_test_set_property (GObject * object, guint prop_id,
-    const GValue * value, GParamSpec * pspec)
+my_test_set_property (GObject * object, guint prop_id,
+                      const GValue * value, GParamSpec * pspec)
 {
   GTest *test;
 
-  test = G_TEST (object);
+  test = MY_TEST (object);
 
   switch (prop_id) {
     case ARG_TEST_PROP:
@@ -160,12 +160,12 @@ g_test_set_property (GObject * object, guint prop_id,
 }
 
 static void
-g_test_get_property (GObject * object, guint prop_id,
-    GValue * value, GParamSpec * pspec)
+my_test_get_property (GObject * object, guint prop_id,
+                      GValue * value, GParamSpec * pspec)
 {
   GTest *test;
 
-  test = G_TEST (object);
+  test = MY_TEST (object);
 
   switch (prop_id) {
     case ARG_TEST_PROP:
@@ -178,9 +178,9 @@ g_test_get_property (GObject * object, guint prop_id,
 }
 
 static void
-g_test_do_signal1 (GTest * test)
+my_test_do_signal1 (GTest * test)
 {
-  g_signal_emit (G_OBJECT (test), g_test_signals[TEST_SIGNAL1], 0, 0);
+  g_signal_emit (G_OBJECT (test), my_test_signals[TEST_SIGNAL1], 0, 0);
 }
 
 static void
@@ -189,13 +189,13 @@ signal2_handler (GTest * test, gint anint)
 }
 
 static void
-g_test_do_signal2 (GTest * test)
+my_test_do_signal2 (GTest * test)
 {
-  g_signal_emit (G_OBJECT (test), g_test_signals[TEST_SIGNAL2], 0, 0);
+  g_signal_emit (G_OBJECT (test), my_test_signals[TEST_SIGNAL2], 0, 0);
 }
 
 static void
-g_test_do_prop (GTest * test)
+my_test_do_prop (GTest * test)
 {
   test->value = g_rand_int (rand);
   g_object_notify (G_OBJECT (test), "test-prop");
@@ -208,11 +208,11 @@ run_thread (GTest * test)
 
   while (!stopping) {
     if (TESTNUM == 1)
-      g_test_do_signal1 (test);
+      my_test_do_signal1 (test);
     if (TESTNUM == 2)
-      g_test_do_signal2 (test);
+      my_test_do_signal2 (test);
     if (TESTNUM == 3)
-      g_test_do_prop (test);
+      my_test_do_prop (test);
     if ((i++ % 10000) == 0) {
       g_print (".");
       g_thread_yield(); /* force context switch */

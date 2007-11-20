@@ -2,12 +2,12 @@
 #include <glib.h>
 #include <glib-object.h>
 
-#define G_TYPE_TEST               (g_test_get_type ())
-#define G_TEST(test)              (G_TYPE_CHECK_INSTANCE_CAST ((test), G_TYPE_TEST, GTest))
-#define G_IS_TEST(test)           (G_TYPE_CHECK_INSTANCE_TYPE ((test), G_TYPE_TEST))
-#define G_TEST_CLASS(tclass)      (G_TYPE_CHECK_CLASS_CAST ((tclass), G_TYPE_TEST, GTestClass))
-#define G_IS_TEST_CLASS(tclass)   (G_TYPE_CHECK_CLASS_TYPE ((tclass), G_TYPE_TEST))
-#define G_TEST_GET_CLASS(test)    (G_TYPE_INSTANCE_GET_CLASS ((test), G_TYPE_TEST, GTestClass))
+#define G_TYPE_TEST               (my_test_get_type ())
+#define MY_TEST(test)              (G_TYPE_CHECK_INSTANCE_CAST ((test), G_TYPE_TEST, GTest))
+#define MY_IS_TEST(test)           (G_TYPE_CHECK_INSTANCE_TYPE ((test), G_TYPE_TEST))
+#define MY_TEST_CLASS(tclass)      (G_TYPE_CHECK_CLASS_CAST ((tclass), G_TYPE_TEST, GTestClass))
+#define MY_IS_TEST_CLASS(tclass)   (G_TYPE_CHECK_CLASS_TYPE ((tclass), G_TYPE_TEST))
+#define MY_TEST_GET_CLASS(test)    (G_TYPE_INSTANCE_GET_CLASS ((test), G_TYPE_TEST, GTestClass))
 
 enum {
   PROP_0,
@@ -31,25 +31,25 @@ struct _GTestClass
   GObjectClass parent_class;
 };
 
-static GType g_test_get_type (void);
+static GType my_test_get_type (void);
 static volatile gboolean stopping;
 
-static void g_test_class_init (GTestClass * klass);
-static void g_test_init (GTest * test);
-static void g_test_dispose (GObject * object);
-static void g_test_get_property (GObject    *object,
-				 guint       prop_id,
-				 GValue     *value,
-				 GParamSpec *pspec);
-static void g_test_set_property (GObject      *object,
-				 guint         prop_id,
-				 const GValue *value,
-				 GParamSpec   *pspec);
+static void my_test_class_init (GTestClass * klass);
+static void my_test_init (GTest * test);
+static void my_test_dispose (GObject * object);
+static void my_test_get_property (GObject    *object,
+                                  guint       prop_id,
+                                  GValue     *value,
+                                  GParamSpec *pspec);
+static void my_test_set_property (GObject      *object,
+                                  guint         prop_id,
+                                  const GValue *value,
+                                  GParamSpec   *pspec);
 
 static GObjectClass *parent_class = NULL;
 
 static GType
-g_test_get_type (void)
+my_test_get_type (void)
 {
   static GType test_type = 0;
 
@@ -58,12 +58,12 @@ g_test_get_type (void)
       sizeof (GTestClass),
       NULL,
       NULL,
-      (GClassInitFunc) g_test_class_init,
+      (GClassInitFunc) my_test_class_init,
       NULL,
       NULL,
       sizeof (GTest),
       0,
-      (GInstanceInitFunc) g_test_init,
+      (GInstanceInitFunc) my_test_init,
       NULL
     };
 
@@ -73,7 +73,7 @@ g_test_get_type (void)
 }
 
 static void
-g_test_class_init (GTestClass * klass)
+my_test_class_init (GTestClass * klass)
 {
   GObjectClass *gobject_class;
 
@@ -81,9 +81,9 @@ g_test_class_init (GTestClass * klass)
 
   parent_class = g_type_class_ref (G_TYPE_OBJECT);
 
-  gobject_class->dispose = g_test_dispose;
-  gobject_class->get_property = g_test_get_property;
-  gobject_class->set_property = g_test_set_property;
+  gobject_class->dispose = my_test_dispose;
+  gobject_class->get_property = my_test_get_property;
+  gobject_class->set_property = my_test_set_property;
 
   g_object_class_install_property (gobject_class,
 				   PROP_DUMMY,
@@ -95,31 +95,31 @@ g_test_class_init (GTestClass * klass)
 }
 
 static void
-g_test_init (GTest * test)
+my_test_init (GTest * test)
 {
   static guint static_id = 1;
   test->id = static_id++;
 }
 
 static void
-g_test_dispose (GObject * object)
+my_test_dispose (GObject * object)
 {
   GTest *test;
 
-  test = G_TEST (object);
+  test = MY_TEST (object);
 
   G_OBJECT_CLASS (parent_class)->dispose (object);
 }
 
 static void 
-g_test_get_property (GObject    *object,
-		     guint       prop_id,
-		     GValue     *value,
-		     GParamSpec *pspec)
+my_test_get_property (GObject    *object,
+                      guint       prop_id,
+                      GValue     *value,
+                      GParamSpec *pspec)
 {
   GTest *test;
 
-  test = G_TEST (object);
+  test = MY_TEST (object);
 
   switch (prop_id)
     {
@@ -133,14 +133,14 @@ g_test_get_property (GObject    *object,
 }
 
 static void 
-g_test_set_property (GObject      *object,
-		     guint         prop_id,
-		     const GValue *value,
-		     GParamSpec   *pspec)
+my_test_set_property (GObject      *object,
+                      guint         prop_id,
+                      const GValue *value,
+                      GParamSpec   *pspec)
 {
   GTest *test;
 
-  test = G_TEST (object);
+  test = MY_TEST (object);
 
   switch (prop_id)
     {
@@ -159,13 +159,13 @@ dummy_notify (GObject    *object,
 {
   GTest *test;
 
-  test = G_TEST (object);
+  test = MY_TEST (object);
 
   test->count++;  
 }
 
 static void
-g_test_do_property (GTest * test)
+my_test_do_property (GTest * test)
 {
   gint dummy;
 
@@ -179,7 +179,7 @@ run_thread (GTest * test)
   gint i = 1;
   
   while (!stopping) {
-    g_test_do_property (test);
+    my_test_do_property (test);
     if ((i++ % 10000) == 0)
       {
         g_print (".%c", 'a' + test->id);
