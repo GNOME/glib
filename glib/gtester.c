@@ -118,6 +118,8 @@ launch_test (const char *binary)
     argv[i++] = queue_gfree (&free_list, g_strdup_printf ("--seed=%s", subtest_seedstr));
   for (slist = subtest_paths; slist; slist = slist->next)
     argv[i++] = queue_gfree (&free_list, g_strdup_printf ("-p=%s", (gchar*) slist->data));
+  if (gtester_list_tests)
+    argv[i++] = "-l";
   argv[i++] = NULL;
 
   /* child_report will be used to capture logging information from the
