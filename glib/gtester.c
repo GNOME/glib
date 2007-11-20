@@ -18,6 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 #include <glib.h>
+#include <gstdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -34,19 +35,102 @@ static void     parse_args      (gint           *argc_p,
 
 /* --- variables --- */
 static GIOChannel  *ioc_report = NULL;
-static gboolean     subtest_running = FALSE;
-static gboolean     subtest_io_pending = FALSE;
-static gboolean     gtester_quiet = TRUE;
+static gboolean     gtester_quiet = FALSE;
 static gboolean     gtester_verbose = FALSE;
 static gboolean     gtester_list_tests = FALSE;
+static gboolean     subtest_running = FALSE;
+static gboolean     subtest_io_pending = FALSE;
+static gboolean     subtest_faill = TRUE;
+static gboolean     subtest_quiet = TRUE;
+static gboolean     subtest_verbose = FALSE;
 static gboolean     subtest_mode_fatal = FALSE;
 static gboolean     subtest_mode_perf = FALSE;
 static gboolean     subtest_mode_quick = TRUE;
 static const gchar *subtest_seedstr = NULL;
 static GSList      *subtest_paths = NULL;
-static const gchar *outpu_filename = NULL;
+static gboolean     testcase_open = FALSE;
+static const gchar *output_filename = NULL;
+static guint        log_indent = 0;
+static gint         log_fd = -1;
 
 /* --- functions --- */
+static const char*
+sindent (guint n)
+{
+  static const char spaces[] = "                                                                                                    ";
+  int l = sizeof (spaces);
+  n = MIN (n, l - 1);
+  return spaces + l - n;
+}
+
+static void G_GNUC_PRINTF (1, 2)
+test_log_printfe (const char *format,
+                  ...)
+{
+  char *result;
+  int r;
+  va_list args;
+  va_start (args, format);
+  result = g_markup_vprintf_escaped (format, args);
+  va_end (args);
+  do
+    r = write (log_fd, result, strlen (result));
+  while (r < 0 && errno == EINTR);
+  g_free (result);
+}
+
+static void
+test_log_msg (GTestLogMsg *msg)
+{
+  switch (msg->log_type)
+    {
+    case G_TEST_LOG_NONE:
+      break;
+    case G_TEST_LOG_ERROR:
+      g_printerr ("%s\n", msg->strings[0]);
+      break;
+    case G_TEST_LOG_START_BINARY:
+      test_log_printfe ("%s<binary file=\"%s\"/>\n", sindent (log_indent), msg->strings[0]);
+      test_log_printfe ("%s<random-seed>%s</random-seed>\n", sindent (log_indent), msg->strings[1]);
+      break;
+    case G_TEST_LOG_LIST_CASE:
+      g_print ("%s\n", msg->strings[0]);
+      break;
+    case G_TEST_LOG_START_CASE:
+      if (gtester_verbose)
+        {
+          gchar *sc = g_strconcat (msg->strings[0], ":", NULL);
+          gchar *sleft = g_strdup_printf ("%-68s", sc);
+          g_free (sc);
+          g_print ("%70s ", sleft);
+          g_free (sleft);
+        }
+      g_return_if_fail (testcase_open == 0);
+      testcase_open++;
+      test_log_printfe ("%s<testcase path=\"%s\">\n", sindent (log_indent), msg->strings[0]);
+      log_indent += 2;
+      break;
+    case G_TEST_LOG_STOP_CASE:
+      g_return_if_fail (testcase_open > 0);
+      test_log_printfe ("%s<duration>%.6Lf</duration>\n", sindent (log_indent), msg->nums[2]);
+      test_log_printfe ("%s<status exit-status=\"%d\" n-forks=\"%d\"/>\n",
+                        sindent (log_indent), (int) msg->nums[0], (int) msg->nums[1]);
+      log_indent -= 2;
+      test_log_printfe ("%s</testcase>\n", sindent (log_indent));
+      testcase_open--;
+      if (gtester_verbose)
+        g_print ("OK\n");
+      break;
+    case G_TEST_LOG_MIN_RESULT:
+    case G_TEST_LOG_MAX_RESULT:
+      test_log_printfe ("%s<performance minimize=\"%d\" maximize=\"%d\" value=\"%.16Lg\">\n",
+                        sindent (log_indent), msg->log_type == G_TEST_LOG_MIN_RESULT, msg->log_type == G_TEST_LOG_MAX_RESULT, msg->nums[0]);
+      test_log_printfe ("%s%s\n", sindent (log_indent + 2), msg->strings[0]);
+      test_log_printfe ("%s</performance>\n", sindent (log_indent));
+      break;
+    }
+}
+
 static gboolean
 child_report_cb (GIOChannel  *source,
                  GIOCondition condition,
@@ -69,19 +153,7 @@ child_report_cb (GIOChannel  *source,
               msg = g_test_log_buffer_pop (tlb);
               if (msg)
                 {
-                  guint ui;
-                  /* print message, this should be written to an XML log file */
-                  g_printerr ("{*GTLOG(%s)", g_test_log_type_name (msg->log_type));
-                  for (ui = 0; ui < msg->n_strings; ui++)
-                    g_printerr (":{%s}", msg->strings[ui]);
-                  if (msg->n_nums)
-                    {
-                      g_printerr (":(");
-                      for (ui = 0; ui < msg->n_nums; ui++)
-                        g_printerr ("%s%.16Lg", ui ? ";" : "", msg->nums[ui]);
-                      g_printerr (")");
-                    }
-                  g_printerr (":GTLOG*}\n");
+                  test_log_msg (msg);
                   g_test_log_msg_free (msg);
                 }
             }
@@ -129,8 +201,8 @@ unset_cloexec_fdp (gpointer fdp_data)
   while (r < 0 && errno == EINTR);
 }
 
-static void
-launch_test (const char *binary)
+static gboolean
+launch_test_binary (const char *binary)
 {
   GTestLogBuffer *tlb;
   GSList *slist, *free_list = NULL;
@@ -146,14 +218,14 @@ launch_test (const char *binary)
         g_error ("Failed to open pipe for test binary: %s: %s", binary, g_strerror (errno));
       else
         g_warning ("Failed to open pipe for test binary: %s: %s", binary, g_strerror (errno));
-      return;
+      return FALSE;
     }
 
   /* setup argv */
   argv[i++] = binary;
-  if (gtester_quiet)
+  if (subtest_quiet)
     argv[i++] = "--quiet";
-  if (gtester_verbose)
+  if (subtest_verbose)
     argv[i++] = "--verbose";
   // argv[i++] = "--debug-log";
   argv[i++] = queue_gfree (&free_list, g_strdup_printf ("--GTestLogFD=%u", report_pipe[1]));
@@ -188,6 +260,9 @@ launch_test (const char *binary)
   free_list = NULL;
   close (report_pipe[1]);
 
+  if (!gtester_quiet)
+    g_print ("(pid=%lu)\n", (unsigned long) pid);
+
   if (error)
     {
       close (report_pipe[0]);
@@ -196,7 +271,7 @@ launch_test (const char *binary)
       else
         g_warning ("Failed to execute test binary: %s: %s", argv[0], error->message);
       g_clear_error (&error);
-      return;
+      return FALSE;
     }
 
   subtest_running = TRUE;
@@ -220,6 +295,29 @@ launch_test (const char *binary)
 
   close (report_pipe[0]);
   g_test_log_buffer_free (tlb);
+
+  return TRUE;
+}
+
+static void
+launch_test (const char *binary)
+{
+  gboolean success;
+  GTimer *btimer = g_timer_new();
+  subtest_faill = FALSE;
+  if (!gtester_quiet)
+    g_print ("TEST: %s... ", binary);
+  test_log_printfe ("%s<testbinary path=\"%s\">\n", sindent (log_indent), binary);
+  log_indent += 2;
+  g_timer_start (btimer);
+  success = launch_test_binary (binary);
+  g_timer_stop (btimer);
+  test_log_printfe ("%s<duration>%.6f</duration>\n", sindent (log_indent), g_timer_elapsed (btimer, NULL));
+  log_indent -= 2;
+  test_log_printfe ("%s</testbinary>\n", sindent (log_indent));
+  if (!gtester_quiet)
+    g_print ("%s: %s\n", subtest_faill || !success ? "FAIL" : "PASS", binary);
+  g_timer_destroy (btimer);
 }
 
 static void
@@ -242,8 +340,8 @@ usage (gboolean just_version)
   g_print ("  -p=TESTPATH                 only start test cases matching TESTPATH\n");
   g_print ("  --seed=SEEDSTRING           start all tests with random number seed SEEDSTRING\n");
   g_print ("  -o=LOGFILE                  write the test log to LOGFILE\n");
-  g_print ("  -q, --quiet                 suppress unnecessary output\n");
-  g_print ("  --verbose                   produce additional output\n");
+  g_print ("  -q, --quiet                 suppress per test binary output\n");
+  g_print ("  --verbose                   report success per testcase\n");
 }
 
 static void
@@ -297,11 +395,11 @@ parse_args (gint    *argc_p,
         {
           gchar *equal = argv[i] + 2;
           if (*equal == '=')
-            outpu_filename = equal + 1;
+            output_filename = equal + 1;
           else if (i + 1 < argc)
             {
               argv[i++] = NULL;
-              outpu_filename = argv[i];
+              output_filename = argv[i];
             }
           argv[i] = NULL;
         }
@@ -400,12 +498,26 @@ main (int    argc,
       return 1;
     }
 
+  if (output_filename)
+    {
+      log_fd = g_open (output_filename, O_WRONLY | O_CREAT | O_TRUNC, 0666);
+      if (log_fd < 0)
+        g_error ("Failed to open log file '%s': %s", output_filename, g_strerror (errno));
+    }
+
+  test_log_printfe ("<?xml version=\"1.0\"?>\n");
+  test_log_printfe ("%s<gtester>\n", sindent (log_indent));
+  log_indent += 2;
   for (ui = 1; ui < argc; ui++)
     {
       const char *binary = argv[ui];
       launch_test (binary);
+      /* we only get here on success or if !subtest_mode_fatal */
     }
+  log_indent -= 2;
+  test_log_printfe ("%s</gtester>\n", sindent (log_indent));
 
-  /* we only get here on success or if !subtest_mode_fatal */
+  close (log_fd);
+
   return 0;
 }

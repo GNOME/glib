@@ -13,6 +13,6 @@ testing_LDADD	  = $(progs_ldadd)
 
 
 test:
-	${GTESTER} ${TEST_PROGS}
+	${GTESTER} --verbose ${TEST_PROGS}
 .PHONY: test
 check-local: test

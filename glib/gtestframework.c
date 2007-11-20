@@ -625,6 +625,7 @@ test_case_run (GTestCase *tc)
       largs[1] = test_run_forks;
       largs[2] = g_timer_elapsed (test_run_timer, NULL);
       g_test_log (G_TEST_LOG_STOP_CASE, NULL, NULL, G_N_ELEMENTS (largs), largs);
+      g_timer_destroy (test_run_timer);
     }
   g_free (test_run_name);
   test_run_name = old_name;
