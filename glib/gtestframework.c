@@ -334,9 +334,36 @@ parse_args (gint    *argc_p,
   *argc_p = e;
 }
 
+/**
+ * g_test_init:
+ * @argc: Address of the @argc parameter of the main() function.
+ *        Changed if any arguments were handled.
+ * @argv: Address of the @argv parameter of main().
+ *        Any parameters understood by g_test_init() stripped before return.
+ *
+ * Initialize the GLib testing framework, e.g. by seeding the
+ * test random number generator, the name for g_get_prgname()
+ * and parsing test related command line args.
+ * So far, the following arguments are understood:
+ * <informalexample>
+ * -l                   list test cases available in a test executable.
+ * --seed RANDOMSEED    provide a random seed to reproduce test runs using random numbers.
+ * --verbose            run tests verbosely.
+ * -q, --quiet          run tests quietly.
+ * -p TESTPATH          execute all tests matching TESTPATH.
+ * -m {perf|slow|quick} execute tests according to this test modes:
+ *                      perf - performance tests, may take long and report results.
+ *                      slow - slow and thorough tests, may take quite long and maximize coverage.
+ *                      quick - quick tests, should run really quickly and give good coverage.
+ * --debug-log          debug test logging output.
+ * -k, --keep-going     gtester specific argument.
+ * --GTestLogFD N       gtester specific argument.
+ * --GTestSkipCount N   gtester specific argument.
+ * </informalexample>
+ */
 void
-g_test_init (int            *argc,
-             char         ***argv,
+g_test_init (int    *argc,
+             char ***argv,
              ...)
 {
   static char seedstr[4 + 4 * 8 + 1];
@@ -417,12 +444,35 @@ test_run_seed (const gchar *rseed)
   g_error ("Unknown or invalid random seed: %s", rseed);
 }
 
+/**
+ * g_test_rand_int:
+ *
+ * Get a reproducable random integer number.
+ * The random numbers generate by the g_test_rand_*() family of functions
+ * change with every new test program start, unless the --seed option is
+ * given when starting test programs.
+ * For individual test cases however, the random number generator is
+ * reseeded, to avoid dependencies between tests and to make --seed
+ * effective for all test cases.
+ *
+ * Returns: a random number from the seeded random number generator.
+ */
 gint32
 g_test_rand_int (void)
 {
   return g_rand_int (test_run_rand);
 }
 
+/**
+ * g_test_rand_int_range:
+ * @begin: the minimum value returned by this function
+ * @end:   the smallest value not to be returned by this function
+ *
+ * Get a reproducable random integer number out of a specified range,
+ * see g_test_rand_int() for details on test case random numbers.
+ *
+ * Returns a number with @begin <= number < @end.
+ */
 gint32
 g_test_rand_int_range (gint32          begin,
                        gint32          end)
@@ -430,12 +480,30 @@ g_test_rand_int_range (gint32          begin,
   return g_rand_int_range (test_run_rand, begin, end);
 }
 
+/**
+ * g_test_rand_double:
+ *
+ * Get a reproducable random floating point number,
+ * see g_test_rand_int() for details on test case random numbers.
+ *
+ * Return a random number from the seeded random number generator.
+ */
 double
 g_test_rand_double (void)
 {
   return g_rand_double (test_run_rand);
 }
 
+/**
+ * g_test_rand_double_range:
+ * @range_start: the minimum value returned by this function
+ * @range_end: the minimum value not returned by this function
+ *
+ * Get a reproducable random floating pointer number out of a specified range,
+ * see g_test_rand_int() for details on test case random numbers.
+ *
+ * Returns a number with @range_start <= number < @range_end.
+ */
 double
 g_test_rand_double_range (double          range_start,
                           double          range_end)
@@ -443,6 +511,12 @@ g_test_rand_double_range (double          range_start,
   return g_rand_double_range (test_run_rand, range_start, range_end);
 }
 
+/**
+ * g_test_timer_start:
+ *
+ * Start a timing test. Call g_test_timer_elapsed() when the task is supposed
+ * to be done. Call this function again to restart the timer.
+ */
 void
 g_test_timer_start (void)
 {
@@ -452,6 +526,11 @@ g_test_timer_start (void)
   g_timer_start (test_user_timer);
 }
 
+/**
+ * g_test_timer_elapsed:
+ *
+ * Get the time since the last start of the timer with g_test_timer_start().
+ */
 double
 g_test_timer_elapsed (void)
 {
@@ -459,12 +538,28 @@ g_test_timer_elapsed (void)
   return test_user_stamp;
 }
 
+/**
+ * g_test_timer_last:
+ *
+ * Report the last result of g_test_timer_elapsed().
+ */
 double
 g_test_timer_last (void)
 {
   return test_user_stamp;
 }
 
+/**
+ * g_test_minimized_result:
+ * @minimized_quantity: the reported value
+ * @format: the format string of the report message
+ *
+ * Report the result of a performance or measurement test.
+ * The test should generally strive to minimize the reported
+ * quantities (smaller values are better than larger ones),
+ * this and @minimized_quantity can determine sorting
+ * order for test result reports.
+ */
 void
 g_test_minimized_result (double          minimized_quantity,
                          const char     *format,
@@ -480,6 +575,17 @@ g_test_minimized_result (double          minimized_quantity,
   g_free (buffer);
 }
 
+/**
+ * g_test_minimized_result:
+ * @maximized_quantity: the reported value
+ * @format: the format string of the report message
+ *
+ * Report the result of a performance or measurement test.
+ * The test should generally strive to maximize the reported
+ * quantities (larger values are better than smaller ones),
+ * this and @maximized_quantity can determine sorting
+ * order for test result reports.
+ */
 void
 g_test_maximized_result (double          maximized_quantity,
                          const char     *format,
@@ -495,6 +601,13 @@ g_test_maximized_result (double          maximized_quantity,
   g_free (buffer);
 }
 
+/**
+ * g_test_message:
+ * @format: the format string
+ * @...:    printf-like arguments to @format
+ *
+ * Add a message to the test report.
+ */
 void
 g_test_message (const char *format,
                 ...)
@@ -508,6 +621,21 @@ g_test_message (const char *format,
   g_free (buffer);
 }
 
+/**
+ * g_test_bug_base:
+ * @uri_pattern: the base pattern for bug URIs
+ *
+ * Specify the base URI for bug reports.
+ * The base URI is used to construct bug report messages for
+ * g_test_message() when g_test_bug() is called.
+ * Calling this function outside of a test case sets the
+ * default base URI for all test cases. Calling it from within
+ * a test case changes the base URI for the scope of the test
+ * case only.
+ * Bug URIs are constructed by appending a bug specific URI
+ * portion to @uri_pattern, or by replacing the special string
+ * '%s' within @uri_pattern if that is present.
+ */
 void
 g_test_bug_base (const char *uri_pattern)
 {
@@ -515,6 +643,15 @@ g_test_bug_base (const char *uri_pattern)
   test_uri_base = g_strdup (uri_pattern);
 }
 
+/**
+ * g_test_bug:
+ * @bug_uri_snippet: Bug specific bug tracker URI portion.
+ *
+ * This function adds a message to test reports that
+ * associates a bug URI with a test case.
+ * Bug URIs are constructed from a base URI set with g_test_bug_base()
+ * and @bug_uri_snippet.
+ */
 void
 g_test_bug (const char *bug_uri_snippet)
 {
@@ -534,6 +671,13 @@ g_test_bug (const char *bug_uri_snippet)
     g_test_message ("Bug Reference: %s%s", test_uri_base, bug_uri_snippet);
 }
 
+/**
+ * g_test_get_root:
+ *
+ * Get the toplevel test suite for the test path API.
+ *
+ * Returns: the toplevel #GTestSuite
+ */
 GTestSuite*
 g_test_get_root (void)
 {
@@ -546,12 +690,46 @@ g_test_get_root (void)
   return test_suite_root;
 }
 
+/**
+ * g_test_run:
+ *
+ * Runs all tests under the toplevel suite which can be retrieved
+ * with g_test_get_root(). Similar to g_test_run_suite(), the test
+ * cases to be run are filtered according to
+ * test path arguments (-p <testpath>) as parsed by g_test_init().
+ * g_test_run_suite() or g_test_run() may only be called once
+ * in a program.
+ */
 int
 g_test_run (void)
 {
   return g_test_run_suite (g_test_get_root());
 }
 
+/**
+ * g_test_create_case:
+ * @test_name:     the name for the test case
+ * @data_size:     the size of the fixture data structure
+ * @data_setup:    the function to set up the fixture data
+ * @data_test:     the actual test function
+ * @data_teardown: the function to teardown the fixture data
+ *
+ * Create a new #GTestCase, named @test_name, this API is fairly
+ * low level, calling g_test_add() or g_test_add_func() is preferable.
+ * When this test is executed, a fixture structure of size @data_size
+ * will be allocated and filled with 0s. Then data_setup() is called
+ * to initialize the fixture. After fixture setup, the actual test
+ * function data_test() is called. Once the test run completed, the
+ * fixture structure is torn down  by calling data_teardown() and
+ * after that the memory is released.
+ * Splitting up a test run into fixture setup, test function and
+ * fixture teardown is most usful if the same fixture is used for
+ * multiple tests. In this cases, g_test_create_case() will be
+ * called with the same fixture, but varying @test_name and
+ * @data_test arguments.
+ *
+ * Returns a newly allocated #GTestCase.
+ */
 GTestCase*
 g_test_create_case (const char     *test_name,
                     gsize           data_size,
@@ -612,6 +790,16 @@ g_test_add_vtable (const char     *testpath,
   g_strfreev (segments);
 }
 
+/**
+ * g_test_add_func:
+ * @testpath:   Slash seperated test case path name for the test.
+ * @test_func:  The test function to invoke for this test.
+ *
+ * Create a new test case, similar to g_test_create_case(). However
+ * the test is assumed to use no fixture, and test suites are automatically
+ * created on the fly and added to the root fixture, based on the
+ * slash seperated portions of @testpath.
+ */
 void
 g_test_add_func (const char     *testpath,
                  void          (*test_func) (void))
@@ -622,6 +810,14 @@ g_test_add_func (const char     *testpath,
   g_test_add_vtable (testpath, 0, NULL, test_func, NULL);
 }
 
+/**
+ * g_test_create_suite:
+ * @suite_name: a name for the suite
+ *
+ * Create a new test suite with the name @suite_name.
+ *
+ * Returns: A newly allocated #GTestSuite instance.
+ */
 GTestSuite*
 g_test_create_suite (const char *suite_name)
 {
@@ -633,6 +829,13 @@ g_test_create_suite (const char *suite_name)
   return ts;
 }
 
+/**
+ * g_test_suite_add:
+ * @suite: a #GTestSuite
+ * @test_case: a #GTestCase
+ *
+ * Adds @test_case to @suite.
+ */
 void
 g_test_suite_add (GTestSuite     *suite,
                   GTestCase      *test_case)
@@ -642,6 +845,13 @@ g_test_suite_add (GTestSuite     *suite,
   suite->cases = g_slist_prepend (suite->cases, test_case);
 }
 
+/**
+ * g_test_suite_add_suite:
+ * @suite:       a #GTestSuite
+ * @nestedsuite: another #GTestSuite
+ *
+ * Adds @nestedsuite to @suite.
+ */
 void
 g_test_suite_add_suite (GTestSuite     *suite,
                         GTestSuite     *nestedsuite)
@@ -651,6 +861,14 @@ g_test_suite_add_suite (GTestSuite     *suite,
   suite->suites = g_slist_prepend (suite->suites, nestedsuite);
 }
 
+/**
+ * g_test_queue_free:
+ * @gfree_pointer: the pointer to be stored.
+ *
+ * Enqueue a pointer to be released with g_free() during the next
+ * teardown phase. This is equivalent to calling g_test_queue_destroy()
+ * with a destroy callback of g_free().
+ */
 void
 g_test_queue_free (gpointer gfree_pointer)
 {
@@ -658,6 +876,18 @@ g_test_queue_free (gpointer gfree_pointer)
     g_test_queue_destroy (g_free, gfree_pointer);
 }
 
+/**
+ * g_test_queue_destroy:
+ * @destroy_func:       Destroy callback for teardown phase.
+ * @destroy_data:       Destroy callback data.
+ *
+ * This function enqueus a callback @destroy_func() to be executed
+ * during the next test case teardown phase. This is most useful
+ * to auto destruct allocted test resources at the end of a test run.
+ * Resources are released in reverse queue order, that means enqueueing
+ * callback A before callback B will cause B() to be called before
+ * A() during teardown.
+ */
 void
 g_test_queue_destroy (GDestroyNotify destroy_func,
                       gpointer       destroy_data)
@@ -760,6 +990,16 @@ g_test_run_suite_internal (GTestSuite *suite,
   return n_bad || bad_suite;
 }
 
+/**
+ * g_test_run_suite:
+ * @suite: a #GTestSuite
+ *
+ * Execute the tests within @suite and all nested #GTestSuites.
+ * The test suites to be executed are filtered according to
+ * test path arguments (-p <testpath>) as parsed by g_test_init().
+ * g_test_run_suite() or g_test_run() may only be called once
+ * in a program.
+ */
 int
 g_test_run_suite (GTestSuite *suite)
 {
@@ -866,6 +1106,13 @@ g_assertion_message_cmpstr (const char     *domain,
   g_free (s);
 }
 
+/**
+ * g_strcmp0:
+ * @str1: a C string or %NULL
+ * @str2: another C string or %NULL
+ *
+ * Compares @str1 and @str2 like strcmp(). Handles %NULL strings gracefully.
+ */
 int
 g_strcmp0 (const char     *str1,
            const char     *str2)
@@ -996,6 +1243,50 @@ test_time_stamp (void)
   return stamp;
 }
 
+/**
+ * g_test_trap_fork:
+ * @usec_timeout:    Timeout for the forked test in micro seconds.
+ * @test_trap_flags: Flags to modify forking behaviour.
+ *
+ * Fork the current test program to execute a test case that might
+ * not return or that might abort. The forked test case is aborted
+ * and considered failing if its run time exceeds @usec_timeout.
+ * The forking behavior can be configured with the following flags:
+ * %G_TEST_TRAP_SILENCE_STDOUT - redirect stdout of the test child
+ * to /dev/null so it cannot be observed on the console during test
+ * runs. The actual output is still captured though to allow later
+ * tests with g_test_trap_assert_stdout().
+ * %G_TEST_TRAP_SILENCE_STDERR - redirect stderr of the test child
+ * to /dev/null so it cannot be observed on the console during test
+ * runs. The actual output is still captured though to allow later
+ * tests with g_test_trap_assert_stderr().
+ * %G_TEST_TRAP_INHERIT_STDIN - if this flag is given, stdin of the
+ * forked child process is shared with stdin of its parent process.
+ * It is redirected to /dev/null otherwise.
+ *
+ * In the following example, the test code forks, the forked child
+ * process produces some sample output and exits successfully.
+ * The forking parent process then asserts successfull child program
+ * termination and validates cihld program outputs.
+ *
+ * <informalexample><programlisting>
+ *   static void
+ *   test_fork_patterns (void)
+ *   {
+ *     if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT | G_TEST_TRAP_SILENCE_STDERR))
+ *       {
+ *         g_print ("some stdout text: somagic17\n");
+ *         g_printerr ("some stderr text: semagic43\n");
+ *         exit (0); // successful test run
+ *       }
+ *     g_test_trap_assert_passed();
+ *     g_test_trap_assert_stdout ("*somagic17*");
+ *     g_test_trap_assert_stderr ("*semagic43*");
+ *   }
+ * </programlisting></informalexample>
+ *
+ * Returns: %TRUE for the forked child and %FALSE for the executing parent process.
+ */
 gboolean
 g_test_trap_fork (guint64        usec_timeout,
                   GTestTrapFlags test_trap_flags)
@@ -1129,12 +1420,26 @@ g_test_trap_fork (guint64        usec_timeout,
     }
 }
 
+/**
+ * g_test_trap_has_passed:
+ *
+ * Check the reuslt of the last g_test_trap_fork() call.
+ *
+ * Returns: %TRUE if the last forked child terminated successfully.
+ */
 gboolean
 g_test_trap_has_passed (void)
 {
   return test_trap_last_status == 0; /* exit_status == 0 && !signal && !coredump */
 }
 
+/**
+ * g_test_trap_reached_timeout:
+ *
+ * Check the reuslt of the last g_test_trap_fork() call.
+ *
+ * Returns: %TRUE if the last forked child got killed due to a fork timeout.
+ */
 gboolean
 g_test_trap_reached_timeout (void)
 {
@@ -1290,6 +1595,11 @@ g_test_log_extract (GTestLogBuffer *tbuffer)
   return FALSE;
 }
 
+/**
+ * g_test_log_buffer_new:
+ *
+ * Internal function for gtester to decode test log messages, no ABI guarantees provided.
+ */
 GTestLogBuffer*
 g_test_log_buffer_new (void)
 {
@@ -1298,6 +1608,11 @@ g_test_log_buffer_new (void)
   return tb;
 }
 
+/**
+ * g_test_log_buffer_free
+ *
+ * Internal function for gtester to free test log messages, no ABI guarantees provided.
+ */
 void
 g_test_log_buffer_free (GTestLogBuffer *tbuffer)
 {
@@ -1308,6 +1623,11 @@ g_test_log_buffer_free (GTestLogBuffer *tbuffer)
   g_free (tbuffer);
 }
 
+/**
+ * g_test_log_buffer_push
+ *
+ * Internal function for gtester to decode test log messages, no ABI guarantees provided.
+ */
 void
 g_test_log_buffer_push (GTestLogBuffer *tbuffer,
                         guint           n_bytes,
@@ -1325,6 +1645,11 @@ g_test_log_buffer_push (GTestLogBuffer *tbuffer,
     }
 }
 
+/**
+ * g_test_log_buffer_pop:
+ *
+ * Internal function for gtester to retrieve test log messages, no ABI guarantees provided.
+ */
 GTestLogMsg*
 g_test_log_buffer_pop (GTestLogBuffer *tbuffer)
 {
@@ -1339,6 +1664,11 @@ g_test_log_buffer_pop (GTestLogBuffer *tbuffer)
   return msg;
 }
 
+/**
+ * g_test_log_msg_free:
+ *
+ * Internal function for gtester to free test log messages, no ABI guarantees provided.
+ */
 void
 g_test_log_msg_free (GTestLogMsg *tmsg)
 {
@@ -1347,6 +1677,24 @@ g_test_log_msg_free (GTestLogMsg *tmsg)
   g_free (tmsg->nums);
   g_free (tmsg);
 }
+
+/* --- macros docs START --- */
+/**
+ * g_test_add:
+ * @testpath:  The test path for a new test case.
+ * @Fixture:   The type of a fixture data structure.
+ * @fsetup:    The function to set up the fixture data.
+ * @ftest:     The actual test function.
+ * @fteardown: The function to tear down the fixture data.
+ *
+ * Hook up a new test case at @testpath, similar to g_test_add_func().
+ * A fixture data structure with setup and teardown function may be provided
+ * though, simmilar to g_test_create_case().
+ * g_test_add() is implemented as a macro, so that the fsetup(), ftest() and
+ * fteardown() callbacks can expect a @Fixture pointer as first argument in
+ * a type safe manner.
+ **/
+/* --- macros docs END --- */
 
 #define __G_TESTFRAMEWORK_C__
 #include "galiasdef.c"
