@@ -48,11 +48,14 @@ main (int   argc,
   };
 
   working_folder = g_get_current_dir ();
-  g_spawn_async (working_folder,
+  g_spawn_async_with_pipes (working_folder,
 		 child_argv, NULL /* envp */,
 		 G_SPAWN_DO_NOT_REAP_CHILD | G_SPAWN_SEARCH_PATH,
 		 NULL, NULL,
 		 &pid,
+		 NULL,
+		 NULL,
+		 NULL,
 		 &error);
   g_free (working_folder);
 
