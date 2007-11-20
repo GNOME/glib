@@ -73,6 +73,7 @@ static int         test_trap_last_status = 0;
 static int         test_trap_last_pid = 0;
 static char       *test_trap_last_stdout = NULL;
 static char       *test_trap_last_stderr = NULL;
+static char       *test_uri_base = NULL;
 static gboolean    test_debug_log = FALSE;
 const GTestConfig *g_test_config_vars = NULL;
 static GTestConfig mutable_test_config_vars = {
@@ -88,14 +89,18 @@ g_test_log_type_name (GTestLogType log_type)
 {
   switch (log_type)
     {
+    case G_TEST_LOG_NONE:               return "none";
+    case G_TEST_LOG_ERROR:              return "error";
     case G_TEST_LOG_START_BINARY:       return "binary";
     case G_TEST_LOG_LIST_CASE:          return "list";
+    case G_TEST_LOG_SKIP_CASE:          return "skip";
     case G_TEST_LOG_START_CASE:         return "start";
     case G_TEST_LOG_STOP_CASE:          return "stop";
     case G_TEST_LOG_MIN_RESULT:         return "minperf";
     case G_TEST_LOG_MAX_RESULT:         return "maxperf";
-    default:                            return "???";
+    case G_TEST_LOG_MESSAGE:            return "message";
     }
+  return "???";
 }
 
 static void
@@ -163,6 +168,10 @@ g_test_log (GTestLogType lbit,
     case G_TEST_LOG_MAX_RESULT:
       if (g_test_verbose())
         g_print ("(MAXPERF:%s)\n", string1);
+      break;
+    case G_TEST_LOG_MESSAGE:
+      if (g_test_verbose())
+        g_print ("(MSG: %s)\n", string1);
       break;
     default: ;
     }
@@ -479,6 +488,45 @@ g_test_maximized_result (double          maximized_quantity,
   g_free (buffer);
 }
 
+void
+g_test_message (const char *format,
+                ...)
+{
+  gchar *buffer;
+  va_list args;
+  va_start (args, format);
+  buffer = g_strdup_vprintf (format, args);
+  va_end (args);
+  g_test_log (G_TEST_LOG_MESSAGE, buffer, NULL, 0, NULL);
+  g_free (buffer);
+}
+
+void
+g_test_bug_base (const char *uri_pattern)
+{
+  g_free (test_uri_base);
+  test_uri_base = g_strdup (uri_pattern);
+}
+
+void
+g_test_bug (const char *bug_uri_snippet)
+{
+  char *c;
+  g_return_if_fail (test_uri_base != NULL);
+  g_return_if_fail (bug_uri_snippet != NULL);
+  c = strstr (test_uri_base, "%s");
+  if (c)
+    {
+      char *b = g_strndup (test_uri_base, c - test_uri_base);
+      char *s = g_strconcat (b, bug_uri_snippet, c + 2, NULL);
+      g_free (b);
+      g_test_message ("Bug Reference: %s", s);
+      g_free (s);
+    }
+  else
+    g_test_message ("Bug Reference: %s%s", test_uri_base, bug_uri_snippet);
+}
+
 GTestSuite*
 g_test_get_root (void)
 {
@@ -606,15 +654,11 @@ g_test_queue_free (gpointer gfree_pointer)
 static int
 test_case_run (GTestCase *tc)
 {
-  gchar *old_name;
-  old_name = test_run_name;
+  gchar *old_name = test_run_name, *old_base = g_strdup (test_uri_base);
   test_run_name = g_strconcat (old_name, "/", tc->name, NULL);
   if (++test_run_count <= test_skip_count)
-    {
-      g_test_log (G_TEST_LOG_SKIP_CASE, test_run_name, NULL, 0, NULL);
-      return 0;
-    }
-  if (test_run_list)
+    g_test_log (G_TEST_LOG_SKIP_CASE, test_run_name, NULL, 0, NULL);
+  else if (test_run_list)
     {
       g_print ("%s\n", test_run_name);
       g_test_log (G_TEST_LOG_LIST_CASE, test_run_name, NULL, 0, NULL);
@@ -650,7 +694,8 @@ test_case_run (GTestCase *tc)
     }
   g_free (test_run_name);
   test_run_name = old_name;
-  /* FIXME: need reporting here */
+  g_free (test_uri_base);
+  test_uri_base = old_base;
   return 0;
 }
 

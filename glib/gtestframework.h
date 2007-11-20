@@ -83,6 +83,11 @@ void    g_test_add_func                 (const char     *testpath,
                                                     void (*) (Fixture*)))  \
                                          (void*) g_test_add_vtable) \
                                           (testpath, sizeof (Fixture), fsetup, ftest, fteardown)
+/* add test messages to the test report */
+void    g_test_message                  (const char *format,
+                                         ...) G_GNUC_PRINTF (1, 2);
+void    g_test_bug_base                 (const char *uri_pattern);
+void    g_test_bug                      (const char *bug_uri_snippet);
 /* measure test timings */
 void    g_test_timer_start              (void);
 double  g_test_timer_elapsed            (void); // elapsed seconds
@@ -190,6 +195,7 @@ typedef enum {
   G_TEST_LOG_STOP_CASE,         // d:status d:nforks d:elapsed
   G_TEST_LOG_MIN_RESULT,        // s:blurb d:result
   G_TEST_LOG_MAX_RESULT,        // s:blurb d:result
+  G_TEST_LOG_MESSAGE,           // s:blurb
 } GTestLogType;
 
 typedef struct {

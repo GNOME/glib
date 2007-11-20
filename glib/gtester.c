@@ -166,6 +166,9 @@ test_log_msg (GTestLogMsg *msg)
       test_log_printfe ("%s%s\n", sindent (log_indent + 2), msg->strings[0]);
       test_log_printfe ("%s</performance>\n", sindent (log_indent));
       break;
+    case G_TEST_LOG_MESSAGE:
+      test_log_printfe ("%s<message>\n%s\n%s</message>\n", sindent (log_indent), msg->strings[0], sindent (log_indent));
+      break;
     }
 }
 
@@ -616,6 +619,11 @@ static void
 fixture_test (guint *fix)
 {
   g_assert_cmphex (*fix, ==, 0xdeadbeef);
+  g_test_message ("This is a test message API test message.");
+  g_test_bug_base ("http://www.example.com/bugtracker/");
+  g_test_bug ("123");
+  g_test_bug_base ("http://www.example.com/bugtracker?bugnum=%s;cmd=showbug");
+  g_test_bug ("456");
 }
 static void
 fixture_teardown (guint *fix)

@@ -1249,6 +1249,8 @@ g_assertion_message_expr
 g_strcmp0
 g_test_add_func
 g_test_add_vtable
+g_test_bug
+g_test_bug_base
 g_test_config_vars
 g_test_create_case
 g_test_create_suite
@@ -1261,6 +1263,7 @@ g_test_log_buffer_push
 g_test_log_msg_free
 g_test_log_type_name
 g_test_maximized_result
+g_test_message
 g_test_minimized_result
 g_test_queue_free
 g_test_rand_double
