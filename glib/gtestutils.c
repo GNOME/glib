@@ -1,4 +1,4 @@
-/* GLib testing framework examples
+/* GLib testing utilities
  * Copyright (C) 2007 Tim Janik
  *
  * This library is free software; you can redistribute it and/or
@@ -17,7 +17,7 @@
  * Boston, MA 02111-1307, USA.
  */
 #include "config.h"
-#include "gtestframework.h"
+#include "gtestutils.h"
 #include "galias.h"
 #include <sys/types.h>
 #include <sys/wait.h>
@@ -1700,5 +1700,5 @@ g_test_log_msg_free (GTestLogMsg *tmsg)
  **/
 /* --- macros docs END --- */
 
-#define __G_TESTFRAMEWORK_C__
+#define __G_TEST_UTILS_C__
 #include "galiasdef.c"

@@ -1240,8 +1240,8 @@ g_thread_pool_set_sort_function
 #endif
 #endif
 
-#if IN_HEADER(__G_TESTFRAMEWORK_H__)
-#if IN_FILE(__G_TESTFRAMEWORK_C__)
+#if IN_HEADER(__G_TEST_UTILS_H__)
+#if IN_FILE(__G_TEST_UTILS_C__)
 g_assertion_message
 g_assertion_message_cmpnum
 g_assertion_message_cmpstr

@@ -1,4 +1,4 @@
-/* GLib testing framework examples
+/* GLib testing utilities
  * Copyright (C) 2007 Tim Janik
  *
  * This library is free software; you can redistribute it and/or
@@ -16,8 +16,8 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
-#ifndef __G_TESTFRAMEWORK_H__
-#define __G_TESTFRAMEWORK_H__
+#ifndef __G_TEST_UTILS_H__
+#define __G_TEST_UTILS_H__
 
 #include <glib.h>
 
@@ -224,4 +224,4 @@ void            g_test_log_msg_free     (GTestLogMsg    *tmsg);
 
 G_END_DECLS;
 
-#endif /* __G_TESTFRAMEWORK_H__ */
+#endif /* __G_TEST_UTILS_H__ */

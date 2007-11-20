@@ -18,7 +18,7 @@
  * otherwise) arising in any way out of the use of this software, even
  * if advised of the possibility of such damage.
  */
-#include <glib/gtestframework.h>
+#include <glib/gtestutils.h>
 #include <stdlib.h>
 
 /* test assertion variants */

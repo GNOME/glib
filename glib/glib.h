@@ -70,7 +70,7 @@
 #include <glib/gspawn.h>
 #include <glib/gstrfuncs.h>
 #include <glib/gstring.h>
-#include <glib/gtestframework.h>
+#include <glib/gtestutils.h>
 #include <glib/gthread.h>
 #include <glib/gthreadpool.h>
 #include <glib/gtimer.h>

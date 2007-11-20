@@ -134,7 +134,7 @@ libglib_2_0_la_SOURCES = 	\
 	gstdio.c		\
 	gstrfuncs.c		\
 	gstring.c		\
-	gtestframework.c	\
+	gtestutils.c		\
 	gthread.c       	\
 	gthreadprivate.h	\
 	gthreadpool.c   	\
@@ -215,7 +215,7 @@ glibsubinclude_HEADERS =   \
 	gspawn.h	\
 	gstdio.h	\
 	gstrfuncs.h	\
-	gtestframework.h\
+	gtestutils.h	\
 	gstring.h	\
 	gthread.h	\
 	gthreadpool.h	\
