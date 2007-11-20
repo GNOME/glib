@@ -677,15 +677,20 @@ g_test_run_suite (GTestSuite *suite)
   while (test_paths)
     {
       const char *rest, *path = test_paths->data;
-      guint l, n;
+      guint l, n = strlen (suite->name);
       test_paths = g_slist_delete_link (test_paths, test_paths);
       while (path[0] == '/')
         path++;
+      if (!n) /* root suite, run unconditionally */
+        {
+          n_bad += 0 != g_test_run_suite_internal (suite, path);
+          continue;
+        }
+      /* regular suite, match path */
       rest = strchr (path, '/');
       l = strlen (path);
       l = rest ? MIN (l, rest - path) : l;
-      n = l ? strlen (suite->name) : 0;
-      if (l == n && strncmp (path, suite->name, n) == 0)
+      if (!l || l == n && strncmp (path, suite->name, n) == 0)
         n_bad += 0 != g_test_run_suite_internal (suite, rest ? rest : "");
     }
   return n_bad;
