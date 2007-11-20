@@ -2974,6 +2974,7 @@ glib/libcharset/Makefile
 glib/gnulib/Makefile
 glib/pcre/Makefile
 glib/update-pcre/Makefile
+glib/tests/Makefile
 gmodule/Makefile
 gmodule/gmoduleconf.h
 gobject/Makefile
