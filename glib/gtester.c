@@ -21,10 +21,55 @@
  * USA
  */
 
+#include <glib.h>
+
+static void
+child_watch_cb (GPid     pid,
+		gint     status,
+		gpointer data)
+{
+	GMainLoop* loop = data;
+
+	g_main_loop_quit (loop);
+}
+
 int
 main (int   argc,
       char**argv)
 {
-	return 0;
+  GMainLoop* loop;
+  GError   * error = NULL;
+  GPid       pid = 0;
+  gchar    * working_folder;
+  gchar    * child_argv[] = {
+    "cat",
+    "/proc/cpuinfo",
+    NULL
+  };
+
+  working_folder = g_get_current_dir ();
+  g_spawn_async (working_folder,
+		 child_argv, NULL /* envp */,
+		 G_SPAWN_DO_NOT_REAP_CHILD | G_SPAWN_SEARCH_PATH,
+		 NULL, NULL,
+		 &pid,
+		 &error);
+  g_free (working_folder);
+
+  if (error)
+    {
+      g_error ("Couldn't execute child: %s", error->message);
+      /* doesn't return */
+    }
+
+  loop = g_main_loop_new (NULL, FALSE);
+
+  g_child_watch_add (pid,
+		     child_watch_cb,
+		     loop);
+
+  g_main_loop_run (loop);
+  g_main_loop_unref (loop);
+  return 0;
 }
 
