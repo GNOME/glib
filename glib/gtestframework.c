@@ -63,6 +63,9 @@ static gchar      *test_run_output = NULL;
 static gchar      *test_run_seedstr = NULL;
 static GRand      *test_run_rand = NULL;
 static gchar      *test_run_name = "";
+static GTimer     *test_run_timer = NULL;
+static GTimer     *test_user_timer = NULL;
+static double      test_user_stamp = 0;
 static GSList     *test_paths = NULL;
 static GTestSuite *test_suite_root = NULL;
 static GSList     *test_run_free_queue = NULL;
@@ -218,6 +221,9 @@ g_test_init (int            *argc,
   test_run_seed (test_run_seedstr);
   if (test_run_seedstr == seedstr)
     g_printerr ("NOTE: random-seed: %s\n", test_run_seedstr);
+
+  /* misc setups */
+  test_run_timer = g_timer_new();
 }
 
 static void
@@ -282,6 +288,28 @@ g_test_rand_double_range (double          range_start,
                           double          range_end)
 {
   return g_rand_double_range (test_run_rand, range_start, range_end);
+}
+
+void
+g_test_timer_start (void)
+{
+  if (!test_user_timer)
+    test_user_timer = g_timer_new();
+  test_user_stamp = 0;
+  g_timer_start (test_user_timer);
+}
+
+double
+g_test_timer_elapsed (void)
+{
+  test_user_stamp = test_user_timer ? g_timer_elapsed (test_user_timer, NULL) : 0;
+  return test_user_stamp;
+}
+
+double
+g_test_timer_last (void)
+{
+  return test_user_stamp;
 }
 
 GTestSuite*
@@ -411,7 +439,9 @@ g_test_queue_free (gpointer gfree_pointer)
 static int
 test_case_run (GTestCase *tc)
 {
-  gchar *old_name = test_run_name;
+  gchar *old_name;
+  g_timer_start (test_run_timer);
+  old_name = test_run_name;
   test_run_name = g_strconcat (old_name, "/", tc->name, NULL);
   if (test_run_list)
     g_print ("%s\n", test_run_name);
@@ -439,6 +469,8 @@ test_case_run (GTestCase *tc)
     }
   g_free (test_run_name);
   test_run_name = old_name;
+  g_timer_stop (test_run_timer);
+  /* FIXME: need reporting here */
   return 0;
 }
 
