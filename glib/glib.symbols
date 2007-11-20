@@ -1249,6 +1249,7 @@ g_assertion_message_expr
 g_strcmp0
 g_test_add_func
 g_test_add_vtable
+g_test_config_vars
 g_test_create_case
 g_test_create_suite
 g_test_get_root

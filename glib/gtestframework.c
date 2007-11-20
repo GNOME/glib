@@ -55,13 +55,8 @@ static guint8*                  g_test_log_dump         (GTestLogMsg *msg,
 
 /* --- variables --- */
 static int         test_log_fd = -1;
-static gboolean    test_mode_quick = TRUE;
-static gboolean    test_mode_perf = FALSE;
 static gboolean    test_mode_fatal = TRUE;
-static gboolean    g_test_initialized = FALSE;
 static gboolean    g_test_run_once = TRUE;
-static gboolean    test_run_quiet = FALSE;
-static gboolean    test_run_verbose = FALSE;
 static gboolean    test_run_list = FALSE;
 static gchar      *test_run_seedstr = NULL;
 static GRand      *test_run_rand = NULL;
@@ -79,6 +74,13 @@ static int         test_trap_last_pid = 0;
 static char       *test_trap_last_stdout = NULL;
 static char       *test_trap_last_stderr = NULL;
 static gboolean    test_debug_log = FALSE;
+const GTestConfig *g_test_config_vars = NULL;
+static GTestConfig mutable_test_config_vars = {
+  TRUE,         /* test_quick */
+  FALSE,        /* test_perf */
+  FALSE,        /* test_verbose */
+  FALSE,        /* test_quiet */
+};
 
 /* --- functions --- */
 const char*
@@ -149,17 +151,17 @@ g_test_log (GTestLogType lbit,
   switch (lbit)
     {
     case G_TEST_LOG_STOP_CASE:
-      if (!test_run_quiet)
+      if (!g_test_quiet())
         g_print ("%s\n", fail ? "FAIL" : "OK");
       if (fail && test_mode_fatal)
         abort();
       break;
     case G_TEST_LOG_MIN_RESULT:
-      if (test_run_verbose)
+      if (g_test_verbose())
         g_print ("(MINPERF:%s)\n", string1);
       break;
     case G_TEST_LOG_MAX_RESULT:
-      if (test_run_verbose)
+      if (g_test_verbose())
         g_print ("(MAXPERF:%s)\n", string1);
       break;
     default: ;
@@ -179,7 +181,7 @@ g_test_log (GTestLogType lbit,
   switch (lbit)
     {
     case G_TEST_LOG_START_CASE:
-      if (!test_run_quiet)
+      if (!g_test_quiet())
         g_print ("%s: ", string1);
       break;
     default: ;
@@ -262,13 +264,13 @@ parse_args (gint    *argc_p,
               mode = argv[i];
             }
           if (strcmp (mode, "perf") == 0)
-            test_mode_perf = TRUE;
+            mutable_test_config_vars.test_perf = TRUE;
           else if (strcmp (mode, "slow") == 0)
-            test_mode_quick = FALSE;
+            mutable_test_config_vars.test_quick = FALSE;
           else if (strcmp (mode, "quick") == 0)
             {
-              test_mode_quick = TRUE;
-              test_mode_perf = FALSE;
+              mutable_test_config_vars.test_quick = TRUE;
+              mutable_test_config_vars.test_perf = FALSE;
             }
           else
             g_error ("unknown test mode: -m %s", mode);
@@ -276,14 +278,14 @@ parse_args (gint    *argc_p,
         }
       else if (strcmp ("-q", argv[i]) == 0 || strcmp ("--quiet", argv[i]) == 0)
         {
-          test_run_quiet = TRUE;
-          test_run_verbose = FALSE;
+          mutable_test_config_vars.test_quiet = TRUE;
+          mutable_test_config_vars.test_verbose = FALSE;
           argv[i] = NULL;
         }
       else if (strcmp ("--verbose", argv[i]) == 0)
         {
-          test_run_quiet = FALSE;
-          test_run_verbose = TRUE;
+          mutable_test_config_vars.test_quiet = FALSE;
+          mutable_test_config_vars.test_verbose = TRUE;
           argv[i] = NULL;
         }
       else if (strcmp ("-l", argv[i]) == 0)
@@ -326,8 +328,8 @@ g_test_init (int            *argc,
   gpointer vararg1;
   g_return_if_fail (argc != NULL);
   g_return_if_fail (argv != NULL);
-  g_return_if_fail (g_test_initialized == FALSE);
-  g_test_initialized = TRUE;
+  g_return_if_fail (g_test_config_vars == NULL);
+  g_test_config_vars = &mutable_test_config_vars;
 
   va_start (args, argv);
   vararg1 = va_arg (args, gpointer); /* reserved for future extensions */
@@ -696,7 +698,7 @@ int
 g_test_run_suite (GTestSuite *suite)
 {
   guint n_bad = 0;
-  g_return_val_if_fail (g_test_initialized == TRUE, -1);
+  g_return_val_if_fail (g_test_config_vars != NULL, -1);
   g_return_val_if_fail (g_test_run_once == TRUE, -1);
   g_test_run_once = FALSE;
   if (!test_paths)
