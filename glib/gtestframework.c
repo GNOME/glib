@@ -53,7 +53,7 @@ static guint8*                  g_test_log_dump         (GTestLogMsg *msg,
                                                          guint       *len);
 
 /* --- variables --- */
-static int         test_stdmsg = 1;
+static int         test_log_fd = -1;
 static gboolean    test_mode_quick = TRUE;
 static gboolean    test_mode_perf = FALSE;
 static gboolean    test_mode_fatal = TRUE;
@@ -62,7 +62,6 @@ static gboolean    g_test_run_once = TRUE;
 static gboolean    test_run_quiet = FALSE;
 static gboolean    test_run_verbose = FALSE;
 static gboolean    test_run_list = FALSE;
-static gchar      *test_run_output = NULL;
 static gchar      *test_run_seedstr = NULL;
 static GRand      *test_run_rand = NULL;
 static gchar      *test_run_name = "";
@@ -79,10 +78,10 @@ static char       *test_trap_last_stderr = NULL;
 static gboolean    test_debug_log = FALSE;
 
 /* --- functions --- */
-static const char*
-test_log_bit (GTestLogType lbit)
+const char*
+g_test_log_type_name (GTestLogType log_type)
 {
-  switch (lbit)
+  switch (log_type)
     {
     case G_TEST_LOG_START_BINARY:       return "binary";
     case G_TEST_LOG_LIST_CASE:          return "list";
@@ -98,6 +97,13 @@ static void
 g_test_log_send (guint         n_bytes,
                  const guint8 *buffer)
 {
+  if (test_log_fd >= 0)
+    {
+      int r;
+      do
+        r = write (test_log_fd, buffer, n_bytes);
+      while (r < 0 && errno == EINTR);
+    }
   if (test_debug_log)
     {
       GTestLogBuffer *lbuffer = g_test_log_buffer_new();
@@ -109,7 +115,7 @@ g_test_log_send (guint         n_bytes,
       g_assert (lbuffer->data->len == 0); // FIXME: should be g_awrn_if_fail
       g_test_log_buffer_free (lbuffer);
       /* print message */
-      g_printerr ("{*LOG(%s)", test_log_bit (msg->log_type));
+      g_printerr ("{*LOG(%s)", g_test_log_type_name (msg->log_type));
       for (ui = 0; ui < msg->n_strings; ui++)
         g_printerr (":{%s}", msg->strings[ui]);
       if (msg->n_nums)
@@ -205,6 +211,18 @@ parse_args (gint    *argc_p,
           test_debug_log = TRUE;
           argv[i] = NULL;
         }
+      else if (strcmp ("--GTestLogFD", argv[i]) == 0 || strncmp ("--GTestLogFD=", argv[i], 13) == 0)
+        {
+          gchar *equal = argv[i] + 12;
+          if (*equal == '=')
+            test_log_fd = g_ascii_strtoull (equal + 1, NULL, 0);
+          else if (i + 1 < argc)
+            {
+              argv[i++] = NULL;
+              test_log_fd = g_ascii_strtoull (argv[i], NULL, 0);
+            }
+          argv[i] = NULL;
+        }
       else if (strcmp ("-p", argv[i]) == 0 || strncmp ("-p=", argv[i], 3) == 0)
         {
           gchar *equal = argv[i] + 2;
@@ -214,18 +232,6 @@ parse_args (gint    *argc_p,
             {
               argv[i++] = NULL;
               test_paths = g_slist_prepend (test_paths, argv[i]);
-            }
-          argv[i] = NULL;
-        }
-      else if (strcmp ("-o", argv[i]) == 0 || strncmp ("-o=", argv[i], 3) == 0)
-        {
-          gchar *equal = argv[i] + 2;
-          if (*equal == '=')
-            test_run_output = equal + 1;
-          else if (i + 1 < argc)
-            {
-              argv[i++] = NULL;
-              test_run_output = argv[i];
             }
           argv[i] = NULL;
         }
@@ -690,7 +696,7 @@ g_test_run_suite (GTestSuite *suite)
       rest = strchr (path, '/');
       l = strlen (path);
       l = rest ? MIN (l, rest - path) : l;
-      if (!l || l == n && strncmp (path, suite->name, n) == 0)
+      if ((!l || l == n) && strncmp (path, suite->name, n) == 0)
         n_bad += 0 != g_test_run_suite_internal (suite, rest ? rest : "");
     }
   return n_bad;
@@ -931,16 +937,15 @@ g_test_trap_fork (guint64        usec_timeout,
         close (stdout_pipe[1]);
       if (stderr_pipe[1] >= 3)
         close (stderr_pipe[1]);
-      test_stdmsg = stdtst_pipe[1];
+      test_log_fd = stdtst_pipe[1];
       return TRUE;
     }
   else                          /* parent */
     {
       GString *sout = g_string_new (NULL);
       GString *serr = g_string_new (NULL);
-      GString *stst = g_string_new (NULL);
       guint64 sstamp;
-      int soutpos = 0, serrpos = 0, ststpos = 0, wr, need_wait = TRUE;
+      int soutpos = 0, serrpos = 0, wr, need_wait = TRUE;
       test_run_forks++;
       close (stdout_pipe[1]);
       close (stderr_pipe[1]);
@@ -978,18 +983,24 @@ g_test_trap_fork (guint64        usec_timeout,
               close (stderr_pipe[0]);
               stderr_pipe[0] = -1;
             }
-          if (stdtst_pipe[0] >= 0 && FD_ISSET (stdtst_pipe[0], &fds) &&
-              g_string_must_read (stst, stdtst_pipe[0]) == 0)
+          if (stdtst_pipe[0] >= 0 && FD_ISSET (stdtst_pipe[0], &fds))
             {
-              close (stdtst_pipe[0]);
-              stdtst_pipe[0] = -1;
+              guint8 buffer[4096];
+              gint l, r = read (stdtst_pipe[0], buffer, sizeof (buffer));
+              if (r > 0 && test_log_fd > 0)
+                do
+                  l = write (test_log_fd, buffer, r);
+                while (l < 0 && errno == EINTR);
+              if (r == 0 || (r < 0 && errno != EINTR && errno != EAGAIN))
+                {
+                  close (stdtst_pipe[0]);
+                  stdtst_pipe[0] = -1;
+                }
             }
           if (!(test_trap_flags & G_TEST_TRAP_SILENCE_STDOUT))
             g_string_write_out (sout, 1, &soutpos);
           if (!(test_trap_flags & G_TEST_TRAP_SILENCE_STDERR))
             g_string_write_out (serr, 2, &serrpos);
-          if (TRUE) // FIXME: needs capturing into log file
-            g_string_write_out (stst, 1, &ststpos);
           if (usec_timeout)
             {
               guint64 nstamp = test_time_stamp();
@@ -1025,7 +1036,6 @@ g_test_trap_fork (guint64        usec_timeout,
         }
       test_trap_last_stdout = g_string_free (sout, FALSE);
       test_trap_last_stderr = g_string_free (serr, FALSE);
-      g_string_free (stst, TRUE);
       return FALSE;
     }
 }

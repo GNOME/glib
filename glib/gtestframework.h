@@ -192,6 +192,7 @@ typedef struct {
   GSList      *msgs;
 } GTestLogBuffer;
 
+const char*     g_test_log_type_name    (GTestLogType    log_type);
 GTestLogBuffer* g_test_log_buffer_new   (void);
 void            g_test_log_buffer_free  (GTestLogBuffer *tbuffer);
 void            g_test_log_buffer_push  (GTestLogBuffer *tbuffer,

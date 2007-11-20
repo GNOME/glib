@@ -21,6 +21,10 @@
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <errno.h>
+#include <signal.h>
 
 /* the read buffer size in bytes */
 #define READ_BUFFER_SIZE 4096
@@ -33,7 +37,7 @@ static void     parse_args      (gint           *argc_p,
 static GIOChannel  *ioc_report = NULL;
 static gboolean     subtest_running = FALSE;
 static gboolean     subtest_io_pending = FALSE;
-static gboolean     gtester_quiet = FALSE;
+static gboolean     gtester_quiet = TRUE;
 static gboolean     gtester_verbose = FALSE;
 static gboolean     gtester_list_tests = FALSE;
 static gboolean     subtest_mode_fatal = FALSE;
@@ -49,32 +53,55 @@ child_report_cb (GIOChannel  *source,
                  GIOCondition condition,
                  gpointer     data)
 {
+  GTestLogBuffer *tlb = data;
   GIOStatus status = G_IO_STATUS_NORMAL;
-
-  while (status == G_IO_STATUS_NORMAL)
+  gsize length = 0;
+  do
     {
-      gchar buffer[READ_BUFFER_SIZE];
-      gsize length = 0;
+      guint8 buffer[READ_BUFFER_SIZE];
       GError *error = NULL;
-      status = g_io_channel_read_chars (source, buffer, sizeof (buffer), &length, &error);
-      switch (status)
+      status = g_io_channel_read_chars (source, (gchar*) buffer, sizeof (buffer), &length, &error);
+      if (length)
         {
-        case G_IO_STATUS_NORMAL:
-          write (2, buffer, length); /* passthrough child's stdout */
-          break;
-        case G_IO_STATUS_AGAIN:
-          /* retry later */
-          break;
-        case G_IO_STATUS_ERROR:
-          /* ignore, child closed fd or similar g_warning ("Error while reading data: %s", error->message); */
-          /* fall through into EOF */
-        case G_IO_STATUS_EOF:
-          subtest_io_pending = FALSE;
-          return FALSE;
+          GTestLogMsg *msg;
+          g_test_log_buffer_push (tlb, length, buffer);
+          do
+            {
+              msg = g_test_log_buffer_pop (tlb);
+              if (msg)
+                {
+                  guint ui;
+                  /* print message, this should be written to an XML log file */
+                  g_printerr ("{*GTLOG(%s)", g_test_log_type_name (msg->log_type));
+                  for (ui = 0; ui < msg->n_strings; ui++)
+                    g_printerr (":{%s}", msg->strings[ui]);
+                  if (msg->n_nums)
+                    {
+                      g_printerr (":(");
+                      for (ui = 0; ui < msg->n_nums; ui++)
+                        g_printerr ("%s%.16Lg", ui ? ";" : "", msg->nums[ui]);
+                      g_printerr (")");
+                    }
+                  g_printerr (":GTLOG*}\n");
+                  g_test_log_msg_free (msg);
+                }
+            }
+          while (msg);
         }
       g_clear_error (&error);
+      /* ignore the io channel status, which seems to be bogus especially for non blocking fds */
+      (void) status;
     }
-  return TRUE;
+  while (length > 0);
+  if (condition & (G_IO_ERR | G_IO_HUP))
+    {
+      /* if there's no data to read and select() reports an error or hangup,
+       * the fd must have been closed remotely
+       */
+      subtest_io_pending = FALSE;
+      return FALSE;
+    }
+  return TRUE; /* keep polling */
 }
 
 static void
@@ -95,17 +122,42 @@ queue_gfree (GSList **slistp,
 }
 
 static void
+unset_cloexec_fdp (gpointer fdp_data)
+{
+  int r, *fdp = fdp_data;
+  do
+    r = fcntl (*fdp, F_SETFD, 0 /* FD_CLOEXEC */);
+  while (r < 0 && errno == EINTR);
+}
+
+static void
 launch_test (const char *binary)
 {
+  GTestLogBuffer *tlb;
   GSList *slist, *free_list = NULL;
   GError *error = NULL;
   const gchar *argv[20 + g_slist_length (subtest_paths)];
   GPid pid = 0;
-  gint i = 0, child_report = -1;
+  gint report_pipe[2] = { -1, -1 };
+  gint i = 0;
+
+  if (pipe (report_pipe) < 0)
+    {
+      if (subtest_mode_fatal)
+        g_error ("Failed to open pipe for test binary: %s: %s", binary, g_strerror (errno));
+      else
+        g_warning ("Failed to open pipe for test binary: %s: %s", binary, g_strerror (errno));
+      return;
+    }
 
   /* setup argv */
   argv[i++] = binary;
-  // argv[i++] = "--quiet";
+  if (gtester_quiet)
+    argv[i++] = "--quiet";
+  if (gtester_verbose)
+    argv[i++] = "--verbose";
+  // argv[i++] = "--debug-log";
+  argv[i++] = queue_gfree (&free_list, g_strdup_printf ("--GTestLogFD=%u", report_pipe[1]));
   if (!subtest_mode_fatal)
     argv[i++] = "--keep-going";
   if (subtest_mode_quick)
@@ -122,26 +174,24 @@ launch_test (const char *binary)
     argv[i++] = "-l";
   argv[i++] = NULL;
 
-  /* child_report will be used to capture logging information from the
-   * child binary. for the moment, we just use it to replicate stdout.
-   */
-
   g_spawn_async_with_pipes (NULL, /* g_get_current_dir() */
                             (gchar**) argv,
                             NULL, /* envp */
                             G_SPAWN_DO_NOT_REAP_CHILD, /* G_SPAWN_SEARCH_PATH */
-                            NULL, NULL, /* child_setup, user_data */
+                            unset_cloexec_fdp, &report_pipe[1], /* pre-exec callback */
                             &pid,
                             NULL,       /* standard_input */
-                            &child_report, /* standard_output */
+                            NULL,       /* standard_output */
                             NULL,       /* standard_error */
                             &error);
   g_slist_foreach (free_list, (void(*)(void*,void*)) g_free, NULL);
   g_slist_free (free_list);
   free_list = NULL;
+  close (report_pipe[1]);
 
   if (error)
     {
+      close (report_pipe[0]);
       if (subtest_mode_fatal)
         g_error ("Failed to execute test binary: %s: %s", argv[0], error->message);
       else
@@ -149,14 +199,17 @@ launch_test (const char *binary)
       g_clear_error (&error);
       return;
     }
+
   subtest_running = TRUE;
   subtest_io_pending = TRUE;
-
-  if (child_report >= 0)
+  tlb = g_test_log_buffer_new();
+  if (report_pipe[0] >= 0)
     {
-      ioc_report = g_io_channel_unix_new (child_report);
+      ioc_report = g_io_channel_unix_new (report_pipe[0]);
       g_io_channel_set_flags (ioc_report, G_IO_FLAG_NONBLOCK, NULL);
-      g_io_add_watch_full (ioc_report, G_PRIORITY_DEFAULT - 1, G_IO_IN | G_IO_ERR | G_IO_HUP, child_report_cb, NULL, NULL);
+      g_io_channel_set_encoding (ioc_report, NULL, NULL);
+      g_io_channel_set_buffered (ioc_report, FALSE);
+      g_io_add_watch_full (ioc_report, G_PRIORITY_DEFAULT - 1, G_IO_IN | G_IO_ERR | G_IO_HUP, child_report_cb, tlb, NULL);
       g_io_channel_unref (ioc_report);
     }
   g_child_watch_add_full (G_PRIORITY_DEFAULT + 1, pid, child_watch_cb, NULL, NULL);
@@ -165,6 +218,9 @@ launch_test (const char *binary)
          subtest_io_pending ||          /* FALSE once ioc_report closes */
          g_main_context_pending (NULL)) /* TRUE while idler, etc are running */
     g_main_context_iteration (NULL, TRUE);
+
+  close (report_pipe[0]);
+  g_test_log_buffer_free (tlb);
 }
 
 static void
@@ -321,6 +377,20 @@ main (int    argc,
       char **argv)
 {
   guint ui;
+
+  /* some unices need SA_RESTART for SIGCHLD to return -EAGAIN for io.
+   * we must fiddle with sigaction() *before* glib is used, otherwise
+   * we could revoke signal hanmdler setups from glib initialization code.
+   */
+  if (TRUE * 0)
+    {
+      struct sigaction sa;
+      struct sigaction osa;
+      sa.sa_handler = SIG_DFL;
+      sigfillset (&sa.sa_mask);
+      sa.sa_flags = SA_RESTART;
+      sigaction (SIGCHLD, &sa, &osa);
+    }
 
   g_set_prgname (argv[0]);
   parse_args (&argc, &argv);
