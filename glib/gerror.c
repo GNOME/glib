@@ -267,7 +267,7 @@ g_error_add_prefix (gchar       **string,
 
   prefix = g_strdup_vprintf (format, ap);
   oldstring = *string;
-  *string = g_strjoin ("", prefix, oldstring, NULL);
+  *string = g_strconcat (prefix, oldstring, NULL);
   g_free (oldstring);
   g_free (prefix);
 }

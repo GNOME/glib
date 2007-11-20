@@ -1,3 +1,8 @@
+2007-11-20  Sven Neumann  <sven@gimp.org>
+
+	* glib/gerror.c (g_error_add_prefix): use g_strconcat() instead of
+	g_strjoin() to concatenate two strings.
+
 2007-11-19  Marco Barisione  <marco@barisione.org>
 
 	* glib/gregex.c: When the compilation of a pattern fails in the error
