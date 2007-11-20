@@ -23,7 +23,44 @@
 
 #include <glib.h>
 
+/* the read buffer size in bytes */
+#define READ_BUFFER_SIZE 1024
+
 static GIOChannel* out = NULL;
+
+static gboolean
+child_out_cb (GIOChannel  * source,
+	      GIOCondition  condition,
+	      gpointer      data)
+{
+  GError* error = NULL;
+  gsize length = 0;
+  gchar buffer[READ_BUFFER_SIZE];
+  GIOStatus status = G_IO_STATUS_NORMAL;
+
+  while (status == G_IO_STATUS_NORMAL) {
+    status = g_io_channel_read_chars (source, buffer, sizeof (buffer), &length, &error);
+
+    switch (status) {
+    case G_IO_STATUS_NORMAL:
+	    // FIXME: this is where the parsing happens
+	    g_print ("%d\n", length);
+	    break;
+    case G_IO_STATUS_AGAIN:
+	    /* retry later */
+	    break;
+    case G_IO_STATUS_ERROR:
+	    /* fall through into EOF */
+	    g_warning ("Error while reading data: %s",
+		       error->message);
+	    g_error_free (error);
+    case G_IO_STATUS_EOF:
+	    return FALSE;
+    }
+  }
+
+  return TRUE;
+}
 
 static void
 child_watch_cb (GPid     pid,
@@ -34,32 +71,9 @@ child_watch_cb (GPid     pid,
 
   g_spawn_close_pid (pid);
 
-  //g_main_loop_quit (loop);
-}
-
-static gboolean
-child_out_cb (GIOChannel  * source,
-	      GIOCondition  condition,
-	      gpointer      data)
-{
-  GError* error = NULL;
-  gsize length = 0;
-  gchar buffer[10];
-  GIOStatus status;
-
-  status = g_io_channel_read_chars (source, buffer, sizeof (buffer), &length, &error);
-  if (status == G_IO_STATUS_NORMAL)
-    {
-      g_print ("%d\n", length);
-    }
-
-  if (status != G_IO_STATUS_NORMAL || length != sizeof (buffer))
-    {
-      g_main_loop_quit (data);
-      return FALSE;
-    }
-  else
-    return TRUE;
+  /* read the remaining data - also stops the io watch from being polled */
+  child_out_cb (out, G_IO_IN, data);
+  g_main_loop_quit (data);
 }
 
 int
@@ -71,13 +85,14 @@ main (int   argc,
   GPid       pid = 0;
   gchar    * working_folder;
   gchar    * child_argv[] = {
-    "cat",
-    "/proc/cpuinfo",
+    "git-annotate",
+    "--incremental",
+    "ChangeLog",
     NULL
   };
   gint        child_out;
 
-  working_folder = g_get_current_dir ();
+  working_folder = g_strdup ("/home/herzi/Hacking/Imendio/WebKit/WebCore"); //g_get_current_dir ();
   g_spawn_async_with_pipes (working_folder,
 		 child_argv, NULL /* envp */,
 		 G_SPAWN_DO_NOT_REAP_CHILD | G_SPAWN_SEARCH_PATH,
@@ -102,6 +117,7 @@ main (int   argc,
 		     loop);
 
   out = g_io_channel_unix_new (child_out);
+  g_io_channel_set_flags (out, G_IO_FLAG_NONBLOCK, NULL); // FIXME: GError
   g_io_add_watch (out, G_IO_IN,
 		  child_out_cb, loop);
 
