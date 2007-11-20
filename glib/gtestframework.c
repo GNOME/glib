@@ -260,45 +260,66 @@ test_case_run (GTestCase *tc)
 {
   gchar *old_name = test_run_name;
   test_run_name = g_strconcat (old_name, "/", tc->name, NULL);
-  void *fixture = g_malloc0 (tc->fixture_size);
-  if (tc->fixture_setup)
-    tc->fixture_setup (fixture);
-  tc->fixture_test (fixture);
-  if (tc->fixture_teardown)
-    tc->fixture_teardown (fixture);
-  while (test_run_free_queue)
+  if (test_run_list)
+    g_print ("%s\n", test_run_name);
+  else
     {
-      gpointer freeme = test_run_free_queue->data;
-      test_run_free_queue = g_slist_delete_link (test_run_free_queue, test_run_free_queue);
-      g_free (freeme);
+      if (!test_run_quiet)
+        g_print ("%s: ", test_run_name);
+      void *fixture = g_malloc0 (tc->fixture_size);
+      if (tc->fixture_setup)
+        tc->fixture_setup (fixture);
+      tc->fixture_test (fixture);
+      if (tc->fixture_teardown)
+        tc->fixture_teardown (fixture);
+      while (test_run_free_queue)
+        {
+          gpointer freeme = test_run_free_queue->data;
+          test_run_free_queue = g_slist_delete_link (test_run_free_queue, test_run_free_queue);
+          g_free (freeme);
+        }
+      g_free (fixture);
+      if (!test_run_quiet)
+        g_print ("OK\n");
     }
-  g_free (fixture);
   g_free (test_run_name);
   test_run_name = old_name;
   return 0;
 }
 
 static int
-g_test_run_suite_internal (GTestSuite *suite)
+g_test_run_suite_internal (GTestSuite *suite,
+                           const char *path)
 {
-  guint n_bad = 0, n_good = 0, bad_suite = 0;
-  gchar *old_name = test_run_name;
+  guint n_bad = 0, n_good = 0, bad_suite = 0, l;
+  gchar *rest, *old_name = test_run_name;
   GSList *slist, *reversed;
   g_return_val_if_fail (suite != NULL, -1);
+  while (path[0] == '/')
+    path++;
+  l = strlen (path);
+  rest = strchr (path, '/');
+  l = rest ? MIN (l, rest - path) : l;
   test_run_name = suite->name[0] == 0 ? g_strdup (test_run_name) : g_strconcat (old_name, "/", suite->name, NULL);
   reversed = g_slist_reverse (g_slist_copy (suite->cases));
   for (slist = reversed; slist; slist = slist->next)
     {
       GTestCase *tc = slist->data;
-      n_good++;
-      n_bad += test_case_run (tc) != 0;
+      guint n = l ? strlen (tc->name) : 0;
+      if (l == n && strncmp (path, tc->name, n) == 0)
+        {
+          n_good++;
+          n_bad += test_case_run (tc) != 0;
+        }
     }
   g_slist_free (reversed);
   reversed = g_slist_reverse (g_slist_copy (suite->suites));
   for (slist = reversed; slist; slist = slist->next)
     {
       GTestSuite *ts = slist->data;
-      bad_suite += g_test_run_suite_internal (ts) != 0;
+      guint n = l ? strlen (ts->name) : 0;
+      if (l == n && strncmp (path, ts->name, n) == 0)
+        bad_suite += g_test_run_suite_internal (ts, rest ? rest : "") != 0;
     }
   g_slist_free (reversed);
   g_free (test_run_name);
@@ -309,10 +330,27 @@ g_test_run_suite_internal (GTestSuite *suite)
 int
 g_test_run_suite (GTestSuite *suite)
 {
+  guint n_bad = 0;
   g_return_val_if_fail (g_test_initialized == TRUE, -1);
   g_return_val_if_fail (g_test_run_once == TRUE, -1);
   g_test_run_once = FALSE;
-  return g_test_run_suite_internal (suite);
+  if (!test_paths)
+    test_paths = g_slist_prepend (test_paths, "");
+  while (test_paths)
+    {
+      const char *rest, *path = test_paths->data;
+      guint l, n;
+      test_paths = g_slist_delete_link (test_paths, test_paths);
+      while (path[0] == '/')
+        path++;
+      rest = strchr (path, '/');
+      l = strlen (path);
+      l = rest ? MIN (l, rest - path) : l;
+      n = l ? strlen (suite->name) : 0;
+      if (l == n && strncmp (path, suite->name, n) == 0)
+        n_bad += 0 != g_test_run_suite_internal (suite, rest ? rest : "");
+    }
+  return n_bad;
 }
 
 void

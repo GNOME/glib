@@ -78,7 +78,7 @@ main (int   argc,
 {
   GTestCase *tc;
   g_test_init (&argc, &argv, NULL);
-  GTestSuite *rootsuite = g_test_create_suite ("root");
+  GTestSuite *rootsuite = g_test_create_suite ("top");
   GTestSuite *miscsuite = g_test_create_suite ("misc");
   g_test_suite_add_suite (rootsuite, miscsuite);
   GTestSuite *forksuite = g_test_create_suite ("fork");
