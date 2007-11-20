@@ -23,6 +23,8 @@
 
 #include <glib.h>
 
+static GIOChannel* out = NULL;
+
 static void
 child_watch_cb (GPid     pid,
 		gint     status,
@@ -30,7 +32,9 @@ child_watch_cb (GPid     pid,
 {
   GMainLoop* loop = data;
 
-  g_main_loop_quit (loop);
+  g_spawn_close_pid (pid);
+
+  //g_main_loop_quit (loop);
 }
 
 static gboolean
@@ -40,20 +44,22 @@ child_out_cb (GIOChannel  * source,
 {
   GError* error = NULL;
   gsize length = 0;
-  gchar buffer[4096];
+  gchar buffer[10];
   GIOStatus status;
 
-  status = g_io_channel_read_chars (source, buffer, sizeof(buffer), &length, &error);
+  status = g_io_channel_read_chars (source, buffer, sizeof (buffer), &length, &error);
   if (status == G_IO_STATUS_NORMAL)
     {
       g_print ("%d\n", length);
-      return TRUE;
     }
-  else
+
+  if (status != G_IO_STATUS_NORMAL || length != sizeof (buffer))
     {
-      g_print ("Output done: %d\n", status);
+      g_main_loop_quit (data);
       return FALSE;
     }
+  else
+    return TRUE;
 }
 
 int
@@ -70,7 +76,6 @@ main (int   argc,
     NULL
   };
   gint        child_out;
-  GIOChannel* out;
 
   working_folder = g_get_current_dir ();
   g_spawn_async_with_pipes (working_folder,
@@ -98,7 +103,7 @@ main (int   argc,
 
   out = g_io_channel_unix_new (child_out);
   g_io_add_watch (out, G_IO_IN,
-		  child_out_cb, NULL);
+		  child_out_cb, loop);
 
   g_main_loop_run (loop);
   g_main_loop_unref (loop);
