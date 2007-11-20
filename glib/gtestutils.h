@@ -1,5 +1,6 @@
 /* GLib testing utilities
- * Copyright (C) 2007 Tim Janik
+ * Copyright (C) 2007 Imendio AB
+ * Authors: Tim Janik
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
