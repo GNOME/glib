@@ -152,35 +152,15 @@ int
 main (int   argc,
       char *argv[])
 {
-  GTestCase *tc;
   g_test_init (&argc, &argv, NULL);
-  GTestSuite *rootsuite = g_test_create_suite ("top");
-  GTestSuite *miscsuite = g_test_create_suite ("misc");
-  g_test_suite_add_suite (rootsuite, miscsuite);
-  GTestSuite *forksuite = g_test_create_suite ("fork");
-  g_test_suite_add_suite (rootsuite, forksuite);
-  GTestSuite *randsuite = g_test_create_suite ("rand");
-  g_test_suite_add_suite (rootsuite, randsuite);
 
-  tc = g_test_create_case ("fail assertion", 0, NULL, test_fork_fail, NULL);
-  g_test_suite_add (forksuite, tc);
-  tc = g_test_create_case ("patterns", 0, NULL, test_fork_patterns, NULL);
-  g_test_suite_add (forksuite, tc);
-  tc = g_test_create_case ("timeout", 0, NULL, test_fork_timeout, NULL);
-  g_test_suite_add (forksuite, tc);
+  g_test_add_func ("/random-generator/rand-1", test_rand1);
+  g_test_add_func ("/random-generator/rand-2", test_rand2);
+  g_test_add_func ("/misc/assertions", test_assertions);
+  g_test_add ("/misc/primetoul", Fixturetest, fixturetest_setup, fixturetest_test, fixturetest_teardown);
+  g_test_add_func ("/forking/fail assertion", test_fork_fail);
+  g_test_add_func ("/forking/patterns", test_fork_patterns);
+  g_test_add_func ("/forking/timeout", test_fork_timeout);
 
-  tc = g_test_create_case ("rand-1", 0, NULL, test_rand1, NULL);
-  g_test_suite_add (randsuite, tc);
-  tc = g_test_create_case ("rand-2", 0, NULL, test_rand2, NULL);
-  g_test_suite_add (randsuite, tc);
-
-  tc = g_test_create_case ("assertions", 0, NULL, test_assertions, NULL);
-  g_test_suite_add (miscsuite, tc);
-  tc = g_test_create_case ("primetoul", sizeof (Fixturetest),
-                           (void(*)(void)) fixturetest_setup,
-                           (void(*)(void)) fixturetest_test,
-                           (void(*)(void)) fixturetest_teardown);
-  g_test_suite_add (miscsuite, tc);
-
-  return g_test_run_suite (rootsuite);
+  return g_test_run();
 }

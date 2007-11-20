@@ -322,6 +322,56 @@ g_test_create_case (const char     *test_name,
   return tc;
 }
 
+void
+g_test_add_vtable (const char     *testpath,
+                   gsize           data_size,
+                   void          (*data_setup)    (void),
+                   void          (*fixture_test_func) (void),
+                   void          (*data_teardown) (void))
+{
+  gchar **segments;
+  guint ui;
+  GTestSuite *suite;
+
+  g_return_if_fail (testpath != NULL);
+  g_return_if_fail (testpath[0] == '/');
+  g_return_if_fail (fixture_test_func != NULL);
+
+  suite = g_test_get_root();
+  segments = g_strsplit (testpath, "/", -1);
+  for (ui = 0; segments[ui] != NULL; ui++)
+    {
+      const char *seg = segments[ui];
+      gboolean islast = segments[ui + 1] == NULL;
+      if (islast && !seg[0])
+        g_error ("invalid test case path: %s", testpath);
+      else if (!seg[0])
+        continue;       // initial or duplicate slash
+      else if (!islast)
+        {
+          GTestSuite *csuite = g_test_create_suite (seg);
+          g_test_suite_add_suite (suite, csuite);
+          suite = csuite;
+        }
+      else /* islast */
+        {
+          GTestCase *tc = g_test_create_case (seg, data_size, data_setup, fixture_test_func, data_teardown);
+          g_test_suite_add (suite, tc);
+        }
+    }
+  g_strfreev (segments);
+}
+
+void
+g_test_add_func (const char     *testpath,
+                 void          (*test_func) (void))
+{
+  g_return_if_fail (testpath != NULL);
+  g_return_if_fail (testpath[0] == '/');
+  g_return_if_fail (test_func != NULL);
+  g_test_add_vtable (testpath, 0, NULL, test_func, NULL);
+}
+
 GTestSuite*
 g_test_create_suite (const char *suite_name)
 {
