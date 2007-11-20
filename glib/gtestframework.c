@@ -369,6 +369,10 @@ g_test_init (int    *argc,
   static char seedstr[4 + 4 * 8 + 1];
   va_list args;
   gpointer vararg1;
+  /* make warnings and criticals fatal for all test programs */
+  GLogLevelFlags fatal_mask = (GLogLevelFlags) g_log_set_always_fatal ((GLogLevelFlags) G_LOG_FATAL_MASK);
+  fatal_mask = (GLogLevelFlags) (fatal_mask | G_LOG_LEVEL_WARNING | G_LOG_LEVEL_CRITICAL);
+  /* check caller args */
   g_return_if_fail (argc != NULL);
   g_return_if_fail (argv != NULL);
   g_return_if_fail (g_test_config_vars == NULL);
