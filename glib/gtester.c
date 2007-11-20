@@ -28,9 +28,32 @@ child_watch_cb (GPid     pid,
 		gint     status,
 		gpointer data)
 {
-	GMainLoop* loop = data;
+  GMainLoop* loop = data;
 
-	g_main_loop_quit (loop);
+  g_main_loop_quit (loop);
+}
+
+static gboolean
+child_out_cb (GIOChannel  * source,
+	      GIOCondition  condition,
+	      gpointer      data)
+{
+  GError* error = NULL;
+  gsize length = 0;
+  gchar buffer[4096];
+  GIOStatus status;
+
+  status = g_io_channel_read_chars (source, buffer, sizeof(buffer), &length, &error);
+  if (status == G_IO_STATUS_NORMAL)
+    {
+      g_print ("%d\n", length);
+      return TRUE;
+    }
+  else
+    {
+      g_print ("Output done: %d\n", status);
+      return FALSE;
+    }
 }
 
 int
@@ -46,6 +69,8 @@ main (int   argc,
     "/proc/cpuinfo",
     NULL
   };
+  gint        child_out;
+  GIOChannel* out;
 
   working_folder = g_get_current_dir ();
   g_spawn_async_with_pipes (working_folder,
@@ -54,7 +79,7 @@ main (int   argc,
 		 NULL, NULL,
 		 &pid,
 		 NULL,
-		 NULL,
+		 &child_out,
 		 NULL,
 		 &error);
   g_free (working_folder);
@@ -70,6 +95,10 @@ main (int   argc,
   g_child_watch_add (pid,
 		     child_watch_cb,
 		     loop);
+
+  out = g_io_channel_unix_new (child_out);
+  g_io_add_watch (out, G_IO_IN,
+		  child_out_cb, NULL);
 
   g_main_loop_run (loop);
   g_main_loop_unref (loop);
