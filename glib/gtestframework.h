@@ -33,6 +33,9 @@ typedef struct GTestSuite GTestSuite;
 #define g_assert_cmpint(n1, cmp, n2)    do { if (n1 cmp n2) ; else \
                                           g_assertion_message_cmpnum (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
                                             #n1 " " #cmp " " #n2, n1, #cmp, n2, 'i'); } while (0)
+#define g_assert_cmphex(n1, cmp, n2)    do { if (n1 cmp n2) ; else \
+                                          g_assertion_message_cmpnum (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
+                                            #n1 " " #cmp " " #n2, n1, #cmp, n2, 'x'); } while (0)
 #define g_assert_cmpfloat(n1,cmp,n2)    do { if (n1 cmp n2) ; else \
                                           g_assertion_message_cmpnum (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
                                             #n1 " " #cmp " " #n2, n1, #cmp, n2, 'f'); } while (0)
@@ -48,13 +51,6 @@ void    g_test_minimized_result         (double          minimized_quantity,
 void    g_test_maximized_result         (double          maximized_quantity,
                                          const char     *format,
                                          ...) G_GNUC_PRINTF (2, 3);
-
-/* guards used around forked tests */
-guint   g_test_trap_fork                ();
-void    g_test_trap_assert_passed       (void);
-void    g_test_trap_assert_failed       (void);
-void    g_test_trap_assert_stdout       (const char     *stdout_pattern);
-void    g_test_trap_assert_stderr       (const char     *stderr_pattern);
 
 /* initialize testing framework */
 void    g_test_init                     (int            *argc,
@@ -83,25 +79,48 @@ double  g_test_timer_last               (void); // repeat last elapsed() result
 void    g_test_queue_free               (gpointer gfree_pointer);
 void    g_test_queue_unref              (gpointer gobjectunref_pointer);
 
+/* test traps are guards used around forked tests */
+typedef enum {
+  G_TEST_TRAP_SILENCE_STDOUT    = 1 << 7,
+  G_TEST_TRAP_SILENCE_STDERR    = 1 << 8,
+  G_TEST_TRAP_INHERIT_STDIN     = 1 << 9,
+} GTestTrapFlags;
+gboolean g_test_trap_fork               (guint64              usec_timeout,
+                                         GTestTrapFlags       test_trap_flags);
+gboolean g_test_trap_has_passed         (void);
+gboolean g_test_trap_reached_timeout    (void);
+#define  g_test_trap_assert_passed()            g_test_trap_assertions (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, 1, 0, 0, 0)
+#define  g_test_trap_assert_failed()            g_test_trap_assertions (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, 0, 1, 0, 0)
+#define  g_test_trap_assert_stdout(soutpattern) g_test_trap_assertions (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, 0, 0, soutpattern, 0)
+#define  g_test_trap_assert_stderr(serrpattern) g_test_trap_assertions (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, 0, 0, 0, serrpattern)
+
 /* provide seed-able random numbers for tests */
-long double     g_test_rand_range       (long double range_start,
-                                         long double range_end);
+double   g_test_rand_range              (double          range_start,
+                                         double          range_end);
 
 /* semi-internal API */
-GTestCase*      g_test_create_case      (const char     *test_name,
+GTestCase*    g_test_create_case        (const char     *test_name,
                                          gsize           data_size,
                                          void          (*data_setup) (void),
                                          void          (*data_test) (void),
                                          void          (*data_teardown) (void));
-GTestSuite*     g_test_create_suite     (const char     *suite_name);
-GTestSuite*     g_test_get_root         (void);
-void            g_test_suite_add        (GTestSuite     *suite,
+GTestSuite*   g_test_create_suite       (const char     *suite_name);
+GTestSuite*   g_test_get_root           (void);
+void          g_test_suite_add          (GTestSuite     *suite,
                                          GTestCase      *test_case);
-void            g_test_suite_add_suite  (GTestSuite     *suite,
+void          g_test_suite_add_suite    (GTestSuite     *suite,
                                          GTestSuite     *nestedsuite);
-int             g_test_run_suite        (GTestSuite     *suite);
+int           g_test_run_suite          (GTestSuite     *suite);
 
 /* internal ABI */
+void    g_test_trap_assertions          (const char     *domain,
+                                         const char     *file,
+                                         int             line,
+                                         const char     *func,
+                                         gboolean        must_pass,
+                                         gboolean        must_fail,
+                                         const char     *stdout_pattern,
+                                         const char     *stderr_pattern);
 void    g_assertion_message             (const char     *domain,
                                          const char     *file,
                                          int             line,
