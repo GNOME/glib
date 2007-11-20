@@ -46,6 +46,13 @@ struct GTestSuite
   GSList *suites;
   GSList *cases;
 };
+typedef struct DestroyEntry DestroyEntry;
+struct DestroyEntry
+{
+  DestroyEntry *next;
+  GDestroyNotify destroy_func;
+  gpointer       destroy_data;
+};
 
 /* --- prototypes --- */
 static void                     test_run_seed           (const gchar *rseed);
@@ -68,13 +75,13 @@ static GTimer     *test_user_timer = NULL;
 static double      test_user_stamp = 0;
 static GSList     *test_paths = NULL;
 static GTestSuite *test_suite_root = NULL;
-static GSList     *test_run_free_queue = NULL;
 static int         test_trap_last_status = 0;
 static int         test_trap_last_pid = 0;
 static char       *test_trap_last_stdout = NULL;
 static char       *test_trap_last_stderr = NULL;
 static char       *test_uri_base = NULL;
 static gboolean    test_debug_log = FALSE;
+static DestroyEntry *test_destroy_queue = NULL;
 const GTestConfig *g_test_config_vars = NULL;
 static GTestConfig mutable_test_config_vars = {
   TRUE,         /* test_quick */
@@ -648,7 +655,20 @@ void
 g_test_queue_free (gpointer gfree_pointer)
 {
   if (gfree_pointer)
-    test_run_free_queue = g_slist_prepend (test_run_free_queue, gfree_pointer);
+    g_test_queue_destroy (g_free, gfree_pointer);
+}
+
+void
+g_test_queue_destroy (GDestroyNotify destroy_func,
+                      gpointer       destroy_data)
+{
+  DestroyEntry *dentry;
+  g_return_if_fail (destroy_func != NULL);
+  dentry = g_slice_new0 (DestroyEntry);
+  dentry->destroy_func = destroy_func;
+  dentry->destroy_data = destroy_data;
+  dentry->next = test_destroy_queue;
+  test_destroy_queue = dentry;
 }
 
 static int
@@ -676,11 +696,12 @@ test_case_run (GTestCase *tc)
         tc->fixture_setup (fixture);
       tc->fixture_test (fixture);
       test_trap_clear();
-      while (test_run_free_queue)
+      while (test_destroy_queue)
         {
-          gpointer freeme = test_run_free_queue->data;
-          test_run_free_queue = g_slist_delete_link (test_run_free_queue, test_run_free_queue);
-          g_free (freeme);
+          DestroyEntry *dentry = test_destroy_queue;
+          test_destroy_queue = dentry->next;
+          dentry->destroy_func (dentry->destroy_data);
+          g_slice_free (DestroyEntry, dentry);
         }
       if (tc->fixture_teardown)
         tc->fixture_teardown (fixture);

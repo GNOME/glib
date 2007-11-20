@@ -95,7 +95,9 @@ double  g_test_timer_last               (void); // repeat last elapsed() result
 
 /* automatically g_free or g_object_unref upon teardown */
 void    g_test_queue_free               (gpointer gfree_pointer);
-void    g_test_queue_unref              (gpointer gobjectunref_pointer);
+void    g_test_queue_destroy            (GDestroyNotify destroy_func,
+                                         gpointer       destroy_data);
+#define g_test_queue_unref(gobject)     g_test_queue_destroy (g_object_unref, gobject)
 
 /* test traps are guards used around forked tests */
 typedef enum {
