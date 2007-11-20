@@ -47,6 +47,7 @@ struct GTestSuite
 };
 
 /* --- prototypes --- */
+static void                     test_run_seed           (const gchar *rseed);
 static void                     test_trap_clear         (void);
 
 /* --- variables --- */
@@ -59,7 +60,8 @@ static gboolean    g_test_run_once = TRUE;
 static gboolean    test_run_quiet = FALSE;
 static gboolean    test_run_list = FALSE;
 static gchar      *test_run_output = NULL;
-static gchar      *test_run_seed = NULL;
+static gchar      *test_run_seedstr = NULL;
+static GRand      *test_run_rand = NULL;
 static gchar      *test_run_name = "";
 static GSList     *test_paths = NULL;
 static GTestSuite *test_suite_root = NULL;
@@ -151,15 +153,15 @@ parse_args (gint    *argc_p,
           test_run_list = TRUE;
           argv[i] = NULL;
         }
-      else if (strcmp ("-seed", argv[i]) == 0 || strncmp ("-seed=", argv[i], 6) == 0)
+      else if (strcmp ("--seed", argv[i]) == 0 || strncmp ("--seed=", argv[i], 7) == 0)
         {
-          gchar *equal = argv[i] + 5;
+          gchar *equal = argv[i] + 6;
           if (*equal == '=')
-            test_run_seed = equal + 1;
+            test_run_seedstr = equal + 1;
           else if (i + 1 < argc)
             {
               argv[i++] = NULL;
-              test_run_seed = argv[i];
+              test_run_seedstr = argv[i];
             }
           argv[i] = NULL;
         }
@@ -181,6 +183,7 @@ g_test_init (int            *argc,
              char         ***argv,
              ...)
 {
+  static char seedstr[4 + 4 * 8 + 1];
   va_list args;
   gpointer vararg1;
   g_return_if_fail (argc != NULL);
@@ -193,9 +196,92 @@ g_test_init (int            *argc,
   va_end (args);
   g_return_if_fail (vararg1 == NULL);
 
+  /* setup random seed string */
+  g_snprintf (seedstr, sizeof (seedstr), "R02S%08x%08x%08x%08x", g_random_int(), g_random_int(), g_random_int(), g_random_int());
+  test_run_seedstr = seedstr;
+
+  /* parse args, sets up mode, changes seed, etc. */
   parse_args (argc, argv);
 
+  /* verify GRand reliability, needed for reliable seeds */
+  if (1)
+    {
+      GRand *rg = g_rand_new_with_seed (0xc8c49fb6);
+      guint32 t1 = g_rand_int (rg), t2 = g_rand_int (rg), t3 = g_rand_int (rg), t4 = g_rand_int (rg);
+      // g_print ("GRand-current: 0x%x 0x%x 0x%x 0x%x\n", t1, t2, t3, t4);
+      if (t1 != 0xfab39f9b || t2 != 0xb948fb0e || t3 != 0x3d31be26 || t4 != 0x43a19d66)
+        g_warning ("random numbers are not GRand-2.2 compatible, seeds may be broken (check $G_RANDOM_VERSION)");
+      g_rand_free (rg);
+    }
 
+  /* check rand seed */
+  test_run_seed (test_run_seedstr);
+  if (test_run_seedstr == seedstr)
+    g_printerr ("NOTE: random-seed: %s\n", test_run_seedstr);
+}
+
+static void
+test_run_seed (const gchar *rseed)
+{
+  guint seed_failed = 0;
+  if (test_run_rand)
+    g_rand_free (test_run_rand);
+  test_run_rand = NULL;
+  while (strchr (" \t\v\r\n\f", *rseed))
+    rseed++;
+  if (strncmp (rseed, "R02S", 4) == 0)  // seed for random generator 02 (GRand-2.2)
+    {
+      const char *s = rseed + 4;
+      if (strlen (s) >= 32)             // require 4 * 8 chars
+        {
+          guint32 seedarray[4];
+          gchar *p, hexbuf[9] = { 0, };
+          memcpy (hexbuf, s + 0, 8);
+          seedarray[0] = g_ascii_strtoull (hexbuf, &p, 16);
+          seed_failed += p != NULL && *p != 0;
+          memcpy (hexbuf, s + 8, 8);
+          seedarray[1] = g_ascii_strtoull (hexbuf, &p, 16);
+          seed_failed += p != NULL && *p != 0;
+          memcpy (hexbuf, s + 16, 8);
+          seedarray[2] = g_ascii_strtoull (hexbuf, &p, 16);
+          seed_failed += p != NULL && *p != 0;
+          memcpy (hexbuf, s + 24, 8);
+          seedarray[3] = g_ascii_strtoull (hexbuf, &p, 16);
+          seed_failed += p != NULL && *p != 0;
+          if (!seed_failed)
+            {
+              test_run_rand = g_rand_new_with_seed_array (seedarray, 4);
+              return;
+            }
+        }
+    }
+  g_error ("Unknown or invalid random seed: %s", rseed);
+}
+
+gint32
+g_test_rand_int (void)
+{
+  return g_rand_int (test_run_rand);
+}
+
+gint32
+g_test_rand_int_range (gint32          begin,
+                       gint32          end)
+{
+  return g_rand_int_range (test_run_rand, begin, end);
+}
+
+double
+g_test_rand_double (void)
+{
+  return g_rand_double (test_run_rand);
+}
+
+double
+g_test_rand_double_range (double          range_start,
+                          double          range_end)
+{
+  return g_rand_double_range (test_run_rand, range_start, range_end);
 }
 
 GTestSuite*
@@ -284,6 +370,7 @@ test_case_run (GTestCase *tc)
       if (!test_run_quiet)
         g_print ("%s: ", test_run_name);
       void *fixture = g_malloc0 (tc->fixture_size);
+      test_run_seed (test_run_seedstr);
       if (tc->fixture_setup)
         tc->fixture_setup (fixture);
       tc->fixture_test (fixture);

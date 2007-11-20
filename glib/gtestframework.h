@@ -27,18 +27,26 @@ typedef struct GTestCase  GTestCase;
 typedef struct GTestSuite GTestSuite;
 
 /* assertion API */
-#define g_assert_cmpstr(s1, cmp, s2)    do { if (g_strcmp0 (s1, s2) cmp 0) ; else \
-                                          g_assertion_message_cmpstr (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
-                                            #s1 " " #cmp " " #s2, s1, #cmp, s2); } while (0)
-#define g_assert_cmpint(n1, cmp, n2)    do { if (n1 cmp n2) ; else \
-                                          g_assertion_message_cmpnum (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
-                                            #n1 " " #cmp " " #n2, n1, #cmp, n2, 'i'); } while (0)
-#define g_assert_cmphex(n1, cmp, n2)    do { if (n1 cmp n2) ; else \
-                                          g_assertion_message_cmpnum (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
-                                            #n1 " " #cmp " " #n2, n1, #cmp, n2, 'x'); } while (0)
-#define g_assert_cmpfloat(n1,cmp,n2)    do { if (n1 cmp n2) ; else \
-                                          g_assertion_message_cmpnum (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
-                                            #n1 " " #cmp " " #n2, n1, #cmp, n2, 'f'); } while (0)
+#define g_assert_cmpstr(s1, cmp, s2)    do { const char *__s1 = (s1), *__s2 = (s2); \
+                                             if (g_strcmp0 (__s1, __s2) cmp 0) ; else \
+                                               g_assertion_message_cmpstr (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
+                                                 #s1 " " #cmp " " #s2, __s1, #cmp, __s2); } while (0)
+#define g_assert_cmpint(n1, cmp, n2)    do { gint64 __n1 = (n1), __n2 = (n2); \
+                                             if (__n1 cmp __n2) ; else \
+                                               g_assertion_message_cmpnum (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
+                                                 #n1 " " #cmp " " #n2, __n1, #cmp, __n2, 'i'); } while (0)
+#define g_assert_cmpuint(n1, cmp, n2)   do { guint64 __n1 = (n1), __n2 = (n2); \
+                                             if (__n1 cmp __n2) ; else \
+                                               g_assertion_message_cmpnum (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
+                                                 #n1 " " #cmp " " #n2, __n1, #cmp, __n2, 'i'); } while (0)
+#define g_assert_cmphex(n1, cmp, n2)    do { guint64 __n1 = (n1), __n2 = (n2); \
+                                             if (__n1 cmp __n2) ; else \
+                                               g_assertion_message_cmpnum (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
+                                                 #n1 " " #cmp " " #n2, __n1, #cmp, __n2, 'x'); } while (0)
+#define g_assert_cmpfloat(n1,cmp,n2)    do { long double __n1 = (n1), __n2 = (n2); \
+                                             if (__n1 cmp __n2) ; else \
+                                               g_assertion_message_cmpnum (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
+                                                 #n1 " " #cmp " " #n2, __n1, #cmp, __n2, 'f'); } while (0)
 int     g_strcmp0                       (const char     *str1,
                                          const char     *str2);
 //      g_assert(condition)             /*...*/
@@ -95,7 +103,12 @@ gboolean g_test_trap_reached_timeout    (void);
 #define  g_test_trap_assert_stderr(serrpattern) g_test_trap_assertions (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, 0, 0, 0, serrpattern)
 
 /* provide seed-able random numbers for tests */
-double   g_test_rand_range              (double          range_start,
+#define  g_test_rand_bit()              (0 != (g_test_rand_int() & (1 << 15)))
+gint32   g_test_rand_int                (void);
+gint32   g_test_rand_int_range          (gint32          begin,
+                                         gint32          end);
+double   g_test_rand_double             (void);
+double   g_test_rand_double_range       (double          range_start,
                                          double          range_end);
 
 /* semi-internal API */
