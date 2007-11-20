@@ -73,7 +73,7 @@ child_watch_cb (GPid     pid,
 
   /* read the remaining data - also stops the io watch from being polled */
   child_out_cb (out, G_IO_IN, data);
-  g_main_loop_quit (data);
+  g_main_loop_quit (loop);
 }
 
 int
