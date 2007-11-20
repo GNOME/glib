@@ -381,7 +381,7 @@ main (int    argc,
    * we must fiddle with sigaction() *before* glib is used, otherwise
    * we could revoke signal hanmdler setups from glib initialization code.
    */
-  if (TRUE * 0)
+  if (TRUE)
     {
       struct sigaction sa;
       struct sigaction osa;
