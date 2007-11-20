@@ -18,7 +18,7 @@ gregex_c =
 gregex_h =
 endif
 
-SUBDIRS = libcharset $(PRINTF_SUBDIR) $(MAYBE_PCRE) update-pcre
+SUBDIRS = libcharset $(PRINTF_SUBDIR) $(MAYBE_PCRE) update-pcre . tests
 
 DIST_SUBDIRS = libcharset gnulib pcre update-pcre
 
