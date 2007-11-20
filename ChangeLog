@@ -1,3 +1,273 @@
+Tue Nov 20 15:59:55 2007 +0100 Tim Janik
+
+	Renamed gtestframework to gtestutils.
+
+	* glib/glib.h:
+	* glib/Makefile.am: added gtestutils.h to public includes.
+
+	* glib/gtestutils.c: include gtestutils.h.
+
+	* glib/gtestutils.h:
+	* glib/glib.symbols:
+	* glib/tests/testing.c: renamed gtestframework to gtestutils.
+
+	* glib/gtestframework.h: renamed to gtestutils.h.
+
+	* glib/gtestframework.c: renamed to gtestutils.c.
+
+Tue Nov 20 15:29:34 2007 +0100 Tim Janik
+
+	glib/gtestframework.c: g_test_init(): make warnings and criticals fatal for all test programs.
+
+Wed Nov 14 20:35:05 2007 +0100 Tim Janik
+
+	gtestframework.c: added test API documentation by Sven Herzberg and Tim Janik.
+
+Wed Nov 14 19:10:28 2007 +0100 Tim Janik
+
+	gtestframework.[hc]: implemented g_test_queue_destroy() and g_test_queue_unref().
+
+Fri Nov 9 12:28:52 2007 +0100 Tim Janik
+
+	Added g_test_bug() and related API.
+
+	* gtester.c: handle G_TEST_LOG_MESSAGE and test test message API.
+
+	* gtestframework.h, gtestframework.c: added test message API and convenience
+	API to send test messages about bug URLs.
+
+Fri Nov 9 11:35:11 2007 +0100 Tim Janik
+
+	Added API to access test framework configuration.
+
+	* gtestframework.h, gtestframework.c: export testing configuration to test
+	programs with g_test_quick(), g_test_perf(), g_test_verbose(), g_test_quiet().
+
+Thu Nov 8 17:55:09 2007 +0100 Tim Janik
+
+	gtester: implemented logic to handle failing tests, self tests, and validate XML reports.
+
+	* gtester.c: terminate when tests failed. keep XML valid when test cases fail.
+	restart test binaries when tests fail, resuming after the last processed test.
+	support --gtester-selftest to run gtester itself as test program.
+	support --test-arg=<arg> to pass args along to test programs. added
+	main_selftest() which does a simplistic fixture test. fail if exit
+	code of test programs is not 0.
+
+	* gtestframework.h: added G_TEST_LOG_SKIP_CASE test log message type.
+
+	* gtestframework.c: support --GTestSkipCount=<n> to skip a number of tests.
+
+	* tests/Makefile.am: added test-report: for demonstration purposes.
+	added gtester-xmllint-check: and hooked it up into check:, this rule calls
+	gtester as test program, running it's selftest, and then uses xmllint to
+	validate the generate XML test log file.
+
+Thu Nov 8 14:51:37 2007 +0100 Tim Janik
+
+	gtester: implemented XML logging.
+
+	* glib/gtester.c: log test messages to XML output file. beautified normal test
+	result output.
+
+	* glib/gtestframework.c: fixed GTimer leak.
+
+	* glib/tests/Makefile.am: start gtester with --verbose.
+
+Thu Nov 8 12:33:31 2007 +0100 Tim Janik
+
+	tests/Makefile.am: execute test programs with gtester, add test: to check:
+
+Thu Nov 8 12:18:51 2007 +0100 Tim Janik
+
+	Fixed PLT symbol exports for gtestframework.h.
+
+	* glib/glib.symbols: added all exported gtestframework.h symbols.
+
+	* glib/gtestframework.c: include galias.h, galiasdef.c, define __G_TESTFRAMEWORK_C__.
+
+Thu Nov 8 11:31:12 2007 +0100 Tim Janik
+
+	glib/gtester.c: fixed debugging flag.
+
+Wed Nov 7 17:56:26 2007 +0100 Tim Janik
+
+	fixed bogus unistd.h include.
+
+Wed Nov 7 17:53:30 2007 +0100 Tim Janik
+
+	Implemented test log IPC.
+
+	* gtester.c: read and decode log messages from test binary child processes.
+	fixed GIOChannel and child watch handling to process all messages and avoid
+	hangs. pass --verbose and --quiet on to children, default to --quiet.
+
+	* gtestframework.h: export g_test_log_type_name().
+
+	* gtestframework.c: send test log to --GTestLogFD=<fd> if given, removed
+	bogus -o-option.
+
+Tue Nov 6 20:07:44 2007 +0100 Tim Janik
+
+	gtester.c: support test case listing through gtester.
+
+Tue Nov 6 20:01:06 2007 +0100 Tim Janik
+
+	gtestframework.c: fixed testpath matches for automatic root suite.
+
+Tue Nov 6 19:50:33 2007 +0100 Tim Janik
+
+	gtester.c: adapted to become a rudimentary test binary launcher.
+
+	* gtester.c: increased read buffer size to match common unix pipe buffer size.
+	added argument parsing and usage. changed io handling to capture and replicate
+	stdout. fixed io handlers to be cleaned up when the child process exits (catch
+	G_IO_ERR | G_IO_HUP). we now use pending/iteration instead of a main loop
+	structure, to keep running until the child process exits and all io has been
+	processed. launch the test binaries given on the command line. don't quit when
+	a child couldn't be launched but --keep-going was specified.
+
+Tue Nov 6 17:11:37 2007 +0100 Tim Janik
+
+	Integrated gtester program into build process.
+
+	* Makefile.am: build and install gtester binary.
+
+	* gtester.c: fixed up coding style and removed hard wired test coded.
+
+Tue Nov 6 16:12:32 2007 +0100 Sven Herzberg
+
+	glib/gtester.c:Small -Wall fix
+
+Tue Nov 6 16:05:06 2007 +0100 Sven Herzberg
+
+	glib/gtester.c:Implemented nonblocking reading properly now
+
+Mon Nov 5 13:53:23 2007 +0100 Sven Herzberg
+
+	glib/gtester.c:Quit the application when the output is parsed completely, not just the process finished
+
+Mon Nov 5 12:00:16 2007 +0100 Sven Herzberg
+
+	glib/gtester.c:Read the output of the child process
+
+Mon Nov 5 11:50:59 2007 +0100 Sven Herzberg
+
+	glib/gtester.c:Use g_spawn_async_with_pipes()
+
+Mon Nov 5 11:50:08 2007 +0100 Sven Herzberg
+
+	glib/gtester.c:Spawn a process async and quit gtester after the child process exited
+
+Mon Nov 5 11:30:45 2007 +0100 Sven Herzberg
+
+	glib/gtester.c:Added a first revision of gtester
+
+Tue Nov 6 16:47:06 2007 +0100 Tim Janik
+
+	Implemented test log serialization.
+
+	* glib/gtestframework.h: added g_test_log*() API.
+
+	* glib/gtestframework.c: implement test log serialization.
+
+Tue Nov 6 14:24:54 2007 +0100 Tim Janik
+
+	Implemented test logging basics.
+
+	* glib/gtestframework.c: added --debug-log and --verbose, implemented
+	test information logging.
+
+	* testing.c: test g_test_maximized_result() and g_test_minimized_result().
+
+Tue Nov 6 11:52:14 2007 +0100 Tim Janik
+
+	Implemented g_test_timer*().
+
+	* gtestframework.c: implemented g_test_timer*().
+
+	* tests/testing.c: added a g_test_timer*() test.
+
+Mon Nov 5 18:28:24 2007 +0100 Tim Janik
+
+	Implemented support for testpaths.
+
+	* gtestframework.c: implemented g_test_add_vtable() and g_test_add_func().
+
+	* tests/testing.c: use g_test_add() and g_test_add_func() to majorly simplify main().
+
+Mon Nov 5 15:56:42 2007 +0100 Tim Janik
+
+	testing.c: added tests for the g_test_rand*() API.
+
+Mon Nov 5 15:55:38 2007 +0100 Tim Janik
+
+	Implemented g_test_rand*().
+
+	* gtestframework.h: fixed g_assert_cmp*() to evaluate arguments only once.
+	added g_assert_cmpuint(). completed g_test_rand*() to cover bits, ints,
+	doubles and ranges.
+
+	* gtestframework.c: fixed "--seed" option and implemented g_test_rand*().
+
+Mon Nov 5 15:51:43 2007 +0100 Tim Janik
+
+	testing.c: added tests for g_assert_cmphex() and forked test traps.
+
+Mon Nov 5 15:10:18 2007 +0100 Tim Janik
+
+	Implemented g_test_trap_fork() API.
+
+	* gtestframework.h: added g_assert_cmphex(). reworked g_test_trap*() API.
+
+	* gtestframework.c: implemented g_test_trap_fork() API.
+
+Thu Nov 1 15:05:07 2007 +0100 Tim Janik
+
+	* glib/gtestframework.c:
+
+	that match a given test path.
+	(g_test_run_suite): run suite only if it matches the existing test paths.
+
+	* glib/tests/testing.c: minor rename.
+
+Thu Nov 1 13:45:55 2007 +0100 Tim Janik
+
+	GTest framework started.
+
+	* glib/gtestframework.h: testing framework API as proposed on gtk-devel-list.
+	includes elaborate assertions, performance report functions, test traps,
+	test timer, test random numbers, teardoiwn garbage collection functions
+	and general test case / test suite management APIs.
+
+	* glib/gtestframework.c: first test framework implementation. already covers
+	some test suite management APIs and assertion message implementations.
+
+	* glib/tests/testing.c: test program for the testing framework.
+
+	* glib/tests/Makefile.am: complie testing.c as test. run all tests as part of
+	make test:.
+
+Wed Oct 31 15:42:48 2007 +0100 Tim Janik
+
+	glib/Makefile.am: build tests/ subdir after building libglib.
+
+Tue Oct 30 16:17:32 2007 +0100 Tim Janik
+
+	Fixed up internal 'g_test*' names.
+
+	* refcount/signals.c:
+	* refcount/objects.c:
+	* refcount/objects2.c:
+	* refcount/closures.c:
+	* refcount/properties.c:
+	* refcount/properties2.c: changed namespace prefix from g_test_* to my_test_*
+	to not clash with newly introduced g_test* API in glib.
+
+Tue Oct 30 14:41:26 2007 +0100 Tim Janik
+
+	Added gtestframework.[hc] and glib/tests/.
+
 2007-11-20  Sven Neumann  <sven@gimp.org>
 
 	* glib/gerror.c (g_error_add_prefix): use g_strconcat() instead of
