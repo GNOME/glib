@@ -54,6 +54,8 @@ test_timer (void)
   ttime = g_test_timer_elapsed();
   g_assert_cmpfloat (ttime, >, 0);
   g_assert_cmpfloat (g_test_timer_last(), ==, ttime);
+  g_test_minimized_result (ttime, "timer-test-time: %fsec", ttime);
+  g_test_maximized_result (5, "bogus-quantity: %ddummies", 5); // simple API test
 }
 
 /* fork out for a failing test */

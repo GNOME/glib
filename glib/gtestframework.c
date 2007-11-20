@@ -58,12 +58,13 @@ static gboolean    test_mode_fatal = TRUE;
 static gboolean    g_test_initialized = FALSE;
 static gboolean    g_test_run_once = TRUE;
 static gboolean    test_run_quiet = FALSE;
+static gboolean    test_run_verbose = FALSE;
 static gboolean    test_run_list = FALSE;
 static gchar      *test_run_output = NULL;
 static gchar      *test_run_seedstr = NULL;
 static GRand      *test_run_rand = NULL;
 static gchar      *test_run_name = "";
-static GTimer     *test_run_timer = NULL;
+static guint       test_run_forks = 0;
 static GTimer     *test_user_timer = NULL;
 static double      test_user_stamp = 0;
 static GSList     *test_paths = NULL;
@@ -73,8 +74,98 @@ static int         test_trap_last_status = 0;
 static int         test_trap_last_pid = 0;
 static char       *test_trap_last_stdout = NULL;
 static char       *test_trap_last_stderr = NULL;
+static gboolean    test_debug_log = FALSE;
 
 /* --- functions --- */
+typedef enum {
+  G_TEST_LOG_NONE,
+  G_TEST_LOG_ERROR,             // s:msg
+  G_TEST_LOG_START_BINARY,      // s:binaryname s:seed
+  G_TEST_LOG_LIST_CASE,         // s:testpath
+  G_TEST_LOG_START_CASE,        // s:testpath
+  G_TEST_LOG_STOP_CASE,         // d:status d:nforks d:elapsed
+  G_TEST_LOG_MIN_RESULT,        // s:blurb d:result
+  G_TEST_LOG_MAX_RESULT,        // s:blurb d:result
+} GTestLogBit;
+
+static const char*
+test_log_bit (GTestLogBit lbit)
+{
+  switch (lbit)
+    {
+    case G_TEST_LOG_START_BINARY:       return "binary";
+    case G_TEST_LOG_LIST_CASE:          return "list";
+    case G_TEST_LOG_START_CASE:         return "start";
+    case G_TEST_LOG_STOP_CASE:          return "stop";
+    case G_TEST_LOG_MIN_RESULT:         return "minperf";
+    case G_TEST_LOG_MAX_RESULT:         return "maxperf";
+    default:                            return "???";
+    }
+}
+
+static void
+g_test_log (GTestLogBit  lbit,
+            const gchar *string1,
+            const gchar *string2,
+            guint        n_args,
+            long double *largs)
+{
+  gboolean fail = lbit == G_TEST_LOG_STOP_CASE && largs[0] != 0;
+  const char *bit = test_log_bit (lbit);
+
+  switch (lbit)
+    {
+    case G_TEST_LOG_STOP_CASE:
+      if (!test_run_quiet)
+        g_print ("%s\n", fail ? "FAIL" : "OK");
+      if (fail && test_mode_fatal)
+        abort();
+      break;
+    case G_TEST_LOG_MIN_RESULT:
+      if (test_run_verbose)
+        g_print ("(MINPERF:%s)\n", string1);
+      break;
+    case G_TEST_LOG_MAX_RESULT:
+      if (test_run_verbose)
+        g_print ("(MAXPERF:%s)\n", string1);
+      break;
+    default: ;
+    }
+
+  if (test_debug_log)
+    g_printerr ("{*LOG(%s)", bit);
+  if (test_debug_log && string1)
+    g_printerr (":{%s}", string1);
+  if (test_debug_log && string2)
+    g_printerr (":{%s}", string2);
+  if (n_args)
+    {
+      guint i;
+      if (test_debug_log)
+        g_printerr (":(");
+      for (i = 0; i < n_args; i++)
+        {
+          if (i && test_debug_log)
+            g_printerr (";");
+          if (test_debug_log)
+            g_printerr ("%.16Lg", largs[i]);
+        }
+      if (test_debug_log)
+        g_printerr (")");
+    }
+  if (test_debug_log)
+    g_printerr (":LOG*}\n");
+
+  switch (lbit)
+    {
+    case G_TEST_LOG_START_CASE:
+      if (!test_run_quiet)
+        g_print ("%s: ", string1);
+      break;
+    default: ;
+    }
+}
+
 static void
 parse_args (gint    *argc_p,
             gchar ***argv_p)
@@ -96,6 +187,11 @@ parse_args (gint    *argc_p,
                strcmp (argv[i], "-k") == 0)
         {
           test_mode_fatal = FALSE;
+          argv[i] = NULL;
+        }
+      else if (strcmp (argv[i], "--debug-log") == 0)
+        {
+          test_debug_log = TRUE;
           argv[i] = NULL;
         }
       else if (strcmp ("-p", argv[i]) == 0 || strncmp ("-p=", argv[i], 3) == 0)
@@ -149,6 +245,13 @@ parse_args (gint    *argc_p,
       else if (strcmp ("-q", argv[i]) == 0 || strcmp ("--quiet", argv[i]) == 0)
         {
           test_run_quiet = TRUE;
+          test_run_verbose = FALSE;
+          argv[i] = NULL;
+        }
+      else if (strcmp ("--verbose", argv[i]) == 0)
+        {
+          test_run_quiet = FALSE;
+          test_run_verbose = TRUE;
           argv[i] = NULL;
         }
       else if (strcmp ("-l", argv[i]) == 0)
@@ -205,6 +308,8 @@ g_test_init (int            *argc,
 
   /* parse args, sets up mode, changes seed, etc. */
   parse_args (argc, argv);
+  if (!g_get_prgname())
+    g_set_prgname ((*argv)[0]);
 
   /* verify GRand reliability, needed for reliable seeds */
   if (1)
@@ -219,11 +324,9 @@ g_test_init (int            *argc,
 
   /* check rand seed */
   test_run_seed (test_run_seedstr);
-  if (test_run_seedstr == seedstr)
-    g_printerr ("NOTE: random-seed: %s\n", test_run_seedstr);
 
-  /* misc setups */
-  test_run_timer = g_timer_new();
+  /* report program start */
+  g_test_log (G_TEST_LOG_START_BINARY, g_get_prgname(), test_run_seedstr, 0, NULL);
 }
 
 static void
@@ -310,6 +413,36 @@ double
 g_test_timer_last (void)
 {
   return test_user_stamp;
+}
+
+void
+g_test_minimized_result (double          minimized_quantity,
+                         const char     *format,
+                         ...)
+{
+  long double largs = minimized_quantity;
+  gchar *buffer;
+  va_list args;
+  va_start (args, format);
+  buffer = g_strdup_vprintf (format, args);
+  va_end (args);
+  g_test_log (G_TEST_LOG_MIN_RESULT, buffer, NULL, 1, &largs);
+  g_free (buffer);
+}
+
+void
+g_test_maximized_result (double          maximized_quantity,
+                         const char     *format,
+                         ...)
+{
+  long double largs = maximized_quantity;
+  gchar *buffer;
+  va_list args;
+  va_start (args, format);
+  buffer = g_strdup_vprintf (format, args);
+  va_end (args);
+  g_test_log (G_TEST_LOG_MAX_RESULT, buffer, NULL, 1, &largs);
+  g_free (buffer);
 }
 
 GTestSuite*
@@ -440,15 +573,20 @@ static int
 test_case_run (GTestCase *tc)
 {
   gchar *old_name;
-  g_timer_start (test_run_timer);
   old_name = test_run_name;
   test_run_name = g_strconcat (old_name, "/", tc->name, NULL);
   if (test_run_list)
-    g_print ("%s\n", test_run_name);
+    {
+      g_print ("%s\n", test_run_name);
+      g_test_log (G_TEST_LOG_LIST_CASE, test_run_name, NULL, 0, NULL);
+    }
   else
     {
-      if (!test_run_quiet)
-        g_print ("%s: ", test_run_name);
+      GTimer *test_run_timer = g_timer_new();
+      long double largs[3];
+      g_test_log (G_TEST_LOG_START_CASE, test_run_name, NULL, 0, NULL);
+      test_run_forks = 0;
+      g_timer_start (test_run_timer);
       void *fixture = g_malloc0 (tc->fixture_size);
       test_run_seed (test_run_seedstr);
       if (tc->fixture_setup)
@@ -464,12 +602,14 @@ test_case_run (GTestCase *tc)
       if (tc->fixture_teardown)
         tc->fixture_teardown (fixture);
       g_free (fixture);
-      if (!test_run_quiet)
-        g_print ("OK\n");
+      g_timer_stop (test_run_timer);
+      largs[0] = 0; // OK
+      largs[1] = test_run_forks;
+      largs[2] = g_timer_elapsed (test_run_timer, NULL);
+      g_test_log (G_TEST_LOG_STOP_CASE, NULL, NULL, G_N_ELEMENTS (largs), largs);
     }
   g_free (test_run_name);
   test_run_name = old_name;
-  g_timer_stop (test_run_timer);
   /* FIXME: need reporting here */
   return 0;
 }
@@ -785,6 +925,7 @@ g_test_trap_fork (guint64        usec_timeout,
       GString *stst = g_string_new (NULL);
       guint64 sstamp;
       int soutpos = 0, serrpos = 0, ststpos = 0, wr, need_wait = TRUE;
+      test_run_forks++;
       close (stdout_pipe[1]);
       close (stderr_pipe[1]);
       close (stdtst_pipe[1]);
