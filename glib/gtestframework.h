@@ -167,6 +167,38 @@ void    g_test_add_vtable               (const char     *testpath,
                                          void          (*data_test)     (void),
                                          void          (*data_teardown) (void));
 
+/* internal logging API */
+typedef enum {
+  G_TEST_LOG_NONE,
+  G_TEST_LOG_ERROR,             // s:msg
+  G_TEST_LOG_START_BINARY,      // s:binaryname s:seed
+  G_TEST_LOG_LIST_CASE,         // s:testpath
+  G_TEST_LOG_START_CASE,        // s:testpath
+  G_TEST_LOG_STOP_CASE,         // d:status d:nforks d:elapsed
+  G_TEST_LOG_MIN_RESULT,        // s:blurb d:result
+  G_TEST_LOG_MAX_RESULT,        // s:blurb d:result
+} GTestLogType;
+
+typedef struct {
+  GTestLogType  log_type;
+  guint         n_strings;
+  gchar       **strings; // NULL terminated
+  guint         n_nums;
+  long double  *nums;
+} GTestLogMsg;
+typedef struct {
+  /*< private >*/
+  GString     *data;
+  GSList      *msgs;
+} GTestLogBuffer;
+
+GTestLogBuffer* g_test_log_buffer_new   (void);
+void            g_test_log_buffer_free  (GTestLogBuffer *tbuffer);
+void            g_test_log_buffer_push  (GTestLogBuffer *tbuffer,
+                                         guint           n_bytes,
+                                         const guint8   *bytes);
+GTestLogMsg*    g_test_log_buffer_pop   (GTestLogBuffer *tbuffer);
+void            g_test_log_msg_free     (GTestLogMsg    *tmsg);
 
 G_END_DECLS;
 
