@@ -173,6 +173,7 @@ typedef enum {
   G_TEST_LOG_ERROR,             // s:msg
   G_TEST_LOG_START_BINARY,      // s:binaryname s:seed
   G_TEST_LOG_LIST_CASE,         // s:testpath
+  G_TEST_LOG_SKIP_CASE,         // s:testpath
   G_TEST_LOG_START_CASE,        // s:testpath
   G_TEST_LOG_STOP_CASE,         // d:status d:nforks d:elapsed
   G_TEST_LOG_MIN_RESULT,        // s:blurb d:result

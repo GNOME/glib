@@ -11,8 +11,18 @@ TEST_PROGS       += testing
 testing_SOURCES	  = testing.c
 testing_LDADD	  = $(progs_ldadd)
 
-
+# exemplary unit test rules
 test:
 	${GTESTER} --verbose ${TEST_PROGS}
-.PHONY: test
+test-report:
+	${GTESTER} --verbose -k -o testreport.xml ${TEST_PROGS}
+.PHONY: test test-report
 check-local: test
+
+
+# some testing of gtester funcitonality
+XMLLINT=xmllint
+gtester-xmllint-check: # check testreport xml with xmllint if present
+	${GTESTER} -k --quiet -o tmpsample.xml --test-arg=--gtester-selftest ${GTESTER}
+	${XMLLINT} --version 2>/dev/null; test "$$?" != 0 || ${XMLLINT} --noout tmpsample.xml
+check-am: gtester-xmllint-check

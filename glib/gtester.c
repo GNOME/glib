@@ -23,6 +23,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <sys/wait.h>
 #include <errno.h>
 #include <signal.h>
 
@@ -30,6 +31,8 @@
 #define READ_BUFFER_SIZE 4096
 
 /* --- prototypes --- */
+static int      main_selftest   (int    argc,
+                                 char **argv);
 static void     parse_args      (gint           *argc_p,
                                  gchar        ***argv_p);
 
@@ -38,17 +41,21 @@ static GIOChannel  *ioc_report = NULL;
 static gboolean     gtester_quiet = FALSE;
 static gboolean     gtester_verbose = FALSE;
 static gboolean     gtester_list_tests = FALSE;
+static gboolean     gtester_selftest = FALSE;
 static gboolean     subtest_running = FALSE;
+static gint         subtest_exitstatus = 0;
 static gboolean     subtest_io_pending = FALSE;
-static gboolean     subtest_faill = TRUE;
 static gboolean     subtest_quiet = TRUE;
 static gboolean     subtest_verbose = FALSE;
-static gboolean     subtest_mode_fatal = FALSE;
+static gboolean     subtest_mode_fatal = TRUE;
 static gboolean     subtest_mode_perf = FALSE;
 static gboolean     subtest_mode_quick = TRUE;
 static const gchar *subtest_seedstr = NULL;
 static GSList      *subtest_paths = NULL;
+static GSList      *subtest_args = NULL;
 static gboolean     testcase_open = FALSE;
+static guint        testcase_count = 0;
+static guint        testcase_fail_count = 0;
 static const gchar *output_filename = NULL;
 static guint        log_indent = 0;
 static gint         log_fd = -1;
@@ -80,6 +87,33 @@ test_log_printfe (const char *format,
 }
 
 static void
+terminate (void)
+{
+  kill (getpid(), SIGTERM);
+  abort();
+}
+
+static void
+testcase_close (long double duration,
+                guint       exit_status,
+                guint       n_forks)
+{
+  g_return_if_fail (testcase_open > 0);
+  test_log_printfe ("%s<duration>%.6Lf</duration>\n", sindent (log_indent), duration);
+  test_log_printfe ("%s<status exit-status=\"%d\" n-forks=\"%d\"/>\n",
+                    sindent (log_indent), exit_status, n_forks);
+  log_indent -= 2;
+  test_log_printfe ("%s</testcase>\n", sindent (log_indent));
+  testcase_open--;
+  if (gtester_verbose)
+    g_print ("%s\n", exit_status ? "FAIL" : "OK");
+  if (exit_status)
+    testcase_fail_count += 1;
+  if (subtest_mode_fatal && testcase_fail_count)
+    terminate();
+}
+
+static void
 test_log_msg (GTestLogMsg *msg)
 {
   switch (msg->log_type)
@@ -97,6 +131,7 @@ test_log_msg (GTestLogMsg *msg)
       g_print ("%s\n", msg->strings[0]);
       break;
     case G_TEST_LOG_START_CASE:
+      testcase_count++;
       if (gtester_verbose)
         {
           gchar *sc = g_strconcat (msg->strings[0], ":", NULL);
@@ -110,16 +145,19 @@ test_log_msg (GTestLogMsg *msg)
       test_log_printfe ("%s<testcase path=\"%s\">\n", sindent (log_indent), msg->strings[0]);
       log_indent += 2;
       break;
+    case G_TEST_LOG_SKIP_CASE:
+      if (TRUE && gtester_verbose) // enable to debug test case skipping logic
+        {
+          gchar *sc = g_strconcat (msg->strings[0], ":", NULL);
+          gchar *sleft = g_strdup_printf ("%-68s", sc);
+          g_free (sc);
+          g_print ("%70s SKIPPED\n", sleft);
+          g_free (sleft);
+        }
+      test_log_printfe ("%s<testcase path=\"%s\" skipped=\"1\"/>\n", sindent (log_indent), msg->strings[0]);
+      break;
     case G_TEST_LOG_STOP_CASE:
-      g_return_if_fail (testcase_open > 0);
-      test_log_printfe ("%s<duration>%.6Lf</duration>\n", sindent (log_indent), msg->nums[2]);
-      test_log_printfe ("%s<status exit-status=\"%d\" n-forks=\"%d\"/>\n",
-                        sindent (log_indent), (int) msg->nums[0], (int) msg->nums[1]);
-      log_indent -= 2;
-      test_log_printfe ("%s</testcase>\n", sindent (log_indent));
-      testcase_open--;
-      if (gtester_verbose)
-        g_print ("OK\n");
+      testcase_close (msg->nums[2], (int) msg->nums[0], (int) msg->nums[1]);
       break;
     case G_TEST_LOG_MIN_RESULT:
     case G_TEST_LOG_MAX_RESULT:
@@ -181,6 +219,10 @@ child_watch_cb (GPid     pid,
 		gpointer data)
 {
   g_spawn_close_pid (pid);
+  if (WIFEXITED (status)) /* normal exit */
+    subtest_exitstatus = WEXITSTATUS (status);
+  else /* signal or core dump, etc */
+    subtest_exitstatus = 0xffffffff;
   subtest_running = FALSE;
 }
 
@@ -202,12 +244,13 @@ unset_cloexec_fdp (gpointer fdp_data)
 }
 
 static gboolean
-launch_test_binary (const char *binary)
+launch_test_binary (const char *binary,
+                    guint       skip_tests)
 {
   GTestLogBuffer *tlb;
   GSList *slist, *free_list = NULL;
   GError *error = NULL;
-  const gchar *argv[20 + g_slist_length (subtest_paths)];
+  const gchar *argv[99 + g_slist_length (subtest_args) + g_slist_length (subtest_paths)];
   GPid pid = 0;
   gint report_pipe[2] = { -1, -1 };
   gint i = 0;
@@ -223,12 +266,13 @@ launch_test_binary (const char *binary)
 
   /* setup argv */
   argv[i++] = binary;
+  for (slist = subtest_args; slist; slist = slist->next)
+    argv[i++] = (gchar*) slist->data;
+  // argv[i++] = "--debug-log";
   if (subtest_quiet)
     argv[i++] = "--quiet";
   if (subtest_verbose)
     argv[i++] = "--verbose";
-  // argv[i++] = "--debug-log";
-  argv[i++] = queue_gfree (&free_list, g_strdup_printf ("--GTestLogFD=%u", report_pipe[1]));
   if (!subtest_mode_fatal)
     argv[i++] = "--keep-going";
   if (subtest_mode_quick)
@@ -237,12 +281,15 @@ launch_test_binary (const char *binary)
     argv[i++] = "-m=slow";
   if (subtest_mode_perf)
     argv[i++] = "-m=perf";
-  if (subtest_seedstr)
-    argv[i++] = queue_gfree (&free_list, g_strdup_printf ("--seed=%s", subtest_seedstr));
-  for (slist = subtest_paths; slist; slist = slist->next)
-    argv[i++] = queue_gfree (&free_list, g_strdup_printf ("-p=%s", (gchar*) slist->data));
   if (gtester_list_tests)
     argv[i++] = "-l";
+  if (subtest_seedstr)
+    argv[i++] = queue_gfree (&free_list, g_strdup_printf ("--seed=%s", subtest_seedstr));
+  argv[i++] = queue_gfree (&free_list, g_strdup_printf ("--GTestLogFD=%u", report_pipe[1]));
+  if (skip_tests)
+    argv[i++] = queue_gfree (&free_list, g_strdup_printf ("--GTestSkipCount=%u", skip_tests));
+  for (slist = subtest_paths; slist; slist = slist->next)
+    argv[i++] = queue_gfree (&free_list, g_strdup_printf ("-p=%s", (gchar*) slist->data));
   argv[i++] = NULL;
 
   g_spawn_async_with_pipes (NULL, /* g_get_current_dir() */
@@ -302,22 +349,39 @@ launch_test_binary (const char *binary)
 static void
 launch_test (const char *binary)
 {
-  gboolean success;
+  gboolean success = TRUE;
   GTimer *btimer = g_timer_new();
-  subtest_faill = FALSE;
+  gboolean need_restart;
+  testcase_count = 0;
+  testcase_fail_count = 0;
   if (!gtester_quiet)
     g_print ("TEST: %s... ", binary);
+
+ retry:
   test_log_printfe ("%s<testbinary path=\"%s\">\n", sindent (log_indent), binary);
   log_indent += 2;
   g_timer_start (btimer);
-  success = launch_test_binary (binary);
+  subtest_exitstatus = 0;
+  success &= launch_test_binary (binary, testcase_count);
+  success &= subtest_exitstatus == 0;
+  need_restart = testcase_open != 0;
+  if (testcase_open)
+    testcase_close (0, -999, 0);
   g_timer_stop (btimer);
   test_log_printfe ("%s<duration>%.6f</duration>\n", sindent (log_indent), g_timer_elapsed (btimer, NULL));
   log_indent -= 2;
   test_log_printfe ("%s</testbinary>\n", sindent (log_indent));
+  if (need_restart)
+    {
+      /* restart test binary, skipping processed test cases */
+      goto retry;
+    }
+
   if (!gtester_quiet)
-    g_print ("%s: %s\n", subtest_faill || !success ? "FAIL" : "PASS", binary);
+    g_print ("%s: %s\n", testcase_fail_count || !success ? "FAIL" : "PASS", binary);
   g_timer_destroy (btimer);
+  if (subtest_mode_fatal && !success)
+    terminate();
 }
 
 static void
@@ -361,6 +425,12 @@ parse_args (gint    *argc_p,
           g_log_set_always_fatal (fatal_mask);
           argv[i] = NULL;
         }
+      else if (strcmp (argv[i], "--gtester-selftest") == 0)
+        {
+          gtester_selftest = TRUE;
+          argv[i] = NULL;
+          break;        // stop parsing regular gtester arguments
+        }
       else if (strcmp (argv[i], "-h") == 0 || strcmp (argv[i], "--help") == 0)
         {
           usage (FALSE);
@@ -388,6 +458,18 @@ parse_args (gint    *argc_p,
             {
               argv[i++] = NULL;
               subtest_paths = g_slist_prepend (subtest_paths, argv[i]);
+            }
+          argv[i] = NULL;
+        }
+      else if (strcmp ("--test-arg", argv[i]) == 0 || strncmp ("--test-arg=", argv[i], 11) == 0)
+        {
+          gchar *equal = argv[i] + 10;
+          if (*equal == '=')
+            subtest_args = g_slist_prepend (subtest_args, equal + 1);
+          else if (i + 1 < argc)
+            {
+              argv[i++] = NULL;
+              subtest_args = g_slist_prepend (subtest_args, argv[i]);
             }
           argv[i] = NULL;
         }
@@ -491,6 +573,8 @@ main (int    argc,
 
   g_set_prgname (argv[0]);
   parse_args (&argc, &argv);
+  if (gtester_selftest)
+    return main_selftest (argc, argv);
 
   if (argc <= 1)
     {
@@ -520,4 +604,31 @@ main (int    argc,
   close (log_fd);
 
   return 0;
+}
+
+static void
+fixture_setup (guint *fix)
+{
+  g_assert_cmphex (*fix, ==, 0);
+  *fix = 0xdeadbeef;
+}
+static void
+fixture_test (guint *fix)
+{
+  g_assert_cmphex (*fix, ==, 0xdeadbeef);
+}
+static void
+fixture_teardown (guint *fix)
+{
+  g_assert_cmphex (*fix, ==, 0xdeadbeef);
+}
+
+static int
+main_selftest (int    argc,
+               char **argv)
+{
+  /* gtester main() for --gtester-selftest invokations */
+  g_test_init (&argc, &argv, NULL);
+  g_test_add ("/gtester/fixture-test", guint, fixture_setup, fixture_test, fixture_teardown);
+  return g_test_run();
 }
