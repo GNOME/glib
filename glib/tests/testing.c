@@ -174,10 +174,12 @@ main (int   argc,
   g_test_add_func ("/random-generator/rand-2", test_rand2);
   g_test_add_func ("/misc/assertions", test_assertions);
   g_test_add ("/misc/primetoul", Fixturetest, fixturetest_setup, fixturetest_test, fixturetest_teardown);
-  g_test_add_func ("/misc/timer", test_timer);
+  if (g_test_perf())
+    g_test_add_func ("/misc/timer", test_timer);
   g_test_add_func ("/forking/fail assertion", test_fork_fail);
   g_test_add_func ("/forking/patterns", test_fork_patterns);
-  g_test_add_func ("/forking/timeout", test_fork_timeout);
+  if (g_test_slow())
+    g_test_add_func ("/forking/timeout", test_fork_timeout);
 
   return g_test_run();
 }

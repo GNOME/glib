@@ -366,6 +366,10 @@ if test "x$PERL_PATH" = x ; then
 fi
 AC_SUBST(PERL_PATH)
 
+# Need suitable python path for greport
+AM_PATH_PYTHON(2.4,,PYTHON="/usr/bin/env python2.4")
+
+
 dnl ***********************
 dnl *** Tests for iconv ***
 dnl ***********************

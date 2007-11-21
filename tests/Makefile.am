@@ -1,3 +1,5 @@
+include $(top_srcdir)/Makefile.decl
+
 SUBDIRS=gobject refcount
 
 if ENABLE_REGEX
@@ -31,7 +33,7 @@ spawn_test_win32_gui_LDFLAGS = -mwindows
 
 endif
 
-EXTRA_DIST =					\
+EXTRA_DIST +=					\
 	$(test_scripts)				\
 	makefile.msc.in				\
 	casefold.txt				\

@@ -1,4 +1,5 @@
 ## Process this file with automake to produce Makefile.in
+include $(top_srcdir)/Makefile.decl
 
 if HAVE_GOOD_PRINTF
 else
@@ -52,7 +53,7 @@ MIRRORING_TAB_SOURCE = 				\
 
 # The compilation of GRegex can be disabled, but the source files must
 # be distributed.
-EXTRA_DIST = 			\
+EXTRA_DIST += 			\
 	makefile.msc.in		\
 	glib.rc.in		\
 	gen-unicode-tables.pl	\

@@ -1,4 +1,5 @@
 ## Process this file with automake to produce Makefile.in
+include $(top_srcdir)/Makefile.decl
 
 AUTOMAKE_OPTIONS = 1.7
 
@@ -9,7 +10,7 @@ bin_SCRIPTS = glib-gettextize
 INCLUDES = -DG_LOG_DOMAIN=g_log_domain_glib @GLIB_DEBUG_FLAGS@ \
 	-DG_DISABLE_DEPRECATED -DGLIB_COMPILATION
 
-EXTRA_DIST = 			\
+EXTRA_DIST += 			\
 	ChangeLog.pre-2-14	\
 	ChangeLog.pre-2-12	\
 	ChangeLog.pre-2-10	\

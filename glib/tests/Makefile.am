@@ -1,8 +1,7 @@
+include $(top_srcdir)/Makefile.decl
+
 INCLUDES = -g -I$(top_srcdir) -I$(top_srcdir)/glib $(GLIB_DEBUG_FLAGS)
 
-GTESTER		 = $(top_builddir)/glib/gtester
-
-TEST_PROGS	=
 noinst_PROGRAMS = $(TEST_PROGS)
 progs_ldadd     = $(top_builddir)/glib/libglib-2.0.la
 
@@ -10,15 +9,6 @@ progs_ldadd     = $(top_builddir)/glib/libglib-2.0.la
 TEST_PROGS       += testing
 testing_SOURCES	  = testing.c
 testing_LDADD	  = $(progs_ldadd)
-
-# exemplary unit test rules
-test:
-	${GTESTER} --verbose ${TEST_PROGS}
-test-report:
-	${GTESTER} --verbose -k -o testreport.xml ${TEST_PROGS}
-.PHONY: test test-report
-check-local: test
-
 
 # some testing of gtester funcitonality
 XMLLINT=xmllint

@@ -1,4 +1,5 @@
 ## Process this file with automake to produce Makefile.in
+include $(top_srcdir)/Makefile.decl
 
 INCLUDES = 			\
 	-DLIBDIR=\"$(libdir)\" -I$(top_srcdir)
@@ -9,7 +10,7 @@ libcharset_la_SOURCES =    	\
 	libcharset.h		\
 	localcharset.c
 
-EXTRA_DIST = 			\
+EXTRA_DIST += 			\
 	README			\
 	config.charset		\
 	ref-add.sin		\

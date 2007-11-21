@@ -2,6 +2,7 @@
 # Copyright (C) 1997,98,99,2000 Tim Janik and Red Hat, Inc.
 #
 ## Process this file with automake to produce Makefile.in
+include $(top_srcdir)/Makefile.decl
 
 INCLUDES = \
 	-DG_LOG_DOMAIN=\"GLib-GObject\"		\
@@ -142,7 +143,7 @@ gobject_extra_sources = \
 gobject_target_headers = $(gobject_public_h_sources)
 gobject_target_sources = $(gobject_c_sources)
 EXTRA_HEADERS =
-EXTRA_DIST = \
+EXTRA_DIST += \
 	$(gobject_private_h_sources) 	\
 	$(gobject_extra_sources) 	\
 	makegobjectalias.pl		\

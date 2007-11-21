@@ -83,13 +83,14 @@ static char       *test_trap_last_stderr = NULL;
 static char       *test_uri_base = NULL;
 static gboolean    test_debug_log = FALSE;
 static DestroyEntry *test_destroy_queue = NULL;
-const GTestConfig *g_test_config_vars = NULL;
 static GTestConfig mutable_test_config_vars = {
+  FALSE,        /* test_initialized */
   TRUE,         /* test_quick */
   FALSE,        /* test_perf */
   FALSE,        /* test_verbose */
   FALSE,        /* test_quiet */
 };
+const GTestConfig * const g_test_config_vars = &mutable_test_config_vars;
 
 /* --- functions --- */
 const char*
@@ -376,8 +377,8 @@ g_test_init (int    *argc,
   /* check caller args */
   g_return_if_fail (argc != NULL);
   g_return_if_fail (argv != NULL);
-  g_return_if_fail (g_test_config_vars == NULL);
-  g_test_config_vars = &mutable_test_config_vars;
+  g_return_if_fail (g_test_config_vars->test_initialized == FALSE);
+  mutable_test_config_vars.test_initialized = TRUE;
 
   va_start (args, argv);
   vararg1 = va_arg (args, gpointer); /* reserved for future extensions */
@@ -1009,7 +1010,7 @@ int
 g_test_run_suite (GTestSuite *suite)
 {
   guint n_bad = 0;
-  g_return_val_if_fail (g_test_config_vars != NULL, -1);
+  g_return_val_if_fail (g_test_config_vars->test_initialized, -1);
   g_return_val_if_fail (g_test_run_once == TRUE, -1);
   g_test_run_once = FALSE;
   if (!test_paths)

@@ -1,3 +1,36 @@
+2007-11-21 21:06:47  Tim Janik  <timj@imendio.com>
+
+	* Makefile.decl: initialize automake variables EXTRA_DIST and
+	TEST_PROGS for unconditional appending via += in other makefiles.
+	define recursive test targets: test, test-report, perf-report,
+	full-report, as described here:
+      http://mail.gnome.org/archives/gtk-devel-list/2007-November/msg00000.html
+
+	* Makefile.am:
+	* build/win32/vs8/Makefile.am, build/win32/dirent/Makefile.am:
+	* build/win32/Makefile.am, build/Makefile.am:
+	* docs/Makefile.am, docs/reference/Makefile.am:
+	* docs/reference/glib/Makefile.am, docs/reference/gobject/Makefile.am:
+	* gmodule/Makefile.am, tests/Makefile.am:
+	* tests/refcount/Makefile.am, tests/gobject/Makefile.am:
+	* glib/update-pcre/Makefile.am, glib/libcharset/Makefile.am:
+	* glib/tests/Makefile.am, glib/pcre/Makefile.am:
+	* glib/gnulib/Makefile.am, gobject/Makefile.am, m4macros/Makefile.am:
+	* gthread/Makefile.am, glib/Makefile.am:
+	include $(top_srcdir)/Makefile.decl, adapted EXTRA_DIST assignments.
+
+	* glib/tests/Makefile.am: removed example testing rules.
+
+	* glib/tests/testing.c: conditionalized performance and slow tests.
+
+	* glib/gtestutils.h:
+	* glib/gtestutils.c: work around g_test_config_vars not changing its
+	exported value after value assignments, aparently due to symbol aliases.
+
+	* glib/gtester.c: fixed off-by-one error which produced junk in logs.
+
+	* configure.in: check for python >= 2.4 and provide $PYTHON for scripts.
+
 Tue Nov 20 15:59:55 2007 +0100 Tim Janik
 
 	Renamed gtestframework to gtestutils.

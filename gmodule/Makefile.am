@@ -1,9 +1,10 @@
 ## Process this file with automake to produce Makefile.in
+include $(top_srcdir)/Makefile.decl
 
 INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/glib -I$(top_srcdir)/gmodule \
 	-DG_LOG_DOMAIN=\"GModule\" @GLIB_DEBUG_FLAGS@ -DG_DISABLE_DEPRECATED
 
-EXTRA_DIST =	\
+EXTRA_DIST +=	\
 		makefile.msc.in \
 		gmoduleconf.h.in \
 		gmodule.def	\
