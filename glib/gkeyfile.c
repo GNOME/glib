@@ -1462,6 +1462,9 @@ g_key_file_get_string_list (GKeyFile     *key_file,
   g_return_val_if_fail (group_name != NULL, NULL);
   g_return_val_if_fail (key != NULL, NULL);
 
+  if (length)
+    *length = 0;
+
   value = g_key_file_get_value (key_file, group_name, key, &key_file_error);
 
   if (key_file_error)
@@ -1744,7 +1747,11 @@ g_key_file_get_locale_string_list (GKeyFile     *key_file,
     g_propagate_error (error, key_file_error);
   
   if (!value)
-    return NULL;
+    {
+      if (length)
+        *length = 0;
+      return NULL;
+    }
 
   if (value[strlen (value) - 1] == ';')
     value[strlen (value) - 1] = '\0';
@@ -1939,6 +1946,9 @@ g_key_file_get_boolean_list (GKeyFile     *key_file,
   g_return_val_if_fail (key_file != NULL, NULL);
   g_return_val_if_fail (group_name != NULL, NULL);
   g_return_val_if_fail (key != NULL, NULL);
+
+  if (length)
+    *length = 0;
 
   key_file_error = NULL;
 
@@ -2152,6 +2162,9 @@ g_key_file_get_integer_list (GKeyFile     *key_file,
   g_return_val_if_fail (group_name != NULL, NULL);
   g_return_val_if_fail (key != NULL, NULL);
 
+  if (length)
+    *length = 0;
+
   values = g_key_file_get_string_list (key_file, group_name, key,
 				       &num_ints, &key_file_error);
 
@@ -2360,6 +2373,9 @@ g_key_file_get_double_list  (GKeyFile     *key_file,
   g_return_val_if_fail (key_file != NULL, NULL);
   g_return_val_if_fail (group_name != NULL, NULL);
   g_return_val_if_fail (key != NULL, NULL);
+
+  if (length)
+    *length = 0;
 
   values = g_key_file_get_string_list (key_file, group_name, key,
                                        &num_doubles, &key_file_error);
@@ -3322,7 +3338,7 @@ g_key_file_is_key_name (const gchar *name)
     return FALSE;
 
   /* We accept spaces in the middle of keys to not break
-   * existing apps, but we don't tolerate initial of final
+   * existing apps, but we don't tolerate initial or final
    * spaces, which would lead to silent corruption when
    * rereading the file.
    */
