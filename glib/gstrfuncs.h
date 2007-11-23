@@ -243,6 +243,10 @@ gchar*                g_stpcpy         (gchar        *dest,
 G_CONST_RETURN gchar *g_strip_context  (const gchar *msgid, 
 					const gchar *msgval);
 
+G_CONST_RETURN gchar *g_dpgettext      (const gchar *domain,
+                                        const gchar *msgctxtid,
+                                        const gchar *msgid);
+
 G_END_DECLS
 
 #endif /* __G_STRFUNCS_H__ */

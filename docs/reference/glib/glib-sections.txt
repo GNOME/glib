@@ -2483,8 +2483,10 @@ g_unichar_to_utf8
 <INCLUDE>glib.h,glib/gi18n.h</INCLUDE>
 _
 Q_
+C_
 N_
 g_strip_context
+g_dpgettext
 <SUBSECTION>
 g_get_language_names
 </SECTION>

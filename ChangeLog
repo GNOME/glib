@@ -1,5 +1,15 @@
 2007-11-23  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gi18n-lib.h: 
+	* glib/gi18n.h: Define a two-argument macro C_() for marking
+	translatable strings with context and implement C_() and Q_()
+	using g_dpgettext().  (#142676, Morten Welinder)
+
+	* glib/glib.symbols:
+	* glib/gstrfuncs.[hc]: Implement g_dpgettext().
+
+2007-11-23  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/goption.c: Use g_print to print out --help text in 
 	locale encoding.  (#469551, Takao Fujiwara)
 

@@ -42,6 +42,7 @@
 #if !defined (HAVE_STRSIGNAL) || !defined(NO_SYS_SIGLIST_DECL)
 #include <signal.h>
 #endif
+#include <libintl.h>
 
 #include "glib.h"
 #include "gprintf.h"
@@ -2842,6 +2843,66 @@ g_strv_length (gchar **str_array)
 
   return i;
 }
+
+
+/**
+ * g_dpgettext:
+ * @domain: the translation domain to use, or %NULL to use
+ *   the domain set with textdomain()
+ * @msgctxtid: a combined message context and message id
+ * @msgid: the message id, or %NULL
+ *
+ * This function is a variant of dgettext() which supports
+ * a disambiguating message context. GNU gettext uses the
+ * '\004' character to separate the message context and
+ * message id in @msgctxtid. If %NULL is passed as @msgid,
+ * this function also supports the older convention of using 
+ * '|' as a separator. 
+ *
+ * Applications should normally not use this function directly,
+ * but use the C_() or Q_() macros for translations with
+ * context.
+ *
+ * Returns: The translated string
+ *
+ * Since: 2.16
+ */
+const gchar *
+g_dpgettext (const gchar *domain, 
+             const gchar *msgctxtid, 
+             const gchar *msgid)
+{
+  const gchar *translation;
+  gchar *sep;
+
+  translation = dgettext (domain, msgctxtid);
+
+  if (translation == msgctxtid)
+    {
+      if (msgid)
+        return msgid;
+
+      sep = strchr (msgctxtid, '|');
+ 
+      if (sep)
+        {
+          /* try with '\004' instead of '|', in case
+           * xgettext -kQ_:1g was used
+           */
+          gchar *tmp = g_alloca (strlen (msgctxtid) + 1);
+          strcpy (tmp, msgctxtid);
+          tmp[sep - msgctxtid] = '\004';
+
+          translation = dgettext (domain, tmp);
+   
+          if (translation == tmp)
+            return sep + 1; 
+        }
+    }
+
+  return translation;
+}
+
 
 #define __G_STRFUNCS_C__
 #include "galiasdef.c"

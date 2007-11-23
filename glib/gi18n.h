@@ -22,13 +22,11 @@
 #include <glib/gstrfuncs.h>
 #include <libintl.h>
 
-#define _(String) gettext (String)
-#define Q_(String) g_strip_context ((String), gettext (String))
-#ifdef gettext_noop
-#define N_(String) gettext_noop (String)
-#else
+#define  _(String) gettext (String)
+#define Q_(String) g_dpgettext (NULL, String, NULL)
 #define N_(String) (String)
-#endif
+#define C_(Context,String) g_dpgettext (NULL, Context "\004" String, String)
+
 
 #endif  /* __G_I18N_H__ */
 
