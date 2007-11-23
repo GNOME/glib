@@ -1,5 +1,12 @@
 2007-11-23  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gbase64.c (g_base64_encode): Don't refuse to encode
+	a single byte.  (Milan Crha)
+
+	* tests/base64-test.c: Test encoding short strings.
+
+2007-11-23  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/gi18n-lib.h: 
 	* glib/gi18n.h: Define a two-argument macro C_() for marking
 	translatable strings with context and implement C_() and Q_()

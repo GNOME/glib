@@ -231,16 +231,14 @@ g_base64_encode (const guchar *data,
   gint save = 0;
 
   g_return_val_if_fail (data != NULL, NULL);
-  g_return_val_if_fail (len > 1, NULL);
+  g_return_val_if_fail (len > 0, NULL);
 
   /* We can use a smaller limit here, since we know the saved state is 0 */
   out = g_malloc (len * 4 / 3 + 4);
   outlen = g_base64_encode_step (data, len, FALSE, out, &state, &save);
-  outlen += g_base64_encode_close (FALSE,
-				   out + outlen, 
-				   &state, 
-				   &save);
+  outlen += g_base64_encode_close (FALSE, out + outlen, &state, &save);
   out[outlen] = '\0';
+
   return (gchar *) out;
 }
 
