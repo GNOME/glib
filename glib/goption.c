@@ -772,7 +772,7 @@ print_help (GOptionContext *context,
   gchar *help;
 
   help = g_option_context_get_help (context, main_help, group);
-  g_printf (help);
+  g_print ("%s", help);
   g_free (help);
 
   exit (0);  

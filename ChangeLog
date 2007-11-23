@@ -1,3 +1,8 @@
+2007-11-23  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/goption.c: Use g_print to print out --help text in 
+	locale encoding.  (#469551, Takao Fujiwara)
+
 2007-11-22  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gkeyfile.c: Set length out param in list-returning functions
