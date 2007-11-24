@@ -205,8 +205,9 @@ g_option_error_quark (void)
  * program functionality that should be displayed as a paragraph
  * below the usage line, use g_option_context_set_summary().
  *
- * Note that the @parameter_string is translated (see
- * g_option_context_set_translate_func()). 
+ * Note that the @parameter_string is translated using the
+ * function set with g_option_context_set_translate_func(), so
+ * it should normally be passed untranslated.
  *
  * Returns: a newly created #GOptionContext, which must be
  *    freed with g_option_context_free() after use.
@@ -771,7 +772,7 @@ print_help (GOptionContext *context,
   gchar *help;
 
   help = g_option_context_get_help (context, main_help, group);
-  g_printf (help);
+  g_print ("%s", help);
   g_free (help);
 
   exit (0);  
