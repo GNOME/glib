@@ -1,4 +1,11 @@
-2007-11-18  Matthias Clasen  <mclasen@redhat.com>
+2007-11-24  Matthias Clasen  <mclasen@redhat.com>
+
+	Merge from trunk:
+
+	* glib/gkeyfile.c: Set length out param in list-returning functions
+	to 0 when returning NULL.  (#498728, Christian Persch)
+
+2007-11-24  Matthias Clasen  <mclasen@redhat.com>
 
 	Merge from trunk:
 
