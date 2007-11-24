@@ -1,5 +1,9 @@
 2007-11-24  Matthias Clasen  <mclasen@redhat.com>
 
+	* tests/base64-test.c: Fix memory overrun.
+
+2007-11-24  Matthias Clasen  <mclasen@redhat.com>
+
 	* NEWS: Updates
 
 2007-11-24  Matthias Clasen  <mclasen@redhat.com>

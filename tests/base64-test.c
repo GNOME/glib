@@ -24,7 +24,7 @@ test_incremental (gboolean line_break,
   guchar *data2;
 
   data2 = g_malloc (length);
-  text = g_malloc (length * 2);
+  text = g_malloc (length * 4);
 
   len = 0;
   state = 0;
