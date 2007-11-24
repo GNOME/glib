@@ -1,5 +1,9 @@
 2007-11-24  Matthias Clasen  <mclasen@redhat.com>
 
+	* tests/base64-test.c: Fix a memory overrun.
+
+2007-11-24  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/gutils.c: Remove leftover ENABLE_NLS #ifdefs.
 
 2007-11-23  Matthias Clasen  <mclasen@redhat.com>
