@@ -624,10 +624,10 @@ g_ascii_formatd (gchar       *buffer,
 }
 
 static guint64
-g_parse_long_long (const gchar *nptr,
-		   gchar      **endptr,
-		   guint        base,
-		   gboolean    *negative)
+g_parse_long_long (const gchar  *nptr,
+		   gchar       **endptr,
+		   guint         base,
+		   gboolean     *negative)
 {
   /* this code is based on on the strtol(3) code from GNU libc released under
    * the GNU Lesser General Public License.
