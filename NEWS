@@ -1,3 +1,20 @@
+Overview of Changes from GLib 2.14.3 to GLib 2.14.4
+===================================================
+
+* Bugs fixed:
+ 494602 builddir != srcdir build broken
+ 492677 Misprint in specification of the interface "g_spawn_async...
+ 490061 outptrs uninitialized after g_parse_long_long
+ 418778 Insufficient pkg-config version requirement
+ 467537 g_convert_with_iconv() not resetting iconv() state correc...
+ 466557 glib-mkenums shifts ARGV[0] to undefined
+ 490637 gobject documentation patch
+ 445362 Non-numeric local labels in gatomic.c are causing linker ...
+ 498113 tests/regex-test fails on 64bit environment
+ 498728 g_key_file_get_*_list should set length to 0 when returni...
+ 469551 application --help messages are garbaged on none UTF-8 lo...
+
+
 Overview of Changes from GLib 2.14.2 to GLib 2.14.3
 ===================================================
 

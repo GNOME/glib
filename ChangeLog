@@ -1,5 +1,9 @@
 2007-11-24  Matthias Clasen  <mclasen@redhat.com>
 
+	* NEWS: Updates
+
+2007-11-24  Matthias Clasen  <mclasen@redhat.com>
+
 	Merge from trunk:
 
 	* glib/gbase64.c (g_base64_encode): Don't refuse to encode
