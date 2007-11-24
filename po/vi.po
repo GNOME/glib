@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib GNOME TRUNK\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-11-07 00:25-0500\n"
+"POT-Creation-Date: 2007-11-24 11:31-0500\n"
 "PO-Revision-Date: 2007-09-03 22:50+0930\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <gnomevi-list@lists.sourceforge.net>\n"
@@ -99,62 +99,62 @@ msgstr "Không hỗ trợ khả năng chuyển đổi từ bộ ký tự « %s �
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "Không thể mở bộ chuyển đổi từ « %s » sang « %s »"
 
-#: glib/gconvert.c:622 glib/gconvert.c:1011 glib/giochannel.c:1320
+#: glib/gconvert.c:625 glib/gconvert.c:1010 glib/giochannel.c:1320
 #: glib/giochannel.c:1362 glib/giochannel.c:2204 glib/gutf8.c:950
 #: glib/gutf8.c:1399
 #, c-format
 msgid "Invalid byte sequence in conversion input"
 msgstr "Gặp dây byte không hợp lệ trong dữ liệu nhập chuyển đổi"
 
-#: glib/gconvert.c:628 glib/gconvert.c:938 glib/giochannel.c:1327
+#: glib/gconvert.c:631 glib/gconvert.c:937 glib/giochannel.c:1327
 #: glib/giochannel.c:2216
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Gặp lỗi khi chuyển đổi: %s"
 
-#: glib/gconvert.c:663 glib/gutf8.c:946 glib/gutf8.c:1150 glib/gutf8.c:1291
+#: glib/gconvert.c:662 glib/gutf8.c:946 glib/gutf8.c:1150 glib/gutf8.c:1291
 #: glib/gutf8.c:1395
 #, c-format
 msgid "Partial character sequence at end of input"
 msgstr "Dây ký tự riêng phần ở cuối dữ liệu nhập"
 
-#: glib/gconvert.c:913
+#: glib/gconvert.c:912
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Không thể chuyển đổi đồ dữ trữ « %s » thành bộ mã « %s »"
 
-#: glib/gconvert.c:1727
+#: glib/gconvert.c:1726
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr ""
 "URI « %s » không phải là một URI tuyệt đối sử dụng lược đồ « file » (tập tin)"
 
-#: glib/gconvert.c:1737
+#: glib/gconvert.c:1736
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Không cho phép URI tập tin cục bộ « %s » chứa dấu thăng « # »"
 
-#: glib/gconvert.c:1754
+#: glib/gconvert.c:1753
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI « %s » không hợp lệ"
 
-#: glib/gconvert.c:1766
+#: glib/gconvert.c:1765
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Tên máy của URI « %s » không hợp lệ"
 
-#: glib/gconvert.c:1782
+#: glib/gconvert.c:1781
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI « %s » chứa một số ký tự đã thoát không hợp lệ"
 
-#: glib/gconvert.c:1877
+#: glib/gconvert.c:1876
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Tên đường dẫn « %s » không phải là một đường dẫn tuyệt đối"
 
-#: glib/gconvert.c:1887
+#: glib/gconvert.c:1886
 #, c-format
 msgid "Invalid hostname"
 msgstr "Tên máy không hợp lệ"
@@ -559,66 +559,66 @@ msgstr "kết hợp cờ dòng mới một cách không hợp lệ"
 msgid "unknown error"
 msgstr "lỗi lạ"
 
-#: glib/gregex.c:324 glib/gregex.c:1360
+#: glib/gregex.c:324 glib/gregex.c:1367
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "Gặp lỗi trong khi khớp biểu thức chính quy %s: %s"
 
-#: glib/gregex.c:875
+#: glib/gregex.c:876
 msgid "PCRE library is compiled without UTF8 support"
 msgstr "Thư viện PCRE đã biên dịch không có khả năng hỗ trợ UTF-8"
 
-#: glib/gregex.c:884
+#: glib/gregex.c:885
 msgid "PCRE library is compiled without UTF8 properties support"
 msgstr "Thư viện PCRE đã biên dịch không có khả năng hỗ trợ tài sản UTF-8"
 
-#: glib/gregex.c:929
+#: glib/gregex.c:935
 #, c-format
 msgid "Error while compiling regular expression %s at char %d: %s"
 msgstr "Gặp lỗi trong khi biên dịch biểu thức chính quy %s ở ký tự %d: %s"
 
-#: glib/gregex.c:964
+#: glib/gregex.c:971
 #, c-format
 msgid "Error while optimizing regular expression %s: %s"
 msgstr "Gặp lỗi trong khi tối hưu hoá biểu thức chính quy %s: %s"
 
-#: glib/gregex.c:1788
+#: glib/gregex.c:1795
 msgid "hexadecimal digit or '}' expected"
 msgstr "đợi chữ số thập lục hay dấu ngoặc móc đóng « } »"
 
-#: glib/gregex.c:1804
+#: glib/gregex.c:1811
 msgid "hexadecimal digit expected"
 msgstr "đợi chữ số thập lục"
 
-#: glib/gregex.c:1844
+#: glib/gregex.c:1851
 msgid "missing '<' in symbolic reference"
 msgstr "thiếu dấu ngoặc nhọn mở « < » trong tham chiếu tượng trưng"
 
-#: glib/gregex.c:1853
+#: glib/gregex.c:1860
 msgid "unfinished symbolic reference"
 msgstr "tham chiếu tượng trưng chưa hoàn thành"
 
-#: glib/gregex.c:1860
+#: glib/gregex.c:1867
 msgid "zero-length symbolic reference"
 msgstr "tham chiếu tượng trưng có độ dài số không"
 
-#: glib/gregex.c:1871
+#: glib/gregex.c:1878
 msgid "digit expected"
 msgstr "đợi chữ số"
 
-#: glib/gregex.c:1889
+#: glib/gregex.c:1896
 msgid "illegal symbolic reference"
 msgstr "tham chiếu tượng trưng không cho phép"
 
-#: glib/gregex.c:1951
+#: glib/gregex.c:1958
 msgid "stray final '\\'"
 msgstr "dấu xuyệc ngược kết thúc rải rác « \\ »"
 
-#: glib/gregex.c:1955
+#: glib/gregex.c:1962
 msgid "unknown escape sequence"
 msgstr "dãy thoạt lạ"
 
-#: glib/gregex.c:1965
+#: glib/gregex.c:1972
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr "Gặp lỗi trong khi phân tách văn bản thay thế « %s » ở ký tự %lu: %s"
@@ -775,61 +775,61 @@ msgstr "Dãy không hợp lệ nằm trong dữ liệu nhập việc chuyển đ
 msgid "Character out of range for UTF-16"
 msgstr "Ký tự ở ngoại phạm vi UTF-16"
 
-#: glib/goption.c:572
+#: glib/goption.c:573
 msgid "Usage:"
 msgstr "Sử dụng:"
 
-#: glib/goption.c:572
+#: glib/goption.c:573
 msgid "[OPTION...]"
 msgstr "[TÙY_CHỌN...]"
 
-#: glib/goption.c:676
+#: glib/goption.c:677
 msgid "Help Options:"
 msgstr "Tùy chọn trợ giúp:"
 
-#: glib/goption.c:677
+#: glib/goption.c:678
 msgid "Show help options"
 msgstr "Hiển thị các tùy chọn trợ giúp"
 
-#: glib/goption.c:683
+#: glib/goption.c:684
 msgid "Show all help options"
 msgstr "Hiển thị mọi tùy chọn trợ giúp"
 
-#: glib/goption.c:735
+#: glib/goption.c:736
 msgid "Application Options:"
 msgstr "Tùy chọn ứng dụng:"
 
-#: glib/goption.c:796 glib/goption.c:866
+#: glib/goption.c:797 glib/goption.c:867
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "Không thể phân tách giá trị số nguyên « %s » cho %s"
 
-#: glib/goption.c:806 glib/goption.c:874
+#: glib/goption.c:807 glib/goption.c:875
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "Giá trị số nguyên « %s » cho %s ở ngoại phạm vi"
 
-#: glib/goption.c:831
+#: glib/goption.c:832
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "Không thể phân tách giá trị đôi « %s » cho %s"
 
-#: glib/goption.c:839
+#: glib/goption.c:840
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "Giá trị đôi « %s » cho %s ở ngoại phạm vi"
 
-#: glib/goption.c:1176
+#: glib/goption.c:1177
 #, c-format
 msgid "Error parsing option %s"
 msgstr "Gặp lỗi khi phân tách tùy chọn %s"
 
-#: glib/goption.c:1207 glib/goption.c:1318
+#: glib/goption.c:1208 glib/goption.c:1319
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Thiếu đối số cho %s"
 
-#: glib/goption.c:1713
+#: glib/goption.c:1714
 #, c-format
 msgid "Unknown option %s"
 msgstr "Không biết tùy chọn %s"
@@ -877,9 +877,9 @@ msgstr "Tên khoá không hợp lệ: %s"
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "Tập tin khóa chứa bảng mã không được hỗ trợ « %s »"
 
-#: glib/gkeyfile.c:1094 glib/gkeyfile.c:1253 glib/gkeyfile.c:2455
-#: glib/gkeyfile.c:2521 glib/gkeyfile.c:2640 glib/gkeyfile.c:2775
-#: glib/gkeyfile.c:2928 glib/gkeyfile.c:3108 glib/gkeyfile.c:3165
+#: glib/gkeyfile.c:1094 glib/gkeyfile.c:1253 glib/gkeyfile.c:2471
+#: glib/gkeyfile.c:2537 glib/gkeyfile.c:2656 glib/gkeyfile.c:2791
+#: glib/gkeyfile.c:2944 glib/gkeyfile.c:3124 glib/gkeyfile.c:3181
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Tập tin khóa không có nhóm « %s »"
@@ -889,19 +889,19 @@ msgstr "Tập tin khóa không có nhóm « %s »"
 msgid "Key file does not have key '%s'"
 msgstr "Tập tin khóa không có khóa « %s »"
 
-#: glib/gkeyfile.c:1367 glib/gkeyfile.c:1477
+#: glib/gkeyfile.c:1367 glib/gkeyfile.c:1480
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr ""
 "Tập tin khóa chứa khóa « %s » với giá trị « %s » mà không phải là UTF-8"
 
-#: glib/gkeyfile.c:1387 glib/gkeyfile.c:1497 glib/gkeyfile.c:1866
+#: glib/gkeyfile.c:1387 glib/gkeyfile.c:1500 glib/gkeyfile.c:1873
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr ""
 "Tập tin khóa chứa khóa « %s » mà có giá trị không có khả năng giải dịch."
 
-#: glib/gkeyfile.c:2078 glib/gkeyfile.c:2287
+#: glib/gkeyfile.c:2088 glib/gkeyfile.c:2300
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -910,37 +910,37 @@ msgstr ""
 "Tập tin khóa chứa khóa « %s » trong nhóm « %s » mà có giá trị không có khả "
 "năng giải dịch."
 
-#: glib/gkeyfile.c:2470 glib/gkeyfile.c:2655 glib/gkeyfile.c:3176
+#: glib/gkeyfile.c:2486 glib/gkeyfile.c:2671 glib/gkeyfile.c:3192
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Tập tin khóa không có khóa « %s » trong nhóm « %s »"
 
-#: glib/gkeyfile.c:3415
+#: glib/gkeyfile.c:3431
 #, c-format
 msgid "Key file contains escape character at end of line"
 msgstr "Tập tin khóa chứa ký tự thoát tại kết thúc của dòng"
 
-#: glib/gkeyfile.c:3437
+#: glib/gkeyfile.c:3453
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "Tập tin khóa chứa dãy thoát không hợp lệ « %s »"
 
-#: glib/gkeyfile.c:3579
+#: glib/gkeyfile.c:3595
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Không thể giải dịch giá trị « %s » dạng con số."
 
-#: glib/gkeyfile.c:3593
+#: glib/gkeyfile.c:3609
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "Giá trị số nguyên « %s » ở ngoại phạm vi"
 
-#: glib/gkeyfile.c:3626
+#: glib/gkeyfile.c:3642
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "Không thể giải dịch giá trị « %s » dạng con số nổi."
 
-#: glib/gkeyfile.c:3650
+#: glib/gkeyfile.c:3666
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Không thể giải dịch giá trị « %s » dạng bun (đúng/sai)."

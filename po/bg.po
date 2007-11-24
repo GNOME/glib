@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib trunk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-11-07 00:25-0500\n"
+"POT-Creation-Date: 2007-11-24 11:31-0500\n"
 "PO-Revision-Date: 2007-08-26 21:13+0300\n"
 "Last-Translator: Alexander Shopov <ash@contact.bg>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
@@ -98,64 +98,64 @@ msgstr "Преобразуването от набора знаци „%s“ к�
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "Не може да се отвори конвертор от „%s“ към „%s“"
 
-#: glib/gconvert.c:622 glib/gconvert.c:1011 glib/giochannel.c:1320
+#: glib/gconvert.c:625 glib/gconvert.c:1010 glib/giochannel.c:1320
 #: glib/giochannel.c:1362 glib/giochannel.c:2204 glib/gutf8.c:950
 #: glib/gutf8.c:1399
 #, c-format
 msgid "Invalid byte sequence in conversion input"
 msgstr "Грешна байтова последователност на входа за преобразуване"
 
-#: glib/gconvert.c:628 glib/gconvert.c:938 glib/giochannel.c:1327
+#: glib/gconvert.c:631 glib/gconvert.c:937 glib/giochannel.c:1327
 #: glib/giochannel.c:2216
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Грешка по време на преобразуване: %s"
 
-#: glib/gconvert.c:663 glib/gutf8.c:946 glib/gutf8.c:1150 glib/gutf8.c:1291
+#: glib/gconvert.c:662 glib/gutf8.c:946 glib/gutf8.c:1150 glib/gutf8.c:1291
 #: glib/gutf8.c:1395
 #, c-format
 msgid "Partial character sequence at end of input"
 msgstr "Непълна знакова последователност в края на входните данни"
 
-#: glib/gconvert.c:913
+#: glib/gconvert.c:912
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr ""
 "Заместващият знак „%s“ не може да бъде преобразуван към знак от набора „%s“"
 
-#: glib/gconvert.c:1727
+#: glib/gconvert.c:1726
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr ""
 "Адресът „%s“ не е абсолютен при използване на схемата „file“ (файлова "
 "система)"
 
-#: glib/gconvert.c:1737
+#: glib/gconvert.c:1736
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Адресът „%s“ на локален файл не може да включва „#“"
 
-#: glib/gconvert.c:1754
+#: glib/gconvert.c:1753
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "Адресът „%s“ е неправилен"
 
-#: glib/gconvert.c:1766
+#: glib/gconvert.c:1765
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Името на хоста в адреса „%s“ е неправилно"
 
-#: glib/gconvert.c:1782
+#: glib/gconvert.c:1781
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "Адресът „%s“ съдържа грешни екраниращи последователности"
 
-#: glib/gconvert.c:1877
+#: glib/gconvert.c:1876
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Пътят „%s“ не е абсолютен"
 
-#: glib/gconvert.c:1887
+#: glib/gconvert.c:1886
 #, c-format
 msgid "Invalid hostname"
 msgstr "Неправилно име на хост"
@@ -570,66 +570,66 @@ msgstr "неправилна комбинация от флагове за но�
 msgid "unknown error"
 msgstr "непозната грешка"
 
-#: glib/gregex.c:324 glib/gregex.c:1360
+#: glib/gregex.c:324 glib/gregex.c:1367
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "Грешка %2$s при напасването на регулярния израз - %1$s"
 
-#: glib/gregex.c:875
+#: glib/gregex.c:876
 msgid "PCRE library is compiled without UTF8 support"
 msgstr "Библиотеката PCRE е компилирана без поддръжка на UTF-8"
 
-#: glib/gregex.c:884
+#: glib/gregex.c:885
 msgid "PCRE library is compiled without UTF8 properties support"
 msgstr "Библиотеката PCRE е компилирана без поддръжка на настройки в UTF-8"
 
-#: glib/gregex.c:929
+#: glib/gregex.c:935
 #, c-format
 msgid "Error while compiling regular expression %s at char %d: %s"
 msgstr "Грешка при компилирането на регулярния израз %s, знак %d: %s"
 
-#: glib/gregex.c:964
+#: glib/gregex.c:971
 #, c-format
 msgid "Error while optimizing regular expression %s: %s"
 msgstr "Грешка при оптимизирането на регулярния израз %s: %s"
 
-#: glib/gregex.c:1788
+#: glib/gregex.c:1795
 msgid "hexadecimal digit or '}' expected"
 msgstr "очаква се шестнайсетично число или „}“"
 
-#: glib/gregex.c:1804
+#: glib/gregex.c:1811
 msgid "hexadecimal digit expected"
 msgstr "очаква се шестнайсетично число"
 
-#: glib/gregex.c:1844
+#: glib/gregex.c:1851
 msgid "missing '<' in symbolic reference"
 msgstr "в символния указател липсва „<“"
 
-#: glib/gregex.c:1853
+#: glib/gregex.c:1860
 msgid "unfinished symbolic reference"
 msgstr "незавършен символен указател"
 
-#: glib/gregex.c:1860
+#: glib/gregex.c:1867
 msgid "zero-length symbolic reference"
 msgstr "символен указател с нулева дължина"
 
-#: glib/gregex.c:1871
+#: glib/gregex.c:1878
 msgid "digit expected"
 msgstr "очаква се цифра"
 
-#: glib/gregex.c:1889
+#: glib/gregex.c:1896
 msgid "illegal symbolic reference"
 msgstr "неправилен символен указател"
 
-#: glib/gregex.c:1951
+#: glib/gregex.c:1958
 msgid "stray final '\\'"
 msgstr "в края има един знак „\\“ в повече"
 
-#: glib/gregex.c:1955
+#: glib/gregex.c:1962
 msgid "unknown escape sequence"
 msgstr "непозната екранираща последователност"
 
-#: glib/gregex.c:1965
+#: glib/gregex.c:1972
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr "Грешка при анализа на текста за замяна „%s“, знак %lu: %s"
@@ -784,65 +784,65 @@ msgstr "Неправилна последователност на входа з
 msgid "Character out of range for UTF-16"
 msgstr "Знак извън обхвата на UTF-16"
 
-#: glib/goption.c:572
+#: glib/goption.c:573
 msgid "Usage:"
 msgstr "Употреба:"
 
-#: glib/goption.c:572
+#: glib/goption.c:573
 msgid "[OPTION...]"
 msgstr "[ОПЦИЯ...]"
 
-#: glib/goption.c:676
+#: glib/goption.c:677
 msgid "Help Options:"
 msgstr "Настройки на помощта:"
 
-#: glib/goption.c:677
+#: glib/goption.c:678
 msgid "Show help options"
 msgstr "Показване на настройките на помощта"
 
-#: glib/goption.c:683
+#: glib/goption.c:684
 msgid "Show all help options"
 msgstr "Показване на всички настройки на помощта"
 
-#: glib/goption.c:735
+#: glib/goption.c:736
 msgid "Application Options:"
 msgstr "Настройки на приложението:"
 
-#: glib/goption.c:796 glib/goption.c:866
+#: glib/goption.c:797 glib/goption.c:867
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "Не може да се анализира целочислената стойност „%s“ за %s"
 
-#: glib/goption.c:806 glib/goption.c:874
+#: glib/goption.c:807 glib/goption.c:875
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr ""
 "Целочислената стойност „%s“ за %s е извън интервала на допустими стойности"
 
-#: glib/goption.c:831
+#: glib/goption.c:832
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr ""
 "Не може да се анализира стойността с повишена точност double „%s“ за %s"
 
-#: glib/goption.c:839
+#: glib/goption.c:840
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr ""
 "Стойността с повишена точност - double „%s“ за %s е извън интервала на "
 "допустими стойности"
 
-#: glib/goption.c:1176
+#: glib/goption.c:1177
 #, c-format
 msgid "Error parsing option %s"
 msgstr "Грешка при анализа на опцията: %s"
 
-#: glib/goption.c:1207 glib/goption.c:1318
+#: glib/goption.c:1208 glib/goption.c:1319
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Липсва аргумент за %s"
 
-#: glib/goption.c:1713
+#: glib/goption.c:1714
 #, c-format
 msgid "Unknown option %s"
 msgstr "Непозната опция %s"
@@ -890,9 +890,9 @@ msgstr "Неправилно име на ключ: %s"
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "Ключовият файл съдържа неподдържаното кодиране „%s“"
 
-#: glib/gkeyfile.c:1094 glib/gkeyfile.c:1253 glib/gkeyfile.c:2455
-#: glib/gkeyfile.c:2521 glib/gkeyfile.c:2640 glib/gkeyfile.c:2775
-#: glib/gkeyfile.c:2928 glib/gkeyfile.c:3108 glib/gkeyfile.c:3165
+#: glib/gkeyfile.c:1094 glib/gkeyfile.c:1253 glib/gkeyfile.c:2471
+#: glib/gkeyfile.c:2537 glib/gkeyfile.c:2656 glib/gkeyfile.c:2791
+#: glib/gkeyfile.c:2944 glib/gkeyfile.c:3124 glib/gkeyfile.c:3181
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Ключовият файл не съдържа групата „%s“"
@@ -902,19 +902,19 @@ msgstr "Ключовият файл не съдържа групата „%s“"
 msgid "Key file does not have key '%s'"
 msgstr "Ключовият файл не съдържа ключа „%s“"
 
-#: glib/gkeyfile.c:1367 glib/gkeyfile.c:1477
+#: glib/gkeyfile.c:1367 glib/gkeyfile.c:1480
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "Ключовият файл съдържа ключ „%s“ със стойност „%s“, която не е в UTF-8"
 
-#: glib/gkeyfile.c:1387 glib/gkeyfile.c:1497 glib/gkeyfile.c:1866
+#: glib/gkeyfile.c:1387 glib/gkeyfile.c:1500 glib/gkeyfile.c:1873
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr ""
 "Ключовият файл съдържа ключа „%s“, чиято стойност не може да бъде "
 "анализирана."
 
-#: glib/gkeyfile.c:2078 glib/gkeyfile.c:2287
+#: glib/gkeyfile.c:2088 glib/gkeyfile.c:2300
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -923,38 +923,38 @@ msgstr ""
 "Ключовият файл съдържа ключа „%s“ в групата „%s“, чиято стойност не може да "
 "бъде анализирана."
 
-#: glib/gkeyfile.c:2470 glib/gkeyfile.c:2655 glib/gkeyfile.c:3176
+#: glib/gkeyfile.c:2486 glib/gkeyfile.c:2671 glib/gkeyfile.c:3192
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Ключовият файл не съдържа ключа „%s“ в групата „%s“"
 
-#: glib/gkeyfile.c:3415
+#: glib/gkeyfile.c:3431
 #, c-format
 msgid "Key file contains escape character at end of line"
 msgstr "Ключовият файл съдържа екранираща последователност в край на ред"
 
-#: glib/gkeyfile.c:3437
+#: glib/gkeyfile.c:3453
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "Ключовият файл съдържа грешна екранираща последователност - „%s“"
 
-#: glib/gkeyfile.c:3579
+#: glib/gkeyfile.c:3595
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Стойността „%s“ не може да се интерпретира като число."
 
-#: glib/gkeyfile.c:3593
+#: glib/gkeyfile.c:3609
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "Целочислената стойност „%s“ е извън интервала на допустими стойности"
 
-#: glib/gkeyfile.c:3626
+#: glib/gkeyfile.c:3642
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr ""
 "Стойността „%s“ не може да се интерпретира като число с плаваща запетая."
 
-#: glib/gkeyfile.c:3650
+#: glib/gkeyfile.c:3666
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Стойността „%s“ не може да се интерпретира като булева."

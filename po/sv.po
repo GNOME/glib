@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-11-07 00:25-0500\n"
+"POT-Creation-Date: 2007-11-24 11:31-0500\n"
 "PO-Revision-Date: 2007-08-11 12:22+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
@@ -99,62 +99,62 @@ msgstr "Konvertering från teckentabellen \"%s\" till \"%s\" stöds inte"
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "Kunde inte öppna konverteraren från \"%s\" till \"%s\""
 
-#: glib/gconvert.c:622 glib/gconvert.c:1011 glib/giochannel.c:1320
+#: glib/gconvert.c:625 glib/gconvert.c:1010 glib/giochannel.c:1320
 #: glib/giochannel.c:1362 glib/giochannel.c:2204 glib/gutf8.c:950
 #: glib/gutf8.c:1399
 #, c-format
 msgid "Invalid byte sequence in conversion input"
 msgstr "Ogiltig bytesekvens i konverteringsindata"
 
-#: glib/gconvert.c:628 glib/gconvert.c:938 glib/giochannel.c:1327
+#: glib/gconvert.c:631 glib/gconvert.c:937 glib/giochannel.c:1327
 #: glib/giochannel.c:2216
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Fel vid konvertering: %s"
 
-#: glib/gconvert.c:663 glib/gutf8.c:946 glib/gutf8.c:1150 glib/gutf8.c:1291
+#: glib/gconvert.c:662 glib/gutf8.c:946 glib/gutf8.c:1150 glib/gutf8.c:1291
 #: glib/gutf8.c:1395
 #, c-format
 msgid "Partial character sequence at end of input"
 msgstr "Ofullständig teckensekvens vid slutet av indata"
 
 # fallback syftar på en sträng
-#: glib/gconvert.c:913
+#: glib/gconvert.c:912
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Kan inte konvertera reservsträngen \"%s\" till kodningen \"%s\""
 
-#: glib/gconvert.c:1727
+#: glib/gconvert.c:1726
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "URI:n \"%s\" är ingen absolut URI som använder \"file\"-schemat"
 
-#: glib/gconvert.c:1737
+#: glib/gconvert.c:1736
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Lokala fil-URI:n \"%s\" får inte innehålla en \"#\""
 
-#: glib/gconvert.c:1754
+#: glib/gconvert.c:1753
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI:n \"%s\" är ogiltig"
 
-#: glib/gconvert.c:1766
+#: glib/gconvert.c:1765
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Värdnamnet i URI:n \"%s\" är ogiltigt"
 
-#: glib/gconvert.c:1782
+#: glib/gconvert.c:1781
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI:n \"%s\" innehåller ogiltigt kodade tecken"
 
-#: glib/gconvert.c:1877
+#: glib/gconvert.c:1876
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Sökvägen \"%s\" är ingen absolut sökväg"
 
-#: glib/gconvert.c:1887
+#: glib/gconvert.c:1886
 #, c-format
 msgid "Invalid hostname"
 msgstr "Ogiltigt värdnamn"
@@ -566,66 +566,66 @@ msgstr "ogiltig kombination av nyradsflaggor"
 msgid "unknown error"
 msgstr "okänt fel"
 
-#: glib/gregex.c:324 glib/gregex.c:1360
+#: glib/gregex.c:324 glib/gregex.c:1367
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "Fel vid matchning av reguljära uttrycket %s: %s"
 
-#: glib/gregex.c:875
+#: glib/gregex.c:876
 msgid "PCRE library is compiled without UTF8 support"
 msgstr "PCRE-biblioteket är byggt utan stöd för UTF8"
 
-#: glib/gregex.c:884
+#: glib/gregex.c:885
 msgid "PCRE library is compiled without UTF8 properties support"
 msgstr "PCRE-biblioteket är byggt utan stöd för UTF8-egenskaper"
 
-#: glib/gregex.c:929
+#: glib/gregex.c:935
 #, c-format
 msgid "Error while compiling regular expression %s at char %d: %s"
 msgstr "Fel vid kompilering av reguljära uttrycket %s vid tecknet %d: %s"
 
-#: glib/gregex.c:964
+#: glib/gregex.c:971
 #, c-format
 msgid "Error while optimizing regular expression %s: %s"
 msgstr "Fel vid optimering av reguljära uttrycket %s: %s"
 
-#: glib/gregex.c:1788
+#: glib/gregex.c:1795
 msgid "hexadecimal digit or '}' expected"
 msgstr "hexadecimal siffra eller \"}\" förväntades"
 
-#: glib/gregex.c:1804
+#: glib/gregex.c:1811
 msgid "hexadecimal digit expected"
 msgstr "hexadecimal siffra förväntades"
 
-#: glib/gregex.c:1844
+#: glib/gregex.c:1851
 msgid "missing '<' in symbolic reference"
 msgstr "saknar \"<\" i symbolisk referens"
 
-#: glib/gregex.c:1853
+#: glib/gregex.c:1860
 msgid "unfinished symbolic reference"
 msgstr "oavslutad symbolisk referens"
 
-#: glib/gregex.c:1860
+#: glib/gregex.c:1867
 msgid "zero-length symbolic reference"
 msgstr "symbolisk referens med noll-längd"
 
-#: glib/gregex.c:1871
+#: glib/gregex.c:1878
 msgid "digit expected"
 msgstr "siffra förväntades"
 
-#: glib/gregex.c:1889
+#: glib/gregex.c:1896
 msgid "illegal symbolic reference"
 msgstr "otillåten symbolisk referens"
 
-#: glib/gregex.c:1951
+#: glib/gregex.c:1958
 msgid "stray final '\\'"
 msgstr "felplacerad avslutande \"\\\""
 
-#: glib/gregex.c:1955
+#: glib/gregex.c:1962
 msgid "unknown escape sequence"
 msgstr "okänd escape-sekvens"
 
-#: glib/gregex.c:1965
+#: glib/gregex.c:1972
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr "Fel vid tolkning av ersättningstexten \"%s\" vid tecknet %lu: %s"
@@ -780,61 +780,61 @@ msgstr "Ogiltig sekvens i konverteringsindata"
 msgid "Character out of range for UTF-16"
 msgstr "Tecknet är utanför intervallet för UTF-16"
 
-#: glib/goption.c:572
+#: glib/goption.c:573
 msgid "Usage:"
 msgstr "Användning:"
 
-#: glib/goption.c:572
+#: glib/goption.c:573
 msgid "[OPTION...]"
 msgstr "[FLAGGA...]"
 
-#: glib/goption.c:676
+#: glib/goption.c:677
 msgid "Help Options:"
 msgstr "Hjälpflaggor:"
 
-#: glib/goption.c:677
+#: glib/goption.c:678
 msgid "Show help options"
 msgstr "Visa hjälpflaggor"
 
-#: glib/goption.c:683
+#: glib/goption.c:684
 msgid "Show all help options"
 msgstr "Visa alla hjälpflaggor"
 
-#: glib/goption.c:735
+#: glib/goption.c:736
 msgid "Application Options:"
 msgstr "Programflaggor:"
 
-#: glib/goption.c:796 glib/goption.c:866
+#: glib/goption.c:797 glib/goption.c:867
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "Kan inte tolka heltalsvärdet \"%s\" för %s"
 
-#: glib/goption.c:806 glib/goption.c:874
+#: glib/goption.c:807 glib/goption.c:875
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "Heltalsvärdet \"%s\" för %s är utanför intervallet"
 
-#: glib/goption.c:831
+#: glib/goption.c:832
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "Kan inte tolka dubbelvärdet \"%s\" för %s"
 
-#: glib/goption.c:839
+#: glib/goption.c:840
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "Dubbelvärdet \"%s\" för %s är utanför intervallet"
 
-#: glib/goption.c:1176
+#: glib/goption.c:1177
 #, c-format
 msgid "Error parsing option %s"
 msgstr "Fel vid tolkning av flaggan %s"
 
-#: glib/goption.c:1207 glib/goption.c:1318
+#: glib/goption.c:1208 glib/goption.c:1319
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Argument saknas för %s"
 
-#: glib/goption.c:1713
+#: glib/goption.c:1714
 #, c-format
 msgid "Unknown option %s"
 msgstr "Okänd flagga %s"
@@ -882,9 +882,9 @@ msgstr "Ogiltigt nyckelnamn: %s"
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "Nyckelfilen innehåller kodningen \"%s\" som inte stöds"
 
-#: glib/gkeyfile.c:1094 glib/gkeyfile.c:1253 glib/gkeyfile.c:2455
-#: glib/gkeyfile.c:2521 glib/gkeyfile.c:2640 glib/gkeyfile.c:2775
-#: glib/gkeyfile.c:2928 glib/gkeyfile.c:3108 glib/gkeyfile.c:3165
+#: glib/gkeyfile.c:1094 glib/gkeyfile.c:1253 glib/gkeyfile.c:2471
+#: glib/gkeyfile.c:2537 glib/gkeyfile.c:2656 glib/gkeyfile.c:2791
+#: glib/gkeyfile.c:2944 glib/gkeyfile.c:3124 glib/gkeyfile.c:3181
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Nyckelfilen har inte gruppen \"%s\""
@@ -894,19 +894,19 @@ msgstr "Nyckelfilen har inte gruppen \"%s\""
 msgid "Key file does not have key '%s'"
 msgstr "Nyckelfilen har inte nyckeln \"%s\""
 
-#: glib/gkeyfile.c:1367 glib/gkeyfile.c:1477
+#: glib/gkeyfile.c:1367 glib/gkeyfile.c:1480
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr ""
 "Nyckelfilen innehåller nyckeln \"%s\" med värdet \"%s\" som inte är UTF-8"
 
-#: glib/gkeyfile.c:1387 glib/gkeyfile.c:1497 glib/gkeyfile.c:1866
+#: glib/gkeyfile.c:1387 glib/gkeyfile.c:1500 glib/gkeyfile.c:1873
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr ""
 "Nyckelfilen innehåller nyckeln \"%s\" som har värde som inte kan tolkas."
 
-#: glib/gkeyfile.c:2078 glib/gkeyfile.c:2287
+#: glib/gkeyfile.c:2088 glib/gkeyfile.c:2300
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -915,37 +915,37 @@ msgstr ""
 "Nyckelfilen innehåller nyckeln \"%s\" i gruppen \"%s\" som har värde som "
 "inte kan tolkas."
 
-#: glib/gkeyfile.c:2470 glib/gkeyfile.c:2655 glib/gkeyfile.c:3176
+#: glib/gkeyfile.c:2486 glib/gkeyfile.c:2671 glib/gkeyfile.c:3192
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Nyckelfilen har inte nyckeln \"%s\" i gruppen \"%s\""
 
-#: glib/gkeyfile.c:3415
+#: glib/gkeyfile.c:3431
 #, c-format
 msgid "Key file contains escape character at end of line"
 msgstr "Nyckelfilen innehåller kontrolltecken i slutet på en rad"
 
-#: glib/gkeyfile.c:3437
+#: glib/gkeyfile.c:3453
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "Nyckelfilen innehåller ogiltiga kontrollsekvensen \"%s\""
 
-#: glib/gkeyfile.c:3579
+#: glib/gkeyfile.c:3595
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Värdet \"%s\" kan inte tolkas som ett tal."
 
-#: glib/gkeyfile.c:3593
+#: glib/gkeyfile.c:3609
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "Heltalsvärdet \"%s\" är utanför intervallet"
 
-#: glib/gkeyfile.c:3626
+#: glib/gkeyfile.c:3642
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "Värdet \"%s\" kan inte tolkas som ett flyttal."
 
-#: glib/gkeyfile.c:3650
+#: glib/gkeyfile.c:3666
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Värdet \"%s\" kan inte tolkas som ett booleskt värde."

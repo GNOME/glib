@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-11-07 00:25-0500\n"
+"POT-Creation-Date: 2007-11-24 11:31-0500\n"
 "PO-Revision-Date: 2007-08-31 12:40+0530\n"
 "Last-Translator: Shankar Prasad <svenkate@redhat.com>\n"
 "Language-Team: Kannada <en@li.org>\n"
@@ -99,61 +99,61 @@ msgstr "'%s' ಅಕ್ಷರಗಳಿಂದ '%s' ಗೆ ಪರಿವರ್ತಿ
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "'%s' ನಿಂದ '%s'ಗೆ ಪರಿವರ್ತಕವನ್ನು ತೆರೆಯಲಾಗುತ್ತಿಲ್ಲ"
 
-#: glib/gconvert.c:622 glib/gconvert.c:1011 glib/giochannel.c:1320
+#: glib/gconvert.c:625 glib/gconvert.c:1010 glib/giochannel.c:1320
 #: glib/giochannel.c:1362 glib/giochannel.c:2204 glib/gutf8.c:950
 #: glib/gutf8.c:1399
 #, c-format
 msgid "Invalid byte sequence in conversion input"
 msgstr "ಪರಿವರ್ತಿತ ಆದಾನದಲ್ಲಿನ ಬೈಟ್ ಅನುಕ್ರಮ ಅಮಾನ್ಯವಾಗಿದೆ"
 
-#: glib/gconvert.c:628 glib/gconvert.c:938 glib/giochannel.c:1327
+#: glib/gconvert.c:631 glib/gconvert.c:937 glib/giochannel.c:1327
 #: glib/giochannel.c:2216
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "ಪರಿವರ್ತಿಸುವಾಗ ದೋಷ: %s"
 
-#: glib/gconvert.c:663 glib/gutf8.c:946 glib/gutf8.c:1150 glib/gutf8.c:1291
+#: glib/gconvert.c:662 glib/gutf8.c:946 glib/gutf8.c:1150 glib/gutf8.c:1291
 #: glib/gutf8.c:1395
 #, c-format
 msgid "Partial character sequence at end of input"
 msgstr "ಆದಾನದ ಕೊನೆಯಲ್ಲಿ ಆಂಶಿಕ ಅಕ್ಷರ ಅನುಕ್ರಮಣೆ"
 
-#: glib/gconvert.c:913
+#: glib/gconvert.c:912
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "fallback '%s' ಅನ್ನು ಸಂಕೇತಸೆಟ್ '%s' ಗೆ ಪರಿವರ್ತಿಸಲಾಗಿಲ್ಲ"
 
-#: glib/gconvert.c:1727
+#: glib/gconvert.c:1726
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "URI '%s' \"ಕಡತ\" ವಿಧಾನವನ್ನು ಬಳಸುವ ಒಂದು ಪರಿಪೂರ್ಣವಾದ URI ಅಲ್ಲ"
 
-#: glib/gconvert.c:1737
+#: glib/gconvert.c:1736
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "ಸ್ಥಳೀಯ ಕಡತ URI '%s' ಒಂದು '#' ಅನ್ನು ಹೊಂದಿಲ್ಲದಿರಬಹುದು"
 
-#: glib/gconvert.c:1754
+#: glib/gconvert.c:1753
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI '%s' ಅಮಾನ್ಯವಾಗಿದೆ"
 
-#: glib/gconvert.c:1766
+#: glib/gconvert.c:1765
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "URI '%s' ನ ಅತಿಥೇಯದ ಹೆಸರು ಸರಿಯಿಲ್ಲ"
 
-#: glib/gconvert.c:1782
+#: glib/gconvert.c:1781
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI '%s' ಅಮಾನ್ಯವಾಗಿ ನುಣುಚಿಕೊಂಡ ಚಿಹ್ನೆಗಳನ್ನು ಒಳಗೊಂಡಿದೆ"
 
-#: glib/gconvert.c:1877
+#: glib/gconvert.c:1876
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "ಪಥದ ಹೆಸರು '%s' ಒಂದು ಪರಿಪೂರ್ಣವಾದ ಪಥವಲ್ಲ"
 
-#: glib/gconvert.c:1887
+#: glib/gconvert.c:1886
 #, c-format
 msgid "Invalid hostname"
 msgstr "ಅಮಾನ್ಯವಾದ ಅತಿಥೇಯದ ಹೆಸರು"
@@ -558,66 +558,66 @@ msgstr "ಹೊಸಸಾಲು ಗುರುತುಗಳ ಅಮಾನ್ಯ ಸಂ
 msgid "unknown error"
 msgstr "ಗೊತ್ತಿರದ ದೋಷ"
 
-#: glib/gregex.c:324 glib/gregex.c:1360
+#: glib/gregex.c:324 glib/gregex.c:1367
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "ಸಾಮಾನ್ಯ ನಿರೂಪಣೆಯ %s ಅನ್ನು ಹೊಂದಾಣಿಸುವಲ್ಲಿ ದೋಷ ಕಂಡುಬಂದಿದೆ: %s"
 
-#: glib/gregex.c:875
+#: glib/gregex.c:876
 msgid "PCRE library is compiled without UTF8 support"
 msgstr "UTF8 ಬೆಂಬಲವಿಲ್ಲದೆ PCRE ಭಂಡಾರವು ಸಂಕಲಿತಗೊಂಡಿದೆ"
 
-#: glib/gregex.c:884
+#: glib/gregex.c:885
 msgid "PCRE library is compiled without UTF8 properties support"
 msgstr "UTF8 ಗುಣಲಕ್ಷಣಗಳ ಬೆಂಬಲವಿಲ್ಲದೆ PCRE ಭಂಡಾರವು ಸಂಕಲಿತಗೊಂಡಿದೆ"
 
-#: glib/gregex.c:929
+#: glib/gregex.c:935
 #, fuzzy, c-format
 msgid "Error while compiling regular expression %s at char %d: %s"
 msgstr "ಸಾಮಾನ್ಯ ನಿರೂಪಣೆಯ %s ಅನ್ನು char %d ನಲ್ಲಿ ಸಂಕಲಿಸುವಲ್ಲಿ ದೋಷ ಕಂಡುಬಂದಿದೆ: %s"
 
-#: glib/gregex.c:964
+#: glib/gregex.c:971
 #, c-format
 msgid "Error while optimizing regular expression %s: %s"
 msgstr "ಸಾಮಾನ್ಯ ನಿರೂಪಣೆಯ %s ಅನ್ನು ಸರಳೀಕರಿಸುವಲ್ಲಿ ದೋಷ ಕಂಡುಬಂದಿದೆ: %s"
 
-#: glib/gregex.c:1788
+#: glib/gregex.c:1795
 msgid "hexadecimal digit or '}' expected"
 msgstr "ಷೋಡ-ದಶಮಾನ ಅಂಕಿ ಅಥವ '}' ಅನ್ನು ಅಪೇಕ್ಷಿಸಲಾಗಿದೆ"
 
-#: glib/gregex.c:1804
+#: glib/gregex.c:1811
 msgid "hexadecimal digit expected"
 msgstr "ಷೋಡ-ದಶಮಾನ ಅಂಕಿಯನ್ನು ಅಪೇಕ್ಷಿಸಲಾಗಿದೆ"
 
-#: glib/gregex.c:1844
+#: glib/gregex.c:1851
 msgid "missing '<' in symbolic reference"
 msgstr "ಸಾಂಕೇತಿಕ ಉಲ್ಲೇಖದಲ್ಲಿ '<' ಕಾಣೆಯಾಗಿದೆ"
 
-#: glib/gregex.c:1853
+#: glib/gregex.c:1860
 msgid "unfinished symbolic reference"
 msgstr "ಅಪೂರ್ಣಗೊಂಡಿರುವ ಸಾಂಕೇತಿಕ ಉಲ್ಲೇಖ"
 
-#: glib/gregex.c:1860
+#: glib/gregex.c:1867
 msgid "zero-length symbolic reference"
 msgstr "ಶೂನ್ಯ-ಉದ್ದದ ಸಾಂಕೇತಿಕ ಉಲ್ಲೇಖ"
 
-#: glib/gregex.c:1871
+#: glib/gregex.c:1878
 msgid "digit expected"
 msgstr "ಅಪೇಕ್ಷಿತ ಅಂಕಿ"
 
-#: glib/gregex.c:1889
+#: glib/gregex.c:1896
 msgid "illegal symbolic reference"
 msgstr "ನಿಯಮ ಬಾಹಿರವಾದ ಸಾಂಕೇತಿಕ ಉಲ್ಲೇಖ"
 
-#: glib/gregex.c:1951
+#: glib/gregex.c:1958
 msgid "stray final '\\'"
 msgstr "ಅಪರೂಪದ ಅಂತ್ಯ '\\'"
 
-#: glib/gregex.c:1955
+#: glib/gregex.c:1962
 msgid "unknown escape sequence"
 msgstr "ಗೊತ್ತಿರದ ಪಾರು ಅನುಕ್ರಮ"
 
-#: glib/gregex.c:1965
+#: glib/gregex.c:1972
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr "ಬದಲಾಯಿಸಲ್ಪಟ್ಟ ಪಠ್ಯ \"%s\"ಅನ್ನು %lu ನಲ್ಲಿ parsing ಮಾಡುವಾಗಿನ ದೋಷ: %s"
@@ -769,61 +769,61 @@ msgstr "ಆದಾನ ಪರಿವರ್ತನೆಯಲ್ಲಿ ಅಮಾನ್�
 msgid "Character out of range for UTF-16"
 msgstr "ಅಕ್ಷರವು UTF-16 ನ ವ್ಯಾಪ್ತಿ ಇಂದ ಹೊರಗಿದೆ"
 
-#: glib/goption.c:572
+#: glib/goption.c:573
 msgid "Usage:"
 msgstr "ಬಳಕೆ:"
 
-#: glib/goption.c:572
+#: glib/goption.c:573
 msgid "[OPTION...]"
 msgstr "[OPTION...]"
 
-#: glib/goption.c:676
+#: glib/goption.c:677
 msgid "Help Options:"
 msgstr "ಸಹಾಯ ಆಯ್ಕೆಗಳು:"
 
-#: glib/goption.c:677
+#: glib/goption.c:678
 msgid "Show help options"
 msgstr "ಸಹಾಯ ಆಯ್ಕೆಯನ್ನು ತೋರಿಸು"
 
-#: glib/goption.c:683
+#: glib/goption.c:684
 msgid "Show all help options"
 msgstr "ಎಲ್ಲಾ ಸಹಾಯ ಅಂಶಪಟ್ಟಿಯನ್ನು ತೋರಿಸು"
 
-#: glib/goption.c:735
+#: glib/goption.c:736
 msgid "Application Options:"
 msgstr "ಅನ್ವಯದ ಆಯ್ಕೆಗಳು:"
 
-#: glib/goption.c:796 glib/goption.c:866
+#: glib/goption.c:797 glib/goption.c:867
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr " for %s ಕ್ಕಾಗಿನ ಪೂರ್ಣಾಂಕ ಮೌಲ್ಯ '%s' ಅನ್ನು ಶಬ್ಧಲಕ್ಷಣ ಹೇಳಲಾಗಿಲ್ಲ"
 
-#: glib/goption.c:806 glib/goption.c:874
+#: glib/goption.c:807 glib/goption.c:875
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "%s ಕ್ಕಾಗಿನ ಪೂರ್ಣಾಂಕ ಮೌಲ್ಯ '%s' ವು ವ್ಯಾಪ್ತಿಯಿಂದ ಹೊರಗಿದೆ"
 
-#: glib/goption.c:831
+#: glib/goption.c:832
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "'%s' ದ %s ಕ್ಕಾಗಿನ ದ್ವಿಮೌಲ್ಯವನ್ನು parse ಮಾಡಲಾಗಿಲ್ಲ"
 
-#: glib/goption.c:839
+#: glib/goption.c:840
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "%s ಕ್ಕಾಗಿನ '%s' ದ್ವಿ ಮೌಲ್ಯವು ವ್ಯಾಪ್ತಿಯಿಂದ ಹೊರಗಿದೆ"
 
-#: glib/goption.c:1176
+#: glib/goption.c:1177
 #, c-format
 msgid "Error parsing option %s"
 msgstr "%s ಆಯ್ಕೆಯ ಶಬ್ಧಲಕ್ಷಣವನ್ನು ಹೇಳುವಾಗ ದೋಷ"
 
-#: glib/goption.c:1207 glib/goption.c:1318
+#: glib/goption.c:1208 glib/goption.c:1319
 #, c-format
 msgid "Missing argument for %s"
 msgstr "%s ಗೆ ಆರ್ಗ್ಯುಮೆಂಟ್ ಕಾಣುತ್ತಿಲ್ಲ"
 
-#: glib/goption.c:1713
+#: glib/goption.c:1714
 #, c-format
 msgid "Unknown option %s"
 msgstr "ಗೊತ್ತಿರದ ಆಯ್ಕೆ %s"
@@ -870,9 +870,9 @@ msgstr "ಅಮಾನ್ಯ ಕೀಲಿ ಹೆಸರು: %s"
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "ಕೀಲಿ ಕಡತವು ಬೆಂಬಲಿತವಲ್ಲದ encoding '%s'ಅನ್ನು ಹೊಂದಿದೆ"
 
-#: glib/gkeyfile.c:1094 glib/gkeyfile.c:1253 glib/gkeyfile.c:2455
-#: glib/gkeyfile.c:2521 glib/gkeyfile.c:2640 glib/gkeyfile.c:2775
-#: glib/gkeyfile.c:2928 glib/gkeyfile.c:3108 glib/gkeyfile.c:3165
+#: glib/gkeyfile.c:1094 glib/gkeyfile.c:1253 glib/gkeyfile.c:2471
+#: glib/gkeyfile.c:2537 glib/gkeyfile.c:2656 glib/gkeyfile.c:2791
+#: glib/gkeyfile.c:2944 glib/gkeyfile.c:3124 glib/gkeyfile.c:3181
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "ಕೀಲಿ ಕಡತವು ಸಮೂಹ '%s'ವನ್ನು ಹೊಂದಿಲ್ಲ"
@@ -882,18 +882,18 @@ msgstr "ಕೀಲಿ ಕಡತವು ಸಮೂಹ '%s'ವನ್ನು ಹೊಂ�
 msgid "Key file does not have key '%s'"
 msgstr "ಕೀಲಿ ಕಡತವು ಕೀಲಿ '%s'ಯನ್ನು ಹೊಂದಿಲ್ಲ"
 
-#: glib/gkeyfile.c:1367 glib/gkeyfile.c:1477
+#: glib/gkeyfile.c:1367 glib/gkeyfile.c:1480
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr ""
 "ಕೀಲಿ ಕಡತವು ಕೀಲಿ '%s'ಯನ್ನು ಹೊಂದಿದ್ದು ಅದು UTF-8 ಅಲ್ಲದ ಮೌಲ್ಯವಾದ '%s'ವನ್ನು ಹೊಂದಿದೆ "
 
-#: glib/gkeyfile.c:1387 glib/gkeyfile.c:1497 glib/gkeyfile.c:1866
+#: glib/gkeyfile.c:1387 glib/gkeyfile.c:1500 glib/gkeyfile.c:1873
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "ಕೀಲಿ ಕಡತವು ಕೀಲಿ '%s'ಯನ್ನು ಹೊಂದಿದ್ದು ಅದು ಮೌಲ್ಯವನ್ನು ವಿವರಿಸಲಾಗುವುದಿಲ್ಲ."
 
-#: glib/gkeyfile.c:2078 glib/gkeyfile.c:2287
+#: glib/gkeyfile.c:2088 glib/gkeyfile.c:2300
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -902,37 +902,37 @@ msgstr ""
 "ಕೀಲಿ ಕಡತವು ಕೀಲಿ '%s'ಯನ್ನು ಹೊಂದಿದ್ದು ಅದು ಸಮೂಹ '%s'ದ್ದಾಗಿದ್ದು ಹಾಗು ಅದರ ಮೌಲ್ಯವನ್ನು "
 "ವಿವರಿಸಲಾಗುವುದಿಲ್ಲ."
 
-#: glib/gkeyfile.c:2470 glib/gkeyfile.c:2655 glib/gkeyfile.c:3176
+#: glib/gkeyfile.c:2486 glib/gkeyfile.c:2671 glib/gkeyfile.c:3192
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "ಕೀಲಿ ಕಡತವು ಕೀಲಿ'%s' ಯನ್ನು ಗುಂಪು '%s'ನಲ್ಲಿ ಹೊಂದಿಲ್ಲ"
 
-#: glib/gkeyfile.c:3415
+#: glib/gkeyfile.c:3431
 #, c-format
 msgid "Key file contains escape character at end of line"
 msgstr "ಕೀಲಿ ಕಡತವು ಸಾಲಿನ ಕೊನೆಯಲ್ಲಿ ಪಾರು ಅಕ್ಷರಗಳನ್ನು ಹೊಂದಿದೆ"
 
-#: glib/gkeyfile.c:3437
+#: glib/gkeyfile.c:3453
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "ಕೀಲಿ ಕಡತವು ಅಮಾನ್ಯ ಪಾರು ಅನುಕ್ರಮವನ್ನು ಹೊಂದಿದೆ '%s'"
 
-#: glib/gkeyfile.c:3579
+#: glib/gkeyfile.c:3595
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "ಮೌಲ್ಯ '%s' ವನ್ನು ಒಂದು ಸಂಖ್ಯೆಯಾಗಿ ಸೂಚಿಸಲು ಆಗುವುದಿಲ್ಲ."
 
-#: glib/gkeyfile.c:3593
+#: glib/gkeyfile.c:3609
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "ಪೂರ್ಣಾಂಕ ಮೌಲ್ಯ '%s' ವು ವ್ಯಾಪ್ತಿಯನ್ನು ಮೀರಿದೆ"
 
-#: glib/gkeyfile.c:3626
+#: glib/gkeyfile.c:3642
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "ಮೌಲ್ಯ '%s' ವನ್ನು ಒಂದು ತೇಲು ಸಂಖ್ಯೆ ಆಗಿ ವಿವರಿಸಲು ಆಗುವುದಿಲ್ಲ."
 
-#: glib/gkeyfile.c:3650
+#: glib/gkeyfile.c:3666
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "ಮೌಲ್ಯ '%s' ವನ್ನು ಒಂದು ಬೂಲಿಯನ್ ಆಗಿ ವಿವರಿಸಲು ಆಗುವುದಿಲ್ಲ."

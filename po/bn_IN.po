@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-11-07 00:25-0500\n"
+"POT-Creation-Date: 2007-11-24 11:31-0500\n"
 "PO-Revision-Date: 2007-07-10 12:49+0530\n"
 "Last-Translator: Runa Bhattacharjee <runabh@gmail.com>\n"
 "Language-Team: Bengali (India) <en@li.org>\n"
@@ -103,61 +103,61 @@ msgstr "'%s' অক্ষরমালা থেকে '%s'-এ রূপান�
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "'%s' থেকে '%s' রূপান্তর ব্যবস্থা খোলা যায়নি"
 
-#: glib/gconvert.c:622 glib/gconvert.c:1011 glib/giochannel.c:1320
+#: glib/gconvert.c:625 glib/gconvert.c:1010 glib/giochannel.c:1320
 #: glib/giochannel.c:1362 glib/giochannel.c:2204 glib/gutf8.c:950
 #: glib/gutf8.c:1399
 #, c-format
 msgid "Invalid byte sequence in conversion input"
 msgstr "রূপান্তর করার জন্য প্রদত্ত ইনপুটের মধ্যে বাইটের অনুক্রম সঠিক নয়"
 
-#: glib/gconvert.c:628 glib/gconvert.c:938 glib/giochannel.c:1327
+#: glib/gconvert.c:631 glib/gconvert.c:937 glib/giochannel.c:1327
 #: glib/giochannel.c:2216
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "রূপান্তর কর্ম সঞ্চালনকালের উত্‌পন্ন সমস্যা: %s"
 
-#: glib/gconvert.c:663 glib/gutf8.c:946 glib/gutf8.c:1150 glib/gutf8.c:1291
+#: glib/gconvert.c:662 glib/gutf8.c:946 glib/gutf8.c:1150 glib/gutf8.c:1291
 #: glib/gutf8.c:1395
 #, c-format
 msgid "Partial character sequence at end of input"
 msgstr "প্রদত্ত ইনপুটের অন্তে আংশিক অক্ষর অনুক্রম"
 
-#: glib/gconvert.c:913
+#: glib/gconvert.c:912
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "ফলব্যাক '%s' থেকে '%s' কোড-সেটে পরিবর্তন করা যায়নি"
 
-#: glib/gconvert.c:1727
+#: glib/gconvert.c:1726
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "URI '%s'-টি \"file\" স্কিম প্রয়োগকারী সুনিশ্চিত URI নয়"
 
-#: glib/gconvert.c:1737
+#: glib/gconvert.c:1736
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "স্থানীয় ফাইল URI '%s'-র মধ্যে '#' চিহ্ন অন্তর্ভুক্ত করা যাবে না"
 
-#: glib/gconvert.c:1754
+#: glib/gconvert.c:1753
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI '%s' বৈধ নয়"
 
-#: glib/gconvert.c:1766
+#: glib/gconvert.c:1765
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "URI '%s'-র হোস্ট-নেম বৈধ নয়"
 
-#: glib/gconvert.c:1782
+#: glib/gconvert.c:1781
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI '%s'-র মধ্যে অবৈধরূপে এস্কেপ অক্ষর প্রয়োগ করা হয়েছে"
 
-#: glib/gconvert.c:1877
+#: glib/gconvert.c:1876
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "'%s' পাথটি সুনিশ্চিত নয়"
 
-#: glib/gconvert.c:1887
+#: glib/gconvert.c:1886
 #, c-format
 msgid "Invalid hostname"
 msgstr "হোস্ট-নেম বৈধ নয়"
@@ -560,66 +560,66 @@ msgstr "নতুন পংক্তি চিহ্নকারী ফ্ল্
 msgid "unknown error"
 msgstr "অজানা সমস্যা"
 
-#: glib/gregex.c:324 glib/gregex.c:1360
+#: glib/gregex.c:324 glib/gregex.c:1367
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "রেগুলার এক্সপ্রেশন %s-র মিল অনুসন্ধানে সমস্যা: %s"
 
-#: glib/gregex.c:875
+#: glib/gregex.c:876
 msgid "PCRE library is compiled without UTF8 support"
 msgstr "PCRE লাইব্রেরি UTF8 সমর্থন বিনা কম্পাইল করা হয়েছে"
 
-#: glib/gregex.c:884
+#: glib/gregex.c:885
 msgid "PCRE library is compiled without UTF8 properties support"
 msgstr "PCRE লাইব্রেরি UTF8 বৈশিষ্ট্যের সমর্থন বিনা কম্পাইল করা হয়েছে"
 
-#: glib/gregex.c:929
+#: glib/gregex.c:935
 #, c-format
 msgid "Error while compiling regular expression %s at char %d: %s"
 msgstr "রেগুলার এক্সপ্রেশন %s, %d অক্ষরে কম্পাইল করতে সমস্যা: %s"
 
-#: glib/gregex.c:964
+#: glib/gregex.c:971
 #, c-format
 msgid "Error while optimizing regular expression %s: %s"
 msgstr "রেগুলার এক্সপ্রেশন %s-র সর্বোত্তম ব্যবহারে সমস্যা: %s"
 
-#: glib/gregex.c:1788
+#: glib/gregex.c:1795
 msgid "hexadecimal digit or '}' expected"
 msgstr "হেক্সাডেসিমাল সংখ্যা অথবা '}' প্রত্যাশিত"
 
-#: glib/gregex.c:1804
+#: glib/gregex.c:1811
 msgid "hexadecimal digit expected"
 msgstr "হেক্সাডেসিমাল সংখ্যা প্রত্যাশিত"
 
-#: glib/gregex.c:1844
+#: glib/gregex.c:1851
 msgid "missing '<' in symbolic reference"
 msgstr "সিম্বলিক রেফারেন্সের মধ্যে '<' অনুপস্থিত"
 
-#: glib/gregex.c:1853
+#: glib/gregex.c:1860
 msgid "unfinished symbolic reference"
 msgstr "সিম্বলিক রেফারেন্স অসম্পূর্ণ"
 
-#: glib/gregex.c:1860
+#: glib/gregex.c:1867
 msgid "zero-length symbolic reference"
 msgstr "সিম্বলিক রেফারেন্সের মধ্যে অক্ষর সংখ্যা শূণ্য"
 
-#: glib/gregex.c:1871
+#: glib/gregex.c:1878
 msgid "digit expected"
 msgstr "সংখ্যা প্রত্যাশিত"
 
-#: glib/gregex.c:1889
+#: glib/gregex.c:1896
 msgid "illegal symbolic reference"
 msgstr "অবৈধ সিম্বলিক রেফারেন্স"
 
-#: glib/gregex.c:1951
+#: glib/gregex.c:1958
 msgid "stray final '\\'"
 msgstr "অন্তে অপ্রত্যাশিত '\\'"
 
-#: glib/gregex.c:1955
+#: glib/gregex.c:1962
 msgid "unknown escape sequence"
 msgstr "অজানা এস্কেপ সিকোয়েন্স"
 
-#: glib/gregex.c:1965
+#: glib/gregex.c:1972
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr "প্রতিস্থাপনার টেক্সট \"%s\", %lu অক্ষরে পার্স করতে সমস্যা: %s"
@@ -768,61 +768,61 @@ msgstr "রূপান্তর করার উদ্দেশ্যে প্
 msgid "Character out of range for UTF-16"
 msgstr "অক্ষরটি UTF-16'র আয়ত্বের বাইরে"
 
-#: glib/goption.c:572
+#: glib/goption.c:573
 msgid "Usage:"
 msgstr "ব্যবহারপ্রণালী:"
 
-#: glib/goption.c:572
+#: glib/goption.c:573
 msgid "[OPTION...]"
 msgstr "[OPTION...]"
 
-#: glib/goption.c:676
+#: glib/goption.c:677
 msgid "Help Options:"
 msgstr "সহায়তা সংক্রান্ত বিকল্প:"
 
-#: glib/goption.c:677
+#: glib/goption.c:678
 msgid "Show help options"
 msgstr "সহায়তা সংক্রান্ত বিকল্প প্রদর্শন করা হবে"
 
-#: glib/goption.c:683
+#: glib/goption.c:684
 msgid "Show all help options"
 msgstr "সহায়তা সংক্রান্ত সমস্ত বিকল্প প্রদর্শন করা হবে"
 
-#: glib/goption.c:735
+#: glib/goption.c:736
 msgid "Application Options:"
 msgstr "অ্যাপ্লিকেশন সংক্রান্ত বিকল্প:"
 
-#: glib/goption.c:796 glib/goption.c:866
+#: glib/goption.c:797 glib/goption.c:867
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "%2$s-র জন্য '%1$s'-র পূর্ণসংখ্যা মান পার্স করতে ব্যর্থ"
 
-#: glib/goption.c:806 glib/goption.c:874
+#: glib/goption.c:807 glib/goption.c:875
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "%2$s-র জন্য '%1$s'-র পূর্ণসংখ্যা মান সীমা বহির্ভূত"
 
-#: glib/goption.c:831
+#: glib/goption.c:832
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "%2$s-র জন্য '%1$s'-র দ্বীগুণ মান পার্স করতে ব্যর্থ"
 
-#: glib/goption.c:839
+#: glib/goption.c:840
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "%2$s-র জন্য '%1$s'-র দ্বীগুণ মান সীমা বহির্ভূত"
 
-#: glib/goption.c:1176
+#: glib/goption.c:1177
 #, c-format
 msgid "Error parsing option %s"
 msgstr "%s বিকল্প পার্স করতে ব্যর্থ"
 
-#: glib/goption.c:1207 glib/goption.c:1318
+#: glib/goption.c:1208 glib/goption.c:1319
 #, c-format
 msgid "Missing argument for %s"
 msgstr "%s'র আর্গুমেন্ট অনুপস্থিত"
 
-#: glib/goption.c:1713
+#: glib/goption.c:1714
 #, c-format
 msgid "Unknown option %s"
 msgstr "অজানা বিকল্প %s"
@@ -868,9 +868,9 @@ msgstr "কি-র নাম অবৈধ: %s"
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "কি-ফাইলের মধ্যে অসমর্থিত এনকোডিং '%s'"
 
-#: glib/gkeyfile.c:1094 glib/gkeyfile.c:1253 glib/gkeyfile.c:2455
-#: glib/gkeyfile.c:2521 glib/gkeyfile.c:2640 glib/gkeyfile.c:2775
-#: glib/gkeyfile.c:2928 glib/gkeyfile.c:3108 glib/gkeyfile.c:3165
+#: glib/gkeyfile.c:1094 glib/gkeyfile.c:1253 glib/gkeyfile.c:2471
+#: glib/gkeyfile.c:2537 glib/gkeyfile.c:2656 glib/gkeyfile.c:2791
+#: glib/gkeyfile.c:2944 glib/gkeyfile.c:3124 glib/gkeyfile.c:3181
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "কি-ফাইলের মধ্যে কোনো সংকলন অনুপস্থিত '%s'"
@@ -880,18 +880,18 @@ msgstr "কি-ফাইলের মধ্যে কোনো সংকলন �
 msgid "Key file does not have key '%s'"
 msgstr "কি-ফাইলের মধ্যে কোনো কি উপস্থিত নেই '%s'"
 
-#: glib/gkeyfile.c:1367 glib/gkeyfile.c:1477
+#: glib/gkeyfile.c:1367 glib/gkeyfile.c:1480
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr ""
 "কি-ফাইলের মধ্যে '%2$s' মান সহ  '%1$s' কি উপস্থিত রয়েছে যা UTF-8 বিন্যাসে নেই।"
 
-#: glib/gkeyfile.c:1387 glib/gkeyfile.c:1497 glib/gkeyfile.c:1866
+#: glib/gkeyfile.c:1387 glib/gkeyfile.c:1500 glib/gkeyfile.c:1873
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "কি-ফাইলের মধ্যে '%s' কি উপস্থিত রয়েছে যার মান ব্যাখ্যা করা সম্ভব নয়।"
 
-#: glib/gkeyfile.c:2078 glib/gkeyfile.c:2287
+#: glib/gkeyfile.c:2088 glib/gkeyfile.c:2300
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -900,37 +900,37 @@ msgstr ""
 "কি-ফাইলের মধ্যে '%2$s' সংকলনে '%1$s' কি উপস্থিত রয়েছে যার মান ব্যাখ্যা করা সম্ভব "
 "নয়।"
 
-#: glib/gkeyfile.c:2470 glib/gkeyfile.c:2655 glib/gkeyfile.c:3176
+#: glib/gkeyfile.c:2486 glib/gkeyfile.c:2671 glib/gkeyfile.c:3192
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "কি-ফাইলের মধ্যে '%2$s' সংকলনে '%1$s' কি উপস্থিত নেই"
 
-#: glib/gkeyfile.c:3415
+#: glib/gkeyfile.c:3431
 #, c-format
 msgid "Key file contains escape character at end of line"
 msgstr "কি-ফাইলের মধ্যে পংক্তির অবশেষে এস্কেপ অক্ষর উপস্থিত রয়েছে"
 
-#: glib/gkeyfile.c:3437
+#: glib/gkeyfile.c:3453
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "কি-ফাইলের মধ্যে অবৈধ এস্কেপ ধারা উপস্থিত রয়েছে '%s'"
 
-#: glib/gkeyfile.c:3579
+#: glib/gkeyfile.c:3595
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "'%s' মান কোনো সংখ্যারূপে ব্যাখ্যা করা সম্ভব নয়।"
 
-#: glib/gkeyfile.c:3593
+#: glib/gkeyfile.c:3609
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "'%s' পূর্ণসংখ্যা মান সীমা বহির্ভূত"
 
-#: glib/gkeyfile.c:3626
+#: glib/gkeyfile.c:3642
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "'%s' মান float সংখ্যা রূপে ব্যাখ্যা করা সম্ভব নয়।"
 
-#: glib/gkeyfile.c:3650
+#: glib/gkeyfile.c:3666
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "'%s' মান বুলিয়ান রূপে ব্যাখ্যা করা সম্ভব নয়।"

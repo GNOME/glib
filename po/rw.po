@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.12\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-11-07 00:25-0500\n"
+"POT-Creation-Date: 2007-11-24 11:31-0500\n"
 "PO-Revision-Date: 2005-03-28 19:34-0700\n"
 "Last-Translator: Steve Murphy <murf@e-tools.com>\n"
 "Language-Team: Kinyarwanda <translation-team-rw@lists.sourceforge.net>\n"
@@ -105,61 +105,61 @@ msgstr "Bivuye Inyuguti Gushyiraho Kuri ni OYA"
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "OYA Gufungura Bivuye Kuri"
 
-#: glib/gconvert.c:622 glib/gconvert.c:1011 glib/giochannel.c:1320
+#: glib/gconvert.c:625 glib/gconvert.c:1010 glib/giochannel.c:1320
 #: glib/giochannel.c:1362 glib/giochannel.c:2204 glib/gutf8.c:950
 #: glib/gutf8.c:1399
 #, fuzzy, c-format
 msgid "Invalid byte sequence in conversion input"
 msgstr "Bayite in Ihindurangero Iyinjiza"
 
-#: glib/gconvert.c:628 glib/gconvert.c:938 glib/giochannel.c:1327
+#: glib/gconvert.c:631 glib/gconvert.c:937 glib/giochannel.c:1327
 #: glib/giochannel.c:2216
 #, fuzzy, c-format
 msgid "Error during conversion: %s"
 msgstr "Ihindurangero"
 
-#: glib/gconvert.c:663 glib/gutf8.c:946 glib/gutf8.c:1150 glib/gutf8.c:1291
+#: glib/gconvert.c:662 glib/gutf8.c:946 glib/gutf8.c:1150 glib/gutf8.c:1291
 #: glib/gutf8.c:1395
 #, fuzzy, c-format
 msgid "Partial character sequence at end of input"
 msgstr "Inyuguti ku Impera Bya Iyinjiza"
 
-#: glib/gconvert.c:913
+#: glib/gconvert.c:912
 #, fuzzy, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "GUHINDURA Kuri"
 
-#: glib/gconvert.c:1727
+#: glib/gconvert.c:1726
 #, fuzzy, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "ni OYA ikoresha IDOSIYE Igishusho"
 
-#: glib/gconvert.c:1737
+#: glib/gconvert.c:1736
 #, fuzzy, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "IDOSIYE Gicurasi OYA Gushyiramo a"
 
-#: glib/gconvert.c:1754
+#: glib/gconvert.c:1753
 #, fuzzy, c-format
 msgid "The URI '%s' is invalid"
 msgstr "ni Sibyo"
 
-#: glib/gconvert.c:1766
+#: glib/gconvert.c:1765
 #, fuzzy, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Izina ry'inturo: Bya ni Sibyo"
 
-#: glib/gconvert.c:1782
+#: glib/gconvert.c:1781
 #, fuzzy, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "Kirimo Inyuguti"
 
-#: glib/gconvert.c:1877
+#: glib/gconvert.c:1876
 #, fuzzy, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "ni OYA Inzira"
 
-#: glib/gconvert.c:1887
+#: glib/gconvert.c:1886
 #, fuzzy, c-format
 msgid "Invalid hostname"
 msgstr "Izina ry'inturo:"
@@ -550,67 +550,67 @@ msgstr ""
 msgid "unknown error"
 msgstr ""
 
-#: glib/gregex.c:324 glib/gregex.c:1360
+#: glib/gregex.c:324 glib/gregex.c:1367
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr ""
 
-#: glib/gregex.c:875
+#: glib/gregex.c:876
 msgid "PCRE library is compiled without UTF8 support"
 msgstr ""
 
-#: glib/gregex.c:884
+#: glib/gregex.c:885
 msgid "PCRE library is compiled without UTF8 properties support"
 msgstr ""
 
-#: glib/gregex.c:929
+#: glib/gregex.c:935
 #, fuzzy, c-format
 msgid "Error while compiling regular expression %s at char %d: %s"
 msgstr "ku Umurongo INYUGUTI"
 
-#: glib/gregex.c:964
+#: glib/gregex.c:971
 #, c-format
 msgid "Error while optimizing regular expression %s: %s"
 msgstr ""
 
-#: glib/gregex.c:1788
+#: glib/gregex.c:1795
 msgid "hexadecimal digit or '}' expected"
 msgstr ""
 
-#: glib/gregex.c:1804
+#: glib/gregex.c:1811
 msgid "hexadecimal digit expected"
 msgstr ""
 
-#: glib/gregex.c:1844
+#: glib/gregex.c:1851
 msgid "missing '<' in symbolic reference"
 msgstr ""
 
-#: glib/gregex.c:1853
+#: glib/gregex.c:1860
 #, fuzzy
 msgid "unfinished symbolic reference"
 msgstr "Indango"
 
-#: glib/gregex.c:1860
+#: glib/gregex.c:1867
 msgid "zero-length symbolic reference"
 msgstr ""
 
-#: glib/gregex.c:1871
+#: glib/gregex.c:1878
 msgid "digit expected"
 msgstr ""
 
-#: glib/gregex.c:1889
+#: glib/gregex.c:1896
 msgid "illegal symbolic reference"
 msgstr ""
 
-#: glib/gregex.c:1951
+#: glib/gregex.c:1958
 msgid "stray final '\\'"
 msgstr ""
 
-#: glib/gregex.c:1955
+#: glib/gregex.c:1962
 msgid "unknown escape sequence"
 msgstr ""
 
-#: glib/gregex.c:1965
+#: glib/gregex.c:1972
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr ""
@@ -761,63 +761,63 @@ msgid "Character out of range for UTF-16"
 msgstr "Inyuma Bya Urutonde kugirango"
 
 # crashrep/source\all\crashrep.lng:%MSG_CMDLINE_USAGE%.text
-#: glib/goption.c:572
+#: glib/goption.c:573
 msgid "Usage:"
 msgstr "Ikoresha:"
 
-#: glib/goption.c:572
+#: glib/goption.c:573
 msgid "[OPTION...]"
 msgstr ""
 
-#: glib/goption.c:676
+#: glib/goption.c:677
 msgid "Help Options:"
 msgstr ""
 
-#: glib/goption.c:677
+#: glib/goption.c:678
 #, fuzzy
 msgid "Show help options"
 msgstr "Ifashayobora Amahitamo"
 
-#: glib/goption.c:683
+#: glib/goption.c:684
 #, fuzzy
 msgid "Show all help options"
 msgstr "Byose Ifashayobora Amahitamo"
 
-#: glib/goption.c:735
+#: glib/goption.c:736
 msgid "Application Options:"
 msgstr ""
 
-#: glib/goption.c:796 glib/goption.c:866
+#: glib/goption.c:797 glib/goption.c:867
 #, fuzzy, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "Umubare wuzuye Agaciro kugirango"
 
-#: glib/goption.c:806 glib/goption.c:874
+#: glib/goption.c:807 glib/goption.c:875
 #, fuzzy, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "Agaciro kugirango Inyuma Bya Urutonde"
 
-#: glib/goption.c:831
+#: glib/goption.c:832
 #, fuzzy, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "Umubare wuzuye Agaciro kugirango"
 
-#: glib/goption.c:839
+#: glib/goption.c:840
 #, fuzzy, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "Agaciro kugirango Inyuma Bya Urutonde"
 
-#: glib/goption.c:1176
+#: glib/goption.c:1177
 #, fuzzy, c-format
 msgid "Error parsing option %s"
 msgstr "Ihindurangero"
 
-#: glib/goption.c:1207 glib/goption.c:1318
+#: glib/goption.c:1208 glib/goption.c:1319
 #, c-format
 msgid "Missing argument for %s"
 msgstr ""
 
-#: glib/goption.c:1713
+#: glib/goption.c:1714
 #, fuzzy, c-format
 msgid "Unknown option %s"
 msgstr "Ihitamo ritazwi:"
@@ -865,9 +865,9 @@ msgstr "Izina ry'inturo:"
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "IDOSIYE Kirimo Imisobekere:"
 
-#: glib/gkeyfile.c:1094 glib/gkeyfile.c:1253 glib/gkeyfile.c:2455
-#: glib/gkeyfile.c:2521 glib/gkeyfile.c:2640 glib/gkeyfile.c:2775
-#: glib/gkeyfile.c:2928 glib/gkeyfile.c:3108 glib/gkeyfile.c:3165
+#: glib/gkeyfile.c:1094 glib/gkeyfile.c:1253 glib/gkeyfile.c:2471
+#: glib/gkeyfile.c:2537 glib/gkeyfile.c:2656 glib/gkeyfile.c:2791
+#: glib/gkeyfile.c:2944 glib/gkeyfile.c:3124 glib/gkeyfile.c:3181
 #, fuzzy, c-format
 msgid "Key file does not have group '%s'"
 msgstr "IDOSIYE OYA Itsinda"
@@ -877,54 +877,54 @@ msgstr "IDOSIYE OYA Itsinda"
 msgid "Key file does not have key '%s'"
 msgstr "IDOSIYE OYA Urufunguzo"
 
-#: glib/gkeyfile.c:1367 glib/gkeyfile.c:1477
+#: glib/gkeyfile.c:1367 glib/gkeyfile.c:1480
 #, fuzzy, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "IDOSIYE Kirimo Urufunguzo Na: Agaciro ni OYA 8"
 
-#: glib/gkeyfile.c:1387 glib/gkeyfile.c:1497 glib/gkeyfile.c:1866
+#: glib/gkeyfile.c:1387 glib/gkeyfile.c:1500 glib/gkeyfile.c:1873
 #, fuzzy, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "IDOSIYE Kirimo Urufunguzo Agaciro"
 
-#: glib/gkeyfile.c:2078 glib/gkeyfile.c:2287
+#: glib/gkeyfile.c:2088 glib/gkeyfile.c:2300
 #, fuzzy, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
 "interpreted."
 msgstr "IDOSIYE Kirimo Urufunguzo in Itsinda Agaciro"
 
-#: glib/gkeyfile.c:2470 glib/gkeyfile.c:2655 glib/gkeyfile.c:3176
+#: glib/gkeyfile.c:2486 glib/gkeyfile.c:2671 glib/gkeyfile.c:3192
 #, fuzzy, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "IDOSIYE OYA Urufunguzo in Itsinda"
 
-#: glib/gkeyfile.c:3415
+#: glib/gkeyfile.c:3431
 #, fuzzy, c-format
 msgid "Key file contains escape character at end of line"
 msgstr "IDOSIYE Kirimo Inyuguti ku Impera Bya Umurongo"
 
-#: glib/gkeyfile.c:3437
+#: glib/gkeyfile.c:3453
 #, fuzzy, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "IDOSIYE Kirimo Sibyo"
 
-#: glib/gkeyfile.c:3579
+#: glib/gkeyfile.c:3595
 #, fuzzy, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Nka a Umubare"
 
-#: glib/gkeyfile.c:3593
+#: glib/gkeyfile.c:3609
 #, fuzzy, c-format
 msgid "Integer value '%s' out of range"
 msgstr "Agaciro kugirango Inyuma Bya Urutonde"
 
-#: glib/gkeyfile.c:3626
+#: glib/gkeyfile.c:3642
 #, fuzzy, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "Nka a Umubare"
 
-#: glib/gkeyfile.c:3650
+#: glib/gkeyfile.c:3666
 #, fuzzy, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Nka a Icyungo"
