@@ -2085,6 +2085,17 @@ if test x"$GCC" = xyes; then
       AC_DEFINE_UNQUOTED(G_ATOMIC_POWERPC, 1,
 		   	 [powerpc atomic implementation])
       glib_memory_barrier_needed=yes
+      AC_MSG_CHECKING([whether asm supports numbered local labels])
+      AC_TRY_COMPILE(
+		,[ 
+			__asm__ __volatile__ ("1:       nop\n"
+					      "         bne-    1b")
+		],[
+			AC_DEFINE_UNQUOTED(ASM_NUMERIC_LABELS, 1, [define if asm blocks can use numeric local labels])
+			AC_MSG_RESULT([yes])
+		],[
+			AC_MSG_RESULT([no])
+		])
       ;;	
     ia64)
       AC_MSG_RESULT([ia64])

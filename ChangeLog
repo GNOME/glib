@@ -1,3 +1,14 @@
+2007-11-18  Matthias Clasen  <mclasen@redhat.com>
+
+	Merge from trunk:
+
+	* configure.in: Check whether assembler supports numerical local
+	labels.
+
+	* glib/gatomic.c: Fix powerpc implementation of atomic for
+	platforms where the assembler doesn't support numerical local
+	labels.  (#445362)
+
 2007-11-19  Marco Barisione  <marco@barisione.org>
 
 	Merge from trunk:

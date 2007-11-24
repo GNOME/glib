@@ -281,6 +281,15 @@ g_atomic_int_exchange_and_add (volatile gint *atomic,
 			       gint           val)
 {
   gint result, temp;
+#if ASM_NUMERIC_LABELS
+  __asm__ __volatile__ ("1:       lwarx   %0,0,%3\n"
+			"         add     %1,%0,%4\n"
+			"         stwcx.  %1,0,%3\n"
+			"         bne-    1b"
+			: "=&b" (result), "=&r" (temp), "=m" (*atomic)
+			: "b" (atomic), "r" (val), "m" (*atomic)
+			: "cr0", "memory");
+#else
   __asm__ __volatile__ (".Lieaa%=:       lwarx   %0,0,%3\n"
 			"         add     %1,%0,%4\n"
 			"         stwcx.  %1,0,%3\n"
@@ -288,6 +297,7 @@ g_atomic_int_exchange_and_add (volatile gint *atomic,
 			: "=&b" (result), "=&r" (temp), "=m" (*atomic)
 			: "b" (atomic), "r" (val), "m" (*atomic)
 			: "cr0", "memory");
+#endif
   return result;
 }
  
@@ -297,6 +307,15 @@ g_atomic_int_add (volatile gint *atomic,
 		  gint           val)
 {
   gint result, temp;  
+#if ASM_NUMERIC_LABELS
+  __asm__ __volatile__ ("1:       lwarx   %0,0,%3\n"
+			"         add     %1,%0,%4\n"
+			"         stwcx.  %1,0,%3\n"
+			"         bne-    1b"
+			: "=&b" (result), "=&r" (temp), "=m" (*atomic)
+			: "b" (atomic), "r" (val), "m" (*atomic)
+			: "cr0", "memory");
+#else
   __asm__ __volatile__ (".Lia%=:       lwarx   %0,0,%3\n"
 			"         add     %1,%0,%4\n"
 			"         stwcx.  %1,0,%3\n"
@@ -304,6 +323,7 @@ g_atomic_int_add (volatile gint *atomic,
 			: "=&b" (result), "=&r" (temp), "=m" (*atomic)
 			: "b" (atomic), "r" (val), "m" (*atomic)
 			: "cr0", "memory");
+#endif
 }
 #   else /* !__OPTIMIZE__ */
 gint
@@ -336,6 +356,18 @@ g_atomic_int_compare_and_exchange (volatile gint *atomic,
 				   gint           newval)
 {
   gint result;
+#if ASM_NUMERIC_LABELS
+  __asm__ __volatile__ ("sync\n"
+			"1: lwarx   %0,0,%1\n"
+			"   subf.   %0,%2,%0\n"
+			"   bne     2f\n"
+			"   stwcx.  %3,0,%1\n"
+			"   bne-    1b\n"
+			"2: isync"
+			: "=&r" (result)
+			: "b" (atomic), "r" (oldval), "r" (newval)
+			: "cr0", "memory"); 
+#else
   __asm__ __volatile__ ("sync\n"
 			".L1icae%=: lwarx   %0,0,%1\n"
 			"   subf.   %0,%2,%0\n"
@@ -346,6 +378,7 @@ g_atomic_int_compare_and_exchange (volatile gint *atomic,
 			: "=&r" (result)
 			: "b" (atomic), "r" (oldval), "r" (newval)
 			: "cr0", "memory"); 
+#endif
   return result == 0;
 }
 
@@ -355,6 +388,18 @@ g_atomic_pointer_compare_and_exchange (volatile gpointer *atomic,
 				       gpointer           newval)
 {
   gpointer result;
+#if ASM_NUMERIC_LABELS
+  __asm__ __volatile__ ("sync\n"
+			"1: lwarx   %0,0,%1\n"
+			"   subf.   %0,%2,%0\n"
+			"   bne     2f\n"
+			"   stwcx.  %3,0,%1\n"
+			"   bne-    1b\n"
+			"2: isync"
+			: "=&r" (result)
+			: "b" (atomic), "r" (oldval), "r" (newval)
+			: "cr0", "memory"); 
+#else
   __asm__ __volatile__ ("sync\n"
 			".L1pcae%=: lwarx   %0,0,%1\n"
 			"   subf.   %0,%2,%0\n"
@@ -365,6 +410,7 @@ g_atomic_pointer_compare_and_exchange (volatile gpointer *atomic,
 			: "=&r" (result)
 			: "b" (atomic), "r" (oldval), "r" (newval)
 			: "cr0", "memory"); 
+#endif
   return result == 0;
 }
 #   elif GLIB_SIZEOF_VOID_P == 8 /* 64-bit system */
@@ -374,6 +420,19 @@ g_atomic_int_compare_and_exchange (volatile gint *atomic,
 				   gint           newval)
 {
   gpointer result;
+#if ASM_NUMERIC_LABELS
+  __asm__ __volatile__ ("sync\n"
+			"1: lwarx   %0,0,%1\n"
+			"   extsw   %0,%0\n"
+			"   subf.   %0,%2,%0\n"
+			"   bne     2f\n"
+			"   stwcx.  %3,0,%1\n"
+			"   bne-    1b\n"
+			"2: isync"
+			: "=&r" (result)
+			: "b" (atomic), "r" (oldval), "r" (newval)
+			: "cr0", "memory"); 
+#else
   __asm__ __volatile__ ("sync\n"
 			".L1icae%=: lwarx   %0,0,%1\n"
 			"   extsw   %0,%0\n"
@@ -385,6 +444,7 @@ g_atomic_int_compare_and_exchange (volatile gint *atomic,
 			: "=&r" (result)
 			: "b" (atomic), "r" (oldval), "r" (newval)
 			: "cr0", "memory"); 
+#endif
   return result == 0;
 }
 
@@ -394,6 +454,18 @@ g_atomic_pointer_compare_and_exchange (volatile gpointer *atomic,
 				       gpointer           newval)
 {
   gpointer result;
+#if ASM_NUMERIC_LABELS
+  __asm__ __volatile__ ("sync\n"
+			"1: ldarx   %0,0,%1\n"
+			"   subf.   %0,%2,%0\n"
+			"   bne     2f\n"
+			"   stdcx.  %3,0,%1\n"
+			"   bne-    1b\n"
+			"2: isync"
+			: "=&r" (result)
+			: "b" (atomic), "r" (oldval), "r" (newval)
+			: "cr0", "memory"); 
+#else
   __asm__ __volatile__ ("sync\n"
 			".L1pcae%=: ldarx   %0,0,%1\n"
 			"   subf.   %0,%2,%0\n"
@@ -404,6 +476,7 @@ g_atomic_pointer_compare_and_exchange (volatile gpointer *atomic,
 			: "=&r" (result)
 			: "b" (atomic), "r" (oldval), "r" (newval)
 			: "cr0", "memory"); 
+#endif
   return result == 0;
 }
 #  else /* What's that */
