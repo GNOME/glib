@@ -14,6 +14,8 @@
 
 	* glib/gconvert.c: Include win_iconv.c on Windows.
 
+	* glib/Makefile.am: Add win_iconv.c to EXTRA_DIST.
+	
 	* configure.in: Bypass iconv checks on Windows. 
 
 2007-11-25  Tor Lillqvist  <tml@novell.com>

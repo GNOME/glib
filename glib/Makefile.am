@@ -69,6 +69,7 @@ EXTRA_DIST += 			\
 	glib.symbols		\
 	gregex.c		\
 	gregex.h		\
+	win_iconv.c		\
 	$(MIRRORING_TAB_SOURCE)
 
 # These may be in the builddir too
