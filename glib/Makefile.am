@@ -21,7 +21,6 @@ endif
 
 if OS_UNIX
 gtestutils_c = gtestutils.c
-gtestutils_h = gtestutils.h
 tests_subdir = tests
 endif
 
@@ -227,7 +226,7 @@ glibsubinclude_HEADERS =   \
 	gspawn.h	\
 	gstdio.h	\
 	gstrfuncs.h	\
-	$(gtestutils_h)	\
+	gtestutils.h	\
 	gstring.h	\
 	gthread.h	\
 	gthreadpool.h	\
