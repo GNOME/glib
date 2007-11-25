@@ -376,38 +376,44 @@ dnl ***********************
 dnl
 dnl We do this before the gettext checks, to avoid distortion
 
-AC_ARG_WITH(libiconv,
-            [AC_HELP_STRING([--with-libiconv=@<:@no/gnu/native@:>@],
-                            [use the libiconv library])],,
-	    [with_libiconv=maybe])
+dnl On Windows we use a native implementation
 
-found_iconv=no
-case $with_libiconv in
-  maybe)
-    # Check in the C library first
-    AC_CHECK_FUNC(iconv_open, [with_libiconv=no; found_iconv=yes])
-    # Check if we have GNU libiconv
-    if test $found_iconv = "no"; then
+if test x"$glib_native_win32" = xyes; then
+  with_libiconv=native
+else
+  AC_ARG_WITH(libiconv,
+	      [AC_HELP_STRING([--with-libiconv=@<:@no/gnu/native@:>@],
+			      [use the libiconv library])],,
+	      [with_libiconv=maybe])
+
+  found_iconv=no
+  case $with_libiconv in
+    maybe)
+      # Check in the C library first
+      AC_CHECK_FUNC(iconv_open, [with_libiconv=no; found_iconv=yes])
+      # Check if we have GNU libiconv
+      if test $found_iconv = "no"; then
+	AC_CHECK_LIB(iconv, libiconv_open, [with_libiconv=gnu; found_iconv=yes])
+      fi
+      # Check if we have a iconv in -liconv, possibly from vendor
+      if test $found_iconv = "no"; then
+	AC_CHECK_LIB(iconv, iconv_open, [with_libiconv=native; found_iconv=yes])
+      fi
+      ;;
+    no)
+      AC_CHECK_FUNC(iconv_open, [with_libiconv=no; found_iconv=yes])
+      ;;
+    gnu|yes)
       AC_CHECK_LIB(iconv, libiconv_open, [with_libiconv=gnu; found_iconv=yes])
-    fi
-    # Check if we have a iconv in -liconv, possibly from vendor
-    if test $found_iconv = "no"; then
+      ;;
+    native)
       AC_CHECK_LIB(iconv, iconv_open, [with_libiconv=native; found_iconv=yes])
-    fi
-    ;;
-  no)
-    AC_CHECK_FUNC(iconv_open, [with_libiconv=no; found_iconv=yes])
-    ;;
-  gnu|yes)
-    AC_CHECK_LIB(iconv, libiconv_open, [with_libiconv=gnu; found_iconv=yes])
-    ;;
-  native)
-    AC_CHECK_LIB(iconv, iconv_open, [with_libiconv=native; found_iconv=yes])
-    ;;
-esac
+      ;;
+  esac
 
-if test "x$found_iconv" = "xno" ; then
-   AC_MSG_ERROR([*** No iconv() implementation found in C library or libiconv])
+  if test "x$found_iconv" = "xno" ; then
+     AC_MSG_ERROR([*** No iconv() implementation found in C library or libiconv])
+  fi
 fi
 
 jm_GLIBC21
@@ -465,11 +471,13 @@ dnl
 dnl Now we are done with gettext checks, figure out ICONV_LIBS
 dnl
 
-if test x$with_libiconv != xno ; then
-  case " $INTLLIBS " in
-  *[[\ \	]]-liconv[[\ \	]]*) ;;
-  *) ICONV_LIBS="-liconv" ;;
-  esac
+if test x"$glib_native_win32" != xyes; then
+  if test x$with_libiconv != xno ; then
+    case " $INTLLIBS " in
+    *[[\ \	]]-liconv[[\ \	]]*) ;;
+    *) ICONV_LIBS="-liconv" ;;
+    esac
+  fi
 fi
 AC_SUBST(ICONV_LIBS)
 

@@ -22,13 +22,16 @@
 
 #include "config.h"
 
+#include "glib.h"
+
+#ifndef G_OS_WIN32
 #include <iconv.h>
+#endif
 #include <errno.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 
-#include "glib.h"
 #include "gprintfint.h"
 #include "gthreadprivate.h"
 #include "gunicode.h"
@@ -49,6 +52,10 @@
 #endif
 
 #include "galias.h"
+
+#ifdef G_OS_WIN32
+#include "win_iconv.c"
+#endif
 
 GQuark 
 g_convert_error_quark (void)

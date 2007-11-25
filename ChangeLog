@@ -1,3 +1,21 @@
+2007-11-26  Tor Lillqvist  <tml@novell.com>
+
+	Implement #491549: On Windows, always use the native API for
+	character set conversions instead of GNU libiconv. Almost all
+	codesets supported by GNU libiconv exist as Windows codepages.
+	One missing feature is the "C99" and "JAVA" pseudo codesets, but I
+	doubt that is worth worrying about.
+	
+	* glib/win_iconv.c: New file. iconv() implementation for
+	Windows. Placed in the public domain by Yukihiro Nakadaira
+	<yukihiro.nakadaira@gmail.com>. From
+	http://yukihiro.nakadaira.googlepages.com/win_iconv.zip, his
+	2007-11-17 version.
+
+	* glib/gconvert.c: Include win_iconv.c on Windows.
+
+	* configure.in: Bypass iconv checks on Windows. 
+
 2007-11-25  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gtestutils.c: Add conditionals for non-Unix. Just g_error()
