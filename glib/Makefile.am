@@ -19,7 +19,13 @@ gregex_c =
 gregex_h =
 endif
 
-SUBDIRS = libcharset $(PRINTF_SUBDIR) $(MAYBE_PCRE) update-pcre . tests
+if OS_UNIX
+gtestutils_c = gtestutils.c
+gtestutils_h = gtestutils.h
+tests_subdir = tests
+endif
+
+SUBDIRS = libcharset $(PRINTF_SUBDIR) $(MAYBE_PCRE) update-pcre . $(tests_subdir)
 
 DIST_SUBDIRS = libcharset gnulib pcre update-pcre
 
@@ -140,7 +146,7 @@ libglib_2_0_la_SOURCES = 	\
 	gstdio.c		\
 	gstrfuncs.c		\
 	gstring.c		\
-	gtestutils.c		\
+	$(gtestutils_c)		\
 	gthread.c       	\
 	gthreadprivate.h	\
 	gthreadpool.c   	\
@@ -221,7 +227,7 @@ glibsubinclude_HEADERS =   \
 	gspawn.h	\
 	gstdio.h	\
 	gstrfuncs.h	\
-	gtestutils.h	\
+	$(gtestutils_h)	\
 	gstring.h	\
 	gthread.h	\
 	gthreadpool.h	\
@@ -304,10 +310,13 @@ endif
 
 bin_PROGRAMS	 = ${INSTALL_PROGS}
 
+if OS_UNIX
+
 INSTALL_PROGS	+= gtester
 gtester_SOURCES	 = gtester.c
 gtester_LDADD	 = libglib-2.0.la
 
+endif
 
 glib-2.0.lib: libglib-2.0.la glib.def
 	lib -name:libglib-2.0-$(LT_CURRENT_MINUS_AGE).dll -def:glib.def -out:$@

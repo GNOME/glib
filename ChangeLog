@@ -1,3 +1,7 @@
+2007-11-25  Tor Lillqvist  <tml@novell.com>
+
+	* glib/Makefile.am: Build gtestutils etc on OS_UNIX only.
+
 2007-11-25  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Require gtk-doc 1.8.
