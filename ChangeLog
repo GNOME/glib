@@ -1,5 +1,10 @@
 2007-11-24  Matthias Clasen  <mclasen@redhat.com>
 
+	* */Makefile.am: Replace INCLUDES by AM_CPPFLAGS, other
+	cleanups.
+
+2007-11-24  Matthias Clasen  <mclasen@redhat.com>
+
 	* tests/base64-test.c: Fix a memory overrun.
 
 2007-11-24  Matthias Clasen  <mclasen@redhat.com>

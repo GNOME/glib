@@ -23,8 +23,13 @@ SUBDIRS = libcharset $(PRINTF_SUBDIR) $(MAYBE_PCRE) update-pcre . tests
 
 DIST_SUBDIRS = libcharset gnulib pcre update-pcre
 
-INCLUDES = -I$(top_srcdir) $(pcre_inc) -DG_LOG_DOMAIN=\"GLib\" \
-	$(GLIB_DEBUG_FLAGS) -DG_DISABLE_DEPRECATED -DGLIB_COMPILATION \
+AM_CPPFLAGS = 				\
+	-I$(top_srcdir) 		\
+	$(pcre_inc) 			\
+	-DG_LOG_DOMAIN=\"GLib\" 	\
+	$(GLIB_DEBUG_FLAGS) 		\
+	-DG_DISABLE_DEPRECATED 		\
+	-DGLIB_COMPILATION 		\
 	-DPCRE_STATIC
 
 glib.def: glib.symbols

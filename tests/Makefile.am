@@ -8,7 +8,14 @@ else
 enable_regex =
 endif
 
-INCLUDES = -g -I$(top_srcdir) -I$(top_srcdir)/glib -I$(top_srcdir)/gmodule $(GLIB_DEBUG_FLAGS) $(enable_regex)
+AM_CPPFLAGS = 				\
+	-I$(top_srcdir) 		\
+	-I$(top_srcdir)/glib 		\
+	-I$(top_srcdir)/gmodule 	\
+	$(GLIB_DEBUG_FLAGS) 		\
+	$(enable_regex)
+
+AM_CFLAGS = -g
 
 EFENCE=
 
@@ -58,7 +65,15 @@ endif
 if ENABLE_TIMELOOP
 timeloop = timeloop timeloop-closure
 endif
-noinst_PROGRAMS = testglib testgdate testgdateparser unicode-normalize unicode-collate $(timeloop) errorcheck-mutex-test
+noinst_PROGRAMS = 		\
+	testglib		\
+	testgdate 		\
+	testgdateparser 	\
+	unicode-normalize 	\
+	unicode-collate 	\
+	$(timeloop) 		\
+	errorcheck-mutex-test
+
 testglib_LDADD = $(libglib)
 patterntest_LDADD = $(libglib)
 testgdate_LDADD = $(libglib)
@@ -217,22 +232,23 @@ libmoduletestplugin_b_la_LDFLAGS = $(G_MODULE_LDFLAGS) -avoid-version -module $(
 libmoduletestplugin_b_la_LIBADD = $(G_MODULE_LIBS) $(libadd_libgmodule) $(libadd_libglib)
 
 dist-hook: $(BUILT_EXTRA_DIST)
-	files='$(BUILT_EXTRA_DIST)'; \
-	for f in $$files; do \
-	  if test -f $$f; then d=.; else d=$(srcdir); fi; \
+	files='$(BUILT_EXTRA_DIST)'; 				\
+	for f in $$files; do 					\
+	  if test -f $$f; then d=.; else d=$(srcdir); fi; 	\
 	  cp $$d/$$f $(distdir) || exit 1; done
-	mkdir $(distdir)/markups;          \
-	for f in $(srcdir)/markups/* ; do  \
+	mkdir $(distdir)/markups;          			\
+	for f in $(srcdir)/markups/* ; do  			\
 	  cp $$f $(distdir)/markups; done 
-	mkdir $(distdir)/collate;          \
-	for f in $(srcdir)/collate/* ; do  \
+	mkdir $(distdir)/collate;          			\
+	for f in $(srcdir)/collate/* ; do  			\
           if test -f $$f; then cp $$f $(distdir)/collate; fi; done
-	mkdir $(distdir)/bookmarks;          \
-	for f in $(srcdir)/bookmarks/* ; do  \
+	mkdir $(distdir)/bookmarks;          			\
+	for f in $(srcdir)/bookmarks/* ; do  			\
 	  cp $$f $(distdir)/bookmarks; done 
 
-DISTCLEANFILES = iochannel-test-outfile \
-		file-test-get-contents \
-		maptest \
-		mapchild \
-		collate.out
+DISTCLEANFILES =		\
+	iochannel-test-outfile 	\
+	file-test-get-contents 	\
+	maptest 		\
+	mapchild 		\
+	collate.out

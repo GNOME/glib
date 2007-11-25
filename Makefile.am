@@ -7,8 +7,11 @@ SUBDIRS = . m4macros glib gobject gmodule gthread tests build po docs
 
 bin_SCRIPTS = glib-gettextize
 
-INCLUDES = -DG_LOG_DOMAIN=g_log_domain_glib @GLIB_DEBUG_FLAGS@ \
-	-DG_DISABLE_DEPRECATED -DGLIB_COMPILATION
+AM_CPPFLAGS = 					\
+	-DG_LOG_DOMAIN=g_log_domain_glib 	\
+	@GLIB_DEBUG_FLAGS@ 			\
+	-DG_DISABLE_DEPRECATED 			\
+	-DGLIB_COMPILATION
 
 EXTRA_DIST += 			\
 	ChangeLog.pre-2-14	\

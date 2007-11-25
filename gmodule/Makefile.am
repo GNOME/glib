@@ -1,21 +1,26 @@
 ## Process this file with automake to produce Makefile.in
 include $(top_srcdir)/Makefile.decl
 
-INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/glib -I$(top_srcdir)/gmodule \
-	-DG_LOG_DOMAIN=\"GModule\" @GLIB_DEBUG_FLAGS@ -DG_DISABLE_DEPRECATED
+AM_CPPFLAGS = 				\
+	-I$(top_srcdir) 		\
+	-I$(top_srcdir)/glib 		\
+	-I$(top_srcdir)/gmodule 	\
+	-DG_LOG_DOMAIN=\"GModule\" 	\
+	@GLIB_DEBUG_FLAGS@ 		\
+	-DG_DISABLE_DEPRECATED
 
-EXTRA_DIST +=	\
-		makefile.msc.in \
-		gmoduleconf.h.in \
-		gmodule.def	\
-		gmodule-dl.c	\
-		gmodule-dld.c	\
-		gmodule-dyld.c	\
-		gmodule-os2.c	\
-		gmodule-win32.c	\
-		gmodule-beos.c	\
-		gmodule-ar.c	\
-		gmoduleconf.h.win32 \
+EXTRA_DIST +=				\
+		makefile.msc.in 	\
+		gmoduleconf.h.in 	\
+		gmodule.def		\
+		gmodule-dl.c		\
+		gmodule-dld.c		\
+		gmodule-dyld.c		\
+		gmodule-os2.c		\
+		gmodule-win32.c		\
+		gmodule-beos.c		\
+		gmodule-ar.c		\
+		gmoduleconf.h.win32 	\
 		gmodule.rc.in
 
 BUILT_EXTRA_DIST = \

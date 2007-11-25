@@ -4,7 +4,7 @@
 ## Process this file with automake to produce Makefile.in
 include $(top_srcdir)/Makefile.decl
 
-INCLUDES = \
+AM_CPPFLAGS = 					\
 	-DG_LOG_DOMAIN=\"GLib-GObject\"		\
 	-I$(top_srcdir)				\
 	-I$(top_srcdir)/glib			\

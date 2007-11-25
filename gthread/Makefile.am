@@ -1,9 +1,14 @@
 ## Process this file with automake to produce Makefile.in
 include $(top_srcdir)/Makefile.decl
 
-INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/glib -I$(top_srcdir)/gthread \
-	-DG_LOG_DOMAIN=\"GThread\" @GTHREAD_COMPILE_IMPL_DEFINES@ \
-	@GLIB_DEBUG_FLAGS@ -DG_DISABLE_DEPRECATED
+AM_CPPFLAGS = 				\
+	-I$(top_srcdir) 		\
+	-I$(top_srcdir)/glib 		\
+	-I$(top_srcdir)/gthread 	\
+	-DG_LOG_DOMAIN=\"GThread\" 	\
+	@GTHREAD_COMPILE_IMPL_DEFINES@ 	\
+	@GLIB_DEBUG_FLAGS@ 		\
+	-DG_DISABLE_DEPRECATED
 
 EXTRA_DIST +=				\
 		makefile.msc.in		\
@@ -13,7 +18,7 @@ EXTRA_DIST +=				\
 		gthread.def		\
 		gthread.rc.in
 
-BUILT_EXTRA_DIST = \
+BUILT_EXTRA_DIST = 			\
 		makefile.msc		\
 		gthread.rc
 
