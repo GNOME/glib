@@ -19,12 +19,7 @@ gregex_c =
 gregex_h =
 endif
 
-if OS_UNIX
-gtestutils_c = gtestutils.c
-tests_subdir = tests
-endif
-
-SUBDIRS = libcharset $(PRINTF_SUBDIR) $(MAYBE_PCRE) update-pcre . $(tests_subdir)
+SUBDIRS = libcharset $(PRINTF_SUBDIR) $(MAYBE_PCRE) update-pcre . tests
 
 DIST_SUBDIRS = libcharset gnulib pcre update-pcre
 
@@ -145,7 +140,7 @@ libglib_2_0_la_SOURCES = 	\
 	gstdio.c		\
 	gstrfuncs.c		\
 	gstring.c		\
-	$(gtestutils_c)		\
+	gtestutils.c		\
 	gthread.c       	\
 	gthreadprivate.h	\
 	gthreadpool.c   	\

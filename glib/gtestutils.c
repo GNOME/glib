@@ -21,11 +21,15 @@
 #include "gtestutils.h"
 #include "galias.h"
 #include <sys/types.h>
+#ifdef G_OS_UNIX
 #include <sys/wait.h>
 #include <fcntl.h>
+#endif
 #include <string.h>
 #include <stdlib.h>
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
+#endif
 #include <errno.h>
 #include <signal.h>
 #ifdef HAVE_SYS_SELECT_H
@@ -1130,6 +1134,7 @@ g_strcmp0 (const char     *str1,
   return strcmp (str1, str2);
 }
 
+#ifdef G_OS_UNIX
 static int /* 0 on success */
 kill_child (int  pid,
             int *status,
@@ -1175,6 +1180,7 @@ kill_child (int  pid,
   while (wr < 0 && errno == EINTR);
   return wr;
 }
+#endif
 
 static inline int
 g_string_must_read (GString *gstring,
@@ -1297,6 +1303,7 @@ gboolean
 g_test_trap_fork (guint64        usec_timeout,
                   GTestTrapFlags test_trap_flags)
 {
+#ifdef G_OS_UNIX
   int stdout_pipe[2] = { -1, -1 };
   int stderr_pipe[2] = { -1, -1 };
   int stdtst_pipe[2] = { -1, -1 };
@@ -1424,6 +1431,9 @@ g_test_trap_fork (guint64        usec_timeout,
       test_trap_last_stderr = g_string_free (serr, FALSE);
       return FALSE;
     }
+#else
+  g_error ("Not implemented: g_test_trap_fork");
+#endif
 }
 
 /**
