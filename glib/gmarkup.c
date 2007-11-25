@@ -2296,7 +2296,7 @@ g_markup_vprintf_escaped (const char *format,
  * output, without having to worry that the strings
  * might themselves contain markup.
  *
- * <informalexample><programlisting>
+ * |[
  * const char *store = "Fortnum &amp; Mason";
  * const char *item = "Tea";
  * char *output;
@@ -2306,7 +2306,7 @@ g_markup_vprintf_escaped (const char *format,
  *                                   "&lt;item&gt;&percnt;s&lt;/item&gt;"
  *                                   "&lt;/purchase&gt;",
  *                                   store, item);
- * </programlisting></informalexample>
+ * ]|
  * 
  * Return value: newly allocated result from formatting
  *  operation. Free with g_free().

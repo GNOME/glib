@@ -36,6 +36,7 @@
 #include <stdarg.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <libintl.h>
 #include <locale.h>
 #include <string.h>
 #include <ctype.h>		/* For tolower() */
@@ -1781,11 +1782,11 @@ g_get_real_name (void)
  * g_get_homedir() not pay attention to <envar>HOME</envar> and to 
  * return the real home directory for the user. If applications
  * want to pay attention to <envar>HOME</envar>, they can do:
- * <informalexample><programlisting>
+ * |[
  *  const char *homedir = g_getenv ("HOME");
  *   if (!homedir)
  *      homedir = g_get_homedir (<!-- -->);
- * </programlisting></informalexample>
+ * ]|
  *
  * Returns: the current user's home directory
  */
@@ -3130,10 +3131,6 @@ _g_utils_thread_init (void)
   g_get_language_names ();
 }
 
-#ifdef ENABLE_NLS
-
-#include <libintl.h>
-
 #ifdef G_OS_WIN32
 
 /**
@@ -3182,11 +3179,11 @@ _glib_gettext (const gchar *str)
   if (!_glib_gettext_initialized)
     {
 #ifdef G_OS_WIN32
-      gchar *tmp = _glib_get_locale_dir();
-      bindtextdomain(GETTEXT_PACKAGE, tmp);
-      g_free(tmp);
+      gchar *tmp = _glib_get_locale_dir ();
+      bindtextdomain (GETTEXT_PACKAGE, tmp);
+      g_free (tmp);
 #else
-      bindtextdomain(GETTEXT_PACKAGE, GLIB_LOCALE_DIR);
+      bindtextdomain (GETTEXT_PACKAGE, GLIB_LOCALE_DIR);
 #endif
 #    ifdef HAVE_BIND_TEXTDOMAIN_CODESET
       bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
@@ -3196,8 +3193,6 @@ _glib_gettext (const gchar *str)
   
   return dgettext (GETTEXT_PACKAGE, str);
 }
-
-#endif /* ENABLE_NLS */
 
 #ifdef G_OS_WIN32
 

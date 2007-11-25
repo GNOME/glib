@@ -1275,7 +1275,7 @@ test_time_stamp (void)
  * The forking parent process then asserts successfull child program
  * termination and validates cihld program outputs.
  *
- * <informalexample><programlisting>
+ * |[
  *   static void
  *   test_fork_patterns (void)
  *   {
@@ -1289,7 +1289,7 @@ test_time_stamp (void)
  *     g_test_trap_assert_stdout ("*somagic17*");
  *     g_test_trap_assert_stderr ("*semagic43*");
  *   }
- * </programlisting></informalexample>
+ * ]|
  *
  * Returns: %TRUE for the forked child and %FALSE for the executing parent process.
  */

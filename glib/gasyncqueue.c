@@ -565,7 +565,7 @@ g_async_queue_length_unlocked (GAsyncQueue* queue)
  *
  * If you were sorting a list of priority numbers to make sure the
  * lowest priority would be at the top of the queue, you could use:
- * <informalexample><programlisting> 
+ * |[
  *  gint32 id1;
  *  gint32 id2;
  *   
@@ -573,7 +573,7 @@ g_async_queue_length_unlocked (GAsyncQueue* queue)
  *  id2 = GPOINTER_TO_INT (element2);
  *   
  *  return (id1 > id2 ? +1 : id1 == id2 ? 0 : -1);
- * </programlisting></informalexample>
+ * ]|
  *
  * Since: 2.10
  **/

@@ -154,14 +154,14 @@ g_mkdir_with_parents (const gchar *pathname,
  * For example, you might think you could use %G_FILE_TEST_IS_SYMLINK
  * to know whether it is is safe to write to a file without being
  * tricked into writing into a different location. It doesn't work!
- *
- * <informalexample><programlisting>
+ * |[
  * /&ast; DON'T DO THIS &ast;/
- *  if (!g_file_test (filename, G_FILE_TEST_IS_SYMLINK)) {
- *    fd = g_open (filename, O_WRONLY);
- *    /&ast; write to fd &ast;/
- *  }
- * </programlisting></informalexample>
+ *  if (!g_file_test (filename, G_FILE_TEST_IS_SYMLINK)) 
+ *    {
+ *      fd = g_open (filename, O_WRONLY);
+ *      /&ast; write to fd &ast;/
+ *    }
+ * ]|
  *
  * Another thing to note is that %G_FILE_TEST_EXISTS and
  * %G_FILE_TEST_IS_EXECUTABLE are implemented using the access()

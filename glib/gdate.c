@@ -864,9 +864,9 @@ g_date_set_parse (GDate       *d,
  * Sets the value of a date from a <type>time_t</type> value. 
  *
  * To set the value of a date to the current day, you could write:
- * <informalexample><programlisting> 
+ * |[
  *  g_date_set_time_t (date, time (NULL)); 
- * </programlisting></informalexample>
+ * ]|
  *
  * Since: 2.10
  */

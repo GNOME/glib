@@ -1897,7 +1897,7 @@ g_main_current_source (void)
  * from within idle handlers, but may have freed the object 
  * before the dispatch of your idle handler.
  *
- * <informalexample><programlisting>
+ * |[
  * static gboolean 
  * idle_callback (gpointer data)
  * {
@@ -1927,7 +1927,7 @@ g_main_current_source (void)
  *    
  *   G_OBJECT_CLASS (parent_class)->finalize (object);
  * }
- * </programlisting></informalexample>
+ * ]|
  *
  * This will fail in a multi-threaded application if the 
  * widget is destroyed before the idle handler fires due 
@@ -1935,7 +1935,7 @@ g_main_current_source (void)
  * this particular problem, is to check to if the source
  * has already been destroy within the callback.
  *
- * <informalexample><programlisting>
+ * |[
  * static gboolean 
  * idle_callback (gpointer data)
  * {
@@ -1950,7 +1950,7 @@ g_main_current_source (void)
  *   
  *   return FALSE;
  * }
- * </programlisting></informalexample>
+ * ]|
  *
  * Return value: %TRUE if the source has been destroyed
  *

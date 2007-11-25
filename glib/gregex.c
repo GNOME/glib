@@ -1103,7 +1103,7 @@ g_regex_match_simple (const gchar        *pattern,
  * To retrieve all the non-overlapping matches of the pattern in 
  * string you can use g_match_info_next().
  *
- * <informalexample><programlisting>
+ * |[
  * static void
  * print_uppercase_words (const gchar *string)
  * {
@@ -1123,7 +1123,7 @@ g_regex_match_simple (const gchar        *pattern,
  *   g_match_info_free (match_info);
  *   g_regex_unref (regex);
  * }
- * </programlisting></informalexample>
+ * ]|
  *
  * Returns: %TRUE is the string matched, %FALSE otherwise
  *
@@ -1172,7 +1172,7 @@ g_regex_match (const GRegex      *regex,
  * To retrieve all the non-overlapping matches of the pattern in 
  * string you can use g_match_info_next().
  *
- * <informalexample><programlisting>
+ * |[
  * static void
  * print_uppercase_words (const gchar *string)
  * {
@@ -1198,7 +1198,7 @@ g_regex_match (const GRegex      *regex,
  *       g_error_free (error);
  *     }
  * }
- * </programlisting></informalexample>
+ * ]|
  *
  * Returns: %TRUE is the string matched, %FALSE otherwise
  *

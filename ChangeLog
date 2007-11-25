@@ -1,3 +1,17 @@
+2007-11-25  Matthias Clasen  <mclasen@redhat.com>
+
+	* configure.in: Require gtk-doc 1.8.
+
+	* glib/gasyncqueue.c:
+	* glib/gdate.c:
+	* glib/gfileutils.c:
+	* glib/gmain.c:
+	* glib/gmarkup.c:
+	* glib/gregex.c:
+	* glib/gtestutils.c:
+	* glib/gutils.c: Use gtk-doc abbreviations for 
+	examples in doc comments.
+
 2007-11-24  Matthias Clasen  <mclasen@redhat.com>
 
 	* */Makefile.am: Replace INCLUDES by AM_CPPFLAGS, other
