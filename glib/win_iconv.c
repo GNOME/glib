@@ -137,6 +137,7 @@ static int name_to_codepage(const char *name);
 static uint utf16_to_ucs4(const ushort *wbuf);
 static void ucs4_to_utf16(uint wc, ushort *wbuf, int *wbufsize);
 static int is_unicode(int codepage);
+static int must_use_null_useddefaultchar(int codepage);
 static void check_utf_bom(rec_iconv_t *cd, ushort *wbuf, int *wbufsize);
 static char *strrstr(const char *str, const char *token);
 
@@ -1001,6 +1002,18 @@ is_unicode(int codepage)
             codepage == 65000 || codepage == 65001);
 }
 
+static int
+must_use_null_useddefaultchar(int codepage)
+{
+    return (codepage == 65000 || codepage == 65001 ||
+            codepage == 50220 || codepage == 50221 ||
+            codepage == 50222 || codepage == 50225 ||
+            codepage == 50227 || codepage == 50229 ||
+            codepage == 52936 || codepage == 54936 ||
+            (codepage >= 57002 && codepage <= 57011) ||
+            codepage == 42);
+}
+
 static void
 check_utf_bom(rec_iconv_t *cd, ushort *wbuf, int *wbufsize)
 {
@@ -1269,9 +1282,11 @@ kernel_wctomb(csconv_t *cv, ushort *wbuf, int wbufsize, uchar *buf, int bufsize)
     BOOL usedDefaultChar = 0;
     int len;
 
+    if (bufsize == 0)
+        return_error(E2BIG);
     len = WideCharToMultiByte(cv->codepage, 0,
             (const wchar_t *)wbuf, wbufsize, (char *)buf, bufsize, NULL,
-            (cv->codepage == 65000 || cv->codepage == 65001) ? NULL : &usedDefaultChar);
+            must_use_null_useddefaultchar(cv->codepage) ? NULL : &usedDefaultChar);
     if (len == 0)
     {
         if (GetLastError() == ERROR_INSUFFICIENT_BUFFER)

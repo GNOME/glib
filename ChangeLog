@@ -1,5 +1,14 @@
 2007-11-27  Tor Lillqvist  <tml@novell.com>
 
+	* glib/win_iconv.c: Some improvements, being upstreamed.
+	(must_use_null_useddefaultchar): New function, checks for those
+	codepages for which one must pass a NULL lpUsedDefaultChar pointer
+	to WideCharToMultiByte().
+	(kernel_wctomb): Use it.
+	(kernel_wctomb): Return with E2BIG immediately if bufsize is zero.
+
+2007-11-27  Tor Lillqvist  <tml@novell.com>
+
 	* glib/gutils.c (_glib_get_locale_dir) [Win32]: Use either
 	lib/locale or share/locale depending on which one is in
 	GLIB_LOCALE_DIR. When the configury recognizes GNU gettext (based
