@@ -822,9 +822,15 @@ AM_CONDITIONAL(HAVE_SUNSTUDIO_VISIBILITY, [test x$g_have_sunstudio_visibility = 
 AC_C_BIGENDIAN
 
 # check for header files
-AC_CHECK_HEADERS([dirent.h float.h limits.h pwd.h sys/param.h sys/poll.h sys/resource.h])
+AC_CHECK_HEADERS([dirent.h float.h limits.h pwd.h grp.h sys/param.h sys/poll.h sys/resource.h])
 AC_CHECK_HEADERS([sys/time.h sys/times.h sys/wait.h unistd.h values.h])
 AC_CHECK_HEADERS([sys/select.h sys/types.h stdint.h sched.h malloc.h])
+AC_CHECK_HEADERS([sys/vfs.h sys/mount.h sys/vmount.h sys/statfs.h sys/statvfs.h])
+AC_CHECK_HEADERS([mntent.h sys/mnttab.h sys/vfstab.h sys/mntctl.h sys/sysctl.h fstab.h])
+
+# check for structure fields
+AC_CHECK_MEMBERS([struct stat.st_mtimensec, struct stat.st_mtim.tv_nsec, struct stat.st_atimensec, struct stat.st_atim.tv_nsec, struct stat.st_ctimensec, struct stat.st_ctim.tv_nsec])
+AC_CHECK_MEMBERS([struct stat.st_blksize, struct stat.st_blocks])
 
 # Checks for libcharset
 jm_LANGINFO_CODESET
@@ -888,6 +894,8 @@ AC_MSG_RESULT(unsigned $glib_size_type)
 
 # Check for some functions
 AC_CHECK_FUNCS(lstat strerror strsignal memmove vsnprintf stpcpy strcasecmp strncasecmp poll getcwd vasprintf setenv unsetenv getc_unlocked readlink symlink fdwalk)
+AC_CHECK_FUNCS(chown lchown fchmod fchown link statvfs statfs utimes getgrgid getpwuid)
+AC_CHECK_FUNCS(setmntent endmntent hasmntopt getmntinfo)
 # Check for high-resolution sleep functions
 AC_CHECK_FUNCS(nanosleep nsleep)
 
@@ -896,6 +904,47 @@ AC_CHECK_FUNCS(_NSGetEnviron)
 
 AC_FUNC_VSNPRINTF_C99
 AC_FUNC_PRINTF_UNIX98
+
+dnl
+dnl if statfs() takes 2 arguments (Posix) or 4 (Solaris)
+dnl
+if test "$ac_cv_func_statfs" = yes ; then
+  AC_MSG_CHECKING([number of arguments to statfs()])
+  AC_TRY_COMPILE([#include <unistd.h>
+  #ifdef HAVE_SYS_PARAM_H
+  #include <sys/param.h>
+  #endif
+  #ifdef HAVE_SYS_VFS_H
+  #include <sys/vfs.h>
+  #endif
+  #ifdef HAVE_SYS_MOUNT_H
+  #include <sys/mount.h>
+  #endif
+  #ifdef HAVE_SYS_STATFS_H
+  #include <sys/statfs.h>
+  #endif], [struct statfs st;
+  statfs(NULL, &st);],[
+    AC_MSG_RESULT([2])
+    AC_DEFINE(STATFS_ARGS, 2, [Number of arguments to statfs()])],[
+    AC_TRY_COMPILE([#include <unistd.h>
+  #ifdef HAVE_SYS_PARAM_H
+  #include <sys/param.h>
+  #endif
+  #ifdef HAVE_SYS_VFS_H
+  #include <sys/vfs.h>
+  #endif
+  #ifdef HAVE_SYS_MOUNT_H
+  #include <sys/mount.h>
+  #endif
+  #ifdef HAVE_SYS_STATFS_H
+  #include <sys/statfs.h>
+  #endif], [struct statfs st;
+  statfs(NULL, &st, sizeof (st), 0);],[
+      AC_MSG_RESULT([4])
+      AC_DEFINE(STATFS_ARGS, 4, [Number of arguments to statfs()])],[
+      AC_MSG_RESULT(unknown)
+      AC_MSG_ERROR([unable to determine number of arguments to statfs()])])])
+fi
 
 #
 # Check whether to use an included printf
@@ -1399,6 +1448,105 @@ esac
 AC_MSG_RESULT($GIO)
 AC_SUBST(GIO)
 
+
+dnl **********************************
+dnl *** Check for libselinux (GIO) ***
+dnl **********************************
+AC_ARG_ENABLE(selinux, [  --disable-selinux       build without selinux support])
+msg_selinux=no
+SELINUX_LIBS=
+if test "x$enable_selinux" != "xno"; then
+
+ AC_CHECK_LIB(selinux, is_selinux_enabled,
+   [AC_CHECK_HEADERS(selinux/selinux.h,
+     [AC_SEARCH_LIBS(lgetfilecon_raw, selinux, 
+       [AC_DEFINE(HAVE_SELINUX, 1, [Define to 1 if libselinux is available])
+        SELINUX_LIBS="-lselinux"
+        msg_selinux=yes])
+     ])
+   ])
+fi
+AC_SUBST(SELINUX_LIBS)
+
+dnl *****************************
+dnl ** Check for inotify (GIO) **
+dnl *****************************
+inotify_support=no
+AC_CHECK_HEADERS([linux/inotify.h],
+[
+	inotify_support=yes
+])
+AC_CHECK_HEADERS([sys/inotify.h],
+[
+	inotify_support=yes
+])
+
+AM_CONDITIONAL(HAVE_INOTIFY, [test "$inotify_support" = "yes"])
+
+dnl ****************************
+dnl *** Checks for FAM (GIO) ***
+dnl ****************************
+
+should_disable_fam=no
+
+AC_ARG_ENABLE(fam, [  --disable-fam          build without enabling fam for file system monitoring],
+                         [
+                                if test "x$enable_fam" = "xno"; then
+                                        should_disable_fam=yes
+                                        echo "Not building FAM support"
+                                fi
+                         ]
+                         )
+fam_support=no
+FAM_LIBS=
+if test "x$should_disable_fam" = "xno"; then
+AC_CHECK_LIB(fam, FAMOpen,
+  [AC_CHECK_HEADERS(fam.h,
+    [AC_DEFINE(HAVE_FAM, [], [Define if we have FAM])
+     AC_CHECK_LIB(fam, FAMNoExists,
+     		  AC_DEFINE(HAVE_FAM_NO_EXISTS, [], [Define if we have FAMNoExists in fam]))
+     FAM_LIBS="-lfam"]
+     fam_support=yes,
+    AC_MSG_WARN(*** FAM support will not be built (header files not found) ***))],
+  AC_MSG_WARN(*** FAM support will not be built (FAM library not found) ***))
+AC_SUBST(FAM_LIBS)
+fi
+AM_CONDITIONAL(HAVE_FAM, [test "$fam_support" = "yes"])
+
+
+dnl *****************************
+dnl *** Check for xattr (GIO) ***
+dnl *****************************
+AC_ARG_ENABLE(xattr, [  --disable-xattr           build without xattr support])
+msg_xattr=no
+XATTR_LIBS=
+if test "x$enable_xattr" != "xno"; then
+
+dnl either glibc or libattr can provide xattr support
+
+dnl for both of them, we check for getxattr being in
+dnl the library and a valid xattr header.
+
+dnl try glibc
+ AC_CHECK_LIB(c, getxattr,
+   [AC_CHECK_HEADERS(sys/xattr.h,
+     [AC_DEFINE(HAVE_XATTR, 1, [Define to 1 if xattr is available])
+      msg_xattr=yes])
+   ])
+
+  if test "x$msg_xattr" != "xyes"; then
+dnl   failure. try libattr
+   AC_CHECK_LIB(attr, getxattr,
+      [AC_CHECK_HEADERS(attr/xattr.h,
+       [AC_DEFINE(HAVE_XATTR, 1, [Define to 1 if xattr is available])
+        XATTR_LIBS="-lattr"
+        msg_xattr=yes])
+      ])
+  fi
+fi
+AC_SUBST(XATTR_LIBS)
+
+
 dnl ****************************************
 dnl *** platform dependent source checks ***
 dnl ****************************************
@@ -1869,6 +2017,45 @@ int main () {
 			if test "$ac_cv_func_nonposix_getpwuid_r" = yes; then
 				AC_DEFINE(HAVE_NONPOSIX_GETPWUID_R,1,
 					[Have non-POSIX function getpwuid_r])
+			fi
+		fi
+	fi
+	if test "$ac_cv_header_grp_h" = "yes"; then
+	   	AC_CACHE_CHECK([for posix getgrgid_r],
+			ac_cv_func_posix_getgrgid_r,
+			[AC_TRY_RUN([
+#include <errno.h>
+#include <grp.h>
+int main () { 
+    char buffer[10000];
+    struct group grp, *grpptr = &grp;
+    int error;
+    errno = 0;
+    error = getgrgid_r (0, &grp, buffer, 
+                        sizeof (buffer), &grpptr);
+   return (error < 0 && errno == ENOSYS) 
+	   || error == ENOSYS; 
+}                              ],
+			       [ac_cv_func_posix_getgrgid_r=yes],
+			       [ac_cv_func_posix_getgrgid_r=no])])
+		GLIB_ASSERT_SET(ac_cv_func_posix_getgrgid_r)
+		if test "$ac_cv_func_posix_getgrgid_r" = yes; then
+		   	AC_DEFINE(HAVE_POSIX_GETGRGID_R,1,
+				[Have POSIX function getgrgid_r])
+		else
+			AC_CACHE_CHECK([for nonposix getgrgid_r],
+				ac_cv_func_nonposix_getgrgid_r,
+				[AC_TRY_LINK([#include <grp.h>],
+                               		[char buffer[10000];
+					struct group grp;	
+					getgrgid_r (0, &grp, buffer, 
+                                       	sizeof (buffer));],
+				[ac_cv_func_nonposix_getgrgid_r=yes],
+				[ac_cv_func_nonposix_getgrgid_r=no])])
+			GLIB_ASSERT_SET(ac_cv_func_nonposix_getgrgid_r)
+			if test "$ac_cv_func_nonposix_getgrgid_r" = yes; then
+			   	AC_DEFINE(HAVE_NONPOSIX_GETGRGID_R,1,
+					[Have non-POSIX function getgrgid_r])
 			fi
 		fi
 	fi
@@ -2974,6 +3161,10 @@ gthread-2.0.pc
 gthread-2.0-uninstalled.pc
 gobject-2.0.pc
 gobject-2.0-uninstalled.pc
+gio-2.0.pc
+gio-unix-2.0.pc
+gio-2.0-uninstalled.pc
+gio-unix-2.0-uninstalled.pc
 glib-zip
 glib-gettextize
 Makefile
@@ -2992,6 +3183,10 @@ gmodule/gmoduleconf.h
 gobject/Makefile
 gobject/glib-mkenums
 gthread/Makefile
+gio/Makefile
+gio/xdgmime/Makefile
+gio/inotify/Makefile
+gio/fam/Makefile
 po/Makefile.in
 docs/Makefile
 docs/reference/Makefile
@@ -2999,6 +3194,8 @@ docs/reference/glib/Makefile
 docs/reference/glib/version.xml
 docs/reference/gobject/Makefile
 docs/reference/gobject/version.xml
+docs/reference/gio/Makefile
+docs/reference/gio/version.xml
 tests/Makefile
 tests/gobject/Makefile
 tests/refcount/Makefile

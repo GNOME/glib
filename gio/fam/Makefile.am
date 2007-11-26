@@ -1,0 +1,33 @@
+NULL =
+
+module_flags = -export_dynamic -avoid-version -module -no-undefined -export-symbols-regex '^g_io_module_(load|unload)'
+
+giomodule_LTLIBRARIES = libgiofam.la
+giomoduledir = $(libdir)/gio/modules
+
+libgiofam_la_SOURCES = 		\
+	fam-helper.c			\
+	fam-helper.h			\
+	fam-module.c			\
+	gfamdirectorymonitor.c		\
+	gfamdirectorymonitor.h		\
+	gfamfilemonitor.c		\
+	gfamfilemonitor.h		\
+	$(NULL)
+
+libgiofam_la_CFLAGS = \
+	-DG_LOG_DOMAIN=\"GLib-GIO\"	\
+	-I$(top_srcdir) 		\
+	-I$(top_srcdir)/glib 		\
+	-I$(top_srcdir)/gmodule		\
+	-I$(top_srcdir)/gio 		\
+	-DGIO_MODULE_DIR=\"$(libdir)/gio/modules\"  \
+	-DG_DISABLE_DEPRECATED
+
+libgiofam_la_LDFLAGS = $(module_flags)
+libgiofam_la_LIBADD = \
+		$(top_builddir)/gio/libgio-2.0.la \
+		$(GLIB_LIBS) \
+		$(FAM_LIBS) \
+		$(NULL)
+

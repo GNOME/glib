@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
+<!ENTITY version SYSTEM "version.xml">
+]>
+<book lang="en" id="gio" xmlns:xi="http://www.w3.org/2003/XInclude">
+<title>GIO Reference Manual</title>
+  <bookinfo>
+    <title>GIO Reference Manual</title>
+    <releaseinfo>for GIO &version;</releaseinfo>
+  </bookinfo>
+  <part>
+  <title>GIO Overview</title>
+  </part>
+  <part>
+  <title>API Reference</title>
+    <chapter id="file_ops">
+    	<title>File Operations</title>
+    	<xi:include href="xml/gfile.xml"/>
+        <xi:include href="xml/gfileattribute.xml"/>
+    	<xi:include href="xml/gfileinfo.xml"/>
+	<xi:include href="xml/gfileenumerator.xml"/>
+	<xi:include href="xml/gmountoperation.xml"/>
+	<xi:include href="xml/gioerror.xml"/>
+    </chapter>
+    <chapter id="file_mon">
+    	<title>File System Monitoring</title>
+        <xi:include href="xml/gfilemonitor.xml"/>
+        <xi:include href="xml/gdirectorymonitor.xml"/>
+    </chapter>
+    <chapter id="async">
+        <title>Asynchronous I/O</title>
+	<xi:include href="xml/gcancellable.xml"/>
+	<xi:include href="xml/gasyncresult.xml"/>
+        <xi:include href="xml/gioscheduler.xml"/>
+	<xi:include href="xml/gsimpleasyncresult.xml"/>
+    </chapter>
+    
+    <chapter id="streaming">
+        <title>Streaming I/O</title>
+	<xi:include href="xml/gseekable.xml"/>
+
+        <xi:include href="xml/ginputstream.xml"/>        
+        <xi:include href="xml/goutputstream.xml"/>
+
+        <xi:include href="xml/gfileinputstream.xml"/>
+        <xi:include href="xml/gfileoutputstream.xml"/>
+
+        <xi:include href="xml/gfilterinputstream.xml"/>        
+        <xi:include href="xml/gfilteroutputstream.xml"/>
+	
+        <xi:include href="xml/gmemoryinputstream.xml"/>        
+        <xi:include href="xml/gmemoryoutputstream.xml"/>
+        
+        <xi:include href="xml/gbufferedinputstream.xml"/>
+        <xi:include href="xml/gbufferedoutputstream.xml"/>
+	
+        <xi:include href="xml/gdatainputstream.xml"/>
+        <xi:include href="xml/gdataoutputstream.xml"/>
+        
+        <xi:include href="xml/gsocketinputstream.xml"/>
+        <xi:include href="xml/gsocketoutputstream.xml"/>
+
+    </chapter>
+
+    <chapter id="types">
+        <title>File types and applications</title>
+        <xi:include href="xml/gcontenttype.xml"/>
+	<xi:include href="xml/gappinfo.xml"/>
+    </chapter>
+    
+    <chapter id="volume_mon">
+    	<title>Volumes and Drives</title>
+        <xi:include href="xml/gvolumemonitor.xml"/>
+	<xi:include href="xml/gvolume.xml"/>
+	<xi:include href="xml/gdrive.xml"/>
+	<xi:include href="xml/gunixmounts.xml"/>
+    </chapter>
+    <chapter id="icons">
+    	<title>Icons</title>
+    	<xi:include href="xml/gicon.xml"/>
+    	<xi:include href="xml/gfileicon.xml"/>
+    	<xi:include href="xml/gloadableicon.xml"/>
+    	<xi:include href="xml/gthemedicon.xml"/>
+    </chapter>
+    <chapter id="utils">   
+    	<title>Utilities</title>
+        <xi:include href="xml/gfilenamecompleter.xml"/>
+        <xi:include href="xml/gurifuncs.xml"/>
+    </chapter>
+    <chapter id="extending">
+    	<title>Extending GIO</title>
+        <xi:include href="xml/gvfs.xml"/>
+	<xi:include href="xml/giomodule.xml"/>
+    </chapter>
+  </part>
+
+  <chapter id="gio-hierarchy">
+    <title>Object Hierarchy</title>
+      <xi:include href="xml/tree_index.sgml"/>
+  </chapter>
+  
+  <index>
+    <title id="index-all">Index</title>
+  </index>
+</book>

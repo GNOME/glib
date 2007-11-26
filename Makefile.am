@@ -3,7 +3,7 @@ include $(top_srcdir)/Makefile.decl
 
 AUTOMAKE_OPTIONS = 1.7
 
-SUBDIRS = . m4macros glib gobject gmodule gthread tests build po docs
+SUBDIRS = . m4macros glib gobject gmodule gthread gio tests build po docs
 
 bin_SCRIPTS = glib-gettextize
 
@@ -45,11 +45,15 @@ EXTRA_DIST += 			\
 	gmodule-export-2.0.pc.in	\
 	gmodule-no-export-2.0.pc.in	\
 	gthread-2.0.pc.in	\
+	gio-2.0.pc.in		\
+	gio-unix-2.0.pc.in	\
 	glib-2.0-uninstalled.pc.in 	\
 	gobject-2.0-uninstalled.pc.in 	\
 	gmodule-2.0-uninstalled.pc.in	\
 	gthread-2.0-uninstalled.pc.in	\
-	gmodule-no-export-2.0-uninstalled.pc.in
+	gmodule-no-export-2.0-uninstalled.pc.in \
+	gio-2.0-uninstalled.pc.in		\
+	gio-unix-2.0-uninstalled.pc.in	
 
 
 # These may be in the builddir too
@@ -77,7 +81,7 @@ stamp-gc-h: config.status
 	echo timestamp > stamp-gc-h
 
 pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = glib-2.0.pc gobject-2.0.pc gmodule-2.0.pc gmodule-export-2.0.pc gmodule-no-export-2.0.pc gthread-2.0.pc
+pkgconfig_DATA = glib-2.0.pc gobject-2.0.pc gmodule-2.0.pc gmodule-export-2.0.pc gmodule-no-export-2.0.pc gthread-2.0.pc gio-2.0.pc gio-unix-2.0.pc
 
 $(pkgconfig_DATA): config.status
 

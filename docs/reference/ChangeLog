@@ -1,3 +1,13 @@
+2007-11-26  Alexander Larsson  <alexl@redhat.com>
+
+        * Makefile.am:
+        * gio/Makefile.am:
+        * gio/gio-docs.xml:
+        * gio/gio-sections.txt:
+        * gio/gio.types:
+        * gio/version.xml.in:
+	Add gio docs
+
 2007-11-23  Matthias Clasen <mclasen@redhat.com>
 
 	* glib/tmpl/i18n.sgml:

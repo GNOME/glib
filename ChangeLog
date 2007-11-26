@@ -1,3 +1,21 @@
+2007-11-26  Alexander Larsson  <alexl@redhat.com>
+
+        * Makefile.am:
+        * configure.in:
+        * gio-2.0-uninstalled.pc.in:
+        * gio-2.0.pc.in: 
+        * gio-unix-2.0-uninstalled.pc.in:
+        * gio-unix-2.0.pc.in:
+	* gio/
+	* docs/reference/gio
+	Merged gio-standalone into glib.
+	
+        * glib/glibintl.h:
+        * glib/gutils.c:
+	Export glib_gettext so that gio can use it
+	Add P_ (using same domain for now)
+	Add I_ as g_intern_static_string
+
 2007-11-26  Tor Lillqvist  <tml@novell.com>
 
 	* glib/win_iconv.c: ISO8859-1 is CP28591, not CP1252.
