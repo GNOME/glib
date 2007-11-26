@@ -3171,8 +3171,16 @@ _glib_get_locale_dir (void)
 
 #endif /* G_OS_WIN32 */
 
+/**
+ * glib_gettext:
+ * str: The string to be translated
+ *
+ * Returns the translated string from the glib translations.
+ * This is an internal function and should only be used by
+ * the internals of glib (such as libgio).
+ */
 G_CONST_RETURN gchar *
-_glib_gettext (const gchar *str)
+glib_gettext (const gchar *str)
 {
   static gboolean _glib_gettext_initialized = FALSE;
 

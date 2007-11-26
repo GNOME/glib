@@ -7,10 +7,12 @@
 
 #ifdef ENABLE_NLS
 
-gchar *_glib_gettext (const gchar *str) G_GNUC_FORMAT (1);
+gchar *glib_gettext (const gchar *str);
 
 #include <libintl.h>
-#define _(String) _glib_gettext(String)
+#define _(String) glib_gettext(String)
+/* Split out this in the code, but keep it in the same domain for now */
+#define P_(String) glib_gettext(String)
 
 #ifdef gettext_noop
 #define N_(String) gettext_noop(String)
@@ -20,11 +22,15 @@ gchar *_glib_gettext (const gchar *str) G_GNUC_FORMAT (1);
 #else /* NLS is disabled */
 #define _(String) (String)
 #define N_(String) (String)
+#define P_(String) (String)
 #define textdomain(String) (String)
 #define gettext(String) (String)
 #define dgettext(Domain,String) (String)
 #define dcgettext(Domain,String,Type) (String)
 #define bindtextdomain(Domain,Directory) (Domain) 
 #endif
+
+/* not really I18N-related, but also a string marker macro */
+#define I_(string) g_intern_static_string (string)
 
 #endif /* __GLIBINTL_H__ */
