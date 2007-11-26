@@ -1,3 +1,13 @@
+2007-11-27  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gutils.c (_glib_get_locale_dir) [Win32]: Use either
+	lib/locale or share/locale depending on which one is in
+	GLIB_LOCALE_DIR. When the configury recognizes GNU gettext (based
+	on the _nl_msg_cat_cntr variable, eek), share/locale gets used.
+
+	* glib-zip.in: Likewise, look for message catalogs either in
+	lib/locale or share/locale.
+
 2007-11-26  Matthias Clasen  <mclasen@redhat.com>
 
 	* gio/gfileattribute.c: Fix up a doc comment.
