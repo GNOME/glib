@@ -3138,29 +3138,37 @@ _g_utils_thread_init (void)
 /**
  * _glib_get_locale_dir:
  *
- * Return the path to the lib\locale subfolder of the GLib
- * installation folder. The path is in the system codepage. We have to
- * use system codepage as bindtextdomain() doesn't have a UTF-8
- * interface.
+ * Return the path to the share\locale or lib\locale subfolder of the
+ * GLib installation folder. The path is in the system codepage. We
+ * have to use system codepage as bindtextdomain() doesn't have a
+ * UTF-8 interface.
  */
 static gchar *
 _glib_get_locale_dir (void)
 {
-  gchar *dir, *cp_dir;
+  gchar *install_dir, *locale_dir;
   gchar *retval = NULL;
 
-  dir = g_win32_get_package_installation_directory (GETTEXT_PACKAGE, dll_name);
-  cp_dir = g_win32_locale_filename_from_utf8 (dir);
-  g_free (dir);
+  install_dir = g_win32_get_package_installation_directory (GETTEXT_PACKAGE, dll_name);
 
-  if (cp_dir)
+  if (install_dir)
     {
-      /* Don't use g_build_filename() on pathnames in the system
-       * codepage. In CJK locales cp_dir might end with a double-byte
-       * character whose trailing byte is a backslash.
+      /*
+       * Append "/share/locale" or "/lib/locale" depending on whether
+       * autoconfigury detected GNU gettext or not.
        */
-      retval = g_strconcat (cp_dir, "\\lib\\locale", NULL);
-      g_free (cp_dir);
+      const char *p = GLIB_LOCALE_DIR + strlen (GLIB_LOCALE_DIR);
+      while (*--p != '/')
+	;
+      while (*--p != '/')
+	;
+
+      locale_dir = g_build_filename (install_dir, p, NULL);
+
+      retval = g_win32_locale_filename_from_utf8 (locale_dir);
+
+      g_free (install_dir);
+      g_free (locale_dir);
     }
 
   if (retval)

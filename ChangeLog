@@ -1,3 +1,15 @@
+2007-11-27  Tor Lillqvist  <tml@novell.com>
+
+	Merge from trunk:
+
+	* glib/gutils.c (_glib_get_locale_dir) [Win32]: Use either
+	lib/locale or share/locale depending on which one is in
+	GLIB_LOCALE_DIR. When the configury recognizes GNU gettext (based
+	on the _nl_msg_cat_cntr variable, eek), share/locale gets used.
+
+	* glib-zip.in: Likewise, look for message catalogs either in
+	lib/locale or share/locale.
+
 2007-11-24  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Bump version

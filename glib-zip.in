@@ -16,7 +16,6 @@ cp -p @abs_srcdir@/COPYING share/doc/glib-dev-@GLIB_VERSION@
 
 rm $ZIP
 zip $ZIP -@ <<EOF
-COPYING.LIB-2
 bin/gspawn-win32-helper.exe
 bin/gspawn-win32-helper-console.exe
 bin/libglib-2.0-@LT_CURRENT_MINUS_AGE@.dll
@@ -25,7 +24,17 @@ bin/libgobject-2.0-@LT_CURRENT_MINUS_AGE@.dll
 bin/libgthread-2.0-@LT_CURRENT_MINUS_AGE@.dll
 EOF
 
-zip -r $ZIP lib/locale/*/LC_MESSAGES/glib20.mo
+if [ -f lib/locale/de/LC_MESSAGES/glib20.mo -a -f share/locale/de/LC_MESSAGES/glib20.mo ]; then
+  if [ lib/locale/de/LC_MESSAGES/glib20.mo -nt share/locale/de/LC_MESSAGES/glib20.mo ]; then
+    zip -r $ZIP lib/locale/*/LC_MESSAGES/glib20.mo
+  else
+    zip -r $ZIP share/locale/*/LC_MESSAGES/glib20.mo
+  fi
+elif [ -f lib/locale/de/LC_MESSAGES/glib20.mo ]; then
+  zip -r $ZIP lib/locale/*/LC_MESSAGES/glib20.mo
+else
+  zip -r $ZIP share/locale/*/LC_MESSAGES/glib20.mo
+fi
 
 zip -r $ZIP share/doc/glib-@GLIB_VERSION@
 
