@@ -205,7 +205,7 @@ gioinclude_HEADERS = \
 	gmemoryoutputstream.h 	\
 	gmountoperation.h 	\
 	goutputstream.h 	\
-	gseekable.h 		\	
+	gseekable.h 		\
 	gsimpleasyncresult.h 	\
 	gsocketinputstream.h 	\
 	gsocketoutputstream.h 	\
