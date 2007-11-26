@@ -1,5 +1,9 @@
 2007-11-26  Tor Lillqvist  <tml@novell.com>
 
+	* glib/win_iconv.c: ISO8859-1 is CP28591, not CP1252.
+
+2007-11-26  Tor Lillqvist  <tml@novell.com>
+
 	Implement #491549: On Windows, always use the native API for
 	character set conversions instead of GNU libiconv. Almost all
 	codesets supported by GNU libiconv exist as Windows codepages.
