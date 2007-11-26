@@ -1,3 +1,7 @@
+2007-11-26  Matthias Clasen  <mclasen@redhat.com>
+
+	* gio/gfileattribute.c: Fix up a doc comment.
+
 2007-11-26  Alexander Larsson  <alexl@redhat.com>
 
         * Makefile.am:
