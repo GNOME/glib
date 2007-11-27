@@ -35,6 +35,13 @@ G_BEGIN_DECLS
 #define G_IS_DATA_INPUT_STREAM_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_DATA_INPUT_STREAM))
 #define G_DATA_INPUT_STREAM_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), G_TYPE_DATA_INPUT_STREAM, GDataInputStreamClass))
 
+/**
+ * GDataInputStream:
+ * @parent: a #GBufferedInputStream.
+ *
+ * An implementation of #GBufferedInputStream that allows for high-level 
+ * data manipulation of arbitrary data (including binary operations).
+ **/
 typedef struct _GDataInputStream         GDataInputStream;
 typedef struct _GDataInputStreamClass    GDataInputStreamClass;
 typedef struct _GDataInputStreamPrivate  GDataInputStreamPrivate;
@@ -50,7 +57,7 @@ struct _GDataInputStream
 struct _GDataInputStreamClass
 {
  GBufferedInputStreamClass parent_class;
-
+  /*< private >*/
   /* Padding for future expansion */
   void (*_g_reserved1) (void);
   void (*_g_reserved2) (void);
@@ -59,12 +66,31 @@ struct _GDataInputStreamClass
   void (*_g_reserved5) (void);
 };
 
+/**
+ * GDataStreamByteOrder:
+ * @G_DATA_STREAM_BYTE_ORDER_BIG_ENDIAN: Selects Big Endian byte order. 
+ * @G_DATA_STREAM_BYTE_ORDER_LITTLE_ENDIAN: Selects Little Endian byte order.
+ * @G_DATA_STREAM_BYTE_ORDER_HOST_ENDIAN: Selects endianness based on host machine's architecture.
+ *
+ * #GDataStreamByteOrder is used to ensure proper endianness of streaming data sources
+ * across various machine architectures.
+ *
+ **/
 typedef enum  {
   G_DATA_STREAM_BYTE_ORDER_BIG_ENDIAN,
   G_DATA_STREAM_BYTE_ORDER_LITTLE_ENDIAN,
   G_DATA_STREAM_BYTE_ORDER_HOST_ENDIAN
 } GDataStreamByteOrder;
 
+/** 
+ * GDataStreamNewlineType:
+ * @G_DATA_STREAM_NEWLINE_TYPE_LF: Selects "LF" line endings, common on most modern UNIX platforms.
+ * @G_DATA_STREAM_NEWLINE_TYPE_CR: Selects "CR" line endings.
+ * @G_DATA_STREAM_NEWLINE_TYPE_CR_LF: Selects "CR, LF" line ending, common on Microsoft Windows.
+ * @G_DATA_STREAM_NEWLINE_TYPE_ANY: Selects any line ending type.
+ *
+ * #GDataStreamNewlineType is used when checking for or setting the line endings for a given file.
+ **/
 typedef enum  {
   G_DATA_STREAM_NEWLINE_TYPE_LF,
   G_DATA_STREAM_NEWLINE_TYPE_CR,

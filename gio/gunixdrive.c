@@ -30,7 +30,6 @@
 #include "gdriveprivate.h"
 #include "gthemedicon.h"
 #include "gvolumemonitor.h"
-
 #include "glibintl.h"
 
 struct _GUnixDrive {

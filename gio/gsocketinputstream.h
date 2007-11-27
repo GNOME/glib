@@ -34,6 +34,11 @@ G_BEGIN_DECLS
 #define G_IS_SOCKET_INPUT_STREAM_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_SOCKET_INPUT_STREAM))
 #define G_SOCKET_INPUT_STREAM_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), G_TYPE_SOCKET_INPUT_STREAM, GSocketInputStreamClass))
 
+/**
+ * GSocketInputStream:
+ * 
+ * Implements #GInputStream for reading from sockets.
+ **/
 typedef struct _GSocketInputStream         GSocketInputStream;
 typedef struct _GSocketInputStreamClass    GSocketInputStreamClass;
 typedef struct _GSocketInputStreamPrivate  GSocketInputStreamPrivate;
@@ -50,6 +55,7 @@ struct _GSocketInputStreamClass
 {
   GInputStreamClass parent_class;
 
+  /*< private >*/
   /* Padding for future expansion */
   void (*_g_reserved1) (void);
   void (*_g_reserved2) (void);

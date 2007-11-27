@@ -28,6 +28,15 @@
 #include "gvfs.h"
 #include "glibintl.h"
 
+/**
+ * SECTION:gfilemonitor
+ * @short_description: File Monitor
+ * @see_also: #GDirectoryMonitor
+ *
+ * Monitors a file for changes.
+ * 
+ **/
+
 enum {
   CHANGED,
   LAST_SIGNAL
@@ -103,6 +112,15 @@ g_file_monitor_class_init (GFileMonitorClass *klass)
   gobject_class->finalize = g_file_monitor_finalize;
   gobject_class->dispose = g_file_monitor_dispose;
 
+  /**
+   * GFileMonitor::changed:
+   * @monitor: a #GFileMonitor.
+   * @file: a #GFile.
+   * @other_file: a #GFile.
+   * @event_type: a #GFileMonitorEvent.
+   * 
+   * Emitted when a file has been changed. 
+   **/
   signals[CHANGED] =
     g_signal_new (I_("changed"),
 		  G_TYPE_FILE_MONITOR,
@@ -141,7 +159,9 @@ g_file_monitor_is_cancelled (GFileMonitor *monitor)
 
 /**
  * g_file_monitor_cancel:
- * @monitor:
+ * @monitor: a #GFileMonitor.
+ * 
+ * Cancels a file monitor.
  * 
  * Returns: %TRUE if monitor was cancelled.
  **/
@@ -318,10 +338,13 @@ cancel_virtual_changes_done (GFileMonitor *monitor)
 
 /**
  * g_file_monitor_emit_event:
- * @monitor:
- * @file:
- * @other_file:
- * @event_type:
+ * @monitor: a #GFileMonitor.
+ * @file: a #GFile.
+ * @other_file: a #GFile.
+ * @event_type: a #GFileMonitorEvent
+ * 
+ * Emits a file monitor event. This is mainly necessary for implementations
+ * of GFileMonitor.
  * 
  **/
 void

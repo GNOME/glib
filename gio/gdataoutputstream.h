@@ -36,6 +36,13 @@ G_BEGIN_DECLS
 #define G_IS_DATA_OUTPUT_STREAM_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_DATA_OUTPUT_STREAM))
 #define G_DATA_OUTPUT_STREAM_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), G_TYPE_DATA_OUTPUT_STREAM, GDataOutputStreamClass))
 
+/**
+ * GDataOutputStream:
+ * @parent: a #GBufferedOutputStream.
+ *
+ * An implementation of #GBufferedOutputStream that allows for high-level 
+ * data manipulation of arbitrary data (including binary operations).
+ **/
 typedef struct _GDataOutputStream         GDataOutputStream;
 typedef struct _GDataOutputStreamClass    GDataOutputStreamClass;
 typedef struct _GDataOutputStreamPrivate  GDataOutputStreamPrivate;
@@ -51,7 +58,7 @@ struct _GDataOutputStream
 struct _GDataOutputStreamClass
 {
  GFilterOutputStreamClass parent_class;
-
+  /*< private >*/
   /* Padding for future expansion */
   void (*_g_reserved1) (void);
   void (*_g_reserved2) (void);

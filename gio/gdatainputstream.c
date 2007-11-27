@@ -25,6 +25,16 @@
 #include "gdatainputstream.h"
 #include "glibintl.h"
 
+/**
+ * SECTION:gdatainputstream
+ * @short_description: Data Input Stream.
+ * @see_also: #GInputStream.
+ * 
+ * Data input stream implements #GInputStream and includes functions for 
+ * reading data directly from an input stream.
+ *
+ **/
+
 struct _GDataInputStreamPrivate {
   GDataStreamByteOrder byte_order;
   GDataStreamNewlineType newline_type;
@@ -116,7 +126,9 @@ g_data_input_stream_init (GDataInputStream *stream)
 
 /**
  * g_data_input_stream_new:
- * @base_stream: a given #GInputStream.
+ * @base_stream: a #GInputStream.
+ * 
+ * Creates a new data input stream for the @base_stream.
  * 
  * Returns: a new #GDataInputStream.
  **/
@@ -156,6 +168,8 @@ g_data_input_stream_set_byte_order (GDataInputStream *stream,
  * g_data_input_stream_get_byte_order:
  * @stream: a given #GDataInputStream.
  * 
+ * Gets the byte order for the data input stream.
+ * 
  * Returns the @stream's current #GDataStreamByteOrder. 
  **/
 GDataStreamByteOrder
@@ -168,7 +182,7 @@ g_data_input_stream_get_byte_order (GDataInputStream *stream)
 
 /**
  * g_data_input_stream_set_newline_type:
- * @stream: a given #GDataInputStream.
+ * @stream: a #GDataInputStream.
  * @type: the type of new line return as #GDataStreamNewlineType.
  * 
  * Sets the newline type for the @stream.
@@ -248,7 +262,6 @@ read_data (GDataInputStream *stream,
  * Returns: an unsigned 8-bit/1-byte value read from the @stream or %0 
  * if an error occured.
  **/
-
 guchar
 g_data_input_stream_read_byte (GDataInputStream        *stream,
 			      GCancellable            *cancellable,
@@ -357,6 +370,10 @@ g_data_input_stream_read_uint16 (GDataInputStream        *stream,
  * 
  * In order to get the correct byte order for this read operation, 
  * see g_data_stream_get_byte_order() and g_data_stream_set_byte_order().
+ *
+ * If @cancellable is not %NULL, then the operation can be cancelled by
+ * triggering the cancellable object from another thread. If the operation
+ * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
  *   
  * Returns a signed 32-bit/4-byte value read from the @stream or %0 if 
  * an error occured. 
@@ -399,6 +416,10 @@ g_data_input_stream_read_int32 (GDataInputStream        *stream,
  * 
  * In order to get the correct byte order for this read operation, 
  * see g_data_stream_get_byte_order() and g_data_stream_set_byte_order().
+ *
+ * If @cancellable is not %NULL, then the operation can be cancelled by
+ * triggering the cancellable object from another thread. If the operation
+ * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
  * 
  * Returns an unsigned 32-bit/4-byte value read from the @stream or %0 if 
  * an error occured. 
@@ -441,6 +462,10 @@ g_data_input_stream_read_uint32 (GDataInputStream        *stream,
  * 
  * In order to get the correct byte order for this read operation, 
  * see g_data_stream_get_byte_order() and g_data_stream_set_byte_order().
+ *
+ * If @cancellable is not %NULL, then the operation can be cancelled by
+ * triggering the cancellable object from another thread. If the operation
+ * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
  * 
  * Returns a signed 64-bit/8-byte value read from @stream or %0 if 
  * an error occured.  
@@ -483,6 +508,10 @@ g_data_input_stream_read_int64 (GDataInputStream        *stream,
  * 
  * In order to get the correct byte order for this read operation, 
  * see g_data_stream_get_byte_order().
+ *
+ * If @cancellable is not %NULL, then the operation can be cancelled by
+ * triggering the cancellable object from another thread. If the operation
+ * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
  * 
  * Returns an unsigned 64-bit/8-byte read from @stream or %0 if 
  * an error occured. 
@@ -621,10 +650,15 @@ scan_for_newline (GDataInputStream *stream,
  * @length: a #gsize to get the length of the data read in.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @error: #GError for error reporting.
+ *
+ * Reads a line from the data input stream.
+ * 
+ * If @cancellable is not %NULL, then the operation can be cancelled by
+ * triggering the cancellable object from another thread. If the operation
+ * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
  * 
  * Returns a string with the line that was read in. Set @length to 
- * a #gsize to get the length of the read line. This function will 
- * return %NULL on an error.
+ * a #gsize to get the length of the read line. Returns %NULL on an error.
  **/
 char *
 g_data_input_stream_read_line (GDataInputStream        *stream,

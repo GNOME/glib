@@ -25,6 +25,12 @@
 #include "goutputstream.h"
 #include "glibintl.h"
 
+/**
+ * SECTION:gfilteroutputstream
+ * @short_description: Filter Output Stream
+ *
+ **/
+
 enum {
   PROP_0,
   PROP_BASE_STREAM

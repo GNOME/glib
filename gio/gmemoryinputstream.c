@@ -21,14 +21,22 @@
  */
 
 #include <config.h>
-
 #include "gmemoryinputstream.h"
 #include "ginputstream.h"
 #include "gseekable.h"
 #include "string.h"
 #include "gsimpleasyncresult.h"
-
 #include "glibintl.h"
+
+/**
+ * SECTION:gmemoryinputstream
+ * @short_description: streaming input operations on memory chunks
+ * @see_also: #GMemoryOutputStream.
+ *
+ * #GMemoryInputStream is a class for using arbitrary
+ * memory chunks as input for GIO streaming input operations.
+ *
+ */
 
 struct _GMemoryInputStreamPrivate {
   guint8 *buffer;      

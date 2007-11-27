@@ -28,6 +28,15 @@
 #include "gsimpleasyncresult.h"
 #include "glibintl.h"
 
+/**
+ * SECTION:gfileoutputstream
+ * @short_description: file output streaming operations
+ * @see_also: #GOutputStream, #GDataOutputStream, #GSeekable.
+ * 
+ * 
+ *
+ **/
+
 static void       g_file_output_stream_seekable_iface_init    (GSeekableIface       *iface);
 static goffset    g_file_output_stream_seekable_tell          (GSeekable            *seekable);
 static gboolean   g_file_output_stream_seekable_can_seek      (GSeekable            *seekable);
@@ -89,15 +98,29 @@ g_file_output_stream_init (GFileOutputStream *stream)
 /**
  * g_file_output_stream_query_info:
  * @stream: a #GFileOutputStream.
- * @attributes:
+ * @attributes: a file attribute query string.
  * @cancellable: optional #GCancellable object, %NULL to ignore. 
- * @error: a #GError location to store the error occuring, or %NULL to 
- * ignore.
+ * @error: a #GError, %NULL to ignore.
  *
- *  * Returns: %NULL or a #GFileInfo for the @stream.
+ * Queries a file output stream for the given @attributes. 
+ * This function blocks while querying the stream. For the asynchronous 
+ * version of this function, see g_file_output_stream_query_info_async(). 
+ * While the stream is blocked, the stream will set the pending flag 
+ * internally, and any other operations on the stream will fail with 
+ * %G_IO_ERROR_PENDING.
  * 
- * For the asynchronous version of this function, see 
- * g_file_output_stream_query_info_async(). 
+ * Can fail if the stream was already closed (with @error being set to 
+ * %G_IO_ERROR_CLOSED), the stream has pending operations (with @error being
+ * set to %G_IO_ERROR_PENDING), or if querying info is not supported for 
+ * the stream's interface (with @error being set to %G_IO_ERROR_NOT_SUPPORTED). In
+ * all cases of failure, %NULL will be returned.
+ * 
+ * If @cancellable is not %NULL, then the operation can be cancelled by
+ * triggering the cancellable object from another thread. If the operation
+ * was cancelled, the error %G_IO_ERROR_CANCELLED will be set, and %NULL will 
+ * be returned. 
+ * 
+ * Returns: a #GFileInfo for the @stream, or %NULL on error.
  **/
 GFileInfo *
 g_file_output_stream_query_info (GFileOutputStream      *stream,
@@ -165,11 +188,11 @@ async_ready_callback_wrapper (GObject *source_object,
 /**
  * g_file_output_stream_query_info_async:
  * @stream: a #GFileOutputStream.
- * @attributes:
+ * @attributes: a file attribute query string.
  * @io_priority: the io priority of the request.
  * @cancellable: optional #GCancellable object, %NULL to ignore. 
- * @callback: a #GAsyncReadyCallback.
- * @user_data: user data for @callback.
+ * @callback: callback to call when the request is satisfied
+ * @user_data: the data to pass to callback function
  * 
  * Asynchronously queries the @stream for a #GFileInfo. When completed,
  * @callback will be called with a #GAsyncResult which can be used to 
@@ -227,8 +250,7 @@ g_file_output_stream_query_info_async (GFileOutputStream     *stream,
  * g_file_output_stream_query_info_finish:
  * @stream: a #GFileOutputStream.
  * @result: a #GAsyncResult.
- * @error: a #GError location to store the error occuring, or %NULL to 
- * ignore.
+ * @error: a #GError, %NULL to ignore.
  * 
  * Finalizes the asynchronous query started 
  * by g_file_output_stream_query_info_async().
@@ -259,9 +281,11 @@ g_file_output_stream_query_info_finish (GFileOutputStream     *stream,
 
 /**
  * g_file_output_stream_get_etag:
- * @stream: a #GFileOutputString.
+ * @stream: a #GFileOutputStream.
  * 
- * Returns: 
+ * Gets the entity tag for the file output stream.
+ * 
+ * Returns: the entity tag for the stream.
  **/
 char *
 g_file_output_stream_get_etag (GFileOutputStream  *stream)
@@ -291,9 +315,11 @@ g_file_output_stream_get_etag (GFileOutputStream  *stream)
 
 /**
  * g_file_output_stream_tell:
- * @stream:
+ * @stream: a #GFileOutputStream.
  * 
- * Returns: 
+ * Gets the current location within the stream.
+ * 
+ * Returns: a #goffset of the location within the stream.
  **/
 goffset
 g_file_output_stream_tell (GFileOutputStream  *stream)
@@ -320,9 +346,11 @@ g_file_output_stream_seekable_tell (GSeekable *seekable)
 
 /**
  * g_file_output_stream_can_seek:
- * @stream:
+ * @stream: a #GFileOutputStream.
  * 
- * Returns: 
+ * Checks if the stream can be seeked.
+ * 
+ * Returns: %TRUE if seeking is supported by the stream.
  **/
 gboolean
 g_file_output_stream_can_seek (GFileOutputStream  *stream)
@@ -353,13 +381,15 @@ g_file_output_stream_seekable_can_seek (GSeekable *seekable)
 
 /**
  * g_file_output_stream_seek:
- * @stream:
- * @offset:
- * @type:
+ * @stream: a #GFileOutputStream.
+ * @offset: a #goffset to seek.
+ * @type: a #GSeekType.
  * @cancellable: optional #GCancellable object, %NULL to ignore. 
- * @error: a #GError location to store the error occuring, or %NULL to 
- * ignore.
- * Returns: 
+ * @error: a #GError, %NULL to ignore.
+ * 
+ * Seeks to a location in a file output stream.
+ * 
+ * Returns: %TRUE if the seek was successful. %FALSE otherwise.
  **/
 gboolean
 g_file_output_stream_seek (GFileOutputStream  *stream,
@@ -426,7 +456,9 @@ g_file_output_stream_seekable_seek (GSeekable  *seekable,
 
 /**
  * g_file_output_stream_can_truncate:
- * @stream:
+ * @stream: a #GFileOutputStream.
+ * 
+ * Checks if the stream can be truncated.
  * 
  * Returns: %TRUE if stream can be truncated.
  **/
@@ -459,12 +491,14 @@ g_file_output_stream_seekable_can_truncate (GSeekable  *seekable)
 
 /**
  * g_file_output_stream_truncate:
- * @stream:
- * @size:
+ * @stream: a #GFileOutputStream.
+ * @size: a #goffset to truncate the stream at.
  * @cancellable: optional #GCancellable object, %NULL to ignore. 
- * @error: a #GError location to store the error occuring, or %NULL to 
- * ignore.
- * Returns: %TRUE if @stream is truncated.
+ * @error: a #GError, %NULL to ignore.
+ * 
+ * Truncates a file output stream.
+ * 
+ * Returns: %TRUE if @stream is truncated successfully.
  **/
 gboolean
 g_file_output_stream_truncate (GFileOutputStream  *stream,

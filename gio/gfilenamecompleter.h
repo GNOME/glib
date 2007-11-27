@@ -34,6 +34,11 @@ G_BEGIN_DECLS
 #define G_IS_FILENAME_COMPLETER(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), G_TYPE_FILENAME_COMPLETER))
 #define G_IS_FILENAME_COMPLETER_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_FILENAME_COMPLETER))
 
+/**
+ * GFilenameCompleter:
+ * 
+ * Completes filenames based on files that exist within the file system.
+ **/
 typedef struct _GFilenameCompleter GFilenameCompleter;
 typedef struct _GFilenameCompleterClass GFilenameCompleterClass;
 
@@ -44,6 +49,7 @@ struct _GFilenameCompleterClass {
   /* signals */
   void (* got_completion_data)	(GFilenameCompleter *filename_completer);
 
+  /*< private >*/
   /* Padding for future expansion */
   void (*_g_reserved1) (void);
   void (*_g_reserved2) (void);

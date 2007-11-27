@@ -36,6 +36,12 @@ G_BEGIN_DECLS
 #define G_IS_MOUNT_OPERATION_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_MOUNT_OPERATION))
 #define G_MOUNT_OPERATION_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), G_TYPE_MOUNT_OPERATION, GMountOperationClass))
 
+/**
+ * GMountOperation:
+ * 
+ * Class for providing authentication methods for mounting operations, 
+ * such as mounting a file locally, or authenticating with a server.
+ **/
 typedef struct _GMountOperation        GMountOperation;
 typedef struct _GMountOperationClass   GMountOperationClass;
 typedef struct _GMountOperationPrivate GMountOperationPrivate;
@@ -47,6 +53,19 @@ struct _GMountOperation
   GMountOperationPrivate *priv;
 };
 
+/**
+ * GPasswordFlags:
+ * @G_PASSWORD_FLAGS_NEED_PASSWORD: operation requires a password.
+ * @G_PASSWORD_FLAGS_NEED_USERNAME: operation requires a username.
+ * @G_PASSWORD_FLAGS_NEED_DOMAIN: operation requires a domain.
+ * @G_PASSWORD_FLAGS_SAVING_SUPPORTED: operation supports saving settings.
+ * @G_PASSWORD_FLAGS_ANON_SUPPORTED: operation supports anonymous users.
+ * 
+ * #GPasswordFlags are used to request specific information from the 
+ * user, or to notify the user of their choices in an authentication
+ * situation. 
+ * 
+ **/ 
 typedef enum {
   G_PASSWORD_FLAGS_NEED_PASSWORD    = 1<<0,
   G_PASSWORD_FLAGS_NEED_USERNAME    = 1<<1,
@@ -55,6 +74,14 @@ typedef enum {
   G_PASSWORD_FLAGS_ANON_SUPPORTED   = 1<<5
 } GPasswordFlags;
 
+/**
+ * GPasswordSave:
+ * @G_PASSWORD_SAVE_NEVER: never save a password.
+ * @G_PASSWORD_SAVE_FOR_SESSION: save a password for the session.
+ * @G_PASSWORD_SAVE_PERMANENTLY: save a password permanently.
+ * 
+ * #GPasswordSave is used to indicate the lifespan of a saved password.
+ **/ 
 typedef enum {
   G_PASSWORD_SAVE_NEVER,
   G_PASSWORD_SAVE_FOR_SESSION,
@@ -72,15 +99,15 @@ struct _GMountOperationClass
 			     const char      *default_user,
 			     const char      *default_domain,
 			     GPasswordFlags   flags);
-  
+
   gboolean (* ask_question) (GMountOperation *op,
 			     const char      *message,
 			     const char      *choices[]);
-
+  
   void     (* reply)        (GMountOperation *op,
 			     gboolean         abort);
   
-  
+  /*< private >*/
   /* Padding for future expansion */
   void (*_g_reserved1) (void);
   void (*_g_reserved2) (void);

@@ -35,6 +35,11 @@ G_BEGIN_DECLS
 #define G_IS_FILTER_INPUT_STREAM_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_FILTER_INPUT_STREAM))
 #define G_FILTER_INPUT_STREAM_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), G_TYPE_FILTER_INPUT_STREAM, GFilterInputStreamClass))
 
+/**
+ * GFilterInputStream:
+ * 
+ * Filtered input streams. Implements #GInputStream.
+ **/
 typedef struct _GFilterInputStream         GFilterInputStream;
 typedef struct _GFilterInputStreamClass    GFilterInputStreamClass;
 typedef struct _GFilterInputStreamPrivate  GFilterInputStreamPrivate;
@@ -50,7 +55,8 @@ struct _GFilterInputStream
 struct _GFilterInputStreamClass
 {
   GInputStreamClass parent_class;
-  
+
+  /*< private >*/  
   /* Padding for future expansion */
   void (*_g_reserved1) (void);
   void (*_g_reserved2) (void);

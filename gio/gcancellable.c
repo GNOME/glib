@@ -25,11 +25,14 @@
 #include <fcntl.h>
 #include <gioerror.h>
 #include "gcancellable.h"
-
 #include "glibintl.h"
 
 
-/*
+/**
+ * SECTION:gcancellable
+ * @short_description: Thread-safe Operation Cancellation Stack
+ * @include: gio/gcancellable.h
+ *
  * GCancellable is a thread-safe operation cancellation stack used 
  * throughout GIO to allow for cancellation of asynchronous operations.
  */
@@ -77,6 +80,12 @@ g_cancellable_class_init (GCancellableClass *klass)
   
   gobject_class->finalize = g_cancellable_finalize;
 
+  /**
+   * GCancellable::cancelled:
+   * @cancellable: a #GCancellable.
+   * 
+   * Emitted when the operation has been cancelled from another thread.
+   */
   signals[CANCELLED] =
     g_signal_new (I_("cancelled"),
 		  G_TYPE_FROM_CLASS (gobject_class),
@@ -129,8 +138,10 @@ g_cancellable_init (GCancellable *cancellable)
 
 /**
  * g_cancellable_new:
+ * 
+ * Creates a new #GCancellable object.
  *  
- * Returns: a new #GCancellable object.
+ * Returns: a #GCancellable.
  **/
 GCancellable *
 g_cancellable_new (void)
@@ -180,6 +191,8 @@ g_pop_current_cancellable (GCancellable *cancellable)
 /**
  * g_cancellable_get_current:
  * 
+ * Gets the top cancellable from the stack.
+ * 
  * Returns: a #GCancellable from the top of the stack, or %NULL
  * if the stack is empty. 
  **/
@@ -200,7 +213,6 @@ g_cancellable_get_current  (void)
  * @cancellable: a #GCancellable object.
  * 
  * Resets @cancellable to its uncancelled state. 
- *
  **/
 void 
 g_cancellable_reset (GCancellable *cancellable)
@@ -222,6 +234,8 @@ g_cancellable_reset (GCancellable *cancellable)
 /**
  * g_cancellable_is_cancelled:
  * @cancellable: a #GCancellable or NULL.
+ * 
+ * Checks if a cancellable job has been cancelled.
  * 
  * Returns: %TRUE if @cancellable is is cancelled, 
  * FALSE if called with %NULL or if item is not cancelled. 
@@ -261,7 +275,9 @@ g_cancellable_set_error_if_cancelled (GCancellable  *cancellable,
  * g_cancellable_get_fd:
  * @cancellable: a #GCancellable.
  * 
- * Returns: A valid file descriptor. -1 if the file descriptor 
+ * Gets the file descriptor for a cancellable job.
+ * 
+ * Returns: A valid file descriptor. %-1 if the file descriptor 
  * is not supported, or on errors. 
  **/
 int
@@ -290,7 +306,6 @@ g_cancellable_get_fd (GCancellable *cancellable)
  * 
  * Will set @cancellable to cancelled, and will emit the CANCELLED
  * signal. This function is thread-safe.
- *  
  **/
 void
 g_cancellable_cancel (GCancellable *cancellable)

@@ -25,6 +25,16 @@
 #include "gfileicon.h"
 #include "gsimpleasyncresult.h"
 
+/**
+ * SECTION:gfileicon
+ * @short_description: Icons for given files.
+ * @see_also: #GIcon, #GLoadableIcon.
+ * @include: gio/gfileicon.h
+ * 
+ * #GFileIcon gets the default icon for a #GFile.  
+ * 
+ **/
+
 static void g_file_icon_icon_iface_init          (GIconIface          *iface);
 static void g_file_icon_loadable_icon_iface_init (GLoadableIconIface  *iface);
 static void g_file_icon_load_async               (GLoadableIcon       *icon,
@@ -80,9 +90,11 @@ g_file_icon_init (GFileIcon *file)
 
 /**
  * g_file_icon_new:
- * @file:
+ * @file: a #GFile.
  * 
- * Returns: 
+ * Creates a new icon for a file.
+ * 
+ * Returns: a #GIcon for the given @file, or %NULL on error.
  **/
 GIcon *
 g_file_icon_new (GFile *file)
@@ -99,9 +111,11 @@ g_file_icon_new (GFile *file)
 
 /**
  * g_file_icon_get_file:
- * @icon:
+ * @icon: a #GIcon.
  * 
- * Returns: 
+ * Gets the #GFile associated with the given @icon.
+ * 
+ * Returns: a #GFile, or %NULL.
  **/
 GFile *
 g_file_icon_get_file (GFileIcon *icon)

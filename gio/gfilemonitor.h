@@ -35,6 +35,18 @@ G_BEGIN_DECLS
 #define G_IS_FILE_MONITOR_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_FILE_MONITOR))
 #define G_FILE_MONITOR_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), G_TYPE_FILE_MONITOR, GFileMonitorClass))
 
+/**
+ * GFileMonitorEvent:
+ * @G_FILE_MONITOR_EVENT_CHANGED: Monitor file changed events.
+ * @G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT: Monitor file changed done events.
+ * @G_FILE_MONITOR_EVENT_DELETED: Monitors file deleted events.
+ * @G_FILE_MONITOR_EVENT_CREATED: Monitors file created events.
+ * @G_FILE_MONITOR_EVENT_ATTRIBUTE_CHANGED: Monitors file attribute changed events.
+ * @G_FILE_MONITOR_EVENT_PRE_UNMOUNT: Monitors pre-unmount events.
+ * @G_FILE_MONITOR_EVENT_UNMOUNTED: Monitors unmount events.
+ * 
+ * Flags used when creating a #GFileMonitor to define what events to monitor for.
+ **/
 typedef enum {
   G_FILE_MONITOR_EVENT_CHANGED,
   G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT,
@@ -48,6 +60,11 @@ typedef enum {
 typedef struct _GFileMonitorClass	GFileMonitorClass;
 typedef struct _GFileMonitorPrivate	GFileMonitorPrivate;
 
+/**
+ * GFileMonitor:
+ * 
+ * Watches for changes within a #GFile.
+ **/
 struct _GFileMonitor
 {
   GObject parent;
@@ -69,7 +86,7 @@ struct _GFileMonitorClass
   /* Virtual Table */
   gboolean	(*cancel)(GFileMonitor* monitor);
 
-
+  /*< private >*/
   /* Padding for future expansion */
   void (*_g_reserved1) (void);
   void (*_g_reserved2) (void);

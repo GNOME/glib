@@ -25,6 +25,12 @@
 #include "ginputstream.h"
 #include "glibintl.h"
 
+/**
+ * SECTION:gfilterinputstream
+ * @short_description: Filter Input Stream.
+ *
+ **/
+
 enum {
   PROP_0,
   PROP_BASE_STREAM

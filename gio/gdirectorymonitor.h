@@ -39,6 +39,12 @@ G_BEGIN_DECLS
 typedef struct _GDirectoryMonitorClass	 GDirectoryMonitorClass;
 typedef struct _GDirectoryMonitorPrivate GDirectoryMonitorPrivate;
 
+/**
+ * GDirectoryMonitor:
+ * @parent: The parent class. 
+ * 
+ * Implements a monitor on the given #GFile that points to a directory.
+ **/
 struct _GDirectoryMonitor
 {
   GObject parent;
@@ -60,6 +66,7 @@ struct _GDirectoryMonitorClass
   /* Virtual Table */
   gboolean	(*cancel)(GDirectoryMonitor* monitor);
 
+  /*< private >*/
   /* Padding for future expansion */
   void (*_g_reserved1) (void);
   void (*_g_reserved2) (void);

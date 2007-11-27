@@ -28,12 +28,33 @@
 
 G_BEGIN_DECLS
 
+/**
+ * GIOJob:
+ * 
+ * Opaque class for definining and scheduling IO jobs.
+ **/
 typedef struct _GIOJob GIOJob;
 
+/**
+ * GIOJobFunc:
+ * @job: a #GIOJob.
+ * @cancellable: optional #GCancellable object, %NULL to ignore.
+ * @user_data: the data to pass to callback function
+ * 
+ * I/O Job function.
+ * 
+ **/
 typedef void (*GIOJobFunc) (GIOJob *job,
 			    GCancellable *cancellable,
 			    gpointer user_data);
 
+/**
+ * GIODataFunc:
+ * @user_data:
+ * 
+ * I/O Data function.
+ * 
+ **/
 typedef void (*GIODataFunc) (gpointer user_data);
 
 void g_schedule_io_job         (GIOJobFunc      job_func,

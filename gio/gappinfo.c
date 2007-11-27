@@ -25,6 +25,17 @@
 #include "glibintl.h"
 #include <gioerror.h>
 
+/**
+ * SECTION:gappinfo
+ * @short_description: Application information and launch contexts. 
+ * @stability: Unstable
+ * 
+ * #GAppInfo and #GAppLaunchContext are used for describing and launching 
+ * installed system applications. 
+ *
+ * @Note: These may/will be moved to Gtk+ in the future.
+ *
+ **/
 
 static void g_app_info_base_init (gpointer g_class);
 static void g_app_info_class_init (gpointer g_class,
@@ -76,6 +87,8 @@ g_app_info_base_init (gpointer g_class)
 /**
  * g_app_info_dup:
  * @appinfo: a #GAppInfo.
+ * 
+ * Creates a duplicate of a #GAppInfo.
  *
  * Returns: a duplicate of @appinfo.
  **/
@@ -95,9 +108,10 @@ g_app_info_dup (GAppInfo *appinfo)
  * g_app_info_equal:
  * @appinfo1: the first #GAppInfo.  
  * @appinfo2: the second #GAppInfo.
+ * 
+ * Checks if two #GAppInfos are equal.
  *
  * Returns: %TRUE if @appinfo1 is equal to @appinfo2. %FALSE otherwise.
- *  
  **/
 gboolean
 g_app_info_equal (GAppInfo    *appinfo1,
@@ -119,8 +133,10 @@ g_app_info_equal (GAppInfo    *appinfo1,
 /**
  * g_app_info_get_id:
  * @appinfo: a #GAppInfo.
+ * 
+ * Gets the ID of an application.
  *
- * Returns: 
+ * Returns: a string containing the application's ID.
  **/
 const char *
 g_app_info_get_id (GAppInfo *appinfo)
@@ -137,6 +153,8 @@ g_app_info_get_id (GAppInfo *appinfo)
 /**
  * g_app_info_get_name:
  * @appinfo: a #GAppInfo.
+ * 
+ * Gets the installed name of the application. 
  *
  * Returns: the name of the application for @appinfo.
  **/
@@ -155,10 +173,12 @@ g_app_info_get_name (GAppInfo *appinfo)
 /**
  * g_app_info_get_description:
  * @appinfo: a #GAppInfo.
+ * 
+ * Gets a human-readable description of an installed application.
  *
  * Returns: a string containing a description of the 
- * application @appinfo.  
- * The returned string should be not freed when no longer needed.
+ * application @appinfo. The returned string should be not freed 
+ * when no longer needed.
  **/
 const char *
 g_app_info_get_description (GAppInfo *appinfo)
@@ -175,6 +195,8 @@ g_app_info_get_description (GAppInfo *appinfo)
 /**
  * g_app_info_get_executable:
  * @appinfo: a #GAppInfo.
+ * 
+ * Gets the executable's name for the installed application.
  *
  * Returns: a string containing the @appinfo's application 
  * binary's name.
@@ -197,6 +219,8 @@ g_app_info_get_executable (GAppInfo *appinfo)
  * @appinfo: a #GAppInfo.
  * @content_type: the content type.
  * @error: a #GError.
+ * 
+ * Sets an application as the default handler for a given type.
  *
  * Returns: %TRUE if the given @appinfo is the default 
  * for the given @content_type. %FALSE if not, 
@@ -223,6 +247,8 @@ g_app_info_set_as_default_for_type (GAppInfo    *appinfo,
  * @appinfo: a #GAppInfo.
  * @extension: a string containing the file extension.
  * @error: a #GError.
+ * 
+ * Sets an application as the default handler for the given file extention.
  *
  * Returns: %TRUE if the given @appinfo is the default 
  * for the given @extension. %FALSE if not, 
@@ -253,6 +279,9 @@ g_app_info_set_as_default_for_extension (GAppInfo  *appinfo,
  * @appinfo: a #GAppInfo.
  * @content_type: a string.
  * @error: a #GError.
+ * 
+ * Adds a content type to the application information to indicate the 
+ * application is capable of opening files with the given content type.
  *
  * Returns: %TRUE if @appinfo supports @content_type.
  * %FALSE if not, or in case of an error.
@@ -280,6 +309,8 @@ g_app_info_add_supports_type (GAppInfo             *appinfo,
 /**
  * g_app_info_can_remove_support_type:
  * @appinfo: a #GAppInfo.
+ * 
+ * Checks if a supported content type can be removed from an application.
  *
  * Returns: %TRUE if it is possible to remove supported 
  * content types from a given @appinfo, %FALSE if not.
@@ -306,6 +337,8 @@ g_app_info_can_remove_supports_type (GAppInfo *appinfo)
  * @content_type: a string.
  * @error: a #GError.
  *
+ * Removes a supported type from an application, if possible.
+ * 
  * Returns: %TRUE if @content_type support was removed
  * from @appinfo. %FALSE if not.
  **/
@@ -332,6 +365,8 @@ g_app_info_remove_supports_type (GAppInfo *appinfo,
 /**
  * g_app_info_get_icon:
  * @appinfo: a #GAppInfo.
+ * 
+ * Gets the default icon for the application.
  *
  * Returns: the default #GIcon for @appinfo.
  **/
@@ -354,8 +389,12 @@ g_app_info_get_icon (GAppInfo *appinfo)
  * @files: a #GList of #GFile objects.
  * @launch_context: a #GAppLaunchContext.
  * @error: a #GError.
+ * 
+ * Launches the application. Passes @files to the launched application 
+ * as arguments, and loads the @launch_context for managing the application
+ * once it has been launched. On error, @error will be set accordingly.
  *
- * Returns: %TRUE on successful launch.
+ * Returns: %TRUE on successful launch, %FALSE otherwise.
  **/
 gboolean
 g_app_info_launch (GAppInfo    *appinfo,
@@ -376,6 +415,8 @@ g_app_info_launch (GAppInfo    *appinfo,
 /**
  * g_app_info_supports_uris:
  * @appinfo: a #GAppInfo.
+ * 
+ * Checks if the application supports reading files and directories from URIs.
  *
  * Returns: %TRUE if the @appinfo supports URIs.
  **/
@@ -398,9 +439,12 @@ g_app_info_supports_uris (GAppInfo *appinfo)
  * @uris: a #GList containing URIs to launch. 
  * @launch_context: a #GAppLaunchContext.
  * @error: a #GError.
+ * 
+ * Launches the application. Passes @uris to the launched application 
+ * as arguments, and loads the @launch_context for managing the application
+ * once it has been launched. On error, @error will be set accordingly.
  *
- * Returns: %TRUE if the @appinfo was launched 
- * with the given @uris.
+ * Returns: %TRUE if the @appinfo was launched successfully, %FALSE otherwise.
  **/
 gboolean
 g_app_info_launch_uris (GAppInfo    *appinfo,
@@ -423,8 +467,10 @@ g_app_info_launch_uris (GAppInfo    *appinfo,
  * @appinfo: a #GAppInfo.
  * @desktop_env: a string.
  *
- * Returns: %TRUE if the @GAppInfo should be shown,
- * %FALSE otherwise.
+ * Checks if the application info should be shown when listing
+ * applications available.
+ * 
+ * Returns: %TRUE if the @appinfo should be shown, %FALSE otherwise.
  **/
 gboolean
 g_app_info_should_show (GAppInfo    *appinfo,
@@ -443,8 +489,10 @@ G_DEFINE_TYPE (GAppLaunchContext, g_app_launch_context, G_TYPE_OBJECT);
 
 /**
  * g_app_launch_context_new:
+ * 
+ * Creates a new application launch context.
  *
- * Returns: A new #GAppLaunchContext.
+ * Returns: a #GAppLaunchContext.
  **/
 GAppLaunchContext *
 g_app_launch_context_new (void)
@@ -468,6 +516,11 @@ g_app_launch_context_init (GAppLaunchContext *launch_context)
  * @info: a #GAppInfo. 
  * @files: a #GList of files.
  *
+ * Gets the DISPLAY for a launched application.
+ * TODO: can't find an implementation. DISPLAY as in X atom "DISPLAY"?
+ * Environmental variable "DISPLAY"?
+ * 
+ * Returns: a display string.
  **/
 char *
 g_app_launch_context_get_display (GAppLaunchContext *context,
@@ -487,12 +540,18 @@ g_app_launch_context_get_display (GAppLaunchContext *context,
   return class->get_display (context, info, files);
 }
 
+/* should this be moved to the g_desktop_app_ implementation? */
 /**
  * g_app_launch_context_get_startup_notify_id:
  * @context: a #GAppLaunchContext.
  * @info: a #GAppInfo.
  * @files: a #GList of files.
+ * 
+ * Gets the DESKTOP_STARTUP_ID for the launched application, if supported. 
+ * Startup notification IDs are defined in the FreeDesktop.Org Startup Notifications standard, 
+ * at <ulink url="http://standards.freedesktop.org/startup-notification-spec/startup-notification-latest.txt"/>.
  *
+ * Returns: a startup notifaction ID for the application, or %NULL if not supported.
  **/
 char *
 g_app_launch_context_get_startup_notify_id (GAppLaunchContext *context,
@@ -514,10 +573,12 @@ g_app_launch_context_get_startup_notify_id (GAppLaunchContext *context,
 
 
 /**
- * g_app_launch_context_get_startup_notify_id:
+ * g_app_launch_context_launch_failed:
  * @context: a #GAppLaunchContext.
- * @startup_notify_id: a string containing the startup ID of the application.
+ * @startup_notify_id: a string containing the DESKTOP_STARTUP_ID of the launched application.
  *
+ * TODO: what does this do? Can't find it implemented anywhere.
+ * 
  **/
 void
 g_app_launch_context_launch_failed (GAppLaunchContext *context,

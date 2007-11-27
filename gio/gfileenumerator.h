@@ -39,7 +39,12 @@ G_BEGIN_DECLS
 #define G_IS_FILE_ENUMERATOR_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_FILE_ENUMERATOR))
 #define G_FILE_ENUMERATOR_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), G_TYPE_FILE_ENUMERATOR, GFileEnumeratorClass))
 
-
+/**
+ * GFileEnumerator:
+ * @parent: The parent class.
+ * 
+ * A per matched file iterator.
+ **/
 typedef struct _GFileEnumerator         GFileEnumerator;
 typedef struct _GFileEnumeratorClass    GFileEnumeratorClass;
 typedef struct _GFileEnumeratorPrivate  GFileEnumeratorPrivate;
@@ -84,8 +89,8 @@ struct _GFileEnumeratorClass
 				   GAsyncResult                   *res,
 				   GError                        **error);
 
-
-    /* Padding for future expansion */
+  /*< private >*/
+  /* Padding for future expansion */
   void (*_g_reserved1) (void);
   void (*_g_reserved2) (void);
   void (*_g_reserved3) (void);

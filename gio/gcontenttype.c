@@ -21,20 +21,27 @@
  */
 
 #include <config.h>
-
 #include <sys/types.h>
 #include <dirent.h>
 #include <string.h>
 #include <stdio.h>
-
 #include "gcontenttypeprivate.h"
 #include "glibintl.h"
 
-/* A content type is a platform specific string that defines the type
-   of a file. On unix it is a mime type, on win32 it is an extension string
-   like ".doc", ".txt" or a percieved string like "audio". Such strings
-   can be looked up in the registry at HKEY_CLASSES_ROOT.
-*/
+/* This really sucks. GTK-Doc isn't smart enough to realize there are two
+ * different versions of the functions within this file, based on the platform. 
+ * I can move the definitions out of this file, but that's ugly. 
+ */
+
+/**
+ * SECTION:gcontenttype
+ * @short_description: platform specific content typing
+ *
+ * A content type is a platform specific string that defines the type
+ * of a file. On unix it is a mime type, on win32 it is an extension string
+ * like ".doc", ".txt" or a percieved string like "audio". Such strings
+ * can be looked up in the registry at HKEY_CLASSES_ROOT.
+ **/
 
 #ifdef G_OS_WIN32
 
@@ -112,7 +119,7 @@ g_content_type_equals (const char *type1,
 
 /**
  * g_content_type_is_a:
- * @type: a content type string. a content type string.
+ * @type: a content type string. 
  * @supertype: a string.
  *
  * Determines if @type is a subset of @supertype.  
@@ -144,9 +151,11 @@ g_content_type_is_a (const char   *type,
 
 /**
  * g_content_type_is_unknown:
- * @type: a content type string. a content type string.
+ * @type: a content type string. 
  * 
- * Returns:
+ * Checks if the content type is known by GIO.
+ * 
+ * Returns: %TRUE if the type is unknown.
  **/  
 gboolean
 g_content_type_is_unknown (const char *type)
@@ -158,7 +167,9 @@ g_content_type_is_unknown (const char *type)
 
 /**
  * g_content_type_get_description:
- * @type: a content type string. a content type string.
+ * @type: a content type string. 
+ * 
+ * Gets the human readable description of the content type.
  * 
  * Returns: a short description of the content type @type. 
  **/  
@@ -187,7 +198,9 @@ g_content_type_get_description (const char *type)
 
 /**
  * g_content_type_get_mime_type:
- * @type: a content type string. a content type string.
+ * @type: a content type string. 
+ * 
+ * Gets the mime-type for the content type.
  * 
  * Returns: the registered mime-type for the given @type.
  **/  
@@ -212,7 +225,9 @@ g_content_type_get_mime_type (const char   *type)
 
 /**
  * g_content_type_get_icon:
- * @type: a content type string. a content type string.
+ * @type: a content type string.
+ * 
+ * Gets the icon for a content type.
  * 
  * Returns: #GIcon corresponding to the content type.
  **/  
@@ -235,9 +250,11 @@ g_content_type_get_icon (const char   *type)
  * g_content_type_can_be_executable:
  * @type: a content type string.
  * 
- * Returns: %TRUE if the file type corresponds to something that
- * can be executable, %FALSE otherwise. Note that for instance
- * things like textfiles can be executables (i.e. scripts)
+ * Checks if a content type can be executable. Note that for instance
+ * things like text files can be executables (i.e. scripts and batch files).
+ * 
+ * Returns: %TRUE if the file type corresponds to a type that
+ * can be executable, %FALSE otherwise. 
  **/  
 gboolean
 g_content_type_can_be_executable (const char   *type)
@@ -273,9 +290,11 @@ looks_like_text (const guchar *data, gsize data_size)
  * @result_uncertain: a flag indicating the certainty of the 
  * result.
  * 
+ * Guesses the content type based on example data. If the function is 
+ * uncertain, @result_uncertain will be set to %TRUE.
+ * 
  * Returns: a string indicating a guessed content type for the 
- * given data. If the function is uncertain, @result_uncertain 
- * will be set to %TRUE.
+ * given data. 
  **/  
 char *
 g_content_type_guess (const char   *filename,
@@ -309,6 +328,9 @@ g_content_type_guess (const char   *filename,
 
 /**
  * g_content_types_get_registered:
+ * 
+ * Gets a list of strings containing the registered content types on 
+ * the system.
  * 
  * Returns: #GList of the registered content types.
  **/  

@@ -28,6 +28,16 @@
 #include "string.h"
 #include "glibintl.h"
 
+/**
+ * SECTION:gmemoryoutputstream
+ * @short_description: streaming output operations on memory chunks
+ * @see_also: #GMemoryInputStream.
+ *
+ * #GMemoryOutputStream is a class for using arbitrary
+ * memory chunks as output for GIO streaming output operations.
+ *
+ */
+
 struct _GMemoryOutputStreamPrivate {
   
   GByteArray *data;

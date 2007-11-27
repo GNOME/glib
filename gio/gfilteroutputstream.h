@@ -35,6 +35,11 @@ G_BEGIN_DECLS
 #define G_IS_FILTER_OUTPUT_STREAM_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_FILTER_OUTPUT_STREAM))
 #define G_FILTER_OUTPUT_STREAM_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), G_TYPE_FILTER_OUTPUT_STREAM, GFilterOutputStreamClass))
 
+/**
+ * GFilterOutputStream:
+ * 
+ * Filtered output streams. Implements #GOutputStream.
+ **/
 typedef struct _GFilterOutputStream         GFilterOutputStream;
 typedef struct _GFilterOutputStreamClass    GFilterOutputStreamClass;
 typedef struct _GFilterOutputStreamPrivate  GFilterOutputStreamPrivate;
@@ -51,6 +56,7 @@ struct _GFilterOutputStreamClass
 {
  GOutputStreamClass parent_class;
 
+  /*< private >*/
   /* Padding for future expansion */
   void (*_g_reserved1) (void);
   void (*_g_reserved2) (void);

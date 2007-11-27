@@ -24,6 +24,17 @@
 #include "gurifuncs.h"
 #include "string.h"
 
+/**
+ * SECTION:gurifuncs
+ * @short_description: URI Functions
+ * 
+ * Functions for manipulating Universal Resource Identifiers (URIs) as 
+ * defined by RFC 3986. It is highly recommended that you have read and
+ * understand RFC 3986 for understanding this API. A copy of RFC 3986 
+ * can be found at <ulink url="http://www.ietf.org/rfc/rfc3986.txt"/>.
+ *
+ **/
+
 static int
 unescape_character (const char *scanner)
 {
@@ -46,6 +57,8 @@ unescape_character (const char *scanner)
  * @escaped_string: a string.
  * @escaped_string_end: a string.
  * @illegal_characters: a string of illegal characters not to be allowed.
+ * 
+ * Unescapes a segment of an escaped string.
  * 
  * Returns: an unescaped version of @escaped_string or %NULL on error.
  * The returned string should be freed when no longer needed.
@@ -109,10 +122,10 @@ g_uri_unescape_segment (const char *escaped_string,
  * @escaped_string: an escaped string to be unescaped.
  * @illegal_characters: a string of illegal characters not to be allowed.
  * 
- * Returns: an unescaped version of @escaped_string. 
- *
- * The returned string should be freed when no longer needed
- *
+ * Unescapes a whole escaped string.
+ * 
+ * Returns: an unescaped version of @escaped_string. The returned string 
+ * should be freed when no longer needed.
  **/
 char *
 g_uri_unescape_string (const char *escaped_string,
@@ -125,13 +138,12 @@ g_uri_unescape_string (const char *escaped_string,
  * g_uri_get_scheme:
  * @uri: a valid URI.
  * 
- * Returns: The "Scheme" component of the URI, or %NULL on error. 
- * RFC 3986 decodes the scheme as:
+ * Gets the scheme portion of a URI. RFC 3986 decodes the scheme as:
  * URI = scheme ":" hier-part [ "?" query ] [ "#" fragment ] 
- * Popular schemes include "file", "http", "svn", etc.
- *
+ * Common schemes include "file", "http", "svn+ssh", etc.
+ * 
+ * Returns: The "Scheme" component of the URI, or %NULL on error. 
  * The returned string should be freed when no longer needed.
- *
  **/
 char *
 g_uri_get_scheme (const char  *uri)
@@ -205,8 +217,9 @@ gunichar_ok (gunichar c)
  * @reserved_chars_allowed: a string of reserve characters allowed to be used.
  * @allow_utf8: set %TRUE if the return value may include UTF8 characters.
  * 
- * Returns a #GString with the escaped URI appended.
- *
+ * Appends an escaped URI to @string.
+ * 
+ * Returns: a #GString with the escaped URI appended.
  **/
 GString *
 g_string_append_uri_escaped (GString *string,
@@ -253,11 +266,12 @@ g_string_append_uri_escaped (GString *string,
  * g_uri_escape_string:
  * @unescaped: the unescaped input string.
  * @reserved_chars_allowed: a string of reserve characters allowed to be used.
- * @allow_utf8: set to %TRUE if string can include UTF8 characters.
+ * @allow_utf8: a #gboolean. Set to %TRUE if string can include UTF8 characters.
  * 
- * Returns an escaped version of @unescaped. 
+ * Escapes a string for use in a URI.
  * 
- * The returned string should be freed when no longer needed.
+ * Returns: an escaped version of @unescaped. The returned string should be 
+ * freed when no longer needed.
  **/
 char *
 g_uri_escape_string (const char *unescaped,

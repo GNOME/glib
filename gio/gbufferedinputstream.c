@@ -22,13 +22,34 @@
  */
 
 #include <config.h>
-
 #include "gbufferedinputstream.h"
 #include "ginputstream.h"
 #include "gsimpleasyncresult.h"
 #include <string.h>
-
 #include "glibintl.h"
+
+/**
+ * SECTION:gbufferedinputstream
+ * @short_description: Buffered Input Stream
+ * @see_also: #GFilterInputStream, #GInputStream.
+ * 
+ * Buffered input stream implements #GFilterInputStream and provides 
+ * for buffered reads. 
+ * 
+ * By default, #GBufferedInputStream's buffer size is set at 4 kilobytes.
+ * 
+ * To create a buffered input stream, use g_buffered_input_stream_new(), or 
+ * g_buffered_input_stream_new_sized() to specify the buffer's size at construction.
+ * 
+ * To get the size of a buffer within a buffered input stream, use 
+ * g_buffered_input_stream_get_buffer_size(). To change the size of a 
+ * buffered input stream's buffer, use g_buffered_input_stream_set_buffer_size(). 
+ * Note: the buffer's size cannot be reduced below the size of the data within the
+ * buffer.
+ *
+ **/
+
+
 
 #define DEFAULT_BUFFER_SIZE 4096
 
@@ -151,7 +172,9 @@ g_buffered_input_stream_class_init (GBufferedInputStreamClass *klass)
  * g_buffered_input_stream_get_buffer_size:
  * @stream: #GBufferedInputStream.
  * 
- * Returns: the current buffer size, or -1 on error.
+ * Gets the size of the input buffer.
+ * 
+ * Returns: the current buffer size, or %-1 on error.
  **/
 gsize
 g_buffered_input_stream_get_buffer_size (GBufferedInputStream  *stream)
@@ -496,14 +519,14 @@ g_buffered_input_stream_fill_async (GBufferedInputStream  *stream,
 }
 
 /**
- * g_buffered_input_stream_fill_finished:
+ * g_buffered_input_stream_fill_finish:
  * @stream: a #GBufferedInputStream.
  * @result: a #GAsyncResult.
  * @error: a #GError.
  *
  * Finishes an asynchronous read.
  * 
- * Returns: a #gssize of the read stream, or -1 on an error. 
+ * Returns: a #gssize of the read stream, or %-1 on an error. 
  **/
 gssize
 g_buffered_input_stream_fill_finish (GBufferedInputStream  *stream,
@@ -535,6 +558,8 @@ g_buffered_input_stream_fill_finish (GBufferedInputStream  *stream,
  * g_buffered_input_stream_get_available:
  * @stream: #GBufferedInputStream.
  * 
+ * Gets the size of the available data within the stream.
+ * 
  * Returns: size of the available stream. 
  **/
 gsize
@@ -552,7 +577,10 @@ g_buffered_input_stream_get_available (GBufferedInputStream  *stream)
  * @offset: a #gsize.
  * @count: a #gsize.
  * 
- * Returns: 
+ * Peeks in the buffer, copying data of size @count into @buffer, offset
+ * @offset bytes.
+ * 
+ * Returns: a #gsize of the number of bytes peeked, or %-1 on error.
  **/
 gsize
 g_buffered_input_stream_peek (GBufferedInputStream  *stream,

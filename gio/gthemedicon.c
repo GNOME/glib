@@ -24,6 +24,14 @@
 
 #include "gthemedicon.h"
 
+/**
+ * SECTION:gthemedicon
+ * @short_description: Themed Icons
+ * @see_also: #GIcon, #GLoadableIcon.
+ *
+ * #GThemedIcon is an implementation of #GIcon for themed icons.
+ **/
+
 static void g_themed_icon_icon_iface_init (GIconIface       *iface);
 
 struct _GThemedIcon
@@ -70,9 +78,11 @@ g_themed_icon_init (GThemedIcon *themed)
 
 /**
  * g_themed_icon_new:
- * @iconname:
+ * @iconname: a string containing an icon name.
  * 
- * Returns: a new #GIcon.
+ * Creates a new themed icon for @iconname.
+ * 
+ * Returns: a new #GThemedIcon.
  **/
 GIcon *
 g_themed_icon_new (const char *iconname)
@@ -91,10 +101,12 @@ g_themed_icon_new (const char *iconname)
 
 /**
  * g_themed_icon_new_from_names:
- * @iconnames:
- * @len:
+ * @iconnames: an array of strings containing icon names.
+ * @len: the number of elements in the @iconnames array.
  * 
- * Returns: a new #GIcon.
+ * Creates a new themed icon for @iconnames.
+ * 
+ * Returns: a new #GThemedIcon.
  **/
 GIcon *
 g_themed_icon_new_from_names (char **iconnames, int len)
@@ -121,9 +133,11 @@ g_themed_icon_new_from_names (char **iconnames, int len)
 
 /**
  * g_themed_icon_get_names:
- * @icon:
+ * @icon: a #GThemedIcon.
  * 
- * Returns: 
+ * Gets the names of icons from within @icon.
+ * 
+ * Returns: a list of icon names.
  **/
 const char * const *
 g_themed_icon_get_names (GThemedIcon *icon)

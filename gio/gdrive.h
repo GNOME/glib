@@ -34,6 +34,24 @@ G_BEGIN_DECLS
 #define G_IS_DRIVE(obj)	       (G_TYPE_CHECK_INSTANCE_TYPE ((obj), G_TYPE_DRIVE))
 #define G_DRIVE_GET_IFACE(obj) (G_TYPE_INSTANCE_GET_INTERFACE ((obj), G_TYPE_DRIVE, GDriveIface))
 
+/**
+ * GDriveIface:
+ * @g_iface: The parent interface.
+ * @changed: Signal emitted when the drive is changed.
+ * @get_name: Returns the name for the given #GDrive.
+ * @get_icon: Returns a #GIcon for the given #GDrive.
+ * @has_volumes: Returns %TRUE if the #GDrive has mountable volumes.
+ * @get_volumes: Returns a #GList of volumes for the #GDrive.
+ * @is_automounted: returns %TRUE if the #GDrive was automounted.
+ * @can_mount: Returns %TRUE if the #GDrive can be mounted.
+ * @can_eject: Returns %TRUE if the #GDrive can be ejected.
+ * @mount: Mounts a given #GDrive.
+ * @mount_finish: Finishes a mount operation.
+ * @eject: Ejects a #GDrive.
+ * @eject_finish: Finishes an eject operation.
+ * 
+ * Interface for creating #GDrive implementations.
+ */ 
 typedef struct _GDriveIface    GDriveIface;
 
 struct _GDriveIface

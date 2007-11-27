@@ -36,10 +36,33 @@ G_BEGIN_DECLS
 #define G_IS_FILE_INFO_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_FILE_INFO))
 #define G_FILE_INFO_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), G_TYPE_FILE_INFO, GFileInfoClass))
 
+/**
+ * GFileInfo:
+ * 
+ * Stores information about a file system object referenced by a #GFile.
+ **/
 typedef struct _GFileInfo        GFileInfo;
 typedef struct _GFileInfoClass   GFileInfoClass;
+
+/**
+ * GFileAttributeMatcher:
+ * 
+ * Determines if a string matches a file attribute.
+ **/
 typedef struct _GFileAttributeMatcher GFileAttributeMatcher;
 
+/**
+ * GFileType:
+ * @G_FILE_TYPE_UNKNOWN: File's type is unknown.
+ * @G_FILE_TYPE_REGULAR: File handle represents a regular file.
+ * @G_FILE_TYPE_DIRECTORY: File handle represents a directory.
+ * @G_FILE_TYPE_SYMBOLIC_LINK: File handle represents a symbolic link (Unix systems)
+ * @G_FILE_TYPE_SPECIAL: File is a "special" file, such as a socket, fifo, blockdev,  or chardev.
+ * @G_FILE_TYPE_SHORTCUT: File is a shortcut (Windows systems)
+ * @G_FILE_TYPE_MOUNTABLE: File is a mountable location.
+ * 
+ * Indicates the file's on-disk type.
+ **/
 typedef enum {
   G_FILE_TYPE_UNKNOWN = 0,
   G_FILE_TYPE_REGULAR,
@@ -51,102 +74,537 @@ typedef enum {
 } GFileType;
 
 /* Common Attributes:  */
-
+/**
+ * G_FILE_ATTRIBUTE_STD_TYPE:
+ * 
+ * A key in the "std" namespace for storing file types. 
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_UINT32.
+ * The value for this key should contain a #GFileType.
+ **/
 #define G_FILE_ATTRIBUTE_STD_TYPE "std:type"                     /* uint32 (GFileType) */
+
+/**
+ * G_FILE_ATTRIBUTE_STD_IS_HIDDEN:
+ * 
+ * A key in the "std" namespace for checking if a file is hidden. 
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
+ **/
 #define G_FILE_ATTRIBUTE_STD_IS_HIDDEN "std:is_hidden"           /* boolean */
+
+/**
+ * G_FILE_ATTRIBUTE_STD_IS_BACKUP:
+ * 
+ * A key in the "std" namespace for checking if a file is a backup file.
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
+ **/
 #define G_FILE_ATTRIBUTE_STD_IS_BACKUP "std:is_backup"           /* boolean */
+
+/**
+ * G_FILE_ATTRIBUTE_STD_IS_SYMLINK:
+ * 
+ * A key in the "std" namespace for checking if the file is a symlink.
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
+ **/
 #define G_FILE_ATTRIBUTE_STD_IS_SYMLINK "std:is_symlink"         /* boolean */
+
+/**
+ * G_FILE_ATTRIBUTE_STD_IS_VIRTUAL:
+ * 
+ * A key in the "std" namespace for checking if a file is virtual.
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
+ **/
 #define G_FILE_ATTRIBUTE_STD_IS_VIRTUAL "std:is_virtual"         /* boolean */
+
+/**
+ * G_FILE_ATTRIBUTE_STD_NAME:
+ * 
+ * A key in the "std" namespace for getting the name of the file.
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BYTE_STRING.
+ **/
 #define G_FILE_ATTRIBUTE_STD_NAME "std:name"                     /* byte string */
+
+/**
+ * G_FILE_ATTRIBUTE_STD_DISPLAY_NAME:
+ * 
+ * A key in the "std" namespace for getting the display name of the file.
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_STRING.
+ **/
 #define G_FILE_ATTRIBUTE_STD_DISPLAY_NAME "std:display_name"     /* string */
+
+/**
+ * G_FILE_ATTRIBUTE_STD_EDIT_NAME:
+ * 
+ * A key in the "std" namespace for edit name of the file.
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_STRING.
+ **/
 #define G_FILE_ATTRIBUTE_STD_EDIT_NAME "std:edit_name"           /* string */
+
+/**
+ * G_FILE_ATTRIBUTE_STD_COPY_NAME:
+ * 
+ * A key in the "std" namespace for getting the copy name of the file.
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_STRING.
+ **/
 #define G_FILE_ATTRIBUTE_STD_COPY_NAME "std:copy_name"           /* string */
+
+/**
+ * G_FILE_ATTRIBUTE_STD_ICON:
+ * 
+ * A key in the "std" namespace for getting the icon for the file.
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_OBJECT.
+ * The value for this key should contain a #GIcon.
+ **/
 #define G_FILE_ATTRIBUTE_STD_ICON "std:icon"                     /* object (GIcon) */
+
+/**
+ * G_FILE_ATTRIBUTE_STD_CONTENT_TYPE:
+ * 
+ * A key in the "std" namespace for getting the content type of the file.
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_STRING.
+ * The value for this key should contain a valid content type.
+ **/
 #define G_FILE_ATTRIBUTE_STD_CONTENT_TYPE "std:content_type"     /* string */
+
+/**
+ * G_FILE_ATTRIBUTE_STD_FAST_CONTENT_TYPE:
+ * 
+ * A key in the "std" namespace for getting the fast content type.
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_STRING.
+ * 
+ **/
 #define G_FILE_ATTRIBUTE_STD_FAST_CONTENT_TYPE "std:fast_content_type" /* string */
+
+/**
+ * G_FILE_ATTRIBUTE_STD_SIZE:
+ * 
+ * A key in the "std" namespace for getting the file's size.
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_UINT64.
+ **/
 #define G_FILE_ATTRIBUTE_STD_SIZE "std:size"                     /* uint64 */
+
+/**
+ * G_FILE_ATTRIBUTE_STD_SYMLINK_TARGET:
+ * 
+ * A key in the "std" namespace for getting the symlink target, if the file
+ * is a symlink. Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BYTE_STRING.
+ **/
 #define G_FILE_ATTRIBUTE_STD_SYMLINK_TARGET "std:symlink_target" /* byte string */
+
+/**
+ * G_FILE_ATTRIBUTE_STD_TARGET_URI:
+ * 
+ * A key in the "std" namespace for getting the target URI for the file.
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_STRING.
+ **/
 #define G_FILE_ATTRIBUTE_STD_TARGET_URI "std:target_uri"         /* string */
+
+/**
+ * G_FILE_ATTRIBUTE_STD_SORT_ORDER:
+ * 
+ * A key in the "std" namespace for setting the sort order of a file. 
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_INT32.
+ * An example use would be in file managers, which would use this key to set 
+ * the order files are displayed.
+ **/
 #define G_FILE_ATTRIBUTE_STD_SORT_ORDER "std:sort_order"         /* int32  */
 
 /* Entity tags, used to avoid missing updates on save */
-
+/**
+ * G_FILE_ATTRIBUTE_ETAG_VALUE:
+ * 
+ * A key in the "etag" namespace for getting the value of the file's
+ * entity tag. Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_STRING.
+ **/
 #define G_FILE_ATTRIBUTE_ETAG_VALUE "etag:value"                 /* string */
 
 /* File identifier, for e.g. avoiding loops when doing recursive directory scanning */
-
+/**
+ * G_FILE_ATTRIBUTE_ID_FILE:
+ * 
+ * A key in the "id" namespace for getting a file identifier.
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_STRING.
+ * An example use would be during listing files, to avoid recursive
+ * directory scanning.
+ **/
 #define G_FILE_ATTRIBUTE_ID_FILE "id:file"                     /* string */
+
+/**
+ * G_FILE_ATTRIBUTE_ID_FS:
+ * 
+ * A key in the "id" namespace for getting the file system identifier.
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_STRING.
+ * An example use would be during listing files, to avoid recursive
+ * directory scanning.
+ **/
 #define G_FILE_ATTRIBUTE_ID_FS "id:fs"                         /* string */
 
 /* Calculated Access Rights for current user */
 
+/**
+ * G_FILE_ATTRIBUTE_ACCESS_CAN_READ:
+ * 
+ * A key in the "access" namespace for getting read privilidges. 
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
+ * This key will be true if the user is able to read the file.
+ **/
 #define G_FILE_ATTRIBUTE_ACCESS_CAN_READ "access:can_read"       /* boolean */
+
+/**
+ * G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE:
+ * 
+ * A key in the "access" namespace for getting write privilidges.
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
+ * This key will be true if the user is able to write to the file.
+ **/
 #define G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE "access:can_write"     /* boolean */
+
+/**
+ * G_FILE_ATTRIBUTE_ACCESS_CAN_EXECUTE:
+ * 
+ * A key in the "access" namespace for getting execution privilidges.
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
+ * This key will be true if the user is able to execute the file.
+ **/
 #define G_FILE_ATTRIBUTE_ACCESS_CAN_EXECUTE "access:can_execute" /* boolean */
+
+/**
+ * G_FILE_ATTRIBUTE_ACCESS_CAN_DELETE:
+ * 
+ * A key in the "access" namespace for checking deletion privilidges.
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
+ * This key will be true if the user is able to delete the file.
+ **/
 #define G_FILE_ATTRIBUTE_ACCESS_CAN_DELETE "access:can_delete"   /* boolean */
+
+/**
+ * G_FILE_ATTRIBUTE_ACCESS_CAN_TRASH:
+ * 
+ * A key in the "access" namespace for checking trashing privilidges.
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
+ * This key will be true if the user is able to send the file to the 
+ * virtual file system trash location.
+ **/
 #define G_FILE_ATTRIBUTE_ACCESS_CAN_TRASH "access:can_trash"     /* boolean */
+
+/**
+ * G_FILE_ATTRIBUTE_ACCESS_CAN_RENAME:
+ * 
+ * A key in the "access" namespace for checking renaming privilidges.
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
+ * This key will be true if the user is able to rename the file.
+ **/
 #define G_FILE_ATTRIBUTE_ACCESS_CAN_RENAME "access:can_rename"   /* boolean */ 
 /* TODO: Should we have special version for directories? can_enumerate, etc */
 
 /* Mountable attributes */
-
+/**
+ * G_FILE_ATTRIBUTE_MOUNTABLE_CAN_MOUNT:
+ * 
+ * A key in the "mountable" namespace for checking if a file is mountable.
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
+ **/
 #define G_FILE_ATTRIBUTE_MOUNTABLE_CAN_MOUNT "mountable:can_mount"     /* boolean */
+
+/**
+ * G_FILE_ATTRIBUTE_MOUNTABLE_CAN_UNMOUNT:
+ * 
+ * A key in the "mountable" namespace for checking if a file is unmountable.
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
+ **/
 #define G_FILE_ATTRIBUTE_MOUNTABLE_CAN_UNMOUNT "mountable:can_unmount" /* boolean */
+
+/**
+ * G_FILE_ATTRIBUTE_MOUNTABLE_CAN_EJECT:
+ * 
+ * A key in the "mountable" namespace for checking if a file can be ejected.
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
+ **/
 #define G_FILE_ATTRIBUTE_MOUNTABLE_CAN_EJECT "mountable:can_eject"     /* boolean */
+
+/**
+ * G_FILE_ATTRIBUTE_MOUNTABLE_UNIX_DEVICE:
+ * 
+ * A key in the "mountable" namespace for getting the unix device.
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_UINT32.
+ **/
 #define G_FILE_ATTRIBUTE_MOUNTABLE_UNIX_DEVICE "mountable:unix_device" /* uint32 */
+
+/**
+ * G_FILE_ATTRIBUTE_MOUNTABLE_HAL_UDI:
+ * 
+ * A key in the "mountable" namespace for getting the HAL UDI for the mounted
+ * file. Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_STRING.
+ **/
 #define G_FILE_ATTRIBUTE_MOUNTABLE_HAL_UDI "mountable:hal_udi"         /* string */
 
 /* Time attributes */
 
   /* The last time the file content or an attribute was modified */
+/**
+ * G_FILE_ATTRIBUTE_TIME_MODIFIED:
+ * 
+ * A key in the "time" namespace for getting the time the file was last
+ * modified. Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_UINT64, 
+ * and contains the UNIX time since the file was modified.
+ **/
 #define G_FILE_ATTRIBUTE_TIME_MODIFIED "time:modified"           /* uint64 */
+
+/**
+ * G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC:
+ * 
+ * A key in the "time" namespace for getting the milliseconds of the time
+ * the file was last modified. This should be used in conjunction with 
+ * #G_FILE_ATTRIBUTE_TIME_MODIFIED. Corresponding #GFileAttributeType is 
+ * %G_FILE_ATTRIBUTE_TYPE_UINT32.
+ **/
 #define G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC "time:modified_usec" /* uint32 */
   /* The last time the file was read */
+/**
+ * G_FILE_ATTRIBUTE_TIME_ACCESS:
+ * 
+ * A key in the "time" namespace for getting the time the file was last
+ * accessed. Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_UINT64, 
+ * and contains the UNIX time since the file was last accessed.
+ **/
 #define G_FILE_ATTRIBUTE_TIME_ACCESS "time:access"               /* uint64 */
+/**
+ * G_FILE_ATTRIBUTE_TIME_ACCESS_USEC:
+ * 
+ * A key in the "time" namespace for getting the milliseconds of the time
+ * the file was last accessed. This should be used in conjunction with
+ * #G_FILE_ATTRIBUTE_TIME_ACCESS. Corresponding #GFileAttributeType is 
+ * %G_FILE_ATTRIBUTE_TYPE_UINT32.
+ **/
 #define G_FILE_ATTRIBUTE_TIME_ACCESS_USEC "time:access_usec"     /* uint32 */
   /* The last time a file attribute was changed (e.g. unix ctime) */
+/**
+ * G_FILE_ATTRIBUTE_TIME_CHANGED:
+ * 
+ * A key in the "time" namespace for getting the time the file was last
+ * changed. Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_UINT64, 
+ * and contains the UNIX time since the file was last changed.
+ **/
 #define G_FILE_ATTRIBUTE_TIME_CHANGED "time:changed"             /* uint64 */
+/**
+ * G_FILE_ATTRIBUTE_TIME_CHANGED_USEC:
+ * 
+ * A key in the "time" namespace for getting the milliseconds of the time
+ * the file was last changed. This should be used in conjunction with
+ * #G_FILE_ATTRIBUTE_TIME_CHANGED. Corresponding #GFileAttributeType is 
+ * %G_FILE_ATTRIBUTE_TYPE_UINT32. 
+ **/
 #define G_FILE_ATTRIBUTE_TIME_CHANGED_USEC "time:changed_usec"   /* uint32 */
   /* When the file was originally created (e.g. ntfs ctime) */
+/**
+ * G_FILE_ATTRIBUTE_TIME_CREATED:
+ * 
+ * A key in the "time" namespace for getting the time the file was created.
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_UINT64, 
+ * and contains the UNIX time since the file was created.
+ **/
 #define G_FILE_ATTRIBUTE_TIME_CREATED "time:created"             /* uint64 */
+
+/**
+ * G_FILE_ATTRIBUTE_TIME_CREATED_USEC:
+ * 
+ * A key in the "time" namespace for getting the milliseconds of the time
+ * the file was created. This should be used in conjunction with
+ * #G_FILE_ATTRIBUTE_TIME_CREATED. Corresponding #GFileAttributeType is 
+ * %G_FILE_ATTRIBUTE_TYPE_UINT32. 
+ **/
 #define G_FILE_ATTRIBUTE_TIME_CREATED_USEC "time:created_usec"   /* uint32 */
 
 /* Unix specific attributes */
-
+/**
+ * G_FILE_ATTRIBUTE_UNIX_DEVICE:
+ * 
+ * A key in the "unix" namespace for getting the device id of the device the 
+ * file is located on (see man stat(2)). This attribute is only available 
+ * for UNIX file systems. Corresponding #GFileAttributeType is 
+ * %G_FILE_ATTRIBUTE_TYPE_UINT32. 
+ * 
+ **/
 #define G_FILE_ATTRIBUTE_UNIX_DEVICE "unix:device"               /* uint32 */
+/**
+ * G_FILE_ATTRIBUTE_UNIX_INODE:
+ * 
+ * A key in the "unix" namespace for getting the inode of the file.
+ * This attribute is only available for UNIX file systems. Corresponding 
+ * #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_UINT64.
+ **/
 #define G_FILE_ATTRIBUTE_UNIX_INODE "unix:inode"                 /* uint64 */
+/**
+ * G_FILE_ATTRIBUTE_UNIX_MODE:
+ * 
+ * A key in the "unix" namespace for getting the mode of the file (e.g. whether the file 
+ * is a regular file, symlink, etc). See man lstat(2). This attribute is only available 
+ * for UNIX file systems. Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_UINT32.
+ **/
 #define G_FILE_ATTRIBUTE_UNIX_MODE "unix:mode"                   /* uint32 */
+
+/**
+ * G_FILE_ATTRIBUTE_UNIX_NLINK:
+ * 
+ * A key in the "unix" namespace for getting the number of hard links for a 
+ * file. See man lstat(2). This attribute is only available for UNIX file systems. 
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_UINT32.
+ * 
+ **/
 #define G_FILE_ATTRIBUTE_UNIX_NLINK "unix:nlink"                 /* uint32 */
+/**
+ * G_FILE_ATTRIBUTE_UNIX_UID:
+ * 
+ * A key in the "unix" namespace for getting the user ID for the file. 
+ * This attribute is only available for UNIX file systems. 
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_UINT32.
+ **/
 #define G_FILE_ATTRIBUTE_UNIX_UID "unix:uid"                     /* uint32 */
+/**
+ * G_FILE_ATTRIBUTE_UNIX_GID:
+ * 
+ * A key in the "unix" namespace for getting the group ID for the file.
+ * This attribute is only available for UNIX file systems. 
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_UINT32.
+ **/
 #define G_FILE_ATTRIBUTE_UNIX_GID "unix:gid"                     /* uint32 */
+/**
+ * G_FILE_ATTRIBUTE_UNIX_RDEV:
+ * 
+ * A key in the "unix" namespace for getting the device ID for the file (if it 
+ * is a special file). See man lstat(2). This attribute is only available for 
+ * UNIX file systems. Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_UINT32.
+ **/
 #define G_FILE_ATTRIBUTE_UNIX_RDEV "unix:rdev"                   /* uint32 */
+/**
+ * G_FILE_ATTRIBUTE_UNIX_BLOCK_SIZE:
+ * 
+ * A key in the "unix" namespace for getting the block size for the file system.
+ * This attribute is only available for UNIX file systems. 
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_UINT32.
+ **/
 #define G_FILE_ATTRIBUTE_UNIX_BLOCK_SIZE "unix:block_size"       /* uint32 */
+/**
+ * G_FILE_ATTRIBUTE_UNIX_BLOCKS:
+ * 
+ * A key in the "unix" namespace for getting the number of blocks allocated for the file.
+ * This attribute is only available for UNIX file systems. 
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_UINT64.
+ **/
 #define G_FILE_ATTRIBUTE_UNIX_BLOCKS "unix:blocks"               /* uint64 */
+
+/**
+ * G_FILE_ATTRIBUTE_UNIX_IS_MOUNTPOINT:
+ * 
+ * A key in the "unix" namespace for checking if the file represents a unix mount point.
+ * Returns %TRUE if the file is a unix mount point. This attribute is only available for 
+ * UNIX file systems. Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
+ **/
 #define G_FILE_ATTRIBUTE_UNIX_IS_MOUNTPOINT "unix:is_mountpoint" /* boolean */
 
 /* DOS specific attributes */
-
+/**
+ * G_FILE_ATTRIBUTE_DOS_IS_ARCHIVE:
+ * 
+ * A key in the "dos" namespace for checking if the file's archive flag is set.
+ * Returns %TRUE if the archive flag is set. This attribute is only available for 
+ * DOS file systems. Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
+ **/
 #define G_FILE_ATTRIBUTE_DOS_IS_ARCHIVE "dos:is_archive"         /* boolean */
+
+/**
+ * G_FILE_ATTRIBUTE_DOS_IS_SYSTEM:
+ * 
+ * A key in the "dos" namespace for checking if the file's backup flag is set.
+ * Returns %TRUE if the backup flag is set. This attribute is only available for 
+ * DOS file systems. Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
+ **/
 #define G_FILE_ATTRIBUTE_DOS_IS_SYSTEM "dos:is_system"           /* boolean */
 
 /* Owner attributes */
-
+/**
+ * G_FILE_ATTRIBUTE_OWNER_USER:
+ * 
+ * A key in the "owner" namespace for getting the user name of the file's owner.
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_STRING.
+ **/
 #define G_FILE_ATTRIBUTE_OWNER_USER "owner:user"                 /* string */
+
+/**
+ * G_FILE_ATTRIBUTE_OWNER_USER_REAL:
+ * 
+ * A key in the "owner" namespace for getting the real name of the user that owns the file.
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_STRING.
+ **/
 #define G_FILE_ATTRIBUTE_OWNER_USER_REAL "owner:user_real"       /* string */
+
+/**
+ * G_FILE_ATTRIBUTE_OWNER_GROUP:
+ * 
+ * A key in the "owner" namespace for getting the file owner's group.
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_STRING.
+ **/
 #define G_FILE_ATTRIBUTE_OWNER_GROUP "owner:group"               /* string */
 
 /* Thumbnails */
 
+/**
+ * G_FILE_ATTRIBUTE_THUMBNAIL_PATH:
+ * 
+ * A key in the "thumbnail" namespace for getting the path to the thumbnail image.
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BYTE_STRING.
+ **/
 #define G_FILE_ATTRIBUTE_THUMBNAIL_PATH "thumbnail:path"         /* bytestring */
-#define G_FILE_ATTRIBUTE_THUMBNAILING_FAILED "thumbnail:failed"         /* bytestring */
+/**
+ * G_FILE_ATTRIBUTE_THUMBNAIL_THUMNAILING_FAILED:
+ * 
+ * A key in the "thumbnail" namespace for checking if thumbnailing failed. 
+ * Is set to %TRUE if thumbnailing failed. Corresponding #GFileAttributeType 
+ * is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN. 
+ **/
+#define G_FILE_ATTRIBUTE_THUMBNAILING_FAILED "thumbnail:failed"         /* boolean */
 
 /* File system info (for g_file_get_filesystem_info) */
 
+/**
+ * G_FILE_ATTRIBUTE_FS_SIZE:
+ * 
+ * A key in the "fs" namespace for getting the size of the file system, used in
+ * g_file_get_filesystem_info(). Corresponding #GFileAttributeType is 
+ * %G_FILE_ATTRIBUTE_TYPE_UINT64.
+ **/
 #define G_FILE_ATTRIBUTE_FS_SIZE "fs:size"                       /* uint64 */
+
+/**
+ * G_FILE_ATTRIBUTE_FS_FREE:
+ * 
+ * A key in the "fs" namespace for getting the free space left on the file system.
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_UINT64.
+ **/
 #define G_FILE_ATTRIBUTE_FS_FREE "fs:free"                       /* uint64 */
+
+/**
+ * G_FILE_ATTRIBUTE_FS_TYPE:
+ * 
+ * A key in the "fs" namespace for getting the file system's type.
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_STRING.
+ **/
 #define G_FILE_ATTRIBUTE_FS_TYPE "fs:type"                       /* string */
+
+/**
+ * G_FILE_ATTRIBUTE_FS_READONLY:
+ * 
+ * A key in the "fs" namespace for checking if the file system is read only.
+ * Is set to %TRUE if the file system is read only. Corresponding #GFileAttributeType is 
+ * %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
+ **/
 #define G_FILE_ATTRIBUTE_FS_READONLY "fs:readonly"               /* boolean */
 
+/**
+ * G_FILE_ATTRIBUTE_GVFS_BACKEND:
+ * 
+ * A key in the "gvfs" namespace that gets the name of the current
+ * GVFS backend in use. Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_STRING.
+ **/
 #define G_FILE_ATTRIBUTE_GVFS_BACKEND "gvfs:backend"             /* string */
 
 GType g_file_info_get_type (void) G_GNUC_CONST;

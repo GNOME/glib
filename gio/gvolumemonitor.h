@@ -36,11 +36,19 @@ G_BEGIN_DECLS
 #define G_IS_VOLUME_MONITOR(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), G_TYPE_VOLUME_MONITOR))
 #define G_IS_VOLUME_MONITOR_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_VOLUME_MONITOR))
 
+/**
+ * GVolumeMonitor:
+ * @parent: The parent class.
+ *
+ * A Volume Monitor that watches for volume events.
+ **/
 typedef struct _GVolumeMonitor GVolumeMonitor;
 typedef struct _GVolumeMonitorClass GVolumeMonitorClass;
 
 struct _GVolumeMonitor {
   GObject parent;
+
+  /*< private >*/
   gpointer priv;
 };
 
@@ -65,7 +73,7 @@ struct _GVolumeMonitorClass {
   GList * (*get_mounted_volumes)  (GVolumeMonitor *volume_monitor);
   GList * (*get_connected_drives) (GVolumeMonitor *volume_monitor);
 
-
+  /*< private >*/
   /* Padding for future expansion */
   void (*_g_reserved1) (void);
   void (*_g_reserved2) (void);

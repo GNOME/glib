@@ -28,6 +28,15 @@
 #include "gsimpleasyncresult.h"
 #include "glibintl.h"
 
+/**
+ * SECTION:gfileinputstream
+ * @short_description: file input streaming operations
+ * @see_also: #GInputStream, #GDataInputStream, #GSeekable.
+ * 
+ * 
+ *
+ **/
+
 static void       g_file_input_stream_seekable_iface_init    (GSeekableIface       *iface);
 static goffset    g_file_input_stream_seekable_tell          (GSeekable            *seekable);
 static gboolean   g_file_input_stream_seekable_can_seek      (GSeekable            *seekable);
@@ -89,12 +98,19 @@ g_file_input_stream_init (GFileInputStream *stream)
 
 /**
  * g_file_input_stream_query_info:
- * @stream:
- * @attributes:
+ * @stream: a #GFileInputStream.
+ * @attributes: a file attribute query string.
  * @cancellable: optional #GCancellable object, %NULL to ignore. 
  * @error: a #GError location to store the error occuring, or %NULL to 
  * ignore.
- * Returns: 
+ *
+ * Queries a file input stream the given @attributes.his function blocks while querying
+ * the stream. For the asynchronous (non-blocking) version of this function, see 
+ * g_file_input_stream_query_info_async(). While the stream is blocked, 
+ * the stream will set the pending flag internally, and any other operations on the 
+ * stream will fail with %G_IO_ERROR_PENDING.
+ *
+ * Returns: a #GFileInfo, or %NULL on error.
  **/
 GFileInfo *
 g_file_input_stream_query_info (GFileInputStream     *stream,
@@ -161,11 +177,19 @@ async_ready_callback_wrapper (GObject *source_object,
 
 /**
  * g_file_input_stream_query_info_async:
- * @stream:
- * @attributes:
- * @io_priority: the io priority of the request.
- * @cancellable: optional #GCancellable object, %NULL to ignore. @callback:
- * @user_data:
+ * @stream: a #GFileInputStream.
+ * @attributes: a file attribute query string.
+ * @io_priority: the i/o priority of the request.
+ * @cancellable: optional #GCancellable object, %NULL to ignore. 
+ * @callback: callback to call when the request is satisfied
+ * @user_data: the data to pass to callback function
+ * 
+ * Queries the stream information asynchronously. For the synchronous version
+ * of this function, see g_file_input_stream_query_info(). 
+ * 
+ * If @cancellable is not %NULL, then the operation can be cancelled by
+ * triggering the cancellable object from another thread. If the operation
+ * was cancelled, the error %G_IO_ERROR_CANCELLED will be set
  *  
  **/
 void
@@ -214,10 +238,13 @@ g_file_input_stream_query_info_async (GFileInputStream     *stream,
 
 /**
  * g_file_input_stream_query_info_finish:
- * @stream:
- * @result:
+ * @stream: a #GFileInputStream.
+ * @result: a #GAsyncResult.
  * @error: a #GError location to store the error occuring, or %NULL to 
  * ignore.
+ * 
+ * Finishes an asynchronous info query operation.
+ * 
  * Returns: #GFileInfo. 
  **/
 GFileInfo *
@@ -244,9 +271,11 @@ g_file_input_stream_query_info_finish (GFileInputStream     *stream,
 
 /**
  * g_file_input_stream_tell:
- * @stream:
+ * @stream: a #GFileInputStream.
  * 
- * Returns: 
+ * Gets the current position in the stream.
+ * 
+ * Returns: a #goffset with the position in the stream.
  **/
 goffset
 g_file_input_stream_tell (GFileInputStream  *stream)
@@ -273,7 +302,9 @@ g_file_input_stream_seekable_tell (GSeekable *seekable)
 
 /**
  * g_file_input_stream_can_seek:
- * @stream:
+ * @stream: a #GFileInputStream.
+ * 
+ * Checks if a file input stream can be seeked.
  * 
  * Returns: %TRUE if stream can be seeked. %FALSE otherwise.
  **/
@@ -306,13 +337,21 @@ g_file_input_stream_seekable_can_seek (GSeekable *seekable)
 
 /**
  * g_file_input_stream_seek:
- * @stream:
- * @offset:
- * @type:
+ * @stream: a #GFileInputStream.
+ * @offset: a #goffset to seek.
+ * @type: a #GSeekType.
  * @cancellable: optional #GCancellable object, %NULL to ignore. 
  * @error: a #GError location to store the error occuring, or %NULL to 
  * ignore.
- * Returns: 
+ * 
+ * Seeks in the file input stream.
+ * 
+ * If @cancellable is not %NULL, then the operation can be cancelled by
+ * triggering the cancellable object from another thread. If the operation
+ * was cancelled, the error %G_IO_ERROR_CANCELLED will be set.
+ * 
+ * Returns: %TRUE if the stream was successfully seeked to the position.
+ * %FALSE on error.
  **/
 gboolean
 g_file_input_stream_seek (GFileInputStream  *stream,

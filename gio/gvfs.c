@@ -27,6 +27,15 @@
 #include "giomodule.h"
 #include "glibintl.h"
 
+/**
+ * SECTION:gvfs
+ * @short_description: Virtual File System 
+ * @include: gio/gvfs.h
+ * 
+ * Entry point for using GIO functionality.
+ *
+ **/
+
 G_DEFINE_TYPE (GVfs, g_vfs, G_TYPE_OBJECT);
 
 static void
@@ -41,9 +50,11 @@ g_vfs_init (GVfs *vfs)
 
 /**
  * g_vfs_is_active:
- * @vfs: an  #GVfs.
+ * @vfs: a #GVfs.
  * 
- * Returns TRUE if construction of the @vfs was successful and its now active.
+ * Checks if the VFS is active.
+ * 
+ * Returns: %TRUE if construction of the @vfs was successful and it is now active.
  **/
 gboolean
 g_vfs_is_active (GVfs *vfs)
@@ -60,11 +71,12 @@ g_vfs_is_active (GVfs *vfs)
 
 /**
  * g_vfs_get_file_for_path:
- * @vfs: an input #GVfs.
+ * @vfs: a #GVfs.
  * @path: a string containing a VFS path.
  * 
- * Returns a #GFile for the given @path.
+ * Gets a #GFile for @path.
  * 
+ * Returns: a #GFile.
  **/
 GFile *
 g_vfs_get_file_for_path (GVfs *vfs,
@@ -82,14 +94,16 @@ g_vfs_get_file_for_path (GVfs *vfs,
 
 /**
  * g_vfs_get_file_for_uri:
- * @vfs: an input #GVfs.
- * @uri: an input string containing a URI path.
- *
+ * @vfs: a#GVfs.
+ * @uri: a string containing a URI path.
+ * 
+ * Gets a #GFile for @uri.
+ * 
  * This operation never fails, but the returned object
  * might not support any I/O operation if the uri
  * is malformed or if the uri type is not supported.
  * 
- * Returns a #GFile for the given @uri. 
+ * Returns: a #GFile. 
  * 
  **/
 GFile *
@@ -108,10 +122,11 @@ g_vfs_get_file_for_uri (GVfs *vfs,
 
 /**
  * g_vfs_get_supported_uri_schemes:
- * @vfs: an input #GVfs.
+ * @vfs: a #GVfs.
  * 
- * Returns: 
+ * Gets a list of URI schemes supported by GVFS. 
  * 
+ * Returns: a list of strings.
  **/
 const gchar * const *
 g_vfs_get_supported_uri_schemes (GVfs *vfs)
@@ -127,7 +142,7 @@ g_vfs_get_supported_uri_schemes (GVfs *vfs)
 
 /**
  * g_vfs_parse_name:
- * @vfs: an input #GVfs.
+ * @vfs: a #GVfs.
  * @parse_name: a string to be parsed by the VFS module.
  * 
  * This operation never fails, but the returned object might 
@@ -135,7 +150,6 @@ g_vfs_get_supported_uri_schemes (GVfs *vfs)
  * be parsed by the #GVfs module.
  * 
  * Returns a #GFile for the given @parse_name.
- * 
  **/
 GFile *
 g_vfs_parse_name (GVfs *vfs,
@@ -230,7 +244,9 @@ get_default_vfs (gpointer arg)
 /**
  * g_vfs_get_default:
  * 
- * Returns the default #GVfs for the system.
+ * Gets the default #GVfs for the system.
+ * 
+ * Returns: a #GVfs. 
  **/
 GVfs *
 g_vfs_get_default (void)
@@ -243,7 +259,9 @@ g_vfs_get_default (void)
 /**
  * g_vfs_get_local:
  * 
- * Returns the local #GVfs for the system.
+ * Gets the local #GVfs for the system.
+ * 
+ * Returns: a #GVfs.
  **/
 GVfs *
 g_vfs_get_local (void)

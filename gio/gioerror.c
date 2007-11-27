@@ -25,9 +25,17 @@
 #include "gioerror.h"
 
 /**
- * g_io_error_quark:
+ * SECTION:gioerror
+ * @short_description: Error helper functions.
  *
- * Return value: The quark used as %G_IO_ERROR
+ **/
+
+/**
+ * g_io_error_quark:
+ * 
+ * Gets the GIO Error Quark.
+ *
+ * Return value: a #GQuark.
  **/
 GQuark
 g_io_error_quark (void)
@@ -35,6 +43,14 @@ g_io_error_quark (void)
   return g_quark_from_static_string ("g-io-error-quark");
 }
 
+/**
+ * g_io_error_from_errno:
+ * @err_no: Error number as defined in errno.h.
+ *
+ * Converts errno.h error codes into GIO error codes.
+ *
+ * Returns: #GIOErrorEnum value for the given errno.h error number.
+ **/
 GIOErrorEnum
 g_io_error_from_errno (gint err_no)
 {

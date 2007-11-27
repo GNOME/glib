@@ -35,6 +35,11 @@ G_BEGIN_DECLS
 #define G_IS_FILE_ICON_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_FILE_ICON))
 #define G_FILE_ICON_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), G_TYPE_FILE_ICON, GFileIconClass))
 
+/**
+ * GFileIcon:
+ * 
+ * Gets an icon for a #GFile. Implements #GLoadabeIcon.
+ **/
 typedef struct _GFileIcon        GFileIcon;
 typedef struct _GFileIconClass   GFileIconClass;
 

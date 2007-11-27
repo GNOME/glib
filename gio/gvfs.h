@@ -35,6 +35,11 @@ G_BEGIN_DECLS
 #define G_IS_VFS(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), G_TYPE_VFS))
 #define G_IS_VFS_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_VFS))
 
+/**
+ * GVfs:
+ * 
+ * Virtual File System object.
+ **/
 typedef struct _GVfs         GVfs; /* Dummy typedef */
 typedef struct _GVfsClass    GVfsClass;
 
@@ -61,7 +66,7 @@ struct _GVfsClass
 				                     const char *parse_name);
 
 
-
+  /*< private >*/
   /* Padding for future expansion */
   void (*_g_reserved1) (void);
   void (*_g_reserved2) (void);

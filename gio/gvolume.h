@@ -34,9 +34,31 @@ G_BEGIN_DECLS
 #define G_VOLUME_GET_IFACE(obj)  (G_TYPE_INSTANCE_GET_INTERFACE ((obj), G_TYPE_VOLUME, GVolumeIface))
 
 /* GVolume typedef is in gfile.h due to include order issues */
+/**
+ * GDrive:
+ * 
+ * Opaque drive object.
+ **/
 typedef struct _GDrive          GDrive; /* Dummy typedef */
 typedef struct _GVolumeIface    GVolumeIface;
 
+/**
+ * GVolumeIface:
+ * @g_iface: The parent interface.
+ * @changed: Changed signal that is emitted when the volume's state has changed.
+ * @get_root: Gets a #GFile to the root directory of the #GVolume.
+ * @get_name: Gets a string containing the name of the #GVolume.
+ * @get_icon: Gets a #GIcon for the #GVolume.
+ * @get_drive: Gets a #GDrive the volume is located on.
+ * @can_unmount: Checks if a #GVolume can be unmounted.
+ * @can_eject: Checks if a #GVolume can be ejected.
+ * @unmount: Starts unmounting a #GVolume.
+ * @unmount_finish: Finishes an unmounting operation.
+ * @eject: Starts ejecting a #GVolume.
+ * @eject_finish: Finishes an eject operation.
+ * 
+ * Interface for implementing operations for mounted volumes.
+ **/
 struct _GVolumeIface
 {
   GTypeInterface g_iface;

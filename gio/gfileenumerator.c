@@ -27,6 +27,13 @@
 #include "gsimpleasyncresult.h"
 #include "glibintl.h"
 
+/**
+ * SECTION:gfileenumerator
+ * @short_description: Enumerated Files Routines.
+ * 
+ * 
+ **/ 
+
 G_DEFINE_TYPE (GFileEnumerator, g_file_enumerator, G_TYPE_OBJECT);
 
 struct _GFileEnumeratorPrivate {
@@ -305,6 +312,9 @@ g_file_enumerator_next_files_async  (GFileEnumerator                *enumerator,
  * @result: a #GAsyncResult.
  * @error: a #GError location to store the error occuring, or %NULL to 
  * ignore.
+ * 
+ * 
+ * 
  * Returns: 
  **/
 GList *
@@ -402,6 +412,9 @@ g_file_enumerator_close_async (GFileEnumerator                *enumerator,
  * @result: a #GAsyncResult.
  * @error: a #GError location to store the error occuring, or %NULL to 
  * ignore.
+ * 
+ * 
+ * 
  * Returns: %TRUE if the close operation has finished successfully.
  **/
 gboolean

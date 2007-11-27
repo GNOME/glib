@@ -28,9 +28,38 @@
 
 G_BEGIN_DECLS
 
+/**
+ * GUnixMount:
+ * 
+ * Defines a Unix mount.
+ **/
 typedef struct _GUnixMount GUnixMount;
+
+/**
+ * GUnixMountPoint:
+ * 
+ * Defines a Unix mount point (e.g. "/dev").
+ **/
 typedef struct _GUnixMountPoint GUnixMountPoint;
 
+/**
+ * GUnixMountType:
+ * @G_UNIX_MOUNT_TYPE_UNKNOWN: Unknown UNIX mount type.
+ * @G_UNIX_MOUNT_TYPE_FLOPPY: Floppy disk UNIX mount type.
+ * @G_UNIX_MOUNT_TYPE_CDROM: CDROM UNIX mount type.
+ * @G_UNIX_MOUNT_TYPE_NFS: Network File System (NFS) UNIX mount type.
+ * @G_UNIX_MOUNT_TYPE_ZIP: ZIP UNIX mount type.
+ * @G_UNIX_MOUNT_TYPE_JAZ: JAZZ UNIX mount type.
+ * @G_UNIX_MOUNT_TYPE_MEMSTICK: Memory Stick UNIX mount type.
+ * @G_UNIX_MOUNT_TYPE_CF: Compact Flash UNIX mount type.
+ * @G_UNIX_MOUNT_TYPE_SM: Smart Media UNIX mount type.
+ * @G_UNIX_MOUNT_TYPE_SDMMC: SD/MMC UNIX mount type.
+ * @G_UNIX_MOUNT_TYPE_IPOD: iPod UNIX mount type.
+ * @G_UNIX_MOUNT_TYPE_CAMERA: Digital camera UNIX mount type.
+ * @G_UNIX_MOUNT_TYPE_HD: Hard drive UNIX mount type.
+ * 
+ * Types of UNIX mounts.
+ **/
 typedef enum {
   G_UNIX_MOUNT_TYPE_UNKNOWN,
   G_UNIX_MOUNT_TYPE_FLOPPY,
@@ -47,6 +76,11 @@ typedef enum {
   G_UNIX_MOUNT_TYPE_HD
 } GUnixMountType;
 
+/**
+ * GUnixMountMonitor:
+ * 
+ * Watches #GUnixMount<!-- -->s for changes.
+ **/
 typedef struct _GUnixMountMonitor GUnixMountMonitor;
 typedef struct _GUnixMountMonitorClass GUnixMountMonitorClass;
 

@@ -30,7 +30,6 @@
 #include "gunixvolume.h"
 #include "gunixdrive.h"
 #include "gvolumeprivate.h"
-
 #include "glibintl.h"
 
 struct _GUnixVolumeMonitor {

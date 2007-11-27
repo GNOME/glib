@@ -31,7 +31,6 @@
 #include "gvolumeprivate.h"
 #include "gvolumemonitor.h"
 #include "gthemedicon.h"
-
 #include "glibintl.h"
 
 struct _GUnixVolume {

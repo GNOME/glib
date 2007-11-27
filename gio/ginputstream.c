@@ -28,6 +28,14 @@
 #include "gseekable.h"
 #include "gsimpleasyncresult.h"
 
+/**
+ * SECTION:ginputstream
+ * @short_description: base class for implementing streaming input
+ *
+ * 
+ * 
+ **/
+
 G_DEFINE_TYPE (GInputStream, g_input_stream, G_TYPE_OBJECT);
 
 struct _GInputStreamPrivate {
@@ -228,14 +236,14 @@ g_input_stream_read  (GInputStream  *stream,
  * read as many bytes as requested, only stopping on an error or end of stream.
  *
  * On a successful read of @count bytes, or if we reached the end of the
- * stream,  TRUE is returned, and @bytes_read is set to the number of bytes
+ * stream,  %TRUE is returned, and @bytes_read is set to the number of bytes
  * read into @buffer.
  * 
- * If there is an error during the operation FALSE is returned and @error
+ * If there is an error during the operation %FALSE is returned and @error
  * is set to indicate the error status, @bytes_read is updated to contain
  * the number of bytes read into @buffer before the error occured.
  *
- * Return value: TRUE on success, FALSE if there was an error
+ * Return value: %TRUE on success, %FALSE if there was an error
  **/
 gboolean
 g_input_stream_read_all (GInputStream              *stream,
@@ -407,6 +415,7 @@ g_input_stream_real_skip (GInputStream         *stream,
 /**
  * g_input_stream_close:
  * @stream: A #GInputStream.
+ * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @error: location to store the error occuring, or %NULL to ignore
  *
  * Closes the stream, releasing resources related to it.
@@ -604,11 +613,14 @@ g_input_stream_read_async (GInputStream        *stream,
 
 /**
  * g_input_stream_read_finish:
- * @stream:
- * @result:
+ * @stream: a #GInputStream.
+ * @result: a #GAsyncResult.
  * @error: a #GError location to store the error occuring, or %NULL to 
  * ignore.
- * Returns: 
+ * 
+ * Finishes an asynchronous stream read operation. 
+ * 
+ * Returns: number of bytes read in, or -1 on error.
  **/
 gssize
 g_input_stream_read_finish (GInputStream              *stream,
@@ -733,11 +745,14 @@ g_input_stream_skip_async (GInputStream        *stream,
 
 /**
  * g_input_stream_skip_finish:
- * @stream:
- * @result:
+ * @stream: a #GInputStream.
+ * @result: a #GAsyncResult.
  * @error: a #GError location to store the error occuring, or %NULL to 
  * ignore.
- * Returns: 
+ * 
+ * Finishes a stream skip operation.
+ * 
+ * Returns: the size of the bytes skipped, or %-1 on error.
  **/
 gssize
 g_input_stream_skip_finish (GInputStream              *stream,
@@ -826,11 +841,14 @@ g_input_stream_close_async (GInputStream       *stream,
 
 /**
  * g_input_stream_close_finish:
- * @stream:
- * @result:
+ * @stream: a #GInputStream.
+ * @result: a #GAsyncResult.
  * @error: a #GError location to store the error occuring, or %NULL to 
  * ignore.
- * Returns: 
+ * 
+ * Finishes closing a stream asynchronously, started from g_input_stream_close_async().
+ * 
+ * Returns: %TRUE if the stream was closed successfully.
  **/
 gboolean
 g_input_stream_close_finish (GInputStream              *stream,
@@ -862,6 +880,8 @@ g_input_stream_close_finish (GInputStream              *stream,
  * g_input_stream_is_closed:
  * @stream: input stream.
  * 
+ * Checks if an input stream is closed.
+ * 
  * Returns: %TRUE if the stream is closed.
  **/
 gboolean
@@ -875,6 +895,8 @@ g_input_stream_is_closed (GInputStream *stream)
 /**
  * g_input_stream_has_pending:
  * @stream: input stream.
+ * 
+ * Checks if an input stream has pending actions.
  * 
  * Returns: %TRUE if @stream has pending actions.
  **/  

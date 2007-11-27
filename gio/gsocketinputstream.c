@@ -37,8 +37,16 @@
 #include "gsocketinputstream.h"
 #include "gcancellable.h"
 #include "gasynchelper.h"
-
 #include "glibintl.h"
+
+/**
+ * SECTION:gsocketinputstream
+ * @short_description: Socket Input Stream
+ * @see_also: #GInputStream.
+ *
+ * #GSocketInputStream implements #GInputStream for reading from a socket, 
+ * including asynchronous operations.
+ **/
 
 G_DEFINE_TYPE (GSocketInputStream, g_socket_input_stream, G_TYPE_INPUT_STREAM);
 
@@ -128,12 +136,13 @@ g_socket_input_stream_init (GSocketInputStream *socket)
 
 /**
  * g_socket_input_stream_new:
- * @fd: file descriptor.
- * @close_fd_at_close: boolean value
+ * @fd: socket file descriptor.
+ * @close_fd_at_close: a #gboolean.
  * 
+ * Creates a new #GSocketInputStream for the given @fd. If @close_fd_at_close
+ * is %TRUE, the socket will be closed when the stream is closed.
  * 
- * Returns: new #GInputStream. If @close_fd_at_close is %TRUE, 
- * @fd will be closed when the #GInputStream is closed.
+ * Returns: a #GSocketInputStream. 
  **/
 GInputStream *
 g_socket_input_stream_new (int fd,

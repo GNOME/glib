@@ -24,6 +24,15 @@
 
 #include "giomodule.h"
 
+/**
+ * SECTION:giomodule
+ * @short_description: Loadable GIO Modules
+ *
+ * Provides an interface and default functions for loading and unloading 
+ * GIO modules.
+ * 
+ **/
+
 struct _GIOModule {
   GTypeModule parent_instance;
   
@@ -130,7 +139,9 @@ g_io_module_unload_module (GTypeModule *gmodule)
  * g_io_module_new:
  * @filename: filename of the module to load.
  * 
- * Returns: a new #GIOModule from given @filename, 
+ * Loads a new module into GIO.
+ * 
+ * Returns: a #GIOModule from given @filename, 
  * or %NULL on error.
  **/
 GIOModule *
@@ -208,9 +219,10 @@ G_LOCK_DEFINE_STATIC (loaded_dirs);
 static GHashTable *loaded_dirs = NULL;
 
 /**
- * g_io_module_ensure_loaded:
- * @directory: directory to ensure is loaded.
+ * g_io_modules_ensure_loaded:
+ * @directory: string containing a directory path.
  * 
+ * Loads all of the modules within the @directory. 
  **/
 void
 g_io_modules_ensure_loaded (const char *directory)

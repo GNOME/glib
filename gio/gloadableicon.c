@@ -21,10 +21,18 @@
  */
 
 #include <config.h>
-
 #include "gsimpleasyncresult.h"
 #include "gloadableicon.h"
 #include "glibintl.h"
+
+/**
+ * SECTION:gloadableicon
+ * @short_description: Loadable Icons
+ * @see_also: #GIcon, #GThemedIcon
+ * 
+ * Implements #GIcon and adds the ability to load icons.
+ *
+ **/
 
 static void          g_loadable_icon_real_load_async  (GLoadableIcon        *icon,
 						       int                   size,
@@ -86,13 +94,17 @@ g_loadable_icon_base_init (gpointer g_class)
 
 /**
  * g_loadable_icon_load:
- * @icon:
- * @size:
- * @type:
+ * @icon: a #GLoadableIcon.
+ * @size: an integer.
+ * @type: 
  * @cancellable: optional #GCancellable object, %NULL to ignore. 
  * @error: a #GError location to store the error occuring, or %NULL to 
  * ignore.
- * Returns: 
+ * 
+ * Loads a loadable icon. For the asynchronous version of this function, 
+ * see g_loadable_icon_load_async().
+ * 
+ * Returns: a #GInputStream to read the icon from.
  **/
 GInputStream *
 g_loadable_icon_load (GLoadableIcon        *icon,
@@ -113,12 +125,15 @@ g_loadable_icon_load (GLoadableIcon        *icon,
 
 /**
  * g_loadable_icon_load_async:
- * @icon:
- * @size:
- * @cancellable: optional #GCancellable object, %NULL to ignore. @callback:
- * @user_data:
+ * @icon: a #GLoadableIcon.
+ * @size: an integer.
+ * @cancellable: optional #GCancellable object, %NULL to ignore. 
+ * @callback: a #GAsyncReadyCallback to call when the request is satisfied
+ * @user_data: the data to pass to callback function
  * 
- * Loads an icon asynchronously.
+ * Loads an icon asynchronously. To finish this function, see 
+ * g_loadable_icon_load_finish(). For the synchronous, blocking 
+ * version of this function, see g_loadable_icon_load().
  * 
  **/
 void
@@ -140,12 +155,15 @@ g_loadable_icon_load_async (GLoadableIcon        *icon,
 
 /**
  * g_loadable_icon_load_finish:
- * @icon:
- * @res:
+ * @icon: a #GLoadableIcon.
+ * @res: a #GAsyncResult.
  * @type:
  * @error: a #GError location to store the error occuring, or %NULL to 
  * ignore.
- * Returns:
+ * 
+ * Finishes an asynchronous icon load started in g_loadable_icon_load_async().
+ * 
+ * Returns: a #GInputStream to read the icon from.
  **/
 GInputStream *
 g_loadable_icon_load_finish (GLoadableIcon        *icon,

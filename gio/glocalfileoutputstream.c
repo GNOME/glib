@@ -400,15 +400,6 @@ g_local_file_output_stream_query_info (GFileOutputStream     *stream,
 					 error);
 }
 
-/**
- * g_local_file_output_stream_create:
- * @filename:
- * @flags:
- * @cancellable: optional #GCancellable object, %NULL to ignore. 
- * @error: a #GError location to store the error occuring, or %NULL to 
- * ignore.
- * Returns: #GFileOutputStream.
- **/
 GFileOutputStream *
 g_local_file_output_stream_create  (const char       *filename,
 				    GFileCreateFlags  flags,
@@ -452,15 +443,6 @@ g_local_file_output_stream_create  (const char       *filename,
   return G_FILE_OUTPUT_STREAM (stream);
 }
 
-/**
- * g_local_file_output_stream_append:
- * @filename:
- * @flags:
- * @cancellable: optional #GCancellable object, %NULL to ignore. 
- * @error: a #GError location to store the error occuring, or %NULL to 
- * ignore.
- * Returns: 
- **/
 GFileOutputStream *
 g_local_file_output_stream_append  (const char       *filename,
 				    GFileCreateFlags  flags,
@@ -834,17 +816,6 @@ handle_overwrite_open (const char *filename,
   return -1;
 }
 
-/**
- * g_local_file_output_stream_replace:
- * @filename: the file name.
- * @etag:
- * @create_backup: if set, create a backup of the file.
- * @flags:
- * @cancellable: optional #GCancellable object, %NULL to ignore. 
- * @error: a #GError location to store the error occuring, or %NULL to 
- * ignore.
- * Returns: #GFileOutputStream
- **/
 GFileOutputStream *
 g_local_file_output_stream_replace (const char        *filename,
 				    const char        *etag,

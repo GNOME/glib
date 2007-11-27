@@ -24,6 +24,15 @@
 #include "gvolumemonitor.h"
 #include "glibintl.h"
 
+/**
+ * SECTION:gvolumemonitor
+ * @short_description: Volume Monitor
+ * @see_also: #GDirectoryMonitor, #GFileMonitor
+ * 
+ * Monitors a mounted volume for changes.
+ *
+ **/
+
 G_DEFINE_TYPE (GVolumeMonitor, g_volume_monitor, G_TYPE_OBJECT);
 
 enum {
@@ -56,6 +65,13 @@ g_volume_monitor_class_init (GVolumeMonitorClass *klass)
   
   gobject_class->finalize = g_volume_monitor_finalize;
 
+  /**
+   * GVolumeMonitor::volume-mounted:   
+   * @volume_monitor: The volume monitor emitting the signal.
+   * @volume: the volume that was mounted.
+   *
+   * Emitted when a volume is mounted.
+   **/
   signals[VOLUME_MOUNTED] = g_signal_new (I_("volume_mounted"),
 					  G_TYPE_VOLUME_MONITOR,
 					  G_SIGNAL_RUN_LAST,
@@ -63,7 +79,13 @@ g_volume_monitor_class_init (GVolumeMonitorClass *klass)
 					  NULL, NULL,
 					  g_cclosure_marshal_VOID__OBJECT,
 					  G_TYPE_NONE, 1, G_TYPE_VOLUME);
-  
+  /**
+   * GVolumeMonitor::volume-pre-unmount:
+   * @volume_monitor: The volume monitor emitting the signal.
+   * @volume: the volume that is being unmounted.
+   *
+   * Emitted when a volume is about to be unmounted.
+   **/ 
   signals[VOLUME_PRE_UNMOUNT] = g_signal_new (I_("volume_pre_unmount"),
 					      G_TYPE_VOLUME_MONITOR,
 					      G_SIGNAL_RUN_LAST,
@@ -71,7 +93,13 @@ g_volume_monitor_class_init (GVolumeMonitorClass *klass)
 					      NULL, NULL,
 					      g_cclosure_marshal_VOID__OBJECT,
 					      G_TYPE_NONE, 1, G_TYPE_VOLUME);
-  
+  /**
+   * GVolumeMonitor::volume-unmounted:
+   * @volume_monitor: The volume monitor emitting the signal.
+   * @volume: the volume that was unmounted.
+   * 
+   * Emitted when a volume is unmounted.
+   **/  
   signals[VOLUME_UNMOUNTED] = g_signal_new (I_("volume_unmounted"),
 					    G_TYPE_VOLUME_MONITOR,
 					    G_SIGNAL_RUN_LAST,
@@ -79,7 +107,13 @@ g_volume_monitor_class_init (GVolumeMonitorClass *klass)
 					    NULL, NULL,
 					    g_cclosure_marshal_VOID__OBJECT,
 					    G_TYPE_NONE, 1, G_TYPE_VOLUME);
-
+  /**
+   * GVolumeMonitor::drive-connected:
+   * @volume_monitor: The volume monitor emitting the signal.
+   * @drive: a #GDrive that was connected.
+   * 
+   * Emitted when a drive is connected to the system.
+   **/
   signals[DRIVE_CONNECTED] = g_signal_new (I_("drive_connected"),
 					   G_TYPE_VOLUME_MONITOR,
 					   G_SIGNAL_RUN_LAST,
@@ -88,7 +122,13 @@ g_volume_monitor_class_init (GVolumeMonitorClass *klass)
 					   g_cclosure_marshal_VOID__OBJECT,
 					   G_TYPE_NONE, 1, G_TYPE_DRIVE);
   
-  
+  /**
+   * GVolumeMonitor::drive-disconnected:
+   * @volume_monitor: The volume monitor emitting the signal.
+   * @drive: a #GDrive that was disconnected.
+   * 
+   * Emitted when a drive is disconnected from the system.
+   **/  
   signals[DRIVE_DISCONNECTED] = g_signal_new (I_("drive_disconnected"),
 					      G_TYPE_VOLUME_MONITOR,
 					      G_SIGNAL_RUN_LAST,
@@ -107,8 +147,9 @@ g_volume_monitor_init (GVolumeMonitor *monitor)
  * g_volume_monitor_get_mounted_volumes:
  * @volume_monitor: a #GVolumeMonitor.
  * 
- * Returns a #GList of mounted #GVolumes.
+ * Gets a list of volumes mounted on the computer.
  * 
+ * Returns a #GList of mounted #GVolumes.
  **/
 GList *
 g_volume_monitor_get_mounted_volumes  (GVolumeMonitor *volume_monitor)
@@ -126,8 +167,9 @@ g_volume_monitor_get_mounted_volumes  (GVolumeMonitor *volume_monitor)
  * g_volume_monitor_get_connected_drives:
  * @volume_monitor: a #GVolumeMonitor.
  * 
- * Returns a #GList of connected #GDrives. 
+ * Gets a list of drives connected to the computer.
  * 
+ * Returns: a #GList of connected #GDrives. 
  **/
 GList *
 g_volume_monitor_get_connected_drives (GVolumeMonitor *volume_monitor)

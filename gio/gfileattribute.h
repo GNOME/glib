@@ -27,6 +27,20 @@
 
 G_BEGIN_DECLS
 
+/**
+ * GFileAttributeType:
+ * @G_FILE_ATTRIBUTE_TYPE_INVALID: indicates an invalid or uninitalized type.
+ * @G_FILE_ATTRIBUTE_TYPE_STRING: a null terminated C string.
+ * @G_FILE_ATTRIBUTE_TYPE_BYTE_STRING: a zero terminated string of non-zero bytes.
+ * @G_FILE_ATTRIBUTE_TYPE_BOOLEAN: a boolean value.
+ * @G_FILE_ATTRIBUTE_TYPE_UINT32: an unsigned 4-byte/32-bit integer.
+ * @G_FILE_ATTRIBUTE_TYPE_INT32: a signed 4-byte/32-bit integer.
+ * @G_FILE_ATTRIBUTE_TYPE_UINT64: an unsigned 8-byte/64-bit integer.
+ * @G_FILE_ATTRIBUTE_TYPE_INT64: a signed 8-byte/64-bit integer.
+ * @G_FILE_ATTRIBUTE_TYPE_OBJECT: a #GObject.
+ * 
+ * The data type for #GFileAttributeValue<!-- -->s. 
+ **/ 
 typedef enum {
   G_FILE_ATTRIBUTE_TYPE_INVALID = 0,
   G_FILE_ATTRIBUTE_TYPE_STRING,
@@ -39,13 +53,28 @@ typedef enum {
   G_FILE_ATTRIBUTE_TYPE_OBJECT
 } GFileAttributeType;
 
+/**
+ * GFileAttributeFlags:
+ * @G_FILE_ATTRIBUTE_FLAGS_NONE: no flags set.
+ * @G_FILE_ATTRIBUTE_FLAGS_COPY_WITH_FILE: copy the attribute values when the file is copied.
+ * @G_FILE_ATTRIBUTE_FLAGS_COPY_WHEN_MOVED: copy the attribute values when the file is moved.
+ * 
+ * Indicates how to transfer file attributes to new #GFile structures when they are copied.
+ **/
 typedef enum {
   G_FILE_ATTRIBUTE_FLAGS_NONE = 0,
   G_FILE_ATTRIBUTE_FLAGS_COPY_WITH_FILE = 1 << 0,
   G_FILE_ATTRIBUTE_FLAGS_COPY_WHEN_MOVED = 1 << 1
 } GFileAttributeFlags;
 
-/* Used by g_file_set_attributes_from_info */
+/**
+ * GFileAttributeStatus:
+ * @G_FILE_ATTRIBUTE_STATUS_UNSET: Attribute value is unset (empty).
+ * @G_FILE_ATTRIBUTE_STATUS_SET: Attribute value is set.
+ * @G_FILE_ATTRIBUTE_STATUS_ERROR_SETTING: Indicates an error in setting the value.
+ * 
+ * Used by g_file_set_attributes_from_info() when setting file attributes.
+ **/
 typedef enum {
   G_FILE_ATTRIBUTE_STATUS_UNSET = 0,
   G_FILE_ATTRIBUTE_STATUS_SET,
@@ -54,6 +83,13 @@ typedef enum {
 
 #define G_FILE_ATTRIBUTE_VALUE_INIT {0}
 
+/**
+ * GFileAttributeValue:
+ * @type: a #GFileAttributeType.
+ * @status: a #GFileAttributeStatus.
+ *
+ * Contains the value data for the Key-Value pair.
+ **/
 typedef struct  {
   GFileAttributeType type : 8;
   GFileAttributeStatus status : 8;
@@ -69,12 +105,28 @@ typedef struct  {
   } u;
 } GFileAttributeValue;
 
+/**
+ * GFileAttributeInfo:
+ * @name: a string containing the key's name.
+ * @type: a #GFileAttributeType for the key.
+ * @flags: a set of #GFileAttributeFlags.
+ * 
+ * A Key-Value pair definition. 
+ **/
 typedef struct {
   char *name;
   GFileAttributeType type;
   GFileAttributeFlags flags;
 } GFileAttributeInfo;
 
+/**
+ * GFileAttributeInfoList:
+ * @infos: an array of #GFileAttributeInfo<!-- -->s.
+ * @n_infos: the number of values in the array.
+ * 
+ * Acts as a lightweight registry for possible valid file attributes.
+ * The registry stores Key-Value pair formats as #GFileAttributeInfo<!-- -->s.
+ **/
 typedef struct {
   GFileAttributeInfo *infos;
   int n_infos;

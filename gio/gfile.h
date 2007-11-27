@@ -37,15 +37,37 @@ G_BEGIN_DECLS
 #define G_IS_FILE(obj)	       (G_TYPE_CHECK_INSTANCE_TYPE ((obj), G_TYPE_FILE))
 #define G_FILE_GET_IFACE(obj)  (G_TYPE_INSTANCE_GET_INTERFACE ((obj), G_TYPE_FILE, GFileIface))
 
+/**
+ * GFileQueryInfoFlags:
+ * @G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS:
+ * 
+ * Flags used when querying a #GFileInfo.
+ */
 typedef enum {
   G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS = (1<<0)
 } GFileQueryInfoFlags;
 
+/**
+ * GFileCreateFlags:
+ * @G_FILE_CREATE_FLAGS_NONE:
+ * @G_FILE_CREATE_FLAGS_PRIVATE: 
+ * 
+ * Flags used when an operation may create a file.
+ */
 typedef enum  {
   G_FILE_CREATE_FLAGS_NONE = 0,
   G_FILE_CREATE_FLAGS_PRIVATE = (1<<0)
 } GFileCreateFlags;
 
+/**
+ * GFileCopyFlags:
+ * @G_FILE_COPY_OVERWRITE: Overwrite any existing files
+ * @G_FILE_COPY_BACKUP: Make a backup of any existing files.
+ * @G_FILE_COPY_NOFOLLOW_SYMLINKS: Don't follow symlinks.
+ * @G_FILE_COPY_ALL_METADATA: Copy all file metadata (see #GFileInfo).
+ *
+ * Flags used when copying or moving files. 
+ */
 typedef enum {
   G_FILE_COPY_OVERWRITE = (1<<0),
   G_FILE_COPY_BACKUP = (1<<1),
@@ -53,25 +75,149 @@ typedef enum {
   G_FILE_COPY_ALL_METADATA = (1<<3)
 } GFileCopyFlags;
 
+/**
+ * GFileMonitorFlags:
+ * @G_FILE_MONITOR_FLAGS_NONE: No flags set.
+ * @G_FILE_MONITOR_FLAGS_MONITOR_MOUNTS: Watch for mount events. 
+ *
+ * Flags used to set what a #GFileMonitor or #GDirectoryMonitor will watch for. 
+ */
 typedef enum  {
   G_FILE_MONITOR_FLAGS_NONE = 0,
   G_FILE_MONITOR_FLAGS_MONITOR_MOUNTS = (1<<0)
 } GFileMonitorFlags;
 
+/**
+ * GFile:
+ * 
+ * A handle to an object implementing the #GFileIface interface. 
+ * Generally stores a location within the file system. Handles do not 
+ * necessarily represent files or directories that currently exist.
+ **/
 typedef struct _GFile         		GFile; /* Dummy typedef */
 typedef struct _GFileIface    		GFileIface;
 typedef struct _GDirectoryMonitor       GDirectoryMonitor;
 typedef struct _GFileMonitor            GFileMonitor;
+
+/**
+ * GVolume:
+ * 
+ * A handle to an object implementing the #GVolumeIface interface.
+ **/
 typedef struct _GVolume         GVolume; /* Dummy typedef */
 
+/**
+ * GFileProgressCallback:
+ * @current_num_bytes: the current number of bytes in the operation.
+ * @total_num_bytes: the total number of bytes in the operation.
+ * @user_data: user data passed to the callback.
+ *
+ * When doing file operations that may take a while, such as moving 
+ * a file or copying a file, a progress callback is used to pass how 
+ * far along that operation is to the application. 
+ **/
 typedef void (*GFileProgressCallback) (goffset current_num_bytes,
 				       goffset total_num_bytes,
 				       gpointer user_data);
+
+/**
+ * GFileReadMoreCallback:
+ * @file_contents:
+ * @file_size:
+ * @callback_data:
+ *
+ * 
+ **/
 typedef gboolean (* GFileReadMoreCallback) (const char *file_contents,
 					    goffset file_size,
 					    gpointer callback_data);
 
-
+/**
+ * GFileIface:
+ * @g_iface: The parent interface.
+ * @dup: Duplicates a #GFile.
+ * @hash: Creates a hash of a #GFile.
+ * @equal: Checks equality of two given #GFile<!-- -->s.
+ * @is_native: Checks to see if a file is native to the system.
+ * @has_uri_scheme: Checks to see if a #GFile has a given URI scheme.
+ * @get_uri_scheme: Gets the URI scheme for a #GFile.
+ * @get_basename: Gets the basename for a given #GFile.
+ * @get_path: Gets the current path within a #GFile. 
+ * @get_uri: Gets a URI for the path within a #GFile.
+ * @get_parse_name: Gets the parsed name for the #GFile.
+ * @get_parent: Gets the parent directory for the #GFile.
+ * @contains_file: Checks whether a #GFile contains a specified file.
+ * @get_relative_path: Gets the path for a #GFile relative to a given path.
+ * @resolve_relative_path: Resolves a relative path for a #GFile to an absolute path.
+ * @get_child_for_display_name: Gets the child #GFile for a given display name.
+ * @enumerate_children: Gets a #GFileEnumerator with the children of a #GFile.
+ * @enumerate_children_async: Asynchronously gets a #GFileEnumerator with the children of a #GFile.
+ * @enumerate_children_finish: Finishes asynchronously enumerating the children.
+ * @query_info: Gets the #GFileInfo for a #GFile.
+ * @query_info_async: Asynchronously gets the #GFileInfo for a #GFile.
+ * @query_info_finish: Finishes an asynchronous query info operation.
+ * @query_filesystem_info: Gets a #GFileInfo for the file system #GFile is on.
+ * @_query_filesystem_info_async: Asynchronously gets a #GFileInfo for the file system #GFile is on.
+ * @_query_filesystem_info_finish: Finishes asynchronously getting the file system info.
+ * @find_enclosing_volume: Gets a #GVolume for the #GFile.
+ * @find_enclosing_volume_async: Asynchronously gets the #GVolume for a #GFile.
+ * @find_enclosing_volume_finish: Finishes asynchronously getting the volume.
+ * @set_display_name: Sets the display name for a #GFile.
+ * @set_display_name_async: Asynchronously sets a #GFile's display name.
+ * @set_display_name_finish: Finishes asynchronously setting a #GFile's display name.
+ * @query_settable_attributes: Returns a list of #GFileAttribute<!-- -->s that can be set.
+ * @_query_settable_attributes_async: Asynchronously gets a list of #GFileAttribute<!-- -->s that can be set.
+ * @_query_settable_attributes_finish: Finishes asynchronously querying settable attributes.
+ * @query_writable_namespaces: Returns a list of #GFileAttribute namespaces that are writable.
+ * @_query_writable_namespaces_async: Asynchronously gets a list of #GFileAttribute namespaces that are writable.
+ * @_query_writable_namespaces_finish: Finishes asynchronously querying the writable namespaces.
+ * @set_attribute: Sets a #GFileAttribute.
+ * @set_attributes_from_info: Sets a #GFileAttribute with information from a #GFileInfo.
+ * @set_attributes_async: Asynchronously sets a file's attributes.
+ * @set_attributes_finish: Finishes setting a file's attributes asynchronously.
+ * @read: Reads a file asynchronously.
+ * @read_async: Asynchronously reads a file.
+ * @read_finish: Finishes asynchronously reading a file.
+ * @append_to: Writes to the end of a file.
+ * @append_to_async: Asynchronously writes to the end of a file.
+ * @append_to_finish: Finishes an asynchronous file append operation.
+ * @create: Creates a new file.
+ * @create_async: Asynchronously creates a file.
+ * @create_finish: Finishes asynchronously creating a file.
+ * @replace: Replaces the contents of a file.
+ * @replace_async: Asynchronously replaces the contents of a file.
+ * @replace_finish: Finishes asynchronously replacing a file.
+ * @delete_file: Deletes a file.
+ * @_delete_file_async: Asynchronously deletes a file.
+ * @_delete_file_finish: Finishes an asynchronous delete.
+ * @trash: Sends a #GFile to the Trash location.
+ * @_trash_async: Asynchronously sends a #GFile to the Trash location.
+ * @_trash_finish: Finishes an asynchronous file trashing operation.
+ * @make_directory: Makes a directory.
+ * @_make_directory_async: Asynchronously makes a directory.
+ * @_make_directory_finish: Finishes making a directory asynchronously.
+ * @make_symbolic_link: Makes a symbolic link.
+ * @_make_symbolic_link_async: Asynchronously makes a symbolic link
+ * @_make_symbolic_link_finish: Finishes making a symbolic link asynchronously.
+ * @copy: Copies a file.
+ * @_copy_async: Asynchronously copies a file.
+ * @_copy_finish: Finishes an asynchronous copy operation.
+ * @move: Moves a file.
+ * @_move_async: Asynchronously moves a file. 
+ * @_move_finish: Finishes an asynchronous move operation.
+ * @mount_mountable: Mounts a mountable object.
+ * @mount_mountable_finish: Finishes a mounting operation.
+ * @unmount_mountable: Unmounts a mountable object.
+ * @unmount_mountable_finish: Finishes an unmount operation.
+ * @eject_mountable: Ejects a mountable.
+ * @eject_mountable_finish: Finishes an eject operation.
+ * @mount_for_location: Mounts a specified location. 
+ * @mount_for_location_finish: Finishes mounting a specified location.
+ * @monitor_dir: Creates a #GDirectoryMonitor for the location.
+ * @monitor_file: Creates a #GFileMonitor for the location.
+ * 
+ * An interface for writing VFS file handles.  
+ **/ 
 struct _GFileIface
 {
   GTypeInterface g_iface;
@@ -346,6 +492,7 @@ struct _GFileIface
   GFileMonitor*      (*monitor_file)        (GFile                  *file,
 					     GFileMonitorFlags       flags,
 					     GCancellable           *cancellable);
+
 };
 
 GType g_file_get_type (void) G_GNUC_CONST;

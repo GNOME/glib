@@ -32,13 +32,36 @@ G_BEGIN_DECLS
 #define G_IS_ASYNC_RESULT(obj)	       (G_TYPE_CHECK_INSTANCE_TYPE ((obj), G_TYPE_ASYNC_RESULT))
 #define G_ASYNC_RESULT_GET_IFACE(obj)  (G_TYPE_INSTANCE_GET_INTERFACE ((obj), G_TYPE_ASYNC_RESULT, GAsyncResultIface))
 
+/**
+ * GAsyncResult:
+ *
+ * Holds results information for an asynchronous operation, 
+ * usually passed directly to a asynchronous _finish() operation.
+ **/
 typedef struct _GAsyncResult         GAsyncResult; /* Dummy typedef */
 typedef struct _GAsyncResultIface    GAsyncResultIface;
 
+/**
+ * GAsyncReadyCallback:
+ * @source_object: the object the asynchronous operation was started with.
+ * @res: a #GAsyncResult.
+ * @user_data: user data passed to the callback.
+ *
+ * Type definition for a function that will be called back when an asynchronous 
+ * operation within GIO has been completed. 
+ **/
 typedef void (*GAsyncReadyCallback) (GObject *source_object,
 				     GAsyncResult *res,
 				     gpointer user_data);
 
+/**
+ * GAsyncResultIface:
+ * @g_iface: The parent interface. 
+ * @get_user_data: Gets the user data passed to the callback.
+ * @get_source_object: Gets the source object that issued the asynchronous operation.
+ *
+ * Interface definition for #GAsyncResult.
+ **/
 struct _GAsyncResultIface
 {
   GTypeInterface g_iface;

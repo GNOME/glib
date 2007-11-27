@@ -40,6 +40,13 @@ G_BEGIN_DECLS
 #define G_IS_APP_LAUNCH_CONTEXT_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_APP_LAUNCH_CONTEXT))
 #define G_APP_LAUNCH_CONTEXT_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), G_TYPE_APP_LAUNCH_CONTEXT, GAppLaunchContextClass))
 
+/**
+ * GAppInfoCreateFlags:
+ * @G_APP_INFO_CREATE_FLAGS_NONE: No flags.
+ * @G_APP_INFO_CREATE_NEEDS_TERMINAL: Application opens with a terminal window.
+ * 
+ * Flags used when creating a #GAppInfo.
+ */
 typedef enum {
   G_APP_INFO_CREATE_FLAGS_NONE = 0,
   G_APP_INFO_CREATE_NEEDS_TERMINAL = (1<<0)
@@ -49,7 +56,38 @@ typedef struct _GAppLaunchContext        GAppLaunchContext;
 typedef struct _GAppLaunchContextClass   GAppLaunchContextClass;
 typedef struct _GAppLaunchContextPrivate GAppLaunchContextPrivate;
 
+/**
+ * GAppInfo:
+ * 
+ * Information about an installed application.
+ */
 typedef struct _GAppInfo         GAppInfo; /* Dummy typedef */
+
+/**
+ * GAppInfoIface:
+ * @g_iface: The parent interface.
+ * @dup: Copies a #GAppInfo.
+ * @equal: Checks two #GAppInfo<!-- -->s for equality.
+ * @get_id: Gets a string identifier for a #GAppInfo.
+ * @get_name: Gets the name of the application for a #GAppInfo.
+ * @get_description: Gets a short description for the application described by the #GAppInfo.
+ * @get_executable: Gets the execuable name for the #GAppInfo.
+ * @get_icon: Gets the #GIcon for the #GAppInfo.
+ * @launch: Launches an application specified by the #GAppInfo.
+ * @supports_uris: Indicates whether the application specified supports launching URIs.
+ * @launch_uris: Launches an application with a list of URIs.
+ * @should_show: Returns whether an application should be shown (e.g. when getting a list of installed applications).
+ * @supports_xdg_startup_notify: Indicates whether the application supports the 
+ * <ulink url="http://standards.freedesktop.org/startup-notification-spec/startup-notification-latest.txt">
+ * <citetitle>FreeDesktop.Org Startup Notification Specification</citetitle></ulink>.
+ * @set_as_default_for_type: Sets an application as default for a given content type.
+ * @set_as_default_for_extension: Sets an application as default for a given file extention.
+ * @add_supports_type: Adds to the #GAppInfo information about supported file types.
+ * @can_remove_supports_type: Checks for support for removing supported file types from a #GAppInfo.
+ * @remove_supports_type: Removes a supported application type from a #GAppInfo.
+ * 
+ * Application Information interface, for operating system portability.
+ */
 typedef struct _GAppInfoIface    GAppInfoIface;
 
 struct _GAppInfoIface
@@ -94,7 +132,7 @@ struct _GAppInfoIface
   gboolean  (*remove_supports_type)         (GAppInfo           *appinfo,
 					     const char         *content_type,
 					     GError            **error);
-
+  /*< private >*/
   /* Padding for future expansion */
   void (*_g_reserved1) (void);
   void (*_g_reserved2) (void);
@@ -162,11 +200,17 @@ GAppInfo *g_app_info_get_default_for_uri_scheme  (const char  *uri_scheme);
    can_remove, remove (as in, don't support a specific mimetype)
 */
 
-
+/**
+ * GAppLaunchContext:
+ * @parent_instance: The parent instance.
+ * 
+ * Gets feedback from the system when launching an application.
+ */
 struct _GAppLaunchContext
 {
   GObject parent_instance;
 
+  /*< private >*/
   GAppLaunchContextPrivate *priv;
 };
 

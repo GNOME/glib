@@ -47,6 +47,14 @@
 #include "gfile.h"
 #include "gfilemonitor.h"
 
+/**
+ * SECTION:gunixmounts
+ * @short_description: Unix Mounts
+ * 
+ * Routines for managing mounted UNIX mount points and paths.
+ *
+ **/
+
 struct _GUnixMount {
   char *mount_path;
   char *device_path;
@@ -898,8 +906,12 @@ get_mount_points_timestamp (void)
  * g_get_unix_mounts:
  * @time_read: guint64 to contain a timestamp.
  * 
- * Returns a #GList of the UNIX mounts. If @time_read
- * is set, it will be filled with the mount timestamp.
+ * Gets a #GList of strings containing the unix mounts. If @time_read
+ * is set, it will be filled with the mount timestamp, 
+ * allowing for checking if the mounts have changed with 
+ * g_unix_mounts_changed_since().
+ * 
+ * Returns: a #GList of the UNIX mounts. 
  **/
 GList *
 g_get_unix_mounts (guint64 *time_read)
@@ -912,11 +924,14 @@ g_get_unix_mounts (guint64 *time_read)
 
 /**
  * g_get_unix_mount_at:
- * @mount_path: path to mount.
+ * @mount_path: path for a possible unix mount.
  * @time_read: guint64 to contain a timestamp.
  * 
- * Returns a #GUnixMount. If @time_read
- * is set, it will be filled with the mount timestamp.
+ * Gets a #GUnixMount for a given mount path. If @time_read
+ * is set, it will be filled with a unix timestamp for checking
+ * if the mounts have changed since with g_unix_mounts_changed_since().
+ * 
+ * Returns: a #GUnixMount. 
  **/
 GUnixMount *
 g_get_unix_mount_at (const char *mount_path,
@@ -947,8 +962,12 @@ g_get_unix_mount_at (const char *mount_path,
  * g_get_unix_mount_points:
  * @time_read: guint64 to contain a timestamp.
  * 
- * Returns a #GList of the UNIX mountpoints. If @time_read
- * is set, it will be filled with the mount timestamp.
+ * Gets a #GList of strings containing the unix mount points. 
+ * If @time_read is set, it will be filled with the mount timestamp,
+ * allowing for checking if the mounts have changed with 
+ * g_unix_mounts_points_changed_since().
+ * 
+ * Returns a #GList of the UNIX mountpoints. 
  **/
 GList *
 g_get_unix_mount_points (guint64 *time_read)
@@ -960,8 +979,10 @@ g_get_unix_mount_points (guint64 *time_read)
 }
 
 /**
- * g_unix_mounts_change_since:
+ * g_unix_mounts_changed_since:
  * @time: guint64 to contain a timestamp.
+ * 
+ * Checks if the unix mounts have changed since a given unix time.
  * 
  * Returns %TRUE if the mounts have changed since @time. 
  **/
@@ -972,8 +993,10 @@ g_unix_mounts_changed_since (guint64 time)
 }
 
 /**
- * g_unix_mount_points_change_since:
+ * g_unix_mount_points_changed_since:
  * @time: guint64 to contain a timestamp.
+ * 
+ * Checks if the unix mount points have changed since a given unix time.
  * 
  * Returns %TRUE if the mount points have changed since @time. 
  **/
@@ -1015,7 +1038,11 @@ g_unix_mount_monitor_class_init (GUnixMountMonitorClass *klass)
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
   gobject_class->finalize = g_unix_mount_monitor_finalize;
-  
+  /**
+   * GUnixMountMonitor::mounts-changed:
+   * 
+   * Emitted when the unix mounts have changed.
+   **/ 
   signals[MOUNTS_CHANGED] =
     g_signal_new ("mounts_changed",
 		  G_TYPE_FROM_CLASS (klass),
@@ -1024,7 +1051,11 @@ g_unix_mount_monitor_class_init (GUnixMountMonitorClass *klass)
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
-  
+  /**
+   * GUnixMountMonitor::mountpoints-changed:
+   * 
+   * Emitted when the unix mount points have changed.
+   **/
   signals[MOUNTPOINTS_CHANGED] =
     g_signal_new ("mountpoints_changed",
 		  G_TYPE_FROM_CLASS (klass),
@@ -1098,7 +1129,9 @@ g_unix_mount_monitor_init (GUnixMountMonitor *monitor)
 /**
  * g_unix_mount_monitor_new:
  * 
- * Returns a new #GUnixMountMonitor. 
+ * Gets a new #GUnixMountMonitor.
+ * 
+ * Returns: a #GUnixMountMonitor. 
  **/
 GUnixMountMonitor *
 g_unix_mount_monitor_new (void)
@@ -1116,6 +1149,7 @@ g_unix_mount_monitor_new (void)
  * g_unix_mount_free:
  * @mount_entry: a #GUnixMount.
  * 
+ * Frees a unix mount.
  **/
 void
 g_unix_mount_free (GUnixMount *mount_entry)
@@ -1130,8 +1164,9 @@ g_unix_mount_free (GUnixMount *mount_entry)
 
 /**
  * g_unix_mount_point_free:
- * @mount_point: 
+ * @mount_point: unix mount point to free.
  * 
+ * Frees a unix mount point.
  **/
 void
 g_unix_mount_point_free (GUnixMountPoint *mount_point)
@@ -1161,6 +1196,8 @@ strcmp_null (const char *str1,
  * g_unix_mount_compare:
  * @mount1: first #GUnixMount to compare.
  * @mount2: second #GUnixMount to compare.
+ * 
+ * Compares two unix mounts.
  * 
  * Returns 1, 0 or -1 if @mount1 is greater than, equal to,
  * or less than @mount2, respectively. 
@@ -1196,8 +1233,9 @@ g_unix_mount_compare (GUnixMount      *mount1,
  * g_unix_mount_get_mount_path:
  * @mount_entry: input #GUnixMount to get the mount path for.
  * 
- * Returns the mount path for @mount_entry.
+ * Gets the mount path for a unix mount.
  * 
+ * Returns: the mount path for @mount_entry.
  **/
 const char *
 g_unix_mount_get_mount_path (GUnixMount *mount_entry)
@@ -1211,6 +1249,9 @@ g_unix_mount_get_mount_path (GUnixMount *mount_entry)
  * g_unix_mount_get_device_path:
  * @mount_entry: a #GUnixMount.
  * 
+ * Gets the device path for a unix mount.
+ * 
+ * Returns: a string containing the device path.
  **/
 const char *
 g_unix_mount_get_device_path (GUnixMount *mount_entry)
@@ -1224,6 +1265,9 @@ g_unix_mount_get_device_path (GUnixMount *mount_entry)
  * g_unix_mount_get_fs_type:
  * @mount_entry: a #GUnixMount.
  * 
+ * Gets the filesystem type for the unix mount.
+ * 
+ * Returns: a string containing the file system type.
  **/
 const char *
 g_unix_mount_get_fs_type (GUnixMount *mount_entry)
@@ -1237,8 +1281,9 @@ g_unix_mount_get_fs_type (GUnixMount *mount_entry)
  * g_unix_mount_is_readonly:
  * @mount_entry: a #GUnixMount.
  * 
- * Returns %TRUE if @mount_entry is read only.
+ * Checks if a unix mount is mounted read only.
  * 
+ * Returns: %TRUE if @mount_entry is read only.
  **/
 gboolean
 g_unix_mount_is_readonly (GUnixMount *mount_entry)
@@ -1252,6 +1297,9 @@ g_unix_mount_is_readonly (GUnixMount *mount_entry)
  * g_unix_mount_is_system_internal:
  * @mount_entry: a #GUnixMount.
  * 
+ * Checks if a unix mount is a system path.
+ * 
+ * Returns: %TRUE if the unix mount is for a system path.
  **/
 gboolean
 g_unix_mount_is_system_internal (GUnixMount *mount_entry)
@@ -1265,6 +1313,8 @@ g_unix_mount_is_system_internal (GUnixMount *mount_entry)
  * g_unix_mount_point_compare:
  * @mount1: a #GUnixMount.
  * @mount2: a #GUnixMount.
+ * 
+ * Compares two unix mount points.
  * 
  * Returns 1, 0 or -1 if @mount1 is greater than, equal to,
  * or less than @mount2, respectively.
@@ -1306,8 +1356,11 @@ g_unix_mount_point_compare (GUnixMountPoint *mount1,
 
 /**
  * g_unix_mount_point_get_mount_path:
- * @mount_point: a #GUnixMount.
+ * @mount_point: a #GUnixMountPoint.
  * 
+ * Gets the mount path for a unix mount point.
+ * 
+ * Returns: a string containing the mount path.
  **/
 const char *
 g_unix_mount_point_get_mount_path (GUnixMountPoint *mount_point)
@@ -1319,8 +1372,11 @@ g_unix_mount_point_get_mount_path (GUnixMountPoint *mount_point)
 
 /**
  * g_unix_mount_point_get_device_path:
- * @mount_point: a #GUnixMount.
+ * @mount_point: a #GUnixMountPoint.
  * 
+ * Gets the device path for a unix mount point.
+ * 
+ * Returns: a string containing the device path.
  **/
 const char *
 g_unix_mount_point_get_device_path (GUnixMountPoint *mount_point)
@@ -1332,8 +1388,11 @@ g_unix_mount_point_get_device_path (GUnixMountPoint *mount_point)
 
 /**
  * g_unix_mount_point_get_fs_type:
- * @mount_point: a #GUnixMount.
+ * @mount_point: a #GUnixMountPoint.
  * 
+ * Gets the file system type for the mount point.
+ * 
+ * Returns: a string containing the file system type.
  **/
 const char *
 g_unix_mount_point_get_fs_type (GUnixMountPoint *mount_point)
@@ -1345,8 +1404,11 @@ g_unix_mount_point_get_fs_type (GUnixMountPoint *mount_point)
 
 /**
  * g_unix_mount_point_is_readonly:
- * @mount_point: a #GUnixMount.
+ * @mount_point: a #GUnixMountPoint.
  * 
+ * Checks if a unix mount point is read only.
+ * 
+ * Returns: %TRUE if a mount point is read only.
  **/
 gboolean
 g_unix_mount_point_is_readonly (GUnixMountPoint *mount_point)
@@ -1358,8 +1420,11 @@ g_unix_mount_point_is_readonly (GUnixMountPoint *mount_point)
 
 /**
  * g_unix_mount_point_is_user_mountable:
- * @mount_point:  a #GUnixMount.
+ * @mount_point: a #GUnixMountPoint.
  * 
+ * Checks if a unix mount point is mountable by the user.
+ * 
+ * Returns: %TRUE if the mount point is user mountable.
  **/
 gboolean
 g_unix_mount_point_is_user_mountable (GUnixMountPoint *mount_point)
@@ -1371,8 +1436,11 @@ g_unix_mount_point_is_user_mountable (GUnixMountPoint *mount_point)
 
 /**
  * g_unix_mount_point_is_loopback:
- * @mount_point:  a #GUnixMount.
+ * @mount_point: a #GUnixMountPoint.
  * 
+ * Checks if a unix mount point is a loopback device.
+ * 
+ * Returns: %TRUE if the mount point is a loopback. %FALSE otherwise. 
  **/
 gboolean
 g_unix_mount_point_is_loopback (GUnixMountPoint *mount_point)
@@ -1482,6 +1550,10 @@ guess_mount_type (const char *mount_path,
  * g_unix_mount_guess_type:
  * @mount_entry: a #GUnixMount.
  * 
+ * Guesses the type of a unix mount. If the mount type cannot be 
+ * determined, returns %G_UNIX_MOUNT_TYPE_UNKNOWN.
+ * 
+ * Returns: a #GUnixMountType. 
  **/
 GUnixMountType
 g_unix_mount_guess_type (GUnixMount *mount_entry)
@@ -1498,8 +1570,12 @@ g_unix_mount_guess_type (GUnixMount *mount_entry)
 
 /**
  * g_unix_mount_point_guess_type:
- * @mount_point: a #GUnixMount.
+ * @mount_point: a #GUnixMountPoint.
  * 
+ * Guesses the type of a unix mount point. If the mount type cannot be 
+ * determined, returns %G_UNIX_MOUNT_TYPE_UNKNOWN.
+ * 
+ * Returns: a #GUnixMountType.
  **/
 GUnixMountType
 g_unix_mount_point_guess_type (GUnixMountPoint *mount_point)

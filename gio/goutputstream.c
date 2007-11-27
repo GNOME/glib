@@ -21,10 +21,17 @@
  */
 
 #include <config.h>
-
 #include "goutputstream.h"
 #include "gsimpleasyncresult.h"
 #include "glibintl.h"
+
+/**
+ * SECTION:goutputstream
+ * @short_description: base class for implementing streaming output
+ * 
+ * 
+ *
+ **/
 
 G_DEFINE_TYPE (GOutputStream, g_output_stream, G_TYPE_OBJECT);
 
@@ -293,11 +300,11 @@ g_output_stream_write_all (GOutputStream *stream,
  *
  * This function is optional for inherited classes.
  * 
- * If @cancellable is not NULL, then the operation can be cancelled by
+ * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
- * was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+ * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned.
  *
- * Return value: TRUE on success, FALSE on error
+ * Return value: %TRUE on success, %FALSE on error
  **/
 gboolean
 g_output_stream_flush (GOutputStream    *stream,
@@ -344,15 +351,16 @@ g_output_stream_flush (GOutputStream    *stream,
 
 /**
  * g_output_stream_splice:
- * @stream:
- * @source:
- * @flags:
+ * @stream: a #GOutputStream.
+ * @source: a #GInputStream.
+ * @flags: a set of #GOutputStreamSpliceFlags.
  * @cancellable: optional #GCancellable object, %NULL to ignore. 
  * @error: a #GError location to store the error occuring, or %NULL to 
  * ignore.
  *
+ * Splices an input stream into an output stream.
  *
- * Returns: 
+ * Returns: a #gssize containig the size of the data spliced.
  **/
 gssize
 g_output_stream_splice (GOutputStream *stream,
@@ -697,8 +705,9 @@ g_output_stream_write_async (GOutputStream       *stream,
  * @error: a #GError location to store the error occuring, or %NULL to 
  * ignore.
  * 
+ * Finishes a stream write operation.
  * 
- * Returns: 
+ * Returns: a #gssize containing the number of bytes written to the stream.
  **/
 gssize
 g_output_stream_write_finish (GOutputStream *stream,
@@ -752,13 +761,15 @@ async_ready_splice_callback_wrapper (GObject *source_object,
 
 /**
  * g_output_stream_splice_async:
- * @stream:
- * @source:
- * @flags:
+ * @stream: a #GOutputStream.
+ * @source: a #GInputStream. 
+ * @flags: a set of #GOutputStreamSpliceFlags.
  * @io_priority: the io priority of the request.
  * @cancellable: optional #GCancellable object, %NULL to ignore. 
- * @callback:
- * @user_data:
+ * @callback: a #GAsyncReadyCallback. 
+ * @user_data: user data passed to @callback.
+ * 
+ * Splices a stream asynchronously.
  * 
  **/
 void
@@ -827,7 +838,9 @@ g_output_stream_splice_async (GOutputStream             *stream,
  * @error: a #GError location to store the error occuring, or %NULL to 
  * ignore.
  *
- * Returns: 
+ * Finishes an asynchronous stream splice operation.
+ * 
+ * Returns: a #gssize of the number of bytes spliced.
  **/
 gssize
 g_output_stream_splice_finish (GOutputStream             *stream,
@@ -853,11 +866,13 @@ g_output_stream_splice_finish (GOutputStream             *stream,
 
 /**
  * g_output_stream_flush_async:
- * @stream:
+ * @stream: a #GOutputStream.
  * @io_priority: the io priority of the request.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @callback: a #GAsyncReadyCallback.
- * @user_data:
+ * @callback: a #GAsyncReadyCallback to call when the request is satisfied
+ * @user_data: the data to pass to callback function
+ * 
+ * Flushes a stream asynchronously.
  * 
  **/
 void
@@ -918,6 +933,9 @@ g_output_stream_flush_async (GOutputStream       *stream,
  * @result: a GAsyncResult.
  * @error: a #GError location to store the error occuring, or %NULL to 
  * ignore.
+ * 
+ * Finishes flushing an output stream.
+ * 
  * Returns: %TRUE if flush operation suceeded, %FALSE otherwise.
  **/
 gboolean
@@ -1006,11 +1024,14 @@ g_output_stream_close_async (GOutputStream      *stream,
 
 /**
  * g_output_stream_close_finish:
- * @stream:
- * @result:
+ * @stream: a #GOutputStream.
+ * @result: a #GAsyncResult.
  * @error: a #GError location to store the error occuring, or %NULL to 
  * ignore.
- * Returns: %TRUE, %FALSE otherwise.
+ * 
+ * Closes an output stream.
+ * 
+ * Returns: %TRUE if stream was successfully closed, %FALSE otherwise.
  **/
 gboolean
 g_output_stream_close_finish (GOutputStream *stream,
@@ -1040,7 +1061,9 @@ g_output_stream_close_finish (GOutputStream *stream,
 
 /**
  * g_output_stream_is_closed:
- * @stream:
+ * @stream: a #GOutputStream.
+ * 
+ * Checks if an output stream has already been closed.
  * 
  * Returns: %TRUE if @stream is closed. %FALSE otherwise. 
  **/
@@ -1054,7 +1077,9 @@ g_output_stream_is_closed (GOutputStream *stream)
 
 /**
  * g_output_stream_has_pending:
- * @stream:
+ * @stream: a #GOutputStream.
+ * 
+ * Checks if an ouput stream has pending actions.
  * 
  * Returns: %TRUE if @stream has pending actions. 
  **/
@@ -1068,11 +1093,10 @@ g_output_stream_has_pending (GOutputStream *stream)
 
 /**
  * g_output_stream_set_pending:
- * @stream:
- * @pending: 
+ * @stream: a #GOutputStream.
+ * @pending: a #gboolean.
  * 
- * Sets the @stream as having pending actions. 
- * 
+ * Sets the @stream as having pending actions if @pending is %TRUE. 
  **/
 void
 g_output_stream_set_pending (GOutputStream              *stream,

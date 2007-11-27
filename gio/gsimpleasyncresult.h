@@ -35,9 +35,23 @@ G_BEGIN_DECLS
 #define G_IS_SIMPLE_ASYNC_RESULT_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_SIMPLE_ASYNC_RESULT))
 #define G_SIMPLE_ASYNC_RESULT_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), G_TYPE_SIMPLE_ASYNC_RESULT, GSimpleAsyncResultClass))
 
+/**
+ * GSimpleAsyncResult:
+ * 
+ * A simple implementation of #GAsyncResult.
+ **/
 typedef struct _GSimpleAsyncResult        GSimpleAsyncResult;
 typedef struct _GSimpleAsyncResultClass   GSimpleAsyncResultClass;
 
+/**
+ * GSimpleAsyncThreadFunc:
+ * @res: a #GSimpleAsyncResult. 
+ * @object: a #GObject.
+ * @cancellable: optional #GCancellable object, %NULL to ignore.
+ * 
+ * Simple thread function that runs an asynchronous operation and 
+ * checks for cancellation.
+ **/
 typedef void (*GSimpleAsyncThreadFunc) (GSimpleAsyncResult *res,
 					GObject *object,
 					GCancellable *cancellable);

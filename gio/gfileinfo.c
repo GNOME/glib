@@ -20,6 +20,21 @@
  * Author: Alexander Larsson <alexl@redhat.com>
  */
 
+/**
+ * SECTION:gfileinfo
+ * @short_description: File Information and Attributes.
+ * @see_also: #GFile.
+ * 
+ * Functionality for manipulating basic metadata for files. #GFileInfo
+ * implements methods for getting information that all files should 
+ * contain, and allows for manipulation of extended attributes. 
+ * #GFileAttributeMatcher allows for searching through a #GFileInfo for 
+ * attributes.
+ * 
+ * 
+ * 
+ **/
+
 #include <config.h>
 
 #include <string.h>
@@ -222,7 +237,9 @@ g_file_info_init (GFileInfo *info)
 /**
  * g_file_info_new:
  * 
- * Returns: a new #GFileInfo.
+ * Creates a new file info structure.
+ * 
+ * Returns: a #GFileInfo.
  **/
 GFileInfo *
 g_file_info_new (void)
@@ -235,7 +252,7 @@ g_file_info_new (void)
  * @src_info: source to copy attributes from.
  * @dest_info: destination to copy attributes to.
  * 
- * Copies all of the attributes from @src_info to @dest_info.
+ * Copies all of the #GFileAttribute<!-- -->s from @src_info to @dest_info.
  **/
 void
 g_file_info_copy_into (GFileInfo *src_info, GFileInfo *dest_info)
@@ -273,6 +290,8 @@ g_file_info_copy_into (GFileInfo *src_info, GFileInfo *dest_info)
  * g_file_info_dup:
  * @other: a #GFileInfo.
  * 
+ * Duplicates a file info structure.
+ * 
  * Returns: a duplicate #GFileInfo of @other.
  **/
 GFileInfo *
@@ -293,7 +312,6 @@ g_file_info_dup (GFileInfo  *other)
  * @mask: a #GFileAttributeMatcher.
  *
  * Sets @mask on @info to match specific attribute types.
- * 
  **/
 void
 g_file_info_set_attribute_mask (GFileInfo *info,
@@ -330,6 +348,8 @@ g_file_info_set_attribute_mask (GFileInfo *info,
  * g_file_info_unset_attribute_mask:
  * @info: #GFileInfo.
  * 
+ * Unsets a mask set by g_file_info_set_attribute_mask(), if one
+ * is set.
  **/
 void
 g_file_info_unset_attribute_mask (GFileInfo *info)
@@ -346,7 +366,6 @@ g_file_info_unset_attribute_mask (GFileInfo *info)
  * @info: a #GFileInfo.
  *
  * Clears the status information from @info.
- * 
  **/
 void
 g_file_info_clear_status (GFileInfo  *info)
@@ -421,7 +440,9 @@ g_file_info_find_value_by_name (GFileInfo *info,
 /**
  * g_file_info_has_attribute:
  * @info: a #GFileInfo.
- * @attribute: a string.
+ * @attribute: a file attribute key.
+ * 
+ * Checks if a file info structure has an attribute named @attribute.
  * 
  * Returns: %TRUE if @GFileInfo has an attribute named @attribute, 
  * %FALSE otherwise.
@@ -442,7 +463,9 @@ g_file_info_has_attribute (GFileInfo  *info,
 /**
  * g_file_info_list_attributes:
  * @info: a #GFileInfo.
- * @name_space: a string.
+ * @name_space: a file attribute key's namespace.
+ * 
+ * Lists the file info structure's attributes.
  * 
  * Returns: a null-terminated array of strings of all of the 
  * possible attribute types for the given @name_space, or 
@@ -478,10 +501,12 @@ g_file_info_list_attributes (GFileInfo  *info,
 /**
  * g_file_info_get_attribute_type:
  * @info: a #GFileInfo.
- * @attribute: a string.
+ * @attribute: a file attribute key.
+ * 
+ * Gets the attribute type for an attribute key.
  * 
  * Returns: a #GFileAttributeType for the given @attribute, or 
- * %G_FILE_ATTRIBUTE_TYPE_INVALID if one cannot be found.
+ * %G_FILE_ATTRIBUTE_TYPE_INVALID if the key is invalid.
  **/
 GFileAttributeType
 g_file_info_get_attribute_type (GFileInfo  *info,
@@ -502,9 +527,9 @@ g_file_info_get_attribute_type (GFileInfo  *info,
 /**
  * g_file_info_remove_attribute:
  * @info: a #GFileInfo.
- * @attribute: a string.
+ * @attribute: a file attribute key.
  * 
- * Removes @attribute from @info if it exists.
+ * Removes all cases of @attribute from @info if it exists.
  *
  **/
 void
@@ -533,7 +558,9 @@ g_file_info_remove_attribute (GFileInfo  *info,
 /**
  * g_file_info_get_attribute:
  * @info: a #GFileInfo.
- * @attribute: a string.
+ * @attribute: a file attribute key.
+ * 
+ * Gets an attribute value from a file info structure.
  * 
  * Returns: a #GFileAttributeValue for the given @attribute, or 
  * %NULL otherwise.
@@ -552,7 +579,10 @@ g_file_info_get_attribute (GFileInfo  *info,
 /**
  * g_file_info_get_attribute_object:
  * @info: a #GFileInfo.
- * @attribute: a string.
+ * @attribute: a file attribute key.
+ * 
+ * Gets the value of a #GObject attribute. If the attribute does 
+ * not contain a #GObject, %NULL will be returned.
  * 
  * Returns: a #GObject associated with the given @attribute, or
  * %NULL otherwise.
@@ -573,7 +603,10 @@ g_file_info_get_attribute_object (GFileInfo  *info,
 /**
  * g_file_info_get_attribute_string:
  * @info: a #GFileInfo.
- * @attribute: a string.
+ * @attribute: a file attribute key.
+ * 
+ * Gets the value of a string attribute. If the attribute does 
+ * not contain a string, %NULL will be returned.
  * 
  * Returns: the contents of the @attribute value as a string, or 
  * %NULL otherwise.
@@ -594,7 +627,10 @@ g_file_info_get_attribute_string (GFileInfo  *info,
 /**
  * g_file_info_get_attribute_byte_string:
  * @info: a #GFileInfo.
- * @attribute: a string.
+ * @attribute: a file attribute key.
+ * 
+ * Gets the value of a byte string attribute. If the attribute does 
+ * not contain a byte string, %NULL will be returned.
  * 
  * Returns: the contents of the @attribute value as a byte string, or 
  * %NULL otherwise.
@@ -615,9 +651,12 @@ g_file_info_get_attribute_byte_string (GFileInfo  *info,
 /**
  * g_file_info_get_attribute_boolean:
  * @info: a #GFileInfo.
- * @attribute: a string.
+ * @attribute: a file attribute key.
  * 
- * Returns: 
+ * Gets the value of a boolean attribute. If the attribute does not
+ * contain a boolean value, %FALSE will be returned.
+ * 
+ * Returns: the boolean value contained within the attribute. 
  **/
 gboolean
 g_file_info_get_attribute_boolean (GFileInfo  *info,
@@ -635,9 +674,13 @@ g_file_info_get_attribute_boolean (GFileInfo  *info,
 /**
  * g_file_info_get_attribute_uint32:
  * @info: a #GFileInfo.
- * @attribute: a string.
+ * @attribute: a file attribute key.
  * 
- * Returns: 
+ * Gets an unsigned 32-bit integer contained within the attribute. If the 
+ * attribute does not contain an unsigned 32-bit integer, or is invalid, 
+ * %0 will be returned.
+ * 
+ * Returns: an unsigned 32-bit integer from the attribute. 
  **/
 guint32
 g_file_info_get_attribute_uint32 (GFileInfo  *info,
@@ -654,10 +697,14 @@ g_file_info_get_attribute_uint32 (GFileInfo  *info,
 
 /**
  * g_file_info_get_attribute_int32:
- * @info:
- * @attribute:
+ * @info: a #GFileInfo.
+ * @attribute: a file attribute key.
  * 
- * Returns:
+ * Gets a signed 32-bit integer contained within the attribute. If the 
+ * attribute does not contain a signed 32-bit integer, or is invalid, 
+ * %0 will be returned.
+ * 
+ * Returns: a signed 32-bit integer from the attribute.
  **/
 gint32
 g_file_info_get_attribute_int32 (GFileInfo  *info,
@@ -674,10 +721,14 @@ g_file_info_get_attribute_int32 (GFileInfo  *info,
 
 /**
  * g_file_info_get_attribute_uint64:
- * @info:
- * @attribute:
+ * @info: a #GFileInfo.
+ * @attribute: a file attribute key.
  * 
- * Returns: 
+ * Gets a unsigned 64-bit integer contained within the attribute. If the 
+ * attribute does not contain an unsigned 64-bit integer, or is invalid, 
+ * %0 will be returned.
+ * 
+ * Returns: a unsigned 64-bit integer from the attribute. 
  **/
 guint64
 g_file_info_get_attribute_uint64 (GFileInfo  *info,
@@ -694,10 +745,14 @@ g_file_info_get_attribute_uint64 (GFileInfo  *info,
 
 /**
  * g_file_info_get_attribute_int64:
- * @info:
- * @attribute:
+ * @info: a #GFileInfo.
+ * @attribute: a file attribute key.
  * 
- * Returns: 
+ * Gets a signed 64-bit integer contained within the attribute. If the 
+ * attribute does not contain an signed 64-bit integer, or is invalid, 
+ * %0 will be returned.
+ * 
+ * Returns: a signed 64-bit integer from the attribute. 
  **/
 gint64
 g_file_info_get_attribute_int64  (GFileInfo  *info,
@@ -754,9 +809,12 @@ g_file_info_create_value_by_name (GFileInfo *info,
 
 /**
  * g_file_info_set_attribute:
- * @info:
- * @attribute:
- * @attr_value:
+ * @info: a #GFileInfo.
+ * @attribute: a file attribute key.
+ * @attr_value: a #GFileAttributeValue.
+ * 
+ * Sets the @attribute to contain the given @attr_value, 
+ * if possible.
  *
  **/
 void
@@ -777,9 +835,12 @@ g_file_info_set_attribute (GFileInfo  *info,
 
 /**
  * g_file_info_set_attribute_object:
- * @info:
- * @attribute:
- * @attr_value:
+ * @info: a #GFileInfo.
+ * @attribute: a file attribute key.
+ * @attr_value: a #GObject.
+ * 
+ * Sets the @attribute to contain the given @attr_value, 
+ * if possible.
  * 
  **/
 void
@@ -800,9 +861,12 @@ g_file_info_set_attribute_object (GFileInfo  *info,
 
 /**
  * g_file_info_set_attribute_string:
- * @info:
- * @attribute:
- * @attr_value:
+ * @info: a #GFileInfo.
+ * @attribute: a file attribute key.
+ * @attr_value: a string.
+ * 
+ * Sets the @attribute to contain the given @attr_value, 
+ * if possible.
  *
  **/
 void
@@ -823,9 +887,12 @@ g_file_info_set_attribute_string (GFileInfo  *info,
 
 /**
  * g_file_info_set_attribute_byte_string:
- * @info:
- * @attribute:
- * @attr_value:
+ * @info: a #GFileInfo.
+ * @attribute: a file attribute key.
+ * @attr_value: a byte string.
+ * 
+ * Sets the @attribute to contain the given @attr_value, 
+ * if possible.
  * 
  **/
 void
@@ -846,9 +913,12 @@ g_file_info_set_attribute_byte_string (GFileInfo  *info,
 
 /**
  * g_file_info_set_attribute_boolean:
- * @info:
- * @attribute:
- * @attr_value:
+ * @info: a #GFileInfo.
+ * @attribute: a file attribute key.
+ * @attr_value: a boolean value.
+ * 
+ * Sets the @attribute to contain the given @attr_value, 
+ * if possible.
  * 
  **/
 void
@@ -868,9 +938,12 @@ g_file_info_set_attribute_boolean (GFileInfo  *info,
 
 /**
  * g_file_info_set_attribute_uint32:
- * @info:
- * @attribute:
- * @attr_value:
+ * @info: a #GFileInfo.
+ * @attribute: a file attribute key.
+ * @attr_value: an unsigned 32-bit integer.
+ * 
+ * Sets the @attribute to contain the given @attr_value, 
+ * if possible.
  * 
  **/
 
@@ -892,9 +965,12 @@ g_file_info_set_attribute_uint32 (GFileInfo  *info,
 
 /**
  * g_file_info_set_attribute_int32:
- * @info:
- * @attribute:
- * @attr_value:
+ * @info: a #GFileInfo.
+ * @attribute: a file attribute key.
+ * @attr_value: a signed 32-bit integer
+ * 
+ * Sets the @attribute to contain the given @attr_value, 
+ * if possible.
  * 
  **/
 void
@@ -914,9 +990,12 @@ g_file_info_set_attribute_int32  (GFileInfo  *info,
 
 /**
  * g_file_info_set_attribute_uint64:
- * @info:
- * @attribute:
- * @attr_value:
+ * @info: a #GFileInfo.
+ * @attribute: a file attribute key.
+ * @attr_value: an unsigned 64-bit integer.
+ * 
+ * Sets the @attribute to contain the given @attr_value, 
+ * if possible.
  * 
  **/
 void
@@ -936,9 +1015,12 @@ g_file_info_set_attribute_uint64 (GFileInfo  *info,
 
 /**
  * g_file_info_set_attribute_int64:
- * @info:
+ * @info: a #GFileInfo.
  * @attribute: attribute name to set.
  * @attr_value: int64 value to set attribute to.
+ * 
+ * Sets the @attribute to contain the given @attr_value, 
+ * if possible.
  * 
  **/
 void
@@ -961,6 +1043,9 @@ g_file_info_set_attribute_int64  (GFileInfo  *info,
  * g_file_info_get_file_type:
  * @info: a #GFileInfo.
  * 
+ * Gets a file's type (whether it is a regular file, symlink, etc). 
+ * This is different from the file's content type, see g_file_info_get_content_type().
+ * 
  * Returns: a #GFileType for the given file.
  **/
 GFileType
@@ -981,6 +1066,8 @@ g_file_info_get_file_type (GFileInfo *info)
 /**
  * g_file_info_get_is_hidden:
  * @info: a #GFileInfo.
+ * 
+ * Checks if a file is hidden.
  * 
  * Returns: %TRUE if the file is a hidden file, %FALSE otherwise.
  **/
@@ -1003,7 +1090,9 @@ g_file_info_get_is_hidden (GFileInfo *info)
  * g_file_info_get_is_backup:
  * @info: a #GFileInfo.
  * 
- * Returns: %TRUE if file is a backup file (.*~), %FALSE otherwise.
+ * Checks if a file is a backup file.
+ * 
+ * Returns: %TRUE if file is a backup file, %FALSE otherwise.
  **/
 gboolean
 g_file_info_get_is_backup (GFileInfo *info)
@@ -1023,6 +1112,8 @@ g_file_info_get_is_backup (GFileInfo *info)
 /**
  * g_file_info_get_is_symlink:
  * @info: a #GFileInfo.
+ * 
+ * Checks if a file is a symlink.
  * 
  * Returns: %TRUE if the given @info is a symlink.
  **/
@@ -1045,7 +1136,9 @@ g_file_info_get_is_symlink (GFileInfo *info)
  * g_file_info_get_name:
  * @info: a #GFileInfo.
  * 
- * Returns: 
+ * Gets the name for a file.
+ * 
+ * Returns: a string containing the file name.
  **/
 const char *
 g_file_info_get_name (GFileInfo *info)
@@ -1066,7 +1159,9 @@ g_file_info_get_name (GFileInfo *info)
  * g_file_info_get_display_name:
  * @info: a #GFileInfo.
  * 
- * Returns: 
+ * Gets a display name for a file.
+ * 
+ * Returns: a string containing the display name.
  **/
 const char *
 g_file_info_get_display_name (GFileInfo *info)
@@ -1087,7 +1182,9 @@ g_file_info_get_display_name (GFileInfo *info)
  * g_file_info_get_edit_name:
  * @info: a #GFileInfo.
  * 
- * Returns: 
+ * Gets the edit name for a file.
+ * 
+ * Returns: a string containing the edit name.
  **/
 const char *
 g_file_info_get_edit_name (GFileInfo *info)
@@ -1107,6 +1204,8 @@ g_file_info_get_edit_name (GFileInfo *info)
 /**
  * g_file_info_get_icon:
  * @info: a #GFileInfo.
+ * 
+ * Gets the icon for a file.
  * 
  * Returns: #GIcon for the given @info.
  **/
@@ -1133,7 +1232,9 @@ g_file_info_get_icon (GFileInfo *info)
  * g_file_info_get_content_type:
  * @info: a #GFileInfo.
  * 
- * Returns: 
+ * Gets the file's content type.
+ * 
+ * Returns: a string containing the file's content type.s
  **/
 const char *
 g_file_info_get_content_type (GFileInfo *info)
@@ -1154,7 +1255,9 @@ g_file_info_get_content_type (GFileInfo *info)
  * g_file_info_get_size:
  * @info: a #GFileInfo.
  * 
- * Returns: goffset. 
+ * Gets the file's size.
+ * 
+ * Returns: a #goffset containing the file's size. 
  **/
 goffset
 g_file_info_get_size (GFileInfo *info)
@@ -1174,7 +1277,10 @@ g_file_info_get_size (GFileInfo *info)
 /**
  * g_file_info_get_modification_time:
  * @info: a #GFileInfo.
- * @result:
+ * @result: a #GTimeVal.
+ * 
+ * Gets the modification time of the current @info and sets it
+ * in @result.
  * 
  **/
 
@@ -1204,7 +1310,9 @@ g_file_info_get_modification_time (GFileInfo *info,
  * g_file_info_get_symlink_target:
  * @info: a #GFileInfo.
  * 
- * Returns: 
+ * Gets the symlink target for a given #GFileInfo.
+ * 
+ * Returns: a string containing the symlink target.
  **/
 const char *
 g_file_info_get_symlink_target (GFileInfo *info)
@@ -1225,7 +1333,10 @@ g_file_info_get_symlink_target (GFileInfo *info)
  * g_file_info_get_etag:
  * @info: a #GFileInfo.
  * 
- * Returns: 
+ * Gets the entity tag for a given #GFileInfo. 
+ * See %G_FILE_ATTRIBUTE_ETAG_VALUE.
+ * 
+ * Returns: a string containing the value of the "etag:value" attribute.
  **/
 const char *
 g_file_info_get_etag (GFileInfo *info)
@@ -1246,7 +1357,10 @@ g_file_info_get_etag (GFileInfo *info)
  * g_file_info_get_sort_order:
  * @info: a #GFileInfo.
  * 
- * Returns:
+ * Gets the value of the sort_order attribute from the #GFileInfo.
+ * See %G_FILE_ATTRIBUTE_STD_SORT_ORDER.
+ * 
+ * Returns: a #gint32 containing the value of the "std:sort_order" attribute.
  **/
 gint32
 g_file_info_get_sort_order (GFileInfo *info)
@@ -1267,8 +1381,10 @@ g_file_info_get_sort_order (GFileInfo *info)
 /**
  * g_file_info_set_file_type:
  * @info: a #GFileInfo.
- * @type:
- *  
+ * @type: a #GFileType.
+ * 
+ * Sets the file type in a #GFileInfo to @type.
+ * See %G_FILE_ATTRIBUTE_STD_TYPE.
  **/
 void
 g_file_info_set_file_type (GFileInfo         *info,
@@ -1290,8 +1406,10 @@ g_file_info_set_file_type (GFileInfo         *info,
 /**
  * g_file_info_set_is_hidden:
  * @info: a #GFileInfo.
- * @is_hidden:
+ * @is_hidden: a #gboolean.
  * 
+ * Sets the "is_hidden" attribute in a #GFileInfo according to @is_symlink.
+ * See %G_FILE_ATTRIBUTE_STD_IS_HIDDEN.
  **/
 void
 g_file_info_set_is_hidden (GFileInfo *info,
@@ -1313,7 +1431,10 @@ g_file_info_set_is_hidden (GFileInfo *info,
 /**
  * g_file_info_set_is_symlink:
  * @info: a #GFileInfo.
- * @is_symlink:
+ * @is_symlink: a #gboolean.
+ * 
+ * Sets the "is_symlink" attribute in a #GFileInfo according to @is_symlink.
+ * See %G_FILE_ATTRIBUTE_STD_IS_SYMLINK.
  * 
  **/
 void
@@ -1336,7 +1457,10 @@ g_file_info_set_is_symlink (GFileInfo *info,
 /**
  * g_file_info_set_name:
  * @info: a #GFileInfo.
- * @name:
+ * @name: a string containing a name.
+ * 
+ * Sets the name attribute for the current #GFileInfo. 
+ * See %G_FILE_ATTRIBUTE_STD_NAME.
  * 
  **/
 void
@@ -1360,7 +1484,10 @@ g_file_info_set_name (GFileInfo         *info,
 /**
  * g_file_info_set_display_name:
  * @info: a #GFileInfo.
- * @display_name:
+ * @display_name: a string containing a display name.
+ * 
+ * Sets the display name for the current #GFileInfo.
+ * See %G_FILE_ATTRIBUTE_STD_DISPLAY_NAME.
  *  
  **/
 void
@@ -1384,7 +1511,10 @@ g_file_info_set_display_name (GFileInfo         *info,
 /**
  * g_file_info_set_edit_name:
  * @info: a #GFileInfo.
- * @edit_name:
+ * @edit_name: a string containing an edit name.
+ * 
+ * Sets the edit name for the current file.
+ * See %G_FILE_ATTRIBUTE_STD_EDIT_NAME.
  * 
  **/
 
@@ -1409,7 +1539,10 @@ g_file_info_set_edit_name (GFileInfo         *info,
 /**
  * g_file_info_set_icon:
  * @info: a #GFileInfo.
- * @icon:
+ * @icon: a #GIcon.
+ * 
+ * Sets the icon for a given #GFileInfo. 
+ * See %G_FILE_ATTRIBUTE_STD_ICON.
  *
  **/
 void
@@ -1433,7 +1566,10 @@ g_file_info_set_icon (GFileInfo   *info,
 /**
  * g_file_info_set_content_type:
  * @info: a #GFileInfo.
- * @content_type:
+ * @content_type: a content type. See #GContentType.
+ * 
+ * Sets the content type attribute for a given #GFileInfo.
+ * See %G_FILE_ATTRIBUTE_STD_CONTENT_TYPE.
  *
  **/
 void
@@ -1457,7 +1593,10 @@ g_file_info_set_content_type (GFileInfo         *info,
 /**
  * g_file_info_set_size:
  * @info: a #GFileInfo.
- * @size:
+ * @size: a #goffset containing the file's size.
+ * 
+ * Sets the %G_FILE_ATTRIBUTE_STD_SIZE attribute in the file info 
+ * to the given size.
  * 
  **/
 void
@@ -1480,7 +1619,10 @@ g_file_info_set_size (GFileInfo         *info,
 /**
  * g_file_info_set_modification_time
  * @info: a #GFileInfo.
- * @mtime:
+ * @mtime: a #GTimeVal.
+ * 
+ * Sets the %G_FILE_ATTRIBUTE_TIME_MODIFIED attribute in the file
+ * info to the given time value.
  * 
  **/
 void
@@ -1510,7 +1652,10 @@ g_file_info_set_modification_time (GFileInfo         *info,
 /**
  * g_file_info_set_symlink_target:
  * @info: a #GFileInfo.
- * @symlink_target:
+ * @symlink_target: a static string containing a path to a symlink target.
+ * 
+ * Sets the %G_FILE_ATTRIBUTE_STD_SYMLINK_TARGET attribute in the file info 
+ * to the given symlink target.
  * 
  **/
 void
@@ -1534,7 +1679,10 @@ g_file_info_set_symlink_target (GFileInfo         *info,
 /**
  * g_file_info_set_sort_order:
  * @info: a #GFileInfo.
- * @sort_order:
+ * @sort_order: a sort order integer.
+ * 
+ * Sets the sort order attribute in the file info structure. See 
+ * %G_FILE_ATTRIBUTE_STD_SORT_ORDER.
  * 
  **/
 void
@@ -1559,6 +1707,17 @@ g_file_info_set_sort_order (GFileInfo         *info,
 #define MEGABYTE_FACTOR (1024.0 * 1024.0)
 #define GIGABYTE_FACTOR (1024.0 * 1024.0 * 1024.0)
 
+/**
+ * g_format_file_size_for_display:
+ * @size: a file size.
+ * 
+ * Formats a file size into a human readable string. Sizes are rounded
+ * to the nearest metric prefix and are displayed rounded to the nearest 
+ * tenth. E.g. the file size 3292528 bytes will be converted into the string 
+ * "3.1 MB".
+ * 
+ * Returns: a formatted string containing a human readable file size.
+ **/
 char *
 g_format_file_size_for_display (goffset size)
 {
@@ -1647,10 +1806,34 @@ matcher_add (GFileAttributeMatcher *matcher,
 }
 
 /**
- * g_file_attribute_matcher_new
- * @attributes:
+ * g_file_attribute_matcher_new:
+ * @attributes: an attribute string to match.
  * 
- * Returns: #GFileAttributeMatcher.
+ * Creates a new file attribute matcher, which matches attributes against
+ * a given string. #GFileAttributeMatcher<!-- -->s are reference counted structures, 
+ * and are created with a reference count of 1. If the number of references
+ * falls to 0, the #GFileAttributeMatcher is automatically destroyed.
+ * 
+ * The @attribute string should be formatted with specific keys separated
+ * from namespaces with a colon. Several "namespace:key" strings may be 
+ * concatenated with a single comma (e.g. "std:type,std:is_hidden"). 
+ * The wildcard "*" may be used to match all keys and namespaces, or "namespace:*" will 
+ * match all keys in a given namespace. 
+ * 
+ * Examples of strings to use:
+ * <table>
+ * <title>File Attribute Matcher strings and results</title>
+ * <tgroup cols='2' align='left'><thead>
+ * <row><entry> Matcher String </entry><entry> Matches </entry></row></thead>
+ * <tbody>
+ * <row><entry>"*"</entry><entry>matches all attributes.</entry></row>
+ * <row><entry>"std:is_hidden"</entry><entry>matches only the key is_hidden in the std namespace.</entry></row>
+ * <row><entry>"std:type,unix:*"</entry><entry>matches the type key in the std namespace and all keys in the unix 
+ * namespace.</entry></row>
+ * </tbody></tgroup>
+ * </table>
+ * 
+ * Returns: a #GFileAttributeMatcher.
  **/
 GFileAttributeMatcher *
 g_file_attribute_matcher_new (const char *attributes)
@@ -1707,6 +1890,8 @@ g_file_attribute_matcher_new (const char *attributes)
  * g_file_attribute_matcher_ref:
  * @matcher: a #GFileAttributeMatcher.
  * 
+ * References a file attribute matcher.
+ * 
  * Returns: a #GFileAttributeMatcher.
  **/
 GFileAttributeMatcher *
@@ -1746,9 +1931,12 @@ g_file_attribute_matcher_unref (GFileAttributeMatcher *matcher)
 /**
  * g_file_attribute_matcher_matches_only:
  * @matcher: a #GFileAttributeMatcher.
- * @attribute:
+ * @attribute: a file attribute key.
  * 
- * Returns: 
+ * Checks if a attribute matcher only matches a given attribute. Always
+ * returns %FALSE if "*" was used when creating the matcher.
+ * 
+ * Returns: %TRUE if the matcher only matches @attribute. %FALSE otherwise.
  **/
 gboolean
 g_file_attribute_matcher_matches_only (GFileAttributeMatcher *matcher,
@@ -1817,9 +2005,13 @@ g_file_attribute_matcher_matches_id (GFileAttributeMatcher *matcher,
 /**
  * g_file_attribute_matcher_matches:
  * @matcher: a #GFileAttributeMatcher.
- * @attribute:
+ * @attribute: a file attribute key.
+ *
+ * Checks if an attribute will be matched by an attribute matcher. If 
+ * the matcher was created with the "*" matching string, this function
+ * will always return %TRUE.
  * 
- * Returns: 
+ * Returns: %TRUE if @attribute matches @matcher. %FALSE otherwise.
  **/
 gboolean
 g_file_attribute_matcher_matches (GFileAttributeMatcher *matcher,
@@ -1838,9 +2030,17 @@ g_file_attribute_matcher_matches (GFileAttributeMatcher *matcher,
 /**
  * g_file_attribute_matcher_enumerate_namespace:
  * @matcher: a #GFileAttributeMatcher.
- * @ns:
+ * @ns: a string containing a file attribute namespace.
  * 
- * Returns: %TRUE, %FALSE.
+ * Checks if the matcher will match all of the keys in a given namespace.
+ * This will always return %TRUE if a wildcard character is in use (e.g. if 
+ * matcher was created with "std:*" and @ns is "std", or if matcher was created
+ * using "*" and namespace is anything.) 
+ * 
+ * TODO: this is awkwardly worded.
+ * 
+ * Returns: %TRUE if the matcher matches all of the entries
+ * in the given @ns, %FALSE otherwise.
  **/
 gboolean
 g_file_attribute_matcher_enumerate_namespace (GFileAttributeMatcher *matcher,
@@ -1884,7 +2084,10 @@ g_file_attribute_matcher_enumerate_namespace (GFileAttributeMatcher *matcher,
  * g_file_attribute_matcher_enumerate_next:
  * @matcher: a #GFileAttributeMatcher.
  * 
- * Returns: 
+ * Gets the next matched attribute from a #GFileAttributeMatcher.
+ * 
+ * Returns: a string containing the next attribute or %NULL if 
+ * no more attribute exist.
  **/
 const char *
 g_file_attribute_matcher_enumerate_next (GFileAttributeMatcher *matcher)

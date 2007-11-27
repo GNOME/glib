@@ -27,6 +27,16 @@
 #include <string.h>
 #include "glibintl.h"
 
+/**
+ * SECTION:gfilenamecompleter
+ * @short_description: Filename Completer.
+ * 
+ * Completes partial file and directory names given a partial string by
+ * looking in the file system for clues. Can return a list of possible 
+ * completion strings for widget implementation.
+ * 
+ **/
+
 enum {
   GOT_COMPLETION_DATA,
   LAST_SIGNAL
@@ -84,7 +94,11 @@ g_filename_completer_class_init (GFilenameCompleterClass *klass)
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   
   gobject_class->finalize = g_filename_completer_finalize;
-
+  /**
+   * GFilenameCompleter::got-completion-data:
+   * 
+   * Emitted when the file name completion information comes available.
+   **/
   signals[GOT_COMPLETION_DATA] = g_signal_new (I_("got_completion_data"),
 					  G_TYPE_FILENAME_COMPLETER,
 					  G_SIGNAL_RUN_LAST,
@@ -102,7 +116,9 @@ g_filename_completer_init (GFilenameCompleter *completer)
 /**
  * g_filename_completer_new:
  * 
- * Returns: a new #GFilenameCompleter.
+ * Creates a new filename completer.
+ * 
+ * Returns: a #GFilenameCompleter.
  **/
 GFilenameCompleter *
 g_filename_completer_new (void)
@@ -439,6 +455,8 @@ g_filename_completer_get_completion_suffix (GFilenameCompleter *completer,
  * @completer: the filename completer.
  * @initial_text: text to be completed.
  * 
+ * Gets an array of completion strings for a given initial text.
+ * 
  * Returns: array of strings with possible completions for @initial_text.
  * This array must be freed by g_strfreev() when finished. 
  **/
@@ -474,7 +492,7 @@ g_filename_completer_get_completions (GFilenameCompleter *completer,
 /**
  * g_filename_completer_set_dirs_only:
  * @completer: the filename completer.
- * @dirs_only: 
+ * @dirs_only: a #gboolean.
  * 
  * If @dirs_only is %TRUE, @completer will only 
  * complete directory names, and not file names.

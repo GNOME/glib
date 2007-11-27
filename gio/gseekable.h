@@ -33,9 +33,25 @@ G_BEGIN_DECLS
 #define G_IS_SEEKABLE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), G_TYPE_SEEKABLE))
 #define G_SEEKABLE_GET_IFACE(obj)  (G_TYPE_INSTANCE_GET_INTERFACE ((obj), G_TYPE_SEEKABLE, GSeekableIface))
 
+/**
+ * GSeekable:
+ * 
+ * Seek object for streaming operations.
+ **/ 
 typedef struct _GSeekable        GSeekable;
 typedef struct _GSeekableIface   GSeekableIface;
 
+/**
+ * GSeekableIface:
+ * @g_iface: The parent interface.
+ * @tell: Tells the current location within a stream.
+ * @can_seek: Checks if seeking is supported by the stream.
+ * @seek: Seeks to a location within a stream.
+ * @can_truncate: Chekcs if truncation is suppored by the stream.
+ * @truncate: Truncates a stream.
+ * 
+ * Provides an interface for implementing seekable functionality on I/O Streams.
+ **/ 
 struct _GSeekableIface
 {
   GTypeInterface g_iface;

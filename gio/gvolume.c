@@ -26,6 +26,33 @@
 #include "gsimpleasyncresult.h"
 #include "glibintl.h"
 
+/**
+ * SECTION:gvolume
+ * @short_description: mounted volume management
+ * 
+ * Class for managing mounted volumes.
+ * 
+ * Unmounting volumes is an asynchronous operation. For more information about
+ * asynchronous operations, see #GAsyncReady and #GSimpleAsyncReady. To unmount a volume, 
+ * first call g_volume_unmount() with (at least) the volume and a #GAsyncReadyCallback.
+ * The callback will be fired when the operation has resolved (either with success or failure), 
+ * and a #GAsyncReady structure will be passed to the callback. 
+ * That callback should then call g_volume_unmount_finish() with
+ * the volume and the #GAsyncReady data to see if the operation was completed successfully.
+ * If an @error is present when g_volume_unmount_finish() is called, then it will
+ * be filled with any error information.
+ * 
+ * Ejecting volumes is also an asynchronous operation. 
+ * To eject a volume, call g_volume_eject() with (at least) the volume to eject 
+ * and a #GAsyncReadyCallback. The callback will be fired when the eject operation
+ * has resolved (either with success or failure), and a #GAsyncReady structure will
+ * be passed to the callback. That callback should then call g_volume_eject_finish()
+ * with the volume and the #GAsyncReady data to determine if the operation was completed
+ * successfully. If an @error is present when g_volume_eject_finish() is called, then
+ * it will be filled with any error information. 
+ *
+ **/
+
 static void g_volume_base_init (gpointer g_class);
 static void g_volume_class_init (gpointer g_class,
 				 gpointer class_data);
@@ -73,6 +100,11 @@ g_volume_base_init (gpointer g_class)
 
   if (! initialized)
     {
+     /**
+      * GVolume::changed:
+      * 
+      * Emitted when the volume has been changed.
+      **/
       g_signal_new (I_("changed"),
                     G_TYPE_VOLUME,
                     G_SIGNAL_RUN_LAST,
@@ -89,8 +121,9 @@ g_volume_base_init (gpointer g_class)
  * g_volume_get_root:
  * @volume: a #GVolume.
  * 
- * Returns a #GFile.
+ * Gets the root directory on @volume.
  * 
+ * Returns a #GFile.
  **/
 GFile *
 g_volume_get_root (GVolume *volume)
@@ -108,10 +141,10 @@ g_volume_get_root (GVolume *volume)
  * g_volume_get_name:
  * @volume: a #GVolume.
  * 
- * Returns the name for the given @volume. 
+ * Gets the name of @volume.
  * 
- * The returned string should be freed when no longer needed.
- * 
+ * Returns the name for the given @volume. The returned string should 
+ * be freed when no longer needed.
  **/
 char *
 g_volume_get_name (GVolume *volume)
@@ -127,10 +160,11 @@ g_volume_get_name (GVolume *volume)
 
 /**
  * g_volume_get_icon:
- * @volume:
+ * @volume: a #GVolume.
  * 
- * Returns the #GIcon for the given @volume.
+ * Gets the icon for @volume.
  * 
+ * Returns: a #GIcon.
  **/
 GIcon *
 g_volume_get_icon (GVolume *volume)
@@ -146,10 +180,11 @@ g_volume_get_icon (GVolume *volume)
   
 /**
  * g_volume_get_drive:
- * @volume:
+ * @volume: a #GVolume.
  * 
- * Returns the #GDrive for the given @volume.
+ * Gets the drive for the @volume.
  * 
+ * Returns: a #GDrive.
  **/
 GDrive *
 g_volume_get_drive (GVolume *volume)
@@ -165,7 +200,9 @@ g_volume_get_drive (GVolume *volume)
 
 /**
  * g_volume_can_unmount: 
- * @volume:
+ * @volume: a #GVolume.
+ * 
+ * Checks if @volume can be mounted.
  * 
  * Returns %TRUE if the @volume can be unmounted.
  **/
@@ -183,10 +220,11 @@ g_volume_can_unmount (GVolume *volume)
 
 /**
  * g_volume_can_eject:
- * @volume:
+ * @volume: a #GVolume.
+ * 
+ * Checks if @volume can be ejected.
  * 
  * Returns %TRUE if the @volume can be ejected.
- * 
  **/
 gboolean
 g_volume_can_eject (GVolume *volume)
@@ -202,10 +240,14 @@ g_volume_can_eject (GVolume *volume)
 
 /**
  * g_volume_unmount:
- * @volume:
- * @callback:
- * @user_data:
+ * @volume: a #GVolume.
+ * @cancellable: optional #GCancellable object, %NULL to ignore.
+ * @callback: a #GAsyncReadyCallback.
+ * @user_data: user data passed to @callback.
  * 
+ * Unmounts a volume. This is an asynchronous operation, and is finished by calling 
+ * g_volume_unmount_finish() with the @volume and #GAsyncResults data returned in the 
+ * @callback.
  * 
  **/
 void
@@ -235,12 +277,15 @@ g_volume_unmount (GVolume *volume,
 
 /**
  * g_volume_unmount_finish:
- * @volume:
- * @result:
+ * @volume: a #GVolume.
+ * @result: a #GAsyncResult.
  * @error: a #GError location to store the error occuring, or %NULL to 
  * ignore.
- * Return:
  * 
+ * Finishes unmounting a volume. If any errors occured during the operation, 
+ * @error will be set to contain the errors and %FALSE will be returned.
+ * 
+ * Returns: %TRUE if the volume was successfully unmounted. %FALSE otherwise.
  **/
 gboolean
 g_volume_unmount_finish (GVolume              *volume,
@@ -265,9 +310,14 @@ g_volume_unmount_finish (GVolume              *volume,
 
 /**
  * g_volume_eject:
- * @volume:
- * @callback:
- * @user_data:
+ * @volume: a #GVolume.
+ * @cancellable: optional #GCancellable object, %NULL to ignore. 
+ * @callback: a #GAsyncReadyCallback.
+ * @user_data: user data passed to @callback.
+ * 
+ * Ejects a volume. This is an asynchronous operation, and is finished
+ * by calling g_volume_eject_finish() from the @callback with the @volume and 
+ * #GAsyncResults returned in the callback.
  * 
  **/
 void
@@ -297,12 +347,15 @@ g_volume_eject (GVolume         *volume,
 
 /**
  * g_volume_eject_finish:
- * @volume:
- * @result:
+ * @volume: a #GVolume.
+ * @result: a #GAsyncResult.
  * @error: a #GError location to store the error occuring, or %NULL to 
  * ignore.
- * Returns: 
  * 
+ * Finishes ejecting the volume. If any errors occured during the operation, 
+ * @error will be set to contain the errors and %FALSE will be returned.
+ * 
+ * Returns: %TRUE if the volume was successfully ejected. %FALSE otherwise.
  **/
 gboolean
 g_volume_eject_finish (GVolume              *volume,

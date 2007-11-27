@@ -24,6 +24,15 @@
 
 #include "gioscheduler.h"
 
+/**
+ * SECTION:gioscheduler
+ * @short_description: I/O Scheduler
+ * 
+ * Schedules asynchronous I/O operations for integration into the main 
+ * event loop (#GMainLoop).
+ * 
+ **/
+
 struct _GIOJob {
   GSList *active_link;
   GIOJobFunc job_func;
@@ -177,10 +186,10 @@ run_job_at_idle (gpointer data)
  * @job_func: a #GIOJobFunc.
  * @user_data: a #gpointer.
  * @notify: a #GDestroyNotify.
- * @io_priority: the io priority of the request. a #gint.
+ * @io_priority: the i/o priority of the request. a #gint.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  *
- * Schedules the @job_func.
+ * Schedules the I/O Job.
  * 
  **/
 void
@@ -314,6 +323,7 @@ mainloop_proxy_notify (gpointer data)
  * @notify: a #GDestroyNotify.
  * @block: boolean flag indicating whether or not this job should block.
  * 
+ * Sends an I/O job to the application's main loop for processing.
  * 
  **/
 void

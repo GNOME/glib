@@ -37,8 +37,16 @@
 #include "gcancellable.h"
 #include "gsimpleasyncresult.h"
 #include "gasynchelper.h"
-
 #include "glibintl.h"
+
+/**
+ * SECTION:gsocketoutputstream
+ * @short_description: Socket Output Stream
+ * @see_also: #GOutputStream.
+ *
+ * #GSocketOutputStream implements #GOutputStream for writing to a socket, including
+ * asynchronous operations.
+ **/
 
 G_DEFINE_TYPE (GSocketOutputStream, g_socket_output_stream, G_TYPE_OUTPUT_STREAM);
 
@@ -116,8 +124,11 @@ g_socket_output_stream_init (GSocketOutputStream *socket)
 
 /**
  * g_socket_output_stream_new:
- * @fd: file descriptor.
- * @close_fd_at_close: boolean value.
+ * @fd: socket's file descriptor.
+ * @close_fd_at_close: a #gboolean.
+ * 
+ * Creates a new socket output stream for @fd. If @close_fd_at_close
+ * is %TRUE, the socket will be closed when the output stream is destroyed.
  * 
  * Returns: #GOutputStream. If @close_fd_at_close is %TRUE, then
  * @fd will be closed when the #GOutputStream is closed.

@@ -74,6 +74,8 @@ g_icon_base_init (gpointer g_class)
  * g_icon_hash:
  * @icon: #gconstpointer to an icon object.
  * 
+ * Gets a hash for an icon.
+ * 
  * Returns: a #guint containing a hash for the @icon, suitable for 
  * use in a #GHashTable or similar data structure.
  **/
@@ -93,6 +95,8 @@ g_icon_hash (gconstpointer icon)
  * g_icon_equal:
  * @icon1: pointer to the first #GIcon.
  * @icon2: pointer to the second #GIcon.
+ * 
+ * Checks if two icons are equal.
  * 
  * Returns: %TRUE if @icon1 is equal to @icon2. %FALSE otherwise.
  **/

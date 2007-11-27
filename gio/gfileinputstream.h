@@ -35,6 +35,12 @@ G_BEGIN_DECLS
 #define G_IS_FILE_INPUT_STREAM_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_FILE_INPUT_STREAM))
 #define G_FILE_INPUT_STREAM_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), G_TYPE_FILE_INPUT_STREAM, GFileInputStreamClass))
 
+/**
+ * GFileInputStream:
+ * @parent: the parent #GInputStream instance.
+ * 
+ * Implements #GInputStream and #GSeekable for file input operations.
+ **/
 typedef struct _GFileInputStream         GFileInputStream;
 typedef struct _GFileInputStreamClass    GFileInputStreamClass;
 typedef struct _GFileInputStreamPrivate  GFileInputStreamPrivate;
@@ -71,7 +77,7 @@ struct _GFileInputStreamClass
   GFileInfo *(*query_info_finish) (GFileInputStream     *stream,
 				   GAsyncResult         *res,
 				   GError              **error);
-    
+  /*< private >*/
   /* Padding for future expansion */
   void (*_g_reserved1) (void);
   void (*_g_reserved2) (void);

@@ -35,6 +35,12 @@ G_BEGIN_DECLS
 #define G_IS_BUFFERED_OUTPUT_STREAM_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_BUFFERED_OUTPUT_STREAM))
 #define G_BUFFERED_OUTPUT_STREAM_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), G_TYPE_BUFFERED_OUTPUT_STREAM, GBufferedOutputStreamClass))
 
+/**
+ * GBufferedOutputStream:
+ * @parent_class: The parent class.
+ * 
+ * An implementation of #GFilterOutputStream with a sized buffer.
+ **/
 typedef struct _GBufferedOutputStream         GBufferedOutputStream;
 typedef struct _GBufferedOutputStreamClass    GBufferedOutputStreamClass;
 typedef struct _GBufferedOutputStreamPrivate  GBufferedOutputStreamPrivate;
@@ -51,6 +57,7 @@ struct _GBufferedOutputStreamClass
 {
  GOutputStreamClass parent_class;
 
+  /*< private >*/
   /* Padding for future expansion */
   void (*_g_reserved1) (void);
   void (*_g_reserved2) (void);

@@ -35,6 +35,11 @@ G_BEGIN_DECLS
 #define G_IO_IS_MODULE_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), G_IO_TYPE_MODULE))
 #define G_IO_MODULE_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), G_IO_TYPE_MODULE, GIOModuleClass))
 
+/**
+ * GIOModule:
+ * 
+ * Opaque module base class for extending GIO.
+ **/
 typedef struct _GIOModule GIOModule;
 typedef struct _GIOModuleClass GIOModuleClass;
 
@@ -44,7 +49,22 @@ GIOModule *g_io_module_new      (const gchar *filename);
 void       g_io_modules_ensure_loaded (const char *directory);
 
 /* API for the modules to implement */
+/**
+ * g_io_module_load:
+ * @module: a #GIOModule.
+ * 
+ * Required API for GIO modules to implement. This function is ran after the module
+ * has been loaded into GIO, to initialize the module.
+ **/
 void        g_io_module_load     (GIOModule   *module);
+
+/**
+ * g_io_module_unload:
+ * @module: a #GIOModule.
+ * 
+ * Required API for GIO modules to implement. This function is ran when the module
+ * is being unloaded from GIO, to finalize the module.
+ **/
 void        g_io_module_unload   (GIOModule   *module);
 
 G_END_DECLS

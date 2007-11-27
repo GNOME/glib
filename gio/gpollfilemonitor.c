@@ -192,7 +192,9 @@ got_initial_info (GObject *source_object,
 
 /**
  * g_poll_file_monitor_new:
- * @file:
+ * @file: a #GFile.
+ * 
+ * Polls @file for changes.
  * 
  * Returns a new #GFileMonitor for the given #GFile. 
  **/

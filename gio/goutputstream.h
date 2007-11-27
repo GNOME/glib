@@ -38,12 +38,29 @@ G_BEGIN_DECLS
 #define G_IS_OUTPUT_STREAM_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_OUTPUT_STREAM))
 #define G_OUTPUT_STREAM_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), G_TYPE_OUTPUT_STREAM, GOutputStreamClass))
 
+/**
+ * GOutputStreamSpliceFlags:
+ * @G_OUTPUT_STREAM_SPLICE_FLAGS_NONE:
+ * @G_OUTPUT_STREAM_SPLICE_FLAGS_CLOSE_SOURCE:
+ * @G_OUTPUT_STREAM_SPLICE_FLAGS_CLOSE_TARGET:
+ * 
+ * 
+ **/
 typedef enum {
   G_OUTPUT_STREAM_SPLICE_FLAGS_NONE = 0,
   G_OUTPUT_STREAM_SPLICE_FLAGS_CLOSE_SOURCE = 1 << 0,
   G_OUTPUT_STREAM_SPLICE_FLAGS_CLOSE_TARGET = 1 << 1
 } GOutputStreamSpliceFlags;
 
+/**
+ * GOutputStream:
+ * 
+ * Base class for writing output. 
+ * 
+ * All classes derived from GOutputStream should implement synchronous 
+ * writing, splicing, flushing and closing streams, but may implement
+ * asynchronous versions.
+ **/
 typedef struct _GOutputStream         GOutputStream;
 typedef struct _GOutputStreamClass    GOutputStreamClass;
 typedef struct _GOutputStreamPrivate  GOutputStreamPrivate;
@@ -119,6 +136,7 @@ struct _GOutputStreamClass
 			     GAsyncResult        *result,
 			     GError             **error);
 
+  /*< private >*/
   /* Padding for future expansion */
   void (*_g_reserved1) (void);
   void (*_g_reserved2) (void);

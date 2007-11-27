@@ -28,6 +28,21 @@
 #include "gio-marshal.h"
 #include "glibintl.h"
 
+/** 
+ * SECTION:gmountoperation
+ * @short_description: Authentication methods for mountable locations.
+ *
+ * #GMountOperation provides a mechanism for authenticating mountable 
+ * operations, such as loop mounting files, hard drive partitions or 
+ * server locations. 
+ *
+ * Mountable GIO backends should implement #GMountOperation if they 
+ * require any priviledges or authentication for their volumes to be 
+ * mounted (e.g. a hard disk partition or an encrypted filesystem), or 
+ * if they are implementing a remote server protocol which requires user
+ * credentials such as FTP or WebDAV. 
+ **/
+
 G_DEFINE_TYPE (GMountOperation, g_mount_operation, G_TYPE_OBJECT);
 
 enum {
@@ -112,6 +127,16 @@ g_mount_operation_class_init (GMountOperationClass *klass)
   klass->ask_password = ask_password;
   klass->ask_question = ask_question;
   
+  /**
+   * GMountOperation::ask-password:
+   * @op: a #GMountOperation requesting a password.
+   * @message: string containing a message to display to the user.
+   * @default_user: string containing the default user name.
+   * @default_domain: string containing the default domain.
+   * @flags: a set of #GPasswordFlags.
+   * 
+   * Emitted when a mount operation asks the user for a password.
+   */
   signals[ASK_PASSWORD] =
     g_signal_new (I_("ask_password"),
 		  G_TYPE_FROM_CLASS (gobject_class),
@@ -121,7 +146,16 @@ g_mount_operation_class_init (GMountOperationClass *klass)
 		  _gio_marshal_BOOLEAN__STRING_STRING_STRING_INT,
 		  G_TYPE_BOOLEAN, 4,
 		  G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_UINT);
-  
+		  
+  /**
+   * GMountOperation::ask-question:
+   * @op: a #GMountOperation asking a question.
+   * @message: string containing a message to display to the user.
+   * @choices: an array of strings for each possible choice.
+   * 
+   * Emitted when asking the user a question and gives a list of choices for the 
+   * user to choose from. 
+   */
   signals[ASK_QUESTION] =
     g_signal_new (I_("ask_question"),
 		  G_TYPE_FROM_CLASS (gobject_class),
@@ -131,7 +165,14 @@ g_mount_operation_class_init (GMountOperationClass *klass)
 		  _gio_marshal_BOOLEAN__STRING_POINTER,
 		  G_TYPE_BOOLEAN, 2,
 		  G_TYPE_STRING, G_TYPE_POINTER);
-
+		  
+  /**
+   * GMountOperation::reply:
+   * @op: a #GMountOperation.
+   * @abort: a gboolean indicating %TRUE if the operation was aborted.
+   * 
+   * Emitted when the user has replied to the mount operation.
+   */
   signals[REPLY] =
     g_signal_new (I_("reply"),
 		  G_TYPE_FROM_CLASS (gobject_class),
@@ -154,7 +195,9 @@ g_mount_operation_init (GMountOperation *operation)
 /**
  * g_mount_operation_new:
  * 
- * Returns: a new #GMountOperation.
+ * Creates a new mount operation.
+ * 
+ * Returns: a #GMountOperation.
  **/
 GMountOperation *
 g_mount_operation_new (void)
@@ -164,9 +207,11 @@ g_mount_operation_new (void)
 
 /**
  * g_mount_operation_get_username
- * @op:
+ * @op: a #GMountOperation.
  * 
- * Returns: 
+ * Get the user name from the mount operation.
+ *
+ * Returns: a string containing the user name.
  **/
 const char *
 g_mount_operation_get_username (GMountOperation *op)
@@ -177,8 +222,10 @@ g_mount_operation_get_username (GMountOperation *op)
 
 /**
  * g_mount_operation_set_username:
- * @op:
+ * @op: a #GMountOperation.
  * @username: input username.
+ *
+ * Sets the user name within @op to @username.
  * 
  **/
 void
@@ -192,9 +239,11 @@ g_mount_operation_set_username (GMountOperation *op,
 
 /**
  * g_mount_operation_get_password:
- * @op:
- * 
- * Returns:  
+ * @op: a #GMountOperation.
+ *
+ * Gets a password from the mount operation. 
+ *
+ * Returns: a string containing the password within @op.
  **/
 const char *
 g_mount_operation_get_password (GMountOperation *op)
@@ -205,7 +254,7 @@ g_mount_operation_get_password (GMountOperation *op)
 
 /**
  * g_mount_operation_set_password:
- * @op: the given #GMountOperation.
+ * @op: a #GMountOperation.
  * @password: password to set.
  * 
  * Sets the mount operation's password to @password.  
@@ -222,7 +271,10 @@ g_mount_operation_set_password (GMountOperation *op,
 
 /**
  * g_mount_operation_get_anonymous:
- * @op:
+ * @op: a #GMountOperation.
+ * 
+ * Check to see whether the mount operation is being used 
+ * for an anonymous user.
  * 
  * Returns: %TRUE if mount operation is anonymous. 
  **/
@@ -235,9 +287,10 @@ g_mount_operation_get_anonymous (GMountOperation *op)
 
 /**
  * g_mount_operation_set_anonymous:
- * @op: the given #GMountOperation.
+ * @op: a #GMountOperation.
  * @anonymous: boolean value.
  * 
+ * Sets the mount operation to use an anonymous user if @anonymous is %TRUE.
  **/  
 void
 g_mount_operation_set_anonymous (GMountOperation *op,
@@ -249,9 +302,11 @@ g_mount_operation_set_anonymous (GMountOperation *op,
 
 /**
  * g_mount_operation_get_domain:
- * @op:
+ * @op: a #GMountOperation.
  * 
- * Returns: a const string set to the domain.
+ * Gets the domain of the mount operation.
+ * 
+ * Returns: a string set to the domain. 
  **/
 const char *
 g_mount_operation_get_domain (GMountOperation *op)
@@ -262,7 +317,7 @@ g_mount_operation_get_domain (GMountOperation *op)
 
 /**
  * g_mount_operation_set_domain:
- * @op: the given #GMountOperation.
+ * @op: a #GMountOperation.
  * @domain: the domain to set.
  * 
  * Sets the mount operation's domain. 
@@ -278,9 +333,11 @@ g_mount_operation_set_domain (GMountOperation *op,
 
 /**
  * g_mount_operation_get_password_save:
- * @op: the given #GMountOperation.
+ * @op: a #GMountOperation.
+ * 
+ * Gets the state of saving passwords for the mount operation.
  *
- * Returns: #GPasswordSave. 
+ * Returns: a #GPasswordSave flag. 
  **/  
 
 GPasswordSave
@@ -291,9 +348,11 @@ g_mount_operation_get_password_save (GMountOperation *op)
 }
 
 /**
- * g_mount_operation_set_password_save
- * @op:
- * @save: #GPasswordSave
+ * g_mount_operation_set_password_save:
+ * @op: a #GMountOperation.
+ * @save: a set of #GPasswordSave flags.
+ * 
+ * Sets the state of saving passwords for the mount operation.
  * 
  **/   
 void
@@ -306,9 +365,12 @@ g_mount_operation_set_password_save (GMountOperation *op,
 
 /**
  * g_mount_operation_get_choice:
- * @op:
+ * @op: a #GMountOperation.
  * 
- * Returns: 
+ * Gets a choice from the mount operation.
+ *
+ * Returns: an integer containing an index of the user's choice from 
+ * the choice's list, or %0.
  **/
 int
 g_mount_operation_get_choice (GMountOperation *op)
@@ -319,9 +381,10 @@ g_mount_operation_get_choice (GMountOperation *op)
 
 /**
  * g_mount_operation_set_choice:
- * @op:
- * @choice:
- *  
+ * @op: a #GMountOperation.
+ * @choice: an integer.
+ *
+ * Sets a default choice for the mount operation.
  **/
 void
 g_mount_operation_set_choice (GMountOperation *op,
@@ -333,11 +396,10 @@ g_mount_operation_set_choice (GMountOperation *op,
 
 /**
  * g_mount_operation_reply:
- * @op: #GMountOperation.
+ * @op: a #GMountOperation.
  * @abort: boolean.
  * 
- * Emits the #GMountOperation::Reply signal with the abort flag set to
- * @abort.
+ * Emits the #GMountOperation::reply signal.
  **/
 void
 g_mount_operation_reply (GMountOperation *op,

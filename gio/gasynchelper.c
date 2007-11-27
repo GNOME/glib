@@ -24,6 +24,15 @@
 
 #include "gasynchelper.h"
 
+/**
+ * SECTION:gasynchelper
+ * @short_description: Asynchronous Helper Functions
+ * @see_also: #GAsyncReady.
+ * 
+ * Provides helper functions for asynchronous operations.
+ *
+ **/
+
 static void
 async_result_free (gpointer data)
 {

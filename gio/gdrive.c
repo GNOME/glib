@@ -25,6 +25,16 @@
 #include "gsimpleasyncresult.h"
 #include "glibintl.h"
 
+/**
+ * SECTION:gdrive
+ * @short_description: Virtual File System drive management.
+ * @include: gio/gdrive.h
+ * 
+ * #GDrive manages drive operations from GVFS, including volume mounting
+ * and ejecting, and getting the drive's name and icon. 
+ * 
+ **/
+
 static void g_drive_base_init (gpointer g_class);
 static void g_drive_class_init (gpointer g_class,
 				 gpointer class_data);
@@ -72,6 +82,13 @@ g_drive_base_init (gpointer g_class)
 
   if (! initialized)
     {
+      /**
+      * GDrive::changed:
+      * @volume: a #GVolume.
+      * 
+      * Emitted when the drive's state has changed.
+      * 
+      **/
       g_signal_new (I_("changed"),
                     G_TYPE_DRIVE,
                     G_SIGNAL_RUN_LAST,
@@ -90,7 +107,7 @@ g_drive_base_init (gpointer g_class)
  * 
  * Returns: string containing @drive's name.
  *
- * The returned string should be freed when no longer needed
+ * The returned string should be freed when no longer needed.
  **/
 char *
 g_drive_get_name (GDrive *drive)
@@ -128,6 +145,8 @@ g_drive_get_icon (GDrive *drive)
  * g_drive_has_volumes:
  * @drive: a #GDrive.
  * 
+ * Checks if a drive has any volumes.
+ * 
  * Returns: %TRUE if @drive contains volumes, %FALSE otherwise.
  **/
 gboolean
@@ -146,7 +165,9 @@ g_drive_has_volumes (GDrive *drive)
  * g_drive_get_volumes:
  * @drive: a #GDrive.
  * 
- * Returns: #GList containing any #GVolume s on the given @drive.
+ * Gets a list of volumes for a drive.
+ * 
+ * Returns: #GList containing any #GVolume<!---->s on the given @drive.
  * NOTE: Fact-check this.
  **/
 GList *
@@ -165,6 +186,8 @@ g_drive_get_volumes (GDrive *drive)
  * g_drive_is_automounted:
  * @drive: a #GDrive.
  * 
+ * Checks if a drive was automatically mounted, e.g. by HAL.
+ * 
  * Returns: %TRUE if the drive was automounted. %FALSE otherwise.
  **/
 gboolean
@@ -182,6 +205,8 @@ g_drive_is_automounted (GDrive *drive)
 /**
  * g_drive_can_mount:
  * @drive: a #GDrive.
+ * 
+ * Checks if a drive can be mounted.
  * 
  * Returns: %TRUE if the @drive can be mounted. %FALSE otherwise.
  **/
@@ -204,6 +229,8 @@ g_drive_can_mount (GDrive *drive)
  * g_drive_can_eject:
  * @drive: pointer to a #GDrive.
  * 
+ * Checks if a drive can be ejected.
+ * 
  * Returns: %TRUE if the @drive can be ejected. %FALSE otherwise.
  **/
 gboolean
@@ -225,9 +252,11 @@ g_drive_can_eject (GDrive *drive)
  * g_drive_mount:
  * @drive: a #GDrive.
  * @mount_operation: a #GMountOperation.
+ * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @callback: a #GAsyncReadyCallback.
  * @user_data: a #gpointer.
  * 
+ * Mounts a drive.
  * 
  **/
 void
@@ -262,6 +291,8 @@ g_drive_mount (GDrive         *drive,
  * @result: a #GAsyncResult.
  * @error: a #GError.
  * 
+ * Finishes mounting a drive.
+ * 
  * Returns: %TRUE, %FALSE if operation failed.
  **/
 gboolean
@@ -288,8 +319,11 @@ g_drive_mount_finish (GDrive               *drive,
 /**
  * g_drive_eject:
  * @drive: a #GDrive.
+ * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @callback: a #GAsyncReadyCallback.
  * @user_data: a #gpointer.
+ * 
+ * Ejects a drive.
  * 
  **/
 void
@@ -321,6 +355,8 @@ g_drive_eject (GDrive         *drive,
  * @drive: a #GDrive.
  * @result: a #GAsyncResult.
  * @error: a #GError.
+ * 
+ * Finishes ejecting a drive.
  * 
  * Returns: %TRUE if the drive has been ejected successfully,
  * %FALSE otherwise.

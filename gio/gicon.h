@@ -32,10 +32,24 @@ G_BEGIN_DECLS
 #define G_IS_ICON(obj)	       (G_TYPE_CHECK_INSTANCE_TYPE ((obj), G_TYPE_ICON))
 #define G_ICON_GET_IFACE(obj)  (G_TYPE_INSTANCE_GET_INTERFACE ((obj), G_TYPE_ICON, GIconIface))
 
+/**
+ * GIcon:
+ *
+ * Icons for file, content, drive and volume types.
+ **/
 typedef struct _GIcon         		GIcon; /* Dummy typedef */
 typedef struct _GIconIface    		GIconIface;
 
-
+/**
+ * GIconIface:
+ * @g_iface: The parent interface.
+ * @hash: A hash for a given #GIcon.
+ * @equal: Checks if two #GIcon<!-- -->s are equal.
+ *
+ * GIconIface is used to implement GIcon types for various
+ * different systems. See #GThemedIcon and #GLoadableIcon for
+ * examples of how to use this interface.
+ */
 struct _GIconIface
 {
   GTypeInterface g_iface;

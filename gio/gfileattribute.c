@@ -29,6 +29,160 @@
 #include "glibintl.h"
 
 /**
+ * SECTION:gfileattribute
+ * @short_description: Key-Value Paired File Attributes.
+ * @see_also: #GFile, #GFileInfo.
+ * 
+ * File attributes in GIO consist of a list of key-value pairs. 
+ * 
+ * Keys are strings that contain a key namespace and a key name, separated
+ * by a colon, e.g. "namespace:keyname". Namespaces are included to sort
+ * key-value pairs by namespaces for relevance. Keys can be searched 
+ * for using wildcards, e.g. "std:*" will return all of the keys in the 
+ * "std" namespace.
+ * 
+ * Values are stored within the list in #GFileAttributeValue structures.
+ * Values can store different types, listed in the enum #GFileAttributeType.
+ * Upon creation of a #GFileAttributeValue, the type will be set to 
+ * %G_FILE_ATTRIBUTE_TYPE_INVALID. 
+ * 
+ * The Key-value list is stored within the #GFile structure as a 
+ * #GFileAttributeInfoList. This list is queryable by key names 
+ * as indicated earlier.
+ * 
+ * Classes that implement #GFileIface will create a #GFileAttributeInfoList and 
+ * install default keys and values for their given file system, architecture, 
+ * and other possible implementation details (e.g., on a UNIX system, a file 
+ * attribute key will be registered for the user id for a given file). Other 
+ * attributes can be appended to a #GFileAttributeList later by 
+ * g_file_attribute_info_list_add(). 
+ * 
+ * <para>
+ * <table>
+ * <title>GFileAttributes Namespaces</title>
+ * <tgroup cols='2' align='left'><thead>
+ * <row><entry>Namspace</entry><entry>Description</entry></row>
+ * </thead>
+ * <tbody>
+ * <row><entry>"std"</entry><entry>The "Standard" namespace. General file
+ * information that any application may need should be put in this namespace. Examples
+ * include the file's name, type, and size.</entry></row> 
+ * <row><entry>"etag"</entry><entry>The "Entity Tag" namespace. Remotely shared
+ * files, like those on HTTP/1.1 file systems, use "entity tags" to quickly determine 
+ * if a file has been modified. Entity tags are globally unique, and should
+ * always be sent with the current revision of a file. An example of a key
+ * in this namespace is "value", which contains the value of the current
+ * entity tag.</entry></row>
+ * <row><entry>"id"</entry><entry>The "Identification" namespace. This 
+ * namespace is used by file managers and applications that list directories
+ * to check for loops and to uniquely identify files.</entry></row>
+ * <row><entry>"access"</entry><entry>The "Access" namespace. Used to check
+ * if a user has the proper privilidges to access files and perform
+ * file operations. Keys in this namespace are made to be generic 
+ * and easily understood, e.g. the "can_read" key is %TRUE if 
+ * the current user has permission to read the file. UNIX permissions and
+ * NTFS ACLs in Windows should be mapped to these values.</entry></row>
+ * <row><entry>"mountable"</entry><entry>The "Mountable" namespace. Includes 
+ * simple boolean keys for checking if a file or path supports mount operations, e.g.
+ * mount, unmount, eject.</entry></row>
+ * <row><entry>"time"</entry><entry>The "Time" namespace. Includes file 
+ * access, changed, created times. </entry></row>
+ * <row><entry>"unix"</entry><entry>The "Unix" namespace. Includes UNIX-specific
+ * information and may not be available for all files. Examples include 
+ * the UNIX "UID", "GID", etc.</entry></row>
+ * <row><entry>"dos"</entry><entry>The "DOS" namespace. Includes DOS-specific 
+ * information and may not be available for all files. Examples include
+ * "is_system" for checking if a file is marked as a system file, and "is_archive"
+ * for checking if a file is marked as an archive file.</entry></row>
+ * <row><entry>"owner"</entry><entry>The "Owner" namespace. Includes information
+ * about who owns a file. May not be available for all file systems. Examples include
+ * "user" for getting the user name of the file owner.</entry></row>
+ * <row><entry>"thumbnail"</entry><entry>The "Thumbnail" namespace. Includes 
+ * information about file thumbnails and their location within the file system. Exaples of 
+ * keys in this namespace include "path" to get the location of a thumbnail, and "failed"
+ * to check if thumbnailing failed.</entry></row>
+ * <row><entry>"fs"</entry><entry>The "Filesystem" namespace. Gets information
+ * about the file system where a file is located, such as its type, how much
+ * space is left available, and the overall size of the file system.</entry></row>
+ * <row><entry>"gvfs"</entry><entry>The "GVFS" namespace. Keys in this namespace
+ * contain information about the current GVFS backend in use. </entry></row>
+ * </tbody>
+ * </tgroup>
+ * </table>
+ * </para>
+ * 
+ * More namespaces can be added from GIO modules or by individual applications. 
+ * For more information about writing GIO modules, see #GIOModule.
+ * 
+ * <para><table>
+ * <title>GFileAttributes Built-in Keys and Value Types</title>
+ * <tgroup cols='3' align='left'><thead>
+ * <row><entry>Enum Value</entry><entry>Namespace:Key</entry><entry>Value Type</entry></row>
+ * </thead><tbody>
+ * <row><entry>%G_FILE_ATTRIBUTE_STD_TYPE</entry><entry>std:type</entry><entry>uint32 (#GFileType)</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_STD_IS_HIDDEN</entry><entry>std:is_hidden</entry><entry>boolean</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_STD_IS_BACKUP</entry><entry>std:is_backup</entry><entry>boolean</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_STD_IS_SYMLINK</entry><entry>std:is_symlink</entry><entry>boolean</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_STD_IS_VIRTUAL</entry><entry>std:is_virtual</entry><entry>boolean</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_STD_NAME</entry><entry>std:name</entry><entry>byte string</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_STD_DISPLAY_NAME</entry><entry>std:display_name</entry><entry>string</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_STD_EDIT_NAME</entry><entry>std:edit_name</entry><entry>string</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_STD_ICON</entry><entry>std:icon</entry><entry>object (#GIcon)</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_STD_CONTENT_TYPE</entry><entry>std:content_type</entry><entry>string</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_STD_FAST_CONTENT_TYPE</entry><entry>std:fast_content_type</entry><entry>string</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_STD_SIZE</entry><entry>std:size</entry><entry>uint64</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_STD_SYMLINK_TARGET</entry><entry>std:symlink_target</entry><entry>byte string</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_STD_TARGET_URI</entry><entry>std:target_uri</entry><entry>string</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_STD_SORT_ORDER</entry><entry>std:sort_order</entry><entry>int32</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_ETAG_VALUE</entry><entry>etag:value</entry><entry>string</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_ID_FILE</entry><entry>id:file</entry><entry>string</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_ID_FS</entry><entry>id:fs</entry><entry>string</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_ACCESS_CAN_READ</entry><entry>access:can_read</entry><entry>boolean</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE</entry><entry>access:can_write</entry><entry>boolean</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_ACCESS_CAN_EXECUTE</entry><entry>access:can_execute</entry><entry>boolean</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_ACCESS_CAN_DELETE</entry><entry>access:can_delete</entry><entry>boolean</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_ACCESS_CAN_TRASH</entry><entry>access:can_trash</entry><entry>boolean</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_ACCESS_CAN_RENAME</entry><entry>access:can_rename</entry><entry>boolean</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_MOUNTABLE_CAN_MOUNT</entry><entry>mountable:can_mount</entry><entry>boolean</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_MOUNTABLE_CAN_UNMOUNT</entry><entry>mountable:can_unmount</entry><entry>boolean</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_MOUNTABLE_CAN_EJECT</entry><entry>mountable:can_eject</entry><entry>boolean</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_MOUNTABLE_UNIX_DEVICE</entry><entry>mountable:unix_device</entry><entry>uint32</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_MOUNTABLE_HAL_UDI</entry><entry>mountable:hal_udi</entry><entry>string</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_TIME_MODIFIED</entry><entry>time:modified</entry><entry>uint64</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC</entry><entry>time:modified_usec</entry><entry>uint32</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_TIME_ACCESS</entry><entry>time:access</entry><entry>uint64</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_TIME_ACCESS_USEC</entry><entry>time:access_usec</entry><entry>uint32</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_TIME_CHANGED</entry><entry>time:changed</entry><entry>uint64</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_TIME_CHANGED_USEC</entry><entry>time:changed_usec</entry><entry>uint32</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_TIME_CREATED</entry><entry>time:created</entry><entry>uint64</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_TIME_CREATED_USEC</entry><entry>time:created_usec</entry><entry>uint32</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_UNIX_DEVICE</entry><entry>unix:device</entry><entry>uint32</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_UNIX_INODE</entry><entry>unix:inode</entry><entry>uint64</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_UNIX_MODE</entry><entry>unix:mode</entry><entry>uint32</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_UNIX_NLINK</entry><entry>unix:nlink</entry><entry>uint32</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_UNIX_UID</entry><entry>unix:uid</entry><entry>uint32</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_UNIX_GID</entry><entry>unix:gid</entry><entry>uint32</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_UNIX_RDEV</entry><entry>unix:rdev</entry><entry>uint32</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_UNIX_BLOCK_SIZE</entry><entry>unix:block_size</entry><entry>uint32</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_UNIX_BLOCKS</entry><entry>unix:blocks</entry><entry>uint64</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_UNIX_IS_MOUNTPOINT</entry><entry>unix:is_mountpoint</entry><entry>boolean</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_DOS_IS_ARCHIVE</entry><entry>dos:is_archive</entry><entry>boolean</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_DOS_IS_SYSTEM</entry><entry>dos:is_system</entry><entry>boolean</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_OWNER_USER</entry><entry>owner:user</entry><entry>string</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_OWNER_USER_REAL</entry><entry>owner:user_real</entry><entry>string</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_OWNER_GROUP</entry><entry>owner:group</entry><entry>string</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_THUMBNAIL_PATH</entry><entry>thumbnail:path</entry><entry>bytestring</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_THUMBNAILING_FAILED</entry><entry>thumbnail:failed</entry><entry>boolean</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_FS_SIZE</entry><entry>fs:size</entry><entry>uint64</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_FS_FREE</entry><entry>fs:free</entry><entry>uint64</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_FS_TYPE</entry><entry>fs:type</entry><entry>string</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_FS_READONLY</entry><entry>fs:readonly</entry><entry>boolean</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_GVFS_BACKEND</entry><entry>gvfs:backend</entry><entry>string</entry></row>
+ * </tbody></tgroup></table></para>
+ *  
+ **/ 
+
+/**
  * g_file_attribute_value_free:
  * @attr: a #GFileAttributeValue. 
  * 
@@ -70,9 +224,10 @@ g_file_attribute_value_clear (GFileAttributeValue *attr)
 
 /**
  * g_file_attribute_value_set:
- * @attr: a #GFileAttributeValue.
- * @new_value:
+ * @attr: a #GFileAttributeValue to set the value in.
+ * @new_value: a #GFileAttributeValue to get the value from.
  * 
+ * Sets an attribute's value from another attribute.
  **/
 void
 g_file_attribute_value_set (GFileAttributeValue *attr,
@@ -96,7 +251,9 @@ g_file_attribute_value_set (GFileAttributeValue *attr,
 /**
  * g_file_attribute_value_new:
  * 
- * Returns: a new #GFileAttributeValue.
+ * Creates a new file attribute.
+ * 
+ * Returns: a #GFileAttributeValue.
  **/
 GFileAttributeValue *
 g_file_attribute_value_new (void)
@@ -112,6 +269,8 @@ g_file_attribute_value_new (void)
 /**
  * g_file_attribute_value_dup:
  * @other: a #GFileAttributeValue to duplicate.
+ * 
+ * Duplicates a file attribute.
  * 
  * Returns: a duplicate of the @other.
  **/
@@ -182,10 +341,10 @@ escape_byte_string (const char *str)
  * @attr: a #GFileAttributeValue.
  *
  * Converts a #GFileAttributeValue to a string for display.
- * The returned string should be freed when no longer needed
+ * The returned string should be freed when no longer needed.
  * 
- * Returns: a string from the @attr, %NULL on error, or "&lt;invalid&gt;" if 
- * @attr is of type %G_FILE_ATTRIBUTE_TYPE_INVALID.
+ * Returns: a string from the @attr, %NULL on error, or "&lt;invalid&gt;" 
+ * if @attr is of type %G_FILE_ATTRIBUTE_TYPE_INVALID.
  **/
 char *
 g_file_attribute_value_as_string (const GFileAttributeValue *attr)
@@ -235,7 +394,10 @@ g_file_attribute_value_as_string (const GFileAttributeValue *attr)
  * g_file_attribute_value_get_string:
  * @attr: a #GFileAttributeValue.
  * 
- * Returns: 
+ * Gets the string from a file attribute value. If the value is not the
+ * right type then %NULL will be returned.
+ * 
+ * Returns: the string value contained within the attribute, or %NULL.
  **/
 const char *
 g_file_attribute_value_get_string (const GFileAttributeValue *attr)
@@ -252,7 +414,10 @@ g_file_attribute_value_get_string (const GFileAttributeValue *attr)
  * g_file_attribute_value_get_byte_string:
  * @attr: a #GFileAttributeValue.
  * 
- * Returns: 
+ * Gets the byte string from a file attribute value. If the value is not the
+ * right type then %NULL will be returned.
+ * 
+ * Returns: the byte string contained within the attribute or %NULL.
  **/
 const char *
 g_file_attribute_value_get_byte_string (const GFileAttributeValue *attr)
@@ -269,7 +434,10 @@ g_file_attribute_value_get_byte_string (const GFileAttributeValue *attr)
  * g_file_attribute_value_get_boolean:
  * @attr: a #GFileAttributeValue.
  * 
- * Returns: 
+ * Gets the boolean value from a file attribute value. If the value is not the
+ * right type then %FALSE will be returned.
+ * 
+ * Returns: the boolean value contained within the attribute, or %FALSE.
  **/
 gboolean
 g_file_attribute_value_get_boolean (const GFileAttributeValue *attr)
@@ -286,7 +454,10 @@ g_file_attribute_value_get_boolean (const GFileAttributeValue *attr)
  * g_file_attribute_value_get_uint32:
  * @attr: a #GFileAttributeValue.
  * 
- * Returns: 
+ * Gets the unsigned 32-bit integer from a file attribute value. If the value 
+ * is not the right type then %0 will be returned.
+ * 
+ * Returns: the unsigned 32-bit integer from the attribute, or %0.
  **/
 guint32
 g_file_attribute_value_get_uint32 (const GFileAttributeValue *attr)
@@ -303,7 +474,10 @@ g_file_attribute_value_get_uint32 (const GFileAttributeValue *attr)
  * g_file_attribute_value_get_int32:
  * @attr: a #GFileAttributeValue.
  * 
- * Returns: 
+ * Gets the signed 32-bit integer from a file attribute value. If the value 
+ * is not the right type then %0 will be returned.
+ * 
+ * Returns: the signed 32-bit integer from the attribute, or %0.
  **/
 gint32
 g_file_attribute_value_get_int32 (const GFileAttributeValue *attr)
@@ -320,7 +494,10 @@ g_file_attribute_value_get_int32 (const GFileAttributeValue *attr)
  * g_file_attribute_value_get_uint64:
  * @attr: a #GFileAttributeValue.
  * 
- * Returns: 
+ * Gets the unsigned 64-bit integer from a file attribute value. If the value 
+ * is not the right type then %0 will be returned.
+ * 
+ * Returns: the unsigned 64-bit integer from the attribute, or %0.
  **/  
 guint64
 g_file_attribute_value_get_uint64 (const GFileAttributeValue *attr)
@@ -337,7 +514,10 @@ g_file_attribute_value_get_uint64 (const GFileAttributeValue *attr)
  * g_file_attribute_value_get_int64:
  * @attr: a #GFileAttributeValue.
  * 
- * Returns: 
+ * Gets the signed 64-bit integer from a file attribute value. If the value 
+ * is not the right type then %0 will be returned.
+ * 
+ * Returns: the signed 64-bit integer from the attribute, or %0. 
  **/
 gint64
 g_file_attribute_value_get_int64 (const GFileAttributeValue *attr)
@@ -354,7 +534,10 @@ g_file_attribute_value_get_int64 (const GFileAttributeValue *attr)
  * g_file_attribute_value_get_object:
  * @attr: a #GFileAttributeValue.
  * 
- * Returns: 
+ * Gets the GObject from a file attribute value. If the value 
+ * is not the right type then %NULL will be returned.
+ * 
+ * Returns: the GObject from the attribute, or %0.
  **/
 GObject *
 g_file_attribute_value_get_object (const GFileAttributeValue *attr)
@@ -370,7 +553,9 @@ g_file_attribute_value_get_object (const GFileAttributeValue *attr)
 /**
  * g_file_attribute_value_set_string:
  * @attr: a #GFileAttributeValue.
- * @string:
+ * @string: a string to set within the type.
+ * 
+ * Sets the attribute value to a given string.
  * 
  **/
 void
@@ -388,7 +573,9 @@ g_file_attribute_value_set_string (GFileAttributeValue *attr,
 /**
  * g_file_attribute_value_set_byte_string:
  * @attr: a #GFileAttributeValue.
- * @string:
+ * @string: a byte string to set within the type.
+ * 
+ * Sets the attribute value to a given byte string.
  * 
  **/
 void
@@ -406,8 +593,10 @@ g_file_attribute_value_set_byte_string (GFileAttributeValue *attr,
 /**
  * g_file_attribute_value_set_boolean:
  * @attr: a #GFileAttributeValue.
- * @value:
- *  
+ * @value: a #gboolean to set within the type.
+ * 
+ * Sets the attribute value to the given boolean value. 
+ * 
  **/
 void
 g_file_attribute_value_set_boolean (GFileAttributeValue *attr,
@@ -423,7 +612,9 @@ g_file_attribute_value_set_boolean (GFileAttributeValue *attr,
 /**
  * g_file_attribute_value_set_uint32:
  * @attr: a #GFileAttributeValue.
- * @value:
+ * @value: a #guint32 to set within the type.
+ * 
+ * Sets the attribute value to the given unsigned 32-bit integer.
  * 
  **/ 
 void
@@ -440,7 +631,9 @@ g_file_attribute_value_set_uint32 (GFileAttributeValue *attr,
 /**
  * g_file_attribute_value_set_int32:
  * @attr: a #GFileAttributeValue.
- * @value:
+ * @value: a #gint32 to set within the type.
+ * 
+ * Sets the attribute value to the given signed 32-bit integer.
  *  
  **/
 void
@@ -457,7 +650,9 @@ g_file_attribute_value_set_int32 (GFileAttributeValue *attr,
 /**
  * g_file_attribute_value_set_uint64:
  * @attr: a #GFileAttributeValue.
- * @value:
+ * @value: a #guint64 to set within the type.
+ * 
+ * Sets the attribute value to a given unsigned 64-bit integer.
  * 
  **/
 void
@@ -474,8 +669,10 @@ g_file_attribute_value_set_uint64 (GFileAttributeValue *attr,
 /**
  * g_file_attribute_value_set_int64:
  * @attr: a #GFileAttributeValue.
- * @value: a #gint64 to set the value to.
- *  
+ * @value: a #gint64 to set within the type.
+ * 
+ * Sets the attribute value to a given signed 64-bit integer. 
+ * 
  **/
 void
 g_file_attribute_value_set_int64 (GFileAttributeValue *attr,
@@ -493,8 +690,8 @@ g_file_attribute_value_set_int64 (GFileAttributeValue *attr,
  * @attr: a #GFileAttributeValue.
  * @obj: a #GObject.
  *
- * Sets the file attribute @attr to contain the value @obj.
- * The @attr references the object internally.
+ * Sets the attribute to contain the value @obj.
+ * The @attr references the GObject internally.
  * 
  **/
 void
@@ -525,7 +722,9 @@ list_update_public (GFileAttributeInfoListPriv *priv)
 /**
  * g_file_attribute_info_list_new:
  * 
- * Returns a new #GFileAttributeInfoList.
+ * Creates a new file attribute info list.
+ * 
+ * Returns: a #GFileAttributeInfoList.
  **/
 GFileAttributeInfoList *
 g_file_attribute_info_list_new (void)
@@ -545,6 +744,8 @@ g_file_attribute_info_list_new (void)
 /**
  * g_file_attribute_info_list_dup:
  * @list: a #GFileAttributeInfoList to duplicate.
+ * 
+ * Makes a duplicate of a file attribute info list.
  * 
  * Returns a duplicate of the given @list. 
  **/
@@ -575,6 +776,8 @@ g_file_attribute_info_list_dup (GFileAttributeInfoList *list)
 /**
  * g_file_attribute_info_list_ref:
  * @list: a #GFileAttributeInfoList to reference.
+ * 
+ * References a file attribute info list.
  * 
  * Returns: #GFileAttributeInfoList or %NULL on error.
  **/

@@ -29,6 +29,15 @@
 #include "gvfs.h"
 #include "glibintl.h"
 
+/**
+ * SECTION:gdirectorymonitor
+ * @short_description: Directory Monitor
+ * @see_also: #GFileMonitor.
+ * 
+ * Monitors a directory for changes.
+ *
+ **/
+
 enum {
   CHANGED,
   LAST_SIGNAL
@@ -146,9 +155,11 @@ g_directory_monitor_init (GDirectoryMonitor *monitor)
 
 /**
  * g_directory_monitor_cancel:
- * @monitor:
+ * @monitor: a #GDirectoryMonitor.
+ *
+ * Cancels the monitoring activity on @monitor.
  * 
- * Returns: 
+ * Returns: %TRUE if the monitor was cancelled successfully. %FALSE otherwise.
  **/
 gboolean
 g_directory_monitor_cancel (GDirectoryMonitor* monitor)
@@ -168,8 +179,10 @@ g_directory_monitor_cancel (GDirectoryMonitor* monitor)
 
 /**
  * g_directory_monitor_set_rate_limit:
- * @monitor:
- * @limit_msecs:
+ * @monitor: a #GDirectoryMonitor.
+ * @limit_msecs: an integer to set the limit of the directory monitor in milliseconds.
+ *
+ * Sets the limit of the directory monitor to watch for changes every @limit_msecs milliseconds.
  * 
  **/
 void
@@ -183,9 +196,11 @@ g_directory_monitor_set_rate_limit (GDirectoryMonitor *monitor,
 
 /**
  * g_directory_monitor_is_cancelled:
- * @monitor:
+ * @monitor: a #GDirectoryMonitor.
  * 
- * Returns: 
+ * Checks whether @monitor is cancelled.
+ *
+ * Returns: %TRUE if the monitor on the directory was cancelled. %FALSE otherwise.
  **/
 gboolean
 g_directory_monitor_is_cancelled (GDirectoryMonitor *monitor)
@@ -394,10 +409,14 @@ update_rate_limiter_timeout (GDirectoryMonitor *monitor, guint new_time)
 
 /**
  * g_directory_monitor_emit_event:
- * @monitor:
- * @child:
- * @other_file:
- * @event_type:
+ * @monitor: a #GDirectoryMonitor.
+ * @child: a #GFile.
+ * @other_file: a #GFile.
+ * @event_type: a set of #GFileMonitorEvent flags.
+ * 
+ * Emits the GDirectoryMonitor::changed signal if a change
+ * has taken place. Should be called from directory monitor 
+ * implementations only.
  * 
  **/
 void

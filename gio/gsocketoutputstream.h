@@ -34,6 +34,11 @@ G_BEGIN_DECLS
 #define G_IS_SOCKET_OUTPUT_STREAM_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_SOCKET_OUTPUT_STREAM))
 #define G_SOCKET_OUTPUT_STREAM_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), G_TYPE_SOCKET_OUTPUT_STREAM, GSocketOutputStreamClass))
 
+/**
+ * GSocketOutputStream:
+ * 
+ * Implements #GOutputStream for outputting to sockets.
+ **/
 typedef struct _GSocketOutputStream         GSocketOutputStream;
 typedef struct _GSocketOutputStreamClass    GSocketOutputStreamClass;
 typedef struct _GSocketOutputStreamPrivate  GSocketOutputStreamPrivate;
@@ -50,6 +55,7 @@ struct _GSocketOutputStreamClass
 {
   GOutputStreamClass parent_class;
 
+  /*< private >*/
   /* Padding for future expansion */
   void (*_g_reserved1) (void);
   void (*_g_reserved2) (void);

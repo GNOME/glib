@@ -34,10 +34,24 @@ G_BEGIN_DECLS
 #define G_IS_LOADABLE_ICON(obj)	        (G_TYPE_CHECK_INSTANCE_TYPE ((obj), G_TYPE_LOADABLE_ICON))
 #define G_LOADABLE_ICON_GET_IFACE(obj)  (G_TYPE_INSTANCE_GET_INTERFACE ((obj), G_TYPE_LOADABLE_ICON, GLoadableIconIface))
 
+/**
+ * GLoadableIcon:
+ * 
+ * Dummy type for subclassing loadable icon types.
+ **/
 typedef struct _GLoadableIcon         		GLoadableIcon; /* Dummy typedef */
 typedef struct _GLoadableIconIface    		GLoadableIconIface;
 
-
+/**
+ * GLoadableIconIface:
+ * @g_iface: The parent interface.
+ * @load: Loads an icon.
+ * @load_async: Loads an icon asynchronously.
+ * @load_finish: Finishes an asynchronous icon load.
+ * 
+ * GLoadableIconIface is used for implementing loadable icon types, 
+ * for implementations that need to load an icon.
+ **/
 struct _GLoadableIconIface
 {
   GTypeInterface g_iface;

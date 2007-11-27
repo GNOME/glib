@@ -24,6 +24,17 @@
 #include "gseekable.h"
 #include "glibintl.h"
 
+/**
+ * SECTION:gseekable
+ * @short_description: Stream seeking interface.
+ * @see_also: #GInputStream, #GOutputStream.
+ * 
+ * #GSeekable is implemented by streams (implementations of 
+ * #GInputStream or #GOutputStream) that support seeking.
+ * 
+ **/
+
+
 static void g_seekable_base_init (gpointer g_class);
 
 
@@ -64,9 +75,11 @@ g_seekable_base_init (gpointer g_class)
 
 /**
  * g_seekable_tell:
- * @seekable:
+ * @seekable: a #GSeekable.
  * 
- * Returns: a goffset.
+ * Tells the current position within the stream.
+ * 
+ * Returns: the offset from the beginning of the buffer.
  **/
 goffset
 g_seekable_tell (GSeekable *seekable)
@@ -82,7 +95,9 @@ g_seekable_tell (GSeekable *seekable)
 
 /**
  * g_seekable_can_seek:
- * @seekable:
+ * @seekable: a #GSeekable.
+ * 
+ * Tests if the stream supports the #GSeekableIface.
  * 
  * Returns: %TRUE if @seekable can be seeked. %FALSE otherwise.
  **/
@@ -100,13 +115,22 @@ g_seekable_can_seek (GSeekable *seekable)
 
 /**
  * g_seekable_seek:
- * @seekable:
- * @offset:
- * @type:
+ * @seekable: a #GSeekable.
+ * @offset: a #goffset.
+ * @type: a #GSeekType.
  * @cancellable: optional #GCancellable object, %NULL to ignore. 
  * @error: a #GError location to store the error occuring, or %NULL to 
  * ignore.
- * Returns: %TRUE, %FALSE otherwise.
+ * 
+ * Seeks in the stream by the given @offset, modified by @type.
+ *
+ * If @cancellable is not %NULL, then the operation can be cancelled by
+ * triggering the cancellable object from another thread. If the operation
+ * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
+ * 
+ * Returns: %TRUE if successful. If an error
+ * has occured, this function will return %FALSE and set @error
+ * appropriately if present.
  **/
 gboolean
 g_seekable_seek (GSeekable     *seekable,
@@ -126,9 +150,11 @@ g_seekable_seek (GSeekable     *seekable,
 
 /**
  * g_seekable_can_truncate:
- * @seekable:
+ * @seekable: a #GSeekable.
  * 
- * Returns: 
+ * Tests if the stream can be truncated.
+ * 
+ * Returns: %TRUE if the stream can be truncated, %FALSE otherwise.
  **/
 gboolean
 g_seekable_can_truncate (GSeekable *seekable)
@@ -144,12 +170,23 @@ g_seekable_can_truncate (GSeekable *seekable)
 
 /**
  * g_seekable_truncate:
- * @seekable:
- * @offset:
+ * @seekable: a #GSeekable.
+ * @offset: a #goffset.
  * @cancellable: optional #GCancellable object, %NULL to ignore. 
  * @error: a #GError location to store the error occuring, or %NULL to 
  * ignore.
- * Returns: 
+ * 
+ * Truncates a stream with a given #offset. 
+ * 
+ * If @cancellable is not %NULL, then the operation can be cancelled by
+ * triggering the cancellable object from another thread. If the operation
+ * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. If an
+ * operation was partially finished when the operation was cancelled the
+ * partial result will be returned, without an error.
+ * 
+ * Returns: %TRUE if successful. If an error
+ * has occured, this function will return %FALSE and set @error
+ * appropriately if present. 
  **/
 gboolean
 g_seekable_truncate (GSeekable     *seekable,

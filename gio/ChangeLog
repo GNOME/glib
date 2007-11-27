@@ -1,3 +1,96 @@
+2007-11-27  Andrew Walton  <awalton@svn.gnome.org>
+	* gappinfo.c:
+	* gappinfo.h:
+	* gasynchelper.c:
+	* gasyncresult.c:
+	* gasyncresult.h:
+	* gbufferedinputstream.c:
+	* gbufferedinputstream.h:
+	* gbufferedoutputstream.c:
+	* gbufferedoutputstream.h:
+	* gcancellable.c: 
+	* gcancellable.h:
+	* gcontenttype.c:
+	* gdatainputstream.c:
+	* gdatainputstream.h:
+	* gdataoutputstream.c:
+	* gdataoutputstream.h:
+	* gdirectorymonitor.c:
+	* gdirectorymonitor.h:
+	* gdrive.c: 
+	* gdrive.h:
+	* gfile.c:
+	* gfile.h:
+	* gfileattribute.c:
+	* gfileattribute.h:
+	* gfileenumerator.c:
+	* gfileenumerator.h:
+	* gfileicon.c:
+	* gfileicon.h:
+	* gfileinfo.c:
+	* gfileinfo.h:
+	* gfileinputstream.c:
+	* gfileinputstream.h:
+	* gfilemonitor.c:
+	* gfilemonitor.h:
+	* gfilenamecompleter.c:
+	* gfilenamecompleter.h:
+	* gfileoutputstream.c:
+	* gfileoutputstream.h:
+	* gfilterinputstream.c:
+	* gfilterinputstream.h:
+	* gfilteroutputstream.c:
+	* gfilteroutputstream.h:
+	* gicon.c:
+	* gicon.h:
+	* ginputstream.c:
+	* ginputstream.h:
+	* gioerror.c:
+	* gioerror.h:
+	* giomodule.c:
+	* giomodule.h:
+	* gioscheduler.c:
+	* gioscheduler.h:
+	* gloadableicon.c:
+	* gloadableicon.h:
+	* glocalfileoutputstream.c:
+	* gmemoryinputstream.c:
+	* gmemoryinputstream.h:
+	* gmemoryoutputstream.c:
+	* gmemoryoutputstream.h:
+	* gmountoperation.c: 
+	* gmountoperation.h:
+	* goutputstream.c:
+	* goutputstream.h:
+	* gpollfilemonitor.c:
+	* gseekable.c:
+	* gseekable.h:
+	* gsimpleasyncresult.c:
+	* gsimpleasyncresult.h:
+	* gsocketinputstream.c:
+	* gsocketinputstream.h:
+	* gsocketoutputstream.c:
+	* gsocketoutputstream.h:
+	* gthemedicon.c:
+	* gthemedicon.h:
+	* gunixdrive.c:
+	* gunixmounts.c: 
+	* gunixmounts.h:
+	* gunixvolume.c:
+	* gunixvolumemonitor.c:
+	* gurifuncs.c:
+	* gurifuncs.h:
+	* gvfs.c:
+	* gvfs.h:
+	* gvolume.c:
+	* gvolume.h:
+	* gvolumemonitor.c: 
+	* gvolumemonitor.h:
+	Bumps documentation to 93% symbol coverage, touching most 
+	of the public files. Fixes broken function documentation prototypes. 
+	Fixes GCancellable inaccuracies. Removes unnecessary incomplete 
+	gtk-doc headers in private files.
+
 2007-11-27  Jürg Billeter  <j@bitron.ch>
 
 	* gbufferedinputstream.c: (g_buffered_input_stream_peek_buffer),

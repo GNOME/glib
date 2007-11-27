@@ -24,6 +24,65 @@
 #include "gasyncresult.h"
 #include "glibintl.h"
 
+/**
+ * SECTION:gasyncresult
+ * @short_description: Asynchronous Function Results
+ * @see_also: #GSimpleAsyncResult
+ * 
+ * Provides a base class for implementing asynchronous function results.
+ * 
+ * Asynchronous operations are broken up into two separate operations
+ * which are chained together by a #GAsyncReadyCallback. To begin
+ * an asynchronous operation, provide a #GAsyncReadyCallback to the asynchronous
+ * function. This callback will be triggered when the operation has completed, 
+ * and will be passed a #GAsyncReady instance filled with the details of the operation's
+ * success or failure, the object the asynchronous function was 
+ * started for and any error codes returned. The asynchronous callback function
+ * is then expected to call the corresponding "_finish()" operation with the
+ * object the function was called for, and the #GAsyncReady instance, and optionally, 
+ * an @error to grab any error conditions that may have occurred.
+ * 
+ * Example of a typical asynchronous operation flow:
+ * <informalexample>
+ * <programlisting>
+ * void _theoretical_frobnitz_async (Theoretical *t, 
+ *                                   GCancellable *c, 
+ *                                   GAsyncReadyCallback *cb,
+ *                                   gpointer u);
+ *
+ * gboolean _theoretical_frobnitz_finish (Theoretical *t,
+ *                                        GAsyncResult *res,
+ *                                        GError **e);
+ *
+ * static void 
+ * frobnitz_result_func (GObject *source_object, 
+ *			 GAsyncResult *res, 
+ *			 gpointer user_data)
+ * {
+ *   gboolean success = FALSE;
+ *   success = _theoretical_frobnitz_finish( source_object, res, NULL );
+ *   if (success)
+ *     g_printf("Hurray!/n");
+ *   else 
+ *     g_printf("Uh oh!/n");
+ *   /<!-- -->* ... *<!-- -->/
+ *   g_free(res);
+ * }
+ *
+ * int main (int argc, void *argv[])
+ * {
+ *    /<!-- -->* ... *<!-- -->/
+ *    _theoretical_frobnitz_async (theoretical_data, NULL, frobnitz_result_func, NULL);
+ *
+ *    /<!-- -->* ... *<!-- -->/
+ * </programlisting>
+ * </informalexample> 
+ * 
+ * Asynchronous jobs are threaded if #GThread is available, but also may
+ * be sent to the Main Event Loop and processed in an idle function.
+ *
+ **/
+
 static void g_async_result_base_init (gpointer g_class);
 static void g_async_result_class_init (gpointer g_class,
 				       gpointer class_data);
@@ -73,8 +132,9 @@ g_async_result_base_init (gpointer g_class)
  * g_async_result_get_user_data:
  * @res: a #GAsyncResult.
  * 
- * Returns: the user data for the given @res, or
- * %NULL on failure. 
+ * Gets the user data from a #GAsyncResult.
+ * 
+ * Returns: the user data for @res. 
  **/
 gpointer
 g_async_result_get_user_data (GAsyncResult *res)
@@ -91,6 +151,8 @@ g_async_result_get_user_data (GAsyncResult *res)
 /**
  * g_async_result_get_source_object:
  * @res: a #GAsyncResult.
+ * 
+ * Gets the source object from a #GAsyncResult.
  * 
  * Returns: the source object for the @res.
  **/

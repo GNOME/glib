@@ -21,13 +21,34 @@
  */
 
 #include <config.h>
-
 #include "gbufferedoutputstream.h"
 #include "goutputstream.h"
 #include "gsimpleasyncresult.h"
 #include "string.h"
-
 #include "glibintl.h"
+
+/**
+ * SECTION:gbufferedoutputstream
+ * @short_description: Buffered Output Stream
+ * @see_also: #GFilterOutputStream, #GOutputStream.
+ * 
+ * Buffered output stream implements #GFilterOutputStream and provides 
+ * for buffered writes. 
+ * 
+ * By default, #GBufferedOutputStream's buffer size is set at 4 kilobytes.
+ * 
+ * To create a buffered output stream, use g_buffered_output_stream_new(), or 
+ * g_buffered_output_stream_new_sized() to specify the buffer's size at construction.
+ * 
+ * To get the size of a buffer within a buffered input stream, use 
+ * g_buffered_output_stream_get_buffer_size(). To change the size of a 
+ * buffered output stream's buffer, use g_buffered_output_stream_set_buffer_size(). 
+ * Note: the buffer's size cannot be reduced below the size of the data within the
+ * buffer.
+ *
+ **/
+
+
 
 #define DEFAULT_BUFFER_SIZE 4096
 
@@ -140,6 +161,8 @@ g_buffered_output_stream_class_init (GBufferedOutputStreamClass *klass)
  * g_buffered_output_stream_get_buffer_size:
  * @stream: a #GBufferedOutputStream.
  * 
+ * Gets the size of the buffer in the @stream.
+ * 
  * Returns: the current size of the buffer.
  **/
 gsize
@@ -156,7 +179,6 @@ g_buffered_output_stream_get_buffer_size (GBufferedOutputStream *stream)
  * @size: a #gsize.
  *
  * Sets the size of the internal buffer to @size.
- * 
  **/    
 void
 g_buffered_output_stream_set_buffer_size (GBufferedOutputStream *stream,
@@ -192,6 +214,8 @@ g_buffered_output_stream_set_buffer_size (GBufferedOutputStream *stream,
  * g_buffered_output_stream_get_auto_grow:
  * @stream: a #GBufferedOutputStream.
  * 
+ * Checks if the buffer automatically grows as data is added.
+ * 
  * Returns: %TRUE if the @stream's buffer automatically grows,
  * %FALSE otherwise.
  **/  
@@ -206,10 +230,9 @@ g_buffered_output_stream_get_auto_grow (GBufferedOutputStream *stream)
 /**
  * g_buffered_output_stream_set_auto_grow:
  * @stream: a #GBufferedOutputStream.
- * @auto_grow: a boolean.
+ * @auto_grow: a #gboolean.
  *
  * Sets whether or not the @stream's buffer should automatically grow.
- * 
  **/
 void
 g_buffered_output_stream_set_auto_grow (GBufferedOutputStream *stream,
@@ -300,6 +323,8 @@ g_buffered_output_stream_init (GBufferedOutputStream *stream)
  * g_buffered_output_stream_new:
  * @base_stream: a #GOutputStream.
  * 
+ * Creates a new buffered output stream for a base stream.
+ * 
  * Returns: a #GOutputStream for the given @base_stream.
  **/  
 GOutputStream *
@@ -320,6 +345,8 @@ g_buffered_output_stream_new (GOutputStream *base_stream)
  * g_buffered_output_stream_new_sized:
  * @base_stream: a #GOutputStream.
  * @size: a #gsize.
+ * 
+ * Creates a new buffered output stream with a given buffer size.
  * 
  * Returns: a #GOutputStream with an internal buffer set to @size.
  **/  
