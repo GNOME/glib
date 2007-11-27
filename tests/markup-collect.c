@@ -126,7 +126,13 @@ static struct test tests[] =
 
   { "<str a='x' b='x' c='x' d='x' e='x' f='x' g='x' h='x' i='x' j='x' k='x' l='x' m='x' n='x' o='x' p='x' q='x' r='x' s='x' t='x' u='x' v='x' w='x' x='x' y='x' z='x' aa='x' bb='x' cc='x' dd='x' ee='x' ff='x' gg='x' hh='x' ii='x' jj='x' kk='x' ll='x' mm='x' nn='x' oo='x' pp='x' qq='x' rr='x' ss='x' tt='x' uu='x' vv='x' ww='x' xx='x' yy='x' zz='x' am='x' cm='x'/>",
     "<str(0) (null) (null) (null) (null)>",
-    G_MARKUP_ERROR_UNKNOWN_ATTRIBUTE, "'a'" }
+    G_MARKUP_ERROR_UNKNOWN_ATTRIBUTE, "'a'" },
+
+  { "<bool mb='ja'/>", "<bool(0) 0 0 -1>",
+    G_MARKUP_ERROR_INVALID_CONTENT, "'mb'" },
+
+  { "<bool mb='nein'/>", "<bool(0) 0 0 -1>",
+    G_MARKUP_ERROR_INVALID_CONTENT, "'mb'" }
 };
 
 int

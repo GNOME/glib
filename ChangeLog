@@ -1,3 +1,7 @@
+2007-11-26  Matthias Clasen  <mclasen@redhat.com>
+
+	* tests/markup-collect.c: Add some tests for invalid booleans
+
 2007-11-26  Ryan Lortie  <desrt@desrt.ca>
  
  	Add new function g_markup_collect_attributes (bug #496847).
