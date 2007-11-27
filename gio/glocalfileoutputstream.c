@@ -222,7 +222,7 @@ g_local_file_output_stream_close (GOutputStream *stream,
 	{
 	  g_set_error (error, G_IO_ERROR,
 		       g_io_error_from_errno (errno),
-		       _("Error renamining temporary file: %s"),
+		       _("Error renaming temporary file: %s"),
 		       g_strerror (errno));
 	  goto err_out;
 	}
