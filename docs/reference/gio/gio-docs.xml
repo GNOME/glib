@@ -58,8 +58,8 @@
         <xi:include href="xml/gdatainputstream.xml"/>
         <xi:include href="xml/gdataoutputstream.xml"/>
         
-        <xi:include href="xml/gsocketinputstream.xml"/>
-        <xi:include href="xml/gsocketoutputstream.xml"/>
+        <xi:include href="xml/gunixinputstream.xml"/>
+        <xi:include href="xml/gunixoutputstream.xml"/>
 
     </chapter>
 

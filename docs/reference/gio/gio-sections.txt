@@ -512,21 +512,21 @@ GFilterInputStreamPrivate
 </SECTION>
 
 <SECTION>
-<FILE>gsocketinputstream</FILE>
-<TITLE>GSocketInputStream</TITLE>
-GSocketInputStream
-g_socket_input_stream_new
+<FILE>gunixinputstream</FILE>
+<TITLE>GUnixInputStream</TITLE>
+GUnixInputStream
+g_unix_input_stream_new
 <SUBSECTION Standard>
-GSocketInputStreamClass
-G_SOCKET_INPUT_STREAM
-G_IS_SOCKET_INPUT_STREAM
-G_TYPE_SOCKET_INPUT_STREAM
-G_SOCKET_INPUT_STREAM_CLASS
-G_IS_SOCKET_INPUT_STREAM_CLASS
-G_SOCKET_INPUT_STREAM_GET_CLASS
+GUnixInputStreamClass
+G_UNIX_INPUT_STREAM
+G_IS_UNIX_INPUT_STREAM
+G_TYPE_UNIX_INPUT_STREAM
+G_UNIX_INPUT_STREAM_CLASS
+G_IS_UNIX_INPUT_STREAM_CLASS
+G_UNIX_INPUT_STREAM_GET_CLASS
 <SUBSECTION Private>
-g_socket_input_stream_get_type
-GSocketInputStreamPrivate
+g_unix_input_stream_get_type
+GUnixInputStreamPrivate
 </SECTION>
 
 <SECTION>
@@ -762,21 +762,21 @@ GDataOutputStreamPrivate
 </SECTION>
 
 <SECTION>
-<FILE>gsocketoutputstream</FILE>
-<TITLE>GSocketOutputStream</TITLE>
-GSocketOutputStream
-g_socket_output_stream_new
+<FILE>gunixoutputstream</FILE>
+<TITLE>GUnixOutputStream</TITLE>
+GUnixOutputStream
+g_unix_output_stream_new
 <SUBSECTION Standard>
-GSocketOutputStreamClass
-G_SOCKET_OUTPUT_STREAM
-G_IS_SOCKET_OUTPUT_STREAM
-G_TYPE_SOCKET_OUTPUT_STREAM
-G_SOCKET_OUTPUT_STREAM_CLASS
-G_IS_SOCKET_OUTPUT_STREAM_CLASS
-G_SOCKET_OUTPUT_STREAM_GET_CLASS
+GUnixOutputStreamClass
+G_UNIX_OUTPUT_STREAM
+G_IS_UNIX_OUTPUT_STREAM
+G_TYPE_UNIX_OUTPUT_STREAM
+G_UNIX_OUTPUT_STREAM_CLASS
+G_IS_UNIX_OUTPUT_STREAM_CLASS
+G_UNIX_OUTPUT_STREAM_GET_CLASS
 <SUBSECTION Private>
-g_socket_output_stream_get_type
-GSocketOutputStreamPrivate
+g_unix_output_stream_get_type
+GUnixOutputStreamPrivate
 </SECTION>
 
 <SECTION>

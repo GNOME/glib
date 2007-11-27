@@ -1,5 +1,7 @@
 2007-11-27  Matthias Clasen  <mclasen@redhat.com>
 
+	* gio/gio-sections.txt:
+	* gio/gio-docs.xml:
 	* gio/gio.types: Update for api changes
 
 2007-11-26  Alexander Larsson  <alexl@redhat.com>
