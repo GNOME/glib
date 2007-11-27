@@ -1,3 +1,10 @@
+2007-11-27  Alexander Larsson  <alexl@redhat.com>
+
+	* Makefile.am
+	* gio.h:
+	Add catch-all gio.h header
+	Don't install gdummyfile.h
+
 2007-11-26  Alexander Larsson  <alexl@redhat.com>
 
 	* Makefile.am (gioinclude_HEADERS):

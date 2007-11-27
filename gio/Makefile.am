@@ -109,6 +109,7 @@ libgio_2_0_la_SOURCES =		\
 	gdirectorymonitor.c 	\
 	gdrive.c 		\
 	gdriveprivate.h 	\
+	gdummyfile.h 		\
 	gdummyfile.c 		\
 	gfile.c 		\
 	gfileattribute.c 	\
@@ -183,7 +184,6 @@ gioinclude_HEADERS = \
 	gdataoutputstream.h 	\
 	gdirectorymonitor.h 	\
 	gdrive.h 		\
-	gdummyfile.h 		\
 	gfile.h 		\
 	gfileattribute.h 	\
 	gfileenumerator.h 	\
@@ -197,6 +197,7 @@ gioinclude_HEADERS = \
 	gfilteroutputstream.h 	\
 	gicon.h 		\
 	ginputstream.h 		\
+	gio.h			\
 	gioerror.h 		\
 	giomodule.h 		\
 	gioscheduler.h 		\
