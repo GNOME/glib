@@ -3,6 +3,8 @@ exec_prefix=@exec_prefix@
 libdir=@libdir@
 includedir=@includedir@
 
+giomoduledir=@GIO_MODULE_DIR@
+
 Name: GIO
 Description: glib I/O library
 Version: @VERSION@

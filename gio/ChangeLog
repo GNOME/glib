@@ -1,5 +1,12 @@
 2007-11-27  Alexander Larsson  <alexl@redhat.com>
 
+        * Makefile.am:
+        * fam/Makefile.am:
+        * inotify/Makefile.am:
+	Use the user-specified giomoduledir
+
+2007-11-27  Alexander Larsson  <alexl@redhat.com>
+
 	* Makefile.am
 	* gio.h:
 	Add catch-all gio.h header

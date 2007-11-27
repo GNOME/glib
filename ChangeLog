@@ -1,3 +1,11 @@
+2007-11-27  Alexander Larsson  <alexl@redhat.com>
+
+        * configure.in:
+	Allow configuration of gio-module-dir
+	
+        * gio-2.0.pc.in:
+	Export giomodules location as giomodule variable
+
 2007-11-26  Matthias Clasen  <mclasen@redhat.com>
 
 	* tests/markup-collect.c: Add some tests for invalid booleans

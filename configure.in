@@ -1448,6 +1448,17 @@ esac
 AC_MSG_RESULT($GIO)
 AC_SUBST(GIO)
 
+dnl *********************************
+dnl *** Directory for GIO modules ***
+dnl *********************************
+
+AC_ARG_WITH(gio-module-dir,
+           [AC_HELP_STRING([--with-gio-module-dir=PATH],
+                           [Load gio modules from this directory [LIBDIR/gio/modules]])],
+           [],
+	   [with_gio_module_dir='${libdir}/gio/modules'])
+GIO_MODULE_DIR=$with_gio_module_dir
+AC_SUBST(GIO_MODULE_DIR)
 
 dnl **********************************
 dnl *** Check for libselinux (GIO) ***

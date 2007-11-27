@@ -14,7 +14,7 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/gmodule				\
 	$(GLIB_DEBUG_FLAGS)				\
 	-DG_DISABLE_DEPRECATED				\
-	-DGIO_MODULE_DIR=\"$(libdir)/gio/modules\"	
+	-DGIO_MODULE_DIR=\"$(GIO_MODULE_DIR)\"	
 
 lib_LTLIBRARIES = libgio-2.0.la
 

@@ -21,7 +21,7 @@ libgiofam_la_CFLAGS = \
 	-I$(top_srcdir)/glib 		\
 	-I$(top_srcdir)/gmodule		\
 	-I$(top_srcdir)/gio 		\
-	-DGIO_MODULE_DIR=\"$(libdir)/gio/modules\"  \
+	-DGIO_MODULE_DIR=\"$(GIO_MODULE_DIR)\"	\
 	-DG_DISABLE_DEPRECATED
 
 libgiofam_la_LDFLAGS = $(module_flags)
