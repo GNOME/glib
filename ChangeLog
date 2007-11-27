@@ -1,5 +1,11 @@
 2007-11-27  Alexander Larsson  <alexl@redhat.com>
 
+        * gio/gfileinfo.[ch]:
+        * glib/gfileutils.[ch]:
+        Move g_format_file_size_for_display from gio to glib
+
+2007-11-27  Alexander Larsson  <alexl@redhat.com>
+
         * configure.in:
 	Allow configuration of gio-module-dir
 	

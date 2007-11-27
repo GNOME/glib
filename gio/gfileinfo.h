@@ -24,6 +24,7 @@
 #define __G_FILE_INFO_H__
 
 #include <glib-object.h>
+#include <glib/gfileutils.h>
 #include <gio/gfileattribute.h>
 #include <gio/gicon.h>
 
@@ -716,10 +717,6 @@ void              g_file_info_set_symlink_target     (GFileInfo         *info,
 						      const char        *symlink_target);
 void              g_file_info_set_sort_order         (GFileInfo         *info,
 						      gint32             sort_order);
-
-/* Helper functions for attributes: */
-/* TODO: Move this to glib when merging */
-char *g_format_file_size_for_display (goffset size);
 
 GFileAttributeMatcher *g_file_attribute_matcher_new            (const char            *attributes);
 GFileAttributeMatcher *g_file_attribute_matcher_ref            (GFileAttributeMatcher *matcher);

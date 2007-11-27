@@ -1703,48 +1703,6 @@ g_file_info_set_sort_order (GFileInfo         *info,
 }
 
 
-#define KILOBYTE_FACTOR 1024.0
-#define MEGABYTE_FACTOR (1024.0 * 1024.0)
-#define GIGABYTE_FACTOR (1024.0 * 1024.0 * 1024.0)
-
-/**
- * g_format_file_size_for_display:
- * @size: a file size.
- * 
- * Formats a file size into a human readable string. Sizes are rounded
- * to the nearest metric prefix and are displayed rounded to the nearest 
- * tenth. E.g. the file size 3292528 bytes will be converted into the string 
- * "3.1 MB".
- * 
- * Returns: a formatted string containing a human readable file size.
- **/
-char *
-g_format_file_size_for_display (goffset size)
-{
-  if (size < (goffset) KILOBYTE_FACTOR)
-    return g_strdup_printf (dngettext(GETTEXT_PACKAGE, "%u byte", "%u bytes",(guint) size), (guint) size);
-  else
-    {
-      gdouble displayed_size;
-      
-      if (size < (goffset) MEGABYTE_FACTOR)
-	{
-	  displayed_size = (gdouble) size / KILOBYTE_FACTOR;
-	  return g_strdup_printf (_("%.1f KB"), displayed_size);
-	}
-      else if (size < (goffset) GIGABYTE_FACTOR)
-	{
-	  displayed_size = (gdouble) size / MEGABYTE_FACTOR;
-	  return g_strdup_printf (_("%.1f MB"), displayed_size);
-	}
-      else
-	{
-	  displayed_size = (gdouble) size / GIGABYTE_FACTOR;
-	  return g_strdup_printf (_("%.1f GB"), displayed_size);
-	}
-    }
-}
-
 #define ON_STACK_MATCHERS 5
 
 typedef struct {

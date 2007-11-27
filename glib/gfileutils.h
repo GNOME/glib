@@ -101,6 +101,8 @@ gint    g_file_open_tmp      (const gchar  *tmpl,
 			      gchar       **name_used,
 			      GError      **error);
 
+char *g_format_file_size_for_display (goffset size);
+
 gchar *g_build_path     (const gchar *separator,
 			 const gchar *first_element,
 			 ...) G_GNUC_MALLOC G_GNUC_NULL_TERMINATED;
