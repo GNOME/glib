@@ -47,8 +47,5 @@
 #include <gio/gmemoryinputstream.h>
 #include <gio/gmemoryoutputstream.h>
 #include <gio/gsimpleasyncresult.h>
-#include <gio/gsocketinputstream.h>
-#include <gio/gsocketoutputstream.h>
-#include <gio/gurifuncs.h>
 
 #endif /* __G_IO_H__ */

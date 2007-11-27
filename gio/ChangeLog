@@ -1,5 +1,10 @@
 2007-11-27  Alexander Larsson  <alexl@redhat.com>
 
+	* gio.h:
+	Don't include removed headers
+
+2007-11-27  Alexander Larsson  <alexl@redhat.com>
+
         * Makefile.am:
         * gsocketinputstream.[ch]: Removed.
         * gsocketoutputstream.[ch]: Removed.
