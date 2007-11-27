@@ -1,3 +1,7 @@
+2007-11-28  Andre Klapper  <a9016009@gmx.de>
+
+	* gdesktopappinfo.c: Fix a typo.
+
 2007-11-27  Andre Klapper  <a9016009@gmx.de>
 
 	* glocalfileoutputstream.c: Fix a typo.

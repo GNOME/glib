@@ -1020,7 +1020,7 @@ ensure_dir (DirType type,
   else
     {
       g_set_error (error, G_IO_ERROR, g_io_error_from_errno (err),
-                   _("Can't create user mime configuration folder %s: %s"),
+                   _("Can't create user MIME configuration folder %s: %s"),
                    display_name, g_strerror (err));
     }
 
