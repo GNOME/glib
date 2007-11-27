@@ -157,6 +157,7 @@ libglib_2_0_la_SOURCES = 	\
 	gunidecomp.h		\
 	gunidecomp.c		\
 	gunicodeprivate.h	\
+	gurifuncs.c 		\
 	gutils.c		\
 	gdebug.h		\
 	gprintf.c		\
@@ -230,6 +231,7 @@ glibsubinclude_HEADERS =   \
 	gtree.h		\
 	gtypes.h	\
 	gunicode.h	\
+	gurifuncs.h 		\
 	gutils.h	\
 	gwin32.h	\
 	gprintf.h

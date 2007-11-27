@@ -143,7 +143,6 @@ libgio_2_0_la_SOURCES =		\
 	gthemedicon.c 		\
 	gunionvolumemonitor.c 	\
 	gunionvolumemonitor.h 	\
-	gurifuncs.c 		\
 	gvfs.c 			\
 	gvolume.c 		\
 	gvolumemonitor.c 	\
@@ -211,7 +210,6 @@ gioinclude_HEADERS = \
 	gsocketinputstream.h 	\
 	gsocketoutputstream.h 	\
 	gthemedicon.h 		\
-	gurifuncs.h 		\
 	gvfs.h 			\
 	gvolume.h 		\
 	gvolumemonitor.h 	\

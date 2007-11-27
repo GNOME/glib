@@ -71,13 +71,6 @@ char *   g_uri_get_scheme            (const char *uri);
 char *   g_uri_escape_string         (const char *unescaped,
 				      const char *reserved_chars_allowed,
 				      gboolean    allow_utf8);
-GString *g_string_append_uri_escaped (GString    *string,
-				      const char *unescaped,
-				      const char *reserved_chars_allowed,
-				      gboolean    allow_utf8);
-
-
-
 
 G_END_DECLS
 

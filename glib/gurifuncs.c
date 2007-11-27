@@ -62,6 +62,8 @@ unescape_character (const char *scanner)
  * 
  * Returns: an unescaped version of @escaped_string or %NULL on error.
  * The returned string should be freed when no longer needed.
+ *
+ * Since: 2.16
  **/
 char *
 g_uri_unescape_segment (const char *escaped_string,
@@ -126,6 +128,8 @@ g_uri_unescape_segment (const char *escaped_string,
  * 
  * Returns: an unescaped version of @escaped_string. The returned string 
  * should be freed when no longer needed.
+ *
+ * Since: 2.16
  **/
 char *
 g_uri_unescape_string (const char *escaped_string,
@@ -144,6 +148,8 @@ g_uri_unescape_string (const char *escaped_string,
  * 
  * Returns: The "Scheme" component of the URI, or %NULL on error. 
  * The returned string should be freed when no longer needed.
+ *
+ * Since: 2.16
  **/
 char *
 g_uri_get_scheme (const char  *uri)
@@ -183,85 +189,6 @@ g_uri_get_scheme (const char  *uri)
   return g_strndup (uri, p - uri - 1);
 }
 
-#define SUB_DELIM_CHARS  "!$&'()*+,;="
-
-static gboolean
-is_valid (char c, const char *reserved_chars_allowed)
-{
-  if (g_ascii_isalnum (c) ||
-      c == '-' ||
-      c == '.' ||
-      c == '_' ||
-      c == '~')
-    return TRUE;
-
-  if (reserved_chars_allowed &&
-      strchr (reserved_chars_allowed, c) != NULL)
-    return TRUE;
-  
-  return FALSE;
-}
-
-static gboolean 
-gunichar_ok (gunichar c)
-{
-  return
-    (c != (gunichar) -2) &&
-    (c != (gunichar) -1);
-}
-
-/**
- * g_string_append_uri_escaped:
- * @string: a #GString to append to.
- * @unescaped: the input C string of unescaped URI data.
- * @reserved_chars_allowed: a string of reserve characters allowed to be used.
- * @allow_utf8: set %TRUE if the return value may include UTF8 characters.
- * 
- * Appends an escaped URI to @string.
- * 
- * Returns: a #GString with the escaped URI appended.
- **/
-GString *
-g_string_append_uri_escaped (GString *string,
-			     const char *unescaped,
-			     const char *reserved_chars_allowed,
-			     gboolean allow_utf8)
-{
-  unsigned char c;
-  const char *end;
-  static const gchar hex[16] = "0123456789ABCDEF";
-
-  g_return_val_if_fail (string != NULL, NULL);
-  g_return_val_if_fail (unescaped != NULL, NULL);
-
-  end = unescaped + strlen (unescaped);
-  
-  while ((c = *unescaped) != 0)
-    {
-      if (c >= 0x80 && allow_utf8 &&
-	  gunichar_ok (g_utf8_get_char_validated (unescaped, end - unescaped)))
-	{
-	  int len = g_utf8_skip [c];
-	  g_string_append_len (string, unescaped, len);
-	  unescaped += len;
-	}
-      else if (is_valid (c, reserved_chars_allowed))
-	{
-	  g_string_append_c (string, c);
-	  unescaped++;
-	}
-      else
-	{
-	  g_string_append_c (string, '%');
-	  g_string_append_c (string, hex[((guchar)c) >> 4]);
-	  g_string_append_c (string, hex[((guchar)c) & 0xf]);
-	  unescaped++;
-	}
-    }
-
-  return string;
-}
-
 /**
  * g_uri_escape_string:
  * @unescaped: the unescaped input string.
@@ -272,6 +199,8 @@ g_string_append_uri_escaped (GString *string,
  * 
  * Returns: an escaped version of @unescaped. The returned string should be 
  * freed when no longer needed.
+ *
+ * Since: 2.16
  **/
 char *
 g_uri_escape_string (const char *unescaped,

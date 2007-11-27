@@ -129,6 +129,10 @@ void         g_string_append_vprintf    (GString	 *string,
 void         g_string_append_printf     (GString	 *string,
 					 const gchar	 *format,
 					 ...) G_GNUC_PRINTF (2, 3);
+GString *    g_string_append_uri_escaped(GString         *string,
+					 const char      *unescaped,
+					 const char      *reserved_chars_allowed,
+					 gboolean         allow_utf8);
 
 /* -- optimize g_strig_append_c --- */
 #ifdef G_CAN_INLINE
