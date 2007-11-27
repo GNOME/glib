@@ -1,6 +1,7 @@
 /* GIO - GLib Input, Output and Streaming Library
  * 
  * Copyright (C) 2006-2007 Red Hat, Inc.
+ * Copyright (C) 2007 Jürg Billeter
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -523,7 +524,7 @@ scan_for_newline (GDataInputStream *stream,
 {
   GBufferedInputStream *bstream;
   GDataInputStreamPrivate *priv;
-  char buffer[100];
+  const char *buffer;
   gsize start, end, peeked;
   int i;
   gssize found_pos;
@@ -534,83 +535,79 @@ scan_for_newline (GDataInputStream *stream,
   priv = stream->priv;
   
   bstream = G_BUFFERED_INPUT_STREAM (stream);
-  
-  available = g_buffered_input_stream_get_available (bstream);
 
   checked = *checked_out;
   last_saw_cr = *last_saw_cr_out;
   found_pos = -1;
   newline_len = 0;
   
-  while (checked < available)
-    {
-      start = checked;
-      end = MIN (start + sizeof(buffer), available);
-      peeked = g_buffered_input_stream_peek (bstream, buffer, start, end - start);
-      end = start + peeked;
+  start = checked;
+  buffer = g_buffered_input_stream_peek_buffer (bstream, &available) + start;
+  end = available;
+  peeked = end - start;
 
-      for (i = 0; i < peeked; i++)
+  for (i = 0; checked < available && i < peeked; i++)
+    {
+      switch (priv->newline_type)
 	{
-	  switch (priv->newline_type)
+	case G_DATA_STREAM_NEWLINE_TYPE_LF:
+	  if (buffer[i] == 10)
 	    {
-	    case G_DATA_STREAM_NEWLINE_TYPE_LF:
-	      if (buffer[i] == 10)
+	      found_pos = start + i;
+	      newline_len = 1;
+	    }
+	  break;
+	case G_DATA_STREAM_NEWLINE_TYPE_CR:
+	  if (buffer[i] == 13)
+	    {
+	      found_pos = start + i;
+	      newline_len = 1;
+	    }
+	  break;
+	case G_DATA_STREAM_NEWLINE_TYPE_CR_LF:
+	  if (last_saw_cr && buffer[i] == 10)
+	    {
+	      found_pos = start + i - 1;
+	      newline_len = 2;
+	    }
+	  break;
+	default:
+	case G_DATA_STREAM_NEWLINE_TYPE_ANY:
+	  if (buffer[i] == 10) /* LF */
+	    {
+	      if (last_saw_cr)
 		{
-		  found_pos = start + i;
-		  newline_len = 1;
-		}
-	      break;
-	    case G_DATA_STREAM_NEWLINE_TYPE_CR:
-	      if (buffer[i] == 13)
-		{
-		  found_pos = start + i;
-		  newline_len = 1;
-		}
-	      break;
-	    case G_DATA_STREAM_NEWLINE_TYPE_CR_LF:
-	      if (last_saw_cr && buffer[i] == 10)
-		{
+		  /* CR LF */
 		  found_pos = start + i - 1;
 		  newline_len = 2;
 		}
-	      break;
-	    default:
-	    case G_DATA_STREAM_NEWLINE_TYPE_ANY:
-	      if (buffer[i] == 10) /* LF */
+	      else
 		{
-		  if (last_saw_cr)
-		    {
-		      /* CR LF */
-		      found_pos = start + i - 1;
-		      newline_len = 2;
-		    }
-		  else
-		    {
-		      /* LF */
-		      found_pos = start + i;
-		      newline_len = 1;
-		    }
-		}
-	      else if (last_saw_cr)
-		{
-		  /* Last was cr, this is not LF, end is CR */
-		  found_pos = start + i - 1;
+		  /* LF */
+		  found_pos = start + i;
 		  newline_len = 1;
 		}
-	      /* Don't check for CR here, instead look at last_saw_cr on next byte */
-	      break;
 	    }
-	  
-	  last_saw_cr = (buffer[i] == 13);
-
-	  if (found_pos != -1)
+	  else if (last_saw_cr)
 	    {
-	      *newline_len_out = newline_len;
-	      return found_pos;
+	      /* Last was cr, this is not LF, end is CR */
+	      found_pos = start + i - 1;
+	      newline_len = 1;
 	    }
+	  /* Don't check for CR here, instead look at last_saw_cr on next byte */
+	  break;
 	}
-      checked = end;
+	
+      last_saw_cr = (buffer[i] == 13);
+
+      if (found_pos != -1)
+	{
+	  *newline_len_out = newline_len;
+	  return found_pos;
+	}
     }
+
+  checked = end;
 
   *checked_out = checked;
   *last_saw_cr_out = last_saw_cr;
@@ -694,25 +691,118 @@ g_data_input_stream_read_line (GDataInputStream        *stream,
 }
 
 
+static gssize
+scan_for_chars (GDataInputStream *stream,
+		gsize *checked_out,
+		const char *stop_chars)
+{
+  GBufferedInputStream *bstream;
+  GDataInputStreamPrivate *priv;
+  const char *buffer;
+  gsize start, end, peeked;
+  int i;
+  gssize found_pos;
+  gsize available, checked;
+  const char *stop_char;
+
+  priv = stream->priv;
+  
+  bstream = G_BUFFERED_INPUT_STREAM (stream);
+
+  checked = *checked_out;
+  found_pos = -1;
+  
+  start = checked;
+  buffer = g_buffered_input_stream_peek_buffer (bstream, &available) + start;
+  end = available;
+  peeked = end - start;
+
+  for (i = 0; checked < available && i < peeked; i++)
+    {
+      for (stop_char = stop_chars; *stop_char != '\0'; stop_char++)
+	{
+	  if (buffer[i] == *stop_char)
+	    return (start + i);
+	}
+    }
+
+  checked = end;
+
+  *checked_out = checked;
+  return -1;
+}
+
 /**
  * g_data_input_stream_read_until:
  * @stream: a given #GDataInputStream.
- * @stop_char: character to terminate the read.
+ * @stop_chars: characters to terminate the read.
  * @length: a #gsize to get the length of the data read in.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @error: #GError for error reporting.
  * 
- * NOTE: not supported for #GDataInputStream.
- * Returns %NULL.
+ * Returns a string with the data that was read before encountering any of
+ * the stop characters. Set @length to a #gsize to get the length of the
+ * read line. This function will return %NULL on an error.
  **/
 char *
 g_data_input_stream_read_until (GDataInputStream        *stream,
-			       gchar                    stop_char,
+			       const gchar             *stop_chars,
 			       gsize                   *length,
 			       GCancellable            *cancellable,
 			       GError                 **error)
 {
-  /* TODO: should be implemented */
-  g_assert_not_reached ();
-  return NULL;
+  GBufferedInputStream *bstream;
+  gsize checked;
+  gssize found_pos;
+  gssize res;
+  int stop_char_len;
+  char *data_until;
+  
+  g_return_val_if_fail (G_IS_DATA_INPUT_STREAM (stream), NULL);  
+
+  bstream = G_BUFFERED_INPUT_STREAM (stream);
+
+  stop_char_len = 1;
+  checked = 0;
+
+  while ((found_pos = scan_for_chars (stream, &checked, stop_chars)) == -1)
+    {
+      if (g_buffered_input_stream_get_available (bstream) ==
+	  g_buffered_input_stream_get_buffer_size (bstream))
+	g_buffered_input_stream_set_buffer_size (bstream,
+						 2 * g_buffered_input_stream_get_buffer_size (bstream));
+
+      res = g_buffered_input_stream_fill (bstream, -1, cancellable, error);
+      if (res < 0)
+	return NULL;
+      if (res == 0)
+	{
+	  /* End of stream */
+	  if (g_buffered_input_stream_get_available (bstream) == 0)
+	    {
+	      if (length)
+		*length = 0;
+	      return NULL;
+	    }
+	  else
+	    {
+	      found_pos = checked;
+	      stop_char_len = 0;
+	      break;
+	    }
+	}
+    }
+
+  data_until = g_malloc (found_pos + stop_char_len + 1);
+
+  res = g_input_stream_read (G_INPUT_STREAM (stream),
+			     data_until,
+			     found_pos + stop_char_len,
+			     NULL, NULL);
+  if (length)
+    *length = (gsize)found_pos;
+  g_assert (res == found_pos + stop_char_len);
+  data_until[found_pos] = 0;
+  
+  return data_until;
 }

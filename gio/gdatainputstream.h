@@ -107,7 +107,7 @@ char *                 g_data_input_stream_read_line        (GDataInputStream   
 							     GCancellable            *cancellable,
 							     GError                 **error);
 char *                 g_data_input_stream_read_until       (GDataInputStream        *stream,
-							     gchar                    stop_char,
+							     const gchar             *stop_chars,
 							     gsize                   *length,
 							     GCancellable            *cancellable,
 							     GError                 **error);

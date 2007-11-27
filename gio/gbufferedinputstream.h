@@ -89,6 +89,8 @@ gsize         g_buffered_input_stream_peek            (GBufferedInputStream  *st
 						       void                  *buffer,
 						       gsize                  offset,
 						       gsize                  count);
+const void*   g_buffered_input_stream_peek_buffer     (GBufferedInputStream  *stream,
+						       gsize                 *count);
 
 gssize        g_buffered_input_stream_fill            (GBufferedInputStream  *stream,
 						       gssize                 count,
@@ -102,6 +104,10 @@ void          g_buffered_input_stream_fill_async      (GBufferedInputStream  *st
 						       gpointer               user_data);
 gssize        g_buffered_input_stream_fill_finish     (GBufferedInputStream  *stream,
 						       GAsyncResult          *result,
+						       GError               **error);
+
+int           g_buffered_input_stream_read_byte       (GBufferedInputStream  *stream,
+						       GCancellable          *cancellable,
 						       GError               **error);
 
 

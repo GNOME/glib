@@ -1,6 +1,7 @@
 /* GIO - GLib Input, Output and Streaming Library
  * 
  * Copyright (C) 2006-2007 Red Hat, Inc.
+ * Copyright (C) 2007 Jürg Billeter
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -577,6 +578,34 @@ g_buffered_input_stream_peek (GBufferedInputStream  *stream,
   return count;
 }
 
+/**
+ * g_buffered_input_stream_peek_buffer:
+ * @stream: a #GBufferedInputStream.
+ * @count: a #gsize to get the number of bytes available in the buffer.
+ *
+ * Returns the buffer with the currently available bytes. The returned
+ * buffer must not be modified and will become invalid when reading from
+ * the stream or filling the buffer.
+ *
+ * Returns: read-only buffer
+ **/
+const void*
+g_buffered_input_stream_peek_buffer (GBufferedInputStream  *stream,
+                                     gsize                 *count)
+{
+  GBufferedInputStreamPrivate *priv;
+
+  g_return_val_if_fail (G_IS_BUFFERED_INPUT_STREAM (stream), NULL);
+
+  priv = stream->priv;
+
+  if (count) {
+    *count = priv->end - priv->pos;
+  }
+
+  return priv->buffer + priv->pos;
+}
+
 static void
 compact_buffer (GBufferedInputStream *stream)
 {
@@ -783,6 +812,81 @@ g_buffered_input_stream_read (GInputStream *stream,
   priv->pos += count;
   
   return bytes_read;
+}
+
+/**
+ * g_buffered_input_stream_read_byte:
+ * @stream: #GBufferedInputStream.
+ * @cancellable: optional #GCancellable object, %NULL to ignore.
+ * @error: location to store the error occuring, or %NULL to ignore.
+ *
+ * Tries to read a single byte from the stream or the buffer. Will block
+ * during this read.
+ *
+ * On success, the byte read from the stream is returned. On end of stream
+ * -1 is returned but it's not an exceptional error and @error is not set.
+ * 
+ * If @cancellable is not %NULL, then the operation can be cancelled by
+ * triggering the cancellable object from another thread. If the operation
+ * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. If an
+ * operation was partially finished when the operation was cancelled the
+ * partial result will be returned, without an error.
+ *
+ * On error -1 is returned and @error is set accordingly.
+ * 
+ * Returns: the byte read from the @stream, or -1 on end of stream or error.
+ **/
+int
+g_buffered_input_stream_read_byte (GBufferedInputStream  *stream,
+                                   GCancellable          *cancellable,
+                                   GError               **error)
+{
+  GBufferedInputStreamPrivate *priv;
+  GInputStream *input_stream;
+  gsize available;
+  gssize nread;
+
+  g_return_val_if_fail (G_IS_BUFFERED_INPUT_STREAM (stream), -1);
+
+  priv = stream->priv;
+  input_stream = G_INPUT_STREAM (stream);
+
+  if (g_input_stream_is_closed (input_stream))
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_CLOSED,
+       _("Stream is already closed"));
+      return -1;
+    }
+
+  if (g_input_stream_has_pending (input_stream))
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_PENDING,
+       _("Stream has outstanding operation"));
+      return -1;
+    }
+
+  available = priv->end - priv->pos;
+
+  if (available < 1)
+    return priv->buffer[priv->pos++];
+
+  /* Byte not available, request refill for more */
+
+  if (cancellable)
+    g_push_current_cancellable (cancellable);
+
+  priv->pos = 0;
+  priv->end = 0;
+
+  nread = g_buffered_input_stream_fill (stream, priv->len, cancellable, error);
+
+  if (cancellable)
+    g_pop_current_cancellable (cancellable);
+
+  if (nread <= 0)
+    return -1; /* error or end of stream */
+
+  return priv->buffer[priv->pos++];
 }
 
 /* ************************** */

@@ -1,3 +1,17 @@
+2007-11-27  Jürg Billeter  <j@bitron.ch>
+
+	* gbufferedinputstream.c: (g_buffered_input_stream_peek_buffer),
+	(g_buffered_input_stream_read_byte):
+	* gbufferedinputstream.h:
+	New functions for efficient access to buffer and simple single byte
+	reads.
+
+	* gdatainputstream.c: (scan_for_newline), (scan_for_chars),
+	(g_data_input_stream_read_until):
+	* gdatainputstream.h:
+	Use peek_buffer to avoid memcpy in scan_for_newline, implement
+	read_until with multiple stop chars.
+
 2007-11-27  Alexander Larsson  <alexl@redhat.com>
 
         * Makefile.am:
