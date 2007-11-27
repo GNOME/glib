@@ -34,125 +34,127 @@
 #include <glib/gstdio.h>
 #include "gioerror.h"
 #include "gsimpleasyncresult.h"
-#include "gsocketinputstream.h"
+#include "gunixinputstream.h"
 #include "gcancellable.h"
 #include "gasynchelper.h"
 #include "glibintl.h"
 
 /**
- * SECTION:gsocketinputstream
- * @short_description: Socket Input Stream
+ * SECTION:gunixinputstream
+ * @short_description: Unix Input Stream
  * @see_also: #GInputStream.
  *
- * #GSocketInputStream implements #GInputStream for reading from a socket, 
- * including asynchronous operations.
+ * #GUnixInputStream implements #GInputStream for reading from a
+ * unix file descriptor, including asynchronous operations. The file
+ * descriptor much be selectable, so it doesn't work with opened files.
  **/
 
-G_DEFINE_TYPE (GSocketInputStream, g_socket_input_stream, G_TYPE_INPUT_STREAM);
+G_DEFINE_TYPE (GUnixInputStream, g_unix_input_stream, G_TYPE_INPUT_STREAM);
 
-struct _GSocketInputStreamPrivate {
+struct _GUnixInputStreamPrivate {
   int fd;
   gboolean close_fd_at_close;
 };
 
-static gssize   g_socket_input_stream_read         (GInputStream         *stream,
-						    void                 *buffer,
-						    gsize                 count,
-						    GCancellable         *cancellable,
-						    GError              **error);
-static gboolean g_socket_input_stream_close        (GInputStream         *stream,
-						    GCancellable         *cancellable,
-						    GError              **error);
-static void     g_socket_input_stream_read_async   (GInputStream         *stream,
-						    void                 *buffer,
-						    gsize                 count,
-						    int                   io_priority,
-						    GCancellable         *cancellable,
-						    GAsyncReadyCallback   callback,
-						    gpointer              data);
-static gssize   g_socket_input_stream_read_finish  (GInputStream         *stream,
-						    GAsyncResult         *result,
-						    GError              **error);
-static void     g_socket_input_stream_skip_async   (GInputStream         *stream,
-						    gsize                 count,
-						    int                   io_priority,
-						    GCancellable         *cancellable,
-						    GAsyncReadyCallback   callback,
-						    gpointer              data);
-static gssize   g_socket_input_stream_skip_finish  (GInputStream         *stream,
-						    GAsyncResult         *result,
-						    GError              **error);
-static void     g_socket_input_stream_close_async  (GInputStream         *stream,
-						    int                   io_priority,
-						    GCancellable         *cancellable,
-						    GAsyncReadyCallback   callback,
-						    gpointer              data);
-static gboolean g_socket_input_stream_close_finish (GInputStream         *stream,
-						    GAsyncResult         *result,
-						    GError              **error);
+static gssize   g_unix_input_stream_read         (GInputStream         *stream,
+						  void                 *buffer,
+						  gsize                 count,
+						  GCancellable         *cancellable,
+						  GError              **error);
+static gboolean g_unix_input_stream_close        (GInputStream         *stream,
+						  GCancellable         *cancellable,
+						  GError              **error);
+static void     g_unix_input_stream_read_async   (GInputStream         *stream,
+						  void                 *buffer,
+						  gsize                 count,
+						  int                   io_priority,
+						  GCancellable         *cancellable,
+						  GAsyncReadyCallback   callback,
+						  gpointer              data);
+static gssize   g_unix_input_stream_read_finish  (GInputStream         *stream,
+						  GAsyncResult         *result,
+						  GError              **error);
+static void     g_unix_input_stream_skip_async   (GInputStream         *stream,
+						  gsize                 count,
+						  int                   io_priority,
+						  GCancellable         *cancellable,
+						  GAsyncReadyCallback   callback,
+						  gpointer              data);
+static gssize   g_unix_input_stream_skip_finish  (GInputStream         *stream,
+						  GAsyncResult         *result,
+						  GError              **error);
+static void     g_unix_input_stream_close_async  (GInputStream         *stream,
+						  int                   io_priority,
+						  GCancellable         *cancellable,
+						  GAsyncReadyCallback   callback,
+						  gpointer              data);
+static gboolean g_unix_input_stream_close_finish (GInputStream         *stream,
+						  GAsyncResult         *result,
+						  GError              **error);
+
 
 static void
-g_socket_input_stream_finalize (GObject *object)
+g_unix_input_stream_finalize (GObject *object)
 {
-  GSocketInputStream *stream;
+  GUnixInputStream *stream;
   
-  stream = G_SOCKET_INPUT_STREAM (object);
+  stream = G_UNIX_INPUT_STREAM (object);
 
-  if (G_OBJECT_CLASS (g_socket_input_stream_parent_class)->finalize)
-    (*G_OBJECT_CLASS (g_socket_input_stream_parent_class)->finalize) (object);
+  if (G_OBJECT_CLASS (g_unix_input_stream_parent_class)->finalize)
+    (*G_OBJECT_CLASS (g_unix_input_stream_parent_class)->finalize) (object);
 }
 
 static void
-g_socket_input_stream_class_init (GSocketInputStreamClass *klass)
+g_unix_input_stream_class_init (GUnixInputStreamClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   GInputStreamClass *stream_class = G_INPUT_STREAM_CLASS (klass);
   
-  g_type_class_add_private (klass, sizeof (GSocketInputStreamPrivate));
+  g_type_class_add_private (klass, sizeof (GUnixInputStreamPrivate));
   
-  gobject_class->finalize = g_socket_input_stream_finalize;
+  gobject_class->finalize = g_unix_input_stream_finalize;
 
-  stream_class->read = g_socket_input_stream_read;
-  stream_class->close = g_socket_input_stream_close;
-  stream_class->read_async = g_socket_input_stream_read_async;
-  stream_class->read_finish = g_socket_input_stream_read_finish;
+  stream_class->read = g_unix_input_stream_read;
+  stream_class->close = g_unix_input_stream_close;
+  stream_class->read_async = g_unix_input_stream_read_async;
+  stream_class->read_finish = g_unix_input_stream_read_finish;
   if (0)
     {
       /* TODO: Implement instead of using fallbacks */
-      stream_class->skip_async = g_socket_input_stream_skip_async;
-      stream_class->skip_finish = g_socket_input_stream_skip_finish;
+      stream_class->skip_async = g_unix_input_stream_skip_async;
+      stream_class->skip_finish = g_unix_input_stream_skip_finish;
     }
-  stream_class->close_async = g_socket_input_stream_close_async;
-  stream_class->close_finish = g_socket_input_stream_close_finish;
+  stream_class->close_async = g_unix_input_stream_close_async;
+  stream_class->close_finish = g_unix_input_stream_close_finish;
 }
 
 static void
-g_socket_input_stream_init (GSocketInputStream *socket)
+g_unix_input_stream_init (GUnixInputStream *unix_stream)
 {
-  socket->priv = G_TYPE_INSTANCE_GET_PRIVATE (socket,
-					      G_TYPE_SOCKET_INPUT_STREAM,
-					      GSocketInputStreamPrivate);
+  unix_stream->priv = G_TYPE_INSTANCE_GET_PRIVATE (unix_stream,
+						   G_TYPE_UNIX_INPUT_STREAM,
+						   GUnixInputStreamPrivate);
 }
 
 /**
- * g_socket_input_stream_new:
- * @fd: socket file descriptor.
+ * g_unix_input_stream_new:
+ * @fd: unix file descriptor.
  * @close_fd_at_close: a #gboolean.
  * 
- * Creates a new #GSocketInputStream for the given @fd. If @close_fd_at_close
- * is %TRUE, the socket will be closed when the stream is closed.
+ * Creates a new #GUnixInputStream for the given @fd. If @close_fd_at_close
+ * is %TRUE, the file descriptor will be closed when the stream is closed.
  * 
- * Returns: a #GSocketInputStream. 
+ * Returns: a #GUnixInputStream. 
  **/
 GInputStream *
-g_socket_input_stream_new (int fd,
-			   gboolean close_fd_at_close)
+g_unix_input_stream_new (int fd,
+			 gboolean close_fd_at_close)
 {
-  GSocketInputStream *stream;
+  GUnixInputStream *stream;
 
   g_return_val_if_fail (fd != -1, NULL);
 
-  stream = g_object_new (G_TYPE_SOCKET_INPUT_STREAM, NULL);
+  stream = g_object_new (G_TYPE_UNIX_INPUT_STREAM, NULL);
 
   stream->priv->fd = fd;
   stream->priv->close_fd_at_close = close_fd_at_close;
@@ -161,19 +163,19 @@ g_socket_input_stream_new (int fd,
 }
 
 static gssize
-g_socket_input_stream_read (GInputStream *stream,
-			    void         *buffer,
-			    gsize         count,
-			    GCancellable *cancellable,
-			    GError      **error)
+g_unix_input_stream_read (GInputStream *stream,
+			  void         *buffer,
+			  gsize         count,
+			  GCancellable *cancellable,
+			  GError      **error)
 {
-  GSocketInputStream *socket_stream;
+  GUnixInputStream *unix_stream;
   gssize res;
   struct pollfd poll_fds[2];
   int poll_ret;
   int cancel_fd;
 
-  socket_stream = G_SOCKET_INPUT_STREAM (stream);
+  unix_stream = G_UNIX_INPUT_STREAM (stream);
 
   cancel_fd = g_cancellable_get_fd (cancellable);
   if (cancel_fd != -1)
@@ -181,7 +183,7 @@ g_socket_input_stream_read (GInputStream *stream,
       do
 	{
 	  poll_fds[0].events = POLLIN;
-	  poll_fds[0].fd = socket_stream->priv->fd;
+	  poll_fds[0].fd = unix_stream->priv->fd;
 	  poll_fds[1].events = POLLIN;
 	  poll_fds[1].fd = cancel_fd;
 	  poll_ret = poll (poll_fds, 2, -1);
@@ -192,7 +194,7 @@ g_socket_input_stream_read (GInputStream *stream,
 	{
 	  g_set_error (error, G_IO_ERROR,
 		       g_io_error_from_errno (errno),
-		       _("Error reading from socket: %s"),
+		       _("Error reading from unix: %s"),
 		       g_strerror (errno));
 	  return -1;
 	}
@@ -202,7 +204,7 @@ g_socket_input_stream_read (GInputStream *stream,
     {
       if (g_cancellable_set_error_if_cancelled (cancellable, error))
 	break;
-      res = read (socket_stream->priv->fd, buffer, count);
+      res = read (unix_stream->priv->fd, buffer, count);
       if (res == -1)
 	{
 	  if (errno == EINTR)
@@ -210,7 +212,7 @@ g_socket_input_stream_read (GInputStream *stream,
 	  
 	  g_set_error (error, G_IO_ERROR,
 		       g_io_error_from_errno (errno),
-		       _("Error reading from socket: %s"),
+		       _("Error reading from unix: %s"),
 		       g_strerror (errno));
 	}
       
@@ -221,27 +223,27 @@ g_socket_input_stream_read (GInputStream *stream,
 }
 
 static gboolean
-g_socket_input_stream_close (GInputStream *stream,
-			     GCancellable *cancellable,
-			     GError      **error)
+g_unix_input_stream_close (GInputStream *stream,
+			   GCancellable *cancellable,
+			   GError      **error)
 {
-  GSocketInputStream *socket_stream;
+  GUnixInputStream *unix_stream;
   int res;
 
-  socket_stream = G_SOCKET_INPUT_STREAM (stream);
+  unix_stream = G_UNIX_INPUT_STREAM (stream);
 
-  if (!socket_stream->priv->close_fd_at_close)
+  if (!unix_stream->priv->close_fd_at_close)
     return TRUE;
   
   while (1)
     {
       /* This might block during the close. Doesn't seem to be a way to avoid it though. */
-      res = close (socket_stream->priv->fd);
+      res = close (unix_stream->priv->fd);
       if (res == -1)
 	{
 	  g_set_error (error, G_IO_ERROR,
 		       g_io_error_from_errno (errno),
-		       _("Error closing socket: %s"),
+		       _("Error closing unix: %s"),
 		       g_strerror (errno));
 	}
       break;
@@ -256,7 +258,7 @@ typedef struct {
   GAsyncReadyCallback callback;
   gpointer user_data;
   GCancellable *cancellable;
-  GSocketInputStream *stream;
+  GUnixInputStream *stream;
 } ReadAsyncData;
 
 static gboolean
@@ -284,7 +286,7 @@ read_async_cb (ReadAsyncData *data,
 	  
 	  g_set_error (&error, G_IO_ERROR,
 		       g_io_error_from_errno (errno),
-		       _("Error reading from socket: %s"),
+		       _("Error reading from unix: %s"),
 		       g_strerror (errno));
 	}
       break;
@@ -293,7 +295,7 @@ read_async_cb (ReadAsyncData *data,
   simple = g_simple_async_result_new (G_OBJECT (data->stream),
 				      data->callback,
 				      data->user_data,
-				      g_socket_input_stream_read_async);
+				      g_unix_input_stream_read_async);
 
   g_simple_async_result_set_op_res_gssize (simple, count_read);
 
@@ -311,19 +313,19 @@ read_async_cb (ReadAsyncData *data,
 }
 
 static void
-g_socket_input_stream_read_async (GInputStream        *stream,
-				  void                *buffer,
-				  gsize                count,
-				  int                  io_priority,
-				  GCancellable        *cancellable,
-				  GAsyncReadyCallback  callback,
-				  gpointer             user_data)
+g_unix_input_stream_read_async (GInputStream        *stream,
+				void                *buffer,
+				gsize                count,
+				int                  io_priority,
+				GCancellable        *cancellable,
+				GAsyncReadyCallback  callback,
+				gpointer             user_data)
 {
   GSource *source;
-  GSocketInputStream *socket_stream;
+  GUnixInputStream *unix_stream;
   ReadAsyncData *data;
 
-  socket_stream = G_SOCKET_INPUT_STREAM (stream);
+  unix_stream = G_UNIX_INPUT_STREAM (stream);
 
   data = g_new0 (ReadAsyncData, 1);
   data->count = count;
@@ -331,9 +333,9 @@ g_socket_input_stream_read_async (GInputStream        *stream,
   data->callback = callback;
   data->user_data = user_data;
   data->cancellable = cancellable;
-  data->stream = socket_stream;
+  data->stream = unix_stream;
 
-  source = _g_fd_source_new (socket_stream->priv->fd,
+  source = _g_fd_source_new (unix_stream->priv->fd,
 			     POLLIN,
 			     cancellable);
   
@@ -344,36 +346,36 @@ g_socket_input_stream_read_async (GInputStream        *stream,
 }
 
 static gssize
-g_socket_input_stream_read_finish (GInputStream              *stream,
-				   GAsyncResult              *result,
-				   GError                   **error)
+g_unix_input_stream_read_finish (GInputStream              *stream,
+				 GAsyncResult              *result,
+				 GError                   **error)
 {
   GSimpleAsyncResult *simple;
   gssize nread;
 
   simple = G_SIMPLE_ASYNC_RESULT (result);
-  g_assert (g_simple_async_result_get_source_tag (simple) == g_socket_input_stream_read_async);
+  g_assert (g_simple_async_result_get_source_tag (simple) == g_unix_input_stream_read_async);
   
   nread = g_simple_async_result_get_op_res_gssize (simple);
   return nread;
 }
 
 static void
-g_socket_input_stream_skip_async (GInputStream        *stream,
-				  gsize                count,
-				  int                  io_priority,
-				  GCancellable        *cancellable,
-				  GAsyncReadyCallback  callback,
-				  gpointer             data)
+g_unix_input_stream_skip_async (GInputStream        *stream,
+				gsize                count,
+				int                  io_priority,
+				GCancellable        *cancellable,
+				GAsyncReadyCallback  callback,
+				gpointer             data)
 {
   g_assert_not_reached ();
   /* TODO: Not implemented */
 }
 
 static gssize
-g_socket_input_stream_skip_finish  (GInputStream              *stream,
-				    GAsyncResult              *result,
-				    GError                   **error)
+g_unix_input_stream_skip_finish  (GInputStream              *stream,
+				  GAsyncResult              *result,
+				  GError                   **error)
 {
   g_assert_not_reached ();
   /* TODO: Not implemented */
@@ -397,15 +399,15 @@ close_async_data_free (gpointer _data)
 static gboolean
 close_async_cb (CloseAsyncData *data)
 {
-  GSocketInputStream *socket_stream;
+  GUnixInputStream *unix_stream;
   GSimpleAsyncResult *simple;
   GError *error = NULL;
   gboolean result;
   int res;
 
-  socket_stream = G_SOCKET_INPUT_STREAM (data->stream);
+  unix_stream = G_UNIX_INPUT_STREAM (data->stream);
 
-  if (!socket_stream->priv->close_fd_at_close)
+  if (!unix_stream->priv->close_fd_at_close)
     {
       result = TRUE;
       goto out;
@@ -413,12 +415,12 @@ close_async_cb (CloseAsyncData *data)
   
   while (1)
     {
-      res = close (socket_stream->priv->fd);
+      res = close (unix_stream->priv->fd);
       if (res == -1)
 	{
 	  g_set_error (&error, G_IO_ERROR,
 		       g_io_error_from_errno (errno),
-		       _("Error closing socket: %s"),
+		       _("Error closing unix: %s"),
 		       g_strerror (errno));
 	}
       break;
@@ -430,7 +432,7 @@ close_async_cb (CloseAsyncData *data)
   simple = g_simple_async_result_new (G_OBJECT (data->stream),
 				      data->callback,
 				      data->user_data,
-				      g_socket_input_stream_close_async);
+				      g_unix_input_stream_close_async);
 
   if (!result)
     {
@@ -446,11 +448,11 @@ close_async_cb (CloseAsyncData *data)
 }
 
 static void
-g_socket_input_stream_close_async (GInputStream       *stream,
-				   int                 io_priority,
-				   GCancellable       *cancellable,
-				   GAsyncReadyCallback callback,
-				   gpointer            user_data)
+g_unix_input_stream_close_async (GInputStream       *stream,
+				 int                 io_priority,
+				 GCancellable       *cancellable,
+				 GAsyncReadyCallback callback,
+				 gpointer            user_data)
 {
   GSource *idle;
   CloseAsyncData *data;
@@ -468,9 +470,9 @@ g_socket_input_stream_close_async (GInputStream       *stream,
 }
 
 static gboolean
-g_socket_input_stream_close_finish (GInputStream              *stream,
-				    GAsyncResult              *result,
-				    GError                   **error)
+g_unix_input_stream_close_finish (GInputStream              *stream,
+				  GAsyncResult              *result,
+				  GError                   **error)
 {
   /* Failures handled in generic close_finish code */
   return TRUE;

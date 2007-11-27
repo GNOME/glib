@@ -73,19 +73,23 @@ if OS_UNIX
 appinfo_sources += gdesktopappinfo.c gdesktopappinfo.h
 platform_libadd += xdgmime/libxdgmime.la
 unix_sources = \
-	gunixdrive.c \
-	gunixdrive.h \
-	gunixmounts.c \
-	gunixmounts.h \
-	gunixvolume.c \
-	gunixvolume.h \
-	gunixvolumemonitor.c \
-	gunixvolumemonitor.h \
+	gunixdrive.c 		\
+	gunixdrive.h 		\
+	gunixmounts.c 		\
+	gunixmounts.h 		\
+	gunixvolume.c 		\
+	gunixvolume.h 		\
+	gunixvolumemonitor.c 	\
+	gunixvolumemonitor.h 	\
+	gunixinputstream.c 	\
+	gunixoutputstream.c 	\
 	$(NULL)
 
 giounixincludedir=$(includedir)/gio-unix-2.0/gio
 giounixinclude_HEADERS = \
 	gunixmounts.h 		\
+	gunixinputstream.h 	\
+	gunixoutputstream.h 	\
 	$(NULL)
 endif
 
@@ -138,8 +142,6 @@ libgio_2_0_la_SOURCES =		\
 	gpollfilemonitor.h 	\
 	gseekable.c 		\
 	gsimpleasyncresult.c 	\
-	gsocketinputstream.c 	\
-	gsocketoutputstream.c 	\
 	gthemedicon.c 		\
 	gunionvolumemonitor.c 	\
 	gunionvolumemonitor.h 	\
@@ -207,8 +209,6 @@ gioinclude_HEADERS = \
 	goutputstream.h 	\
 	gseekable.h 		\
 	gsimpleasyncresult.h 	\
-	gsocketinputstream.h 	\
-	gsocketoutputstream.h 	\
 	gthemedicon.h 		\
 	gvfs.h 			\
 	gvolume.h 		\

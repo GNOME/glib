@@ -1,3 +1,14 @@
+2007-11-27  Alexander Larsson  <alexl@redhat.com>
+
+        * Makefile.am:
+        * gsocketinputstream.[ch]: Removed.
+        * gsocketoutputstream.[ch]: Removed.
+        * gunixinputstream.[ch]: Added.
+        * gunixoutputstream.[ch]: Added.
+	Renamed GSocket*Stream to GUnix*Stream and made
+	it unix-only, since its not really only for sockets
+	and it only works on unix (but is highly useful there).
+
 2007-11-27  Andrew Walton  <awalton@svn.gnome.org>
 	* gappinfo.c:
 	* gappinfo.h:
