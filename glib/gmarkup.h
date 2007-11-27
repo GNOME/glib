@@ -38,7 +38,8 @@ typedef enum
    */
   G_MARKUP_ERROR_UNKNOWN_ELEMENT,
   G_MARKUP_ERROR_UNKNOWN_ATTRIBUTE,
-  G_MARKUP_ERROR_INVALID_CONTENT
+  G_MARKUP_ERROR_INVALID_CONTENT,
+  G_MARKUP_ERROR_MISSING_ATTRIBUTE
 } GMarkupError;
 
 #define G_MARKUP_ERROR g_markup_error_quark ()
@@ -126,6 +127,27 @@ gchar *g_markup_printf_escaped (const char *format,
 				...) G_GNUC_PRINTF (1, 2);
 gchar *g_markup_vprintf_escaped (const char *format,
 				 va_list     args);
+
+typedef enum
+{
+  G_MARKUP_COLLECT_INVALID,
+  G_MARKUP_COLLECT_STRING,
+  G_MARKUP_COLLECT_STRDUP,
+  G_MARKUP_COLLECT_BOOLEAN,
+  G_MARKUP_COLLECT_TRISTATE,
+
+  G_MARKUP_COLLECT_OPTIONAL = (1 << 16)
+} GMarkupCollectType;
+
+
+/* useful from start_element */
+gboolean   g_markup_collect_attributes (const gchar         *element_name,
+                                        const gchar        **attribute_names,
+                                        const gchar        **attribute_values,
+                                        GError             **error,
+                                        GMarkupCollectType   first_type,
+                                        const gchar         *first_attr,
+                                        ...);
 
 G_END_DECLS
 

@@ -1,3 +1,16 @@
+2007-11-26  Ryan Lortie  <desrt@desrt.ca>
+ 
+ 	Add new function g_markup_collect_attributes (bug #496847).
+ 
+ 	* glib/glib.symbols: add g_markup_collect_attributes
+ 
+ 	* docs/reference/glib/glib-sections.txt: 
+ 	* glib/gmarkup.h:
+ 	* glib/gmarkup.c: add g_markup_collect_attributes and new enumerated
+ 	type GMarkupCollectType.  Add new error code
+ 	G_MARKUP_ERROR_MISSING_ATTRIBUTE that is thrown by the attribute
+ 	collector.
+
 2007-11-27  Tor Lillqvist  <tml@novell.com>
 
 	* glib/win_iconv.c: Some improvements, being upstreamed.

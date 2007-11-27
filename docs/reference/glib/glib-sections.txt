@@ -999,6 +999,9 @@ g_markup_parse_context_get_element
 g_markup_parse_context_get_element_stack
 g_markup_parse_context_new
 g_markup_parse_context_parse
+<SUBSECTION>
+GMarkupCollectType
+g_markup_collect_attributes
 <SUBSECTION Private>
 g_markup_error_quark
 </SECTION>

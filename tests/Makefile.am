@@ -105,6 +105,7 @@ test_programs =					\
 	list-test				\
 	mainloop-test				\
 	mapping-test				\
+	markup-collect				\
 	markup-escape-test			\
 	module-test				\
 	node-test				\
@@ -216,6 +217,7 @@ utf8_validate_LDADD = $(progs_ldadd)
 utf8_pointer_LDADD = $(progs_ldadd)
 uri_test_LDADD = $(progs_ldadd)
 regex_test_LDADD = $(progs_ldadd)
+markup_collect_LDADD = $(progs_ldadd)
 
 lib_LTLIBRARIES = libmoduletestplugin_a.la libmoduletestplugin_b.la
 
