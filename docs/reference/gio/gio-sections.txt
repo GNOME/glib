@@ -735,7 +735,6 @@ GMemoryOutputStreamPrivate
 <FILE>gdataoutputstream</FILE>
 <TITLE>GDataOutputStream</TITLE>
 GDataOutputStream
-GDataOutputStreamClass
 g_data_output_stream_new
 g_data_output_stream_set_byte_order
 g_data_output_stream_get_byte_order
@@ -748,6 +747,7 @@ g_data_output_stream_put_int64
 g_data_output_stream_put_uint64
 g_data_output_stream_put_string
 <SUBSECTION Standard>
+GDataOutputStreamClass
 G_DATA_OUTPUT_STREAM
 G_IS_DATA_OUTPUT_STREAM
 G_TYPE_DATA_OUTPUT_STREAM

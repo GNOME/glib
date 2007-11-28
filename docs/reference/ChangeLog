@@ -1,5 +1,7 @@
 2007-11-28  Matthias Clasen  <mclasen@redhat.com>
 
+	* gio/gio-sections.txt: More cleanup
+
 	* gio/gio.types: Remove internal types
 
 2007-11-27  Matthias Clasen  <mclasen@redhat.com>
