@@ -1,5 +1,10 @@
 2007-11-28  Matthias Clasen  <mclasen@redhat.com>
 
+	* Makefile.am:
+	* abicheck.sh: Fix copy-and-paste leftovers 
+
+2007-11-28  Matthias Clasen  <mclasen@redhat.com>
+
 	* gfile.h: Add G_FILE_COPY_FLAGS_NONE for consistency.
 
 2007-11-28  Alexander Larsson  <alexl@redhat.com>
