@@ -10,6 +10,7 @@ g_vfs_parse_name
 g_vfs_get_default
 g_vfs_get_local
 g_vfs_is_active
+g_vfs_get_supported_uri_schemes
 <SUBSECTION Standard>
 GVfsClass
 G_VFS
@@ -268,7 +269,6 @@ g_file_info_set_size
 g_file_info_set_modification_time
 g_file_info_set_symlink_target
 g_file_info_set_sort_order
-g_format_file_size_for_display
 g_file_attribute_matcher_new
 g_file_attribute_matcher_ref
 g_file_attribute_matcher_unref
@@ -1143,19 +1143,4 @@ G_IO_IS_MODULE_CLASS
 G_IO_MODULE_GET_CLASS
 <SUBSECTION Private>
 g_io_module_get_type
-</SECTION>
-
-<SECTION>
-<FILE>gurifuncs</FILE>
-<TITLE>Uri functions</TITLE>
-G_URI_RESERVED_CHARS_GENERIC_DELIMITERS
-G_URI_RESERVED_CHARS_SUBCOMPONENT_DELIMITERS
-G_URI_RESERVED_CHARS_ALLOWED_IN_PATH_ELEMENT
-G_URI_RESERVED_CHARS_ALLOWED_IN_PATH
-G_URI_RESERVED_CHARS_ALLOWED_IN_USERINFO
-g_uri_unescape_string
-g_uri_unescape_segment
-g_uri_get_scheme
-g_uri_escape_string
-g_string_append_uri_escaped
 </SECTION>
