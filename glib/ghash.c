@@ -322,6 +322,43 @@ g_hash_table_lookup_extended (GHashTable    *hash_table,
     return FALSE;
 }
 
+static void
+g_hash_table_insert_internal (GHashTable *hash_table,
+                              gpointer    key,
+                              gpointer    value,
+                              gboolean    keep_new_key)
+{
+  GHashNode **node;
+  guint key_hash;
+  
+  g_return_if_fail (hash_table != NULL);
+  g_return_if_fail (hash_table->ref_count > 0);
+  
+  node = g_hash_table_lookup_node (hash_table, key, &key_hash);
+  
+  if (*node)
+    {
+      if (hash_table->key_destroy_func)
+        {
+          if (keep_new_key)
+            hash_table->key_destroy_func ((*node)->key);
+          else
+            hash_table->key_destroy_func (key);
+        }
+      
+      if (hash_table->value_destroy_func)
+	hash_table->value_destroy_func ((*node)->value);
+
+      (*node)->value = value;
+    }
+  else
+    {
+      *node = g_hash_node_new (key, value, key_hash);
+      hash_table->nnodes++;
+      G_HASH_TABLE_RESIZE (hash_table);
+    }
+}
+
 /**
  * g_hash_table_insert:
  * @hash_table: a #GHashTable.
@@ -341,36 +378,7 @@ g_hash_table_insert (GHashTable *hash_table,
 		     gpointer	 key,
 		     gpointer	 value)
 {
-  GHashNode **node;
-  guint key_hash;
-  
-  g_return_if_fail (hash_table != NULL);
-  g_return_if_fail (hash_table->ref_count > 0);
-  
-  node = g_hash_table_lookup_node (hash_table, key, &key_hash);
-  
-  if (*node)
-    {
-      /* do not reset node->key in this place, keeping
-       * the old key is the intended behaviour. 
-       * g_hash_table_replace() can be used instead.
-       */
-
-      /* free the passed key */
-      if (hash_table->key_destroy_func)
-	hash_table->key_destroy_func (key);
-      
-      if (hash_table->value_destroy_func)
-	hash_table->value_destroy_func ((*node)->value);
-
-      (*node)->value = value;
-    }
-  else
-    {
-      *node = g_hash_node_new (key, value, key_hash);
-      hash_table->nnodes++;
-      G_HASH_TABLE_RESIZE (hash_table);
-    }
+  return g_hash_table_insert_internal (hash_table, key, value, FALSE);
 }
 
 /**
@@ -391,31 +399,7 @@ g_hash_table_replace (GHashTable *hash_table,
 		      gpointer	  key,
 		      gpointer	  value)
 {
-  GHashNode **node;
-  guint key_hash;
-  
-  g_return_if_fail (hash_table != NULL);
-  g_return_if_fail (hash_table->ref_count > 0);
-  
-  node = g_hash_table_lookup_node (hash_table, key, &key_hash);
-  
-  if (*node)
-    {
-      if (hash_table->key_destroy_func)
-	hash_table->key_destroy_func ((*node)->key);
-      
-      if (hash_table->value_destroy_func)
-	hash_table->value_destroy_func ((*node)->value);
-
-      (*node)->key   = key;
-      (*node)->value = value;
-    }
-  else
-    {
-      *node = g_hash_node_new (key, value, key_hash);
-      hash_table->nnodes++;
-      G_HASH_TABLE_RESIZE (hash_table);
-    }
+  return g_hash_table_insert_internal (hash_table, key, value, TRUE);
 }
 
 /**

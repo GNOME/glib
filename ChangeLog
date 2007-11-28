@@ -1,3 +1,9 @@
+2007-11-27  Ryan Lortie  <desrt@desrt.ca>
+
+	* glib/ghash.c (g_hash_table_insert, g_hash_table_replace,
+	g_hash_table_insert_internal): insert/replace were identical except
+	for a single line.  Replace both with a common function.
+
 2007-11-27  Alexander Larsson  <alexl@redhat.com>
 
         * gio/Makefile.am:
