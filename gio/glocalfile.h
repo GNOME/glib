@@ -27,7 +27,7 @@
 
 G_BEGIN_DECLS
 
-#define G_TYPE_LOCAL_FILE         (g_local_file_get_type ())
+#define G_TYPE_LOCAL_FILE         (_g_local_file_get_type ())
 #define G_LOCAL_FILE(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), G_TYPE_LOCAL_FILE, GLocalFile))
 #define G_LOCAL_FILE_CLASS(k)     (G_TYPE_CHECK_CLASS_CAST((k), G_TYPE_LOCAL_FILE, GLocalFileClass))
 #define G_IS_LOCAL_FILE(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), G_TYPE_LOCAL_FILE))
@@ -42,9 +42,9 @@ struct _GLocalFileClass
   GObjectClass parent_class;
 };
 
-GType g_local_file_get_type (void) G_GNUC_CONST;
+GType _g_local_file_get_type (void) G_GNUC_CONST;
   
-GFile * g_local_file_new (const char *filename);
+GFile * _g_local_file_new (const char *filename);
 
 G_END_DECLS
 

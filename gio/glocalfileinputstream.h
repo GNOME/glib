@@ -27,7 +27,7 @@
 
 G_BEGIN_DECLS
 
-#define G_TYPE_LOCAL_FILE_INPUT_STREAM         (g_local_file_input_stream_get_type ())
+#define G_TYPE_LOCAL_FILE_INPUT_STREAM         (_g_local_file_input_stream_get_type ())
 #define G_LOCAL_FILE_INPUT_STREAM(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), G_TYPE_LOCAL_FILE_INPUT_STREAM, GLocalFileInputStream))
 #define G_LOCAL_FILE_INPUT_STREAM_CLASS(k)     (G_TYPE_CHECK_CLASS_CAST((k), G_TYPE_LOCAL_FILE_INPUT_STREAM, GLocalFileInputStreamClass))
 #define G_IS_LOCAL_FILE_INPUT_STREAM(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), G_TYPE_LOCAL_FILE_INPUT_STREAM))
@@ -51,9 +51,9 @@ struct _GLocalFileInputStreamClass
   GFileInputStreamClass parent_class;
 };
 
-GType g_local_file_input_stream_get_type (void) G_GNUC_CONST;
+GType _g_local_file_input_stream_get_type (void) G_GNUC_CONST;
 
-GFileInputStream *g_local_file_input_stream_new (int fd);
+GFileInputStream *_g_local_file_input_stream_new (int fd);
 
 G_END_DECLS
 

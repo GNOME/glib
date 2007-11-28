@@ -40,6 +40,7 @@ struct _GLocalVfsClass
   
 };
 
+#define g_local_vfs_get_type _g_local_vfs_get_type
 G_DEFINE_TYPE (GLocalVfs, g_local_vfs, G_TYPE_VFS)
  
 static void
@@ -62,7 +63,7 @@ g_local_vfs_init (GLocalVfs *vfs)
  * Returns: a new #GVfs handle.
  **/
 GVfs *
-g_local_vfs_new (void)
+_g_local_vfs_new (void)
 {
   return g_object_new (G_TYPE_LOCAL_VFS, NULL);
 }
@@ -71,7 +72,7 @@ static GFile *
 g_local_vfs_get_file_for_path  (GVfs       *vfs,
 				const char *path)
 {
-  return g_local_file_new (path);
+  return _g_local_file_new (path);
 }
 
 static GFile *
@@ -84,9 +85,9 @@ g_local_vfs_get_file_for_uri   (GVfs       *vfs,
   path = g_filename_from_uri (uri, NULL, NULL);
 
   if (path != NULL)
-    file = g_local_file_new (path);
+    file = _g_local_file_new (path);
   else
-    file = g_dummy_file_new (uri);
+    file = _g_dummy_file_new (uri);
 
   g_free (path);
 
@@ -160,7 +161,7 @@ g_local_vfs_parse_name (GVfs       *vfs,
   if (filename == NULL)
     filename = g_strdup (parse_name);
     
-  file = g_local_file_new (filename);
+  file = _g_local_file_new (filename);
   g_free (filename);
 
   return file;

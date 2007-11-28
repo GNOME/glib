@@ -207,7 +207,7 @@ _compare_monitor_class_by_prio (gconstpointer a,
   return ret;
 }
 
-extern GType g_inotify_directory_monitor_get_type (void);
+extern GType _g_inotify_directory_monitor_get_type (void);
 
 static gpointer
 get_default_local_directory_monitor (gpointer data)
@@ -219,7 +219,7 @@ get_default_local_directory_monitor (gpointer data)
 
 #if defined(HAVE_SYS_INOTIFY_H) || defined(HAVE_LINUX_INOTIFY_H)
   /* Register Inotify monitor */
-  g_inotify_directory_monitor_get_type ();
+  _g_inotify_directory_monitor_get_type ();
 #endif
 
   g_io_modules_ensure_loaded (GIO_MODULE_DIR);
@@ -261,8 +261,8 @@ get_default_local_directory_monitor (gpointer data)
  * Returns: new #GDirectoryMonitor for the given @dirname.
  **/
 GDirectoryMonitor*
-g_local_directory_monitor_new (const char* dirname,
-                               GFileMonitorFlags flags)
+_g_local_directory_monitor_new (const char* dirname,
+				GFileMonitorFlags flags)
 {
   static GOnce once_init = G_ONCE_INIT;
   static GType monitor_type = G_TYPE_INVALID;
@@ -290,3 +290,5 @@ g_local_directory_monitor_cancel (GDirectoryMonitor* monitor)
   return TRUE;
 }
 
+#define __G_LOCAL_DIRECTORY_MONITOR_C__
+#include "gioaliasdef.c"

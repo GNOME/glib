@@ -37,6 +37,7 @@
 
 #include "gioalias.h"
 
+#define g_local_file_input_stream_get_type _g_local_file_input_stream_get_type
 G_DEFINE_TYPE (GLocalFileInputStream, g_local_file_input_stream, G_TYPE_FILE_INPUT_STREAM);
 
 struct _GLocalFileInputStreamPrivate {
@@ -113,7 +114,7 @@ g_local_file_input_stream_init (GLocalFileInputStream *info)
  * Returns: #GFileInputStream for the given file descriptor.
  **/
 GFileInputStream *
-g_local_file_input_stream_new (int fd)
+_g_local_file_input_stream_new (int fd)
 {
   GLocalFileInputStream *stream;
 

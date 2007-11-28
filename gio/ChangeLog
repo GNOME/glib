@@ -1,6 +1,39 @@
 2007-11-28  Alexander Larsson  <alexl@redhat.com>
 
         * Makefile.am:
+        * gdriveprivate.h:
+	Removed unnecessary file
+	
+        * gdesktopappinfo.[ch]:
+        * gdummyfile.[ch]:
+        * gfile.c:
+        * glocaldirectorymonitor.[ch]:
+        * glocalfile.[ch]:
+        * glocalfileenumerator.[ch]:
+        * glocalfileinputstream.[ch]:
+        * glocalfilemonitor.[ch]:
+        * glocalfileoutputstream.[ch]:
+        * glocalvfs.[ch]:
+        * gnativevolumemonitor.c:
+        * gpollfilemonitor.[ch]:
+        * gunionvolumemonitor.[ch]:
+        * gunixdrive.[ch]:
+        * gunixvolume.[ch]:
+        * gunixvolumemonitor.[ch]:
+        * gvfs.c:
+        * gvolumeprivate.h:
+        * inotify/ginotifydirectorymonitor.[ch]:
+        * inotify/ginotifyfilemonitor.[ch]:
+        * inotify/inotify-helper.c:
+	Append _ to all internal functions
+	
+        * gio.symbols:
+	Add missing symbols
+	Export symbols needed for modules
+
+2007-11-28  Alexander Larsson  <alexl@redhat.com>
+
+        * Makefile.am:
         * abicheck.sh: Added.
         * makegioalias.pl: Added.
         * pltcheck.sh: Added.

@@ -3076,7 +3076,7 @@ g_file_monitor_file (GFile *file,
 
 /* Fallback to polling */
   if (monitor == NULL)
-    monitor = g_poll_file_monitor_new (file);
+    monitor = _g_poll_file_monitor_new (file);
 
   return monitor;
 }

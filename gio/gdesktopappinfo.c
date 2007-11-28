@@ -72,6 +72,7 @@ struct _GDesktopAppInfo
   /* FIXME: what about StartupWMClass ? */
 };
 
+#define g_desktop_app_info_get_type _g_desktop_app_info_get_type
 G_DEFINE_TYPE_WITH_CODE (GDesktopAppInfo, g_desktop_app_info, G_TYPE_OBJECT,
 			 G_IMPLEMENT_INTERFACE (G_TYPE_APP_INFO,
 						g_desktop_app_info_iface_init))
@@ -151,7 +152,7 @@ g_desktop_app_info_init (GDesktopAppInfo *local)
  * Returns: a new #GDesktopAppInfo or %NULL on error.
  **/
 GDesktopAppInfo *
-g_desktop_app_info_new_from_filename (const char *filename)
+_g_desktop_app_info_new_from_filename (const char *filename)
 {
   GDesktopAppInfo *info;
   GKeyFile *key_file;
@@ -257,7 +258,7 @@ g_desktop_app_info_new_from_filename (const char *filename)
  * Returns: a new #GDesktopAppInfo.
  **/
 GDesktopAppInfo *
-g_desktop_app_info_new (const char *desktop_id)
+_g_desktop_app_info_new (const char *desktop_id)
 {
   GDesktopAppInfo *appinfo;
   const char * const *dirs;
@@ -272,7 +273,7 @@ g_desktop_app_info_new (const char *desktop_id)
       char *p;
 
       filename = g_build_filename (dirs[i], desktop_id, NULL);
-      appinfo = g_desktop_app_info_new_from_filename (filename);
+      appinfo = _g_desktop_app_info_new_from_filename (filename);
       g_free (filename);
       if (appinfo != NULL)
 	{
@@ -286,7 +287,7 @@ g_desktop_app_info_new (const char *desktop_id)
 	  *p = '/';
 	  
 	  filename = g_build_filename (dirs[i], basename, NULL);
-	  appinfo = g_desktop_app_info_new_from_filename (filename);
+	  appinfo = _g_desktop_app_info_new_from_filename (filename);
 	  g_free (filename);
 	  if (appinfo != NULL)
 	    {
@@ -303,7 +304,7 @@ g_desktop_app_info_new (const char *desktop_id)
  found:
   appinfo->desktop_id = g_strdup (desktop_id);
 
-  if (g_desktop_app_info_get_is_hidden (appinfo))
+  if (_g_desktop_app_info_get_is_hidden (appinfo))
     {
       g_object_unref (appinfo);
       appinfo = NULL;
@@ -380,7 +381,7 @@ g_desktop_app_info_get_name (GAppInfo *appinfo)
  * Returns: %TRUE if hidden, %FALSE otherwise. 
  **/
 gboolean
-g_desktop_app_info_get_is_hidden (GDesktopAppInfo *info)
+_g_desktop_app_info_get_is_hidden (GDesktopAppInfo *info)
 {
   return info->hidden;
 }
@@ -1437,7 +1438,7 @@ g_app_info_create_from_commandline (const char *commandline,
 
   run_update_command ("update-desktop-database", "applications");
   
-  info = g_desktop_app_info_new_from_filename (filename);
+  info = _g_desktop_app_info_new_from_filename (filename);
   g_free (filename);
   if (info == NULL) 
     g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
@@ -1508,7 +1509,7 @@ g_app_info_get_all_for_type (const char *content_type)
     {
       char *desktop_entry = l->data;
 
-      info = g_desktop_app_info_new (desktop_entry);
+      info = _g_desktop_app_info_new (desktop_entry);
       if (info)
 	{
 	  if (app_info_in_list (G_APP_INFO (info), infos))
@@ -1549,7 +1550,7 @@ g_app_info_get_default_for_type (const char *content_type,
     {
       char *desktop_entry = l->data;
 
-      info = (GAppInfo *)g_desktop_app_info_new (desktop_entry);
+      info = (GAppInfo *)_g_desktop_app_info_new (desktop_entry);
       if (info)
 	{
 	  if (must_support_uris && !g_app_info_supports_uris (info))
@@ -1607,11 +1608,11 @@ get_apps_from_dir (GHashTable *apps, const char *dirname, const char *prefix)
 	      /* Use _extended so we catch NULLs too (hidden) */
 	      if (!g_hash_table_lookup_extended (apps, desktop_id, NULL, NULL))
 		{
-		  appinfo = g_desktop_app_info_new_from_filename (filename);
+		  appinfo = _g_desktop_app_info_new_from_filename (filename);
 
 		  /* Don't return apps that don't take arguments */
 		  if (appinfo &&
-		      g_desktop_app_info_get_is_hidden (appinfo) &&
+		      _g_desktop_app_info_get_is_hidden (appinfo) &&
 		      strstr (appinfo->exec,"%U") == NULL &&
 		      strstr (appinfo->exec,"%u") == NULL &&
 		      strstr (appinfo->exec,"%f") == NULL &&

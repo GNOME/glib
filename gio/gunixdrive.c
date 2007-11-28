@@ -27,7 +27,6 @@
 #include <glib.h>
 #include "gunixdrive.h"
 #include "gunixvolume.h"
-#include "gdriveprivate.h"
 #include "gthemedicon.h"
 #include "gvolumemonitor.h"
 #include "glibintl.h"
@@ -46,6 +45,7 @@ struct _GUnixDrive {
 
 static void g_unix_volume_drive_iface_init (GDriveIface *iface);
 
+#define g_unix_drive_get_type _g_unix_drive_get_type
 G_DEFINE_TYPE_WITH_CODE (GUnixDrive, g_unix_drive, G_TYPE_OBJECT,
 			 G_IMPLEMENT_INTERFACE (G_TYPE_DRIVE,
 						g_unix_volume_drive_iface_init))
@@ -58,7 +58,7 @@ g_unix_drive_finalize (GObject *object)
   drive = G_UNIX_DRIVE (object);
 
   if (drive->volume)
-    g_unix_volume_unset_drive (drive->volume, drive);
+    _g_unix_volume_unset_drive (drive->volume, drive);
   
   g_free (drive->name);
   g_free (drive->icon);
@@ -126,8 +126,8 @@ type_to_icon (GUnixMountType type)
  * Returns: a #GUnixDrive for the given #GUnixMountPoint.
  **/
 GUnixDrive *
-g_unix_drive_new (GVolumeMonitor *volume_monitor,
-		  GUnixMountPoint *mountpoint)
+_g_unix_drive_new (GVolumeMonitor *volume_monitor,
+		   GUnixMountPoint *mountpoint)
 {
   GUnixDrive *drive;
   
@@ -154,11 +154,11 @@ g_unix_drive_new (GVolumeMonitor *volume_monitor,
  * 
  **/
 void
-g_unix_drive_disconnected (GUnixDrive *drive)
+_g_unix_drive_disconnected (GUnixDrive *drive)
 {
   if (drive->volume)
     {
-      g_unix_volume_unset_drive (drive->volume, drive);
+      _g_unix_volume_unset_drive (drive->volume, drive);
       drive->volume = NULL;
     }
 }
@@ -170,14 +170,14 @@ g_unix_drive_disconnected (GUnixDrive *drive)
  *  
  **/
 void
-g_unix_drive_set_volume (GUnixDrive     *drive,
-			 GUnixVolume    *volume)
+_g_unix_drive_set_volume (GUnixDrive     *drive,
+			  GUnixVolume    *volume)
 {
   if (drive->volume == volume)
     return;
   
   if (drive->volume)
-    g_unix_volume_unset_drive (drive->volume, drive);
+    _g_unix_volume_unset_drive (drive->volume, drive);
   
   drive->volume = volume;
   
@@ -192,8 +192,8 @@ g_unix_drive_set_volume (GUnixDrive     *drive,
  *
  **/
 void
-g_unix_drive_unset_volume (GUnixDrive     *drive,
-			   GUnixVolume    *volume)
+_g_unix_drive_unset_volume (GUnixDrive     *drive,
+			    GUnixVolume    *volume)
 {
   if (drive->volume == volume)
     {
@@ -263,7 +263,7 @@ g_unix_drive_has_volumes (GDrive *drive)
 
 
 gboolean
-g_unix_drive_has_mountpoint (GUnixDrive *drive,
+_g_unix_drive_has_mountpoint (GUnixDrive *drive,
 			     const char  *mountpoint)
 {
   return strcmp (drive->mountpoint, mountpoint) == 0;

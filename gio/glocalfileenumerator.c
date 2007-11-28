@@ -52,6 +52,7 @@ struct _GLocalFileEnumerator
   gboolean follow_symlinks;
 };
 
+#define g_local_file_enumerator_get_type _g_local_file_enumerator_get_type
 G_DEFINE_TYPE (GLocalFileEnumerator, g_local_file_enumerator, G_TYPE_FILE_ENUMERATOR);
 
 static GFileInfo *g_local_file_enumerator_next_file (GFileEnumerator  *enumerator,
@@ -132,16 +133,15 @@ convert_file_to_io_error (GError **error,
 }
 
 GFileEnumerator *
-g_local_file_enumerator_new (const char *filename,
-			     const char *attributes,
-			     GFileQueryInfoFlags flags,
-			     GCancellable *cancellable,
-			     GError **error)
+_g_local_file_enumerator_new (const char *filename,
+			      const char *attributes,
+			      GFileQueryInfoFlags flags,
+			      GCancellable *cancellable,
+			      GError **error)
 {
   GLocalFileEnumerator *local;
   GDir *dir;
   GError *dir_error;
-  int new_code;
 
   dir_error = NULL;
   dir = g_dir_open (filename, 0, error != NULL ? &dir_error : NULL);

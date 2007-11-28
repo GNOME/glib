@@ -43,6 +43,7 @@ struct _GInotifyFileMonitor
 
 static gboolean g_inotify_file_monitor_cancel (GFileMonitor* monitor);
 
+#define g_inotify_file_monitor_get_type _g_inotify_file_monitor_get_type
 G_DEFINE_TYPE (GInotifyFileMonitor, g_inotify_file_monitor, G_TYPE_LOCAL_FILE_MONITOR)
 
 static void

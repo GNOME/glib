@@ -47,6 +47,7 @@ static void g_union_volume_monitor_remove_monitor (GUnionVolumeMonitor *union_mo
 						   GVolumeMonitor *child_monitor);
 
 
+#define g_union_volume_monitor_get_type _g_union_volume_monitor_get_type
 G_DEFINE_TYPE (GUnionVolumeMonitor, g_union_volume_monitor, G_TYPE_VOLUME_MONITOR);
 
 
@@ -253,7 +254,7 @@ get_default_native_type (gpointer data)
   {
     volatile GType unix_type;
     /* volatile is required to avoid any G_GNUC_CONST optimizations */
-    unix_type = g_unix_volume_monitor_get_type ();
+    unix_type = _g_unix_volume_monitor_get_type ();
   }
 #endif
       
@@ -374,7 +375,7 @@ g_volume_monitor_get (void)
  * Returns: a #GVolume for given @mountpoint or %NULL.  
  **/
 GVolume *
-g_volume_get_for_mount_path (const char *mountpoint)
+_g_volume_get_for_mount_path (const char *mountpoint)
 {
   GType native_type;
   GNativeVolumeMonitorClass *klass;

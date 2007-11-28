@@ -41,6 +41,7 @@ struct _GPollFileMonitor
 
 #define POLL_TIME_SECS 5
 
+#define g_poll_file_monitor_get_type _g_poll_file_monitor_get_type
 G_DEFINE_TYPE (GPollFileMonitor, g_poll_file_monitor, G_TYPE_FILE_MONITOR)
 
 static void
@@ -201,7 +202,7 @@ got_initial_info (GObject *source_object,
  * Returns: a new #GFileMonitor for the given #GFile. 
  **/
 GFileMonitor*
-g_poll_file_monitor_new (GFile *file)
+_g_poll_file_monitor_new (GFile *file)
 {
   GPollFileMonitor* poll_monitor;
   

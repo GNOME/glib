@@ -54,6 +54,7 @@ struct _GDummyFile
   char *text_uri;
 };
 
+#define g_dummy_file_get_type _g_dummy_file_get_type
 G_DEFINE_TYPE_WITH_CODE (GDummyFile, g_dummy_file, G_TYPE_OBJECT,
 			 G_IMPLEMENT_INTERFACE (G_TYPE_FILE,
 						g_dummy_file_file_iface_init))
@@ -108,7 +109,7 @@ g_dummy_file_init (GDummyFile *dummy)
  * Returns: a new #GFile. 
  **/
 GFile *
-g_dummy_file_new (const char *uri)
+_g_dummy_file_new (const char *uri)
 {
   GDummyFile *dummy;
 
@@ -184,7 +185,7 @@ g_dummy_file_get_parent (GFile *file)
   uri = _g_encode_uri (&new_decoded_uri);
   g_free (dirname);
   
-  parent = g_dummy_file_new (uri);
+  parent = _g_dummy_file_new (uri);
   g_free (uri);
   
   return parent;
@@ -195,7 +196,7 @@ g_dummy_file_dup (GFile *file)
 {
   GDummyFile *dummy = G_DUMMY_FILE (file);
 
-  return g_dummy_file_new (dummy->text_uri);
+  return _g_dummy_file_new (dummy->text_uri);
 }
 
 static guint
@@ -350,7 +351,7 @@ g_dummy_file_resolve_relative_path (GFile *file,
       str = g_string_new (dummy->text_uri);
       g_string_append (str, "/");
       g_string_append_encoded (str, relative_path, SUB_DELIM_CHARS ":@/");
-      child = g_dummy_file_new (str->str);
+      child = _g_dummy_file_new (str->str);
       g_string_free (str, TRUE);
     }
   else
@@ -365,7 +366,7 @@ g_dummy_file_resolve_relative_path (GFile *file,
       uri = _g_encode_uri (&new_decoded_uri);
       g_free (new_decoded_uri.path);
       
-      child = g_dummy_file_new (uri);
+      child = _g_dummy_file_new (uri);
       g_free (uri);
     }
 

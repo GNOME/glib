@@ -38,6 +38,7 @@
 
 #include "gioalias.h"
 
+#define g_local_file_output_stream_get_type _g_local_file_output_stream_get_type
 G_DEFINE_TYPE (GLocalFileOutputStream, g_local_file_output_stream, G_TYPE_FILE_OUTPUT_STREAM);
 
 /* Some of the file replacement code was based on the code from gedit,
@@ -403,10 +404,10 @@ g_local_file_output_stream_query_info (GFileOutputStream     *stream,
 }
 
 GFileOutputStream *
-g_local_file_output_stream_create  (const char       *filename,
-				    GFileCreateFlags  flags,
-				    GCancellable     *cancellable,
-				    GError          **error)
+_g_local_file_output_stream_create  (const char       *filename,
+				     GFileCreateFlags  flags,
+				     GCancellable     *cancellable,
+				     GError          **error)
 {
   GLocalFileOutputStream *stream;
   int mode;
@@ -446,10 +447,10 @@ g_local_file_output_stream_create  (const char       *filename,
 }
 
 GFileOutputStream *
-g_local_file_output_stream_append  (const char       *filename,
-				    GFileCreateFlags  flags,
-				    GCancellable     *cancellable,
-				    GError          **error)
+_g_local_file_output_stream_append  (const char       *filename,
+				     GFileCreateFlags  flags,
+				     GCancellable     *cancellable,
+				     GError          **error)
 {
   GLocalFileOutputStream *stream;
   int mode;
@@ -819,12 +820,12 @@ handle_overwrite_open (const char *filename,
 }
 
 GFileOutputStream *
-g_local_file_output_stream_replace (const char        *filename,
-				    const char        *etag,
-				    gboolean           create_backup,
-				    GFileCreateFlags   flags,
-				    GCancellable      *cancellable,
-				    GError           **error)
+_g_local_file_output_stream_replace (const char        *filename,
+				     const char        *etag,
+				     gboolean           create_backup,
+				     GFileCreateFlags   flags,
+				     GCancellable      *cancellable,
+				     GError           **error)
 {
   GLocalFileOutputStream *stream;
   int mode;

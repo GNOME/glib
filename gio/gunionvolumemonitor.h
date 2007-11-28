@@ -28,7 +28,7 @@
 
 G_BEGIN_DECLS
 
-#define G_TYPE_UNION_VOLUME_MONITOR        (g_union_volume_monitor_get_type ())
+#define G_TYPE_UNION_VOLUME_MONITOR        (_g_union_volume_monitor_get_type ())
 #define G_UNION_VOLUME_MONITOR(o)          (G_TYPE_CHECK_INSTANCE_CAST ((o), G_TYPE_UNION_VOLUME_MONITOR, GUnionVolumeMonitor))
 #define G_UNION_VOLUME_MONITOR_CLASS(k)    (G_TYPE_CHECK_CLASS_CAST((k), G_TYPE_UNION_VOLUME_MONITOR, GUnionVolumeMonitorClass))
 #define G_IS_UNION_VOLUME_MONITOR(o)       (G_TYPE_CHECK_INSTANCE_TYPE ((o), G_TYPE_UNION_VOLUME_MONITOR))
@@ -42,12 +42,7 @@ struct _GUnionVolumeMonitorClass {
 
 };
 
-GType g_union_volume_monitor_get_type (void) G_GNUC_CONST;
-
-GList * g_union_volume_monitor_convert_volumes (GUnionVolumeMonitor *monitor,
-						GList               *child_volumes);
-GDrive *g_union_volume_monitor_convert_drive   (GUnionVolumeMonitor *monitor,
-						GDrive              *child_drive);
+GType _g_union_volume_monitor_get_type (void) G_GNUC_CONST;
 
 G_END_DECLS
 

@@ -91,6 +91,7 @@ struct _GLocalFile
   char *filename;
 };
 
+#define g_local_file_get_type _g_local_file_get_type
 G_DEFINE_TYPE_WITH_CODE (GLocalFile, g_local_file, G_TYPE_OBJECT,
 			 G_IMPLEMENT_INTERFACE (G_TYPE_FILE,
 						g_local_file_file_iface_init))
@@ -260,13 +261,13 @@ canonicalize_filename (const char *filename)
 }
 
 /**
- * g_local_file_new:
+ * _g_local_file_new:
  * @filename: filename of the file to create.
  * 
  * Returns: new local #GFile.
  **/
 GFile *
-g_local_file_new (const char *filename)
+_g_local_file_new (const char *filename)
 {
   GLocalFile *local;
 
@@ -419,7 +420,7 @@ g_local_file_get_parent (GFile *file)
     return NULL;
 
   dirname = g_path_get_dirname (local->filename);
-  parent = g_local_file_new (dirname);
+  parent = _g_local_file_new (dirname);
   g_free (dirname);
   return parent;
 }
@@ -429,7 +430,7 @@ g_local_file_dup (GFile *file)
 {
   GLocalFile *local = G_LOCAL_FILE (file);
 
-  return g_local_file_new (local->filename);
+  return _g_local_file_new (local->filename);
 }
 
 static guint
@@ -499,10 +500,10 @@ g_local_file_resolve_relative_path (GFile *file,
   GFile *child;
 
   if (g_path_is_absolute (relative_path))
-    return g_local_file_new (relative_path);
+    return _g_local_file_new (relative_path);
   
   filename = g_build_filename (local->filename, relative_path, NULL);
-  child = g_local_file_new (filename);
+  child = _g_local_file_new (filename);
   g_free (filename);
   
   return child;
@@ -516,9 +517,9 @@ g_local_file_enumerate_children (GFile *file,
 				 GError **error)
 {
   GLocalFile *local = G_LOCAL_FILE (file);
-  return g_local_file_enumerator_new (local->filename,
-				      attributes, flags,
-				      cancellable, error);
+  return _g_local_file_enumerator_new (local->filename,
+				       attributes, flags,
+				       cancellable, error);
 }
 
 static GFile *
@@ -845,7 +846,7 @@ g_local_file_find_enclosing_volume (GFile *file,
       return NULL;
     }
 
-  volume = g_volume_get_for_mount_path (mountpoint);
+  volume = _g_volume_get_for_mount_path (mountpoint);
   g_free (mountpoint);
   if (volume)
     return volume;
@@ -1036,7 +1037,7 @@ g_local_file_read (GFile *file,
       return NULL;
     }
   
-  return g_local_file_input_stream_new (fd);
+  return _g_local_file_input_stream_new (fd);
 }
 
 static GFileOutputStream *
@@ -1045,8 +1046,8 @@ g_local_file_append_to (GFile *file,
 			GCancellable *cancellable,
 			GError **error)
 {
-  return g_local_file_output_stream_append (G_LOCAL_FILE (file)->filename,
-					    flags, cancellable, error);
+  return _g_local_file_output_stream_append (G_LOCAL_FILE (file)->filename,
+					     flags, cancellable, error);
 }
 
 static GFileOutputStream *
@@ -1055,8 +1056,8 @@ g_local_file_create (GFile *file,
 		     GCancellable *cancellable,
 		     GError **error)
 {
-  return g_local_file_output_stream_create (G_LOCAL_FILE (file)->filename,
-					    flags, cancellable, error);
+  return _g_local_file_output_stream_create (G_LOCAL_FILE (file)->filename,
+					     flags, cancellable, error);
 }
 
 static GFileOutputStream *
@@ -1067,9 +1068,9 @@ g_local_file_replace (GFile *file,
 		      GCancellable *cancellable,
 		      GError **error)
 {
-  return g_local_file_output_stream_replace (G_LOCAL_FILE (file)->filename,
-					     etag, make_backup, flags,
-					     cancellable, error);
+  return _g_local_file_output_stream_replace (G_LOCAL_FILE (file)->filename,
+					      etag, make_backup, flags,
+					      cancellable, error);
 }
 
 
@@ -1774,7 +1775,7 @@ g_local_file_monitor_dir (GFile* file,
 			  GCancellable *cancellable)
 {
   GLocalFile* local_file = G_LOCAL_FILE(file);
-  return g_local_directory_monitor_new (local_file->filename, flags);
+  return _g_local_directory_monitor_new (local_file->filename, flags);
 }
 
 static GFileMonitor*
@@ -1783,7 +1784,7 @@ g_local_file_monitor_file (GFile* file,
 			   GCancellable *cancellable)
 {
   GLocalFile* local_file = G_LOCAL_FILE(file);
-  return g_local_file_monitor_new (local_file->filename, flags);
+  return _g_local_file_monitor_new (local_file->filename, flags);
 }
 
 static void

@@ -53,6 +53,7 @@ static void mounts_changed      (GUnixMountMonitor  *mount_monitor,
 static void update_drives       (GUnixVolumeMonitor *monitor);
 static void update_volumes      (GUnixVolumeMonitor *monitor);
 
+#define g_unix_volume_monitor_get_type _g_unix_volume_monitor_get_type
 G_DEFINE_TYPE (GUnixVolumeMonitor, g_unix_volume_monitor, G_TYPE_NATIVE_VOLUME_MONITOR);
 
 static void
@@ -116,7 +117,7 @@ get_volume_for_mountpoint (const char *mountpoint)
   mount = g_get_unix_mount_at (mountpoint, NULL);
   
   /* TODO: Set drive? */
-  volume = g_unix_volume_new (mount, NULL);
+  volume = _g_unix_volume_new (mount, NULL);
 
   return G_VOLUME (volume);
 }
@@ -184,7 +185,7 @@ g_unix_volume_monitor_init (GUnixVolumeMonitor *unix_monitor)
  * Returns:  a new #GVolumeMonitor.
  **/
 GVolumeMonitor *
-g_unix_volume_monitor_new (void)
+_g_unix_volume_monitor_new (void)
 {
   GUnixVolumeMonitor *monitor;
 
@@ -242,8 +243,8 @@ diff_sorted_lists (GList *list1, GList *list2, GCompareFunc compare,
  * Returns:  #GUnixDrive for the given @mountpoint.
  **/
 GUnixDrive *
-g_unix_volume_monitor_lookup_drive_for_mountpoint (GUnixVolumeMonitor *monitor,
-						   const char *mountpoint)
+_g_unix_volume_monitor_lookup_drive_for_mountpoint (GUnixVolumeMonitor *monitor,
+						    const char *mountpoint)
 {
   GList *l;
 
@@ -251,7 +252,7 @@ g_unix_volume_monitor_lookup_drive_for_mountpoint (GUnixVolumeMonitor *monitor,
     {
       GUnixDrive *drive = l->data;
 
-      if (g_unix_drive_has_mountpoint (drive, mountpoint))
+      if (_g_unix_drive_has_mountpoint (drive, mountpoint))
 	return drive;
     }
   
@@ -268,7 +269,7 @@ find_volume_by_mountpoint (GUnixVolumeMonitor *monitor,
     {
       GUnixVolume *volume = l->data;
 
-      if (g_unix_volume_has_mountpoint (volume, mountpoint))
+      if (_g_unix_volume_has_mountpoint (volume, mountpoint))
 	return volume;
     }
   
@@ -295,11 +296,11 @@ update_drives (GUnixVolumeMonitor *monitor)
     {
       GUnixMountPoint *mountpoint = l->data;
       
-      drive = g_unix_volume_monitor_lookup_drive_for_mountpoint (monitor,
-								 g_unix_mount_point_get_mount_path (mountpoint));
+      drive = _g_unix_volume_monitor_lookup_drive_for_mountpoint (monitor,
+								  g_unix_mount_point_get_mount_path (mountpoint));
       if (drive)
 	{
-	  g_unix_drive_disconnected (drive);
+	  _g_unix_drive_disconnected (drive);
 	  monitor->drives = g_list_remove (monitor->drives, drive);
 	  g_signal_emit_by_name (monitor, "drive_disconnected", drive);
 	  g_object_unref (drive);
@@ -310,7 +311,7 @@ update_drives (GUnixVolumeMonitor *monitor)
     {
       GUnixMountPoint *mountpoint = l->data;
       
-      drive = g_unix_drive_new (G_VOLUME_MONITOR (monitor), mountpoint);
+      drive = _g_unix_drive_new (G_VOLUME_MONITOR (monitor), mountpoint);
       if (drive)
 	{
 	  monitor->drives = g_list_prepend (monitor->drives, drive);
@@ -351,7 +352,7 @@ update_volumes (GUnixVolumeMonitor *monitor)
       volume = find_volume_by_mountpoint (monitor, g_unix_mount_get_mount_path (mount));
       if (volume)
 	{
-	  g_unix_volume_unmounted (volume);
+	  _g_unix_volume_unmounted (volume);
 	  monitor->volumes = g_list_remove (monitor->volumes, volume);
 	  g_signal_emit_by_name (monitor, "volume_unmounted", volume);
 	  g_object_unref (volume);
@@ -364,9 +365,9 @@ update_volumes (GUnixVolumeMonitor *monitor)
 
       mount_path = g_unix_mount_get_mount_path (mount);
       
-      drive = g_unix_volume_monitor_lookup_drive_for_mountpoint (monitor,
+      drive = _g_unix_volume_monitor_lookup_drive_for_mountpoint (monitor,
 								 mount_path);
-      volume = g_unix_volume_new (mount, drive);
+      volume = _g_unix_volume_new (mount, drive);
       if (volume)
 	{
 	  monitor->volumes = g_list_prepend (monitor->volumes, volume);

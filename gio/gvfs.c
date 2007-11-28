@@ -216,7 +216,7 @@ get_default_vfs (gpointer arg)
   
   /* Ensure GLocalVfs type is available
      the cast is required to avoid any G_GNUC_CONST optimizations */
-  casted_get_type = g_local_vfs_get_type;
+  casted_get_type = _g_local_vfs_get_type;
   local_type = casted_get_type ();
   
   /* Ensure vfs in modules loaded */
@@ -271,7 +271,7 @@ g_vfs_get_local (void)
   static gsize vfs = 0;
 
   if (g_once_init_enter (&vfs))
-    g_once_init_leave (&vfs, (gsize)g_local_vfs_new ());
+    g_once_init_leave (&vfs, (gsize)_g_local_vfs_new ());
 
   return G_VFS (vfs);
 }

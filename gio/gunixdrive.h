@@ -30,7 +30,7 @@
 
 G_BEGIN_DECLS
 
-#define G_TYPE_UNIX_DRIVE        (g_unix_drive_get_type ())
+#define G_TYPE_UNIX_DRIVE        (_g_unix_drive_get_type ())
 #define G_UNIX_DRIVE(o)          (G_TYPE_CHECK_INSTANCE_CAST ((o), G_TYPE_UNIX_DRIVE, GUnixDrive))
 #define G_UNIX_DRIVE_CLASS(k)    (G_TYPE_CHECK_CLASS_CAST((k), G_TYPE_UNIX_DRIVE, GUnixDriveClass))
 #define G_IS_UNIX_DRIVE(o)       (G_TYPE_CHECK_INSTANCE_TYPE ((o), G_TYPE_UNIX_DRIVE))
@@ -42,17 +42,17 @@ struct _GUnixDriveClass {
    GObjectClass parent_class;
 };
 
-GType g_unix_drive_get_type (void) G_GNUC_CONST;
+GType _g_unix_drive_get_type (void) G_GNUC_CONST;
 
-GUnixDrive *g_unix_drive_new            (GVolumeMonitor *volume_monitor,
-					 GUnixMountPoint *mountpoint);
-gboolean    g_unix_drive_has_mountpoint (GUnixDrive     *drive,
-					 const char     *mountpoint);
-void        g_unix_drive_set_volume     (GUnixDrive     *drive,
-					 GUnixVolume    *volume);
-void        g_unix_drive_unset_volume   (GUnixDrive     *drive,
-					 GUnixVolume    *volume);
-void        g_unix_drive_disconnected   (GUnixDrive     *drive);
+GUnixDrive *_g_unix_drive_new            (GVolumeMonitor *volume_monitor,
+					  GUnixMountPoint *mountpoint);
+gboolean    _g_unix_drive_has_mountpoint (GUnixDrive     *drive,
+					  const char     *mountpoint);
+void        _g_unix_drive_set_volume     (GUnixDrive     *drive,
+					  GUnixVolume    *volume);
+void        _g_unix_drive_unset_volume   (GUnixDrive     *drive,
+					  GUnixVolume    *volume);
+void        _g_unix_drive_disconnected   (GUnixDrive     *drive);
 
 G_END_DECLS
 

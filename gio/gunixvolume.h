@@ -30,7 +30,7 @@
 
 G_BEGIN_DECLS
 
-#define G_TYPE_UNIX_VOLUME        (g_unix_volume_get_type ())
+#define G_TYPE_UNIX_VOLUME        (_g_unix_volume_get_type ())
 #define G_UNIX_VOLUME(o)          (G_TYPE_CHECK_INSTANCE_CAST ((o), G_TYPE_UNIX_VOLUME, GUnixVolume))
 #define G_UNIX_VOLUME_CLASS(k)    (G_TYPE_CHECK_CLASS_CAST((k), G_TYPE_UNIX_VOLUME, GUnixVolumeClass))
 #define G_IS_UNIX_VOLUME(o)       (G_TYPE_CHECK_INSTANCE_TYPE ((o), G_TYPE_UNIX_VOLUME))
@@ -42,15 +42,15 @@ struct _GUnixVolumeClass {
    GObjectClass parent_class;
 };
 
-GType g_unix_volume_get_type (void) G_GNUC_CONST;
+GType _g_unix_volume_get_type (void) G_GNUC_CONST;
 
-GUnixVolume *g_unix_volume_new            (GUnixMount     *mount,
-					   GUnixDrive     *drive);
-gboolean     g_unix_volume_has_mountpoint (GUnixVolume    *volume,
-					   const char     *mountpoint);
-void         g_unix_volume_unset_drive    (GUnixVolume    *volume,
-					   GUnixDrive     *drive);
-void         g_unix_volume_unmounted      (GUnixVolume    *volume);
+GUnixVolume *_g_unix_volume_new            (GUnixMount     *mount,
+					    GUnixDrive     *drive);
+gboolean     _g_unix_volume_has_mountpoint (GUnixVolume    *volume,
+					    const char     *mountpoint);
+void         _g_unix_volume_unset_drive    (GUnixVolume    *volume,
+					    GUnixDrive     *drive);
+void         _g_unix_volume_unmounted      (GUnixVolume    *volume);
 
 G_END_DECLS
 

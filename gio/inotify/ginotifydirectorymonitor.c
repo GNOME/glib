@@ -41,6 +41,7 @@ struct _GInotifyDirectoryMonitor
 
 static gboolean g_inotify_directory_monitor_cancel (GDirectoryMonitor* monitor);
 
+#define g_inotify_directory_monitor_get_type _g_inotify_directory_monitor_get_type
 G_DEFINE_TYPE (GInotifyDirectoryMonitor, g_inotify_directory_monitor, G_TYPE_LOCAL_DIRECTORY_MONITOR)
 
 static void

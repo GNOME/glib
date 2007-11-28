@@ -347,11 +347,19 @@ g_file_info_get_attribute
 g_file_info_get_attribute_string 
 g_file_info_get_attribute_byte_string 
 g_file_info_get_attribute_boolean 
+g_file_info_get_attribute_uint32 
+g_file_info_get_attribute_int32 
+g_file_info_get_attribute_uint64 
+g_file_info_get_attribute_int64 
 g_file_info_get_attribute_object 
 g_file_info_set_attribute 
 g_file_info_set_attribute_string 
 g_file_info_set_attribute_byte_string 
 g_file_info_set_attribute_boolean 
+g_file_info_set_attribute_uint32 
+g_file_info_set_attribute_int32 
+g_file_info_set_attribute_uint64 
+g_file_info_set_attribute_int64 
 g_file_info_set_attribute_object 
 g_file_info_clear_status 
 g_file_info_get_file_type 
@@ -382,6 +390,8 @@ g_file_info_set_size
 g_file_info_set_modification_time 
 g_file_info_set_symlink_target 
 g_file_info_set_sort_order 
+g_file_attribute_matcher_new 
+g_file_attribute_matcher_ref 
 g_file_attribute_matcher_unref 
 g_file_attribute_matcher_matches 
 g_file_attribute_matcher_matches_only 
@@ -684,5 +694,23 @@ g_volume_monitor_get_connected_drives
 #endif
 #if IN_FILE(__G_UNION_VOLUME_MONITOR_C__)
 g_volume_monitor_get 
+#endif
+#endif
+
+#if IN_HEADER(__G_NATIVE_VOLUME_MONITOR_H__)
+#if IN_FILE(__G_NATIVE_VOLUME_MONITOR_C__)
+g_native_volume_monitor_get_type  G_GNUC_CONST
+#endif
+#endif
+
+#if IN_HEADER(__G_LOCAL_FILE_MONITOR_H__)
+#if IN_FILE(__G_LOCAL_FILE_MONITOR_C__)
+g_local_file_monitor_get_type  G_GNUC_CONST
+#endif
+#endif
+
+#if IN_HEADER(__G_LOCAL_DIRECTORY_MONITOR_H__)
+#if IN_FILE(__G_LOCAL_DIRECTORY_MONITOR_C__)
+g_local_directory_monitor_get_type  G_GNUC_CONST
 #endif
 #endif

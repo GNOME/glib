@@ -46,6 +46,7 @@ struct _GUnixVolume {
 
 static void g_unix_volume_volume_iface_init (GVolumeIface *iface);
 
+#define g_unix_volume_get_type _g_unix_volume_get_type
 G_DEFINE_TYPE_WITH_CODE (GUnixVolume, g_unix_volume, G_TYPE_OBJECT,
 			 G_IMPLEMENT_INTERFACE (G_TYPE_VOLUME,
 						g_unix_volume_volume_iface_init))
@@ -59,7 +60,7 @@ g_unix_volume_finalize (GObject *object)
   volume = G_UNIX_VOLUME (object);
 
   if (volume->drive)
-    g_unix_drive_unset_volume (volume->drive, volume);
+    _g_unix_drive_unset_volume (volume->drive, volume);
     
   g_assert (volume->drive == NULL);
   g_free (volume->name);
@@ -138,8 +139,8 @@ type_to_icon (GUnixMountType type)
  * 
  **/
 GUnixVolume *
-g_unix_volume_new (GUnixMount *mount,
-		   GUnixDrive *drive)
+_g_unix_volume_new (GUnixMount *mount,
+		    GUnixDrive *drive)
 {
   GUnixVolume *volume;
   GUnixMountType type;
@@ -155,7 +156,7 @@ g_unix_volume_new (GUnixMount *mount,
   volume = g_object_new (G_TYPE_UNIX_VOLUME, NULL);
   volume->drive = drive;
   if (drive)
-    g_unix_drive_set_volume (drive, volume);
+    _g_unix_drive_set_volume (drive, volume);
   volume->mountpoint = g_strdup (mount_path);
 
   type = g_unix_mount_guess_type (mount);
@@ -194,11 +195,11 @@ g_unix_volume_new (GUnixMount *mount,
  * 
  **/
 void
-g_unix_volume_unmounted (GUnixVolume *volume)
+_g_unix_volume_unmounted (GUnixVolume *volume)
 {
   if (volume->drive)
     {
-      g_unix_drive_unset_volume (volume->drive, volume);
+      _g_unix_drive_unset_volume (volume->drive, volume);
       volume->drive = NULL;
       g_signal_emit_by_name (volume, "changed");
     }
@@ -211,8 +212,8 @@ g_unix_volume_unmounted (GUnixVolume *volume)
  *   
  **/
 void
-g_unix_volume_unset_drive (GUnixVolume   *volume,
-			   GUnixDrive    *drive)
+_g_unix_volume_unset_drive (GUnixVolume   *volume,
+			    GUnixDrive    *drive)
 {
   if (volume->drive == drive)
     {
@@ -254,8 +255,8 @@ g_unix_volume_get_name (GVolume *volume)
  * Returns: 
  **/
 gboolean
-g_unix_volume_has_mountpoint (GUnixVolume *volume,
-			      const char  *mountpoint)
+_g_unix_volume_has_mountpoint (GUnixVolume *volume,
+			       const char  *mountpoint)
 {
   return strcmp (volume->mountpoint, mountpoint) == 0;
 }
@@ -287,6 +288,7 @@ g_unix_volume_can_eject (GVolume *volume)
 
 static void
 g_unix_volume_unmount (GVolume         *volume,
+		       GCancellable    *cancellable,
 		       GAsyncReadyCallback callback,
 		       gpointer         user_data)
 {
@@ -303,6 +305,7 @@ g_unix_volume_unmount_finish (GVolume *volume,
 
 static void
 g_unix_volume_eject (GVolume         *volume,
+		     GCancellable    *cancellable,
 		     GAsyncReadyCallback callback,
 		     gpointer         user_data)
 {

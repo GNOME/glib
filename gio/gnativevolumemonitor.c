@@ -30,3 +30,6 @@ static void
 g_native_volume_monitor_init (GNativeVolumeMonitor *native_monitor)
 {
 }
+
+#define __G_NATIVE_VOLUME_MONITOR_C__
+#include "gioaliasdef.c"

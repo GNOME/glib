@@ -129,7 +129,6 @@ libgio_2_0_la_SOURCES =		\
 	gdataoutputstream.c 	\
 	gdirectorymonitor.c 	\
 	gdrive.c 		\
-	gdriveprivate.h 	\
 	gdummyfile.h 		\
 	gdummyfile.c 		\
 	gfile.c 		\

@@ -29,7 +29,7 @@
 
 G_BEGIN_DECLS
 
-#define G_TYPE_LOCAL_FILE_ENUMERATOR         (g_local_file_enumerator_get_type ())
+#define G_TYPE_LOCAL_FILE_ENUMERATOR         (_g_local_file_enumerator_get_type ())
 #define G_LOCAL_FILE_ENUMERATOR(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), G_TYPE_LOCAL_FILE_ENUMERATOR, GLocalFileEnumerator))
 #define G_LOCAL_FILE_ENUMERATOR_CLASS(k)     (G_TYPE_CHECK_CLASS_CAST((k), G_TYPE_LOCAL_FILE_ENUMERATOR, GLocalFileEnumeratorClass))
 #define G_IS_LOCAL_FILE_ENUMERATOR(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), G_TYPE_LOCAL_FILE_ENUMERATOR))
@@ -47,13 +47,13 @@ struct _GLocalFileEnumeratorClass
 
 };
 
-GType g_local_file_enumerator_get_type (void) G_GNUC_CONST;
+GType _g_local_file_enumerator_get_type (void) G_GNUC_CONST;
 
-GFileEnumerator *g_local_file_enumerator_new (const char *filename,
-					      const char *attributes,
-					      GFileQueryInfoFlags flags,
-					      GCancellable *cancellable,
-					      GError **error);
+GFileEnumerator *_g_local_file_enumerator_new (const char *filename,
+					       const char *attributes,
+					       GFileQueryInfoFlags flags,
+					       GCancellable *cancellable,
+					       GError **error);
 
 G_END_DECLS
 
