@@ -24,6 +24,8 @@
 #include <errno.h>
 #include "gioerror.h"
 
+#include "gioalias.h"
+
 /**
  * SECTION:gioerror
  * @short_description: Error helper functions
@@ -169,3 +171,6 @@ g_io_error_from_errno (gint err_no)
       break;
     }
 }
+
+#define __G_IO_ERROR_C__
+#include "gioaliasdef.c"

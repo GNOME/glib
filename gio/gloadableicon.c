@@ -25,6 +25,8 @@
 #include "gloadableicon.h"
 #include "glibintl.h"
 
+#include "gioalias.h"
+
 /**
  * SECTION:gloadableicon
  * @short_description: Loadable Icons
@@ -276,3 +278,6 @@ g_loadable_icon_real_load_finish (GLoadableIcon        *icon,
 
   return g_object_ref (data->stream);
 }
+
+#define __G_LOADABLE_ICON_C__
+#include "gioaliasdef.c"

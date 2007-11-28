@@ -1,3 +1,22 @@
+2007-11-28  Alexander Larsson  <alexl@redhat.com>
+
+        * Makefile.am:
+        * abicheck.sh: Added.
+        * makegioalias.pl: Added.
+        * pltcheck.sh: Added.
+        * gio.symbols: Added.
+	* *.c:
+        * inotify/*.c
+	Initial work on adding symbol handling.
+
+	* gvfs.h:
+	Correct ifdef guard name
+
+        * fam/Makefile.am:
+        * inotify/Makefile.am:
+        * xdgmime/Makefile.am:
+	Include toplevel Makefile.decl
+
 2007-11-27  Matthias Clasen  <mclasen@redhat.com>
 
 	* gcontenttype.c: Move doc comments to the unix section.

@@ -28,6 +28,8 @@
 #include "gseekable.h"
 #include "gsimpleasyncresult.h"
 
+#include "gioalias.h"
+
 /**
  * SECTION:ginputstream
  * @short_description: base class for implementing streaming input
@@ -1204,3 +1206,6 @@ g_input_stream_real_close_finish (GInputStream              *stream,
   g_assert (g_simple_async_result_get_source_tag (simple) == g_input_stream_real_close_async);
   return TRUE;
 }
+
+#define __G_INPUT_STREAM_C__
+#include "gioaliasdef.c"

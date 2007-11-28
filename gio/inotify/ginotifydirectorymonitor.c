@@ -31,6 +31,8 @@
 #define USE_INOTIFY 1
 #include "inotify-helper.h"
 
+#include "gioalias.h"
+
 struct _GInotifyDirectoryMonitor
 {
   GLocalDirectoryMonitor parent_instance;

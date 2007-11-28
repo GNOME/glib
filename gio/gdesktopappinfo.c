@@ -36,6 +36,8 @@
 #include <glib/gstdio.h>
 #include "glibintl.h"
 
+#include "gioalias.h"
+
 #define DEFAULT_APPLICATIONS_GROUP  "Default Applications" 
 #define MIME_CACHE_GROUP            "MIME Cache"
 
@@ -2190,3 +2192,6 @@ get_all_desktop_entries_for_mime_type (const char *base_mime_type)
   
   return desktop_entries;
 }
+
+#define __G_DESKTOP_APP_INFO_C__
+#include "gioaliasdef.c"

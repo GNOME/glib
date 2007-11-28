@@ -35,6 +35,7 @@
 #include "glocalfileinfo.h"
 #include "glibintl.h"
 
+#include "gioalias.h"
 
 G_DEFINE_TYPE (GLocalFileInputStream, g_local_file_input_stream, G_TYPE_FILE_INPUT_STREAM);
 

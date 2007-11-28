@@ -25,6 +25,8 @@
 #include "gsimpleasyncresult.h"
 #include "glibintl.h"
 
+#include "gioalias.h"
+
 /**
  * SECTION:goutputstream
  * @short_description: base class for implementing streaming output
@@ -1343,3 +1345,6 @@ g_output_stream_real_close_finish (GOutputStream              *stream,
   g_assert (g_simple_async_result_get_source_tag (simple) == g_output_stream_real_close_async);
   return TRUE;
 }
+
+#define __G_OUTPUT_STREAM_C__
+#include "gioaliasdef.c"

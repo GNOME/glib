@@ -32,6 +32,8 @@
 #include "gvolumemonitor.h"
 #include "glibintl.h"
 
+#include "gioalias.h"
+
 struct _GUnixDrive {
   GObject parent;
 

@@ -1,3 +1,5 @@
+include $(top_srcdir)/Makefile.decl
+
 AM_CPPFLAGS = -DXDG_PREFIX=_gio_xdg
 
 noinst_LTLIBRARIES = libxdgmime.la

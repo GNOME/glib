@@ -24,6 +24,8 @@
 
 #include "gioscheduler.h"
 
+#include "gioalias.h"
+
 /**
  * SECTION:gioscheduler
  * @short_description: I/O Scheduler
@@ -380,3 +382,6 @@ g_io_job_send_to_mainloop (GIOJob        *job,
       mainloop_proxy_free (proxy);
     }
 }
+
+#define __G_IO_SCHEDULER_C__
+#include "gioaliasdef.c"

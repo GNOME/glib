@@ -77,6 +77,8 @@
 #include <glib/gstdio.h>
 #include "glibintl.h"
 
+#include "gioalias.h"
+
 static void g_local_file_file_iface_init (GFileIface       *iface);
 
 static GFileAttributeInfoList *local_writable_attributes = NULL;

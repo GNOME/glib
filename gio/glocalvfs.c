@@ -27,6 +27,8 @@
 #include <sys/types.h>
 #include <pwd.h>
 
+#include "gioalias.h"
+
 struct _GLocalVfs
 {
   GVfs parent;

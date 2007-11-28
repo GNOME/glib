@@ -25,6 +25,8 @@
 #include "gdatainputstream.h"
 #include "glibintl.h"
 
+#include "gioalias.h"
+
 /**
  * SECTION:gdatainputstream
  * @short_description: Data Input Stream
@@ -854,3 +856,6 @@ g_data_input_stream_read_until (GDataInputStream        *stream,
   
   return data_until;
 }
+
+#define __G_DATA_INPUT_STREAM_C__
+#include "gioaliasdef.c"

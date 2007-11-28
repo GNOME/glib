@@ -24,6 +24,8 @@
 #include "gseekable.h"
 #include "glibintl.h"
 
+#include "gioalias.h"
+
 /**
  * SECTION:gseekable
  * @short_description: Stream seeking interface
@@ -203,3 +205,5 @@ g_seekable_truncate (GSeekable     *seekable,
   return (* iface->truncate) (seekable, offset, cancellable, error);
 }
 
+#define __G_SEEKABLE_C__
+#include "gioaliasdef.c"

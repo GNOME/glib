@@ -29,6 +29,8 @@
 #include "gvfs.h"
 #include "glibintl.h"
 
+#include "gioalias.h"
+
 /**
  * SECTION:gdirectorymonitor
  * @short_description: Directory Monitor
@@ -489,3 +491,6 @@ g_directory_monitor_emit_event (GDirectoryMonitor *monitor,
       update_rate_limiter_timeout (monitor, limiter->send_virtual_changes_done_at);
     }
 }
+
+#define __G_DIRECTORY_MONITOR_C__
+#include "gioaliasdef.c"

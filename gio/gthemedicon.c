@@ -24,6 +24,8 @@
 
 #include "gthemedicon.h"
 
+#include "gioalias.h"
+
 /**
  * SECTION:gthemedicon
  * @short_description: Themed Icons
@@ -184,3 +186,6 @@ g_themed_icon_icon_iface_init (GIconIface *iface)
   iface->hash = g_themed_icon_hash;
   iface->equal = g_themed_icon_equal;
 }
+
+#define __G_THEMED_ICON_C__
+#include "gioaliasdef.c"

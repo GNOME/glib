@@ -25,6 +25,8 @@
 #include "ginputstream.h"
 #include "glibintl.h"
 
+#include "gioalias.h"
+
 /**
  * SECTION:gfilterinputstream
  * @short_description: Filter Input Stream
@@ -395,5 +397,8 @@ g_filter_input_stream_close_finish (GInputStream  *stream,
 
   return res;
 }
+
+#define __G_FILTER_INPUT_STREAM_C__
+#include "gioaliasdef.c"
 
 /* vim: ts=2 sw=2 et */

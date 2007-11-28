@@ -35,6 +35,8 @@
 
 #include "glibintl.h"
 
+#include "gioalias.h"
+
 struct _GUnionVolumeMonitor {
   GVolumeMonitor parent;
 
@@ -393,3 +395,6 @@ g_volume_get_for_mount_path (const char *mountpoint)
 
   return volume;
 }
+
+#define __G_UNION_VOLUME_MONITOR_C__
+#include "gioaliasdef.c"

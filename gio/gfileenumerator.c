@@ -27,6 +27,8 @@
 #include "gsimpleasyncresult.h"
 #include "glibintl.h"
 
+#include "gioalias.h"
+
 /**
  * SECTION:gfileenumerator
  * @short_description: Enumerated Files Routines
@@ -628,3 +630,6 @@ g_file_enumerator_real_close_finish      (GFileEnumerator      *enumerator,
 	    g_file_enumerator_real_close_async);
   return TRUE;
 }
+
+#define __G_FILE_ENUMERATOR_C__
+#include "gioaliasdef.c"

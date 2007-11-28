@@ -1,0 +1,688 @@
+/* This file lists all exported symbols. It is used to generate
+ * the gio.def file used to control exports on Windows and the
+ * gioalias.h/gioaliasdef.c files used to avoid PLT entries for
+ * internal uses of exported functions (see makegioalias.pl).
+ *
+ * Every symbol must be included in the right
+ * #ifdef IN_HEADER(sym) #endif and
+ * #ifdef IN_FILE(sym) #endif sections.
+ */
+#ifdef ALL_FILES
+#define IN_FILE(x) 1
+#define IN_HEADER(x) 1
+#endif
+
+#if IN_HEADER(__G_VFS_H__)
+#if IN_FILE(__G_VFS_C__)
+g_vfs_get_type G_GNUC_CONST
+g_vfs_is_active
+g_vfs_get_file_for_path
+g_vfs_get_file_for_uri
+g_vfs_get_supported_uri_schemes
+g_vfs_parse_name
+g_vfs_get_default
+g_vfs_get_local
+#endif
+#endif
+
+#if IN_HEADER(__G_APP_INFO_H__)
+#if IN_FILE(__G_APP_INFO_C__)
+g_app_info_get_type G_GNUC_CONST
+g_app_launch_context_get_type G_GNUC_CONST
+g_app_info_dup
+g_app_info_equal
+g_app_info_get_id
+g_app_info_get_name
+g_app_info_get_description
+g_app_info_get_executable
+g_app_info_get_icon
+g_app_info_launch
+g_app_info_supports_uris
+g_app_info_launch_uris
+g_app_info_should_show
+g_app_info_set_as_default_for_type
+g_app_info_set_as_default_for_extension
+g_app_info_add_supports_type
+g_app_info_can_remove_supports_type
+g_app_info_remove_supports_type
+g_app_launch_context_new
+g_app_launch_context_get_display
+g_app_launch_context_get_startup_notify_id
+g_app_launch_context_launch_failed
+#endif
+
+#if IN_FILE(__G_DESKTOP_APP_INFO_C__)
+g_app_info_create_from_commandline
+g_app_info_get_all
+g_app_info_get_all_for_type
+g_app_info_get_default_for_type
+g_app_info_get_default_for_uri_scheme
+#endif
+#endif
+
+
+#if IN_HEADER(__G_ASYNC_RESULT_H__)
+#if IN_FILE(__G_ASYNC_RESULT_C__)
+g_async_result_get_type G_GNUC_CONST
+g_async_result_get_user_data
+g_async_result_get_source_object
+#endif
+#endif
+
+#if IN_HEADER(__G_BUFFERED_INPUT_STREAM_H__)
+#if IN_FILE(__G_BUFFERED_INPUT_STREAM_C__)
+g_buffered_input_stream_get_type G_GNUC_CONST
+g_buffered_input_stream_new
+g_buffered_input_stream_new_sized
+g_buffered_input_stream_get_buffer_size
+g_buffered_input_stream_set_buffer_size
+g_buffered_input_stream_get_available
+g_buffered_input_stream_peek
+g_buffered_input_stream_peek_buffer
+g_buffered_input_stream_fill
+g_buffered_input_stream_fill_async
+g_buffered_input_stream_fill_finish
+g_buffered_input_stream_read_byte
+#endif
+#endif
+
+#if IN_HEADER(__G_BUFFERED_OUTPUT_STREAM_H__)
+#if IN_FILE(__G_BUFFERED_OUTPUT_STREAM_C__)
+g_buffered_output_stream_get_type G_GNUC_CONST;
+g_buffered_output_stream_new
+g_buffered_output_stream_new_sized
+g_buffered_output_stream_get_buffer_size
+g_buffered_output_stream_set_buffer_size
+g_buffered_output_stream_get_auto_grow
+g_buffered_output_stream_set_auto_grow
+#endif
+#endif
+
+#if IN_HEADER(__G_CANCELLABLE_H__)
+#if IN_FILE(__G_CANCELLABLE_C__)
+g_cancellable_get_type G_GNUC_CONST
+g_cancellable_new
+g_cancellable_is_cancelled
+g_cancellable_set_error_if_cancelled
+g_cancellable_get_fd
+g_cancellable_get_current
+g_push_current_cancellable
+g_pop_current_cancellable
+g_cancellable_reset
+g_cancellable_cancel
+#endif
+#endif
+
+#if IN_HEADER(__G_CONTENT_TYPE_H__)
+#if IN_FILE(__G_CONTENT_TYPE_C__)
+g_content_type_equals
+g_content_type_is_a
+g_content_type_is_unknown
+g_content_type_get_description
+g_content_type_get_mime_type
+g_content_type_get_icon
+g_content_type_can_be_executable
+g_content_type_guess
+g_content_types_get_registered
+#endif
+#endif
+
+#if IN_HEADER(__G_DATA_INPUT_STREAM_H__)
+#if IN_FILE(__G_DATA_INPUT_STREAM_C__)
+g_data_input_stream_get_type G_GNUC_CONST
+g_data_input_stream_new
+g_data_input_stream_set_byte_order
+g_data_input_stream_get_byte_order
+g_data_input_stream_set_newline_type
+g_data_input_stream_get_newline_type
+g_data_input_stream_read_byte
+g_data_input_stream_read_int16
+g_data_input_stream_read_uint16
+g_data_input_stream_read_int32
+g_data_input_stream_read_uint32
+g_data_input_stream_read_int64
+g_data_input_stream_read_uint64
+g_data_input_stream_read_line
+g_data_input_stream_read_until
+#endif
+#endif
+
+#if IN_HEADER(__G_DATA_OUTPUT_STREAM_H__)
+#if IN_FILE(__G_DATA_OUTPUT_STREAM_C__)
+g_data_output_stream_get_type G_GNUC_CONST
+g_data_output_stream_new
+g_data_output_stream_set_byte_order
+g_data_output_stream_get_byte_order
+g_data_output_stream_put_byte
+g_data_output_stream_put_int16
+g_data_output_stream_put_uint16
+g_data_output_stream_put_int32
+g_data_output_stream_put_uint32
+g_data_output_stream_put_int64
+g_data_output_stream_put_uint64
+g_data_output_stream_put_string
+#endif
+#endif
+
+#if IN_HEADER(__G_DIRECTORY_MONITOR_H__)
+#if IN_FILE(__G_DIRECTORY_MONITOR_C__)
+g_directory_monitor_get_type G_GNUC_CONST
+g_directory_monitor_cancel
+g_directory_monitor_is_cancelled
+g_directory_monitor_set_rate_limit
+g_directory_monitor_emit_event
+#endif
+#endif
+
+#if IN_HEADER(__G_DRIVE_H__)
+#if IN_FILE(__G_DRIVE_C__)
+g_drive_get_type G_GNUC_CONST
+g_drive_get_name
+g_drive_get_icon
+g_drive_has_volumes
+g_drive_get_volumes
+g_drive_is_automounted
+g_drive_can_mount
+g_drive_can_eject
+g_drive_mount
+g_drive_mount_finish
+g_drive_eject
+g_drive_eject_finish
+#endif
+#endif
+
+#if IN_HEADER(__G_FILE_ATTRIBUTE_H__)
+#if IN_FILE(__G_FILE_ATTRIBUTE_C__)
+g_file_attribute_value_new
+g_file_attribute_value_free
+g_file_attribute_value_clear
+g_file_attribute_value_set
+g_file_attribute_value_dup
+g_file_attribute_value_as_string
+g_file_attribute_value_get_string
+g_file_attribute_value_get_byte_string
+g_file_attribute_value_get_boolean
+g_file_attribute_value_get_uint32
+g_file_attribute_value_get_int32
+g_file_attribute_value_get_uint64
+g_file_attribute_value_get_int64
+g_file_attribute_value_get_object
+g_file_attribute_value_set_string
+g_file_attribute_value_set_byte_string
+g_file_attribute_value_set_boolean
+g_file_attribute_value_set_uint32
+g_file_attribute_value_set_int32
+g_file_attribute_value_set_uint64
+g_file_attribute_value_set_int64
+g_file_attribute_value_set_object
+g_file_attribute_info_list_new
+g_file_attribute_info_list_ref
+g_file_attribute_info_list_unref
+g_file_attribute_info_list_dup
+g_file_attribute_info_list_lookup
+g_file_attribute_info_list_add
+#endif
+#endif
+
+#if IN_HEADER(__G_FILE_H__)
+#if IN_FILE(__G_FILE_C__)
+g_file_get_type G_GNUC_CONST
+g_file_new_for_path
+g_file_new_for_uri
+g_file_new_for_commandline_arg
+g_file_parse_name
+g_file_dup
+g_file_hash
+g_file_equal
+g_file_get_basename
+g_file_get_path
+g_file_get_uri
+g_file_get_parse_name
+g_file_get_parent
+g_file_get_child
+g_file_get_child_for_display_name
+g_file_contains_file
+g_file_get_relative_path
+g_file_resolve_relative_path
+g_file_is_native
+g_file_has_uri_scheme
+g_file_get_uri_scheme
+g_file_read
+g_file_read_async
+g_file_read_finish
+g_file_append_to
+g_file_create
+g_file_replace
+g_file_append_to_async
+g_file_append_to_finish
+g_file_create_async
+g_file_create_finish
+g_file_replace_async
+g_file_replace_finish
+g_file_query_info
+g_file_query_info_async
+g_file_query_info_finish
+g_file_query_filesystem_info
+g_file_find_enclosing_volume
+g_file_enumerate_children
+g_file_enumerate_children_async
+g_file_enumerate_children_finish
+g_file_set_display_name
+g_file_set_display_name_async
+g_file_set_display_name_finish
+g_file_delete
+g_file_trash
+g_file_copy
+g_file_move
+g_file_make_directory
+g_file_make_symbolic_link
+g_file_query_settable_attributes
+g_file_query_writable_namespaces
+g_file_set_attribute
+g_file_set_attributes_from_info
+g_file_set_attributes_async
+g_file_set_attributes_finish
+g_file_set_attribute_string
+g_file_set_attribute_byte_string
+g_file_set_attribute_uint32
+g_file_set_attribute_int32
+g_file_set_attribute_uint64
+g_file_set_attribute_int64
+g_mount_for_location
+g_mount_for_location_finish
+g_file_mount_mountable
+g_file_mount_mountable_finish
+g_file_unmount_mountable
+g_file_unmount_mountable_finish
+g_file_eject_mountable
+g_file_eject_mountable_finish
+g_file_copy_attributes
+g_file_monitor_directory
+g_file_monitor_file
+g_file_load_contents
+g_file_load_contents_async
+g_file_load_contents_finish
+g_file_load_partial_contents_async
+g_file_load_partial_contents_finish
+g_file_replace_contents
+g_file_replace_contents_async
+g_file_replace_contents_finish
+#endif
+#endif
+
+#if IN_HEADER(__G_FILE_ENUMERATOR_H__)
+#if IN_FILE(__G_FILE_ENUMERATOR_C__)
+g_file_enumerator_get_type G_GNUC_CONST
+g_file_enumerator_next_file
+g_file_enumerator_close
+g_file_enumerator_next_files_async
+g_file_enumerator_next_files_finish
+g_file_enumerator_close_async
+g_file_enumerator_close_finish
+g_file_enumerator_is_closed
+g_file_enumerator_has_pending
+g_file_enumerator_set_pending
+#endif
+#endif
+
+#if IN_HEADER(__G_FILE_ICON_H__)
+#if IN_FILE(__G_FILE_ICON_C__)
+g_file_icon_get_type G_GNUC_CONST
+g_file_icon_new
+g_file_icon_get_file
+#endif
+#endif
+
+#if IN_HEADER(__G_FILE_INFO_H__)
+#if IN_FILE(__G_FILE_INFO_C__)
+g_file_info_get_type  G_GNUC_CONST
+g_file_info_new 
+g_file_info_dup 
+g_file_info_copy_into 
+g_file_info_has_attribute 
+g_file_info_list_attributes 
+g_file_info_get_attribute_type 
+g_file_info_remove_attribute 
+g_file_info_get_attribute 
+g_file_info_get_attribute_string 
+g_file_info_get_attribute_byte_string 
+g_file_info_get_attribute_boolean 
+g_file_info_get_attribute_object 
+g_file_info_set_attribute 
+g_file_info_set_attribute_string 
+g_file_info_set_attribute_byte_string 
+g_file_info_set_attribute_boolean 
+g_file_info_set_attribute_object 
+g_file_info_clear_status 
+g_file_info_get_file_type 
+g_file_info_get_is_hidden 
+g_file_info_get_is_backup 
+g_file_info_get_is_symlink 
+g_file_info_get_name 
+g_file_info_get_display_name 
+g_file_info_get_edit_name 
+g_file_info_get_icon 
+g_file_info_get_content_type 
+g_file_info_get_size 
+g_file_info_get_modification_time 
+g_file_info_get_symlink_target 
+g_file_info_get_etag 
+g_file_info_get_sort_order 
+g_file_info_set_attribute_mask 
+g_file_info_unset_attribute_mask 
+g_file_info_set_file_type 
+g_file_info_set_is_hidden 
+g_file_info_set_is_symlink 
+g_file_info_set_name 
+g_file_info_set_display_name 
+g_file_info_set_edit_name 
+g_file_info_set_icon 
+g_file_info_set_content_type 
+g_file_info_set_size 
+g_file_info_set_modification_time 
+g_file_info_set_symlink_target 
+g_file_info_set_sort_order 
+g_file_attribute_matcher_unref 
+g_file_attribute_matcher_matches 
+g_file_attribute_matcher_matches_only 
+g_file_attribute_matcher_enumerate_namespace 
+g_file_attribute_matcher_enumerate_next 
+#endif
+#endif
+
+#if IN_HEADER(__G_FILE_INPUT_STREAM_H__)
+#if IN_FILE(__G_FILE_INPUT_STREAM_C__)
+g_file_input_stream_get_type  G_GNUC_CONST
+g_file_input_stream_query_info 
+g_file_input_stream_query_info_async 
+g_file_input_stream_query_info_finish 
+g_file_input_stream_tell 
+g_file_input_stream_can_seek 
+g_file_input_stream_seek 
+#endif
+#endif
+
+#if IN_HEADER(__G_FILE_MONITOR_H__)
+#if IN_FILE(__G_FILE_MONITOR_C__)
+g_file_monitor_get_type  G_GNUC_CONST
+g_file_monitor_cancel 
+g_file_monitor_is_cancelled 
+g_file_monitor_set_rate_limit 
+g_file_monitor_emit_event 
+#endif
+#endif
+
+#if IN_HEADER(__G_FILENAME_COMPLETER_H__)
+#if IN_FILE(__G_FILENAME_COMPLETER_C__)
+g_filename_completer_get_type  G_GNUC_CONST
+g_filename_completer_new 
+g_filename_completer_get_completion_suffix 
+g_filename_completer_get_completions 
+g_filename_completer_set_dirs_only 
+#endif
+#endif
+
+#if IN_HEADER(__G_FILE_OUTPUT_STREAM_H__)
+#if IN_FILE(__G_FILE_OUTPUT_STREAM_C__)
+g_file_output_stream_get_type  G_GNUC_CONST
+g_file_output_stream_query_info 
+g_file_output_stream_query_info_async 
+g_file_output_stream_query_info_finish 
+g_file_output_stream_get_etag 
+g_file_output_stream_tell 
+g_file_output_stream_can_seek 
+g_file_output_stream_seek 
+g_file_output_stream_can_truncate 
+g_file_output_stream_truncate 
+#endif
+#endif
+
+#if IN_HEADER(__G_FILTER_INPUT_STREAM_H__)
+#if IN_FILE(__G_FILTER_INPUT_STREAM_C__)
+g_filter_input_stream_get_type  G_GNUC_CONST
+g_filter_input_stream_get_base_stream 
+#endif
+#endif
+
+#if IN_HEADER(__G_FILTER_OUTPUT_STREAM_H__)
+#if IN_FILE(__G_FILTER_OUTPUT_STREAM_C__)
+g_filter_output_stream_get_type  G_GNUC_CONST
+g_filter_output_stream_get_base_stream 
+#endif
+#endif
+
+#if IN_HEADER(__G_ICON_H__)
+#if IN_FILE(__G_ICON_C__)
+g_icon_get_type  G_GNUC_CONST
+g_icon_hash 
+g_icon_equal 
+#endif
+#endif
+
+#if IN_HEADER(__G_INPUT_STREAM_H__)
+#if IN_FILE(__G_INPUT_STREAM_C__)
+g_input_stream_get_type  G_GNUC_CONST
+g_input_stream_read 
+g_input_stream_read_all 
+g_input_stream_skip 
+g_input_stream_close 
+g_input_stream_read_async 
+g_input_stream_read_finish 
+g_input_stream_skip_async 
+g_input_stream_skip_finish 
+g_input_stream_close_async 
+g_input_stream_close_finish 
+g_input_stream_is_closed 
+g_input_stream_has_pending 
+g_input_stream_set_pending 
+#endif
+#endif
+
+#if IN_HEADER(__G_IO_ERROR_H__)
+#if IN_FILE(__G_IO_ERROR_C__)
+g_io_error_quark 
+g_io_error_from_errno 
+#endif
+#endif
+
+#if IN_HEADER(__G_IO_MODULE_H__)
+#if IN_FILE(__G_IO_MODULE_C__)
+g_io_module_get_type  G_GNUC_CONST
+g_io_module_new 
+g_io_modules_ensure_loaded 
+#endif
+#endif
+
+#if IN_HEADER(__G_IO_SCHEDULER_H__)
+#if IN_FILE(__G_IO_SCHEDULER_C__)
+g_schedule_io_job 
+g_cancel_all_io_jobs 
+g_io_job_send_to_mainloop 
+#endif
+#endif
+
+#if IN_HEADER(__G_LOADABLE_ICON_H__)
+#if IN_FILE(__G_LOADABLE_ICON_C__)
+g_loadable_icon_get_type  G_GNUC_CONST
+g_loadable_icon_load 
+g_loadable_icon_load_async 
+g_loadable_icon_load_finish 
+#endif
+#endif
+
+#if IN_HEADER(__G_MEMORY_INPUT_STREAM_H__)
+#if IN_FILE(__G_MEMORY_INPUT_STREAM_C__)
+g_memory_input_stream_get_type  G_GNUC_CONST
+g_memory_input_stream_from_data 
+g_memory_input_stream_set_free_data 
+g_memory_input_stream_get_data 
+g_memory_input_stream_get_data_size 
+#endif
+#endif
+
+#if IN_HEADER(__G_MEMORY_OUTPUT_STREAM_H__)
+#if IN_FILE(__G_MEMORY_OUTPUT_STREAM_C__)
+g_memory_output_stream_get_type  G_GNUC_CONST
+g_memory_output_stream_new 
+g_memory_output_stream_set_max_size 
+g_memory_output_stream_get_data 
+g_memory_output_stream_set_free_data 
+#endif
+#endif
+
+#if IN_HEADER(__G_MOUNT_OPERATION_H__)
+#if IN_FILE(__G_MOUNT_OPERATION_C__)
+g_mount_operation_get_type  G_GNUC_CONST
+g_mount_operation_new 
+g_mount_operation_get_username 
+g_mount_operation_set_username 
+g_mount_operation_get_password 
+g_mount_operation_set_password 
+g_mount_operation_get_anonymous 
+g_mount_operation_set_anonymous 
+g_mount_operation_get_domain 
+g_mount_operation_set_domain 
+g_mount_operation_get_password_save 
+g_mount_operation_set_password_save 
+g_mount_operation_get_choice 
+g_mount_operation_set_choice 
+g_mount_operation_reply 
+#endif
+#endif
+
+#if IN_HEADER(__G_OUTPUT_STREAM_H__)
+#if IN_FILE(__G_OUTPUT_STREAM_C__)
+g_output_stream_get_type  G_GNUC_CONST
+g_output_stream_write 
+g_output_stream_write_all 
+g_output_stream_splice 
+g_output_stream_flush 
+g_output_stream_close 
+g_output_stream_write_async 
+g_output_stream_write_finish 
+g_output_stream_splice_async 
+g_output_stream_splice_finish 
+g_output_stream_flush_async 
+g_output_stream_flush_finish 
+g_output_stream_close_async 
+g_output_stream_close_finish 
+g_output_stream_is_closed 
+g_output_stream_has_pending 
+g_output_stream_set_pending 
+#endif
+#endif
+
+#if IN_HEADER(__G_SEEKABLE_H__)
+#if IN_FILE(__G_SEEKABLE_C__)
+g_seekable_get_type  G_GNUC_CONST
+g_seekable_tell 
+g_seekable_can_seek 
+g_seekable_seek 
+g_seekable_can_truncate 
+g_seekable_truncate 
+#endif
+#endif
+
+#if IN_HEADER(__G_SIMPLE_ASYNC_RESULT_H__)
+#if IN_FILE(__G_SIMPLE_ASYNC_RESULT_C__)
+g_simple_async_result_get_type  G_GNUC_CONST
+g_simple_async_result_new 
+g_simple_async_result_new_error 
+g_simple_async_result_new_from_error 
+g_simple_async_result_set_op_res_gpointer 
+g_simple_async_result_get_op_res_gpointer 
+g_simple_async_result_set_op_res_gssize 
+g_simple_async_result_get_op_res_gssize 
+g_simple_async_result_set_op_res_gboolean 
+g_simple_async_result_get_op_res_gboolean 
+g_simple_async_result_get_source_tag 
+g_simple_async_result_set_handle_cancellation 
+g_simple_async_result_complete 
+g_simple_async_result_complete_in_idle 
+g_simple_async_result_run_in_thread 
+g_simple_async_result_set_from_error 
+g_simple_async_result_propagate_error 
+g_simple_async_result_set_error 
+g_simple_async_result_set_error_va 
+g_simple_async_report_error_in_idle 
+#endif
+#endif
+
+#if IN_HEADER(__G_THEMED_ICON_H__)
+#if IN_FILE(__G_THEMED_ICON_C__)
+g_themed_icon_get_type  G_GNUC_CONST
+g_themed_icon_new 
+g_themed_icon_new_from_names 
+g_themed_icon_get_names 
+#endif
+#endif
+
+#if IN_HEADER(__G_UNIX_MOUNTS_H__)
+#if IN_FILE(__G_UNIX_MOUNTS_C__)
+g_unix_mount_free 
+g_unix_mount_point_free 
+g_unix_mount_compare 
+g_unix_mount_get_mount_path 
+g_unix_mount_get_device_path 
+g_unix_mount_get_fs_type 
+g_unix_mount_is_readonly 
+g_unix_mount_is_system_internal 
+g_unix_mount_guess_type 
+g_unix_mount_point_compare 
+g_unix_mount_point_get_mount_path 
+g_unix_mount_point_get_device_path 
+g_unix_mount_point_get_fs_type 
+g_unix_mount_point_is_readonly 
+g_unix_mount_point_is_user_mountable 
+g_unix_mount_point_is_loopback 
+g_unix_mount_point_guess_type 
+g_get_unix_mount_points 
+g_get_unix_mounts 
+g_get_unix_mount_at 
+g_unix_mounts_changed_since 
+g_unix_mount_points_changed_since 
+g_unix_mount_monitor_get_type  G_GNUC_CONST
+g_unix_mount_monitor_new 
+#endif
+#endif
+
+#if IN_HEADER(__G_UNIX_INPUT_STREAM_H__)
+#if IN_FILE(__G_UNIX_INPUT_STREAM_C__)
+g_unix_input_stream_get_type  G_GNUC_CONST
+g_unix_input_stream_new 
+#endif
+#endif
+
+#if IN_HEADER(__G_UNIX_OUTPUT_STREAM_H__)
+#if IN_FILE(__G_UNIX_OUTPUT_STREAM_C__)
+g_unix_output_stream_get_type  G_GNUC_CONST
+g_unix_output_stream_new 
+#endif
+#endif
+
+#if IN_HEADER(__G_VOLUME_H__)
+#if IN_FILE(__G_VOLUME_C__)
+g_volume_get_type  G_GNUC_CONST
+g_volume_get_root 
+g_volume_get_name 
+g_volume_get_icon 
+g_volume_get_drive 
+g_volume_can_unmount 
+g_volume_can_eject 
+g_volume_unmount 
+g_volume_unmount_finish 
+g_volume_eject 
+g_volume_eject_finish 
+#endif
+#endif
+
+#if IN_HEADER(__G_VOLUME_MONITOR_H__)
+#if IN_FILE(__G_VOLUME_MONITOR_C__)
+g_volume_monitor_get_type  G_GNUC_CONST
+g_volume_monitor_get_mounted_volumes 
+g_volume_monitor_get_connected_drives 
+#endif
+#if IN_FILE(__G_UNION_VOLUME_MONITOR_C__)
+g_volume_monitor_get 
+#endif
+#endif

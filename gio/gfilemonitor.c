@@ -28,6 +28,8 @@
 #include "gvfs.h"
 #include "glibintl.h"
 
+#include "gioalias.h"
+
 /**
  * SECTION:gfilemonitor
  * @short_description: File Monitor
@@ -403,3 +405,6 @@ g_file_monitor_emit_event (GFileMonitor *monitor,
       schedule_virtual_change_done (monitor, file);
     }
 }
+
+#define __G_FILE_MONITOR_C__
+#include "gioaliasdef.c"

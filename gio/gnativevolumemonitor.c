@@ -5,6 +5,7 @@
 #include <glib.h>
 #include "gnativevolumemonitor.h"
 
+#include "gioalias.h"
 
 G_DEFINE_ABSTRACT_TYPE (GNativeVolumeMonitor, g_native_volume_monitor, G_TYPE_VOLUME_MONITOR);
 

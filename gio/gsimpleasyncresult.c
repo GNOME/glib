@@ -34,6 +34,8 @@
 #include <gio/gioerror.h>
 #include "glibintl.h"
 
+#include "gioalias.h"
+
 /**
  * SECTION:gsimpleasyncresult
  * @short_description: simple asynchronous results implementation
@@ -680,3 +682,6 @@ g_simple_async_report_error_in_idle (GObject *object,
   g_simple_async_result_complete_in_idle (simple);
   g_object_unref (simple);
 }
+
+#define __G_SIMPLE_ASYNC_RESULT_C__
+#include "gioaliasdef.c"

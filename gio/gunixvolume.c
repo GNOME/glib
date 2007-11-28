@@ -33,6 +33,8 @@
 #include "gthemedicon.h"
 #include "glibintl.h"
 
+#include "gioalias.h"
+
 struct _GUnixVolume {
   GObject parent;
 

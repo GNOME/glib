@@ -47,6 +47,8 @@
 #include "gfile.h"
 #include "gfilemonitor.h"
 
+#include "gioalias.h"
+
 /**
  * SECTION:gunixmounts
  * @short_description: Unix Mounts
@@ -1589,3 +1591,6 @@ g_unix_mount_point_guess_type (GUnixMountPoint *mount_point)
 			   mount_point->device_path,
 			   mount_point->filesystem_type);
 }
+
+#define __G_UNIX_MOUNTS_C__
+#include "gioaliasdef.c"

@@ -28,6 +28,8 @@
 #include "gsimpleasyncresult.h"
 #include "glibintl.h"
 
+#include "gioalias.h"
+
 /**
  * SECTION:gmemoryinputstream
  * @short_description: streaming input operations on memory chunks
@@ -465,5 +467,7 @@ g_memory_input_stream_truncate (GSeekable      *seekable,
   return FALSE;
 }
 
-/* vim: ts=2 sw=2 et */
+#define __G_MEMORY_INPUT_STREAM_C__
+#include "gioaliasdef.c"
 
+/* vim: ts=2 sw=2 et */

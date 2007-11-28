@@ -1,3 +1,5 @@
+include $(top_srcdir)/Makefile.decl
+
 NULL =
 
 noinst_LTLIBRARIES = libinotify.la

@@ -26,6 +26,8 @@
 #include "gpollfilemonitor.h"
 #include "gfilemonitor.h"
 
+#include "gioalias.h"
+
 static gboolean g_poll_file_monitor_cancel (GFileMonitor* monitor);
 static void schedule_poll_timeout (GPollFileMonitor* poll_monitor);
 

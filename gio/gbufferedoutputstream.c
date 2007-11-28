@@ -27,6 +27,8 @@
 #include "string.h"
 #include "glibintl.h"
 
+#include <gioalias.h>
+
 /**
  * SECTION:gbufferedoutputstream
  * @short_description: Buffered Output Stream
@@ -757,5 +759,8 @@ g_buffered_output_stream_close_finish (GOutputStream        *stream,
 
   return TRUE;
 }
+
+#define __G_BUFFERED_OUTPUT_STREAM_C__
+#include "gioaliasdef.c"
 
 /* vim: ts=2 sw=2 et */

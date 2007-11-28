@@ -25,6 +25,8 @@
 
 #include "glibintl.h"
 
+#include "gioalias.h"
+
 static void g_icon_base_init (gpointer g_class);
 static void g_icon_class_init (gpointer g_class,
 			       gpointer class_data);
@@ -120,3 +122,5 @@ g_icon_equal (GIcon *icon1,
   return (* iface->equal) (icon1, icon2);
 }
 
+#define __G_ICON_C__
+#include "gioaliasdef.c"

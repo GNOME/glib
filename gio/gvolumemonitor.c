@@ -24,6 +24,8 @@
 #include "gvolumemonitor.h"
 #include "glibintl.h"
 
+#include "gioalias.h"
+
 /**
  * SECTION:gvolumemonitor
  * @short_description: Volume Monitor
@@ -183,3 +185,5 @@ g_volume_monitor_get_connected_drives (GVolumeMonitor *volume_monitor)
   return class->get_connected_drives (volume_monitor);
 }
 
+#define __G_VOLUME_MONITOR_C__
+#include "gioaliasdef.c"

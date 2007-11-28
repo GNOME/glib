@@ -25,6 +25,8 @@
 #include "gsimpleasyncresult.h"
 #include "glibintl.h"
 
+#include "gioalias.h"
+
 /**
  * SECTION:gdrive
  * @short_description: Virtual File System drive management
@@ -383,3 +385,6 @@ g_drive_eject_finish (GDrive               *drive,
   
   return (* iface->mount_finish) (drive, result, error);
 }
+
+#define __G_DRIVE_C__
+#include "gioaliasdef.c"

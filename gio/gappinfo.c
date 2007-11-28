@@ -25,6 +25,8 @@
 #include "glibintl.h"
 #include <gioerror.h>
 
+#include "gioalias.h"
+
 /**
  * SECTION:gappinfo
  * @short_description: Application information and launch contexts
@@ -32,8 +34,6 @@
  * 
  * #GAppInfo and #GAppLaunchContext are used for describing and launching 
  * installed system applications. 
- *
- * @Note: These may/will be moved to Gtk+ in the future.
  *
  **/
 
@@ -594,3 +594,6 @@ g_app_launch_context_launch_failed (GAppLaunchContext *context,
   if (class->launch_failed != NULL)
     class->launch_failed (context, startup_notify_id);
 }
+
+#define __G_APP_INFO_C__
+#include "gioaliasdef.c"

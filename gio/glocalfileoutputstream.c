@@ -36,6 +36,8 @@
 #include "glocalfileoutputstream.h"
 #include "glocalfileinfo.h"
 
+#include "gioalias.h"
+
 G_DEFINE_TYPE (GLocalFileOutputStream, g_local_file_output_stream, G_TYPE_FILE_OUTPUT_STREAM);
 
 /* Some of the file replacement code was based on the code from gedit,

@@ -1,3 +1,5 @@
+include $(top_srcdir)/Makefile.decl
+
 NULL =
 
 module_flags = -export_dynamic -avoid-version -module -no-undefined -export-symbols-regex '^g_io_module_(load|unload)'

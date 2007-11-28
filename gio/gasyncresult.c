@@ -24,6 +24,8 @@
 #include "gasyncresult.h"
 #include "glibintl.h"
 
+#include "gioalias.h"
+
 /**
  * SECTION:gasyncresult
  * @short_description: Asynchronous Function Results
@@ -167,3 +169,6 @@ g_async_result_get_source_object (GAsyncResult *res)
 
   return (* iface->get_source_object) (res);
 }
+
+#define __G_ASYNC_RESULT_C__
+#include "gioaliasdef.c"

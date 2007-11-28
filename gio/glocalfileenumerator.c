@@ -27,6 +27,8 @@
 #include <glocalfileinfo.h>
 #include "glibintl.h"
 
+#include "gioalias.h"
+
   /* TODO:
    *  It would be nice to use the dirent->d_type to check file type without
    *  needing to stat each files on linux and other systems that support it.

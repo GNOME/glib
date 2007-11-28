@@ -32,6 +32,8 @@
 
 #include "gdummyfile.h"
 
+#include "gioalias.h"
+
 static void g_dummy_file_file_iface_init (GFileIface       *iface);
 
 typedef struct {

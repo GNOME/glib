@@ -27,6 +27,7 @@
 #include "gcancellable.h"
 #include "glibintl.h"
 
+#include "gioalias.h"
 
 /**
  * SECTION:gcancellable
@@ -334,4 +335,5 @@ g_cancellable_cancel (GCancellable *cancellable)
     }
 }
 
-
+#define __G_CANCELLABLE_C__
+#include "gioaliasdef.c"

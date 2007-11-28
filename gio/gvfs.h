@@ -20,8 +20,8 @@
  * Author: Alexander Larsson <alexl@redhat.com>
  */
 
-#ifndef __G_VFS_IMPLEMENTATION_H__
-#define __G_VFS_IMPLEMENTATION_H__
+#ifndef __G_VFS_H__
+#define __G_VFS_H__
 
 #include <glib-object.h>
 #include <gio/gfile.h>

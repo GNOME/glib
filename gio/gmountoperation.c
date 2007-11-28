@@ -28,6 +28,8 @@
 #include "gio-marshal.h"
 #include "glibintl.h"
 
+#include "gioalias.h"
+
 /** 
  * SECTION:gmountoperation
  * @short_description: Authentication methods for mountable locations
@@ -408,3 +410,6 @@ g_mount_operation_reply (GMountOperation *op,
   g_return_if_fail (G_IS_MOUNT_OPERATION (op));
   g_signal_emit (op, signals[REPLY], 0, abort);
 }
+
+#define __G_MOUNT_OPERATION_C__
+#include "gioaliasdef.c"

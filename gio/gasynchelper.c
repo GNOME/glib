@@ -24,6 +24,8 @@
 
 #include "gasynchelper.h"
 
+#include "gioalias.h"
+
 /**
  * SECTION:gasynchelper
  * @short_description: Asynchronous Helper Functions

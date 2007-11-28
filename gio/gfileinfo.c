@@ -42,6 +42,8 @@
 #include "gfileinfo.h"
 #include "glibintl.h"
 
+#include "gioalias.h"
+
 /* We use this nasty thing, because NULL is a valid attribute matcher (matches nothing) */
 #define NO_ATTRIBUTE_MASK ((GFileAttributeMatcher *)1)
 
@@ -2083,3 +2085,6 @@ g_file_attribute_matcher_enumerate_next (GFileAttributeMatcher *matcher)
 	return get_attribute_for_id (sub_matcher->id);
     }
 }
+
+#define __G_FILE_INFO_C__
+#include "gioaliasdef.c"

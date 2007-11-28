@@ -1,9 +1,26 @@
+include $(top_srcdir)/Makefile.decl
+
 NULL =
 
 SUBDIRS= 
 
 if OS_UNIX
 SUBDIRS += xdgmime
+endif
+
+gio.def: gio.symbols
+	(echo -e EXPORTS; $(CPP) -P -DINCLUDE_VARIABLES -DINCLUDE_INTERNAL_SYMBOLS -DG_OS_WIN32 -DALL_FILES - <$(srcdir)/gobject.symbols | sed -e '/^$$/d' -e 's/^/	/' -e 's/G_GNUC_[^ ]*//g' | sort) > gobject.def
+
+gioalias.h: gio.symbols
+	$(PERL) $(srcdir)/makegioalias.pl < $(srcdir)/gio.symbols > gioalias.h
+
+gioaliasdef.c: gio.symbols
+	$(PERL) $(srcdir)/makegioalias.pl -def < $(srcdir)/gio.symbols > gioaliasdef.c
+
+if OS_LINUX
+if HAVE_GNUC_VISIBILITY
+TESTS = abicheck.sh pltcheck.sh
+endif
 endif
 
 AM_CPPFLAGS = \
@@ -19,8 +36,9 @@ AM_CPPFLAGS = \
 lib_LTLIBRARIES = libgio-2.0.la
 
 marshal_sources = \
-        gio-marshal.h \
-        gio-marshal.c \
+        gio-marshal.h	\
+        gio-marshal.c	\
+	makegioalias.pl	\
 	$(NULL)
 
 if CROSS_COMPILING
@@ -215,8 +233,13 @@ gioinclude_HEADERS = \
 	gvolumemonitor.h 	\
 	$(NULL)
 
+
+# these sources (also mentioned above) are generated.
+BUILT_SOURCES = gio-marshal.h gio-marshal.c gioalias.h gioaliasdef.c
+
 EXTRA_DIST = 			\
 	gio-marshal.list	\
+	gio.symbols		\
 	$(NULL)
 
 CLEANFILES = 			\

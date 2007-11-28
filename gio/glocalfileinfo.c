@@ -60,6 +60,8 @@
 #include "gcontenttype.h"
 #include "gcontenttypeprivate.h"
 
+#include "gioalias.h"
+
 struct ThumbMD5Context {
 	guint32 buf[4];
 	guint32 bits[2];

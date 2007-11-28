@@ -27,6 +27,8 @@
 #include "giomodule.h"
 #include "glibintl.h"
 
+#include "gioalias.h"
+
 /**
  * SECTION:gvfs
  * @short_description: Virtual File System 
@@ -274,3 +276,5 @@ g_vfs_get_local (void)
   return G_VFS (vfs);
 }
 
+#define __G_VFS_C__
+#include "gioaliasdef.c"

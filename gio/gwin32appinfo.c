@@ -33,6 +33,8 @@
 #include <windows.h>
 #include <shlwapi.h>
 
+#include "gioalias.h"
+
 #ifndef ASSOCF_INIT_BYEXENAME
 #define ASSOCF_INIT_BYEXENAME 0x00000002
 #endif

@@ -39,6 +39,8 @@
 #include "gasynchelper.h"
 #include "glibintl.h"
 
+#include "gioalias.h"
+
 /**
  * SECTION:gunixinputstream
  * @short_description: Unix Input Stream
@@ -478,3 +480,5 @@ g_unix_input_stream_close_finish (GInputStream              *stream,
   return TRUE;
 }
 
+#define __G_UNIX_INPUT_STREAM_C__
+#include "gioaliasdef.c"

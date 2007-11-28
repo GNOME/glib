@@ -26,6 +26,8 @@
 #include "gsimpleasyncresult.h"
 #include "glibintl.h"
 
+#include "gioalias.h"
+
 /**
  * SECTION:gvolume
  * @short_description: mounted volume management
@@ -377,3 +379,6 @@ g_volume_eject_finish (GVolume              *volume,
   iface = G_VOLUME_GET_IFACE (volume);
   return (* iface->eject_finish) (volume, result, error);
 }
+
+#define __G_VOLUME_C__
+#include "gioaliasdef.c"

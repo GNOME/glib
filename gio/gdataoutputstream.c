@@ -25,6 +25,8 @@
 #include "gdataoutputstream.h"
 #include "glibintl.h"
 
+#include "gioalias.h"
+
 /**
  * SECTION:gdataoutputstream
  * @short_description: Data Output Stream
@@ -473,3 +475,6 @@ g_data_output_stream_put_string (GDataOutputStream     *stream,
 				    &bytes_written,
 				    cancellable, error);
 }  
+
+#define __G_DATA_OUTPUT_STREAM_C__
+#include "gioaliasdef.c"

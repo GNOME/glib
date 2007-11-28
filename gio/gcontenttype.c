@@ -28,6 +28,8 @@
 #include "gcontenttypeprivate.h"
 #include "glibintl.h"
 
+#include "gioalias.h"
+
 /**
  * SECTION:gcontenttype
  * @short_description: platform specific content typing
@@ -868,3 +870,6 @@ g_content_types_get_registered (void)
 }
 
 #endif /* Unix version */
+
+#define __G_CONTENT_TYPE_C__
+#include "gioaliasdef.c"

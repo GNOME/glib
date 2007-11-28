@@ -28,6 +28,8 @@
 #include "gsimpleasyncresult.h"
 #include "glibintl.h"
 
+#include "gioalias.h"
+
 /**
  * SECTION:gfileinputstream
  * @short_description: file input streaming operations
@@ -518,3 +520,7 @@ g_file_input_stream_real_query_info_finish (GFileInputStream     *stream,
   
   return NULL;
 }
+
+#define __G_FILE_INPUT_STREAM_C__
+#include "gioaliasdef.c"
+

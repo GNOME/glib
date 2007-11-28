@@ -74,8 +74,6 @@ GDataOutputStream*  g_data_output_stream_new        (GOutputStream *base_stream)
 void                 g_data_output_stream_set_byte_order (GDataOutputStream     *stream,
 							  GDataStreamByteOrder   order);
 GDataStreamByteOrder g_data_output_stream_get_byte_order (GDataOutputStream     *stream);
-void                 g_data_output_stream_set_expand_buffer (GDataOutputStream     *stream,
-							     gboolean               expand_buffer);
 
 gboolean             g_data_output_stream_put_byte       (GDataOutputStream     *stream,
 							  guchar                 data,

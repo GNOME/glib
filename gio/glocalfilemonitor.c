@@ -27,6 +27,8 @@
 
 #include <string.h>
 
+#include "gioalias.h"
+
 enum
 {
   PROP_0,

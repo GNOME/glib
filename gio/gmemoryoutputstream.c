@@ -28,6 +28,8 @@
 #include "string.h"
 #include "glibintl.h"
 
+#include "gioalias.h"
+
 /**
  * SECTION:gmemoryoutputstream
  * @short_description: streaming output operations on memory chunks
@@ -684,5 +686,8 @@ g_memory_output_stream_truncate (GSeekable      *seekable,
 
   return TRUE;
 }
+
+#define __G_MEMORY_OUTPUT_STREAM_C__
+#include "gioaliasdef.c"
 
 /* vim: ts=2 sw=2 et */

@@ -34,6 +34,8 @@
 #include "gpollfilemonitor.h"
 #include "glibintl.h"
 
+#include "gioalias.h"
+
 /**
  * SECTION:gfile
  * @short_description: File and Directory Handling
@@ -4605,3 +4607,6 @@ g_file_replace_contents_finish (GFile                *file,
   
   return TRUE;
 }
+
+#define __G_FILE_C__
+#include "gioaliasdef.c"

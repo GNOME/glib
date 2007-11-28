@@ -24,6 +24,8 @@
 
 #include "giomodule.h"
 
+#include "gioalias.h"
+
 /**
  * SECTION:giomodule
  * @short_description: Loadable GIO Modules
@@ -247,3 +249,6 @@ g_io_modules_ensure_loaded (const char *directory)
   
   G_UNLOCK (loaded_dirs);
 }
+
+#define __G_IO_MODULE_C__
+#include "gioaliasdef.c"
