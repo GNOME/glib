@@ -61,6 +61,7 @@
 #include "glib.h"
 #include "gprintfint.h"
 #include "gthreadprivate.h"
+#include "glibintl.h"
 #include "galias.h"
 
 #ifdef	MAXPATHLEN

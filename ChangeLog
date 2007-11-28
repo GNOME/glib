@@ -1,3 +1,16 @@
+2007-11-28  Alexander Larsson  <alexl@redhat.com>
+
+        * glib/glib.symbols:
+	Add in the new symbols
+	
+        * glib/gurifuncs.c:
+	Use the aliases framework
+	
+        * glib/glibintl.h:
+        * glib/gutils.c:
+	Make the alias stuff work now that glib_gettext
+	is exported to libgio. 
+
 2007-11-27  Ryan Lortie  <desrt@desrt.ca>
 
 	* glib/ghash.c (g_hash_table_insert, g_hash_table_replace,

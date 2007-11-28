@@ -5,9 +5,9 @@
 #error "config.h must be included prior to glibintl.h"
 #endif
 
-#ifdef ENABLE_NLS
+G_CONST_RETURN gchar *glib_gettext (const gchar *str);
 
-gchar *glib_gettext (const gchar *str);
+#ifdef ENABLE_NLS
 
 #include <libintl.h>
 #define _(String) glib_gettext(String)

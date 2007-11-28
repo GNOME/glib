@@ -338,6 +338,7 @@ g_file_set_contents
 g_file_open_tmp PRIVATE
 g_file_test PRIVATE
 g_file_read_link
+g_format_file_size_for_display
 g_mkstemp PRIVATE
 g_mkdir_with_parents
 #ifdef G_OS_WIN32
@@ -1126,6 +1127,15 @@ g_dpgettext
 #endif
 #endif
 
+#if IN_HEADER(__G_URI_FUNCS_H__)
+#if IN_FILE(__G_URI_FUNCS_C__)
+g_uri_unescape_string 
+g_uri_unescape_segment 
+g_uri_get_scheme 
+g_uri_escape_string 
+#endif
+#endif
+
 #if IN_HEADER(__G_STRING_H__)
 #if IN_FILE(__G_STRING_C__)
 g_string_append
@@ -1162,6 +1172,7 @@ g_string_printf G_GNUC_PRINTF(2,3)
 g_string_set_size
 g_string_sized_new
 g_string_truncate
+g_string_append_uri_escaped
 #ifndef G_DISABLE_DEPRECATED
 g_string_down
 g_string_up
@@ -1409,6 +1420,13 @@ g_unichar_validate
 #endif
 #endif
 
+
+#if IN_HEADER(__GLIBINTL_H__)
+#if IN_FILE(__G_UTILS_C__)
+glib_gettext
+#endif
+#endif
+
 #if IN_HEADER(__G_HASH_H__)
 #if IN_FILE(__G_UTILS_C__)
 g_int_equal
@@ -1557,4 +1575,3 @@ glib_minor_version
 glib_on_error_halt
 g_mem_gc_friendly
 #endif
-
