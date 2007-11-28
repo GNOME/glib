@@ -1028,6 +1028,7 @@ G_IS_APP_LAUNCH_CONTEXT_CLASS
 G_TYPE_APP_LAUNCH_CONTEXT
 <SUBSECTION Private>
 g_app_info_get_type
+g_app_launch_context_get_type
 GAppLaunchContextPrivate
 </SECTION>
 

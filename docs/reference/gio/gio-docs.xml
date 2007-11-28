@@ -86,7 +86,6 @@
     <chapter id="utils">   
     	<title>Utilities</title>
         <xi:include href="xml/gfilenamecompleter.xml"/>
-        <xi:include href="xml/gurifuncs.xml"/>
     </chapter>
     <chapter id="extending">
     	<title>Extending GIO</title>
