@@ -123,7 +123,7 @@ g_volume_base_init (gpointer g_class)
  * 
  * Gets the root directory on @volume.
  * 
- * Returns a #GFile.
+ * Returns: a #GFile.
  **/
 GFile *
 g_volume_get_root (GVolume *volume)
@@ -143,7 +143,7 @@ g_volume_get_root (GVolume *volume)
  * 
  * Gets the name of @volume.
  * 
- * Returns the name for the given @volume. The returned string should 
+ * Returns: the name for the given @volume. The returned string should 
  * be freed when no longer needed.
  **/
 char *
@@ -204,7 +204,7 @@ g_volume_get_drive (GVolume *volume)
  * 
  * Checks if @volume can be mounted.
  * 
- * Returns %TRUE if the @volume can be unmounted.
+ * Returns: %TRUE if the @volume can be unmounted.
  **/
 gboolean
 g_volume_can_unmount (GVolume *volume)
@@ -224,7 +224,7 @@ g_volume_can_unmount (GVolume *volume)
  * 
  * Checks if @volume can be ejected.
  * 
- * Returns %TRUE if the @volume can be ejected.
+ * Returns: %TRUE if the @volume can be ejected.
  **/
 gboolean
 g_volume_can_eject (GVolume *volume)

@@ -747,7 +747,7 @@ g_file_attribute_info_list_new (void)
  * 
  * Makes a duplicate of a file attribute info list.
  * 
- * Returns a duplicate of the given @list. 
+ * Returns: a copy of the given @list. 
  **/
 GFileAttributeInfoList *
 g_file_attribute_info_list_dup (GFileAttributeInfoList *list)

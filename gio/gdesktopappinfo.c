@@ -1486,6 +1486,8 @@ app_info_in_list (GAppInfo *info, GList *l)
  * g_app_info_get_all_for_type:
  * @content_type:
  * 
+ * Gets a list of all #GAppInfo s for a given content type.
+ *
  * Returns: #GList of #GAppInfo s for given @content_type.
  **/
 GList *
@@ -1520,10 +1522,14 @@ g_app_info_get_all_for_type (const char *content_type)
 
 
 /**
- * g_app_info-get_default_for_type:
+ * g_app_info_get_default_for_type:
  * @content_type:
  * @must_support_uris:
  * 
+ * Gets the #GAppInfo that correspond to a given content type.
+ * If @must_support_uris is true, the #GAppInfo is expected to 
+ * support URIs. 
+ *
  * Returns: #GAppInfo for given @content_type.
  **/
 GAppInfo *

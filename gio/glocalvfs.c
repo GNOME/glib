@@ -54,8 +54,10 @@ g_local_vfs_init (GLocalVfs *vfs)
 
 /**
  * g_local_vfs_new:
- * 
- * Returns a new #GVfs handle.
+ *
+ * Returns a new #GVfs handle for a local vfs.
+ *
+ * Returns: a new #GVfs handle.
  **/
 GVfs *
 g_local_vfs_new (void)

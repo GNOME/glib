@@ -149,7 +149,7 @@ g_volume_monitor_init (GVolumeMonitor *monitor)
  * 
  * Gets a list of volumes mounted on the computer.
  * 
- * Returns a #GList of mounted #GVolumes.
+ * Returns: a #GList of mounted #GVolumes.
  **/
 GList *
 g_volume_monitor_get_mounted_volumes  (GVolumeMonitor *volume_monitor)

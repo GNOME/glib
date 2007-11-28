@@ -490,13 +490,6 @@ app_info_in_list (GAppInfo *info, GList *l)
   return FALSE;
 }
 
-/**
- * g_app_info_get_all_for_type:
- * @content_type:
- * 
- * Returns a #GList of #GAppInfo for a given @content_type.
- * 
- **/
 GList *
 g_app_info_get_all_for_type (const char *content_type)
 {
@@ -580,16 +573,6 @@ g_app_info_get_all_for_type (const char *content_type)
   return g_list_reverse (infos);
 }
 
-/**
- * g_app_info_get_default_for_type:
- * @content_type:
- * @must_support_uris:
- * 
- * Returns the default #GAppInfo for the given @content_type. If 
- * @must_support_uris is true, the #GAppInfo is expected to support
- * URIs. 
- * 
- **/
 GAppInfo *
 g_app_info_get_default_for_type (const char *content_type,
 				 gboolean must_support_uris)
@@ -615,11 +598,6 @@ g_app_info_get_default_for_type (const char *content_type,
   return NULL;
 }
 
-/**
- * g_app_info_get_default_for_uri_scheme:
- * @uri_scheme:
- * 
- **/
 GAppInfo *
 g_app_info_get_default_for_uri_scheme (const char *uri_scheme)
 {
@@ -627,10 +605,6 @@ g_app_info_get_default_for_uri_scheme (const char *uri_scheme)
   return NULL;
 }
 
-/**
- * g_app_info_get_all:
- * 
- **/
 GList *
 g_app_info_get_all (void)
 {

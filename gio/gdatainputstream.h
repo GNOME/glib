@@ -104,7 +104,7 @@ GDataInputStream*  g_data_input_stream_new        (GInputStream *base_stream);
 void                   g_data_input_stream_set_byte_order   (GDataInputStream        *stream,
 							     GDataStreamByteOrder     order);
 GDataStreamByteOrder   g_data_input_stream_get_byte_order   (GDataInputStream        *stream);
-void                   g_data_input_stream_set_newline_type (GDataInputStream        *data_stream,
+void                   g_data_input_stream_set_newline_type (GDataInputStream        *stream,
 							     GDataStreamNewlineType   type);
 GDataStreamNewlineType g_data_input_stream_get_newline_type (GDataInputStream        *stream);
 guchar                 g_data_input_stream_read_byte        (GDataInputStream        *stream,

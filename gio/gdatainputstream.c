@@ -170,7 +170,7 @@ g_data_input_stream_set_byte_order (GDataInputStream *stream,
  * 
  * Gets the byte order for the data input stream.
  * 
- * Returns the @stream's current #GDataStreamByteOrder. 
+ * Returns: the @stream's current #GDataStreamByteOrder. 
  **/
 GDataStreamByteOrder
 g_data_input_stream_get_byte_order (GDataInputStream *stream)
@@ -256,9 +256,8 @@ read_data (GDataInputStream *stream,
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @error: #GError for error reporting.
  * 
- * In order to get the correct byte order for this read operation, 
- * see g_data_stream_get_byte_order() and g_data_stream_set_byte_order().
- * 
+ * Reads an unsigned 8-bit/1-byte value from @stream.
+ *
  * Returns: an unsigned 8-bit/1-byte value read from the @stream or %0 
  * if an error occured.
  **/
@@ -284,10 +283,12 @@ g_data_input_stream_read_byte (GDataInputStream        *stream,
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @error: #GError for error reporting.
  * 
+ * Reads a 16-bit/2-byte value from @stream.
+ *
  * In order to get the correct byte order for this read operation, 
  * see g_data_stream_get_byte_order() and g_data_stream_set_byte_order().
  * 
- * Returns a signed 16-bit/2-byte value read from @stream or %0 if 
+ * Returns: a signed 16-bit/2-byte value read from @stream or %0 if 
  * an error occured.
  **/
 gint16
@@ -326,10 +327,12 @@ g_data_input_stream_read_int16 (GDataInputStream        *stream,
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @error: #GError for error reporting.
  *
+ * Reads an unsigned 16-bit/2-byte value from @stream.
+ *
  * In order to get the correct byte order for this read operation, 
  * see g_data_stream_get_byte_order() and g_data_stream_set_byte_order(). 
  * 
- * Returns an unsigned 16-bit/2-byte value read from the @stream or %0 if 
+ * Returns: an unsigned 16-bit/2-byte value read from the @stream or %0 if 
  * an error occured. 
  **/
 guint16
@@ -368,6 +371,8 @@ g_data_input_stream_read_uint16 (GDataInputStream        *stream,
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @error: #GError for error reporting.
  * 
+ * Reads a signed 32-bit/4-byte value from @stream.
+ *
  * In order to get the correct byte order for this read operation, 
  * see g_data_stream_get_byte_order() and g_data_stream_set_byte_order().
  *
@@ -375,7 +380,7 @@ g_data_input_stream_read_uint16 (GDataInputStream        *stream,
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
  *   
- * Returns a signed 32-bit/4-byte value read from the @stream or %0 if 
+ * Returns: a signed 32-bit/4-byte value read from the @stream or %0 if 
  * an error occured. 
  **/
 gint32
@@ -414,6 +419,8 @@ g_data_input_stream_read_int32 (GDataInputStream        *stream,
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @error: #GError for error reporting.
  * 
+ * Reads an unsigned 32-bit/4-byte value from @stream.
+ *
  * In order to get the correct byte order for this read operation, 
  * see g_data_stream_get_byte_order() and g_data_stream_set_byte_order().
  *
@@ -421,7 +428,7 @@ g_data_input_stream_read_int32 (GDataInputStream        *stream,
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
  * 
- * Returns an unsigned 32-bit/4-byte value read from the @stream or %0 if 
+ * Returns: an unsigned 32-bit/4-byte value read from the @stream or %0 if 
  * an error occured. 
  **/
 guint32
@@ -460,6 +467,8 @@ g_data_input_stream_read_uint32 (GDataInputStream        *stream,
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @error: #GError for error reporting.
  * 
+ * Reads a 64-bit/8-byte value from @stream.
+ *
  * In order to get the correct byte order for this read operation, 
  * see g_data_stream_get_byte_order() and g_data_stream_set_byte_order().
  *
@@ -467,7 +476,7 @@ g_data_input_stream_read_uint32 (GDataInputStream        *stream,
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
  * 
- * Returns a signed 64-bit/8-byte value read from @stream or %0 if 
+ * Returns: a signed 64-bit/8-byte value read from @stream or %0 if 
  * an error occured.  
  **/
 gint64
@@ -506,6 +515,8 @@ g_data_input_stream_read_int64 (GDataInputStream        *stream,
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @error: #GError for error reporting.
  * 
+ * Reads an unsigned 64-bit/8-byte value from @stream.
+ *
  * In order to get the correct byte order for this read operation, 
  * see g_data_stream_get_byte_order().
  *
@@ -513,7 +524,7 @@ g_data_input_stream_read_int64 (GDataInputStream        *stream,
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
  * 
- * Returns an unsigned 64-bit/8-byte read from @stream or %0 if 
+ * Returns: an unsigned 64-bit/8-byte read from @stream or %0 if 
  * an error occured. 
  **/
 guint64
@@ -657,7 +668,7 @@ scan_for_newline (GDataInputStream *stream,
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
  * 
- * Returns a string with the line that was read in. Set @length to 
+ * Returns: a string with the line that was read in. Set @length to 
  * a #gsize to get the length of the read line. Returns %NULL on an error.
  **/
 char *
@@ -774,9 +785,12 @@ scan_for_chars (GDataInputStream *stream,
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @error: #GError for error reporting.
  * 
- * Returns a string with the data that was read before encountering any of
- * the stop characters. Set @length to a #gsize to get the length of the
- * read line. This function will return %NULL on an error.
+ * Reads a string from the data input stream, up to the first 
+ * occurrance of any of the stop characters.
+ *
+ * Returns: a string with the data that was read before encountering 
+ * any of the stop characters. Set @length to a #gsize to get the length 
+ * of the string. This function will return %NULL on an error.
  **/
 char *
 g_data_input_stream_read_until (GDataInputStream        *stream,

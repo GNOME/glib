@@ -124,7 +124,7 @@ g_vfs_get_file_for_uri (GVfs *vfs,
  * g_vfs_get_supported_uri_schemes:
  * @vfs: a #GVfs.
  * 
- * Gets a list of URI schemes supported by GVFS. 
+ * Gets a list of URI schemes supported by @vfs.
  * 
  * Returns: a list of strings.
  **/
@@ -149,7 +149,7 @@ g_vfs_get_supported_uri_schemes (GVfs *vfs)
  * not support any I/O operations if the @parse_name cannot 
  * be parsed by the #GVfs module.
  * 
- * Returns a #GFile for the given @parse_name.
+ * Returns: a #GFile for the given @parse_name.
  **/
 GFile *
 g_vfs_parse_name (GVfs *vfs,

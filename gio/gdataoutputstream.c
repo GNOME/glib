@@ -181,7 +181,7 @@ g_data_output_stream_get_byte_order (GDataOutputStream *stream)
 
 /**
  * g_data_output_stream_put_byte:
- * @data_stream: a #GDataOutputStream.
+ * @stream: a #GDataOutputStream.
  * @data: a #guchar.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @error: a #GError, %NULL to ignore.
@@ -191,16 +191,16 @@ g_data_output_stream_get_byte_order (GDataOutputStream *stream)
  * Returns: %TRUE if @data was successfully added to the @stream.
  **/
 gboolean
-g_data_output_stream_put_byte (GDataOutputStream     *data_stream,
+g_data_output_stream_put_byte (GDataOutputStream     *stream,
 			       guchar                 data,
 			       GCancellable          *cancellable,
 			       GError               **error)
 {
   gsize bytes_written;
   
-  g_return_val_if_fail (G_IS_DATA_OUTPUT_STREAM (data_stream), FALSE);
+  g_return_val_if_fail (G_IS_DATA_OUTPUT_STREAM (stream), FALSE);
 
-  return g_output_stream_write_all (G_OUTPUT_STREAM (data_stream),
+  return g_output_stream_write_all (G_OUTPUT_STREAM (stream),
 				    &data, 1,
 				    &bytes_written,
 				    cancellable, error);

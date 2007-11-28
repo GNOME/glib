@@ -3670,7 +3670,7 @@ g_file_real_set_attributes_finish (GFile                      *file,
  * fails, but the returned object might not support any I/O
  * operation if the @path is malformed.
  * 
- * Returns a new #GFile for the given @path. 
+ * Returns: a new #GFile for the given @path. 
  **/
 GFile *
 g_file_new_for_path (const char *path)
@@ -3689,7 +3689,7 @@ g_file_new_for_path (const char *path)
  * might not support any I/O operation if the @uri
  * is malformed or if the uri type is not supported.
  * 
- * Returns a #GFile for the given @uri.
+ * Returns: a #GFile for the given @uri.
  **/ 
 GFile *
 g_file_new_for_uri (const char *uri)
@@ -3709,7 +3709,7 @@ g_file_new_for_uri (const char *uri)
  * but the returned object might not support any I/O
  * operation if the @parse_name cannot be parsed by #GVfs.
  * 
- * Returns a new #GFile.
+ * Returns: a new #GFile.
  **/
 GFile *
 g_file_parse_name (const char *parse_name)
@@ -3750,7 +3750,7 @@ has_valid_scheme (const char *uri)
  * Attempts to generate a #GFile with the given line from
  * the command line argument. 
  * 
- * Returns a new #GFile. 
+ * Returns: a new #GFile. 
  **/
 GFile *
 g_file_new_for_commandline_arg (const char *arg)

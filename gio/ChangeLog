@@ -1,3 +1,20 @@
+2007-11-27  Matthias Clasen  <mclasen@redhat.com>
+
+	* gpollfilemonitor.c:
+	* gunixmounts.c:
+	* gvfs.c:
+	* gfile.c:
+	* gdesktopappinfo.c:
+	* gwin32appinfo.c:
+	* gvolume.c:
+	* glocalvfs.c:
+	* gvolumemonitor.c:
+	* gdatainputstream.c:
+	* gdatainputstream.h:
+	* gdataoutputstream.c:
+	* gdataoutputstream.h:
+	* gfileinfo.h: Doc cleanups
+
 2007-11-28  Andre Klapper  <a9016009@gmx.de>
 
 	* gdesktopappinfo.c: Fix a typo.

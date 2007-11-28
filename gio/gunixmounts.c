@@ -906,10 +906,10 @@ get_mount_points_timestamp (void)
  * g_get_unix_mounts:
  * @time_read: guint64 to contain a timestamp.
  * 
- * Gets a #GList of strings containing the unix mounts. If @time_read
- * is set, it will be filled with the mount timestamp, 
- * allowing for checking if the mounts have changed with 
- * g_unix_mounts_changed_since().
+ * Gets a #GList of strings containing the unix mounts. 
+ * If @time_read is set, it will be filled with the mount 
+ * timestamp, allowing for checking if the mounts have changed 
+ * with g_unix_mounts_changed_since().
  * 
  * Returns: a #GList of the UNIX mounts. 
  **/
@@ -967,7 +967,7 @@ g_get_unix_mount_at (const char *mount_path,
  * allowing for checking if the mounts have changed with 
  * g_unix_mounts_points_changed_since().
  * 
- * Returns a #GList of the UNIX mountpoints. 
+ * Returns: a #GList of the UNIX mountpoints. 
  **/
 GList *
 g_get_unix_mount_points (guint64 *time_read)
@@ -984,7 +984,7 @@ g_get_unix_mount_points (guint64 *time_read)
  * 
  * Checks if the unix mounts have changed since a given unix time.
  * 
- * Returns %TRUE if the mounts have changed since @time. 
+ * Returns: %TRUE if the mounts have changed since @time. 
  **/
 gboolean
 g_unix_mounts_changed_since (guint64 time)
@@ -998,7 +998,7 @@ g_unix_mounts_changed_since (guint64 time)
  * 
  * Checks if the unix mount points have changed since a given unix time.
  * 
- * Returns %TRUE if the mount points have changed since @time. 
+ * Returns: %TRUE if the mount points have changed since @time. 
  **/
 gboolean
 g_unix_mount_points_changed_since (guint64 time)
@@ -1199,7 +1199,7 @@ strcmp_null (const char *str1,
  * 
  * Compares two unix mounts.
  * 
- * Returns 1, 0 or -1 if @mount1 is greater than, equal to,
+ * Returns: 1, 0 or -1 if @mount1 is greater than, equal to,
  * or less than @mount2, respectively. 
  **/
 gint
@@ -1316,7 +1316,7 @@ g_unix_mount_is_system_internal (GUnixMount *mount_entry)
  * 
  * Compares two unix mount points.
  * 
- * Returns 1, 0 or -1 if @mount1 is greater than, equal to,
+ * Returns: 1, 0 or -1 if @mount1 is greater than, equal to,
  * or less than @mount2, respectively.
  **/
 gint
