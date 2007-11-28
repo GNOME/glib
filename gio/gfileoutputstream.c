@@ -31,7 +31,7 @@
 /**
  * SECTION:gfileoutputstream
  * @short_description: file output streaming operations
- * @see_also: #GOutputStream, #GDataOutputStream, #GSeekable.
+ * @see_also: #GOutputStream, #GDataOutputStream, #GSeekable
  * 
  * 
  *

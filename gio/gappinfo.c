@@ -27,7 +27,7 @@
 
 /**
  * SECTION:gappinfo
- * @short_description: Application information and launch contexts. 
+ * @short_description: Application information and launch contexts
  * @stability: Unstable
  * 
  * #GAppInfo and #GAppLaunchContext are used for describing and launching 

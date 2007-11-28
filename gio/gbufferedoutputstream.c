@@ -30,7 +30,7 @@
 /**
  * SECTION:gbufferedoutputstream
  * @short_description: Buffered Output Stream
- * @see_also: #GFilterOutputStream, #GOutputStream.
+ * @see_also: #GFilterOutputStream, #GOutputStream
  * 
  * Buffered output stream implements #GFilterOutputStream and provides 
  * for buffered writes. 

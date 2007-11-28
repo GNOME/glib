@@ -22,8 +22,8 @@
 
 /**
  * SECTION:gfileinfo
- * @short_description: File Information and Attributes.
- * @see_also: #GFile.
+ * @short_description: File Information and Attributes
+ * @see_also: #GFile
  * 
  * Functionality for manipulating basic metadata for files. #GFileInfo
  * implements methods for getting information that all files should 

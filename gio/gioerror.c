@@ -26,7 +26,7 @@
 
 /**
  * SECTION:gioerror
- * @short_description: Error helper functions.
+ * @short_description: Error helper functions
  *
  **/
 

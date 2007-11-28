@@ -27,7 +27,7 @@
 /**
  * SECTION:gasynchelper
  * @short_description: Asynchronous Helper Functions
- * @see_also: #GAsyncReady.
+ * @see_also: #GAsyncReady
  * 
  * Provides helper functions for asynchronous operations.
  *

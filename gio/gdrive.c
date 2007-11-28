@@ -27,7 +27,7 @@
 
 /**
  * SECTION:gdrive
- * @short_description: Virtual File System drive management.
+ * @short_description: Virtual File System drive management
  * @include: gio/gdrive.h
  * 
  * #GDrive manages drive operations from GVFS, including volume mounting

@@ -30,8 +30,8 @@
 
 /**
  * SECTION:gfileattribute
- * @short_description: Key-Value Paired File Attributes.
- * @see_also: #GFile, #GFileInfo.
+ * @short_description: Key-Value Paired File Attributes
+ * @see_also: #GFile, #GFileInfo
  * 
  * File attributes in GIO consist of a list of key-value pairs. 
  * 

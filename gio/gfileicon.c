@@ -27,8 +27,8 @@
 
 /**
  * SECTION:gfileicon
- * @short_description: Icons for given files.
- * @see_also: #GIcon, #GLoadableIcon.
+ * @short_description: Icons for given files
+ * @see_also: #GIcon, #GLoadableIcon
  * @include: gio/gfileicon.h
  * 
  * #GFileIcon gets the default icon for a #GFile.  

@@ -27,8 +27,8 @@
 
 /**
  * SECTION:gdatainputstream
- * @short_description: Data Input Stream.
- * @see_also: #GInputStream.
+ * @short_description: Data Input Stream
+ * @see_also: #GInputStream
  * 
  * Data input stream implements #GInputStream and includes functions for 
  * reading data directly from an input stream.

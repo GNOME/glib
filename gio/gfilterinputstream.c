@@ -27,7 +27,7 @@
 
 /**
  * SECTION:gfilterinputstream
- * @short_description: Filter Input Stream.
+ * @short_description: Filter Input Stream
  *
  **/
 

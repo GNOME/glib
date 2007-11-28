@@ -42,7 +42,7 @@
 /**
  * SECTION:gunixinputstream
  * @short_description: Unix Input Stream
- * @see_also: #GInputStream.
+ * @see_also: #GInputStream
  *
  * #GUnixInputStream implements #GInputStream for reading from a
  * unix file descriptor, including asynchronous operations. The file

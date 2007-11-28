@@ -29,7 +29,7 @@
 
 /**
  * SECTION:gfileenumerator
- * @short_description: Enumerated Files Routines.
+ * @short_description: Enumerated Files Routines
  * 
  * 
  **/ 

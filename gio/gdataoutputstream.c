@@ -27,8 +27,8 @@
 
 /**
  * SECTION:gdataoutputstream
- * @short_description: Data Output Stream.
- * @see_also: #GOutputStream.
+ * @short_description: Data Output Stream
+ * @see_also: #GOutputStream
  * 
  * Data output stream implements #GOutputStream and includes functions for 
  * writing data directly to an output stream.

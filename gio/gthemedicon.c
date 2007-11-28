@@ -27,7 +27,7 @@
 /**
  * SECTION:gthemedicon
  * @short_description: Themed Icons
- * @see_also: #GIcon, #GLoadableIcon.
+ * @see_also: #GIcon, #GLoadableIcon
  *
  * #GThemedIcon is an implementation of #GIcon for themed icons.
  **/

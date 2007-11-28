@@ -31,7 +31,7 @@
 /**
  * SECTION:gbufferedinputstream
  * @short_description: Buffered Input Stream
- * @see_also: #GFilterInputStream, #GInputStream.
+ * @see_also: #GFilterInputStream, #GInputStream
  * 
  * Buffered input stream implements #GFilterInputStream and provides 
  * for buffered reads. 

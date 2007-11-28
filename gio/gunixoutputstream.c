@@ -42,7 +42,7 @@
 /**
  * SECTION:gunixoutputstream
  * @short_description: Unix Output Stream
- * @see_also: #GOutputStream.
+ * @see_also: #GOutputStream
  *
  * #GUnixOutputStream implements #GOutputStream for writing to a a
  * unix file descriptor, including asynchronous operations. The file

@@ -26,8 +26,8 @@
 
 /**
  * SECTION:gseekable
- * @short_description: Stream seeking interface.
- * @see_also: #GInputStream, #GOutputStream.
+ * @short_description: Stream seeking interface
+ * @see_also: #GInputStream, #GOutputStream
  * 
  * #GSeekable is implemented by streams (implementations of 
  * #GInputStream or #GOutputStream) that support seeking.

@@ -32,7 +32,7 @@
 /**
  * SECTION:gdirectorymonitor
  * @short_description: Directory Monitor
- * @see_also: #GFileMonitor.
+ * @see_also: #GFileMonitor
  * 
  * Monitors a directory for changes.
  *

@@ -39,7 +39,7 @@ G_BEGIN_DECLS
 
 /**
  * GFileQueryInfoFlags:
- * @G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS:
+ * @G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS: Don't follow symlinks.
  * 
  * Flags used when querying a #GFileInfo.
  */
@@ -49,8 +49,9 @@ typedef enum {
 
 /**
  * GFileCreateFlags:
- * @G_FILE_CREATE_FLAGS_NONE:
- * @G_FILE_CREATE_FLAGS_PRIVATE: 
+ * @G_FILE_CREATE_FLAGS_NONE: No flags set.
+ * @G_FILE_CREATE_FLAGS_PRIVATE: Create a file that can only be 
+ *    accessed by the current user.
  * 
  * Flags used when an operation may create a file.
  */
@@ -62,7 +63,7 @@ typedef enum  {
 /**
  * GFileCopyFlags:
  * @G_FILE_COPY_OVERWRITE: Overwrite any existing files
- * @G_FILE_COPY_BACKUP: Make a backup of any existing files.
+ * @G_FILE_COPY_BACKUP: Make a backup of any existing files. TODO: explain backup naming scheme.
  * @G_FILE_COPY_NOFOLLOW_SYMLINKS: Don't follow symlinks.
  * @G_FILE_COPY_ALL_METADATA: Copy all file metadata (see #GFileInfo).
  *

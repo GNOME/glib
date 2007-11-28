@@ -31,7 +31,7 @@
 /**
  * SECTION:gmemoryinputstream
  * @short_description: streaming input operations on memory chunks
- * @see_also: #GMemoryOutputStream.
+ * @see_also: #GMemoryOutputStream
  *
  * #GMemoryInputStream is a class for using arbitrary
  * memory chunks as input for GIO streaming input operations.

@@ -268,12 +268,15 @@ g_file_has_uri_scheme (GFile *file,
  * @file: input #GFile.
  *
  * Gets the URI scheme for a #GFile.
- *
- * Returns: string to the URI scheme for the given #GFile.  
  * RFC 3986 decodes the scheme as:
+ * <programlisting>
  * URI = scheme ":" hier-part [ "?" query ] [ "#" fragment ] 
- * Common schemes include "file", "http", "svn", etc. The returned 
- * string should be freed when no longer needed.
+ * </programlisting>
+ * Common schemes include "file", "http", "svn", etc. 
+ *
+ * Returns: a string containing the URI scheme for the given 
+ *     #GFile. The returned string should be freed with g_free() 
+ *     when no longer needed.
  **/
 char *
 g_file_get_uri_scheme (GFile *file)
@@ -294,9 +297,9 @@ g_file_get_uri_scheme (GFile *file)
  *
  * Gets the basename for a given #GFile.
  *
- * Returns: string containing the #GFile's base name, or %NULL if given
- * #GFile is invalid. The returned string should be freed when no longer 
- * needed.
+ * Returns: string containing the #GFile's base name, or %NULL 
+ *     if given #GFile is invalid. The returned string should be 
+ *     freed with g_free() when no longer needed.
  **/
 char *
 g_file_get_basename (GFile *file)
@@ -316,8 +319,9 @@ g_file_get_basename (GFile *file)
  *
  * Gets the current path within a #GFile. 
  *
- * Returns: string containing the #GFile's path, or %NULL if given #GFile is
- * invalid. The returned string should be freed when no longer needed.
+ * Returns: string containing the #GFile's path, or %NULL if 
+ *     given #GFile is invalid. The returned string should be 
+ *     freed with g_free() when no longer needed.
  **/
 char *
 g_file_get_path (GFile *file)
@@ -337,9 +341,9 @@ g_file_get_path (GFile *file)
  *
  * Gets a URI for the path within a #GFile.
  *
- * Returns: string to the #GFile's Universal Resource Identifier (URI), 
- * or %NULL if given #GFile is invalid. The returned string should be freed 
- * when no longer needed.
+ * Returns: a string containing the #GFile's URI or %NULL 
+ *     if given #GFile is invalid. The returned string should 
+ *     be freed with g_free() when no longer needed.
  **/
 char *
 g_file_get_uri (GFile *file)
@@ -359,8 +363,9 @@ g_file_get_uri (GFile *file)
  *
  * Gets the parsed name for the #GFile.
  *
- * Returns: string to the #GFile's parsed name, or %NULL if given
- * #GFile is invalid. The returned string should be freed when no longer needed.
+ * Returns: a string containing the #GFile's parsed name, 
+ *     or %NULL if given #GFile is invalid. The returned 
+ *     string should be freed with g_free() when no longer needed.
  **/
 char *
 g_file_get_parse_name (GFile *file)
@@ -379,11 +384,11 @@ g_file_get_parse_name (GFile *file)
  * @file: input #GFile.
  *
  * Duplicates a #GFile handle. This operation does not duplicate 
- * the actual file or directory represented by the #GFile; see g_file_copy()
- * if attempting to copy a file. 
+ * the actual file or directory represented by the #GFile; see 
+ * g_file_copy() if attempting to copy a file. 
  *
  * Returns: #GFile that is a duplicate of the given #GFile, 
- * or %NULL if given #GFile is invalid. 
+ *     or %NULL if given #GFile is invalid. 
  **/
 GFile *
 g_file_dup (GFile *file)
@@ -401,13 +406,12 @@ g_file_dup (GFile *file)
  * g_file_hash:
  * @file: #gconstpointer to a #GFile.
  *
- * Creates a hash of a #GFile.
+ * Creates a hash value for a #GFile.
  *
- * Returns: 0 if @file is not a valid #GFile, otherwise a 
- * guint containing a hash of the #GFile. This function
- * is intended for easily hashing a #GFile to add to a 
- * #GHashTable or similar data structure.
- * 
+ * Returns: 0 if @file is not a valid #GFile, otherwise an 
+ * integer that can be used as hash value for the #GFile. 
+ * This function is intended for easily hashing a #GFile to 
+ * add to a #GHashTable or similar data structure.
  **/
 guint
 g_file_hash (gconstpointer file)
@@ -555,8 +559,9 @@ g_file_contains_file (GFile *parent,
  *
  * Gets the path for @descendant relative to @parent. 
  *
- * Returns: string with the relative path from @descendant to @parent. 
- * The returned string should be freed when no longer needed.
+ * Returns: string with the relative path from @descendant 
+ *     to @parent. The returned string should be freed with 
+ *     g_free() when no longer needed.
  **/
 char *
 g_file_get_relative_path (GFile *parent,
@@ -582,8 +587,8 @@ g_file_get_relative_path (GFile *parent,
  *
  * Resolves a relative path for @file to an absolute path.
  *
- * Returns: #GFile to the resolved path. %NULL if @relative_path is NULL.
- * or if @file is invalid.
+ * Returns: #GFile to the resolved path. %NULL if @relative_path 
+ *     is %NULL or if @file is invalid.
  **/
 GFile *
 g_file_resolve_relative_path (GFile *file,
@@ -608,7 +613,8 @@ g_file_resolve_relative_path (GFile *file,
  * @error: #GError for error reporting.
  *
  * Gets a #GFileEnumerator for the children of @file that match @attributes, 
- * where attributes is a #GFileAttributeInfo query string (e.g. "std:type", "std:*").
+ * where attributes is a #GFileAttributeInfo query string (e.g. "std:type", 
+ * "std:*").
  * 
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
@@ -619,7 +625,7 @@ g_file_resolve_relative_path (GFile *file,
  * be set in @error.
  * 
  * Returns: A #GFileEnumerator if successful. %NULL if cancelled or if #GFile's 
- * backend doesn't support #GFileEnumerator. 
+ *     backend doesn't support #GFileEnumerator. 
  **/
 GFileEnumerator *
 g_file_enumerate_children (GFile *file,
@@ -660,12 +666,12 @@ g_file_enumerate_children (GFile *file,
  * @callback: a #GAsyncReadyCallback.
  * @user_data: a #gpointer.
  *
- * Asynchronously gets a #GFileEnumerator for the children of @file that match @attributes, 
- * where attributes is a #GFileAttributeInfo query string (e.g. "std:type", "std:*"). For the 
- * synchronous version of this function, see g_file_enumerate_children().
+ * Asynchronously gets a #GFileEnumerator for the children of @file that 
+ * match @attributes, where attributes is a #GFileAttributeInfo query 
+ * string (e.g. "std:type", "std:*"). For the synchronous version of this 
+ * function, see g_file_enumerate_children().
  * 
  * To finish this asynchronous operation, see g_file_enumerate_children_finish().
- *
  **/
 void
 g_file_enumerate_children_async (GFile                      *file,
@@ -696,10 +702,11 @@ g_file_enumerate_children_async (GFile                      *file,
  * @res: a #GAsyncResult.
  * @error: a #GError.
  * 
- * If @cancellable was not %NULL when g_file_enumerate_children_async() was called, 
- * then the operation could have been cancelled by triggering the cancellable object 
- * from another thread. If the operation was cancelled, the @error will be set to 
- * %G_IO_ERROR_CANCELLED and this function will return %NULL. 
+ * If @cancellable was not %NULL when g_file_enumerate_children_async() 
+ * was called, then the operation could have been cancelled by triggering 
+ * the cancellable object from another thread. If the operation was cancelled, 
+ * the @error will be set to %G_IO_ERROR_CANCELLED and this function will 
+ * return %NULL. 
  *
  * If the #GFileIface for the given @file does not support enumerating files,
  * then %NULL will be returned and the error %G_IO_ERROR_NOT_SUPPORTED will 
@@ -741,9 +748,9 @@ g_file_enumerate_children_finish  (GFile                      *file,
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
  * 
- * If the #GFileIface for the given @file does not support querying file information,
- * then %NULL will be returned and the error %G_IO_ERROR_NOT_SUPPORTED will 
- * be set in @error.
+ * If the #GFileIface for the given @file does not support querying file 
+ * information, then %NULL will be returned and the error 
+ * %G_IO_ERROR_NOT_SUPPORTED will be set in @error.
  * 
  * Returns: a #GFileInfo for the given @file, or %NULL on error.
  **/
@@ -779,7 +786,7 @@ g_file_query_info (GFile *file,
  * @file: input #GFile.
  * @attributes: a string containing a #GFileAttributeInfo query.
  * @flags: a set of #GFileQueryInfoFlags.
- * @io_priority: the io priority of the request. the io priority of the request. 
+ * @io_priority: the io priority of the request.
  * @cancellable: optional #GCancellable object, %NULL to ignore. 
  * @callback: a #GAsyncReadyCallback. 
  * @user_data: a #gpointer. 
@@ -789,7 +796,6 @@ g_file_query_info (GFile *file,
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned.
  * 
  * To finish this asynchronous operation, see g_file_query_info_finish().
- * 
  **/
 void
 g_file_query_info_async (GFile                      *file,
@@ -823,13 +829,13 @@ g_file_query_info_async (GFile                      *file,
  * Finishes an asynchronous file info query. 
  *
  * If @cancellable was not %NULL when g_file_query_info_async() was called, 
- * then the operation could have been cancelled by triggering the cancellable object 
- * from another thread. If the operation was cancelled, the @error will be set to 
- * %G_IO_ERROR_CANCELLED and this function will return %NULL. 
+ * then the operation could have been cancelled by triggering the cancellable 
+ * object from another thread. If the operation was cancelled, the @error will 
+ * be set to %G_IO_ERROR_CANCELLED and this function will return %NULL. 
  * 
- * If the #GFileIface for the given @file does not support querying file information,
- * then %NULL will be returned and the error %G_IO_ERROR_NOT_SUPPORTED will 
- * be set in @error.
+ * If the #GFileIface for the given @file does not support querying file 
+ * information, then %NULL will be returned and the error 
+ * %G_IO_ERROR_NOT_SUPPORTED will be set in @error.
  * 
  * Returns: #GFileInfo for given @file or %NULL on error.
  **/
@@ -1131,7 +1137,6 @@ g_file_replace (GFile *file,
  *
  * Asynchronously reads @file. For the synchronous version of this function, 
  * see g_file_read().
- *
  **/
 void
 g_file_read_async (GFile                  *file,
@@ -1207,7 +1212,6 @@ g_file_read_finish (GFile                  *file,
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
- * 
  **/
 void
 g_file_append_to_async (GFile                      *file,
@@ -1276,7 +1280,6 @@ g_file_append_to_finish (GFile                      *file,
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
- *
  **/
 void
 g_file_create_async (GFile                      *file,
@@ -1348,7 +1351,6 @@ g_file_create_finish (GFile                      *file,
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
- * 
  **/
 void
 g_file_replace_async (GFile                      *file,
@@ -1960,6 +1962,7 @@ g_file_copy (GFile                  *source,
  * </tbody>
  * </tgroup>
  * </table>
+ *
  * Returns: %TRUE on successful move, %FALSE otherwise.
  **/
 gboolean
@@ -2236,7 +2239,6 @@ g_file_set_display_name (GFile                  *file,
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
- * 
  **/
 void
 g_file_set_display_name_async (GFile                      *file,
@@ -2353,8 +2355,8 @@ g_file_query_settable_attributes (GFile                      *file,
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
  * 
  * Returns: a #GFileAttributeInfoList of attribute namespaces 
- * where the user can create their own attribute names, such 
- * as extended attributes.
+ *     where the user can create their own attribute names, such 
+ *     as extended attributes.
  **/
 GFileAttributeInfoList *
 g_file_query_writable_namespaces (GFile                      *file,
@@ -2448,16 +2450,17 @@ g_file_set_attribute (GFile                  *file,
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @error: a #GError, or %NULL 
  * 
- * Tries to set all attributes in the #GFileInfo on the target values, not stopping
- * on the first error.
+ * Tries to set all attributes in the #GFileInfo on the target values, 
+ * not stopping on the first error.
  * 
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
  * 
  * Returns: %TRUE if there was any error, and @error will be set to
- * the first error. Error on particular fields are flagged by setting the
- * "status" field in the attribute value to %G_FILE_ATTRIBUTE_STATUS_ERROR_SETTING.
+ *     the first error. Error on particular fields are flagged by setting 
+ *     the "status" field in the attribute value to 
+ *     %G_FILE_ATTRIBUTE_STATUS_ERROR_SETTING.
  **/
 gboolean
 g_file_set_attributes_from_info (GFile                      *file,
@@ -2537,7 +2540,6 @@ g_file_real_set_attributes_from_info (GFile                      *file,
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
- * 
  **/
 void
 g_file_set_attributes_async (GFile                      *file,
@@ -2802,7 +2804,6 @@ g_file_set_attribute_int64 (GFile                  *file,
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
  * 
  * Mounts a mountable file using @mount_operation, if possible. 
- *
  **/
 void
 g_file_mount_mountable (GFile                  *file,
@@ -2875,7 +2876,6 @@ g_file_mount_mountable_finish (GFile                  *file,
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
- * 
  **/
 void
 g_file_unmount_mountable (GFile                  *file,
@@ -2950,7 +2950,6 @@ g_file_unmount_mountable_finish   (GFile                  *file,
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
- * 
  **/
 void
 g_file_eject_mountable (GFile                  *file,
@@ -3668,9 +3667,9 @@ g_file_real_set_attributes_finish (GFile                      *file,
  * g_file_new_for_path:
  * @path: a string containing a relative or absolute path.
  * 
- * Constructs a #GFile for given @path. This operation never
+ * Constructs a #GFile for a given path. This operation never
  * fails, but the returned object might not support any I/O
- * operation if the @path is malformed.
+ * operation if @path is malformed.
  * 
  * Returns: a new #GFile for the given @path. 
  **/
@@ -3687,9 +3686,10 @@ g_file_new_for_path (const char *path)
  * g_file_new_for_uri:
  * @uri: a string containing a URI.
  * 
- * This operation never fails, but the returned object
- * might not support any I/O operation if the @uri
- * is malformed or if the uri type is not supported.
+ * Constructs a #GFile for a given URI. This operation never 
+ * fails, but the returned object might not support any I/O 
+ * operation if @uri is malformed or if the uri type is 
+ * not supported.
  * 
  * Returns: a #GFile for the given @uri.
  **/ 
@@ -3796,7 +3796,6 @@ g_file_new_for_commandline_arg (const char *arg)
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
- * 
  **/
 void
 g_mount_for_location (GFile                  *location,
@@ -4133,7 +4132,6 @@ load_contents_open_callback (GObject *obj,
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
- * 
  **/
 void
 g_file_load_partial_contents_async (GFile                *file,
@@ -4244,7 +4242,6 @@ g_file_load_partial_contents_finish (GFile                *file,
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
- * 
  **/
 void
 g_file_load_contents_async (GFile                *file,
@@ -4521,7 +4518,6 @@ replace_contents_open_callback (GObject *obj,
  * 
  * If @make_backup is %TRUE, this function will attempt to 
  * make a backup of @file.
- * 
  **/
 void
 g_file_replace_contents_async  (GFile                *file,
