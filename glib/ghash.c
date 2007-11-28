@@ -338,11 +338,15 @@ g_hash_table_insert_internal (GHashTable *hash_table,
   
   if (*node)
     {
-      if (hash_table->key_destroy_func)
+      if (keep_new_key)
         {
-          if (keep_new_key)
+          if (hash_table->key_destroy_func)
             hash_table->key_destroy_func ((*node)->key);
-          else
+          (*node)->key = key;
+        }
+      else
+        {
+          if (hash_table->key_destroy_func)
             hash_table->key_destroy_func (key);
         }
       
