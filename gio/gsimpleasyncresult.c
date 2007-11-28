@@ -53,37 +53,46 @@
  * by the operation; all of the simple return cases are covered.
  * 
  * Most of the time, an application will not need to know of the details 
- * of this API; it is handled transparently, and any necessary operations are handled by
- * #GAsyncResult's interface. However, if implementing a new GIO module, for writing 
- * language bindings, or for complex applications that need better control of how
- * asynchronous operations are completed, it is important to understand this functionality.
+ * of this API; it is handled transparently, and any necessary operations are 
+ * handled by #GAsyncResult's interface. However, if implementing a new GIO 
+ * module, for writing language bindings, or for complex applications that 
+ * need better control of how asynchronous operations are completed, it is 
+ * important to understand this functionality.
  * 
- * To create a new #GSimpleAsyncResult, call g_simple_async_result_new(). If the 
- * result needs to be created for a #GError, use g_simple_async_result_new_from_error().
- * If a #GError is not available (e.g. the asynchronous operation's doesn't take a #GError
- * argument), but the result still needs to be created for an error condition, use 
+ * To create a new #GSimpleAsyncResult, call g_simple_async_result_new(). If 
+ * the result needs to be created for a #GError, use 
+ * g_simple_async_result_new_from_error(). If a #GError is not available (e.g. 
+ * the asynchronous operation's doesn't take a #GError argument), but the result 
+ * still needs to be created for an error condition, use
  * g_simple_async_result_new_error() (or g_simple_async_result_set_error_va()
- * if your application or binding requires passing a variable argument list directly), 
- * and the error can then be propegated through the use of g_simple_async_result_propagate_error().
+ * if your application or binding requires passing a variable argument list 
+ * directly), and the error can then be propegated through the use of 
+ * g_simple_async_result_propagate_error().
  * 
  * An asynchronous operation can be made to ignore a cancellation event by calling 
- * g_simple_async_result_set_handle_cancellation() with a #GSimpleAsyncResult for the operation
- * and %FALSE. 
+ * g_simple_async_result_set_handle_cancellation() with a #GSimpleAsyncResult 
+ * for the operation and %FALSE. 
  * 
  * GSimpleAsyncResult can integrate into GLib's Main Event Loop <!-- TODO: Crosslink -->, 
- * or it can use #GThread<!-- -->s if available. g_simple_async_result_complete() will finish an 
- * I/O task directly within the main event loop. g_simple_async_result_complete_in_idle() will integrate 
- * the I/O task into the main event loop as an idle function and g_simple_async_result_run_in_thread() 
+ * or it can use #GThread<!-- -->s if available. g_simple_async_result_complete() 
+ * will finish an I/O task directly within the main event loop. 
+ * g_simple_async_result_complete_in_idle() will integrate the I/O task into the 
+ * main event loop as an idle function and g_simple_async_result_run_in_thread() 
  * will run the job in a separate thread.
  * 
- * To set the results of an asynchronous function, g_simple_async_result_set_op_res_gpointer(), 
- * g_simple_async_result_set_op_res_gboolean(), and g_simple_async_result_set_op_res_gssize()
- * are provided, setting the operation's result to a gpointer, gboolean, or gssize, respectively.
+ * To set the results of an asynchronous function, 
+ * g_simple_async_result_set_op_res_gpointer(), 
+ * g_simple_async_result_set_op_res_gboolean(), and 
+ * g_simple_async_result_set_op_res_gssize()
+ * are provided, setting the operation's result to a gpointer, gboolean, or 
+ * gssize, respectively.
  * 
- * Likewise, to get the result of an asynchronous function, g_simple_async_result_get_op_res_gpointer(),
- * g_simple_async_result_get_op_res_gboolean(), and g_simple_async_result_get_op_res_gssize() are 
- * provided, getting the operation's result as a gpointer, gboolean, and gssize, respectively.
- * 
+ * Likewise, to get the result of an asynchronous function, 
+ * g_simple_async_result_get_op_res_gpointer(),
+ * g_simple_async_result_get_op_res_gboolean(), and 
+ * g_simple_async_result_get_op_res_gssize() are 
+ * provided, getting the operation's result as a gpointer, gboolean, and 
+ * gssize, respectively.
  **/
 
 static void g_simple_async_result_async_result_iface_init (GAsyncResultIface       *iface);

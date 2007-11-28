@@ -1336,11 +1336,13 @@ g_desktop_app_info_remove_supports_type (GAppInfo           *appinfo,
 
 /**
  * g_app_info_create_from_commandline:
- * @commandline:
- * @application_name:
- * @flags:
- * @error: a #GError location to store the error occuring, or %NULL to 
- * ignore.
+ * @commandline: the commandline to use
+ * @application_name: the application name, or %NULL to use @commandline
+ * @flags: flags that can specify details of the created #GAppInfo
+ * @error: a #GError location to store the error occuring, %NULL to ignore.
+ *
+ * Creates a new #GAppInfo from the given information.
+ *
  * Returns: new #GAppInfo for given command.
  **/
 GAppInfo *
@@ -1484,7 +1486,7 @@ app_info_in_list (GAppInfo *info, GList *l)
 
 /**
  * g_app_info_get_all_for_type:
- * @content_type:
+ * @content_type: the content type to find a #GAppInfo for
  * 
  * Gets a list of all #GAppInfo s for a given content type.
  *
@@ -1523,12 +1525,11 @@ g_app_info_get_all_for_type (const char *content_type)
 
 /**
  * g_app_info_get_default_for_type:
- * @content_type:
- * @must_support_uris:
+ * @content_type: the content type to find a #GAppInfo for
+ * @must_support_uris: if %TRUE, the #GAppInfo is expected to
+ *     support URIs
  * 
  * Gets the #GAppInfo that correspond to a given content type.
- * If @must_support_uris is true, the #GAppInfo is expected to 
- * support URIs. 
  *
  * Returns: #GAppInfo for given @content_type.
  **/

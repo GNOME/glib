@@ -968,11 +968,12 @@ g_output_stream_flush_finish (GOutputStream *stream,
 /**
  * g_output_stream_close_async:
  * @stream: A #GOutputStream.
+ * @io_priority: the io priority of the request.
  * @callback: callback to call when the request is satisfied
  * @user_data: the data to pass to callback function
  * @cancellable: optional cancellable object
  *
- * Requests an asynchronous closes of the stream, releasing resources related to it.
+ * Requests an asynchronous close of the stream, releasing resources related to it.
  * When the operation is finished @callback will be called, giving the results.
  *
  * For behaviour details see g_output_stream_close().

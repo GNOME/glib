@@ -354,7 +354,7 @@ g_file_get_uri (GFile *file)
 }
 
 /**
- * g_file_parse_name:
+ * g_file_get_parse_name:
  * @file: input #GFile.
  *
  * Gets the parsed name for the #GFile.
@@ -943,7 +943,7 @@ g_file_find_enclosing_volume (GFile *file,
  * g_file_read:
  * @file: #GFile to read.
  * @cancellable: a #GCancellable
- * @error: a #GError.
+ * @error: a #GError, or %NULL
  *
  * Reads a whole file into a #GFileInputStream. Fails returning %NULL if 
  * given #GFile points to a directory. 
@@ -987,6 +987,7 @@ g_file_read (GFile *file,
  * @file: input #GFile.
  * @flags: a set of #GFileCreateFlags.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
+ * @error: a #GError, or %NULL
  *
  * If the #GFileIface for @file does not support appending to files, then
  * @error will be set to %G_IO_ERROR_NOT_SUPPORTED and %NULL will be returned. 
@@ -1028,7 +1029,7 @@ g_file_append_to (GFile *file,
  * @file: input #GFile.
  * @flags: a set of #GFileCreateFlags.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @error: a #GError. 
+ * @error: a #GError, or %NULL
  *
  * If the #GFileIface for @file does not support creating files, then
  * @error will be set to %G_IO_ERROR_NOT_SUPPORTED and %NULL will be returned. 
@@ -1073,6 +1074,7 @@ g_file_create (GFile *file,
  * @make_backup: a #gboolean.
  * @flags: a set of #GFileCreateFlags.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
+ * @error: a #GError, or %NULL
  *
  * If the #GFileIface for @file does not support streaming operations, then
  * @error will be set to %G_IO_ERROR_NOT_SUPPORTED and %NULL will be returned. 
@@ -1154,7 +1156,7 @@ g_file_read_async (GFile                  *file,
  * g_file_read_finish:
  * @file: input #GFile.
  * @res: a #GAsyncResult. 
- * @error: a #GError. 
+ * @error: a #GError, or %NULL
  *
  * Finishes an asynchronous file read operation started with 
  * g_file_read_async(). 
@@ -1232,7 +1234,7 @@ g_file_append_to_async (GFile                      *file,
  * g_file_append_to_finish:
  * @file: input #GFile.
  * @res: #GAsyncResult
- * @error: a #GError. 
+ * @error: a #GError, or #NULL
  * 
  * Finishes appending to a file started with g_file_append_to_async().
  * 
@@ -1301,7 +1303,7 @@ g_file_create_async (GFile                      *file,
  * g_file_create_finish:
  * @file: input #GFile.
  * @res: a #GAsyncResult. 
- * @error: a #GError. 
+ * @error: a #GError, or %NULL
  * 
  * Finishes creating a file started with g_file_create_async().
  * 
@@ -1377,7 +1379,7 @@ g_file_replace_async (GFile                      *file,
  * g_file_replace_finish:
  * @file: input #GFile.
  * @res: a #GAsyncResult. 
- * @error: a #GError. 
+ * @error: a #GError, or %NULL
  * 
  * Finishes replacing the contents of the file started by 
  * g_file_replace_async(). This is typically called within 
@@ -1811,7 +1813,7 @@ file_copy_fallback (GFile                  *source,
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @progress_callback: function to callback with progress information
  * @progress_callback_data: userdata to pass to @progress_callback
- * @error: #GError to set on error
+ * @error: #GError to set on error, or %NULL
  * 
  * <!-- Source Friendly Version
  * List of possible errors resulting from g_file_copy():
@@ -1914,7 +1916,7 @@ g_file_copy (GFile                  *source,
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @progress_callback: GFileProgressCallback function for updates.
  * @progress_callback_data: gpointer to user data for the callback function.
- * @error: #GError for returning error conditions.
+ * @error: #GError for returning error conditions, or %NULL
  *
  * List of possible returns from g_file_move() with given source,
  * destination, and flags:
@@ -2012,7 +2014,7 @@ g_file_move (GFile                  *source,
  * g_file_make_directory
  * @file: input #GFile.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @error: a #GError. 
+ * @error: a #GError, or %NULL 
  * 
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
@@ -2097,7 +2099,7 @@ g_file_make_symbolic_link (GFile *file,
  * g_file_delete:
  * @file: input #GFile.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @error: a #GError. 
+ * @error: a #GError, or %NULL 
  * 
  * Deletes a file.
  * 
@@ -2136,7 +2138,7 @@ g_file_delete (GFile *file,
  * g_file_trash:
  * @file: #GFile to send to trash.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @error: a #GError.
+ * @error: a #GError, or %NULL
  *
  * Sends @file to the virtual file system "Trash" location. If the
  * virtual file system does not have support having a "Trash" location, 
@@ -2178,7 +2180,7 @@ g_file_trash (GFile *file,
  * @file: input #GFile.
  * @display_name: a string.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @error: a #GError. 
+ * @error: a #GError, or %NULL
  * 
  * Sets the display name for @file. If the display name contains invalid
  * characters, @error will be set to %G_IO_ERROR_INVALID_ARGUMENT. For the 
@@ -2262,7 +2264,7 @@ g_file_set_display_name_async (GFile                      *file,
  * g_file_set_display_name_finish:
  * @file: input #GFile.
  * @res: a #GAsyncResult. 
- * @error: a #GError. 
+ * @error: a #GError, or %NULL
  * 
  * Finishes setting a display name started with g_file_set_display_name_async().
  * 
@@ -2293,7 +2295,7 @@ g_file_set_display_name_finish (GFile                      *file,
  * g_file_query_settable_attributes:
  * @file: input #GFile.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @error: a #GError. 
+ * @error: a #GError, or %NULL
  * 
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
@@ -2344,7 +2346,7 @@ g_file_query_settable_attributes (GFile                      *file,
  * g_file_query_writable_namespaces:
  * @file: input #GFile.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @error: a #GError. 
+ * @error: a #GError, or %NULL
  * 
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
@@ -2397,7 +2399,7 @@ g_file_query_writable_namespaces (GFile                      *file,
  * @value: a set of #GFileAttributeValue.
  * @flags: a set of #GFileQueryInfoFlags.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @error: a #GError. 
+ * @error: a #GError, or %NULL
  * 
  * Sets an attribute in the file with attribute name @attribute to @value.
  * If setting attributes is not suppored by the #GFileIface for @file, 
@@ -2444,7 +2446,7 @@ g_file_set_attribute (GFile                  *file,
  * @info: a #GFileInfo.
  * @flags: #GFileQueryInfoFlags
  * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @error: a #GError. 
+ * @error: a #GError, or %NULL 
  * 
  * Tries to set all attributes in the #GFileInfo on the target values, not stopping
  * on the first error.
@@ -2561,7 +2563,7 @@ g_file_set_attributes_async (GFile                      *file,
  * @file: input #GFile.
  * @result: a #GAsyncResult.
  * @info: a #GFileInfo.
- * @error: a #GError. 
+ * @error: a #GError, or %NULL
  * 
  * Finishes setting an attribute started in g_file_set_attributes_async().
  * 
@@ -2592,7 +2594,7 @@ g_file_set_attributes_finish (GFile                      *file,
  * @value: a string containing the attribute's value.
  * @flags: #GFileQueryInfoFlags.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @error: a #GError. 
+ * @error: a #GError, or %NULL
  * 
  * Sets @attribute of type %G_FILE_ATTRIBUTE_TYPE_STRING to @value. If
  * @attribute is of a different type, this operation will fail.
@@ -2625,7 +2627,7 @@ g_file_set_attribute_string (GFile                  *file,
  * @value: a string containing the attribute's new value.
  * @flags: a #GFileQueryInfoFlags.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @error: a #GError. 
+ * @error: a #GError, or %NULL
  * 
  * Sets @attribute of type %G_FILE_ATTRIBUTE_TYPE_BYTE_STRING to @value. If
  * @attribute is of a different type, this operation will fail, returning %FALSE. 
@@ -2659,7 +2661,7 @@ g_file_set_attribute_byte_string  (GFile                  *file,
  * @value: a #guint32 containing the attribute's new value.
  * @flags: a #GFileQueryInfoFlags.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @error: a #GError. 
+ * @error: a #GError, or %NULL
  * 
  * Sets @attribute of type %G_FILE_ATTRIBUTE_TYPE_UINT32 to @value. If
  * @attribute is of a different type, this operation will fail.
@@ -2693,7 +2695,7 @@ g_file_set_attribute_uint32 (GFile                  *file,
  * @value: a #gint32 containing the attribute's new value.
  * @flags: a #GFileQueryInfoFlags.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @error: a #GError. 
+ * @error: a #GError, or %NULL
  * 
  * Sets @attribute of type %G_FILE_ATTRIBUTE_TYPE_INT32 to @value. If
  * @attribute is of a different type, this operation will fail.
@@ -2727,7 +2729,7 @@ g_file_set_attribute_int32 (GFile                  *file,
  * @value: a #guint64 containing the attribute's new value.
  * @flags: a #GFileQueryInfoFlags.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @error: a #GError. 
+ * @error: a #GError, or %NULL
  * 
  * Sets @attribute of type %G_FILE_ATTRIBUTE_TYPE_UINT64 to @value. If
  * @attribute is of a different type, this operation will fail.
@@ -2761,7 +2763,7 @@ g_file_set_attribute_uint64 (GFile                  *file,
  * @value: a #guint64 containing the attribute's new value.
  * @flags: a #GFileQueryInfoFlags.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @error: a #GError. 
+ * @error: a #GError, or %NULL
  * 
  * Sets @attribute of type %G_FILE_ATTRIBUTE_TYPE_INT64 to @value. If
  * @attribute is of a different type, this operation will fail.
@@ -2838,7 +2840,7 @@ g_file_mount_mountable (GFile                  *file,
  * g_file_mount_mountable_finish:
  * @file: input #GFile.
  * @result: a #GAsyncResult.
- * @error: a #GError. 
+ * @error: a #GError, or %NULL
  * 
  * Returns: a #GFile or %NULL on error.
  **/
@@ -2907,7 +2909,7 @@ g_file_unmount_mountable (GFile                  *file,
  * g_file_unmount_mountable_finish:
  * @file: input #GFile.
  * @result: a #GAsyncResult.
- * @error: a #GError. 
+ * @error: a #GError, or %NULL
  * 
  * Returns: %TRUE if the operation finished successfully. %FALSE
  * otherwise.
@@ -2982,7 +2984,7 @@ g_file_eject_mountable (GFile                  *file,
  * g_file_eject_mountable_finish:
  * @file: input #GFile.
  * @result: a #GAsyncResult.
- * @error: a #GError. 
+ * @error: a #GError, or %NULL
  * 
  * Finishes an asynchronous eject operation started by 
  * g_file_eject_mountable().
@@ -3828,7 +3830,7 @@ g_mount_for_location (GFile                  *location,
  * g_mount_for_location_finish:
  * @location: input #GFile.
  * @result: a #GAsyncResult.
- * @error: a #GError. 
+ * @error: a #GError, or %NULL
  * 
  * Finishes a mount operation started by g_mount_for_location().
  * 
@@ -3871,7 +3873,7 @@ g_mount_for_location_finish (GFile                  *location,
  * @contents: a location to place the contents of the file.
  * @length: a location to place the length of the contents of the file.
  * @etag_out: a location to place the current entity tag for the file.
- * @error: a #GError. 
+ * @error: a #GError, or %NULL
  * 
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
@@ -4168,7 +4170,7 @@ g_file_load_partial_contents_async (GFile                *file,
  * @contents: a location to place the contents of the file.
  * @length: a location to place the length of the contents of the file.
  * @etag_out: a location to place the current entity tag for the file.
- * @error: a #GError. 
+ * @error: a #GError, or %NULL
  * 
  * Returns: %TRUE if the load was successful. If %FALSE and @error is 
  * present, it will be set appropriately. 
@@ -4264,7 +4266,7 @@ g_file_load_contents_async (GFile                *file,
  * @contents: a location to place the contents of the file.
  * @length: a location to place the length of the contents of the file.
  * @etag_out: a location to place the current entity tag for the file.
- * @error: a #GError. 
+ * @error: a #GError, or %NULL
  * 
  * Finishes an asynchronous load of the @file's contents. The contents 
  * are placed in @contents, and @length is set to the size of the @contents 
@@ -4301,7 +4303,7 @@ g_file_load_contents_finish (GFile                *file,
  * @flags: a set of #GFileCreateFlags.
  * @new_etag: a location to a new entity tag for the document.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @error: a #GError. 
+ * @error: a #GError, or %NULL
  *
  * Replaces the contents of @file with @contents of @length bytes. The old 
  * @etag will be replaced with the @new_etag. If @make_backup is %TRUE, 
@@ -4333,12 +4335,7 @@ g_file_replace_contents (GFile                *file,
   g_return_val_if_fail (G_IS_FILE (file), FALSE);
   g_return_val_if_fail (contents != NULL, FALSE);
 
-  out = g_file_replace (file,
-			etag,
-			make_backup,
-			flags,
-			cancellable,
-			error);
+  out = g_file_replace (file, etag, make_backup, flags, cancellable, error);
   if (out == NULL)
     return FALSE;
 
@@ -4568,7 +4565,7 @@ g_file_replace_contents_async  (GFile                *file,
  * @file: input #GFile.
  * @res: a #GAsyncResult. 
  * @new_etag: a location of a new entity tag for the document.
- * @error: a #GError. 
+ * @error: a #GError, or %NULL 
  * 
  * Finishes an asynchronous replace of the given @file. Sets
  * @new_etag to the new entity tag for the document, if present.

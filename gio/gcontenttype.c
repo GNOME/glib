@@ -28,11 +28,6 @@
 #include "gcontenttypeprivate.h"
 #include "glibintl.h"
 
-/* This really sucks. GTK-Doc isn't smart enough to realize there are two
- * different versions of the functions within this file, based on the platform. 
- * I can move the definitions out of this file, but that's ugly. 
- */
-
 /**
  * SECTION:gcontenttype
  * @short_description: platform specific content typing
@@ -82,16 +77,6 @@ get_registry_classes_key (const char *subdir,
   return value_utf8;
 }
 
-/**
- * g_content_type_equals:
- * @type1: a content type string.
- * @type2: a content type string.
- *
- * Compares two content types for equality.
- *
- * Returns: %TRUE if the two strings are identical or equivalent,
- * %FALSE otherwise.
- **/  
 gboolean
 g_content_type_equals (const char *type1,
 		       const char *type2)
@@ -117,16 +102,6 @@ g_content_type_equals (const char *type1,
   return res;
 }
 
-/**
- * g_content_type_is_a:
- * @type: a content type string. 
- * @supertype: a string.
- *
- * Determines if @type is a subset of @supertype.  
- *
- * Returns: %TRUE if @type is a kind of @supertype,
- * %FALSE otherwise. 
- **/  
 gboolean
 g_content_type_is_a (const char   *type,
 		     const char   *supertype)
@@ -149,14 +124,6 @@ g_content_type_is_a (const char   *type,
   return res;
 }
 
-/**
- * g_content_type_is_unknown:
- * @type: a content type string. 
- * 
- * Checks if the content type is known by GIO.
- * 
- * Returns: %TRUE if the type is unknown.
- **/  
 gboolean
 g_content_type_is_unknown (const char *type)
 {
@@ -165,14 +132,6 @@ g_content_type_is_unknown (const char *type)
   return strcmp ("*", type) == 0;
 }
 
-/**
- * g_content_type_get_description:
- * @type: a content type string. 
- * 
- * Gets the human readable description of the content type.
- * 
- * Returns: a short description of the content type @type. 
- **/  
 char *
 g_content_type_get_description (const char *type)
 {
@@ -196,14 +155,6 @@ g_content_type_get_description (const char *type)
   return g_strdup_printf (_("%s filetype"), type);
 }
 
-/**
- * g_content_type_get_mime_type:
- * @type: a content type string. 
- * 
- * Gets the mime-type for the content type.
- * 
- * Returns: the registered mime-type for the given @type.
- **/  
 char *
 g_content_type_get_mime_type (const char   *type)
 {
@@ -223,14 +174,6 @@ g_content_type_get_mime_type (const char   *type)
   return g_strdup ("application/octet-stream");
 }
 
-/**
- * g_content_type_get_icon:
- * @type: a content type string.
- * 
- * Gets the icon for a content type.
- * 
- * Returns: #GIcon corresponding to the content type.
- **/  
 GIcon *
 g_content_type_get_icon (const char   *type)
 {
@@ -246,16 +189,6 @@ g_content_type_get_icon (const char   *type)
   return NULL;
 }
 
-/**
- * g_content_type_can_be_executable:
- * @type: a content type string.
- * 
- * Checks if a content type can be executable. Note that for instance
- * things like text files can be executables (i.e. scripts and batch files).
- * 
- * Returns: %TRUE if the file type corresponds to a type that
- * can be executable, %FALSE otherwise. 
- **/  
 gboolean
 g_content_type_can_be_executable (const char   *type)
 {
@@ -282,20 +215,6 @@ looks_like_text (const guchar *data, gsize data_size)
   return TRUE;
 }
 
-/**
- * g_content_type_guess:
- * @filename: a string.
- * @data: a stream of data.
- * @data_size: the size of @data.
- * @result_uncertain: a flag indicating the certainty of the 
- * result.
- * 
- * Guesses the content type based on example data. If the function is 
- * uncertain, @result_uncertain will be set to %TRUE.
- * 
- * Returns: a string indicating a guessed content type for the 
- * given data. 
- **/  
 char *
 g_content_type_guess (const char   *filename,
 		      const guchar *data,
@@ -326,14 +245,6 @@ g_content_type_guess (const char   *filename,
   return g_strdup ("*");
 }
 
-/**
- * g_content_types_get_registered:
- * 
- * Gets a list of strings containing the registered content types on 
- * the system.
- * 
- * Returns: #GList of the registered content types.
- **/  
 GList *
 g_content_types_get_registered (void)
 {
@@ -428,6 +339,16 @@ _g_unix_content_type_get_parents (const char *type)
   return (char **)g_ptr_array_free (array, FALSE);
 }
 
+/**
+ * g_content_type_equals:
+ * @type1: a content type string.
+ * @type2: a content type string.
+ *
+ * Compares two content types for equality.
+ *
+ * Returns: %TRUE if the two strings are identical or equivalent,
+ * %FALSE otherwise.
+ **/  
 gboolean
 g_content_type_equals (const char   *type1,
 		       const char   *type2)
@@ -444,6 +365,16 @@ g_content_type_equals (const char   *type1,
   return res;
 }
 
+/**
+ * g_content_type_is_a:
+ * @type: a content type string. 
+ * @supertype: a string.
+ *
+ * Determines if @type is a subset of @supertype.  
+ *
+ * Returns: %TRUE if @type is a kind of @supertype,
+ * %FALSE otherwise. 
+ **/  
 gboolean
 g_content_type_is_a (const char   *type,
 		     const char   *supertype)
@@ -460,6 +391,14 @@ g_content_type_is_a (const char   *type,
   return res;
 }
 
+/**
+ * g_content_type_is_unknown:
+ * @type: a content type string. 
+ * 
+ * Checks if the content type is known by GIO.
+ * 
+ * Returns: %TRUE if the type is unknown.
+ **/  
 gboolean
 g_content_type_is_unknown (const char *type)
 {
@@ -624,6 +563,14 @@ load_comment_for_mime (const char *mimetype)
   return g_strdup_printf (_("%s type"), mimetype);
 }
 
+/**
+ * g_content_type_get_description:
+ * @type: a content type string. 
+ * 
+ * Gets the human readable description of the content type.
+ * 
+ * Returns: a short description of the content type @type. 
+ **/  
 char *
 g_content_type_get_description (const char *type)
 {
@@ -654,6 +601,14 @@ g_content_type_get_description (const char *type)
   return comment;
 }
 
+/**
+ * g_content_type_get_mime_type:
+ * @type: a content type string. 
+ * 
+ * Gets the mime-type for the content type.
+ * 
+ * Returns: the registered mime-type for the given @type.
+ **/  
 char *
 g_content_type_get_mime_type (const char   *type)
 {
@@ -662,6 +617,14 @@ g_content_type_get_mime_type (const char   *type)
   return g_strdup (type);
 }
 
+/**
+ * g_content_type_get_icon:
+ * @type: a content type string.
+ * 
+ * Gets the icon for a content type.
+ * 
+ * Returns: #GIcon corresponding to the content type.
+ **/  
 GIcon *
 g_content_type_get_icon (const char   *type)
 {
@@ -675,9 +638,11 @@ g_content_type_get_icon (const char   *type)
  * g_content_type_can_be_executable:
  * @type: a content type string.
  * 
- * Returns: %TRUE if the file type corresponds to something that
- * can be executable, %FALSE otherwise. Note that for instance
- * things like textfiles can be executables (i.e. scripts)
+ * Checks if a content type can be executable. Note that for instance
+ * things like text files can be executables (i.e. scripts and batch files).
+ * 
+ * Returns: %TRUE if the file type corresponds to a type that
+ * can be executable, %FALSE otherwise. 
  **/  
 gboolean
 g_content_type_can_be_executable (const char   *type)
@@ -703,6 +668,20 @@ looks_like_text (const guchar *data, gsize data_size)
   return TRUE;
 }
 
+/**
+ * g_content_type_guess:
+ * @filename: a string.
+ * @data: a stream of data.
+ * @data_size: the size of @data.
+ * @result_uncertain: a flag indicating the certainty of the 
+ * result.
+ * 
+ * Guesses the content type based on example data. If the function is 
+ * uncertain, @result_uncertain will be set to %TRUE.
+ * 
+ * Returns: a string indicating a guessed content type for the 
+ * given data. 
+ **/  
 char *
 g_content_type_guess (const char   *filename,
 		      const guchar *data,
@@ -857,6 +836,14 @@ enumerate_mimetypes_dir (const char *dir, GHashTable *mimetypes)
   g_free (mimedir);
 }
 
+/**
+ * g_content_types_get_registered:
+ * 
+ * Gets a list of strings containing the registered content types on 
+ * the system.
+ * 
+ * Returns: #GList of the registered content types.
+ **/  
 GList *
 g_content_types_get_registered (void)
 {

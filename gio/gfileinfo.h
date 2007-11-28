@@ -590,7 +590,7 @@ typedef enum {
  **/
 #define G_FILE_ATTRIBUTE_THUMBNAIL_PATH "thumbnail:path"         /* bytestring */
 /**
- * G_FILE_ATTRIBUTE_THUMBNAIL_THUMNAILING_FAILED:
+ * G_FILE_ATTRIBUTE_THUMBNAILING_FAILED:
  * 
  * A key in the "thumbnail" namespace for checking if thumbnailing failed. 
  * This attribute is %TRUE if thumbnailing failed. Corresponding 

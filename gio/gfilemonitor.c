@@ -145,8 +145,10 @@ g_file_monitor_init (GFileMonitor *monitor)
 
 /**
  * g_file_monitor_is_cancelled:
- * @monitor:
+ * @monitor: a #GFileMonitor
  * 
+ * Returns whether the monitor is canceled.
+ *
  * Returns: %TRUE if monitor is canceled. %FALSE otherwise.
  **/
 gboolean

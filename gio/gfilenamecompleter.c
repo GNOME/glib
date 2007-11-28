@@ -403,9 +403,12 @@ init_completion (GFilenameCompleter *completer,
  * g_filename_completer_get_completion_suffix:
  * @completer: the filename completer.
  * @initial_text: text to be completed.
- * 
- * Returns: a completed string. This string is not owned by GIO, so
- * remember to g_free() it when finished.
+ *
+ * Obtains a completion for @initial_text from @completer.
+ *  
+ * Returns: a completed string, or %NULL if no completion exists. 
+ *     This string is not owned by GIO, so remember to g_free() it 
+ *     when finished.
  **/
 char *
 g_filename_completer_get_completion_suffix (GFilenameCompleter *completer,

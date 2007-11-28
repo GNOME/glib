@@ -340,7 +340,10 @@ g_union_volume_monitor_new (void)
 /**
  * g_volume_monitor_get:
  * 
- * Returns: a #GVolumeMonitor.
+ * Gets the volume monitor used by gio.
+ *
+ * Returns: a reference to the #GVolumeMonitor used by gio. Call
+ *    g_object_unref() when done with it.
  **/
 GVolumeMonitor *
 g_volume_monitor_get (void)
@@ -349,7 +352,7 @@ g_volume_monitor_get (void)
   
   G_LOCK (the_volume_monitor);
 
-  if (the_volume_monitor )
+  if (the_volume_monitor)
     vm = G_VOLUME_MONITOR (g_object_ref (the_volume_monitor));
   else
     {

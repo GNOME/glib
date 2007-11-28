@@ -307,7 +307,7 @@ g_app_info_add_supports_type (GAppInfo             *appinfo,
 
 
 /**
- * g_app_info_can_remove_support_type:
+ * g_app_info_can_remove_supports_type:
  * @appinfo: a #GAppInfo.
  * 
  * Checks if a supported content type can be removed from an application.

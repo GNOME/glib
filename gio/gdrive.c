@@ -105,9 +105,10 @@ g_drive_base_init (gpointer g_class)
  * g_drive_get_name:
  * @drive: a #GDrive.
  * 
- * Returns: string containing @drive's name.
+ * Gets the name of @drive.
  *
- * The returned string should be freed when no longer needed.
+ * Returns: a string containing @drive's name. The returned 
+ *     string should be freed when no longer needed.
  **/
 char *
 g_drive_get_name (GDrive *drive)

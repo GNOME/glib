@@ -195,6 +195,14 @@ g_filter_output_stream_init (GFilterOutputStream *stream)
 {
 }
 
+/**
+ * g_filter_output_stream_get_base_stream:
+ * @stream: a #GFilterOutputStream.
+ * 
+ * Gets the base stream for the filter stream.
+ *
+ * Returns: a #GOutputStream.
+ **/
 GOutputStream *
 g_filter_output_stream_get_base_stream (GFilterOutputStream *stream)
 {

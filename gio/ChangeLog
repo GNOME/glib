@@ -1,5 +1,11 @@
 2007-11-27  Matthias Clasen  <mclasen@redhat.com>
 
+	* gcontenttype.c: Move doc comments to the unix section.
+
+	* *.[hc]: More trivial doc corrections.
+
+2007-11-27  Matthias Clasen  <mclasen@redhat.com>
+
 	* gpollfilemonitor.c:
 	* gunixmounts.c:
 	* gvfs.c:

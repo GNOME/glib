@@ -846,6 +846,8 @@ g_file_attribute_info_list_bsearch (GFileAttributeInfoList *list,
  * @list: a #GFileAttributeInfoList.
  * @name: the name of the attribute to lookup.
  * 
+ * Gets the file attribute with the name @name from @list.
+ *
  * Returns: a #GFileAttributeInfo for the @name, or %NULL if an 
  * attribute isn't found.
  **/
@@ -875,7 +877,6 @@ g_file_attribute_info_list_lookup (GFileAttributeInfoList *list,
  * 
  * Adds a new attribute with @name to the @list, setting
  * its @type and @flags. 
- * 
  **/
 void
 g_file_attribute_info_list_add    (GFileAttributeInfoList *list,
