@@ -2,8 +2,6 @@
 <FILE>gvfs</FILE>
 <TITLE>GVfs</TITLE>
 GVfs
-g_vfs_get_name
-g_vfs_get_priority
 g_vfs_get_file_for_path
 g_vfs_get_file_for_uri
 g_vfs_parse_name
@@ -741,7 +739,6 @@ GDataOutputStreamClass
 g_data_output_stream_new
 g_data_output_stream_set_byte_order
 g_data_output_stream_get_byte_order
-g_data_output_stream_set_expand_buffer
 g_data_output_stream_put_byte
 g_data_output_stream_put_int16
 g_data_output_stream_put_uint16

@@ -1,5 +1,9 @@
 2007-11-27  Matthias Clasen  <mclasen@redhat.com>
 
+	* gio/gio-sections.txt: Remove nonexisting functions
+
+2007-11-27  Matthias Clasen  <mclasen@redhat.com>
+
 	* gio/gio-sections.txt: Some additions
 
 2007-11-27  Matthias Clasen  <mclasen@redhat.com>
