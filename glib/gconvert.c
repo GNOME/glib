@@ -235,7 +235,7 @@ iconv_cache_init (void)
 }
 
 
-/**
+/*
  * iconv_cache_bucket_new:
  * @key: cache key
  * @cd: iconv descriptor
@@ -270,7 +270,7 @@ iconv_cache_bucket_new (gchar *key, GIConv cd)
 }
 
 
-/**
+/*
  * iconv_cache_bucket_expire:
  * @node: cache bucket's node
  * @bucket: cache bucket
@@ -315,7 +315,7 @@ iconv_cache_bucket_expire (GList *node, struct _iconv_cache_bucket *bucket)
 }
 
 
-/**
+/*
  * iconv_cache_expire_unused:
  *
  * Expires as many unused cache buckets as it needs to in order to get

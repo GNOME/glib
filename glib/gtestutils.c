@@ -134,8 +134,8 @@ g_test_log_send (guint         n_bytes,
       guint ui;
       g_test_log_buffer_push (lbuffer, n_bytes, buffer);
       msg = g_test_log_buffer_pop (lbuffer);
-      g_assert (msg != NULL); // FIXME: should be g_awrn_if_fail
-      g_assert (lbuffer->data->len == 0); // FIXME: should be g_awrn_if_fail
+      g_assert (msg != NULL); /* FIXME: should be g_awrn_if_fail */
+      g_assert (lbuffer->data->len == 0); /* FIXME: should be g_awrn_if_fail */
       g_test_log_buffer_free (lbuffer);
       /* print message */
       g_printerr ("{*LOG(%s)", g_test_log_type_name (msg->log_type));
@@ -403,7 +403,7 @@ g_test_init (int    *argc,
     {
       GRand *rg = g_rand_new_with_seed (0xc8c49fb6);
       guint32 t1 = g_rand_int (rg), t2 = g_rand_int (rg), t3 = g_rand_int (rg), t4 = g_rand_int (rg);
-      // g_print ("GRand-current: 0x%x 0x%x 0x%x 0x%x\n", t1, t2, t3, t4);
+      /* g_print ("GRand-current: 0x%x 0x%x 0x%x 0x%x\n", t1, t2, t3, t4); */
       if (t1 != 0xfab39f9b || t2 != 0xb948fb0e || t3 != 0x3d31be26 || t4 != 0x43a19d66)
         g_warning ("random numbers are not GRand-2.2 compatible, seeds may be broken (check $G_RANDOM_VERSION)");
       g_rand_free (rg);
@@ -425,10 +425,10 @@ test_run_seed (const gchar *rseed)
   test_run_rand = NULL;
   while (strchr (" \t\v\r\n\f", *rseed))
     rseed++;
-  if (strncmp (rseed, "R02S", 4) == 0)  // seed for random generator 02 (GRand-2.2)
+  if (strncmp (rseed, "R02S", 4) == 0)  /* seed for random generator 02 (GRand-2.2) */
     {
       const char *s = rseed + 4;
-      if (strlen (s) >= 32)             // require 4 * 8 chars
+      if (strlen (s) >= 32)             /* require 4 * 8 chars */
         {
           guint32 seedarray[4];
           gchar *p, hexbuf[9] = { 0, };
@@ -481,7 +481,7 @@ g_test_rand_int (void)
  * Get a reproducable random integer number out of a specified range,
  * see g_test_rand_int() for details on test case random numbers.
  *
- * Returns a number with @begin <= number < @end.
+ * Returns: a number with @begin <= number < @end.
  */
 gint32
 g_test_rand_int_range (gint32          begin,
@@ -512,7 +512,7 @@ g_test_rand_double (void)
  * Get a reproducable random floating pointer number out of a specified range,
  * see g_test_rand_int() for details on test case random numbers.
  *
- * Returns a number with @range_start <= number < @range_end.
+ * Returns: a number with @range_start <= number < @range_end.
  */
 double
 g_test_rand_double_range (double          range_start,
@@ -540,6 +540,8 @@ g_test_timer_start (void)
  * g_test_timer_elapsed:
  *
  * Get the time since the last start of the timer with g_test_timer_start().
+ *
+ * Returns: the time since the last start of the timer, as a double
  */
 double
 g_test_timer_elapsed (void)
@@ -552,6 +554,8 @@ g_test_timer_elapsed (void)
  * g_test_timer_last:
  *
  * Report the last result of g_test_timer_elapsed().
+ *
+ * Returns: the last result of g_test_timer_elapsed(), as a double
  */
 double
 g_test_timer_last (void)
@@ -709,6 +713,8 @@ g_test_get_root (void)
  * test path arguments (-p <testpath>) as parsed by g_test_init().
  * g_test_run_suite() or g_test_run() may only be called once
  * in a program.
+ *
+ * Returns: 0 on success
  */
 int
 g_test_run (void)
@@ -738,7 +744,7 @@ g_test_run (void)
  * called with the same fixture, but varying @test_name and
  * @data_test arguments.
  *
- * Returns a newly allocated #GTestCase.
+ * Returns: a newly allocated #GTestCase.
  */
 GTestCase*
 g_test_create_case (const char     *test_name,
@@ -784,7 +790,7 @@ g_test_add_vtable (const char     *testpath,
       if (islast && !seg[0])
         g_error ("invalid test case path: %s", testpath);
       else if (!seg[0])
-        continue;       // initial or duplicate slash
+        continue;       /* initial or duplicate slash */
       else if (!islast)
         {
           GTestSuite *csuite = g_test_create_suite (seg);
@@ -947,7 +953,7 @@ test_case_run (GTestCase *tc)
         tc->fixture_teardown (fixture);
       g_free (fixture);
       g_timer_stop (test_run_timer);
-      largs[0] = 0; // OK
+      largs[0] = 0; /* OK */
       largs[1] = test_run_forks;
       largs[2] = g_timer_elapsed (test_run_timer, NULL);
       g_test_log (G_TEST_LOG_STOP_CASE, NULL, NULL, G_N_ELEMENTS (largs), largs);
@@ -1009,6 +1015,8 @@ g_test_run_suite_internal (GTestSuite *suite,
  * test path arguments (-p <testpath>) as parsed by g_test_init().
  * g_test_run_suite() or g_test_run() may only be called once
  * in a program.
+ *
+ * Returns: 0 on success
  */
 int
 g_test_run_suite (GTestSuite *suite)
@@ -1289,7 +1297,7 @@ test_time_stamp (void)
  *       {
  *         g_print ("some stdout text: somagic17\n");
  *         g_printerr ("some stderr text: semagic43\n");
- *         exit (0); // successful test run
+ *         exit (0); /&ast; successful test run &ast;/
  *       }
  *     g_test_trap_assert_passed();
  *     g_test_trap_assert_stdout ("*somagic17*");
@@ -1357,7 +1365,7 @@ g_test_trap_fork (guint64        usec_timeout,
           if (stdtst_pipe[0] >= 0)
             FD_SET (stdtst_pipe[0], &fds);
           tv.tv_sec = 0;
-          tv.tv_usec = MIN (usec_timeout ? usec_timeout : 1000000, 100 * 1000); // sleep at most 0.5 seconds to catch clock skews, etc.
+          tv.tv_usec = MIN (usec_timeout ? usec_timeout : 1000000, 100 * 1000); /* sleep at most 0.5 seconds to catch clock skews, etc. */
           int ret = select (MAX (MAX (stdout_pipe[0], stderr_pipe[0]), stdtst_pipe[0]) + 1, &fds, NULL, NULL, &tv);
           if (ret < 0 && errno != EINTR)
             {
@@ -1398,7 +1406,7 @@ g_test_trap_fork (guint64        usec_timeout,
             {
               guint64 nstamp = test_time_stamp();
               int status = 0;
-              sstamp = MIN (sstamp, nstamp); // guard against backwards clock skews
+              sstamp = MIN (sstamp, nstamp); /* guard against backwards clock skews */
               if (usec_timeout < nstamp - sstamp)
                 {
                   /* timeout reached, need to abort the child now */

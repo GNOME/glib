@@ -3187,6 +3187,8 @@ _glib_get_locale_dir (void)
  * Returns the translated string from the glib translations.
  * This is an internal function and should only be used by
  * the internals of glib (such as libgio).
+ *
+ * Returns: the transation of @str to the current locale
  */
 G_CONST_RETURN gchar *
 glib_gettext (const gchar *str)
