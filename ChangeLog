@@ -1,3 +1,8 @@
+2007-11-28  Emmanuele Bassi  <ebassi@gnome.org>
+
+	* gio/Makefile.am: Remove makegioalias.pl from the marshal files
+	and avoid it being cleaned up when running make clean.
+
 2007-11-28  Alexander Larsson  <alexl@redhat.com>
 
         * glib/glib.symbols:

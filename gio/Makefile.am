@@ -38,7 +38,6 @@ lib_LTLIBRARIES = libgio-2.0.la
 marshal_sources = \
         gio-marshal.h	\
         gio-marshal.c	\
-	makegioalias.pl	\
 	$(NULL)
 
 if CROSS_COMPILING
