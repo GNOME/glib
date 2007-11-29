@@ -1,4 +1,4 @@
-2007-11-29  A. Walton,,,  <anwalt01@ganyemede>
+2007-11-29  A. Walton <awalton@svn.gnome.org>
 
 	* gappinfo.c:
 	  Fixes unknown meaning in GAppLaunchContext docs.
