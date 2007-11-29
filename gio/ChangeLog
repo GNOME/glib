@@ -1,5 +1,9 @@
 2007-11-28  Matthias Clasen  <mclasen@redhat.com>
 
+	* inotify/inotify-helper.c: Don't export the lock from libgio.
+
+2007-11-28  Matthias Clasen  <mclasen@redhat.com>
+
 	* Makefile.am:
 	* abicheck.sh: Fix copy-and-paste leftovers 
 
