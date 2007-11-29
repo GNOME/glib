@@ -130,14 +130,6 @@ type_to_icon (GUnixMountType type)
   return g_strdup (icon_name);
 }
 
-/**
- * g_unix_volume_new:
- * @mount: 
- * @drive:
- * 
- * Returns: a #GUnixVolume.
- * 
- **/
 GUnixVolume *
 _g_unix_volume_new (GUnixMount *mount,
 		    GUnixDrive *drive)
@@ -189,11 +181,6 @@ _g_unix_volume_new (GUnixMount *mount,
   return volume;
 }
 
-/**
- * g_unix_volume_unmounted:
- * @volume: 
- * 
- **/
 void
 _g_unix_volume_unmounted (GUnixVolume *volume)
 {
@@ -205,12 +192,6 @@ _g_unix_volume_unmounted (GUnixVolume *volume)
     }
 }
 
-/**
- * g_unix_volume_unset_drive:
- * @volume:
- * @drive:
- *   
- **/
 void
 _g_unix_volume_unset_drive (GUnixVolume   *volume,
 			    GUnixDrive    *drive)
@@ -247,13 +228,6 @@ g_unix_volume_get_name (GVolume *volume)
   return g_strdup (unix_volume->name);
 }
 
-/**
- * g_unix_volume_has_mountpoint:
- * @volume:
- * @mountpoint:
- * 
- * Returns: 
- **/
 gboolean
 _g_unix_volume_has_mountpoint (GUnixVolume *volume,
 			       const char  *mountpoint)

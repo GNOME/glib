@@ -69,12 +69,12 @@
  * <row><entry>"std"</entry><entry>The "Standard" namespace. General file
  * information that any application may need should be put in this namespace. Examples
  * include the file's name, type, and size.</entry></row> 
- * <row><entry>"etag"</entry><entry>The "Entity Tag" namespace. Remotely shared
- * files, like those on HTTP/1.1 file systems, use "entity tags" to quickly determine 
- * if a file has been modified. Entity tags are globally unique, and should
- * always be sent with the current revision of a file. An example of a key
- * in this namespace is "value", which contains the value of the current
- * entity tag.</entry></row>
+ * <row><entry>"etag"</entry><entry>The "Entity Tag" namespace. 
+ * GIO use "entity tags" to quickly determine if a file has been modified
+ * from the version on the file system. Entity tags are globally unique identifiers, 
+ * and should always be sent with the current revision of a file. 
+ * An example of a key in this namespace is "value", which contains the value of the 
+ * current entity tag.</entry></row>
  * <row><entry>"id"</entry><entry>The "Identification" namespace. This 
  * namespace is used by file managers and applications that list directories
  * to check for loops and to uniquely identify files.</entry></row>

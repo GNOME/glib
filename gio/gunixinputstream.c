@@ -43,7 +43,7 @@
 
 /**
  * SECTION:gunixinputstream
- * @short_description: Unix Input Stream
+ * @short_description: streaming input operations for Unix file descriptors
  * @see_also: #GInputStream
  *
  * #GUnixInputStream implements #GInputStream for reading from a

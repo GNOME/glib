@@ -46,7 +46,7 @@
  * virtual file system. #GFile<!-- -->s are lightweight, immutable 
  * objects that do no I/O upon creation. It is necessary to understand that
  * #GFile objects do not represent files, merely a handle to a file. All
- * file I/O is implemented as streams (see #GInputStream and #GOutputStream).
+ * file I/O is implemented as streaming operations (see #GInputStream and #GOutputStream).
  * 
  * To construct a #GFile, you can use: 
  * g_file_new_for_path() if you have a path.
@@ -58,12 +58,21 @@
  * g_file_resolve_relative_path() to resolve a relative path between
  * two #GFile<!-- -->s.
  * 
- * Many #GFile operations have both synchronous (or blocking) and 
- * asynchronous (non-blocking) versions to suit your application. 
- * Asynchronous versions of synchronous functions simply have _async()
- * appended to their function names. The asynchronous I/O functions 
- * call a #GAsyncReadyCallback which is then used to finalize the operation, 
- * which is then passed to the function's matching _finish() operation.
+ * Many #GFile operations have both synchronous and asynchronous versions 
+ * to suit your application. Asynchronous versions of synchronous functions 
+ * simply have _async() appended to their function names. The asynchronous 
+ * I/O functions call a #GAsyncReadyCallback which is then used to finalize 
+ * the operation, which is then passed to the function's matching _finish() 
+ * operation. 
+ *
+ * Some #GFile operations do not have synchronous analogs, as they may
+ * take a very long time to finish, and blocking may leave an application
+ * unusable. Notable cases include:
+ * g_file_mount_mountable() to mount a mountable file.
+ * g_file_unmount_mountable() to unmount a mountable file.
+ * g_file_eject_mountable() to eject a mountable file.
+ * 
+ *
  **/
 
 static void g_file_base_init (gpointer g_class);
@@ -276,7 +285,7 @@ g_file_has_uri_scheme (GFile      *file,
  * Returns: a string containing the URI scheme for the given 
  *     #GFile. The returned string should be freed with g_free() 
  *     when no longer needed.
-      **/
+ **/
 char *
 g_file_get_uri_scheme (GFile *file)
 {
@@ -662,8 +671,8 @@ g_file_enumerate_children (GFile                *file,
  * @flags: a set of #GFileQueryInfoFlags.
  * @io_priority: the io priority of the request.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @callback: a #GAsyncReadyCallback.
- * @user_data: a #gpointer.
+ * @callback: a #GAsyncReadyCallback to call when the request is satisfied
+ * @user_data: the data to pass to callback function
  *
  * Asynchronously gets a #GFileEnumerator for the children of @file that 
  * match @attributes, where attributes is a #GFileAttributeInfo query 
@@ -789,8 +798,8 @@ g_file_query_info (GFile                *file,
  * @flags: a set of #GFileQueryInfoFlags.
  * @io_priority: the io priority of the request.
  * @cancellable: optional #GCancellable object, %NULL to ignore. 
- * @callback: a #GAsyncReadyCallback. 
- * @user_data: a #gpointer. 
+ * @callback: a #GAsyncReadyCallback to call when the request is satisfied
+ * @user_data: the data to pass to callback function
  * 
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
@@ -1223,10 +1232,12 @@ g_file_read_finish (GFile         *file,
  * Readies a file for appending data asynchronously. 
  *
  * For the synchronous version of this function, see g_file_append_to().
+ * To finish this operation, see g_file_append_to_finish().
  * 
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
- * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
+ * was cancelled, the error %G_IO_ERROR_CANCELLED will be set when 
+ * g_file_append_to_finish() is called, and %NULL will be returned.
  **/
 void
 g_file_append_to_async (GFile               *file,
@@ -1255,7 +1266,12 @@ g_file_append_to_async (GFile               *file,
  * @res: #GAsyncResult
  * @error: a #GError, or %NULL
  * 
- * Finishes appending to a file started with g_file_append_to_async().
+ * Finishes appending to a file. See g_file_append_to_async().
+ * 
+ * If @cancellable was not %NULL when g_file_append_to_async() was called, 
+ * then the operation could have been be cancelled by triggering the cancellable 
+ * object from another thread. If the operation was cancelled, the error 
+ * %G_IO_ERROR_CANCELLED will be set in @error, and %NULL will be returned. 
  * 
  * Returns: a valid #GFileOutputStream or %NULL on error.
  **/
@@ -1292,10 +1308,12 @@ g_file_append_to_finish (GFile         *file,
  * Creates a new file asynchronously. 
  *
  * For the synchronous version of this function, see g_file_create(). 
+ * To finish this operation, see g_file_create_finish().
  * 
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
- * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
+ * was cancelled, the error %G_IO_ERROR_CANCELLED will be set, and %NULL
+ * will be returned by g_file_create_finish(). 
  **/
 void
 g_file_create_async (GFile               *file,
@@ -1324,9 +1342,14 @@ g_file_create_async (GFile               *file,
  * @res: a #GAsyncResult. 
  * @error: a #GError, or %NULL
  * 
- * Finishes creating a file started with g_file_create_async().
+ * Finishes creating a file. See g_file_create_async().
  * 
- * Returns: a #GFileOutputStream.
+ * If @cancellable was not %NULL when g_file_create_async() was called, 
+ * then the operation could have been be cancelled by triggering the cancellable 
+ * object from another thread. If the operation was cancelled, the error 
+ * %G_IO_ERROR_CANCELLED will be set in @error, and %NULL will be returned. 
+ * 
+ * Returns: a #GFileOutputStream or %NULL on error.
  **/
 GFileOutputStream *
 g_file_create_finish (GFile         *file,
@@ -1364,10 +1387,12 @@ g_file_create_finish (GFile         *file,
  * %TRUE, this function will attempt to make a backup of the current file.
  *
  * For the synchronous version of this function, see g_file_replace(). 
+ * To finish this operation, see g_file_replace_finish().
  *
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
- * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
+ * was cancelled, the error %G_IO_ERROR_CANCELLED will be set, and 
+ * %NULL will be returned in g_file_replace_finish(). 
  **/
 void
 g_file_replace_async (GFile               *file,
@@ -1400,9 +1425,12 @@ g_file_replace_async (GFile               *file,
  * @res: a #GAsyncResult. 
  * @error: a #GError, or %NULL
  * 
- * Finishes replacing the contents of the file started by 
- * g_file_replace_async(). This is typically called within 
- * a #GAsyncReadyCallback.
+ * Finishes replacing the contents of the file. See g_file_replace_async().
+ * 
+ * If @cancellable was not %NULL when g_file_replace_async() was called, 
+ * then the operation could have been be cancelled by triggering the cancellable 
+ * object from another thread. If the operation was cancelled, the error 
+ * %G_IO_ERROR_CANCELLED will be set in @error, and %NULL will be returned. 
  * 
  * Returns: a #GFileOutputStream, or %NULL if an error has occured.
  **/
@@ -2892,6 +2920,8 @@ g_file_mount_mountable (GFile               *file,
  * @file: input #GFile.
  * @result: a #GAsyncResult.
  * @error: a #GError, or %NULL
+ *
+ * Finishes a mount operation. See g_file_mount_mountable() for details.
  * 
  * Finish an asynchronous mount operation that was started 
  * with g_file_mount_mountable().
@@ -2925,6 +2955,8 @@ g_file_mount_mountable_finish (GFile         *file,
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @callback: a #GAsyncReadyCallback. 
  * @user_data: a #gpointer. 
+ *
+ * Starts an asynchronous unmount operation. 
  * 
  * Unmounts a mounted file.
  *
@@ -2963,6 +2995,8 @@ g_file_unmount_mountable (GFile               *file,
  * @file: input #GFile.
  * @result: a #GAsyncResult.
  * @error: a #GError, or %NULL
+ *
+ * Finishes an unmount operation, see g_file_unmount_mountable() for details.
  * 
  * Finish an asynchronous unmount operation that was started 
  * with g_file_unmount_mountable().
@@ -4616,8 +4650,9 @@ g_file_replace_contents_async  (GFile               *file,
  * @new_etag: a location of a new entity tag for the document.
  * @error: a #GError, or %NULL 
  * 
- * Finishes an asynchronous replace of the given @file. Sets
- * @new_etag to the new entity tag for the document, if present.
+ * Finishes an asynchronous replace of the given @file. See
+ * g_file_replace_contents_async(). Sets @new_etag to the new entity 
+ * tag for the document, if present.
  * 
  * Returns: %TRUE on success, %FALSE on failure.
  **/

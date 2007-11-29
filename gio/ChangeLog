@@ -1,3 +1,22 @@
+2007-11-29  A. Walton,,,  <anwalt01@ganyemede>
+
+	* gappinfo.c:
+	  Fixes unknown meaning in GAppLaunchContext docs.
+	* gfile.c:
+	  Clarify asynchronous ops.
+	* gfileattribute.c:
+	  Fix entity tag docs.
+	* gicon.c:
+	* gthemedicon.c:
+	  Provides missing gtk-doc section, fixes API docs slighly.
+	* gsimpleasyncresult.c:
+	  Fill in missing info in docs.
+	* gunixinputstream.c:
+	* gunixoutputstream.c:
+	  Be more expressive in short description.
+	* gunixvolume.c:
+	  Remove gtk-doc stubs for non-public API.
+
 2007-11-28  Matthias Clasen  <mclasen@redhat.com>
 
 	* *.c: Coding style fixups

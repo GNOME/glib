@@ -61,6 +61,10 @@
  * need better control of how asynchronous operations are completed, it is 
  * important to understand this functionality.
  * 
+ * GSimpleAsyncResults are tagged with the calling function to ensure that 
+ * asynchronous functions and their finishing functions are used together 
+ * correctly.
+ * 
  * To create a new #GSimpleAsyncResult, call g_simple_async_result_new(). If 
  * the result needs to be created for a #GError, use 
  * g_simple_async_result_new_from_error(). If a #GError is not available (e.g. 
@@ -167,10 +171,10 @@ g_simple_async_result_init (GSimpleAsyncResult *simple)
 
 /**
  * g_simple_async_result_new:
- * @source_object: a #GObject.
+ * @source_object: a #GObject the asynchronous function was called with.
  * @callback: a #GAsyncReadyCallback.
  * @user_data: user data passed to @callback.
- * @source_tag:
+ * @source_tag: the asynchronous function.
  * 
  * Creates a #GSimpleAsyncResult.
  * 
@@ -323,7 +327,7 @@ g_simple_async_result_get_source_tag (GSimpleAsyncResult *simple)
  * @simple: a #GSimpleAsyncResult.
  * @dest: a location to propegate the error to.
  * 
- * Propegates an error from within the simple asynchronous result to
+ * Propagates an error from within the simple asynchronous result to
  * a given destination.
  * 
  * Returns: %TRUE if the error was propegated to @dest. %FALSE otherwise.
@@ -645,7 +649,7 @@ g_simple_async_result_run_in_thread (GSimpleAsyncResult *simple,
 
 /**
  * g_simple_async_report_error_in_idle:
- * @object:
+ * @object: a #GObject.
  * @callback: a #GAsyncReadyCallback. 
  * @user_data: user data passed to @callback.
  * @domain: a #GQuark containing the error domain (usually #G_IO_ERROR).

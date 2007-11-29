@@ -522,11 +522,11 @@ g_app_launch_context_init (GAppLaunchContext *launch_context)
  * @info: a #GAppInfo. 
  * @files: a #GList of files.
  *
- * Gets the DISPLAY for a launched application.
- * TODO: can't find an implementation. DISPLAY as in X atom "DISPLAY"?
- * Environmental variable "DISPLAY"?
+ * Gets the display string for the display. This is used to ensure new
+ * applications are started on the same display as the launching 
+ * application.
  * 
- * Returns: a display string.
+ * Returns: a display string for the display.
  **/
 char *
 g_app_launch_context_get_display (GAppLaunchContext *context,
@@ -558,7 +558,7 @@ g_app_launch_context_get_display (GAppLaunchContext *context,
  * Notifications standard, at 
  * <ulink url="http://standards.freedesktop.org/startup-notification-spec/startup-notification-latest.txt"/>.
  *
- * Returns: a startup notifaction ID for the application, or %NULL if 
+ * Returns: a startup notification ID for the application, or %NULL if 
  *     not supported.
  **/
 char *
@@ -586,7 +586,9 @@ g_app_launch_context_get_startup_notify_id (GAppLaunchContext *context,
  * @startup_notify_id: a string containing the DESKTOP_STARTUP_ID 
  *     of the launched application.
  *
- * TODO: what does this do? Can't find it implemented anywhere.
+ * Called when an application has failed to launch, and cancels the 
+ * application startup notification.
+ * 
  **/
 void
 g_app_launch_context_launch_failed (GAppLaunchContext *context,

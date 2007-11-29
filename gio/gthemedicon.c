@@ -28,10 +28,13 @@
 
 /**
  * SECTION:gthemedicon
- * @short_description: Themed Icons
+ * @short_description: icon theming support
  * @see_also: #GIcon, #GLoadableIcon
  *
- * #GThemedIcon is an implementation of #GIcon for themed icons.
+ * #GThemedIcon is an implementation of #GIcon that supports icon themes.
+ * #GThemedIcon contains a list of all of the icons present in an icon
+ * theme, so that icons can be looked up quickly. #GThemedIcon does
+ * not provide actual pixmaps for icons, just the icon names.
  **/
 
 static void g_themed_icon_icon_iface_init (GIconIface       *iface);
