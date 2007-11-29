@@ -1,3 +1,8 @@
+2007-11-29  Matthias Clasen <mclasen@redhat.com>
+
+	* gasyncresult.c: Add another paragraph to the intro,
+	adjust coding style of example.
+
 2007-11-29  A. Walton <awalton@svn.gnome.org>
 
 	* gappinfo.c:
