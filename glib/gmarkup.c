@@ -2447,12 +2447,13 @@ g_markup_parse_boolean (const char  *string,
  * particular attribute is to be allowed but
  * ignored.
  *
- * This function deals with issuing errors for
- * missing attributes, unknown attributes and
- * duplicate attributes as well as parse errors
- * for boolean-valued attributes.  In all of these
- * cases %FALSE will be returned and @error will
- * be set as appropriate.
+ * This function deals with issuing errors for missing attributes 
+ * (of type %G_MARKUP_ERROR_MISSING_ATTRIBUTE), unknown attributes 
+ * (of type %G_MARKUP_ERROR_UNKNOWN_ATTRIBUTE) and duplicate 
+ * attributes (of type %G_MARKUP_ERROR_INVALID_CONTENT) as well 
+ * as parse errors for boolean-valued attributes (again of type
+ * %G_MARKUP_ERROR_INVALID_CONTENT). In all of these cases %FALSE 
+ * will be returned and @error will be set as appropriate.
  *
  * Return value: %TRUE if successful
  *

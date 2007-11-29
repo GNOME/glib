@@ -1,7 +1,8 @@
 2007-11-28  Matthias Clasen  <mclasen@redhat.com>
 
-	* glib/gmarkup.c:
-	* glib/gerror.c: Add Since: tags to new API
+	* glib/gmarkup.h:
+	* glib/gmarkup.c: 
+	* glib/gerror.c: Add Since: tags to new API, other doc improvements.
 
 2007-11-28  Matthias Clasen  <mclasen@redhat.com>
 
