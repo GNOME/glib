@@ -1427,6 +1427,7 @@ g_build_filename
 g_build_filenamev
 g_build_path
 g_build_pathv
+g_format_file_size_for_display
 
 <SUBSECTION>
 g_find_program_in_path
@@ -2043,6 +2044,7 @@ g_string_append
 g_string_append_c
 g_string_append_unichar
 g_string_append_len
+g_string_append_uri_escaped
 g_string_prepend
 g_string_prepend_c
 g_string_prepend_unichar
@@ -2484,7 +2486,6 @@ g_unichar_to_utf8
 <TITLE>I18N</TITLE>
 <FILE>i18n</FILE>
 <INCLUDE>glib.h,glib/gi18n.h</INCLUDE>
-_
 Q_
 C_
 N_
@@ -2502,4 +2503,18 @@ g_base64_encode_close
 g_base64_encode
 g_base64_decode_step
 g_base64_decode
+</SECTION>
+
+<SECTION>
+<TITLE>URI Functions</TITLE>
+<FILE>gurifuncs</FILE>
+G_URI_RESERVED_CHARS_ALLOWED_IN_PATH
+G_URI_RESERVED_CHARS_ALLOWED_IN_PATH_ELEMENT
+G_URI_RESERVED_CHARS_ALLOWED_IN_USERINFO
+G_URI_RESERVED_CHARS_GENERIC_DELIMITERS
+G_URI_RESERVED_CHARS_SUBCOMPONENT_DELIMITERS
+g_uri_escape_string
+g_uri_get_scheme
+g_uri_unescape_segment
+g_uri_unescape_string
 </SECTION>

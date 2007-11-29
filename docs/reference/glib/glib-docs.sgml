@@ -63,6 +63,7 @@
 <!ENTITY glib-i18n SYSTEM "xml/i18n.xml">
 <!ENTITY glib-Regex SYSTEM "xml/gregex.xml">
 <!ENTITY glib-Version SYSTEM "xml/version.xml">
+<!ENTITY glib-Uri SYSTEM "xml/gurifuncs.xml">
 
 <!ENTITY glib-Compiling SYSTEM "compiling.sgml">
 <!ENTITY glib-Building SYSTEM "building.sgml">
@@ -151,6 +152,7 @@ synchronize their operation.
     &glib-Timers;
     &glib-Spawn;
     &glib-Fileutils;
+    &glib-Uri;
     &glib-Shell;
     &glib-Option;
     &glib-Pattern-Matching;
@@ -218,6 +220,9 @@ synchronize their operation.
   </index>  
   <index role="2.14">
     <title>Index of new symbols in 2.14</title>
+  </index>  
+  <index role="2.16">
+    <title>Index of new symbols in 2.16</title>
   </index>  
 
 </book>
