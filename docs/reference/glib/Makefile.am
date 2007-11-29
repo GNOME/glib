@@ -22,6 +22,7 @@ CFILE_GLOB=$(top_srcdir)/glib/*.c $(top_srcdir)/gmodule/*.c
 IGNORE_HFILES=			\
 	build			\
 	gobject 		\
+	gio			\
 	config.h 		\
 	gdatasetprivate.h	\
 	glibintl.h		\
