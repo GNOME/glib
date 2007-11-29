@@ -1,3 +1,16 @@
+2007-11-28  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gurifuncs.c: Some doc cleanups
+
+2007-11-28  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gtestutils.c: Fix up some doc comments, avoid C99 comments
+
+	* glib/gconvert.c: De-doc-commentify static functions to
+	shut up gtk-doc.
+
+	* glib/gutils.c: Fix the glib_gettext doc comment.
+
 2007-11-28  Tor Lillqvist  <tml@novell.com>
 
 	* config.h.win32.in: Update to match what configure produces.

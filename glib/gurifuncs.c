@@ -34,7 +34,6 @@
  * defined by RFC 3986. It is highly recommended that you have read and
  * understand RFC 3986 for understanding this API. A copy of RFC 3986 
  * can be found at <ulink url="http://www.ietf.org/rfc/rfc3986.txt"/>.
- *
  **/
 
 static int
@@ -145,7 +144,9 @@ g_uri_unescape_string (const char *escaped_string,
  * @uri: a valid URI.
  * 
  * Gets the scheme portion of a URI. RFC 3986 decodes the scheme as:
+ * <programlisting>
  * URI = scheme ":" hier-part [ "?" query ] [ "#" fragment ] 
+ * </programlisting>
  * Common schemes include "file", "http", "svn+ssh", etc.
  * 
  * Returns: The "Scheme" component of the URI, or %NULL on error. 
@@ -194,8 +195,9 @@ g_uri_get_scheme (const char  *uri)
 /**
  * g_uri_escape_string:
  * @unescaped: the unescaped input string.
- * @reserved_chars_allowed: a string of reserve characters allowed to be used.
- * @allow_utf8: a #gboolean. Set to %TRUE if string can include UTF8 characters.
+ * @reserved_chars_allowed: a string of reserved characters that are
+ *      allowed to be used.
+ * @allow_utf8: %TRUE if the result can include UTF-8 characters.
  * 
  * Escapes a string for use in a URI.
  * 
