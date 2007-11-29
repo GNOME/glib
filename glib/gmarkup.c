@@ -2455,8 +2455,9 @@ g_markup_parse_boolean (const char  *string,
  * be set as appropriate.
  *
  * Return value: %TRUE if successful
+ *
+ * Since: 2.16
  **/
-
 gboolean
 g_markup_collect_attributes (const gchar         *element_name,
                              const gchar        **attribute_names,

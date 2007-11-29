@@ -276,7 +276,7 @@ g_error_add_prefix (gchar       **string,
  * g_prefix_error:
  * @err: a return location for a #GError, or %NULL
  * @format: printf()-style format string
- * ...: arguments to @format
+ * @...: arguments to @format
  *
  * Formats a string according to @format and
  * prefix it to an existing error message.  If
@@ -288,6 +288,8 @@ g_error_add_prefix (gchar       **string,
  * also do nothing.  Whether or not it makes
  * sense to take advantage of this feature is up
  * to you.
+ *
+ * Since: 2.16
  **/
 void
 g_prefix_error (GError      **err,
@@ -309,12 +311,14 @@ g_prefix_error (GError      **err,
  * @dest: error return location
  * @src: error to move into the return location
  * @format: printf()-style format string
- * ...: arguments to @format
+ * @...: arguments to @format
  * 
  * If @dest is %NULL, free @src; otherwise,
  * moves @src into *@dest. *@dest must be %NULL.
  * After the move, add a prefix as with 
  * g_prefix_error().
+ *
+ * Since: 2.16
  **/
 void
 g_propagate_prefixed_error (GError      **dest,
