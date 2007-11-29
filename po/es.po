@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.es\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-11-28 00:02+0000\n"
-"PO-Revision-Date: 2007-11-28 17:20+0100\n"
+"POT-Creation-Date: 2007-11-28 16:31+0000\n"
+"PO-Revision-Date: 2007-11-29 18:45+0100\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Spanish <traductores@es.gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -961,512 +961,512 @@ msgstr "El valor «%s» no puede interpretarse como un número de coma flotante.
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "El valor «%s» no puede interpretarse como un booleano."
 
-#: ../gio/gbufferedinputstream.c:404 ../gio/gbufferedinputstream.c:498
-#: ../gio/gbufferedinputstream.c:885 ../gio/gfileinputstream.c:132
-#: ../gio/gfileinputstream.c:216 ../gio/gfileinputstream.c:375
-#: ../gio/gfileoutputstream.c:142 ../gio/gfileoutputstream.c:226
-#: ../gio/gfileoutputstream.c:413 ../gio/gfileoutputstream.c:521
-#: ../gio/ginputstream.c:190 ../gio/ginputstream.c:333
-#: ../gio/ginputstream.c:591 ../gio/ginputstream.c:724
-#: ../gio/goutputstream.c:198 ../gio/goutputstream.c:322
-#: ../gio/goutputstream.c:678 ../gio/goutputstream.c:896
+#: ../gio/gbufferedinputstream.c:406 ../gio/gbufferedinputstream.c:500
+#: ../gio/gbufferedinputstream.c:887 ../gio/gfileinputstream.c:134
+#: ../gio/gfileinputstream.c:218 ../gio/gfileinputstream.c:377
+#: ../gio/gfileoutputstream.c:144 ../gio/gfileoutputstream.c:228
+#: ../gio/gfileoutputstream.c:415 ../gio/gfileoutputstream.c:523
+#: ../gio/ginputstream.c:192 ../gio/ginputstream.c:335
+#: ../gio/ginputstream.c:593 ../gio/ginputstream.c:726
+#: ../gio/goutputstream.c:200 ../gio/goutputstream.c:324
+#: ../gio/goutputstream.c:680 ../gio/goutputstream.c:898
 msgid "Stream is already closed"
 msgstr "El flujo ya se cerró"
 
-#: ../gio/gbufferedinputstream.c:411 ../gio/gbufferedinputstream.c:508
-#: ../gio/gbufferedinputstream.c:892 ../gio/gfileinputstream.c:139
-#: ../gio/gfileinputstream.c:226 ../gio/gfileinputstream.c:382
-#: ../gio/gfileoutputstream.c:149 ../gio/gfileoutputstream.c:236
-#: ../gio/gfileoutputstream.c:420 ../gio/gfileoutputstream.c:528
-#: ../gio/ginputstream.c:197 ../gio/ginputstream.c:340
-#: ../gio/ginputstream.c:465 ../gio/ginputstream.c:601
-#: ../gio/ginputstream.c:734 ../gio/ginputstream.c:830
-#: ../gio/goutputstream.c:205 ../gio/goutputstream.c:329
-#: ../gio/goutputstream.c:395 ../gio/goutputstream.c:541
-#: ../gio/goutputstream.c:688 ../gio/goutputstream.c:816
-#: ../gio/goutputstream.c:906 ../gio/goutputstream.c:1013
+#: ../gio/gbufferedinputstream.c:413 ../gio/gbufferedinputstream.c:510
+#: ../gio/gbufferedinputstream.c:894 ../gio/gfileinputstream.c:141
+#: ../gio/gfileinputstream.c:228 ../gio/gfileinputstream.c:384
+#: ../gio/gfileoutputstream.c:151 ../gio/gfileoutputstream.c:238
+#: ../gio/gfileoutputstream.c:422 ../gio/gfileoutputstream.c:530
+#: ../gio/ginputstream.c:199 ../gio/ginputstream.c:342
+#: ../gio/ginputstream.c:467 ../gio/ginputstream.c:603
+#: ../gio/ginputstream.c:736 ../gio/ginputstream.c:832
+#: ../gio/goutputstream.c:207 ../gio/goutputstream.c:331
+#: ../gio/goutputstream.c:397 ../gio/goutputstream.c:543
+#: ../gio/goutputstream.c:690 ../gio/goutputstream.c:818
+#: ../gio/goutputstream.c:908 ../gio/goutputstream.c:1016
 msgid "Stream has outstanding operation"
 msgstr ""
 
-#: ../gio/gbufferedinputstream.c:488 ../gio/ginputstream.c:581
+#: ../gio/gbufferedinputstream.c:490 ../gio/ginputstream.c:583
 msgid "Too large count value passed to g_input_stream_read_async"
-msgstr ""
+msgstr "El valor de conteo pasado a passed to g_input_stream_read_async es demasiado largo"
 
-#: ../gio/gcancellable.c:267 ../gio/gsimpleasyncresult.c:594
+#: ../gio/gcancellable.c:268 ../gio/gsimpleasyncresult.c:605
 msgid "Operation was cancelled"
 msgstr "Se canceló la operación"
 
-#: ../gio/gcontenttype.c:195
+#: ../gio/gcontenttype.c:156
 msgid "Unknown type"
 msgstr "Tipo desconocido"
 
-#: ../gio/gcontenttype.c:196
+#: ../gio/gcontenttype.c:157
 #, c-format
 msgid "%s filetype"
 msgstr "tipo de archivo %s"
 
-#: ../gio/gcontenttype.c:624
+#: ../gio/gcontenttype.c:565
 #, c-format
 msgid "%s type"
 msgstr "tipo %s"
 
-#: ../gio/gdatainputstream.c:239
+#: ../gio/gdatainputstream.c:241
 msgid "Unexpected early end-of-stream"
-msgstr ""
+msgstr "Final de flujo inesperadamente prematuro"
 
-#: ../gio/gdesktopappinfo.c:370 ../gio/gwin32appinfo.c:210
+#: ../gio/gdesktopappinfo.c:373 ../gio/gwin32appinfo.c:212
 msgid "Unnamed"
 msgstr "Sin nombre"
 
-#: ../gio/gdesktopappinfo.c:540
+#: ../gio/gdesktopappinfo.c:543
 msgid "Desktop file didn't specify Exec field"
 msgstr ""
 
-#: ../gio/gdesktopappinfo.c:822
+#: ../gio/gdesktopappinfo.c:825
 msgid "Unable to find terminal required for application"
-msgstr ""
+msgstr "Imposible encontrar el terminal requerido por la aplicación"
 
-#: ../gio/gdesktopappinfo.c:1017
+#: ../gio/gdesktopappinfo.c:1020
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
-msgstr ""
+msgstr "No se puede crear la carpeta de configuración de la aplicación %s del usuario: %s"
 
-#: ../gio/gdesktopappinfo.c:1023
+#: ../gio/gdesktopappinfo.c:1026
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
-msgstr ""
+msgstr "No se puede crear la carpeta de configuración MIME %s del usuario: %s"
 
-#: ../gio/gdesktopappinfo.c:1391
+#: ../gio/gdesktopappinfo.c:1396
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Definición personalizada para %s"
 
-#: ../gio/gdesktopappinfo.c:1415
+#: ../gio/gdesktopappinfo.c:1420
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "No se puede crear el archivo de escritorio %s del usuario"
 
-#: ../gio/gdesktopappinfo.c:1440
+#: ../gio/gdesktopappinfo.c:1445
 msgid "Can't load just created desktop file"
 msgstr "No se puede cargar el archivo de escritorio recientemente creado"
 
-#: ../gio/gdrive.c:280
+#: ../gio/gdrive.c:283
 msgid "drive doesn't implement mount"
-msgstr ""
+msgstr "la unidad no implementa el montaje"
 
-#: ../gio/gdrive.c:345
+#: ../gio/gdrive.c:348
 msgid "drive doesn't implement eject"
-msgstr ""
+msgstr "la unidad no implementa la expulsión"
 
-#: ../gio/gfile.c:645 ../gio/gfile.c:770 ../gio/gfile.c:893 ../gio/gfile.c:978
-#: ../gio/gfile.c:1019 ../gio/gfile.c:1062 ../gio/gfile.c:1110
-#: ../gio/gfile.c:2041 ../gio/gfile.c:2089 ../gio/gfile.c:2128
-#: ../gio/gfile.c:2434 ../gio/gfile.c:2826 ../gio/gfile.c:2897
-#: ../gio/gfile.c:2972
+#: ../gio/gfile.c:653 ../gio/gfile.c:779 ../gio/gfile.c:901 ../gio/gfile.c:986
+#: ../gio/gfile.c:1028 ../gio/gfile.c:1071 ../gio/gfile.c:1120
+#: ../gio/gfile.c:2048 ../gio/gfile.c:2096 ../gio/gfile.c:2135
+#: ../gio/gfile.c:2440 ../gio/gfile.c:2831 ../gio/gfile.c:2901
+#: ../gio/gfile.c:2975
 msgid "Operation not supported"
 msgstr "Operación no soportada"
 
-#: ../gio/gfile.c:935 ../gio/glocalfile.c:833 ../gio/glocalfile.c:842
-#: ../gio/glocalfile.c:853
+#: ../gio/gfile.c:943 ../gio/glocalfile.c:836 ../gio/glocalfile.c:845
+#: ../gio/glocalfile.c:856
 msgid "Containing volume does not exist"
 msgstr ""
 
-#: ../gio/gfile.c:1446
+#: ../gio/gfile.c:1452
 msgid "Can't copy over directory"
-msgstr ""
+msgstr "No se puede copiar sobre el directorio"
 
-#: ../gio/gfile.c:1505
+#: ../gio/gfile.c:1511
 msgid "Can't copy directory over directory"
-msgstr ""
+msgstr "No se puede copiar directorio sobre directorio"
 
-#: ../gio/gfile.c:1513
+#: ../gio/gfile.c:1519
 msgid "Target file exists"
-msgstr ""
+msgstr "El archivo destino ya existe"
 
-#: ../gio/gfile.c:1529
+#: ../gio/gfile.c:1535
 msgid "Can't recursively copy directory"
-msgstr ""
+msgstr "No se puede copiar el directorio recursivamente"
 
-#: ../gio/gfile.c:2079
+#: ../gio/gfile.c:2086
 msgid "Invalid symlink value given"
-msgstr ""
+msgstr "El valor del enlace simbólico dado no es válido"
 
-#: ../gio/gfile.c:2169
+#: ../gio/gfile.c:2176
 msgid "Trash not supported"
-msgstr ""
+msgstr "No se soporta mover a la papelera"
 
-#: ../gio/gfile.c:2209
+#: ../gio/gfile.c:2216
 msgid "File names cannot contain '/'"
-msgstr ""
+msgstr "Los nombres de archivo no pueden contener «/»"
 
-#: ../gio/gfile.c:3818
+#: ../gio/gfile.c:3821
 msgid "volume doesn't implement mount"
-msgstr ""
+msgstr "el volumen no implementa el montado"
 
-#: ../gio/gfileenumerator.c:131
+#: ../gio/gfileenumerator.c:133
 msgid "Enumerator is closed"
 msgstr ""
 
-#: ../gio/gfileenumerator.c:138 ../gio/gfileenumerator.c:197
-#: ../gio/gfileenumerator.c:296 ../gio/gfileenumerator.c:396
+#: ../gio/gfileenumerator.c:140 ../gio/gfileenumerator.c:199
+#: ../gio/gfileenumerator.c:298 ../gio/gfileenumerator.c:398
 msgid "File enumerator has outstanding operation"
 msgstr ""
 
-#: ../gio/gfileenumerator.c:286 ../gio/gfileenumerator.c:386
+#: ../gio/gfileenumerator.c:288 ../gio/gfileenumerator.c:388
 msgid "File enumerator is already closed"
 msgstr ""
 
-#: ../gio/gfileinputstream.c:155 ../gio/gfileinputstream.c:473
-#: ../gio/gfileoutputstream.c:165 ../gio/gfileoutputstream.c:600
+#: ../gio/gfileinputstream.c:157 ../gio/gfileinputstream.c:475
+#: ../gio/gfileoutputstream.c:167 ../gio/gfileoutputstream.c:602
 msgid "Stream doesn't support query_info"
 msgstr ""
 
-#: ../gio/gfileinputstream.c:389 ../gio/gfileoutputstream.c:427
+#: ../gio/gfileinputstream.c:391 ../gio/gfileoutputstream.c:429
 msgid "Seek not supported on stream"
 msgstr ""
 
-#: ../gio/gfileinputstream.c:432
+#: ../gio/gfileinputstream.c:434
 msgid "Truncate not allowed on input stream"
 msgstr ""
 
-#: ../gio/gfileoutputstream.c:535
+#: ../gio/gfileoutputstream.c:537
 msgid "Truncate not supported on stream"
 msgstr ""
 
-#: ../gio/ginputstream.c:183
+#: ../gio/ginputstream.c:185
 msgid "Too large count value passed to g_input_stream_read"
 msgstr ""
 
-#: ../gio/ginputstream.c:206
+#: ../gio/ginputstream.c:208
 msgid "Input stream doesn't implement read"
 msgstr ""
 
-#: ../gio/ginputstream.c:326
+#: ../gio/ginputstream.c:328
 msgid "Too large count value passed to g_input_stream_skip"
 msgstr ""
 
-#: ../gio/ginputstream.c:714
+#: ../gio/ginputstream.c:716
 msgid "Too large count value passed to g_input_stream_skip_async"
 msgstr ""
 
-#: ../gio/glocalfile.c:535
+#: ../gio/glocalfile.c:538
 #, c-format
 msgid "Invalid filename %s"
 msgstr "Nombre de archivo no válido %s"
 
-#: ../gio/glocalfile.c:784
+#: ../gio/glocalfile.c:787
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr ""
 
-#: ../gio/glocalfile.c:873
+#: ../gio/glocalfile.c:876
 msgid "Can't rename root directory"
 msgstr ""
 
-#: ../gio/glocalfile.c:891
+#: ../gio/glocalfile.c:894
 msgid "Can't rename file, filename already exist"
 msgstr ""
 
-#: ../gio/glocalfile.c:904 ../gio/glocalfile.c:1589 ../gio/glocalfile.c:1618
-#: ../gio/glocalfile.c:1747 ../gio/glocalfileoutputstream.c:432
-#: ../gio/glocalfileoutputstream.c:475 ../gio/glocalfileoutputstream.c:863
+#: ../gio/glocalfile.c:907 ../gio/glocalfile.c:1592 ../gio/glocalfile.c:1621
+#: ../gio/glocalfile.c:1750 ../gio/glocalfileoutputstream.c:435
+#: ../gio/glocalfileoutputstream.c:478 ../gio/glocalfileoutputstream.c:866
 msgid "Invalid filename"
 msgstr "Nombre de archivo inválido"
 
-#: ../gio/glocalfile.c:908
+#: ../gio/glocalfile.c:911
 #, c-format
 msgid "Error renaming file: %s"
 msgstr ""
 
-#: ../gio/glocalfile.c:1023
+#: ../gio/glocalfile.c:1026
 #, c-format
 msgid "Error opening file: %s"
 msgstr ""
 
-#: ../gio/glocalfile.c:1033
+#: ../gio/glocalfile.c:1036
 msgid "Can't open directory"
 msgstr ""
 
-#: ../gio/glocalfile.c:1085 ../gio/glocalfile.c:1593
+#: ../gio/glocalfile.c:1088 ../gio/glocalfile.c:1596
 #, c-format
 msgid "Error removing file: %s"
 msgstr ""
 
-#: ../gio/glocalfile.c:1361
+#: ../gio/glocalfile.c:1364
 #, c-format
 msgid "Error trashing file: %s"
 msgstr ""
 
-#: ../gio/glocalfile.c:1385
+#: ../gio/glocalfile.c:1388
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr ""
 
-#: ../gio/glocalfile.c:1403
+#: ../gio/glocalfile.c:1406
 msgid "Unable to find toplevel directory for trash"
 msgstr ""
 
-#: ../gio/glocalfile.c:1462 ../gio/glocalfile.c:1482
+#: ../gio/glocalfile.c:1465 ../gio/glocalfile.c:1485
 msgid "Unable to find or create trash directory"
 msgstr ""
 
-#: ../gio/glocalfile.c:1514
+#: ../gio/glocalfile.c:1517
 #, c-format
 msgid "Unable to create trashed file: %s"
 msgstr ""
 
-#: ../gio/glocalfile.c:1537
+#: ../gio/glocalfile.c:1540
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr ""
 
-#: ../gio/glocalfile.c:1622
+#: ../gio/glocalfile.c:1625
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "Error al crear el enlace simbólico: %s"
 
-#: ../gio/glocalfile.c:1669 ../gio/glocalfile.c:1751
+#: ../gio/glocalfile.c:1672 ../gio/glocalfile.c:1754
 #, c-format
 msgid "Error moving file: %s"
 msgstr "Error al mover el archivo: %s"
 
-#: ../gio/glocalfile.c:1690
+#: ../gio/glocalfile.c:1693
 msgid "Can't move directory over directory"
 msgstr "No se puede mover un directorio sobre un directoro"
 
-#: ../gio/glocalfile.c:1699
+#: ../gio/glocalfile.c:1702
 msgid "Target file already exists"
 msgstr ""
 
-#: ../gio/glocalfile.c:1712 ../gio/glocalfileoutputstream.c:721
-#: ../gio/glocalfileoutputstream.c:735 ../gio/glocalfileoutputstream.c:750
-#: ../gio/glocalfileoutputstream.c:766 ../gio/glocalfileoutputstream.c:780
+#: ../gio/glocalfile.c:1715 ../gio/glocalfileoutputstream.c:724
+#: ../gio/glocalfileoutputstream.c:738 ../gio/glocalfileoutputstream.c:753
+#: ../gio/glocalfileoutputstream.c:769 ../gio/glocalfileoutputstream.c:783
 msgid "Backup file creation failed"
 msgstr ""
 
-#: ../gio/glocalfile.c:1729
+#: ../gio/glocalfile.c:1732
 #, c-format
 msgid "Error removing target file: %s"
 msgstr ""
 
-#: ../gio/glocalfileinfo.c:648
+#: ../gio/glocalfileinfo.c:650
 msgid "Attribute value must be non-NULL"
 msgstr ""
 
-#: ../gio/glocalfileinfo.c:655
+#: ../gio/glocalfileinfo.c:657
 msgid "Invalid attribute type (string expected)"
 msgstr ""
 
-#: ../gio/glocalfileinfo.c:662
+#: ../gio/glocalfileinfo.c:664
 msgid "Invalid extended attribute name"
 msgstr ""
 
-#: ../gio/glocalfileinfo.c:703
+#: ../gio/glocalfileinfo.c:705
 #, c-format
 msgid "Error setting extended attribute '%s': %s"
 msgstr ""
 
-#: ../gio/glocalfileinfo.c:1246 ../gio/glocalfileoutputstream.c:611
+#: ../gio/glocalfileinfo.c:1248 ../gio/glocalfileoutputstream.c:614
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr ""
 
-#: ../gio/glocalfileinfo.c:1300
+#: ../gio/glocalfileinfo.c:1302
 msgid " (invalid encoding)"
 msgstr " (codificación no válida)"
 
-#: ../gio/glocalfileinfo.c:1465
+#: ../gio/glocalfileinfo.c:1467
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr ""
 
-#: ../gio/glocalfileinfo.c:1510
+#: ../gio/glocalfileinfo.c:1512
 msgid "Invalid attribute type (uint32 expected)"
 msgstr ""
 
-#: ../gio/glocalfileinfo.c:1527
+#: ../gio/glocalfileinfo.c:1529
 msgid "Invalid attribute type (uint64 expected)"
 msgstr ""
 
-#: ../gio/glocalfileinfo.c:1545
+#: ../gio/glocalfileinfo.c:1547
 msgid "Invalid attribute type (byte string expected)"
 msgstr ""
 
-#: ../gio/glocalfileinfo.c:1569
+#: ../gio/glocalfileinfo.c:1571
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr ""
 
-#: ../gio/glocalfileinfo.c:1616 ../gio/glocalfileinfo.c:1774
+#: ../gio/glocalfileinfo.c:1618 ../gio/glocalfileinfo.c:1776
 #, c-format
 msgid "Error setting owner: %s"
 msgstr ""
 
-#: ../gio/glocalfileinfo.c:1639
+#: ../gio/glocalfileinfo.c:1641
 msgid "symlink must be non-NULL"
 msgstr ""
 
-#: ../gio/glocalfileinfo.c:1647 ../gio/glocalfileinfo.c:1664
-#: ../gio/glocalfileinfo.c:1673
+#: ../gio/glocalfileinfo.c:1649 ../gio/glocalfileinfo.c:1666
+#: ../gio/glocalfileinfo.c:1675
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr ""
 
-#: ../gio/glocalfileinfo.c:1656
+#: ../gio/glocalfileinfo.c:1658
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 
-#: ../gio/glocalfileinfo.c:1824
+#: ../gio/glocalfileinfo.c:1826
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr ""
 
-#: ../gio/glocalfileinputstream.c:150 ../gio/glocalfileoutputstream.c:522
+#: ../gio/glocalfileinputstream.c:152 ../gio/glocalfileoutputstream.c:525
 #, c-format
 msgid "Error reading from file: %s"
 msgstr "Error al leer del archivo: %s"
 
-#: ../gio/glocalfileinputstream.c:179 ../gio/glocalfileinputstream.c:189
-#: ../gio/glocalfileinputstream.c:295 ../gio/glocalfileoutputstream.c:336
-#: ../gio/glocalfileoutputstream.c:796
+#: ../gio/glocalfileinputstream.c:181 ../gio/glocalfileinputstream.c:191
+#: ../gio/glocalfileinputstream.c:297 ../gio/glocalfileoutputstream.c:339
+#: ../gio/glocalfileoutputstream.c:799
 #, c-format
 msgid "Error seeking in file: %s"
 msgstr "Error al buscar en el archivo: %s"
 
-#: ../gio/glocalfileinputstream.c:217 ../gio/glocalfileoutputstream.c:244
+#: ../gio/glocalfileinputstream.c:219 ../gio/glocalfileoutputstream.c:247
 #, c-format
 msgid "Error closing file: %s"
 msgstr "Error al cerrar el archivo: %s"
 
-#: ../gio/glocalfileoutputstream.c:151 ../gio/glocalfileoutputstream.c:541
+#: ../gio/glocalfileoutputstream.c:154 ../gio/glocalfileoutputstream.c:544
 #, c-format
 msgid "Error writing to file: %s"
 msgstr "Error al escribir en el archivo: %s"
 
-#: ../gio/glocalfileoutputstream.c:190
+#: ../gio/glocalfileoutputstream.c:193
 #, c-format
 msgid "Error removing old backup link: %s"
 msgstr "Error al eliminar el enlace de respaldo antiguo: %s"
 
-#: ../gio/glocalfileoutputstream.c:199
+#: ../gio/glocalfileoutputstream.c:202
 #, c-format
 msgid "Error creating backup link: %s"
 msgstr "Error al crear un enlace de respaldo: %s"
 
-#: ../gio/glocalfileoutputstream.c:209
+#: ../gio/glocalfileoutputstream.c:212
 #, c-format
 msgid "Error creating backup copy: %s"
 msgstr "Error al crear una copia de respaldo: %s"
 
-#: ../gio/glocalfileoutputstream.c:225
+#: ../gio/glocalfileoutputstream.c:228
 #, c-format
 msgid "Error renaming temporary file: %s"
 msgstr "Error al renombrar el archivo temporal: %s"
 
-#: ../gio/glocalfileoutputstream.c:376 ../gio/glocalfileoutputstream.c:807
+#: ../gio/glocalfileoutputstream.c:379 ../gio/glocalfileoutputstream.c:810
 #, c-format
 msgid "Error truncating file: %s"
 msgstr "Error al truncar el archivo: %s"
 
-#: ../gio/glocalfileoutputstream.c:436 ../gio/glocalfileoutputstream.c:479
-#: ../gio/glocalfileoutputstream.c:602 ../gio/glocalfileoutputstream.c:867
+#: ../gio/glocalfileoutputstream.c:439 ../gio/glocalfileoutputstream.c:482
+#: ../gio/glocalfileoutputstream.c:605 ../gio/glocalfileoutputstream.c:870
 #, c-format
 msgid "Error opening file '%s': %s"
 msgstr "Error al abrir el archivo «%s»: %s"
 
-#: ../gio/glocalfileoutputstream.c:623
+#: ../gio/glocalfileoutputstream.c:626
 msgid "Target file is a directory"
 msgstr "El archivo destino es un directorio"
 
-#: ../gio/glocalfileoutputstream.c:628
+#: ../gio/glocalfileoutputstream.c:631
 msgid "Target file is not a regular file"
 msgstr "El archivo destino no es un archivo regular"
 
-#: ../gio/glocalfileoutputstream.c:640
+#: ../gio/glocalfileoutputstream.c:643
 msgid "The file was externally modified"
 msgstr "El archivo se modificó externamente"
 
-#: ../gio/goutputstream.c:191
+#: ../gio/goutputstream.c:193
 msgid "Too large count value passed to g_output_stream_write"
 msgstr ""
 
-#: ../gio/goutputstream.c:214
+#: ../gio/goutputstream.c:216
 msgid "Output stream doesn't implement write"
 msgstr ""
 
-#: ../gio/goutputstream.c:381 ../gio/goutputstream.c:796
+#: ../gio/goutputstream.c:383 ../gio/goutputstream.c:798
 msgid "Target stream is already closed"
 msgstr ""
 
-#: ../gio/goutputstream.c:388 ../gio/goutputstream.c:806
+#: ../gio/goutputstream.c:390 ../gio/goutputstream.c:808
 msgid "Source stream is already closed"
 msgstr ""
 
-#: ../gio/goutputstream.c:668
+#: ../gio/goutputstream.c:670
 msgid "Too large count value passed to g_output_stream_write_async"
 msgstr ""
 
-#: ../gio/gunixdrive.c:144
+#: ../gio/gunixdrive.c:146
 msgid "Unknown drive"
 msgstr "Unidad desconocida"
 
 #. TODO: add translation table from gnome-vfs
-#: ../gio/gunixvolume.c:88
+#: ../gio/gunixvolume.c:91
 #, c-format
 msgid "%s volume"
 msgstr "volumen %s"
 
-#: ../gio/gunixvolume.c:167
+#: ../gio/gunixvolume.c:170
 msgid "Filesystem root"
 msgstr "Sistema de archivos raíz"
 
 #. TODO: Use volume size as name?
-#: ../gio/gunixvolume.c:181
+#: ../gio/gunixvolume.c:184
 msgid "Unknown volume"
 msgstr "Volumen desconocido"
 
-#: ../gio/gvolume.c:270
+#: ../gio/gvolume.c:272
 msgid "volume doesn't implement unmount"
 msgstr "el volumen no implementa el desmontado"
 
-#: ../gio/gvolume.c:340
+#: ../gio/gvolume.c:342
 msgid "volume doesn't implement eject"
-msgstr "el volumen no implementa la extracción"
+msgstr "el volumen no implementa la expulsión"
 
-#: ../gio/gwin32appinfo.c:263
+#: ../gio/gwin32appinfo.c:265
 msgid "Can't find application"
 msgstr "No se puede encontrar la aplicación"
 
-#: ../gio/gwin32appinfo.c:297
+#: ../gio/gwin32appinfo.c:299
 #, c-format
 msgid "Error launching application: %s"
 msgstr "Error al analizar la aplicación: %s"
 
-#: ../gio/gwin32appinfo.c:326
+#: ../gio/gwin32appinfo.c:328
 msgid "URIs not supported"
 msgstr "No se soportan URI"
 
-#: ../gio/gwin32appinfo.c:347
+#: ../gio/gwin32appinfo.c:349
 msgid "association changes not supported on win32"
 msgstr "los cambios de asociación no están soportados en win32"
 
-#: ../gio/gwin32appinfo.c:357
+#: ../gio/gwin32appinfo.c:359
 msgid "Association creation not supported on win32"
 msgstr "La creación de asociación no está soportada en win32"
 
-#: ../gio/gunixinputstream.c:197 ../gio/gunixinputstream.c:215
-#: ../gio/gunixinputstream.c:289 ../gio/gunixoutputstream.c:278
+#: ../gio/gunixinputstream.c:199 ../gio/gunixinputstream.c:217
+#: ../gio/gunixinputstream.c:291 ../gio/gunixoutputstream.c:280
 #, c-format
 msgid "Error reading from unix: %s"
 msgstr "Error al leer de unix: %s"
 
-#: ../gio/gunixinputstream.c:246 ../gio/gunixinputstream.c:423
-#: ../gio/gunixoutputstream.c:235 ../gio/gunixoutputstream.c:382
+#: ../gio/gunixinputstream.c:248 ../gio/gunixinputstream.c:425
+#: ../gio/gunixoutputstream.c:237 ../gio/gunixoutputstream.c:384
 #, c-format
 msgid "Error closing unix: %s"
 msgstr "Error al cerrar unix: %s"
 
-#: ../gio/gunixoutputstream.c:185 ../gio/gunixoutputstream.c:204
+#: ../gio/gunixoutputstream.c:187 ../gio/gunixoutputstream.c:206
 #, c-format
 msgid "Error writing to unix: %s"
 msgstr "Error al escribir en unix: %s"
