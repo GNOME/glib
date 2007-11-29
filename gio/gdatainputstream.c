@@ -73,10 +73,10 @@ g_data_input_stream_class_init (GDataInputStreamClass *klass)
 }
 
 static void
-g_data_input_stream_set_property (GObject         *object,
-				  guint            prop_id,
-				  const GValue    *value,
-				  GParamSpec      *pspec)
+g_data_input_stream_set_property (GObject      *object,
+				  guint         prop_id,
+				  const GValue *value,
+				  GParamSpec   *pspec)
 {
   GDataInputStreamPrivate *priv;
   GDataInputStream        *dstream;
@@ -96,9 +96,9 @@ g_data_input_stream_set_property (GObject         *object,
 
 static void
 g_data_input_stream_get_property (GObject    *object,
-                                      guint       prop_id,
-                                      GValue     *value,
-                                      GParamSpec *pspec)
+                                  guint       prop_id,
+                                  GValue     *value,
+                                  GParamSpec *pspec)
 {
   GDataInputStreamPrivate *priv;
   GDataInputStream        *dstream;
@@ -108,7 +108,6 @@ g_data_input_stream_get_property (GObject    *object,
 
   switch (prop_id)
     { 
-  
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -158,8 +157,8 @@ g_data_input_stream_new (GInputStream *base_stream)
  *  
  **/
 void
-g_data_input_stream_set_byte_order (GDataInputStream *stream,
-				    GDataStreamByteOrder order)
+g_data_input_stream_set_byte_order (GDataInputStream     *stream,
+				    GDataStreamByteOrder  order)
 {
   g_return_if_fail (G_IS_DATA_INPUT_STREAM (stream));
 
@@ -194,8 +193,8 @@ g_data_input_stream_get_byte_order (GDataInputStream *stream)
  *  
  **/
 void
-g_data_input_stream_set_newline_type (GDataInputStream        *stream,
-				      GDataStreamNewlineType   type)
+g_data_input_stream_set_newline_type (GDataInputStream       *stream,
+				      GDataStreamNewlineType  type)
 {
   g_return_if_fail (G_IS_DATA_INPUT_STREAM (stream));
 
@@ -219,11 +218,11 @@ g_data_input_stream_get_newline_type (GDataInputStream *stream)
 }
 
 static gboolean
-read_data (GDataInputStream *stream,
-	  void *buffer,
-	  gsize size,
-	  GCancellable *cancellable,
-	  GError **error)
+read_data (GDataInputStream  *stream,
+           void              *buffer,
+           gsize              size,
+           GCancellable      *cancellable,
+           GError           **error)
 {
   gsize available;
   gssize res;
@@ -264,9 +263,9 @@ read_data (GDataInputStream *stream,
  * if an error occured.
  **/
 guchar
-g_data_input_stream_read_byte (GDataInputStream        *stream,
-			      GCancellable            *cancellable,
-			      GError                 **error)
+g_data_input_stream_read_byte (GDataInputStream  *stream,
+			      GCancellable       *cancellable,
+			      GError            **error)
 {
   guchar c;
   
@@ -294,9 +293,9 @@ g_data_input_stream_read_byte (GDataInputStream        *stream,
  * an error occured.
  **/
 gint16
-g_data_input_stream_read_int16 (GDataInputStream        *stream,
-			       GCancellable            *cancellable,
-			       GError                 **error)
+g_data_input_stream_read_int16 (GDataInputStream  *stream,
+			       GCancellable       *cancellable,
+			       GError            **error)
 {
   gint16 v;
   
@@ -338,9 +337,9 @@ g_data_input_stream_read_int16 (GDataInputStream        *stream,
  * an error occured. 
  **/
 guint16
-g_data_input_stream_read_uint16 (GDataInputStream        *stream,
-				GCancellable            *cancellable,
-				GError                 **error)
+g_data_input_stream_read_uint16 (GDataInputStream  *stream,
+				GCancellable       *cancellable,
+				GError            **error)
 {
   guint16 v;
   
@@ -386,9 +385,9 @@ g_data_input_stream_read_uint16 (GDataInputStream        *stream,
  * an error occured. 
  **/
 gint32
-g_data_input_stream_read_int32 (GDataInputStream        *stream,
-			       GCancellable            *cancellable,
-			       GError                 **error)
+g_data_input_stream_read_int32 (GDataInputStream  *stream,
+			       GCancellable       *cancellable,
+			       GError            **error)
 {
   gint32 v;
   
@@ -434,9 +433,9 @@ g_data_input_stream_read_int32 (GDataInputStream        *stream,
  * an error occured. 
  **/
 guint32
-g_data_input_stream_read_uint32 (GDataInputStream        *stream,
-				GCancellable            *cancellable,
-				GError                 **error)
+g_data_input_stream_read_uint32 (GDataInputStream  *stream,
+				GCancellable       *cancellable,
+				GError            **error)
 {
   guint32 v;
   
@@ -482,9 +481,9 @@ g_data_input_stream_read_uint32 (GDataInputStream        *stream,
  * an error occured.  
  **/
 gint64
-g_data_input_stream_read_int64 (GDataInputStream        *stream,
-			       GCancellable            *cancellable,
-			       GError                 **error)
+g_data_input_stream_read_int64 (GDataInputStream  *stream,
+			       GCancellable       *cancellable,
+			       GError            **error)
 {
   gint64 v;
   
@@ -530,9 +529,9 @@ g_data_input_stream_read_int64 (GDataInputStream        *stream,
  * an error occured. 
  **/
 guint64
-g_data_input_stream_read_uint64 (GDataInputStream        *stream,
-				GCancellable            *cancellable,
-				GError                 **error)
+g_data_input_stream_read_uint64 (GDataInputStream  *stream,
+				GCancellable       *cancellable,
+				GError            **error)
 {
   guint64 v;
   
@@ -560,9 +559,9 @@ g_data_input_stream_read_uint64 (GDataInputStream        *stream,
 
 static gssize
 scan_for_newline (GDataInputStream *stream,
-		  gsize *checked_out,
-		  gboolean *last_saw_cr_out,
-		  int *newline_len_out)
+		  gsize            *checked_out,
+		  gboolean         *last_saw_cr_out,
+		  int              *newline_len_out)
 {
   GBufferedInputStream *bstream;
   GDataInputStreamPrivate *priv;
@@ -674,10 +673,10 @@ scan_for_newline (GDataInputStream *stream,
  * a #gsize to get the length of the read line. Returns %NULL on an error.
  **/
 char *
-g_data_input_stream_read_line (GDataInputStream        *stream,
-			      gsize                   *length,
-			      GCancellable            *cancellable,
-			      GError                 **error)
+g_data_input_stream_read_line (GDataInputStream  *stream,
+			       gsize             *length,
+			       GCancellable      *cancellable,
+			       GError           **error)
 {
   GBufferedInputStream *bstream;
   gsize checked;
@@ -740,8 +739,8 @@ g_data_input_stream_read_line (GDataInputStream        *stream,
 
 static gssize
 scan_for_chars (GDataInputStream *stream,
-		gsize *checked_out,
-		const char *stop_chars)
+		gsize            *checked_out,
+		const char       *stop_chars)
 {
   GBufferedInputStream *bstream;
   GDataInputStreamPrivate *priv;
@@ -795,11 +794,11 @@ scan_for_chars (GDataInputStream *stream,
  * of the string. This function will return %NULL on an error.
  **/
 char *
-g_data_input_stream_read_until (GDataInputStream        *stream,
-			       const gchar             *stop_chars,
-			       gsize                   *length,
-			       GCancellable            *cancellable,
-			       GError                 **error)
+g_data_input_stream_read_until (GDataInputStream  *stream,
+			       const gchar        *stop_chars,
+			       gsize              *length,
+			       GCancellable       *cancellable,
+			       GError            **error)
 {
   GBufferedInputStream *bstream;
   gsize checked;

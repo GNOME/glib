@@ -114,8 +114,8 @@ g_app_info_dup (GAppInfo *appinfo)
  * Returns: %TRUE if @appinfo1 is equal to @appinfo2. %FALSE otherwise.
  **/
 gboolean
-g_app_info_equal (GAppInfo    *appinfo1,
-		  GAppInfo    *appinfo2)
+g_app_info_equal (GAppInfo *appinfo1,
+		  GAppInfo *appinfo2)
 {
   GAppInfoIface *iface;
 
@@ -255,9 +255,9 @@ g_app_info_set_as_default_for_type (GAppInfo    *appinfo,
  * or in case of an error.
  **/
 gboolean
-g_app_info_set_as_default_for_extension (GAppInfo  *appinfo,
-					 const char *extension,
-					 GError **error)
+g_app_info_set_as_default_for_extension (GAppInfo    *appinfo,
+					 const char  *extension,
+					 GError     **error)
 {
   GAppInfoIface *iface;
   
@@ -284,12 +284,12 @@ g_app_info_set_as_default_for_extension (GAppInfo  *appinfo,
  * application is capable of opening files with the given content type.
  *
  * Returns: %TRUE if @appinfo supports @content_type.
- * %FALSE if not, or in case of an error.
+ *     %FALSE if not, or in case of an error.
  **/
 gboolean
-g_app_info_add_supports_type (GAppInfo             *appinfo,
-			      const char           *content_type,
-			      GError              **error)
+g_app_info_add_supports_type (GAppInfo    *appinfo,
+			      const char  *content_type,
+			      GError     **error)
 {
   GAppInfoIface *iface;
   
@@ -301,7 +301,10 @@ g_app_info_add_supports_type (GAppInfo             *appinfo,
   if (iface->add_supports_type)
     return (* iface->add_supports_type) (appinfo, content_type, error);
 
-  g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED, "g_app_info_add_supports_type not supported yet");
+  g_set_error (error, G_IO_ERROR, 
+               G_IO_ERROR_NOT_SUPPORTED, 
+               "g_app_info_add_supports_type not supported yet");
+
   return FALSE;
 }
 
@@ -313,7 +316,7 @@ g_app_info_add_supports_type (GAppInfo             *appinfo,
  * Checks if a supported content type can be removed from an application.
  *
  * Returns: %TRUE if it is possible to remove supported 
- * content types from a given @appinfo, %FALSE if not.
+ *     content types from a given @appinfo, %FALSE if not.
  **/
 gboolean
 g_app_info_can_remove_supports_type (GAppInfo *appinfo)
@@ -340,12 +343,12 @@ g_app_info_can_remove_supports_type (GAppInfo *appinfo)
  * Removes a supported type from an application, if possible.
  * 
  * Returns: %TRUE if @content_type support was removed
- * from @appinfo. %FALSE if not.
+ *     from @appinfo. %FALSE if not.
  **/
 gboolean
-g_app_info_remove_supports_type (GAppInfo *appinfo,
-				 const char *content_type,
-				 GError **error)
+g_app_info_remove_supports_type (GAppInfo    *appinfo,
+				 const char  *content_type,
+				 GError     **error)
 {
   GAppInfoIface *iface;
   
@@ -357,7 +360,10 @@ g_app_info_remove_supports_type (GAppInfo *appinfo,
   if (iface->remove_supports_type)
     return (* iface->remove_supports_type) (appinfo, content_type, error);
 
-  g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED, "g_app_info_remove_supports_type not supported yet");
+  g_set_error (error, G_IO_ERROR, 
+               G_IO_ERROR_NOT_SUPPORTED, 
+               "g_app_info_remove_supports_type not supported yet");
+
   return FALSE;
 }
 
@@ -397,10 +403,10 @@ g_app_info_get_icon (GAppInfo *appinfo)
  * Returns: %TRUE on successful launch, %FALSE otherwise.
  **/
 gboolean
-g_app_info_launch (GAppInfo    *appinfo,
-		   GList       *files,
-		   GAppLaunchContext *launch_context,
-		   GError     **error)
+g_app_info_launch (GAppInfo           *appinfo,
+		   GList              *files,
+		   GAppLaunchContext  *launch_context,
+		   GError            **error)
 {
   GAppInfoIface *iface;
   
@@ -447,10 +453,10 @@ g_app_info_supports_uris (GAppInfo *appinfo)
  * Returns: %TRUE if the @appinfo was launched successfully, %FALSE otherwise.
  **/
 gboolean
-g_app_info_launch_uris (GAppInfo    *appinfo,
-			GList       *uris,
-			GAppLaunchContext *launch_context,
-			GError     **error)
+g_app_info_launch_uris (GAppInfo           *appinfo,
+			GList              *uris,
+			GAppLaunchContext  *launch_context,
+			GError            **error)
 {
   GAppInfoIface *iface;
   
@@ -473,8 +479,8 @@ g_app_info_launch_uris (GAppInfo    *appinfo,
  * Returns: %TRUE if the @appinfo should be shown, %FALSE otherwise.
  **/
 gboolean
-g_app_info_should_show (GAppInfo    *appinfo,
-			const char  *desktop_env)
+g_app_info_should_show (GAppInfo   *appinfo,
+			const char *desktop_env)
 {
   GAppInfoIface *iface;
   
@@ -548,10 +554,12 @@ g_app_launch_context_get_display (GAppLaunchContext *context,
  * @files: a #GList of files.
  * 
  * Gets the DESKTOP_STARTUP_ID for the launched application, if supported. 
- * Startup notification IDs are defined in the FreeDesktop.Org Startup Notifications standard, 
- * at <ulink url="http://standards.freedesktop.org/startup-notification-spec/startup-notification-latest.txt"/>.
+ * Startup notification IDs are defined in the FreeDesktop.Org Startup 
+ * Notifications standard, at 
+ * <ulink url="http://standards.freedesktop.org/startup-notification-spec/startup-notification-latest.txt"/>.
  *
- * Returns: a startup notifaction ID for the application, or %NULL if not supported.
+ * Returns: a startup notifaction ID for the application, or %NULL if 
+ *     not supported.
  **/
 char *
 g_app_launch_context_get_startup_notify_id (GAppLaunchContext *context,
@@ -575,14 +583,14 @@ g_app_launch_context_get_startup_notify_id (GAppLaunchContext *context,
 /**
  * g_app_launch_context_launch_failed:
  * @context: a #GAppLaunchContext.
- * @startup_notify_id: a string containing the DESKTOP_STARTUP_ID of the launched application.
+ * @startup_notify_id: a string containing the DESKTOP_STARTUP_ID 
+ *     of the launched application.
  *
  * TODO: what does this do? Can't find it implemented anywhere.
- * 
  **/
 void
 g_app_launch_context_launch_failed (GAppLaunchContext *context,
-				    const char *startup_notify_id)
+				    const char        *startup_notify_id)
 {
   GAppLaunchContextClass *class;
 

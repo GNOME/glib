@@ -74,10 +74,10 @@ g_data_output_stream_class_init (GDataOutputStreamClass *klass)
 }
 
 static void
-g_data_output_stream_set_property (GObject         *object,
-				  guint            prop_id,
-				  const GValue    *value,
-				  GParamSpec      *pspec)
+g_data_output_stream_set_property (GObject     *object,
+				  guint         prop_id,
+				  const GValue *value,
+				  GParamSpec   *pspec)
 {
   GDataOutputStreamPrivate *priv;
   GDataOutputStream        *dstream;
@@ -87,12 +87,10 @@ g_data_output_stream_set_property (GObject         *object,
 
   switch (prop_id) 
     {
-
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
-
 }
 
 static void
@@ -109,13 +107,12 @@ g_data_output_stream_get_property (GObject    *object,
 
   switch (prop_id)
     { 
-  
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
-
 }
+
 static void
 g_data_output_stream_init (GDataOutputStream *stream)
 {
@@ -154,11 +151,10 @@ g_data_output_stream_new (GOutputStream *base_stream)
  * @order: a %GDataStreamByteOrder.
  * 
  * Sets the byte order of the data output stream to @order.
- * 
  **/
 void
-g_data_output_stream_set_byte_order (GDataOutputStream *stream,
-				    GDataStreamByteOrder order)
+g_data_output_stream_set_byte_order (GDataOutputStream    *stream,
+                                     GDataStreamByteOrder  order)
 {
   g_return_if_fail (G_IS_DATA_OUTPUT_STREAM (stream));
 
@@ -193,10 +189,10 @@ g_data_output_stream_get_byte_order (GDataOutputStream *stream)
  * Returns: %TRUE if @data was successfully added to the @stream.
  **/
 gboolean
-g_data_output_stream_put_byte (GDataOutputStream     *stream,
-			       guchar                 data,
-			       GCancellable          *cancellable,
-			       GError               **error)
+g_data_output_stream_put_byte (GDataOutputStream  *stream,
+			       guchar              data,
+			       GCancellable       *cancellable,
+			       GError            **error)
 {
   gsize bytes_written;
   
@@ -220,10 +216,10 @@ g_data_output_stream_put_byte (GDataOutputStream     *stream,
  * Returns: %TRUE if @data was successfully added to the @stream.
  **/
 gboolean
-g_data_output_stream_put_int16 (GDataOutputStream     *stream,
-				gint16                 data,
-				GCancellable          *cancellable,
-				GError               **error)
+g_data_output_stream_put_int16 (GDataOutputStream  *stream,
+				gint16              data,
+				GCancellable       *cancellable,
+				GError            **error)
 {
   gsize bytes_written;
   
@@ -260,10 +256,10 @@ g_data_output_stream_put_int16 (GDataOutputStream     *stream,
  * Returns: %TRUE if @data was successfully added to the @stream.
  **/
 gboolean
-g_data_output_stream_put_uint16 (GDataOutputStream     *stream,
-				 guint16                data,
-				 GCancellable          *cancellable,
-				 GError               **error)
+g_data_output_stream_put_uint16 (GDataOutputStream  *stream,
+				 guint16             data,
+				 GCancellable       *cancellable,
+				 GError            **error)
 {
   gsize bytes_written;
   
@@ -300,10 +296,10 @@ g_data_output_stream_put_uint16 (GDataOutputStream     *stream,
  * Returns: %TRUE if @data was successfully added to the @stream.
  **/
 gboolean
-g_data_output_stream_put_int32 (GDataOutputStream     *stream,
-				gint32                 data,
-				GCancellable          *cancellable,
-				GError               **error)
+g_data_output_stream_put_int32 (GDataOutputStream  *stream,
+				gint32              data,
+				GCancellable       *cancellable,
+				GError            **error)
 {
   gsize bytes_written;
   
@@ -340,10 +336,10 @@ g_data_output_stream_put_int32 (GDataOutputStream     *stream,
  * Returns: %TRUE if @data was successfully added to the @stream.
  **/
 gboolean
-g_data_output_stream_put_uint32 (GDataOutputStream     *stream,
-				 guint32                data,
-				 GCancellable          *cancellable,
-				 GError               **error)
+g_data_output_stream_put_uint32 (GDataOutputStream  *stream,
+				 guint32             data,
+				 GCancellable       *cancellable,
+				 GError            **error)
 {
   gsize bytes_written;
   
@@ -380,10 +376,10 @@ g_data_output_stream_put_uint32 (GDataOutputStream     *stream,
  * Returns: %TRUE if @data was successfully added to the @stream.
  **/
 gboolean
-g_data_output_stream_put_int64 (GDataOutputStream     *stream,
-				gint64                 data,
-				GCancellable          *cancellable,
-				GError               **error)
+g_data_output_stream_put_int64 (GDataOutputStream  *stream,
+				gint64              data,
+				GCancellable       *cancellable,
+				GError            **error)
 {
   gsize bytes_written;
   
@@ -420,10 +416,10 @@ g_data_output_stream_put_int64 (GDataOutputStream     *stream,
  * Returns: %TRUE if @data was successfully added to the @stream.
  **/
 gboolean
-g_data_output_stream_put_uint64 (GDataOutputStream     *stream,
-				 guint64                data,
-				 GCancellable          *cancellable,
-				 GError               **error)
+g_data_output_stream_put_uint64 (GDataOutputStream  *stream,
+				 guint64             data,
+				 GCancellable       *cancellable,
+				 GError            **error)
 {
   gsize bytes_written;
   
@@ -460,10 +456,10 @@ g_data_output_stream_put_uint64 (GDataOutputStream     *stream,
  * Returns: %TRUE if @string was successfully added to the @stream.
  **/
 gboolean
-g_data_output_stream_put_string (GDataOutputStream     *stream,
-				 const char            *str,
-				 GCancellable          *cancellable,
-				 GError               **error)
+g_data_output_stream_put_string (GDataOutputStream  *stream,
+				 const char         *str,
+				 GCancellable       *cancellable,
+				 GError            **error)
 {
   gsize bytes_written;
   

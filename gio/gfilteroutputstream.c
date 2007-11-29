@@ -128,10 +128,10 @@ g_filter_output_stream_class_init (GFilterOutputStreamClass *klass)
 }
 
 static void
-g_filter_output_stream_set_property (GObject         *object,
-                                     guint            prop_id,
-                                     const GValue    *value,
-                                     GParamSpec      *pspec)
+g_filter_output_stream_set_property (GObject      *object,
+                                     guint         prop_id,
+                                     const GValue *value,
+                                     GParamSpec   *pspec)
 {
   GFilterOutputStream *filter_stream;
   GObject *obj;
@@ -178,7 +178,7 @@ g_filter_output_stream_get_property (GObject    *object,
 static void
 g_filter_output_stream_dispose (GObject *object)
 {
-  GFilterOutputStream        *stream;
+  GFilterOutputStream *stream;
 
   stream = G_FILTER_OUTPUT_STREAM (object);
 
@@ -214,11 +214,11 @@ g_filter_output_stream_get_base_stream (GFilterOutputStream *stream)
 }
 
 static gssize
-g_filter_output_stream_write (GOutputStream *stream,
-                              const void *buffer,
-                              gsize          count,
-                              GCancellable  *cancellable,
-                              GError       **error)
+g_filter_output_stream_write (GOutputStream  *stream,
+                              const void     *buffer,
+                              gsize           count,
+                              GCancellable   *cancellable,
+                              GError        **error)
 {
   GFilterOutputStream *filter_stream;
   gssize nwritten;
@@ -235,9 +235,9 @@ g_filter_output_stream_write (GOutputStream *stream,
 }
 
 static gboolean
-g_filter_output_stream_flush (GOutputStream    *stream,
-                              GCancellable  *cancellable,
-                              GError          **error)
+g_filter_output_stream_flush (GOutputStream  *stream,
+                              GCancellable   *cancellable,
+                              GError        **error)
 {
   GFilterOutputStream *filter_stream;
   gboolean res;
@@ -269,13 +269,13 @@ g_filter_output_stream_close (GOutputStream  *stream,
 }
 
 static void
-g_filter_output_stream_write_async (GOutputStream        *stream,
-                                    const void           *buffer,
-                                    gsize                 count,
-                                    int                   io_priority,
-                                    GCancellable         *cancellable,
-                                    GAsyncReadyCallback   callback,
-                                    gpointer              data)
+g_filter_output_stream_write_async (GOutputStream       *stream,
+                                    const void          *buffer,
+                                    gsize                count,
+                                    int                  io_priority,
+                                    GCancellable        *cancellable,
+                                    GAsyncReadyCallback  callback,
+                                    gpointer             data)
 {
   GFilterOutputStream *filter_stream;
 
@@ -292,9 +292,9 @@ g_filter_output_stream_write_async (GOutputStream        *stream,
 }
 
 static gssize
-g_filter_output_stream_write_finish (GOutputStream        *stream,
-                                     GAsyncResult         *result,
-                                     GError              **error)
+g_filter_output_stream_write_finish (GOutputStream  *stream,
+                                     GAsyncResult   *result,
+                                     GError        **error)
 {
   GFilterOutputStream *filter_stream;
   gssize nwritten;
@@ -309,11 +309,11 @@ g_filter_output_stream_write_finish (GOutputStream        *stream,
 }
 
 static void
-g_filter_output_stream_flush_async (GOutputStream        *stream,
-                                    int                   io_priority,
-                                    GCancellable         *cancellable,
-                                    GAsyncReadyCallback   callback,
-                                    gpointer              data)
+g_filter_output_stream_flush_async (GOutputStream       *stream,
+                                    int                  io_priority,
+                                    GCancellable        *cancellable,
+                                    GAsyncReadyCallback  callback,
+                                    gpointer             data)
 {
   GFilterOutputStream *filter_stream;
 
@@ -327,9 +327,9 @@ g_filter_output_stream_flush_async (GOutputStream        *stream,
 }
 
 static gboolean
-g_filter_output_stream_flush_finish (GOutputStream        *stream,
-                                     GAsyncResult         *result,
-                                     GError              **error)
+g_filter_output_stream_flush_finish (GOutputStream  *stream,
+                                     GAsyncResult   *result,
+                                     GError        **error)
 {
   GFilterOutputStream *filter_stream;
   gboolean res;
@@ -344,11 +344,11 @@ g_filter_output_stream_flush_finish (GOutputStream        *stream,
 }
 
 static void
-g_filter_output_stream_close_async (GOutputStream        *stream,
-                                    int                   io_priority,
-                                    GCancellable         *cancellable,
-                                    GAsyncReadyCallback   callback,
-                                    gpointer              data)
+g_filter_output_stream_close_async (GOutputStream       *stream,
+                                    int                  io_priority,
+                                    GCancellable        *cancellable,
+                                    GAsyncReadyCallback  callback,
+                                    gpointer             data)
 {
   GFilterOutputStream *filter_stream;
 
@@ -362,9 +362,9 @@ g_filter_output_stream_close_async (GOutputStream        *stream,
 }
 
 static gboolean
-g_filter_output_stream_close_finish (GOutputStream        *stream,
-                                     GAsyncResult         *result,
-                                     GError              **error)
+g_filter_output_stream_close_finish (GOutputStream  *stream,
+                                     GAsyncResult   *result,
+                                     GError        **error)
 {
   GFilterOutputStream *filter_stream;
   gboolean res;

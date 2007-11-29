@@ -73,7 +73,7 @@ g_drive_get_type (void)
 
 static void
 g_drive_class_init (gpointer g_class,
-		   gpointer class_data)
+                    gpointer class_data)
 {
 }
 
@@ -260,14 +260,13 @@ g_drive_can_eject (GDrive *drive)
  * @user_data: a #gpointer.
  * 
  * Mounts a drive.
- * 
  **/
 void
-g_drive_mount (GDrive         *drive,
-	       GMountOperation *mount_operation,
-	       GCancellable *cancellable,
-	       GAsyncReadyCallback callback,
-	       gpointer         user_data)
+g_drive_mount (GDrive              *drive,
+	       GMountOperation     *mount_operation,
+	       GCancellable        *cancellable,
+	       GAsyncReadyCallback  callback,
+	       gpointer             user_data)
 {
   GDriveIface *iface;
 
@@ -299,9 +298,9 @@ g_drive_mount (GDrive         *drive,
  * Returns: %TRUE, %FALSE if operation failed.
  **/
 gboolean
-g_drive_mount_finish (GDrive               *drive,
-		      GAsyncResult         *result,
-		      GError              **error)
+g_drive_mount_finish (GDrive        *drive,
+		      GAsyncResult  *result,
+		      GError       **error)
 {
   GDriveIface *iface;
 
@@ -330,10 +329,10 @@ g_drive_mount_finish (GDrive               *drive,
  * 
  **/
 void
-g_drive_eject (GDrive         *drive,
-	       GCancellable *cancellable,
+g_drive_eject (GDrive              *drive,
+	       GCancellable        *cancellable,
 	       GAsyncReadyCallback  callback,
-	       gpointer         user_data)
+	       gpointer             user_data)
 {
   GDriveIface *iface;
 
@@ -365,9 +364,9 @@ g_drive_eject (GDrive         *drive,
  * %FALSE otherwise.
  **/
 gboolean
-g_drive_eject_finish (GDrive               *drive,
-		      GAsyncResult         *result,
-		      GError              **error)
+g_drive_eject_finish (GDrive        *drive,
+		      GAsyncResult  *result,
+		      GError       **error)
 {
   GDriveIface *iface;
 

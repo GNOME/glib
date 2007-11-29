@@ -106,19 +106,19 @@ g_file_input_stream_init (GFileInputStream *stream)
  * @error: a #GError location to store the error occuring, or %NULL to 
  * ignore.
  *
- * Queries a file input stream the given @attributes.his function blocks while querying
- * the stream. For the asynchronous (non-blocking) version of this function, see 
- * g_file_input_stream_query_info_async(). While the stream is blocked, 
- * the stream will set the pending flag internally, and any other operations on the 
- * stream will fail with %G_IO_ERROR_PENDING.
+ * Queries a file input stream the given @attributes.his function blocks 
+ * while querying the stream. For the asynchronous (non-blocking) version 
+ * of this function, see g_file_input_stream_query_info_async(). While the 
+ * stream is blocked, the stream will set the pending flag internally, and 
+ * any other operations on the stream will fail with %G_IO_ERROR_PENDING.
  *
  * Returns: a #GFileInfo, or %NULL on error.
  **/
 GFileInfo *
-g_file_input_stream_query_info (GFileInputStream     *stream,
-				   char                 *attributes,
-				   GCancellable         *cancellable,
-				   GError              **error)
+g_file_input_stream_query_info (GFileInputStream  *stream,
+                                char              *attributes,
+                                GCancellable      *cancellable,
+                                GError           **error)
 {
   GFileInputStreamClass *class;
   GInputStream *input_stream;
@@ -165,9 +165,9 @@ g_file_input_stream_query_info (GFileInputStream     *stream,
 }
 
 static void
-async_ready_callback_wrapper (GObject *source_object,
-			      GAsyncResult *res,
-			      gpointer      user_data)
+async_ready_callback_wrapper (GObject      *source_object,
+                              GAsyncResult *res,
+                              gpointer      user_data)
 {
   GFileInputStream *stream = G_FILE_INPUT_STREAM (source_object);
 
@@ -186,8 +186,8 @@ async_ready_callback_wrapper (GObject *source_object,
  * @callback: callback to call when the request is satisfied
  * @user_data: the data to pass to callback function
  * 
- * Queries the stream information asynchronously. For the synchronous version
- * of this function, see g_file_input_stream_query_info(). 
+ * Queries the stream information asynchronously. For the synchronous 
+ * version of this function, see g_file_input_stream_query_info(). 
  * 
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
@@ -195,12 +195,12 @@ async_ready_callback_wrapper (GObject *source_object,
  *  
  **/
 void
-g_file_input_stream_query_info_async (GFileInputStream     *stream,
-					 char                 *attributes,
-					 int                   io_priority,
-					 GCancellable         *cancellable,
-					 GAsyncReadyCallback   callback,
-					 gpointer              user_data)
+g_file_input_stream_query_info_async (GFileInputStream    *stream,
+                                      char                *attributes,
+                                      int                  io_priority,
+                                      GCancellable        *cancellable,
+                                      GAsyncReadyCallback  callback,
+                                      gpointer             user_data)
 {
   GFileInputStreamClass *klass;
   GInputStream *input_stream;
@@ -242,17 +242,17 @@ g_file_input_stream_query_info_async (GFileInputStream     *stream,
  * g_file_input_stream_query_info_finish:
  * @stream: a #GFileInputStream.
  * @result: a #GAsyncResult.
- * @error: a #GError location to store the error occuring, or %NULL to 
- * ignore.
+ * @error: a #GError location to store the error occuring, 
+ *     or %NULL to ignore.
  * 
  * Finishes an asynchronous info query operation.
  * 
  * Returns: #GFileInfo. 
  **/
 GFileInfo *
-g_file_input_stream_query_info_finish (GFileInputStream     *stream,
-					  GAsyncResult         *result,
-					  GError              **error)
+g_file_input_stream_query_info_finish (GFileInputStream  *stream,
+                                       GAsyncResult      *result,
+                                       GError           **error)
 {
   GSimpleAsyncResult *simple;
   GFileInputStreamClass *class;
@@ -280,7 +280,7 @@ g_file_input_stream_query_info_finish (GFileInputStream     *stream,
  * Returns: a #goffset with the position in the stream.
  **/
 goffset
-g_file_input_stream_tell (GFileInputStream  *stream)
+g_file_input_stream_tell (GFileInputStream *stream)
 {
   GFileInputStreamClass *class;
   goffset offset;
@@ -311,7 +311,7 @@ g_file_input_stream_seekable_tell (GSeekable *seekable)
  * Returns: %TRUE if stream can be seeked. %FALSE otherwise.
  **/
 gboolean
-g_file_input_stream_can_seek (GFileInputStream  *stream)
+g_file_input_stream_can_seek (GFileInputStream *stream)
 {
   GFileInputStreamClass *class;
   gboolean can_seek;
@@ -343,8 +343,8 @@ g_file_input_stream_seekable_can_seek (GSeekable *seekable)
  * @offset: a #goffset to seek.
  * @type: a #GSeekType.
  * @cancellable: optional #GCancellable object, %NULL to ignore. 
- * @error: a #GError location to store the error occuring, or %NULL to 
- * ignore.
+ * @error: a #GError location to store the error occuring, or 
+ *     %NULL to ignore.
  * 
  * Seeks in the file input stream.
  * 
@@ -408,27 +408,27 @@ g_file_input_stream_seek (GFileInputStream  *stream,
 }
 
 static gboolean
-g_file_input_stream_seekable_seek (GSeekable  *seekable,
-				   goffset     offset,
-				   GSeekType   type,
+g_file_input_stream_seekable_seek (GSeekable     *seekable,
+				   goffset        offset,
+				   GSeekType      type,
 				   GCancellable  *cancellable,
-				   GError    **error)
+				   GError       **error)
 {
   return g_file_input_stream_seek (G_FILE_INPUT_STREAM (seekable),
 				   offset, type, cancellable, error);
 }
 
 static gboolean
-g_file_input_stream_seekable_can_truncate (GSeekable  *seekable)
+g_file_input_stream_seekable_can_truncate (GSeekable *seekable)
 {
   return FALSE;
 }
 
 static gboolean
-g_file_input_stream_seekable_truncate (GSeekable  *seekable,
-				       goffset     offset,
+g_file_input_stream_seekable_truncate (GSeekable     *seekable,
+				       goffset        offset,
 				       GCancellable  *cancellable,
-				       GError    **error)
+				       GError       **error)
 {
   g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
 	       _("Truncate not allowed on input stream"));
@@ -455,8 +455,8 @@ query_info_data_free (QueryInfoAsyncData *data)
 
 static void
 query_info_async_thread (GSimpleAsyncResult *res,
-		       GObject *object,
-		       GCancellable *cancellable)
+		         GObject            *object,
+		         GCancellable       *cancellable)
 {
   GFileInputStreamClass *class;
   GError *error = NULL;
@@ -484,12 +484,12 @@ query_info_async_thread (GSimpleAsyncResult *res,
 }
 
 static void
-g_file_input_stream_real_query_info_async (GFileInputStream     *stream,
-					      char                 *attributes,
-					      int                   io_priority,
-					      GCancellable         *cancellable,
-					      GAsyncReadyCallback   callback,
-					      gpointer              user_data)
+g_file_input_stream_real_query_info_async (GFileInputStream    *stream,
+                                           char                *attributes,
+                                           int                  io_priority,
+                                           GCancellable        *cancellable,
+                                           GAsyncReadyCallback  callback,
+                                           gpointer             user_data)
 {
   GSimpleAsyncResult *res;
   QueryInfoAsyncData *data;
@@ -505,9 +505,9 @@ g_file_input_stream_real_query_info_async (GFileInputStream     *stream,
 }
 
 static GFileInfo *
-g_file_input_stream_real_query_info_finish (GFileInputStream     *stream,
-					       GAsyncResult         *res,
-					       GError              **error)
+g_file_input_stream_real_query_info_finish (GFileInputStream  *stream,
+                                            GAsyncResult      *res,
+                                            GError           **error)
 {
   GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
   QueryInfoAsyncData *data;

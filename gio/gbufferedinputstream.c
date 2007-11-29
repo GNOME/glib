@@ -197,7 +197,7 @@ g_buffered_input_stream_get_buffer_size (GBufferedInputStream  *stream)
  **/
 void
 g_buffered_input_stream_set_buffer_size (GBufferedInputStream  *stream,
-					 gsize                  size)
+                                         gsize                  size)
 {
   GBufferedInputStreamPrivate *priv;
   gsize in_buffer;
@@ -232,10 +232,10 @@ g_buffered_input_stream_set_buffer_size (GBufferedInputStream  *stream,
 }
 
 static void
-g_buffered_input_stream_set_property (GObject         *object,
-                                      guint            prop_id,
-                                      const GValue    *value,
-                                      GParamSpec      *pspec)
+g_buffered_input_stream_set_property (GObject      *object,
+                                      guint         prop_id,
+                                      const GValue *value,
+                                      GParamSpec   *pspec)
 {
   GBufferedInputStreamPrivate *priv;
   GBufferedInputStream        *bstream;
@@ -270,15 +270,14 @@ g_buffered_input_stream_get_property (GObject    *object,
 
   switch (prop_id)
     { 
-    
     case PROP_BUFSIZE:
       g_value_set_uint (value, priv->len);
       break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
-
 }
 
 static void
@@ -333,8 +332,8 @@ g_buffered_input_stream_new (GInputStream *base_stream)
  * @base_stream: a #GOutputStream.
  * @size: a #gsize.
  * 
- * Creates a new #GBufferedInputStream from the given @base_stream, with 
- * a buffer set to @size.
+ * Creates a new #GBufferedInputStream from the given @base_stream, 
+ * with a buffer set to @size.
  *
  * Returns: a #GInputStream.
  **/
@@ -384,13 +383,13 @@ g_buffered_input_stream_new_sized (GInputStream *base_stream,
  * g_buffered_input_stream_fill_async().
  *
  * Returns: the number of bytes read into @stream's buffer, up to @count, 
- * or -1 on error.
+ *     or -1 on error.
  **/
 gssize
 g_buffered_input_stream_fill (GBufferedInputStream  *stream,
-			      gssize                 count,
-			      GCancellable          *cancellable,
-			      GError               **error)
+                              gssize                 count,
+                              GCancellable          *cancellable,
+                              GError               **error)
 {
   GBufferedInputStreamClass *class;
   GInputStream *input_stream;
@@ -431,9 +430,9 @@ g_buffered_input_stream_fill (GBufferedInputStream  *stream,
 }
 
 static void
-async_fill_callback_wrapper (GObject *source_object,
-			     GAsyncResult *res,
-			     gpointer      user_data)
+async_fill_callback_wrapper (GObject      *source_object,
+                             GAsyncResult *res,
+                             gpointer      user_data)
 {
   GBufferedInputStream *stream = G_BUFFERED_INPUT_STREAM (source_object);
 
@@ -446,7 +445,7 @@ async_fill_callback_wrapper (GObject *source_object,
  * g_buffered_input_stream_fill_async:
  * @stream: #GBufferedInputStream.
  * @count: a #gssize.
- * @io_priority: the io priority of the request. the io priority of the request.
+ * @io_priority: the io priority of the request.
  * @cancellable: optional #GCancellable object
  * @callback: a #GAsyncReadyCallback.
  * @user_data: a #gpointer.
@@ -454,16 +453,14 @@ async_fill_callback_wrapper (GObject *source_object,
  * Reads data into @stream's buffer asynchronously, up to @count size.
  * @io_priority can be used to prioritize reads. For the synchronous
  * version of this function, see g_buffered_input_stream_fill().
- * 
  **/
-
 void
-g_buffered_input_stream_fill_async (GBufferedInputStream  *stream,
-				    gssize                 count,
-				    int                    io_priority,
-				    GCancellable          *cancellable,
-				    GAsyncReadyCallback    callback,
-				    gpointer               user_data)
+g_buffered_input_stream_fill_async (GBufferedInputStream *stream,
+                                    gssize                count,
+                                    int                   io_priority,
+                                    GCancellable         *cancellable,
+                                    GAsyncReadyCallback   callback,
+                                    gpointer              user_data)
 {
   GBufferedInputStreamClass *class;
   GSimpleAsyncResult *simple;
@@ -517,7 +514,7 @@ g_buffered_input_stream_fill_async (GBufferedInputStream  *stream,
   stream->priv->outstanding_callback = callback;
   g_object_ref (stream);
   class->fill_async (stream, count, io_priority, cancellable,
-		     async_fill_callback_wrapper, user_data);
+                     async_fill_callback_wrapper, user_data);
 }
 
 /**
@@ -532,8 +529,8 @@ g_buffered_input_stream_fill_async (GBufferedInputStream  *stream,
  **/
 gssize
 g_buffered_input_stream_fill_finish (GBufferedInputStream  *stream,
-				     GAsyncResult          *result,
-				     GError               **error)
+                                     GAsyncResult          *result,
+                                     GError               **error)
 {
   GSimpleAsyncResult *simple;
   GBufferedInputStreamClass *class;
@@ -545,11 +542,11 @@ g_buffered_input_stream_fill_finish (GBufferedInputStream  *stream,
     {
       simple = G_SIMPLE_ASYNC_RESULT (result);
       if (g_simple_async_result_propagate_error (simple, error))
-	return -1;
+        return -1;
 
       /* Special case read of 0 bytes */
       if (g_simple_async_result_get_source_tag (simple) == g_buffered_input_stream_fill_async)
-	return 0;
+        return 0;
     }
 
   class = G_BUFFERED_INPUT_STREAM_GET_CLASS (stream);
@@ -565,7 +562,7 @@ g_buffered_input_stream_fill_finish (GBufferedInputStream  *stream,
  * Returns: size of the available stream. 
  **/
 gsize
-g_buffered_input_stream_get_available (GBufferedInputStream  *stream)
+g_buffered_input_stream_get_available (GBufferedInputStream *stream)
 {
   g_return_val_if_fail (G_IS_BUFFERED_INPUT_STREAM (stream), -1);
 
@@ -579,16 +576,16 @@ g_buffered_input_stream_get_available (GBufferedInputStream  *stream)
  * @offset: a #gsize.
  * @count: a #gsize.
  * 
- * Peeks in the buffer, copying data of size @count into @buffer, offset
- * @offset bytes.
+ * Peeks in the buffer, copying data of size @count into @buffer, 
+ * offset @offset bytes.
  * 
  * Returns: a #gsize of the number of bytes peeked, or %-1 on error.
  **/
 gsize
-g_buffered_input_stream_peek (GBufferedInputStream  *stream,
-			      void                  *buffer,
-			      gsize                  offset,
-			      gsize                  count)
+g_buffered_input_stream_peek (GBufferedInputStream *stream,
+                              void                 *buffer,
+                              gsize                 offset,
+                              gsize                 count)
 {
   gsize available;
   gsize end;
@@ -620,8 +617,8 @@ g_buffered_input_stream_peek (GBufferedInputStream  *stream,
  * Returns: read-only buffer
  **/
 const void*
-g_buffered_input_stream_peek_buffer (GBufferedInputStream  *stream,
-                                     gsize                 *count)
+g_buffered_input_stream_peek_buffer (GBufferedInputStream *stream,
+                                     gsize                *count)
 {
   GBufferedInputStreamPrivate *priv;
 
@@ -629,9 +626,8 @@ g_buffered_input_stream_peek_buffer (GBufferedInputStream  *stream,
 
   priv = stream->priv;
 
-  if (count) {
+  if (count) 
     *count = priv->end - priv->pos;
-  }
 
   return priv->buffer + priv->pos;
 }
@@ -646,19 +642,17 @@ compact_buffer (GBufferedInputStream *stream)
 
   current_size = priv->end - priv->pos;
   
-  g_memmove (priv->buffer,
-	     priv->buffer + priv->pos,
-	     current_size);
+  g_memmove (priv->buffer, priv->buffer + priv->pos, current_size);
   
   priv->pos = 0;
   priv->end = current_size;
 }
 
 static gssize
-g_buffered_input_stream_real_fill (GBufferedInputStream *stream,
-				   gssize                 count,
-				   GCancellable         *cancellable,
-				   GError              **error)
+g_buffered_input_stream_real_fill (GBufferedInputStream  *stream,
+                                   gssize                 count,
+                                   GCancellable          *cancellable,
+                                   GError               **error)
 {
   GBufferedInputStreamPrivate *priv;
   GInputStream *base_stream;
@@ -693,10 +687,10 @@ g_buffered_input_stream_real_fill (GBufferedInputStream *stream,
 }
 
 static gssize
-g_buffered_input_stream_skip (GInputStream          *stream,
-			      gsize                  count,
-			      GCancellable          *cancellable,
-			      GError               **error)
+g_buffered_input_stream_skip (GInputStream  *stream,
+                              gsize          count,
+                              GCancellable  *cancellable,
+                              GError       **error)
 {
   GBufferedInputStream        *bstream;
   GBufferedInputStreamPrivate *priv;
@@ -715,7 +709,9 @@ g_buffered_input_stream_skip (GInputStream          *stream,
       return count;
     }
 
-  /* Full request not available, skip all currently availbile and request refill for more */
+  /* Full request not available, skip all currently available and 
+   * request refill for more 
+   */
   
   priv->pos = 0;
   priv->end = 0;
@@ -732,15 +728,15 @@ g_buffered_input_stream_skip (GInputStream          *stream,
       base_stream = G_FILTER_INPUT_STREAM (stream)->base_stream;
 
       nread = g_input_stream_skip (base_stream,
-				   count,
-				   cancellable,
-				   error);
+                                   count,
+                                   cancellable,
+                                   error);
       
       if (nread < 0 && bytes_skipped == 0)
-	return -1;
+        return -1;
       
       if (nread > 0)
-	bytes_skipped += nread;
+        bytes_skipped += nread;
       
       return bytes_skipped;
     }
@@ -752,9 +748,9 @@ g_buffered_input_stream_skip (GInputStream          *stream,
   if (nread < 0)
     {
       if (bytes_skipped == 0)
-	return -1;
+        return -1;
       else
-	return bytes_skipped;
+        return bytes_skipped;
     }
   
   available = priv->end - priv->pos;
@@ -815,10 +811,10 @@ g_buffered_input_stream_read (GInputStream *stream,
 				   error);
       
       if (nread < 0 && bytes_read == 0)
-	return -1;
+        return -1;
       
       if (nread > 0)
-	bytes_read += nread;
+        bytes_read += nread;
       
       return bytes_read;
     }
@@ -829,9 +825,9 @@ g_buffered_input_stream_read (GInputStream *stream,
   if (nread < 0)
     {
       if (bytes_read == 0)
-	return -1;
+        return -1;
       else
-	return bytes_read;
+        return bytes_read;
     }
   
   available = priv->end - priv->pos;
@@ -924,9 +920,9 @@ g_buffered_input_stream_read_byte (GBufferedInputStream  *stream,
 /* ************************** */
 
 static void
-fill_async_callback (GObject *source_object,
-		     GAsyncResult *result,
-		     gpointer user_data)
+fill_async_callback (GObject      *source_object,
+                     GAsyncResult *result,
+                     gpointer      user_data)
 {
   GError *error;
   gssize res;
@@ -951,12 +947,12 @@ fill_async_callback (GObject *source_object,
 }
 
 static void
-g_buffered_input_stream_real_fill_async  (GBufferedInputStream *stream,
-					  gssize                count,
-					  int                   io_priority,
-					  GCancellable         *cancellable,
-					  GAsyncReadyCallback   callback,
-					  gpointer              user_data)
+g_buffered_input_stream_real_fill_async (GBufferedInputStream *stream,
+                                         gssize                count,
+                                         int                   io_priority,
+                                         GCancellable         *cancellable,
+                                         GAsyncReadyCallback   callback,
+                                         gpointer              user_data)
 {
   GBufferedInputStreamPrivate *priv;
   GInputStream *base_stream;
@@ -1364,5 +1360,3 @@ g_buffered_input_stream_skip_finish (GInputStream   *stream,
 
 #define __G_BUFFERED_INPUT_STREAM_C__
 #include "gioaliasdef.c"
-
-/* vim: ts=2 sw=2 et */

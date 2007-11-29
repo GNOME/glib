@@ -109,11 +109,11 @@ g_loadable_icon_base_init (gpointer g_class)
  * Returns: a #GInputStream to read the icon from.
  **/
 GInputStream *
-g_loadable_icon_load (GLoadableIcon        *icon,
-		      int                   size,
-		      char                **type,
-		      GCancellable         *cancellable,
-		      GError              **error)
+g_loadable_icon_load (GLoadableIcon  *icon,
+		      int             size,
+		      char          **type,
+		      GCancellable   *cancellable,
+		      GError        **error)
 {
   GLoadableIconIface *iface;
 
@@ -139,11 +139,11 @@ g_loadable_icon_load (GLoadableIcon        *icon,
  * 
  **/
 void
-g_loadable_icon_load_async (GLoadableIcon        *icon,
-			    int                   size,
-			    GCancellable         *cancellable,
-			    GAsyncReadyCallback   callback,
-			    gpointer              user_data)
+g_loadable_icon_load_async (GLoadableIcon       *icon,
+                            int                  size,
+                            GCancellable        *cancellable,
+                            GAsyncReadyCallback  callback,
+                            gpointer             user_data)
 {
   GLoadableIconIface *iface;
   
@@ -168,10 +168,10 @@ g_loadable_icon_load_async (GLoadableIcon        *icon,
  * Returns: a #GInputStream to read the icon from.
  **/
 GInputStream *
-g_loadable_icon_load_finish (GLoadableIcon        *icon,
-			     GAsyncResult         *res,
-			     char                **type,
-			     GError              **error)
+g_loadable_icon_load_finish (GLoadableIcon  *icon,
+			     GAsyncResult   *res,
+			     char          **type,
+			     GError        **error)
 {
   GLoadableIconIface *iface;
   
@@ -212,8 +212,8 @@ load_data_free (LoadData *data)
 
 static void
 load_async_thread (GSimpleAsyncResult *res,
-		   GObject *object,
-		   GCancellable *cancellable)
+		   GObject            *object,
+		   GCancellable       *cancellable)
 {
   GLoadableIconIface *iface;
   GInputStream *stream;
@@ -241,11 +241,11 @@ load_async_thread (GSimpleAsyncResult *res,
 
 
 static void
-g_loadable_icon_real_load_async (GLoadableIcon        *icon,
-				 int                   size,
-				 GCancellable         *cancellable,
-				 GAsyncReadyCallback   callback,
-				 gpointer              user_data)
+g_loadable_icon_real_load_async (GLoadableIcon       *icon,
+				 int                  size,
+				 GCancellable        *cancellable,
+				 GAsyncReadyCallback  callback,
+				 gpointer             user_data)
 {
   GSimpleAsyncResult *res;
   LoadData *data;

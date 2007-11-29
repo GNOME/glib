@@ -164,7 +164,7 @@ g_directory_monitor_init (GDirectoryMonitor *monitor)
  * Returns: %TRUE if the monitor was cancelled successfully. %FALSE otherwise.
  **/
 gboolean
-g_directory_monitor_cancel (GDirectoryMonitor* monitor)
+g_directory_monitor_cancel (GDirectoryMonitor *monitor)
 {
   GDirectoryMonitorClass *class;
 
@@ -182,14 +182,15 @@ g_directory_monitor_cancel (GDirectoryMonitor* monitor)
 /**
  * g_directory_monitor_set_rate_limit:
  * @monitor: a #GDirectoryMonitor.
- * @limit_msecs: an integer to set the limit of the directory monitor in milliseconds.
+ * @limit_msecs: an integer to set the limit of the directory monitor 
+ *     in milliseconds.
  *
- * Sets the limit of the directory monitor to watch for changes every @limit_msecs milliseconds.
- * 
+ * Sets the limit of the directory monitor to watch for changes every 
+ * @limit_msecs milliseconds.
  **/
 void
 g_directory_monitor_set_rate_limit (GDirectoryMonitor *monitor,
-				    int limit_msecs)
+				    int                limit_msecs)
 {
   g_return_if_fail (G_IS_DIRECTORY_MONITOR (monitor));
 
@@ -202,7 +203,8 @@ g_directory_monitor_set_rate_limit (GDirectoryMonitor *monitor,
  * 
  * Checks whether @monitor is cancelled.
  *
- * Returns: %TRUE if the monitor on the directory was cancelled. %FALSE otherwise.
+ * Returns: %TRUE if the monitor on the directory was cancelled. 
+ *     %FALSE otherwise.
  **/
 gboolean
 g_directory_monitor_is_cancelled (GDirectoryMonitor *monitor)
@@ -228,7 +230,7 @@ time_difference (guint32 from, guint32 to)
 
 static RateLimiter *
 new_limiter (GDirectoryMonitor *monitor,
-	     GFile *file)
+	     GFile             *file)
 {
   RateLimiter *limiter;
 
@@ -240,7 +242,8 @@ new_limiter (GDirectoryMonitor *monitor,
 }
 
 static void
-rate_limiter_send_virtual_changes_done_now (GDirectoryMonitor *monitor, RateLimiter *limiter)
+rate_limiter_send_virtual_changes_done_now (GDirectoryMonitor *monitor, 
+                                            RateLimiter       *limiter)
 {
   if (limiter->send_virtual_changes_done_at != 0)
     {
@@ -250,7 +253,9 @@ rate_limiter_send_virtual_changes_done_now (GDirectoryMonitor *monitor, RateLimi
 }
 
 static void
-rate_limiter_send_delayed_change_now (GDirectoryMonitor *monitor, RateLimiter *limiter, guint32 time_now)
+rate_limiter_send_delayed_change_now (GDirectoryMonitor *monitor, 
+                                      RateLimiter       *limiter, 
+                                      guint32            time_now)
 {
   if (limiter->send_delayed_change_at != 0)
     {
@@ -267,7 +272,10 @@ typedef struct {
 } ForEachData;
 
 static gboolean
-calc_min_time (GDirectoryMonitor *monitor, RateLimiter *limiter, guint32 time_now, guint32 *min_time)
+calc_min_time (GDirectoryMonitor *monitor, 
+               RateLimiter       *limiter, 
+               guint32            time_now, 
+               guint32           *min_time)
 {
   gboolean delete_me;
   guint32 expire_at;
@@ -305,9 +313,9 @@ calc_min_time (GDirectoryMonitor *monitor, RateLimiter *limiter, guint32 time_no
 }
 
 static gboolean
-foreach_rate_limiter_fire (gpointer  key,
-			   gpointer  value,
-			   gpointer  user_data)
+foreach_rate_limiter_fire (gpointer key,
+			   gpointer value,
+			   gpointer user_data)
 {
   RateLimiter *limiter = value;
   ForEachData *data = user_data;
@@ -361,9 +369,9 @@ rate_limiter_timeout (gpointer timeout_data)
 }
 
 static gboolean
-foreach_rate_limiter_update (gpointer  key,
-			     gpointer  value,
-			     gpointer  user_data)
+foreach_rate_limiter_update (gpointer key,
+			     gpointer value,
+			     gpointer user_data)
 {
   RateLimiter *limiter = value;
   ForEachData *data = user_data;
@@ -372,7 +380,8 @@ foreach_rate_limiter_update (gpointer  key,
 }
 
 static void
-update_rate_limiter_timeout (GDirectoryMonitor *monitor, guint new_time)
+update_rate_limiter_timeout (GDirectoryMonitor *monitor, 
+                             guint              new_time)
 {
   ForEachData data;
   GSource *source;
@@ -416,16 +425,15 @@ update_rate_limiter_timeout (GDirectoryMonitor *monitor, guint new_time)
  * @other_file: a #GFile.
  * @event_type: a set of #GFileMonitorEvent flags.
  * 
- * Emits the GDirectoryMonitor::changed signal if a change
+ * Emits the #GDirectoryMonitor::changed signal if a change
  * has taken place. Should be called from directory monitor 
  * implementations only.
- * 
  **/
 void
 g_directory_monitor_emit_event (GDirectoryMonitor *monitor,
-				GFile *child,
-				GFile *other_file,
-				GFileMonitorEvent event_type)
+				GFile             *child,
+				GFile             *other_file,
+				GFileMonitorEvent  event_type)
 {
   guint32 time_now, since_last;
   gboolean emit_now;

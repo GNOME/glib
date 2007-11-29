@@ -64,9 +64,6 @@
  * appended to their function names. The asynchronous I/O functions 
  * call a #GAsyncReadyCallback which is then used to finalize the operation, 
  * which is then passed to the function's matching _finish() operation.
- * 
- * 
- *
  **/
 
 static void g_file_base_init (gpointer g_class);
@@ -247,11 +244,11 @@ g_file_is_native (GFile *file)
  * Checks to see if a #GFile has a given URI scheme.
  *
  * Returns: %TRUE if #GFile's backend supports the
- * given URI scheme, FALSE if URI scheme is %NULL,
- * not supported, or #GFile is invalid.
+ *     given URI scheme, %FALSE if URI scheme is %NULL,
+ *     not supported, or #GFile is invalid.
  **/
 gboolean
-g_file_has_uri_scheme (GFile *file,
+g_file_has_uri_scheme (GFile      *file,
 		       const char *uri_scheme)
 {
   GFileIface *iface;
@@ -279,7 +276,7 @@ g_file_has_uri_scheme (GFile *file,
  * Returns: a string containing the URI scheme for the given 
  *     #GFile. The returned string should be freed with g_free() 
  *     when no longer needed.
- **/
+      **/
 char *
 g_file_get_uri_scheme (GFile *file)
 {
@@ -491,7 +488,7 @@ g_file_get_parent (GFile *file)
  * child doesn't exist.
  **/
 GFile *
-g_file_get_child (GFile *file,
+g_file_get_child (GFile      *file,
 		  const char *name)
 {
   g_return_val_if_fail (G_IS_FILE (file), NULL);
@@ -514,7 +511,7 @@ g_file_get_child (GFile *file,
  * %NULL if @display_name is %NULL.  
  **/
 GFile *
-g_file_get_child_for_display_name (GFile *file,
+g_file_get_child_for_display_name (GFile      *file,
 				   const char *display_name,
 				   GError **error)
 {
@@ -593,7 +590,7 @@ g_file_get_relative_path (GFile *parent,
  *     is %NULL or if @file is invalid.
  **/
 GFile *
-g_file_resolve_relative_path (GFile *file,
+g_file_resolve_relative_path (GFile      *file,
 			      const char *relative_path)
 {
   GFileIface *iface;
@@ -630,11 +627,11 @@ g_file_resolve_relative_path (GFile *file,
  *     backend doesn't support #GFileEnumerator. 
  **/
 GFileEnumerator *
-g_file_enumerate_children (GFile *file,
-			   const char *attributes,
-			   GFileQueryInfoFlags flags,
-			   GCancellable *cancellable,
-			   GError **error)
+g_file_enumerate_children (GFile                *file,
+			   const char           *attributes,
+			   GFileQueryInfoFlags   flags,
+			   GCancellable         *cancellable,
+			   GError              **error)
 			   
 {
   GFileIface *iface;
@@ -676,13 +673,13 @@ g_file_enumerate_children (GFile *file,
  * To finish this asynchronous operation, see g_file_enumerate_children_finish().
  **/
 void
-g_file_enumerate_children_async (GFile                      *file,
-				 const char                 *attributes,
-				 GFileQueryInfoFlags         flags,
-				 int                         io_priority,
-				 GCancellable               *cancellable,
-				 GAsyncReadyCallback         callback,
-				 gpointer                    user_data)
+g_file_enumerate_children_async (GFile               *file,
+				 const char          *attributes,
+				 GFileQueryInfoFlags  flags,
+				 int                  io_priority,
+				 GCancellable        *cancellable,
+				 GAsyncReadyCallback  callback,
+				 gpointer             user_data)
 {
   GFileIface *iface;
 
@@ -704,6 +701,8 @@ g_file_enumerate_children_async (GFile                      *file,
  * @res: a #GAsyncResult.
  * @error: a #GError.
  * 
+ * Finishes an async enumerate children operation.
+ *
  * If @cancellable was not %NULL when g_file_enumerate_children_async() 
  * was called, then the operation could have been cancelled by triggering 
  * the cancellable object from another thread. If the operation was cancelled, 
@@ -717,9 +716,9 @@ g_file_enumerate_children_async (GFile                      *file,
  * Returns: a #GFileEnumerator or %NULL if an error occurred.
  **/
 GFileEnumerator *
-g_file_enumerate_children_finish  (GFile                      *file,
-				   GAsyncResult               *res,
-				   GError                    **error)
+g_file_enumerate_children_finish (GFile         *file,
+				  GAsyncResult  *res,
+				  GError       **error)
 {
   GFileIface *iface;
   
@@ -757,11 +756,11 @@ g_file_enumerate_children_finish  (GFile                      *file,
  * Returns: a #GFileInfo for the given @file, or %NULL on error.
  **/
 GFileInfo *
-g_file_query_info (GFile *file,
-		   const char *attributes,
-		   GFileQueryInfoFlags flags,
-		   GCancellable *cancellable,
-		   GError **error)
+g_file_query_info (GFile                *file,
+		   const char           *attributes,
+		   GFileQueryInfoFlags   flags,
+		   GCancellable         *cancellable,
+		   GError              **error)
 {
   GFileIface *iface;
   
@@ -800,13 +799,13 @@ g_file_query_info (GFile *file,
  * To finish this asynchronous operation, see g_file_query_info_finish().
  **/
 void
-g_file_query_info_async (GFile                      *file,
-			 const char                 *attributes,
-			 GFileQueryInfoFlags         flags,
-			 int                         io_priority,
-			 GCancellable               *cancellable,
-			 GAsyncReadyCallback         callback,
-			 gpointer                    user_data)
+g_file_query_info_async (GFile               *file,
+			 const char          *attributes,
+			 GFileQueryInfoFlags  flags,
+			 int                  io_priority,
+			 GCancellable        *cancellable,
+			 GAsyncReadyCallback  callback,
+			 gpointer             user_data)
 {
   GFileIface *iface;
   
@@ -842,9 +841,9 @@ g_file_query_info_async (GFile                      *file,
  * Returns: #GFileInfo for given @file or %NULL on error.
  **/
 GFileInfo *
-g_file_query_info_finish (GFile                      *file,
-			  GAsyncResult               *res,
-			  GError                    **error)
+g_file_query_info_finish (GFile         *file,
+			  GAsyncResult  *res,
+			  GError       **error)
 {
   GFileIface *iface;
 
@@ -869,6 +868,8 @@ g_file_query_info_finish (GFile                      *file,
  * @cancellable: optional #GCancellable object, %NULL to ignore. 
  * @error: a #GError. 
  * 
+ * Obtains attributes of a #GFile.
+ *
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
@@ -880,10 +881,10 @@ g_file_query_info_finish (GFile                      *file,
  * Returns: a #GFileInfo or %NULL if there was an error.
  **/
 GFileInfo *
-g_file_query_filesystem_info (GFile *file,
-			      const char *attributes,
-			      GCancellable *cancellable,
-			      GError **error)
+g_file_query_filesystem_info (GFile         *file,
+			      const char    *attributes,
+			      GCancellable  *cancellable,
+			      GError       **error)
 {
   GFileIface *iface;
   
@@ -924,9 +925,9 @@ g_file_query_filesystem_info (GFile *file,
  * Returns: a #GVolume where the @file is located or %NULL on error.
  **/
 GVolume *
-g_file_find_enclosing_volume (GFile *file,
-			      GCancellable *cancellable,
-			      GError **error)
+g_file_find_enclosing_volume (GFile         *file,
+			      GCancellable  *cancellable,
+			      GError       **error)
 {
   GFileIface *iface;
 
@@ -966,9 +967,9 @@ g_file_find_enclosing_volume (GFile *file,
  * Returns: #GFileInputStream or %NULL on error.
  **/
 GFileInputStream *
-g_file_read (GFile *file,
-	     GCancellable *cancellable,
-	     GError **error)
+g_file_read (GFile         *file,
+	     GCancellable  *cancellable,
+	     GError       **error)
 {
   GFileIface *iface;
   
@@ -997,8 +998,11 @@ g_file_read (GFile *file,
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @error: a #GError, or %NULL
  *
- * If the #GFileIface for @file does not support appending to files, then
- * @error will be set to %G_IO_ERROR_NOT_SUPPORTED and %NULL will be returned. 
+ * Gets an output stream for appending to the file.
+ *
+ * If the #GFileIface for @file does not support appending to files, 
+ * then @error will be set to %G_IO_ERROR_NOT_SUPPORTED and %NULL will 
+ * be returned. 
  * 
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
@@ -1007,10 +1011,10 @@ g_file_read (GFile *file,
  * Returns: a #GFileOutputStream.
  **/
 GFileOutputStream *
-g_file_append_to (GFile *file,
-		  GFileCreateFlags flags,
-		  GCancellable *cancellable,
-		  GError **error)
+g_file_append_to (GFile             *file,
+		  GFileCreateFlags   flags,
+		  GCancellable      *cancellable,
+		  GError           **error)
 {
   GFileIface *iface;
 
@@ -1039,6 +1043,8 @@ g_file_append_to (GFile *file,
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @error: a #GError, or %NULL
  *
+ * Creates the file and returns an output stream for writing to it.
+ *
  * If the #GFileIface for @file does not support creating files, then
  * @error will be set to %G_IO_ERROR_NOT_SUPPORTED and %NULL will be returned. 
  *
@@ -1050,10 +1056,10 @@ g_file_append_to (GFile *file,
  * %NULL on error.
  **/
 GFileOutputStream *
-g_file_create (GFile *file,
-	       GFileCreateFlags flags,
-	       GCancellable *cancellable,
-	       GError **error)
+g_file_create (GFile             *file,
+	       GFileCreateFlags   flags,
+	       GCancellable      *cancellable,
+	       GError           **error)
 {
   GFileIface *iface;
   
@@ -1079,13 +1085,17 @@ g_file_create (GFile *file,
  * g_file_replace:
  * @file: input #GFile.
  * @etag: an Entity Tag for the current #GFile.
- * @make_backup: a #gboolean.
+ * @make_backup: %TRUE if a backup should be created.
  * @flags: a set of #GFileCreateFlags.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @error: a #GError, or %NULL
  *
- * If the #GFileIface for @file does not support streaming operations, then
- * @error will be set to %G_IO_ERROR_NOT_SUPPORTED and %NULL will be returned. 
+ * Returns an output stream for overwriting the file, possibly
+ * creating a backup copy of the file first.
+ *
+ * If the #GFileIface for @file does not support streaming operations, 
+ * then @error will be set to %G_IO_ERROR_NOT_SUPPORTED and %NULL will 
+ * be returned. 
  * 
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
@@ -1093,16 +1103,17 @@ g_file_create (GFile *file,
  * 
  * @etag will replace the entity tag for the current file.
  * 
- * Returns: a #GFileOutputStream or %NULL on error. If @make_backup is %TRUE, 
- * this function will attempt to make a backup of the current file.
+ * Returns: a #GFileOutputStream or %NULL on error. If @make_backup is 
+ *     %TRUE, this function will attempt to make a backup of the current 
+ *     file.
  **/
 GFileOutputStream *
-g_file_replace (GFile *file,
-		const char *etag,
-		gboolean  make_backup,
-		GFileCreateFlags flags,
-		GCancellable *cancellable,
-		GError **error)
+g_file_replace (GFile             *file,
+		const char        *etag,
+		gboolean           make_backup,
+		GFileCreateFlags   flags,
+		GCancellable      *cancellable,
+		GError           **error)
 {
   GFileIface *iface;
 
@@ -1137,15 +1148,16 @@ g_file_replace (GFile *file,
  * @callback: a #GAsyncReadyCallback.
  * @user_data: a #gpointer. 
  *
- * Asynchronously reads @file. For the synchronous version of this function, 
- * see g_file_read().
+ * Asynchronously reads @file. 
+ *
+ * For the synchronous version of this function, see g_file_read().
  **/
 void
-g_file_read_async (GFile                  *file,
-		   int                     io_priority,
-		   GCancellable           *cancellable,
-		   GAsyncReadyCallback     callback,
-		   gpointer                user_data)
+g_file_read_async (GFile               *file,
+		   int                  io_priority,
+		   GCancellable        *cancellable,
+		   GAsyncReadyCallback  callback,
+		   gpointer             user_data)
 {
   GFileIface *iface;
   
@@ -1168,8 +1180,9 @@ g_file_read_async (GFile                  *file,
  * Finishes an asynchronous file read operation started with 
  * g_file_read_async(). 
  *  
- * If the #GFileIface for @file does not support streaming operations, then
- * @error will be set to %G_IO_ERROR_NOT_SUPPORTED and %NULL will be returned. 
+ * If the #GFileIface for @file does not support streaming operations, 
+ * then @error will be set to %G_IO_ERROR_NOT_SUPPORTED and %NULL will 
+ * be returned. 
  *
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
@@ -1178,9 +1191,9 @@ g_file_read_async (GFile                  *file,
  * Returns: a #GFileInputStream or %NULL on error.
  **/
 GFileInputStream *
-g_file_read_finish (GFile                  *file,
-		    GAsyncResult           *res,
-		    GError                **error)
+g_file_read_finish (GFile         *file,
+		    GAsyncResult  *res,
+		    GError       **error)
 {
   GFileIface *iface;
   
@@ -1202,26 +1215,26 @@ g_file_read_finish (GFile                  *file,
  * g_file_append_to_async:
  * @file: input #GFile.
  * @flags: a set of #GFileCreateFlags.
- * @io_priority: the io priority of the request. the io priority of the request. 
+ * @io_priority: the io priority of the request. 
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @callback: a #GAsyncReadyCallback. 
  * @user_data: a #gpointer. 
  * 
  * Readies a file for appending data asynchronously. 
- * For the synchronous version of this function, see  
- * g_file_append_to().
+ *
+ * For the synchronous version of this function, see g_file_append_to().
  * 
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
  **/
 void
-g_file_append_to_async (GFile                      *file,
-			GFileCreateFlags            flags,
-			int                         io_priority,
-			GCancellable               *cancellable,
-			GAsyncReadyCallback         callback,
-			gpointer                    user_data)
+g_file_append_to_async (GFile               *file,
+			GFileCreateFlags     flags,
+			int                  io_priority,
+			GCancellable        *cancellable,
+			GAsyncReadyCallback  callback,
+			gpointer             user_data)
 {
   GFileIface *iface;
   
@@ -1240,16 +1253,16 @@ g_file_append_to_async (GFile                      *file,
  * g_file_append_to_finish:
  * @file: input #GFile.
  * @res: #GAsyncResult
- * @error: a #GError, or #NULL
+ * @error: a #GError, or %NULL
  * 
  * Finishes appending to a file started with g_file_append_to_async().
  * 
  * Returns: a valid #GFileOutputStream or %NULL on error.
  **/
 GFileOutputStream *
-g_file_append_to_finish (GFile                      *file,
-			 GAsyncResult               *res,
-			 GError                    **error)
+g_file_append_to_finish (GFile         *file,
+			 GAsyncResult  *res,
+			 GError       **error)
 {
   GFileIface *iface;
   
@@ -1271,25 +1284,26 @@ g_file_append_to_finish (GFile                      *file,
  * g_file_create_async:
  * @file: input #GFile.
  * @flags: a set of #GFileCreateFlags.
- * @io_priority: the io priority of the request. the io priority of the request. 
+ * @io_priority: the io priority of the request.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @callback: a #GAsyncReadyCallback. 
  * @user_data: a #gpointer. 
  * 
- * Creates a new file asynchronously. For the synchronous version of 
- * this function, see g_file_create(). 
+ * Creates a new file asynchronously. 
+ *
+ * For the synchronous version of this function, see g_file_create(). 
  * 
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
  **/
 void
-g_file_create_async (GFile                      *file,
-		     GFileCreateFlags            flags,
-		     int                         io_priority,
-		     GCancellable               *cancellable,
-		     GAsyncReadyCallback         callback,
-		     gpointer                    user_data)
+g_file_create_async (GFile               *file,
+		     GFileCreateFlags     flags,
+		     int                  io_priority,
+		     GCancellable        *cancellable,
+		     GAsyncReadyCallback  callback,
+		     gpointer             user_data)
 {
   GFileIface *iface;
   
@@ -1315,9 +1329,9 @@ g_file_create_async (GFile                      *file,
  * Returns: a #GFileOutputStream.
  **/
 GFileOutputStream *
-g_file_create_finish (GFile                      *file,
-		      GAsyncResult               *res,
-		      GError                    **error)
+g_file_create_finish (GFile         *file,
+		      GAsyncResult  *res,
+		      GError       **error)
 {
   GFileIface *iface;
   
@@ -1341,28 +1355,29 @@ g_file_create_finish (GFile                      *file,
  * @etag: an Entity Tag for the current #GFile.
  * @make_backup: a #gboolean.
  * @flags: a set of #GFileCreateFlags.
- * @io_priority: the io priority of the request. the io priority of the request. 
+ * @io_priority: the io priority of the request.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @callback: a #GAsyncReadyCallback. 
  * @user_data: a #gpointer. 
  * 
- * Replaces a file's contents. For the synchronous version of this 
- * function, see g_file_replace(). If @make_backup is %TRUE, this function
- * will attempt to make a backup of the current file.
- * 
+ * Replaces a file's contents asynchronously. If @make_backup is 
+ * %TRUE, this function will attempt to make a backup of the current file.
+ *
+ * For the synchronous version of this function, see g_file_replace(). 
+ *
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
  **/
 void
-g_file_replace_async (GFile                      *file,
-		      const char                 *etag,
-		      gboolean                    make_backup,
-		      GFileCreateFlags            flags,
-		      int                         io_priority,
-		      GCancellable               *cancellable,
-		      GAsyncReadyCallback         callback,
-		      gpointer                    user_data)
+g_file_replace_async (GFile               *file,
+		      const char          *etag,
+		      gboolean             make_backup,
+		      GFileCreateFlags     flags,
+		      int                  io_priority,
+		      GCancellable        *cancellable,
+		      GAsyncReadyCallback  callback,
+		      gpointer             user_data)
 {
   GFileIface *iface;
   
@@ -1392,9 +1407,9 @@ g_file_replace_async (GFile                      *file,
  * Returns: a #GFileOutputStream, or %NULL if an error has occured.
  **/
 GFileOutputStream *
-g_file_replace_finish (GFile                      *file,
-		       GAsyncResult               *res,
-		       GError                    **error)
+g_file_replace_finish (GFile         *file,
+		       GAsyncResult  *res,
+		       GError       **error)
 {
   GFileIface *iface;
   
@@ -1413,11 +1428,11 @@ g_file_replace_finish (GFile                      *file,
 }
 
 static gboolean
-copy_symlink (GFile                  *destination,
-	      GFileCopyFlags          flags,
-	      GCancellable           *cancellable,
-	      const char             *target,
-	      GError                **error)
+copy_symlink (GFile           *destination,
+	      GFileCopyFlags   flags,
+	      GCancellable    *cancellable,
+	      const char      *target,
+	      GError         **error)
 {
   GError *my_error;
   gboolean tried_delete;
@@ -1469,11 +1484,11 @@ copy_symlink (GFile                  *destination,
 }
 
 static GInputStream *
-open_source_for_copy (GFile *source,
-		      GFile *destination,
-		      GFileCopyFlags flags,
-		      GCancellable *cancellable,
-		      GError **error)
+open_source_for_copy (GFile           *source,
+		      GFile           *destination,
+		      GFileCopyFlags   flags,
+		      GCancellable    *cancellable,
+		      GError         **error)
 {
   GError *my_error;
   GInputStream *in;
@@ -1489,9 +1504,10 @@ open_source_for_copy (GFile *source,
 
   if (my_error->domain == G_IO_ERROR && my_error->code == G_IO_ERROR_IS_DIRECTORY)
     {
-      /* The source is a directory, don't fail with WOULD_RECURSE immediately, as
-	 that is less useful to the app. Better check for errors on the target instead. */
-      
+      /* The source is a directory, don't fail with WOULD_RECURSE immediately, 
+       * as that is less useful to the app. Better check for errors on the 
+       * target instead. 
+       */
       g_error_free (my_error);
       my_error = NULL;
       
@@ -1522,7 +1538,9 @@ open_source_for_copy (GFile *source,
 	}
       else
 	{
-	  /* Error getting info from target, return that error (except for NOT_FOUND, which is no error here) */
+	  /* Error getting info from target, return that error 
+           * (except for NOT_FOUND, which is no error here) 
+           */
 	  if (my_error->domain != G_IO_ERROR && my_error->code != G_IO_ERROR_NOT_FOUND)
 	    {
 	      g_propagate_error (error, my_error);
@@ -1541,7 +1559,8 @@ open_source_for_copy (GFile *source,
 }
 
 static gboolean
-should_copy (GFileAttributeInfo *info, gboolean as_move)
+should_copy (GFileAttributeInfo *info, 
+             gboolean            as_move)
 {
   if (as_move)
     return info->flags & G_FILE_ATTRIBUTE_FLAGS_COPY_WHEN_MOVED;
@@ -1551,7 +1570,7 @@ should_copy (GFileAttributeInfo *info, gboolean as_move)
 static char *
 build_attribute_list_for_copy (GFileAttributeInfoList *attributes,
 			       GFileAttributeInfoList *namespaces,
-			       gboolean as_move)
+			       gboolean                as_move)
 {
   GString *s;
   gboolean first;
@@ -1594,15 +1613,14 @@ build_attribute_list_for_copy (GFileAttributeInfoList *attributes,
     }
 
   return g_string_free (s, FALSE);
-
 }
 
 gboolean
-g_file_copy_attributes (GFile *source,
-			GFile *destination,
-			GFileCopyFlags flags,
-			GCancellable *cancellable,
-			GError **error)
+g_file_copy_attributes (GFile           *source,
+			GFile           *destination,
+			GFileCopyFlags   flags,
+			GCancellable    *cancellable,
+			GError         **error)
 {
   GFileAttributeInfoList *attributes, *namespaces;
   char *attrs_to_read;
@@ -1624,7 +1642,8 @@ g_file_copy_attributes (GFile *source,
   attrs_to_read = build_attribute_list_for_copy (attributes, namespaces, as_move);
 
   /* Ignore errors here, if we can't read some info (e.g. if it doesn't exist)
-     we just don't copy it. */
+   * we just don't copy it. 
+   */
   info = g_file_query_info (source, attrs_to_read,
 			    source_nofollow_symlinks ? G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS:0,
 			    cancellable,
@@ -1650,12 +1669,12 @@ g_file_copy_attributes (GFile *source,
 
 /* Closes the streams */
 static gboolean
-copy_stream_with_progress (GInputStream *in,
-			   GOutputStream *out,
-			   GCancellable *cancellable,
-			   GFileProgressCallback progress_callback,
-			   gpointer progress_callback_data,
-			   GError **error)
+copy_stream_with_progress (GInputStream           *in,
+			   GOutputStream          *out,
+			   GCancellable           *cancellable,
+			   GFileProgressCallback   progress_callback,
+			   gpointer                progress_callback_data,
+			   GError                **error)
 {
   gssize n_read, n_written;
   goffset current_size;
@@ -1834,9 +1853,9 @@ file_copy_fallback (GFile                  *source,
  *  dir      file    overwr  G_IO_ERROR_WOULD_RECURSE
  * Docbook version below -->
  * 
- * Copies a file or directory from @source to @destination, with the given @flags. 
- * @flags should be set to %0 if not used. This operation may fail, and @error will 
- * be set appropriately with the given error result (see the following table). 
+ * Copies a file or directory from @source to @destination, with the given 
+ * @flags. This operation may fail, and @error will be set appropriately with 
+ * the given error result (see the following table). 
  * File copies are always asynchronous. 
  * 
  * If @cancellable is not %NULL, then the operation can be cancelled by
@@ -1916,14 +1935,12 @@ g_file_copy (GFile                  *source,
  * g_file_move:
  * @source: #GFile pointing to the source location.
  * @destination: #GFile pointing to the destination location.
- * @flags: #GFileCopyFlags enum.
+ * @flags: set of #GFileCopyFlags.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @progress_callback: GFileProgressCallback function for updates.
+ * @progress_callback: #GFileProgressCallback function for updates.
  * @progress_callback_data: gpointer to user data for the callback function.
  * @error: #GError for returning error conditions, or %NULL
  *
- * List of possible returns from g_file_move() with given source,
- * destination, and flags:
  * <!-- Source version
  * source   dest    flags   results in
  * -        *       *       G_IO_ERROR_NOT_FOUND
@@ -1936,7 +1953,21 @@ g_file_copy (GFile                  *source,
  * dir      *       0       G_IO_ERROR_EXISTS
  * dir      dir     overwr  G_IO_ERROR_WOULD_MERGE
  * dir      file    overwr  ok || G_IO_ERROR_WOULD_RECURSE
- * Pretty Docbook version -->
+ * Docbook version below -->
+ *
+ * Moves a file or directory from @source to @destination, with the given 
+ * @flags. This operation may fail, and @error will be set appropriately with 
+ * the given error result (see the following table). 
+ * File moves are always asynchronous. 
+ * 
+ * If @cancellable is not %NULL, then the operation can be cancelled by
+ * triggering the cancellable object from another thread. If the operation
+ * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
+ * 
+ * If @progress_callback is not %NULL, then the operation can be monitored by
+ * setting this to a #GFileProgressCallback function. @progress_callback_data
+ * will be passed to this function.
+ *
  * <table>
  * <title>g_file_move() Error Conditions</title>
  * <tgroup cols='4' align='left'><thead>
@@ -2020,6 +2051,8 @@ g_file_move (GFile                  *source,
  * @file: input #GFile.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @error: a #GError, or %NULL 
+ *
+ * Creates a directory.
  * 
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
@@ -2028,9 +2061,9 @@ g_file_move (GFile                  *source,
  * Returns: %TRUE on successful creation, %FALSE otherwise.
  **/
 gboolean
-g_file_make_directory (GFile *file,
-		       GCancellable *cancellable,
-		       GError **error)
+g_file_make_directory (GFile         *file,
+		       GCancellable  *cancellable,
+		       GError       **error)
 {
   GFileIface *iface;
 
@@ -2059,6 +2092,8 @@ g_file_make_directory (GFile *file,
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @error: a #GError. 
  * 
+ * Creates a symbolic link.
+ *
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
@@ -2066,10 +2101,10 @@ g_file_make_directory (GFile *file,
  * Returns: %TRUE on the creation of a new symlink, %FALSE otherwise.
  **/
 gboolean
-g_file_make_symbolic_link (GFile *file,
-			   const char *symlink_value,
-			   GCancellable *cancellable,
-			   GError **error)
+g_file_make_symbolic_link (GFile         *file,
+			   const char    *symlink_value,
+			   GCancellable  *cancellable,
+			   GError       **error)
 {
   GFileIface *iface;
 
@@ -2115,9 +2150,9 @@ g_file_make_symbolic_link (GFile *file,
  * Returns: %TRUE if the file was deleted. %FALSE otherwise.
  **/
 gboolean
-g_file_delete (GFile *file,
-	       GCancellable *cancellable,
-	       GError **error)
+g_file_delete (GFile         *file,
+	       GCancellable  *cancellable,
+	       GError       **error)
 {
   GFileIface *iface;
   
@@ -2147,7 +2182,8 @@ g_file_delete (GFile *file,
  *
  * Sends @file to the virtual file system "Trash" location. If the
  * virtual file system does not have support having a "Trash" location, 
- * %FALSE will be returned, and @error will be set to %G_IO_ERROR_NOT_SUPPORTED. 
+ * %FALSE will be returned, and @error will be set to 
+ * %G_IO_ERROR_NOT_SUPPORTED. 
  *
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
@@ -2156,9 +2192,9 @@ g_file_delete (GFile *file,
  * Returns: %TRUE on successful trash, %FALSE otherwise.
  **/
 gboolean
-g_file_trash (GFile *file,
-	      GCancellable *cancellable,
-	      GError **error)
+g_file_trash (GFile         *file,
+	      GCancellable  *cancellable,
+	      GError       **error)
 {
   GFileIface *iface;
   
@@ -2198,10 +2234,10 @@ g_file_trash (GFile *file,
  * Returns: a #GFile, or %NULL if there was an error.
  **/
 GFile *
-g_file_set_display_name (GFile                  *file,
-			 const char             *display_name,
-			 GCancellable           *cancellable,
-			 GError                **error)
+g_file_set_display_name (GFile         *file,
+			 const char    *display_name,
+			 GCancellable  *cancellable,
+			 GError       **error)
 {
   GFileIface *iface;
   
@@ -2229,26 +2265,25 @@ g_file_set_display_name (GFile                  *file,
  * g_file_set_display_name_async:
  * @file: input #GFile.
  * @display_name: a string.
- * @io_priority: the io priority of the request. the io priority of the request. 
+ * @io_priority: the io priority of the request. 
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @callback: a #GAsyncReadyCallback. 
  * @user_data: a #gpointer. 
  * 
  * Asynchronously sets the display name for a given #GFile.
- * For the synchronous version of this function, see 
- * g_file_set_display_name().
+ * For the synchronous version of this function, see g_file_set_display_name().
  * 
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
  **/
 void
-g_file_set_display_name_async (GFile                      *file,
-			       const char                 *display_name,
-			       int                         io_priority,
-			       GCancellable               *cancellable,
-			       GAsyncReadyCallback         callback,
-			       gpointer                    user_data)
+g_file_set_display_name_async (GFile               *file,
+			       const char          *display_name,
+			       int                  io_priority,
+			       GCancellable        *cancellable,
+			       GAsyncReadyCallback  callback,
+			       gpointer             user_data)
 {
   GFileIface *iface;
   
@@ -2270,14 +2305,15 @@ g_file_set_display_name_async (GFile                      *file,
  * @res: a #GAsyncResult. 
  * @error: a #GError, or %NULL
  * 
- * Finishes setting a display name started with g_file_set_display_name_async().
+ * Finishes setting a display name started with 
+ * g_file_set_display_name_async().
  * 
  * Returns: a #GFile or %NULL on error.
  **/
 GFile *
-g_file_set_display_name_finish (GFile                      *file,
-				GAsyncResult               *res,
-				GError                    **error)
+g_file_set_display_name_finish (GFile         *file,
+				GAsyncResult  *res,
+				GError       **error)
 {
   GFileIface *iface;
   
@@ -2301,19 +2337,21 @@ g_file_set_display_name_finish (GFile                      *file,
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @error: a #GError, or %NULL
  * 
+ * Obtain the list of settable attributes for the file.
+ *
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
  * 
- * Returns: the type and full attribute name of all the attributes that
- * the file can set. This doesn't mean setting it will always succeed though,
- * you might get an access failure, or some specific file may not support a
- * specific attribute.
+ * Returns: the type and full attribute name of all the attributes 
+ *     that the file can set. This doesn't mean setting it will always 
+ *     succeed though, you might get an access failure, or some specific 
+ *     file may not support a specific attribute.
  **/
 GFileAttributeInfoList *
-g_file_query_settable_attributes (GFile                      *file,
-				  GCancellable               *cancellable,
-				  GError                    **error)
+g_file_query_settable_attributes (GFile         *file,
+				  GCancellable  *cancellable,
+				  GError       **error)
 {
   GFileIface *iface;
   GError *my_error;
@@ -2352,6 +2390,9 @@ g_file_query_settable_attributes (GFile                      *file,
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @error: a #GError, or %NULL
  * 
+ * Obtain the list of attribute namespaces where new attributes 
+ * can be created.
+ *
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
@@ -2361,9 +2402,9 @@ g_file_query_settable_attributes (GFile                      *file,
  *     as extended attributes.
  **/
 GFileAttributeInfoList *
-g_file_query_writable_namespaces (GFile                      *file,
-				  GCancellable               *cancellable,
-				  GError                    **error)
+g_file_query_writable_namespaces (GFile         *file,
+				  GCancellable  *cancellable,
+				  GError       **error)
 {
   GFileIface *iface;
   GError *my_error;
@@ -2416,12 +2457,12 @@ g_file_query_writable_namespaces (GFile                      *file,
  * Returns: %TRUE if the attribute was set, %FALSE otherwise.
  **/
 gboolean
-g_file_set_attribute (GFile                  *file,
-		      const char             *attribute,
-		      const GFileAttributeValue    *value,
-		      GFileQueryInfoFlags       flags,
-		      GCancellable           *cancellable,
-		      GError                **error)
+g_file_set_attribute (GFile                      *file,
+		      const char                 *attribute,
+		      const GFileAttributeValue  *value,
+		      GFileQueryInfoFlags         flags,
+		      GCancellable               *cancellable,
+		      GError                    **error)
 {
   GFileIface *iface;
   
@@ -2465,11 +2506,11 @@ g_file_set_attribute (GFile                  *file,
  *     %G_FILE_ATTRIBUTE_STATUS_ERROR_SETTING.
  **/
 gboolean
-g_file_set_attributes_from_info (GFile                      *file,
-				 GFileInfo                  *info,
-				 GFileQueryInfoFlags           flags,
-				 GCancellable               *cancellable,
-				 GError                    **error)
+g_file_set_attributes_from_info (GFile                *file,
+				 GFileInfo            *info,
+				 GFileQueryInfoFlags   flags,
+				 GCancellable         *cancellable,
+				 GError              **error)
 {
   GFileIface *iface;
 
@@ -2483,16 +2524,20 @@ g_file_set_attributes_from_info (GFile                      *file,
   
   iface = G_FILE_GET_IFACE (file);
 
-  return (* iface->set_attributes_from_info) (file, info, flags, cancellable, error);
+  return (* iface->set_attributes_from_info) (file, 
+                                              info, 
+                                              flags, 
+                                              cancellable, 
+                                              error);
 }
 
 
 static gboolean
-g_file_real_set_attributes_from_info (GFile                      *file,
-				      GFileInfo                  *info,
-				      GFileQueryInfoFlags           flags,
-				      GCancellable               *cancellable,
-				      GError                    **error)
+g_file_real_set_attributes_from_info (GFile                *file,
+				      GFileInfo            *info,
+				      GFileQueryInfoFlags   flags,
+				      GCancellable         *cancellable,
+				      GError              **error)
 {
   char **attributes;
   int i;
@@ -2531,7 +2576,7 @@ g_file_real_set_attributes_from_info (GFile                      *file,
  * @file: input #GFile.
  * @info: a #GFileInfo.
  * @flags: a #GFileQueryInfoFlags.
- * @io_priority: the io priority of the request. the io priority of the request. 
+ * @io_priority: the io priority of the request. 
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @callback: a #GAsyncReadyCallback. 
  * @user_data: a #gpointer.
@@ -2544,13 +2589,13 @@ g_file_real_set_attributes_from_info (GFile                      *file,
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
  **/
 void
-g_file_set_attributes_async (GFile                      *file,
-			     GFileInfo                  *info,
-			     GFileQueryInfoFlags         flags,
-			     int                         io_priority,
-			     GCancellable               *cancellable,
-			     GAsyncReadyCallback         callback,
-			     gpointer                    user_data)
+g_file_set_attributes_async (GFile               *file,
+			     GFileInfo           *info,
+			     GFileQueryInfoFlags  flags,
+			     int                  io_priority,
+			     GCancellable        *cancellable,
+			     GAsyncReadyCallback  callback,
+			     gpointer             user_data)
 {
   GFileIface *iface;
   
@@ -2558,8 +2603,13 @@ g_file_set_attributes_async (GFile                      *file,
   g_return_if_fail (G_IS_FILE_INFO (info));
 
   iface = G_FILE_GET_IFACE (file);
-  (* iface->set_attributes_async) (file, info, flags, io_priority, cancellable, callback, user_data);
-  
+  (* iface->set_attributes_async) (file, 
+                                   info, 
+                                   flags, 
+                                   io_priority, 
+                                   cancellable, 
+                                   callback, 
+                                   user_data);
 }
 
 /**
@@ -2574,10 +2624,10 @@ g_file_set_attributes_async (GFile                      *file,
  * Returns: %TRUE if the attributes were set correctly, %FALSE otherwise.
  **/
 gboolean
-g_file_set_attributes_finish (GFile                      *file,
-			      GAsyncResult               *result,
-			      GFileInfo                 **info,
-			      GError                    **error)
+g_file_set_attributes_finish (GFile         *file,
+			      GAsyncResult  *result,
+			      GFileInfo    **info,
+			      GError       **error)
 {
   GFileIface *iface;
   
@@ -2585,8 +2635,8 @@ g_file_set_attributes_finish (GFile                      *file,
   g_return_val_if_fail (G_IS_ASYNC_RESULT (result), FALSE);
 
   /* No standard handling of errors here, as we must set info even
-     on errors */
-  
+   * on errors 
+   */
   iface = G_FILE_GET_IFACE (file);
   return (* iface->set_attributes_finish) (file, result, info, error);
 }
@@ -2600,8 +2650,8 @@ g_file_set_attributes_finish (GFile                      *file,
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @error: a #GError, or %NULL
  * 
- * Sets @attribute of type %G_FILE_ATTRIBUTE_TYPE_STRING to @value. If
- * @attribute is of a different type, this operation will fail.
+ * Sets @attribute of type %G_FILE_ATTRIBUTE_TYPE_STRING to @value. 
+ * If @attribute is of a different type, this operation will fail.
  * 
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
@@ -2610,12 +2660,12 @@ g_file_set_attributes_finish (GFile                      *file,
  * Returns: %TRUE if the @attribute was successfully set, %FALSE otherwise.
  **/
 gboolean
-g_file_set_attribute_string (GFile                  *file,
-			     const char             *attribute,
-			     const char             *value,
-			     GFileQueryInfoFlags       flags,
-			     GCancellable           *cancellable,
-			     GError                **error)
+g_file_set_attribute_string (GFile                *file,
+			     const char           *attribute,
+			     const char           *value,
+			     GFileQueryInfoFlags   flags,
+			     GCancellable         *cancellable,
+			     GError              **error)
 {
   GFileAttributeValue v;
 
@@ -2633,8 +2683,9 @@ g_file_set_attribute_string (GFile                  *file,
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @error: a #GError, or %NULL
  * 
- * Sets @attribute of type %G_FILE_ATTRIBUTE_TYPE_BYTE_STRING to @value. If
- * @attribute is of a different type, this operation will fail, returning %FALSE. 
+ * Sets @attribute of type %G_FILE_ATTRIBUTE_TYPE_BYTE_STRING to @value. 
+ * If @attribute is of a different type, this operation will fail, 
+ * returning %FALSE. 
  * 
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
@@ -2644,12 +2695,12 @@ g_file_set_attribute_string (GFile                  *file,
  * in the @file, %FALSE otherwise.
  **/
 gboolean
-g_file_set_attribute_byte_string  (GFile                  *file,
-				   const char             *attribute,
-				   const char             *value,
-				   GFileQueryInfoFlags       flags,
-				   GCancellable           *cancellable,
-				   GError                **error)
+g_file_set_attribute_byte_string  (GFile                *file,
+				   const char           *attribute,
+				   const char           *value,
+				   GFileQueryInfoFlags   flags,
+				   GCancellable         *cancellable,
+				   GError              **error)
 {
   GFileAttributeValue v;
 
@@ -2667,8 +2718,8 @@ g_file_set_attribute_byte_string  (GFile                  *file,
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @error: a #GError, or %NULL
  * 
- * Sets @attribute of type %G_FILE_ATTRIBUTE_TYPE_UINT32 to @value. If
- * @attribute is of a different type, this operation will fail.
+ * Sets @attribute of type %G_FILE_ATTRIBUTE_TYPE_UINT32 to @value. 
+ * If @attribute is of a different type, this operation will fail.
  * 
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
@@ -2678,12 +2729,12 @@ g_file_set_attribute_byte_string  (GFile                  *file,
  * in the @file, %FALSE otherwise.
  **/
 gboolean
-g_file_set_attribute_uint32 (GFile                  *file,
-			     const char             *attribute,
-			     guint32                 value,
-			     GFileQueryInfoFlags       flags,
-			     GCancellable           *cancellable,
-			     GError                **error)
+g_file_set_attribute_uint32 (GFile                *file,
+			     const char           *attribute,
+			     guint32               value,
+			     GFileQueryInfoFlags   flags,
+			     GCancellable         *cancellable,
+			     GError              **error)
 {
   GFileAttributeValue v;
 
@@ -2701,8 +2752,8 @@ g_file_set_attribute_uint32 (GFile                  *file,
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @error: a #GError, or %NULL
  * 
- * Sets @attribute of type %G_FILE_ATTRIBUTE_TYPE_INT32 to @value. If
- * @attribute is of a different type, this operation will fail.
+ * Sets @attribute of type %G_FILE_ATTRIBUTE_TYPE_INT32 to @value. 
+ * If @attribute is of a different type, this operation will fail.
  * 
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
@@ -2712,12 +2763,12 @@ g_file_set_attribute_uint32 (GFile                  *file,
  * in the @file, %FALSE otherwise. 
  **/
 gboolean
-g_file_set_attribute_int32 (GFile                  *file,
-			    const char             *attribute,
-			    gint32                  value,
-			    GFileQueryInfoFlags       flags,
-			    GCancellable           *cancellable,
-			    GError                **error)
+g_file_set_attribute_int32 (GFile                *file,
+			    const char           *attribute,
+			    gint32                value,
+			    GFileQueryInfoFlags   flags,
+			    GCancellable         *cancellable,
+			    GError              **error)
 {
   GFileAttributeValue v;
 
@@ -2735,8 +2786,8 @@ g_file_set_attribute_int32 (GFile                  *file,
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @error: a #GError, or %NULL
  * 
- * Sets @attribute of type %G_FILE_ATTRIBUTE_TYPE_UINT64 to @value. If
- * @attribute is of a different type, this operation will fail.
+ * Sets @attribute of type %G_FILE_ATTRIBUTE_TYPE_UINT64 to @value. 
+ * If @attribute is of a different type, this operation will fail.
  * 
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
@@ -2746,12 +2797,12 @@ g_file_set_attribute_int32 (GFile                  *file,
  * in the @file, %FALSE otherwise.
  **/
 gboolean
-g_file_set_attribute_uint64 (GFile                  *file,
-			     const char             *attribute,
-			     guint64                 value,
-			     GFileQueryInfoFlags       flags,
-			     GCancellable           *cancellable,
-			     GError                **error)
+g_file_set_attribute_uint64 (GFile                *file,
+			     const char           *attribute,
+			     guint64               value,
+			     GFileQueryInfoFlags   flags,
+			     GCancellable         *cancellable,
+			     GError              **error)
  {
   GFileAttributeValue v;
 
@@ -2769,8 +2820,8 @@ g_file_set_attribute_uint64 (GFile                  *file,
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @error: a #GError, or %NULL
  * 
- * Sets @attribute of type %G_FILE_ATTRIBUTE_TYPE_INT64 to @value. If
- * @attribute is of a different type, this operation will fail.
+ * Sets @attribute of type %G_FILE_ATTRIBUTE_TYPE_INT64 to @value. 
+ * If @attribute is of a different type, this operation will fail.
  * 
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
@@ -2779,12 +2830,12 @@ g_file_set_attribute_uint64 (GFile                  *file,
  * Returns: %TRUE if the @attribute was successfully set, %FALSE otherwise.
  **/
 gboolean
-g_file_set_attribute_int64 (GFile                  *file,
-			    const char             *attribute,
-			    gint64                  value,
-			    GFileQueryInfoFlags       flags,
-			    GCancellable           *cancellable,
-			    GError                **error)
+g_file_set_attribute_int64 (GFile                *file,
+			    const char           *attribute,
+			    gint64                value,
+			    GFileQueryInfoFlags   flags,
+			    GCancellable         *cancellable,
+			    GError              **error)
 {
  GFileAttributeValue v;
 
@@ -2801,18 +2852,18 @@ g_file_set_attribute_int64 (GFile                  *file,
  * @callback: a #GAsyncReadyCallback. 
  * @user_data: a #gpointer. 
  * 
+ * Mounts a mountable file using @mount_operation, if possible. 
+ *
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
- * 
- * Mounts a mountable file using @mount_operation, if possible. 
  **/
 void
-g_file_mount_mountable (GFile                  *file,
-			GMountOperation        *mount_operation,
-			GCancellable           *cancellable,
-			GAsyncReadyCallback     callback,
-			gpointer                user_data)
+g_file_mount_mountable (GFile               *file,
+			GMountOperation     *mount_operation,
+			GCancellable        *cancellable,
+			GAsyncReadyCallback  callback,
+			gpointer             user_data)
 {
   GFileIface *iface;
 
@@ -2822,21 +2873,18 @@ g_file_mount_mountable (GFile                  *file,
   iface = G_FILE_GET_IFACE (file);
 
   if (iface->mount_mountable == NULL)
-    {
-      g_simple_async_report_error_in_idle (G_OBJECT (file),
-					   callback,
-					   user_data,
-					   G_IO_ERROR,
-					   G_IO_ERROR_NOT_SUPPORTED,
-					   _("Operation not supported"));
-    }
+    g_simple_async_report_error_in_idle (G_OBJECT (file),
+				         callback,
+					 user_data,
+					 G_IO_ERROR,
+					 G_IO_ERROR_NOT_SUPPORTED,
+					 _("Operation not supported"));
   
   (* iface->mount_mountable) (file,
 			      mount_operation,
 			      cancellable,
 			      callback,
 			      user_data);
-  
 }
 
 /**
@@ -2845,12 +2893,15 @@ g_file_mount_mountable (GFile                  *file,
  * @result: a #GAsyncResult.
  * @error: a #GError, or %NULL
  * 
+ * Finish an asynchronous mount operation that was started 
+ * with g_file_mount_mountable().
+ *
  * Returns: a #GFile or %NULL on error.
  **/
 GFile *
-g_file_mount_mountable_finish (GFile                  *file,
-			       GAsyncResult           *result,
-			       GError                **error)
+g_file_mount_mountable_finish (GFile         *file,
+			       GAsyncResult  *result,
+			       GError       **error)
 {
   GFileIface *iface;
 
@@ -2875,15 +2926,17 @@ g_file_mount_mountable_finish (GFile                  *file,
  * @callback: a #GAsyncReadyCallback. 
  * @user_data: a #gpointer. 
  * 
+ * Unmounts a mounted file.
+ *
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
  **/
 void
-g_file_unmount_mountable (GFile                  *file,
-			  GCancellable           *cancellable,
-			  GAsyncReadyCallback     callback,
-			  gpointer                user_data)
+g_file_unmount_mountable (GFile               *file,
+			  GCancellable        *cancellable,
+			  GAsyncReadyCallback  callback,
+			  gpointer             user_data)
 {
   GFileIface *iface;
   
@@ -2892,14 +2945,12 @@ g_file_unmount_mountable (GFile                  *file,
   iface = G_FILE_GET_IFACE (file);
   
   if (iface->unmount_mountable == NULL)
-    {
-      g_simple_async_report_error_in_idle (G_OBJECT (file),
-					   callback,
-					   user_data,
-					   G_IO_ERROR,
-					   G_IO_ERROR_NOT_SUPPORTED,
-					   _("Operation not supported"));
-    }
+    g_simple_async_report_error_in_idle (G_OBJECT (file),
+					 callback,
+					 user_data,
+					 G_IO_ERROR,
+					 G_IO_ERROR_NOT_SUPPORTED,
+					 _("Operation not supported"));
   
   (* iface->unmount_mountable) (file,
 				cancellable,
@@ -2913,13 +2964,16 @@ g_file_unmount_mountable (GFile                  *file,
  * @result: a #GAsyncResult.
  * @error: a #GError, or %NULL
  * 
+ * Finish an asynchronous unmount operation that was started 
+ * with g_file_unmount_mountable().
+ *
  * Returns: %TRUE if the operation finished successfully. %FALSE
  * otherwise.
  **/
 gboolean
-g_file_unmount_mountable_finish   (GFile                  *file,
-				   GAsyncResult           *result,
-				   GError                **error)
+g_file_unmount_mountable_finish (GFile         *file,
+				 GAsyncResult  *result,
+				 GError       **error)
 {
   GFileIface *iface;
   
@@ -2954,10 +3008,10 @@ g_file_unmount_mountable_finish   (GFile                  *file,
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
  **/
 void
-g_file_eject_mountable (GFile                  *file,
-			GCancellable           *cancellable,
-			GAsyncReadyCallback     callback,
-			gpointer                user_data)
+g_file_eject_mountable (GFile               *file,
+			GCancellable        *cancellable,
+			GAsyncReadyCallback  callback,
+			gpointer             user_data)
 {
   GFileIface *iface;
 
@@ -2966,14 +3020,12 @@ g_file_eject_mountable (GFile                  *file,
   iface = G_FILE_GET_IFACE (file);
   
   if (iface->eject_mountable == NULL)
-    {
-      g_simple_async_report_error_in_idle (G_OBJECT (file),
-					   callback,
-					   user_data,
-					   G_IO_ERROR,
-					   G_IO_ERROR_NOT_SUPPORTED,
-					   _("Operation not supported"));
-    }
+    g_simple_async_report_error_in_idle (G_OBJECT (file),
+					 callback,
+					 user_data,
+					 G_IO_ERROR,
+					 G_IO_ERROR_NOT_SUPPORTED,
+					 _("Operation not supported"));
   
   (* iface->eject_mountable) (file,
 			      cancellable,
@@ -2994,9 +3046,9 @@ g_file_eject_mountable (GFile                  *file,
  * otherwise.
  **/
 gboolean
-g_file_eject_mountable_finish (GFile                  *file,
-			       GAsyncResult           *result,
-			       GError                **error)
+g_file_eject_mountable_finish (GFile         *file,
+			       GAsyncResult  *result,
+			       GError       **error)
 {
   GFileIface *iface;
   
@@ -3020,6 +3072,8 @@ g_file_eject_mountable_finish (GFile                  *file,
  * @flags: a set of #GFileMonitorFlags.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * 
+ * Obtains a directory monitor for the given file.
+ *
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
@@ -3028,9 +3082,9 @@ g_file_eject_mountable_finish (GFile                  *file,
  * or %NULL on error.
  **/
 GDirectoryMonitor*
-g_file_monitor_directory (GFile *file,
-			  GFileMonitorFlags flags,
-			  GCancellable *cancellable)
+g_file_monitor_directory (GFile             *file,
+			  GFileMonitorFlags  flags,
+			  GCancellable      *cancellable)
 {
   GFileIface *iface;
 
@@ -3050,6 +3104,8 @@ g_file_monitor_directory (GFile *file,
  * @flags: a set of #GFileMonitorFlags.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * 
+ * Obtains a file monitor for the given file.
+ *
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
@@ -3058,9 +3114,9 @@ g_file_monitor_directory (GFile *file,
  * or %NULL on error.
  **/
 GFileMonitor*
-g_file_monitor_file (GFile *file,
-		     GFileMonitorFlags flags,
-		     GCancellable *cancellable)
+g_file_monitor_file (GFile             *file,
+		     GFileMonitorFlags  flags,
+		     GCancellable      *cancellable)
 {
   GFileIface *iface;
   GFileMonitor *monitor;
@@ -3102,8 +3158,8 @@ query_info_data_free (QueryInfoAsyncData *data)
 
 static void
 query_info_async_thread (GSimpleAsyncResult *res,
-			 GObject *object,
-			 GCancellable *cancellable)
+			 GObject            *object,
+			 GCancellable       *cancellable)
 {
   GError *error = NULL;
   QueryInfoAsyncData *data;
@@ -3123,13 +3179,13 @@ query_info_async_thread (GSimpleAsyncResult *res,
 }
 
 static void
-g_file_real_query_info_async (GFile                      *file,
-			      const char                 *attributes,
-			      GFileQueryInfoFlags         flags,
-			      int                         io_priority,
-			      GCancellable               *cancellable,
-			      GAsyncReadyCallback         callback,
-			      gpointer                    user_data)
+g_file_real_query_info_async (GFile               *file,
+			      const char          *attributes,
+			      GFileQueryInfoFlags  flags,
+			      int                  io_priority,
+			      GCancellable        *cancellable,
+			      GAsyncReadyCallback  callback,
+			      gpointer             user_data)
 {
   GSimpleAsyncResult *res;
   QueryInfoAsyncData *data;
@@ -3146,9 +3202,9 @@ g_file_real_query_info_async (GFile                      *file,
 }
 
 static GFileInfo *
-g_file_real_query_info_finish (GFile                      *file,
-			       GAsyncResult               *res,
-			       GError                    **error)
+g_file_real_query_info_finish (GFile         *file,
+			       GAsyncResult  *res,
+			       GError       **error)
 {
   GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
   QueryInfoAsyncData *data;
@@ -3179,8 +3235,8 @@ enumerate_children_data_free (EnumerateChildrenAsyncData *data)
 
 static void
 enumerate_children_async_thread (GSimpleAsyncResult *res,
-				 GObject *object,
-				 GCancellable *cancellable)
+				 GObject            *object,
+				 GCancellable       *cancellable)
 {
   GError *error = NULL;
   EnumerateChildrenAsyncData *data;
@@ -3200,13 +3256,13 @@ enumerate_children_async_thread (GSimpleAsyncResult *res,
 }
 
 static void
-g_file_real_enumerate_children_async (GFile                      *file,
-				      const char                 *attributes,
-				      GFileQueryInfoFlags         flags,
-				      int                         io_priority,
-				      GCancellable               *cancellable,
-				      GAsyncReadyCallback         callback,
-				      gpointer                    user_data)
+g_file_real_enumerate_children_async (GFile               *file,
+				      const char          *attributes,
+				      GFileQueryInfoFlags  flags,
+				      int                  io_priority,
+				      GCancellable        *cancellable,
+				      GAsyncReadyCallback  callback,
+				      gpointer             user_data)
 {
   GSimpleAsyncResult *res;
   EnumerateChildrenAsyncData *data;
@@ -3223,9 +3279,9 @@ g_file_real_enumerate_children_async (GFile                      *file,
 }
 
 static GFileEnumerator *
-g_file_real_enumerate_children_finish (GFile                      *file,
-				       GAsyncResult               *res,
-				       GError                    **error)
+g_file_real_enumerate_children_finish (GFile         *file,
+				       GAsyncResult  *res,
+				       GError       **error)
 {
   GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
   EnumerateChildrenAsyncData *data;
@@ -3241,8 +3297,8 @@ g_file_real_enumerate_children_finish (GFile                      *file,
 
 static void
 open_read_async_thread (GSimpleAsyncResult *res,
-			GObject *object,
-			GCancellable *cancellable)
+			GObject            *object,
+			GCancellable       *cancellable)
 {
   GFileIface *iface;
   GFileInputStream *stream;
@@ -3262,11 +3318,11 @@ open_read_async_thread (GSimpleAsyncResult *res,
 }
 
 static void
-g_file_real_read_async (GFile                  *file,
-			int                     io_priority,
-			GCancellable           *cancellable,
-			GAsyncReadyCallback     callback,
-			gpointer                user_data)
+g_file_real_read_async (GFile               *file,
+			int                  io_priority,
+			GCancellable        *cancellable,
+			GAsyncReadyCallback  callback,
+			gpointer             user_data)
 {
   GSimpleAsyncResult *res;
   
@@ -3277,9 +3333,9 @@ g_file_real_read_async (GFile                  *file,
 }
 
 static GFileInputStream *
-g_file_real_read_finish (GFile                  *file,
-			 GAsyncResult           *res,
-			 GError                **error)
+g_file_real_read_finish (GFile         *file,
+			 GAsyncResult  *res,
+			 GError       **error)
 {
   GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
   gpointer op;
@@ -3295,8 +3351,8 @@ g_file_real_read_finish (GFile                  *file,
 
 static void
 append_to_async_thread (GSimpleAsyncResult *res,
-			GObject *object,
-			GCancellable *cancellable)
+			GObject            *object,
+			GCancellable       *cancellable)
 {
   GFileIface *iface;
   GFileCreateFlags *data;
@@ -3319,12 +3375,12 @@ append_to_async_thread (GSimpleAsyncResult *res,
 }
 
 static void
-g_file_real_append_to_async (GFile                  *file,
-			     GFileCreateFlags        flags,
-			     int                     io_priority,
-			     GCancellable           *cancellable,
-			     GAsyncReadyCallback     callback,
-			     gpointer                user_data)
+g_file_real_append_to_async (GFile               *file,
+			     GFileCreateFlags     flags,
+			     int                  io_priority,
+			     GCancellable        *cancellable,
+			     GAsyncReadyCallback  callback,
+			     gpointer             user_data)
 {
   GFileCreateFlags *data;
   GSimpleAsyncResult *res;
@@ -3340,9 +3396,9 @@ g_file_real_append_to_async (GFile                  *file,
 }
 
 static GFileOutputStream *
-g_file_real_append_to_finish (GFile                  *file,
-			      GAsyncResult           *res,
-			      GError                **error)
+g_file_real_append_to_finish (GFile         *file,
+			      GAsyncResult  *res,
+			      GError       **error)
 {
   GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
   gpointer op;
@@ -3358,8 +3414,8 @@ g_file_real_append_to_finish (GFile                  *file,
 
 static void
 create_async_thread (GSimpleAsyncResult *res,
-		     GObject *object,
-		     GCancellable *cancellable)
+		     GObject            *object,
+		     GCancellable       *cancellable)
 {
   GFileIface *iface;
   GFileCreateFlags *data;
@@ -3382,12 +3438,12 @@ create_async_thread (GSimpleAsyncResult *res,
 }
 
 static void
-g_file_real_create_async (GFile                  *file,
-			  GFileCreateFlags        flags,
-			  int                     io_priority,
-			  GCancellable           *cancellable,
-			  GAsyncReadyCallback     callback,
-			  gpointer                user_data)
+g_file_real_create_async (GFile               *file,
+			  GFileCreateFlags     flags,
+			  int                  io_priority,
+			  GCancellable        *cancellable,
+			  GAsyncReadyCallback  callback,
+			  gpointer             user_data)
 {
   GFileCreateFlags *data;
   GSimpleAsyncResult *res;
@@ -3403,9 +3459,9 @@ g_file_real_create_async (GFile                  *file,
 }
 
 static GFileOutputStream *
-g_file_real_create_finish (GFile                  *file,
-			   GAsyncResult           *res,
-			   GError                **error)
+g_file_real_create_finish (GFile         *file,
+			   GAsyncResult  *res,
+			   GError       **error)
 {
   GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
   gpointer op;
@@ -3437,8 +3493,8 @@ replace_async_data_free (ReplaceAsyncData *data)
 
 static void
 replace_async_thread (GSimpleAsyncResult *res,
-		      GObject *object,
-		      GCancellable *cancellable)
+		      GObject            *object,
+		      GCancellable       *cancellable)
 {
   GFileIface *iface;
   GFileOutputStream *stream;
@@ -3466,14 +3522,14 @@ replace_async_thread (GSimpleAsyncResult *res,
 }
 
 static void
-g_file_real_replace_async (GFile                  *file,
-			   const char             *etag,
-			   gboolean                make_backup,
-			   GFileCreateFlags        flags,
-			   int                     io_priority,
-			   GCancellable           *cancellable,
-			   GAsyncReadyCallback     callback,
-			   gpointer                user_data)
+g_file_real_replace_async (GFile               *file,
+			   const char          *etag,
+			   gboolean             make_backup,
+			   GFileCreateFlags     flags,
+			   int                  io_priority,
+			   GCancellable        *cancellable,
+			   GAsyncReadyCallback  callback,
+			   gpointer             user_data)
 {
   GSimpleAsyncResult *res;
   ReplaceAsyncData *data;
@@ -3491,9 +3547,9 @@ g_file_real_replace_async (GFile                  *file,
 }
 
 static GFileOutputStream *
-g_file_real_replace_finish (GFile                  *file,
-			    GAsyncResult           *res,
-			    GError                **error)
+g_file_real_replace_finish (GFile         *file,
+			    GAsyncResult  *res,
+			    GError       **error)
 {
   GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
   ReplaceAsyncData *data;
@@ -3523,8 +3579,8 @@ set_display_name_data_free (SetDisplayNameAsyncData *data)
 
 static void
 set_display_name_async_thread (GSimpleAsyncResult *res,
-			       GObject *object,
-			       GCancellable *cancellable)
+			       GObject            *object,
+			       GCancellable       *cancellable)
 {
   GError *error = NULL;
   SetDisplayNameAsyncData *data;
@@ -3544,12 +3600,12 @@ set_display_name_async_thread (GSimpleAsyncResult *res,
 }
 
 static void
-g_file_real_set_display_name_async (GFile                      *file,	
-				    const char                 *display_name,
-				    int                         io_priority,
-				    GCancellable               *cancellable,
-				    GAsyncReadyCallback         callback,
-				    gpointer                    user_data)
+g_file_real_set_display_name_async (GFile               *file,	
+				    const char          *display_name,
+				    int                  io_priority,
+				    GCancellable        *cancellable,
+				    GAsyncReadyCallback  callback,
+				    gpointer             user_data)
 {
   GSimpleAsyncResult *res;
   SetDisplayNameAsyncData *data;
@@ -3565,9 +3621,9 @@ g_file_real_set_display_name_async (GFile                      *file,
 }
 
 static GFile *
-g_file_real_set_display_name_finish (GFile                      *file,
-				     GAsyncResult               *res,
-				     GError                    **error)
+g_file_real_set_display_name_finish (GFile         *file,
+				     GAsyncResult  *res,
+				     GError       **error)
 {
   GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
   SetDisplayNameAsyncData *data;
@@ -3600,8 +3656,8 @@ set_info_data_free (SetInfoAsyncData *data)
 
 static void
 set_info_async_thread (GSimpleAsyncResult *res,
-		       GObject *object,
-		       GCancellable *cancellable)
+		       GObject            *object,
+		       GCancellable       *cancellable)
 {
   SetInfoAsyncData *data;
   
@@ -3616,13 +3672,13 @@ set_info_async_thread (GSimpleAsyncResult *res,
 }
 
 static void
-g_file_real_set_attributes_async (GFile                      *file,
-				  GFileInfo                  *info,
-				  GFileQueryInfoFlags        flags,
-				  int                         io_priority,
-				  GCancellable               *cancellable,
-				  GAsyncReadyCallback         callback,
-				  gpointer                    user_data)
+g_file_real_set_attributes_async (GFile               *file,
+				  GFileInfo           *info,
+				  GFileQueryInfoFlags  flags,
+				  int                  io_priority,
+				  GCancellable        *cancellable,
+				  GAsyncReadyCallback  callback,
+				  gpointer             user_data)
 {
   GSimpleAsyncResult *res;
   SetInfoAsyncData *data;
@@ -3639,10 +3695,10 @@ g_file_real_set_attributes_async (GFile                      *file,
 }
 
 static gboolean
-g_file_real_set_attributes_finish (GFile                      *file,
-				   GAsyncResult               *res,
-				   GFileInfo                 **info,
-				   GError                    **error)
+g_file_real_set_attributes_finish (GFile         *file,
+				   GAsyncResult  *res,
+				   GFileInfo    **info,
+				   GError       **error)
 {
   GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
   SetInfoAsyncData *data;
@@ -3654,9 +3710,8 @@ g_file_real_set_attributes_finish (GFile                      *file,
   if (info) 
     *info = g_object_ref (data->info);
 
-  if (error != NULL && data->error) {
+  if (error != NULL && data->error) 
     *error = g_error_copy (data->error);
-  }
   
   return data->res;
 }
@@ -3680,8 +3735,7 @@ g_file_new_for_path (const char *path)
 {
   g_return_val_if_fail (path != NULL, NULL);
 
-  return g_vfs_get_file_for_path (g_vfs_get_default (),
-				  path);
+  return g_vfs_get_file_for_path (g_vfs_get_default (), path);
 }
  
 /**
@@ -3700,8 +3754,7 @@ g_file_new_for_uri (const char *uri)
 {
   g_return_val_if_fail (uri != NULL, NULL);
 
-  return g_vfs_get_file_for_uri (g_vfs_get_default (),
-				 uri);
+  return g_vfs_get_file_for_uri (g_vfs_get_default (), uri);
 }
   
 /**
@@ -3720,8 +3773,7 @@ g_file_parse_name (const char *parse_name)
 {
   g_return_val_if_fail (parse_name != NULL, NULL);
 
-  return g_vfs_parse_name (g_vfs_get_default (),
-			   parse_name);
+  return g_vfs_parse_name (g_vfs_get_default (), parse_name);
 }
 
 static gboolean
@@ -3800,11 +3852,11 @@ g_file_new_for_commandline_arg (const char *arg)
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
  **/
 void
-g_mount_for_location (GFile                  *location,
-		      GMountOperation        *mount_operation,
-		      GCancellable           *cancellable,
-		      GAsyncReadyCallback     callback,
-		      gpointer                user_data)
+g_mount_for_location (GFile               *location,
+		      GMountOperation     *mount_operation,
+		      GCancellable        *cancellable,
+		      GAsyncReadyCallback  callback,
+		      gpointer             user_data)
 {
   GFileIface *iface;
 
@@ -3840,9 +3892,9 @@ g_mount_for_location (GFile                  *location,
  * appropriately if present.
  **/
 gboolean
-g_mount_for_location_finish (GFile                  *location,
-			     GAsyncResult           *result,
-			     GError                **error)
+g_mount_for_location_finish (GFile         *location,
+			     GAsyncResult  *result,
+			     GError       **error)
 {
   GFileIface *iface;
 
@@ -3885,12 +3937,12 @@ g_mount_for_location_finish (GFile                  *location,
  * put into @length, the contents in @contents.
  **/
 gboolean
-g_file_load_contents (GFile                *file,
-		      GCancellable         *cancellable,
-		      char                **contents,
-		      gsize                *length,
-		      char                **etag_out,
-		      GError              **error)
+g_file_load_contents (GFile         *file,
+		      GCancellable  *cancellable,
+		      char         **contents,
+		      gsize         *length,
+		      char         **etag_out,
+		      GError       **error)
 {
   GFileInputStream *in;
   GByteArray *content;
@@ -3901,9 +3953,7 @@ g_file_load_contents (GFile                *file,
   g_return_val_if_fail (G_IS_FILE (file), FALSE);
   g_return_val_if_fail (contents != NULL, FALSE);
 
-  in = g_file_read (file,
-		    cancellable,
-		    error);
+  in = g_file_read (file, cancellable, error);
   if (in == NULL)
     return FALSE;
 
@@ -3985,9 +4035,9 @@ load_contents_data_free (LoadContentsData *data)
 }
 
 static void
-load_contents_close_callback (GObject *obj,
-			     GAsyncResult *close_res,
-			     gpointer user_data)
+load_contents_close_callback (GObject      *obj,
+			      GAsyncResult *close_res,
+			      gpointer      user_data)
 {
   GInputStream *stream = G_INPUT_STREAM (obj);
   LoadContentsData *data = user_data;
@@ -4007,9 +4057,9 @@ load_contents_close_callback (GObject *obj,
 }
 
 static void
-load_contents_fstat_callback (GObject *obj,
+load_contents_fstat_callback (GObject      *obj,
 			      GAsyncResult *stat_res,
-			      gpointer user_data)
+			      gpointer      user_data)
 {
   GInputStream *stream = G_INPUT_STREAM (obj);
   LoadContentsData *data = user_data;
@@ -4029,9 +4079,9 @@ load_contents_fstat_callback (GObject *obj,
 }
 
 static void
-load_contents_read_callback (GObject *obj,
+load_contents_read_callback (GObject      *obj,
 			     GAsyncResult *read_res,
-			     gpointer user_data)
+			     gpointer      user_data)
 {
   GInputStream *stream = G_INPUT_STREAM (obj);
   LoadContentsData *data = user_data;
@@ -4085,9 +4135,9 @@ load_contents_read_callback (GObject *obj,
 }
 
 static void
-load_contents_open_callback (GObject *obj,
+load_contents_open_callback (GObject      *obj,
 			     GAsyncResult *open_res,
-			     gpointer user_data)
+			     gpointer      user_data)
 {
   GFile *file = G_FILE (obj);
   GFileInputStream *stream;
@@ -4136,11 +4186,11 @@ load_contents_open_callback (GObject *obj,
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
  **/
 void
-g_file_load_partial_contents_async (GFile                *file,
-				    GCancellable         *cancellable,
-				    GFileReadMoreCallback read_more_callback,
-				    GAsyncReadyCallback   callback,
-				    gpointer              user_data)
+g_file_load_partial_contents_async (GFile                 *file,
+				    GCancellable          *cancellable,
+				    GFileReadMoreCallback  read_more_callback,
+				    GAsyncReadyCallback    callback,
+				    gpointer               user_data)
 {
   LoadContentsData *data;
 
@@ -4172,16 +4222,19 @@ g_file_load_partial_contents_async (GFile                *file,
  * @etag_out: a location to place the current entity tag for the file.
  * @error: a #GError, or %NULL
  * 
+ * Finishes an asynchronous partial load operation that was started
+ * with g_file_load_partial_contents_async().
+ *
  * Returns: %TRUE if the load was successful. If %FALSE and @error is 
  * present, it will be set appropriately. 
  **/
 gboolean
-g_file_load_partial_contents_finish (GFile                *file,
-				     GAsyncResult         *res,
-				     char                **contents,
-				     gsize                *length,
-				     char                **etag_out,
-				     GError              **error)
+g_file_load_partial_contents_finish (GFile         *file,
+				     GAsyncResult  *res,
+				     char         **contents,
+				     gsize         *length,
+				     char         **etag_out,
+				     GError       **error)
 {
   GSimpleAsyncResult *simple;
   LoadContentsData *data;
@@ -4219,8 +4272,7 @@ g_file_load_partial_contents_finish (GFile                *file,
     }
 
   /* Zero terminate */
-  g_byte_array_set_size (data->content,
-			 data->pos + 1);
+  g_byte_array_set_size (data->content, data->pos + 1);
   data->content->data[data->pos] = 0;
   
   *contents = (char *)g_byte_array_free (data->content, FALSE);
@@ -4236,26 +4288,26 @@ g_file_load_partial_contents_finish (GFile                *file,
  * @callback: a #GAsyncReadyCallback. 
  * @user_data: a #gpointer. 
  * 
- * Starts an asynchronous load of the @file's contents. When the load operation 
- * has completed, @callback will be called with @userdata. To finish 
- * the operation, call g_file_load_contents_finish() with the 
- * #GAsyncResult returned by the @callback.
+ * Starts an asynchronous load of the @file's contents. 
+ * When the load operation has completed, @callback will be called 
+ * with @userdata. To finish the operation, call 
+ * g_file_load_contents_finish() with the #GAsyncResult returned by 
+ * the @callback.
  * 
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
  **/
 void
-g_file_load_contents_async (GFile                *file,
-			   GCancellable         *cancellable,
-			   GAsyncReadyCallback   callback,
-			   gpointer              user_data)
+g_file_load_contents_async (GFile               *file,
+			   GCancellable        *cancellable,
+			   GAsyncReadyCallback  callback,
+			   gpointer             user_data)
 {
   g_file_load_partial_contents_async (file,
 				      cancellable,
 				      NULL,
 				      callback, user_data);
-  
 }
 
 /**
@@ -4267,21 +4319,21 @@ g_file_load_contents_async (GFile                *file,
  * @etag_out: a location to place the current entity tag for the file.
  * @error: a #GError, or %NULL
  * 
- * Finishes an asynchronous load of the @file's contents. The contents 
- * are placed in @contents, and @length is set to the size of the @contents 
- * string. If @etag_out is present, it will be set to the new entity 
- * tag for the @file.
+ * Finishes an asynchronous load of the @file's contents. 
+ * The contents are placed in @contents, and @length is set to the 
+ * size of the @contents string. If @etag_out is present, it will be 
+ * set to the new entity tag for the @file.
  * 
  * Returns: %TRUE if the load was successful. If %FALSE and @error is 
  * present, it will be set appropriately. 
  **/
 gboolean
-g_file_load_contents_finish (GFile                *file,
-			     GAsyncResult         *res,
-			     char                **contents,
-			     gsize                *length,
-			     char                **etag_out,
-			     GError              **error)
+g_file_load_contents_finish (GFile         *file,
+			     GAsyncResult  *res,
+			     char         **contents,
+			     gsize         *length,
+			     char         **etag_out,
+			     GError       **error)
 {
   return g_file_load_partial_contents_finish (file,
 					      res,
@@ -4289,7 +4341,6 @@ g_file_load_contents_finish (GFile                *file,
 					      length,
 					      etag_out,
 					      error);
-  
 }
   
 /**
@@ -4304,9 +4355,9 @@ g_file_load_contents_finish (GFile                *file,
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @error: a #GError, or %NULL
  *
- * Replaces the contents of @file with @contents of @length bytes. The old 
- * @etag will be replaced with the @new_etag. If @make_backup is %TRUE, 
- * this function will attempt to make a backup of @file.
+ * Replaces the contents of @file with @contents of @length bytes. 
+ * The old @etag will be replaced with the @new_etag. If @make_backup 
+ * is %TRUE, this function will attempt to make a backup of @file.
  * 
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
@@ -4317,15 +4368,15 @@ g_file_load_contents_finish (GFile                *file,
  * appropriately if present.
  **/
 gboolean
-g_file_replace_contents (GFile                *file,
-			 const char           *contents,
-			 gsize                 length,
-			 const char           *etag,
-			 gboolean              make_backup,
-			 GFileCreateFlags      flags,
-			 char                **new_etag,
-			 GCancellable         *cancellable,
-			 GError              **error)
+g_file_replace_contents (GFile             *file,
+			 const char        *contents,
+			 gsize              length,
+			 const char        *etag,
+			 gboolean           make_backup,
+			 GFileCreateFlags   flags,
+			 char             **new_etag,
+			 GCancellable      *cancellable,
+			 GError           **error)
 {
   GFileOutputStream *out;
   gsize pos, remainder;
@@ -4394,9 +4445,9 @@ replace_contents_data_free (ReplaceContentsData *data)
 }
 
 static void
-replace_contents_close_callback (GObject *obj,
+replace_contents_close_callback (GObject      *obj,
 				 GAsyncResult *close_res,
-				 gpointer user_data)
+				 gpointer      user_data)
 {
   GOutputStream *stream = G_OUTPUT_STREAM (obj);
   ReplaceContentsData *data = user_data;
@@ -4418,9 +4469,9 @@ replace_contents_close_callback (GObject *obj,
 }
 
 static void
-replace_contents_write_callback (GObject *obj,
+replace_contents_write_callback (GObject      *obj,
 				 GAsyncResult *read_res,
-				 gpointer user_data)
+				 gpointer      user_data)
 {
   GOutputStream *stream = G_OUTPUT_STREAM (obj);
   ReplaceContentsData *data = user_data;
@@ -4458,9 +4509,9 @@ replace_contents_write_callback (GObject *obj,
 }
 
 static void
-replace_contents_open_callback (GObject *obj,
+replace_contents_open_callback (GObject      *obj,
 				GAsyncResult *open_res,
-				gpointer user_data)
+				gpointer      user_data)
 {
   GFile *file = G_FILE (obj);
   GFileOutputStream *stream;
@@ -4522,15 +4573,15 @@ replace_contents_open_callback (GObject *obj,
  * make a backup of @file.
  **/
 void
-g_file_replace_contents_async  (GFile                *file,
-				const char           *contents,
-				gsize                 length,
-				const char           *etag,
-				gboolean              make_backup,
-				GFileCreateFlags      flags,
-				GCancellable         *cancellable,
-				GAsyncReadyCallback   callback,
-				gpointer              user_data)
+g_file_replace_contents_async  (GFile               *file,
+				const char          *contents,
+				gsize                length,
+				const char          *etag,
+				gboolean             make_backup,
+				GFileCreateFlags     flags,
+				GCancellable        *cancellable,
+				GAsyncReadyCallback  callback,
+				gpointer             user_data)
 {
   ReplaceContentsData *data;
 
@@ -4571,10 +4622,10 @@ g_file_replace_contents_async  (GFile                *file,
  * Returns: %TRUE on success, %FALSE on failure.
  **/
 gboolean
-g_file_replace_contents_finish (GFile                *file,
-				GAsyncResult         *res,
-				char                **new_etag,
-				GError              **error)
+g_file_replace_contents_finish (GFile         *file,
+				GAsyncResult  *res,
+				char         **new_etag,
+				GError       **error)
 {
   GSimpleAsyncResult *simple;
   ReplaceContentsData *data;

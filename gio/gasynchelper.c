@@ -50,10 +50,10 @@ async_result_free (gpointer data)
 
 void
 _g_queue_async_result (GAsyncResultData *result,
-		       gpointer        async_object,
-		       GError         *error,
-		       gpointer        user_data,
-		       GSourceFunc     source_func)
+		       gpointer          async_object,
+		       GError           *error,
+		       gpointer          user_data,
+		       GSourceFunc       source_func)
 {
   GSource *source;
 
@@ -83,8 +83,8 @@ typedef struct
 } FDSource;
 
 static gboolean 
-fd_source_prepare (GSource  *source,
-		   gint     *timeout)
+fd_source_prepare (GSource *source,
+		   gint    *timeout)
 {
   FDSource *fd_source = (FDSource *)source;
   *timeout = -1;
@@ -93,7 +93,7 @@ fd_source_prepare (GSource  *source,
 }
 
 static gboolean 
-fd_source_check (GSource  *source)
+fd_source_check (GSource *source)
 {
   FDSource *fd_source = (FDSource *)source;
 
@@ -139,15 +139,15 @@ static GSourceFuncs fd_source_funcs = {
 /* Might be called on another thread */
 static void
 fd_source_cancelled_cb (GCancellable *cancellable,
-			gpointer data)
+			gpointer      data)
 {
   /* Wake up the mainloop in case we're waiting on async calls with FDSource */
   g_main_context_wakeup (NULL);
 }
 
 GSource *
-_g_fd_source_new (int fd,
-		  gushort events,
+_g_fd_source_new (int           fd,
+		  gushort       events,
 		  GCancellable *cancellable)
 {
   GSource *source;

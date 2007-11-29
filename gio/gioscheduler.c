@@ -53,8 +53,8 @@ static GSList *active_jobs = NULL;
 
 static GThreadPool *job_thread_pool = NULL;
 
-static void io_job_thread (gpointer       data,
-			   gpointer       user_data);
+static void io_job_thread (gpointer data,
+			   gpointer user_data);
 
 static void
 g_io_job_free (GIOJob *job)
@@ -65,9 +65,9 @@ g_io_job_free (GIOJob *job)
 }
 
 static gint
-g_io_job_compare (gconstpointer  a,
-		  gconstpointer  b,
-		  gpointer       user_data)
+g_io_job_compare (gconstpointer a,
+		  gconstpointer b,
+		  gpointer      user_data)
 {
   const GIOJob *aa = a;
   const GIOJob *bb = b;
@@ -142,8 +142,8 @@ remove_active_job (GIOJob *job)
 }
 
 static void
-io_job_thread (gpointer       data,
-	       gpointer       user_data)
+io_job_thread (gpointer data,
+	       gpointer user_data)
 {
   GIOJob *job = data;
 
@@ -195,11 +195,11 @@ run_job_at_idle (gpointer data)
  * 
  **/
 void
-g_schedule_io_job (GIOJobFunc     job_func,
-		   gpointer       user_data,
-		   GDestroyNotify notify,
-		   gint           io_priority,
-		   GCancellable  *cancellable)
+g_schedule_io_job (GIOJobFunc      job_func,
+		   gpointer        user_data,
+		   GDestroyNotify  notify,
+		   gint            io_priority,
+		   GCancellable   *cancellable)
 {
   static GOnce once_init = G_ONCE_INIT;
   GIOJob *job;
@@ -329,11 +329,11 @@ mainloop_proxy_notify (gpointer data)
  * 
  **/
 void
-g_io_job_send_to_mainloop (GIOJob        *job,
-			   GIODataFunc    func,
-			   gpointer       user_data,
-			   GDestroyNotify notify,
-			   gboolean       block)
+g_io_job_send_to_mainloop (GIOJob         *job,
+			   GIODataFunc     func,
+			   gpointer        user_data,
+			   GDestroyNotify  notify,
+			   gboolean        block)
 {
   GSource *source;
   MainLoopProxy *proxy;

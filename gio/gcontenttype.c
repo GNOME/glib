@@ -45,7 +45,7 @@
 #include <windows.h>
 
 static char *
-get_registry_classes_key (const char *subdir,
+get_registry_classes_key (const char    *subdir,
 			  const wchar_t *key_name)
 {
   wchar_t *wc_key;
@@ -105,8 +105,8 @@ g_content_type_equals (const char *type1,
 }
 
 gboolean
-g_content_type_is_a (const char   *type,
-		     const char   *supertype)
+g_content_type_is_a (const char *type,
+		     const char *supertype)
 {
   gboolean res;
   char *value_utf8;
@@ -158,7 +158,7 @@ g_content_type_get_description (const char *type)
 }
 
 char *
-g_content_type_get_mime_type (const char   *type)
+g_content_type_get_mime_type (const char *type)
 {
   char *mime;
 
@@ -177,7 +177,7 @@ g_content_type_get_mime_type (const char   *type)
 }
 
 GIcon *
-g_content_type_get_icon (const char   *type)
+g_content_type_get_icon (const char *type)
 {
   g_return_val_if_fail (type != NULL, NULL);
 
@@ -192,7 +192,7 @@ g_content_type_get_icon (const char   *type)
 }
 
 gboolean
-g_content_type_can_be_executable (const char   *type)
+g_content_type_can_be_executable (const char *type)
 {
   g_return_val_if_fail (type != NULL, FALSE);
 
@@ -204,7 +204,8 @@ g_content_type_can_be_executable (const char   *type)
 }
 
 static gboolean
-looks_like_text (const guchar *data, gsize data_size)
+looks_like_text (const guchar *data, 
+                 gsize         data_size)
 {
   gsize i;
   guchar c;
@@ -352,8 +353,8 @@ _g_unix_content_type_get_parents (const char *type)
  * %FALSE otherwise.
  **/  
 gboolean
-g_content_type_equals (const char   *type1,
-		       const char   *type2)
+g_content_type_equals (const char *type1,
+		       const char *type2)
 {
   gboolean res;
   
@@ -378,8 +379,8 @@ g_content_type_equals (const char   *type1,
  * %FALSE otherwise. 
  **/  
 gboolean
-g_content_type_is_a (const char   *type,
-		     const char   *supertype)
+g_content_type_is_a (const char *type,
+		     const char *supertype)
 {
   gboolean res;
     
@@ -441,12 +442,12 @@ language_level (const char *lang)
 }
 
 static void
-mime_info_start_element (GMarkupParseContext *context,
-			 const gchar         *element_name,
-			 const gchar        **attribute_names,
-			 const gchar        **attribute_values,
-			 gpointer             user_data,
-			 GError             **error)
+mime_info_start_element (GMarkupParseContext  *context,
+			 const gchar          *element_name,
+			 const gchar         **attribute_names,
+			 const gchar         **attribute_values,
+			 gpointer              user_data,
+			 GError              **error)
 {
   int i;
   const char *lang;
@@ -471,10 +472,10 @@ mime_info_start_element (GMarkupParseContext *context,
 }
 
 static void
-mime_info_end_element (GMarkupParseContext *context,
-		       const gchar         *element_name,
-		       gpointer             user_data,
-		       GError             **error)
+mime_info_end_element (GMarkupParseContext  *context,
+		       const gchar          *element_name,
+		       gpointer              user_data,
+		       GError              **error)
 {
   MimeParser *parser = user_data;
   
@@ -482,11 +483,11 @@ mime_info_end_element (GMarkupParseContext *context,
 }
 
 static void
-mime_info_text (GMarkupParseContext *context,
-		const gchar         *text,
-		gsize                text_len,  
-		gpointer             user_data,
-		GError             **error)
+mime_info_text (GMarkupParseContext  *context,
+		const gchar          *text,
+		gsize                 text_len,  
+		gpointer              user_data,
+		GError              **error)
 {
   MimeParser *parser = user_data;
 
@@ -500,7 +501,8 @@ mime_info_text (GMarkupParseContext *context,
 }
 
 static char *
-load_comment_for_mime_helper (const char *dir, const char *basename)
+load_comment_for_mime_helper (const char *dir, 
+                              const char *basename)
 {
   GMarkupParseContext *context;
   char *filename, *data;
@@ -612,7 +614,7 @@ g_content_type_get_description (const char *type)
  * Returns: the registered mime-type for the given @type.
  **/  
 char *
-g_content_type_get_mime_type (const char   *type)
+g_content_type_get_mime_type (const char *type)
 {
   g_return_val_if_fail (type != NULL, NULL);
 
@@ -628,7 +630,7 @@ g_content_type_get_mime_type (const char   *type)
  * Returns: #GIcon corresponding to the content type.
  **/  
 GIcon *
-g_content_type_get_icon (const char   *type)
+g_content_type_get_icon (const char *type)
 {
   g_return_val_if_fail (type != NULL, NULL);
 
@@ -647,7 +649,7 @@ g_content_type_get_icon (const char   *type)
  * can be executable, %FALSE otherwise. 
  **/  
 gboolean
-g_content_type_can_be_executable (const char   *type)
+g_content_type_can_be_executable (const char *type)
 {
   g_return_val_if_fail (type != NULL, FALSE);
 
@@ -777,9 +779,9 @@ g_content_type_guess (const char   *filename,
 }
 
 static gboolean
-foreach_mimetype (gpointer  key,
-		  gpointer  value,
-		  gpointer  user_data)
+foreach_mimetype (gpointer key,
+		  gpointer value,
+		  gpointer user_data)
 {
   GList **l = user_data;
 
@@ -788,7 +790,9 @@ foreach_mimetype (gpointer  key,
 }
 
 static void
-enumerate_mimetypes_subdir (const char *dir, const char *prefix, GHashTable *mimetypes)
+enumerate_mimetypes_subdir (const char *dir, 
+                            const char *prefix, 
+                            GHashTable *mimetypes)
 {
   DIR *d;
   struct dirent *ent;
@@ -810,7 +814,8 @@ enumerate_mimetypes_subdir (const char *dir, const char *prefix, GHashTable *mim
 }
 
 static void
-enumerate_mimetypes_dir (const char *dir, GHashTable *mimetypes)
+enumerate_mimetypes_dir (const char *dir, 
+                         GHashTable *mimetypes)
 {
   DIR *d;
   struct dirent *ent;

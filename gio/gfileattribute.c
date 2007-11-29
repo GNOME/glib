@@ -232,7 +232,7 @@ g_file_attribute_value_clear (GFileAttributeValue *attr)
  * Sets an attribute's value from another attribute.
  **/
 void
-g_file_attribute_value_set (GFileAttributeValue *attr,
+g_file_attribute_value_set (GFileAttributeValue        *attr,
 			    const GFileAttributeValue *new_value)
 {
   g_return_if_fail (attr != NULL);

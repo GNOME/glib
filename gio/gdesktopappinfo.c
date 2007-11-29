@@ -449,7 +449,10 @@ expand_macro_single (char macro, GFile *file)
 }
 
 static void
-expand_macro (char macro, GString *exec, GDesktopAppInfo *info, GList **file_list)
+expand_macro (char              macro, 
+              GString          *exec, 
+              GDesktopAppInfo  *info, 
+              GList           **file_list)
 {
   GList *files = *file_list;
   char *expanded;
@@ -526,11 +529,11 @@ expand_macro (char macro, GString *exec, GDesktopAppInfo *info, GList **file_lis
 }
 
 static gboolean
-expand_application_parameters (GDesktopAppInfo *info,
-			       GList         **files,
-			       int            *argc,
-			       char         ***argv,
-			       GError        **error)
+expand_application_parameters (GDesktopAppInfo   *info,
+			       GList            **files,
+			       int               *argc,
+			       char            ***argv,
+			       GError           **error)
 {
   GList *file_list = *files;
   const char *p = info->exec;
@@ -571,7 +574,7 @@ expand_application_parameters (GDesktopAppInfo *info,
 }
 
 static gboolean
-prepend_terminal_to_vector (int *argc,
+prepend_terminal_to_vector (int    *argc,
 			    char ***argv)
 {
 #ifndef G_OS_WIN32
@@ -680,9 +683,9 @@ is_env (const char *a,
 
 /* free with g_strfreev */
 static char **
-replace_env_var (char **old_environ,
-		 const char *env_var,
-		 const char *new_value)
+replace_env_var (char       **old_environ,
+		 const char  *env_var,
+		 const char  *new_value)
 {
   int length, new_length;
   int index, new_index;
@@ -792,10 +795,10 @@ dup_list_segment (GList *start,
 }
 
 static gboolean
-g_desktop_app_info_launch (GAppInfo                *appinfo,
-			   GList                   *files,
-			   GAppLaunchContext       *launch_context,
-			   GError                 **error)
+g_desktop_app_info_launch (GAppInfo           *appinfo,
+			   GList              *files,
+			   GAppLaunchContext  *launch_context,
+			   GError            **error)
 {
   GDesktopAppInfo *info = G_DESKTOP_APP_INFO (appinfo);
   gboolean completed = FALSE;
@@ -916,10 +919,10 @@ g_desktop_app_info_supports_xdg_startup_notify (GAppInfo *appinfo)
 }
  
 static gboolean
-g_desktop_app_info_launch_uris (GAppInfo *appinfo,
-				GList *uris,
-				GAppLaunchContext *launch_context,
-				GError **error)
+g_desktop_app_info_launch_uris (GAppInfo           *appinfo,
+				GList              *uris,
+				GAppLaunchContext  *launch_context,
+				GError            **error)
 {
   GList *files;
   GFile *file;
@@ -947,7 +950,7 @@ g_desktop_app_info_launch_uris (GAppInfo *appinfo,
 }
 
 static gboolean
-g_desktop_app_info_should_show (GAppInfo *appinfo,
+g_desktop_app_info_should_show (GAppInfo   *appinfo,
 				const char *desktop_env)
 {
   GDesktopAppInfo *info = G_DESKTOP_APP_INFO (appinfo);
@@ -993,20 +996,16 @@ typedef enum {
 } DirType;
 
 static char *
-ensure_dir (DirType type,
-            GError **error)
+ensure_dir (DirType   type,
+            GError  **error)
 {
   char *path, *display_name;
   int err;
 
   if (type == APP_DIR)
-    {
-      path = g_build_filename (g_get_user_data_dir (), "applications", NULL);
-    }
+    path = g_build_filename (g_get_user_data_dir (), "applications", NULL);
   else
-    {
-      path = g_build_filename (g_get_user_data_dir (), "mime", "packages", NULL);
-    }
+    path = g_build_filename (g_get_user_data_dir (), "mime", "packages", NULL);
 
   errno = 0;
   if (g_mkdir_with_parents (path, 0700) == 0)
@@ -1015,17 +1014,13 @@ ensure_dir (DirType type,
   err = errno;
   display_name = g_filename_display_name (path);
   if (type == APP_DIR)
-    {
-      g_set_error (error, G_IO_ERROR, g_io_error_from_errno (err),
-                   _("Can't create user application configuration folder %s: %s"),
-                   display_name, g_strerror (err));
-    }
+    g_set_error (error, G_IO_ERROR, g_io_error_from_errno (err),
+                 _("Can't create user application configuration folder %s: %s"),
+                 display_name, g_strerror (err));
   else
-    {
-      g_set_error (error, G_IO_ERROR, g_io_error_from_errno (err),
-                   _("Can't create user MIME configuration folder %s: %s"),
-                   display_name, g_strerror (err));
-    }
+    g_set_error (error, G_IO_ERROR, g_io_error_from_errno (err),
+                 _("Can't create user MIME configuration folder %s: %s"),
+                 display_name, g_strerror (err));
 
   g_free (display_name);
   g_free (path);
@@ -1034,7 +1029,10 @@ ensure_dir (DirType type,
 }
 
 static gboolean
-update_default_list (const char *desktop_id, const char *content_type, gboolean add, GError **error)
+update_default_list (const char  *desktop_id, 
+                     const char  *content_type, 
+                     gboolean     add, 
+                     GError     **error)
 {
   char *dirname, *filename;
   GKeyFile *key_file;
@@ -1167,9 +1165,9 @@ run_update_command (char *command,
 }
 
 static gboolean
-g_desktop_app_info_set_as_default_for_extension (GAppInfo           *appinfo,
-						 const char         *extension,
-						 GError            **error)
+g_desktop_app_info_set_as_default_for_extension (GAppInfo    *appinfo,
+						 const char  *extension,
+						 GError     **error)
 {
   char *filename, *basename, *mimetype;
   char *dirname;
@@ -1215,9 +1213,9 @@ g_desktop_app_info_set_as_default_for_extension (GAppInfo           *appinfo,
 }
 
 static gboolean
-g_desktop_app_info_add_supports_type (GAppInfo           *appinfo,
-				      const char         *content_type,
-				      GError            **error)
+g_desktop_app_info_add_supports_type (GAppInfo    *appinfo,
+				      const char  *content_type,
+				      GError     **error)
 {
   GDesktopAppInfo *info = G_DESKTOP_APP_INFO (appinfo);
   GKeyFile *keyfile;
@@ -1267,7 +1265,7 @@ g_desktop_app_info_add_supports_type (GAppInfo           *appinfo,
 }
 
 static gboolean
-g_desktop_app_info_can_remove_supports_type (GAppInfo           *appinfo)
+g_desktop_app_info_can_remove_supports_type (GAppInfo *appinfo)
 {
   GDesktopAppInfo *info = G_DESKTOP_APP_INFO (appinfo);
   char *user_dirname;
@@ -1277,9 +1275,9 @@ g_desktop_app_info_can_remove_supports_type (GAppInfo           *appinfo)
 }
 
 static gboolean
-g_desktop_app_info_remove_supports_type (GAppInfo           *appinfo,
-					 const char         *content_type,
-					 GError            **error)
+g_desktop_app_info_remove_supports_type (GAppInfo    *appinfo,
+					 const char  *content_type,
+					 GError     **error)
 {
   GDesktopAppInfo *info = G_DESKTOP_APP_INFO (appinfo);
   GKeyFile *keyfile;
@@ -1349,10 +1347,10 @@ g_desktop_app_info_remove_supports_type (GAppInfo           *appinfo,
  * Returns: new #GAppInfo for given command.
  **/
 GAppInfo *
-g_app_info_create_from_commandline (const char *commandline,
-				    const char *application_name,
-				    GAppInfoCreateFlags flags,
-				    GError **error)
+g_app_info_create_from_commandline (const char           *commandline,
+				    const char           *application_name,
+				    GAppInfoCreateFlags   flags,
+				    GError              **error)
 {
   GKeyFile *key_file;
   char *dirname;
@@ -1475,13 +1473,14 @@ g_desktop_app_info_iface_init (GAppInfoIface *iface)
 }
 
 static gboolean
-app_info_in_list (GAppInfo *info, GList *l)
+app_info_in_list (GAppInfo *info, 
+                  GList    *list)
 {
-  while (l != NULL)
+  while (list != NULL)
     {
-      if (g_app_info_equal (info, l->data))
+      if (g_app_info_equal (info, list->data))
 	return TRUE;
-      l = l->next;
+      list = list->next;
     }
   return FALSE;
 }
@@ -1538,7 +1537,7 @@ g_app_info_get_all_for_type (const char *content_type)
  **/
 GAppInfo *
 g_app_info_get_default_for_type (const char *content_type,
-				 gboolean must_support_uris)
+				 gboolean    must_support_uris)
 {
   GList *desktop_entries, *l;
   GAppInfo *info;
@@ -1587,7 +1586,9 @@ g_app_info_get_default_for_uri_scheme (const char *uri_scheme)
 
 
 static void
-get_apps_from_dir (GHashTable *apps, const char *dirname, const char *prefix)
+get_apps_from_dir (GHashTable *apps, 
+                   const char *dirname, 
+                   const char *prefix)
 {
   GDir *dir;
   const char *basename;
@@ -1653,9 +1654,9 @@ get_apps_from_dir (GHashTable *apps, const char *dirname, const char *prefix)
 }
 
 static void
-collect_apps (gpointer  key,
-	      gpointer  value,
-	      gpointer  user_data)
+collect_apps (gpointer key,
+	      gpointer value,
+	      gpointer user_data)
 {
   GList **infos = user_data;
 
@@ -1717,14 +1718,16 @@ typedef struct {
 static MimeInfoCache *mime_info_cache = NULL;
 G_LOCK_DEFINE_STATIC (mime_info_cache);
 
-static void mime_info_cache_dir_add_desktop_entries (MimeInfoCacheDir *dir,
-						     const char *mime_type,
-						     char **new_desktop_file_ids);
+static void mime_info_cache_dir_add_desktop_entries (MimeInfoCacheDir  *dir,
+						     const char        *mime_type,
+						     char             **new_desktop_file_ids);
 
 static MimeInfoCache * mime_info_cache_new (void);
 
 static void
-destroy_info_cache_value (gpointer key, GList *value, gpointer data)
+destroy_info_cache_value (gpointer  key, 
+                          GList    *value, 
+                          gpointer  data)
 {
   g_list_foreach (value, (GFunc)g_free, NULL);
   g_list_free (value);
@@ -1739,8 +1742,8 @@ destroy_info_cache_map (GHashTable *info_cache_map)
 
 static gboolean
 mime_info_cache_dir_out_of_date (MimeInfoCacheDir *dir,
-				 const char *cache_file,
-				 time_t *timestamp)
+				 const char       *cache_file,
+				 time_t           *timestamp)
 {
   struct stat buf;
   char *filename;
@@ -1978,9 +1981,9 @@ mime_info_cache_dir_free (MimeInfoCacheDir *dir)
 }
 
 static void
-mime_info_cache_dir_add_desktop_entries (MimeInfoCacheDir *dir,
-					 const char *mime_type,
-					 char **new_desktop_file_ids)
+mime_info_cache_dir_add_desktop_entries (MimeInfoCacheDir  *dir,
+					 const char        *mime_type,
+					 char             **new_desktop_file_ids)
 {
   GList *desktop_file_ids;
   int i;
@@ -2120,7 +2123,8 @@ mime_info_cache_reload (const char *dir)
 }
 
 static GList *
-append_desktop_entry (GList *list, const char *desktop_entry)
+append_desktop_entry (GList      *list, 
+                      const char *desktop_entry)
 {
   /* Add if not already in list, and valid */
   if (!g_list_find_custom (list, desktop_entry, (GCompareFunc) strcmp))

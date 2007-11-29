@@ -179,9 +179,9 @@ g_file_enumerator_next_file (GFileEnumerator *enumerator,
  * Return value: #TRUE on success or #FALSE on error.
  **/
 gboolean
-g_file_enumerator_close (GFileEnumerator *enumerator,
-			 GCancellable *cancellable,
-			 GError **error)
+g_file_enumerator_close (GFileEnumerator  *enumerator,
+			 GCancellable     *cancellable,
+			 GError          **error)
 {
   GFileEnumeratorClass *class;
 
@@ -215,9 +215,9 @@ g_file_enumerator_close (GFileEnumerator *enumerator,
 }
 
 static void
-next_async_callback_wrapper (GObject *source_object,
+next_async_callback_wrapper (GObject      *source_object,
 			     GAsyncResult *res,
-			     gpointer user_data)
+			     gpointer      user_data)
 {
   GFileEnumerator *enumerator = G_FILE_ENUMERATOR (source_object);
 
@@ -254,12 +254,12 @@ next_async_callback_wrapper (GObject *source_object,
  * priority is %G_PRIORITY_DEFAULT.
  **/
 void
-g_file_enumerator_next_files_async  (GFileEnumerator                *enumerator,
-				     int                             num_files,
-				     int                             io_priority,
-				     GCancellable                   *cancellable,
-				     GAsyncReadyCallback             callback,
-				     gpointer                        user_data)
+g_file_enumerator_next_files_async (GFileEnumerator     *enumerator,
+				    int                  num_files,
+				    int                  io_priority,
+				    GCancellable        *cancellable,
+				    GAsyncReadyCallback  callback,
+				    gpointer             user_data)
 {
   GFileEnumeratorClass *class;
   GSimpleAsyncResult *simple;
@@ -320,9 +320,9 @@ g_file_enumerator_next_files_async  (GFileEnumerator                *enumerator,
  * Returns: 
  **/
 GList *
-g_file_enumerator_next_files_finish  (GFileEnumerator *enumerator,
-				      GAsyncResult *result,
-				      GError **error)
+g_file_enumerator_next_files_finish (GFileEnumerator  *enumerator,
+				     GAsyncResult     *result,
+				     GError          **error)
 {
   GFileEnumeratorClass *class;
   GSimpleAsyncResult *simple;
@@ -346,9 +346,9 @@ g_file_enumerator_next_files_finish  (GFileEnumerator *enumerator,
 }
 
 static void
-close_async_callback_wrapper (GObject *source_object,
+close_async_callback_wrapper (GObject      *source_object,
 			      GAsyncResult *res,
-			      gpointer user_data)
+			      gpointer      user_data)
 {
   GFileEnumerator *enumerator = G_FILE_ENUMERATOR (source_object);
   
@@ -362,18 +362,18 @@ close_async_callback_wrapper (GObject *source_object,
 /**
  * g_file_enumerator_close_async:
  * @enumerator: a #GFileEnumerator.
- * @io_priority: the io priority of the request. the io priority of the request
+ * @io_priority: the io priority of the request.
  * @cancellable: optional #GCancellable object, %NULL to ignore. 
  * @callback: callback to call when the request is satisfied
  * @user_data: the user_data to pass to callback function 
  * 
  **/
 void
-g_file_enumerator_close_async (GFileEnumerator                *enumerator,
-			       int                             io_priority,
-			       GCancellable                   *cancellable,
-			       GAsyncReadyCallback             callback,
-			       gpointer                        user_data)
+g_file_enumerator_close_async (GFileEnumerator     *enumerator,
+			       int                  io_priority,
+			       GCancellable        *cancellable,
+			       GAsyncReadyCallback  callback,
+			       gpointer             user_data)
 {
   GFileEnumeratorClass *class;
 
@@ -420,9 +420,9 @@ g_file_enumerator_close_async (GFileEnumerator                *enumerator,
  * Returns: %TRUE if the close operation has finished successfully.
  **/
 gboolean
-g_file_enumerator_close_finish (GFileEnumerator                *enumerator,
-				GAsyncResult                   *result,
-				GError                        **error)
+g_file_enumerator_close_finish (GFileEnumerator  *enumerator,
+				GAsyncResult     *result,
+				GError          **error)
 {
   GSimpleAsyncResult *simple;
   GFileEnumeratorClass *class;
@@ -476,8 +476,8 @@ g_file_enumerator_has_pending (GFileEnumerator *enumerator)
  * 
  **/
 void
-g_file_enumerator_set_pending (GFileEnumerator              *enumerator,
-			       gboolean                   pending)
+g_file_enumerator_set_pending (GFileEnumerator *enumerator,
+			       gboolean         pending)
 {
   g_return_if_fail (G_IS_FILE_ENUMERATOR (enumerator));
   
@@ -491,8 +491,8 @@ typedef struct {
 
 static void
 next_files_thread (GSimpleAsyncResult *res,
-		   GObject *object,
-		   GCancellable *cancellable)
+		   GObject            *object,
+		   GCancellable       *cancellable)
 {
   NextAsyncOp *op;
   GFileEnumeratorClass *class;
@@ -535,12 +535,12 @@ next_files_thread (GSimpleAsyncResult *res,
 
 
 static void
-g_file_enumerator_real_next_files_async (GFileEnumerator                *enumerator,
-					 int                             num_files,
-					 int                             io_priority,
-					 GCancellable                   *cancellable,
-					 GAsyncReadyCallback             callback,
-					 gpointer                        user_data)
+g_file_enumerator_real_next_files_async (GFileEnumerator     *enumerator,
+					 int                  num_files,
+					 int                  io_priority,
+					 GCancellable        *cancellable,
+					 GAsyncReadyCallback  callback,
+					 gpointer             user_data)
 {
   GSimpleAsyncResult *res;
   NextAsyncOp *op;
@@ -575,8 +575,8 @@ g_file_enumerator_real_next_files_finish (GFileEnumerator                *enumer
 
 static void
 close_async_thread (GSimpleAsyncResult *res,
-		    GObject *object,
-		    GCancellable *cancellable)
+		    GObject            *object,
+		    GCancellable       *cancellable)
 {
   GFileEnumeratorClass *class;
   GError *error = NULL;
@@ -598,11 +598,11 @@ close_async_thread (GSimpleAsyncResult *res,
 
 
 static void
-g_file_enumerator_real_close_async (GFileEnumerator      *enumerator,
-				    int                   io_priority,
-				    GCancellable         *cancellable,
-				    GAsyncReadyCallback   callback,
-				    gpointer              user_data)
+g_file_enumerator_real_close_async (GFileEnumerator     *enumerator,
+				    int                  io_priority,
+				    GCancellable        *cancellable,
+				    GAsyncReadyCallback  callback,
+				    gpointer             user_data)
 {
   GSimpleAsyncResult *res;
   
@@ -621,9 +621,9 @@ g_file_enumerator_real_close_async (GFileEnumerator      *enumerator,
 }
 
 static gboolean
-g_file_enumerator_real_close_finish      (GFileEnumerator      *enumerator,
-					  GAsyncResult         *result,
-					  GError              **error)
+g_file_enumerator_real_close_finish (GFileEnumerator  *enumerator,
+                                     GAsyncResult     *result,
+                                     GError          **error)
 {
   GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
   g_assert (g_simple_async_result_get_source_tag (simple) == 

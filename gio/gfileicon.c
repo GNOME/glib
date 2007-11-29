@@ -155,11 +155,11 @@ g_file_icon_icon_iface_init (GIconIface *iface)
 
 
 static GInputStream *
-g_file_icon_load (GLoadableIcon        *icon,
-		  int                   size,
-		  char                **type,
-		  GCancellable         *cancellable,
-		  GError              **error)
+g_file_icon_load (GLoadableIcon  *icon,
+		  int            size,
+		  char          **type,
+		  GCancellable   *cancellable,
+		  GError        **error)
 {
   GFileInputStream *stream;
   GFileIcon *file_icon = G_FILE_ICON (icon);
@@ -185,9 +185,9 @@ load_data_free (LoadData *data)
 }
 
 static void
-load_async_callback (GObject *source_object,
+load_async_callback (GObject      *source_object,
 		     GAsyncResult *res,
-		     gpointer user_data)
+		     gpointer      user_data)
 {
   GFileInputStream *stream;
   GError *error = NULL;
@@ -223,11 +223,11 @@ load_async_callback (GObject *source_object,
 }
 
 static void
-g_file_icon_load_async  (GLoadableIcon        *icon,
-			 int                   size,
-			 GCancellable         *cancellable,
-			 GAsyncReadyCallback   callback,
-			 gpointer              user_data)
+g_file_icon_load_async (GLoadableIcon       *icon,
+                        int                  size,
+                        GCancellable        *cancellable,
+                        GAsyncReadyCallback  callback,
+                        gpointer             user_data)
 {
   GFileIcon *file_icon = G_FILE_ICON (icon);
   LoadData *data;
@@ -244,10 +244,10 @@ g_file_icon_load_async  (GLoadableIcon        *icon,
 }
 
 static GInputStream *
-g_file_icon_load_finish (GLoadableIcon        *icon,
-			 GAsyncResult         *res,
-			 char                **type,
-			 GError              **error)
+g_file_icon_load_finish (GLoadableIcon  *icon,
+			 GAsyncResult   *res,
+			 char          **type,
+			 GError        **error)
 {
   GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
   gpointer op;

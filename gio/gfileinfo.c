@@ -257,7 +257,8 @@ g_file_info_new (void)
  * Copies all of the #GFileAttribute<!-- -->s from @src_info to @dest_info.
  **/
 void
-g_file_info_copy_into (GFileInfo *src_info, GFileInfo *dest_info)
+g_file_info_copy_into (GFileInfo *src_info, 
+                       GFileInfo *dest_info)
 {
   GFileAttribute *source, *dest;
   int i;
@@ -297,7 +298,7 @@ g_file_info_copy_into (GFileInfo *src_info, GFileInfo *dest_info)
  * Returns: a duplicate #GFileInfo of @other.
  **/
 GFileInfo *
-g_file_info_dup (GFileInfo  *other)
+g_file_info_dup (GFileInfo *other)
 {
   GFileInfo *new;
   
@@ -316,7 +317,7 @@ g_file_info_dup (GFileInfo  *other)
  * Sets @mask on @info to match specific attribute types.
  **/
 void
-g_file_info_set_attribute_mask (GFileInfo *info,
+g_file_info_set_attribute_mask (GFileInfo             *info,
 				GFileAttributeMatcher *mask)
 {
   GFileAttribute *attr;
@@ -384,7 +385,7 @@ g_file_info_clear_status (GFileInfo  *info)
 
 static int
 g_file_info_find_place (GFileInfo  *info,
-			guint32 attribute)
+			guint32     attribute)
 {
   int min, max, med;
   GFileAttribute *attrs;
@@ -415,7 +416,7 @@ g_file_info_find_place (GFileInfo  *info,
 
 static GFileAttributeValue *
 g_file_info_find_value (GFileInfo *info,
-			guint32 attr_id)
+			guint32    attr_id)
 {
   GFileAttribute *attrs;
   int i;
@@ -430,7 +431,7 @@ g_file_info_find_value (GFileInfo *info,
 }
 
 static GFileAttributeValue *
-g_file_info_find_value_by_name (GFileInfo *info,
+g_file_info_find_value_by_name (GFileInfo  *info,
 				const char *attribute)
 {
   guint32 attr_id;
@@ -680,7 +681,7 @@ g_file_info_get_attribute_boolean (GFileInfo  *info,
  * 
  * Gets an unsigned 32-bit integer contained within the attribute. If the 
  * attribute does not contain an unsigned 32-bit integer, or is invalid, 
- * %0 will be returned.
+ * 0 will be returned.
  * 
  * Returns: an unsigned 32-bit integer from the attribute. 
  **/
@@ -704,7 +705,7 @@ g_file_info_get_attribute_uint32 (GFileInfo  *info,
  * 
  * Gets a signed 32-bit integer contained within the attribute. If the 
  * attribute does not contain a signed 32-bit integer, or is invalid, 
- * %0 will be returned.
+ * 0 will be returned.
  * 
  * Returns: a signed 32-bit integer from the attribute.
  **/
@@ -728,7 +729,7 @@ g_file_info_get_attribute_int32 (GFileInfo  *info,
  * 
  * Gets a unsigned 64-bit integer contained within the attribute. If the 
  * attribute does not contain an unsigned 64-bit integer, or is invalid, 
- * %0 will be returned.
+ * 0 will be returned.
  * 
  * Returns: a unsigned 64-bit integer from the attribute. 
  **/
@@ -752,7 +753,7 @@ g_file_info_get_attribute_uint64 (GFileInfo  *info,
  * 
  * Gets a signed 64-bit integer contained within the attribute. If the 
  * attribute does not contain an signed 64-bit integer, or is invalid, 
- * %0 will be returned.
+ * 0 will be returned.
  * 
  * Returns: a signed 64-bit integer from the attribute. 
  **/
@@ -817,11 +818,10 @@ g_file_info_create_value_by_name (GFileInfo *info,
  * 
  * Sets the @attribute to contain the given @attr_value, 
  * if possible.
- *
  **/
 void
-g_file_info_set_attribute (GFileInfo  *info,
-			   const char *attribute,
+g_file_info_set_attribute (GFileInfo                 *info,
+			   const char                *attribute,
 			   const GFileAttributeValue *attr_value)
 {
   GFileAttributeValue *value;
@@ -843,12 +843,11 @@ g_file_info_set_attribute (GFileInfo  *info,
  * 
  * Sets the @attribute to contain the given @attr_value, 
  * if possible.
- * 
  **/
 void
 g_file_info_set_attribute_object (GFileInfo  *info,
 				  const char *attribute,
-				  GObject *attr_value)
+				  GObject    *attr_value)
 {
   GFileAttributeValue *value;
 
@@ -869,7 +868,6 @@ g_file_info_set_attribute_object (GFileInfo  *info,
  * 
  * Sets the @attribute to contain the given @attr_value, 
  * if possible.
- *
  **/
 void
 g_file_info_set_attribute_string (GFileInfo  *info,
@@ -895,7 +893,6 @@ g_file_info_set_attribute_string (GFileInfo  *info,
  * 
  * Sets the @attribute to contain the given @attr_value, 
  * if possible.
- * 
  **/
 void
 g_file_info_set_attribute_byte_string (GFileInfo  *info,
@@ -921,12 +918,11 @@ g_file_info_set_attribute_byte_string (GFileInfo  *info,
  * 
  * Sets the @attribute to contain the given @attr_value, 
  * if possible.
- * 
  **/
 void
 g_file_info_set_attribute_boolean (GFileInfo  *info,
 				   const char *attribute,
-				   gboolean attr_value)
+				   gboolean    attr_value)
 {
   GFileAttributeValue *value;
 
@@ -946,9 +942,7 @@ g_file_info_set_attribute_boolean (GFileInfo  *info,
  * 
  * Sets the @attribute to contain the given @attr_value, 
  * if possible.
- * 
  **/
-
 void
 g_file_info_set_attribute_uint32 (GFileInfo  *info,
 				  const char *attribute,
@@ -973,12 +967,11 @@ g_file_info_set_attribute_uint32 (GFileInfo  *info,
  * 
  * Sets the @attribute to contain the given @attr_value, 
  * if possible.
- * 
  **/
 void
-g_file_info_set_attribute_int32  (GFileInfo  *info,
-				  const char *attribute,
-				  gint32      attr_value)
+g_file_info_set_attribute_int32 (GFileInfo  *info,
+                                 const char *attribute,
+                                 gint32      attr_value)
 {
   GFileAttributeValue *value;
  
@@ -998,7 +991,6 @@ g_file_info_set_attribute_int32  (GFileInfo  *info,
  * 
  * Sets the @attribute to contain the given @attr_value, 
  * if possible.
- * 
  **/
 void
 g_file_info_set_attribute_uint64 (GFileInfo  *info,
@@ -1283,9 +1275,7 @@ g_file_info_get_size (GFileInfo *info)
  * 
  * Gets the modification time of the current @info and sets it
  * in @result.
- * 
  **/
-
 void
 g_file_info_get_modification_time (GFileInfo *info,
 				   GTimeVal  *result)
@@ -1389,8 +1379,8 @@ g_file_info_get_sort_order (GFileInfo *info)
  * See %G_FILE_ATTRIBUTE_STD_TYPE.
  **/
 void
-g_file_info_set_file_type (GFileInfo         *info,
-			   GFileType          type)
+g_file_info_set_file_type (GFileInfo *info,
+			   GFileType  type)
 {
   static guint32 attr = 0;
   GFileAttributeValue *value;
@@ -1437,7 +1427,6 @@ g_file_info_set_is_hidden (GFileInfo *info,
  * 
  * Sets the "is_symlink" attribute in a #GFileInfo according to @is_symlink.
  * See %G_FILE_ATTRIBUTE_STD_IS_SYMLINK.
- * 
  **/
 void
 g_file_info_set_is_symlink (GFileInfo *info,
@@ -1463,11 +1452,10 @@ g_file_info_set_is_symlink (GFileInfo *info,
  * 
  * Sets the name attribute for the current #GFileInfo. 
  * See %G_FILE_ATTRIBUTE_STD_NAME.
- * 
  **/
 void
-g_file_info_set_name (GFileInfo         *info,
-		      const char        *name)
+g_file_info_set_name (GFileInfo  *info,
+		      const char *name)
 {
   static guint32 attr = 0;
   GFileAttributeValue *value;
@@ -1490,11 +1478,10 @@ g_file_info_set_name (GFileInfo         *info,
  * 
  * Sets the display name for the current #GFileInfo.
  * See %G_FILE_ATTRIBUTE_STD_DISPLAY_NAME.
- *  
  **/
 void
-g_file_info_set_display_name (GFileInfo         *info,
-			      const char        *display_name)
+g_file_info_set_display_name (GFileInfo  *info,
+			      const char *display_name)
 {
   static guint32 attr = 0;
   GFileAttributeValue *value;
@@ -1517,12 +1504,10 @@ g_file_info_set_display_name (GFileInfo         *info,
  * 
  * Sets the edit name for the current file.
  * See %G_FILE_ATTRIBUTE_STD_EDIT_NAME.
- * 
  **/
-
 void
-g_file_info_set_edit_name (GFileInfo         *info,
-			   const char        *edit_name)
+g_file_info_set_edit_name (GFileInfo  *info,
+			   const char *edit_name)
 {
   static guint32 attr = 0;
   GFileAttributeValue *value;
@@ -1545,11 +1530,10 @@ g_file_info_set_edit_name (GFileInfo         *info,
  * 
  * Sets the icon for a given #GFileInfo. 
  * See %G_FILE_ATTRIBUTE_STD_ICON.
- *
  **/
 void
-g_file_info_set_icon (GFileInfo   *info,
-		      GIcon       *icon)
+g_file_info_set_icon (GFileInfo *info,
+		      GIcon     *icon)
 {
   static guint32 attr = 0;
   GFileAttributeValue *value;
@@ -1572,11 +1556,10 @@ g_file_info_set_icon (GFileInfo   *info,
  * 
  * Sets the content type attribute for a given #GFileInfo.
  * See %G_FILE_ATTRIBUTE_STD_CONTENT_TYPE.
- *
  **/
 void
-g_file_info_set_content_type (GFileInfo         *info,
-			      const char        *content_type)
+g_file_info_set_content_type (GFileInfo  *info,
+			      const char *content_type)
 {
   static guint32 attr = 0;
   GFileAttributeValue *value;
@@ -1599,11 +1582,10 @@ g_file_info_set_content_type (GFileInfo         *info,
  * 
  * Sets the %G_FILE_ATTRIBUTE_STD_SIZE attribute in the file info 
  * to the given size.
- * 
  **/
 void
-g_file_info_set_size (GFileInfo         *info,
-		      goffset            size)
+g_file_info_set_size (GFileInfo *info,
+		      goffset    size)
 {
   static guint32 attr = 0;
   GFileAttributeValue *value;
@@ -1625,11 +1607,10 @@ g_file_info_set_size (GFileInfo         *info,
  * 
  * Sets the %G_FILE_ATTRIBUTE_TIME_MODIFIED attribute in the file
  * info to the given time value.
- * 
  **/
 void
-g_file_info_set_modification_time (GFileInfo         *info,
-				   GTimeVal          *mtime)
+g_file_info_set_modification_time (GFileInfo *info,
+				   GTimeVal  *mtime)
 {
   static guint32 attr_mtime = 0, attr_mtime_usec;
   GFileAttributeValue *value;
@@ -1658,11 +1639,10 @@ g_file_info_set_modification_time (GFileInfo         *info,
  * 
  * Sets the %G_FILE_ATTRIBUTE_STD_SYMLINK_TARGET attribute in the file info 
  * to the given symlink target.
- * 
  **/
 void
-g_file_info_set_symlink_target (GFileInfo         *info,
-				const char        *symlink_target)
+g_file_info_set_symlink_target (GFileInfo  *info,
+				const char *symlink_target)
 {
   static guint32 attr = 0;
   GFileAttributeValue *value;
@@ -1685,11 +1665,10 @@ g_file_info_set_symlink_target (GFileInfo         *info,
  * 
  * Sets the sort order attribute in the file info structure. See 
  * %G_FILE_ATTRIBUTE_STD_SORT_ORDER.
- * 
  **/
 void
-g_file_info_set_sort_order (GFileInfo         *info,
-			    gint32             sort_order)
+g_file_info_set_sort_order (GFileInfo *info,
+			    gint32     sort_order)
 {
   static guint32 attr = 0;
   GFileAttributeValue *value;
@@ -1725,7 +1704,8 @@ struct _GFileAttributeMatcher {
 
 static void
 matcher_add (GFileAttributeMatcher *matcher,
-	     guint id, guint mask)
+	     guint                  id,
+             guint                  mask)
 {
   SubMatcher *sub_matchers;
   int i;
@@ -1923,7 +1903,7 @@ g_file_attribute_matcher_matches_only (GFileAttributeMatcher *matcher,
 
 static gboolean
 matcher_matches_id (GFileAttributeMatcher *matcher,
-		    guint32 id)
+                    guint32                id)
 {
   SubMatcher *sub_matchers;
   int i;
@@ -1952,7 +1932,7 @@ matcher_matches_id (GFileAttributeMatcher *matcher,
 
 static gboolean
 g_file_attribute_matcher_matches_id (GFileAttributeMatcher *matcher,
-				     guint32 id)
+                                     guint32                id)
 {
   g_return_val_if_fail (matcher != NULL, FALSE);
   

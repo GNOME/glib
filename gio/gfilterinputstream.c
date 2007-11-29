@@ -211,11 +211,11 @@ g_filter_input_stream_get_base_stream (GFilterInputStream *stream)
 }
 
 static gssize
-g_filter_input_stream_read (GInputStream *stream,
-                            void         *buffer,
-                            gsize         count,
-                            GCancellable *cancellable,
-                            GError      **error)
+g_filter_input_stream_read (GInputStream  *stream,
+                            void          *buffer,
+                            gsize          count,
+                            GCancellable  *cancellable,
+                            GError       **error)
 {
   GFilterInputStream *filter_stream;
   GInputStream       *base_stream;
@@ -234,10 +234,10 @@ g_filter_input_stream_read (GInputStream *stream,
 }
 
 static gssize
-g_filter_input_stream_skip (GInputStream              *stream,
-                            gsize                      count,
-                            GCancellable              *cancellable,
-                            GError                   **error)
+g_filter_input_stream_skip (GInputStream  *stream,
+                            gsize          count,
+                            GCancellable  *cancellable,
+                            GError       **error)
 {
   GFilterInputStream *filter_stream;
   GInputStream       *base_stream;
@@ -273,13 +273,13 @@ g_filter_input_stream_close (GInputStream  *stream,
 }
 
 static void
-g_filter_input_stream_read_async (GInputStream           *stream,
-                                  void                   *buffer,
-                                  gsize                   count,
-                                  int                     io_priority,
-                                  GCancellable           *cancellable,
-                                  GAsyncReadyCallback     callback,
-                                  gpointer                user_data)
+g_filter_input_stream_read_async (GInputStream        *stream,
+                                  void                *buffer,
+                                  gsize                count,
+                                  int                  io_priority,
+                                  GCancellable        *cancellable,
+                                  GAsyncReadyCallback  callback,
+                                  gpointer             user_data)
 {
   GFilterInputStream *filter_stream;
   GInputStream       *base_stream;
@@ -358,11 +358,11 @@ g_filter_input_stream_skip_finish (GInputStream  *stream,
 }
 
 static void
-g_filter_input_stream_close_async (GInputStream         *stream,
-                                   int                   io_priority,
-                                   GCancellable         *cancellable,
-                                   GAsyncReadyCallback   callback,
-                                   gpointer              user_data)
+g_filter_input_stream_close_async (GInputStream        *stream,
+                                   int                  io_priority,
+                                   GCancellable        *cancellable,
+                                   GAsyncReadyCallback  callback,
+                                   gpointer             user_data)
 {
   GFilterInputStream *filter_stream;
   GInputStream       *base_stream;
@@ -375,8 +375,6 @@ g_filter_input_stream_close_async (GInputStream         *stream,
                               cancellable,
                               callback,
                               user_data);
-
-
 }
 
 static gboolean
@@ -400,5 +398,3 @@ g_filter_input_stream_close_finish (GInputStream  *stream,
 
 #define __G_FILTER_INPUT_STREAM_C__
 #include "gioaliasdef.c"
-
-/* vim: ts=2 sw=2 et */

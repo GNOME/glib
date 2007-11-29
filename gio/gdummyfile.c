@@ -34,7 +34,7 @@
 
 #include "gioalias.h"
 
-static void g_dummy_file_file_iface_init (GFileIface       *iface);
+static void g_dummy_file_file_iface_init (GFileIface *iface);
 
 typedef struct {
   char *scheme;
@@ -70,7 +70,8 @@ static char * unescape_string (const gchar *escaped_string,
 			       const gchar *escaped_string_end,
 			       const gchar *illegal_characters);
 
-static void g_string_append_encoded (GString *string, const char *encoded,
+static void g_string_append_encoded (GString    *string, 
+                                     const char *encoded,
 				     const char *reserved_chars_allowed);
 
 static void
@@ -218,7 +219,8 @@ g_dummy_file_equal (GFile *file1,
 }
 
 static int
-safe_strcmp (const char *a, const char *b)
+safe_strcmp (const char *a, 
+             const char *b)
 {
   if (a == NULL)
     a = "";
@@ -245,7 +247,8 @@ uri_same_except_path (GDecodedUri *a,
 }
 
 static const char *
-match_prefix (const char *path, const char *prefix)
+match_prefix (const char *path, 
+              const char *prefix)
 {
   int prefix_len;
 
@@ -683,7 +686,8 @@ is_valid (char c, const char *reserved_chars_allowed)
 }
 
 static void
-g_string_append_encoded (GString *string, const char *encoded,
+g_string_append_encoded (GString    *string, 
+                         const char *encoded,
 			 const char *reserved_chars_allowed)
 {
   unsigned char c;
