@@ -33,6 +33,12 @@
  * Schedules asynchronous I/O operations for integration into the main 
  * event loop (#GMainLoop).
  * 
+ * Each I/O operation has a priority, and the scheduler uses the priorities
+ * to determine the order in which operations are executed. They are 
+ * <emphasis>not</emphasis> used to determine system-wide I/O scheduling.
+ * Priorities are integers, with lower numbers indicating higher priority. 
+ * It is recommended to choose priorities between %G_PRIORITY_LOW and 
+ * %G_PRIORITY_HIGH, with %G_PRIORITY_DEFAULT as a default.
  **/
 
 struct _GIOJob {
@@ -188,7 +194,8 @@ run_job_at_idle (gpointer data)
  * @job_func: a #GIOJobFunc.
  * @user_data: a #gpointer.
  * @notify: a #GDestroyNotify.
- * @io_priority: the i/o priority of the request. a #gint.
+ * @io_priority: the <link linkend="gioscheduler">I/O priority</link> 
+ * of the request.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  *
  * Schedules the I/O Job.
@@ -326,7 +333,6 @@ mainloop_proxy_notify (gpointer data)
  * @block: boolean flag indicating whether or not this job should block.
  * 
  * Sends an I/O job to the application's main loop for processing.
- * 
  **/
 void
 g_io_job_send_to_mainloop (GIOJob         *job,

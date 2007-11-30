@@ -231,7 +231,8 @@ next_async_callback_wrapper (GObject      *source_object,
  * g_file_enumerator_next_files_async:
  * @enumerator: a #GFileEnumerator.
  * @num_files: the number of file info objects to request
- * @io_priority: the io priority of the request. the io priority of the request
+ * @io_priority: the <link linkend="gioscheduler">io priority</link> 
+ *     of the request. 
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @callback: callback to call when the request is satisfied
  * @user_data: the user_data to pass to callback function 
@@ -362,7 +363,8 @@ close_async_callback_wrapper (GObject      *source_object,
 /**
  * g_file_enumerator_close_async:
  * @enumerator: a #GFileEnumerator.
- * @io_priority: the io priority of the request.
+ * @io_priority: the <link linkend="gio-GIOScheduler">I/O priority</link> 
+ *     of the request.
  * @cancellable: optional #GCancellable object, %NULL to ignore. 
  * @callback: callback to call when the request is satisfied
  * @user_data: the user_data to pass to callback function 

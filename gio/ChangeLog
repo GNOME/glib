@@ -1,5 +1,7 @@
 2007-11-29  Matthias Clasen <mclasen@redhat.com>
 
+	* *.c: Explain I/O priority.
+
 	* *.c: More coding style fixes.
 
 2007-11-29  Matthias Clasen <mclasen@redhat.com>

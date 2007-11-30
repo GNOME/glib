@@ -380,5 +380,3 @@ g_filter_output_stream_close_finish (GOutputStream  *stream,
 
 #define __G_FILTER_OUTPUT_STREAM_C__
 #include "gioaliasdef.c"
-
-/* vim: ts=2 sw=2 et */

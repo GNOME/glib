@@ -669,7 +669,8 @@ g_file_enumerate_children (GFile                *file,
  * @file: input #GFile.
  * @attributes: a string containing a #GFileAttributeInfo query.
  * @flags: a set of #GFileQueryInfoFlags.
- * @io_priority: the io priority of the request.
+ * @io_priority: the <link linkend="gio-GIOScheduler">I/O priority</link> 
+ *     of the request.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @callback: a #GAsyncReadyCallback to call when the request is satisfied
  * @user_data: the data to pass to callback function
@@ -796,7 +797,8 @@ g_file_query_info (GFile                *file,
  * @file: input #GFile.
  * @attributes: a string containing a #GFileAttributeInfo query.
  * @flags: a set of #GFileQueryInfoFlags.
- * @io_priority: the io priority of the request.
+ * @io_priority: the <link linkend="gio-GIOScheduler">I/O priority</link> 
+ *     of the request.
  * @cancellable: optional #GCancellable object, %NULL to ignore. 
  * @callback: a #GAsyncReadyCallback to call when the request is satisfied
  * @user_data: the data to pass to callback function
@@ -1152,7 +1154,8 @@ g_file_replace (GFile             *file,
 /**
  * g_file_read_async:
  * @file: input #GFile.
- * @io_priority: the io priority of the request. 
+ * @io_priority: the <link linkend="gio-GIOScheduler">I/O priority</link> 
+ *     of the request. 
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @callback: a #GAsyncReadyCallback.
  * @user_data: a #gpointer. 
@@ -1224,7 +1227,8 @@ g_file_read_finish (GFile         *file,
  * g_file_append_to_async:
  * @file: input #GFile.
  * @flags: a set of #GFileCreateFlags.
- * @io_priority: the io priority of the request. 
+ * @io_priority: the <link linkend="gio-GIOScheduler">I/O priority</link> 
+ *     of the request. 
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @callback: a #GAsyncReadyCallback. 
  * @user_data: a #gpointer. 
@@ -1300,7 +1304,8 @@ g_file_append_to_finish (GFile         *file,
  * g_file_create_async:
  * @file: input #GFile.
  * @flags: a set of #GFileCreateFlags.
- * @io_priority: the io priority of the request.
+ * @io_priority: the <link linkend="gio-GIOScheduler">I/O priority</link> 
+ *     of the request.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @callback: a #GAsyncReadyCallback. 
  * @user_data: a #gpointer. 
@@ -1378,7 +1383,8 @@ g_file_create_finish (GFile         *file,
  * @etag: an Entity Tag for the current #GFile.
  * @make_backup: a #gboolean.
  * @flags: a set of #GFileCreateFlags.
- * @io_priority: the io priority of the request.
+ * @io_priority: the <link linkend="gio-GIOScheduler">I/O priority</link> 
+ *     of the request.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @callback: a #GAsyncReadyCallback. 
  * @user_data: a #gpointer. 
@@ -2293,7 +2299,8 @@ g_file_set_display_name (GFile         *file,
  * g_file_set_display_name_async:
  * @file: input #GFile.
  * @display_name: a string.
- * @io_priority: the io priority of the request. 
+ * @io_priority: the <link linkend="gioscheduler">I/O priority</link> 
+ *     of the request. 
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @callback: a #GAsyncReadyCallback. 
  * @user_data: a #gpointer. 
@@ -2604,7 +2611,8 @@ g_file_real_set_attributes_from_info (GFile                *file,
  * @file: input #GFile.
  * @info: a #GFileInfo.
  * @flags: a #GFileQueryInfoFlags.
- * @io_priority: the io priority of the request. 
+ * @io_priority: the <link linkend="gio-GIOScheduler">I/O priority</link> 
+ *     of the request. 
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @callback: a #GAsyncReadyCallback. 
  * @user_data: a #gpointer.
