@@ -363,7 +363,7 @@ close_async_callback_wrapper (GObject      *source_object,
 /**
  * g_file_enumerator_close_async:
  * @enumerator: a #GFileEnumerator.
- * @io_priority: the <link linkend="gio-GIOScheduler">I/O priority</link> 
+ * @io_priority: the <link linkend="io-priority">I/O priority</link> 
  *     of the request.
  * @cancellable: optional #GCancellable object, %NULL to ignore. 
  * @callback: callback to call when the request is satisfied

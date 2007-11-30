@@ -520,7 +520,7 @@ async_ready_close_callback_wrapper (GObject      *source_object,
  * @stream: A #GInputStream.
  * @buffer: a buffer to read data into (which should be at least count bytes long).
  * @count: the number of bytes that will be read from the stream
- * @io_priority: the <link linkend="gio-GIOScheduler">I/O priority</link> 
+ * @io_priority: the <link linkend="io-priority">I/O priority</link> 
  * of the request. 
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @callback: callback to call when the request is satisfied
@@ -655,7 +655,7 @@ g_input_stream_read_finish (GInputStream  *stream,
  * g_input_stream_skip_async:
  * @stream: A #GInputStream.
  * @count: the number of bytes that will be skipped from the stream
- * @io_priority: the <link linkend="gio-GIOScheduler">I/O priority</link> 
+ * @io_priority: the <link linkend="io-priority">I/O priority</link> 
  * of the request. 
  * @cancellable: optional #GCancellable object, %NULL to ignore. 
  * @callback: callback to call when the request is satisfied
@@ -787,7 +787,7 @@ g_input_stream_skip_finish (GInputStream  *stream,
 /**
  * g_input_stream_close_async:
  * @stream: A #GInputStream.
- * @io_priority: the <link linkend="gio-GIOScheduler">I/O priority</link> 
+ * @io_priority: the <link linkend="io-priority">I/O priority</link> 
  * of the request. 
  * @cancellable: optional cancellable object
  * @callback: callback to call when the request is satisfied

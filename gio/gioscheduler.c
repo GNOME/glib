@@ -33,12 +33,14 @@
  * Schedules asynchronous I/O operations for integration into the main 
  * event loop (#GMainLoop).
  * 
+ * <para id="io-priority"><indexterm><primary>I/O priority</primary></indexterm>
  * Each I/O operation has a priority, and the scheduler uses the priorities
  * to determine the order in which operations are executed. They are 
  * <emphasis>not</emphasis> used to determine system-wide I/O scheduling.
  * Priorities are integers, with lower numbers indicating higher priority. 
  * It is recommended to choose priorities between %G_PRIORITY_LOW and 
  * %G_PRIORITY_HIGH, with %G_PRIORITY_DEFAULT as a default.
+ * </para>
  **/
 
 struct _GIOJob {

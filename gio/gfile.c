@@ -46,7 +46,8 @@
  * virtual file system. #GFile<!-- -->s are lightweight, immutable 
  * objects that do no I/O upon creation. It is necessary to understand that
  * #GFile objects do not represent files, merely a handle to a file. All
- * file I/O is implemented as streaming operations (see #GInputStream and #GOutputStream).
+ * file I/O is implemented as streaming operations (see #GInputStream and 
+ * #GOutputStream).
  * 
  * To construct a #GFile, you can use: 
  * g_file_new_for_path() if you have a path.
@@ -72,7 +73,14 @@
  * g_file_unmount_mountable() to unmount a mountable file.
  * g_file_eject_mountable() to eject a mountable file.
  * 
- *
+ * <para id="gfile-etag"><indexterm><primary>entity tag</primary></indexterm>
+ * One notable feature of #GFile<!-- -->s are entity tags, or "etags" for 
+ * short. Entity tags are somewhat like a more abstract version of the 
+ * traditional mtime, and can be used to quickly determine if the file has
+ * been modified from the version on the file system. See the HTTP 1.1 
+ * <ulink url="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.19">specification</ulink>
+ * for HTTP Etag headers, which are a very similar concept.
+ * </para>
  **/
 
 static void g_file_base_init (gpointer g_class);
@@ -669,7 +677,7 @@ g_file_enumerate_children (GFile                *file,
  * @file: input #GFile.
  * @attributes: a string containing a #GFileAttributeInfo query.
  * @flags: a set of #GFileQueryInfoFlags.
- * @io_priority: the <link linkend="gio-GIOScheduler">I/O priority</link> 
+ * @io_priority: the <link linkend="io-priority">I/O priority</link> 
  *     of the request.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @callback: a #GAsyncReadyCallback to call when the request is satisfied
@@ -797,7 +805,7 @@ g_file_query_info (GFile                *file,
  * @file: input #GFile.
  * @attributes: a string containing a #GFileAttributeInfo query.
  * @flags: a set of #GFileQueryInfoFlags.
- * @io_priority: the <link linkend="gio-GIOScheduler">I/O priority</link> 
+ * @io_priority: the <link linkend="io-priority">I/O priority</link> 
  *     of the request.
  * @cancellable: optional #GCancellable object, %NULL to ignore. 
  * @callback: a #GAsyncReadyCallback to call when the request is satisfied
@@ -1095,8 +1103,9 @@ g_file_create (GFile             *file,
 /**
  * g_file_replace:
  * @file: input #GFile.
- * @etag: an Entity Tag for the current #GFile.
- * @make_backup: %TRUE if a backup should be created.
+ * @etag: an <link linkend="gfile-etag">entity tag</link> for the 
+ *     current #GFile.
+ * @make_backup: %TRUE if a backup should be created`.
  * @flags: a set of #GFileCreateFlags.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @error: a #GError, or %NULL
@@ -1154,7 +1163,7 @@ g_file_replace (GFile             *file,
 /**
  * g_file_read_async:
  * @file: input #GFile.
- * @io_priority: the <link linkend="gio-GIOScheduler">I/O priority</link> 
+ * @io_priority: the <link linkend="io-priority">I/O priority</link> 
  *     of the request. 
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @callback: a #GAsyncReadyCallback.
@@ -1227,7 +1236,7 @@ g_file_read_finish (GFile         *file,
  * g_file_append_to_async:
  * @file: input #GFile.
  * @flags: a set of #GFileCreateFlags.
- * @io_priority: the <link linkend="gio-GIOScheduler">I/O priority</link> 
+ * @io_priority: the <link linkend="io-priority">I/O priority</link> 
  *     of the request. 
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @callback: a #GAsyncReadyCallback. 
@@ -1304,7 +1313,7 @@ g_file_append_to_finish (GFile         *file,
  * g_file_create_async:
  * @file: input #GFile.
  * @flags: a set of #GFileCreateFlags.
- * @io_priority: the <link linkend="gio-GIOScheduler">I/O priority</link> 
+ * @io_priority: the <link linkend="io-priority">I/O priority</link> 
  *     of the request.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @callback: a #GAsyncReadyCallback. 
@@ -1380,10 +1389,11 @@ g_file_create_finish (GFile         *file,
 /**
  * g_file_replace_async:
  * @file: input #GFile.
- * @etag: an Entity Tag for the current #GFile.
+ * @etag: an <link linkend="gfile-etag">entity tag</link> for the 
+ *     current #GFile.
  * @make_backup: a #gboolean.
  * @flags: a set of #GFileCreateFlags.
- * @io_priority: the <link linkend="gio-GIOScheduler">I/O priority</link> 
+ * @io_priority: the <link linkend="io-priority">I/O priority</link> 
  *     of the request.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @callback: a #GAsyncReadyCallback. 
@@ -2299,7 +2309,7 @@ g_file_set_display_name (GFile         *file,
  * g_file_set_display_name_async:
  * @file: input #GFile.
  * @display_name: a string.
- * @io_priority: the <link linkend="gioscheduler">I/O priority</link> 
+ * @io_priority: the <link linkend="io-priority">I/O priority</link> 
  *     of the request. 
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @callback: a #GAsyncReadyCallback. 
@@ -2611,7 +2621,7 @@ g_file_real_set_attributes_from_info (GFile                *file,
  * @file: input #GFile.
  * @info: a #GFileInfo.
  * @flags: a #GFileQueryInfoFlags.
- * @io_priority: the <link linkend="gio-GIOScheduler">I/O priority</link> 
+ * @io_priority: the <link linkend="io-priority">I/O priority</link> 
  *     of the request. 
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @callback: a #GAsyncReadyCallback. 
@@ -4390,10 +4400,12 @@ g_file_load_contents_finish (GFile         *file,
  * @file: input #GFile.
  * @contents: a string containing the new contents for @file.
  * @length: the length of @contents in bytes.
- * @etag: the old entity tag for the document.
+ * @etag: the old <link linkend="gfile-etag">entity tag</link> 
+ *     for the document.
  * @make_backup: a #gboolean.
  * @flags: a set of #GFileCreateFlags.
- * @new_etag: a location to a new entity tag for the document.
+ * @new_etag: a location to a new <link linkend="gfile-etag">entity tag</link>
+ *      for the document.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @error: a #GError, or %NULL
  *
@@ -4592,7 +4604,7 @@ replace_contents_open_callback (GObject      *obj,
  * @file: input #GFile.
  * @contents: string of contents to replace the file with.
  * @length: the length of @contents in bytes.
- * @etag: a new entity tag for the @file.
+ * @etag: a new <link linkend="gfile-etag">entity tag</link> for the @file.
  * @make_backup: a #gboolean.
  * @flags: a set of #GFileCreateFlags.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
@@ -4655,7 +4667,8 @@ g_file_replace_contents_async  (GFile               *file,
  * g_file_replace_contents_finish:
  * @file: input #GFile.
  * @res: a #GAsyncResult. 
- * @new_etag: a location of a new entity tag for the document.
+ * @new_etag: a location of a new <link linkend="gfile-etag">entity tag</link> 
+ *     for the document.
  * @error: a #GError, or %NULL 
  * 
  * Finishes an asynchronous replace of the given @file. See

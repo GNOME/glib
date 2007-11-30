@@ -1325,8 +1325,8 @@ g_file_info_get_symlink_target (GFileInfo *info)
  * g_file_info_get_etag:
  * @info: a #GFileInfo.
  * 
- * Gets the entity tag for a given #GFileInfo. 
- * See %G_FILE_ATTRIBUTE_ETAG_VALUE.
+ * Gets the <link linkend="gfile-etag">entity tag</link> for a given 
+ * #GFileInfo. See %G_FILE_ATTRIBUTE_ETAG_VALUE.
  * 
  * Returns: a string containing the value of the "etag:value" attribute.
  **/

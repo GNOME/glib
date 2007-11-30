@@ -445,7 +445,7 @@ async_fill_callback_wrapper (GObject      *source_object,
  * g_buffered_input_stream_fill_async:
  * @stream: #GBufferedInputStream.
  * @count: a #gssize.
- * @io_priority: the <link linkend="gio-GIOScheduler">I/O priority</link> 
+ * @io_priority: the <link linkend="io-priority">I/O priority</link> 
  *     of the request.
  * @cancellable: optional #GCancellable object
  * @callback: a #GAsyncReadyCallback.
