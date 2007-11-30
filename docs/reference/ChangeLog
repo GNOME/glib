@@ -1,3 +1,11 @@
+2007-11-29  Behdad Esfahbod  <behdad@gnome.org>
+
+	Bug 500361 – Improve docs for g_array_free() and g_ptr_array_free()
+
+	* glib/tmpl/arrays.sgml:
+	* glib/tmpl/arrays_pointer.sgml:
+	Document how to free the return value.
+
 2007-11-28  Matthias Clasen  <mclasen@redhat.com>
 
 	* gio/gio-sections.txt: More cleanup

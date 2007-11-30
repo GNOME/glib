@@ -298,12 +298,13 @@ the underlying array for use elsewhere.
 <note>
 <para>
 If array elements contain dynamically-allocated memory, they should be freed
-first.
+separately.
 </para>
 </note>
 
 @array: a #GArray.
 @free_segment: if %TRUE the actual element data is freed as well.
-@Returns: the element data if @free_segment is %FALSE, otherwise %NULL
+@Returns: the element data if @free_segment is %FALSE, otherwise %NULL.
+	The element data should be freed using g_free().
 
 

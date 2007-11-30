@@ -227,14 +227,22 @@ Returns the pointer at the given index of the pointer array.
 
 <!-- ##### FUNCTION g_ptr_array_free ##### -->
 <para>
-Frees all of the memory allocated for the pointer array.
+Frees the memory allocated for the #GPtrArray.
+If @free_segment is %TRUE it frees the memory block holding the elements
+as well. Pass %FALSE if you want to free the #GPtrArray wrapper but preserve
+the underlying array for use elsewhere.
 </para>
+<note>
+<para>
+If array contents point to dynamically-allocated memory, they should be freed
+separately.
+</para>
+</note>
 
 @array: a #GPtrArray.
-@free_seg: if %TRUE the array of pointers (@pdata) is freed.
-@Returns: %NULL if @free_seg is %TRUE, otherwise the array of 
-pointers (@pdata) is returned.
-
+@free_seg: if %TRUE the actual pointer array is freed as well.
+@Returns: the pointer array if @free_seg is %FALSE, otherwise %NULL.
+	The pointer array should be freed using g_free().
 
 <!-- ##### FUNCTION g_ptr_array_foreach ##### -->
 <para>
