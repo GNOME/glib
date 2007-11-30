@@ -126,8 +126,8 @@ type_to_icon (GUnixMountType type)
  * Returns: a #GUnixDrive for the given #GUnixMountPoint.
  **/
 GUnixDrive *
-_g_unix_drive_new (GVolumeMonitor *volume_monitor,
-		   GUnixMountPoint *mountpoint)
+_g_unix_drive_new (GVolumeMonitor  *volume_monitor,
+                   GUnixMountPoint *mountpoint)
 {
   GUnixDrive *drive;
   
@@ -170,8 +170,8 @@ _g_unix_drive_disconnected (GUnixDrive *drive)
  *  
  **/
 void
-_g_unix_drive_set_volume (GUnixDrive     *drive,
-			  GUnixVolume    *volume)
+_g_unix_drive_set_volume (GUnixDrive  *drive,
+			  GUnixVolume *volume)
 {
   if (drive->volume == volume)
     return;
@@ -192,8 +192,8 @@ _g_unix_drive_set_volume (GUnixDrive     *drive,
  *
  **/
 void
-_g_unix_drive_unset_volume (GUnixDrive     *drive,
-			    GUnixVolume    *volume)
+_g_unix_drive_unset_volume (GUnixDrive  *drive,
+			    GUnixVolume *volume)
 {
   if (drive->volume == volume)
     {
@@ -270,37 +270,37 @@ _g_unix_drive_has_mountpoint (GUnixDrive *drive,
 }
 
 static void
-g_unix_drive_mount (GDrive         *drive,
-		    GMountOperation *mount_operation,
-		    GCancellable *cancellable,
-		    GAsyncReadyCallback callback,
-		    gpointer        user_data)
+g_unix_drive_mount (GDrive              *drive,
+                    GMountOperation     *mount_operation,
+                    GCancellable        *cancellable,
+                    GAsyncReadyCallback  callback,
+                    gpointer             user_data)
 {
   /* TODO */
 }
 
 
 static gboolean
-g_unix_drive_mount_finish (GDrive *drive,
-			   GAsyncResult *result,
-			   GError **error)
+g_unix_drive_mount_finish (GDrive        *drive,
+                           GAsyncResult  *result,
+                           GError       **error)
 {
   return TRUE;
 }
 
 static void
-g_unix_drive_eject (GDrive         *drive,
-		    GCancellable *cancellable,
-		    GAsyncReadyCallback callback,
-		    gpointer        user_data)
+g_unix_drive_eject (GDrive              *drive,
+                    GCancellable        *cancellable,
+                    GAsyncReadyCallback  callback,
+                    gpointer             user_data)
 {
   /* TODO */
 }
 
 static gboolean
-g_unix_drive_eject_finish (GDrive *drive,
-			   GAsyncResult *result,
-			   GError **error)
+g_unix_drive_eject_finish (GDrive        *drive,
+                           GAsyncResult  *result,
+                           GError       **error)
 {
   return TRUE;
 }

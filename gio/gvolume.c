@@ -247,16 +247,15 @@ g_volume_can_eject (GVolume *volume)
  * @callback: a #GAsyncReadyCallback.
  * @user_data: user data passed to @callback.
  * 
- * Unmounts a volume. This is an asynchronous operation, and is finished by calling 
- * g_volume_unmount_finish() with the @volume and #GAsyncResults data returned in the 
- * @callback.
- * 
+ * Unmounts a volume. This is an asynchronous operation, and is 
+ * finished by calling g_volume_unmount_finish() with the @volume 
+ * and #GAsyncResults data returned in the @callback.
  **/
 void
-g_volume_unmount (GVolume *volume,
-		  GCancellable *cancellable,
-		  GAsyncReadyCallback callback,
-		  gpointer user_data)
+g_volume_unmount (GVolume             *volume,
+		  GCancellable        *cancellable,
+		  GAsyncReadyCallback  callback,
+		  gpointer             user_data)
 {
   GVolumeIface *iface;
 
@@ -290,9 +289,9 @@ g_volume_unmount (GVolume *volume,
  * Returns: %TRUE if the volume was successfully unmounted. %FALSE otherwise.
  **/
 gboolean
-g_volume_unmount_finish (GVolume              *volume,
-			 GAsyncResult         *result,
-			 GError              **error)
+g_volume_unmount_finish (GVolume       *volume,
+			 GAsyncResult  *result,
+			 GError       **error)
 {
   GVolumeIface *iface;
 
@@ -317,16 +316,15 @@ g_volume_unmount_finish (GVolume              *volume,
  * @callback: a #GAsyncReadyCallback.
  * @user_data: user data passed to @callback.
  * 
- * Ejects a volume. This is an asynchronous operation, and is finished
- * by calling g_volume_eject_finish() from the @callback with the @volume and 
- * #GAsyncResults returned in the callback.
- * 
+ * Ejects a volume. This is an asynchronous operation, and is 
+ * finished by calling g_volume_eject_finish() from the @callback 
+ * with the @volume and #GAsyncResults returned in the callback.
  **/
 void
-g_volume_eject (GVolume         *volume,
-		GCancellable *cancellable,
+g_volume_eject (GVolume             *volume,
+		GCancellable        *cancellable,
 		GAsyncReadyCallback  callback,
-		gpointer         user_data)
+		gpointer             user_data)
 {
   GVolumeIface *iface;
 
@@ -360,9 +358,9 @@ g_volume_eject (GVolume         *volume,
  * Returns: %TRUE if the volume was successfully ejected. %FALSE otherwise.
  **/
 gboolean
-g_volume_eject_finish (GVolume              *volume,
-		       GAsyncResult         *result,
-		       GError              **error)
+g_volume_eject_finish (GVolume       *volume,
+		       GAsyncResult  *result,
+		       GError       **error)
 {
   GVolumeIface *iface;
 

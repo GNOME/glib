@@ -227,13 +227,12 @@ g_memory_output_stream_new (GByteArray *data)
 {
   GOutputStream *stream;
 
-  if (data == NULL) {
+  if (data == NULL)
     stream = g_object_new (G_TYPE_MEMORY_OUTPUT_STREAM, NULL);
-  } else {
+  else
     stream = g_object_new (G_TYPE_MEMORY_OUTPUT_STREAM,
                            "data", data,
                            NULL);
-  }
 
   return stream;
 }
@@ -246,7 +245,7 @@ g_memory_output_stream_new (GByteArray *data)
  **/
 void
 g_memory_output_stream_set_free_data (GMemoryOutputStream *ostream,
-				      gboolean free_data)
+                                      gboolean             free_data)
 {
   GMemoryOutputStreamPrivate *priv;
 
@@ -276,23 +275,23 @@ g_memory_output_stream_set_max_size (GMemoryOutputStream *ostream,
   priv->max_size = max_size;
 
   if (priv->max_size > 0 &&
-      priv->max_size < priv->data->len) {
+      priv->max_size < priv->data->len) 
+    {
 
-    g_byte_array_set_size (priv->data, priv->max_size);
+      g_byte_array_set_size (priv->data, priv->max_size);
 
-    if (priv->pos > priv->max_size) {
-      priv->pos = priv->max_size;
+      if (priv->pos > priv->max_size) 
+        priv->pos = priv->max_size;
     }
-  }
 
   g_object_notify (G_OBJECT (ostream), "size-limit");
 }
 
 static void
-g_memory_output_stream_set_property (GObject         *object,
-                                     guint            prop_id,
-                                     const GValue    *value,
-                                     GParamSpec      *pspec)
+g_memory_output_stream_set_property (GObject      *object,
+                                     guint         prop_id,
+                                     const GValue *value,
+                                     GParamSpec   *pspec)
 {
   GMemoryOutputStream *ostream;
   GMemoryOutputStreamPrivate *priv;
@@ -306,18 +305,18 @@ g_memory_output_stream_set_property (GObject         *object,
     {
     case PROP_DATA:
 
-      if (priv->data && priv->free_data) {
+      if (priv->data && priv->free_data) 
         g_byte_array_free (priv->data, TRUE);
-      }
 
       data = g_value_get_pointer (value);
 
-      if (data == NULL) {
-        data = g_byte_array_new (); 
-        priv->free_data = TRUE;
-      } else {
+      if (data == NULL) 
+        {
+          data = g_byte_array_new (); 
+          priv->free_data = TRUE;
+        } 
+      else 
         priv->free_data = FALSE;
-      }
  
       priv->data = data;
       priv->pos  = 0;
@@ -395,19 +394,18 @@ array_check_boundary (GMemoryOutputStream  *stream,
 
   priv = stream->priv;
 
-  if (! priv->max_size) {
+  if (!priv->max_size) 
     return TRUE;
-  }
 
-  if (priv->max_size < size || size > G_MAXUINT) {
+  if (priv->max_size < size || size > G_MAXUINT)
+    {
+      g_set_error (error,
+                   G_IO_ERROR,
+                   G_IO_ERROR_FAILED,
+                   "Reached maximum data array limit");
 
-    g_set_error (error,
-                 G_IO_ERROR,
-                 G_IO_ERROR_FAILED,
-                 "Reached maximum data array limit");
-
-    return FALSE;
-  }
+      return FALSE;
+    }
 
   return TRUE; 
 }
@@ -435,17 +433,16 @@ array_resize (GMemoryOutputStream  *stream,
 
   if (size > old_len && priv->pos > old_len) 
     memset (priv->data->data + priv->pos, 0, size - old_len);
-  
 
   return priv->data->len - priv->pos;
 }
 
 static gssize
-g_memory_output_stream_write (GOutputStream *stream,
-                              const void    *buffer,
-                              gsize          count,
-                              GCancellable  *cancellable,
-                              GError       **error)
+g_memory_output_stream_write (GOutputStream  *stream,
+                              const void     *buffer,
+                              gsize           count,
+                              GCancellable   *cancellable,
+                              GError        **error)
 {
   GMemoryOutputStream        *ostream;
   GMemoryOutputStreamPrivate *priv;
@@ -465,9 +462,7 @@ g_memory_output_stream_write (GOutputStream *stream,
       new_size = priv->pos + count;
 
       if (priv->max_size > 0)
-        {
-          new_size = MIN (new_size, priv->max_size);
-        }
+        new_size = MIN (new_size, priv->max_size);
 
       n = array_resize (ostream, new_size, error);
 
@@ -480,9 +475,7 @@ g_memory_output_stream_write (GOutputStream *stream,
           return -1;
         }
       else if (n < 0)
-        {
-          return -1;
-        }
+        return -1;
     }
 
   dest = priv->data->data + priv->pos;
@@ -507,13 +500,13 @@ g_memory_output_stream_close (GOutputStream  *stream,
 }
 
 static void
-g_memory_output_stream_write_async  (GOutputStream        *stream,
-                                     const void           *buffer,
-                                     gsize                 count,
-                                     int                   io_priority,
-                                     GCancellable         *cancellable,
-                                     GAsyncReadyCallback   callback,
-                                     gpointer              data)
+g_memory_output_stream_write_async  (GOutputStream       *stream,
+                                     const void          *buffer,
+                                     gsize                count,
+                                     int                  io_priority,
+                                     GCancellable        *cancellable,
+                                     GAsyncReadyCallback  callback,
+                                     gpointer             data)
 {
   GSimpleAsyncResult *simple;
   gssize nwritten;
@@ -533,13 +526,12 @@ g_memory_output_stream_write_async  (GOutputStream        *stream,
   g_simple_async_result_set_op_res_gssize (simple, nwritten); 
   g_simple_async_result_complete_in_idle (simple);
   g_object_unref (simple);
-
 }
 
 static gssize
-g_memory_output_stream_write_finish (GOutputStream        *stream,
-                                     GAsyncResult         *result,
-                                     GError              **error)
+g_memory_output_stream_write_finish (GOutputStream  *stream,
+                                     GAsyncResult   *result,
+                                     GError        **error)
 {
   GSimpleAsyncResult *simple;
   gssize nwritten;
@@ -554,11 +546,11 @@ g_memory_output_stream_write_finish (GOutputStream        *stream,
 }
 
 static void
-g_memory_output_stream_close_async  (GOutputStream        *stream,
-                                     int                   io_priority,
-                                     GCancellable         *cancellable,
-                                     GAsyncReadyCallback   callback,
-                                     gpointer              data)
+g_memory_output_stream_close_async  (GOutputStream       *stream,
+                                     int                  io_priority,
+                                     GCancellable        *cancellable,
+                                     GAsyncReadyCallback  callback,
+                                     gpointer             data)
 {
   GSimpleAsyncResult *simple;
 
@@ -573,13 +565,12 @@ g_memory_output_stream_close_async  (GOutputStream        *stream,
   
   g_simple_async_result_complete_in_idle (simple);
   g_object_unref (simple);
-
 }
 
 static gboolean
-g_memory_output_stream_close_finish (GOutputStream        *stream,
-                                     GAsyncResult         *result,
-                                     GError              **error)
+g_memory_output_stream_close_finish (GOutputStream  *stream,
+                                     GAsyncResult   *result,
+                                     GError        **error)
 {
   GSimpleAsyncResult *simple;
 
@@ -588,12 +579,11 @@ g_memory_output_stream_close_finish (GOutputStream        *stream,
   g_assert (g_simple_async_result_get_source_tag (simple) == 
             g_memory_output_stream_close_async);
 
-
   return TRUE;
 }
 
 static goffset
-g_memory_output_stream_tell (GSeekable  *seekable)
+g_memory_output_stream_tell (GSeekable *seekable)
 {
   GMemoryOutputStream *stream;
   GMemoryOutputStreamPrivate *priv;
@@ -611,11 +601,11 @@ g_memory_output_stream_can_seek (GSeekable *seekable)
 }
 
 static gboolean
-g_memory_output_stream_seek (GSeekable      *seekable,
-                            goffset          offset,
-                            GSeekType        type,
-                            GCancellable    *cancellable,
-                            GError         **error)
+g_memory_output_stream_seek (GSeekable    *seekable,
+                            goffset        offset,
+                            GSeekType      type,
+                            GCancellable  *cancellable,
+                            GError       **error)
 {
   GMemoryOutputStream        *stream;
   GMemoryOutputStreamPrivate *priv;
@@ -624,8 +614,8 @@ g_memory_output_stream_seek (GSeekable      *seekable,
   stream = G_MEMORY_OUTPUT_STREAM (seekable);
   priv = stream->priv;
 
-  switch (type) {
-
+  switch (type) 
+    {
     case G_SEEK_CUR:
       absolute = priv->pos + offset;
       break;
@@ -645,17 +635,18 @@ g_memory_output_stream_seek (GSeekable      *seekable,
                    "Invalid GSeekType supplied");
 
       return FALSE;
-  }
+    }
 
-  if (absolute < 0) {
-    g_set_error (error,
-                 G_IO_ERROR,
-                 G_IO_ERROR_INVALID_ARGUMENT,
-                 "Invalid seek request");
-    return FALSE;
-  }
+  if (absolute < 0) 
+    {
+      g_set_error (error,
+                   G_IO_ERROR,
+                   G_IO_ERROR_INVALID_ARGUMENT,
+                   "Invalid seek request");
+      return FALSE;
+    }
 
-  if (! array_check_boundary (stream, absolute, error)) 
+  if (!array_check_boundary (stream, absolute, error)) 
     return FALSE;  
 
   priv->pos = absolute;
@@ -670,10 +661,10 @@ g_memory_output_stream_can_truncate (GSeekable *seekable)
 }
 
 static gboolean
-g_memory_output_stream_truncate (GSeekable      *seekable,
-                                 goffset         offset,
-                                 GCancellable   *cancellable,
-                                 GError         **error)
+g_memory_output_stream_truncate (GSeekable     *seekable,
+                                 goffset        offset,
+                                 GCancellable  *cancellable,
+                                 GError       **error)
 {
   GMemoryOutputStream *ostream;
   GMemoryOutputStreamPrivate *priv;
@@ -682,12 +673,10 @@ g_memory_output_stream_truncate (GSeekable      *seekable,
   priv = ostream->priv;
  
   if (array_resize (ostream, offset, error) < 0)
-      return FALSE;
+    return FALSE;
 
   return TRUE;
 }
 
 #define __G_MEMORY_OUTPUT_STREAM_C__
 #include "gioaliasdef.c"
-
-/* vim: ts=2 sw=2 et */

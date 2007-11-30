@@ -45,7 +45,7 @@ g_seekable_get_type (void)
 {
   static GType seekable_type = 0;
 
-  if (! seekable_type)
+  if (!seekable_type)
     {
       static const GTypeInfo seekable_info =
       {
@@ -131,8 +131,8 @@ g_seekable_can_seek (GSeekable *seekable)
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
  * 
  * Returns: %TRUE if successful. If an error
- * has occured, this function will return %FALSE and set @error
- * appropriately if present.
+ *     has occured, this function will return %FALSE and set @error
+ *     appropriately if present.
  **/
 gboolean
 g_seekable_seek (GSeekable     *seekable,
@@ -187,8 +187,8 @@ g_seekable_can_truncate (GSeekable *seekable)
  * partial result will be returned, without an error.
  * 
  * Returns: %TRUE if successful. If an error
- * has occured, this function will return %FALSE and set @error
- * appropriately if present. 
+ *     has occured, this function will return %FALSE and set @error
+ *     appropriately if present. 
  **/
 gboolean
 g_seekable_truncate (GSeekable     *seekable,

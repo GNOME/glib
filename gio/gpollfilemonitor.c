@@ -75,7 +75,8 @@ g_poll_file_monitor_init (GPollFileMonitor* poll_monitor)
 }
 
 static int 
-safe_strcmp (const char *a, const char *b)
+safe_strcmp (const char *a, 
+             const char *b)
 {
   if (a == NULL && b == NULL)
     return 0;
@@ -112,9 +113,9 @@ calc_event_type (GFileInfo *last,
 }
 
 static void
-got_new_info (GObject *source_object,
-	      GAsyncResult *res,
-	      gpointer user_data)
+got_new_info (GObject      *source_object,
+              GAsyncResult *res,
+              gpointer      user_data)
 {
   GPollFileMonitor* poll_monitor = user_data;
   GFileInfo *info;
@@ -176,9 +177,9 @@ schedule_poll_timeout (GPollFileMonitor* poll_monitor)
  }
 
 static void
-got_initial_info (GObject *source_object,
-		  GAsyncResult *res,
-		  gpointer user_data)
+got_initial_info (GObject      *source_object,
+                  GAsyncResult *res,
+                  gpointer      user_data)
 {
   GPollFileMonitor* poll_monitor = user_data;
   GFileInfo *info;

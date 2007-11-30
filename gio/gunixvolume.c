@@ -171,10 +171,8 @@ _g_unix_volume_new (GUnixMount *mount,
     }
   
   if (volume_name == NULL)
-    {
-      /* TODO: Use volume size as name? */
-      volume_name = g_strdup (_("Unknown volume"));
-    }
+    /* TODO: Use volume size as name? */
+    volume_name = g_strdup (_("Unknown volume"));
   
   volume->name = volume_name;
 
@@ -193,8 +191,8 @@ _g_unix_volume_unmounted (GUnixVolume *volume)
 }
 
 void
-_g_unix_volume_unset_drive (GUnixVolume   *volume,
-			    GUnixDrive    *drive)
+_g_unix_volume_unset_drive (GUnixVolume *volume,
+			    GUnixDrive  *drive)
 {
   if (volume->drive == drive)
     {
@@ -261,18 +259,18 @@ g_unix_volume_can_eject (GVolume *volume)
 }
 
 static void
-g_unix_volume_unmount (GVolume         *volume,
-		       GCancellable    *cancellable,
-		       GAsyncReadyCallback callback,
-		       gpointer         user_data)
+g_unix_volume_unmount (GVolume             *volume,
+		       GCancellable        *cancellable,
+		       GAsyncReadyCallback  callback,
+		       gpointer             user_data)
 {
   /* TODO */
 }
 
 static gboolean
-g_unix_volume_unmount_finish (GVolume *volume,
-			      GAsyncResult *result,
-			      GError **error)
+g_unix_volume_unmount_finish (GVolume       *volume,
+			      GAsyncResult  *result,
+			      GError       **error)
 {
   return TRUE;
 }

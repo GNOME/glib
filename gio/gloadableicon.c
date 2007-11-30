@@ -32,8 +32,7 @@
  * @short_description: Loadable Icons
  * @see_also: #GIcon, #GThemedIcon
  * 
- * Implements #GIcon and adds the ability to load icons.
- *
+ * Extends the #GIcon interface and adds the ability to load icons.
  **/
 
 static void          g_loadable_icon_real_load_async  (GLoadableIcon        *icon,
@@ -122,7 +121,6 @@ g_loadable_icon_load (GLoadableIcon  *icon,
   iface = G_LOADABLE_ICON_GET_IFACE (icon);
 
   return (* iface->load) (icon, size, type, cancellable, error);
-  
 }
 
 /**
@@ -136,7 +134,6 @@ g_loadable_icon_load (GLoadableIcon  *icon,
  * Loads an icon asynchronously. To finish this function, see 
  * g_loadable_icon_load_finish(). For the synchronous, blocking 
  * version of this function, see g_loadable_icon_load().
- * 
  **/
 void
 g_loadable_icon_load_async (GLoadableIcon       *icon,
@@ -152,7 +149,6 @@ g_loadable_icon_load_async (GLoadableIcon       *icon,
   iface = G_LOADABLE_ICON_GET_IFACE (icon);
 
   (* iface->load_async) (icon, size, cancellable, callback, user_data);
-  
 }
 
 /**
@@ -188,7 +184,6 @@ g_loadable_icon_load_finish (GLoadableIcon  *icon,
   iface = G_LOADABLE_ICON_GET_IFACE (icon);
 
   return (* iface->load_finish) (icon, res, type, error);
-  
 }
 
 /********************************************

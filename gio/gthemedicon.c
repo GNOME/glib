@@ -37,7 +37,7 @@
  * not provide actual pixmaps for icons, just the icon names.
  **/
 
-static void g_themed_icon_icon_iface_init (GIconIface       *iface);
+static void g_themed_icon_icon_iface_init (GIconIface *iface);
 
 struct _GThemedIcon
 {
@@ -114,7 +114,8 @@ g_themed_icon_new (const char *iconname)
  * Returns: a new #GThemedIcon.
  **/
 GIcon *
-g_themed_icon_new_from_names (char **iconnames, int len)
+g_themed_icon_new_from_names (char **iconnames, 
+                              int    len)
 {
   GThemedIcon *themed;
   int i;
@@ -168,7 +169,7 @@ g_themed_icon_hash (GIcon *icon)
 
 static gboolean
 g_themed_icon_equal (GIcon *icon1,
-		    GIcon *icon2)
+                     GIcon *icon2)
 {
   GThemedIcon *themed1 = G_THEMED_ICON (icon1);
   GThemedIcon *themed2 = G_THEMED_ICON (icon2);

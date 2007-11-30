@@ -102,7 +102,7 @@ g_local_file_enumerator_init (GLocalFileEnumerator *local)
 
 static void
 convert_file_to_io_error (GError **error,
-			  GError *file_error)
+			  GError  *file_error)
 {
   int new_code;
 
@@ -111,21 +111,23 @@ convert_file_to_io_error (GError **error,
   
   new_code = G_IO_ERROR_FAILED;
   
-  if (file_error->domain == G_FILE_ERROR) {
-    switch (file_error->code) {
-    case G_FILE_ERROR_NOENT:
-      new_code = G_IO_ERROR_NOT_FOUND;
-      break;
-    case G_FILE_ERROR_ACCES:
-      new_code = G_IO_ERROR_PERMISSION_DENIED;
-      break;
-    case G_FILE_ERROR_NOTDIR:
-      new_code = G_IO_ERROR_NOT_DIRECTORY;
-      break;
-    default:
-      break;
+  if (file_error->domain == G_FILE_ERROR) 
+    {
+      switch (file_error->code) 
+        {
+        case G_FILE_ERROR_NOENT:
+          new_code = G_IO_ERROR_NOT_FOUND;
+          break;
+        case G_FILE_ERROR_ACCES:
+          new_code = G_IO_ERROR_PERMISSION_DENIED;
+          break;
+        case G_FILE_ERROR_NOTDIR:
+          new_code = G_IO_ERROR_NOT_DIRECTORY;
+          break;
+        default:
+          break;
+        }
     }
-  }
   
   g_set_error (error, G_IO_ERROR,
 	       new_code,
@@ -133,11 +135,11 @@ convert_file_to_io_error (GError **error,
 }
 
 GFileEnumerator *
-_g_local_file_enumerator_new (const char *filename,
-			      const char *attributes,
-			      GFileQueryInfoFlags flags,
-			      GCancellable *cancellable,
-			      GError **error)
+_g_local_file_enumerator_new (const char           *filename,
+			      const char           *attributes,
+			      GFileQueryInfoFlags   flags,
+			      GCancellable         *cancellable,
+			      GError              **error)
 {
   GLocalFileEnumerator *local;
   GDir *dir;
@@ -145,11 +147,12 @@ _g_local_file_enumerator_new (const char *filename,
 
   dir_error = NULL;
   dir = g_dir_open (filename, 0, error != NULL ? &dir_error : NULL);
-  if (dir == NULL) {
-    convert_file_to_io_error (error, dir_error);
-    g_error_free (dir_error);
-    return NULL;
-  }
+  if (dir == NULL) 
+    {
+      convert_file_to_io_error (error, dir_error);
+      g_error_free (dir_error);
+      return NULL;
+    }
   
   local = g_object_new (G_TYPE_LOCAL_FILE_ENUMERATOR, NULL);
 
@@ -162,9 +165,9 @@ _g_local_file_enumerator_new (const char *filename,
 }
 
 static GFileInfo *
-g_local_file_enumerator_next_file (GFileEnumerator *enumerator,
+g_local_file_enumerator_next_file (GFileEnumerator  *enumerator,
 				   GCancellable     *cancellable,
-				   GError **error)
+				   GError          **error)
 {
   GLocalFileEnumerator *local = G_LOCAL_FILE_ENUMERATOR (enumerator);
   const char *filename;
@@ -212,7 +215,7 @@ g_local_file_enumerator_next_file (GFileEnumerator *enumerator,
 }
 
 static gboolean
-g_local_file_enumerator_close (GFileEnumerator *enumerator,
+g_local_file_enumerator_close (GFileEnumerator  *enumerator,
 			       GCancellable     *cancellable,
 			       GError          **error)
 {

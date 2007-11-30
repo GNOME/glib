@@ -149,7 +149,7 @@ g_unix_input_stream_init (GUnixInputStream *unix_stream)
  * Returns: a #GUnixInputStream. 
  **/
 GInputStream *
-g_unix_input_stream_new (int fd,
+g_unix_input_stream_new (int      fd,
 			 gboolean close_fd_at_close)
 {
   GUnixInputStream *stream;
@@ -165,11 +165,11 @@ g_unix_input_stream_new (int fd,
 }
 
 static gssize
-g_unix_input_stream_read (GInputStream *stream,
-			  void         *buffer,
-			  gsize         count,
-			  GCancellable *cancellable,
-			  GError      **error)
+g_unix_input_stream_read (GInputStream  *stream,
+			  void          *buffer,
+			  gsize          count,
+			  GCancellable  *cancellable,
+			  GError       **error)
 {
   GUnixInputStream *unix_stream;
   gssize res;
@@ -225,9 +225,9 @@ g_unix_input_stream_read (GInputStream *stream,
 }
 
 static gboolean
-g_unix_input_stream_close (GInputStream *stream,
-			   GCancellable *cancellable,
-			   GError      **error)
+g_unix_input_stream_close (GInputStream  *stream,
+			   GCancellable  *cancellable,
+			   GError       **error)
 {
   GUnixInputStream *unix_stream;
   int res;
@@ -242,12 +242,10 @@ g_unix_input_stream_close (GInputStream *stream,
       /* This might block during the close. Doesn't seem to be a way to avoid it though. */
       res = close (unix_stream->priv->fd);
       if (res == -1)
-	{
-	  g_set_error (error, G_IO_ERROR,
-		       g_io_error_from_errno (errno),
-		       _("Error closing unix: %s"),
-		       g_strerror (errno));
-	}
+	g_set_error (error, G_IO_ERROR,
+                     g_io_error_from_errno (errno),
+                     _("Error closing unix: %s"),
+                     g_strerror (errno));
       break;
     }
   
@@ -265,8 +263,8 @@ typedef struct {
 
 static gboolean
 read_async_cb (ReadAsyncData *data,
-	       GIOCondition condition,
-	       int fd)
+               GIOCondition   condition,
+               int            fd)
 {
   GSimpleAsyncResult *simple;
   GError *error = NULL;
@@ -348,9 +346,9 @@ g_unix_input_stream_read_async (GInputStream        *stream,
 }
 
 static gssize
-g_unix_input_stream_read_finish (GInputStream              *stream,
-				 GAsyncResult              *result,
-				 GError                   **error)
+g_unix_input_stream_read_finish (GInputStream  *stream,
+				 GAsyncResult  *result,
+				 GError       **error)
 {
   GSimpleAsyncResult *simple;
   gssize nread;
@@ -375,9 +373,9 @@ g_unix_input_stream_skip_async (GInputStream        *stream,
 }
 
 static gssize
-g_unix_input_stream_skip_finish  (GInputStream              *stream,
-				  GAsyncResult              *result,
-				  GError                   **error)
+g_unix_input_stream_skip_finish  (GInputStream  *stream,
+				  GAsyncResult  *result,
+				  GError       **error)
 {
   g_assert_not_reached ();
   /* TODO: Not implemented */
@@ -419,12 +417,10 @@ close_async_cb (CloseAsyncData *data)
     {
       res = close (unix_stream->priv->fd);
       if (res == -1)
-	{
-	  g_set_error (&error, G_IO_ERROR,
-		       g_io_error_from_errno (errno),
-		       _("Error closing unix: %s"),
-		       g_strerror (errno));
-	}
+	g_set_error (&error, G_IO_ERROR,
+                     g_io_error_from_errno (errno),
+                     _("Error closing unix: %s"),
+                     g_strerror (errno));
       break;
     }
   
@@ -450,11 +446,11 @@ close_async_cb (CloseAsyncData *data)
 }
 
 static void
-g_unix_input_stream_close_async (GInputStream       *stream,
-				 int                 io_priority,
-				 GCancellable       *cancellable,
-				 GAsyncReadyCallback callback,
-				 gpointer            user_data)
+g_unix_input_stream_close_async (GInputStream        *stream,
+				 int                  io_priority,
+				 GCancellable        *cancellable,
+				 GAsyncReadyCallback  callback,
+				 gpointer             user_data)
 {
   GSource *idle;
   CloseAsyncData *data;
@@ -472,9 +468,9 @@ g_unix_input_stream_close_async (GInputStream       *stream,
 }
 
 static gboolean
-g_unix_input_stream_close_finish (GInputStream              *stream,
-				  GAsyncResult              *result,
-				  GError                   **error)
+g_unix_input_stream_close_finish (GInputStream  *stream,
+				  GAsyncResult  *result,
+				  GError       **error)
 {
   /* Failures handled in generic close_finish code */
   return TRUE;

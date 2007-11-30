@@ -390,7 +390,7 @@ g_mount_operation_get_choice (GMountOperation *op)
  **/
 void
 g_mount_operation_set_choice (GMountOperation *op,
-			      int choice)
+			      int              choice)
 {
   g_return_if_fail (G_IS_MOUNT_OPERATION (op));
   op->priv->choice = choice;

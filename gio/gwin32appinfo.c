@@ -183,7 +183,7 @@ g_win32_app_info_dup (GAppInfo *appinfo)
 
 static gboolean
 g_win32_app_info_equal (GAppInfo *appinfo1,
-			  GAppInfo *appinfo2)
+                        GAppInfo *appinfo2)
 {
   GWin32AppInfo *info1 = G_WIN32_APP_INFO (appinfo1);
   GWin32AppInfo *info2 = G_WIN32_APP_INFO (appinfo2);
@@ -239,10 +239,10 @@ g_win32_app_info_get_icon (GAppInfo *appinfo)
 }
 
 static gboolean
-g_win32_app_info_launch (GAppInfo                *appinfo,
-			 GList                   *files,
-			 GAppLaunchContext       *launch_context,
-			 GError                 **error)
+g_win32_app_info_launch (GAppInfo           *appinfo,
+			 GList              *files,
+			 GAppLaunchContext  *launch_context,
+			 GError            **error)
 {
   GWin32AppInfo *info = G_WIN32_APP_INFO (appinfo);
   ASSOCF flags;
@@ -256,11 +256,11 @@ g_win32_app_info_launch (GAppInfo                *appinfo,
   if (info->id_is_exename)
     flags |= ASSOCF_INIT_BYEXENAME;
 
-  if (AssocQueryKeyW(flags,
-		     ASSOCKEY_SHELLEXECCLASS,
-		     info->id,
-		     NULL,
-		     &class_key) != S_OK)
+  if (AssocQueryKeyW (flags,
+		      ASSOCKEY_SHELLEXECCLASS,
+		      info->id,
+		      NULL,
+		      &class_key) != S_OK)
     {
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED, _("Can't find application"));
       return FALSE;
@@ -320,17 +320,19 @@ g_win32_app_info_supports_uris (GAppInfo *appinfo)
 }
 
 static gboolean
-g_win32_app_info_launch_uris (GAppInfo *appinfo,
-			      GList *uris,
-			      GAppLaunchContext *launch_context,
-			      GError **error)
+g_win32_app_info_launch_uris (GAppInfo           *appinfo,
+			      GList              *uris,
+			      GAppLaunchContext  *launch_context,
+			      GError            **error)
 {
-  g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED, _("URIs not supported"));
+  g_set_error (error, G_IO_ERROR, 
+               G_IO_ERROR_NOT_SUPPORTED, 
+               _("URIs not supported"));
   return FALSE;
 }
 
 static gboolean
-g_win32_app_info_should_show (GAppInfo *appinfo,
+g_win32_app_info_should_show (GAppInfo   *appinfo,
 			      const char *win32_env)
 {
   GWin32AppInfo *info = G_WIN32_APP_INFO (appinfo);
@@ -343,20 +345,24 @@ g_win32_app_info_should_show (GAppInfo *appinfo,
 
 static gboolean
 g_win32_app_info_set_as_default_for_type (GAppInfo    *appinfo,
-					    const char  *content_type,
-					    GError     **error)
+                                          const char  *content_type,
+                                          GError     **error)
 {
-  g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED, _("association changes not supported on win32"));
+  g_set_error (error, G_IO_ERROR, 
+               G_IO_ERROR_NOT_SUPPORTED, 
+               _("association changes not supported on win32"));
   return FALSE;
 }
 
 GAppInfo *
-g_app_info_create_from_commandline (const char *commandline,
-				    const char *application_name,
-				    GAppInfoCreateFlags flags,
-				    GError **error)
+g_app_info_create_from_commandline (const char           *commandline,
+				    const char           *application_name,
+				    GAppInfoCreateFlags   flags,
+				    GError              **error)
 {
-  g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED, _("Association creation not supported on win32"));
+  g_set_error (error, G_IO_ERROR, 
+               G_IO_ERROR_NOT_SUPPORTED, 
+               _("Association creation not supported on win32"));
   return NULL;
 }
 
@@ -379,7 +385,7 @@ g_win32_app_info_iface_init (GAppInfoIface *iface)
 }
 
 static void
-enumerate_open_with_list (HKEY dir_key,
+enumerate_open_with_list (HKEY    dir_key,
 			  GList **prognames)
 {
   DWORD index;
@@ -393,14 +399,14 @@ enumerate_open_with_list (HKEY dir_key,
   index = 0;
   name_len = 256;
   nbytes = sizeof (data) - 2;
-  while (RegEnumValueW(dir_key,
-		       index,
-		       name,
-		       &name_len,
-		       0,
-		       &type,
-		       (LPBYTE)data,
-		       &nbytes) == ERROR_SUCCESS)
+  while (RegEnumValueW (dir_key,
+		        index,
+		        name,
+		        &name_len,
+		        0,
+		        &type,
+		        (LPBYTE)data,
+		        &nbytes) == ERROR_SUCCESS)
     {
       data[nbytes/2] = '\0';
       if (type == REG_SZ &&
@@ -418,14 +424,14 @@ enumerate_open_with_list (HKEY dir_key,
   
   index = 0;
   name_len = 256;
-  while (RegEnumKeyExW(dir_key,
-		       index,
-		       name,
-		       &name_len,
-		       NULL,
-		       NULL,
-		       NULL,
-		       NULL) == ERROR_SUCCESS)
+  while (RegEnumKeyExW (dir_key,
+		        index,
+		        name,
+		        &name_len,
+		        NULL,
+		        NULL,
+		        NULL,
+		        NULL) == ERROR_SUCCESS)
     {
       *prognames = g_list_prepend (*prognames, g_memdup (name, (name_len + 1) * 2));
       index++;
@@ -443,14 +449,14 @@ enumerate_open_with_progids (HKEY dir_key,
 
   index = 0;
   name_len = 256;
-  while (RegEnumValueW(dir_key,
-		       index,
-		       name,
-		       &name_len,
-		       0,
-		       &type,
-		       NULL,
-		       0) == ERROR_SUCCESS)
+  while (RegEnumValueW (dir_key,
+		        index,
+		        name,
+		        &name_len,
+		        0,
+		        &type,
+		        NULL,
+		        0) == ERROR_SUCCESS)
     {
       *progids = g_list_prepend (*progids, g_memdup (name, (name_len + 1) * 2));
       index++;
@@ -459,7 +465,7 @@ enumerate_open_with_progids (HKEY dir_key,
 }
 
 static void
-enumerate_open_with_root (HKEY dir_key,
+enumerate_open_with_root (HKEY    dir_key,
 			  GList **progids,
 			  GList **prognames)
 {
@@ -481,13 +487,14 @@ enumerate_open_with_root (HKEY dir_key,
 }
 
 static gboolean
-app_info_in_list (GAppInfo *info, GList *l)
+app_info_in_list (GAppInfo *info, 
+                  GList    *list)
 {
-  while (l != NULL)
+  while (list != NULL)
     {
-      if (g_app_info_equal (info, l->data))
+      if (g_app_info_equal (info, list->data))
 	return TRUE;
-      l = l->next;
+      list = list->next;
     }
   return FALSE;
 }
@@ -577,7 +584,7 @@ g_app_info_get_all_for_type (const char *content_type)
 
 GAppInfo *
 g_app_info_get_default_for_type (const char *content_type,
-				 gboolean must_support_uris)
+				 gboolean    must_support_uris)
 {
   wchar_t *wtype;
   wchar_t buffer[1024];
@@ -587,12 +594,12 @@ g_app_info_get_default_for_type (const char *content_type,
 
   /* Verify that we have some sort of app registered for this type */
   buffer_size = 1024;
-  if (AssocQueryStringW(0,
-			REAL_ASSOCSTR_COMMAND,
-			wtype,
-			NULL,
-			buffer,
-			&buffer_size) == S_OK)
+  if (AssocQueryStringW (0,
+		  	 REAL_ASSOCSTR_COMMAND,
+			 wtype,
+			 NULL,
+			 buffer,
+			 &buffer_size) == S_OK)
     /* Takes ownership of wtype */
     return g_desktop_app_info_new_from_id (wtype, FALSE);
 
@@ -624,14 +631,14 @@ g_app_info_get_all (void)
   infos = NULL;
   index = 0;
   name_len = 256;
-  while (RegEnumKeyExW(reg_key,
-		       index,
-		       name,
-		       &name_len,
-		       NULL,
-		       NULL,
-		       NULL,
-		       NULL) == ERROR_SUCCESS)
+  while (RegEnumKeyExW (reg_key,
+		        index,
+		        name,
+		        &name_len,
+		        NULL,
+		        NULL,
+		        NULL,
+		        NULL) == ERROR_SUCCESS)
     {
       wchar_t *name_dup = g_memdup (name, (name_len+1)*2);
       /* name_dup ownership is taken */

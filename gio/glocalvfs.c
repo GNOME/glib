@@ -69,15 +69,15 @@ _g_local_vfs_new (void)
 }
 
 static GFile *
-g_local_vfs_get_file_for_path  (GVfs       *vfs,
-				const char *path)
+g_local_vfs_get_file_for_path (GVfs       *vfs,
+                               const char *path)
 {
   return _g_local_file_new (path);
 }
 
 static GFile *
-g_local_vfs_get_file_for_uri   (GVfs       *vfs,
-				const char *uri)
+g_local_vfs_get_file_for_uri (GVfs       *vfs,
+                              const char *uri)
 {
   char *path;
   GFile *file;
@@ -104,7 +104,7 @@ g_local_vfs_get_supported_uri_schemes (GVfs *vfs)
 
 static GFile *
 g_local_vfs_parse_name (GVfs       *vfs,
-			const char *parse_name)
+                        const char *parse_name)
 {
   GFile *file;
   char *filename;

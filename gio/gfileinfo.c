@@ -1749,16 +1749,17 @@ matcher_add (GFileAttributeMatcher *matcher,
  * g_file_attribute_matcher_new:
  * @attributes: an attribute string to match.
  * 
- * Creates a new file attribute matcher, which matches attributes against
- * a given string. #GFileAttributeMatcher<!-- -->s are reference counted structures, 
- * and are created with a reference count of 1. If the number of references
- * falls to 0, the #GFileAttributeMatcher is automatically destroyed.
+ * Creates a new file attribute matcher, which matches attributes 
+ * against a given string. #GFileAttributeMatcher<!-- -->s are reference 
+ * counted structures, and are created with a reference count of 1. If 
+ * the number of references falls to 0, the #GFileAttributeMatcher is 
+ * automatically destroyed.
  * 
  * The @attribute string should be formatted with specific keys separated
  * from namespaces with a colon. Several "namespace:key" strings may be 
  * concatenated with a single comma (e.g. "std:type,std:is_hidden"). 
- * The wildcard "*" may be used to match all keys and namespaces, or "namespace:*" will 
- * match all keys in a given namespace. 
+ * The wildcard "*" may be used to match all keys and namespaces, or 
+ * "namespace:*" will match all keys in a given namespace. 
  * 
  * Examples of strings to use:
  * <table>

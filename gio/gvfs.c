@@ -81,7 +81,7 @@ g_vfs_is_active (GVfs *vfs)
  * Returns: a #GFile.
  **/
 GFile *
-g_vfs_get_file_for_path (GVfs *vfs,
+g_vfs_get_file_for_path (GVfs       *vfs,
 			 const char *path)
 {
   GVfsClass *class;
@@ -109,7 +109,7 @@ g_vfs_get_file_for_path (GVfs *vfs,
  * 
  **/
 GFile *
-g_vfs_get_file_for_uri (GVfs *vfs,
+g_vfs_get_file_for_uri (GVfs       *vfs,
 			const char *uri)
 {
   GVfsClass *class;
@@ -154,7 +154,7 @@ g_vfs_get_supported_uri_schemes (GVfs *vfs)
  * Returns: a #GFile for the given @parse_name.
  **/
 GFile *
-g_vfs_parse_name (GVfs *vfs,
+g_vfs_parse_name (GVfs       *vfs,
 		  const char *parse_name)
 {
   GVfsClass *class;

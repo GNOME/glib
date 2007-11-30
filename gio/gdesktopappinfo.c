@@ -1184,23 +1184,24 @@ g_desktop_app_info_set_as_default_for_extension (GAppInfo    *appinfo,
 
   mimetype = g_strdup_printf ("application/x-extension-%s", extension);
   
-  if (!g_file_test (filename, G_FILE_TEST_EXISTS)) {
-    char *contents;
+  if (!g_file_test (filename, G_FILE_TEST_EXISTS)) 
+    {
+      char *contents;
 
-    contents =
-      g_strdup_printf ("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-		       "<mime-info xmlns=\"http://www.freedesktop.org/standards/shared-mime-info\">\n"
-		       " <mime-type type=\"%s\">\n"
-		       "  <comment>%s document</comment>\n"
-		       "  <glob pattern=\"*.%s\"/>\n"
-		       " </mime-type>\n"
-		       "</mime-info>\n", mimetype, extension, extension);
+      contents =
+        g_strdup_printf ("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+                         "<mime-info xmlns=\"http://www.freedesktop.org/standards/shared-mime-info\">\n"
+                         " <mime-type type=\"%s\">\n"
+                         "  <comment>%s document</comment>\n"
+                         "  <glob pattern=\"*.%s\"/>\n"
+                         " </mime-type>\n"
+                         "</mime-info>\n", mimetype, extension, extension);
 
-    g_file_set_contents (filename, contents, -1, NULL);
-    g_free (contents);
+      g_file_set_contents (filename, contents, -1, NULL);
+      g_free (contents);
 
-    run_update_command ("update-mime-database", "mime");
-  }
+      run_update_command ("update-mime-database", "mime");
+    }
   g_free (filename);
   
   res = g_desktop_app_info_set_as_default_for_type (appinfo,
@@ -2179,14 +2180,14 @@ get_all_desktop_entries_for_mime_type (const char *base_mime_type)
       /* Go through all entries that support the mimetype */
       for (dir_list = mime_info_cache->dirs;
 	   dir_list != NULL;
-	   dir_list = dir_list->next) {
-	dir = dir_list->data;
+	   dir_list = dir_list->next) 
+        {
+	  dir = dir_list->data;
 	
-	list = g_hash_table_lookup (dir->mime_info_cache_map, mime_type);
-	for (tmp = list; tmp != NULL; tmp = tmp->next) {
-	  desktop_entries = append_desktop_entry (desktop_entries, tmp->data);
-	}
-      }
+	  list = g_hash_table_lookup (dir->mime_info_cache_map, mime_type);
+	  for (tmp = list; tmp != NULL; tmp = tmp->next)
+	    desktop_entries = append_desktop_entry (desktop_entries, tmp->data);
+        }
     }
   
   G_UNLOCK (mime_info_cache);

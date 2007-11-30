@@ -32,7 +32,6 @@
  * @see_also: #GDirectoryMonitor, #GFileMonitor
  * 
  * Monitors a mounted volume for changes.
- *
  **/
 
 G_DEFINE_TYPE (GVolumeMonitor, g_volume_monitor, G_TYPE_OBJECT);
@@ -154,7 +153,7 @@ g_volume_monitor_init (GVolumeMonitor *monitor)
  * Returns: a #GList of mounted #GVolumes.
  **/
 GList *
-g_volume_monitor_get_mounted_volumes  (GVolumeMonitor *volume_monitor)
+g_volume_monitor_get_mounted_volumes (GVolumeMonitor *volume_monitor)
 {
   GVolumeMonitorClass *class;
 

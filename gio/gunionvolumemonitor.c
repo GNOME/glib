@@ -152,9 +152,9 @@ g_union_volume_monitor_class_init (GUnionVolumeMonitorClass *klass)
 }
 
 static void
-child_volume_mounted (GVolumeMonitor *child_monitor,
-		      GVolume *child_volume,
-		      GUnionVolumeMonitor *union_monitor)
+child_volume_mounted (GVolumeMonitor      *child_monitor,
+                      GVolume             *child_volume,
+                      GUnionVolumeMonitor *union_monitor)
 {
   g_signal_emit_by_name (union_monitor,
 			 "volume_mounted",
@@ -162,9 +162,9 @@ child_volume_mounted (GVolumeMonitor *child_monitor,
 }
 
 static void
-child_volume_pre_unmount (GVolumeMonitor *child_monitor,
-			  GVolume *child_volume,
-			  GUnionVolumeMonitor *union_monitor)
+child_volume_pre_unmount (GVolumeMonitor      *child_monitor,
+                          GVolume             *child_volume,
+                          GUnionVolumeMonitor *union_monitor)
 {
   g_signal_emit_by_name (union_monitor,
 			 "volume_pre_unmount",
@@ -172,9 +172,9 @@ child_volume_pre_unmount (GVolumeMonitor *child_monitor,
 }
 
 static void
-child_volume_unmounted (GVolumeMonitor *child_monitor,
-			GVolume *child_volume,
-			GUnionVolumeMonitor *union_monitor)
+child_volume_unmounted (GVolumeMonitor      *child_monitor,
+                        GVolume             *child_volume,
+                        GUnionVolumeMonitor *union_monitor)
 {
   g_signal_emit_by_name (union_monitor,
 			 "volume_unmounted",
@@ -182,9 +182,9 @@ child_volume_unmounted (GVolumeMonitor *child_monitor,
 }
 
 static void
-child_drive_connected (GVolumeMonitor *child_monitor,
-		       GDrive *child_drive,
-		       GUnionVolumeMonitor *union_monitor)
+child_drive_connected (GVolumeMonitor      *child_monitor,
+                       GDrive              *child_drive,
+                       GUnionVolumeMonitor *union_monitor)
 {
   g_signal_emit_by_name (union_monitor,
 			 "drive_connected",
@@ -192,9 +192,9 @@ child_drive_connected (GVolumeMonitor *child_monitor,
 }
 
 static void
-child_drive_disconnected (GVolumeMonitor *child_monitor,
-			  GDrive *child_drive,
-			  GUnionVolumeMonitor *union_monitor)
+child_drive_disconnected (GVolumeMonitor      *child_monitor,
+                          GDrive              *child_drive,
+                          GUnionVolumeMonitor *union_monitor)
 {
   g_signal_emit_by_name (union_monitor,
 			 "drive_disconnected",
@@ -203,7 +203,7 @@ child_drive_disconnected (GVolumeMonitor *child_monitor,
 
 static void
 g_union_volume_monitor_add_monitor (GUnionVolumeMonitor *union_monitor,
-				    GVolumeMonitor *volume_monitor)
+                                    GVolumeMonitor      *volume_monitor)
 {
   if (g_list_find (union_monitor->monitors, volume_monitor))
     return;
@@ -221,7 +221,7 @@ g_union_volume_monitor_add_monitor (GUnionVolumeMonitor *union_monitor,
 
 static void
 g_union_volume_monitor_remove_monitor (GUnionVolumeMonitor *union_monitor,
-				       GVolumeMonitor *child_monitor)
+                                       GVolumeMonitor      *child_monitor)
 {
   GList *l;
 

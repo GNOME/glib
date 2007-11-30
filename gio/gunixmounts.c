@@ -686,7 +686,8 @@ aix_fs_ignorespace (FILE *fd)
 
 /* read one word from file */
 static int
-aix_fs_getword (FILE *fd, char *word)
+aix_fs_getword (FILE *fd, 
+                char *word)
 {
   int c;
   
@@ -716,7 +717,8 @@ typedef struct {
 
 /* read mount points properties */
 static int
-aix_fs_get (FILE *fd, AixMountTableEntry *prop)
+aix_fs_get (FILE               *fd, 
+            AixMountTableEntry *prop)
 {
   static char word[PATH_MAX] = { 0 };
   char value[PATH_MAX];
@@ -1069,11 +1071,11 @@ g_unix_mount_monitor_class_init (GUnixMountMonitorClass *klass)
 }
 
 static void
-fstab_file_changed (GFileMonitor* monitor,
-		    GFile* file,
-		    GFile* other_file,
-		    GFileMonitorEvent event_type,
-		    gpointer user_data)
+fstab_file_changed (GFileMonitor      *monitor,
+		    GFile             *file,
+		    GFile             *other_file,
+		    GFileMonitorEvent  event_type,
+		    gpointer           user_data)
 {
   GUnixMountMonitor *mount_monitor;
 
@@ -1087,11 +1089,11 @@ fstab_file_changed (GFileMonitor* monitor,
 }
 
 static void
-mtab_file_changed (GFileMonitor* monitor,
-		   GFile* file,
-		   GFile* other_file,
-		   GFileMonitorEvent event_type,
-		   gpointer user_data)
+mtab_file_changed (GFileMonitor      *monitor,
+		   GFile             *file,
+		   GFile             *other_file,
+		   GFileMonitorEvent  event_type,
+		   gpointer           user_data)
 {
   GUnixMountMonitor *mount_monitor;
 
@@ -1205,8 +1207,8 @@ strcmp_null (const char *str1,
  * or less than @mount2, respectively. 
  **/
 gint
-g_unix_mount_compare (GUnixMount      *mount1,
-		      GUnixMount      *mount2)
+g_unix_mount_compare (GUnixMount *mount1,
+		      GUnixMount *mount2)
 {
   int res;
 

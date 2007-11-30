@@ -128,11 +128,11 @@ g_local_file_output_stream_init (GLocalFileOutputStream *stream)
 }
 
 static gssize
-g_local_file_output_stream_write (GOutputStream *stream,
-				  const void   *buffer,
-				  gsize         count,
-				  GCancellable *cancellable,
-				  GError      **error)
+g_local_file_output_stream_write (GOutputStream  *stream,
+				  const void     *buffer,
+				  gsize           count,
+				  GCancellable   *cancellable,
+				  GError        **error)
 {
   GLocalFileOutputStream *file;
   gssize res;
@@ -162,9 +162,9 @@ g_local_file_output_stream_write (GOutputStream *stream,
 }
 
 static gboolean
-g_local_file_output_stream_close (GOutputStream *stream,
-				  GCancellable *cancellable,
-				  GError      **error)
+g_local_file_output_stream_close (GOutputStream  *stream,
+				  GCancellable   *cancellable,
+				  GError        **error)
 {
   GLocalFileOutputStream *file;
   struct stat final_stat;
@@ -259,7 +259,7 @@ g_local_file_output_stream_close (GOutputStream *stream,
 }
 
 static char *
-g_local_file_output_stream_get_etag (GFileOutputStream      *stream)
+g_local_file_output_stream_get_etag (GFileOutputStream *stream)
 {
   GLocalFileOutputStream *file;
 
@@ -319,11 +319,11 @@ seek_type_to_lseek (GSeekType type)
 }
 
 static gboolean
-g_local_file_output_stream_seek (GFileOutputStream     *stream,
-				 goffset               offset,
-				 GSeekType             type,
-				 GCancellable         *cancellable,
-				 GError              **error)
+g_local_file_output_stream_seek (GFileOutputStream  *stream,
+				 goffset             offset,
+				 GSeekType           type,
+				 GCancellable       *cancellable,
+				 GError            **error)
 {
   GLocalFileOutputStream *file;
   off_t pos;
@@ -345,17 +345,17 @@ g_local_file_output_stream_seek (GFileOutputStream     *stream,
 }
 
 static gboolean
-g_local_file_output_stream_can_truncate (GFileOutputStream    *stream)
+g_local_file_output_stream_can_truncate (GFileOutputStream *stream)
 {
   /* We can't truncate pipes and stuff where we can't seek */
   return g_local_file_output_stream_can_seek (stream);
 }
 
 static gboolean
-g_local_file_output_stream_truncate (GFileOutputStream    *stream,
-				     goffset               size,
-				     GCancellable         *cancellable,
-				     GError              **error)
+g_local_file_output_stream_truncate (GFileOutputStream  *stream,
+				     goffset             size,
+				     GCancellable       *cancellable,
+				     GError            **error)
 {
   GLocalFileOutputStream *file;
   int res;
@@ -363,7 +363,7 @@ g_local_file_output_stream_truncate (GFileOutputStream    *stream,
   file = G_LOCAL_FILE_OUTPUT_STREAM (stream);
 
  restart:
-  res = ftruncate(file->priv->fd, size);
+  res = ftruncate (file->priv->fd, size);
   
   if (res == -1)
     {
@@ -386,10 +386,10 @@ g_local_file_output_stream_truncate (GFileOutputStream    *stream,
 
 
 static GFileInfo *
-g_local_file_output_stream_query_info (GFileOutputStream     *stream,
-				       char                 *attributes,
-				       GCancellable         *cancellable,
-				       GError              **error)
+g_local_file_output_stream_query_info (GFileOutputStream  *stream,
+				       char               *attributes,
+				       GCancellable       *cancellable,
+				       GError            **error)
 {
   GLocalFileOutputStream *file;
 
@@ -404,10 +404,10 @@ g_local_file_output_stream_query_info (GFileOutputStream     *stream,
 }
 
 GFileOutputStream *
-_g_local_file_output_stream_create  (const char       *filename,
-				     GFileCreateFlags  flags,
-				     GCancellable     *cancellable,
-				     GError          **error)
+_g_local_file_output_stream_create  (const char        *filename,
+				     GFileCreateFlags   flags,
+				     GCancellable      *cancellable,
+				     GError           **error)
 {
   GLocalFileOutputStream *stream;
   int mode;
@@ -447,10 +447,10 @@ _g_local_file_output_stream_create  (const char       *filename,
 }
 
 GFileOutputStream *
-_g_local_file_output_stream_append  (const char       *filename,
-				     GFileCreateFlags  flags,
-				     GCancellable     *cancellable,
-				     GError          **error)
+_g_local_file_output_stream_append  (const char        *filename,
+				     GFileCreateFlags   flags,
+				     GCancellable      *cancellable,
+				     GError           **error)
 {
   GLocalFileOutputStream *stream;
   int mode;
@@ -560,12 +560,12 @@ copy_file_data (gint     sfd,
 }
 
 static int
-handle_overwrite_open (const char *filename,
-		       const char *etag,
-		       gboolean create_backup,
-		       char **temp_filename,
-		       GCancellable *cancellable,
-		       GError      **error)
+handle_overwrite_open (const char    *filename,
+		       const char    *etag,
+		       gboolean       create_backup,
+		       char         **temp_filename,
+		       GCancellable  *cancellable,
+		       GError       **error)
 {
   int fd = -1;
   struct stat original_stat;

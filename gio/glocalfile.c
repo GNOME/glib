@@ -284,7 +284,7 @@ g_local_file_is_native (GFile *file)
 }
 
 static gboolean
-g_local_file_has_uri_scheme (GFile *file,
+g_local_file_has_uri_scheme (GFile      *file,
 			     const char *uri_scheme)
 {
   return g_ascii_strcasecmp (uri_scheme, "file") == 0;
@@ -330,7 +330,7 @@ get_filename_charset (const gchar **filename_charset)
 
 static gboolean
 name_is_valid_for_display (const char *string,
-			   gboolean is_valid_utf8)
+			   gboolean    is_valid_utf8)
 {
   char c;
   
@@ -452,7 +452,8 @@ g_local_file_equal (GFile *file1,
 }
 
 static const char *
-match_prefix (const char *path, const char *prefix)
+match_prefix (const char *path, 
+              const char *prefix)
 {
   int prefix_len;
 
@@ -492,7 +493,7 @@ g_local_file_get_relative_path (GFile *parent,
 }
 
 static GFile *
-g_local_file_resolve_relative_path (GFile *file,
+g_local_file_resolve_relative_path (GFile      *file,
 				    const char *relative_path)
 {
   GLocalFile *local = G_LOCAL_FILE (file);
@@ -510,11 +511,11 @@ g_local_file_resolve_relative_path (GFile *file,
 }
 
 static GFileEnumerator *
-g_local_file_enumerate_children (GFile *file,
-				 const char *attributes,
-				 GFileQueryInfoFlags flags,
-				 GCancellable *cancellable,
-				 GError **error)
+g_local_file_enumerate_children (GFile                *file,
+				 const char           *attributes,
+				 GFileQueryInfoFlags   flags,
+				 GCancellable         *cancellable,
+				 GError              **error)
 {
   GLocalFile *local = G_LOCAL_FILE (file);
   return _g_local_file_enumerator_new (local->filename,
@@ -553,96 +554,97 @@ get_fs_type (long f_type)
 {
 
   /* filesystem ids taken from linux manpage */
-  switch (f_type) {
-  case 0xadf5:
-    return "adfs";
-  case 0xADFF:
-    return "affs";
-  case 0x42465331:
-    return "befs";
-  case 0x1BADFACE:
-    return "bfs";
-  case 0xFF534D42:
-    return "cifs";
-  case 0x73757245:
-    return "coda";
-  case 0x012FF7B7:
-    return "coh";
-  case 0x28cd3d45:
-    return "cramfs";
-  case 0x1373:
-    return "devfs";
-  case 0x00414A53:
-    return "efs";
-  case 0x137D:
-    return "ext";
-  case 0xEF51:
-    return "ext2";
-  case 0xEF53:
-    return "ext3";
-  case 0x4244:
-    return "hfs";
-  case 0xF995E849:
-    return "hpfs";
-  case 0x958458f6:
-    return "hugetlbfs";
-  case 0x9660:
-    return "isofs";
-  case 0x72b6:
-    return "jffs2";
-  case 0x3153464a:
-    return "jfs";
-  case 0x137F:
-    return "minix";
-  case 0x138F:
-    return "minix2";
-  case 0x2468:
-    return "minix2";
-  case 0x2478:
-    return "minix22";
-  case 0x4d44:
-    return "msdos";
-  case 0x564c:
-    return "ncp";
-  case 0x6969:
-    return "nfs";
-  case 0x5346544e:
-    return "ntfs";
-  case 0x9fa1:
-    return "openprom";
-  case 0x9fa0:
-    return "proc";
-  case 0x002f:
-    return "qnx4";
-  case 0x52654973:
-    return "reiserfs";
-  case 0x7275:
-    return "romfs";
-  case 0x517B:
-    return "smb";
-  case 0x012FF7B6:
-    return "sysv2";
-  case 0x012FF7B5:
-    return "sysv4";
-  case 0x01021994:
-    return "tmpfs";
-  case 0x15013346:
-    return "udf";
-  case 0x00011954:
-    return "ufs";
-  case 0x9fa2:
-    return "usbdevice";
-  case 0xa501FCF5:
-    return "vxfs";
-  case 0x012FF7B4:
-    return "xenix";
-  case 0x58465342:
-    return "xfs";
-  case 0x012FD16D:
-    return "xiafs";
-  default:
-    return NULL;
-  }
+  switch (f_type) 
+    {
+    case 0xadf5:
+      return "adfs";
+    case 0xADFF:
+      return "affs";
+    case 0x42465331:
+      return "befs";
+    case 0x1BADFACE:
+      return "bfs";
+    case 0xFF534D42:
+      return "cifs";
+    case 0x73757245:
+      return "coda";
+    case 0x012FF7B7:
+      return "coh";
+    case 0x28cd3d45:
+      return "cramfs";
+    case 0x1373:
+      return "devfs";
+    case 0x00414A53:
+      return "efs";
+    case 0x137D:
+      return "ext";
+    case 0xEF51:
+      return "ext2";
+    case 0xEF53:
+      return "ext3";
+    case 0x4244:
+      return "hfs";
+    case 0xF995E849:
+      return "hpfs";
+    case 0x958458f6:
+      return "hugetlbfs";
+    case 0x9660:
+      return "isofs";
+    case 0x72b6:
+      return "jffs2";
+    case 0x3153464a:
+      return "jfs";
+    case 0x137F:
+      return "minix";
+    case 0x138F:
+      return "minix2";
+    case 0x2468:
+      return "minix2";
+    case 0x2478:
+      return "minix22";
+    case 0x4d44:
+      return "msdos";
+    case 0x564c:
+      return "ncp";
+    case 0x6969:
+      return "nfs";
+    case 0x5346544e:
+      return "ntfs";
+    case 0x9fa1:
+      return "openprom";
+    case 0x9fa0:
+      return "proc";
+    case 0x002f:
+      return "qnx4";
+    case 0x52654973:
+      return "reiserfs";
+    case 0x7275:
+      return "romfs";
+    case 0x517B:
+      return "smb";
+    case 0x012FF7B6:
+      return "sysv2";
+    case 0x012FF7B5:
+      return "sysv4";
+    case 0x01021994:
+      return "tmpfs";
+    case 0x15013346:
+      return "udf";
+    case 0x00011954:
+      return "ufs";
+    case 0x9fa2:
+      return "usbdevice";
+    case 0xa501FCF5:
+      return "vxfs";
+    case 0x012FF7B4:
+      return "xenix";
+    case 0x58465342:
+      return "xfs";
+    case 0x012FD16D:
+      return "xiafs";
+    default:
+      return NULL;
+    }
 }
 #endif
 
@@ -656,20 +658,20 @@ typedef enum {
 
 static gboolean
 device_equal (gconstpointer v1,
-	   gconstpointer v2)
+              gconstpointer v2)
 {
   return *(dev_t *)v1 == * (dev_t *)v2;
 }
 
 static guint
-device_hash (gconstpointer  v)
+device_hash (gconstpointer v)
 {
   return (guint) *(dev_t *)v;
 }
 
 static void
-get_mount_info (GFileInfo *fs_info,
-		const char *path,
+get_mount_info (GFileInfo             *fs_info,
+		const char            *path,
 		GFileAttributeMatcher *matcher)
 {
   struct stat buf;
@@ -734,10 +736,10 @@ get_mount_info (GFileInfo *fs_info,
 }
 
 static GFileInfo *
-g_local_file_query_filesystem_info (GFile                *file,
-				    const char           *attributes,
-				    GCancellable         *cancellable,
-				    GError              **error)
+g_local_file_query_filesystem_info (GFile         *file,
+				    const char    *attributes,
+				    GCancellable  *cancellable,
+				    GError       **error)
 {
   GLocalFile *local = G_LOCAL_FILE (file);
   GFileInfo *info;
@@ -820,9 +822,9 @@ g_local_file_query_filesystem_info (GFile                *file,
 }
 
 static GVolume *
-g_local_file_find_enclosing_volume (GFile *file,
-				    GCancellable *cancellable,
-				    GError **error)
+g_local_file_find_enclosing_volume (GFile         *file,
+				    GCancellable  *cancellable,
+				    GError       **error)
 {
   GLocalFile *local = G_LOCAL_FILE (file);
   struct stat buf;
@@ -858,10 +860,10 @@ g_local_file_find_enclosing_volume (GFile *file,
 }
 
 static GFile *
-g_local_file_set_display_name (GFile *file,
-			       const char *display_name,
-			       GCancellable *cancellable,
-			       GError **error)
+g_local_file_set_display_name (GFile         *file,
+			       const char    *display_name,
+			       GCancellable  *cancellable,
+			       GError       **error)
 {
   GLocalFile *local, *new_local;
   GFile *new_file, *parent;
@@ -950,28 +952,28 @@ g_local_file_query_info (GFile                *file,
 }
 
 static GFileAttributeInfoList *
-g_local_file_query_settable_attributes (GFile                      *file,
-					GCancellable               *cancellable,
-					GError                    **error)
+g_local_file_query_settable_attributes (GFile         *file,
+					GCancellable  *cancellable,
+					GError       **error)
 {
   return g_file_attribute_info_list_ref (local_writable_attributes);
 }
 
 static GFileAttributeInfoList *
-g_local_file_query_writable_namespaces (GFile *file,
-					GCancellable *cancellable,
-					GError **error)
+g_local_file_query_writable_namespaces (GFile         *file,
+					GCancellable  *cancellable,
+					GError       **error)
 {
   return g_file_attribute_info_list_ref (local_writable_namespaces);
 }
 
 static gboolean
-g_local_file_set_attribute (GFile *file,
-			    const char *attribute,
-			    const GFileAttributeValue *value,
-			    GFileQueryInfoFlags flags,
-			    GCancellable *cancellable,
-			    GError **error)
+g_local_file_set_attribute (GFile                      *file,
+			    const char                 *attribute,
+			    const GFileAttributeValue  *value,
+			    GFileQueryInfoFlags         flags,
+			    GCancellable               *cancellable,
+			    GError                    **error)
 {
   GLocalFile *local = G_LOCAL_FILE (file);
 
@@ -984,11 +986,11 @@ g_local_file_set_attribute (GFile *file,
 }
 
 static gboolean
-g_local_file_set_attributes_from_info (GFile *file,
-				       GFileInfo *info,
-				       GFileQueryInfoFlags flags,
-				       GCancellable *cancellable,
-				       GError **error)
+g_local_file_set_attributes_from_info (GFile                *file,
+				       GFileInfo            *info,
+				       GFileQueryInfoFlags   flags,
+				       GCancellable         *cancellable,
+				       GError              **error)
 {
   GLocalFile *local = G_LOCAL_FILE (file);
   int res, chained_res;
@@ -1010,9 +1012,9 @@ g_local_file_set_attributes_from_info (GFile *file,
 }
 
 static GFileInputStream *
-g_local_file_read (GFile *file,
-		   GCancellable *cancellable,
-		   GError **error)
+g_local_file_read (GFile         *file,
+		   GCancellable  *cancellable,
+		   GError       **error)
 {
   GLocalFile *local = G_LOCAL_FILE (file);
   int fd;
@@ -1041,32 +1043,32 @@ g_local_file_read (GFile *file,
 }
 
 static GFileOutputStream *
-g_local_file_append_to (GFile *file,
-			GFileCreateFlags flags,
-			GCancellable *cancellable,
-			GError **error)
+g_local_file_append_to (GFile             *file,
+			GFileCreateFlags   flags,
+			GCancellable      *cancellable,
+			GError           **error)
 {
   return _g_local_file_output_stream_append (G_LOCAL_FILE (file)->filename,
 					     flags, cancellable, error);
 }
 
 static GFileOutputStream *
-g_local_file_create (GFile *file,
-		     GFileCreateFlags flags,
-		     GCancellable *cancellable,
-		     GError **error)
+g_local_file_create (GFile             *file,
+		     GFileCreateFlags   flags,
+		     GCancellable      *cancellable,
+		     GError           **error)
 {
   return _g_local_file_output_stream_create (G_LOCAL_FILE (file)->filename,
 					     flags, cancellable, error);
 }
 
 static GFileOutputStream *
-g_local_file_replace (GFile *file,
-		      const char *etag,
-		      gboolean make_backup,
-		      GFileCreateFlags flags,
-		      GCancellable *cancellable,
-		      GError **error)
+g_local_file_replace (GFile             *file,
+		      const char        *etag,
+		      gboolean           make_backup,
+		      GFileCreateFlags   flags,
+		      GCancellable      *cancellable,
+		      GError           **error)
 {
   return _g_local_file_output_stream_replace (G_LOCAL_FILE (file)->filename,
 					      etag, make_backup, flags,
@@ -1075,9 +1077,9 @@ g_local_file_replace (GFile *file,
 
 
 static gboolean
-g_local_file_delete (GFile *file,
-		     GCancellable *cancellable,
-		     GError **error)
+g_local_file_delete (GFile         *file,
+		     GCancellable  *cancellable,
+		     GError       **error)
 {
   GLocalFile *local = G_LOCAL_FILE (file);
   
@@ -1139,7 +1141,8 @@ expand_symlink (const char *link)
 }
 
 static char *
-get_parent (const char *path, dev_t *parent_dev)
+get_parent (const char *path, 
+            dev_t      *parent_dev)
 {
   char *parent, *tmp;
   struct stat parent_stat;
@@ -1209,7 +1212,8 @@ expand_all_symlinks (const char *path)
 }
 
 static char *
-find_mountpoint_for (const char *file, dev_t dev)
+find_mountpoint_for (const char *file, 
+                     dev_t       dev)
 {
   char *dir, *parent;
   dev_t dir_dev, parent_dev;
@@ -1217,20 +1221,21 @@ find_mountpoint_for (const char *file, dev_t dev)
   dir = g_strdup (file);
   dir_dev = dev;
 
-  while (1) {
-    parent = get_parent (dir, &parent_dev);
-    if (parent == NULL)
-      return dir;
+  while (1) 
+    {
+      parent = get_parent (dir, &parent_dev);
+      if (parent == NULL)
+        return dir;
     
-    if (parent_dev != dir_dev)
-      {
-	g_free (parent);
-	return dir;
-      }
+      if (parent_dev != dir_dev)
+        {
+          g_free (parent);
+          return dir;
+        }
     
-    g_free (dir);
-    dir = parent;
-  }
+      g_free (dir);
+      dir = parent;
+    }
 }
 
 static char *
@@ -1247,7 +1252,8 @@ find_topdir_for (const char *file)
 }
 
 static char *
-get_unique_filename (const char *basename, int id)
+get_unique_filename (const char *basename, 
+                     int         id)
 {
   const char *dot;
       
@@ -1262,7 +1268,8 @@ get_unique_filename (const char *basename, int id)
 }
 
 static gboolean
-path_has_prefix (const char *path, const char *prefix)
+path_has_prefix (const char *path, 
+                 const char *prefix)
 {
   int prefix_len;
 
@@ -1282,7 +1289,8 @@ path_has_prefix (const char *path, const char *prefix)
 }
 
 static char *
-try_make_relative (const char *path, const char *base)
+try_make_relative (const char *path, 
+                   const char *base)
 {
   char *path2, *base2;
   char *relative;
@@ -1336,9 +1344,9 @@ escape_trash_name (char *name)
 }
 
 static gboolean
-g_local_file_trash (GFile *file,
-		    GCancellable *cancellable,
-		    GError **error)
+g_local_file_trash (GFile         *file,
+		    GCancellable  *cancellable,
+		    GError       **error)
 {
   GLocalFile *local = G_LOCAL_FILE (file);
   struct stat file_stat, home_stat, trash_stat, global_stat;
@@ -1575,9 +1583,9 @@ g_local_file_trash (GFile *file,
 }
 
 static gboolean
-g_local_file_make_directory (GFile *file,
-			     GCancellable *cancellable,
-			     GError **error)
+g_local_file_make_directory (GFile         *file,
+			     GCancellable  *cancellable,
+			     GError       **error)
 {
   GLocalFile *local = G_LOCAL_FILE (file);
   
@@ -1602,10 +1610,10 @@ g_local_file_make_directory (GFile *file,
 }
 
 static gboolean
-g_local_file_make_symbolic_link (GFile *file,
-				 const char *symlink_value,
-				 GCancellable *cancellable,
-				 GError **error)
+g_local_file_make_symbolic_link (GFile         *file,
+				 const char    *symlink_value,
+				 GCancellable  *cancellable,
+				 GError       **error)
 {
 #ifdef HAVE_SYMLINK
   GLocalFile *local = G_LOCAL_FILE (file);
@@ -1635,13 +1643,13 @@ g_local_file_make_symbolic_link (GFile *file,
 
 
 static gboolean
-g_local_file_copy (GFile                *source,
-		   GFile                *destination,
-		   GFileCopyFlags        flags,
-		   GCancellable         *cancellable,
-		   GFileProgressCallback progress_callback,
-		   gpointer              progress_callback_data,
-		   GError              **error)
+g_local_file_copy (GFile                  *source,
+		   GFile                  *destination,
+		   GFileCopyFlags          flags,
+		   GCancellable           *cancellable,
+		   GFileProgressCallback   progress_callback,
+		   gpointer                progress_callback_data,
+		   GError                **error)
 {
   /* Fall back to default copy */
   g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED, "Copy not supported");
@@ -1649,13 +1657,13 @@ g_local_file_copy (GFile                *source,
 }
 
 static gboolean
-g_local_file_move (GFile                *source,
-		   GFile                *destination,
-		   GFileCopyFlags        flags,
-		   GCancellable         *cancellable,
-		   GFileProgressCallback progress_callback,
-		   gpointer              progress_callback_data,
-		   GError              **error)
+g_local_file_move (GFile                  *source,
+		   GFile                  *destination,
+		   GFileCopyFlags          flags,
+		   GCancellable           *cancellable,
+		   GFileProgressCallback   progress_callback,
+		   gpointer                progress_callback_data,
+		   GError                **error)
 {
   GLocalFile *local_source = G_LOCAL_FILE (source);
   GLocalFile *local_destination = G_LOCAL_FILE (destination);
@@ -1770,18 +1778,18 @@ g_local_file_move (GFile                *source,
 
 
 static GDirectoryMonitor*
-g_local_file_monitor_dir (GFile* file,
-			  GFileMonitorFlags flags,
-			  GCancellable *cancellable)
+g_local_file_monitor_dir (GFile             *file,
+			  GFileMonitorFlags  flags,
+			  GCancellable      *cancellable)
 {
   GLocalFile* local_file = G_LOCAL_FILE(file);
   return _g_local_directory_monitor_new (local_file->filename, flags);
 }
 
 static GFileMonitor*
-g_local_file_monitor_file (GFile* file,
-			   GFileMonitorFlags flags,
-			   GCancellable *cancellable)
+g_local_file_monitor_file (GFile             *file,
+			   GFileMonitorFlags  flags,
+			   GCancellable      *cancellable)
 {
   GLocalFile* local_file = G_LOCAL_FILE(file);
   return _g_local_file_monitor_new (local_file->filename, flags);

@@ -1,5 +1,9 @@
 2007-11-29  Matthias Clasen <mclasen@redhat.com>
 
+	* *.c: More coding style fixes.
+
+2007-11-29  Matthias Clasen <mclasen@redhat.com>
+
 	* gasyncresult.c: Add another paragraph to the intro,
 	adjust coding style of example.
 

@@ -140,7 +140,7 @@ g_unix_volume_monitor_class_init (GUnixVolumeMonitorClass *klass)
 
 static void
 mountpoints_changed (GUnixMountMonitor *mount_monitor,
-		     gpointer user_data)
+		     gpointer           user_data)
 {
   GUnixVolumeMonitor *unix_monitor = user_data;
 
@@ -151,7 +151,7 @@ mountpoints_changed (GUnixMountMonitor *mount_monitor,
 
 static void
 mounts_changed (GUnixMountMonitor *mount_monitor,
-		gpointer user_data)
+		gpointer           user_data)
 {
   GUnixVolumeMonitor *unix_monitor = user_data;
 
@@ -195,8 +195,11 @@ _g_unix_volume_monitor_new (void)
 }
 
 static void
-diff_sorted_lists (GList *list1, GList *list2, GCompareFunc compare,
-		   GList **added, GList **removed)
+diff_sorted_lists (GList         *list1, 
+                   GList         *list2, 
+                   GCompareFunc   compare,
+		   GList        **added, 
+                   GList        **removed)
 {
   int order;
   
@@ -244,7 +247,7 @@ diff_sorted_lists (GList *list1, GList *list2, GCompareFunc compare,
  **/
 GUnixDrive *
 _g_unix_volume_monitor_lookup_drive_for_mountpoint (GUnixVolumeMonitor *monitor,
-						    const char *mountpoint)
+						    const char         *mountpoint)
 {
   GList *l;
 

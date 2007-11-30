@@ -125,11 +125,11 @@ _g_local_file_input_stream_new (int fd)
 }
 
 static gssize
-g_local_file_input_stream_read (GInputStream *stream,
-				void         *buffer,
-				gsize         count,
-				GCancellable *cancellable,
-				GError      **error)
+g_local_file_input_stream_read (GInputStream  *stream,
+				void          *buffer,
+				gsize          count,
+				GCancellable  *cancellable,
+				GError       **error)
 {
   GLocalFileInputStream *file;
   gssize res;
@@ -160,10 +160,10 @@ g_local_file_input_stream_read (GInputStream *stream,
 }
 
 static gssize
-g_local_file_input_stream_skip (GInputStream *stream,
-				gsize         count,
-				GCancellable *cancellable,
-				GError      **error)
+g_local_file_input_stream_skip (GInputStream  *stream,
+				gsize          count,
+				GCancellable  *cancellable,
+				GError       **error)
 {
   off_t res, start;
   GLocalFileInputStream *file;
@@ -197,9 +197,9 @@ g_local_file_input_stream_skip (GInputStream *stream,
 }
 
 static gboolean
-g_local_file_input_stream_close (GInputStream *stream,
-				 GCancellable *cancellable,
-				 GError      **error)
+g_local_file_input_stream_close (GInputStream  *stream,
+				 GCancellable  *cancellable,
+				 GError       **error)
 {
   GLocalFileInputStream *file;
   int res;
@@ -213,12 +213,10 @@ g_local_file_input_stream_close (GInputStream *stream,
     {
       res = close (file->priv->fd);
       if (res == -1)
-	{
-	  g_set_error (error, G_IO_ERROR,
-		       g_io_error_from_errno (errno),
-		       _("Error closing file: %s"),
-		       g_strerror (errno));
-	}
+        g_set_error (error, G_IO_ERROR,
+                     g_io_error_from_errno (errno),
+                     _("Error closing file: %s"),
+                     g_strerror (errno));
       break;
     }
 
@@ -277,11 +275,11 @@ seek_type_to_lseek (GSeekType type)
 }
 
 static gboolean
-g_local_file_input_stream_seek (GFileInputStream     *stream,
-				goffset               offset,
-				GSeekType             type,
-				GCancellable         *cancellable,
-				GError              **error)
+g_local_file_input_stream_seek (GFileInputStream  *stream,
+				goffset            offset,
+				GSeekType          type,
+				GCancellable      *cancellable,
+				GError           **error)
 {
   GLocalFileInputStream *file;
   off_t pos;
@@ -303,10 +301,10 @@ g_local_file_input_stream_seek (GFileInputStream     *stream,
 }
 
 static GFileInfo *
-g_local_file_input_stream_query_info (GFileInputStream     *stream,
-				      char                 *attributes,
-				      GCancellable         *cancellable,
-				      GError              **error)
+g_local_file_input_stream_query_info (GFileInputStream  *stream,
+				      char              *attributes,
+				      GCancellable      *cancellable,
+				      GError           **error)
 {
   GLocalFileInputStream *file;
 

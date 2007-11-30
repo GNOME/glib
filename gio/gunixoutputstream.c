@@ -137,7 +137,7 @@ g_unix_output_stream_init (GUnixOutputStream *unix_stream)
  * @fd will be closed when the #GOutputStream is closed.
  **/
 GOutputStream *
-g_unix_output_stream_new (int fd,
+g_unix_output_stream_new (int      fd,
 			  gboolean close_fd_at_close)
 {
   GUnixOutputStream *stream;
@@ -153,11 +153,11 @@ g_unix_output_stream_new (int fd,
 }
 
 static gssize
-g_unix_output_stream_write (GOutputStream *stream,
-			    const void    *buffer,
-			    gsize          count,
-			    GCancellable  *cancellable,
-			    GError       **error)
+g_unix_output_stream_write (GOutputStream  *stream,
+			    const void     *buffer,
+			    gsize           count,
+			    GCancellable   *cancellable,
+			    GError        **error)
 {
   GUnixOutputStream *unix_stream;
   gssize res;
@@ -214,9 +214,9 @@ g_unix_output_stream_write (GOutputStream *stream,
 }
 
 static gboolean
-g_unix_output_stream_close (GOutputStream *stream,
-			    GCancellable  *cancellable,
-			    GError       **error)
+g_unix_output_stream_close (GOutputStream  *stream,
+			    GCancellable   *cancellable,
+			    GError        **error)
 {
   GUnixOutputStream *unix_stream;
   int res;
@@ -254,8 +254,8 @@ typedef struct {
 
 static gboolean
 write_async_cb (WriteAsyncData *data,
-		GIOCondition condition,
-		int fd)
+		GIOCondition    condition,
+		int             fd)
 {
   GSimpleAsyncResult *simple;
   GError *error = NULL;
@@ -304,13 +304,13 @@ write_async_cb (WriteAsyncData *data,
 }
 
 static void
-g_unix_output_stream_write_async (GOutputStream      *stream,
-				  const void         *buffer,
-				  gsize               count,
-				  int                 io_priority,
-				  GCancellable       *cancellable,
-				  GAsyncReadyCallback callback,
-				  gpointer            user_data)
+g_unix_output_stream_write_async (GOutputStream       *stream,
+				  const void          *buffer,
+				  gsize                count,
+				  int                  io_priority,
+				  GCancellable        *cancellable,
+				  GAsyncReadyCallback  callback,
+				  gpointer             user_data)
 {
   GSource *source;
   GUnixOutputStream *unix_stream;
@@ -337,9 +337,9 @@ g_unix_output_stream_write_async (GOutputStream      *stream,
 }
 
 static gssize
-g_unix_output_stream_write_finish (GOutputStream *stream,
-				   GAsyncResult *result,
-				   GError **error)
+g_unix_output_stream_write_finish (GOutputStream  *stream,
+				   GAsyncResult   *result,
+				   GError        **error)
 {
   GSimpleAsyncResult *simple;
   gssize nwritten;
@@ -409,11 +409,11 @@ close_async_cb (CloseAsyncData *data)
 }
 
 static void
-g_unix_output_stream_close_async (GOutputStream       *stream,
-				  int                 io_priority,
-				  GCancellable       *cancellable,
-				  GAsyncReadyCallback callback,
-				  gpointer            user_data)
+g_unix_output_stream_close_async (GOutputStream        *stream,
+				  int                  io_priority,
+				  GCancellable        *cancellable,
+				  GAsyncReadyCallback  callback,
+				  gpointer             user_data)
 {
   GSource *idle;
   CloseAsyncData *data;
@@ -431,9 +431,9 @@ g_unix_output_stream_close_async (GOutputStream       *stream,
 }
 
 static gboolean
-g_unix_output_stream_close_finish (GOutputStream              *stream,
-				   GAsyncResult              *result,
-				   GError                   **error)
+g_unix_output_stream_close_finish (GOutputStream  *stream,
+				   GAsyncResult   *result,
+				   GError        **error)
 {
   /* Failures handled in generic close_finish code */
   return TRUE;

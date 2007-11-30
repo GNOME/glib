@@ -62,10 +62,10 @@ g_local_directory_monitor_finalize (GObject* object)
 }
 
 static void
-g_local_directory_monitor_set_property (GObject *object,
-                                   guint property_id,
-                                   const GValue *value,
-                                   GParamSpec *pspec)
+g_local_directory_monitor_set_property (GObject      *object,
+                                        guint         property_id,
+                                        const GValue *value,
+                                        GParamSpec   *pspec)
 {
   switch (property_id)
   {
@@ -79,9 +79,9 @@ g_local_directory_monitor_set_property (GObject *object,
 }
 
 static GObject *
-g_local_directory_monitor_constructor (GType type,
-                                    guint n_construct_properties,
-                                    GObjectConstructParam *construct_properties)
+g_local_directory_monitor_constructor (GType                  type,
+                                       guint                  n_construct_properties,
+                                       GObjectConstructParam *construct_properties)
 {
   GObject *obj;
   GLocalDirectoryMonitorClass *klass;
@@ -157,7 +157,7 @@ g_local_directory_monitor_init (GLocalDirectoryMonitor* local_monitor)
 
 static void
 mounts_changed (GUnixMountMonitor *mount_monitor,
-                gpointer user_data)
+                gpointer           user_data)
 {
   GLocalDirectoryMonitor *local_monitor = user_data;
   GUnixMount *mount;
@@ -190,7 +190,7 @@ mounts_changed (GUnixMountMonitor *mount_monitor,
 static gint
 _compare_monitor_class_by_prio (gconstpointer a,
                                 gconstpointer b,
-                                gpointer user_data)
+                                gpointer      user_data)
 {
   GType *type1 = (GType *) a, *type2 = (GType *) b;
   GLocalDirectoryMonitorClass *klass1, *klass2;
@@ -261,7 +261,7 @@ get_default_local_directory_monitor (gpointer data)
  * Returns: new #GDirectoryMonitor for the given @dirname.
  **/
 GDirectoryMonitor*
-_g_local_directory_monitor_new (const char* dirname,
+_g_local_directory_monitor_new (const char*       dirname,
 				GFileMonitorFlags flags)
 {
   static GOnce once_init = G_ONCE_INIT;

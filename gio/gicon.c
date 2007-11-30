@@ -29,14 +29,13 @@
 
 /**
  * SECTION:gicon
- * @short_description: base class for icons
+ * @short_description: interface for icons
  *
- * #GIcon is a base class for implementing more complex icon classes. It
- * contains a very minimal interface for checking the equality of two icons 
- * and hashing of icons.
+ * #GIcon is a very minimal interface for icons. It provides functions 
+ * for checking the equality of two icons and hashing of icons.
  * 
  * #GIcon does not provide the actual pixmap for the icon as this is out 
- * of gio's scope, however implementations of #GIcon may contain the name 
+ * of GIO's scope, however implementations of #GIcon may contain the name 
  * of an icon (see #GThemedIcon), or the path to an icon (see #GLoadableIcon). 
  * 
  * To obtain a hash of a #GIcon, see g_icon_hash().

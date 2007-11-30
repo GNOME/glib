@@ -458,13 +458,11 @@ g_buffered_output_stream_flush (GOutputStream  *stream,
 
   res = flush_buffer (bstream, cancellable, error);
 
-  if (res == FALSE) {
+  if (res == FALSE)
     return FALSE;
-  }
 
-  res = g_output_stream_flush (base_stream,
-                               cancellable,
-                               error);
+  res = g_output_stream_flush (base_stream, cancellable, error);
+
   return res;
 }
 
@@ -486,17 +484,9 @@ g_buffered_output_stream_close (GOutputStream  *stream,
 
   /* report the first error but still close the stream */
   if (res)
-    {
-      res = g_output_stream_close (base_stream,
-                                   cancellable,
-                                   error); 
-    }
+    res = g_output_stream_close (base_stream, cancellable, error); 
   else
-    {
-      g_output_stream_close (base_stream,
-                             cancellable,
-                             NULL); 
-    }
+    g_output_stream_close (base_stream, cancellable, NULL); 
 
   return res;
 }
@@ -545,11 +535,7 @@ flush_buffer_thread (GSimpleAsyncResult *result,
   /* if flushing the buffer didn't work don't even bother
    * to flush the stream but just report that error */
   if (res && fdata->flush_stream)
-    {
-      res = g_output_stream_flush (base_stream,
-                                   cancellable,
-                                   &error);
-    }
+    res = g_output_stream_flush (base_stream, cancellable, &error);
 
   if (fdata->close_stream) 
     {
@@ -558,18 +544,9 @@ flush_buffer_thread (GSimpleAsyncResult *result,
        * an error report that first error but still try 
        * close the stream */
       if (res == FALSE)
-        {
-          g_output_stream_close (base_stream,
-                                 cancellable,
-                                 NULL);
-        } 
+        g_output_stream_close (base_stream, cancellable, NULL);
       else 
-        {
-          res = g_output_stream_close (base_stream,
-                                       cancellable,
-                                       &error);
-        } 
-
+        res = g_output_stream_close (base_stream, cancellable, &error);
     }
 
   if (res == FALSE)

@@ -149,10 +149,10 @@ read_link (const gchar *full_name)
 
 /* Get the SELinux security context */
 static void
-get_selinux_context (const char *path,
-		     GFileInfo *info,
+get_selinux_context (const char            *path,
+		     GFileInfo             *info,
 		     GFileAttributeMatcher *attribute_matcher,
-		     gboolean follow_symlinks)
+		     gboolean               follow_symlinks)
 {
 #ifdef HAVE_SELINUX
   char *context;
@@ -202,7 +202,8 @@ name_is_valid (const char *str)
 }
 
 static char *
-hex_escape_string (const char *str, gboolean *free_return)
+hex_escape_string (const char *str, 
+                   gboolean   *free_return)
 {
   int num_invalid, i;
   char *escaped_str, *p;
@@ -248,7 +249,9 @@ hex_escape_string (const char *str, gboolean *free_return)
 }
 
 static char *
-hex_unescape_string (const char *str, int *out_len, gboolean *free_return)
+hex_unescape_string (const char *str, 
+                     int        *out_len, 
+                     gboolean   *free_return)
 {
   int i;
   char *unescaped_str, *p;
@@ -292,10 +295,10 @@ hex_unescape_string (const char *str, int *out_len, gboolean *free_return)
 }
 
 static void
-escape_xattr (GFileInfo *info,
+escape_xattr (GFileInfo  *info,
 	      const char *gio_attr, /* gio attribute name */
 	      const char *value, /* Is zero terminated */
-	      size_t len /* not including zero termination */)
+	      size_t      len /* not including zero termination */)
 {
   char *escaped_val;
   gboolean free_escaped_val;
@@ -310,10 +313,10 @@ escape_xattr (GFileInfo *info,
 
 static void
 get_one_xattr (const char *path,
-	       GFileInfo *info,
+	       GFileInfo  *info,
 	       const char *gio_attr,
 	       const char *xattr,
-	       gboolean follow_symlinks)
+	       gboolean    follow_symlinks)
 {
   char value[64];
   char *value_p;
@@ -365,11 +368,11 @@ get_one_xattr (const char *path,
 #endif /* defined HAVE_XATTR */
 
 static void
-get_xattrs (const char *path,
-	    gboolean user,
-	    GFileInfo *info,
+get_xattrs (const char            *path,
+	    gboolean               user,
+	    GFileInfo             *info,
 	    GFileAttributeMatcher *matcher,
-	    gboolean follow_symlinks)
+	    gboolean               follow_symlinks)
 {
 #ifdef HAVE_XATTR
   gboolean all;
@@ -480,8 +483,8 @@ get_xattrs (const char *path,
 
 #ifdef HAVE_XATTR
 static void
-get_one_xattr_from_fd (int fd,
-		       GFileInfo *info,
+get_one_xattr_from_fd (int         fd,
+		       GFileInfo  *info,
 		       const char *gio_attr,
 		       const char *xattr)
 {
@@ -525,9 +528,9 @@ get_one_xattr_from_fd (int fd,
 #endif /* defined HAVE_XATTR */
 
 static void
-get_xattrs_from_fd (int fd,
-		    gboolean user,
-		    GFileInfo *info,
+get_xattrs_from_fd (int                    fd,
+		    gboolean               user,
+		    GFileInfo             *info,
 		    GFileAttributeMatcher *matcher)
 {
 #ifdef HAVE_XATTR
@@ -633,10 +636,10 @@ get_xattrs_from_fd (int fd,
 
 #ifdef HAVE_XATTR
 static gboolean
-set_xattr (char *filename,
-	   const char *escaped_attribute,
-	   const GFileAttributeValue *attr_value,
-	   GError **error)
+set_xattr (char                       *filename,
+	   const char                 *escaped_attribute,
+	   const GFileAttributeValue  *attr_value,
+	   GError                    **error)
 {
   char *attribute, *value;
   gboolean free_attribute, free_value;
@@ -680,7 +683,6 @@ set_xattr (char *filename,
   attribute = hex_unescape_string (escaped_attribute, NULL, &free_attribute);
   value = hex_unescape_string (attr_value->u.string, &val_len, &free_value);
 
-
   if (is_user)
     a = g_strconcat ("user.", attribute, NULL);
   else
@@ -714,9 +716,9 @@ set_xattr (char *filename,
 
 
 void
-_g_local_file_info_get_parent_info (const char             *dir,
-				    GFileAttributeMatcher  *attribute_matcher,
-				    GLocalParentFileInfo   *parent_info)
+_g_local_file_info_get_parent_info (const char            *dir,
+				    GFileAttributeMatcher *attribute_matcher,
+				    GLocalParentFileInfo  *parent_info)
 {
   struct stat statbuf;
   int res;
@@ -750,10 +752,10 @@ _g_local_file_info_get_parent_info (const char             *dir,
 
 static void
 get_access_rights (GFileAttributeMatcher *attribute_matcher,
-		   GFileInfo *info,
-		   const gchar *path,
-		   struct stat *statbuf,
-		   GLocalParentFileInfo *parent_info)
+		   GFileInfo             *info,
+		   const gchar           *path,
+		   struct stat           *statbuf,
+		   GLocalParentFileInfo  *parent_info)
 {
   if (g_file_attribute_matcher_matches (attribute_matcher,
 					G_FILE_ATTRIBUTE_ACCESS_CAN_READ))
@@ -807,7 +809,8 @@ get_access_rights (GFileAttributeMatcher *attribute_matcher,
 }
 
 static void
-set_info_from_stat (GFileInfo *info, struct stat *statbuf,
+set_info_from_stat (GFileInfo             *info, 
+                    struct stat           *statbuf,
 		    GFileAttributeMatcher *attribute_matcher)
 {
   GFileType file_type;
@@ -1098,13 +1101,13 @@ get_groupname_from_gid (gid_t gid)
 }
 
 static char *
-get_content_type (const char *basename,
-		  const char *path,
-		  struct stat *statbuf,
-		  gboolean is_symlink,
-		  gboolean symlink_broken,
-		  GFileQueryInfoFlags flags,
-		  gboolean fast)
+get_content_type (const char          *basename,
+		  const char          *path,
+		  struct stat         *statbuf,
+		  gboolean             is_symlink,
+		  gboolean             symlink_broken,
+		  GFileQueryInfoFlags  flags,
+		  gboolean             fast)
 {
   if (is_symlink &&
       (symlink_broken || (flags & G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS)))
@@ -1161,7 +1164,8 @@ get_content_type (const char *basename,
 }
 
 static char *
-thumb_digest_to_ascii (unsigned char digest[16], const char *suffix)
+thumb_digest_to_ascii (unsigned char  digest[16], 
+                       const char    *suffix)
 {
   static const char hex_digits[] = "0123456789abcdef";
   char *res;
@@ -1169,10 +1173,11 @@ thumb_digest_to_ascii (unsigned char digest[16], const char *suffix)
   
   res = g_malloc (33 + strlen (suffix));
   
-  for (i = 0; i < 16; i++) {
-    res[2*i] = hex_digits[digest[i] >> 4];
-    res[2*i+1] = hex_digits[digest[i] & 0xf];
-  }
+  for (i = 0; i < 16; i++) 
+    {
+      res[2*i] = hex_digits[digest[i] >> 4];
+      res[2*i+1] = hex_digits[digest[i] & 0xf];
+    }
   
   res[32] = 0;
 
@@ -1184,7 +1189,7 @@ thumb_digest_to_ascii (unsigned char digest[16], const char *suffix)
 
 static void
 get_thumbnail_attributes (const char *path,
-			  GFileInfo *info)
+                          GFileInfo  *info)
 {
   char *uri;
   unsigned char digest[16];
@@ -1215,12 +1220,12 @@ get_thumbnail_attributes (const char *path,
 
 
 GFileInfo *
-_g_local_file_info_get (const char *basename,
-			const char *path,
-			GFileAttributeMatcher *attribute_matcher,
-			GFileQueryInfoFlags flags,
-			GLocalParentFileInfo *parent_info,
-			GError **error)
+_g_local_file_info_get (const char             *basename,
+			const char             *path,
+			GFileAttributeMatcher  *attribute_matcher,
+			GFileQueryInfoFlags     flags,
+			GLocalParentFileInfo   *parent_info,
+			GError                **error)
 {
   GFileInfo *info;
   struct stat statbuf;
@@ -1452,8 +1457,8 @@ _g_local_file_info_get (const char *basename,
 }
 
 GFileInfo *
-_g_local_file_info_get_from_fd (int fd,
-				char *attributes,
+_g_local_file_info_get_from_fd (int      fd,
+				char    *attributes,
 				GError **error)
 {
   struct stat stat_buf;
@@ -1502,9 +1507,9 @@ _g_local_file_info_get_from_fd (int fd,
 }
 
 static gboolean
-get_uint32 (const GFileAttributeValue *value,
-	    guint32 *val_out,
-	    GError **error)
+get_uint32 (const GFileAttributeValue  *value,
+	    guint32                    *val_out,
+	    GError                    **error)
 {
   if (value->type != G_FILE_ATTRIBUTE_TYPE_UINT32)
     {
@@ -1519,9 +1524,9 @@ get_uint32 (const GFileAttributeValue *value,
 }
 
 static gboolean
-get_uint64 (const GFileAttributeValue *value,
-	    guint64 *val_out,
-	    GError **error)
+get_uint64 (const GFileAttributeValue  *value,
+	    guint64                    *val_out,
+	    GError                    **error)
 {
   if (value->type != G_FILE_ATTRIBUTE_TYPE_UINT64)
     {
@@ -1537,9 +1542,9 @@ get_uint64 (const GFileAttributeValue *value,
 
 #if defined(HAVE_SYMLINK)
 static gboolean
-get_byte_string (const GFileAttributeValue *value,
-		 const char **val_out,
-		 GError **error)
+get_byte_string (const GFileAttributeValue  *value,
+		 const char                **val_out,
+		 GError                    **error)
 {
   if (value->type != G_FILE_ATTRIBUTE_TYPE_BYTE_STRING)
     {
@@ -1555,9 +1560,9 @@ get_byte_string (const GFileAttributeValue *value,
 #endif
 
 static gboolean
-set_unix_mode (char *filename,
-	       const GFileAttributeValue *value,
-	       GError **error)
+set_unix_mode (char                       *filename,
+	       const GFileAttributeValue  *value,
+	       GError                    **error)
 {
   guint32 val;
   
@@ -1577,11 +1582,11 @@ set_unix_mode (char *filename,
 
 #ifdef HAVE_CHOWN
 static gboolean
-set_unix_uid_gid (char *filename,
-		  const GFileAttributeValue *uid_value,
-		  const GFileAttributeValue *gid_value,
-		  GFileQueryInfoFlags flags,
-		  GError **error)
+set_unix_uid_gid (char                       *filename,
+		  const GFileAttributeValue  *uid_value,
+		  const GFileAttributeValue  *gid_value,
+		  GFileQueryInfoFlags         flags,
+		  GError                    **error)
 {
   int res;
   guint32 val;
@@ -1625,9 +1630,9 @@ set_unix_uid_gid (char *filename,
 
 #ifdef HAVE_SYMLINK
 static gboolean
-set_symlink (char *filename,
-	     const GFileAttributeValue *value,
-	     GError **error)
+set_symlink (char                       *filename,
+	     const GFileAttributeValue  *value,
+	     GError                    **error)
 {
   const char *val;
   struct stat statbuf;
@@ -1682,7 +1687,9 @@ set_symlink (char *filename,
 #endif
 
 static int
-lazy_stat (char *filename, struct stat *statbuf, gboolean *called_stat)
+lazy_stat (char        *filename, 
+           struct stat *statbuf, 
+           gboolean    *called_stat)
 {
   int res;
 
@@ -1700,12 +1707,12 @@ lazy_stat (char *filename, struct stat *statbuf, gboolean *called_stat)
 
 #ifdef HAVE_UTIMES
 static gboolean
-set_mtime_atime (char *filename,
-		 const GFileAttributeValue *mtime_value,
-		 const GFileAttributeValue *mtime_usec_value,
-		 const GFileAttributeValue *atime_value,
-		 const GFileAttributeValue *atime_usec_value,
-		 GError **error)
+set_mtime_atime (char                       *filename,
+		 const GFileAttributeValue  *mtime_value,
+		 const GFileAttributeValue  *mtime_usec_value,
+		 const GFileAttributeValue  *atime_value,
+		 const GFileAttributeValue  *atime_usec_value,
+		 GError                    **error)
 {
   int res;
   guint64 val;
@@ -1782,12 +1789,12 @@ set_mtime_atime (char *filename,
 #endif
 
 gboolean
-_g_local_file_info_set_attribute (char *filename,
-				  const char *attribute,
-				  const GFileAttributeValue *value,
-				  GFileQueryInfoFlags flags,
-				  GCancellable *cancellable,
-				  GError **error)
+_g_local_file_info_set_attribute (char                       *filename,
+				  const char                 *attribute,
+				  const GFileAttributeValue  *value,
+				  GFileQueryInfoFlags         flags,
+				  GCancellable               *cancellable,
+				  GError                    **error)
 {
   if (strcmp (attribute, G_FILE_ATTRIBUTE_UNIX_MODE) == 0)
     return set_unix_mode (filename, value, error);
@@ -1828,11 +1835,11 @@ _g_local_file_info_set_attribute (char *filename,
 }
 
 gboolean
-_g_local_file_info_set_attributes  (char                       *filename,
-				    GFileInfo                  *info,
-				    GFileQueryInfoFlags         flags,
-				    GCancellable               *cancellable,
-				    GError                    **error)
+_g_local_file_info_set_attributes  (char                 *filename,
+				    GFileInfo            *info,
+				    GFileQueryInfoFlags   flags,
+				    GCancellable         *cancellable,
+				    GError              **error)
 {
   GFileAttributeValue *value, *uid, *gid;
   GFileAttributeValue *mtime, *mtime_usec, *atime, *atime_usec;
@@ -1989,7 +1996,8 @@ thumb_md5 (const char *string, unsigned char digest[16])
  * Note: this code is harmless on little-endian machines.
  */
 static void
-byteReverse(unsigned char *buf, unsigned longs)
+byteReverse (unsigned char *buf, 
+             unsigned       longs)
 {
     guint32 t;
     do {
@@ -2024,8 +2032,8 @@ thumb_md5_init (struct ThumbMD5Context *ctx)
  */
 static void 
 thumb_md5_update (struct ThumbMD5Context *ctx,
-		  unsigned char const *buf,
-		  unsigned len)
+		  unsigned char const    *buf,
+		  unsigned                len)
 {
     guint32 t;
 
@@ -2075,7 +2083,8 @@ thumb_md5_update (struct ThumbMD5Context *ctx,
  * 1 0* (64-bit count of bits processed, MSB-first)
  */
 static void 
-thumb_md5_final (unsigned char digest[16], struct ThumbMD5Context *ctx)
+thumb_md5_final (unsigned char           digest[16], 
+                 struct ThumbMD5Context *ctx)
 {
     unsigned count;
     unsigned char *p;
@@ -2134,7 +2143,8 @@ thumb_md5_final (unsigned char digest[16], struct ThumbMD5Context *ctx)
  * the data and converts bytes into longwords for this routine.
  */
 static void 
-thumb_md5_transform (guint32 buf[4], guint32 const in[16])
+thumb_md5_transform (guint32       buf[4], 
+                     guint32 const in[16])
 {
     register guint32 a, b, c, d;
 

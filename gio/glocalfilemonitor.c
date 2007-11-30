@@ -43,10 +43,10 @@ g_local_file_monitor_init (GLocalFileMonitor* local_monitor)
 }
 
 static void
-g_local_file_monitor_set_property (GObject *object,
-                                   guint property_id,
+g_local_file_monitor_set_property (GObject      *object,
+                                   guint         property_id,
                                    const GValue *value,
-                                   GParamSpec *pspec)
+                                   GParamSpec   *pspec)
 {
   switch (property_id)
   {
@@ -60,8 +60,8 @@ g_local_file_monitor_set_property (GObject *object,
 }
 
 static GObject *
-g_local_file_monitor_constructor (GType type,
-                                  guint n_construct_properties,
+g_local_file_monitor_constructor (GType                  type,
+                                  guint                  n_construct_properties,
                                   GObjectConstructParam *construct_properties)
 {
   GObject *obj;
@@ -126,7 +126,7 @@ g_local_file_monitor_class_init (GLocalFileMonitorClass* klass)
 static gint
 _compare_monitor_class_by_prio (gconstpointer a,
                                 gconstpointer b,
-                                gpointer user_data)
+                                gpointer      user_data)
 {
   GType *type1 = (GType *) a, *type2 = (GType *) b;
   GLocalFileMonitorClass *klass1, *klass2;
@@ -198,8 +198,8 @@ get_default_local_file_monitor (gpointer data)
  * Returns: a new #GFileMonitor for the given @pathname. 
  **/
 GFileMonitor*
-_g_local_file_monitor_new (const char* pathname,
-			   GFileMonitorFlags flags)
+_g_local_file_monitor_new (const char        *pathname,
+			   GFileMonitorFlags  flags)
 {
   static GOnce once_init = G_ONCE_INIT;
   static GType monitor_type = G_TYPE_INVALID;

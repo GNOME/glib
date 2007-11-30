@@ -270,17 +270,18 @@ g_dummy_file_contains_file (GFile *parent,
       descendant_dummy->decoded_uri != NULL)
     {
       if (uri_same_except_path (parent_dummy->decoded_uri,
-				descendant_dummy->decoded_uri)) {
-	remainder = match_prefix (descendant_dummy->decoded_uri->path,
-				  parent_dummy->decoded_uri->path);
-	if (remainder != NULL && *remainder == '/')
-	  {
-	    while (*remainder == '/')
-	      remainder++;
-	    if (*remainder != 0)
-	      return TRUE;
-	  }
-      }
+				descendant_dummy->decoded_uri)) 
+        {
+	  remainder = match_prefix (descendant_dummy->decoded_uri->path,
+                                    parent_dummy->decoded_uri->path);
+          if (remainder != NULL && *remainder == '/')
+	    {
+	      while (*remainder == '/')
+	        remainder++;
+	      if (*remainder != 0)
+	        return TRUE;
+	    }
+        }
     }
   else
     {
@@ -310,17 +311,18 @@ g_dummy_file_get_relative_path (GFile *parent,
       descendant_dummy->decoded_uri != NULL)
     {
       if (uri_same_except_path (parent_dummy->decoded_uri,
-				descendant_dummy->decoded_uri)) {
-	remainder = match_prefix (descendant_dummy->decoded_uri->path,
-				  parent_dummy->decoded_uri->path);
-	if (remainder != NULL && *remainder == '/')
-	  {
-	    while (*remainder == '/')
-	      remainder++;
-	    if (*remainder != 0)
-	      return g_strdup (remainder);
-	  }
-      }
+				descendant_dummy->decoded_uri)) 
+        {
+          remainder = match_prefix (descendant_dummy->decoded_uri->path,
+                                    parent_dummy->decoded_uri->path);
+          if (remainder != NULL && *remainder == '/')
+	    {
+	      while (*remainder == '/')
+	        remainder++;
+	      if (*remainder != 0)
+	        return g_strdup (remainder);
+	    }
+        }
     }
   else
     {
@@ -340,7 +342,7 @@ g_dummy_file_get_relative_path (GFile *parent,
 
 
 static GFile *
-g_dummy_file_resolve_relative_path (GFile *file,
+g_dummy_file_resolve_relative_path (GFile      *file,
 				    const char *relative_path)
 {
   GDummyFile *dummy = G_DUMMY_FILE (file);
@@ -464,30 +466,32 @@ unescape_string (const gchar *escaped_string,
   result = g_malloc (escaped_string_end - escaped_string + 1);
 	
   out = result;
-  for (in = escaped_string; in < escaped_string_end; in++) {
-    character = *in;
-    if (*in == '%') {
-      in++;
-      if (escaped_string_end - in < 2)
-	{
-	  g_free (result);
-	  return NULL;
-	}
+  for (in = escaped_string; in < escaped_string_end; in++) 
+    {
+      character = *in;
+      if (*in == '%') 
+        {
+          in++;
+          if (escaped_string_end - in < 2)
+	    {
+	      g_free (result);
+	      return NULL;
+	    }
       
-      character = unescape_character (in);
+          character = unescape_character (in);
       
-      /* Check for an illegal character. We consider '\0' illegal here. */
-      if (character <= 0 ||
-	  (illegal_characters != NULL &&
-	   strchr (illegal_characters, (char)character) != NULL))
-	{
-	  g_free (result);
-	  return NULL;
-	}
-      in++; /* The other char will be eaten in the loop header */
+          /* Check for an illegal character. We consider '\0' illegal here. */
+          if (character <= 0 ||
+	      (illegal_characters != NULL &&
+	       strchr (illegal_characters, (char)character) != NULL))
+	    {
+	      g_free (result);
+	      return NULL;
+	    }
+          in++; /* The other char will be eaten in the loop header */
+        }
+      *out++ = (char)character;
     }
-    *out++ = (char)character;
-  }
   
   *out = '\0';
   g_assert (out - result <= strlen (escaped_string));
