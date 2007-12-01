@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.es\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-11-28 16:31+0000\n"
-"PO-Revision-Date: 2007-11-29 18:45+0100\n"
+"POT-Creation-Date: 2007-11-29 17:47+0000\n"
+"PO-Revision-Date: 2007-12-01 15:14+0100\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Spanish <traductores@es.gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -961,8 +961,8 @@ msgstr "El valor «%s» no puede interpretarse como un número de coma flotante.
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "El valor «%s» no puede interpretarse como un booleano."
 
-#: ../gio/gbufferedinputstream.c:406 ../gio/gbufferedinputstream.c:500
-#: ../gio/gbufferedinputstream.c:887 ../gio/gfileinputstream.c:134
+#: ../gio/gbufferedinputstream.c:405 ../gio/gbufferedinputstream.c:497
+#: ../gio/gbufferedinputstream.c:883 ../gio/gfileinputstream.c:134
 #: ../gio/gfileinputstream.c:218 ../gio/gfileinputstream.c:377
 #: ../gio/gfileoutputstream.c:144 ../gio/gfileoutputstream.c:228
 #: ../gio/gfileoutputstream.c:415 ../gio/gfileoutputstream.c:523
@@ -973,8 +973,8 @@ msgstr "El valor «%s» no puede interpretarse como un booleano."
 msgid "Stream is already closed"
 msgstr "El flujo ya se cerró"
 
-#: ../gio/gbufferedinputstream.c:413 ../gio/gbufferedinputstream.c:510
-#: ../gio/gbufferedinputstream.c:894 ../gio/gfileinputstream.c:141
+#: ../gio/gbufferedinputstream.c:412 ../gio/gbufferedinputstream.c:507
+#: ../gio/gbufferedinputstream.c:890 ../gio/gfileinputstream.c:141
 #: ../gio/gfileinputstream.c:228 ../gio/gfileinputstream.c:384
 #: ../gio/gfileoutputstream.c:151 ../gio/gfileoutputstream.c:238
 #: ../gio/gfileoutputstream.c:422 ../gio/gfileoutputstream.c:530
@@ -988,11 +988,11 @@ msgstr "El flujo ya se cerró"
 msgid "Stream has outstanding operation"
 msgstr ""
 
-#: ../gio/gbufferedinputstream.c:490 ../gio/ginputstream.c:583
+#: ../gio/gbufferedinputstream.c:487 ../gio/ginputstream.c:583
 msgid "Too large count value passed to g_input_stream_read_async"
-msgstr "El valor de conteo pasado a passed to g_input_stream_read_async es demasiado largo"
+msgstr "El valor de conteo pasado a g_input_stream_read_async es demasiado largo"
 
-#: ../gio/gcancellable.c:268 ../gio/gsimpleasyncresult.c:605
+#: ../gio/gcancellable.c:268 ../gio/gsimpleasyncresult.c:609
 msgid "Operation was cancelled"
 msgstr "Se canceló la operación"
 
@@ -1005,12 +1005,12 @@ msgstr "Tipo desconocido"
 msgid "%s filetype"
 msgstr "tipo de archivo %s"
 
-#: ../gio/gcontenttype.c:565
+#: ../gio/gcontenttype.c:567
 #, c-format
 msgid "%s type"
 msgstr "tipo %s"
 
-#: ../gio/gdatainputstream.c:241
+#: ../gio/gdatainputstream.c:240
 msgid "Unexpected early end-of-stream"
 msgstr "Final de flujo inesperadamente prematuro"
 
@@ -1018,88 +1018,90 @@ msgstr "Final de flujo inesperadamente prematuro"
 msgid "Unnamed"
 msgstr "Sin nombre"
 
-#: ../gio/gdesktopappinfo.c:543
+#: ../gio/gdesktopappinfo.c:546
 msgid "Desktop file didn't specify Exec field"
 msgstr ""
 
-#: ../gio/gdesktopappinfo.c:825
+#: ../gio/gdesktopappinfo.c:828
 msgid "Unable to find terminal required for application"
 msgstr "Imposible encontrar el terminal requerido por la aplicación"
 
-#: ../gio/gdesktopappinfo.c:1020
+#: ../gio/gdesktopappinfo.c:1018
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
-msgstr "No se puede crear la carpeta de configuración de la aplicación %s del usuario: %s"
+msgstr ""
+"No se puede crear la carpeta de configuración de la aplicación %s del "
+"usuario: %s"
 
-#: ../gio/gdesktopappinfo.c:1026
+#: ../gio/gdesktopappinfo.c:1022
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "No se puede crear la carpeta de configuración MIME %s del usuario: %s"
 
-#: ../gio/gdesktopappinfo.c:1396
+#: ../gio/gdesktopappinfo.c:1394
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Definición personalizada para %s"
 
-#: ../gio/gdesktopappinfo.c:1420
+#: ../gio/gdesktopappinfo.c:1418
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "No se puede crear el archivo de escritorio %s del usuario"
 
-#: ../gio/gdesktopappinfo.c:1445
+#: ../gio/gdesktopappinfo.c:1443
 msgid "Can't load just created desktop file"
 msgstr "No se puede cargar el archivo de escritorio recientemente creado"
 
-#: ../gio/gdrive.c:283
+#: ../gio/gdrive.c:282
 msgid "drive doesn't implement mount"
 msgstr "la unidad no implementa el montaje"
 
-#: ../gio/gdrive.c:348
+#: ../gio/gdrive.c:347
 msgid "drive doesn't implement eject"
 msgstr "la unidad no implementa la expulsión"
 
-#: ../gio/gfile.c:653 ../gio/gfile.c:779 ../gio/gfile.c:901 ../gio/gfile.c:986
-#: ../gio/gfile.c:1028 ../gio/gfile.c:1071 ../gio/gfile.c:1120
-#: ../gio/gfile.c:2048 ../gio/gfile.c:2096 ../gio/gfile.c:2135
-#: ../gio/gfile.c:2440 ../gio/gfile.c:2831 ../gio/gfile.c:2901
-#: ../gio/gfile.c:2975
+#: ../gio/gfile.c:659 ../gio/gfile.c:787 ../gio/gfile.c:911 ../gio/gfile.c:996
+#: ../gio/gfile.c:1041 ../gio/gfile.c:1086 ../gio/gfile.c:1140
+#: ../gio/gfile.c:2109 ../gio/gfile.c:2159 ../gio/gfile.c:2198
+#: ../gio/gfile.c:2509 ../gio/gfile.c:2909 ../gio/gfile.c:2985
+#: ../gio/gfile.c:3062
 msgid "Operation not supported"
 msgstr "Operación no soportada"
 
-#: ../gio/gfile.c:943 ../gio/glocalfile.c:836 ../gio/glocalfile.c:845
+#: ../gio/gfile.c:953 ../gio/glocalfile.c:836 ../gio/glocalfile.c:845
 #: ../gio/glocalfile.c:856
 msgid "Containing volume does not exist"
 msgstr ""
 
-#: ../gio/gfile.c:1452
+#: ../gio/gfile.c:1495
 msgid "Can't copy over directory"
 msgstr "No se puede copiar sobre el directorio"
 
-#: ../gio/gfile.c:1511
+#: ../gio/gfile.c:1555
 msgid "Can't copy directory over directory"
 msgstr "No se puede copiar directorio sobre directorio"
 
-#: ../gio/gfile.c:1519
+#: ../gio/gfile.c:1563
 msgid "Target file exists"
 msgstr "El archivo destino ya existe"
 
-#: ../gio/gfile.c:1535
+#: ../gio/gfile.c:1581
 msgid "Can't recursively copy directory"
 msgstr "No se puede copiar el directorio recursivamente"
 
-#: ../gio/gfile.c:2086
+#: ../gio/gfile.c:2149
 msgid "Invalid symlink value given"
 msgstr "El valor del enlace simbólico dado no es válido"
 
-#: ../gio/gfile.c:2176
+#: ../gio/gfile.c:2240
 msgid "Trash not supported"
 msgstr "No se soporta mover a la papelera"
 
-#: ../gio/gfile.c:2216
+#: ../gio/gfile.c:2280
 msgid "File names cannot contain '/'"
 msgstr "Los nombres de archivo no pueden contener «/»"
 
-#: ../gio/gfile.c:3821
+#: ../gio/gfile.c:3907
 msgid "volume doesn't implement mount"
 msgstr "el volumen no implementa el montado"
 
@@ -1135,19 +1137,19 @@ msgstr ""
 
 #: ../gio/ginputstream.c:185
 msgid "Too large count value passed to g_input_stream_read"
-msgstr ""
+msgstr "El valor de conteo pasado a g_input_stream_read es demasiado largo"
 
 #: ../gio/ginputstream.c:208
 msgid "Input stream doesn't implement read"
-msgstr ""
+msgstr "El flujo de entrada no implementa la lectura"
 
 #: ../gio/ginputstream.c:328
 msgid "Too large count value passed to g_input_stream_skip"
-msgstr ""
+msgstr "El valor de conteo pasado a g_input_stream_skip es demasiado largo"
 
 #: ../gio/ginputstream.c:716
 msgid "Too large count value passed to g_input_stream_skip_async"
-msgstr ""
+msgstr "El valor de conteo pasado a g_input_stream_skip_async es demasiado largo"
 
 #: ../gio/glocalfile.c:538
 #, c-format
@@ -1157,15 +1159,15 @@ msgstr "Nombre de archivo no válido %s"
 #: ../gio/glocalfile.c:787
 #, c-format
 msgid "Error getting filesystem info: %s"
-msgstr ""
+msgstr "Error al obtener la información del sistema de archivos: %s"
 
 #: ../gio/glocalfile.c:876
 msgid "Can't rename root directory"
-msgstr ""
+msgstr "No se puede renombrar el directorio raíz"
 
 #: ../gio/glocalfile.c:894
 msgid "Can't rename file, filename already exist"
-msgstr ""
+msgstr "No se puede renombrar el archivo, el nombre ya existe"
 
 #: ../gio/glocalfile.c:907 ../gio/glocalfile.c:1592 ../gio/glocalfile.c:1621
 #: ../gio/glocalfile.c:1750 ../gio/glocalfileoutputstream.c:435
@@ -1176,35 +1178,35 @@ msgstr "Nombre de archivo inválido"
 #: ../gio/glocalfile.c:911
 #, c-format
 msgid "Error renaming file: %s"
-msgstr ""
+msgstr "Error al renombrar el archivo: %s"
 
 #: ../gio/glocalfile.c:1026
 #, c-format
 msgid "Error opening file: %s"
-msgstr ""
+msgstr "Error al abrir el archivo: %s"
 
 #: ../gio/glocalfile.c:1036
 msgid "Can't open directory"
-msgstr ""
+msgstr "No se puede abrir el directorio"
 
 #: ../gio/glocalfile.c:1088 ../gio/glocalfile.c:1596
 #, c-format
 msgid "Error removing file: %s"
-msgstr ""
+msgstr "Error al eliminar el archivo: %s"
 
 #: ../gio/glocalfile.c:1364
 #, c-format
 msgid "Error trashing file: %s"
-msgstr ""
+msgstr "Error al mover a la papelera el archivo: %s"
 
 #: ../gio/glocalfile.c:1388
 #, c-format
 msgid "Unable to create trash dir %s: %s"
-msgstr ""
+msgstr "No se pudo crear el directorio papelera %s: %s"
 
 #: ../gio/glocalfile.c:1406
 msgid "Unable to find toplevel directory for trash"
-msgstr ""
+msgstr "No se pudo encontrar el directorio de nivel superior para mover a la papelera"
 
 #: ../gio/glocalfile.c:1465 ../gio/glocalfile.c:1485
 msgid "Unable to find or create trash directory"
@@ -1236,35 +1238,35 @@ msgstr "No se puede mover un directorio sobre un directoro"
 
 #: ../gio/glocalfile.c:1702
 msgid "Target file already exists"
-msgstr ""
+msgstr "El archivo destino ya existe"
 
 #: ../gio/glocalfile.c:1715 ../gio/glocalfileoutputstream.c:724
 #: ../gio/glocalfileoutputstream.c:738 ../gio/glocalfileoutputstream.c:753
 #: ../gio/glocalfileoutputstream.c:769 ../gio/glocalfileoutputstream.c:783
 msgid "Backup file creation failed"
-msgstr ""
+msgstr "Falló la creación del archivo de respaldo"
 
 #: ../gio/glocalfile.c:1732
 #, c-format
 msgid "Error removing target file: %s"
-msgstr ""
+msgstr "Error al eliminar el archivo destino: %s"
 
 #: ../gio/glocalfileinfo.c:650
 msgid "Attribute value must be non-NULL"
-msgstr ""
+msgstr "El valor del atributo de ser no nulo"
 
 #: ../gio/glocalfileinfo.c:657
 msgid "Invalid attribute type (string expected)"
-msgstr ""
+msgstr "Tipo de atributo no válido (se esperaba una cadena)"
 
 #: ../gio/glocalfileinfo.c:664
 msgid "Invalid extended attribute name"
-msgstr ""
+msgstr "Nombre extendido del atributo no válido"
 
 #: ../gio/glocalfileinfo.c:705
 #, c-format
 msgid "Error setting extended attribute '%s': %s"
-msgstr ""
+msgstr "Error al establecer el atributo extendido «%s»: %s"
 
 #: ../gio/glocalfileinfo.c:1248 ../gio/glocalfileoutputstream.c:614
 #, c-format
@@ -1282,39 +1284,39 @@ msgstr ""
 
 #: ../gio/glocalfileinfo.c:1512
 msgid "Invalid attribute type (uint32 expected)"
-msgstr ""
+msgstr "Tipo de atributo no válido (se esperaba uint32)"
 
 #: ../gio/glocalfileinfo.c:1529
 msgid "Invalid attribute type (uint64 expected)"
-msgstr ""
+msgstr "Tipo de atributo no válido (se esperaba uint64)"
 
 #: ../gio/glocalfileinfo.c:1547
 msgid "Invalid attribute type (byte string expected)"
-msgstr ""
+msgstr "Tipo de atributo no válido (se esperaba una cadena byte)"
 
 #: ../gio/glocalfileinfo.c:1571
 #, c-format
 msgid "Error setting permissions: %s"
-msgstr ""
+msgstr "Error al establecer permisos: %s"
 
 #: ../gio/glocalfileinfo.c:1618 ../gio/glocalfileinfo.c:1776
 #, c-format
 msgid "Error setting owner: %s"
-msgstr ""
+msgstr "Error al establecer el propietario: %s"
 
 #: ../gio/glocalfileinfo.c:1641
 msgid "symlink must be non-NULL"
-msgstr ""
+msgstr "el enlace simbólico debe ser no nulo"
 
 #: ../gio/glocalfileinfo.c:1649 ../gio/glocalfileinfo.c:1666
 #: ../gio/glocalfileinfo.c:1675
 #, c-format
 msgid "Error setting symlink: %s"
-msgstr ""
+msgstr "Error al establecer el enlace simbólico: %s"
 
 #: ../gio/glocalfileinfo.c:1658
 msgid "Error setting symlink: file is not a symlink"
-msgstr ""
+msgstr "Error al establecer el enlace simbólico: el archivo no es un enlace simbólico"
 
 #: ../gio/glocalfileinfo.c:1826
 #, c-format
@@ -1388,7 +1390,7 @@ msgstr "El archivo se modificó externamente"
 
 #: ../gio/goutputstream.c:193
 msgid "Too large count value passed to g_output_stream_write"
-msgstr ""
+msgstr "El valor de conteo pasado a g_output_stream_write es demasiado largo"
 
 #: ../gio/goutputstream.c:216
 msgid "Output stream doesn't implement write"
@@ -1416,12 +1418,12 @@ msgstr "Unidad desconocida"
 msgid "%s volume"
 msgstr "volumen %s"
 
-#: ../gio/gunixvolume.c:170
+#: ../gio/gunixvolume.c:162
 msgid "Filesystem root"
 msgstr "Sistema de archivos raíz"
 
 #. TODO: Use volume size as name?
-#: ../gio/gunixvolume.c:184
+#: ../gio/gunixvolume.c:176
 msgid "Unknown volume"
 msgstr "Volumen desconocido"
 
