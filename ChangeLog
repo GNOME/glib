@@ -1,3 +1,7 @@
+2007-12-01  Behdad Esfahbod  <behdad@gnome.org>
+
+	* Makefile.am: Don't descend into build/. (#500875)
+
 2007-11-28  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gmarkup.h:
