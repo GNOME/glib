@@ -165,6 +165,8 @@ libgio_2_0_la_SOURCES =		\
 	gvolume.c 		\
 	gvolumemonitor.c 	\
 	gvolumeprivate.h 	\
+	gioenumtypes.h		\
+	gioenumtypes.c		\
 	$(appinfo_sources) 	\
 	$(unix_sources) 	\
 	$(local_sources) 	\
@@ -189,8 +191,7 @@ endif
 
 libgio_2_0_la_LDFLAGS= -export-dynamic $(no_undefined) -export-symbols-regex '^g_.*'
 
-gioincludedir=$(includedir)/glib-2.0/gio/
-gioinclude_HEADERS = \
+gio_headers =			\
 	gappinfo.h 		\
 	gasyncresult.h 		\
 	gbufferedinputstream.h 	\
@@ -231,15 +232,35 @@ gioinclude_HEADERS = \
 	gvolumemonitor.h 	\
 	$(NULL)
 
+gioincludedir=$(includedir)/glib-2.0/gio/
+gioinclude_HEADERS = 		\
+	$(gio_headers)		\
+	gioenumtypes.h
 
 # these sources (also mentioned above) are generated.
-BUILT_SOURCES = gio-marshal.h gio-marshal.c gioalias.h gioaliasdef.c
+BUILT_SOURCES = 		\
+	gio-marshal.h 		\
+	gio-marshal.c 		\
+	gioalias.h 		\
+	gioaliasdef.c		\
+	gioenumtypes.h		\
+	gioenumtypes.c		\
+	$(NULL)
 
 EXTRA_DIST = 			\
 	gio-marshal.list	\
 	gio.symbols		\
+	gioenumtypes.h.template	\
+	gioenumtypes.c.template	\
 	$(NULL)
 
 CLEANFILES = 			\
 	$(marshal_sources)	\
 	$(NULL)
+
+gioenumtypes.h: $(gio_headers)
+	( cd $(srcdir) && $(top_builddir)/gobject/glib-mkenums --template gioenumtypes.h.template $(gio_headers) ) > gioenumtypes.h
+	
+gioenumtypes.c: $(gio_headers)
+	( cd $(srcdir) && $(top_builddir)/gobject/glib-mkenums --template gioenumtypes.c.template $(gio_headers) ) > gioenumtypes.c
+	

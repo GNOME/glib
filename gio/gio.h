@@ -47,5 +47,6 @@
 #include <gio/gmemoryinputstream.h>
 #include <gio/gmemoryoutputstream.h>
 #include <gio/gsimpleasyncresult.h>
+#include <gio/gioenumtypes.h>
 
 #endif /* __G_IO_H__ */

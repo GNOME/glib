@@ -44,7 +44,7 @@ G_BEGIN_DECLS
  * Flags used when querying a #GFileInfo.
  */
 typedef enum {
-  G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS = (1<<0)
+  G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS = (1<<0)   /*< nick=nofollow-symlinks >*/
 } GFileQueryInfoFlags;
 
 /**
@@ -71,7 +71,7 @@ typedef enum  {
  * Flags used when copying or moving files. 
  */
 typedef enum {
-  G_FILE_COPY_FLAGS_NONE = 0,
+  G_FILE_COPY_FLAGS_NONE = 0,          /*< nick=none >*/
   G_FILE_COPY_OVERWRITE = (1<<0),
   G_FILE_COPY_BACKUP = (1<<1),
   G_FILE_COPY_NOFOLLOW_SYMLINKS = (1<<2),

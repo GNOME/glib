@@ -1,5 +1,19 @@
 2007-11-30  Matthias Clasen <mclasen@redhat.com>
 
+	* gioenumtypes.[hc].template: Templates for enum registration
+
+	* Makefile.am: Generate gioenumtypes.[hc]
+
+	* gio.h: Include gioenumtypes.h
+	* gappinfo.h:
+	* gfile.h: Add some explicit nicks.
+
+	* gio.symbols: Add new symbols
+
+	* pltcheck.sh: Adjust
+
+2007-11-30  Matthias Clasen <mclasen@redhat.com>
+
 	* *.c: Explain etags and link to the explanation
 
 2007-11-29  Matthias Clasen <mclasen@redhat.com>

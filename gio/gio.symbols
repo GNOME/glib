@@ -714,3 +714,24 @@ g_local_file_monitor_get_type  G_GNUC_CONST
 g_local_directory_monitor_get_type  G_GNUC_CONST
 #endif
 #endif
+
+#if IN_HEADER(__GIO_ENUM_TYPES_H__)
+#if IN_FILE(__GIO_ENUM_TYPES_C__)
+g_app_info_create_flags_get_type G_GNUC_CONST
+g_data_stream_byte_order_get_type G_GNUC_CONST
+g_data_stream_newline_type_get_type G_GNUC_CONST
+g_file_attribute_flags_get_type G_GNUC_CONST
+g_file_attribute_status_get_type G_GNUC_CONST
+g_file_attribute_type_get_type G_GNUC_CONST
+g_file_copy_flags_get_type G_GNUC_CONST
+g_file_create_flags_get_type G_GNUC_CONST
+g_file_monitor_event_get_type G_GNUC_CONST
+g_file_monitor_flags_get_type G_GNUC_CONST
+g_file_query_info_flags_get_type G_GNUC_CONST
+g_file_type_get_type G_GNUC_CONST
+g_io_error_enum_get_type G_GNUC_CONST
+g_output_stream_splice_flags_get_type G_GNUC_CONST
+g_password_flags_get_type G_GNUC_CONST
+g_password_save_get_type G_GNUC_CONST
+#endif
+#endif
