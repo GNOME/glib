@@ -23,6 +23,7 @@
 #include <config.h>
 #include <string.h>
 #include "gdataoutputstream.h"
+#include "gioenumtypes.h"
 #include "glibintl.h"
 
 #include "gioalias.h"
@@ -44,7 +45,8 @@ struct _GDataOutputStreamPrivate {
 };
 
 enum {
-  PROP_0
+  PROP_0,
+  PROP_BYTE_ORDER
 };
 
 static void g_data_output_stream_set_property (GObject      *object,
@@ -71,6 +73,22 @@ g_data_output_stream_class_init (GDataOutputStreamClass *klass)
   object_class = G_OBJECT_CLASS (klass);
   object_class->get_property = g_data_output_stream_get_property;
   object_class->set_property = g_data_output_stream_set_property;
+
+  /**
+   * GDataOutputStream:byte-order:
+   *
+   * Determines the byte ordering that is used when writing 
+   * multi-byte entities (such as integers) to the stream.
+   */
+  g_object_class_install_property (object_class,
+                                   PROP_BYTE_ORDER,
+                                   g_param_spec_enum ("byte-order",
+                                                      P_("Byte order"),
+                                                      P_("The byte order"),
+                                                      G_TYPE_DATA_STREAM_BYTE_ORDER,
+                                                      G_DATA_STREAM_BYTE_ORDER_BIG_ENDIAN,
+                                                      G_PARAM_READWRITE|G_PARAM_STATIC_NAME|G_PARAM_STATIC_BLURB));
+
 }
 
 static void
@@ -79,14 +97,16 @@ g_data_output_stream_set_property (GObject     *object,
 				  const GValue *value,
 				  GParamSpec   *pspec)
 {
-  GDataOutputStreamPrivate *priv;
-  GDataOutputStream        *dstream;
+  GDataOutputStream *dstream;
 
   dstream = G_DATA_OUTPUT_STREAM (object);
-  priv = dstream->priv;
 
   switch (prop_id) 
     {
+    case PROP_BYTE_ORDER:
+      g_data_output_stream_set_byte_order (dstream, g_value_get_enum (value));
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -106,7 +126,11 @@ g_data_output_stream_get_property (GObject    *object,
   priv = dstream->priv;
 
   switch (prop_id)
-    { 
+    {
+    case PROP_BYTE_ORDER:
+      g_value_set_enum (value, priv->byte_order);
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -156,9 +180,14 @@ void
 g_data_output_stream_set_byte_order (GDataOutputStream    *stream,
                                      GDataStreamByteOrder  order)
 {
+  GDataOutputStreamPrivate *priv;
   g_return_if_fail (G_IS_DATA_OUTPUT_STREAM (stream));
-
-  stream->priv->byte_order = order;
+  priv = stream->priv;
+  if (priv->byte_order != order)
+    {
+      priv->byte_order = order;
+      g_object_notify (G_OBJECT (stream), "byte-order");
+    }
 }
 
 /**

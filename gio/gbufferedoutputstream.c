@@ -153,7 +153,7 @@ g_buffered_output_stream_class_init (GBufferedOutputStreamClass *klass)
                                                       1,
                                                       G_MAXUINT,
                                                       DEFAULT_BUFFER_SIZE,
-                                                      G_PARAM_READWRITE|
+                                                      G_PARAM_READWRITE|G_PARAM_CONSTRUCT|
                                                       G_PARAM_STATIC_NAME|G_PARAM_STATIC_NICK|G_PARAM_STATIC_BLURB));
 
   g_object_class_install_property (object_class,

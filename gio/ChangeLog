@@ -1,5 +1,8 @@
 2007-12-01  Matthias Clasen <mclasen@redhat.com>
 
+	* gdirectorymonitor.c:
+	* gfilemonitor.c: Add properties
+
 	* gbufferedoutputstream.c: Don't mark buffer-size property 
 	as construct-only.
 

@@ -64,6 +64,12 @@ struct _GDirectoryMonitorPrivate {
   guint32 timeout_fires_at;
 };
 
+enum {
+  PROP_0,
+  PROP_RATE_LIMIT,
+  PROP_CANCELLED
+};
+
 #define DEFAULT_RATE_LIMIT_MSECS 800
 #define DEFAULT_VIRTUAL_CHANGES_DONE_DELAY_SECS 2
 
@@ -74,6 +80,56 @@ rate_limiter_free (RateLimiter *limiter)
 {
   g_object_unref (limiter->file);
   g_free (limiter);
+}
+
+static void
+g_directory_monitor_set_property (GObject      *object,
+                                  guint         prop_id,
+                                  const GValue *value,
+                                  GParamSpec   *pspec)
+{
+  GDirectoryMonitor *monitor;
+
+  monitor = G_DIRECTORY_MONITOR (object);
+
+  switch (prop_id)
+    {
+    case PROP_RATE_LIMIT:
+      g_directory_monitor_set_rate_limit (monitor, g_value_get_int (value));
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+    }
+}
+
+static void
+g_directory_monitor_get_property (GObject    *object,
+                                  guint       prop_id,
+                                  GValue     *value,
+                                  GParamSpec *pspec)
+{
+  GDirectoryMonitor *monitor;
+  GDirectoryMonitorPrivate *priv;
+
+  monitor = G_DIRECTORY_MONITOR (object);
+  priv = monitor->priv;
+
+  switch (prop_id)
+    {
+    case PROP_RATE_LIMIT:
+      g_value_set_int (value, priv->rate_limit_msec);
+      break;
+
+    case PROP_CANCELLED:
+      g_value_set_boolean (value, priv->cancelled);
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+    }
 }
 
 static void
@@ -113,12 +169,15 @@ g_directory_monitor_dispose (GObject *object)
 static void
 g_directory_monitor_class_init (GDirectoryMonitorClass *klass)
 {
-  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+  GObjectClass *object_class;
   
   g_type_class_add_private (klass, sizeof (GDirectoryMonitorPrivate));
   
-  gobject_class->finalize = g_directory_monitor_finalize;
-  gobject_class->dispose = g_directory_monitor_dispose;
+  object_class = G_OBJECT_CLASS (klass);
+  object_class->finalize = g_directory_monitor_finalize;
+  object_class->dispose = g_directory_monitor_dispose;
+  object_class->get_property = g_directory_monitor_get_property;
+  object_class->set_property = g_directory_monitor_set_property;
 
   /**
    * GDirectoryMonitor::changed:
@@ -136,10 +195,28 @@ g_directory_monitor_class_init (GDirectoryMonitorClass *klass)
 		  G_STRUCT_OFFSET (GDirectoryMonitorClass, changed),
 		  NULL, NULL,
 		  _gio_marshal_VOID__OBJECT_OBJECT_INT,
-		  G_TYPE_NONE,3,
-		  G_TYPE_FILE,
-		  G_TYPE_FILE,
-		  G_TYPE_INT);
+		  G_TYPE_NONE, 3,
+		  G_TYPE_FILE, G_TYPE_FILE, G_TYPE_INT);
+
+  g_object_class_install_property (object_class,
+                                   PROP_RATE_LIMIT,
+                                   g_param_spec_int ("rate-limit",
+                                                     P_("Rate limit"),
+                                                     P_("The limit of the monitor to watch for changes, in milliseconds"),
+                                                     0, G_MAXINT,
+                                                     DEFAULT_RATE_LIMIT_MSECS,
+                                                     G_PARAM_READWRITE|
+                                                     G_PARAM_STATIC_NAME|G_PARAM_STATIC_NICK|G_PARAM_STATIC_BLURB));
+
+  g_object_class_install_property (object_class,
+                                   PROP_CANCELLED,
+                                   g_param_spec_boolean ("cancelled",
+                                                         P_("Cancelled"),
+                                                         P_("Whether the monitor has been cancelled"),
+                                                         FALSE,
+                                                         G_PARAM_READABLE|
+                                                         G_PARAM_STATIC_NAME|G_PARAM_STATIC_NICK|G_PARAM_STATIC_BLURB));
+
 }
 
 static void
@@ -174,6 +251,7 @@ g_directory_monitor_cancel (GDirectoryMonitor *monitor)
     return TRUE;
   
   monitor->priv->cancelled = TRUE;
+  g_object_notify (G_OBJECT (monitor), "cancelled");
   
   class = G_DIRECTORY_MONITOR_GET_CLASS (monitor);
   return (* class->cancel) (monitor);
@@ -192,9 +270,14 @@ void
 g_directory_monitor_set_rate_limit (GDirectoryMonitor *monitor,
 				    int                limit_msecs)
 {
+  GDirectoryMonitorPrivate *priv;
   g_return_if_fail (G_IS_DIRECTORY_MONITOR (monitor));
-
-  monitor->priv->rate_limit_msec = limit_msecs;
+  priv = monitor->priv;
+  if (priv->rate_limit_msec != limit_msecs)
+    {
+      monitor->priv->rate_limit_msec = limit_msecs;
+      g_object_notify (G_OBJECT (monitor), "rate-limit");
+    }
 }
 
 /**

@@ -305,7 +305,8 @@ g_mount_operation_class_init (GMountOperationClass *klass)
                                                         P_("Username"),
                                                         P_("The user name"),
                                                         NULL,
-                                                        G_PARAM_READWRITE|G_PARAM_STATIC_NAME|G_PARAM_STATIC_BLURB));
+                                                        G_PARAM_READWRITE|
+                                                        G_PARAM_STATIC_NAME|G_PARAM_STATIC_NICK|G_PARAM_STATIC_BLURB));
 
   /**
    * GMountOperation:password:
@@ -319,7 +320,8 @@ g_mount_operation_class_init (GMountOperationClass *klass)
                                                         P_("Password"),
                                                         P_("The password"),
                                                         NULL,
-                                                        G_PARAM_READWRITE|G_PARAM_STATIC_NAME|G_PARAM_STATIC_BLURB));
+                                                        G_PARAM_READWRITE|
+                                                        G_PARAM_STATIC_NAME|G_PARAM_STATIC_NICK|G_PARAM_STATIC_BLURB));
 
   /**
    * GMountOperation:anonymous:
@@ -332,7 +334,8 @@ g_mount_operation_class_init (GMountOperationClass *klass)
                                                          P_("Anonymous"),
                                                          P_("Whether to use an anonymous user"),
                                                          FALSE,
-                                                         G_PARAM_READWRITE|G_PARAM_STATIC_NAME|G_PARAM_STATIC_BLURB));
+                                                         G_PARAM_READWRITE|
+                                                         G_PARAM_STATIC_NAME|G_PARAM_STATIC_NICK|G_PARAM_STATIC_BLURB));
 
   /**
    * GMountOperation:domain:
@@ -345,7 +348,8 @@ g_mount_operation_class_init (GMountOperationClass *klass)
                                                         P_("Domain"),
                                                         P_("The domain of the mount operation"),
                                                         NULL,
-                                                        G_PARAM_READWRITE|G_PARAM_STATIC_NAME|G_PARAM_STATIC_BLURB));
+                                                        G_PARAM_READWRITE|
+                                                        G_PARAM_STATIC_NAME|G_PARAM_STATIC_NICK|G_PARAM_STATIC_BLURB));
 
   /**
    * GMountOperation:password-save:
@@ -359,7 +363,8 @@ g_mount_operation_class_init (GMountOperationClass *klass)
                                                       P_("How passwords should be saved"),
                                                       G_TYPE_PASSWORD_SAVE,
                                                       G_PASSWORD_SAVE_NEVER,
-                                                      G_PARAM_READWRITE|G_PARAM_STATIC_NAME|G_PARAM_STATIC_BLURB));
+                                                      G_PARAM_READWRITE|
+                                                      G_PARAM_STATIC_NAME|G_PARAM_STATIC_NICK|G_PARAM_STATIC_BLURB));
 
   /**
    * GMountOperation:choice:
@@ -373,7 +378,8 @@ g_mount_operation_class_init (GMountOperationClass *klass)
                                                      P_("Choice"),
                                                      P_("The users choice"),
                                                      0, G_MAXINT, 0,
-                                                     G_PARAM_READWRITE|G_PARAM_STATIC_NAME|G_PARAM_STATIC_BLURB));
+                                                     G_PARAM_READWRITE|
+                                                     G_PARAM_STATIC_NAME|G_PARAM_STATIC_NICK|G_PARAM_STATIC_BLURB));
 }
 
 static void
