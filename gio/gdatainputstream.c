@@ -23,6 +23,7 @@
 
 #include <config.h>
 #include "gdatainputstream.h"
+#include "gioenumtypes.h"
 #include "glibintl.h"
 
 #include "gioalias.h"
@@ -43,7 +44,9 @@ struct _GDataInputStreamPrivate {
 };
 
 enum {
-  PROP_0
+  PROP_0,
+  PROP_BYTE_ORDER,
+  PROP_NEWLINE_TYPE
 };
 
 static void g_data_input_stream_set_property (GObject      *object,
@@ -70,6 +73,37 @@ g_data_input_stream_class_init (GDataInputStreamClass *klass)
   object_class = G_OBJECT_CLASS (klass);
   object_class->get_property = g_data_input_stream_get_property;
   object_class->set_property = g_data_input_stream_set_property;
+
+  /**
+   * GDataStream:byte-order:
+   *
+   * The ::byte-order property determines the byte ordering that
+   * is used when reading multi-byte entities (such as integers)
+   * from the stream.
+   */ 
+  g_object_class_install_property (object_class,
+                                   PROP_BYTE_ORDER,
+                                   g_param_spec_enum ("byte-order",
+                                                      P_("Byte order"),
+                                                      P_("The byte order"),
+                                                      G_TYPE_DATA_STREAM_BYTE_ORDER,
+                                                      G_DATA_STREAM_BYTE_ORDER_BIG_ENDIAN,
+                                                      G_PARAM_READWRITE|G_PARAM_STATIC_NAME|G_PARAM_STATIC_BLURB));
+
+  /**
+   * GDataStream:newline-type:
+   *
+   * The :newline-type property determines what is considered
+   * as a line ending when reading complete lines from the stream.
+   */ 
+  g_object_class_install_property (object_class,
+                                   PROP_NEWLINE_TYPE,
+                                   g_param_spec_enum ("newline-type",
+                                                      P_("Newline type"),
+                                                      P_("The accepted types of line ending"),
+                                                      G_TYPE_DATA_STREAM_NEWLINE_TYPE,
+                                                      G_DATA_STREAM_NEWLINE_TYPE_LF,
+                                                      G_PARAM_READWRITE|G_PARAM_STATIC_NAME|G_PARAM_STATIC_BLURB));
 }
 
 static void
@@ -84,8 +118,15 @@ g_data_input_stream_set_property (GObject      *object,
   dstream = G_DATA_INPUT_STREAM (object);
   priv = dstream->priv;
 
-  switch (prop_id) 
+   switch (prop_id) 
     {
+    case PROP_BYTE_ORDER:
+      g_data_input_stream_set_byte_order (dstream, g_value_get_enum (value));
+      break;
+
+    case PROP_NEWLINE_TYPE:
+      g_data_input_stream_set_newline_type (dstream, g_value_get_enum (value));
+      break;
 
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -108,6 +149,14 @@ g_data_input_stream_get_property (GObject    *object,
 
   switch (prop_id)
     { 
+    case PROP_BYTE_ORDER:
+      g_value_set_enum (value, priv->byte_order);
+      break;
+
+    case PROP_NEWLINE_TYPE:
+      g_value_set_enum (value, priv->newline_type);
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -160,9 +209,18 @@ void
 g_data_input_stream_set_byte_order (GDataInputStream     *stream,
 				    GDataStreamByteOrder  order)
 {
+  GDataInputStreamPrivate *priv;
+
   g_return_if_fail (G_IS_DATA_INPUT_STREAM (stream));
 
-  stream->priv->byte_order = order;
+  priv = stream->priv;
+
+  if (priv->byte_order != order)
+    {
+      priv->byte_order = order;
+      
+      g_object_notify (G_OBJECT (stream), "byte-order");
+    }
 }
 
 /**
@@ -196,9 +254,18 @@ void
 g_data_input_stream_set_newline_type (GDataInputStream       *stream,
 				      GDataStreamNewlineType  type)
 {
+  GDataInputStreamPrivate *priv;
+
   g_return_if_fail (G_IS_DATA_INPUT_STREAM (stream));
 
-  stream->priv->newline_type = type;
+  priv = stream->priv;
+  
+  if (priv->newline_type != type)
+    {
+      priv->newline_type = type;
+
+      g_object_notify (G_OBJECT (stream), "newline-type");
+    }
 }
 
 /**

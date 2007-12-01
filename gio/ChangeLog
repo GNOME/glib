@@ -1,4 +1,9 @@
 2007-11-30  Matthias Clasen <mclasen@redhat.com>
+	
+	* gdatainputstream.c: Turn byte-order and newline-type into
+	properties.
+
+2007-11-30  Matthias Clasen <mclasen@redhat.com>
 
 	* gioenumtypes.[hc].template: Templates for enum registration
 
