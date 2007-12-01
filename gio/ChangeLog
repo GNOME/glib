@@ -1,3 +1,7 @@
+2007-12-01  Matthias Clasen <mclasen@redhat.com>
+
+	* gbufferedoutputstream.c: Add properties
+
 2007-11-30  Matthias Clasen <mclasen@redhat.com>
 
 	* *.c: Unify the capitalization of section headings.

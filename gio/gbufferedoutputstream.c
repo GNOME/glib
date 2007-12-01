@@ -39,18 +39,16 @@
  * 
  * By default, #GBufferedOutputStream's buffer size is set at 4 kilobytes.
  * 
- * To create a buffered output stream, use g_buffered_output_stream_new(), or 
- * g_buffered_output_stream_new_sized() to specify the buffer's size at construction.
+ * To create a buffered output stream, use g_buffered_output_stream_new(), 
+ * or g_buffered_output_stream_new_sized() to specify the buffer's size 
+ * at construction.
  * 
  * To get the size of a buffer within a buffered input stream, use 
  * g_buffered_output_stream_get_buffer_size(). To change the size of a 
- * buffered output stream's buffer, use g_buffered_output_stream_set_buffer_size(). 
- * Note: the buffer's size cannot be reduced below the size of the data within the
- * buffer.
- *
+ * buffered output stream's buffer, use 
+ * g_buffered_output_stream_set_buffer_size(). Note that the buffer's 
+ * size cannot be reduced below the size of the data within the buffer.
  **/
-
-
 
 #define DEFAULT_BUFFER_SIZE 4096
 
@@ -63,7 +61,8 @@ struct _GBufferedOutputStreamPrivate {
 
 enum {
   PROP_0,
-  PROP_BUFSIZE
+  PROP_BUFSIZE,
+  PROP_AUTO_GROW
 };
 
 static void     g_buffered_output_stream_set_property (GObject      *object,
@@ -157,6 +156,15 @@ g_buffered_output_stream_class_init (GBufferedOutputStreamClass *klass)
                                                       G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY |
                                                       G_PARAM_STATIC_NAME|G_PARAM_STATIC_NICK|G_PARAM_STATIC_BLURB));
 
+  g_object_class_install_property (object_class,
+                                   PROP_AUTO_GROW,
+                                   g_param_spec_boolean ("auto-grow",
+                                                         P_("Auto-grow"),
+                                                         P_("Whether the buffer should automatically grow"),
+                                                         FALSE,
+                                                         G_PARAM_READWRITE|
+                                                         G_PARAM_STATIC_NAME|G_PARAM_STATIC_NICK|G_PARAM_STATIC_BLURB));
+
 }
 
 /**
@@ -184,7 +192,7 @@ g_buffered_output_stream_get_buffer_size (GBufferedOutputStream *stream)
  **/    
 void
 g_buffered_output_stream_set_buffer_size (GBufferedOutputStream *stream,
-					 gsize                 size)
+                                          gsize                  size)
 {
   GBufferedOutputStreamPrivate *priv;
   guint8 *buffer;
@@ -193,6 +201,9 @@ g_buffered_output_stream_set_buffer_size (GBufferedOutputStream *stream,
 
   priv = stream->priv;
   
+  if (size == priv->len)
+    return;
+
   if (priv->buffer)
     {
       size = MAX (size, priv->pos);
@@ -210,6 +221,8 @@ g_buffered_output_stream_set_buffer_size (GBufferedOutputStream *stream,
       priv->len = size;
       priv->pos = 0;
     }
+
+  g_object_notify (G_OBJECT (stream), "buffer-size");
 }
 
 /**
@@ -238,31 +251,38 @@ g_buffered_output_stream_get_auto_grow (GBufferedOutputStream *stream)
  **/
 void
 g_buffered_output_stream_set_auto_grow (GBufferedOutputStream *stream,
-				       gboolean              auto_grow)
+                                        gboolean               auto_grow)
 {
+  GBufferedOutputStreamPrivate *priv;
   g_return_if_fail (G_IS_BUFFERED_OUTPUT_STREAM (stream));
-
-  stream->priv->auto_grow = auto_grow;
+  priv = stream->priv;
+  auto_grow = auto_grow != FALSE;
+  if (priv->auto_grow != auto_grow)
+    {
+      priv->auto_grow = auto_grow;
+      g_object_notify (G_OBJECT (stream), "auto-grow");
+    }
 }
 
 static void
-g_buffered_output_stream_set_property (GObject         *object,
-                                       guint            prop_id,
-                                       const GValue    *value,
-                                       GParamSpec      *pspec)
+g_buffered_output_stream_set_property (GObject      *object,
+                                       guint         prop_id,
+                                       const GValue *value,
+                                       GParamSpec   *pspec)
 {
-  GBufferedOutputStream *buffered_stream;
-  GBufferedOutputStreamPrivate *priv;
+  GBufferedOutputStream *stream;
 
-  buffered_stream = G_BUFFERED_OUTPUT_STREAM (object);
-  priv = buffered_stream->priv;
+  stream = G_BUFFERED_OUTPUT_STREAM (object);
 
   switch (prop_id) 
     {
-
     case PROP_BUFSIZE:
-      g_buffered_output_stream_set_buffer_size (buffered_stream, g_value_get_uint (value));
+      g_buffered_output_stream_set_buffer_size (stream, g_value_get_uint (value));
       break;    
+
+    case PROP_AUTO_GROW:
+      g_buffered_output_stream_set_auto_grow (stream, g_value_get_boolean (value));
+      break;
 
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -285,9 +305,12 @@ g_buffered_output_stream_get_property (GObject    *object,
 
   switch (prop_id)
     {
-
     case PROP_BUFSIZE:
       g_value_set_uint (value, priv->len);
+      break;
+
+    case PROP_AUTO_GROW:
+      g_value_set_boolean (value, priv->auto_grow);
       break;
 
     default:
