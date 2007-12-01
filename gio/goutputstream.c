@@ -29,7 +29,7 @@
 
 /**
  * SECTION:goutputstream
- * @short_description: base class for implementing streaming output
+ * @short_description: Base class for implementing streaming output
  * 
  * 
  *

@@ -1,5 +1,9 @@
 2007-11-30  Matthias Clasen <mclasen@redhat.com>
 
+	* *.c: Unify the capitalization of section headings.
+
+2007-11-30  Matthias Clasen <mclasen@redhat.com>
+
 	* gmountoperation.c: Add properties
 	
 	* gdatainputstream.c: Turn byte-order and newline-type into

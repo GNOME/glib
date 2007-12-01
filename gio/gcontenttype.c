@@ -32,7 +32,7 @@
 
 /**
  * SECTION:gcontenttype
- * @short_description: platform specific content typing
+ * @short_description: Platform-specific content typing
  *
  * A content type is a platform specific string that defines the type
  * of a file. On unix it is a mime type, on win32 it is an extension string

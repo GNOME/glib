@@ -43,7 +43,7 @@
 
 /**
  * SECTION:gunixoutputstream
- * @short_description: streaming output operations for Unix file descriptors
+ * @short_description: Streaming output operations for Unix file descriptors
  * @see_also: #GOutputStream
  *
  * #GUnixOutputStream implements #GOutputStream for writing to a a

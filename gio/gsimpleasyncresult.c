@@ -38,7 +38,7 @@
 
 /**
  * SECTION:gsimpleasyncresult
- * @short_description: simple asynchronous results implementation
+ * @short_description: Simple asynchronous results implementation
  * @see_also: #GAsyncResult
  *
  * Implements #GAsyncResult for simple cases. Most of the time, this 

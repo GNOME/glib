@@ -32,7 +32,7 @@
 
 /**
  * SECTION:gfileinputstream
- * @short_description: file input streaming operations
+ * @short_description: File input streaming operations
  * @see_also: #GInputStream, #GDataInputStream, #GSeekable
  * 
  * 

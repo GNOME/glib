@@ -32,7 +32,7 @@
 
 /**
  * SECTION:gmemoryinputstream
- * @short_description: streaming input operations on memory chunks
+ * @short_description: Streaming input operations on memory chunks
  * @see_also: #GMemoryOutputStream
  *
  * #GMemoryInputStream is a class for using arbitrary

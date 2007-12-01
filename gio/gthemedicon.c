@@ -28,7 +28,7 @@
 
 /**
  * SECTION:gthemedicon
- * @short_description: icon theming support
+ * @short_description: Icon theming support
  * @see_also: #GIcon, #GLoadableIcon
  *
  * #GThemedIcon is an implementation of #GIcon that supports icon themes.

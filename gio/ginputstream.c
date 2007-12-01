@@ -32,7 +32,7 @@
 
 /**
  * SECTION:ginputstream
- * @short_description: base class for implementing streaming input
+ * @short_description: Base class for implementing streaming input
  *
  * 
  * 
