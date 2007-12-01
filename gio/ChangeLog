@@ -1,6 +1,11 @@
 2007-12-01  Matthias Clasen <mclasen@redhat.com>
 
-	* gbufferedoutputstream.c: Add properties
+	* gbufferedoutputstream.c: Don't mark buffer-size property 
+	as construct-only.
+
+2007-12-01  Matthias Clasen <mclasen@redhat.com>
+
+	* gbufferedoutputstream.c: Add auto-grow property.
 
 2007-11-30  Matthias Clasen <mclasen@redhat.com>
 
