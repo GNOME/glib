@@ -25,6 +25,7 @@
 #include <string.h>
 
 #include "gmountoperation.h"
+#include "gioenumtypes.h"
 #include "gio-marshal.h"
 #include "glibintl.h"
 
@@ -39,7 +40,7 @@
  * server locations. 
  *
  * Mountable GIO backends should implement #GMountOperation if they 
- * require any priviledges or authentication for their volumes to be 
+ * require any privileges or authentication for their volumes to be 
  * mounted (e.g. a hard disk partition or an encrypted filesystem), or 
  * if they are implementing a remote server protocol which requires user
  * credentials such as FTP or WebDAV. 
@@ -64,6 +65,110 @@ struct _GMountOperationPrivate {
   GPasswordSave password_save;
   int choice;
 };
+
+enum {
+  PROP_0,
+  PROP_USERNAME,
+  PROP_PASSWORD,
+  PROP_ANONYMOUS,
+  PROP_DOMAIN,
+  PROP_PASSWORD_SAVE,
+  PROP_CHOICE
+};
+
+static void 
+g_mount_operation_set_property (GObject      *object,
+                                guint         prop_id,
+                                const GValue *value,
+                                GParamSpec   *pspec)
+{
+  GMountOperation *operation;
+
+  operation = G_MOUNT_OPERATION (object);
+
+  switch (prop_id)
+    {
+    case PROP_USERNAME:
+      g_mount_operation_set_username (operation, 
+                                      g_value_get_string (value));
+      break;
+   
+    case PROP_PASSWORD:
+      g_mount_operation_set_password (operation, 
+                                      g_value_get_string (value));
+      break;
+
+    case PROP_ANONYMOUS:
+      g_mount_operation_set_anonymous (operation, 
+                                       g_value_get_boolean (value));
+      break;
+
+    case PROP_DOMAIN:
+      g_mount_operation_set_domain (operation, 
+                                    g_value_get_string (value));
+      break;
+
+    case PROP_PASSWORD_SAVE:
+      g_mount_operation_set_password_save (operation, 
+                                           g_value_get_enum (value));
+      break;
+
+    case PROP_CHOICE:
+      g_mount_operation_set_choice (operation, 
+                                    g_value_get_int (value));
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+    }
+}
+
+
+static void 
+g_mount_operation_get_property (GObject    *object,
+                                guint       prop_id,
+                                GValue     *value,
+                                GParamSpec *pspec)
+{
+  GMountOperation *operation;
+  GMountOperationPrivate *priv;
+
+  operation = G_MOUNT_OPERATION (object);
+  priv = operation->priv;
+  
+  switch (prop_id)
+    {
+    case PROP_USERNAME:
+      g_value_set_string (value, priv->user);
+      break;
+
+    case PROP_PASSWORD:
+      g_value_set_string (value, priv->password);
+      break;
+
+    case PROP_ANONYMOUS:
+      g_value_set_boolean (value, priv->anonymous);
+      break;
+
+    case PROP_DOMAIN:
+      g_value_set_string (value, priv->domain);
+      break;
+
+    case PROP_PASSWORD_SAVE:
+      g_value_set_enum (value, priv->password_save);
+      break;
+
+    case PROP_CHOICE:
+      g_value_set_int (value, priv->choice);
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+    }
+}
+
 
 static void
 g_mount_operation_finalize (GObject *object)
@@ -120,11 +225,14 @@ ask_question (GMountOperation *op,
 static void
 g_mount_operation_class_init (GMountOperationClass *klass)
 {
-  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+  GObjectClass *object_class;
   
   g_type_class_add_private (klass, sizeof (GMountOperationPrivate));
-  
-  gobject_class->finalize = g_mount_operation_finalize;
+ 
+  object_class = G_OBJECT_CLASS (klass);
+  object_class->finalize = g_mount_operation_finalize;
+  object_class->get_property = g_mount_operation_get_property;
+  object_class->set_property = g_mount_operation_set_property;
   
   klass->ask_password = ask_password;
   klass->ask_question = ask_question;
@@ -141,7 +249,7 @@ g_mount_operation_class_init (GMountOperationClass *klass)
    */
   signals[ASK_PASSWORD] =
     g_signal_new (I_("ask_password"),
-		  G_TYPE_FROM_CLASS (gobject_class),
+		  G_TYPE_FROM_CLASS (object_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (GMountOperationClass, ask_password),
 		  boolean_handled_accumulator, NULL,
@@ -155,12 +263,12 @@ g_mount_operation_class_init (GMountOperationClass *klass)
    * @message: string containing a message to display to the user.
    * @choices: an array of strings for each possible choice.
    * 
-   * Emitted when asking the user a question and gives a list of choices for the 
-   * user to choose from. 
+   * Emitted when asking the user a question and gives a list of 
+   * choices for the user to choose from. 
    */
   signals[ASK_QUESTION] =
     g_signal_new (I_("ask_question"),
-		  G_TYPE_FROM_CLASS (gobject_class),
+		  G_TYPE_FROM_CLASS (object_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (GMountOperationClass, ask_question),
 		  boolean_handled_accumulator, NULL,
@@ -171,19 +279,101 @@ g_mount_operation_class_init (GMountOperationClass *klass)
   /**
    * GMountOperation::reply:
    * @op: a #GMountOperation.
-   * @abort: a gboolean indicating %TRUE if the operation was aborted.
+   * @abort: a boolean indicating %TRUE if the operation was aborted.
    * 
    * Emitted when the user has replied to the mount operation.
    */
   signals[REPLY] =
     g_signal_new (I_("reply"),
-		  G_TYPE_FROM_CLASS (gobject_class),
+		  G_TYPE_FROM_CLASS (object_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (GMountOperationClass, reply),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__BOOLEAN,
 		  G_TYPE_NONE, 1,
 		  G_TYPE_BOOLEAN);
+
+  /**
+   * GMountOperation:username:
+   *
+   * The user name that is used for authentication when carrying out
+   * the mount operation.
+   */ 
+  g_object_class_install_property (object_class,
+                                   PROP_USERNAME,
+                                   g_param_spec_string ("username",
+                                                        P_("Username"),
+                                                        P_("The user name"),
+                                                        NULL,
+                                                        G_PARAM_READWRITE|G_PARAM_STATIC_NAME|G_PARAM_STATIC_BLURB));
+
+  /**
+   * GMountOperation:password:
+   *
+   * The password that is used for authentication when carrying out
+   * the mount operation.
+   */ 
+  g_object_class_install_property (object_class,
+                                   PROP_PASSWORD,
+                                   g_param_spec_string ("password",
+                                                        P_("Password"),
+                                                        P_("The password"),
+                                                        NULL,
+                                                        G_PARAM_READWRITE|G_PARAM_STATIC_NAME|G_PARAM_STATIC_BLURB));
+
+  /**
+   * GMountOperation:anonymous:
+   * 
+   * Whether to use an anonymous user when authenticating.
+   */
+  g_object_class_install_property (object_class,
+                                   PROP_ANONYMOUS,
+                                   g_param_spec_boolean ("anonymous",
+                                                         P_("Anonymous"),
+                                                         P_("Whether to use an anonymous user"),
+                                                         FALSE,
+                                                         G_PARAM_READWRITE|G_PARAM_STATIC_NAME|G_PARAM_STATIC_BLURB));
+
+  /**
+   * GMountOperation:domain:
+   *
+   * The domain to use for the mount operation.
+   */ 
+  g_object_class_install_property (object_class,
+                                   PROP_DOMAIN,
+                                   g_param_spec_string ("domain",
+                                                        P_("Domain"),
+                                                        P_("The domain of the mount operation"),
+                                                        NULL,
+                                                        G_PARAM_READWRITE|G_PARAM_STATIC_NAME|G_PARAM_STATIC_BLURB));
+
+  /**
+   * GMountOperation:password-save:
+   *
+   * Determines if and how the password information should be saved. 
+   */ 
+  g_object_class_install_property (object_class,
+                                   PROP_PASSWORD_SAVE,
+                                   g_param_spec_enum ("password-save",
+                                                      P_("Password save"),
+                                                      P_("How passwords should be saved"),
+                                                      G_TYPE_PASSWORD_SAVE,
+                                                      G_PASSWORD_SAVE_NEVER,
+                                                      G_PARAM_READWRITE|G_PARAM_STATIC_NAME|G_PARAM_STATIC_BLURB));
+
+  /**
+   * GMountOperation:choice:
+   *
+   * The index of the user's choice when a question is asked during the 
+   * mount operation. See the #GMountOperation::ask-question signal.
+   */ 
+  g_object_class_install_property (object_class,
+                                   PROP_CHOICE,
+                                   g_param_spec_int ("choice",
+                                                     P_("Choice"),
+                                                     P_("The users choice"),
+                                                     0, G_MAXINT, 0,
+                                                     G_PARAM_READWRITE|G_PARAM_STATIC_NAME|G_PARAM_STATIC_BLURB));
 }
 
 static void
@@ -237,6 +427,7 @@ g_mount_operation_set_username (GMountOperation *op,
   g_return_if_fail (G_IS_MOUNT_OPERATION (op));
   g_free (op->priv->user);
   op->priv->user = g_strdup (username);
+  g_object_notify (G_OBJECT (op), "username");
 }
 
 /**
@@ -269,6 +460,7 @@ g_mount_operation_set_password (GMountOperation *op,
   g_return_if_fail (G_IS_MOUNT_OPERATION (op));
   g_free (op->priv->password);
   op->priv->password = g_strdup (password);
+  g_object_notify (G_OBJECT (op), "password");
 }
 
 /**
@@ -298,8 +490,15 @@ void
 g_mount_operation_set_anonymous (GMountOperation *op,
 				 gboolean         anonymous)
 {
+  GMountOperationPrivate *priv;
   g_return_if_fail (G_IS_MOUNT_OPERATION (op));
-  op->priv->anonymous = anonymous;
+  priv = op->priv;
+
+  if (priv->anonymous != anonymous)
+    {
+      priv->anonymous = anonymous;
+      g_object_notify (G_OBJECT (op), "anonymous");
+    }
 }
 
 /**
@@ -331,6 +530,7 @@ g_mount_operation_set_domain (GMountOperation *op,
   g_return_if_fail (G_IS_MOUNT_OPERATION (op));
   g_free (op->priv->domain);
   op->priv->domain = g_strdup (domain);
+  g_object_notify (G_OBJECT (op), "domain");
 }
 
 /**
@@ -361,8 +561,15 @@ void
 g_mount_operation_set_password_save (GMountOperation *op,
 				     GPasswordSave    save)
 {
+  GMountOperationPrivate *priv;
   g_return_if_fail (G_IS_MOUNT_OPERATION (op));
-  op->priv->password_save = save;
+  priv = op->priv;
+ 
+  if (priv->password_save != save)
+    {
+      priv->password_save = save;
+      g_object_notify (G_OBJECT (op), "password-save");
+    }
 }
 
 /**
@@ -392,8 +599,14 @@ void
 g_mount_operation_set_choice (GMountOperation *op,
 			      int              choice)
 {
+  GMountOperationPrivate *priv;
   g_return_if_fail (G_IS_MOUNT_OPERATION (op));
-  op->priv->choice = choice;
+  priv = op->priv;
+  if (priv->choice != choice)
+    {
+      priv->choice = choice;
+      g_object_notify (G_OBJECT (op), "choice");
+    }
 }
 
 /**

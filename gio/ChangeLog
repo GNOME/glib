@@ -1,4 +1,6 @@
 2007-11-30  Matthias Clasen <mclasen@redhat.com>
+
+	* gmountoperation.c: Add properties
 	
 	* gdatainputstream.c: Turn byte-order and newline-type into
 	properties.
