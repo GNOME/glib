@@ -1,5 +1,9 @@
 2007-12-01  Matthias Clasen <mclasen@redhat.com>
 
+	* gioenumtypes.c.template: Make threadsafe get_type() functions.
+
+2007-12-01  Matthias Clasen <mclasen@redhat.com>
+
 	* gdirectorymonitor.c:
 	* gfilemonitor.c: Add properties
 

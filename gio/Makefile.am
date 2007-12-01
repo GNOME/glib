@@ -258,9 +258,9 @@ CLEANFILES = 			\
 	$(marshal_sources)	\
 	$(NULL)
 
-gioenumtypes.h: $(gio_headers)
+gioenumtypes.h: $(gio_headers) gioenumtypes.h.template
 	( cd $(srcdir) && $(top_builddir)/gobject/glib-mkenums --template gioenumtypes.h.template $(gio_headers) ) > gioenumtypes.h
 	
-gioenumtypes.c: $(gio_headers)
+gioenumtypes.c: $(gio_headers) gioenumtypes.c.template
 	( cd $(srcdir) && $(top_builddir)/gobject/glib-mkenums --template gioenumtypes.c.template $(gio_headers) ) > gioenumtypes.c
 	
