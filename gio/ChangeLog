@@ -1,3 +1,7 @@
+2007-12-01  Behdad Esfahbod  <behdad@gnome.org>
+
+	* gioenumtypes.c.template: Fix typo.
+
 2007-12-01  Matthias Clasen <mclasen@redhat.com>
 
 	* gioenumtypes.c.template: Make threadsafe get_type() functions.
