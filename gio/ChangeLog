@@ -1,3 +1,9 @@
+2007-12-02  A. Walton  <awalton@svn.gnome.org>
+
+	* gfile.c:
+	* gfileattribute.c:
+	Documentation accuracy fixes.
+
 2007-12-01  Behdad Esfahbod  <behdad@gnome.org>
 
 	* gioenumtypes.c.template: Fix typo.

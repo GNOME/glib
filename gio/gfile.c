@@ -235,10 +235,10 @@ g_file_base_init (gpointer g_class)
  * g_file_is_native:
  * @file: input #GFile.
  *
- * Checks to see if a file is native to the system.
+ * Checks to see if a file is native to the platform.
  *
- * Returns: %TRUE if file is native. (If the file is native
- * to the system, e.g. located in file:///).
+ * Returns: %TRUE if file is native. (If the #GFile<!---->'s expressed in 
+ * the platform-native filename format, e.g. "C:\Windows", "/usr/bin/").
  **/
 gboolean
 g_file_is_native (GFile *file)
@@ -377,7 +377,7 @@ g_file_get_uri (GFile *file)
  * g_file_get_parse_name:
  * @file: input #GFile.
  *
- * Gets the parsed name for the #GFile.
+ * Gets the UTF-8 parsed name for the #GFile.
  *
  * Returns: a string containing the #GFile's parsed name, 
  *     or %NULL if given #GFile is invalid. The returned 
