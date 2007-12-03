@@ -76,15 +76,11 @@ static GHashNode**	g_hash_table_lookup_node  (GHashTable     *hash_table,
 static GHashNode*	g_hash_node_new		  (gpointer	   key,
                                                    gpointer        value,
                                                    guint           key_hash);
-static void		g_hash_node_destroy	  (GHashNode	  *hash_node,
-                                                   GDestroyNotify  key_destroy_func,
-                                                   GDestroyNotify  value_destroy_func);
-static void		g_hash_nodes_destroy	  (GHashNode	  *hash_node,
-						  GDestroyNotify   key_destroy_func,
-						  GDestroyNotify   value_destroy_func);
 static guint g_hash_table_foreach_remove_or_steal (GHashTable     *hash_table,
                                                    GHRFunc	   func,
                                                    gpointer	   user_data,
+                                                   gboolean        notify);
+static void         g_hash_table_remove_all_nodes (GHashTable *hash_table,
                                                    gboolean        notify);
 
 
@@ -193,12 +189,7 @@ g_hash_table_unref (GHashTable *hash_table)
 
   if (g_atomic_int_exchange_and_add (&hash_table->ref_count, -1) - 1 == 0)
     {
-      gint i;
-
-      for (i = 0; i < hash_table->size; i++)
-        g_hash_nodes_destroy (hash_table->nodes[i], 
-                              hash_table->key_destroy_func,
-                              hash_table->value_destroy_func);
+      g_hash_table_remove_all_nodes (hash_table, FALSE);
       g_free (hash_table->nodes);
       g_slice_free (GHashTable, hash_table);
     }
@@ -418,11 +409,29 @@ g_hash_table_remove_node (GHashTable   *hash_table,
 
   *node_ptr = node->next;
 
-  g_hash_node_destroy (node,
-                       notify ? hash_table->key_destroy_func : NULL,
-                       notify ? hash_table->value_destroy_func : NULL);
+  if (notify && hash_table->key_destroy_func)
+    hash_table->key_destroy_func (node->key);
+
+  if (notify && hash_table->value_destroy_func)
+    hash_table->value_destroy_func (node->value);
+
+  g_slice_free (GHashNode, node);
 
   hash_table->nnodes--;
+}
+
+static void
+g_hash_table_remove_all_nodes (GHashTable *hash_table,
+                               gboolean    notify)
+{
+  GHashNode **node_ptr;
+  int i;
+
+  for (i = 0; i < hash_table->size; i++)
+    for (node_ptr = &hash_table->nodes[i]; *node_ptr != NULL;)
+      g_hash_table_remove_node (hash_table, &node_ptr, notify);
+
+  hash_table->nnodes = 0;
 }
 
 static gboolean
@@ -438,7 +447,7 @@ g_hash_table_remove_internal (GHashTable    *hash_table,
   if (*node_ptr == NULL)
     return FALSE;
 
-  g_hash_table_remove_node (hash_table, &node_ptr, FALSE);
+  g_hash_table_remove_node (hash_table, &node_ptr, notify);
   G_HASH_TABLE_RESIZE (hash_table);
 
   return TRUE;
@@ -481,19 +490,9 @@ g_hash_table_remove (GHashTable	   *hash_table,
 void
 g_hash_table_remove_all (GHashTable *hash_table)
 {
-  guint i;
-
   g_return_if_fail (hash_table != NULL);
 
-  for (i = 0; i < hash_table->size; i++)
-    {
-      g_hash_nodes_destroy (hash_table->nodes[i],
-                            hash_table->key_destroy_func,
-                            hash_table->value_destroy_func);
-      hash_table->nodes[i] = NULL;
-    }
-  hash_table->nnodes = 0;
-  
+  g_hash_table_remove_all_nodes (hash_table, TRUE);
   G_HASH_TABLE_RESIZE (hash_table);
 }
 
@@ -526,18 +525,9 @@ g_hash_table_steal (GHashTable    *hash_table,
 void
 g_hash_table_steal_all (GHashTable *hash_table)
 {
-  guint i;
-
   g_return_if_fail (hash_table != NULL);
 
-  for (i = 0; i < hash_table->size; i++)
-    {
-      g_hash_nodes_destroy (hash_table->nodes[i], NULL, NULL);
-      hash_table->nodes[i] = NULL;
-    }
-
-  hash_table->nnodes = 0;
-
+  g_hash_table_remove_all_nodes (hash_table, FALSE);
   G_HASH_TABLE_RESIZE (hash_table);
 }
 
@@ -813,36 +803,6 @@ g_hash_node_new (gpointer key,
   
   return hash_node;
 }
-
-static void
-g_hash_node_destroy (GHashNode      *hash_node,
-		     GDestroyNotify  key_destroy_func,
-		     GDestroyNotify  value_destroy_func)
-{
-  if (key_destroy_func)
-    key_destroy_func (hash_node->key);
-  if (value_destroy_func)
-    value_destroy_func (hash_node->value);
-  g_slice_free (GHashNode, hash_node);
-}
-
-static void
-g_hash_nodes_destroy (GHashNode *hash_node,
-		      GFreeFunc  key_destroy_func,
-		      GFreeFunc  value_destroy_func)
-{
-  while (hash_node)
-    {
-      GHashNode *next = hash_node->next;
-      if (key_destroy_func)
-	key_destroy_func (hash_node->key);
-      if (value_destroy_func)
-	value_destroy_func (hash_node->value);
-      g_slice_free (GHashNode, hash_node);
-      hash_node = next;
-    }
-}
-
 
 #define __G_HASH_C__
 #include "galiasdef.c"

@@ -1,4 +1,10 @@
-2006-12-03  Ryan Lortie  <desrt@desrt.ca>
+2007-12-03  Ryan Lortie  <desrt@desrt.ca>
+
+	* glib/ghash.c: create a common function for the many places where all
+	nodes in the table are removed (remove_all, steal_all, destroy, unref,
+	etc...)
+
+2007-12-03  Ryan Lortie  <desrt@desrt.ca>
 
 	* tests/hash-test.c (second_hash_test): fix memory leak, add a few
 	extra sanity tests.
