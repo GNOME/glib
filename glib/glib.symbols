@@ -1559,6 +1559,8 @@ g_win32_locale_filename_from_utf8
 #endif
 #endif
 
+glib_gettext
+
 #ifdef INCLUDE_VARIABLES
 g_ascii_table
 g_utf8_skip

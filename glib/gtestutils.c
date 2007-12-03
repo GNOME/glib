@@ -30,6 +30,9 @@
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
+#ifdef G_OS_WIN32
+#include <io.h>
+#endif
 #include <errno.h>
 #include <signal.h>
 #ifdef HAVE_SYS_SELECT_H
@@ -753,11 +756,12 @@ g_test_create_case (const char     *test_name,
                     void          (*data_test) (void),
                     void          (*data_teardown) (void))
 {
+  GTestCase *tc;
   g_return_val_if_fail (test_name != NULL, NULL);
   g_return_val_if_fail (strchr (test_name, '/') == NULL, NULL);
   g_return_val_if_fail (test_name[0] != 0, NULL);
   g_return_val_if_fail (data_test != NULL, NULL);
-  GTestCase *tc = g_slice_new0 (GTestCase);
+  tc = g_slice_new0 (GTestCase);
   tc->name = g_strdup (test_name);
   tc->fixture_size = data_size;
   tc->fixture_setup = (void*) data_setup;
@@ -837,10 +841,11 @@ g_test_add_func (const char     *testpath,
 GTestSuite*
 g_test_create_suite (const char *suite_name)
 {
+  GTestSuite *ts;
   g_return_val_if_fail (suite_name != NULL, NULL);
   g_return_val_if_fail (strchr (suite_name, '/') == NULL, NULL);
   g_return_val_if_fail (suite_name[0] != 0, NULL);
-  GTestSuite *ts = g_slice_new0 (GTestSuite);
+  ts = g_slice_new0 (GTestSuite);
   ts->name = g_strdup (suite_name);
   return ts;
 }
@@ -933,10 +938,11 @@ test_case_run (GTestCase *tc)
     {
       GTimer *test_run_timer = g_timer_new();
       long double largs[3];
+      void *fixture;
       g_test_log (G_TEST_LOG_START_CASE, test_run_name, NULL, 0, NULL);
       test_run_forks = 0;
       g_timer_start (test_run_timer);
-      void *fixture = g_malloc0 (tc->fixture_size);
+      fixture = g_malloc0 (tc->fixture_size);
       test_run_seed (test_run_seedstr);
       if (tc->fixture_setup)
         tc->fixture_setup (fixture);
@@ -1057,11 +1063,12 @@ g_assertion_message (const char     *domain,
                      const char     *message)
 {
   char lstr[32];
+  char *s;
   g_snprintf (lstr, 32, "%d", line);
-  char *s = g_strconcat (domain ? domain : "", domain && domain[0] ? ":" : "",
-                         file, ":", lstr, ":",
-                         func, func[0] ? ":" : "",
-                         " ", message, NULL);
+  s = g_strconcat (domain ? domain : "", domain && domain[0] ? ":" : "",
+                   file, ":", lstr, ":",
+                   func, func[0] ? ":" : "",
+                   " ", message, NULL);
   g_printerr ("**\n** %s\n", s);
   g_free (s);
   abort();

@@ -78,6 +78,7 @@ glib_OBJECTS =			\
 	gstdio.obj	\
 	gstrfuncs.obj		\
 	gstring.obj		\
+	gtestutils.obj	\
 	gthread.obj		\
 	gthreadpool.obj		\
 	gtimer.obj		\
@@ -86,6 +87,7 @@ glib_OBJECTS =			\
 	gunicollate.obj		\
 	gunidecomp.obj		\
 	guniprop.obj		\
+	gurifuncs.obj	\
 	gutf8.obj		\
 	gutils.obj		\
 	gwin32.obj		\

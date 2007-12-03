@@ -1,3 +1,14 @@
+2007-12-03  Hans Breuer  <hans@breuer.org>
+
+	* glib/glib.symbols : added glib_gettext (in use by gio)
+	* makefile.msc : also try building gio
+	
+	* glib/gmarkup.c : use G_GUINT64_CONSTANT() to avoid 
+	'bad suffix on number'
+	* glib/gtestutils.c : declare cariable at the beginning of the block,
+	include <io.h> for G_OS_WIN32
+	* makefile.msc.in : add gurifuncs and gtestutils
+
 2007-12-03  Ryan Lortie  <desrt@desrt.ca>
 
 	* glib/ghash.c: create a common function for the many places where all

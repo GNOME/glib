@@ -2496,7 +2496,7 @@ g_markup_collect_attributes (const gchar         *element_name,
         mandatory = FALSE;
 
       for (i = 0; attribute_names[i]; i++)
-        if (i >= 40 || !(collected & (1ull << i)))
+        if (i >= 40 || !(collected & (G_GUINT64_CONSTANT(1) << i)))
           if (!strcmp (attribute_names[i], attr))
             break;
 
@@ -2514,7 +2514,7 @@ g_markup_collect_attributes (const gchar         *element_name,
        * what error it is, so just continue...
        */
       if (i < 40)
-        collected |= (1ull << i);
+        collected |= (G_GUINT64_CONSTANT(1) << i);
 
       value = attribute_values[i];
 

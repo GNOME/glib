@@ -1,7 +1,7 @@
 ## Makefile for building the GLib dlls with Microsoft C
 ## Use: nmake -f makefile.msc
 
-PARTS = glib gmodule gthread gobject tests
+PARTS = glib gmodule gthread gobject gio tests
 
 all : \
 	config.h \
