@@ -22,7 +22,6 @@
 
 #include <config.h>
 #include <sys/types.h>
-#include <dirent.h>
 #include <string.h>
 #include <stdio.h>
 #include "gcontenttypeprivate.h"
@@ -285,6 +284,8 @@ g_content_types_get_registered (void)
 }
 
 #else /* !G_OS_WIN32 - Unix specific version */
+
+#include <dirent.h>
 
 #define XDG_PREFIX _gio_xdg
 #include "xdgmime/xdgmime.h"

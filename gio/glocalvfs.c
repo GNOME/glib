@@ -25,7 +25,9 @@
 #include "glocalfile.h"
 #include <gio/gdummyfile.h>
 #include <sys/types.h>
+#ifdef HAVE_PWD_H
 #include <pwd.h>
+#endif
 
 #include "gioalias.h"
 
@@ -135,6 +137,7 @@ g_local_vfs_parse_name (GVfs       *vfs,
 	    user_prefix = g_strdup (g_get_home_dir());
 	  else
 	    {
+#ifdef HAVE_PWD_H
 	      user_name = g_strndup (user_start, user_end - user_start);
 	      passwd_file_entry = getpwnam (user_name);
 	      g_free (user_name);
@@ -143,6 +146,7 @@ g_local_vfs_parse_name (GVfs       *vfs,
 		  passwd_file_entry->pw_dir != NULL)
 		user_prefix = g_strdup (passwd_file_entry->pw_dir);
 	      else
+#endif
 		user_prefix = g_strdup (g_get_home_dir ());
 	    }
 

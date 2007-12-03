@@ -25,7 +25,9 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
+#endif
 #include <errno.h>
 #include <string.h>
 
@@ -506,9 +508,9 @@ copy_file_data (gint     sfd,
   gboolean ret = TRUE;
   gpointer buffer;
   const gchar *write_buffer;
-  ssize_t bytes_read;
-  ssize_t bytes_to_write;
-  ssize_t bytes_written;
+  gssize bytes_read;
+  gssize bytes_to_write;
+  gssize bytes_written;
   
   buffer = g_malloc (BUFSIZE);
   

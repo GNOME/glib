@@ -21,9 +21,17 @@
  */
 
 #include <config.h>
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
+#endif
 #include <fcntl.h>
 #include <gioerror.h>
+#ifdef G_OS_WIN32
+#include <io.h>
+#ifndef pipe
+#define pipe(fds) _pipe(fds, 4096, _O_BINARY)
+#endif
+#endif
 #include "gcancellable.h"
 #include "glibintl.h"
 

@@ -1,3 +1,17 @@
+2007-12-03  Hans Breuer  <hans@breuer.org>
+
+	[start of port to win32/msvc]
+	* gcancellable.c : HAVE_UNIST_H and _pipe()
+	* gcontenttype.c : only include <dirent.h> in the UNIX branch
+	* gdatainputstream.c : pointer arithmetic on void* is a gcc extension
+	* gdummyfile.c glocalfileinputstream.c gsimpleasyncresult.c : use 
+	HAVE_UNIST_H
+	* glocalfileoutputstream.c : use HAVE_UNIST_H and s/ssize_t/gssize/
+	* glocalvfs.c : use HAVE_PWD_H
+	* gio.symbols : ifdef unix specific functions with G_OS_UNIX
+	* makefile.msc : new file (maybe later converted to makefile.msc.in)
+	* Makefile.am : added to EXTRA_DIST
+
 2007-12-03  Matthias Clasen  <mclasen@redhat.com>
 
 	* gfile.c (g_file_copy): Add a cross-reference to g_file_dup().

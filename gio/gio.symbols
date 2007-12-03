@@ -629,6 +629,7 @@ g_themed_icon_get_names
 
 #if IN_HEADER(__G_UNIX_MOUNTS_H__)
 #if IN_FILE(__G_UNIX_MOUNTS_C__)
+#ifdef G_OS_UNIX
 g_unix_mount_free 
 g_unix_mount_point_free 
 g_unix_mount_compare 
@@ -653,20 +654,25 @@ g_unix_mounts_changed_since
 g_unix_mount_points_changed_since 
 g_unix_mount_monitor_get_type  G_GNUC_CONST
 g_unix_mount_monitor_new 
+#endif /* G_OS_UNIX */
 #endif
 #endif
 
 #if IN_HEADER(__G_UNIX_INPUT_STREAM_H__)
 #if IN_FILE(__G_UNIX_INPUT_STREAM_C__)
+#ifdef G_OS_UNIX
 g_unix_input_stream_get_type  G_GNUC_CONST
 g_unix_input_stream_new 
+#endif /* G_OS_UNIX */
 #endif
 #endif
 
 #if IN_HEADER(__G_UNIX_OUTPUT_STREAM_H__)
 #if IN_FILE(__G_UNIX_OUTPUT_STREAM_C__)
+#ifdef G_OS_UNIX
 g_unix_output_stream_get_type  G_GNUC_CONST
 g_unix_output_stream_new 
+#endif /* G_OS_UNIX */
 #endif
 #endif
 
@@ -705,13 +711,17 @@ g_native_volume_monitor_get_type  G_GNUC_CONST
 
 #if IN_HEADER(__G_LOCAL_FILE_MONITOR_H__)
 #if IN_FILE(__G_LOCAL_FILE_MONITOR_C__)
+#ifdef G_OS_UNIX
 g_local_file_monitor_get_type  G_GNUC_CONST
+#endif
 #endif
 #endif
 
 #if IN_HEADER(__G_LOCAL_DIRECTORY_MONITOR_H__)
 #if IN_FILE(__G_LOCAL_DIRECTORY_MONITOR_C__)
+#ifdef G_OS_UNIX
 g_local_directory_monitor_get_type  G_GNUC_CONST
+#endif
 #endif
 #endif
 
