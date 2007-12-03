@@ -184,6 +184,47 @@ get_selinux_context (const char            *path,
 
 #ifdef HAVE_XATTR
 
+/* Wrappers to hide away differences between (Linux) getxattr/lgetxattr and
+ * (Mac) getxattr(..., XATTR_NOFOLLOW)
+ */
+#ifdef HAVE_XATTR_NOFOLLOW
+#define g_fgetxattr(fd,name,value,size)  fgetxattr(fd,name,value,size,0,0)
+#define g_flistxattr(fd,name,size)       flistxattr(fd,name,size,0)
+#define g_setxattr(path,name,value,size) setxattr(path,name,value,size,0,0)
+#else
+#define g_fgetxattr     fgetxattr
+#define g_flistxattr    flistxattr
+#define g_setxattr(path,name,value,size) setxattr(path,name,value,size,0)
+#endif
+
+static ssize_t
+g_getxattr (const char *path, const char *name, void *value, size_t size,
+            gboolean follow_symlinks)
+{
+#ifdef HAVE_XATTR_NOFOLLOW
+  return getxattr (path, name, value, size, 0, follow_symlinks ? 0 : XATTR_NOFOLLOW);
+#else
+  if (follow_symlinks)
+    return getxattr (path, name, value, size);
+  else
+    return lgetxattr (path, name, value, size);
+#endif
+}
+
+static ssize_t
+g_listxattr(const char *path, char *namebuf, size_t size,
+            gboolean follow_symlinks)
+{
+#ifdef HAVE_XATTR_NOFOLLOW
+  return listxattr (path, namebuf, size, follow_symlinks ? 0 : XATTR_NOFOLLOW);
+#else
+  if (follow_symlinks)
+    return listxattr (path, namebuf, size);
+  else
+    return llistxattr (path, namebuf, size);
+#endif
+}
+
 static gboolean
 valid_char (char c)
 {
@@ -322,30 +363,21 @@ get_one_xattr (const char *path,
   char *value_p;
   ssize_t len;
 
-  if (follow_symlinks)  
-    len = getxattr (path, xattr, value, sizeof (value)-1);
-  else
-    len = lgetxattr (path, xattr,value, sizeof (value)-1);
+  len = g_getxattr (path, xattr, value, sizeof (value)-1, follow_symlinks);
 
   value_p = NULL;
   if (len >= 0)
     value_p = value;
   else if (len == -1 && errno == ERANGE)
     {
-      if (follow_symlinks)  
-	len = getxattr (path, xattr, NULL, 0);
-      else
-	len = lgetxattr (path, xattr, NULL, 0);
+      len = g_getxattr (path, xattr, NULL, 0, follow_symlinks);
 
       if (len < 0)
 	return;
 
       value_p = g_malloc (len+1);
 
-      if (follow_symlinks)  
-	len = getxattr (path, xattr, value_p, len);
-      else
-	len = lgetxattr (path, xattr, value_p, len);
+      len = g_getxattr (path, xattr, value_p, len, follow_symlinks);
 
       if (len < 0)
 	{
@@ -389,10 +421,7 @@ get_xattrs (const char            *path,
 
   if (all)
     {
-      if (follow_symlinks)
-	list_res_size = listxattr (path, NULL, 0);
-      else
-	list_res_size = llistxattr (path, NULL, 0);
+      list_res_size = g_listxattr (path, NULL, 0, follow_symlinks);
 
       if (list_res_size == -1 ||
 	  list_res_size == 0)
@@ -403,10 +432,7 @@ get_xattrs (const char            *path,
 
     retry:
       
-      if (follow_symlinks)
-	list_res_size = listxattr (path, list, list_size);
-      else
-	list_res_size = llistxattr (path, list, list_size);
+      list_res_size = g_listxattr (path, list, list_size, follow_symlinks);
       
       if (list_res_size == -1 && errno == ERANGE)
 	{
@@ -492,21 +518,21 @@ get_one_xattr_from_fd (int         fd,
   char *value_p;
   ssize_t len;
 
-  len = fgetxattr (fd, xattr, value, sizeof (value)-1);
+  len = g_fgetxattr (fd, xattr, value, sizeof (value)-1);
 
   value_p = NULL;
   if (len >= 0)
     value_p = value;
   else if (len == -1 && errno == ERANGE)
     {
-      len = fgetxattr (fd, xattr, NULL, 0);
+      len = g_fgetxattr (fd, xattr, NULL, 0);
 
       if (len < 0)
 	return;
 
       value_p = g_malloc (len+1);
 
-      len = fgetxattr (fd, xattr, value_p, len);
+      len = g_fgetxattr (fd, xattr, value_p, len);
 
       if (len < 0)
 	{
@@ -548,7 +574,7 @@ get_xattrs_from_fd (int                    fd,
 
   if (all)
     {
-      list_res_size = flistxattr (fd, NULL, 0);
+      list_res_size = g_flistxattr (fd, NULL, 0);
 
       if (list_res_size == -1 ||
 	  list_res_size == 0)
@@ -559,7 +585,7 @@ get_xattrs_from_fd (int                    fd,
 
     retry:
       
-      list_res_size = flistxattr (fd, list, list_size);
+      list_res_size = g_flistxattr (fd, list, list_size);
       
       if (list_res_size == -1 && errno == ERANGE)
 	{
@@ -688,7 +714,7 @@ set_xattr (char                       *filename,
   else
     a = attribute;
   
-  res = setxattr (filename, a, value, val_len, 0);
+  res = g_setxattr (filename, a, value, val_len);
   errsv = errno;
   
   if (is_user)

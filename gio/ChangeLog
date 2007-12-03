@@ -1,5 +1,10 @@
 2007-12-03  Alexander Larsson  <alexl@redhat.com>
 
+        * glocalfileinfo.c:
+	Handle OSX style xattrs API (#500506)
+
+2007-12-03  Alexander Larsson  <alexl@redhat.com>
+
         * gfile.[ch]:
         * glocalfile.c:
 	Add G_FILE_COPY_NO_FALLBACK_FOR_MOVE flag

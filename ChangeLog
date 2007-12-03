@@ -1,3 +1,8 @@
+2007-12-03  Alexander Larsson  <alexl@redhat.com>
+
+        * configure.in:
+	Add xattr checks for OSX style API (#500506)
+
 2007-12-03  Ryan Lortie  <desrt@desrt.ca>
 
 	* glib/ghash.c: merge more common code into functions.  Vastly

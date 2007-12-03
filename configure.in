@@ -1554,9 +1554,31 @@ dnl   failure. try libattr
         msg_xattr=yes])
       ])
   fi
+
+  if test "x$msg_xattr" = "xyes"; then
+    AC_MSG_CHECKING([for XATTR_NOFOLLOW])
+    AC_TRY_COMPILE([
+      #include <stdio.h>
+      #ifdef HAVE_SYS_TYPES_H
+      #include <sys/types.h>
+      #endif
+      #ifdef HAVE_SYS_XATTR_H
+      #include <sys/xattr.h>
+      #elif HAVE_ATTR_XATTR_H
+      #include <attr/xattr.h>
+      #endif
+    ],
+    [ssize_t len = getxattr("", "", NULL, 0, 0, XATTR_NOFOLLOW);],
+    [
+      AC_DEFINE([HAVE_XATTR_NOFOLLOW], [1], [Define to 1 if xattr API uses XATTR_NOFOLLOW])
+      AC_MSG_RESULT([yes])
+    ],
+    [AC_MSG_RESULT([no])]
+    )
+  fi
+
 fi
 AC_SUBST(XATTR_LIBS)
-
 
 dnl ****************************************
 dnl *** platform dependent source checks ***
