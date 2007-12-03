@@ -132,13 +132,15 @@ test_new (const gchar        *pattern,
 
 static gboolean
 test_new_fail (const gchar        *pattern,
-	       GRegexCompileFlags  compile_opts)
+	       GRegexCompileFlags  compile_opts,
+	       GRegexError         expected_error)
 {
   GRegex *regex;
+  GError *error = NULL;
   
   verbose ("compiling \"%s\" (expected a failure) \t", pattern);
 
-  regex = g_regex_new (pattern, compile_opts, 0, NULL);
+  regex = g_regex_new (pattern, compile_opts, 0, &error);
 
   if (regex != NULL)
     {
@@ -148,13 +150,22 @@ test_new_fail (const gchar        *pattern,
       return FALSE;
     }
 
+  if (error->code != expected_error)
+    {
+      g_print ("failed \t(pattern: \"%s\", compile: %d, got error: %d, "
+	       "expected error: %d)\n",
+	       pattern, compile_opts, error->code, expected_error);
+      g_error_free (error);
+      return FALSE;
+    }
+
   verbose ("passed\n");
   return TRUE;
 }
 
-#define TEST_NEW_FAIL(pattern, compile_opts) { \
+#define TEST_NEW_FAIL(pattern, compile_opts, expected_error) { \
   total++; \
-  if (test_new_fail (pattern, compile_opts)) \
+  if (test_new_fail (pattern, compile_opts, expected_error)) \
     PASS; \
   else \
     FAIL; \
@@ -1600,13 +1611,13 @@ main (int argc, char *argv[])
   /* This gives "internal error: code overflow" with pcre 6.0 */
   TEST_NEW("(?i)(?-i)", 0, 0);
 
-  /* TEST_NEW_FAIL(pattern, compile_opts) */
-  TEST_NEW_FAIL("(", 0);
-  TEST_NEW_FAIL(")", 0);
-  TEST_NEW_FAIL("[", 0);
-  TEST_NEW_FAIL("*", 0);
-  TEST_NEW_FAIL("?", 0);
-  TEST_NEW_FAIL("(?P<A>x)|(?P<A>y)", 0);
+  /* TEST_NEW_FAIL(pattern, compile_opts, expected_error) */
+  TEST_NEW_FAIL("(", 0, G_REGEX_ERROR_UNMATCHED_PARENTHESIS);
+  TEST_NEW_FAIL(")", 0, G_REGEX_ERROR_UNMATCHED_PARENTHESIS);
+  TEST_NEW_FAIL("[", 0, G_REGEX_ERROR_UNTERMINATED_CHARACTER_CLASS);
+  TEST_NEW_FAIL("*", 0, G_REGEX_ERROR_NOTHING_TO_REPEAT);
+  TEST_NEW_FAIL("?", 0, G_REGEX_ERROR_NOTHING_TO_REPEAT);
+  TEST_NEW_FAIL("(?P<A>x)|(?P<A>y)", 0, G_REGEX_ERROR_DUPLICATE_SUBPATTERN_NAME);
 
   /* TEST_MATCH_SIMPLE(pattern, string, compile_opts, match_opts, expected) */
   TEST_MATCH_SIMPLE("a", "", 0, 0, FALSE);

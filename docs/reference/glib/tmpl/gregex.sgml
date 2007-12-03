@@ -80,10 +80,50 @@ written by Philip Hazel.
 Error codes returned by regular expressions functions.
 </para>
 
-@G_REGEX_ERROR_COMPILE: Compilation of the regular expression in g_regex_new() failed.
+@G_REGEX_ERROR_COMPILE: Compilation of the regular expression failed.
 @G_REGEX_ERROR_OPTIMIZE: Optimization of the regular expression failed.
 @G_REGEX_ERROR_REPLACE: Replacement failed due to an ill-formed replacement string.
 @G_REGEX_ERROR_MATCH: The match process failed.
+@G_REGEX_ERROR_INTERNAL: Internal error of the regular expression engine. Since 2.16
+@G_REGEX_ERROR_STRAY_BACKSLASH: "\\" at end of pattern. Since 2.16
+@G_REGEX_ERROR_MISSING_CONTROL_CHAR: "\\c" at end of pattern. Since 2.16
+@G_REGEX_ERROR_UNRECOGNIZED_ESCAPE: Unrecognized character follows "\\". Since 2.16
+@G_REGEX_ERROR_QUANTIFIERS_OUT_OF_ORDER: Numbers out of order in "{}" quantifier. Since 2.16
+@G_REGEX_ERROR_QUANTIFIER_TOO_BIG: Number too big in "{}" quantifier. Since 2.16
+@G_REGEX_ERROR_UNTERMINATED_CHARACTER_CLASS: Missing terminating "]" for character class. Since 2.16
+@G_REGEX_ERROR_INVALID_ESCAPE_IN_CHARACTER_CLASS: Invalid escape sequence in character class. Since 2.16
+@G_REGEX_ERROR_RANGE_OUT_OF_ORDER: Range out of order in character class. Since 2.16
+@G_REGEX_ERROR_NOTHING_TO_REPEAT: Nothing to repeat. Since 2.16
+@G_REGEX_ERROR_UNRECOGNIZED_CHARACTER: Unrecognized character after "(?", "(?&lt;" or "(?P". Since 2.16
+@G_REGEX_ERROR_POSIX_NAMED_CLASS_OUTSIDE_CLASS: POSIX named classes are supported only within a class. Since 2.16
+@G_REGEX_ERROR_UNMATCHED_PARENTHESIS: Missing terminating ")" or ")" without opening "(". Since 2.16
+@G_REGEX_ERROR_INEXISTENT_SUBPATTERN_REFERENCE: Reference to non-existent subpattern. Since 2.16
+@G_REGEX_ERROR_UNTERMINATED_COMMENT: Missing terminating ")" after comment. Since 2.16
+@G_REGEX_ERROR_EXPRESSION_TOO_LARGE: Regular expression too large. Since 2.16
+@G_REGEX_ERROR_MEMORY_ERROR: Failed to get memory. Since 2.16
+@G_REGEX_ERROR_VARIABLE_LENGTH_LOOKBEHIND: Lookbehind assertion is not fixed length. Since 2.16
+@G_REGEX_ERROR_MALFORMED_CONDITION: Malformed number or name after "(?(". Since 2.16
+@G_REGEX_ERROR_TOO_MANY_CONDITIONAL_BRANCHES: Conditional group contains more than two branches. Since 2.16
+@G_REGEX_ERROR_ASSERTION_EXPECTED: Assertion expected after "(?(". Since 2.16
+@G_REGEX_ERROR_UNKNOWN_POSIX_CLASS_NAME: Unknown POSIX class name. Since 2.16
+@G_REGEX_ERROR_POSIX_COLLATING_ELEMENTS_NOT_SUPPORTED: POSIX collating elements are not supported. Since 2.16
+@G_REGEX_ERROR_HEX_CODE_TOO_LARGE: Character value in "\\x{...}" sequence is too large. Since 2.16
+@G_REGEX_ERROR_INVALID_CONDITION: Invalid condition "(?(0)". Since 2.16
+@G_REGEX_ERROR_SINGLE_BYTE_MATCH_IN_LOOKBEHIND: \\C not allowed in lookbehind assertion. Since 2.16
+@G_REGEX_ERROR_INFINITE_LOOP: Recursive call could loop indefinitely. Since 2.16
+@G_REGEX_ERROR_MISSING_SUBPATTERN_NAME_TERMINATOR: Missing terminator in subpattern name. Since 2.16
+@G_REGEX_ERROR_DUPLICATE_SUBPATTERN_NAME: Two named subpatterns have the same name. Since 2.16
+@G_REGEX_ERROR_MALFORMED_PROPERTY: Malformed "\\P" or "\\p" sequence. Since 2.16
+@G_REGEX_ERROR_UNKNOWN_PROPERTY: Unknown property name after "\\P" or "\\p". Since 2.16
+@G_REGEX_ERROR_SUBPATTERN_NAME_TOO_LONG: Subpattern name is too long (maximum 32 characters). Since 2.16
+@G_REGEX_ERROR_TOO_MANY_SUBPATTERNS: Too many named subpatterns (maximum 10,000). Since 2.16
+@G_REGEX_ERROR_INVALID_OCTAL_VALUE: Octal value is greater than "\\377". Since 2.16
+@G_REGEX_ERROR_TOO_MANY_BRANCHES_IN_DEFINE: "DEFINE" group contains more than one branch. Since 2.16
+@G_REGEX_ERROR_DEFINE_REPETION: Repeating a "DEFINE" group is not allowed. Since 2.16
+@G_REGEX_ERROR_INCONSISTENT_NEWLINE_OPTIONS: Inconsistent newline options. Since 2.16
+@G_REGEX_ERROR_MISSING_BACK_REFERENCE: "\\g" is not followed by a braced name or an
+optionally braced non-zero number. Since 2.16
+
 @Since: 2.14
 
 <!-- ##### MACRO G_REGEX_ERROR ##### -->

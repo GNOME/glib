@@ -1,3 +1,9 @@
+2007-12-03  Marco Barisione <marco@barisione.org>
+
+	* glib/gregex.c:
+	* glib/gregex.h: Add new error codes for when compilation fails and
+	make compilation error translatable. (#482313, Morten Welinder)
+
 2007-12-03  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gkeyfile.c: Add a hash table to speed up group lookups,

@@ -179,6 +179,192 @@ match_error (gint errcode)
   return _("unknown error");
 }
 
+static void
+translate_compile_error (gint *errcode, gchar **errmsg)
+{
+  /* Compile errors are created adding 100 to the error code returned
+   * by PCRE.
+   * If errcode is known we put the translatable error message in
+   * erromsg. If errcode is unknown we put the generic
+   * G_REGEX_ERROR_COMPILE error code in errcode and keep the
+   * untranslated error message returned by PCRE.
+   * Note that there can be more PCRE errors with the same GRegexError
+   * and that some PCRE errors are useless for us. */
+  *errcode += 100;
+
+  switch (*errcode)
+    {
+    case G_REGEX_ERROR_STRAY_BACKSLASH:
+      *errmsg = _("\\ at end of pattern");
+      break;
+    case G_REGEX_ERROR_MISSING_CONTROL_CHAR:
+      *errmsg = _("\\c at end of pattern");
+      break;
+    case G_REGEX_ERROR_UNRECOGNIZED_ESCAPE:
+      *errmsg = _("unrecognized character follows \\");
+      break;
+    case 137:
+      *errcode = G_REGEX_ERROR_UNRECOGNIZED_ESCAPE;
+      *errmsg = _("case changing escapes are not allowed here");
+      break;
+    case G_REGEX_ERROR_QUANTIFIERS_OUT_OF_ORDER:
+      *errmsg = _("numbers out of order in {} quantifier");
+      break;
+    case G_REGEX_ERROR_QUANTIFIER_TOO_BIG:
+      *errmsg = _("number too big in {} quantifier");
+      break;
+    case G_REGEX_ERROR_UNTERMINATED_CHARACTER_CLASS:
+      *errmsg = _("missing terminating ] for character class");
+      break;
+    case G_REGEX_ERROR_INVALID_ESCAPE_IN_CHARACTER_CLASS:
+      *errmsg = _("invalid escape sequence in character class");
+      break;
+    case G_REGEX_ERROR_RANGE_OUT_OF_ORDER:
+      *errmsg = _("range out of order in character class");
+      break;
+    case G_REGEX_ERROR_NOTHING_TO_REPEAT:
+      *errmsg = _("nothing to repeat");
+      break;
+    case G_REGEX_ERROR_UNRECOGNIZED_CHARACTER:
+      *errmsg = _("unrecognized character after (?");
+      break;
+    case 124:
+      *errcode = G_REGEX_ERROR_UNRECOGNIZED_CHARACTER;
+      *errmsg = _("unrecognized character after (?<");
+      break;
+    case 141:
+      *errcode = G_REGEX_ERROR_UNRECOGNIZED_CHARACTER;
+      *errmsg = _("unrecognized character after (?P");
+      break;
+    case G_REGEX_ERROR_POSIX_NAMED_CLASS_OUTSIDE_CLASS:
+      *errmsg = _("POSIX named classes are supported only within a class");
+      break;
+    case G_REGEX_ERROR_UNMATCHED_PARENTHESIS:
+      *errmsg = _("missing terminating )");
+      break;
+    case 122:
+      *errcode = G_REGEX_ERROR_UNMATCHED_PARENTHESIS;
+      *errmsg = _(") without opening (");
+      break;
+    case 129:
+      *errcode = G_REGEX_ERROR_UNMATCHED_PARENTHESIS;
+      *errmsg = _("(?R or (?[+-]digits must be followed by )");
+      break;
+    case G_REGEX_ERROR_INEXISTENT_SUBPATTERN_REFERENCE:
+      *errmsg = _("reference to non-existent subpattern");
+      break;
+    case G_REGEX_ERROR_UNTERMINATED_COMMENT:
+      *errmsg = _("missing ) after comment");
+      break;
+    case G_REGEX_ERROR_EXPRESSION_TOO_LARGE:
+      *errmsg = _("regular expression too large");
+      break;
+    case G_REGEX_ERROR_MEMORY_ERROR:
+      *errmsg = _("failed to get memory");
+      break;
+    case G_REGEX_ERROR_VARIABLE_LENGTH_LOOKBEHIND:
+      *errmsg = _("lookbehind assertion is not fixed length");
+      break;
+    case G_REGEX_ERROR_MALFORMED_CONDITION:
+      *errmsg = _("malformed number or name after (?(");
+      break;
+    case G_REGEX_ERROR_TOO_MANY_CONDITIONAL_BRANCHES:
+      *errmsg = _("conditional group contains more than two branches");
+      break;
+    case G_REGEX_ERROR_ASSERTION_EXPECTED:
+      *errmsg = _("assertion expected after (?(");
+      break;
+    case G_REGEX_ERROR_UNKNOWN_POSIX_CLASS_NAME:
+      *errmsg = _("unknown POSIX class name");
+      break;
+    case G_REGEX_ERROR_POSIX_COLLATING_ELEMENTS_NOT_SUPPORTED:
+      *errmsg = _("POSIX collating elements are not supported");
+      break;
+    case G_REGEX_ERROR_HEX_CODE_TOO_LARGE:
+      *errmsg = _("character value in \\x{...} sequence is too large");
+      break;
+    case G_REGEX_ERROR_INVALID_CONDITION:
+      *errmsg = _("invalid condition (?(0)");
+      break;
+    case G_REGEX_ERROR_SINGLE_BYTE_MATCH_IN_LOOKBEHIND:
+      *errmsg = _("\\C not allowed in lookbehind assertion");
+      break;
+    case G_REGEX_ERROR_INFINITE_LOOP:
+      *errmsg = _("recursive call could loop indefinitely");
+      break;
+    case G_REGEX_ERROR_MISSING_SUBPATTERN_NAME_TERMINATOR:
+      *errmsg = _("missing terminator in subpattern name");
+      break;
+    case G_REGEX_ERROR_DUPLICATE_SUBPATTERN_NAME:
+      *errmsg = _("two named subpatterns have the same name");
+      break;
+    case G_REGEX_ERROR_MALFORMED_PROPERTY:
+      *errmsg = _("malformed \\P or \\p sequence");
+      break;
+    case G_REGEX_ERROR_UNKNOWN_PROPERTY:
+      *errmsg = _("unknown property name after \\P or \\p");
+      break;
+    case G_REGEX_ERROR_SUBPATTERN_NAME_TOO_LONG:
+      *errmsg = _("subpattern name is too long (maximum 32 characters)");
+      break;
+    case G_REGEX_ERROR_TOO_MANY_SUBPATTERNS:
+      *errmsg = _("too many named subpatterns (maximum 10,000)");
+      break;
+    case G_REGEX_ERROR_INVALID_OCTAL_VALUE:
+      *errmsg = _("octal value is greater than \\377");
+      break;
+    case G_REGEX_ERROR_TOO_MANY_BRANCHES_IN_DEFINE:
+      *errmsg = _("DEFINE group contains more than one branch");
+      break;
+    case G_REGEX_ERROR_DEFINE_REPETION:
+      *errmsg = _("repeating a DEFINE group is not allowed");
+      break;
+    case G_REGEX_ERROR_INCONSISTENT_NEWLINE_OPTIONS:
+      *errmsg = _("inconsistent NEWLINE options");
+      break;
+    case G_REGEX_ERROR_MISSING_BACK_REFERENCE:
+      *errmsg = _("\\g is not followed by a braced name or an optionally "
+		 "braced non-zero number");
+      break;
+    case 11:
+      *errcode = G_REGEX_ERROR_INTERNAL;
+      *errmsg = _("unexpected repeat");
+      break;
+    case 23:
+      *errcode = G_REGEX_ERROR_INTERNAL;
+      *errmsg = _("code overflow");
+      break;
+    case 52:
+      *errcode = G_REGEX_ERROR_INTERNAL;
+      *errmsg = _("overran compiling workspace");
+      break;
+    case 53:
+      *errcode = G_REGEX_ERROR_INTERNAL;
+      *errmsg = _("previously-checked referenced subpattern not found");
+      break;
+    case 16:
+      /* This should not happen as we never pass a NULL erroffset */
+      g_warning ("erroffset passed as NULL");
+      *errcode = G_REGEX_ERROR_COMPILE;
+      break;
+    case 17:
+      /* This should not happen as we check options before passing them
+       * to pcre_compile2() */
+      g_warning ("unknown option bit(s) set");
+      *errcode = G_REGEX_ERROR_COMPILE;
+      break;
+    case 32:
+    case 44:
+    case 45:
+      /* These errors should not happen as we are using an UTF8-enabled PCRE
+       * and we do not check if strings are valid */
+      g_warning (*errmsg);
+      *errcode = G_REGEX_ERROR_COMPILE;
+      break;
+    default:
+      *errcode = G_REGEX_ERROR_COMPILE;
+    }
+}
 
 /* GMatchInfo */
 
@@ -854,8 +1040,9 @@ g_regex_new (const gchar         *pattern,
 {
   GRegex *regex;
   pcre *re;
-  const gchar *errmsg;
+  gchar *errmsg;
   gint erroffset;
+  gint errcode;
   gboolean optimize = FALSE;
   static gboolean initialized = FALSE;
   unsigned long int pcre_compile_options;
@@ -919,7 +1106,8 @@ g_regex_new (const gchar         *pattern,
     }
 
   /* compile the pattern */
-  re = pcre_compile (pattern, compile_options, &errmsg, &erroffset, NULL);
+  re = pcre_compile2 (pattern, compile_options, &errcode,
+		      (const gchar **)&errmsg, &erroffset, NULL);
 
   /* if the compilation failed, set the error member and return 
    * immediately */
@@ -927,11 +1115,14 @@ g_regex_new (const gchar         *pattern,
     {
       GError *tmp_error;
 
+      /* Translate the PCRE error code to GRegexError and use a translated
+       * error message if possible */
+      translate_compile_error (&errcode, &errmsg);
+
       /* PCRE uses byte offsets but we want to show character offsets */
       erroffset = g_utf8_pointer_to_offset (pattern, &pattern[erroffset]);
 
-      tmp_error = g_error_new (G_REGEX_ERROR, 
-			       G_REGEX_ERROR_COMPILE,
+      tmp_error = g_error_new (G_REGEX_ERROR, errcode,
 			       _("Error while compiling regular "
 				 "expression %s at char %d: %s"),
 			       pattern, erroffset, errmsg);
@@ -963,7 +1154,7 @@ g_regex_new (const gchar         *pattern,
 
   if (optimize)
     {
-      regex->extra = pcre_study (regex->pcre_re, 0, &errmsg);
+      regex->extra = pcre_study (regex->pcre_re, 0, (const gchar **)&errmsg);
       if (errmsg != NULL)
         {
           GError *tmp_error = g_error_new (G_REGEX_ERROR,
