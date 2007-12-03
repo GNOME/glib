@@ -232,8 +232,9 @@ static void second_hash_test (gboolean simple_hash)
 
      crcinit ();
 
-     h = g_hash_table_new (simple_hash ? one_hash : honeyman_hash,
-     			   second_hash_cmp);
+     h = g_hash_table_new_full (simple_hash ? one_hash : honeyman_hash,
+     			        second_hash_cmp,
+                                g_xfree, g_xfree);
      g_assert (h != NULL);
      for (i=0; i<20; i++)
           {
@@ -262,14 +263,13 @@ static void second_hash_test (gboolean simple_hash)
 
      sprintf (key, "%d", 3);
      g_hash_table_remove (h, key);
+     g_assert (g_hash_table_size (h) == 19);
      g_hash_table_foreach_remove (h, remove_even_foreach, NULL);
+     g_assert (g_hash_table_size (h) == 9);
      g_hash_table_foreach (h, not_even_foreach, NULL);
 
      for (i=0; i<20; i++)
           {
-	  if ((i % 2) == 0 || i == 3)
-  	      continue;
-
           sprintf (key, "%d", i);
 	  g_assert (atoi(key) == i);
 
@@ -280,17 +280,19 @@ static void second_hash_test (gboolean simple_hash)
           found = g_hash_table_lookup_extended (h, key,
 	  					(gpointer)&orig_key,
 						(gpointer)&orig_val);
-	  g_assert (found);
+	  if ((i % 2) == 0 || i == 3)
+            {
+              g_assert (!found);
+  	      continue;
+            }
 
-	  g_hash_table_remove (h, key);
+	  g_assert (found);
 
 	  g_assert (orig_key != NULL);
 	  g_assert (strcmp (key, orig_key) == 0);
-	  g_free (orig_key);
 
 	  g_assert (orig_val != NULL);
 	  g_assert (strcmp (val, orig_val) == 0);
-	  g_free (orig_val);
           }
 
     g_hash_table_destroy (h);

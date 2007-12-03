@@ -1,3 +1,8 @@
+2006-12-03  Ryan Lortie  <desrt@desrt.ca>
+
+	* tests/hash-test.c (second_hash_test): fix memory leak, add a few
+	extra sanity tests.
+
 2007-12-03  Matthias Clasen  <mclasen@redhat.com>
 	
 	* glib/gkeyfile.c: Don't call g_get_language_names() per-key.
