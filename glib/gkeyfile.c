@@ -81,6 +81,8 @@ struct _GKeyFile
   gchar list_separator;
 
   GKeyFileFlags flags;
+
+  gchar **locales;
 };
 
 typedef struct _GKeyFileKeyValuePair GKeyFileKeyValuePair;
@@ -206,6 +208,7 @@ g_key_file_init (GKeyFile *key_file)
   key_file->approximate_size = 0;
   key_file->list_separator = ';';
   key_file->flags = 0;
+  key_file->locales = g_strdupv ((gchar **)g_get_language_names ());
 }
 
 static void
@@ -213,8 +216,17 @@ g_key_file_clear (GKeyFile *key_file)
 {
   GList *tmp, *group_node;
 
+  if (key_file->locales) 
+    {
+      g_strfreev (key_file->locales);
+      key_file->locales = NULL;
+    }
+
   if (key_file->parse_buffer)
-    g_string_free (key_file->parse_buffer, TRUE);
+    {
+      g_string_free (key_file->parse_buffer, TRUE);
+      key_file->parse_buffer = NULL;
+    }
 
   tmp = key_file->groups;
   while (tmp != NULL)
@@ -698,17 +710,14 @@ static gboolean
 g_key_file_locale_is_interesting (GKeyFile    *key_file,
 				  const gchar *locale)
 {
-  const gchar * const * current_locales;
   gsize i;
 
   if (key_file->flags & G_KEY_FILE_KEEP_TRANSLATIONS)
     return TRUE;
 
-  current_locales = g_get_language_names ();
-
-  for (i = 0; current_locales[i] != NULL; i++)
+  for (i = 0; key_file->locales[i] != NULL; i++)
     {
-      if (g_ascii_strcasecmp (current_locales[i], locale) == 0)
+      if (g_ascii_strcasecmp (key_file->locales[i], locale) == 0)
 	return TRUE;
     }
 
@@ -2999,7 +3008,7 @@ g_key_file_add_group (GKeyFile    *key_file,
   if (key_file->start_group == NULL)
     key_file->start_group = group;
 
-  g_hash_table_insert (key_file->group_hash, group->name, group);
+  g_hash_table_insert (key_file->group_hash, (gpointer)group->name, group);
 }
 
 static void

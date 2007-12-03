@@ -1,3 +1,8 @@
+2007-12-03  Matthias Clasen  <mclasen@redhat.com>
+	
+	* glib/gkeyfile.c: Don't call g_get_language_names() per-key.
+	(#500638, Michael Meeks)
+
 2007-12-03  Marco Barisione <marco@barisione.org>
 
 	* glib/gregex.c:
