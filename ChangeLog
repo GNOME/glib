@@ -1,3 +1,13 @@
+2007-12-03  Matthias Clasen  <mclasen@redhat.com>
+
+	Merged from trunk:
+
+	* glib/gkeyfile.c: Don't call g_get_language_names() per-key.
+	(#500638, Michael Meeks)
+
+	* glib/gkeyfile.c: Add a hash table to speed up group lookups,
+	which GKeyFile does quite a lot.
+
 2007-12-03  Marco Barisione <marco@barisione.org>
 
 	Backport from trunk:

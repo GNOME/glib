@@ -67,6 +67,7 @@ typedef struct _GKeyFileGroup GKeyFileGroup;
 struct _GKeyFile
 {
   GList *groups;
+  GHashTable *group_hash;
 
   GKeyFileGroup *start_group;
   GKeyFileGroup *current_group;
@@ -80,6 +81,8 @@ struct _GKeyFile
   gchar list_separator;
 
   GKeyFileFlags flags;
+
+  gchar **locales;
 };
 
 typedef struct _GKeyFileKeyValuePair GKeyFileKeyValuePair;
@@ -199,11 +202,13 @@ g_key_file_init (GKeyFile *key_file)
 {  
   key_file->current_group = g_slice_new0 (GKeyFileGroup);
   key_file->groups = g_list_prepend (NULL, key_file->current_group);
+  key_file->group_hash = g_hash_table_new (g_str_hash, g_str_equal);
   key_file->start_group = NULL;
   key_file->parse_buffer = g_string_sized_new (128);
   key_file->approximate_size = 0;
   key_file->list_separator = ';';
   key_file->flags = 0;
+  key_file->locales = g_strdupv ((gchar **)g_get_language_names ());
 }
 
 static void
@@ -211,8 +216,17 @@ g_key_file_clear (GKeyFile *key_file)
 {
   GList *tmp, *group_node;
 
+  if (key_file->locales) 
+    {
+      g_strfreev (key_file->locales);
+      key_file->locales = NULL;
+    }
+
   if (key_file->parse_buffer)
-    g_string_free (key_file->parse_buffer, TRUE);
+    {
+      g_string_free (key_file->parse_buffer, TRUE);
+      key_file->parse_buffer = NULL;
+    }
 
   tmp = key_file->groups;
   while (tmp != NULL)
@@ -695,17 +709,14 @@ static gboolean
 g_key_file_locale_is_interesting (GKeyFile    *key_file,
 				  const gchar *locale)
 {
-  const gchar * const * current_locales;
   gsize i;
 
   if (key_file->flags & G_KEY_FILE_KEEP_TRANSLATIONS)
     return TRUE;
 
-  current_locales = g_get_language_names ();
-
-  for (i = 0; current_locales[i] != NULL; i++)
+  for (i = 0; key_file->locales[i] != NULL; i++)
     {
-      if (g_ascii_strcasecmp (current_locales[i], locale) == 0)
+      if (g_ascii_strcasecmp (key_file->locales[i], locale) == 0)
 	return TRUE;
     }
 
@@ -2783,8 +2794,8 @@ g_key_file_get_group_comment (GKeyFile             *key_file,
   GList *group_node;
   GKeyFileGroup *group;
   
-  group_node = g_key_file_lookup_group_node (key_file, group_name);
-  if (!group_node)
+  group = g_key_file_lookup_group (key_file, group_name);
+  if (!group)
     {
       g_set_error (error, G_KEY_FILE_ERROR,
                    G_KEY_FILE_ERROR_GROUP_NOT_FOUND,
@@ -2794,10 +2805,10 @@ g_key_file_get_group_comment (GKeyFile             *key_file,
       return NULL;
     }
 
-  group = (GKeyFileGroup *)group_node->data;
   if (group->comment)
     return g_strdup (group->comment->value);
   
+  group_node = g_key_file_lookup_group_node (key_file, group_name);
   group_node = group_node->next;
   group = (GKeyFileGroup *)group_node->data;  
   return get_group_comment (key_file, group, error);
@@ -2904,7 +2915,7 @@ g_key_file_has_group (GKeyFile    *key_file,
   g_return_val_if_fail (key_file != NULL, FALSE);
   g_return_val_if_fail (group_name != NULL, FALSE);
 
-  return g_key_file_lookup_group_node (key_file, group_name) != NULL;
+  return g_key_file_lookup_group (key_file, group_name) != NULL;
 }
 
 /**
@@ -2977,6 +2988,8 @@ g_key_file_add_group (GKeyFile    *key_file,
 
   if (key_file->start_group == NULL)
     key_file->start_group = group;
+
+  g_hash_table_insert (key_file->group_hash, (gpointer)group->name, group);
 }
 
 static void
@@ -3030,6 +3043,9 @@ g_key_file_remove_group_node (GKeyFile *key_file,
   GList *tmp;
 
   group = (GKeyFileGroup *) group_node->data;
+
+  if (group->name)
+    g_hash_table_remove (key_file->group_hash, group->name);
 
   /* If the current group gets deleted make the current group the last
    * added group.
@@ -3223,14 +3239,7 @@ static GKeyFileGroup *
 g_key_file_lookup_group (GKeyFile    *key_file,
 			 const gchar *group_name)
 {
-  GList *group_node;
-
-  group_node = g_key_file_lookup_group_node (key_file, group_name);
-
-  if (group_node != NULL)
-    return (GKeyFileGroup *) group_node->data; 
-
-  return NULL;
+  return (GKeyFileGroup *)g_hash_table_lookup (key_file->group_hash, group_name);
 }
 
 static GList *
