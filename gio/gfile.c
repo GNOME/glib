@@ -1927,7 +1927,10 @@ file_copy_fallback (GFile                  *source,
  * </tbody>
  * </tgroup>
  * </table>
- * 
+ *
+ * If you are interested in copying the #GFile object itself (not the on-disk
+ * file), see g_file_dup().
+ *
  * Returns: %TRUE on success, %FALSE otherwise.
  **/
 gboolean

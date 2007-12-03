@@ -1,3 +1,8 @@
+2007-12-03  Matthias Clasen  <mclasen@redhat.com>
+
+	* gfile.c (g_file_copy): Add a cross-reference to g_file_dup().
+	(#499783)
+
 2007-12-03  Alexander Larsson  <alexl@redhat.com>
 
         * glocalfileinfo.c:
