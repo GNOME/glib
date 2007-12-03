@@ -1,3 +1,8 @@
+2007-12-03  Ryan Lortie  <desrt@desrt.ca>
+
+	* glib/ghash.c: merge more common code into functions.  Vastly
+	simplify loop logic in g_hash_table_foreach_remove_or_steal().
+
 2007-12-01  Behdad Esfahbod  <behdad@gnome.org>
 
 	* Makefile.am: Don't descend into build/. (#500875)

@@ -406,6 +406,44 @@ g_hash_table_replace (GHashTable *hash_table,
   return g_hash_table_insert_internal (hash_table, key, value, TRUE);
 }
 
+static void
+g_hash_table_remove_node (GHashTable   *hash_table,
+                          GHashNode  ***node_ptr_ptr,
+                          gboolean      notify)
+{
+  GHashNode **node_ptr, *node;
+
+  node_ptr = *node_ptr_ptr;
+  node = *node_ptr;
+
+  *node_ptr = node->next;
+
+  g_hash_node_destroy (node,
+                       notify ? hash_table->key_destroy_func : NULL,
+                       notify ? hash_table->value_destroy_func : NULL);
+
+  hash_table->nnodes--;
+}
+
+static gboolean
+g_hash_table_remove_internal (GHashTable    *hash_table,
+                              gconstpointer  key,
+                              gboolean       notify)
+{
+  GHashNode **node_ptr;
+  
+  g_return_val_if_fail (hash_table != NULL, FALSE);
+  
+  node_ptr = g_hash_table_lookup_node (hash_table, key, NULL);
+  if (*node_ptr == NULL)
+    return FALSE;
+
+  g_hash_table_remove_node (hash_table, &node_ptr, FALSE);
+  G_HASH_TABLE_RESIZE (hash_table);
+
+  return TRUE;
+}
+
 /**
  * g_hash_table_remove:
  * @hash_table: a #GHashTable.
@@ -422,28 +460,9 @@ g_hash_table_replace (GHashTable *hash_table,
  **/
 gboolean
 g_hash_table_remove (GHashTable	   *hash_table,
-		     gconstpointer  key)
+                     gconstpointer  key)
 {
-  GHashNode **node, *dest;
-  
-  g_return_val_if_fail (hash_table != NULL, FALSE);
-  
-  node = g_hash_table_lookup_node (hash_table, key, NULL);
-  if (*node)
-    {
-      dest = *node;
-      (*node) = dest->next;
-      g_hash_node_destroy (dest, 
-			   hash_table->key_destroy_func,
-			   hash_table->value_destroy_func);
-      hash_table->nnodes--;
-  
-      G_HASH_TABLE_RESIZE (hash_table);
-
-      return TRUE;
-    }
-
-  return FALSE;
+  return g_hash_table_remove_internal (hash_table, key, TRUE);
 }
 
 /**
@@ -492,24 +511,7 @@ gboolean
 g_hash_table_steal (GHashTable    *hash_table,
                     gconstpointer  key)
 {
-  GHashNode **node, *dest;
-  
-  g_return_val_if_fail (hash_table != NULL, FALSE);
-  
-  node = g_hash_table_lookup_node (hash_table, key, NULL);
-  if (*node)
-    {
-      dest = *node;
-      (*node) = dest->next;
-      g_hash_node_destroy (dest, NULL, NULL);
-      hash_table->nnodes--;
-  
-      G_HASH_TABLE_RESIZE (hash_table);
-
-      return TRUE;
-    }
-
-  return FALSE;
+  return g_hash_table_remove_internal (hash_table, key, FALSE);
 }
 
 /**
@@ -593,46 +595,22 @@ g_hash_table_foreach_remove_or_steal (GHashTable *hash_table,
                                       gpointer	  user_data,
                                       gboolean    notify)
 {
-  GHashNode *node, *prev;
-  gint i;
+  GHashNode *node, **node_ptr;
   guint deleted = 0;
-  
+  gint i;
+
   for (i = 0; i < hash_table->size; i++)
-    {
-    restart:
-      
-      prev = NULL;
-      
-      for (node = hash_table->nodes[i]; node; prev = node, node = node->next)
-	{
-	  if ((* func) (node->key, node->value, user_data))
-	    {
-	      deleted += 1;
-	      
-	      hash_table->nnodes -= 1;
-	      
-	      if (prev)
-		{
-		  prev->next = node->next;
-		  g_hash_node_destroy (node,
-				       notify ? hash_table->key_destroy_func : NULL,
-				       notify ? hash_table->value_destroy_func : NULL);
-		  node = prev;
-		}
-	      else
-		{
-		  hash_table->nodes[i] = node->next;
-		  g_hash_node_destroy (node,
-				       notify ? hash_table->key_destroy_func : NULL,
-				       notify ? hash_table->value_destroy_func : NULL);
-		  goto restart;
-		}
-	    }
-	}
-    }
-  
+    for (node_ptr = &hash_table->nodes[i]; (node = *node_ptr) != NULL;)
+      if ((* func) (node->key, node->value, user_data))
+        {
+          g_hash_table_remove_node (hash_table, &node_ptr, notify);
+          deleted++;
+        }
+      else
+        node_ptr = &node->next;
+
   G_HASH_TABLE_RESIZE (hash_table);
-  
+
   return deleted;
 }
 
