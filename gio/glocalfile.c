@@ -1746,10 +1746,13 @@ g_local_file_move (GFile                  *source,
   if (rename (local_source->filename, local_destination->filename) == -1)
     {
       int errsv = errno;
-      if (errsv == EXDEV)
-	goto fallback;
 
-      if (errsv == EINVAL)
+      if (errsv == EXDEV)
+	/* This will cause the fallback code to run */
+	g_set_error (error, G_IO_ERROR,
+		     G_IO_ERROR_NOT_SUPPORTED,
+		     _("Move between mounts not supported"));
+      else if (errsv == EINVAL)
 	/* This must be an invalid filename, on e.g. FAT, or
 	   we're trying to move the file into itself...
 	   We return invalid filename for both... */
@@ -1765,17 +1768,7 @@ g_local_file_move (GFile                  *source,
 
     }
   return TRUE;
-
- fallback:
-
-  if (!g_file_copy (source, destination, G_FILE_COPY_OVERWRITE | G_FILE_COPY_ALL_METADATA, cancellable,
-		    progress_callback, progress_callback_data,
-		    error))
-    return FALSE;
-  
-  return g_file_delete (source, cancellable, error);
 }
-
 
 static GDirectoryMonitor*
 g_local_file_monitor_dir (GFile             *file,

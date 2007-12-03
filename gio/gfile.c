@@ -2081,6 +2081,14 @@ g_file_move (GFile                  *source,
 	}
     }
 
+  if (flags & G_FILE_COPY_NO_FALLBACK_FOR_MOVE)
+    {  
+      g_set_error (error, G_IO_ERROR,
+		   G_IO_ERROR_NOT_SUPPORTED,
+		   _("Operation not supported"));
+      return FALSE;
+    }
+  
   flags |= G_FILE_COPY_ALL_METADATA;
   if (!g_file_copy (source, destination, flags, cancellable,
 		    progress_callback, progress_callback_data,

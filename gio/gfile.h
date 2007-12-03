@@ -66,7 +66,8 @@ typedef enum  {
  * @G_FILE_COPY_OVERWRITE: Overwrite any existing files
  * @G_FILE_COPY_BACKUP: Make a backup of any existing files. TODO: explain backup naming scheme.
  * @G_FILE_COPY_NOFOLLOW_SYMLINKS: Don't follow symlinks.
- * @G_FILE_COPY_ALL_METADATA: Copy all file metadata (see #GFileInfo).
+ * @G_FILE_COPY_ALL_METADATA: Copy all file metadata instead of just default set (see #GFileInfo).
+ * @G_FILE_COPY_NO_FALLBACK_FOR_MOVE: Don't use copy and delete fallback if native move not supported.
  *
  * Flags used when copying or moving files. 
  */
@@ -75,7 +76,8 @@ typedef enum {
   G_FILE_COPY_OVERWRITE = (1<<0),
   G_FILE_COPY_BACKUP = (1<<1),
   G_FILE_COPY_NOFOLLOW_SYMLINKS = (1<<2),
-  G_FILE_COPY_ALL_METADATA = (1<<3)
+  G_FILE_COPY_ALL_METADATA = (1<<3),
+  G_FILE_COPY_NO_FALLBACK_FOR_MOVE = (1<<4)
 } GFileCopyFlags;
 
 /**
