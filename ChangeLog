@@ -1,3 +1,8 @@
+2007-12-03  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gkeyfile.c: Add a hash table to speed up group lookups,
+	which GKeyFile does quite a lot.  
+
 2007-12-03  Alexander Larsson  <alexl@redhat.com>
 
         * configure.in:
