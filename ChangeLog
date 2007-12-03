@@ -1,3 +1,10 @@
+2007-12-03  Marco Barisione <marco@barisione.org>
+
+	Backport from trunk:
+
+	* glib/gregex.c: Make compilation error messages translatable.
+	(#482313, Morten Welinder)
+
 2007-11-27  Tor Lillqvist  <tml@novell.com>
 
 	Merge from trunk:

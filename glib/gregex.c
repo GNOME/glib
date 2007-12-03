@@ -179,6 +179,121 @@ match_error (gint errcode)
   return _("unknown error");
 }
 
+static const gchar *
+compile_error (gint errcode,
+	       const gchar *default_msg)
+{
+  switch (errcode)
+    {
+    case 1:
+      return _("\\ at end of pattern");
+    case 2:
+      return _("\\c at end of pattern");
+    case 3:
+      return _("unrecognized character follows \\");
+    case 37:
+      return _("case changing escapes are not allowed here");
+    case 4:
+      return _("numbers out of order in {} quantifier");
+    case 5:
+      return _("number too big in {} quantifier");
+    case 6:
+      return _("missing terminating ] for character class");
+    case 7:
+      return _("invalid escape sequence in character class");
+    case 8:
+      return _("range out of order in character class");
+    case 9:
+      return _("nothing to repeat");
+    case 12:
+      return _("unrecognized character after (?");
+    case 24:
+      return _("unrecognized character after (?<");
+    case 41:
+      return _("unrecognized character after (?P");
+    case 13:
+      return _("POSIX named classes are supported only within a class");
+    case 14:
+      return _("(?R or (?[+-]digits must be followed by )");
+    case 15:
+      return _("reference to non-existent subpattern");
+    case 18:
+      return _("missing ) after comment");
+    case 20:
+      return _("regular expression too large");
+    case 21:
+      return _("failed to get memory");
+    case 25:
+      return _("lookbehind assertion is not fixed length");
+    case 26:
+      return _("malformed number or name after (?(");
+    case 27:
+      return _("conditional group contains more than two branches");
+    case 28:
+      return _("assertion expected after (?(");
+    case 30:
+      return _("unknown POSIX class name");
+    case 31:
+      return _("POSIX collating elements are not supported");
+    case 34:
+      return _("character value in \\x{...} sequence is too large");
+    case 35:
+      return _("invalid condition (?(0)");
+    case 36:
+      return _("\\C not allowed in lookbehind assertion");
+    case 40:
+      return _("recursive call could loop indefinitely");
+    case 42:
+      return _("missing terminator in subpattern name");
+    case 43:
+      return _("two named subpatterns have the same name");
+    case 46:
+      return _("malformed \\P or \\p sequence");
+    case 47:
+      return _("unknown property name after \\P or \\p");
+    case 48:
+      return _("subpattern name is too long (maximum 32 characters)");
+    case 49:
+      return _("too many named subpatterns (maximum 10,000)");
+    case 51:
+      return _("octal value is greater than \\377");
+    case 54:
+      return _("DEFINE group contains more than one branch");
+    case 55:
+      return _("repeating a DEFINE group is not allowed");
+    case 56:
+      return _("inconsistent NEWLINE options");
+    case 57:
+      return _("\\g is not followed by a braced name or an optionally "
+	       "braced non-zero number");
+    case 11:
+      return _("unexpected repeat");
+    case 23:
+      return _("code overflow");
+    case 52:
+      return _("overran compiling workspace");
+    case 53:
+      return _("previously-checked referenced subpattern not found");
+    case 16:
+      /* This should not happen as we never pass a NULL erroffset */
+      g_warning ("erroffset passed as NULL");
+      break;
+    case 17:
+      /* This should not happen as we check options before passing them
+       * to pcre_compile2() */
+      g_warning ("unknown option bit(s) set");
+      break;
+    case 32:
+    case 44:
+    case 45:
+      /* These errors should not happen as we are using an UTF8-enabled PCRE
+       * and we do not check if strings are valid */
+      g_warning (default_msg);
+      break;
+    }
+
+  return default_msg;
+}
 
 /* GMatchInfo */
 
@@ -841,6 +956,9 @@ g_regex_unref (GRegex *regex)
  * Compiles the regular expression to an internal form, and does 
  * the initial setup of the #GRegex structure.  
  * 
+ * The error code of @error is G_REGEX_ERROR_COMPILE, but
+ * future versions will add more specific error codes.
+ * 
  * Returns: a #GRegex structure. Call g_regex_unref() when you 
  *   are done with it
  *
@@ -856,6 +974,7 @@ g_regex_new (const gchar         *pattern,
   pcre *re;
   const gchar *errmsg;
   gint erroffset;
+  gint errcode;
   gboolean optimize = FALSE;
   static gboolean initialized = FALSE;
   unsigned long int pcre_compile_options;
@@ -919,7 +1038,8 @@ g_regex_new (const gchar         *pattern,
     }
 
   /* compile the pattern */
-  re = pcre_compile (pattern, compile_options, &errmsg, &erroffset, NULL);
+  re = pcre_compile2 (pattern, compile_options, &errcode, &errmsg,
+		      &erroffset, NULL);
 
   /* if the compilation failed, set the error member and return 
    * immediately */
@@ -927,10 +1047,14 @@ g_regex_new (const gchar         *pattern,
     {
       GError *tmp_error;
 
+      /* Get the translatable error message instead of just using the
+       * English one */
+      errmsg = compile_error (errcode, errmsg);
+
       /* PCRE uses byte offsets but we want to show character offsets */
       erroffset = g_utf8_pointer_to_offset (pattern, &pattern[erroffset]);
 
-      tmp_error = g_error_new (G_REGEX_ERROR, 
+      tmp_error = g_error_new (G_REGEX_ERROR,
 			       G_REGEX_ERROR_COMPILE,
 			       _("Error while compiling regular "
 				 "expression %s at char %d: %s"),
