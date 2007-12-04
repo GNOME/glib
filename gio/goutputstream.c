@@ -423,11 +423,20 @@ g_output_stream_real_splice (GOutputStream             *stream,
                              GCancellable              *cancellable,
                              GError                   **error)
 {
+  GOutputStreamClass *class = G_OUTPUT_STREAM_GET_CLASS (stream);
   gssize n_read, n_written;
   gssize bytes_copied;
   char buffer[8192], *p;
   gboolean res;
 
+  if (class->write == NULL) 
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+		   _("Output stream doesn't implement write"));
+      res = FALSE;
+      goto notsupported;
+    }
+  
   bytes_copied = 0;
   res = TRUE;
   do 
@@ -445,9 +454,7 @@ g_output_stream_real_splice (GOutputStream             *stream,
       p = buffer;
       while (n_read > 0)
 	{
-	  stream->priv->pending = FALSE;
-	  n_written = g_output_stream_write (stream, p, n_read, cancellable, error);
-	  stream->priv->pending = TRUE;
+	  n_written = class->write (stream, p, n_read, cancellable, error);
 	  if (n_written == -1)
 	    {
 	      res = FALSE;
@@ -461,6 +468,7 @@ g_output_stream_real_splice (GOutputStream             *stream,
     }
   while (res);
 
+ notsupported:
   if (!res)
     error = NULL; /* Ignore further errors */
 
@@ -473,10 +481,8 @@ g_output_stream_real_splice (GOutputStream             *stream,
   if (flags & G_OUTPUT_STREAM_SPLICE_FLAGS_CLOSE_TARGET)
     {
       /* But write errors on close are bad! */
-      stream->priv->pending = FALSE;
-      if (!g_output_stream_close (stream, cancellable, error))
+      if (!class->close (stream, cancellable, error))
 	res = FALSE;
-      stream->priv->pending = TRUE;
     }
 
   if (res)
@@ -546,12 +552,12 @@ g_output_stream_close (GOutputStream  *stream,
       return FALSE;
     }
 
-  res = g_output_stream_flush (stream, cancellable, error);
-
   stream->priv->pending = TRUE;
   
   if (cancellable)
     g_push_current_cancellable (cancellable);
+
+  res = class->flush (stream, cancellable, error);
 
   if (!res)
     {
@@ -1202,14 +1208,11 @@ splice_async_thread (GSimpleAsyncResult *result,
   class = G_OUTPUT_STREAM_GET_CLASS (object);
   op = g_simple_async_result_get_op_res_gpointer (result);
   
-  stream->priv->pending = FALSE;
-  op->bytes_copied =
-    g_output_stream_splice (stream,
-			    op->source,
-			    op->flags,
-			    cancellable,
-			    &error);
-  stream->priv->pending = TRUE;
+  op->bytes_copied = class->splice (stream,
+				    op->source,
+				    op->flags,
+				    cancellable,
+				    &error);
 
   if (op->bytes_copied == -1)
     {

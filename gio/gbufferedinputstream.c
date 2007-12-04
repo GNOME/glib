@@ -701,6 +701,7 @@ g_buffered_input_stream_skip (GInputStream  *stream,
 {
   GBufferedInputStream        *bstream;
   GBufferedInputStreamPrivate *priv;
+  GBufferedInputStreamClass *class;
   GInputStream *base_stream;
   gsize available, bytes_skipped;
   gssize nread;
@@ -748,9 +749,8 @@ g_buffered_input_stream_skip (GInputStream  *stream,
       return bytes_skipped;
     }
   
-  g_input_stream_set_pending (stream, FALSE); /* to avoid already pending error */
-  nread = g_buffered_input_stream_fill (bstream, priv->len, cancellable, error);
-  g_input_stream_set_pending (stream, TRUE); /* enable again */
+  class = G_BUFFERED_INPUT_STREAM_GET_CLASS (stream);
+  nread = class->fill (bstream, priv->len, cancellable, error);
   
   if (nread < 0)
     {
@@ -778,6 +778,7 @@ g_buffered_input_stream_read (GInputStream *stream,
 {
   GBufferedInputStream        *bstream;
   GBufferedInputStreamPrivate *priv;
+  GBufferedInputStreamClass *class;
   GInputStream *base_stream;
   gsize available, bytes_read;
   gssize nread;
@@ -826,9 +827,8 @@ g_buffered_input_stream_read (GInputStream *stream,
       return bytes_read;
     }
   
-  g_input_stream_set_pending (stream, FALSE); /* to avoid already pending error */
-  nread = g_buffered_input_stream_fill (bstream, priv->len, cancellable, error);
-  g_input_stream_set_pending (stream, TRUE); /* enable again */
+  class = G_BUFFERED_INPUT_STREAM_GET_CLASS (stream);
+  nread = class->fill (bstream, priv->len, cancellable, error);
   if (nread < 0)
     {
       if (bytes_read == 0)
@@ -875,6 +875,7 @@ g_buffered_input_stream_read_byte (GBufferedInputStream  *stream,
                                    GError               **error)
 {
   GBufferedInputStreamPrivate *priv;
+  GBufferedInputStreamClass *class;
   GInputStream *input_stream;
   gsize available;
   gssize nread;
@@ -905,16 +906,21 @@ g_buffered_input_stream_read_byte (GBufferedInputStream  *stream,
 
   /* Byte not available, request refill for more */
 
+  g_input_stream_set_pending (input_stream, TRUE);
+
   if (cancellable)
     g_push_current_cancellable (cancellable);
 
   priv->pos = 0;
   priv->end = 0;
 
-  nread = g_buffered_input_stream_fill (stream, priv->len, cancellable, error);
+  class = G_BUFFERED_INPUT_STREAM_GET_CLASS (stream);
+  nread = class->fill (stream, priv->len, cancellable, error);
 
   if (cancellable)
     g_pop_current_cancellable (cancellable);
+
+  g_input_stream_set_pending (input_stream, FALSE);
 
   if (nread <= 0)
     return -1; /* error or end of stream */
@@ -1069,8 +1075,6 @@ read_fill_buffer_callback (GObject *source_object,
   bstream = G_BUFFERED_INPUT_STREAM (source_object);
   priv = bstream->priv;
   
-  g_input_stream_set_pending (G_INPUT_STREAM (bstream), TRUE); /* enable again */
-  
   data = g_simple_async_result_get_op_res_gpointer (simple);
   
   error = NULL;
@@ -1110,6 +1114,7 @@ g_buffered_input_stream_read_async (GInputStream              *stream,
 {
   GBufferedInputStream *bstream;
   GBufferedInputStreamPrivate *priv;
+  GBufferedInputStreamClass *class;
   GInputStream *base_stream;
   gsize available;
   GSimpleAsyncResult *simple;
@@ -1166,10 +1171,9 @@ g_buffered_input_stream_read_async (GInputStream              *stream,
     }
   else
     {
-      g_input_stream_set_pending (stream, FALSE); /* to avoid already pending error */
-      g_buffered_input_stream_fill_async (bstream, priv->len,
-					  io_priority, cancellable,
-					  read_fill_buffer_callback, simple);
+      class = G_BUFFERED_INPUT_STREAM_GET_CLASS (stream);
+      class->fill_async (bstream, priv->len, io_priority, cancellable,
+			 read_fill_buffer_callback, simple);
     }
 }
 
@@ -1249,8 +1253,6 @@ skip_fill_buffer_callback (GObject *source_object,
   bstream = G_BUFFERED_INPUT_STREAM (source_object);
   priv = bstream->priv;
   
-  g_input_stream_set_pending (G_INPUT_STREAM (bstream), TRUE); /* enable again */
-  
   data = g_simple_async_result_get_op_res_gpointer (simple);
   
   error = NULL;
@@ -1288,6 +1290,7 @@ g_buffered_input_stream_skip_async (GInputStream              *stream,
 {
   GBufferedInputStream *bstream;
   GBufferedInputStreamPrivate *priv;
+  GBufferedInputStreamClass *class;
   GInputStream *base_stream;
   gsize available;
   GSimpleAsyncResult *simple;
@@ -1340,10 +1343,9 @@ g_buffered_input_stream_skip_async (GInputStream              *stream,
     }
   else
     {
-      g_input_stream_set_pending (stream, FALSE); /* to avoid already pending error */
-      g_buffered_input_stream_fill_async (bstream, priv->len,
-					  io_priority, cancellable,
-					  skip_fill_buffer_callback, simple);
+      class = G_BUFFERED_INPUT_STREAM_GET_CLASS (stream);
+      class->fill_async (bstream, priv->len, io_priority, cancellable,
+			 skip_fill_buffer_callback, simple);
     }
 }
 

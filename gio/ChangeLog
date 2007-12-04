@@ -1,3 +1,9 @@
+2007-11-30  Dan Winship  <danw@gnome.org>
+
+	* goutputstream.c: Don't cheat and unset the "pending" flag around
+	inner calls. Instead, call the class method directly rather than
+	the wrapper function that checks "pending"
+
 2007-12-03  Behdad Esfahbod  <behdad@gnome.org>
 
 	* glib/gnulib/Makefile.am: Fix EXTRA_DIST automake warnings. (#501107)
