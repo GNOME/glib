@@ -60,15 +60,6 @@ struct _GHashTable
   GDestroyNotify   value_destroy_func;
 };
 
-#define G_HASH_TABLE_RESIZE(hash_table)				\
-   G_STMT_START {						\
-     if ((hash_table->size >= 3 * hash_table->nnodes &&	        \
-	  hash_table->size > HASH_TABLE_MIN_SIZE) ||		\
-	 (3 * hash_table->size <= hash_table->nnodes &&	        \
-	  hash_table->size < HASH_TABLE_MAX_SIZE))		\
-	   g_hash_table_resize (hash_table);			\
-   } G_STMT_END
-
 static void		g_hash_table_resize	  (GHashTable	  *hash_table);
 static GHashNode**	g_hash_table_lookup_node  (GHashTable     *hash_table,
                                                    gconstpointer   key,
@@ -83,6 +74,16 @@ static guint g_hash_table_foreach_remove_or_steal (GHashTable     *hash_table,
 static void         g_hash_table_remove_all_nodes (GHashTable *hash_table,
                                                    gboolean        notify);
 
+static inline void
+g_hash_table_maybe_resize (GHashTable *hash_table)
+{
+  gint nnodes = hash_table->nnodes;
+  gint size = hash_table->size;
+
+  if ((size >= 3 * nnodes && size > HASH_TABLE_MIN_SIZE) ||
+      (3 * size <= nnodes && size < HASH_TABLE_MAX_SIZE))
+    g_hash_table_resize (hash_table);
+}
 
 /**
  * g_hash_table_new:
@@ -350,7 +351,7 @@ g_hash_table_insert_internal (GHashTable *hash_table,
     {
       *node = g_hash_node_new (key, value, key_hash);
       hash_table->nnodes++;
-      G_HASH_TABLE_RESIZE (hash_table);
+      g_hash_table_maybe_resize (hash_table);
     }
 }
 
@@ -448,7 +449,7 @@ g_hash_table_remove_internal (GHashTable    *hash_table,
     return FALSE;
 
   g_hash_table_remove_node (hash_table, &node_ptr, notify);
-  G_HASH_TABLE_RESIZE (hash_table);
+  g_hash_table_maybe_resize (hash_table);
 
   return TRUE;
 }
@@ -493,7 +494,7 @@ g_hash_table_remove_all (GHashTable *hash_table)
   g_return_if_fail (hash_table != NULL);
 
   g_hash_table_remove_all_nodes (hash_table, TRUE);
-  G_HASH_TABLE_RESIZE (hash_table);
+  g_hash_table_maybe_resize (hash_table);
 }
 
 /**
@@ -528,7 +529,7 @@ g_hash_table_steal_all (GHashTable *hash_table)
   g_return_if_fail (hash_table != NULL);
 
   g_hash_table_remove_all_nodes (hash_table, FALSE);
-  G_HASH_TABLE_RESIZE (hash_table);
+  g_hash_table_maybe_resize (hash_table);
 }
 
 /**
@@ -599,7 +600,7 @@ g_hash_table_foreach_remove_or_steal (GHashTable *hash_table,
       else
         node_ptr = &node->next;
 
-  G_HASH_TABLE_RESIZE (hash_table);
+  g_hash_table_maybe_resize (hash_table);
 
   return deleted;
 }
