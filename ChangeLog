@@ -1,3 +1,7 @@
+2007-12-03  Behdad Esfahbod  <behdad@gnome.org>
+
+	* glib/gnulib/Makefile.am: Fix EXTRA_DIST automake warnings. (#501107)
+
 2007-12-03  Hans Breuer  <hans@breuer.org>
 
 	* glib/glib.symbols : added glib_gettext (in use by gio)

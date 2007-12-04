@@ -247,7 +247,7 @@ BUILT_SOURCES = 		\
 	gioenumtypes.c		\
 	$(NULL)
 
-EXTRA_DIST = 			\
+EXTRA_DIST += 			\
 	gio-marshal.list	\
 	gio.symbols		\
 	gioenumtypes.h.template	\
