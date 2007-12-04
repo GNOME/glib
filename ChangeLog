@@ -1,3 +1,8 @@
+2007-12-03  Ryan Lortie  <desrt@desrt.ca>
+
+	* glib/glib.symbols (glib_gettext): remove stray (duplicate) entry
+	from file to fix the build
+
 2007-12-03  Behdad Esfahbod  <behdad@gnome.org>
 
 	* glib/gnulib/Makefile.am: Fix EXTRA_DIST automake warnings. (#501107)

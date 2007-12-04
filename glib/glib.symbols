@@ -1420,7 +1420,6 @@ g_unichar_validate
 #endif
 #endif
 
-
 #if IN_HEADER(__GLIBINTL_H__)
 #if IN_FILE(__G_UTILS_C__)
 glib_gettext
@@ -1558,8 +1557,6 @@ g_win32_locale_filename_from_utf8
 #endif
 #endif
 #endif
-
-glib_gettext
 
 #ifdef INCLUDE_VARIABLES
 g_ascii_table
