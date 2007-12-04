@@ -103,6 +103,7 @@ libglib_2_0_la_SOURCES = 	\
 	gbookmarkfile.c 	\
 	gbsearcharray.h		\
 	gcache.c		\
+	gchecksum.c		\
 	gcompletion.c		\
 	gconvert.c		\
 	gdataset.c		\
@@ -185,6 +186,7 @@ glibsubinclude_HEADERS =   \
 	gbase64.h	\
 	gbookmarkfile.h \
 	gcache.h	\
+	gchecksum.h	\
 	gcompletion.h	\
 	gconvert.h	\
 	gdataset.h	\

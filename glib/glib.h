@@ -35,6 +35,7 @@
 #include <glib/gbase64.h>
 #include <glib/gbookmarkfile.h>
 #include <glib/gcache.h>
+#include <glib/gchecksum.h>
 #include <glib/gcompletion.h>
 #include <glib/gconvert.h>
 #include <glib/gdataset.h>

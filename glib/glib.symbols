@@ -171,6 +171,19 @@ g_cache_value_foreach
 #endif
 #endif
 
+#if IN_HEADER(__G_CHECKSUM_H__)
+#if IN_FILE(__G_CHECKSUM_C__)
+g_checksum_new
+g_checksum_copy
+g_checksum_free
+g_checksum_update
+g_checksum_get_string
+g_checksum_get_digest
+g_compute_checksum_for_data
+g_compute_checksum_for_string
+#endif
+#endif
+
 #if IN_HEADER(__G_COMPLETION_H__)
 #if IN_FILE(__G_COMPLETION_C__)
 g_completion_add_items

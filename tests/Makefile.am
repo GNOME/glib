@@ -91,6 +91,7 @@ test_programs =					\
 	base64-test				\
 	bit-test				\
 	$(CXX_TEST)				\
+	checksum-test				\
 	child-test				\
 	completion-test				\
 	convert-test				\
@@ -163,6 +164,7 @@ array_test_LDADD = $(progs_ldadd)
 base64_test_LDADD = $(progs_ldadd)
 bit_test_LDADD = $(progs_ldadd)
 bookmarkfile_test_LDADD = $(progs_ldadd)
+checksum_test_LDADD = $(progs_ldadd)
 child_test_LDADD = $(thread_ldadd)
 completion_test_LDADD = $(progs_ldadd)
 convert_test_LDADD = $(progs_ldadd)
