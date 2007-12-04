@@ -1,5 +1,10 @@
 2007-12-04  Emmanuele Bassi  <ebassi@gnome.org>
 
+	* gio/glocalfileinfo.c: Replace the copy-and-paste MD5 digest
+	generation with GChecksum.
+
+2007-12-04  Emmanuele Bassi  <ebassi@gnome.org>
+
 	* glib/gchecksum.[ch]: Add GChecksum, a generic wrapper around
 	various hashing algorithms. At the moment, the MD5, SHA-1 and
 	SHA-256 algorithms are supported. (#443648)
