@@ -1,5 +1,10 @@
 2007-12-03  Ryan Lortie  <desrt@desrt.ca>
 
+	* glib/ghash.c: no code changes; add comments to document the internal
+	functions.
+
+2007-12-03  Ryan Lortie  <desrt@desrt.ca>
+
 	* glib/ghash.c: no code changes; reorder functions to remove the need
 	for forward declarations.
 

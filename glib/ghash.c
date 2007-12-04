@@ -60,6 +60,35 @@ struct _GHashTable
   GDestroyNotify   value_destroy_func;
 };
 
+/**
+ * g_hash_table_lookup_node:
+ * @hash_table: our #GHashTable
+ * @key: the key to lookup against
+ * @hash_return: optional key hash return location
+ * Return value: a pointer to the described #GHashNode pointer
+ *
+ * Performs a lookup in the hash table.  Virtually all hash operations
+ * will use this function internally.
+ *
+ * This function first computes the hash value of the key using the
+ * user's hash function.
+ *
+ * If an entry in the table matching @key is found then this function
+ * returns a pointer to the pointer to that entry in the table.  In
+ * the case that the entry is at the head of a chain, this pointer
+ * will be an item in the nodes[] array.  In the case that the entry
+ * is not at the head of a chain, this pointer will be the ->next
+ * pointer on the node that preceeds it.
+ *
+ * In the case that no matching entry exists in the table, a pointer
+ * to a %NULL pointer will be returned.  To insert a item, this %NULL
+ * pointer should be updated to point to the new #GHashNode.
+ *
+ * If @hash_return is a pass-by-reference parameter.  If it is
+ * non-%NULL then the computed hash value is returned.  This is to
+ * save insertions from having to compute the hash record again for
+ * the new record.
+ **/
 static inline GHashNode **
 g_hash_table_lookup_node (GHashTable    *hash_table,
                           gconstpointer  key,
@@ -108,6 +137,36 @@ g_hash_table_lookup_node (GHashTable    *hash_table,
   return node_ptr;
 }
 
+/**
+ * g_hash_table_remove_node:
+ * @hash_table: our #GHashTable
+ * @node_ptr_ptr: a pointer to the return value from
+ *   g_hash_table_lookup_node()
+ * @notify: %TRUE if the destroy notify handlers are to be called
+ *
+ * Removes a node from the hash table and updates the node count.  The
+ * node is freed.  No table resize is performed.
+ *
+ * If @notify is %TRUE then the destroy notify functions are called
+ * for the key and value of the hash node.
+ *
+ * @node_ptr_ptr is a pass-by-reference in/out parameter.  When the
+ * function is called, it should point to the pointer to the node to
+ * remove.  This level of indirection is required so that the pointer
+ * may be updated appropriately once the node has been removed.
+ *
+ * Before the function returns, the pointer at @node_ptr_ptr will be
+ * updated to point to the position in the table that contains the
+ * pointer to the "next" node in the chain.  This makes this function
+ * convenient to use from functions that iterate over the entire
+ * table.  If there is no further item in the chain then the
+ * #GHashNode pointer will be %NULL (ie: **node_ptr_ptr == %NULL).
+ *
+ * Since the pointer in the table to the removed node is replaced with
+ * either a pointer to the next node or a %NULL pointer as
+ * appropriate, the pointer at the end of @node_ptr_ptr will never be
+ * modified at all.  Stay tuned. :)
+ **/
 static void
 g_hash_table_remove_node (GHashTable   *hash_table,
                           GHashNode  ***node_ptr_ptr,
@@ -131,6 +190,17 @@ g_hash_table_remove_node (GHashTable   *hash_table,
   hash_table->nnodes--;
 }
 
+/**
+ * g_hash_table_remove_all_nodes:
+ * @hash_table: our #GHashTable
+ * @notify: %TRUE if the destroy notify handlers are to be called
+ *
+ * Removes all nodes from the table.  Since this may be a precursor to
+ * freeing the table entirely, no resize is performed.
+ *
+ * If @notify is %TRUE then the destroy notify functions are called
+ * for the key and value of the hash node.
+ **/
 static void
 g_hash_table_remove_all_nodes (GHashTable *hash_table,
                                gboolean    notify)
@@ -145,6 +215,15 @@ g_hash_table_remove_all_nodes (GHashTable *hash_table,
   hash_table->nnodes = 0;
 }
 
+/**
+ * g_hash_table_resize:
+ * @hash_table: our #GHashTable
+ *
+ * Resizes the hash table to the optimal size based on the number of
+ * nodes currently held.  If you call this function then a resize will
+ * occur, even if one does not need to occur.  Use
+ * g_hash_table_maybe_resize() instead.
+ **/
 static void
 g_hash_table_resize (GHashTable *hash_table)
 {
@@ -176,6 +255,15 @@ g_hash_table_resize (GHashTable *hash_table)
   hash_table->size = new_size;
 }
 
+/**
+ * g_hash_table_maybe_resize:
+ * @hash_table: our #GHashTable
+ *
+ * Resizes the hash table, if needed.
+ *
+ * Essentially, calls g_hash_table_resize() if the table has strayed
+ * too far from its ideal size for its number of nodes.
+ **/
 static inline void
 g_hash_table_maybe_resize (GHashTable *hash_table)
 {
@@ -382,6 +470,22 @@ g_hash_table_lookup_extended (GHashTable    *hash_table,
   return TRUE;
 }
 
+/**
+ * g_hash_table_insert_internal:
+ * @hash_table: our #GHashTable
+ * @key: the key to insert
+ * @value: the value to insert
+ * @keep_new_key: if %TRUE and this key already exists in the table
+ *   then call the destroy notify function on the old key.  If %FALSE
+ *   then call the destroy notify function on the new key.
+ *
+ * Implements the common logic for the g_hash_table_insert() and
+ * g_hash_table_replace() functions.
+ *
+ * Do a lookup of @key.  If it is found, replace it with the new
+ * @value (and perhaps the new @key).  If it is not found, create a
+ * new node.
+ **/
 static void
 g_hash_table_insert_internal (GHashTable *hash_table,
                               gpointer    key,
@@ -473,6 +577,19 @@ g_hash_table_replace (GHashTable *hash_table,
   return g_hash_table_insert_internal (hash_table, key, value, TRUE);
 }
 
+/**
+ * g_hash_table_remove_internal:
+ * @hash_table: our #GHashTable
+ * @key: the key to remove
+ * @notify: %TRUE if the destroy notify handlers are to be called
+ * Return value: %TRUE if a node was found and removed, else %FALSE
+ *
+ * Implements the common logic for the g_hash_table_remove() and
+ * g_hash_table_steal() functions.
+ *
+ * Do a lookup of @key and remove it if it is found, calling the
+ * destroy notify handlers only if @notify is %TRUE.
+ **/
 static gboolean
 g_hash_table_remove_internal (GHashTable    *hash_table,
                               gconstpointer  key,
@@ -570,6 +687,23 @@ g_hash_table_steal_all (GHashTable *hash_table)
   g_hash_table_maybe_resize (hash_table);
 }
 
+/**
+ * g_hash_table_foreach_remove_or_steal:
+ * @hash_table: our #GHashTable
+ * @func: the user's callback function
+ * @user_data: data for @func
+ * @notify: %TRUE if the destroy notify handlers are to be called
+ *
+ * Implements the common logic for g_hash_table_foreach_remove() and
+ * g_hash_table_foreach_steal().
+ *
+ * Iterates over every node in the table, calling @func with the key
+ * and value of the node (and @user_data).  If @func returns %TRUE the
+ * node is removed from the table.
+ *
+ * If @notify is true then the destroy notify handlers will be called
+ * for each removed node.
+ **/
 static guint
 g_hash_table_foreach_remove_or_steal (GHashTable *hash_table,
                                       GHRFunc	  func,
