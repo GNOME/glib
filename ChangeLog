@@ -1,5 +1,9 @@
 2007-12-03  Ryan Lortie  <desrt@desrt.ca>
 
+	* glib/ghash.c: rename 'node' to 'node_ptr' where appropriate
+
+2007-12-03  Ryan Lortie  <desrt@desrt.ca>
+
 	* glib/ghash.c: convert G_HASH_TABLE_RESIZE() macro to inline function
 
 2007-12-03  Ryan Lortie  <desrt@desrt.ca>
