@@ -2518,3 +2518,19 @@ g_uri_get_scheme
 g_uri_unescape_segment
 g_uri_unescape_string
 </SECTION>
+
+<SECTION>
+<TITLE>Data Checksums</TITLE>
+<FILE>checksum</FILE>
+GChecksumType
+GChecksum
+g_checksum_new
+g_checksum_copy
+g_checksum_free
+g_checksum_update
+g_checksum_get_string
+g_checksum_get_digest
+<SUBSECTION>
+g_compute_checksum_for_data
+g_compute_checksum_for_string
+</SECTION>

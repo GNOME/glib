@@ -60,6 +60,7 @@
 <!ENTITY glib-Keyfile SYSTEM "xml/keyfile.xml">
 <!ENTITY glib-Bookmarkfile SYSTEM "xml/bookmarkfile.xml">
 <!ENTITY glib-Base64 SYSTEM "xml/base64.xml">
+<!ENTITY glib-Checksum SYSTEM "xml/checksum.xml">
 <!ENTITY glib-i18n SYSTEM "xml/i18n.xml">
 <!ENTITY glib-Regex SYSTEM "xml/gregex.xml">
 <!ENTITY glib-Version SYSTEM "xml/version.xml">
@@ -142,6 +143,7 @@ synchronize their operation.
     &glib-Character-Set-Conversion;
     &glib-Unicode-Manipulation;
     &glib-Base64;
+    &glib-Checksum;
     &glib-i18n;
     &glib-Date-and-Time-Functions;
     &glib-Random-Numbers;   

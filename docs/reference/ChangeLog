@@ -1,3 +1,10 @@
+2007-12-04  Emmanuele Bassi  <ebassi@gnome.org>
+
+	* glib/glib-sections.txt: Add GChecksum public API.
+
+	* glib/tmpl/checksum.sgml:
+	* glib/glib-docs.sgml: Add the checksums API page.
+
 2007-11-29  Behdad Esfahbod  <behdad@gnome.org>
 
 	Bug 500361 – Improve docs for g_array_free() and g_ptr_array_free()
