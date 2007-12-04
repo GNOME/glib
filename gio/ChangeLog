@@ -1,3 +1,9 @@
+2007-12-04  Alexander Larsson  <alexl@redhat.com>
+
+        * goutputstream.c:
+        (g_output_stream_close):
+	Only call flush if non-null.
+
 2007-11-30  Dan Winship  <danw@gnome.org>
 
 	* ginputstream.c (g_input_stream_set_pending): Make this take a

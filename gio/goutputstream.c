@@ -518,7 +518,10 @@ g_output_stream_close (GOutputStream  *stream,
   if (cancellable)
     g_push_current_cancellable (cancellable);
 
-  res = class->flush (stream, cancellable, error);
+  if (class->flush)
+    res = class->flush (stream, cancellable, error);
+  else
+    res = TRUE;
   
   if (!res)
     {
