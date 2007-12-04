@@ -217,12 +217,12 @@ g_hash_table_destroy (GHashTable *hash_table)
   g_hash_table_unref (hash_table);
 }
 
-static inline GHashNode**
+static inline GHashNode **
 g_hash_table_lookup_node (GHashTable    *hash_table,
                           gconstpointer  key,
                           guint         *hash_return)
 {
-  GHashNode **node_ptr;
+  GHashNode **node_ptr, *node;
   guint hash_value;
 
   hash_value = (* hash_table->hash_func) (key);
@@ -241,12 +241,26 @@ g_hash_table_lookup_node (GHashTable    *hash_table,
    *  key equality function in most cases.
    */
   if (hash_table->key_equal_func)
-    while (*node_ptr && (((*node_ptr)->key_hash != hash_value) ||
-                     !(*hash_table->key_equal_func) ((*node_ptr)->key, key)))
-      node_ptr = &(*node_ptr)->next;
+    {
+      while ((node = *node_ptr))
+        {
+          if (node->key_hash == hash_value &&
+              hash_table->key_equal_func (node->key, key))
+            break;
+
+          node_ptr = &(*node_ptr)->next;
+        }
+    }
   else
-    while (*node_ptr && (*node_ptr)->key != key)
-      node_ptr = &(*node_ptr)->next;
+    {
+      while ((node = *node_ptr))
+        {
+          if (node->key == key)
+            break;
+
+          node_ptr = &(*node_ptr)->next;
+        }
+    }
 
   return node_ptr;
 }
@@ -302,16 +316,16 @@ g_hash_table_lookup_extended (GHashTable    *hash_table,
 
   node = *g_hash_table_lookup_node (hash_table, lookup_key, NULL);
 
-  if (node)
-    {
-      if (orig_key)
-        *orig_key = node->key;
-      if (value)
-        *value = node->value;
-      return TRUE;
-    }
-  else
+  if (node == NULL)
     return FALSE;
+
+  if (orig_key)
+    *orig_key = node->key;
+
+  if (value)
+    *value = node->value;
+
+  return TRUE;
 }
 
 static void
@@ -320,7 +334,7 @@ g_hash_table_insert_internal (GHashTable *hash_table,
                               gpointer    value,
                               gboolean    keep_new_key)
 {
-  GHashNode **node_ptr;
+  GHashNode **node_ptr, *node;
   guint key_hash;
 
   g_return_if_fail (hash_table != NULL);
@@ -328,13 +342,13 @@ g_hash_table_insert_internal (GHashTable *hash_table,
 
   node_ptr = g_hash_table_lookup_node (hash_table, key, &key_hash);
 
-  if (*node_ptr)
+  if ((node = *node_ptr))
     {
       if (keep_new_key)
         {
           if (hash_table->key_destroy_func)
-            hash_table->key_destroy_func ((*node_ptr)->key);
-          (*node_ptr)->key = key;
+            hash_table->key_destroy_func (node->key);
+          node->key = key;
         }
       else
         {
@@ -343,13 +357,20 @@ g_hash_table_insert_internal (GHashTable *hash_table,
         }
 
       if (hash_table->value_destroy_func)
-        hash_table->value_destroy_func ((*node_ptr)->value);
+        hash_table->value_destroy_func (node->value);
 
-      (*node_ptr)->value = value;
+      node->value = value;
     }
   else
     {
-      *node_ptr = g_hash_node_new (key, value, key_hash);
+      node = g_slice_new (GHashNode);
+
+      node->key = key;
+      node->value = value;
+      node->key_hash = key_hash;
+      node->next = NULL;
+
+      *node_ptr = node;
       hash_table->nnodes++;
       g_hash_table_maybe_resize (hash_table);
     }
@@ -788,21 +809,6 @@ g_hash_table_resize (GHashTable *hash_table)
   g_free (hash_table->nodes);
   hash_table->nodes = new_nodes;
   hash_table->size = new_size;
-}
-
-static GHashNode*
-g_hash_node_new (gpointer key,
-		 gpointer value,
-		 guint key_hash)
-{
-  GHashNode *hash_node = g_slice_new (GHashNode);
-
-  hash_node->key = key;
-  hash_node->value = value;
-  hash_node->key_hash = key_hash;
-  hash_node->next = NULL;
-
-  return hash_node;
 }
 
 #define __G_HASH_C__

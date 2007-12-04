@@ -1,5 +1,11 @@
 2007-12-03  Ryan Lortie  <desrt@desrt.ca>
 
+	* glib/ghash.c (g_hash_table_lookup_node,
+	g_hash_table_lookup_extended, g_hash_table_insert_internal,
+	g_hash_node_new): improve clarity in some functions
+
+2007-12-03  Ryan Lortie  <desrt@desrt.ca>
+
 	* glib/ghash.c: rename 'node' to 'node_ptr' where appropriate
 
 2007-12-03  Ryan Lortie  <desrt@desrt.ca>
