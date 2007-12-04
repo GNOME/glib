@@ -234,7 +234,7 @@ static void second_hash_test (gboolean simple_hash)
 
      h = g_hash_table_new_full (simple_hash ? one_hash : honeyman_hash,
      			        second_hash_cmp,
-                                g_xfree, g_xfree);
+                                g_free, g_free);
      g_assert (h != NULL);
      for (i=0; i<20; i++)
           {
