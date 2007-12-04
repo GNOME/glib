@@ -138,23 +138,10 @@ g_file_output_stream_query_info (GFileOutputStream      *stream,
   
   output_stream = G_OUTPUT_STREAM (stream);
   
-  if (g_output_stream_is_closed (output_stream))
-    {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_CLOSED,
-		   _("Stream is already closed"));
-      return NULL;
-    }
-  
-  if (g_output_stream_has_pending (output_stream))
-    {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_PENDING,
-		   _("Stream has outstanding operation"));
-      return NULL;
-    }
+  if (!g_output_stream_set_pending (output_stream, error))
+    return NULL;
       
   info = NULL;
-  
-  g_output_stream_set_pending (output_stream, TRUE);
   
   if (cancellable)
     g_push_current_cancellable (cancellable);
@@ -169,7 +156,7 @@ g_file_output_stream_query_info (GFileOutputStream      *stream,
   if (cancellable)
     g_pop_current_cancellable (cancellable);
   
-  g_output_stream_set_pending (output_stream, FALSE);
+  g_output_stream_clear_pending (output_stream);
   
   return info;
 }
@@ -181,7 +168,7 @@ async_ready_callback_wrapper (GObject *source_object,
 {
   GFileOutputStream *stream = G_FILE_OUTPUT_STREAM (source_object);
 
-  g_output_stream_set_pending (G_OUTPUT_STREAM (stream), FALSE);
+  g_output_stream_clear_pending (G_OUTPUT_STREAM (stream));
   if (stream->priv->outstanding_callback)
     (*stream->priv->outstanding_callback) (source_object, res, user_data);
   g_object_unref (stream);
@@ -215,34 +202,24 @@ g_file_output_stream_query_info_async (GFileOutputStream     *stream,
 {
   GFileOutputStreamClass *klass;
   GOutputStream *output_stream;
+  GError *error = NULL;
 
   g_return_if_fail (G_IS_FILE_OUTPUT_STREAM (stream));
 
   output_stream = G_OUTPUT_STREAM (stream);
  
-  if (g_output_stream_is_closed (output_stream))
+  if (!g_output_stream_set_pending (output_stream, &error))
     {
-      g_simple_async_report_error_in_idle (G_OBJECT (stream),
-					   callback,
-					   user_data,
-					   G_IO_ERROR, G_IO_ERROR_CLOSED,
-					   _("Stream is already closed"));
-      return;
-    }
-  
-  if (g_output_stream_has_pending (output_stream))
-    {
-      g_simple_async_report_error_in_idle (G_OBJECT (stream),
-					   callback,
-					   user_data,
-					   G_IO_ERROR, G_IO_ERROR_PENDING,
-					   _("Stream has outstanding operation"));
+      g_simple_async_report_gerror_in_idle (G_OBJECT (stream),
+					    callback,
+					    user_data,
+					    error);
+      g_error_free (error);
       return;
     }
 
   klass = G_FILE_OUTPUT_STREAM_GET_CLASS (stream);
 
-  g_output_stream_set_pending (output_stream, TRUE);
   stream->priv->outstanding_callback = callback;
   g_object_ref (stream);
   klass->query_info_async (stream, attributes, io_priority, cancellable,
@@ -410,20 +387,6 @@ g_file_output_stream_seek (GFileOutputStream  *stream,
   output_stream = G_OUTPUT_STREAM (stream);
   class = G_FILE_OUTPUT_STREAM_GET_CLASS (stream);
 
-  if (g_output_stream_is_closed (output_stream))
-    {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_CLOSED,
-		   _("Stream is already closed"));
-      return FALSE;
-    }
-  
-  if (g_output_stream_has_pending (output_stream))
-    {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_PENDING,
-		   _("Stream has outstanding operation"));
-      return FALSE;
-    }
-  
   if (!class->seek)
     {
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
@@ -431,7 +394,8 @@ g_file_output_stream_seek (GFileOutputStream  *stream,
       return FALSE;
     }
 
-  g_output_stream_set_pending (output_stream, TRUE);
+  if (!g_output_stream_set_pending (output_stream, error))
+    return FALSE;
   
   if (cancellable)
     g_push_current_cancellable (cancellable);
@@ -441,7 +405,7 @@ g_file_output_stream_seek (GFileOutputStream  *stream,
   if (cancellable)
     g_pop_current_cancellable (cancellable);
 
-  g_output_stream_set_pending (output_stream, FALSE);
+  g_output_stream_clear_pending (output_stream);
   
   return res;
 }
@@ -518,20 +482,6 @@ g_file_output_stream_truncate (GFileOutputStream  *stream,
   output_stream = G_OUTPUT_STREAM (stream);
   class = G_FILE_OUTPUT_STREAM_GET_CLASS (stream);
 
-  if (g_output_stream_is_closed (output_stream))
-    {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_CLOSED,
-		   _("Stream is already closed"));
-      return FALSE;
-    }
-  
-  if (g_output_stream_has_pending (output_stream))
-    {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_PENDING,
-		   _("Stream has outstanding operation"));
-      return FALSE;
-    }
-  
   if (!class->truncate)
     {
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
@@ -539,7 +489,8 @@ g_file_output_stream_truncate (GFileOutputStream  *stream,
       return FALSE;
     }
 
-  g_output_stream_set_pending (output_stream, TRUE);
+  if (!g_output_stream_set_pending (output_stream, error))
+    return FALSE;
   
   if (cancellable)
     g_push_current_cancellable (cancellable);
@@ -549,7 +500,7 @@ g_file_output_stream_truncate (GFileOutputStream  *stream,
   if (cancellable)
     g_pop_current_cancellable (cancellable);
 
-  g_output_stream_set_pending (output_stream, FALSE);
+  g_output_stream_clear_pending (output_stream);
   
   return res;
 }

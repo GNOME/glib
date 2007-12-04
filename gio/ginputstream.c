@@ -186,20 +186,6 @@ g_input_stream_read  (GInputStream  *stream,
       return -1;
     }
 
-  if (stream->priv->closed)
-    {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_CLOSED,
-		   _("Stream is already closed"));
-      return -1;
-    }
-  
-  if (stream->priv->pending)
-    {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_PENDING,
-		   _("Stream has outstanding operation"));
-      return -1;
-    }
-  
   class = G_INPUT_STREAM_GET_CLASS (stream);
 
   if (class->read == NULL) 
@@ -209,16 +195,19 @@ g_input_stream_read  (GInputStream  *stream,
       return -1;
     }
 
+  if (!g_input_stream_set_pending (stream, error))
+    return -1;
+
   if (cancellable)
     g_push_current_cancellable (cancellable);
   
-  stream->priv->pending = TRUE;
   res = class->read (stream, buffer, count, cancellable, error);
-  stream->priv->pending = FALSE;
 
   if (cancellable)
     g_pop_current_cancellable (cancellable);
   
+  g_input_stream_clear_pending (stream);
+
   return res;
 }
 
@@ -329,32 +318,21 @@ g_input_stream_skip (GInputStream  *stream,
       return -1;
     }
   
-  if (stream->priv->closed)
-    {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_CLOSED,
-		   _("Stream is already closed"));
-      return -1;
-    }
-
-  if (stream->priv->pending)
-    {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_PENDING,
-		   _("Stream has outstanding operation"));
-      return -1;
-    }
-  
   class = G_INPUT_STREAM_GET_CLASS (stream);
+
+  if (!g_input_stream_set_pending (stream, error))
+    return -1;
 
   if (cancellable)
     g_push_current_cancellable (cancellable);
   
-  stream->priv->pending = TRUE;
   res = class->skip (stream, count, cancellable, error);
-  stream->priv->pending = FALSE;
 
   if (cancellable)
     g_pop_current_cancellable (cancellable);
   
+  g_input_stream_clear_pending (stream);
+
   return res;
 }
 
@@ -461,16 +439,10 @@ g_input_stream_close (GInputStream  *stream,
   if (stream->priv->closed)
     return TRUE;
 
-  if (stream->priv->pending)
-    {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_PENDING,
-		   _("Stream has outstanding operation"));
-      return FALSE;
-    }
-  
   res = TRUE;
 
-  stream->priv->pending = TRUE;
+  if (!g_input_stream_set_pending (stream, error))
+    return FALSE;
 
   if (cancellable)
     g_push_current_cancellable (cancellable);
@@ -480,11 +452,11 @@ g_input_stream_close (GInputStream  *stream,
 
   if (cancellable)
     g_pop_current_cancellable (cancellable);
+
+  g_input_stream_clear_pending (stream);
   
   stream->priv->closed = TRUE;
   
-  stream->priv->pending = FALSE;
-
   return res;
 }
 
@@ -495,7 +467,7 @@ async_ready_callback_wrapper (GObject      *source_object,
 {
   GInputStream *stream = G_INPUT_STREAM (source_object);
 
-  stream->priv->pending = FALSE;
+  g_input_stream_clear_pending (stream);
   if (stream->priv->outstanding_callback)
     (*stream->priv->outstanding_callback) (source_object, res, user_data);
   g_object_unref (stream);
@@ -508,7 +480,7 @@ async_ready_close_callback_wrapper (GObject      *source_object,
 {
   GInputStream *stream = G_INPUT_STREAM (source_object);
 
-  stream->priv->pending = FALSE;
+  g_input_stream_clear_pending (stream);
   stream->priv->closed = TRUE;
   if (stream->priv->outstanding_callback)
     (*stream->priv->outstanding_callback) (source_object, res, user_data);
@@ -560,6 +532,7 @@ g_input_stream_read_async (GInputStream        *stream,
 {
   GInputStreamClass *class;
   GSimpleAsyncResult *simple;
+  GError *error = NULL;
 
   g_return_if_fail (G_IS_INPUT_STREAM (stream));
   g_return_if_fail (buffer != NULL);
@@ -585,29 +558,17 @@ g_input_stream_read_async (GInputStream        *stream,
       return;
     }
 
-  if (stream->priv->closed)
+  if (!g_input_stream_set_pending (stream, &error))
     {
-      g_simple_async_report_error_in_idle (G_OBJECT (stream),
-					   callback,
-					   user_data,
-					   G_IO_ERROR, G_IO_ERROR_CLOSED,
-					   _("Stream is already closed"));
-      return;
-    }
-  
-  if (stream->priv->pending)
-    {
-      g_simple_async_report_error_in_idle (G_OBJECT (stream),
-					   callback,
-					   user_data,
-					   G_IO_ERROR, G_IO_ERROR_PENDING,
-					   _("Stream has outstanding operation"));
+      g_simple_async_report_gerror_in_idle (G_OBJECT (stream),
+					    callback,
+					    user_data,
+					    error);
+      g_error_free (error);
       return;
     }
 
   class = G_INPUT_STREAM_GET_CLASS (stream);
-  
-  stream->priv->pending = TRUE;
   stream->priv->outstanding_callback = callback;
   g_object_ref (stream);
   class->read_async (stream, buffer, count, io_priority, cancellable,
@@ -694,6 +655,7 @@ g_input_stream_skip_async (GInputStream        *stream,
 {
   GInputStreamClass *class;
   GSimpleAsyncResult *simple;
+  GError *error = NULL;
 
   g_return_if_fail (G_IS_INPUT_STREAM (stream));
 
@@ -719,28 +681,17 @@ g_input_stream_skip_async (GInputStream        *stream,
       return;
     }
 
-  if (stream->priv->closed)
+  if (!g_input_stream_set_pending (stream, &error))
     {
-      g_simple_async_report_error_in_idle (G_OBJECT (stream),
-					   callback,
-					   user_data,
-					   G_IO_ERROR, G_IO_ERROR_CLOSED,
-					   _("Stream is already closed"));
-      return;
-    }
-  
-  if (stream->priv->pending)
-    {
-      g_simple_async_report_error_in_idle (G_OBJECT (stream),
-					   callback,
-					   user_data,
-					   G_IO_ERROR, G_IO_ERROR_PENDING,
-					   _("Stream has outstanding operation"));
+      g_simple_async_report_gerror_in_idle (G_OBJECT (stream),
+					    callback,
+					    user_data,
+					    error);
+      g_error_free (error);
       return;
     }
 
   class = G_INPUT_STREAM_GET_CLASS (stream);
-  stream->priv->pending = TRUE;
   stream->priv->outstanding_callback = callback;
   g_object_ref (stream);
   class->skip_async (stream, count, io_priority, cancellable,
@@ -811,6 +762,7 @@ g_input_stream_close_async (GInputStream        *stream,
 {
   GInputStreamClass *class;
   GSimpleAsyncResult *simple;
+  GError *error = NULL;
 
   g_return_if_fail (G_IS_INPUT_STREAM (stream));
 
@@ -826,18 +778,17 @@ g_input_stream_close_async (GInputStream        *stream,
       return;
     }
 
-  if (stream->priv->pending)
+  if (!g_input_stream_set_pending (stream, &error))
     {
-      g_simple_async_report_error_in_idle (G_OBJECT (stream),
-					   callback,
-					   user_data,
-					   G_IO_ERROR, G_IO_ERROR_PENDING,
-					   _("Stream has outstanding operation"));
+      g_simple_async_report_gerror_in_idle (G_OBJECT (stream),
+					    callback,
+					    user_data,
+					    error);
+      g_error_free (error);
       return;
     }
   
   class = G_INPUT_STREAM_GET_CLASS (stream);
-  stream->priv->pending = TRUE;
   stream->priv->outstanding_callback = callback;
   g_object_ref (stream);
   class->close_async (stream, io_priority, cancellable,
@@ -916,17 +867,50 @@ g_input_stream_has_pending (GInputStream *stream)
 /**
  * g_input_stream_set_pending:
  * @stream: input stream
- * @pending: boolean.
+ * @error: a #GError location to store the error occuring, or %NULL to 
+ * ignore.
  * 
- * Sets @stream has actions pending.
+ * Sets @stream to have actions pending. If the pending flag is
+ * already set or @stream is closed, it will return %FALSE and set
+ * @error.
+ *
+ * Return value: %TRUE if pending was previously unset and is now set.
+ **/
+gboolean
+g_input_stream_set_pending (GInputStream *stream, GError **error)
+{
+  g_return_val_if_fail (G_IS_INPUT_STREAM (stream), FALSE);
+  
+  if (stream->priv->closed)
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_CLOSED,
+		   _("Stream is already closed"));
+      return FALSE;
+    }
+  
+  if (stream->priv->pending)
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_PENDING,
+		   _("Stream has outstanding operation"));
+      return FALSE;
+    }
+  
+  stream->priv->pending = TRUE;
+  return TRUE;
+}
+
+/**
+ * g_input_stream_clear_pending:
+ * @stream: input stream
+ * 
+ * Clears the pending flag on @stream.
  **/
 void
-g_input_stream_set_pending (GInputStream *stream,
-			    gboolean      pending)
+g_input_stream_clear_pending (GInputStream *stream)
 {
   g_return_if_fail (G_IS_INPUT_STREAM (stream));
   
-  stream->priv->pending = pending;
+  stream->priv->pending = FALSE;
 }
 
 /********************************************

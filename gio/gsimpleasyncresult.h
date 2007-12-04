@@ -114,13 +114,17 @@ void                g_simple_async_result_set_error_va     (GSimpleAsyncResult  
 							    const char              *format,
 							    va_list                  args);
 
-void g_simple_async_report_error_in_idle (GObject *object,
-					  GAsyncReadyCallback callback,
-					  gpointer user_data,
-					  GQuark         domain,
-					  gint           code,
-					  const char    *format,
-					  ...);
+void g_simple_async_report_error_in_idle  (GObject *object,
+					   GAsyncReadyCallback callback,
+					   gpointer user_data,
+					   GQuark         domain,
+					   gint           code,
+					   const char    *format,
+					   ...);
+void g_simple_async_report_gerror_in_idle (GObject *object,
+					   GAsyncReadyCallback callback,
+					   gpointer user_data,
+					   GError *error);
 
 G_END_DECLS
 

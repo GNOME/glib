@@ -405,21 +405,8 @@ g_buffered_input_stream_fill (GBufferedInputStream  *stream,
   
   input_stream = G_INPUT_STREAM (stream);
   
-  if (g_input_stream_is_closed (input_stream))
-    {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_CLOSED,
-		   _("Stream is already closed"));
-      return -1;
-    }
-  
-  if (g_input_stream_has_pending (input_stream))
-    {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_PENDING,
-		   _("Stream has outstanding operation"));
-      return -1;
-    }
-      
-  g_input_stream_set_pending (input_stream, TRUE);
+  if (!g_input_stream_set_pending (input_stream, error))
+    return -1;
 
   if (cancellable)
     g_push_current_cancellable (cancellable);
@@ -430,7 +417,7 @@ g_buffered_input_stream_fill (GBufferedInputStream  *stream,
   if (cancellable)
     g_pop_current_cancellable (cancellable);
   
-  g_input_stream_set_pending (input_stream, FALSE);
+  g_input_stream_clear_pending (input_stream);
   
   return res;
 }
@@ -442,7 +429,7 @@ async_fill_callback_wrapper (GObject      *source_object,
 {
   GBufferedInputStream *stream = G_BUFFERED_INPUT_STREAM (source_object);
 
-  g_input_stream_set_pending (G_INPUT_STREAM (stream), FALSE);
+  g_input_stream_clear_pending (G_INPUT_STREAM (stream));
   (*stream->priv->outstanding_callback) (source_object, res, user_data);
   g_object_unref (stream);
 }
@@ -471,6 +458,7 @@ g_buffered_input_stream_fill_async (GBufferedInputStream *stream,
 {
   GBufferedInputStreamClass *class;
   GSimpleAsyncResult *simple;
+  GError *error = NULL;
 
   g_return_if_fail (G_IS_BUFFERED_INPUT_STREAM (stream));
 
@@ -495,29 +483,18 @@ g_buffered_input_stream_fill_async (GBufferedInputStream *stream,
       return;
     }
   
-  if (g_input_stream_is_closed (G_INPUT_STREAM (stream)))
+  if (!g_input_stream_set_pending (G_INPUT_STREAM (stream), &error))
     {
-      g_simple_async_report_error_in_idle (G_OBJECT (stream),
-					   callback,
-					   user_data,
-					   G_IO_ERROR, G_IO_ERROR_CLOSED,
-					   _("Stream is already closed"));
+      g_simple_async_report_gerror_in_idle (G_OBJECT (stream),
+					    callback,
+					    user_data,
+					    error);
+      g_error_free (error);
       return;
     }
     
-  if (g_input_stream_has_pending (G_INPUT_STREAM (stream)))
-    {
-      g_simple_async_report_error_in_idle (G_OBJECT (stream),
-					   callback,
-					   user_data,
-					   G_IO_ERROR, G_IO_ERROR_PENDING,
-					   _("Stream has outstanding operation"));
-      return;
-    }
-
   class = G_BUFFERED_INPUT_STREAM_GET_CLASS (stream);
   
-  g_input_stream_set_pending (G_INPUT_STREAM (stream), TRUE);
   stream->priv->outstanding_callback = callback;
   g_object_ref (stream);
   class->fill_async (stream, count, io_priority, cancellable,
@@ -892,21 +869,18 @@ g_buffered_input_stream_read_byte (GBufferedInputStream  *stream,
       return -1;
     }
 
-  if (g_input_stream_has_pending (input_stream))
-    {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_PENDING,
-       _("Stream has outstanding operation"));
-      return -1;
-    }
+  if (!g_input_stream_set_pending (input_stream, error))
+    return -1;
 
   available = priv->end - priv->pos;
 
   if (available < 1)
-    return priv->buffer[priv->pos++];
+    {
+      g_input_stream_clear_pending (input_stream);
+      return priv->buffer[priv->pos++];
+    }
 
   /* Byte not available, request refill for more */
-
-  g_input_stream_set_pending (input_stream, TRUE);
 
   if (cancellable)
     g_push_current_cancellable (cancellable);
@@ -920,7 +894,7 @@ g_buffered_input_stream_read_byte (GBufferedInputStream  *stream,
   if (cancellable)
     g_pop_current_cancellable (cancellable);
 
-  g_input_stream_set_pending (input_stream, FALSE);
+  g_input_stream_clear_pending (input_stream);
 
   if (nread <= 0)
     return -1; /* error or end of stream */

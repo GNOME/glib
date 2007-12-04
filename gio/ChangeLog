@@ -1,5 +1,23 @@
 2007-11-30  Dan Winship  <danw@gnome.org>
 
+	* ginputstream.c (g_input_stream_set_pending): Make this take a
+	GError and return a gboolean, and do the "outstanding operation"
+	check (and the "stream is already closed" check) itself.
+	(g_input_stream_clear_pending): Formerly set_pending(FALSE).
+
+	* goutputstream.c (g_output_stream_set_pending)
+	(g_output_stream_clear_pending): Likewise
+
+	* gbufferedinputstream.c: 
+	* gfileinputstream.c: 
+	* gfileoutputstream.c: Update for that
+
+	* gsimpleasyncresult.c (g_simple_async_report_gerror_in_idle):
+	Like g_simple_async_report_error_in_idle, but takes a GError
+	rather than building one.
+
+2007-11-30  Dan Winship  <danw@gnome.org>
+
 	* goutputstream.c: Don't cheat and unset the "pending" flag around
 	inner calls. Instead, call the class method directly rather than
 	the wrapper function that checks "pending"
