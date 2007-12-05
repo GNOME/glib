@@ -1,5 +1,11 @@
 2007-12-05  Ryan Lortie  <desrt@desrt.ca>
 
+	* autogen.sh: for the benefit of git users, checkout build/ if it is
+	missing
+	* .gitignore: but after that, ignore it.
+
+2007-12-05  Ryan Lortie  <desrt@desrt.ca>
+
 	* glib/ghash.c: ungtk-docify some comments for internal functions
 
 2007-12-04  Emmanuele Bassi  <ebassi@gnome.org>

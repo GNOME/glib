@@ -83,6 +83,23 @@ rm -rf autom4te.cache
 # regenerated from their corresponding *.in files by ./configure anyway.
 touch README INSTALL
 
+if [ ! -d build ]; then
+  if [ -x "`which svn`" ]; then
+    echo
+    echo "=============================================================="
+    echo "  your checkout doesn't contain build/."
+    echo "      fetching it from http://svn.gnome.org/svn/build/trunk/"
+    echo "=============================================================="
+    echo
+
+    svn checkout http://svn.gnome.org/svn/build/trunk/ build
+  else
+    echo
+    echo 'warning: build/ directory is missing and no "svn" to fetch it!'
+    echo
+  fi
+fi
+
 $ACLOCAL $ACLOCAL_FLAGS || exit $?
 
 libtoolize --force || exit $?
