@@ -25,7 +25,7 @@
 #include "glocaldirectorymonitor.h"
 #include "gunixmounts.h"
 #include "gdirectorymonitor.h"
-#include "giomodule.h"
+#include "giomodule-priv.h"
 
 #include <string.h>
 

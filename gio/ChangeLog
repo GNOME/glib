@@ -1,5 +1,15 @@
 2007-12-05  Alexander Larsson  <alexl@redhat.com>
 
+        * Makefile.am:
+        * giomodule-priv.h: Added.
+        * glocaldirectorymonitor.c:
+        * glocalfilemonitor.c:
+        * gunionvolumemonitor.c:
+        * gvfs.c:
+	Actually add the declaration of _g_io_modules_ensure_loaded
+
+2007-12-05  Alexander Larsson  <alexl@redhat.com>
+
         * gdatainputstream.c:
 	Fix warnings
 	

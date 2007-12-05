@@ -24,7 +24,7 @@
 #include <string.h>
 #include "gvfs.h"
 #include "glocalvfs.h"
-#include "giomodule.h"
+#include "giomodule-priv.h"
 #include "glibintl.h"
 
 #include "gioalias.h"

@@ -146,6 +146,7 @@ libgio_2_0_la_SOURCES =		\
 	ginputstream.c 		\
 	gioerror.c 		\
 	giomodule.c 		\
+	giomodule-priv.h	\
 	gioscheduler.c 		\
 	gloadableicon.c 	\
 	gmemoryinputstream.c 	\

@@ -27,7 +27,7 @@
 #include <glib.h>
 #include "gunionvolumemonitor.h"
 #include "gvolumeprivate.h"
-#include "giomodule.h"
+#include "giomodule-priv.h"
 #ifdef G_OS_UNIX
 #include "gunixvolumemonitor.h"
 #endif

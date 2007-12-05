@@ -23,7 +23,7 @@
 #include <config.h>
 
 #include "glocalfilemonitor.h"
-#include "giomodule.h"
+#include "giomodule-priv.h"
 
 #include <string.h>
 
