@@ -222,7 +222,7 @@ get_default_local_directory_monitor (gpointer data)
   _g_inotify_directory_monitor_get_type ();
 #endif
 
-  g_io_modules_ensure_loaded (GIO_MODULE_DIR);
+  _g_io_modules_ensure_loaded ();
   
   monitor_impls = g_type_children (G_TYPE_LOCAL_DIRECTORY_MONITOR,
                                    &n_monitor_impls);

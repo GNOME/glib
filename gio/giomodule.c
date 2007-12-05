@@ -23,6 +23,7 @@
 #include <config.h>
 
 #include "giomodule.h"
+#include "giomodule-priv.h"
 
 #include "gioalias.h"
 
@@ -31,7 +32,8 @@
  * @short_description: Loadable GIO Modules
  *
  * Provides an interface and default functions for loading and unloading 
- * GIO modules.
+ * modules. This is used internally to make gio extensible, but can also
+ * be used by other to implement module loading.
  * 
  **/
 
@@ -139,9 +141,10 @@ g_io_module_unload_module (GTypeModule *gmodule)
 
 /**
  * g_io_module_new:
- * @filename: filename of the module to load.
+ * @filename: filename of the shared library module.
  * 
- * Loads a new module into GIO.
+ * Creates a new GIOModule that will load the specific
+ * shared library when in use.
  * 
  * Returns: a #GIOModule from given @filename, 
  * or %NULL on error.
@@ -171,8 +174,16 @@ is_valid_module_name (const gchar *basename)
 #endif
 }
 
-static GList *
-load_modules (const char *dirname)
+/**
+ * g_io_modules_load_all_in_directory:
+ * @dirname: pathname for a directory containing modules to load.
+ * 
+ * Loads all the modules in the the specified directory.
+ * 
+ * Returns: a list of #GIOModules loaded from the directory
+ **/
+GList *
+g_io_modules_load_all_in_directory (const char *dirname)
 {
   const gchar *name;
   GDir        *dir;
@@ -218,33 +229,21 @@ load_modules (const char *dirname)
 }
 
 G_LOCK_DEFINE_STATIC (loaded_dirs);
-static GHashTable *loaded_dirs = NULL;
 
-/**
- * g_io_modules_ensure_loaded:
- * @directory: string containing a directory path.
- * 
- * Loads all of the modules within the @directory. 
- **/
 void
-g_io_modules_ensure_loaded (const char *directory)
+_g_io_modules_ensure_loaded (void)
 {
   GList *modules;
+  const char *directory;
+  static gboolean loaded_dirs = FALSE;
 
-  g_return_if_fail (directory != NULL);
   
   G_LOCK (loaded_dirs);
 
-  if (loaded_dirs == NULL)
-    loaded_dirs = g_hash_table_new (g_str_hash, g_str_equal);
-
-  if (!g_hash_table_lookup_extended (loaded_dirs, directory,
-				     NULL, NULL))
+  if (!loaded_dirs)
     {
-      modules = load_modules (directory);
-      g_hash_table_insert (loaded_dirs,
-			   g_strdup (directory),
-			   modules);
+      loaded_dirs = TRUE;
+      modules = g_io_modules_load_all_in_directory (GIO_MODULE_DIR);
     }
   
   G_UNLOCK (loaded_dirs);

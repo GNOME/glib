@@ -650,7 +650,7 @@ scan_for_newline (GDataInputStream *stream,
   newline_len = 0;
   
   start = checked;
-  buffer = (guint8*)g_buffered_input_stream_peek_buffer (bstream, &available) + start;
+  buffer = (const char*)g_buffered_input_stream_peek_buffer (bstream, &available) + start;
   end = available;
   peeked = end - start;
 
@@ -826,7 +826,7 @@ scan_for_chars (GDataInputStream *stream,
   found_pos = -1;
   
   start = checked;
-  buffer = (guint8*)g_buffered_input_stream_peek_buffer (bstream, &available) + start;
+  buffer = (const char *)g_buffered_input_stream_peek_buffer (bstream, &available) + start;
   end = available;
   peeked = end - start;
 

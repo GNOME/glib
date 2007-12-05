@@ -259,7 +259,7 @@ get_default_native_type (gpointer data)
 #endif
       
   /* Ensure vfs in modules loaded */
-  g_io_modules_ensure_loaded (GIO_MODULE_DIR);
+  _g_io_modules_ensure_loaded ();
       
   monitors = g_type_children (G_TYPE_NATIVE_VOLUME_MONITOR, &n_monitors);
   native_type = 0;

@@ -1,5 +1,22 @@
 2007-12-05  Alexander Larsson  <alexl@redhat.com>
 
+        * gdatainputstream.c:
+	Fix warnings
+	
+        * gio.symbols:
+        * giomodule.[ch]
+        * glocaldirectorymonitor.c:
+        * glocalfilemonitor.c:
+        * gunionvolumemonitor.c:
+        * gvfs.c:
+	Make g_io_modules_ensure_loaded a private function and
+	don't pass in the dirname. This means we can do magic
+	directory finding in the win32 version.
+	Export the actual load-modules-in-directory code so that
+	gvfs can reuse that.
+
+2007-12-05  Alexander Larsson  <alexl@redhat.com>
+
         * gbufferedinputstream.c:
         * gbufferedoutputstream.c:
         * gdrive.[ch]:

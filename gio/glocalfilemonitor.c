@@ -158,7 +158,7 @@ get_default_local_file_monitor (gpointer data)
   _g_inotify_file_monitor_get_type ();
 #endif
 
-  g_io_modules_ensure_loaded (GIO_MODULE_DIR);
+  _g_io_modules_ensure_loaded ();
   
   monitor_impls = g_type_children (G_TYPE_LOCAL_FILE_MONITOR,
                                    &n_monitor_impls);
