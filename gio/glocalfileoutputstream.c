@@ -110,15 +110,15 @@ g_local_file_output_stream_class_init (GLocalFileOutputStreamClass *klass)
   
   gobject_class->finalize = g_local_file_output_stream_finalize;
 
-  stream_class->write = g_local_file_output_stream_write;
-  stream_class->close = g_local_file_output_stream_close;
+  stream_class->write_fn = g_local_file_output_stream_write;
+  stream_class->close_fn = g_local_file_output_stream_close;
   file_stream_class->query_info = g_local_file_output_stream_query_info;
   file_stream_class->get_etag = g_local_file_output_stream_get_etag;
   file_stream_class->tell = g_local_file_output_stream_tell;
   file_stream_class->can_seek = g_local_file_output_stream_can_seek;
   file_stream_class->seek = g_local_file_output_stream_seek;
   file_stream_class->can_truncate = g_local_file_output_stream_can_truncate;
-  file_stream_class->truncate = g_local_file_output_stream_truncate;
+  file_stream_class->truncate_fn = g_local_file_output_stream_truncate;
 }
 
 static void

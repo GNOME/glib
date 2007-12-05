@@ -188,7 +188,7 @@ g_input_stream_read  (GInputStream  *stream,
 
   class = G_INPUT_STREAM_GET_CLASS (stream);
 
-  if (class->read == NULL) 
+  if (class->read_fn == NULL) 
     {
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
 		   _("Input stream doesn't implement read"));
@@ -201,7 +201,7 @@ g_input_stream_read  (GInputStream  *stream,
   if (cancellable)
     g_push_current_cancellable (cancellable);
   
-  res = class->read (stream, buffer, count, cancellable, error);
+  res = class->read_fn (stream, buffer, count, cancellable, error);
 
   if (cancellable)
     g_pop_current_cancellable (cancellable);
@@ -368,7 +368,7 @@ g_input_stream_real_skip (GInputStream  *stream,
     {
       my_error = NULL;
 
-      ret = class->read (stream, buffer, MIN (sizeof (buffer), count),
+      ret = class->read_fn (stream, buffer, MIN (sizeof (buffer), count),
 			 cancellable, &my_error);
       if (ret == -1)
 	{
@@ -447,8 +447,8 @@ g_input_stream_close (GInputStream  *stream,
   if (cancellable)
     g_push_current_cancellable (cancellable);
 
-  if (class->close)
-    res = class->close (stream, cancellable, error);
+  if (class->close_fn)
+    res = class->close_fn (stream, cancellable, error);
 
   if (cancellable)
     g_pop_current_cancellable (cancellable);
@@ -936,9 +936,9 @@ read_async_thread (GSimpleAsyncResult *res,
 
   class = G_INPUT_STREAM_GET_CLASS (object);
 
-  op->count_read = class->read (G_INPUT_STREAM (object),
-				op->buffer, op->count_requested,
-				cancellable, &error);
+  op->count_read = class->read_fn (G_INPUT_STREAM (object),
+				   op->buffer, op->count_requested,
+				   cancellable, &error);
   if (op->count_read == -1)
     {
       g_simple_async_result_set_from_error (res, error);
@@ -1153,7 +1153,7 @@ close_async_thread (GSimpleAsyncResult *res,
      open handles */
   
   class = G_INPUT_STREAM_GET_CLASS (object);
-  result = class->close (G_INPUT_STREAM (object), cancellable, &error);
+  result = class->close_fn (G_INPUT_STREAM (object), cancellable, &error);
   if (!result)
     {
       g_simple_async_result_set_from_error (res, error);

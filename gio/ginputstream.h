@@ -60,7 +60,7 @@ struct _GInputStreamClass
 
   /* Sync ops: */
   
-  gssize   (* read)        (GInputStream *stream,
+  gssize   (* read_fn)     (GInputStream *stream,
 			    void         *buffer,
 			    gsize         count,
 			    GCancellable *cancellable,
@@ -69,7 +69,7 @@ struct _GInputStreamClass
 			    gsize         count,
 			    GCancellable *cancellable,
 			    GError      **error);
-  gboolean (* close)	   (GInputStream *stream,
+  gboolean (* close_fn)	   (GInputStream *stream,
 			    GCancellable *cancellable,
 			    GError      **error);
 

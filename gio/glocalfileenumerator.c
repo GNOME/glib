@@ -92,7 +92,7 @@ g_local_file_enumerator_class_init (GLocalFileEnumeratorClass *klass)
   gobject_class->finalize = g_local_file_enumerator_finalize;
 
   enumerator_class->next_file = g_local_file_enumerator_next_file;
-  enumerator_class->close = g_local_file_enumerator_close;
+  enumerator_class->close_fn = g_local_file_enumerator_close;
 }
 
 static void

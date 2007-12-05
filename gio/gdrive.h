@@ -70,7 +70,7 @@ struct _GDriveIface
   gboolean (*is_automounted)(GDrive       *drive);
   gboolean (*can_mount)   (GDrive         *drive);
   gboolean (*can_eject)   (GDrive         *drive);
-  void     (*mount)       (GDrive         *drive,
+  void     (*mount_fn)    (GDrive         *drive,
 			   GMountOperation *mount_operation,
 			   GCancellable   *cancellable,
 			   GAsyncReadyCallback callback,

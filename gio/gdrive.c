@@ -275,7 +275,7 @@ g_drive_mount (GDrive              *drive,
 
   iface = G_DRIVE_GET_IFACE (drive);
 
-  if (iface->mount == NULL)
+  if (iface->mount_fn == NULL)
     {
       g_simple_async_report_error_in_idle (G_OBJECT (drive), callback, user_data,
 					   G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
@@ -284,7 +284,7 @@ g_drive_mount (GDrive              *drive,
       return;
     }
   
-  (* iface->mount) (drive, mount_operation, cancellable, callback, user_data);
+  (* iface->mount_fn) (drive, mount_operation, cancellable, callback, user_data);
 }
 
 /**

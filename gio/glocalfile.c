@@ -1815,7 +1815,7 @@ g_local_file_file_iface_init (GFileIface *iface)
   iface->query_writable_namespaces = g_local_file_query_writable_namespaces;
   iface->set_attribute = g_local_file_set_attribute;
   iface->set_attributes_from_info = g_local_file_set_attributes_from_info;
-  iface->read = g_local_file_read;
+  iface->read_fn = g_local_file_read;
   iface->append_to = g_local_file_append_to;
   iface->create = g_local_file_create;
   iface->replace = g_local_file_replace;

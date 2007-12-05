@@ -999,7 +999,7 @@ g_file_read (GFile         *file,
 
   iface = G_FILE_GET_IFACE (file);
 
-  if (iface->read == NULL)
+  if (iface->read_fn == NULL)
     {
       g_set_error (error, G_IO_ERROR,
 		   G_IO_ERROR_NOT_SUPPORTED,
@@ -1007,7 +1007,7 @@ g_file_read (GFile         *file,
       return NULL;
     }
   
-  return (* iface->read) (file, cancellable, error);
+  return (* iface->read_fn) (file, cancellable, error);
 }
 
 /**
@@ -3369,7 +3369,7 @@ open_read_async_thread (GSimpleAsyncResult *res,
 
   iface = G_FILE_GET_IFACE (object);
 
-  stream = iface->read (G_FILE (object), cancellable, &error);
+  stream = iface->read_fn (G_FILE (object), cancellable, &error);
 
   if (stream == NULL)
     {

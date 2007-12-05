@@ -148,7 +148,7 @@ g_buffered_input_stream_class_init (GBufferedInputStreamClass *klass)
   istream_class->skip = g_buffered_input_stream_skip;
   istream_class->skip_async  = g_buffered_input_stream_skip_async;
   istream_class->skip_finish = g_buffered_input_stream_skip_finish;
-  istream_class->read = g_buffered_input_stream_read;
+  istream_class->read_fn = g_buffered_input_stream_read;
   istream_class->read_async  = g_buffered_input_stream_read_async;
   istream_class->read_finish = g_buffered_input_stream_read_finish;
 

@@ -116,8 +116,8 @@ g_unix_input_stream_class_init (GUnixInputStreamClass *klass)
   
   gobject_class->finalize = g_unix_input_stream_finalize;
 
-  stream_class->read = g_unix_input_stream_read;
-  stream_class->close = g_unix_input_stream_close;
+  stream_class->read_fn = g_unix_input_stream_read;
+  stream_class->close_fn = g_unix_input_stream_close;
   stream_class->read_async = g_unix_input_stream_read_async;
   stream_class->read_finish = g_unix_input_stream_read_finish;
   if (0)

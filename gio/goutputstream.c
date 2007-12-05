@@ -196,7 +196,7 @@ g_output_stream_write (GOutputStream  *stream,
 
   class = G_OUTPUT_STREAM_GET_CLASS (stream);
 
-  if (class->write == NULL) 
+  if (class->write_fn == NULL) 
     {
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
 		   _("Output stream doesn't implement write"));
@@ -209,7 +209,7 @@ g_output_stream_write (GOutputStream  *stream,
   if (cancellable)
     g_push_current_cancellable (cancellable);
   
-  res = class->write (stream, buffer, count, cancellable, error);
+  res = class->write_fn (stream, buffer, count, cancellable, error);
   
   if (cancellable)
     g_pop_current_cancellable (cancellable);
@@ -396,7 +396,8 @@ g_output_stream_real_splice (GOutputStream             *stream,
   char buffer[8192], *p;
   gboolean res;
 
-  if (class->write == NULL) 
+  bytes_copied = 0;
+  if (class->write_fn == NULL) 
     {
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
 		   _("Output stream doesn't implement write"));
@@ -404,7 +405,6 @@ g_output_stream_real_splice (GOutputStream             *stream,
       goto notsupported;
     }
   
-  bytes_copied = 0;
   res = TRUE;
   do 
     {
@@ -421,7 +421,7 @@ g_output_stream_real_splice (GOutputStream             *stream,
       p = buffer;
       while (n_read > 0)
 	{
-	  n_written = class->write (stream, p, n_read, cancellable, error);
+	  n_written = class->write_fn (stream, p, n_read, cancellable, error);
 	  if (n_written == -1)
 	    {
 	      res = FALSE;
@@ -448,7 +448,7 @@ g_output_stream_real_splice (GOutputStream             *stream,
   if (flags & G_OUTPUT_STREAM_SPLICE_FLAGS_CLOSE_TARGET)
     {
       /* But write errors on close are bad! */
-      if (!class->close (stream, cancellable, error))
+      if (!class->close_fn (stream, cancellable, error))
 	res = FALSE;
     }
 
@@ -528,14 +528,14 @@ g_output_stream_close (GOutputStream  *stream,
       /* flushing caused the error that we want to return,
        * but we still want to close the underlying stream if possible
        */
-      if (class->close)
-	class->close (stream, cancellable, NULL);
+      if (class->close_fn)
+	class->close_fn (stream, cancellable, NULL);
     }
   else
     {
       res = TRUE;
-      if (class->close)
-	res = class->close (stream, cancellable, error);
+      if (class->close_fn)
+	res = class->close_fn (stream, cancellable, error);
     }
   
   if (cancellable)
@@ -1112,8 +1112,8 @@ write_async_thread (GSimpleAsyncResult *res,
 
   class = G_OUTPUT_STREAM_GET_CLASS (object);
   op = g_simple_async_result_get_op_res_gpointer (res);
-  op->count_written = class->write (G_OUTPUT_STREAM (object), op->buffer, op->count_requested,
-				    cancellable, &error);
+  op->count_written = class->write_fn (G_OUTPUT_STREAM (object), op->buffer, op->count_requested,
+				       cancellable, &error);
   if (op->count_written == -1)
     {
       g_simple_async_result_set_from_error (res, error);
@@ -1286,7 +1286,7 @@ close_async_thread (GSimpleAsyncResult *res,
      open handles */
   
   class = G_OUTPUT_STREAM_GET_CLASS (object);
-  result = class->close (G_OUTPUT_STREAM (object), cancellable, &error);
+  result = class->close_fn (G_OUTPUT_STREAM (object), cancellable, &error);
   if (!result)
     {
       g_simple_async_result_set_from_error (res, error);

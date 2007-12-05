@@ -119,9 +119,9 @@ g_memory_input_stream_class_init (GMemoryInputStreamClass *klass)
   object_class->finalize     = g_memory_input_stream_finalize;
   
   istream_class = G_INPUT_STREAM_CLASS (klass);
-  istream_class->read  = g_memory_input_stream_read;
+  istream_class->read_fn  = g_memory_input_stream_read;
   istream_class->skip  = g_memory_input_stream_skip;
-  istream_class->close = g_memory_input_stream_close;
+  istream_class->close_fn = g_memory_input_stream_close;
 
   istream_class->read_async  = g_memory_input_stream_read_async;
   istream_class->read_finish  = g_memory_input_stream_read_finish;
@@ -152,7 +152,7 @@ g_memory_input_stream_seekable_iface_init (GSeekableIface *iface)
   iface->can_seek     = g_memory_input_stream_can_seek;
   iface->seek         = g_memory_input_stream_seek;
   iface->can_truncate = g_memory_input_stream_can_truncate;
-  iface->truncate     = g_memory_input_stream_truncate;
+  iface->truncate_fn  = g_memory_input_stream_truncate;
 }
 
 static void

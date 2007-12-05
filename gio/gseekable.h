@@ -48,7 +48,7 @@ typedef struct _GSeekableIface   GSeekableIface;
  * @can_seek: Checks if seeking is supported by the stream.
  * @seek: Seeks to a location within a stream.
  * @can_truncate: Chekcs if truncation is suppored by the stream.
- * @truncate: Truncates a stream.
+ * @truncate_fn: Truncates a stream.
  * 
  * Provides an interface for implementing seekable functionality on I/O Streams.
  **/ 
@@ -68,7 +68,7 @@ struct _GSeekableIface
 				  GError      **error);
   
   gboolean    (* can_truncate)   (GSeekable    *seekable);
-  gboolean    (* truncate)       (GSeekable    *seekable,
+  gboolean    (* truncate_fn)    (GSeekable    *seekable,
 				  goffset       offset,
 				  GCancellable *cancellable,
 				  GError       **error);

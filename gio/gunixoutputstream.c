@@ -108,8 +108,8 @@ g_unix_output_stream_class_init (GUnixOutputStreamClass *klass)
   
   gobject_class->finalize = g_unix_output_stream_finalize;
 
-  stream_class->write = g_unix_output_stream_write;
-  stream_class->close = g_unix_output_stream_close;
+  stream_class->write_fn = g_unix_output_stream_write;
+  stream_class->close_fn = g_unix_output_stream_close;
   stream_class->write_async = g_unix_output_stream_write_async;
   stream_class->write_finish = g_unix_output_stream_write_finish;
   stream_class->close_async = g_unix_output_stream_close_async;

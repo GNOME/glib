@@ -87,7 +87,7 @@ g_file_input_stream_seekable_iface_init (GSeekableIface *iface)
   iface->can_seek = g_file_input_stream_seekable_can_seek;
   iface->seek = g_file_input_stream_seekable_seek;
   iface->can_truncate = g_file_input_stream_seekable_can_truncate;
-  iface->truncate = g_file_input_stream_seekable_truncate;
+  iface->truncate_fn = g_file_input_stream_seekable_truncate;
 }
 
 static void

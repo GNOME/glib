@@ -135,9 +135,9 @@ g_buffered_output_stream_class_init (GBufferedOutputStreamClass *klass)
   object_class->finalize     = g_buffered_output_stream_finalize;
 
   ostream_class = G_OUTPUT_STREAM_CLASS (klass);
-  ostream_class->write = g_buffered_output_stream_write;
+  ostream_class->write_fn = g_buffered_output_stream_write;
   ostream_class->flush = g_buffered_output_stream_flush;
-  ostream_class->close = g_buffered_output_stream_close;
+  ostream_class->close_fn = g_buffered_output_stream_close;
   ostream_class->write_async  = g_buffered_output_stream_write_async;
   ostream_class->write_finish = g_buffered_output_stream_write_finish;
   ostream_class->flush_async  = g_buffered_output_stream_flush_async;

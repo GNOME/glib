@@ -92,9 +92,9 @@ g_local_file_input_stream_class_init (GLocalFileInputStreamClass *klass)
   
   gobject_class->finalize = g_local_file_input_stream_finalize;
 
-  stream_class->read = g_local_file_input_stream_read;
+  stream_class->read_fn = g_local_file_input_stream_read;
   stream_class->skip = g_local_file_input_stream_skip;
-  stream_class->close = g_local_file_input_stream_close;
+  stream_class->close_fn = g_local_file_input_stream_close;
   file_stream_class->tell = g_local_file_input_stream_tell;
   file_stream_class->can_seek = g_local_file_input_stream_can_seek;
   file_stream_class->seek = g_local_file_input_stream_seek;

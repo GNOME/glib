@@ -352,7 +352,7 @@ struct _GFileIface
 						   GFileInfo                 **info,
 						   GError                    **error);
   
-  GFileInputStream *  (*read)               (GFile                *file,
+  GFileInputStream *  (*read_fn)            (GFile                *file,
 					     GCancellable         *cancellable,
 					     GError              **error);
   void                (*read_async)         (GFile                *file,
@@ -378,7 +378,7 @@ struct _GFileIface
 					     GAsyncResult               *res,
 					     GError                    **error);
   
-  GFileOutputStream * (*create)             (GFile                *file,
+  GFileOutputStream *  (*create)            (GFile                *file,
 					     GFileCreateFlags      flags,
 					     GCancellable         *cancellable,
 					     GError               **error);

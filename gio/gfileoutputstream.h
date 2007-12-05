@@ -65,7 +65,7 @@ struct _GFileOutputStreamClass
 			       GCancellable         *cancellable,
 			       GError              **error);
   gboolean   (*can_truncate)  (GFileOutputStream    *stream);
-  gboolean   (*truncate)      (GFileOutputStream    *stream,
+  gboolean   (*truncate_fn)   (GFileOutputStream    *stream,
 			       goffset               size,
 			       GCancellable         *cancellable,
 			       GError              **error);

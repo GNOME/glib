@@ -1,3 +1,32 @@
+2007-12-05  Alexander Larsson  <alexl@redhat.com>
+
+        * gbufferedinputstream.c:
+        * gbufferedoutputstream.c:
+        * gdrive.[ch]:
+        * gfile.[ch]:
+        * gfileenumerator.[ch]:
+        * gfileinputstream.c:
+        * gfileoutputstream.[ch]:
+        * gfilterinputstream.c:
+        * gfilteroutputstream.c:
+        * ginputstream.[ch]:
+        * glocalfile.c:
+        * glocalfileenumerator.c:
+        * glocalfileinputstream.c:
+        * glocalfileoutputstream.c:
+        * gmemoryinputstream.c:
+        * gmemoryoutputstream.c:
+        * goutputstream.[ch]:
+        * gseekable.[ch]:
+        * gunixdrive.c:
+        * gunixinputstream.c:
+        * gunixoutputstream.c:
+	Rename all struct members named:
+	read, write, close, truncate, or mount
+	to foo_fn, as these are reserved names
+	and could be defined as macros in libc.
+	(#501645)
+
 2007-12-04  Alexander Larsson  <alexl@redhat.com>
 
         * goutputstream.c:

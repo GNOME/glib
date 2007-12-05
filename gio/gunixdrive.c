@@ -315,7 +315,7 @@ g_unix_volume_drive_iface_init (GDriveIface *iface)
   iface->is_automounted = g_unix_drive_is_automounted;
   iface->can_mount = g_unix_drive_can_mount;
   iface->can_eject = g_unix_drive_can_eject;
-  iface->mount = g_unix_drive_mount;
+  iface->mount_fn = g_unix_drive_mount;
   iface->mount_finish = g_unix_drive_mount_finish;
   iface->eject = g_unix_drive_eject;
   iface->eject_finish = g_unix_drive_eject_finish;

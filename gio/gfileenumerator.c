@@ -204,7 +204,7 @@ g_file_enumerator_close (GFileEnumerator  *enumerator,
     g_push_current_cancellable (cancellable);
   
   enumerator->priv->pending = TRUE;
-  (* class->close) (enumerator, cancellable, error);
+  (* class->close_fn) (enumerator, cancellable, error);
   enumerator->priv->pending = FALSE;
   enumerator->priv->closed = TRUE;
 
@@ -590,7 +590,7 @@ close_async_thread (GSimpleAsyncResult *res,
      open handles */
   
   class = G_FILE_ENUMERATOR_GET_CLASS (object);
-  result = class->close (G_FILE_ENUMERATOR (object), cancellable, &error);
+  result = class->close_fn (G_FILE_ENUMERATOR (object), cancellable, &error);
   if (!result)
     {
       g_simple_async_result_set_from_error (res, error);

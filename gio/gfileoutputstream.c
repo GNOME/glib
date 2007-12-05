@@ -86,7 +86,7 @@ g_file_output_stream_seekable_iface_init (GSeekableIface *iface)
   iface->can_seek = g_file_output_stream_seekable_can_seek;
   iface->seek = g_file_output_stream_seekable_seek;
   iface->can_truncate = g_file_output_stream_seekable_can_truncate;
-  iface->truncate = g_file_output_stream_seekable_truncate;
+  iface->truncate_fn = g_file_output_stream_seekable_truncate;
 }
 
 static void
@@ -440,7 +440,7 @@ g_file_output_stream_can_truncate (GFileOutputStream  *stream)
   class = G_FILE_OUTPUT_STREAM_GET_CLASS (stream);
 
   can_truncate = FALSE;
-  if (class->truncate)
+  if (class->truncate_fn)
     {
       can_truncate = TRUE;
       if (class->can_truncate)
@@ -482,7 +482,7 @@ g_file_output_stream_truncate (GFileOutputStream  *stream,
   output_stream = G_OUTPUT_STREAM (stream);
   class = G_FILE_OUTPUT_STREAM_GET_CLASS (stream);
 
-  if (!class->truncate)
+  if (!class->truncate_fn)
     {
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
 		   _("Truncate not supported on stream"));
@@ -495,7 +495,7 @@ g_file_output_stream_truncate (GFileOutputStream  *stream,
   if (cancellable)
     g_push_current_cancellable (cancellable);
   
-  res = class->truncate (stream, size, cancellable, error);
+  res = class->truncate_fn (stream, size, cancellable, error);
   
   if (cancellable)
     g_pop_current_cancellable (cancellable);

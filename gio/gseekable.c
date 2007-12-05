@@ -202,7 +202,7 @@ g_seekable_truncate (GSeekable     *seekable,
 
   iface = G_SEEKABLE_GET_IFACE (seekable);
 
-  return (* iface->truncate) (seekable, offset, cancellable, error);
+  return (* iface->truncate_fn) (seekable, offset, cancellable, error);
 }
 
 #define __G_SEEKABLE_C__

@@ -105,9 +105,9 @@ g_filter_input_stream_class_init (GFilterInputStreamClass *klass)
   object_class->finalize     = g_filter_input_stream_finalize;
 
   istream_class = G_INPUT_STREAM_CLASS (klass);
-  istream_class->read  = g_filter_input_stream_read;
+  istream_class->read_fn  = g_filter_input_stream_read;
   istream_class->skip  = g_filter_input_stream_skip;
-  istream_class->close = g_filter_input_stream_close;
+  istream_class->close_fn = g_filter_input_stream_close;
 
   istream_class->read_async   = g_filter_input_stream_read_async;
   istream_class->read_finish  = g_filter_input_stream_read_finish;

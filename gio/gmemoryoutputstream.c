@@ -131,8 +131,8 @@ g_memory_output_stream_class_init (GMemoryOutputStreamClass *klass)
 
   ostream_class = G_OUTPUT_STREAM_CLASS (klass);
 
-  ostream_class->write = g_memory_output_stream_write;
-  ostream_class->close = g_memory_output_stream_close;
+  ostream_class->write_fn = g_memory_output_stream_write;
+  ostream_class->close_fn = g_memory_output_stream_close;
   ostream_class->write_async  = g_memory_output_stream_write_async;
   ostream_class->write_finish = g_memory_output_stream_write_finish;
   ostream_class->close_async  = g_memory_output_stream_close_async;
@@ -189,7 +189,7 @@ g_memory_output_stream_seekable_iface_init (GSeekableIface *iface)
   iface->can_seek     = g_memory_output_stream_can_seek;
   iface->seek         = g_memory_output_stream_seek;
   iface->can_truncate = g_memory_output_stream_can_truncate;
-  iface->truncate     = g_memory_output_stream_truncate;
+  iface->truncate_fn     = g_memory_output_stream_truncate;
 }
 
 

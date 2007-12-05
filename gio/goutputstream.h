@@ -80,22 +80,22 @@ struct _GOutputStreamClass
 
   /* Sync ops: */
   
-  gssize      (* write)  (GOutputStream *stream,
-			  const void *buffer,
-			  gsize count,
-			  GCancellable *cancellable,
-			  GError **error);
-  gssize      (* splice) (GOutputStream *stream,
-			  GInputStream  *source,
-			  GOutputStreamSpliceFlags   flags,
-			  GCancellable  *cancellable,
-			  GError       **error);
-  gboolean    (* flush)	 (GOutputStream *stream,
-			  GCancellable  *cancellable,
-			  GError       **error);
-  gboolean    (* close)	 (GOutputStream *stream,
-			  GCancellable  *cancellable,
-			  GError       **error);
+  gssize      (* write_fn)(GOutputStream *stream,
+			   const void *buffer,
+			   gsize count,
+			   GCancellable *cancellable,
+			   GError **error);
+  gssize      (* splice)  (GOutputStream *stream,
+			   GInputStream  *source,
+			   GOutputStreamSpliceFlags   flags,
+			   GCancellable  *cancellable,
+			   GError       **error);
+  gboolean    (* flush)	  (GOutputStream *stream,
+			   GCancellable  *cancellable,
+			   GError       **error);
+  gboolean    (* close_fn)(GOutputStream *stream,
+			   GCancellable  *cancellable,
+			   GError       **error);
   
   /* Async ops: (optional in derived classes) */
 

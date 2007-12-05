@@ -67,7 +67,7 @@ struct _GFileEnumeratorClass
   GFileInfo *(*next_file)         (GFileEnumerator              *enumerator,
 				   GCancellable                 *cancellable,
 				   GError                      **error);
-  gboolean   (*close)             (GFileEnumerator              *enumerator,
+  gboolean   (*close_fn)          (GFileEnumerator              *enumerator,
 				   GCancellable                 *cancellable,
 				   GError                      **error);
 

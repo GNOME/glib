@@ -106,9 +106,9 @@ g_filter_output_stream_class_init (GFilterOutputStreamClass *klass)
   object_class->dispose      = g_filter_output_stream_dispose;
     
   ostream_class = G_OUTPUT_STREAM_CLASS (klass);
-  ostream_class->write = g_filter_output_stream_write;
+  ostream_class->write_fn = g_filter_output_stream_write;
   ostream_class->flush = g_filter_output_stream_flush;
-  ostream_class->close = g_filter_output_stream_close;
+  ostream_class->close_fn = g_filter_output_stream_close;
   ostream_class->write_async  = g_filter_output_stream_write_async;
   ostream_class->write_finish = g_filter_output_stream_write_finish;
   ostream_class->flush_async  = g_filter_output_stream_flush_async;
