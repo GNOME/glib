@@ -410,7 +410,8 @@ usage (gboolean just_version)
   g_print ("  --g-fatal-warnings          make warnings fatal (abort)\n");
   g_print ("  -k, --keep-going            continue running after tests failed\n");
   g_print ("  -l                          list paths of available test cases\n");
-  g_print ("  -m=perf, -m=slow, -m=quick  run test cases in mode perf, slow or quick (default)\n");
+  g_print ("  -m=perf, -m=slow, -m=quick -m=thorough\n");
+  g_print ("                              run test cases in mode perf, slow/thorough or quick (default)\n");
   g_print ("  -p=TESTPATH                 only start test cases matching TESTPATH\n");
   g_print ("  --seed=SEEDSTRING           start all tests with random number seed SEEDSTRING\n");
   g_print ("  -o=LOGFILE                  write the test log to LOGFILE\n");
@@ -508,7 +509,7 @@ parse_args (gint    *argc_p,
             }
           if (strcmp (mode, "perf") == 0)
             subtest_mode_perf = TRUE;
-          else if (strcmp (mode, "slow") == 0)
+          else if (strcmp (mode, "slow") == 0 || strcmp (mode, "thorough") == 0)
             subtest_mode_quick = FALSE;
           else if (strcmp (mode, "quick") == 0)
             {

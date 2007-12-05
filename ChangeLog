@@ -1,3 +1,7 @@
+2007-12-05 17:58:18  Tim Janik  <timj@imendio.com>
+
+	* glib/gtester.c: added -m=thorough support to gtester.
+
 2007-12-05 17:21:05  Tim Janik  <timj@imendio.com>
 
 	* glib/glib/gtestutils.c: print out random seed for verbose tests,
