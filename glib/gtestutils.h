@@ -73,18 +73,22 @@ void    g_test_init                     (int            *argc,
 #define g_test_quiet()                  (g_test_config_vars->test_quiet)
 /* run all tests under toplevel suite (path: /) */
 int     g_test_run                      (void);
-/* hook up a simple test function under test path */
+/* hook up a test functions under test path */
 void    g_test_add_func                 (const char     *testpath,
                                          void          (*test_func) (void));
+void    g_test_add_data_func            (const char     *testpath,
+                                         gconstpointer   test_data,
+                                         void          (*test_func) (gconstpointer));
 /* hook up a test with fixture under test path */
-#define g_test_add(testpath, Fixture, fsetup, ftest, fteardown) \
-                                        ((void (*) (const char*,        \
-                                                    gsize,              \
-                                                    void (*) (Fixture*),   \
-                                                    void (*) (Fixture*),   \
-                                                    void (*) (Fixture*)))  \
+#define g_test_add(testpath, Fixture, tdata, fsetup, ftest, fteardown) \
+                                        ((void (*) (const char*,       \
+                                                    gsize,             \
+                                                    gconstpointer,     \
+                                                    void (*) (Fixture*, gconstpointer),   \
+                                                    void (*) (Fixture*, gconstpointer),   \
+                                                    void (*) (Fixture*, gconstpointer)))  \
                                          (void*) g_test_add_vtable) \
-                                          (testpath, sizeof (Fixture), fsetup, ftest, fteardown)
+                                          (testpath, sizeof (Fixture), tdata, fsetup, ftest, fteardown)
 /* add test messages to the test report */
 void    g_test_message                  (const char *format,
                                          ...) G_GNUC_PRINTF (1, 2);
@@ -128,6 +132,7 @@ double   g_test_rand_double_range       (double          range_start,
 /* semi-internal API */
 GTestCase*    g_test_create_case        (const char     *test_name,
                                          gsize           data_size,
+                                         gconstpointer   test_data,
                                          void          (*data_setup) (void),
                                          void          (*data_test) (void),
                                          void          (*data_teardown) (void));
@@ -177,6 +182,7 @@ void    g_assertion_message_cmpnum      (const char     *domain,
                                          char            numtype);
 void    g_test_add_vtable               (const char     *testpath,
                                          gsize           data_size,
+                                         gconstpointer   test_data,
                                          void          (*data_setup)    (void),
                                          void          (*data_test)     (void),
                                          void          (*data_teardown) (void));

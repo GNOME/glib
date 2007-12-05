@@ -44,9 +44,10 @@ struct GTestCase
 {
   gchar  *name;
   guint   fixture_size;
-  void (*fixture_setup) (void*);
-  void (*fixture_test) (void*);
-  void (*fixture_teardown) (void*);
+  void   (*fixture_setup)    (void*, gconstpointer);
+  void   (*fixture_test)     (void*, gconstpointer);
+  void   (*fixture_teardown) (void*, gconstpointer);
+  gpointer test_data;
 };
 struct GTestSuite
 {
@@ -381,6 +382,7 @@ g_test_init (int    *argc,
   /* make warnings and criticals fatal for all test programs */
   GLogLevelFlags fatal_mask = (GLogLevelFlags) g_log_set_always_fatal ((GLogLevelFlags) G_LOG_FATAL_MASK);
   fatal_mask = (GLogLevelFlags) (fatal_mask | G_LOG_LEVEL_WARNING | G_LOG_LEVEL_CRITICAL);
+  g_log_set_always_fatal (fatal_mask);
   /* check caller args */
   g_return_if_fail (argc != NULL);
   g_return_if_fail (argv != NULL);
@@ -729,6 +731,7 @@ g_test_run (void)
  * g_test_create_case:
  * @test_name:     the name for the test case
  * @data_size:     the size of the fixture data structure
+ * @test_data:     test data argument for the test functions
  * @data_setup:    the function to set up the fixture data
  * @data_test:     the actual test function
  * @data_teardown: the function to teardown the fixture data
@@ -752,6 +755,7 @@ g_test_run (void)
 GTestCase*
 g_test_create_case (const char     *test_name,
                     gsize           data_size,
+                    gconstpointer   test_data,
                     void          (*data_setup) (void),
                     void          (*data_test) (void),
                     void          (*data_teardown) (void))
@@ -763,6 +767,7 @@ g_test_create_case (const char     *test_name,
   g_return_val_if_fail (data_test != NULL, NULL);
   tc = g_slice_new0 (GTestCase);
   tc->name = g_strdup (test_name);
+  tc->test_data = (gpointer) test_data;
   tc->fixture_size = data_size;
   tc->fixture_setup = (void*) data_setup;
   tc->fixture_test = (void*) data_test;
@@ -773,6 +778,7 @@ g_test_create_case (const char     *test_name,
 void
 g_test_add_vtable (const char     *testpath,
                    gsize           data_size,
+                   gconstpointer   test_data,
                    void          (*data_setup)    (void),
                    void          (*fixture_test_func) (void),
                    void          (*data_teardown) (void))
@@ -803,7 +809,7 @@ g_test_add_vtable (const char     *testpath,
         }
       else /* islast */
         {
-          GTestCase *tc = g_test_create_case (seg, data_size, data_setup, fixture_test_func, data_teardown);
+          GTestCase *tc = g_test_create_case (seg, data_size, test_data, data_setup, fixture_test_func, data_teardown);
           g_test_suite_add (suite, tc);
         }
     }
@@ -827,7 +833,30 @@ g_test_add_func (const char     *testpath,
   g_return_if_fail (testpath != NULL);
   g_return_if_fail (testpath[0] == '/');
   g_return_if_fail (test_func != NULL);
-  g_test_add_vtable (testpath, 0, NULL, test_func, NULL);
+  g_test_add_vtable (testpath, 0, NULL, NULL, test_func, NULL);
+}
+
+/**
+ * g_test_add_data_func:
+ * @testpath:   Slash seperated test case path name for the test.
+ * @test_data:  Test data argument for the test function.
+ * @test_func:  The test function to invoke for this test.
+ *
+ * Create a new test case, similar to g_test_create_case(). However
+ * the test is assumed to use no fixture, and test suites are automatically
+ * created on the fly and added to the root fixture, based on the
+ * slash seperated portions of @testpath. The @test_data argument
+ * will be passed as first argument to @test_func.
+ */
+void
+g_test_add_data_func (const char     *testpath,
+                      gconstpointer   test_data,
+                      void          (*test_func) (gconstpointer))
+{
+  g_return_if_fail (testpath != NULL);
+  g_return_if_fail (testpath[0] == '/');
+  g_return_if_fail (test_func != NULL);
+  g_test_add_vtable (testpath, 0, test_data, NULL, (void(*)(void)) test_func, NULL);
 }
 
 /**
@@ -942,11 +971,11 @@ test_case_run (GTestCase *tc)
       g_test_log (G_TEST_LOG_START_CASE, test_run_name, NULL, 0, NULL);
       test_run_forks = 0;
       g_timer_start (test_run_timer);
-      fixture = g_malloc0 (tc->fixture_size);
+      fixture = tc->fixture_size ? g_malloc0 (tc->fixture_size) : tc->test_data;
       test_run_seed (test_run_seedstr);
       if (tc->fixture_setup)
-        tc->fixture_setup (fixture);
-      tc->fixture_test (fixture);
+        tc->fixture_setup (fixture, tc->test_data);
+      tc->fixture_test (fixture, tc->test_data);
       test_trap_clear();
       while (test_destroy_queue)
         {
@@ -956,8 +985,9 @@ test_case_run (GTestCase *tc)
           g_slice_free (DestroyEntry, dentry);
         }
       if (tc->fixture_teardown)
-        tc->fixture_teardown (fixture);
-      g_free (fixture);
+        tc->fixture_teardown (fixture, tc->test_data);
+      if (tc->fixture_size)
+        g_free (fixture);
       g_timer_stop (test_run_timer);
       largs[0] = 0; /* OK */
       largs[1] = test_run_forks;

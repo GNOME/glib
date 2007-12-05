@@ -610,13 +610,15 @@ main (int    argc,
 }
 
 static void
-fixture_setup (guint *fix)
+fixture_setup (guint        *fix,
+               gconstpointer test_data)
 {
   g_assert_cmphex (*fix, ==, 0);
   *fix = 0xdeadbeef;
 }
 static void
-fixture_test (guint *fix)
+fixture_test (guint        *fix,
+              gconstpointer test_data)
 {
   g_assert_cmphex (*fix, ==, 0xdeadbeef);
   g_test_message ("This is a test message API test message.");
@@ -626,7 +628,8 @@ fixture_test (guint *fix)
   g_test_bug ("456");
 }
 static void
-fixture_teardown (guint *fix)
+fixture_teardown (guint        *fix,
+                  gconstpointer test_data)
 {
   g_assert_cmphex (*fix, ==, 0xdeadbeef);
 }
@@ -637,6 +640,6 @@ main_selftest (int    argc,
 {
   /* gtester main() for --gtester-selftest invokations */
   g_test_init (&argc, &argv, NULL);
-  g_test_add ("/gtester/fixture-test", guint, fixture_setup, fixture_test, fixture_teardown);
+  g_test_add ("/gtester/fixture-test", guint, NULL, fixture_setup, fixture_test, fixture_teardown);
   return g_test_run();
 }

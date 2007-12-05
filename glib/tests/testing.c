@@ -108,23 +108,29 @@ typedef struct {
   gchar *msg;
 } Fixturetest;
 static void
-fixturetest_setup (Fixturetest *fix)
+fixturetest_setup (Fixturetest  *fix,
+                   gconstpointer test_data)
 {
+  g_assert (test_data == (void*) 0xc0cac01a);
   fix->seed = 18;
   fix->prime = 19;
   fix->msg = g_strdup_printf ("%d", fix->prime);
 }
 static void
-fixturetest_test (Fixturetest *fix)
+fixturetest_test (Fixturetest  *fix,
+                  gconstpointer test_data)
 {
   guint prime = g_spaced_primes_closest (fix->seed);
   g_assert_cmpint (prime, ==, fix->prime);
   prime = g_ascii_strtoull (fix->msg, NULL, 0);
   g_assert_cmpint (prime, ==, fix->prime);
+  g_assert (test_data == (void*) 0xc0cac01a);
 }
 static void
-fixturetest_teardown (Fixturetest *fix)
+fixturetest_teardown (Fixturetest  *fix,
+                      gconstpointer test_data)
 {
+  g_assert (test_data == (void*) 0xc0cac01a);
   g_free (fix->msg);
 }
 
@@ -164,6 +170,12 @@ test_rand2 (void)
   g_assert_cmpfloat (shared_rand_state.drange, ==, g_test_rand_double_range (-999, +17));
 }
 
+static void
+test_data_test (gconstpointer test_data)
+{
+  g_assert (test_data == (void*) 0xc0c0baba);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -173,7 +185,8 @@ main (int   argc,
   g_test_add_func ("/random-generator/rand-1", test_rand1);
   g_test_add_func ("/random-generator/rand-2", test_rand2);
   g_test_add_func ("/misc/assertions", test_assertions);
-  g_test_add ("/misc/primetoul", Fixturetest, fixturetest_setup, fixturetest_test, fixturetest_teardown);
+  g_test_add_data_func ("/misc/test-data", (void*) 0xc0c0baba, test_data_test);
+  g_test_add ("/misc/primetoul", Fixturetest, (void*) 0xc0cac01a, fixturetest_setup, fixturetest_test, fixturetest_teardown);
   if (g_test_perf())
     g_test_add_func ("/misc/timer", test_timer);
   g_test_add_func ("/forking/fail assertion", test_fork_fail);

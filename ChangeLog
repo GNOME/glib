@@ -1,3 +1,15 @@
+2007-12-05 11:43:22  Tim Janik  <timj@imendio.com>
+
+        * glib/gtestutils.[hc]: added g_test_add_data_func() to pass data
+	into tests. allow data arguments for fixture tests.
+
+	* glib/gtestutils.c: fixed fatal log flag setup, so tests really abort
+	upon criticals/warnings/errors.
+
+	* glib/tests/testing.c: test test_data arguments.
+
+	* glib/gtester.c: some prototype fixups.
+
 2007-12-05  Tor Lillqvist  <tml@novell.com>
 
 	* glib/win_iconv.c: Add "shift-jis" as an alternative spelling of
