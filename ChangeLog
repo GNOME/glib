@@ -1,3 +1,8 @@
+2007-12-05  Tor Lillqvist  <tml@novell.com>
+
+	* glib/win_iconv.c: Add "shift-jis" as an alternative spelling of
+	"shift_jis".
+
 2007-12-05  Ryan Lortie  <desrt@desrt.ca>
 
 	* autogen.sh: for the benefit of git users, checkout build/ if it is

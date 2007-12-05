@@ -437,6 +437,7 @@ static struct {
     {874, "windows-874"}, /* ANSI/OEM Thai (same as 28605, ISO 8859-15); Thai (Windows) */
     {875, "cp875"}, /* IBM EBCDIC Greek Modern */
     {932, "shift_jis"}, /* ANSI/OEM Japanese; Japanese (Shift-JIS) */
+    {932, "shift-jis"}, /* alternative name for it */
     {936, "gb2312"}, /* ANSI/OEM Simplified Chinese (PRC, Singapore); Chinese Simplified (GB2312) */
     {949, "ks_c_5601-1987"}, /* ANSI/OEM Korean (Unified Hangul Code) */
     {950, "big5"}, /* ANSI/OEM Traditional Chinese (Taiwan; Hong Kong SAR, PRC); Chinese Traditional (Big5) */
