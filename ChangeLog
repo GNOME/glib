@@ -1,3 +1,15 @@
+2007-12-05 17:21:05  Tim Janik  <timj@imendio.com>
+
+	* glib/glib/gtestutils.c: print out random seed for verbose tests,
+	also adapted test result reporting slightly in verbose mode to allow
+	custom debugging output. support "thorough" as test mode alis for "slow".
+
+	* glib/glib/gtestutils.h: added g_test_thorough().
+
+	* glib/glib/gtester.c: print out the last random seed when tests fail.
+	added result attribute to test case status logging to easily spot
+	failing tests in log files. disabled debugging output when skipping tests.
+
 2007-12-05 11:43:22  Tim Janik  <timj@imendio.com>
 
         * glib/gtestutils.[hc]: added g_test_add_data_func() to pass data

@@ -172,8 +172,14 @@ g_test_log (GTestLogType lbit,
 
   switch (lbit)
     {
+    case G_TEST_LOG_START_BINARY:
+      if (g_test_verbose())
+        g_print ("GTest: random seed: %s\n", string2);
+      break;
     case G_TEST_LOG_STOP_CASE:
-      if (!g_test_quiet())
+      if (g_test_verbose())
+        g_print ("GTest: result: %s\n", fail ? "FAIL" : "OK");
+      else if (!g_test_quiet())
         g_print ("%s\n", fail ? "FAIL" : "OK");
       if (fail && test_mode_fatal)
         abort();
@@ -207,7 +213,9 @@ g_test_log (GTestLogType lbit,
   switch (lbit)
     {
     case G_TEST_LOG_START_CASE:
-      if (!g_test_quiet())
+      if (g_test_verbose())
+        g_print ("GTest: run: %s\n", string1);
+      else if (!g_test_quiet())
         g_print ("%s: ", string1);
       break;
     default: ;
@@ -293,6 +301,8 @@ parse_args (gint    *argc_p,
             mutable_test_config_vars.test_perf = TRUE;
           else if (strcmp (mode, "slow") == 0)
             mutable_test_config_vars.test_quick = FALSE;
+          else if (strcmp (mode, "thorough") == 0)
+            mutable_test_config_vars.test_quick = FALSE;
           else if (strcmp (mode, "quick") == 0)
             {
               mutable_test_config_vars.test_quick = TRUE;
@@ -361,9 +371,11 @@ parse_args (gint    *argc_p,
  * --verbose            run tests verbosely.
  * -q, --quiet          run tests quietly.
  * -p TESTPATH          execute all tests matching TESTPATH.
- * -m {perf|slow|quick} execute tests according to this test modes:
+ * -m {perf|slow|thorough|quick}
+ *                      execute tests according to these test modes:
  *                      perf - performance tests, may take long and report results.
  *                      slow - slow and thorough tests, may take quite long and maximize coverage.
+ *                      thorough - currently an alias for "slow".
  *                      quick - quick tests, should run really quickly and give good coverage.
  * --debug-log          debug test logging output.
  * -k, --keep-going     gtester specific argument.

@@ -68,6 +68,7 @@ void    g_test_init                     (int            *argc,
 /* query testing framework config */
 #define g_test_quick()                  (g_test_config_vars->test_quick)
 #define g_test_slow()                   (!g_test_config_vars->test_quick)
+#define g_test_thorough()               (!g_test_config_vars->test_quick)
 #define g_test_perf()                   (g_test_config_vars->test_perf)
 #define g_test_verbose()                (g_test_config_vars->test_verbose)
 #define g_test_quiet()                  (g_test_config_vars->test_quiet)

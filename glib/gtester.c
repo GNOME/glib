@@ -51,6 +51,7 @@ static gboolean     subtest_mode_fatal = TRUE;
 static gboolean     subtest_mode_perf = FALSE;
 static gboolean     subtest_mode_quick = TRUE;
 static const gchar *subtest_seedstr = NULL;
+static gchar       *subtest_last_seed = NULL;
 static GSList      *subtest_paths = NULL;
 static GSList      *subtest_args = NULL;
 static gboolean     testcase_open = FALSE;
@@ -95,18 +96,21 @@ terminate (void)
 
 static void
 testcase_close (long double duration,
-                guint       exit_status,
+                gint        exit_status,
                 guint       n_forks)
 {
   g_return_if_fail (testcase_open > 0);
   test_log_printfe ("%s<duration>%.6Lf</duration>\n", sindent (log_indent), duration);
-  test_log_printfe ("%s<status exit-status=\"%d\" n-forks=\"%d\"/>\n",
-                    sindent (log_indent), exit_status, n_forks);
+  test_log_printfe ("%s<status exit-status=\"%d\" n-forks=\"%d\" result=\"%s\"/>\n",
+                    sindent (log_indent), exit_status, n_forks,
+                    exit_status ? "failed" : "success");
   log_indent -= 2;
   test_log_printfe ("%s</testcase>\n", sindent (log_indent));
   testcase_open--;
   if (gtester_verbose)
     g_print ("%s\n", exit_status ? "FAIL" : "OK");
+  if (exit_status && subtest_last_seed)
+    g_print ("GTester: last random seed: %s\n", subtest_last_seed);
   if (exit_status)
     testcase_fail_count += 1;
   if (subtest_mode_fatal && testcase_fail_count)
@@ -125,7 +129,8 @@ test_log_msg (GTestLogMsg *msg)
       break;
     case G_TEST_LOG_START_BINARY:
       test_log_printfe ("%s<binary file=\"%s\"/>\n", sindent (log_indent), msg->strings[0]);
-      test_log_printfe ("%s<random-seed>%s</random-seed>\n", sindent (log_indent), msg->strings[1]);
+      subtest_last_seed = g_strdup (msg->strings[1]);
+      test_log_printfe ("%s<random-seed>%s</random-seed>\n", sindent (log_indent), subtest_last_seed);
       break;
     case G_TEST_LOG_LIST_CASE:
       g_print ("%s\n", msg->strings[0]);
@@ -146,7 +151,7 @@ test_log_msg (GTestLogMsg *msg)
       log_indent += 2;
       break;
     case G_TEST_LOG_SKIP_CASE:
-      if (TRUE && gtester_verbose) // enable to debug test case skipping logic
+      if (FALSE && gtester_verbose) // enable to debug test case skipping logic
         {
           gchar *sc = g_strconcat (msg->strings[0], ":", NULL);
           gchar *sleft = g_strdup_printf ("%-68s", sc);
@@ -369,11 +374,13 @@ launch_test (const char *binary)
   success &= subtest_exitstatus == 0;
   need_restart = testcase_open != 0;
   if (testcase_open)
-    testcase_close (0, -999, 0);
+    testcase_close (0, -256, 0);
   g_timer_stop (btimer);
   test_log_printfe ("%s<duration>%.6f</duration>\n", sindent (log_indent), g_timer_elapsed (btimer, NULL));
   log_indent -= 2;
   test_log_printfe ("%s</testbinary>\n", sindent (log_indent));
+  g_free (subtest_last_seed);
+  subtest_last_seed = NULL;
   if (need_restart)
     {
       /* restart test binary, skipping processed test cases */
