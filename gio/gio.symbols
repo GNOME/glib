@@ -485,6 +485,7 @@ g_input_stream_close_finish
 g_input_stream_is_closed 
 g_input_stream_has_pending 
 g_input_stream_set_pending 
+g_input_stream_clear_pending
 #endif
 #endif
 
@@ -579,6 +580,7 @@ g_output_stream_close_finish
 g_output_stream_is_closed 
 g_output_stream_has_pending 
 g_output_stream_set_pending 
+g_output_stream_clear_pending
 #endif
 #endif
 
@@ -615,6 +617,7 @@ g_simple_async_result_propagate_error
 g_simple_async_result_set_error 
 g_simple_async_result_set_error_va 
 g_simple_async_report_error_in_idle 
+g_simple_async_report_gerror_in_idle 
 #endif
 #endif
 
