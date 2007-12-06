@@ -215,11 +215,11 @@ g_set_error (GError      **err,
  * g_propagate_error:
  * @dest: error return location
  * @src: error to move into the return location
- * 
- * If @dest is %NULL, free @src; otherwise,
- * moves @src into *@dest. *@dest must be %NULL.
+ *
+ * If @dest is %NULL, free @src; otherwise, moves @src into *@dest.
+ * The error variable @dest points to must be %NULL.
  **/
-void    
+void
 g_propagate_error (GError       **dest,
 		   GError        *src)
 {

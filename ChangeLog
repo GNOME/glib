@@ -1,3 +1,7 @@
+2007-12-06  Mathias Hasselmann  <mathias@openismus.com>
+
+	* glib/gerror.c: Improve wording for g_propagate_error docs.
+
 2007-12-06 09:27:42  Tim Janik  <timj@imendio.com>
 
 	* tests/scannerapi.c: added new scanner test from #501654, by
