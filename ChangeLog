@@ -1,5 +1,10 @@
 2007-12-06  Mathias Hasselmann  <mathias@openismus.com>
 
+	* glib/gunidecomp.c: Mention g_utf8_normalize()
+	returns NULL on invalid string. (#501997)
+
+2007-12-06  Mathias Hasselmann  <mathias@openismus.com>
+
 	* glib/gerror.c: Improve wording for g_propagate_error docs.
 
 2007-12-06 09:27:42  Tim Janik  <timj@imendio.com>

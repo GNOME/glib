@@ -486,13 +486,14 @@ _g_utf8_normalize_wc (const gchar    *str,
  * @str: a UTF-8 encoded string.
  * @len: length of @str, in bytes, or -1 if @str is nul-terminated.
  * @mode: the type of normalization to perform.
- * 
+ *
  * Converts a string into canonical form, standardizing
  * such issues as whether a character with an accent
  * is represented as a base character and combining
- * accent or as a single precomposed character. You
- * should generally call g_utf8_normalize() before
- * comparing two Unicode strings.
+ * accent or as a single precomposed character. The
+ * string has to be valid UTF-8, otherwise %NULL is
+ * returned. You should generally call g_utf8_normalize()
+ * before comparing two Unicode strings.
  *
  * The normalization mode %G_NORMALIZE_DEFAULT only
  * standardizes differences that do not affect the
@@ -513,9 +514,10 @@ _g_utf8_normalize_wc (const gchar    *str,
  * useful if you intend to convert the string to
  * a legacy encoding or pass it to a system with
  * less capable Unicode handling.
- * 
- * Return value: a newly allocated string, that is the 
- *   normalized form of @str.
+ *
+ * Return value: a newly allocated string, that is the
+ *   normalized form of @str, or %NULL if @str is not
+ *   valid UTF-8.
  **/
 gchar *
 g_utf8_normalize (const gchar    *str,
