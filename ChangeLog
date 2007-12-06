@@ -1,3 +1,11 @@
+2007-12-06 09:27:42  Tim Janik  <timj@imendio.com>
+
+	* tests/scannerapi.c: added new scanner test from #501654, by
+	Patrick Hulin with various modifications.
+	reworked coding style, adapted to new testing framework, fixed
+	token parser test and use a forked sub process to test
+	g_scanner_error() output messages.
+
 2007-12-05 17:58:18  Tim Janik  <timj@imendio.com>
 
 	* glib/gtester.c: added -m=thorough support to gtester.

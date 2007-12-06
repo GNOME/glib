@@ -65,7 +65,7 @@ endif
 if ENABLE_TIMELOOP
 timeloop = timeloop timeloop-closure
 endif
-noinst_PROGRAMS = 		\
+noinst_PROGRAMS = $(TEST_PROGS)	\
 	testglib		\
 	testgdate 		\
 	testgdateparser 	\
@@ -73,6 +73,11 @@ noinst_PROGRAMS = 		\
 	unicode-collate 	\
 	$(timeloop) 		\
 	errorcheck-mutex-test
+
+TEST_PROGS              += scannerapi
+scannerapi_SOURCES       = scannerapi.c
+scannerapi_LDADD         = $(progs_ldadd)
+
 
 testglib_LDADD = $(libglib)
 patterntest_LDADD = $(libglib)
