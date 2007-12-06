@@ -1,3 +1,4 @@
+/* -*- Mode: C; c-file-style: "gnu"; -*- */
 /* GObject introspection: IDL generator
  *
  * Copyright (C) 2005 Matthias Clasen
@@ -241,7 +242,6 @@ write_callable_info (const gchar    *namespace,
   
   type = g_callable_info_get_return_type (info);
   write_type_info (namespace, type, file);
-  g_base_info_unref ((GIBaseInfo *)type);
 
   g_fprintf (file, "\"");
 
@@ -262,6 +262,7 @@ write_callable_info (const gchar    *namespace,
 	  g_assert_not_reached ();
 	}
     }
+  g_base_info_unref ((GIBaseInfo *)type);
   if (g_callable_info_may_return_null (info))
     g_fprintf (file, " null-ok=\"1\"");
 
@@ -1023,8 +1024,14 @@ write_repository (GIRepository *repository,
 
   for (i = 0; namespaces[i]; i++)
     {
+      const gchar *shared_library;
       ns = namespaces[i];
-      g_fprintf (file, "  <namespace name=\"%s\">\n", ns);
+      shared_library = g_irepository_get_shared_library (repository, ns);
+      if (shared_library)
+        g_fprintf (file, "  <namespace name=\"%s\" shared-library=\"%s\">\n",
+                   ns, shared_library);
+      else
+        g_fprintf (file, "  <namespace name=\"%s\">\n", ns);
       
       for (j = 0; j < g_irepository_get_n_infos (repository, ns); j++)
 	{
@@ -1097,28 +1104,32 @@ static GOptionEntry options[] =
 
 static const guchar *
 load_metadata (const gchar  *filename,
-	       void        **dlhandle)
+	       GModule     **dlhandle,
+               gsize        *len)
 {
-  guchar *metadata; 
-  void *handle; 
-  char *error; 
+  guchar *metadata;
+  gsize *metadata_size;
+  GModule *handle; 
 
-  handle = dlopen (filename, RTLD_LAZY);
-  metadata = dlsym (handle, "_G_METADATA");
-  
-  error = dlerror ();
-
-  if (dlhandle)
-    *dlhandle = handle;
-
-  if (error) 
-    { 
-      g_fprintf (stderr, 
-		 "Could not load metadata from '%s': %s\n", 
-		 filename, error);
-
+  handle = g_module_open (filename, G_MODULE_BIND_LOCAL|G_MODULE_BIND_LAZY);
+  if (!g_module_symbol (handle, "_G_METADATA", (gpointer *) &metadata))
+    {
+      g_printerr ("Could not load metadata from '%s': %s\n", 
+		  filename, g_module_error ());
       return NULL;
     }
+  
+  if (!g_module_symbol (handle, "_G_METADATA_SIZE", (gpointer *) &metadata_size))
+    {
+      g_printerr ("Could not load metadata from '%s': %s\n", 
+		  filename, g_module_error ());
+      return NULL;
+    }
+
+  *len = *metadata_size;
+  
+  if (dlhandle)
+    *dlhandle = handle;
 
   return metadata;
 }
@@ -1130,6 +1141,7 @@ main (int argc, char *argv[])
   GError *error = NULL;
   gboolean needs_prefix;
   gint i;
+  GMetadata *data;
 
   g_type_init ();
 
@@ -1148,12 +1160,13 @@ main (int argc, char *argv[])
 
   for (i = 0; input[i]; i++)
     {
-      void *dlhandle = NULL;
+      GModule *dlhandle = NULL;
       const guchar *metadata;
+      gsize len;
 
       if (raw)
 	{
-	  if (!g_file_get_contents (input[i], (gchar **)&metadata, NULL, &error))
+	  if (!g_file_get_contents (input[i], (gchar **)&metadata, &len, &error))
 	    {
 	      g_fprintf (stderr, "failed to read '%s': %s\n", 
 			 input[i], error->message);
@@ -1163,7 +1176,7 @@ main (int argc, char *argv[])
 	}
       else
 	{
-	  metadata = load_metadata (input[i], &dlhandle);
+	  metadata = load_metadata (input[i], &dlhandle, &len);
 	  if (!metadata)
 	    {
 	      g_fprintf (stderr, "failed to load metadata from '%s'\n", 
@@ -1177,13 +1190,22 @@ main (int argc, char *argv[])
       else
 	needs_prefix = FALSE;
 
-      g_irepository_register (g_irepository_get_default (), metadata);
+      data = g_metadata_new_from_const_memory (metadata, len);
+      {
+        GError *error = NULL;
+        if (!g_metadata_validate (data, &error)) {
+          g_printerr ("metadata not valid: %s\n", error->message);
+          g_clear_error (&error);
+        }
+      }
+      g_irepository_register (g_irepository_get_default (), data);
       write_repository (g_irepository_get_default (), needs_prefix);
-      g_irepository_unregister (g_irepository_get_default (), metadata);
+      g_irepository_unregister (g_irepository_get_default (),
+                                g_metadata_get_namespace (data));
 
       if (dlhandle)
 	{
-	  dlclose (dlhandle);
+	  g_module_close (dlhandle);
 	  dlhandle = NULL;
 	}
 
