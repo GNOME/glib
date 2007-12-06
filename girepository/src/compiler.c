@@ -36,23 +36,24 @@ gboolean no_init = FALSE;
 gchar **input = NULL;
 gchar *output = NULL;
 gchar *mname = NULL;
+gchar *shlib = NULL;
 gboolean debug = FALSE;
 gboolean verbose = FALSE;
 
 static gchar *
-format_output (guchar *metadata,
-	       gsize   len)
+format_output (GMetadata *metadata)
 {
   GString *result;
   gint i;
 
-  result = g_string_sized_new (6 * len);
+  result = g_string_sized_new (6 * metadata->len);
 
-  g_string_append_printf (result, "#include <stdlib.h>\n\n");
-
+  g_string_append_printf (result, "#include <stdlib.h>\n");
+  g_string_append_printf (result, "#include <girepository.h>\n\n");
+  
   g_string_append_printf (result, "const unsigned char _G_METADATA[] = \n{");
 
-  for (i = 0; i < len; i++)
+  for (i = 0; i < metadata->len; i++)
     {
       if (i > 0)
 	g_string_append (result, ", ");
@@ -60,10 +61,12 @@ format_output (guchar *metadata,
       if (i % 10 == 0)
 	g_string_append (result, "\n\t");
       
-      g_string_append_printf (result, "0x%.2x", metadata[i]);      
+      g_string_append_printf (result, "0x%.2x", metadata->data[i]);      
     }
 
   g_string_append_printf (result, "\n};\n\n");
+  g_string_append_printf (result, "const gsize _G_METADATA_SIZE = %u;\n\n",
+			  (guint)metadata->len);
 
   if (!no_init)
     {
@@ -71,15 +74,18 @@ format_output (guchar *metadata,
 			      "__attribute__((constructor)) void\n"
 			      "register_metadata (void)\n"
 			      "{\n"
-			      "\tg_irepository_register (NULL, _G_METADATA);\n"
+			      "\tGMetadata *metadata;\n"
+			      "\tmetadata = g_metadata_new_from_const_memory (_G_METADATA, _G_METADATA_SIZE);\n"
+			      "\tg_irepository_register (NULL, metadata);\n"
 			      "}\n\n");
 
       g_string_append_printf (result,
 			      "__attribute__((destructor)) void\n"
 			      "unregister_metadata (void)\n"
 			      "{\n"
-			      "\tg_irepository_unregister (NULL, _G_METADATA);\n"
-			      "}\n");
+			      "\tg_irepository_unregister (NULL, \"%s\");\n"
+			      "}\n",
+			      g_metadata_get_namespace (metadata));
     }
 
   return g_string_free (result, FALSE);
@@ -87,8 +93,7 @@ format_output (guchar *metadata,
 
 static void
 write_out_metadata (gchar *prefix,
-		    guchar *metadata,
-		    gsize  len)
+		    GMetadata *metadata)
 {
   FILE *file;
 
@@ -117,12 +122,12 @@ write_out_metadata (gchar *prefix,
     }
 
   if (raw)
-    fwrite (metadata, 1, len, file);
+    fwrite (metadata->data, 1, metadata->len, file);
   else
     {
       gchar *code;
 
-      code = format_output (metadata, len);
+      code = format_output (metadata);
       fputs (code, file);
       g_free (code);
     }
@@ -150,6 +155,7 @@ static GOptionEntry options[] =
   { "no-init", 0, 0, G_OPTION_ARG_NONE, &no_init, "do not create _init() function", NULL },
   { "output", 'o', 0, G_OPTION_ARG_FILENAME, &output, "output file", "FILE" }, 
   { "module", 'm', 0, G_OPTION_ARG_STRING, &mname, "module to compile", "NAME" }, 
+  { "shared-library", 'l', 0, G_OPTION_ARG_FILENAME, &shlib, "shared library", "FILE" }, 
   { "debug", 0, 0, G_OPTION_ARG_NONE, &debug, "show debug messages", NULL }, 
   { "verbose", 0, 0, G_OPTION_ARG_NONE, &verbose, "show verbose messages", NULL }, 
   { G_OPTION_REMAINING, 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &input, NULL, NULL },
@@ -207,20 +213,24 @@ main (int argc, char ** argv)
     {
       GIdlModule *module = m->data;
       gchar *prefix;
-      guchar *metadata;
-      gsize len;
+      GMetadata *metadata;
 
       if (mname && strcmp (mname, module->name) != 0)
 	continue;
-
-      g_idl_module_build_metadata (module, modules, &metadata, &len);
+      if (shlib)
+	{
+          if (module->shared_library)
+	    g_free (module->shared_library);
+          module->shared_library = g_strdup (shlib);
+	}
+      metadata = g_idl_module_build_metadata (module, modules);
       if (metadata == NULL)
 	{
 	  g_error ("Failed to build metadata for module '%s'\n", module->name);
 
 	  continue;
 	}
-      if (!g_metadata_validate (metadata, len, &error))
+      if (!g_metadata_validate (metadata, &error))
 	g_error ("Invalid metadata for module '%s': %s", 
 		 module->name, error->message);
 
@@ -230,8 +240,8 @@ main (int argc, char ** argv)
       else
 	prefix = NULL;
 
-      write_out_metadata (prefix, metadata, len);
-      g_free (metadata);
+      write_out_metadata (prefix, metadata);
+      g_metadata_free (metadata);
       metadata = NULL;
 
       /* when writing to stdout, stop after the first module */
