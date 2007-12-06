@@ -1,3 +1,8 @@
+2007-12-06 13:29:00  Tim Janik  <timj@imendio.com>
+
+	* glib/gtester.c (child_report_cb): detect non-blocking fd EOF
+	by read()==0 following poll(), needed on MacOS.
+
 2007-12-06  Mathias Hasselmann  <mathias@openismus.com>
 
 	* glib/gunidecomp.c: Mention g_utf8_normalize()

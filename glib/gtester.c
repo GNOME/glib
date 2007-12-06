@@ -184,12 +184,21 @@ child_report_cb (GIOChannel  *source,
 {
   GTestLogBuffer *tlb = data;
   GIOStatus status = G_IO_STATUS_NORMAL;
+  gboolean first_read_eof = FALSE, first_read = TRUE;
   gsize length = 0;
   do
     {
       guint8 buffer[READ_BUFFER_SIZE];
       GError *error = NULL;
       status = g_io_channel_read_chars (source, (gchar*) buffer, sizeof (buffer), &length, &error);
+      if (first_read && (condition & G_IO_IN))
+        {
+          /* on some unixes (MacOS) we need to detect non-blocking fd EOF
+           * by an IO_IN select/poll followed by read()==0.
+           */
+          first_read_eof = length == 0;
+        }
+      first_read = FALSE;
       if (length)
         {
           GTestLogMsg *msg;
@@ -206,11 +215,11 @@ child_report_cb (GIOChannel  *source,
           while (msg);
         }
       g_clear_error (&error);
-      /* ignore the io channel status, which seems to be bogus especially for non blocking fds */
+      /* ignore the io channel status, which will report intermediate EOFs for non blocking fds */
       (void) status;
     }
   while (length > 0);
-  if (condition & (G_IO_ERR | G_IO_HUP))
+  if (first_read_eof || (condition & (G_IO_ERR | G_IO_HUP)))
     {
       /* if there's no data to read and select() reports an error or hangup,
        * the fd must have been closed remotely
