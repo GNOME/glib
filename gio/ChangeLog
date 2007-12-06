@@ -1,3 +1,8 @@
+2007-12-06  Alexander Larsson  <alexl@redhat.com>
+
+	* glocalfileinfo.h:
+	Include sys/types.h for dev_t (#501919)
+
 2007-12-06  Behdad Esfahbod  <behdad@gnome.org>
 
 	* gio.symbols:
