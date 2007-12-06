@@ -380,7 +380,7 @@ g_hash_table_unref (GHashTable *hash_table)
 
   if (g_atomic_int_exchange_and_add (&hash_table->ref_count, -1) - 1 == 0)
     {
-      g_hash_table_remove_all_nodes (hash_table, FALSE);
+      g_hash_table_remove_all_nodes (hash_table, TRUE);
       g_free (hash_table->nodes);
       g_slice_free (GHashTable, hash_table);
     }
