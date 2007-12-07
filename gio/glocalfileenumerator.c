@@ -149,8 +149,11 @@ _g_local_file_enumerator_new (const char           *filename,
   dir = g_dir_open (filename, 0, error != NULL ? &dir_error : NULL);
   if (dir == NULL) 
     {
-      convert_file_to_io_error (error, dir_error);
-      g_error_free (dir_error);
+      if (error != NULL)
+	{
+	  convert_file_to_io_error (error, dir_error);
+	  g_error_free (dir_error);
+	}
       return NULL;
     }
   

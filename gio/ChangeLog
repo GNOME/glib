@@ -1,5 +1,10 @@
 2007-12-07  Alexander Larsson  <alexl@redhat.com>
 
+	* glocalfileenumerator.c (_g_local_file_enumerator_new):
+	Avoid warning spew if error == NULL
+	
+2007-12-07  Alexander Larsson  <alexl@redhat.com>
+
 	* gfile.c:
 	Update docs wrt etags
 
