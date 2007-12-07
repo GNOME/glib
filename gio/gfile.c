@@ -4420,13 +4420,19 @@ g_file_load_contents_finish (GFile         *file,
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @error: a #GError, or %NULL
  *
- * Replaces the contents of @file with @contents of @length bytes. 
- * The old @etag will be replaced with the @new_etag. If @make_backup 
- * is %TRUE, this function will attempt to make a backup of @file.
+ * Replaces the contents of @file with @contents of @length bytes.
+ 
+ * If @etag is specified (not %NULL) any existing file must have that etag, or
+ * the error %G_IO_ERROR_WRONG_ETAG will be returned.
+ *
+ * If @make_backup is %TRUE, this function will attempt to make a backup of @file.
  * 
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
+ *
+ * The returned @new_etag can be used to verify that the file hasn't changed the
+ * next time it is saved over.
  * 
  * Returns: %TRUE if successful. If an error
  * has occured, this function will return %FALSE and set @error

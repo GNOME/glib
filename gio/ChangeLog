@@ -1,3 +1,8 @@
+2007-12-07  Alexander Larsson  <alexl@redhat.com>
+
+	* gfile.c:
+	Update docs wrt etags
+
 2007-12-06  Alexander Larsson  <alexl@redhat.com>
 
 	* glocalfileinfo.h:
