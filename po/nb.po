@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.13.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-06 19:42+0100\n"
-"PO-Revision-Date: 2007-12-06 19:47+0100\n"
+"POT-Creation-Date: 2007-12-08 14:05+0100\n"
+"PO-Revision-Date: 2007-12-08 14:07+0100\n"
 "Last-Translator:  Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmal <i18n-nb@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -620,19 +620,16 @@ msgid "nothing to repeat"
 msgstr "ingenting å gjenta"
 
 #: ../glib/gregex.c:229
-#, fuzzy
 msgid "unrecognized character after (?"
-msgstr "Uferdig referanse til tegn"
+msgstr "ikke gjenkjent tegn etter (?"
 
 #: ../glib/gregex.c:233
-#, fuzzy
 msgid "unrecognized character after (?<"
-msgstr "Uferdig referanse til tegn"
+msgstr "ikke gjenkjent tegn etter (?<"
 
 #: ../glib/gregex.c:237
-#, fuzzy
 msgid "unrecognized character after (?P"
-msgstr "Uferdig referanse til tegn"
+msgstr "ikke gjenkjent tegn etter (?P"
 
 #: ../glib/gregex.c:240
 msgid "POSIX named classes are supported only within a class"
@@ -1183,7 +1180,7 @@ msgstr "type %s"
 msgid "Unexpected early end-of-stream"
 msgstr ""
 
-#: ../gio/gdesktopappinfo.c:373 ../gio/gwin32appinfo.c:212
+#: ../gio/gdesktopappinfo.c:373 ../gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr "Uten navn"
 
@@ -1239,8 +1236,8 @@ msgstr ""
 msgid "Operation not supported"
 msgstr "Operasjonen er ikke støttet"
 
-#: ../gio/gfile.c:963 ../gio/glocalfile.c:838 ../gio/glocalfile.c:847
-#: ../gio/glocalfile.c:858
+#: ../gio/gfile.c:963 ../gio/glocalfile.c:882 ../gio/glocalfile.c:891
+#: ../gio/glocalfile.c:902
 #, c-format
 msgid "Containing volume does not exist"
 msgstr ""
@@ -1344,264 +1341,264 @@ msgstr ""
 msgid "Stream has outstanding operation"
 msgstr ""
 
-#: ../gio/glocalfile.c:539
+#: ../gio/glocalfile.c:554
 #, c-format
 msgid "Invalid filename %s"
 msgstr "Ugyldig filnavn %s"
 
-#: ../gio/glocalfile.c:789
+#: ../gio/glocalfile.c:804
 #, fuzzy, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "Feil under lesing av fil «%s»: %s"
 
-#: ../gio/glocalfile.c:878
+#: ../gio/glocalfile.c:922
 #, c-format
 msgid "Can't rename root directory"
-msgstr ""
+msgstr "Kan ikke endre navn på rotkatalogen"
 
-#: ../gio/glocalfile.c:896
+#: ../gio/glocalfile.c:940
 #, c-format
 msgid "Can't rename file, filename already exist"
 msgstr "Kan ikke endre navn på filen. Filnavnet eksisterer allerede"
 
-#: ../gio/glocalfile.c:909 ../gio/glocalfile.c:1600 ../gio/glocalfile.c:1629
-#: ../gio/glocalfile.c:1761 ../gio/glocalfileoutputstream.c:437
-#: ../gio/glocalfileoutputstream.c:480 ../gio/glocalfileoutputstream.c:868
+#: ../gio/glocalfile.c:953 ../gio/glocalfile.c:1666 ../gio/glocalfile.c:1695
+#: ../gio/glocalfile.c:1827 ../gio/glocalfileoutputstream.c:451
+#: ../gio/glocalfileoutputstream.c:494 ../gio/glocalfileoutputstream.c:886
 #, c-format
 msgid "Invalid filename"
 msgstr "Ugyldig filnavn"
 
-#: ../gio/glocalfile.c:913
-#, fuzzy, c-format
+#: ../gio/glocalfile.c:957
+#, c-format
 msgid "Error renaming file: %s"
-msgstr "Feil under lesing av fil «%s»: %s"
+msgstr "Feil under endring av navn på fil: %s"
 
-#: ../gio/glocalfile.c:1028
+#: ../gio/glocalfile.c:1072
 #, c-format
 msgid "Error opening file: %s"
 msgstr "Feil under åpning av fil: %s"
 
-#: ../gio/glocalfile.c:1038
+#: ../gio/glocalfile.c:1082
 #, c-format
 msgid "Can't open directory"
 msgstr "Kan ikke åpne mappe"
 
-#: ../gio/glocalfile.c:1090 ../gio/glocalfile.c:1604
-#, fuzzy, c-format
+#: ../gio/glocalfile.c:1134 ../gio/glocalfile.c:1670
+#, c-format
 msgid "Error removing file: %s"
-msgstr "Feil under lesing av fil «%s»: %s"
+msgstr "Feil ved fjerning av fil: %s"
 
-#: ../gio/glocalfile.c:1372
-#, fuzzy, c-format
+#: ../gio/glocalfile.c:1419
+#, c-format, fuzzy
 msgid "Error trashing file: %s"
 msgstr "Feil under lesing av fil «%s»: %s"
 
-#: ../gio/glocalfile.c:1396
+#: ../gio/glocalfile.c:1443
 #, fuzzy, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "Feil under oppretting av fil «%s»: %s"
 
-#: ../gio/glocalfile.c:1414
+#: ../gio/glocalfile.c:1467
 #, c-format
 msgid "Unable to find toplevel directory for trash"
 msgstr ""
 
-#: ../gio/glocalfile.c:1473 ../gio/glocalfile.c:1493
+#: ../gio/glocalfile.c:1527 ../gio/glocalfile.c:1547
 #, c-format
 msgid "Unable to find or create trash directory"
 msgstr ""
 
-#: ../gio/glocalfile.c:1525
+#: ../gio/glocalfile.c:1579
 #, fuzzy, c-format
 msgid "Unable to create trashed file: %s"
 msgstr "Feil under oppretting av fil «%s»: %s"
 
-#: ../gio/glocalfile.c:1548
+#: ../gio/glocalfile.c:1602
 #, fuzzy, c-format
 msgid "Unable to trash file: %s"
 msgstr "Feil under oppretting av fil «%s»: %s"
 
-#: ../gio/glocalfile.c:1633
+#: ../gio/glocalfile.c:1699
 #, fuzzy, c-format
 msgid "Error making symbolic link: %s"
 msgstr "Feil under tolking av flagg %s"
 
-#: ../gio/glocalfile.c:1680 ../gio/glocalfile.c:1765
+#: ../gio/glocalfile.c:1746 ../gio/glocalfile.c:1831
 #, fuzzy, c-format
 msgid "Error moving file: %s"
 msgstr "Feil under lesing av fil «%s»: %s"
 
-#: ../gio/glocalfile.c:1701
+#: ../gio/glocalfile.c:1767
 #, c-format
 msgid "Can't move directory over directory"
 msgstr ""
 
-#: ../gio/glocalfile.c:1710
+#: ../gio/glocalfile.c:1776
 #, c-format
 msgid "Target file already exists"
 msgstr ""
 
-#: ../gio/glocalfile.c:1723 ../gio/glocalfileoutputstream.c:726
-#: ../gio/glocalfileoutputstream.c:740 ../gio/glocalfileoutputstream.c:755
-#: ../gio/glocalfileoutputstream.c:771 ../gio/glocalfileoutputstream.c:785
+#: ../gio/glocalfile.c:1789 ../gio/glocalfileoutputstream.c:740
+#: ../gio/glocalfileoutputstream.c:754 ../gio/glocalfileoutputstream.c:769
+#: ../gio/glocalfileoutputstream.c:785 ../gio/glocalfileoutputstream.c:799
 #, c-format
 msgid "Backup file creation failed"
 msgstr ""
 
-#: ../gio/glocalfile.c:1740
+#: ../gio/glocalfile.c:1806
 #, fuzzy, c-format
 msgid "Error removing target file: %s"
 msgstr "Feil under lesing av fil «%s»: %s"
 
-#: ../gio/glocalfile.c:1754
+#: ../gio/glocalfile.c:1820
 #, c-format
 msgid "Move between mounts not supported"
 msgstr ""
 
-#: ../gio/glocalfileinfo.c:679
+#: ../gio/glocalfileinfo.c:706
 #, c-format
 msgid "Attribute value must be non-NULL"
 msgstr ""
 
-#: ../gio/glocalfileinfo.c:686
+#: ../gio/glocalfileinfo.c:713
 #, c-format
 msgid "Invalid attribute type (string expected)"
 msgstr ""
 
-#: ../gio/glocalfileinfo.c:693
+#: ../gio/glocalfileinfo.c:720
 #, fuzzy, c-format
 msgid "Invalid extended attribute name"
 msgstr "Dokumentet sluttet uventet inni et attributtnavn"
 
-#: ../gio/glocalfileinfo.c:733
+#: ../gio/glocalfileinfo.c:760
 #, fuzzy, c-format
 msgid "Error setting extended attribute '%s': %s"
 msgstr "Feil under åpning av katalog «%s»: %s"
 
-#: ../gio/glocalfileinfo.c:1263 ../gio/glocalfileoutputstream.c:616
+#: ../gio/glocalfileinfo.c:1346 ../gio/glocalfileoutputstream.c:630
 #, fuzzy, c-format
 msgid "Error stating file '%s': %s"
 msgstr "Feil under lesing av fil «%s»: %s"
 
-#: ../gio/glocalfileinfo.c:1317
+#: ../gio/glocalfileinfo.c:1400
 msgid " (invalid encoding)"
 msgstr ""
 
-#: ../gio/glocalfileinfo.c:1482
+#: ../gio/glocalfileinfo.c:1575
 #, fuzzy, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "Feil under lesing av fil «%s»: %s"
 
-#: ../gio/glocalfileinfo.c:1527
+#: ../gio/glocalfileinfo.c:1620
 #, c-format
 msgid "Invalid attribute type (uint32 expected)"
 msgstr ""
 
-#: ../gio/glocalfileinfo.c:1544
+#: ../gio/glocalfileinfo.c:1637
 #, c-format
 msgid "Invalid attribute type (uint64 expected)"
 msgstr ""
 
-#: ../gio/glocalfileinfo.c:1562
+#: ../gio/glocalfileinfo.c:1655
 #, c-format
 msgid "Invalid attribute type (byte string expected)"
 msgstr ""
 
-#: ../gio/glocalfileinfo.c:1586
+#: ../gio/glocalfileinfo.c:1679
 #, fuzzy, c-format
 msgid "Error setting permissions: %s"
 msgstr "Feil under konvertering: %s"
 
-#: ../gio/glocalfileinfo.c:1633 ../gio/glocalfileinfo.c:1793
+#: ../gio/glocalfileinfo.c:1726 ../gio/glocalfileinfo.c:1886
 #, fuzzy, c-format
 msgid "Error setting owner: %s"
 msgstr "Feil under konvertering: %s"
 
-#: ../gio/glocalfileinfo.c:1656
+#: ../gio/glocalfileinfo.c:1749
 #, c-format
 msgid "symlink must be non-NULL"
 msgstr ""
 
-#: ../gio/glocalfileinfo.c:1664 ../gio/glocalfileinfo.c:1681
-#: ../gio/glocalfileinfo.c:1690
+#: ../gio/glocalfileinfo.c:1757 ../gio/glocalfileinfo.c:1774
+#: ../gio/glocalfileinfo.c:1783
 #, fuzzy, c-format
 msgid "Error setting symlink: %s"
 msgstr "Feil på linje %d: %s"
 
-#: ../gio/glocalfileinfo.c:1673
+#: ../gio/glocalfileinfo.c:1766
 #, c-format
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 
-#: ../gio/glocalfileinfo.c:1843
+#: ../gio/glocalfileinfo.c:1936
 #, fuzzy, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Symbolske lenker er ikke støttet"
 
-#: ../gio/glocalfileinputstream.c:154 ../gio/glocalfileoutputstream.c:527
+#: ../gio/glocalfileinputstream.c:158 ../gio/glocalfileoutputstream.c:541
 #, fuzzy, c-format
 msgid "Error reading from file: %s"
 msgstr "Feil under lesing av fil «%s»: %s"
 
-#: ../gio/glocalfileinputstream.c:183 ../gio/glocalfileinputstream.c:193
-#: ../gio/glocalfileinputstream.c:297 ../gio/glocalfileoutputstream.c:341
-#: ../gio/glocalfileoutputstream.c:801
+#: ../gio/glocalfileinputstream.c:187 ../gio/glocalfileinputstream.c:197
+#: ../gio/glocalfileinputstream.c:301 ../gio/glocalfileoutputstream.c:351
+#: ../gio/glocalfileoutputstream.c:815
 #, fuzzy, c-format
 msgid "Error seeking in file: %s"
 msgstr "Feil under lesing av fil «%s»: %s"
 
-#: ../gio/glocalfileinputstream.c:220 ../gio/glocalfileoutputstream.c:249
+#: ../gio/glocalfileinputstream.c:224 ../gio/glocalfileoutputstream.c:259
 #, fuzzy, c-format
 msgid "Error closing file: %s"
 msgstr "Feil under lesing av fil «%s»: %s"
 
-#: ../gio/glocalfileoutputstream.c:156 ../gio/glocalfileoutputstream.c:546
+#: ../gio/glocalfileoutputstream.c:166 ../gio/glocalfileoutputstream.c:560
 #, fuzzy, c-format
 msgid "Error writing to file: %s"
 msgstr "Feil under lesing av fil «%s»: %s"
 
-#: ../gio/glocalfileoutputstream.c:195
+#: ../gio/glocalfileoutputstream.c:205
 #, fuzzy, c-format
 msgid "Error removing old backup link: %s"
 msgstr "Feil under tolking av flagg %s"
 
-#: ../gio/glocalfileoutputstream.c:204
+#: ../gio/glocalfileoutputstream.c:214
 #, fuzzy, c-format
 msgid "Error creating backup link: %s"
 msgstr "Feil under tolking av flagg %s"
 
-#: ../gio/glocalfileoutputstream.c:214
+#: ../gio/glocalfileoutputstream.c:224
 #, fuzzy, c-format
 msgid "Error creating backup copy: %s"
 msgstr "Feil under lesing av fil «%s»: %s"
 
-#: ../gio/glocalfileoutputstream.c:230
+#: ../gio/glocalfileoutputstream.c:240
 #, fuzzy, c-format
 msgid "Error renaming temporary file: %s"
 msgstr "Feil under lesing av fil «%s»: %s"
 
-#: ../gio/glocalfileoutputstream.c:381 ../gio/glocalfileoutputstream.c:812
+#: ../gio/glocalfileoutputstream.c:395 ../gio/glocalfileoutputstream.c:830
 #, fuzzy, c-format
 msgid "Error truncating file: %s"
 msgstr "Feil under lesing av fil «%s»: %s"
 
-#: ../gio/glocalfileoutputstream.c:441 ../gio/glocalfileoutputstream.c:484
-#: ../gio/glocalfileoutputstream.c:607 ../gio/glocalfileoutputstream.c:872
+#: ../gio/glocalfileoutputstream.c:455 ../gio/glocalfileoutputstream.c:498
+#: ../gio/glocalfileoutputstream.c:621 ../gio/glocalfileoutputstream.c:890
 #, fuzzy, c-format
 msgid "Error opening file '%s': %s"
 msgstr "Feil under lesing av fil «%s»: %s"
 
-#: ../gio/glocalfileoutputstream.c:628
+#: ../gio/glocalfileoutputstream.c:642
 #, c-format
 msgid "Target file is a directory"
 msgstr ""
 
-#: ../gio/glocalfileoutputstream.c:633
+#: ../gio/glocalfileoutputstream.c:647
 #, fuzzy, c-format
 msgid "Target file is not a regular file"
 msgstr "Ikke en vanlig fil"
 
-#: ../gio/glocalfileoutputstream.c:645
+#: ../gio/glocalfileoutputstream.c:659
 #, c-format
 msgid "The file was externally modified"
 msgstr ""
@@ -1653,27 +1650,27 @@ msgstr ""
 msgid "volume doesn't implement eject"
 msgstr ""
 
-#: ../gio/gwin32appinfo.c:265
+#: ../gio/gwin32appinfo.c:277
 #, c-format
 msgid "Can't find application"
 msgstr ""
 
-#: ../gio/gwin32appinfo.c:299
+#: ../gio/gwin32appinfo.c:312
 #, fuzzy, c-format
 msgid "Error launching application: %s"
 msgstr "Feil under tolking av flagg %s"
 
-#: ../gio/gwin32appinfo.c:330
+#: ../gio/gwin32appinfo.c:343
 #, fuzzy, c-format
 msgid "URIs not supported"
 msgstr "Symbolske lenker er ikke støttet"
 
-#: ../gio/gwin32appinfo.c:353
+#: ../gio/gwin32appinfo.c:366
 #, c-format
 msgid "association changes not supported on win32"
 msgstr ""
 
-#: ../gio/gwin32appinfo.c:365
+#: ../gio/gwin32appinfo.c:378
 #, c-format
 msgid "Association creation not supported on win32"
 msgstr ""
