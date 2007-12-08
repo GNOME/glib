@@ -21,6 +21,7 @@ gio/gbufferedoutputstream.c
 gio/gcancellable.c
 gio/gcontenttype.c
 gio/gdatainputstream.c
+gio/gdataoutputstream.c
 gio/gdesktopappinfo.c
 gio/gdirectorymonitor.c
 gio/gdrive.c
