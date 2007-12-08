@@ -1,3 +1,7 @@
+2007-12-08  Hans Breuer  <hans@breuer.org>
+
+	* glib/makefile.msc.in : build gchecksum.obj
+
 2007-12-06  Mathias Hasselmann  <mathias@openismus.com>
 
 	* glib/ghash.c: Call destroy notify when destroying

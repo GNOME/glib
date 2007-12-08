@@ -41,6 +41,7 @@ glib_OBJECTS =			\
 	gbase64.obj	\
 	gbookmarkfile.obj 	\
 	gcache.obj		\
+	gchecksum.obj	\
 	gcompletion.obj		\
 	gconvert.obj		\
 	gdataset.obj		\
