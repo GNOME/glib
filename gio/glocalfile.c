@@ -27,7 +27,9 @@
 #include <string.h>
 #include <errno.h>
 #include <fcntl.h>
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
+#endif
 
 #if HAVE_SYS_STATFS_H
 #include <sys/statfs.h>
@@ -76,6 +78,19 @@
 #include "gvolumeprivate.h"
 #include <glib/gstdio.h>
 #include "glibintl.h"
+
+#ifdef G_OS_WIN32
+#include <windows.h>
+#include <io.h>
+#include <direct.h>
+
+#ifndef S_ISDIR
+#define S_ISDIR(m) (((m) & _S_IFMT) == _S_IFDIR)
+#endif
+#ifndef S_ISLNK
+#define S_ISLNK(m) (0)
+#endif
+#endif
 
 #include "gioalias.h"
 
@@ -683,7 +698,7 @@ get_mount_info (GFileInfo             *fs_info,
   GUnixMount *mount;
   guint64 cache_time;
 
-  if (lstat (path, &buf) != 0)
+  if (g_lstat (path, &buf) != 0)
     return;
 
   G_LOCK (mount_info_hash);
@@ -797,11 +812,36 @@ g_local_file_query_filesystem_info (GFile         *file,
   
   if (g_file_attribute_matcher_matches (attribute_matcher,
 					G_FILE_ATTRIBUTE_FS_FREE))
-    g_file_info_set_attribute_uint64 (info, G_FILE_ATTRIBUTE_FS_FREE, block_size * statfs_buffer.f_bavail);
+    {
+#ifdef G_OS_WIN32
+      gchar *localdir = g_path_get_dirname (local->filename);
+      wchar_t *wdirname = g_utf8_to_utf16 (localdir, -1, NULL, NULL, NULL);
+      ULARGE_INTEGER li;
+      
+      g_free (localdir);
+      if (GetDiskFreeSpaceExW (wdirname, &li, NULL, NULL))
+        g_file_info_set_attribute_uint64 (info, G_FILE_ATTRIBUTE_FS_FREE, (guint64)li.QuadPart);
+      g_free (wdirname);
+#else
+      g_file_info_set_attribute_uint64 (info, G_FILE_ATTRIBUTE_FS_FREE, block_size * statfs_buffer.f_bavail);
+#endif
+    }
   if (g_file_attribute_matcher_matches (attribute_matcher,
 					G_FILE_ATTRIBUTE_FS_SIZE))
-    g_file_info_set_attribute_uint64 (info, G_FILE_ATTRIBUTE_FS_SIZE, block_size * statfs_buffer.f_blocks);
-
+    {
+#ifdef G_OS_WIN32
+      gchar *localdir = g_path_get_dirname (local->filename);
+      wchar_t *wdirname = g_utf8_to_utf16 (localdir, -1, NULL, NULL, NULL);
+      ULARGE_INTEGER li;
+      
+      g_free (localdir);
+      if (GetDiskFreeSpaceExW (wdirname, NULL, &li, NULL))
+        g_file_info_set_attribute_uint64 (info, G_FILE_ATTRIBUTE_FS_SIZE,  (guint64)li.QuadPart);
+      g_free (wdirname);
+#else
+      g_file_info_set_attribute_uint64 (info, G_FILE_ATTRIBUTE_FS_SIZE, block_size * statfs_buffer.f_blocks);
+#endif
+    }
 #ifdef USE_STATFS
   fstype = get_fs_type (statfs_buffer.f_type);
   if (fstype &&
@@ -813,7 +853,11 @@ g_local_file_query_filesystem_info (GFile         *file,
   if (g_file_attribute_matcher_matches (attribute_matcher,
 					G_FILE_ATTRIBUTE_FS_READONLY))
     {
+#ifdef G_OS_WIN32
+      /* need to implement with *unix_mount* */
+#else
       get_mount_info (info, local->filename, attribute_matcher);
+#endif
     }
   
   g_file_attribute_matcher_unref (attribute_matcher);
@@ -831,7 +875,7 @@ g_local_file_find_enclosing_volume (GFile         *file,
   char *mountpoint;
   GVolume *volume;
 
-  if (lstat (local->filename, &buf) != 0)
+  if (g_lstat (local->filename, &buf) != 0)
     {
       g_set_error (error, G_IO_ERROR,
 		   G_IO_ERROR_NOT_FOUND,
@@ -1114,12 +1158,19 @@ expand_symlink (const char *link)
 {
   char *resolved, *canonical, *parent, *link2;
   char symlink_value[4096];
+#ifdef G_OS_WIN32
+#else
   ssize_t res;
+#endif
   
+#ifdef G_OS_WIN32
+#else
   res = readlink (link, symlink_value, sizeof (symlink_value) - 1);
+  
   if (res == -1)
     return g_strdup (link);
   symlink_value[res] = 0;
+#endif
   
   if (g_path_is_absolute (symlink_value))
     return canonicalize_filename (symlink_value);
@@ -1355,13 +1406,9 @@ g_local_file_trash (GFile         *file,
   char *trashdir, *globaldir, *topdir, *infodir, *filesdir;
   char *basename, *trashname, *trashfile, *infoname, *infofile;
   char *original_name, *original_name_escaped;
-  uid_t uid;
-  char uid_str[32];
   int i;
   char *data;
   gboolean is_homedir_trash;
-  time_t t;
-  struct tm now;
   char delete_time[32];
   int fd;
   
@@ -1403,6 +1450,12 @@ g_local_file_trash (GFile         *file,
     }
   else
     {
+#ifdef G_OS_WIN32
+      g_warning ("Recycle bin not implemented");
+#else
+      uid_t uid;
+      char uid_str[32];
+
       uid = geteuid ();
       g_snprintf (uid_str, sizeof (uid_str), "%lu", (unsigned long)uid);
       
@@ -1464,6 +1517,7 @@ g_local_file_trash (GFile         *file,
 	      trashdir = NULL;
 	    }
 	}
+#endif
 
       if (trashdir == NULL)
 	{
@@ -1564,10 +1618,22 @@ g_local_file_trash (GFile         *file,
   g_free (original_name);
   g_free (topdir);
   
-  t = time (NULL);
-  localtime_r (&t, &now);
-  delete_time[0] = 0;
-  strftime(delete_time, sizeof (delete_time), "%Y-%m-%dT%H:%M:%S", &now);
+#ifdef G_OS_WIN32
+  {
+    GTimeVal now;
+    g_get_current_time (&now);
+    strncpy (delete_time, g_time_val_to_iso8601 (&now), sizeof (delete_time));
+  }
+#else
+  {
+    time_t t;
+    struct tm now;
+    t = time (NULL);
+    localtime_r (&t, &now);
+    delete_time[0] = 0;
+    strftime(delete_time, sizeof (delete_time), "%Y-%m-%dT%H:%M:%S", &now);
+  }
+#endif
 
   data = g_strdup_printf ("[Trash Info]\nPath=%s\nDeletionDate=%s\n",
 			  original_name_escaped, delete_time);

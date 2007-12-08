@@ -22,11 +22,15 @@
 
 #include <config.h>
 
+#ifdef HAVE_SYS_TIME_H
 #include <sys/time.h>
+#endif
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <string.h>
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
+#endif
 #include <fcntl.h>
 #include <errno.h>
 #ifdef HAVE_GRP_H
@@ -56,6 +60,29 @@
 
 #include "glibintl.h"
 
+#ifdef G_OS_WIN32
+#include <windows.h>
+#include <io.h>
+#ifndef W_OK
+#define W_OK 2
+#endif
+#ifndef R_OK
+#define R_OK 4
+#endif
+#ifndef X_OK
+#define X_OK 0 /* not really */
+#endif
+#ifndef S_ISREG
+#define S_ISREG(m) (((m) & _S_IFMT) == _S_IFREG)
+#endif
+#ifndef S_ISDIR
+#define S_ISDIR(m) (((m) & _S_IFMT) == _S_IFDIR)
+#endif
+#ifndef S_IXUSR
+#define S_IXUSR _S_IEXEC
+#endif
+#endif
+
 #include "glocalfileinfo.h"
 #include "gioerror.h"
 #include "gthemedicon.h"
@@ -69,12 +96,12 @@ struct ThumbMD5Context {
 	guint32 bits[2];
 	unsigned char in[64];
 };
-
+#ifndef G_OS_WIN32
 typedef struct {
   char *user_name;
   char *real_name;
 } UidData;
-
+#endif
 G_LOCK_DEFINE_STATIC (uid_cache);
 static GHashTable *uid_cache = NULL;
 
@@ -769,7 +796,11 @@ _g_local_file_info_get_parent_info (const char            *dir,
        */
       if (res == 0)
 	{
+#ifdef S_ISVTX
 	  parent_info->is_sticky = (statbuf.st_mode & S_ISVTX) != 0;
+#else
+	  parent_info->is_sticky = FALSE;
+#endif
 	  parent_info->owner = statbuf.st_uid;
 	  parent_info->device = statbuf.st_dev;
 	}
@@ -808,11 +839,13 @@ get_access_rights (GFileAttributeMatcher *attribute_matcher,
 	{
 	  if (parent_info->is_sticky)
 	    {
+#ifndef G_OS_WIN32
 	      uid_t uid = geteuid ();
 
 	      if (uid == statbuf->st_uid ||
 		  uid == parent_info->owner ||
 		  uid == 0)
+#endif
 		writable = TRUE;
 	    }
 	  else
@@ -847,6 +880,7 @@ set_info_from_stat (GFileInfo             *info,
     file_type = G_FILE_TYPE_REGULAR;
   else if (S_ISDIR (statbuf->st_mode))
     file_type = G_FILE_TYPE_DIRECTORY;
+#ifndef G_OS_WIN32
   else if (S_ISCHR (statbuf->st_mode) ||
 	   S_ISBLK (statbuf->st_mode) ||
 	   S_ISFIFO (statbuf->st_mode)
@@ -855,6 +889,7 @@ set_info_from_stat (GFileInfo             *info,
 #endif
 	   )
     file_type = G_FILE_TYPE_SPECIAL;
+#endif
 #ifdef S_ISLNK
   else if (S_ISLNK (statbuf->st_mode))
     file_type = G_FILE_TYPE_SYMBOLIC_LINK;
@@ -977,7 +1012,7 @@ convert_pwd_string_to_utf8 (char *pwd_str)
   
   return utf8_string;
 }
-
+#ifndef G_OS_WIN32
 static void
 uid_data_free (UidData *data)
 {
@@ -1075,7 +1110,6 @@ get_realname_from_uid (uid_t uid)
   return res;
 }
 
-
 /* called with lock held */
 static char *
 lookup_gid_name (gid_t gid)
@@ -1125,6 +1159,7 @@ get_groupname_from_gid (gid_t gid)
   G_UNLOCK (gid_cache);
   return res;
 }
+#endif /* !G_OS_WIN32 */
 
 static char *
 get_content_type (const char          *basename,
@@ -1140,12 +1175,14 @@ get_content_type (const char          *basename,
     return g_strdup  ("inode/symlink");
   else if (S_ISDIR(statbuf->st_mode))
     return g_strdup ("inode/directory");
+#ifndef G_OS_WIN32
   else if (S_ISCHR(statbuf->st_mode))
     return g_strdup ("inode/chardevice");
   else if (S_ISBLK(statbuf->st_mode))
     return g_strdup ("inode/blockdevice");
   else if (S_ISFIFO(statbuf->st_mode))
     return g_strdup ("inode/fifo");
+#endif
 #ifdef S_ISSOCK
   else if (S_ISSOCK(statbuf->st_mode))
     return g_strdup ("inode/socket");
@@ -1228,6 +1265,52 @@ get_thumbnail_attributes (const char *path,
   g_free (filename);
 }
 
+void
+win32_get_file_user_info (const gchar* filename,
+			  gchar **group_name, 
+			  gchar **user_name, 
+			  gchar **real_name)
+{
+  PSECURITY_DESCRIPTOR psd = NULL;
+  DWORD sd_size = 0; /* first call calculates the size rewuired */
+  
+  wchar_t *wfilename = g_utf8_to_utf16 (filename, -1, NULL, NULL, NULL);
+  if ((GetFileSecurityW (wfilename, 
+                        GROUP_SECURITY_INFORMATION | OWNER_SECURITY_INFORMATION,
+			NULL,
+			sd_size,
+			&sd_size) || (ERROR_INSUFFICIENT_BUFFER == GetLastError())) &&
+     (psd = g_try_malloc (sd_size)) != NULL &&
+     GetFileSecurityW (wfilename, 
+                        GROUP_SECURITY_INFORMATION | OWNER_SECURITY_INFORMATION,
+			psd,
+			sd_size,
+			&sd_size))
+    {
+      PSID psid = 0;
+      SID_NAME_USE name_use; /* don't care? */
+      char *name = NULL;
+      DWORD name_len = 0;
+      if (user_name && 
+          GetSecurityDescriptorOwner (psd, &psid, NULL) &&
+          (LookupAccountSid (NULL, /* local machine */
+                             psid, 
+			     name, &name_len,
+			     NULL, NULL, /* no domain info yet */
+			     &name_use)  || (ERROR_INSUFFICIENT_BUFFER == GetLastError())) &&
+	  (name = g_try_malloc (name_len)) != NULL &&
+          LookupAccountSid (NULL, /* local machine */
+                            psid, 
+			    name, &name_len,
+			    NULL, NULL, /* no domain info yet */
+			    &name_use))
+	{
+	  *user_name = name;
+	}				 
+      g_free (psd);
+    }
+  g_free (wfilename);
+}
 
 GFileInfo *
 _g_local_file_info_get (const char             *basename,
@@ -1416,9 +1499,13 @@ _g_local_file_info_get (const char             *basename,
   if (g_file_attribute_matcher_matches (attribute_matcher,
 					G_FILE_ATTRIBUTE_OWNER_USER))
     {
-      char *name;
+      char *name = NULL;
       
+#ifdef G_OS_WIN32
+      win32_get_file_user_info (path, NULL, &name, NULL);
+#else
       name = get_username_from_uid (statbuf.st_uid);
+#endif
       if (name)
 	g_file_info_set_attribute_string (info, G_FILE_ATTRIBUTE_OWNER_USER, name);
       g_free (name);
@@ -1427,9 +1514,12 @@ _g_local_file_info_get (const char             *basename,
   if (g_file_attribute_matcher_matches (attribute_matcher,
 					G_FILE_ATTRIBUTE_OWNER_USER_REAL))
     {
-      char *name;
-      
+      char *name = NULL;
+#ifdef G_OS_WIN32
+      win32_get_file_user_info (path, NULL, NULL, &name);
+#else
       name = get_realname_from_uid (statbuf.st_uid);
+#endif
       if (name)
 	g_file_info_set_attribute_string (info, G_FILE_ATTRIBUTE_OWNER_USER_REAL, name);
       g_free (name);
@@ -1438,9 +1528,12 @@ _g_local_file_info_get (const char             *basename,
   if (g_file_attribute_matcher_matches (attribute_matcher,
 					G_FILE_ATTRIBUTE_OWNER_GROUP))
     {
-      char *name;
-      
+      char *name = NULL;
+#ifdef G_OS_WIN32
+      win32_get_file_user_info (path, &name, NULL, NULL);
+#else
       name = get_groupname_from_gid (statbuf.st_gid);
+#endif
       if (name)
 	g_file_info_set_attribute_string (info, G_FILE_ATTRIBUTE_OWNER_GROUP, name);
       g_free (name);

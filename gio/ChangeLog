@@ -1,3 +1,21 @@
+2007-12-08  Hans Breuer  <hans@breuer.org>
+
+	[gio compiles and links on win32, not sure how much already works]
+	* glocaldirectorymonitor.c : ifdefed out inotify emulation for win32
+	* glocalfile.c : use HAVE_UNISTD_H; implement file system size info 
+	base on win32 API; prefer g_lstat() over lstat(); instead of 
+	localtime_r() use an all GLib implementation on win32;
+	get_mount_info() still needs a win32 specifc implementation
+	* glocalfileinfo.c : use HAVE_*_H; start of implementation of 
+	win32_get_file_user_info to get owner/group info without uid/gid
+	* glocalfileinputstream.c : include <io.h> on win32
+	* glocalfileoutputstream.c : include <io.h> on win32 and some S_IS*
+	definition, use g_win32_ftruncate() for G_OS_WIN32
+	* gwin32appinfo.c : optionalize a bunch on #ifdef AssocQueryString
+	it is available with mingw/w32api but a mess with the M$ Platform SDKs
+	see: http://mail.gnome.org/archives/gtk-devel-list/2007-December/msg00014.html
+	* makefile.msc : updated
+
 2007-12-07  Alexander Larsson  <alexl@redhat.com>
 
 	* glocalfileenumerator.c (_g_local_file_enumerator_new):

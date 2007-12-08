@@ -112,6 +112,9 @@ g_local_directory_monitor_constructor (GType                  type,
 
   if (!klass->mount_notify)
     {
+#ifdef G_OS_WIN32
+      g_warning ("G_OS_WIN32: no mount emulation");
+#else
       GUnixMount *mount;
       
       /* Emulate unmount detection */
@@ -126,6 +129,7 @@ g_local_directory_monitor_constructor (GType                  type,
       local_monitor->mount_monitor = g_unix_mount_monitor_new ();
       g_signal_connect (local_monitor->mount_monitor, "mounts_changed",
         G_CALLBACK (mounts_changed), local_monitor);
+#endif
     }
 
   return obj;
@@ -165,13 +169,17 @@ mounts_changed (GUnixMountMonitor *mount_monitor,
   GFile *file;
   
   /* Emulate unmount detection */
-  
+#ifdef G_OS_WIN32
+  mount = NULL;
+  g_warning ("G_OS_WIN32: no mount emulation");
+#else  
   mount = g_get_unix_mount_at (local_monitor->dirname, NULL);
   
   is_mounted = mount != NULL;
   
   if (mount)
     g_unix_mount_free (mount);
+#endif
 
   if (local_monitor->was_mounted != is_mounted)
     {

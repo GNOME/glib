@@ -16,6 +16,7 @@ sub-one:
 	cd ..
 
 INCLUDES = \
+	-FImsvc_recommended_pragmas.h \
 	-I .. -I ..\glib -I ..\gmodule -I . \
 	$(INTL_CFLAGS)
 
@@ -120,6 +121,8 @@ OBJECTS = \
 	glocalfileinfo.obj \
 	glocalfileinputstream.obj \
 	glocalfileoutputstream.obj \
+	glocalfilemonitor.obj \
+	glocaldirectorymonitor.obj \
 	gwin32appinfo.obj \
 	\
 	gio-marshal.obj
@@ -248,7 +251,7 @@ libgio-$(PKG_VER).dll : $(OBJECTS) $(PACKAGE).def
 	$(CC) $(CFLAGS) -LD -Felibgio-$(PKG_VER).dll $(OBJECTS) \
 	..\glib\glib-2.0.lib ..\gobject\gobject-2.0.lib ..\gmodule\gmodule-2.0.lib \
 	$(INTL_LIBS) \
-	user32.lib advapi32.lib wsock32.lib $(LDFLAGS) /def:$(PACKAGE).def
+	user32.lib advapi32.lib shell32.lib wsock32.lib $(LDFLAGS) /def:$(PACKAGE).def
 
 .c.obj :
 	$(CC) $(CFLAGS) -GD -c $(PKG_CFLAGS) $<

@@ -27,6 +27,7 @@
 #include "gcontenttypeprivate.h"
 #include "gwin32appinfo.h"
 #include "gioerror.h"
+#include "gfile.h"
 #include <glib/gstdio.h>
 #include "glibintl.h"
 
@@ -45,6 +46,9 @@
 #define REAL_ASSOCSTR_FRIENDLYDOCNAME 3
 #define REAL_ASSOCSTR_FRIENDLYAPPNAME 4
 
+#ifndef AssocQueryString
+#pragma message("AssocQueryString not available with SDK used")
+#endif
 
 static void g_win32_app_info_iface_init (GAppInfoIface *iface);
 
@@ -97,7 +101,9 @@ static GAppInfo *
 g_desktop_app_info_new_from_id (wchar_t *id /* takes ownership */,
 				gboolean id_is_exename)
 {
+#ifdef AssocQueryString
   ASSOCF flags;
+#endif
   wchar_t buffer[1024];
   DWORD buffer_size;
   GWin32AppInfo *info;
@@ -108,6 +114,7 @@ g_desktop_app_info_new_from_id (wchar_t *id /* takes ownership */,
   info->id_utf8 = g_utf16_to_utf8 (id, -1, NULL, NULL, NULL);  
   info->id_is_exename = id_is_exename;
 
+#ifdef AssocQueryString  
   flags = 0;
   if (id_is_exename)
     flags |= ASSOCF_INIT_BYEXENAME;
@@ -129,6 +136,7 @@ g_desktop_app_info_new_from_id (wchar_t *id /* takes ownership */,
 			buffer,
 			&buffer_size) == S_OK)
     info->name = g_utf16_to_utf8 (buffer, -1, NULL, NULL, NULL);
+#endif
 
   if (info->name == NULL)
     {
@@ -139,6 +147,7 @@ g_desktop_app_info_new_from_id (wchar_t *id /* takes ownership */,
 	info->name = g_strdup (info->id_utf8);
     }
 
+#ifdef AssocQueryString
   if (AssocQueryKeyW(flags,
 		     ASSOCKEY_APP,
 		     info->id,
@@ -150,6 +159,7 @@ g_desktop_app_info_new_from_id (wchar_t *id /* takes ownership */,
 	info->no_open_with = TRUE;
       RegCloseKey (app_key);
     }
+#endif
   
   return G_APP_INFO (info);
 }
@@ -245,13 +255,15 @@ g_win32_app_info_launch (GAppInfo           *appinfo,
 			 GError            **error)
 {
   GWin32AppInfo *info = G_WIN32_APP_INFO (appinfo);
+#ifdef AssocQueryString
   ASSOCF flags;
+#endif
   HKEY class_key;
   SHELLEXECUTEINFOW exec_info = {0};
   GList *l;
 
   /* TODO:  What might startup_id mean on win32? */
-  
+#ifdef AssocQueryString  
   flags = 0;
   if (info->id_is_exename)
     flags |= ASSOCF_INIT_BYEXENAME;
@@ -265,8 +277,9 @@ g_win32_app_info_launch (GAppInfo           *appinfo,
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED, _("Can't find application"));
       return FALSE;
     }
+#endif
 
-  for (l = file; l != NULL; l = l->next)
+  for (l = files; l != NULL; l = l->next)
     {
       char *path = g_file_get_path (l->data);
       wchar_t *wfilename = g_utf8_to_utf16 (path, -1, NULL, NULL, NULL);
@@ -593,6 +606,7 @@ g_app_info_get_default_for_type (const char *content_type,
   wtype = g_utf8_to_utf16 (content_type, -1, NULL, NULL, NULL);
 
   /* Verify that we have some sort of app registered for this type */
+#ifdef AssocQueryString
   buffer_size = 1024;
   if (AssocQueryStringW (0,
 		  	 REAL_ASSOCSTR_COMMAND,
@@ -602,6 +616,7 @@ g_app_info_get_default_for_type (const char *content_type,
 			 &buffer_size) == S_OK)
     /* Takes ownership of wtype */
     return g_desktop_app_info_new_from_id (wtype, FALSE);
+#endif
 
   g_free (wtype);
   return NULL;

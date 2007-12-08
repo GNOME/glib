@@ -37,6 +37,10 @@
 #include "glocalfileinfo.h"
 #include "glibintl.h"
 
+#ifdef G_OS_WIN32
+#include <io.h>
+#endif
+
 #include "gioalias.h"
 
 #define g_local_file_input_stream_get_type _g_local_file_input_stream_get_type

@@ -38,6 +38,16 @@
 #include "glocalfileoutputstream.h"
 #include "glocalfileinfo.h"
 
+#ifdef G_OS_WIN32
+#include <io.h>
+#ifndef S_ISDIR
+#define S_ISDIR(m) (((m) & _S_IFMT) == _S_IFDIR)
+#endif
+#ifndef S_ISREG
+#define S_ISREG(m) (((m) & _S_IFMT) == _S_IFREG)
+#endif
+#endif
+
 #include "gioalias.h"
 
 #define g_local_file_output_stream_get_type _g_local_file_output_stream_get_type
@@ -365,7 +375,11 @@ g_local_file_output_stream_truncate (GFileOutputStream  *stream,
   file = G_LOCAL_FILE_OUTPUT_STREAM (stream);
 
  restart:
+#ifdef G_OS_WIN32
+  res = g_win32_ftruncate (file->priv->fd, size);
+#else
   res = ftruncate (file->priv->fd, size);
+#endif
   
   if (res == -1)
     {
@@ -805,7 +819,11 @@ handle_overwrite_open (const char    *filename,
     }
 
   /* Truncate the file at the start */
+#ifdef G_OS_WIN32
+  if (g_win32_ftruncate (fd, 0) == -1)
+#else
   if (ftruncate (fd, 0) == -1)
+#endif
     {
       g_set_error (error, G_IO_ERROR,
 		   g_io_error_from_errno (errno),
