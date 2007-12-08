@@ -1265,6 +1265,7 @@ get_thumbnail_attributes (const char *path,
   g_free (filename);
 }
 
+#ifdef G_OS_WIN32
 void
 win32_get_file_user_info (const gchar* filename,
 			  gchar **group_name, 
@@ -1311,6 +1312,7 @@ win32_get_file_user_info (const gchar* filename,
     }
   g_free (wfilename);
 }
+#endif /* G_OS_WIN32 */
 
 GFileInfo *
 _g_local_file_info_get (const char             *basename,

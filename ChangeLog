@@ -1,3 +1,8 @@
+2007-12-08  Christian Persch  <chpe@gnome.org>
+
+	* gio/glocalfileinfo.c: (get_thumbnail_attributes): Add forgotten
+	#ifdef G_OS_WIN32 to fix the build on linux.
+
 2007-12-08  Hans Breuer  <hans@breuer.org>
 
 	* glib/makefile.msc.in : build gchecksum.obj
