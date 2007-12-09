@@ -73,6 +73,8 @@ TESTS = \
 	utf8-validate.exe \
 	utf8-pointer.exe \
 	uri-test.exe \
+	\
+	gio-ls.exe
 
 DLLS = \
 	libmoduletestplugin_a.dll \
@@ -83,6 +85,12 @@ all :	$(TESTS) $(NONAUTOMATIC_TESTS) $(DLLS)
 .c.exe :
 	$(CC) $(CFLAGS) -c $<
 	$(CC) $(CFLAGS) -Fe$@ $< ..\glib\glib-2.0.lib ..\gmodule\gmodule-2.0.lib ..\gthread\gthread-2.0.lib $(LDFLAGS) user32.lib /subsystem:console
+
+gio-ls.exe : gio-ls.obj
+	$(CC) $(CFLAGS) -Fe$@ gio-ls.obj \
+	..\glib\glib-2.0.lib ..\gmodule\gmodule-2.0.lib ..\gthread\gthread-2.0.lib \
+	..\gobject\gobject-2.0.lib ..\gio\gio-2.0.lib \
+	$(LDFLAGS) user32.lib /subsystem:console
 
 slice-test.exe : memchunks.obj slice-test.obj 
 	$(CC) $(CFLAGS) -Fe$@ memchunks.obj slice-test.obj \

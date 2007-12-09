@@ -1,5 +1,8 @@
 2007-12-09  Hans Breuer  <hans@breuer.org>
 
+	* tests/gio-ls.c : (new file) a test program emulating some of 'ls'
+	* tests/makefile.msc.in : build it (currently on win32)
+
 	* **/makefile.msc glib/makefile.msc.in : removed -GD to compile
 	with msvc9 (vs2008) with less complains
 	
