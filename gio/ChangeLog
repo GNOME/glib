@@ -1,3 +1,9 @@
+2007-12-09  Hans Breuer  <hans@breuer.org>
+
+	* makefile.msc : follow lib naming convention
+	* glocalfileinfo.c(win32_get_file_user_info) : working implementation
+	for user and group name, tested with ../tests/gio-ls
+
 2007-12-09  A. Walton  <awalton@svn.gnome.org>
 
 	* gdesktopappinfo.c:

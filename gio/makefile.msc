@@ -251,7 +251,8 @@ libgio-$(PKG_VER).dll : $(OBJECTS) $(PACKAGE).def
 	$(CC) $(CFLAGS) -LD -Felibgio-$(PKG_VER).dll $(OBJECTS) \
 	..\glib\glib-2.0.lib ..\gobject\gobject-2.0.lib ..\gmodule\gmodule-2.0.lib \
 	$(INTL_LIBS) \
-	user32.lib advapi32.lib shell32.lib wsock32.lib $(LDFLAGS) /def:$(PACKAGE).def
+	user32.lib advapi32.lib shell32.lib wsock32.lib $(LDFLAGS) \
+	/implib:gio-2.0.lib /def:$(PACKAGE).def
 
 .c.obj :
 	$(CC) $(CFLAGS) -c $(PKG_CFLAGS) $<

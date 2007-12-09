@@ -1266,14 +1266,14 @@ get_thumbnail_attributes (const char *path,
 }
 
 #ifdef G_OS_WIN32
-void
+static void
 win32_get_file_user_info (const gchar* filename,
 			  gchar **group_name, 
 			  gchar **user_name, 
 			  gchar **real_name)
 {
   PSECURITY_DESCRIPTOR psd = NULL;
-  DWORD sd_size = 0; /* first call calculates the size rewuired */
+  DWORD sd_size = 0; /* first call calculates the size required */
   
   wchar_t *wfilename = g_utf8_to_utf16 (filename, -1, NULL, NULL, NULL);
   if ((GetFileSecurityW (wfilename, 
@@ -1283,31 +1283,74 @@ win32_get_file_user_info (const gchar* filename,
 			&sd_size) || (ERROR_INSUFFICIENT_BUFFER == GetLastError())) &&
      (psd = g_try_malloc (sd_size)) != NULL &&
      GetFileSecurityW (wfilename, 
-                        GROUP_SECURITY_INFORMATION | OWNER_SECURITY_INFORMATION,
-			psd,
-			sd_size,
-			&sd_size))
+                       GROUP_SECURITY_INFORMATION | OWNER_SECURITY_INFORMATION,
+		       psd,
+		       sd_size,
+		       &sd_size))
     {
       PSID psid = 0;
-      SID_NAME_USE name_use; /* don't care? */
-      char *name = NULL;
+      BOOL defaulted;
+      SID_NAME_USE name_use = 0; /* don't care? */
+      wchar_t *name = NULL;
+      wchar_t *domain = NULL;
       DWORD name_len = 0;
-      if (user_name && 
-          GetSecurityDescriptorOwner (psd, &psid, NULL) &&
-          (LookupAccountSid (NULL, /* local machine */
-                             psid, 
-			     name, &name_len,
-			     NULL, NULL, /* no domain info yet */
-			     &name_use)  || (ERROR_INSUFFICIENT_BUFFER == GetLastError())) &&
-	  (name = g_try_malloc (name_len)) != NULL &&
-          LookupAccountSid (NULL, /* local machine */
-                            psid, 
-			    name, &name_len,
-			    NULL, NULL, /* no domain info yet */
-			    &name_use))
-	{
-	  *user_name = name;
-	}				 
+      DWORD domain_len = 0;
+      /* get the user name */
+      do {
+        if (!user_name)
+	  break;
+	if (!GetSecurityDescriptorOwner (psd, &psid, &defaulted))
+	  break;
+	if (!LookupAccountSidW (NULL, /* local machine */
+                                psid, 
+			        name, &name_len,
+			        domain, &domain_len, /* no domain info yet */
+			        &name_use)  && (ERROR_INSUFFICIENT_BUFFER != GetLastError()))
+	  break;
+	name = g_try_malloc (name_len*sizeof(wchar_t));
+	domain = g_try_malloc (domain_len*sizeof(wchar_t));
+	if (name && domain &&
+            LookupAccountSidW (NULL, /* local machine */
+                               psid, 
+			       name, &name_len,
+			       domain, &domain_len, /* no domain info yet */
+			       &name_use))
+	  {
+	    *user_name = g_utf16_to_utf8 (name, -1, NULL, NULL, NULL);
+	  }
+	g_free (name);
+	g_free (domain);
+      } while (FALSE);
+
+      /* get the group name */
+      do {
+        if (!group_name)
+	  break;
+	if (!GetSecurityDescriptorGroup (psd, &psid, &defaulted))
+	  break;
+	if (!LookupAccountSidW (NULL, /* local machine */
+                                psid, 
+			        name, &name_len,
+			        domain, &domain_len, /* no domain info yet */
+			        &name_use)  && (ERROR_INSUFFICIENT_BUFFER != GetLastError()))
+	  break;
+	name = g_try_malloc (name_len*sizeof(wchar_t));
+	domain = g_try_malloc (domain_len*sizeof(wchar_t));
+	if (name && domain &&
+            LookupAccountSidW (NULL, /* local machine */
+                               psid, 
+			       name, &name_len,
+			       domain, &domain_len, /* no domain info yet */
+			       &name_use))
+	  {
+	    *group_name = g_utf16_to_utf8 (name, -1, NULL, NULL, NULL);
+	  }
+	g_free (name);
+	g_free (domain);
+      } while (FALSE);
+
+      /* TODO: get real name */
+
       g_free (psd);
     }
   g_free (wfilename);
