@@ -45,7 +45,7 @@ G_BEGIN_DECLS
  * @is_automounted: returns %TRUE if the #GDrive was automounted.
  * @can_mount: Returns %TRUE if the #GDrive can be mounted.
  * @can_eject: Returns %TRUE if the #GDrive can be ejected.
- * @mount: Mounts a given #GDrive.
+ * @mount_fn: Mounts a given #GDrive.
  * @mount_finish: Finishes a mount operation.
  * @eject: Ejects a #GDrive.
  * @eject_finish: Finishes an eject operation.

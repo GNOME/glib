@@ -30,8 +30,8 @@
 /**
  * SECTION:goutputstream
  * @short_description: Base class for implementing streaming output
- * 
- * 
+ *
+ *
  *
  **/
 

@@ -213,12 +213,12 @@ g_memory_output_stream_init (GMemoryOutputStream *stream)
  * Creates a new #GMemoryOutputStream. If @data is non-%NULL it will use
  * that for its internal storage otherwise it will create a new #GByteArray.
  * In both cases the internal #GByteArray can later be accessed through the 
- * "data" property.
+ * "data" property, or with g_memory_output_stream_get_data().
  *
  * Note: The new stream will not take ownership of the supplied
  * @data so you have to free it yourself after use or explicitly
  * ask for it be freed on close by setting the "free-array" 
- * property to $TRUE.
+ * property to %TRUE.
  *
  * Return value: A newly created #GMemoryOutputStream object.
  **/
@@ -239,9 +239,11 @@ g_memory_output_stream_new (GByteArray *data)
 
 /**
  * g_memory_output_stream_set_free_data:
- * @ostream:
- * @free_data:
+ * @ostream: a #GMemoryOutputStream.
+ * @free_data: a #gboolean. If %TRUE, frees the data within @stream.
  * 
+ * Sets if the data within the @stream should be freed when the stream 
+ * is freed. 
  **/
 void
 g_memory_output_stream_set_free_data (GMemoryOutputStream *ostream,
@@ -258,9 +260,10 @@ g_memory_output_stream_set_free_data (GMemoryOutputStream *ostream,
 
 /**
  * g_memory_output_stream_set_max_size:
- * @ostream:
- * @max_size:
- * 
+ * @ostream: a #GMemoryOutputStream.
+ * @max_size: a #guint to set as the maximum stream size.
+ *
+ * Sets a size limit on the data contained within the output stream.
  **/
 void
 g_memory_output_stream_set_max_size (GMemoryOutputStream *ostream,
@@ -372,7 +375,9 @@ g_memory_output_stream_get_property (GObject    *object,
 
 /**
  * g_memory_output_stream_get_data:
- * @ostream:
+ * @ostream: a #GMemoryOutputStream
+ *
+ * Gets any loaded data from the @ostream.
  * 
  * Returns: #GByteArray of the stream's data.
  **/

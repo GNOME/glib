@@ -171,7 +171,7 @@ g_drive_has_volumes (GDrive *drive)
  * Gets a list of volumes for a drive.
  * 
  * Returns: #GList containing any #GVolume<!---->s on the given @drive.
- * NOTE: Fact-check this.
+ * <!-- NOTE: Fact-check this. -->
  **/
 GList *
 g_drive_get_volumes (GDrive *drive)
@@ -289,13 +289,17 @@ g_drive_mount (GDrive              *drive,
 
 /**
  * g_drive_mount_finish:
- * @drive: pointer to a #GDrive.
+ * @drive: a #GDrive.
  * @result: a #GAsyncResult.
  * @error: a #GError.
  * 
- * Finishes mounting a drive.
+ * Finishes mounting a drive. 
+ *
+ * If the @drive's interface does not implement the mount operation, @error will 
+ * be set to %G_IO_ERROR_NOT_SUPPORTED and %FALSE will be returned.
  * 
- * Returns: %TRUE, %FALSE if operation failed.
+ * Returns: %TRUE if the mount was finished successfully, 
+ *     %FALSE if operation failed.
  **/
 gboolean
 g_drive_mount_finish (GDrive        *drive,
@@ -359,6 +363,9 @@ g_drive_eject (GDrive              *drive,
  * @error: a #GError.
  * 
  * Finishes ejecting a drive.
+ *
+ * If @drive's interface does not implement the eject operation, @error will 
+ * be set to %G_IO_ERROR_NOT_SUPPORTED and %FALSE will be returned.
  * 
  * Returns: %TRUE if the drive has been ejected successfully,
  * %FALSE otherwise.

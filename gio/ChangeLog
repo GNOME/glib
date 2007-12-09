@@ -1,3 +1,23 @@
+2007-12-09  A. Walton  <awalton@svn.gnome.org>
+
+	* gdesktopappinfo.c:
+	* gdrive.c:
+	* gdrive.h:
+	* gfile.c:
+	* gfile.h:
+	* gfileattribute.c:
+	* gfileenumerator.c:
+	* gioerror.c:
+	* gioscheduler.c:
+	* gioscheduler.h:
+	* gloadableicon.c:
+	* gmemoryinputstream.c:
+	* gmemoryoutputstream.c:
+	* goutputstream.h:
+	* gsimpleasyncresult.c:
+	More documentation cleanup and filling in missing information, bringing
+	GIO to 99% symbol coverage.
+
 2007-12-08  Hans Breuer  <hans@breuer.org>
 
 	[gio compiles and links on win32, not sure how much already works]

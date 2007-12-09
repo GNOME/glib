@@ -165,9 +165,11 @@ g_memory_input_stream_init (GMemoryInputStream *stream)
 
 /**
  * g_memory_input_stream_set_free_data:
- * @stream:
- * @free_data:
+ * @stream: a #GMemoryInputStream.
+ * @free_data: a #gboolean. If %TRUE, frees the data within @stream.
  * 
+ * Sets if the data within the @stream should be freed when the stream 
+ * is freed. 
  **/
 void
 g_memory_input_stream_set_free_data (GMemoryInputStream *stream,
@@ -182,6 +184,8 @@ g_memory_input_stream_set_free_data (GMemoryInputStream *stream,
  * g_memory_input_stream_from_data:
  * @data: input data.
  * @len: length of the data.
+ *
+ * Creates a new #GMemoryInputStream with data in memory of a given size.
  * 
  * Returns: new #GInputStream read from @data of @len bytes.
  **/
@@ -228,9 +232,11 @@ g_memory_input_stream_read (GInputStream  *stream,
 
 /**
  * g_memory_input_stream_get_data:
- * @stream:
+ * @stream: a #GMemoryInputStream
  * 
- * Returns: 
+ * Gets a pointer to the data within the #GMemoryInputStream.
+ *
+ * Returns: a pointer to the memory in the @stream.
  **/
 const void *
 g_memory_input_stream_get_data (GMemoryInputStream *stream)
@@ -242,9 +248,12 @@ g_memory_input_stream_get_data (GMemoryInputStream *stream)
 
 /**
  * g_memory_input_stream_get_data_size:
- * @stream:
+ * @stream: a #GMemoryInputStream
  * 
- * Returns: 
+ * Gets the size of the data within the #GMemoryInputStream.
+ *
+ * Returns: a gsize with the size of the data in @stream, or -1
+ *     on error.
  **/
 gsize
 g_memory_input_stream_get_data_size (GMemoryInputStream *stream)

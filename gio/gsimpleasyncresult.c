@@ -653,7 +653,9 @@ g_simple_async_result_run_in_thread (GSimpleAsyncResult     *simple,
  * @format: a formatted error reporting string.
  * @...: a list of variables to fill in @format.
  * 
- * Reports an error in an idle function.
+ * Reports an error in an asynchronous function in an idle function by 
+ * directly setting the contents of the #GAsyncResult with the given error
+ * information.
  **/
 void
 g_simple_async_report_error_in_idle (GObject             *object,
@@ -683,13 +685,15 @@ g_simple_async_report_error_in_idle (GObject             *object,
 }
 
 /**
- * g_simple_async_report_error_in_idle:
+ * g_simple_async_report_gerror_in_idle:
  * @object: a #GObject.
  * @callback: a #GAsyncReadyCallback. 
  * @user_data: user data passed to @callback.
  * @error: the #GError to report
  * 
- * Reports an error in an idle function.
+ * Reports an error in an idle function. Similar to 
+ * g_simple_async_report_error_in_idle(), but takes a #GError rather 
+ * than building a new one.
  **/
 void
 g_simple_async_report_gerror_in_idle (GObject *object,

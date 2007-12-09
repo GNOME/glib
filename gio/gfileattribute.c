@@ -61,7 +61,7 @@
  * 
  * <para>
  * <table>
- * <title>GFileAttributes Namespaces</title>
+ * <title>GFileAttributes Default Namespaces</title>
  * <tgroup cols='2' align='left'><thead>
  * <row><entry>Namspace</entry><entry>Description</entry></row>
  * </thead>
@@ -110,8 +110,12 @@
  * </table>
  * </para>
  * 
+ * Please note that these are not all of the possible namespaces.
  * More namespaces can be added from GIO modules or by individual applications. 
  * For more information about writing GIO modules, see #GIOModule.
+ *
+ * <!-- TODO: Implementation note about using extended attributes on supported 
+ * file systems -->
  * 
  * <para><table>
  * <title>GFileAttributes Built-in Keys and Value Types</title>

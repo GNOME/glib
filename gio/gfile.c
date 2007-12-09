@@ -52,6 +52,7 @@
  * To construct a #GFile, you can use: 
  * g_file_new_for_path() if you have a path.
  * g_file_new_for_uri() if you have a URI.
+ * g_file_new_for_commandline_arg() for a command line argument.
  * 
  * You can move through the filesystem with #GFile handles with
  * g_file_get_parent() to get a handle to the parent directory.
@@ -425,9 +426,9 @@ g_file_dup (GFile *file)
  * Creates a hash value for a #GFile.
  *
  * Returns: 0 if @file is not a valid #GFile, otherwise an 
- * integer that can be used as hash value for the #GFile. 
- * This function is intended for easily hashing a #GFile to 
- * add to a #GHashTable or similar data structure.
+ *     integer that can be used as hash value for the #GFile. 
+ *     This function is intended for easily hashing a #GFile to 
+ *     add to a #GHashTable or similar data structure.
  **/
 guint
 g_file_hash (gconstpointer file)
@@ -449,7 +450,7 @@ g_file_hash (gconstpointer file)
  * Checks equality of two given #GFile<!-- -->s
  *
  * Returns: %TRUE if @file1 and @file2 are equal.
- * %FALSE if either is not a #GFile.
+ *     %FALSE if either is not a #GFile.
  **/
 gboolean
 g_file_equal (GFile *file1,
@@ -478,7 +479,7 @@ g_file_equal (GFile *file1,
  * file system, then %NULL will be returned.
  *
  * Returns: a #GFile structure to the parent of the given
- * #GFile or %NULL. 
+ *     #GFile or %NULL. 
  **/
 GFile *
 g_file_get_parent (GFile *file)
@@ -501,8 +502,8 @@ g_file_get_parent (GFile *file)
  * it exists.
  *
  * Returns: a #GFile to a child specified by 
- * @name or %NULL if @name is %NULL, or the specified
- * child doesn't exist.
+ *     @name or %NULL if @name is %NULL, or the specified
+ *     child doesn't exist.
  **/
 GFile *
 g_file_get_child (GFile      *file,
@@ -525,7 +526,7 @@ g_file_get_child (GFile      *file,
  * set with %G_IO_ERROR_INVALID_FILENAME.
  * 
  * Returns: a #GFile to the specified child, or 
- * %NULL if @display_name is %NULL.  
+ *     %NULL if @display_name is %NULL.  
  **/
 GFile *
 g_file_get_child_for_display_name (GFile      *file,
@@ -628,9 +629,10 @@ g_file_resolve_relative_path (GFile      *file,
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @error: #GError for error reporting.
  *
- * Gets a #GFileEnumerator for the children of @file that match @attributes, 
+ * Gets a #GFileEnumerator for the children of @file. The returned enumerator will 
+ * automatically generate a #GFileAttributeMatcher internally that match @attributes, 
  * where attributes is a #GFileAttributeInfo query string (e.g. "std:type", 
- * "std:*").
+ * "std:*"). See g_file_enumerator_next_file() for details.
  * 
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
@@ -683,10 +685,11 @@ g_file_enumerate_children (GFile                *file,
  * @callback: a #GAsyncReadyCallback to call when the request is satisfied
  * @user_data: the data to pass to callback function
  *
- * Asynchronously gets a #GFileEnumerator for the children of @file that 
- * match @attributes, where attributes is a #GFileAttributeInfo query 
- * string (e.g. "std:type", "std:*"). For the synchronous version of this 
- * function, see g_file_enumerate_children().
+ * Asynchronously gets a #GFileEnumerator for the children of @file. The returned 
+ * file enumerator will automatically generate a #GFileAttributeMatcher 
+ * that matches @attributes, where attributes is a #GFileAttributeInfo query 
+ * string (e.g. "std:type", "std:*"). See g_file_enumerator_next_file() for details.
+ * For the synchronous version of this function, see g_file_enumerate_children().
  * 
  * To finish this asynchronous operation, see g_file_enumerate_children_finish().
  **/
@@ -1166,8 +1169,8 @@ g_file_replace (GFile             *file,
  * @io_priority: the <link linkend="io-priority">I/O priority</link> 
  *     of the request. 
  * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @callback: a #GAsyncReadyCallback.
- * @user_data: a #gpointer. 
+ * @callback: a #GAsyncReadyCallback to call when the request is satisfied
+ * @user_data: the data to pass to callback function
  *
  * Asynchronously reads @file. 
  *
@@ -1239,8 +1242,8 @@ g_file_read_finish (GFile         *file,
  * @io_priority: the <link linkend="io-priority">I/O priority</link> 
  *     of the request. 
  * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @callback: a #GAsyncReadyCallback. 
- * @user_data: a #gpointer. 
+ * @callback: a #GAsyncReadyCallback to call when the request is satisfied
+ * @user_data: the data to pass to callback function
  * 
  * Readies a file for appending data asynchronously. 
  *
@@ -1316,8 +1319,8 @@ g_file_append_to_finish (GFile         *file,
  * @io_priority: the <link linkend="io-priority">I/O priority</link> 
  *     of the request.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @callback: a #GAsyncReadyCallback. 
- * @user_data: a #gpointer. 
+ * @callback: a #GAsyncReadyCallback to call when the request is satisfied
+ * @user_data: the data to pass to callback function
  * 
  * Creates a new file asynchronously. 
  *
@@ -1396,8 +1399,8 @@ g_file_create_finish (GFile         *file,
  * @io_priority: the <link linkend="io-priority">I/O priority</link> 
  *     of the request.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @callback: a #GAsyncReadyCallback. 
- * @user_data: a #gpointer. 
+ * @callback: a #GAsyncReadyCallback to call when the request is satisfied
+ * @user_data: the data to pass to callback function
  * 
  * Replaces a file's contents asynchronously. If @make_backup is 
  * %TRUE, this function will attempt to make a backup of the current file.
@@ -1659,6 +1662,22 @@ build_attribute_list_for_copy (GFileAttributeInfoList *attributes,
   return g_string_free (s, FALSE);
 }
 
+/**
+ * g_file_copy_attributes:
+ * @source: a #GFile with attributes.
+ * @destination: a #GFile to copy attributes to.
+ * @flags: a set of #GFileCopyFlags.
+ * @cancellable: optional #GCancellable object, %NULL to ignore.
+ * @error: a #GError, %NULL to ignore.
+ *
+ * Copies the file attributes from @source to @destination. 
+ *
+ * If @cancellable is not %NULL, then the operation can be cancelled by
+ * triggering the cancellable object from another thread. If the operation
+ * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
+ *
+ * Returns: %TRUE if the attributes were copied successfully, %FALSE otherwise.
+ **/
 gboolean
 g_file_copy_attributes (GFile           *source,
 			GFile           *destination,
@@ -2323,8 +2342,8 @@ g_file_set_display_name (GFile         *file,
  * @io_priority: the <link linkend="io-priority">I/O priority</link> 
  *     of the request. 
  * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @callback: a #GAsyncReadyCallback. 
- * @user_data: a #gpointer. 
+ * @callback: a #GAsyncReadyCallback to call when the request is satisfied
+ * @user_data: the data to pass to callback function
  * 
  * Asynchronously sets the display name for a given #GFile.
  * For the synchronous version of this function, see g_file_set_display_name().
@@ -2906,8 +2925,8 @@ g_file_set_attribute_int64 (GFile                *file,
  * @file: input #GFile.
  * @mount_operation: a #GMountOperation.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @callback: a #GAsyncReadyCallback. 
- * @user_data: a #gpointer. 
+ * @callback: a #GAsyncReadyCallback to call when the request is satisfied
+ * @user_data: the data to pass to callback function
  * 
  * Mounts a mountable file using @mount_operation, if possible. 
  *
@@ -2982,8 +3001,8 @@ g_file_mount_mountable_finish (GFile         *file,
  * g_file_unmount_mountable:
  * @file: input #GFile.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @callback: a #GAsyncReadyCallback. 
- * @user_data: a #gpointer. 
+ * @callback: a #GAsyncReadyCallback to call when the request is satisfied
+ * @user_data: the data to pass to callback function
  *
  * Starts an asynchronous unmount operation. 
  * 
@@ -3058,8 +3077,8 @@ g_file_unmount_mountable_finish (GFile         *file,
  * g_file_eject_mountable:
  * @file: input #GFile.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @callback: a #GAsyncReadyCallback. 
- * @user_data: a #gpointer. 
+ * @callback: a #GAsyncReadyCallback to call when the request is satisfied
+ * @user_data: the data to pass to callback function
  * 
  * Starts an asynchronous eject on a mountable.  
  * When this operation has completed, @callback will be called with
@@ -3901,8 +3920,8 @@ g_file_new_for_commandline_arg (const char *arg)
  * @location: input #GFile.
  * @mount_operation: a #GMountOperation.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @callback: a #GAsyncReadyCallback. 
- * @user_data: a #gpointer. 
+ * @callback: a #GAsyncReadyCallback to call when the request is satisfied
+ * @user_data: the data to pass to callback function
  * 
  * Starts the @mount_operation, mounting the volume at @location. 
  * 
@@ -4241,9 +4260,17 @@ load_contents_open_callback (GObject      *obj,
  * @file: input #GFile.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @read_more_callback: a #GFileReadMoreCallback.
- * @callback: a #GAsyncReadyCallback. 
- * @user_data: a #gpointer. 
- * 
+ * @callback: a #GAsyncReadyCallback to call when the request is satisfied
+ * @user_data: the data to pass to the callback functions.
+ *
+ * Reads the partial contents of a file. A #GFileReadMoreCallback should be 
+ * used to stop reading from the file when appropriate, else this function
+ * will behave exactly as g_file_load_contents_async(). This operation 
+ * can be finished by g_file_load_partial_contents_finish().
+ *
+ * Users of this function should be aware that @user_data is passed to 
+ * both the @read_more_callback and the @callback.
+ *
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
@@ -4348,8 +4375,8 @@ g_file_load_partial_contents_finish (GFile         *file,
  * g_file_load_contents_async:
  * @file: input #GFile.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @callback: a #GAsyncReadyCallback. 
- * @user_data: a #gpointer. 
+ * @callback: a #GAsyncReadyCallback to call when the request is satisfied
+ * @user_data: the data to pass to callback function
  * 
  * Starts an asynchronous load of the @file's contents. 
  * When the load operation has completed, @callback will be called 
@@ -4625,8 +4652,8 @@ replace_contents_open_callback (GObject      *obj,
  * @make_backup: a #gboolean.
  * @flags: a set of #GFileCreateFlags.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @callback: a #GAsyncReadyCallback. 
- * @user_data: a #gpointer. 
+ * @callback: a #GAsyncReadyCallback to call when the request is satisfied
+ * @user_data: the data to pass to callback function
  * 
  * Starts an asynchronous replacement of @file with the given 
  * @contents of @length bytes. @etag will replace the document's 

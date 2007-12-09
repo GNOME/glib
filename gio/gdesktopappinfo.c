@@ -1572,9 +1572,13 @@ g_app_info_get_default_for_type (const char *content_type,
 
 /**
  * g_app_info_get_default_for_uri_scheme:
- * @uri_scheme:
+ * @uri_scheme: a string containing a URI scheme.
+ *
+ * Gets the default application for launching applications using this URI scheme.
+ *
+ * TODO: This is currently unimplemented.
  * 
- * Returns: #GAppInfo
+ * Returns: %NULL.
  **/
 GAppInfo *
 g_app_info_get_default_for_uri_scheme (const char *uri_scheme)
@@ -1668,8 +1672,10 @@ collect_apps (gpointer key,
 
 /**
  * g_app_info_get_all:
+ *
+ * Gets a list of all of the applications currently registered on this system.
  * 
- * Returns: a newly allocated #GList of references to #GAppInfo s.
+ * Returns: a newly allocated #GList of references to #GAppInfo<!---->s.
  **/
 GList *
 g_app_info_get_all (void)

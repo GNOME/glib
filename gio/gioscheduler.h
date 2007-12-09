@@ -50,7 +50,7 @@ typedef void (*GIOJobFunc) (GIOJob *job,
 
 /**
  * GIODataFunc:
- * @user_data:
+ * @user_data: data to pass to the I/O function.
  * 
  * I/O Data function.
  * 

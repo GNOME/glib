@@ -127,11 +127,16 @@ typedef void (*GFileProgressCallback) (goffset current_num_bytes,
 
 /**
  * GFileReadMoreCallback:
- * @file_contents:
- * @file_size:
- * @callback_data:
+ * @file_contents: the data as currently read.
+ * @file_size: the size of the data currently read.
+ * @callback_data: data passed to the callback.
  *
- * 
+ * When loading the partial contents of a file with g_file_read_partial_contents(), 
+ * it may become necessary to determine if any more data from the file should be loaded. 
+ * A #GFileReadMoreCallback function facilitates this by returning %TRUE if more data 
+ * should be read, or %FALSE otherwise.
+ *
+ * Returns: %TRUE if more data should be read back. %FALSE otherwise.
  **/
 typedef gboolean (* GFileReadMoreCallback) (const char *file_contents,
 					    goffset file_size,
@@ -180,7 +185,7 @@ typedef gboolean (* GFileReadMoreCallback) (const char *file_contents,
  * @set_attributes_from_info: Sets a #GFileAttribute with information from a #GFileInfo.
  * @set_attributes_async: Asynchronously sets a file's attributes.
  * @set_attributes_finish: Finishes setting a file's attributes asynchronously.
- * @read: Reads a file asynchronously.
+ * @read_fn: Reads a file asynchronously.
  * @read_async: Asynchronously reads a file.
  * @read_finish: Finishes asynchronously reading a file.
  * @append_to: Writes to the end of a file.

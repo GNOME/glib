@@ -30,8 +30,8 @@
  * SECTION:gioscheduler
  * @short_description: I/O Scheduler
  * 
- * Schedules asynchronous I/O operations for integration into the main 
- * event loop (#GMainLoop).
+ * Schedules asynchronous I/O operations. #GIOScheduler integrates into the main 
+ * event loop (#GMainLoop) and may use threads if they are available.
  * 
  * <para id="io-priority"><indexterm><primary>I/O priority</primary></indexterm>
  * Each I/O operation has a priority, and the scheduler uses the priorities

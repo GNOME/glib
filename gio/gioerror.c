@@ -30,6 +30,7 @@
  * SECTION:gioerror
  * @short_description: Error helper functions
  *
+ * Contains helper functions for reporting errors to the user.
  **/
 
 /**

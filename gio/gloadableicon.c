@@ -97,7 +97,7 @@ g_loadable_icon_base_init (gpointer g_class)
  * g_loadable_icon_load:
  * @icon: a #GLoadableIcon.
  * @size: an integer.
- * @type: 
+ * @type:  a location to store the type of the loaded icon, %NULL to ignore.
  * @cancellable: optional #GCancellable object, %NULL to ignore. 
  * @error: a #GError location to store the error occuring, or %NULL to 
  * ignore.
@@ -155,7 +155,7 @@ g_loadable_icon_load_async (GLoadableIcon       *icon,
  * g_loadable_icon_load_finish:
  * @icon: a #GLoadableIcon.
  * @res: a #GAsyncResult.
- * @type:
+ * @type: a location to store the type of the loaded icon, %NULL to ignore.
  * @error: a #GError location to store the error occuring, or %NULL to 
  * ignore.
  * 
