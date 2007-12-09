@@ -1,3 +1,17 @@
+2007-12-09  Hans Breuer  <hans@breuer.org>
+
+	* **/makefile.msc glib/makefile.msc.in : removed -GD to compile
+	with msvc9 (vs2008) with less complains
+	
+	* glibconfig.h.win32.in : #define G_HAVE_ISO_VARARGS 1 for
+	msv8 (vs2005) and above
+	
+	* glib/gfileutils.c : s/stricmp/_stricmp/
+	* msvc_recommended_pragmas.h : work around Microsoft's premature 
+	attempt to deprecate the C-Library
+
+	* tests/makefile.msc.in : added checksum-test
+
 2007-12-08  Christian Persch  <chpe@gnome.org>
 
 	* gio/glocalfileinfo.c: (get_thumbnail_attributes): Add forgotten

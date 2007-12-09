@@ -254,4 +254,4 @@ libgio-$(PKG_VER).dll : $(OBJECTS) $(PACKAGE).def
 	user32.lib advapi32.lib shell32.lib wsock32.lib $(LDFLAGS) /def:$(PACKAGE).def
 
 .c.obj :
-	$(CC) $(CFLAGS) -GD -c $(PKG_CFLAGS) $<
+	$(CC) $(CFLAGS) -c $(PKG_CFLAGS) $<

@@ -26,3 +26,6 @@
 
 #pragma warning(disable:4244)	/* No possible loss of data warnings */
 #pragma warning(disable:4305)   /* No truncation from int to char warnings */
+
+/* work around Microsoft's premature attempt to deprecate the C-Library */
+#pragma warning(disable:4996)   /* This function or variable may be unsafe. */

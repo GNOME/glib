@@ -1,7 +1,7 @@
 TOP = ..\..\..
 !INCLUDE ..\..\build\win32\make.msc
 
-INCLUDES = -I ..\.. 
+INCLUDES = -I ..\.. -I ..
 DEFINES = -DHAVE_CONFIG_H -DHAVE_LONG_LONG_FORMAT
 
 OBJECTS = \

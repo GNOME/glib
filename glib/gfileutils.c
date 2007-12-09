@@ -221,10 +221,10 @@ g_file_test (const gchar *filename,
       if (lastdot == NULL)
 	return FALSE;
 
-      if (stricmp (lastdot, ".exe") == 0 ||
-	  stricmp (lastdot, ".cmd") == 0 ||
-	  stricmp (lastdot, ".bat") == 0 ||
-	  stricmp (lastdot, ".com") == 0)
+      if (_stricmp (lastdot, ".exe") == 0 ||
+	  _stricmp (lastdot, ".cmd") == 0 ||
+	  _stricmp (lastdot, ".bat") == 0 ||
+	  _stricmp (lastdot, ".com") == 0)
 	return TRUE;
 
       /* Check if it is one of the types listed in %PATHEXT% */

@@ -25,6 +25,7 @@ TESTS = \
 	bit-test.exe \
 	bookmarkfile-test.exe \
 	child-test.exe \
+	checksum-test.exe \
 	completion-test.exe \
 	convert-test.exe \
 	date-test.exe	\

@@ -134,6 +134,11 @@ typedef gint64 goffset;
 #endif
 
 #define G_HAVE_GNUC_VARARGS 1
+#else /* _MSC_VER */
+/* varargs macros available since msvc8 (vs2005) */
+#  if _MSC_VER >= 1400
+#    define G_HAVE_ISO_VARARGS 1
+#   endif
 #endif /* not _MSC_VER */
 #define G_HAVE_GROWING_STACK 0
 

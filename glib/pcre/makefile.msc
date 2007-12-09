@@ -18,11 +18,11 @@ DEFINES = \
 	-DMAX_NAME_COUNT=10000 \
 	-DMAX_DUPLENGTH=30000 \
 	-DLINK_SIZE=2 \
-	-DEBCDIC=0 \
+	-UEBCDIC \
 	-DPOSIX_MALLOC_THRESHOLD=10
 
 OBJECTS = \
-	\.obj \
+	pcre_chartables.obj \
 	pcre_compile.obj \
 	pcre_config.obj \
 	pcre_dfa_exec.obj \
@@ -31,7 +31,6 @@ OBJECTS = \
 	pcre_get.obj \
 	pcre_globals.obj \
 	pcre_info.obj \
-	pcre_internal.obj \
 	pcre_maketables.obj \
 	pcre_newline.obj \
 	pcre_ord2utf8.obj \
@@ -43,9 +42,6 @@ OBJECTS = \
 	pcre_valid_utf8.obj \
 	pcre_version.obj \
 	pcre_xclass.obj \
-	ucp.obj \
-	ucpinternal.obj \
-	ucptable.h.obj \
 
 all : pcre.lib
 
