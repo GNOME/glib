@@ -1,5 +1,9 @@
 2007-12-10  Matthias Clasen  <mclasen@redhat.com>
 
+	* gmountoperation.h (GPasswordFlags): Close the gap
+
+2007-12-10  Matthias Clasen  <mclasen@redhat.com>
+
 	* Makefile.am: Install gdesktopappinfo.h as unix-specific header.
 	* gio.symbols:
 	* gdesktopappinfo.[hc]: Remove _-prefixes
