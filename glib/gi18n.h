@@ -23,9 +23,9 @@
 #include <libintl.h>
 
 #define  _(String) gettext (String)
-#define Q_(String) g_dpgettext (NULL, String, NULL)
+#define Q_(String) g_dpgettext (NULL, String, 0)
 #define N_(String) (String)
-#define C_(Context,String) g_dpgettext (NULL, Context "\004" String, String)
+#define C_(Context,String) g_dpgettext (NULL, Context "\004" String, strlen (Context) + 1)
 
 
 #endif  /* __G_I18N_H__ */

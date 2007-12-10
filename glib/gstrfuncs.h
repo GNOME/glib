@@ -245,7 +245,7 @@ G_CONST_RETURN gchar *g_strip_context  (const gchar *msgid,
 
 G_CONST_RETURN gchar *g_dpgettext      (const gchar *domain,
                                         const gchar *msgctxtid,
-                                        const gchar *msgid);
+                                        gsize        msgidoffset);
 
 G_END_DECLS
 

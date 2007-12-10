@@ -2849,19 +2849,20 @@ g_strv_length (gchar **str_array)
  * g_dpgettext:
  * @domain: the translation domain to use, or %NULL to use
  *   the domain set with textdomain()
- * @msgctxtid: a combined message context and message id
- * @msgid: the message id, or %NULL
+ * @msgctxtid: a combined message context and message id, separated
+ *   by a \004 character
+ * @msgidoffset: the offset of the message id in @msgctxid
  *
  * This function is a variant of dgettext() which supports
  * a disambiguating message context. GNU gettext uses the
  * '\004' character to separate the message context and
- * message id in @msgctxtid. If %NULL is passed as @msgid,
- * this function also supports the older convention of using 
- * '|' as a separator. 
+ * message id in @msgctxtid.
+ * If 0 is passed as @msgidoffset, this function will fall back to
+ * trying to use the deprecated convention of using "|" as a separation
+ * character.
  *
  * Applications should normally not use this function directly,
- * but use the C_() or Q_() macros for translations with
- * context.
+ * but use the C_() macro for translations with context.
  *
  * Returns: The translated string
  *
@@ -2870,7 +2871,7 @@ g_strv_length (gchar **str_array)
 const gchar *
 g_dpgettext (const gchar *domain, 
              const gchar *msgctxtid, 
-             const gchar *msgid)
+             gsize        msgidoffset)
 {
   const gchar *translation;
   gchar *sep;
@@ -2879,8 +2880,8 @@ g_dpgettext (const gchar *domain,
 
   if (translation == msgctxtid)
     {
-      if (msgid)
-        return msgid;
+      if (msgidoffset > 0)
+        return msgctxtid + msgidoffset;
 
       sep = strchr (msgctxtid, '|');
  

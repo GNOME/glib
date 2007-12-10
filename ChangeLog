@@ -1,3 +1,14 @@
+2007-12-10  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gstrfuncs.h:
+	* glib/gstrfuncs.c (g_dpgettext): Change prototype to take 
+	msgctxtid + offset instead of two strings, to avoid duplication
+	of string constants if the compiler/linker don't perform constant
+	suffix merging.  (#502590, Christian Persch)
+
+	* glib/gi18n.h:
+	* glib/gi18n-lib.h: Adapt the definitions of C_() and Q_().
+
 2007-12-09  Hans Breuer  <hans@breuer.org>
 
 	* tests/gio-ls.c : (new file) a test program emulating some of 'ls'
