@@ -134,7 +134,6 @@ g_file_enumerator_close_finish
 g_file_enumerator_is_closed
 g_file_enumerator_has_pending
 g_file_enumerator_set_pending
-g_output_stream_clear_pending
 <SUBSECTION Standard>
 GFileEnumeratorClass
 G_FILE_ENUMERATOR
@@ -631,6 +630,7 @@ g_output_stream_close_finish
 g_output_stream_is_closed
 g_output_stream_has_pending
 g_output_stream_set_pending
+g_output_stream_clear_pending
 <SUBSECTION Standard>
 GOutputStreamClass
 G_OUTPUT_STREAM
@@ -1123,6 +1123,25 @@ G_UNIX_MOUNT_MONITOR_CLASS
 G_IS_UNIX_MOUNT_MONITOR_CLASS
 <SUBSECTION Private>
 g_unix_mount_monitor_get_type
+</SECTION>
+
+<SECTION>
+<FILE>gdesktopappinfo</FILE>
+<TITLE>Desktop file based GAppInfo</TITLE>
+GDesktopAppInfo
+g_desktop_app_info_new_from_filename
+g_desktop_app_info_new
+g_desktop_app_info_get_is_hidden
+<SUBSECTION Standard>
+GDesktopAppInfoClass
+G_TYPE_DESKTOP_APP_INFO
+G_DESKTOP_APP_INFO
+G_DESKTOP_APP_INFO_CLASS
+G_IS_DESKTOP_APP_INFO
+G_IS_DESKTOP_APP_INFO_CLASS
+G_DESKTOP_APP_INFO_GET_CLASS
+<SUBSECTION Private>
+g_desktop_app_info_get_type
 </SECTION>
 
 <SECTION>

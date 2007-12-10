@@ -1,3 +1,9 @@
+2007-12-10  Matthias Clasen  <mclasen@redhat.com>
+
+	* Makefile.am: Install gdesktopappinfo.h as unix-specific header.
+	* gio.symbols:
+	* gdesktopappinfo.[hc]: Remove _-prefixes
+
 2007-12-10  Tor Lillqvist  <tml@novell.com>
 
 	* glocalfile.c: Add some more G_OS_WIN32 conditionals to silence

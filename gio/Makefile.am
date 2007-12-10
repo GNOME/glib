@@ -104,6 +104,7 @@ unix_sources = \
 
 giounixincludedir=$(includedir)/gio-unix-2.0/gio
 giounixinclude_HEADERS = \
+	gdesktopappinfo.h	\
 	gunixmounts.h 		\
 	gunixinputstream.h 	\
 	gunixoutputstream.h 	\

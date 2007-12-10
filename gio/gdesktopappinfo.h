@@ -27,7 +27,7 @@
 
 G_BEGIN_DECLS
 
-#define G_TYPE_DESKTOP_APP_INFO         (_g_desktop_app_info_get_type ())
+#define G_TYPE_DESKTOP_APP_INFO         (g_desktop_app_info_get_type ())
 #define G_DESKTOP_APP_INFO(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), G_TYPE_DESKTOP_APP_INFO, GDesktopAppInfo))
 #define G_DESKTOP_APP_INFO_CLASS(k)     (G_TYPE_CHECK_CLASS_CAST((k), G_TYPE_DESKTOP_APP_INFO, GDesktopAppInfoClass))
 #define G_IS_DESKTOP_APP_INFO(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), G_TYPE_DESKTOP_APP_INFO))
@@ -42,11 +42,11 @@ struct _GDesktopAppInfoClass
   GObjectClass parent_class;
 };
 
-GType _g_desktop_app_info_get_type (void) G_GNUC_CONST;
+GType g_desktop_app_info_get_type (void) G_GNUC_CONST;
   
-GDesktopAppInfo *_g_desktop_app_info_new_from_filename (const char      *filename);
-GDesktopAppInfo *_g_desktop_app_info_new               (const char      *desktop_id);
-gboolean         _g_desktop_app_info_get_is_hidden     (GDesktopAppInfo *info);
+GDesktopAppInfo *g_desktop_app_info_new_from_filename (const char      *filename);
+GDesktopAppInfo *g_desktop_app_info_new               (const char      *desktop_id);
+gboolean         g_desktop_app_info_get_is_hidden     (GDesktopAppInfo *info);
 
 G_END_DECLS
 

@@ -1,3 +1,9 @@
+2007-12-10  Matthias Clasen <mclasen@redhat.com>
+
+	* gio/gio-sections.txt:
+	* gio/gio-docs.xml:
+	* gio/gio.types: Add gdesktopappinfo
+
 2007-12-10  Bastien Nocera  <hadess@hadess.net>
 
 	* glib/tmpl/keyfile.sgml: Mention the difference

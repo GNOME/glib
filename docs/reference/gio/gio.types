@@ -4,6 +4,7 @@ g_unix_mount_monitor_get_type
 g_data_output_stream_get_type
 g_unix_output_stream_get_type
 g_unix_input_stream_get_type
+g_desktop_app_info_get_type
 g_memory_input_stream_get_type
 g_volume_get_type
 g_file_monitor_get_type
