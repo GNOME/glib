@@ -83,13 +83,13 @@ g_local_file_monitor_constructor (GType                  type,
     {
       if (strcmp ("filename", g_param_spec_get_name (construct_properties[i].pspec)) == 0)
         {
-          g_assert (G_VALUE_HOLDS_STRING (construct_properties[i].value));
+          g_warn_if_fail (G_VALUE_HOLDS_STRING (construct_properties[i].value));
           filename = g_value_get_string (construct_properties[i].value);
           break;
         }
     }
 
-  g_assert (filename != NULL);
+  g_warn_if_fail (filename != NULL);
 
   local_monitor->filename = g_strdup (filename);
   return obj;

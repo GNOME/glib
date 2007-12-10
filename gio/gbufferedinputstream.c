@@ -983,7 +983,7 @@ g_buffered_input_stream_real_fill_finish (GBufferedInputStream *stream,
   gssize nread;
 
   simple = G_SIMPLE_ASYNC_RESULT (result);
-  g_assert (g_simple_async_result_get_source_tag (simple) == g_buffered_input_stream_real_fill_async);
+  g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == g_buffered_input_stream_real_fill_async);
   
   nread = g_simple_async_result_get_op_res_gssize (simple);
   return nread;
@@ -1161,7 +1161,7 @@ g_buffered_input_stream_read_finish (GInputStream   *stream,
   
   simple = G_SIMPLE_ASYNC_RESULT (result);
   
-  g_assert (g_simple_async_result_get_source_tag (simple) == g_buffered_input_stream_read_async);
+  g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == g_buffered_input_stream_read_async);
 
   data = g_simple_async_result_get_op_res_gpointer (simple);
   
@@ -1333,7 +1333,7 @@ g_buffered_input_stream_skip_finish (GInputStream   *stream,
   
   simple = G_SIMPLE_ASYNC_RESULT (result);
   
-  g_assert (g_simple_async_result_get_source_tag (simple) == g_buffered_input_stream_skip_async);
+  g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == g_buffered_input_stream_skip_async);
 
   data = g_simple_async_result_get_op_res_gpointer (simple);
   

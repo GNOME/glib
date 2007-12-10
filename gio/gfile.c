@@ -3291,7 +3291,7 @@ g_file_real_query_info_finish (GFile         *file,
   GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
   QueryInfoAsyncData *data;
 
-  g_assert (g_simple_async_result_get_source_tag (simple) == g_file_real_query_info_async);
+  g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == g_file_real_query_info_async);
 
   data = g_simple_async_result_get_op_res_gpointer (simple);
   if (data->info)
@@ -3368,7 +3368,7 @@ g_file_real_enumerate_children_finish (GFile         *file,
   GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
   EnumerateChildrenAsyncData *data;
 
-  g_assert (g_simple_async_result_get_source_tag (simple) == g_file_real_enumerate_children_async);
+  g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == g_file_real_enumerate_children_async);
 
   data = g_simple_async_result_get_op_res_gpointer (simple);
   if (data->enumerator)
@@ -3422,7 +3422,7 @@ g_file_real_read_finish (GFile         *file,
   GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
   gpointer op;
 
-  g_assert (g_simple_async_result_get_source_tag (simple) == g_file_real_read_async);
+  g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == g_file_real_read_async);
 
   op = g_simple_async_result_get_op_res_gpointer (simple);
   if (op)
@@ -3485,7 +3485,7 @@ g_file_real_append_to_finish (GFile         *file,
   GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
   gpointer op;
 
-  g_assert (g_simple_async_result_get_source_tag (simple) == g_file_real_append_to_async);
+  g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == g_file_real_append_to_async);
 
   op = g_simple_async_result_get_op_res_gpointer (simple);
   if (op)
@@ -3548,7 +3548,7 @@ g_file_real_create_finish (GFile         *file,
   GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
   gpointer op;
 
-  g_assert (g_simple_async_result_get_source_tag (simple) == g_file_real_create_async);
+  g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == g_file_real_create_async);
 
   op = g_simple_async_result_get_op_res_gpointer (simple);
   if (op)
@@ -3636,7 +3636,7 @@ g_file_real_replace_finish (GFile         *file,
   GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
   ReplaceAsyncData *data;
 
-  g_assert (g_simple_async_result_get_source_tag (simple) == g_file_real_replace_async);
+  g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == g_file_real_replace_async);
 
   data = g_simple_async_result_get_op_res_gpointer (simple);
   if (data->stream)
@@ -3710,7 +3710,7 @@ g_file_real_set_display_name_finish (GFile         *file,
   GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
   SetDisplayNameAsyncData *data;
 
-  g_assert (g_simple_async_result_get_source_tag (simple) == g_file_real_set_display_name_async);
+  g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == g_file_real_set_display_name_async);
 
   data = g_simple_async_result_get_op_res_gpointer (simple);
   if (data->file)
@@ -3785,7 +3785,7 @@ g_file_real_set_attributes_finish (GFile         *file,
   GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
   SetInfoAsyncData *data;
   
-  g_assert (g_simple_async_result_get_source_tag (simple) == g_file_real_set_attributes_async);
+  g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == g_file_real_set_attributes_async);
 
   data = g_simple_async_result_get_op_res_gpointer (simple);
 
@@ -4338,7 +4338,7 @@ g_file_load_partial_contents_finish (GFile         *file,
   if (g_simple_async_result_propagate_error (simple, error))
     return FALSE;
   
-  g_assert (g_simple_async_result_get_source_tag (simple) == g_file_load_contents_async);
+  g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == g_file_load_contents_async);
   
   data = g_simple_async_result_get_op_res_gpointer (simple);
 
@@ -4738,7 +4738,7 @@ g_file_replace_contents_finish (GFile         *file,
   if (g_simple_async_result_propagate_error (simple, error))
     return FALSE;
   
-  g_assert (g_simple_async_result_get_source_tag (simple) == g_file_replace_contents_async);
+  g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == g_file_replace_contents_async);
   
   data = g_simple_async_result_get_op_res_gpointer (simple);
 

@@ -543,7 +543,7 @@ g_memory_output_stream_write_finish (GOutputStream  *stream,
 
   simple = G_SIMPLE_ASYNC_RESULT (result);
   
-  g_assert (g_simple_async_result_get_source_tag (simple) == 
+  g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == 
             g_memory_output_stream_write_async);
 
   nwritten = g_simple_async_result_get_op_res_gssize (simple);
@@ -581,7 +581,7 @@ g_memory_output_stream_close_finish (GOutputStream  *stream,
 
   simple = G_SIMPLE_ASYNC_RESULT (result);
 
-  g_assert (g_simple_async_result_get_source_tag (simple) == 
+  g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == 
             g_memory_output_stream_close_async);
 
   return TRUE;

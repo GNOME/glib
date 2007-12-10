@@ -1,3 +1,29 @@
+2007-12-10 15:08:59  Tim Janik  <timj@imendio.com>
+
+        * let g_warn_if_fail replace g_assert as discussed here:
+          http://mail.gnome.org/archives/gtk-devel-list/2007-October/msg00089.html
+
+        * fix bug #502498: Test framework assertion failures should follow
+        gcc error format.
+
+        * gmessages.h, gmessages.c: deprecated g_assert_warning() which is
+        unused now. removed g_assert*() definitions whcih are provided by 
+        gtestutils.h now. added g_warn_if_reached() and g_warn_if_fail()  
+        which are recommended as g_assert/g_assert_not_reached replacements
+        for non-test programs.
+        added g_warn_message() to implement g_warn_*() macros.
+        use emacs-next-error friendly formatting for file:line: for warnings.
+
+        * gtestutils.h, gtestutils.c: use emacs-next-error friendly formatting.
+        implement g_assert_not_reached() with g_assertion_message() and
+        g_assert() in terms of g_assertion_message_expr() so we'll be able to
+        provide assertion messages in test logs.
+
+        * gkeyfile.c, gbookmarkfile.c: changed g_assert*() to g_warn_if_fail()
+        or g_return_if_fail() where suitable.
+
+        * gio/: changed g_assert to g_warn_if_fail.
+
 2007-12-10 13:02:08  Tim Janik  <timj@imendio.com>
 
 	* glib/gtestutils.c (g_assertion_message_cmpnum): applied patch by Tommi

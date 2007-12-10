@@ -62,7 +62,7 @@ g_unix_volume_finalize (GObject *object)
   if (volume->drive)
     _g_unix_drive_unset_volume (volume->drive, volume);
     
-  g_assert (volume->drive == NULL);
+  g_warn_if_fail (volume->drive == NULL);
   g_free (volume->name);
   g_free (volume->icon);
   g_free (volume->mountpoint);

@@ -236,7 +236,7 @@ g_key_file_clear (GKeyFile *key_file)
       g_key_file_remove_group_node (key_file, group_node);
     }
 
-  g_assert (key_file->groups == NULL);
+  g_warn_if_fail (key_file->groups == NULL);
 }
 
 
@@ -778,7 +778,7 @@ g_key_file_parse_comment (GKeyFile     *key_file,
   if (!(key_file->flags & G_KEY_FILE_KEEP_COMMENTS))
     return;
   
-  g_assert (key_file->current_group != NULL);
+  g_warn_if_fail (key_file->current_group != NULL);
 
   pair = g_slice_new (GKeyFileKeyValuePair);
   pair->key = NULL;
@@ -843,7 +843,7 @@ g_key_file_parse_key_value_pair (GKeyFile     *key_file,
 
   key_end = value_start = strchr (line, '=');
 
-  g_assert (key_end != NULL);
+  g_warn_if_fail (key_end != NULL);
 
   key_end--;
   value_start++;
@@ -855,7 +855,7 @@ g_key_file_parse_key_value_pair (GKeyFile     *key_file,
 
   key_len = key_end - line + 2;
 
-  g_assert (key_len <= length);
+  g_warn_if_fail (key_len <= length);
 
   key = g_strndup (line, key_len - 1);
 
@@ -877,7 +877,7 @@ g_key_file_parse_key_value_pair (GKeyFile     *key_file,
 
   value = g_strndup (value_start, value_len);
 
-  g_assert (key_file->start_group != NULL);
+  g_warn_if_fail (key_file->start_group != NULL);
 
   if (key_file->current_group
       && key_file->current_group->name
@@ -1189,7 +1189,11 @@ g_key_file_get_groups (GKeyFile *key_file,
 
   num_groups = g_list_length (key_file->groups);
 
-  g_assert (num_groups > 0);
+  g_return_val_if_fail (num_groups > 0, NULL);
+
+  group_node = g_list_last (key_file->groups);
+  
+  g_return_val_if_fail (((GKeyFileGroup *) group_node->data)->name == NULL, NULL);
 
   /* Only need num_groups instead of num_groups + 1
    * because the first group of the file (last in the
@@ -1198,9 +1202,6 @@ g_key_file_get_groups (GKeyFile *key_file,
    */
   groups = g_new (gchar *, num_groups);
 
-  group_node = g_list_last (key_file->groups);
-  
-  g_assert (((GKeyFileGroup *) group_node->data)->name == NULL);
 
   i = 0;
   for (group_node = group_node->prev;
@@ -1211,7 +1212,7 @@ g_key_file_get_groups (GKeyFile *key_file,
 
       group = (GKeyFileGroup *) group_node->data;
 
-      g_assert (group->name != NULL);
+      g_warn_if_fail (group->name != NULL);
 
       groups[i++] = g_strdup (group->name);
     }
@@ -2586,10 +2587,10 @@ g_key_file_set_top_comment (GKeyFile     *key_file,
   /* The last group in the list should be the top (comments only)
    * group in the file
    */
-  g_assert (key_file->groups != NULL);
+  g_warn_if_fail (key_file->groups != NULL);
   group_node = g_list_last (key_file->groups);
   group = (GKeyFileGroup *) group_node->data;
-  g_assert (group->name == NULL);
+  g_warn_if_fail (group->name == NULL);
 
   /* Note all keys must be comments at the top of
    * the file, so we can just free it all.
@@ -2843,10 +2844,10 @@ g_key_file_get_top_comment (GKeyFile  *key_file,
   /* The last group in the list should be the top (comments only)
    * group in the file
    */
-  g_assert (key_file->groups != NULL);
+  g_warn_if_fail (key_file->groups != NULL);
   group_node = g_list_last (key_file->groups);
   group = (GKeyFileGroup *) group_node->data;
-  g_assert (group->name == NULL);
+  g_warn_if_fail (group->name == NULL);
 
   return get_group_comment (key_file, group, error);
 }
@@ -3046,7 +3047,7 @@ g_key_file_remove_key_value_pair_node (GKeyFile      *key_file,
   if (pair->key != NULL)
     key_file->approximate_size -= strlen (pair->key) + 1;
 
-  g_assert (pair->value != NULL);
+  g_warn_if_fail (pair->value != NULL);
   key_file->approximate_size -= strlen (pair->value);
 
   g_key_file_key_value_pair_free (pair);
@@ -3116,7 +3117,7 @@ g_key_file_remove_group_node (GKeyFile *key_file,
       g_key_file_remove_key_value_pair_node (key_file, group, pair_node);
     }
 
-  g_assert (group->key_value_pairs == NULL);
+  g_warn_if_fail (group->key_value_pairs == NULL);
 
   if (group->lookup_map)
     {

@@ -313,7 +313,7 @@ read_data (GDataInputStream  *stream,
   res = g_input_stream_read (G_INPUT_STREAM (stream),
 			     buffer, size,
 			     NULL, NULL);
-  g_assert (res == size);
+  g_warn_if_fail (res == size);
   return TRUE;
 }
 
@@ -797,7 +797,7 @@ g_data_input_stream_read_line (GDataInputStream  *stream,
 			     NULL, NULL);
   if (length)
     *length = (gsize)found_pos;
-  g_assert (res == found_pos + newline_len);
+  g_warn_if_fail (res == found_pos + newline_len);
   line[found_pos] = 0;
   
   return line;
@@ -917,7 +917,7 @@ g_data_input_stream_read_until (GDataInputStream  *stream,
 			     NULL, NULL);
   if (length)
     *length = (gsize)found_pos;
-  g_assert (res == found_pos + stop_char_len);
+  g_warn_if_fail (res == found_pos + stop_char_len);
   data_until[found_pos] = 0;
   
   return data_until;

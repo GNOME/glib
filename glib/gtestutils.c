@@ -1106,9 +1106,11 @@ g_assertion_message (const char     *domain,
 {
   char lstr[32];
   char *s;
+  if (!message)
+    message = "code should not be reached";
   g_snprintf (lstr, 32, "%d", line);
   s = g_strconcat (domain ? domain : "", domain && domain[0] ? ":" : "",
-                   file, ":", lstr, ":",
+                   "ERROR:(", file, ":", lstr, "):",
                    func, func[0] ? ":" : "",
                    " ", message, NULL);
   g_printerr ("**\n** %s\n", s);

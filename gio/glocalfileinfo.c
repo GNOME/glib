@@ -728,7 +728,7 @@ set_xattr (char                       *filename,
     }
   else
     {
-      g_assert (g_str_has_prefix (escaped_attribute, "xattr_sys:"));
+      g_warn_if_fail (g_str_has_prefix (escaped_attribute, "xattr_sys:"));
       escaped_attribute += 10;
       is_user = FALSE;
     }
@@ -991,7 +991,7 @@ make_valid_utf8 (const char *name)
   
   g_string_append (string, remainder);
 
-  g_assert (g_utf8_validate (string->str, -1, NULL));
+  g_warn_if_fail (g_utf8_validate (string->str, -1, NULL));
   
   return g_string_free (string, FALSE);
 }

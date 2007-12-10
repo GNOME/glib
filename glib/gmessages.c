@@ -537,6 +537,27 @@ g_return_if_fail_warning (const char *log_domain,
 }
 
 void
+g_warn_message (const char     *domain,
+                const char     *file,
+                int             line,
+                const char     *func,
+                const char     *warnexpr)
+{
+  char *s, lstr[32];
+  g_snprintf (lstr, 32, "%d", line);
+  if (warnexpr)
+    s = g_strconcat ("(", file, ":", lstr, "):",
+                     func, func[0] ? ":" : "",
+                     " runtime check failed: (", warnexpr, ")", NULL);
+  else
+    s = g_strconcat ("(", file, ":", lstr, "):",
+                     func, func[0] ? ":" : "",
+                     " ", "code should not be reached", NULL);
+  g_log (domain, G_LOG_LEVEL_WARNING, "%s", s);
+  g_free (s);
+}
+
+void
 g_assert_warning (const char *log_domain,
 		  const char *file,
 		  const int   line,

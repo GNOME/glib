@@ -48,10 +48,18 @@ typedef struct GTestSuite GTestSuite;
                                              if (__n1 cmp __n2) ; else \
                                                g_assertion_message_cmpnum (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
                                                  #n1 " " #cmp " " #n2, __n1, #cmp, __n2, 'f'); } while (0)
+#ifdef G_DISABLE_ASSERT
+#define g_assert_not_reached()          do { (void) 0; } while (0)
+#define g_assert(expr)                  do { (void) 0; } while (0)
+#else /* !G_DISABLE_ASSERT */
+#define g_assert_not_reached()          do { g_assertion_message (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, NULL); } while (0)
+#define g_assert(expr)                  do { if G_LIKELY (expr) ; else \
+                                               g_assertion_message_expr (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
+                                                 #expr); } while (0)
+#endif /* !G_DISABLE_ASSERT */
+
 int     g_strcmp0                       (const char     *str1,
                                          const char     *str2);
-//      g_assert(condition)             /*...*/
-//      g_assert_not_reached()          /*...*/
 
 /* report performance results */
 void    g_test_minimized_result         (double          minimized_quantity,

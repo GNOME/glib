@@ -591,7 +591,7 @@ g_file_output_stream_real_query_info_finish (GFileOutputStream     *stream,
   GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
   QueryInfoAsyncData *data;
 
-  g_assert (g_simple_async_result_get_source_tag (simple) == g_file_output_stream_real_query_info_async);
+  g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == g_file_output_stream_real_query_info_async);
 
   data = g_simple_async_result_get_op_res_gpointer (simple);
   if (data->info)

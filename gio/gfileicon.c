@@ -252,7 +252,7 @@ g_file_icon_load_finish (GLoadableIcon  *icon,
   GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
   gpointer op;
 
-  g_assert (g_simple_async_result_get_source_tag (simple) == g_file_icon_load_async);
+  g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == g_file_icon_load_async);
 
   if (type)
     *type = NULL;

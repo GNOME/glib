@@ -976,7 +976,7 @@ g_input_stream_real_read_finish (GInputStream  *stream,
   GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
   ReadData *op;
 
-  g_assert (g_simple_async_result_get_source_tag (simple) == 
+  g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == 
 	    g_input_stream_real_read_async);
 
   op = g_simple_async_result_get_op_res_gpointer (simple);
@@ -1133,7 +1133,7 @@ g_input_stream_real_skip_finish (GInputStream  *stream,
   GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
   SkipData *op;
 
-  g_assert (g_simple_async_result_get_source_tag (simple) == g_input_stream_real_skip_async);
+  g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == g_input_stream_real_skip_async);
   op = g_simple_async_result_get_op_res_gpointer (simple);
   return op->count_skipped;
 }
@@ -1190,7 +1190,7 @@ g_input_stream_real_close_finish (GInputStream  *stream,
 				  GError       **error)
 {
   GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
-  g_assert (g_simple_async_result_get_source_tag (simple) == g_input_stream_real_close_async);
+  g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == g_input_stream_real_close_async);
   return TRUE;
 }
 

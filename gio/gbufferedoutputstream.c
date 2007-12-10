@@ -659,7 +659,7 @@ g_buffered_output_stream_write_finish (GOutputStream        *stream,
   buffered_stream = G_BUFFERED_OUTPUT_STREAM (stream);
   priv = buffered_stream->priv;
 
-  g_assert (g_simple_async_result_get_source_tag (simple) == 
+  g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == 
             g_buffered_output_stream_write_async);
 
   wdata = g_simple_async_result_get_op_res_gpointer (simple);
@@ -712,7 +712,7 @@ g_buffered_output_stream_flush_finish (GOutputStream        *stream,
 
   simple = G_SIMPLE_ASYNC_RESULT (result);
 
-  g_assert (g_simple_async_result_get_source_tag (simple) == 
+  g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == 
             g_buffered_output_stream_flush_async);
 
   return TRUE;
@@ -754,7 +754,7 @@ g_buffered_output_stream_close_finish (GOutputStream        *stream,
 
   simple = G_SIMPLE_ASYNC_RESULT (result);
 
-  g_assert (g_simple_async_result_get_source_tag (simple) == 
+  g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == 
             g_buffered_output_stream_flush_async);
 
   return TRUE;

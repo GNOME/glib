@@ -729,7 +729,10 @@ g_log_set_fatal_mask
 g_log_set_handler
 g_logv
 g_return_if_fail_warning
+g_warn_message
+#ifndef G_DISABLE_DEPRECATED
 g_assert_warning G_GNUC_NORETURN
+#endif
 g_print G_GNUC_PRINTF(1,2)
 g_printerr G_GNUC_PRINTF(1,2)
 g_set_printerr_handler

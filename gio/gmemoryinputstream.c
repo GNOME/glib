@@ -322,7 +322,7 @@ g_memory_input_stream_read_finish (GInputStream  *stream,
   gssize nread;
 
   simple = G_SIMPLE_ASYNC_RESULT (result);
-  g_assert (g_simple_async_result_get_source_tag (simple) == g_memory_input_stream_read_async);
+  g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == g_memory_input_stream_read_async);
   
   nread = g_simple_async_result_get_op_res_gssize (simple);
   return nread;
@@ -358,7 +358,7 @@ g_memory_input_stream_skip_finish (GInputStream  *stream,
   gssize nskipped;
 
   simple = G_SIMPLE_ASYNC_RESULT (result);
-  g_assert (g_simple_async_result_get_source_tag (simple) == g_memory_input_stream_skip_async);
+  g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == g_memory_input_stream_skip_async);
   
   nskipped = g_simple_async_result_get_op_res_gssize (simple);
   return nskipped;

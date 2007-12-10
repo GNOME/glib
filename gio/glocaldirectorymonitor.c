@@ -102,7 +102,7 @@ g_local_directory_monitor_constructor (GType                  type,
     {
       if (strcmp ("dirname", g_param_spec_get_name (construct_properties[i].pspec)) == 0)
         {
-          g_assert (G_VALUE_HOLDS_STRING (construct_properties[i].value));
+          g_warn_if_fail (G_VALUE_HOLDS_STRING (construct_properties[i].value));
           dirname = g_value_get_string (construct_properties[i].value);
           break;
         }

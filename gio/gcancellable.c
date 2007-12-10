@@ -169,7 +169,7 @@ g_push_current_cancellable (GCancellable *cancellable)
 {
   GSList *l;
 
-  g_assert (cancellable != NULL);
+  g_return_if_fail (cancellable != NULL);
   
   l = g_static_private_get (&current_cancellable);
   l = g_slist_prepend (l, cancellable);
@@ -190,8 +190,8 @@ g_pop_current_cancellable (GCancellable *cancellable)
   
   l = g_static_private_get (&current_cancellable);
   
-  g_assert (l != NULL);
-  g_assert (l->data == cancellable);
+  g_return_if_fail (l != NULL);
+  g_return_if_fail (l->data == cancellable);
 
   l = g_slist_delete_link (l, l);
   g_static_private_set (&current_cancellable, l, NULL);

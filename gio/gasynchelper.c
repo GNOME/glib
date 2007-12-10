@@ -111,7 +111,7 @@ fd_source_dispatch (GSource     *source,
   GFDSourceFunc func = (GFDSourceFunc)callback;
   FDSource *fd_source = (FDSource *)source;
 
-  g_assert (func != NULL);
+  g_warn_if_fail (func != NULL);
 
   return (*func) (user_data, fd_source->pollfd.revents, fd_source->pollfd.fd);
 }
