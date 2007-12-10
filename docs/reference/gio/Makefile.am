@@ -24,6 +24,7 @@ IGNORE_HFILES= 		           \
 	gdummyfile.h			\
 	gfamdirectorymonitor.h		\
 	gfamfilemonitor.h		\
+	gioalias.h			\
 	ginotifydirectorymonitor.h	\
 	ginotifyfilemonitor.h		\
 	glocaldirectorymonitor.h	\

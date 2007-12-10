@@ -113,11 +113,19 @@ g_file_replace_contents_async
 g_file_replace_contents_finish
 g_file_copy_attributes
 <SUBSECTION Standard>
+G_TYPE_FILE_COPY_FLAGS
+G_TYPE_FILE_CREATE_FLAGS
+G_TYPE_FILE_MONITOR_FLAGS
+G_TYPE_FILE_QUERY_INFO_FLAGS
 G_FILE
 G_IS_FILE
 G_TYPE_FILE
 G_FILE_GET_IFACE
 <SUBSECTION Private>
+g_file_copy_flags_get_type
+g_file_create_flags_get_type
+g_file_monitor_flags_get_type
+g_file_query_info_flags_get_type
 g_file_get_type
 </SECTION>
 
@@ -282,8 +290,10 @@ G_TYPE_FILE_INFO
 G_FILE_INFO_CLASS
 G_IS_FILE_INFO_CLASS
 G_FILE_INFO_GET_CLASS
+G_TYPE_FILE_TYPE
 <SUBSECTION Private>
 g_file_info_get_type
+g_file_type_get_type
 </SECTION>
 
 <SECTION>
@@ -324,6 +334,14 @@ g_file_attribute_info_list_unref
 g_file_attribute_info_list_dup
 g_file_attribute_info_list_lookup
 g_file_attribute_info_list_add
+<SUBSECTION Standard>
+G_TYPE_FILE_ATTRIBUTE_FLAGS
+G_TYPE_FILE_ATTRIBUTE_STATUS
+G_TYPE_FILE_ATTRIBUTE_TYPE
+<SUBSECTION Private>
+g_file_attribute_flags_get_type
+g_file_attribute_status_get_type
+g_file_attribute_type_get_type
 </SECTION>
 
 <SECTION>
@@ -336,6 +354,7 @@ g_file_monitor_is_cancelled
 g_file_monitor_set_rate_limit
 g_file_monitor_emit_event
 <SUBSECTION Standard>
+G_TYPE_FILE_MONITOR_EVENT
 GFileMonitorClass
 G_FILE_MONITOR
 G_IS_FILE_MONITOR
@@ -344,6 +363,7 @@ G_FILE_MONITOR_CLASS
 G_IS_FILE_MONITOR_CLASS
 G_FILE_MONITOR_GET_CLASS
 <SUBSECTION Private>
+g_file_monitor_event_get_type
 g_file_monitor_get_type
 GFileMonitorPrivate
 </SECTION>
@@ -391,6 +411,7 @@ g_icon_get_type
 GThemedIcon
 g_themed_icon_new
 g_themed_icon_new_from_names
+g_themed_icon_get_names
 <SUBSECTION Standard>
 GThemedIconClass
 G_THEMED_ICON
@@ -455,6 +476,7 @@ g_input_stream_close_finish
 g_input_stream_is_closed
 g_input_stream_has_pending
 g_input_stream_set_pending
+g_input_stream_clear_pending
 <SUBSECTION Standard>
 GInputStreamClass
 G_INPUT_STREAM
@@ -569,6 +591,8 @@ g_data_input_stream_read_uint64
 g_data_input_stream_read_line
 g_data_input_stream_read_until
 <SUBSECTION Standard>
+G_TYPE_DATA_STREAM_BYTE_ORDER
+G_TYPE_DATA_STREAM_NEWLINE_TYPE
 GDataInputStreamClass
 G_DATA_INPUT_STREAM
 G_IS_DATA_INPUT_STREAM
@@ -578,6 +602,8 @@ G_IS_DATA_INPUT_STREAM_CLASS
 G_DATA_INPUT_STREAM_GET_CLASS
 <SUBSECTION Private>
 g_data_input_stream_get_type
+g_data_stream_byte_order_get_type
+g_data_stream_newline_type_get_type
 GDataInputStreamPrivate
 </SECTION>
 
@@ -630,7 +656,9 @@ g_output_stream_close_finish
 g_output_stream_is_closed
 g_output_stream_has_pending
 g_output_stream_set_pending
+g_output_stream_clear_pending
 <SUBSECTION Standard>
+G_TYPE_OUTPUT_STREAM_SPLICE_FLAGS
 GOutputStreamClass
 G_OUTPUT_STREAM
 G_IS_OUTPUT_STREAM
@@ -639,6 +667,7 @@ G_OUTPUT_STREAM_CLASS
 G_IS_OUTPUT_STREAM_CLASS
 G_OUTPUT_STREAM_GET_CLASS
 <SUBSECTION Private>
+g_output_stream_splice_flags_get_type
 g_output_stream_get_type
 GOutputStreamPrivate
 </SECTION>
@@ -931,6 +960,7 @@ g_simple_async_result_propagate_error
 g_simple_async_result_set_error
 g_simple_async_result_set_error_va
 g_simple_async_report_error_in_idle
+g_simple_async_report_gerror_in_idle
 <SUBSECTION Standard>
 GSimpleAsyncResultClass
 G_SIMPLE_ASYNC_RESULT
@@ -960,7 +990,10 @@ g_io_job_send_to_mainloop
 G_IO_ERROR
 GIOErrorEnum
 g_io_error_from_errno
+<SUBSECTION Standard>
+G_TYPE_IO_ERROR_ENUM
 <SUBSECTION Private>
+g_io_error_enum_get_type
 g_io_error_quark
 </SECTION>
 
@@ -1007,10 +1040,10 @@ g_app_info_get_default_for_type
 g_app_info_get_default_for_uri_scheme
 g_app_launch_context_get_display
 g_app_launch_context_get_startup_notify_id
-g_app_launch_context_get_type
 g_app_launch_context_launch_failed
 g_app_launch_context_new
 <SUBSECTION Standard>
+G_TYPE_APP_INFO_CREATE_FLAGS
 GAppInfoIface
 GAppLaunchContextClass
 G_APP_INFO
@@ -1024,6 +1057,7 @@ G_IS_APP_LAUNCH_CONTEXT
 G_IS_APP_LAUNCH_CONTEXT_CLASS
 G_TYPE_APP_LAUNCH_CONTEXT
 <SUBSECTION Private>
+g_app_info_create_flags_get_type
 g_app_info_get_type
 g_app_launch_context_get_type
 GAppLaunchContextPrivate
@@ -1050,6 +1084,8 @@ g_mount_operation_get_choice
 g_mount_operation_set_choice
 g_mount_operation_reply
 <SUBSECTION Standard>
+G_TYPE_PASSWORD_FLAGS
+G_TYPE_PASSWORD_SAVE
 GMountOperationClass
 G_MOUNT_OPERATION
 G_IS_MOUNT_OPERATION
@@ -1058,6 +1094,8 @@ G_MOUNT_OPERATION_CLASS
 G_IS_MOUNT_OPERATION_CLASS
 G_MOUNT_OPERATION_GET_CLASS
 <SUBSECTION Private>
+g_password_flags_get_type
+g_password_save_get_type
 g_mount_operation_get_type
 GMountOperationPrivate
 </SECTION>
@@ -1128,7 +1166,7 @@ g_unix_mount_monitor_get_type
 <TITLE>GIOModule</TITLE>
 GIOModule
 g_io_module_new
-g_io_modules_ensure_loaded
+g_io_modules_load_all_in_directory
 g_io_module_load
 g_io_module_unload
 <SUBSECTION Standard>
