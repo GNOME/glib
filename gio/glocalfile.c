@@ -663,9 +663,11 @@ get_fs_type (long f_type)
 }
 #endif
 
+#ifndef G_OS_WIN32
+
 G_LOCK_DEFINE_STATIC(mount_info_hash);
 static GHashTable *mount_info_hash = NULL;
-guint64 mount_info_hash_cache_time = 0;
+static guint64 mount_info_hash_cache_time = 0;
 
 typedef enum {
   MOUNT_INFO_READONLY = 1<<0
@@ -750,6 +752,8 @@ get_mount_info (GFileInfo             *fs_info,
     g_file_info_set_attribute_boolean (fs_info, G_FILE_ATTRIBUTE_FS_READONLY, TRUE);
 }
 
+#endif
+
 static GFileInfo *
 g_local_file_query_filesystem_info (GFile         *file,
 				    const char    *attributes,
@@ -760,12 +764,14 @@ g_local_file_query_filesystem_info (GFile         *file,
   GFileInfo *info;
   int statfs_result;
   gboolean no_size;
+#ifndef G_OS_WIN32
   guint64 block_size;
 #ifdef USE_STATFS
   struct statfs statfs_buffer;
   const char *fstype;
 #elif defined(USE_STATVFS)
   struct statvfs statfs_buffer;
+#endif
 #endif
   GFileAttributeMatcher *attribute_matcher;
 	
@@ -1289,6 +1295,8 @@ find_mountpoint_for (const char *file,
     }
 }
 
+#ifndef G_OS_WIN32
+
 static char *
 find_topdir_for (const char *file)
 {
@@ -1301,6 +1309,8 @@ find_topdir_for (const char *file)
 
   return find_mountpoint_for (dir, dir_dev);
 }
+
+#endif
 
 static char *
 get_unique_filename (const char *basename, 
@@ -1400,10 +1410,9 @@ g_local_file_trash (GFile         *file,
 		    GError       **error)
 {
   GLocalFile *local = G_LOCAL_FILE (file);
-  struct stat file_stat, home_stat, trash_stat, global_stat;
+  struct stat file_stat, home_stat;
   const char *homedir;
-  char *dirname;
-  char *trashdir, *globaldir, *topdir, *infodir, *filesdir;
+  char *trashdir, *topdir, *infodir, *filesdir;
   char *basename, *trashname, *trashfile, *infoname, *infofile;
   char *original_name, *original_name_escaped;
   int i;
@@ -1411,6 +1420,10 @@ g_local_file_trash (GFile         *file,
   gboolean is_homedir_trash;
   char delete_time[32];
   int fd;
+#ifndef G_OS_WIN32
+  struct stat trash_stat, global_stat;
+  char *dirname, *globaldir;
+#endif
   
   if (g_lstat (local->filename, &file_stat) != 0)
     {
