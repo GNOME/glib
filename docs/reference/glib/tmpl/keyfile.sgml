@@ -89,6 +89,11 @@ Key files are always encoded in UTF-8.
 Key and Group names are case-sensitive, for example a group called
 <literal>[GROUP]</literal> is a different group from <literal>[group]</literal>.
 </para></listitem>
+<listitem><para>
+<filename>.ini</filename> files don't have a strongly typed boolean entry type, they only
+have <literal>GetProfileInt</literal>. In <structname>GKeyFile</structname> only
+<literal>true</literal> and <literal>false</literal> (in lower case) are allowed.
+</para></listitem>
 </itemizedlist>
 </para>
 

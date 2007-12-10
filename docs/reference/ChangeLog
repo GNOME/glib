@@ -1,3 +1,9 @@
+2007-12-10  Bastien Nocera  <hadess@hadess.net>
+
+	* glib/tmpl/keyfile.sgml: Mention the difference
+	in handling booleans between GKeyFile and .INI files
+	(Closes: #468882)
+
 2007-12-10  Alexander Larsson  <alexl@redhat.com>
 
         * gio/Makefile.am:
