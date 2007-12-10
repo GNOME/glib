@@ -1,3 +1,8 @@
+2007-12-10 13:02:08  Tim Janik  <timj@imendio.com>
+
+	* glib/gtestutils.c (g_assertion_message_cmpnum): applied patch by Tommi
+	Komulainen to fix int64 printouts, fixes #502511.
+
 2007-12-10  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gstrfuncs.h:

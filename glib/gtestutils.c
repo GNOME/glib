@@ -1143,7 +1143,7 @@ g_assertion_message_cmpnum (const char     *domain,
   switch (numtype)
     {
     case 'i':   s = g_strdup_printf ("assertion failed (%s): (%.0Lf %s %.0Lf)", expr, arg1, cmp, arg2); break;
-    case 'x':   s = g_strdup_printf ("assertion failed (%s): (0x%08Lx %s 0x%08Lx)", expr, (guint64) arg1, cmp, (guint64) arg2); break;
+    case 'x':   s = g_strdup_printf ("assertion failed (%s): (0x%08" G_GUINT64_FORMAT " %s 0x%08" G_GUINT64_FORMAT ")", expr, (guint64) arg1, cmp, (guint64) arg2); break;
     case 'f':   s = g_strdup_printf ("assertion failed (%s): (%.9Lg %s %.9Lg)", expr, arg1, cmp, arg2); break;
       /* ideally use: floats=%.7g double=%.17g */
     }
