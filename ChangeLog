@@ -1,3 +1,8 @@
+2007-12-10  Benjamin Otte  <otte@gnome.org>
+
+	* glib/garray.h: use an intermediate cast to void * in g_array_index()
+	to not trigger cast alignment warnings, fixes #502927.
+
 2007-12-10 15:08:59  Tim Janik  <timj@imendio.com>
 
         * let g_warn_if_fail replace g_assert as discussed here:
