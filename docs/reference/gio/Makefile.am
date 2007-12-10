@@ -20,13 +20,19 @@ CFILE_GLOB=$(top_srcdir)/gio/*.c
 IGNORE_HFILES= 		           \
 	fam-helper.h			\
 	gasynchelper.h			\
+	gcontenttypeprivate.h		\
 	gdesktopappinfo.h		\
 	gdummyfile.h			\
 	gfamdirectorymonitor.h		\
 	gfamfilemonitor.h		\
-	gioalias.h			\
 	ginotifydirectorymonitor.h	\
 	ginotifyfilemonitor.h		\
+	gio-marshal.h			\
+	gio.h				\
+	gioalias.h			\
+	gioalias.h			\
+	gioenumtypes.h			\
+	giomodule-priv.h		\
 	glocaldirectorymonitor.h	\
 	glocalfile.h			\
 	glocalfileenumerator.h		\
@@ -43,7 +49,12 @@ IGNORE_HFILES= 		           \
 	gunixvolumemonitor.h		\
 	gvolumeprivate.h		\
 	gwin32appinfo.h			\
+	inotify-diag.h			\
+	inotify-helper.h		\
 	inotify-kernel.h		\
+	inotify-missing.h		\
+	inotify-path.h			\
+	inotify-sub.h			\
 	local_inotify.h			\
 	local_inotify_syscalls.h	\
 	xdgmime.h			\

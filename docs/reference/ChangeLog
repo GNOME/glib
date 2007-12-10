@@ -1,3 +1,11 @@
+2007-12-10  Alexander Larsson  <alexl@redhat.com>
+
+        * gio/Makefile.am:
+	Remove more internal headers.
+	
+        * gio/gio-sections.txt:
+	Update for changes
+
 2007-12-10  Matthias Clasen  <mclasen@redhat.com>
 
 	* gio/Makefile.am: Ignore gioalias.h
