@@ -2318,12 +2318,12 @@ g_file_set_display_name (GFile         *file,
   g_return_val_if_fail (G_IS_FILE (file), NULL);
   g_return_val_if_fail (display_name != NULL, NULL);
 
-  if (strchr (display_name, '/') != NULL)
+  if (strchr (display_name, G_DIR_SEPARATOR) != NULL)
     {
       g_set_error (error,
 		   G_IO_ERROR,
 		   G_IO_ERROR_INVALID_ARGUMENT,
-		   _("File names cannot contain '/'"));
+		   _("File names cannot contain '%c'"), G_DIR_SEPARATOR);
       return NULL;
     }
   

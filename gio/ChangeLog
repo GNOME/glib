@@ -1,3 +1,8 @@
+2007-12-10  Alexander Larsson  <alexl@redhat.com>
+
+	* gfile.c (g_file_set_display_name):
+	Don't hardcode '/' (#502727)
+
 2007-12-09  Hans Breuer  <hans@breuer.org>
 
 	* makefile.msc : follow lib naming convention
