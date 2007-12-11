@@ -78,6 +78,7 @@
 #include <glib/gtree.h>
 #include <glib/gtypes.h>
 #include <glib/gunicode.h>
+#include <glib/gurifuncs.h>
 #include <glib/gutils.h>
 #ifdef G_PLATFORM_WIN32
 #include <glib/gwin32.h>

@@ -1,3 +1,7 @@
+2007-12-10  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/glib.h: Include gurifuncs.h
+
 2007-12-10  Benjamin Otte  <otte@gnome.org>
 
 	* glib/garray.h: use an intermediate cast to void * in g_array_index()
