@@ -18,6 +18,7 @@
  * Boston, MA 02111-1307, USA.
  *
  * Author: Alexander Larsson <alexl@redhat.com>
+ *         David Zeuthen <davidz@redhat.com>
  */
 
 #include <config.h>
@@ -32,9 +33,19 @@
  * @short_description: Virtual File System drive management
  * @include: gio/gdrive.h
  * 
- * #GDrive manages drive operations from GVFS, including volume mounting
- * and ejecting, and getting the drive's name and icon. 
- * 
+ * #GDrive is a container class for #GVolume objects that stem from
+ * the same piece of media. As such, #GDrive abstracts a drive with
+ * (or without) removable media and provides operations for querying
+ * whether media is available, determing whether media change is
+ * automatically detected and ejecting the media.
+ *
+ * If the #GDrive reports that media isn't automatically detected, one
+ * can poll for media; typically one should not do this periodically
+ * as a poll for media operation is potententially expensive and may
+ * spin up the drive creating noise.
+ *
+ * For porting from GnomeVFS note that there is no equivalent of
+ * #GDrive in that API.
  **/
 
 static void g_drive_base_init (gpointer g_class);
@@ -148,9 +159,9 @@ g_drive_get_icon (GDrive *drive)
  * g_drive_has_volumes:
  * @drive: a #GDrive.
  * 
- * Checks if a drive has any volumes.
+ * Check if @drive has any mountable volumes.
  * 
- * Returns: %TRUE if @drive contains volumes, %FALSE otherwise.
+ * Returns: %TRUE if the @drive contains volumes, %FALSE otherwise.
  **/
 gboolean
 g_drive_has_volumes (GDrive *drive)
@@ -168,10 +179,9 @@ g_drive_has_volumes (GDrive *drive)
  * g_drive_get_volumes:
  * @drive: a #GDrive.
  * 
- * Gets a list of volumes for a drive.
+ * Get a list of mountable volumes for @drive.
  * 
  * Returns: #GList containing any #GVolume<!---->s on the given @drive.
- * <!-- NOTE: Fact-check this. -->
  **/
 GList *
 g_drive_get_volumes (GDrive *drive)
@@ -186,15 +196,15 @@ g_drive_get_volumes (GDrive *drive)
 }
 
 /**
- * g_drive_is_automounted:
+ * g_drive_is_media_check_automatic:
  * @drive: a #GDrive.
  * 
- * Checks if a drive was automatically mounted, e.g. by HAL.
+ * Checks if @drive is capabable of automatically detecting media changes.
  * 
- * Returns: %TRUE if the drive was automounted. %FALSE otherwise.
+ * Returns: %TRUE if the @drive is capabable of automatically detecting media changes, %FALSE otherwise.
  **/
 gboolean
-g_drive_is_automounted (GDrive *drive)
+g_drive_is_media_check_automatic (GDrive *drive)
 {
   GDriveIface *iface;
 
@@ -202,19 +212,19 @@ g_drive_is_automounted (GDrive *drive)
 
   iface = G_DRIVE_GET_IFACE (drive);
 
-  return (* iface->is_automounted) (drive);
+  return (* iface->is_media_check_automatic) (drive);
 }
 
 /**
- * g_drive_can_mount:
+ * g_drive_is_media_removable:
  * @drive: a #GDrive.
  * 
- * Checks if a drive can be mounted.
+ * Checks if the @drive supports removable media.
  * 
- * Returns: %TRUE if the @drive can be mounted. %FALSE otherwise.
+ * Returns: %TRUE if @drive supports removable media, %FALSE otherwise.
  **/
 gboolean
-g_drive_can_mount (GDrive *drive)
+g_drive_is_media_removable (GDrive *drive)
 {
   GDriveIface *iface;
 
@@ -222,10 +232,29 @@ g_drive_can_mount (GDrive *drive)
 
   iface = G_DRIVE_GET_IFACE (drive);
 
-  if (iface->can_mount == NULL)
-    return FALSE;
+  return (* iface->is_media_removable) (drive);
+}
 
-  return (* iface->can_mount) (drive);
+/**
+ * g_drive_has_media:
+ * @drive: a #GDrive.
+ * 
+ * Checks if the @drive has media. Note that the OS may not be polling
+ * the drive for media changes; see g_drive_is_media_check_automatic()
+ * for more details.
+ * 
+ * Returns: %TRUE if @drive has media, %FALSE otherwise.
+ **/
+gboolean
+g_drive_has_media (GDrive *drive)
+{
+  GDriveIface *iface;
+
+  g_return_val_if_fail (G_IS_DRIVE (drive), FALSE);
+
+  iface = G_DRIVE_GET_IFACE (drive);
+
+  return (* iface->has_media) (drive);
 }
 
 /**
@@ -252,74 +281,26 @@ g_drive_can_eject (GDrive *drive)
 }
 
 /**
- * g_drive_mount:
+ * g_drive_can_poll_for_media:
  * @drive: a #GDrive.
- * @mount_operation: a #GMountOperation.
- * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @callback: a #GAsyncReadyCallback.
- * @user_data: a #gpointer.
  * 
- * Mounts a drive.
- **/
-void
-g_drive_mount (GDrive              *drive,
-	       GMountOperation     *mount_operation,
-	       GCancellable        *cancellable,
-	       GAsyncReadyCallback  callback,
-	       gpointer             user_data)
-{
-  GDriveIface *iface;
-
-  g_return_if_fail (G_IS_DRIVE (drive));
-  g_return_if_fail (G_IS_MOUNT_OPERATION (mount_operation));
-
-  iface = G_DRIVE_GET_IFACE (drive);
-
-  if (iface->mount_fn == NULL)
-    {
-      g_simple_async_report_error_in_idle (G_OBJECT (drive), callback, user_data,
-					   G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
-					   _("drive doesn't implement mount"));
-      
-      return;
-    }
-  
-  (* iface->mount_fn) (drive, mount_operation, cancellable, callback, user_data);
-}
-
-/**
- * g_drive_mount_finish:
- * @drive: a #GDrive.
- * @result: a #GAsyncResult.
- * @error: a #GError.
+ * Checks if a drive can be polled for media changes.
  * 
- * Finishes mounting a drive. 
- *
- * If the @drive's interface does not implement the mount operation, @error will 
- * be set to %G_IO_ERROR_NOT_SUPPORTED and %FALSE will be returned.
- * 
- * Returns: %TRUE if the mount was finished successfully, 
- *     %FALSE if operation failed.
+ * Returns: %TRUE if the @drive can be polled for media changes. %FALSE otherwise.
  **/
 gboolean
-g_drive_mount_finish (GDrive        *drive,
-		      GAsyncResult  *result,
-		      GError       **error)
+g_drive_can_poll_for_media (GDrive *drive)
 {
   GDriveIface *iface;
 
   g_return_val_if_fail (G_IS_DRIVE (drive), FALSE);
-  g_return_val_if_fail (G_IS_ASYNC_RESULT (result), FALSE);
 
-  if (G_IS_SIMPLE_ASYNC_RESULT (result))
-    {
-      GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
-      if (g_simple_async_result_propagate_error (simple, error))
-	return FALSE;
-    }
-  
   iface = G_DRIVE_GET_IFACE (drive);
-  return (* iface->mount_finish) (drive, result, error);
+
+  if (iface->poll_for_media == NULL)
+    return FALSE;
+
+  return (* iface->can_poll_for_media) (drive);
 }
 
 /**
@@ -363,9 +344,6 @@ g_drive_eject (GDrive              *drive,
  * @error: a #GError.
  * 
  * Finishes ejecting a drive.
- *
- * If @drive's interface does not implement the eject operation, @error will 
- * be set to %G_IO_ERROR_NOT_SUPPORTED and %FALSE will be returned.
  * 
  * Returns: %TRUE if the drive has been ejected successfully,
  * %FALSE otherwise.
@@ -389,7 +367,74 @@ g_drive_eject_finish (GDrive        *drive,
   
   iface = G_DRIVE_GET_IFACE (drive);
   
-  return (* iface->mount_finish) (drive, result, error);
+  return (* iface->eject_finish) (drive, result, error);
+}
+
+/**
+ * g_drive_poll_for_media:
+ * @drive: a #GDrive.
+ * @cancellable: optional #GCancellable object, %NULL to ignore.
+ * @callback: a #GAsyncReadyCallback.
+ * @user_data: a #gpointer.
+ * 
+ * Polls @drive to see if media has been inserted or removed.
+ * 
+ **/
+void
+g_drive_poll_for_media (GDrive              *drive,
+                        GCancellable        *cancellable,
+                        GAsyncReadyCallback  callback,
+                        gpointer             user_data)
+{
+  GDriveIface *iface;
+
+  g_return_if_fail (G_IS_DRIVE (drive));
+
+  iface = G_DRIVE_GET_IFACE (drive);
+
+  if (iface->poll_for_media == NULL)
+    {
+      g_simple_async_report_error_in_idle (G_OBJECT (drive), callback, user_data,
+					   G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+					   _("drive doesn't implement polling for media"));
+      
+      return;
+    }
+  
+  (* iface->poll_for_media) (drive, cancellable, callback, user_data);
+}
+
+/**
+ * g_drive_poll_for_media_finish
+ * @drive: a #GDrive.
+ * @result: a #GAsyncResult.
+ * @error: a #GError.
+ * 
+ * Finishes poll_for_mediaing a drive.
+ * 
+ * Returns: %TRUE if the drive has been poll_for_mediaed successfully,
+ * %FALSE otherwise.
+ **/
+gboolean
+g_drive_poll_for_media_finish (GDrive        *drive,
+                               GAsyncResult  *result,
+                               GError       **error)
+{
+  GDriveIface *iface;
+
+  g_return_val_if_fail (G_IS_DRIVE (drive), FALSE);
+  g_return_val_if_fail (G_IS_ASYNC_RESULT (result), FALSE);
+
+  if (G_IS_SIMPLE_ASYNC_RESULT (result))
+    {
+      GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
+      if (g_simple_async_result_propagate_error (simple, error))
+	return FALSE;
+    }
+  
+  iface = G_DRIVE_GET_IFACE (drive);
+  
+  return (* iface->poll_for_media_finish) (drive, result, error);
 }
 
 #define __G_DRIVE_C__

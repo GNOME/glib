@@ -1,3 +1,5 @@
+/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
+
 /* GIO - GLib Input, Output and Streaming Library
  * 
  * Copyright (C) 2006-2007 Red Hat, Inc.
@@ -46,8 +48,12 @@
 #include "gunixmounts.h"
 #include "gfile.h"
 #include "gfilemonitor.h"
+#include "glibintl.h"
+#include "gthemedicon.h"
 
 #include "gioalias.h"
+
+static const char *_resolve_dev_root (void);
 
 /**
  * SECTION:gunixmounts
@@ -57,7 +63,41 @@
  *
  **/
 
-struct _GUnixMount {
+/**
+ * GUnixMountType:
+ * @G_UNIX_MOUNT_TYPE_UNKNOWN: Unknown UNIX mount type.
+ * @G_UNIX_MOUNT_TYPE_FLOPPY: Floppy disk UNIX mount type.
+ * @G_UNIX_MOUNT_TYPE_CDROM: CDROM UNIX mount type.
+ * @G_UNIX_MOUNT_TYPE_NFS: Network File System (NFS) UNIX mount type.
+ * @G_UNIX_MOUNT_TYPE_ZIP: ZIP UNIX mount type.
+ * @G_UNIX_MOUNT_TYPE_JAZ: JAZZ UNIX mount type.
+ * @G_UNIX_MOUNT_TYPE_MEMSTICK: Memory Stick UNIX mount type.
+ * @G_UNIX_MOUNT_TYPE_CF: Compact Flash UNIX mount type.
+ * @G_UNIX_MOUNT_TYPE_SM: Smart Media UNIX mount type.
+ * @G_UNIX_MOUNT_TYPE_SDMMC: SD/MMC UNIX mount type.
+ * @G_UNIX_MOUNT_TYPE_IPOD: iPod UNIX mount type.
+ * @G_UNIX_MOUNT_TYPE_CAMERA: Digital camera UNIX mount type.
+ * @G_UNIX_MOUNT_TYPE_HD: Hard drive UNIX mount type.
+ * 
+ * Types of UNIX mounts.
+ **/
+typedef enum {
+  G_UNIX_MOUNT_TYPE_UNKNOWN,
+  G_UNIX_MOUNT_TYPE_FLOPPY,
+  G_UNIX_MOUNT_TYPE_CDROM,
+  G_UNIX_MOUNT_TYPE_NFS,
+  G_UNIX_MOUNT_TYPE_ZIP,
+  G_UNIX_MOUNT_TYPE_JAZ,
+  G_UNIX_MOUNT_TYPE_MEMSTICK,
+  G_UNIX_MOUNT_TYPE_CF,
+  G_UNIX_MOUNT_TYPE_SM,
+  G_UNIX_MOUNT_TYPE_SDMMC,
+  G_UNIX_MOUNT_TYPE_IPOD,
+  G_UNIX_MOUNT_TYPE_CAMERA,
+  G_UNIX_MOUNT_TYPE_HD
+} GUnixMountType;
+
+struct _GUnixMountEntry {
   char *mount_path;
   char *device_path;
   char *filesystem_type;
@@ -151,6 +191,63 @@ is_in (const char *value, const char *set[])
   return FALSE;
 }
 
+/**
+ * g_unix_is_mount_path_system_internal:
+ * @mount_path: a mount path, e.g. <literal>/media/disk</literal> or <literal>/usr</literal>
+ *
+ * Determines if @mount_path is considered an implementation of the
+ * OS. This is primarily used for hiding mountable and mounted volumes
+ * that only are used in the OS and has little to no relevance to the
+ * casual user.
+ *
+ * Returns; %TRUE if @mount_path is considered an implementation detail of the OS.
+ **/
+gboolean
+g_unix_is_mount_path_system_internal (const char *mount_path)
+{
+  const char *ignore_mountpoints[] = {
+    /* Includes all FHS 2.3 toplevel dirs and other specilized
+     * directories that we want to hide from the user.
+     */
+    "/",              /* we already have "Filesystem root" in Nautilus */ 
+    "/bin",
+    "/boot",
+    "/dev",
+    "/etc",
+    "/home",
+    "/lib",
+    "/lib64",
+    "/media",
+    "/mnt",
+    "/opt",
+    "/root",
+    "/sbin",
+    "/srv",
+    "/tmp",
+    "/usr",
+    "/var",
+    "/var/log/audit", /* https://bugzilla.redhat.com/show_bug.cgi?id=333041 */
+    "/var/tmp",       /* https://bugzilla.redhat.com/show_bug.cgi?id=335241 */
+    "/proc",
+    "/sbin",
+    "/net",
+    NULL
+  };
+
+  if (is_in (mount_path, ignore_mountpoints))
+    return TRUE;
+  
+  if (g_str_has_prefix (mount_path, "/dev") ||
+      g_str_has_prefix (mount_path, "/proc") ||
+      g_str_has_prefix (mount_path, "/sys"))
+    return TRUE;
+
+  if (strstr (mount_path, "/.gvfs") != NULL)
+    return TRUE;
+
+  return FALSE;
+}
+
 static gboolean
 guess_system_internal (const char *mountpoint,
 		       const char *fs,
@@ -183,29 +280,6 @@ guess_system_internal (const char *mountpoint,
     "/dev/vn",
     NULL
   };
-  const char *ignore_mountpoints[] = {
-    /* Includes all FHS 2.3 toplevel dirs */
-    "/bin",
-    "/boot",
-    "/dev",
-    "/etc",
-    "/home",
-    "/lib",
-    "/lib64",
-    "/media",
-    "/mnt",
-    "/opt",
-    "/root",
-    "/sbin",
-    "/srv",
-    "/tmp",
-    "/usr",
-    "/var",
-    "/proc",
-    "/sbin",
-    "/net",
-    NULL
-  };
   
   if (is_in (fs, ignore_fs))
     return TRUE;
@@ -213,15 +287,7 @@ guess_system_internal (const char *mountpoint,
   if (is_in (device, ignore_devices))
     return TRUE;
 
-  if (is_in (mountpoint, ignore_mountpoints))
-    return TRUE;
-  
-  if (g_str_has_prefix (mountpoint, "/dev") ||
-      g_str_has_prefix (mountpoint, "/proc") ||
-      g_str_has_prefix (mountpoint, "/sys"))
-    return TRUE;
-
-  if (strstr (mountpoint, "/.gvfs") != NULL)
+  if (g_unix_is_mount_path_system_internal (mountpoint))
     return TRUE;
   
   return FALSE;
@@ -261,7 +327,7 @@ _g_get_unix_mounts ()
   struct mntent *mntent;
   FILE *file;
   char *read_file;
-  GUnixMount *mount_entry;
+  GUnixMountEntry *mount_entry;
   GHashTable *mounts_hash;
   GList *return_list;
   
@@ -291,11 +357,14 @@ _g_get_unix_mounts ()
       if (mntent->mnt_fsname != NULL &&
 	  mntent->mnt_fsname[0] == '/' &&
 	  g_hash_table_lookup (mounts_hash, mntent->mnt_fsname))
-	continue;
+        continue;
       
-      mount_entry = g_new0 (GUnixMount, 1);
+      mount_entry = g_new0 (GUnixMountEntry, 1);
       mount_entry->mount_path = g_strdup (mntent->mnt_dir);
-      mount_entry->device_path = g_strdup (mntent->mnt_fsname);
+      if (strcmp (mntent->mnt_fsname, "/dev/root") == 0)
+        mount_entry->device_path = g_strdup (_resolve_dev_root ());
+      else
+        mount_entry->device_path = g_strdup (mntent->mnt_fsname);
       mount_entry->filesystem_type = g_strdup (mntent->mnt_type);
       
 #if defined (HAVE_HASMNTOPT)
@@ -349,7 +418,7 @@ _g_get_unix_mounts (void)
   struct mnttab mntent;
   FILE *file;
   char *read_file;
-  GUnixMount *mount_entry;
+  GUnixMountEntry *mount_entry;
   GList *return_list;
   
   read_file = get_mtab_read_file ();
@@ -363,7 +432,7 @@ _g_get_unix_mounts (void)
   G_LOCK (getmntent);
   while (! getmntent (file, &mntent))
     {
-      mount_entry = g_new0 (GUnixMount, 1);
+      mount_entry = g_new0 (GUnixMountEntry, 1);
       
       mount_entry->mount_path = g_strdup (mntent.mnt_mountp);
       mount_entry->device_path = g_strdup (mntent.mnt_special);
@@ -432,7 +501,7 @@ _g_get_unix_mounts (void)
   return_list = NULL;
   while (vmount_number > 0)
     {
-      mount_entry = g_new0 (GUnixMount, 1);
+      mount_entry = g_new0 (GUnixMountEntry, 1);
       
       mount_entry->device_path = g_strdup (vmt2dataptr (vmount_info, VMT_OBJECT));
       mount_entry->mount_path = g_strdup (vmt2dataptr (vmount_info, VMT_STUB));
@@ -477,7 +546,7 @@ _g_get_unix_mounts (void)
 {
   struct statfs *mntent = NULL;
   int num_mounts, i;
-  GUnixMount *mount_entry;
+  GUnixMountEntry *mount_entry;
   GList *return_list;
   
   /* Pass MNT_NOWAIT to avoid blocking trying to update NFS mounts. */
@@ -488,7 +557,7 @@ _g_get_unix_mounts (void)
   
   for (i = 0; i < num_mounts; i++)
     {
-      mount_entry = g_new0 (GUnixMount, 1);
+      mount_entry = g_new0 (GUnixMountEntry, 1);
       
       mount_entry->mount_path = g_strdup (mntent[i].f_mntonname);
       mount_entry->device_path = g_strdup (mntent[i].f_mntfromname);
@@ -554,10 +623,13 @@ _g_get_unix_mount_points (void)
       if ((strcmp (mntent->mnt_dir, "ignore") == 0) ||
 	  (strcmp (mntent->mnt_dir, "swap") == 0))
 	continue;
-      
+
       mount_entry = g_new0 (GUnixMountPoint, 1);
       mount_entry->mount_path = g_strdup (mntent->mnt_dir);
-      mount_entry->device_path = g_strdup (mntent->mnt_fsname);
+      if (strcmp (mntent->mnt_fsname, "/dev/root") == 0)
+        mount_entry->device_path = g_strdup (_resolve_dev_root ());
+      else
+        mount_entry->device_path = g_strdup (mntent->mnt_fsname);
       mount_entry->filesystem_type = g_strdup (mntent->mnt_type);
       
 #ifdef HAVE_HASMNTOPT
@@ -931,18 +1003,18 @@ g_get_unix_mounts (guint64 *time_read)
  * @mount_path: path for a possible unix mount.
  * @time_read: guint64 to contain a timestamp.
  * 
- * Gets a #GUnixMount for a given mount path. If @time_read
+ * Gets a #GUnixMountEntry for a given mount path. If @time_read
  * is set, it will be filled with a unix timestamp for checking
  * if the mounts have changed since with g_unix_mounts_changed_since().
  * 
  * Returns: a #GUnixMount. 
  **/
-GUnixMount *
+GUnixMountEntry *
 g_get_unix_mount_at (const char *mount_path,
 		     guint64 *time_read)
 {
   GList *mounts, *l;
-  GUnixMount *mount_entry, *found;
+  GUnixMountEntry *mount_entry, *found;
   
   mounts = g_get_unix_mounts (time_read);
 
@@ -1156,7 +1228,7 @@ g_unix_mount_monitor_new (void)
  * Frees a unix mount.
  **/
 void
-g_unix_mount_free (GUnixMount *mount_entry)
+g_unix_mount_free (GUnixMountEntry *mount_entry)
 {
   g_return_if_fail (mount_entry != NULL);
 
@@ -1198,8 +1270,8 @@ strcmp_null (const char *str1,
 
 /**
  * g_unix_mount_compare:
- * @mount1: first #GUnixMount to compare.
- * @mount2: second #GUnixMount to compare.
+ * @mount1: first #GUnixMountEntry to compare.
+ * @mount2: second #GUnixMountEntry to compare.
  * 
  * Compares two unix mounts.
  * 
@@ -1207,8 +1279,8 @@ strcmp_null (const char *str1,
  * or less than @mount2, respectively. 
  **/
 gint
-g_unix_mount_compare (GUnixMount *mount1,
-		      GUnixMount *mount2)
+g_unix_mount_compare (GUnixMountEntry *mount1,
+		      GUnixMountEntry *mount2)
 {
   int res;
 
@@ -1235,14 +1307,14 @@ g_unix_mount_compare (GUnixMount *mount1,
 
 /**
  * g_unix_mount_get_mount_path:
- * @mount_entry: input #GUnixMount to get the mount path for.
+ * @mount_entry: input #GUnixMountEntry to get the mount path for.
  * 
  * Gets the mount path for a unix mount.
  * 
  * Returns: the mount path for @mount_entry.
  **/
 const char *
-g_unix_mount_get_mount_path (GUnixMount *mount_entry)
+g_unix_mount_get_mount_path (GUnixMountEntry *mount_entry)
 {
   g_return_val_if_fail (mount_entry != NULL, NULL);
 
@@ -1258,7 +1330,7 @@ g_unix_mount_get_mount_path (GUnixMount *mount_entry)
  * Returns: a string containing the device path.
  **/
 const char *
-g_unix_mount_get_device_path (GUnixMount *mount_entry)
+g_unix_mount_get_device_path (GUnixMountEntry *mount_entry)
 {
   g_return_val_if_fail (mount_entry != NULL, NULL);
 
@@ -1274,7 +1346,7 @@ g_unix_mount_get_device_path (GUnixMount *mount_entry)
  * Returns: a string containing the file system type.
  **/
 const char *
-g_unix_mount_get_fs_type (GUnixMount *mount_entry)
+g_unix_mount_get_fs_type (GUnixMountEntry *mount_entry)
 {
   g_return_val_if_fail (mount_entry != NULL, NULL);
 
@@ -1290,7 +1362,7 @@ g_unix_mount_get_fs_type (GUnixMount *mount_entry)
  * Returns: %TRUE if @mount_entry is read only.
  **/
 gboolean
-g_unix_mount_is_readonly (GUnixMount *mount_entry)
+g_unix_mount_is_readonly (GUnixMountEntry *mount_entry)
 {
   g_return_val_if_fail (mount_entry != NULL, FALSE);
 
@@ -1306,7 +1378,7 @@ g_unix_mount_is_readonly (GUnixMount *mount_entry)
  * Returns: %TRUE if the unix mount is for a system path.
  **/
 gboolean
-g_unix_mount_is_system_internal (GUnixMount *mount_entry)
+g_unix_mount_is_system_internal (GUnixMountEntry *mount_entry)
 {
   g_return_val_if_fail (mount_entry != NULL, FALSE);
 
@@ -1560,7 +1632,7 @@ guess_mount_type (const char *mount_path,
  * Returns: a #GUnixMountType. 
  **/
 GUnixMountType
-g_unix_mount_guess_type (GUnixMount *mount_entry)
+g_unix_mount_guess_type (GUnixMountEntry *mount_entry)
 {
   g_return_val_if_fail (mount_entry != NULL, G_UNIX_MOUNT_TYPE_UNKNOWN);
   g_return_val_if_fail (mount_entry->mount_path != NULL, G_UNIX_MOUNT_TYPE_UNKNOWN);
@@ -1592,6 +1664,274 @@ g_unix_mount_point_guess_type (GUnixMountPoint *mount_point)
   return guess_mount_type (mount_point->mount_path,
 			   mount_point->device_path,
 			   mount_point->filesystem_type);
+}
+
+static const char *
+type_to_icon (GUnixMountType type, gboolean is_mount_point)
+{
+  const char *icon_name;
+  
+  switch (type)
+    {
+    case G_UNIX_MOUNT_TYPE_HD:
+      if (is_mount_point)
+        icon_name = "drive-removable-media";
+      else
+        icon_name = "drive-harddisk";
+      break;
+    case G_UNIX_MOUNT_TYPE_FLOPPY:
+    case G_UNIX_MOUNT_TYPE_ZIP:
+    case G_UNIX_MOUNT_TYPE_JAZ:
+      if (is_mount_point)
+        icon_name = "drive-removable-media";
+      else
+        icon_name = "media-floppy";
+      break;
+    case G_UNIX_MOUNT_TYPE_CDROM:
+      if (is_mount_point)
+        icon_name = "drive-optical";
+      else
+        icon_name = "media-optical";
+      break;
+    case G_UNIX_MOUNT_TYPE_NFS:
+      /* TODO: Would like a better icon here... */
+      if (is_mount_point)
+        icon_name = "drive-removable-media";
+      else
+        icon_name = "drive-harddisk";
+      break;
+    case G_UNIX_MOUNT_TYPE_MEMSTICK:
+      if (is_mount_point)
+        icon_name = "drive-removable-media";
+      else
+        icon_name = "media-flash";
+      break;
+    case G_UNIX_MOUNT_TYPE_CAMERA:
+      if (is_mount_point)
+        icon_name = "drive-removable-media";
+      else
+        icon_name = "camera-photo";
+      break;
+    case G_UNIX_MOUNT_TYPE_IPOD:
+      if (is_mount_point)
+        icon_name = "drive-removable-media";
+      else
+        icon_name = "multimedia-player";
+      break;
+    case G_UNIX_MOUNT_TYPE_UNKNOWN:
+    default:
+      if (is_mount_point)
+        icon_name = "drive-removable-media";
+      else
+        icon_name = "drive-harddisk";
+      break;
+    }
+
+  return icon_name;
+}
+
+char *
+g_unix_mount_guess_name (GUnixMountEntry *mount_entry)
+{
+  char *name;
+
+  if (strcmp (mount_entry->mount_path, "/") == 0)
+    name = g_strdup (_("Filesystem root"));
+  else
+    name = g_filename_display_basename (mount_entry->mount_path);
+
+  return name;
+}
+
+GIcon *
+g_unix_mount_guess_icon (GUnixMountEntry *mount_entry)
+{
+  return g_themed_icon_new (type_to_icon (g_unix_mount_guess_type (mount_entry), FALSE));
+}
+
+char *
+g_unix_mount_point_guess_name (GUnixMountPoint *mount_point)
+{
+  char *name;
+
+  if (strcmp (mount_point->mount_path, "/") == 0)
+    name = g_strdup (_("Filesystem root"));
+  else
+    name = g_filename_display_basename (mount_point->mount_path);
+
+  return name;
+}
+
+GIcon *
+g_unix_mount_point_guess_icon (GUnixMountPoint *mount_point)
+{
+  return g_themed_icon_new (type_to_icon (g_unix_mount_point_guess_type (mount_point), TRUE));
+}
+
+
+/* borrowed from gtk/gtkfilesystemunix.c in GTK+ on 02/23/2006 */
+static void
+_canonicalize_filename (gchar *filename)
+{
+  gchar *p, *q;
+  gboolean last_was_slash = FALSE;
+  
+  p = filename;
+  q = filename;
+  
+  while (*p)
+    {
+      if (*p == G_DIR_SEPARATOR)
+        {
+          if (!last_was_slash)
+            *q++ = G_DIR_SEPARATOR;
+          
+          last_was_slash = TRUE;
+        }
+      else
+        {
+          if (last_was_slash && *p == '.')
+            {
+              if (*(p + 1) == G_DIR_SEPARATOR ||
+                  *(p + 1) == '\0')
+                {
+                  if (*(p + 1) == '\0')
+                    break;
+                  
+                  p += 1;
+                }
+              else if (*(p + 1) == '.' &&
+                       (*(p + 2) == G_DIR_SEPARATOR ||
+                        *(p + 2) == '\0'))
+                {
+                  if (q > filename + 1)
+                    {
+                      q--;
+                      while (q > filename + 1 &&
+                             *(q - 1) != G_DIR_SEPARATOR)
+                        q--;
+                    }
+                  
+                  if (*(p + 2) == '\0')
+                    break;
+                  
+                  p += 2;
+                }
+              else
+                {
+                  *q++ = *p;
+                  last_was_slash = FALSE;
+                }
+            }
+          else
+            {
+              *q++ = *p;
+              last_was_slash = FALSE;
+            }
+        }
+      
+      p++;
+    }
+  
+  if (q > filename + 1 && *(q - 1) == G_DIR_SEPARATOR)
+    q--;
+  
+  *q = '\0';
+}
+
+static char *
+_resolve_symlink (const char *file)
+{
+  GError *error;
+  char *dir;
+  char *link;
+  char *f;
+  char *f1;
+  
+  f = g_strdup (file);
+  
+  while (g_file_test (f, G_FILE_TEST_IS_SYMLINK)) {
+    link = g_file_read_link (f, &error);
+    if (link == NULL) {
+      g_error_free (error);
+      g_free (f);
+      f = NULL;
+      goto out;
+    }
+    
+    dir = g_path_get_dirname (f);
+    f1 = g_strdup_printf ("%s/%s", dir, link);
+    g_free (dir);
+    g_free (link);
+    g_free (f);
+    f = f1;
+  }
+  
+ out:
+  if (f != NULL)
+    _canonicalize_filename (f);
+  return f;
+}
+
+static const char *
+_resolve_dev_root (void)
+{
+  static gboolean have_real_dev_root = FALSE;
+  static char real_dev_root[256];
+  struct stat statbuf;
+  
+  /* see if it's cached already */
+  if (have_real_dev_root)
+    goto found;
+  
+  /* otherwise we're going to find it right away.. */
+  have_real_dev_root = TRUE;
+  
+  if (stat ("/dev/root", &statbuf) == 0) {
+    if (! S_ISLNK (statbuf.st_mode)) {
+      dev_t root_dev = statbuf.st_dev;
+      FILE *f;
+      char buf[1024];
+      
+      /* see if device with similar major:minor as /dev/root is mention
+       * in /etc/mtab (it usually is) 
+       */
+      f = fopen ("/etc/mtab", "r");
+      if (f != NULL) {
+        struct mntent ent;
+        
+        while (getmntent_r (f, &ent, buf, sizeof (buf)) != NULL) {
+          
+          if (stat (ent.mnt_fsname, &statbuf) == 0 &&
+              statbuf.st_dev == root_dev) {
+            strncpy (real_dev_root, ent.mnt_fsname, sizeof (real_dev_root) - 1);
+            real_dev_root[sizeof (real_dev_root) - 1] = '\0';
+            fclose (f);
+            goto found;
+          }
+        }
+        fclose (f);
+      }                                        
+      
+      /* no, that didn't work.. next we could scan /dev ... but I digress.. */
+      
+    } else {
+      char *resolved;
+      resolved = _resolve_symlink ("/dev/root");
+      if (resolved != NULL) {
+        strncpy (real_dev_root, resolved, sizeof (real_dev_root) - 1);
+        real_dev_root[sizeof (real_dev_root) - 1] = '\0';
+        g_free (resolved);
+        goto found;
+      }
+    }
+  }
+  
+  /* bah sucks.. */
+  strcpy (real_dev_root, "/dev/root");
+  
+ found:
+  return real_dev_root;
 }
 
 #define __G_UNIX_MOUNTS_C__

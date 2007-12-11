@@ -90,8 +90,8 @@ if OS_UNIX
 appinfo_sources += gdesktopappinfo.c gdesktopappinfo.h
 platform_libadd += xdgmime/libxdgmime.la
 unix_sources = \
-	gunixdrive.c 		\
-	gunixdrive.h 		\
+	gunixmount.c		\
+	gunixmount.h		\
 	gunixmounts.c 		\
 	gunixmounts.h 		\
 	gunixvolume.c 		\
@@ -101,6 +101,7 @@ unix_sources = \
 	gunixinputstream.c 	\
 	gunixoutputstream.c 	\
 	$(NULL)
+
 
 giounixincludedir=$(includedir)/gio-unix-2.0/gio
 giounixinclude_HEADERS = \
@@ -150,6 +151,7 @@ libgio_2_0_la_SOURCES =		\
 	giomodule-priv.h	\
 	gioscheduler.c 		\
 	gloadableicon.c 	\
+	gmount.c 		\
 	gmemoryinputstream.c 	\
 	gmemoryoutputstream.c 	\
 	gmountoperation.c 	\
@@ -166,7 +168,7 @@ libgio_2_0_la_SOURCES =		\
 	gvfs.c 			\
 	gvolume.c 		\
 	gvolumemonitor.c 	\
-	gvolumeprivate.h 	\
+	gmountprivate.h 	\
 	gioenumtypes.h		\
 	gioenumtypes.c		\
 	$(appinfo_sources) 	\
@@ -222,6 +224,7 @@ gio_headers =			\
 	giomodule.h 		\
 	gioscheduler.h 		\
 	gloadableicon.h 	\
+	gmount.h 		\
 	gmemoryinputstream.h 	\
 	gmemoryoutputstream.h 	\
 	gmountoperation.h 	\

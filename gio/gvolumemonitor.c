@@ -18,6 +18,7 @@
  * Boston, MA 02111-1307, USA.
  *
  * Author: Alexander Larsson <alexl@redhat.com>
+ *         David Zeuthen <davidz@redhat.com>
  */
 
 #include <config.h>
@@ -37,11 +38,16 @@
 G_DEFINE_TYPE (GVolumeMonitor, g_volume_monitor, G_TYPE_OBJECT);
 
 enum {
-  VOLUME_MOUNTED,
-  VOLUME_PRE_UNMOUNT,
-  VOLUME_UNMOUNTED,
+  VOLUME_ADDED,
+  VOLUME_REMOVED,
+  VOLUME_CHANGED,
+  MOUNT_ADDED,
+  MOUNT_REMOVED,
+  MOUNT_PRE_UNMOUNT,
+  MOUNT_CHANGED,
   DRIVE_CONNECTED,
   DRIVE_DISCONNECTED,
+  DRIVE_CHANGED,
   LAST_SIGNAL
 };
 
@@ -67,47 +73,110 @@ g_volume_monitor_class_init (GVolumeMonitorClass *klass)
   gobject_class->finalize = g_volume_monitor_finalize;
 
   /**
-   * GVolumeMonitor::volume-mounted:   
+   * GVolumeMonitor::volume-added:
    * @volume_monitor: The volume monitor emitting the signal.
-   * @volume: the volume that was mounted.
-   *
-   * Emitted when a volume is mounted.
-   **/
-  signals[VOLUME_MOUNTED] = g_signal_new (I_("volume_mounted"),
-					  G_TYPE_VOLUME_MONITOR,
-					  G_SIGNAL_RUN_LAST,
-					  G_STRUCT_OFFSET (GVolumeMonitorClass, volume_mounted),
-					  NULL, NULL,
-					  g_cclosure_marshal_VOID__OBJECT,
-					  G_TYPE_NONE, 1, G_TYPE_VOLUME);
-  /**
-   * GVolumeMonitor::volume-pre-unmount:
-   * @volume_monitor: The volume monitor emitting the signal.
-   * @volume: the volume that is being unmounted.
-   *
-   * Emitted when a volume is about to be unmounted.
-   **/ 
-  signals[VOLUME_PRE_UNMOUNT] = g_signal_new (I_("volume_pre_unmount"),
-					      G_TYPE_VOLUME_MONITOR,
-					      G_SIGNAL_RUN_LAST,
-					      G_STRUCT_OFFSET (GVolumeMonitorClass, volume_pre_unmount),
-					      NULL, NULL,
-					      g_cclosure_marshal_VOID__OBJECT,
-					      G_TYPE_NONE, 1, G_TYPE_VOLUME);
-  /**
-   * GVolumeMonitor::volume-unmounted:
-   * @volume_monitor: The volume monitor emitting the signal.
-   * @volume: the volume that was unmounted.
+   * @volume: a #GVolume that was added.
    * 
-   * Emitted when a volume is unmounted.
+   * Emitted when a mountable volume is added to the system.
+   **/
+  signals[VOLUME_ADDED] = g_signal_new (I_("volume_added"),
+                                        G_TYPE_VOLUME_MONITOR,
+                                        G_SIGNAL_RUN_LAST,
+                                        G_STRUCT_OFFSET (GVolumeMonitorClass, volume_added),
+                                        NULL, NULL,
+                                        g_cclosure_marshal_VOID__OBJECT,
+                                        G_TYPE_NONE, 1, G_TYPE_VOLUME);
+  
+  /**
+   * GVolumeMonitor::volume-removed:
+   * @volume_monitor: The volume monitor emitting the signal.
+   * @volume: a #GVolume that was removed.
+   * 
+   * Emitted when a mountable volume is removed from the system.
    **/  
-  signals[VOLUME_UNMOUNTED] = g_signal_new (I_("volume_unmounted"),
-					    G_TYPE_VOLUME_MONITOR,
-					    G_SIGNAL_RUN_LAST,
-					    G_STRUCT_OFFSET (GVolumeMonitorClass, volume_unmounted),
-					    NULL, NULL,
-					    g_cclosure_marshal_VOID__OBJECT,
-					    G_TYPE_NONE, 1, G_TYPE_VOLUME);
+  signals[VOLUME_REMOVED] = g_signal_new (I_("volume_removed"),
+                                          G_TYPE_VOLUME_MONITOR,
+                                          G_SIGNAL_RUN_LAST,
+                                          G_STRUCT_OFFSET (GVolumeMonitorClass, volume_removed),
+                                          NULL, NULL,
+                                          g_cclosure_marshal_VOID__OBJECT,
+                                          G_TYPE_NONE, 1, G_TYPE_VOLUME);
+  
+  /**
+   * GVolumeMonitor::volume-changed:
+   * @volume_monitor: The volume monitor emitting the signal.
+   * @volume: a #GVolume that changed.
+   * 
+   * Emitted when mountable volume is changed.
+   **/  
+  signals[VOLUME_CHANGED] = g_signal_new (I_("volume_changed"),
+                                          G_TYPE_VOLUME_MONITOR,
+                                          G_SIGNAL_RUN_LAST,
+                                          G_STRUCT_OFFSET (GVolumeMonitorClass, volume_changed),
+                                          NULL, NULL,
+                                          g_cclosure_marshal_VOID__OBJECT,
+                                          G_TYPE_NONE, 1, G_TYPE_VOLUME);
+
+  /**
+   * GVolumeMonitor::mount-added:
+   * @volume_monitor: The volume monitor emitting the signal.
+   * @mount: a #GMount that was added.
+   * 
+   * Emitted when a mount is added.
+   **/
+  signals[MOUNT_ADDED] = g_signal_new (I_("mount_added"),
+                                       G_TYPE_VOLUME_MONITOR,
+                                       G_SIGNAL_RUN_LAST,
+                                       G_STRUCT_OFFSET (GVolumeMonitorClass, mount_added),
+                                       NULL, NULL,
+                                       g_cclosure_marshal_VOID__OBJECT,
+                                       G_TYPE_NONE, 1, G_TYPE_MOUNT);
+
+  /**
+   * GVolumeMonitor::mount-removed:
+   * @volume_monitor: The volume monitor emitting the signal.
+   * @mount: a #GMount that was removed.
+   * 
+   * Emitted when a mount is removed.
+   **/
+  signals[MOUNT_REMOVED] = g_signal_new (I_("mount_removed"),
+                                         G_TYPE_VOLUME_MONITOR,
+                                         G_SIGNAL_RUN_LAST,
+                                         G_STRUCT_OFFSET (GVolumeMonitorClass, mount_removed),
+                                         NULL, NULL,
+                                         g_cclosure_marshal_VOID__OBJECT,
+                                         G_TYPE_NONE, 1, G_TYPE_MOUNT);
+
+  /**
+   * GVolumeMonitor::mount-pre-unmount:
+   * @volume_monitor: The volume monitor emitting the signal.
+   * @mount: a #GMount that is being unmounted.
+   *
+   * Emitted when a mount is about to be removed.
+   **/ 
+  signals[MOUNT_PRE_UNMOUNT] = g_signal_new (I_("mount_pre_unmount"),
+                                             G_TYPE_VOLUME_MONITOR,
+                                             G_SIGNAL_RUN_LAST,
+                                             G_STRUCT_OFFSET (GVolumeMonitorClass, mount_pre_unmount),
+                                             NULL, NULL,
+                                             g_cclosure_marshal_VOID__OBJECT,
+                                             G_TYPE_NONE, 1, G_TYPE_MOUNT);
+
+  /**
+   * GVolumeMonitor::mount-changed:
+   * @volume_monitor: The volume monitor emitting the signal.
+   * @mount: a #GMount that changed.
+   *
+   * Emitted when a mount changes.
+   **/ 
+  signals[MOUNT_CHANGED] = g_signal_new (I_("mount_changed"),
+                                         G_TYPE_VOLUME_MONITOR,
+                                         G_SIGNAL_RUN_LAST,
+                                         G_STRUCT_OFFSET (GVolumeMonitorClass, mount_changed),
+                                         NULL, NULL,
+                                         g_cclosure_marshal_VOID__OBJECT,
+                                         G_TYPE_NONE, 1, G_TYPE_MOUNT);
+
   /**
    * GVolumeMonitor::drive-connected:
    * @volume_monitor: The volume monitor emitting the signal.
@@ -137,6 +206,22 @@ g_volume_monitor_class_init (GVolumeMonitorClass *klass)
 					      NULL, NULL,
 					      g_cclosure_marshal_VOID__OBJECT,
 					      G_TYPE_NONE, 1, G_TYPE_DRIVE);
+
+  /**
+   * GVolumeMonitor::drive-changed:
+   * @volume_monitor: The volume monitor emitting the signal.
+   * @drive: the drive that changed
+   *
+   * Emitted when a drive changes.
+   **/ 
+  signals[DRIVE_CHANGED] = g_signal_new (I_("drive_changed"),
+                                         G_TYPE_VOLUME_MONITOR,
+                                         G_SIGNAL_RUN_LAST,
+                                         G_STRUCT_OFFSET (GVolumeMonitorClass, drive_changed),
+                                         NULL, NULL,
+                                         g_cclosure_marshal_VOID__OBJECT,
+                                         G_TYPE_NONE, 1, G_TYPE_DRIVE);
+
 }
 
 static void
@@ -144,31 +229,12 @@ g_volume_monitor_init (GVolumeMonitor *monitor)
 {
 }
 
-/**
- * g_volume_monitor_get_mounted_volumes:
- * @volume_monitor: a #GVolumeMonitor.
- * 
- * Gets a list of volumes mounted on the computer.
- * 
- * Returns: a #GList of mounted #GVolumes.
- **/
-GList *
-g_volume_monitor_get_mounted_volumes (GVolumeMonitor *volume_monitor)
-{
-  GVolumeMonitorClass *class;
-
-  g_return_val_if_fail (G_IS_VOLUME_MONITOR (volume_monitor), NULL);
-
-  class = G_VOLUME_MONITOR_GET_CLASS (volume_monitor);
-
-  return class->get_mounted_volumes (volume_monitor);
-}
 
 /**
- * g_volume_monitor_get_connected_drives:
+ * g_volume_monitor_get_drives:
  * @volume_monitor: a #GVolumeMonitor.
  * 
- * Gets a list of drives connected to the computer.
+ * Gets a list of drives connected to the system.
  * 
  * Returns: a #GList of connected #GDrives. 
  **/
@@ -182,6 +248,46 @@ g_volume_monitor_get_connected_drives (GVolumeMonitor *volume_monitor)
   class = G_VOLUME_MONITOR_GET_CLASS (volume_monitor);
 
   return class->get_connected_drives (volume_monitor);
+}
+
+/**
+ * g_volume_monitor_get_volumes:
+ * @volume_monitor: a #GVolumeMonitor.
+ * 
+ * Gets a list of the volumes on the system.
+ * 
+ * Returns: a #GList of #GVolume.
+ **/
+GList *
+g_volume_monitor_get_volumes (GVolumeMonitor *volume_monitor)
+{
+  GVolumeMonitorClass *class;
+
+  g_return_val_if_fail (G_IS_VOLUME_MONITOR (volume_monitor), NULL);
+
+  class = G_VOLUME_MONITOR_GET_CLASS (volume_monitor);
+
+  return class->get_volumes (volume_monitor);
+}
+
+/**
+ * g_volume_monitor_get_mounts:
+ * @volume_monitor: a #GVolumeMonitor.
+ * 
+ * Gets a list of the mounts on the system.
+ * 
+ * Returns: a #GList of #GMount.
+ **/
+GList *
+g_volume_monitor_get_mounts (GVolumeMonitor *volume_monitor)
+{
+  GVolumeMonitorClass *class;
+
+  g_return_val_if_fail (G_IS_VOLUME_MONITOR (volume_monitor), NULL);
+
+  class = G_VOLUME_MONITOR_GET_CLASS (volume_monitor);
+
+  return class->get_mounts (volume_monitor);
 }
 
 #define __G_VOLUME_MONITOR_C__

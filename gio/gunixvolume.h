@@ -18,6 +18,7 @@
  * Boston, MA 02111-1307, USA.
  *
  * Author: Alexander Larsson <alexl@redhat.com>
+ *         David Zeuthen <davidz@redhat.com>
  */
 
 #ifndef __G_UNIX_VOLUME_H__
@@ -44,13 +45,15 @@ struct _GUnixVolumeClass {
 
 GType _g_unix_volume_get_type (void) G_GNUC_CONST;
 
-GUnixVolume *_g_unix_volume_new            (GUnixMount     *mount,
-					    GUnixDrive     *drive);
-gboolean     _g_unix_volume_has_mountpoint (GUnixVolume    *volume,
-					    const char     *mountpoint);
-void         _g_unix_volume_unset_drive    (GUnixVolume    *volume,
-					    GUnixDrive     *drive);
-void         _g_unix_volume_unmounted      (GUnixVolume    *volume);
+GUnixVolume *_g_unix_volume_new           (GVolumeMonitor    *volume_monitor,
+                                           GUnixMountPoint   *mountpoint);
+gboolean    _g_unix_volume_has_mount_path (GUnixVolume       *volume,
+                                           const char        *mount_path);
+void        _g_unix_volume_set_mount      (GUnixVolume       *volume,
+                                           GUnixMount        *mount);
+void        _g_unix_volume_unset_mount    (GUnixVolume       *volume,
+                                           GUnixMount        *mount);
+void        _g_unix_volume_disconnected   (GUnixVolume       *volume);
 
 G_END_DECLS
 

@@ -75,7 +75,7 @@
 #include "glocalfileoutputstream.h"
 #include "glocaldirectorymonitor.h"
 #include "glocalfilemonitor.h"
-#include "gvolumeprivate.h"
+#include "gmountprivate.h"
 #include <glib/gstdio.h>
 #include "glibintl.h"
 
@@ -697,7 +697,7 @@ get_mount_info (GFileInfo             *fs_info,
   guint mount_info;
   char *mountpoint;
   dev_t *dev;
-  GUnixMount *mount;
+  GUnixMountEntry *mount;
   guint64 cache_time;
 
   if (g_lstat (path, &buf) != 0)
@@ -871,21 +871,21 @@ g_local_file_query_filesystem_info (GFile         *file,
   return info;
 }
 
-static GVolume *
-g_local_file_find_enclosing_volume (GFile         *file,
-				    GCancellable  *cancellable,
-				    GError       **error)
+static GMount *
+g_local_file_find_enclosing_mount (GFile         *file,
+                                   GCancellable  *cancellable,
+                                   GError       **error)
 {
   GLocalFile *local = G_LOCAL_FILE (file);
   struct stat buf;
   char *mountpoint;
-  GVolume *volume;
+  GMount *mount;
 
   if (g_lstat (local->filename, &buf) != 0)
     {
       g_set_error (error, G_IO_ERROR,
 		   G_IO_ERROR_NOT_FOUND,
-		   _("Containing volume does not exist"));
+		   _("Containing mount does not exist"));
       return NULL;
     }
 
@@ -894,18 +894,18 @@ g_local_file_find_enclosing_volume (GFile         *file,
     {
       g_set_error (error, G_IO_ERROR,
 		   G_IO_ERROR_NOT_FOUND,
-		   _("Containing volume does not exist"));
+		   _("Containing mount does not exist"));
       return NULL;
     }
 
-  volume = _g_volume_get_for_mount_path (mountpoint);
+  mount = _g_mount_get_for_mount_path (mountpoint);
   g_free (mountpoint);
-  if (volume)
-    return volume;
+  if (mount)
+    return mount;
 
   g_set_error (error, G_IO_ERROR,
 	       G_IO_ERROR_NOT_FOUND,
-	       _("Containing volume does not exist"));
+	       _("Containing mount does not exist"));
   return NULL;
 }
 
@@ -1889,7 +1889,7 @@ g_local_file_file_iface_init (GFileIface *iface)
   iface->enumerate_children = g_local_file_enumerate_children;
   iface->query_info = g_local_file_query_info;
   iface->query_filesystem_info = g_local_file_query_filesystem_info;
-  iface->find_enclosing_volume = g_local_file_find_enclosing_volume;
+  iface->find_enclosing_mount = g_local_file_find_enclosing_mount;
   iface->query_settable_attributes = g_local_file_query_settable_attributes;
   iface->query_writable_namespaces = g_local_file_query_writable_namespaces;
   iface->set_attribute = g_local_file_set_attribute;

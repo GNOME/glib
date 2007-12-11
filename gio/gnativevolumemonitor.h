@@ -22,7 +22,7 @@ struct _GNativeVolumeMonitor {
 struct _GNativeVolumeMonitorClass {
   GVolumeMonitorClass parent_class;
 
-  GVolume * (*get_volume_for_mountpoint) (const char *mountpoint);
+  GMount * (*get_mount_for_mount_path) (const char *mount_path);
   
   int priority;
 };

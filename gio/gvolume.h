@@ -18,6 +18,7 @@
  * Boston, MA 02111-1307, USA.
  *
  * Author: Alexander Larsson <alexl@redhat.com>
+ *         David Zeuthen <davidz@redhat.com>
  */
 
 #ifndef __G_VOLUME_H__
@@ -25,6 +26,7 @@
 
 #include <glib-object.h>
 #include <gio/gfile.h>
+#include <gio/gdrive.h>
 
 G_BEGIN_DECLS
 
@@ -33,32 +35,22 @@ G_BEGIN_DECLS
 #define G_IS_VOLUME(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), G_TYPE_VOLUME))
 #define G_VOLUME_GET_IFACE(obj)  (G_TYPE_INSTANCE_GET_INTERFACE ((obj), G_TYPE_VOLUME, GVolumeIface))
 
-/* GVolume typedef is in gfile.h due to include order issues */
-/**
- * GDrive:
- * 
- * Opaque drive object.
- **/
-typedef struct _GDrive          GDrive; /* Dummy typedef */
-typedef struct _GVolumeIface    GVolumeIface;
-
 /**
  * GVolumeIface:
  * @g_iface: The parent interface.
  * @changed: Changed signal that is emitted when the volume's state has changed.
- * @get_root: Gets a #GFile to the root directory of the #GVolume.
  * @get_name: Gets a string containing the name of the #GVolume.
  * @get_icon: Gets a #GIcon for the #GVolume.
- * @get_drive: Gets a #GDrive the volume is located on.
- * @can_unmount: Checks if a #GVolume can be unmounted.
- * @can_eject: Checks if a #GVolume can be ejected.
- * @unmount: Starts unmounting a #GVolume.
- * @unmount_finish: Finishes an unmounting operation.
- * @eject: Starts ejecting a #GVolume.
- * @eject_finish: Finishes an eject operation.
+ * @get_drive: Gets a #GDrive the volume is located on. Returns %NULL if the #GVolume is not associated with a #GDrive.
+ * @get_mount: Gets a #GMount representing the mounted volume. Returns %NULL if the #GVolume is not mounted.
+ * @can_mount: Returns %TRUE if the #GVolume can be mounted.
+ * @mount: Mounts a given #GVolume.
+ * @mount_finish: Finishes a mount operation.
  * 
- * Interface for implementing operations for mounted volumes.
+ * Interface for implementing operations for mountable volumes.
  **/
+typedef struct _GVolumeIface    GVolumeIface;
+
 struct _GVolumeIface
 {
   GTypeInterface g_iface;
@@ -69,50 +61,47 @@ struct _GVolumeIface
   
   /* Virtual Table */
 
-  GFile *  (*get_root)       (GVolume         *volume);
-  char *   (*get_name)       (GVolume         *volume);
-  GIcon *  (*get_icon)       (GVolume         *volume);
-  GDrive * (*get_drive)      (GVolume         *volume);
-  gboolean (*can_unmount)    (GVolume         *volume);
-  gboolean (*can_eject)      (GVolume         *volume);
-  void     (*unmount)        (GVolume         *volume,
-			      GCancellable    *cancellable,
-			      GAsyncReadyCallback callback,
-			      gpointer         user_data);
-  gboolean (*unmount_finish) (GVolume         *volume,
-			      GAsyncResult    *result,
-			      GError         **error);
-  void     (*eject)          (GVolume         *volume,
-			      GCancellable    *cancellable,
-			      GAsyncReadyCallback callback,
-			      gpointer         user_data);
-  gboolean (*eject_finish)   (GVolume         *volume,
-			      GAsyncResult    *result,
-			      GError         **error);
+  char *    (*get_name)       (GVolume             *volume);
+  GIcon *   (*get_icon)       (GVolume             *volume);
+  GDrive *  (*get_drive)      (GVolume             *volume);
+  GMount *  (*get_mount)      (GVolume             *volume);
+  gboolean  (*can_mount)      (GVolume             *volume);
+  void      (*mount_fn)       (GVolume             *volume,
+                               GMountOperation     *mount_operation,
+                               GCancellable        *cancellable,
+                               GAsyncReadyCallback  callback,
+                               gpointer             user_data);
+  gboolean  (*mount_finish)   (GVolume             *volume,
+                               GAsyncResult        *result,
+                               GError             **error);
+
+  /*< private >*/
+  /* Padding for future expansion */
+  void (*_g_reserved1) (void);
+  void (*_g_reserved2) (void);
+  void (*_g_reserved3) (void);
+  void (*_g_reserved4) (void);
+  void (*_g_reserved5) (void);
+  void (*_g_reserved6) (void);
+  void (*_g_reserved7) (void);
+  void (*_g_reserved8) (void);
 };
 
-GType g_volume_get_type (void) G_GNUC_CONST;
+GType     g_volume_get_type       (void) G_GNUC_CONST;
 
-GFile   *g_volume_get_root       (GVolume              *volume);
-char *   g_volume_get_name       (GVolume              *volume);
-GIcon *  g_volume_get_icon       (GVolume              *volume);
-GDrive * g_volume_get_drive      (GVolume              *volume);
-gboolean g_volume_can_unmount    (GVolume              *volume);
-gboolean g_volume_can_eject      (GVolume              *volume);
-void     g_volume_unmount        (GVolume              *volume,
-				  GCancellable         *cancellable,
-				  GAsyncReadyCallback   callback,
-				  gpointer              user_data);
-gboolean g_volume_unmount_finish (GVolume              *volume,
-				  GAsyncResult         *result,
-				  GError              **error);
-void     g_volume_eject          (GVolume              *volume,
-				  GCancellable         *cancellable,
-				  GAsyncReadyCallback   callback,
-				  gpointer              user_data);
-gboolean g_volume_eject_finish   (GVolume              *volume,
-				  GAsyncResult         *result,
-				  GError              **error);
+char *    g_volume_get_name       (GVolume              *volume);
+GIcon *   g_volume_get_icon       (GVolume              *volume);
+GDrive *  g_volume_get_drive      (GVolume              *volume);
+GMount *  g_volume_get_mount      (GVolume              *volume);
+gboolean  g_volume_can_mount      (GVolume              *volume);
+void      g_volume_mount          (GVolume              *volume,
+                                   GMountOperation      *mount_operation,
+                                   GCancellable         *cancellable,
+                                   GAsyncReadyCallback   callback,
+                                   gpointer              user_data);
+gboolean g_volume_mount_finish    (GVolume              *volume,
+                                   GAsyncResult         *result,
+                                   GError              **error);
 
 G_END_DECLS
 

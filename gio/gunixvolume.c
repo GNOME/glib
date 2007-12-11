@@ -1,3 +1,5 @@
+/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
+
 /* GIO - GLib Input, Output and Streaming Library
  * 
  * Copyright (C) 2006-2007 Red Hat, Inc.
@@ -18,19 +20,21 @@
  * Boston, MA 02111-1307, USA.
  *
  * Author: Alexander Larsson <alexl@redhat.com>
+ *         David Zeuthen <davidz@redhat.com>
  */
 
 #include <config.h>
 
 #include <string.h>
+#include <sys/wait.h>
+#include <unistd.h>
 
 #include <glib.h>
-#include "gunixvolumemonitor.h"
 #include "gunixvolume.h"
-#include "gunixdrive.h"
-#include "gvolumeprivate.h"
-#include "gvolumemonitor.h"
+#include "gunixmount.h"
 #include "gthemedicon.h"
+#include "gvolumemonitor.h"
+#include "gsimpleasyncresult.h"
 #include "glibintl.h"
 
 #include "gioalias.h"
@@ -38,10 +42,13 @@
 struct _GUnixVolume {
   GObject parent;
 
-  GUnixDrive *drive; /* owned by volume monitor */
+  GVolumeMonitor *volume_monitor;
+  GUnixMount     *mount; /* owned by volume monitor */
+  
+  char *device_path;
+  char *mount_path;
   char *name;
-  char *icon;
-  char *mountpoint;
+  GIcon *icon;
 };
 
 static void g_unix_volume_volume_iface_init (GVolumeIface *iface);
@@ -51,7 +58,6 @@ G_DEFINE_TYPE_WITH_CODE (GUnixVolume, g_unix_volume, G_TYPE_OBJECT,
 			 G_IMPLEMENT_INTERFACE (G_TYPE_VOLUME,
 						g_unix_volume_volume_iface_init))
 
-
 static void
 g_unix_volume_finalize (GObject *object)
 {
@@ -59,14 +65,17 @@ g_unix_volume_finalize (GObject *object)
   
   volume = G_UNIX_VOLUME (object);
 
-  if (volume->drive)
-    _g_unix_drive_unset_volume (volume->drive, volume);
-    
-  g_warn_if_fail (volume->drive == NULL);
-  g_free (volume->name);
-  g_free (volume->icon);
-  g_free (volume->mountpoint);
+  if (volume->volume_monitor != NULL)
+    g_object_unref (volume->volume_monitor);
+
+  if (volume->mount)
+    _g_unix_mount_unset_volume (volume->mount, volume);
   
+  g_object_unref (volume->icon);
+  g_free (volume->name);
+  g_free (volume->mount_path);
+  g_free (volume->device_path);
+
   if (G_OBJECT_CLASS (g_unix_volume_parent_class)->finalize)
     (*G_OBJECT_CLASS (g_unix_volume_parent_class)->finalize) (object);
 }
@@ -84,210 +93,261 @@ g_unix_volume_init (GUnixVolume *unix_volume)
 {
 }
 
-static char *
-get_filesystem_volume_name (const char *fs_type)
-{
-  /* TODO: add translation table from gnome-vfs */
-  return g_strdup_printf (_("%s volume"), fs_type);
-}
-
-static char *
-type_to_icon (GUnixMountType type)
-{
-  const char *icon_name = NULL;
-  
-  switch (type)
-    {
-    case G_UNIX_MOUNT_TYPE_HD:
-      icon_name = "drive-harddisk";
-      break;
-    case G_UNIX_MOUNT_TYPE_FLOPPY:
-    case G_UNIX_MOUNT_TYPE_ZIP:
-    case G_UNIX_MOUNT_TYPE_JAZ:
-      icon_name = "media-floppy";
-      break;
-    case G_UNIX_MOUNT_TYPE_CDROM:
-      icon_name = "media-optical";
-      break;
-    case G_UNIX_MOUNT_TYPE_NFS:
-      /* TODO: Would like a better icon here... */
-      icon_name = "drive-harddisk";
-      break;
-    case G_UNIX_MOUNT_TYPE_MEMSTICK:
-      icon_name = "media-flash";
-      break;
-    case G_UNIX_MOUNT_TYPE_CAMERA:
-      icon_name = "camera-photo";
-      break;
-    case G_UNIX_MOUNT_TYPE_IPOD:
-      icon_name = "multimedia-player";
-      break;
-    case G_UNIX_MOUNT_TYPE_UNKNOWN:
-    default:
-      icon_name = "drive-harddisk";
-      break;
-    }
-  return g_strdup (icon_name);
-}
-
+/**
+ * g_unix_volume_new:
+ * @volume_monitor: a #GVolumeMonitor.
+ * @mountpoint: a #GUnixMountPoint.
+ * 
+ * Returns: a #GUnixVolume for the given #GUnixMountPoint.
+ **/
 GUnixVolume *
-_g_unix_volume_new (GUnixMount *mount,
-		    GUnixDrive *drive)
+_g_unix_volume_new (GVolumeMonitor  *volume_monitor,
+                    GUnixMountPoint *mountpoint)
 {
   GUnixVolume *volume;
-  GUnixMountType type;
-  const char *mount_path;
-  char *volume_name;
   
-  mount_path = g_unix_mount_get_mount_path (mount);
-  
-  /* No drive for volume. Ignore internal things */
-  if (drive == NULL && g_unix_mount_is_system_internal (mount))
+  if (!(g_unix_mount_point_is_user_mountable (mountpoint) ||
+	g_str_has_prefix (g_unix_mount_point_get_device_path (mountpoint), "/vol/")) ||
+      g_unix_mount_point_is_loopback (mountpoint))
     return NULL;
   
   volume = g_object_new (G_TYPE_UNIX_VOLUME, NULL);
-  volume->drive = drive;
-  if (drive)
-    _g_unix_drive_set_volume (drive, volume);
-  volume->mountpoint = g_strdup (mount_path);
+  volume->volume_monitor = volume_monitor != NULL ? g_object_ref (volume_monitor) : NULL;
+  volume->mount_path = g_strdup (g_unix_mount_point_get_mount_path (mountpoint));
+  volume->device_path = g_strdup (g_unix_mount_point_get_device_path (mountpoint));
 
-  type = g_unix_mount_guess_type (mount);
-  
-  volume->icon = type_to_icon (type);
-					  
-  volume_name = NULL;
-  if (mount_path)
-    {
-      if (strcmp (mount_path, "/") == 0)
-	volume_name = g_strdup (_("Filesystem root"));
-      else
-	volume_name = g_filename_display_basename (mount_path);
-    }
-      
-  if (volume_name == NULL)
-    {
-      if (g_unix_mount_get_fs_type (mount) != NULL)
-	volume_name = g_strdup (get_filesystem_volume_name (g_unix_mount_get_fs_type (mount)));
-    }
-  
-  if (volume_name == NULL)
-    /* TODO: Use volume size as name? */
-    volume_name = g_strdup (_("Unknown volume"));
-  
-  volume->name = volume_name;
-
+  volume->name = g_unix_mount_point_guess_name (mountpoint);
+  volume->icon = g_unix_mount_point_guess_icon (mountpoint);
   return volume;
 }
 
+/**
+ * g_unix_volume_disconnected:
+ * @volume:
+ * 
+ **/
 void
-_g_unix_volume_unmounted (GUnixVolume *volume)
+_g_unix_volume_disconnected (GUnixVolume *volume)
 {
-  if (volume->drive)
+  if (volume->mount)
     {
-      _g_unix_drive_unset_volume (volume->drive, volume);
-      volume->drive = NULL;
-      g_signal_emit_by_name (volume, "changed");
+      _g_unix_mount_unset_volume (volume->mount, volume);
+      volume->mount = NULL;
     }
 }
 
+/**
+ * g_unix_volume_set_mount:
+ * @volume:
+ * @mount:
+ *  
+ **/
 void
-_g_unix_volume_unset_drive (GUnixVolume *volume,
-			    GUnixDrive  *drive)
+_g_unix_volume_set_mount (GUnixVolume  *volume,
+                          GUnixMount *mount)
 {
-  if (volume->drive == drive)
+  if (volume->mount == mount)
+    return;
+  
+  if (volume->mount)
+    _g_unix_mount_unset_volume (volume->mount, volume);
+  
+  volume->mount = mount;
+  
+  /* TODO: Emit changed in idle to avoid locking issues */
+  g_signal_emit_by_name (volume, "changed");
+  if (volume->volume_monitor != NULL)
+    g_signal_emit_by_name (volume->volume_monitor, "volume_changed", volume);
+}
+
+/**
+ * g_unix_volume_unset_mount:
+ * @volume:
+ * @mount:
+ *
+ **/
+void
+_g_unix_volume_unset_mount (GUnixVolume  *volume,
+                            GUnixMount *mount)
+{
+  if (volume->mount == mount)
     {
-      volume->drive = NULL;
+      volume->mount = NULL;
       /* TODO: Emit changed in idle to avoid locking issues */
       g_signal_emit_by_name (volume, "changed");
+      if (volume->volume_monitor != NULL)
+        g_signal_emit_by_name (volume->volume_monitor, "volume_changed", volume);
     }
-}
-
-static GFile *
-g_unix_volume_get_root (GVolume *volume)
-{
-  GUnixVolume *unix_volume = G_UNIX_VOLUME (volume);
-
-  return g_file_new_for_path (unix_volume->mountpoint);
 }
 
 static GIcon *
 g_unix_volume_get_icon (GVolume *volume)
 {
   GUnixVolume *unix_volume = G_UNIX_VOLUME (volume);
-
-  return g_themed_icon_new (unix_volume->icon);
+  return g_object_ref (unix_volume->icon);
 }
 
 static char *
 g_unix_volume_get_name (GVolume *volume)
 {
   GUnixVolume *unix_volume = G_UNIX_VOLUME (volume);
-  
   return g_strdup (unix_volume->name);
 }
 
-gboolean
-_g_unix_volume_has_mountpoint (GUnixVolume *volume,
-			       const char  *mountpoint)
+static gboolean
+g_unix_volume_can_mount (GVolume *volume)
 {
-  return strcmp (volume->mountpoint, mountpoint) == 0;
+  return TRUE;
 }
 
 static GDrive *
 g_unix_volume_get_drive (GVolume *volume)
 {
-  GUnixVolume *unix_volume = G_UNIX_VOLUME (volume);
-
-  if (unix_volume->drive)
-    return G_DRIVE (g_object_ref (unix_volume->drive));
-  
+  /* TODO */
   return NULL;
 }
 
-static gboolean
-g_unix_volume_can_unmount (GVolume *volume)
+static GMount *
+g_unix_volume_get_mount (GVolume *volume)
 {
-  /* TODO */
-  return FALSE;
+  GUnixVolume *unix_volume = G_UNIX_VOLUME (volume);
+
+  if (unix_volume->mount != NULL)
+    return g_object_ref (unix_volume->mount);
+
+  return NULL;
+}
+
+
+gboolean
+_g_unix_volume_has_mount_path (GUnixVolume *volume,
+                                         const char  *mount_path)
+{
+  return strcmp (volume->mount_path, mount_path) == 0;
+}
+
+
+typedef struct {
+  GUnixVolume *unix_volume;
+  GAsyncReadyCallback callback;
+  gpointer user_data;
+  GCancellable *cancellable;
+  int error_fd;
+  GIOChannel *error_channel;
+  guint error_channel_source_id;
+  GString *error_string;
+} MountOp;
+
+static void 
+mount_cb (GPid pid, gint status, gpointer user_data)
+{
+  MountOp *data = user_data;
+  GSimpleAsyncResult *simple;
+  
+  if (WEXITSTATUS (status) != 0)
+    {
+      GError *error;
+      error = g_error_new_literal (G_IO_ERROR, 
+                                   G_IO_ERROR_FAILED,
+                                   data->error_string->str);
+      simple = g_simple_async_result_new_from_error (G_OBJECT (data->unix_volume),
+                                                     data->callback,
+                                                     data->user_data,
+                                                     error);
+      g_error_free (error);
+    }
+  else
+    {
+      simple = g_simple_async_result_new (G_OBJECT (data->unix_volume),
+                                          data->callback,
+                                          data->user_data,
+                                          NULL);
+    }
+
+  g_simple_async_result_complete (simple);
+  g_object_unref (simple);
+
+  g_source_remove (data->error_channel_source_id);
+  g_io_channel_unref (data->error_channel);
+  g_string_free (data->error_string, TRUE);
+  close (data->error_fd);
+  g_spawn_close_pid (pid);
+  g_free (data);
 }
 
 static gboolean
-g_unix_volume_can_eject (GVolume *volume)
+mount_read_error (GIOChannel *channel,
+                  GIOCondition condition,
+                  gpointer user_data)
 {
-  /* TODO */
-  return FALSE;
-}
+  char *str;
+  gsize str_len;
+  MountOp *data = user_data;
 
-static void
-g_unix_volume_unmount (GVolume             *volume,
-		       GCancellable        *cancellable,
-		       GAsyncReadyCallback  callback,
-		       gpointer             user_data)
-{
-  /* TODO */
-}
-
-static gboolean
-g_unix_volume_unmount_finish (GVolume       *volume,
-			      GAsyncResult  *result,
-			      GError       **error)
-{
+  g_io_channel_read_to_end (channel, &str, &str_len, NULL);
+  g_string_append (data->error_string, str);
+  g_free (str);
   return TRUE;
 }
 
 static void
-g_unix_volume_eject (GVolume         *volume,
-		     GCancellable    *cancellable,
-		     GAsyncReadyCallback callback,
-		     gpointer         user_data)
+g_unix_volume_mount (GVolume    *volume,
+                     GMountOperation     *mount_operation,
+                     GCancellable        *cancellable,
+                     GAsyncReadyCallback  callback,
+                     gpointer             user_data)
 {
-  /* TODO */
+  GUnixVolume *unix_volume = G_UNIX_VOLUME (volume);
+  MountOp *data;
+  GPid child_pid;
+  GError *error;
+  char *argv[] = {"mount", NULL, NULL};
+
+  if (unix_volume->mount_path != NULL)
+    argv[1] = unix_volume->mount_path;
+  else
+    argv[1] = unix_volume->device_path;
+  
+  data = g_new0 (MountOp, 1);
+  data->unix_volume = unix_volume;
+  data->callback = callback;
+  data->user_data = user_data;
+  data->cancellable = cancellable;
+  
+  error = NULL;
+  if (!g_spawn_async_with_pipes (NULL,         /* working dir */
+                                 argv,
+                                 NULL,         /* envp */
+                                 G_SPAWN_DO_NOT_REAP_CHILD|G_SPAWN_SEARCH_PATH,
+                                 NULL,         /* child_setup */
+                                 NULL,         /* user_data for child_setup */
+                                 &child_pid,
+                                 NULL,           /* standard_input */
+                                 NULL,           /* standard_output */
+                                 &(data->error_fd),
+                                 &error)) {
+    GSimpleAsyncResult *simple;
+    simple = g_simple_async_result_new_from_error (G_OBJECT (data->unix_volume),
+                                                   data->callback,
+                                                   data->user_data,
+                                                   error);
+    g_simple_async_result_complete (simple);
+    g_object_unref (simple);
+    g_error_free (error);
+    g_free (data);
+    return;
+  }
+  data->error_string = g_string_new ("");
+  data->error_channel = g_io_channel_unix_new (data->error_fd);
+  data->error_channel_source_id = g_io_add_watch (data->error_channel, G_IO_IN, mount_read_error, data);
+  g_child_watch_add (child_pid, mount_cb, data);
 }
 
+
 static gboolean
-g_unix_volume_eject_finish (GVolume *volume,
-			    GAsyncResult *result,
-			    GError **error)
+g_unix_volume_mount_finish (GVolume        *volume,
+                           GAsyncResult  *result,
+                           GError       **error)
 {
   return TRUE;
 }
@@ -295,14 +355,11 @@ g_unix_volume_eject_finish (GVolume *volume,
 static void
 g_unix_volume_volume_iface_init (GVolumeIface *iface)
 {
-  iface->get_root = g_unix_volume_get_root;
   iface->get_name = g_unix_volume_get_name;
   iface->get_icon = g_unix_volume_get_icon;
   iface->get_drive = g_unix_volume_get_drive;
-  iface->can_unmount = g_unix_volume_can_unmount;
-  iface->can_eject = g_unix_volume_can_eject;
-  iface->unmount = g_unix_volume_unmount;
-  iface->unmount_finish = g_unix_volume_unmount_finish;
-  iface->eject = g_unix_volume_eject;
-  iface->eject_finish = g_unix_volume_eject_finish;
+  iface->get_mount = g_unix_volume_get_mount;
+  iface->can_mount = g_unix_volume_can_mount;
+  iface->mount_fn = g_unix_volume_mount;
+  iface->mount_finish = g_unix_volume_mount_finish;
 }

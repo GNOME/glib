@@ -18,12 +18,14 @@
  * Boston, MA 02111-1307, USA.
  *
  * Author: Alexander Larsson <alexl@redhat.com>
+ *         David Zeuthen <davidz@redhat.com>
  */
 
 #ifndef __G_VOLUME_MONITOR_H__
 #define __G_VOLUME_MONITOR_H__
 
 #include <glib-object.h>
+#include <gio/gmount.h>
 #include <gio/gvolume.h>
 #include <gio/gdrive.h>
 
@@ -57,21 +59,34 @@ struct _GVolumeMonitorClass {
 
   /*< public >*/
   /* signals */
-  void (* volume_mounted)	(GVolumeMonitor *volume_monitor,
-				 GVolume        *volume);
-  void (* volume_pre_unmount)	(GVolumeMonitor *volume_monitor,
-				 GVolume	*volume);
-  void (* volume_unmounted)	(GVolumeMonitor *volume_monitor,
-				 GVolume        *volume);
-  void (* drive_connected) 	(GVolumeMonitor *volume_monitor,
+  void (* volume_added)     (GVolumeMonitor   *volume_monitor,
+                             GVolume          *volume);
+  void (* volume_removed)   (GVolumeMonitor   *volume_monitor,
+                             GVolume          *volume);
+  void (* volume_changed)   (GVolumeMonitor   *volume_monitor,
+                             GVolume          *volume);
+
+  void (* mount_added)       (GVolumeMonitor *volume_monitor,
+                              GMount         *mount);
+  void (* mount_removed)     (GVolumeMonitor *volume_monitor,
+                              GMount         *mount);
+  void (* mount_pre_unmount) (GVolumeMonitor *volume_monitor,
+                              GMount         *mount);
+  void (* mount_changed)     (GVolumeMonitor *volume_monitor,
+                              GMount         *mount);
+
+  void (* drive_connected)      (GVolumeMonitor *volume_monitor,
 				 GDrive	        *drive);
-  void (* drive_disconnected)	(GVolumeMonitor *volume_monitor,
+  void (* drive_disconnected)   (GVolumeMonitor *volume_monitor,
+				 GDrive         *drive);
+  void (* drive_changed)        (GVolumeMonitor *volume_monitor,
 				 GDrive         *drive);
 
   /* Vtable */
 
-  GList * (*get_mounted_volumes)  (GVolumeMonitor *volume_monitor);
-  GList * (*get_connected_drives) (GVolumeMonitor *volume_monitor);
+  GList * (*get_connected_drives)   (GVolumeMonitor *volume_monitor);
+  GList * (*get_volumes)            (GVolumeMonitor *volume_monitor);
+  GList * (*get_mounts)             (GVolumeMonitor *volume_monitor);
 
   /*< private >*/
   /* Padding for future expansion */
@@ -87,9 +102,10 @@ struct _GVolumeMonitorClass {
 
 GType g_volume_monitor_get_type (void) G_GNUC_CONST;
 
-GVolumeMonitor *g_volume_monitor_get                  (void);
-GList *         g_volume_monitor_get_mounted_volumes  (GVolumeMonitor *volume_monitor);
+GVolumeMonitor *g_volume_monitor_get          (void);
 GList *         g_volume_monitor_get_connected_drives (GVolumeMonitor *volume_monitor);
+GList *         g_volume_monitor_get_volumes          (GVolumeMonitor *volume_monitor);
+GList *         g_volume_monitor_get_mounts           (GVolumeMonitor *volume_monitor);
 
 G_END_DECLS
 

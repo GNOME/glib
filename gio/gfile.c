@@ -929,14 +929,14 @@ g_file_query_filesystem_info (GFile         *file,
 }
 
 /**
- * g_file_find_enclosing_volume:
+ * g_file_find_enclosing_mount:
  * @file: input #GFile.
  * @cancellable: optional #GCancellable object, %NULL to ignore. 
  * @error: a #GError. 
  *
- * Gets a #GVolume for the #GFile. 
+ * Gets a #GMount for the #GFile. 
  *
- * If the #GFileIface for @file does not have a volume (e.g. possibly a 
+ * If the #GFileIface for @file does not have a mount (e.g. possibly a 
  * remote share), @error will be set to %G_IO_ERROR_NOT_FOUND and %NULL
  * will be returned.
  * 
@@ -944,10 +944,10 @@ g_file_query_filesystem_info (GFile         *file,
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
  * 
- * Returns: a #GVolume where the @file is located or %NULL on error.
+ * Returns: a #GMount where the @file is located or %NULL on error.
  **/
-GVolume *
-g_file_find_enclosing_volume (GFile         *file,
+GMount *
+g_file_find_enclosing_mount (GFile         *file,
 			      GCancellable  *cancellable,
 			      GError       **error)
 {
@@ -959,15 +959,15 @@ g_file_find_enclosing_volume (GFile         *file,
     return NULL;
 
   iface = G_FILE_GET_IFACE (file);
-  if (iface->find_enclosing_volume == NULL)
+  if (iface->find_enclosing_mount == NULL)
     {
       g_set_error (error, G_IO_ERROR,
 		   G_IO_ERROR_NOT_FOUND,
-		   _("Containing volume does not exist"));
+		   _("Containing mount does not exist"));
       return NULL;
     }
   
-  return (* iface->find_enclosing_volume) (file, cancellable, error);
+  return (* iface->find_enclosing_mount) (file, cancellable, error);
 }
 
 /**

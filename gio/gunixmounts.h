@@ -25,15 +25,16 @@
 
 #include <glib.h>
 #include <glib-object.h>
+#include <gio/gicon.h>
 
 G_BEGIN_DECLS
 
 /**
- * GUnixMount:
+ * GUnixMountEntry:
  * 
- * Defines a Unix mount.
+ * Defines a Unix mount entry (e.g. "/media/cdrom").
  **/
-typedef struct _GUnixMount GUnixMount;
+typedef struct _GUnixMountEntry GUnixMountEntry;
 
 /**
  * GUnixMountPoint:
@@ -41,40 +42,6 @@ typedef struct _GUnixMount GUnixMount;
  * Defines a Unix mount point (e.g. "/dev").
  **/
 typedef struct _GUnixMountPoint GUnixMountPoint;
-
-/**
- * GUnixMountType:
- * @G_UNIX_MOUNT_TYPE_UNKNOWN: Unknown UNIX mount type.
- * @G_UNIX_MOUNT_TYPE_FLOPPY: Floppy disk UNIX mount type.
- * @G_UNIX_MOUNT_TYPE_CDROM: CDROM UNIX mount type.
- * @G_UNIX_MOUNT_TYPE_NFS: Network File System (NFS) UNIX mount type.
- * @G_UNIX_MOUNT_TYPE_ZIP: ZIP UNIX mount type.
- * @G_UNIX_MOUNT_TYPE_JAZ: JAZZ UNIX mount type.
- * @G_UNIX_MOUNT_TYPE_MEMSTICK: Memory Stick UNIX mount type.
- * @G_UNIX_MOUNT_TYPE_CF: Compact Flash UNIX mount type.
- * @G_UNIX_MOUNT_TYPE_SM: Smart Media UNIX mount type.
- * @G_UNIX_MOUNT_TYPE_SDMMC: SD/MMC UNIX mount type.
- * @G_UNIX_MOUNT_TYPE_IPOD: iPod UNIX mount type.
- * @G_UNIX_MOUNT_TYPE_CAMERA: Digital camera UNIX mount type.
- * @G_UNIX_MOUNT_TYPE_HD: Hard drive UNIX mount type.
- * 
- * Types of UNIX mounts.
- **/
-typedef enum {
-  G_UNIX_MOUNT_TYPE_UNKNOWN,
-  G_UNIX_MOUNT_TYPE_FLOPPY,
-  G_UNIX_MOUNT_TYPE_CDROM,
-  G_UNIX_MOUNT_TYPE_NFS,
-  G_UNIX_MOUNT_TYPE_ZIP,
-  G_UNIX_MOUNT_TYPE_JAZ,
-  G_UNIX_MOUNT_TYPE_MEMSTICK,
-  G_UNIX_MOUNT_TYPE_CF,
-  G_UNIX_MOUNT_TYPE_SM,
-  G_UNIX_MOUNT_TYPE_SDMMC,
-  G_UNIX_MOUNT_TYPE_IPOD,
-  G_UNIX_MOUNT_TYPE_CAMERA,
-  G_UNIX_MOUNT_TYPE_HD
-} GUnixMountType;
 
 /**
  * GUnixMountMonitor:
@@ -90,16 +57,17 @@ typedef struct _GUnixMountMonitorClass GUnixMountMonitorClass;
 #define G_IS_UNIX_MOUNT_MONITOR(o)       (G_TYPE_CHECK_INSTANCE_TYPE ((o), G_TYPE_UNIX_MOUNT_MONITOR))
 #define G_IS_UNIX_MOUNT_MONITOR_CLASS(k) (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_UNIX_MOUNT_MONITOR))
 
-void           g_unix_mount_free                    (GUnixMount         *mount_entry);
+void           g_unix_mount_free                    (GUnixMountEntry    *mount_entry);
 void           g_unix_mount_point_free              (GUnixMountPoint    *mount_point);
-gint           g_unix_mount_compare                 (GUnixMount         *mount1,
-						     GUnixMount         *mount2);
-const char *   g_unix_mount_get_mount_path          (GUnixMount         *mount_entry);
-const char *   g_unix_mount_get_device_path         (GUnixMount         *mount_entry);
-const char *   g_unix_mount_get_fs_type             (GUnixMount         *mount_entry);
-gboolean       g_unix_mount_is_readonly             (GUnixMount         *mount_entry);
-gboolean       g_unix_mount_is_system_internal      (GUnixMount         *mount_entry);
-GUnixMountType g_unix_mount_guess_type              (GUnixMount         *mount_entry);
+gint           g_unix_mount_compare                 (GUnixMountEntry    *mount1,
+						     GUnixMountEntry    *mount2);
+const char *   g_unix_mount_get_mount_path          (GUnixMountEntry    *mount_entry);
+const char *   g_unix_mount_get_device_path         (GUnixMountEntry    *mount_entry);
+const char *   g_unix_mount_get_fs_type             (GUnixMountEntry    *mount_entry);
+gboolean       g_unix_mount_is_readonly             (GUnixMountEntry    *mount_entry);
+gboolean       g_unix_mount_is_system_internal      (GUnixMountEntry    *mount_entry);
+char *         g_unix_mount_guess_name              (GUnixMountEntry    *mount_entry);
+GIcon *        g_unix_mount_guess_icon              (GUnixMountEntry    *mount_entry);
 
 gint           g_unix_mount_point_compare           (GUnixMountPoint    *mount1,
 						     GUnixMountPoint    *mount2);
@@ -109,17 +77,24 @@ const char *   g_unix_mount_point_get_fs_type       (GUnixMountPoint    *mount_p
 gboolean       g_unix_mount_point_is_readonly       (GUnixMountPoint    *mount_point);
 gboolean       g_unix_mount_point_is_user_mountable (GUnixMountPoint    *mount_point);
 gboolean       g_unix_mount_point_is_loopback       (GUnixMountPoint    *mount_point);
-GUnixMountType g_unix_mount_point_guess_type        (GUnixMountPoint    *mount_point);
+char *         g_unix_mount_point_guess_name        (GUnixMountPoint    *mount_point);
+GIcon *        g_unix_mount_point_guess_icon        (GUnixMountPoint    *mount_point);
 
 GList *        g_get_unix_mount_points              (guint64            *time_read);
 GList *        g_get_unix_mounts                    (guint64            *time_read);
-GUnixMount *   g_get_unix_mount_at                  (const char         *mount_path,
+GUnixMountEntry * g_get_unix_mount_at               (const char         *mount_path,
 						     guint64            *time_read);
 gboolean       g_unix_mounts_changed_since          (guint64             time);
 gboolean       g_unix_mount_points_changed_since    (guint64             time);
 
 GType              g_unix_mount_monitor_get_type (void) G_GNUC_CONST;
 GUnixMountMonitor *g_unix_mount_monitor_new      (void);
+
+
+
+char *g_unix_get_canonical_device_path (const char *device_path);
+
+gboolean g_unix_is_mount_path_system_internal (const char *mount_path);
 
 G_END_DECLS
 

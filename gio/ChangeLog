@@ -1,3 +1,88 @@
+2007-12-11  David Zeuthen  <davidz@redhat.com>
+
+	Rework how volumes, drives and volume monitoring is
+	done. Previosly the model was
+
+	 GDrive <1-1> GVolume
+
+	where a GDrive instance represented a mount point and a GVolume
+	instance represented a mounted file system. This patch changes it
+	the model to
+
+		GDrive <1-N> GVolume <1-1> GMount
+
+	where GMount now serves the purpose of the old GVolume and the new
+	GVolume serves the purpose of the old GDrive. In addition the new
+	GDrive interface is used to represent a collection of GVolume
+	instances (typically partitions) and also contains utility to query
+	the state of the physical drive the GDrive object represents (such
+	as checking for media, polling the drive, ejecting the media etc.).
+
+	Also implement mounting and unmounting in the Unix volume monitor
+	backend. A subquent patch will introduce GDrive support for ejection
+	of media.
+
+	* Makefile.am:
+	* gdrive.c: (g_drive_is_media_check_automatic),
+	(g_drive_is_media_removable), (g_drive_has_media),
+	(g_drive_can_poll_for_media), (g_drive_eject),
+	(g_drive_eject_finish), (g_drive_poll_for_media),
+	(g_drive_poll_for_media_finish):
+	* gdrive.h:
+	* gfile.c: (g_file_find_enclosing_mount):
+	* gfile.h:
+	* gio.symbols:
+	* glocaldirectorymonitor.c:
+	(g_local_directory_monitor_constructor), (mounts_changed):
+	* glocalfile.c: (get_mount_info),
+	(g_local_file_find_enclosing_mount),
+	(g_local_file_file_iface_init):
+	* gnativevolumemonitor.h:
+	* gunionvolumemonitor.c: (get_mounts), (get_volumes),
+	(get_connected_drives), (g_union_volume_monitor_class_init),
+	(child_volume_added), (child_volume_removed),
+	(child_volume_changed), (child_mount_added), (child_mount_removed),
+	(child_mount_pre_unmount), (child_mount_changed),
+	(child_drive_changed), (g_union_volume_monitor_add_monitor),
+	(g_union_volume_monitor_remove_monitor),
+	(_g_mount_get_for_mount_path):
+	* gunixmounts.c: (g_unix_is_mount_path_system_internal),
+	(guess_system_internal), (_g_get_unix_mounts),
+	(_g_get_unix_mount_points), (g_get_unix_mount_at),
+	(g_unix_mount_free), (g_unix_mount_compare),
+	(g_unix_mount_get_mount_path), (g_unix_mount_get_device_path),
+	(g_unix_mount_get_fs_type), (g_unix_mount_is_readonly),
+	(g_unix_mount_is_system_internal), (g_unix_mount_guess_type),
+	(type_to_icon), (g_unix_mount_guess_name),
+	(g_unix_mount_guess_icon), (g_unix_mount_point_guess_name),
+	(g_unix_mount_point_guess_icon), (_canonicalize_filename),
+	(_resolve_symlink), (_resolve_dev_root):
+	* gunixmounts.h:
+	* gunixvolume.c: (g_unix_volume_finalize), (_g_unix_volume_new),
+	(_g_unix_volume_disconnected), (_g_unix_volume_set_mount),
+	(_g_unix_volume_unset_mount), (g_unix_volume_get_icon),
+	(g_unix_volume_get_name), (g_unix_volume_can_mount),
+	(g_unix_volume_get_drive), (g_unix_volume_get_mount),
+	(_g_unix_volume_has_mount_path), (mount_cb), (mount_read_error),
+	(g_unix_volume_mount), (g_unix_volume_mount_finish),
+	(g_unix_volume_volume_iface_init):
+	* gunixvolume.h:
+	* gunixvolumemonitor.c: (g_unix_volume_monitor_finalize),
+	(get_mounts), (get_volumes), (get_connected_drives),
+	(get_mount_for_mount_path), (g_unix_volume_monitor_class_init),
+	(mountpoints_changed), (mounts_changed),
+	(g_unix_volume_monitor_init),
+	(_g_unix_volume_monitor_lookup_volume_for_mount_path),
+	(find_mount_by_mountpath), (update_volumes), (update_mounts):
+	* gunixvolumemonitor.h:
+	* gvolume.c: (g_volume_get_mount), (g_volume_can_mount),
+	(g_volume_mount), (g_volume_mount_finish):
+	* gvolume.h:
+	* gvolumemonitor.c: (g_volume_monitor_class_init),
+	(g_volume_monitor_get_connected_drives),
+	(g_volume_monitor_get_volumes), (g_volume_monitor_get_mounts):
+	* gvolumemonitor.h:
+
 2007-12-10  Matthias Clasen  <mclasen@redhat.com>
 
 	* gmountoperation.h (GPasswordFlags): Close the gap

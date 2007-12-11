@@ -27,7 +27,7 @@
 
 G_BEGIN_DECLS
 
-GVolume *_g_volume_get_for_mount_path (const char *mountpoint);
+GMount *_g_mount_get_for_mount_path (const char *mount_path);
 
 G_END_DECLS
 

@@ -105,11 +105,11 @@ typedef struct _GDirectoryMonitor       GDirectoryMonitor;
 typedef struct _GFileMonitor            GFileMonitor;
 
 /**
- * GVolume:
+ * GMount:
  * 
- * A handle to an object implementing the #GVolumeIface interface.
+ * A handle to an object implementing the #GMountIface interface.
  **/
-typedef struct _GVolume         GVolume; /* Dummy typedef */
+typedef struct _GMount         GMount; /* Dummy typedef */
 
 /**
  * GFileProgressCallback:
@@ -169,9 +169,9 @@ typedef gboolean (* GFileReadMoreCallback) (const char *file_contents,
  * @query_filesystem_info: Gets a #GFileInfo for the file system #GFile is on.
  * @_query_filesystem_info_async: Asynchronously gets a #GFileInfo for the file system #GFile is on.
  * @_query_filesystem_info_finish: Finishes asynchronously getting the file system info.
- * @find_enclosing_volume: Gets a #GVolume for the #GFile.
- * @find_enclosing_volume_async: Asynchronously gets the #GVolume for a #GFile.
- * @find_enclosing_volume_finish: Finishes asynchronously getting the volume.
+ * @find_enclosing_mount: Gets a #GMount for the #GFile.
+ * @find_enclosing_mount_async: Asynchronously gets the #GMount for a #GFile.
+ * @find_enclosing_mount_finish: Finishes asynchronously getting the volume.
  * @set_display_name: Sets the display name for a #GFile.
  * @set_display_name_async: Asynchronously sets a #GFile's display name.
  * @set_display_name_finish: Finishes asynchronously setting a #GFile's display name.
@@ -296,17 +296,17 @@ struct _GFileIface
   void                (*_query_filesystem_info_async) (void);
   void                (*_query_filesystem_info_finish) (void);
   
-  GVolume *           (*find_enclosing_volume)(GFile              *file,
+  GMount *            (*find_enclosing_mount)(GFile              *file,
 					       GCancellable       *cancellable,
 					       GError            **error);
-  void                (*find_enclosing_volume_async)(GFile              *file,
-						     int                   io_priority,
-						     GCancellable         *cancellable,
-						     GAsyncReadyCallback   callback,
-						     gpointer              user_data);
-  GVolume *           (*find_enclosing_volume_finish)(GFile              *file,
-						      GAsyncResult         *res,
-						      GError            **error);
+  void                (*find_enclosing_mount_async)(GFile              *file,
+                                                    int                   io_priority,
+                                                    GCancellable         *cancellable,
+                                                    GAsyncReadyCallback   callback,
+                                                    gpointer              user_data);
+  GMount *            (*find_enclosing_mount_finish)(GFile              *file,
+                                                     GAsyncResult         *res,
+                                                     GError            **error);
   
   GFile *             (*set_display_name)         (GFile                *file,
 						   const char           *display_name,
@@ -608,9 +608,9 @@ GFileInfo *             g_file_query_filesystem_info      (GFile                
 							   const char                 *attributes,
 							   GCancellable               *cancellable,
 							   GError                    **error);
-GVolume *               g_file_find_enclosing_volume      (GFile                      *file,
-							   GCancellable               *cancellable,
-							   GError                    **error);
+GMount *                g_file_find_enclosing_mount      (GFile                      *file,
+                                                          GCancellable               *cancellable,
+                                                          GError                    **error);
 GFileEnumerator *       g_file_enumerate_children         (GFile                      *file,
 							   const char                 *attributes,
 							   GFileQueryInfoFlags         flags,

@@ -18,6 +18,7 @@
  * Boston, MA 02111-1307, USA.
  *
  * Author: Alexander Larsson <alexl@redhat.com>
+ *         David Zeuthen <davidz@redhat.com>
  */
 
 #include <config.h>
@@ -26,7 +27,7 @@
 
 #include <glib.h>
 #include "gunionvolumemonitor.h"
-#include "gvolumeprivate.h"
+#include "gmountprivate.h"
 #include "giomodule-priv.h"
 #ifdef G_OS_UNIX
 #include "gunixvolumemonitor.h"
@@ -85,7 +86,7 @@ g_union_volume_monitor_dispose (GObject *object)
 }
 
 static GList *
-get_mounted_volumes (GVolumeMonitor *volume_monitor)
+get_mounts (GVolumeMonitor *volume_monitor)
 {
   GUnionVolumeMonitor *monitor;
   GVolumeMonitor *child_monitor;
@@ -102,8 +103,33 @@ get_mounted_volumes (GVolumeMonitor *volume_monitor)
     {
       child_monitor = l->data;
 
-      res = g_list_concat (res,
-			   g_volume_monitor_get_mounted_volumes (child_monitor));
+      res = g_list_concat (res, g_volume_monitor_get_mounts (child_monitor));
+    }
+  
+  G_UNLOCK (the_volume_monitor);
+
+  return res;
+}
+
+static GList *
+get_volumes (GVolumeMonitor *volume_monitor)
+{
+  GUnionVolumeMonitor *monitor;
+  GVolumeMonitor *child_monitor;
+  GList *res;
+  GList *l;
+  
+  monitor = G_UNION_VOLUME_MONITOR (volume_monitor);
+
+  res = NULL;
+  
+  G_LOCK (the_volume_monitor);
+
+  for (l = monitor->monitors; l != NULL; l = l->next)
+    {
+      child_monitor = l->data;
+
+      res = g_list_concat (res, g_volume_monitor_get_volumes (child_monitor));
     }
   
   G_UNLOCK (the_volume_monitor);
@@ -129,8 +155,7 @@ get_connected_drives (GVolumeMonitor *volume_monitor)
     {
       child_monitor = l->data;
 
-      res = g_list_concat (res,
-			   g_volume_monitor_get_connected_drives (child_monitor));
+      res = g_list_concat (res, g_volume_monitor_get_connected_drives (child_monitor));
     }
   
   G_UNLOCK (the_volume_monitor);
@@ -147,38 +172,80 @@ g_union_volume_monitor_class_init (GUnionVolumeMonitorClass *klass)
   gobject_class->finalize = g_union_volume_monitor_finalize;
   gobject_class->dispose = g_union_volume_monitor_dispose;
 
-  monitor_class->get_mounted_volumes = get_mounted_volumes;
   monitor_class->get_connected_drives = get_connected_drives;
+  monitor_class->get_volumes = get_volumes;
+  monitor_class->get_mounts = get_mounts;
 }
 
 static void
-child_volume_mounted (GVolumeMonitor      *child_monitor,
-                      GVolume             *child_volume,
+child_volume_added (GVolumeMonitor      *child_monitor,
+                    GVolume    *child_volume,
+                    GUnionVolumeMonitor *union_monitor)
+{
+  g_signal_emit_by_name (union_monitor,
+			 "volume_added",
+			 child_volume);
+}
+
+static void
+child_volume_removed (GVolumeMonitor      *child_monitor,
+                      GVolume    *child_volume,
                       GUnionVolumeMonitor *union_monitor)
 {
   g_signal_emit_by_name (union_monitor,
-			 "volume_mounted",
+			 "volume_removed",
 			 child_volume);
 }
 
 static void
-child_volume_pre_unmount (GVolumeMonitor      *child_monitor,
-                          GVolume             *child_volume,
+child_volume_changed (GVolumeMonitor      *child_monitor,
+                      GVolume    *child_volume,
+                      GUnionVolumeMonitor *union_monitor)
+{
+  g_signal_emit_by_name (union_monitor,
+			 "volume_changed",
+			 child_volume);
+}
+
+static void
+child_mount_added (GVolumeMonitor      *child_monitor,
+                   GMount              *child_mount,
+                   GUnionVolumeMonitor *union_monitor)
+{
+  g_signal_emit_by_name (union_monitor,
+                         "mount_added",
+                         child_mount);
+}
+
+static void
+child_mount_removed (GVolumeMonitor      *child_monitor,
+                     GMount              *child_mount,
+                     GUnionVolumeMonitor *union_monitor)
+{
+  g_signal_emit_by_name (union_monitor,
+			 "mount_removed",
+			 child_mount);
+}
+
+static void
+child_mount_pre_unmount (GVolumeMonitor       *child_monitor,
+                          GMount              *child_mount,
                           GUnionVolumeMonitor *union_monitor)
 {
   g_signal_emit_by_name (union_monitor,
-			 "volume_pre_unmount",
-			 child_volume);
+			 "mount_pre_unmount",
+			 child_mount);
 }
 
+
 static void
-child_volume_unmounted (GVolumeMonitor      *child_monitor,
-                        GVolume             *child_volume,
-                        GUnionVolumeMonitor *union_monitor)
+child_mount_changed (GVolumeMonitor       *child_monitor,
+                      GMount              *child_mount,
+                      GUnionVolumeMonitor *union_monitor)
 {
   g_signal_emit_by_name (union_monitor,
-			 "volume_unmounted",
-			 child_volume);
+			 "mount_changed",
+			 child_mount);
 }
 
 static void
@@ -202,6 +269,16 @@ child_drive_disconnected (GVolumeMonitor      *child_monitor,
 }
 
 static void
+child_drive_changed (GVolumeMonitor      *child_monitor,
+                     GDrive             *child_drive,
+                     GUnionVolumeMonitor *union_monitor)
+{
+  g_signal_emit_by_name (union_monitor,
+                         "drive_changed",
+                         child_drive);
+}
+
+static void
 g_union_volume_monitor_add_monitor (GUnionVolumeMonitor *union_monitor,
                                     GVolumeMonitor      *volume_monitor)
 {
@@ -212,11 +289,16 @@ g_union_volume_monitor_add_monitor (GUnionVolumeMonitor *union_monitor,
     g_list_prepend (union_monitor->monitors,
 		    g_object_ref (volume_monitor));
 
-  g_signal_connect (volume_monitor, "volume_mounted", (GCallback)child_volume_mounted, union_monitor);
-  g_signal_connect (volume_monitor, "volume_pre_unmount", (GCallback)child_volume_pre_unmount, union_monitor);
-  g_signal_connect (volume_monitor, "volume_unmounted", (GCallback)child_volume_unmounted, union_monitor);
+  g_signal_connect (volume_monitor, "volume_added", (GCallback)child_volume_added, union_monitor);
+  g_signal_connect (volume_monitor, "volume_removed", (GCallback)child_volume_removed, union_monitor);
+  g_signal_connect (volume_monitor, "volume_changed", (GCallback)child_volume_changed, union_monitor);
+  g_signal_connect (volume_monitor, "mount_added", (GCallback)child_mount_added, union_monitor);
+  g_signal_connect (volume_monitor, "mount_removed", (GCallback)child_mount_removed, union_monitor);
+  g_signal_connect (volume_monitor, "mount_pre_unmount", (GCallback)child_mount_pre_unmount, union_monitor);
+  g_signal_connect (volume_monitor, "mount_changed", (GCallback)child_mount_changed, union_monitor);
   g_signal_connect (volume_monitor, "drive_connected", (GCallback)child_drive_connected, union_monitor);
   g_signal_connect (volume_monitor, "drive_disconnected", (GCallback)child_drive_disconnected, union_monitor);
+  g_signal_connect (volume_monitor, "drive_changed", (GCallback)child_drive_changed, union_monitor);
 }
 
 static void
@@ -231,11 +313,16 @@ g_union_volume_monitor_remove_monitor (GUnionVolumeMonitor *union_monitor,
 
   union_monitor->monitors = g_list_delete_link (union_monitor->monitors, l);
 
-  g_signal_handlers_disconnect_by_func (child_monitor, child_volume_mounted, union_monitor);
-  g_signal_handlers_disconnect_by_func (child_monitor, child_volume_pre_unmount, union_monitor);
-  g_signal_handlers_disconnect_by_func (child_monitor, child_volume_unmounted, union_monitor);
+  g_signal_handlers_disconnect_by_func (child_monitor, child_volume_added, union_monitor);
+  g_signal_handlers_disconnect_by_func (child_monitor, child_volume_removed, union_monitor);
+  g_signal_handlers_disconnect_by_func (child_monitor, child_volume_changed, union_monitor);
+  g_signal_handlers_disconnect_by_func (child_monitor, child_mount_added, union_monitor);
+  g_signal_handlers_disconnect_by_func (child_monitor, child_mount_removed, union_monitor);
+  g_signal_handlers_disconnect_by_func (child_monitor, child_mount_pre_unmount, union_monitor);
+  g_signal_handlers_disconnect_by_func (child_monitor, child_mount_changed, union_monitor);
   g_signal_handlers_disconnect_by_func (child_monitor, child_drive_connected, union_monitor);
   g_signal_handlers_disconnect_by_func (child_monitor, child_drive_disconnected, union_monitor);
+  g_signal_handlers_disconnect_by_func (child_monitor, child_drive_changed, union_monitor);
 }
 
 static gpointer
@@ -369,32 +456,32 @@ g_volume_monitor_get (void)
 }
 
 /**
- * g_volume_get_for_mount_path:
+ * _g_mount_get_for_mount_path:
  * @mountpoint: a string.
  * 
- * Returns: a #GVolume for given @mountpoint or %NULL.  
+ * Returns: a #GMount for given @mount_path or %NULL.  
  **/
-GVolume *
-_g_volume_get_for_mount_path (const char *mountpoint)
+GMount *
+_g_mount_get_for_mount_path (const char *mount_path)
 {
   GType native_type;
   GNativeVolumeMonitorClass *klass;
-  GVolume *volume;
+  GMount *mount;
   
   native_type = get_native_type ();
 
   if (native_type == G_TYPE_INVALID)
     return NULL;
 
-  volume = NULL;
+  mount = NULL;
   
   klass = G_NATIVE_VOLUME_MONITOR_CLASS (g_type_class_ref (native_type));
-  if (klass->get_volume_for_mountpoint)
-    volume = klass->get_volume_for_mountpoint (mountpoint);
+  if (klass->get_mount_for_mount_path)
+    mount = klass->get_mount_for_mount_path (mount_path);
   
   g_type_class_unref (klass);
 
-  return volume;
+  return mount;
 }
 
 #define __G_UNION_VOLUME_MONITOR_C__

@@ -115,7 +115,7 @@ g_local_directory_monitor_constructor (GType                  type,
 #ifdef G_OS_WIN32
       g_warning ("G_OS_WIN32: no mount emulation");
 #else
-      GUnixMount *mount;
+      GUnixMountEntry *mount;
       
       /* Emulate unmount detection */
       
@@ -164,7 +164,7 @@ mounts_changed (GUnixMountMonitor *mount_monitor,
                 gpointer           user_data)
 {
   GLocalDirectoryMonitor *local_monitor = user_data;
-  GUnixMount *mount;
+  GUnixMountEntry *mount;
   gboolean is_mounted;
   GFile *file;
   

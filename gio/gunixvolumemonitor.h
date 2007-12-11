@@ -18,6 +18,7 @@
  * Boston, MA 02111-1307, USA.
  *
  * Author: Alexander Larsson <alexl@redhat.com>
+ *         David Zeuthen <davidz@redhat.com>
  */
 
 #ifndef __G_UNIX_VOLUME_MONITOR_H__
@@ -38,8 +39,8 @@ typedef struct _GUnixVolumeMonitor GUnixVolumeMonitor;
 typedef struct _GUnixVolumeMonitorClass GUnixVolumeMonitorClass;
 
 /* Forward definitions */
+typedef struct _GUnixMount GUnixMount;
 typedef struct _GUnixVolume GUnixVolume;
-typedef struct _GUnixDrive GUnixDrive;
 
 struct _GUnixVolumeMonitorClass {
   GNativeVolumeMonitorClass parent_class;
@@ -48,9 +49,9 @@ struct _GUnixVolumeMonitorClass {
 
 GType _g_unix_volume_monitor_get_type (void) G_GNUC_CONST;
 
-GVolumeMonitor *_g_unix_volume_monitor_new                         (void);
-GUnixDrive *    _g_unix_volume_monitor_lookup_drive_for_mountpoint (GUnixVolumeMonitor *monitor,
-								    const char         *mountpoint);
+GVolumeMonitor * _g_unix_volume_monitor_new                          (void);
+GUnixVolume *    _g_unix_volume_monitor_lookup_volume_for_mount_path (GUnixVolumeMonitor *monitor,
+                                                                      const char         *mount_path);
 
 G_END_DECLS
 
