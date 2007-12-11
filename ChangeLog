@@ -1,3 +1,7 @@
+2007-12-11 Rahul Bhalerao <b.rahul.pm@gmail.com>
+
+	* configure.in: Added entry for Marathi Translations
+
 2007-12-10  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/glib.h: Include gurifuncs.h
