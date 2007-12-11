@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: glib.glib-2-14.es\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-12-03 18:49+0000\n"
-"PO-Revision-Date: 2007-12-10 15:44+0100\n"
+"PO-Revision-Date: 2007-12-11 22:24+0100\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Spanish <traductores@es.gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -620,7 +620,7 @@ msgstr "Sólo se soportan las clases con nombres POSIX dentro de una clase"
 
 #: ../glib/gregex.c:217
 msgid "(?R or (?[+-]digits must be followed by )"
-msgstr ""
+msgstr "(?R o los dígitos (?[+-] deben estar seguidos por )"
 
 #: ../glib/gregex.c:219
 msgid "reference to non-existent subpattern"
@@ -640,7 +640,7 @@ msgstr "falló al obtener memoria"
 
 #: ../glib/gregex.c:227
 msgid "lookbehind assertion is not fixed length"
-msgstr ""
+msgstr "la expresión «lookbehind» no tiene una longitud fija"
 
 #: ../glib/gregex.c:229
 msgid "malformed number or name after (?("
@@ -652,7 +652,7 @@ msgstr "el grupo condicional contiene más de dos ramas"
 
 #: ../glib/gregex.c:233
 msgid "assertion expected after (?("
-msgstr ""
+msgstr "se esperaba una afirmación después de (?("
 
 #: ../glib/gregex.c:235
 msgid "unknown POSIX class name"
@@ -660,7 +660,7 @@ msgstr "nombre de clase POSIX desconocido"
 
 #: ../glib/gregex.c:237
 msgid "POSIX collating elements are not supported"
-msgstr ""
+msgstr "los elementos POSIX recopilados no están soportados"
 
 #: ../glib/gregex.c:239
 msgid "character value in \\x{...} sequence is too large"
@@ -672,7 +672,7 @@ msgstr "condición no válida (?(0)"
 
 #: ../glib/gregex.c:243
 msgid "\\C not allowed in lookbehind assertion"
-msgstr ""
+msgstr "no se permite \\C en expresiones «lookbehind»"
 
 #: ../glib/gregex.c:245
 msgid "recursive call could loop indefinitely"
@@ -720,7 +720,7 @@ msgstr "opciones NEWLINE inconsistentes"
 
 #: ../glib/gregex.c:267
 msgid "\\g is not followed by a braced name or an optionally braced non-zero number"
-msgstr ""
+msgstr "\\g no está seguido por un nombre de llave o un número distinto de cero con una llave opcional"
 
 #: ../glib/gregex.c:270
 msgid "unexpected repeat"
@@ -728,15 +728,15 @@ msgstr "repetición inesperada"
 
 #: ../glib/gregex.c:272
 msgid "code overflow"
-msgstr ""
+msgstr "desbordamiento de código"
 
 #: ../glib/gregex.c:274
 msgid "overran compiling workspace"
-msgstr ""
+msgstr "se desbordó el espacio de trabajo de compilación"
 
 #: ../glib/gregex.c:276
 msgid "previously-checked referenced subpattern not found"
-msgstr ""
+msgstr "no se encontró el subpatrón referenciado anteriormente comprobado"
 
 #: ../glib/gregex.c:439 ../glib/gregex.c:1491
 #, c-format
