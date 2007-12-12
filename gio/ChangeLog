@@ -1,5 +1,11 @@
 2007-12-12  Alexander Larsson  <alexl@redhat.com>
 
+        * gioscheduler.c:
+	Fix race condition when freeing proxy in
+	g_io_job_send_to_mainloop().
+
+2007-12-12  Alexander Larsson  <alexl@redhat.com>
+
         * gfileattribute.c:
         * gfileinfo.[ch]:
         * glocalfile.c:

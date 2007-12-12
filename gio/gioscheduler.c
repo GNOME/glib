@@ -291,6 +291,9 @@ mainloop_proxy_func (gpointer data)
 
   proxy->func (proxy->data);
 
+  if (proxy->notify)
+    proxy->notify (proxy->data);
+  
   if (proxy->ack_lock)
     {
       g_mutex_lock (proxy->ack_lock);
@@ -311,19 +314,6 @@ mainloop_proxy_free (MainLoopProxy *proxy)
     }
   
   g_free (proxy);
-}
-
-static void
-mainloop_proxy_notify (gpointer data)
-{
-  MainLoopProxy *proxy = data;
-
-  if (proxy->notify)
-    proxy->notify (proxy->data);
-
-  /* If nonblocking we free here, otherwise we free in io thread */
-  if (proxy->ack_lock == NULL)
-    mainloop_proxy_free (proxy);
 }
 
 /**
@@ -355,7 +345,9 @@ g_io_job_send_to_mainloop (GIOJob         *job,
       /* We just immediately re-enter in the case of idles (non-threads)
        * Anything else would just deadlock. If you can't handle this, enable threads.
        */
-      func (user_data); 
+      func (user_data);
+      if (notify)
+	notify (user_data);
       return;
     }
   
@@ -368,16 +360,14 @@ g_io_job_send_to_mainloop (GIOJob         *job,
     {
       proxy->ack_lock = g_mutex_new ();
       proxy->ack_condition = g_cond_new ();
+      g_mutex_lock (proxy->ack_lock);
     }
   
   source = g_idle_source_new ();
   g_source_set_priority (source, G_PRIORITY_DEFAULT);
+  g_source_set_callback (source, mainloop_proxy_func, proxy,
+			 block ? NULL : (GDestroyNotify)mainloop_proxy_free);
 
-  g_source_set_callback (source, mainloop_proxy_func, proxy, mainloop_proxy_notify);
-
-  if (block)
-    g_mutex_lock (proxy->ack_lock);
-		  
   id = g_source_attach (source, NULL);
   g_source_unref (source);
 
@@ -385,8 +375,8 @@ g_io_job_send_to_mainloop (GIOJob         *job,
     {
       g_cond_wait (proxy->ack_condition, proxy->ack_lock);
       g_mutex_unlock (proxy->ack_lock);
-      
-      /* destroy notify didn't free proxy */
+
+      /* In the blocking case we free the proxy here */
       mainloop_proxy_free (proxy);
     }
 }
