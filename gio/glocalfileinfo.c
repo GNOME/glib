@@ -184,7 +184,7 @@ get_selinux_context (const char            *path,
 #ifdef HAVE_SELINUX
   char *context;
 
-  if (!g_file_attribute_matcher_matches (attribute_matcher, "selinux:context"))
+  if (!g_file_attribute_matcher_matches (attribute_matcher, "selinux::context"))
     return;
   
   if (is_selinux_enabled ())
@@ -202,7 +202,7 @@ get_selinux_context (const char            *path,
 
       if (context)
 	{
-	  g_file_info_set_attribute_string (info, "selinux:context", context);
+	  g_file_info_set_attribute_string (info, "selinux::context", context);
 	  freecon(context);
 	}
     }
@@ -483,12 +483,12 @@ get_xattrs (const char            *path,
 	      if (user)
 		{
 		  escaped_attr = hex_escape_string (attr + 5, &free_escaped_attr);
-		  gio_attr = g_strconcat ("xattr:", escaped_attr, NULL);
+		  gio_attr = g_strconcat ("xattr::", escaped_attr, NULL);
 		}
 	      else
 		{
 		  escaped_attr = hex_escape_string (attr, &free_escaped_attr);
-		  gio_attr = g_strconcat ("xattr_sys:", escaped_attr, NULL);
+		  gio_attr = g_strconcat ("xattr-sys::", escaped_attr, NULL);
 		}
 	      
 	      if (free_escaped_attr)
@@ -597,7 +597,7 @@ get_xattrs_from_fd (int                    fd,
   if (user)
     all = g_file_attribute_matcher_enumerate_namespace (matcher, "xattr");
   else
-    all = g_file_attribute_matcher_enumerate_namespace (matcher, "xattr_sys");
+    all = g_file_attribute_matcher_enumerate_namespace (matcher, "xattr-sys");
 
   if (all)
     {
@@ -636,12 +636,12 @@ get_xattrs_from_fd (int                    fd,
 	      if (user)
 		{
 		  escaped_attr = hex_escape_string (attr + 5, &free_escaped_attr);
-		  gio_attr = g_strconcat ("xattr:", escaped_attr, NULL);
+		  gio_attr = g_strconcat ("xattr::", escaped_attr, NULL);
 		}
 	      else
 		{
 		  escaped_attr = hex_escape_string (attr, &free_escaped_attr);
-		  gio_attr = g_strconcat ("xattr_sys:", escaped_attr, NULL);
+		  gio_attr = g_strconcat ("xattr-sys::", escaped_attr, NULL);
 		}
 	      
 	      if (free_escaped_attr)
@@ -721,14 +721,14 @@ set_xattr (char                       *filename,
       return FALSE;
     }
 
-  if (g_str_has_prefix (escaped_attribute, "xattr:"))
+  if (g_str_has_prefix (escaped_attribute, "xattr::"))
     {
       escaped_attribute += 6;
       is_user = TRUE;
     }
   else
     {
-      g_warn_if_fail (g_str_has_prefix (escaped_attribute, "xattr_sys:"));
+      g_warn_if_fail (g_str_has_prefix (escaped_attribute, "xattr-sys::"));
       escaped_attribute += 10;
       is_user = FALSE;
     }
@@ -1971,9 +1971,9 @@ _g_local_file_info_set_attribute (char                       *filename,
 #endif
 
 #ifdef HAVE_XATTR
-  else if (g_str_has_prefix (attribute, "xattr:"))
+  else if (g_str_has_prefix (attribute, "xattr::"))
     return set_xattr (filename, attribute, value, error);
-  else if (g_str_has_prefix (attribute, "xattr_sys:"))
+  else if (g_str_has_prefix (attribute, "xattr-sys::"))
     return set_xattr (filename, attribute, value, error);
 #endif
   

@@ -195,7 +195,7 @@ g_local_file_class_init (GLocalFileClass *klass)
 				  G_FILE_ATTRIBUTE_FLAGS_COPY_WITH_FILE |
 				  G_FILE_ATTRIBUTE_FLAGS_COPY_WHEN_MOVED);
   g_file_attribute_info_list_add (list,
-				  "xattr_sys",
+				  "xattr-sys",
 				  G_FILE_ATTRIBUTE_TYPE_STRING,
 				  G_FILE_ATTRIBUTE_FLAGS_COPY_WHEN_MOVED);
 #endif

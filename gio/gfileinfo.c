@@ -177,7 +177,7 @@ lookup_attribute (const char *attribute)
       return attr_id;
     }
 
-  colon = strchr (attribute, ':');
+  colon = strstr (attribute, "::");
   if (colon)
     ns = g_strndup (attribute, colon - attribute);
   else
@@ -1756,10 +1756,10 @@ matcher_add (GFileAttributeMatcher *matcher,
  * automatically destroyed.
  * 
  * The @attribute string should be formatted with specific keys separated
- * from namespaces with a colon. Several "namespace:key" strings may be 
- * concatenated with a single comma (e.g. "std:type,std:is_hidden"). 
+ * from namespaces with a double colon. Several "namespace::key" strings may be 
+ * concatenated with a single comma (e.g. "std::type,std::is-hidden"). 
  * The wildcard "*" may be used to match all keys and namespaces, or 
- * "namespace:*" will match all keys in a given namespace. 
+ * "namespace::*" will match all keys in a given namespace. 
  * 
  * Examples of strings to use:
  * <table>
@@ -1768,8 +1768,8 @@ matcher_add (GFileAttributeMatcher *matcher,
  * <row><entry> Matcher String </entry><entry> Matches </entry></row></thead>
  * <tbody>
  * <row><entry>"*"</entry><entry>matches all attributes.</entry></row>
- * <row><entry>"std:is_hidden"</entry><entry>matches only the key is_hidden in the std namespace.</entry></row>
- * <row><entry>"std:type,unix:*"</entry><entry>matches the type key in the std namespace and all keys in the unix 
+ * <row><entry>"std::is-hidden"</entry><entry>matches only the key is-hidden in the std namespace.</entry></row>
+ * <row><entry>"std::type,unix::*"</entry><entry>matches the type key in the std namespace and all keys in the unix 
  * namespace.</entry></row>
  * </tbody></tgroup>
  * </table>
@@ -1800,11 +1800,11 @@ g_file_attribute_matcher_new (const char *attributes)
 	{
 	  guint32 id, mask;
   
-	  colon = strchr (split[i], ':');
+	  colon = strstr (split[i], "::");
 	  if (colon != NULL &&
-	      !(colon[1] == 0 ||
-		(colon[1] == '*' &&
-		 colon[2] == 0)))
+	      !(colon[2] == 0 ||
+		(colon[2] == '*' &&
+		 colon[3] == 0)))
 	    {
 	      id = lookup_attribute (split[i]);
 	      mask = 0xffffffff;
@@ -1975,7 +1975,7 @@ g_file_attribute_matcher_matches (GFileAttributeMatcher *matcher,
  * 
  * Checks if the matcher will match all of the keys in a given namespace.
  * This will always return %TRUE if a wildcard character is in use (e.g. if 
- * matcher was created with "std:*" and @ns is "std", or if matcher was created
+ * matcher was created with "std::*" and @ns is "std", or if matcher was created
  * using "*" and namespace is anything.) 
  * 
  * TODO: this is awkwardly worded.

@@ -84,7 +84,7 @@ typedef enum {
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_UINT32.
  * The value for this key should contain a #GFileType.
  **/
-#define G_FILE_ATTRIBUTE_STD_TYPE "std:type"                     /* uint32 (GFileType) */
+#define G_FILE_ATTRIBUTE_STD_TYPE "std::type"                     /* uint32 (GFileType) */
 
 /**
  * G_FILE_ATTRIBUTE_STD_IS_HIDDEN:
@@ -92,7 +92,7 @@ typedef enum {
  * A key in the "std" namespace for checking if a file is hidden. 
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
  **/
-#define G_FILE_ATTRIBUTE_STD_IS_HIDDEN "std:is_hidden"           /* boolean */
+#define G_FILE_ATTRIBUTE_STD_IS_HIDDEN "std::is-hidden"           /* boolean */
 
 /**
  * G_FILE_ATTRIBUTE_STD_IS_BACKUP:
@@ -100,7 +100,7 @@ typedef enum {
  * A key in the "std" namespace for checking if a file is a backup file.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
  **/
-#define G_FILE_ATTRIBUTE_STD_IS_BACKUP "std:is_backup"           /* boolean */
+#define G_FILE_ATTRIBUTE_STD_IS_BACKUP "std::is-backup"           /* boolean */
 
 /**
  * G_FILE_ATTRIBUTE_STD_IS_SYMLINK:
@@ -110,7 +110,7 @@ typedef enum {
  * to get the type.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
  **/
-#define G_FILE_ATTRIBUTE_STD_IS_SYMLINK "std:is_symlink"         /* boolean */
+#define G_FILE_ATTRIBUTE_STD_IS_SYMLINK "std::is-symlink"         /* boolean */
 
 /**
  * G_FILE_ATTRIBUTE_STD_IS_VIRTUAL:
@@ -118,7 +118,7 @@ typedef enum {
  * A key in the "std" namespace for checking if a file is virtual.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
  **/
-#define G_FILE_ATTRIBUTE_STD_IS_VIRTUAL "std:is_virtual"         /* boolean */
+#define G_FILE_ATTRIBUTE_STD_IS_VIRTUAL "std::is-virtual"         /* boolean */
 
 /**
  * G_FILE_ATTRIBUTE_STD_NAME:
@@ -130,7 +130,7 @@ typedef enum {
  * name in a user interface.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BYTE_STRING.
  **/
-#define G_FILE_ATTRIBUTE_STD_NAME "std:name"                     /* byte string */
+#define G_FILE_ATTRIBUTE_STD_NAME "std::name"                     /* byte string */
 
 /**
  * G_FILE_ATTRIBUTE_STD_DISPLAY_NAME:
@@ -140,7 +140,7 @@ typedef enum {
  * the UI.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_STRING.
  **/
-#define G_FILE_ATTRIBUTE_STD_DISPLAY_NAME "std:display_name"     /* string */
+#define G_FILE_ATTRIBUTE_STD_DISPLAY_NAME "std::display-name"     /* string */
 
 /**
  * G_FILE_ATTRIBUTE_STD_EDIT_NAME:
@@ -153,7 +153,7 @@ typedef enum {
  * 
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_STRING.
  **/
-#define G_FILE_ATTRIBUTE_STD_EDIT_NAME "std:edit_name"           /* string */
+#define G_FILE_ATTRIBUTE_STD_EDIT_NAME "std::edit-name"           /* string */
 
 /**
  * G_FILE_ATTRIBUTE_STD_COPY_NAME:
@@ -167,7 +167,7 @@ typedef enum {
  * 
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_STRING.
  **/
-#define G_FILE_ATTRIBUTE_STD_COPY_NAME "std:copy_name"           /* string */
+#define G_FILE_ATTRIBUTE_STD_COPY_NAME "std::copy-name"           /* string */
 
 /**
  * G_FILE_ATTRIBUTE_STD_ICON:
@@ -176,7 +176,7 @@ typedef enum {
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_OBJECT.
  * The value for this key should contain a #GIcon.
  **/
-#define G_FILE_ATTRIBUTE_STD_ICON "std:icon"                     /* object (GIcon) */
+#define G_FILE_ATTRIBUTE_STD_ICON "std::icon"                     /* object (GIcon) */
 
 /**
  * G_FILE_ATTRIBUTE_STD_CONTENT_TYPE:
@@ -185,7 +185,7 @@ typedef enum {
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_STRING.
  * The value for this key should contain a valid content type.
  **/
-#define G_FILE_ATTRIBUTE_STD_CONTENT_TYPE "std:content_type"     /* string */
+#define G_FILE_ATTRIBUTE_STD_CONTENT_TYPE "std::content-type"     /* string */
 
 /**
  * G_FILE_ATTRIBUTE_STD_FAST_CONTENT_TYPE:
@@ -197,7 +197,7 @@ typedef enum {
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_STRING.
  * 
  **/
-#define G_FILE_ATTRIBUTE_STD_FAST_CONTENT_TYPE "std:fast_content_type" /* string */
+#define G_FILE_ATTRIBUTE_STD_FAST_CONTENT_TYPE "std::fast-content-type" /* string */
 
 /**
  * G_FILE_ATTRIBUTE_STD_SIZE:
@@ -205,7 +205,7 @@ typedef enum {
  * A key in the "std" namespace for getting the file's size (in bytes).
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_UINT64.
  **/
-#define G_FILE_ATTRIBUTE_STD_SIZE "std:size"                     /* uint64 */
+#define G_FILE_ATTRIBUTE_STD_SIZE "std::size"                     /* uint64 */
 
 /**
  * G_FILE_ATTRIBUTE_STD_SYMLINK_TARGET:
@@ -214,7 +214,7 @@ typedef enum {
  * is a symlink. Corresponding #GFileAttributeType is 
  * %G_FILE_ATTRIBUTE_TYPE_BYTE_STRING.
  **/
-#define G_FILE_ATTRIBUTE_STD_SYMLINK_TARGET "std:symlink_target" /* byte string */
+#define G_FILE_ATTRIBUTE_STD_SYMLINK_TARGET "std::symlink-target" /* byte string */
 
 /**
  * G_FILE_ATTRIBUTE_STD_TARGET_URI:
@@ -223,7 +223,7 @@ typedef enum {
  * the case of %G_FILE_TYPE_SHORTCUT or %G_FILE_TYPE_MOUNTABLE files.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_STRING.
  **/
-#define G_FILE_ATTRIBUTE_STD_TARGET_URI "std:target_uri"         /* string */
+#define G_FILE_ATTRIBUTE_STD_TARGET_URI "std::target-uri"         /* string */
 
 /**
  * G_FILE_ATTRIBUTE_STD_SORT_ORDER:
@@ -235,7 +235,7 @@ typedef enum {
  * should be sorted first, and files without sort order as if sort order
  * was zero.
  **/
-#define G_FILE_ATTRIBUTE_STD_SORT_ORDER "std:sort_order"         /* int32  */
+#define G_FILE_ATTRIBUTE_STD_SORT_ORDER "std::sort-order"         /* int32  */
 
 /* Entity tags, used to avoid missing updates on save */
 
@@ -246,7 +246,7 @@ typedef enum {
  * entity tag. Corresponding #GFileAttributeType is 
  * %G_FILE_ATTRIBUTE_TYPE_STRING.
  **/
-#define G_FILE_ATTRIBUTE_ETAG_VALUE "etag:value"                 /* string */
+#define G_FILE_ATTRIBUTE_ETAG_VALUE "etag::value"                 /* string */
 
 /* File identifier, for e.g. avoiding loops when doing recursive 
  * directory scanning 
@@ -260,7 +260,7 @@ typedef enum {
  * An example use would be during listing files, to avoid recursive
  * directory scanning.
  **/
-#define G_FILE_ATTRIBUTE_ID_FILE "id:file"                     /* string */
+#define G_FILE_ATTRIBUTE_ID_FILE "id::file"                     /* string */
 
 /**
  * G_FILE_ATTRIBUTE_ID_FS:
@@ -270,7 +270,7 @@ typedef enum {
  * An example use would be during listing files, to avoid recursive
  * directory scanning.
  **/
-#define G_FILE_ATTRIBUTE_ID_FS "id:fs"                         /* string */
+#define G_FILE_ATTRIBUTE_ID_FS "id::fs"                         /* string */
 
 /* Calculated Access Rights for current user */
 
@@ -281,7 +281,7 @@ typedef enum {
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
  * This attribute will be %TRUE if the user is able to read the file.
  **/
-#define G_FILE_ATTRIBUTE_ACCESS_CAN_READ "access:can_read"       /* boolean */
+#define G_FILE_ATTRIBUTE_ACCESS_CAN_READ "access::can-read"       /* boolean */
 
 /**
  * G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE:
@@ -290,7 +290,7 @@ typedef enum {
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
  * This attribute will be %TRUE if the user is able to write to the file.
  **/
-#define G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE "access:can_write"     /* boolean */
+#define G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE "access::can-write"     /* boolean */
 
 /**
  * G_FILE_ATTRIBUTE_ACCESS_CAN_EXECUTE:
@@ -299,7 +299,7 @@ typedef enum {
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
  * This attribute will be %TRUE if the user is able to execute the file.
  **/
-#define G_FILE_ATTRIBUTE_ACCESS_CAN_EXECUTE "access:can_execute" /* boolean */
+#define G_FILE_ATTRIBUTE_ACCESS_CAN_EXECUTE "access::can-execute" /* boolean */
 
 /**
  * G_FILE_ATTRIBUTE_ACCESS_CAN_DELETE:
@@ -308,7 +308,7 @@ typedef enum {
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
  * This attribute will be %TRUE if the user is able to delete the file.
  **/
-#define G_FILE_ATTRIBUTE_ACCESS_CAN_DELETE "access:can_delete"   /* boolean */
+#define G_FILE_ATTRIBUTE_ACCESS_CAN_DELETE "access::can-delete"   /* boolean */
 
 /**
  * G_FILE_ATTRIBUTE_ACCESS_CAN_TRASH:
@@ -318,7 +318,7 @@ typedef enum {
  * This attribute will be %TRUE if the user is able to move the file to 
  * the trash.
  **/
-#define G_FILE_ATTRIBUTE_ACCESS_CAN_TRASH "access:can_trash"     /* boolean */
+#define G_FILE_ATTRIBUTE_ACCESS_CAN_TRASH "access::can-trash"     /* boolean */
 
 /**
  * G_FILE_ATTRIBUTE_ACCESS_CAN_RENAME:
@@ -327,7 +327,7 @@ typedef enum {
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
  * This attribute will be %TRUE if the user is able to rename the file.
  **/
-#define G_FILE_ATTRIBUTE_ACCESS_CAN_RENAME "access:can_rename"   /* boolean */ 
+#define G_FILE_ATTRIBUTE_ACCESS_CAN_RENAME "access::can-rename"   /* boolean */ 
 
 /* TODO: Should we have special version for directories? can_enumerate, etc */
 
@@ -339,7 +339,7 @@ typedef enum {
  * A key in the "mountable" namespace for checking if a file (of type G_FILE_TYPE_MOUNTABLE) is mountable.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
  **/
-#define G_FILE_ATTRIBUTE_MOUNTABLE_CAN_MOUNT "mountable:can_mount"     /* boolean */
+#define G_FILE_ATTRIBUTE_MOUNTABLE_CAN_MOUNT "mountable::can-mount"     /* boolean */
 
 /**
  * G_FILE_ATTRIBUTE_MOUNTABLE_CAN_UNMOUNT:
@@ -347,7 +347,7 @@ typedef enum {
  * A key in the "mountable" namespace for checking if a file (of type G_FILE_TYPE_MOUNTABLE)  is unmountable.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
  **/
-#define G_FILE_ATTRIBUTE_MOUNTABLE_CAN_UNMOUNT "mountable:can_unmount" /* boolean */
+#define G_FILE_ATTRIBUTE_MOUNTABLE_CAN_UNMOUNT "mountable::can-unmount" /* boolean */
 
 /**
  * G_FILE_ATTRIBUTE_MOUNTABLE_CAN_EJECT:
@@ -355,7 +355,7 @@ typedef enum {
  * A key in the "mountable" namespace for checking if a file (of type G_FILE_TYPE_MOUNTABLE) can be ejected.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
  **/
-#define G_FILE_ATTRIBUTE_MOUNTABLE_CAN_EJECT "mountable:can_eject"     /* boolean */
+#define G_FILE_ATTRIBUTE_MOUNTABLE_CAN_EJECT "mountable::can-eject"     /* boolean */
 
 /**
  * G_FILE_ATTRIBUTE_MOUNTABLE_UNIX_DEVICE:
@@ -363,7 +363,7 @@ typedef enum {
  * A key in the "mountable" namespace for getting the unix device.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_UINT32.
  **/
-#define G_FILE_ATTRIBUTE_MOUNTABLE_UNIX_DEVICE "mountable:unix_device" /* uint32 */
+#define G_FILE_ATTRIBUTE_MOUNTABLE_UNIX_DEVICE "mountable::unix-device" /* uint32 */
 
 /**
  * G_FILE_ATTRIBUTE_MOUNTABLE_HAL_UDI:
@@ -371,7 +371,7 @@ typedef enum {
  * A key in the "mountable" namespace for getting the HAL UDI for the mountable
  * file. Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_STRING.
  **/
-#define G_FILE_ATTRIBUTE_MOUNTABLE_HAL_UDI "mountable:hal_udi"         /* string */
+#define G_FILE_ATTRIBUTE_MOUNTABLE_HAL_UDI "mountable::hal-udi"         /* string */
 
 /* Time attributes */
 
@@ -383,7 +383,7 @@ typedef enum {
  * %G_FILE_ATTRIBUTE_TYPE_UINT64, and contains the UNIX time since the 
  * file was modified.
  **/
-#define G_FILE_ATTRIBUTE_TIME_MODIFIED "time:modified"           /* uint64 */
+#define G_FILE_ATTRIBUTE_TIME_MODIFIED "time::modified"           /* uint64 */
 
 /**
  * G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC:
@@ -393,7 +393,7 @@ typedef enum {
  * #G_FILE_ATTRIBUTE_TIME_MODIFIED. Corresponding #GFileAttributeType is 
  * %G_FILE_ATTRIBUTE_TYPE_UINT32.
  **/
-#define G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC "time:modified_usec" /* uint32 */
+#define G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC "time::modified-usec" /* uint32 */
 
 /**
  * G_FILE_ATTRIBUTE_TIME_ACCESS:
@@ -403,7 +403,7 @@ typedef enum {
  * %G_FILE_ATTRIBUTE_TYPE_UINT64, and contains the UNIX time since the 
  * file was last accessed.
  **/
-#define G_FILE_ATTRIBUTE_TIME_ACCESS "time:access"               /* uint64 */
+#define G_FILE_ATTRIBUTE_TIME_ACCESS "time::access"               /* uint64 */
 
 /**
  * G_FILE_ATTRIBUTE_TIME_ACCESS_USEC:
@@ -413,7 +413,7 @@ typedef enum {
  * #G_FILE_ATTRIBUTE_TIME_ACCESS. Corresponding #GFileAttributeType is 
  * %G_FILE_ATTRIBUTE_TYPE_UINT32.
  **/
-#define G_FILE_ATTRIBUTE_TIME_ACCESS_USEC "time:access_usec"     /* uint32 */
+#define G_FILE_ATTRIBUTE_TIME_ACCESS_USEC "time::access-usec"     /* uint32 */
 
 /**
  * G_FILE_ATTRIBUTE_TIME_CHANGED:
@@ -424,7 +424,7 @@ typedef enum {
  *
  * This corresponds to the traditional UNIX ctime.
  **/
-#define G_FILE_ATTRIBUTE_TIME_CHANGED "time:changed"             /* uint64 */
+#define G_FILE_ATTRIBUTE_TIME_CHANGED "time::changed"             /* uint64 */
 
 /**
  * G_FILE_ATTRIBUTE_TIME_CHANGED_USEC:
@@ -434,7 +434,7 @@ typedef enum {
  * #G_FILE_ATTRIBUTE_TIME_CHANGED. Corresponding #GFileAttributeType is 
  * %G_FILE_ATTRIBUTE_TYPE_UINT32. 
  **/
-#define G_FILE_ATTRIBUTE_TIME_CHANGED_USEC "time:changed_usec"   /* uint32 */
+#define G_FILE_ATTRIBUTE_TIME_CHANGED_USEC "time::changed-usec"   /* uint32 */
 
 /**
  * G_FILE_ATTRIBUTE_TIME_CREATED:
@@ -445,7 +445,7 @@ typedef enum {
  *
  * This corresponds to the NTFS ctime.
  **/
-#define G_FILE_ATTRIBUTE_TIME_CREATED "time:created"             /* uint64 */
+#define G_FILE_ATTRIBUTE_TIME_CREATED "time::created"             /* uint64 */
 
 /**
  * G_FILE_ATTRIBUTE_TIME_CREATED_USEC:
@@ -455,7 +455,7 @@ typedef enum {
  * #G_FILE_ATTRIBUTE_TIME_CREATED. Corresponding #GFileAttributeType is 
  * %G_FILE_ATTRIBUTE_TYPE_UINT32. 
  **/
-#define G_FILE_ATTRIBUTE_TIME_CREATED_USEC "time:created_usec"   /* uint32 */
+#define G_FILE_ATTRIBUTE_TIME_CREATED_USEC "time::created-usec"   /* uint32 */
 
 /* Unix specific attributes */
 
@@ -467,7 +467,7 @@ typedef enum {
  * available for UNIX file systems. Corresponding #GFileAttributeType is 
  * %G_FILE_ATTRIBUTE_TYPE_UINT32. 
  **/
-#define G_FILE_ATTRIBUTE_UNIX_DEVICE "unix:device"               /* uint32 */
+#define G_FILE_ATTRIBUTE_UNIX_DEVICE "unix::device"               /* uint32 */
 
 /**
  * G_FILE_ATTRIBUTE_UNIX_INODE:
@@ -476,7 +476,7 @@ typedef enum {
  * This attribute is only available for UNIX file systems. Corresponding 
  * #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_UINT64.
  **/
-#define G_FILE_ATTRIBUTE_UNIX_INODE "unix:inode"                 /* uint64 */
+#define G_FILE_ATTRIBUTE_UNIX_INODE "unix::inode"                 /* uint64 */
 
 /**
  * G_FILE_ATTRIBUTE_UNIX_MODE:
@@ -486,7 +486,7 @@ typedef enum {
  * documentation. This attribute is only available for UNIX file systems. 
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_UINT32.
  **/
-#define G_FILE_ATTRIBUTE_UNIX_MODE "unix:mode"                   /* uint32 */
+#define G_FILE_ATTRIBUTE_UNIX_MODE "unix::mode"                   /* uint32 */
 
 /**
  * G_FILE_ATTRIBUTE_UNIX_NLINK:
@@ -496,7 +496,7 @@ typedef enum {
  * for UNIX file systems. Corresponding #GFileAttributeType is 
  * %G_FILE_ATTRIBUTE_TYPE_UINT32.
  **/
-#define G_FILE_ATTRIBUTE_UNIX_NLINK "unix:nlink"                 /* uint32 */
+#define G_FILE_ATTRIBUTE_UNIX_NLINK "unix::nlink"                 /* uint32 */
 
 /**
  * G_FILE_ATTRIBUTE_UNIX_UID:
@@ -505,7 +505,7 @@ typedef enum {
  * This attribute is only available for UNIX file systems. 
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_UINT32.
  **/
-#define G_FILE_ATTRIBUTE_UNIX_UID "unix:uid"                     /* uint32 */
+#define G_FILE_ATTRIBUTE_UNIX_UID "unix::uid"                     /* uint32 */
 
 /**
  * G_FILE_ATTRIBUTE_UNIX_GID:
@@ -514,7 +514,7 @@ typedef enum {
  * This attribute is only available for UNIX file systems. 
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_UINT32.
  **/
-#define G_FILE_ATTRIBUTE_UNIX_GID "unix:gid"                     /* uint32 */
+#define G_FILE_ATTRIBUTE_UNIX_GID "unix::gid"                     /* uint32 */
 
 /**
  * G_FILE_ATTRIBUTE_UNIX_RDEV:
@@ -524,7 +524,7 @@ typedef enum {
  * is only available for UNIX file systems. Corresponding #GFileAttributeType 
  * is %G_FILE_ATTRIBUTE_TYPE_UINT32.
  **/
-#define G_FILE_ATTRIBUTE_UNIX_RDEV "unix:rdev"                   /* uint32 */
+#define G_FILE_ATTRIBUTE_UNIX_RDEV "unix::rdev"                   /* uint32 */
 
 /**
  * G_FILE_ATTRIBUTE_UNIX_BLOCK_SIZE:
@@ -533,7 +533,7 @@ typedef enum {
  * system. This attribute is only available for UNIX file systems. 
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_UINT32.
  **/
-#define G_FILE_ATTRIBUTE_UNIX_BLOCK_SIZE "unix:block_size"       /* uint32 */
+#define G_FILE_ATTRIBUTE_UNIX_BLOCK_SIZE "unix::block-size"       /* uint32 */
 
 /**
  * G_FILE_ATTRIBUTE_UNIX_BLOCKS:
@@ -542,7 +542,7 @@ typedef enum {
  * for the file. This attribute is only available for UNIX file systems. 
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_UINT64.
  **/
-#define G_FILE_ATTRIBUTE_UNIX_BLOCKS "unix:blocks"               /* uint64 */
+#define G_FILE_ATTRIBUTE_UNIX_BLOCKS "unix::blocks"               /* uint64 */
 
 /**
  * G_FILE_ATTRIBUTE_UNIX_IS_MOUNTPOINT:
@@ -552,7 +552,7 @@ typedef enum {
  * point. This attribute is only available for UNIX file systems. 
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
  **/
-#define G_FILE_ATTRIBUTE_UNIX_IS_MOUNTPOINT "unix:is_mountpoint" /* boolean */
+#define G_FILE_ATTRIBUTE_UNIX_IS_MOUNTPOINT "unix::is-mountpoint" /* boolean */
 
 /* DOS specific attributes */
 
@@ -564,7 +564,7 @@ typedef enum {
  * is only available for DOS file systems. Corresponding #GFileAttributeType 
  * is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
  **/
-#define G_FILE_ATTRIBUTE_DOS_IS_ARCHIVE "dos:is_archive"         /* boolean */
+#define G_FILE_ATTRIBUTE_DOS_IS_ARCHIVE "dos::is-archive"         /* boolean */
 
 /**
  * G_FILE_ATTRIBUTE_DOS_IS_SYSTEM:
@@ -574,7 +574,7 @@ typedef enum {
  * is only available for DOS file systems. Corresponding #GFileAttributeType 
  * is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
  **/
-#define G_FILE_ATTRIBUTE_DOS_IS_SYSTEM "dos:is_system"           /* boolean */
+#define G_FILE_ATTRIBUTE_DOS_IS_SYSTEM "dos::is-system"           /* boolean */
 
 /* Owner attributes */
 
@@ -585,7 +585,7 @@ typedef enum {
  * file's owner. Corresponding #GFileAttributeType is 
  * %G_FILE_ATTRIBUTE_TYPE_STRING.
  **/
-#define G_FILE_ATTRIBUTE_OWNER_USER "owner:user"                 /* string */
+#define G_FILE_ATTRIBUTE_OWNER_USER "owner::user"                 /* string */
 
 /**
  * G_FILE_ATTRIBUTE_OWNER_USER_REAL:
@@ -594,7 +594,7 @@ typedef enum {
  * user that owns the file. Corresponding #GFileAttributeType is 
  * %G_FILE_ATTRIBUTE_TYPE_STRING.
  **/
-#define G_FILE_ATTRIBUTE_OWNER_USER_REAL "owner:user_real"       /* string */
+#define G_FILE_ATTRIBUTE_OWNER_USER_REAL "owner::user-real"       /* string */
 
 /**
  * G_FILE_ATTRIBUTE_OWNER_GROUP:
@@ -602,7 +602,7 @@ typedef enum {
  * A key in the "owner" namespace for getting the file owner's group.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_STRING.
  **/
-#define G_FILE_ATTRIBUTE_OWNER_GROUP "owner:group"               /* string */
+#define G_FILE_ATTRIBUTE_OWNER_GROUP "owner::group"               /* string */
 
 /* Thumbnails */
 
@@ -613,7 +613,7 @@ typedef enum {
  * image. Corresponding #GFileAttributeType is 
  * %G_FILE_ATTRIBUTE_TYPE_BYTE_STRING.
  **/
-#define G_FILE_ATTRIBUTE_THUMBNAIL_PATH "thumbnail:path"         /* bytestring */
+#define G_FILE_ATTRIBUTE_THUMBNAIL_PATH "thumbnail::path"         /* bytestring */
 /**
  * G_FILE_ATTRIBUTE_THUMBNAILING_FAILED:
  * 
@@ -621,7 +621,7 @@ typedef enum {
  * This attribute is %TRUE if thumbnailing failed. Corresponding 
  * #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN. 
  **/
-#define G_FILE_ATTRIBUTE_THUMBNAILING_FAILED "thumbnail:failed"         /* boolean */
+#define G_FILE_ATTRIBUTE_THUMBNAILING_FAILED "thumbnail::failed"         /* boolean */
 
 /* File system info (for g_file_get_filesystem_info) */
 
@@ -632,7 +632,7 @@ typedef enum {
  * used in g_file_query_filesystem_info(). Corresponding #GFileAttributeType 
  * is %G_FILE_ATTRIBUTE_TYPE_UINT64.
  **/
-#define G_FILE_ATTRIBUTE_FS_SIZE "fs:size"                       /* uint64 */
+#define G_FILE_ATTRIBUTE_FS_SIZE "fs::size"                       /* uint64 */
 
 /**
  * G_FILE_ATTRIBUTE_FS_FREE:
@@ -641,7 +641,7 @@ typedef enum {
  * file system. Corresponding #GFileAttributeType is 
  * %G_FILE_ATTRIBUTE_TYPE_UINT64.
  **/
-#define G_FILE_ATTRIBUTE_FS_FREE "fs:free"                       /* uint64 */
+#define G_FILE_ATTRIBUTE_FS_FREE "fs::free"                       /* uint64 */
 
 /**
  * G_FILE_ATTRIBUTE_FS_TYPE:
@@ -649,7 +649,7 @@ typedef enum {
  * A key in the "fs" namespace for getting the file system's type.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_STRING.
  **/
-#define G_FILE_ATTRIBUTE_FS_TYPE "fs:type"                       /* string */
+#define G_FILE_ATTRIBUTE_FS_TYPE "fs::type"                       /* string */
 
 /**
  * G_FILE_ATTRIBUTE_FS_READONLY:
@@ -658,7 +658,7 @@ typedef enum {
  * Is set to %TRUE if the file system is read only. Corresponding 
  * #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
  **/
-#define G_FILE_ATTRIBUTE_FS_READONLY "fs:readonly"               /* boolean */
+#define G_FILE_ATTRIBUTE_FS_READONLY "fs::readonly"               /* boolean */
 
 /**
  * G_FILE_ATTRIBUTE_GVFS_BACKEND:
@@ -667,7 +667,7 @@ typedef enum {
  * GVFS backend in use. Corresponding #GFileAttributeType is 
  * %G_FILE_ATTRIBUTE_TYPE_STRING.
  **/
-#define G_FILE_ATTRIBUTE_GVFS_BACKEND "gvfs:backend"             /* string */
+#define G_FILE_ATTRIBUTE_GVFS_BACKEND "gvfs::backend"             /* string */
 
 GType g_file_info_get_type (void) G_GNUC_CONST;
 

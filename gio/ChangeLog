@@ -1,5 +1,14 @@
 2007-12-12  Alexander Larsson  <alexl@redhat.com>
 
+        * gfileattribute.c:
+        * gfileinfo.[ch]:
+        * glocalfile.c:
+        * glocalfileinfo.c:
+	Make attribute namespace separator "::" instead of ":".
+	Use - instead of _ as separator in attribute names.
+
+2007-12-12  Alexander Larsson  <alexl@redhat.com>
+
         * gbufferedinputstream.h:
         * gbufferedoutputstream.h:
         * gdatainputstream.h:

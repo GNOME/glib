@@ -121,65 +121,65 @@
  * <tgroup cols='3' align='left'><thead>
  * <row><entry>Enum Value</entry><entry>Namespace:Key</entry><entry>Value Type</entry></row>
  * </thead><tbody>
- * <row><entry>%G_FILE_ATTRIBUTE_STD_TYPE</entry><entry>std:type</entry><entry>uint32 (#GFileType)</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_STD_IS_HIDDEN</entry><entry>std:is_hidden</entry><entry>boolean</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_STD_IS_BACKUP</entry><entry>std:is_backup</entry><entry>boolean</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_STD_IS_SYMLINK</entry><entry>std:is_symlink</entry><entry>boolean</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_STD_IS_VIRTUAL</entry><entry>std:is_virtual</entry><entry>boolean</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_STD_NAME</entry><entry>std:name</entry><entry>byte string</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_STD_DISPLAY_NAME</entry><entry>std:display_name</entry><entry>string</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_STD_EDIT_NAME</entry><entry>std:edit_name</entry><entry>string</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_STD_ICON</entry><entry>std:icon</entry><entry>object (#GIcon)</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_STD_CONTENT_TYPE</entry><entry>std:content_type</entry><entry>string</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_STD_FAST_CONTENT_TYPE</entry><entry>std:fast_content_type</entry><entry>string</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_STD_SIZE</entry><entry>std:size</entry><entry>uint64</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_STD_SYMLINK_TARGET</entry><entry>std:symlink_target</entry><entry>byte string</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_STD_TARGET_URI</entry><entry>std:target_uri</entry><entry>string</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_STD_SORT_ORDER</entry><entry>std:sort_order</entry><entry>int32</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_ETAG_VALUE</entry><entry>etag:value</entry><entry>string</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_ID_FILE</entry><entry>id:file</entry><entry>string</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_ID_FS</entry><entry>id:fs</entry><entry>string</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_ACCESS_CAN_READ</entry><entry>access:can_read</entry><entry>boolean</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE</entry><entry>access:can_write</entry><entry>boolean</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_ACCESS_CAN_EXECUTE</entry><entry>access:can_execute</entry><entry>boolean</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_ACCESS_CAN_DELETE</entry><entry>access:can_delete</entry><entry>boolean</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_ACCESS_CAN_TRASH</entry><entry>access:can_trash</entry><entry>boolean</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_ACCESS_CAN_RENAME</entry><entry>access:can_rename</entry><entry>boolean</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_MOUNTABLE_CAN_MOUNT</entry><entry>mountable:can_mount</entry><entry>boolean</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_MOUNTABLE_CAN_UNMOUNT</entry><entry>mountable:can_unmount</entry><entry>boolean</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_MOUNTABLE_CAN_EJECT</entry><entry>mountable:can_eject</entry><entry>boolean</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_MOUNTABLE_UNIX_DEVICE</entry><entry>mountable:unix_device</entry><entry>uint32</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_MOUNTABLE_HAL_UDI</entry><entry>mountable:hal_udi</entry><entry>string</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_TIME_MODIFIED</entry><entry>time:modified</entry><entry>uint64</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC</entry><entry>time:modified_usec</entry><entry>uint32</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_TIME_ACCESS</entry><entry>time:access</entry><entry>uint64</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_TIME_ACCESS_USEC</entry><entry>time:access_usec</entry><entry>uint32</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_TIME_CHANGED</entry><entry>time:changed</entry><entry>uint64</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_TIME_CHANGED_USEC</entry><entry>time:changed_usec</entry><entry>uint32</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_TIME_CREATED</entry><entry>time:created</entry><entry>uint64</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_TIME_CREATED_USEC</entry><entry>time:created_usec</entry><entry>uint32</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_UNIX_DEVICE</entry><entry>unix:device</entry><entry>uint32</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_UNIX_INODE</entry><entry>unix:inode</entry><entry>uint64</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_UNIX_MODE</entry><entry>unix:mode</entry><entry>uint32</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_UNIX_NLINK</entry><entry>unix:nlink</entry><entry>uint32</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_UNIX_UID</entry><entry>unix:uid</entry><entry>uint32</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_UNIX_GID</entry><entry>unix:gid</entry><entry>uint32</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_UNIX_RDEV</entry><entry>unix:rdev</entry><entry>uint32</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_UNIX_BLOCK_SIZE</entry><entry>unix:block_size</entry><entry>uint32</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_UNIX_BLOCKS</entry><entry>unix:blocks</entry><entry>uint64</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_UNIX_IS_MOUNTPOINT</entry><entry>unix:is_mountpoint</entry><entry>boolean</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_DOS_IS_ARCHIVE</entry><entry>dos:is_archive</entry><entry>boolean</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_DOS_IS_SYSTEM</entry><entry>dos:is_system</entry><entry>boolean</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_OWNER_USER</entry><entry>owner:user</entry><entry>string</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_OWNER_USER_REAL</entry><entry>owner:user_real</entry><entry>string</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_OWNER_GROUP</entry><entry>owner:group</entry><entry>string</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_THUMBNAIL_PATH</entry><entry>thumbnail:path</entry><entry>bytestring</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_THUMBNAILING_FAILED</entry><entry>thumbnail:failed</entry><entry>boolean</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_FS_SIZE</entry><entry>fs:size</entry><entry>uint64</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_FS_FREE</entry><entry>fs:free</entry><entry>uint64</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_FS_TYPE</entry><entry>fs:type</entry><entry>string</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_FS_READONLY</entry><entry>fs:readonly</entry><entry>boolean</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_GVFS_BACKEND</entry><entry>gvfs:backend</entry><entry>string</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_STD_TYPE</entry><entry>std::type</entry><entry>uint32 (#GFileType)</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_STD_IS_HIDDEN</entry><entry>std::is-hidden</entry><entry>boolean</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_STD_IS_BACKUP</entry><entry>std::is-backup</entry><entry>boolean</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_STD_IS_SYMLINK</entry><entry>std::is-symlink</entry><entry>boolean</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_STD_IS_VIRTUAL</entry><entry>std::is-virtual</entry><entry>boolean</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_STD_NAME</entry><entry>std::name</entry><entry>byte string</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_STD_DISPLAY_NAME</entry><entry>std::display-name</entry><entry>string</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_STD_EDIT_NAME</entry><entry>std::edit-name</entry><entry>string</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_STD_ICON</entry><entry>std::icon</entry><entry>object (#GIcon)</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_STD_CONTENT_TYPE</entry><entry>std::content-type</entry><entry>string</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_STD_FAST_CONTENT_TYPE</entry><entry>std::fast-content-type</entry><entry>string</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_STD_SIZE</entry><entry>std::size</entry><entry>uint64</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_STD_SYMLINK_TARGET</entry><entry>std::symlink-target</entry><entry>byte string</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_STD_TARGET_URI</entry><entry>std::target-uri</entry><entry>string</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_STD_SORT_ORDER</entry><entry>std::sort-order</entry><entry>int32</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_ETAG_VALUE</entry><entry>etag::value</entry><entry>string</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_ID_FILE</entry><entry>id::file</entry><entry>string</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_ID_FS</entry><entry>id::fs</entry><entry>string</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_ACCESS_CAN_READ</entry><entry>access::can-read</entry><entry>boolean</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE</entry><entry>access::can-write</entry><entry>boolean</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_ACCESS_CAN_EXECUTE</entry><entry>access::can-execute</entry><entry>boolean</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_ACCESS_CAN_DELETE</entry><entry>access::can-delete</entry><entry>boolean</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_ACCESS_CAN_TRASH</entry><entry>access::can-trash</entry><entry>boolean</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_ACCESS_CAN_RENAME</entry><entry>access::can-rename</entry><entry>boolean</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_MOUNTABLE_CAN_MOUNT</entry><entry>mountable::can-mount</entry><entry>boolean</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_MOUNTABLE_CAN_UNMOUNT</entry><entry>mountable::can-unmount</entry><entry>boolean</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_MOUNTABLE_CAN_EJECT</entry><entry>mountable::can-eject</entry><entry>boolean</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_MOUNTABLE_UNIX_DEVICE</entry><entry>mountable::unix-device</entry><entry>uint32</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_MOUNTABLE_HAL_UDI</entry><entry>mountable::hal-udi</entry><entry>string</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_TIME_MODIFIED</entry><entry>time::modified</entry><entry>uint64</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC</entry><entry>time::modified-usec</entry><entry>uint32</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_TIME_ACCESS</entry><entry>time::access</entry><entry>uint64</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_TIME_ACCESS_USEC</entry><entry>time::access-usec</entry><entry>uint32</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_TIME_CHANGED</entry><entry>time::changed</entry><entry>uint64</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_TIME_CHANGED_USEC</entry><entry>time::changed-usec</entry><entry>uint32</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_TIME_CREATED</entry><entry>time::created</entry><entry>uint64</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_TIME_CREATED_USEC</entry><entry>time::created-usec</entry><entry>uint32</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_UNIX_DEVICE</entry><entry>unix::device</entry><entry>uint32</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_UNIX_INODE</entry><entry>unix::inode</entry><entry>uint64</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_UNIX_MODE</entry><entry>unix::mode</entry><entry>uint32</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_UNIX_NLINK</entry><entry>unix::nlink</entry><entry>uint32</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_UNIX_UID</entry><entry>unix::uid</entry><entry>uint32</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_UNIX_GID</entry><entry>unix::gid</entry><entry>uint32</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_UNIX_RDEV</entry><entry>unix::rdev</entry><entry>uint32</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_UNIX_BLOCK_SIZE</entry><entry>unix::block-size</entry><entry>uint32</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_UNIX_BLOCKS</entry><entry>unix::blocks</entry><entry>uint64</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_UNIX_IS_MOUNTPOINT</entry><entry>unix::is-mountpoint</entry><entry>boolean</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_DOS_IS_ARCHIVE</entry><entry>dos::is-archive</entry><entry>boolean</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_DOS_IS_SYSTEM</entry><entry>dos::is-system</entry><entry>boolean</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_OWNER_USER</entry><entry>owner::user</entry><entry>string</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_OWNER_USER_REAL</entry><entry>owner::user-real</entry><entry>string</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_OWNER_GROUP</entry><entry>owner::group</entry><entry>string</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_THUMBNAIL_PATH</entry><entry>thumbnail::path</entry><entry>bytestring</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_THUMBNAILING_FAILED</entry><entry>thumbnail::failed</entry><entry>boolean</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_FS_SIZE</entry><entry>fs::size</entry><entry>uint64</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_FS_FREE</entry><entry>fs::free</entry><entry>uint64</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_FS_TYPE</entry><entry>fs::type</entry><entry>string</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_FS_READONLY</entry><entry>fs::readonly</entry><entry>boolean</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_GVFS_BACKEND</entry><entry>gvfs::backend</entry><entry>string</entry></row>
  * </tbody></tgroup></table></para>
  *  
  **/ 
