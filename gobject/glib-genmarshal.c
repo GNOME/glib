@@ -123,6 +123,7 @@ static gboolean		 gen_cbody = FALSE;
 static gboolean          gen_internal = FALSE;
 static gboolean		 skip_ploc = FALSE;
 static gboolean		 std_includes = TRUE;
+static gint              exit_status = 0;
 
 
 /* --- functions --- */
@@ -283,6 +284,7 @@ pad (const gchar *string)
       buffer = g_strdup_printf ("%s ", string);
       g_warning ("overfull string (%u bytes) for padspace",
                  (guint) strlen (string));
+      exit_status |= 2;
 
       return buffer;
     }
@@ -464,6 +466,7 @@ process_signature (Signature *sig)
   if (!complete_out_arg (sig->rarg))
     {
       g_warning ("unknown type: %s", sig->rarg->keyword);
+      exit_status |= 1;
       return;
     }
   for (node = sig->args; node; node = node->next)
@@ -473,6 +476,7 @@ process_signature (Signature *sig)
       if (!complete_in_arg (iarg))
 	{
 	  g_warning ("unknown type: %s", iarg->keyword);
+          exit_status |= 1;
 	  return;
 	}
     }
@@ -604,7 +608,6 @@ main (int   argc,
   GScanner *scanner;
   GSList *slist, *files = NULL;
   gint i;
-  gint result = 0;
 
   /* parse args and do fast exits */
   parse_args (&argc, &argv);
@@ -665,7 +668,7 @@ main (int   argc,
       if (fd < 0)
 	{
 	  g_warning ("failed to open \"%s\": %s", file, g_strerror (errno));
-	  result = 1;
+	  exit_status |= 1;
 	  continue;
 	}
 
@@ -724,7 +727,7 @@ main (int   argc,
 	  if (expected_token != G_TOKEN_NONE)
 	    {
 	      g_scanner_unexp_token (scanner, expected_token, "type name", NULL, NULL, NULL, TRUE);
-	      result = 1;
+	      exit_status |= 1;
 	      break;
 	    }
 
@@ -751,7 +754,7 @@ main (int   argc,
   g_hash_table_foreach_remove (marshallers, string_key_destroy, NULL);
   g_hash_table_destroy (marshallers);
 
-  return result;
+  return exit_status;
 }
 
 static void
