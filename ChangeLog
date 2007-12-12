@@ -1,11 +1,3 @@
-2007-11-11  Mathias Hasselmann  <mathias@openismus.com>
-
-	Always exit with non-zero error code when printing warnings.
-
-	* gobject/glib-genmarshal.c: Add global exit_status variable, and use
-	it in pad() and process_signature() to return with non-zero error code
-	when printing warnings. (#495294)
-
 2007-12-11 Rahul Bhalerao <b.rahul.pm@gmail.com>
 
 	* configure.in: Added entry for Marathi Translations

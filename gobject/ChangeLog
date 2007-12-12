@@ -1,3 +1,11 @@
+2007-11-11  Mathias Hasselmann  <mathias@openismus.com>
+
+	Always exit with non-zero error code when printing warnings.
+
+	* gobject/glib-genmarshal.c: Add global exit_status variable, and use
+	it in pad() and process_signature() to return with non-zero error code
+	when printing warnings. (#495294)
+
 2007-11-08  Matthias Clasen <mclasen@redhat.com>
 
 	* glib-mkenums.in: Don't shift ARGV[0] to undefined. 
