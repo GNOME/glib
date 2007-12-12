@@ -1,3 +1,10 @@
+2007-12-12 16:06:11  Tim Janik  <timj@imendio.com>
+
+	* tests/testglib.c: split up tests and reworked code to use
+	the new test framework.
+
+	* tests/Makefile.am: added testglib to TEST_PROGS.
+
 2007-12-11 Rahul Bhalerao <b.rahul.pm@gmail.com>
 
 	* configure.in: Added entry for Marathi Translations

@@ -66,7 +66,6 @@ if ENABLE_TIMELOOP
 timeloop = timeloop timeloop-closure
 endif
 noinst_PROGRAMS = $(TEST_PROGS)	\
-	testglib		\
 	testgdate 		\
 	testgdateparser 	\
 	unicode-normalize 	\
@@ -77,9 +76,10 @@ noinst_PROGRAMS = $(TEST_PROGS)	\
 TEST_PROGS              += scannerapi
 scannerapi_SOURCES       = scannerapi.c
 scannerapi_LDADD         = $(progs_ldadd)
+TEST_PROGS		+= testglib
+testglib_LDADD		 = $(libglib)
 
 
-testglib_LDADD = $(libglib)
 patterntest_LDADD = $(libglib)
 testgdate_LDADD = $(libglib)
 testgdateparser_LDADD = $(libglib)
