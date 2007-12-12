@@ -1,5 +1,12 @@
 2007-12-12  Alexander Larsson  <alexl@redhat.com>
 
+        * gdrive.h:
+        * gmount.h:
+        * gvolume.h:
+	No need for padding for interfaces
+	
+2007-12-12  Alexander Larsson  <alexl@redhat.com>
+
         * gappinfo.[ch]:
         * gasyncresult.c:
         * gbufferedinputstream.c:
