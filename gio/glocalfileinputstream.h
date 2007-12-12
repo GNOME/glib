@@ -40,7 +40,7 @@ typedef struct _GLocalFileInputStreamPrivate  GLocalFileInputStreamPrivate;
 
 struct _GLocalFileInputStream
 {
-  GFileInputStream parent;
+  GFileInputStream parent_instance;
 
   /*< private >*/
   GLocalFileInputStreamPrivate *priv;

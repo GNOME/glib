@@ -48,7 +48,7 @@ typedef struct _GDataInputStreamPrivate  GDataInputStreamPrivate;
 
 struct _GDataInputStream
 {
-  GBufferedInputStream parent;
+  GBufferedInputStream parent_instance;
 
   /*< private >*/
   GDataInputStreamPrivate *priv;

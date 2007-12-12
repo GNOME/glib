@@ -46,7 +46,7 @@ typedef struct _GMemoryInputStreamPrivate  GMemoryInputStreamPrivate;
 
 struct _GMemoryInputStream
 {
-  GInputStream parent;
+  GInputStream parent_instance;
 
   /*< private >*/
   GMemoryInputStreamPrivate *priv;

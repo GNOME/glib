@@ -48,7 +48,7 @@ typedef struct _GInputStreamPrivate  GInputStreamPrivate;
 
 struct _GInputStream
 {
-  GObject parent;
+  GObject parent_instance;
 
   /*< private >*/
   GInputStreamPrivate *priv;

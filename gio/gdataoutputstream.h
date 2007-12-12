@@ -38,7 +38,7 @@ G_BEGIN_DECLS
 
 /**
  * GDataOutputStream:
- * @parent: a #GBufferedOutputStream.
+ * @parent_instance: a #GBufferedOutputStream.
  *
  * An implementation of #GBufferedOutputStream that allows for high-level 
  * data manipulation of arbitrary data (including binary operations).
@@ -49,7 +49,7 @@ typedef struct _GDataOutputStreamPrivate  GDataOutputStreamPrivate;
 
 struct _GDataOutputStream
 {
-  GFilterOutputStream parent;
+  GFilterOutputStream parent_instance;
 
   /*< private >*/
   GDataOutputStreamPrivate *priv;

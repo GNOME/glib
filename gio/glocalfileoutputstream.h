@@ -41,7 +41,7 @@ typedef struct _GLocalFileOutputStreamPrivate  GLocalFileOutputStreamPrivate;
 
 struct _GLocalFileOutputStream
 {
-  GFileOutputStream parent;
+  GFileOutputStream parent_instance;
 
   /*< private >*/
   GLocalFileOutputStreamPrivate *priv;

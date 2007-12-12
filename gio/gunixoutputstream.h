@@ -45,7 +45,7 @@ typedef struct _GUnixOutputStreamPrivate  GUnixOutputStreamPrivate;
 
 struct _GUnixOutputStream
 {
-  GOutputStream parent;
+  GOutputStream parent_instance;
 
   /*< private >*/
   GUnixOutputStreamPrivate *priv;

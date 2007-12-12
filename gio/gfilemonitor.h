@@ -67,7 +67,7 @@ typedef struct _GFileMonitorPrivate	GFileMonitorPrivate;
  **/
 struct _GFileMonitor
 {
-  GObject parent;
+  GObject parent_instance;
 
   /*< private >*/
   GFileMonitorPrivate *priv;

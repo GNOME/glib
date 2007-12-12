@@ -16,7 +16,7 @@ typedef struct _GNativeVolumeMonitor GNativeVolumeMonitor;
 typedef struct _GNativeVolumeMonitorClass GNativeVolumeMonitorClass;
 
 struct _GNativeVolumeMonitor {
-  GVolumeMonitor parent;
+  GVolumeMonitor parent_instance;
 };
 
 struct _GNativeVolumeMonitorClass {

@@ -46,7 +46,7 @@ typedef struct _GBufferedInputStreamPrivate  GBufferedInputStreamPrivate;
 
 struct _GBufferedInputStream
 {
-  GFilterInputStream parent;
+  GFilterInputStream parent_instance;
 
   /*< private >*/
   GBufferedInputStreamPrivate *priv;

@@ -41,13 +41,13 @@ typedef struct _GDirectoryMonitorPrivate GDirectoryMonitorPrivate;
 
 /**
  * GDirectoryMonitor:
- * @parent: The parent class. 
+ * @parent_instance: The parent class. 
  * 
  * Implements a monitor on the given #GFile that points to a directory.
  **/
 struct _GDirectoryMonitor
 {
-  GObject parent;
+  GObject parent_instance;
 
   /*< private >*/
   GDirectoryMonitorPrivate *priv;

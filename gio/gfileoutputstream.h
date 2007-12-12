@@ -49,7 +49,7 @@ typedef struct _GFileOutputStreamPrivate  GFileOutputStreamPrivate;
 
 struct _GFileOutputStream
 {
-  GOutputStream parent;
+  GOutputStream parent_instance;
   
   /*< private >*/
   GFileOutputStreamPrivate *priv;

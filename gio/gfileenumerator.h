@@ -41,7 +41,7 @@ G_BEGIN_DECLS
 
 /**
  * GFileEnumerator:
- * @parent: The parent class.
+ * @parent_instance: The parent class.
  * 
  * A per matched file iterator.
  **/
@@ -52,7 +52,7 @@ typedef struct _GFileEnumeratorPrivate  GFileEnumeratorPrivate;
 
 struct _GFileEnumerator
 {
-  GObject parent;
+  GObject parent_instance;
   
   /*< private >*/
   GFileEnumeratorPrivate *priv;

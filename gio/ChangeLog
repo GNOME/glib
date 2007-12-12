@@ -1,5 +1,31 @@
 2007-12-12  Alexander Larsson  <alexl@redhat.com>
 
+        * gbufferedinputstream.h:
+        * gbufferedoutputstream.h:
+        * gdatainputstream.h:
+        * gdataoutputstream.h:
+        * gdirectorymonitor.h:
+        * gfileenumerator.h:
+        * gfileinputstream.h:
+        * gfilemonitor.h:
+        * gfileoutputstream.h:
+        * gfilterinputstream.h:
+        * gfilteroutputstream.h:
+        * ginputstream.h:
+        * glocalfileinputstream.h:
+        * glocalfileoutputstream.h:
+        * gmemoryinputstream.h:
+        * gmemoryoutputstream.h:
+        * gnativevolumemonitor.h:
+        * goutputstream.h:
+        * gunixinputstream.h:
+        * gunixoutputstream.h:
+        * gvfs.h:
+        * gvolumemonitor.h:
+	s/parent/parent_instance/ in GObjects
+
+2007-12-12  Alexander Larsson  <alexl@redhat.com>
+
         * gdrive.h:
         * gmount.h:
         * gvolume.h:

@@ -44,7 +44,7 @@ typedef struct _GVfs         GVfs; /* Dummy typedef */
 typedef struct _GVfsClass    GVfsClass;
 
 struct _GVfs {
-  GObject parent;
+  GObject parent_instance;
 };
 
 struct _GVfsClass

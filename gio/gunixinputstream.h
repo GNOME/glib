@@ -45,7 +45,7 @@ typedef struct _GUnixInputStreamPrivate  GUnixInputStreamPrivate;
 
 struct _GUnixInputStream
 {
-  GInputStream parent;
+  GInputStream parent_instance;
 
   /*< private >*/
   GUnixInputStreamPrivate *priv;

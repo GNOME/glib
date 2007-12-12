@@ -40,7 +40,7 @@ G_BEGIN_DECLS
 
 /**
  * GVolumeMonitor:
- * @parent: The parent class.
+ * @parent_instance: The parent instance.
  *
  * A Volume Monitor that watches for volume events.
  **/
@@ -48,7 +48,7 @@ typedef struct _GVolumeMonitor GVolumeMonitor;
 typedef struct _GVolumeMonitorClass GVolumeMonitorClass;
 
 struct _GVolumeMonitor {
-  GObject parent;
+  GObject parent_instance;
 
   /*< private >*/
   gpointer priv;

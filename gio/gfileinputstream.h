@@ -49,7 +49,7 @@ typedef struct _GFileInputStreamPrivate  GFileInputStreamPrivate;
 
 struct _GFileInputStream
 {
-  GInputStream parent;
+  GInputStream parent_instance;
 
   /*< private >*/
   GFileInputStreamPrivate *priv;

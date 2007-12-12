@@ -67,7 +67,7 @@ typedef struct _GOutputStreamPrivate  GOutputStreamPrivate;
 
 struct _GOutputStream
 {
-  GObject parent;
+  GObject parent_instance;
   
   /*< private >*/
   GOutputStreamPrivate *priv;

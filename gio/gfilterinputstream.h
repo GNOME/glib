@@ -46,7 +46,7 @@ typedef struct _GFilterInputStreamPrivate  GFilterInputStreamPrivate;
 
 struct _GFilterInputStream
 {
-  GInputStream parent;
+  GInputStream parent_instance;
 
   /*<protected >*/
   GInputStream *base_stream;

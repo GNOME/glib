@@ -46,7 +46,7 @@ typedef struct _GMemoryOutputStreamPrivate  GMemoryOutputStreamPrivate;
 
 struct _GMemoryOutputStream
 {
-  GOutputStream parent;
+  GOutputStream parent_instance;
 
   /*< private >*/
   GMemoryOutputStreamPrivate *priv;

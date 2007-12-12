@@ -47,7 +47,7 @@ typedef struct _GBufferedOutputStreamPrivate  GBufferedOutputStreamPrivate;
 
 struct _GBufferedOutputStream
 {
-  GFilterOutputStream parent;
+  GFilterOutputStream parent_instance;
 
   /*< protected >*/
   GBufferedOutputStreamPrivate *priv;
