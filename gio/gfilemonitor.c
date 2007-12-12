@@ -269,8 +269,8 @@ g_file_monitor_cancel (GFileMonitor* monitor)
  * @limit_msecs: a integer with the limit in milliseconds to 
  * poll for changes.
  *
- * Sets the rate limit to which the @monitor will poll for changes 
- * on the device. 
+ * Sets the rate limit to which the @monitor will report
+ * consecutive change events to the same file. 
  * 
  **/
 void

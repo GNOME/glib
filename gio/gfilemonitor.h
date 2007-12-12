@@ -37,15 +37,15 @@ G_BEGIN_DECLS
 
 /**
  * GFileMonitorEvent:
- * @G_FILE_MONITOR_EVENT_CHANGED: Monitor file changed events.
- * @G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT: Monitor file changed done events.
- * @G_FILE_MONITOR_EVENT_DELETED: Monitors file deleted events.
- * @G_FILE_MONITOR_EVENT_CREATED: Monitors file created events.
- * @G_FILE_MONITOR_EVENT_ATTRIBUTE_CHANGED: Monitors file attribute changed events.
- * @G_FILE_MONITOR_EVENT_PRE_UNMOUNT: Monitors pre-unmount events.
- * @G_FILE_MONITOR_EVENT_UNMOUNTED: Monitors unmount events.
+ * @G_FILE_MONITOR_EVENT_CHANGED: a file changed.
+ * @G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT: a hint that this was probably the last change in a set of changes.
+ * @G_FILE_MONITOR_EVENT_DELETED: a file was deleted.
+ * @G_FILE_MONITOR_EVENT_CREATED: a file was created.
+ * @G_FILE_MONITOR_EVENT_ATTRIBUTE_CHANGED: a file attribute was changed.
+ * @G_FILE_MONITOR_EVENT_PRE_UNMOUNT: the file location will soon be unmounted.
+ * @G_FILE_MONITOR_EVENT_UNMOUNTED: the file location was be unmounted.
  * 
- * Flags used when creating a #GFileMonitor to define what events to monitor for.
+ * Specifies what type of event a monitor event is.
  **/
 typedef enum {
   G_FILE_MONITOR_EVENT_CHANGED,
@@ -63,7 +63,7 @@ typedef struct _GFileMonitorPrivate	GFileMonitorPrivate;
 /**
  * GFileMonitor:
  * 
- * Watches for changes within a #GFile.
+ * Watches for changes to a file.
  **/
 struct _GFileMonitor
 {

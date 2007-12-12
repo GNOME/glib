@@ -37,9 +37,11 @@ G_BEGIN_DECLS
 
 /**
  * GFileOutputStream:
- * @parent: The parent #GOutputStream instance.
  *
- * Implements #GOutputStream and #GSeekable for file output operations. 
+ * A subclass of GOutputStream for opened files. This adds
+ * a few file-specific operations and seeking and truncating.
+ *
+ * #GFileOutputStream implements GSeekable.
  **/
 typedef struct _GFileOutputStream         GFileOutputStream;
 typedef struct _GFileOutputStreamClass    GFileOutputStreamClass;

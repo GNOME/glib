@@ -43,7 +43,7 @@ G_BEGIN_DECLS
 /**
  * GAppInfoCreateFlags:
  * @G_APP_INFO_CREATE_FLAGS_NONE: No flags.
- * @G_APP_INFO_CREATE_NEEDS_TERMINAL: Application opens with a terminal window.
+ * @G_APP_INFO_CREATE_NEEDS_TERMINAL: Application opens in a terminal window.
  * 
  * Flags used when creating a #GAppInfo.
  */
@@ -59,7 +59,8 @@ typedef struct _GAppLaunchContextPrivate GAppLaunchContextPrivate;
 /**
  * GAppInfo:
  * 
- * Information about an installed application.
+ * Information about an installed application and methods to launch
+ * it (with file arguments).
  */
 typedef struct _GAppInfo         GAppInfo; /* Dummy typedef */
 
@@ -77,7 +78,6 @@ typedef struct _GAppInfo         GAppInfo; /* Dummy typedef */
  * @supports_uris: Indicates whether the application specified supports launching URIs.
  * @launch_uris: Launches an application with a list of URIs.
  * @should_show: Returns whether an application should be shown (e.g. when getting a list of installed applications).
- * @supports_xdg_startup_notify: Indicates whether the application supports the 
  * <ulink url="http://standards.freedesktop.org/startup-notification-spec/startup-notification-latest.txt">
  * <citetitle>FreeDesktop.Org Startup Notification Specification</citetitle></ulink>.
  * @set_as_default_for_type: Sets an application as default for a given content type.
@@ -115,8 +115,6 @@ struct _GAppInfoIface
 					     GError                 **error);
   gboolean            (*should_show)        (GAppInfo                *appinfo,
 					     const char              *desktop_env);
-  gboolean            (*supports_xdg_startup_notify) (GAppInfo       *appinfo);
-
 
   /* For changing associations */
   gboolean  (*set_as_default_for_type)      (GAppInfo           *appinfo,
@@ -132,18 +130,6 @@ struct _GAppInfoIface
   gboolean  (*remove_supports_type)         (GAppInfo           *appinfo,
 					     const char         *content_type,
 					     GError            **error);
-  /*< private >*/
-  /* Padding for future expansion */
-  void (*_g_reserved1) (void);
-  void (*_g_reserved2) (void);
-  void (*_g_reserved3) (void);
-  void (*_g_reserved4) (void);
-  void (*_g_reserved5) (void);
-  void (*_g_reserved6) (void);
-  void (*_g_reserved7) (void);
-  void (*_g_reserved8) (void);
-  void (*_g_reserved9) (void);
-  void (*_g_reserved10) (void);
 };
 
 GType g_app_info_get_type (void) G_GNUC_CONST;
@@ -193,18 +179,13 @@ GAppInfo *g_app_info_get_default_for_type        (const char  *content_type,
 						  gboolean     must_support_uris);
 GAppInfo *g_app_info_get_default_for_uri_scheme  (const char  *uri_scheme);
 
-/* TODO: missing operations:
-   add app as supporting a content type, but don't make it default
-   implement set_as_default_for_extension
-
-   can_remove, remove (as in, don't support a specific mimetype)
-*/
-
 /**
  * GAppLaunchContext:
  * @parent_instance: The parent instance.
  * 
- * Gets feedback from the system when launching an application.
+ * Integrating the launch with the launching application. This is used to
+ * handle for instance startup notification and launching the new application
+ * on the same screen as the launching window.
  */
 struct _GAppLaunchContext
 {

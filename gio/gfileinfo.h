@@ -106,6 +106,8 @@ typedef enum {
  * G_FILE_ATTRIBUTE_STD_IS_SYMLINK:
  * 
  * A key in the "std" namespace for checking if the file is a symlink.
+ * Typically the actual type is something else, if we followed the symlink
+ * to get the type.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
  **/
 #define G_FILE_ATTRIBUTE_STD_IS_SYMLINK "std:is_symlink"         /* boolean */
@@ -122,6 +124,10 @@ typedef enum {
  * G_FILE_ATTRIBUTE_STD_NAME:
  * 
  * A key in the "std" namespace for getting the name of the file.
+ * The name is the on-disk filename which may not be in any known encoding,
+ * and can thus not be generally displayed as is.
+ * Use #G_FILE_ATTRIBUTE_STD_DISPLAY_NAME if you need to display the
+ * name in a user interface.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BYTE_STRING.
  **/
 #define G_FILE_ATTRIBUTE_STD_NAME "std:name"                     /* byte string */
@@ -130,6 +136,8 @@ typedef enum {
  * G_FILE_ATTRIBUTE_STD_DISPLAY_NAME:
  * 
  * A key in the "std" namespace for getting the display name of the file.
+ * A display name is guaranteed to be in UTF8 and can thus be displayed in
+ * the UI.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_STRING.
  **/
 #define G_FILE_ATTRIBUTE_STD_DISPLAY_NAME "std:display_name"     /* string */
@@ -138,6 +146,11 @@ typedef enum {
  * G_FILE_ATTRIBUTE_STD_EDIT_NAME:
  * 
  * A key in the "std" namespace for edit name of the file.
+ * An edit name is similar to the display name, but it is meant to be
+ * used when you want to rename the file in the UI. The display name
+ * might contain information you don't want in the new filename (such as
+ * "(invalid unicode)" if the filename was in an invalid encoding).
+ * 
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_STRING.
  **/
 #define G_FILE_ATTRIBUTE_STD_EDIT_NAME "std:edit_name"           /* string */
@@ -146,6 +159,12 @@ typedef enum {
  * G_FILE_ATTRIBUTE_STD_COPY_NAME:
  * 
  * A key in the "std" namespace for getting the copy name of the file.
+ * The copy name is an optional version of the name. If availible its always
+ * in UTF8, and corresponds directly to the original filename (only transcoded to
+ * UTF8). This is useful if you want to copy the file to another filesystem that
+ * might have a different encoding. If the filename is not a valid string in the
+ * encoding selected for the filesystem it is in then the copy name will not be set.
+ * 
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_STRING.
  **/
 #define G_FILE_ATTRIBUTE_STD_COPY_NAME "std:copy_name"           /* string */
@@ -172,6 +191,9 @@ typedef enum {
  * G_FILE_ATTRIBUTE_STD_FAST_CONTENT_TYPE:
  * 
  * A key in the "std" namespace for getting the fast content type.
+ * The fast content type isn't as reliable as the regular one, as it
+ * only uses the filename to guess it, but it is faster to calculate than the
+ * regular content type.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_STRING.
  * 
  **/
@@ -180,7 +202,7 @@ typedef enum {
 /**
  * G_FILE_ATTRIBUTE_STD_SIZE:
  * 
- * A key in the "std" namespace for getting the file's size.
+ * A key in the "std" namespace for getting the file's size (in bytes).
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_UINT64.
  **/
 #define G_FILE_ATTRIBUTE_STD_SIZE "std:size"                     /* uint64 */
@@ -197,7 +219,8 @@ typedef enum {
 /**
  * G_FILE_ATTRIBUTE_STD_TARGET_URI:
  * 
- * A key in the "std" namespace for getting the target URI for the file.
+ * A key in the "std" namespace for getting the target URI for the file, in
+ * the case of %G_FILE_TYPE_SHORTCUT or %G_FILE_TYPE_MOUNTABLE files.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_STRING.
  **/
 #define G_FILE_ATTRIBUTE_STD_TARGET_URI "std:target_uri"         /* string */
@@ -208,7 +231,9 @@ typedef enum {
  * A key in the "std" namespace for setting the sort order of a file. 
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_INT32.
  * An example use would be in file managers, which would use this key 
- * to set the order files are displayed.
+ * to set the order files are displayed. Files with smaller sort order
+ * should be sorted first, and files without sort order as if sort order
+ * was zero.
  **/
 #define G_FILE_ATTRIBUTE_STD_SORT_ORDER "std:sort_order"         /* int32  */
 
@@ -290,8 +315,8 @@ typedef enum {
  * 
  * A key in the "access" namespace for checking trashing privileges.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
- * This attribute will be %TRUE if the user is able to send the file to 
- * the virtual file system trash location.
+ * This attribute will be %TRUE if the user is able to move the file to 
+ * the trash.
  **/
 #define G_FILE_ATTRIBUTE_ACCESS_CAN_TRASH "access:can_trash"     /* boolean */
 
@@ -311,7 +336,7 @@ typedef enum {
 /**
  * G_FILE_ATTRIBUTE_MOUNTABLE_CAN_MOUNT:
  * 
- * A key in the "mountable" namespace for checking if a file is mountable.
+ * A key in the "mountable" namespace for checking if a file (of type G_FILE_TYPE_MOUNTABLE) is mountable.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
  **/
 #define G_FILE_ATTRIBUTE_MOUNTABLE_CAN_MOUNT "mountable:can_mount"     /* boolean */
@@ -319,7 +344,7 @@ typedef enum {
 /**
  * G_FILE_ATTRIBUTE_MOUNTABLE_CAN_UNMOUNT:
  * 
- * A key in the "mountable" namespace for checking if a file is unmountable.
+ * A key in the "mountable" namespace for checking if a file (of type G_FILE_TYPE_MOUNTABLE)  is unmountable.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
  **/
 #define G_FILE_ATTRIBUTE_MOUNTABLE_CAN_UNMOUNT "mountable:can_unmount" /* boolean */
@@ -327,7 +352,7 @@ typedef enum {
 /**
  * G_FILE_ATTRIBUTE_MOUNTABLE_CAN_EJECT:
  * 
- * A key in the "mountable" namespace for checking if a file can be ejected.
+ * A key in the "mountable" namespace for checking if a file (of type G_FILE_TYPE_MOUNTABLE) can be ejected.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
  **/
 #define G_FILE_ATTRIBUTE_MOUNTABLE_CAN_EJECT "mountable:can_eject"     /* boolean */
@@ -343,7 +368,7 @@ typedef enum {
 /**
  * G_FILE_ATTRIBUTE_MOUNTABLE_HAL_UDI:
  * 
- * A key in the "mountable" namespace for getting the HAL UDI for the mounted
+ * A key in the "mountable" namespace for getting the HAL UDI for the mountable
  * file. Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_STRING.
  **/
 #define G_FILE_ATTRIBUTE_MOUNTABLE_HAL_UDI "mountable:hal_udi"         /* string */
@@ -603,8 +628,8 @@ typedef enum {
 /**
  * G_FILE_ATTRIBUTE_FS_SIZE:
  * 
- * A key in the "fs" namespace for getting the size of the file system, 
- * used in g_file_get_filesystem_info(). Corresponding #GFileAttributeType 
+ * A key in the "fs" namespace for getting the total size (in bytes) of the file system, 
+ * used in g_file_query_filesystem_info(). Corresponding #GFileAttributeType 
  * is %G_FILE_ATTRIBUTE_TYPE_UINT64.
  **/
 #define G_FILE_ATTRIBUTE_FS_SIZE "fs:size"                       /* uint64 */
@@ -612,7 +637,7 @@ typedef enum {
 /**
  * G_FILE_ATTRIBUTE_FS_FREE:
  * 
- * A key in the "fs" namespace for getting the free space left on the 
+ * A key in the "fs" namespace for getting the number of bytes of free space left on the 
  * file system. Corresponding #GFileAttributeType is 
  * %G_FILE_ATTRIBUTE_TYPE_UINT64.
  **/

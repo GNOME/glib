@@ -248,6 +248,9 @@ g_buffered_output_stream_get_auto_grow (GBufferedOutputStream *stream)
  * @auto_grow: a #gboolean.
  *
  * Sets whether or not the @stream's buffer should automatically grow.
+ * If @auto_grow is true, then each write will just make the buffer
+ * larger, and you must manually flush the buffer to actually write out
+ * the data to the underlying stream.
  **/
 void
 g_buffered_output_stream_set_auto_grow (GBufferedOutputStream *stream,

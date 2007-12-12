@@ -30,7 +30,7 @@ G_BEGIN_DECLS
 /**
  * GFileAttributeType:
  * @G_FILE_ATTRIBUTE_TYPE_INVALID: indicates an invalid or uninitalized type.
- * @G_FILE_ATTRIBUTE_TYPE_STRING: a null terminated C string.
+ * @G_FILE_ATTRIBUTE_TYPE_STRING: a null terminated UTF8 string.
  * @G_FILE_ATTRIBUTE_TYPE_BYTE_STRING: a zero terminated string of non-zero bytes.
  * @G_FILE_ATTRIBUTE_TYPE_BOOLEAN: a boolean value.
  * @G_FILE_ATTRIBUTE_TYPE_UINT32: an unsigned 4-byte/32-bit integer.
@@ -59,7 +59,7 @@ typedef enum {
  * @G_FILE_ATTRIBUTE_FLAGS_COPY_WITH_FILE: copy the attribute values when the file is copied.
  * @G_FILE_ATTRIBUTE_FLAGS_COPY_WHEN_MOVED: copy the attribute values when the file is moved.
  * 
- * Indicates how to transfer file attributes to new #GFile structures when they are copied.
+ * A flag specifying the behaviour of an attribute.
  **/
 typedef enum {
   G_FILE_ATTRIBUTE_FLAGS_NONE = 0,
@@ -107,11 +107,11 @@ typedef struct  {
 
 /**
  * GFileAttributeInfo:
- * @name: a string containing the key's name.
- * @type: a #GFileAttributeType for the key.
+ * @name: the name of the attribute.
+ * @type: the #GFileAttributeType type of the attribute.
  * @flags: a set of #GFileAttributeFlags.
  * 
- * A Key-Value pair definition. 
+ * Information about a specific attribute. 
  **/
 typedef struct {
   char *name;

@@ -37,9 +37,11 @@ G_BEGIN_DECLS
 
 /**
  * GFileInputStream:
- * @parent: the parent #GInputStream instance.
  * 
- * Implements #GInputStream and #GSeekable for file input operations.
+ * A subclass of GInputStream for opened files. This adds
+ * a few file-specific operations and seeking.
+ *
+ * #GFileInputStream implements #GSeekable.
  **/
 typedef struct _GFileInputStream         GFileInputStream;
 typedef struct _GFileInputStreamClass    GFileInputStreamClass;

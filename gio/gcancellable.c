@@ -43,7 +43,8 @@
  * @include: gio/gcancellable.h
  *
  * GCancellable is a thread-safe operation cancellation stack used 
- * throughout GIO to allow for cancellation of asynchronous operations.
+ * throughout GIO to allow for cancellation of synchronous and
+ * asynchronous operations.
  */
 
 enum {
@@ -94,6 +95,10 @@ g_cancellable_class_init (GCancellableClass *klass)
    * @cancellable: a #GCancellable.
    * 
    * Emitted when the operation has been cancelled from another thread.
+   * 
+   * Can be used by implementations of cancellable operations. This will
+   * be emitted in the thread that tried to cancel the operation, not the
+   * thread the is running the operation.
    */
   signals[CANCELLED] =
     g_signal_new (I_("cancelled"),
@@ -149,6 +154,13 @@ g_cancellable_init (GCancellable *cancellable)
  * g_cancellable_new:
  * 
  * Creates a new #GCancellable object.
+ *
+ * Applications that want to start one or more operations
+ * that should be cancellable should create a #GCancellable
+ * and pass it to the operations.
+ *
+ * One #GCancellable can be used in multiple consecutive
+ * operations, but not in multiple concurrent operations.
  *  
  * Returns: a #GCancellable.
  **/
@@ -162,7 +174,14 @@ g_cancellable_new (void)
  * g_push_current_cancellable:
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * 
- * Pushes @cancellable onto the cancellable stack.
+ * Pushes @cancellable onto the cancellable stack. The current
+ * cancllable can then be recieved using g_cancellable_get_current().
+ *
+ * This is useful when implementing cancellable operations in
+ * code that does not allow you to pass down the cancellable object.
+ *
+ * This is typically called automatically by e.g. #GFile operations,
+ * so you rarely have to call this yourself.
  **/
 void
 g_push_current_cancellable (GCancellable *cancellable)
@@ -180,8 +199,8 @@ g_push_current_cancellable (GCancellable *cancellable)
  * g_pop_current_cancellable:
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  *
- * Pops @cancellable off the cancellable stack if @cancellable 
- * is on the top of the stack.
+ * Pops @cancellable off the cancellable stack (verifying that @cancellable 
+ * is on the top of the stack).
  **/
 void
 g_pop_current_cancellable (GCancellable *cancellable)
@@ -260,7 +279,8 @@ g_cancellable_is_cancelled (GCancellable *cancellable)
  * @cancellable: a #GCancellable object.
  * @error: #GError to append error state to.
  * 
- * Sets the current error to notify that the operation was cancelled.
+ * If the @cancelalble is cancelled, sets the error to notify
+ * that the operation was cancelled.
  * 
  * Returns: %TRUE if @cancellable was cancelled, %FALSE if it was not.
  **/
@@ -284,7 +304,9 @@ g_cancellable_set_error_if_cancelled (GCancellable  *cancellable,
  * g_cancellable_get_fd:
  * @cancellable: a #GCancellable.
  * 
- * Gets the file descriptor for a cancellable job.
+ * Gets the file descriptor for a cancellable job. This can be used to
+ * implement cancellable operations on Unix systems. The returned fd will
+ * turn readable when @cancellable is cancelled.
  * 
  * Returns: A valid file descriptor. %-1 if the file descriptor 
  * is not supported, or on errors. 
@@ -314,7 +336,11 @@ g_cancellable_get_fd (GCancellable *cancellable)
  * @cancellable: a #GCancellable object.
  * 
  * Will set @cancellable to cancelled, and will emit the CANCELLED
- * signal. This function is thread-safe.
+ * signal.
+ *
+ * This function is thread-safe. In other words, you can safely call it from
+ * another thread than the one running an operation that was passed
+ * the @cancellable.
  **/
 void
 g_cancellable_cancel (GCancellable *cancellable)

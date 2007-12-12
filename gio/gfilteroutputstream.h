@@ -38,7 +38,7 @@ G_BEGIN_DECLS
 /**
  * GFilterOutputStream:
  * 
- * Filtered output streams. Implements #GOutputStream.
+ * A base class for all output streams that work on an underlying stream.
  **/
 typedef struct _GFilterOutputStream         GFilterOutputStream;
 typedef struct _GFilterOutputStreamClass    GFilterOutputStreamClass;

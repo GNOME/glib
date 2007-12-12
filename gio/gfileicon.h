@@ -38,7 +38,7 @@ G_BEGIN_DECLS
 /**
  * GFileIcon:
  * 
- * Gets an icon for a #GFile. Implements #GLoadabeIcon.
+ * Gets an icon for a #GFile. Implements #GLoadableIcon.
  **/
 typedef struct _GFileIcon        GFileIcon;
 typedef struct _GFileIconClass   GFileIconClass;

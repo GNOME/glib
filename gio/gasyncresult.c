@@ -52,7 +52,8 @@
  * of the operation is not needed, there is no need to call the
  * "_finish()" function, GIO will take care of cleaning up the
  * result and error information after the #GAsyncReadyCallback 
- * returns.
+ * returns. It is also allowed to take a reference to the #GAsyncResult and
+ * call "_finish()" later.
  * 
  * Example of a typical asynchronous operation flow:
  * |[
@@ -96,9 +97,15 @@
  *    /<!-- -->* ... *<!-- -->/
  * }
  * ]|
+ *
+ * The callback for an asynchronous operation is called only once, and is
+ * always called, even in the case of a cancelled operation. On cancellation
+ * the result is a %G_IO_ERROR_CANCELLED error.
  * 
- * Asynchronous jobs are threaded if #GThread is available, but also may
- * be sent to the Main Event Loop and processed in an idle function.
+ * Some ascynchronous operations are implemented using synchronous call. These
+ * are run in a separate #GThread has been initialized, but otherwise they
+ * are sent to the Main Event Loop and processed in an idle function. So, if you
+ * truly need asynchronous operations, make sure to initialize #GThread.
  **/
 
 static void g_async_result_base_init (gpointer g_class);

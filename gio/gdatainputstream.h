@@ -87,7 +87,7 @@ typedef enum  {
  * @G_DATA_STREAM_NEWLINE_TYPE_LF: Selects "LF" line endings, common on most modern UNIX platforms.
  * @G_DATA_STREAM_NEWLINE_TYPE_CR: Selects "CR" line endings.
  * @G_DATA_STREAM_NEWLINE_TYPE_CR_LF: Selects "CR, LF" line ending, common on Microsoft Windows.
- * @G_DATA_STREAM_NEWLINE_TYPE_ANY: Selects any line ending type.
+ * @G_DATA_STREAM_NEWLINE_TYPE_ANY: Automatically try to handle any line ending type.
  *
  * #GDataStreamNewlineType is used when checking for or setting the line endings for a given file.
  **/

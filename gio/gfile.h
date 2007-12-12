@@ -44,6 +44,7 @@ G_BEGIN_DECLS
  * Flags used when querying a #GFileInfo.
  */
 typedef enum {
+  G_FILE_QUERY_INFO_FLAGS_NONE = 0,
   G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS = (1<<0)   /*< nick=nofollow-symlinks >*/
 } GFileQueryInfoFlags;
 
@@ -64,9 +65,9 @@ typedef enum  {
  * GFileCopyFlags:
  * @G_FILE_COPY_FLAGS_NONE: No flags set.
  * @G_FILE_COPY_OVERWRITE: Overwrite any existing files
- * @G_FILE_COPY_BACKUP: Make a backup of any existing files. TODO: explain backup naming scheme.
+ * @G_FILE_COPY_BACKUP: Make a backup of any existing files.
  * @G_FILE_COPY_NOFOLLOW_SYMLINKS: Don't follow symlinks.
- * @G_FILE_COPY_ALL_METADATA: Copy all file metadata instead of just default set (see #GFileInfo).
+ * @G_FILE_COPY_ALL_METADATA: Copy all file metadata instead of just default set used for copy (see #GFileInfo).
  * @G_FILE_COPY_NO_FALLBACK_FOR_MOVE: Don't use copy and delete fallback if native move not supported.
  *
  * Flags used when copying or moving files. 

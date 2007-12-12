@@ -35,7 +35,7 @@ G_BEGIN_DECLS
 /**
  * GIcon:
  *
- * Icons for file, content, drive and volume types.
+ * An abstract type that specifies an icon.
  **/
 typedef struct _GIcon         		GIcon; /* Dummy typedef */
 typedef struct _GIconIface    		GIconIface;
@@ -48,7 +48,7 @@ typedef struct _GIconIface    		GIconIface;
  *
  * GIconIface is used to implement GIcon types for various
  * different systems. See #GThemedIcon and #GLoadableIcon for
- * examples of how to use this interface.
+ * examples of how to implement this interface.
  */
 struct _GIconIface
 {

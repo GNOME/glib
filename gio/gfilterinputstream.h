@@ -38,7 +38,7 @@ G_BEGIN_DECLS
 /**
  * GFilterInputStream:
  * 
- * Filtered input streams. Implements #GInputStream.
+ * A base class for all input streams that work on an underlying stream.
  **/
 typedef struct _GFilterInputStream         GFilterInputStream;
 typedef struct _GFilterInputStreamClass    GFilterInputStreamClass;

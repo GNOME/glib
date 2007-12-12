@@ -34,7 +34,7 @@
  * @see_also: #GInputStream
  * 
  * Data input stream implements #GInputStream and includes functions for 
- * reading data directly from an input stream.
+ * reading structured data directly from a binary input stream.
  *
  **/
 
@@ -246,8 +246,9 @@ g_data_input_stream_get_byte_order (GDataInputStream *stream)
  * 
  * Sets the newline type for the @stream.
  * 
- * TODO: is it valid to set this to G_DATA_STREAM_NEWLINE_TYPE_ANY, or
- * should it always be set to {_LF, _CR, _CR_LF}
+ * Note that using G_DATA_STREAM_NEWLINE_TYPE_ANY is slightly unsafe. If a read
+ * chunk ends in "CR" we must read an additional byte to know if this is "CR" or
+ * "CR LF", and this might block if there is no more data availible.
  *  
  **/
 void
@@ -331,8 +332,8 @@ read_data (GDataInputStream  *stream,
  **/
 guchar
 g_data_input_stream_read_byte (GDataInputStream  *stream,
-			      GCancellable       *cancellable,
-			      GError            **error)
+			       GCancellable       *cancellable,
+			       GError            **error)
 {
   guchar c;
   
@@ -405,8 +406,8 @@ g_data_input_stream_read_int16 (GDataInputStream  *stream,
  **/
 guint16
 g_data_input_stream_read_uint16 (GDataInputStream  *stream,
-				GCancellable       *cancellable,
-				GError            **error)
+				 GCancellable       *cancellable,
+				 GError            **error)
 {
   guint16 v;
   
@@ -453,8 +454,8 @@ g_data_input_stream_read_uint16 (GDataInputStream  *stream,
  **/
 gint32
 g_data_input_stream_read_int32 (GDataInputStream  *stream,
-			       GCancellable       *cancellable,
-			       GError            **error)
+				GCancellable       *cancellable,
+				GError            **error)
 {
   gint32 v;
   
@@ -501,8 +502,8 @@ g_data_input_stream_read_int32 (GDataInputStream  *stream,
  **/
 guint32
 g_data_input_stream_read_uint32 (GDataInputStream  *stream,
-				GCancellable       *cancellable,
-				GError            **error)
+				 GCancellable       *cancellable,
+				 GError            **error)
 {
   guint32 v;
   
@@ -736,8 +737,8 @@ scan_for_newline (GDataInputStream *stream,
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
  * 
- * Returns: a string with the line that was read in. Set @length to 
- * a #gsize to get the length of the read line. Returns %NULL on an error.
+ * Returns: a string with the line that was read in (including the newlines).
+ * Set @length to a #gsize to get the length of the read line. Returns %NULL on an error.
  **/
 char *
 g_data_input_stream_read_line (GDataInputStream  *stream,

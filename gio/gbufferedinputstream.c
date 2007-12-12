@@ -177,12 +177,12 @@ g_buffered_input_stream_class_init (GBufferedInputStreamClass *klass)
  * 
  * Gets the size of the input buffer.
  * 
- * Returns: the current buffer size, or %-1 on error.
+ * Returns: the current buffer size.
  **/
 gsize
 g_buffered_input_stream_get_buffer_size (GBufferedInputStream  *stream)
 {
-  g_return_val_if_fail (G_IS_BUFFERED_INPUT_STREAM (stream), -1);
+  g_return_val_if_fail (G_IS_BUFFERED_INPUT_STREAM (stream), 0);
 
   return stream->priv->len;
 }

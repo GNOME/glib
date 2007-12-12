@@ -39,8 +39,8 @@
  * 
  * Keys are strings that contain a key namespace and a key name, separated
  * by a colon, e.g. "namespace:keyname". Namespaces are included to sort
- * key-value pairs by namespaces for relevance. Keys can be searched 
- * for using wildcards, e.g. "std:*" will return all of the keys in the 
+ * key-value pairs by namespaces for relevance. Keys can be retrived 
+ * using wildcards, e.g. "std:*" will return all of the keys in the 
  * "std" namespace.
  * 
  * Values are stored within the list in #GFileAttributeValue structures.
@@ -48,16 +48,14 @@
  * Upon creation of a #GFileAttributeValue, the type will be set to 
  * %G_FILE_ATTRIBUTE_TYPE_INVALID. 
  * 
- * The Key-value list is stored within the #GFile structure as a 
- * #GFileAttributeInfoList. This list is queryable by key names 
+ * The list of possible attributes for a filesystem (pointed to by a #GFile) is
+ * availible as a #GFileAttributeInfoList. This list is queryable by key names 
  * as indicated earlier.
  * 
  * Classes that implement #GFileIface will create a #GFileAttributeInfoList and 
  * install default keys and values for their given file system, architecture, 
  * and other possible implementation details (e.g., on a UNIX system, a file 
- * attribute key will be registered for the user id for a given file). Other 
- * attributes can be appended to a #GFileAttributeList later by 
- * g_file_attribute_info_list_add(). 
+ * attribute key will be registered for the user id for a given file).
  * 
  * <para>
  * <table>
@@ -83,7 +81,7 @@
  * NTFS ACLs in Windows should be mapped to these values.</entry></row>
  * <row><entry>"mountable"</entry><entry>The "Mountable" namespace. Includes 
  * simple boolean keys for checking if a file or path supports mount operations, e.g.
- * mount, unmount, eject.</entry></row>
+ * mount, unmount, eject. These are used for files of type %G_FILE_TYPE_MOUNTABLE.</entry></row>
  * <row><entry>"time"</entry><entry>The "Time" namespace. Includes file 
  * access, changed, created times. </entry></row>
  * <row><entry>"unix"</entry><entry>The "Unix" namespace. Includes UNIX-specific
@@ -95,11 +93,12 @@
  * for checking if a file is marked as an archive file.</entry></row>
  * <row><entry>"owner"</entry><entry>The "Owner" namespace. Includes information
  * about who owns a file. May not be available for all file systems. Examples include
- * "user" for getting the user name of the file owner.</entry></row>
+ * "user" for getting the user name of the file owner. This information is often mapped from
+ * some backend specific data such as a unix UID.</entry></row>
  * <row><entry>"thumbnail"</entry><entry>The "Thumbnail" namespace. Includes 
  * information about file thumbnails and their location within the file system. Exaples of 
  * keys in this namespace include "path" to get the location of a thumbnail, and "failed"
- * to check if thumbnailing failed.</entry></row>
+ * to check if thumbnailing of the file failed.</entry></row>
  * <row><entry>"fs"</entry><entry>The "Filesystem" namespace. Gets information
  * about the file system where a file is located, such as its type, how much
  * space is left available, and the overall size of the file system.</entry></row>

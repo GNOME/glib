@@ -29,11 +29,12 @@
 
 /**
  * SECTION:gfileicon
- * @short_description: Icons for given files
+ * @short_description: Icons pointing to an image file
  * @see_also: #GIcon, #GLoadableIcon
  * @include: gio/gfileicon.h
  * 
- * #GFileIcon gets the default icon for a #GFile.  
+ * #GFileIcon specifies an icon by pointing to an image file
+ * to be used as icon.
  * 
  **/
 

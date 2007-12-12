@@ -39,11 +39,14 @@
  * operations, such as loop mounting files, hard drive partitions or 
  * server locations. 
  *
- * Mountable GIO backends should implement #GMountOperation if they 
+ * Mountin operations are handed a #GMountOperation that then can use if they 
  * require any privileges or authentication for their volumes to be 
  * mounted (e.g. a hard disk partition or an encrypted filesystem), or 
  * if they are implementing a remote server protocol which requires user
- * credentials such as FTP or WebDAV. 
+ * credentials such as FTP or WebDAV.
+ *
+ * Users should instantiate a subclass of this that implements all
+ * the various callbacks to show the required dialogs.
  **/
 
 G_DEFINE_TYPE (GMountOperation, g_mount_operation, G_TYPE_OBJECT);

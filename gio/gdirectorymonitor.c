@@ -36,7 +36,7 @@
  * @short_description: Directory Monitor
  * @see_also: #GFileMonitor
  * 
- * Monitors a directory for changes.
+ * Monitors a directory for changes to files in it.
  *
  **/
 
@@ -236,7 +236,10 @@ g_directory_monitor_init (GDirectoryMonitor *monitor)
  * g_directory_monitor_cancel:
  * @monitor: a #GDirectoryMonitor.
  *
- * Cancels the monitoring activity on @monitor.
+ * Cancels the monitoring activity on @monitor. Note that
+ * the monitor is automatically cancelled when finalized.
+ *
+ * It is safe to call this multiple times.
  * 
  * Returns: %TRUE if the monitor was cancelled successfully. %FALSE otherwise.
  **/
@@ -260,11 +263,9 @@ g_directory_monitor_cancel (GDirectoryMonitor *monitor)
 /**
  * g_directory_monitor_set_rate_limit:
  * @monitor: a #GDirectoryMonitor.
- * @limit_msecs: an integer to set the limit of the directory monitor 
- *     in milliseconds.
+ * @limit_msecs: the change rate limit of the directory monitor in milliseconds.
  *
- * Sets the limit of the directory monitor to watch for changes every 
- * @limit_msecs milliseconds.
+ * Report same consecutive changes of the same type at most once each @limit_msecs milliseconds.
  **/
 void
 g_directory_monitor_set_rate_limit (GDirectoryMonitor *monitor,

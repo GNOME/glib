@@ -33,7 +33,7 @@
  * @stability: Unstable
  * 
  * #GAppInfo and #GAppLaunchContext are used for describing and launching 
- * installed system applications. 
+ * applications installed on the system. 
  *
  **/
 
@@ -134,7 +134,10 @@ g_app_info_equal (GAppInfo *appinfo1,
  * g_app_info_get_id:
  * @appinfo: a #GAppInfo.
  * 
- * Gets the ID of an application.
+ * Gets the ID of an application. An id is a string that
+ * identifies the application. The exact format of the id is
+ * platform dependent. For instance on Unix this is the
+ * desktop file id from the xdg menu specification.
  *
  * Returns: a string containing the application's ID.
  **/
@@ -177,7 +180,7 @@ g_app_info_get_name (GAppInfo *appinfo)
  * Gets a human-readable description of an installed application.
  *
  * Returns: a string containing a description of the 
- * application @appinfo. The returned string should be not freed 
+ * application @appinfo, or %NULL if none. The returned string should be not freed 
  * when no longer needed.
  **/
 const char *
@@ -220,11 +223,9 @@ g_app_info_get_executable (GAppInfo *appinfo)
  * @content_type: the content type.
  * @error: a #GError.
  * 
- * Sets an application as the default handler for a given type.
+ * Sets the application as the default handler for a given type.
  *
- * Returns: %TRUE if the given @appinfo is the default 
- * for the given @content_type. %FALSE if not, 
- * or in case of an error.
+ * Returns: %TRUE on success, %FALSE on error.
  **/
 gboolean
 g_app_info_set_as_default_for_type (GAppInfo    *appinfo,
@@ -245,14 +246,12 @@ g_app_info_set_as_default_for_type (GAppInfo    *appinfo,
 /**
  * g_app_info_set_as_default_for_extension:
  * @appinfo: a #GAppInfo.
- * @extension: a string containing the file extension.
+ * @extension: a string containing the file extension (without the dot).
  * @error: a #GError.
  * 
- * Sets an application as the default handler for the given file extention.
+ * Sets the application as the default handler for the given file extention.
  *
- * Returns: %TRUE if the given @appinfo is the default 
- * for the given @extension. %FALSE if not, 
- * or in case of an error.
+ * Returns: %TRUE on success, %FALSE on error.
  **/
 gboolean
 g_app_info_set_as_default_for_extension (GAppInfo    *appinfo,
@@ -283,8 +282,7 @@ g_app_info_set_as_default_for_extension (GAppInfo    *appinfo,
  * Adds a content type to the application information to indicate the 
  * application is capable of opening files with the given content type.
  *
- * Returns: %TRUE if @appinfo supports @content_type.
- *     %FALSE if not, or in case of an error.
+ * Returns: %TRUE on success, %FALSE on error.
  **/
 gboolean
 g_app_info_add_supports_type (GAppInfo    *appinfo,
@@ -342,8 +340,7 @@ g_app_info_can_remove_supports_type (GAppInfo *appinfo)
  *
  * Removes a supported type from an application, if possible.
  * 
- * Returns: %TRUE if @content_type support was removed
- *     from @appinfo. %FALSE if not.
+ * Returns: %TRUE on success, %FALSE on error.
  **/
 gboolean
 g_app_info_remove_supports_type (GAppInfo    *appinfo,
@@ -372,7 +369,7 @@ g_app_info_remove_supports_type (GAppInfo    *appinfo,
  * g_app_info_get_icon:
  * @appinfo: a #GAppInfo.
  * 
- * Gets the default icon for the application.
+ * Gets the icon for the application.
  *
  * Returns: the default #GIcon for @appinfo.
  **/
@@ -397,10 +394,17 @@ g_app_info_get_icon (GAppInfo *appinfo)
  * @error: a #GError.
  * 
  * Launches the application. Passes @files to the launched application 
- * as arguments, and loads the @launch_context for managing the application
- * once it has been launched. On error, @error will be set accordingly.
+ * as arguments, using the optional @launch_context to get information
+ * about the details of the launcher (like what screen its is on).
+ * On error, @error will be set accordingly.
  *
- * Returns: %TRUE on successful launch, %FALSE otherwise.
+ * To lauch the application without arguments pass a %NULL @files list.
+ *
+ * Note that even if the launch is successful the application launched
+ * can fail to start if it runs into problems during startup. There is
+ * no way to detect this.
+ *
+ * Returns: %TRUE on successful launch, %FALSE otherwise. 
  **/
 gboolean
 g_app_info_launch (GAppInfo           *appinfo,
@@ -447,10 +451,17 @@ g_app_info_supports_uris (GAppInfo *appinfo)
  * @error: a #GError.
  * 
  * Launches the application. Passes @uris to the launched application 
- * as arguments, and loads the @launch_context for managing the application
- * once it has been launched. On error, @error will be set accordingly.
+ * as arguments, using the optional @launch_context to get information
+ * about the details of the launcher (like what screen its is on).
+ * On error, @error will be set accordingly.
  *
- * Returns: %TRUE if the @appinfo was launched successfully, %FALSE otherwise.
+ * To lauch the application without arguments pass a %NULL @uris list.
+ *
+ * Note that even if the launch is successful the application launched
+ * can fail to start if it runs into problems during startup. There is
+ * no way to detect this.
+ *
+ * Returns: %TRUE on successful launch, %FALSE otherwise. 
  **/
 gboolean
 g_app_info_launch_uris (GAppInfo           *appinfo,
@@ -471,10 +482,14 @@ g_app_info_launch_uris (GAppInfo           *appinfo,
 /**
  * g_app_info_should_show:
  * @appinfo: a #GAppInfo.
- * @desktop_env: a string.
+ * @desktop_env: A string specifying what desktop this is, or %NULL.
  *
  * Checks if the application info should be shown when listing
  * applications available.
+ *
+ * @destkop_env is used to hide applications that are specified to
+ * just show up in specific desktops. For instance, passing in "GNOME"
+ * would show all applications specific to the Gnome desktop.
  * 
  * Returns: %TRUE if the @appinfo should be shown, %FALSE otherwise.
  **/
@@ -496,7 +511,8 @@ G_DEFINE_TYPE (GAppLaunchContext, g_app_launch_context, G_TYPE_OBJECT);
 /**
  * g_app_launch_context_new:
  * 
- * Creates a new application launch context.
+ * Creates a new application launch context. This is not normally used,
+ * instead you instantiate a subclass of this, such as GdkLaunchContext.
  *
  * Returns: a #GAppLaunchContext.
  **/
@@ -546,14 +562,15 @@ g_app_launch_context_get_display (GAppLaunchContext *context,
   return class->get_display (context, info, files);
 }
 
-/* should this be moved to the g_desktop_app_ implementation? */
 /**
  * g_app_launch_context_get_startup_notify_id:
  * @context: a #GAppLaunchContext.
  * @info: a #GAppInfo.
  * @files: a #GList of files.
  * 
- * Gets the DESKTOP_STARTUP_ID for the launched application, if supported. 
+ * Initiates startup notification for the applicaiont and returns the
+ * DESKTOP_STARTUP_ID for the launched operation, if supported.
+ *
  * Startup notification IDs are defined in the FreeDesktop.Org Startup 
  * Notifications standard, at 
  * <ulink url="http://standards.freedesktop.org/startup-notification-spec/startup-notification-latest.txt"/>.
@@ -583,11 +600,10 @@ g_app_launch_context_get_startup_notify_id (GAppLaunchContext *context,
 /**
  * g_app_launch_context_launch_failed:
  * @context: a #GAppLaunchContext.
- * @startup_notify_id: a string containing the DESKTOP_STARTUP_ID 
- *     of the launched application.
+ * @startup_notify_id: the startup notification id that was returned by g_app_launch_context_get_startup_notify_id().
  *
- * Called when an application has failed to launch, and cancels the 
- * application startup notification.
+ * Called when an application has failed to launch, so that it can cancel
+ * the application startup notification started in g_app_launch_context_get_startup_notify_id().
  * 
  **/
 void

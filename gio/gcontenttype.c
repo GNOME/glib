@@ -399,9 +399,11 @@ g_content_type_is_a (const char *type,
  * g_content_type_is_unknown:
  * @type: a content type string. 
  * 
- * Checks if the content type is known by GIO.
+ * Checks if the content type is the generic "unknown" type.
+ * On unix this is the "application/octet-stream" mimetype,
+ * while on win32 it is "*".
  * 
- * Returns: %TRUE if the type is unknown.
+ * Returns: %TRUE if the type is the unknown type.
  **/  
 gboolean
 g_content_type_is_unknown (const char *type)
@@ -610,9 +612,9 @@ g_content_type_get_description (const char *type)
  * g_content_type_get_mime_type:
  * @type: a content type string. 
  * 
- * Gets the mime-type for the content type.
+ * Gets the mime-type for the content type. If one is registered
  * 
- * Returns: the registered mime-type for the given @type.
+ * Returns: the registered mime-type for the given @type, or NULL if unknown.
  **/  
 char *
 g_content_type_get_mime_type (const char *type)
@@ -847,8 +849,8 @@ enumerate_mimetypes_dir (const char *dir,
 /**
  * g_content_types_get_registered:
  * 
- * Gets a list of strings containing the registered content types on 
- * the system.
+ * Gets a list of strings containing all the registered content types
+ * known to the system.
  * 
  * Returns: #GList of the registered content types.
  **/  

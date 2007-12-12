@@ -252,9 +252,9 @@ g_desktop_app_info_new_from_filename (const char *filename)
 
 /**
  * g_desktop_app_info_new:
- * @desktop_id:
+ * @desktop_id: the desktop file id
  * 
- * Returns: a new #GDesktopAppInfo.
+ * Returns: a new #GDesktopAppInfo, or %NULL if no desktop file with that id
  **/
 GDesktopAppInfo *
 g_desktop_app_info_new (const char *desktop_id)
@@ -375,8 +375,11 @@ g_desktop_app_info_get_name (GAppInfo *appinfo)
 
 /**
  * g_desktop_app_info_get_is_hidden:
- * @info:
- * 
+ * @info: a #GDesktopAppInfo.
+ *
+ * A desktop file is hidden if the Hidden key in it is
+ * set to True.
+ *
  * Returns: %TRUE if hidden, %FALSE otherwise. 
  **/
 gboolean
@@ -909,14 +912,6 @@ g_desktop_app_info_supports_uris (GAppInfo *appinfo)
     (strstr (info->exec, "%U") != NULL);
 }
 
-static gboolean
-g_desktop_app_info_supports_xdg_startup_notify (GAppInfo *appinfo)
-{
-  GDesktopAppInfo *info = G_DESKTOP_APP_INFO (appinfo);
-  
-  return info->startup_notify;
-}
- 
 static gboolean
 g_desktop_app_info_launch_uris (GAppInfo           *appinfo,
 				GList              *uris,
@@ -1462,7 +1457,6 @@ g_desktop_app_info_iface_init (GAppInfoIface *iface)
   iface->get_icon = g_desktop_app_info_get_icon;
   iface->launch = g_desktop_app_info_launch;
   iface->supports_uris = g_desktop_app_info_supports_uris;
-  iface->supports_xdg_startup_notify = g_desktop_app_info_supports_xdg_startup_notify;
   iface->launch_uris = g_desktop_app_info_launch_uris;
   iface->should_show = g_desktop_app_info_should_show;
   iface->set_as_default_for_type = g_desktop_app_info_set_as_default_for_type;

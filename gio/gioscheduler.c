@@ -329,12 +329,12 @@ mainloop_proxy_notify (gpointer data)
 /**
  * g_io_job_send_to_mainloop:
  * @job: a #GIOJob.
- * @func: a #GIODataFunc.
+ * @func: a #GIODataFunc callback that will be called the main thread.
  * @user_data: a #gpointer.
  * @notify: a #GDestroyNotify.
- * @block: boolean flag indicating whether or not this job should block.
+ * @block: boolean flag indicating whether or not the job should block until the callback has returned.
  * 
- * Sends an I/O job to the application's main loop for processing.
+ * Sends a notification from an I/O job to the mainloop processing on the main thread.
  **/
 void
 g_io_job_send_to_mainloop (GIOJob         *job,

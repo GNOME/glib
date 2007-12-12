@@ -252,8 +252,7 @@ g_memory_input_stream_get_data (GMemoryInputStream *stream)
  * 
  * Gets the size of the data within the #GMemoryInputStream.
  *
- * Returns: a gsize with the size of the data in @stream, or -1
- *     on error.
+ * Returns: a gsize with the size of the data in @stream.
  **/
 gsize
 g_memory_input_stream_get_data_size (GMemoryInputStream *stream)
