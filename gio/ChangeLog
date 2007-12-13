@@ -1,5 +1,11 @@
 2007-12-13  Alexander Larsson  <alexl@redhat.com>
 
+        * gfile.[ch]:
+        * gio.symbols:
+	Rename g_mount_for_location to g_file_mount_enclosing_volume.
+
+2007-12-13  Alexander Larsson  <alexl@redhat.com>
+
         * gmountoperation.h:
 	G_PASSWORD_FLAGS_ANON_SUPPORTED -> G_PASSWORD_FLAGS_ANONYMOUS_SUPPORTED
 

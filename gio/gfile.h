@@ -222,8 +222,8 @@ typedef gboolean (* GFileReadMoreCallback) (const char *file_contents,
  * @unmount_mountable_finish: Finishes an unmount operation.
  * @eject_mountable: Ejects a mountable.
  * @eject_mountable_finish: Finishes an eject operation.
- * @mount_for_location: Mounts a specified location. 
- * @mount_for_location_finish: Finishes mounting a specified location.
+ * @g_file_mount_enclosing_volume: Mounts a specified location. 
+ * @g_file_mount_enclosing_volume_finish: Finishes mounting a specified location.
  * @monitor_dir: Creates a #GDirectoryMonitor for the location.
  * @monitor_file: Creates a #GFileMonitor for the location.
  * 
@@ -487,14 +487,14 @@ struct _GFileIface
 						    GError             **error);
 
 
-  void     (*mount_for_location)        (GFile *location,
-					 GMountOperation *mount_operation,
-					 GCancellable *cancellable,
-					 GAsyncReadyCallback callback,
-					 gpointer user_data);
-  gboolean (*mount_for_location_finish) (GFile *location,
-					 GAsyncResult *result,
-					 GError **error);
+  void     (*mount_enclosing_volume)        (GFile *location,
+					     GMountOperation *mount_operation,
+					     GCancellable *cancellable,
+					     GAsyncReadyCallback callback,
+					     gpointer user_data);
+  gboolean (*mount_enclosing_volume_finish) (GFile *location,
+					     GAsyncResult *result,
+					     GError **error);
   
   GDirectoryMonitor* (*monitor_dir)         (GFile                  *file,
 					     GFileMonitorFlags       flags,
@@ -731,12 +731,12 @@ gboolean                g_file_set_attribute_int64        (GFile                
 							   GFileQueryInfoFlags         flags,
 							   GCancellable               *cancellable,
 							   GError                    **error);
-void                    g_mount_for_location              (GFile                      *location,
+void                    g_file_mount_enclosing_volume     (GFile                      *location,
 							   GMountOperation            *mount_operation,
 							   GCancellable               *cancellable,
 							   GAsyncReadyCallback         callback,
 							   gpointer                    user_data);
-gboolean                g_mount_for_location_finish       (GFile                      *location,
+gboolean                g_file_mount_enclosing_volume_finish (GFile                      *location,
 							   GAsyncResult               *result,
 							   GError                    **error);
 void                    g_file_mount_mountable            (GFile                      *file,

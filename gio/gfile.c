@@ -3969,7 +3969,7 @@ g_file_new_for_commandline_arg (const char *arg)
 }
 
 /**
- * g_mount_for_location:
+ * g_file_mount_enclosing_volume:
  * @location: input #GFile.
  * @mount_operation: a #GMountOperation.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
@@ -3980,18 +3980,18 @@ g_file_new_for_commandline_arg (const char *arg)
  * 
  * When this operation has completed, @callback will be called with
  * @user_user data, and the operation can be finalized with 
- * g_mount_for_location_finish().
+ * g_file_mount_enclosing_volume_finish().
  * 
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
  **/
 void
-g_mount_for_location (GFile               *location,
-		      GMountOperation     *mount_operation,
-		      GCancellable        *cancellable,
-		      GAsyncReadyCallback  callback,
-		      gpointer             user_data)
+g_file_mount_enclosing_volume (GFile               *location,
+			       GMountOperation     *mount_operation,
+			       GCancellable        *cancellable,
+			       GAsyncReadyCallback  callback,
+			       gpointer             user_data)
 {
   GFileIface *iface;
 
@@ -4000,7 +4000,7 @@ g_mount_for_location (GFile               *location,
 
   iface = G_FILE_GET_IFACE (location);
 
-  if (iface->mount_for_location == NULL)
+  if (iface->mount_enclosing_volume == NULL)
     {
       g_simple_async_report_error_in_idle (G_OBJECT (location),
 					   callback, user_data,
@@ -4010,26 +4010,26 @@ g_mount_for_location (GFile               *location,
       return;
     }
   
-  (* iface->mount_for_location) (location, mount_operation, cancellable, callback, user_data);
+  (* iface->mount_enclosing_volume) (location, mount_operation, cancellable, callback, user_data);
 
 }
 
 /**
- * g_mount_for_location_finish:
+ * g_file_mount_enclosing_volume_finish:
  * @location: input #GFile.
  * @result: a #GAsyncResult.
  * @error: a #GError, or %NULL
  * 
- * Finishes a mount operation started by g_mount_for_location().
+ * Finishes a mount operation started by g_file_mount_enclosing_volume().
  * 
  * Returns: %TRUE if successful. If an error
  * has occured, this function will return %FALSE and set @error
  * appropriately if present.
  **/
 gboolean
-g_mount_for_location_finish (GFile         *location,
-			     GAsyncResult  *result,
-			     GError       **error)
+g_file_mount_enclosing_volume_finish (GFile         *location,
+				      GAsyncResult  *result,
+				      GError       **error)
 {
   GFileIface *iface;
 
@@ -4045,7 +4045,7 @@ g_mount_for_location_finish (GFile         *location,
   
   iface = G_FILE_GET_IFACE (location);
 
-  return (* iface->mount_for_location_finish) (location, result, error);
+  return (* iface->mount_enclosing_volume_finish) (location, result, error);
 }
 
 /********************************************
