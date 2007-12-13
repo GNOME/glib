@@ -1,3 +1,10 @@
+2007-12-13  Bastien Nocera  <hadess@hadess.net>
+
+	* glib/gtimer.c: (g_time_val_from_iso8601):
+	Don't try to parse dates that start with anything but a
+	digit, a plus or a minus sign, as those can't be valid
+	ISO8601 dates (Closes: #503029)
+
 2007-12-03  Matthias Clasen  <mclasen@redhat.com>
 
 	Merged from trunk:
