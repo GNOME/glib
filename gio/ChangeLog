@@ -1,5 +1,19 @@
 2007-12-13  Alexander Larsson  <alexl@redhat.com>
 
+        * gcancellable.[ch]:
+        * gio.symbols:
+        * gbufferedinputstream.c:
+        * gfileenumerator.c:
+        * gfileinputstream.c:
+        * gfileoutputstream.c:
+        * ginputstream.c:
+        * gioscheduler.c:
+        * goutputstream.c:
+	g_push/pop_current_cancellable ->
+	g_cancellable_push/pop_current
+
+2007-12-13  Alexander Larsson  <alexl@redhat.com>
+
         * gfile.[ch]:
         * gio.symbols:
 	Rename g_mount_for_location to g_file_mount_enclosing_volume.

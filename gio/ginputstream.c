@@ -199,12 +199,12 @@ g_input_stream_read  (GInputStream  *stream,
     return -1;
 
   if (cancellable)
-    g_push_current_cancellable (cancellable);
+    g_cancellable_push_current (cancellable);
   
   res = class->read_fn (stream, buffer, count, cancellable, error);
 
   if (cancellable)
-    g_pop_current_cancellable (cancellable);
+    g_cancellable_pop_current (cancellable);
   
   g_input_stream_clear_pending (stream);
 
@@ -324,12 +324,12 @@ g_input_stream_skip (GInputStream  *stream,
     return -1;
 
   if (cancellable)
-    g_push_current_cancellable (cancellable);
+    g_cancellable_push_current (cancellable);
   
   res = class->skip (stream, count, cancellable, error);
 
   if (cancellable)
-    g_pop_current_cancellable (cancellable);
+    g_cancellable_pop_current (cancellable);
   
   g_input_stream_clear_pending (stream);
 
@@ -445,13 +445,13 @@ g_input_stream_close (GInputStream  *stream,
     return FALSE;
 
   if (cancellable)
-    g_push_current_cancellable (cancellable);
+    g_cancellable_push_current (cancellable);
 
   if (class->close_fn)
     res = class->close_fn (stream, cancellable, error);
 
   if (cancellable)
-    g_pop_current_cancellable (cancellable);
+    g_cancellable_pop_current (cancellable);
 
   g_input_stream_clear_pending (stream);
   

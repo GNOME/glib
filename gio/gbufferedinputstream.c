@@ -409,13 +409,13 @@ g_buffered_input_stream_fill (GBufferedInputStream  *stream,
     return -1;
 
   if (cancellable)
-    g_push_current_cancellable (cancellable);
+    g_cancellable_push_current (cancellable);
   
   class = G_BUFFERED_INPUT_STREAM_GET_CLASS (stream);
   res = class->fill (stream, count, cancellable, error);
 
   if (cancellable)
-    g_pop_current_cancellable (cancellable);
+    g_cancellable_pop_current (cancellable);
   
   g_input_stream_clear_pending (input_stream);
   
@@ -883,7 +883,7 @@ g_buffered_input_stream_read_byte (GBufferedInputStream  *stream,
   /* Byte not available, request refill for more */
 
   if (cancellable)
-    g_push_current_cancellable (cancellable);
+    g_cancellable_push_current (cancellable);
 
   priv->pos = 0;
   priv->end = 0;
@@ -892,7 +892,7 @@ g_buffered_input_stream_read_byte (GBufferedInputStream  *stream,
   nread = class->fill (stream, priv->len, cancellable, error);
 
   if (cancellable)
-    g_pop_current_cancellable (cancellable);
+    g_cancellable_pop_current (cancellable);
 
   g_input_stream_clear_pending (input_stream);
 

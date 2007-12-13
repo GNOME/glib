@@ -156,10 +156,10 @@ io_job_thread (gpointer data,
   GIOJob *job = data;
 
   if (job->cancellable)
-    g_push_current_cancellable (job->cancellable);
+    g_cancellable_push_current (job->cancellable);
   job->job_func (job, job->cancellable, job->data);
   if (job->cancellable)
-    g_pop_current_cancellable (job->cancellable);
+    g_cancellable_pop_current (job->cancellable);
 
   if (job->destroy_notify)
     job->destroy_notify (job->data);
@@ -175,12 +175,12 @@ run_job_at_idle (gpointer data)
   GIOJob *job = data;
 
   if (job->cancellable)
-    g_push_current_cancellable (job->cancellable);
+    g_cancellable_push_current (job->cancellable);
   
   job->job_func (job, job->cancellable, job->data);
   
   if (job->cancellable)
-    g_pop_current_cancellable (job->cancellable);
+    g_cancellable_pop_current (job->cancellable);
 
   if (job->destroy_notify)
     job->destroy_notify (job->data);

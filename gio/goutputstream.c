@@ -207,12 +207,12 @@ g_output_stream_write (GOutputStream  *stream,
     return -1;
   
   if (cancellable)
-    g_push_current_cancellable (cancellable);
+    g_cancellable_push_current (cancellable);
   
   res = class->write_fn (stream, buffer, count, cancellable, error);
   
   if (cancellable)
-    g_pop_current_cancellable (cancellable);
+    g_cancellable_pop_current (cancellable);
   
   g_output_stream_clear_pending (stream);
 
@@ -318,12 +318,12 @@ g_output_stream_flush (GOutputStream  *stream,
   if (class->flush)
     {
       if (cancellable)
-	g_push_current_cancellable (cancellable);
+	g_cancellable_push_current (cancellable);
       
       res = class->flush (stream, cancellable, error);
       
       if (cancellable)
-	g_pop_current_cancellable (cancellable);
+	g_cancellable_pop_current (cancellable);
     }
   
   g_output_stream_clear_pending (stream);
@@ -371,12 +371,12 @@ g_output_stream_splice (GOutputStream             *stream,
 
   res = TRUE;
   if (cancellable)
-    g_push_current_cancellable (cancellable);
+    g_cancellable_push_current (cancellable);
       
   res = class->splice (stream, source, flags, cancellable, error);
       
   if (cancellable)
-    g_pop_current_cancellable (cancellable);
+    g_cancellable_pop_current (cancellable);
   
   g_output_stream_clear_pending (stream);
 
@@ -516,7 +516,7 @@ g_output_stream_close (GOutputStream  *stream,
     return FALSE;
 
   if (cancellable)
-    g_push_current_cancellable (cancellable);
+    g_cancellable_push_current (cancellable);
 
   if (class->flush)
     res = class->flush (stream, cancellable, error);
@@ -539,7 +539,7 @@ g_output_stream_close (GOutputStream  *stream,
     }
   
   if (cancellable)
-    g_pop_current_cancellable (cancellable);
+    g_cancellable_pop_current (cancellable);
   
   stream->priv->closed = TRUE;
   g_output_stream_clear_pending (stream);

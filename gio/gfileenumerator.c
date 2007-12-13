@@ -166,14 +166,14 @@ g_file_enumerator_next_file (GFileEnumerator *enumerator,
   class = G_FILE_ENUMERATOR_GET_CLASS (enumerator);
 
   if (cancellable)
-    g_push_current_cancellable (cancellable);
+    g_cancellable_push_current (cancellable);
   
   enumerator->priv->pending = TRUE;
   info = (* class->next_file) (enumerator, cancellable, error);
   enumerator->priv->pending = FALSE;
 
   if (cancellable)
-    g_pop_current_cancellable (cancellable);
+    g_cancellable_pop_current (cancellable);
   
   return info;
 }
@@ -216,7 +216,7 @@ g_file_enumerator_close (GFileEnumerator  *enumerator,
     }
 
   if (cancellable)
-    g_push_current_cancellable (cancellable);
+    g_cancellable_push_current (cancellable);
   
   enumerator->priv->pending = TRUE;
   (* class->close_fn) (enumerator, cancellable, error);
@@ -224,7 +224,7 @@ g_file_enumerator_close (GFileEnumerator  *enumerator,
   enumerator->priv->closed = TRUE;
 
   if (cancellable)
-    g_pop_current_cancellable (cancellable);
+    g_cancellable_pop_current (cancellable);
   
   return TRUE;
 }

@@ -67,8 +67,8 @@ gboolean      g_cancellable_set_error_if_cancelled (GCancellable  *cancellable,
 						    GError       **error);
 int           g_cancellable_get_fd                 (GCancellable  *cancellable);
 GCancellable *g_cancellable_get_current            (void);
-void          g_push_current_cancellable           (GCancellable  *cancellable);
-void          g_pop_current_cancellable            (GCancellable  *cancellable);
+void          g_cancellable_push_current           (GCancellable  *cancellable);
+void          g_cancellable_pop_current            (GCancellable  *cancellable);
 void          g_cancellable_reset                  (GCancellable  *cancellable);
 
 

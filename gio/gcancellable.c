@@ -171,7 +171,7 @@ g_cancellable_new (void)
 }
 
 /**
- * g_push_current_cancellable:
+ * g_cancellable_push_current:
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * 
  * Pushes @cancellable onto the cancellable stack. The current
@@ -184,7 +184,7 @@ g_cancellable_new (void)
  * so you rarely have to call this yourself.
  **/
 void
-g_push_current_cancellable (GCancellable *cancellable)
+g_cancellable_push_current (GCancellable *cancellable)
 {
   GSList *l;
 
@@ -196,14 +196,14 @@ g_push_current_cancellable (GCancellable *cancellable)
 }
 
 /**
- * g_pop_current_cancellable:
+ * g_cancellable_pop_current:
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  *
  * Pops @cancellable off the cancellable stack (verifying that @cancellable 
  * is on the top of the stack).
  **/
 void
-g_pop_current_cancellable (GCancellable *cancellable)
+g_cancellable_pop_current (GCancellable *cancellable)
 {
   GSList *l;
   

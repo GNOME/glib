@@ -144,7 +144,7 @@ g_file_output_stream_query_info (GFileOutputStream      *stream,
   info = NULL;
   
   if (cancellable)
-    g_push_current_cancellable (cancellable);
+    g_cancellable_push_current (cancellable);
   
   class = G_FILE_OUTPUT_STREAM_GET_CLASS (stream);
   if (class->query_info)
@@ -154,7 +154,7 @@ g_file_output_stream_query_info (GFileOutputStream      *stream,
 		 _("Stream doesn't support query_info"));
   
   if (cancellable)
-    g_pop_current_cancellable (cancellable);
+    g_cancellable_pop_current (cancellable);
   
   g_output_stream_clear_pending (output_stream);
   
@@ -400,12 +400,12 @@ g_file_output_stream_seek (GFileOutputStream  *stream,
     return FALSE;
   
   if (cancellable)
-    g_push_current_cancellable (cancellable);
+    g_cancellable_push_current (cancellable);
   
   res = class->seek (stream, offset, type, cancellable, error);
   
   if (cancellable)
-    g_pop_current_cancellable (cancellable);
+    g_cancellable_pop_current (cancellable);
 
   g_output_stream_clear_pending (output_stream);
   
@@ -495,12 +495,12 @@ g_file_output_stream_truncate (GFileOutputStream  *stream,
     return FALSE;
   
   if (cancellable)
-    g_push_current_cancellable (cancellable);
+    g_cancellable_push_current (cancellable);
   
   res = class->truncate_fn (stream, size, cancellable, error);
   
   if (cancellable)
-    g_pop_current_cancellable (cancellable);
+    g_cancellable_pop_current (cancellable);
 
   g_output_stream_clear_pending (output_stream);
   
