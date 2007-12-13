@@ -7,12 +7,12 @@
 # Jorge González <jorgegonz@svn.gnome.org>, 2007.
 msgid ""
 msgstr ""
-"Project-Id-Version: glib.glib-2-14.es\n"
+"Project-Id-Version: glib.glib-2-14\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-03 18:49+0000\n"
-"PO-Revision-Date: 2007-12-11 22:24+0100\n"
+"POT-Creation-Date: 2007-12-11 21:32+0000\n"
+"PO-Revision-Date: 2007-12-13 15:43+0100\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
-"Language-Team: Spanish <traductores@es.gnome.org>\n"
+"Language-Team: Spanish <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -576,7 +576,7 @@ msgstr "carácter no reconocido después de \\"
 
 #: ../glib/gregex.c:195
 msgid "case changing escapes are not allowed here"
-msgstr ""
+msgstr "aquí no se permite escapar las letras con mayúscula"
 
 #: ../glib/gregex.c:197
 msgid "numbers out of order in {} quantifier"
@@ -640,7 +640,7 @@ msgstr "falló al obtener memoria"
 
 #: ../glib/gregex.c:227
 msgid "lookbehind assertion is not fixed length"
-msgstr "la expresión «lookbehind» no tiene una longitud fija"
+msgstr "la comprobación «lookbehind» no tiene una longitud fija"
 
 #: ../glib/gregex.c:229
 msgid "malformed number or name after (?("
@@ -652,7 +652,7 @@ msgstr "el grupo condicional contiene más de dos ramas"
 
 #: ../glib/gregex.c:233
 msgid "assertion expected after (?("
-msgstr "se esperaba una afirmación después de (?("
+msgstr "se esperaba una comprobación después de (?("
 
 #: ../glib/gregex.c:235
 msgid "unknown POSIX class name"
@@ -672,7 +672,7 @@ msgstr "condición no válida (?(0)"
 
 #: ../glib/gregex.c:243
 msgid "\\C not allowed in lookbehind assertion"
-msgstr "no se permite \\C en expresiones «lookbehind»"
+msgstr "no se permite \\C en comprobaciones «lookbehind»"
 
 #: ../glib/gregex.c:245
 msgid "recursive call could loop indefinitely"
@@ -720,7 +720,9 @@ msgstr "opciones NEWLINE inconsistentes"
 
 #: ../glib/gregex.c:267
 msgid "\\g is not followed by a braced name or an optionally braced non-zero number"
-msgstr "\\g no está seguido por un nombre de llave o un número distinto de cero con una llave opcional"
+msgstr ""
+"\\g no está seguido por un nombre de llave o un número distinto de cero con "
+"una llave opcional"
 
 #: ../glib/gregex.c:270
 msgid "unexpected repeat"
@@ -1006,73 +1008,73 @@ msgstr "Falta un argumento para %s"
 msgid "Unknown option %s"
 msgstr "Opción desconocida %s"
 
-#: ../glib/gkeyfile.c:341
+#: ../glib/gkeyfile.c:355
 msgid "Valid key file could not be found in search dirs"
 msgstr ""
 "No se pudo encontrar la clave de archivo válida en los directorios de "
 "búsqueda"
 
-#: ../glib/gkeyfile.c:376
+#: ../glib/gkeyfile.c:390
 msgid "Not a regular file"
 msgstr "No es un archivo regular"
 
-#: ../glib/gkeyfile.c:384
+#: ../glib/gkeyfile.c:398
 msgid "File is empty"
 msgstr "El archivo está vacío"
 
-#: ../glib/gkeyfile.c:746
+#: ../glib/gkeyfile.c:757
 #, c-format
 msgid "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr ""
 "El archivo de claves contiene la línea «%s» que no es un par valor-clave, "
 "grupo o comentario"
 
-#: ../glib/gkeyfile.c:806
+#: ../glib/gkeyfile.c:817
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "Nombre de grupo no válido: %s"
 
-#: ../glib/gkeyfile.c:828
+#: ../glib/gkeyfile.c:839
 msgid "Key file does not start with a group"
 msgstr "El archivo de claves no empieza por un grupo"
 
-#: ../glib/gkeyfile.c:854
+#: ../glib/gkeyfile.c:865
 #, c-format
 msgid "Invalid key name: %s"
 msgstr "Nombre de clave no válida: %s"
 
-#: ../glib/gkeyfile.c:881
+#: ../glib/gkeyfile.c:892
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "El archivo de clavess contiene una codificación «%s» no soportada"
 
-#: ../glib/gkeyfile.c:1094 ../glib/gkeyfile.c:1253 ../glib/gkeyfile.c:2471
-#: ../glib/gkeyfile.c:2537 ../glib/gkeyfile.c:2656 ../glib/gkeyfile.c:2791
-#: ../glib/gkeyfile.c:2944 ../glib/gkeyfile.c:3124 ../glib/gkeyfile.c:3181
+#: ../glib/gkeyfile.c:1105 ../glib/gkeyfile.c:1264 ../glib/gkeyfile.c:2482
+#: ../glib/gkeyfile.c:2548 ../glib/gkeyfile.c:2667 ../glib/gkeyfile.c:2802
+#: ../glib/gkeyfile.c:2955 ../glib/gkeyfile.c:3140 ../glib/gkeyfile.c:3197
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "El archivo de claves no tiene el grupo «%s»"
 
-#: ../glib/gkeyfile.c:1265
+#: ../glib/gkeyfile.c:1276
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "El archivo de claves no tiene la clave «%s»"
 
-#: ../glib/gkeyfile.c:1367 ../glib/gkeyfile.c:1480
+#: ../glib/gkeyfile.c:1378 ../glib/gkeyfile.c:1491
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr ""
 "El archivo de claves contiene la clave  «%s» con el valor «%s» el cual no es "
 "UTF-8"
 
-#: ../glib/gkeyfile.c:1387 ../glib/gkeyfile.c:1500 ../glib/gkeyfile.c:1873
+#: ../glib/gkeyfile.c:1398 ../glib/gkeyfile.c:1511 ../glib/gkeyfile.c:1884
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr ""
 "El archivo de claves contiene la clave «%s» que tiene un valor que no puede "
 "interpretarse."
 
-#: ../glib/gkeyfile.c:2088 ../glib/gkeyfile.c:2300
+#: ../glib/gkeyfile.c:2099 ../glib/gkeyfile.c:2311
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -1081,36 +1083,36 @@ msgstr ""
 "El archivo de claves contiene la clave «%s» en el grupo «%s» que tiene un "
 "valor que no puede interpretarse."
 
-#: ../glib/gkeyfile.c:2486 ../glib/gkeyfile.c:2671 ../glib/gkeyfile.c:3192
+#: ../glib/gkeyfile.c:2497 ../glib/gkeyfile.c:2682 ../glib/gkeyfile.c:3208
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "El archivo de claves no tiene la clave «%s» en el grupo «%s»"
 
-#: ../glib/gkeyfile.c:3431
+#: ../glib/gkeyfile.c:3440
 msgid "Key file contains escape character at end of line"
 msgstr "El archivo de claves contiene un carácter de escape al final de la línea"
 
-#: ../glib/gkeyfile.c:3453
+#: ../glib/gkeyfile.c:3462
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "El archivo de claves contiene la secuencia de escape inválida «%s»"
 
-#: ../glib/gkeyfile.c:3595
+#: ../glib/gkeyfile.c:3604
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "El valor «%s» no puede interpretarse como un número."
 
-#: ../glib/gkeyfile.c:3609
+#: ../glib/gkeyfile.c:3618
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "El valor entero «%s» está fuera de rango"
 
-#: ../glib/gkeyfile.c:3642
+#: ../glib/gkeyfile.c:3651
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "El valor «%s» no puede interpretarse como un número de coma flotante."
 
-#: ../glib/gkeyfile.c:3666
+#: ../glib/gkeyfile.c:3675
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "El valor «%s» no puede interpretarse como un booleano."
