@@ -236,6 +236,9 @@ g_key_file_clear (GKeyFile *key_file)
       g_key_file_remove_group_node (key_file, group_node);
     }
 
+  g_hash_table_destroy (key_file->group_hash);
+  key_file->group_hash = NULL;
+
   g_warn_if_fail (key_file->groups == NULL);
 }
 

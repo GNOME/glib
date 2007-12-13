@@ -1,3 +1,8 @@
+2007-12-13  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gkeyfile.c (g_key_file_clear): Free group_hash.
+	(#503420, Christian Persch)
+
 2007-12-12 16:06:11  Tim Janik  <timj@imendio.com>
 
 	* tests/testglib.c: split up tests and reworked code to use
