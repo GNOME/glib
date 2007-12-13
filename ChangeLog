@@ -1,3 +1,10 @@
+2007-12-13  Mathias Hasselmann  <mathias@openismus.com>
+
+	Give exmples in error message unsupported case-changing escape
+	sequences. (503222)
+
+	* glib/gregex.c: Add examples to error message for PCRE-ERR37.
+
 2007-12-13  Bastien Nocera  <hadess@hadess.net>
 
 	* glib/gtimer.c: (g_time_val_from_iso8601):

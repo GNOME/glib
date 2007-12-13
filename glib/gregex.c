@@ -189,7 +189,8 @@ translate_compile_error (gint *errcode, gchar **errmsg)
    * G_REGEX_ERROR_COMPILE error code in errcode and keep the
    * untranslated error message returned by PCRE.
    * Note that there can be more PCRE errors with the same GRegexError
-   * and that some PCRE errors are useless for us. */
+   * and that some PCRE errors are useless for us.
+   */
   *errcode += 100;
 
   switch (*errcode)
@@ -204,8 +205,11 @@ translate_compile_error (gint *errcode, gchar **errmsg)
       *errmsg = _("unrecognized character follows \\");
       break;
     case 137:
+      /* A number of Perl escapes are not handled by PCRE.
+       * Therefore it explicitly raises ERR37.
+       */
       *errcode = G_REGEX_ERROR_UNRECOGNIZED_ESCAPE;
-      *errmsg = _("case changing escapes are not allowed here");
+      *errmsg = _("case-changing escapes (\\l, \\L, \\u, \\U) are not allowed here");
       break;
     case G_REGEX_ERROR_QUANTIFIERS_OUT_OF_ORDER:
       *errmsg = _("numbers out of order in {} quantifier");
