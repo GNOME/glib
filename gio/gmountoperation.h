@@ -59,7 +59,7 @@ struct _GMountOperation
  * @G_PASSWORD_FLAGS_NEED_USERNAME: operation requires a username.
  * @G_PASSWORD_FLAGS_NEED_DOMAIN: operation requires a domain.
  * @G_PASSWORD_FLAGS_SAVING_SUPPORTED: operation supports saving settings.
- * @G_PASSWORD_FLAGS_ANON_SUPPORTED: operation supports anonymous users.
+ * @G_PASSWORD_FLAGS_ANONYMOUS_SUPPORTED: operation supports anonymous users.
  * 
  * #GPasswordFlags are used to request specific information from the 
  * user, or to notify the user of their choices in an authentication
@@ -67,11 +67,11 @@ struct _GMountOperation
  * 
  **/ 
 typedef enum {
-  G_PASSWORD_FLAGS_NEED_PASSWORD    = 1<<0,
-  G_PASSWORD_FLAGS_NEED_USERNAME    = 1<<1,
-  G_PASSWORD_FLAGS_NEED_DOMAIN      = 1<<2,
-  G_PASSWORD_FLAGS_SAVING_SUPPORTED = 1<<3,
-  G_PASSWORD_FLAGS_ANON_SUPPORTED   = 1<<4
+  G_PASSWORD_FLAGS_NEED_PASSWORD       = 1<<0,
+  G_PASSWORD_FLAGS_NEED_USERNAME       = 1<<1,
+  G_PASSWORD_FLAGS_NEED_DOMAIN         = 1<<2,
+  G_PASSWORD_FLAGS_SAVING_SUPPORTED    = 1<<3,
+  G_PASSWORD_FLAGS_ANONYMOUS_SUPPORTED = 1<<4
 } GPasswordFlags;
 
 /**

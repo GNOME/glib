@@ -1,3 +1,8 @@
+2007-12-13  Alexander Larsson  <alexl@redhat.com>
+
+        * gmountoperation.h:
+	G_PASSWORD_FLAGS_ANON_SUPPORTED -> G_PASSWORD_FLAGS_ANONYMOUS_SUPPORTED
+
 2007-12-12  Alexander Larsson  <alexl@redhat.com>
 
         * gioscheduler.c:
