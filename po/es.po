@@ -7,12 +7,12 @@
 # Jorge González <jorgegonz@svn.gnome.org>, 2007.
 msgid ""
 msgstr ""
-"Project-Id-Version: glib.HEAD.es\n"
+"Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-10 11:22+0000\n"
-"PO-Revision-Date: 2007-12-11 22:33+0100\n"
+"POT-Creation-Date: 2007-12-11 12:40+0000\n"
+"PO-Revision-Date: 2007-12-13 15:40+0100\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
-"Language-Team: Spanish <traductores@es.gnome.org>\n"
+"Language-Team: Spanish <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -598,7 +598,7 @@ msgstr "carácter no reconocido después de \\"
 
 #: ../glib/gregex.c:208
 msgid "case changing escapes are not allowed here"
-msgstr ""
+msgstr "aquí no se permite escapar las letras con mayúscula"
 
 #: ../glib/gregex.c:211
 msgid "numbers out of order in {} quantifier"
@@ -670,7 +670,7 @@ msgstr "falló al obtener memoria"
 
 #: ../glib/gregex.c:266
 msgid "lookbehind assertion is not fixed length"
-msgstr "la expresión «lookbehind» no tiene una longitud fija"
+msgstr "la comprobación «lookbehind» no tiene una longitud fija"
 
 #: ../glib/gregex.c:269
 msgid "malformed number or name after (?("
@@ -678,11 +678,11 @@ msgstr "número o nombre mal formado después de (?("
 
 #: ../glib/gregex.c:272
 msgid "conditional group contains more than two branches"
-msgstr "el grupo condificonal contiene más de dos ramas"
+msgstr "el grupo condicional contiene más de dos ramas"
 
 #: ../glib/gregex.c:275
 msgid "assertion expected after (?("
-msgstr "se esperaba una afirmación después de (?("
+msgstr "se esperaba una comprobación después de (?("
 
 #: ../glib/gregex.c:278
 msgid "unknown POSIX class name"
@@ -702,7 +702,7 @@ msgstr "condición no válida (?(0)"
 
 #: ../glib/gregex.c:290
 msgid "\\C not allowed in lookbehind assertion"
-msgstr "no se permite \\C en expresiones «lookbehind»"
+msgstr "no se permite \\C en comprobaciones «lookbehind»"
 
 #: ../glib/gregex.c:293
 msgid "recursive call could loop indefinitely"
@@ -750,7 +750,9 @@ msgstr "opciones NEWLINE inconsistentes"
 
 #: ../glib/gregex.c:326
 msgid "\\g is not followed by a braced name or an optionally braced non-zero number"
-msgstr "\\g no está seguido por un nombre de llave o un número distinto de cero con una llave opcional"
+msgstr ""
+"\\g no está seguido por un nombre de llave o un número distinto de cero con "
+"una llave opcional"
 
 #: ../glib/gregex.c:331
 msgid "unexpected repeat"
@@ -1076,33 +1078,33 @@ msgstr "Nombre de clave no válida: %s"
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "El archivo de clavess contiene una codificación «%s» no soportada"
 
-#: ../glib/gkeyfile.c:1106 ../glib/gkeyfile.c:1265 ../glib/gkeyfile.c:2483
-#: ../glib/gkeyfile.c:2551 ../glib/gkeyfile.c:2686 ../glib/gkeyfile.c:2821
-#: ../glib/gkeyfile.c:2974 ../glib/gkeyfile.c:3161 ../glib/gkeyfile.c:3222
+#: ../glib/gkeyfile.c:1106 ../glib/gkeyfile.c:1266 ../glib/gkeyfile.c:2484
+#: ../glib/gkeyfile.c:2552 ../glib/gkeyfile.c:2687 ../glib/gkeyfile.c:2822
+#: ../glib/gkeyfile.c:2975 ../glib/gkeyfile.c:3162 ../glib/gkeyfile.c:3223
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "El archivo de claves no tiene el grupo «%s»"
 
-#: ../glib/gkeyfile.c:1277
+#: ../glib/gkeyfile.c:1278
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "El archivo de claves no tiene la clave «%s»"
 
-#: ../glib/gkeyfile.c:1379 ../glib/gkeyfile.c:1492
+#: ../glib/gkeyfile.c:1380 ../glib/gkeyfile.c:1493
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr ""
 "El archivo de claves contiene la clave  «%s» con el valor «%s» el cual no es "
 "UTF-8"
 
-#: ../glib/gkeyfile.c:1399 ../glib/gkeyfile.c:1512 ../glib/gkeyfile.c:1885
+#: ../glib/gkeyfile.c:1400 ../glib/gkeyfile.c:1513 ../glib/gkeyfile.c:1886
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr ""
 "El archivo de claves contiene la clave «%s» que tiene un valor que no puede "
 "interpretarse."
 
-#: ../glib/gkeyfile.c:2100 ../glib/gkeyfile.c:2312
+#: ../glib/gkeyfile.c:2101 ../glib/gkeyfile.c:2313
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -1111,36 +1113,36 @@ msgstr ""
 "El archivo de claves contiene la clave «%s» en el grupo «%s» que tiene un "
 "valor que no puede interpretarse."
 
-#: ../glib/gkeyfile.c:2498 ../glib/gkeyfile.c:2701 ../glib/gkeyfile.c:3233
+#: ../glib/gkeyfile.c:2499 ../glib/gkeyfile.c:2702 ../glib/gkeyfile.c:3234
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "El archivo de claves no tiene la clave «%s» en el grupo «%s»"
 
-#: ../glib/gkeyfile.c:3467
+#: ../glib/gkeyfile.c:3468
 msgid "Key file contains escape character at end of line"
 msgstr "El archivo de claves contiene un carácter de escape al final de la línea"
 
-#: ../glib/gkeyfile.c:3489
+#: ../glib/gkeyfile.c:3490
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "El archivo de claves contiene la secuencia de escape inválida «%s»"
 
-#: ../glib/gkeyfile.c:3631
+#: ../glib/gkeyfile.c:3632
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "El valor «%s» no puede interpretarse como un número."
 
-#: ../glib/gkeyfile.c:3645
+#: ../glib/gkeyfile.c:3646
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "El valor entero «%s» está fuera de rango"
 
-#: ../glib/gkeyfile.c:3678
+#: ../glib/gkeyfile.c:3679
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "El valor «%s» no puede interpretarse como un número de coma flotante."
 
-#: ../glib/gkeyfile.c:3702
+#: ../glib/gkeyfile.c:3703
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "El valor «%s» no puede interpretarse como un booleano."
@@ -1176,41 +1178,41 @@ msgstr "tipo %s"
 msgid "Unexpected early end-of-stream"
 msgstr "Final de flujo inesperadamente prematuro"
 
-#: ../gio/gdesktopappinfo.c:373 ../gio/gwin32appinfo.c:222
+#: ../gio/gdesktopappinfo.c:372 ../gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr "Sin nombre"
 
-#: ../gio/gdesktopappinfo.c:546
+#: ../gio/gdesktopappinfo.c:545
 msgid "Desktop file didn't specify Exec field"
 msgstr "El archivo de escritorio no especificó el campo Exec"
 
-#: ../gio/gdesktopappinfo.c:828
+#: ../gio/gdesktopappinfo.c:827
 msgid "Unable to find terminal required for application"
 msgstr "Imposible encontrar el terminal requerido por la aplicación"
 
-#: ../gio/gdesktopappinfo.c:1018
+#: ../gio/gdesktopappinfo.c:1017
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
 "No se puede crear la carpeta de configuración de la aplicación %s del "
 "usuario: %s"
 
-#: ../gio/gdesktopappinfo.c:1022
+#: ../gio/gdesktopappinfo.c:1021
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "No se puede crear la carpeta de configuración MIME %s del usuario: %s"
 
-#: ../gio/gdesktopappinfo.c:1395
+#: ../gio/gdesktopappinfo.c:1394
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Definición personalizada para %s"
 
-#: ../gio/gdesktopappinfo.c:1419
+#: ../gio/gdesktopappinfo.c:1418
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "No se puede crear el archivo de escritorio %s del usuario"
 
-#: ../gio/gdesktopappinfo.c:1444
+#: ../gio/gdesktopappinfo.c:1443
 msgid "Can't load just created desktop file"
 msgstr "No se puede cargar el archivo de escritorio recientemente creado"
 
@@ -1230,8 +1232,8 @@ msgstr "la unidad no implementa la expulsión"
 msgid "Operation not supported"
 msgstr "Operación no soportada"
 
-#: ../gio/gfile.c:966 ../gio/glocalfile.c:882 ../gio/glocalfile.c:891
-#: ../gio/glocalfile.c:902
+#: ../gio/gfile.c:966 ../gio/glocalfile.c:888 ../gio/glocalfile.c:897
+#: ../gio/glocalfile.c:908
 msgid "Containing volume does not exist"
 msgstr "El volumen contenido no existe"
 
@@ -1323,102 +1325,102 @@ msgstr "El flujo tiene una operación excepcional"
 msgid "Invalid filename %s"
 msgstr "Nombre de archivo no válido %s"
 
-#: ../gio/glocalfile.c:804
+#: ../gio/glocalfile.c:810
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "Error al obtener la información del sistema de archivos: %s"
 
-#: ../gio/glocalfile.c:922
+#: ../gio/glocalfile.c:928
 msgid "Can't rename root directory"
 msgstr "No se puede renombrar el directorio raíz"
 
-#: ../gio/glocalfile.c:940
+#: ../gio/glocalfile.c:946
 msgid "Can't rename file, filename already exist"
 msgstr "No se puede renombrar el archivo, el nombre ya existe"
 
-#: ../gio/glocalfile.c:953 ../gio/glocalfile.c:1666 ../gio/glocalfile.c:1695
-#: ../gio/glocalfile.c:1827 ../gio/glocalfileoutputstream.c:451
+#: ../gio/glocalfile.c:959 ../gio/glocalfile.c:1679 ../gio/glocalfile.c:1708
+#: ../gio/glocalfile.c:1840 ../gio/glocalfileoutputstream.c:451
 #: ../gio/glocalfileoutputstream.c:494 ../gio/glocalfileoutputstream.c:886
 msgid "Invalid filename"
 msgstr "Nombre de archivo inválido"
 
-#: ../gio/glocalfile.c:957
+#: ../gio/glocalfile.c:963
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "Error al renombrar el archivo: %s"
 
-#: ../gio/glocalfile.c:1072
+#: ../gio/glocalfile.c:1078
 #, c-format
 msgid "Error opening file: %s"
 msgstr "Error al abrir el archivo: %s"
 
-#: ../gio/glocalfile.c:1082
+#: ../gio/glocalfile.c:1088
 msgid "Can't open directory"
 msgstr "No se puede abrir el directorio"
 
-#: ../gio/glocalfile.c:1134 ../gio/glocalfile.c:1670
+#: ../gio/glocalfile.c:1140 ../gio/glocalfile.c:1683
 #, c-format
 msgid "Error removing file: %s"
 msgstr "Error al eliminar el archivo: %s"
 
-#: ../gio/glocalfile.c:1419
+#: ../gio/glocalfile.c:1432
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "Error al mover a la papelera el archivo: %s"
 
-#: ../gio/glocalfile.c:1443
+#: ../gio/glocalfile.c:1456
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "No se pudo crear el directorio papelera %s: %s"
 
-#: ../gio/glocalfile.c:1467
+#: ../gio/glocalfile.c:1480
 msgid "Unable to find toplevel directory for trash"
 msgstr "No se pudo encontrar el directorio de nivel superior para mover a la papelera"
 
-#: ../gio/glocalfile.c:1527 ../gio/glocalfile.c:1547
+#: ../gio/glocalfile.c:1540 ../gio/glocalfile.c:1560
 msgid "Unable to find or create trash directory"
 msgstr "No se pudo encontrar o crear el directorio de la papelera"
 
-#: ../gio/glocalfile.c:1579
+#: ../gio/glocalfile.c:1592
 #, c-format
 msgid "Unable to create trashed file: %s"
 msgstr "No se pudo crear el archivo enviado a la papelera: %s"
 
-#: ../gio/glocalfile.c:1602
+#: ../gio/glocalfile.c:1615
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "No se pudo enviar a la papelera el archivo: %s"
 
-#: ../gio/glocalfile.c:1699
+#: ../gio/glocalfile.c:1712
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "Error al crear el enlace simbólico: %s"
 
-#: ../gio/glocalfile.c:1746 ../gio/glocalfile.c:1831
+#: ../gio/glocalfile.c:1759 ../gio/glocalfile.c:1844
 #, c-format
 msgid "Error moving file: %s"
 msgstr "Error al mover el archivo: %s"
 
-#: ../gio/glocalfile.c:1767
+#: ../gio/glocalfile.c:1780
 msgid "Can't move directory over directory"
 msgstr "No se puede mover un directorio sobre un directoro"
 
-#: ../gio/glocalfile.c:1776
+#: ../gio/glocalfile.c:1789
 msgid "Target file already exists"
 msgstr "El archivo destino ya existe"
 
-#: ../gio/glocalfile.c:1789 ../gio/glocalfileoutputstream.c:740
+#: ../gio/glocalfile.c:1802 ../gio/glocalfileoutputstream.c:740
 #: ../gio/glocalfileoutputstream.c:754 ../gio/glocalfileoutputstream.c:769
 #: ../gio/glocalfileoutputstream.c:785 ../gio/glocalfileoutputstream.c:799
 msgid "Backup file creation failed"
 msgstr "Falló la creación del archivo de respaldo"
 
-#: ../gio/glocalfile.c:1806
+#: ../gio/glocalfile.c:1819
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Error al eliminar el archivo destino: %s"
 
-#: ../gio/glocalfile.c:1820
+#: ../gio/glocalfile.c:1833
 msgid "Move between mounts not supported"
 msgstr "No se soporta mover archivos entre puntos de montaje"
 
