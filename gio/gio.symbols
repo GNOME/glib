@@ -517,9 +517,10 @@ g_io_modules_load_all_in_directory
 
 #if IN_HEADER(__G_IO_SCHEDULER_H__)
 #if IN_FILE(__G_IO_SCHEDULER_C__)
-g_schedule_io_job 
-g_cancel_all_io_jobs 
-g_io_job_send_to_mainloop 
+g_io_scheduler_push_job
+g_io_scheduler_cancel_all_jobs
+g_io_scheduler_job_send_to_mainloop
+g_io_scheduler_job_send_to_mainloop_async
 #endif
 #endif
 
