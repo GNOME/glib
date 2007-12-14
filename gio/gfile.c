@@ -1070,7 +1070,7 @@ g_file_read (GFile         *file,
  * the file doesn't already exist it is created.
  *
  * By default files created are generally readable by everyone,
- * but if you pass #G_FILE_CREATE_FLAGS_PRIVATE in @flags the file
+ * but if you pass #G_FILE_CREATE_PRIVATE in @flags the file
  * will be made readable only to the current user, to the level that
  * is supported on the target filesystem.
  *
@@ -1123,7 +1123,7 @@ g_file_append_to (GFile             *file,
  * The file must not already exists.
  *
  * By default files created are generally readable by everyone,
- * but if you pass #G_FILE_CREATE_FLAGS_PRIVATE in @flags the file
+ * but if you pass #G_FILE_CREATE_PRIVATE in @flags the file
  * will be made readable only to the current user, to the level that
  * is supported on the target filesystem.
  *
@@ -1189,7 +1189,7 @@ g_file_create (GFile             *file,
  * the destination when the stream is closed.
  * 
  * By default files created are generally readable by everyone,
- * but if you pass #G_FILE_CREATE_FLAGS_PRIVATE in @flags the file
+ * but if you pass #G_FILE_CREATE_PRIVATE in @flags the file
  * will be made readable only to the current user, to the level that
  * is supported on the target filesystem.
  *
@@ -1681,8 +1681,8 @@ should_copy (GFileAttributeInfo *info,
              gboolean            as_move)
 {
   if (as_move)
-    return info->flags & G_FILE_ATTRIBUTE_FLAGS_COPY_WHEN_MOVED;
-  return info->flags & G_FILE_ATTRIBUTE_FLAGS_COPY_WITH_FILE;
+    return info->flags & G_FILE_ATTRIBUTE_INFO_COPY_WHEN_MOVED;
+  return info->flags & G_FILE_ATTRIBUTE_INFO_COPY_WITH_FILE;
 }
 
 static char *

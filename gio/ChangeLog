@@ -1,3 +1,19 @@
+2007-12-14  Alexander Larsson  <alexl@redhat.com>
+
+        * gappinfo.h:
+        * gfile.[ch]:
+        * gfileattribute.[ch]:
+        * gio.symbols:
+        * glocalfile.c:
+        * glocalfileoutputstream.c:
+        * gmountoperation.[ch]:
+        * goutputstream.[ch]:
+	Clean up all flags enums to not have _FLAGS in them
+	Make the names of some of the enums better.
+
+        * glocalfileinfo.c:
+	Fix warning
+	
 2007-12-14  Michael Natterer  <mitch@imendio.com>
 
 	* gio.symbols: fix g_io_scheduler symbol names.

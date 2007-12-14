@@ -212,7 +212,7 @@ ask_password (GMountOperation *op,
 	      const char      *message,
 	      const char      *default_user,
 	      const char      *default_domain,
-	      GPasswordFlags   flags)
+	      GAskPasswordFlags flags)
 {
   return FALSE;
 }
@@ -246,7 +246,7 @@ g_mount_operation_class_init (GMountOperationClass *klass)
    * @message: string containing a message to display to the user.
    * @default_user: string containing the default user name.
    * @default_domain: string containing the default domain.
-   * @flags: a set of #GPasswordFlags.
+   * @flags: a set of #GAskPasswordFlags.
    * 
    * Emitted when a mount operation asks the user for a password.
    */

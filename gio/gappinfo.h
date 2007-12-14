@@ -52,7 +52,7 @@ G_BEGIN_DECLS
  * Flags used when creating a #GAppInfo.
  */
 typedef enum {
-  G_APP_INFO_CREATE_FLAGS_NONE = 0,           /*< nick=none >*/
+  G_APP_INFO_CREATE_NONE = 0,           /*< nick=none >*/
   G_APP_INFO_CREATE_NEEDS_TERMINAL = (1<<0)   /*< nick=needs-terminal >*/
 } GAppInfoCreateFlags;
 

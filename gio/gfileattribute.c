@@ -875,7 +875,7 @@ g_file_attribute_info_list_lookup (GFileAttributeInfoList *list,
  * @list: a #GFileAttributeInfoList.
  * @name: the name of the attribute to add.
  * @type: the #GFileAttributeType for the attribute.
- * @flags: #GFileAttributeFlags for the attribute.
+ * @flags: #GFileAttributeInfoFlags for the attribute.
  * 
  * Adds a new attribute with @name to the @list, setting
  * its @type and @flags. 
@@ -884,7 +884,7 @@ void
 g_file_attribute_info_list_add    (GFileAttributeInfoList *list,
 				   const char             *name,
 				   GFileAttributeType      type,
-				   GFileAttributeFlags     flags)
+				   GFileAttributeInfoFlags flags)
 {
   GFileAttributeInfoListPriv *priv = (GFileAttributeInfoListPriv *)list;
   GFileAttributeInfo info;

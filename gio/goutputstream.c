@@ -439,13 +439,13 @@ g_output_stream_real_splice (GOutputStream             *stream,
   if (!res)
     error = NULL; /* Ignore further errors */
 
-  if (flags & G_OUTPUT_STREAM_SPLICE_FLAGS_CLOSE_SOURCE)
+  if (flags & G_OUTPUT_STREAM_SPLICE_CLOSE_SOURCE)
     {
       /* Don't care about errors in source here */
       g_input_stream_close (source, cancellable, NULL);
     }
 
-  if (flags & G_OUTPUT_STREAM_SPLICE_FLAGS_CLOSE_TARGET)
+  if (flags & G_OUTPUT_STREAM_SPLICE_CLOSE_TARGET)
     {
       /* But write errors on close are bad! */
       if (!class->close_fn (stream, cancellable, error))

@@ -58,18 +58,18 @@ typedef enum {
 } GFileAttributeType;
 
 /**
- * GFileAttributeFlags:
- * @G_FILE_ATTRIBUTE_FLAGS_NONE: no flags set.
- * @G_FILE_ATTRIBUTE_FLAGS_COPY_WITH_FILE: copy the attribute values when the file is copied.
- * @G_FILE_ATTRIBUTE_FLAGS_COPY_WHEN_MOVED: copy the attribute values when the file is moved.
+ * GFileAttributeInfoFlags:
+ * @G_FILE_ATTRIBUTE_INFO_NONE: no flags set.
+ * @G_FILE_ATTRIBUTE_INFO_COPY_WITH_FILE: copy the attribute values when the file is copied.
+ * @G_FILE_ATTRIBUTE_INFO_COPY_WHEN_MOVED: copy the attribute values when the file is moved.
  * 
- * A flag specifying the behaviour of an attribute.
+ * Flags specifying the behaviour of an attribute.
  **/
 typedef enum {
-  G_FILE_ATTRIBUTE_FLAGS_NONE = 0,
-  G_FILE_ATTRIBUTE_FLAGS_COPY_WITH_FILE = 1 << 0,
-  G_FILE_ATTRIBUTE_FLAGS_COPY_WHEN_MOVED = 1 << 1
-} GFileAttributeFlags;
+  G_FILE_ATTRIBUTE_INFO_NONE = 0,
+  G_FILE_ATTRIBUTE_INFO_COPY_WITH_FILE = 1 << 0,
+  G_FILE_ATTRIBUTE_INFO_COPY_WHEN_MOVED = 1 << 1
+} GFileAttributeInfoFlags;
 
 /**
  * GFileAttributeStatus:
@@ -113,14 +113,14 @@ typedef struct  {
  * GFileAttributeInfo:
  * @name: the name of the attribute.
  * @type: the #GFileAttributeType type of the attribute.
- * @flags: a set of #GFileAttributeFlags.
+ * @flags: a set of #GFileAttributeInfoFlags.
  * 
  * Information about a specific attribute. 
  **/
 typedef struct {
   char *name;
   GFileAttributeType type;
-  GFileAttributeFlags flags;
+  GFileAttributeInfoFlags flags;
 } GFileAttributeInfo;
 
 /**
@@ -180,7 +180,7 @@ const GFileAttributeInfo *g_file_attribute_info_list_lookup (GFileAttributeInfoL
 void                      g_file_attribute_info_list_add    (GFileAttributeInfoList *list,
 							     const char             *name,
 							     GFileAttributeType      type,
-							     GFileAttributeFlags     flags);
+							     GFileAttributeInfoFlags flags);
 
 G_END_DECLS
 

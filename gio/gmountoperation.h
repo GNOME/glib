@@ -58,25 +58,26 @@ struct _GMountOperation
 };
 
 /**
- * GPasswordFlags:
- * @G_PASSWORD_FLAGS_NEED_PASSWORD: operation requires a password.
- * @G_PASSWORD_FLAGS_NEED_USERNAME: operation requires a username.
- * @G_PASSWORD_FLAGS_NEED_DOMAIN: operation requires a domain.
- * @G_PASSWORD_FLAGS_SAVING_SUPPORTED: operation supports saving settings.
- * @G_PASSWORD_FLAGS_ANONYMOUS_SUPPORTED: operation supports anonymous users.
+ * GAskPasswordFlags:
+ * @G_ASK_PASSWORD_NEED_PASSWORD: operation requires a password.
+ * @G_ASK_PASSWORD_NEED_USERNAME: operation requires a username.
+ * @G_ASK_PASSWORD_NEED_DOMAIN: operation requires a domain.
+ * @G_ASK_PASSWORD_SAVING_SUPPORTED: operation supports saving settings.
+ * @G_ASK_PASSWORD_ANONYMOUS_SUPPORTED: operation supports anonymous users.
  * 
- * #GPasswordFlags are used to request specific information from the 
+ * #GAskPasswordFlags are used to request specific information from the 
  * user, or to notify the user of their choices in an authentication
  * situation. 
  * 
  **/ 
 typedef enum {
-  G_PASSWORD_FLAGS_NEED_PASSWORD       = 1<<0,
-  G_PASSWORD_FLAGS_NEED_USERNAME       = 1<<1,
-  G_PASSWORD_FLAGS_NEED_DOMAIN         = 1<<2,
-  G_PASSWORD_FLAGS_SAVING_SUPPORTED    = 1<<3,
-  G_PASSWORD_FLAGS_ANONYMOUS_SUPPORTED = 1<<4
-} GPasswordFlags;
+  G_ASK_PASSWORD_NONE = 0,
+  G_ASK_PASSWORD_NEED_PASSWORD       = 1<<0,
+  G_ASK_PASSWORD_NEED_USERNAME       = 1<<1,
+  G_ASK_PASSWORD_NEED_DOMAIN         = 1<<2,
+  G_ASK_PASSWORD_SAVING_SUPPORTED    = 1<<3,
+  G_AKS_PASSWORD_ANONYMOUS_SUPPORTED = 1<<4
+} GAskPasswordFlags;
 
 /**
  * GPasswordSave:
@@ -102,7 +103,7 @@ struct _GMountOperationClass
 			     const char      *message,
 			     const char      *default_user,
 			     const char      *default_domain,
-			     GPasswordFlags   flags);
+			     GAskPasswordFlags flags);
 
   gboolean (* ask_question) (GMountOperation *op,
 			     const char      *message,

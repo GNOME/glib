@@ -44,16 +44,16 @@ G_BEGIN_DECLS
 
 /**
  * GOutputStreamSpliceFlags:
- * @G_OUTPUT_STREAM_SPLICE_FLAGS_NONE: Do not close either stream.
- * @G_OUTPUT_STREAM_SPLICE_FLAGS_CLOSE_SOURCE: Close the source stream after the splice.
- * @G_OUTPUT_STREAM_SPLICE_FLAGS_CLOSE_TARGET: Close the target stream after the splice.
+ * @G_OUTPUT_STREAM_SPLICE_NONE: Do not close either stream.
+ * @G_OUTPUT_STREAM_SPLICE_CLOSE_SOURCE: Close the source stream after the splice.
+ * @G_OUTPUT_STREAM_SPLICE_CLOSE_TARGET: Close the target stream after the splice.
  * 
  * GOutputStreamSpliceFlags determine how streams should be spliced.
  **/
 typedef enum {
-  G_OUTPUT_STREAM_SPLICE_FLAGS_NONE = 0,
-  G_OUTPUT_STREAM_SPLICE_FLAGS_CLOSE_SOURCE = 1 << 0,
-  G_OUTPUT_STREAM_SPLICE_FLAGS_CLOSE_TARGET = 1 << 1
+  G_OUTPUT_STREAM_SPLICE_NONE = 0,
+  G_OUTPUT_STREAM_SPLICE_CLOSE_SOURCE = 1 << 0,
+  G_OUTPUT_STREAM_SPLICE_CLOSE_TARGET = 1 << 1
 } GOutputStreamSpliceFlags;
 
 /**

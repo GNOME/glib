@@ -48,7 +48,7 @@ G_BEGIN_DECLS
  * Flags used when querying a #GFileInfo.
  */
 typedef enum {
-  G_FILE_QUERY_INFO_FLAGS_NONE = 0,
+  G_FILE_QUERY_INFO_NONE = 0,
   G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS = (1<<0)   /*< nick=nofollow-symlinks >*/
 } GFileQueryInfoFlags;
 
@@ -61,13 +61,13 @@ typedef enum {
  * Flags used when an operation may create a file.
  */
 typedef enum  {
-  G_FILE_CREATE_FLAGS_NONE = 0,
-  G_FILE_CREATE_FLAGS_PRIVATE = (1<<0)
+  G_FILE_CREATE_NONE = 0,
+  G_FILE_CREATE_PRIVATE = (1<<0)
 } GFileCreateFlags;
 
 /**
  * GFileCopyFlags:
- * @G_FILE_COPY_FLAGS_NONE: No flags set.
+ * @G_FILE_COPY_NONE: No flags set.
  * @G_FILE_COPY_OVERWRITE: Overwrite any existing files
  * @G_FILE_COPY_BACKUP: Make a backup of any existing files.
  * @G_FILE_COPY_NOFOLLOW_SYMLINKS: Don't follow symlinks.
@@ -77,7 +77,7 @@ typedef enum  {
  * Flags used when copying or moving files. 
  */
 typedef enum {
-  G_FILE_COPY_FLAGS_NONE = 0,          /*< nick=none >*/
+  G_FILE_COPY_NONE = 0,          /*< nick=none >*/
   G_FILE_COPY_OVERWRITE = (1<<0),
   G_FILE_COPY_BACKUP = (1<<1),
   G_FILE_COPY_NOFOLLOW_SYMLINKS = (1<<2),
@@ -87,14 +87,14 @@ typedef enum {
 
 /**
  * GFileMonitorFlags:
- * @G_FILE_MONITOR_FLAGS_NONE: No flags set.
- * @G_FILE_MONITOR_FLAGS_MONITOR_MOUNTS: Watch for mount events. 
+ * @G_FILE_MONITOR_NONE: No flags set.
+ * @G_FILE_MONITOR_WATCH_MOUNTS: Watch for mount events. 
  *
  * Flags used to set what a #GFileMonitor or #GDirectoryMonitor will watch for. 
  */
 typedef enum  {
-  G_FILE_MONITOR_FLAGS_NONE = 0,
-  G_FILE_MONITOR_FLAGS_MONITOR_MOUNTS = (1<<0)
+  G_FILE_MONITOR_NONE = 0,
+  G_FILE_MONITOR_WATCH_MOUNTS = (1<<0)
 } GFileMonitorFlags;
 
 /**

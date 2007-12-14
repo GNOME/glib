@@ -432,7 +432,7 @@ _g_local_file_output_stream_create  (const char        *filename,
   if (g_cancellable_set_error_if_cancelled (cancellable, error))
     return NULL;
 
-  if (flags & G_FILE_CREATE_FLAGS_PRIVATE)
+  if (flags & G_FILE_CREATE_PRIVATE)
     mode = 0600;
   else
     mode = 0666;
@@ -475,7 +475,7 @@ _g_local_file_output_stream_append  (const char        *filename,
   if (g_cancellable_set_error_if_cancelled (cancellable, error))
     return NULL;
 
-  if (flags & G_FILE_CREATE_FLAGS_PRIVATE)
+  if (flags & G_FILE_CREATE_PRIVATE)
     mode = 0600;
   else
     mode = 0666;
@@ -857,7 +857,7 @@ _g_local_file_output_stream_replace (const char        *filename,
 
   temp_file = NULL;
 
-  if (flags & G_FILE_CREATE_FLAGS_PRIVATE)
+  if (flags & G_FILE_CREATE_PRIVATE)
     mode = 0600;
   else
     mode = 0666;
