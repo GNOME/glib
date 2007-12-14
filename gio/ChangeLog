@@ -1,7 +1,7 @@
 2007-12-14  Yevgen Muntyan  <muntyan@tamu.edu>
 
-	* gio/Makefile.am:
-	* gio/inotify/Makefile.am: Fixed build when srcdir != builddir,
+	* Makefile.am:
+	* inotify/Makefile.am: Fixed build when srcdir != builddir,
 	made mkenums and friends use temporary files to avoid leaving
 	empty generated files on failure (#503470).
 
