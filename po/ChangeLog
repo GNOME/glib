@@ -1,6 +1,8 @@
 2007-12-14  Stéphane Raimbault  <stephane.raimbault@gmail.com>
 
-	* POTFILES.in: Updated file list (gio).
+	* POTFILES.in: Updated file list (gio).  
+	* fr.po: Updated French translation by Robert-André Mauchin and
+	Stéphane Raimbault.
 
 2007-12-13  Matej Urbančič <mateju@svn.gnome.org>
 
