@@ -1,5 +1,55 @@
 2007-12-14  Alexander Larsson  <alexl@redhat.com>
 
+        * Makefile.am:
+        * fam/Makefile.am:
+        * gappinfo.h:
+        * gasyncresult.h:
+        * gbufferedinputstream.h:
+        * gbufferedoutputstream.h:
+        * gcancellable.h:
+        * gcontenttype.h:
+        * gdatainputstream.h:
+        * gdataoutputstream.h:
+        * gdesktopappinfo.h:
+        * gdirectorymonitor.h:
+        * gdrive.h:
+        * gfile.h:
+        * gfileattribute.h:
+        * gfileenumerator.h:
+        * gfileicon.h:
+        * gfileinfo.h:
+        * gfileinputstream.h:
+        * gfilemonitor.h:
+        * gfilenamecompleter.h:
+        * gfileoutputstream.h:
+        * gfilterinputstream.h:
+        * gfilteroutputstream.h:
+        * gicon.h:
+        * ginputstream.h:
+        * gio.h:
+        * gioerror.h:
+        * giomodule.h:
+        * gioscheduler.h:
+        * gloadableicon.h:
+        * gmemoryinputstream.h:
+        * gmemoryoutputstream.h:
+        * gmount.h:
+        * gmountoperation.h:
+        * goutputstream.h:
+        * gseekable.h:
+        * gsimpleasyncresult.h:
+        * gthemedicon.h:
+        * gunixinputstream.h:
+        * gunixmounts.h:
+        * gunixoutputstream.h:
+        * gvfs.h:
+        * gvolume.h:
+        * gvolumemonitor.h:
+        * inotify/Makefile.am:
+	Only allow including <gio/gio.h> from apps
+
+2007-12-14  Alexander Larsson  <alexl@redhat.com>
+
         * gioscheduler.[ch]:
         * gsimpleasyncresult.c:
 	Rename gioscheduler calls so they all use the g_io_schedule_ prefix.

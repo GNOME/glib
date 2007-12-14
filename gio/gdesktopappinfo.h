@@ -23,7 +23,7 @@
 #ifndef __G_DESKTOP_APP_INFO_H__
 #define __G_DESKTOP_APP_INFO_H__
 
-#include <gio/gappinfo.h>
+#include <gio/gio.h>
 
 G_BEGIN_DECLS
 

@@ -23,6 +23,8 @@
 #ifndef __G_IO_H__
 #define __G_IO_H__
 
+#define __GIO_GIO_H_INSIDE__
+
 #include <gio/gvfs.h>
 #include <gio/gfile.h>
 #include <gio/gvolumemonitor.h>
@@ -48,5 +50,7 @@
 #include <gio/gmemoryoutputstream.h>
 #include <gio/gsimpleasyncresult.h>
 #include <gio/gioenumtypes.h>
+
+#undef __GIO_GIO_H_INSIDE__
 
 #endif /* __G_IO_H__ */

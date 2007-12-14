@@ -23,9 +23,7 @@
 #ifndef __G_UNIX_MOUNTS_H__
 #define __G_UNIX_MOUNTS_H__
 
-#include <glib.h>
-#include <glib-object.h>
-#include <gio/gicon.h>
+#include <gio/gio.h>
 
 G_BEGIN_DECLS
 

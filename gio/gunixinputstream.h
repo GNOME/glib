@@ -23,7 +23,7 @@
 #ifndef __G_UNIX_INPUT_STREAM_H__
 #define __G_UNIX_INPUT_STREAM_H__
 
-#include <gio/ginputstream.h>
+#include <gio/gio.h>
 
 G_BEGIN_DECLS
 

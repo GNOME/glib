@@ -32,5 +32,6 @@ libinotify_la_CFLAGS = \
 	-I$(top_srcdir)/gmodule		\
 	-I$(top_srcdir)/gio 		\
 	-DGIO_MODULE_DIR=\"$(GIO_MODULE_DIR)\"	\
+	-DGIO_COMPILATION		\
 	-DG_DISABLE_DEPRECATED
 
