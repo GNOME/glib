@@ -63,7 +63,7 @@ static const char *_resolve_dev_root (void);
  *
  **/
 
-/**
+/*
  * GUnixMountType:
  * @G_UNIX_MOUNT_TYPE_UNKNOWN: Unknown UNIX mount type.
  * @G_UNIX_MOUNT_TYPE_FLOPPY: Floppy disk UNIX mount type.
@@ -1622,7 +1622,7 @@ guess_mount_type (const char *mount_path,
   return type;
 }
 
-/**
+/*
  * g_unix_mount_guess_type:
  * @mount_entry: a #GUnixMount.
  * 
@@ -1631,7 +1631,7 @@ guess_mount_type (const char *mount_path,
  * 
  * Returns: a #GUnixMountType. 
  **/
-GUnixMountType
+static GUnixMountType
 g_unix_mount_guess_type (GUnixMountEntry *mount_entry)
 {
   g_return_val_if_fail (mount_entry != NULL, G_UNIX_MOUNT_TYPE_UNKNOWN);
@@ -1644,7 +1644,7 @@ g_unix_mount_guess_type (GUnixMountEntry *mount_entry)
 			   mount_entry->filesystem_type);
 }
 
-/**
+/*
  * g_unix_mount_point_guess_type:
  * @mount_point: a #GUnixMountPoint.
  * 
@@ -1653,7 +1653,7 @@ g_unix_mount_guess_type (GUnixMountEntry *mount_entry)
  * 
  * Returns: a #GUnixMountType.
  **/
-GUnixMountType
+static GUnixMountType
 g_unix_mount_point_guess_type (GUnixMountPoint *mount_point)
 {
   g_return_val_if_fail (mount_point != NULL, G_UNIX_MOUNT_TYPE_UNKNOWN);

@@ -683,11 +683,18 @@ gboolean           g_file_info_has_attribute             (GFileInfo  *info,
 							  const char *attribute);
 char **            g_file_info_list_attributes           (GFileInfo  *info,
 							  const char *name_space);
+gboolean           g_file_info_get_attribute_data        (GFileInfo  *info,
+							  const char *attribute,
+							  GFileAttributeType *type,
+							  gpointer   *value_pp,
+							  GFileAttributeStatus *status);
 GFileAttributeType g_file_info_get_attribute_type        (GFileInfo  *info,
 							  const char *attribute);
 void               g_file_info_remove_attribute          (GFileInfo  *info,
 							  const char *attribute);
-GFileAttributeValue * g_file_info_get_attribute          (GFileInfo  *info,
+GFileAttributeStatus g_file_info_get_attribute_status    (GFileInfo  *info,
+							  const char *attribute);
+char *             g_file_info_get_attribute_as_string   (GFileInfo  *info,
 							  const char *attribute);
 const char *       g_file_info_get_attribute_string      (GFileInfo  *info,
 							  const char *attribute);
@@ -708,7 +715,8 @@ GObject *          g_file_info_get_attribute_object      (GFileInfo  *info,
 
 void               g_file_info_set_attribute             (GFileInfo  *info,
 							  const char *attribute,
-							  const GFileAttributeValue *attr_value);
+							  GFileAttributeType type,
+							  gpointer    value_p);
 void               g_file_info_set_attribute_string      (GFileInfo  *info,
 							  const char *attribute,
 							  const char *attr_value);

@@ -1020,7 +1020,8 @@ g_local_file_query_writable_namespaces (GFile         *file,
 static gboolean
 g_local_file_set_attribute (GFile                      *file,
 			    const char                 *attribute,
-			    const GFileAttributeValue  *value,
+			    GFileAttributeType          type,
+			    gpointer                    value_p,
 			    GFileQueryInfoFlags         flags,
 			    GCancellable               *cancellable,
 			    GError                    **error)
@@ -1029,7 +1030,8 @@ g_local_file_set_attribute (GFile                      *file,
 
   return _g_local_file_info_set_attribute (local->filename,
 					   attribute,
-					   value,
+					   type,
+					   value_p,
 					   flags,
 					   cancellable,
 					   error);

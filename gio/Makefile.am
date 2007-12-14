@@ -141,6 +141,7 @@ libgio_2_0_la_SOURCES =		\
 	gdummyfile.c 		\
 	gfile.c 		\
 	gfileattribute.c 	\
+	gfileattribute-priv.h 	\
 	gfileenumerator.c 	\
 	gfileicon.c 		\
 	gfileinfo.c 		\

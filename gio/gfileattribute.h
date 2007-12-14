@@ -85,30 +85,6 @@ typedef enum {
   G_FILE_ATTRIBUTE_STATUS_ERROR_SETTING
 } GFileAttributeStatus;
 
-#define G_FILE_ATTRIBUTE_VALUE_INIT {0}
-
-/**
- * GFileAttributeValue:
- * @type: a #GFileAttributeType.
- * @status: a #GFileAttributeStatus.
- *
- * Contains the value data for the Key-Value pair.
- **/
-typedef struct  {
-  GFileAttributeType type : 8;
-  GFileAttributeStatus status : 8;
-  union {
-    gboolean boolean;
-    gint32 int32;
-    guint32 uint32;
-    gint64 int64;
-    guint64 uint64;
-    char *string;
-    GQuark quark;
-    GObject *obj;
-  } u;
-} GFileAttributeValue;
-
 /**
  * GFileAttributeInfo:
  * @name: the name of the attribute.
@@ -135,41 +111,6 @@ typedef struct {
   GFileAttributeInfo *infos;
   int n_infos;
 } GFileAttributeInfoList;
-
-GFileAttributeValue *g_file_attribute_value_new             (void);
-void                 g_file_attribute_value_free            (GFileAttributeValue *attr);
-void                 g_file_attribute_value_clear           (GFileAttributeValue *attr);
-void                 g_file_attribute_value_set             (GFileAttributeValue *attr,
-							     const GFileAttributeValue *new_value);
-GFileAttributeValue *g_file_attribute_value_dup             (const GFileAttributeValue *other);
-
-char *               g_file_attribute_value_as_string       (const GFileAttributeValue *attr);
-
-const char *         g_file_attribute_value_get_string      (const GFileAttributeValue *attr);
-const char *         g_file_attribute_value_get_byte_string (const GFileAttributeValue *attr);
-gboolean             g_file_attribute_value_get_boolean     (const GFileAttributeValue *attr);
-guint32              g_file_attribute_value_get_uint32      (const GFileAttributeValue *attr);
-gint32               g_file_attribute_value_get_int32       (const GFileAttributeValue *attr);
-guint64              g_file_attribute_value_get_uint64      (const GFileAttributeValue *attr);
-gint64               g_file_attribute_value_get_int64       (const GFileAttributeValue *attr);
-GObject *            g_file_attribute_value_get_object      (const GFileAttributeValue *attr);
-
-void                 g_file_attribute_value_set_string      (GFileAttributeValue *attr,
-							     const char          *string);
-void                 g_file_attribute_value_set_byte_string (GFileAttributeValue *attr,
-							     const char          *string);
-void                 g_file_attribute_value_set_boolean     (GFileAttributeValue *attr,
-							     gboolean             value);
-void                 g_file_attribute_value_set_uint32      (GFileAttributeValue *attr,
-							     guint32              value);
-void                 g_file_attribute_value_set_int32       (GFileAttributeValue *attr,
-							     gint32               value);
-void                 g_file_attribute_value_set_uint64      (GFileAttributeValue *attr,
-							     guint64              value);
-void                 g_file_attribute_value_set_int64       (GFileAttributeValue *attr,
-							     gint64               value);
-void                 g_file_attribute_value_set_object      (GFileAttributeValue *attr,
-							     GObject             *obj);
 
 GFileAttributeInfoList *  g_file_attribute_info_list_new    (void);
 GFileAttributeInfoList *  g_file_attribute_info_list_ref    (GFileAttributeInfoList *list);

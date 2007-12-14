@@ -1,3 +1,29 @@
+2007-12-14  Alexander Larsson  <alexl@redhat.com>
+
+	* Makefile.am:
+        * gfileattribute.[ch]:
+        * gfileattribute-priv.h:
+	Move GFileAttributeValue to a private header, as
+	its sort of ugly.
+	
+        * gfile.[ch]:
+	Make set_attribute take a type + a pointer instead
+	of a GFileAttributeValue.
+	
+        * gfileinfo.[ch]:
+	Fix up for above changes.
+	Add g_file_info_get_attribute_data to get
+	all info in one call, g_file_info_get_attribute_status
+	to get the status and g_file_info_get_attribute_as_string.
+	
+        * gio.symbols:
+        * glocalfile.c:
+        * glocalfileinfo.[ch]:
+	Update for changes
+	
+        * gunixmounts.c:
+	Make _guess_type static.
+
 2007-12-14  Yevgen Muntyan  <muntyan@tamu.edu>
 
 	* Makefile.am:

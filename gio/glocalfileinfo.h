@@ -54,7 +54,8 @@ GFileInfo *_g_local_file_info_get_from_fd     (int                         fd,
 char *     _g_local_file_info_create_etag     (struct stat                *statbuf);
 gboolean   _g_local_file_info_set_attribute   (char                       *filename,
 					       const char                 *attribute,
-					       const GFileAttributeValue  *value,
+					       GFileAttributeType          type,
+					       gpointer                    value_p,
 					       GFileQueryInfoFlags         flags,
 					       GCancellable               *cancellable,
 					       GError                    **error);

@@ -341,7 +341,8 @@ struct _GFileIface
   
   gboolean            (*set_attribute)            (GFile                *file,
 						   const char           *attribute,
-						   const GFileAttributeValue *value,
+						   GFileAttributeType    type,
+						   gpointer              value_p,
 						   GFileQueryInfoFlags   flags,
 						   GCancellable         *cancellable,
 						   GError              **error);
@@ -679,7 +680,8 @@ GFileAttributeInfoList *g_file_query_writable_namespaces  (GFile                
 							   GError                    **error);
 gboolean                g_file_set_attribute              (GFile                      *file,
 							   const char                 *attribute,
-							   const GFileAttributeValue  *value,
+							   GFileAttributeType          type,
+							   gpointer                    value_p,
 							   GFileQueryInfoFlags         flags,
 							   GCancellable               *cancellable,
 							   GError                    **error);

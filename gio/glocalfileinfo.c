@@ -57,6 +57,7 @@
 
 #include <glib/gstdio.h>
 #include <glib/gchecksum.h>
+#include <gfileattribute-priv.h>
 
 #include "glibintl.h"
 
@@ -1939,42 +1940,47 @@ set_mtime_atime (char                       *filename,
 gboolean
 _g_local_file_info_set_attribute (char                       *filename,
 				  const char                 *attribute,
-				  const GFileAttributeValue  *value,
+				  GFileAttributeType          type,
+				  gpointer                    value_p,
 				  GFileQueryInfoFlags         flags,
 				  GCancellable               *cancellable,
 				  GError                    **error)
 {
+  GFileAttributeValue value = { 0 };
+
+  _g_file_attribute_value_set_from_pointer (&value, type, value_p, FALSE);
+  
   if (strcmp (attribute, G_FILE_ATTRIBUTE_UNIX_MODE) == 0)
-    return set_unix_mode (filename, value, error);
+    return set_unix_mode (filename, &value, error);
   
 #ifdef HAVE_CHOWN
   else if (strcmp (attribute, G_FILE_ATTRIBUTE_UNIX_UID) == 0)
-    return set_unix_uid_gid (filename, value, NULL, flags, error);
+    return set_unix_uid_gid (filename, &value, NULL, flags, error);
   else if (strcmp (attribute, G_FILE_ATTRIBUTE_UNIX_GID) == 0)
-    return set_unix_uid_gid (filename, NULL, value, flags, error);
+    return set_unix_uid_gid (filename, NULL, &value, flags, error);
 #endif
   
 #ifdef HAVE_SYMLINK
   else if (strcmp (attribute, G_FILE_ATTRIBUTE_STD_SYMLINK_TARGET) == 0)
-    return set_symlink (filename, value, error);
+    return set_symlink (filename, &value, error);
 #endif
 
 #ifdef HAVE_UTIMES
   else if (strcmp (attribute, G_FILE_ATTRIBUTE_TIME_MODIFIED) == 0)
-    return set_mtime_atime (filename, value, NULL, NULL, NULL, error);
+    return set_mtime_atime (filename, &value, NULL, NULL, NULL, error);
   else if (strcmp (attribute, G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC) == 0)
-    return set_mtime_atime (filename, NULL, value, NULL, NULL, error);
+    return set_mtime_atime (filename, NULL, &value, NULL, NULL, error);
   else if (strcmp (attribute, G_FILE_ATTRIBUTE_TIME_ACCESS) == 0)
-    return set_mtime_atime (filename, NULL, NULL, value, NULL, error);
+    return set_mtime_atime (filename, NULL, NULL, &value, NULL, error);
   else if (strcmp (attribute, G_FILE_ATTRIBUTE_TIME_ACCESS_USEC) == 0)
-    return set_mtime_atime (filename, NULL, NULL, NULL, value, error);
+    return set_mtime_atime (filename, NULL, NULL, NULL, &value, error);
 #endif
 
 #ifdef HAVE_XATTR
   else if (g_str_has_prefix (attribute, "xattr::"))
-    return set_xattr (filename, attribute, value, error);
+    return set_xattr (filename, attribute, &value, error);
   else if (g_str_has_prefix (attribute, "xattr-sys::"))
-    return set_xattr (filename, attribute, value, error);
+    return set_xattr (filename, attribute, &value, error);
 #endif
   
   g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
@@ -2001,7 +2007,7 @@ _g_local_file_info_set_attributes  (char                 *filename,
 
   /* Set symlink first, since this recreates the file */
 #ifdef HAVE_SYMLINK
-  value = g_file_info_get_attribute (info, G_FILE_ATTRIBUTE_STD_SYMLINK_TARGET);
+  value = _g_file_info_get_attribute_value (info, G_FILE_ATTRIBUTE_STD_SYMLINK_TARGET);
   if (value)
     {
       if (!set_symlink (filename, value, error))
@@ -2022,8 +2028,8 @@ _g_local_file_info_set_attributes  (char                 *filename,
    * Change ownership before permissions, since ownership changes can
      change permissions (e.g. setuid)
    */
-  uid = g_file_info_get_attribute (info, G_FILE_ATTRIBUTE_UNIX_UID);
-  gid = g_file_info_get_attribute (info, G_FILE_ATTRIBUTE_UNIX_GID);
+  uid = _g_file_info_get_attribute_value (info, G_FILE_ATTRIBUTE_UNIX_UID);
+  gid = _g_file_info_get_attribute_value (info, G_FILE_ATTRIBUTE_UNIX_GID);
   
   if (uid || gid)
     {
@@ -2043,7 +2049,7 @@ _g_local_file_info_set_attributes  (char                 *filename,
     }
 #endif
   
-  value = g_file_info_get_attribute (info, G_FILE_ATTRIBUTE_UNIX_MODE);
+  value = _g_file_info_get_attribute_value (info, G_FILE_ATTRIBUTE_UNIX_MODE);
   if (value)
     {
       if (!set_unix_mode (filename, value, error))
@@ -2063,10 +2069,10 @@ _g_local_file_info_set_attributes  (char                 *filename,
    * Change times as the last thing to avoid it changing due to metadata changes
    */
   
-  mtime = g_file_info_get_attribute (info, G_FILE_ATTRIBUTE_TIME_MODIFIED);
-  mtime_usec = g_file_info_get_attribute (info, G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC);
-  atime = g_file_info_get_attribute (info, G_FILE_ATTRIBUTE_TIME_ACCESS);
-  atime_usec = g_file_info_get_attribute (info, G_FILE_ATTRIBUTE_TIME_ACCESS_USEC);
+  mtime = _g_file_info_get_attribute_value (info, G_FILE_ATTRIBUTE_TIME_MODIFIED);
+  mtime_usec = _g_file_info_get_attribute_value (info, G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC);
+  atime = _g_file_info_get_attribute_value (info, G_FILE_ATTRIBUTE_TIME_ACCESS);
+  atime_usec = _g_file_info_get_attribute_value (info, G_FILE_ATTRIBUTE_TIME_ACCESS_USEC);
 
   if (mtime || mtime_usec || atime || atime_usec)
     {

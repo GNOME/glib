@@ -31,6 +31,7 @@
 #include "gioscheduler.h"
 #include <glocalfile.h>
 #include "gsimpleasyncresult.h"
+#include "gfileattribute-priv.h"
 #include "gpollfilemonitor.h"
 #include "glibintl.h"
 
@@ -2566,7 +2567,8 @@ g_file_query_writable_namespaces (GFile         *file,
  * g_file_set_attribute:
  * @file: input #GFile.
  * @attribute: a string containing the attribute's name.
- * @value: a set of #GFileAttributeValue.
+ * @type: The type of the attribute
+ * @value_p: a pointer to the value (or the pointer itself if the type is a pointer type)
  * @flags: a set of #GFileQueryInfoFlags.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @error: a #GError, or %NULL
@@ -2582,7 +2584,8 @@ g_file_query_writable_namespaces (GFile         *file,
 gboolean
 g_file_set_attribute (GFile                      *file,
 		      const char                 *attribute,
-		      const GFileAttributeValue  *value,
+		      GFileAttributeType          type,
+		      gpointer                    value_p,
 		      GFileQueryInfoFlags         flags,
 		      GCancellable               *cancellable,
 		      GError                    **error)
@@ -2605,7 +2608,7 @@ g_file_set_attribute (GFile                      *file,
       return FALSE;
     }
 
-  return (* iface->set_attribute) (file, attribute, value, flags, cancellable, error);
+  return (* iface->set_attribute) (file, attribute, type, value_p, flags, cancellable, error);
 }
 
 /**
@@ -2676,12 +2679,14 @@ g_file_real_set_attributes_from_info (GFile                *file,
 
   for (i = 0; attributes[i] != NULL; i++)
     {
-      value = (GFileAttributeValue *)g_file_info_get_attribute (info, attributes[i]);
+      value = _g_file_info_get_attribute_value (info, attributes[i]);
 
       if (value->status != G_FILE_ATTRIBUTE_STATUS_UNSET)
 	continue;
 
-      if (!g_file_set_attribute (file, attributes[i], value, flags, cancellable, error))
+      if (!g_file_set_attribute (file, attributes[i],
+				 value->type, _g_file_attribute_value_peek_as_pointer (value),
+				 flags, cancellable, error))
 	{
 	  value->status = G_FILE_ATTRIBUTE_STATUS_ERROR_SETTING;
 	  res = FALSE;
@@ -2790,11 +2795,9 @@ g_file_set_attribute_string (GFile                *file,
 			     GCancellable         *cancellable,
 			     GError              **error)
 {
-  GFileAttributeValue v;
-
-  v.type = G_FILE_ATTRIBUTE_TYPE_STRING;
-  v.u.string = (char *)value;
-  return g_file_set_attribute (file, attribute, &v, flags, cancellable, error);
+  return g_file_set_attribute (file, attribute,
+			       G_FILE_ATTRIBUTE_TYPE_STRING, (gpointer)value,
+			       flags, cancellable, error);
 }
 
 /**
@@ -2825,11 +2828,9 @@ g_file_set_attribute_byte_string  (GFile                *file,
 				   GCancellable         *cancellable,
 				   GError              **error)
 {
-  GFileAttributeValue v;
-
-  v.type = G_FILE_ATTRIBUTE_TYPE_BYTE_STRING;
-  v.u.string = (char *)value;
-  return g_file_set_attribute (file, attribute, &v, flags, cancellable, error);
+  return g_file_set_attribute (file, attribute,
+			       G_FILE_ATTRIBUTE_TYPE_BYTE_STRING, (gpointer)value,
+			       flags, cancellable, error);
 }
 
 /**
@@ -2859,11 +2860,9 @@ g_file_set_attribute_uint32 (GFile                *file,
 			     GCancellable         *cancellable,
 			     GError              **error)
 {
-  GFileAttributeValue v;
-
-  v.type = G_FILE_ATTRIBUTE_TYPE_UINT32;
-  v.u.uint32 = value;
-  return g_file_set_attribute (file, attribute, &v, flags, cancellable, error);
+  return g_file_set_attribute (file, attribute,
+			       G_FILE_ATTRIBUTE_TYPE_UINT32, &value,
+			       flags, cancellable, error);
 }
 
 /**
@@ -2893,11 +2892,9 @@ g_file_set_attribute_int32 (GFile                *file,
 			    GCancellable         *cancellable,
 			    GError              **error)
 {
-  GFileAttributeValue v;
-
-  v.type = G_FILE_ATTRIBUTE_TYPE_INT32;
-  v.u.int32 = value;
-  return g_file_set_attribute (file, attribute, &v, flags, cancellable, error);
+  return g_file_set_attribute (file, attribute,
+			       G_FILE_ATTRIBUTE_TYPE_INT32, &value,
+			       flags, cancellable, error);
 }
 
 /**
@@ -2927,11 +2924,9 @@ g_file_set_attribute_uint64 (GFile                *file,
 			     GCancellable         *cancellable,
 			     GError              **error)
  {
-  GFileAttributeValue v;
-
-  v.type = G_FILE_ATTRIBUTE_TYPE_UINT64;
-  v.u.uint64 = value;
-  return g_file_set_attribute (file, attribute, &v, flags, cancellable, error);
+  return g_file_set_attribute (file, attribute,
+			       G_FILE_ATTRIBUTE_TYPE_UINT64, &value,
+			       flags, cancellable, error);
 }
 
 /**
@@ -2960,11 +2955,9 @@ g_file_set_attribute_int64 (GFile                *file,
 			    GCancellable         *cancellable,
 			    GError              **error)
 {
- GFileAttributeValue v;
-
-  v.type = G_FILE_ATTRIBUTE_TYPE_INT64;
-  v.u.int64 = value;
-  return g_file_set_attribute (file, attribute, &v, flags, cancellable, error);
+  return g_file_set_attribute (file, attribute,
+			       G_FILE_ATTRIBUTE_TYPE_INT64, &value,
+			       flags, cancellable, error);
 }
 
 /**
