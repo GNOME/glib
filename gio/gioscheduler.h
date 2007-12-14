@@ -29,47 +29,39 @@
 G_BEGIN_DECLS
 
 /**
- * GIOJob:
+ * GIOSchedulerJob:
  * 
  * Opaque class for definining and scheduling IO jobs.
  **/
-typedef struct _GIOJob GIOJob;
+typedef struct _GIOSchedulerJob GIOSchedulerJob;
 
 /**
- * GIOJobFunc:
- * @job: a #GIOJob.
+ * GIOSchedulerJobFunc:
+ * @job: a #GIOSchedulerJob.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @user_data: the data to pass to callback function
  * 
  * I/O Job function.
  * 
  **/
-typedef void (*GIOJobFunc) (GIOJob *job,
-			    GCancellable *cancellable,
-			    gpointer user_data);
+typedef void (*GIOSchedulerJobFunc) (GIOSchedulerJob *job,
+				     GCancellable *cancellable,
+				     gpointer user_data);
 
-/**
- * GIODataFunc:
- * @user_data: data to pass to the I/O function.
- * 
- * I/O Data function.
- * 
- **/
-typedef void (*GIODataFunc) (gpointer user_data);
-
-void g_schedule_io_job         (GIOJobFunc      job_func,
-				gpointer        user_data,
-				GDestroyNotify  notify,
-				gint            io_priority,
-				GCancellable   *cancellable);
-void g_cancel_all_io_jobs      (void);
-
-void g_io_job_send_to_mainloop (GIOJob         *job,
-				GIODataFunc     func,
-				gpointer        user_data,
-				GDestroyNotify  notify,
-				gboolean        block);
-
+void     g_io_scheduler_push_job                   (GIOSchedulerJobFunc  job_func,
+						    gpointer             user_data,
+						    GDestroyNotify       notify,
+						    gint                 io_priority,
+						    GCancellable        *cancellable);
+void     g_io_scheduler_cancel_all_jobs            (void);
+gboolean g_io_scheduler_job_send_to_mainloop       (GIOSchedulerJob     *job,
+						    GSourceFunc          func,
+						    gpointer             user_data,
+						    GDestroyNotify       notify);
+void     g_io_scheduler_job_send_to_mainloop_async (GIOSchedulerJob     *job,
+						    GSourceFunc          func,
+						    gpointer             user_data,
+						    GDestroyNotify       notify);
 
 G_END_DECLS
 

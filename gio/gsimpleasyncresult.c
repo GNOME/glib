@@ -594,7 +594,7 @@ typedef struct {
 } RunInThreadData;
 
 static void
-run_in_thread (GIOJob       *job,
+run_in_thread (GIOSchedulerJob       *job,
                GCancellable *c,
                gpointer      _data)
 {
@@ -640,7 +640,7 @@ g_simple_async_result_run_in_thread (GSimpleAsyncResult     *simple,
   data = g_new (RunInThreadData, 1);
   data->func = func;
   data->simple = g_object_ref (simple);
-  g_schedule_io_job (run_in_thread, data, NULL, io_priority, cancellable);
+  g_io_scheduler_push_job (run_in_thread, data, NULL, io_priority, cancellable);
 }
 
 /**

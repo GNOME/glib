@@ -43,10 +43,10 @@
  * </para>
  **/
 
-struct _GIOJob {
+struct _GIOSchedulerJob {
   GSList *active_link;
-  GIOJobFunc job_func;
-  GIODataFunc cancel_func; /* Runs under job map lock */
+  GIOSchedulerJobFunc job_func;
+  GSourceFunc cancel_func; /* Runs under job map lock */
   gpointer data;
   GDestroyNotify destroy_notify;
 
@@ -65,7 +65,7 @@ static void io_job_thread (gpointer data,
 			   gpointer user_data);
 
 static void
-g_io_job_free (GIOJob *job)
+g_io_job_free (GIOSchedulerJob *job)
 {
   if (job->cancellable)
     g_object_unref (job->cancellable);
@@ -77,8 +77,8 @@ g_io_job_compare (gconstpointer a,
 		  gconstpointer b,
 		  gpointer      user_data)
 {
-  const GIOJob *aa = a;
-  const GIOJob *bb = b;
+  const GIOSchedulerJob *aa = a;
+  const GIOSchedulerJob *bb = b;
 
   /* Cancelled jobs are set prio == -1, so that
      they are executed as quickly as possible */
@@ -119,9 +119,9 @@ init_scheduler (gpointer arg)
 }
 
 static void
-remove_active_job (GIOJob *job)
+remove_active_job (GIOSchedulerJob *job)
 {
-  GIOJob *other_job;
+  GIOSchedulerJob *other_job;
   GSList *l;
   gboolean resort_jobs;
   
@@ -153,7 +153,7 @@ static void
 io_job_thread (gpointer data,
 	       gpointer user_data)
 {
-  GIOJob *job = data;
+  GIOSchedulerJob *job = data;
 
   if (job->cancellable)
     g_cancellable_push_current (job->cancellable);
@@ -172,7 +172,7 @@ io_job_thread (gpointer data,
 static gboolean
 run_job_at_idle (gpointer data)
 {
-  GIOJob *job = data;
+  GIOSchedulerJob *job = data;
 
   if (job->cancellable)
     g_cancellable_push_current (job->cancellable);
@@ -192,30 +192,30 @@ run_job_at_idle (gpointer data)
 }
 
 /**
- * g_schedule_io_job:
- * @job_func: a #GIOJobFunc.
+ * g_io_scheduler_push_job:
+ * @job_func: a #GIOSchedulerJobFunc.
  * @user_data: a #gpointer.
  * @notify: a #GDestroyNotify.
  * @io_priority: the <link linkend="gioscheduler">I/O priority</link> 
  * of the request.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  *
- * Schedules the I/O Job.
+ * Schedules the I/O Job to run
  * 
  **/
 void
-g_schedule_io_job (GIOJobFunc      job_func,
-		   gpointer        user_data,
-		   GDestroyNotify  notify,
-		   gint            io_priority,
-		   GCancellable   *cancellable)
+g_io_scheduler_push_job (GIOSchedulerJobFunc job_func,
+			 gpointer user_data,
+			 GDestroyNotify notify,
+			 gint io_priority,
+			 GCancellable *cancellable)
 {
   static GOnce once_init = G_ONCE_INIT;
-  GIOJob *job;
+  GIOSchedulerJob *job;
 
   g_return_if_fail (job_func != NULL);
 
-  job = g_new0 (GIOJob, 1);
+  job = g_new0 (GIOSchedulerJob, 1);
   job->job_func = job_func;
   job->data = user_data;
   job->destroy_notify = notify;
@@ -246,12 +246,12 @@ g_schedule_io_job (GIOJobFunc      job_func,
 }
 
 /**
- * g_cancel_all_io_jobs:
+ * g_io_scheduler_cancel_all_jobs:
  * 
  * Cancels all cancellable I/O Jobs. 
  **/
 void
-g_cancel_all_io_jobs (void)
+g_io_scheduler_cancel_all_jobs (void)
 {
   GSList *cancellable_list, *l;
   
@@ -259,7 +259,7 @@ g_cancel_all_io_jobs (void)
   cancellable_list = NULL;
   for (l = active_jobs; l != NULL; l = l->next)
     {
-      GIOJob *job = l->data;
+      GIOSchedulerJob *job = l->data;
       if (job->cancellable)
 	cancellable_list = g_slist_prepend (cancellable_list,
 					    g_object_ref (job->cancellable));
@@ -276,8 +276,9 @@ g_cancel_all_io_jobs (void)
 }
 
 typedef struct {
-  GIODataFunc func;
-  gpointer    data;
+  GSourceFunc func;
+  gboolean ret_val;
+  gpointer data;
   GDestroyNotify notify;
 
   GMutex *ack_lock;
@@ -289,7 +290,7 @@ mainloop_proxy_func (gpointer data)
 {
   MainLoopProxy *proxy = data;
 
-  proxy->func (proxy->data);
+  proxy->ret_val = proxy->func (proxy->data);
 
   if (proxy->notify)
     proxy->notify (proxy->data);
@@ -317,21 +318,83 @@ mainloop_proxy_free (MainLoopProxy *proxy)
 }
 
 /**
- * g_io_job_send_to_mainloop:
- * @job: a #GIOJob.
- * @func: a #GIODataFunc callback that will be called the main thread.
+ * g_io_scheduler_job_send_to_mainloop:
+ * @job: a #GIOSchedulerJob.
+ * @func: a #GSourceFunc callback that will be called in the main thread.
  * @user_data: a #gpointer.
  * @notify: a #GDestroyNotify.
- * @block: boolean flag indicating whether or not the job should block until the callback has returned.
  * 
- * Sends a notification from an I/O job to the mainloop processing on the main thread.
+ * Used from an I/O job to send a callback to be run in the main loop (main thread), waiting for
+ * the result (and thus blocking the I/O job).
+ *
+ * Returns: The return value of @func
+ **/
+gboolean
+g_io_scheduler_job_send_to_mainloop (GIOSchedulerJob *job,
+				     GSourceFunc func,
+				     gpointer user_data,
+				     GDestroyNotify notify)
+{
+  GSource *source;
+  MainLoopProxy *proxy;
+  guint id;
+  gboolean ret_val;
+
+  g_return_val_if_fail (job != NULL, FALSE);
+  g_return_val_if_fail (func != NULL, FALSE);
+
+  if (job->idle_tag)
+    {
+      /* We just immediately re-enter in the case of idles (non-threads)
+       * Anything else would just deadlock. If you can't handle this, enable threads.
+       */
+      ret_val = func (user_data);
+      if (notify)
+	notify (user_data);
+      return ret_val;
+    }
+  
+  proxy = g_new0 (MainLoopProxy, 1);
+  proxy->func = func;
+  proxy->data = user_data;
+  proxy->notify = notify;
+  proxy->ack_lock = g_mutex_new ();
+  proxy->ack_condition = g_cond_new ();
+  g_mutex_lock (proxy->ack_lock);
+  
+  source = g_idle_source_new ();
+  g_source_set_priority (source, G_PRIORITY_DEFAULT);
+  g_source_set_callback (source, mainloop_proxy_func, proxy,
+			 NULL);
+
+  id = g_source_attach (source, NULL);
+  g_source_unref (source);
+
+  g_cond_wait (proxy->ack_condition, proxy->ack_lock);
+  g_mutex_unlock (proxy->ack_lock);
+
+  ret_val = proxy->ret_val;
+  mainloop_proxy_free (proxy);
+  
+  return ret_val;
+}
+
+/**
+ * g_io_scheduler_job_send_to_mainloop:
+ * @job: a #GIOSchedulerJob.
+ * @func: a #GSourceFunc callback that will be called in the main thread.
+ * @user_data: a #gpointer.
+ * @notify: a #GDestroyNotify.
+ * 
+ * Used from an I/O job to send a callback to be run asynchronously in the main loop (main thread).
+ * The callback will be run when the main loop is availible, but at that time the I/O job
+ * might have finished. The return value from the callback is ignored.
  **/
 void
-g_io_job_send_to_mainloop (GIOJob         *job,
-			   GIODataFunc     func,
-			   gpointer        user_data,
-			   GDestroyNotify  notify,
-			   gboolean        block)
+g_io_scheduler_job_send_to_mainloop_async (GIOSchedulerJob *job,
+					   GSourceFunc     func,
+					   gpointer        user_data,
+					   GDestroyNotify  notify)
 {
   GSource *source;
   MainLoopProxy *proxy;
@@ -356,30 +419,15 @@ g_io_job_send_to_mainloop (GIOJob         *job,
   proxy->data = user_data;
   proxy->notify = notify;
   
-  if (block)
-    {
-      proxy->ack_lock = g_mutex_new ();
-      proxy->ack_condition = g_cond_new ();
-      g_mutex_lock (proxy->ack_lock);
-    }
-  
   source = g_idle_source_new ();
   g_source_set_priority (source, G_PRIORITY_DEFAULT);
   g_source_set_callback (source, mainloop_proxy_func, proxy,
-			 block ? NULL : (GDestroyNotify)mainloop_proxy_free);
+			 (GDestroyNotify)mainloop_proxy_free);
 
   id = g_source_attach (source, NULL);
   g_source_unref (source);
-
-  if (block)
-    {
-      g_cond_wait (proxy->ack_condition, proxy->ack_lock);
-      g_mutex_unlock (proxy->ack_lock);
-
-      /* In the blocking case we free the proxy here */
-      mainloop_proxy_free (proxy);
-    }
 }
+
 
 #define __G_IO_SCHEDULER_C__
 #include "gioaliasdef.c"

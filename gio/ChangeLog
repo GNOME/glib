@@ -1,3 +1,11 @@
+2007-12-14  Alexander Larsson  <alexl@redhat.com>
+
+        * gioscheduler.[ch]:
+        * gsimpleasyncresult.c:
+	Rename gioscheduler calls so they all use the g_io_schedule_ prefix.
+	Split out the send_to_mainloop call into two versions instead
+	of having the block argument.
+
 2007-12-13  Alexander Larsson  <alexl@redhat.com>
 
         * gcancellable.[ch]:
