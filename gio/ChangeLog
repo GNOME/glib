@@ -1,5 +1,10 @@
 2007-12-14  Alexander Larsson  <alexl@redhat.com>
 
+        * gmountoperation.h:
+	Fix AKS -> ASK typo
+
+2007-12-14  Alexander Larsson  <alexl@redhat.com>
+
         * gappinfo.h:
         * gfile.[ch]:
         * gfileattribute.[ch]:
