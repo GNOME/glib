@@ -1,3 +1,8 @@
+2007-12-15  Kjartan Maraas  <kmaraas@gnome.org>
+
+	* POTFILES.in: Add gio-ls.c
+	* nb.po: Updated Norwegian bokmål translation.
+
 2007-12-14  Jorge Gonzalez  <jorgegonz@svn.gnome.org>
 
         * es.po: Updated Spanish translation

@@ -73,3 +73,4 @@ gio/gvfs.c
 gio/gvolume.c
 gio/gvolumemonitor.c
 gio/gwin32appinfo.c
+tests/gio-ls.c
