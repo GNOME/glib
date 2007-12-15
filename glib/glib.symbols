@@ -385,6 +385,11 @@ g_hash_table_replace
 g_hash_table_size
 g_hash_table_steal
 g_hash_table_steal_all
+g_hash_table_iter_init
+g_hash_table_iter_next
+g_hash_table_iter_get_hash_table
+g_hash_table_iter_remove
+g_hash_table_iter_steal
 #endif
 #endif
 

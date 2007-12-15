@@ -56,9 +56,27 @@ struct _GHashTable
   GHashFunc        hash_func;
   GEqualFunc       key_equal_func;
   volatile gint    ref_count;
+#ifndef G_DISABLE_ASSERT
+  /*
+   * Tracks the structure of the hash table, not its contents: is only
+   * incremented when a node is added or removed (is not incremented
+   * when the key or data of a node is modified).
+   */
+  int              version;
+#endif
   GDestroyNotify   key_destroy_func;
   GDestroyNotify   value_destroy_func;
 };
+
+typedef struct
+{
+  GHashTable	*hash_table;
+  GHashNode	*prev_node;
+  GHashNode	*node;
+  int		position;
+  gboolean	pre_advanced;
+  int		version;
+} RealIter;
 
 /*
  * g_hash_table_lookup_node:
@@ -332,11 +350,222 @@ g_hash_table_new_full (GHashFunc       hash_func,
   hash_table->hash_func          = hash_func ? hash_func : g_direct_hash;
   hash_table->key_equal_func     = key_equal_func;
   hash_table->ref_count          = 1;
+#ifndef G_DISABLE_ASSERT
+  hash_table->version            = 0;
+#endif
   hash_table->key_destroy_func   = key_destroy_func;
   hash_table->value_destroy_func = value_destroy_func;
   hash_table->nodes              = g_new0 (GHashNode*, hash_table->size);
 
   return hash_table;
+}
+
+/**
+ * g_hash_table_iter_init:
+ * @iter: an uninitialized #GHashTableIter.
+ * @hash_table: a #GHashTable.
+ *
+ * Initializes a key/value pair iterator and associates it with
+ * @hash_table. Modifying the hash table after calling this function
+ * invalidates the returned iterator.
+ *
+ * <informalexample><programlisting>
+ * GHashTableIter iter;
+ * gpointer key, value;
+ *
+ * g_hash_table_iter_init(&iter, hash_table);
+ * while (g_hash_table_iter_next(&iter, &key, &value)) {
+ *   /&ast; do something with key and value &ast;/
+ * }
+ * </programlisting></informalexample>
+ *
+ * Since: 2.16
+ **/
+void
+g_hash_table_iter_init (GHashTableIter *iter,
+			GHashTable     *hash_table)
+{
+  RealIter *ri = (RealIter *) iter;
+
+  g_return_if_fail (iter != NULL);
+  g_return_if_fail (hash_table != NULL);
+
+  ri->hash_table = hash_table;
+  ri->prev_node = NULL;
+  ri->node = NULL;
+  ri->position = -1;
+  ri->pre_advanced = FALSE;
+#ifndef G_DISABLE_ASSERT
+  ri->version = hash_table->version;
+#endif
+}
+
+/**
+ * g_hash_table_iter_next:
+ * @iter: an initialized #GHashTableIter.
+ * @key: a location to store the key, or %NULL.
+ * @value: a location to store the value, or %NULL.
+ *
+ * Advances @iter and retrieves the key and/or value that are now
+ * pointed to as a result of this advancement. If %FALSE is returned,
+ * @key and @value are not set, and the iterator becomes invalid.
+ *
+ * Return value: %FALSE if the end of the #GHashTable has been reached.
+ *
+ * Since: 2.16
+ **/
+gboolean
+g_hash_table_iter_next (GHashTableIter *iter,
+			gpointer       *key,
+			gpointer       *value)
+{
+  RealIter *ri = (RealIter *) iter;
+
+  g_return_val_if_fail (iter != NULL, FALSE);
+  g_return_val_if_fail (ri->version == ri->hash_table->version, FALSE);
+
+  if (ri->pre_advanced)
+    {
+      ri->pre_advanced = FALSE;
+
+      if (ri->node == NULL)
+	return FALSE;
+    }
+  else
+    {
+      if (ri->node != NULL)
+	{
+	  ri->prev_node = ri->node;
+	  ri->node = ri->node->next;
+	}
+
+      while (ri->node == NULL)
+	{
+	  ri->position++;
+	  if (ri->position >= ri->hash_table->size)
+	    return FALSE;
+
+	  ri->prev_node = NULL;
+	  ri->node = ri->hash_table->nodes[ri->position];
+	}
+    }
+
+  if (key != NULL)
+    *key = ri->node->key;
+  if (value != NULL)
+    *value = ri->node->value;
+
+  return TRUE;
+}
+
+/**
+ * g_hash_table_iter_get_hash_table:
+ * @iter: an initialized #GHashTableIter.
+ *
+ * Returns the #GHashTable associated with @iter.
+ *
+ * Return value: the #GHashTable associated with @iter.
+ *
+ * Since: 2.16
+ **/
+GHashTable *
+g_hash_table_iter_get_hash_table (GHashTableIter *iter)
+{
+  g_return_val_if_fail (iter != NULL, NULL);
+
+  return ((RealIter *) iter)->hash_table;
+}
+
+static void
+iter_remove_or_steal (RealIter *ri, gboolean notify)
+{
+  GHashNode *prev;
+  GHashNode *node;
+  int position;
+
+  g_return_if_fail (ri != NULL);
+  g_return_if_fail (ri->version == ri->hash_table->version);
+  g_return_if_fail (ri->node != NULL);
+
+  prev = ri->prev_node;
+  node = ri->node;
+  position = ri->position;
+
+  /* pre-advance the iterator since we will remove the node */
+
+  ri->node = ri->node->next;
+  /* ri->prev_node is still the correct previous node */
+
+  while (ri->node == NULL)
+    {
+      ri->position++;
+      if (ri->position >= ri->hash_table->size)
+	break;
+
+      ri->prev_node = NULL;
+      ri->node = ri->hash_table->nodes[ri->position];
+    }
+
+  ri->pre_advanced = TRUE;
+
+  /* remove the node */
+
+  if (prev != NULL)
+    prev->next = node->next;
+  else
+    ri->hash_table->nodes[position] = node->next;
+
+  if (notify)
+    {
+      if (ri->hash_table->key_destroy_func)
+	ri->hash_table->key_destroy_func(node->key);
+      if (ri->hash_table->value_destroy_func)
+	ri->hash_table->value_destroy_func(node->value);
+    }
+
+  g_slice_free (GHashNode, node);
+
+  ri->hash_table->nnodes--;
+}
+
+/**
+ * g_hash_table_iter_remove():
+ * @iter: an initialized #GHashTableIter.
+ *
+ * Removes the key/value pair currently pointed to by the iterator
+ * from its associated #GHashTable. Can only be called after
+ * g_hash_table_iter_next() returned %TRUE, and cannot be called more
+ * than once for the same key/value pair.
+ *
+ * If the #GHashTable was created using g_hash_table_new_full(), the
+ * key and value are freed using the supplied destroy functions, otherwise
+ * you have to make sure that any dynamically allocated values are freed 
+ * yourself.
+ *
+ * Since: 2.16
+ **/
+void
+g_hash_table_iter_remove (GHashTableIter *iter)
+{
+  iter_remove_or_steal ((RealIter *) iter, TRUE);
+}
+
+/**
+ * g_hash_table_iter_steal():
+ * @iter: an initialized #GHashTableIter.
+ *
+ * Removes the key/value pair currently pointed to by the iterator
+ * from its associated #GHashTable, without calling the key and value
+ * destroy functions. Can only be called after
+ * g_hash_table_iter_next() returned %TRUE, and cannot be called more
+ * than once for the same key/value pair.
+ *
+ * Since: 2.16
+ **/
+void
+g_hash_table_iter_steal (GHashTableIter *iter)
+{
+  iter_remove_or_steal ((RealIter *) iter, FALSE);
 }
 
 
@@ -531,6 +760,10 @@ g_hash_table_insert_internal (GHashTable *hash_table,
       *node_ptr = node;
       hash_table->nnodes++;
       g_hash_table_maybe_resize (hash_table);
+
+#ifndef G_DISABLE_ASSERT
+      hash_table->version++;
+#endif
     }
 }
 
@@ -606,6 +839,10 @@ g_hash_table_remove_internal (GHashTable    *hash_table,
   g_hash_table_remove_node (hash_table, &node_ptr, notify);
   g_hash_table_maybe_resize (hash_table);
 
+#ifndef G_DISABLE_ASSERT
+  hash_table->version++;
+#endif
+
   return TRUE;
 }
 
@@ -665,6 +902,11 @@ g_hash_table_remove_all (GHashTable *hash_table)
 {
   g_return_if_fail (hash_table != NULL);
 
+#ifndef G_DISABLE_ASSERT
+  if (hash_table->nnodes != 0)
+    hash_table->version++;
+#endif
+
   g_hash_table_remove_all_nodes (hash_table, TRUE);
   g_hash_table_maybe_resize (hash_table);
 }
@@ -682,6 +924,11 @@ void
 g_hash_table_steal_all (GHashTable *hash_table)
 {
   g_return_if_fail (hash_table != NULL);
+
+#ifndef G_DISABLE_ASSERT
+  if (hash_table->nnodes != 0)
+    hash_table->version++;
+#endif
 
   g_hash_table_remove_all_nodes (hash_table, FALSE);
   g_hash_table_maybe_resize (hash_table);
@@ -726,6 +973,11 @@ g_hash_table_foreach_remove_or_steal (GHashTable *hash_table,
 
   g_hash_table_maybe_resize (hash_table);
 
+#ifndef G_DISABLE_ASSERT
+  if (deleted > 0)
+    hash_table->version++;
+#endif
+
   return deleted;
 }
 
@@ -740,6 +992,9 @@ g_hash_table_foreach_remove_or_steal (GHashTable *hash_table,
  * #GHashTable. If you supplied key or value destroy functions when creating
  * the #GHashTable, they are used to free the memory allocated for the removed
  * keys and values.
+ *
+ * See #GHashTableIterator for an alternative way to loop over the 
+ * key/value pairs in the hash table.
  *
  * Return value: the number of key/value pairs removed.
  **/
@@ -763,6 +1018,9 @@ g_hash_table_foreach_remove (GHashTable *hash_table,
  * Calls the given function for each key/value pair in the #GHashTable.
  * If the function returns %TRUE, then the key/value pair is removed from the
  * #GHashTable, but no key or value destroy functions are called.
+ *
+ * See #GHashTableIterator for an alternative way to loop over the 
+ * key/value pairs in the hash table.
  *
  * Return value: the number of key/value pairs removed.
  **/

@@ -40,7 +40,9 @@ and g_hash_table_lookup_extended().
 To remove a key and value, use g_hash_table_remove().
 </para>
 <para>
-To call a function for each key and value pair use g_hash_table_foreach().
+To call a function for each key and value pair use g_hash_table_foreach()
+or use a iterator to iterate over the key/value pairs in the hash table, see
+#GHashTableIter.
 </para>
 <para>
 To destroy a #GHashTable use g_hash_table_destroy().
@@ -96,7 +98,7 @@ hash functions which can be used when the key is a #gpointer, #gint, and
 #gchar* respectively.
 </para>
 <para>
-FIXME: Need more here.
+<!-- FIXME: Need more here. -->
 The hash values should be evenly distributed over a fairly large range?
 The modulus is taken with the hash table size (a prime number)
 to find the 'bucket' to place each key into.
@@ -336,6 +338,51 @@ This function is deprecated and will be removed in the next major
 </para>
 
 @hash_table: 
+
+
+<!-- ##### FUNCTION g_hash_table_iter_init ##### -->
+<para>
+
+</para>
+
+@iter: 
+@hash_table: 
+
+
+<!-- ##### FUNCTION g_hash_table_iter_next ##### -->
+<para>
+
+</para>
+
+@iter: 
+@key: 
+@value: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_hash_table_iter_get_hash_table ##### -->
+<para>
+
+</para>
+
+@iter: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_hash_table_iter_remove ##### -->
+<para>
+
+</para>
+
+@iter: 
+
+
+<!-- ##### FUNCTION g_hash_table_iter_steal ##### -->
+<para>
+
+</para>
+
+@iter: 
 
 
 <!-- ##### FUNCTION g_direct_equal ##### -->

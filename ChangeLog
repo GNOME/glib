@@ -1,3 +1,11 @@
+2007-12-14  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/glib.symbols:
+	* glib/ghash.[hc]: Add hash table iterators.  (#500507,
+	Jean-Yves Lefort)
+
+	* tests/hash-test.c: Test iterators. 
+
 2007-12-13  Mathias Hasselmann  <mathias@openismus.com>
 
 	Give exmples in error message unsupported case-changing escape

@@ -2015,6 +2015,12 @@ g_hash_table_thaw
 g_hash_table_destroy
 g_hash_table_ref
 g_hash_table_unref
+GHashTableIter
+g_hash_table_iter_init
+g_hash_table_iter_next
+g_hash_table_iter_get_hash_table
+g_hash_table_iter_remove
+g_hash_table_iter_steal
 
 <SUBSECTION>
 g_direct_equal

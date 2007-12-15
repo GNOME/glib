@@ -1,3 +1,8 @@
+2007-12-14  Matthias Clasen <mclasen@redhat.com>
+
+	* glib/tmpl/hash_tables.sgml:
+	* glib/glib-sections.txt: Add hash iterator functions
+
 2007-12-10  Matthias Clasen <mclasen@redhat.com>
 
 	* gio/gio-sections.txt:
