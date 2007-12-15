@@ -46,7 +46,7 @@ G_BEGIN_DECLS
 
 /**
  * GAppInfoCreateFlags:
- * @G_APP_INFO_CREATE_FLAGS_NONE: No flags.
+ * @G_APP_INFO_CREATE_NONE: No flags.
  * @G_APP_INFO_CREATE_NEEDS_TERMINAL: Application opens in a terminal window.
  * 
  * Flags used when creating a #GAppInfo.

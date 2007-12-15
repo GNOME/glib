@@ -71,7 +71,6 @@ struct _GMountOperation
  * 
  **/ 
 typedef enum {
-  G_ASK_PASSWORD_NONE = 0,
   G_ASK_PASSWORD_NEED_PASSWORD       = 1<<0,
   G_ASK_PASSWORD_NEED_USERNAME       = 1<<1,
   G_ASK_PASSWORD_NEED_DOMAIN         = 1<<2,
