@@ -1,5 +1,10 @@
 2007-12-14  Matthias Clasen  <mclasen@redhat.com>
 
+	* gunixmounts.c:
+	* gfile.h: Doc updates
+
+2007-12-14  Matthias Clasen  <mclasen@redhat.com>
+
 	* gcontenttype.c:
 	* gdesktopappinfo.c: Use hash table iterators.
 

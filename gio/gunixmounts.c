@@ -193,14 +193,16 @@ is_in (const char *value, const char *set[])
 
 /**
  * g_unix_is_mount_path_system_internal:
- * @mount_path: a mount path, e.g. <literal>/media/disk</literal> or <literal>/usr</literal>
+ * @mount_path: a mount path, e.g. <filename>/media/disk</filename> 
+ *    or <filename>/usr</filename>
  *
  * Determines if @mount_path is considered an implementation of the
  * OS. This is primarily used for hiding mountable and mounted volumes
  * that only are used in the OS and has little to no relevance to the
  * casual user.
  *
- * Returns; %TRUE if @mount_path is considered an implementation detail of the OS.
+ * Returns: %TRUE if @mount_path is considered an implementation detail 
+ *     of the OS.
  **/
 gboolean
 g_unix_is_mount_path_system_internal (const char *mount_path)

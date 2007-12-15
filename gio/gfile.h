@@ -54,8 +54,8 @@ typedef enum {
 
 /**
  * GFileCreateFlags:
- * @G_FILE_CREATE_FLAGS_NONE: No flags set.
- * @G_FILE_CREATE_FLAGS_PRIVATE: Create a file that can only be 
+ * @G_FILE_CREATE_NONE: No flags set.
+ * @G_FILE_CREATE_PRIVATE: Create a file that can only be 
  *    accessed by the current user.
  * 
  * Flags used when an operation may create a file.
@@ -226,8 +226,8 @@ typedef gboolean (* GFileReadMoreCallback) (const char *file_contents,
  * @unmount_mountable_finish: Finishes an unmount operation.
  * @eject_mountable: Ejects a mountable.
  * @eject_mountable_finish: Finishes an eject operation.
- * @g_file_mount_enclosing_volume: Mounts a specified location. 
- * @g_file_mount_enclosing_volume_finish: Finishes mounting a specified location.
+ * @mount_enclosing_volume: Mounts a specified location. 
+ * @mount_enclosing_volume_finish: Finishes mounting a specified location.
  * @monitor_dir: Creates a #GDirectoryMonitor for the location.
  * @monitor_file: Creates a #GFileMonitor for the location.
  * 
