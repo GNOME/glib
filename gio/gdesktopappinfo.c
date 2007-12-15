@@ -1651,17 +1651,6 @@ get_apps_from_dir (GHashTable *apps,
     }
 }
 
-static void
-collect_apps (gpointer key,
-	      gpointer value,
-	      gpointer user_data)
-{
-  GList **infos = user_data;
-
-  if (value)
-    *infos = g_list_prepend (*infos, value);
-}
-
 
 /**
  * g_app_info_get_all:
@@ -1675,6 +1664,8 @@ g_app_info_get_all (void)
 {
   const char * const *dirs;
   GHashTable *apps;
+  GHashTableIter iter;
+  gpointer key;
   int i;
   GList *infos;
 
@@ -1689,9 +1680,9 @@ g_app_info_get_all (void)
 
 
   infos = NULL;
-  g_hash_table_foreach (apps,
-			collect_apps,
-			&infos);
+  g_hash_table_iter_init (&iter, apps);
+  while (g_hash_table_iter_next (&iter, &key, NULL))
+    infos = g_list_prepend (infos, key);
 
   g_hash_table_destroy (apps);
 

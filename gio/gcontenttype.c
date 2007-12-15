@@ -781,17 +781,6 @@ g_content_type_guess (const char   *filename,
   return mimetype;
 }
 
-static gboolean
-foreach_mimetype (gpointer key,
-		  gpointer value,
-		  gpointer user_data)
-{
-  GList **l = user_data;
-
-  *l = g_list_prepend (*l, (char *)key);
-  return TRUE;
-}
-
 static void
 enumerate_mimetypes_subdir (const char *dir, 
                             const char *prefix, 
@@ -859,6 +848,8 @@ g_content_types_get_registered (void)
 {
   const char * const* dirs;
   GHashTable *mimetypes;
+  GHashTableIter iter;
+  gpointer key;
   int i;
   GList *l;
 
@@ -871,7 +862,10 @@ g_content_types_get_registered (void)
     enumerate_mimetypes_dir (dirs[i], mimetypes);
 
   l = NULL;
-  g_hash_table_foreach_steal (mimetypes, foreach_mimetype, &l);
+  g_hash_table_iter_init (&iter, mimetypes);
+  while (g_hash_table_iter_next (&iter, &key, NULL))
+    l = g_list_prepend (l, key);
+
   g_hash_table_destroy (mimetypes);
 
   return l;

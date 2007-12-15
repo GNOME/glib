@@ -1,3 +1,8 @@
+2007-12-14  Matthias Clasen  <mclasen@redhat.com>
+
+	* gcontenttype.c:
+	* gdesktopappinfo.c: Use hash table iterators.
+
 2007-12-14  Alexander Larsson  <alexl@redhat.com>
 
 	* Makefile.am:
