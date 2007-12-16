@@ -1,3 +1,8 @@
+2007-12-16  Mathias Hasselmann  <mathias@openismus.com>
+
+	* glib/gutils.c:
+	Allow NULL strings in g_parse_debug_string. (#503862, Matthew Barnes)
+
 2007-12-14  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/glib.symbols:

@@ -565,7 +565,7 @@ debug_key_matches (const gchar *key,
 /**
  * g_parse_debug_string:
  * @string: a list of debug options separated by colons, spaces, or
- * commas; or the string "all" to set all flags.
+ * commas; or the string "all" to set all flags, or %NULL.
  * @keys: pointer to an array of #GDebugKey which associate 
  *     strings with bit flags.
  * @nkeys: the number of #GDebugKey<!-- -->s in the array.
@@ -585,7 +585,8 @@ g_parse_debug_string  (const gchar     *string,
   guint i;
   guint result = 0;
   
-  g_return_val_if_fail (string != NULL, 0);
+  if (string == NULL)
+    return 0;
 
   /* this function is used by gmem.c/gslice.c initialization code,
    * so introducing malloc dependencies here would require adaptions
