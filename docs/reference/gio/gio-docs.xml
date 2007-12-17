@@ -74,6 +74,7 @@
     	<title>Volumes and Drives</title>
         <xi:include href="xml/gvolumemonitor.xml"/>
 	<xi:include href="xml/gvolume.xml"/>
+        <xi:include href="xml/gmount.xml"/>
 	<xi:include href="xml/gdrive.xml"/>
 	<xi:include href="xml/gunixmounts.xml"/>
     </chapter>

@@ -68,7 +68,7 @@ g_file_query_info
 g_file_query_info_async
 g_file_query_info_finish
 g_file_query_filesystem_info
-g_file_find_enclosing_volume
+g_file_find_enclosing_mount
 g_file_enumerate_children
 g_file_enumerate_children_async
 g_file_enumerate_children_finish
@@ -93,14 +93,14 @@ g_file_set_attribute_uint32
 g_file_set_attribute_int32
 g_file_set_attribute_uint64
 g_file_set_attribute_int64
-g_mount_for_location
-g_mount_for_location_finish
 g_file_mount_mountable
 g_file_mount_mountable_finish
 g_file_unmount_mountable
 g_file_unmount_mountable_finish
 g_file_eject_mountable
 g_file_eject_mountable_finish
+g_file_mount_enclosing_volume
+g_file_mount_enclosing_volume_finish
 g_file_monitor_directory
 g_file_monitor_file
 g_file_load_contents
@@ -220,7 +220,9 @@ g_file_info_has_attribute
 g_file_info_list_attributes
 g_file_info_get_attribute_type
 g_file_info_remove_attribute
-g_file_info_get_attribute
+g_file_info_get_attribute_as_string
+g_file_info_get_attribute_data
+g_file_info_get_attribute_status
 g_file_info_get_attribute_string
 g_file_info_get_attribute_byte_string
 g_file_info_get_attribute_boolean
@@ -290,34 +292,12 @@ g_file_info_get_type
 <FILE>gfileattribute</FILE>
 <TITLE>GFileAttribute</TITLE>
 GFileAttributeType
-GFileAttributeFlags
+GFileAttributeInfoFlags
 GFileAttributeStatus
 G_FILE_ATTRIBUTE_VALUE_INIT
 GFileAttributeValue
 GFileAttributeInfo
 GFileAttributeInfoList
-g_file_attribute_value_new
-g_file_attribute_value_free
-g_file_attribute_value_clear
-g_file_attribute_value_set
-g_file_attribute_value_dup
-g_file_attribute_value_as_string
-g_file_attribute_value_get_string
-g_file_attribute_value_get_byte_string
-g_file_attribute_value_get_boolean
-g_file_attribute_value_get_uint32
-g_file_attribute_value_get_int32
-g_file_attribute_value_get_uint64
-g_file_attribute_value_get_int64
-g_file_attribute_value_get_object
-g_file_attribute_value_set_string
-g_file_attribute_value_set_byte_string
-g_file_attribute_value_set_boolean
-g_file_attribute_value_set_uint32
-g_file_attribute_value_set_int32
-g_file_attribute_value_set_uint64
-g_file_attribute_value_set_int64
-g_file_attribute_value_set_object
 g_file_attribute_info_list_new
 g_file_attribute_info_list_ref
 g_file_attribute_info_list_unref
@@ -455,6 +435,7 @@ g_input_stream_close_finish
 g_input_stream_is_closed
 g_input_stream_has_pending
 g_input_stream_set_pending
+g_input_stream_clear_pending
 <SUBSECTION Standard>
 GInputStreamClass
 G_INPUT_STREAM
@@ -803,8 +784,9 @@ g_seekable_get_type
 <TITLE>GVolumeMonitor</TITLE>
 GVolumeMonitor
 g_volume_monitor_get
-g_volume_monitor_get_mounted_volumes
 g_volume_monitor_get_connected_drives
+g_volume_monitor_get_volumes
+g_volume_monitor_get_mounts
 <SUBSECTION Standard>
 GVolumeMonitorClass
 G_VOLUME_MONITOR
@@ -818,20 +800,39 @@ g_volume_monitor_get_type
 </SECTION>
 
 <SECTION>
+<FILE>gmount</FILE>
+<TITLE>GMount</TITLE>
+GMount
+GMountIface
+g_mount_can_unmount
+g_mount_get_drive
+g_mount_get_icon
+g_mount_get_name
+g_mount_get_root
+g_mount_get_volume
+g_mount_unmount
+g_mount_unmount_finish
+<SUBSECTION Standard>
+G_IS_MOUNT
+G_MOUNT
+G_MOUNT_GET_IFACE
+G_TYPE_MOUNT
+<SUBSECTION Private>
+g_mount_get_type
+</SECTION>
+
+<SECTION>
 <FILE>gvolume</FILE>
 <TITLE>GVolume</TITLE>
 GVolume
 GVolumeIface
-g_volume_get_root
 g_volume_get_name
 g_volume_get_icon
 g_volume_get_drive
-g_volume_can_unmount
-g_volume_can_eject
-g_volume_unmount
-g_volume_unmount_finish
-g_volume_eject
-g_volume_eject_finish
+g_volume_can_mount
+g_volume_get_mount
+g_volume_mount
+g_volume_mount_finish
 <SUBSECTION Standard>
 G_VOLUME
 G_IS_VOLUME
@@ -850,11 +851,13 @@ g_drive_get_name
 g_drive_get_icon
 g_drive_has_volumes
 g_drive_get_volumes
-g_drive_is_automounted
-g_drive_can_mount
 g_drive_can_eject
-g_drive_mount
-g_drive_mount_finish
+g_drive_can_poll_for_media
+g_drive_poll_for_media
+g_drive_poll_for_media_finish
+g_drive_has_media
+g_drive_is_media_check_automatic
+g_drive_is_media_removable
 g_drive_eject
 g_drive_eject_finish
 <SUBSECTION Standard>
@@ -875,8 +878,8 @@ g_cancellable_is_cancelled
 g_cancellable_set_error_if_cancelled
 g_cancellable_get_fd
 g_cancellable_get_current
-g_push_current_cancellable
-g_pop_current_cancellable
+g_cancellable_pop_current
+g_cancellable_push_current
 g_cancellable_reset
 g_cancellable_cancel
 <SUBSECTION Standard>
@@ -948,12 +951,12 @@ g_simple_async_result_get_type
 <SECTION>
 <FILE>gioscheduler</FILE>
 <TITLE>GIOScheduler</TITLE>
-GIOJob
-GIOJobFunc
-GIODataFunc
-g_schedule_io_job
-g_cancel_all_io_jobs
-g_io_job_send_to_mainloop
+GIOSchedulerJob
+GIOSchedulerJobFunc
+g_io_scheduler_push_job
+g_io_scheduler_cancel_all_jobs
+g_io_scheduler_job_send_to_mainloop
+g_io_scheduler_job_send_to_mainloop_async
 </SECTION>
 
 <SECTION>
@@ -985,6 +988,7 @@ g_content_types_get_registered
 <TITLE>GAppInfo</TITLE>
 GAppInfoCreateFlags
 GAppInfo
+GAppInfoIface
 GAppLaunchContext
 g_app_info_create_from_commandline
 g_app_info_dup
@@ -1009,11 +1013,9 @@ g_app_info_get_default_for_type
 g_app_info_get_default_for_uri_scheme
 g_app_launch_context_get_display
 g_app_launch_context_get_startup_notify_id
-g_app_launch_context_get_type
 g_app_launch_context_launch_failed
 g_app_launch_context_new
 <SUBSECTION Standard>
-GAppInfoIface
 GAppLaunchContextClass
 G_APP_INFO
 G_IS_APP_INFO
@@ -1034,7 +1036,7 @@ GAppLaunchContextPrivate
 <SECTION>
 <FILE>gmountoperation</FILE>
 <TITLE>GMountOperation</TITLE>
-GPasswordFlags
+GAskPasswordFlags
 GPasswordSave
 GMountOperation
 g_mount_operation_new
@@ -1089,7 +1091,6 @@ g_filename_completer_get_type
 <TITLE>Unix Mounts</TITLE>
 GUnixMount
 GUnixMountPoint
-GUnixMountType
 GUnixMountMonitor
 g_unix_mount_free
 g_unix_mount_point_free
@@ -1099,7 +1100,8 @@ g_unix_mount_get_device_path
 g_unix_mount_get_fs_type
 g_unix_mount_is_readonly
 g_unix_mount_is_system_internal
-g_unix_mount_guess_type
+g_unix_mount_guess_icon
+g_unix_mount_guess_name
 g_unix_mount_point_compare
 g_unix_mount_point_get_mount_path
 g_unix_mount_point_get_device_path
@@ -1107,22 +1109,38 @@ g_unix_mount_point_get_fs_type
 g_unix_mount_point_is_readonly
 g_unix_mount_point_is_user_mountable
 g_unix_mount_point_is_loopback
-g_unix_mount_point_guess_type
+g_unix_mount_point_guess_icon
+g_unix_mount_point_guess_name
 g_get_unix_mount_points
 g_get_unix_mounts
 g_get_unix_mount_at
 g_unix_mounts_changed_since
 g_unix_mount_points_changed_since
 g_unix_mount_monitor_new
+g_unix_get_canonical_device_path
+g_unix_is_mount_path_system_internal
 <SUBSECTION Standard>
+GUnixMountClass
 GUnixMountMonitorClass
 G_UNIX_MOUNT_MONITOR
 G_IS_UNIX_MOUNT_MONITOR
 G_TYPE_UNIX_MOUNT_MONITOR
 G_UNIX_MOUNT_MONITOR_CLASS
 G_IS_UNIX_MOUNT_MONITOR_CLASS
+G_IS_UNIX_MOUNT
+G_IS_UNIX_MOUNT_CLASS
+G_UNIX_MOUNT
+G_UNIX_MOUNT_CLASS
+G_TYPE_UNIX_MOUNT
 <SUBSECTION Private>
 g_unix_mount_monitor_get_type
+</SECTION>
+
+<SECTION>
+<FILE>gunixmountentry</FILE>
+<TITLE>GUnixMountEntry</TITLE>
+GUnixMountEntry
+<SUBSECTION Standard>
 </SECTION>
 
 <SECTION>

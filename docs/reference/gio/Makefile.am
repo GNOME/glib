@@ -21,7 +21,6 @@ IGNORE_HFILES= 		           \
 	fam-helper.h			\
 	gasynchelper.h			\
 	gcontenttypeprivate.h		\
-	gdesktopappinfo.h		\
 	gdummyfile.h			\
 	gfamdirectorymonitor.h		\
 	gfamfilemonitor.h		\
@@ -46,7 +45,6 @@ IGNORE_HFILES= 		           \
 	gunionvolumemonitor.h		\
 	gunixdrive.h			\
 	gunixvolume.h			\
-	gunixvolumemonitor.h		\
 	gvolumeprivate.h		\
 	gwin32appinfo.h			\
 	inotify-diag.h			\
