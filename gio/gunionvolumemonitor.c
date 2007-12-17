@@ -59,12 +59,17 @@ static void
 g_union_volume_monitor_finalize (GObject *object)
 {
   GUnionVolumeMonitor *monitor;
-  
+  GVolumeMonitor *child_monitor;
+
   monitor = G_UNION_VOLUME_MONITOR (object);
 
-  while (monitor->monitors != NULL)
-    g_union_volume_monitor_remove_monitor (monitor,
-					   monitor->monitors->data);
+  while (monitor->monitors != NULL) {
+    child_monitor = monitor->monitors->data;
+    g_union_volume_monitor_remove_monitor (monitor, 
+                                           child_monitor);
+    g_object_unref (child_monitor);
+  }
+
   
   if (G_OBJECT_CLASS (g_union_volume_monitor_parent_class)->finalize)
     (*G_OBJECT_CLASS (g_union_volume_monitor_parent_class)->finalize) (object);
@@ -163,6 +168,64 @@ get_connected_drives (GVolumeMonitor *volume_monitor)
   return res;
 }
 
+static GVolume *
+get_volume_for_uuid (GVolumeMonitor *volume_monitor, const char *uuid)
+{
+  GUnionVolumeMonitor *monitor;
+  GVolumeMonitor *child_monitor;
+  GVolume *volume;
+  GList *l;
+  
+  monitor = G_UNION_VOLUME_MONITOR (volume_monitor);
+
+  volume = NULL;
+  
+  G_LOCK (the_volume_monitor);
+
+  for (l = monitor->monitors; l != NULL; l = l->next)
+    {
+      child_monitor = l->data;
+
+      volume = g_volume_monitor_get_volume_for_uuid (child_monitor, uuid);
+      if (volume != NULL)
+        break;
+
+    }
+  
+  G_UNLOCK (the_volume_monitor);
+
+  return volume;
+}
+
+static GMount *
+get_mount_for_uuid (GVolumeMonitor *volume_monitor, const char *uuid)
+{
+  GUnionVolumeMonitor *monitor;
+  GVolumeMonitor *child_monitor;
+  GMount *mount;
+  GList *l;
+  
+  monitor = G_UNION_VOLUME_MONITOR (volume_monitor);
+
+  mount = NULL;
+  
+  G_LOCK (the_volume_monitor);
+
+  for (l = monitor->monitors; l != NULL; l = l->next)
+    {
+      child_monitor = l->data;
+
+      mount = g_volume_monitor_get_mount_for_uuid (child_monitor, uuid);
+      if (mount != NULL)
+        break;
+
+    }
+  
+  G_UNLOCK (the_volume_monitor);
+
+  return mount;
+}
+
 static void
 g_union_volume_monitor_class_init (GUnionVolumeMonitorClass *klass)
 {
@@ -175,6 +238,8 @@ g_union_volume_monitor_class_init (GUnionVolumeMonitorClass *klass)
   monitor_class->get_connected_drives = get_connected_drives;
   monitor_class->get_volumes = get_volumes;
   monitor_class->get_mounts = get_mounts;
+  monitor_class->get_volume_for_uuid = get_volume_for_uuid;
+  monitor_class->get_mount_for_uuid = get_mount_for_uuid;
 }
 
 static void
@@ -325,14 +390,13 @@ g_union_volume_monitor_remove_monitor (GUnionVolumeMonitor *union_monitor,
   g_signal_handlers_disconnect_by_func (child_monitor, child_drive_changed, union_monitor);
 }
 
-static gpointer
-get_default_native_type (gpointer data)
+static GType
+get_default_native_type_with_exclude (GType type_to_exclude)
 {
   GNativeVolumeMonitorClass *klass;
   GType *monitors;
   guint n_monitors;
   GType native_type;
-  GType *ret = (GType *) data;
   int native_prio;
   int i;
       
@@ -347,39 +411,57 @@ get_default_native_type (gpointer data)
       
   /* Ensure vfs in modules loaded */
   _g_io_modules_ensure_loaded ();
-      
+
   monitors = g_type_children (G_TYPE_NATIVE_VOLUME_MONITOR, &n_monitors);
   native_type = 0;
   native_prio = -1;
   
   for (i = 0; i < n_monitors; i++)
     {
-      klass = G_NATIVE_VOLUME_MONITOR_CLASS (g_type_class_ref (monitors[i]));
-      if (klass->priority > native_prio)
+      if (monitors[i] != type_to_exclude)
         {
-	  native_prio = klass->priority;
-	  native_type = monitors[i];
-	}
+          klass = G_NATIVE_VOLUME_MONITOR_CLASS (g_type_class_ref (monitors[i]));
 
-      g_type_class_unref (klass);
+          if (klass->priority > native_prio)
+            {
+	      native_prio = klass->priority;
+	      native_type = monitors[i];
+	    }
+
+          g_type_class_unref (klass);
+        }
     }
       
   g_free (monitors);
 
-  *ret = native_type;
+  return native_type;
+}
 
+static gpointer
+get_default_native_type (gpointer data)
+{
+  GType *ret = (GType *) data;
+
+  *ret = get_default_native_type_with_exclude (G_TYPE_INVALID);
   return NULL;
 }
 
-static GType
-get_native_type (void)
-{
-  static GOnce once_init = G_ONCE_INIT;
-  static GType type = G_TYPE_INVALID;
+static GOnce _once_init = G_ONCE_INIT;
+static GType _type = G_TYPE_INVALID;
 
-  g_once (&once_init, get_default_native_type, &type);
+static GType
+get_native_type ()
+{
+
+  g_once (&_once_init, get_default_native_type, &_type);
   
-  return type;
+  return _type;
+}
+
+static void
+update_native_type (GType type)
+{
+  _type = type;
 }
 
 static void
@@ -396,8 +478,22 @@ g_union_volume_monitor_init (GUnionVolumeMonitor *union_monitor)
   if (native_type != G_TYPE_INVALID)
     {
       monitor = g_object_new (native_type, NULL);
-      g_union_volume_monitor_add_monitor (union_monitor, monitor);
-      g_object_unref (monitor);
+      /* A native file monitor (the hal one if hald isn't running for
+       * example) may very well fail so handle falling back to the
+       * native one shipped with gio (e.g. GUnixVolumeMonitor)
+       */
+      if (monitor == NULL)
+        {
+          native_type = get_default_native_type_with_exclude (native_type);
+          monitor = g_object_new (native_type, NULL);
+        }
+
+      if (monitor != NULL)
+        {
+          g_union_volume_monitor_add_monitor (union_monitor, monitor);
+          g_object_unref (monitor);
+          update_native_type (native_type);
+        }
     }
   
   monitors = g_type_children (G_TYPE_VOLUME_MONITOR, &n_monitors);
@@ -474,10 +570,22 @@ _g_mount_get_for_mount_path (const char *mount_path)
     return NULL;
 
   mount = NULL;
-  
+
   klass = G_NATIVE_VOLUME_MONITOR_CLASS (g_type_class_ref (native_type));
   if (klass->get_mount_for_mount_path)
-    mount = klass->get_mount_for_mount_path (mount_path);
+    {
+      G_LOCK (the_volume_monitor);
+      mount = klass->get_mount_for_mount_path (mount_path);
+      G_UNLOCK (the_volume_monitor);
+    }
+
+  /* TODO: How do we know this succeeded? Keep in mind that the native
+   *       volume monitor may fail (e.g. not being able to connect to
+   *       hald). Is the get_mount_for_mount_path() method allowed to
+   *       return NULL? Seems like it is ... probably the method needs
+   *       to take a boolean and write if it succeeds or not.. Messy.
+   *       Very messy.
+   */
   
   g_type_class_unref (klass);
 

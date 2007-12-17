@@ -64,6 +64,7 @@ const char *   g_unix_mount_get_device_path         (GUnixMountEntry    *mount_e
 const char *   g_unix_mount_get_fs_type             (GUnixMountEntry    *mount_entry);
 gboolean       g_unix_mount_is_readonly             (GUnixMountEntry    *mount_entry);
 gboolean       g_unix_mount_is_system_internal      (GUnixMountEntry    *mount_entry);
+gboolean       g_unix_mount_guess_can_eject         (GUnixMountEntry    *mount_entry);
 char *         g_unix_mount_guess_name              (GUnixMountEntry    *mount_entry);
 GIcon *        g_unix_mount_guess_icon              (GUnixMountEntry    *mount_entry);
 
@@ -75,6 +76,7 @@ const char *   g_unix_mount_point_get_fs_type       (GUnixMountPoint    *mount_p
 gboolean       g_unix_mount_point_is_readonly       (GUnixMountPoint    *mount_point);
 gboolean       g_unix_mount_point_is_user_mountable (GUnixMountPoint    *mount_point);
 gboolean       g_unix_mount_point_is_loopback       (GUnixMountPoint    *mount_point);
+gboolean       g_unix_mount_point_guess_can_eject   (GUnixMountPoint    *mount_point);
 char *         g_unix_mount_point_guess_name        (GUnixMountPoint    *mount_point);
 GIcon *        g_unix_mount_point_guess_icon        (GUnixMountPoint    *mount_point);
 

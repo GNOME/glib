@@ -119,6 +119,18 @@ get_connected_drives (GVolumeMonitor *volume_monitor)
   return NULL;
 }
 
+static GVolume *
+get_volume_for_uuid (GVolumeMonitor *volume_monitor, const char *uuid)
+{
+  return NULL;
+}
+
+static GMount *
+get_mount_for_uuid (GVolumeMonitor *volume_monitor, const char *uuid)
+{
+  return NULL;
+}
+
 static GMount *
 get_mount_for_mount_path (const char *mount_path)
 {
@@ -145,6 +157,8 @@ g_unix_volume_monitor_class_init (GUnixVolumeMonitorClass *klass)
   monitor_class->get_mounts = get_mounts;
   monitor_class->get_volumes = get_volumes;
   monitor_class->get_connected_drives = get_connected_drives;
+  monitor_class->get_volume_for_uuid = get_volume_for_uuid;
+  monitor_class->get_mount_for_uuid = get_mount_for_uuid;
 
   native_class->priority = 0;
   native_class->get_mount_for_mount_path = get_mount_for_mount_path;
@@ -363,10 +377,6 @@ update_mounts (GUnixVolumeMonitor *monitor)
     {
       GUnixMountEntry *mount_entry = l->data;
       
-      g_warning ("%s %s removed", 
-                 g_unix_mount_get_mount_path (mount_entry),
-                 g_unix_mount_get_device_path (mount_entry));
-
       mount = find_mount_by_mountpath (monitor, g_unix_mount_get_mount_path (mount_entry));
       if (mount)
 	{

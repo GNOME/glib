@@ -92,6 +92,12 @@ struct _GVolumeMonitorClass {
   GList * (*get_volumes)            (GVolumeMonitor *volume_monitor);
   GList * (*get_mounts)             (GVolumeMonitor *volume_monitor);
 
+  GVolume * (*get_volume_for_uuid)  (GVolumeMonitor  *volume_monitor, 
+                                     const char      *uuid);
+
+  GMount *  (*get_mount_for_uuid)   (GVolumeMonitor  *volume_monitor, 
+                                     const char      *uuid);
+
   /*< private >*/
   /* Padding for future expansion */
   void (*_g_reserved1) (void);
@@ -106,10 +112,14 @@ struct _GVolumeMonitorClass {
 
 GType g_volume_monitor_get_type (void) G_GNUC_CONST;
 
-GVolumeMonitor *g_volume_monitor_get          (void);
-GList *         g_volume_monitor_get_connected_drives (GVolumeMonitor *volume_monitor);
-GList *         g_volume_monitor_get_volumes          (GVolumeMonitor *volume_monitor);
-GList *         g_volume_monitor_get_mounts           (GVolumeMonitor *volume_monitor);
+GVolumeMonitor *g_volume_monitor_get                     (void);
+GList *         g_volume_monitor_get_connected_drives    (GVolumeMonitor  *volume_monitor);
+GList *         g_volume_monitor_get_volumes             (GVolumeMonitor  *volume_monitor);
+GList *         g_volume_monitor_get_mounts              (GVolumeMonitor  *volume_monitor);
+GVolume *       g_volume_monitor_get_volume_for_uuid     (GVolumeMonitor  *volume_monitor,
+                                                          const char      *uuid);
+GMount *        g_volume_monitor_get_mount_for_uuid      (GVolumeMonitor  *volume_monitor,
+                                                          const char      *uuid);
 
 G_END_DECLS
 

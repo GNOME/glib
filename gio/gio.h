@@ -50,6 +50,7 @@
 #include <gio/gmemoryoutputstream.h>
 #include <gio/gsimpleasyncresult.h>
 #include <gio/gioenumtypes.h>
+#include <gio/gnativevolumemonitor.h>
 
 #undef __GIO_GIO_H_INSIDE__
 

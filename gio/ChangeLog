@@ -1,3 +1,48 @@
+2007-12-14  David Zeuthen  <davidz@redhat.com>
+
+	* Makefile.am:
+	* gio.symbols:
+	* gmount.c: (g_mount_get_uuid), (g_mount_can_eject),
+	(g_mount_eject), (g_mount_eject_finish):
+	* gmount.h:
+	* gunionvolumemonitor.c: (g_union_volume_monitor_finalize),
+	(get_volume_for_uuid), (get_mount_for_uuid),
+	(g_union_volume_monitor_class_init),
+	(get_default_native_type_with_exclude), (get_default_native_type),
+	(get_native_type), (update_native_type),
+	(g_union_volume_monitor_init), (_g_mount_get_for_mount_path):
+	* gunixmount.c: (_g_unix_mount_new), (g_unix_mount_get_uuid),
+	(g_unix_mount_can_eject), (eject_unmount_cb),
+	(eject_unmount_read_error), (eject_unmount_do),
+	(g_unix_mount_unmount), (g_unix_mount_eject),
+	(g_unix_mount_eject_finish), (g_unix_mount_mount_iface_init):
+	* gunixmounts.c: (g_unix_mount_guess_can_eject),
+	(g_unix_mount_point_guess_can_eject):
+	* gunixmounts.h:
+	* gunixvolume.c: (_g_unix_volume_new), (g_unix_volume_get_uuid),
+	(g_unix_volume_can_eject), (g_unix_volume_get_drive),
+	(eject_mount_cb), (eject_mount_read_error), (eject_mount_do),
+	(g_unix_volume_mount), (g_unix_volume_eject),
+	(g_unix_volume_eject_finish), (g_unix_volume_volume_iface_init):
+	* gunixvolumemonitor.c: (get_volume_for_uuid),
+	(get_mount_for_uuid), (g_unix_volume_monitor_class_init),
+	(update_mounts):
+	* gvolume.c: (g_volume_get_uuid), (g_volume_can_eject),
+	(g_volume_eject), (g_volume_eject_finish):
+	* gvolume.h:
+	* gvolumemonitor.c: (g_volume_monitor_get_volume_for_uuid),
+	(g_volume_monitor_get_mount_for_uuid):
+	* gvolumemonitor.h:
+
+	Provide eject() on both GMount and GVolume and utility functions
+	to guess whether a GUnixMountPoint or GUnixMountEntry should be
+	ejected. Introduce the concept of UUID's and wire it into GVolume
+	and GMount and provide API on GVolumeMonitor to find such
+	instances. Also handle the case where an external
+	GNativeVolumeMonitor fails to initialize. Lock around the
+	_g_get_mount_for_mount_path() function such that volume monitor
+	implementations won't have to do locking themselves.
+
 2007-12-17  Matthias Clasen  <mclasen@redhat.com>
 
 	* gdesktopappinfo.c:

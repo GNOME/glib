@@ -235,6 +235,7 @@ gio_headers =			\
 	gmemoryinputstream.h 	\
 	gmemoryoutputstream.h 	\
 	gmountoperation.h 	\
+	gnativevolumemonitor.h 	\
 	goutputstream.h 	\
 	gseekable.h 		\
 	gsimpleasyncresult.h 	\

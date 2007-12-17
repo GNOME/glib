@@ -290,5 +290,50 @@ g_volume_monitor_get_mounts (GVolumeMonitor *volume_monitor)
   return class->get_mounts (volume_monitor);
 }
 
+/**
+ * g_volume_monitor_get_volume_for_uuid:
+ * @volume_monitor: a #GVolumeMonitor.
+ * 
+ * Finds a #GVolume object by it's UUID (see g_volume_get_uuid())
+ * 
+ * Returns: a #GVolume or %NULL if no such volume is available.
+ **/
+GVolume *
+g_volume_monitor_get_volume_for_uuid   (GVolumeMonitor *volume_monitor, 
+                                        const char     *uuid)
+{
+  GVolumeMonitorClass *class;
+
+  g_return_val_if_fail (G_IS_VOLUME_MONITOR (volume_monitor), NULL);
+  g_return_val_if_fail (uuid != NULL, NULL);
+
+  class = G_VOLUME_MONITOR_GET_CLASS (volume_monitor);
+
+  return class->get_volume_for_uuid (volume_monitor, uuid);
+}
+
+/**
+ * g_volume_monitor_get_mount_for_uuid:
+ * @volume_monitor: a #GVolumeMonitor.
+ * 
+ * Finds a #GMount object by it's UUID (see g_mount_get_uuid())
+ * 
+ * Returns: a #GMount or %NULL if no such mount is available.
+ **/
+GMount *
+g_volume_monitor_get_mount_for_uuid   (GVolumeMonitor *volume_monitor, 
+                                       const char     *uuid)
+{
+  GVolumeMonitorClass *class;
+
+  g_return_val_if_fail (G_IS_VOLUME_MONITOR (volume_monitor), NULL);
+  g_return_val_if_fail (uuid != NULL, NULL);
+
+  class = G_VOLUME_MONITOR_GET_CLASS (volume_monitor);
+
+  return class->get_mount_for_uuid (volume_monitor, uuid);
+}
+
+
 #define __G_VOLUME_MONITOR_C__
 #include "gioaliasdef.c"

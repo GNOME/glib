@@ -52,6 +52,8 @@ struct _GUnixMount {
   GIcon *icon;
   char *device_path;
   char *mount_path;
+
+  gboolean can_eject;
 };
 
 static void g_unix_mount_mount_iface_init (GMountIface *iface);
@@ -99,9 +101,9 @@ g_unix_mount_init (GUnixMount *unix_mount)
 }
 
 GUnixMount *
-_g_unix_mount_new (GVolumeMonitor        *volume_monitor,
-                   GUnixMountEntry       *mount_entry,
-                   GUnixVolume  *volume)
+_g_unix_mount_new (GVolumeMonitor  *volume_monitor,
+                   GUnixMountEntry *mount_entry,
+                   GUnixVolume     *volume)
 {
   GUnixMount *mount;
   
@@ -113,6 +115,8 @@ _g_unix_mount_new (GVolumeMonitor        *volume_monitor,
   mount->volume_monitor = volume_monitor != NULL ? g_object_ref (volume_monitor) : NULL;
   mount->device_path = g_strdup (g_unix_mount_get_device_path (mount_entry));
   mount->mount_path = g_strdup (g_unix_mount_get_mount_path (mount_entry));
+  mount->can_eject = g_unix_mount_guess_can_eject (mount_entry);
+
   mount->name = g_unix_mount_guess_name (mount_entry);
   mount->icon = g_unix_mount_guess_icon (mount_entry);
 
@@ -168,6 +172,12 @@ g_unix_mount_get_icon (GMount *mount)
 }
 
 static char *
+g_unix_mount_get_uuid (GMount *mount)
+{
+  return NULL;
+}
+
+static char *
 g_unix_mount_get_name (GMount *mount)
 {
   GUnixMount *unix_mount = G_UNIX_MOUNT (mount);
@@ -210,6 +220,13 @@ g_unix_mount_can_unmount (GMount *mount)
   return TRUE;
 }
 
+static gboolean
+g_unix_mount_can_eject (GMount *mount)
+{
+  GUnixMount *unix_mount = G_UNIX_MOUNT (mount);
+  return unix_mount->can_eject;
+}
+
 
 typedef struct {
   GUnixMount *unix_mount;
@@ -220,12 +237,12 @@ typedef struct {
   GIOChannel *error_channel;
   guint error_channel_source_id;
   GString *error_string;
-} UnmountOp;
+} UnmountEjectOp;
 
 static void 
-unmount_cb (GPid pid, gint status, gpointer user_data)
+eject_unmount_cb (GPid pid, gint status, gpointer user_data)
 {
-  UnmountOp *data = user_data;
+  UnmountEjectOp *data = user_data;
   GSimpleAsyncResult *simple;
   
   if (WEXITSTATUS (status) != 0)
@@ -260,13 +277,13 @@ unmount_cb (GPid pid, gint status, gpointer user_data)
 }
 
 static gboolean
-unmount_read_error (GIOChannel *channel,
+eject_unmount_read_error (GIOChannel *channel,
                     GIOCondition condition,
                     gpointer user_data)
 {
   char *str;
   gsize str_len;
-  UnmountOp *data = user_data;
+  UnmountEjectOp *data = user_data;
 
   g_io_channel_read_to_end (channel, &str, &str_len, NULL);
   g_string_append (data->error_string, str);
@@ -275,23 +292,18 @@ unmount_read_error (GIOChannel *channel,
 }
 
 static void
-g_unix_mount_unmount (GMount             *mount,
-                      GCancellable        *cancellable,
-                      GAsyncReadyCallback  callback,
-                      gpointer             user_data)
+eject_unmount_do (GMount              *mount,
+                  GCancellable        *cancellable,
+                  GAsyncReadyCallback  callback,
+                  gpointer             user_data,
+                  char               **argv)
 {
   GUnixMount *unix_mount = G_UNIX_MOUNT (mount);
-  UnmountOp *data;
+  UnmountEjectOp *data;
   GPid child_pid;
   GError *error;
-  char *argv[] = {"umount", NULL, NULL};
-
-  if (unix_mount->mount_path != NULL)
-    argv[1] = unix_mount->mount_path;
-  else
-    argv[1] = unix_mount->device_path;
   
-  data = g_new0 (UnmountOp, 1);
+  data = g_new0 (UnmountEjectOp, 1);
   data->unix_mount = unix_mount;
   data->callback = callback;
   data->user_data = user_data;
@@ -322,8 +334,25 @@ g_unix_mount_unmount (GMount             *mount,
   }
   data->error_string = g_string_new ("");
   data->error_channel = g_io_channel_unix_new (data->error_fd);
-  data->error_channel_source_id = g_io_add_watch (data->error_channel, G_IO_IN, unmount_read_error, data);
-  g_child_watch_add (child_pid, unmount_cb, data);
+  data->error_channel_source_id = g_io_add_watch (data->error_channel, G_IO_IN, eject_unmount_read_error, data);
+  g_child_watch_add (child_pid, eject_unmount_cb, data);
+}
+
+static void
+g_unix_mount_unmount (GMount             *mount,
+                      GCancellable        *cancellable,
+                      GAsyncReadyCallback  callback,
+                      gpointer             user_data)
+{
+  GUnixMount *unix_mount = G_UNIX_MOUNT (mount);
+  char *argv[] = {"umount", NULL, NULL};
+
+  if (unix_mount->mount_path != NULL)
+    argv[1] = unix_mount->mount_path;
+  else
+    argv[1] = unix_mount->device_path;
+
+  return eject_unmount_do (mount, cancellable, callback, user_data, argv);
 }
 
 static gboolean
@@ -335,14 +364,43 @@ g_unix_mount_unmount_finish (GMount       *mount,
 }
 
 static void
+g_unix_mount_eject (GMount             *mount,
+                    GCancellable        *cancellable,
+                    GAsyncReadyCallback  callback,
+                    gpointer             user_data)
+{
+  GUnixMount *unix_mount = G_UNIX_MOUNT (mount);
+  char *argv[] = {"eject", NULL, NULL};
+
+  if (unix_mount->mount_path != NULL)
+    argv[1] = unix_mount->mount_path;
+  else
+    argv[1] = unix_mount->device_path;
+
+  return eject_unmount_do (mount, cancellable, callback, user_data, argv);
+}
+
+static gboolean
+g_unix_mount_eject_finish (GMount       *mount,
+                           GAsyncResult  *result,
+                           GError       **error)
+{
+  return TRUE;
+}
+
+static void
 g_unix_mount_mount_iface_init (GMountIface *iface)
 {
   iface->get_root = g_unix_mount_get_root;
   iface->get_name = g_unix_mount_get_name;
   iface->get_icon = g_unix_mount_get_icon;
+  iface->get_uuid = g_unix_mount_get_uuid;
   iface->get_drive = g_unix_mount_get_drive;
   iface->get_volume = g_unix_mount_get_volume;
   iface->can_unmount = g_unix_mount_can_unmount;
+  iface->can_eject = g_unix_mount_can_eject;
   iface->unmount = g_unix_mount_unmount;
   iface->unmount_finish = g_unix_mount_unmount_finish;
+  iface->eject = g_unix_mount_eject;
+  iface->eject_finish = g_unix_mount_eject_finish;
 }

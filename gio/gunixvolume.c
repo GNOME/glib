@@ -47,6 +47,8 @@ struct _GUnixVolume {
   
   char *device_path;
   char *mount_path;
+  gboolean can_eject;
+
   char *name;
   GIcon *icon;
 };
@@ -115,6 +117,7 @@ _g_unix_volume_new (GVolumeMonitor  *volume_monitor,
   volume->volume_monitor = volume_monitor != NULL ? g_object_ref (volume_monitor) : NULL;
   volume->mount_path = g_strdup (g_unix_mount_point_get_mount_path (mountpoint));
   volume->device_path = g_strdup (g_unix_mount_point_get_device_path (mountpoint));
+  volume->can_eject = g_unix_mount_point_guess_can_eject (mountpoint);
 
   volume->name = g_unix_mount_point_guess_name (mountpoint);
   volume->icon = g_unix_mount_point_guess_icon (mountpoint);
@@ -194,16 +197,28 @@ g_unix_volume_get_name (GVolume *volume)
   return g_strdup (unix_volume->name);
 }
 
+static char *
+g_unix_volume_get_uuid (GVolume *volume)
+{
+  return NULL;
+}
+
 static gboolean
 g_unix_volume_can_mount (GVolume *volume)
 {
   return TRUE;
 }
 
+static gboolean
+g_unix_volume_can_eject (GVolume *volume)
+{
+  GUnixVolume *unix_volume = G_UNIX_VOLUME (volume);
+  return unix_volume->can_eject;
+}
+
 static GDrive *
 g_unix_volume_get_drive (GVolume *volume)
 {
-  /* TODO */
   return NULL;
 }
 
@@ -236,12 +251,12 @@ typedef struct {
   GIOChannel *error_channel;
   guint error_channel_source_id;
   GString *error_string;
-} MountOp;
+} EjectMountOp;
 
 static void 
-mount_cb (GPid pid, gint status, gpointer user_data)
+eject_mount_cb (GPid pid, gint status, gpointer user_data)
 {
-  MountOp *data = user_data;
+  EjectMountOp *data = user_data;
   GSimpleAsyncResult *simple;
   
   if (WEXITSTATUS (status) != 0)
@@ -276,13 +291,13 @@ mount_cb (GPid pid, gint status, gpointer user_data)
 }
 
 static gboolean
-mount_read_error (GIOChannel *channel,
+eject_mount_read_error (GIOChannel *channel,
                   GIOCondition condition,
                   gpointer user_data)
 {
   char *str;
   gsize str_len;
-  MountOp *data = user_data;
+  EjectMountOp *data = user_data;
 
   g_io_channel_read_to_end (channel, &str, &str_len, NULL);
   g_string_append (data->error_string, str);
@@ -291,24 +306,18 @@ mount_read_error (GIOChannel *channel,
 }
 
 static void
-g_unix_volume_mount (GVolume    *volume,
-                     GMountOperation     *mount_operation,
-                     GCancellable        *cancellable,
-                     GAsyncReadyCallback  callback,
-                     gpointer             user_data)
+eject_mount_do (GVolume             *volume,
+                GCancellable        *cancellable,
+                GAsyncReadyCallback  callback,
+                gpointer             user_data,
+                char               **argv)
 {
   GUnixVolume *unix_volume = G_UNIX_VOLUME (volume);
-  MountOp *data;
+  EjectMountOp *data;
   GPid child_pid;
   GError *error;
-  char *argv[] = {"mount", NULL, NULL};
-
-  if (unix_volume->mount_path != NULL)
-    argv[1] = unix_volume->mount_path;
-  else
-    argv[1] = unix_volume->device_path;
   
-  data = g_new0 (MountOp, 1);
+  data = g_new0 (EjectMountOp, 1);
   data->unix_volume = unix_volume;
   data->callback = callback;
   data->user_data = user_data;
@@ -339,10 +348,28 @@ g_unix_volume_mount (GVolume    *volume,
   }
   data->error_string = g_string_new ("");
   data->error_channel = g_io_channel_unix_new (data->error_fd);
-  data->error_channel_source_id = g_io_add_watch (data->error_channel, G_IO_IN, mount_read_error, data);
-  g_child_watch_add (child_pid, mount_cb, data);
+  data->error_channel_source_id = g_io_add_watch (data->error_channel, G_IO_IN, eject_mount_read_error, data);
+  g_child_watch_add (child_pid, eject_mount_cb, data);
 }
 
+
+static void
+g_unix_volume_mount (GVolume    *volume,
+                     GMountOperation     *mount_operation,
+                     GCancellable        *cancellable,
+                     GAsyncReadyCallback  callback,
+                     gpointer             user_data)
+{
+  GUnixVolume *unix_volume = G_UNIX_VOLUME (volume);
+  char *argv[] = {"mount", NULL, NULL};
+
+  if (unix_volume->mount_path != NULL)
+    argv[1] = unix_volume->mount_path;
+  else
+    argv[1] = unix_volume->device_path;
+
+  eject_mount_do (volume, cancellable, callback, user_data, argv);
+}
 
 static gboolean
 g_unix_volume_mount_finish (GVolume        *volume,
@@ -353,13 +380,39 @@ g_unix_volume_mount_finish (GVolume        *volume,
 }
 
 static void
+g_unix_volume_eject (GVolume    *volume,
+                     GCancellable        *cancellable,
+                     GAsyncReadyCallback  callback,
+                     gpointer             user_data)
+{
+  GUnixVolume *unix_volume = G_UNIX_VOLUME (volume);
+  char *argv[] = {"eject", NULL, NULL};
+
+  argv[1] = unix_volume->device_path;
+
+  eject_mount_do (volume, cancellable, callback, user_data, argv);
+}
+
+static gboolean
+g_unix_volume_eject_finish (GVolume        *volume,
+                            GAsyncResult  *result,
+                            GError       **error)
+{
+  return TRUE;
+}
+
+static void
 g_unix_volume_volume_iface_init (GVolumeIface *iface)
 {
   iface->get_name = g_unix_volume_get_name;
   iface->get_icon = g_unix_volume_get_icon;
+  iface->get_uuid = g_unix_volume_get_uuid;
   iface->get_drive = g_unix_volume_get_drive;
   iface->get_mount = g_unix_volume_get_mount;
   iface->can_mount = g_unix_volume_can_mount;
+  iface->can_eject = g_unix_volume_can_eject;
   iface->mount_fn = g_unix_volume_mount;
   iface->mount_finish = g_unix_volume_mount_finish;
+  iface->eject = g_unix_volume_eject;
+  iface->eject_finish = g_unix_volume_eject_finish;
 }

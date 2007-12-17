@@ -1807,6 +1807,32 @@ g_unix_mount_point_guess_icon (GUnixMountPoint *mount_point)
   return g_themed_icon_new (type_to_icon (g_unix_mount_point_guess_type (mount_point), TRUE));
 }
 
+gboolean
+g_unix_mount_guess_can_eject (GUnixMountEntry *mount_entry)
+{
+  GUnixMountType guessed_type;
+
+  guessed_type = g_unix_mount_guess_type (mount_entry);
+  if (guessed_type == G_UNIX_MOUNT_TYPE_IPOD ||
+      guessed_type == G_UNIX_MOUNT_TYPE_CDROM)
+    return TRUE;
+
+  return FALSE;
+}
+
+gboolean
+g_unix_mount_point_guess_can_eject (GUnixMountPoint *mount_point)
+{
+  GUnixMountType guessed_type;
+
+  guessed_type = g_unix_mount_point_guess_type (mount_point);
+  if (guessed_type == G_UNIX_MOUNT_TYPE_IPOD ||
+      guessed_type == G_UNIX_MOUNT_TYPE_CDROM)
+    return TRUE;
+
+  return FALSE;
+}
+
 
 /* borrowed from gtk/gtkfilesystemunix.c in GTK+ on 02/23/2006 */
 static void

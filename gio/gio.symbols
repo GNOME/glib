@@ -681,11 +681,15 @@ g_mount_get_type  G_GNUC_CONST
 g_mount_get_root 
 g_mount_get_name 
 g_mount_get_icon 
+g_mount_get_uuid 
 g_mount_get_volume
 g_mount_get_drive 
 g_mount_can_unmount 
+g_mount_can_eject 
 g_mount_unmount 
 g_mount_unmount_finish 
+g_mount_eject 
+g_mount_eject_finish 
 #endif
 #endif
 
@@ -694,11 +698,15 @@ g_mount_unmount_finish
 g_volume_get_type  G_GNUC_CONST
 g_volume_get_name 
 g_volume_get_icon 
+g_volume_get_uuid 
 g_volume_get_drive 
 g_volume_get_mount
 g_volume_can_mount
+g_volume_can_eject
 g_volume_mount 
 g_volume_mount_finish 
+g_volume_eject 
+g_volume_eject_finish 
 #endif
 #endif
 
@@ -708,6 +716,7 @@ g_volume_monitor_get_type  G_GNUC_CONST
 g_volume_monitor_get_connected_drives 
 g_volume_monitor_get_volumes 
 g_volume_monitor_get_mounts
+g_volume_monitor_get_mount_for_uuid
 #endif
 #if IN_FILE(__G_UNION_VOLUME_MONITOR_C__)
 g_volume_monitor_get 

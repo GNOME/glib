@@ -62,11 +62,15 @@ typedef struct _GMountIface    GMountIface;
  * @get_root: Gets a #GFile to the root directory of the #GMount.
  * @get_name: Gets a string containing the name of the #GMount.
  * @get_icon: Gets a #GIcon for the #GMount.
+ * @get_uuid: Gets the UUID for the #GMount. The reference is typically based on the file system UUID for the mount in question and should be considered an opaque string. Returns %NULL if there is no UUID available.
  * @get_volume: Gets a #GVolume the mount is located on. Returns %NULL if the #GMount is not associated with a #GVolume.
  * @get_drive: Gets a #GDrive the volume of the mount is located on. Returns %NULL if the #GMount is not associated with a #GDrive or a #GVolume. This is convenience method for getting the #GVolume and using that to get the #GDrive.
  * @can_unmount: Checks if a #GMount can be unmounted.
+ * @can_eject: Checks if a #GMount can be ejected.
  * @unmount: Starts unmounting a #GMount.
  * @unmount_finish: Finishes an unmounting operation.
+ * @eject: Starts ejecting a #GMount.
+ * @eject_finish: Finishes an eject operation.
  * 
  * Interface for implementing operations for mounts.
  **/
@@ -83,14 +87,23 @@ struct _GMountIface
   GFile *            (*get_root)             (GMount         *mount);
   char *             (*get_name)             (GMount         *mount);
   GIcon *            (*get_icon)             (GMount         *mount);
+  char *             (*get_uuid)             (GMount         *mount);
   GVolume *          (*get_volume)           (GMount         *mount);
   GDrive *           (*get_drive)            (GMount         *mount);
   gboolean           (*can_unmount)          (GMount         *mount);
+  gboolean           (*can_eject)            (GMount         *mount);
   void               (*unmount)              (GMount         *mount,
                                               GCancellable    *cancellable,
                                               GAsyncReadyCallback callback,
                                               gpointer         user_data);
   gboolean           (*unmount_finish)       (GMount         *mount,
+                                              GAsyncResult    *result,
+                                              GError         **error);
+  void               (*eject)                (GMount         *mount,
+                                              GCancellable    *cancellable,
+                                              GAsyncReadyCallback callback,
+                                              gpointer         user_data);
+  gboolean           (*eject_finish)         (GMount         *mount,
                                               GAsyncResult    *result,
                                               GError         **error);
 };
@@ -100,16 +113,25 @@ GType g_mount_get_type (void) G_GNUC_CONST;
 GFile *            g_mount_get_root             (GMount              *mount);
 char *             g_mount_get_name             (GMount              *mount);
 GIcon *            g_mount_get_icon             (GMount              *mount);
+char *             g_mount_get_uuid             (GMount              *mount);
 GVolume *          g_mount_get_volume           (GMount              *mount);
 GDrive *           g_mount_get_drive            (GMount              *mount);
 gboolean           g_mount_can_unmount          (GMount              *mount);
+gboolean           g_mount_can_eject            (GMount              *mount);
 void               g_mount_unmount              (GMount              *mount,
-                                                 GCancellable         *cancellable,
-                                                 GAsyncReadyCallback   callback,
-                                                 gpointer              user_data);
+                                                 GCancellable        *cancellable,
+                                                 GAsyncReadyCallback  callback,
+                                                 gpointer             user_data);
 gboolean           g_mount_unmount_finish       (GMount              *mount,
-                                                 GAsyncResult         *result,
-                                                 GError              **error);
+                                                 GAsyncResult        *result,
+                                                 GError             **error);
+void               g_mount_eject                (GMount              *mount,
+                                                 GCancellable        *cancellable,
+                                                 GAsyncReadyCallback  callback,
+                                                 gpointer             user_data);
+gboolean           g_mount_eject_finish         (GMount              *mount,
+                                                 GAsyncResult        *result,
+                                                 GError             **error);
 
 G_END_DECLS
 

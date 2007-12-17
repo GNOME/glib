@@ -1,3 +1,5 @@
+/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
+
 /* GIO - GLib Input, Output and Streaming Library
  * 
  * Copyright (C) 2006-2007 Red Hat, Inc.
@@ -22,6 +24,9 @@
  */
 
 #include <config.h>
+
+#include <string.h>
+
 #include "gmount.h"
 #include "gmountprivate.h"
 #include "gsimpleasyncresult.h"
@@ -175,7 +180,30 @@ g_mount_get_icon (GMount *mount)
 
   return (* iface->get_icon) (mount);
 }
-  
+
+/**
+ * g_mount_get_uuid:
+ * @mount: a #GMount.
+ * 
+ * Gets the UUID for the @mount. The reference is typically based on
+ * the file system UUID for the mount in question and should be
+ * considered an opaque string. Returns %NULL if there is no UUID
+ * available.
+ * 
+ * Returns: the UUID for @mount or %NULL if no UUID can be computed.
+ **/
+char *
+g_mount_get_uuid (GMount *mount)
+{
+  GMountIface *iface;
+
+  g_return_val_if_fail (G_IS_MOUNT (mount), NULL);
+
+  iface = G_MOUNT_GET_IFACE (mount);
+
+  return (* iface->get_uuid) (mount);
+}
+
 /**
  * g_mount_get_volume:
  * @mount: a #GMount.
@@ -237,6 +265,26 @@ g_mount_can_unmount (GMount *mount)
   iface = G_MOUNT_GET_IFACE (mount);
 
   return (* iface->can_unmount) (mount);
+}
+
+/**
+ * g_mount_can_eject: 
+ * @mount: a #GMount.
+ * 
+ * Checks if @mount can be eject.
+ * 
+ * Returns: %TRUE if the @mount can be ejected.
+ **/
+gboolean
+g_mount_can_eject (GMount *mount)
+{
+  GMountIface *iface;
+
+  g_return_val_if_fail (G_IS_MOUNT (mount), FALSE);
+
+  iface = G_MOUNT_GET_IFACE (mount);
+
+  return (* iface->can_eject) (mount);
 }
 
 /**
@@ -306,6 +354,76 @@ g_mount_unmount_finish (GMount       *mount,
   
   iface = G_MOUNT_GET_IFACE (mount);
   return (* iface->unmount_finish) (mount, result, error);
+}
+
+
+/**
+ * g_mount_eject:
+ * @mount: a #GMount.
+ * @cancellable: optional #GCancellable object, %NULL to ignore.
+ * @callback: a #GAsyncReadyCallback.
+ * @user_data: user data passed to @callback.
+ * 
+ * Ejects a mount. This is an asynchronous operation, and is 
+ * finished by calling g_mount_eject_finish() with the @mount 
+ * and #GAsyncResults data returned in the @callback.
+ **/
+void
+g_mount_eject (GMount             *mount,
+               GCancellable        *cancellable,
+               GAsyncReadyCallback  callback,
+               gpointer             user_data)
+{
+  GMountIface *iface;
+
+  g_return_if_fail (G_IS_MOUNT (mount));
+  
+  iface = G_MOUNT_GET_IFACE (mount);
+
+  if (iface->eject == NULL)
+    {
+      g_simple_async_report_error_in_idle (G_OBJECT (mount),
+					   callback, user_data,
+					   G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+					   _("mount doesn't implement eject"));
+      
+      return;
+    }
+  
+  (* iface->eject) (mount, cancellable, callback, user_data);
+}
+
+/**
+ * g_mount_eject_finish:
+ * @mount: a #GMount.
+ * @result: a #GAsyncResult.
+ * @error: a #GError location to store the error occuring, or %NULL to 
+ * ignore.
+ * 
+ * Finishes ejecting a mount. If any errors occured during the operation, 
+ * @error will be set to contain the errors and %FALSE will be returned.
+ * 
+ * Returns: %TRUE if the mount was successfully ejected. %FALSE otherwise.
+ **/
+gboolean
+g_mount_eject_finish (GMount       *mount,
+                      GAsyncResult  *result,
+                      GError       **error)
+{
+  GMountIface *iface;
+
+  g_return_val_if_fail (G_IS_MOUNT (mount), FALSE);
+  g_return_val_if_fail (G_IS_ASYNC_RESULT (result), FALSE);
+
+  if (G_IS_SIMPLE_ASYNC_RESULT (result))
+    {
+      GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
+      if (g_simple_async_result_propagate_error (simple, error))
+        return FALSE;
+    }
+  
+  iface = G_MOUNT_GET_IFACE (mount);
+  return (* iface->eject_finish) (mount, result, error);
 }
 
 #define __G_MOUNT_C__

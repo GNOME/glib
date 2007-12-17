@@ -155,6 +155,29 @@ g_volume_get_icon (GVolume *volume)
 
   return (* iface->get_icon) (volume);
 }
+
+/**
+ * g_volume_get_uuid:
+ * @volume: a #GVolume.
+ * 
+ * Gets the UUID for the @volume. The reference is typically based on
+ * the file system UUID for the volume in question and should be
+ * considered an opaque string. Returns %NULL if there is no UUID
+ * available.
+ * 
+ * Returns: the UUID for @volume or %NULL if no UUID can be computed.
+ **/
+char *
+g_volume_get_uuid (GVolume *volume)
+{
+  GVolumeIface *iface;
+
+  g_return_val_if_fail (G_IS_VOLUME (volume), NULL);
+
+  iface = G_VOLUME_GET_IFACE (volume);
+
+  return (* iface->get_uuid) (volume);
+}
   
 /**
  * g_volume_get_drive:
@@ -218,6 +241,29 @@ g_volume_can_mount (GVolume *volume)
     return FALSE;
 
   return (* iface->can_mount) (volume);
+}
+
+/**
+ * g_volume_can_eject:
+ * @volume: a #GVolume.
+ * 
+ * Checks if a volume can be ejected.
+ * 
+ * Returns: %TRUE if the @volume can be ejected. %FALSE otherwise.
+ **/
+gboolean
+g_volume_can_eject (GVolume *volume)
+{
+  GVolumeIface *iface;
+
+  g_return_val_if_fail (G_IS_VOLUME (volume), FALSE);
+
+  iface = G_VOLUME_GET_IFACE (volume);
+
+  if (iface->can_eject == NULL)
+    return FALSE;
+
+  return (* iface->can_eject) (volume);
 }
 
 /**
@@ -285,6 +331,70 @@ g_volume_mount_finish (GVolume  *volume,
   
   iface = G_VOLUME_GET_IFACE (volume);
   return (* iface->mount_finish) (volume, result, error);
+}
+
+/**
+ * g_volume_eject:
+ * @volume: a #GVolume.
+ * @cancellable: optional #GCancellable object, %NULL to ignore.
+ * @callback: a #GAsyncReadyCallback.
+ * @user_data: a #gpointer.
+ * 
+ * Ejects a volume.
+ **/
+void
+g_volume_eject (GVolume    *volume,
+                GCancellable        *cancellable,
+                GAsyncReadyCallback  callback,
+                gpointer             user_data)
+{
+  GVolumeIface *iface;
+
+  g_return_if_fail (G_IS_VOLUME (volume));
+
+  iface = G_VOLUME_GET_IFACE (volume);
+
+  if (iface->eject == NULL)
+    {
+      g_simple_async_report_error_in_idle (G_OBJECT (volume), callback, user_data,
+					   G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+					   _("volume doesn't implement eject"));
+      
+      return;
+    }
+  
+  (* iface->eject) (volume, cancellable, callback, user_data);
+}
+
+/**
+ * g_volume_eject_finish:
+ * @volume: pointer to a #GVolume.
+ * @result: a #GAsyncResult.
+ * @error: a #GError.
+ * 
+ * Finishes ejecting a volume.
+ * 
+ * Returns: %TRUE, %FALSE if operation failed.
+ **/
+gboolean
+g_volume_eject_finish (GVolume  *volume,
+                       GAsyncResult      *result,
+                       GError           **error)
+{
+  GVolumeIface *iface;
+
+  g_return_val_if_fail (G_IS_VOLUME (volume), FALSE);
+  g_return_val_if_fail (G_IS_ASYNC_RESULT (result), FALSE);
+
+  if (G_IS_SIMPLE_ASYNC_RESULT (result))
+    {
+      GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
+      if (g_simple_async_result_propagate_error (simple, error))
+	return FALSE;
+    }
+  
+  iface = G_VOLUME_GET_IFACE (volume);
+  return (* iface->eject_finish) (volume, result, error);
 }
 
 #define __G_VOLUME_C__
