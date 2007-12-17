@@ -248,6 +248,8 @@ g_file_base_init (gpointer g_class)
  * these cases this call will return %FALSE, but g_file_get_path()
  * will still return a native path.
  *
+ * This call does no blocking i/o.
+ * 
  * Returns: %TRUE if file is native. 
  **/
 gboolean
@@ -270,6 +272,8 @@ g_file_is_native (GFile *file)
  *
  * Checks to see if a #GFile has a given URI scheme.
  *
+ * This call does no blocking i/o.
+ * 
  * Returns: %TRUE if #GFile's backend supports the
  *     given URI scheme, %FALSE if URI scheme is %NULL,
  *     not supported, or #GFile is invalid.
@@ -300,6 +304,8 @@ g_file_has_uri_scheme (GFile      *file,
  * </programlisting>
  * Common schemes include "file", "http", "ftp", etc. 
  *
+ * This call does no blocking i/o.
+ * 
  * Returns: a string containing the URI scheme for the given 
  *     #GFile. The returned string should be freed with g_free() 
  *     when no longer needed.
@@ -327,6 +333,8 @@ g_file_get_uri_scheme (GFile *file)
  * or a uri like sftp://host/ it will return a single directory separator
  * (and on Windows, possibly a drive letter).
  *
+ * This call does no blocking i/o.
+ * 
  * Returns: string containing the #GFile's base name, or %NULL 
  *     if given #GFile is invalid. The returned string should be 
  *     freed with g_free() when no longer needed.
@@ -349,6 +357,8 @@ g_file_get_basename (GFile *file)
  *
  * Gets the local pathname for #GFile, if one exists. 
  *
+ * This call does no blocking i/o.
+ * 
  * Returns: string containing the #GFile's path, or %NULL if 
  *     no such path exists. The returned string should be 
  *     freed with g_free() when no longer needed.
@@ -371,6 +381,8 @@ g_file_get_path (GFile *file)
  *
  * Gets the URI for the @file.
  *
+ * This call does no blocking i/o.
+ * 
  * Returns: a string containing the #GFile's URI.
  *     The returned string should be freed with g_free() when no longer needed.
  **/
@@ -402,6 +414,8 @@ g_file_get_uri (GFile *file)
  * to UTF8 the pathname is used, otherwise the IRI is used
  * (a form of URI that allows UTF8 characters unescaped).
  *
+ * This call does no blocking i/o.
+ * 
  * Returns: a string containing the #GFile's parse name. The returned 
  *     string should be freed with g_free() when no longer needed.
  **/
@@ -425,6 +439,8 @@ g_file_get_parse_name (GFile *file)
  * the actual file or directory represented by the #GFile; see 
  * g_file_copy() if attempting to copy a file. 
  *
+ * This call does no blocking i/o.
+ * 
  * Returns: #GFile that is a duplicate of the given #GFile. 
  **/
 GFile *
@@ -445,6 +461,8 @@ g_file_dup (GFile *file)
  *
  * Creates a hash value for a #GFile.
  *
+ * This call does no blocking i/o.
+ * 
  * Returns: 0 if @file is not a valid #GFile, otherwise an 
  *     integer that can be used as hash value for the #GFile. 
  *     This function is intended for easily hashing a #GFile to 
@@ -469,6 +487,8 @@ g_file_hash (gconstpointer file)
  *
  * Checks equality of two given #GFile<!-- -->s
  *
+ * This call does no blocking i/o.
+ * 
  * Returns: %TRUE if @file1 and @file2 are equal.
  *     %FALSE if either is not a #GFile.
  **/
@@ -498,6 +518,8 @@ g_file_equal (GFile *file1,
  * If the @file represents the root directory of the 
  * file system, then %NULL will be returned.
  *
+ * This call does no blocking i/o.
+ * 
  * Returns: a #GFile structure to the parent of the given
  *     #GFile or %NULL if there is no parent. 
  **/
@@ -524,6 +546,8 @@ g_file_get_parent (GFile *file)
  * you can still have a #GFile that points to it. You can use this
  * for instance to create that file.
  *
+ * This call does no blocking i/o.
+ * 
  * Returns: a #GFile to a child specified by @name.
  **/
 GFile *
@@ -544,7 +568,11 @@ g_file_get_child (GFile      *file,
  *
  * Gets the child of @file for a given @display_name (i.e. a UTF8
  * version of the name). If this function fails, it returns %NULL and @error will be 
- * set.
+ * set. This is very useful when constructing a GFile for a new file
+ * and the user entered the filename in the user interface, for instance
+ * when you select a directory and type a filename in the file selector.
+ * 
+ * This call does no blocking i/o.
  * 
  * Returns: a #GFile to the specified child, or 
  *     %NULL if the display name couldn't be converted.  
@@ -570,6 +598,8 @@ g_file_get_child_for_display_name (GFile      *file,
  * @descendant: input #GFile.
  * 
  * Checks whether @parent (recursively) contains the specified @descendent.
+ * 
+ * This call does no blocking i/o.
  * 
  * Returns:  %TRUE if the @descendent's parent, grandparent, etc is @parent. %FALSE otherwise.
  **/
@@ -597,6 +627,8 @@ g_file_contains_file (GFile *parent,
  *
  * Gets the path for @descendant relative to @parent. 
  *
+ * This call does no blocking i/o.
+ * 
  * Returns: string with the relative path from @descendant 
  *     to @parent, or %NULL if @descendant is not a descendant of @parent. The returned string should be freed with 
  *     g_free() when no longer needed.
@@ -625,6 +657,8 @@ g_file_get_relative_path (GFile *parent,
  *
  * Resolves a relative path for @file to an absolute path.
  *
+ * This call does no blocking i/o.
+ * 
  * Returns: #GFile to the resolved path. %NULL if @relative_path 
  *     is %NULL or if @file is invalid.
  **/

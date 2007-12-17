@@ -1,5 +1,11 @@
 2007-12-17  Alexander Larsson  <alexl@redhat.com>
 
+        * gfile.c:
+	Add doc comments about what GFile operations are
+	guaranteed to not block.
+
+2007-12-17  Alexander Larsson  <alexl@redhat.com>
+
         * gunixmounts.c:
 	Add missing #ifdef fixing OSX build.
 	(#503334, patch from Richard Hult)
