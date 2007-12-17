@@ -1,5 +1,15 @@
 2007-12-17  Matthias Clasen <mclasen@redhat.com>
 
+	* gio/migration.xml: Stub of a migration chapter
+	* gio/overview.xml: Stub of an overview
+	* gio/gvfs-overview.{odg,png}: Overview diagram taken
+	from Alex Guadec slides.
+
+	* gio/Makefile.am:
+	* gio/gio-docs.xml: Include these
+
+2007-12-17  Matthias Clasen <mclasen@redhat.com>
+
 	* gio/gio-sections.txt: Updates
 
 2007-12-14  Matthias Clasen <mclasen@redhat.com>

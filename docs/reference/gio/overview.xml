@@ -1,0 +1,14 @@
+<part>
+  <title>GIO Overview</title>
+
+  <para>
+    <figure id="mainloop-states">
+      <title>GIO in the GTK+ library stack</title>
+      <graphic fileref="gvfs-overview.png" format="PNG"></graphic>
+    </figure>
+  </para>
+
+  <!-- FIXME a picture is worth a 1000 words, 
+             but we still need some text here 
+  -->
+</part>

@@ -1,0 +1,11 @@
+<chapter id="migrating">
+  <title>Migrating to GIO</title>
+
+  <para>
+    This chapter explains how to port applications from POSIX I/O or
+    gnome-vfs to GIO.
+  </para>
+
+  <!-- FIXME now explain ! -->
+
+</chapter>

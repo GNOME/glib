@@ -87,12 +87,16 @@ GTKDOC_LIBS = \
 MKDB_OPTIONS = --output-format=xml --sgml-mode
 
 # Images to copy into HTML directory
-HTML_IMAGES =
+HTML_IMAGES =			\
+	gvfs-overview.png
 
 content_files = 		\
-	version.xml
+	version.xml		\
+	migrating.xml
 
-extra_files = version.xml.in
+extra_files = 			\
+	version.xml.in		\
+	gvfs-overview.odg
 
 include $(top_srcdir)/gtk-doc.make
 

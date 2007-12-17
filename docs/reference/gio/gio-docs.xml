@@ -8,10 +8,10 @@
   <bookinfo>
     <title>GIO Reference Manual</title>
     <releaseinfo>for GIO &version;</releaseinfo>
-  </bookinfo>
-  <part>
-  <title>GIO Overview</title>
-  </part>
+  < /bookinfo>
+
+  <xi:include href="overview.xml"/>
+
   <part>
   <title>API Reference</title>
     <chapter id="file_ops">
@@ -95,6 +95,8 @@
 	<xi:include href="xml/giomodule.xml"/>
     </chapter>
   </part>
+
+  <xi:include href="migrating.xml"/>
 
   <chapter id="gio-hierarchy">
     <title>Object Hierarchy</title>
