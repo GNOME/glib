@@ -137,7 +137,7 @@ get_mount_for_mount_path (const char *mount_path)
   GUnixMountEntry *mount_entry;
   GUnixMount *mount;
 
-  mount_entry = g_get_unix_mount_at (mount_path, NULL);
+  mount_entry = g_unix_mount_at (mount_path, NULL);
   
   /* TODO: Set mountable volume? */
   mount = _g_unix_mount_new (NULL, mount_entry, NULL);
@@ -312,7 +312,7 @@ update_volumes (GUnixVolumeMonitor *monitor)
   GList *l;
   GUnixVolume *volume;
   
-  new_mountpoints = g_get_unix_mount_points (NULL);
+  new_mountpoints = g_unix_mount_points_get (NULL);
   
   new_mountpoints = g_list_sort (new_mountpoints, (GCompareFunc) g_unix_mount_point_compare);
   
@@ -365,7 +365,7 @@ update_mounts (GUnixVolumeMonitor *monitor)
   GUnixVolume *volume;
   const char *mount_path;
   
-  new_mounts = g_get_unix_mounts (NULL);
+  new_mounts = g_unix_mounts_get (NULL);
   
   new_mounts = g_list_sort (new_mounts, (GCompareFunc) g_unix_mount_compare);
   

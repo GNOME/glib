@@ -39,6 +39,12 @@ typedef struct _GUnixVolumeMonitor GUnixVolumeMonitor;
 typedef struct _GUnixVolumeMonitorClass GUnixVolumeMonitorClass;
 
 /* Forward definitions */
+
+/**
+ * GUnixMount:
+ *
+ * Implementation of the #GMount interface for Unix systems.
+ */
 typedef struct _GUnixMount GUnixMount;
 typedef struct _GUnixVolume GUnixVolume;
 

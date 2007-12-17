@@ -730,7 +730,7 @@ get_mount_info (GFileInfo             *fs_info,
       if (mountpoint == NULL)
 	mountpoint = "/";
 
-      mount = g_get_unix_mount_at (mountpoint, &cache_time);
+      mount = g_unix_mount_at (mountpoint, &cache_time);
       if (mount)
 	{
 	  if (g_unix_mount_is_readonly (mount))

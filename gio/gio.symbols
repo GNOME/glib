@@ -645,9 +645,9 @@ g_unix_mount_point_is_user_mountable
 g_unix_mount_point_is_loopback 
 g_unix_mount_point_guess_name 
 g_unix_mount_point_guess_icon
-g_get_unix_mount_points 
-g_get_unix_mounts 
-g_get_unix_mount_at 
+g_unix_mount_points_get
+g_unix_mounts_get
+g_unix_mount_at 
 g_unix_mounts_changed_since 
 g_unix_mount_points_changed_since 
 g_unix_mount_monitor_get_type  G_GNUC_CONST

@@ -30,14 +30,16 @@ G_BEGIN_DECLS
 /**
  * GUnixMountEntry:
  * 
- * Defines a Unix mount entry (e.g. "/media/cdrom").
+ * Defines a Unix mount entry (e.g. <filename>/media/cdrom</filename>). 
+ * This corresponds roughly to a mtab entry.
  **/
 typedef struct _GUnixMountEntry GUnixMountEntry;
 
 /**
  * GUnixMountPoint:
  * 
- * Defines a Unix mount point (e.g. "/dev").
+ * Defines a Unix mount point (e.g. <filename>/dev</filename>).
+ * This corresponds roughly to a fstab entry.
  **/
 typedef struct _GUnixMountPoint GUnixMountPoint;
 
@@ -80,19 +82,15 @@ gboolean       g_unix_mount_point_guess_can_eject   (GUnixMountPoint    *mount_p
 char *         g_unix_mount_point_guess_name        (GUnixMountPoint    *mount_point);
 GIcon *        g_unix_mount_point_guess_icon        (GUnixMountPoint    *mount_point);
 
-GList *        g_get_unix_mount_points              (guint64            *time_read);
-GList *        g_get_unix_mounts                    (guint64            *time_read);
-GUnixMountEntry * g_get_unix_mount_at               (const char         *mount_path,
+GList *        g_unix_mount_points_get              (guint64            *time_read);
+GList *        g_unix_mounts_get                    (guint64            *time_read);
+GUnixMountEntry *g_unix_mount_at                    (const char         *mount_path,
 						     guint64            *time_read);
 gboolean       g_unix_mounts_changed_since          (guint64             time);
 gboolean       g_unix_mount_points_changed_since    (guint64             time);
 
 GType              g_unix_mount_monitor_get_type (void) G_GNUC_CONST;
 GUnixMountMonitor *g_unix_mount_monitor_new      (void);
-
-
-
-char *g_unix_get_canonical_device_path (const char *device_path);
 
 gboolean g_unix_is_mount_path_system_internal (const char *mount_path);
 

@@ -119,7 +119,7 @@ g_local_directory_monitor_constructor (GType                  type,
       
       /* Emulate unmount detection */
       
-      mount = g_get_unix_mount_at (local_monitor->dirname, NULL);
+      mount = g_unix_mount_at (local_monitor->dirname, NULL);
       
       local_monitor->was_mounted = mount != NULL;
       
@@ -173,7 +173,7 @@ mounts_changed (GUnixMountMonitor *mount_monitor,
   mount = NULL;
   g_warning ("G_OS_WIN32: no mount emulation");
 #else  
-  mount = g_get_unix_mount_at (local_monitor->dirname, NULL);
+  mount = g_unix_mount_at (local_monitor->dirname, NULL);
   
   is_mounted = mount != NULL;
   

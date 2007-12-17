@@ -981,7 +981,7 @@ get_mount_points_timestamp (void)
 }
 
 /**
- * g_get_unix_mounts:
+ * g_unix_mounts_get:
  * @time_read: guint64 to contain a timestamp.
  * 
  * Gets a #GList of strings containing the unix mounts. 
@@ -992,7 +992,7 @@ get_mount_points_timestamp (void)
  * Returns: a #GList of the UNIX mounts. 
  **/
 GList *
-g_get_unix_mounts (guint64 *time_read)
+g_unix_mounts_get (guint64 *time_read)
 {
   if (time_read)
     *time_read = get_mounts_timestamp ();
@@ -1001,7 +1001,7 @@ g_get_unix_mounts (guint64 *time_read)
 }
 
 /**
- * g_get_unix_mount_at:
+ * g_unix_mount_at:
  * @mount_path: path for a possible unix mount.
  * @time_read: guint64 to contain a timestamp.
  * 
@@ -1012,13 +1012,13 @@ g_get_unix_mounts (guint64 *time_read)
  * Returns: a #GUnixMount. 
  **/
 GUnixMountEntry *
-g_get_unix_mount_at (const char *mount_path,
-		     guint64 *time_read)
+g_unix_mount_at (const char *mount_path,
+		 guint64    *time_read)
 {
   GList *mounts, *l;
   GUnixMountEntry *mount_entry, *found;
   
-  mounts = g_get_unix_mounts (time_read);
+  mounts = g_unix_mounts_get (time_read);
 
   found = NULL;
   for (l = mounts; l != NULL; l = l->next)
@@ -1037,7 +1037,7 @@ g_get_unix_mount_at (const char *mount_path,
 }
 
 /**
- * g_get_unix_mount_points:
+ * g_unix_mount_points_get:
  * @time_read: guint64 to contain a timestamp.
  * 
  * Gets a #GList of strings containing the unix mount points. 
@@ -1048,7 +1048,7 @@ g_get_unix_mount_at (const char *mount_path,
  * Returns: a #GList of the UNIX mountpoints. 
  **/
 GList *
-g_get_unix_mount_points (guint64 *time_read)
+g_unix_mount_points_get (guint64 *time_read)
 {
   if (time_read)
     *time_read = get_mount_points_timestamp ();
