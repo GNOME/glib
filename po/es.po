@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-15 11:47+0000\n"
-"PO-Revision-Date: 2007-12-15 21:42+0100\n"
+"POT-Creation-Date: 2007-12-17 09:34+0000\n"
+"PO-Revision-Date: 2007-12-17 20:23+0100\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Spanish <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -1180,41 +1180,41 @@ msgstr "tipo %s"
 msgid "Unexpected early end-of-stream"
 msgstr "Final de flujo inesperadamente prematuro"
 
-#: ../gio/gdesktopappinfo.c:372 ../gio/gwin32appinfo.c:222
+#: ../gio/gdesktopappinfo.c:376 ../gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr "Sin nombre"
 
-#: ../gio/gdesktopappinfo.c:548
+#: ../gio/gdesktopappinfo.c:552
 msgid "Desktop file didn't specify Exec field"
 msgstr "El archivo de escritorio no especificó el campo Exec"
 
-#: ../gio/gdesktopappinfo.c:830
+#: ../gio/gdesktopappinfo.c:834
 msgid "Unable to find terminal required for application"
 msgstr "Imposible encontrar el terminal requerido por la aplicación"
 
-#: ../gio/gdesktopappinfo.c:1012
+#: ../gio/gdesktopappinfo.c:1016
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
 "No se puede crear la carpeta de configuración de la aplicación %s del "
 "usuario: %s"
 
-#: ../gio/gdesktopappinfo.c:1016
+#: ../gio/gdesktopappinfo.c:1020
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "No se puede crear la carpeta de configuración MIME %s del usuario: %s"
 
-#: ../gio/gdesktopappinfo.c:1389
+#: ../gio/gdesktopappinfo.c:1393
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Definición personalizada para %s"
 
-#: ../gio/gdesktopappinfo.c:1413
+#: ../gio/gdesktopappinfo.c:1417
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "No se puede crear el archivo de escritorio %s del usuario"
 
-#: ../gio/gdesktopappinfo.c:1438
+#: ../gio/gdesktopappinfo.c:1442
 msgid "Can't load just created desktop file"
 msgstr "No se puede cargar el archivo de escritorio recientemente creado"
 
@@ -1268,7 +1268,7 @@ msgstr "No se soporta mover a la papelera"
 msgid "File names cannot contain '%c'"
 msgstr "Los nombres de archivo no pueden contener «%c»"
 
-#: ../gio/gfile.c:4001 ../gio/gvolume.c:251
+#: ../gio/gfile.c:4001 ../gio/gvolume.c:297
 msgid "volume doesn't implement mount"
 msgstr "el volumen no implementa el montado"
 
@@ -1563,9 +1563,13 @@ msgstr "El archivo destino no es un archivo regular"
 msgid "The file was externally modified"
 msgstr "El archivo se modificó externamente"
 
-#: ../gio/gmount.c:270
+#: ../gio/gmount.c:318
 msgid "mount doesn't implement unmount"
 msgstr "el punto de montaje no implementa desmontado"
+
+#: ../gio/gmount.c:388
+msgid "mount doesn't implement eject"
+msgstr "el punto de montaje no implementa la expulsión"
 
 #: ../gio/goutputstream.c:193
 msgid "Too large count value passed to g_output_stream_write"
@@ -1595,7 +1599,7 @@ msgstr "Error al leer de unix: %s"
 msgid "Error closing unix: %s"
 msgstr "Error al cerrar unix: %s"
 
-#: ../gio/gunixmounts.c:1741 ../gio/gunixmounts.c:1760
+#: ../gio/gunixmounts.c:1752 ../gio/gunixmounts.c:1789
 msgid "Filesystem root"
 msgstr "Sistema de archivos raíz"
 
@@ -1603,6 +1607,10 @@ msgstr "Sistema de archivos raíz"
 #, c-format
 msgid "Error writing to unix: %s"
 msgstr "Error al escribir en unix: %s"
+
+#: ../gio/gvolume.c:361
+msgid "volume doesn't implement eject"
+msgstr "el volumen no implementa la expulsión"
 
 #: ../gio/gwin32appinfo.c:277
 msgid "Can't find application"
