@@ -8,7 +8,7 @@
   <bookinfo>
     <title>GIO Reference Manual</title>
     <releaseinfo>for GIO &version;</releaseinfo>
-  < /bookinfo>
+  </bookinfo>
 
   <xi:include href="overview.xml"/>
 
