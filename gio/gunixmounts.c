@@ -1938,6 +1938,7 @@ _resolve_symlink (const char *file)
   return f;
 }
 
+#ifdef HAVE_MNTENT_H
 static const char *
 _resolve_dev_root (void)
 {
@@ -1998,6 +1999,7 @@ _resolve_dev_root (void)
  found:
   return real_dev_root;
 }
+#endif
 
 #define __G_UNIX_MOUNTS_C__
 #include "gioaliasdef.c"
