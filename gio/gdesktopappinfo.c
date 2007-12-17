@@ -148,6 +148,8 @@ g_desktop_app_info_init (GDesktopAppInfo *local)
  * g_desktop_app_info_new_from_filename:
  * @filename: a string containing a file name.
  * 
+ * Creates a new #GDesktopAppInfo.
+ *
  * Returns: a new #GDesktopAppInfo or %NULL on error.
  **/
 GDesktopAppInfo *
@@ -253,6 +255,8 @@ g_desktop_app_info_new_from_filename (const char *filename)
 /**
  * g_desktop_app_info_new:
  * @desktop_id: the desktop file id
+ * 
+ * Creates a new #GDesktopAppInfo.
  * 
  * Returns: a new #GDesktopAppInfo, or %NULL if no desktop file with that id
  **/

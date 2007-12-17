@@ -1650,8 +1650,9 @@ g_unix_mount_guess_type (GUnixMountEntry *mount_entry)
  * g_unix_mount_point_guess_type:
  * @mount_point: a #GUnixMountPoint.
  * 
- * Guesses the type of a unix mount point. If the mount type cannot be 
- * determined, returns %G_UNIX_MOUNT_TYPE_UNKNOWN.
+ * Guesses the type of a unix mount point. 
+ * If the mount type cannot be determined, 
+ * returns %G_UNIX_MOUNT_TYPE_UNKNOWN.
  * 
  * Returns: a #GUnixMountType.
  **/
@@ -1732,6 +1733,16 @@ type_to_icon (GUnixMountType type, gboolean is_mount_point)
   return icon_name;
 }
 
+/**
+ * g_unix_mount_guess_name:
+ * @mount_entry: a #GUnixMountEntry
+ * 
+ * Guesses the name of a Unix mount. 
+ * The result is a translated string.
+ *
+ * Returns: A newly allocated string that must
+ *     be freed with g_free()
+ */
 char *
 g_unix_mount_guess_name (GUnixMountEntry *mount_entry)
 {
@@ -1745,12 +1756,30 @@ g_unix_mount_guess_name (GUnixMountEntry *mount_entry)
   return name;
 }
 
+/**
+ * g_unix_mount_guess_icon:
+ * @mount_entry: a #GUnixMountEntry
+ * 
+ * Guesses the icon of a Unix mount. 
+ *
+ * Returns: a #GIcon
+ */
 GIcon *
 g_unix_mount_guess_icon (GUnixMountEntry *mount_entry)
 {
   return g_themed_icon_new (type_to_icon (g_unix_mount_guess_type (mount_entry), FALSE));
 }
 
+/**
+ * g_unix_mount_point_guess_name:
+ * @mount_point: a #GUnixMountPoint
+ * 
+ * Guesses the name of a Unix mount point. 
+ * The result is a translated string.
+ *
+ * Returns: A newly allocated string that must 
+ *     be freed with g_free()
+ */
 char *
 g_unix_mount_point_guess_name (GUnixMountPoint *mount_point)
 {
@@ -1764,6 +1793,14 @@ g_unix_mount_point_guess_name (GUnixMountPoint *mount_point)
   return name;
 }
 
+/**
+ * g_unix_mount_point_guess_icon:
+ * @mount_point: a #GUnixMountPoint
+ * 
+ * Guesses the icon of a Unix mount point. 
+ *
+ * Returns: a #GIcon
+ */
 GIcon *
 g_unix_mount_point_guess_icon (GUnixMountPoint *mount_point)
 {

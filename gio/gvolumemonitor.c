@@ -231,7 +231,7 @@ g_volume_monitor_init (GVolumeMonitor *monitor)
 
 
 /**
- * g_volume_monitor_get_drives:
+ * g_volume_monitor_get_connected_drives:
  * @volume_monitor: a #GVolumeMonitor.
  * 
  * Gets a list of drives connected to the system.

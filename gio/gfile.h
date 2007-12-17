@@ -43,6 +43,7 @@ G_BEGIN_DECLS
 
 /**
  * GFileQueryInfoFlags:
+ * @G_FILE_QUERY_INFO_NONE: No flags set.
  * @G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS: Don't follow symlinks.
  * 
  * Flags used when querying a #GFileInfo.

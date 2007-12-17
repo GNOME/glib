@@ -324,16 +324,17 @@ mainloop_proxy_free (MainLoopProxy *proxy)
  * @user_data: a #gpointer.
  * @notify: a #GDestroyNotify.
  * 
- * Used from an I/O job to send a callback to be run in the main loop (main thread), waiting for
- * the result (and thus blocking the I/O job).
+ * Used from an I/O job to send a callback to be run in the 
+ * main loop (main thread), waiting for the result (and thus 
+ * blocking the I/O job).
  *
  * Returns: The return value of @func
  **/
 gboolean
 g_io_scheduler_job_send_to_mainloop (GIOSchedulerJob *job,
-				     GSourceFunc func,
-				     gpointer user_data,
-				     GDestroyNotify notify)
+				     GSourceFunc      func,
+				     gpointer         user_data,
+				     GDestroyNotify   notify)
 {
   GSource *source;
   MainLoopProxy *proxy;
@@ -380,21 +381,22 @@ g_io_scheduler_job_send_to_mainloop (GIOSchedulerJob *job,
 }
 
 /**
- * g_io_scheduler_job_send_to_mainloop:
+ * g_io_scheduler_job_send_to_mainloop_async:
  * @job: a #GIOSchedulerJob.
  * @func: a #GSourceFunc callback that will be called in the main thread.
  * @user_data: a #gpointer.
  * @notify: a #GDestroyNotify.
  * 
- * Used from an I/O job to send a callback to be run asynchronously in the main loop (main thread).
- * The callback will be run when the main loop is availible, but at that time the I/O job
- * might have finished. The return value from the callback is ignored.
+ * Used from an I/O job to send a callback to be run asynchronously 
+ * in the main loop (main thread). The callback will be run when the 
+ * main loop is available, but at that time the I/O job might have 
+ * finished. The return value from the callback is ignored.
  **/
 void
 g_io_scheduler_job_send_to_mainloop_async (GIOSchedulerJob *job,
-					   GSourceFunc     func,
-					   gpointer        user_data,
-					   GDestroyNotify  notify)
+					   GSourceFunc      func,
+					   gpointer         user_data,
+					   GDestroyNotify   notify)
 {
   GSource *source;
   MainLoopProxy *proxy;

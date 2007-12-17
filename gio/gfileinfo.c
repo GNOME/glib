@@ -871,10 +871,10 @@ g_file_info_create_value_by_name (GFileInfo *info,
  * g_file_info_set_attribute:
  * @info: a #GFileInfo.
  * @attribute: a file attribute key.
- * @attr_value: a #GFileAttributeValue.
+ * @type: a #GFileAttributeType
+ * @value_p: pointer to the value
  * 
- * Sets the @attribute to contain the given @attr_value, 
- * if possible.
+ * Sets the @attribute to contain the given value, if possible.
  **/
 void
 g_file_info_set_attribute (GFileInfo                 *info,

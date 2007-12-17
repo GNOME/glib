@@ -1,3 +1,13 @@
+2007-12-17  Matthias Clasen  <mclasen@redhat.com>
+
+	* gdesktopappinfo.c:
+	* gunixmounts.c:
+	* gfileinfo.c:
+	* gvolumemonitor.c:
+	* gfile.h:
+	* gioscheduler.c:
+	* gvolume.h: Documentation updates
+
 2007-12-14  Matthias Clasen  <mclasen@redhat.com>
 
 	* gunixmounts.c:

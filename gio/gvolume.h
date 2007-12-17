@@ -48,7 +48,7 @@ G_BEGIN_DECLS
  * @get_drive: Gets a #GDrive the volume is located on. Returns %NULL if the #GVolume is not associated with a #GDrive.
  * @get_mount: Gets a #GMount representing the mounted volume. Returns %NULL if the #GVolume is not mounted.
  * @can_mount: Returns %TRUE if the #GVolume can be mounted.
- * @mount: Mounts a given #GVolume.
+ * @mount_fn: Mounts a given #GVolume.
  * @mount_finish: Finishes a mount operation.
  * 
  * Interface for implementing operations for mountable volumes.
