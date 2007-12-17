@@ -1,3 +1,22 @@
+2007-12-17  Alexander Larsson  <alexl@redhat.com>
+
+        * gnativevolumemonitor.h:
+        * gunionvolumemonitor.c:
+        * gunixvolumemonitor.c:
+	Add is_supported() to GNativeVolumeMonitorClass so
+	that we can avoid having to create an object to see
+	if the backend is supported at runtime.
+	Also add name member and an env var to pick a specific
+	volume monitor backend.
+	
+        * gmountprivate.h:
+        * glocalfile.c:
+	Add cancellable to _g_mount_get_for_mount_path()
+	
+        * glocaldirectorymonitor.c:
+        * glocalfilemonitor.c:
+	Avoid loading and unloading modules while sorting.
+
 2007-12-17  Matthias Clasen  <mclasen@redhat.com>
 
 	* gio.symbols:

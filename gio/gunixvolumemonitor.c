@@ -131,8 +131,15 @@ get_mount_for_uuid (GVolumeMonitor *volume_monitor, const char *uuid)
   return NULL;
 }
 
+static gboolean
+is_supported (void)
+{
+  return TRUE;
+}
+
 static GMount *
-get_mount_for_mount_path (const char *mount_path)
+get_mount_for_mount_path (const char *mount_path,
+                          GCancellable *cancellable)
 {
   GUnixMountEntry *mount_entry;
   GUnixMount *mount;
@@ -161,6 +168,8 @@ g_unix_volume_monitor_class_init (GUnixVolumeMonitorClass *klass)
   monitor_class->get_mount_for_uuid = get_mount_for_uuid;
 
   native_class->priority = 0;
+  native_class->name = "unix";
+  native_class->is_supported = is_supported;
   native_class->get_mount_for_mount_path = get_mount_for_mount_path;
 }
 

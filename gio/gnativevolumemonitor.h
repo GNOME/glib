@@ -22,9 +22,12 @@ struct _GNativeVolumeMonitor {
 struct _GNativeVolumeMonitorClass {
   GVolumeMonitorClass parent_class;
 
-  GMount * (*get_mount_for_mount_path) (const char *mount_path);
-  
   int priority;
+  char *name;
+
+  GMount * (*get_mount_for_mount_path) (const char *mount_path,
+					GCancellable *cancellable);
+  gboolean (*is_supported)             (void);
 };
 
 GType g_native_volume_monitor_get_type (void) G_GNUC_CONST;

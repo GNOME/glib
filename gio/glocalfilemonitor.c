@@ -165,6 +165,10 @@ get_default_local_file_monitor (gpointer data)
 
   chosen_type = G_TYPE_INVALID;
 
+  /* Ref all classes once so we don't load/unload them a lot */
+  for (i = 0; i < n_monitor_impls; i++)
+    g_type_class_ref (monitor_impls[i]);
+  
   g_qsort_with_data (monitor_impls,
                      n_monitor_impls,
                      sizeof (GType),
@@ -183,6 +187,9 @@ get_default_local_file_monitor (gpointer data)
       g_type_class_unref (klass);
     }
 
+  for (i = 0; i < n_monitor_impls; i++)
+    g_type_class_unref (g_type_class_peek (monitor_impls[i]));
+  
   g_free (monitor_impls);
 
   *ret = chosen_type;

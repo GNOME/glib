@@ -390,16 +390,49 @@ g_union_volume_monitor_remove_monitor (GUnionVolumeMonitor *union_monitor,
   g_signal_handlers_disconnect_by_func (child_monitor, child_drive_changed, union_monitor);
 }
 
-static GType
-get_default_native_type_with_exclude (GType type_to_exclude)
+/* Note: This compares in reverse order.
+   Higher prio -> sort first
+ */
+static gint
+compare_monitor_type (gconstpointer  a,
+		      gconstpointer  b,
+		      gpointer       user_data)
+{
+  GNativeVolumeMonitorClass *class_a, *class_b;
+  gint res;
+  const char *use_this_monitor;
+
+  /* We ref:ed all the classes, so the peek is safe */
+  class_a = g_type_class_peek (*(GType *)a);
+  class_b = g_type_class_peek (*(GType *)b);
+  use_this_monitor = user_data;
+
+  if (class_a == class_b)
+    res = 0;
+  else if (use_this_monitor != NULL &&
+	   strcmp (class_a->name, use_this_monitor) == 0)
+    res = -1;
+  else if (use_this_monitor != NULL &&
+	   strcmp (class_b->name, use_this_monitor) == 0)
+    res = 1;
+  else 
+    res = class_b->priority - class_a->priority;
+  
+  return res;
+}
+
+static GTypeClass *
+get_default_native_class (gpointer data)
 {
   GNativeVolumeMonitorClass *klass;
   GType *monitors;
   guint n_monitors;
-  GType native_type;
-  int native_prio;
+  GTypeClass *native_class;
+  const char *use_this;
   int i;
-      
+
+  use_this = g_getenv ("GIO_USE_VOLUME_MONITOR");
+  
 #ifdef G_OS_UNIX
   /* Ensure GUnixVolumeMonitor type is available */
   {
@@ -413,55 +446,44 @@ get_default_native_type_with_exclude (GType type_to_exclude)
   _g_io_modules_ensure_loaded ();
 
   monitors = g_type_children (G_TYPE_NATIVE_VOLUME_MONITOR, &n_monitors);
-  native_type = 0;
-  native_prio = -1;
+
+  /* Ref all classes once so we don't load/unload them a lot */
+  for (i = 0; i < n_monitors; i++)
+    g_type_class_ref (monitors[i]);
   
+  g_qsort_with_data (monitors, n_monitors, sizeof (GType),
+		     compare_monitor_type, (gpointer)use_this);
+
+  native_class = NULL;
   for (i = 0; i < n_monitors; i++)
     {
-      if (monitors[i] != type_to_exclude)
-        {
-          klass = G_NATIVE_VOLUME_MONITOR_CLASS (g_type_class_ref (monitors[i]));
+      klass = G_NATIVE_VOLUME_MONITOR_CLASS (g_type_class_ref (monitors[i]));
 
-          if (klass->priority > native_prio)
-            {
-	      native_prio = klass->priority;
-	      native_type = monitors[i];
-	    }
-
-          g_type_class_unref (klass);
-        }
+      if (klass->is_supported ())
+	{
+	  native_class = (GTypeClass *)klass;
+	  break;
+	}
+      g_type_class_unref (klass);
     }
-      
+
+  for (i = 0; i < n_monitors; i++)
+    g_type_class_unref (g_type_class_peek (monitors[i]));
+
   g_free (monitors);
 
-  return native_type;
+  return native_class;
 }
 
-static gpointer
-get_default_native_type (gpointer data)
-{
-  GType *ret = (GType *) data;
-
-  *ret = get_default_native_type_with_exclude (G_TYPE_INVALID);
-  return NULL;
-}
-
-static GOnce _once_init = G_ONCE_INIT;
-static GType _type = G_TYPE_INVALID;
 
 static GType
 get_native_type ()
 {
+  static GOnce _once_init = G_ONCE_INIT;
 
-  g_once (&_once_init, get_default_native_type, &_type);
-  
-  return _type;
-}
+  g_once (&_once_init, (GThreadFunc)get_default_native_class, NULL);
 
-static void
-update_native_type (GType type)
-{
-  _type = type;
+  return G_TYPE_FROM_CLASS (_once_init.retval);
 }
 
 static void
@@ -478,22 +500,8 @@ g_union_volume_monitor_init (GUnionVolumeMonitor *union_monitor)
   if (native_type != G_TYPE_INVALID)
     {
       monitor = g_object_new (native_type, NULL);
-      /* A native file monitor (the hal one if hald isn't running for
-       * example) may very well fail so handle falling back to the
-       * native one shipped with gio (e.g. GUnixVolumeMonitor)
-       */
-      if (monitor == NULL)
-        {
-          native_type = get_default_native_type_with_exclude (native_type);
-          monitor = g_object_new (native_type, NULL);
-        }
-
-      if (monitor != NULL)
-        {
-          g_union_volume_monitor_add_monitor (union_monitor, monitor);
-          g_object_unref (monitor);
-          update_native_type (native_type);
-        }
+      g_union_volume_monitor_add_monitor (union_monitor, monitor);
+      g_object_unref (monitor);
     }
   
   monitors = g_type_children (G_TYPE_VOLUME_MONITOR, &n_monitors);
@@ -521,7 +529,6 @@ g_union_volume_monitor_new (void)
   
   return monitor;
 }
-
 
 /**
  * g_volume_monitor_get:
@@ -554,11 +561,13 @@ g_volume_monitor_get (void)
 /**
  * _g_mount_get_for_mount_path:
  * @mountpoint: a string.
+ * @cancellable: a #GCancellable, or %NULL
  * 
  * Returns: a #GMount for given @mount_path or %NULL.  
  **/
 GMount *
-_g_mount_get_for_mount_path (const char *mount_path)
+_g_mount_get_for_mount_path (const char *mount_path,
+			     GCancellable *cancellable)
 {
   GType native_type;
   GNativeVolumeMonitorClass *klass;
@@ -575,7 +584,7 @@ _g_mount_get_for_mount_path (const char *mount_path)
   if (klass->get_mount_for_mount_path)
     {
       G_LOCK (the_volume_monitor);
-      mount = klass->get_mount_for_mount_path (mount_path);
+      mount = klass->get_mount_for_mount_path (mount_path, cancellable);
       G_UNLOCK (the_volume_monitor);
     }
 

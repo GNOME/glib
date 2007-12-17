@@ -898,7 +898,7 @@ g_local_file_find_enclosing_mount (GFile         *file,
       return NULL;
     }
 
-  mount = _g_mount_get_for_mount_path (mountpoint);
+  mount = _g_mount_get_for_mount_path (mountpoint, cancellable);
   g_free (mountpoint);
   if (mount)
     return mount;
