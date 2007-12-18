@@ -2,13 +2,103 @@
   <title>GIO Overview</title>
 
   <para>
+    GIO is striving to provide a modern, easy-to-use VFS api that sits
+    at the right level in the library stack. The goal is to overcome the
+    shortcomings of gnome-vfs and provide an api that is so good that
+    developers prefer it over raw POSIX calls. Among other things
+    that means using GObject. It also means not cloning the POSIX 
+    api, but providing a higher-level, document-centric interfaces.
+  </para>
+
+  <para>
+    The abstract file system model of GIO consists of a number of
+    interfaces and base classes for I/O and files:
+    <variablelist>
+       <varlistentry>
+         <term>GFile</term>
+         <listitem><para>reference to a file</para></listitem>
+       </varlistentry>
+       <varlistentry>
+         <term>GFileInfo</term>
+         <listitem><para>information about a file or filesystem</para></listitem>
+       </varlistentry>
+       <varlistentry>
+         <term>GFileEnumerator</term>
+         <listitem><para>list files in directories</para></listitem>
+       </varlistentry>
+       <varlistentry>
+         <term>GDrive</term>
+         <listitem><para>represents a drive</para></listitem>
+       </varlistentry>
+       <varlistentry>
+         <term>GVolume</term>
+         <listitem><para>represents a file system in an abstract way</para></listitem>
+       </varlistentry>
+       <varlistentry>
+         <term>GMount</term>
+         <listitem><para>represents a mounted file system</para></listitem>
+       </varlistentry>
+    </variablelist>
+    Then there is a number of stream classes, similar to the input and
+    output stream hierarchies that can be found in frameworks like Java:
+    <variablelist>
+       <varlistentry>
+         <term>GInputStream</term>
+         <listitem><para>read data</para></listitem>
+       </varlistentry>
+       <varlistentry>
+         <term>GOutputStream</term>
+         <listitem><para>write data</para></listitem>
+       </varlistentry>
+       <varlistentry>
+         <term>GSeekable</term>
+         <listitem><para>seek in data</para></listitem>
+       </varlistentry>
+    </variablelist>
+    There are interfaces related to applications and the types
+    of files they handle:
+    <variablelist>
+       <varlistentry>
+          <term>GAppInfo</term>
+          <listitem><para>information about an installed application</para></listitem>
+       </varlistentry>
+       <varlistentry>
+          <term>GIcon</term>
+          <listitem><para>abstract type for file and application icons</para></listitem>
+       </varlistentry>
+    </variablelist>
+    Beyond these, GIO provides facilities for file monitoring,
+    asynchronous I/O and filename completion.  In addition to the 
+    interfaces, GIO provides implementations for the local case. 
+    Implementations for various network file systems are provided 
+    by the GVFS package as loadable modules.
+  </para>
+
+  <para>
+    Other design choices which consciously break with the gnome-vfs
+    design are to move backends out-of-process, which minimizes the
+    dependency bloat and makes the whole system more robust. The backends
+    are not included in GIO, but in the separate GVFS package. GVFS 
+    also contains the GVFS daemon, which spawn further mount daemons 
+    for each individual connection.
+  </para>
+
+  <para>
     <figure id="mainloop-states">
       <title>GIO in the GTK+ library stack</title>
       <graphic fileref="gvfs-overview.png" format="PNG"></graphic>
     </figure>
   </para>
 
-  <!-- FIXME a picture is worth a 1000 words, 
-             but we still need some text here 
-  -->
+  <para>
+    The GIO model of I/O is stateful: if an application establishes e.g. 
+    a sftp connection to a server, it becomes available to all applications 
+    in the session; the user does not have to enter his password over 
+    and over again.
+  </para>
+  <para>
+    One of the big advantages of putting the VFS in the GLib layer 
+    is that GTK+ can directly use it, e.g. in the filechooser.
+  </para>
+
 </part>
