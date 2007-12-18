@@ -124,10 +124,12 @@ gboolean g_test_trap_fork               (guint64              usec_timeout,
                                          GTestTrapFlags       test_trap_flags);
 gboolean g_test_trap_has_passed         (void);
 gboolean g_test_trap_reached_timeout    (void);
-#define  g_test_trap_assert_passed()            g_test_trap_assertions (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, 1, 0, 0, 0)
-#define  g_test_trap_assert_failed()            g_test_trap_assertions (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, 0, 1, 0, 0)
-#define  g_test_trap_assert_stdout(soutpattern) g_test_trap_assertions (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, 0, 0, soutpattern, 0)
-#define  g_test_trap_assert_stderr(serrpattern) g_test_trap_assertions (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, 0, 0, 0, serrpattern)
+#define  g_test_trap_assert_passed()                      g_test_trap_assertions (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, 0, 0)
+#define  g_test_trap_assert_failed()                      g_test_trap_assertions (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, 1, 0)
+#define  g_test_trap_assert_stdout(soutpattern)           g_test_trap_assertions (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, 2, soutpattern)
+#define  g_test_trap_assert_stdout_unmatched(soutpattern) g_test_trap_assertions (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, 3, soutpattern)
+#define  g_test_trap_assert_stderr(serrpattern)           g_test_trap_assertions (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, 4, serrpattern)
+#define  g_test_trap_assert_stderr_unmatched(serrpattern) g_test_trap_assertions (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, 5, serrpattern)
 
 /* provide seed-able random numbers for tests */
 #define  g_test_rand_bit()              (0 != (g_test_rand_int() & (1 << 15)))
@@ -158,10 +160,8 @@ void    g_test_trap_assertions          (const char     *domain,
                                          const char     *file,
                                          int             line,
                                          const char     *func,
-                                         gboolean        must_pass,
-                                         gboolean        must_fail,
-                                         const char     *stdout_pattern,
-                                         const char     *stderr_pattern);
+                                         guint64         assertion_flags, /* 0-pass, 1-fail, 2-outpattern, 4-errpattern */
+                                         const char     *pattern);
 void    g_assertion_message             (const char     *domain,
                                          const char     *file,
                                          int             line,

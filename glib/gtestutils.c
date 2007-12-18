@@ -1526,11 +1526,15 @@ g_test_trap_assertions (const char     *domain,
                         const char     *file,
                         int             line,
                         const char     *func,
-                        gboolean        must_pass,
-                        gboolean        must_fail,
-                        const char     *stdout_pattern,
-                        const char     *stderr_pattern)
+                        guint64         assertion_flags, /* 0-pass, 1-fail, 2-outpattern, 4-errpattern */
+                        const char     *pattern)
 {
+  gboolean must_pass = assertion_flags == 0;
+  gboolean must_fail = assertion_flags == 1;
+  gboolean match_result = 0 == (assertion_flags & 1);
+  const char *stdout_pattern = (assertion_flags & 2) ? pattern : NULL;
+  const char *stderr_pattern = (assertion_flags & 4) ? pattern : NULL;
+  const char *match_error = match_result ? "failed to match" : "contains invalid match";
   if (test_trap_last_pid == 0)
     g_error ("child process failed to exit after g_test_trap_fork() and before g_test_trap_assert*()");
   if (must_pass && !g_test_trap_has_passed())
@@ -1545,15 +1549,15 @@ g_test_trap_assertions (const char     *domain,
       g_assertion_message (domain, file, line, func, msg);
       g_free (msg);
     }
-  if (stdout_pattern && !g_pattern_match_simple (stdout_pattern, test_trap_last_stdout))
+  if (stdout_pattern && match_result == !g_pattern_match_simple (stdout_pattern, test_trap_last_stdout))
     {
-      char *msg = g_strdup_printf ("stdout of child process (%d) failed to match: %s", test_trap_last_pid, stdout_pattern);
+      char *msg = g_strdup_printf ("stdout of child process (%d) %s: %s", test_trap_last_pid, match_error, stdout_pattern);
       g_assertion_message (domain, file, line, func, msg);
       g_free (msg);
     }
-  if (stderr_pattern && !g_pattern_match_simple (stderr_pattern, test_trap_last_stderr))
+  if (stderr_pattern && match_result == !g_pattern_match_simple (stderr_pattern, test_trap_last_stderr))
     {
-      char *msg = g_strdup_printf ("stderr of child process (%d) failed to match: %s", test_trap_last_pid, stderr_pattern);
+      char *msg = g_strdup_printf ("stderr of child process (%d) %s: %s", test_trap_last_pid, match_error, stderr_pattern);
       g_assertion_message (domain, file, line, func, msg);
       g_free (msg);
     }
