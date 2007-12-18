@@ -1,3 +1,12 @@
+2007-12-18  Tim-Philipp Müller  <tim at centricular dot net>
+
+	* docs/reference/glib/glib-sections.txt:
+	* glib/gasyncqueue.c: (g_async_queue_new), (g_async_queue_new_full),
+	  (g_async_queue_unref):
+	* glib/gasyncqueue.h: add g_async_queue_new_full() which takes a
+	  GDestroyNotify function to free any remaining queue items when the
+	  queue is destroyed after the final atomic unref (#367550).
+
 2007-12-18 13:45:23  Tim Janik  <timj@imendio.com>
 
 	* glib/gtestutils.[hc]: added g_test_trap_assert_stdout_unmatched() and

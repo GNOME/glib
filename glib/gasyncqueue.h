@@ -38,6 +38,8 @@ typedef struct _GAsyncQueue GAsyncQueue;
 /* Get a new GAsyncQueue with the ref_count 1 */
 GAsyncQueue*  g_async_queue_new                 (void);
 
+GAsyncQueue*  g_async_queue_new_full            (GDestroyNotify item_free_func);
+
 /* Lock and unlock a GAsyncQueue. All functions lock the queue for
  * themselves, but in certain cirumstances you want to hold the lock longer,
  * thus you lock the queue, call the *_unlocked functions and unlock it again.
