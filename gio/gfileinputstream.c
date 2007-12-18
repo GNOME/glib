@@ -33,9 +33,8 @@
 /**
  * SECTION:gfileinputstream
  * @short_description: File input streaming operations
+ * @include: gio.h
  * @see_also: #GInputStream, #GDataInputStream, #GSeekable
- * 
- * 
  *
  **/
 

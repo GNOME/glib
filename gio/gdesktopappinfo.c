@@ -38,6 +38,16 @@
 
 #include "gioalias.h"
 
+/**
+ * SECTION:gdesktopappinfo
+ * @short_description: Application information from desktop files
+ * @include: gio/gdesktopappinfo.h 
+ * 
+ * #GDesktopAppInfo is an implementation of #GAppInfo based on
+ * desktop files.
+ *
+ **/
+
 #define DEFAULT_APPLICATIONS_GROUP  "Default Applications" 
 #define MIME_CACHE_GROUP            "MIME Cache"
 

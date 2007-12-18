@@ -30,8 +30,9 @@
 #include "gioalias.h"
 
 /**
- * SECTION:volume
- * @short_description: volume management
+ * SECTION:gvolume
+ * @short_description: Volume management
+ * @include: gio.h
  * 
  * The #GVolume interface represents user-visible objects that can be
  * mounted. Note, when porting from GnomeVFS, #GVolume is the moral

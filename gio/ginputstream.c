@@ -33,6 +33,7 @@
 /**
  * SECTION:ginputstream
  * @short_description: Base class for implementing streaming input
+ * @include: gio.h
  *
  * 
  * 

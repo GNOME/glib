@@ -30,8 +30,8 @@
 /**
  * SECTION:gfileicon
  * @short_description: Icons pointing to an image file
+ * @include: gio.h
  * @see_also: #GIcon, #GLoadableIcon
- * @include: gio/gfileicon.h
  * 
  * #GFileIcon specifies an icon by pointing to an image file
  * to be used as icon.

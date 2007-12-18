@@ -40,8 +40,8 @@
 /**
  * SECTION:gfile
  * @short_description: File and Directory Handling
+ * @include: gio.h
  * @see_also: #GFileInfo, #GFileEnumerator
- * @include: gio/gfile.h
  * 
  * #GFile is a high level abstraction for manipulating files on a 
  * virtual file system. #GFile<!-- -->s are lightweight, immutable 

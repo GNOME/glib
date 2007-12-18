@@ -32,7 +32,7 @@
 /**
  * SECTION:gvfs
  * @short_description: Virtual File System 
- * @include: gio/gvfs.h
+ * @include: gio.h
  * 
  * Entry point for using GIO functionality.
  *

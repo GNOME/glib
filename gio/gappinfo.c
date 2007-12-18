@@ -30,7 +30,7 @@
 /**
  * SECTION:gappinfo
  * @short_description: Application information and launch contexts
- * @stability: Unstable
+ * @include: gio.h
  * 
  * #GAppInfo and #GAppLaunchContext are used for describing and launching 
  * applications installed on the system. 

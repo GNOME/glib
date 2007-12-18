@@ -30,6 +30,7 @@
 /**
  * SECTION:gvolumemonitor
  * @short_description: Volume Monitor
+ * @include: gio.h
  * @see_also: #GDirectoryMonitor, #GFileMonitor
  * 
  * Monitors a mounted volume for changes.

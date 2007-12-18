@@ -1,3 +1,7 @@
+2007-12-17  Matthias Clasen  <mclasen@redhat.com>
+
+	* *.c: Fix up includes in the section docs.
+
 2007-12-17  Alexander Larsson  <alexl@redhat.com>
 
         * gnativevolumemonitor.h:

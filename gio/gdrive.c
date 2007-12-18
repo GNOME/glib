@@ -31,7 +31,7 @@
 /**
  * SECTION:gdrive
  * @short_description: Virtual File System drive management
- * @include: gio/gdrive.h
+ * @include: gio.h
  * 
  * #GDrive is a container class for #GVolume objects that stem from
  * the same piece of media. As such, #GDrive abstracts a drive with

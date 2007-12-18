@@ -41,6 +41,7 @@
 /**
  * SECTION:gsimpleasyncresult
  * @short_description: Simple asynchronous results implementation
+ * @include: gio.h
  * @see_also: #GAsyncResult
  *
  * Implements #GAsyncResult for simple cases. Most of the time, this 
@@ -48,24 +49,25 @@
  * Because of this, #GSimpleAsyncResult is used throughout GIO for 
  * handling asynchronous functions. 
  * 
- * GSimpleAsyncResult handles #GAsyncReadyCallback<!-- -->s, error reporting,
- * operation cancellation and the final state of an operation, completely
- * transparent to the application. Results can be returned as a pointer e.g. 
- * for functions that return data that is collected asynchronously,
- * a boolean value for checking the success or failure of an operation,
- * or a #gssize for operations which return the number of bytes modified 
- * by the operation; all of the simple return cases are covered.
+ * GSimpleAsyncResult handles #GAsyncReadyCallback<!-- -->s, error 
+ * reporting, operation cancellation and the final state of an operation, 
+ * completely transparent to the application. Results can be returned 
+ * as a pointer e.g. for functions that return data that is collected 
+ * asynchronously, a boolean value for checking the success or failure 
+ * of an operation, or a #gssize for operations which return the number 
+ * of bytes modified by the operation; all of the simple return cases 
+ * are covered.
  * 
  * Most of the time, an application will not need to know of the details 
- * of this API; it is handled transparently, and any necessary operations are 
- * handled by #GAsyncResult's interface. However, if implementing a new GIO 
- * module, for writing language bindings, or for complex applications that 
- * need better control of how asynchronous operations are completed, it is 
- * important to understand this functionality.
+ * of this API; it is handled transparently, and any necessary operations 
+ * are handled by #GAsyncResult's interface. However, if implementing a 
+ * new GIO module, for writing language bindings, or for complex 
+ * applications that need better control of how asynchronous operations 
+ * are completed, it is important to understand this functionality.
  * 
- * GSimpleAsyncResults are tagged with the calling function to ensure that 
- * asynchronous functions and their finishing functions are used together 
- * correctly.
+ * GSimpleAsyncResults are tagged with the calling function to ensure 
+ * that asynchronous functions and their finishing functions are used 
+ * together correctly.
  * 
  * To create a new #GSimpleAsyncResult, call g_simple_async_result_new(). 
  * If the result needs to be created for a #GError, use 
@@ -81,8 +83,8 @@
  * calling g_simple_async_result_set_handle_cancellation() with a 
  * #GSimpleAsyncResult for the operation and %FALSE. 
  * 
- * GSimpleAsyncResult can integrate into GLib's Main Event Loop 
- * <!-- TODO: Crosslink -->, or it can use #GThread<!-- -->s if available. 
+ * GSimpleAsyncResult can integrate into GLib's event loop, #GMainLoop, 
+ * or it can use #GThread<!-- -->s if available. 
  * g_simple_async_result_complete() will finish an I/O task directly within 
  * the main event loop. g_simple_async_result_complete_in_idle() will 
  * integrate the I/O task into the main event loop as an idle function and 

@@ -31,6 +31,7 @@
 /**
  * SECTION:gdataoutputstream
  * @short_description: Data Output Stream
+ * @include: gio.h
  * @see_also: #GOutputStream
  * 
  * Data output stream implements #GOutputStream and includes functions for 

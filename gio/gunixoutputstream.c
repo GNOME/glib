@@ -44,6 +44,7 @@
 /**
  * SECTION:gunixoutputstream
  * @short_description: Streaming output operations for Unix file descriptors
+ * @include: gio/gunixoutputstream.h
  * @see_also: #GOutputStream
  *
  * #GUnixOutputStream implements #GOutputStream for writing to a a

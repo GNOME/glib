@@ -30,6 +30,7 @@
 /**
  * SECTION:gfilterinputstream
  * @short_description: Filter Input Stream
+ * @include: gio.h
  *
  **/
 

@@ -44,6 +44,7 @@
 /**
  * SECTION:gunixinputstream
  * @short_description: Streaming input operations for Unix file descriptors
+ * @include: gio/gunixinputstream.h
  * @see_also: #GInputStream
  *
  * #GUnixInputStream implements #GInputStream for reading from a

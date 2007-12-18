@@ -34,6 +34,7 @@
 /**
  * SECTION:gdirectorymonitor
  * @short_description: Directory Monitor
+ * @include: gio.h
  * @see_also: #GFileMonitor
  * 
  * Monitors a directory for changes to files in it.

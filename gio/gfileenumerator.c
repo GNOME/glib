@@ -32,20 +32,23 @@
 /**
  * SECTION:gfileenumerator
  * @short_description: Enumerated Files Routines
+ * @include: gio.h
  * 
- * #GFileEnumerator allows you to operate on a set of #GFile<!-- -->s, returning
- * a #GFileInfo structure for each file enumerated (e.g. g_file_enumerate_children() 
- * will return a #GFileEnumerator for each of the children within a directory).
+ * #GFileEnumerator allows you to operate on a set of #GFile<!-- -->s, 
+ * returning a #GFileInfo structure for each file enumerated (e.g. 
+ * g_file_enumerate_children() will return a #GFileEnumerator for each 
+ * of the children within a directory).
  *
  * To get the next file's information from a #GFileEnumerator, use 
  * g_file_enumerator_next_file() or its asynchronous version, 
- * g_file_enumerator_next_file_async(). Note that the asynchronous version will
- * return a list of #GFileInfo<!---->s, whereas the synchronous will only return 
- * the next file in the enumerator.
+ * g_file_enumerator_next_file_async(). Note that the asynchronous 
+ * version will return a list of #GFileInfo<!---->s, whereas the 
+ * synchronous will only return the next file in the enumerator.
  *
- * To close a #GFileEnumerator, use g_file_enumerator_close(), or its asynchronous 
- * version, g_file_enumerator_close_async(). Once a #GFileEnumerator is closed, 
- * no further actions may be performed on it, and it should be freed with g_object_unref().
+ * To close a #GFileEnumerator, use g_file_enumerator_close(), or 
+ * its asynchronous version, g_file_enumerator_close_async(). Once 
+ * a #GFileEnumerator is closed, no further actions may be performed 
+ * on it, and it should be freed with g_object_unref().
  * 
  **/ 
 

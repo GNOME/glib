@@ -36,11 +36,11 @@
 
 /**
  * SECTION:gmount
- * @short_description: mount management
+ * @short_description: Mount management
+ * @include: gio.h
  * 
- * The #GMount interface represents user-visible mounts. Note, when
- * porting from GnomeVFS, #GMount is the moral equivalent of
- * #GnomeVFSVolume.
+ * The #GMount interface represents user-visible mounts. Note, when 
+ * porting from GnomeVFS, #GMount is the moral equivalent of #GnomeVFSVolume.
  * 
  * Unmounting a #GMount instance is an asynchronous operation. For
  * more information about asynchronous operations, see #GAsyncReady
@@ -51,9 +51,8 @@
  * #GAsyncReady structure will be passed to the callback.  That
  * callback should then call g_mount_unmount_finish() with the #GMount
  * and the #GAsyncReady data to see if the operation was completed
- * successfully.  If an @error is present when
- * g_mount_unmount_finish() is called, then it will be filled with any
- * error information.
+ * successfully.  If an @error is present when g_mount_unmount_finish() 
+ * is called, then it will be filled with any error information.
  **/
 
 static void g_mount_base_init (gpointer g_class);

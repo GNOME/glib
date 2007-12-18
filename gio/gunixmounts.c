@@ -57,6 +57,7 @@ static const char *_resolve_dev_root (void);
 
 /**
  * SECTION:gunixmounts
+ * @include: gio/gunixmounts.h
  * @short_description: Unix Mounts
  * 
  * Routines for managing mounted UNIX mount points and paths.

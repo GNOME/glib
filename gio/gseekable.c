@@ -29,6 +29,7 @@
 /**
  * SECTION:gseekable
  * @short_description: Stream seeking interface
+ * @include: gio.h
  * @see_also: #GInputStream, #GOutputStream
  * 
  * #GSeekable is implemented by streams (implementations of 

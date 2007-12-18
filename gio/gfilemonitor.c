@@ -33,6 +33,7 @@
 /**
  * SECTION:gfilemonitor
  * @short_description: File Monitor
+ * @include: gio.h
  * @see_also: #GDirectoryMonitor
  *
  * Monitors a file for changes.

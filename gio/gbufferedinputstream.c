@@ -33,6 +33,7 @@
 /**
  * SECTION:gbufferedinputstream
  * @short_description: Buffered Input Stream
+ * @include: gio.h
  * @see_also: #GFilterInputStream, #GInputStream
  * 
  * Buffered input stream implements #GFilterInputStream and provides 

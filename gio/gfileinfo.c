@@ -23,6 +23,7 @@
 /**
  * SECTION:gfileinfo
  * @short_description: File Information and Attributes
+ * @include: gio.h
  * @see_also: #GFile
  * 
  * Functionality for manipulating basic metadata for files. #GFileInfo
@@ -30,9 +31,6 @@
  * contain, and allows for manipulation of extended attributes. 
  * #GFileAttributeMatcher allows for searching through a #GFileInfo for 
  * attributes.
- * 
- * 
- * 
  **/
 
 #include <config.h>

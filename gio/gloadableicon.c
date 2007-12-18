@@ -30,9 +30,11 @@
 /**
  * SECTION:gloadableicon
  * @short_description: Loadable Icons
+ * @include: gio.h
  * @see_also: #GIcon, #GThemedIcon
  * 
- * Extends the #GIcon interface and adds the ability to load icons from streams.
+ * Extends the #GIcon interface and adds the ability to 
+ * load icons from streams.
  **/
 
 static void          g_loadable_icon_real_load_async  (GLoadableIcon        *icon,
