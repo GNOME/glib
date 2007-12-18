@@ -10,7 +10,7 @@
     <releaseinfo>for GIO &version;</releaseinfo>
   </bookinfo>
 
-  <xi:include href="overview.xml"/>
+  <xi:include href="xml/overview.xml"/>
 
   <part>
   <title>API Reference</title>
@@ -96,7 +96,7 @@
     </chapter>
   </part>
 
-  <xi:include href="migrating.xml"/>
+  <xi:include href="xml/migrating.xml"/>
 
   <chapter id="gio-hierarchy">
     <title>Object Hierarchy</title>

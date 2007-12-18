@@ -1,5 +1,9 @@
 2007-12-17  Matthias Clasen <mclasen@redhat.com>
 
+	* gio: Flesh out the overview and migration docs.
+
+2007-12-17  Matthias Clasen <mclasen@redhat.com>
+
 	* gio/migration.xml: Stub of a migration chapter
 	* gio/overview.xml: Stub of an overview
 	* gio/gvfs-overview.{odg,png}: Overview diagram taken

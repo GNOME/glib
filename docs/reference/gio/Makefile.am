@@ -92,6 +92,11 @@ HTML_IMAGES =			\
 
 content_files = 		\
 	version.xml		\
+	overview.xml		\
+	migrating.xml
+
+expand_content_files =		\
+	overview.xml		\
 	migrating.xml
 
 extra_files = 			\

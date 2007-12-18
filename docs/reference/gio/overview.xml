@@ -1,13 +1,16 @@
 <part>
   <title>GIO Overview</title>
 
+  <chapter> 
+    <title>Introduction</title>
+
   <para>
-    GIO is striving to provide a modern, easy-to-use VFS api that sits
+    GIO is striving to provide a modern, easy-to-use VFS API that sits
     at the right level in the library stack. The goal is to overcome the
-    shortcomings of gnome-vfs and provide an api that is so good that
+    shortcomings of GnomeVFS and provide an API that is so good that
     developers prefer it over raw POSIX calls. Among other things
     that means using GObject. It also means not cloning the POSIX 
-    api, but providing a higher-level, document-centric interfaces.
+    API, but providing a higher-level, document-centric interfaces.
   </para>
 
   <para>
@@ -68,31 +71,29 @@
        </varlistentry>
     </variablelist>
     Beyond these, GIO provides facilities for file monitoring,
-    asynchronous I/O and filename completion.  In addition to the 
+    asynchronous I/O and filename completion. In addition to the 
     interfaces, GIO provides implementations for the local case. 
     Implementations for various network file systems are provided 
     by the GVFS package as loadable modules.
   </para>
 
   <para>
-    Other design choices which consciously break with the gnome-vfs
+    Other design choices which consciously break with the GnomeVFS
     design are to move backends out-of-process, which minimizes the
     dependency bloat and makes the whole system more robust. The backends
-    are not included in GIO, but in the separate GVFS package. GVFS 
-    also contains the GVFS daemon, which spawn further mount daemons 
-    for each individual connection.
+    are not included in GIO, but in the separate GVFS package. The GVFS 
+    package also contains the GVFS daemon, which spawn further mount 
+    daemons for each individual connection.
   </para>
 
-  <para>
-    <figure id="mainloop-states">
-      <title>GIO in the GTK+ library stack</title>
-      <graphic fileref="gvfs-overview.png" format="PNG"></graphic>
-    </figure>
-  </para>
+  <figure id="gvfs-overview">
+    <title>GIO in the GTK+ library stack</title>
+    <graphic fileref="gvfs-overview.png" format="PNG"></graphic>
+  </figure>
 
   <para>
     The GIO model of I/O is stateful: if an application establishes e.g. 
-    a sftp connection to a server, it becomes available to all applications 
+    a SFTP connection to a server, it becomes available to all applications 
     in the session; the user does not have to enter his password over 
     and over again.
   </para>
@@ -100,5 +101,27 @@
     One of the big advantages of putting the VFS in the GLib layer 
     is that GTK+ can directly use it, e.g. in the filechooser.
   </para>
+  </chapter>
+
+  <chapter>
+    <title>Compiling GIO applications</title>
+
+    <para>
+      GIO comes with a <filename>gio-2.0.pc</filename> file that you
+      should use together with <literal>pkg-config</literal> to obtain
+      the necessary information about header files and libraries. See
+      the <literal>pkg-config</literal> man page or the GLib documentation 
+      for more information on how to use <literal>pkg-config</literal> 
+      to compile your application.
+    </para>
+
+    <para>
+      If you are using GIO on UNIX-like systems, you may want to use
+      UNIX-specific GIO interfaces such as #GUnixInputStream, 
+      #GUnixOutputStream, #GUnixMount or #GDesktopAppInfo. 
+      To do so, use the <filename>gio-unix-2.0.pc</filename> file 
+      instead of <filename>gio-2.0.pc</filename>
+    </para>
+  </chapter>
 
 </part>

@@ -1091,6 +1091,7 @@ g_filename_completer_get_type
 <TITLE>Unix Mounts</TITLE>
 GUnixMount
 GUnixMountPoint
+GUnixMountEntry
 GUnixMountMonitor
 g_unix_mount_free
 g_unix_mount_point_free
@@ -1133,13 +1134,6 @@ G_UNIX_MOUNT_CLASS
 G_TYPE_UNIX_MOUNT
 <SUBSECTION Private>
 g_unix_mount_monitor_get_type
-</SECTION>
-
-<SECTION>
-<FILE>gunixmountentry</FILE>
-<TITLE>GUnixMountEntry</TITLE>
-GUnixMountEntry
-<SUBSECTION Standard>
 </SECTION>
 
 <SECTION>
