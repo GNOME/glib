@@ -1186,6 +1186,7 @@ main (int   argc,
   g_timer_destroy(timer);
   g_timer_destroy(timer2);
 
+#define REF_INVALID  "Wed Dec 19 17:20:20 GMT 2007"
 #define REF_SEC_UTC  320063760
 #define REF_STR_UTC  "1980-02-22T10:36:00Z"
 #define REF_STR_CEST "1980-02-22T12:36:00+02:00"
@@ -1194,6 +1195,7 @@ main (int   argc,
   g_print ("checking g_time_val_from_iso8601...\n");
   ref_date.tv_sec = REF_SEC_UTC;
   ref_date.tv_usec = 0;
+  g_assert (g_time_val_from_iso8601 (REF_INVALID, &date) == FALSE);
   g_assert (g_time_val_from_iso8601 (REF_STR_UTC, &date) != FALSE);
   g_print ("\t=> UTC stamp = %ld (should be: %ld) (%ld off)\n", date.tv_sec, ref_date.tv_sec, date.tv_sec - ref_date.tv_sec);
   g_assert (date.tv_sec == ref_date.tv_sec);
