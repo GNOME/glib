@@ -2530,6 +2530,7 @@ g_uri_unescape_string
 <TITLE>Data Checksums</TITLE>
 <FILE>checksum</FILE>
 GChecksumType
+g_checksum_type_get_length
 GChecksum
 g_checksum_new
 g_checksum_copy

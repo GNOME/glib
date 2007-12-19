@@ -1049,6 +1049,41 @@ sha256_sum_digest (Sha256sum *sha256,
  */
 
 /**
+ * g_checksum_type_get_length:
+ * @checksum_type: a #GChecksumType
+ *
+ * Gets the length in bytes of digests of type @type
+ *
+ * Return value: the checksum length, or -1 if @type is
+ * not supported.
+ * 
+ * Since: 2.16
+ */
+gssize
+g_checksum_type_get_length (GChecksumType checksum_type)
+{
+  gssize len = -1;
+
+  switch (checksum_type)
+    {
+    case G_CHECKSUM_MD5:
+      len = MD5_DIGEST_LEN;
+      break;
+    case G_CHECKSUM_SHA1:
+      len = SHA1_DIGEST_LEN;
+      break;
+    case G_CHECKSUM_SHA256:
+      len = SHA256_DIGEST_LEN;
+      break;
+    default:
+      len = -1;
+      break;
+    }
+
+  return len;
+}
+
+/**
  * g_checksum_new:
  * @checksum_type: the desired type of checksum
  *
@@ -1244,8 +1279,9 @@ g_checksum_get_string (GChecksum *checksum)
 /**
  * g_checksum_get_digest:
  * @checksum: a #GChecksum
- * @digest: return location for the digest
- * @digest_len: return location for the length of the digest, or %NULL
+ * @digest: output buffer
+ * @digest_len: an inout parameter. The caller initializes it to the size of @buffer.
+ *   After the call it contains the length of the digest.
  *
  * Gets the digest from @checksum as a raw binary vector and places it
  * into @digest. The size of the digest depends on the type of checksum.
@@ -1257,16 +1293,17 @@ g_checksum_get_string (GChecksum *checksum)
  */
 void
 g_checksum_get_digest (GChecksum  *checksum,
-                       guint8    **digest,
+                       guint8     *buffer,
                        gsize      *digest_len)
 {
   gboolean checksum_open = FALSE;
-  guint8 *new;
   gchar *str = NULL;
-  gsize len = 0;
+  gsize len;
 
   g_return_if_fail (checksum != NULL);
-  g_return_if_fail (digest == NULL || *digest == NULL);
+
+  len = g_checksum_type_get_length (checksum->type);
+  g_return_if_fail (*digest_len >= len);
 
   checksum_open = !!(checksum->digest_str == NULL);
 
@@ -1278,9 +1315,7 @@ g_checksum_get_digest (GChecksum  *checksum,
           md5_sum_close (&(checksum->sum.md5));
           str = md5_sum_to_string (&(checksum->sum.md5));
         }
-      new = g_new (guint8, MD5_DIGEST_LEN);
-      md5_sum_digest (&(checksum->sum.md5), new);
-      len = MD5_DIGEST_LEN;
+      md5_sum_digest (&(checksum->sum.md5), buffer);
       break;
     case G_CHECKSUM_SHA1:
       if (checksum_open)
@@ -1288,9 +1323,7 @@ g_checksum_get_digest (GChecksum  *checksum,
           sha1_sum_close (&(checksum->sum.sha1));
           str = sha1_sum_to_string (&(checksum->sum.sha1));
         }
-      new = g_new (guint8, SHA1_DIGEST_LEN);
-      sha1_sum_digest (&(checksum->sum.sha1), new);
-      len = SHA1_DIGEST_LEN;
+      sha1_sum_digest (&(checksum->sum.sha1), buffer);
       break;
     case G_CHECKSUM_SHA256:
       if (checksum_open)
@@ -1298,13 +1331,9 @@ g_checksum_get_digest (GChecksum  *checksum,
           sha256_sum_close (&(checksum->sum.sha256));
           str = sha256_sum_to_string (&(checksum->sum.sha256));
         }
-      new = g_new (guint8, SHA256_DIGEST_LEN);
-      sha256_sum_digest (&(checksum->sum.sha256), new);
-      len = SHA256_DIGEST_LEN;
+      sha256_sum_digest (&(checksum->sum.sha256), buffer);
       break;
     default:
-      new = NULL;
-      len = 0;
       g_assert_not_reached ();
       break;
     }
@@ -1312,21 +1341,7 @@ g_checksum_get_digest (GChecksum  *checksum,
   if (str)
     checksum->digest_str = str;
 
-  if (digest == NULL)
-    g_free (new);
-  else
-    {
-      if (*digest == NULL)
-        *digest = new;
-      else
-        g_warning ("Digest set on top of a previous digest or uninitialized "
-                   "memory\n"
-                   "This indicates a bug in someone's code. You must ensure "
-                   "a digest is NULL before it's set.");
-    }
-
-  if (digest_len)
-    *digest_len = len;
+  *digest_len = len;
 }
 
 /**

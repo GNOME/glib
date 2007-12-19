@@ -173,6 +173,7 @@ g_cache_value_foreach
 
 #if IN_HEADER(__G_CHECKSUM_H__)
 #if IN_FILE(__G_CHECKSUM_C__)
+g_checksum_type_get_length
 g_checksum_new
 g_checksum_copy
 g_checksum_free

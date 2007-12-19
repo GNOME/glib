@@ -48,8 +48,8 @@ test_checksum (GChecksumType  checksum_type,
   gchar *data;
   guchar *p;
   gsize data_len;
-  guint8 *digest1, *digest2;
-  gsize len1, len2;
+  guint8 digest1[64], digest2[64];
+  gsize len1 = sizeof (digest1), len2 = sizeof (digest2);
   gchar *digest_str1, *digest_str2;
 
   checksum0 = g_checksum_new (checksum_type);
@@ -96,21 +96,8 @@ test_checksum (GChecksumType  checksum_type,
  
   g_free (data);
 
-  digest1 = NULL;
-  g_checksum_get_digest (checksum1, &digest1, &len1);
-  if (!digest1)
-    {
-      g_print ("No %s digest found for checksum1\n", type);
-      exit (1);
-    }
-
-  digest2 = NULL;
-  g_checksum_get_digest (checksum2, &digest2, &len2);
-  if (!digest2)
-    {
-      g_print ("No %s digest found for checksum2\n", type);
-      exit (1);
-    }
+  g_checksum_get_digest (checksum1, digest1, &len1);
+  g_checksum_get_digest (checksum2, digest2, &len2);
   
   digest_str1 = digest_to_string (digest1, len1);
   digest_str2 = digest_to_string (digest2, len2);
@@ -126,8 +113,6 @@ test_checksum (GChecksumType  checksum_type,
 
   g_free (digest_str1);
   g_free (digest_str2);
-  g_free (digest1);
-  g_free (digest2);
 
   digest_str1 = g_strdup (g_checksum_get_string (checksum1));
   digest_str2 = g_strdup (g_checksum_get_string (checksum2));
