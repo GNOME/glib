@@ -1,6 +1,31 @@
 2007-12-19  Alexander Larsson  <alexl@redhat.com>
 
         * giomodule.c:
+	Make g_io_modules_load_all_in_directory not unuse
+	loaded modules so that users of it can do stuff
+	before unloading.
+	Init internal "module" types.
+	Initialize static prio and name for types so that
+	we don't have to load modules to get it.
+	
+        * gnativevolumemonitor.h:
+	* gvolumemonitor.h:
+	Move is_supported to parent class so that
+	non-native monitors can avoid being initialized
+	too. (For instance GDaemonVolumeMonitor if we're
+	not using GDaemonVfs.)
+	
+        * glocaldirectorymonitor.[ch]:
+        * glocalfilemonitor.[ch]:
+	* gunionvolumemonitor.c:
+        * gunixvolumemonitor.c:
+        * gvfs.c:
+	Find plugins using the static prio+name to
+	avoid unnecessarily loading the modules.
+
+2007-12-19  Alexander Larsson  <alexl@redhat.com>
+
+        * giomodule.c:
 	Remove warnings
 
 2007-12-19  Alexander Larsson  <alexl@redhat.com>

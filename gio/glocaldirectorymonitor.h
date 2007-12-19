@@ -51,6 +51,7 @@ struct _GLocalDirectoryMonitor
 struct _GLocalDirectoryMonitorClass {
   GDirectoryMonitorClass parent_class;
   gint prio;
+  char *name; /* Not used atm */
   gboolean mount_notify;
   gboolean (*is_supported) (void);
 };

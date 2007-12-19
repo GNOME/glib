@@ -175,31 +175,37 @@ compare_vfs_type (gconstpointer  a,
 		  gconstpointer  b,
 		  gpointer       user_data)
 {
-  GVfsClass *class_a, *class_b;
+  GType a_type, b_type;
+  char *a_name, *b_name;
+  int a_prio, b_prio;
   gint res;
-  const char *use_this_vfs;
-  
-  class_a = g_type_class_ref (*(GType *)a);
-  class_b = g_type_class_ref (*(GType *)b);
-  use_this_vfs = user_data;
+  const char *use_this_monitor;
+  GQuark private_q, name_q;
 
-  if (class_a == class_b)
+  private_q = g_quark_from_static_string ("gio-prio");
+  name_q = g_quark_from_static_string ("gio-name");
+  
+  use_this_monitor = user_data;
+  a_type = *(GType *)a;
+  b_type = *(GType *)b;
+  a_prio = GPOINTER_TO_INT (g_type_get_qdata (a_type, private_q));
+  a_name = g_type_get_qdata (a_type, name_q);
+  b_prio = GPOINTER_TO_INT (g_type_get_qdata (b_type, private_q));
+  b_name = g_type_get_qdata (b_type, name_q);
+
+  if (a_type == b_type)
     res = 0;
-  else if (use_this_vfs != NULL &&
-	   strcmp (class_a->name, use_this_vfs) == 0)
+  else if (use_this_monitor != NULL &&
+	   strcmp (a_name, use_this_monitor) == 0)
     res = -1;
-  else if (use_this_vfs != NULL &&
-	   strcmp (class_b->name, use_this_vfs) == 0)
+  else if (use_this_monitor != NULL &&
+	   strcmp (b_name, use_this_monitor) == 0)
     res = 1;
   else 
-    res = class_b->priority - class_a->priority;
-  
-  g_type_class_unref (class_a);
-  g_type_class_unref (class_b);
+    res = b_prio - a_prio;
   
   return res;
 }
-
 
 static gpointer
 get_default_vfs (gpointer arg)
@@ -210,14 +216,8 @@ get_default_vfs (gpointer arg)
   guint n_vfs_impls;
   const char *use_this;
   GVfs *vfs;
-  GType (*casted_get_type)(void);
 
   use_this = g_getenv ("GIO_USE_VFS");
-  
-  /* Ensure GLocalVfs type is available
-     the cast is required to avoid any G_GNUC_CONST optimizations */
-  casted_get_type = _g_local_vfs_get_type;
-  local_type = casted_get_type ();
   
   /* Ensure vfs in modules loaded */
   _g_io_modules_ensure_loaded ();

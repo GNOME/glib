@@ -88,6 +88,8 @@ struct _GVolumeMonitorClass {
 
   /* Vtable */
 
+  gboolean (*is_supported)          (void);
+
   GList * (*get_connected_drives)   (GVolumeMonitor *volume_monitor);
   GList * (*get_volumes)            (GVolumeMonitor *volume_monitor);
   GList * (*get_mounts)             (GVolumeMonitor *volume_monitor);
@@ -101,6 +103,7 @@ struct _GVolumeMonitorClass {
 
   GVolume * (*adopt_orphan_mount)   (GMount          *mount);
 
+  
   /*< private >*/
   /* Padding for future expansion */
   void (*_g_reserved1) (void);

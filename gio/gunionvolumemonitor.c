@@ -398,24 +398,34 @@ compare_monitor_type (gconstpointer  a,
 		      gconstpointer  b,
 		      gpointer       user_data)
 {
-  const GNativeVolumeMonitorClass *class_a, *class_b;
+  GType a_type, b_type;
+  char *a_name, *b_name;
+  int a_prio, b_prio;
   gint res;
   const char *use_this_monitor;
+  GQuark private_q, name_q;
 
-  class_a = a;
-  class_b = b;
+  private_q = g_quark_from_static_string ("gio-prio");
+  name_q = g_quark_from_static_string ("gio-name");
+  
   use_this_monitor = user_data;
+  a_type = *(GType *)a;
+  b_type = *(GType *)b;
+  a_prio = GPOINTER_TO_INT (g_type_get_qdata (a_type, private_q));
+  a_name = g_type_get_qdata (a_type, name_q);
+  b_prio = GPOINTER_TO_INT (g_type_get_qdata (b_type, private_q));
+  b_name = g_type_get_qdata (b_type, name_q);
 
-  if (class_a == class_b)
+  if (a_type == b_type)
     res = 0;
   else if (use_this_monitor != NULL &&
-	   strcmp (class_a->name, use_this_monitor) == 0)
+	   strcmp (a_name, use_this_monitor) == 0)
     res = -1;
   else if (use_this_monitor != NULL &&
-	   strcmp (class_b->name, use_this_monitor) == 0)
+	   strcmp (b_name, use_this_monitor) == 0)
     res = 1;
   else 
-    res = class_b->priority - class_a->priority;
+    res = b_prio - a_prio;
   
   return res;
 }
@@ -423,59 +433,42 @@ compare_monitor_type (gconstpointer  a,
 static GType
 get_default_native_class (gpointer data)
 {
-  GNativeVolumeMonitorClass *klass;
+  GNativeVolumeMonitorClass *klass, *native_class, **native_class_out;
   GType *monitors;
   guint n_monitors;
-  GList *l;
-  GTypeClass *native_class;
   const char *use_this;
   int i;
-  GTypeClass **native_class_out;
-  GList *classes;
 
   native_class_out = data;
   
   use_this = g_getenv ("GIO_USE_VOLUME_MONITOR");
   
-#ifdef G_OS_UNIX
-  /* Ensure GUnixVolumeMonitor type is available */
-  {
-    volatile GType unix_type;
-    /* volatile is required to avoid any G_GNUC_CONST optimizations */
-    unix_type = _g_unix_volume_monitor_get_type ();
-  }
-#endif
-      
   /* Ensure vfs in modules loaded */
   _g_io_modules_ensure_loaded ();
 
   monitors = g_type_children (G_TYPE_NATIVE_VOLUME_MONITOR, &n_monitors);
 
-  classes = NULL;
-  /* Ref all classes once so we don't load/unload them a lot */
-  for (i = 0; i < n_monitors; i++)
-    classes = g_list_prepend (classes, g_type_class_ref (monitors[i]));
-
-  g_free (monitors);
-  
-  classes = g_list_sort_with_data (classes,
-				   compare_monitor_type,
-				   (gpointer)use_this);
+  g_qsort_with_data (monitors,
+                     n_monitors,
+                     sizeof (GType),
+                     compare_monitor_type,
+                     (gpointer)use_this);
 
   native_class = NULL;
-  for (l = classes; l != NULL; l = l->next)
-    {
-      klass = l->data;
-
-      if (klass->is_supported ())
+  for (i = 0; i < n_monitors; i++)
+    {    
+      klass = g_type_class_ref (monitors[i]);
+      if (G_VOLUME_MONITOR_CLASS (klass)->is_supported())
 	{
-	  native_class = (GTypeClass *)klass;
+	  native_class = klass;
 	  break;
 	}
       else
 	g_type_class_unref (klass);
     }
 
+  g_free (monitors);
+ 
   if (native_class)
     {
       *native_class_out = native_class;
@@ -512,6 +505,7 @@ g_union_volume_monitor_init (GUnionVolumeMonitor *union_monitor)
   GType *monitors;
   guint n_monitors;
   GNativeVolumeMonitorClass *native_class;
+  GVolumeMonitorClass *klass;
   int i;
 
   native_class = get_native_class ();
@@ -531,10 +525,15 @@ g_union_volume_monitor_init (GUnionVolumeMonitor *union_monitor)
       if (monitors[i] == G_TYPE_UNION_VOLUME_MONITOR ||
 	  g_type_is_a (monitors[i], G_TYPE_NATIVE_VOLUME_MONITOR))
 	continue;
-      
-      monitor = g_object_new (monitors[i], NULL);
-      g_union_volume_monitor_add_monitor (union_monitor, monitor);
-      g_object_unref (monitor);
+
+      klass = g_type_class_ref (monitors[i]);
+      if (klass->is_supported == NULL || klass->is_supported())
+	{
+	  monitor = g_object_new (monitors[i], NULL);
+	  g_union_volume_monitor_add_monitor (union_monitor, monitor);
+	  g_object_unref (monitor);
+	}
+      g_type_class_unref (klass);
     }
       
   g_free (monitors);

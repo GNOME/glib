@@ -166,10 +166,10 @@ g_unix_volume_monitor_class_init (GUnixVolumeMonitorClass *klass)
   monitor_class->get_connected_drives = get_connected_drives;
   monitor_class->get_volume_for_uuid = get_volume_for_uuid;
   monitor_class->get_mount_for_uuid = get_mount_for_uuid;
+  monitor_class->is_supported = is_supported;
 
   native_class->priority = 0;
   native_class->name = "unix";
-  native_class->is_supported = is_supported;
   native_class->get_mount_for_mount_path = get_mount_for_mount_path;
 }
 

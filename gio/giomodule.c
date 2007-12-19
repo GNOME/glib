@@ -24,6 +24,10 @@
 
 #include "giomodule.h"
 #include "giomodule-priv.h"
+#include "glocalfilemonitor.h"
+#include "glocaldirectorymonitor.h"
+#include "gnativevolumemonitor.h"
+#include "gvfs.h"
 
 #include "gioalias.h"
 
@@ -179,9 +183,13 @@ is_valid_module_name (const gchar *basename)
  * g_io_modules_load_all_in_directory:
  * @dirname: pathname for a directory containing modules to load.
  * 
- * Loads all the modules in the the specified directory.
+ * Loads all the modules in the the specified directory. 
  * 
- * Returns: a list of #GIOModules loaded from the directory
+ * Returns: a list of #GIOModules loaded from the directory,
+ *      All the modules are loaded into memory, if you want to
+ *      unload them (enabling on-demand loading) you must call
+ *      g_type_module_unuse() on all the modules. Free the list
+ *      with g_list_free().
  **/
 GList *
 g_io_modules_load_all_in_directory (const char *dirname)
@@ -218,8 +226,6 @@ g_io_modules_load_all_in_directory (const char *dirname)
 	  
           g_free (path);
 
-          g_type_module_unuse (G_TYPE_MODULE (module));
-	  
           modules = g_list_prepend (modules, module);
         }
     }
@@ -231,20 +237,89 @@ g_io_modules_load_all_in_directory (const char *dirname)
 
 G_LOCK_DEFINE_STATIC (loaded_dirs);
 
+extern GType _g_inotify_directory_monitor_get_type (void);
+extern GType _g_inotify_file_monitor_get_type (void);
+extern GType _g_unix_volume_monitor_get_type (void);
+extern GType _g_local_vfs_get_type (void);
+
 void
 _g_io_modules_ensure_loaded (void)
 {
-  GList *modules;
+  GList *modules, *l;
   static gboolean loaded_dirs = FALSE;
-  
+  int i;
+  GType *types;
+  guint n_types;
+  GQuark private_q, name_q;
+
   G_LOCK (loaded_dirs);
 
   if (!loaded_dirs)
     {
       loaded_dirs = TRUE;
       modules = g_io_modules_load_all_in_directory (GIO_MODULE_DIR);
+
+      private_q = g_quark_from_static_string ("gio-prio");
+      name_q = g_quark_from_static_string ("gio-name");
+
+      /* Initialize types from built-in "modules" */
+#if defined(HAVE_SYS_INOTIFY_H) || defined(HAVE_LINUX_INOTIFY_H)
+      _g_inotify_directory_monitor_get_type ();
+      _g_inotify_file_monitor_get_type ();
+#endif
+#ifdef G_OS_UNIX
+      _g_unix_volume_monitor_get_type ();
+#endif
+      _g_local_vfs_get_type ();
+
+      /* Copy over all prios to static gtype data so
+       * we can avoid loading the module again
+       */
+
+      types = g_type_children (G_TYPE_LOCAL_FILE_MONITOR, &n_types);
+      for (i = 0; i < n_types; i++)
+	{
+	  GLocalFileMonitorClass *klass = g_type_class_ref (types[i]);
+	  g_type_set_qdata (types[i], private_q, GINT_TO_POINTER (klass->prio));
+	  g_type_class_unref (klass);
+	}
+      g_free (types);
+
+      types = g_type_children (G_TYPE_LOCAL_DIRECTORY_MONITOR, &n_types);
+      for (i = 0; i < n_types; i++)
+	{
+	  GLocalDirectoryMonitorClass *klass = g_type_class_ref (types[i]);
+	  g_type_set_qdata (types[i], private_q, GINT_TO_POINTER (klass->prio));
+	  g_type_class_unref (klass);
+	}
+      g_free (types);
+
+      types = g_type_children (G_TYPE_NATIVE_VOLUME_MONITOR, &n_types);
+      for (i = 0; i < n_types; i++)
+	{
+	  GNativeVolumeMonitorClass *klass = g_type_class_ref (types[i]);
+	  g_type_set_qdata (types[i], private_q, GINT_TO_POINTER (klass->priority));
+	  g_type_set_qdata (types[i], name_q, g_strdup (klass->name));
+	  g_type_class_unref (klass);
+	}
+      g_free (types);
+      
+      types = g_type_children (G_TYPE_VFS, &n_types);
+      for (i = 0; i < n_types; i++)
+	{
+	  GVfsClass *klass = g_type_class_ref (types[i]);
+	  g_type_set_qdata (types[i], private_q, GINT_TO_POINTER (klass->priority));
+	  g_type_set_qdata (types[i], name_q, g_strdup (klass->name));
+	  g_type_class_unref (klass);
+	}
+      g_free (types);
+      
+      for (l = modules; l != NULL; l = l->next)
+	g_type_module_unuse (G_TYPE_MODULE (l->data));
+      
+      g_list_free (modules);
     }
-  
+
   G_UNLOCK (loaded_dirs);
 }
 

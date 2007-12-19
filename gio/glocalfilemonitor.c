@@ -124,77 +124,70 @@ g_local_file_monitor_class_init (GLocalFileMonitorClass* klass)
 }
 
 static gint
-_compare_monitor_class_by_prio (gconstpointer a,
-                                gconstpointer b,
-                                gpointer      user_data)
+_compare_monitor_type_by_prio (gconstpointer _a,
+			       gconstpointer _b,
+			       gpointer      user_data)
 {
-  GType *type1 = (GType *) a, *type2 = (GType *) b;
-  GLocalFileMonitorClass *klass1, *klass2;
+  const GType *a = _a, *b = _b;
+  int prio_a, prio_b;
   gint ret;
+  GQuark private_q;
 
-  klass1 = G_LOCAL_FILE_MONITOR_CLASS (g_type_class_ref (*type1));
-  klass2 = G_LOCAL_FILE_MONITOR_CLASS (g_type_class_ref (*type2));
+  private_q = g_quark_from_static_string ("gio-prio");
 
-  ret = klass1->prio - klass2->prio;
+  prio_a = GPOINTER_TO_INT (g_type_get_qdata (*a, private_q));
+  prio_b = GPOINTER_TO_INT (g_type_get_qdata (*b, private_q));
 
-  g_type_class_unref (klass1);
-  g_type_class_unref (klass2);
+  ret = prio_b - prio_a;
 
   return ret;
 }
 
-extern GType _g_inotify_file_monitor_get_type (void);
-
 static gpointer
 get_default_local_file_monitor (gpointer data)
 {
-  GType *monitor_impls, chosen_type;
+  GType *monitor_impls;
   guint n_monitor_impls;
   gint i;
-  GType *ret = (GType *) data;
-
-#if defined(HAVE_SYS_INOTIFY_H) || defined(HAVE_LINUX_INOTIFY_H)
-  /* Register Inotify monitor */
-  _g_inotify_file_monitor_get_type ();
-#endif
+  GLocalFileMonitorClass *chosen_class;
+  GLocalFileMonitorClass **ret = data;
 
   _g_io_modules_ensure_loaded ();
   
   monitor_impls = g_type_children (G_TYPE_LOCAL_FILE_MONITOR,
                                    &n_monitor_impls);
 
-  chosen_type = G_TYPE_INVALID;
-
-  /* Ref all classes once so we don't load/unload them a lot */
-  for (i = 0; i < n_monitor_impls; i++)
-    g_type_class_ref (monitor_impls[i]);
-  
   g_qsort_with_data (monitor_impls,
                      n_monitor_impls,
                      sizeof (GType),
-                     _compare_monitor_class_by_prio,
+                     _compare_monitor_type_by_prio,
                      NULL);
 
-  for (i = n_monitor_impls - 1; i >= 0 && chosen_type == G_TYPE_INVALID; i--)
+  chosen_class = NULL;
+  for (i = 0; i < n_monitor_impls; i++)
     {    
       GLocalFileMonitorClass *klass;
-
+      
       klass = G_LOCAL_FILE_MONITOR_CLASS (g_type_class_ref (monitor_impls[i]));
-
+      
       if (klass->is_supported())
-        chosen_type = monitor_impls[i];
-
-      g_type_class_unref (klass);
+	{
+	  chosen_class = klass;
+	  break;
+	}
+      else
+	g_type_class_unref (klass);
     }
 
-  for (i = 0; i < n_monitor_impls; i++)
-    g_type_class_unref (g_type_class_peek (monitor_impls[i]));
-  
   g_free (monitor_impls);
-
-  *ret = chosen_type;
-
-  return NULL;
+  
+  if (chosen_class)
+    {
+      *ret = chosen_class;
+      return (gpointer)G_TYPE_FROM_CLASS (chosen_class);
+    }
+  else
+    return (gpointer)G_TYPE_INVALID;
 }
 
 /**
@@ -209,14 +202,28 @@ _g_local_file_monitor_new (const char        *pathname,
 			   GFileMonitorFlags  flags)
 {
   static GOnce once_init = G_ONCE_INIT;
-  static GType monitor_type = G_TYPE_INVALID;
+  GTypeClass *type_class;
+  GFileMonitor *monitor;
+  GType type;
 
-  g_once (&once_init, get_default_local_file_monitor, &monitor_type);
+  type_class = NULL;
+  g_once (&once_init, get_default_local_file_monitor, &type_class);
+  type = (GType)once_init.retval;
 
-  if (monitor_type != G_TYPE_INVALID)
-    return G_FILE_MONITOR (g_object_new (monitor_type, "filename", pathname, NULL));
+  monitor = NULL;
+  if (type != G_TYPE_INVALID)
+    monitor = G_FILE_MONITOR (g_object_new (type, "filename", pathname, NULL));
 
-  return NULL;
+  /* This is non-null on first pass here. Unref the class now.
+   * This is to avoid unloading the module and then loading it
+   * again which would happen if we unrefed the class
+   * before creating the monitor.
+   */
+  
+  if (type_class)
+    g_type_class_unref (type_class);
+  
+  return monitor;
 }
 
 #define __G_LOCAL_FILE_MONITOR_C__

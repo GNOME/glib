@@ -46,6 +46,7 @@ struct _GLocalFileMonitor
 struct _GLocalFileMonitorClass {
   GFileMonitorClass parent_class;
   gint prio;
+  char *name; /* Not used atm */
   gboolean (*is_supported) (void);
 };
 
