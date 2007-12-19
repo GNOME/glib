@@ -109,10 +109,10 @@ g_io_module_load_module (GTypeModule *gmodule)
   /* Make sure that the loaded library contains the required methods */
   if (! g_module_symbol (module->library,
                          "g_io_module_load",
-                         (gpointer *) &module->load) ||
+                         (gpointer) &module->load) ||
       ! g_module_symbol (module->library,
                          "g_io_module_unload",
-                         (gpointer *) &module->unload))
+                         (gpointer) &module->unload))
     {
       g_printerr ("%s\n", g_module_error ());
       g_module_close (module->library);
@@ -235,9 +235,7 @@ void
 _g_io_modules_ensure_loaded (void)
 {
   GList *modules;
-  const char *directory;
   static gboolean loaded_dirs = FALSE;
-
   
   G_LOCK (loaded_dirs);
 

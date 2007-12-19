@@ -1,5 +1,10 @@
 2007-12-19  Alexander Larsson  <alexl@redhat.com>
 
+        * giomodule.c:
+	Remove warnings
+
+2007-12-19  Alexander Larsson  <alexl@redhat.com>
+
         * gunionvolumemonitor.c:
 	Store the native type as GType, not class so that
 	we can unload it. But still avoid unnecessarily
