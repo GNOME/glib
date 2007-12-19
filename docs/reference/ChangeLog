@@ -1,3 +1,9 @@
+2007-12-19  Alexander Larsson  <alexl@redhat.com>
+
+        * gio/migrating.xml:
+        * gio/overview.xml:
+	Some minor fixes and additions.
+	
 2007-12-17  Matthias Clasen <mclasen@redhat.com>
 
 	* gio: Flesh out the overview and migration docs.

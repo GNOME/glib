@@ -10,7 +10,7 @@
     shortcomings of GnomeVFS and provide an API that is so good that
     developers prefer it over raw POSIX calls. Among other things
     that means using GObject. It also means not cloning the POSIX 
-    API, but providing a higher-level, document-centric interfaces.
+    API, but providing higher-level, document-centric interfaces.
   </para>
 
   <para>
@@ -55,7 +55,7 @@
        </varlistentry>
        <varlistentry>
          <term>GSeekable</term>
-         <listitem><para>seek in data</para></listitem>
+         <listitem><para>interface optionally implemented by streams to support seeking</para></listitem>
        </varlistentry>
     </variablelist>
     There are interfaces related to applications and the types

@@ -35,9 +35,19 @@
           <row><entry>GnomeVFS</entry><entry>GIO</entry></row>
         </thead>
         <tbody>
+          <row><entry>GnomeVFSURI</entry><entry>GFile</entry></row>
+          <row><entry>GnomeVFSFileInfo</entry><entry>GFileInfo</entry></row>
+          <row><entry>GnomeVFSResult</entry><entry>GError, with G_IO_ERROR values</entry></row>
+          <row><entry>GnomeVFSHandle & GnomeVFSAsyncHandle</entry><entry>GInputStream or GOutputStream</entry></row>
+          <row><entry>GnomeVFSDirectoryHandle</entry><entry>GFileEnumerator</entry></row>
+          <row><entry>mime type</entry><entry>content type</entry></row>
+          <row><entry>GnomeVFSMonitor</entry><entry>GFileMonitor and GDirectoryMonitor</entry></row>
+          <row><entry>GnomeVFSVolumeMonitor</entry><entry>GVolumeMonitor</entry></row>
           <row><entry>GnomeVFSVolume</entry><entry>GMount</entry></row>
           <row><entry>GnomeVFSDrive</entry><entry>GVolume</entry></row>
           <row><entry>-</entry><entry>GDrive</entry></row>
+          <row><entry>GnomeVFSContext</entry><entry>GCancellable</entry></row>
+          <row><entry>gnome_vfs_async_cancel</entry><entry>g_cancellable_cancel</entry></row>
         </tbody>
       </tgroup>
     </table>
