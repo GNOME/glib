@@ -1,3 +1,11 @@
+2007-12-19  Emmanuele Bassi  <ebassi@gnome.org>
+
+	* glib/gtimer.c (g_time_val_from_iso8601): Fix the date validation
+	check. (#503029)
+
+	* tests/testglib.c (various_string_tests): Add an invalid date
+	for testing the above fix.
+
 2007-12-19  Alexander Larsson  <alexl@redhat.com>
 
         * glib/gfileutils.[ch]:

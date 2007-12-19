@@ -1382,6 +1382,7 @@ various_string_tests (void)
   g_free (tmp_string);
   g_free (string);
 
+#define REF_INVALID  "Wed Dec 19 17:20:20 GMT 2007"
 #define REF_SEC_UTC  320063760
 #define REF_STR_UTC  "1980-02-22T10:36:00Z"
 #define REF_STR_CEST "1980-02-22T12:36:00+02:00"
@@ -1391,6 +1392,7 @@ various_string_tests (void)
     g_print ("checking g_time_val_from_iso8601...\n");
   ref_date.tv_sec = REF_SEC_UTC;
   ref_date.tv_usec = 0;
+  g_assert (g_time_val_from_iso8601 (REF_INVALID, &date) == FALSE);
   g_assert (g_time_val_from_iso8601 (REF_STR_UTC, &date) != FALSE);
   if (g_test_verbose())
     g_print ("\t=> UTC stamp = %ld (should be: %ld) (%ld off)\n", date.tv_sec, ref_date.tv_sec, date.tv_sec - ref_date.tv_sec);

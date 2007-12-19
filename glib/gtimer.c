@@ -312,9 +312,11 @@ g_time_val_from_iso8601 (const gchar *iso_date,
    * have an ISO 8601 date */
   while (g_ascii_isspace (*iso_date))
     iso_date++;
+
   if (*iso_date == '\0')
     return FALSE;
-  if (!g_ascii_isdigit (*iso_date) || iso_date != '-' || *iso_date != '+')
+
+  if (!g_ascii_isdigit (*iso_date) && *iso_date != '-' && *iso_date != '+')
     return FALSE;
 
   val = strtoul (iso_date, (char **)&iso_date, 10);
