@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.13.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-15 12:41+0100\n"
-"PO-Revision-Date: 2007-12-15 12:46+0100\n"
+"POT-Creation-Date: 2007-12-19 12:39+0100\n"
+"PO-Revision-Date: 2007-12-19 12:55+0100\n"
 "Last-Translator: Espen Stefansen <espens@svn.gnome.org>\n"
 "Language-Team: Norwegian bokmal <i18n-nb@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -607,13 +607,12 @@ msgid "missing terminating ] for character class"
 msgstr "mangler terminerende ] for tegnklassen"
 
 #: ../glib/gregex.c:224
-#, fuzzy
 msgid "invalid escape sequence in character class"
-msgstr "Ugyldig bytesekvens i inndata for konvertering"
+msgstr "ugyldig escape-sekvens i tegnklassen"
 
 #: ../glib/gregex.c:227
 msgid "range out of order in character class"
-msgstr ""
+msgstr "område utenfor rekkefølge i tegnklassen"
 
 #: ../glib/gregex.c:230
 msgid "nothing to repeat"
@@ -633,7 +632,7 @@ msgstr "ikke gjenkjent tegn etter (?P"
 
 #: ../glib/gregex.c:244
 msgid "POSIX named classes are supported only within a class"
-msgstr ""
+msgstr "klasser med POSIX-navngivning støttes kun innen en klasse"
 
 #: ../glib/gregex.c:247
 msgid "missing terminating )"
@@ -649,7 +648,7 @@ msgstr "(?R eller (?[+-]tall må følges av )"
 
 #: ../glib/gregex.c:258
 msgid "reference to non-existent subpattern"
-msgstr ""
+msgstr "referanse til ikke-eksisterende undermønster"
 
 #: ../glib/gregex.c:261
 msgid "missing ) after comment"
@@ -657,11 +656,11 @@ msgstr "mangler ) etter kommentar"
 
 #: ../glib/gregex.c:264
 msgid "regular expression too large"
-msgstr ""
+msgstr "vanlig uttrykk for stort"
 
 #: ../glib/gregex.c:267
 msgid "failed to get memory"
-msgstr ""
+msgstr "ikke nok minne"
 
 #: ../glib/gregex.c:270
 msgid "lookbehind assertion is not fixed length"
@@ -669,11 +668,11 @@ msgstr ""
 
 #: ../glib/gregex.c:273
 msgid "malformed number or name after (?("
-msgstr ""
+msgstr "ugyldig tall eller navn etter (?("
 
 #: ../glib/gregex.c:276
 msgid "conditional group contains more than two branches"
-msgstr ""
+msgstr "betinget gruppe inneholder mer enn to grener"
 
 #: ../glib/gregex.c:279
 msgid "assertion expected after (?("
@@ -690,7 +689,7 @@ msgstr "Symbolske lenker er ikke støttet"
 
 #: ../glib/gregex.c:288
 msgid "character value in \\x{...} sequence is too large"
-msgstr ""
+msgstr "tegnverdi i \\x{...} sekvens er for stor"
 
 #: ../glib/gregex.c:291
 msgid "invalid condition (?(0)"
@@ -698,15 +697,15 @@ msgstr "ugyldig betingelse (?(0)"
 
 #: ../glib/gregex.c:294
 msgid "\\C not allowed in lookbehind assertion"
-msgstr ""
+msgstr "\\C er ikke tillatt i «lookbehind assertion»"
 
 #: ../glib/gregex.c:297
 msgid "recursive call could loop indefinitely"
-msgstr ""
+msgstr "rekursivt kall kunne gå i uendelig løkke"
 
 #: ../glib/gregex.c:300
 msgid "missing terminator in subpattern name"
-msgstr ""
+msgstr "mangler terminering av navn på undermønster"
 
 #: ../glib/gregex.c:303
 msgid "two named subpatterns have the same name"
@@ -714,11 +713,11 @@ msgstr ""
 
 #: ../glib/gregex.c:306
 msgid "malformed \\P or \\p sequence"
-msgstr ""
+msgstr "ugyldig \\P- eller \\p-sekvens"
 
 #: ../glib/gregex.c:309
 msgid "unknown property name after \\P or \\p"
-msgstr ""
+msgstr "ukjent navn på egenskap etter \\P eller \\p"
 
 #: ../glib/gregex.c:312
 msgid "subpattern name is too long (maximum 32 characters)"
@@ -726,7 +725,7 @@ msgstr ""
 
 #: ../glib/gregex.c:315
 msgid "too many named subpatterns (maximum 10,000)"
-msgstr ""
+msgstr "for mange navngitte undermønster (maks 10.000)"
 
 #: ../glib/gregex.c:318
 msgid "octal value is greater than \\377"
@@ -751,7 +750,7 @@ msgstr ""
 
 #: ../glib/gregex.c:335
 msgid "unexpected repeat"
-msgstr ""
+msgstr "uventet gjentagelse"
 
 #: ../glib/gregex.c:339
 msgid "code overflow"
@@ -1146,168 +1145,168 @@ msgstr "Verdi «%s» kan ikke tolkes som et flyttall."
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Verdi «%s» kan ikke tolkes som en bolsk verdi."
 
-#: ../gio/gbufferedinputstream.c:482 ../gio/ginputstream.c:557
+#: ../gio/gbufferedinputstream.c:483 ../gio/ginputstream.c:558
 msgid "Too large count value passed to g_input_stream_read_async"
-msgstr ""
+msgstr "For stor tellerverdi gitt til g_input_stream_read_async"
 
-#: ../gio/gbufferedinputstream.c:868 ../gio/ginputstream.c:887
+#: ../gio/gbufferedinputstream.c:869 ../gio/ginputstream.c:888
 #: ../gio/goutputstream.c:1064
 #, c-format
 msgid "Stream is already closed"
-msgstr ""
+msgstr "Strømmen er allerede lukket"
 
-#: ../gio/gcancellable.c:296 ../gio/gsimpleasyncresult.c:609
+#: ../gio/gcancellable.c:296 ../gio/gsimpleasyncresult.c:611
 #, c-format
 msgid "Operation was cancelled"
 msgstr "Operasjonen ble avbrutt"
 
-#: ../gio/gcontenttype.c:155
+#: ../gio/gcontenttype.c:156
 msgid "Unknown type"
 msgstr "Ukjent type"
 
-#: ../gio/gcontenttype.c:156
+#: ../gio/gcontenttype.c:157
 #, c-format
 msgid "%s filetype"
 msgstr "filtype %s"
 
-#: ../gio/gcontenttype.c:570
+#: ../gio/gcontenttype.c:571
 #, c-format
 msgid "%s type"
 msgstr "type %s"
 
-#: ../gio/gdatainputstream.c:308
+#: ../gio/gdatainputstream.c:309
 #, c-format
 msgid "Unexpected early end-of-stream"
-msgstr ""
+msgstr "Uventet tidlig slutt på strøm"
 
-#: ../gio/gdesktopappinfo.c:372 ../gio/gwin32appinfo.c:222
+#: ../gio/gdesktopappinfo.c:386 ../gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr "Uten navn"
 
-#: ../gio/gdesktopappinfo.c:548
+#: ../gio/gdesktopappinfo.c:562
 #, c-format
 msgid "Desktop file didn't specify Exec field"
-msgstr ""
+msgstr "Desktop-filen hadde ingen verdi i Exec-feltet"
 
-#: ../gio/gdesktopappinfo.c:830
+#: ../gio/gdesktopappinfo.c:844
 #, c-format
 msgid "Unable to find terminal required for application"
-msgstr ""
+msgstr "Kan ikke finne terminalen som kreves for programmet"
 
-#: ../gio/gdesktopappinfo.c:1012
+#: ../gio/gdesktopappinfo.c:1026
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
-msgstr ""
+msgstr "Kan ikke opprette konfigurasjonsmappe %s for brukers program: %s"
 
-#: ../gio/gdesktopappinfo.c:1016
+#: ../gio/gdesktopappinfo.c:1030
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
-msgstr ""
+msgstr "Kan ikke opprette brukers konfigurasjonsmappe %s for MIME: %s"
 
-#: ../gio/gdesktopappinfo.c:1389
+#: ../gio/gdesktopappinfo.c:1403
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Egendefinert definisjon for %s"
 
-#: ../gio/gdesktopappinfo.c:1413
+#: ../gio/gdesktopappinfo.c:1427
 #, c-format
 msgid "Can't create user desktop file %s"
-msgstr ""
+msgstr "Kan ikke opprette brukers desktop-fil %s"
 
-#: ../gio/gdesktopappinfo.c:1438
+#: ../gio/gdesktopappinfo.c:1452
 #, c-format
 msgid "Can't load just created desktop file"
-msgstr ""
+msgstr "Kan ikke laste nylig opprettet desktop-fil"
 
-#: ../gio/gdrive.c:332
+#: ../gio/gdrive.c:363
 msgid "drive doesn't implement eject"
-msgstr ""
+msgstr "stasjonen implementerer ikke utløsing"
 
-#: ../gio/gdrive.c:399
+#: ../gio/gdrive.c:430
 msgid "drive doesn't implement polling for media"
-msgstr ""
+msgstr "stasjonen implementerer ikke sjekk om medie er satt inn"
 
-#: ../gio/gfile.c:696 ../gio/gfile.c:837 ../gio/gfile.c:970
-#: ../gio/gfile.c:1056 ../gio/gfile.c:1109 ../gio/gfile.c:1166
-#: ../gio/gfile.c:1247 ../gio/gfile.c:2154 ../gio/gfile.c:2199
-#: ../gio/gfile.c:2249 ../gio/gfile.c:2288 ../gio/gfile.c:2607
-#: ../gio/gfile.c:3002 ../gio/gfile.c:3079 ../gio/gfile.c:3156
+#: ../gio/gfile.c:730 ../gio/gfile.c:871 ../gio/gfile.c:1004
+#: ../gio/gfile.c:1090 ../gio/gfile.c:1143 ../gio/gfile.c:1200
+#: ../gio/gfile.c:1281 ../gio/gfile.c:2188 ../gio/gfile.c:2233
+#: ../gio/gfile.c:2283 ../gio/gfile.c:2322 ../gio/gfile.c:2641
+#: ../gio/gfile.c:3035 ../gio/gfile.c:3112 ../gio/gfile.c:3189
 #, c-format
 msgid "Operation not supported"
 msgstr "Operasjonen er ikke støttet"
 
-#: ../gio/gfile.c:1012 ../gio/glocalfile.c:888 ../gio/glocalfile.c:897
+#: ../gio/gfile.c:1046 ../gio/glocalfile.c:888 ../gio/glocalfile.c:897
 #: ../gio/glocalfile.c:908
 #, c-format
 msgid "Containing mount does not exist"
 msgstr ""
 
-#: ../gio/gfile.c:1586
+#: ../gio/gfile.c:1620
 #, c-format
 msgid "Can't copy over directory"
 msgstr "Kan ikke kopiere over katalog"
 
-#: ../gio/gfile.c:1646
+#: ../gio/gfile.c:1680
 #, c-format
 msgid "Can't copy directory over directory"
 msgstr "Kan ikke kopiere katalog over katalog"
 
-#: ../gio/gfile.c:1654
+#: ../gio/gfile.c:1688
 #, c-format
 msgid "Target file exists"
 msgstr "Målfilen eksisterer"
 
-#: ../gio/gfile.c:1672
+#: ../gio/gfile.c:1706
 #, c-format
 msgid "Can't recursively copy directory"
 msgstr "Kan ikke kopiere katalog rekursivt"
 
-#: ../gio/gfile.c:2239
+#: ../gio/gfile.c:2273
 #, c-format
 msgid "Invalid symlink value given"
 msgstr "Ugyldig verdi oppgitt for symbolsk lenke"
 
-#: ../gio/gfile.c:2331
+#: ../gio/gfile.c:2365
 #, c-format
 msgid "Trash not supported"
 msgstr "Papirkurv er ikke støttet"
 
-#: ../gio/gfile.c:2378
+#: ../gio/gfile.c:2412
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "Filnavn kan ikke inneholde «%c»"
 
-#: ../gio/gfile.c:4001 ../gio/gvolume.c:251
+#: ../gio/gfile.c:4033 ../gio/gvolume.c:318
 msgid "volume doesn't implement mount"
 msgstr "volumet implementerer ikke montering"
 
-#: ../gio/gfileenumerator.c:148
+#: ../gio/gfileenumerator.c:151
 #, c-format
 msgid "Enumerator is closed"
-msgstr ""
+msgstr "Enumerator er lukket"
 
-#: ../gio/gfileenumerator.c:155 ../gio/gfileenumerator.c:214
-#: ../gio/gfileenumerator.c:314 ../gio/gfileenumerator.c:421
+#: ../gio/gfileenumerator.c:158 ../gio/gfileenumerator.c:217
+#: ../gio/gfileenumerator.c:317 ../gio/gfileenumerator.c:424
 #, c-format
 msgid "File enumerator has outstanding operation"
 msgstr ""
 
-#: ../gio/gfileenumerator.c:304 ../gio/gfileenumerator.c:411
+#: ../gio/gfileenumerator.c:307 ../gio/gfileenumerator.c:414
 msgid "File enumerator is already closed"
 msgstr ""
 
-#: ../gio/gfileinputstream.c:144 ../gio/gfileinputstream.c:440
+#: ../gio/gfileinputstream.c:143 ../gio/gfileinputstream.c:439
 #: ../gio/gfileoutputstream.c:154 ../gio/gfileoutputstream.c:556
 #, c-format
 msgid "Stream doesn't support query_info"
-msgstr ""
+msgstr "Strømmen støtter ikke query_info"
 
-#: ../gio/gfileinputstream.c:355 ../gio/gfileoutputstream.c:395
+#: ../gio/gfileinputstream.c:354 ../gio/gfileoutputstream.c:395
 #, c-format
 msgid "Seek not supported on stream"
-msgstr ""
+msgstr "Søking ikke støttet på strøm"
 
-#: ../gio/gfileinputstream.c:399
+#: ../gio/gfileinputstream.c:398
 #, c-format
 msgid "Truncate not allowed on input stream"
 msgstr ""
@@ -1317,29 +1316,29 @@ msgstr ""
 msgid "Truncate not supported on stream"
 msgstr ""
 
-#: ../gio/ginputstream.c:185
+#: ../gio/ginputstream.c:186
 #, c-format
 msgid "Too large count value passed to g_input_stream_read"
-msgstr ""
+msgstr "For stor tellerverdi gitt til g_input_stream_read"
 
-#: ../gio/ginputstream.c:194
+#: ../gio/ginputstream.c:195
 #, c-format
 msgid "Input stream doesn't implement read"
-msgstr ""
+msgstr "Inndatastrøm implementerer ikke lesing"
 
-#: ../gio/ginputstream.c:317
+#: ../gio/ginputstream.c:318
 #, c-format
 msgid "Too large count value passed to g_input_stream_skip"
-msgstr ""
+msgstr "For stor tellerverdi gitt til g_input_stream_skip"
 
-#: ../gio/ginputstream.c:680
+#: ../gio/ginputstream.c:681
 msgid "Too large count value passed to g_input_stream_skip_async"
-msgstr ""
+msgstr "For stor tellerverdi gitt til g_input_stream_skip_async"
 
-#: ../gio/ginputstream.c:894 ../gio/goutputstream.c:1071
+#: ../gio/ginputstream.c:895 ../gio/goutputstream.c:1071
 #, c-format
 msgid "Stream has outstanding operation"
-msgstr ""
+msgstr "Strømmen har utestående operasjoner"
 
 #: ../gio/glocalfile.c:554
 #, c-format
@@ -1347,9 +1346,9 @@ msgid "Invalid filename %s"
 msgstr "Ugyldig filnavn %s"
 
 #: ../gio/glocalfile.c:810
-#, fuzzy, c-format
+#, c-format
 msgid "Error getting filesystem info: %s"
-msgstr "Feil under lesing av fil «%s»: %s"
+msgstr "Feil under lesing av informasjon om filsystem: %s"
 
 #: ../gio/glocalfile.c:928
 #, c-format
@@ -1389,29 +1388,29 @@ msgid "Error removing file: %s"
 msgstr "Feil ved fjerning av fil: %s"
 
 #: ../gio/glocalfile.c:1434
-#, fuzzy, c-format
+#, c-format
 msgid "Error trashing file: %s"
-msgstr "Feil under lesing av fil «%s»: %s"
+msgstr "Feil ved plassering av fil i papirkurv: %s"
 
 #: ../gio/glocalfile.c:1458
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to create trash dir %s: %s"
-msgstr "Feil under oppretting av fil «%s»: %s"
+msgstr "Kan ikke legge katalog %s i papirkurven: %s"
 
 #: ../gio/glocalfile.c:1482
 #, c-format
 msgid "Unable to find toplevel directory for trash"
-msgstr ""
+msgstr "Kan ikke finne toppnivå for papirkurv"
 
 #: ../gio/glocalfile.c:1542 ../gio/glocalfile.c:1562
 #, c-format
 msgid "Unable to find or create trash directory"
-msgstr ""
+msgstr "Kan ikke finne eller opprette mappe for papirkurv"
 
 #: ../gio/glocalfile.c:1594
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to create trashed file: %s"
-msgstr "Feil under oppretting av fil «%s»: %s"
+msgstr "Kan ikke opprette fil i papirkurven: %s"
 
 #: ../gio/glocalfile.c:1617
 #, fuzzy, c-format
@@ -1419,9 +1418,9 @@ msgid "Unable to trash file: %s"
 msgstr "Feil under oppretting av fil «%s»: %s"
 
 #: ../gio/glocalfile.c:1714
-#, fuzzy, c-format
+#, c-format
 msgid "Error making symbolic link: %s"
-msgstr "Feil under tolking av flagg %s"
+msgstr "Feil ved oppretting av symbolsk lenke: %s"
 
 #: ../gio/glocalfile.c:1761 ../gio/glocalfile.c:1846
 #, c-format
@@ -1443,7 +1442,7 @@ msgstr "Målfilen eksisterer allerede"
 #: ../gio/glocalfileoutputstream.c:785 ../gio/glocalfileoutputstream.c:799
 #, c-format
 msgid "Backup file creation failed"
-msgstr ""
+msgstr "Oppretting av sikkerhetskopi feilet"
 
 #: ../gio/glocalfile.c:1821
 #, c-format
@@ -1458,17 +1457,17 @@ msgstr "Flytting mellom monteringspunkter er ikke støttet"
 #: ../gio/glocalfileinfo.c:707
 #, c-format
 msgid "Attribute value must be non-NULL"
-msgstr ""
+msgstr "Attributtverdi må ikke være NULL"
 
 #: ../gio/glocalfileinfo.c:714
 #, c-format
 msgid "Invalid attribute type (string expected)"
-msgstr ""
+msgstr "Ugyldig type attributt (streng forventet)"
 
 #: ../gio/glocalfileinfo.c:721
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid extended attribute name"
-msgstr "Dokumentet sluttet uventet inni et attributtnavn"
+msgstr "Ugyldig navn på utvidet attributt"
 
 #: ../gio/glocalfileinfo.c:761
 #, fuzzy, c-format
@@ -1476,7 +1475,7 @@ msgid "Error setting extended attribute '%s': %s"
 msgstr "Feil under åpning av katalog «%s»: %s"
 
 #: ../gio/glocalfileinfo.c:1392 ../gio/glocalfileoutputstream.c:630
-#, fuzzy, c-format
+#, c-format, fuzzy
 msgid "Error stating file '%s': %s"
 msgstr "Feil under lesing av fil «%s»: %s"
 
@@ -1492,38 +1491,38 @@ msgstr "Feil under lesing av fil «%s»: %s"
 #: ../gio/glocalfileinfo.c:1666
 #, c-format
 msgid "Invalid attribute type (uint32 expected)"
-msgstr ""
+msgstr "Ugyldig type attributt (uint32 forventet)"
 
 #: ../gio/glocalfileinfo.c:1683
 #, c-format
 msgid "Invalid attribute type (uint64 expected)"
-msgstr ""
+msgstr "Ugyldig type attributt (uint64 forventet)"
 
 #: ../gio/glocalfileinfo.c:1701
 #, c-format
 msgid "Invalid attribute type (byte string expected)"
-msgstr ""
+msgstr "Ugyldig type attributt (byte-streng forventet)"
 
 #: ../gio/glocalfileinfo.c:1725
-#, fuzzy, c-format
+#, c-format
 msgid "Error setting permissions: %s"
-msgstr "Feil under konvertering: %s"
+msgstr "Feil ved setting av rettigheter: %s"
 
 #: ../gio/glocalfileinfo.c:1772 ../gio/glocalfileinfo.c:1932
-#, fuzzy, c-format
+#, c-format
 msgid "Error setting owner: %s"
-msgstr "Feil under konvertering: %s"
+msgstr "Feil ved setting av eier: %s"
 
 #: ../gio/glocalfileinfo.c:1795
 #, c-format
 msgid "symlink must be non-NULL"
-msgstr ""
+msgstr "symbolsk lenke kan ikke være NULL"
 
 #: ../gio/glocalfileinfo.c:1803 ../gio/glocalfileinfo.c:1820
 #: ../gio/glocalfileinfo.c:1829
-#, fuzzy, c-format
+#, c-format
 msgid "Error setting symlink: %s"
-msgstr "Feil på linje %d: %s"
+msgstr "Feil ved setting av symbolsk lenke: %s"
 
 #: ../gio/glocalfileinfo.c:1812
 #, c-format
@@ -1558,9 +1557,9 @@ msgid "Error writing to file: %s"
 msgstr "Feil under skriving til fil: %s"
 
 #: ../gio/glocalfileoutputstream.c:205
-#, fuzzy, c-format
+#, c-format
 msgid "Error removing old backup link: %s"
-msgstr "Feil under tolking av flagg %s"
+msgstr "Feil ved fjerning av gammel sikkerhetskopi av lenke: %s"
 
 #: ../gio/glocalfileoutputstream.c:214
 #, fuzzy, c-format
@@ -1573,9 +1572,9 @@ msgid "Error creating backup copy: %s"
 msgstr "Feil under lesing av fil «%s»: %s"
 
 #: ../gio/glocalfileoutputstream.c:240
-#, fuzzy, c-format
+#, c-format
 msgid "Error renaming temporary file: %s"
-msgstr "Feil under lesing av fil «%s»: %s"
+msgstr "Feil ved endring av navn på midlertidig fil: %s"
 
 #: ../gio/glocalfileoutputstream.c:395 ../gio/glocalfileoutputstream.c:830
 #, fuzzy, c-format
@@ -1594,58 +1593,67 @@ msgid "Target file is a directory"
 msgstr "Målfilen er en katalog"
 
 #: ../gio/glocalfileoutputstream.c:647
-#, fuzzy, c-format
+#, c-format
 msgid "Target file is not a regular file"
-msgstr "Ikke en vanlig fil"
+msgstr "Målfilen er ikke en vanlig fil"
 
 #: ../gio/glocalfileoutputstream.c:659
 #, c-format
 msgid "The file was externally modified"
-msgstr ""
+msgstr "Filen ble endret eksternt"
 
-#: ../gio/gmount.c:270
+#: ../gio/gmount.c:333
 msgid "mount doesn't implement unmount"
-msgstr ""
+msgstr "monteringspunktet implementerer ikke avmontering"
+
+#: ../gio/gmount.c:403
+#, fuzzy
+msgid "mount doesn't implement eject"
+msgstr "volumet implementerer ikke montering"
 
 #: ../gio/goutputstream.c:193
 #, c-format
 msgid "Too large count value passed to g_output_stream_write"
-msgstr ""
+msgstr "For stor tellerverdi gitt til g_output_stream_write"
 
 #: ../gio/goutputstream.c:202 ../gio/goutputstream.c:403
 #, c-format
 msgid "Output stream doesn't implement write"
-msgstr ""
+msgstr "Ut-strømmen implementerer ikke skriving"
 
 #: ../gio/goutputstream.c:363 ../gio/goutputstream.c:764
 #, c-format
 msgid "Source stream is already closed"
-msgstr ""
+msgstr "Kildestrømmen er allerede lukket"
 
 #: ../gio/goutputstream.c:646
 msgid "Too large count value passed to g_output_stream_write_async"
-msgstr ""
+msgstr "For stor tellerverdi gitt til g_output_stream_write_async"
 
-#: ../gio/gunixinputstream.c:199 ../gio/gunixinputstream.c:217
-#: ../gio/gunixinputstream.c:289 ../gio/gunixoutputstream.c:280
+#: ../gio/gunixinputstream.c:200 ../gio/gunixinputstream.c:218
+#: ../gio/gunixinputstream.c:290 ../gio/gunixoutputstream.c:281
 #, fuzzy, c-format
 msgid "Error reading from unix: %s"
 msgstr "Feil under lesing av fil «%s»: %s"
 
-#: ../gio/gunixinputstream.c:247 ../gio/gunixinputstream.c:422
-#: ../gio/gunixoutputstream.c:237 ../gio/gunixoutputstream.c:384
+#: ../gio/gunixinputstream.c:248 ../gio/gunixinputstream.c:423
+#: ../gio/gunixoutputstream.c:238 ../gio/gunixoutputstream.c:385
 #, fuzzy, c-format
 msgid "Error closing unix: %s"
 msgstr "Feil på linje %d: %s"
 
-#: ../gio/gunixmounts.c:1741 ../gio/gunixmounts.c:1760
+#: ../gio/gunixmounts.c:1753 ../gio/gunixmounts.c:1790
 msgid "Filesystem root"
 msgstr "Filsystemrot"
 
-#: ../gio/gunixoutputstream.c:187 ../gio/gunixoutputstream.c:206
+#: ../gio/gunixoutputstream.c:188 ../gio/gunixoutputstream.c:207
 #, fuzzy, c-format
 msgid "Error writing to unix: %s"
 msgstr "Feil under tolking av flagg %s"
+
+#: ../gio/gvolume.c:382
+msgid "volume doesn't implement eject"
+msgstr "volumet implementerer ikke utløsing"
 
 #: ../gio/gwin32appinfo.c:277
 #, c-format
@@ -1665,20 +1673,20 @@ msgstr "URIer er ikke støttet"
 #: ../gio/gwin32appinfo.c:366
 #, c-format
 msgid "association changes not supported on win32"
-msgstr ""
+msgstr "endringer i assosiasjon er ikke støttet på win32"
 
 #: ../gio/gwin32appinfo.c:378
 #, c-format
 msgid "Association creation not supported on win32"
-msgstr ""
+msgstr "Oppretting av assosiasjon er ikke støttet på win32"
 
 #: ../tests/gio-ls.c:28
 msgid "do not hide entries"
-msgstr ""
+msgstr "ikke skjul oppføringer"
 
 #: ../tests/gio-ls.c:30
 msgid "use a long listing format"
-msgstr ""
+msgstr "bruk langt listeformat"
 
 #: ../tests/gio-ls.c:38
 msgid "[FILE...]"
