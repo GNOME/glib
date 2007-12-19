@@ -398,13 +398,12 @@ compare_monitor_type (gconstpointer  a,
 		      gconstpointer  b,
 		      gpointer       user_data)
 {
-  GNativeVolumeMonitorClass *class_a, *class_b;
+  const GNativeVolumeMonitorClass *class_a, *class_b;
   gint res;
   const char *use_this_monitor;
 
-  /* We ref:ed all the classes, so the peek is safe */
-  class_a = g_type_class_peek (*(GType *)a);
-  class_b = g_type_class_peek (*(GType *)b);
+  class_a = a;
+  class_b = b;
   use_this_monitor = user_data;
 
   if (class_a == class_b)
@@ -421,16 +420,21 @@ compare_monitor_type (gconstpointer  a,
   return res;
 }
 
-static GTypeClass *
+static GType
 get_default_native_class (gpointer data)
 {
   GNativeVolumeMonitorClass *klass;
   GType *monitors;
   guint n_monitors;
+  GList *l;
   GTypeClass *native_class;
   const char *use_this;
   int i;
+  GTypeClass **native_class_out;
+  GList *classes;
 
+  native_class_out = data;
+  
   use_this = g_getenv ("GIO_USE_VOLUME_MONITOR");
   
 #ifdef G_OS_UNIX
@@ -447,43 +451,58 @@ get_default_native_class (gpointer data)
 
   monitors = g_type_children (G_TYPE_NATIVE_VOLUME_MONITOR, &n_monitors);
 
+  classes = NULL;
   /* Ref all classes once so we don't load/unload them a lot */
   for (i = 0; i < n_monitors; i++)
-    g_type_class_ref (monitors[i]);
+    classes = g_list_prepend (classes, g_type_class_ref (monitors[i]));
+
+  g_free (monitors);
   
-  g_qsort_with_data (monitors, n_monitors, sizeof (GType),
-		     compare_monitor_type, (gpointer)use_this);
+  classes = g_list_sort_with_data (classes,
+				   compare_monitor_type,
+				   (gpointer)use_this);
 
   native_class = NULL;
-  for (i = 0; i < n_monitors; i++)
+  for (l = classes; l != NULL; l = l->next)
     {
-      klass = G_NATIVE_VOLUME_MONITOR_CLASS (g_type_class_ref (monitors[i]));
+      klass = l->data;
 
       if (klass->is_supported ())
 	{
 	  native_class = (GTypeClass *)klass;
 	  break;
 	}
-      g_type_class_unref (klass);
+      else
+	g_type_class_unref (klass);
     }
 
-  for (i = 0; i < n_monitors; i++)
-    g_type_class_unref (g_type_class_peek (monitors[i]));
-
-  g_free (monitors);
-
-  return native_class;
+  if (native_class)
+    {
+      *native_class_out = native_class;
+      return G_TYPE_FROM_CLASS (native_class);
+    }
+  else
+    return G_TYPE_INVALID;
 }
 
-
-static GType
-get_native_type ()
+/* We return the class, with a ref taken.
+ * This way we avoid unloading the class/module
+ * between selecting the type and creating the
+ * instance on the first call.
+ */
+static GNativeVolumeMonitorClass *
+get_native_class ()
 {
-  static GOnce _once_init = G_ONCE_INIT;
+  static GOnce once_init = G_ONCE_INIT;
+  GTypeClass *type_class;
 
-  g_once (&_once_init, (GThreadFunc)get_default_native_class, NULL);
+  type_class = NULL;
+  g_once (&once_init, (GThreadFunc)get_default_native_class, &type_class);
 
-  return G_TYPE_FROM_CLASS (_once_init.retval);
+  if (type_class == NULL && once_init.retval != G_TYPE_INVALID)
+    type_class = g_type_class_ref ((GType)once_init.retval);
+  
+  return (GNativeVolumeMonitorClass *)type_class;
 }
 
 static void
@@ -492,16 +511,17 @@ g_union_volume_monitor_init (GUnionVolumeMonitor *union_monitor)
   GVolumeMonitor *monitor;
   GType *monitors;
   guint n_monitors;
-  GType native_type;
+  GNativeVolumeMonitorClass *native_class;
   int i;
 
-  native_type = get_native_type ();
+  native_class = get_native_class ();
 
-  if (native_type != G_TYPE_INVALID)
+  if (native_class != NULL)
     {
-      monitor = g_object_new (native_type, NULL);
+      monitor = g_object_new (G_TYPE_FROM_CLASS (native_class), NULL);
       g_union_volume_monitor_add_monitor (union_monitor, monitor);
       g_object_unref (monitor);
+      g_type_class_unref (native_class);
     }
   
   monitors = g_type_children (G_TYPE_VOLUME_MONITOR, &n_monitors);
@@ -569,18 +589,15 @@ GMount *
 _g_mount_get_for_mount_path (const char *mount_path,
 			     GCancellable *cancellable)
 {
-  GType native_type;
   GNativeVolumeMonitorClass *klass;
   GMount *mount;
   
-  native_type = get_native_type ();
-
-  if (native_type == G_TYPE_INVALID)
+  klass = get_native_class ();
+  if (klass == NULL)
     return NULL;
 
   mount = NULL;
 
-  klass = G_NATIVE_VOLUME_MONITOR_CLASS (g_type_class_ref (native_type));
   if (klass->get_mount_for_mount_path)
     {
       G_LOCK (the_volume_monitor);
