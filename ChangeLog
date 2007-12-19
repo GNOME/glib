@@ -1,3 +1,9 @@
+2007-12-19  Alexander Larsson  <alexl@redhat.com>
+
+        * glib/gfileutils.[ch]:
+        * glib/glib.symbols:
+        Rename g_format_file_size_for_display to g_format_size_for_display.
+
 2007-12-18  Tim-Philipp Müller  <tim at centricular dot net>
 
 	* docs/reference/glib/glib-sections.txt:

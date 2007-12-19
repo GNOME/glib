@@ -1805,20 +1805,22 @@ g_build_filename (const gchar *first_element,
 #define GIGABYTE_FACTOR (1024.0 * 1024.0 * 1024.0)
 
 /**
- * g_format_file_size_for_display:
- * @size: a file size.
+ * g_format_size_for_display:
+ * @size: a size in bytes.
  * 
- * Formats a file size into a human readable string. Sizes are rounded
- * to the nearest metric prefix and are displayed rounded to the nearest 
- * tenth. E.g. the file size 3292528 bytes will be converted into the string 
- * "3.1 MB".
+ * Formats a size (for example the size of a file) into a human readable string.
+ * Sizes are rounded to the nearest size prefix (KB, MB, GB) and are displayed rounded to
+ * the nearest  tenth. E.g. the file size 3292528 bytes will be converted into
+ * the string "3.1 MB".
+ *
+ * The prefix units base is 1024 (i.e. 1 KB is 1024 bytes).
  * 
  * Returns: a formatted string containing a human readable file size.
  *
  * Since: 2.16
  **/
 char *
-g_format_file_size_for_display (goffset size)
+g_format_size_for_display (goffset size)
 {
   if (size < (goffset) KILOBYTE_FACTOR)
     return g_strdup_printf (dngettext(GETTEXT_PACKAGE, "%u byte", "%u bytes",(guint) size), (guint) size);

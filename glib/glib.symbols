@@ -351,7 +351,7 @@ g_file_set_contents
 g_file_open_tmp PRIVATE
 g_file_test PRIVATE
 g_file_read_link
-g_format_file_size_for_display
+g_format_size_for_display
 g_mkstemp PRIVATE
 g_mkdir_with_parents
 #ifdef G_OS_WIN32
