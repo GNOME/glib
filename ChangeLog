@@ -1,3 +1,12 @@
+2007-12-19 20:30:18  Tim Janik  <timj@imendio.com>
+
+        * glib/gtestutils.c: capture g_log() messages and send to gtester.
+	also, send assertion messages to gtester.
+
+	* glib/gtester.c: add error messages to output log file.
+	force child poll loop to abort if waitpid() signaled child exit,
+	eventhough the child's report file descriptor wasn't closed.
+
 2007-12-19  Christian Persch  <chpe@gnome.org>
 
 	* glib/gchecksum.c: (g_checksum_type_get_length),

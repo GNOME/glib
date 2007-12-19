@@ -64,10 +64,15 @@ struct DestroyEntry
 };
 
 /* --- prototypes --- */
-static void                     test_run_seed           (const gchar *rseed);
-static void                     test_trap_clear         (void);
-static guint8*                  g_test_log_dump         (GTestLogMsg *msg,
-                                                         guint       *len);
+static void     test_run_seed                   (const gchar *rseed);
+static void     test_trap_clear                 (void);
+static guint8*  g_test_log_dump                 (GTestLogMsg *msg,
+                                                 guint       *len);
+static void     gtest_default_log_handler       (const gchar    *log_domain,
+                                                 GLogLevelFlags  log_level,
+                                                 const gchar    *message,
+                                                 gpointer        unused_data);
+
 
 /* --- variables --- */
 static int         test_log_fd = -1;
@@ -430,6 +435,7 @@ g_test_init (int    *argc,
   test_run_seed (test_run_seedstr);
 
   /* report program start */
+  g_log_set_default_handler (gtest_default_log_handler, NULL);
   g_test_log (G_TEST_LOG_START_BINARY, g_get_prgname(), test_run_seedstr, 0, NULL);
 }
 
@@ -1097,6 +1103,45 @@ g_test_run_suite (GTestSuite *suite)
   return n_bad;
 }
 
+static void
+gtest_default_log_handler (const gchar    *log_domain,
+                           GLogLevelFlags  log_level,
+                           const gchar    *message,
+                           gpointer        unused_data)
+{
+  const gchar *strv[16];
+  gchar *msg;
+  guint i = 0;
+  if (log_domain)
+    {
+      strv[i++] = log_domain;
+      strv[i++] = "-";
+    }
+  if (log_level & G_LOG_FLAG_FATAL)
+    strv[i++] = "FATAL-";
+  if (log_level & G_LOG_FLAG_RECURSION)
+    strv[i++] = "RECURSIVE-";
+  if (log_level & G_LOG_LEVEL_ERROR)
+    strv[i++] = "ERROR";
+  if (log_level & G_LOG_LEVEL_CRITICAL)
+    strv[i++] = "CRITICAL";
+  if (log_level & G_LOG_LEVEL_WARNING)
+    strv[i++] = "WARNING";
+  if (log_level & G_LOG_LEVEL_MESSAGE)
+    strv[i++] = "MESSAGE";
+  if (log_level & G_LOG_LEVEL_INFO)
+    strv[i++] = "INFO";
+  if (log_level & G_LOG_LEVEL_DEBUG)
+    strv[i++] = "DEBUG";
+  strv[i++] = ": ";
+  strv[i++] = message;
+  strv[i++] = NULL;
+  msg = g_strjoinv ("", (gchar**) strv);
+  g_test_log (G_TEST_LOG_ERROR, msg, NULL, 0, NULL);
+  g_log_default_handler (log_domain, log_level, message, unused_data);
+  g_free (msg);
+}
+
 void
 g_assertion_message (const char     *domain,
                      const char     *file,
@@ -1114,6 +1159,7 @@ g_assertion_message (const char     *domain,
                    func, func[0] ? ":" : "",
                    " ", message, NULL);
   g_printerr ("**\n** %s\n", s);
+  g_test_log (G_TEST_LOG_ERROR, s, NULL, 0, NULL);
   g_free (s);
   abort();
 }
@@ -1363,6 +1409,7 @@ g_test_trap_fork (guint64        usec_timeout,
                   GTestTrapFlags test_trap_flags)
 {
 #ifdef G_OS_UNIX
+  gboolean pass_on_forked_log = FALSE;
   int stdout_pipe[2] = { -1, -1 };
   int stderr_pipe[2] = { -1, -1 };
   int stdtst_pipe[2] = { -1, -1 };
@@ -1441,7 +1488,7 @@ g_test_trap_fork (guint64        usec_timeout,
               gint l, r = read (stdtst_pipe[0], buffer, sizeof (buffer));
               if (r > 0 && test_log_fd > 0)
                 do
-                  l = write (test_log_fd, buffer, r);
+                  l = write (pass_on_forked_log ? test_log_fd : -1, buffer, r);
                 while (l < 0 && errno == EINTR);
               if (r == 0 || (r < 0 && errno != EINTR && errno != EAGAIN))
                 {

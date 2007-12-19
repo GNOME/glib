@@ -122,10 +122,15 @@ test_log_msg (GTestLogMsg *msg)
 {
   switch (msg->log_type)
     {
+      guint i;
+      gchar **strv;
     case G_TEST_LOG_NONE:
       break;
     case G_TEST_LOG_ERROR:
-      g_printerr ("%s\n", msg->strings[0]);
+      strv = g_strsplit (msg->strings[0], "\n", -1);
+      for (i = 0; strv[i]; i++)
+        test_log_printfe ("%s<error>%s</error>\n", sindent (log_indent), strv[i]);
+      g_strfreev (strv);
       break;
     case G_TEST_LOG_START_BINARY:
       test_log_printfe ("%s<binary file=\"%s\"/>\n", sindent (log_indent), msg->strings[0]);
@@ -219,6 +224,7 @@ child_report_cb (GIOChannel  *source,
       (void) status;
     }
   while (length > 0);
+  // g_print ("LASTIOSTATE: first_read_eof=%d condition=%d\n", first_read_eof, condition);
   if (first_read_eof || (condition & (G_IO_ERR | G_IO_HUP)))
     {
       /* if there's no data to read and select() reports an error or hangup,
@@ -270,6 +276,8 @@ launch_test_binary (const char *binary,
   const gchar *argv[99 + g_slist_length (subtest_args) + g_slist_length (subtest_paths)];
   GPid pid = 0;
   gint report_pipe[2] = { -1, -1 };
+  guint child_report_cb_id = 0;
+  gboolean loop_pending;
   gint i = 0;
 
   if (pipe (report_pipe) < 0)
@@ -347,16 +355,27 @@ launch_test_binary (const char *binary,
       g_io_channel_set_flags (ioc_report, G_IO_FLAG_NONBLOCK, NULL);
       g_io_channel_set_encoding (ioc_report, NULL, NULL);
       g_io_channel_set_buffered (ioc_report, FALSE);
-      g_io_add_watch_full (ioc_report, G_PRIORITY_DEFAULT - 1, G_IO_IN | G_IO_ERR | G_IO_HUP, child_report_cb, tlb, NULL);
+      child_report_cb_id = g_io_add_watch_full (ioc_report, G_PRIORITY_DEFAULT - 1, G_IO_IN | G_IO_ERR | G_IO_HUP, child_report_cb, tlb, NULL);
       g_io_channel_unref (ioc_report);
     }
   g_child_watch_add_full (G_PRIORITY_DEFAULT + 1, pid, child_watch_cb, NULL, NULL);
 
-  while (subtest_running ||             /* FALSE once child exits */
-         subtest_io_pending ||          /* FALSE once ioc_report closes */
-         g_main_context_pending (NULL)) /* TRUE while idler, etc are running */
-    g_main_context_iteration (NULL, TRUE);
+  loop_pending = g_main_context_pending (NULL);
+  while (subtest_running ||     /* FALSE once child exits */
+         subtest_io_pending ||  /* FALSE once ioc_report closes */
+         loop_pending)          /* TRUE while idler, etc are running */
+    {
+      // g_print ("LOOPSTATE: subtest_running=%d subtest_io_pending=%d\n", subtest_running, subtest_io_pending);
+      /* check for unexpected hangs that are not signalled on report_pipe */
+      if (!subtest_running &&   /* child exited */
+          subtest_io_pending && /* no EOF detected on report_pipe */
+          !loop_pending)        /* no IO events pending however */
+        break;
+      g_main_context_iteration (NULL, TRUE);
+      loop_pending = g_main_context_pending (NULL);
+    }
 
+  g_source_remove (child_report_cb_id);
   close (report_pipe[0]);
   g_test_log_buffer_free (tlb);
 
