@@ -44,6 +44,8 @@ G_BEGIN_DECLS
  * GDriveIface:
  * @g_iface: The parent interface.
  * @changed: Signal emitted when the drive is changed.
+ * @disconnected: The removed signal that is emitted when the #GDrive have been disconnected. If the recipient is holding references to the object they should release them so the object can be finalized.
+ * @eject_button: Signal emitted when the physical eject button (if any) of a drive have been pressed.
  * @get_name: Returns the name for the given #GDrive.
  * @get_icon: Returns a #GIcon for the given #GDrive.
  * @has_volumes: Returns %TRUE if the #GDrive has mountable volumes.
@@ -68,6 +70,8 @@ struct _GDriveIface
 
   /* signals */
   void (*changed)                      (GDrive              *drive);
+  void (*disconnected)                 (GDrive              *drive);
+  void (*eject_button)                 (GDrive              *drive);
   
   /* Virtual Table */
   char *   (*get_name)                 (GDrive              *drive);

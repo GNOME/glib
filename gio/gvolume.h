@@ -43,6 +43,7 @@ G_BEGIN_DECLS
  * GVolumeIface:
  * @g_iface: The parent interface.
  * @changed: Changed signal that is emitted when the volume's state has changed.
+ * @removed: The removed signal that is emitted when the #GVolume have been removed. If the recipient is holding references to the object they should release them so the object can be finalized.
  * @get_name: Gets a string containing the name of the #GVolume.
  * @get_icon: Gets a #GIcon for the #GVolume.
  * @get_uuid: Gets the UUID for the #GVolume. The reference is typically based on the file system UUID for the mount in question and should be considered an opaque string. Returns %NULL if there is no UUID available.
@@ -66,6 +67,7 @@ struct _GVolumeIface
   /* signals */
 
   void (*changed) (GVolume *volume);
+  void (*removed) (GVolume *volume);
   
   /* Virtual Table */
 

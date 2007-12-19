@@ -115,6 +115,22 @@ g_mount_base_init (gpointer g_class)
                     g_cclosure_marshal_VOID__VOID,
                     G_TYPE_NONE, 0);
 
+     /**
+      * GMount::unmounted:
+      * 
+      * This signal is emitted when the #GMount have been
+      * unmounted. If the recipient is holding references to the
+      * object they should release them so the object can be
+      * finalized.
+      **/
+      g_signal_new (I_("unmounted"),
+                    G_TYPE_MOUNT,
+                    G_SIGNAL_RUN_LAST,
+                    G_STRUCT_OFFSET (GMountIface, unmounted),
+                    NULL, NULL,
+                    g_cclosure_marshal_VOID__VOID,
+                    G_TYPE_NONE, 0);
+
       initialized = TRUE;
     }
 }

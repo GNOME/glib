@@ -41,15 +41,21 @@
  * Mounting a #GVolume instance is an asynchronous operation. For more
  * information about asynchronous operations, see #GAsyncReady and
  * #GSimpleAsyncReady. To mount a #GVolume, first call
- * g_volume_mount() with (at least) the #GVolume instane, a
- * #GMountOperation object and a #GAsyncReadyCallback.  The callback
- * will be fired when the operation has resolved (either with success
- * or failure), and a #GAsyncReady structure will be passed to the
- * callback.  That callback should then call g_volume_mount_finish()
- * with the #GVolume instance and the #GAsyncReady data to see if the
- * operation was completed successfully.  If an @error is present when
- * g_volume_mount_finish() is called, then it will be filled with any
- * error information.
+ * g_volume_mount() with (at least) the #GVolume instance, optionally
+ * a #GMountOperation object and a #GAsyncReadyCallback. 
+ *
+ * Typically, one will only want to pass %NULL for the
+ * #GMountOperation if automounting all volumes when a desktop session
+ * starts since it's not desirable to put up a lot of dialogs asking
+ * for credentials.
+ *
+ * The callback will be fired when the operation has resolved (either
+ * with success or failure), and a #GAsyncReady structure will be
+ * passed to the callback.  That callback should then call
+ * g_volume_mount_finish() with the #GVolume instance and the
+ * #GAsyncReady data to see if the operation was completed
+ * successfully.  If an @error is present when g_volume_mount_finish()
+ * is called, then it will be filled with any error information.
  **/
 
 static void g_volume_base_init (gpointer g_class);
@@ -108,6 +114,21 @@ g_volume_base_init (gpointer g_class)
                     G_TYPE_VOLUME,
                     G_SIGNAL_RUN_LAST,
                     G_STRUCT_OFFSET (GVolumeIface, changed),
+                    NULL, NULL,
+                    g_cclosure_marshal_VOID__VOID,
+                    G_TYPE_NONE, 0);
+
+     /**
+      * GVolume::removed:
+      * 
+      * This signal is emitted when the #GVolume have been removed. If
+      * the recipient is holding references to the object they should
+      * release them so the object can be finalized.
+      **/
+      g_signal_new (I_("removed"),
+                    G_TYPE_VOLUME,
+                    G_SIGNAL_RUN_LAST,
+                    G_STRUCT_OFFSET (GVolumeIface, removed),
                     NULL, NULL,
                     g_cclosure_marshal_VOID__VOID,
                     G_TYPE_NONE, 0);
@@ -270,7 +291,7 @@ g_volume_can_eject (GVolume *volume)
 /**
  * g_volume_mount:
  * @volume: a #GVolume.
- * @mount_operation: a #GMountOperation.
+ * @mount_operation: a #GMountOperation or %NULL to avoid user interaction.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @callback: a #GAsyncReadyCallback.
  * @user_data: a #gpointer.
@@ -287,7 +308,6 @@ g_volume_mount (GVolume    *volume,
   GVolumeIface *iface;
 
   g_return_if_fail (G_IS_VOLUME (volume));
-  g_return_if_fail (G_IS_MOUNT_OPERATION (mount_operation));
 
   iface = G_VOLUME_GET_IFACE (volume);
 

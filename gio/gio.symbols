@@ -720,6 +720,7 @@ g_volume_monitor_get_mount_for_uuid
 #endif
 #if IN_FILE(__G_UNION_VOLUME_MONITOR_C__)
 g_volume_monitor_get 
+g_volume_monitor_adopt_orphan_mount
 #endif
 #endif
 

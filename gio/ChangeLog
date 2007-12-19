@@ -1,3 +1,23 @@
+2007-12-19  David Zeuthen  <davidz@redhat.com>
+
+	Introduce g_volume_monitor_adopt_orphan_mount() function. Also
+	add signals 'disconnected' and 'eject-button' on GDrive. Add
+	signal 'removed' on GVolume and 'unmounted' on GMount.
+
+	* gdrive.c: (g_drive_base_init):
+	* gdrive.h:
+	* gfile.c: (g_file_mount_mountable),
+	(g_file_mount_enclosing_volume):
+	* gio.symbols:
+	* gioerror.h:
+	* gmount.c: (g_mount_base_init):
+	* gmount.h:
+	* gunionvolumemonitor.c: (g_volume_monitor_adopt_orphan_mount):
+	* gunixvolumemonitor.c: (update_volumes), (update_mounts):
+	* gvolume.c: (g_volume_base_init), (g_volume_mount):
+	* gvolume.h:
+	* gvolumemonitor.h:
+
 2007-12-17  Matthias Clasen  <mclasen@redhat.com>
 
 	* *.c: Fix up includes in the section docs.

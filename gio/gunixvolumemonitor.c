@@ -340,6 +340,7 @@ update_volumes (GUnixVolumeMonitor *monitor)
 	  _g_unix_volume_disconnected (volume);
 	  monitor->volumes = g_list_remove (monitor->volumes, volume);
 	  g_signal_emit_by_name (monitor, "volume_removed", volume);
+	  g_signal_emit_by_name (volume, "removed");
 	  g_object_unref (volume);
 	}
     }
@@ -392,6 +393,7 @@ update_mounts (GUnixVolumeMonitor *monitor)
 	  _g_unix_mount_unmounted (mount);
 	  monitor->mounts = g_list_remove (monitor->mounts, mount);
 	  g_signal_emit_by_name (monitor, "mount_removed", mount);
+	  g_signal_emit_by_name (mount, "unmounted");
 	  g_object_unref (mount);
 	}
     }

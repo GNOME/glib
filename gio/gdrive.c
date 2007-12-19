@@ -97,15 +97,46 @@ g_drive_base_init (gpointer g_class)
     {
       /**
       * GDrive::changed:
-      * @volume: a #GVolume.
+      * @drive: a #GDrive.
       * 
       * Emitted when the drive's state has changed.
-      * 
       **/
       g_signal_new (I_("changed"),
                     G_TYPE_DRIVE,
                     G_SIGNAL_RUN_LAST,
                     G_STRUCT_OFFSET (GDriveIface, changed),
+                    NULL, NULL,
+                    g_cclosure_marshal_VOID__VOID,
+                    G_TYPE_NONE, 0);
+
+      /**
+      * GDrive::disconnected:
+      * @drive: a #GDrive.
+      * 
+      * This signal is emitted when the #GDrive have been
+      * disconnected. If the recipient is holding references to the
+      * object they should release them so the object can be
+      * finalized.
+      **/
+      g_signal_new (I_("disconnected"),
+                    G_TYPE_DRIVE,
+                    G_SIGNAL_RUN_LAST,
+                    G_STRUCT_OFFSET (GDriveIface, disconnected),
+                    NULL, NULL,
+                    g_cclosure_marshal_VOID__VOID,
+                    G_TYPE_NONE, 0);
+
+      /**
+      * GDrive::eject-button:
+      * @drive: a #GDrive.
+      * 
+      * Emitted when the physical eject button (if any) of a drive have been pressed.
+      * 
+      **/
+      g_signal_new (I_("eject-button"),
+                    G_TYPE_DRIVE,
+                    G_SIGNAL_RUN_LAST,
+                    G_STRUCT_OFFSET (GDriveIface, eject_button),
                     NULL, NULL,
                     g_cclosure_marshal_VOID__VOID,
                     G_TYPE_NONE, 0);

@@ -98,6 +98,9 @@ struct _GVolumeMonitorClass {
   GMount *  (*get_mount_for_uuid)   (GVolumeMonitor  *volume_monitor, 
                                      const char      *uuid);
 
+
+  GVolume * (*adopt_orphan_mount)   (GMount          *mount);
+
   /*< private >*/
   /* Padding for future expansion */
   void (*_g_reserved1) (void);
@@ -120,6 +123,8 @@ GVolume *       g_volume_monitor_get_volume_for_uuid     (GVolumeMonitor  *volum
                                                           const char      *uuid);
 GMount *        g_volume_monitor_get_mount_for_uuid      (GVolumeMonitor  *volume_monitor,
                                                           const char      *uuid);
+
+GVolume *       g_volume_monitor_adopt_orphan_mount      (GMount *mount);
 
 G_END_DECLS
 

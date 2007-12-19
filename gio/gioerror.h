@@ -79,6 +79,7 @@ GQuark          g_io_error_quark      (void);
  * @G_IO_ERROR_WOULD_BLOCK: Operation would block.
  * @G_IO_ERROR_HOST_NOT_FOUND: Host couldn't be found (remote operations).
  * @G_IO_ERROR_WOULD_MERGE: Operation would merge files.
+ * @G_IO_ERROR_FAILED_HANDLED: Operation failed and a helper program has already interacted with the user. Do not display any error dialog.
  *
  * Error codes returned by GIO functions.
  * 
@@ -114,7 +115,8 @@ typedef enum
   G_IO_ERROR_BUSY,
   G_IO_ERROR_WOULD_BLOCK,
   G_IO_ERROR_HOST_NOT_FOUND,
-  G_IO_ERROR_WOULD_MERGE
+  G_IO_ERROR_WOULD_MERGE,
+  G_IO_ERROR_FAILED_HANDLED
 } GIOErrorEnum;
 
 GIOErrorEnum g_io_error_from_errno (gint err_no);

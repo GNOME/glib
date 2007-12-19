@@ -601,5 +601,79 @@ _g_mount_get_for_mount_path (const char *mount_path,
   return mount;
 }
 
+/**
+ * g_volume_monitor_adopt_orphan_mount:
+ * @mount: a #GMount object to find a parent for
+ *
+ * This function should be called by any #GVolumeMonitor
+ * implementation when a new #GMount object is created that is not
+ * associated with a #GVolume object. It must be called just before
+ * emitting the @mount_added signal.
+ *
+ * If the return value is not %NULL, the caller must associate the
+ * returned #GVolume object with the #GMount. This involves returning
+ * it in it's g_mount_get_volume() implementation. The caller must
+ * also listen for the "removed" signal on the returned object
+ * and give up it's reference when handling that signal
+ * 
+ * Similary, if implementing g_volume_monitor_adopt_orphan_mount(),
+ * the implementor must take a reference to @mount and return it in
+ * it's g_volume_get_mount() implemented. Also, the implementor must
+ * listen for the "unmounted" signal on @mount and give up it's
+ * reference upon handling that signal.
+ *
+ * There are two main use cases for this function.
+ *
+ * One is when implementing a user space file system driver that reads
+ * blocks of a block device that is already represented by the native
+ * volume monitor (for example a CD Audio file system driver). Such
+ * a driver will generate it's own #GMount object that needs to be
+ * assoicated with the #GVolume object that represents the volume.
+ *
+ * The other is for implementing a #GVolumeMonitor whose sole purpose
+ * is to return #GVolume objects representing entries in the users
+ * "favorite servers" list or similar.
+ *
+ * Returns: the #GVolume object that is the parent for @mount or %NULL
+ * if no wants to adopt the #GMount.
+ */
+GVolume *
+g_volume_monitor_adopt_orphan_mount (GMount *mount)
+{
+  GVolumeMonitor *child_monitor;
+  GVolumeMonitorClass *child_monitor_class;
+  GVolume *volume;
+  GList *l;
+
+  g_return_val_if_fail (mount != NULL, NULL);
+
+  if (the_volume_monitor == NULL)
+    return NULL;
+
+  volume = NULL;
+  
+  /* TODO: nasty locking issues because current VM's don't emit signals in idle */
+
+  //G_LOCK (the_volume_monitor);
+
+  for (l = the_volume_monitor->monitors; l != NULL; l = l->next)
+    {
+      child_monitor = l->data;
+      child_monitor_class = G_VOLUME_MONITOR_GET_CLASS (child_monitor);
+
+      if (child_monitor_class->adopt_orphan_mount != NULL)
+        {
+          volume = child_monitor_class->adopt_orphan_mount (mount);
+          if (volume != NULL)
+            break;
+        }
+    }
+  
+  //G_UNLOCK (the_volume_monitor);
+
+  return volume;
+}
+
+
 #define __G_UNION_VOLUME_MONITOR_C__
 #include "gioaliasdef.c"

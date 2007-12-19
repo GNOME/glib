@@ -2997,7 +2997,7 @@ g_file_set_attribute_int64 (GFile                *file,
 /**
  * g_file_mount_mountable:
  * @file: input #GFile.
- * @mount_operation: a #GMountOperation, or %NULL.
+ * @mount_operation: a #GMountOperation, or %NULL to avoid user interaction.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @callback: a #GAsyncReadyCallback to call when the request is satisfied
  * @user_data: the data to pass to callback function
@@ -3023,7 +3023,6 @@ g_file_mount_mountable (GFile               *file,
   GFileIface *iface;
 
   g_return_if_fail (G_IS_FILE (file));
-  g_return_if_fail (G_IS_MOUNT_OPERATION (mount_operation));
 
   iface = G_FILE_GET_IFACE (file);
 
@@ -3998,7 +3997,7 @@ g_file_new_for_commandline_arg (const char *arg)
 /**
  * g_file_mount_enclosing_volume:
  * @location: input #GFile.
- * @mount_operation: a #GMountOperation.
+ * @mount_operation: a #GMountOperation or %NULL to avoid user interaction.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @callback: a #GAsyncReadyCallback to call when the request is satisfied
  * @user_data: the data to pass to callback function
@@ -4023,7 +4022,6 @@ g_file_mount_enclosing_volume (GFile               *location,
   GFileIface *iface;
 
   g_return_if_fail (G_IS_FILE (location));
-  g_return_if_fail (G_IS_MOUNT_OPERATION (mount_operation));
 
   iface = G_FILE_GET_IFACE (location);
 
