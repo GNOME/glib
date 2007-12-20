@@ -1,5 +1,9 @@
 2007-12-19  Matthias Clasen  <mclasen@redhat.com>
 
+	* pltcheck.sh: Update
+
+2007-12-19  Matthias Clasen  <mclasen@redhat.com>
+
 	* gunionvolumemonitor.c:
 	* gunixmount.c: Remove C99 comments
 
