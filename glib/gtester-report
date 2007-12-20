@@ -1,0 +1,335 @@
+#! /usr/bin/env python
+# GLib Testing Framework Utility			-*- Mode: python; -*-
+# Copyright (C) 2007 Imendio AB
+# Authors: Tim Janik
+#
+# This library is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Lesser General Public
+# License as published by the Free Software Foundation; either
+# version 2 of the License, or (at your option) any later version.
+#
+# This library is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public
+# License along with this library; if not, write to the
+# Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+# Boston, MA 02111-1307, USA.
+import sys, re, xml.dom.minidom
+pkginstall_configvars = {
+  #@PKGINSTALL_CONFIGVARS_IN24LINES@ # configvars are substituted upon script installation
+}
+
+# xml utilities
+def find_child (node, child_name):
+  for child in node.childNodes:
+    if child.nodeName == child_name:
+      return child
+  return None
+def list_children (node, child_name):
+  rlist = []
+  for child in node.childNodes:
+    if child.nodeName == child_name:
+      rlist += [ child ]
+  return rlist
+def find_node (node, name = None):
+  if not node or node.nodeName == name or not name:
+    return node
+  for child in node.childNodes:
+    c = find_node (child, name)
+    if c:
+      return c
+  return None
+def node_as_text (node, name = None):
+  if name:
+    node = find_node (node, name)
+  txt = ''
+  if node:
+    if node.nodeValue:
+      txt += node.nodeValue
+    for child in node.childNodes:
+      txt += node_as_text (child)
+  return txt
+def attribute_as_text (node, aname, node_name = None):
+  node = find_node (node, node_name)
+  if not node:
+    return ''
+  attr = node.attributes.get (aname, '')
+  if hasattr (attr, 'value'):
+    return attr.value
+  return ''
+
+# HTML utilities
+def html_indent_string (n):
+  uncollapsible_space = ' &nbsp;' # HTML won't compress alternating sequences of ' ' and '&nbsp;'
+  string = ''
+  for i in range (0, (n + 1) / 2):
+    string += uncollapsible_space
+  return string
+
+class TestBinary:
+  def __init__ (self, name):
+    self.name = name
+    self.testcases = []
+    self.duration = 0
+    self.success_cases = 0
+    self.skipped_cases = 0
+    self.file = '???'
+    self.random_seed = ''
+
+class TreeProcess:
+  def __init__ (self):
+    self.nest_level = 0
+  def trampoline (self, node):
+    name = node.nodeName
+    if name == '#text':
+      self.handle_text (node)
+    else:
+      try:	method = getattr (self, 'handle_' + re.sub ('[^a-zA-Z0-9]', '_', name))
+      except:	method = None
+      if method:
+        return method (node)
+      else:
+        return self.process_recursive (name, node)
+  def process_recursive (self, node_name, node):
+    self.process_children (node)
+  def process_children (self, node):
+    self.nest_level += 1
+    for child in node.childNodes:
+      self.trampoline (child)
+    self.nest_level += 1
+
+class ReportReader (TreeProcess):
+  def __init__ (self):
+    TreeProcess.__init__ (self)
+    self.binary_names = []
+    self.binaries = {}
+    self.last_binary = None
+  def binary_list (self):
+    lst = []
+    for name in self.binary_names:
+      lst += [ self.binaries[name] ]
+    return lst
+  def handle_testcase (self, node):
+    self.last_binary.testcases += [ node ]
+    result = attribute_as_text (node, 'result', 'status')
+    if result == 'success':
+      self.last_binary.success_cases += 1
+    if bool (attribute_as_text (node, 'skipped')):
+      self.last_binary.skipped_cases += 1
+  def handle_text (self, node):
+    pass
+  def handle_testbinary (self, node):
+    path = node.attributes.get ('path', None).value
+    if self.binaries.get (path, -1) == -1:
+      self.binaries[path] = TestBinary (path)
+      self.binary_names += [ path ]
+    self.last_binary = self.binaries[path]
+    dn = find_child (node, 'duration')
+    dur = node_as_text (dn)
+    try:        dur = float (dur)
+    except:     dur = 0
+    if dur:
+      self.last_binary.duration += dur
+    bin = find_child (node, 'binary')
+    if bin:
+      self.last_binary.file = attribute_as_text (bin, 'file')
+    rseed = find_child (node, 'random-seed')
+    if rseed:
+      self.last_binary.random_seed = node_as_text (rseed)
+    self.process_children (node)
+
+class ReportWriter (TreeProcess):
+  # Javascript/CSS snippet to toggle element visibility
+  cssjs = r'''
+  <style type="text/css" media="screen">
+    .VisibleSection { }
+    .HiddenSection  { display: none; }
+  </style>
+  <script language="javascript" type="text/javascript"><!--
+  function toggle_display (parentid, tagtype, idmatch, keymatch) {
+    ptag = document.getElementById (parentid);
+    tags = ptag.getElementsByTagName (tagtype);
+    for (var i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var key = tag.getAttribute ("keywords");
+      if (tag.id.indexOf (idmatch) == 0 && key && key.match (keymatch)) {
+        if (tag.className.indexOf ("HiddenSection") >= 0)
+          tag.className = "VisibleSection";
+        else
+          tag.className = "HiddenSection";
+      }
+    }
+  }
+  message_array = Array();
+  function view_testlog (wname, file, random_seed, tcase, msgid) {
+      txt = message_array[msgid];
+      txt = txt.replace (/&/g, "&amp;");
+      txt = txt.replace (/</g, "&lt;");
+      txt = txt.replace (/>/g, "&gt;");
+      var w = window.open ("", // URI
+                           wname,
+                           "resizable,scrollbars,status,width=790,height=400");
+      var doc = w.document;
+      doc.write ("<h2>File: " + file + "</h2>\n");
+      doc.write ("<h3>Case: " + tcase + "</h3>\n");
+      doc.write ("<strong>Random Seed:</strong> <code>" + random_seed + "</code> <br /><br />\n");
+      doc.write ("<strong>Output: </strong><br />\n");
+      doc.write ("<pre>");
+      doc.write (txt);
+      doc.write ("</pre>\n");
+      doc.write ("<a href=\'javascript:window.close()\'>Close Window</a>\n");
+      doc.close();
+  }
+  --></script>
+  '''
+  def __init__ (self, binary_list):
+    TreeProcess.__init__ (self)
+    self.binaries = binary_list
+    self.bcounter = 0
+    self.tcounter = 0
+    self.total_tcounter = 0
+    self.total_fcounter = 0
+    self.total_duration = 0
+    self.indent_depth = 0
+    self.lastchar = ''
+  def oprint (self, message):
+    sys.stdout.write (message)
+    if message:
+      self.lastchar = message[-1]
+  def handle_text (self, node):
+    self.oprint (node.nodeValue)
+  def handle_testcase (self, node, binary):
+    skipped = bool (attribute_as_text (node, 'skipped'))
+    if skipped:
+      return            # skipped tests are uninteresting for HTML reports
+    path = attribute_as_text (node, 'path')
+    duration = node_as_text (node, 'duration')
+    result = attribute_as_text (node, 'result', 'status')
+    rcolor = {
+      'success': 'bgcolor="lightgreen"',
+      'failed':  'bgcolor="red"',
+    }.get (result, '')
+    if result != 'success':
+      duration = '-'    # ignore bogus durations
+    self.oprint ('<tr id="b%u_t%u_" keywords="%s all" class="HiddenSection">\n' % (self.bcounter, self.tcounter, result))
+    self.oprint ('<td>%s %s</td> <td align="right">%s</td> \n' % (html_indent_string (4), path, duration))
+    if result != 'success':
+      rlist = list_children (node, 'error')
+      txt = ''
+      for enode in rlist:
+        txt += node_as_text (enode)
+        if txt and txt[-1] != '\n':
+          txt += '\n'
+      txt = re.sub (r'"', r'\\"', txt)
+      txt = re.sub (r'\n', r'\\n', txt)
+      self.oprint ('<script language="javascript" type="text/javascript">message_array["b%u_t%u_"] = "%s";</script>\n' % (self.bcounter, self.tcounter, txt))
+      self.oprint ('<td align="center"><a href="javascript:view_testlog (\'%s\', \'%s\', \'%s\', \'%s\', \'b%u_t%u_\')">Output</a></td>\n' %
+                   ('TestOutputWindow', binary.file, binary.random_seed, path, self.bcounter, self.tcounter))
+    else:
+      self.oprint ('<td align="center">-</td>\n')
+    self.oprint ('<td align="right" %s>%s</td>\n' % (rcolor, result))
+    self.oprint ('</tr>\n')
+    self.tcounter += 1
+    self.total_tcounter += 1
+    self.total_fcounter += result != 'success'
+  def handle_binary (self, binary):
+    self.tcounter = 1
+    self.bcounter += 1
+    self.total_duration += binary.duration
+    self.oprint ('<tr><td><strong>%s</strong></td><td align="right">%f</td> <td align="center">\n' % (binary.name, binary.duration))
+    erlink, oklink = ('', '')
+    real_cases = len (binary.testcases) - binary.skipped_cases
+    if binary.success_cases < real_cases:
+      erlink = 'href="javascript:toggle_display (\'ResultTable\', \'tr\', \'b%u_\', \'failed\')"' % self.bcounter
+    if binary.success_cases:
+      oklink = 'href="javascript:toggle_display (\'ResultTable\', \'tr\', \'b%u_\', \'success\')"' % self.bcounter
+    self.oprint ('<a %s>ER</a>\n' % erlink)
+    self.oprint ('<a %s>OK</a>\n' % oklink)
+    self.oprint ('</td>\n')
+    perc = binary.success_cases * 100.0 / real_cases
+    pcolor = {
+      100 : 'bgcolor="lightgreen"',
+      0   : 'bgcolor="red"',
+    }.get (int (perc), 'bgcolor="yellow"')
+    self.oprint ('<td align="right" %s>%.2f%%</td>\n' % (pcolor, perc))
+    self.oprint ('</tr>\n')
+    for tc in binary.testcases:
+      self.handle_testcase (tc, binary)
+  def handle_totals (self):
+    self.oprint ('<tr>')
+    self.oprint ('<td><strong>Totals:</strong> %u Binaries, %u Tests, %u Failed, %u Succeeded</td>' %
+                 (self.bcounter, self.total_tcounter, self.total_fcounter, self.total_tcounter - self.total_fcounter))
+    self.oprint ('<td align="right">%f</td>\n' % self.total_duration)
+    self.oprint ('<td align="center">-</td>\n')
+    perc = (self.total_tcounter - self.total_fcounter) * 100.0 / self.total_tcounter
+    pcolor = {
+      100 : 'bgcolor="lightgreen"',
+      0   : 'bgcolor="red"',
+    }.get (int (perc), 'bgcolor="yellow"')
+    self.oprint ('<td align="right" %s>%.2f%%</td>\n' % (pcolor, perc))
+    self.oprint ('</tr>\n')
+  def printout (self):
+    self.oprint ('<html><head>\n')
+    self.oprint ('<title>GTester Unit Test Report</title>\n')
+    self.oprint (self.cssjs)
+    self.oprint ('</head>\n')
+    self.oprint ('<body>\n')
+    self.oprint ('<h2>GTester Unit Test Report</h2>\n')
+    self.oprint ('<table id="ResultTable" width="100%" border="1">\n<tr>\n')
+    self.oprint ('<th>Program / Testcase </th>\n')
+    self.oprint ('<th style="width:8em">Duration (sec)</th>\n')
+    self.oprint ('<th style="width:5em">View</th>\n')
+    self.oprint ('<th style="width:5em">Result</th>\n')
+    self.oprint ('</tr>\n')
+    for tb in self.binaries:
+      self.handle_binary (tb)
+    self.handle_totals()
+    self.oprint ('</table>\n')
+    self.oprint ('</body>\n')
+    self.oprint ('</html>\n')
+
+def parse_files_and_args ():
+  from sys import argv, stdin
+  files = []
+  arg_iter = sys.argv[1:].__iter__()
+  rest = len (sys.argv) - 1
+  for arg in arg_iter:
+    rest -= 1
+    if arg == '--help' or arg == '-h':
+      print_help ()
+      sys.exit (0)
+    elif arg == '--version' or arg == '-v':
+      print_help (False)
+      sys.exit (0)
+    else:
+      files = files + [ arg ]
+  return files
+
+def print_help (with_help = True):
+  import os
+  print "gtester-report (GLib utils) version", pkginstall_configvars.get ('glib-version', '0.0-uninstalled')
+  if not with_help:
+    return
+  print "Usage: %s [OPTIONS] <gtester-log.xml>" % os.path.basename (sys.argv[0])
+  print "Generate HTML reports from the XML log files generated by gtester."
+  print "Options:"
+  print "  --help, -h                print this help message"
+  print "  --version, -v             print version info"
+
+def main():
+  from sys import argv, stdin
+  files = parse_files_and_args()
+  if len (files) != 1:
+    print_help (True)
+    sys.exit (1)
+  xd = xml.dom.minidom.parse (files[0])
+  rr = ReportReader()
+  rr.trampoline (xd)
+  rw = ReportWriter (rr.binary_list())
+  rw.printout()
+
+if __name__ == '__main__':
+  main()

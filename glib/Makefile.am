@@ -315,6 +315,21 @@ INSTALL_PROGS	+= gtester
 gtester_SOURCES	 = gtester.c
 gtester_LDADD	 = libglib-2.0.la
 
+auto_config_binscripts = gtester-report
+bin_SCRIPTS = ${auto_config_binscripts}
+EXTRA_DIST += ${auto_config_binscripts}
+
+CONFIGVARS = \
+        "bindir"    	: "${bindir}",		\
+        "glib-version"  : "${GLIB_VERSION}"
+
+install-exec-hook:
+	for sf in ${auto_config_binscripts} ; do \
+	  sed -i "$(DESTDIR)$(bindir)/$$sf" \
+	     -e '1,24s|^ *#@PKGINSTALL_CONFIGVARS_IN24LINES@|  ${CONFIGVARS}|' \
+	     -e '1,1s|#!/usr/bin/env python\([0-9]\+\(\.[0-9]\+\)\?\)\?|#!${PYTHON}|' || exit $$? ; \
+	done
+
 endif
 
 glib-2.0.lib: libglib-2.0.la glib.def
