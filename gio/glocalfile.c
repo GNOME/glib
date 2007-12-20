@@ -158,7 +158,7 @@ g_local_file_class_init (GLocalFileClass *klass)
   
 #ifdef HAVE_SYMLINK
   g_file_attribute_info_list_add (list,
-				  G_FILE_ATTRIBUTE_STD_SYMLINK_TARGET,
+				  G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET,
 				  G_FILE_ATTRIBUTE_TYPE_BYTE_STRING,
 				  0);
 #endif
@@ -749,7 +749,7 @@ get_mount_info (GFileInfo             *fs_info,
     }
 
   if (mount_info & MOUNT_INFO_READONLY)
-    g_file_info_set_attribute_boolean (fs_info, G_FILE_ATTRIBUTE_FS_READONLY, TRUE);
+    g_file_info_set_attribute_boolean (fs_info, G_FILE_ATTRIBUTE_FILESYSTEM_READONLY, TRUE);
 }
 
 #endif
@@ -817,7 +817,7 @@ g_local_file_query_filesystem_info (GFile         *file,
   attribute_matcher = g_file_attribute_matcher_new (attributes);
   
   if (g_file_attribute_matcher_matches (attribute_matcher,
-					G_FILE_ATTRIBUTE_FS_FREE))
+					G_FILE_ATTRIBUTE_FILESYSTEM_FREE))
     {
 #ifdef G_OS_WIN32
       gchar *localdir = g_path_get_dirname (local->filename);
@@ -826,14 +826,14 @@ g_local_file_query_filesystem_info (GFile         *file,
       
       g_free (localdir);
       if (GetDiskFreeSpaceExW (wdirname, &li, NULL, NULL))
-        g_file_info_set_attribute_uint64 (info, G_FILE_ATTRIBUTE_FS_FREE, (guint64)li.QuadPart);
+        g_file_info_set_attribute_uint64 (info, G_FILE_ATTRIBUTE_FILESYSTEM_FREE, (guint64)li.QuadPart);
       g_free (wdirname);
 #else
-      g_file_info_set_attribute_uint64 (info, G_FILE_ATTRIBUTE_FS_FREE, block_size * statfs_buffer.f_bavail);
+      g_file_info_set_attribute_uint64 (info, G_FILE_ATTRIBUTE_FILESYSTEM_FREE, block_size * statfs_buffer.f_bavail);
 #endif
     }
   if (g_file_attribute_matcher_matches (attribute_matcher,
-					G_FILE_ATTRIBUTE_FS_SIZE))
+					G_FILE_ATTRIBUTE_FILESYSTEM_SIZE))
     {
 #ifdef G_OS_WIN32
       gchar *localdir = g_path_get_dirname (local->filename);
@@ -842,22 +842,22 @@ g_local_file_query_filesystem_info (GFile         *file,
       
       g_free (localdir);
       if (GetDiskFreeSpaceExW (wdirname, NULL, &li, NULL))
-        g_file_info_set_attribute_uint64 (info, G_FILE_ATTRIBUTE_FS_SIZE,  (guint64)li.QuadPart);
+        g_file_info_set_attribute_uint64 (info, G_FILE_ATTRIBUTE_FILESYSTEM_SIZE,  (guint64)li.QuadPart);
       g_free (wdirname);
 #else
-      g_file_info_set_attribute_uint64 (info, G_FILE_ATTRIBUTE_FS_SIZE, block_size * statfs_buffer.f_blocks);
+      g_file_info_set_attribute_uint64 (info, G_FILE_ATTRIBUTE_FILESYSTEM_SIZE, block_size * statfs_buffer.f_blocks);
 #endif
     }
 #ifdef USE_STATFS
   fstype = get_fs_type (statfs_buffer.f_type);
   if (fstype &&
       g_file_attribute_matcher_matches (attribute_matcher,
-					G_FILE_ATTRIBUTE_FS_TYPE))
-    g_file_info_set_attribute_string (info, G_FILE_ATTRIBUTE_FS_TYPE, fstype);
+					G_FILE_ATTRIBUTE_FILESYSTEM_TYPE))
+    g_file_info_set_attribute_string (info, G_FILE_ATTRIBUTE_FILESYSTEM_TYPE, fstype);
 #endif  
 
   if (g_file_attribute_matcher_matches (attribute_matcher,
-					G_FILE_ATTRIBUTE_FS_READONLY))
+					G_FILE_ATTRIBUTE_FILESYSTEM_READONLY))
     {
 #ifdef G_OS_WIN32
       /* need to implement with *unix_mount* */

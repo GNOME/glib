@@ -82,74 +82,74 @@ typedef enum {
 
 /* Common Attributes:  */
 /**
- * G_FILE_ATTRIBUTE_STD_TYPE:
+ * G_FILE_ATTRIBUTE_STANDARD_TYPE:
  * 
- * A key in the "std" namespace for storing file types. 
+ * A key in the "standard" namespace for storing file types. 
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_UINT32.
  * The value for this key should contain a #GFileType.
  **/
-#define G_FILE_ATTRIBUTE_STD_TYPE "std::type"                     /* uint32 (GFileType) */
+#define G_FILE_ATTRIBUTE_STANDARD_TYPE "standard::type"                     /* uint32 (GFileType) */
 
 /**
- * G_FILE_ATTRIBUTE_STD_IS_HIDDEN:
+ * G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN:
  * 
- * A key in the "std" namespace for checking if a file is hidden. 
+ * A key in the "standard" namespace for checking if a file is hidden. 
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
  **/
-#define G_FILE_ATTRIBUTE_STD_IS_HIDDEN "std::is-hidden"           /* boolean */
+#define G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN "standard::is-hidden"           /* boolean */
 
 /**
- * G_FILE_ATTRIBUTE_STD_IS_BACKUP:
+ * G_FILE_ATTRIBUTE_STANDARD_IS_BACKUP:
  * 
- * A key in the "std" namespace for checking if a file is a backup file.
+ * A key in the "standard" namespace for checking if a file is a backup file.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
  **/
-#define G_FILE_ATTRIBUTE_STD_IS_BACKUP "std::is-backup"           /* boolean */
+#define G_FILE_ATTRIBUTE_STANDARD_IS_BACKUP "standard::is-backup"           /* boolean */
 
 /**
- * G_FILE_ATTRIBUTE_STD_IS_SYMLINK:
+ * G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK:
  * 
- * A key in the "std" namespace for checking if the file is a symlink.
+ * A key in the "standard" namespace for checking if the file is a symlink.
  * Typically the actual type is something else, if we followed the symlink
  * to get the type.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
  **/
-#define G_FILE_ATTRIBUTE_STD_IS_SYMLINK "std::is-symlink"         /* boolean */
+#define G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK "standard::is-symlink"         /* boolean */
 
 /**
- * G_FILE_ATTRIBUTE_STD_IS_VIRTUAL:
+ * G_FILE_ATTRIBUTE_STANDARD_IS_VIRTUAL:
  * 
- * A key in the "std" namespace for checking if a file is virtual.
+ * A key in the "standard" namespace for checking if a file is virtual.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
  **/
-#define G_FILE_ATTRIBUTE_STD_IS_VIRTUAL "std::is-virtual"         /* boolean */
+#define G_FILE_ATTRIBUTE_STANDARD_IS_VIRTUAL "standard::is-virtual"         /* boolean */
 
 /**
- * G_FILE_ATTRIBUTE_STD_NAME:
+ * G_FILE_ATTRIBUTE_STANDARD_NAME:
  * 
- * A key in the "std" namespace for getting the name of the file.
+ * A key in the "standard" namespace for getting the name of the file.
  * The name is the on-disk filename which may not be in any known encoding,
  * and can thus not be generally displayed as is.
- * Use #G_FILE_ATTRIBUTE_STD_DISPLAY_NAME if you need to display the
+ * Use #G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME if you need to display the
  * name in a user interface.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BYTE_STRING.
  **/
-#define G_FILE_ATTRIBUTE_STD_NAME "std::name"                     /* byte string */
+#define G_FILE_ATTRIBUTE_STANDARD_NAME "standard::name"                     /* byte string */
 
 /**
- * G_FILE_ATTRIBUTE_STD_DISPLAY_NAME:
+ * G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME:
  * 
- * A key in the "std" namespace for getting the display name of the file.
+ * A key in the "standard" namespace for getting the display name of the file.
  * A display name is guaranteed to be in UTF8 and can thus be displayed in
  * the UI.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_STRING.
  **/
-#define G_FILE_ATTRIBUTE_STD_DISPLAY_NAME "std::display-name"     /* string */
+#define G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME "standard::display-name"     /* string */
 
 /**
- * G_FILE_ATTRIBUTE_STD_EDIT_NAME:
+ * G_FILE_ATTRIBUTE_STANDARD_EDIT_NAME:
  * 
- * A key in the "std" namespace for edit name of the file.
+ * A key in the "standard" namespace for edit name of the file.
  * An edit name is similar to the display name, but it is meant to be
  * used when you want to rename the file in the UI. The display name
  * might contain information you don't want in the new filename (such as
@@ -157,12 +157,12 @@ typedef enum {
  * 
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_STRING.
  **/
-#define G_FILE_ATTRIBUTE_STD_EDIT_NAME "std::edit-name"           /* string */
+#define G_FILE_ATTRIBUTE_STANDARD_EDIT_NAME "standard::edit-name"           /* string */
 
 /**
- * G_FILE_ATTRIBUTE_STD_COPY_NAME:
+ * G_FILE_ATTRIBUTE_STANDARD_COPY_NAME:
  * 
- * A key in the "std" namespace for getting the copy name of the file.
+ * A key in the "standard" namespace for getting the copy name of the file.
  * The copy name is an optional version of the name. If availible its always
  * in UTF8, and corresponds directly to the original filename (only transcoded to
  * UTF8). This is useful if you want to copy the file to another filesystem that
@@ -171,75 +171,75 @@ typedef enum {
  * 
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_STRING.
  **/
-#define G_FILE_ATTRIBUTE_STD_COPY_NAME "std::copy-name"           /* string */
+#define G_FILE_ATTRIBUTE_STANDARD_COPY_NAME "standard::copy-name"           /* string */
 
 /**
- * G_FILE_ATTRIBUTE_STD_ICON:
+ * G_FILE_ATTRIBUTE_STANDARD_ICON:
  * 
- * A key in the "std" namespace for getting the icon for the file.
+ * A key in the "standard" namespace for getting the icon for the file.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_OBJECT.
  * The value for this key should contain a #GIcon.
  **/
-#define G_FILE_ATTRIBUTE_STD_ICON "std::icon"                     /* object (GIcon) */
+#define G_FILE_ATTRIBUTE_STANDARD_ICON "standard::icon"                     /* object (GIcon) */
 
 /**
- * G_FILE_ATTRIBUTE_STD_CONTENT_TYPE:
+ * G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE:
  * 
- * A key in the "std" namespace for getting the content type of the file.
+ * A key in the "standard" namespace for getting the content type of the file.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_STRING.
  * The value for this key should contain a valid content type.
  **/
-#define G_FILE_ATTRIBUTE_STD_CONTENT_TYPE "std::content-type"     /* string */
+#define G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE "standard::content-type"     /* string */
 
 /**
- * G_FILE_ATTRIBUTE_STD_FAST_CONTENT_TYPE:
+ * G_FILE_ATTRIBUTE_STANDARD_FAST_CONTENT_TYPE:
  * 
- * A key in the "std" namespace for getting the fast content type.
+ * A key in the "standard" namespace for getting the fast content type.
  * The fast content type isn't as reliable as the regular one, as it
  * only uses the filename to guess it, but it is faster to calculate than the
  * regular content type.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_STRING.
  * 
  **/
-#define G_FILE_ATTRIBUTE_STD_FAST_CONTENT_TYPE "std::fast-content-type" /* string */
+#define G_FILE_ATTRIBUTE_STANDARD_FAST_CONTENT_TYPE "standard::fast-content-type" /* string */
 
 /**
- * G_FILE_ATTRIBUTE_STD_SIZE:
+ * G_FILE_ATTRIBUTE_STANDARD_SIZE:
  * 
- * A key in the "std" namespace for getting the file's size (in bytes).
+ * A key in the "standard" namespace for getting the file's size (in bytes).
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_UINT64.
  **/
-#define G_FILE_ATTRIBUTE_STD_SIZE "std::size"                     /* uint64 */
+#define G_FILE_ATTRIBUTE_STANDARD_SIZE "standard::size"                     /* uint64 */
 
 /**
- * G_FILE_ATTRIBUTE_STD_SYMLINK_TARGET:
+ * G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET:
  * 
- * A key in the "std" namespace for getting the symlink target, if the file
+ * A key in the "standard" namespace for getting the symlink target, if the file
  * is a symlink. Corresponding #GFileAttributeType is 
  * %G_FILE_ATTRIBUTE_TYPE_BYTE_STRING.
  **/
-#define G_FILE_ATTRIBUTE_STD_SYMLINK_TARGET "std::symlink-target" /* byte string */
+#define G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET "standard::symlink-target" /* byte string */
 
 /**
- * G_FILE_ATTRIBUTE_STD_TARGET_URI:
+ * G_FILE_ATTRIBUTE_STANDARD_TARGET_URI:
  * 
- * A key in the "std" namespace for getting the target URI for the file, in
+ * A key in the "standard" namespace for getting the target URI for the file, in
  * the case of %G_FILE_TYPE_SHORTCUT or %G_FILE_TYPE_MOUNTABLE files.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_STRING.
  **/
-#define G_FILE_ATTRIBUTE_STD_TARGET_URI "std::target-uri"         /* string */
+#define G_FILE_ATTRIBUTE_STANDARD_TARGET_URI "standard::target-uri"         /* string */
 
 /**
- * G_FILE_ATTRIBUTE_STD_SORT_ORDER:
+ * G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER:
  * 
- * A key in the "std" namespace for setting the sort order of a file. 
+ * A key in the "standard" namespace for setting the sort order of a file. 
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_INT32.
  * An example use would be in file managers, which would use this key 
  * to set the order files are displayed. Files with smaller sort order
  * should be sorted first, and files without sort order as if sort order
  * was zero.
  **/
-#define G_FILE_ATTRIBUTE_STD_SORT_ORDER "std::sort-order"         /* int32  */
+#define G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER "standard::sort-order"         /* int32  */
 
 /* Entity tags, used to avoid missing updates on save */
 
@@ -267,14 +267,15 @@ typedef enum {
 #define G_FILE_ATTRIBUTE_ID_FILE "id::file"                     /* string */
 
 /**
- * G_FILE_ATTRIBUTE_ID_FS:
+ * G_FILE_ATTRIBUTE_ID_FILESYSTEM:
  * 
  * A key in the "id" namespace for getting the file system identifier.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_STRING.
- * An example use would be during listing files, to avoid recursive
- * directory scanning.
+ * An example use would be during drag and drop to see if the source
+ * and target are on the same filesystem (default to move) or not (default
+ * to copy).
  **/
-#define G_FILE_ATTRIBUTE_ID_FS "id::fs"                         /* string */
+#define G_FILE_ATTRIBUTE_ID_FILESYSTEM "id::filesystem"         /* string */
 
 /* Calculated Access Rights for current user */
 
@@ -630,39 +631,39 @@ typedef enum {
 /* File system info (for g_file_get_filesystem_info) */
 
 /**
- * G_FILE_ATTRIBUTE_FS_SIZE:
+ * G_FILE_ATTRIBUTE_FILESYSTEM_SIZE:
  * 
- * A key in the "fs" namespace for getting the total size (in bytes) of the file system, 
+ * A key in the "filesystem" namespace for getting the total size (in bytes) of the file system, 
  * used in g_file_query_filesystem_info(). Corresponding #GFileAttributeType 
  * is %G_FILE_ATTRIBUTE_TYPE_UINT64.
  **/
-#define G_FILE_ATTRIBUTE_FS_SIZE "fs::size"                       /* uint64 */
+#define G_FILE_ATTRIBUTE_FILESYSTEM_SIZE "filesystem::size"                       /* uint64 */
 
 /**
- * G_FILE_ATTRIBUTE_FS_FREE:
+ * G_FILE_ATTRIBUTE_FILESYSTEM_FREE:
  * 
- * A key in the "fs" namespace for getting the number of bytes of free space left on the 
+ * A key in the "filesystem" namespace for getting the number of bytes of free space left on the 
  * file system. Corresponding #GFileAttributeType is 
  * %G_FILE_ATTRIBUTE_TYPE_UINT64.
  **/
-#define G_FILE_ATTRIBUTE_FS_FREE "fs::free"                       /* uint64 */
+#define G_FILE_ATTRIBUTE_FILESYSTEM_FREE "filesystem::free"                       /* uint64 */
 
 /**
- * G_FILE_ATTRIBUTE_FS_TYPE:
+ * G_FILE_ATTRIBUTE_FILESYSTEM_TYPE:
  * 
- * A key in the "fs" namespace for getting the file system's type.
+ * A key in the "filesystem" namespace for getting the file system's type.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_STRING.
  **/
-#define G_FILE_ATTRIBUTE_FS_TYPE "fs::type"                       /* string */
+#define G_FILE_ATTRIBUTE_FILESYSTEM_TYPE "filesystem::type"                       /* string */
 
 /**
- * G_FILE_ATTRIBUTE_FS_READONLY:
+ * G_FILE_ATTRIBUTE_FILESYSTEM_READONLY:
  * 
- * A key in the "fs" namespace for checking if the file system is read only.
+ * A key in the "filesystem" namespace for checking if the file system is read only.
  * Is set to %TRUE if the file system is read only. Corresponding 
  * #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
  **/
-#define G_FILE_ATTRIBUTE_FS_READONLY "fs::readonly"               /* boolean */
+#define G_FILE_ATTRIBUTE_FILESYSTEM_READONLY "filesystem::readonly"               /* boolean */
 
 /**
  * G_FILE_ATTRIBUTE_GVFS_BACKEND:

@@ -692,9 +692,9 @@ g_file_resolve_relative_path (GFile      *file,
  * should be gathered. It is not an error if its not possible to read a particular
  * requested attribute from a file, it just won't be set. @attribute should
  * be a comma-separated list of attribute or attribute wildcards. The wildcard "*"
- * means all attributes, and a wildcard like "std:*" means all attributes in the std
- * namespace. An example attribute query be "std:*,owner:user".
- * The standard attributes are availible as defines, like #G_FILE_ATTRIBUTE_STD_NAME.
+ * means all attributes, and a wildcard like "standard::*" means all attributes in the standard
+ * namespace. An example attribute query be "standard::*,owner::user".
+ * The standard attributes are availible as defines, like #G_FILE_ATTRIBUTE_STANDARD_NAME.
  *
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
@@ -828,9 +828,9 @@ g_file_enumerate_children_finish (GFile         *file,
  * should be gathered. It is not an error if its not possible to read a particular
  * requested attribute from a file, it just won't be set. @attribute should
  * be a comma-separated list of attribute or attribute wildcards. The wildcard "*"
- * means all attributes, and a wildcard like "std:*" means all attributes in the std
- * namespace. An example attribute query be "std:*,owner:user".
- * The standard attributes are availible as defines, like #G_FILE_ATTRIBUTE_STD_NAME.
+ * means all attributes, and a wildcard like "standard::*" means all attributes in the standard
+ * namespace. An example attribute query be "standard::*,owner::user".
+ * The standard attributes are availible as defines, like #G_FILE_ATTRIBUTE_STANDARD_NAME.
  * 
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
@@ -969,9 +969,9 @@ g_file_query_info_finish (GFile         *file,
  * be a comma-separated list of attribute or attribute wildcards. The wildcard "*"
  * means all attributes, and a wildcard like "fs:*" means all attributes in the fs
  * namespace. The standard namespace for filesystem attributes is "fs".
- * Common attributes of interest are #G_FILE_ATTRIBUTE_FS_SIZE
- * (the total size of the filesystem in bytes), #G_FILE_ATTRIBUTE_FS_FREE (number of
- * bytes availible), and #G_FILE_ATTRIBUTE_FS_TYPE (type of the filesystem).
+ * Common attributes of interest are #G_FILE_ATTRIBUTE_FILESYSTEM_SIZE
+ * (the total size of the filesystem in bytes), #G_FILE_ATTRIBUTE_FILESYSTEM_FREE (number of
+ * bytes availible), and #G_FILE_ATTRIBUTE_FILESYSTEM_TYPE (type of the filesystem).
  * 
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
@@ -1606,7 +1606,7 @@ copy_symlink (GFile           *destination,
 
 
 	  /* Don't overwrite if the destination is a directory */
-	  info = g_file_query_info (destination, G_FILE_ATTRIBUTE_STD_TYPE,
+	  info = g_file_query_info (destination, G_FILE_ATTRIBUTE_STANDARD_TYPE,
 				    G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS,
 				    cancellable, &my_error);
 	  if (info != NULL)
@@ -1664,7 +1664,7 @@ open_source_for_copy (GFile           *source,
       g_error_free (my_error);
       my_error = NULL;
       
-      info = g_file_query_info (destination, G_FILE_ATTRIBUTE_STD_TYPE,
+      info = g_file_query_info (destination, G_FILE_ATTRIBUTE_STANDARD_TYPE,
 				G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS,
 				cancellable, &my_error);
       if (info != NULL)
@@ -1856,7 +1856,7 @@ copy_stream_with_progress (GInputStream           *in,
 
   total_size = 0;
   info = g_file_input_stream_query_info (G_FILE_INPUT_STREAM (in),
-					 G_FILE_ATTRIBUTE_STD_SIZE,
+					 G_FILE_ATTRIBUTE_STANDARD_SIZE,
 					 cancellable, NULL);
   if (info)
     {
@@ -1940,7 +1940,7 @@ file_copy_fallback (GFile                  *source,
   if (flags & G_FILE_COPY_NOFOLLOW_SYMLINKS)
     {
       info = g_file_query_info (source,
-				G_FILE_ATTRIBUTE_STD_TYPE "," G_FILE_ATTRIBUTE_STD_SYMLINK_TARGET,
+				G_FILE_ATTRIBUTE_STANDARD_TYPE "," G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET,
 				G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS,
 				cancellable,
 				error);
@@ -2382,7 +2382,7 @@ g_file_trash (GFile         *file,
  * filesystem if possible and the @file is renamed to this.
  * 
  * If you want to implement a rename operation in the user interface the edit name
- * (#G_FILE_ATTRIBUTE_STD_EDIT_NAME) should be used as the initial value in the rename
+ * (#G_FILE_ATTRIBUTE_STANDARD_EDIT_NAME) should be used as the initial value in the rename
  * widget, and then the result after editing should be passed to g_file_set_display_name().
  *
  * On success the resulting converted filename is returned.

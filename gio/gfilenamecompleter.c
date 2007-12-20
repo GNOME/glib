@@ -318,7 +318,7 @@ schedule_load_basenames (GFilenameCompleter *completer,
   completer->basename_loader = data;
   
   g_file_enumerate_children_async (dir,
-				   G_FILE_ATTRIBUTE_STD_NAME "," G_FILE_ATTRIBUTE_STD_TYPE,
+				   G_FILE_ATTRIBUTE_STANDARD_NAME "," G_FILE_ATTRIBUTE_STANDARD_TYPE,
 				   0, 0,
 				   data->cancellable,
 				   got_enum, data);

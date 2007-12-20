@@ -1,5 +1,20 @@
 2007-12-20  Alexander Larsson  <alexl@redhat.com>
 
+        * gfile.c:
+        * gfileattribute.c:
+        * gfileinfo.c:
+        * gfileinfo.h:
+        * gfilenamecompleter.c:
+        * glocalfile.c:
+        * glocalfileinfo.c:
+        * gpollfilemonitor.c:
+	File attribute renames:
+	std:: -> standard::
+	fs:: -> filesystem::
+	id::fs -> id::filesystem
+	
+2007-12-20  Alexander Larsson  <alexl@redhat.com>
+
         * gfile.[ch]:
         * gdrive.[ch]:
         * gmount.[ch]:

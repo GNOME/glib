@@ -42,8 +42,8 @@
  * Keys are strings that contain a key namespace and a key name, separated
  * by a colon, e.g. "namespace:keyname". Namespaces are included to sort
  * key-value pairs by namespaces for relevance. Keys can be retrived 
- * using wildcards, e.g. "std:*" will return all of the keys in the 
- * "std" namespace.
+ * using wildcards, e.g. "standard::*" will return all of the keys in the 
+ * "standard" namespace.
  * 
  * Values are stored within the list in #GFileAttributeValue structures.
  * Values can store different types, listed in the enum #GFileAttributeType.
@@ -66,7 +66,7 @@
  * <row><entry>Namspace</entry><entry>Description</entry></row>
  * </thead>
  * <tbody>
- * <row><entry>"std"</entry><entry>The "Standard" namespace. General file
+ * <row><entry>"standard"</entry><entry>The "Standard" namespace. General file
  * information that any application may need should be put in this namespace. 
  * Examples include the file's name, type, and size.</entry></row> 
  * <row><entry>"etag"</entry><entry>The <link linkend="gfile-etag">"Entity Tag"</link> 
@@ -101,7 +101,7 @@
  * information about file thumbnails and their location within the file system. Exaples of 
  * keys in this namespace include "path" to get the location of a thumbnail, and "failed"
  * to check if thumbnailing of the file failed.</entry></row>
- * <row><entry>"fs"</entry><entry>The "Filesystem" namespace. Gets information
+ * <row><entry>"filesystem"</entry><entry>The "Filesystem" namespace. Gets information
  * about the file system where a file is located, such as its type, how much
  * space is left available, and the overall size of the file system.</entry></row>
  * <row><entry>"gvfs"</entry><entry>The "GVFS" namespace. Keys in this namespace
@@ -123,24 +123,24 @@
  * <tgroup cols='3' align='left'><thead>
  * <row><entry>Enum Value</entry><entry>Namespace:Key</entry><entry>Value Type</entry></row>
  * </thead><tbody>
- * <row><entry>%G_FILE_ATTRIBUTE_STD_TYPE</entry><entry>std::type</entry><entry>uint32 (#GFileType)</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_STD_IS_HIDDEN</entry><entry>std::is-hidden</entry><entry>boolean</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_STD_IS_BACKUP</entry><entry>std::is-backup</entry><entry>boolean</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_STD_IS_SYMLINK</entry><entry>std::is-symlink</entry><entry>boolean</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_STD_IS_VIRTUAL</entry><entry>std::is-virtual</entry><entry>boolean</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_STD_NAME</entry><entry>std::name</entry><entry>byte string</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_STD_DISPLAY_NAME</entry><entry>std::display-name</entry><entry>string</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_STD_EDIT_NAME</entry><entry>std::edit-name</entry><entry>string</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_STD_ICON</entry><entry>std::icon</entry><entry>object (#GIcon)</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_STD_CONTENT_TYPE</entry><entry>std::content-type</entry><entry>string</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_STD_FAST_CONTENT_TYPE</entry><entry>std::fast-content-type</entry><entry>string</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_STD_SIZE</entry><entry>std::size</entry><entry>uint64</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_STD_SYMLINK_TARGET</entry><entry>std::symlink-target</entry><entry>byte string</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_STD_TARGET_URI</entry><entry>std::target-uri</entry><entry>string</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_STD_SORT_ORDER</entry><entry>std::sort-order</entry><entry>int32</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_STANDARD_TYPE</entry><entry>standard::type</entry><entry>uint32 (#GFileType)</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN</entry><entry>standard::is-hidden</entry><entry>boolean</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_STANDARD_IS_BACKUP</entry><entry>standard::is-backup</entry><entry>boolean</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK</entry><entry>standard::is-symlink</entry><entry>boolean</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_STANDARD_IS_VIRTUAL</entry><entry>standard::is-virtual</entry><entry>boolean</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_STANDARD_NAME</entry><entry>standard::name</entry><entry>byte string</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME</entry><entry>standard::display-name</entry><entry>string</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_STANDARD_EDIT_NAME</entry><entry>standard::edit-name</entry><entry>string</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_STANDARD_ICON</entry><entry>standard::icon</entry><entry>object (#GIcon)</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE</entry><entry>standard::content-type</entry><entry>string</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_STANDARD_FAST_CONTENT_TYPE</entry><entry>standard::fast-content-type</entry><entry>string</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_STANDARD_SIZE</entry><entry>standard::size</entry><entry>uint64</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET</entry><entry>standard::symlink-target</entry><entry>byte string</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_STANDARD_TARGET_URI</entry><entry>standard::target-uri</entry><entry>string</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER</entry><entry>standard::sort-order</entry><entry>int32</entry></row>
  * <row><entry>%G_FILE_ATTRIBUTE_ETAG_VALUE</entry><entry>etag::value</entry><entry>string</entry></row>
  * <row><entry>%G_FILE_ATTRIBUTE_ID_FILE</entry><entry>id::file</entry><entry>string</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_ID_FS</entry><entry>id::fs</entry><entry>string</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_ID_FILESYSTEM</entry><entry>id::filesystem</entry><entry>string</entry></row>
  * <row><entry>%G_FILE_ATTRIBUTE_ACCESS_CAN_READ</entry><entry>access::can-read</entry><entry>boolean</entry></row>
  * <row><entry>%G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE</entry><entry>access::can-write</entry><entry>boolean</entry></row>
  * <row><entry>%G_FILE_ATTRIBUTE_ACCESS_CAN_EXECUTE</entry><entry>access::can-execute</entry><entry>boolean</entry></row>
@@ -177,10 +177,10 @@
  * <row><entry>%G_FILE_ATTRIBUTE_OWNER_GROUP</entry><entry>owner::group</entry><entry>string</entry></row>
  * <row><entry>%G_FILE_ATTRIBUTE_THUMBNAIL_PATH</entry><entry>thumbnail::path</entry><entry>bytestring</entry></row>
  * <row><entry>%G_FILE_ATTRIBUTE_THUMBNAILING_FAILED</entry><entry>thumbnail::failed</entry><entry>boolean</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_FS_SIZE</entry><entry>fs::size</entry><entry>uint64</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_FS_FREE</entry><entry>fs::free</entry><entry>uint64</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_FS_TYPE</entry><entry>fs::type</entry><entry>string</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_FS_READONLY</entry><entry>fs::readonly</entry><entry>boolean</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_FILESYSTEM_SIZE</entry><entry>filesystem::size</entry><entry>uint64</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_FILESYSTEM_FREE</entry><entry>filesystem::free</entry><entry>uint64</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_FILESYSTEM_TYPE</entry><entry>filesystem::type</entry><entry>string</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_FILESYSTEM_READONLY</entry><entry>filesystem::readonly</entry><entry>boolean</entry></row>
  * <row><entry>%G_FILE_ATTRIBUTE_GVFS_BACKEND</entry><entry>gvfs::backend</entry><entry>string</entry></row>
  * </tbody></tgroup></table></para>
  *  

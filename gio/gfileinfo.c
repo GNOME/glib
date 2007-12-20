@@ -1107,7 +1107,7 @@ g_file_info_get_file_type (GFileInfo *info)
   g_return_val_if_fail (G_IS_FILE_INFO (info), G_FILE_TYPE_UNKNOWN);
   
   if (attr == 0)
-    attr = lookup_attribute (G_FILE_ATTRIBUTE_STD_TYPE);
+    attr = lookup_attribute (G_FILE_ATTRIBUTE_STANDARD_TYPE);
   
   value = g_file_info_find_value (info, attr);
   return (GFileType)_g_file_attribute_value_get_uint32 (value);
@@ -1130,7 +1130,7 @@ g_file_info_get_is_hidden (GFileInfo *info)
   g_return_val_if_fail (G_IS_FILE_INFO (info), FALSE);
   
   if (attr == 0)
-    attr = lookup_attribute (G_FILE_ATTRIBUTE_STD_IS_HIDDEN);
+    attr = lookup_attribute (G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN);
   
   value = g_file_info_find_value (info, attr);
   return (GFileType)_g_file_attribute_value_get_boolean (value);
@@ -1153,7 +1153,7 @@ g_file_info_get_is_backup (GFileInfo *info)
   g_return_val_if_fail (G_IS_FILE_INFO (info), FALSE);
   
   if (attr == 0)
-    attr = lookup_attribute (G_FILE_ATTRIBUTE_STD_IS_BACKUP);
+    attr = lookup_attribute (G_FILE_ATTRIBUTE_STANDARD_IS_BACKUP);
   
   value = g_file_info_find_value (info, attr);
   return (GFileType)_g_file_attribute_value_get_boolean (value);
@@ -1176,7 +1176,7 @@ g_file_info_get_is_symlink (GFileInfo *info)
   g_return_val_if_fail (G_IS_FILE_INFO (info), FALSE);
   
   if (attr == 0)
-    attr = lookup_attribute (G_FILE_ATTRIBUTE_STD_IS_SYMLINK);
+    attr = lookup_attribute (G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK);
   
   value = g_file_info_find_value (info, attr);
   return (GFileType)_g_file_attribute_value_get_boolean (value);
@@ -1199,7 +1199,7 @@ g_file_info_get_name (GFileInfo *info)
   g_return_val_if_fail (G_IS_FILE_INFO (info), NULL);
   
   if (attr == 0)
-    attr = lookup_attribute (G_FILE_ATTRIBUTE_STD_NAME);
+    attr = lookup_attribute (G_FILE_ATTRIBUTE_STANDARD_NAME);
   
   value = g_file_info_find_value (info, attr);
   return _g_file_attribute_value_get_byte_string (value);
@@ -1222,7 +1222,7 @@ g_file_info_get_display_name (GFileInfo *info)
   g_return_val_if_fail (G_IS_FILE_INFO (info), NULL);
   
   if (attr == 0)
-    attr = lookup_attribute (G_FILE_ATTRIBUTE_STD_DISPLAY_NAME);
+    attr = lookup_attribute (G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME);
   
   value = g_file_info_find_value (info, attr);
   return _g_file_attribute_value_get_string (value);
@@ -1245,7 +1245,7 @@ g_file_info_get_edit_name (GFileInfo *info)
   g_return_val_if_fail (G_IS_FILE_INFO (info), NULL);
   
   if (attr == 0)
-    attr = lookup_attribute (G_FILE_ATTRIBUTE_STD_EDIT_NAME);
+    attr = lookup_attribute (G_FILE_ATTRIBUTE_STANDARD_EDIT_NAME);
   
   value = g_file_info_find_value (info, attr);
   return _g_file_attribute_value_get_string (value);
@@ -1269,7 +1269,7 @@ g_file_info_get_icon (GFileInfo *info)
   g_return_val_if_fail (G_IS_FILE_INFO (info), NULL);
   
   if (attr == 0)
-    attr = lookup_attribute (G_FILE_ATTRIBUTE_STD_ICON);
+    attr = lookup_attribute (G_FILE_ATTRIBUTE_STANDARD_ICON);
   
   value = g_file_info_find_value (info, attr);
   obj = _g_file_attribute_value_get_object (value);
@@ -1295,7 +1295,7 @@ g_file_info_get_content_type (GFileInfo *info)
   g_return_val_if_fail (G_IS_FILE_INFO (info), NULL);
   
   if (attr == 0)
-    attr = lookup_attribute (G_FILE_ATTRIBUTE_STD_CONTENT_TYPE);
+    attr = lookup_attribute (G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE);
   
   value = g_file_info_find_value (info, attr);
   return _g_file_attribute_value_get_string (value);
@@ -1318,7 +1318,7 @@ g_file_info_get_size (GFileInfo *info)
   g_return_val_if_fail (G_IS_FILE_INFO (info), (goffset) 0);
   
   if (attr == 0)
-    attr = lookup_attribute (G_FILE_ATTRIBUTE_STD_SIZE);
+    attr = lookup_attribute (G_FILE_ATTRIBUTE_STANDARD_SIZE);
   
   value = g_file_info_find_value (info, attr);
   return (goffset) _g_file_attribute_value_get_uint64 (value);
@@ -1371,7 +1371,7 @@ g_file_info_get_symlink_target (GFileInfo *info)
   g_return_val_if_fail (G_IS_FILE_INFO (info), NULL);
   
   if (attr == 0)
-    attr = lookup_attribute (G_FILE_ATTRIBUTE_STD_SYMLINK_TARGET);
+    attr = lookup_attribute (G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET);
   
   value = g_file_info_find_value (info, attr);
   return _g_file_attribute_value_get_byte_string (value);
@@ -1406,9 +1406,9 @@ g_file_info_get_etag (GFileInfo *info)
  * @info: a #GFileInfo.
  * 
  * Gets the value of the sort_order attribute from the #GFileInfo.
- * See %G_FILE_ATTRIBUTE_STD_SORT_ORDER.
+ * See %G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER.
  * 
- * Returns: a #gint32 containing the value of the "std:sort_order" attribute.
+ * Returns: a #gint32 containing the value of the "standard::sort_order" attribute.
  **/
 gint32
 g_file_info_get_sort_order (GFileInfo *info)
@@ -1419,7 +1419,7 @@ g_file_info_get_sort_order (GFileInfo *info)
   g_return_val_if_fail (G_IS_FILE_INFO (info), 0);
   
   if (attr == 0)
-    attr = lookup_attribute (G_FILE_ATTRIBUTE_STD_SORT_ORDER);
+    attr = lookup_attribute (G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER);
   
   value = g_file_info_find_value (info, attr);
   return _g_file_attribute_value_get_int32 (value);
@@ -1432,7 +1432,7 @@ g_file_info_get_sort_order (GFileInfo *info)
  * @type: a #GFileType.
  * 
  * Sets the file type in a #GFileInfo to @type.
- * See %G_FILE_ATTRIBUTE_STD_TYPE.
+ * See %G_FILE_ATTRIBUTE_STANDARD_TYPE.
  **/
 void
 g_file_info_set_file_type (GFileInfo *info,
@@ -1444,7 +1444,7 @@ g_file_info_set_file_type (GFileInfo *info,
   g_return_if_fail (G_IS_FILE_INFO (info));
   
   if (attr == 0)
-    attr = lookup_attribute (G_FILE_ATTRIBUTE_STD_TYPE);
+    attr = lookup_attribute (G_FILE_ATTRIBUTE_STANDARD_TYPE);
   
   value = g_file_info_create_value (info, attr);
   if (value)
@@ -1457,7 +1457,7 @@ g_file_info_set_file_type (GFileInfo *info,
  * @is_hidden: a #gboolean.
  * 
  * Sets the "is_hidden" attribute in a #GFileInfo according to @is_symlink.
- * See %G_FILE_ATTRIBUTE_STD_IS_HIDDEN.
+ * See %G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN.
  **/
 void
 g_file_info_set_is_hidden (GFileInfo *info,
@@ -1469,7 +1469,7 @@ g_file_info_set_is_hidden (GFileInfo *info,
   g_return_if_fail (G_IS_FILE_INFO (info));
   
   if (attr == 0)
-    attr = lookup_attribute (G_FILE_ATTRIBUTE_STD_IS_HIDDEN);
+    attr = lookup_attribute (G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN);
   
   value = g_file_info_create_value (info, attr);
   if (value)
@@ -1482,7 +1482,7 @@ g_file_info_set_is_hidden (GFileInfo *info,
  * @is_symlink: a #gboolean.
  * 
  * Sets the "is_symlink" attribute in a #GFileInfo according to @is_symlink.
- * See %G_FILE_ATTRIBUTE_STD_IS_SYMLINK.
+ * See %G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK.
  **/
 void
 g_file_info_set_is_symlink (GFileInfo *info,
@@ -1494,7 +1494,7 @@ g_file_info_set_is_symlink (GFileInfo *info,
   g_return_if_fail (G_IS_FILE_INFO (info));
   
   if (attr == 0)
-    attr = lookup_attribute (G_FILE_ATTRIBUTE_STD_IS_SYMLINK);
+    attr = lookup_attribute (G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK);
   
   value = g_file_info_create_value (info, attr);
   if (value)
@@ -1507,7 +1507,7 @@ g_file_info_set_is_symlink (GFileInfo *info,
  * @name: a string containing a name.
  * 
  * Sets the name attribute for the current #GFileInfo. 
- * See %G_FILE_ATTRIBUTE_STD_NAME.
+ * See %G_FILE_ATTRIBUTE_STANDARD_NAME.
  **/
 void
 g_file_info_set_name (GFileInfo  *info,
@@ -1520,7 +1520,7 @@ g_file_info_set_name (GFileInfo  *info,
   g_return_if_fail (name != NULL);
   
   if (attr == 0)
-    attr = lookup_attribute (G_FILE_ATTRIBUTE_STD_NAME);
+    attr = lookup_attribute (G_FILE_ATTRIBUTE_STANDARD_NAME);
   
   value = g_file_info_create_value (info, attr);
   if (value)
@@ -1533,7 +1533,7 @@ g_file_info_set_name (GFileInfo  *info,
  * @display_name: a string containing a display name.
  * 
  * Sets the display name for the current #GFileInfo.
- * See %G_FILE_ATTRIBUTE_STD_DISPLAY_NAME.
+ * See %G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME.
  **/
 void
 g_file_info_set_display_name (GFileInfo  *info,
@@ -1546,7 +1546,7 @@ g_file_info_set_display_name (GFileInfo  *info,
   g_return_if_fail (display_name != NULL);
   
   if (attr == 0)
-    attr = lookup_attribute (G_FILE_ATTRIBUTE_STD_DISPLAY_NAME);
+    attr = lookup_attribute (G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME);
   
   value = g_file_info_create_value (info, attr);
   if (value)
@@ -1559,7 +1559,7 @@ g_file_info_set_display_name (GFileInfo  *info,
  * @edit_name: a string containing an edit name.
  * 
  * Sets the edit name for the current file.
- * See %G_FILE_ATTRIBUTE_STD_EDIT_NAME.
+ * See %G_FILE_ATTRIBUTE_STANDARD_EDIT_NAME.
  **/
 void
 g_file_info_set_edit_name (GFileInfo  *info,
@@ -1572,7 +1572,7 @@ g_file_info_set_edit_name (GFileInfo  *info,
   g_return_if_fail (edit_name != NULL);
   
   if (attr == 0)
-    attr = lookup_attribute (G_FILE_ATTRIBUTE_STD_EDIT_NAME);
+    attr = lookup_attribute (G_FILE_ATTRIBUTE_STANDARD_EDIT_NAME);
   
   value = g_file_info_create_value (info, attr);
   if (value)
@@ -1585,7 +1585,7 @@ g_file_info_set_edit_name (GFileInfo  *info,
  * @icon: a #GIcon.
  * 
  * Sets the icon for a given #GFileInfo. 
- * See %G_FILE_ATTRIBUTE_STD_ICON.
+ * See %G_FILE_ATTRIBUTE_STANDARD_ICON.
  **/
 void
 g_file_info_set_icon (GFileInfo *info,
@@ -1598,7 +1598,7 @@ g_file_info_set_icon (GFileInfo *info,
   g_return_if_fail (G_IS_ICON (icon));
   
   if (attr == 0)
-    attr = lookup_attribute (G_FILE_ATTRIBUTE_STD_ICON);
+    attr = lookup_attribute (G_FILE_ATTRIBUTE_STANDARD_ICON);
   
   value = g_file_info_create_value (info, attr);
   if (value)
@@ -1611,7 +1611,7 @@ g_file_info_set_icon (GFileInfo *info,
  * @content_type: a content type. See #GContentType.
  * 
  * Sets the content type attribute for a given #GFileInfo.
- * See %G_FILE_ATTRIBUTE_STD_CONTENT_TYPE.
+ * See %G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE.
  **/
 void
 g_file_info_set_content_type (GFileInfo  *info,
@@ -1624,7 +1624,7 @@ g_file_info_set_content_type (GFileInfo  *info,
   g_return_if_fail (content_type != NULL);
   
   if (attr == 0)
-    attr = lookup_attribute (G_FILE_ATTRIBUTE_STD_CONTENT_TYPE);
+    attr = lookup_attribute (G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE);
   
   value = g_file_info_create_value (info, attr);
   if (value)
@@ -1636,7 +1636,7 @@ g_file_info_set_content_type (GFileInfo  *info,
  * @info: a #GFileInfo.
  * @size: a #goffset containing the file's size.
  * 
- * Sets the %G_FILE_ATTRIBUTE_STD_SIZE attribute in the file info 
+ * Sets the %G_FILE_ATTRIBUTE_STANDARD_SIZE attribute in the file info 
  * to the given size.
  **/
 void
@@ -1649,7 +1649,7 @@ g_file_info_set_size (GFileInfo *info,
   g_return_if_fail (G_IS_FILE_INFO (info));
   
   if (attr == 0)
-    attr = lookup_attribute (G_FILE_ATTRIBUTE_STD_SIZE);
+    attr = lookup_attribute (G_FILE_ATTRIBUTE_STANDARD_SIZE);
   
   value = g_file_info_create_value (info, attr);
   if (value)
@@ -1693,7 +1693,7 @@ g_file_info_set_modification_time (GFileInfo *info,
  * @info: a #GFileInfo.
  * @symlink_target: a static string containing a path to a symlink target.
  * 
- * Sets the %G_FILE_ATTRIBUTE_STD_SYMLINK_TARGET attribute in the file info 
+ * Sets the %G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET attribute in the file info 
  * to the given symlink target.
  **/
 void
@@ -1707,7 +1707,7 @@ g_file_info_set_symlink_target (GFileInfo  *info,
   g_return_if_fail (symlink_target != NULL);
   
   if (attr == 0)
-    attr = lookup_attribute (G_FILE_ATTRIBUTE_STD_SYMLINK_TARGET);
+    attr = lookup_attribute (G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET);
   
   value = g_file_info_create_value (info, attr);
   if (value)
@@ -1720,7 +1720,7 @@ g_file_info_set_symlink_target (GFileInfo  *info,
  * @sort_order: a sort order integer.
  * 
  * Sets the sort order attribute in the file info structure. See 
- * %G_FILE_ATTRIBUTE_STD_SORT_ORDER.
+ * %G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER.
  **/
 void
 g_file_info_set_sort_order (GFileInfo *info,
@@ -1732,7 +1732,7 @@ g_file_info_set_sort_order (GFileInfo *info,
   g_return_if_fail (G_IS_FILE_INFO (info));
   
   if (attr == 0)
-    attr = lookup_attribute (G_FILE_ATTRIBUTE_STD_SORT_ORDER);
+    attr = lookup_attribute (G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER);
   
   value = g_file_info_create_value (info, attr);
   if (value)
@@ -1813,7 +1813,7 @@ matcher_add (GFileAttributeMatcher *matcher,
  * 
  * The @attribute string should be formatted with specific keys separated
  * from namespaces with a double colon. Several "namespace::key" strings may be 
- * concatenated with a single comma (e.g. "std::type,std::is-hidden"). 
+ * concatenated with a single comma (e.g. "standard::type,standard::is-hidden"). 
  * The wildcard "*" may be used to match all keys and namespaces, or 
  * "namespace::*" will match all keys in a given namespace. 
  * 
@@ -1824,9 +1824,9 @@ matcher_add (GFileAttributeMatcher *matcher,
  * <row><entry> Matcher String </entry><entry> Matches </entry></row></thead>
  * <tbody>
  * <row><entry>"*"</entry><entry>matches all attributes.</entry></row>
- * <row><entry>"std::is-hidden"</entry><entry>matches only the key is-hidden in the std namespace.</entry></row>
- * <row><entry>"std::type,unix::*"</entry><entry>matches the type key in the std namespace and all keys in the unix 
- * namespace.</entry></row>
+ * <row><entry>"standard::is-hidden"</entry><entry>matches only the key is-hidden in the standard namespace.</entry></row>
+ * <row><entry>"standard::type,unix::*"</entry><entry>matches the type key in the standard namespace and
+ * all keys in the unix namespace.</entry></row>
  * </tbody></tgroup>
  * </table>
  * 
@@ -2031,7 +2031,7 @@ g_file_attribute_matcher_matches (GFileAttributeMatcher *matcher,
  * 
  * Checks if the matcher will match all of the keys in a given namespace.
  * This will always return %TRUE if a wildcard character is in use (e.g. if 
- * matcher was created with "std::*" and @ns is "std", or if matcher was created
+ * matcher was created with "standard::*" and @ns is "standard", or if matcher was created
  * using "*" and namespace is anything.) 
  * 
  * TODO: this is awkwardly worded.

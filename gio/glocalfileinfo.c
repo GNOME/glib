@@ -951,10 +951,10 @@ set_info_from_stat (GFileInfo             *info,
     }
 
   if (g_file_attribute_matcher_matches (attribute_matcher,
-					G_FILE_ATTRIBUTE_ID_FS))
+					G_FILE_ATTRIBUTE_ID_FILESYSTEM))
     {
       char *id = _g_local_file_info_create_fs_id (statbuf);
-      g_file_info_set_attribute_string (info, G_FILE_ATTRIBUTE_ID_FS, id);
+      g_file_info_set_attribute_string (info, G_FILE_ATTRIBUTE_ID_FILESYSTEM, id);
       g_free (id);
     }
 }
@@ -1424,11 +1424,11 @@ _g_local_file_info_get (const char             *basename,
     g_file_info_set_is_hidden (info, TRUE);
 
   if (basename != NULL && basename[strlen (basename) -1] == '~')
-    g_file_info_set_attribute_boolean (info, G_FILE_ATTRIBUTE_STD_IS_BACKUP, TRUE);
+    g_file_info_set_attribute_boolean (info, G_FILE_ATTRIBUTE_STANDARD_IS_BACKUP, TRUE);
 
   if (is_symlink &&
       g_file_attribute_matcher_matches (attribute_matcher,
-					G_FILE_ATTRIBUTE_STD_SYMLINK_TARGET))
+					G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET))
     {
       char *link = read_link (path);
       g_file_info_set_symlink_target (info, link);
@@ -1436,7 +1436,7 @@ _g_local_file_info_get (const char             *basename,
     }
 
   if (g_file_attribute_matcher_matches (attribute_matcher,
-					G_FILE_ATTRIBUTE_STD_DISPLAY_NAME))
+					G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME))
     {
       char *display_name = g_filename_display_basename (path);
       
@@ -1451,7 +1451,7 @@ _g_local_file_info_get (const char             *basename,
     }
   
   if (g_file_attribute_matcher_matches (attribute_matcher,
-					G_FILE_ATTRIBUTE_STD_EDIT_NAME))
+					G_FILE_ATTRIBUTE_STANDARD_EDIT_NAME))
     {
       char *edit_name = g_filename_display_basename (path);
       g_file_info_set_edit_name (info, edit_name);
@@ -1460,18 +1460,18 @@ _g_local_file_info_get (const char             *basename,
 
   
   if (g_file_attribute_matcher_matches (attribute_matcher,
-					G_FILE_ATTRIBUTE_STD_COPY_NAME))
+					G_FILE_ATTRIBUTE_STANDARD_COPY_NAME))
     {
       char *copy_name = g_filename_to_utf8 (basename, -1, NULL, NULL, NULL);
       if (copy_name)
-	g_file_info_set_attribute_string (info, G_FILE_ATTRIBUTE_STD_COPY_NAME, copy_name);
+	g_file_info_set_attribute_string (info, G_FILE_ATTRIBUTE_STANDARD_COPY_NAME, copy_name);
       g_free (copy_name);
     }
 
   if (g_file_attribute_matcher_matches (attribute_matcher,
-					G_FILE_ATTRIBUTE_STD_CONTENT_TYPE) ||
+					G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE) ||
       g_file_attribute_matcher_matches (attribute_matcher,
-					G_FILE_ATTRIBUTE_STD_ICON))
+					G_FILE_ATTRIBUTE_STANDARD_ICON))
     {
       char *content_type = get_content_type (basename, path, &statbuf, is_symlink, symlink_broken, flags, FALSE);
 
@@ -1480,7 +1480,7 @@ _g_local_file_info_get (const char             *basename,
 	  g_file_info_set_content_type (info, content_type);
 
 	  if (g_file_attribute_matcher_matches (attribute_matcher,
-						G_FILE_ATTRIBUTE_STD_ICON))
+						G_FILE_ATTRIBUTE_STANDARD_ICON))
 	    {
 	      char *mimetype_icon, *generic_mimetype_icon, *type_icon, *p;
 	      char *icon_names[3];
@@ -1531,13 +1531,13 @@ _g_local_file_info_get (const char             *basename,
     }
 
   if (g_file_attribute_matcher_matches (attribute_matcher,
-					G_FILE_ATTRIBUTE_STD_FAST_CONTENT_TYPE))
+					G_FILE_ATTRIBUTE_STANDARD_FAST_CONTENT_TYPE))
     {
       char *content_type = get_content_type (basename, path, &statbuf, is_symlink, symlink_broken, flags, TRUE);
       
       if (content_type)
 	{
-	  g_file_info_set_attribute_string (info, G_FILE_ATTRIBUTE_STD_FAST_CONTENT_TYPE, content_type);
+	  g_file_info_set_attribute_string (info, G_FILE_ATTRIBUTE_STANDARD_FAST_CONTENT_TYPE, content_type);
 	  g_free (content_type);
 	}
     }
@@ -1961,7 +1961,7 @@ _g_local_file_info_set_attribute (char                       *filename,
 #endif
   
 #ifdef HAVE_SYMLINK
-  else if (strcmp (attribute, G_FILE_ATTRIBUTE_STD_SYMLINK_TARGET) == 0)
+  else if (strcmp (attribute, G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET) == 0)
     return set_symlink (filename, &value, error);
 #endif
 
@@ -2007,7 +2007,7 @@ _g_local_file_info_set_attributes  (char                 *filename,
 
   /* Set symlink first, since this recreates the file */
 #ifdef HAVE_SYMLINK
-  value = _g_file_info_get_attribute_value (info, G_FILE_ATTRIBUTE_STD_SYMLINK_TARGET);
+  value = _g_file_info_get_attribute_value (info, G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET);
   if (value)
     {
       if (!set_symlink (filename, value, error))
