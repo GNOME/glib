@@ -1,5 +1,7 @@
 2007-12-20  Matthias Clasen  <mclasen@redhat.com>
 
+	* NEWS: Updates
+
 	* glib/Makefile.am: Fix make dist
 
 2007-12-20 16:34:04  Tim Janik  <timj@imendio.com>

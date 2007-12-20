@@ -1,3 +1,123 @@
+Overview of Changes from GLib 2.14.x to GLib 2.15.0
+===================================================
+
+Major new features:
+
+ * GIO: a VFS API, designed to replace GnomeVFS. The GIO implementation 
+   in GLib has support for local filesystems. The new, separate gvfs 
+   module contains various backend implementations (cifs, ftp, sftp,
+   http, ...)
+
+ * GChecksum: provides various hash algorithms, such as MD5, SHA-1
+   and SHA-256
+ 
+ * GTest: a test framework 
+ 
+Smaller additions:
+
+ * GHash:
+ - GHash has iterators, as an alternative to g_hash_table_foreach
+
+ * GMarkup: 
+ - g_markup_parse_context_get_element_stack: New function to
+   get the stack of open elements
+ - G_MARKUP_PREFIX_ERROR_POSITION: New flag to improve error
+   reporting
+ - g_markup_collect_attributes: Convenience function for handling
+   attributes
+
+* GKeyFile: 
+ - Functions that take a GError now return a boolean to indicate 
+   success, instead of void
+ - Various performance improvements
+
+* GAsyncQueue:
+ - g_async_queue_new_full: new function that allows to specify
+   a free function for leftover elements
+ 
+* GError:
+ - g_prefix_error and g_propagate_prefixed_error: New functions
+   to ease error propagation
+
+* Internationalization:
+ - C_: A new 2-argument variant of the Q_() macro 
+ - Use native character set conversion API on Windows
+
+* GLib builds with automake 1.10
+
+* Bugs fixed:
+ 455725 specific combination of g_utf8_strlen and g_pattern_match...
+ 467537 g_convert_with_iconv() not resetting iconv() state correc...
+ 497033 Commandline option parser should warn about missing optio...
+ 504527 gchecksum: Conditional jump or move depends on uninitiali...
+ 445362 Non-numeric local labels in gatomic.c are causing linker ...
+ 482313 gregex: no way to tell why compilation failed
+ 317775 main loops continues to run after g_main_loop_quit() has ...
+ 418778 Insufficient pkg-config version requirement
+ 436293 g_option_context_new() doc should mention that the string...
+ 466557 glib-mkenums shifts ARGV[0] to undefined
+ 468882 GKeyFile doesn't accept "True" as a true boolean value
+ 469551 application --help messages are garbaged on none UTF-8 lo...
+ 479724 Memory leak upon calling "g_main_loop_run" in the seconda...
+ 490061 outptrs uninitialized after g_parse_long_long
+ 490637 gobject documentation patch
+ 495294 glib-genmarshal prints warnings but returns 0
+ 496046 option to prefix location of errors for GMarkup
+ 498113 tests/regex-test fails on 64bit environment
+ 500506 Fails to build on OSX 10.4
+ 500638 gkeyfile speedup ...
+ 500875 Make check fails as there is no "test" target for "build"...
+ 502511 g_assert_cmphex prints invalid message
+ 502927 g_array_index triggers cast aligment warning
+ 503029 g_time_val_from_iso8601 parse non-ISO8601 dates
+ 503222 Need context to translate
+ 503420 gkeyfile leaks a hash table
+ 503470 Fix build when builddir != srcdir
+ 504227 Inverse variant for g_test_trap_assert_stdout, g_test_tra...
+ 71704 	file include order
+ 491957 Misprint in the specification of the interface "g_main_co...
+ 491959 Misprint in description of the structure "GThreadPool"
+ 491965 Mistype in the specification of the function "g_hook_list...
+ 491966 Misprint in the specification of the interface "g_main_co...
+ 491968 The documentation does not mention the restriction for th...
+ 491970 The documentation for the interface "g_date_clamp" is inc...
+ 491974 The documentation of the interface "g_main_context_iterat...
+ 491975 The documentation for the interfaces "g_io_channel_read_u...
+ 491979 Misprint in the description of the interfaces g_key_file_...
+ 491982 Misprint in the description of the interface "g_key_file_...
+ 501107 EXTRA_DIST automake warnings
+ 501997 g_utf8_normalize() returns NULL on invalid string
+ 502590 C_/g_dpgettext efficiency
+ 464259 g_set_application_name() docs should say "Since 2.2"
+ 496518 gbase64.c API doc clarification
+ 498728 g_key_file_get_*_list should set length to 0 when returni...
+ 500361 Improve docs for g_array_free() and g_ptr_array_free()
+ 501853 g_checksum_get_digest docs
+ 503862 Allow NULL strings in g_parse_debug_string()
+ 142676 Q_
+ 367550 Add g_async_queue_new_full() with GDestroyNotify function
+ 375651 Minor enhancements to GKeyFile API
+ 443648 MD5 digest support
+ 449937 Upgrade auto* sources to be clean under automake1.9
+ 452887 gmarkup context "get element" function is useless when ca...
+ 491549 [PATCH] Eliminate libiconv dependency on Windows
+ 500507 GHashTableIter API 
+
+* Translation updates
+ Belarusian Latin (be@latin)
+ Czech (cs)
+ German (de)
+ Spanish (es)
+ Esperanto (et)
+ French (fr)
+ Korean (ko)
+ Marathi (mr)
+ Norwegian bokmål (nb)
+ Brazilian Portugese (pt_BR)
+ Slovenian (sl)
+ Swedish (sv)
+
+
 Overview of Changes from GLib 2.14.2 to GLib 2.14.3
 ===================================================
 
