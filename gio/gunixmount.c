@@ -340,6 +340,7 @@ eject_unmount_do (GMount              *mount,
 
 static void
 g_unix_mount_unmount (GMount             *mount,
+                      GMountUnmountFlags flags,
                       GCancellable        *cancellable,
                       GAsyncReadyCallback  callback,
                       gpointer             user_data)
@@ -365,6 +366,7 @@ g_unix_mount_unmount_finish (GMount       *mount,
 
 static void
 g_unix_mount_eject (GMount             *mount,
+                    GMountUnmountFlags flags,
                     GCancellable        *cancellable,
                     GAsyncReadyCallback  callback,
                     gpointer             user_data)

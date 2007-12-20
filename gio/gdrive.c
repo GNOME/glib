@@ -337,6 +337,7 @@ g_drive_can_poll_for_media (GDrive *drive)
 /**
  * g_drive_eject:
  * @drive: a #GDrive.
+ * @flags: flags affecting the unmount if required for eject
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @callback: a #GAsyncReadyCallback.
  * @user_data: a #gpointer.
@@ -346,6 +347,7 @@ g_drive_can_poll_for_media (GDrive *drive)
  **/
 void
 g_drive_eject (GDrive              *drive,
+	       GMountUnmountFlags   flags,
 	       GCancellable        *cancellable,
 	       GAsyncReadyCallback  callback,
 	       gpointer             user_data)
@@ -365,7 +367,7 @@ g_drive_eject (GDrive              *drive,
       return;
     }
   
-  (* iface->eject) (drive, cancellable, callback, user_data);
+  (* iface->eject) (drive, flags, cancellable, callback, user_data);
 }
 
 /**

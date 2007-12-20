@@ -381,6 +381,7 @@ g_unix_volume_mount_finish (GVolume        *volume,
 
 static void
 g_unix_volume_eject (GVolume    *volume,
+                     GMountUnmountFlags   flags,
                      GCancellable        *cancellable,
                      GAsyncReadyCallback  callback,
                      gpointer             user_data)

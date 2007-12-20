@@ -67,6 +67,19 @@ typedef enum  {
 } GFileCreateFlags;
 
 /**
+ * GMountUnmountFlags:
+ * @G_MOUNT_UNMOUNT_NONE: No flags set.
+ * @G_MOUNT_UNMOUNT_FORCE: Unmount even if there are outstanding
+ *  file operations on the mount.
+ * 
+ * Flags used when an operation may create a file.
+ */
+typedef enum  {
+  G_MOUNT_UNMOUNT_NONE = 0,
+  G_MOUNT_UNMOUNT_FORCE = (1<<0)
+} GMountUnmountFlags;
+
+/**
  * GFileCopyFlags:
  * @G_FILE_COPY_NONE: No flags set.
  * @G_FILE_COPY_OVERWRITE: Overwrite any existing files
@@ -478,6 +491,7 @@ struct _GFileIface
 						    GAsyncResult        *result,
 						    GError             **error);
   void                (*unmount_mountable)         (GFile               *file,
+						    GMountUnmountFlags   flags,
 						    GCancellable         *cancellable,
 						    GAsyncReadyCallback  callback,
 						    gpointer             user_data);
@@ -485,6 +499,7 @@ struct _GFileIface
 						    GAsyncResult        *result,
 						    GError             **error);
   void                (*eject_mountable)           (GFile               *file,
+						    GMountUnmountFlags   flags,
 						    GCancellable        *cancellable,
 						    GAsyncReadyCallback  callback,
 						    gpointer             user_data);
@@ -755,6 +770,7 @@ GFile *                 g_file_mount_mountable_finish     (GFile                
 							   GAsyncResult               *result,
 							   GError                    **error);
 void                    g_file_unmount_mountable          (GFile                      *file,
+							   GMountUnmountFlags          flags,
 							   GCancellable               *cancellable,
 							   GAsyncReadyCallback         callback,
 							   gpointer                    user_data);
@@ -762,6 +778,7 @@ gboolean                g_file_unmount_mountable_finish   (GFile                
 							   GAsyncResult               *result,
 							   GError                    **error);
 void                    g_file_eject_mountable            (GFile                      *file,
+							   GMountUnmountFlags          flags,
 							   GCancellable               *cancellable,
 							   GAsyncReadyCallback         callback,
 							   gpointer                    user_data);

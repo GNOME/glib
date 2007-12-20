@@ -95,6 +95,7 @@ struct _GMountIface
   gboolean           (*can_unmount)          (GMount         *mount);
   gboolean           (*can_eject)            (GMount         *mount);
   void               (*unmount)              (GMount         *mount,
+					      GMountUnmountFlags flags,
                                               GCancellable    *cancellable,
                                               GAsyncReadyCallback callback,
                                               gpointer         user_data);
@@ -102,10 +103,19 @@ struct _GMountIface
                                               GAsyncResult    *result,
                                               GError         **error);
   void               (*eject)                (GMount         *mount,
+					      GMountUnmountFlags flags,
                                               GCancellable    *cancellable,
                                               GAsyncReadyCallback callback,
                                               gpointer         user_data);
   gboolean           (*eject_finish)         (GMount         *mount,
+                                              GAsyncResult    *result,
+                                              GError         **error);
+  void               (*remount)              (GMount         *mount,
+					      GMountOperation     *mount_operation,
+                                              GCancellable    *cancellable,
+                                              GAsyncReadyCallback callback,
+                                              gpointer         user_data);
+  gboolean           (*remount_finish)       (GMount         *mount,
                                               GAsyncResult    *result,
                                               GError         **error);
 };
@@ -121,6 +131,7 @@ GDrive *           g_mount_get_drive            (GMount              *mount);
 gboolean           g_mount_can_unmount          (GMount              *mount);
 gboolean           g_mount_can_eject            (GMount              *mount);
 void               g_mount_unmount              (GMount              *mount,
+						 GMountUnmountFlags   flags,
                                                  GCancellable        *cancellable,
                                                  GAsyncReadyCallback  callback,
                                                  gpointer             user_data);
@@ -128,10 +139,19 @@ gboolean           g_mount_unmount_finish       (GMount              *mount,
                                                  GAsyncResult        *result,
                                                  GError             **error);
 void               g_mount_eject                (GMount              *mount,
+						 GMountUnmountFlags   flags,
                                                  GCancellable        *cancellable,
                                                  GAsyncReadyCallback  callback,
                                                  gpointer             user_data);
 gboolean           g_mount_eject_finish         (GMount              *mount,
+                                                 GAsyncResult        *result,
+                                                 GError             **error);
+void               g_mount_remount              (GMount              *mount,
+						 GMountOperation     *mount_operation,
+                                                 GCancellable        *cancellable,
+                                                 GAsyncReadyCallback  callback,
+                                                 gpointer             user_data);
+gboolean           g_mount_remount_finish       (GMount              *mount,
                                                  GAsyncResult        *result,
                                                  GError             **error);
 

@@ -1,5 +1,18 @@
 2007-12-20  Alexander Larsson  <alexl@redhat.com>
 
+        * gfile.[ch]:
+        * gdrive.[ch]:
+        * gmount.[ch]:
+        * gvolume.[ch]:
+        * gunixmount.c:
+        * gunixvolume.c:
+        * gio.symbols:
+	Add GMountUnmountFlags to all unmount and
+	eject calls.
+	Add g_mount_remount() call.
+
+2007-12-20  Alexander Larsson  <alexl@redhat.com>
+
 	* gvfs.c (get_default_vfs):
 	Fix unused variable warning
 

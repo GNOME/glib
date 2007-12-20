@@ -84,6 +84,7 @@ struct _GDriveIface
   gboolean (*can_eject)                (GDrive              *drive);
   gboolean (*can_poll_for_media)       (GDrive              *drive);
   void     (*eject)                    (GDrive              *drive,
+					GMountUnmountFlags   flags,
                                         GCancellable        *cancellable,
                                         GAsyncReadyCallback  callback,
                                         gpointer             user_data);
@@ -111,6 +112,7 @@ gboolean g_drive_is_media_check_automatic (GDrive               *drive);
 gboolean g_drive_can_poll_for_media       (GDrive               *drive);
 gboolean g_drive_can_eject                (GDrive               *drive);
 void     g_drive_eject                    (GDrive               *drive,
+					   GMountUnmountFlags    flags,
                                            GCancellable         *cancellable,
                                            GAsyncReadyCallback   callback,
                                            gpointer              user_data);

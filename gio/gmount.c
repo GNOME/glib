@@ -305,6 +305,7 @@ g_mount_can_eject (GMount *mount)
 /**
  * g_mount_unmount:
  * @mount: a #GMount.
+ * @flags: flags affecting the operation
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @callback: a #GAsyncReadyCallback.
  * @user_data: user data passed to @callback.
@@ -314,10 +315,11 @@ g_mount_can_eject (GMount *mount)
  * and #GAsyncResults data returned in the @callback.
  **/
 void
-g_mount_unmount (GMount             *mount,
-                 GCancellable        *cancellable,
-                 GAsyncReadyCallback  callback,
-                 gpointer             user_data)
+g_mount_unmount (GMount *mount,
+                 GMountUnmountFlags flags,
+                 GCancellable *cancellable,
+                 GAsyncReadyCallback callback,
+                 gpointer user_data)
 {
   GMountIface *iface;
 
@@ -335,7 +337,7 @@ g_mount_unmount (GMount             *mount,
       return;
     }
   
-  (* iface->unmount) (mount, cancellable, callback, user_data);
+  (* iface->unmount) (mount, flags, cancellable, callback, user_data);
 }
 
 /**
@@ -375,6 +377,7 @@ g_mount_unmount_finish (GMount       *mount,
 /**
  * g_mount_eject:
  * @mount: a #GMount.
+ * @flags: flags affecting the unmount if required for eject
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @callback: a #GAsyncReadyCallback.
  * @user_data: user data passed to @callback.
@@ -384,10 +387,11 @@ g_mount_unmount_finish (GMount       *mount,
  * and #GAsyncResults data returned in the @callback.
  **/
 void
-g_mount_eject (GMount             *mount,
-               GCancellable        *cancellable,
-               GAsyncReadyCallback  callback,
-               gpointer             user_data)
+g_mount_eject (GMount *mount,
+               GMountUnmountFlags flags,
+               GCancellable *cancellable,
+               GAsyncReadyCallback callback,
+               gpointer user_data)
 {
   GMountIface *iface;
 
@@ -405,7 +409,7 @@ g_mount_eject (GMount             *mount,
       return;
     }
   
-  (* iface->eject) (mount, cancellable, callback, user_data);
+  (* iface->eject) (mount, flags, cancellable, callback, user_data);
 }
 
 /**
@@ -440,6 +444,84 @@ g_mount_eject_finish (GMount       *mount,
   iface = G_MOUNT_GET_IFACE (mount);
   return (* iface->eject_finish) (mount, result, error);
 }
+
+/**
+ * g_mount_remount:
+ * @mount: a #GMount.
+ * @mount_operation: a #GMountOperation or %NULL to avoid user interaction.
+ * @cancellable: optional #GCancellable object, %NULL to ignore.
+ * @callback: a #GAsyncReadyCallback.
+ * @user_data: user data passed to @callback.
+ * 
+ * Remounts a mount. This is an asynchronous operation, and is 
+ * finished by calling g_mount_unmount_finish() with the @mount 
+ * and #GAsyncResults data returned in the @callback.
+ *
+ * Remounting is useful when some setting affecting the operation
+ * of the volume has been changed, as these may need a remount to
+ * take affect. While this is semantically equivalent with unmounting
+ * and then remounting not all backends might need to actually be
+ * unmounted.
+ **/
+void
+g_mount_remount (GMount *mount,
+                 GMountOperation *mount_operation,
+                 GCancellable *cancellable,
+                 GAsyncReadyCallback callback,
+                 gpointer user_data)
+{
+  GMountIface *iface;
+
+  g_return_if_fail (G_IS_MOUNT (mount));
+  
+  iface = G_MOUNT_GET_IFACE (mount);
+
+  if (iface->remount == NULL)
+    {
+      g_simple_async_report_error_in_idle (G_OBJECT (mount),
+					   callback, user_data,
+					   G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+					   _("mount doesn't implement remount"));
+      
+      return;
+    }
+  
+  (* iface->remount) (mount, mount_operation, cancellable, callback, user_data);
+}
+
+/**
+ * g_mount_remount_finish:
+ * @mount: a #GMount.
+ * @result: a #GAsyncResult.
+ * @error: a #GError location to store the error occuring, or %NULL to 
+ * ignore.
+ * 
+ * Finishes remounting a mount. If any errors occured during the operation, 
+ * @error will be set to contain the errors and %FALSE will be returned.
+ * 
+ * Returns: %TRUE if the mount was successfully remounted. %FALSE otherwise.
+ **/
+gboolean
+g_mount_remount_finish (GMount       *mount,
+                        GAsyncResult  *result,
+                        GError       **error)
+{
+  GMountIface *iface;
+
+  g_return_val_if_fail (G_IS_MOUNT (mount), FALSE);
+  g_return_val_if_fail (G_IS_ASYNC_RESULT (result), FALSE);
+
+  if (G_IS_SIMPLE_ASYNC_RESULT (result))
+    {
+      GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
+      if (g_simple_async_result_propagate_error (simple, error))
+        return FALSE;
+    }
+  
+  iface = G_MOUNT_GET_IFACE (mount);
+  return (* iface->remount_finish) (mount, result, error);
+}
+
 
 #define __G_MOUNT_C__
 #include "gioaliasdef.c"

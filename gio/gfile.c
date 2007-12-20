@@ -3078,6 +3078,7 @@ g_file_mount_mountable_finish (GFile         *file,
 /**
  * g_file_unmount_mountable:
  * @file: input #GFile.
+ * @flags: flags affecting the operation
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @callback: a #GAsyncReadyCallback to call when the request is satisfied
  * @user_data: the data to pass to callback function
@@ -3093,6 +3094,7 @@ g_file_mount_mountable_finish (GFile         *file,
  **/
 void
 g_file_unmount_mountable (GFile               *file,
+			  GMountUnmountFlags   flags,
 			  GCancellable        *cancellable,
 			  GAsyncReadyCallback  callback,
 			  gpointer             user_data)
@@ -3112,6 +3114,7 @@ g_file_unmount_mountable (GFile               *file,
 					 _("Operation not supported"));
   
   (* iface->unmount_mountable) (file,
+				flags,
 				cancellable,
 				callback,
 				user_data);
@@ -3155,6 +3158,7 @@ g_file_unmount_mountable_finish (GFile         *file,
 /**
  * g_file_eject_mountable:
  * @file: input #GFile.
+ * @flags: flags affecting the operation
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @callback: a #GAsyncReadyCallback to call when the request is satisfied
  * @user_data: the data to pass to callback function
@@ -3170,6 +3174,7 @@ g_file_unmount_mountable_finish (GFile         *file,
  **/
 void
 g_file_eject_mountable (GFile               *file,
+			GMountUnmountFlags   flags,
 			GCancellable        *cancellable,
 			GAsyncReadyCallback  callback,
 			gpointer             user_data)
@@ -3189,6 +3194,7 @@ g_file_eject_mountable (GFile               *file,
 					 _("Operation not supported"));
   
   (* iface->eject_mountable) (file,
+			      flags,
 			      cancellable,
 			      callback,
 			      user_data);

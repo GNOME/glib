@@ -87,6 +87,7 @@ struct _GVolumeIface
                                GAsyncResult        *result,
                                GError             **error);
   void      (*eject)          (GVolume             *volume,
+			       GMountUnmountFlags   flags,
                                GCancellable        *cancellable,
                                GAsyncReadyCallback  callback,
                                gpointer             user_data);
@@ -113,6 +114,7 @@ gboolean g_volume_mount_finish    (GVolume              *volume,
                                    GAsyncResult         *result,
                                    GError              **error);
 void      g_volume_eject          (GVolume              *volume,
+				   GMountUnmountFlags    flags,
                                    GCancellable         *cancellable,
                                    GAsyncReadyCallback   callback,
                                    gpointer              user_data);

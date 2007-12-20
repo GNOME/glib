@@ -357,6 +357,7 @@ g_volume_mount_finish (GVolume  *volume,
 /**
  * g_volume_eject:
  * @volume: a #GVolume.
+ * @flags: flags affecting the unmount if required for eject
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @callback: a #GAsyncReadyCallback.
  * @user_data: a #gpointer.
@@ -365,6 +366,7 @@ g_volume_mount_finish (GVolume  *volume,
  **/
 void
 g_volume_eject (GVolume    *volume,
+		GMountUnmountFlags   flags,
                 GCancellable        *cancellable,
                 GAsyncReadyCallback  callback,
                 gpointer             user_data)
@@ -384,7 +386,7 @@ g_volume_eject (GVolume    *volume,
       return;
     }
   
-  (* iface->eject) (volume, cancellable, callback, user_data);
+  (* iface->eject) (volume, flags, cancellable, callback, user_data);
 }
 
 /**
