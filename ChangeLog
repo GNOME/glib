@@ -1,3 +1,7 @@
+2007-12-20  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/Makefile.am: Fix make dist
+
 2007-12-20 16:34:04  Tim Janik  <timj@imendio.com>
 
 	* glib/gtester-report: commented class definitions. moved HTML character
