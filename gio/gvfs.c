@@ -210,7 +210,6 @@ compare_vfs_type (gconstpointer  a,
 static gpointer
 get_default_vfs (gpointer arg)
 {
-  volatile GType local_type;
   GType *vfs_impls;
   int i;
   guint n_vfs_impls;
