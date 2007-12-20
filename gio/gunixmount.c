@@ -77,7 +77,7 @@ g_unix_mount_finalize (GObject *object)
   if (mount->volume)
     _g_unix_volume_unset_mount (mount->volume, mount);
     
-  //TODO: g_warn_if_fail (volume->volume == NULL);
+  /* TODO: g_warn_if_fail (volume->volume == NULL); */
   g_object_unref (mount->icon);
   g_free (mount->name);
   g_free (mount->device_path);

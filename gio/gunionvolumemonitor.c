@@ -670,7 +670,7 @@ g_volume_monitor_adopt_orphan_mount (GMount *mount)
   
   /* TODO: nasty locking issues because current VM's don't emit signals in idle */
 
-  //G_LOCK (the_volume_monitor);
+  /*G_LOCK (the_volume_monitor);*/
 
   for (l = the_volume_monitor->monitors; l != NULL; l = l->next)
     {
@@ -685,7 +685,7 @@ g_volume_monitor_adopt_orphan_mount (GMount *mount)
         }
     }
   
-  //G_UNLOCK (the_volume_monitor);
+  /*G_UNLOCK (the_volume_monitor);*/
 
   return volume;
 }
