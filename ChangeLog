@@ -1,6 +1,11 @@
+2007-12-20  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gchecksum.[hc] (g_checksum_new): Return NULL when 
+	the checksum_type is unknown.  (#501853)
+
 2007-12-20  Christian Persch  <chpe@gnome.org>
 
-	* glib/gchecksum.c: (g_checksum_new): Use g_slice_new0, to fix
+	* glib/gchecksum.c (g_checksum_new): Use g_slice_new0, to fix
 	"conditional jump or move depends on uninitialised value(s)" error
 	from valgrind. Bug #504527.
 

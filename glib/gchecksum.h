@@ -34,8 +34,8 @@ G_BEGIN_DECLS
  * The hashing algorithm to be used by #GChecksum when performing the
  * digest of some data.
  *
- * The #GChecksumType enumeration can be extended at later date to include
- * new hashing algorithm types.
+ * Note that the #GChecksumType enumeration may be extended at a later 
+ * date to include new hashing algorithm types. 
  *
  * Since: 2.16
  */

@@ -1052,9 +1052,9 @@ sha256_sum_digest (Sha256sum *sha256,
  * g_checksum_type_get_length:
  * @checksum_type: a #GChecksumType
  *
- * Gets the length in bytes of digests of type @type
+ * Gets the length in bytes of digests of type @checksum_type
  *
- * Return value: the checksum length, or -1 if @type is
+ * Return value: the checksum length, or -1 if @checksum_type is
  * not supported.
  * 
  * Since: 2.16
@@ -1087,8 +1087,9 @@ g_checksum_type_get_length (GChecksumType checksum_type)
  * g_checksum_new:
  * @checksum_type: the desired type of checksum
  *
- * Creates a new #GChecksum, using the checksum algorithm @type. A
- * #GChecksum can be used to compute the checksum, or digest, of an
+ * Creates a new #GChecksum, using the checksum algorithm @checksum_type. 
+ * If the @checksum_type is not known, %NULL is returned.
+ * A #GChecksum can be used to compute the checksum, or digest, of an
  * arbitrary binary blob, using different hashing algorithms.
  *
  * A #GChecksum works by feeding a binary blob through g_checksum_update()
@@ -1100,8 +1101,8 @@ g_checksum_type_get_length (GChecksumType checksum_type)
  * will be closed and it won't be possible to call g_checksum_update()
  * on it anymore.
  *
- * Return value: the newly created #GChecksum. Use g_checksum_free() to
- *   free the memory allocated by it.
+ * Return value: the newly created #GChecksum, or %NULL. 
+ *   Use g_checksum_free() to free the memory allocated by it.
  *
  * Since: 2.16
  */
@@ -1110,7 +1111,8 @@ g_checksum_new (GChecksumType checksum_type)
 {
   GChecksum *checksum;
 
-  g_return_val_if_fail (IS_VALID_TYPE (checksum_type), NULL);
+  if (! IS_VALID_TYPE (checksum_type))
+    return NULL;
 
   checksum = g_slice_new0 (GChecksum);
   checksum->type = checksum_type;
