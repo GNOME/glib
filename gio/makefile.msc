@@ -22,7 +22,8 @@ INCLUDES = \
 
 DEFINES = \
 	-DG_LOG_DOMAIN=\"GLib-GIO\" \
-	-DGIO_MODULE_DIR=\"$(libdir)/gio/modules\"
+	-DGIO_MODULE_DIR=\"$(libdir)/gio/modules\" \
+	-DGIO_COMPILATION
 
 appinfo_sources = \
 	gwin32appinfo.c gwin32appinfo.h
@@ -78,6 +79,7 @@ OBJECTS = \
 	gcontenttype.obj \
 	gdatainputstream.obj \
 	gdataoutputstream.obj \
+#	gdesktopappinfo.obj \
 	gdirectorymonitor.obj \
 	gdrive.obj \
 	gdummyfile.obj \
@@ -101,6 +103,7 @@ OBJECTS = \
 	gloadableicon.obj \
 	gmemoryinputstream.obj \
 	gmemoryoutputstream.obj \
+	gmount.obj \
 	gmountoperation.obj \
 	gnativevolumemonitor.obj \
 	goutputstream.obj \

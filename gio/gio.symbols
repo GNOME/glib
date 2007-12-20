@@ -63,10 +63,12 @@ g_app_info_get_default_for_uri_scheme
 
 #if IN_HEADER(__G_DESKTOP_APP_INFO_H__)
 #if IN_FILE(__G_DESKTOP_APP_INFO_C__)
+#ifdef G_OS_UNIX
 g_desktop_app_info_new_from_filename
 g_desktop_app_info_new
 g_desktop_app_info_get_type G_GNUC_CONST
 g_desktop_app_info_get_is_hidden
+#endif
 #endif
 #endif
 
