@@ -69,6 +69,7 @@ def html_indent_string (n):
     string += uncollapsible_space
   return string
 
+# TestBinary object, instantiated per test binary in the log file
 class TestBinary:
   def __init__ (self, name):
     self.name = name
@@ -79,6 +80,7 @@ class TestBinary:
     self.file = '???'
     self.random_seed = ''
 
+# base class to handle processing/traversion of XML nodes
 class TreeProcess:
   def __init__ (self):
     self.nest_level = 0
@@ -101,6 +103,7 @@ class TreeProcess:
       self.trampoline (child)
     self.nest_level += 1
 
+# test report reader, this class collects some statistics and merges duplicate test binary runs
 class ReportReader (TreeProcess):
   def __init__ (self):
     TreeProcess.__init__ (self)
@@ -117,7 +120,7 @@ class ReportReader (TreeProcess):
     result = attribute_as_text (node, 'result', 'status')
     if result == 'success':
       self.last_binary.success_cases += 1
-    if bool (attribute_as_text (node, 'skipped')):
+    if bool (int (attribute_as_text (node, 'skipped') + '0')):
       self.last_binary.skipped_cases += 1
   def handle_text (self, node):
     pass
@@ -141,6 +144,7 @@ class ReportReader (TreeProcess):
       self.last_binary.random_seed = node_as_text (rseed)
     self.process_children (node)
 
+# HTML report generation class
 class ReportWriter (TreeProcess):
   # Javascript/CSS snippet to toggle element visibility
   cssjs = r'''
@@ -164,11 +168,8 @@ class ReportWriter (TreeProcess):
     }
   }
   message_array = Array();
-  function view_testlog (wname, file, random_seed, tcase, msgid) {
+  function view_testlog (wname, file, random_seed, tcase, msgtitle, msgid) {
       txt = message_array[msgid];
-      txt = txt.replace (/&/g, "&amp;");
-      txt = txt.replace (/</g, "&lt;");
-      txt = txt.replace (/>/g, "&gt;");
       var w = window.open ("", // URI
                            wname,
                            "resizable,scrollbars,status,width=790,height=400");
@@ -176,7 +177,7 @@ class ReportWriter (TreeProcess):
       doc.write ("<h2>File: " + file + "</h2>\n");
       doc.write ("<h3>Case: " + tcase + "</h3>\n");
       doc.write ("<strong>Random Seed:</strong> <code>" + random_seed + "</code> <br /><br />\n");
-      doc.write ("<strong>Output: </strong><br />\n");
+      doc.write ("<strong>" + msgtitle + "</strong><br />\n");
       doc.write ("<pre>");
       doc.write (txt);
       doc.write ("</pre>\n");
@@ -202,7 +203,7 @@ class ReportWriter (TreeProcess):
   def handle_text (self, node):
     self.oprint (node.nodeValue)
   def handle_testcase (self, node, binary):
-    skipped = bool (attribute_as_text (node, 'skipped'))
+    skipped = bool (int (attribute_as_text (node, 'skipped') + '0'))
     if skipped:
       return            # skipped tests are uninteresting for HTML reports
     path = attribute_as_text (node, 'path')
@@ -216,6 +217,7 @@ class ReportWriter (TreeProcess):
       duration = '-'    # ignore bogus durations
     self.oprint ('<tr id="b%u_t%u_" keywords="%s all" class="HiddenSection">\n' % (self.bcounter, self.tcounter, result))
     self.oprint ('<td>%s %s</td> <td align="right">%s</td> \n' % (html_indent_string (4), path, duration))
+    perflist = list_children (node, 'performance')
     if result != 'success':
       rlist = list_children (node, 'error')
       txt = ''
@@ -225,9 +227,29 @@ class ReportWriter (TreeProcess):
           txt += '\n'
       txt = re.sub (r'"', r'\\"', txt)
       txt = re.sub (r'\n', r'\\n', txt)
+      txt = re.sub (r'&', r'&amp;', txt)
+      txt = re.sub (r'<', r'&lt;', txt)
       self.oprint ('<script language="javascript" type="text/javascript">message_array["b%u_t%u_"] = "%s";</script>\n' % (self.bcounter, self.tcounter, txt))
-      self.oprint ('<td align="center"><a href="javascript:view_testlog (\'%s\', \'%s\', \'%s\', \'%s\', \'b%u_t%u_\')">Output</a></td>\n' %
-                   ('TestOutputWindow', binary.file, binary.random_seed, path, self.bcounter, self.tcounter))
+      self.oprint ('<td align="center"><a href="javascript:view_testlog (\'%s\', \'%s\', \'%s\', \'%s\', \'Output:\', \'b%u_t%u_\')">Details</a></td>\n' %
+                   ('TestResultWindow', binary.file, binary.random_seed, path, self.bcounter, self.tcounter))
+    elif perflist:
+      presults = []
+      for perf in perflist:
+        pmin = bool (int (attribute_as_text (perf, 'minimize')))
+        pmax = bool (int (attribute_as_text (perf, 'maximize')))
+        pval = float (attribute_as_text (perf, 'value'))
+        txt = node_as_text (perf)
+        txt = re.sub (r'&', r'&amp;', txt)
+        txt = re.sub (r'<', r'&gt;', txt)
+        txt = '<strong>Performace(' + (pmin and '<em>minimized</em>' or '<em>maximized</em>') + '):</strong> ' + txt.strip() + '<br />\n'
+        txt = re.sub (r'"', r'\\"', txt)
+        txt = re.sub (r'\n', r'\\n', txt)
+        presults += [ (pval, txt) ]
+      presults.sort()
+      ptxt = ''.join ([e[1] for e in presults])
+      self.oprint ('<script language="javascript" type="text/javascript">message_array["b%u_t%u_"] = "%s";</script>\n' % (self.bcounter, self.tcounter, ptxt))
+      self.oprint ('<td align="center"><a href="javascript:view_testlog (\'%s\', \'%s\', \'%s\', \'%s\', \'Test Results:\', \'b%u_t%u_\')">Details</a></td>\n' %
+                   ('TestResultWindow', binary.file, binary.random_seed, path, self.bcounter, self.tcounter))
     else:
       self.oprint ('<td align="center">-</td>\n')
     self.oprint ('<td align="right" %s>%s</td>\n' % (rcolor, result))
@@ -291,6 +313,7 @@ class ReportWriter (TreeProcess):
     self.oprint ('</body>\n')
     self.oprint ('</html>\n')
 
+# main program handling
 def parse_files_and_args ():
   from sys import argv, stdin
   files = []
