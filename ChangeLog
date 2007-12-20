@@ -1,3 +1,7 @@
+2007-12-19  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/glib.symbols: Add g_async_queue_new_full
+
 2007-12-19 20:30:18  Tim Janik  <timj@imendio.com>
 
         * glib/gtestutils.c: capture g_log() messages and send to gtester.

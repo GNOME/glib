@@ -58,6 +58,7 @@ g_async_queue_length
 g_async_queue_length_unlocked
 g_async_queue_lock
 g_async_queue_new
+g_async_queue_new_full
 g_async_queue_pop
 g_async_queue_pop_unlocked
 g_async_queue_push
