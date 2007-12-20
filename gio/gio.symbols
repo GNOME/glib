@@ -634,6 +634,7 @@ g_unix_mount_get_device_path
 g_unix_mount_get_fs_type 
 g_unix_mount_is_readonly 
 g_unix_mount_is_system_internal 
+g_unix_mount_guess_can_eject
 g_unix_mount_guess_name 
 g_unix_mount_guess_icon
 g_unix_mount_point_compare 
@@ -643,7 +644,8 @@ g_unix_mount_point_get_fs_type
 g_unix_mount_point_is_readonly 
 g_unix_mount_point_is_user_mountable 
 g_unix_mount_point_is_loopback 
-g_unix_mount_point_guess_name 
+g_unix_mount_point_guess_can_eject
+g_unix_mount_point_guess_name
 g_unix_mount_point_guess_icon
 g_unix_mount_points_get
 g_unix_mounts_get
@@ -714,6 +716,7 @@ g_volume_eject_finish
 #if IN_FILE(__G_VOLUME_MONITOR_C__)
 g_volume_monitor_get_type  G_GNUC_CONST
 g_volume_monitor_get_connected_drives 
+g_volume_monitor_get_volume_for_uuid
 g_volume_monitor_get_volumes 
 g_volume_monitor_get_mounts
 g_volume_monitor_get_mount_for_uuid
