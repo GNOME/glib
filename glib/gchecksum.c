@@ -1112,7 +1112,7 @@ g_checksum_new (GChecksumType checksum_type)
 
   g_return_val_if_fail (IS_VALID_TYPE (checksum_type), NULL);
 
-  checksum = g_slice_new (GChecksum);
+  checksum = g_slice_new0 (GChecksum);
   checksum->type = checksum_type;
 
   switch (checksum_type)

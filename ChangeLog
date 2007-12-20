@@ -1,3 +1,9 @@
+2007-12-20  Christian Persch  <chpe@gnome.org>
+
+	* glib/gchecksum.c: (g_checksum_new): Use g_slice_new0, to fix
+	"conditional jump or move depends on uninitialised value(s)" error
+	from valgrind. Bug #504527.
+
 2007-12-20 15:17:04  Tim Janik  <timj@imendio.com>
 
 	* Makefile.decl: generate HTML reports for test-report perf-report full-report.
