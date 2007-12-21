@@ -326,9 +326,12 @@ CONFIGVARS = \
 
 install-exec-hook:
 	for sf in ${auto_config_binscripts} ; do \
-	  sed -i "$(DESTDIR)$(bindir)/$$sf" \
-	     -e '1,24s|^ *#@PKGINSTALL_CONFIGVARS_IN24LINES@|  ${CONFIGVARS}|' \
-	     -e '1,1s|#!/usr/bin/env python\([0-9]\+\(\.[0-9]\+\)\?\)\?|#!${PYTHON}|' || exit $$? ; \
+	  sed -i.bak \
+	    -e '1,24s|^ *#@PKGINSTALL_CONFIGVARS_IN24LINES@|  ${CONFIGVARS}|' \
+	    -e '1,1s|#!/usr/bin/env python\([0-9]\+\(\.[0-9]\+\)\?\)\?|#!${PYTHON}|' \
+	    "$(DESTDIR)$(bindir)/$$sf" \
+	  || exit $$? \
+	  && rm -f "$(DESTDIR)$(bindir)/$$sf".bak ; \
 	done
 
 endif

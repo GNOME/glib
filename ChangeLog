@@ -1,3 +1,9 @@
+2007-12-21 18:02:30  Tim Janik  <timj@imendio.com>
+
+	* glib/Makefile.am: use "sed -i.bak <CMD> <FILE> && rm -f <FILE>.bak"
+	syntax for install-exec-hook, which seems to be the only "sed -i"
+	variant that is portable across linux and MacOS.
+
 2007-12-21  Matthias Clasen  <mclasne@redhat.com>
 
 	* glib/gtestutils.h: Bring up to GLib coding standards: remove
