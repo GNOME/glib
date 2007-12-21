@@ -1,3 +1,13 @@
+2007-12-09  Hans Breuer  <hans@breuer.org>
+
+	* tests/gio-ls.c : adapt to recent api changes
+	* tests/testglib.c : variable declaration at the beginning of a block
+	
+	(Lieven van der Heide, #503602)
+	* win32-fixup.pl : process *.rc.in as well; substitute 
+	LT_CURRENT_MINUS_AGE
+	* glib/makefile.msc.in : alphabetic sorting of OBJECTS
+
 2007-12-20  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Bump version

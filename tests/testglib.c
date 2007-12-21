@@ -819,6 +819,9 @@ test_info (void)
   
   if (g_test_verbose())
     {
+#ifdef G_PLATFORM_WIN32
+      gchar *glib_dll;
+#endif
       const gchar *charset;
       if (g_get_charset ((G_CONST_RETURN char**)&charset))
         g_print ("current charset is UTF-8: %s\n", charset);
@@ -828,10 +831,10 @@ test_info (void)
 #ifdef G_PLATFORM_WIN32
 #ifdef G_OS_WIN32
       /* Can't calculate GLib DLL name at runtime. */
-      gchar *glib_dll = "libglib-2.0-0.dll";
+      glib_dll = "libglib-2.0-0.dll";
 #endif
 #ifdef G_WITH_CYGWIN
-      gchar *glib_dll = "cygglib-2.0-0.dll";
+      glib_dll = "cygglib-2.0-0.dll";
 #endif
 
       g_print ("current locale: %s\n", g_win32_getlocale ());

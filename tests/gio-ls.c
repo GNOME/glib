@@ -1,5 +1,4 @@
 
-#include <glib/goption.h>
 #include <gio/gio.h>
 
 #define GETTEXT_PACKAGE "gio-ls"
@@ -61,7 +60,7 @@ print_path (const gchar* path,
             guint32      flags)
 {
   GFile *top;
-  const gchar *short_attrs = G_FILE_ATTRIBUTE_STD_NAME;
+  const gchar *short_attrs = G_FILE_ATTRIBUTE_STANDARD_NAME;
   const gchar *long_attrs = G_FILE_ATTRIBUTE_OWNER_USER "," G_FILE_ATTRIBUTE_OWNER_GROUP "," \
 			    "access:*,std:*";
   const gchar *attrs;
@@ -92,7 +91,7 @@ print_path (const gchar* path,
 
           if (flags & SHOW_LONG)
 	    {
-	      GFileAttributeValue *val = g_file_info_get_attribute (info, G_FILE_ATTRIBUTE_OWNER_USER);
+	      const gchar *val;
 	      
 	      g_print ("%c%c%c%c ",
 		g_file_info_get_file_type (info) == G_FILE_TYPE_DIRECTORY ? 'd' : '-',
@@ -100,19 +99,14 @@ print_path (const gchar* path,
 		g_file_info_get_attribute_boolean (info, G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE) ? 'w' : '-',
 		g_file_info_get_attribute_boolean (info, G_FILE_ATTRIBUTE_ACCESS_CAN_EXECUTE) ? 'x' : '-');
 
-	      if (!val)
-	        g_print ("\t?");
-              else if (val->type == G_FILE_ATTRIBUTE_TYPE_STRING)
-	        g_print ("\t%15s", val->u.string);
+	      val = g_file_info_get_attribute_string (info, G_FILE_ATTRIBUTE_OWNER_USER);
+	      g_print ("\t%15s", val ? val : "?user?");
 
-	      val = g_file_info_get_attribute (info, G_FILE_ATTRIBUTE_OWNER_GROUP);
-	      if (!val)
-	        g_print ("\t?");
-              else if (val->type == G_FILE_ATTRIBUTE_TYPE_STRING)
-	        g_print ("\t%15s", val->u.string);
+	      val = g_file_info_get_attribute_string (info, G_FILE_ATTRIBUTE_OWNER_GROUP);
+	      g_print ("\t%15s", val ? val : "?group?");
 	    }
 	    
-	  g_print ("\t%s\n", name ? name : "<NULL>");
+	  g_print ("\t%s\n", name ? name : "?noname?");
 
 	  g_object_unref (info);
 	}
