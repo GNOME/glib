@@ -156,7 +156,7 @@ test_log_msg (GTestLogMsg *msg)
       log_indent += 2;
       break;
     case G_TEST_LOG_SKIP_CASE:
-      if (FALSE && gtester_verbose) // enable to debug test case skipping logic
+      if (FALSE && gtester_verbose) /* enable to debug test case skipping logic */
         {
           gchar *sc = g_strconcat (msg->strings[0], ":", NULL);
           gchar *sleft = g_strdup_printf ("%-68s", sc);
@@ -224,7 +224,7 @@ child_report_cb (GIOChannel  *source,
       (void) status;
     }
   while (length > 0);
-  // g_print ("LASTIOSTATE: first_read_eof=%d condition=%d\n", first_read_eof, condition);
+  /* g_print ("LASTIOSTATE: first_read_eof=%d condition=%d\n", first_read_eof, condition); */
   if (first_read_eof || (condition & (G_IO_ERR | G_IO_HUP)))
     {
       /* if there's no data to read and select() reports an error or hangup,
@@ -365,7 +365,7 @@ launch_test_binary (const char *binary,
          subtest_io_pending ||  /* FALSE once ioc_report closes */
          loop_pending)          /* TRUE while idler, etc are running */
     {
-      // g_print ("LOOPSTATE: subtest_running=%d subtest_io_pending=%d\n", subtest_running, subtest_io_pending);
+      /* g_print ("LOOPSTATE: subtest_running=%d subtest_io_pending=%d\n", subtest_running, subtest_io_pending); */
       /* check for unexpected hangs that are not signalled on report_pipe */
       if (!subtest_running &&   /* child exited */
           subtest_io_pending && /* no EOF detected on report_pipe */
@@ -468,7 +468,7 @@ parse_args (gint    *argc_p,
         {
           gtester_selftest = TRUE;
           argv[i] = NULL;
-          break;        // stop parsing regular gtester arguments
+          break;        /* stop parsing regular gtester arguments */
         }
       else if (strcmp (argv[i], "-h") == 0 || strcmp (argv[i], "--help") == 0)
         {

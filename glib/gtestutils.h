@@ -22,7 +22,7 @@
 
 #include <glib.h>
 
-G_BEGIN_DECLS;
+G_BEGIN_DECLS
 
 typedef struct GTestCase  GTestCase;
 typedef struct GTestSuite GTestSuite;
@@ -105,8 +105,8 @@ void    g_test_bug_base                 (const char *uri_pattern);
 void    g_test_bug                      (const char *bug_uri_snippet);
 /* measure test timings */
 void    g_test_timer_start              (void);
-double  g_test_timer_elapsed            (void); // elapsed seconds
-double  g_test_timer_last               (void); // repeat last elapsed() result
+double  g_test_timer_elapsed            (void); /* elapsed seconds */
+double  g_test_timer_last               (void); /* repeat last elapsed() result */
 
 /* automatically g_free or g_object_unref upon teardown */
 void    g_test_queue_free               (gpointer gfree_pointer);
@@ -118,7 +118,7 @@ void    g_test_queue_destroy            (GDestroyNotify destroy_func,
 typedef enum {
   G_TEST_TRAP_SILENCE_STDOUT    = 1 << 7,
   G_TEST_TRAP_SILENCE_STDERR    = 1 << 8,
-  G_TEST_TRAP_INHERIT_STDIN     = 1 << 9,
+  G_TEST_TRAP_INHERIT_STDIN     = 1 << 9
 } GTestTrapFlags;
 gboolean g_test_trap_fork               (guint64              usec_timeout,
                                          GTestTrapFlags       test_trap_flags);
@@ -207,21 +207,21 @@ GLIB_VAR const GTestConfig * const g_test_config_vars;
 /* internal logging API */
 typedef enum {
   G_TEST_LOG_NONE,
-  G_TEST_LOG_ERROR,             // s:msg
-  G_TEST_LOG_START_BINARY,      // s:binaryname s:seed
-  G_TEST_LOG_LIST_CASE,         // s:testpath
-  G_TEST_LOG_SKIP_CASE,         // s:testpath
-  G_TEST_LOG_START_CASE,        // s:testpath
-  G_TEST_LOG_STOP_CASE,         // d:status d:nforks d:elapsed
-  G_TEST_LOG_MIN_RESULT,        // s:blurb d:result
-  G_TEST_LOG_MAX_RESULT,        // s:blurb d:result
-  G_TEST_LOG_MESSAGE,           // s:blurb
+  G_TEST_LOG_ERROR,             /* s:msg */
+  G_TEST_LOG_START_BINARY,      /* s:binaryname s:seed */
+  G_TEST_LOG_LIST_CASE,         /* s:testpath */
+  G_TEST_LOG_SKIP_CASE,         /* s:testpath */
+  G_TEST_LOG_START_CASE,        /* s:testpath */
+  G_TEST_LOG_STOP_CASE,         /* d:status d:nforks d:elapsed */
+  G_TEST_LOG_MIN_RESULT,        /* s:blurb d:result */
+  G_TEST_LOG_MAX_RESULT,        /* s:blurb d:result */
+  G_TEST_LOG_MESSAGE            /* s:blurb */
 } GTestLogType;
 
 typedef struct {
   GTestLogType  log_type;
   guint         n_strings;
-  gchar       **strings; // NULL terminated
+  gchar       **strings; /* NULL terminated */
   guint         n_nums;
   long double  *nums;
 } GTestLogMsg;
@@ -240,6 +240,6 @@ void            g_test_log_buffer_push  (GTestLogBuffer *tbuffer,
 GTestLogMsg*    g_test_log_buffer_pop   (GTestLogBuffer *tbuffer);
 void            g_test_log_msg_free     (GTestLogMsg    *tmsg);
 
-G_END_DECLS;
+G_END_DECLS
 
 #endif /* __G_TEST_UTILS_H__ */

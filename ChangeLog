@@ -1,3 +1,12 @@
+2007-12-21  Matthias Clasen  <mclasne@redhat.com>
+
+	* glib/gtestutils.h: Bring up to GLib coding standards: remove
+	C99 comments, trailing commas in enumerations and extra ; after
+	G_BEGIN/END_DECLS. Among other things, this makes xulrunner build
+	against GLib 2.15.
+
+	* glib/gtester.c: More of the same
+
 2007-12-09  Hans Breuer  <hans@breuer.org>
 
 	* tests/gio-ls.c : adapt to recent api changes
