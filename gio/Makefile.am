@@ -178,6 +178,8 @@ libgio_2_0_la_SOURCES =		\
 	gmountprivate.h 	\
 	gioenumtypes.h		\
 	gioenumtypes.c		\
+	gioalias.h 		\
+	gioaliasdef.c		\
 	$(appinfo_sources) 	\
 	$(unix_sources) 	\
 	$(local_sources) 	\
@@ -227,6 +229,7 @@ gio_headers =			\
 	gicon.h 		\
 	ginputstream.h 		\
 	gio.h			\
+	gioenumtypes.h		\
 	gioerror.h 		\
 	giomodule.h 		\
 	gioscheduler.h 		\
@@ -265,6 +268,9 @@ EXTRA_DIST += 			\
 	gio.symbols		\
 	gioenumtypes.h.template	\
 	gioenumtypes.c.template	\
+	makegioalias.pl		\
+	abicheck.sh		\
+	pltcheck.sh		\
 	$(NULL)
 
 CLEANFILES = 			\

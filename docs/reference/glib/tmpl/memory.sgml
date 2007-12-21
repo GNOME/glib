@@ -340,3 +340,6 @@ still in use.
 Note that this function will not output anything unless you have
 previously installed the #glib_mem_profiler_table with g_mem_set_vtable().
 </para>
+
+
+

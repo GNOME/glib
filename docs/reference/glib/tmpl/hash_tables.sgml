@@ -340,6 +340,12 @@ This function is deprecated and will be removed in the next major
 @hash_table: 
 
 
+<!-- ##### STRUCT GHashTableIter ##### -->
+<para>
+
+</para>
+
+
 <!-- ##### FUNCTION g_hash_table_iter_init ##### -->
 <para>
 

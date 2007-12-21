@@ -43,6 +43,15 @@ Support for checksums has been added in GLib 2.16
 @G_CHECKSUM_SHA1: 
 @G_CHECKSUM_SHA256: 
 
+<!-- ##### FUNCTION g_checksum_type_get_length ##### -->
+<para>
+
+</para>
+
+@checksum_type: 
+@Returns: 
+
+
 <!-- ##### STRUCT GChecksum ##### -->
 <para>
 
@@ -100,7 +109,7 @@ Support for checksums has been added in GLib 2.16
 </para>
 
 @checksum: 
-@digest: 
+@buffer: 
 @digest_len: 
 
 

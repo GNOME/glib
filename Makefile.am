@@ -34,6 +34,7 @@ EXTRA_DIST += 			\
 	HACKING			\
 	MAINTAINERS		\
 	autogen.sh		\
+	Makefile.decl		\
 	mkinstalldirs		\
 	makefile.msc		\
 	glibconfig.h.win32.in	\

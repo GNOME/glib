@@ -477,3 +477,24 @@ End:
 -->
 
 
+<!-- ##### FUNCTION g_prefix_error ##### -->
+<para>
+
+</para>
+
+@err: 
+@format: 
+@Varargs: 
+
+
+<!-- ##### FUNCTION g_propagate_prefixed_error ##### -->
+<para>
+
+</para>
+
+@dest: 
+@src: 
+@format: 
+@Varargs: 
+
+

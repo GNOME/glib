@@ -1,3 +1,7 @@
+2007-12-20  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.15.0 ===
+
 2007-12-20  Hans Breuer  <hans@breuer.org>
 
 	* makefile.msc : don't build gdesktopappinfo.obj, it collides 

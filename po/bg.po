@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib trunk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-11-07 00:25-0500\n"
+"POT-Creation-Date: 2007-12-20 10:49-0500\n"
 "PO-Revision-Date: 2007-08-26 21:13+0300\n"
 "Last-Translator: Alexander Shopov <ash@contact.bg>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
@@ -88,74 +88,74 @@ msgstr "Никое приложение „%s“ не е регистрирал�
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "Неуспех при разширяването на реда за изпълнение „%s“ с адреса „%s“"
 
-#: glib/gconvert.c:424 glib/gconvert.c:502 glib/giochannel.c:1148
+#: glib/gconvert.c:431 glib/gconvert.c:509 glib/giochannel.c:1158
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Преобразуването от набора знаци „%s“ към „%s“ не се поддържа"
 
-#: glib/gconvert.c:428 glib/gconvert.c:506
+#: glib/gconvert.c:435 glib/gconvert.c:513
 #, c-format
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "Не може да се отвори конвертор от „%s“ към „%s“"
 
-#: glib/gconvert.c:622 glib/gconvert.c:1011 glib/giochannel.c:1320
-#: glib/giochannel.c:1362 glib/giochannel.c:2204 glib/gutf8.c:950
+#: glib/gconvert.c:632 glib/gconvert.c:1017 glib/giochannel.c:1330
+#: glib/giochannel.c:1372 glib/giochannel.c:2215 glib/gutf8.c:950
 #: glib/gutf8.c:1399
 #, c-format
 msgid "Invalid byte sequence in conversion input"
 msgstr "Грешна байтова последователност на входа за преобразуване"
 
-#: glib/gconvert.c:628 glib/gconvert.c:938 glib/giochannel.c:1327
-#: glib/giochannel.c:2216
+#: glib/gconvert.c:638 glib/gconvert.c:944 glib/giochannel.c:1337
+#: glib/giochannel.c:2227
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Грешка по време на преобразуване: %s"
 
-#: glib/gconvert.c:663 glib/gutf8.c:946 glib/gutf8.c:1150 glib/gutf8.c:1291
+#: glib/gconvert.c:669 glib/gutf8.c:946 glib/gutf8.c:1150 glib/gutf8.c:1291
 #: glib/gutf8.c:1395
 #, c-format
 msgid "Partial character sequence at end of input"
 msgstr "Непълна знакова последователност в края на входните данни"
 
-#: glib/gconvert.c:913
+#: glib/gconvert.c:919
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr ""
 "Заместващият знак „%s“ не може да бъде преобразуван към знак от набора „%s“"
 
-#: glib/gconvert.c:1727
+#: glib/gconvert.c:1733
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr ""
 "Адресът „%s“ не е абсолютен при използване на схемата „file“ (файлова "
 "система)"
 
-#: glib/gconvert.c:1737
+#: glib/gconvert.c:1743
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Адресът „%s“ на локален файл не може да включва „#“"
 
-#: glib/gconvert.c:1754
+#: glib/gconvert.c:1760
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "Адресът „%s“ е неправилен"
 
-#: glib/gconvert.c:1766
+#: glib/gconvert.c:1772
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Името на хоста в адреса „%s“ е неправилно"
 
-#: glib/gconvert.c:1782
+#: glib/gconvert.c:1788
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "Адресът „%s“ съдържа грешни екраниращи последователности"
 
-#: glib/gconvert.c:1877
+#: glib/gconvert.c:1883
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Пътят „%s“ не е абсолютен"
 
-#: glib/gconvert.c:1887
+#: glib/gconvert.c:1893
 #, c-format
 msgid "Invalid hostname"
 msgstr "Неправилно име на хост"
@@ -245,37 +245,59 @@ msgstr "Шаблонът „%s“ е неправилен, не трябва д�
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "Шаблонът „%s“ не съдържа XXXXXX"
 
-#: glib/gfileutils.c:1840
+#: glib/gfileutils.c:1826
+#, c-format
+msgid "%u byte"
+msgid_plural "%u bytes"
+msgstr[0] ""
+msgstr[1] ""
+
+#: glib/gfileutils.c:1834
+#, c-format
+msgid "%.1f KB"
+msgstr ""
+
+#: glib/gfileutils.c:1839
+#, c-format
+msgid "%.1f MB"
+msgstr ""
+
+#: glib/gfileutils.c:1844
+#, c-format
+msgid "%.1f GB"
+msgstr ""
+
+#: glib/gfileutils.c:1887
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Неуспех при четене на символната връзка „%s“: %s"
 
-#: glib/gfileutils.c:1861
+#: glib/gfileutils.c:1908
 #, c-format
 msgid "Symbolic links not supported"
 msgstr "Символни връзки не се поддържат"
 
-#: glib/giochannel.c:1152
+#: glib/giochannel.c:1162
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Не може да се отвори конвертор от „%s“ към „%s“: %s"
 
-#: glib/giochannel.c:1497
+#: glib/giochannel.c:1507
 #, c-format
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "Не може да се чете от g_io_channel_read_line_string"
 
-#: glib/giochannel.c:1544 glib/giochannel.c:1801 glib/giochannel.c:1887
+#: glib/giochannel.c:1554 glib/giochannel.c:1811 glib/giochannel.c:1898
 #, c-format
 msgid "Leftover unconverted data in read buffer"
 msgstr "В буфера за четене останаха непреобразувани данни"
 
-#: glib/giochannel.c:1624 glib/giochannel.c:1701
+#: glib/giochannel.c:1634 glib/giochannel.c:1711
 #, c-format
 msgid "Channel terminates in a partial character"
 msgstr "Каналът прекъсна на непълен знак"
 
-#: glib/giochannel.c:1687
+#: glib/giochannel.c:1697
 #, c-format
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Не може да се чете от g_io_channel_read_to_end"
@@ -292,24 +314,24 @@ msgstr ""
 "Неуспех при отваряне на файл в паметта „%s“: неуспешно изпълнение на mmap(): "
 "%s"
 
-#: glib/gmarkup.c:226
-#, c-format
-msgid "Error on line %d char %d: %s"
+#: glib/gmarkup.c:228 glib/gmarkup.c:244
+#, fuzzy, c-format
+msgid "Error on line %d char %d: "
 msgstr "Грешка на ред %d, знак %d: %s"
 
-#: glib/gmarkup.c:324
+#: glib/gmarkup.c:338
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "Грешка на ред %d: %s"
 
-#: glib/gmarkup.c:428
+#: glib/gmarkup.c:442
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "Намерена е празна заместваща последователност: „&;“. Валидни "
 "последователности са: &amp; &quot; &lt; &gt; &apos;"
 
-#: glib/gmarkup.c:438
+#: glib/gmarkup.c:452
 #, c-format
 msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
@@ -320,17 +342,17 @@ msgstr ""
 "започва със знака „&“. Ако той не трябва да започва заместваща "
 "последователност, той може да се екранира така: &amp;"
 
-#: glib/gmarkup.c:472
+#: glib/gmarkup.c:486
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
 msgstr "Знакът „%s“ не може да се съдържа в заместваща последователност"
 
-#: glib/gmarkup.c:509
+#: glib/gmarkup.c:523
 #, c-format
 msgid "Entity name '%s' is not known"
 msgstr "Заместващата последователност „%s“ е неизвестна"
 
-#: glib/gmarkup.c:520
+#: glib/gmarkup.c:534
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
@@ -339,7 +361,7 @@ msgstr ""
 "амперсанд, без той да е начало на заместваща последователност. Представете "
 "амперсанда чрез &amp;"
 
-#: glib/gmarkup.c:573
+#: glib/gmarkup.c:587
 #, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
@@ -348,16 +370,16 @@ msgstr ""
 "Грешка при анализ на „%-.*s“, което трябва да е число в указател на знак "
 "(например &#234;). Вероятно числото е твърде голямо"
 
-#: glib/gmarkup.c:598
+#: glib/gmarkup.c:612
 #, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
 msgstr "Указателят на знак „%-.*s“ при декодиране не представя разрешен знак"
 
-#: glib/gmarkup.c:613
+#: glib/gmarkup.c:627
 msgid "Empty character reference; should include a digit such as &#454;"
 msgstr "Празен указател на знак. Трябва да включва число, например &#454;"
 
-#: glib/gmarkup.c:623
+#: glib/gmarkup.c:637
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -367,32 +389,32 @@ msgstr ""
 "без той да е начало на заместваща последователност. Представете амперсанда "
 "чрез &amp;"
 
-#: glib/gmarkup.c:709
+#: glib/gmarkup.c:723
 msgid "Unfinished entity reference"
 msgstr "Незавършена заместваща последователност"
 
-#: glib/gmarkup.c:715
+#: glib/gmarkup.c:729
 msgid "Unfinished character reference"
 msgstr "Незавършен указател на знак"
 
-#: glib/gmarkup.c:958
+#: glib/gmarkup.c:972
 msgid "Invalid UTF-8 encoded text - overlong sequence"
 msgstr "Неправилно кодиран текст в UTF-8 - прекалено дълга последователност"
 
-#: glib/gmarkup.c:986
+#: glib/gmarkup.c:1000
 msgid "Invalid UTF-8 encoded text - not a start char"
 msgstr "Неправилно кодиран текст в UTF-8 - не може да се започва с този знак"
 
-#: glib/gmarkup.c:1022
+#: glib/gmarkup.c:1036
 #, c-format
 msgid "Invalid UTF-8 encoded text - not valid '%s'"
 msgstr "Неправилно кодиран текст в UTF-8 - „%s“ е грешен"
 
-#: glib/gmarkup.c:1060
+#: glib/gmarkup.c:1074
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Документът трябва да започва с елемент (напр. <book>)"
 
-#: glib/gmarkup.c:1100
+#: glib/gmarkup.c:1114
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -400,7 +422,7 @@ msgid ""
 msgstr ""
 "„%s“ е неправилен знак след „<“. Името на елемент не може да започне с него"
 
-#: glib/gmarkup.c:1164
+#: glib/gmarkup.c:1178
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
@@ -409,7 +431,7 @@ msgstr ""
 "Неподходящ знак „%s“, очаква се отварящия етикет на елемент „%s“ да завърши "
 "с „>“"
 
-#: glib/gmarkup.c:1253
+#: glib/gmarkup.c:1267
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -417,7 +439,7 @@ msgstr ""
 "Неподходящ знак „%s“, очаква се „=“ след името на атрибут „%s“ на елемент „%"
 "s“"
 
-#: glib/gmarkup.c:1295
+#: glib/gmarkup.c:1309
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -428,7 +450,7 @@ msgstr ""
 "завърши със знак „>“ или „/“, или евентуално да продължи с атрибут. Най-"
 "вероятно използвате неправилен знак в името на атрибут"
 
-#: glib/gmarkup.c:1384
+#: glib/gmarkup.c:1395
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -437,7 +459,7 @@ msgstr ""
 "Неподходящ знак „%s“, очаква се знакът „\"“ след знака за равенство, когато "
 "се присвоява стойност на атрибута „%s“ на елемент „%s“"
 
-#: glib/gmarkup.c:1529
+#: glib/gmarkup.c:1537
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -445,7 +467,7 @@ msgid ""
 msgstr ""
 "„%s“ е неправилен знак след „</“. Името на елемент не може да започва с „%s“"
 
-#: glib/gmarkup.c:1569
+#: glib/gmarkup.c:1577
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -454,26 +476,26 @@ msgstr ""
 "„%s“ е неправилен знак при завършването на затварящ етикет с име „%s“. "
 "Позволен е знакът „>“"
 
-#: glib/gmarkup.c:1580
+#: glib/gmarkup.c:1588
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "Елементът „%s“ е затворен, няма текущо отворен елемент"
 
-#: glib/gmarkup.c:1589
+#: glib/gmarkup.c:1597
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "Елементът „%s“ е затворен, но текущо е отворен елемент „%s“"
 
-#: glib/gmarkup.c:1755
+#: glib/gmarkup.c:1757
 msgid "Document was empty or contained only whitespace"
 msgstr "Документът е празен или съдържа само празни знаци"
 
-#: glib/gmarkup.c:1769
+#: glib/gmarkup.c:1771
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr ""
 "Документът завършва неочаквано веднага след отваряща счупена скоба - „<“"
 
-#: glib/gmarkup.c:1777 glib/gmarkup.c:1822
+#: glib/gmarkup.c:1779 glib/gmarkup.c:1824
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -482,7 +504,7 @@ msgstr ""
 "Документът завършва неочаквано - има отворени елементи. Последно отворен е „%"
 "s“"
 
-#: glib/gmarkup.c:1785
+#: glib/gmarkup.c:1787
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -491,19 +513,19 @@ msgstr ""
 "Документът завършва неочаквано, очаква се затваряща счупена скоба да завърши "
 "етикета <%s/>"
 
-#: glib/gmarkup.c:1791
+#: glib/gmarkup.c:1793
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Документът завършва неочаквано в името на елемент"
 
-#: glib/gmarkup.c:1797
+#: glib/gmarkup.c:1799
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Документът завършва неочаквано в името на атрибут"
 
-#: glib/gmarkup.c:1802
+#: glib/gmarkup.c:1804
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Документът завършва неочаквано в отварящ етикет на елемент "
 
-#: glib/gmarkup.c:1808
+#: glib/gmarkup.c:1810
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -511,16 +533,16 @@ msgstr ""
 "Документът завършва неочаквано след знака за равенство следващ името на "
 "атрибута. Атрибутът няма стойност"
 
-#: glib/gmarkup.c:1815
+#: glib/gmarkup.c:1817
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Документът завършва неочаквано вътре в стойността на атрибут"
 
-#: glib/gmarkup.c:1831
+#: glib/gmarkup.c:1833
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "Документът завършва неочаквано в затварящия етикет на елемент „%s“"
 
-#: glib/gmarkup.c:1837
+#: glib/gmarkup.c:1839
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "Документът завършва неочаквано в коментар или инструкция за обработка"
 
@@ -570,66 +592,257 @@ msgstr "неправилна комбинация от флагове за но�
 msgid "unknown error"
 msgstr "непозната грешка"
 
-#: glib/gregex.c:324 glib/gregex.c:1360
+#: glib/gregex.c:199
+msgid "\\ at end of pattern"
+msgstr ""
+
+#: glib/gregex.c:202
+msgid "\\c at end of pattern"
+msgstr ""
+
+#: glib/gregex.c:205
+msgid "unrecognized character follows \\"
+msgstr ""
+
+#: glib/gregex.c:212
+msgid "case-changing escapes (\\l, \\L, \\u, \\U) are not allowed here"
+msgstr ""
+
+#: glib/gregex.c:215
+msgid "numbers out of order in {} quantifier"
+msgstr ""
+
+#: glib/gregex.c:218
+msgid "number too big in {} quantifier"
+msgstr ""
+
+#: glib/gregex.c:221
+#, fuzzy
+msgid "missing terminating ] for character class"
+msgstr "Каналът прекъсна на непълен знак"
+
+#: glib/gregex.c:224
+#, fuzzy
+msgid "invalid escape sequence in character class"
+msgstr "Грешна байтова последователност на входа за преобразуване"
+
+#: glib/gregex.c:227
+msgid "range out of order in character class"
+msgstr ""
+
+#: glib/gregex.c:230
+msgid "nothing to repeat"
+msgstr ""
+
+#: glib/gregex.c:233
+#, fuzzy
+msgid "unrecognized character after (?"
+msgstr "Незавършен указател на знак"
+
+#: glib/gregex.c:237
+#, fuzzy
+msgid "unrecognized character after (?<"
+msgstr "Незавършен указател на знак"
+
+#: glib/gregex.c:241
+#, fuzzy
+msgid "unrecognized character after (?P"
+msgstr "Незавършен указател на знак"
+
+#: glib/gregex.c:244
+msgid "POSIX named classes are supported only within a class"
+msgstr ""
+
+#: glib/gregex.c:247
+msgid "missing terminating )"
+msgstr ""
+
+#: glib/gregex.c:251
+msgid ") without opening ("
+msgstr ""
+
+#: glib/gregex.c:255
+msgid "(?R or (?[+-]digits must be followed by )"
+msgstr ""
+
+#: glib/gregex.c:258
+msgid "reference to non-existent subpattern"
+msgstr ""
+
+#: glib/gregex.c:261
+msgid "missing ) after comment"
+msgstr ""
+
+#: glib/gregex.c:264
+msgid "regular expression too large"
+msgstr ""
+
+#: glib/gregex.c:267
+msgid "failed to get memory"
+msgstr ""
+
+#: glib/gregex.c:270
+msgid "lookbehind assertion is not fixed length"
+msgstr ""
+
+#: glib/gregex.c:273
+msgid "malformed number or name after (?("
+msgstr ""
+
+#: glib/gregex.c:276
+msgid "conditional group contains more than two branches"
+msgstr ""
+
+#: glib/gregex.c:279
+msgid "assertion expected after (?("
+msgstr ""
+
+#: glib/gregex.c:282
+msgid "unknown POSIX class name"
+msgstr ""
+
+#: glib/gregex.c:285
+#, fuzzy
+msgid "POSIX collating elements are not supported"
+msgstr "Символни връзки не се поддържат"
+
+#: glib/gregex.c:288
+msgid "character value in \\x{...} sequence is too large"
+msgstr ""
+
+#: glib/gregex.c:291
+msgid "invalid condition (?(0)"
+msgstr ""
+
+#: glib/gregex.c:294
+msgid "\\C not allowed in lookbehind assertion"
+msgstr ""
+
+#: glib/gregex.c:297
+msgid "recursive call could loop indefinitely"
+msgstr ""
+
+#: glib/gregex.c:300
+msgid "missing terminator in subpattern name"
+msgstr ""
+
+#: glib/gregex.c:303
+msgid "two named subpatterns have the same name"
+msgstr ""
+
+#: glib/gregex.c:306
+msgid "malformed \\P or \\p sequence"
+msgstr ""
+
+#: glib/gregex.c:309
+msgid "unknown property name after \\P or \\p"
+msgstr ""
+
+#: glib/gregex.c:312
+msgid "subpattern name is too long (maximum 32 characters)"
+msgstr ""
+
+#: glib/gregex.c:315
+msgid "too many named subpatterns (maximum 10,000)"
+msgstr ""
+
+#: glib/gregex.c:318
+msgid "octal value is greater than \\377"
+msgstr ""
+
+#: glib/gregex.c:321
+msgid "DEFINE group contains more than one branch"
+msgstr ""
+
+#: glib/gregex.c:324
+msgid "repeating a DEFINE group is not allowed"
+msgstr ""
+
+#: glib/gregex.c:327
+msgid "inconsistent NEWLINE options"
+msgstr ""
+
+#: glib/gregex.c:330
+msgid ""
+"\\g is not followed by a braced name or an optionally braced non-zero number"
+msgstr ""
+
+#: glib/gregex.c:335
+msgid "unexpected repeat"
+msgstr ""
+
+#: glib/gregex.c:339
+msgid "code overflow"
+msgstr ""
+
+#: glib/gregex.c:343
+msgid "overran compiling workspace"
+msgstr ""
+
+#: glib/gregex.c:347
+msgid "previously-checked referenced subpattern not found"
+msgstr ""
+
+#: glib/gregex.c:514 glib/gregex.c:1562
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "Грешка %2$s при напасването на регулярния израз - %1$s"
 
-#: glib/gregex.c:875
+#: glib/gregex.c:1067
 msgid "PCRE library is compiled without UTF8 support"
 msgstr "Библиотеката PCRE е компилирана без поддръжка на UTF-8"
 
-#: glib/gregex.c:884
+#: glib/gregex.c:1076
 msgid "PCRE library is compiled without UTF8 properties support"
 msgstr "Библиотеката PCRE е компилирана без поддръжка на настройки в UTF-8"
 
-#: glib/gregex.c:929
+#: glib/gregex.c:1130
 #, c-format
 msgid "Error while compiling regular expression %s at char %d: %s"
 msgstr "Грешка при компилирането на регулярния израз %s, знак %d: %s"
 
-#: glib/gregex.c:964
+#: glib/gregex.c:1166
 #, c-format
 msgid "Error while optimizing regular expression %s: %s"
 msgstr "Грешка при оптимизирането на регулярния израз %s: %s"
 
-#: glib/gregex.c:1788
+#: glib/gregex.c:1990
 msgid "hexadecimal digit or '}' expected"
 msgstr "очаква се шестнайсетично число или „}“"
 
-#: glib/gregex.c:1804
+#: glib/gregex.c:2006
 msgid "hexadecimal digit expected"
 msgstr "очаква се шестнайсетично число"
 
-#: glib/gregex.c:1844
+#: glib/gregex.c:2046
 msgid "missing '<' in symbolic reference"
 msgstr "в символния указател липсва „<“"
 
-#: glib/gregex.c:1853
+#: glib/gregex.c:2055
 msgid "unfinished symbolic reference"
 msgstr "незавършен символен указател"
 
-#: glib/gregex.c:1860
+#: glib/gregex.c:2062
 msgid "zero-length symbolic reference"
 msgstr "символен указател с нулева дължина"
 
-#: glib/gregex.c:1871
+#: glib/gregex.c:2073
 msgid "digit expected"
 msgstr "очаква се цифра"
 
-#: glib/gregex.c:1889
+#: glib/gregex.c:2091
 msgid "illegal symbolic reference"
 msgstr "неправилен символен указател"
 
-#: glib/gregex.c:1951
+#: glib/gregex.c:2153
 msgid "stray final '\\'"
 msgstr "в края има един знак „\\“ в повече"
 
-#: glib/gregex.c:1955
+#: glib/gregex.c:2157
 msgid "unknown escape sequence"
 msgstr "непозната екранираща последователност"
 
-#: glib/gregex.c:1965
+#: glib/gregex.c:2167
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr "Грешка при анализа на текста за замяна „%s“, знак %lu: %s"
@@ -666,17 +879,17 @@ msgstr "Текстът е празен (или съдържа само праз�
 msgid "Failed to read data from child process"
 msgstr "Неуспех при четене на данни от дъщерен процес"
 
-#: glib/gspawn-win32.c:287 glib/gspawn.c:1450
+#: glib/gspawn-win32.c:287 glib/gspawn.c:1455
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Неуспех при създаването на канал за комуникация с дъщерен процес (%s)"
 
-#: glib/gspawn-win32.c:325 glib/gspawn.c:1114
+#: glib/gspawn-win32.c:325 glib/gspawn.c:1119
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Неуспех при четене от дъщерен канал (%s)"
 
-#: glib/gspawn-win32.c:351 glib/gspawn.c:1319
+#: glib/gspawn-win32.c:351 glib/gspawn.c:1324
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Неуспех при промяна към папка „%s“ (%s)"
@@ -725,43 +938,43 @@ msgstr ""
 msgid "Failed to read data from child process (%s)"
 msgstr "Неуспех при четене на данни от дъщерен процес (%s)"
 
-#: glib/gspawn.c:312
+#: glib/gspawn.c:317
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr ""
 "Неочаквана грешка в select() при четене на данни от дъщерен процес (%s)"
 
-#: glib/gspawn.c:395
+#: glib/gspawn.c:400
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Неочаквана грешка в waitpid() (%s)"
 
-#: glib/gspawn.c:1179
+#: glib/gspawn.c:1184
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Неуспешно разклоняване (%s)"
 
-#: glib/gspawn.c:1329
+#: glib/gspawn.c:1334
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Неуспех при изпълнение на дъщерен процес „%s“ (%s)"
 
-#: glib/gspawn.c:1339
+#: glib/gspawn.c:1344
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Неуспех при пренасочване на изхода или входа на дъщерен процес (%s)"
 
-#: glib/gspawn.c:1348
+#: glib/gspawn.c:1353
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Неуспех при разклоняване на дъщерен процес (%s)"
 
-#: glib/gspawn.c:1356
+#: glib/gspawn.c:1361
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Неизвестна грешка при изпълнение на дъщерен процес „%s“"
 
-#: glib/gspawn.c:1378
+#: glib/gspawn.c:1383
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr ""
@@ -784,85 +997,85 @@ msgstr "Неправилна последователност на входа з
 msgid "Character out of range for UTF-16"
 msgstr "Знак извън обхвата на UTF-16"
 
-#: glib/goption.c:572
+#: glib/goption.c:573
 msgid "Usage:"
 msgstr "Употреба:"
 
-#: glib/goption.c:572
+#: glib/goption.c:573
 msgid "[OPTION...]"
 msgstr "[ОПЦИЯ...]"
 
-#: glib/goption.c:676
+#: glib/goption.c:677
 msgid "Help Options:"
 msgstr "Настройки на помощта:"
 
-#: glib/goption.c:677
+#: glib/goption.c:678
 msgid "Show help options"
 msgstr "Показване на настройките на помощта"
 
-#: glib/goption.c:683
+#: glib/goption.c:684
 msgid "Show all help options"
 msgstr "Показване на всички настройки на помощта"
 
-#: glib/goption.c:735
+#: glib/goption.c:736
 msgid "Application Options:"
 msgstr "Настройки на приложението:"
 
-#: glib/goption.c:796 glib/goption.c:866
+#: glib/goption.c:797 glib/goption.c:867
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "Не може да се анализира целочислената стойност „%s“ за %s"
 
-#: glib/goption.c:806 glib/goption.c:874
+#: glib/goption.c:807 glib/goption.c:875
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr ""
 "Целочислената стойност „%s“ за %s е извън интервала на допустими стойности"
 
-#: glib/goption.c:831
+#: glib/goption.c:832
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr ""
 "Не може да се анализира стойността с повишена точност double „%s“ за %s"
 
-#: glib/goption.c:839
+#: glib/goption.c:840
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr ""
 "Стойността с повишена точност - double „%s“ за %s е извън интервала на "
 "допустими стойности"
 
-#: glib/goption.c:1176
+#: glib/goption.c:1177
 #, c-format
 msgid "Error parsing option %s"
 msgstr "Грешка при анализа на опцията: %s"
 
-#: glib/goption.c:1207 glib/goption.c:1318
+#: glib/goption.c:1208 glib/goption.c:1319
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Липсва аргумент за %s"
 
-#: glib/goption.c:1713
+#: glib/goption.c:1714
 #, c-format
 msgid "Unknown option %s"
 msgstr "Непозната опция %s"
 
-#: glib/gkeyfile.c:341
+#: glib/gkeyfile.c:358
 #, c-format
 msgid "Valid key file could not be found in search dirs"
 msgstr "Не може да се открие валиден файл с ключове в папките с данни"
 
-#: glib/gkeyfile.c:376
+#: glib/gkeyfile.c:393
 #, c-format
 msgid "Not a regular file"
 msgstr "Не е обикновен файл"
 
-#: glib/gkeyfile.c:384
+#: glib/gkeyfile.c:401
 #, c-format
 msgid "File is empty"
 msgstr "Файлът е празен"
 
-#: glib/gkeyfile.c:746
+#: glib/gkeyfile.c:761
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
@@ -870,51 +1083,51 @@ msgstr ""
 "Ключовият файл съдържа реда „%s“, който не е нито двойка ключ-стойност, нито "
 "група, нито коментар"
 
-#: glib/gkeyfile.c:806
+#: glib/gkeyfile.c:821
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "Неправилно име на група: %s"
 
-#: glib/gkeyfile.c:828
+#: glib/gkeyfile.c:843
 #, c-format
 msgid "Key file does not start with a group"
 msgstr "Ключовият файл не започва с група"
 
-#: glib/gkeyfile.c:854
+#: glib/gkeyfile.c:869
 #, c-format
 msgid "Invalid key name: %s"
 msgstr "Неправилно име на ключ: %s"
 
-#: glib/gkeyfile.c:881
+#: glib/gkeyfile.c:896
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "Ключовият файл съдържа неподдържаното кодиране „%s“"
 
-#: glib/gkeyfile.c:1094 glib/gkeyfile.c:1253 glib/gkeyfile.c:2455
-#: glib/gkeyfile.c:2521 glib/gkeyfile.c:2640 glib/gkeyfile.c:2775
-#: glib/gkeyfile.c:2928 glib/gkeyfile.c:3108 glib/gkeyfile.c:3165
+#: glib/gkeyfile.c:1109 glib/gkeyfile.c:1269 glib/gkeyfile.c:2487
+#: glib/gkeyfile.c:2555 glib/gkeyfile.c:2690 glib/gkeyfile.c:2825
+#: glib/gkeyfile.c:2978 glib/gkeyfile.c:3165 glib/gkeyfile.c:3226
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Ключовият файл не съдържа групата „%s“"
 
-#: glib/gkeyfile.c:1265
+#: glib/gkeyfile.c:1281
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "Ключовият файл не съдържа ключа „%s“"
 
-#: glib/gkeyfile.c:1367 glib/gkeyfile.c:1477
+#: glib/gkeyfile.c:1383 glib/gkeyfile.c:1496
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "Ключовият файл съдържа ключ „%s“ със стойност „%s“, която не е в UTF-8"
 
-#: glib/gkeyfile.c:1387 glib/gkeyfile.c:1497 glib/gkeyfile.c:1866
+#: glib/gkeyfile.c:1403 glib/gkeyfile.c:1516 glib/gkeyfile.c:1889
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr ""
 "Ключовият файл съдържа ключа „%s“, чиято стойност не може да бъде "
 "анализирана."
 
-#: glib/gkeyfile.c:2078 glib/gkeyfile.c:2287
+#: glib/gkeyfile.c:2104 glib/gkeyfile.c:2316
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -923,38 +1136,589 @@ msgstr ""
 "Ключовият файл съдържа ключа „%s“ в групата „%s“, чиято стойност не може да "
 "бъде анализирана."
 
-#: glib/gkeyfile.c:2470 glib/gkeyfile.c:2655 glib/gkeyfile.c:3176
+#: glib/gkeyfile.c:2502 glib/gkeyfile.c:2705 glib/gkeyfile.c:3237
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Ключовият файл не съдържа ключа „%s“ в групата „%s“"
 
-#: glib/gkeyfile.c:3415
+#: glib/gkeyfile.c:3471
 #, c-format
 msgid "Key file contains escape character at end of line"
 msgstr "Ключовият файл съдържа екранираща последователност в край на ред"
 
-#: glib/gkeyfile.c:3437
+#: glib/gkeyfile.c:3493
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "Ключовият файл съдържа грешна екранираща последователност - „%s“"
 
-#: glib/gkeyfile.c:3579
+#: glib/gkeyfile.c:3635
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Стойността „%s“ не може да се интерпретира като число."
 
-#: glib/gkeyfile.c:3593
+#: glib/gkeyfile.c:3649
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "Целочислената стойност „%s“ е извън интервала на допустими стойности"
 
-#: glib/gkeyfile.c:3626
+#: glib/gkeyfile.c:3682
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr ""
 "Стойността „%s“ не може да се интерпретира като число с плаваща запетая."
 
-#: glib/gkeyfile.c:3650
+#: glib/gkeyfile.c:3706
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Стойността „%s“ не може да се интерпретира като булева."
+
+#: gio/gbufferedinputstream.c:483 gio/ginputstream.c:558
+msgid "Too large count value passed to g_input_stream_read_async"
+msgstr ""
+
+#: gio/gbufferedinputstream.c:869 gio/ginputstream.c:888
+#: gio/goutputstream.c:1064
+#, c-format
+msgid "Stream is already closed"
+msgstr ""
+
+#: gio/gcancellable.c:296 gio/gsimpleasyncresult.c:611
+#, c-format
+msgid "Operation was cancelled"
+msgstr ""
+
+#: gio/gcontenttype.c:156
+#, fuzzy
+msgid "Unknown type"
+msgstr "непозната грешка"
+
+#: gio/gcontenttype.c:157
+#, c-format
+msgid "%s filetype"
+msgstr ""
+
+#: gio/gcontenttype.c:571
+#, c-format
+msgid "%s type"
+msgstr ""
+
+#: gio/gdatainputstream.c:309
+#, c-format
+msgid "Unexpected early end-of-stream"
+msgstr ""
+
+#: gio/gdesktopappinfo.c:386 gio/gwin32appinfo.c:222
+msgid "Unnamed"
+msgstr ""
+
+#: gio/gdesktopappinfo.c:562
+#, c-format
+msgid "Desktop file didn't specify Exec field"
+msgstr ""
+
+#: gio/gdesktopappinfo.c:844
+#, c-format
+msgid "Unable to find terminal required for application"
+msgstr ""
+
+#: gio/gdesktopappinfo.c:1026
+#, c-format
+msgid "Can't create user application configuration folder %s: %s"
+msgstr ""
+
+#: gio/gdesktopappinfo.c:1030
+#, c-format
+msgid "Can't create user MIME configuration folder %s: %s"
+msgstr ""
+
+#: gio/gdesktopappinfo.c:1403
+#, c-format
+msgid "Custom definition for %s"
+msgstr ""
+
+#: gio/gdesktopappinfo.c:1427
+#, c-format
+msgid "Can't create user desktop file %s"
+msgstr ""
+
+#: gio/gdesktopappinfo.c:1452
+#, c-format
+msgid "Can't load just created desktop file"
+msgstr ""
+
+#: gio/gdrive.c:365
+msgid "drive doesn't implement eject"
+msgstr ""
+
+#: gio/gdrive.c:432
+msgid "drive doesn't implement polling for media"
+msgstr ""
+
+#: gio/gfile.c:730 gio/gfile.c:871 gio/gfile.c:1004 gio/gfile.c:1090
+#: gio/gfile.c:1143 gio/gfile.c:1200 gio/gfile.c:1281 gio/gfile.c:2188
+#: gio/gfile.c:2233 gio/gfile.c:2283 gio/gfile.c:2322 gio/gfile.c:2641
+#: gio/gfile.c:3035 gio/gfile.c:3114 gio/gfile.c:3194
+#, fuzzy, c-format
+msgid "Operation not supported"
+msgstr "Символни връзки не се поддържат"
+
+#: gio/gfile.c:1046 gio/glocalfile.c:888 gio/glocalfile.c:897
+#: gio/glocalfile.c:908
+#, c-format
+msgid "Containing mount does not exist"
+msgstr ""
+
+#: gio/gfile.c:1620
+#, c-format
+msgid "Can't copy over directory"
+msgstr ""
+
+#: gio/gfile.c:1680
+#, c-format
+msgid "Can't copy directory over directory"
+msgstr ""
+
+#: gio/gfile.c:1688
+#, c-format
+msgid "Target file exists"
+msgstr ""
+
+#: gio/gfile.c:1706
+#, c-format
+msgid "Can't recursively copy directory"
+msgstr ""
+
+#: gio/gfile.c:2273
+#, c-format
+msgid "Invalid symlink value given"
+msgstr ""
+
+#: gio/gfile.c:2365
+#, fuzzy, c-format
+msgid "Trash not supported"
+msgstr "Символни връзки не се поддържат"
+
+#: gio/gfile.c:2412
+#, c-format
+msgid "File names cannot contain '%c'"
+msgstr ""
+
+#: gio/gfile.c:4039 gio/gvolume.c:318
+msgid "volume doesn't implement mount"
+msgstr ""
+
+#: gio/gfileenumerator.c:151
+#, c-format
+msgid "Enumerator is closed"
+msgstr ""
+
+#: gio/gfileenumerator.c:158 gio/gfileenumerator.c:217
+#: gio/gfileenumerator.c:317 gio/gfileenumerator.c:424
+#, c-format
+msgid "File enumerator has outstanding operation"
+msgstr ""
+
+#: gio/gfileenumerator.c:307 gio/gfileenumerator.c:414
+msgid "File enumerator is already closed"
+msgstr ""
+
+#: gio/gfileinputstream.c:143 gio/gfileinputstream.c:439
+#: gio/gfileoutputstream.c:154 gio/gfileoutputstream.c:556
+#, c-format
+msgid "Stream doesn't support query_info"
+msgstr ""
+
+#: gio/gfileinputstream.c:354 gio/gfileoutputstream.c:395
+#, c-format
+msgid "Seek not supported on stream"
+msgstr ""
+
+#: gio/gfileinputstream.c:398
+#, c-format
+msgid "Truncate not allowed on input stream"
+msgstr ""
+
+#: gio/gfileoutputstream.c:490
+#, c-format
+msgid "Truncate not supported on stream"
+msgstr ""
+
+#: gio/ginputstream.c:186
+#, c-format
+msgid "Too large count value passed to g_input_stream_read"
+msgstr ""
+
+#: gio/ginputstream.c:195
+#, c-format
+msgid "Input stream doesn't implement read"
+msgstr ""
+
+#: gio/ginputstream.c:318
+#, c-format
+msgid "Too large count value passed to g_input_stream_skip"
+msgstr ""
+
+#: gio/ginputstream.c:681
+msgid "Too large count value passed to g_input_stream_skip_async"
+msgstr ""
+
+#: gio/ginputstream.c:895 gio/goutputstream.c:1071
+#, c-format
+msgid "Stream has outstanding operation"
+msgstr ""
+
+#: gio/glocalfile.c:554
+#, fuzzy, c-format
+msgid "Invalid filename %s"
+msgstr "Неправилно име на ключ: %s"
+
+#: gio/glocalfile.c:810
+#, fuzzy, c-format
+msgid "Error getting filesystem info: %s"
+msgstr "Грешка при четене на файл „%s“: %s"
+
+#: gio/glocalfile.c:928
+#, c-format
+msgid "Can't rename root directory"
+msgstr ""
+
+#: gio/glocalfile.c:946
+#, c-format
+msgid "Can't rename file, filename already exist"
+msgstr ""
+
+#: gio/glocalfile.c:959 gio/glocalfile.c:1681 gio/glocalfile.c:1710
+#: gio/glocalfile.c:1842 gio/glocalfileoutputstream.c:451
+#: gio/glocalfileoutputstream.c:494 gio/glocalfileoutputstream.c:886
+#, fuzzy, c-format
+msgid "Invalid filename"
+msgstr "Неправилно име на хост"
+
+#: gio/glocalfile.c:963
+#, fuzzy, c-format
+msgid "Error renaming file: %s"
+msgstr "Грешка при четене на файл „%s“: %s"
+
+#: gio/glocalfile.c:1080
+#, fuzzy, c-format
+msgid "Error opening file: %s"
+msgstr "Грешка при четене на файл „%s“: %s"
+
+#: gio/glocalfile.c:1090
+#, c-format
+msgid "Can't open directory"
+msgstr ""
+
+#: gio/glocalfile.c:1142 gio/glocalfile.c:1685
+#, fuzzy, c-format
+msgid "Error removing file: %s"
+msgstr "Грешка при четене на файл „%s“: %s"
+
+#: gio/glocalfile.c:1434
+#, fuzzy, c-format
+msgid "Error trashing file: %s"
+msgstr "Грешка при четене на файл „%s“: %s"
+
+#: gio/glocalfile.c:1458
+#, fuzzy, c-format
+msgid "Unable to create trash dir %s: %s"
+msgstr "Неуспех при създаване на файл „%s“: %s"
+
+#: gio/glocalfile.c:1482
+#, c-format
+msgid "Unable to find toplevel directory for trash"
+msgstr ""
+
+#: gio/glocalfile.c:1542 gio/glocalfile.c:1562
+#, c-format
+msgid "Unable to find or create trash directory"
+msgstr ""
+
+#: gio/glocalfile.c:1594
+#, fuzzy, c-format
+msgid "Unable to create trashed file: %s"
+msgstr "Неуспех при създаване на файл „%s“: %s"
+
+#: gio/glocalfile.c:1617
+#, fuzzy, c-format
+msgid "Unable to trash file: %s"
+msgstr "Неуспех при създаване на файл „%s“: %s"
+
+#: gio/glocalfile.c:1714
+#, fuzzy, c-format
+msgid "Error making symbolic link: %s"
+msgstr "Грешка при анализа на опцията: %s"
+
+#: gio/glocalfile.c:1761 gio/glocalfile.c:1846
+#, fuzzy, c-format
+msgid "Error moving file: %s"
+msgstr "Грешка при четене на файл „%s“: %s"
+
+#: gio/glocalfile.c:1782
+#, c-format
+msgid "Can't move directory over directory"
+msgstr ""
+
+#: gio/glocalfile.c:1791
+#, c-format
+msgid "Target file already exists"
+msgstr ""
+
+#: gio/glocalfile.c:1804 gio/glocalfileoutputstream.c:740
+#: gio/glocalfileoutputstream.c:754 gio/glocalfileoutputstream.c:769
+#: gio/glocalfileoutputstream.c:785 gio/glocalfileoutputstream.c:799
+#, c-format
+msgid "Backup file creation failed"
+msgstr ""
+
+#: gio/glocalfile.c:1821
+#, fuzzy, c-format
+msgid "Error removing target file: %s"
+msgstr "Грешка при четене на файл „%s“: %s"
+
+#: gio/glocalfile.c:1835
+#, c-format
+msgid "Move between mounts not supported"
+msgstr ""
+
+#: gio/glocalfileinfo.c:707
+#, c-format
+msgid "Attribute value must be non-NULL"
+msgstr ""
+
+#: gio/glocalfileinfo.c:714
+#, c-format
+msgid "Invalid attribute type (string expected)"
+msgstr ""
+
+#: gio/glocalfileinfo.c:721
+#, fuzzy, c-format
+msgid "Invalid extended attribute name"
+msgstr "Документът завършва неочаквано в името на атрибут"
+
+#: gio/glocalfileinfo.c:761
+#, fuzzy, c-format
+msgid "Error setting extended attribute '%s': %s"
+msgstr "Грешка при отваряне на папка „%s“: %s"
+
+#: gio/glocalfileinfo.c:1392 gio/glocalfileoutputstream.c:630
+#, fuzzy, c-format
+msgid "Error stating file '%s': %s"
+msgstr "Грешка при четене на файл „%s“: %s"
+
+#: gio/glocalfileinfo.c:1446
+msgid " (invalid encoding)"
+msgstr ""
+
+#: gio/glocalfileinfo.c:1621
+#, fuzzy, c-format
+msgid "Error stating file descriptor: %s"
+msgstr "Грешка при четене на файл „%s“: %s"
+
+#: gio/glocalfileinfo.c:1666
+#, c-format
+msgid "Invalid attribute type (uint32 expected)"
+msgstr ""
+
+#: gio/glocalfileinfo.c:1683
+#, c-format
+msgid "Invalid attribute type (uint64 expected)"
+msgstr ""
+
+#: gio/glocalfileinfo.c:1701
+#, c-format
+msgid "Invalid attribute type (byte string expected)"
+msgstr ""
+
+#: gio/glocalfileinfo.c:1725
+#, fuzzy, c-format
+msgid "Error setting permissions: %s"
+msgstr "Грешка по време на преобразуване: %s"
+
+#: gio/glocalfileinfo.c:1772 gio/glocalfileinfo.c:1932
+#, fuzzy, c-format
+msgid "Error setting owner: %s"
+msgstr "Грешка по време на преобразуване: %s"
+
+#: gio/glocalfileinfo.c:1795
+#, c-format
+msgid "symlink must be non-NULL"
+msgstr ""
+
+#: gio/glocalfileinfo.c:1803 gio/glocalfileinfo.c:1820
+#: gio/glocalfileinfo.c:1829
+#, fuzzy, c-format
+msgid "Error setting symlink: %s"
+msgstr "Грешка на ред %d: %s"
+
+#: gio/glocalfileinfo.c:1812
+#, c-format
+msgid "Error setting symlink: file is not a symlink"
+msgstr ""
+
+#: gio/glocalfileinfo.c:1987
+#, fuzzy, c-format
+msgid "Setting attribute %s not supported"
+msgstr "Символни връзки не се поддържат"
+
+#: gio/glocalfileinputstream.c:158 gio/glocalfileoutputstream.c:541
+#, fuzzy, c-format
+msgid "Error reading from file: %s"
+msgstr "Грешка при четене на файл „%s“: %s"
+
+#: gio/glocalfileinputstream.c:187 gio/glocalfileinputstream.c:197
+#: gio/glocalfileinputstream.c:301 gio/glocalfileoutputstream.c:351
+#: gio/glocalfileoutputstream.c:815
+#, fuzzy, c-format
+msgid "Error seeking in file: %s"
+msgstr "Грешка при четене на файл „%s“: %s"
+
+#: gio/glocalfileinputstream.c:224 gio/glocalfileoutputstream.c:259
+#, fuzzy, c-format
+msgid "Error closing file: %s"
+msgstr "Грешка при четене на файл „%s“: %s"
+
+#: gio/glocalfileoutputstream.c:166 gio/glocalfileoutputstream.c:560
+#, fuzzy, c-format
+msgid "Error writing to file: %s"
+msgstr "Грешка при четене на файл „%s“: %s"
+
+#: gio/glocalfileoutputstream.c:205
+#, fuzzy, c-format
+msgid "Error removing old backup link: %s"
+msgstr "Грешка при анализа на опцията: %s"
+
+#: gio/glocalfileoutputstream.c:214
+#, fuzzy, c-format
+msgid "Error creating backup link: %s"
+msgstr "Грешка при анализа на опцията: %s"
+
+#: gio/glocalfileoutputstream.c:224
+#, fuzzy, c-format
+msgid "Error creating backup copy: %s"
+msgstr "Грешка при четене на файл „%s“: %s"
+
+#: gio/glocalfileoutputstream.c:240
+#, fuzzy, c-format
+msgid "Error renaming temporary file: %s"
+msgstr "Грешка при четене на файл „%s“: %s"
+
+#: gio/glocalfileoutputstream.c:395 gio/glocalfileoutputstream.c:830
+#, fuzzy, c-format
+msgid "Error truncating file: %s"
+msgstr "Грешка при четене на файл „%s“: %s"
+
+#: gio/glocalfileoutputstream.c:455 gio/glocalfileoutputstream.c:498
+#: gio/glocalfileoutputstream.c:621 gio/glocalfileoutputstream.c:890
+#, fuzzy, c-format
+msgid "Error opening file '%s': %s"
+msgstr "Грешка при четене на файл „%s“: %s"
+
+#: gio/glocalfileoutputstream.c:642
+#, c-format
+msgid "Target file is a directory"
+msgstr ""
+
+#: gio/glocalfileoutputstream.c:647
+#, fuzzy, c-format
+msgid "Target file is not a regular file"
+msgstr "Не е обикновен файл"
+
+#: gio/glocalfileoutputstream.c:659
+#, c-format
+msgid "The file was externally modified"
+msgstr ""
+
+#: gio/gmount.c:335
+msgid "mount doesn't implement unmount"
+msgstr ""
+
+#: gio/gmount.c:407
+msgid "mount doesn't implement eject"
+msgstr ""
+
+#: gio/gmount.c:484
+msgid "mount doesn't implement remount"
+msgstr ""
+
+#: gio/goutputstream.c:193
+#, c-format
+msgid "Too large count value passed to g_output_stream_write"
+msgstr ""
+
+#: gio/goutputstream.c:202 gio/goutputstream.c:403
+#, c-format
+msgid "Output stream doesn't implement write"
+msgstr ""
+
+#: gio/goutputstream.c:363 gio/goutputstream.c:764
+#, c-format
+msgid "Source stream is already closed"
+msgstr ""
+
+#: gio/goutputstream.c:646
+msgid "Too large count value passed to g_output_stream_write_async"
+msgstr ""
+
+#: gio/gunixinputstream.c:200 gio/gunixinputstream.c:218
+#: gio/gunixinputstream.c:290 gio/gunixoutputstream.c:281
+#, fuzzy, c-format
+msgid "Error reading from unix: %s"
+msgstr "Грешка при четене на файл „%s“: %s"
+
+#: gio/gunixinputstream.c:248 gio/gunixinputstream.c:423
+#: gio/gunixoutputstream.c:238 gio/gunixoutputstream.c:385
+#, fuzzy, c-format
+msgid "Error closing unix: %s"
+msgstr "Грешка на ред %d: %s"
+
+#: gio/gunixmounts.c:1753 gio/gunixmounts.c:1790
+msgid "Filesystem root"
+msgstr ""
+
+#: gio/gunixoutputstream.c:188 gio/gunixoutputstream.c:207
+#, fuzzy, c-format
+msgid "Error writing to unix: %s"
+msgstr "Грешка при анализа на опцията: %s"
+
+#: gio/gvolume.c:384
+msgid "volume doesn't implement eject"
+msgstr ""
+
+#: gio/gwin32appinfo.c:277
+#, c-format
+msgid "Can't find application"
+msgstr ""
+
+#: gio/gwin32appinfo.c:312
+#, fuzzy, c-format
+msgid "Error launching application: %s"
+msgstr "Грешка при анализа на опцията: %s"
+
+#: gio/gwin32appinfo.c:343
+#, fuzzy, c-format
+msgid "URIs not supported"
+msgstr "Символни връзки не се поддържат"
+
+#: gio/gwin32appinfo.c:366
+#, c-format
+msgid "association changes not supported on win32"
+msgstr ""
+
+#: gio/gwin32appinfo.c:378
+#, c-format
+msgid "Association creation not supported on win32"
+msgstr ""
+
+#: tests/gio-ls.c:28
+msgid "do not hide entries"
+msgstr ""
+
+#: tests/gio-ls.c:30
+msgid "use a long listing format"
+msgstr ""
+
+#: tests/gio-ls.c:38
+#, fuzzy
+msgid "[FILE...]"
+msgstr "[ОПЦИЯ...]"

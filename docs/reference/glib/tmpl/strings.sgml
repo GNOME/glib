@@ -166,6 +166,18 @@ The #GString struct contains the public fields of a #GString.
 @Returns: 
 
 
+<!-- ##### FUNCTION g_string_append_uri_escaped ##### -->
+<para>
+
+</para>
+
+@string: 
+@unescaped: 
+@reserved_chars_allowed: 
+@allow_utf8: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_string_prepend ##### -->
 <para>
 

@@ -586,6 +586,7 @@ Flags which influence the parsing.
 @key: 
 @comment: 
 @error: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_key_file_remove_group ##### -->
@@ -596,6 +597,7 @@ Flags which influence the parsing.
 @key_file: 
 @group_name: 
 @error: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_key_file_remove_key ##### -->
@@ -607,6 +609,7 @@ Flags which influence the parsing.
 @group_name: 
 @key: 
 @error: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_key_file_remove_comment ##### -->
@@ -618,6 +621,7 @@ Flags which influence the parsing.
 @group_name: 
 @key: 
 @error: 
+@Returns: 
 
 
 <!-- ##### MACRO G_KEY_FILE_DESKTOP_GROUP ##### -->

@@ -251,6 +251,15 @@ i.e. just the <filename>foo</filename> in <filename>/usr/bin/foo</filename>.
 </para>
 
 
+<!-- ##### MACRO _ ##### -->
+<para>
+Marks a string for translation, gets replaced with the translated string
+at runtime.
+</para>
+
+@String: the string to be translated
+@Since: 2.4
+
 <!-- ##### MACRO access ##### -->
 <para>
 

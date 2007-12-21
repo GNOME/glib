@@ -1,5 +1,7 @@
 2007-12-20  Matthias Clasen  <mclasen@redhat.com>
 
+	* === Released 2.15.0 ===
+
 	* NEWS: Updates
 
 	* glib/Makefile.am: Fix make dist

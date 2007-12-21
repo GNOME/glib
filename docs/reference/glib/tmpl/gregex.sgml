@@ -123,7 +123,6 @@ Error codes returned by regular expressions functions.
 @G_REGEX_ERROR_INCONSISTENT_NEWLINE_OPTIONS: Inconsistent newline options. Since 2.16
 @G_REGEX_ERROR_MISSING_BACK_REFERENCE: "\\g" is not followed by a braced name or an
 optionally braced non-zero number. Since 2.16
-
 @Since: 2.14
 
 <!-- ##### MACRO G_REGEX_ERROR ##### -->

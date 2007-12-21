@@ -1,3 +1,7 @@
+2007-12-20  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.15.0 ===
+
 2007-11-11  Mathias Hasselmann  <mathias@openismus.com>
 
 	Always exit with non-zero error code when printing warnings.

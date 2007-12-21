@@ -32,16 +32,6 @@ The gettext manual.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### MACRO _ ##### -->
-<para>
-Marks a string for translation, gets replaced with the translated string
-at runtime.
-</para>
-
-@String: the string to be translated
-@Since: 2.4
-
-
 <!-- ##### MACRO Q_ ##### -->
 <para>
 Like _(), but handles context in message ids. This has the advantage that 
@@ -92,10 +82,13 @@ pass <option>--keyword=C_:1c,2</option> to xgettext when extracting
 messages. Note that this only works with GNU gettext >= 0.15. 
 </para></note>
 
-@msgctxt: a message context, must be a string literal
-@msgid: a message id, must be a string literal
+@Context: 
+@String: 
 @Returns: the translated message
 @Since: 2.16
+<!-- # Unused Parameters # -->
+@msgctxt: a message context, must be a string literal
+@msgid: a message id, must be a string literal
 
 
 <!-- ##### MACRO N_ ##### -->
@@ -124,7 +117,6 @@ be directly used, e.g. in string array initializers.
 @Since: 2.4
 
 
-
 <!-- ##### FUNCTION g_strip_context ##### -->
 <para>
 
@@ -132,6 +124,17 @@ be directly used, e.g. in string array initializers.
 
 @msgid: 
 @msgval: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_dpgettext ##### -->
+<para>
+
+</para>
+
+@domain: 
+@msgctxtid: 
+@msgidoffset: 
 @Returns: 
 
 

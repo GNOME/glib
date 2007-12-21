@@ -244,6 +244,7 @@ separately.
 @Returns: the pointer array if @free_seg is %FALSE, otherwise %NULL.
 	The pointer array should be freed using g_free().
 
+
 <!-- ##### FUNCTION g_ptr_array_foreach ##### -->
 <para>
 
