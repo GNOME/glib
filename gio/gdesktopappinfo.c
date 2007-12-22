@@ -920,10 +920,10 @@ static gboolean
 g_desktop_app_info_supports_uris (GAppInfo *appinfo)
 {
   GDesktopAppInfo *info = G_DESKTOP_APP_INFO (appinfo);
-  
-  return
-    (strstr (info->exec, "%u") != NULL) ||
-    (strstr (info->exec, "%U") != NULL);
+ 
+  return info->exec && 
+    ((strstr (info->exec, "%u") != NULL) ||
+     (strstr (info->exec, "%U") != NULL));
 }
 
 static gboolean
@@ -1581,7 +1581,8 @@ g_app_info_get_default_for_type (const char *content_type,
  * g_app_info_get_default_for_uri_scheme:
  * @uri_scheme: a string containing a URI scheme.
  *
- * Gets the default application for launching applications using this URI scheme.
+ * Gets the default application for launching applications 
+ * using this URI scheme.
  *
  * TODO: This is currently unimplemented.
  * 
@@ -1625,11 +1626,12 @@ get_apps_from_dir (GHashTable *apps,
 
 		  /* Don't return apps that don't take arguments */
 		  if (appinfo &&
-		      g_desktop_app_info_get_is_hidden (appinfo) &&
-		      strstr (appinfo->exec,"%U") == NULL &&
-		      strstr (appinfo->exec,"%u") == NULL &&
-		      strstr (appinfo->exec,"%f") == NULL &&
-		      strstr (appinfo->exec,"%F") == NULL)
+		      (g_desktop_app_info_get_is_hidden (appinfo) ||
+		       (appinfo->exec && 
+			strstr (appinfo->exec,"%U") == NULL &&
+			strstr (appinfo->exec,"%u") == NULL &&
+			strstr (appinfo->exec,"%f") == NULL &&
+			strstr (appinfo->exec,"%F") == NULL)))
 		    {
 		      g_object_unref (appinfo);
 		      appinfo = NULL;
@@ -1679,7 +1681,7 @@ g_app_info_get_all (void)
   const char * const *dirs;
   GHashTable *apps;
   GHashTableIter iter;
-  gpointer key;
+  gpointer value;
   int i;
   GList *infos;
 
@@ -1695,8 +1697,8 @@ g_app_info_get_all (void)
 
   infos = NULL;
   g_hash_table_iter_init (&iter, apps);
-  while (g_hash_table_iter_next (&iter, &key, NULL))
-    infos = g_list_prepend (infos, key);
+  while (g_hash_table_iter_next (&iter, NULL, &value))
+    infos = g_list_prepend (infos, value);
 
   g_hash_table_destroy (apps);
 
@@ -2142,13 +2144,13 @@ append_desktop_entry (GList      *list,
  * get_all_desktop_entries_for_mime_type:
  * @mime_type: a mime type.
  *
- * Returns all the desktop filenames for @mime_type. The desktop files
+ * Returns all the desktop ids for @mime_type. The desktop files
  * are listed in an order so that default applications are listed before
  * non-default ones, and handlers for inherited mimetypes are listed
  * after the base ones.
  *
- * Return value: a #GList containing the desktop filenames containing the
- * @mime_type.
+ * Return value: a #GList containing the desktop ids which claim
+ *    to handle @mime_type.
  */
 static GList *
 get_all_desktop_entries_for_mime_type (const char *base_mime_type)

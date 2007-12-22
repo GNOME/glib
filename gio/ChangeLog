@@ -1,3 +1,10 @@
+2007-12-22  Matthias Clasen  <mclasen@redhat.com>
+
+	* gio/gappinfo.c: Doc improvements
+	
+	* gio/gdesktopappinfo.c (g_app_info_get_all): Return app infos,
+	not ids.
+
 2007-12-20  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.15.0 ===

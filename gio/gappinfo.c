@@ -139,6 +139,9 @@ g_app_info_equal (GAppInfo *appinfo1,
  * platform dependent. For instance on Unix this is the
  * desktop file id from the xdg menu specification.
  *
+ * Note that the returned ID may be %NULL, depending on how
+ * the @appinfo has been constructed.
+ *
  * Returns: a string containing the application's ID.
  **/
 const char *
@@ -180,8 +183,7 @@ g_app_info_get_name (GAppInfo *appinfo)
  * Gets a human-readable description of an installed application.
  *
  * Returns: a string containing a description of the 
- * application @appinfo, or %NULL if none. The returned string should be not freed 
- * when no longer needed.
+ * application @appinfo, or %NULL if none. 
  **/
 const char *
 g_app_info_get_description (GAppInfo *appinfo)
