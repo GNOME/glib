@@ -428,8 +428,11 @@ g_module_open (const gchar    *file_name,
 	  gchar *real_name = parse_libtool_archive (name);
 
 	  /* real_name might be NULL, but then module error is already set */
-	  g_free (name);
-	  name = real_name;
+	  if (real_name)
+	    {
+	      g_free (name);
+	      name = real_name;
+            }
 	}
       if (name)
 	handle = _g_module_open (name, (flags & G_MODULE_BIND_LAZY) != 0,
