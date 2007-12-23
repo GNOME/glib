@@ -1934,7 +1934,7 @@ g_key_file_set_boolean (GKeyFile    *key_file,
  * @error: return location for a #GError
  *
  * Returns the values associated with @key under @group_name as
- * booleans. If @group_name is %NULL, the start_group is used.
+ * booleans. 
  *
  * If @key cannot be found then %NULL is returned and @error is set to
  * #G_KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the values associated
@@ -2053,7 +2053,7 @@ g_key_file_set_boolean_list (GKeyFile    *key_file,
  * @error: return location for a #GError
  *
  * Returns the value associated with @key under @group_name as an
- * integer. If @group_name is %NULL, the start group is used.
+ * integer. 
  *
  * If @key cannot be found then 0 is returned and @error is set to
  * #G_KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the value associated
@@ -2334,7 +2334,6 @@ g_key_file_get_double  (GKeyFile     *key_file,
  *
  * Associates a new double value with @key under @group_name.
  * If @key cannot be found then it is created. 
- * If @group_name is %NULL, the start group is used.
  *
  * Since: 2.12
  **/
@@ -2361,7 +2360,7 @@ g_key_file_set_double  (GKeyFile    *key_file,
  * @error: return location for a #GError
  *
  * Returns the values associated with @key under @group_name as
- * doubles. If @group_name is %NULL, the start group is used.
+ * doubles. 
  *
  * If @key cannot be found then %NULL is returned and @error is set to
  * #G_KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the values associated
@@ -2436,7 +2435,6 @@ g_key_file_get_double_list  (GKeyFile     *key_file,
  *
  * Associates a list of double values with @key under
  * @group_name.  If @key cannot be found then it is created.
- * If @group_name is %NULL the start group is used.
  *
  * Since: 2.12
  **/

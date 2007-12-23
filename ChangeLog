@@ -1,3 +1,8 @@
+2007-12-22  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gkeyfile.c: Remove wrong documentation about start group
+	handling.  (#476856, Areg Beketovski)
+
 2007-12-21 18:02:30  Tim Janik  <timj@imendio.com>
 
 	* glib/Makefile.am: use "sed -i.bak <CMD> <FILE> && rm -f <FILE>.bak"
