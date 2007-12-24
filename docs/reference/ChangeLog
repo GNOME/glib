@@ -1,3 +1,8 @@
+2007-12-24  Benjamin Otte  <otte@gnome.org>
+
+	* glib/tmpl/timers.sgml: Add a warning about g_thread_init
+	invalidating timers. (#491218)
+
 2007-12-24  Mathias Hasselmann  <mathias@openismus.com>
 
 	Fix typo in g_try_new0 docs (#505195, Felix Riemann).

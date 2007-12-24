@@ -71,6 +71,9 @@ started. If @timer has been stopped, obtains the elapsed time between the time
 it was started and the time it was stopped. The return value is the number of
 seconds elapsed, including any fractional part. The @microseconds
 out parameter is essentially useless.
+<warning><para>Calling initialization functions, in particular g_thread_init(),
+while a timer is running will cause invalid return values from this function.
+</para></warning>
 </para>
 
 @timer: a #GTimer.
