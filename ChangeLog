@@ -1,4 +1,4 @@
-2007-12-18  Mathias Hasselmann  <mathias@openismus.com>
+2007-12-22  Mathias Hasselmann  <mathias@openismus.com>
 
 	Do not show empty groups in --help output. Initial patch from Yevgen
 	Muntyan. (#504142)
