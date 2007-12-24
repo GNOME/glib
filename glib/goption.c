@@ -520,6 +520,45 @@ print_entry (GOptionGroup       *group,
   g_string_free (str, TRUE);  
 }
 
+static gboolean
+group_has_visible_entries (GOptionGroup *group,
+                           gboolean      main_entries)
+{
+  GOptionFlags reject_filter = G_OPTION_FLAG_HIDDEN;
+  GOptionEntry *entry;
+  gint i, l;
+
+  if (!main_entries)
+    reject_filter |= G_OPTION_FLAG_IN_MAIN;
+
+  for (i = 0, l = (group ? group->n_entries : 0); i < l; i++)
+    {
+      entry = &group->entries[i];
+
+      if (main_entries && !(entry->flags & G_OPTION_FLAG_IN_MAIN))
+        continue;
+      if (!(entry->flags & reject_filter))
+        return TRUE;
+    }
+
+  return FALSE;
+}
+
+static gboolean
+group_list_has_visible_entires (GList    *group_list,
+                                gboolean  main_entries)
+{
+  while (group_list)
+    {
+      if (group_has_visible_entries (group_list->data, main_entries))
+        return TRUE;
+
+      group_list = group_list->next;
+    }
+
+  return FALSE;
+}
+
 /**
  * g_option_context_get_help: 
  * @context: a #GOptionContext
@@ -686,10 +725,11 @@ g_option_context_get_help (GOptionContext *context,
       while (list)
 	{
 	  GOptionGroup *group = list->data;
-	  
-	  g_string_append_printf (string, "  --help-%-*s %s\n", 
-                                  max_length - 5, group->name, 
-		                  TRANSLATE (group, group->help_description));
+
+	  if (group_has_visible_entries (group, FALSE))
+	    g_string_append_printf (string, "  --help-%-*s %s\n",
+				    max_length - 5, group->name,
+				    TRANSLATE (group, group->help_description));
 	  
 	  list = list->next;
 	}
@@ -700,12 +740,15 @@ g_option_context_get_help (GOptionContext *context,
   if (group)
     {
       /* Print a certain group */
-      
-      g_string_append (string, TRANSLATE (group, group->description));
-      g_string_append (string, "\n");
-      for (i = 0; i < group->n_entries; i++)
-	print_entry (group, max_length, &group->entries[i], string);
-      g_string_append (string, "\n");
+
+      if (group_has_visible_entries (group, FALSE))
+        {
+          g_string_append (string, TRANSLATE (group, group->description));
+          g_string_append (string, "\n");
+          for (i = 0; i < group->n_entries; i++)
+            print_entry (group, max_length, &group->entries[i], string);
+          g_string_append (string, "\n");
+        }
     }
   else if (!main_help)
     {
@@ -717,19 +760,25 @@ g_option_context_get_help (GOptionContext *context,
 	{
 	  GOptionGroup *group = list->data;
 
-	  g_string_append (string, group->description);
-          g_string_append (string, "\n");
-	  for (i = 0; i < group->n_entries; i++)
-	    if (!(group->entries[i].flags & G_OPTION_FLAG_IN_MAIN))
-	      print_entry (group, max_length, &group->entries[i], string);
+	  if (group_has_visible_entries (group, FALSE))
+	    {
+	      g_string_append (string, group->description);
+	      g_string_append (string, "\n");
+	      for (i = 0; i < group->n_entries; i++)
+		if (!(group->entries[i].flags & G_OPTION_FLAG_IN_MAIN))
+		  print_entry (group, max_length, &group->entries[i], string);
 	  
-	  g_string_append (string, "\n");
+	      g_string_append (string, "\n");
+	    }
+
 	  list = list->next;
 	}
     }
   
   /* Print application options if --help or --help-all has been specified */
-  if (main_help || !group)
+  if ((main_help || !group) &&
+      (group_has_visible_entries (context->main_group, TRUE) ||
+       group_list_has_visible_entires (context->groups, TRUE)))
     {
       list = context->groups;
 

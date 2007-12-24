@@ -1,3 +1,12 @@
+2007-12-18  Mathias Hasselmann  <mathias@openismus.com>
+
+	Do not show empty groups in --help output. Initial patch from Yevgen
+	Muntyan. (#504142)
+
+	* glib/goption.c: Do not show empty groups in --help output.
+	* glib/tests/Makefile.am: Add option-context.c
+	* glib/tests/option-context.c: Test skipping of empty groups.
+
 2007-12-22  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gkeyfile.c: Remove wrong documentation about start group
