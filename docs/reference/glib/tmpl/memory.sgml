@@ -101,7 +101,7 @@ Attempts to allocate @n_structs elements of type @struct_type, initialized
 to 0's, and returns %NULL on failure. Contrast with g_new0(), which aborts 
 the program on failure.
 The returned pointer is cast to a pointer to the given type.
-If @n_counts is 0 it returns %NULL.
+The function returns %NULL when @n_structs is 0.
 </para>
 
 @struct_type: the type of the elements to allocate

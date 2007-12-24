@@ -1,3 +1,10 @@
+2007-12-24  Mathias Hasselmann  <mathias@openismus.com>
+
+	Fix typo in g_try_new0 docs (#505195, Felix Riemann).
+
+	* docs/reference/glib/tmpl/memory.sgml: Reference
+	n_structs, instead of non-existant n_counts argument.
+
 2007-12-22  Matthias Clasen  <mclasen@redhat.com>
 
 	* gobject/tmpl/gtypemodule.sgml: Fix a typo
