@@ -1,3 +1,7 @@
+2007-12-24  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gtestutils.c: Include sys/time.h.  (#505258)
+
 2007-12-22  Mathias Hasselmann  <mathias@openismus.com>
 
 	Do not show empty groups in --help output. Initial patch from Yevgen

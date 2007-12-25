@@ -23,6 +23,7 @@
 #include <sys/types.h>
 #ifdef G_OS_UNIX
 #include <sys/wait.h>
+#include <sys/time.h>
 #include <fcntl.h>
 #endif
 #include <string.h>
