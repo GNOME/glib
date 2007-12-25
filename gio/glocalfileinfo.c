@@ -906,10 +906,10 @@ set_info_from_stat (GFileInfo             *info,
   g_file_info_set_attribute_uint32 (info, G_FILE_ATTRIBUTE_UNIX_UID, statbuf->st_uid);
   g_file_info_set_attribute_uint32 (info, G_FILE_ATTRIBUTE_UNIX_GID, statbuf->st_gid);
   g_file_info_set_attribute_uint32 (info, G_FILE_ATTRIBUTE_UNIX_RDEV, statbuf->st_rdev);
-#if defined (HAVE_STRUCT_STAT_BLKSIZE)
+#if defined (HAVE_STRUCT_STAT_ST_BLKSIZE)
   g_file_info_set_attribute_uint32 (info, G_FILE_ATTRIBUTE_UNIX_BLOCK_SIZE, statbuf->st_blksize);
 #endif
-#if defined (HAVE_STRUCT_STAT_BLOCKS)
+#if defined (HAVE_STRUCT_STAT_ST_BLOCKS)
   g_file_info_set_attribute_uint64 (info, G_FILE_ATTRIBUTE_UNIX_BLOCKS, statbuf->st_blocks);
 #endif
   

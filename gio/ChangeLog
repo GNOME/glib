@@ -1,3 +1,8 @@
+2007-12-25  Paolo Borelli  <pborelli@katamail.com>
+
+	* glocalfileinfo.c (set_info_from_stat): fix typo in the ifdef
+	used to detect statbuf->st_blocks. (#505042)
+
 2007-12-24  Matthias Clasen  <mclasen@redhat.com>
 
 	* gdesktopappinfo.c (g_desktop_app_info_launch): Fix the
