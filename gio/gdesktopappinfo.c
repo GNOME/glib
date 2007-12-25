@@ -810,6 +810,16 @@ dup_list_segment (GList *start,
   return g_list_reverse (res);
 }
 
+#ifdef HAVE__NSGETENVIRON
+#define environ (*_NSGetEnviron())
+#elif !defined(G_OS_WIN32)
+
+/* According to the Single Unix Specification, environ is not in 
+ *  * any system header, although unistd.h often declares it.
+ *   */
+extern char **environ;
+#endif
+
 static gboolean
 g_desktop_app_info_launch (GAppInfo           *appinfo,
 			   GList              *files,
@@ -862,7 +872,12 @@ g_desktop_app_info_launch (GAppInfo           *appinfo,
 	  
 	  if (display || sn_id)
 	    {
-	      envp = g_listenv ();
+#ifdef G_OS_WIN32
+	      /* FIXME */
+	      envp = g_new0 (char *, 1);
+#else
+	      envp = g_strdupv (environ);
+#endif
 	      
 	      if (display)
 		envp = replace_env_var (envp,
