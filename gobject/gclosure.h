@@ -32,7 +32,7 @@ G_BEGIN_DECLS
 #define	G_CLOSURE_NEEDS_MARSHAL(closure) (((GClosure*) (closure))->marshal == NULL)
 #define	G_CLOSURE_N_NOTIFIERS(cl)	 ((cl)->meta_marshal + ((cl)->n_guards << 1L) + \
                                           (cl)->n_fnotifiers + (cl)->n_inotifiers)
-#define	G_CCLOSURE_SWAP_DATA(cclosure)	 (((GClosure*) (closure))->derivative_flag)
+#define	G_CCLOSURE_SWAP_DATA(cclosure)	 (((GClosure*) (cclosure))->derivative_flag)
 #define	G_CALLBACK(f)			 ((GCallback) (f))
 
 
