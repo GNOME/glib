@@ -854,7 +854,7 @@ g_content_types_get_registered (void)
   int i;
   GList *l;
 
-  mimetypes = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
+  mimetypes = g_hash_table_new (g_str_hash, g_str_equal);
 
   enumerate_mimetypes_dir (g_get_user_data_dir (), mimetypes);
   dirs = g_get_system_data_dirs ();

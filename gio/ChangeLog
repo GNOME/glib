@@ -1,3 +1,8 @@
+2007-12-26  Matthias Clasen  <mclasen@redhat.com> 
+
+	* gcontenttype.c (g_content_types_get_registered): Don't return
+	freed memory (#505815, Mikael Hermansson)
+
 2007-12-25  Paolo Borelli  <pborelli@katamail.com>
 
 	* glocalfileinfo.c (set_info_from_stat): fix typo in the ifdef
