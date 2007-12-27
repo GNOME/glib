@@ -1,5 +1,10 @@
 2007-12-26  Matthias Clasen  <mclasen@redhat.com> 
 
+	* gdesktopappinfo.c: Include crt_externs.h.  (#505730,
+	Tommi Komulainen)
+
+2007-12-26  Matthias Clasen  <mclasen@redhat.com> 
+
 	* gcontenttype.c (g_content_types_get_registered): Don't return
 	freed memory (#505815, Mikael Hermansson)
 

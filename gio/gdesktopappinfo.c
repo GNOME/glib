@@ -28,6 +28,10 @@
 #include <unistd.h>
 #include <sys/wait.h>
 
+#ifdef HAVE_CRT_EXTERNS_H
+#include <crt_externs.h>
+#endif
+
 #include "gcontenttypeprivate.h"
 #include "gdesktopappinfo.h"
 #include "gioerror.h"
