@@ -87,6 +87,12 @@ function will thus only affect the child, not the parent.
 </para>
 
 <para>
+Note that POSIX allows only async-signal-safe functions (see signal(7)) 
+to be called in the child between fork() and exec(), which drastically 
+limits the usefulness of child setup functions. 
+</para>
+
+<para>
 On Windows the function is called in the parent. Its usefulness on
 Windows is thus questionable. In many cases executing the child setup
 function in the parent can have ill effects, and you should be very
