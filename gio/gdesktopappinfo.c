@@ -60,6 +60,11 @@ static void g_desktop_app_info_iface_init (GAppInfoIface *iface);
 static GList *get_all_desktop_entries_for_mime_type (const char *base_mime_type);
 static void mime_info_cache_reload (const char *dir);
 
+/**
+ * GDesktopAppInfo:
+ * 
+ * Information about an installed application from a desktop file.
+ */
 struct _GDesktopAppInfo
 {
   GObject parent_instance;

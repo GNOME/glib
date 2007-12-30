@@ -43,7 +43,7 @@ G_BEGIN_DECLS
  * @G_FILE_ATTRIBUTE_TYPE_INT64: a signed 8-byte/64-bit integer.
  * @G_FILE_ATTRIBUTE_TYPE_OBJECT: a #GObject.
  * 
- * The data type for #GFileAttributeValue<!-- -->s. 
+ * The data types for file attributes.
  **/ 
 typedef enum {
   G_FILE_ATTRIBUTE_TYPE_INVALID = 0,

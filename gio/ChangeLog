@@ -1,5 +1,6 @@
 2007-12-30  Matthias Clasen  <mclasen@redhat.com> 
 
+	* gdesktopappinfo.c:
 	* gvolumemonitor.c: 
 	* gfileinfo.c: Documentation updates.
 
