@@ -17,13 +17,14 @@ HFILE_GLOB=$(top_srcdir)/gio/*.h
 CFILE_GLOB=$(top_srcdir)/gio/*.c
 
 # Headers to ignore
-IGNORE_HFILES= 		           \
+IGNORE_HFILES=				\
 	fam-helper.h			\
 	gasynchelper.h			\
 	gcontenttypeprivate.h		\
 	gdummyfile.h			\
 	gfamdirectorymonitor.h		\
 	gfamfilemonitor.h		\
+	gfileattribute-priv.h		\
 	ginotifydirectorymonitor.h	\
 	ginotifyfilemonitor.h		\
 	gio-marshal.h			\
