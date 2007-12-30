@@ -36,6 +36,11 @@
  * @include: gio.h
  * @see_also: #GInputStream, #GDataInputStream, #GSeekable
  *
+ * GFileInputStream provides input streams that take their
+ * content from a file.
+ *
+ * GFileInputStream implements #GSeekable, which allows 
+ * the input stream to jump to arbitrary positions in the file.
  **/
 
 static void       g_file_input_stream_seekable_iface_init    (GSeekableIface       *iface);

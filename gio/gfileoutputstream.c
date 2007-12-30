@@ -36,7 +36,11 @@
  * @include: gio.h
  * @see_also: #GOutputStream, #GDataOutputStream, #GSeekable
  * 
+ * GFileOutputStream provides output streams that write their
+ * content to a file.
  *
+ * GFileOutputStream implements #GSeekable, which allows
+ * the output stream to jump to arbitrary positions in the file.
  **/
 
 static void       g_file_output_stream_seekable_iface_init    (GSeekableIface       *iface);
