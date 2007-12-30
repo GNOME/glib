@@ -1808,6 +1808,14 @@ g_unix_mount_point_guess_icon (GUnixMountPoint *mount_point)
   return g_themed_icon_new (type_to_icon (g_unix_mount_point_guess_type (mount_point), TRUE));
 }
 
+/**
+ * g_unix_mount_guess_can_eject:
+ * @mount_entry: a #GUnixMountEntry
+ * 
+ * Guesses whether a Unix mount can be ejected.
+ *
+ * Returns: %TRUE if @mount_entry is deemed to be ejectable.
+ */
 gboolean
 g_unix_mount_guess_can_eject (GUnixMountEntry *mount_entry)
 {
@@ -1821,6 +1829,14 @@ g_unix_mount_guess_can_eject (GUnixMountEntry *mount_entry)
   return FALSE;
 }
 
+/**
+ * g_unix_mount_point_guess_can_eject:
+ * @mount_point: a #GUnixMountPoint
+ * 
+ * Guesses whether a Unix mount point can be ejected.
+ *
+ * Returns: %TRUE if @mount_point is deemed to be ejectable.
+ */
 gboolean
 g_unix_mount_point_guess_can_eject (GUnixMountPoint *mount_point)
 {

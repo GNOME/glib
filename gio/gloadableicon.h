@@ -41,7 +41,8 @@ G_BEGIN_DECLS
 /**
  * GLoadableIcon:
  * 
- * Generic interface for all kinds of icons that can be loaded as a stream to an image file.
+ * Generic type for all kinds of icons that can be loaded 
+ * as a stream.
  **/
 typedef struct _GLoadableIcon         		GLoadableIcon; /* Dummy typedef */
 typedef struct _GLoadableIconIface    		GLoadableIconIface;
@@ -53,6 +54,7 @@ typedef struct _GLoadableIconIface    		GLoadableIconIface;
  * @load_async: Loads an icon asynchronously.
  * @load_finish: Finishes an asynchronous icon load.
  * 
+ * Interface for icons that can be loaded as a stream.
  **/
 struct _GLoadableIconIface
 {
