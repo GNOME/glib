@@ -447,8 +447,8 @@ g_file_info_find_value_by_name (GFileInfo  *info,
  * 
  * Checks if a file info structure has an attribute named @attribute.
  * 
- * Returns: %TRUE if @GFileInfo has an attribute named @attribute, 
- * %FALSE otherwise.
+ * Returns: %TRUE if @Ginfo has an attribute named @attribute, 
+ *     %FALSE otherwise.
  **/
 gboolean
 g_file_info_has_attribute (GFileInfo  *info,
@@ -533,7 +533,6 @@ g_file_info_get_attribute_type (GFileInfo  *info,
  * @attribute: a file attribute key.
  * 
  * Removes all cases of @attribute from @info if it exists.
- *
  **/
 void
 g_file_info_remove_attribute (GFileInfo  *info,
@@ -558,11 +557,24 @@ g_file_info_remove_attribute (GFileInfo  *info,
     }
 }
 
+/**
+ * g_file_info_get_attribute_data:
+ * @info: a #GFileInfo
+ * @attribute: a file attribute key
+ * @type: return location for the attribute type, or %NULL
+ * @value_pp: return location for the attribute value, or %NULL
+ * @status: return location for the attribute status, or %NULL
+ *
+ * Gets the attribute type, value and status for an attribute key.
+ *
+ * Returns: %TRUE if @info has an attribute named @attribute, 
+ *      %FALSE otherwise.
+ */
 gboolean
-g_file_info_get_attribute_data (GFileInfo  *info,
-				const char *attribute,
-				GFileAttributeType *type,
-				gpointer   *value_pp,
+g_file_info_get_attribute_data (GFileInfo            *info,
+				const char           *attribute,
+				GFileAttributeType   *type,
+				gpointer             *value_pp,
 				GFileAttributeStatus *status)
 {
   GFileAttributeValue *value;
@@ -583,6 +595,17 @@ g_file_info_get_attribute_data (GFileInfo  *info,
   return TRUE;
 }
 
+/** 
+ * g_file_info_get_attribute_status:
+ * @info: a #GFileInfo
+ * @attribute: a file attribute key
+ *
+ * Gets the attribute status for an attribute key.
+ *
+ * Returns: a #GFileAttributeStatus for the given @attribute, or 
+ *    %G_FILE_ATTRIBUTE_STATUS_UNSET if the key is invalid.
+ *
+ */
 GFileAttributeStatus
 g_file_info_get_attribute_status (GFileInfo  *info,
 				  const char *attribute)
@@ -596,7 +619,7 @@ g_file_info_get_attribute_status (GFileInfo  *info,
   if (val)
     return val->status;
 
-  return 0;
+  return G_FILE_ATTRIBUTE_STATUS_UNSET;
 }
 
 
@@ -620,8 +643,8 @@ _g_file_info_get_attribute_value (GFileInfo  *info,
  * This escapes things as needed to make the string valid
  * utf8.
  * 
- * Returns: a utf8 string associated with the given @attribute.
- *    When you're done with the string it must be freed.
+ * Returns: a UTF-8 string associated with the given @attribute.
+ *    When you're done with the string it must be freed with g_free().
  **/
 char *
 g_file_info_get_attribute_as_string (GFileInfo  *info,
