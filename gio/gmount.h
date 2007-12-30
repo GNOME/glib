@@ -72,6 +72,8 @@ typedef struct _GMountIface    GMountIface;
  * @unmount_finish: Finishes an unmounting operation.
  * @eject: Starts ejecting a #GMount.
  * @eject_finish: Finishes an eject operation.
+ * @remount: Starts remounting a #GMount.
+ * @remount_finish: Finishes a remounting operation.
  * 
  * Interface for implementing operations for mounts.
  **/
