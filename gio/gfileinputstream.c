@@ -39,8 +39,14 @@
  * GFileInputStream provides input streams that take their
  * content from a file.
  *
- * GFileInputStream implements #GSeekable, which allows 
- * the input stream to jump to arbitrary positions in the file.
+ * GFileInputStream implements #GSeekable, which allows the input 
+ * stream to jump to arbitrary positions in the file, provided the 
+ * filesystem of the file allows it. In addition to the generic 
+ * g_seekable_ API, GFileInputStream has its own API for seeking 
+ * and positioning. To find the position of a file input stream, 
+ * use g_file_input_stream_tell(). To find out if a file input 
+ * stream supports seeking, use g_file_input_stream_can_seek().
+ * To position a file input stream, use g_file_input_stream_seek().
  **/
 
 static void       g_file_input_stream_seekable_iface_init    (GSeekableIface       *iface);
