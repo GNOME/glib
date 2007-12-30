@@ -1,5 +1,6 @@
 2007-12-30  Matthias Clasen  <mclasen@redhat.com> 
 
+	* gvolumemonitor.c: 
 	* gfileinfo.c: Documentation updates.
 
 2007-12-26  Matthias Clasen  <mclasen@redhat.com> 

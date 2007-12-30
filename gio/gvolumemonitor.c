@@ -294,6 +294,7 @@ g_volume_monitor_get_mounts (GVolumeMonitor *volume_monitor)
 /**
  * g_volume_monitor_get_volume_for_uuid:
  * @volume_monitor: a #GVolumeMonitor.
+ * @uuid: the UUID to look for
  * 
  * Finds a #GVolume object by it's UUID (see g_volume_get_uuid())
  * 
@@ -316,6 +317,7 @@ g_volume_monitor_get_volume_for_uuid   (GVolumeMonitor *volume_monitor,
 /**
  * g_volume_monitor_get_mount_for_uuid:
  * @volume_monitor: a #GVolumeMonitor.
+ * @uuid: the UUID to look for
  * 
  * Finds a #GMount object by it's UUID (see g_mount_get_uuid())
  * 
