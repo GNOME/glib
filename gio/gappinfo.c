@@ -514,7 +514,7 @@ G_DEFINE_TYPE (GAppLaunchContext, g_app_launch_context, G_TYPE_OBJECT);
  * g_app_launch_context_new:
  * 
  * Creates a new application launch context. This is not normally used,
- * instead you instantiate a subclass of this, such as GdkLaunchContext.
+ * instead you instantiate a subclass of this, such as #GdkAppLaunchContext.
  *
  * Returns: a #GAppLaunchContext.
  **/
