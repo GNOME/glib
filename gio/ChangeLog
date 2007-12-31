@@ -1,5 +1,11 @@
 2007-12-30  Matthias Clasen  <mclasen@redhat.com> 
 
+	* fam/Makefile.am:
+	* inotify/Makefile.am: Use GLIB_DEBUG_FLAGS. This should
+	fix builds with --disable-visibility.  (#500273, Christian Persch)
+
+2007-12-30  Matthias Clasen  <mclasen@redhat.com> 
+
 	* gdesktopfileinfo.c (g_app_info_get_all): Don't include NULLs
 	in the list of returned app infos.
 
