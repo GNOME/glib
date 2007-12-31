@@ -24,11 +24,20 @@
  * SECTION:gfileinfo
  * @short_description: File Information and Attributes
  * @include: gio.h
- * @see_also: #GFile
+ * @see_also: #GFile, <link linkend="gio-GFileAttribute">GFileAttribute</link>
  * 
  * Functionality for manipulating basic metadata for files. #GFileInfo
  * implements methods for getting information that all files should 
  * contain, and allows for manipulation of extended attributes. 
+ *
+ * See <link linkend="gio-GFileAttribute">GFileAttribute</link> for more
+ * information on how GIO handles file attributes.
+ *
+ * To obtain a #GFileInfo for a #GFile, use g_file_query_info() (or its 
+ * async variant). To obtain a #GFileInfo for a file input or output 
+ * stream, use g_file_input_stream_query_info() or 
+ * g_file_output_stream_query_info() (or their async variants).
+ *
  * #GFileAttributeMatcher allows for searching through a #GFileInfo for 
  * attributes.
  **/

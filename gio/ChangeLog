@@ -1,5 +1,9 @@
 2007-12-30  Matthias Clasen  <mclasen@redhat.com> 
 
+	* gfileinfo.c: Expand the long description.
+
+2007-12-30  Matthias Clasen  <mclasen@redhat.com> 
+
 	* fam/Makefile.am:
 	* inotify/Makefile.am: Use GLIB_DEBUG_FLAGS. This should
 	fix builds with --disable-visibility.  (#500273, Christian Persch)
