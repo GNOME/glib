@@ -1,5 +1,10 @@
 2007-12-30  Matthias Clasen  <mclasen@redhat.com> 
 
+	* gdesktopfileinfo.c (g_app_info_get_all): Don't include NULLs
+	in the list of returned app infos.
+
+2007-12-30  Matthias Clasen  <mclasen@redhat.com> 
+
 	* gappinfo.c: Fix a cross-reference
 
 2007-12-30  Matthias Clasen  <mclasen@redhat.com> 

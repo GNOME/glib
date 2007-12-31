@@ -1722,7 +1722,10 @@ g_app_info_get_all (void)
   infos = NULL;
   g_hash_table_iter_init (&iter, apps);
   while (g_hash_table_iter_next (&iter, NULL, &value))
-    infos = g_list_prepend (infos, value);
+    {
+      if (value)
+        infos = g_list_prepend (infos, value);
+    }
 
   g_hash_table_destroy (apps);
 
