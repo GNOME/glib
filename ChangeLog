@@ -1,5 +1,11 @@
 2007-12-24  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gtestutils.h:
+	* glib/glib.symbols: Mark assertion functions as G_GNUC_NORETURN.
+	(#506461, Sebastian Dröge)
+
+2007-12-24  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/gtestutils.c: Include sys/time.h.  (#505258)
 
 2007-12-22  Mathias Hasselmann  <mathias@openismus.com>

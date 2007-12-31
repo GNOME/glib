@@ -166,12 +166,12 @@ void    g_assertion_message             (const char     *domain,
                                          const char     *file,
                                          int             line,
                                          const char     *func,
-                                         const char     *message);
+                                         const char     *message) G_GNUC_NORETURN;
 void    g_assertion_message_expr        (const char     *domain,
                                          const char     *file,
                                          int             line,
                                          const char     *func,
-                                         const char     *expr);
+                                         const char     *expr) G_GNUC_NORETURN;
 void    g_assertion_message_cmpstr      (const char     *domain,
                                          const char     *file,
                                          int             line,
@@ -179,7 +179,7 @@ void    g_assertion_message_cmpstr      (const char     *domain,
                                          const char     *expr,
                                          const char     *arg1,
                                          const char     *cmp,
-                                         const char     *arg2);
+                                         const char     *arg2) G_GNUC_NORETURN;
 void    g_assertion_message_cmpnum      (const char     *domain,
                                          const char     *file,
                                          int             line,
@@ -188,7 +188,7 @@ void    g_assertion_message_cmpnum      (const char     *domain,
                                          long double     arg1,
                                          const char     *cmp,
                                          long double     arg2,
-                                         char            numtype);
+                                         char            numtype) G_GNUC_NORETURN;
 void    g_test_add_vtable               (const char     *testpath,
                                          gsize           data_size,
                                          gconstpointer   test_data,

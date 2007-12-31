@@ -1278,10 +1278,10 @@ g_thread_pool_set_sort_function
 
 #if IN_HEADER(__G_TEST_UTILS_H__)
 #if IN_FILE(__G_TEST_UTILS_C__)
-g_assertion_message
-g_assertion_message_cmpnum
-g_assertion_message_cmpstr
-g_assertion_message_expr
+g_assertion_message G_GNUC_NORETURN
+g_assertion_message_cmpnum G_GNUC_NORETURN
+g_assertion_message_cmpstr G_GNUC_NORETURN
+g_assertion_message_expr G_GNUC_NORETURN
 g_strcmp0
 g_test_add_data_func
 g_test_add_func
