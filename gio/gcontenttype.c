@@ -840,8 +840,8 @@ enumerate_mimetypes_dir (const char *dir,
  * g_content_types_get_registered:
  * 
  * Gets a list of strings containing all the registered content types
- * known to the system.
- * 
+ * known to the system. The list and its data should be freed using 
+ * @g_list_foreach(list, g_free, NULL) and @g_list_free(list)
  * Returns: #GList of the registered content types.
  **/  
 GList *

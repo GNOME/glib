@@ -1,3 +1,14 @@
+2007-12-31  Mathias Hasselmann  <mathias@openismus.com>
+
+	Updates to GIO documentation. (#506395, Mikael Hermansson)
+
+	* gcontenttype.c: Describe memory management for return value of
+	g_content_types_get_registered(). Missing piece from #505815.
+	* gdrive.c, gmount.c, gvolumemonitor.c: Add more description to
+	GVolume, GDrive, GMounts, which hopefully gives the user less
+	confusions when using this API. Following explainations from
+	Alexander Larsson on gtk-devel-list.
+
 2007-12-30  Matthias Clasen  <mclasen@redhat.com> 
 
 	* gfileinfo.c: Expand the long description.

@@ -33,6 +33,10 @@
  * @short_description: Virtual File System drive management
  * @include: gio.h
  * 
+ * #GDrive - this represent a piece of hardware connected to the machine.
+ * Its generally only created for removable hardware or hardware with
+ * removable media. 
+ *
  * #GDrive is a container class for #GVolume objects that stem from
  * the same piece of media. As such, #GDrive abstracts a drive with
  * (or without) removable media and provides operations for querying

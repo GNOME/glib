@@ -38,9 +38,15 @@
  * SECTION:gmount
  * @short_description: Mount management
  * @include: gio.h
- * 
+ * @see also: GVolume, GUnixMount
+ *
  * The #GMount interface represents user-visible mounts. Note, when 
  * porting from GnomeVFS, #GMount is the moral equivalent of #GnomeVFSVolume.
+ *
+ * #GMount is a "mounted" filesystem that you can access. Mounted is in
+ * quotes because its not the same as a unix mount, it might be a gvfs
+ * mount, but you can still access the files on it if you use GIO. Might or
+ * might not be related to a volume object.
  * 
  * Unmounting a #GMount instance is an asynchronous operation. For
  * more information about asynchronous operations, see #GAsyncReady

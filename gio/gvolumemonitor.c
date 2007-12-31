@@ -33,8 +33,10 @@
  * @include: gio.h
  * @see_also: #GDirectoryMonitor, #GFileMonitor
  * 
- * Monitors a mounted volume for changes.
- **/
+ * #GVolumeMonitor is for listing the user interesting devices and volumes
+ * on the computer. In other words, what a file selector or file manager
+ * would show in a sidebar. 
+**/
 
 G_DEFINE_TYPE (GVolumeMonitor, g_volume_monitor, G_TYPE_OBJECT);
 
