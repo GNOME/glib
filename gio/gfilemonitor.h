@@ -47,7 +47,7 @@ G_BEGIN_DECLS
  * @G_FILE_MONITOR_EVENT_CREATED: a file was created.
  * @G_FILE_MONITOR_EVENT_ATTRIBUTE_CHANGED: a file attribute was changed.
  * @G_FILE_MONITOR_EVENT_PRE_UNMOUNT: the file location will soon be unmounted.
- * @G_FILE_MONITOR_EVENT_UNMOUNTED: the file location was be unmounted.
+ * @G_FILE_MONITOR_EVENT_UNMOUNTED: the file location was unmounted.
  * 
  * Specifies what type of event a monitor event is.
  **/
