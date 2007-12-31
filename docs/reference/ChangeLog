@@ -1,3 +1,7 @@
+2007-12-31  Wouter Bolsterlee  <wbolster@svn.gnome.org>
+
+	* glib/tmpl/macros_misc.sgml: Fixed typo
+
 2007-12-30  Matthias Clasen  <mclasen@redhat.com>
 
 	* gio/Makefile.am:
@@ -30,8 +34,8 @@
 
 2007-12-19  Alexander Larsson  <alexl@redhat.com>
 
-        * gio/migrating.xml:
-        * gio/overview.xml:
+	* gio/migrating.xml:
+	* gio/overview.xml:
 	Some minor fixes and additions.
 	
 2007-12-17  Matthias Clasen <mclasen@redhat.com>
@@ -71,10 +75,10 @@
 
 2007-12-10  Alexander Larsson  <alexl@redhat.com>
 
-        * gio/Makefile.am:
+	* gio/Makefile.am:
 	Remove more internal headers.
 	
-        * gio/gio-sections.txt:
+	* gio/gio-sections.txt:
 	Update for changes
 
 2007-12-10  Matthias Clasen  <mclasen@redhat.com>
@@ -123,12 +127,12 @@
 
 2007-11-26  Alexander Larsson  <alexl@redhat.com>
 
-        * Makefile.am:
-        * gio/Makefile.am:
-        * gio/gio-docs.xml:
-        * gio/gio-sections.txt:
-        * gio/gio.types:
-        * gio/version.xml.in:
+	* Makefile.am:
+	* gio/Makefile.am:
+	* gio/gio-docs.xml:
+	* gio/gio-sections.txt:
+	* gio/gio.types:
+	* gio/version.xml.in:
 	Add gio docs
 
 2007-11-23  Matthias Clasen <mclasen@redhat.com>
@@ -1783,7 +1787,7 @@ Fri Feb 27 22:05:23 2004  Matthias Clasen  <maclas@gmx.de>
 
 2004-02-26  Sebastian Wilhelmi  <seppi@seppi.de>
 
-        * glib/tmpl/threads.sgml: Updated to reflect removal of the PID
+	* glib/tmpl/threads.sgml: Updated to reflect removal of the PID
 	niceness surrogate for thread priorities.
 
 	* glib/glib-overrides.txt, glib/glib-sections.txt,
@@ -2502,7 +2506,7 @@ Sat May 18 00:44:35 2002  Tim Janik  <timj@gtk.org>
 
 	[merged from stable]
 
-        * glib/tmpl/scanner.sgml: fix documentation for g_scanner_unexp_token().
+	* glib/tmpl/scanner.sgml: fix documentation for g_scanner_unexp_token().
 
 2002-05-01  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
@@ -2621,7 +2625,7 @@ Wed Dec 19 23:07:53 2001  Owen Taylor  <otaylor@redhat.com>
 
 2001-12-13  Matthias Clasen  <matthiasc@poet.de>
 
-        * glib/tmpl/completion.sgml, glib/tmpl/date.sgml,
+	* glib/tmpl/completion.sgml, glib/tmpl/date.sgml,
 	glib/tmpl/fileutils.sgml, glib/tmpl/iochannels.sgml,
 	glib/tmpl/macros.sgml, glib/tmpl/memory.sgml,
 	glib/tmpl/misc_utils.sgml, glib/tmpl/warnings.sgml,
@@ -3144,7 +3148,7 @@ Fri Jan  5 15:47:10 2001  Owen Taylor  <otaylor@redhat.com>
 	
 Tue Dec  5 15:41:23 2000  Owen Taylor  <otaylor@redhat.com>
 
-        * glib/Makefile.am glib/mainloop-states*: add images
+	* glib/Makefile.am glib/mainloop-states*: add images
 
 	* glib/glib-sections.txt: Updated
 
@@ -3153,7 +3157,7 @@ Tue Dec  5 15:41:23 2000  Owen Taylor  <otaylor@redhat.com>
 
 Mon Nov 13 00:18:55 2000  Owen Taylor  <otaylor@redhat.com>
 
-        * glib/glib-sections.sgml: Move conversion functions
+	* glib/glib-sections.sgml: Move conversion functions
 	into GConv section.
 	
 	* gobject/gobject-docs.sgml: Fix some malformed sgml.
@@ -3182,7 +3186,7 @@ Sun Nov  5 13:24:50 2000  Owen Taylor  <otaylor@redhat.com>
 
 2000-11-05  Havoc Pennington  <hp@pobox.com>
 
-        * glib/tmpl/spawn.sgml, glib/tmpl/markup.sgml,
+	* glib/tmpl/spawn.sgml, glib/tmpl/markup.sgml,
 	glib/tmpl/fileutils.sgml: Added
 	
 	* glib/Makefile.am: Add new files
@@ -3288,7 +3292,7 @@ Mon Oct 30 06:01:43 2000  Tim Janik  <timj@gtk.org>
 
 Thu Sep  7 12:35:35 2000  Owen Taylor  <otaylor@redhat.com>
 
-        * Some further makefile improvement.
+	* Some further makefile improvement.
 	 
 	* Restore all the docs that mysteriously vanished earlier.
 
@@ -3338,7 +3342,7 @@ Tue Sep  5 20:03:25 2000  Owen Taylor  <otaylor@redhat.com>
 2000-01-25  Damon Chaplin  <damon@karuna.freeserve.co.uk>
 
 	* tmpl/misc_utils.sgml: g_bit_nth_lsf/msf docs from 
-         Nils Rennebarth <nils@ipe.uni-stuttgart.de>, and updates for
+	Nils Rennebarth <nils@ipe.uni-stuttgart.de>, and updates for
 	GVoidFunc & GFreeFunc.
 
 1999-12-02  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
