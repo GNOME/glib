@@ -1,24 +1,21 @@
-# translation of oc.po to Occitan
+# Translation of oc.po to Occitan
 # Occitan translation of glib.
-# Copyright (C) 2001-2006, 2007 Free Software Foundation, Inc.
-# This file is distributed under the same license as the glib package.
+# Copyright (C) 2004,2007 Free Software Foundation, Inc.
+# This file is distributed under the same license as the Glom package.
 #
-# Yannig MARCHEGAY (yannig@marchegay.org) - 2006-2007
-#
-# Yannig Marchegay (Kokoyaya) <yannig@marchegay.org>, 2007.
+# Yannig Marchegay (Kokoyaya) <yannig@marchegay.org>, 2006-2008.
 msgid ""
 msgstr ""
 "Project-Id-Version: oc\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-20 10:49-0500\n"
-"PO-Revision-Date: 2007-11-20 14:30+0100\n"
+"POT-Creation-Date: 2007-12-27 13:29+0100\n"
+"PO-Revision-Date: 2007-12-27 15:18+0100\n"
 "Last-Translator: Yannig Marchegay (Kokoyaya) <yannig@marchegay.org>\n"
 "Language-Team: Occitan <ubuntu-l10n-oci@lists.ubuntu.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: KBabel 1.11.4\n"
 
 #: glib/gbookmarkfile.c:705 glib/gbookmarkfile.c:782 glib/gbookmarkfile.c:861
 #: glib/gbookmarkfile.c:908
@@ -240,23 +237,23 @@ msgstr ""
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%u octet"
+msgstr[1] "%u octets"
 
 #: glib/gfileutils.c:1834
 #, c-format
 msgid "%.1f KB"
-msgstr ""
+msgstr "%.1f ko"
 
 #: glib/gfileutils.c:1839
 #, c-format
 msgid "%.1f MB"
-msgstr ""
+msgstr "%.1f Mo"
 
 #: glib/gfileutils.c:1844
 #, c-format
 msgid "%.1f GB"
-msgstr ""
+msgstr "%.1f Go"
 
 #: glib/gfileutils.c:1887
 #, c-format
@@ -555,7 +552,7 @@ msgid "\\c at end of pattern"
 msgstr ""
 
 #: glib/gregex.c:205
-msgid "unrecognized character follows \\"
+msgid "unrecognized character follows \\""
 msgstr ""
 
 #: glib/gregex.c:212
@@ -1118,9 +1115,8 @@ msgid "Operation was cancelled"
 msgstr ""
 
 #: gio/gcontenttype.c:156
-#, fuzzy
 msgid "Unknown type"
-msgstr "Opcion %s desconeguda"
+msgstr "Tipe desconegut"
 
 #: gio/gcontenttype.c:157
 #, c-format
@@ -1139,7 +1135,7 @@ msgstr ""
 
 #: gio/gdesktopappinfo.c:386 gio/gwin32appinfo.c:222
 msgid "Unnamed"
-msgstr ""
+msgstr "Sens nom"
 
 #: gio/gdesktopappinfo.c:562
 #, c-format
@@ -1298,12 +1294,12 @@ msgid "Stream has outstanding operation"
 msgstr ""
 
 #: gio/glocalfile.c:554
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid filename %s"
 msgstr "Nom d'òste invalid"
 
 #: gio/glocalfile.c:810
-#, fuzzy, c-format
+#, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "Error de lectura del fichièr '%s' : %s"
 
@@ -1320,17 +1316,17 @@ msgstr ""
 #: gio/glocalfile.c:959 gio/glocalfile.c:1681 gio/glocalfile.c:1710
 #: gio/glocalfile.c:1842 gio/glocalfileoutputstream.c:451
 #: gio/glocalfileoutputstream.c:494 gio/glocalfileoutputstream.c:886
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid filename"
 msgstr "Nom d'òste invalid"
 
 #: gio/glocalfile.c:963
-#, fuzzy, c-format
+#, c-format
 msgid "Error renaming file: %s"
 msgstr "Error de lectura del fichièr '%s' : %s"
 
 #: gio/glocalfile.c:1080
-#, fuzzy, c-format
+#, c-format
 msgid "Error opening file: %s"
 msgstr "Error de lectura del fichièr '%s' : %s"
 
@@ -1340,17 +1336,17 @@ msgid "Can't open directory"
 msgstr ""
 
 #: gio/glocalfile.c:1142 gio/glocalfile.c:1685
-#, fuzzy, c-format
+#, c-format
 msgid "Error removing file: %s"
 msgstr "Error de lectura del fichièr '%s' : %s"
 
 #: gio/glocalfile.c:1434
-#, fuzzy, c-format
+#, c-format
 msgid "Error trashing file: %s"
 msgstr "Error de lectura del fichièr '%s' : %s"
 
 #: gio/glocalfile.c:1458
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "Impossible de crear lo fichièr '%s' : %s"
 
@@ -1365,12 +1361,12 @@ msgid "Unable to find or create trash directory"
 msgstr ""
 
 #: gio/glocalfile.c:1594
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to create trashed file: %s"
 msgstr "Impossible de crear lo fichièr '%s' : %s"
 
 #: gio/glocalfile.c:1617
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to trash file: %s"
 msgstr "Impossible de crear lo fichièr '%s' : %s"
 
@@ -1380,7 +1376,7 @@ msgid "Error making symbolic link: %s"
 msgstr ""
 
 #: gio/glocalfile.c:1761 gio/glocalfile.c:1846
-#, fuzzy, c-format
+#, c-format
 msgid "Error moving file: %s"
 msgstr "Error de lectura del fichièr '%s' : %s"
 
@@ -1402,7 +1398,7 @@ msgid "Backup file creation failed"
 msgstr ""
 
 #: gio/glocalfile.c:1821
-#, fuzzy, c-format
+#, c-format
 msgid "Error removing target file: %s"
 msgstr "Error de lectura del fichièr '%s' : %s"
 
@@ -1427,12 +1423,12 @@ msgid "Invalid extended attribute name"
 msgstr ""
 
 #: gio/glocalfileinfo.c:761
-#, fuzzy, c-format
+#, c-format
 msgid "Error setting extended attribute '%s': %s"
 msgstr "Error de lectura del fichièr '%s' : %s"
 
 #: gio/glocalfileinfo.c:1392 gio/glocalfileoutputstream.c:630
-#, fuzzy, c-format
+#, c-format
 msgid "Error stating file '%s': %s"
 msgstr "Error de lectura del fichièr '%s' : %s"
 
@@ -1441,7 +1437,7 @@ msgid " (invalid encoding)"
 msgstr ""
 
 #: gio/glocalfileinfo.c:1621
-#, fuzzy, c-format
+#, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "Error de lectura del fichièr '%s' : %s"
 
@@ -1461,12 +1457,12 @@ msgid "Invalid attribute type (byte string expected)"
 msgstr ""
 
 #: gio/glocalfileinfo.c:1725
-#, fuzzy, c-format
+#, c-format
 msgid "Error setting permissions: %s"
 msgstr "Error de lectura del fichièr '%s' : %s"
 
 #: gio/glocalfileinfo.c:1772 gio/glocalfileinfo.c:1932
-#, fuzzy, c-format
+#, c-format
 msgid "Error setting owner: %s"
 msgstr "Error de lectura del fichièr '%s' : %s"
 
@@ -1477,7 +1473,7 @@ msgstr ""
 
 #: gio/glocalfileinfo.c:1803 gio/glocalfileinfo.c:1820
 #: gio/glocalfileinfo.c:1829
-#, fuzzy, c-format
+#, c-format
 msgid "Error setting symlink: %s"
 msgstr "Error de lectura del fichièr '%s' : %s"
 
@@ -1492,24 +1488,24 @@ msgid "Setting attribute %s not supported"
 msgstr ""
 
 #: gio/glocalfileinputstream.c:158 gio/glocalfileoutputstream.c:541
-#, fuzzy, c-format
+#, c-format
 msgid "Error reading from file: %s"
 msgstr "Error de lectura del fichièr '%s' : %s"
 
 #: gio/glocalfileinputstream.c:187 gio/glocalfileinputstream.c:197
 #: gio/glocalfileinputstream.c:301 gio/glocalfileoutputstream.c:351
 #: gio/glocalfileoutputstream.c:815
-#, fuzzy, c-format
+#, c-format
 msgid "Error seeking in file: %s"
 msgstr "Error de lectura del fichièr '%s' : %s"
 
 #: gio/glocalfileinputstream.c:224 gio/glocalfileoutputstream.c:259
-#, fuzzy, c-format
+#, c-format
 msgid "Error closing file: %s"
 msgstr "Error de lectura del fichièr '%s' : %s"
 
 #: gio/glocalfileoutputstream.c:166 gio/glocalfileoutputstream.c:560
-#, fuzzy, c-format
+#, c-format
 msgid "Error writing to file: %s"
 msgstr "Error de lectura del fichièr '%s' : %s"
 
@@ -1519,28 +1515,28 @@ msgid "Error removing old backup link: %s"
 msgstr ""
 
 #: gio/glocalfileoutputstream.c:214
-#, fuzzy, c-format
+#, c-format
 msgid "Error creating backup link: %s"
 msgstr "Error de lectura del fichièr '%s' : %s"
 
 #: gio/glocalfileoutputstream.c:224
-#, fuzzy, c-format
+#, c-format
 msgid "Error creating backup copy: %s"
 msgstr "Error de lectura del fichièr '%s' : %s"
 
 #: gio/glocalfileoutputstream.c:240
-#, fuzzy, c-format
+#, c-format
 msgid "Error renaming temporary file: %s"
 msgstr "Error de lectura del fichièr '%s' : %s"
 
 #: gio/glocalfileoutputstream.c:395 gio/glocalfileoutputstream.c:830
-#, fuzzy, c-format
+#, c-format
 msgid "Error truncating file: %s"
 msgstr "Error de lectura del fichièr '%s' : %s"
 
 #: gio/glocalfileoutputstream.c:455 gio/glocalfileoutputstream.c:498
 #: gio/glocalfileoutputstream.c:621 gio/glocalfileoutputstream.c:890
-#, fuzzy, c-format
+#, c-format
 msgid "Error opening file '%s': %s"
 msgstr "Error de lectura del fichièr '%s' : %s"
 
@@ -1592,13 +1588,13 @@ msgstr ""
 
 #: gio/gunixinputstream.c:200 gio/gunixinputstream.c:218
 #: gio/gunixinputstream.c:290 gio/gunixoutputstream.c:281
-#, fuzzy, c-format
+#, c-format
 msgid "Error reading from unix: %s"
 msgstr "Error de lectura del fichièr '%s' : %s"
 
 #: gio/gunixinputstream.c:248 gio/gunixinputstream.c:423
 #: gio/gunixoutputstream.c:238 gio/gunixoutputstream.c:385
-#, fuzzy, c-format
+#, c-format
 msgid "Error closing unix: %s"
 msgstr "Error de lectura del fichièr '%s' : %s"
 
@@ -1607,7 +1603,7 @@ msgid "Filesystem root"
 msgstr ""
 
 #: gio/gunixoutputstream.c:188 gio/gunixoutputstream.c:207
-#, fuzzy, c-format
+#, c-format
 msgid "Error writing to unix: %s"
 msgstr "Error de lectura del fichièr '%s' : %s"
 
@@ -1649,6 +1645,6 @@ msgid "use a long listing format"
 msgstr ""
 
 #: tests/gio-ls.c:38
-#, fuzzy
 msgid "[FILE...]"
-msgstr "[OPCION...]"
+msgstr "[FICHIÈR...]"
+
