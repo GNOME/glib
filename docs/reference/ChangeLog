@@ -1,5 +1,9 @@
 2007-12-31  Wouter Bolsterlee  <wbolster@svn.gnome.org>
 
+	* gio/migrating.xml: Fixed invalid XML entity
+
+2007-12-31  Wouter Bolsterlee  <wbolster@svn.gnome.org>
+
 	* glib/tmpl/macros_misc.sgml: Fixed typo
 
 2007-12-30  Matthias Clasen  <mclasen@redhat.com>
