@@ -1,3 +1,9 @@
+2008-01-01  Wouter Bolsterlee  <wbolster@svn.gnome.org>
+
+	* gfile.c: Expanded the g_file_new_for_commandline_arg
+	description a bit, based on the code and the docs of the
+	other g_file_new_for_* functions.
+
 2007-12-31  Wouter Bolsterlee  <wbolster@svn.gnome.org>
 
 	* gfilemonitor.h: Fixed typo in docs.

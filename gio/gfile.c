@@ -3970,9 +3970,12 @@ has_valid_scheme (const char *uri)
  * g_file_new_for_commandline_arg:
  * @arg: a command line string.
  * 
- * Creates a #GFile with the given argument from
- * the command line. 
- * 
+ * Creates a #GFile with the given argument from the command line. The value of
+ * @arg can be either a URI, an absolute path or a relative path resolved
+ * relative to the current working directory.
+ * This operation never fails, but the returned object might not support any
+ * I/O operation if @arg points to a malformed path.
+ *
  * Returns: a new #GFile. 
  **/
 GFile *
