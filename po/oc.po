@@ -171,7 +171,7 @@ msgstr ""
 #: glib/gfileutils.c:572
 #, c-format
 msgid "Error reading file '%s': %s"
-msgstr "Error de lectura del fichièr '%s' : %s"
+msgstr ""
 
 #: glib/gfileutils.c:654
 #, c-format
@@ -552,7 +552,7 @@ msgid "\\c at end of pattern"
 msgstr ""
 
 #: glib/gregex.c:205
-msgid "unrecognized character follows \\""
+msgid "unrecognized character follows \\"
 msgstr ""
 
 #: glib/gregex.c:212
@@ -1296,12 +1296,12 @@ msgstr ""
 #: gio/glocalfile.c:554
 #, c-format
 msgid "Invalid filename %s"
-msgstr "Nom d'òste invalid"
+msgstr "Nom d'òste %s invalid"
 
 #: gio/glocalfile.c:810
 #, c-format
 msgid "Error getting filesystem info: %s"
-msgstr "Error de lectura del fichièr '%s' : %s"
+msgstr ""
 
 #: gio/glocalfile.c:928
 #, c-format
@@ -1323,12 +1323,12 @@ msgstr "Nom d'òste invalid"
 #: gio/glocalfile.c:963
 #, c-format
 msgid "Error renaming file: %s"
-msgstr "Error de lectura del fichièr '%s' : %s"
+msgstr ""
 
 #: gio/glocalfile.c:1080
 #, c-format
 msgid "Error opening file: %s"
-msgstr "Error de lectura del fichièr '%s' : %s"
+msgstr ""
 
 #: gio/glocalfile.c:1090
 #, c-format
@@ -1338,17 +1338,17 @@ msgstr ""
 #: gio/glocalfile.c:1142 gio/glocalfile.c:1685
 #, c-format
 msgid "Error removing file: %s"
-msgstr "Error de lectura del fichièr '%s' : %s"
+msgstr ""
 
 #: gio/glocalfile.c:1434
 #, c-format
 msgid "Error trashing file: %s"
-msgstr "Error de lectura del fichièr '%s' : %s"
+msgstr ""
 
 #: gio/glocalfile.c:1458
 #, c-format
 msgid "Unable to create trash dir %s: %s"
-msgstr "Impossible de crear lo fichièr '%s' : %s"
+msgstr ""
 
 #: gio/glocalfile.c:1482
 #, c-format
@@ -1363,12 +1363,12 @@ msgstr ""
 #: gio/glocalfile.c:1594
 #, c-format
 msgid "Unable to create trashed file: %s"
-msgstr "Impossible de crear lo fichièr '%s' : %s"
+msgstr ""
 
 #: gio/glocalfile.c:1617
 #, c-format
 msgid "Unable to trash file: %s"
-msgstr "Impossible de crear lo fichièr '%s' : %s"
+msgstr ""
 
 #: gio/glocalfile.c:1714
 #, c-format
@@ -1378,7 +1378,7 @@ msgstr ""
 #: gio/glocalfile.c:1761 gio/glocalfile.c:1846
 #, c-format
 msgid "Error moving file: %s"
-msgstr "Error de lectura del fichièr '%s' : %s"
+msgstr ""
 
 #: gio/glocalfile.c:1782
 #, c-format
@@ -1400,7 +1400,7 @@ msgstr ""
 #: gio/glocalfile.c:1821
 #, c-format
 msgid "Error removing target file: %s"
-msgstr "Error de lectura del fichièr '%s' : %s"
+msgstr ""
 
 #: gio/glocalfile.c:1835
 #, c-format
@@ -1425,12 +1425,12 @@ msgstr ""
 #: gio/glocalfileinfo.c:761
 #, c-format
 msgid "Error setting extended attribute '%s': %s"
-msgstr "Error de lectura del fichièr '%s' : %s"
+msgstr ""
 
 #: gio/glocalfileinfo.c:1392 gio/glocalfileoutputstream.c:630
 #, c-format
 msgid "Error stating file '%s': %s"
-msgstr "Error de lectura del fichièr '%s' : %s"
+msgstr ""
 
 #: gio/glocalfileinfo.c:1446
 msgid " (invalid encoding)"
@@ -1439,7 +1439,7 @@ msgstr ""
 #: gio/glocalfileinfo.c:1621
 #, c-format
 msgid "Error stating file descriptor: %s"
-msgstr "Error de lectura del fichièr '%s' : %s"
+msgstr ""
 
 #: gio/glocalfileinfo.c:1666
 #, c-format
@@ -1459,12 +1459,12 @@ msgstr ""
 #: gio/glocalfileinfo.c:1725
 #, c-format
 msgid "Error setting permissions: %s"
-msgstr "Error de lectura del fichièr '%s' : %s"
+msgstr ""
 
 #: gio/glocalfileinfo.c:1772 gio/glocalfileinfo.c:1932
 #, c-format
 msgid "Error setting owner: %s"
-msgstr "Error de lectura del fichièr '%s' : %s"
+msgstr ""
 
 #: gio/glocalfileinfo.c:1795
 #, c-format
@@ -1475,7 +1475,7 @@ msgstr ""
 #: gio/glocalfileinfo.c:1829
 #, c-format
 msgid "Error setting symlink: %s"
-msgstr "Error de lectura del fichièr '%s' : %s"
+msgstr ""
 
 #: gio/glocalfileinfo.c:1812
 #, c-format
@@ -1490,24 +1490,24 @@ msgstr ""
 #: gio/glocalfileinputstream.c:158 gio/glocalfileoutputstream.c:541
 #, c-format
 msgid "Error reading from file: %s"
-msgstr "Error de lectura del fichièr '%s' : %s"
+msgstr ""
 
 #: gio/glocalfileinputstream.c:187 gio/glocalfileinputstream.c:197
 #: gio/glocalfileinputstream.c:301 gio/glocalfileoutputstream.c:351
 #: gio/glocalfileoutputstream.c:815
 #, c-format
 msgid "Error seeking in file: %s"
-msgstr "Error de lectura del fichièr '%s' : %s"
+msgstr ""
 
 #: gio/glocalfileinputstream.c:224 gio/glocalfileoutputstream.c:259
 #, c-format
 msgid "Error closing file: %s"
-msgstr "Error de lectura del fichièr '%s' : %s"
+msgstr ""
 
 #: gio/glocalfileoutputstream.c:166 gio/glocalfileoutputstream.c:560
 #, c-format
 msgid "Error writing to file: %s"
-msgstr "Error de lectura del fichièr '%s' : %s"
+msgstr ""
 
 #: gio/glocalfileoutputstream.c:205
 #, c-format
@@ -1517,28 +1517,28 @@ msgstr ""
 #: gio/glocalfileoutputstream.c:214
 #, c-format
 msgid "Error creating backup link: %s"
-msgstr "Error de lectura del fichièr '%s' : %s"
+msgstr ""
 
 #: gio/glocalfileoutputstream.c:224
 #, c-format
 msgid "Error creating backup copy: %s"
-msgstr "Error de lectura del fichièr '%s' : %s"
+msgstr ""
 
 #: gio/glocalfileoutputstream.c:240
 #, c-format
 msgid "Error renaming temporary file: %s"
-msgstr "Error de lectura del fichièr '%s' : %s"
+msgstr ""
 
 #: gio/glocalfileoutputstream.c:395 gio/glocalfileoutputstream.c:830
 #, c-format
 msgid "Error truncating file: %s"
-msgstr "Error de lectura del fichièr '%s' : %s"
+msgstr ""
 
 #: gio/glocalfileoutputstream.c:455 gio/glocalfileoutputstream.c:498
 #: gio/glocalfileoutputstream.c:621 gio/glocalfileoutputstream.c:890
 #, c-format
 msgid "Error opening file '%s': %s"
-msgstr "Error de lectura del fichièr '%s' : %s"
+msgstr ""
 
 #: gio/glocalfileoutputstream.c:642
 #, c-format
@@ -1590,13 +1590,13 @@ msgstr ""
 #: gio/gunixinputstream.c:290 gio/gunixoutputstream.c:281
 #, c-format
 msgid "Error reading from unix: %s"
-msgstr "Error de lectura del fichièr '%s' : %s"
+msgstr ""
 
 #: gio/gunixinputstream.c:248 gio/gunixinputstream.c:423
 #: gio/gunixoutputstream.c:238 gio/gunixoutputstream.c:385
 #, c-format
 msgid "Error closing unix: %s"
-msgstr "Error de lectura del fichièr '%s' : %s"
+msgstr ""
 
 #: gio/gunixmounts.c:1753 gio/gunixmounts.c:1790
 msgid "Filesystem root"
@@ -1605,7 +1605,7 @@ msgstr ""
 #: gio/gunixoutputstream.c:188 gio/gunixoutputstream.c:207
 #, c-format
 msgid "Error writing to unix: %s"
-msgstr "Error de lectura del fichièr '%s' : %s"
+msgstr ""
 
 #: gio/gvolume.c:384
 msgid "volume doesn't implement eject"
