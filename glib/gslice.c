@@ -1435,8 +1435,8 @@ g_slice_debug_tree_statistics (void)
                 o++; /* formerly used, now empty */
           }
       en = b ? en : 0;
-      tf = MAX (t, 1.0); // max(1) to be a valid divisor
-      bf = MAX (b, 1.0); // max(1) to be a valid divisor
+      tf = MAX (t, 1.0); /* max(1) to be a valid divisor */
+      bf = MAX (b, 1.0); /* max(1) to be a valid divisor */
       fprintf (stderr, "GSlice: MemChecker: %u trunks, %u branches, %u old branches\n", t, b, o);
       fprintf (stderr, "GSlice: MemChecker: %f branches per trunk, %.2f%% utilization\n",
                b / tf,

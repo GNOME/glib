@@ -1,3 +1,7 @@
+2007-12-31  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gslice.c: Remove C99 comments
+
 2007-12-24  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gtestutils.h:
