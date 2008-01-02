@@ -786,7 +786,7 @@ g_hash_table_insert (GHashTable *hash_table,
                      gpointer    key,
                      gpointer    value)
 {
-  return g_hash_table_insert_internal (hash_table, key, value, FALSE);
+  g_hash_table_insert_internal (hash_table, key, value, FALSE);
 }
 
 /**
@@ -807,7 +807,7 @@ g_hash_table_replace (GHashTable *hash_table,
                       gpointer    key,
                       gpointer    value)
 {
-  return g_hash_table_insert_internal (hash_table, key, value, TRUE);
+  g_hash_table_insert_internal (hash_table, key, value, TRUE);
 }
 
 /*

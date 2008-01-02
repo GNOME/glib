@@ -1,3 +1,10 @@
+2008-01-02  Alvaro Lopez Ortega  <alvaro@sun.com>
+
+	* glib/ghash.c (g_hash_table_replace, g_hash_table_insert): These
+	functions prototype defines its output as void, and therefore they
+	should not return any value. This patch fixes a compilation error:
+	the "return" clauses were incompatible with the functions prototype.
+
 2007-12-31  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gslice.c: Remove C99 comments
