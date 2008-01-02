@@ -1,5 +1,11 @@
 2008-01-02  Alvaro Lopez Ortega  <alvaro@sun.com>
 
+	* gio/gunixmount.c (g_unix_mount_unmount, g_unix_mount_eject):
+	These void functions were trying to return a value. It was causing
+	the compilation to fail.
+
+2008-01-02  Alvaro Lopez Ortega  <alvaro@sun.com>
+
 	* glib/ghash.c (g_hash_table_replace, g_hash_table_insert): These
 	functions prototype defines its output as void, and therefore they
 	should not return any value. This patch fixes a compilation error:

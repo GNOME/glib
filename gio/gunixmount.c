@@ -353,7 +353,7 @@ g_unix_mount_unmount (GMount             *mount,
   else
     argv[1] = unix_mount->device_path;
 
-  return eject_unmount_do (mount, cancellable, callback, user_data, argv);
+  eject_unmount_do (mount, cancellable, callback, user_data, argv);
 }
 
 static gboolean
@@ -379,7 +379,7 @@ g_unix_mount_eject (GMount             *mount,
   else
     argv[1] = unix_mount->device_path;
 
-  return eject_unmount_do (mount, cancellable, callback, user_data, argv);
+  eject_unmount_do (mount, cancellable, callback, user_data, argv);
 }
 
 static gboolean
