@@ -1760,9 +1760,11 @@ set_unix_uid_gid (char                       *filename,
   else
     gid = -1;
   
+#ifdef HAVE_LCHOWN
   if (flags & G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS)
     res = lchown (filename, uid, gid);
   else
+#endif
     res = chown (filename, uid, gid);
   
   if (res == -1)

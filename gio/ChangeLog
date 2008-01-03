@@ -1,5 +1,10 @@
 2008-01-03  Alexander Larsson  <alexl@redhat.com>
 
+        * glocalfileinfo.c:
+	Check for HAVE_LCHOWN (#505887)
+	
+2008-01-03  Alexander Larsson  <alexl@redhat.com>
+
         * gfileinfo.h:
         * glocalfileinfo.c:
 	Add define for selinux context attribute.
