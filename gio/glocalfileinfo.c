@@ -185,7 +185,7 @@ get_selinux_context (const char            *path,
 #ifdef HAVE_SELINUX
   char *context;
 
-  if (!g_file_attribute_matcher_matches (attribute_matcher, "selinux::context"))
+  if (!g_file_attribute_matcher_matches (attribute_matcher, G_FILE_ATTRIBUTE_SELINUX_CONTEXT))
     return;
   
   if (is_selinux_enabled ())
@@ -203,8 +203,8 @@ get_selinux_context (const char            *path,
 
       if (context)
 	{
-	  g_file_info_set_attribute_string (info, "selinux::context", context);
-	  freecon(context);
+	  g_file_info_set_attribute_string (info, G_FILE_ATTRIBUTE_SELINUX_CONTEXT, context);
+	  freecon (context);
 	}
     }
 #endif
@@ -445,7 +445,7 @@ get_xattrs (const char            *path,
   if (user)
     all = g_file_attribute_matcher_enumerate_namespace (matcher, "xattr");
   else
-    all = g_file_attribute_matcher_enumerate_namespace (matcher, "xattr_sys");
+    all = g_file_attribute_matcher_enumerate_namespace (matcher, "xattr-sys");
 
   if (all)
     {
@@ -1633,14 +1633,14 @@ _g_local_file_info_get_from_fd (int      fd,
   set_info_from_stat (info, &stat_buf, matcher);
   
 #ifdef HAVE_SELINUX
-  if (g_file_attribute_matcher_matches (matcher, "selinux:context") &&
+  if (g_file_attribute_matcher_matches (matcher, G_FILE_ATTRIBUTE_SELINUX_CONTEXT) &&
       is_selinux_enabled ())
     {
       char *context;
       if (fgetfilecon_raw (fd, &context) >= 0)
 	{
-	  g_file_info_set_attribute_string (info, "selinux:context", context);
-	  freecon(context);
+	  g_file_info_set_attribute_string (info, G_FILE_ATTRIBUTE_SELINUX_CONTEXT, context);
+	  freecon (context);
 	}
     }
 #endif

@@ -1,5 +1,14 @@
 2008-01-03  Alexander Larsson  <alexl@redhat.com>
 
+        * gfileinfo.h:
+        * glocalfileinfo.c:
+	Add define for selinux context attribute.
+	Fix missing : -> :: namespace separator change
+	Fix missing _ -> - name change for xattr-sys.
+	(#505058)
+
+2008-01-03  Alexander Larsson  <alexl@redhat.com>
+
         * fam/Makefile.am:
 	Link to libglib and libgobject directly (#504879)
 	Patch from Sebastien Bacher

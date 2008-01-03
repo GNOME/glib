@@ -658,10 +658,9 @@ typedef enum {
 
 /**
  * G_FILE_ATTRIBUTE_FILESYSTEM_READONLY:
- * 
- * A key in the "filesystem" namespace for checking if the file system is read only.
- * Is set to %TRUE if the file system is read only. Corresponding 
- * #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
+ * * A key in the "filesystem" namespace for checking if the file system 
+ * is read only. Is set to %TRUE if the file system is read only. 
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
  **/
 #define G_FILE_ATTRIBUTE_FILESYSTEM_READONLY "filesystem::readonly"               /* boolean */
 
@@ -673,6 +672,15 @@ typedef enum {
  * %G_FILE_ATTRIBUTE_TYPE_STRING.
  **/
 #define G_FILE_ATTRIBUTE_GVFS_BACKEND "gvfs::backend"             /* string */
+
+/**
+ * G_FILE_ATTRIBUTE_SELINUX_CONTEXT:
+ * 
+ * A key in the "selinux" namespace for getting the file's SELinux
+ * context. Corresponding #GFileAttributeType is 
+ * %G_FILE_ATTRIBUTE_TYPE_STRING.
+ **/
+#define G_FILE_ATTRIBUTE_SELINUX_CONTEXT "selinux::context"       /* string */
 
 GType g_file_info_get_type (void) G_GNUC_CONST;
 
