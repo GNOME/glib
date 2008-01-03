@@ -31,6 +31,8 @@ libgiofam_la_CFLAGS = \
 libgiofam_la_LDFLAGS = $(module_flags)
 libgiofam_la_LIBADD = \
 		$(top_builddir)/gio/libgio-2.0.la \
+		$(top_builddir)/gobject/libgobject-2.0.la \
+		$(top_builddir)/glib/libglib-2.0.la \
 		$(GLIB_LIBS) \
 		$(FAM_LIBS) \
 		$(NULL)

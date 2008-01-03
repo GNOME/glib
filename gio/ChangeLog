@@ -1,3 +1,9 @@
+2008-01-03  Alexander Larsson  <alexl@redhat.com>
+
+        * fam/Makefile.am:
+	Link to libglib and libgobject directly (#504879)
+	Patch from Sebastien Bacher
+
 2008-01-01  Wouter Bolsterlee  <wbolster@svn.gnome.org>
 
 	* gfile.c: Expanded the g_file_new_for_commandline_arg
