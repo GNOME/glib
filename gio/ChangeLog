@@ -1,5 +1,10 @@
 2008-01-03  Alexander Larsson  <alexl@redhat.com>
 
+	* gunixmounts.c (g_unix_is_mount_path_system_internal):
+	Add /usr/local to list of internal mountpoints
+
+2008-01-03  Alexander Larsson  <alexl@redhat.com>
+
         * glocalfileinfo.c:
 	Check for HAVE_LCHOWN (#505887)
 	

@@ -228,6 +228,7 @@ g_unix_is_mount_path_system_internal (const char *mount_path)
     "/srv",
     "/tmp",
     "/usr",
+    "/usr/local",
     "/var",
     "/var/log/audit", /* https://bugzilla.redhat.com/show_bug.cgi?id=333041 */
     "/var/tmp",       /* https://bugzilla.redhat.com/show_bug.cgi?id=335241 */
