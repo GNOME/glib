@@ -1,5 +1,11 @@
 2008-01-03  Alexander Larsson  <alexl@redhat.com>
 
+        * gfileinfo.c:
+	Handle NULL attribute matchers safely, as we return this
+	for empty attribute matcher strings.
+
+2008-01-03  Alexander Larsson  <alexl@redhat.com>
+
 	* gunixmounts.c (g_unix_is_mount_path_system_internal):
 	Add /usr/local to list of internal mountpoints
 

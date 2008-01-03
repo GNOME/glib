@@ -1926,11 +1926,11 @@ g_file_attribute_matcher_new (const char *attributes)
 GFileAttributeMatcher *
 g_file_attribute_matcher_ref (GFileAttributeMatcher *matcher)
 {
-  g_return_val_if_fail (matcher != NULL, NULL);
-  g_return_val_if_fail (matcher->ref > 0, NULL);
-
-  g_atomic_int_inc (&matcher->ref);
-  
+  if (matcher)
+    {
+      g_return_val_if_fail (matcher->ref > 0, NULL);
+      g_atomic_int_inc (&matcher->ref);
+    }
   return matcher;
 }
 
@@ -1945,15 +1945,17 @@ g_file_attribute_matcher_ref (GFileAttributeMatcher *matcher)
 void
 g_file_attribute_matcher_unref (GFileAttributeMatcher *matcher)
 {
-  g_return_if_fail (matcher != NULL);
-  g_return_if_fail (matcher->ref > 0);
-
-  if (g_atomic_int_dec_and_test (&matcher->ref))
+  if (matcher)
     {
-      if (matcher->more_sub_matchers)
-	g_array_free (matcher->more_sub_matchers, TRUE);
+      g_return_if_fail (matcher->ref > 0);
       
-      g_free (matcher);
+      if (g_atomic_int_dec_and_test (&matcher->ref))
+	{
+	  if (matcher->more_sub_matchers)
+	    g_array_free (matcher->more_sub_matchers, TRUE);
+	  
+	  g_free (matcher);
+	}
     }
 }
 
@@ -1973,10 +1975,10 @@ g_file_attribute_matcher_matches_only (GFileAttributeMatcher *matcher,
 {
   guint32 id;
 
-  g_return_val_if_fail (matcher != NULL, FALSE);
   g_return_val_if_fail (attribute != NULL && *attribute != '\0', FALSE);
 
-  if (matcher->all)
+  if (matcher == NULL ||
+      matcher->all)
     return FALSE;
   
   id = lookup_attribute (attribute);
@@ -2046,9 +2048,12 @@ gboolean
 g_file_attribute_matcher_matches (GFileAttributeMatcher *matcher,
 				  const char            *attribute)
 {
-  g_return_val_if_fail (matcher != NULL, FALSE);
   g_return_val_if_fail (attribute != NULL && *attribute != '\0', FALSE);
 
+  /* We return a NULL matcher for an empty match string, so handle this */
+  if (matcher == NULL)
+    return FALSE;
+  
   if (matcher->all)
     return TRUE;
   
@@ -2079,8 +2084,11 @@ g_file_attribute_matcher_enumerate_namespace (GFileAttributeMatcher *matcher,
   int ns_id;
   int i;
   
-  g_return_val_if_fail (matcher != NULL, FALSE);
   g_return_val_if_fail (ns != NULL && *ns != '\0', FALSE);
+
+  /* We return a NULL matcher for an empty match string, so handle this */
+  if (matcher == NULL)
+    return FALSE;
   
   if (matcher->all)
     return TRUE;
@@ -2123,8 +2131,10 @@ g_file_attribute_matcher_enumerate_next (GFileAttributeMatcher *matcher)
 {
   int i;
   SubMatcher *sub_matcher;
-  
-  g_return_val_if_fail (matcher != NULL, NULL);
+
+  /* We return a NULL matcher for an empty match string, so handle this */
+  if (matcher == NULL)
+    return NULL;
 
   while (1)
     {
