@@ -951,6 +951,16 @@ g_desktop_app_info_supports_uris (GAppInfo *appinfo)
 }
 
 static gboolean
+g_desktop_app_info_supports_files (GAppInfo *appinfo)
+{
+  GDesktopAppInfo *info = G_DESKTOP_APP_INFO (appinfo);
+ 
+  return info->exec && 
+    ((strstr (info->exec, "%f") != NULL) ||
+     (strstr (info->exec, "%F") != NULL));
+}
+
+static gboolean
 g_desktop_app_info_launch_uris (GAppInfo           *appinfo,
 				GList              *uris,
 				GAppLaunchContext  *launch_context,
@@ -981,16 +991,53 @@ g_desktop_app_info_launch_uris (GAppInfo           *appinfo,
   return res;
 }
 
+G_LOCK_DEFINE_STATIC (g_desktop_env);
+static gchar *g_desktop_env = NULL;
+
+/**
+ * g_desktop_app_info_set_desktop_env:
+ * @desktop_env: a string specifying what desktop this is
+ *
+ * Sets the name of the desktop that the application is running in.
+ * This is used by g_app_info_should_show() to evaluate the
+ * <literal>OnlyShowIn</literal> and <literal>NotShowIn</literal>
+ * desktop entry fields.
+ *
+ * The <ulink url="http://standards.freedesktop.org/menu-spec/latest/">Desktop 
+ * Menu specification</ulink> recognizes the following:
+ * <simplelist>
+ *   <member>GNOME</member>
+ *   <member>KDE</member>
+ *   <member>ROX</member>
+ *   <member>XFCE</member>
+ *   <member>Old</member> 
+ * </simplelist>
+ *
+ * Should be called only once; subsequent calls are ignored.
+ */
+void
+g_desktop_app_info_set_desktop_env (const gchar *desktop_env)
+{
+  G_LOCK (g_desktop_env);
+  if (!g_desktop_env)
+    g_desktop_env = g_strdup (desktop_env);
+  G_UNLOCK (g_desktop_env);
+}
+
 static gboolean
-g_desktop_app_info_should_show (GAppInfo   *appinfo,
-				const char *desktop_env)
+g_desktop_app_info_should_show (GAppInfo *appinfo)
 {
   GDesktopAppInfo *info = G_DESKTOP_APP_INFO (appinfo);
   gboolean found;
+  const gchar *desktop_env;
   int i;
 
   if (info->nodisplay)
     return FALSE;
+
+  G_LOCK (g_desktop_env);
+  desktop_env = g_desktop_env;
+  G_UNLOCK (g_desktop_env);
 
   if (info->only_show_in)
     {
@@ -1495,6 +1542,7 @@ g_desktop_app_info_iface_init (GAppInfoIface *iface)
   iface->get_icon = g_desktop_app_info_get_icon;
   iface->launch = g_desktop_app_info_launch;
   iface->supports_uris = g_desktop_app_info_supports_uris;
+  iface->supports_files = g_desktop_app_info_supports_files;
   iface->launch_uris = g_desktop_app_info_launch_uris;
   iface->should_show = g_desktop_app_info_should_show;
   iface->set_as_default_for_type = g_desktop_app_info_set_as_default_for_type;
@@ -1648,21 +1696,14 @@ get_apps_from_dir (GHashTable *apps,
 		{
 		  appinfo = g_desktop_app_info_new_from_filename (filename);
 
-		  /* Don't return apps that don't take arguments */
-		  if (appinfo &&
-		      (g_desktop_app_info_get_is_hidden (appinfo) ||
-		       (appinfo->exec && 
-			strstr (appinfo->exec,"%U") == NULL &&
-			strstr (appinfo->exec,"%u") == NULL &&
-			strstr (appinfo->exec,"%f") == NULL &&
-			strstr (appinfo->exec,"%F") == NULL)))
+		  if (appinfo && g_desktop_app_info_get_is_hidden (appinfo))
 		    {
 		      g_object_unref (appinfo);
 		      appinfo = NULL;
 		      hidden = TRUE;
 		    }
 				      
-		  if (appinfo != NULL || hidden)
+		  if (appinfo || hidden)
 		    {
 		      g_hash_table_insert (apps, g_strdup (desktop_id), appinfo);
 
@@ -1695,7 +1736,15 @@ get_apps_from_dir (GHashTable *apps,
 /**
  * g_app_info_get_all:
  *
- * Gets a list of all of the applications currently registered on this system.
+ * Gets a list of all of the applications currently registered 
+ * on this system.
+ * 
+ * For desktop files, this includes applications that have 
+ * <literal>NoDisplay=true</liberal> set or are excluded from 
+ * display by means of <literal>OnlyShowIn</literal> or
+ * <literal>NotShowIn</literal>. See g_app_info_should_show().
+ * The returned list does not include applications which have
+ * the <literal>Hidden</literal> key set. 
  * 
  * Returns: a newly allocated #GList of references to #GAppInfo<!---->s.
  **/

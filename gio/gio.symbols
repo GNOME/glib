@@ -38,6 +38,7 @@ g_app_info_get_executable
 g_app_info_get_icon
 g_app_info_launch
 g_app_info_supports_uris
+g_app_info_supports_files
 g_app_info_launch_uris
 g_app_info_should_show
 g_app_info_set_as_default_for_type

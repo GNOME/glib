@@ -446,6 +446,27 @@ g_app_info_supports_uris (GAppInfo *appinfo)
 
 
 /**
+ * g_app_info_supports_files:
+ * @appinfo: a #GAppInfo.
+ * 
+ * Checks if the application accepts files as arguments.
+ *
+ * Returns: %TRUE if the @appinfo supports files.
+ **/
+gboolean
+g_app_info_supports_files (GAppInfo *appinfo)
+{
+  GAppInfoIface *iface;
+  
+  g_return_val_if_fail (G_IS_APP_INFO (appinfo), FALSE);
+
+  iface = G_APP_INFO_GET_IFACE (appinfo);
+
+  return (* iface->supports_files) (appinfo);
+}
+
+
+/**
  * g_app_info_launch_uris:
  * @appinfo: a #GAppInfo.
  * @uris: a #GList containing URIs to launch. 
@@ -484,20 +505,14 @@ g_app_info_launch_uris (GAppInfo           *appinfo,
 /**
  * g_app_info_should_show:
  * @appinfo: a #GAppInfo.
- * @desktop_env: A string specifying what desktop this is, or %NULL.
  *
- * Checks if the application info should be shown when listing
- * applications available.
- *
- * @destkop_env is used to hide applications that are specified to
- * just show up in specific desktops. For instance, passing in "GNOME"
- * would show all applications specific to the Gnome desktop.
+ * Checks if the application info should be shown in menus that 
+ * list available applications.
  * 
  * Returns: %TRUE if the @appinfo should be shown, %FALSE otherwise.
  **/
 gboolean
-g_app_info_should_show (GAppInfo   *appinfo,
-			const char *desktop_env)
+g_app_info_should_show (GAppInfo *appinfo)
 {
   GAppInfoIface *iface;
   
@@ -505,7 +520,7 @@ g_app_info_should_show (GAppInfo   *appinfo,
 
   iface = G_APP_INFO_GET_IFACE (appinfo);
 
-  return (* iface->should_show) (appinfo, desktop_env);
+  return (* iface->should_show) (appinfo);
 }
 
 G_DEFINE_TYPE (GAppLaunchContext, g_app_launch_context, G_TYPE_OBJECT);

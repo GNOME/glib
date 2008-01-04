@@ -48,6 +48,8 @@ GDesktopAppInfo *g_desktop_app_info_new_from_filename (const char      *filename
 GDesktopAppInfo *g_desktop_app_info_new               (const char      *desktop_id);
 gboolean         g_desktop_app_info_get_is_hidden     (GDesktopAppInfo *info);
 
+void             g_desktop_app_info_set_desktop_env   (const char *desktop_env);
+
 G_END_DECLS
 
 

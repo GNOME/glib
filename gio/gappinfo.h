@@ -80,6 +80,7 @@ typedef struct _GAppInfo         GAppInfo; /* Dummy typedef */
  * @get_icon: Gets the #GIcon for the #GAppInfo.
  * @launch: Launches an application specified by the #GAppInfo.
  * @supports_uris: Indicates whether the application specified supports launching URIs.
+ * @supports_files: Indicates whether the application specified accepts filename arguments.
  * @launch_uris: Launches an application with a list of URIs.
  * @should_show: Returns whether an application should be shown (e.g. when getting a list of installed applications).
  * <ulink url="http://standards.freedesktop.org/startup-notification-spec/startup-notification-latest.txt">
@@ -113,12 +114,12 @@ struct _GAppInfoIface
 					     GAppLaunchContext       *launch_context,
 					     GError                 **error);
   gboolean            (*supports_uris)      (GAppInfo                *appinfo);
+  gboolean            (*supports_files)     (GAppInfo                *appinfo);
   gboolean            (*launch_uris)        (GAppInfo                *appinfo,
 					     GList                   *uris,
 					     GAppLaunchContext       *launch_context,
 					     GError                 **error);
-  gboolean            (*should_show)        (GAppInfo                *appinfo,
-					     const char              *desktop_env);
+  gboolean            (*should_show)        (GAppInfo                *appinfo);
 
   /* For changing associations */
   gboolean  (*set_as_default_for_type)      (GAppInfo           *appinfo,
@@ -156,12 +157,12 @@ gboolean    g_app_info_launch                       (GAppInfo             *appin
 						     GAppLaunchContext    *launch_context,
 						     GError              **error);
 gboolean    g_app_info_supports_uris                (GAppInfo             *appinfo);
+gboolean    g_app_info_supports_files               (GAppInfo             *appinfo);
 gboolean    g_app_info_launch_uris                  (GAppInfo             *appinfo,
 						     GList                *uris,
 						     GAppLaunchContext    *launch_context,
 						     GError              **error);
-gboolean    g_app_info_should_show                  (GAppInfo             *appinfo,
-						     const char           *desktop_env);
+gboolean    g_app_info_should_show                  (GAppInfo             *appinfo);
 
 gboolean    g_app_info_set_as_default_for_type      (GAppInfo             *appinfo,
 						     const char           *content_type,

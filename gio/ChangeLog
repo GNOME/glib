@@ -1,5 +1,18 @@
 2008-01-04  Alexander Larsson  <alexl@redhat.com>
 
+        * gappinfo.[ch]:
+        * gwin32appinfo.c:
+        * gio.symbols:
+	Add g_app_info_supports_files() 
+        Remove desktop arg from g_app_info_should_show().
+	
+        * gdesktopappinfo.[ch]:
+	Implement g_app_info_supports_files() and new should_show()
+	Add g_desktop_app_info_set_desktop_env() to set the desktop
+	for should_show(). (This will be set by gtk+ later)
+
+2008-01-04  Alexander Larsson  <alexl@redhat.com>
+
         * gio.symbols:
         * gmemoryinputstream.[ch]:
 	Improve API so that you can use multile chunks

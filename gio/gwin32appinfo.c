@@ -333,6 +333,12 @@ g_win32_app_info_supports_uris (GAppInfo *appinfo)
 }
 
 static gboolean
+g_win32_app_info_supports_files (GAppInfo *appinfo)
+{
+  return TRUE;
+}
+
+static gboolean
 g_win32_app_info_launch_uris (GAppInfo           *appinfo,
 			      GList              *uris,
 			      GAppLaunchContext  *launch_context,
@@ -345,8 +351,7 @@ g_win32_app_info_launch_uris (GAppInfo           *appinfo,
 }
 
 static gboolean
-g_win32_app_info_should_show (GAppInfo   *appinfo,
-			      const char *win32_env)
+g_win32_app_info_should_show (GAppInfo *appinfo)
 {
   GWin32AppInfo *info = G_WIN32_APP_INFO (appinfo);
 
@@ -392,6 +397,7 @@ g_win32_app_info_iface_init (GAppInfoIface *iface)
   iface->get_icon = g_win32_app_info_get_icon;
   iface->launch = g_win32_app_info_launch;
   iface->supports_uris = g_win32_app_info_supports_uris;
+  iface->supports_files = g_win32_app_info_supports_files;
   iface->launch_uris = g_win32_app_info_launch_uris;
   iface->should_show = g_win32_app_info_should_show;
   iface->set_as_default_for_type = g_win32_app_info_set_as_default_for_type;
