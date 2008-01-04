@@ -41,11 +41,18 @@
  *
  */
 
+typedef struct _Chunk Chunk;
+
+struct _Chunk {
+  guint8         *data;
+  gsize           len;
+  GDestroyNotify  destroy;
+};
+
 struct _GMemoryInputStreamPrivate {
-  guint8 *buffer;      
-  gsize   pos;
+  GSList *chunks;
   gsize   len;
-  gboolean free_data;
+  gsize   pos;
 };
 
 static gssize   g_memory_input_stream_read         (GInputStream         *stream,
@@ -133,14 +140,28 @@ g_memory_input_stream_class_init (GMemoryInputStreamClass *klass)
 }
 
 static void
+free_chunk (gpointer data, 
+            gpointer user_data)
+{
+  Chunk *chunk = data;
+
+  if (chunk->destroy)
+    chunk->destroy (chunk->data);
+
+  g_slice_free (Chunk, chunk);
+}
+
+static void
 g_memory_input_stream_finalize (GObject *object)
 {
   GMemoryInputStream        *stream;
+  GMemoryInputStreamPrivate *priv;
 
   stream = G_MEMORY_INPUT_STREAM (object);
+  priv = stream->priv;
 
-  if (stream->priv->free_data)
-    g_free (stream->priv->buffer);
+  g_slist_foreach (priv->chunks, free_chunk, NULL);
+  g_slist_free (priv->chunks);
 
   if (G_OBJECT_CLASS (g_memory_input_stream_parent_class)->finalize)
     (*G_OBJECT_CLASS (g_memory_input_stream_parent_class)->finalize) (object);
@@ -164,51 +185,65 @@ g_memory_input_stream_init (GMemoryInputStream *stream)
                                               GMemoryInputStreamPrivate);
 }
 
-/**
- * g_memory_input_stream_set_free_data:
- * @stream: a #GMemoryInputStream.
- * @free_data: a #gboolean. If %TRUE, frees the data within @stream.
- * 
- * Sets if the data within the @stream should be freed when the stream 
- * is freed. 
- **/
-void
-g_memory_input_stream_set_free_data (GMemoryInputStream *stream,
-                                     gboolean            free_data)
+GInputStream *
+g_memory_input_stream_new (void)
 {
-  g_return_if_fail (G_IS_MEMORY_INPUT_STREAM (stream));
+  GInputStream *stream;
 
-  stream->priv->free_data = free_data;
+  stream = g_object_new (G_TYPE_MEMORY_INPUT_STREAM, NULL);
+
+  return stream;
 }
 
 /**
- * g_memory_input_stream_from_data:
- * @data: input data.
- * @len: length of the data.
+ * g_memory_input_stream_new_from_data:
+ * @data: input data
+ * @len: length of the data, may be -1 if @data is a nul-terminated string
+ * @destroy: function that is called to free @data, or %NULL
  *
  * Creates a new #GMemoryInputStream with data in memory of a given size.
  * 
  * Returns: new #GInputStream read from @data of @len bytes.
  **/
 GInputStream *
-g_memory_input_stream_from_data (const void *data, 
-                                 gssize      len)
+g_memory_input_stream_new_from_data (const void     *data, 
+                                     gssize          len,
+                                     GDestroyNotify  destroy)
 {
   GInputStream *stream;
-  GMemoryInputStream *memory_stream;
 
-  g_return_val_if_fail (data != NULL, NULL);
+  stream = g_memory_input_stream_new ();
 
-  stream = g_object_new (G_TYPE_MEMORY_INPUT_STREAM, NULL);
-  memory_stream = G_MEMORY_INPUT_STREAM (stream);
+  g_memory_input_stream_add_data (G_MEMORY_INPUT_STREAM (stream),
+                                  data, len, destroy);
+
+  return stream;
+}
+
+void
+g_memory_input_stream_add_data (GMemoryInputStream *stream,
+                                const void         *data,
+                                gssize              len,
+                                GDestroyNotify      destroy)
+{
+  GMemoryInputStreamPrivate *priv;
+  Chunk *chunk;
+ 
+  g_return_if_fail (G_IS_MEMORY_INPUT_STREAM (stream));
+  g_return_if_fail (data != NULL);
+
+  priv = stream->priv;
 
   if (len == -1)
     len = strlen (data);
   
-  memory_stream->priv->buffer = (guint8 *)data;
-  memory_stream->priv->len = len;
+  chunk = g_slice_new (Chunk);
+  chunk->data = (guint8 *)data;
+  chunk->len = len;
+  chunk->destroy = destroy;
 
-  return stream;
+  priv->chunks = g_slist_append (priv->chunks, chunk);
+  priv->len += chunk->len;
 }
 
 static gssize
@@ -219,48 +254,44 @@ g_memory_input_stream_read (GInputStream  *stream,
                             GError       **error)
 {
   GMemoryInputStream *memory_stream;
-  GMemoryInputStreamPrivate * priv;
+  GMemoryInputStreamPrivate *priv;
+  GSList *l;
+  Chunk *chunk;
+  gsize offset, start, rest, size;
 
   memory_stream = G_MEMORY_INPUT_STREAM (stream);
   priv = memory_stream->priv;
 
   count = MIN (count, priv->len - priv->pos);
-  memcpy (buffer, priv->buffer + priv->pos, count);
+
+  offset = 0;
+  for (l = priv->chunks; l; l = l->next) 
+    {
+      chunk = (Chunk *)l->data;
+
+      if (offset + chunk->len > priv->pos)
+        break;
+
+      offset += chunk->len;
+    }
+  
+  start = priv->pos - offset;
+  rest = count;
+
+  for (; l && rest > 0; l = l->next)
+    {
+      chunk = (Chunk *)l->data;
+      size = MIN (rest, chunk->len - start);
+
+      memcpy (buffer + (count - rest), chunk->data + start, size);
+      rest -= size;
+
+      start = 0;
+    }
+
   priv->pos += count;
 
   return count;
-}
-
-/**
- * g_memory_input_stream_get_data:
- * @stream: a #GMemoryInputStream
- * 
- * Gets a pointer to the data within the #GMemoryInputStream.
- *
- * Returns: a pointer to the memory in the @stream.
- **/
-const void *
-g_memory_input_stream_get_data (GMemoryInputStream *stream)
-{
-  g_return_val_if_fail (G_IS_MEMORY_INPUT_STREAM (stream), NULL);
-
-  return stream->priv->buffer;
-}
-
-/**
- * g_memory_input_stream_get_data_size:
- * @stream: a #GMemoryInputStream
- * 
- * Gets the size of the data within the #GMemoryInputStream.
- *
- * Returns: a gsize with the size of the data in @stream.
- **/
-gsize
-g_memory_input_stream_get_data_size (GMemoryInputStream *stream)
-{
-  g_return_val_if_fail (G_IS_MEMORY_INPUT_STREAM (stream), -1);
-
-  return stream->priv->len;
 }
 
 static gssize
@@ -279,8 +310,6 @@ g_memory_input_stream_skip (GInputStream  *stream,
   priv->pos += count;
 
   return count;
- 
-
 }
 
 static gboolean
@@ -303,7 +332,7 @@ g_memory_input_stream_read_async (GInputStream        *stream,
   GSimpleAsyncResult *simple;
   gssize nread;
 
-  nread =  g_memory_input_stream_read (stream,	buffer, count, cancellable, NULL);
+  nread = g_memory_input_stream_read (stream, buffer, count, cancellable, NULL);
   simple = g_simple_async_result_new (G_OBJECT (stream),
 				      callback,
 				      user_data,
@@ -393,7 +422,7 @@ static goffset
 g_memory_input_stream_tell (GSeekable *seekable)
 {
   GMemoryInputStream *memory_stream;
-  GMemoryInputStreamPrivate * priv;
+  GMemoryInputStreamPrivate *priv;
 
   memory_stream = G_MEMORY_INPUT_STREAM (seekable);
   priv = memory_stream->priv;
@@ -415,7 +444,7 @@ g_memory_input_stream_seek (GSeekable     *seekable,
                             GError       **error)
 {
   GMemoryInputStream *memory_stream;
-  GMemoryInputStreamPrivate * priv;
+  GMemoryInputStreamPrivate *priv;
   goffset absolute;
 
   memory_stream = G_MEMORY_INPUT_STREAM (seekable);
@@ -473,7 +502,7 @@ g_memory_input_stream_truncate (GSeekable     *seekable,
   g_set_error (error,
                G_IO_ERROR,
                G_IO_ERROR_NOT_SUPPORTED,
-               "Cannot seek on GMemoryInputStream");
+               "Cannot truncate GMemoryInputStream");
   return FALSE;
 }
 

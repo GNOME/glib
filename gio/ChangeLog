@@ -1,3 +1,10 @@
+2008-01-04  Alexander Larsson  <alexl@redhat.com>
+
+        * gio.symbols:
+        * gmemoryinputstream.[ch]:
+	Improve API so that you can use multile chunks
+	of memory and custom destroy functions. (#506374)
+
 2008-01-03  Alexander Larsson  <alexl@redhat.com>
 
         * gfileinfo.c:

@@ -519,10 +519,9 @@ g_loadable_icon_load_finish
 #if IN_HEADER(__G_MEMORY_INPUT_STREAM_H__)
 #if IN_FILE(__G_MEMORY_INPUT_STREAM_C__)
 g_memory_input_stream_get_type  G_GNUC_CONST
-g_memory_input_stream_from_data 
-g_memory_input_stream_set_free_data 
-g_memory_input_stream_get_data 
-g_memory_input_stream_get_data_size 
+g_memory_input_stream_new
+g_memory_input_stream_new_from_data 
+g_memory_input_stream_add_data 
 #endif
 #endif
 

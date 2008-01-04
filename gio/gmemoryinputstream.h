@@ -70,12 +70,14 @@ struct _GMemoryInputStreamClass
 
 
 GType          g_memory_input_stream_get_type  (void) G_GNUC_CONST;
-GInputStream * g_memory_input_stream_from_data     (const void         *data,
-						    gssize              len);
-void           g_memory_input_stream_set_free_data (GMemoryInputStream *stream,
-						    gboolean            free_data);
-const void    *g_memory_input_stream_get_data      (GMemoryInputStream *stream);
-gsize          g_memory_input_stream_get_data_size (GMemoryInputStream *stream);
+GInputStream * g_memory_input_stream_new               (void);
+GInputStream * g_memory_input_stream_new_from_data     (const void     *data,
+					  	   	gssize          len,
+						    	GDestroyNotify  destroy);
+void           g_memory_input_stream_add_data          (GMemoryInputStream *stream,
+                                                        const void         *data,
+                                                        gssize              len,
+                                                        GDestroyNotify      destroy);
 
 G_END_DECLS
 
