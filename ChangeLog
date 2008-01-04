@@ -1,3 +1,10 @@
+2008-01-04  Mathias Hasselmann  <mathias@openismus.com>
+
+	Resolve 64 bit-shift bug in g_markup_collect_attributes.
+	Spotted by Lieven van der Heide.
+
+	* glib/gmarkup.c: Use G_GUINT64_CONSTANT in bit-shift.
+
 2008-01-02  Alvaro Lopez Ortega  <alvaro@sun.com>
 
 	* gio/gunixmount.c (g_unix_mount_unmount, g_unix_mount_eject):

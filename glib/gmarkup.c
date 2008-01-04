@@ -2602,7 +2602,7 @@ g_markup_collect_attributes (const gchar         *element_name,
 
   /* ensure we collected all the arguments */
   for (i = 0; attribute_names[i]; i++)
-    if ((collected & (1 << i)) == 0)
+    if ((collected & (G_GUINT64_CONSTANT(1) << i)) == 0)
       {
         /* attribute not collected:  could be caused by two things.
          *
