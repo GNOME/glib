@@ -1,5 +1,11 @@
 2008-01-04  Alexander Larsson  <alexl@redhat.com>
 
+        * gio-marshal.list:
+        * gmountoperation.c:
+	Use the right type (uint) for the ask_password signal.
+
+2008-01-04  Alexander Larsson  <alexl@redhat.com>
+
         * gappinfo.[ch]:
         * gwin32appinfo.c:
         * gio.symbols:

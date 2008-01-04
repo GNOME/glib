@@ -257,7 +257,7 @@ g_mount_operation_class_init (GMountOperationClass *klass)
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (GMountOperationClass, ask_password),
 		  boolean_handled_accumulator, NULL,
-		  _gio_marshal_BOOLEAN__STRING_STRING_STRING_INT,
+		  _gio_marshal_BOOLEAN__STRING_STRING_STRING_UINT,
 		  G_TYPE_BOOLEAN, 4,
 		  G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_UINT);
 		  
