@@ -679,7 +679,8 @@ typedef enum {
  * 
  * A key in the "selinux" namespace for getting the file's SELinux
  * context. Corresponding #GFileAttributeType is 
- * %G_FILE_ATTRIBUTE_TYPE_STRING.
+ * %G_FILE_ATTRIBUTE_TYPE_STRING. Note that this attribute is only
+ * available if GLib has been built with SELinux support.
  **/
 #define G_FILE_ATTRIBUTE_SELINUX_CONTEXT "selinux::context"       /* string */
 
