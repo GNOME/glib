@@ -213,6 +213,7 @@ G_FILE_ATTRIBUTE_FILESYSTEM_FREE
 G_FILE_ATTRIBUTE_FILESYSTEM_TYPE
 G_FILE_ATTRIBUTE_FILESYSTEM_READONLY
 G_FILE_ATTRIBUTE_GVFS_BACKEND
+G_FILE_ATTRIBUTE_SELINUX_CONTEXT
 g_file_info_new
 g_file_info_dup
 g_file_info_copy_into
@@ -510,10 +511,9 @@ GUnixInputStreamPrivate
 <FILE>gmemoryinputstream</FILE>
 <TITLE>GMemoryInputStream</TITLE>
 GMemoryInputStream
-g_memory_input_stream_from_data
-g_memory_input_stream_set_free_data
-g_memory_input_stream_get_data
-g_memory_input_stream_get_data_size
+g_memory_input_stream_new
+g_memory_input_stream_new_from_data
+g_memory_input_stream_add_data
 <SUBSECTION Standard>
 GMemoryInputStreamClass
 G_MEMORY_INPUT_STREAM
@@ -1011,6 +1011,7 @@ g_app_info_get_description
 g_app_info_get_executable
 g_app_info_get_icon
 g_app_info_launch
+g_app_info_supports_files
 g_app_info_supports_uris
 g_app_info_launch_uris
 g_app_info_should_show
@@ -1165,6 +1166,7 @@ GDesktopAppInfo
 g_desktop_app_info_new_from_filename
 g_desktop_app_info_new
 g_desktop_app_info_get_is_hidden
+g_desktop_app_info_set_desktop_env
 <SUBSECTION Standard>
 GDesktopAppInfoClass
 G_TYPE_DESKTOP_APP_INFO
