@@ -1,3 +1,8 @@
+2008-01-06  Matthias Clasen  <mclasen@redhat.com>
+
+	* gio-2.0.pc.in, gio-2.0-uninstalled.pc.in: Require glib-2.0
+	(#507628)
+
 2008-01-04  Mathias Hasselmann  <mathias@openismus.com>
 
 	Resolve 64 bit-shift bug in g_markup_collect_attributes.
