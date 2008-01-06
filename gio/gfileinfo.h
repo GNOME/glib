@@ -658,7 +658,8 @@ typedef enum {
 
 /**
  * G_FILE_ATTRIBUTE_FILESYSTEM_READONLY:
- * * A key in the "filesystem" namespace for checking if the file system 
+ *
+ * A key in the "filesystem" namespace for checking if the file system 
  * is read only. Is set to %TRUE if the file system is read only. 
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
  **/

@@ -1740,7 +1740,7 @@ get_apps_from_dir (GHashTable *apps,
  * on this system.
  * 
  * For desktop files, this includes applications that have 
- * <literal>NoDisplay=true</liberal> set or are excluded from 
+ * <literal>NoDisplay=true</literal> set or are excluded from 
  * display by means of <literal>OnlyShowIn</literal> or
  * <literal>NotShowIn</literal>. See g_app_info_should_show().
  * The returned list does not include applications which have

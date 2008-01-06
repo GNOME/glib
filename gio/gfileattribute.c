@@ -106,6 +106,19 @@
  * space is left available, and the overall size of the file system.</entry></row>
  * <row><entry>"gvfs"</entry><entry>The "GVFS" namespace. Keys in this namespace
  * contain information about the current GVFS backend in use. </entry></row>
+ * <row><entry>"xattr"</entry><entry>The "xattr" namespace. Gets information 
+ * about extended user attributes. See attr(5). The "user." prefix of the
+ * extended user attribute name is stripped away when constructing keys in
+ * this namespace, e.g. "xattr::mime_type" for the extended attribute with 
+ * the name "user.mime_type". Note that this information is only available
+ * if GLib has been built with extended attribute support.</entry></row>
+ * <row><entry>"xattr-sys"</entry><entry>The "xattr-sys" namespace. 
+ * Gets information about extended attributes which are not user-specific. 
+ * See attr(5). Note that this information is only available if GLib
+ * has been built with extended attribute support.</entry></row>
+ * <row><entry>"selinux"</entry><entry>The "SELinux" namespace. Includes
+ * information about the SELinux context of files. Note that this information
+ * is only available if GLib has been built with SELinux support.</entry></row>
  * </tbody>
  * </tgroup>
  * </table>
@@ -182,8 +195,17 @@
  * <row><entry>%G_FILE_ATTRIBUTE_FILESYSTEM_TYPE</entry><entry>filesystem::type</entry><entry>string</entry></row>
  * <row><entry>%G_FILE_ATTRIBUTE_FILESYSTEM_READONLY</entry><entry>filesystem::readonly</entry><entry>boolean</entry></row>
  * <row><entry>%G_FILE_ATTRIBUTE_GVFS_BACKEND</entry><entry>gvfs::backend</entry><entry>string</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_SELINUX_CONTEXT</entry><entry>selinux::context</entry><entry>string</entry></row>
  * </tbody></tgroup></table></para>
  *  
+ * Note that there are no predefined keys in the "xattr" and "xattr-sys" 
+ * namespaces. Keys for the "xattr" namespace are constructed by stripping
+ * away the "user." prefix from the extended user attribute, and prepending
+ * "xattr::". Keys for the "xattr-sys" namespace are constructed by 
+ * concatenating "xattr-sys::" with the extended attribute name. All extended
+ * attribute values are returned as hex-encoded strings in which bytes outside
+ * the ASCII range are encoded as hexadecimal escape sequences of the form
+ * \x<replaceable>nn</replaceable>.
  **/ 
 
 /*
