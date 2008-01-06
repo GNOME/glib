@@ -60,6 +60,11 @@ available from:
 
  http://www.gnu.org/software/gettext/
 
+
+Support for extended attributes and SELinux in GIO requires
+libattr and libselinux. 
+
+
 The Nitty-Gritty
 ================
 

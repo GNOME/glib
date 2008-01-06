@@ -24,6 +24,14 @@ Installation
 
 See the file 'INSTALL'
 
+Notes about GLib 2.16
+=====================
+
+* GLib now includes GIO, which adds optional dependencies against libattr
+  and libselinux for extended attribute and SELinux support. Use 
+  --disable-xattr and --disable-selinux to build without these.
+
+
 Notes about GLib 2.10
 =====================
 
