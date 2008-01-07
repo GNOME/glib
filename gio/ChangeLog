@@ -1,5 +1,10 @@
 2008-01-07  Alexander Larsson  <alexl@redhat.com>
 
+	* gunixinputstream.c (g_unix_input_stream_skip_finish):
+	Fix warning (#507835)
+
+2008-01-07  Alexander Larsson  <alexl@redhat.com>
+
         * Makefile.am:
 	Pass --internal to glib-genmarshal
 	

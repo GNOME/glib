@@ -379,6 +379,7 @@ g_unix_input_stream_skip_finish  (GInputStream  *stream,
 				  GError       **error)
 {
   g_warn_if_reached ();
+  return 0;
   /* TODO: Not implemented */
 }
 
