@@ -1,5 +1,7 @@
 2008-01-07  Matthias Clasen  <mclasen@redhat.com>
 
+	* configure.in: Bump version
+
 	* === Released 2.15.1 ===
 
 2008-01-07  Alexander Larsson  <alexl@redhat.com>
