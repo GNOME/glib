@@ -695,9 +695,8 @@ GBufferedOutputStreamPrivate
 <TITLE>GMemoryOutputStream</TITLE>
 GMemoryOutputStream
 g_memory_output_stream_new
-g_memory_output_stream_set_max_size
 g_memory_output_stream_get_data
-g_memory_output_stream_set_free_data
+g_memory_output_stream_get_size
 <SUBSECTION Standard>
 GMemoryOutputStreamClass
 G_MEMORY_OUTPUT_STREAM
