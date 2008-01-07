@@ -1,5 +1,11 @@
 2008-01-06  Matthias Clasen  <mclasen@redhat.com>
 
+	* tests/*: Add a test for memory input streams.
+	
+	* Makefile.am: Add tests to SUBDIRS.
+
+2008-01-06  Matthias Clasen  <mclasen@redhat.com>
+
 	* glocalfilemonitor.c:
 	* glocaldirectorymonitor.c: Mark property nicks and blurbs
 	for translation.
@@ -34,7 +40,7 @@
 
         * gio.symbols:
         * gmemoryinputstream.[ch]:
-	Improve API so that you can use multile chunks
+	Improve API so that you can use multiple chunks
 	of memory and custom destroy functions. (#506374)
 
 2008-01-03  Alexander Larsson  <alexl@redhat.com>

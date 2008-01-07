@@ -2,7 +2,7 @@ include $(top_srcdir)/Makefile.decl
 
 NULL =
 
-SUBDIRS= 
+SUBDIRS=tests
 
 if OS_UNIX
 SUBDIRS += xdgmime
