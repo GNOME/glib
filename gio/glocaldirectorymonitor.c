@@ -26,6 +26,7 @@
 #include "gunixmounts.h"
 #include "gdirectorymonitor.h"
 #include "giomodule-priv.h"
+#include "glibintl.h"
 
 #include <string.h>
 
@@ -147,9 +148,15 @@ g_local_directory_monitor_class_init (GLocalDirectoryMonitorClass* klass)
 
   dir_monitor_class->cancel = g_local_directory_monitor_cancel;
 
-  g_object_class_install_property (gobject_class, PROP_DIRNAME,
-    g_param_spec_string ("dirname", "Directory name", "Directory to monitor",
-        NULL, G_PARAM_CONSTRUCT_ONLY | G_PARAM_WRITABLE));
+  g_object_class_install_property (gobject_class, 
+                                   PROP_DIRNAME,
+                                   g_param_spec_string ("dirname", 
+                                                        P_("Directory name"), 
+                                                        P_("Directory to monitor"),
+                                                        NULL, 
+                                                        G_PARAM_CONSTRUCT_ONLY|
+                                                        G_PARAM_WRITABLE|
+                                                        G_PARAM_STATIC_NAME|G_PARAM_STATIC_NICK|G_PARAM_STATIC_BLURB));
 
   klass->mount_notify = FALSE;
 }

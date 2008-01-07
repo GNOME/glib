@@ -24,6 +24,7 @@
 
 #include "glocalfilemonitor.h"
 #include "giomodule-priv.h"
+#include "glibintl.h"
 
 #include <string.h>
 
@@ -118,9 +119,15 @@ g_local_file_monitor_class_init (GLocalFileMonitorClass* klass)
   gobject_class->finalize = g_local_file_monitor_finalize;
   gobject_class->constructor = g_local_file_monitor_constructor;
 
-  g_object_class_install_property (gobject_class, PROP_FILENAME,
-      g_param_spec_string ("filename", "File name", "File name to monitor",
-          NULL, G_PARAM_CONSTRUCT_ONLY | G_PARAM_WRITABLE));
+  g_object_class_install_property (gobject_class, 
+                                   PROP_FILENAME,
+                                   g_param_spec_string ("filename", 
+                                                        P_("File name"), 
+                                                        P_("File name to monitor"),
+                                                        NULL, 
+                                                        G_PARAM_CONSTRUCT_ONLY|
+                                                        G_PARAM_WRITABLE|
+                                                        G_PARAM_STATIC_NAME|G_PARAM_STATIC_NICK|G_PARAM_STATIC_BLURB));
 }
 
 static gint

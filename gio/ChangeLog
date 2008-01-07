@@ -1,5 +1,11 @@
 2008-01-06  Matthias Clasen  <mclasen@redhat.com>
 
+	* glocalfilemonitor.c:
+	* glocaldirectorymonitor.c: Mark property nicks and blurbs
+	for translation.
+
+2008-01-06  Matthias Clasen  <mclasen@redhat.com>
+
 	* gdesktopappinfo.c: Fix a docs typo.
 
 	* gfileattribute.c: Add information about extended attributes
