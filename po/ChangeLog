@@ -1,3 +1,7 @@
+008-01-07  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.15.1 ===
+
 2008-01-07  Luca Ferretti  <elle.uca@libero.it>
 
 	* POTFILES.in: remove deleted file gio/gdirectorymonitor.c 

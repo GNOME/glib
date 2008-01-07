@@ -1,3 +1,7 @@
+008-01-07  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.15.1 ===
+
 2007-12-26  Behdad Esfahbod  <behdad@gnome.org>
 
 	* gclosure.h (G_CCLOSURE_SWAP_DATA): Fix macro argument.

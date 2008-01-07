@@ -1428,7 +1428,7 @@ g_build_filename
 g_build_filenamev
 g_build_path
 g_build_pathv
-g_format_file_size_for_display
+g_format_size_for_display
 
 <SUBSECTION>
 g_find_program_in_path

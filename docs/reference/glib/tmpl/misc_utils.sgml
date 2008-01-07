@@ -295,6 +295,15 @@ The returned string should be freed when no longer needed.
 @Returns: 
 
 
+<!-- ##### FUNCTION g_format_size_for_display ##### -->
+<para>
+
+</para>
+
+@size: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_find_program_in_path ##### -->
 <para>
 

@@ -24,7 +24,6 @@ g_file_input_stream_get_type
 g_file_get_type
 g_filter_input_stream_get_type
 g_volume_monitor_get_type
-g_directory_monitor_get_type
 g_io_module_get_type
 g_native_volume_monitor_get_type
 g_buffered_output_stream_get_type

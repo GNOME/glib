@@ -328,27 +328,6 @@ GFileMonitorPrivate
 </SECTION>
 
 <SECTION>
-<FILE>gdirectorymonitor</FILE>
-<TITLE>GDirectoryMonitor</TITLE>
-GDirectoryMonitor
-g_directory_monitor_cancel
-g_directory_monitor_is_cancelled
-g_directory_monitor_set_rate_limit
-g_directory_monitor_emit_event
-<SUBSECTION Standard>
-GDirectoryMonitorClass
-G_DIRECTORY_MONITOR
-G_IS_DIRECTORY_MONITOR
-G_TYPE_DIRECTORY_MONITOR
-G_DIRECTORY_MONITOR_CLASS
-G_IS_DIRECTORY_MONITOR_CLASS
-G_DIRECTORY_MONITOR_GET_CLASS
-<SUBSECTION Private>
-g_directory_monitor_get_type
-GDirectoryMonitorPrivate
-</SECTION>
-
-<SECTION>
 <FILE>gicon</FILE>
 <TITLE>GIcon</TITLE>
 GIcon

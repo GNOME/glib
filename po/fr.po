@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-20 10:49-0500\n"
+"POT-Creation-Date: 2008-01-07 09:50-0500\n"
 "PO-Revision-Date: 2007-12-14 14:22+0100\n"
 "Last-Translator: Robert-André Mauchin <zebob.m@pengzone.org>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
@@ -687,190 +687,193 @@ msgstr ") de terminaison manquante"
 msgid ") without opening ("
 msgstr ") sans ( d'ouverture"
 
-#: glib/gregex.c:255
+#. translators: '(?R' and '(?[+-]digits' are both meant as (groups of)
+#. * sequences here, '(?-54' would be an example for the second group.
+#.
+#: glib/gregex.c:258
 msgid "(?R or (?[+-]digits must be followed by )"
 msgstr "(?R ou (?[+-]chiffres doivent être suivis par )"
 
-#: glib/gregex.c:258
+#: glib/gregex.c:261
 msgid "reference to non-existent subpattern"
 msgstr "référence à un sous-motif non-existant"
 
-#: glib/gregex.c:261
+#: glib/gregex.c:264
 msgid "missing ) after comment"
 msgstr ") manquante après un commentaire"
 
-#: glib/gregex.c:264
+#: glib/gregex.c:267
 msgid "regular expression too large"
 msgstr "expression régulière trop grande"
 
-#: glib/gregex.c:267
+#: glib/gregex.c:270
 msgid "failed to get memory"
 msgstr "l'obtention de la mémoire a échoué"
 
-#: glib/gregex.c:270
+#: glib/gregex.c:273
 msgid "lookbehind assertion is not fixed length"
 msgstr "l'assertion « lookbehind » n'a pas de longueur fixe"
 
-#: glib/gregex.c:273
+#: glib/gregex.c:276
 msgid "malformed number or name after (?("
 msgstr "nom ou nombre non conforme après (?("
 
-#: glib/gregex.c:276
+#: glib/gregex.c:279
 msgid "conditional group contains more than two branches"
 msgstr "un groupe conditionnel contient plus de deux branches"
 
-#: glib/gregex.c:279
+#: glib/gregex.c:282
 msgid "assertion expected after (?("
 msgstr "une assertion est attendue après (?("
 
-#: glib/gregex.c:282
+#: glib/gregex.c:285
 msgid "unknown POSIX class name"
 msgstr "nom de classe POSIX inconnu"
 
-#: glib/gregex.c:285
+#: glib/gregex.c:288
 msgid "POSIX collating elements are not supported"
 msgstr "les éléments d'interclassement POSIX ne sont pas pris en charge"
 
-#: glib/gregex.c:288
+#: glib/gregex.c:291
 msgid "character value in \\x{...} sequence is too large"
 msgstr "la valeur du caractère dans la séquence \\x{...} est trop grande"
 
-#: glib/gregex.c:291
+#: glib/gregex.c:294
 msgid "invalid condition (?(0)"
 msgstr "condition (?(0) non valide"
 
-#: glib/gregex.c:294
+#: glib/gregex.c:297
 msgid "\\C not allowed in lookbehind assertion"
 msgstr "\\C n'est pas autorisé dans l'assertion « lookbehind »"
 
-#: glib/gregex.c:297
+#: glib/gregex.c:300
 msgid "recursive call could loop indefinitely"
 msgstr "un appel récursif peut effectuer des boucles indéfiniment"
 
-#: glib/gregex.c:300
+#: glib/gregex.c:303
 msgid "missing terminator in subpattern name"
 msgstr "terminaison manquante dans le nom du sous-motif"
 
-#: glib/gregex.c:303
+#: glib/gregex.c:306
 msgid "two named subpatterns have the same name"
 msgstr "deux sous-motifs nommés possèdent le même nom"
 
-#: glib/gregex.c:306
+#: glib/gregex.c:309
 msgid "malformed \\P or \\p sequence"
 msgstr "séquence \\P ou \\p non conforme"
 
-#: glib/gregex.c:309
+#: glib/gregex.c:312
 msgid "unknown property name after \\P or \\p"
 msgstr "nom de propriété inconnu après \\P ou \\p"
 
-#: glib/gregex.c:312
+#: glib/gregex.c:315
 msgid "subpattern name is too long (maximum 32 characters)"
 msgstr "le nom du sous-motif est trop long (32 caractères maximum)"
 
-#: glib/gregex.c:315
+#: glib/gregex.c:318
 msgid "too many named subpatterns (maximum 10,000)"
 msgstr "trop de sous-motifs nommés (10 000 maximum)"
 
-#: glib/gregex.c:318
+#: glib/gregex.c:321
 msgid "octal value is greater than \\377"
 msgstr "la valeur octale est plus grande que \\377"
 
-#: glib/gregex.c:321
+#: glib/gregex.c:324
 msgid "DEFINE group contains more than one branch"
 msgstr "le groupe DEFINE contient plus d'une branche"
 
-#: glib/gregex.c:324
+#: glib/gregex.c:327
 msgid "repeating a DEFINE group is not allowed"
 msgstr "la répétition d'un groupe DEFINE n'est pas autorisée"
 
-#: glib/gregex.c:327
+#: glib/gregex.c:330
 msgid "inconsistent NEWLINE options"
 msgstr "options NEWLINE inconsistentes"
 
-#: glib/gregex.c:330
+#: glib/gregex.c:333
 msgid ""
 "\\g is not followed by a braced name or an optionally braced non-zero number"
 msgstr ""
 "\\g n'est pas suivi d'un nom accolé ou d'un nombre accolé différent de zéro"
 
-#: glib/gregex.c:335
+#: glib/gregex.c:338
 msgid "unexpected repeat"
 msgstr "répétition inattendue"
 
-#: glib/gregex.c:339
+#: glib/gregex.c:342
 msgid "code overflow"
 msgstr "dépassement de code"
 
-#: glib/gregex.c:343
+#: glib/gregex.c:346
 msgid "overran compiling workspace"
 msgstr "dépassement de capacité en compilant l'espace de travail"
 
-#: glib/gregex.c:347
+#: glib/gregex.c:350
 msgid "previously-checked referenced subpattern not found"
 msgstr "un sous-motif référencé et précédemment vérifié n'a pas été trouvé"
 
-#: glib/gregex.c:514 glib/gregex.c:1562
+#: glib/gregex.c:517 glib/gregex.c:1565
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "Erreur lors de la correspondance de l'expression régulière %s : %s"
 
-#: glib/gregex.c:1067
+#: glib/gregex.c:1070
 msgid "PCRE library is compiled without UTF8 support"
 msgstr "La bibliothèque PCRE est compilée sans la prise en charge UTF8"
 
-#: glib/gregex.c:1076
+#: glib/gregex.c:1079
 msgid "PCRE library is compiled without UTF8 properties support"
 msgstr ""
 "La bibliothèque PCRE est compilée sans la prise en charge des propriétés UTF8"
 
-#: glib/gregex.c:1130
+#: glib/gregex.c:1133
 #, c-format
 msgid "Error while compiling regular expression %s at char %d: %s"
 msgstr ""
 "Erreur à la compilation de l'expression régulière %s au caractère %d : %s"
 
-#: glib/gregex.c:1166
+#: glib/gregex.c:1169
 #, c-format
 msgid "Error while optimizing regular expression %s: %s"
 msgstr "Erreur à l'optimisation de l'expression régulière %s : %s"
 
-#: glib/gregex.c:1990
+#: glib/gregex.c:1993
 msgid "hexadecimal digit or '}' expected"
 msgstr "chiffre hexadécimal ou « } » attendu"
 
-#: glib/gregex.c:2006
+#: glib/gregex.c:2009
 msgid "hexadecimal digit expected"
 msgstr "chiffre hexadécimal attendu"
 
-#: glib/gregex.c:2046
+#: glib/gregex.c:2049
 msgid "missing '<' in symbolic reference"
 msgstr "« < » manquant dans la référence symbolique"
 
-#: glib/gregex.c:2055
+#: glib/gregex.c:2058
 msgid "unfinished symbolic reference"
 msgstr "référence symbolique non terminée"
 
-#: glib/gregex.c:2062
+#: glib/gregex.c:2065
 msgid "zero-length symbolic reference"
 msgstr "référence symbolique de longueur nulle"
 
-#: glib/gregex.c:2073
+#: glib/gregex.c:2076
 msgid "digit expected"
 msgstr "chiffre attendu"
 
-#: glib/gregex.c:2091
+#: glib/gregex.c:2094
 msgid "illegal symbolic reference"
 msgstr "référence symbolique illégale"
 
-#: glib/gregex.c:2153
+#: glib/gregex.c:2156
 msgid "stray final '\\'"
 msgstr "terminaison parasite « \\ »"
 
-#: glib/gregex.c:2157
+#: glib/gregex.c:2160
 msgid "unknown escape sequence"
 msgstr "séquence d'échappement inconnue"
 
-#: glib/gregex.c:2167
+#: glib/gregex.c:2170
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr ""
@@ -1034,61 +1037,61 @@ msgstr "Séquence non valide dans l'entrée du convertisseur"
 msgid "Character out of range for UTF-16"
 msgstr "Caractère hors plage pour UTF-16"
 
-#: glib/goption.c:573
+#: glib/goption.c:612
 msgid "Usage:"
 msgstr "Utilisation :"
 
-#: glib/goption.c:573
+#: glib/goption.c:612
 msgid "[OPTION...]"
 msgstr "[OPTION...]"
 
-#: glib/goption.c:677
+#: glib/goption.c:716
 msgid "Help Options:"
 msgstr "Options de l'aide :"
 
-#: glib/goption.c:678
+#: glib/goption.c:717
 msgid "Show help options"
 msgstr "Affiche les options de l'aide"
 
-#: glib/goption.c:684
+#: glib/goption.c:723
 msgid "Show all help options"
 msgstr "Affiche toutes les options de l'aide"
 
-#: glib/goption.c:736
+#: glib/goption.c:785
 msgid "Application Options:"
 msgstr "Options de l'application :"
 
-#: glib/goption.c:797 glib/goption.c:867
+#: glib/goption.c:846 glib/goption.c:916
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "Impossible d'analyser la valeur entière « %s » pour %s"
 
-#: glib/goption.c:807 glib/goption.c:875
+#: glib/goption.c:856 glib/goption.c:924
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "La valeur entière « %s » pour %s est hors plage"
 
-#: glib/goption.c:832
+#: glib/goption.c:881
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "Impossible d'analyser la valeur double « %s » pour %s"
 
-#: glib/goption.c:840
+#: glib/goption.c:889
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "La valeur double « %s » pour %s est hors plage"
 
-#: glib/goption.c:1177
+#: glib/goption.c:1226
 #, c-format
 msgid "Error parsing option %s"
 msgstr "Erreur lors de l'analyse de l'option %s"
 
-#: glib/goption.c:1208 glib/goption.c:1319
+#: glib/goption.c:1257 glib/goption.c:1368
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Argument manquant pour %s"
 
-#: glib/goption.c:1714
+#: glib/goption.c:1763
 #, c-format
 msgid "Unknown option %s"
 msgstr "Option inconnue %s"
@@ -1139,9 +1142,9 @@ msgid "Key file contains unsupported encoding '%s'"
 msgstr ""
 "Le fichier de clés contient un codage de caractères non pris en charge « %s »"
 
-#: glib/gkeyfile.c:1109 glib/gkeyfile.c:1269 glib/gkeyfile.c:2487
-#: glib/gkeyfile.c:2555 glib/gkeyfile.c:2690 glib/gkeyfile.c:2825
-#: glib/gkeyfile.c:2978 glib/gkeyfile.c:3165 glib/gkeyfile.c:3226
+#: glib/gkeyfile.c:1109 glib/gkeyfile.c:1269 glib/gkeyfile.c:2485
+#: glib/gkeyfile.c:2553 glib/gkeyfile.c:2688 glib/gkeyfile.c:2823
+#: glib/gkeyfile.c:2976 glib/gkeyfile.c:3163 glib/gkeyfile.c:3224
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Le fichier de clés n'a pas de groupe « %s »"
@@ -1174,40 +1177,40 @@ msgstr ""
 "Le fichier de clés contient la clé « %s » dans le groupe « %s » qui a une "
 "valeur impossible à interpréter."
 
-#: glib/gkeyfile.c:2502 glib/gkeyfile.c:2705 glib/gkeyfile.c:3237
+#: glib/gkeyfile.c:2500 glib/gkeyfile.c:2703 glib/gkeyfile.c:3235
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Le fichier de clés ne contient pas de clé « %s » dans le groupe « %s »"
 
-#: glib/gkeyfile.c:3471
+#: glib/gkeyfile.c:3469
 #, c-format
 msgid "Key file contains escape character at end of line"
 msgstr "Le fichier de clés contient un caractère d'échappement en fin de ligne"
 
-#: glib/gkeyfile.c:3493
+#: glib/gkeyfile.c:3491
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr ""
 "Le fichier de clés contient une séquence d'échappement non valide « %s »"
 
-#: glib/gkeyfile.c:3635
+#: glib/gkeyfile.c:3633
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "La valeur « %s » ne peut pas être interprétée comme un nombre."
 
-#: glib/gkeyfile.c:3649
+#: glib/gkeyfile.c:3647
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "La valeur entière « %s » est hors plage"
 
-#: glib/gkeyfile.c:3682
+#: glib/gkeyfile.c:3680
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr ""
 "La valeur « %s » ne peut pas être interprétée comme un nombre à virgule "
 "flottante."
 
-#: glib/gkeyfile.c:3706
+#: glib/gkeyfile.c:3704
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "La valeur « %s » ne peut pas être interprétée comme un booléen."
@@ -1247,54 +1250,54 @@ msgstr "Type %s"
 msgid "Unexpected early end-of-stream"
 msgstr "Fin précoce de flux inattendue"
 
-#: gio/gdesktopappinfo.c:386 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:395 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr "Sans nom"
 
-#: gio/gdesktopappinfo.c:562
+#: gio/gdesktopappinfo.c:571
 #, c-format
 msgid "Desktop file didn't specify Exec field"
 msgstr "Le fichier Bureau n'a pas indiqué de champ Exec"
 
-#: gio/gdesktopappinfo.c:844
+#: gio/gdesktopappinfo.c:863
 #, c-format
 msgid "Unable to find terminal required for application"
 msgstr "Impossible de trouver le terminal requis par l'application"
 
-#: gio/gdesktopappinfo.c:1026
+#: gio/gdesktopappinfo.c:1097
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
 "Impossible de créer le dossier de configuration de l'application %s pour "
 "l'utilisateur : %s"
 
-#: gio/gdesktopappinfo.c:1030
+#: gio/gdesktopappinfo.c:1101
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr ""
 "Impossible de créer le dossier de configuration MIME %s pour l'utilisateur : "
 "%s"
 
-#: gio/gdesktopappinfo.c:1403
+#: gio/gdesktopappinfo.c:1474
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Définition personnalisée pour %s"
 
-#: gio/gdesktopappinfo.c:1427
+#: gio/gdesktopappinfo.c:1498
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Impossible de créer le fichier bureau %s pour l'utilisateur"
 
-#: gio/gdesktopappinfo.c:1452
+#: gio/gdesktopappinfo.c:1523
 #, c-format
 msgid "Can't load just created desktop file"
 msgstr "Impossible de charger le fichier bureau venant d'être créé"
 
-#: gio/gdrive.c:365
+#: gio/gdrive.c:369
 msgid "drive doesn't implement eject"
 msgstr "le lecteur n'implémente pas l'éjection (« eject »)"
 
-#: gio/gdrive.c:432
+#: gio/gdrive.c:436
 msgid "drive doesn't implement polling for media"
 msgstr "le lecteur n'implémente pas la scrutation du média (« polling »)"
 
@@ -1347,7 +1350,7 @@ msgstr "La corbeille n'est pas prise en charge"
 msgid "File names cannot contain '%c'"
 msgstr "Les noms de fichiers ne peuvent contenir « %c »"
 
-#: gio/gfile.c:4039 gio/gvolume.c:318
+#: gio/gfile.c:4042 gio/gvolume.c:318
 msgid "volume doesn't implement mount"
 msgstr "le volume n'implémente pas « mount »"
 
@@ -1366,23 +1369,23 @@ msgstr "L'énumérateur du fichier a une opération en cours"
 msgid "File enumerator is already closed"
 msgstr "L'énumérateur du fichier est déjà fermé"
 
-#: gio/gfileinputstream.c:143 gio/gfileinputstream.c:439
-#: gio/gfileoutputstream.c:154 gio/gfileoutputstream.c:556
+#: gio/gfileinputstream.c:154 gio/gfileinputstream.c:450
+#: gio/gfileoutputstream.c:168 gio/gfileoutputstream.c:570
 #, c-format
 msgid "Stream doesn't support query_info"
 msgstr "Le flux ne prend pas en charge query_info"
 
-#: gio/gfileinputstream.c:354 gio/gfileoutputstream.c:395
+#: gio/gfileinputstream.c:365 gio/gfileoutputstream.c:409
 #, c-format
 msgid "Seek not supported on stream"
 msgstr "La recherche n'est pas prise en charge sur le flux"
 
-#: gio/gfileinputstream.c:398
+#: gio/gfileinputstream.c:409
 #, c-format
 msgid "Truncate not allowed on input stream"
 msgstr "La troncature n'est pas autorisée sur le flux en entrée"
 
-#: gio/gfileoutputstream.c:490
+#: gio/gfileoutputstream.c:504
 #, c-format
 msgid "Truncate not supported on stream"
 msgstr "La troncature n'est pas prise en charge sur le flux"
@@ -1580,30 +1583,30 @@ msgstr "Type d'attribut non valide (chaîne octet attendu)"
 msgid "Error setting permissions: %s"
 msgstr "Erreur lors de la définition des permissions : %s"
 
-#: gio/glocalfileinfo.c:1772 gio/glocalfileinfo.c:1932
+#: gio/glocalfileinfo.c:1774 gio/glocalfileinfo.c:1934
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Erreur lors de la définition du propriétaire : %s"
 
-#: gio/glocalfileinfo.c:1795
+#: gio/glocalfileinfo.c:1797
 #, c-format
 msgid "symlink must be non-NULL"
 msgstr "un lien symbolique ne doit pas être « NULL »"
 
-#: gio/glocalfileinfo.c:1803 gio/glocalfileinfo.c:1820
-#: gio/glocalfileinfo.c:1829
+#: gio/glocalfileinfo.c:1805 gio/glocalfileinfo.c:1822
+#: gio/glocalfileinfo.c:1831
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Erreur lors de la définition du lien symbolique : %s"
 
-#: gio/glocalfileinfo.c:1812
+#: gio/glocalfileinfo.c:1814
 #, c-format
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 "Erreur lors de la définition du lien symbolique : le fichier n'est pas un "
 "lien symbolique"
 
-#: gio/glocalfileinfo.c:1987
+#: gio/glocalfileinfo.c:1989
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "La définition de l'attribut %s n'est pas prise en charge"
@@ -1676,16 +1679,46 @@ msgstr "Le fichier cible n'est pas un fichier standard"
 msgid "The file was externally modified"
 msgstr "Le fichier a été modifié extérieurement"
 
-#: gio/gmount.c:335
+#: gio/gmemoryinputstream.c:471 gio/gmemoryoutputstream.c:517
+#, c-format
+msgid "Invalid GSeekType supplied"
+msgstr ""
+
+#: gio/gmemoryinputstream.c:481 gio/gmemoryoutputstream.c:527
+#, fuzzy, c-format
+msgid "Invalid seek request"
+msgstr "Nom de fichier non valide : %s"
+
+#: gio/gmemoryinputstream.c:505
+#, c-format
+msgid "Cannot truncate GMemoryInputStream"
+msgstr ""
+
+#: gio/gmemoryoutputstream.c:260
+#, c-format
+msgid "Reached maximum data array limit"
+msgstr ""
+
+#: gio/gmemoryoutputstream.c:295
+#, c-format
+msgid "Memory output stream not resizable"
+msgstr ""
+
+#: gio/gmemoryoutputstream.c:311
+#, c-format
+msgid "Failed to resize memory output stream"
+msgstr ""
+
+#: gio/gmount.c:341
 msgid "mount doesn't implement unmount"
 msgstr "le volume n'implémente pas le démontage (« unmount »)"
 
-#: gio/gmount.c:407
+#: gio/gmount.c:413
 #, fuzzy
 msgid "mount doesn't implement eject"
 msgstr "le volume n'implémente pas le démontage (« unmount »)"
 
-#: gio/gmount.c:484
+#: gio/gmount.c:490
 #, fuzzy
 msgid "mount doesn't implement remount"
 msgstr "le volume n'implémente pas le démontage (« unmount »)"
@@ -1715,13 +1748,13 @@ msgstr "Valeur de comptage trop grande fournie à g_output_stream_write_async"
 msgid "Error reading from unix: %s"
 msgstr "Erreur lors de la lecture depuis unix : %s"
 
-#: gio/gunixinputstream.c:248 gio/gunixinputstream.c:423
+#: gio/gunixinputstream.c:248 gio/gunixinputstream.c:424
 #: gio/gunixoutputstream.c:238 gio/gunixoutputstream.c:385
 #, c-format
 msgid "Error closing unix: %s"
 msgstr "Erreur lors de la fermeture d'unix : %s"
 
-#: gio/gunixmounts.c:1753 gio/gunixmounts.c:1790
+#: gio/gunixmounts.c:1754 gio/gunixmounts.c:1791
 msgid "Filesystem root"
 msgstr "Racine du système de fichiers"
 
@@ -1745,31 +1778,31 @@ msgstr "Impossible de trouver l'application"
 msgid "Error launching application: %s"
 msgstr "Erreur lors du lancement de l'application : %s"
 
-#: gio/gwin32appinfo.c:343
+#: gio/gwin32appinfo.c:349
 #, c-format
 msgid "URIs not supported"
 msgstr "URIs non pris en charge"
 
-#: gio/gwin32appinfo.c:366
+#: gio/gwin32appinfo.c:371
 #, c-format
 msgid "association changes not supported on win32"
 msgstr ""
 "Les modifications d'association ne sont pas prises en en charge sur win32"
 
-#: gio/gwin32appinfo.c:378
+#: gio/gwin32appinfo.c:383
 #, c-format
 msgid "Association creation not supported on win32"
 msgstr "La création d'association n'est pas prise en charge sur win32"
 
-#: tests/gio-ls.c:28
+#: tests/gio-ls.c:27
 msgid "do not hide entries"
 msgstr ""
 
-#: tests/gio-ls.c:30
+#: tests/gio-ls.c:29
 msgid "use a long listing format"
 msgstr ""
 
-#: tests/gio-ls.c:38
+#: tests/gio-ls.c:37
 #, fuzzy
 msgid "[FILE...]"
 msgstr "[OPTION...]"

@@ -5,10 +5,13 @@ Overview of Changes from GLib 2.15.0 to GLib 2.15.1
  - Assertion functions are marked as noreturn again
  - Handling of inline functions has been fixed to work with gcc 4.3
  - C99 comments have been removed from headers
+ - The nonportable sed -i option is no longer used
 
  * GIO:
   - Clarified the semantics of g_app_info_get_all()
-  - API for memory input streams is more flexible
+  - API for memory input and output streams has been changed a bit
+  - GDirectoryMonitor has been removed; GFileMonitor can monitor
+    files and directories now
 
  * Bugs fixed:
    504829 Invalid environment passed to g_spawn_async in g_desktop_...
@@ -33,7 +36,10 @@ Overview of Changes from GLib 2.15.0 to GLib 2.15.1
    506395 Updates to GIO documentation
    507628 Missing .pc entry for gio linking against glib
    505195 [patch] typo in g_try_new0 docs 
- 
+   507822 g{file,directory}monitor changes signal problem
+   506377 gmemoryoutputstream write implementation
+   507835 bug in gunixinputstream 
+
  * Updated translations:
    Arabic (ar)
    Belarusian Latin (be@latin)
