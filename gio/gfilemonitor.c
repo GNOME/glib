@@ -34,9 +34,8 @@
  * SECTION:gfilemonitor
  * @short_description: File Monitor
  * @include: gio.h
- * @see_also: #GDirectoryMonitor
  *
- * Monitors a file for changes.
+ * Monitors a file or directory for changes.
  * 
  **/
 
@@ -47,19 +46,22 @@ enum {
 
 G_DEFINE_ABSTRACT_TYPE (GFileMonitor, g_file_monitor, G_TYPE_OBJECT);
 
+typedef struct {
+  GFile *file;
+  guint32 last_sent_change_time; /* 0 == not sent */
+  guint32 send_delayed_change_at; /* 0 == never */
+  guint32 send_virtual_changes_done_at; /* 0 == never */
+} RateLimiter;
+
 struct _GFileMonitorPrivate {
   gboolean cancelled;
   int rate_limit_msec;
 
   /* Rate limiting change events */
-  guint32 last_sent_change_time; /* Some monotonic clock in msecs */
-  GFile *last_sent_change_file;
-  
-  guint send_delayed_change_timeout;
+  GHashTable *rate_limiter;
 
-  /* Virtual CHANGES_DONE_HINT emission */
-  GSource *virtual_changes_done_timeout;
-  GFile *virtual_changes_done_file;
+  GSource *timeout;
+  guint32 timeout_fires_at;
 };
 
 enum {
@@ -123,6 +125,12 @@ g_file_monitor_get_property (GObject    *object,
 
 static guint signals[LAST_SIGNAL] = { 0 };
 
+static void
+rate_limiter_free (RateLimiter *limiter)
+{
+  g_object_unref (limiter->file);
+  g_slice_free (RateLimiter, limiter);
+}
 
 static void
 g_file_monitor_finalize (GObject *object)
@@ -131,17 +139,13 @@ g_file_monitor_finalize (GObject *object)
 
   monitor = G_FILE_MONITOR (object);
 
-  if (monitor->priv->last_sent_change_file)
-    g_object_unref (monitor->priv->last_sent_change_file);
+  if (monitor->priv->timeout)
+    {
+      g_source_destroy (monitor->priv->timeout);
+      g_source_unref (monitor->priv->timeout);
+    }
 
-  if (monitor->priv->send_delayed_change_timeout != 0)
-    g_source_remove (monitor->priv->send_delayed_change_timeout);
-
-  if (monitor->priv->virtual_changes_done_file)
-    g_object_unref (monitor->priv->virtual_changes_done_file);
-
-  if (monitor->priv->virtual_changes_done_timeout)
-    g_source_destroy (monitor->priv->virtual_changes_done_timeout);
+  g_hash_table_destroy (monitor->priv->rate_limiter);
   
   if (G_OBJECT_CLASS (g_file_monitor_parent_class)->finalize)
     (*G_OBJECT_CLASS (g_file_monitor_parent_class)->finalize) (object);
@@ -221,6 +225,8 @@ g_file_monitor_init (GFileMonitor *monitor)
 					       G_TYPE_FILE_MONITOR,
 					       GFileMonitorPrivate);
   monitor->priv->rate_limit_msec = DEFAULT_RATE_LIMIT_MSECS;
+  monitor->priv->rate_limiter = g_hash_table_new_full (g_file_hash, (GEqualFunc)g_file_equal,
+						       NULL, (GDestroyNotify) rate_limiter_free);
 }
 
 /**
@@ -279,7 +285,9 @@ g_file_monitor_set_rate_limit (GFileMonitor *monitor,
 			       int           limit_msecs)
 {
   GFileMonitorPrivate *priv;
+  
   g_return_if_fail (G_IS_FILE_MONITOR (monitor));
+  
   priv = monitor->priv;
   if (priv->rate_limit_msec != limit_msecs)
     {
@@ -304,189 +312,279 @@ time_difference (guint32 from, guint32 to)
 
 /* Change event rate limiting support: */
 
-static void
-update_last_sent_change (GFileMonitor *monitor, GFile *file, guint32 time_now)
+static RateLimiter *
+new_limiter (GFileMonitor *monitor,
+	     GFile             *file)
 {
-  if (monitor->priv->last_sent_change_file != file)
-    {
-      if (monitor->priv->last_sent_change_file)
-	{
-	  g_object_unref (monitor->priv->last_sent_change_file);
-	  monitor->priv->last_sent_change_file = NULL;
-	}
-      if (file)
-	monitor->priv->last_sent_change_file = g_object_ref (file);
-    }
+  RateLimiter *limiter;
+
+  limiter = g_slice_new0 (RateLimiter);
+  limiter->file = g_object_ref (file);
+  g_hash_table_insert (monitor->priv->rate_limiter, file, limiter);
   
-  monitor->priv->last_sent_change_time = time_now;
+  return limiter;
 }
 
 static void
-send_delayed_change_now (GFileMonitor *monitor)
+rate_limiter_send_virtual_changes_done_now (GFileMonitor *monitor, 
+                                            RateLimiter  *limiter)
 {
-  if (monitor->priv->send_delayed_change_timeout)
+  if (limiter->send_virtual_changes_done_at != 0)
     {
       g_signal_emit (monitor, signals[CHANGED], 0,
-		     monitor->priv->last_sent_change_file, NULL,
-		     G_FILE_MONITOR_EVENT_CHANGED);
-      
-      g_source_remove (monitor->priv->send_delayed_change_timeout);
-      monitor->priv->send_delayed_change_timeout = 0;
-
-      /* Same file, new last_sent time */
-      monitor->priv->last_sent_change_time = get_time_msecs ();
-    }
-}
-
-static gboolean
-delayed_changed_event_timeout (gpointer data)
-{
-  GFileMonitor *monitor = data;
-
-  send_delayed_change_now (monitor);
-  
-  return FALSE;
-}
-
-static void
-schedule_delayed_change (GFileMonitor *monitor, GFile *file, guint32 delay_msec)
-{
-  if (monitor->priv->send_delayed_change_timeout == 0) /* Only set the timeout once */
-    {
-      monitor->priv->send_delayed_change_timeout = 
-	g_timeout_add (delay_msec, delayed_changed_event_timeout, monitor);
-    }
-}
-
-static void
-cancel_delayed_change (GFileMonitor *monitor)
-{
-  if (monitor->priv->send_delayed_change_timeout != 0)
-    {
-      g_source_remove (monitor->priv->send_delayed_change_timeout);
-      monitor->priv->send_delayed_change_timeout = 0;
-    }
-}
-
-/* Virtual changes_done_hint support: */
-
-static void
-send_virtual_changes_done_now (GFileMonitor *monitor)
-{
-  if (monitor->priv->virtual_changes_done_timeout)
-    {
-      g_signal_emit (monitor, signals[CHANGED], 0,
-		     monitor->priv->virtual_changes_done_file, NULL,
+		     limiter->file, NULL,
 		     G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT);
-      
-      g_source_destroy (monitor->priv->virtual_changes_done_timeout);
-      monitor->priv->virtual_changes_done_timeout = NULL;
-
-      g_object_unref (monitor->priv->virtual_changes_done_file);
-      monitor->priv->virtual_changes_done_file = NULL;
+      limiter->send_virtual_changes_done_at = 0;
     }
 }
 
-static gboolean
-virtual_changes_done_timeout (gpointer data)
+static void
+rate_limiter_send_delayed_change_now (GFileMonitor *monitor, 
+                                      RateLimiter *limiter, 
+                                      guint32 time_now)
 {
-  GFileMonitor *monitor = data;
-
-  send_virtual_changes_done_now (monitor);
-  
-  return FALSE;
+  if (limiter->send_delayed_change_at != 0)
+    {
+      g_signal_emit (monitor, signals[CHANGED], 0,
+		     limiter->file, NULL,
+		     G_FILE_MONITOR_EVENT_CHANGED);
+      limiter->send_delayed_change_at = 0;
+      limiter->last_sent_change_time = time_now;
+    }
 }
 
-static void
-schedule_virtual_change_done (GFileMonitor *monitor, GFile *file)
+typedef struct {
+  guint32 min_time;
+  guint32 time_now;
+  GFileMonitor *monitor;
+} ForEachData;
+
+static gboolean
+calc_min_time (GFileMonitor *monitor, 
+               RateLimiter *limiter, 
+               guint32 time_now, 
+               guint32 *min_time)
 {
+  gboolean delete_me;
+  guint32 expire_at;
+
+  delete_me = TRUE;
+
+  if (limiter->last_sent_change_time != 0)
+    {
+      /* Set a timeout at 2*rate limit so that we can clear out the change from the hash eventualy */
+      expire_at = limiter->last_sent_change_time + 2 * monitor->priv->rate_limit_msec;
+
+      if (time_difference (time_now, expire_at) > 0)
+	{
+	  delete_me = FALSE;
+	  *min_time = MIN (*min_time,
+			   time_difference (time_now, expire_at));
+	}
+    }
+
+  if (limiter->send_delayed_change_at != 0)
+    {
+      delete_me = FALSE;
+      *min_time = MIN (*min_time,
+		       time_difference (time_now, limiter->send_delayed_change_at));
+    }
+
+  if (limiter->send_virtual_changes_done_at != 0)
+    {
+      delete_me = FALSE;
+      *min_time = MIN (*min_time,
+		       time_difference (time_now, limiter->send_virtual_changes_done_at));
+    }
+
+  return delete_me;
+}
+
+static gboolean
+foreach_rate_limiter_fire (gpointer key,
+			   gpointer value,
+			   gpointer user_data)
+{
+  RateLimiter *limiter = value;
+  ForEachData *data = user_data;
+
+  if (limiter->send_delayed_change_at != 0 &&
+      time_difference (data->time_now, limiter->send_delayed_change_at) == 0)
+    rate_limiter_send_delayed_change_now (data->monitor, limiter, data->time_now);
+  
+  if (limiter->send_virtual_changes_done_at != 0 &&
+      time_difference (data->time_now, limiter->send_virtual_changes_done_at) == 0)
+    rate_limiter_send_virtual_changes_done_now (data->monitor, limiter);
+  
+  return calc_min_time (data->monitor, limiter, data->time_now, &data->min_time);
+}
+
+static gboolean 
+rate_limiter_timeout (gpointer timeout_data)
+{
+  GFileMonitor *monitor = timeout_data;
+  ForEachData data;
   GSource *source;
   
-  source = g_timeout_source_new_seconds (DEFAULT_VIRTUAL_CHANGES_DONE_DELAY_SECS);
+  data.min_time = G_MAXUINT32;
+  data.monitor = monitor;
+  data.time_now = get_time_msecs ();
+  g_hash_table_foreach_remove (monitor->priv->rate_limiter,
+			       foreach_rate_limiter_fire,
+			       &data);
   
-  g_source_set_callback (source, virtual_changes_done_timeout, monitor, NULL);
-  g_source_attach (source, NULL);
-  monitor->priv->virtual_changes_done_timeout = source;
-  monitor->priv->virtual_changes_done_file = g_object_ref (file);
-  g_source_unref (source);
+  /* Remove old timeout */
+  if (monitor->priv->timeout)
+    {
+      g_source_destroy (monitor->priv->timeout);
+      g_source_unref (monitor->priv->timeout);
+      monitor->priv->timeout = NULL;
+      monitor->priv->timeout_fires_at = 0;
+    }
+  
+  /* Set up new timeout */
+  if (data.min_time != G_MAXUINT32)
+    {
+      source = g_timeout_source_new (data.min_time + 1); /* + 1 to make sure we've really passed the time */
+      g_source_set_callback (source, rate_limiter_timeout, monitor, NULL);
+      g_source_attach (source, NULL);
+      
+      monitor->priv->timeout = source;
+      monitor->priv->timeout_fires_at = data.time_now + data.min_time; 
+    }
+  
+  return FALSE;
+}
+
+static gboolean
+foreach_rate_limiter_update (gpointer key,
+			     gpointer value,
+			     gpointer user_data)
+{
+  RateLimiter *limiter = value;
+  ForEachData *data = user_data;
+
+  return calc_min_time (data->monitor, limiter, data->time_now, &data->min_time);
 }
 
 static void
-cancel_virtual_changes_done (GFileMonitor *monitor)
+update_rate_limiter_timeout (GFileMonitor *monitor, 
+                             guint new_time)
 {
-  if (monitor->priv->virtual_changes_done_timeout)
+  ForEachData data;
+  GSource *source;
+  
+  if (monitor->priv->timeout_fires_at != 0 && new_time != 0 &&
+      time_difference (new_time, monitor->priv->timeout_fires_at) == 0)
+    return; /* Nothing to do, we already fire earlier than that */
+
+  data.min_time = G_MAXUINT32;
+  data.monitor = monitor;
+  data.time_now = get_time_msecs ();
+  g_hash_table_foreach_remove (monitor->priv->rate_limiter,
+			       foreach_rate_limiter_update,
+			       &data);
+
+  /* Remove old timeout */
+  if (monitor->priv->timeout)
     {
-      g_source_destroy (monitor->priv->virtual_changes_done_timeout);
-      monitor->priv->virtual_changes_done_timeout = NULL;
+      g_source_destroy (monitor->priv->timeout);
+      g_source_unref (monitor->priv->timeout);
+      monitor->priv->timeout_fires_at = 0;
+      monitor->priv->timeout = NULL;
+    }
+
+  /* Set up new timeout */
+  if (data.min_time != G_MAXUINT32)
+    {
+      source = g_timeout_source_new (data.min_time + 1);  /* + 1 to make sure we've really passed the time */
+      g_source_set_callback (source, rate_limiter_timeout, monitor, NULL);
+      g_source_attach (source, NULL);
       
-      g_object_unref (monitor->priv->virtual_changes_done_file);
-      monitor->priv->virtual_changes_done_file = NULL;
+      monitor->priv->timeout = source;
+      monitor->priv->timeout_fires_at = data.time_now + data.min_time; 
     }
 }
 
 /**
  * g_file_monitor_emit_event:
  * @monitor: a #GFileMonitor.
- * @file: a #GFile.
+ * @child: a #GFile.
  * @other_file: a #GFile.
- * @event_type: a #GFileMonitorEvent
+ * @event_type: a set of #GFileMonitorEvent flags.
  * 
- * Emits a file monitor event. This is mainly necessary for implementations
- * of GFileMonitor.
- * 
+ * Emits the #GFileMonitor::changed signal if a change
+ * has taken place. Should be called from file monitor 
+ * implementations only.
  **/
 void
 g_file_monitor_emit_event (GFileMonitor *monitor,
-			   GFile *file,
+			   GFile *child,
 			   GFile *other_file,
 			   GFileMonitorEvent event_type)
 {
   guint32 time_now, since_last;
   gboolean emit_now;
+  RateLimiter *limiter;
 
   g_return_if_fail (G_IS_FILE_MONITOR (monitor));
-  g_return_if_fail (G_IS_FILE (file));
+  g_return_if_fail (G_IS_FILE (child));
+
+  limiter = g_hash_table_lookup (monitor->priv->rate_limiter, child);
 
   if (event_type != G_FILE_MONITOR_EVENT_CHANGED)
     {
-      send_delayed_change_now (monitor);
-      update_last_sent_change (monitor, NULL, 0);
-      if (event_type == G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT)
-	cancel_virtual_changes_done (monitor);
-      else
-	send_virtual_changes_done_now (monitor);
-      g_signal_emit (monitor, signals[CHANGED], 0, file, other_file, event_type);
+      if (limiter)
+	{
+	  rate_limiter_send_delayed_change_now (monitor, limiter, get_time_msecs ());
+	  if (event_type == G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT)
+	    limiter->send_virtual_changes_done_at = 0;
+	  else
+	    rate_limiter_send_virtual_changes_done_now (monitor, limiter);
+	  update_rate_limiter_timeout (monitor, 0);
+	}
+      g_signal_emit (monitor, signals[CHANGED], 0, child, other_file, event_type);
     }
   else
     {
+      /* Changed event, rate limit */
       time_now = get_time_msecs ();
       emit_now = TRUE;
       
-      if (monitor->priv->last_sent_change_file)
+      if (limiter)
 	{
-	  since_last = time_difference (monitor->priv->last_sent_change_time, time_now);
+	  since_last = time_difference (limiter->last_sent_change_time, time_now);
 	  if (since_last < monitor->priv->rate_limit_msec)
 	    {
 	      /* We ignore this change, but arm a timer so that we can fire it later if we
 		 don't get any other events (that kill this timeout) */
 	      emit_now = FALSE;
-	      schedule_delayed_change (monitor, file,
-				       monitor->priv->rate_limit_msec - since_last);
+	      if (limiter->send_delayed_change_at == 0)
+		{
+		  limiter->send_delayed_change_at = time_now + monitor->priv->rate_limit_msec;
+		  update_rate_limiter_timeout (monitor, limiter->send_delayed_change_at);
+		}
 	    }
 	}
       
+      if (limiter == NULL)
+	limiter = new_limiter (monitor, child);
+      
       if (emit_now)
 	{
-	  g_signal_emit (monitor, signals[CHANGED], 0, file, other_file, event_type);
+	  g_signal_emit (monitor, signals[CHANGED], 0, child, other_file, event_type);
 	  
-	  cancel_delayed_change (monitor);
-	  update_last_sent_change (monitor, file, time_now);
+	  limiter->last_sent_change_time = time_now;
+	  limiter->send_delayed_change_at = 0;
+	  /* Set a timeout of 2*rate limit so that we can clear out the change from the hash eventualy */
+	  update_rate_limiter_timeout (monitor, time_now + 2 * monitor->priv->rate_limit_msec);
 	}
-
+      
       /* Schedule a virtual change done. This is removed if we get a real one, and
 	 postponed if we get more change events. */
-      cancel_virtual_changes_done (monitor);
-      schedule_virtual_change_done (monitor, file);
+      
+      limiter->send_virtual_changes_done_at = time_now + DEFAULT_VIRTUAL_CHANGES_DONE_DELAY_SECS * 1000;
+      update_rate_limiter_timeout (monitor, limiter->send_virtual_changes_done_at);
     }
 }
 

@@ -36,7 +36,6 @@
 #include <gio/gthemedicon.h>
 #include <gio/gseekable.h>
 #include <gio/gfilemonitor.h>
-#include <gio/gdirectorymonitor.h>
 #include <gio/gbufferedinputstream.h>
 #include <gio/gbufferedoutputstream.h>
 #include <gio/gdatainputstream.h>

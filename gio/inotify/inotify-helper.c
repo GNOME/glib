@@ -43,7 +43,6 @@
 #endif
 #include <gio/glocalfile.h>
 #include <gio/gfilemonitor.h>
-#include <gio/gdirectorymonitor.h>
 #include "inotify-helper.h"
 #include "inotify-missing.h"
 #include "inotify-path.h"
@@ -168,18 +167,8 @@ ih_event_callback (ik_event_t *event, inotify_sub *sub)
   child = g_file_new_for_path (fullpath);
   g_free (fullpath);
 
-  if (G_IS_DIRECTORY_MONITOR (sub->user_data))
-    {
-      GDirectoryMonitor* monitor = G_DIRECTORY_MONITOR (sub->user_data);
-      g_directory_monitor_emit_event (monitor, 
-				      child, NULL, eflags);
-    }
-  else if (G_IS_FILE_MONITOR (sub->user_data))
-    {
-      GFileMonitor* monitor = G_FILE_MONITOR (sub->user_data);
-      g_file_monitor_emit_event (monitor,
-				 child, NULL, eflags);
-    }
+  g_file_monitor_emit_event (G_FILE_MONITOR (sub->user_data),
+			     child, NULL, eflags);
 
   g_object_unref (child);
   g_object_unref (parent);
@@ -217,17 +206,8 @@ ih_not_missing_callback (inotify_sub *sub)
   child = g_file_new_for_path (fullpath);
   g_free (fullpath);
 
-  if (G_IS_DIRECTORY_MONITOR (sub->user_data))
-    {
-      GDirectoryMonitor* monitor = G_DIRECTORY_MONITOR (sub->user_data);
-      g_directory_monitor_emit_event (monitor, child, NULL, eflags);
-    }
-  else if (G_IS_FILE_MONITOR (sub->user_data))
-    {
-      GFileMonitor* monitor = G_FILE_MONITOR (sub->user_data);
-      g_file_monitor_emit_event (monitor,
-				 child, NULL, eflags);
-    }
+  g_file_monitor_emit_event (G_FILE_MONITOR (sub->user_data),
+			     child, NULL, eflags);
 
   g_object_unref (child);
   g_object_unref (parent);

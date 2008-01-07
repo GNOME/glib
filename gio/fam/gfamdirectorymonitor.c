@@ -36,7 +36,7 @@ struct _GFamDirectoryMonitor
   fam_sub *sub;
 };
 
-static gboolean g_fam_directory_monitor_cancel (GDirectoryMonitor* monitor);
+static gboolean g_fam_directory_monitor_cancel (GFileMonitor* monitor);
 
 G_DEFINE_DYNAMIC_TYPE (GFamDirectoryMonitor, g_fam_directory_monitor, G_TYPE_LOCAL_DIRECTORY_MONITOR)
 
@@ -106,12 +106,12 @@ static void
 g_fam_directory_monitor_class_init (GFamDirectoryMonitorClass* klass)
 {
   GObjectClass* gobject_class = G_OBJECT_CLASS (klass);
-  GDirectoryMonitorClass *directory_monitor_class = G_DIRECTORY_MONITOR_CLASS (klass);
+  GFileMonitorClass *file_monitor_class = G_FILE_MONITOR_CLASS (klass);
   GLocalDirectoryMonitorClass *local_directory_monitor_class = G_LOCAL_DIRECTORY_MONITOR_CLASS (klass);
   
   gobject_class->finalize = g_fam_directory_monitor_finalize;
   gobject_class->constructor = g_fam_directory_monitor_constructor;
-  directory_monitor_class->cancel = g_fam_directory_monitor_cancel;
+  file_monitor_class->cancel = g_fam_directory_monitor_cancel;
 
   local_directory_monitor_class->prio = 10;
   local_directory_monitor_class->mount_notify = FALSE;
@@ -125,7 +125,7 @@ g_fam_directory_monitor_init (GFamDirectoryMonitor* monitor)
 }
 
 static gboolean
-g_fam_directory_monitor_cancel (GDirectoryMonitor* monitor)
+g_fam_directory_monitor_cancel (GFileMonitor* monitor)
 {
   GFamDirectoryMonitor *fam_monitor = G_FAM_DIRECTORY_MONITOR (monitor);
   fam_sub *sub = fam_monitor->sub;
@@ -138,8 +138,8 @@ g_fam_directory_monitor_cancel (GDirectoryMonitor* monitor)
     fam_monitor->sub = NULL;
   }
 
-  if (G_DIRECTORY_MONITOR_CLASS (g_fam_directory_monitor_parent_class)->cancel)
-    (*G_DIRECTORY_MONITOR_CLASS (g_fam_directory_monitor_parent_class)->cancel) (monitor);
+  if (G_FILE_MONITOR_CLASS (g_fam_directory_monitor_parent_class)->cancel)
+    (*G_FILE_MONITOR_CLASS (g_fam_directory_monitor_parent_class)->cancel) (monitor);
 
   return TRUE;
 }

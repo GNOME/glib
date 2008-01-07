@@ -2,7 +2,7 @@ include $(top_srcdir)/Makefile.decl
 
 NULL =
 
-SUBDIRS=tests
+SUBDIRS=
 
 if OS_UNIX
 SUBDIRS += xdgmime
@@ -123,6 +123,8 @@ appinfo_sources += gwin32appinfo.c gwin32appinfo.h
 platform_libadd += -lshlwapi
 endif
 
+SUBDIRS += tests
+
 libgio_2_0_la_SOURCES =		\
 	gappinfo.c 		\
 	gasynchelper.c 		\
@@ -135,7 +137,6 @@ libgio_2_0_la_SOURCES =		\
 	gcontenttypeprivate.h 	\
 	gdatainputstream.c 	\
 	gdataoutputstream.c 	\
-	gdirectorymonitor.c 	\
 	gdrive.c 		\
 	gdummyfile.h 		\
 	gdummyfile.c 		\
@@ -213,7 +214,6 @@ gio_headers =			\
 	gcontenttype.h 		\
 	gdatainputstream.h 	\
 	gdataoutputstream.h 	\
-	gdirectorymonitor.h 	\
 	gdrive.h 		\
 	gfile.h 		\
 	gfileattribute.h 	\

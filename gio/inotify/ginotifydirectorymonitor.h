@@ -28,7 +28,6 @@
 
 #include <glib-object.h>
 #include <string.h>
-#include <gio/gdirectorymonitor.h>
 #include "glocaldirectorymonitor.h"
 #include "giomodule.h"
 

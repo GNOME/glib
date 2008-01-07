@@ -24,7 +24,7 @@
 #define __G_LOCAL_DIRECTORY_MONITOR_H__
 
 #include <glib-object.h>
-#include <gio/gdirectorymonitor.h>
+#include <gio/gfilemonitor.h>
 
 #include "gunixmounts.h"
 
@@ -41,7 +41,7 @@ typedef struct _GLocalDirectoryMonitorClass GLocalDirectoryMonitorClass;
 
 struct _GLocalDirectoryMonitor
 {
-  GDirectoryMonitor parent_instance;
+  GFileMonitor parent_instance;
   gchar *dirname;
   /* For mount emulation */
   GUnixMountMonitor *mount_monitor;
@@ -49,7 +49,7 @@ struct _GLocalDirectoryMonitor
 };
 
 struct _GLocalDirectoryMonitorClass {
-  GDirectoryMonitorClass parent_class;
+  GFileMonitorClass parent_class;
   gint prio;
   char *name; /* Not used atm */
   gboolean mount_notify;
@@ -58,8 +58,8 @@ struct _GLocalDirectoryMonitorClass {
 
 GType g_local_directory_monitor_get_type (void) G_GNUC_CONST;
 
-GDirectoryMonitor* _g_local_directory_monitor_new (const char* dirname,
-						   GFileMonitorFlags flags);
+GFileMonitor* _g_local_directory_monitor_new (const char* dirname,
+					      GFileMonitorFlags flags);
 
 G_END_DECLS
 

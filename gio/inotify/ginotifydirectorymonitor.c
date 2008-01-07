@@ -39,7 +39,7 @@ struct _GInotifyDirectoryMonitor
   inotify_sub *sub;
 };
 
-static gboolean g_inotify_directory_monitor_cancel (GDirectoryMonitor* monitor);
+static gboolean g_inotify_directory_monitor_cancel (GFileMonitor* monitor);
 
 #define g_inotify_directory_monitor_get_type _g_inotify_directory_monitor_get_type
 G_DEFINE_TYPE (GInotifyDirectoryMonitor, g_inotify_directory_monitor, G_TYPE_LOCAL_DIRECTORY_MONITOR)
@@ -109,7 +109,7 @@ static void
 g_inotify_directory_monitor_class_init (GInotifyDirectoryMonitorClass* klass)
 {
   GObjectClass* gobject_class = G_OBJECT_CLASS (klass);
-  GDirectoryMonitorClass *directory_monitor_class = G_DIRECTORY_MONITOR_CLASS (klass);
+  GFileMonitorClass *directory_monitor_class = G_FILE_MONITOR_CLASS (klass);
   GLocalDirectoryMonitorClass *local_directory_monitor_class = G_LOCAL_DIRECTORY_MONITOR_CLASS (klass);
   
   gobject_class->finalize = g_inotify_directory_monitor_finalize;
@@ -128,7 +128,7 @@ g_inotify_directory_monitor_init (GInotifyDirectoryMonitor* monitor)
 }
 
 static gboolean
-g_inotify_directory_monitor_cancel (GDirectoryMonitor* monitor)
+g_inotify_directory_monitor_cancel (GFileMonitor* monitor)
 {
   GInotifyDirectoryMonitor *inotify_monitor = G_INOTIFY_DIRECTORY_MONITOR (monitor);
   inotify_sub *sub = inotify_monitor->sub;
@@ -139,8 +139,8 @@ g_inotify_directory_monitor_cancel (GDirectoryMonitor* monitor)
     inotify_monitor->sub = NULL;
   }
 
-  if (G_DIRECTORY_MONITOR_CLASS (g_inotify_directory_monitor_parent_class)->cancel)
-    (*G_DIRECTORY_MONITOR_CLASS (g_inotify_directory_monitor_parent_class)->cancel) (monitor);
+  if (G_FILE_MONITOR_CLASS (g_inotify_directory_monitor_parent_class)->cancel)
+    (*G_FILE_MONITOR_CLASS (g_inotify_directory_monitor_parent_class)->cancel) (monitor);
 
   return TRUE;
 }

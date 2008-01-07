@@ -31,7 +31,7 @@
  * SECTION:gvolumemonitor
  * @short_description: Volume Monitor
  * @include: gio.h
- * @see_also: #GDirectoryMonitor, #GFileMonitor
+ * @see_also: #GFileMonitor
  * 
  * #GVolumeMonitor is for listing the user interesting devices and volumes
  * on the computer. In other words, what a file selector or file manager

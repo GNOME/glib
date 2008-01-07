@@ -104,7 +104,7 @@ typedef enum {
  * @G_FILE_MONITOR_NONE: No flags set.
  * @G_FILE_MONITOR_WATCH_MOUNTS: Watch for mount events. 
  *
- * Flags used to set what a #GFileMonitor or #GDirectoryMonitor will watch for. 
+ * Flags used to set what a #GFileMonitor will watch for. 
  */
 typedef enum  {
   G_FILE_MONITOR_NONE = 0,
@@ -120,7 +120,6 @@ typedef enum  {
  **/
 typedef struct _GFile         		GFile; /* Dummy typedef */
 typedef struct _GFileIface    		GFileIface;
-typedef struct _GDirectoryMonitor       GDirectoryMonitor;
 typedef struct _GFileMonitor            GFileMonitor;
 
 /**
@@ -242,7 +241,7 @@ typedef gboolean (* GFileReadMoreCallback) (const char *file_contents,
  * @eject_mountable_finish: Finishes an eject operation.
  * @mount_enclosing_volume: Mounts a specified location. 
  * @mount_enclosing_volume_finish: Finishes mounting a specified location.
- * @monitor_dir: Creates a #GDirectoryMonitor for the location.
+ * @monitor_dir: Creates a #GFileMonitor for the location.
  * @monitor_file: Creates a #GFileMonitor for the location.
  * 
  * An interface for writing VFS file handles.  
@@ -517,7 +516,7 @@ struct _GFileIface
 					     GAsyncResult *result,
 					     GError **error);
   
-  GDirectoryMonitor* (*monitor_dir)         (GFile                  *file,
+  GFileMonitor*      (*monitor_dir)         (GFile                  *file,
 					     GFileMonitorFlags       flags,
 					     GCancellable           *cancellable);
 
@@ -793,12 +792,12 @@ gboolean                g_file_copy_attributes            (GFile                
 							   GError                    **error);
 
 
-GDirectoryMonitor* g_file_monitor_directory          (GFile                  *file,
-						      GFileMonitorFlags       flags,
-						      GCancellable           *cancellable);
-GFileMonitor*      g_file_monitor_file               (GFile                  *file,
-						      GFileMonitorFlags       flags,
-						      GCancellable           *cancellable);
+GFileMonitor*           g_file_monitor_directory          (GFile                  *file,
+							   GFileMonitorFlags       flags,
+							   GCancellable           *cancellable);
+GFileMonitor*           g_file_monitor_file               (GFile                  *file,
+							   GFileMonitorFlags       flags,
+							   GCancellable           *cancellable);
 
 
 /* Utilities */

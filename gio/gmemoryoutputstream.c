@@ -273,7 +273,7 @@ array_resize (GMemoryOutputStream  *ostream,
 {
   GMemoryOutputStreamPrivate *priv;
   gpointer data;
-  gsize len, increment;
+  gsize len;
 
   priv = ostream->priv;
 

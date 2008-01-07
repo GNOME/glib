@@ -25,7 +25,6 @@
 #include "config.h"
 #include <fam.h>
 #include <gio/gfilemonitor.h>
-#include <gio/gdirectorymonitor.h>
 
 #include "fam-helper.h"
 
@@ -92,7 +91,7 @@ fam_do_iter_unlocked (void)
     
     if (sub->directory)
       {
-	GDirectoryMonitor* monitor = G_DIRECTORY_MONITOR (sub->user_data);
+	GFileMonitor* monitor = G_FILE_MONITOR (sub->user_data);
 	GFileMonitorEvent eflags = fam_event_to_file_monitor_event (ev.code);
 	gchar* path = NULL;
 	GFile *child, *parent;
@@ -108,7 +107,7 @@ fam_do_iter_unlocked (void)
 
 	child = g_file_new_for_path (path);
 	parent = g_file_get_parent (child);
-	g_directory_monitor_emit_event (monitor, child, NULL, eflags);
+	g_file_monitor_emit_event (monitor, child, NULL, eflags);
 	g_free (path);
 	g_object_unref (child);
 	g_object_unref (parent);

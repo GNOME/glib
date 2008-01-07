@@ -1851,7 +1851,7 @@ g_local_file_move (GFile                  *source,
   return TRUE;
 }
 
-static GDirectoryMonitor*
+static GFileMonitor*
 g_local_file_monitor_dir (GFile             *file,
 			  GFileMonitorFlags  flags,
 			  GCancellable      *cancellable)

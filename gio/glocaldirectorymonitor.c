@@ -24,7 +24,6 @@
 
 #include "glocaldirectorymonitor.h"
 #include "gunixmounts.h"
-#include "gdirectorymonitor.h"
 #include "giomodule-priv.h"
 #include "glibintl.h"
 
@@ -38,10 +37,10 @@ enum
   PROP_DIRNAME
 };
 
-static gboolean g_local_directory_monitor_cancel (GDirectoryMonitor* monitor);
+static gboolean g_local_directory_monitor_cancel (GFileMonitor* monitor);
 static void mounts_changed (GUnixMountMonitor *mount_monitor, gpointer user_data);
 
-G_DEFINE_ABSTRACT_TYPE (GLocalDirectoryMonitor, g_local_directory_monitor, G_TYPE_DIRECTORY_MONITOR)
+G_DEFINE_ABSTRACT_TYPE (GLocalDirectoryMonitor, g_local_directory_monitor, G_TYPE_FILE_MONITOR)
 
 static void
 g_local_directory_monitor_finalize (GObject* object)
@@ -140,13 +139,13 @@ static void
 g_local_directory_monitor_class_init (GLocalDirectoryMonitorClass* klass)
 {
   GObjectClass* gobject_class = G_OBJECT_CLASS (klass);
-  GDirectoryMonitorClass *dir_monitor_class = G_DIRECTORY_MONITOR_CLASS (klass);
+  GFileMonitorClass *file_monitor_class = G_FILE_MONITOR_CLASS (klass);
   
   gobject_class->finalize = g_local_directory_monitor_finalize;
   gobject_class->set_property = g_local_directory_monitor_set_property;
   gobject_class->constructor = g_local_directory_monitor_constructor;
 
-  dir_monitor_class->cancel = g_local_directory_monitor_cancel;
+  file_monitor_class->cancel = g_local_directory_monitor_cancel;
 
   g_object_class_install_property (gobject_class, 
                                    PROP_DIRNAME,
@@ -193,9 +192,9 @@ mounts_changed (GUnixMountMonitor *mount_monitor,
       if (local_monitor->was_mounted && !is_mounted)
         {
           file = g_file_new_for_path (local_monitor->dirname);
-          g_directory_monitor_emit_event (G_DIRECTORY_MONITOR (local_monitor),
-                                          file, NULL,
-                                          G_FILE_MONITOR_EVENT_UNMOUNTED);
+          g_file_monitor_emit_event (G_FILE_MONITOR (local_monitor),
+				     file, NULL,
+				     G_FILE_MONITOR_EVENT_UNMOUNTED);
           g_object_unref (file);
         }
       local_monitor->was_mounted = is_mounted;
@@ -274,15 +273,15 @@ get_default_local_directory_monitor (gpointer data)
  * @dirname: filename of the directory to monitor.
  * @flags: #GFileMonitorFlags.
  * 
- * Returns: new #GDirectoryMonitor for the given @dirname.
+ * Returns: new #GFileMonitor for the given @dirname.
  **/
-GDirectoryMonitor*
+GFileMonitor*
 _g_local_directory_monitor_new (const char*       dirname,
 				GFileMonitorFlags flags)
 {
   static GOnce once_init = G_ONCE_INIT;
   GTypeClass *type_class;
-  GDirectoryMonitor *monitor;
+  GFileMonitor *monitor;
   GType type;
 
   type_class = NULL;
@@ -291,7 +290,7 @@ _g_local_directory_monitor_new (const char*       dirname,
 
   monitor = NULL;
   if (type != G_TYPE_INVALID)
-    monitor = G_DIRECTORY_MONITOR (g_object_new (type, "dirname", dirname, NULL));
+    monitor = G_FILE_MONITOR (g_object_new (type, "dirname", dirname, NULL));
 
   /* This is non-null on first pass here. Unref the class now.
    * This is to avoid unloading the module and then loading it
@@ -306,7 +305,7 @@ _g_local_directory_monitor_new (const char*       dirname,
 }
 
 static gboolean
-g_local_directory_monitor_cancel (GDirectoryMonitor* monitor)
+g_local_directory_monitor_cancel (GFileMonitor* monitor)
 {
   GLocalDirectoryMonitor *local_monitor = G_LOCAL_DIRECTORY_MONITOR (monitor);
 

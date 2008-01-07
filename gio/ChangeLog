@@ -1,5 +1,33 @@
 2008-01-07  Alexander Larsson  <alexl@redhat.com>
 
+        * Makefile.am:
+	Build test subdir after .
+	Remove gdirectorymonitor.[ch]
+	
+        * gdirectorymonitor.[ch]:
+        * gfilemonitor.c:
+        * gfile.[ch]:
+        * gio.h:
+	Remove GDirectoryMonitor and make
+	GFileMonitor the baseclass for both file and
+	directory monitors. Lift the more generic
+	rate limiting code from GDirectoryMonitor
+	into GFileMonitor.
+	
+        * fam/fam-helper.c:
+        * fam/gfamdirectorymonitor.[ch]:
+        * inotify/ginotifydirectorymonitor.[ch]:
+        * inotify/inotify-helper.c:
+        * glocaldirectorymonitor.[ch]:
+        * glocalfile.c:
+        * gvolumemonitor.c:
+	Update for the removed GDirectoryMonitor.
+	
+        * gmemoryoutputstream.c:
+	Remove ununsed variable
+
+2008-01-07  Alexander Larsson  <alexl@redhat.com>
+
         * gmemoryinputstream.c:
 	Translate error strings
 	

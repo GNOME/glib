@@ -3246,10 +3246,10 @@ g_file_eject_mountable_finish (GFile         *file,
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
  * 
- * Returns: a #GDirectoryMonitor for the given @file, 
+ * Returns: a #GFileMonitor for the given @file, 
  * or %NULL on error.
  **/
-GDirectoryMonitor*
+GFileMonitor*
 g_file_monitor_directory (GFile             *file,
 			  GFileMonitorFlags  flags,
 			  GCancellable      *cancellable)
