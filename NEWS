@@ -1,3 +1,50 @@
+Overview of Changes from GLib 2.15.0 to GLib 2.15.1
+===================================================
+
+ * Portability fixes:
+ - Assertion functions are marked as noreturn again
+ - Handling of inline functions has been fixed to work with gcc 4.3
+ - C99 comments have been removed from headers
+
+ * GIO:
+  - Clarified the semantics of g_app_info_get_all()
+  - API for memory input streams is more flexible
+
+ * Bugs fixed:
+   504829 Invalid environment passed to g_spawn_async in g_desktop_...
+   505258 crash in Users and Groups: Adding a user
+   505815 g_content_types_get_registered should not g_free keys
+   491218 g_timer_new() doesn't initialize timer->end
+   315437 extern inline -> static inline
+   476856 Inconsistency between standard and implementation of the ...
+   480122 g_module_open fails to open modules with ".la" extension
+   495589 gspawn.c failing to set FD_CLOEXEC
+   500273 doesn't build with --disable-visibility
+   504142 Do not show empty groups in --help output
+   504879 giofam incorrectly linked
+   505042 add file attribute for actually used file size in bytes
+   505058 xattr namespace docs
+   505674 Misprint in the definition of the macro G_CCLOSURE_SWAP_DATA
+   505730 Fails to build on OSX 10.4: _NSGetEnviron not declared
+   505887 older darwin lacks lchown
+   506374 gmemoryinputstream api
+   506461 Conversion of g_assert_not_reached() and friends into fun...
+   503051 Small bug in glib interface
+   506395 Updates to GIO documentation
+   507628 Missing .pc entry for gio linking against glib
+   505195 [patch] typo in g_try_new0 docs 
+ 
+ * Updated translations:
+   Arabic (ar)
+   Belarusian Latin (be@latin)
+   Spanish (es)
+   Basque (eu)
+   Irish (ga)
+   Hebrew (he)
+   Occitan (oc)
+   Vietnamese (vi)
+
+
 Overview of Changes from GLib 2.14.x to GLib 2.15.0
 ===================================================
 

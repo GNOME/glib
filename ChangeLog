@@ -1,3 +1,7 @@
+2008-01-07  Matthias Clasen  <mclasen@redhat.com>
+
+	* NEWS: Updates
+
 2008-01-06  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gregex.c: Add a translator comment (#503051, 
