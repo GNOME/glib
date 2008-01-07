@@ -24,7 +24,6 @@ gio/gcontenttype.c
 gio/gdatainputstream.c
 gio/gdataoutputstream.c
 gio/gdesktopappinfo.c
-gio/gdirectorymonitor.c
 gio/gdrive.c
 gio/gdummyfile.c
 gio/gfileattribute.c

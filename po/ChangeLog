@@ -1,3 +1,9 @@
+2008-01-07  Luca Ferretti  <elle.uca@libero.it>
+
+	* POTFILES.in: remove deleted file gio/gdirectorymonitor.c 
+	
+	* it.po: Updated Italian translation.
+
 2008-01-07  Priit Laes  <plaes at svn dot gnome dot org>
 
 	* et.po: Translation updated by Ivar Smolin
