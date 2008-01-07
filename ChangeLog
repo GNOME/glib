@@ -1,3 +1,8 @@
+2008-01-07  Alexander Larsson  <alexl@redhat.com>
+
+	* configure.in:
+	Add gio/test/Makefile to AC_CONFIG_FILES
+
 2008-01-07  Matthias Clasen  <mclasen@redhat.com>
 
 	* NEWS: Updates

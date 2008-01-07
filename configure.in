@@ -3222,6 +3222,7 @@ gio/Makefile
 gio/xdgmime/Makefile
 gio/inotify/Makefile
 gio/fam/Makefile
+gio/tests/Makefile
 po/Makefile.in
 docs/Makefile
 docs/reference/Makefile
