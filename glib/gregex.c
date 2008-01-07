@@ -252,6 +252,9 @@ translate_compile_error (gint *errcode, gchar **errmsg)
       break;
     case 129:
       *errcode = G_REGEX_ERROR_UNMATCHED_PARENTHESIS;
+      /* translators: '(?R' and '(?[+-]digits' are both meant as (groups of) 
+       * sequences here, '(?-54' would be an example for the second group.
+       */
       *errmsg = _("(?R or (?[+-]digits must be followed by )");
       break;
     case G_REGEX_ERROR_INEXISTENT_SUBPATTERN_REFERENCE:
