@@ -468,7 +468,7 @@ g_memory_input_stream_seek (GSeekable     *seekable,
       g_set_error (error,
                    G_IO_ERROR,
                    G_IO_ERROR_INVALID_ARGUMENT,
-                   "Invalid GSeekType supplied");
+                   _("Invalid GSeekType supplied"));
 
       return FALSE;
     }
@@ -478,7 +478,7 @@ g_memory_input_stream_seek (GSeekable     *seekable,
       g_set_error (error,
                    G_IO_ERROR,
                    G_IO_ERROR_INVALID_ARGUMENT,
-                   "Invalid seek request");
+                   _("Invalid seek request"));
       return FALSE;
     }
 
@@ -502,7 +502,7 @@ g_memory_input_stream_truncate (GSeekable     *seekable,
   g_set_error (error,
                G_IO_ERROR,
                G_IO_ERROR_NOT_SUPPORTED,
-               "Cannot truncate GMemoryInputStream");
+               _("Cannot truncate GMemoryInputStream"));
   return FALSE;
 }
 

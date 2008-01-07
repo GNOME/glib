@@ -41,33 +41,20 @@
  *
  */
 
+#define MIN_ARRAY_SIZE  16
+
 struct _GMemoryOutputStreamPrivate {
   
-  GByteArray *data;
-  goffset     pos;
+  gpointer       data;
+  gsize          len;
 
-  guint       max_size;
-  guint       free_data : 1;
+  goffset        pos;
+
+  GReallocFunc   realloc_fn;
+  GDestroyNotify destroy;
 };
 
-enum {
-  PROP_0,
-  PROP_DATA,
-  PROP_FREE_ARRAY,
-  PROP_SIZE_LIMIT
-};
-
-static void     g_memory_output_stream_finalize     (GObject         *object);
-
-static void     g_memory_output_stream_set_property (GObject      *object,
-                                                     guint         prop_id,
-                                                     const GValue *value,
-                                                     GParamSpec   *pspec);
-
-static void     g_memory_output_stream_get_property (GObject    *object,
-                                                     guint       prop_id,
-                                                     GValue     *value,
-                                                     GParamSpec *pspec);
+static void     g_memory_output_stream_finalize     (GObject      *object);
 
 static gssize   g_memory_output_stream_write       (GOutputStream *stream,
                                                     const void    *buffer,
@@ -127,8 +114,6 @@ g_memory_output_stream_class_init (GMemoryOutputStreamClass *klass)
 
   gobject_class = G_OBJECT_CLASS (klass);
   gobject_class->finalize = g_memory_output_stream_finalize;
-  gobject_class->get_property = g_memory_output_stream_get_property;
-  gobject_class->set_property = g_memory_output_stream_set_property;
 
   ostream_class = G_OUTPUT_STREAM_CLASS (klass);
 
@@ -138,46 +123,19 @@ g_memory_output_stream_class_init (GMemoryOutputStreamClass *klass)
   ostream_class->write_finish = g_memory_output_stream_write_finish;
   ostream_class->close_async  = g_memory_output_stream_close_async;
   ostream_class->close_finish = g_memory_output_stream_close_finish;
-
-  g_object_class_install_property (gobject_class,
-                                   PROP_DATA,
-                                   g_param_spec_pointer ("data",
-                                                         P_("Data byte array"),
-                                                         P_("The byte array used as internal storage."),
-                                                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT | 
-                                                         G_PARAM_STATIC_NAME|G_PARAM_STATIC_NICK|G_PARAM_STATIC_BLURB));
-
-  g_object_class_install_property (gobject_class,
-                                   PROP_FREE_ARRAY,
-                                   g_param_spec_boolean ("free-array",
-                                                         P_("Free array data"),
-                                                         P_("Wether or not the interal array should be free on close."),
-                                                         FALSE,
-                                                         G_PARAM_READWRITE |
-                                                         G_PARAM_STATIC_NAME|G_PARAM_STATIC_NICK|G_PARAM_STATIC_BLURB));
-  g_object_class_install_property (gobject_class,
-                                   PROP_SIZE_LIMIT,
-                                   g_param_spec_uint ("size-limit",
-                                                      P_("Limit"),
-                                                      P_("Maximum amount of bytes that can be written to the stream."),
-                                                      0,
-                                                      G_MAXUINT,
-                                                      0,
-                                                      G_PARAM_READWRITE |
-                                                      G_PARAM_STATIC_NAME|G_PARAM_STATIC_NICK|G_PARAM_STATIC_BLURB));
-
-
 }
 
 static void
 g_memory_output_stream_finalize (GObject *object)
 {
   GMemoryOutputStream        *stream;
+  GMemoryOutputStreamPrivate *priv;
 
   stream = G_MEMORY_OUTPUT_STREAM (object);
+  priv = stream->priv;
   
-  if (stream->priv->free_data)
-    g_byte_array_free (stream->priv->data, TRUE);
+  if (priv->destroy)
+    priv->destroy (priv->data);
     
   if (G_OBJECT_CLASS (g_memory_output_stream_parent_class)->finalize)
     (*G_OBJECT_CLASS (g_memory_output_stream_parent_class)->finalize) (object);
@@ -190,199 +148,79 @@ g_memory_output_stream_seekable_iface_init (GSeekableIface *iface)
   iface->can_seek     = g_memory_output_stream_can_seek;
   iface->seek         = g_memory_output_stream_seek;
   iface->can_truncate = g_memory_output_stream_can_truncate;
-  iface->truncate_fn     = g_memory_output_stream_truncate;
+  iface->truncate_fn  = g_memory_output_stream_truncate;
 }
 
 
 static void
 g_memory_output_stream_init (GMemoryOutputStream *stream)
 {
-  GMemoryOutputStreamPrivate *priv;
-
   stream->priv = G_TYPE_INSTANCE_GET_PRIVATE (stream,
                                               G_TYPE_MEMORY_OUTPUT_STREAM,
                                               GMemoryOutputStreamPrivate);
-
-  priv = stream->priv;
-  priv->data = NULL; 
 }
 
 /**
  * g_memory_output_stream_new:
- * @data: a #GByteArray.
+ * @data: pointer to a chunk of memory to use, or %NULL
+ * @len: the size of @data
+ * @realloc_fn: a function with realloc() semantics to be called when 
+ *     @data needs to be grown, or %NULL
+ * @destroy: a function to be called on @data when the stream is finalized,
+ *     or %NULL
  *
- * Creates a new #GMemoryOutputStream. If @data is non-%NULL it will use
- * that for its internal storage otherwise it will create a new #GByteArray.
- * In both cases the internal #GByteArray can later be accessed through the 
- * "data" property, or with g_memory_output_stream_get_data().
+ * Creates a new #GMemoryOutputStream. 
  *
- * Note: The new stream will not take ownership of the supplied
- * @data so you have to free it yourself after use or explicitly
- * ask for it be freed on close by setting the "free-array" 
- * property to %TRUE.
+ * If @data is non-%NULL, the stream  will use that for its internal storage.
+ * If @realloc_fn is non-%NULL, it will be used for resizing the internal
+ * storage when necessary. To construct a fixed-size output stream, 
+ * pass %NULL as @realloc_fn.
+ * |[
+ * /&ast; a stream that can grow &ast;/
+ * stream = g_memory_output_stream_new (NULL, 0, realloc, free);
+ *
+ * /&ast; a fixed-size stream &ast;/
+ * data = malloc (200);
+ * stream2 = g_memory_output_stream_new (data, 200, NULL, free);
+ * ]|
  *
  * Return value: A newly created #GMemoryOutputStream object.
  **/
 GOutputStream *
-g_memory_output_stream_new (GByteArray *data)
+g_memory_output_stream_new (gpointer       data,
+                            gsize          len,
+                            GReallocFunc   realloc_fn,
+                            GDestroyNotify destroy)
 {
   GOutputStream *stream;
+  GMemoryOutputStreamPrivate *priv;
 
-  if (data == NULL)
-    stream = g_object_new (G_TYPE_MEMORY_OUTPUT_STREAM, NULL);
-  else
-    stream = g_object_new (G_TYPE_MEMORY_OUTPUT_STREAM,
-                           "data", data,
-                           NULL);
+  stream = g_object_new (G_TYPE_MEMORY_OUTPUT_STREAM, NULL);
+
+  priv = G_MEMORY_OUTPUT_STREAM (stream)->priv;
+
+  priv->data = data;
+  priv->len = len;
+  priv->realloc_fn = realloc_fn;
+  priv->destroy = destroy;
+
+  priv->pos = 0;
 
   return stream;
-}
-
-/**
- * g_memory_output_stream_set_free_data:
- * @ostream: a #GMemoryOutputStream.
- * @free_data: a #gboolean. If %TRUE, frees the data within @stream.
- * 
- * Sets if the data within the @stream should be freed when the stream 
- * is freed. 
- **/
-void
-g_memory_output_stream_set_free_data (GMemoryOutputStream *ostream,
-                                      gboolean             free_data)
-{
-  GMemoryOutputStreamPrivate *priv;
-
-  g_return_if_fail (G_IS_MEMORY_OUTPUT_STREAM (ostream));
-
-  priv = ostream->priv;
-
-  priv->free_data = free_data;
-}
-
-/**
- * g_memory_output_stream_set_max_size:
- * @ostream: a #GMemoryOutputStream.
- * @max_size: a #guint to set as the maximum stream size.
- *
- * Sets a size limit on the data contained within the output stream.
- **/
-void
-g_memory_output_stream_set_max_size (GMemoryOutputStream *ostream,
-                                     guint                max_size)
-{
-  GMemoryOutputStreamPrivate *priv;
-  
-  g_return_if_fail (G_IS_MEMORY_OUTPUT_STREAM (ostream));
-
-  priv = ostream->priv;
-
-  priv->max_size = max_size;
-
-  if (priv->max_size > 0 &&
-      priv->max_size < priv->data->len) 
-    {
-
-      g_byte_array_set_size (priv->data, priv->max_size);
-
-      if (priv->pos > priv->max_size) 
-        priv->pos = priv->max_size;
-    }
-
-  g_object_notify (G_OBJECT (ostream), "size-limit");
-}
-
-static void
-g_memory_output_stream_set_property (GObject      *object,
-                                     guint         prop_id,
-                                     const GValue *value,
-                                     GParamSpec   *pspec)
-{
-  GMemoryOutputStream *ostream;
-  GMemoryOutputStreamPrivate *priv;
-  GByteArray *data;
-  guint       max_size;
-
-  ostream = G_MEMORY_OUTPUT_STREAM (object);
-  priv = ostream->priv;
-
-  switch (prop_id)
-    {
-    case PROP_DATA:
-
-      if (priv->data && priv->free_data) 
-        g_byte_array_free (priv->data, TRUE);
-
-      data = g_value_get_pointer (value);
-
-      if (data == NULL) 
-        {
-          data = g_byte_array_new (); 
-          priv->free_data = TRUE;
-        } 
-      else 
-        priv->free_data = FALSE;
- 
-      priv->data = data;
-      priv->pos  = 0;
-      g_object_notify (G_OBJECT (ostream), "data");
-      break;
-
-    case PROP_FREE_ARRAY:
-      priv->free_data = g_value_get_boolean (value);
-      break;
-
-    case PROP_SIZE_LIMIT:
-      max_size = g_value_get_uint (value);
-      g_memory_output_stream_set_max_size (ostream, max_size);
-      break;
-
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-      break;
-    }
-}
-
-static void
-g_memory_output_stream_get_property (GObject    *object,
-                                     guint       prop_id,
-                                     GValue     *value,
-                                     GParamSpec *pspec)
-{
-  GMemoryOutputStream *ostream;
-  GMemoryOutputStreamPrivate *priv;
-
-  ostream = G_MEMORY_OUTPUT_STREAM (object);
-  priv = ostream->priv;
-
-  switch (prop_id)
-    {
-    case PROP_DATA:
-      g_value_set_pointer (value, priv->data);
-      break;
-
-    case PROP_FREE_ARRAY:
-      g_value_set_boolean (value, priv->free_data);
-      break;
-
-    case PROP_SIZE_LIMIT:
-      g_value_set_uint (value, priv->max_size);
-      break;
-
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-      break;
-    }
 }
 
 /**
  * g_memory_output_stream_get_data:
  * @ostream: a #GMemoryOutputStream
  *
- * Gets any loaded data from the @ostream.
+ * Gets any loaded data from the @ostream. 
+ *
+ * Note that the returned pointer may become invalid on the next 
+ * write or truncate operation on the stream. 
  * 
- * Returns: #GByteArray of the stream's data.
+ * Returns: pointer to the stream's data
  **/
-GByteArray *
+gpointer
 g_memory_output_stream_get_data (GMemoryOutputStream *ostream)
 {
   g_return_val_if_fail (G_IS_MEMORY_OUTPUT_STREAM (ostream), NULL);
@@ -390,57 +228,108 @@ g_memory_output_stream_get_data (GMemoryOutputStream *ostream)
   return ostream->priv->data;
 }
 
+/**
+ * g_memory_output_stream_get_size:
+ * @ostream: a #GMemoryOutputStream
+ *
+ * Gets the size of the loaded data from the @ostream.
+ *
+ * Note that the returned size may become invalid on the next
+ * write or truncate operation on the stream.
+ *
+ * Returns: the size of the stream's data
+ */
+gsize
+g_memory_output_stream_get_size (GMemoryOutputStream *ostream)
+{
+  g_return_val_if_fail (G_IS_MEMORY_OUTPUT_STREAM (ostream), 0);
+  
+  return ostream->priv->len;
+}
 
 static gboolean
 array_check_boundary (GMemoryOutputStream  *stream,
                       goffset               size,
                       GError              **error)
 {
-  GMemoryOutputStreamPrivate *priv;
-
-  priv = stream->priv;
-
-  if (!priv->max_size) 
-    return TRUE;
-
-  if (priv->max_size < size || size > G_MAXUINT)
+  if (size > G_MAXUINT)
     {
       g_set_error (error,
                    G_IO_ERROR,
                    G_IO_ERROR_FAILED,
-                   "Reached maximum data array limit");
+                   _("Reached maximum data array limit"));
 
       return FALSE;
     }
 
-  return TRUE; 
+  return TRUE;
 }
 
-static gssize
-array_resize (GMemoryOutputStream  *stream,
-              goffset               size,
+static gboolean
+array_resize (GMemoryOutputStream  *ostream,
+              gsize                 size,
+	      gboolean              allow_partial,
               GError              **error)
 {
   GMemoryOutputStreamPrivate *priv;
-  guint old_len;
+  gpointer data;
+  gsize len, increment;
 
-  priv = stream->priv;
+  priv = ostream->priv;
 
-  if (! array_check_boundary (stream, size, error)) 
-    return -1;
+  if (!array_check_boundary (ostream, size, error))
+    return FALSE;
+
+  if (priv->len == size)
+    return TRUE;
+
+  if (!priv->realloc_fn)
+    {
+      if (allow_partial &&
+	  priv->pos < priv->len)
+	return TRUE; /* Short write */
+      
+      g_set_error (error,
+                   G_IO_ERROR,
+                   G_IO_ERROR_NO_SPACE,
+                   _("Memory output stream not resizable"));
+      return FALSE;
+    }
+
+  len = priv->len;
+  data = priv->realloc_fn (priv->data, size);
+
+  if (!data) 
+    {
+      if (allow_partial &&
+	  priv->pos < priv->len)
+	return TRUE; /* Short write */
+      
+      g_set_error (error,
+                   G_IO_ERROR,
+                   G_IO_ERROR_NO_SPACE,
+                   _("Failed to resize memory output stream"));
+      return FALSE;
+    }
+
+  if (size > len)
+    memset (data + len, 0, size - len);
+
+  priv->data = data;
+  priv->len = size;
   
+  return TRUE;
+}
 
-  if (priv->data->len == size) 
-    return priv->data->len - priv->pos;
-  
+static gint
+g_nearest_pow (gint num)
+{
+  gint n = 1;
 
-  old_len = priv->data->len;
-  g_byte_array_set_size (priv->data, size);
+  while (n < num)
+    n <<= 1;
 
-  if (size > old_len && priv->pos > old_len) 
-    memset (priv->data->data + priv->pos, 0, size - old_len);
-
-  return priv->data->len - priv->pos;
+  return n;
 }
 
 static gssize
@@ -452,43 +341,35 @@ g_memory_output_stream_write (GOutputStream  *stream,
 {
   GMemoryOutputStream        *ostream;
   GMemoryOutputStreamPrivate *priv;
-  gsize     new_size;
-  gssize    n;
   guint8   *dest;
+  gsize new_size;
 
   ostream = G_MEMORY_OUTPUT_STREAM (stream);
   priv = ostream->priv;
 
-  /* count < 0 is ensured by GOutputStream */
+  if (count == 0)
+    return 0;
 
-  n = MIN (count, priv->data->len - priv->pos);
-
-  if (n < 1)
+  if (priv->pos + count > priv->len) 
     {
-      new_size = priv->pos + count;
-
-      if (priv->max_size > 0)
-        new_size = MIN (new_size, priv->max_size);
-
-      n = array_resize (ostream, new_size, error);
-
-      if (n == 0) 
-        {
-          g_set_error (error,
-                       G_IO_ERROR,
-                       G_IO_ERROR_FAILED,
-                       "Reached maximum data array limit");
-          return -1;
-        }
-      else if (n < 0)
-        return -1;
+      /* At least enought to fit the write, rounded up
+	 for greater than linear growth */
+      new_size = g_nearest_pow (priv->pos + count);
+      new_size = MAX (new_size, MIN_ARRAY_SIZE);
+      
+      if (!array_resize (ostream, new_size, TRUE, error))
+	return -1;
     }
 
-  dest = priv->data->data + priv->pos;
-  memcpy (dest, buffer, n); 
-  priv->pos += n;
+  /* Make sure we handle short writes if the array_resize
+     only added part of the required memory */
+  count = MIN (count, priv->len - priv->pos);
+  
+  dest = priv->data + priv->pos;
+  memcpy (dest, buffer, count); 
+  priv->pos += count;
 
-  return n;
+  return count;
 }
 
 static gboolean
@@ -496,23 +377,17 @@ g_memory_output_stream_close (GOutputStream  *stream,
                               GCancellable   *cancellable,
                               GError        **error)
 {
-  GMemoryOutputStream        *ostream;
-  GMemoryOutputStreamPrivate *priv;
-
-  ostream = G_MEMORY_OUTPUT_STREAM (stream);
-  priv = ostream->priv;
-
   return TRUE;
 }
 
 static void
-g_memory_output_stream_write_async  (GOutputStream       *stream,
-                                     const void          *buffer,
-                                     gsize                count,
-                                     int                  io_priority,
-                                     GCancellable        *cancellable,
-                                     GAsyncReadyCallback  callback,
-                                     gpointer             data)
+g_memory_output_stream_write_async (GOutputStream       *stream,
+                                    const void          *buffer,
+                                    gsize                count,
+                                    int                  io_priority,
+                                    GCancellable        *cancellable,
+                                    GAsyncReadyCallback  callback,
+                                    gpointer             data)
 {
   GSimpleAsyncResult *simple;
   gssize nwritten;
@@ -545,18 +420,19 @@ g_memory_output_stream_write_finish (GOutputStream  *stream,
   simple = G_SIMPLE_ASYNC_RESULT (result);
   
   g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == 
-            g_memory_output_stream_write_async);
+                  g_memory_output_stream_write_async);
 
   nwritten = g_simple_async_result_get_op_res_gssize (simple);
+
   return nwritten;
 }
 
 static void
-g_memory_output_stream_close_async  (GOutputStream       *stream,
-                                     int                  io_priority,
-                                     GCancellable        *cancellable,
-                                     GAsyncReadyCallback  callback,
-                                     gpointer             data)
+g_memory_output_stream_close_async (GOutputStream       *stream,
+                                    int                  io_priority,
+                                    GCancellable        *cancellable,
+                                    GAsyncReadyCallback  callback,
+                                    gpointer             data)
 {
   GSimpleAsyncResult *simple;
 
@@ -583,7 +459,7 @@ g_memory_output_stream_close_finish (GOutputStream  *stream,
   simple = G_SIMPLE_ASYNC_RESULT (result);
 
   g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == 
-            g_memory_output_stream_close_async);
+                  g_memory_output_stream_close_async);
 
   return TRUE;
 }
@@ -631,14 +507,14 @@ g_memory_output_stream_seek (GSeekable    *seekable,
       break;
 
     case G_SEEK_END:
-      absolute = priv->data->len + offset;
+      absolute = priv->len + offset;
       break;
   
     default:
       g_set_error (error,
                    G_IO_ERROR,
                    G_IO_ERROR_INVALID_ARGUMENT,
-                   "Invalid GSeekType supplied");
+                   _("Invalid GSeekType supplied"));
 
       return FALSE;
     }
@@ -648,7 +524,7 @@ g_memory_output_stream_seek (GSeekable    *seekable,
       g_set_error (error,
                    G_IO_ERROR,
                    G_IO_ERROR_INVALID_ARGUMENT,
-                   "Invalid seek request");
+                   _("Invalid seek request"));
       return FALSE;
     }
 
@@ -663,7 +539,13 @@ g_memory_output_stream_seek (GSeekable    *seekable,
 static gboolean
 g_memory_output_stream_can_truncate (GSeekable *seekable)
 {
-  return TRUE;
+  GMemoryOutputStream *ostream;
+  GMemoryOutputStreamPrivate *priv;
+
+  ostream = G_MEMORY_OUTPUT_STREAM (seekable);
+  priv = ostream->priv;
+
+  return priv->realloc_fn != NULL;
 }
 
 static gboolean
@@ -678,7 +560,7 @@ g_memory_output_stream_truncate (GSeekable     *seekable,
   ostream = G_MEMORY_OUTPUT_STREAM (seekable);
   priv = ostream->priv;
  
-  if (array_resize (ostream, offset, error) < 0)
+  if (!array_resize (ostream, offset, FALSE, error))
     return FALSE;
 
   return TRUE;

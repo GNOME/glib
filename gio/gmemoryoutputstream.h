@@ -69,14 +69,16 @@ struct _GMemoryOutputStreamClass
   void (*_g_reserved5) (void);
 };
 
+typedef gpointer (*GReallocFunc) (gpointer data, gsize size);
 
-GType          g_memory_output_stream_get_type          (void) G_GNUC_CONST;
-GOutputStream *g_memory_output_stream_new               (GByteArray          *data);
-void           g_memory_output_stream_set_max_size      (GMemoryOutputStream *ostream,
-							 guint                max_size);
-GByteArray *   g_memory_output_stream_get_data          (GMemoryOutputStream *ostream);
-void           g_memory_output_stream_set_free_data     (GMemoryOutputStream *ostream,
-							 gboolean             free_data);
+GType          g_memory_output_stream_get_type (void) G_GNUC_CONST;
+
+GOutputStream *g_memory_output_stream_new      (gpointer             data,
+                                                gsize                len,
+                                                GReallocFunc         realloc_fn,
+                                                GDestroyNotify       destroy);
+gpointer       g_memory_output_stream_get_data (GMemoryOutputStream *ostream);
+gsize          g_memory_output_stream_get_size (GMemoryOutputStream *ostream);
 
 G_END_DECLS
 

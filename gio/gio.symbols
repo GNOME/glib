@@ -530,9 +530,8 @@ g_memory_input_stream_add_data
 #if IN_FILE(__G_MEMORY_OUTPUT_STREAM_C__)
 g_memory_output_stream_get_type  G_GNUC_CONST
 g_memory_output_stream_new 
-g_memory_output_stream_set_max_size 
 g_memory_output_stream_get_data 
-g_memory_output_stream_set_free_data 
+g_memory_output_stream_get_size
 #endif
 #endif
 

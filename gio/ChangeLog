@@ -1,3 +1,13 @@
+2008-01-07  Alexander Larsson  <alexl@redhat.com>
+
+        * gmemoryinputstream.c:
+	Translate error strings
+	
+        * gio.symbols:
+        * gmemoryoutputstream.[ch]:
+	New implementation that avoids using GByteArray
+	in implementation and API. (#506377)
+
 2008-01-06  Matthias Clasen  <mclasen@redhat.com>
 
 	* tests/*: Add a test for memory input streams.
