@@ -1,6 +1,16 @@
 2008-01-07  Alexander Larsson  <alexl@redhat.com>
 
         * Makefile.am:
+	Pass --internal to glib-genmarshal
+	
+        * gfilemonitor.c:
+        * gmountoperation.c:
+        * gio-marshal.list:
+	Use better types for signal arguments (#507822)
+
+2008-01-07  Alexander Larsson  <alexl@redhat.com>
+
+        * Makefile.am:
 	Build test subdir after .
 	Remove gdirectorymonitor.[ch]
 	

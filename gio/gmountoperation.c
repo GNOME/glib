@@ -257,9 +257,9 @@ g_mount_operation_class_init (GMountOperationClass *klass)
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (GMountOperationClass, ask_password),
 		  boolean_handled_accumulator, NULL,
-		  _gio_marshal_BOOLEAN__STRING_STRING_STRING_UINT,
+		  _gio_marshal_BOOLEAN__STRING_STRING_STRING_FLAGS,
 		  G_TYPE_BOOLEAN, 4,
-		  G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_UINT);
+		  G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_ASK_PASSWORD_FLAGS);
 		  
   /**
    * GMountOperation::ask-question:
@@ -276,9 +276,9 @@ g_mount_operation_class_init (GMountOperationClass *klass)
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (GMountOperationClass, ask_question),
 		  boolean_handled_accumulator, NULL,
-		  _gio_marshal_BOOLEAN__STRING_POINTER,
+		  _gio_marshal_BOOLEAN__STRING_BOXED,
 		  G_TYPE_BOOLEAN, 2,
-		  G_TYPE_STRING, G_TYPE_POINTER);
+		  G_TYPE_STRING, G_TYPE_STRV);
 		  
   /**
    * GMountOperation::reply:
