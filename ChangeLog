@@ -1,3 +1,8 @@
+2008-01-08  Alexander Larsson  <alexl@redhat.com>
+
+	* tests/cxx-test.C:
+	Add gio/gio.h include to check for c++ problems.
+
 2008-01-07  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Bump version
