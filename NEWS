@@ -1,3 +1,25 @@
+Overview of Changes from GLib 2.14.4 to GLib 2.14.5
+===================================================
+
+* Bugs fixed:
+ 482313 gregex: no way to tell why compilation failed
+ 315437 extern inline -> static inline
+ 480122 g_module_open fails to open modules with ".la" extension
+ 495589 gspawn.c failing to set FD_CLOEXEC
+ 500638 gkeyfile speedup ...
+ 503029 g_time_val_from_iso8601 parse non-ISO8601 dates
+ 503420 gkeyfile leaks a hash table 
+
+* Updated translations:
+ Arabic (ar)
+ Spanish (es)
+ Estonian (et)
+ French (fr)
+ Portugese (pt)
+ Brazilian Portugese (pt_BR)
+ Swedish (sv)
+
+
 Overview of Changes from GLib 2.14.3 to GLib 2.14.4
 ===================================================
 

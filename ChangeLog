@@ -1,5 +1,9 @@
 2008-01-07  Matthias Clasen  <mclasen@redhat.com>
 
+	* NEWS: Updates
+
+2008-01-07  Matthias Clasen  <mclasen@redhat.com>
+
 	Merged from trunk:
 
 	* glib/gkeyfile.c (g_key_file_clear): Free group_hash.
