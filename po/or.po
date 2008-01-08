@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.or\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-11-24 11:31-0500\n"
+"POT-Creation-Date: 2008-01-07 21:07-0500\n"
 "PO-Revision-Date: 2007-06-11 18:17+0530\n"
 "Last-Translator: Subhransu Behera <arya_subhransu@yahoo.co.in>\n"
 "Language-Team: Oriya <oriya-group@lists.sarovar.org>\n"
@@ -554,66 +554,249 @@ msgstr "ନୂତନ ଧାଡି ପତାକା ମାନଙ୍କ ପାଇ�
 msgid "unknown error"
 msgstr "ଅଜଣା ତୃଟି"
 
-#: glib/gregex.c:324 glib/gregex.c:1367
+#: glib/gregex.c:189
+msgid "\\ at end of pattern"
+msgstr ""
+
+#: glib/gregex.c:191
+msgid "\\c at end of pattern"
+msgstr ""
+
+#: glib/gregex.c:193
+msgid "unrecognized character follows \\"
+msgstr ""
+
+#: glib/gregex.c:195
+msgid "case changing escapes are not allowed here"
+msgstr ""
+
+#: glib/gregex.c:197
+msgid "numbers out of order in {} quantifier"
+msgstr ""
+
+#: glib/gregex.c:199
+msgid "number too big in {} quantifier"
+msgstr ""
+
+#: glib/gregex.c:201
+#, fuzzy
+msgid "missing terminating ] for character class"
+msgstr "ଆଂଶିକ ଅକ୍ଷର ରେ ଚାନେଲର ସମାପ୍ତି"
+
+#: glib/gregex.c:203
+#, fuzzy
+msgid "invalid escape sequence in character class"
+msgstr "ରୁପାନ୍ତରଣ ନିବେଶେର ଅବୈଧ ବାଇଟ୍ ଅନୁକ୍ରମ"
+
+#: glib/gregex.c:205
+msgid "range out of order in character class"
+msgstr ""
+
+#: glib/gregex.c:207
+msgid "nothing to repeat"
+msgstr ""
+
+#: glib/gregex.c:209
+#, fuzzy
+msgid "unrecognized character after (?"
+msgstr "ଅସମାପ୍ତ ଅକ୍ଷର ରେଫରେନ୍ସ"
+
+#: glib/gregex.c:211
+#, fuzzy
+msgid "unrecognized character after (?<"
+msgstr "ଅସମାପ୍ତ ଅକ୍ଷର ରେଫରେନ୍ସ"
+
+#: glib/gregex.c:213
+#, fuzzy
+msgid "unrecognized character after (?P"
+msgstr "ଅସମାପ୍ତ ଅକ୍ଷର ରେଫରେନ୍ସ"
+
+#: glib/gregex.c:215
+msgid "POSIX named classes are supported only within a class"
+msgstr ""
+
+#: glib/gregex.c:217
+msgid "(?R or (?[+-]digits must be followed by )"
+msgstr ""
+
+#: glib/gregex.c:219
+msgid "reference to non-existent subpattern"
+msgstr ""
+
+#: glib/gregex.c:221
+msgid "missing ) after comment"
+msgstr ""
+
+#: glib/gregex.c:223
+msgid "regular expression too large"
+msgstr ""
+
+#: glib/gregex.c:225
+msgid "failed to get memory"
+msgstr ""
+
+#: glib/gregex.c:227
+msgid "lookbehind assertion is not fixed length"
+msgstr ""
+
+#: glib/gregex.c:229
+msgid "malformed number or name after (?("
+msgstr ""
+
+#: glib/gregex.c:231
+msgid "conditional group contains more than two branches"
+msgstr ""
+
+#: glib/gregex.c:233
+msgid "assertion expected after (?("
+msgstr ""
+
+#: glib/gregex.c:235
+msgid "unknown POSIX class name"
+msgstr ""
+
+#: glib/gregex.c:237
+#, fuzzy
+msgid "POSIX collating elements are not supported"
+msgstr "ପ୍ରତିକାତ୍ମକ ସଂୟୋଗ ଅସହାୟକ"
+
+#: glib/gregex.c:239
+msgid "character value in \\x{...} sequence is too large"
+msgstr ""
+
+#: glib/gregex.c:241
+msgid "invalid condition (?(0)"
+msgstr ""
+
+#: glib/gregex.c:243
+msgid "\\C not allowed in lookbehind assertion"
+msgstr ""
+
+#: glib/gregex.c:245
+msgid "recursive call could loop indefinitely"
+msgstr ""
+
+#: glib/gregex.c:247
+msgid "missing terminator in subpattern name"
+msgstr ""
+
+#: glib/gregex.c:249
+msgid "two named subpatterns have the same name"
+msgstr ""
+
+#: glib/gregex.c:251
+msgid "malformed \\P or \\p sequence"
+msgstr ""
+
+#: glib/gregex.c:253
+msgid "unknown property name after \\P or \\p"
+msgstr ""
+
+#: glib/gregex.c:255
+msgid "subpattern name is too long (maximum 32 characters)"
+msgstr ""
+
+#: glib/gregex.c:257
+msgid "too many named subpatterns (maximum 10,000)"
+msgstr ""
+
+#: glib/gregex.c:259
+msgid "octal value is greater than \\377"
+msgstr ""
+
+#: glib/gregex.c:261
+msgid "DEFINE group contains more than one branch"
+msgstr ""
+
+#: glib/gregex.c:263
+msgid "repeating a DEFINE group is not allowed"
+msgstr ""
+
+#: glib/gregex.c:265
+msgid "inconsistent NEWLINE options"
+msgstr ""
+
+#: glib/gregex.c:267
+msgid ""
+"\\g is not followed by a braced name or an optionally braced non-zero number"
+msgstr ""
+
+#: glib/gregex.c:270
+msgid "unexpected repeat"
+msgstr ""
+
+#: glib/gregex.c:272
+msgid "code overflow"
+msgstr ""
+
+#: glib/gregex.c:274
+msgid "overran compiling workspace"
+msgstr ""
+
+#: glib/gregex.c:276
+msgid "previously-checked referenced subpattern not found"
+msgstr ""
+
+#: glib/gregex.c:439 glib/gregex.c:1491
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "%s ନିୟମିତ ପରିପ୍ରକାଶକୁ ମିଳାଇବା ସମୟରେ ତୃଟି: %s"
 
-#: glib/gregex.c:876
+#: glib/gregex.c:995
 msgid "PCRE library is compiled without UTF8 support"
 msgstr "PCRE ଲାଇବ୍ରେରୀକୁ UTF8 ସମର୍ଥନ ବିନା ସଙ୍କଳନ କରାଯାଇଛି"
 
-#: glib/gregex.c:885
+#: glib/gregex.c:1004
 msgid "PCRE library is compiled without UTF8 properties support"
 msgstr "PCRE ଲାଇବ୍ରେରୀକୁ UTF8 ଗୁଣଧର୍ମ ସମର୍ଥନ ବିନା ସଙ୍କଳନ କରାଯାଇଛି"
 
-#: glib/gregex.c:935
+#: glib/gregex.c:1059
 #, c-format
 msgid "Error while compiling regular expression %s at char %d: %s"
 msgstr "%s ନିୟମିତ ପରିପ୍ରକାଶକୁ %d ଅକ୍ଷରରେ ସଙ୍କଳନ କରିବା ସମୟରେ ତୃଟି: %s"
 
-#: glib/gregex.c:971
+#: glib/gregex.c:1095
 #, c-format
 msgid "Error while optimizing regular expression %s: %s"
 msgstr "%s ନିୟମିତ ପରିପ୍ରକାଶକୁ ଅନୁକୂଳତମ କରିବା ସମୟରେ ତୃଟି: %s"
 
-#: glib/gregex.c:1795
+#: glib/gregex.c:1919
 msgid "hexadecimal digit or '}' expected"
 msgstr "ଷୋଡଶାଧାରୀ ଅଙ୍କ କିମ୍ବା '}' ଆଶା କରାଯାଉଥିଲା"
 
-#: glib/gregex.c:1811
+#: glib/gregex.c:1935
 msgid "hexadecimal digit expected"
 msgstr "ଷୋଡଶାଧାରୀ ଅଙ୍କ ଆଶା କରାଯାଉଥିଲା"
 
-#: glib/gregex.c:1851
+#: glib/gregex.c:1975
 msgid "missing '<' in symbolic reference"
 msgstr "ପ୍ରତୀକାତ୍ମକ ନିର୍ଦ୍ଦେଶରେ '<' ଅନୁପସ୍ଥିତ"
 
-#: glib/gregex.c:1860
+#: glib/gregex.c:1984
 msgid "unfinished symbolic reference"
 msgstr "ଅସମାପ୍ତ ପ୍ରତୀକାତ୍ମକ ନିର୍ଦ୍ଦେଶ"
 
-#: glib/gregex.c:1867
+#: glib/gregex.c:1991
 msgid "zero-length symbolic reference"
 msgstr "ଶୂନ୍ଯ ଲମ୍ବ ବିଶିଷ୍ଟ ପ୍ରତୀକାତ୍ମକ ନିର୍ଦ୍ଦେଶ"
 
-#: glib/gregex.c:1878
+#: glib/gregex.c:2002
 msgid "digit expected"
 msgstr "ଅଙ୍କ ଆଶା କରାଯାଉଥିଲା"
 
-#: glib/gregex.c:1896
+#: glib/gregex.c:2020
 msgid "illegal symbolic reference"
 msgstr "ଅବୈଧ ପ୍ରତୀକାତ୍ମକ ନିର୍ଦ୍ଦେଶ"
 
-#: glib/gregex.c:1958
+#: glib/gregex.c:2082
 msgid "stray final '\\'"
 msgstr "ପଥଭ୍ରଷ୍ଟ ନିର୍ଣ୍ଣୟ '\\'"
 
-#: glib/gregex.c:1962
+#: glib/gregex.c:2086
 msgid "unknown escape sequence"
 msgstr "ଅଜଣା ପଳାୟନ ସଂପ୍ରତୀକ"
 
-#: glib/gregex.c:1972
+#: glib/gregex.c:2096
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr "ପରିବର୍ତ୍ତିତ ପାଠ୍ଯ \"%s\" ର %lu ଅକ୍ଷରରେ ବିଶ୍ଳଷଣ କରିବା ସମୟରେ ତୃଟି: %s"
@@ -822,70 +1005,70 @@ msgstr "%s ପାଇଁ ସ୍ବତନ୍ତ୍ରଚର ଟି ହଜି ଯ�
 msgid "Unknown option %s"
 msgstr "ଅଜଣା ପସନ୍ଦ %s"
 
-#: glib/gkeyfile.c:341
+#: glib/gkeyfile.c:358
 #, c-format
 msgid "Valid key file could not be found in search dirs"
 msgstr "ଅନୁସନ୍ଧାନ ଡିରେକ୍ଟୋରି ମାନଙ୍କରେ ବୈଧ ଚାବି ଫାଇଲ ମିଳିଲା ନାହିଁ"
 
-#: glib/gkeyfile.c:376
+#: glib/gkeyfile.c:393
 #, c-format
 msgid "Not a regular file"
 msgstr "ଏହା ଏକ ନିୟମିତ ଫାଇଲ ନୁହେଁ"
 
-#: glib/gkeyfile.c:384
+#: glib/gkeyfile.c:401
 #, c-format
 msgid "File is empty"
 msgstr "ଫାଇଲ ଟି ଖାଲି ଅଛି"
 
-#: glib/gkeyfile.c:746
+#: glib/gkeyfile.c:760
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr "ମୁଖ୍ଯ ଫାଇଲ '%s' କୁ ଧାରଣ କରିଛି ଯାହାକି ଗୋଟିଏ ମୁଖ୍ଯ-ଗୁଣ ର ଯୋଡି, ସମୂହ, କିମ୍ବା ବାକ୍ଯ ନୁହେଁ"
 
-#: glib/gkeyfile.c:806
+#: glib/gkeyfile.c:820
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "ଅବୈଧ ସମୂହ ନାମ: %s"
 
-#: glib/gkeyfile.c:828
+#: glib/gkeyfile.c:842
 #, c-format
 msgid "Key file does not start with a group"
 msgstr "ମୂଖ୍ଯ ଫାଇଲ କୌଣସି ସମୂହ ସହ ଆରମ୍ଭ ହୁଏ ନାହିଁ"
 
-#: glib/gkeyfile.c:854
+#: glib/gkeyfile.c:868
 #, c-format
 msgid "Invalid key name: %s"
 msgstr "ଅବୈଧ ଚାବି ନାମ: %s"
 
-#: glib/gkeyfile.c:881
+#: glib/gkeyfile.c:895
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "ମୂଖ୍ଯ ଫାଇଲ ଟି ଗୋଟିଏ ଅସହାୟକ ସଂକେତ '%s' ଧାରଣ କରିଛି"
 
-#: glib/gkeyfile.c:1094 glib/gkeyfile.c:1253 glib/gkeyfile.c:2471
-#: glib/gkeyfile.c:2537 glib/gkeyfile.c:2656 glib/gkeyfile.c:2791
-#: glib/gkeyfile.c:2944 glib/gkeyfile.c:3124 glib/gkeyfile.c:3181
+#: glib/gkeyfile.c:1108 glib/gkeyfile.c:1267 glib/gkeyfile.c:2485
+#: glib/gkeyfile.c:2551 glib/gkeyfile.c:2670 glib/gkeyfile.c:2805
+#: glib/gkeyfile.c:2958 glib/gkeyfile.c:3143 glib/gkeyfile.c:3200
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "ମୂଖ୍ଯ ଫାଇଲ େର '%s' ନାମ ଥିବା କୌଣସି ସମୂହ ନାହିଁ"
 
-#: glib/gkeyfile.c:1265
+#: glib/gkeyfile.c:1279
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "ମୂଖ୍ଯ ଫାଇଲ େର '%s' ନାମ ଥିବା  କୌଣସି ଚାବିକାଠି ନାହିଁ"
 
-#: glib/gkeyfile.c:1367 glib/gkeyfile.c:1480
+#: glib/gkeyfile.c:1381 glib/gkeyfile.c:1494
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "ମୂଖ୍ଯ ଫାଇଲ ଧାରଣ କରିଥିବା '%s' ଚାବିକାଠି ର ମୂଲ୍ଯ '%s' ଅଟେ, ଯାହାକି ଇଉ-ଟି-ଏଫ୍-୮ ନୁହେଁ"
 
-#: glib/gkeyfile.c:1387 glib/gkeyfile.c:1500 glib/gkeyfile.c:1873
+#: glib/gkeyfile.c:1401 glib/gkeyfile.c:1514 glib/gkeyfile.c:1887
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "ମୂଖ୍ଯ ଫାଇଲ ଧାରଣ କରିଥିବା '%s' ଚାବିକାଠି ର ମୂଲ୍ଯ ନିରୂପଣ କରିହେବ ନାହିଁ"
 
-#: glib/gkeyfile.c:2088 glib/gkeyfile.c:2300
+#: glib/gkeyfile.c:2102 glib/gkeyfile.c:2314
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -893,37 +1076,37 @@ msgid ""
 msgstr ""
 "ମୂଖ୍ଯ ଫାଇଲ ଧାରଣ କରିଥିବା '%s' ଚାବିକାଠି ଗୋଟିଏ '%s' ସମୂହ ସହିତ ଏଛି ଯାହାର ମୂଲ୍ଯ ନିରୂପଣ କରିହେବ ନାହିଁ"
 
-#: glib/gkeyfile.c:2486 glib/gkeyfile.c:2671 glib/gkeyfile.c:3192
+#: glib/gkeyfile.c:2500 glib/gkeyfile.c:2685 glib/gkeyfile.c:3211
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "ମୂଖ୍ଯ ଫାଇଲ େର '%s' ନାମ ଥିବା କୌଣସି ଚାବିକାଠି '%s' ସମୂହ ରେ ନାହିଁ "
 
-#: glib/gkeyfile.c:3431
+#: glib/gkeyfile.c:3443
 #, c-format
 msgid "Key file contains escape character at end of line"
 msgstr "ମୂଖ୍ଯ ଫାଇଲ ଟି ଲାଇନ୍ ର ସମାପ୍ତି ରେ ଏସ୍କେପ୍ ଅକ୍ଷର ଧାରଣ କରିଛି"
 
-#: glib/gkeyfile.c:3453
+#: glib/gkeyfile.c:3465
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "ମୂଖ୍ଯ ଫାଇଲ '%s' ଅବୈଧ ଏସ୍କେପ୍ ଅକ୍ଷର ଧାରଣ କରିଛି"
 
-#: glib/gkeyfile.c:3595
+#: glib/gkeyfile.c:3607
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "'%s' ର ମୂଲ୍ଯ ଗୋଟିଏ ସଂଖ୍ଯା ଭାବରେ ନିରୂପଣ କରିହେବ ନାହିଁ"
 
-#: glib/gkeyfile.c:3609
+#: glib/gkeyfile.c:3621
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "ପୂର୍ଣ ମୂଲ୍ଯ '%s' ପରିସର ର ବାହାରେ ଅଛି"
 
-#: glib/gkeyfile.c:3642
+#: glib/gkeyfile.c:3654
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "'%s' ମୂଲ୍ଯକୁ ଗୋଟିଏ ଭାସମାନ ସଂଖ୍ଯା ଭାବରେ ବ୍ଯାଖ୍ଯା କରିହେବ ନାହିଁ"
 
-#: glib/gkeyfile.c:3666
+#: glib/gkeyfile.c:3678
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "'%s' ର ମୂଲ୍ଯ ଗୋଟିଏ ବୁଲିଆନ୍ ଭାବରେ ନିରୂପଣ କରିହେବ ନାହିଁ"

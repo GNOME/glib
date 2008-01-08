@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib trunk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-11-24 11:31-0500\n"
+"POT-Creation-Date: 2008-01-07 21:07-0500\n"
 "PO-Revision-Date: 2007-09-16 20:57+0900\n"
 "Last-Translator: Takeshi AIHANA <takeshi.aihana@gmail.com>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
@@ -556,66 +556,249 @@ msgstr "改行フラグの連携が間違っています"
 msgid "unknown error"
 msgstr "原因不明のエラー"
 
-#: glib/gregex.c:324 glib/gregex.c:1367
+#: glib/gregex.c:189
+msgid "\\ at end of pattern"
+msgstr ""
+
+#: glib/gregex.c:191
+msgid "\\c at end of pattern"
+msgstr ""
+
+#: glib/gregex.c:193
+msgid "unrecognized character follows \\"
+msgstr ""
+
+#: glib/gregex.c:195
+msgid "case changing escapes are not allowed here"
+msgstr ""
+
+#: glib/gregex.c:197
+msgid "numbers out of order in {} quantifier"
+msgstr ""
+
+#: glib/gregex.c:199
+msgid "number too big in {} quantifier"
+msgstr ""
+
+#: glib/gregex.c:201
+#, fuzzy
+msgid "missing terminating ] for character class"
+msgstr "チャンネルが不完全な文字で終わっています"
+
+#: glib/gregex.c:203
+#, fuzzy
+msgid "invalid escape sequence in character class"
+msgstr "変換する入力に無効なバイトの並びがあります"
+
+#: glib/gregex.c:205
+msgid "range out of order in character class"
+msgstr ""
+
+#: glib/gregex.c:207
+msgid "nothing to repeat"
+msgstr ""
+
+#: glib/gregex.c:209
+#, fuzzy
+msgid "unrecognized character after (?"
+msgstr "中途半端な文字参照です"
+
+#: glib/gregex.c:211
+#, fuzzy
+msgid "unrecognized character after (?<"
+msgstr "中途半端な文字参照です"
+
+#: glib/gregex.c:213
+#, fuzzy
+msgid "unrecognized character after (?P"
+msgstr "中途半端な文字参照です"
+
+#: glib/gregex.c:215
+msgid "POSIX named classes are supported only within a class"
+msgstr ""
+
+#: glib/gregex.c:217
+msgid "(?R or (?[+-]digits must be followed by )"
+msgstr ""
+
+#: glib/gregex.c:219
+msgid "reference to non-existent subpattern"
+msgstr ""
+
+#: glib/gregex.c:221
+msgid "missing ) after comment"
+msgstr ""
+
+#: glib/gregex.c:223
+msgid "regular expression too large"
+msgstr ""
+
+#: glib/gregex.c:225
+msgid "failed to get memory"
+msgstr ""
+
+#: glib/gregex.c:227
+msgid "lookbehind assertion is not fixed length"
+msgstr ""
+
+#: glib/gregex.c:229
+msgid "malformed number or name after (?("
+msgstr ""
+
+#: glib/gregex.c:231
+msgid "conditional group contains more than two branches"
+msgstr ""
+
+#: glib/gregex.c:233
+msgid "assertion expected after (?("
+msgstr ""
+
+#: glib/gregex.c:235
+msgid "unknown POSIX class name"
+msgstr ""
+
+#: glib/gregex.c:237
+#, fuzzy
+msgid "POSIX collating elements are not supported"
+msgstr "シンボリック・リンクはサポートしていません"
+
+#: glib/gregex.c:239
+msgid "character value in \\x{...} sequence is too large"
+msgstr ""
+
+#: glib/gregex.c:241
+msgid "invalid condition (?(0)"
+msgstr ""
+
+#: glib/gregex.c:243
+msgid "\\C not allowed in lookbehind assertion"
+msgstr ""
+
+#: glib/gregex.c:245
+msgid "recursive call could loop indefinitely"
+msgstr ""
+
+#: glib/gregex.c:247
+msgid "missing terminator in subpattern name"
+msgstr ""
+
+#: glib/gregex.c:249
+msgid "two named subpatterns have the same name"
+msgstr ""
+
+#: glib/gregex.c:251
+msgid "malformed \\P or \\p sequence"
+msgstr ""
+
+#: glib/gregex.c:253
+msgid "unknown property name after \\P or \\p"
+msgstr ""
+
+#: glib/gregex.c:255
+msgid "subpattern name is too long (maximum 32 characters)"
+msgstr ""
+
+#: glib/gregex.c:257
+msgid "too many named subpatterns (maximum 10,000)"
+msgstr ""
+
+#: glib/gregex.c:259
+msgid "octal value is greater than \\377"
+msgstr ""
+
+#: glib/gregex.c:261
+msgid "DEFINE group contains more than one branch"
+msgstr ""
+
+#: glib/gregex.c:263
+msgid "repeating a DEFINE group is not allowed"
+msgstr ""
+
+#: glib/gregex.c:265
+msgid "inconsistent NEWLINE options"
+msgstr ""
+
+#: glib/gregex.c:267
+msgid ""
+"\\g is not followed by a braced name or an optionally braced non-zero number"
+msgstr ""
+
+#: glib/gregex.c:270
+msgid "unexpected repeat"
+msgstr ""
+
+#: glib/gregex.c:272
+msgid "code overflow"
+msgstr ""
+
+#: glib/gregex.c:274
+msgid "overran compiling workspace"
+msgstr ""
+
+#: glib/gregex.c:276
+msgid "previously-checked referenced subpattern not found"
+msgstr ""
+
+#: glib/gregex.c:439 glib/gregex.c:1491
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "正規表現 %s でマッチングしている際にエラー: %s"
 
-#: glib/gregex.c:876
+#: glib/gregex.c:995
 msgid "PCRE library is compiled without UTF8 support"
 msgstr "お使いの PCRE ライブラリは UTF-8 をサポートしていません"
 
-#: glib/gregex.c:885
+#: glib/gregex.c:1004
 msgid "PCRE library is compiled without UTF8 properties support"
 msgstr "お使いの PCRE library は UTF-8 のプロパティをサポートしていません"
 
-#: glib/gregex.c:935
+#: glib/gregex.c:1059
 #, c-format
 msgid "Error while compiling regular expression %s at char %d: %s"
 msgstr "正規表現 %s をコンパイルする際にエラー (%d 文字目): %s"
 
-#: glib/gregex.c:971
+#: glib/gregex.c:1095
 #, c-format
 msgid "Error while optimizing regular expression %s: %s"
 msgstr "正規表現 %s を最適化する際にエラー: %s"
 
-#: glib/gregex.c:1795
+#: glib/gregex.c:1919
 msgid "hexadecimal digit or '}' expected"
 msgstr "16進数の数値または '}' を想定していました"
 
-#: glib/gregex.c:1811
+#: glib/gregex.c:1935
 msgid "hexadecimal digit expected"
 msgstr "16進数の数値を想定していました"
 
-#: glib/gregex.c:1851
+#: glib/gregex.c:1975
 msgid "missing '<' in symbolic reference"
 msgstr "シンボル参照の中に '<' がありません"
 
-#: glib/gregex.c:1860
+#: glib/gregex.c:1984
 msgid "unfinished symbolic reference"
 msgstr "中途半端なシンボル参照です"
 
-#: glib/gregex.c:1867
+#: glib/gregex.c:1991
 msgid "zero-length symbolic reference"
 msgstr "サイズが０のシンボル参照です"
 
-#: glib/gregex.c:1878
+#: glib/gregex.c:2002
 msgid "digit expected"
 msgstr "数値を想定していました"
 
-#: glib/gregex.c:1896
+#: glib/gregex.c:2020
 msgid "illegal symbolic reference"
 msgstr "シンボル参照が間違っています"
 
-#: glib/gregex.c:1958
+#: glib/gregex.c:2082
 msgid "stray final '\\'"
 msgstr "最後の '\\' に対応するシンボルがありません"
 
-#: glib/gregex.c:1962
+#: glib/gregex.c:2086
 msgid "unknown escape sequence"
 msgstr "不明なエスケープ・シーケンスです"
 
-#: glib/gregex.c:1972
+#: glib/gregex.c:2096
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr "代替文字 \"%s\" を解析する際にエラー (%lu 文字目): %s"
@@ -825,22 +1008,22 @@ msgstr "%s の引数がありません"
 msgid "Unknown option %s"
 msgstr "%s は不明なオプションです"
 
-#: glib/gkeyfile.c:341
+#: glib/gkeyfile.c:358
 #, c-format
 msgid "Valid key file could not be found in search dirs"
 msgstr "検索ディレクトリには妥当なキー・ファイルがありませんでした"
 
-#: glib/gkeyfile.c:376
+#: glib/gkeyfile.c:393
 #, c-format
 msgid "Not a regular file"
 msgstr "通常のファイルではありません"
 
-#: glib/gkeyfile.c:384
+#: glib/gkeyfile.c:401
 #, c-format
 msgid "File is empty"
 msgstr "ファイルが空です"
 
-#: glib/gkeyfile.c:746
+#: glib/gkeyfile.c:760
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
@@ -848,49 +1031,49 @@ msgstr ""
 "キー・ファイルの行 '%s' がキー/値のペア、グループ、またはコメントではありませ"
 "ん"
 
-#: glib/gkeyfile.c:806
+#: glib/gkeyfile.c:820
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "グループ名が無効です: %s"
 
-#: glib/gkeyfile.c:828
+#: glib/gkeyfile.c:842
 #, c-format
 msgid "Key file does not start with a group"
 msgstr "キー・ファイルがグループで始まっていません"
 
-#: glib/gkeyfile.c:854
+#: glib/gkeyfile.c:868
 #, c-format
 msgid "Invalid key name: %s"
 msgstr "キーの名前が無効です: %s"
 
-#: glib/gkeyfile.c:881
+#: glib/gkeyfile.c:895
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "キー・ファイルにサポートしてないエンコーディング '%s' があります"
 
-#: glib/gkeyfile.c:1094 glib/gkeyfile.c:1253 glib/gkeyfile.c:2471
-#: glib/gkeyfile.c:2537 glib/gkeyfile.c:2656 glib/gkeyfile.c:2791
-#: glib/gkeyfile.c:2944 glib/gkeyfile.c:3124 glib/gkeyfile.c:3181
+#: glib/gkeyfile.c:1108 glib/gkeyfile.c:1267 glib/gkeyfile.c:2485
+#: glib/gkeyfile.c:2551 glib/gkeyfile.c:2670 glib/gkeyfile.c:2805
+#: glib/gkeyfile.c:2958 glib/gkeyfile.c:3143 glib/gkeyfile.c:3200
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "キー・ファイルにグループ '%s' がありません"
 
-#: glib/gkeyfile.c:1265
+#: glib/gkeyfile.c:1279
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "キー・ファイルにキー '%s' がありません"
 
-#: glib/gkeyfile.c:1367 glib/gkeyfile.c:1480
+#: glib/gkeyfile.c:1381 glib/gkeyfile.c:1494
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "キー・ファイルのキー '%s' の値 '%s' が UTF-8 ではありません"
 
-#: glib/gkeyfile.c:1387 glib/gkeyfile.c:1500 glib/gkeyfile.c:1873
+#: glib/gkeyfile.c:1401 glib/gkeyfile.c:1514 glib/gkeyfile.c:1887
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "キー・ファイルのキー '%s' の値を解釈できませんでした"
 
-#: glib/gkeyfile.c:2088 glib/gkeyfile.c:2300
+#: glib/gkeyfile.c:2102 glib/gkeyfile.c:2314
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -898,37 +1081,37 @@ msgid ""
 msgstr ""
 "キー・ファイルのグループ '%2$s' にあるキー '%1$s' の値を解釈できませんでした"
 
-#: glib/gkeyfile.c:2486 glib/gkeyfile.c:2671 glib/gkeyfile.c:3192
+#: glib/gkeyfile.c:2500 glib/gkeyfile.c:2685 glib/gkeyfile.c:3211
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "キー・ファイルにはグループ '%2$s' のキー '%1$s' がありません"
 
-#: glib/gkeyfile.c:3431
+#: glib/gkeyfile.c:3443
 #, c-format
 msgid "Key file contains escape character at end of line"
 msgstr "キー・ファイルの行末にエスケープ文字が含まれています"
 
-#: glib/gkeyfile.c:3453
+#: glib/gkeyfile.c:3465
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "キー・ファイルに無効なエスケープ・シーケンス '%s' が含まれています"
 
-#: glib/gkeyfile.c:3595
+#: glib/gkeyfile.c:3607
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "値 '%s' を数値として解釈できません"
 
-#: glib/gkeyfile.c:3609
+#: glib/gkeyfile.c:3621
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "整数値 '%s' は範囲外の値です"
 
-#: glib/gkeyfile.c:3642
+#: glib/gkeyfile.c:3654
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "値 '%s' を実数値として解釈できません"
 
-#: glib/gkeyfile.c:3666
+#: glib/gkeyfile.c:3678
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "値 '%s' を論理値として解釈できません"

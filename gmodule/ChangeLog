@@ -1,5 +1,9 @@
 2008-01-07  Matthias Clasen  <mclasen@redhat.com>
 
+	* === Released 2.14.5 ===
+
+2008-01-07  Matthias Clasen  <mclasen@redhat.com>
+
 	Merged from trunk:
 
 	* gmodule.c (g_module_open): Don't fail to load modules
