@@ -1,9 +1,20 @@
 2008-01-07  Matthias Clasen  <mclasen@redhat.com>
 
+	Merged from trunk:
+
+	* glib/gkeyfile.c (g_key_file_clear): Free group_hash.
+	(#503420, Christian Persch)
+
+2008-01-07  Matthias Clasen  <mclasen@redhat.com>
+
+	Merged from trunk:
+
 	* glib/gutils.h: Cope with gcc 4.3 changed 'extern inline'
 	semantics.  (#315437, patch by Loïc Minier)
 
 2008-01-07  Matthias Clasen  <mclasen@redhat.com>
+
+	Merged from trunk:
 
 	* glib/gspawn.c (fdwalk): Don't set open_max to
 	RLIM_INFINITY.  (#495589, Tommi Komulainen)
