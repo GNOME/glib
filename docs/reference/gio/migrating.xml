@@ -41,7 +41,7 @@
           <row><entry>GnomeVFSHandle &amp; GnomeVFSAsyncHandle</entry><entry>GInputStream or GOutputStream</entry></row>
           <row><entry>GnomeVFSDirectoryHandle</entry><entry>GFileEnumerator</entry></row>
           <row><entry>mime type</entry><entry>content type</entry></row>
-          <row><entry>GnomeVFSMonitor</entry><entry>GFileMonitor and GDirectoryMonitor</entry></row>
+          <row><entry>GnomeVFSMonitor</entry><entry>GFileMonitor</entry></row>
           <row><entry>GnomeVFSVolumeMonitor</entry><entry>GVolumeMonitor</entry></row>
           <row><entry>GnomeVFSVolume</entry><entry>GMount</entry></row>
           <row><entry>GnomeVFSDrive</entry><entry>GVolume</entry></row>

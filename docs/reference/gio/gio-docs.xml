@@ -26,7 +26,6 @@
     <chapter id="file_mon">
     	<title>File System Monitoring</title>
         <xi:include href="xml/gfilemonitor.xml"/>
-        <xi:include href="xml/gdirectorymonitor.xml"/>
     </chapter>
     <chapter id="async">
         <title>Asynchronous I/O</title>
