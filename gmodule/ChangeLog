@@ -1,3 +1,10 @@
+2008-01-07  Matthias Clasen  <mclasen@redhat.com>
+
+	Merged from trunk:
+
+	* gmodule.c (g_module_open): Don't fail to load modules
+	with suffix .la.  (#480122, Andrey Tsyvarev)
+
 2007-11-24  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.14.4 ===
