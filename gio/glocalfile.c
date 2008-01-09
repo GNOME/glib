@@ -1325,7 +1325,7 @@ get_unique_filename (const char *basename,
 
   dot = strchr (basename, '.');
   if (dot)
-    return g_strdup_printf ("%.*s.%d%s", dot - basename, basename, id, dot);
+    return g_strdup_printf ("%.*s.%d%s", (int)(dot - basename), basename, id, dot);
   else
     return g_strdup_printf ("%s.%d", basename, id);
 }

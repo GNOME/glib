@@ -1,3 +1,7 @@
+2008-01-09  Dan Winship  <danw@gnome.org>
+
+	* glocalfile.c (get_unique_filename): x86_64 fix
+
 2008-01-09  Alexander Larsson  <alexl@redhat.com>
 
         * gio.symbols:
