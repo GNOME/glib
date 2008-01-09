@@ -92,24 +92,39 @@ typedef enum {
   G_PASSWORD_SAVE_PERMANENTLY
 } GPasswordSave;
 
+/**
+ * GMountOperationResult:
+ * @G_MOUNT_OPERATION_HANDLED: The request was fulfilled and the user specified data is now availible
+ * @G_MOUNT_OPERATION_ABORTED: The user requested the mount operation to be aborted
+ * @G_MOUNT_OPERATION_UNHANDLED: The request was unhandled (i.e. not implemented)
+ * 
+ * #GMountOperationResult is returned as a result when a request for information
+ * is send by the mounting operation.
+ **/ 
+typedef enum {
+  G_MOUNT_OPERATION_HANDLED,
+  G_MOUNT_OPERATION_ABORTED,
+  G_MOUNT_OPERATION_UNHANDLED
+} GMountOperationResult;
+
 struct _GMountOperationClass
 {
   GObjectClass parent_class;
 
   /* signals: */
 
-  gboolean (* ask_password) (GMountOperation *op,
-			     const char      *message,
-			     const char      *default_user,
-			     const char      *default_domain,
-			     GAskPasswordFlags flags);
+  void (* ask_password) (GMountOperation *op,
+			 const char      *message,
+			 const char      *default_user,
+			 const char      *default_domain,
+			 GAskPasswordFlags flags);
 
-  gboolean (* ask_question) (GMountOperation *op,
-			     const char      *message,
-			     const char      *choices[]);
+  void (* ask_question) (GMountOperation *op,
+			 const char      *message,
+			 const char      *choices[]);
   
-  void     (* reply)        (GMountOperation *op,
-			     gboolean         abort);
+  void (* reply)        (GMountOperation *op,
+			 GMountOperationResult result);
   
   /*< private >*/
   /* Padding for future expansion */
@@ -150,7 +165,7 @@ int           g_mount_operation_get_choice        (GMountOperation *op);
 void          g_mount_operation_set_choice        (GMountOperation *op,
 						   int              choice);
 void          g_mount_operation_reply             (GMountOperation *op,
-						   gboolean         abort);
+						   GMountOperationResult result);
 
 G_END_DECLS
 

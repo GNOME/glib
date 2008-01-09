@@ -193,37 +193,36 @@ g_mount_operation_finalize (GObject *object)
 }
 
 static gboolean
-boolean_handled_accumulator (GSignalInvocationHint *ihint,
-			     GValue                *return_accu,
-			     const GValue          *handler_return,
-			     gpointer               dummy)
+reply_non_handled_in_idle (gpointer data)
 {
-  gboolean continue_emission;
-  gboolean signal_handled;
-  
-  signal_handled = g_value_get_boolean (handler_return);
-  g_value_set_boolean (return_accu, signal_handled);
-  continue_emission = !signal_handled;
-  
-  return continue_emission;
+  GMountOperation *op = data;
+
+  g_mount_operation_reply (op, G_MOUNT_OPERATION_UNHANDLED);
+  return FALSE;
 }
 
-static gboolean
+static void
 ask_password (GMountOperation *op,
 	      const char      *message,
 	      const char      *default_user,
 	      const char      *default_domain,
 	      GAskPasswordFlags flags)
 {
-  return FALSE;
+  g_idle_add_full (G_PRIORITY_DEFAULT_IDLE,
+		   reply_non_handled_in_idle,
+		   g_object_ref (op),
+		   g_object_unref);
 }
   
-static gboolean
+static void
 ask_question (GMountOperation *op,
 	      const char      *message,
 	      const char      *choices[])
 {
-  return FALSE;
+  g_idle_add_full (G_PRIORITY_DEFAULT_IDLE,
+		   reply_non_handled_in_idle,
+		   g_object_ref (op),
+		   g_object_unref);
 }
 
 static void
@@ -256,9 +255,9 @@ g_mount_operation_class_init (GMountOperationClass *klass)
 		  G_TYPE_FROM_CLASS (object_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (GMountOperationClass, ask_password),
-		  boolean_handled_accumulator, NULL,
-		  _gio_marshal_BOOLEAN__STRING_STRING_STRING_FLAGS,
-		  G_TYPE_BOOLEAN, 4,
+		  NULL, NULL,
+		  _gio_marshal_VOID__STRING_STRING_STRING_FLAGS,
+		  G_TYPE_NONE, 4,
 		  G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_ASK_PASSWORD_FLAGS);
 		  
   /**
@@ -275,9 +274,9 @@ g_mount_operation_class_init (GMountOperationClass *klass)
 		  G_TYPE_FROM_CLASS (object_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (GMountOperationClass, ask_question),
-		  boolean_handled_accumulator, NULL,
-		  _gio_marshal_BOOLEAN__STRING_BOXED,
-		  G_TYPE_BOOLEAN, 2,
+		  NULL, NULL,
+		  _gio_marshal_VOID__STRING_BOXED,
+		  G_TYPE_NONE, 2,
 		  G_TYPE_STRING, G_TYPE_STRV);
 		  
   /**
@@ -293,9 +292,9 @@ g_mount_operation_class_init (GMountOperationClass *klass)
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (GMountOperationClass, reply),
 		  NULL, NULL,
-		  g_cclosure_marshal_VOID__BOOLEAN,
+		  g_cclosure_marshal_VOID__ENUM,
 		  G_TYPE_NONE, 1,
-		  G_TYPE_BOOLEAN);
+		  G_TYPE_MOUNT_OPERATION_RESULT);
 
   /**
    * GMountOperation:username:
@@ -628,10 +627,10 @@ g_mount_operation_set_choice (GMountOperation *op,
  **/
 void
 g_mount_operation_reply (GMountOperation *op,
-			 gboolean         abort)
+			 GMountOperationResult result)
 {
   g_return_if_fail (G_IS_MOUNT_OPERATION (op));
-  g_signal_emit (op, signals[REPLY], 0, abort);
+  g_signal_emit (op, signals[REPLY], 0, result);
 }
 
 #define __G_MOUNT_OPERATION_C__

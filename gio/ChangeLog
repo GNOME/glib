@@ -1,5 +1,16 @@
 2008-01-09  Alexander Larsson  <alexl@redhat.com>
 
+        * gio-marshal.list:
+        * gmountoperation.[ch]:
+	Change the API a bit so that unhandled methods
+	get reported via the reply, rather than by
+	the signal emission return value. This is because
+	some handlers can't know this immediately without
+	doing I/O, and this is an async operation that
+	should not block.
+
+2008-01-09  Alexander Larsson  <alexl@redhat.com>
+
         * fam/fam-helper.c:
         * fam/gfamdirectorymonitor.c:
         * fam/gfamfilemonitor.c:
