@@ -887,14 +887,14 @@ g_file_query_info (GFile                *file,
  * @user_data: the data to pass to callback function
  * 
  * Asynchronously gets the requested information about specified @file. The result
- * is a #GFileInfo objects that contains key-value attributes (like type or size
- * for the file.
+ * is a #GFileInfo objects that contains key-value attributes (such as type or size
+ * for the file).
  * 
  * For more details, see g_file_query_info() which is
  * the synchronous version of this call.
  *
  * When the operation is finished, @callback will be called. You can then call
- * g_file_enumerate_children_finish() to get the result of the operation.
+ * g_file_query_info_finish() to get the result of the operation.
  **/
 void
 g_file_query_info_async (GFile               *file,
@@ -1505,8 +1505,8 @@ g_file_create_finish (GFile         *file,
  * g_file_replace_async:
  * @file: input #GFile.
  * @etag: an <link linkend="gfile-etag">entity tag</link> for the 
- *     current #GFile.
- * @make_backup: a #gboolean.
+ *     current #GFile, or NULL to ignore.
+ * @make_backup: %TRUE if a backup should be created.
  * @flags: a set of #GFileCreateFlags.
  * @io_priority: the <link linkend="io-priority">I/O priority</link> 
  *     of the request.
@@ -2432,7 +2432,12 @@ g_file_set_display_name (GFile         *file,
  * @user_data: the data to pass to callback function
  * 
  * Asynchronously sets the display name for a given #GFile.
- * For the synchronous version of this function, see g_file_set_display_name().
+ * 
+ * For more details, see g_set_display_name() which is
+ * the synchronous version of this call.
+ *
+ * When the operation is finished, @callback will be called. You can then call
+ * g_file_set_display_name_finish() to get the result of the operation.
  **/
 void
 g_file_set_display_name_async (GFile               *file,
@@ -2748,7 +2753,12 @@ g_file_real_set_attributes_from_info (GFile                *file,
  * @user_data: a #gpointer.
  *
  * Asynchronously sets the attributes of @file with @info.
- * For the synchronous version of this function, see g_file_set_attributes(). 
+ * 
+ * For more details, see g_file_set_attributes_from_info() which is
+ * the synchronous version of this call.
+ *
+ * When the operation is finished, @callback will be called. You can then call
+ * g_file_set_attributes_finish() to get the result of the operation.
  **/
 void
 g_file_set_attributes_async (GFile               *file,
@@ -3003,7 +3013,7 @@ g_file_set_attribute_int64 (GFile                *file,
  * @user_data: the data to pass to callback function
  * 
  * Mounts a file of type G_FILE_TYPE_MOUNTABLE.
- * You can speciy using @mount_operation to get callbacks when for instance
+ * Using @mount_operation, you can request callbacks when, for instance, 
  * passwords are needed during authentication.
  *
  * If @cancellable is not %NULL, then the operation can be cancelled by
@@ -3090,7 +3100,7 @@ g_file_mount_mountable_finish (GFile         *file,
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned.
  *
  * When the operation is finished, @callback will be called. You can then call
- * g_file_mount_mountable_finish() to get the result of the operation.
+ * g_file_unmount_mountable_finish() to get the result of the operation.
  **/
 void
 g_file_unmount_mountable (GFile               *file,
@@ -4349,7 +4359,7 @@ load_contents_open_callback (GObject      *obj,
  * g_file_load_partial_contents_async:
  * @file: input #GFile.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @read_more_callback: a #GFileReadMoreCallback.
+ * @read_more_callback: a #GFileReadMoreCallback to receive partial data and to specify whether further data should be read.
  * @callback: a #GAsyncReadyCallback to call when the request is satisfied
  * @user_data: the data to pass to the callback functions.
  *
@@ -4468,7 +4478,11 @@ g_file_load_partial_contents_finish (GFile         *file,
  * @callback: a #GAsyncReadyCallback to call when the request is satisfied
  * @user_data: the data to pass to callback function
  * 
- * Starts an asynchronous load of the @file's contents. 
+ * Starts an asynchronous load of the @file's contents.
+ *
+ * For more details, see g_file_load_contents() which is
+ * the synchronous version of this call.
+ *
  * When the load operation has completed, @callback will be called 
  * with @userdata. To finish the operation, call 
  * g_file_load_contents_finish() with the #GAsyncResult returned by 
@@ -4530,7 +4544,7 @@ g_file_load_contents_finish (GFile         *file,
  * @length: the length of @contents in bytes.
  * @etag: the old <link linkend="gfile-etag">entity tag</link> 
  *     for the document.
- * @make_backup: a #gboolean.
+ * @make_backup: %TRUE if a backup should be created.
  * @flags: a set of #GFileCreateFlags.
  * @new_etag: a location to a new <link linkend="gfile-etag">entity tag</link>
  *      for the document.
@@ -4739,7 +4753,7 @@ replace_contents_open_callback (GObject      *obj,
  * @contents: string of contents to replace the file with.
  * @length: the length of @contents in bytes.
  * @etag: a new <link linkend="gfile-etag">entity tag</link> for the @file.
- * @make_backup: a #gboolean.
+ * @make_backup: %TRUE if a backup should be created.
  * @flags: a set of #GFileCreateFlags.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @callback: a #GAsyncReadyCallback to call when the request is satisfied

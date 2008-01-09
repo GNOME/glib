@@ -1,3 +1,9 @@
+2008-01-09  Murray Cumming  <murrayc@murrayc.com>
+
+	* gfile.c: *_async() functions: Several small corrections 
+	to the documentation, mostly correcting copy/paste errors 
+	and improving some sentences.
+
 2008-01-09  Dan Winship  <danw@gnome.org>
 
 	* glocalfile.c (get_unique_filename): x86_64 fix
