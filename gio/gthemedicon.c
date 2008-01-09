@@ -22,6 +22,8 @@
 
 #include <config.h>
 
+#include <string.h>
+
 #include "gthemedicon.h"
 
 #include "gioalias.h"
@@ -140,6 +142,41 @@ g_themed_icon_new_from_names (char **iconnames,
   
   return G_ICON (themed);
 }
+
+GIcon *
+g_themed_icon_new_with_default_fallbacks (const char *iconname)
+{
+  GThemedIcon *themed;
+  int i, dashes;
+  const char *p;
+  char *dashp;
+  char *last;
+
+  g_return_val_if_fail (iconname != NULL, NULL);
+  
+  themed = g_object_new (G_TYPE_THEMED_ICON, NULL);
+
+  dashes = 0;
+  p = iconname;
+  while (*p)
+    {
+      if (*p == '-')
+	dashes++;
+      p++;
+    }
+
+  themed->names = g_new (char *, dashes + 1 + 1);
+  i = 0;
+  themed->names[i++] = last = g_strdup (iconname);
+
+  while ((dashp = strrchr (last, '-')) != NULL)
+    themed->names[i++] = last = g_strndup (last, dashp - last);
+  
+  themed->names[i++] = NULL;
+
+  return G_ICON (themed);
+}
+
 
 /**
  * g_themed_icon_get_names:

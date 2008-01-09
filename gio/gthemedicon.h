@@ -49,6 +49,7 @@ typedef struct _GThemedIconClass   GThemedIconClass;
 GType g_themed_icon_get_type (void) G_GNUC_CONST;
   
 GIcon *g_themed_icon_new (const char *iconname);
+GIcon *g_themed_icon_new_with_default_fallbacks (const char *iconname);
 GIcon *g_themed_icon_new_from_names (char **iconnames, int len);
 
 const char * const *g_themed_icon_get_names (GThemedIcon *icon);

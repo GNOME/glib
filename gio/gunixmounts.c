@@ -1769,7 +1769,7 @@ g_unix_mount_guess_name (GUnixMountEntry *mount_entry)
 GIcon *
 g_unix_mount_guess_icon (GUnixMountEntry *mount_entry)
 {
-  return g_themed_icon_new (type_to_icon (g_unix_mount_guess_type (mount_entry), FALSE));
+  return g_themed_icon_new_with_default_fallbacks (type_to_icon (g_unix_mount_guess_type (mount_entry), FALSE));
 }
 
 /**
@@ -1806,7 +1806,7 @@ g_unix_mount_point_guess_name (GUnixMountPoint *mount_point)
 GIcon *
 g_unix_mount_point_guess_icon (GUnixMountPoint *mount_point)
 {
-  return g_themed_icon_new (type_to_icon (g_unix_mount_point_guess_type (mount_point), TRUE));
+  return g_themed_icon_new_with_default_fallbacks (type_to_icon (g_unix_mount_point_guess_type (mount_point), TRUE));
 }
 
 /**

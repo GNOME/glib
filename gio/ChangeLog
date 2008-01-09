@@ -1,5 +1,14 @@
 2008-01-09  Alexander Larsson  <alexl@redhat.com>
 
+        * gio.symbols:
+        * gthemedicon.[ch]:
+        Add g_themed_icon_new_with_default_fallbacks
+	
+        * gunixmounts.c:
+	Use default fallbacks for icons
+
+2008-01-09  Alexander Larsson  <alexl@redhat.com>
+
         * gio-marshal.list:
         * gmountoperation.[ch]:
 	Change the API a bit so that unhandled methods
