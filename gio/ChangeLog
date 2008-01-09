@@ -1,6 +1,17 @@
 2008-01-09  Alexander Larsson  <alexl@redhat.com>
 
         * gio.symbols:
+        * gunixmount.c:
+        * gunixmounts.[ch]:
+	Add g_unix_mount_guess_should_display and use
+	for unix volume monitor backend.
+	This means we more or less show what the
+	gnome-vfs backend did.
+	Based on patch from Padraig O'Briain
+
+2008-01-09  Alexander Larsson  <alexl@redhat.com>
+
+        * gio.symbols:
         * gthemedicon.[ch]:
         Add g_themed_icon_new_with_default_fallbacks
 	

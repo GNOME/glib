@@ -628,6 +628,7 @@ g_unix_mount_get_fs_type
 g_unix_mount_is_readonly 
 g_unix_mount_is_system_internal 
 g_unix_mount_guess_can_eject
+g_unix_mount_guess_should_display
 g_unix_mount_guess_name 
 g_unix_mount_guess_icon
 g_unix_mount_point_compare 

@@ -108,7 +108,7 @@ _g_unix_mount_new (GVolumeMonitor  *volume_monitor,
   GUnixMount *mount;
   
   /* No volume for mount: Ignore internal things */
-  if (volume == NULL && g_unix_mount_is_system_internal (mount_entry))
+  if (volume == NULL && !g_unix_mount_guess_should_display (mount_entry))
     return NULL;
 
   mount = g_object_new (G_TYPE_UNIX_MOUNT, NULL);

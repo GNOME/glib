@@ -1831,6 +1831,40 @@ g_unix_mount_guess_can_eject (GUnixMountEntry *mount_entry)
 }
 
 /**
+ * g_unix_mount_guess_should_display:
+ * @mount_entry: a #GUnixMountEntry
+ * 
+ * Guesses whether a Unix mount should be displayed in the UI.
+ *
+ * Returns: %TRUE if @mount_entry is deemed to be displayable.
+ */
+gboolean
+g_unix_mount_guess_should_display (GUnixMountEntry *mount_entry)
+{
+  GUnixMountType guessed_type;
+
+  /* Never display internal mountpoints */
+  if (g_unix_mount_is_system_internal (mount_entry))
+    return FALSE;
+
+  /* Only display things that look "removable" or
+     things in /media (which are generally user mountable) */
+  guessed_type = g_unix_mount_guess_type (mount_entry);
+  if (guessed_type == G_UNIX_MOUNT_TYPE_IPOD ||
+      guessed_type == G_UNIX_MOUNT_TYPE_CDROM ||
+      guessed_type == G_UNIX_MOUNT_TYPE_FLOPPY ||
+      guessed_type == G_UNIX_MOUNT_TYPE_ZIP ||
+      guessed_type == G_UNIX_MOUNT_TYPE_JAZ ||
+      guessed_type == G_UNIX_MOUNT_TYPE_CAMERA ||
+      guessed_type == G_UNIX_MOUNT_TYPE_MEMSTICK ||
+      (mount_entry->mount_path != NULL &&
+       g_str_has_prefix (mount_entry->mount_path, "/media")))
+    return TRUE;
+
+  return FALSE;
+}
+
+/**
  * g_unix_mount_point_guess_can_eject:
  * @mount_point: a #GUnixMountPoint
  * 

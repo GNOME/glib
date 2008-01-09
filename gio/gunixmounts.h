@@ -67,6 +67,7 @@ const char *   g_unix_mount_get_fs_type             (GUnixMountEntry    *mount_e
 gboolean       g_unix_mount_is_readonly             (GUnixMountEntry    *mount_entry);
 gboolean       g_unix_mount_is_system_internal      (GUnixMountEntry    *mount_entry);
 gboolean       g_unix_mount_guess_can_eject         (GUnixMountEntry    *mount_entry);
+gboolean       g_unix_mount_guess_should_display    (GUnixMountEntry    *mount_entry);
 char *         g_unix_mount_guess_name              (GUnixMountEntry    *mount_entry);
 GIcon *        g_unix_mount_guess_icon              (GUnixMountEntry    *mount_entry);
 
