@@ -49,7 +49,6 @@ g_fam_file_monitor_finalize (GObject *object)
   if (sub) {
     if (!_fam_sub_cancel (sub))
       g_warning ("Unexpected error cancelling fam monitor");
-    _fam_sub_free (sub);
     fam_monitor->sub = NULL;
   }
 
@@ -132,7 +131,6 @@ g_fam_file_monitor_cancel (GFileMonitor* monitor)
   if (sub) {
     if (!_fam_sub_cancel (sub))
       g_warning ("Unexpected error cancelling fam monitor");
-    _fam_sub_free (sub);
     fam_monitor->sub = NULL;
   }
 

@@ -1,3 +1,11 @@
+2008-01-09  Alexander Larsson  <alexl@redhat.com>
+
+        * fam/fam-helper.c:
+        * fam/gfamdirectorymonitor.c:
+        * fam/gfamfilemonitor.c:
+	Fix double free crash (#508224)
+	Patch from Joe Marcus Clarke
+
 008-01-07  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.15.1 ===

@@ -82,7 +82,7 @@ fam_do_iter_unlocked (void)
     cancelled = sub->cancelled;
     if (ev.code == FAMAcknowledge && cancelled)
       {
-	g_free (sub);
+	_fam_sub_free (sub);
 	continue;
       }
     
