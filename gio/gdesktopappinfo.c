@@ -1572,7 +1572,8 @@ app_info_in_list (GAppInfo *info,
  * 
  * Gets a list of all #GAppInfo s for a given content type.
  *
- * Returns: #GList of #GAppInfo s for given @content_type.
+ * Returns: #GList of #GAppInfo s for given @content_type
+ *    or %NULL on error.
  **/
 GList *
 g_app_info_get_all_for_type (const char *content_type)
@@ -1580,6 +1581,8 @@ g_app_info_get_all_for_type (const char *content_type)
   GList *desktop_entries, *l;
   GList *infos;
   GDesktopAppInfo *info;
+
+  g_return_val_if_fail (content_type != NULL, NULL);
   
   desktop_entries = get_all_desktop_entries_for_mime_type (content_type);
 
@@ -1613,7 +1616,7 @@ g_app_info_get_all_for_type (const char *content_type)
  * 
  * Gets the #GAppInfo that correspond to a given content type.
  *
- * Returns: #GAppInfo for given @content_type.
+ * Returns: #GAppInfo for given @content_type or %NULL on error.
  **/
 GAppInfo *
 g_app_info_get_default_for_type (const char *content_type,
@@ -1621,6 +1624,8 @@ g_app_info_get_default_for_type (const char *content_type,
 {
   GList *desktop_entries, *l;
   GAppInfo *info;
+
+  g_return_val_if_fail (content_type != NULL, NULL);
   
   desktop_entries = get_all_desktop_entries_for_mime_type (content_type);
 

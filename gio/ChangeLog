@@ -1,3 +1,9 @@
+2008-01-10  A. Walton  <awalton@svn.gnome.org>
+
+	* gdesktopappinfo.c: (g_app_info_get_all_for_type),
+	(g_app_info_get_default_for_type):
+	Check for NULL content types.
+
 2008-01-10  Frederic Crozat  <fcrozat@mandriva.com>
 
 	* gunixmounts.c: add rpc_pipefs to systemfs list (#508309).
