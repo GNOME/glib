@@ -273,6 +273,7 @@ guess_system_internal (const char *mountpoint,
     "tmpfs",
     "usbfs",
     "nfsd",
+    "rpc_pipefs",
     NULL
   };
   const char *ignore_devices[] = {
