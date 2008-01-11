@@ -1,3 +1,8 @@
+2008-01-11  Murray Cumming  <murrayc@murrayc.com>
+
+	* gfile.c: Clarify the sentence about GAsyncReadyCallback, 
+	and correct some spelling mistakes. Bug #508108.
+
 2008-01-11  Matthias Clasen <mclasen@redhat.com>
 
 	* glocalfileinfo.c: Add a comment.

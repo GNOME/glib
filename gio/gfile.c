@@ -65,7 +65,8 @@
  * to suit your application. Asynchronous versions of synchronous functions 
  * simply have _async() appended to their function names. The asynchronous 
  * I/O functions call a #GAsyncReadyCallback which is then used to finalize 
- * the operation, which is then passed to the function's matching _finish() 
+ * the operation, producing a GAsyncResult which is then passed to the 
+ * function's matching _finish() 
  * operation. 
  *
  * Some #GFile operations do not have synchronous analogs, as they may
@@ -243,7 +244,7 @@ g_file_base_init (gpointer g_class)
  * e.g. "C:\Windows" or "/usr/bin/". This does not mean the file is local,
  * as it might be on a locally mounted remote filesystem.
  *
- * On some systems non-native files may be availible using
+ * On some systems non-native files may be available using
  * the native filesystem via a userspace filesystem (FUSE), in
  * these cases this call will return %FALSE, but g_file_get_path()
  * will still return a native path.
@@ -327,9 +328,9 @@ g_file_get_uri_scheme (GFile *file)
  * g_file_get_basename:
  * @file: input #GFile.
  *
- * Gets the basename (the last component of the path) for a given #GFile.
+ * Gets the base name (the last component of the path) for a given #GFile.
  *
- * If called for the toplevel of a system (such as the filesystem root
+ * If called for the top level of a system (such as the filesystem root
  * or a uri like sftp://host/ it will return a single directory separator
  * (and on Windows, possibly a drive letter).
  *
@@ -597,11 +598,11 @@ g_file_get_child_for_display_name (GFile      *file,
  * @parent: input #GFile.
  * @descendant: input #GFile.
  * 
- * Checks whether @parent (recursively) contains the specified @descendent.
+ * Checks whether @parent (recursively) contains the specified @descendant.
  * 
  * This call does no blocking i/o.
  * 
- * Returns:  %TRUE if the @descendent's parent, grandparent, etc is @parent. %FALSE otherwise.
+ * Returns:  %TRUE if the @descendant's parent, grandparent, etc is @parent. %FALSE otherwise.
  **/
 gboolean
 g_file_contains_file (GFile *parent,
@@ -694,7 +695,7 @@ g_file_resolve_relative_path (GFile      *file,
  * be a comma-separated list of attribute or attribute wildcards. The wildcard "*"
  * means all attributes, and a wildcard like "standard::*" means all attributes in the standard
  * namespace. An example attribute query be "standard::*,owner::user".
- * The standard attributes are availible as defines, like #G_FILE_ATTRIBUTE_STANDARD_NAME.
+ * The standard attributes are available as defines, like #G_FILE_ATTRIBUTE_STANDARD_NAME.
  *
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
@@ -830,7 +831,7 @@ g_file_enumerate_children_finish (GFile         *file,
  * be a comma-separated list of attribute or attribute wildcards. The wildcard "*"
  * means all attributes, and a wildcard like "standard::*" means all attributes in the standard
  * namespace. An example attribute query be "standard::*,owner::user".
- * The standard attributes are availible as defines, like #G_FILE_ATTRIBUTE_STANDARD_NAME.
+ * The standard attributes are available as defines, like #G_FILE_ATTRIBUTE_STANDARD_NAME.
  * 
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
@@ -960,7 +961,7 @@ g_file_query_info_finish (GFile         *file,
  * 
  * Similar to g_file_query_info(), but obtains information
  * about the filesystem the @file is on, rather than the file itself.
- * For instance the amount of space availible and the type of
+ * For instance the amount of space available and the type of
  * the filesystem.
  *
  * The @attribute value is a string that specifies the file attributes that
@@ -971,7 +972,7 @@ g_file_query_info_finish (GFile         *file,
  * namespace. The standard namespace for filesystem attributes is "fs".
  * Common attributes of interest are #G_FILE_ATTRIBUTE_FILESYSTEM_SIZE
  * (the total size of the filesystem in bytes), #G_FILE_ATTRIBUTE_FILESYSTEM_FREE (number of
- * bytes availible), and #G_FILE_ATTRIBUTE_FILESYSTEM_TYPE (type of the filesystem).
+ * bytes available), and #G_FILE_ATTRIBUTE_FILESYSTEM_TYPE (type of the filesystem).
  * 
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
@@ -1113,7 +1114,7 @@ g_file_read (GFile         *file,
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
  *
- * Some filesystems don't allow all filenames, and may
+ * Some file systems don't allow all file names, and may
  * return an G_IO_ERROR_INVALID_FILENAME error.
  * If the file is a directory the G_IO_ERROR_IS_DIRECTORY error will be
  * returned. Other errors are possible too, and depend on what kind of
@@ -1169,7 +1170,7 @@ g_file_append_to (GFile             *file,
  * If a file with this name already exists the G_IO_ERROR_EXISTS error
  * will be returned. If the file is a directory the G_IO_ERROR_IS_DIRECTORY
  * error will be returned.
- * Some filesystems don't allow all filenames, and may
+ * Some file systems don't allow all file names, and may
  * return an G_IO_ERROR_INVALID_FILENAME error, and if the name
  * is to long G_IO_ERROR_FILENAME_TOO_LONG will be returned.
  * Other errors are possible too, and depend on what kind of
@@ -1249,7 +1250,7 @@ g_file_create (GFile             *file,
  * If the file is a directory the G_IO_ERROR_IS_DIRECTORY error will be returned,
  * and if the file is some other form of non-regular file then a
  * G_IO_ERROR_NOT_REGULAR_FILE error will be returned.
- * Some filesystems don't allow all filenames, and may
+ * Some file systems don't allow all file names, and may
  * return an G_IO_ERROR_INVALID_FILENAME error, and if the name
  * is to long G_IO_ERROR_FILENAME_TOO_LONG will be returned.
  * Other errors are possible too, and depend on what kind of
@@ -1442,7 +1443,7 @@ g_file_append_to_finish (GFile         *file,
  * Asynchronously creates a new file and returns an output stream for writing to it.
  * The file must not already exists.
  *
- * For more details, see g_file_creat() which is
+ * For more details, see g_file_create() which is
  * the synchronous version of this call.
  *
  * When the operation is finished, @callback will be called. You can then call
@@ -1514,7 +1515,7 @@ g_file_create_finish (GFile         *file,
  * @callback: a #GAsyncReadyCallback to call when the request is satisfied
  * @user_data: the data to pass to callback function
  *
- * Asyncronously overwrites the file, replacing the contents, possibly
+ * Asynchronously overwrites the file, replacing the contents, possibly
  * creating a backup copy of the file first.
  *
  * For more details, see g_file_replace() which is
@@ -2006,7 +2007,7 @@ file_copy_fallback (GFile                  *source,
  * @flags: set of #GFileCopyFlags
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @progress_callback: function to callback with progress information
- * @progress_callback_data: userdata to pass to @progress_callback
+ * @progress_callback_data: user data to pass to @progress_callback
  * @error: #GError to set on error, or %NULL
  *
  * Copies the file @source to the location specified by @destination.
@@ -2026,7 +2027,7 @@ file_copy_fallback (GFile                  *source,
  * If @progress_callback is not %NULL, then the operation can be monitored by
  * setting this to a #GFileProgressCallback function. @progress_callback_data
  * will be passed to this function. It is guaranteed that this callback will
- * be called after all data has been transfered with the total number of bytes
+ * be called after all data has been transferred with the total number of bytes
  * copied during the operation.
  * 
  * If the @source file does not exist then the G_IO_ERROR_NOT_FOUND
@@ -2123,7 +2124,7 @@ g_file_copy (GFile                  *source,
  * If @progress_callback is not %NULL, then the operation can be monitored by
  * setting this to a #GFileProgressCallback function. @progress_callback_data
  * will be passed to this function. It is guaranteed that this callback will
- * be called after all data has been transfered with the total number of bytes
+ * be called after all data has been transferred with the total number of bytes
  * copied during the operation.
  * 
  * If the @source file does not exist then the G_IO_ERROR_NOT_FOUND
@@ -2138,7 +2139,7 @@ g_file_copy (GFile                  *source,
  *
  * If the source is a directory and the target does not exist, or #G_FILE_COPY_OVERWRITE is
  * specified and the target is a file, then the G_IO_ERROR_WOULD_RECURSE error
- * may be returned (if the native move operation isn't availible).
+ * may be returned (if the native move operation isn't available).
  *
  * Returns: %TRUE on successful move, %FALSE otherwise.
  **/
@@ -2334,7 +2335,7 @@ g_file_delete (GFile         *file,
  *
  * Sends @file to the "Trashcan", if possible. This is similar to
  * deleting it, but the user can recover it before emptying the trashcan.
- * Not all filesystems support trashing, so this call can return the
+ * Not all file systems support trashing, so this call can return the
  * %G_IO_ERROR_NOT_SUPPORTED error.
  *
  *
@@ -4067,7 +4068,7 @@ g_file_mount_enclosing_volume (GFile               *location,
  * Finishes a mount operation started by g_file_mount_enclosing_volume().
  * 
  * Returns: %TRUE if successful. If an error
- * has occured, this function will return %FALSE and set @error
+ * has occurred, this function will return %FALSE and set @error
  * appropriately if present.
  **/
 gboolean
@@ -4484,7 +4485,7 @@ g_file_load_partial_contents_finish (GFile         *file,
  * the synchronous version of this call.
  *
  * When the load operation has completed, @callback will be called 
- * with @userdata. To finish the operation, call 
+ * with @user data. To finish the operation, call 
  * g_file_load_contents_finish() with the #GAsyncResult returned by 
  * the @callback.
  * 
@@ -4566,7 +4567,7 @@ g_file_load_contents_finish (GFile         *file,
  * next time it is saved over.
  * 
  * Returns: %TRUE if successful. If an error
- * has occured, this function will return %FALSE and set @error
+ * has occurred, this function will return %FALSE and set @error
  * appropriately if present.
  **/
 gboolean
