@@ -5,7 +5,7 @@
 2008-01-11 12:55:19  Tim Janik  <timj@imendio.com>
 
 	* tests/testingbase64.c: added g_base64_encode()/g_base64_decode()
-	test case by Asbjoern <asbgpe@online.no>. fixed up coding style.
+	test case by Asbjoern Pettersen. fixed up coding style.
 
 2008-01-11 09:00:28  Tim Janik  <timj@imendio.com>
 

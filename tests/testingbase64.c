@@ -1,5 +1,5 @@
 /* GLib testing framework examples and tests
- * Copyright (C) 2008 Asbjoern <asbgpe@online.no>
+ * Copyright (C) 2008 Asbjoern Pettersen
  *
  * This work is provided "as is"; redistribution and modification
  * in whole or in part, in any medium, physical or electronic is
