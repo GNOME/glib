@@ -78,6 +78,9 @@ scannerapi_SOURCES       = scannerapi.c
 scannerapi_LDADD         = $(progs_ldadd)
 TEST_PROGS		+= testglib
 testglib_LDADD		 = $(libglib)
+TEST_PROGS              += testingbase64
+testingbase64_SOURCES    = testingbase64.c
+testingbase64_LDADD      = $(progs_ldadd)
 
 
 patterntest_LDADD = $(libglib)

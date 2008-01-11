@@ -1,3 +1,8 @@
+2008-01-11 12:55:19  Tim Janik  <timj@imendio.com>
+
+	* tests/testingbase64.c: added g_base64_encode()/g_base64_decode()
+	test case by Asbjoern <asbgpe@online.no>. fixed up coding style.
+
 2008-01-11 09:00:28  Tim Janik  <timj@imendio.com>
 
 	* glib/Makefile.am (install-exec-hook): use mv/sed/rm on a temporary
