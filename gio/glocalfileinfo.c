@@ -1439,7 +1439,8 @@ _g_local_file_info_get (const char             *basename,
 					G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME))
     {
       char *display_name = g_filename_display_basename (path);
-      
+     
+      /* look for U+FFFD REPLACEMENT CHARACTER */ 
       if (strstr (display_name, "\357\277\275") != NULL)
 	{
 	  char *p = display_name;
