@@ -326,12 +326,12 @@ CONFIGVARS = \
 
 install-exec-hook:
 	for sf in ${auto_config_binscripts} ; do \
-	  sed -i.bak \
+	  mv -f "$(DESTDIR)$(bindir)/$$sf" "$(DESTDIR)$(bindir)/$$sf".tmp \
+	  && sed < "$(DESTDIR)$(bindir)/$$sf".tmp > "$(DESTDIR)$(bindir)/$$sf" \
 	    -e '1,24s|^ *#@PKGINSTALL_CONFIGVARS_IN24LINES@|  ${CONFIGVARS}|' \
 	    -e '1,1s|#!/usr/bin/env python\([0-9]\+\(\.[0-9]\+\)\?\)\?|#!${PYTHON}|' \
-	    "$(DESTDIR)$(bindir)/$$sf" \
-	  || exit $$? \
-	  && rm -f "$(DESTDIR)$(bindir)/$$sf".bak ; \
+	  || exit $$? ; \
+	  rm -f "$(DESTDIR)$(bindir)/$$sf".tmp ; \
 	done
 
 endif
