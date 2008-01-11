@@ -38,6 +38,16 @@
  * stream, use g_file_input_stream_query_info() or 
  * g_file_output_stream_query_info() (or their async variants).
  *
+ * To change the actual attributes of a file, you should then set the 
+ * attribute in the #GFileInfo and call g_file_set_attributes_from_info() 
+ * or g_file_set_attributes_async() on a GFile.
+ *
+ * However, not all attributes can be changed in the file. For instance, 
+ * the actual size of a file cannot be changed via g_file_info_set_size(). 
+ * You may call g_file_query_settable_attributes() and 
+ * g_file_query_writable_namespaces() to discover the settable attributes 
+ * of a particular file at runtime.
+ *
  * #GFileAttributeMatcher allows for searching through a #GFileInfo for 
  * attributes.
  **/

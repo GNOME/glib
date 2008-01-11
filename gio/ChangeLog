@@ -1,3 +1,9 @@
+2008-01-10  Murray Cumming  <murrayc@murrayc.com>
+
+	* gfileinfo.c: GFileInfo description: Mention 
+	how to actually set attributes in a GFile and how to discover 
+	which attributes are settable. Bug #508378.
+
 2008-01-10  A. Walton  <awalton@svn.gnome.org>
 
 	* gdesktopappinfo.c: (g_app_info_get_all_for_type),
