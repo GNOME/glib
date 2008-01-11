@@ -134,30 +134,31 @@ Logs a critical message and returns @val.
 @val: the value to return from the current function.
 
 
-<!-- ##### MACRO g_assert ##### -->
+<!-- ##### MACRO g_warn_if_fail ##### -->
 <para>
-Debugging macro to terminate the application if the assertion fails.
-If the assertion fails (i.e. the expression is not true), an error message
-is logged and the application is terminated.
-</para>
-<para>
-The macro can be turned off in final releases of code by defining
-#G_DISABLE_ASSERT when compiling the application.
+
 </para>
 
-@expr: the expression to check.
+@expr: 
 
 
-<!-- ##### MACRO g_assert_not_reached ##### -->
+<!-- ##### MACRO g_warn_if_reached ##### -->
 <para>
-Debugging macro to terminate the application if it is ever reached.
-If it is reached, an error message is logged and the application is terminated.
-</para>
-<para>
-The macro can be turned off in final releases of code by defining
-#G_DISABLE_ASSERT when compiling the application.
+
 </para>
 
+
+
+<!-- ##### FUNCTION g_warn_message ##### -->
+<para>
+
+</para>
+
+@domain: 
+@file: 
+@line: 
+@func: 
+@warnexpr: 
 
 
 <!-- ##### FUNCTION g_on_error_query ##### -->

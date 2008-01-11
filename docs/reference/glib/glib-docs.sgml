@@ -65,6 +65,7 @@
 <!ENTITY glib-Regex SYSTEM "xml/gregex.xml">
 <!ENTITY glib-Version SYSTEM "xml/version.xml">
 <!ENTITY glib-Uri SYSTEM "xml/gurifuncs.xml">
+<!ENTITY glib-Testing SYSTEM "xml/testing.xml">
 
 <!ENTITY glib-Compiling SYSTEM "compiling.sgml">
 <!ENTITY glib-Building SYSTEM "building.sgml">
@@ -162,6 +163,7 @@ synchronize their operation.
     &glib-Markup;
     &glib-Keyfile;
     &glib-Bookmarkfile;
+    &glib-Testing;
     &glib-Windows-Compatibility-Functions;
   </chapter>
 

@@ -82,13 +82,10 @@ pass <option>--keyword=C_:1c,2</option> to xgettext when extracting
 messages. Note that this only works with GNU gettext >= 0.15. 
 </para></note>
 
-@Context: 
-@String: 
+@Context: a message context, must be a string literal
+@String: a message id, must be a string literal
 @Returns: the translated message
 @Since: 2.16
-<!-- # Unused Parameters # -->
-@msgctxt: a message context, must be a string literal
-@msgid: a message id, must be a string literal
 
 
 <!-- ##### MACRO N_ ##### -->

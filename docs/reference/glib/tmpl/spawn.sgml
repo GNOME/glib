@@ -89,7 +89,11 @@ function will thus only affect the child, not the parent.
 <para>
 Note that POSIX allows only async-signal-safe functions (see signal(7)) 
 to be called in the child between fork() and exec(), which drastically 
-limits the usefulness of child setup functions. 
+limits the usefulness of child setup functions.  
+</para>
+
+<para>
+Also note that modifying the environment from 
 </para>
 
 <para>

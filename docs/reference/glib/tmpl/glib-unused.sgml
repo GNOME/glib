@@ -48,6 +48,30 @@ Desktop Entry Parser
 
 
 
+<!-- ##### SECTION ./tmpl/testutils.sgml:Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION ./tmpl/testutils.sgml:See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION ./tmpl/testutils.sgml:Short_Description ##### -->
+
+
+
+<!-- ##### SECTION ./tmpl/testutils.sgml:Stability_Level ##### -->
+
+
+
+<!-- ##### SECTION ./tmpl/testutils.sgml:Title ##### -->
+Testing
+
+
 <!-- ##### ENUM GChannelError ##### -->
 <para>
 
@@ -651,6 +675,14 @@ in any UNIX manual.
 @contents: 
 @length: 
 @error: 
+@Returns: 
+
+<!-- ##### FUNCTION g_format_file_size_for_display ##### -->
+<para>
+
+</para>
+
+@size: 
 @Returns: 
 
 <!-- ##### FUNCTION g_io_channel_error_quark ##### -->

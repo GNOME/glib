@@ -734,7 +734,8 @@ g_test_get_root (void)
  * Runs all tests under the toplevel suite which can be retrieved
  * with g_test_get_root(). Similar to g_test_run_suite(), the test
  * cases to be run are filtered according to
- * test path arguments (-p <testpath>) as parsed by g_test_init().
+ * test path arguments (-p <replaceable>testpath</replaceable>) as 
+ * parsed by g_test_init().
  * g_test_run_suite() or g_test_run() may only be called once
  * in a program.
  *
