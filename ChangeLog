@@ -1,3 +1,8 @@
+2008-01-12  Andre Klapper  <a9016009@gmx.de>
+
+	* configure.in: ALL_LINGUAS: remove line breaks from previous 
+	commit to get damned-lies stats correct again. Add Sinhala (si).
+
 2008-01-11  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gtestutils.c: Fix a docs typo
