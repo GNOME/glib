@@ -1,3 +1,7 @@
+2008-01-14  Matthias Clasen  <mclasen@redhat.com>
+
+	* NEWS: Updates
+
 2008-01-14  Alexander Larsson  <alexl@redhat.com>
 
         * glib/gurifuncs.c:

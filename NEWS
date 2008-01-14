@@ -1,3 +1,30 @@
+Overview of Changes from GLib 2.15.1 to GLib 2.15.2
+===================================================
+
+* GIO:
+ - Mount operation API change: unhandled methods get reported via 
+   the reply, rather than by the signal emission return value
+ - File monitor API change: Add a GError argument to g_file_monitor_file
+ - g_unix_mount_guess_should_display(): new function
+
+* Bugs fixed:
+  508224 [PATCH] FAM backend crashes due to double free
+  508074 GAsyncResult documentation suggests g_freeing it.
+  508108 GFile documentation slightly unclear.
+  508309 rpc_pipefs mount points should be hidden
+  508378 GFileInfo documentation implies that it changes attribute...
+  508719 g_file_get_relative_path fails if parent is root
+  508773 g_uri_escape_string() documentation unclear.
+
+* Updated translations:
+  Arabic (ar)
+  Spanish (es)
+  Hebrew (he)
+  Italian (it)
+  Korean (ko)
+  Turkish (tr)
+
+
 Overview of Changes from GLib 2.15.0 to GLib 2.15.1
 ===================================================
 
