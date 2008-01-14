@@ -1,3 +1,8 @@
+2008-01-14  Alexander Larsson  <alexl@redhat.com>
+
+        * gasyncresult.c:
+	Clean up docs and example for GAsyncResult (#508074)
+
 2008-01-11  Murray Cumming  <murrayc@murrayc.com>
 
 	* gfile.c: Clarify the sentence about GAsyncReadyCallback, 

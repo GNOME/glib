@@ -83,7 +83,6 @@
  *
  *   /<!-- -->* ... *<!-- -->/
  *
- *   g_free (res);
  * }
  *
  * int main (int argc, void *argv[])
@@ -103,8 +102,8 @@
  * always called, even in the case of a cancelled operation. On cancellation
  * the result is a %G_IO_ERROR_CANCELLED error.
  * 
- * Some ascynchronous operations are implemented using synchronous call. These
- * are run in a separate #GThread has been initialized, but otherwise they
+ * Some ascynchronous operations are implemented using synchronous calls. These
+ * are run in a separate thread, if #GThread has been initialized, but otherwise they
  * are sent to the Main Event Loop and processed in an idle function. So, if you
  * truly need asynchronous operations, make sure to initialize #GThread.
  **/
