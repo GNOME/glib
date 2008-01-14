@@ -1,3 +1,7 @@
+2008-01-14  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.15.2 ===
+
 2008-01-11  Matthias Clasen  <mclasen@redhat.com>
 	
 	* glib/*: Hook up gtestutils docs.

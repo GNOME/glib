@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.20\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-01-07 09:50-0500\n"
+"POT-Creation-Date: 2008-01-14 10:53-0500\n"
 "PO-Revision-Date: 2007-08-19 23:40+0000\n"
 "Last-Translator: Duarte Loreto <happyguy_pt@hotmail.com>\n"
 "Language-Team: Portuguese <gnome_pt@yahoogroups.com>\n"
@@ -1245,56 +1245,56 @@ msgstr ""
 msgid "drive doesn't implement polling for media"
 msgstr ""
 
-#: gio/gfile.c:730 gio/gfile.c:871 gio/gfile.c:1004 gio/gfile.c:1090
-#: gio/gfile.c:1143 gio/gfile.c:1200 gio/gfile.c:1281 gio/gfile.c:2188
-#: gio/gfile.c:2233 gio/gfile.c:2283 gio/gfile.c:2322 gio/gfile.c:2641
-#: gio/gfile.c:3035 gio/gfile.c:3114 gio/gfile.c:3194
+#: gio/gfile.c:731 gio/gfile.c:872 gio/gfile.c:1005 gio/gfile.c:1091
+#: gio/gfile.c:1144 gio/gfile.c:1201 gio/gfile.c:1282 gio/gfile.c:2189
+#: gio/gfile.c:2234 gio/gfile.c:2284 gio/gfile.c:2323 gio/gfile.c:2647
+#: gio/gfile.c:3046 gio/gfile.c:3125 gio/gfile.c:3205 gio/gfile.c:3283
 #, fuzzy, c-format
 msgid "Operation not supported"
 msgstr "Atalhos não são suportados"
 
-#: gio/gfile.c:1046 gio/glocalfile.c:888 gio/glocalfile.c:897
-#: gio/glocalfile.c:908
+#: gio/gfile.c:1047 gio/glocalfile.c:895 gio/glocalfile.c:904
+#: gio/glocalfile.c:915
 #, c-format
 msgid "Containing mount does not exist"
 msgstr ""
 
-#: gio/gfile.c:1620
+#: gio/gfile.c:1621
 #, c-format
 msgid "Can't copy over directory"
 msgstr ""
 
-#: gio/gfile.c:1680
+#: gio/gfile.c:1681
 #, c-format
 msgid "Can't copy directory over directory"
 msgstr ""
 
-#: gio/gfile.c:1688
+#: gio/gfile.c:1689
 #, c-format
 msgid "Target file exists"
 msgstr ""
 
-#: gio/gfile.c:1706
+#: gio/gfile.c:1707
 #, c-format
 msgid "Can't recursively copy directory"
 msgstr ""
 
-#: gio/gfile.c:2273
+#: gio/gfile.c:2274
 #, c-format
 msgid "Invalid symlink value given"
 msgstr ""
 
-#: gio/gfile.c:2365
+#: gio/gfile.c:2366
 #, fuzzy, c-format
 msgid "Trash not supported"
 msgstr "Atalhos não são suportados"
 
-#: gio/gfile.c:2412
+#: gio/gfile.c:2413
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr ""
 
-#: gio/gfile.c:4042 gio/gvolume.c:318
+#: gio/gfile.c:4068 gio/gvolume.c:318
 msgid "volume doesn't implement mount"
 msgstr ""
 
@@ -1358,116 +1358,121 @@ msgstr ""
 msgid "Stream has outstanding operation"
 msgstr ""
 
-#: gio/glocalfile.c:554
+#: gio/glocaldirectorymonitor.c:296
+#, c-format
+msgid "Unable to find default local directory monitor type"
+msgstr ""
+
+#: gio/glocalfile.c:561
 #, fuzzy, c-format
 msgid "Invalid filename %s"
 msgstr "Nome de chave inválida: %s"
 
-#: gio/glocalfile.c:810
+#: gio/glocalfile.c:817
 #, fuzzy, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "Erro ao ler o ficheiro '%s': %s"
 
-#: gio/glocalfile.c:928
+#: gio/glocalfile.c:935
 #, c-format
 msgid "Can't rename root directory"
 msgstr ""
 
-#: gio/glocalfile.c:946
+#: gio/glocalfile.c:953
 #, c-format
 msgid "Can't rename file, filename already exist"
 msgstr ""
 
-#: gio/glocalfile.c:959 gio/glocalfile.c:1681 gio/glocalfile.c:1710
-#: gio/glocalfile.c:1842 gio/glocalfileoutputstream.c:451
+#: gio/glocalfile.c:966 gio/glocalfile.c:1688 gio/glocalfile.c:1717
+#: gio/glocalfile.c:1849 gio/glocalfileoutputstream.c:451
 #: gio/glocalfileoutputstream.c:494 gio/glocalfileoutputstream.c:886
 #, fuzzy, c-format
 msgid "Invalid filename"
 msgstr "Nome de máquina inválido"
 
-#: gio/glocalfile.c:963
+#: gio/glocalfile.c:970
 #, fuzzy, c-format
 msgid "Error renaming file: %s"
 msgstr "Erro ao ler o ficheiro '%s': %s"
 
-#: gio/glocalfile.c:1080
+#: gio/glocalfile.c:1087
 #, fuzzy, c-format
 msgid "Error opening file: %s"
 msgstr "Erro ao ler o ficheiro '%s': %s"
 
-#: gio/glocalfile.c:1090
+#: gio/glocalfile.c:1097
 #, c-format
 msgid "Can't open directory"
 msgstr ""
 
-#: gio/glocalfile.c:1142 gio/glocalfile.c:1685
+#: gio/glocalfile.c:1149 gio/glocalfile.c:1692
 #, fuzzy, c-format
 msgid "Error removing file: %s"
 msgstr "Erro ao ler o ficheiro '%s': %s"
 
-#: gio/glocalfile.c:1434
+#: gio/glocalfile.c:1441
 #, fuzzy, c-format
 msgid "Error trashing file: %s"
 msgstr "Erro ao ler o ficheiro '%s': %s"
 
-#: gio/glocalfile.c:1458
+#: gio/glocalfile.c:1465
 #, fuzzy, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "Falha ao criar o ficheiro '%s': %s"
 
-#: gio/glocalfile.c:1482
+#: gio/glocalfile.c:1489
 #, c-format
 msgid "Unable to find toplevel directory for trash"
 msgstr ""
 
-#: gio/glocalfile.c:1542 gio/glocalfile.c:1562
+#: gio/glocalfile.c:1549 gio/glocalfile.c:1569
 #, c-format
 msgid "Unable to find or create trash directory"
 msgstr ""
 
-#: gio/glocalfile.c:1594
+#: gio/glocalfile.c:1601
 #, fuzzy, c-format
 msgid "Unable to create trashed file: %s"
 msgstr "Falha ao criar o ficheiro '%s': %s"
 
-#: gio/glocalfile.c:1617
+#: gio/glocalfile.c:1624
 #, fuzzy, c-format
 msgid "Unable to trash file: %s"
 msgstr "Falha ao criar o ficheiro '%s': %s"
 
-#: gio/glocalfile.c:1714
+#: gio/glocalfile.c:1721
 #, fuzzy, c-format
 msgid "Error making symbolic link: %s"
 msgstr "Erro ao parsear a opção %s"
 
-#: gio/glocalfile.c:1761 gio/glocalfile.c:1846
+#: gio/glocalfile.c:1768 gio/glocalfile.c:1853
 #, fuzzy, c-format
 msgid "Error moving file: %s"
 msgstr "Erro ao ler o ficheiro '%s': %s"
 
-#: gio/glocalfile.c:1782
+#: gio/glocalfile.c:1789
 #, c-format
 msgid "Can't move directory over directory"
 msgstr ""
 
-#: gio/glocalfile.c:1791
+#: gio/glocalfile.c:1798
 #, c-format
 msgid "Target file already exists"
 msgstr ""
 
-#: gio/glocalfile.c:1804 gio/glocalfileoutputstream.c:740
+#: gio/glocalfile.c:1811 gio/glocalfileoutputstream.c:740
 #: gio/glocalfileoutputstream.c:754 gio/glocalfileoutputstream.c:769
 #: gio/glocalfileoutputstream.c:785 gio/glocalfileoutputstream.c:799
 #, c-format
 msgid "Backup file creation failed"
 msgstr ""
 
-#: gio/glocalfile.c:1821
+#: gio/glocalfile.c:1828
 #, fuzzy, c-format
 msgid "Error removing target file: %s"
 msgstr "Erro ao ler o ficheiro '%s': %s"
 
-#: gio/glocalfile.c:1835
+#: gio/glocalfile.c:1842
 #, c-format
 msgid "Move between mounts not supported"
 msgstr ""
@@ -1497,57 +1502,57 @@ msgstr "Erro ao abrir o directório '%s': %s"
 msgid "Error stating file '%s': %s"
 msgstr "Erro ao ler o ficheiro '%s': %s"
 
-#: gio/glocalfileinfo.c:1446
+#: gio/glocalfileinfo.c:1447
 msgid " (invalid encoding)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1621
+#: gio/glocalfileinfo.c:1622
 #, fuzzy, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "Erro ao ler o ficheiro '%s': %s"
 
-#: gio/glocalfileinfo.c:1666
+#: gio/glocalfileinfo.c:1667
 #, c-format
 msgid "Invalid attribute type (uint32 expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1683
+#: gio/glocalfileinfo.c:1684
 #, c-format
 msgid "Invalid attribute type (uint64 expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1701
+#: gio/glocalfileinfo.c:1702
 #, c-format
 msgid "Invalid attribute type (byte string expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1725
+#: gio/glocalfileinfo.c:1726
 #, fuzzy, c-format
 msgid "Error setting permissions: %s"
 msgstr "Erro durante a conversão: %s"
 
-#: gio/glocalfileinfo.c:1774 gio/glocalfileinfo.c:1934
+#: gio/glocalfileinfo.c:1775 gio/glocalfileinfo.c:1935
 #, fuzzy, c-format
 msgid "Error setting owner: %s"
 msgstr "Erro durante a conversão: %s"
 
-#: gio/glocalfileinfo.c:1797
+#: gio/glocalfileinfo.c:1798
 #, c-format
 msgid "symlink must be non-NULL"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1805 gio/glocalfileinfo.c:1822
-#: gio/glocalfileinfo.c:1831
+#: gio/glocalfileinfo.c:1806 gio/glocalfileinfo.c:1823
+#: gio/glocalfileinfo.c:1832
 #, fuzzy, c-format
 msgid "Error setting symlink: %s"
 msgstr "Erro na linha %d: %s"
 
-#: gio/glocalfileinfo.c:1814
+#: gio/glocalfileinfo.c:1815
 #, c-format
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1989
+#: gio/glocalfileinfo.c:1990
 #, fuzzy, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Atalhos não são suportados"
@@ -1568,6 +1573,11 @@ msgstr "Erro ao ler o ficheiro '%s': %s"
 #, fuzzy, c-format
 msgid "Error closing file: %s"
 msgstr "Erro ao ler o ficheiro '%s': %s"
+
+#: gio/glocalfilemonitor.c:225
+#, c-format
+msgid "Unable to find default local file monitor type"
+msgstr ""
 
 #: gio/glocalfileoutputstream.c:166 gio/glocalfileoutputstream.c:560
 #, fuzzy, c-format
@@ -1693,7 +1703,7 @@ msgstr "Erro ao ler o ficheiro '%s': %s"
 msgid "Error closing unix: %s"
 msgstr "Erro na linha %d: %s"
 
-#: gio/gunixmounts.c:1754 gio/gunixmounts.c:1791
+#: gio/gunixmounts.c:1755 gio/gunixmounts.c:1792
 msgid "Filesystem root"
 msgstr ""
 

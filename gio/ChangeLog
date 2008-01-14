@@ -1,3 +1,7 @@
+2008-01-14  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.15.2 ===
+
 2008-01-14  Alexander Larsson  <alexl@redhat.com>
 
 	* gfile.c (g_file_monitor_file):
