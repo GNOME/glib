@@ -200,6 +200,13 @@ g_uri_get_scheme (const char  *uri)
  * @allow_utf8: %TRUE if the result can include UTF-8 characters.
  * 
  * Escapes a string for use in a URI.
+ *
+ * Normally all characters that are not "unreserved" (i.e. ASCII alphanumerical
+ * characters plus dash, dot, underscore and tilde) are escaped.
+ * But if you specify characters in @reserved_chars_allowed they are not
+ * escaped. This is useful for the "reserved" characters in the URI
+ * specification, since those are allowed unescaped in some portions of
+ * a URI. 
  * 
  * Returns: an escaped version of @unescaped. The returned string should be 
  * freed when no longer needed.

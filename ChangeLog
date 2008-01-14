@@ -1,3 +1,8 @@
+2008-01-14  Alexander Larsson  <alexl@redhat.com>
+
+        * glib/gurifuncs.c:
+	Clarify docs for g_uri_escape_string (#508773)
+
 2008-01-12  Andre Klapper  <a9016009@gmx.de>
 
 	* configure.in: ALL_LINGUAS: remove line breaks from previous 
