@@ -1,5 +1,11 @@
 2008-01-14  Alexander Larsson  <alexl@redhat.com>
 
+        * glocalfile.c:
+        (match_prefix):
+	Handle root correctly in g_file_get_relative_path (#508719)
+
+2008-01-14  Alexander Larsson  <alexl@redhat.com>
+
         * gasyncresult.c:
 	Clean up docs and example for GAsyncResult (#508074)
 
