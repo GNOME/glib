@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-01-07 16:51+0000\n"
-"PO-Revision-Date: 2008-01-09 15:43+0100\n"
+"POT-Creation-Date: 2008-01-14 15:00+0000\n"
+"PO-Revision-Date: 2008-01-14 17:15+0100\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <<gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -1230,49 +1230,50 @@ msgstr "la unidad no implementa la expulsión"
 msgid "drive doesn't implement polling for media"
 msgstr "la unidad no implementa el sondeo para medios"
 
-#: ../gio/gfile.c:730 ../gio/gfile.c:871 ../gio/gfile.c:1004
-#: ../gio/gfile.c:1090 ../gio/gfile.c:1143 ../gio/gfile.c:1200
-#: ../gio/gfile.c:1281 ../gio/gfile.c:2188 ../gio/gfile.c:2233
-#: ../gio/gfile.c:2283 ../gio/gfile.c:2322 ../gio/gfile.c:2641
-#: ../gio/gfile.c:3035 ../gio/gfile.c:3114 ../gio/gfile.c:3194
+#: ../gio/gfile.c:731 ../gio/gfile.c:872 ../gio/gfile.c:1005
+#: ../gio/gfile.c:1091 ../gio/gfile.c:1144 ../gio/gfile.c:1201
+#: ../gio/gfile.c:1282 ../gio/gfile.c:2189 ../gio/gfile.c:2234
+#: ../gio/gfile.c:2284 ../gio/gfile.c:2323 ../gio/gfile.c:2647
+#: ../gio/gfile.c:3046 ../gio/gfile.c:3125 ../gio/gfile.c:3205
+#: ../gio/gfile.c:3283
 msgid "Operation not supported"
 msgstr "Operación no soportada"
 
-#: ../gio/gfile.c:1046 ../gio/glocalfile.c:888 ../gio/glocalfile.c:897
-#: ../gio/glocalfile.c:908
+#: ../gio/gfile.c:1047 ../gio/glocalfile.c:895 ../gio/glocalfile.c:904
+#: ../gio/glocalfile.c:915
 msgid "Containing mount does not exist"
 msgstr "El punto de montaje contenido no existe"
 
-#: ../gio/gfile.c:1620
+#: ../gio/gfile.c:1621
 msgid "Can't copy over directory"
 msgstr "No se puede copiar sobre el directorio"
 
-#: ../gio/gfile.c:1680
+#: ../gio/gfile.c:1681
 msgid "Can't copy directory over directory"
 msgstr "No se puede copiar directorio sobre directorio"
 
-#: ../gio/gfile.c:1688
+#: ../gio/gfile.c:1689
 msgid "Target file exists"
 msgstr "El archivo destino ya existe"
 
-#: ../gio/gfile.c:1706
+#: ../gio/gfile.c:1707
 msgid "Can't recursively copy directory"
 msgstr "No se puede copiar el directorio recursivamente"
 
-#: ../gio/gfile.c:2273
+#: ../gio/gfile.c:2274
 msgid "Invalid symlink value given"
 msgstr "El valor del enlace simbólico dado no es válido"
 
-#: ../gio/gfile.c:2365
+#: ../gio/gfile.c:2366
 msgid "Trash not supported"
 msgstr "No se soporta mover a la papelera"
 
-#: ../gio/gfile.c:2412
+#: ../gio/gfile.c:2413
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "Los nombres de archivo no pueden contener «%c»"
 
-#: ../gio/gfile.c:4042 ../gio/gvolume.c:318
+#: ../gio/gfile.c:4068 ../gio/gvolume.c:318
 msgid "volume doesn't implement mount"
 msgstr "el volumen no implementa el montado"
 
@@ -1326,107 +1327,111 @@ msgstr "El valor de conteo pasado a g_input_stream_skip_async es demasiado largo
 msgid "Stream has outstanding operation"
 msgstr "El flujo tiene una operación excepcional"
 
-#: ../gio/glocalfile.c:554
+#: ../gio/glocaldirectorymonitor.c:296
+msgid "Unable to find default local directory monitor type"
+msgstr "No se pudo encontrar el tipo de monitorización del directorio local predeterminado"
+
+#: ../gio/glocalfile.c:561
 #, c-format
 msgid "Invalid filename %s"
 msgstr "Nombre de archivo no válido %s"
 
-#: ../gio/glocalfile.c:810
+#: ../gio/glocalfile.c:817
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "Error al obtener la información del sistema de archivos: %s"
 
-#: ../gio/glocalfile.c:928
+#: ../gio/glocalfile.c:935
 msgid "Can't rename root directory"
 msgstr "No se puede renombrar el directorio raíz"
 
-#: ../gio/glocalfile.c:946
+#: ../gio/glocalfile.c:953
 msgid "Can't rename file, filename already exist"
 msgstr "No se puede renombrar el archivo, el nombre ya existe"
 
-#: ../gio/glocalfile.c:959 ../gio/glocalfile.c:1681 ../gio/glocalfile.c:1710
-#: ../gio/glocalfile.c:1842 ../gio/glocalfileoutputstream.c:451
+#: ../gio/glocalfile.c:966 ../gio/glocalfile.c:1688 ../gio/glocalfile.c:1717
+#: ../gio/glocalfile.c:1849 ../gio/glocalfileoutputstream.c:451
 #: ../gio/glocalfileoutputstream.c:494 ../gio/glocalfileoutputstream.c:886
 msgid "Invalid filename"
 msgstr "Nombre de archivo inválido"
 
-#: ../gio/glocalfile.c:963
+#: ../gio/glocalfile.c:970
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "Error al renombrar el archivo: %s"
 
-#: ../gio/glocalfile.c:1080
+#: ../gio/glocalfile.c:1087
 #, c-format
 msgid "Error opening file: %s"
 msgstr "Error al abrir el archivo: %s"
 
-#: ../gio/glocalfile.c:1090
+#: ../gio/glocalfile.c:1097
 msgid "Can't open directory"
 msgstr "No se puede abrir el directorio"
 
-#: ../gio/glocalfile.c:1142 ../gio/glocalfile.c:1685
+#: ../gio/glocalfile.c:1149 ../gio/glocalfile.c:1692
 #, c-format
 msgid "Error removing file: %s"
 msgstr "Error al eliminar el archivo: %s"
 
-#: ../gio/glocalfile.c:1434
+#: ../gio/glocalfile.c:1441
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "Error al mover a la papelera el archivo: %s"
 
-#: ../gio/glocalfile.c:1458
+#: ../gio/glocalfile.c:1465
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "No se pudo crear el directorio papelera %s: %s"
 
-#: ../gio/glocalfile.c:1482
+#: ../gio/glocalfile.c:1489
 msgid "Unable to find toplevel directory for trash"
 msgstr "No se pudo encontrar el directorio de nivel superior para mover a la papelera"
 
-#: ../gio/glocalfile.c:1542 ../gio/glocalfile.c:1562
+#: ../gio/glocalfile.c:1549 ../gio/glocalfile.c:1569
 msgid "Unable to find or create trash directory"
 msgstr "No se pudo encontrar o crear el directorio de la papelera"
 
-#: ../gio/glocalfile.c:1594
+#: ../gio/glocalfile.c:1601
 #, c-format
 msgid "Unable to create trashed file: %s"
 msgstr "No se pudo crear el archivo enviado a la papelera: %s"
 
-#: ../gio/glocalfile.c:1617
+#: ../gio/glocalfile.c:1624
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "No se pudo enviar a la papelera el archivo: %s"
 
-#: ../gio/glocalfile.c:1714
+#: ../gio/glocalfile.c:1721
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "Error al crear el enlace simbólico: %s"
 
-#: ../gio/glocalfile.c:1761 ../gio/glocalfile.c:1846
+#: ../gio/glocalfile.c:1768 ../gio/glocalfile.c:1853
 #, c-format
 msgid "Error moving file: %s"
 msgstr "Error al mover el archivo: %s"
 
-#: ../gio/glocalfile.c:1782
+#: ../gio/glocalfile.c:1789
 msgid "Can't move directory over directory"
 msgstr "No se puede mover un directorio sobre un directoro"
 
-#: ../gio/glocalfile.c:1791
+#: ../gio/glocalfile.c:1798
 msgid "Target file already exists"
 msgstr "El archivo destino ya existe"
 
-#: ../gio/glocalfile.c:1804 ../gio/glocalfileoutputstream.c:740
+#: ../gio/glocalfile.c:1811 ../gio/glocalfileoutputstream.c:740
 #: ../gio/glocalfileoutputstream.c:754 ../gio/glocalfileoutputstream.c:769
 #: ../gio/glocalfileoutputstream.c:785 ../gio/glocalfileoutputstream.c:799
 msgid "Backup file creation failed"
 msgstr "Falló la creación del archivo de respaldo"
 
-#: ../gio/glocalfile.c:1821
+#: ../gio/glocalfile.c:1828
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Error al eliminar el archivo destino: %s"
 
-#: ../gio/glocalfile.c:1835
+#: ../gio/glocalfile.c:1842
 msgid "Move between mounts not supported"
 msgstr "No se soporta mover archivos entre puntos de montaje"
 
@@ -1452,52 +1457,52 @@ msgstr "Error al establecer el atributo extendido «%s»: %s"
 msgid "Error stating file '%s': %s"
 msgstr "Error al mostrar información del estado del archivo «%s»: %s"
 
-#: ../gio/glocalfileinfo.c:1446
+#: ../gio/glocalfileinfo.c:1447
 msgid " (invalid encoding)"
 msgstr " (codificación no válida)"
 
-#: ../gio/glocalfileinfo.c:1621
+#: ../gio/glocalfileinfo.c:1622
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "Error al mostrar la información del estado del descriptor del archivo: %s"
 
-#: ../gio/glocalfileinfo.c:1666
+#: ../gio/glocalfileinfo.c:1667
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Tipo de atributo no válido (se esperaba uint32)"
 
-#: ../gio/glocalfileinfo.c:1683
+#: ../gio/glocalfileinfo.c:1684
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Tipo de atributo no válido (se esperaba uint64)"
 
-#: ../gio/glocalfileinfo.c:1701
+#: ../gio/glocalfileinfo.c:1702
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Tipo de atributo no válido (se esperaba una cadena byte)"
 
-#: ../gio/glocalfileinfo.c:1725
+#: ../gio/glocalfileinfo.c:1726
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Error al establecer permisos: %s"
 
-#: ../gio/glocalfileinfo.c:1774 ../gio/glocalfileinfo.c:1934
+#: ../gio/glocalfileinfo.c:1775 ../gio/glocalfileinfo.c:1935
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Error al establecer el propietario: %s"
 
-#: ../gio/glocalfileinfo.c:1797
+#: ../gio/glocalfileinfo.c:1798
 msgid "symlink must be non-NULL"
 msgstr "el enlace simbólico debe ser no nulo"
 
-#: ../gio/glocalfileinfo.c:1805 ../gio/glocalfileinfo.c:1822
-#: ../gio/glocalfileinfo.c:1831
+#: ../gio/glocalfileinfo.c:1806 ../gio/glocalfileinfo.c:1823
+#: ../gio/glocalfileinfo.c:1832
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Error al establecer el enlace simbólico: %s"
 
-#: ../gio/glocalfileinfo.c:1814
+#: ../gio/glocalfileinfo.c:1815
 msgid "Error setting symlink: file is not a symlink"
 msgstr "Error al establecer el enlace simbólico: el archivo no es un enlace simbólico"
 
-#: ../gio/glocalfileinfo.c:1989
+#: ../gio/glocalfileinfo.c:1990
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Establecer el atributo %s no está soportado"
@@ -1518,6 +1523,10 @@ msgstr "Error al buscar en el archivo: %s"
 #, c-format
 msgid "Error closing file: %s"
 msgstr "Error al cerrar el archivo: %s"
+
+#: ../gio/glocalfilemonitor.c:225
+msgid "Unable to find default local file monitor type"
+msgstr "No se pudo encontrar el tipo de monitorización del archivo local predeterminado"
 
 #: ../gio/glocalfileoutputstream.c:166 ../gio/glocalfileoutputstream.c:560
 #, c-format
@@ -1631,7 +1640,7 @@ msgstr "Error al leer de unix: %s"
 msgid "Error closing unix: %s"
 msgstr "Error al cerrar unix: %s"
 
-#: ../gio/gunixmounts.c:1754 ../gio/gunixmounts.c:1791
+#: ../gio/gunixmounts.c:1755 ../gio/gunixmounts.c:1792
 msgid "Filesystem root"
 msgstr "Sistema de archivos raíz"
 
