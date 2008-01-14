@@ -59,7 +59,8 @@ struct _GLocalDirectoryMonitorClass {
 GType g_local_directory_monitor_get_type (void) G_GNUC_CONST;
 
 GFileMonitor* _g_local_directory_monitor_new (const char* dirname,
-					      GFileMonitorFlags flags);
+					      GFileMonitorFlags flags,
+					      GError **error);
 
 G_END_DECLS
 

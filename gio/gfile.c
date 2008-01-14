@@ -3249,6 +3249,7 @@ g_file_eject_mountable_finish (GFile         *file,
  * @file: input #GFile.
  * @flags: a set of #GFileMonitorFlags.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
+ * @error: a #GError, or %NULL.
  * 
  * Obtains a directory monitor for the given file.
  * This may fail if directory monitoring is not supported.
@@ -3263,18 +3264,27 @@ g_file_eject_mountable_finish (GFile         *file,
 GFileMonitor*
 g_file_monitor_directory (GFile             *file,
 			  GFileMonitorFlags  flags,
-			  GCancellable      *cancellable)
+			  GCancellable      *cancellable,
+			  GError           **error)
 {
   GFileIface *iface;
 
   g_return_val_if_fail (G_IS_FILE (file), NULL);
 
+  if (g_cancellable_set_error_if_cancelled (cancellable, error))
+    return NULL;
+
   iface = G_FILE_GET_IFACE (file);
 
   if (iface->monitor_dir == NULL)
-    return NULL;
+    {
+      g_set_error (error, G_IO_ERROR,
+		   G_IO_ERROR_NOT_SUPPORTED,
+		   _("Operation not supported"));
+      return NULL;
+    }
 
-  return (* iface->monitor_dir) (file, flags, cancellable);
+  return (* iface->monitor_dir) (file, flags, cancellable, error);
 }
 
 /**
@@ -3282,6 +3292,7 @@ g_file_monitor_directory (GFile             *file,
  * @file: input #GFile.
  * @flags: a set of #GFileMonitorFlags.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
+ * @error: a #GError, or %NULL.
  * 
  * Obtains a file monitor for the given file. If no file notification
  * mechanism exists, then regular polling of the file is used.
@@ -3295,19 +3306,23 @@ g_file_monitor_directory (GFile             *file,
 GFileMonitor*
 g_file_monitor_file (GFile             *file,
 		     GFileMonitorFlags  flags,
-		     GCancellable      *cancellable)
+		     GCancellable      *cancellable,
+		     GError           **error)
 {
   GFileIface *iface;
   GFileMonitor *monitor;
   
   g_return_val_if_fail (G_IS_FILE (file), NULL);
 
+  if (g_cancellable_set_error_if_cancelled (cancellable, error))
+    return NULL;
+
   iface = G_FILE_GET_IFACE (file);
 
   monitor = NULL;
   
   if (iface->monitor_file)
-    monitor = (* iface->monitor_file) (file, flags, cancellable);
+    monitor = (* iface->monitor_file) (file, flags, cancellable, error);
 
 /* Fallback to polling */
   if (monitor == NULL)

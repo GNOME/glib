@@ -1191,7 +1191,7 @@ g_unix_mount_monitor_init (GUnixMountMonitor *monitor)
   if (get_fstab_file () != NULL)
     {
       file = g_file_new_for_path (get_fstab_file ());
-      monitor->fstab_monitor = g_file_monitor_file (file, 0, NULL);
+      monitor->fstab_monitor = g_file_monitor_file (file, 0, NULL, NULL);
       g_object_unref (file);
       
       g_signal_connect (monitor->fstab_monitor, "changed", (GCallback)fstab_file_changed, monitor);
@@ -1200,7 +1200,7 @@ g_unix_mount_monitor_init (GUnixMountMonitor *monitor)
   if (get_mtab_monitor_file () != NULL)
     {
       file = g_file_new_for_path (get_mtab_monitor_file ());
-      monitor->mtab_monitor = g_file_monitor_file (file, 0, NULL);
+      monitor->mtab_monitor = g_file_monitor_file (file, 0, NULL, NULL);
       g_object_unref (file);
       
       g_signal_connect (monitor->mtab_monitor, "changed", (GCallback)mtab_file_changed, monitor);

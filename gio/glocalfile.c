@@ -1861,19 +1861,21 @@ g_local_file_move (GFile                  *source,
 static GFileMonitor*
 g_local_file_monitor_dir (GFile             *file,
 			  GFileMonitorFlags  flags,
-			  GCancellable      *cancellable)
+			  GCancellable      *cancellable,
+			  GError           **error)
 {
   GLocalFile* local_file = G_LOCAL_FILE(file);
-  return _g_local_directory_monitor_new (local_file->filename, flags);
+  return _g_local_directory_monitor_new (local_file->filename, flags, error);
 }
 
 static GFileMonitor*
 g_local_file_monitor_file (GFile             *file,
 			   GFileMonitorFlags  flags,
-			   GCancellable      *cancellable)
+			   GCancellable      *cancellable,
+			   GError           **error)
 {
   GLocalFile* local_file = G_LOCAL_FILE(file);
-  return _g_local_file_monitor_new (local_file->filename, flags);
+  return _g_local_file_monitor_new (local_file->filename, flags, error);
 }
 
 static void

@@ -518,11 +518,13 @@ struct _GFileIface
   
   GFileMonitor*      (*monitor_dir)         (GFile                  *file,
 					     GFileMonitorFlags       flags,
-					     GCancellable           *cancellable);
+					     GCancellable           *cancellable,
+					     GError                **error);
 
   GFileMonitor*      (*monitor_file)        (GFile                  *file,
 					     GFileMonitorFlags       flags,
-					     GCancellable           *cancellable);
+					     GCancellable           *cancellable,
+					     GError                **error);
 
 };
 
@@ -794,10 +796,12 @@ gboolean                g_file_copy_attributes            (GFile                
 
 GFileMonitor*           g_file_monitor_directory          (GFile                  *file,
 							   GFileMonitorFlags       flags,
-							   GCancellable           *cancellable);
+							   GCancellable           *cancellable,
+							   GError                **error);
 GFileMonitor*           g_file_monitor_file               (GFile                  *file,
 							   GFileMonitorFlags       flags,
-							   GCancellable           *cancellable);
+							   GCancellable           *cancellable,
+							   GError                **error);
 
 
 /* Utilities */

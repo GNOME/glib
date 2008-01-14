@@ -1,5 +1,20 @@
 2008-01-14  Alexander Larsson  <alexl@redhat.com>
 
+        * gfile.[ch]:
+        (g_file_monitor_directory):
+        (g_file_monitor_file):
+	Add GError to file monitor calls
+	
+        * glocaldirectorymonitor.c:
+        * glocaldirectorymonitor.h:
+        * glocalfile.c:
+        * glocalfilemonitor.c:
+        * glocalfilemonitor.h:
+        * gunixmounts.c:
+	Update for above change
+
+2008-01-14  Alexander Larsson  <alexl@redhat.com>
+
         * glocalfile.c:
         (match_prefix):
 	Handle root correctly in g_file_get_relative_path (#508719)

@@ -276,8 +276,9 @@ get_default_local_directory_monitor (gpointer data)
  * Returns: new #GFileMonitor for the given @dirname.
  **/
 GFileMonitor*
-_g_local_directory_monitor_new (const char*       dirname,
-				GFileMonitorFlags flags)
+_g_local_directory_monitor_new (const char         *dirname,
+				GFileMonitorFlags   flags,
+				GError            **error)
 {
   static GOnce once_init = G_ONCE_INIT;
   GTypeClass *type_class;
@@ -291,6 +292,8 @@ _g_local_directory_monitor_new (const char*       dirname,
   monitor = NULL;
   if (type != G_TYPE_INVALID)
     monitor = G_FILE_MONITOR (g_object_new (type, "dirname", dirname, NULL));
+  else
+    g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED, _("Unable to find default local directory monitor type"));
 
   /* This is non-null on first pass here. Unref the class now.
    * This is to avoid unloading the module and then loading it
