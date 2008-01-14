@@ -3322,7 +3322,7 @@ g_file_monitor_file (GFile             *file,
   monitor = NULL;
   
   if (iface->monitor_file)
-    monitor = (* iface->monitor_file) (file, flags, cancellable, error);
+    monitor = (* iface->monitor_file) (file, flags, cancellable, NULL);
 
 /* Fallback to polling */
   if (monitor == NULL)

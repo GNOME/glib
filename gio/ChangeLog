@@ -1,5 +1,10 @@
 2008-01-14  Alexander Larsson  <alexl@redhat.com>
 
+	* gfile.c (g_file_monitor_file):
+	Don't set error here, since we fallback to polling monitor.
+
+2008-01-14  Alexander Larsson  <alexl@redhat.com>
+
         * gfile.[ch]:
         (g_file_monitor_directory):
         (g_file_monitor_file):
