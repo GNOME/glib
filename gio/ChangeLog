@@ -1,3 +1,10 @@
+2008-01-15  Alexander Larsson  <alexl@redhat.com>
+
+        * gmemoryinputstream.c:
+        * gmemoryoutputstream.c:
+	Don't do pointer arithmetic on void * (#508602)
+	Patch from Kazuki IWAMOTO
+
 2008-01-14  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.15.2 ===

@@ -283,7 +283,7 @@ g_memory_input_stream_read (GInputStream  *stream,
       chunk = (Chunk *)l->data;
       size = MIN (rest, chunk->len - start);
 
-      memcpy (buffer + (count - rest), chunk->data + start, size);
+      memcpy ((guint8 *)buffer + (count - rest), chunk->data + start, size);
       rest -= size;
 
       start = 0;

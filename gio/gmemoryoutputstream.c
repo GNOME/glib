@@ -313,7 +313,7 @@ array_resize (GMemoryOutputStream  *ostream,
     }
 
   if (size > len)
-    memset (data + len, 0, size - len);
+    memset ((guint8 *)data + len, 0, size - len);
 
   priv->data = data;
   priv->len = size;
@@ -365,7 +365,7 @@ g_memory_output_stream_write (GOutputStream  *stream,
      only added part of the required memory */
   count = MIN (count, priv->len - priv->pos);
   
-  dest = priv->data + priv->pos;
+  dest = (guint8 *)priv->data + priv->pos;
   memcpy (dest, buffer, count); 
   priv->pos += count;
 
