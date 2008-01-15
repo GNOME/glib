@@ -1,3 +1,7 @@
+2008-01-14  Dan Winship  <danw@gnome.org>
+
+	* m4macros/glib-2.0.m4: Support gio in AM_PATH_GLIB_2_0 (#509465)
+
 2008-01-15  Dan Winship  <danw@gnome.org>
 
 	* glib/gchecksum.c (md5_sum_update): fix this; the previous code
