@@ -57,10 +57,16 @@ unescape_character (const char *scanner)
  * g_uri_unescape_segment:
  * @escaped_string: a string.
  * @escaped_string_end: a string.
- * @illegal_characters: a string of illegal characters not to be allowed.
+ * @illegal_characters: an optional string of illegal characters not to be allowed.
  * 
  * Unescapes a segment of an escaped string.
- * 
+ *
+ * If any of the characters in @illegal_characters or the character zero appears
+ * as an escaped character in @escaped_string then that is an error and %NULL
+ * will be returned. This is useful it you want to avoid for instance having a
+ * slash being expanded in an escaped path element, which might confuse pathname
+ * handling.
+ *
  * Returns: an unescaped version of @escaped_string or %NULL on error.
  * The returned string should be freed when no longer needed.
  *
@@ -123,10 +129,16 @@ g_uri_unescape_segment (const char *escaped_string,
 /**
  * g_uri_unescape_string:
  * @escaped_string: an escaped string to be unescaped.
- * @illegal_characters: a string of illegal characters not to be allowed.
+ * @illegal_characters: an optional string of illegal characters not to be allowed.
  * 
  * Unescapes a whole escaped string.
  * 
+ * If any of the characters in @illegal_characters or the character zero appears
+ * as an escaped character in @escaped_string then that is an error and %NULL
+ * will be returned. This is useful it you want to avoid for instance having a
+ * slash being expanded in an escaped path element, which might confuse pathname
+ * handling.
+ *
  * Returns: an unescaped version of @escaped_string. The returned string 
  * should be freed when no longer needed.
  *

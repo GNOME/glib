@@ -1,3 +1,8 @@
+2008-01-15  Alexander Larsson  <alexl@redhat.com>
+
+        * glib/gurifuncs.c:
+	Clarify docs for g_uri_unescape_string() (#508773)
+
 2008-01-14  Dan Winship  <danw@gnome.org>
 
 	* m4macros/glib-2.0.m4: Support gio in AM_PATH_GLIB_2_0 (#509465)
