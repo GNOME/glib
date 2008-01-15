@@ -1,3 +1,12 @@
+2008-01-15  Murray Cumming  <murrayc@murrayc.com>
+
+	* gdrive.c:
+	* gfile.c:
+	* gmount.c:
+	* gvolume.c: For async functions that have no non-async 
+	version, document that the GAsyncReadyCallback may be NULL.
+	Bug #509626.
+
 2008-01-15  Alexander Larsson  <alexl@redhat.com>
 
         * gmemoryinputstream.c:

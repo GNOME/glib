@@ -3010,7 +3010,7 @@ g_file_set_attribute_int64 (GFile                *file,
  * @file: input #GFile.
  * @mount_operation: a #GMountOperation, or %NULL to avoid user interaction.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @callback: a #GAsyncReadyCallback to call when the request is satisfied
+ * @callback: a #GAsyncReadyCallback to call when the request is satisfied, or %NULL.
  * @user_data: the data to pass to callback function
  * 
  * Mounts a file of type G_FILE_TYPE_MOUNTABLE.
@@ -3091,7 +3091,7 @@ g_file_mount_mountable_finish (GFile         *file,
  * @file: input #GFile.
  * @flags: flags affecting the operation
  * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @callback: a #GAsyncReadyCallback to call when the request is satisfied
+ * @callback: a #GAsyncReadyCallback to call when the request is satisfied, or %NULL.
  * @user_data: the data to pass to callback function
  *
  * Unmounts a file of type G_FILE_TYPE_MOUNTABLE.
@@ -3171,7 +3171,7 @@ g_file_unmount_mountable_finish (GFile         *file,
  * @file: input #GFile.
  * @flags: flags affecting the operation
  * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @callback: a #GAsyncReadyCallback to call when the request is satisfied
+ * @callback: a #GAsyncReadyCallback to call when the request is satisfied, or %NULL.
  * @user_data: the data to pass to callback function
  * 
  * Starts an asynchronous eject on a mountable.  
@@ -4034,7 +4034,7 @@ g_file_new_for_commandline_arg (const char *arg)
  * @location: input #GFile.
  * @mount_operation: a #GMountOperation or %NULL to avoid user interaction.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @callback: a #GAsyncReadyCallback to call when the request is satisfied
+ * @callback: a #GAsyncReadyCallback to call when the request is satisfied, or %NULL.
  * @user_data: the data to pass to callback function
  * 
  * Starts a @mount_operation, mounting the volume that contains the file @location. 

@@ -293,7 +293,7 @@ g_volume_can_eject (GVolume *volume)
  * @volume: a #GVolume.
  * @mount_operation: a #GMountOperation or %NULL to avoid user interaction.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @callback: a #GAsyncReadyCallback.
+ * @callback: a #GAsyncReadyCallback, or %NULL.
  * @user_data: a #gpointer.
  * 
  * Mounts a volume.
@@ -359,7 +359,7 @@ g_volume_mount_finish (GVolume  *volume,
  * @volume: a #GVolume.
  * @flags: flags affecting the unmount if required for eject
  * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @callback: a #GAsyncReadyCallback.
+ * @callback: a #GAsyncReadyCallback, or %NULL.
  * @user_data: a #gpointer.
  * 
  * Ejects a volume.

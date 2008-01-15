@@ -343,7 +343,7 @@ g_drive_can_poll_for_media (GDrive *drive)
  * @drive: a #GDrive.
  * @flags: flags affecting the unmount if required for eject
  * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @callback: a #GAsyncReadyCallback.
+ * @callback: a #GAsyncReadyCallback, or %NULL.
  * @user_data: a #gpointer.
  * 
  * Ejects a drive.
@@ -411,7 +411,7 @@ g_drive_eject_finish (GDrive        *drive,
  * g_drive_poll_for_media:
  * @drive: a #GDrive.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @callback: a #GAsyncReadyCallback.
+ * @callback: a #GAsyncReadyCallback, or %NULL.
  * @user_data: a #gpointer.
  * 
  * Polls @drive to see if media has been inserted or removed.

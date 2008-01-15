@@ -313,7 +313,7 @@ g_mount_can_eject (GMount *mount)
  * @mount: a #GMount.
  * @flags: flags affecting the operation
  * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @callback: a #GAsyncReadyCallback.
+ * @callback: a #GAsyncReadyCallback, or %NULL.
  * @user_data: user data passed to @callback.
  * 
  * Unmounts a mount. This is an asynchronous operation, and is 
@@ -385,7 +385,7 @@ g_mount_unmount_finish (GMount       *mount,
  * @mount: a #GMount.
  * @flags: flags affecting the unmount if required for eject
  * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @callback: a #GAsyncReadyCallback.
+ * @callback: a #GAsyncReadyCallback, or %NULL.
  * @user_data: user data passed to @callback.
  * 
  * Ejects a mount. This is an asynchronous operation, and is 
@@ -456,7 +456,7 @@ g_mount_eject_finish (GMount       *mount,
  * @mount: a #GMount.
  * @mount_operation: a #GMountOperation or %NULL to avoid user interaction.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @callback: a #GAsyncReadyCallback.
+ * @callback: a #GAsyncReadyCallback, or %NULL.
  * @user_data: user data passed to @callback.
  * 
  * Remounts a mount. This is an asynchronous operation, and is 
