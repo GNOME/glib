@@ -315,7 +315,7 @@ md5_sum_update (Md5sum       *md5,
       guchar *p = (guchar *) md5->data + bit;
 
       bit = MD5_DATASIZE - bit;
-      if (length < MD5_DATASIZE)
+      if (length < bit)
         {
           memcpy (p, data, bit);
           return;
@@ -1202,7 +1202,6 @@ g_checksum_update (GChecksum    *checksum,
 {
   g_return_if_fail (checksum != NULL);
   g_return_if_fail (data != NULL);
-  g_return_if_fail (length > 1);
 
   if (checksum->digest_str)
     {

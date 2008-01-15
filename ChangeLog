@@ -1,3 +1,14 @@
+2008-01-15  Dan Winship  <danw@gnome.org>
+
+	* glib/gchecksum.c (md5_sum_update): fix this; the previous code
+	gave the wrong md5sum when called in certain ways with buffers
+	larger than 64 bytes.
+	(g_checksum_update): remove the unnecessary "length > 1"
+	restriction
+
+	* tests/checksum-test.c: Rewrite this to be much more exhaustive
+	(and in particular to test the md5_sum_update bugfix).
+
 2008-01-14  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Bump version
