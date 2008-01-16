@@ -1,3 +1,8 @@
+2008-01-16  Dan Winship  <danw@gnome.org>
+
+	* glib/gchecksum.c (md5_sum_update): Fix another bug (which
+	doesn't affect the results, but may cause it to read bad memory).
+
 2008-01-15  Alexander Larsson  <alexl@redhat.com>
 
         * glib/gurifuncs.c:

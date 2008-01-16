@@ -317,7 +317,7 @@ md5_sum_update (Md5sum       *md5,
       bit = MD5_DATASIZE - bit;
       if (length < bit)
         {
-          memcpy (p, data, bit);
+          memcpy (p, data, length);
           return;
         }
 
