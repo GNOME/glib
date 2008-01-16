@@ -1,3 +1,17 @@
+2008-01-16  Murray Cumming  <murrayc@murrayc.com>
+
+	* gappinfo.c:
+	* gdatainputstream.c:
+	* gfile.c:
+	* gfileoutputstream.c:
+	* ginputstream.c:
+	* gmount.c:
+	* goutputstream.c:
+	* gseekable.c:
+	* gunixmounts.c: Corrected some typos in the documentation:
+	occured -> occurred.
+	its -> it's (where appropriate).
+
 2008-01-16  Alexander Larsson  <alexl@redhat.com>
 
         * gfile.[ch]:

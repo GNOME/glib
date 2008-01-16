@@ -240,7 +240,7 @@ g_output_stream_write (GOutputStream  *stream,
  * 
  * If there is an error during the operation FALSE is returned and @error
  * is set to indicate the error status, @bytes_written is updated to contain
- * the number of bytes written into the stream before the error occured.
+ * the number of bytes written into the stream before the error occurred.
  *
  * Return value: %TRUE on success, %FALSE if there was an error
  **/

@@ -277,9 +277,9 @@ g_file_output_stream_query_info_finish (GFileOutputStream     *stream,
  * g_file_output_stream_get_etag:
  * @stream: a #GFileOutputStream.
  * 
- * Gets the entity tag for the file when its been written.
+ * Gets the entity tag for the file when it has been written.
  * This must be called after the stream has been written
- * and closed. As the etag can change while writing.
+ * and closed, as the etag can change while writing.
  * 
  * Returns: the entity tag for the stream.
  **/

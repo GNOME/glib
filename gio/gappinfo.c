@@ -397,7 +397,7 @@ g_app_info_get_icon (GAppInfo *appinfo)
  * 
  * Launches the application. Passes @files to the launched application 
  * as arguments, using the optional @launch_context to get information
- * about the details of the launcher (like what screen its is on).
+ * about the details of the launcher (like what screen it is on).
  * On error, @error will be set accordingly.
  *
  * To lauch the application without arguments pass a %NULL @files list.
@@ -475,7 +475,7 @@ g_app_info_supports_files (GAppInfo *appinfo)
  * 
  * Launches the application. Passes @uris to the launched application 
  * as arguments, using the optional @launch_context to get information
- * about the details of the launcher (like what screen its is on).
+ * about the details of the launcher (like what screen it is on).
  * On error, @error will be set accordingly.
  *
  * To lauch the application without arguments pass a %NULL @uris list.

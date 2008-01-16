@@ -233,7 +233,7 @@ g_input_stream_read  (GInputStream  *stream,
  * 
  * If there is an error during the operation %FALSE is returned and @error
  * is set to indicate the error status, @bytes_read is updated to contain
- * the number of bytes read into @buffer before the error occured.
+ * the number of bytes read into @buffer before the error occurred.
  *
  * Return value: %TRUE on success, %FALSE if there was an error
  **/

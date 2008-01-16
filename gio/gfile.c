@@ -55,7 +55,7 @@
  * g_file_new_for_uri() if you have a URI.
  * g_file_new_for_commandline_arg() for a command line argument.
  * 
- * You can move through the filesystem with #GFile handles with
+ * You can move through the file system with #GFile handles with
  * g_file_get_parent() to get a handle to the parent directory.
  * g_file_get_child() to get a handle to a child within a directory.
  * g_file_resolve_relative_path() to resolve a relative path between
@@ -690,8 +690,8 @@ g_file_resolve_relative_path (GFile      *file,
  * all the files in the directory.
  *
  * The @attribute value is a string that specifies the file attributes that
- * should be gathered. It is not an error if its not possible to read a particular
- * requested attribute from a file, it just won't be set. @attribute should
+ * should be gathered. It is not an error if it's not possible to read a particular
+ * requested attribute from a file - it just won't be set. @attribute should
  * be a comma-separated list of attribute or attribute wildcards. The wildcard "*"
  * means all attributes, and a wildcard like "standard::*" means all attributes in the standard
  * namespace. An example attribute query be "standard::*,owner::user".
@@ -873,8 +873,8 @@ g_file_query_exists (GFile *file,
  * for the file.
  *
  * The @attribute value is a string that specifies the file attributes that
- * should be gathered. It is not an error if its not possible to read a particular
- * requested attribute from a file, it just won't be set. @attribute should
+ * should be gathered. It is not an error if it's not possible to read a particular
+ * requested attribute from a file - it just won't be set. @attribute should
  * be a comma-separated list of attribute or attribute wildcards. The wildcard "*"
  * means all attributes, and a wildcard like "standard::*" means all attributes in the standard
  * namespace. An example attribute query be "standard::*,owner::user".
@@ -1012,8 +1012,8 @@ g_file_query_info_finish (GFile         *file,
  * the filesystem.
  *
  * The @attribute value is a string that specifies the file attributes that
- * should be gathered. It is not an error if its not possible to read a particular
- * requested attribute from a file, it just won't be set. @attribute should
+ * should be gathered. It is not an error if it's not possible to read a particular
+ * requested attribute from a file - it just won't be set. @attribute should
  * be a comma-separated list of attribute or attribute wildcards. The wildcard "*"
  * means all attributes, and a wildcard like "fs:*" means all attributes in the fs
  * namespace. The standard namespace for filesystem attributes is "fs".

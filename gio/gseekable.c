@@ -132,7 +132,7 @@ g_seekable_can_seek (GSeekable *seekable)
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
  * 
  * Returns: %TRUE if successful. If an error
- *     has occured, this function will return %FALSE and set @error
+ *     has occurred, this function will return %FALSE and set @error
  *     appropriately if present.
  **/
 gboolean
@@ -188,7 +188,7 @@ g_seekable_can_truncate (GSeekable *seekable)
  * partial result will be returned, without an error.
  * 
  * Returns: %TRUE if successful. If an error
- *     has occured, this function will return %FALSE and set @error
+ *     has occurred, this function will return %FALSE and set @error
  *     appropriately if present. 
  **/
 gboolean

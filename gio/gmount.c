@@ -44,7 +44,7 @@
  * porting from GnomeVFS, #GMount is the moral equivalent of #GnomeVFSVolume.
  *
  * #GMount is a "mounted" filesystem that you can access. Mounted is in
- * quotes because its not the same as a unix mount, it might be a gvfs
+ * quotes because it's not the same as a unix mount, it might be a gvfs
  * mount, but you can still access the files on it if you use GIO. Might or
  * might not be related to a volume object.
  * 
@@ -353,7 +353,7 @@ g_mount_unmount (GMount *mount,
  * @error: a #GError location to store the error occuring, or %NULL to 
  * ignore.
  * 
- * Finishes unmounting a mount. If any errors occured during the operation, 
+ * Finishes unmounting a mount. If any errors occurred during the operation, 
  * @error will be set to contain the errors and %FALSE will be returned.
  * 
  * Returns: %TRUE if the mount was successfully unmounted. %FALSE otherwise.
@@ -425,7 +425,7 @@ g_mount_eject (GMount *mount,
  * @error: a #GError location to store the error occuring, or %NULL to 
  * ignore.
  * 
- * Finishes ejecting a mount. If any errors occured during the operation, 
+ * Finishes ejecting a mount. If any errors occurred during the operation, 
  * @error will be set to contain the errors and %FALSE will be returned.
  * 
  * Returns: %TRUE if the mount was successfully ejected. %FALSE otherwise.
@@ -502,7 +502,7 @@ g_mount_remount (GMount *mount,
  * @error: a #GError location to store the error occuring, or %NULL to 
  * ignore.
  * 
- * Finishes remounting a mount. If any errors occured during the operation, 
+ * Finishes remounting a mount. If any errors occurred during the operation, 
  * @error will be set to contain the errors and %FALSE will be returned.
  * 
  * Returns: %TRUE if the mount was successfully remounted. %FALSE otherwise.
