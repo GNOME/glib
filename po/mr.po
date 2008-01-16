@@ -2,19 +2,21 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
-# sandeep shedmake <sandeep.shedmake@gmail.com>, 2007.
+# sandeep shedmake <sandeep.shedmake@gmail.com>, 2007, 2008.
 msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.mr\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-01-14 10:53-0500\n"
-"PO-Revision-Date: 2007-12-08 15:28+0530\n"
+"PO-Revision-Date: 2008-01-05 20:55+0530\n"
 "Last-Translator: sandeep shedmake <sandeep.shedmake@gmail.com>\n"
 "Language-Team: marathi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"\n"
+"\n"
 "\n"
 "\n"
 "\n"
@@ -571,198 +573,191 @@ msgstr "अपरिचीत त्रुटी"
 
 #: glib/gregex.c:199
 msgid "\\ at end of pattern"
-msgstr ""
+msgstr "रचनाच्या शेवटी \\"
 
 #: glib/gregex.c:202
 msgid "\\c at end of pattern"
-msgstr ""
+msgstr "रचनाच्या शेवटी \\c"
 
 #: glib/gregex.c:205
 msgid "unrecognized character follows \\"
-msgstr ""
+msgstr "\\ च्या पाठोपाठ अपरिचीत अक्षर"
 
 #: glib/gregex.c:212
 msgid "case-changing escapes (\\l, \\L, \\u, \\U) are not allowed here"
-msgstr ""
+msgstr "case-changing escapes (\\l, \\L, \\u, \\U) ला येथे वापरू शकत नाही"
 
 #: glib/gregex.c:215
 msgid "numbers out of order in {} quantifier"
-msgstr ""
+msgstr "{} quantifier मधील संख्या क्रमात नाही"
 
 #: glib/gregex.c:218
 msgid "number too big in {} quantifier"
-msgstr ""
+msgstr "{} quantifier मधील संख्या खूप मोठे आहे"
 
 #: glib/gregex.c:221
-#, fuzzy
 msgid "missing terminating ] for character class"
-msgstr "अपूरे अक्षर असल्यास मार्ग बंद होते"
+msgstr "अक्षर वर्गकरीता समाप्ती ] चिन्ह आढळत नाही"
 
 #: glib/gregex.c:224
-#, fuzzy
 msgid "invalid escape sequence in character class"
-msgstr "रूपांतर आगत मध्ये अवैध बाईट श्रृंखला"
+msgstr "अक्षर वर्गामध्ये अवैध एसकेप श्रृंखला"
 
 #: glib/gregex.c:227
 msgid "range out of order in character class"
-msgstr ""
+msgstr "अक्षर वर्गातले क्रमाच्या क्षेत्रा पलीकडे गेले आहे"
 
 #: glib/gregex.c:230
 msgid "nothing to repeat"
-msgstr ""
+msgstr "पुन्हाकृती करीता काहीच नाही"
 
 #: glib/gregex.c:233
-#, fuzzy
 msgid "unrecognized character after (?"
-msgstr "अपूरे अक्षर संदर्भ"
+msgstr "(? नंतर अपरिचीत अक्षर"
 
 #: glib/gregex.c:237
-#, fuzzy
 msgid "unrecognized character after (?<"
-msgstr "अपूरे अक्षर संदर्भ"
+msgstr "(?< नंतर अपरिचीत अक्षर"
 
 #: glib/gregex.c:241
-#, fuzzy
 msgid "unrecognized character after (?P"
-msgstr "अपूरे अक्षर संदर्भ"
+msgstr "(?P नंतर अपरिचीत अक्षर"
 
 #: glib/gregex.c:244
 msgid "POSIX named classes are supported only within a class"
-msgstr ""
+msgstr "POSIX नामांकीत वर्ग फक्त वर्ग अंतर्गत समर्थीत आहे"
 
 #: glib/gregex.c:247
 msgid "missing terminating )"
-msgstr ""
+msgstr "समाप्ती ) आढळले नाही"
 
 #: glib/gregex.c:251
 msgid ") without opening ("
-msgstr ""
+msgstr ") ( ला न उघडता"
 
 #. translators: '(?R' and '(?[+-]digits' are both meant as (groups of)
 #. * sequences here, '(?-54' would be an example for the second group.
 #.
 #: glib/gregex.c:258
 msgid "(?R or (?[+-]digits must be followed by )"
-msgstr ""
+msgstr "(?R किंवा (?[+-]अंक पाठोपाठ ) असायला पाहिजे"
 
 #: glib/gregex.c:261
 msgid "reference to non-existent subpattern"
-msgstr ""
+msgstr "विना-अस्तित्वातील उपरचना करीता संदर्भ"
 
 #: glib/gregex.c:264
 msgid "missing ) after comment"
-msgstr ""
+msgstr "टिप्पणी नंतर ) आढळले नाही"
 
 #: glib/gregex.c:267
 msgid "regular expression too large"
-msgstr ""
+msgstr "वाक्यरचना खूप मोठे आहे"
 
 #: glib/gregex.c:270
 msgid "failed to get memory"
-msgstr ""
+msgstr "स्मृती प्राप्त करण्यास अपयशी"
 
 #: glib/gregex.c:273
 msgid "lookbehind assertion is not fixed length"
-msgstr ""
+msgstr "lookbehind निश्चित आकाराचे नाही"
 
 #: glib/gregex.c:276
 msgid "malformed number or name after (?("
-msgstr ""
+msgstr "(?( नंतर सदोष संख्या किंवा नाव"
 
 #: glib/gregex.c:279
 msgid "conditional group contains more than two branches"
-msgstr ""
+msgstr "स्थिती समुह मध्ये एका पेक्षा जास्त शाखा आहेत"
 
 #: glib/gregex.c:282
 msgid "assertion expected after (?("
-msgstr ""
+msgstr "(?( नंतर होकारार्थी अपेक्षीत"
 
 #: glib/gregex.c:285
 msgid "unknown POSIX class name"
-msgstr ""
+msgstr "अपरिचीत POSIX वर्ग नाव"
 
 #: glib/gregex.c:288
-#, fuzzy
 msgid "POSIX collating elements are not supported"
-msgstr "बोधचिन्ह लिंक समर्थीत नाही"
+msgstr "POSIX कोलेटींग घटक समर्थीत नाही"
 
 #: glib/gregex.c:291
 msgid "character value in \\x{...} sequence is too large"
-msgstr ""
+msgstr "\\x{...} श्रृंखला मधिल अक्षर मूल्य खूप मोठे आहे"
 
 #: glib/gregex.c:294
-#, fuzzy
 msgid "invalid condition (?(0)"
-msgstr " (अवैध ऐंकोडींग)"
+msgstr "अवैध स्थिती (?(0)"
 
 #: glib/gregex.c:297
 msgid "\\C not allowed in lookbehind assertion"
-msgstr ""
+msgstr "lookbehind assertion मध्ये \\C ला परवानगी नाही"
 
 #: glib/gregex.c:300
 msgid "recursive call could loop indefinitely"
-msgstr ""
+msgstr "recursive call चक्र अनिश्चितरित्या चालू राहू शकते"
 
 #: glib/gregex.c:303
 msgid "missing terminator in subpattern name"
-msgstr ""
+msgstr "उपरचना नावा मध्ये समाप्ती आढळली नाही"
 
 #: glib/gregex.c:306
 msgid "two named subpatterns have the same name"
-msgstr ""
+msgstr "दोन नामांकीत उपरचनाकडे समान नाव आहे"
 
 #: glib/gregex.c:309
 msgid "malformed \\P or \\p sequence"
-msgstr ""
+msgstr "सदोषीत \\P किंवा \\p श्रृंखला"
 
 #: glib/gregex.c:312
 msgid "unknown property name after \\P or \\p"
-msgstr ""
+msgstr "\\P किंवा \\p नंतर अपरिचीत गुणधर्म नाव"
 
 #: glib/gregex.c:315
 msgid "subpattern name is too long (maximum 32 characters)"
-msgstr ""
+msgstr "उपरचना नाव खूपच लांब आहे (कमाल 32 अक्षरे)"
 
 #: glib/gregex.c:318
 msgid "too many named subpatterns (maximum 10,000)"
-msgstr ""
+msgstr "खूपच नामांकीत उपरचना आहेत (कमाल 10,000)"
 
 #: glib/gregex.c:321
 msgid "octal value is greater than \\377"
-msgstr ""
+msgstr "ऑक्टल मूल्य \\377 पेक्षा जास्त आहे"
 
 #: glib/gregex.c:324
 msgid "DEFINE group contains more than one branch"
-msgstr ""
+msgstr "DEFINE समुहात एका पेक्षा जास्त शाखा आहे"
 
 #: glib/gregex.c:327
 msgid "repeating a DEFINE group is not allowed"
-msgstr ""
+msgstr "DEFINE समुहचे पुनःकृती करू शकत नाही"
 
 #: glib/gregex.c:330
 msgid "inconsistent NEWLINE options"
-msgstr ""
+msgstr "अस्थीर NEWLINE पर्याय"
 
 #: glib/gregex.c:333
 msgid ""
 "\\g is not followed by a braced name or an optionally braced non-zero number"
-msgstr ""
+msgstr "ब्रेस नाव किंवा वैक्लपीक ब्रेस विना-शून्य संख्याच्या पाठोपाठ \\g दर्शविले जात नाही"
 
 #: glib/gregex.c:338
 msgid "unexpected repeat"
-msgstr ""
+msgstr "अपरिचीत पुनःकृती"
 
 #: glib/gregex.c:342
 msgid "code overflow"
-msgstr ""
+msgstr "कोड उत्प्रवाह"
 
 #: glib/gregex.c:346
 msgid "overran compiling workspace"
-msgstr ""
+msgstr "उत्पकार्यन्वीत कंपाइल कार्यस्थळ"
 
 #: glib/gregex.c:350
 msgid "previously-checked referenced subpattern not found"
-msgstr ""
+msgstr "पूर्वी-तपासलेले संदर्भीत उपरचना आढळले नाही"
 
 #: glib/gregex.c:517 glib/gregex.c:1565
 #, c-format
@@ -1217,9 +1212,8 @@ msgid "drive doesn't implement eject"
 msgstr "ड्राइव्ह बाहेर कडा कार्यान्वीत करत नाही"
 
 #: gio/gdrive.c:436
-#, fuzzy
 msgid "drive doesn't implement polling for media"
-msgstr "ड्राइव्ह आरोहन कार्यान्वीत करत नाही"
+msgstr "ड्राइव्ह मिडीयाकरीता पोलींग कार्यान्वीत करत नाही"
 
 #: gio/gfile.c:731 gio/gfile.c:872 gio/gfile.c:1005 gio/gfile.c:1091
 #: gio/gfile.c:1144 gio/gfile.c:1201 gio/gfile.c:1282 gio/gfile.c:2189
@@ -1231,9 +1225,9 @@ msgstr "कार्य समर्थित नाही"
 
 #: gio/gfile.c:1047 gio/glocalfile.c:895 gio/glocalfile.c:904
 #: gio/glocalfile.c:915
-#, fuzzy, c-format
+#, c-format
 msgid "Containing mount does not exist"
-msgstr "अंतर्भूतीत खंड अस्तीत्वात नाही"
+msgstr "समाविष्टीत आरोहन अस्तीत्वात नाही"
 
 #: gio/gfile.c:1621
 #, c-format
@@ -1266,9 +1260,9 @@ msgid "Trash not supported"
 msgstr "कचरापेटी समर्थित नाही"
 
 #: gio/gfile.c:2413
-#, fuzzy, c-format
+#, c-format
 msgid "File names cannot contain '%c'"
-msgstr "फाइल नावात '/' असू शकत नाही"
+msgstr "फाइल नावात '%c' असू शकत नाही"
 
 #: gio/gfile.c:4068 gio/gvolume.c:318
 msgid "volume doesn't implement mount"
@@ -1449,9 +1443,9 @@ msgid "Error removing target file: %s"
 msgstr "लक्ष्य फाइल काढून टाकतेवेळी त्रूटी: %s"
 
 #: gio/glocalfile.c:1842
-#, fuzzy, c-format
+#, c-format
 msgid "Move between mounts not supported"
-msgstr "कार्य समर्थित नाही"
+msgstr "आरोहन मधिल स्थानांतरन समर्थीत नाही"
 
 #: gio/glocalfileinfo.c:707
 #, c-format
@@ -1637,19 +1631,16 @@ msgid "Failed to resize memory output stream"
 msgstr ""
 
 #: gio/gmount.c:341
-#, fuzzy
 msgid "mount doesn't implement unmount"
-msgstr "खंड अनारोहन कार्यान्वीत होत नाही"
+msgstr "आरोहन अनारोहन कार्यान्वीत करीत नाही"
 
 #: gio/gmount.c:413
-#, fuzzy
 msgid "mount doesn't implement eject"
-msgstr "खंड बाहेर कडा कार्यन्वीत होत नाही"
+msgstr "आरोहन बाहेर पडा कार्यान्वीत करत नाही"
 
 #: gio/gmount.c:490
-#, fuzzy
 msgid "mount doesn't implement remount"
-msgstr "खंड आरोहन कार्यारत करत नाही"
+msgstr "आरोहन पुनःआरोहन कार्यान्वीत करत नाही"
 
 #: gio/goutputstream.c:193
 #, c-format
@@ -1722,25 +1713,27 @@ msgstr "win32 वर ग निर्माण समर्थित नाह�
 
 #: tests/gio-ls.c:27
 msgid "do not hide entries"
-msgstr ""
+msgstr "नोंदणी लपवू नका"
 
 #: tests/gio-ls.c:29
 msgid "use a long listing format"
-msgstr ""
+msgstr "लांब यादी स्वरूप वापरा"
 
 #: tests/gio-ls.c:37
-#, fuzzy
 msgid "[FILE...]"
-msgstr "[पर्याय...]"
+msgstr "[FILE...]"
 
-#~ msgid "Target stream is already closed"
-#~ msgstr "लक्ष्य श्रृंखला आधिपासूनच बंद आहे"
+#, fuzzy
+msgid "Target stream is already closed"
+msgstr "स्त्रोत श्रृंखला आधिपासून बंद"
 
-#~ msgid "Unknown drive"
-#~ msgstr "अपरिचीत ड्राइव्ह"
+#, fuzzy
+msgid "Unknown drive"
+msgstr "अपरिचीत प्रकार"
 
-#~ msgid "%s volume"
-#~ msgstr "%s खंड"
+msgid "%s volume"
+msgstr "%s खंड"
 
-#~ msgid "Unknown volume"
-#~ msgstr "अपरिचीत खंड"
+#, fuzzy
+msgid "Unknown volume"
+msgstr "अपरिचीत प्रकार"
