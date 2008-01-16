@@ -1,3 +1,9 @@
+2008-01-16  Alexander Larsson  <alexl@redhat.com>
+
+        * gfile.[ch]:
+        * gio.symbols:
+        Add g_file_query_exists (#508771)
+
 2008-01-15  Murray Cumming  <murrayc@murrayc.com>
 
 	* gdrive.c:

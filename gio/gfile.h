@@ -612,6 +612,8 @@ void                    g_file_replace_async              (GFile                
 GFileOutputStream *     g_file_replace_finish             (GFile                      *file,
 							   GAsyncResult               *res,
 							   GError                    **error);
+gboolean                g_file_query_exists               (GFile                      *file,
+							   GCancellable               *cancellable);
 GFileInfo *             g_file_query_info                 (GFile                      *file,
 							   const char                 *attributes,
 							   GFileQueryInfoFlags         flags,

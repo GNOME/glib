@@ -812,6 +812,53 @@ g_file_enumerate_children_finish (GFile         *file,
   return (* iface->enumerate_children_finish) (file, res, error);
 }
 
+/**
+ * g_file_query_exists:
+ * @file: input #GFile.
+ * @cancellable: optional #GCancellable object, %NULL to ignore.
+ *
+ * Utility function to check if a particular file exists. This is
+ * implemented using g_file_query_info() and as such does blocking I/O.
+ *
+ * Note that in many cases it is racy to first check for file existance
+ * and then execute something based on the outcome of that, because the
+ * file might have been created or removed inbetween the operations. The
+ * general approach to handling that is to not check, but just do the
+ * operation and handle the errors as they come.
+ *
+ * As an example of race-free checking. Take the case of reading a file, and
+ * if it doesn't exist, create it. There are two racy versions: read it, and
+ * on error create it; and: check if it exists, if not create it. These
+ * can both result in two processes creating the file (with perhaps a partially
+ * written file as the result). The correct approach is to always try to create
+ * the file with g_file_create() which will either atomically create the file
+ * or fail with an G_IO_ERROR_EXISTS error.
+ *
+ * However, in many cases an existance check is useful in a user
+ * interface, for instance to make a menu item sensitive/insensitive, so that
+ * you don't have to fool users that something is possible and then just show
+ * and error dialog. If you do this, you should make sure to also handle the
+ * errors that can happen due to races when you execute the operation.
+ * 
+ * Returns: %TRUE if the file exists (and can be detected without error), %FALSE otherwise (or if cancelled).
+ */
+gboolean
+g_file_query_exists (GFile *file,
+		     GCancellable *cancellable)
+{
+  GFileInfo *info;
+
+  info = g_file_query_info (file, G_FILE_ATTRIBUTE_STANDARD_TYPE,
+			    G_FILE_QUERY_INFO_NONE,
+			    cancellable, NULL);
+  if (info != NULL)
+    {
+      g_object_unref (info);
+      return TRUE;
+    }
+  
+  return FALSE;
+}
 
 /**
  * g_file_query_info:
