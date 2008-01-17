@@ -9,13 +9,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-01-12 03:55+0000\n"
-"PO-Revision-Date: 2008-01-17 22:57+0800\n"
+"POT-Creation-Date: 2008-01-17 14:59+0000\n"
+"PO-Revision-Date: 2008-01-17 23:16+0800\n"
 "Last-Translator: Deng Xiyue <manphiz@gmail.com>\n"
 "Language-Team: i18n-zh <i18n-zh@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0\n"
 
 #: ../glib/gbookmarkfile.c:705 ../glib/gbookmarkfile.c:782
 #: ../glib/gbookmarkfile.c:861 ../glib/gbookmarkfile.c:908
@@ -232,7 +233,8 @@ msgstr "模板“%s”的不包含 XXXXXX"
 #: ../glib/gfileutils.c:1826
 #, c-format
 msgid "%u byte"
-msgstr "%u 字节"
+msgid_plural "%u bytes"
+msgstr[0] "%u 字节"
 
 #: ../glib/gfileutils.c:1834
 #, c-format
@@ -301,13 +303,19 @@ msgid "Error on line %d: %s"
 msgstr "第%d行出错：%s"
 
 #: ../glib/gmarkup.c:442
-msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr "发现空的实体“&;”。有效的实体为：&amp; &quot; &lt; &gt; &apos;"
 
 #: ../glib/gmarkup.c:452
 #, c-format
-msgid "Character '%s' is not valid at the start of an entity name; the & character begins an entity; if this ampersand isn't supposed to be an entity, escape it as &amp;"
-msgstr "字符“%s”出现在实体名的开头无效。实体都以 & 字符 开头，如果这个 & 不是一个实体的开头，把它变为 &amp;"
+msgid ""
+"Character '%s' is not valid at the start of an entity name; the & character "
+"begins an entity; if this ampersand isn't supposed to be an entity, escape "
+"it as &amp;"
+msgstr ""
+"字符“%s”出现在实体名的开头无效。实体都以 & 字符 开头，如果这个 & 不是一个实体"
+"的开头，把它变为 &amp;"
 
 #: ../glib/gmarkup.c:486
 #, c-format
@@ -320,12 +328,18 @@ msgid "Entity name '%s' is not known"
 msgstr "未知的实体名“%s”"
 
 #: ../glib/gmarkup.c:534
-msgid "Entity did not end with a semicolon; most likely you used an ampersand character without intending to start an entity - escape ampersand as &amp;"
-msgstr "实体没有以分号结束。很可能您使用了 & 字符而又不是一个实体 - 将这个 & 变为 &amp;"
+msgid ""
+"Entity did not end with a semicolon; most likely you used an ampersand "
+"character without intending to start an entity - escape ampersand as &amp;"
+msgstr ""
+"实体没有以分号结束。很可能您使用了 & 字符而又不是一个实体 - 将这个 & 变为 "
+"&amp;"
 
 #: ../glib/gmarkup.c:587
 #, c-format
-msgid "Failed to parse '%-.*s', which should have been a digit inside a character reference (&#234; for example) - perhaps the digit is too large"
+msgid ""
+"Failed to parse '%-.*s', which should have been a digit inside a character "
+"reference (&#234; for example) - perhaps the digit is too large"
 msgstr "分析“%-.*s”失败。它应该是字符引用中的数字(如&#234;) - 可能该数字太大了"
 
 #: ../glib/gmarkup.c:612
@@ -338,8 +352,13 @@ msgid "Empty character reference; should include a digit such as &#454;"
 msgstr "空的字符引用；应该包括数字，如 &#454;"
 
 #: ../glib/gmarkup.c:637
-msgid "Character reference did not end with a semicolon; most likely you used an ampersand character without intending to start an entity - escape ampersand as &amp;"
-msgstr "字符引用没有以分号结束。很可能您使用了 & 字符而又不是一个实体 - 将这个 & 变为 &amp;"
+msgid ""
+"Character reference did not end with a semicolon; most likely you used an "
+"ampersand character without intending to start an entity - escape ampersand "
+"as &amp;"
+msgstr ""
+"字符引用没有以分号结束。很可能您使用了 & 字符而又不是一个实体 - 将这个 & 变"
+"为 &amp;"
 
 #: ../glib/gmarkup.c:723
 msgid "Unfinished entity reference"
@@ -368,37 +387,53 @@ msgstr "文档必须以一个元素开始(例如 <book>)"
 
 #: ../glib/gmarkup.c:1114
 #, c-format
-msgid "'%s' is not a valid character following a '<' character; it may not begin an element name"
+msgid ""
+"'%s' is not a valid character following a '<' character; it may not begin an "
+"element name"
 msgstr "“%s”出现在字符“<”后是无效字符；它不能作为元素名的开头"
 
 #: ../glib/gmarkup.c:1178
 #, c-format
-msgid "Odd character '%s', expected a '>' character to end the start tag of element '%s'"
+msgid ""
+"Odd character '%s', expected a '>' character to end the start tag of element "
+"'%s'"
 msgstr "字符“%s”无效，应该以字符“>”来结束元素“%s”的起始标记"
 
 #: ../glib/gmarkup.c:1267
 #, c-format
-msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgid ""
+"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr "字符“%s”无效，在属性名“%s”(元素“%s”)的后应该是字符“=”"
 
 #: ../glib/gmarkup.c:1309
 #, c-format
-msgid "Odd character '%s', expected a '>' or '/' character to end the start tag of element '%s', or optionally an attribute; perhaps you used an invalid character in an attribute name"
-msgstr "字符“%s”无效，应该以“>”或“/”结束元素“%s”的起始标记，或紧跟该元素的属性；可能您在属性名中使用了无效字符"
+msgid ""
+"Odd character '%s', expected a '>' or '/' character to end the start tag of "
+"element '%s', or optionally an attribute; perhaps you used an invalid "
+"character in an attribute name"
+msgstr ""
+"字符“%s”无效，应该以“>”或“/”结束元素“%s”的起始标记，或紧跟该元素的属性；可能"
+"您在属性名中使用了无效字符"
 
 #: ../glib/gmarkup.c:1395
 #, c-format
-msgid "Odd character '%s', expected an open quote mark after the equals sign when giving value for attribute '%s' of element '%s'"
+msgid ""
+"Odd character '%s', expected an open quote mark after the equals sign when "
+"giving value for attribute '%s' of element '%s'"
 msgstr "字符“%s”无效，在给属性“%s”(元素“%s”)赋值时，在等号后应该是引号"
 
 #: ../glib/gmarkup.c:1537
 #, c-format
-msgid "'%s' is not a valid character following the characters '</'; '%s' may not begin an element name"
+msgid ""
+"'%s' is not a valid character following the characters '</'; '%s' may not "
+"begin an element name"
 msgstr "“%s”出现在字符“</”后无效；“%s”不能作为元素名的开头"
 
 #: ../glib/gmarkup.c:1577
 #, c-format
-msgid "'%s' is not a valid character following the close element name '%s'; the allowed character is '>'"
+msgid ""
+"'%s' is not a valid character following the close element name '%s'; the "
+"allowed character is '>'"
 msgstr "“%s”出现在结束的元素名“%s”后无效；允许的字符是“>”"
 
 #: ../glib/gmarkup.c:1588
@@ -421,12 +456,16 @@ msgstr "文档在一个打开的尖括号“<”后意外结束"
 
 #: ../glib/gmarkup.c:1779 ../glib/gmarkup.c:1824
 #, c-format
-msgid "Document ended unexpectedly with elements still open - '%s' was the last element opened"
+msgid ""
+"Document ended unexpectedly with elements still open - '%s' was the last "
+"element opened"
 msgstr "文档在还存在未结束元素时意外结束 - 最后的未结束元素是“%s”"
 
 #: ../glib/gmarkup.c:1787
 #, c-format
-msgid "Document ended unexpectedly, expected to see a close angle bracket ending the tag <%s/>"
+msgid ""
+"Document ended unexpectedly, expected to see a close angle bracket ending "
+"the tag <%s/>"
 msgstr "文档意外结束，应该以右尖括号“>”来结束标记 <%s/>"
 
 #: ../glib/gmarkup.c:1793
@@ -442,7 +481,9 @@ msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "文档在元素起始标记中意外结束"
 
 #: ../glib/gmarkup.c:1810
-msgid "Document ended unexpectedly after the equals sign following an attribute name; no attribute value"
+msgid ""
+"Document ended unexpectedly after the equals sign following an attribute "
+"name; no attribute value"
 msgstr "文档在跟在属性名后的等号后意外结束；没有属性值"
 
 #: ../glib/gmarkup.c:1817
@@ -670,7 +711,8 @@ msgid "inconsistent NEWLINE options"
 msgstr "不一致的 NEWLINE 选项"
 
 #: ../glib/gregex.c:333
-msgid "\\g is not followed by a braced name or an optionally braced non-zero number"
+msgid ""
+"\\g is not followed by a braced name or an optionally braced non-zero number"
 msgstr "\\g 后没有花括号括起来的名称或可选的花括号括起来的非零数字"
 
 #: ../glib/gregex.c:338
@@ -827,7 +869,9 @@ msgid "Failed to execute helper program (%s)"
 msgstr "执行助手程序(%s)失败"
 
 #: ../glib/gspawn-win32.c:938
-msgid "Unexpected error in g_io_channel_win32_poll() reading data from a child process"
+msgid ""
+"Unexpected error in g_io_channel_win32_poll() reading data from a child "
+"process"
 msgstr "g_io_channel_win32_poll() 从子进程中读取数据时出现异常错误"
 
 #: ../glib/gspawn.c:180
@@ -961,7 +1005,8 @@ msgstr "文件为空"
 
 #: ../glib/gkeyfile.c:761
 #, c-format
-msgid "Key file contains line '%s' which is not a key-value pair, group, or comment"
+msgid ""
+"Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr "键文件中的行“%s”不是键-值对、组或注释"
 
 #: ../glib/gkeyfile.c:821
@@ -1007,7 +1052,9 @@ msgstr "键文件包含键“%s”，其值无法解释。"
 
 #: ../glib/gkeyfile.c:2104 ../glib/gkeyfile.c:2316
 #, c-format
-msgid "Key file contains key '%s' in group '%s' which has value that cannot be interpreted."
+msgid ""
+"Key file contains key '%s' in group '%s' which has value that cannot be "
+"interpreted."
 msgstr "键文件在“%2$s”中包含“%1$s”，其值无法解释。"
 
 #: ../glib/gkeyfile.c:2500 ../glib/gkeyfile.c:2703 ../glib/gkeyfile.c:3235
@@ -1119,49 +1166,50 @@ msgstr "驱动未实现探出"
 msgid "drive doesn't implement polling for media"
 msgstr "驱动未实现媒体轮询"
 
-#: ../gio/gfile.c:731 ../gio/gfile.c:872 ../gio/gfile.c:1005
-#: ../gio/gfile.c:1091 ../gio/gfile.c:1144 ../gio/gfile.c:1201
-#: ../gio/gfile.c:1282 ../gio/gfile.c:2189 ../gio/gfile.c:2234
-#: ../gio/gfile.c:2284 ../gio/gfile.c:2323 ../gio/gfile.c:2647
-#: ../gio/gfile.c:3046 ../gio/gfile.c:3125 ../gio/gfile.c:3205
+#: ../gio/gfile.c:742 ../gio/gfile.c:930 ../gio/gfile.c:1063
+#: ../gio/gfile.c:1190 ../gio/gfile.c:1243 ../gio/gfile.c:1300
+#: ../gio/gfile.c:1381 ../gio/gfile.c:2336 ../gio/gfile.c:2381
+#: ../gio/gfile.c:2431 ../gio/gfile.c:2470 ../gio/gfile.c:2794
+#: ../gio/gfile.c:3193 ../gio/gfile.c:3272 ../gio/gfile.c:3352
+#: ../gio/gfile.c:3430
 msgid "Operation not supported"
 msgstr "不支持该操作"
 
-#: ../gio/gfile.c:1047 ../gio/glocalfile.c:888 ../gio/glocalfile.c:897
-#: ../gio/glocalfile.c:908
+#: ../gio/gfile.c:1105 ../gio/glocalfile.c:895 ../gio/glocalfile.c:904
+#: ../gio/glocalfile.c:915
 msgid "Containing mount does not exist"
 msgstr "包含的挂载不存在"
 
-#: ../gio/gfile.c:1621
+#: ../gio/gfile.c:1720
 msgid "Can't copy over directory"
 msgstr "无法复制目录"
 
-#: ../gio/gfile.c:1681
+#: ../gio/gfile.c:1780
 msgid "Can't copy directory over directory"
 msgstr "无法将目录复制到目录"
 
-#: ../gio/gfile.c:1689
+#: ../gio/gfile.c:1788
 msgid "Target file exists"
 msgstr "目标文件已存在"
 
-#: ../gio/gfile.c:1707
+#: ../gio/gfile.c:1806
 msgid "Can't recursively copy directory"
 msgstr "无法递归复制目录"
 
-#: ../gio/gfile.c:2274
+#: ../gio/gfile.c:2421
 msgid "Invalid symlink value given"
 msgstr "给出的符号链接值无效"
 
-#: ../gio/gfile.c:2366
+#: ../gio/gfile.c:2513
 msgid "Trash not supported"
 msgstr "不支持垃圾箱"
 
-#: ../gio/gfile.c:2413
+#: ../gio/gfile.c:2560
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "文件名不能包含“%c”"
 
-#: ../gio/gfile.c:4053 ../gio/gvolume.c:318
+#: ../gio/gfile.c:4264 ../gio/gvolume.c:318
 msgid "volume doesn't implement mount"
 msgstr "卷未实现挂载"
 
@@ -1215,107 +1263,111 @@ msgstr "传递给 g_input_stream_skip_async 的计数值太大了"
 msgid "Stream has outstanding operation"
 msgstr "流有异常操作"
 
-#: ../gio/glocalfile.c:554
+#: ../gio/glocaldirectorymonitor.c:296
+msgid "Unable to find default local directory monitor type"
+msgstr "无法找默认的本地目录监视器类型"
+
+#: ../gio/glocalfile.c:561
 #, c-format
 msgid "Invalid filename %s"
 msgstr "无效的文件名名：%s"
 
-#: ../gio/glocalfile.c:810
+#: ../gio/glocalfile.c:817
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "读取文件系统信息出错：%s"
 
-#: ../gio/glocalfile.c:928
+#: ../gio/glocalfile.c:935
 msgid "Can't rename root directory"
 msgstr "无法重命名根目录"
 
-#: ../gio/glocalfile.c:946
+#: ../gio/glocalfile.c:953
 msgid "Can't rename file, filename already exist"
 msgstr "无法重命名文件，该文件名已存在"
 
-#: ../gio/glocalfile.c:959 ../gio/glocalfile.c:1681 ../gio/glocalfile.c:1710
-#: ../gio/glocalfile.c:1842 ../gio/glocalfileoutputstream.c:451
+#: ../gio/glocalfile.c:966 ../gio/glocalfile.c:1688 ../gio/glocalfile.c:1717
+#: ../gio/glocalfile.c:1862 ../gio/glocalfileoutputstream.c:451
 #: ../gio/glocalfileoutputstream.c:494 ../gio/glocalfileoutputstream.c:886
 msgid "Invalid filename"
 msgstr "无效的文件名"
 
-#: ../gio/glocalfile.c:963
+#: ../gio/glocalfile.c:970
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "重命名文件出错：%s"
 
-#: ../gio/glocalfile.c:1080
+#: ../gio/glocalfile.c:1087
 #, c-format
 msgid "Error opening file: %s"
 msgstr "打开文件出错：%s"
 
-#: ../gio/glocalfile.c:1090
+#: ../gio/glocalfile.c:1097
 msgid "Can't open directory"
 msgstr "无法打开目录"
 
-#: ../gio/glocalfile.c:1142 ../gio/glocalfile.c:1685
+#: ../gio/glocalfile.c:1149 ../gio/glocalfile.c:1692
 #, c-format
 msgid "Error removing file: %s"
 msgstr "移除文件出错：%s"
 
-#: ../gio/glocalfile.c:1434
+#: ../gio/glocalfile.c:1441
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "将文件放到垃圾箱出错：%s"
 
-#: ../gio/glocalfile.c:1458
+#: ../gio/glocalfile.c:1465
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "创建垃圾箱目录 %s 失败：%s"
 
-#: ../gio/glocalfile.c:1482
+#: ../gio/glocalfile.c:1489
 msgid "Unable to find toplevel directory for trash"
 msgstr "无法找到垃圾箱的顶级目录"
 
-#: ../gio/glocalfile.c:1542 ../gio/glocalfile.c:1562
+#: ../gio/glocalfile.c:1549 ../gio/glocalfile.c:1569
 msgid "Unable to find or create trash directory"
 msgstr "无法找到或创建垃圾箱目录"
 
-#: ../gio/glocalfile.c:1594
+#: ../gio/glocalfile.c:1601
 #, c-format
 msgid "Unable to create trashed file: %s"
 msgstr "创建垃圾文件失败：%s"
 
-#: ../gio/glocalfile.c:1617
+#: ../gio/glocalfile.c:1624
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "创建垃圾文件失败：%s"
 
-#: ../gio/glocalfile.c:1714
+#: ../gio/glocalfile.c:1721
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "创建符号链接出错：%s"
 
-#: ../gio/glocalfile.c:1761 ../gio/glocalfile.c:1846
+#: ../gio/glocalfile.c:1779 ../gio/glocalfile.c:1866
 #, c-format
 msgid "Error moving file: %s"
 msgstr "移动文件出错：%s"
 
-#: ../gio/glocalfile.c:1782
+#: ../gio/glocalfile.c:1802
 msgid "Can't move directory over directory"
 msgstr "无法将目录移动到目录"
 
-#: ../gio/glocalfile.c:1791
+#: ../gio/glocalfile.c:1811
 msgid "Target file already exists"
 msgstr "目标文件已存在"
 
-#: ../gio/glocalfile.c:1804 ../gio/glocalfileoutputstream.c:740
+#: ../gio/glocalfile.c:1824 ../gio/glocalfileoutputstream.c:740
 #: ../gio/glocalfileoutputstream.c:754 ../gio/glocalfileoutputstream.c:769
 #: ../gio/glocalfileoutputstream.c:785 ../gio/glocalfileoutputstream.c:799
 msgid "Backup file creation failed"
 msgstr "备份文件创建失败"
 
-#: ../gio/glocalfile.c:1821
+#: ../gio/glocalfile.c:1841
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "移除目标文件出错：%s"
 
-#: ../gio/glocalfile.c:1835
+#: ../gio/glocalfile.c:1855
 msgid "Move between mounts not supported"
 msgstr "不支持在挂载之间移动"
 
@@ -1407,6 +1459,10 @@ msgstr "在文件中查找时出错：%s"
 #, c-format
 msgid "Error closing file: %s"
 msgstr "关闭文件出错：%s"
+
+#: ../gio/glocalfilemonitor.c:225
+msgid "Unable to find default local file monitor type"
+msgstr "无法找到默认的本地文件监视器类型"
 
 #: ../gio/glocalfileoutputstream.c:166 ../gio/glocalfileoutputstream.c:560
 #, c-format
