@@ -1,3 +1,11 @@
+2008-01-18  Murray Cumming  <murrayc@murrayc.com>
+
+	* gio/gvolumemonitor.c: 
+	(g_volume_monitor_get_connected_drives): 
+	(g_volume_monitor_get_volumes): 
+	(g_volume_monitor_get_mounts): Documentation: 
+	Clarify the ownership of the regurn GLists.
+
 2008-01-17  Alexander Larsson  <alexl@redhat.com>
 
         * gfile.h:

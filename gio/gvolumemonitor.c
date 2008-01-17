@@ -238,8 +238,11 @@ g_volume_monitor_init (GVolumeMonitor *monitor)
  * @volume_monitor: a #GVolumeMonitor.
  * 
  * Gets a list of drives connected to the system.
+ *
+ * The returned list should be freed with g_list_free(), but
+ * its elements need not be freed.
  * 
- * Returns: a #GList of connected #GDrives. 
+ * Returns: a #GList of connected #GDrives - free with g_list_free(). 
  **/
 GList *
 g_volume_monitor_get_connected_drives (GVolumeMonitor *volume_monitor)
@@ -258,8 +261,11 @@ g_volume_monitor_get_connected_drives (GVolumeMonitor *volume_monitor)
  * @volume_monitor: a #GVolumeMonitor.
  * 
  * Gets a list of the volumes on the system.
+ *
+ * The returned list should be freed with g_list_free(), but
+ * its elements need not be freed.
  * 
- * Returns: a #GList of #GVolume.
+ * Returns: a #GList of #GVolume - free with g_list_free().
  **/
 GList *
 g_volume_monitor_get_volumes (GVolumeMonitor *volume_monitor)
@@ -278,8 +284,11 @@ g_volume_monitor_get_volumes (GVolumeMonitor *volume_monitor)
  * @volume_monitor: a #GVolumeMonitor.
  * 
  * Gets a list of the mounts on the system.
+ *
+ * The returned list should be freed with g_list_free(), but
+ * its elements need not be freed.
  * 
- * Returns: a #GList of #GMount.
+ * Returns: a #GList of #GMount - free with g_list_free().
  **/
 GList *
 g_volume_monitor_get_mounts (GVolumeMonitor *volume_monitor)
