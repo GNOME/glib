@@ -1,5 +1,11 @@
 2008-01-17  Alexander Larsson  <alexl@redhat.com>
 
+        * gfile.h:
+	Add the async find_enclosing_mount version
+	to the header file too.
+
+2008-01-17  Alexander Larsson  <alexl@redhat.com>
+
         * gfile.c:
 	Add async version of find_enclosing_mount
 	with default implementation.

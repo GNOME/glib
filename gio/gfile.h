@@ -633,9 +633,17 @@ GFileInfo *             g_file_query_filesystem_info      (GFile                
 							   const char                 *attributes,
 							   GCancellable               *cancellable,
 							   GError                    **error);
-GMount *                g_file_find_enclosing_mount      (GFile                      *file,
-                                                          GCancellable               *cancellable,
-                                                          GError                    **error);
+GMount *                g_file_find_enclosing_mount       (GFile                      *file,
+                                                           GCancellable               *cancellable,
+                                                           GError                    **error);
+void                    g_file_find_enclosing_mount_async (GFile                      *file,
+							   int                         io_priority,
+							   GCancellable               *cancellable,
+							   GAsyncReadyCallback         callback,
+							   gpointer                    user_data);
+GMount *                g_file_find_enclosing_mount_finish (GFile                     *file,
+							    GAsyncResult              *res,
+							    GError                   **error);
 GFileEnumerator *       g_file_enumerate_children         (GFile                      *file,
 							   const char                 *attributes,
 							   GFileQueryInfoFlags         flags,
