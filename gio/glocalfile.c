@@ -1753,13 +1753,24 @@ g_local_file_move (GFile                  *source,
 		   gpointer                progress_callback_data,
 		   GError                **error)
 {
-  GLocalFile *local_source = G_LOCAL_FILE (source);
+  GLocalFile *local_source;
   GLocalFile *local_destination = G_LOCAL_FILE (destination);
   struct stat statbuf;
   gboolean destination_exist, source_is_dir;
   char *backup_name;
   int res;
-
+  off_t source_size;
+  
+  if (!G_IS_LOCAL_FILE (source) ||
+      !G_IS_LOCAL_FILE (destination))
+    {
+      /* Fall back to default move */
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED, "Move not supported");
+      return FALSE;
+    }
+  
+  local_source = G_LOCAL_FILE (source);
+  
   res = g_lstat (local_source->filename, &statbuf);
   if (res == -1)
     {
@@ -1771,6 +1782,8 @@ g_local_file_move (GFile                  *source,
     }
   else
     source_is_dir = S_ISDIR (statbuf.st_mode);
+
+  source_size = statbuf.st_size;
   
   destination_exist = FALSE;
   res = g_lstat (local_destination->filename, &statbuf);
@@ -1853,8 +1866,12 @@ g_local_file_move (GFile                  *source,
 		     _("Error moving file: %s"),
 		     g_strerror (errsv));
       return FALSE;
-
     }
+
+  /* Make sure we send full copied size */
+  if (progress_callback)
+    progress_callback (source_size, source_size, progress_callback_data);
+  
   return TRUE;
 }
 

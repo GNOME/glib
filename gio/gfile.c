@@ -2115,14 +2115,38 @@ g_file_copy (GFile                  *source,
   if (g_cancellable_set_error_if_cancelled (cancellable, error))
     return FALSE;
   
-  if (G_OBJECT_TYPE (source) == G_OBJECT_TYPE (destination))
+  iface = G_FILE_GET_IFACE (destination);
+  if (iface->copy)
+    {
+      my_error = NULL;
+      res = (* iface->copy) (source, destination,
+			     flags, cancellable,
+			     progress_callback, progress_callback_data,
+			     &my_error);
+      
+      if (res)
+	return TRUE;
+      
+      if (my_error->domain != G_IO_ERROR || my_error->code != G_IO_ERROR_NOT_SUPPORTED)
+	{
+	  g_propagate_error (error, my_error);
+	      return FALSE;
+	}
+    }
+
+  /* If the types are different, and the destination method failed
+     also try the source method */
+  if (G_OBJECT_TYPE (source) != G_OBJECT_TYPE (destination))
     {
       iface = G_FILE_GET_IFACE (source);
-
+      
       if (iface->copy)
 	{
 	  my_error = NULL;
-	  res = (* iface->copy) (source, destination, flags, cancellable, progress_callback, progress_callback_data, &my_error);
+	  res = (* iface->copy) (source, destination,
+				 flags, cancellable,
+				 progress_callback, progress_callback_data,
+				 &my_error);
 	  
 	  if (res)
 	    return TRUE;
@@ -2134,7 +2158,7 @@ g_file_copy (GFile                  *source,
 	    }
 	}
     }
-
+  
   return file_copy_fallback (source, destination, flags, cancellable,
 			     progress_callback, progress_callback_data,
 			     error);
@@ -2209,14 +2233,38 @@ g_file_move (GFile                  *source,
   if (g_cancellable_set_error_if_cancelled (cancellable, error))
     return FALSE;
   
-  if (G_OBJECT_TYPE (source) == G_OBJECT_TYPE (destination))
+  iface = G_FILE_GET_IFACE (destination);
+  if (iface->move)
+    {
+      my_error = NULL;
+      res = (* iface->move) (source, destination,
+			     flags, cancellable,
+			     progress_callback, progress_callback_data,
+			     &my_error);
+      
+      if (res)
+	return TRUE;
+      
+      if (my_error->domain != G_IO_ERROR || my_error->code != G_IO_ERROR_NOT_SUPPORTED)
+	{
+	  g_propagate_error (error, my_error);
+	  return FALSE;
+	}
+    }
+
+  /* If the types are different, and the destination method failed
+     also try the source method */
+  if (G_OBJECT_TYPE (source) != G_OBJECT_TYPE (destination))
     {
       iface = G_FILE_GET_IFACE (source);
-
+      
       if (iface->move)
 	{
 	  my_error = NULL;
-	  res = (* iface->move) (source, destination, flags, cancellable, progress_callback, progress_callback_data, &my_error);
+	  res = (* iface->move) (source, destination,
+				 flags, cancellable,
+				 progress_callback, progress_callback_data,
+				 &my_error);
 	  
 	  if (res)
 	    return TRUE;
@@ -2228,7 +2276,7 @@ g_file_move (GFile                  *source,
 	    }
 	}
     }
-
+  
   if (flags & G_FILE_COPY_NO_FALLBACK_FOR_MOVE)
     {  
       g_set_error (error, G_IO_ERROR,

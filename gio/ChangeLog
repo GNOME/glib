@@ -1,3 +1,22 @@
+2008-01-17  Alexander Larsson  <alexl@redhat.com>
+
+        * gfile.c:
+        (g_file_copy):
+        (g_file_move):
+	Allow calls to implementation of copy and write
+	even if the type of the file implementations is
+	different. This can be used to implement native
+	upload and download calls in a vfs.
+	
+        * glocalfile.c:
+        (g_local_file_move):
+	Protect against the case where move is called
+	with one file not being local.
+	
+	Make sure we call the progress callback once
+	in the native move operation so that the caller
+	knows how many bytes were copied.
+
 2008-01-16  Murray Cumming  <murrayc@murrayc.com>
 
 	* gappinfo.c:
