@@ -1,5 +1,11 @@
 2008-01-18  Murray Cumming  <murrayc@murrayc.com>
 
+	* gmount.c: (g_mount_remount): documentation: 
+	Mention g_mount_remount_finish() instead of 
+	g_mount_unmount_finish().
+
+2008-01-18  Murray Cumming  <murrayc@murrayc.com>
+
 	* gappinfo.c:
 	* gcancellable.c:
 	* gfile.c: Fixed some minor typos in the 

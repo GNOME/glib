@@ -460,7 +460,7 @@ g_mount_eject_finish (GMount       *mount,
  * @user_data: user data passed to @callback.
  * 
  * Remounts a mount. This is an asynchronous operation, and is 
- * finished by calling g_mount_unmount_finish() with the @mount 
+ * finished by calling g_mount_remount_finish() with the @mount 
  * and #GAsyncResults data returned in the @callback.
  *
  * Remounting is useful when some setting affecting the operation
