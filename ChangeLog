@@ -1,3 +1,9 @@
+2008-01-18  Murray Cumming  <murrayc@murrayc.com>
+
+	* glib/gfileutils.c:
+	* glib/gsequence.c:
+	* glib/gstring.c: Fixed some minor typos in the documentation.
+
 2008-01-16  Dan Winship  <danw@gnome.org>
 
 	* glib/gchecksum.c (md5_sum_update): Fix another bug (which

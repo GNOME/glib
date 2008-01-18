@@ -855,7 +855,7 @@ g_sequence_insert_sorted_iter (GSequence                *seq,
    * node is not actually in a sequence.
    *
    * node_insert_sorted() makes sure the node is unlinked before
-   * is is inserted.
+   * it is inserted.
    *
    * The reason we need the "iter" versions at all is that that
    * is the only kind of compare functions GtkTreeView can use.

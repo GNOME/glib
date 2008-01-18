@@ -152,7 +152,7 @@ g_mkdir_with_parents (const gchar *pathname,
  * to perform an operation, because there is always the possibility
  * of the condition changing before you actually perform the operation.
  * For example, you might think you could use %G_FILE_TEST_IS_SYMLINK
- * to know whether it is is safe to write to a file without being
+ * to know whether it is safe to write to a file without being
  * tricked into writing into a different location. It doesn't work!
  * |[
  * /&ast; DON'T DO THIS &ast;/

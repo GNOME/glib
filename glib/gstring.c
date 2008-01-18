@@ -1355,7 +1355,7 @@ g_string_up (GString *string)
  * @args: the list of arguments to insert in the output
  *
  * Appends a formatted string onto the end of a #GString.
- * This function is is similar to g_string_append_printf()
+ * This function is similar to g_string_append_printf()
  * except that the arguments to the format string are passed
  * as a va_list.
  *
@@ -1452,7 +1452,7 @@ g_string_printf (GString     *string,
  * @Varargs: the parameters to insert into the format string
  *
  * Appends a formatted string onto the end of a #GString.
- * This function is is similar to g_string_sprintf() except that
+ * This function is similar to g_string_sprintf() except that
  * the text is appended to the #GString. 
  *
  * Deprecated: This function has been renamed to g_string_append_printf()
@@ -1465,7 +1465,7 @@ g_string_printf (GString     *string,
  * @Varargs: the parameters to insert into the format string
  *
  * Appends a formatted string onto the end of a #GString.
- * This function is is similar to g_string_printf() except 
+ * This function is similar to g_string_printf() except 
  * that the text is appended to the #GString.
  */
 void
