@@ -2229,7 +2229,7 @@ g_file_copy (GFile                  *source,
  *
  *
  * Tries to move the file or directory @source to the location specified by @destination.
- * If native move operations is supported then this is used, otherwise a copy + delete
+ * If native move operations are supported then this is used, otherwise a copy + delete
  * fallback is used. The native implementation may support moving directories (for instance
  * on moves inside the same filesystem), but the fallback code does not.
  * 

@@ -1,5 +1,12 @@
 2008-01-18  Murray Cumming  <murrayc@murrayc.com>
 
+	* gappinfo.c:
+	* gcancellable.c:
+	* gfile.c: Fixed some minor typos in the 
+	documentation. 
+
+2008-01-18  Murray Cumming  <murrayc@murrayc.com>
+
 	* gio/gvolumemonitor.c: 
 	(g_volume_monitor_get_connected_drives): 
 	(g_volume_monitor_get_volumes): 

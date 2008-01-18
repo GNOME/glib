@@ -136,7 +136,7 @@ g_app_info_equal (GAppInfo *appinfo1,
  * 
  * Gets the ID of an application. An id is a string that
  * identifies the application. The exact format of the id is
- * platform dependent. For instance on Unix this is the
+ * platform dependent. For instance, on Unix this is the
  * desktop file id from the xdg menu specification.
  *
  * Note that the returned ID may be %NULL, depending on how

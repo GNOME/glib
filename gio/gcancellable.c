@@ -265,7 +265,7 @@ g_cancellable_reset (GCancellable *cancellable)
  * 
  * Checks if a cancellable job has been cancelled.
  * 
- * Returns: %TRUE if @cancellable is is cancelled, 
+ * Returns: %TRUE if @cancellable is cancelled, 
  * FALSE if called with %NULL or if item is not cancelled. 
  **/
 gboolean
