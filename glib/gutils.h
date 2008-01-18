@@ -69,18 +69,6 @@ G_BEGIN_DECLS
 #  endif /* va_list is a pointer */
 #endif /* !G_VA_COPY */
 
-/* need this utility macro, but it's not always present in system headers 
- * copy it from linux features.h for those who need it
- */
-#ifndef __GNUC_PREREQ
-#if defined __GNUC__ && defined __GNUC_MINOR__
-# define __GNUC_PREREQ(maj, min) \
-	((__GNUC__ << 16) + __GNUC_MINOR__ >= ((maj) << 16) + (min))
-#else
-# define __GNUC_PREREQ(maj, min) 0
-#endif
-#endif
-
 /* inlining hassle. for compilers that don't allow the `inline' keyword,
  * mostly because of strict ANSI C compliance or dumbness, we try to fall
  * back to either `__inline__' or `__inline'.
@@ -109,12 +97,7 @@ G_BEGIN_DECLS
 #  define G_INLINE_FUNC
 #  undef  G_CAN_INLINE
 #elif defined (__GNUC__) 
-#  if __GNUC_PREREQ (4,2) && defined (__STDC_VERSION__) \
-   && __STDC_VERSION__ >= 199901L
-#    define G_INLINE_FUNC extern __inline __attribute__ ((__gnu_inline__))
-#  else
-#    define G_INLINE_FUNC extern __inline
-#  endif
+#  define G_INLINE_FUNC static __inline __attribute__ ((unused))
 #elif defined (G_CAN_INLINE) 
 #  define G_INLINE_FUNC static inline
 #else /* can't inline */

@@ -1,3 +1,10 @@
+2008-01-18 16:51:23  Tim Janik  <timj@imendio.com>
+
+	* glib/gutils.h: don't define __GNUC_PREREQ which is not in the glib
+	namespace. for gcc, define G_INLINE_FUNC to "static inline" as with
+	all other C compilers, because newer GCC versions incompatibly
+	changed "extern inline" semantics.
+
 2008-01-18  Murray Cumming  <murrayc@murrayc.com>
 
 	* glib/gfileutils.c:
