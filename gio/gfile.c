@@ -837,13 +837,13 @@ g_file_enumerate_children_finish (GFile         *file,
  * general approach to handling that is to not check, but just do the
  * operation and handle the errors as they come.
  *
- * As an example of race-free checking. Take the case of reading a file, and
- * if it doesn't exist, create it. There are two racy versions: read it, and
+ * As an example of race-free checking, take the case of reading a file, and
+ * if it doesn't exist, creating it. There are two racy versions: read it, and
  * on error create it; and: check if it exists, if not create it. These
  * can both result in two processes creating the file (with perhaps a partially
  * written file as the result). The correct approach is to always try to create
  * the file with g_file_create() which will either atomically create the file
- * or fail with an G_IO_ERROR_EXISTS error.
+ * or fail with a G_IO_ERROR_EXISTS error.
  *
  * However, in many cases an existance check is useful in a user
  * interface, for instance to make a menu item sensitive/insensitive, so that
@@ -880,8 +880,8 @@ g_file_query_exists (GFile *file,
  * @error: a #GError.
  *
  * Gets the requested information about specified @file. The result
- * is a #GFileInfo objects that contains key-value attributes (like type or size
- * for the file.
+ * is a #GFileInfo object that contains key-value attributes (such as 
+ * the type or size of the file).
  *
  * The @attribute value is a string that specifies the file attributes that
  * should be gathered. It is not an error if it's not possible to read a particular
@@ -899,7 +899,7 @@ g_file_query_exists (GFile *file,
  * symlink is returned, rather than information about the symlink itself.
  * However if you pass #G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS in @flags the
  * information about the symlink itself will be returned. Also, for symlinks
- * that points to non-existing files the information about the symlink itself
+ * that point to non-existing files the information about the symlink itself
  * will be returned.
  *
  * If the file does not exist, the G_IO_ERROR_NOT_FOUND error will be returned.
@@ -946,7 +946,7 @@ g_file_query_info (GFile                *file,
  * @user_data: the data to pass to callback function
  * 
  * Asynchronously gets the requested information about specified @file. The result
- * is a #GFileInfo objects that contains key-value attributes (such as type or size
+ * is a #GFileInfo object that contains key-value attributes (such as type or size
  * for the file).
  * 
  * For more details, see g_file_query_info() which is
