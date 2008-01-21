@@ -115,18 +115,6 @@ GFileInfo *g_file_output_stream_query_info_finish (GFileOutputStream     *stream
 						   GAsyncResult         *result,
 						   GError              **error);
 char *     g_file_output_stream_get_etag      (GFileOutputStream  *stream);
-goffset    g_file_output_stream_tell          (GFileOutputStream  *stream);
-gboolean   g_file_output_stream_can_seek      (GFileOutputStream  *stream);
-gboolean   g_file_output_stream_seek          (GFileOutputStream  *stream,
-					       goffset             offset,
-					       GSeekType           type,
-					       GCancellable       *cancellable,
-					       GError            **error);
-gboolean   g_file_output_stream_can_truncate  (GFileOutputStream  *stream);
-gboolean   g_file_output_stream_truncate      (GFileOutputStream  *stream,
-					       goffset             size,
-					       GCancellable       *cancellable,
-					       GError            **error);
 
 G_END_DECLS
 

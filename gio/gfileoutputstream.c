@@ -309,15 +309,7 @@ g_file_output_stream_get_etag (GFileOutputStream  *stream)
   return etag;
 }
 
-/**
- * g_file_output_stream_tell:
- * @stream: a #GFileOutputStream.
- * 
- * Gets the current location within the stream.
- * 
- * Returns: a #goffset of the location within the stream.
- **/
-goffset
+static goffset
 g_file_output_stream_tell (GFileOutputStream  *stream)
 {
   GFileOutputStreamClass *class;
@@ -340,15 +332,7 @@ g_file_output_stream_seekable_tell (GSeekable *seekable)
   return g_file_output_stream_tell (G_FILE_OUTPUT_STREAM (seekable));
 }
 
-/**
- * g_file_output_stream_can_seek:
- * @stream: a #GFileOutputStream.
- * 
- * Checks if the stream can be seeked.
- * 
- * Returns: %TRUE if seeking is supported by the stream.
- **/
-gboolean
+static gboolean
 g_file_output_stream_can_seek (GFileOutputStream  *stream)
 {
   GFileOutputStreamClass *class;
@@ -375,19 +359,7 @@ g_file_output_stream_seekable_can_seek (GSeekable *seekable)
   return g_file_output_stream_can_seek (G_FILE_OUTPUT_STREAM (seekable));
 }
 
-/**
- * g_file_output_stream_seek:
- * @stream: a #GFileOutputStream.
- * @offset: a #goffset to seek.
- * @type: a #GSeekType.
- * @cancellable: optional #GCancellable object, %NULL to ignore. 
- * @error: a #GError, %NULL to ignore.
- * 
- * Seeks to a location in a file output stream.
- * 
- * Returns: %TRUE if the seek was successful. %FALSE otherwise.
- **/
-gboolean
+static gboolean
 g_file_output_stream_seek (GFileOutputStream  *stream,
 			   goffset             offset,
 			   GSeekType           type,
@@ -437,15 +409,7 @@ g_file_output_stream_seekable_seek (GSeekable  *seekable,
 				    offset, type, cancellable, error);
 }
 
-/**
- * g_file_output_stream_can_truncate:
- * @stream: a #GFileOutputStream.
- * 
- * Checks if the stream can be truncated.
- * 
- * Returns: %TRUE if stream can be truncated.
- **/
-gboolean
+static gboolean
 g_file_output_stream_can_truncate (GFileOutputStream  *stream)
 {
   GFileOutputStreamClass *class;
@@ -472,18 +436,7 @@ g_file_output_stream_seekable_can_truncate (GSeekable  *seekable)
   return g_file_output_stream_can_truncate (G_FILE_OUTPUT_STREAM (seekable));
 }
 
-/**
- * g_file_output_stream_truncate:
- * @stream: a #GFileOutputStream.
- * @size: a #goffset to truncate the stream at.
- * @cancellable: optional #GCancellable object, %NULL to ignore. 
- * @error: a #GError, %NULL to ignore.
- * 
- * Truncates a file output stream.
- * 
- * Returns: %TRUE if @stream is truncated successfully.
- **/
-gboolean
+static gboolean
 g_file_output_stream_truncate (GFileOutputStream  *stream,
 			       goffset             size,
 			       GCancellable       *cancellable,

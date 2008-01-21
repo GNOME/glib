@@ -393,9 +393,6 @@ g_file_input_stream_get_type  G_GNUC_CONST
 g_file_input_stream_query_info 
 g_file_input_stream_query_info_async 
 g_file_input_stream_query_info_finish 
-g_file_input_stream_tell 
-g_file_input_stream_can_seek 
-g_file_input_stream_seek 
 #endif
 #endif
 
@@ -426,11 +423,6 @@ g_file_output_stream_query_info
 g_file_output_stream_query_info_async 
 g_file_output_stream_query_info_finish 
 g_file_output_stream_get_etag 
-g_file_output_stream_tell 
-g_file_output_stream_can_seek 
-g_file_output_stream_seek 
-g_file_output_stream_can_truncate 
-g_file_output_stream_truncate 
 #endif
 #endif
 

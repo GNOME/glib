@@ -1,3 +1,11 @@
+2008-01-21  Alexander Larsson  <alexl@redhat.com>
+
+        * gfileinputstream.[ch]:
+        * gfileoutputstream.[ch]:
+        * gio.symbols:
+	Remove duplicated GSeekable functions. (#509990)
+	Just use the g_seekable_xxx() calls instead.
+
 2008-01-21  Matthias Clasen  <mclasen@redhat.com>
 
 	* glocal*.c:

@@ -107,14 +107,6 @@ void       g_file_input_stream_query_info_async  (GFileInputStream     *stream,
 GFileInfo *g_file_input_stream_query_info_finish (GFileInputStream     *stream,
 						  GAsyncResult         *result,
 						  GError              **error);
-goffset    g_file_input_stream_tell              (GFileInputStream     *stream);
-gboolean   g_file_input_stream_can_seek          (GFileInputStream     *stream);
-gboolean   g_file_input_stream_seek              (GFileInputStream     *stream,
-						  goffset               offset,
-						  GSeekType             type,
-						  GCancellable         *cancellable,
-						  GError              **error);
-
 
 
 G_END_DECLS

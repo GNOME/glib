@@ -264,15 +264,7 @@ g_file_input_stream_query_info_finish (GFileInputStream  *stream,
   return class->query_info_finish (stream, result, error);
 }
 
-/**
- * g_file_input_stream_tell:
- * @stream: a #GFileInputStream.
- * 
- * Gets the current position in the stream.
- * 
- * Returns: a #goffset with the position in the stream.
- **/
-goffset
+static goffset
 g_file_input_stream_tell (GFileInputStream *stream)
 {
   GFileInputStreamClass *class;
@@ -295,15 +287,7 @@ g_file_input_stream_seekable_tell (GSeekable *seekable)
   return g_file_input_stream_tell (G_FILE_INPUT_STREAM (seekable));
 }
 
-/**
- * g_file_input_stream_can_seek:
- * @stream: a #GFileInputStream.
- * 
- * Checks if a file input stream can be seeked.
- * 
- * Returns: %TRUE if stream can be seeked. %FALSE otherwise.
- **/
-gboolean
+static gboolean
 g_file_input_stream_can_seek (GFileInputStream *stream)
 {
   GFileInputStreamClass *class;
@@ -330,25 +314,7 @@ g_file_input_stream_seekable_can_seek (GSeekable *seekable)
   return g_file_input_stream_can_seek (G_FILE_INPUT_STREAM (seekable));
 }
 
-/**
- * g_file_input_stream_seek:
- * @stream: a #GFileInputStream.
- * @offset: a #goffset to seek.
- * @type: a #GSeekType.
- * @cancellable: optional #GCancellable object, %NULL to ignore. 
- * @error: a #GError location to store the error occuring, or 
- *     %NULL to ignore.
- * 
- * Seeks in the file input stream.
- * 
- * If @cancellable is not %NULL, then the operation can be cancelled by
- * triggering the cancellable object from another thread. If the operation
- * was cancelled, the error %G_IO_ERROR_CANCELLED will be set.
- * 
- * Returns: %TRUE if the stream was successfully seeked to the position.
- * %FALSE on error.
- **/
-gboolean
+static gboolean
 g_file_input_stream_seek (GFileInputStream  *stream,
 			  goffset            offset,
 			  GSeekType          type,
