@@ -67,8 +67,11 @@ g_file_replace_finish
 g_file_query_info
 g_file_query_info_async
 g_file_query_info_finish
+g_file_query_exists
 g_file_query_filesystem_info
 g_file_find_enclosing_mount
+g_file_find_enclosing_mount_async
+g_file_find_enclosing_mount_finish
 g_file_enumerate_children
 g_file_enumerate_children_async
 g_file_enumerate_children_finish
@@ -349,6 +352,7 @@ g_icon_get_type
 GThemedIcon
 g_themed_icon_new
 g_themed_icon_new_from_names
+g_themed_icon_new_with_default_fallbacks
 <SUBSECTION Standard>
 GThemedIconClass
 G_THEMED_ICON
@@ -672,6 +676,7 @@ GBufferedOutputStreamPrivate
 <SECTION>
 <FILE>gmemoryoutputstream</FILE>
 <TITLE>GMemoryOutputStream</TITLE>
+GReallocFunc
 GMemoryOutputStream
 g_memory_output_stream_new
 g_memory_output_stream_get_data
@@ -1030,6 +1035,7 @@ GAppLaunchContextPrivate
 GAskPasswordFlags
 GPasswordSave
 GMountOperation
+GMountOperationResult
 g_mount_operation_new
 g_mount_operation_get_username
 g_mount_operation_set_username
@@ -1094,6 +1100,7 @@ g_unix_mount_is_system_internal
 g_unix_mount_guess_icon
 g_unix_mount_guess_name
 g_unix_mount_guess_can_eject
+g_unix_mount_guess_should_display
 g_unix_mount_point_free
 g_unix_mount_point_compare
 g_unix_mount_point_get_mount_path

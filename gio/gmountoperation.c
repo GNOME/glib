@@ -620,8 +620,8 @@ g_mount_operation_set_choice (GMountOperation *op,
 
 /**
  * g_mount_operation_reply:
- * @op: a #GMountOperation.
- * @abort: boolean.
+ * @op: a #GMountOperation
+ * @result: a #GMountOperationResult
  * 
  * Emits the #GMountOperation::reply signal.
  **/

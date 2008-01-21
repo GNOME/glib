@@ -185,6 +185,13 @@ g_memory_input_stream_init (GMemoryInputStream *stream)
                                               GMemoryInputStreamPrivate);
 }
 
+/**
+ * g_memory_input_stream_new:
+ *
+ * Creates a new empty #GMemoryInputStream. 
+ *
+ * Returns: a new #GInputStream
+ */
 GInputStream *
 g_memory_input_stream_new (void)
 {
@@ -220,6 +227,15 @@ g_memory_input_stream_new_from_data (const void     *data,
   return stream;
 }
 
+/**
+ * g_memory_input_stream_add_data:
+ * @stream: a #GMemoryInputStream
+ * @data: input data
+ * @len: length of the data, may be -1 if @data is a nul-terminated string
+ * @destroy: function that is called to free @data, or %NULL
+ *
+ * Appends @data to data that can be read from the input stream
+ */
 void
 g_memory_input_stream_add_data (GMemoryInputStream *stream,
                                 const void         *data,

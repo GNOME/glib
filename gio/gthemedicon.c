@@ -143,6 +143,28 @@ g_themed_icon_new_from_names (char **iconnames,
   return G_ICON (themed);
 }
 
+/**
+ * g_themed_icon_new_with_default_fallbacks:
+ * @iconname: a string containing an icon name
+ *
+ * Creates a new themed icon for @iconname, and all the names
+ * that can be created by shortening @iconname at '-' characters.
+ * 
+ * In the following example, @icon1 and @icon2 are equivalent:
+ * |[
+ * const char *names[] = { 
+ *   "gnome-dev-cdrom-audio",
+ *   "gnome-dev-cdrom",
+ *   "gnome-dev",
+ *   "gnome"
+ * };
+ *
+ * icon1 = g_themed_icon_new_from_names (names, 4);
+ * icon2 = g_themed_icon_new_with_default_fallbacks ("gnome-dev-cdrom-audio");
+ * ]|
+ *
+ * Returns: a new #GThemedIcon.
+ */
 GIcon *
 g_themed_icon_new_with_default_fallbacks (const char *iconname)
 {

@@ -1108,7 +1108,23 @@ g_file_find_enclosing_mount (GFile         *file,
   
   return (* iface->find_enclosing_mount) (file, cancellable, error);
 }
-
+/**
+ * g_file_find_enclosing_mount_async:
+ * @file: a #GFile
+ * @io_priority: the <link linkend="io-priority">I/O priority</link> 
+ *     of the request.
+ * @cancellable: optional #GCancellable object, %NULL to ignore.
+ * @callback: a #GAsyncReadyCallback to call when the request is satisfied
+ * @user_data: the data to pass to callback function
+ *
+ * Asynchronously gets the mount for the file.
+ *
+ * For more details, see g_file_find_enclosing_mount() which is
+ * the synchronous version of this call.
+ *
+ * When the operation is finished, @callback will be called. You can then call
+ * g_file_find_enclosing_mount_finish() to get the result of the operation.
+ */
 void
 g_file_find_enclosing_mount_async (GFile              *file,
 				   int                   io_priority,
@@ -1128,10 +1144,21 @@ g_file_find_enclosing_mount_async (GFile              *file,
 					 user_data);
 }
 
+/**
+ * g_file_find_enclosing_mount_finish:
+ * @file: a #GFile
+ * @res: a #GAsyncResult
+ * @error: a #GError
+ * 
+ * Finishes an asynchronous find mount request. 
+ * See g_file_find_enclosing_mount_async().
+ * 
+ * Returns: #GMount for given @file or %NULL on error.
+ **/
 GMount *
-g_file_find_enclosing_mount_finish (GFile              *file,
-				    GAsyncResult         *res,
-				    GError            **error)
+g_file_find_enclosing_mount_finish (GFile         *file,
+				    GAsyncResult  *res,
+				    GError       **error)
 {
   GFileIface *iface;
   

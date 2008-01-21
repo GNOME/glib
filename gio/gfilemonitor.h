@@ -109,7 +109,7 @@ void     g_file_monitor_set_rate_limit (GFileMonitor *monitor,
 
 /* For implementations */
 void g_file_monitor_emit_event (GFileMonitor      *monitor,
-				GFile             *file,
+				GFile             *child,
 				GFile             *other_file,
 				GFileMonitorEvent  event_type);
 

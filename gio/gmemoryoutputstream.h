@@ -69,6 +69,18 @@ struct _GMemoryOutputStreamClass
   void (*_g_reserved5) (void);
 };
 
+/**
+ * GReallocFunc:
+ * @data: memory block to reallocate
+ * @size: size to reallocate @data to
+ *
+ * Changes the size of the memory block pointed to by @data to
+ * @size bytes. 
+ *
+ * The function should have the same semantics as realloc().
+ *
+ * Returns: a pointer to the reallocated memory
+ */
 typedef gpointer (*GReallocFunc) (gpointer data, gsize size);
 
 GType          g_memory_output_stream_get_type (void) G_GNUC_CONST;
