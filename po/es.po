@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-01-14 10:53-0500\n"
+"POT-Creation-Date: 2008-01-21 11:37-0500\n"
 "PO-Revision-Date: 2008-01-14 17:15+0100\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <<gnome-es-list@gnome.org>\n"
@@ -1183,13 +1183,13 @@ msgstr "El valor «%s» no puede interpretarse como un número de coma flotante.
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "El valor «%s» no puede interpretarse como un booleano."
 
-#: gio/gbufferedinputstream.c:483 gio/ginputstream.c:558
+#: gio/gbufferedinputstream.c:483 gio/ginputstream.c:559
 msgid "Too large count value passed to g_input_stream_read_async"
 msgstr ""
 "El valor de conteo pasado a g_input_stream_read_async es demasiado largo"
 
-#: gio/gbufferedinputstream.c:869 gio/ginputstream.c:888
-#: gio/goutputstream.c:1064
+#: gio/gbufferedinputstream.c:869 gio/ginputstream.c:892
+#: gio/goutputstream.c:1075
 #, c-format
 msgid "Stream is already closed"
 msgstr "El flujo ya se cerró"
@@ -1267,56 +1267,56 @@ msgstr "la unidad no implementa la expulsión"
 msgid "drive doesn't implement polling for media"
 msgstr "la unidad no implementa el sondeo para medios"
 
-#: gio/gfile.c:731 gio/gfile.c:872 gio/gfile.c:1005 gio/gfile.c:1091
-#: gio/gfile.c:1144 gio/gfile.c:1201 gio/gfile.c:1282 gio/gfile.c:2189
-#: gio/gfile.c:2234 gio/gfile.c:2284 gio/gfile.c:2323 gio/gfile.c:2647
-#: gio/gfile.c:3046 gio/gfile.c:3125 gio/gfile.c:3205 gio/gfile.c:3283
+#: gio/gfile.c:742 gio/gfile.c:930 gio/gfile.c:1063 gio/gfile.c:1217
+#: gio/gfile.c:1270 gio/gfile.c:1327 gio/gfile.c:1408 gio/gfile.c:2363
+#: gio/gfile.c:2408 gio/gfile.c:2458 gio/gfile.c:2497 gio/gfile.c:2821
+#: gio/gfile.c:3220 gio/gfile.c:3299 gio/gfile.c:3379 gio/gfile.c:3457
 #, c-format
 msgid "Operation not supported"
 msgstr "Operación no soportada"
 
-#: gio/gfile.c:1047 gio/glocalfile.c:895 gio/glocalfile.c:904
+#: gio/gfile.c:1105 gio/glocalfile.c:895 gio/glocalfile.c:904
 #: gio/glocalfile.c:915
 #, c-format
 msgid "Containing mount does not exist"
 msgstr "El punto de montaje contenido no existe"
 
-#: gio/gfile.c:1621
+#: gio/gfile.c:1747
 #, c-format
 msgid "Can't copy over directory"
 msgstr "No se puede copiar sobre el directorio"
 
-#: gio/gfile.c:1681
+#: gio/gfile.c:1807
 #, c-format
 msgid "Can't copy directory over directory"
 msgstr "No se puede copiar directorio sobre directorio"
 
-#: gio/gfile.c:1689
+#: gio/gfile.c:1815
 #, c-format
 msgid "Target file exists"
 msgstr "El archivo destino ya existe"
 
-#: gio/gfile.c:1707
+#: gio/gfile.c:1833
 #, c-format
 msgid "Can't recursively copy directory"
 msgstr "No se puede copiar el directorio recursivamente"
 
-#: gio/gfile.c:2274
+#: gio/gfile.c:2448
 #, c-format
 msgid "Invalid symlink value given"
 msgstr "El valor del enlace simbólico dado no es válido"
 
-#: gio/gfile.c:2366
+#: gio/gfile.c:2540
 #, c-format
 msgid "Trash not supported"
 msgstr "No se soporta mover a la papelera"
 
-#: gio/gfile.c:2413
+#: gio/gfile.c:2587
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "Los nombres de archivo no pueden contener «%c»"
 
-#: gio/gfile.c:4068 gio/gvolume.c:318
+#: gio/gfile.c:4291 gio/gvolume.c:318
 msgid "volume doesn't implement mount"
 msgstr "el volumen no implementa el montado"
 
@@ -1335,23 +1335,23 @@ msgstr "El enumerador del archivo tiene una operacion excepcional"
 msgid "File enumerator is already closed"
 msgstr "El enumerador del archivo ya está cerrado"
 
-#: gio/gfileinputstream.c:154 gio/gfileinputstream.c:450
-#: gio/gfileoutputstream.c:168 gio/gfileoutputstream.c:570
+#: gio/gfileinputstream.c:154 gio/gfileinputstream.c:421
+#: gio/gfileoutputstream.c:168 gio/gfileoutputstream.c:523
 #, c-format
 msgid "Stream doesn't support query_info"
 msgstr "El flujo no soporta query_info"
 
-#: gio/gfileinputstream.c:365 gio/gfileoutputstream.c:409
+#: gio/gfileinputstream.c:336 gio/gfileoutputstream.c:381
 #, c-format
 msgid "Seek not supported on stream"
 msgstr "No se permite buscar en el flujo"
 
-#: gio/gfileinputstream.c:409
+#: gio/gfileinputstream.c:380
 #, c-format
 msgid "Truncate not allowed on input stream"
 msgstr "No se permite truncar en el flujo de entrada"
 
-#: gio/gfileoutputstream.c:504
+#: gio/gfileoutputstream.c:457
 #, c-format
 msgid "Truncate not supported on stream"
 msgstr "No se soporta el truncamiento en el flujo"
@@ -1371,17 +1371,17 @@ msgstr "El flujo de entrada no implementa la lectura"
 msgid "Too large count value passed to g_input_stream_skip"
 msgstr "El valor de conteo pasado a g_input_stream_skip es demasiado largo"
 
-#: gio/ginputstream.c:681
+#: gio/ginputstream.c:683
 msgid "Too large count value passed to g_input_stream_skip_async"
 msgstr ""
 "El valor de conteo pasado a g_input_stream_skip_async es demasiado largo"
 
-#: gio/ginputstream.c:895 gio/goutputstream.c:1071
+#: gio/ginputstream.c:899 gio/goutputstream.c:1082
 #, c-format
 msgid "Stream has outstanding operation"
 msgstr "El flujo tiene una operación excepcional"
 
-#: gio/glocaldirectorymonitor.c:296
+#: gio/glocaldirectorymonitor.c:297
 #, c-format
 msgid "Unable to find default local directory monitor type"
 msgstr ""
@@ -1409,8 +1409,8 @@ msgid "Can't rename file, filename already exist"
 msgstr "No se puede renombrar el archivo, el nombre ya existe"
 
 #: gio/glocalfile.c:966 gio/glocalfile.c:1688 gio/glocalfile.c:1717
-#: gio/glocalfile.c:1849 gio/glocalfileoutputstream.c:451
-#: gio/glocalfileoutputstream.c:494 gio/glocalfileoutputstream.c:886
+#: gio/glocalfile.c:1862 gio/glocalfileoutputstream.c:448
+#: gio/glocalfileoutputstream.c:489 gio/glocalfileoutputstream.c:879
 #, c-format
 msgid "Invalid filename"
 msgstr "Nombre de archivo inválido"
@@ -1471,34 +1471,34 @@ msgstr "No se pudo enviar a la papelera el archivo: %s"
 msgid "Error making symbolic link: %s"
 msgstr "Error al crear el enlace simbólico: %s"
 
-#: gio/glocalfile.c:1768 gio/glocalfile.c:1853
+#: gio/glocalfile.c:1779 gio/glocalfile.c:1866
 #, c-format
 msgid "Error moving file: %s"
 msgstr "Error al mover el archivo: %s"
 
-#: gio/glocalfile.c:1789
+#: gio/glocalfile.c:1802
 #, c-format
 msgid "Can't move directory over directory"
 msgstr "No se puede mover un directorio sobre un directoro"
 
-#: gio/glocalfile.c:1798
+#: gio/glocalfile.c:1811
 #, c-format
 msgid "Target file already exists"
 msgstr "El archivo destino ya existe"
 
-#: gio/glocalfile.c:1811 gio/glocalfileoutputstream.c:740
-#: gio/glocalfileoutputstream.c:754 gio/glocalfileoutputstream.c:769
-#: gio/glocalfileoutputstream.c:785 gio/glocalfileoutputstream.c:799
+#: gio/glocalfile.c:1824 gio/glocalfileoutputstream.c:735
+#: gio/glocalfileoutputstream.c:749 gio/glocalfileoutputstream.c:764
+#: gio/glocalfileoutputstream.c:780 gio/glocalfileoutputstream.c:794
 #, c-format
 msgid "Backup file creation failed"
 msgstr "Falló la creación del archivo de respaldo"
 
-#: gio/glocalfile.c:1828
+#: gio/glocalfile.c:1841
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Error al eliminar el archivo destino: %s"
 
-#: gio/glocalfile.c:1842
+#: gio/glocalfile.c:1855
 #, c-format
 msgid "Move between mounts not supported"
 msgstr "No se soporta mover archivos entre puntos de montaje"
@@ -1523,7 +1523,7 @@ msgstr "Nombre extendido del atributo no válido"
 msgid "Error setting extended attribute '%s': %s"
 msgstr "Error al establecer el atributo extendido «%s»: %s"
 
-#: gio/glocalfileinfo.c:1392 gio/glocalfileoutputstream.c:630
+#: gio/glocalfileinfo.c:1392 gio/glocalfileoutputstream.c:625
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr "Error al mostrar información del estado del archivo «%s»: %s"
@@ -1585,14 +1585,14 @@ msgstr ""
 msgid "Setting attribute %s not supported"
 msgstr "Establecer el atributo %s no está soportado"
 
-#: gio/glocalfileinputstream.c:158 gio/glocalfileoutputstream.c:541
+#: gio/glocalfileinputstream.c:158 gio/glocalfileoutputstream.c:536
 #, c-format
 msgid "Error reading from file: %s"
 msgstr "Error al leer del archivo: %s"
 
 #: gio/glocalfileinputstream.c:187 gio/glocalfileinputstream.c:197
-#: gio/glocalfileinputstream.c:301 gio/glocalfileoutputstream.c:351
-#: gio/glocalfileoutputstream.c:815
+#: gio/glocalfileinputstream.c:300 gio/glocalfileoutputstream.c:350
+#: gio/glocalfileoutputstream.c:810
 #, c-format
 msgid "Error seeking in file: %s"
 msgstr "Error al buscar en el archivo: %s"
@@ -1602,14 +1602,14 @@ msgstr "Error al buscar en el archivo: %s"
 msgid "Error closing file: %s"
 msgstr "Error al cerrar el archivo: %s"
 
-#: gio/glocalfilemonitor.c:225
+#: gio/glocalfilemonitor.c:224
 #, c-format
 msgid "Unable to find default local file monitor type"
 msgstr ""
 "No se pudo encontrar el tipo de monitorización del archivo local "
 "predeterminado"
 
-#: gio/glocalfileoutputstream.c:166 gio/glocalfileoutputstream.c:560
+#: gio/glocalfileoutputstream.c:166 gio/glocalfileoutputstream.c:555
 #, c-format
 msgid "Error writing to file: %s"
 msgstr "Error al escribir en el archivo: %s"
@@ -1634,43 +1634,43 @@ msgstr "Error al crear una copia de respaldo: %s"
 msgid "Error renaming temporary file: %s"
 msgstr "Error al renombrar el archivo temporal: %s"
 
-#: gio/glocalfileoutputstream.c:395 gio/glocalfileoutputstream.c:830
+#: gio/glocalfileoutputstream.c:394 gio/glocalfileoutputstream.c:825
 #, c-format
 msgid "Error truncating file: %s"
 msgstr "Error al truncar el archivo: %s"
 
-#: gio/glocalfileoutputstream.c:455 gio/glocalfileoutputstream.c:498
-#: gio/glocalfileoutputstream.c:621 gio/glocalfileoutputstream.c:890
+#: gio/glocalfileoutputstream.c:452 gio/glocalfileoutputstream.c:493
+#: gio/glocalfileoutputstream.c:616 gio/glocalfileoutputstream.c:883
 #, c-format
 msgid "Error opening file '%s': %s"
 msgstr "Error al abrir el archivo «%s»: %s"
 
-#: gio/glocalfileoutputstream.c:642
+#: gio/glocalfileoutputstream.c:637
 #, c-format
 msgid "Target file is a directory"
 msgstr "El archivo destino es un directorio"
 
-#: gio/glocalfileoutputstream.c:647
+#: gio/glocalfileoutputstream.c:642
 #, c-format
 msgid "Target file is not a regular file"
 msgstr "El archivo destino no es un archivo regular"
 
-#: gio/glocalfileoutputstream.c:659
+#: gio/glocalfileoutputstream.c:654
 #, c-format
 msgid "The file was externally modified"
 msgstr "El archivo se modificó externamente"
 
-#: gio/gmemoryinputstream.c:471 gio/gmemoryoutputstream.c:517
+#: gio/gmemoryinputstream.c:487 gio/gmemoryoutputstream.c:517
 #, c-format
 msgid "Invalid GSeekType supplied"
 msgstr "Se proporcionó un GSeekType no válido"
 
-#: gio/gmemoryinputstream.c:481 gio/gmemoryoutputstream.c:527
+#: gio/gmemoryinputstream.c:497 gio/gmemoryoutputstream.c:527
 #, c-format
 msgid "Invalid seek request"
 msgstr "Petición de búsqueda no válida"
 
-#: gio/gmemoryinputstream.c:505
+#: gio/gmemoryinputstream.c:521
 #, c-format
 msgid "Cannot truncate GMemoryInputStream"
 msgstr "No se puede truncar GMemoryInputStream"
@@ -1712,12 +1712,12 @@ msgstr "El valor de conteo pasado a g_output_stream_write es demasiado largo"
 msgid "Output stream doesn't implement write"
 msgstr "El flujo de salida no implementa la escritura"
 
-#: gio/goutputstream.c:363 gio/goutputstream.c:764
+#: gio/goutputstream.c:363 gio/goutputstream.c:770
 #, c-format
 msgid "Source stream is already closed"
 msgstr "El flujo de origen ya está cerrado"
 
-#: gio/goutputstream.c:646
+#: gio/goutputstream.c:647
 msgid "Too large count value passed to g_output_stream_write_async"
 msgstr ""
 "El valor de conteo pasado a g_output_stream_write_async es demasiado largo"

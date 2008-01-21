@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-01-14 10:53-0500\n"
+"POT-Creation-Date: 2008-01-21 11:37-0500\n"
 "PO-Revision-Date: 2008-01-06 02:22+0200\n"
 "Last-Translator: Ihar Hrachyshka <ihar.hrachyshka@gmail.com>\n"
 "Language-Team: Belarusian Latin <i18n@mova.org>\n"
@@ -1277,12 +1277,12 @@ msgstr ""
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Ličbavuju vartaść '%s' niemahčyma interpretavać jak lahičnuju vartaść."
 
-#: gio/gbufferedinputstream.c:483 gio/ginputstream.c:558
+#: gio/gbufferedinputstream.c:483 gio/ginputstream.c:559
 msgid "Too large count value passed to g_input_stream_read_async"
 msgstr "Funkcyi g_input_stream_read_async pieradadzieny nadta vialiki ličylnik"
 
-#: gio/gbufferedinputstream.c:869 gio/ginputstream.c:888
-#: gio/goutputstream.c:1064
+#: gio/gbufferedinputstream.c:869 gio/ginputstream.c:892
+#: gio/goutputstream.c:1075
 #, c-format
 msgid "Stream is already closed"
 msgstr "Płyń užo začynienaja"
@@ -1359,56 +1359,56 @@ msgstr "pryłada nie zaimplementavała vysoŭvańnia (eject)"
 msgid "drive doesn't implement polling for media"
 msgstr "pryłada nie zaimplementavała apytańnia nośbitaŭ (poll)"
 
-#: gio/gfile.c:731 gio/gfile.c:872 gio/gfile.c:1005 gio/gfile.c:1091
-#: gio/gfile.c:1144 gio/gfile.c:1201 gio/gfile.c:1282 gio/gfile.c:2189
-#: gio/gfile.c:2234 gio/gfile.c:2284 gio/gfile.c:2323 gio/gfile.c:2647
-#: gio/gfile.c:3046 gio/gfile.c:3125 gio/gfile.c:3205 gio/gfile.c:3283
+#: gio/gfile.c:742 gio/gfile.c:930 gio/gfile.c:1063 gio/gfile.c:1217
+#: gio/gfile.c:1270 gio/gfile.c:1327 gio/gfile.c:1408 gio/gfile.c:2363
+#: gio/gfile.c:2408 gio/gfile.c:2458 gio/gfile.c:2497 gio/gfile.c:2821
+#: gio/gfile.c:3220 gio/gfile.c:3299 gio/gfile.c:3379 gio/gfile.c:3457
 #, c-format
 msgid "Operation not supported"
 msgstr "Aperacyja nie padtrymlivajecca"
 
-#: gio/gfile.c:1047 gio/glocalfile.c:895 gio/glocalfile.c:904
+#: gio/gfile.c:1105 gio/glocalfile.c:895 gio/glocalfile.c:904
 #: gio/glocalfile.c:915
 #, c-format
 msgid "Containing mount does not exist"
 msgstr "Źmiaščalnaje mantavańnie nie isnuje"
 
-#: gio/gfile.c:1621
+#: gio/gfile.c:1747
 #, c-format
 msgid "Can't copy over directory"
 msgstr "Niemahčyma skapijavać zamiest katalohu"
 
-#: gio/gfile.c:1681
+#: gio/gfile.c:1807
 #, c-format
 msgid "Can't copy directory over directory"
 msgstr "Niemahčyma skapijavać kataloh zamiest inšaha katalohu"
 
-#: gio/gfile.c:1689
+#: gio/gfile.c:1815
 #, c-format
 msgid "Target file exists"
 msgstr "Metavy fajł isnuje"
 
-#: gio/gfile.c:1707
+#: gio/gfile.c:1833
 #, c-format
 msgid "Can't recursively copy directory"
 msgstr "Niemahčyma rekursiŭna skapijavać kataloh"
 
-#: gio/gfile.c:2274
+#: gio/gfile.c:2448
 #, c-format
 msgid "Invalid symlink value given"
 msgstr "Padadzienaja niapravilnaja vartaść symbalnaj spasyłki"
 
-#: gio/gfile.c:2366
+#: gio/gfile.c:2540
 #, c-format
 msgid "Trash not supported"
 msgstr "Śmietnica nie padtrymlivajacca"
 
-#: gio/gfile.c:2413
+#: gio/gfile.c:2587
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "Nazvy fajłaŭ nia mohuć utrymlivać \"%c\""
 
-#: gio/gfile.c:4068 gio/gvolume.c:318
+#: gio/gfile.c:4291 gio/gvolume.c:318
 msgid "volume doesn't implement mount"
 msgstr "masiŭ nie zaimplementavaŭ mantavańnia (mount)"
 
@@ -1427,23 +1427,23 @@ msgstr "U fajłavaha ličylnika jość važkaja aperacyja"
 msgid "File enumerator is already closed"
 msgstr "Fajłavy ličylnik užo začynieny"
 
-#: gio/gfileinputstream.c:154 gio/gfileinputstream.c:450
-#: gio/gfileoutputstream.c:168 gio/gfileoutputstream.c:570
+#: gio/gfileinputstream.c:154 gio/gfileinputstream.c:421
+#: gio/gfileoutputstream.c:168 gio/gfileoutputstream.c:523
 #, c-format
 msgid "Stream doesn't support query_info"
 msgstr "Płyń nie padtrymlivaje query_info"
 
-#: gio/gfileinputstream.c:365 gio/gfileoutputstream.c:409
+#: gio/gfileinputstream.c:336 gio/gfileoutputstream.c:381
 #, c-format
 msgid "Seek not supported on stream"
 msgstr "Dla płyni nie padtrymlivajecca zruch"
 
-#: gio/gfileinputstream.c:409
+#: gio/gfileinputstream.c:380
 #, c-format
 msgid "Truncate not allowed on input stream"
 msgstr "Dla ŭvachodnaj płyni nie dazvolenaje abcinańnie"
 
-#: gio/gfileoutputstream.c:504
+#: gio/gfileoutputstream.c:457
 #, c-format
 msgid "Truncate not supported on stream"
 msgstr "Dla płyni nie padtrymlivajecca abcinańnie"
@@ -1463,16 +1463,16 @@ msgstr "Uvachodnaja płyń nie zaimplementavała čytańnia (read)"
 msgid "Too large count value passed to g_input_stream_skip"
 msgstr "Funkcyi g_input_stream_skip pieradadzieny nadta vialiki ličylnik"
 
-#: gio/ginputstream.c:681
+#: gio/ginputstream.c:683
 msgid "Too large count value passed to g_input_stream_skip_async"
 msgstr "Funkcyi g_input_stream_skip_async pieradadzieny nadta vialiki ličylnik"
 
-#: gio/ginputstream.c:895 gio/goutputstream.c:1071
+#: gio/ginputstream.c:899 gio/goutputstream.c:1082
 #, c-format
 msgid "Stream has outstanding operation"
 msgstr "Dla płyni jość važkaja aperacyja"
 
-#: gio/glocaldirectorymonitor.c:296
+#: gio/glocaldirectorymonitor.c:297
 #, fuzzy, c-format
 msgid "Unable to find default local directory monitor type"
 msgstr "Niemahčyma znajści najvyšejšy kataloh dziela śmiećcia"
@@ -1501,8 +1501,8 @@ msgstr "Niemahčyma źmianić nazvu dla fajłu, taki fajł užo isnuje"
 
 # glib/gconvert.c:1729
 #: gio/glocalfile.c:966 gio/glocalfile.c:1688 gio/glocalfile.c:1717
-#: gio/glocalfile.c:1849 gio/glocalfileoutputstream.c:451
-#: gio/glocalfileoutputstream.c:494 gio/glocalfileoutputstream.c:886
+#: gio/glocalfile.c:1862 gio/glocalfileoutputstream.c:448
+#: gio/glocalfileoutputstream.c:489 gio/glocalfileoutputstream.c:879
 #, c-format
 msgid "Invalid filename"
 msgstr "Niapravilnaja nazva fajłu"
@@ -1572,35 +1572,35 @@ msgid "Error making symbolic link: %s"
 msgstr "Pamyłka stvareńnia symbalnaj spasyłki: %s"
 
 # glib/gfileutils.c:348
-#: gio/glocalfile.c:1768 gio/glocalfile.c:1853
+#: gio/glocalfile.c:1779 gio/glocalfile.c:1866
 #, c-format
 msgid "Error moving file: %s"
 msgstr "Pamyłka pieranosu fajłu: %s"
 
-#: gio/glocalfile.c:1789
+#: gio/glocalfile.c:1802
 #, c-format
 msgid "Can't move directory over directory"
 msgstr "Niemahčyma pieranieści kataloh zamiest inšaha katalohu"
 
-#: gio/glocalfile.c:1798
+#: gio/glocalfile.c:1811
 #, c-format
 msgid "Target file already exists"
 msgstr "Metavy fajł užo isnuje"
 
-#: gio/glocalfile.c:1811 gio/glocalfileoutputstream.c:740
-#: gio/glocalfileoutputstream.c:754 gio/glocalfileoutputstream.c:769
-#: gio/glocalfileoutputstream.c:785 gio/glocalfileoutputstream.c:799
+#: gio/glocalfile.c:1824 gio/glocalfileoutputstream.c:735
+#: gio/glocalfileoutputstream.c:749 gio/glocalfileoutputstream.c:764
+#: gio/glocalfileoutputstream.c:780 gio/glocalfileoutputstream.c:794
 #, c-format
 msgid "Backup file creation failed"
 msgstr "Niaŭdałaje stvareńnie zapasnoha fajłu"
 
 # glib/gfileutils.c:348
-#: gio/glocalfile.c:1828
+#: gio/glocalfile.c:1841
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Pamyłka vydaleńnia metavaha fajłu: %s"
 
-#: gio/glocalfile.c:1842
+#: gio/glocalfile.c:1855
 #, c-format
 msgid "Move between mounts not supported"
 msgstr "Pieranos pamiž punktami mantavańnia nie padtrymlivajecca"
@@ -1628,7 +1628,7 @@ msgid "Error setting extended attribute '%s': %s"
 msgstr "Pamyłka akreśleńnia pašyranaha atrybutu '%s': %s"
 
 # glib/gfileutils.c:348
-#: gio/glocalfileinfo.c:1392 gio/glocalfileoutputstream.c:630
+#: gio/glocalfileinfo.c:1392 gio/glocalfileoutputstream.c:625
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr "Pamyłka atrymańnia stat() dla fajłu '%s': %s"
@@ -1697,15 +1697,15 @@ msgid "Setting attribute %s not supported"
 msgstr "Akreśleńnie atrybutu %s nie padtrymlivajecca"
 
 # glib/gfileutils.c:348
-#: gio/glocalfileinputstream.c:158 gio/glocalfileoutputstream.c:541
+#: gio/glocalfileinputstream.c:158 gio/glocalfileoutputstream.c:536
 #, c-format
 msgid "Error reading from file: %s"
 msgstr "Pamyłka adčytańnia z fajłu: %s"
 
 # glib/gfileutils.c:348
 #: gio/glocalfileinputstream.c:187 gio/glocalfileinputstream.c:197
-#: gio/glocalfileinputstream.c:301 gio/glocalfileoutputstream.c:351
-#: gio/glocalfileoutputstream.c:815
+#: gio/glocalfileinputstream.c:300 gio/glocalfileoutputstream.c:350
+#: gio/glocalfileoutputstream.c:810
 #, c-format
 msgid "Error seeking in file: %s"
 msgstr "Pamyłka zruchu ŭ fajle: %s"
@@ -1716,13 +1716,13 @@ msgstr "Pamyłka zruchu ŭ fajle: %s"
 msgid "Error closing file: %s"
 msgstr "Pamyłka začynieńnia fajłu: %s"
 
-#: gio/glocalfilemonitor.c:225
+#: gio/glocalfilemonitor.c:224
 #, fuzzy, c-format
 msgid "Unable to find default local file monitor type"
 msgstr "Niemahčyma znajści ci stvaryć kataloh dziela śmiećcia"
 
 # glib/gfileutils.c:348
-#: gio/glocalfileoutputstream.c:166 gio/glocalfileoutputstream.c:560
+#: gio/glocalfileoutputstream.c:166 gio/glocalfileoutputstream.c:555
 #, c-format
 msgid "Error writing to file: %s"
 msgstr "Pamyłka zapisu ŭ fajł: %s"
@@ -1754,45 +1754,45 @@ msgid "Error renaming temporary file: %s"
 msgstr "Pamyłka źmieny nazy časovaha fajłu: %s"
 
 # glib/gfileutils.c:348
-#: gio/glocalfileoutputstream.c:395 gio/glocalfileoutputstream.c:830
+#: gio/glocalfileoutputstream.c:394 gio/glocalfileoutputstream.c:825
 #, c-format
 msgid "Error truncating file: %s"
 msgstr "Pamyłka abcinańnia fajłu: %s"
 
 # glib/gfileutils.c:348
-#: gio/glocalfileoutputstream.c:455 gio/glocalfileoutputstream.c:498
-#: gio/glocalfileoutputstream.c:621 gio/glocalfileoutputstream.c:890
+#: gio/glocalfileoutputstream.c:452 gio/glocalfileoutputstream.c:493
+#: gio/glocalfileoutputstream.c:616 gio/glocalfileoutputstream.c:883
 #, c-format
 msgid "Error opening file '%s': %s"
 msgstr "Pamyłka adčynieńnia fajłu '%s': %s"
 
-#: gio/glocalfileoutputstream.c:642
+#: gio/glocalfileoutputstream.c:637
 #, c-format
 msgid "Target file is a directory"
 msgstr "Metavy fajł źjaŭlajecca kataloham"
 
-#: gio/glocalfileoutputstream.c:647
+#: gio/glocalfileoutputstream.c:642
 #, c-format
 msgid "Target file is not a regular file"
 msgstr "Metavy fajł nia prosty"
 
-#: gio/glocalfileoutputstream.c:659
+#: gio/glocalfileoutputstream.c:654
 #, c-format
 msgid "The file was externally modified"
 msgstr "Fajł byŭ źmienieny zvonku"
 
-#: gio/gmemoryinputstream.c:471 gio/gmemoryoutputstream.c:517
+#: gio/gmemoryinputstream.c:487 gio/gmemoryoutputstream.c:517
 #, c-format
 msgid "Invalid GSeekType supplied"
 msgstr ""
 
 # glib/gconvert.c:1729
-#: gio/gmemoryinputstream.c:481 gio/gmemoryoutputstream.c:527
+#: gio/gmemoryinputstream.c:497 gio/gmemoryoutputstream.c:527
 #, fuzzy, c-format
 msgid "Invalid seek request"
 msgstr "Niapravilnaja nazva fajłu %s"
 
-#: gio/gmemoryinputstream.c:505
+#: gio/gmemoryinputstream.c:521
 #, c-format
 msgid "Cannot truncate GMemoryInputStream"
 msgstr ""
@@ -1834,12 +1834,12 @@ msgstr "Funkcyi g_output_stream_write pieradadzieny nadta vialiki ličylnik"
 msgid "Output stream doesn't implement write"
 msgstr "Vyjściovaja płyń nie zaimplementavała zapisu (write)"
 
-#: gio/goutputstream.c:363 gio/goutputstream.c:764
+#: gio/goutputstream.c:363 gio/goutputstream.c:770
 #, c-format
 msgid "Source stream is already closed"
 msgstr "Kryničnaja płyń užo začynienaja"
 
-#: gio/goutputstream.c:646
+#: gio/goutputstream.c:647
 msgid "Too large count value passed to g_output_stream_write_async"
 msgstr ""
 "Funkcyi g_output_stream_write_async pieradadzieny nadta vialiki ličylnik"

@@ -438,9 +438,6 @@ GFileInputStream
 g_file_input_stream_query_info
 g_file_input_stream_query_info_async
 g_file_input_stream_query_info_finish
-g_file_input_stream_tell
-g_file_input_stream_can_seek
-g_file_input_stream_seek
 <SUBSECTION Standard>
 GFileInputStreamClass
 G_FILE_INPUT_STREAM
@@ -614,11 +611,6 @@ g_file_output_stream_query_info
 g_file_output_stream_query_info_async
 g_file_output_stream_query_info_finish
 g_file_output_stream_get_etag
-g_file_output_stream_tell
-g_file_output_stream_can_seek
-g_file_output_stream_seek
-g_file_output_stream_can_truncate
-g_file_output_stream_truncate
 <SUBSECTION Standard>
 GFileOutputStreamClass
 G_FILE_OUTPUT_STREAM

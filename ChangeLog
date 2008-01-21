@@ -1,8 +1,14 @@
+2008-01-21  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.15.3 ===
+
 2008-01-21  Tor Lillqvist  <tml@novell.com>
 
 	* glib-zip.in: Add the gio DLL to the runtime zipfile.
 
 2008-01-21  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.15.3 ===
 
 	* NEWS: Updates
 

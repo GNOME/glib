@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib GNOME TRUNK\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-01-14 10:53-0500\n"
+"POT-Creation-Date: 2008-01-21 11:37-0500\n"
 "PO-Revision-Date: 2008-01-04 18:33+1030\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <gnomevi-list@lists.sourceforge.net>\n"
@@ -1158,12 +1158,12 @@ msgstr "Không thể giải dịch giá trị « %s » dạng con số nổi."
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Không thể giải dịch giá trị « %s » dạng bun (đúng/sai)."
 
-#: gio/gbufferedinputstream.c:483 gio/ginputstream.c:558
+#: gio/gbufferedinputstream.c:483 gio/ginputstream.c:559
 msgid "Too large count value passed to g_input_stream_read_async"
 msgstr "Giá trị đếm quá lớn được gửi cho hàm « g_input_stream_read_async »"
 
-#: gio/gbufferedinputstream.c:869 gio/ginputstream.c:888
-#: gio/goutputstream.c:1064
+#: gio/gbufferedinputstream.c:869 gio/ginputstream.c:892
+#: gio/goutputstream.c:1075
 #, c-format
 msgid "Stream is already closed"
 msgstr "Luồng đã bị đóng"
@@ -1239,56 +1239,56 @@ msgstr "ổ đĩa không thực hiện chức năng đẩy ra"
 msgid "drive doesn't implement polling for media"
 msgstr "ổ đĩa không thực hiện chức năng thăm dò có phương tiện không"
 
-#: gio/gfile.c:731 gio/gfile.c:872 gio/gfile.c:1005 gio/gfile.c:1091
-#: gio/gfile.c:1144 gio/gfile.c:1201 gio/gfile.c:1282 gio/gfile.c:2189
-#: gio/gfile.c:2234 gio/gfile.c:2284 gio/gfile.c:2323 gio/gfile.c:2647
-#: gio/gfile.c:3046 gio/gfile.c:3125 gio/gfile.c:3205 gio/gfile.c:3283
+#: gio/gfile.c:742 gio/gfile.c:930 gio/gfile.c:1063 gio/gfile.c:1217
+#: gio/gfile.c:1270 gio/gfile.c:1327 gio/gfile.c:1408 gio/gfile.c:2363
+#: gio/gfile.c:2408 gio/gfile.c:2458 gio/gfile.c:2497 gio/gfile.c:2821
+#: gio/gfile.c:3220 gio/gfile.c:3299 gio/gfile.c:3379 gio/gfile.c:3457
 #, c-format
 msgid "Operation not supported"
 msgstr "Thao tác không được hỗ trợ"
 
-#: gio/gfile.c:1047 gio/glocalfile.c:895 gio/glocalfile.c:904
+#: gio/gfile.c:1105 gio/glocalfile.c:895 gio/glocalfile.c:904
 #: gio/glocalfile.c:915
 #, c-format
 msgid "Containing mount does not exist"
 msgstr "Bộ lắp chứa không tồn tại"
 
-#: gio/gfile.c:1621
+#: gio/gfile.c:1747
 #, c-format
 msgid "Can't copy over directory"
 msgstr "Không thể sao chép đè lên thư mục"
 
-#: gio/gfile.c:1681
+#: gio/gfile.c:1807
 #, c-format
 msgid "Can't copy directory over directory"
 msgstr "Không thể sao chép thư mục đè lên thư mục"
 
-#: gio/gfile.c:1689
+#: gio/gfile.c:1815
 #, c-format
 msgid "Target file exists"
 msgstr "Tập tin đích đã có"
 
-#: gio/gfile.c:1707
+#: gio/gfile.c:1833
 #, c-format
 msgid "Can't recursively copy directory"
 msgstr "Không thể sao chép đệ quy thư mục"
 
-#: gio/gfile.c:2274
+#: gio/gfile.c:2448
 #, c-format
 msgid "Invalid symlink value given"
 msgstr "Đưa ra giá trị liên kết tượng trưng không hợp lệ"
 
-#: gio/gfile.c:2366
+#: gio/gfile.c:2540
 #, c-format
 msgid "Trash not supported"
 msgstr "Thùng rác không được hỗ trợ"
 
-#: gio/gfile.c:2413
+#: gio/gfile.c:2587
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "Tên tập tin không thể chứa « %c »"
 
-#: gio/gfile.c:4068 gio/gvolume.c:318
+#: gio/gfile.c:4291 gio/gvolume.c:318
 msgid "volume doesn't implement mount"
 msgstr "hàm volume (khối tin) không thực hiện chức năng mount (lắp)"
 
@@ -1307,23 +1307,23 @@ msgstr "Bộ đếm tập tin có thao tác còn chạy"
 msgid "File enumerator is already closed"
 msgstr "Bộ đếm tập tin đã bị đóng"
 
-#: gio/gfileinputstream.c:154 gio/gfileinputstream.c:450
-#: gio/gfileoutputstream.c:168 gio/gfileoutputstream.c:570
+#: gio/gfileinputstream.c:154 gio/gfileinputstream.c:421
+#: gio/gfileoutputstream.c:168 gio/gfileoutputstream.c:523
 #, c-format
 msgid "Stream doesn't support query_info"
 msgstr "Luồng không hỗ trợ hàm « query_info »"
 
-#: gio/gfileinputstream.c:365 gio/gfileoutputstream.c:409
+#: gio/gfileinputstream.c:336 gio/gfileoutputstream.c:381
 #, c-format
 msgid "Seek not supported on stream"
 msgstr "Chức năng seek (tìm nơi) không được hỗ trợ trên luồng"
 
-#: gio/gfileinputstream.c:409
+#: gio/gfileinputstream.c:380
 #, c-format
 msgid "Truncate not allowed on input stream"
 msgstr "Không cho phép cắt ngắn luồng nhập vào"
 
-#: gio/gfileoutputstream.c:504
+#: gio/gfileoutputstream.c:457
 #, c-format
 msgid "Truncate not supported on stream"
 msgstr "hông cho phép cắt ngắn luồng"
@@ -1343,16 +1343,16 @@ msgstr "Luồng nhập vào không thực hiện chức năng đọc"
 msgid "Too large count value passed to g_input_stream_skip"
 msgstr "Giá trị đếm quá lớn được gửi cho hàm « g_input_stream_skip »"
 
-#: gio/ginputstream.c:681
+#: gio/ginputstream.c:683
 msgid "Too large count value passed to g_input_stream_skip_async"
 msgstr "Giá trị đếm quá lớn được gửi cho hàm « g_input_stream_skip_async »"
 
-#: gio/ginputstream.c:895 gio/goutputstream.c:1071
+#: gio/ginputstream.c:899 gio/goutputstream.c:1082
 #, c-format
 msgid "Stream has outstanding operation"
 msgstr "Luồng có thao tác còn chạy"
 
-#: gio/glocaldirectorymonitor.c:296
+#: gio/glocaldirectorymonitor.c:297
 #, fuzzy, c-format
 msgid "Unable to find default local directory monitor type"
 msgstr "Không tìm thấy thư mục cấp đầu cho thùng rác"
@@ -1378,8 +1378,8 @@ msgid "Can't rename file, filename already exist"
 msgstr "Không thể thay đổi tên của tập tin, vì tên tập tin đã có"
 
 #: gio/glocalfile.c:966 gio/glocalfile.c:1688 gio/glocalfile.c:1717
-#: gio/glocalfile.c:1849 gio/glocalfileoutputstream.c:451
-#: gio/glocalfileoutputstream.c:494 gio/glocalfileoutputstream.c:886
+#: gio/glocalfile.c:1862 gio/glocalfileoutputstream.c:448
+#: gio/glocalfileoutputstream.c:489 gio/glocalfileoutputstream.c:879
 #, c-format
 msgid "Invalid filename"
 msgstr "Tên tập tin không hợp lệ"
@@ -1439,34 +1439,34 @@ msgstr "Không thể chuyển tập tin vào thùng rác: %s"
 msgid "Error making symbolic link: %s"
 msgstr "Gặp lỗi khi tạo liên kết tượng trưng: %s"
 
-#: gio/glocalfile.c:1768 gio/glocalfile.c:1853
+#: gio/glocalfile.c:1779 gio/glocalfile.c:1866
 #, c-format
 msgid "Error moving file: %s"
 msgstr "Gặp lỗi khi di chuyển tập tin: %s"
 
-#: gio/glocalfile.c:1789
+#: gio/glocalfile.c:1802
 #, c-format
 msgid "Can't move directory over directory"
 msgstr "Không thể di chuyển thư mục đè lên thư mục"
 
-#: gio/glocalfile.c:1798
+#: gio/glocalfile.c:1811
 #, c-format
 msgid "Target file already exists"
 msgstr "Tập tin đích đã có"
 
-#: gio/glocalfile.c:1811 gio/glocalfileoutputstream.c:740
-#: gio/glocalfileoutputstream.c:754 gio/glocalfileoutputstream.c:769
-#: gio/glocalfileoutputstream.c:785 gio/glocalfileoutputstream.c:799
+#: gio/glocalfile.c:1824 gio/glocalfileoutputstream.c:735
+#: gio/glocalfileoutputstream.c:749 gio/glocalfileoutputstream.c:764
+#: gio/glocalfileoutputstream.c:780 gio/glocalfileoutputstream.c:794
 #, c-format
 msgid "Backup file creation failed"
 msgstr "Lỗi tạo tập tin sao lưu"
 
-#: gio/glocalfile.c:1828
+#: gio/glocalfile.c:1841
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Gặp lỗi khi gỡ bỏ tập tin đích: %s"
 
-#: gio/glocalfile.c:1842
+#: gio/glocalfile.c:1855
 #, c-format
 msgid "Move between mounts not supported"
 msgstr "Không hỗ trợ chức năng di chuyển giữa các bộ lắp"
@@ -1491,7 +1491,7 @@ msgstr "Tên thuộc tính đã mở rộng không hợp lệ"
 msgid "Error setting extended attribute '%s': %s"
 msgstr "Gặp lỗi khi đặt thuộc tính đã mở rộng « %s »: %s"
 
-#: gio/glocalfileinfo.c:1392 gio/glocalfileoutputstream.c:630
+#: gio/glocalfileinfo.c:1392 gio/glocalfileoutputstream.c:625
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr "Gặp lỗi khi lấy trạng thái về tập tin « %s »: %s"
@@ -1553,14 +1553,14 @@ msgstr ""
 msgid "Setting attribute %s not supported"
 msgstr "Không hỗ trợ chức năng đặt thuộc tính %s"
 
-#: gio/glocalfileinputstream.c:158 gio/glocalfileoutputstream.c:541
+#: gio/glocalfileinputstream.c:158 gio/glocalfileoutputstream.c:536
 #, c-format
 msgid "Error reading from file: %s"
 msgstr "Gặp lỗi khi đọc từ tập tin: %s"
 
 #: gio/glocalfileinputstream.c:187 gio/glocalfileinputstream.c:197
-#: gio/glocalfileinputstream.c:301 gio/glocalfileoutputstream.c:351
-#: gio/glocalfileoutputstream.c:815
+#: gio/glocalfileinputstream.c:300 gio/glocalfileoutputstream.c:350
+#: gio/glocalfileoutputstream.c:810
 #, c-format
 msgid "Error seeking in file: %s"
 msgstr "Gặp lỗi khi tìm nơi trong tập tin: %s"
@@ -1570,12 +1570,12 @@ msgstr "Gặp lỗi khi tìm nơi trong tập tin: %s"
 msgid "Error closing file: %s"
 msgstr "Gặp lỗi khi đóng tập tin: %s"
 
-#: gio/glocalfilemonitor.c:225
+#: gio/glocalfilemonitor.c:224
 #, fuzzy, c-format
 msgid "Unable to find default local file monitor type"
 msgstr "Không tìm thấy hay không thể tạo thư mục thùng rác"
 
-#: gio/glocalfileoutputstream.c:166 gio/glocalfileoutputstream.c:560
+#: gio/glocalfileoutputstream.c:166 gio/glocalfileoutputstream.c:555
 #, c-format
 msgid "Error writing to file: %s"
 msgstr "Gặp lỗi khi ghi vào tập tin: %s"
@@ -1600,43 +1600,43 @@ msgstr "Gặp lỗi khi tạo bản sao lưu : %s"
 msgid "Error renaming temporary file: %s"
 msgstr "Gặp lỗi khi thay đổi tên của tập tin tạm thời: %s"
 
-#: gio/glocalfileoutputstream.c:395 gio/glocalfileoutputstream.c:830
+#: gio/glocalfileoutputstream.c:394 gio/glocalfileoutputstream.c:825
 #, c-format
 msgid "Error truncating file: %s"
 msgstr "Gặp lỗi khi cắt ngắn tập tin: %s"
 
-#: gio/glocalfileoutputstream.c:455 gio/glocalfileoutputstream.c:498
-#: gio/glocalfileoutputstream.c:621 gio/glocalfileoutputstream.c:890
+#: gio/glocalfileoutputstream.c:452 gio/glocalfileoutputstream.c:493
+#: gio/glocalfileoutputstream.c:616 gio/glocalfileoutputstream.c:883
 #, c-format
 msgid "Error opening file '%s': %s"
 msgstr "Gặp lỗi khi mở tập tin « %s »: %s"
 
-#: gio/glocalfileoutputstream.c:642
+#: gio/glocalfileoutputstream.c:637
 #, c-format
 msgid "Target file is a directory"
 msgstr "Tập tin đích là một thư mục"
 
-#: gio/glocalfileoutputstream.c:647
+#: gio/glocalfileoutputstream.c:642
 #, c-format
 msgid "Target file is not a regular file"
 msgstr "Tập tin đích không phải là một tập tin bình thường"
 
-#: gio/glocalfileoutputstream.c:659
+#: gio/glocalfileoutputstream.c:654
 #, c-format
 msgid "The file was externally modified"
 msgstr "Tập tin đã bị sửa đổi bên ngoài"
 
-#: gio/gmemoryinputstream.c:471 gio/gmemoryoutputstream.c:517
+#: gio/gmemoryinputstream.c:487 gio/gmemoryoutputstream.c:517
 #, c-format
 msgid "Invalid GSeekType supplied"
 msgstr ""
 
-#: gio/gmemoryinputstream.c:481 gio/gmemoryoutputstream.c:527
+#: gio/gmemoryinputstream.c:497 gio/gmemoryoutputstream.c:527
 #, fuzzy, c-format
 msgid "Invalid seek request"
 msgstr "Tên tập tin không hợp lệ: %s"
 
-#: gio/gmemoryinputstream.c:505
+#: gio/gmemoryinputstream.c:521
 #, c-format
 msgid "Cannot truncate GMemoryInputStream"
 msgstr ""
@@ -1678,12 +1678,12 @@ msgstr "Giá trị đếm quá lớn được gửi cho hàm « g_output_stream_
 msgid "Output stream doesn't implement write"
 msgstr "Luồng xuất không thực hiện hàm write (ghi)"
 
-#: gio/goutputstream.c:363 gio/goutputstream.c:764
+#: gio/goutputstream.c:363 gio/goutputstream.c:770
 #, c-format
 msgid "Source stream is already closed"
 msgstr "Luồng nguồn đã bị đóng"
 
-#: gio/goutputstream.c:646
+#: gio/goutputstream.c:647
 msgid "Too large count value passed to g_output_stream_write_async"
 msgstr "Giá trị đếm quá lớn được gửi cho hàm « g_output_stream_write_async »"
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-01-14 10:53-0500\n"
+"POT-Creation-Date: 2008-01-21 11:37-0500\n"
 "PO-Revision-Date: 2008-01-12 23:08+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: GNOME Korea <gnome-kr-hackers@lists.kldp.net>\n"
@@ -1150,12 +1150,12 @@ msgstr "값 '%s'을(를) 단정도 실수로 해석할 수 없습니다."
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "값 '%s'을(를) 불리언 값으로 해석할 수 없습니다."
 
-#: gio/gbufferedinputstream.c:483 gio/ginputstream.c:558
+#: gio/gbufferedinputstream.c:483 gio/ginputstream.c:559
 msgid "Too large count value passed to g_input_stream_read_async"
 msgstr "g_input_stream_read_async에 카운트 값이 너무 큽니다"
 
-#: gio/gbufferedinputstream.c:869 gio/ginputstream.c:888
-#: gio/goutputstream.c:1064
+#: gio/gbufferedinputstream.c:869 gio/ginputstream.c:892
+#: gio/goutputstream.c:1075
 #, c-format
 msgid "Stream is already closed"
 msgstr "스트림을 이미 닫았습니다"
@@ -1231,56 +1231,56 @@ msgstr "드라이브가 eject를 구현하지 않았습니다"
 msgid "drive doesn't implement polling for media"
 msgstr "드라이브가 미디어의 폴링을 구현하지 않았습니다"
 
-#: gio/gfile.c:731 gio/gfile.c:872 gio/gfile.c:1005 gio/gfile.c:1091
-#: gio/gfile.c:1144 gio/gfile.c:1201 gio/gfile.c:1282 gio/gfile.c:2189
-#: gio/gfile.c:2234 gio/gfile.c:2284 gio/gfile.c:2323 gio/gfile.c:2647
-#: gio/gfile.c:3046 gio/gfile.c:3125 gio/gfile.c:3205 gio/gfile.c:3283
+#: gio/gfile.c:742 gio/gfile.c:930 gio/gfile.c:1063 gio/gfile.c:1217
+#: gio/gfile.c:1270 gio/gfile.c:1327 gio/gfile.c:1408 gio/gfile.c:2363
+#: gio/gfile.c:2408 gio/gfile.c:2458 gio/gfile.c:2497 gio/gfile.c:2821
+#: gio/gfile.c:3220 gio/gfile.c:3299 gio/gfile.c:3379 gio/gfile.c:3457
 #, c-format
 msgid "Operation not supported"
 msgstr "동작을 지원하지 않습니다"
 
-#: gio/gfile.c:1047 gio/glocalfile.c:895 gio/glocalfile.c:904
+#: gio/gfile.c:1105 gio/glocalfile.c:895 gio/glocalfile.c:904
 #: gio/glocalfile.c:915
 #, c-format
 msgid "Containing mount does not exist"
 msgstr "들어 있는 마운트가 없습니다"
 
-#: gio/gfile.c:1621
+#: gio/gfile.c:1747
 #, c-format
 msgid "Can't copy over directory"
 msgstr "디렉토리를 덮어 써서 복사할 수 없습니다"
 
-#: gio/gfile.c:1681
+#: gio/gfile.c:1807
 #, c-format
 msgid "Can't copy directory over directory"
 msgstr "디렉토리를 덮어 써서 디렉토리를 복사할 수 없습니다"
 
-#: gio/gfile.c:1689
+#: gio/gfile.c:1815
 #, c-format
 msgid "Target file exists"
 msgstr "대상 파일이 있습니다"
 
-#: gio/gfile.c:1707
+#: gio/gfile.c:1833
 #, c-format
 msgid "Can't recursively copy directory"
 msgstr "디렉토리를 재귀적으로 복사할 수 없습니다"
 
-#: gio/gfile.c:2274
+#: gio/gfile.c:2448
 #, c-format
 msgid "Invalid symlink value given"
 msgstr "잘못된 심볼릭 링크 값이 주어졌습니다"
 
-#: gio/gfile.c:2366
+#: gio/gfile.c:2540
 #, c-format
 msgid "Trash not supported"
 msgstr "휴지통을 지원하지 않습니다"
 
-#: gio/gfile.c:2413
+#: gio/gfile.c:2587
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "파일 이름에 '%c' 문자가 들어갈 수 없습니다"
 
-#: gio/gfile.c:4068 gio/gvolume.c:318
+#: gio/gfile.c:4291 gio/gvolume.c:318
 msgid "volume doesn't implement mount"
 msgstr "볼륨이 mount를 구현하지 않았습니다"
 
@@ -1299,23 +1299,23 @@ msgstr "파일 이뉴머레이터에 진행 중인 동작이 있습니다"
 msgid "File enumerator is already closed"
 msgstr "파일 이뉴머레이터를 이미 닫았습니다"
 
-#: gio/gfileinputstream.c:154 gio/gfileinputstream.c:450
-#: gio/gfileoutputstream.c:168 gio/gfileoutputstream.c:570
+#: gio/gfileinputstream.c:154 gio/gfileinputstream.c:421
+#: gio/gfileoutputstream.c:168 gio/gfileoutputstream.c:523
 #, c-format
 msgid "Stream doesn't support query_info"
 msgstr "스트림이 query_info를 지원하지 않습니다"
 
-#: gio/gfileinputstream.c:365 gio/gfileoutputstream.c:409
+#: gio/gfileinputstream.c:336 gio/gfileoutputstream.c:381
 #, c-format
 msgid "Seek not supported on stream"
 msgstr "스트림에서 seek를 지원하지 않습니다"
 
-#: gio/gfileinputstream.c:409
+#: gio/gfileinputstream.c:380
 #, c-format
 msgid "Truncate not allowed on input stream"
 msgstr "입력 스트림이 truncate를 허용하지 않습니다"
 
-#: gio/gfileoutputstream.c:504
+#: gio/gfileoutputstream.c:457
 #, c-format
 msgid "Truncate not supported on stream"
 msgstr "스트림에서 truncate를 지원하지 않습니다"
@@ -1335,16 +1335,16 @@ msgstr "입력 스트림이 read를 구현하지 않았습니다"
 msgid "Too large count value passed to g_input_stream_skip"
 msgstr "g_input_stream_skip에 카운트 값이 너무 큽니다"
 
-#: gio/ginputstream.c:681
+#: gio/ginputstream.c:683
 msgid "Too large count value passed to g_input_stream_skip_async"
 msgstr "g_input_stream_skip_async에 카운트 값이 너무 큽니다"
 
-#: gio/ginputstream.c:895 gio/goutputstream.c:1071
+#: gio/ginputstream.c:899 gio/goutputstream.c:1082
 #, c-format
 msgid "Stream has outstanding operation"
 msgstr "스트림에 진행 중인 동작이 있습니다"
 
-#: gio/glocaldirectorymonitor.c:296
+#: gio/glocaldirectorymonitor.c:297
 #, fuzzy, c-format
 msgid "Unable to find default local directory monitor type"
 msgstr "휴지통의 상위 디렉토리를 찾을 수 없습니다"
@@ -1370,8 +1370,8 @@ msgid "Can't rename file, filename already exist"
 msgstr "파일 이름을 바꿀 수 없습니다. 파일이 이미 있습니다"
 
 #: gio/glocalfile.c:966 gio/glocalfile.c:1688 gio/glocalfile.c:1717
-#: gio/glocalfile.c:1849 gio/glocalfileoutputstream.c:451
-#: gio/glocalfileoutputstream.c:494 gio/glocalfileoutputstream.c:886
+#: gio/glocalfile.c:1862 gio/glocalfileoutputstream.c:448
+#: gio/glocalfileoutputstream.c:489 gio/glocalfileoutputstream.c:879
 #, c-format
 msgid "Invalid filename"
 msgstr "잘못된 파일 이름"
@@ -1431,34 +1431,34 @@ msgstr "파일을 버릴 수 없습니다: %s"
 msgid "Error making symbolic link: %s"
 msgstr "심볼릭 링크를 만드는 데 오류: %s"
 
-#: gio/glocalfile.c:1768 gio/glocalfile.c:1853
+#: gio/glocalfile.c:1779 gio/glocalfile.c:1866
 #, c-format
 msgid "Error moving file: %s"
 msgstr "파일 옮기는 데 오류: %s"
 
-#: gio/glocalfile.c:1789
+#: gio/glocalfile.c:1802
 #, c-format
 msgid "Can't move directory over directory"
 msgstr "디렉토리를 덮어 써서 디렉토리를 옮길 수 없습니다"
 
-#: gio/glocalfile.c:1798
+#: gio/glocalfile.c:1811
 #, c-format
 msgid "Target file already exists"
 msgstr "대상 파일이 이미 있습니다"
 
-#: gio/glocalfile.c:1811 gio/glocalfileoutputstream.c:740
-#: gio/glocalfileoutputstream.c:754 gio/glocalfileoutputstream.c:769
-#: gio/glocalfileoutputstream.c:785 gio/glocalfileoutputstream.c:799
+#: gio/glocalfile.c:1824 gio/glocalfileoutputstream.c:735
+#: gio/glocalfileoutputstream.c:749 gio/glocalfileoutputstream.c:764
+#: gio/glocalfileoutputstream.c:780 gio/glocalfileoutputstream.c:794
 #, c-format
 msgid "Backup file creation failed"
 msgstr "백업 파일 만들기가 실패했습니다"
 
-#: gio/glocalfile.c:1828
+#: gio/glocalfile.c:1841
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "대상 파일을 지우는 데 오류: %s"
 
-#: gio/glocalfile.c:1842
+#: gio/glocalfile.c:1855
 #, c-format
 msgid "Move between mounts not supported"
 msgstr "다른 마운트 사이에 옮기기는 지원하지 않습니다"
@@ -1483,7 +1483,7 @@ msgstr "잘못된 확장 에트리뷰트 이름"
 msgid "Error setting extended attribute '%s': %s"
 msgstr "확장 애트리뷰트 '%s' 설정 중 오류: %s"
 
-#: gio/glocalfileinfo.c:1392 gio/glocalfileoutputstream.c:630
+#: gio/glocalfileinfo.c:1392 gio/glocalfileoutputstream.c:625
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr "'%s' 파일의 정보를 읽는 중 오류: %s"
@@ -1543,14 +1543,14 @@ msgstr "심볼릭 링크 설정 중 오류: 파일이 심볼릭 링크가 아닙
 msgid "Setting attribute %s not supported"
 msgstr "%s 애트리뷰트 설정은 지원하지 않습니다"
 
-#: gio/glocalfileinputstream.c:158 gio/glocalfileoutputstream.c:541
+#: gio/glocalfileinputstream.c:158 gio/glocalfileoutputstream.c:536
 #, c-format
 msgid "Error reading from file: %s"
 msgstr "파일을 읽는 중 오류: %s"
 
 #: gio/glocalfileinputstream.c:187 gio/glocalfileinputstream.c:197
-#: gio/glocalfileinputstream.c:301 gio/glocalfileoutputstream.c:351
-#: gio/glocalfileoutputstream.c:815
+#: gio/glocalfileinputstream.c:300 gio/glocalfileoutputstream.c:350
+#: gio/glocalfileoutputstream.c:810
 #, c-format
 msgid "Error seeking in file: %s"
 msgstr "파일에서 seek하는 중 오류: %s"
@@ -1560,12 +1560,12 @@ msgstr "파일에서 seek하는 중 오류: %s"
 msgid "Error closing file: %s"
 msgstr "파일을 닫는 중 오류: %s"
 
-#: gio/glocalfilemonitor.c:225
+#: gio/glocalfilemonitor.c:224
 #, fuzzy, c-format
 msgid "Unable to find default local file monitor type"
 msgstr "휴지통 디렉토리를 찾을 수 없거나 만들 수 없습니다"
 
-#: gio/glocalfileoutputstream.c:166 gio/glocalfileoutputstream.c:560
+#: gio/glocalfileoutputstream.c:166 gio/glocalfileoutputstream.c:555
 #, c-format
 msgid "Error writing to file: %s"
 msgstr "파일에 쓰는 중 오류: %s"
@@ -1590,43 +1590,43 @@ msgstr "백업 사본을 만드는 중 오류: %s"
 msgid "Error renaming temporary file: %s"
 msgstr "임시 파일의 이름을 바꾸는 오류: %s"
 
-#: gio/glocalfileoutputstream.c:395 gio/glocalfileoutputstream.c:830
+#: gio/glocalfileoutputstream.c:394 gio/glocalfileoutputstream.c:825
 #, c-format
 msgid "Error truncating file: %s"
 msgstr "파일을 자르는 중 오류: %s"
 
-#: gio/glocalfileoutputstream.c:455 gio/glocalfileoutputstream.c:498
-#: gio/glocalfileoutputstream.c:621 gio/glocalfileoutputstream.c:890
+#: gio/glocalfileoutputstream.c:452 gio/glocalfileoutputstream.c:493
+#: gio/glocalfileoutputstream.c:616 gio/glocalfileoutputstream.c:883
 #, c-format
 msgid "Error opening file '%s': %s"
 msgstr "'%s' 파일을 여는 중 오류: %s"
 
-#: gio/glocalfileoutputstream.c:642
+#: gio/glocalfileoutputstream.c:637
 #, c-format
 msgid "Target file is a directory"
 msgstr "대상 파일이 디렉토리입니다"
 
-#: gio/glocalfileoutputstream.c:647
+#: gio/glocalfileoutputstream.c:642
 #, c-format
 msgid "Target file is not a regular file"
 msgstr "대상 파일이 일반 파일이 아닙니다"
 
-#: gio/glocalfileoutputstream.c:659
+#: gio/glocalfileoutputstream.c:654
 #, c-format
 msgid "The file was externally modified"
 msgstr "파일이 외부에서 바뀌었습니다"
 
-#: gio/gmemoryinputstream.c:471 gio/gmemoryoutputstream.c:517
+#: gio/gmemoryinputstream.c:487 gio/gmemoryoutputstream.c:517
 #, c-format
 msgid "Invalid GSeekType supplied"
 msgstr "잘못된 GSeekType이 주어졌습니다"
 
-#: gio/gmemoryinputstream.c:481 gio/gmemoryoutputstream.c:527
+#: gio/gmemoryinputstream.c:497 gio/gmemoryoutputstream.c:527
 #, c-format
 msgid "Invalid seek request"
 msgstr "잘못된 seek 요청"
 
-#: gio/gmemoryinputstream.c:505
+#: gio/gmemoryinputstream.c:521
 #, c-format
 msgid "Cannot truncate GMemoryInputStream"
 msgstr "GMemoryInputStream은 자를 수 없습니다"
@@ -1668,12 +1668,12 @@ msgstr "g_output_stream_write에 카운트 값이 너무 큽니다"
 msgid "Output stream doesn't implement write"
 msgstr "출력 스트림이 write를 구현하지 않았습니다"
 
-#: gio/goutputstream.c:363 gio/goutputstream.c:764
+#: gio/goutputstream.c:363 gio/goutputstream.c:770
 #, c-format
 msgid "Source stream is already closed"
 msgstr "원본 스트림을 이미 닫았습니다"
 
-#: gio/goutputstream.c:646
+#: gio/goutputstream.c:647
 msgid "Too large count value passed to g_output_stream_write_async"
 msgstr "g_output_stream_write_async에 카운트 값이 너무 큽니다"
 
