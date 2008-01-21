@@ -191,8 +191,8 @@ g_file_enumerator_next_file (GFileEnumerator *enumerator,
  * enumerator return %G_IO_ERROR_CLOSED on all calls.
  *
  * This will be automatically called when the last reference
- * is dropped, but you might want to call make sure resources
- * are released as early as possible.
+ * is dropped, but you might want to call this function to make 
+ * sure resources are released as early as possible.
  *
  * Return value: #TRUE on success or #FALSE on error.
  **/

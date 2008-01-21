@@ -116,7 +116,7 @@ g_file_input_stream_init (GFileInputStream *stream)
  * @error: a #GError location to store the error occuring, or %NULL to 
  * ignore.
  *
- * Queries a file input stream the given @attributes.his function blocks 
+ * Queries a file input stream the given @attributes. This function blocks 
  * while querying the stream. For the asynchronous (non-blocking) version 
  * of this function, see g_file_input_stream_query_info_async(). While the 
  * stream is blocked, the stream will set the pending flag internally, and 
@@ -184,8 +184,13 @@ async_ready_callback_wrapper (GObject      *source_object,
  * @callback: callback to call when the request is satisfied
  * @user_data: the data to pass to callback function
  * 
- * Queries the stream information asynchronously. For the synchronous 
- * version of this function, see g_file_input_stream_query_info(). 
+ * Queries the stream information asynchronously.
+ * When the operation is finished @callback will be called. 
+ * You can then call g_file_input_stream_query_info_finish() 
+ * to get the result of the operation.
+ *
+ * For the synchronous version of this function, 
+ * see g_file_input_stream_query_info(). 
  * 
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation

@@ -405,8 +405,8 @@ g_input_stream_real_skip (GInputStream  *stream,
  * Closing a stream multiple times will not return an error.
  *
  * Streams will be automatically closed when the last reference
- * is dropped, but you might want to call make sure resources
- * are released as early as possible.
+ * is dropped, but you might want to call this function to make sure 
+ * resources are released as early as possible.
  *
  * Some streams might keep the backing store of the stream (e.g. a file descriptor)
  * open after the stream is closed. See the documentation for the individual
@@ -500,8 +500,9 @@ async_ready_close_callback_wrapper (GObject      *source_object,
  * @user_data: the data to pass to callback function
  *
  * Request an asynchronous read of @count bytes from the stream into the buffer
- * starting at @buffer. When the operation is finished @callback will be called,
- * giving the results.
+ * starting at @buffer. When the operation is finished @callback will be called. 
+ * You can then call g_input_stream_read_finish() to get the result of the 
+ * operation.
  *
  * During an async request no other sync and async calls are allowed, and will
  * result in %G_IO_ERROR_PENDING errors. 
@@ -624,8 +625,9 @@ g_input_stream_read_finish (GInputStream  *stream,
  * @user_data: the data to pass to callback function
  *
  * Request an asynchronous skip of @count bytes from the stream into the buffer
- * starting at @buffer. When the operation is finished @callback will be called,
- * giving the results.
+ * starting at @buffer. When the operation is finished @callback will be called. 
+ * You can then call g_input_stream_skip_finish() to get the result of the 
+ * operation.
  *
  * During an async request no other sync and async calls are allowed, and will
  * result in %G_IO_ERROR_PENDING errors. 
@@ -746,7 +748,9 @@ g_input_stream_skip_finish (GInputStream  *stream,
  * @user_data: the data to pass to callback function
  *
  * Requests an asynchronous closes of the stream, releasing resources related to it.
- * When the operation is finished @callback will be called, giving the results.
+ * When the operation is finished @callback will be called. 
+ * You can then call g_input_stream_close_finish() to get the result of the 
+ * operation.
  *
  * For behaviour details see g_input_stream_close().
  *

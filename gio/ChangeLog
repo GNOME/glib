@@ -1,3 +1,11 @@
+2008-01-21  Murray Cumming,,,  <murrayc@murrayc.com>
+
+	* gfileenumerator.c:
+	* gfileinputstream.c:
+	* ginputstream.c:
+	* goutputstream.c: Documentation: Fixed minor typos 
+	and added more mentions of specific _finish() functions.
+
 2008-01-21  Alexander Larsson  <alexl@redhat.com>
 
         * inotify/Makefile.am:

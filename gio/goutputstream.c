@@ -342,7 +342,7 @@ g_output_stream_flush (GOutputStream  *stream,
  *
  * Splices an input stream into an output stream.
  *
- * Returns: a #gssize containig the size of the data spliced.
+ * Returns: a #gssize containing the size of the data spliced.
  **/
 gssize
 g_output_stream_splice (GOutputStream             *stream,
@@ -474,8 +474,8 @@ g_output_stream_real_splice (GOutputStream             *stream,
  * stream.
  *
  * Streams will be automatically closed when the last reference
- * is dropped, but you might want to call make sure resources
- * are released as early as possible.
+ * is dropped, but you might want to call this function to make sure 
+ * resources are released as early as possible.
  *
  * Some streams might keep the backing store of the stream (e.g. a file descriptor)
  * open after the stream is closed. See the documentation for the individual
@@ -585,8 +585,9 @@ async_ready_close_callback_wrapper (GObject      *source_object,
  * @user_data: the data to pass to callback function
  *
  * Request an asynchronous write of @count bytes from @buffer into 
- * the stream. When the operation is finished @callback will be called, 
- * giving the results.
+ * the stream. When the operation is finished @callback will be called.
+ * You can then call g_output_stream_write_finish() to get the result of the 
+ * operation.
  *
  * During an async request no other sync and async calls are allowed, 
  * and will result in %G_IO_ERROR_PENDING errors. 
@@ -737,7 +738,12 @@ async_ready_splice_callback_wrapper (GObject      *source_object,
  * @user_data: user data passed to @callback.
  * 
  * Splices a stream asynchronously.
- * 
+ * When the operation is finished @callback will be called.
+ * You can then call g_output_stream_splice_finish() to get the 
+ * result of the operation.
+ *
+ * For the synchronous, blocking version of this function, see 
+ * g_output_stream_splice().
  **/
 void
 g_output_stream_splice_async (GOutputStream            *stream,
@@ -829,7 +835,11 @@ g_output_stream_splice_finish (GOutputStream  *stream,
  * @user_data: the data to pass to callback function
  * 
  * Flushes a stream asynchronously.
- * 
+ * For behaviour details see g_output_stream_flush().
+ *
+ * When the operation is finished @callback will be 
+ * called. You can then call g_output_stream_flush_finish() to get the 
+ * result of the operation.
  **/
 void
 g_output_stream_flush_async (GOutputStream       *stream,
@@ -922,7 +932,8 @@ g_output_stream_flush_finish (GOutputStream  *stream,
  *
  * Requests an asynchronous close of the stream, releasing resources 
  * related to it. When the operation is finished @callback will be 
- * called, giving the results.
+ * called. You can then call g_output_stream_close_finish() to get 
+ * the result of the operation.
  *
  * For behaviour details see g_output_stream_close().
  *
