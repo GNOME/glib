@@ -1,3 +1,33 @@
+Overview of Changes from GLib 2.15.2 to GLib 2.15.3
+===================================================
+
+* GChecksum:
+ - g_checksum_update can accept nul-terminated strings
+ - The MD5 implementation works correctly on buffers 
+   that are longer than 64 bytes
+
+* GIO:
+ - Don't include a copy of the inotify headers, rely on system headers
+ - g_file_find_enclosing_mount has an async variant now
+ - Reduntant seek API on file streams has been removed
+
+* Bugs fixed:
+  508602 gmemory{in|out}putstream.c: unknown pointer size
+  508771 There is no g_file_test/exists() for GFile
+  508773 g_uri_escape_string() documentation unclear.
+  509465 AM_PATH_GLIB_2_0 doesn't support gio
+  509626 async functions: Document allowed NULL callback?
+  509990 GSeekable documentation unclear
+  510448 No inotify support on ARM or SH5
+  510855 g_checksum_update(): Take -1 for length. 
+
+* Updated translations:
+  Basque (eu)
+  Marathi (mr)
+  Swedish (sv)
+  Ukrainian (uk)
+
+
 Overview of Changes from GLib 2.15.1 to GLib 2.15.2
 ===================================================
 
