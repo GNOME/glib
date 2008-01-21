@@ -19,6 +19,7 @@ zip $ZIP -@ <<EOF
 bin/gspawn-win32-helper.exe
 bin/gspawn-win32-helper-console.exe
 bin/libglib-2.0-@LT_CURRENT_MINUS_AGE@.dll
+bin/libgio-2.0-@LT_CURRENT_MINUS_AGE@.dll
 bin/libgmodule-2.0-@LT_CURRENT_MINUS_AGE@.dll
 bin/libgobject-2.0-@LT_CURRENT_MINUS_AGE@.dll
 bin/libgthread-2.0-@LT_CURRENT_MINUS_AGE@.dll
