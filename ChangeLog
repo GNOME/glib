@@ -1,3 +1,8 @@
+2008-01-21  Alexander Larsson  <alexl@redhat.com>
+
+        * configure.in:
+	Only check for sys/inotify.h (see gio/ChangeLog) 
+
 2008-01-18 16:51:23  Tim Janik  <timj@imendio.com>
 
 	* glib/gutils.h: don't define __GNUC_PREREQ which is not in the glib

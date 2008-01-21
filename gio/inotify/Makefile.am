@@ -17,8 +17,6 @@ libinotify_la_SOURCES = 		\
 	inotify-path.h			\
 	inotify-sub.h			\
 	inotify-helper.h		\
-	local_inotify.h			\
-	local_inotify_syscalls.h	\
 	ginotifyfilemonitor.c		\
 	ginotifyfilemonitor.h		\
 	ginotifydirectorymonitor.c	\

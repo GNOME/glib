@@ -1,3 +1,19 @@
+2008-01-21  Alexander Larsson  <alexl@redhat.com>
+
+        * inotify/Makefile.am:
+        * inotify/inotify-helper.c:
+        * inotify/inotify-kernel.c:
+        * inotify/inotify-path.c:
+        * inotify/local_inotify.h: Removed.
+        * inotify/local_inotify_syscalls.h: Removed.
+	Removed the included copies of the inotify
+	headers. We now only use the <sys/inotify.h>
+	header which exists on modern systems.
+	This fixes problems on ARM and SH5 (#510448)
+	but is also generally much cleaner and future
+	safe. For instance, if other OSes add support
+	for inotify it should "just work".
+
 2008-01-20  Matthias Clasen  <mclasen@redhat.com>
 
 	* inotify/*.c: Coding style fixes.

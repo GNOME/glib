@@ -1483,10 +1483,6 @@ dnl *****************************
 dnl ** Check for inotify (GIO) **
 dnl *****************************
 inotify_support=no
-AC_CHECK_HEADERS([linux/inotify.h],
-[
-	inotify_support=yes
-])
 AC_CHECK_HEADERS([sys/inotify.h],
 [
 	inotify_support=yes
