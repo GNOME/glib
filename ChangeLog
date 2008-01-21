@@ -1,3 +1,8 @@
+2008-01-20  Murray Cumming  <murrayc@murrayc.com>
+
+	* glib/gchecksum.c: (g_checksum_update): Accept -1 for the data 
+	length if the data is a null-terminated string. Bug #510855.
+
 2008-01-21  Alexander Larsson  <alexl@redhat.com>
 
         * configure.in:

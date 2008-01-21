@@ -1187,7 +1187,7 @@ g_checksum_free (GChecksum *checksum)
  * g_checksum_update:
  * @checksum: a #GChecksum
  * @data: buffer used to compute the checksum
- * @length: size of the buffer
+ * @length: size of the buffer, or -1 if it is a null-terminated string.
  *
  * Feeds @data into an existing #GChecksum. The checksum must still be
  * open, that is g_checksum_get_string() or g_checksum_get_digest() must
@@ -1202,6 +1202,9 @@ g_checksum_update (GChecksum    *checksum,
 {
   g_return_if_fail (checksum != NULL);
   g_return_if_fail (data != NULL);
+
+  if (length < 0)
+    length = strlen (data);
 
   if (checksum->digest_str)
     {
@@ -1387,7 +1390,7 @@ g_compute_checksum_for_data (GChecksumType  checksum_type,
  * g_compute_checksum_for_string:
  * @checksum_type: a #GChecksumType
  * @str: the string to compute the checksum of
- * @length: the length of the string, or -1
+ * @length: the length of the string, or -1 if the string is null-terminated.
  *
  * Computes the checksum of a string.
  *
