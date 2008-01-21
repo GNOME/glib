@@ -33,9 +33,9 @@ static gboolean is_debug_enabled = FALSE;
 #define IS_W if (is_debug_enabled) g_warning
 
 static gchar*
-dup_dirname(const gchar* dirname)
+dup_dirname (const gchar *dirname)
 {
-  gchar* d_dirname = g_strdup (dirname);
+  gchar *d_dirname = g_strdup (dirname);
   size_t len = strlen (d_dirname);
   
   if (d_dirname[len] == '/')
@@ -45,9 +45,11 @@ dup_dirname(const gchar* dirname)
 }
 
 inotify_sub*
-_ih_sub_new (const gchar* dirname, const gchar* filename, gpointer user_data)
+_ih_sub_new (const gchar *dirname, 
+             const gchar *filename, 
+             gpointer     user_data)
 {
-  inotify_sub* sub = NULL;
+  inotify_sub *sub = NULL;
   
   sub = g_new0 (inotify_sub, 1);
   sub->dirname = dup_dirname (dirname);
@@ -60,7 +62,7 @@ _ih_sub_new (const gchar* dirname, const gchar* filename, gpointer user_data)
 }
 
 void
-_ih_sub_free (inotify_sub* sub)
+_ih_sub_free (inotify_sub *sub)
 {
   g_free (sub->dirname);
   g_free (sub->filename);

@@ -95,7 +95,7 @@ typedef struct ik_event_internal {
  */
 static gboolean
 ik_source_prepare (GSource *source,
-		   gint *timeout)
+		   gint    *timeout)
 {
   return FALSE;
 }
@@ -146,7 +146,8 @@ ik_source_check (GSource *source)
 	goto do_read;
       
       /* With each successive iteration, the minimum rate for
-       * further sleep doubles. */
+       * further sleep doubles. 
+       */
       if (pending-prev_pending < PENDING_MARGINAL_COST (pending_count))
 	goto do_read;
       
@@ -176,9 +177,9 @@ do_read:
 }
 
 static gboolean
-ik_source_dispatch (GSource *source,
-		    GSourceFunc callback,
-		    gpointer user_data)
+ik_source_dispatch (GSource     *source,
+		    GSourceFunc  callback,
+		    gpointer     user_data)
 {
   if (callback)
     return callback (user_data);
@@ -215,7 +216,7 @@ gboolean _ik_startup (void (*cb)(ik_event_t *event))
   g_io_channel_set_encoding (inotify_read_ioc, NULL, NULL);
   g_io_channel_set_flags (inotify_read_ioc, G_IO_FLAG_NONBLOCK, NULL);
 
-  source = g_source_new (&ik_source_funcs, sizeof(GSource));
+  source = g_source_new (&ik_source_funcs, sizeof (GSource));
   g_source_add_poll (source, &ik_poll_fd);
   g_source_set_callback (source, ik_read_callback, NULL, NULL);
   g_source_attach (source, NULL);
@@ -248,7 +249,7 @@ static ik_event_t *
 ik_event_new (char *buffer)
 {
   struct inotify_event *kevent = (struct inotify_event *)buffer;
-  ik_event_t *event = g_new0(ik_event_t,1);
+  ik_event_t *event = g_new0 (ik_event_t, 1);
   
   g_assert (buffer);
   
@@ -265,9 +266,11 @@ ik_event_new (char *buffer)
 }
 
 ik_event_t *
-_ik_event_new_dummy (const char *name, gint32 wd, guint32 mask)
+_ik_event_new_dummy (const char *name, 
+                     gint32      wd, 
+                     guint32     mask)
 {
-  ik_event_t *event = g_new0 (ik_event_t,1);
+  ik_event_t *event = g_new0 (ik_event_t, 1);
   event->wd = wd;
   event->mask = mask;
   event->cookie = 0;
@@ -291,7 +294,9 @@ _ik_event_free (ik_event_t *event)
 }
 
 gint32
-_ik_watch (const char *path, guint32 mask, int *err)
+_ik_watch (const char *path, 
+           guint32     mask, 
+           int        *err)
 {
   gint32 wd = -1;
   
@@ -314,7 +319,8 @@ _ik_watch (const char *path, guint32 mask, int *err)
 }
 
 int
-_ik_ignore(const char *path, gint32 wd)
+_ik_ignore (const char *path, 
+            gint32      wd)
 {
   g_assert (wd >= 0);
   g_assert (inotify_instance_fd >= 0);
@@ -330,7 +336,8 @@ _ik_ignore(const char *path, gint32 wd)
 }
 
 void
-_ik_move_stats (guint32 *matches, guint32 *misses)
+_ik_move_stats (guint32 *matches, 
+                guint32 *misses)
 {
   if (matches)
     *matches = ik_move_matches;
@@ -421,7 +428,8 @@ _ik_mask_to_string (guint32 mask)
 
 
 static void
-ik_read_events (gsize *buffer_size_out, gchar **buffer_out)
+ik_read_events (gsize  *buffer_size_out, 
+                gchar **buffer_out)
 {
   static gchar *buffer = NULL;
   static gsize buffer_size;
@@ -480,7 +488,8 @@ ik_read_callback (gpointer user_data)
 }
 
 static gboolean
-g_timeval_lt (GTimeVal *val1, GTimeVal *val2)
+g_timeval_lt (GTimeVal *val1, 
+              GTimeVal *val2)
 {
   if (val1->tv_sec < val2->tv_sec)
     return TRUE;
@@ -496,13 +505,15 @@ g_timeval_lt (GTimeVal *val1, GTimeVal *val2)
 }
 
 static gboolean
-g_timeval_eq (GTimeVal *val1, GTimeVal *val2)
+g_timeval_eq (GTimeVal *val1, 
+              GTimeVal *val2)
 {
   return (val1->tv_sec == val2->tv_sec) && (val1->tv_usec == val2->tv_usec);
 }
 
 static void
-ik_pair_events (ik_event_internal_t *event1, ik_event_internal_t *event2)
+ik_pair_events (ik_event_internal_t *event1, 
+                ik_event_internal_t *event2)
 {
   g_assert (event1 && event2);
   /* We should only be pairing events that have the same cookie */
@@ -521,7 +532,8 @@ ik_pair_events (ik_event_internal_t *event1, ik_event_internal_t *event2)
 }
 
 static void
-ik_event_add_microseconds (ik_event_internal_t *event, glong ms)
+ik_event_add_microseconds (ik_event_internal_t *event, 
+                           glong                ms)
 {
   g_assert (event);
   g_time_val_add (&event->hold_until, ms);
@@ -549,7 +561,8 @@ ik_event_ready (ik_event_internal_t *event)
 }
 
 static void
-ik_pair_moves (gpointer data, gpointer user_data)
+ik_pair_moves (gpointer data, 
+               gpointer user_data)
 {
   ik_event_internal_t *event = (ik_event_internal_t *)data;
   

@@ -28,7 +28,7 @@
 #include "inotify-missing.h"
 #include "inotify-path.h"
 
-#define SCAN_MISSING_TIME 4000 /* 1/4 Hz */
+#define SCAN_MISSING_TIME 4 /* 1/4 Hz */
 
 static gboolean im_debug_enabled = FALSE;
 #define IM_W if (im_debug_enabled) g_warning
@@ -71,7 +71,7 @@ _im_add (inotify_sub *sub)
   if (!scan_missing_running)
     {
       scan_missing_running = TRUE;
-      g_timeout_add (SCAN_MISSING_TIME, im_scan_missing, NULL);
+      g_timeout_add_seconds (SCAN_MISSING_TIME, im_scan_missing, NULL);
     }
 }
 

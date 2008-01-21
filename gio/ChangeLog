@@ -1,5 +1,11 @@
 2008-01-20  Matthias Clasen  <mclasen@redhat.com>
 
+	* inotify/*.c: Coding style fixes.
+	* inotify/inotify-missing.c: Use g_timeout_add_seconds
+	for the 1/4 Hz timer.
+
+2008-01-20  Matthias Clasen  <mclasen@redhat.com>
+
 	* gfile.c:
 	* gfilemonitor.[hc]:
 	* gmemoryinputstream.c:

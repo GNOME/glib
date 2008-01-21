@@ -50,7 +50,7 @@ g_inotify_directory_monitor_finalize (GObject *object)
   GInotifyDirectoryMonitor *inotify_monitor = G_INOTIFY_DIRECTORY_MONITOR (object);
   inotify_sub *sub = inotify_monitor->sub;
 
-  if (inotify_monitor->sub)
+  if (sub)
     {
       _ih_sub_cancel (sub);
       _ih_sub_free (sub);
@@ -124,7 +124,6 @@ g_inotify_directory_monitor_class_init (GInotifyDirectoryMonitorClass* klass)
 static void
 g_inotify_directory_monitor_init (GInotifyDirectoryMonitor* monitor)
 {
-
 }
 
 static gboolean
@@ -133,11 +132,12 @@ g_inotify_directory_monitor_cancel (GFileMonitor* monitor)
   GInotifyDirectoryMonitor *inotify_monitor = G_INOTIFY_DIRECTORY_MONITOR (monitor);
   inotify_sub *sub = inotify_monitor->sub;
 
-  if (sub) {
-    _ih_sub_cancel (sub);
-    _ih_sub_free (sub);
-    inotify_monitor->sub = NULL;
-  }
+  if (sub) 
+    {
+      _ih_sub_cancel (sub);
+      _ih_sub_free (sub);
+      inotify_monitor->sub = NULL;
+    }
 
   if (G_FILE_MONITOR_CLASS (g_inotify_directory_monitor_parent_class)->cancel)
     (*G_FILE_MONITOR_CLASS (g_inotify_directory_monitor_parent_class)->cancel) (monitor);

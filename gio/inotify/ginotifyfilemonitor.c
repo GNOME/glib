@@ -52,7 +52,7 @@ g_inotify_file_monitor_finalize (GObject *object)
   GInotifyFileMonitor *inotify_monitor = G_INOTIFY_FILE_MONITOR (object);
   inotify_sub *sub = inotify_monitor->sub;
 
-  if (inotify_monitor->sub)
+  if (sub)
     {
       _ih_sub_cancel (sub);
       _ih_sub_free (sub);
@@ -76,8 +76,8 @@ g_inotify_file_monitor_finalize (GObject *object)
 }
 
 static GObject *
-g_inotify_file_monitor_constructor (GType type,
-                                    guint n_construct_properties,
+g_inotify_file_monitor_constructor (GType                  type,
+                                    guint                  n_construct_properties,
                                     GObjectConstructParam *construct_properties)
 {
   GObject *obj;
@@ -142,7 +142,6 @@ g_inotify_file_monitor_class_init (GInotifyFileMonitorClass* klass)
 static void
 g_inotify_file_monitor_init (GInotifyFileMonitor* monitor)
 {
-
 }
 
 static gboolean
@@ -151,11 +150,12 @@ g_inotify_file_monitor_cancel (GFileMonitor* monitor)
   GInotifyFileMonitor *inotify_monitor = G_INOTIFY_FILE_MONITOR (monitor);
   inotify_sub *sub = inotify_monitor->sub;
 
-  if (sub) {
-    _ih_sub_cancel (sub);
-    _ih_sub_free (sub);
-    inotify_monitor->sub = NULL;
-  }
+  if (sub) 
+    {
+      _ih_sub_cancel (sub);
+      _ih_sub_free (sub);
+      inotify_monitor->sub = NULL;
+    }
 
   if (G_FILE_MONITOR_CLASS (g_inotify_file_monitor_parent_class)->cancel)
     (*G_FILE_MONITOR_CLASS (g_inotify_file_monitor_parent_class)->cancel) (monitor);

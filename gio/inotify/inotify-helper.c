@@ -116,7 +116,7 @@ _ih_startup (void)
  * Adds a subscription to be monitored.
  */
 gboolean
-_ih_sub_add (inotify_sub * sub)
+_ih_sub_add (inotify_sub *sub)
 {
   G_LOCK (inotify_lock);
 	
@@ -131,7 +131,7 @@ _ih_sub_add (inotify_sub * sub)
  * Cancels a subscription which was being monitored.
  */
 gboolean
-_ih_sub_cancel (inotify_sub * sub)
+_ih_sub_cancel (inotify_sub *sub)
 {
   G_LOCK (inotify_lock);
 
@@ -150,7 +150,8 @@ _ih_sub_cancel (inotify_sub * sub)
 
 
 static void
-ih_event_callback (ik_event_t *event, inotify_sub *sub)
+ih_event_callback (ik_event_t  *event, 
+                   inotify_sub *sub)
 {
   gchar *fullpath;
   GFileMonitorEvent eflags;
