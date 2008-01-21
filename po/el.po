@@ -617,7 +617,7 @@ msgid "\\c at end of pattern"
 msgstr ""
 
 #: ../glib/gregex.c:205
-msgid "unrecognized character follows \\""
+msgid "unrecognized character follows \\"
 msgstr ""
 
 #: ../glib/gregex.c:212

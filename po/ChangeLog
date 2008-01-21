@@ -1,3 +1,7 @@
+2008-01-21  Tor Lillqvist  <tml@novell.com>
+
+	* el.po: Fix syntax error.
+
 2007-01-21  Kostas Papadimas  <pkst@gnome.org>
 
 	* el.po: Updated Greek translation.
