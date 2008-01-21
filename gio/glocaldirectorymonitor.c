@@ -37,15 +37,16 @@ enum
   PROP_DIRNAME
 };
 
-static gboolean g_local_directory_monitor_cancel (GFileMonitor* monitor);
-static void mounts_changed (GUnixMountMonitor *mount_monitor, gpointer user_data);
+static gboolean g_local_directory_monitor_cancel (GFileMonitor      *monitor);
+static void     mounts_changed                   (GUnixMountMonitor *mount_monitor, 
+                                                  gpointer           user_data);
 
 G_DEFINE_ABSTRACT_TYPE (GLocalDirectoryMonitor, g_local_directory_monitor, G_TYPE_FILE_MONITOR)
 
 static void
-g_local_directory_monitor_finalize (GObject* object)
+g_local_directory_monitor_finalize (GObject *object)
 {
-  GLocalDirectoryMonitor* local_monitor;
+  GLocalDirectoryMonitor *local_monitor;
   local_monitor = G_LOCAL_DIRECTORY_MONITOR (object);
 
   g_free (local_monitor->dirname);
@@ -161,7 +162,7 @@ g_local_directory_monitor_class_init (GLocalDirectoryMonitorClass* klass)
 }
 
 static void
-g_local_directory_monitor_init (GLocalDirectoryMonitor* local_monitor)
+g_local_directory_monitor_init (GLocalDirectoryMonitor *local_monitor)
 {
 }
 
@@ -248,7 +249,7 @@ get_default_local_directory_monitor (gpointer data)
       
       klass = G_LOCAL_DIRECTORY_MONITOR_CLASS (g_type_class_ref (monitor_impls[i]));
       
-      if (klass->is_supported())
+      if (klass->is_supported ())
 	{
 	  chosen_class = klass;
 	  break;
@@ -269,7 +270,7 @@ get_default_local_directory_monitor (gpointer data)
 }
 
 /**
- * g_local_directory_monitor_new:
+ * _g_local_directory_monitor_new:
  * @dirname: filename of the directory to monitor.
  * @flags: #GFileMonitorFlags.
  * 
@@ -308,7 +309,7 @@ _g_local_directory_monitor_new (const char         *dirname,
 }
 
 static gboolean
-g_local_directory_monitor_cancel (GFileMonitor* monitor)
+g_local_directory_monitor_cancel (GFileMonitor *monitor)
 {
   GLocalDirectoryMonitor *local_monitor = G_LOCAL_DIRECTORY_MONITOR (monitor);
 

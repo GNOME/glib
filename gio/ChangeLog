@@ -1,3 +1,11 @@
+2008-01-21  Matthias Clasen  <mclasen@redhat.com>
+
+	* glocal*.c:
+	* gvolumemanager.c: Whitespace cleanups.
+
+	* glocalfileoutputsteam.c (_g_local_file_output_stream_create):
+	Use the right mode when creating the file.
+
 2008-01-21  Murray Cumming,,,  <murrayc@murrayc.com>
 
 	* gfileenumerator.c:

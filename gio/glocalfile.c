@@ -94,7 +94,7 @@
 
 #include "gioalias.h"
 
-static void g_local_file_file_iface_init (GFileIface       *iface);
+static void g_local_file_file_iface_init (GFileIface *iface);
 
 static GFileAttributeInfoList *local_writable_attributes = NULL;
 static GFileAttributeInfoList *local_writable_namespaces = NULL;
@@ -111,7 +111,7 @@ G_DEFINE_TYPE_WITH_CODE (GLocalFile, g_local_file, G_TYPE_OBJECT,
 			 G_IMPLEMENT_INTERFACE (G_TYPE_FILE,
 						g_local_file_file_iface_init))
 
-static char * find_mountpoint_for (const char *file, dev_t dev);
+static char *find_mountpoint_for (const char *file, dev_t dev);
 
 static void
 g_local_file_finalize (GObject *object)
@@ -355,7 +355,7 @@ name_is_valid_for_display (const char *string,
 
   while ((c = *string++) != 0)
     {
-      if (g_ascii_iscntrl(c))
+      if (g_ascii_iscntrl (c))
 	return FALSE;
     }
 
@@ -684,7 +684,7 @@ static gboolean
 device_equal (gconstpointer v1,
               gconstpointer v2)
 {
-  return *(dev_t *)v1 == * (dev_t *)v2;
+  return *(dev_t *)v1 == *(dev_t *)v2;
 }
 
 static guint
@@ -936,7 +936,7 @@ g_local_file_set_display_name (GFile         *file,
       return NULL;
     }
   
-  new_file = g_file_get_child_for_display_name  (parent, display_name, error);
+  new_file = g_file_get_child_for_display_name (parent, display_name, error);
   g_object_unref (parent);
   
   if (new_file == NULL)
@@ -1025,13 +1025,13 @@ g_local_file_query_writable_namespaces (GFile         *file,
 }
 
 static gboolean
-g_local_file_set_attribute (GFile                      *file,
-			    const char                 *attribute,
-			    GFileAttributeType          type,
-			    gpointer                    value_p,
-			    GFileQueryInfoFlags         flags,
-			    GCancellable               *cancellable,
-			    GError                    **error)
+g_local_file_set_attribute (GFile                *file,
+			    const char           *attribute,
+			    GFileAttributeType    type,
+			    gpointer              value_p,
+			    GFileQueryInfoFlags   flags,
+			    GCancellable         *cancellable,
+			    GError              **error)
 {
   GLocalFile *local = G_LOCAL_FILE (file);
 
@@ -1053,7 +1053,7 @@ g_local_file_set_attributes_from_info (GFile                *file,
 {
   GLocalFile *local = G_LOCAL_FILE (file);
   int res, chained_res;
-  GFileIface* default_iface;
+  GFileIface *default_iface;
 
   res = _g_local_file_info_set_attributes (local->filename,
 					   info, flags, 

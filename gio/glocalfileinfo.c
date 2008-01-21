@@ -546,7 +546,7 @@ get_one_xattr_from_fd (int         fd,
   char *value_p;
   ssize_t len;
 
-  len = g_fgetxattr (fd, xattr, value, sizeof (value)-1);
+  len = g_fgetxattr (fd, xattr, value, sizeof (value) - 1);
 
   value_p = NULL;
   if (len >= 0)
@@ -558,7 +558,7 @@ get_one_xattr_from_fd (int         fd,
       if (len < 0)
 	return;
 
-      value_p = g_malloc (len+1);
+      value_p = g_malloc (len + 1);
 
       len = g_fgetxattr (fd, xattr, value_p, len);
 
@@ -1072,11 +1072,11 @@ lookup_uid_data (uid_t uid)
       if (data->user_name != NULL)
 	data->real_name = g_strdup (data->user_name);
       else
-	data->real_name = g_strdup_printf("user #%d", (int)uid);
+	data->real_name = g_strdup_printf ("user #%d", (int)uid);
     }
   
   if (data->user_name == NULL)
-    data->user_name = g_strdup_printf("%d", (int)uid);
+    data->user_name = g_strdup_printf ("%d", (int)uid);
   
   g_hash_table_replace (uid_cache, GINT_TO_POINTER (uid), data);
   
@@ -1244,7 +1244,7 @@ get_thumbnail_attributes (const char *path,
   basename = g_strconcat (g_checksum_get_string (checksum), ".png", NULL);
   g_checksum_free (checksum);
 
-  filename = g_build_filename (g_get_home_dir(),
+  filename = g_build_filename (g_get_home_dir (),
                                ".thumbnails", "normal", basename,
                                NULL);
 
@@ -1253,7 +1253,7 @@ get_thumbnail_attributes (const char *path,
   else
     {
       g_free (filename);
-      filename = g_build_filename (g_get_home_dir(),
+      filename = g_build_filename (g_get_home_dir (),
                                    ".thumbnails", "fail",
                                    "gnome-thumbnail-factory",
                                    basename,
@@ -1268,10 +1268,10 @@ get_thumbnail_attributes (const char *path,
 
 #ifdef G_OS_WIN32
 static void
-win32_get_file_user_info (const gchar* filename,
-			  gchar **group_name, 
-			  gchar **user_name, 
-			  gchar **real_name)
+win32_get_file_user_info (const gchar  *filename,
+			  gchar       **group_name, 
+			  gchar       **user_name, 
+			  gchar       **real_name)
 {
   PSECURITY_DESCRIPTOR psd = NULL;
   DWORD sd_size = 0; /* first call calculates the size required */
@@ -1308,8 +1308,8 @@ win32_get_file_user_info (const gchar* filename,
 			        domain, &domain_len, /* no domain info yet */
 			        &name_use)  && (ERROR_INSUFFICIENT_BUFFER != GetLastError()))
 	  break;
-	name = g_try_malloc (name_len*sizeof(wchar_t));
-	domain = g_try_malloc (domain_len*sizeof(wchar_t));
+	name = g_try_malloc (name_len * sizeof (wchar_t));
+	domain = g_try_malloc (domain_len * sizeof (wchar_t));
 	if (name && domain &&
             LookupAccountSidW (NULL, /* local machine */
                                psid, 
@@ -1335,8 +1335,8 @@ win32_get_file_user_info (const gchar* filename,
 			        domain, &domain_len, /* no domain info yet */
 			        &name_use)  && (ERROR_INSUFFICIENT_BUFFER != GetLastError()))
 	  break;
-	name = g_try_malloc (name_len*sizeof(wchar_t));
-	domain = g_try_malloc (domain_len*sizeof(wchar_t));
+	name = g_try_malloc (name_len * sizeof (wchar_t));
+	domain = g_try_malloc (domain_len * sizeof (wchar_t));
 	if (name && domain &&
             LookupAccountSidW (NULL, /* local machine */
                                psid, 
@@ -1490,7 +1490,7 @@ _g_local_file_info_get (const char             *basename,
 
 	      mimetype_icon = g_strdup (content_type);
 	      
-	      while ((p = strchr(mimetype_icon, '/')) != NULL)
+	      while ((p = strchr (mimetype_icon, '/')) != NULL)
 		*p = '-';
 
 	      p = strchr (content_type, '/');
@@ -1927,7 +1927,7 @@ set_mtime_atime (char                       *filename,
       times[1].tv_usec = val_usec;
     }
   
-  res = utimes(filename, times);
+  res = utimes (filename, times);
   if (res == -1)
     {
       g_set_error (error, G_IO_ERROR,
@@ -1941,13 +1941,13 @@ set_mtime_atime (char                       *filename,
 #endif
 
 gboolean
-_g_local_file_info_set_attribute (char                       *filename,
-				  const char                 *attribute,
-				  GFileAttributeType          type,
-				  gpointer                    value_p,
-				  GFileQueryInfoFlags         flags,
-				  GCancellable               *cancellable,
-				  GError                    **error)
+_g_local_file_info_set_attribute (char                 *filename,
+				  const char           *attribute,
+				  GFileAttributeType    type,
+				  gpointer              value_p,
+				  GFileQueryInfoFlags   flags,
+				  GCancellable         *cancellable,
+				  GError              **error)
 {
   GFileAttributeValue value = { 0 };
 

@@ -134,7 +134,7 @@ g_local_vfs_parse_name (GVfs       *vfs,
 	  user_end = parse_name;
 
 	  if (user_end == user_start)
-	    user_prefix = g_strdup (g_get_home_dir());
+	    user_prefix = g_strdup (g_get_home_dir ());
 	  else
 	    {
 #ifdef HAVE_PWD_H

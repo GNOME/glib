@@ -312,8 +312,8 @@ g_volume_monitor_get_mounts (GVolumeMonitor *volume_monitor)
  * Returns: a #GVolume or %NULL if no such volume is available.
  **/
 GVolume *
-g_volume_monitor_get_volume_for_uuid   (GVolumeMonitor *volume_monitor, 
-                                        const char     *uuid)
+g_volume_monitor_get_volume_for_uuid (GVolumeMonitor *volume_monitor, 
+                                      const char     *uuid)
 {
   GVolumeMonitorClass *class;
 
@@ -335,8 +335,8 @@ g_volume_monitor_get_volume_for_uuid   (GVolumeMonitor *volume_monitor,
  * Returns: a #GMount or %NULL if no such mount is available.
  **/
 GMount *
-g_volume_monitor_get_mount_for_uuid   (GVolumeMonitor *volume_monitor, 
-                                       const char     *uuid)
+g_volume_monitor_get_mount_for_uuid (GVolumeMonitor *volume_monitor, 
+                                     const char     *uuid)
 {
   GVolumeMonitorClass *class;
 

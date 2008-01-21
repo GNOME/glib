@@ -256,8 +256,7 @@ g_local_file_input_stream_can_seek (GFileInputStream *stream)
   
   pos = lseek (file->priv->fd, 0, SEEK_CUR);
 
-  if (pos == (off_t)-1 &&
-      errno == ESPIPE)
+  if (pos == (off_t)-1 && errno == ESPIPE)
     return FALSE;
   
   return TRUE;

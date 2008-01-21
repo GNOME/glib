@@ -306,8 +306,7 @@ g_local_file_output_stream_can_seek (GFileOutputStream *stream)
   
   pos = lseek (file->priv->fd, 0, SEEK_CUR);
 
-  if (pos == (off_t)-1 &&
-      errno == ESPIPE)
+  if (pos == (off_t)-1 && errno == ESPIPE)
     return FALSE;
   
   return TRUE;
@@ -437,9 +436,7 @@ _g_local_file_output_stream_create  (const char        *filename,
   else
     mode = 0666;
   
-  fd = g_open (filename,
-	       O_CREAT | O_EXCL | O_WRONLY,
-	       0666);
+  fd = g_open (filename, O_CREAT | O_EXCL | O_WRONLY, mode);
   if (fd == -1)
     {
       int errsv = errno;
@@ -480,9 +477,7 @@ _g_local_file_output_stream_append  (const char        *filename,
   else
     mode = 0666;
 
-  fd = g_open (filename,
-	       O_CREAT | O_APPEND | O_WRONLY,
-	       mode);
+  fd = g_open (filename, O_CREAT | O_APPEND | O_WRONLY, mode);
   if (fd == -1)
     {
       int errsv = errno;
@@ -863,9 +858,7 @@ _g_local_file_output_stream_replace (const char        *filename,
     mode = 0666;
 
   /* If the file doesn't exist, create it */
-  fd = g_open (filename,
-	       O_CREAT | O_EXCL | O_WRONLY,
-	       mode);
+  fd = g_open (filename, O_CREAT | O_EXCL | O_WRONLY, mode);
 
   if (fd == -1 && errno == EEXIST)
     {

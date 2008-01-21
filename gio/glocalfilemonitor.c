@@ -110,8 +110,7 @@ g_local_file_monitor_finalize (GObject *object)
     (*G_OBJECT_CLASS (g_local_file_monitor_parent_class)->finalize) (object);
 }
 
-static void
-g_local_file_monitor_class_init (GLocalFileMonitorClass* klass)
+static void g_local_file_monitor_class_init (GLocalFileMonitorClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
@@ -177,7 +176,7 @@ get_default_local_file_monitor (gpointer data)
       
       klass = G_LOCAL_FILE_MONITOR_CLASS (g_type_class_ref (monitor_impls[i]));
       
-      if (klass->is_supported())
+      if (klass->is_supported ())
 	{
 	  chosen_class = klass;
 	  break;
