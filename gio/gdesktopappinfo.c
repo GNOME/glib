@@ -292,13 +292,15 @@ g_desktop_app_info_new (const char *desktop_id)
 {
   GDesktopAppInfo *appinfo;
   const char * const *dirs;
+  char *basename;
   int i;
 
   dirs = get_applications_search_path ();
 
+  basename = g_strdup (desktop_id);
+  
   for (i = 0; dirs[i] != NULL; i++)
     {
-      char *basename;
       char *filename;
       char *p;
 
@@ -306,11 +308,8 @@ g_desktop_app_info_new (const char *desktop_id)
       appinfo = g_desktop_app_info_new_from_filename (filename);
       g_free (filename);
       if (appinfo != NULL)
-	{
-	  goto found;
-	}
+	goto found;
 
-      basename = g_strdup (desktop_id);
       p = basename;
       while ((p = strchr (p, '-')) != NULL)
 	{
@@ -320,18 +319,18 @@ g_desktop_app_info_new (const char *desktop_id)
 	  appinfo = g_desktop_app_info_new_from_filename (filename);
 	  g_free (filename);
 	  if (appinfo != NULL)
-	    {
-	      g_free (basename);
-	      goto found;
-	    }
+	    goto found;
 	  *p = '-';
 	  p++;
 	}
     }
   
+  g_free (basename);
   return NULL;
 
  found:
+  g_free (basename);
+  
   appinfo->desktop_id = g_strdup (desktop_id);
 
   if (g_desktop_app_info_get_is_hidden (appinfo))

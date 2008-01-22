@@ -1,6 +1,12 @@
 2008-01-22  Alexander Larsson  <alexl@redhat.com>
 
         * gdesktopappinfo.c:
+	(g_desktop_app_info_new):
+	Don't leak basename.
+	
+2008-01-22  Alexander Larsson  <alexl@redhat.com>
+
+        * gdesktopappinfo.c:
         (g_desktop_app_info_new_from_filename):
 	Don't leak GKeyFile
 
