@@ -120,7 +120,7 @@ test_g_file_new_for_path (void)
       {"/", TRUE, 0, "/somedir/../"},
       {"/", FALSE, 0, "/somedir/.../"},
       {"//tmp/dir1", TRUE, 0, "//tmp/dir1"},
-      //      {"/tmp/dir1", TRUE, 0, "///tmp/dir1"},
+      /*  Should not fail:    {"/tmp/dir1", TRUE, 0, "///tmp/dir1"}, */
       {"/tmp/dir1", TRUE, 0, "/tmp/./dir1"},
       {"/tmp/dir1", TRUE, 0, "/tmp//dir1"},
       {"/tmp/dir1", TRUE, 0, "/tmp///dir1///"},
