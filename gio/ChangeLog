@@ -1,5 +1,10 @@
 2008-01-22  Alexander Larsson  <alexl@redhat.com>
 
+	* glocalfileinfo.c (get_thumbnail_attributes):
+	Fix leak of uri
+
+2008-01-22  Alexander Larsson  <alexl@redhat.com>
+
         * glocalfile.c:
         (canonicalize_filename):
 	Canonicalize paths that start with more than
