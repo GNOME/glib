@@ -83,7 +83,7 @@ compare_two_files (const gboolean use_uri, const char *path1, const char *path2)
   GFile *file1 = NULL;
   GFile *file2 = NULL;
   gboolean equal;
-  
+
   if (use_uri)
     {
       file1 = g_file_new_for_uri (path1);
@@ -120,7 +120,8 @@ test_g_file_new_for_path (void)
       {"/", TRUE, 0, "/somedir/../"},
       {"/", FALSE, 0, "/somedir/.../"},
       {"//tmp/dir1", TRUE, 0, "//tmp/dir1"},
-      /*  Should not fail:    {"/tmp/dir1", TRUE, 0, "///tmp/dir1"}, */
+      {"/tmp/dir1", TRUE, 0, "///tmp/dir1"},
+      {"/tmp/dir1", TRUE, 0, "////tmp/dir1"},
       {"/tmp/dir1", TRUE, 0, "/tmp/./dir1"},
       {"/tmp/dir1", TRUE, 0, "/tmp//dir1"},
       {"/tmp/dir1", TRUE, 0, "/tmp///dir1///"},

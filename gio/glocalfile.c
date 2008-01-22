@@ -214,6 +214,7 @@ canonicalize_filename (const char *filename)
 {
   char *canon, *start, *p, *q;
   char *cwd;
+  int i;
   
   if (!g_path_is_absolute (filename))
     {
@@ -226,6 +227,24 @@ canonicalize_filename (const char *filename)
 
   start = (char *)g_path_skip_root (canon);
 
+  /* POSIX allows double slashes at the start to
+   * mean something special (as does windows too).
+   * So, "//" != "/", but more than two slashes
+   * is treated as "/".
+   */
+  i = 0;
+  for (p = start - 1;
+       (p >= canon) &&
+	 G_IS_DIR_SEPARATOR (*p);
+       p--)
+    i++;
+  if (i > 2)
+    {
+      i -= 1;
+      start -= i;
+      memmove (start, start+i, strlen (start+i)+1);
+    }
+  
   p = start;
   while (*p != 0)
     {

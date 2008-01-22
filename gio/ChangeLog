@@ -1,6 +1,18 @@
 2008-01-22  Alexander Larsson  <alexl@redhat.com>
 
         * glocalfile.c:
+        (canonicalize_filename):
+	Canonicalize paths that start with more than
+	two slashes.
+	
+        * tests/g-file.c:
+        (compare_two_files):
+        (test_g_file_new_for_path):
+	Test the above
+
+2008-01-22  Alexander Larsson  <alexl@redhat.com>
+
+        * glocalfile.c:
 	Allow UTF-8 in file:// parse names.
 	
         * tests/Makefile.am:
