@@ -1,3 +1,15 @@
+2008-01-22  Alexander Larsson  <alexl@redhat.com>
+
+        * glocalfile.c:
+	Allow UTF-8 in file:// parse names.
+	
+        * tests/Makefile.am:
+        * tests/data-input-stream.c:
+        * tests/data-output-stream.c:
+        * tests/g-file-info.c:
+        * tests/g-file.c:
+	Added a bunch of tests from Tomas Bzatek
+
 2008-01-21  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.15.3 ===

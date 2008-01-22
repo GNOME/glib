@@ -16,7 +16,21 @@ progs_ldadd     = 					\
 	$(top_builddir)/gio/libgio-2.0.la
 
 
-TEST_PROGS       += memory-input-stream
+TEST_PROGS       += memory-input-stream g-file g-file-info data-input-stream data-output-stream
+
 memory_input_stream_SOURCES	  = memory-input-stream.c
 memory_input_stream_LDADD	  = $(progs_ldadd)
+
+g_file_SOURCES	  = g-file.c
+g_file_LDADD	  = $(progs_ldadd)
+
+g_file_info_SOURCES	= g-file-info.c
+g_file_info_LDADD	= $(progs_ldadd)
+
+data_input_stream_SOURCES	= data-input-stream.c
+data_input_stream_LDADD		= $(progs_ldadd)
+
+data_output_stream_SOURCES	= data-output-stream.c
+data_output_stream_LDADD	= $(progs_ldadd)
+
 

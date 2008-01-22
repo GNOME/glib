@@ -348,7 +348,7 @@ name_is_valid_for_display (const char *string,
 			   gboolean    is_valid_utf8)
 {
   char c;
-  
+
   if (!is_valid_utf8 &&
       !g_utf8_validate (string, -1, NULL))
     return FALSE;
@@ -372,7 +372,8 @@ g_local_file_get_parse_name (GFile *file)
   char *roundtripped_filename;
   gboolean free_utf8_filename;
   gboolean is_valid_utf8;
-
+  char *escaped_path;
+  
   filename = G_LOCAL_FILE (file)->filename;
   if (get_filename_charset (&charset))
     {
@@ -402,7 +403,6 @@ g_local_file_get_parse_name (GFile *file)
 	}
     }
 
-
   if (utf8_filename != NULL &&
       name_is_valid_for_display (utf8_filename, is_valid_utf8))
     {
@@ -413,7 +413,16 @@ g_local_file_get_parse_name (GFile *file)
     }
   else
     {
-      parse_name = g_filename_to_uri (filename, NULL, NULL);
+      escaped_path = g_uri_escape_string (filename,
+					  G_URI_RESERVED_CHARS_ALLOWED_IN_PATH_ELEMENT "/",
+					  TRUE);
+      parse_name = g_strconcat ("file://",
+				(*escaped_path != '/') ? "/" : "",
+				escaped_path,
+				NULL);
+      
+      g_free (escaped_path);
+
       if (free_utf8_filename)
 	g_free (utf8_filename);
     }
