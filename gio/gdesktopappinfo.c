@@ -186,12 +186,16 @@ g_desktop_app_info_new_from_filename (const char *filename)
 				  filename,
 				  G_KEY_FILE_NONE,
 				  NULL))
-    return NULL;
+    {
+      g_key_file_free (key_file);
+      return NULL;
+    }
 
   start_group = g_key_file_get_start_group (key_file);
   if (start_group == NULL || strcmp (start_group, G_KEY_FILE_DESKTOP_GROUP) != 0)
     {
       g_free (start_group);
+      g_key_file_free (key_file);
       return NULL;
     }
   g_free (start_group);
@@ -203,6 +207,7 @@ g_desktop_app_info_new_from_filename (const char *filename)
   if (type == NULL || strcmp (type, G_KEY_FILE_DESKTOP_TYPE_APPLICATION) != 0)
     {
       g_free (type);
+      g_key_file_free (key_file);
       return NULL;
     }
   g_free (type);
@@ -218,6 +223,7 @@ g_desktop_app_info_new_from_filename (const char *filename)
       if (t == NULL)
 	{
 	  g_free (try_exec);
+	  g_key_file_free (key_file);
 	  return NULL;
 	}
       g_free (t);
@@ -239,6 +245,8 @@ g_desktop_app_info_new_from_filename (const char *filename)
   info->startup_notify = g_key_file_get_boolean (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_STARTUP_NOTIFY, NULL) != FALSE;
   info->hidden = g_key_file_get_boolean (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_HIDDEN, NULL) != FALSE;
 
+  g_key_file_free (key_file);
+  
   info->icon = NULL;
   if (info->icon_name)
     {

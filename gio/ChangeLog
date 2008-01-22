@@ -1,5 +1,11 @@
 2008-01-22  Alexander Larsson  <alexl@redhat.com>
 
+        * gdesktopappinfo.c:
+        (g_desktop_app_info_new_from_filename):
+	Don't leak GKeyFile
+
+2008-01-22  Alexander Larsson  <alexl@redhat.com>
+
 	* glocalfileinfo.c (get_thumbnail_attributes):
 	Fix leak of uri
 
