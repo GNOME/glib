@@ -124,4 +124,64 @@
     </para>
   </chapter>
 
+  <chapter>
+    <title>Running GIO applications</title>
+
+    <para>
+      GIO inspects a few of environment variables in addition to the
+      ones used by GLib.
+    </para>
+
+    <formalpara>
+      <title><envar>XDG_DATA_HOME</envar>, <envar>XDG_DATA_DIRS</envar></title>
+
+      <para>
+        GIO uses these environment variables to locate MIME information. 
+        For more information, see the <ulink url="http://freedesktop.org/Standards/shared-mime-info-spec">Shared MIME-info Database</ulink>
+        and the <ulink url="http://freedesktop.org/Standards/basedir-spec">Base Directory Specification</ulink>.
+      </para>
+    </formalpara>
+
+    <para>
+      The following environment variables are only useful for debugging
+      GIO itself or modules that it loads. They should not be set in a
+      production environment.
+    </para>
+    <formalpara>
+      <title><envar>GIO_USE_VFS</envar></title>
+
+      <para>
+        This environment variable can be set to the name of a #GVfs 
+        implementation to override the default for debugging purposes.
+        The #GVfs implementation for local files that is included in GIO 
+        has the name "local", the implementation in the gvfs module has 
+        the name "gvfs". 
+      </para>
+    </formalpara>
+
+    <formalpara>
+      <title><envar>GIO_USE_VOLUME_MONITOR</envar></title>
+        
+      <para>
+        This variable can be set to the name of a #GVolumeMonitor 
+        implementation to override the default for debugging purposes.
+        The #GVolumeMonitor implementation for local files that is included
+        in GIO has the name "unix", the hal-based implementation in the
+        gvfs module has the name "hal".
+      </para>
+    </formalpara>
+
+    <formalpara>
+      <title><envar>GVFS_INOTIFY_DIAG</envar></title>
+
+      <para>
+        When this environment variable is set and GIO has been built
+        with inotify support, a dump of diagnostic inotify information 
+        will be written every 20 seconds to a file named
+        <filename>/tmp/gvfsdid.<replaceable>pid</replaceable></filename>.
+      </para>
+    </formalpara>
+
+  </chapter>
+
 </part>
