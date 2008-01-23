@@ -196,21 +196,27 @@ run_job_at_idle (gpointer data)
 /**
  * g_io_scheduler_push_job:
  * @job_func: a #GIOSchedulerJobFunc.
- * @user_data: a #gpointer.
- * @notify: a #GDestroyNotify.
+ * @user_data: data to pass to @job_func
+ * @notify: a #GDestroyNotify for @user_data, or %NULL
  * @io_priority: the <link linkend="gioscheduler">I/O priority</link> 
  * of the request.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  *
- * Schedules the I/O Job to run
+ * Schedules the I/O job to run. 
+ *
+ * @notify will be called on @user_data after @job_func has returned,
+ * regardless whether the job was cancelled or has run to completion.
  * 
+ * If @cancellable is not %NULL, it can be used to cancel the I/O job
+ * by calling g_cancellable_cancel() or by calling 
+ * g_io_scheduler_cancel_all_jobs().
  **/
 void
-g_io_scheduler_push_job (GIOSchedulerJobFunc job_func,
-			 gpointer user_data,
-			 GDestroyNotify notify,
-			 gint io_priority,
-			 GCancellable *cancellable)
+g_io_scheduler_push_job (GIOSchedulerJobFunc  job_func,
+			 gpointer             user_data,
+			 GDestroyNotify       notify,
+			 gint                 io_priority,
+			 GCancellable        *cancellable)
 {
   static GOnce once_init = G_ONCE_INIT;
   GIOSchedulerJob *job;
@@ -250,7 +256,10 @@ g_io_scheduler_push_job (GIOSchedulerJobFunc job_func,
 /**
  * g_io_scheduler_cancel_all_jobs:
  * 
- * Cancels all cancellable I/O Jobs. 
+ * Cancels all cancellable I/O jobs. 
+ *
+ * A job is cancellable if a #GCancellable was passed into
+ * g_io_scheduler_push_job().
  **/
 void
 g_io_scheduler_cancel_all_jobs (void)
@@ -321,10 +330,10 @@ mainloop_proxy_free (MainLoopProxy *proxy)
 
 /**
  * g_io_scheduler_job_send_to_mainloop:
- * @job: a #GIOSchedulerJob.
- * @func: a #GSourceFunc callback that will be called in the main thread.
- * @user_data: a #gpointer.
- * @notify: a #GDestroyNotify.
+ * @job: a #GIOSchedulerJob
+ * @func: a #GSourceFunc callback that will be called in the main thread
+ * @user_data: data to pass to @func
+ * @notify: a #GDestroyNotify for @user_data, or %NULL
  * 
  * Used from an I/O job to send a callback to be run in the 
  * main loop (main thread), waiting for the result (and thus 
@@ -384,15 +393,20 @@ g_io_scheduler_job_send_to_mainloop (GIOSchedulerJob *job,
 
 /**
  * g_io_scheduler_job_send_to_mainloop_async:
- * @job: a #GIOSchedulerJob.
- * @func: a #GSourceFunc callback that will be called in the main thread.
- * @user_data: a #gpointer.
- * @notify: a #GDestroyNotify.
+ * @job: a #GIOSchedulerJob
+ * @func: a #GSourceFunc callback that will be called in the main thread
+ * @user_data: data to pass to @func
+ * @notify: a #GDestroyNotify for @user_data, or %NULL
  * 
  * Used from an I/O job to send a callback to be run asynchronously 
  * in the main loop (main thread). The callback will be run when the 
  * main loop is available, but at that time the I/O job might have 
  * finished. The return value from the callback is ignored.
+ *
+ * Note that if you are passing the @user_data from g_io_scheduler_push_job()
+ * on to this function you have to ensure that it is not freed before
+ * @func is called, either by passing %NULL as @notify to 
+ * g_io_scheduler_push_job() or by using refcounting for @user_data.
  **/
 void
 g_io_scheduler_job_send_to_mainloop_async (GIOSchedulerJob *job,

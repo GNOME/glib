@@ -1,3 +1,7 @@
+2008-01-23  Matthias Clasen  <mclasen@redhat.com>
+
+	* gioscheduler.c: Some documentation additions.
+
 2008-01-22  Alexander Larsson  <alexl@redhat.com>
 
         * gdesktopappinfo.c:
