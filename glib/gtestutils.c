@@ -1457,6 +1457,7 @@ g_test_trap_fork (guint64        usec_timeout,
         {
           fd_set fds;
           struct timeval tv;
+          int ret;
           FD_ZERO (&fds);
           if (stdout_pipe[0] >= 0)
             FD_SET (stdout_pipe[0], &fds);
@@ -1466,7 +1467,7 @@ g_test_trap_fork (guint64        usec_timeout,
             FD_SET (stdtst_pipe[0], &fds);
           tv.tv_sec = 0;
           tv.tv_usec = MIN (usec_timeout ? usec_timeout : 1000000, 100 * 1000); /* sleep at most 0.5 seconds to catch clock skews, etc. */
-          int ret = select (MAX (MAX (stdout_pipe[0], stderr_pipe[0]), stdtst_pipe[0]) + 1, &fds, NULL, NULL, &tv);
+          ret = select (MAX (MAX (stdout_pipe[0], stderr_pipe[0]), stdtst_pipe[0]) + 1, &fds, NULL, NULL, &tv);
           if (ret < 0 && errno != EINTR)
             {
               g_warning ("Unexpected error in select() while reading from child process (%d): %s", test_trap_last_pid, g_strerror (errno));

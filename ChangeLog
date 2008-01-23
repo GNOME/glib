@@ -1,3 +1,9 @@
+2008-01-23  Jens Granseuer  <jensgr@gmx.net>
+
+	* glib/gtestutils.c: (g_test_trap_fork):
+	* glib/tests/testing.c: (test_assertions): Only declare variables at
+	the beginning of a code block. Bug #511654.
+
 2008-01-21  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Bump version

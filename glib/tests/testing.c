@@ -26,13 +26,14 @@
 static void
 test_assertions (void)
 {
+  gchar *fuu;
   g_assert_cmpint (1, >, 0);
   g_assert_cmphex (2, ==, 2);
   g_assert_cmpfloat (3.3, !=, 7);
   g_assert_cmpfloat (7, <=, 3 + 4);
   g_assert (TRUE);
   g_assert_cmpstr ("foo", !=, "faa");
-  gchar *fuu = g_strdup_printf ("f%s", "uu");
+  fuu = g_strdup_printf ("f%s", "uu");
   g_test_queue_free (fuu);
   g_assert_cmpstr ("foo", !=, fuu);
   g_assert_cmpstr ("fuu", ==, fuu);
