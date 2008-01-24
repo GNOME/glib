@@ -474,5 +474,37 @@ g_drive_poll_for_media_finish (GDrive        *drive,
   return (* iface->poll_for_media_finish) (drive, result, error);
 }
 
+char *
+g_drive_get_identifier (GDrive              *drive,
+			const char          *kind)
+{
+  GDriveIface *iface;
+
+  g_return_val_if_fail (G_IS_DRIVE (drive), NULL);
+  g_return_val_if_fail (kind != NULL, NULL);
+
+  iface = G_DRIVE_GET_IFACE (drive);
+
+  if (iface->get_identifier == NULL)
+    return NULL;
+  
+  return (* iface->get_identifier) (drive, kind);
+}
+
+char **
+g_drive_enumerate_identifiers (GDrive *drive)
+{
+  GDriveIface *iface;
+
+  g_return_val_if_fail (G_IS_DRIVE (drive), NULL);
+  iface = G_DRIVE_GET_IFACE (drive);
+
+  if (iface->enumerate_identifiers == NULL)
+    return NULL;
+  
+  return (* iface->enumerate_identifiers) (drive);
+}
+
+
 #define __G_DRIVE_C__
 #include "gioaliasdef.c"

@@ -194,6 +194,8 @@ g_drive_eject
 g_drive_eject_finish
 g_drive_poll_for_media
 g_drive_poll_for_media_finish
+g_drive_get_identifier
+g_drive_enumerate_identifiers
 #endif
 #endif
 
@@ -701,7 +703,9 @@ g_volume_can_eject
 g_volume_mount 
 g_volume_mount_finish 
 g_volume_eject 
-g_volume_eject_finish 
+g_volume_eject_finish
+g_volume_get_identifier
+g_volume_enumerate_identifiers
 #endif
 #endif
 

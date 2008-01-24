@@ -420,5 +420,37 @@ g_volume_eject_finish (GVolume  *volume,
   return (* iface->eject_finish) (volume, result, error);
 }
 
+char *
+g_volume_get_identifier (GVolume              *volume,
+			 const char          *kind)
+{
+  GVolumeIface *iface;
+
+  g_return_val_if_fail (G_IS_VOLUME (volume), NULL);
+  g_return_val_if_fail (kind != NULL, NULL);
+
+  iface = G_VOLUME_GET_IFACE (volume);
+
+  if (iface->get_identifier == NULL)
+    return NULL;
+  
+  return (* iface->get_identifier) (volume, kind);
+}
+
+char **
+g_volume_enumerate_identifiers (GVolume *volume)
+{
+  GVolumeIface *iface;
+
+  g_return_val_if_fail (G_IS_VOLUME (volume), NULL);
+  iface = G_VOLUME_GET_IFACE (volume);
+
+  if (iface->enumerate_identifiers == NULL)
+    return NULL;
+  
+  return (* iface->enumerate_identifiers) (volume);
+}
+
+
 #define __G_VOLUME_C__
 #include "gioaliasdef.c"

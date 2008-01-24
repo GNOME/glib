@@ -49,6 +49,9 @@ struct _GUnixVolume {
   char *mount_path;
   gboolean can_eject;
 
+  char *identifier;
+  char *identifier_type;
+  
   char *name;
   GIcon *icon;
 };
@@ -77,6 +80,8 @@ g_unix_volume_finalize (GObject *object)
   g_free (volume->name);
   g_free (volume->mount_path);
   g_free (volume->device_path);
+  g_free (volume->identifier);
+  g_free (volume->identifier_type);
 
   if (G_OBJECT_CLASS (g_unix_volume_parent_class)->finalize)
     (*G_OBJECT_CLASS (g_unix_volume_parent_class)->finalize) (object);
@@ -121,6 +126,29 @@ _g_unix_volume_new (GVolumeMonitor  *volume_monitor,
 
   volume->name = g_unix_mount_point_guess_name (mountpoint);
   volume->icon = g_unix_mount_point_guess_icon (mountpoint);
+
+
+  if (strcmp (g_unix_mount_point_get_fs_type (mountpoint), "nfs") == 0)
+    {
+      volume->identifier_type = g_strdup (G_VOLUME_IDENTIFIER_KIND_NFS_MOUNT);
+      volume->identifier = g_strdup (volume->device_path);
+    }
+  else if (g_str_has_prefix (volume->device_path, "LABEL="))
+    {
+      volume->identifier_type = g_strdup (G_VOLUME_IDENTIFIER_KIND_LABEL);
+      volume->identifier = g_strdup (volume->device_path + 6);
+    }
+  else if (g_str_has_prefix (volume->device_path, "UUID="))
+    {
+      volume->identifier_type = g_strdup (G_VOLUME_IDENTIFIER_KIND_UUID);
+      volume->identifier = g_strdup (volume->device_path + 5);
+    }
+  else if (g_path_is_absolute (volume->device_path))
+    {
+      volume->identifier_type = g_strdup (G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE);
+      volume->identifier = g_strdup (volume->device_path);
+    }
+  
   return volume;
 }
 
@@ -402,6 +430,39 @@ g_unix_volume_eject_finish (GVolume        *volume,
   return TRUE;
 }
 
+static char *
+g_unix_volume_get_identifier (GVolume              *volume,
+                              const char          *kind)
+{
+  GUnixVolume *unix_volume = G_UNIX_VOLUME (volume);
+
+  if (strcmp (kind, unix_volume->identifier_type) == 0)
+    return g_strdup (unix_volume->identifier);
+  return NULL;
+}
+
+static char **
+g_unix_volume_enumerate_identifiers (GVolume *volume)
+{
+  GUnixVolume *unix_volume = G_UNIX_VOLUME (volume);
+  char **res;
+
+  if (unix_volume->identifier_type)
+    {
+      res = g_new (char *, 2);
+      res[0] = g_strdup (unix_volume->identifier_type);
+      res[1] = NULL;
+    }
+  else
+    {
+      res = g_new (char *, 1);
+      res[0] = NULL;
+    }
+
+  return res;
+}
+
+
 static void
 g_unix_volume_volume_iface_init (GVolumeIface *iface)
 {
@@ -416,4 +477,6 @@ g_unix_volume_volume_iface_init (GVolumeIface *iface)
   iface->mount_finish = g_unix_volume_mount_finish;
   iface->eject = g_unix_volume_eject;
   iface->eject_finish = g_unix_volume_eject_finish;
+  iface->get_identifier = g_unix_volume_get_identifier;
+  iface->enumerate_identifiers = g_unix_volume_enumerate_identifiers;
 }

@@ -98,6 +98,10 @@ struct _GDriveIface
   gboolean (*poll_for_media_finish)    (GDrive              *drive,
                                         GAsyncResult        *result,
                                         GError             **error);
+
+  char *   (*get_identifier)           (GDrive              *drive,
+					const char          *kind);
+  char **  (*enumerate_identifiers)    (GDrive              *drive);
 };
 
 GType g_drive_get_type                    (void) G_GNUC_CONST;
@@ -126,6 +130,9 @@ void     g_drive_poll_for_media           (GDrive               *drive,
 gboolean g_drive_poll_for_media_finish    (GDrive               *drive,
                                            GAsyncResult         *result,
                                            GError              **error);
+char *   g_drive_get_identifier           (GDrive              *drive,
+					   const char          *kind);
+char **  g_drive_enumerate_identifiers    (GDrive              *drive);
 
 G_END_DECLS
 

@@ -1,5 +1,21 @@
 2008-01-24  Alexander Larsson  <alexl@redhat.com>
 
+        * gdrive.[ch]:
+	Add g_drive_get_identifier and
+        g_drive_enumerate_identifiers
+
+        * gvolume.[ch]:
+        Add g_volume_get_identifier and
+        g_volume_enumerate_identifiers
+	
+        * gio.symbols:
+	Add symbols
+	
+        * gunixvolume.c:
+	Implement identifiers for unix backend
+
+2008-01-24  Alexander Larsson  <alexl@redhat.com>
+
         * gfile.[ch]:
         * gfile.h:
         * gio.symbols:
