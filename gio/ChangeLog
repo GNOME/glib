@@ -1,3 +1,11 @@
+2008-01-24  Alexander Larsson  <alexl@redhat.com>
+
+        * gfile.[ch]:
+        * gfile.h:
+        * gio.symbols:
+	Add g_file_copy_async() (#511580)
+	Based on patch from Carlos Garcia Campos
+
 2008-01-23  Matthias Clasen  <mclasen@redhat.com>
 
 	* gioscheduler.c: Some documentation additions.

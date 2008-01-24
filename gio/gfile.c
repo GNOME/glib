@@ -90,97 +90,108 @@ static void g_file_base_init (gpointer g_class);
 static void g_file_class_init (gpointer g_class,
 			       gpointer class_data);
 
-static void               g_file_real_query_info_async            (GFile                *file,
-								   const char           *attributes,
-								   GFileQueryInfoFlags   flags,
-								   int                   io_priority,
-								   GCancellable         *cancellable,
-								   GAsyncReadyCallback   callback,
-								   gpointer              user_data);
-static GFileInfo *        g_file_real_query_info_finish           (GFile                *file,
-								   GAsyncResult         *res,
-								   GError              **error);
-static void               g_file_real_enumerate_children_async    (GFile                *file,
-								   const char           *attributes,
-								   GFileQueryInfoFlags   flags,
-								   int                   io_priority,
-								   GCancellable         *cancellable,
-								   GAsyncReadyCallback   callback,
-								   gpointer              user_data);
-static GFileEnumerator *  g_file_real_enumerate_children_finish   (GFile                *file,
-								   GAsyncResult         *res,
-								   GError              **error);
-static void               g_file_real_read_async                  (GFile                *file,
-								   int                   io_priority,
-								   GCancellable         *cancellable,
-								   GAsyncReadyCallback   callback,
-								   gpointer              user_data);
-static GFileInputStream * g_file_real_read_finish                 (GFile                *file,
-								   GAsyncResult         *res,
-								   GError              **error);
-static void               g_file_real_append_to_async             (GFile                *file,
-								   GFileCreateFlags      flags,
-								   int                   io_priority,
-								   GCancellable         *cancellable,
-								   GAsyncReadyCallback   callback,
-								   gpointer              user_data);
-static GFileOutputStream *g_file_real_append_to_finish            (GFile                *file,
-								   GAsyncResult         *res,
-								   GError              **error);
-static void               g_file_real_create_async                (GFile                *file,
-								   GFileCreateFlags      flags,
-								   int                   io_priority,
-								   GCancellable         *cancellable,
-								   GAsyncReadyCallback   callback,
-								   gpointer              user_data);
-static GFileOutputStream *g_file_real_create_finish               (GFile                *file,
-								   GAsyncResult         *res,
-								   GError              **error);
-static void               g_file_real_replace_async               (GFile                *file,
-								   const char           *etag,
-								   gboolean              make_backup,
-								   GFileCreateFlags      flags,
-								   int                   io_priority,
-								   GCancellable         *cancellable,
-								   GAsyncReadyCallback   callback,
-								   gpointer              user_data);
-static GFileOutputStream *g_file_real_replace_finish              (GFile                *file,
-								   GAsyncResult         *res,
-								   GError              **error);
-static gboolean           g_file_real_set_attributes_from_info    (GFile                *file,
-								   GFileInfo            *info,
-								   GFileQueryInfoFlags   flags,
-								   GCancellable         *cancellable,
-								   GError              **error);
-static void               g_file_real_set_display_name_async      (GFile                *file,
-								   const char           *display_name,
-								   int                   io_priority,
-								   GCancellable         *cancellable,
-								   GAsyncReadyCallback   callback,
-								   gpointer              user_data);
-static GFile *            g_file_real_set_display_name_finish     (GFile                *file,
-								   GAsyncResult         *res,
-								   GError              **error);
-static void               g_file_real_set_attributes_async        (GFile                *file,
-								   GFileInfo            *info,
-								   GFileQueryInfoFlags   flags,
-								   int                   io_priority,
-								   GCancellable         *cancellable,
-								   GAsyncReadyCallback   callback,
-								   gpointer              user_data);
-static gboolean           g_file_real_set_attributes_finish       (GFile                *file,
-								   GAsyncResult         *res,
-								   GFileInfo           **info,
-								   GError              **error);
-static void               g_file_real_find_enclosing_mount_async  (GFile                *file,
-								   int                   io_priority,
-								   GCancellable         *cancellable,
-								   GAsyncReadyCallback   callback,
-								   gpointer              user_data);
-static GMount *           g_file_real_find_enclosing_mount_finish (GFile                *file,
-								   GAsyncResult         *res,
-								   GError              **error);
-
+static void               g_file_real_query_info_async            (GFile                  *file,
+								   const char             *attributes,
+								   GFileQueryInfoFlags     flags,
+								   int                     io_priority,
+								   GCancellable           *cancellable,
+								   GAsyncReadyCallback     callback,
+								   gpointer                user_data);
+static GFileInfo *        g_file_real_query_info_finish           (GFile                  *file,
+								   GAsyncResult           *res,
+								   GError                **error);
+static void               g_file_real_enumerate_children_async    (GFile                  *file,
+								   const char             *attributes,
+								   GFileQueryInfoFlags     flags,
+								   int                     io_priority,
+								   GCancellable           *cancellable,
+								   GAsyncReadyCallback     callback,
+								   gpointer                user_data);
+static GFileEnumerator *  g_file_real_enumerate_children_finish   (GFile                  *file,
+								   GAsyncResult           *res,
+								   GError                **error);
+static void               g_file_real_read_async                  (GFile                  *file,
+								   int                     io_priority,
+								   GCancellable           *cancellable,
+								   GAsyncReadyCallback     callback,
+								   gpointer                user_data);
+static GFileInputStream * g_file_real_read_finish                 (GFile                  *file,
+								   GAsyncResult           *res,
+								   GError                **error);
+static void               g_file_real_append_to_async             (GFile                  *file,
+								   GFileCreateFlags        flags,
+								   int                     io_priority,
+								   GCancellable           *cancellable,
+								   GAsyncReadyCallback     callback,
+								   gpointer                user_data);
+static GFileOutputStream *g_file_real_append_to_finish            (GFile                  *file,
+								   GAsyncResult           *res,
+								   GError                **error);
+static void               g_file_real_create_async                (GFile                  *file,
+								   GFileCreateFlags        flags,
+								   int                     io_priority,
+								   GCancellable           *cancellable,
+								   GAsyncReadyCallback     callback,
+								   gpointer                user_data);
+static GFileOutputStream *g_file_real_create_finish               (GFile                  *file,
+								   GAsyncResult           *res,
+								   GError                **error);
+static void               g_file_real_replace_async               (GFile                  *file,
+								   const char             *etag,
+								   gboolean                make_backup,
+								   GFileCreateFlags        flags,
+								   int                     io_priority,
+								   GCancellable           *cancellable,
+								   GAsyncReadyCallback     callback,
+								   gpointer                user_data);
+static GFileOutputStream *g_file_real_replace_finish              (GFile                  *file,
+								   GAsyncResult           *res,
+								   GError                **error);
+static gboolean           g_file_real_set_attributes_from_info    (GFile                  *file,
+								   GFileInfo              *info,
+								   GFileQueryInfoFlags     flags,
+								   GCancellable           *cancellable,
+								   GError                **error);
+static void               g_file_real_set_display_name_async      (GFile                  *file,
+								   const char             *display_name,
+								   int                     io_priority,
+								   GCancellable           *cancellable,
+								   GAsyncReadyCallback     callback,
+								   gpointer                user_data);
+static GFile *            g_file_real_set_display_name_finish     (GFile                  *file,
+								   GAsyncResult           *res,
+								   GError                **error);
+static void               g_file_real_set_attributes_async        (GFile                  *file,
+								   GFileInfo              *info,
+								   GFileQueryInfoFlags     flags,
+								   int                     io_priority,
+								   GCancellable           *cancellable,
+								   GAsyncReadyCallback     callback,
+								   gpointer                user_data);
+static gboolean           g_file_real_set_attributes_finish       (GFile                  *file,
+								   GAsyncResult           *res,
+								   GFileInfo             **info,
+								   GError                **error);
+static void               g_file_real_find_enclosing_mount_async  (GFile                  *file,
+								   int                     io_priority,
+								   GCancellable           *cancellable,
+								   GAsyncReadyCallback     callback,
+								   gpointer                user_data);
+static GMount *           g_file_real_find_enclosing_mount_finish (GFile                  *file,
+								   GAsyncResult           *res,
+								   GError                **error);
+static void               g_file_real_copy_async                  (GFile                  *source,
+								   GFile                  *destination,
+								   GFileCopyFlags          flags,
+								   int                     io_priority,
+								   GCancellable           *cancellable,
+								   GFileProgressCallback   progress_callback,
+								   gpointer                progress_callback_data,
+								   GAsyncReadyCallback     callback,
+								   gpointer                user_data);
+static gboolean           g_file_real_copy_finish                 (GFile                  *file,
+								   GAsyncResult           *res,
+								   GError                **error);
 
 GType
 g_file_get_type (void)
@@ -237,6 +248,8 @@ g_file_class_init (gpointer g_class,
   iface->find_enclosing_mount_async = g_file_real_find_enclosing_mount_async;
   iface->find_enclosing_mount_finish = g_file_real_find_enclosing_mount_finish;
   iface->set_attributes_from_info = g_file_real_set_attributes_from_info;
+  iface->copy_async = g_file_real_copy_async;
+  iface->copy_finish = g_file_real_copy_finish;
 }
 
 static void
@@ -2243,6 +2256,87 @@ g_file_copy (GFile                  *source,
 			     error);
 }
 
+/**
+ * g_file_copy_async:
+ * @source: input #GFile.
+ * @destination: destination #GFile
+ * @flags: set of #GFileCopyFlags
+ * @cancellable: optional #GCancellable object, %NULL to ignore.
+ * @progress_callback: function to callback with progress information
+ * @progress_callback_data: user data to pass to @progress_callback
+ * @callback: a #GAsyncReadyCallback to call when the request is satisfied
+ * @user_data: the data to pass to callback function
+ *
+ * Copies the file @source to the location specified by @destination asynchronously.
+ * For details of the behaviour, see g_file_copy().
+ *
+ * If @progress_callback is not %NULL, then that function that will be called
+ * just like in g_file_copy(), however the callback will run in the main loop,
+ * not in the thread that is doing the I/O operation.
+ *
+ * When the operation is finished, @callback will be called. You can then call
+ * g_file_copy_finish() to get the result of the operation.
+ **/
+void
+g_file_copy_async (GFile                  *source,
+		   GFile                  *destination,
+		   GFileCopyFlags          flags,
+		   int                     io_priority,
+		   GCancellable           *cancellable,
+		   GFileProgressCallback   progress_callback,
+		   gpointer                progress_callback_data,
+		   GAsyncReadyCallback     callback,
+		   gpointer                user_data)
+{
+  GFileIface *iface;
+
+  g_return_if_fail (G_IS_FILE (source));
+  g_return_if_fail (G_IS_FILE (destination));
+
+  iface = G_FILE_GET_IFACE (source);
+  (* iface->copy_async) (source,
+			 destination,
+			 flags,
+			 io_priority,
+			 cancellable,
+			 progress_callback,
+			 progress_callback_data,
+			 callback,
+			 user_data);
+}
+
+/**
+ * g_file_copy_finish:
+ * @file: input #GFile.
+ * @res: a #GAsyncResult. 
+ * @error: a #GError, or %NULL
+ * 
+ * Finishes copying the file started with 
+ * g_file_copy_async().
+ * 
+ * Returns: a %TRUE on success, %FALSE on error.
+ **/
+gboolean
+g_file_copy_finish (GFile        *file,
+		    GAsyncResult *res,
+		    GError      **error)
+{
+  GFileIface *iface;
+  
+  g_return_val_if_fail (G_IS_FILE (file), FALSE);
+  g_return_val_if_fail (G_IS_ASYNC_RESULT (res), FALSE);
+
+  if (G_IS_SIMPLE_ASYNC_RESULT (res))
+    {
+      GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
+      
+      if (g_simple_async_result_propagate_error (simple, error))
+	return FALSE;
+    }
+  
+  iface = G_FILE_GET_IFACE (file);
+  return (* iface->copy_finish) (file, res, error);
+}
 
 /**
  * g_file_move:
@@ -4130,6 +4224,145 @@ g_file_real_find_enclosing_mount_finish (GFile         *file,
 
   mount = g_simple_async_result_get_op_res_gpointer (simple);
   return g_object_ref (mount);
+}
+
+
+typedef struct {
+  GFile *source;
+  GFile *destination;
+  GFileCopyFlags flags;
+  GFileProgressCallback progress_cb;
+  gpointer progress_cb_data;
+  GIOSchedulerJob *job;
+} CopyAsyncData;
+
+static void
+copy_async_data_free (CopyAsyncData *data)
+{
+  g_object_unref (data->source);
+  g_object_unref (data->destination);
+  g_free (data);
+}
+
+typedef struct {
+  CopyAsyncData *data;
+  goffset current_num_bytes;
+  goffset total_num_bytes;
+} ProgressData;
+
+static gboolean
+copy_async_progress_in_main (gpointer user_data)
+{
+  ProgressData *progress = user_data;
+  CopyAsyncData *data = progress->data;
+
+  data->progress_cb (progress->current_num_bytes,
+		     progress->total_num_bytes,
+		     data->progress_cb_data);
+
+  return FALSE;
+}
+
+static gboolean
+mainloop_barrier (gpointer user_data)
+{
+  /* Does nothing, but ensures all queued idles before
+     this are run */
+  return FALSE;
+}
+
+
+static void
+copy_async_progress_callback (goffset current_num_bytes,
+			      goffset total_num_bytes,
+			      gpointer user_data)
+{
+  CopyAsyncData *data = user_data;
+  ProgressData *progress;
+
+  progress = g_new (ProgressData, 1);
+  progress->data = data;
+  progress->current_num_bytes = current_num_bytes;
+  progress->total_num_bytes = total_num_bytes;
+  
+  g_io_scheduler_job_send_to_mainloop_async (data->job,
+					     copy_async_progress_in_main,
+					     progress,
+					     g_free);
+}
+
+static void
+copy_async_thread (GIOSchedulerJob *job,
+		   GCancellable *cancellable,
+ 		   gpointer user_data)
+{
+  GSimpleAsyncResult *res;
+  CopyAsyncData *data;
+  gboolean result;
+  GError *error;
+
+  res = user_data;
+  data = g_simple_async_result_get_op_res_gpointer (res);
+
+  error = NULL;
+  data->job = job;
+  result = g_file_copy (data->source,
+			data->destination,
+			data->flags,
+			cancellable,
+			(data->progress_cb != NULL) ? copy_async_progress_callback : NULL,
+			data,
+			&error);
+
+  /* Ensure all progress callbacks are done running in main thread */
+  if (data->progress_cb != NULL)
+    g_io_scheduler_job_send_to_mainloop (job,
+					 mainloop_barrier,
+					 NULL, NULL);
+  
+  if (!result)
+    {
+      g_simple_async_result_set_from_error (res, error);
+      g_error_free (error);
+    }
+
+  g_simple_async_result_complete_in_idle (res);
+}
+
+static void
+g_file_real_copy_async (GFile                  *source,
+			GFile                  *destination,
+			GFileCopyFlags          flags,
+			int                     io_priority,
+			GCancellable           *cancellable,
+			GFileProgressCallback   progress_callback,
+			gpointer                progress_callback_data,
+			GAsyncReadyCallback     callback,
+			gpointer                user_data)
+{
+  GSimpleAsyncResult *res;
+  CopyAsyncData *data;
+
+  data = g_new0 (CopyAsyncData, 1);
+  data->source = g_object_ref (source);
+  data->destination = g_object_ref (destination);
+  data->flags = flags;
+  data->progress_cb = progress_callback;
+  data->progress_cb_data = progress_callback_data;
+
+  res = g_simple_async_result_new (G_OBJECT (source), callback, user_data, g_file_real_copy_async);
+  g_simple_async_result_set_op_res_gpointer (res, data, (GDestroyNotify)copy_async_data_free);
+
+  g_io_scheduler_push_job (copy_async_thread, res, g_object_unref, io_priority, cancellable);
+}
+
+static gboolean
+g_file_real_copy_finish (GFile        *file,
+			 GAsyncResult *res,
+			 GError      **error)
+{
+  /* Error handled in g_file_copy_finish() */
+  return TRUE;
 }
 
 

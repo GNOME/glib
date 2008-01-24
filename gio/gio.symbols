@@ -260,6 +260,8 @@ g_file_set_display_name_finish
 g_file_delete
 g_file_trash
 g_file_copy
+g_file_copy_async
+g_file_copy_finish
 g_file_move
 g_file_make_directory
 g_file_make_symbolic_link

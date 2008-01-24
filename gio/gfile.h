@@ -228,8 +228,8 @@ typedef gboolean (* GFileReadMoreCallback) (const char *file_contents,
  * @_make_symbolic_link_async: Asynchronously makes a symbolic link
  * @_make_symbolic_link_finish: Finishes making a symbolic link asynchronously.
  * @copy: Copies a file.
- * @_copy_async: Asynchronously copies a file.
- * @_copy_finish: Finishes an asynchronous copy operation.
+ * @copy_async: Asynchronously copies a file.
+ * @copy_finish: Finishes an asynchronous copy operation.
  * @move: Moves a file.
  * @_move_async: Asynchronously moves a file. 
  * @_move_finish: Finishes an asynchronous move operation.
@@ -466,8 +466,18 @@ struct _GFileIface
 					     GFileProgressCallback progress_callback,
 					     gpointer              progress_callback_data,
 					     GError              **error);
-  void                (*_copy_async) (void);
-  void                (*_copy_finish) (void);
+  void                (*copy_async)         (GFile                  *source,
+					     GFile                  *destination,
+					     GFileCopyFlags          flags,
+					     int                     io_priority,
+					     GCancellable           *cancellable,
+					     GFileProgressCallback   progress_callback,
+					     gpointer                progress_callback_data,
+					     GAsyncReadyCallback     callback,
+					     gpointer                user_data);
+  gboolean            (*copy_finish)        (GFile                  *file,
+					     GAsyncResult           *res,
+					     GError                **error);
   
   gboolean            (*move)               (GFile                *source,
 					     GFile                *destination,
@@ -684,6 +694,18 @@ gboolean                g_file_copy                       (GFile                
 							   GCancellable               *cancellable,
 							   GFileProgressCallback       progress_callback,
 							   gpointer                    progress_callback_data,
+							   GError                    **error);
+void                    g_file_copy_async                 (GFile                      *source,
+							   GFile                      *destination,
+							   GFileCopyFlags              flags,
+							   int                         io_priority,
+							   GCancellable               *cancellable,
+							   GFileProgressCallback       progress_callback,
+							   gpointer                    progress_callback_data,
+							   GAsyncReadyCallback         callback,
+							   gpointer                    user_data);
+gboolean                g_file_copy_finish                (GFile                      *file,
+							   GAsyncResult               *res,
 							   GError                    **error);
 gboolean                g_file_move                       (GFile                      *source,
 							   GFile                      *destination,
