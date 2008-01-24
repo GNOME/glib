@@ -1,5 +1,10 @@
 2008-01-23  Matthias Clasen  <mclasen@redhat.com>
 
+	* gio/migration.xml: Add something on trash handling
+	and some very sketchy information on gnome_vfs_xfer
+
+2008-01-23  Matthias Clasen  <mclasen@redhat.com>
+
 	* gio/overview.xml: Document environment
 	variables used by GIO.
 
