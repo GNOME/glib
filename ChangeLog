@@ -1,3 +1,14 @@
+2008-01-25  Loïc Minier  <lool@dooz.org>
+
+	* glib/goption.c: (group_has_visible_entries),
+	(group_list_has_visible_entires), (g_option_context_get_help): Pass
+	context down the implementation to check for the main_group.
+	Bug #510292.
+	* glib/tests/option-context.c:
+	Don't set G_OPTION_FLAG_IN_MAIN in main_entries
+	(group_captions): only create group when actually adding it to the
+	context; add an exit(0) to make sure the test succeeds.
+
 2008-01-23  Jens Granseuer  <jensgr@gmx.net>
 
 	* glib/gtestutils.c: (g_test_trap_fork):

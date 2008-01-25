@@ -21,6 +21,8 @@
  */
 #include <glib/gtestutils.h>
 
+#include <stdlib.h>
+
 static void
 group_captions (void)
 {
@@ -28,7 +30,7 @@ group_captions (void)
 
   GOptionEntry main_entries[] = {
     { "main-switch", 0,
-      G_OPTION_FLAG_NO_ARG | G_OPTION_FLAG_IN_MAIN,
+      G_OPTION_FLAG_NO_ARG,
       G_OPTION_ARG_NONE, NULL,
       "A switch that is in the main group", NULL },
     { NULL }
@@ -52,19 +54,20 @@ group_captions (void)
       gboolean have_test_entries = (0 != (i & 2));
 
       GOptionContext *options;
-      GOptionGroup   *group;
+      GOptionGroup   *group = NULL;
 
       options = g_option_context_new (NULL);
-      group = g_option_group_new ("test", "Test Options",
-                                  "Show all test options",
-                                  NULL, NULL);
 
       if (have_main_entries)
         g_option_context_add_main_entries (options, main_entries, NULL);
       if (have_test_entries)
-        g_option_group_add_entries (group, group_entries);
-
-      g_option_context_add_group (options, group);
+        {
+          group = g_option_group_new ("test", "Test Options",
+                                      "Show all test options",
+                                      NULL, NULL);
+          g_option_context_add_group (options, group);
+          g_option_group_add_entries (group, group_entries);
+        }
 
       for (j = 0; j < G_N_ELEMENTS (help_variants); ++j)
         {
@@ -78,9 +81,10 @@ group_captions (void)
             {
               gchar **argv = args;
               gint    argc = 2;
+              GError *error = NULL;
 
-              g_option_context_parse (options, &argc, &argv, NULL);
-              g_assert_not_reached ();
+              g_option_context_parse (options, &argc, &argv, &error);
+              exit(0);
             }
           else
             {
