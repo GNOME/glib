@@ -59,20 +59,60 @@
         The handling of trashed files has been changed in GIO, compared
         to gnome-vfs. gnome-vfs has a home-grown trash implementation that 
         predates the freedesktop.org <ulink url="http://www.freedesktop.org/wiki/Specifications/trash-spec">Desktop Trash Can</ulink> specification
-        that is implemented in GIO.
-      </para>
-      <para>
-        Both systems support a the <filename>trash://</filename> scheme to
-        access a merged view of all trashed files, but the location for 
-        storing trashed files has changed from <filename>$HOME/.Trash</filename>
-        to <filename>$HOME/.local/share/Trash</filename> (or more correctly
-         <filename>$XDG_DATA_HOME/Trash</filename>), which means that 
+        that is implemented in GIO. The location for storing trashed files 
+        has changed from <filename>$HOME/.Trash</filename> to 
+        <filename>$HOME/.local/share/Trash</filename> (or more correctly
+        <filename>$XDG_DATA_HOME/Trash</filename>), which means that 
         there is a need for migrating files that have been trashed by 
         gnome-vfs to the new location.
       </para>
       <para>
+        In gnome-vfs, the <filename>trash://</filename> scheme offering a 
+        merged view of all trash directories was implemented in nautilus,
+        and trash-handling applications had to find and monitor all trash 
+        directories themselves. With GIO, the <filename>trash://</filename>
+        implementation has been moved to gvfs and applications can simply
+        monitor that location:
+      </para>
+<informalexample><programlisting>
+static void
+file_changed (GFileMonitor      *file_monitor,
+              GFile             *child,
+              GFile             *other_file,
+              GFileMonitorEvent  event_type,
+              gpointer           user_data)
+{
+  switch (event_type)
+  {
+  case G_FILE_MONITOR_EVENT_DELETED:
+    g_print ("'%s' removed from trash\n", g_file_get_basename (child));
+    break;
+  case G_FILE_MONITOR_EVENT_CREATED:
+    g_print ("'%s' added to trash\n", g_file_get_basename (child));
+    break;
+  default: ;
+  }
+}
+
+static void
+start_monitoring_trash (void)
+{
+  GFile *file;
+  GFileMonitor *monitor;
+
+  file = g_file_new_for_uri ("trash://");
+  monitor = g_file_monitor_directory (file, 0, NULL, NULL);
+  g_object_unref (file);
+
+  g_signal_connect (monitor, "changed", G_CALLBACK (file_changed), NULL);
+
+  /* ... */
+
+}       
+</programlisting></informalexample> 
+      <para>
         GIO exposes some useful metadata about trashed files. There are
-        trash::orig-path and tash::deletion-date attributes. The 
+        trash::orig-path and trash::deletion-date attributes. The 
         standard::icon attribute of the <filename>trash://</filename> 
         itself provides a suitable icon for displaying the trash can on 
         the desktop. If you are using this icon, make sure to monitor
@@ -97,7 +137,8 @@
       </para>
       <para>
         GIO offers a much simpler I/O scheduler functionality instead, that
-        lets you schedule a function to be called in a separate thread. 
+        lets you schedule a function to be called in a separate thread, or
+        if threads are not available, as an idle in the mainloop.
         See g_io_scheduler_push_job(). 
       </para>
 

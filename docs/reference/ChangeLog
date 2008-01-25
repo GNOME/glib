@@ -1,3 +1,7 @@
+2008-01-24  Matthias Clasen  <mclasen@redhat.com>
+
+	* gio/migration.xml: Some more
+
 2008-01-23  Matthias Clasen  <mclasen@redhat.com>
 
 	* gio/migration.xml: Add something on trash handling
