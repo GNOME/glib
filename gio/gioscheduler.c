@@ -152,45 +152,54 @@ remove_active_job (GIOSchedulerJob *job)
 }
 
 static void
-io_job_thread (gpointer data,
-	       gpointer user_data)
+job_destroy (gpointer data)
 {
   GIOSchedulerJob *job = data;
-
-  if (job->cancellable)
-    g_cancellable_push_current (job->cancellable);
-  job->job_func (job, job->cancellable, job->data);
-  if (job->cancellable)
-    g_cancellable_pop_current (job->cancellable);
 
   if (job->destroy_notify)
     job->destroy_notify (job->data);
 
   remove_active_job (job);
   g_io_job_free (job);
+}
 
+static void
+io_job_thread (gpointer data,
+	       gpointer user_data)
+{
+  GIOSchedulerJob *job = data;
+  gboolean result;
+
+  if (job->cancellable)
+    g_cancellable_push_current (job->cancellable);
+
+  do 
+    {
+      result = job->job_func (job, job->cancellable, job->data);
+    }
+  while (result);
+
+  if (job->cancellable)
+    g_cancellable_pop_current (job->cancellable);
+
+  job_destroy (job);
 }
 
 static gboolean
 run_job_at_idle (gpointer data)
 {
   GIOSchedulerJob *job = data;
+  gboolean result;
 
   if (job->cancellable)
     g_cancellable_push_current (job->cancellable);
   
-  job->job_func (job, job->cancellable, job->data);
+  result = job->job_func (job, job->cancellable, job->data);
   
   if (job->cancellable)
     g_cancellable_pop_current (job->cancellable);
 
-  if (job->destroy_notify)
-    job->destroy_notify (job->data);
-
-  remove_active_job (job);
-  g_io_job_free (job);
-
-  return FALSE;
+  return result;
 }
 
 /**
@@ -249,7 +258,7 @@ g_io_scheduler_push_job (GIOSchedulerJobFunc  job_func,
        */
       job->idle_tag = g_idle_add_full (G_PRIORITY_DEFAULT_IDLE + 1 + io_priority / 10,
 				       run_job_at_idle,
-				       job, NULL);
+				       job, job_destroy);
     }
 }
 

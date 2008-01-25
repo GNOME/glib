@@ -595,10 +595,10 @@ typedef struct {
   GSimpleAsyncThreadFunc func;
 } RunInThreadData;
 
-static void
-run_in_thread (GIOSchedulerJob       *job,
-               GCancellable *c,
-               gpointer      _data)
+static gboolean
+run_in_thread (GIOSchedulerJob *job,
+               GCancellable    *c,
+               gpointer         _data)
 {
   RunInThreadData *data = _data;
   GSimpleAsyncResult *simple = data->simple;
@@ -617,6 +617,8 @@ run_in_thread (GIOSchedulerJob       *job,
   g_simple_async_result_complete_in_idle (data->simple);
   g_object_unref (data->simple);
   g_free (data);
+
+  return FALSE;
 }
 
 /**

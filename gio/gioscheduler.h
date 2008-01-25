@@ -53,10 +53,13 @@ typedef struct _GIOSchedulerJob GIOSchedulerJob;
  *
  * Long-running jobs should periodically check the @cancellable
  * to see if they have been cancelled.
+ *
+ * Returns: %TRUE if this function should be called again to
+ *    complete the job, %FALSE if the job is complete (or cancelled)
  **/
-typedef void (*GIOSchedulerJobFunc) (GIOSchedulerJob *job,
-				     GCancellable    *cancellable,
-				     gpointer         user_data);
+typedef gboolean (*GIOSchedulerJobFunc) (GIOSchedulerJob *job,
+		   		         GCancellable    *cancellable,
+				         gpointer         user_data);
 
 void     g_io_scheduler_push_job                   (GIOSchedulerJobFunc  job_func,
 						    gpointer             user_data,

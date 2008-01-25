@@ -4273,8 +4273,8 @@ mainloop_barrier (gpointer user_data)
 
 
 static void
-copy_async_progress_callback (goffset current_num_bytes,
-			      goffset total_num_bytes,
+copy_async_progress_callback (goffset  current_num_bytes,
+			      goffset  total_num_bytes,
 			      gpointer user_data)
 {
   CopyAsyncData *data = user_data;
@@ -4291,10 +4291,10 @@ copy_async_progress_callback (goffset current_num_bytes,
 					     g_free);
 }
 
-static void
+static gboolean
 copy_async_thread (GIOSchedulerJob *job,
-		   GCancellable *cancellable,
- 		   gpointer user_data)
+		   GCancellable    *cancellable,
+ 		   gpointer         user_data)
 {
   GSimpleAsyncResult *res;
   CopyAsyncData *data;
@@ -4327,6 +4327,8 @@ copy_async_thread (GIOSchedulerJob *job,
     }
 
   g_simple_async_result_complete_in_idle (res);
+
+  return FALSE;
 }
 
 static void
