@@ -1,6 +1,13 @@
 2008-01-25  Alexander Larsson  <alexl@redhat.com>
 
         * gdesktopappinfo.c:
+	Implement changes discussed on xdg list.
+	Now we can add supported mimetypes by just using defaults.list
+	We can also remove associations in defaults.list.
+
+2008-01-25  Alexander Larsson  <alexl@redhat.com>
+
+        * gdesktopappinfo.c:
 	Don't make local copy of desktop file
 	for mimetype changes if the file already
 	supports the new mimetype.

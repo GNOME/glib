@@ -53,6 +53,7 @@
  **/
 
 #define DEFAULT_APPLICATIONS_GROUP  "Default Applications" 
+#define REMOVED_ASSOCIATIONS_GROUP  "Removed Associations" 
 #define MIME_CACHE_GROUP            "MIME Cache"
 
 static void g_desktop_app_info_iface_init (GAppInfoIface *iface);
@@ -79,7 +80,6 @@ struct _GDesktopAppInfo
   GIcon *icon;
   char **only_show_in;
   char **not_show_in;
-  char **mimetypes;
   char *try_exec;
   char *exec;
   char *binary;
@@ -143,7 +143,6 @@ g_desktop_app_info_finalize (GObject *object)
     g_object_unref (info->icon);
   g_strfreev (info->only_show_in);
   g_strfreev (info->not_show_in);
-  g_strfreev (info->mimetypes);
   g_free (info->try_exec);
   g_free (info->exec);
   g_free (info->binary);
@@ -240,7 +239,6 @@ g_desktop_app_info_new_from_filename (const char *filename)
   info->icon_name =  g_key_file_get_locale_string (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_ICON, NULL, NULL);
   info->only_show_in = g_key_file_get_string_list (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_ONLY_SHOW_IN, NULL, NULL);
   info->not_show_in = g_key_file_get_string_list (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_NOT_SHOW_IN, NULL, NULL);
-  info->mimetypes = g_key_file_get_string_list (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_MIME_TYPE, NULL, NULL);
   info->try_exec = try_exec;
   info->exec = g_key_file_get_string (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_EXEC, NULL);
   info->path = g_key_file_get_string (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_PATH, NULL);
@@ -1120,7 +1118,9 @@ ensure_dir (DirType   type,
 static gboolean
 update_default_list (const char  *desktop_id, 
                      const char  *content_type, 
-                     gboolean     add, 
+                     gboolean     add_at_start, 
+                     gboolean     add_at_end, 
+                     gboolean     remove, 
                      GError     **error)
 {
   char *dirname, *filename;
@@ -1132,6 +1132,9 @@ update_default_list (const char  *desktop_id,
   char *data;
   int i, j;
 
+  /* Don't add both at start and end */
+  g_assert (!(add_at_start && add_at_end));
+  
   dirname = ensure_dir (APP_DIR, error);
   if (!dirname)
     return FALSE;
@@ -1147,6 +1150,8 @@ update_default_list (const char  *desktop_id,
       key_file = g_key_file_new ();
     }
 
+  /* Add to the right place in the list */
+  
   length = 0;
   old_list = g_key_file_get_string_list (key_file, DEFAULT_APPLICATIONS_GROUP,
 					 content_type, &length, NULL);
@@ -1154,7 +1159,39 @@ update_default_list (const char  *desktop_id,
   list = g_new (char *, 1 + length + 1);
 
   i = 0;
-  if (add)
+  if (add_at_start)
+    list[i++] = g_strdup (desktop_id);
+  if (old_list)
+    {
+      for (j = 0; old_list[j] != NULL; j++)
+	{
+	  if (strcmp (old_list[j], desktop_id) != 0)
+	    list[i++] = g_strdup (old_list[j]);
+	}
+    }
+  if (add_at_end)
+    list[i++] = g_strdup (desktop_id);
+  list[i] = NULL;
+  
+  g_strfreev (old_list);
+
+  g_key_file_set_string_list (key_file,
+			      DEFAULT_APPLICATIONS_GROUP,
+			      content_type,
+			      (const char * const *)list, i);
+
+  g_strfreev (list);
+
+  /* Remove from removed associations group (unless remove) */
+  
+  length = 0;
+  old_list = g_key_file_get_string_list (key_file, REMOVED_ASSOCIATIONS_GROUP,
+					 content_type, &length, NULL);
+
+  list = g_new (char *, 1 + length + 1);
+
+  i = 0;
+  if (remove)
     list[i++] = g_strdup (desktop_id);
   if (old_list)
     {
@@ -1168,12 +1205,19 @@ update_default_list (const char  *desktop_id,
   
   g_strfreev (old_list);
 
-  g_key_file_set_string_list (key_file,
-			      DEFAULT_APPLICATIONS_GROUP,
-			      content_type,
-			      (const char * const *)list, i);
+  if (list[0] == NULL)
+    g_key_file_remove_key (key_file,
+			   REMOVED_ASSOCIATIONS_GROUP,
+			   content_type,
+			   NULL);
+  else
+    g_key_file_set_string_list (key_file,
+				REMOVED_ASSOCIATIONS_GROUP,
+				content_type,
+				(const char * const *)list, i);
 
   g_strfreev (list);
+
   
   data = g_key_file_to_data (key_file, &data_size, error);
   g_key_file_free (key_file);
@@ -1195,10 +1239,7 @@ g_desktop_app_info_set_as_default_for_type (GAppInfo    *appinfo,
 {
   GDesktopAppInfo *info = G_DESKTOP_APP_INFO (appinfo);
 
-  if (!g_app_info_add_supports_type (appinfo, content_type, error))
-    return FALSE;
-  
-  return update_default_list (info->desktop_id, content_type, TRUE, error);
+  return update_default_list (info->desktop_id, content_type, TRUE, FALSE, FALSE, error);
 }
 
 static void
@@ -1303,86 +1344,19 @@ g_desktop_app_info_set_as_default_for_extension (GAppInfo    *appinfo,
 }
 
 static gboolean
-g_desktop_app_info_supports_mimetype (GDesktopAppInfo *appinfo,
-				      const char *mimetype)
-{
-  int i;
-
-  if (appinfo->mimetypes == NULL)
-    return FALSE;
-
-  for (i = 0; appinfo->mimetypes[i] != NULL; i++)
-    {
-      if (strcmp (appinfo->mimetypes[i], mimetype) == 0)
-	return TRUE;
-    }
-  
-  return FALSE;
-}
-
-static gboolean
 g_desktop_app_info_add_supports_type (GAppInfo    *appinfo,
 				      const char  *content_type,
 				      GError     **error)
 {
   GDesktopAppInfo *info = G_DESKTOP_APP_INFO (appinfo);
-  GKeyFile *keyfile;
-  char *new_mimetypes, *old_mimetypes, *content;
-  char *dirname;
-  char *filename;
 
-  if (g_desktop_app_info_supports_mimetype (info, content_type))
-    return TRUE; /* Already supported */
-  
-  keyfile = g_key_file_new ();
-  if (!g_key_file_load_from_file (keyfile, info->filename,
-				  G_KEY_FILE_KEEP_COMMENTS |
-				  G_KEY_FILE_KEEP_TRANSLATIONS, error))
-    {
-      g_key_file_free (keyfile);
-      return FALSE;
-    }
-
-  old_mimetypes = g_key_file_get_string (keyfile, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_MIME_TYPE, NULL);
-  new_mimetypes = g_strconcat (content_type, ";", old_mimetypes, NULL);
-  g_key_file_set_string (keyfile, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_MIME_TYPE, new_mimetypes);
-  g_free (old_mimetypes);
-  g_free (new_mimetypes);
-
-  content = g_key_file_to_data (keyfile, NULL, NULL);
-  g_key_file_free (keyfile);
-
-  dirname = ensure_dir (APP_DIR, error);
-  if (!dirname)
-    {
-      g_free (content);
-      return FALSE;
-    }
-  
-  filename = g_build_filename (dirname, info->desktop_id, NULL);
-  g_free (dirname);
-  
-  if (!g_file_set_contents (filename, content, -1, error))
-    {
-      g_free (filename);
-      g_free (content);
-      return FALSE;
-    }
-  g_free (filename);
-  g_free (content);
-
-  run_update_command ("update-desktop-database", "applications");
-  return TRUE;
+  return update_default_list (info->desktop_id, content_type, FALSE, TRUE, FALSE, error);
 }
 
 static gboolean
 g_desktop_app_info_can_remove_supports_type (GAppInfo *appinfo)
 {
-  GDesktopAppInfo *info = G_DESKTOP_APP_INFO (appinfo);
-  char *user_dirname;
-  
-  user_dirname = g_build_filename (g_get_user_data_dir (), "applications", NULL);
-  return g_str_has_prefix (info->filename, user_dirname);
+  return TRUE;
 }
 
 static gboolean
@@ -1391,62 +1365,8 @@ g_desktop_app_info_remove_supports_type (GAppInfo    *appinfo,
 					 GError     **error)
 {
   GDesktopAppInfo *info = G_DESKTOP_APP_INFO (appinfo);
-  GKeyFile *keyfile;
-  char *new_mimetypes, *old_mimetypes, *content;
-  char *found;
-  char *filename;
-  char *dirname;
 
-  if (!g_desktop_app_info_supports_mimetype (info, content_type))
-    return TRUE; /* Already not supported */
-  
-  keyfile = g_key_file_new ();
-  if (!g_key_file_load_from_file (keyfile, info->filename,
-				  G_KEY_FILE_KEEP_COMMENTS |
-				  G_KEY_FILE_KEEP_TRANSLATIONS, error))
-    {
-      g_key_file_free (keyfile);
-      return FALSE;
-    }
-
-  old_mimetypes = g_key_file_get_string (keyfile, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_MIME_TYPE, NULL);
-  new_mimetypes = g_strdup (old_mimetypes);
-  found = NULL;
-  if (new_mimetypes)
-    found = strstr (new_mimetypes, content_type);
-  if (found && *(found + strlen (content_type)) == ';')
-    {
-      char *rest = found + strlen (content_type) + 1;
-      memmove (found, rest, strlen (rest) + 1);
-    }
-  g_key_file_set_string (keyfile, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_MIME_TYPE, new_mimetypes);
-  g_free (old_mimetypes);
-  g_free (new_mimetypes);
-
-  content = g_key_file_to_data (keyfile, NULL, NULL);
-  g_key_file_free (keyfile);
-
-  dirname = ensure_dir (APP_DIR, error);
-  if (!dirname)
-    {
-      g_free (content);
-      return FALSE;
-    }
-  
-  filename = g_build_filename (dirname, info->desktop_id, NULL);
-  g_free (dirname);
-  if (!g_file_set_contents (filename, content, -1, error))
-    {
-      g_free (filename);
-      g_free (content);
-      return FALSE;
-    }
-  g_free (filename);
-  g_free (content);
-
-  run_update_command ("update-desktop-database", "applications");
-
-  return update_default_list (info->desktop_id, content_type, FALSE, error);
+  return update_default_list (info->desktop_id, content_type, FALSE, FALSE, TRUE, error);
 }
 
 /**
@@ -1826,6 +1746,7 @@ typedef struct {
   char *path;
   GHashTable *mime_info_cache_map;
   GHashTable *defaults_list_map;
+  GHashTable *defaults_list_removed_map;
   time_t mime_info_cache_timestamp;
   time_t defaults_list_timestamp;
 } MimeInfoCacheDir;
@@ -2010,9 +1931,13 @@ mime_info_cache_dir_init_defaults_list (MimeInfoCacheDir *dir)
   
   if (dir->defaults_list_map != NULL)
     g_hash_table_destroy (dir->defaults_list_map);
-
   dir->defaults_list_map = g_hash_table_new_full (g_str_hash, g_str_equal,
 						  g_free, (GDestroyNotify)g_strfreev);
+  
+  if (dir->defaults_list_removed_map != NULL)
+    g_hash_table_destroy (dir->defaults_list_removed_map);
+  dir->defaults_list_removed_map = g_hash_table_new_full (g_str_hash, g_str_equal,
+							  g_free, (GDestroyNotify)g_strfreev);
 
   key_file = g_key_file_new ();
   
@@ -2033,31 +1958,54 @@ mime_info_cache_dir_init_defaults_list (MimeInfoCacheDir *dir)
     goto error;
 
   mime_types = g_key_file_get_keys (key_file, DEFAULT_APPLICATIONS_GROUP,
-				    NULL, &load_error);
-
-  if (load_error != NULL)
-    goto error;
-
-  for (i = 0; mime_types[i] != NULL; i++)
+				    NULL, NULL);
+  if (mime_types != NULL)
     {
-      desktop_file_ids = g_key_file_get_string_list (key_file,
-						     DEFAULT_APPLICATIONS_GROUP,
-						     mime_types[i],
-						     NULL,
-						     NULL);
-      if (desktop_file_ids == NULL)
-	continue;
-
-      unaliased_type = _g_unix_content_type_unalias (mime_types[i]);
-      g_hash_table_replace (dir->defaults_list_map,
-			    unaliased_type,
-			    desktop_file_ids);
+      for (i = 0; mime_types[i] != NULL; i++)
+	{
+	  desktop_file_ids = g_key_file_get_string_list (key_file,
+							 DEFAULT_APPLICATIONS_GROUP,
+							 mime_types[i],
+							 NULL,
+							 NULL);
+	  if (desktop_file_ids == NULL)
+	    continue;
+	  
+	  unaliased_type = _g_unix_content_type_unalias (mime_types[i]);
+	  g_hash_table_replace (dir->defaults_list_map,
+				unaliased_type,
+				desktop_file_ids);
+	}
+      
+      g_strfreev (mime_types);
     }
 
-  g_strfreev (mime_types);
+  mime_types = g_key_file_get_keys (key_file, REMOVED_ASSOCIATIONS_GROUP,
+				    NULL, NULL);
+  if (mime_types != NULL)
+    {
+      for (i = 0; mime_types[i] != NULL; i++)
+	{
+	  desktop_file_ids = g_key_file_get_string_list (key_file,
+							 REMOVED_ASSOCIATIONS_GROUP,
+							 mime_types[i],
+							 NULL,
+							 NULL);
+	  if (desktop_file_ids == NULL)
+	    continue;
+	  
+	  unaliased_type = _g_unix_content_type_unalias (mime_types[i]);
+	  g_hash_table_replace (dir->defaults_list_removed_map,
+				unaliased_type,
+				desktop_file_ids);
+	}
+      
+      g_strfreev (mime_types);
+    }
+
   g_key_file_free (key_file);
-  
   return;
+  
  error:
   g_free (filename);
   g_key_file_free (key_file);
@@ -2097,6 +2045,12 @@ mime_info_cache_dir_free (MimeInfoCacheDir *dir)
     {
       g_hash_table_destroy (dir->defaults_list_map);
       dir->defaults_list_map = NULL;
+    }
+  
+  if (dir->defaults_list_removed_map != NULL)
+    {
+      g_hash_table_destroy (dir->defaults_list_removed_map);
+      dir->defaults_list_removed_map = NULL;
     }
   
   g_free (dir);
@@ -2246,10 +2200,12 @@ mime_info_cache_reload (const char *dir)
 
 static GList *
 append_desktop_entry (GList      *list, 
-                      const char *desktop_entry)
+                      const char *desktop_entry,
+		      GList      *removed_entries)
 {
   /* Add if not already in list, and valid */
-  if (!g_list_find_custom (list, desktop_entry, (GCompareFunc) strcmp))
+  if (!g_list_find_custom (list, desktop_entry, (GCompareFunc) strcmp) &&
+      !g_list_find_custom (removed_entries, desktop_entry, (GCompareFunc) strcmp))
     list = g_list_prepend (list, g_strdup (desktop_entry));
   
   return list;
@@ -2270,11 +2226,12 @@ append_desktop_entry (GList      *list,
 static GList *
 get_all_desktop_entries_for_mime_type (const char *base_mime_type)
 {
-  GList *desktop_entries, *list, *dir_list, *tmp;
+  GList *desktop_entries, *removed_entries, *list, *dir_list, *tmp;
   MimeInfoCacheDir *dir;
   char *mime_type;
   char **mime_types;
   char **default_entries;
+  char **removed_associations;
   int i,j;
   
   mime_info_cache_init ();
@@ -2282,6 +2239,7 @@ get_all_desktop_entries_for_mime_type (const char *base_mime_type)
   mime_types = _g_unix_content_type_get_parents (base_mime_type);
   G_LOCK (mime_info_cache);
   
+  removed_entries = NULL;
   desktop_entries = NULL;
   for (i = 0; mime_types[i] != NULL; i++)
     {
@@ -2295,7 +2253,11 @@ get_all_desktop_entries_for_mime_type (const char *base_mime_type)
 	  dir = dir_list->data;
 	  default_entries = g_hash_table_lookup (dir->defaults_list_map, mime_type);
 	  for (j = 0; default_entries != NULL && default_entries[j] != NULL; j++)
-	    desktop_entries = append_desktop_entry (desktop_entries, default_entries[j]);
+	    desktop_entries = append_desktop_entry (desktop_entries, default_entries[j], removed_entries);
+
+	  removed_associations = g_hash_table_lookup (dir->defaults_list_removed_map, mime_type);
+	  for (j = 0; removed_associations != NULL && removed_associations[j] != NULL; j++)
+	    removed_entries = append_desktop_entry (removed_entries, removed_associations[j], NULL);
 	}
 
       /* Go through all entries that support the mimetype */
@@ -2307,13 +2269,15 @@ get_all_desktop_entries_for_mime_type (const char *base_mime_type)
 	
 	  list = g_hash_table_lookup (dir->mime_info_cache_map, mime_type);
 	  for (tmp = list; tmp != NULL; tmp = tmp->next)
-	    desktop_entries = append_desktop_entry (desktop_entries, tmp->data);
+	    desktop_entries = append_desktop_entry (desktop_entries, tmp->data, removed_entries);
         }
     }
   
   G_UNLOCK (mime_info_cache);
 
   g_strfreev (mime_types);
+
+  g_list_free (removed_entries);
   
   desktop_entries = g_list_reverse (desktop_entries);
   
