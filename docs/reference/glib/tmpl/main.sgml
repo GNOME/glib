@@ -753,85 +753,53 @@ for dependency reasons.
 <para>
 The #GSourceFuncs struct contains a table of functions used to handle
 event sources in a generic manner.
+</para>
+<para>
+For idle sources, the prepare and check functions always return %TRUE to
+indicate that the source is always ready to be processed.
+The prepare function also returns a timeout value of 0 to ensure that the
+poll() call doesn't block (since that would be time 
+wasted which could have been spent running the idle function).
+</para>
+<para>
+For timeout sources, the prepare and check functions both return %TRUE if the
+timeout interval has expired. The prepare function also returns a timeout 
+value to ensure that the poll() call doesn't block too 
+long and miss the next timeout.
+</para>
+<para>
+For file descriptor sources, the prepare function typically returns %FALSE,
+since it must wait until poll() has been called before 
+it knows whether any events need to be processed. It sets the returned 
+timeout to -1 to indicate that it doesn't mind how long the 
+poll() call blocks.
+In the check function, it tests the results of the poll()
+call to see if the required condition has been met, and returns %TRUE if so.
+</para>
 
-<informaltable pgwide="1" frame="none" role="struct">
-<tgroup cols="2"><colspec colwidth="2*"/><colspec colwidth="8*"/>
-<tbody>
-
-<row>
-<entry>prepare</entry>
-<entry>
-Called before all the file descriptors are polled.
+@prepare: Called before all the file descriptors are polled.
 If the source can determine that it is ready here (without waiting for the
-results of the <function>poll()</function> call) it should return %TRUE.
+results of the poll() call) it should return %TRUE.
 It can also return a @timeout_ value which should be the maximum timeout
-(in milliseconds) which should be passed to the <function>poll()</function> call.
+(in milliseconds) which should be passed to the poll() call.
 The actual timeout used will be -1 if all sources returned -1, or it will
 be the minimum of all the @timeout_ values returned which were >= 0.
-</entry>
-</row>
 
-<row>
-<entry>check</entry>
-<entry>
-Called after all the file descriptors are polled.
+@check: Called after all the file descriptors are polled.
 The source should return %TRUE if it is ready to be dispatched.
 Note that some time may have passed since the previous prepare function was
 called, so the source should be checked again here.
-</entry>
-</row>
 
-<row>
-<entry>dispatch</entry>
-<entry>
-Called to dispatch the event source, after it has returned %TRUE in
+@dispatch: Called to dispatch the event source, after it has returned %TRUE in
 either its @prepare or its @check function. The @dispatch function is
 passed in a callback function and data. The callback function may be
 %NULL if the source was never connected to a callback using
 g_source_set_callback(). The @dispatch function should call the
 callback function with @user_data and whatever additional parameters are
 needed for this type of event source.
-</entry>
-</row>
 
-<row>
-<entry>finalize</entry>
-<entry>
-Called when the source is finalized.
-</entry>
-</row>
-</tbody></tgroup></informaltable>
-</para>
+@finalize: Called when the source is finalized.
 
-<para>
-For idle sources, the prepare and check functions always return %TRUE to
-indicate that the source is always ready to be processed.
-The prepare function also returns a timeout value of 0 to ensure that the
-<function>poll()</function> call doesn't block (since that would be time 
-wasted which could have been spent running the idle function).
-</para>
-<para>
-For timeout sources, the prepare and check functions both return %TRUE if the
-timeout interval has expired. The prepare function also returns a timeout 
-value to ensure that the <function>poll()</function> call doesn't block too 
-long and miss the next timeout.
-</para>
-<para>
-For file descriptor sources, the prepare function typically returns %FALSE,
-since it must wait until <function>poll()</function> has been called before 
-it knows whether any events need to be processed. It sets the returned 
-timeout to -1 to indicate that it doesn't mind how long the 
-<function>poll()</function> call blocks.
-In the check function, it tests the results of the <function>poll()</function>
-call to see if the required condition has been met, and returns %TRUE if so.
-</para>
-
-@prepare: 
-@check: 
-@dispatch: 
-@finalize: 
-@closure_callback: 
-@closure_marshal: 
 
 <!-- ##### STRUCT GSourceCallbackFuncs ##### -->
 <para>
