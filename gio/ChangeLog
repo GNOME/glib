@@ -1,5 +1,10 @@
 2008-01-25  Matthias Clasen  <mclasen@redhat.com>
 
+	* fam/fam-helper.c (fam_event_to_file_monitor_event): Make this
+	build with gcc 3.4  (#509419)
+
+2008-01-25  Matthias Clasen  <mclasen@redhat.com>
+
 	* gfilemonitor.c: Add references to g_file_monitor_file/directory()
 	(#509994, Murray Cumming)
 

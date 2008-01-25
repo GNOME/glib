@@ -42,7 +42,7 @@ struct _fam_sub
 };
 
 static GFileMonitorEvent 
-fam_event_to_file_monitor_event (enum FAMCodes code)
+fam_event_to_file_monitor_event (FAMCodes code)
 {
   switch (code)
     {
