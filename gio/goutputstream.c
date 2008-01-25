@@ -190,7 +190,8 @@ g_output_stream_write (GOutputStream  *stream,
   if (((gssize) count) < 0)
     {
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
-		   _("Too large count value passed to g_output_stream_write"));
+		   _("Too large count value passed to %s"),
+		   G_GNUC_PRETTY_FUNCTION);
       return -1;
     }
 
@@ -644,7 +645,8 @@ g_output_stream_write_async (GOutputStream       *stream,
 					   callback,
 					   user_data,
 					   G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
-					   _("Too large count value passed to g_output_stream_write_async"));
+					   _("Too large count value passed to %s"),
+					   G_GNUC_PRETTY_FUNCTION);
       return;
     }
 

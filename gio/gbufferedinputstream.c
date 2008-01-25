@@ -480,7 +480,8 @@ g_buffered_input_stream_fill_async (GBufferedInputStream *stream,
 					   callback,
 					   user_data,
 					   G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
-					   _("Too large count value passed to g_input_stream_read_async"));
+					   _("Too large count value passed to %s"),
+					   G_GNUC_PRETTY_FUNCTION);
       return;
     }
   

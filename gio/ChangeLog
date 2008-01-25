@@ -1,3 +1,11 @@
+2008-01-25  Matthias Clasen  <mclasen@redhat.com>
+
+	* ginputstream.c:
+	* goutputstream.c:
+	* gbufferedinputstream.c:
+	* glocalfile.c: String improvements.  (#511966, 
+	 Theppitak Karoonboonyanan)
+
 2008-01-24  Matthias Clasen  <mclasen@redhat.com>
 
 	* gioscheduler.h: Expand docs a bit.

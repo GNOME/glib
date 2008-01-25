@@ -1626,7 +1626,7 @@ g_local_file_trash (GFile         *file,
       
       g_set_error (error, G_IO_ERROR,
 		   g_io_error_from_errno (errno),
-		   _("Unable to create trashed file: %s"),
+		   _("Unable to create trashing info file: %s"),
 		   g_strerror (errno));
       return FALSE;
     }

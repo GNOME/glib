@@ -183,7 +183,8 @@ g_input_stream_read  (GInputStream  *stream,
   if (((gssize) count) < 0)
     {
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
-		   _("Too large count value passed to g_input_stream_read"));
+		   _("Too large count value passed to %s"), 
+                   G_GNUC_PRETTY_FUNCTION);
       return -1;
     }
 
@@ -315,7 +316,8 @@ g_input_stream_skip (GInputStream  *stream,
   if (((gssize) count) < 0)
     {
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
-		   _("Too large count value passed to g_input_stream_skip"));
+		   _("Too large count value passed to %s"),
+		   G_GNUC_PRETTY_FUNCTION);
       return -1;
     }
   
@@ -556,7 +558,8 @@ g_input_stream_read_async (GInputStream        *stream,
 					   callback,
 					   user_data,
 					   G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
-					   _("Too large count value passed to g_input_stream_read_async"));
+					   _("Too large count value passed to %s"),
+					   G_GNUC_PRETTY_FUNCTION);
       return;
     }
 
@@ -680,7 +683,8 @@ g_input_stream_skip_async (GInputStream        *stream,
 					   callback,
 					   user_data,
 					   G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
-					   _("Too large count value passed to g_input_stream_skip_async"));
+					   _("Too large count value passed to %s"),
+					   G_GNUC_PRETTY_FUNCTION);
       return;
     }
 
