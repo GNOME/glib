@@ -79,6 +79,7 @@ struct _GDesktopAppInfo
   GIcon *icon;
   char **only_show_in;
   char **not_show_in;
+  char **mimetypes;
   char *try_exec;
   char *exec;
   char *binary;
@@ -142,6 +143,7 @@ g_desktop_app_info_finalize (GObject *object)
     g_object_unref (info->icon);
   g_strfreev (info->only_show_in);
   g_strfreev (info->not_show_in);
+  g_strfreev (info->mimetypes);
   g_free (info->try_exec);
   g_free (info->exec);
   g_free (info->binary);
@@ -238,6 +240,7 @@ g_desktop_app_info_new_from_filename (const char *filename)
   info->icon_name =  g_key_file_get_locale_string (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_ICON, NULL, NULL);
   info->only_show_in = g_key_file_get_string_list (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_ONLY_SHOW_IN, NULL, NULL);
   info->not_show_in = g_key_file_get_string_list (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_NOT_SHOW_IN, NULL, NULL);
+  info->mimetypes = g_key_file_get_string_list (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_MIME_TYPE, NULL, NULL);
   info->try_exec = try_exec;
   info->exec = g_key_file_get_string (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_EXEC, NULL);
   info->path = g_key_file_get_string (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_PATH, NULL);
@@ -1300,6 +1303,24 @@ g_desktop_app_info_set_as_default_for_extension (GAppInfo    *appinfo,
 }
 
 static gboolean
+g_desktop_app_info_supports_mimetype (GDesktopAppInfo *appinfo,
+				      const char *mimetype)
+{
+  int i;
+
+  if (appinfo->mimetypes == NULL)
+    return FALSE;
+
+  for (i = 0; appinfo->mimetypes[i] != NULL; i++)
+    {
+      if (strcmp (appinfo->mimetypes[i], mimetype) == 0)
+	return TRUE;
+    }
+  
+  return FALSE;
+}
+
+static gboolean
 g_desktop_app_info_add_supports_type (GAppInfo    *appinfo,
 				      const char  *content_type,
 				      GError     **error)
@@ -1310,6 +1331,9 @@ g_desktop_app_info_add_supports_type (GAppInfo    *appinfo,
   char *dirname;
   char *filename;
 
+  if (g_desktop_app_info_supports_mimetype (info, content_type))
+    return TRUE; /* Already supported */
+  
   keyfile = g_key_file_new ();
   if (!g_key_file_load_from_file (keyfile, info->filename,
 				  G_KEY_FILE_KEEP_COMMENTS |
@@ -1373,6 +1397,9 @@ g_desktop_app_info_remove_supports_type (GAppInfo    *appinfo,
   char *filename;
   char *dirname;
 
+  if (!g_desktop_app_info_supports_mimetype (info, content_type))
+    return TRUE; /* Already not supported */
+  
   keyfile = g_key_file_new ();
   if (!g_key_file_load_from_file (keyfile, info->filename,
 				  G_KEY_FILE_KEEP_COMMENTS |
