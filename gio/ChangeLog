@@ -1,5 +1,10 @@
 2008-01-25  Matthias Clasen  <mclasen@redhat.com>
 
+	* gfilemonitor.c: Add references to g_file_monitor_file/directory()
+	(#509994, Murray Cumming)
+
+2008-01-25  Matthias Clasen  <mclasen@redhat.com>
+
 	* gioscheduler.h: Make GIOSchedulerJobFunc return boolean
 	* gioscheduler.c: Keep calling io jobs until they return FALSE;
 	this allows big jobs to be executed in chunks, instead of blocking
