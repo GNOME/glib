@@ -1,3 +1,7 @@
+2008-01-24  Matthias Clasen  <mclasen@redhat.com>
+
+	* gioscheduler.h: Expand docs a bit.
+
 2008-01-24  Alexander Larsson  <alexl@redhat.com>
 
         * gdrive.[ch]:

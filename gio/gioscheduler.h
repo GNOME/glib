@@ -45,12 +45,18 @@ typedef struct _GIOSchedulerJob GIOSchedulerJob;
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @user_data: the data to pass to callback function
  * 
- * I/O Job function.
- * 
+ * I/O Job function. 
+ *
+ * Note that depending on whether threads are available, the 
+ * #GIOScheduler may run jobs in separate threads or in an idle 
+ * in the mainloop. 
+ *
+ * Long-running jobs should periodically check the @cancellable
+ * to see if they have been cancelled.
  **/
 typedef void (*GIOSchedulerJobFunc) (GIOSchedulerJob *job,
-				     GCancellable *cancellable,
-				     gpointer user_data);
+				     GCancellable    *cancellable,
+				     gpointer         user_data);
 
 void     g_io_scheduler_push_job                   (GIOSchedulerJobFunc  job_func,
 						    gpointer             user_data,
