@@ -1,3 +1,8 @@
+2008-01-27  Matthias Clasen  <mclasen@redhat.com>
+
+	* configure.in: Fix the pcre Unicode test to work with
+	LDFLAGS=-Wl,--as-needed.  (#484261, Mark Lee)
+
 2008-01-27  Murray Cumming  <murrayc@murrayc.com>
 
 	* gio/gfile.c: (g_file_replace_contents),

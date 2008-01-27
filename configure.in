@@ -2434,8 +2434,8 @@ if test x$enable_regex = xtrue; then
                       libpcre >= $PCRE_REQUIRED_VERSION)
     AC_CACHE_CHECK([for Unicode support in PCRE],glib_cv_pcre_has_unicode,[
                    glib_save_CFLAGS="$CFLAGS"
-                   glib_save_LDFLAGS="$LDFLAGS"
-                   CFLAGS="$CFLAGS $PCRE_CFLAGS" LDFLAGS="$LDFLAGS $PCRE_LIBS"
+                   glib_save_LIBS="$LIBS"
+                   CFLAGS="$CFLAGS $PCRE_CFLAGS" LIBS="$PCRE_LIBS"
                    AC_TRY_RUN([#include <pcre.h>
                                int main () {
                                  int support;
@@ -2451,7 +2451,7 @@ if test x$enable_regex = xtrue; then
                    glib_cv_pcre_has_unicode=no,
                    glib_cv_pcre_has_unicode=yes)
                    CFLAGS="$glib_save_CFLAGS"
-                   LDFLAGS="$glib_save_LDFLAGS"
+                   LIBS="$glib_save_LIBS"
 	])
     if test "$glib_cv_pcre_has_unicode" = "no"; then
       AC_MSG_ERROR([*** The system-supplied PCRE does not support Unicode properties or UTF-8.])
