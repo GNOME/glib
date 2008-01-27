@@ -1,5 +1,10 @@
 2008-01-27  Matthias Clasen  <mclasen@redhat.com>
 
+	* m4macros/glib-gettext.m4: Remove AC_CANONICAL_HOST from
+	GLIB_WITH_NLS again.  (#385132)
+
+2008-01-27  Matthias Clasen  <mclasen@redhat.com>
+
 	* configure.in: Fix the pcre Unicode test to work with
 	LDFLAGS=-Wl,--as-needed.  (#484261, Mark Lee)
 
