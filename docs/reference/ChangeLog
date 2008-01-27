@@ -1,3 +1,8 @@
+2008-01-27  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/tmpl/macros_misc.sgml: Document G_GNUC_(PRETTY)_FUNCTION
+	as deprecated.
+
 2008-01-24  Matthias Clasen  <mclasen@redhat.com>
 
 	* gio/migration.xml: Some more

@@ -1,5 +1,9 @@
 2008-01-27  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gmacros.h: Deprecate G_GNUC_(PRETTY)_FUNCTION.
+
+2008-01-27  Matthias Clasen  <mclasen@redhat.com>
+
 	* m4macros/glib-gettext.m4: Remove AC_CANONICAL_HOST from
 	GLIB_WITH_NLS again.  (#385132)
 

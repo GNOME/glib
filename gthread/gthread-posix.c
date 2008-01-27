@@ -51,7 +51,7 @@
   int error = (err); 							\
   if (error)	 		 		 			\
     g_error ("file %s: line %d (%s): error '%s' during '%s'",		\
-           __FILE__, __LINE__, G_GNUC_PRETTY_FUNCTION,			\
+           __FILE__, __LINE__, __FUNCTION__,				\
            g_strerror (error), name);					\
   }G_STMT_END
 

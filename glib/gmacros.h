@@ -108,6 +108,7 @@
 #define G_GNUC_WARN_UNUSED_RESULT
 #endif /* __GNUC__ */
 
+#ifndef G_DISABLE_DEPRECATED
 /* Wrap the gcc __PRETTY_FUNCTION__ and __FUNCTION__ variables with
  * macros, so we can refer to them as strings unconditionally.
  * usage not-recommended since gcc-3.0
@@ -119,6 +120,7 @@
 #define G_GNUC_FUNCTION         ""
 #define G_GNUC_PRETTY_FUNCTION  ""
 #endif  /* !__GNUC__ */
+#endif  /* !G_DISABLE_DEPRECATED */
 
 #define G_STRINGIFY(macro_or_string)	G_STRINGIFY_ARG (macro_or_string)
 #define	G_STRINGIFY_ARG(contents)	#contents

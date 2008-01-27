@@ -1,5 +1,12 @@
 2008-01-27  Matthias Clasen  <mclasen@redhat.com>
 
+	* gbufferedinputstream.c:
+	* ginputstream.c:
+	* goutputstream.c: Replace uses of G_GNUC_PRETTY_FUNCTION by
+	__FUNCTION__.
+	
+2008-01-27  Matthias Clasen  <mclasen@redhat.com>
+
 	* glocalfile.c: Avoid trivial differences in translatable strings.
 
 2008-01-25  Matthias Clasen  <mclasen@redhat.com>

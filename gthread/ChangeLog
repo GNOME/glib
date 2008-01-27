@@ -1,3 +1,9 @@
+2008-01-27  Matthias Clasen  <mclasen@redhat.com>
+
+	* gthread-posix.c:
+	* gthread-win32.c: Replace uses of G_GNUC_PRETTY_FUNCTION
+	by __FUNCTION__.
+
 2008-01-21  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.15.3 ===

@@ -264,25 +264,21 @@ is ignored. See the GNU C documentation for details.
 
 <!-- ##### MACRO G_GNUC_FUNCTION ##### -->
 <para>
-Expands to the GNU C <literal>__FUNCTION__</literal> variable if the 
-compiler is <command>gcc</command>, or "" if it isn't. The GNU C 
-<literal>__FUNCTION__</literal> variable contains the name of the 
-current function. See the GNU C documentation for details. 
+Expands to "" on all modern compilers, and to <literal>__FUNCTION__</literal>
+on <command>gcc</command> version 2.x. Don't use it.
 </para>
 
+@Deprecated: 2.14
 
 
 <!-- ##### MACRO G_GNUC_PRETTY_FUNCTION ##### -->
 <para>
-Expands to the GNU C <literal>__PRETTY_FUNCTION__</literal> variable 
-if the compiler is <command>gcc</command>, or "" if it isn't.
-The GNU C <literal>__PRETTY_FUNCTION__</literal> variable contains the 
-name of the current function. For a C program this is the same as the 
-<literal>__FUNCTION__</literal> variable but for C++ it also includes 
-extra information such as the class and function prototype. See the 
-GNU C documentation for details. 
+Expands to "" on all modern compilers, and to 
+<literal>__PRETTY_FUNCTION__</literal> on <command>gcc</command> version 2.x. 
+Don't use it.
 </para>
 
+@Deprecated: 2.14
 
 
 <!-- ##### MACRO G_GNUC_NO_INSTRUMENT ##### -->
