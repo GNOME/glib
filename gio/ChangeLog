@@ -1,3 +1,7 @@
+2008-01-27  Matthias Clasen  <mclasen@redhat.com>
+
+	* glocalfile.c: Avoid trivial differences in translatable strings.
+
 2008-01-25  Matthias Clasen  <mclasen@redhat.com>
 
 	* fam/fam-helper.c (fam_event_to_file_monitor_event): Make this

@@ -1836,7 +1836,7 @@ g_local_file_move (GFile                  *source,
 	  g_set_error (error,
 		       G_IO_ERROR,
 		       G_IO_ERROR_EXISTS,
-		       _("Target file already exists"));
+		       _("Target file exists"));
 	  return FALSE;
 	}
     }
