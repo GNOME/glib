@@ -1,3 +1,9 @@
+2008-01-27  Murray Cumming  <murrayc@murrayc.com>
+
+	* gio/gfile.c: (g_file_replace_contents),
+	(g_file_replace_contents_finish): Document that the new_etags output 
+	gchar* should be freed.
+
 2008-01-25  Loïc Minier  <lool@dooz.org>
 
 	* glib/goption.c: (group_has_visible_entries),

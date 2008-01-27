@@ -5021,7 +5021,8 @@ g_file_load_contents_finish (GFile         *file,
  * @make_backup: %TRUE if a backup should be created.
  * @flags: a set of #GFileCreateFlags.
  * @new_etag: a location to a new <link linkend="gfile-etag">entity tag</link>
- *      for the document.
+ *      for the document. This should be freed with g_free() when no longer 
+ *      needed.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @error: a #GError, or %NULL
  *
@@ -5290,7 +5291,8 @@ g_file_replace_contents_async  (GFile               *file,
  * @file: input #GFile.
  * @res: a #GAsyncResult. 
  * @new_etag: a location of a new <link linkend="gfile-etag">entity tag</link> 
- *     for the document.
+ *     for the document. This should be freed with g_free() when it is no 
+ *     longer needed.
  * @error: a #GError, or %NULL 
  * 
  * Finishes an asynchronous replace of the given @file. See
