@@ -1,5 +1,11 @@
 2008-01-27  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/goption.c: (group_list_has_visible_entries):
+	Removed unused variable is_main_group.  (#512381,
+	Wouter Bolsterlee)
+
+2008-01-27  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/gmacros.h: Deprecate G_GNUC_(PRETTY)_FUNCTION.
 
 2008-01-27  Matthias Clasen  <mclasen@redhat.com>

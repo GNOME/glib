@@ -553,7 +553,6 @@ group_list_has_visible_entires (GOptionContext *context,
 {
   while (group_list)
     {
-      gboolean is_main_group = context->main_group == group_list->data;
       if (group_has_visible_entries (context, group_list->data, main_entries))
         return TRUE;
 
