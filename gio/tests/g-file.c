@@ -289,12 +289,13 @@ resolve_arg (const gboolean is_uri_only, const char *arg)
 	
   /*  Test if we get URI string */
   uri = g_file_get_uri (file1);
-  g_assert (uri != NULL);
+  g_assert_cmpstr (uri, !=, NULL);
+  g_print ("%s\n",uri);
 	
   /*  Test if we get correct value of the local path */
   path = g_file_get_path (file1);
   if (is_uri_only) 
-    g_assert (path == NULL);
+    g_assert_cmpstr (path, ==, NULL);
   else
     g_assert (g_path_is_absolute (path) == TRUE);
 
@@ -319,8 +320,10 @@ test_g_file_new_for_commandline_arg (void)
       {"/tmp", 0, FALSE, "file"},
       {"//UTF-8 p\xc5\x99\xc3\xadli\xc5\xa1 \xc5\xbelu\xc5\xa5ou\xc4\x8dk\xc3\xbd k\xc5\xaf\xc5\x88", 0, FALSE, "file"},
       {"file:///UTF-8%20p%C5%99%C3%ADli%C5%A1%20%C5%BElu%C5%A5ou%C4%8Dk%C3%BD%20k%C5%AF%C5%88/", 0, FALSE, "file"},
+#if 0
       {"http://www.gtk.org/", 0, TRUE, "http"},
       {"ftp://user:pass@ftp.gimp.org/", 0, TRUE, "ftp"},
+#endif
     };
   GFile *file;
   char *resolved;
@@ -368,6 +371,7 @@ get_relative_path (const gboolean use_uri, const gboolean should_contain_file, c
   g_assert (file2 != NULL);
   
   contains_file = g_file_contains_file (file1, file2);
+  g_print ("%s %s\n", dir1, dir2);
   g_assert (contains_file == should_contain_file);
 
   relative_path = g_file_get_relative_path (file1, file2);
@@ -412,8 +416,10 @@ test_g_file_contains_file (void)
       {"file:///dir1/dir2", FALSE, TRUE, "file:///dir1/", NULL},
       {"file:////dir1/new", TRUE, TRUE, "file:////dir1/new/dir2/dir3", "dir2/dir3"},
       {"file:///dir/UTF-8%20p%C5%99%C3%ADli%C5%A1%20%C5%BElu%C5%A5ou%C4%8Dk%C3%BD%20k%C5%AF%C5%88", TRUE, TRUE, "file:///dir/UTF-8%20p%C5%99%C3%ADli%C5%A1%20%C5%BElu%C5%A5ou%C4%8Dk%C3%BD%20k%C5%AF%C5%88/dir2", "dir2"},
+#if 0
       {"dav://www.gtk.org/plan/", TRUE, TRUE, "dav://www.gtk.org/plan/meetings/20071218.txt", "meetings/20071218.txt"},
       {"dav://www.gtk.org/plan/meetings", TRUE, TRUE, "dav://www.gtk.org/plan/meetings/20071218.txt", "20071218.txt"},
+#endif
     };
   
   int i;
