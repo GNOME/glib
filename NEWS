@@ -1,3 +1,37 @@
+Overview of Changes from GLib 2.15.3 to GLib 2.15.4
+===================================================
+
+* G_GNUC_PRETTY_FUNCTION has been deprecated
+
+* GIO:
+ - g_file_copy has an async variant now
+ - Drives and volumes now have API to get identifiers
+   like Hal UDIs or UUIDs.
+
+* Bugs fixed:
+  511807 g_time_val_to_iso8601() uses MT-unsafe gmtime() function
+  316260 [patch] Doc patches for gnode (2.8.1)
+  385132 solaris gettext support fix
+  484261 ./configure check for system PCRE unicode support fails w...
+  510292 GOption main help not shown
+  511580 Implement g_file_copy_async
+  511654 Compile errors due to C99 constructs
+  487909 g_utf8_strreverse and combining marks
+  512381 unused variable 'is_main_group' 
+
+* Updated translations:
+  Arabic (ar)
+  Belarusian (be)
+  Czech (cz)
+  Spanish (es)
+  French (fr)
+  Galician (gl)
+  Portugese (pt)
+  Russian (ru)
+  Swedish (sv)
+  Thai (th)
+
+
 Overview of Changes from GLib 2.15.2 to GLib 2.15.3
 ===================================================
 

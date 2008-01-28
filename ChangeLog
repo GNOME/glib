@@ -1,5 +1,9 @@
 2008-01-28  Matthias Clasen  <mclasen@redhat.com>
 
+	* NEWS: Updates
+
+2008-01-28  Matthias Clasen  <mclasen@redhat.com>
+
 	* configure.in: Check for gmtime_r.  
 	* glib/gtimer.c: Use gmtime_r when available.  (#511807,
 	Sebastian Dröge)
