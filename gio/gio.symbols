@@ -486,6 +486,17 @@ g_io_error_from_errno
 g_io_module_get_type  G_GNUC_CONST
 g_io_module_new 
 g_io_modules_load_all_in_directory
+g_io_extension_point_register
+g_io_extension_point_lookup
+g_io_extension_point_set_required_type
+g_io_extension_point_get_required_type
+g_io_extension_point_get_extensions
+g_io_extension_point_get_extension_by_name
+g_io_extension_point_implement
+g_io_extension_get_type
+g_io_extension_get_name
+g_io_extension_get_priority
+g_io_extension_ref_class
 #endif
 #endif
 

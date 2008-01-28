@@ -12,6 +12,8 @@ G_BEGIN_DECLS
 #define G_IS_NATIVE_VOLUME_MONITOR(o)       (G_TYPE_CHECK_INSTANCE_TYPE ((o), G_TYPE_NATIVE_VOLUME_MONITOR))
 #define G_IS_NATIVE_VOLUME_MONITOR_CLASS(k) (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_NATIVE_VOLUME_MONITOR))
 
+#define G_NATIVE_VOLUME_MONITOR_EXTENSION_POINT_NAME "gio-native-volume-monitor"
+
 typedef struct _GNativeVolumeMonitor GNativeVolumeMonitor;
 typedef struct _GNativeVolumeMonitorClass GNativeVolumeMonitorClass;
 

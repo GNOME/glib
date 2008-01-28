@@ -39,6 +39,8 @@ G_BEGIN_DECLS
 #define G_IS_VFS(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), G_TYPE_VFS))
 #define G_IS_VFS_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_VFS))
 
+#define G_VFS_EXTENSION_POINT_NAME "gio-vfs"
+
 /**
  * GVfs:
  * 

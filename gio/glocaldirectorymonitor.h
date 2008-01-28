@@ -36,6 +36,8 @@ G_BEGIN_DECLS
 #define G_IS_LOCAL_DIRECTORY_MONITOR(o)		(G_TYPE_CHECK_INSTANCE_TYPE ((o), G_TYPE_LOCAL_DIRECTORY_MONITOR))
 #define G_IS_LOCAL_DIRECTORY_MONITOR_CLASS(k)	(G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_LOCAL_DIRECTORY_MONITOR))
 
+#define G_LOCAL_DIRECTORY_MONITOR_EXTENSION_POINT_NAME "gio-local-directory-monitor"
+
 typedef struct _GLocalDirectoryMonitor      GLocalDirectoryMonitor;
 typedef struct _GLocalDirectoryMonitorClass GLocalDirectoryMonitorClass;
 
@@ -50,8 +52,6 @@ struct _GLocalDirectoryMonitor
 
 struct _GLocalDirectoryMonitorClass {
   GFileMonitorClass parent_class;
-  gint prio;
-  char *name; /* Not used atm */
   gboolean mount_notify;
   gboolean (*is_supported) (void);
 };

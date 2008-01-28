@@ -112,7 +112,6 @@ g_fam_file_monitor_class_init (GFamFileMonitorClass* klass)
   gobject_class->constructor = g_fam_file_monitor_constructor;
   file_monitor_class->cancel = g_fam_file_monitor_cancel;
 
-  local_file_monitor_class->prio = 10;
   local_file_monitor_class->is_supported = g_fam_file_monitor_is_supported;
 }
 
@@ -144,5 +143,9 @@ void
 g_fam_file_monitor_register (GIOModule *module)
 {
   g_fam_file_monitor_register_type (G_TYPE_MODULE (module));
+  g_io_extension_point_implement (G_LOCAL_FILE_MONITOR_EXTENSION_POINT_NAME,
+				  G_TYPE_FAM_FILE_MONITOR,
+				  "fam",
+				  10);
 }
 

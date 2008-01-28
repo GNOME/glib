@@ -44,7 +44,11 @@ struct _GInotifyFileMonitor
 static gboolean g_inotify_file_monitor_cancel (GFileMonitor* monitor);
 
 #define g_inotify_file_monitor_get_type _g_inotify_file_monitor_get_type
-G_DEFINE_TYPE (GInotifyFileMonitor, g_inotify_file_monitor, G_TYPE_LOCAL_FILE_MONITOR)
+G_DEFINE_TYPE_WITH_CODE (GInotifyFileMonitor, g_inotify_file_monitor, G_TYPE_LOCAL_FILE_MONITOR,
+			 g_io_extension_point_implement (G_LOCAL_FILE_MONITOR_EXTENSION_POINT_NAME,
+							 g_define_type_id,
+							 "inotify",
+							 20))
 
 static void
 g_inotify_file_monitor_finalize (GObject *object)
@@ -135,7 +139,6 @@ g_inotify_file_monitor_class_init (GInotifyFileMonitorClass* klass)
   gobject_class->constructor = g_inotify_file_monitor_constructor;
   file_monitor_class->cancel = g_inotify_file_monitor_cancel;
 
-  local_file_monitor_class->prio = 20;
   local_file_monitor_class->is_supported = g_inotify_file_monitor_is_supported;
 }
 

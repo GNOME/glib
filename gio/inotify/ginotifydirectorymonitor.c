@@ -42,7 +42,11 @@ struct _GInotifyDirectoryMonitor
 static gboolean g_inotify_directory_monitor_cancel (GFileMonitor* monitor);
 
 #define g_inotify_directory_monitor_get_type _g_inotify_directory_monitor_get_type
-G_DEFINE_TYPE (GInotifyDirectoryMonitor, g_inotify_directory_monitor, G_TYPE_LOCAL_DIRECTORY_MONITOR)
+G_DEFINE_TYPE_WITH_CODE (GInotifyDirectoryMonitor, g_inotify_directory_monitor, G_TYPE_LOCAL_DIRECTORY_MONITOR,
+			 g_io_extension_point_implement (G_LOCAL_DIRECTORY_MONITOR_EXTENSION_POINT_NAME,
+							 g_define_type_id,
+							 "inotify",
+							 20))
 
 static void
 g_inotify_directory_monitor_finalize (GObject *object)
@@ -63,8 +67,8 @@ g_inotify_directory_monitor_finalize (GObject *object)
 
 static GObject *
 g_inotify_directory_monitor_constructor (GType type,
-                                    guint n_construct_properties,
-                                    GObjectConstructParam *construct_properties)
+					 guint n_construct_properties,
+					 GObjectConstructParam *construct_properties)
 {
   GObject *obj;
   GInotifyDirectoryMonitorClass *klass;
@@ -116,7 +120,6 @@ g_inotify_directory_monitor_class_init (GInotifyDirectoryMonitorClass* klass)
   gobject_class->constructor = g_inotify_directory_monitor_constructor;
   directory_monitor_class->cancel = g_inotify_directory_monitor_cancel;
 
-  local_directory_monitor_class->prio = 20;
   local_directory_monitor_class->mount_notify = TRUE;
   local_directory_monitor_class->is_supported = g_inotify_directory_monitor_is_supported;
 }

@@ -390,54 +390,14 @@ g_union_volume_monitor_remove_monitor (GUnionVolumeMonitor *union_monitor,
   g_signal_handlers_disconnect_by_func (child_monitor, child_drive_changed, union_monitor);
 }
 
-/* Note: This compares in reverse order.
-   Higher prio -> sort first
- */
-static gint
-compare_monitor_type (gconstpointer  a,
-		      gconstpointer  b,
-		      gpointer       user_data)
-{
-  GType a_type, b_type;
-  char *a_name, *b_name;
-  int a_prio, b_prio;
-  gint res;
-  const char *use_this_monitor;
-  GQuark private_q, name_q;
-
-  private_q = g_quark_from_static_string ("gio-prio");
-  name_q = g_quark_from_static_string ("gio-name");
-  
-  use_this_monitor = user_data;
-  a_type = *(GType *)a;
-  b_type = *(GType *)b;
-  a_prio = GPOINTER_TO_INT (g_type_get_qdata (a_type, private_q));
-  a_name = g_type_get_qdata (a_type, name_q);
-  b_prio = GPOINTER_TO_INT (g_type_get_qdata (b_type, private_q));
-  b_name = g_type_get_qdata (b_type, name_q);
-
-  if (a_type == b_type)
-    res = 0;
-  else if (use_this_monitor != NULL &&
-	   strcmp (a_name, use_this_monitor) == 0)
-    res = -1;
-  else if (use_this_monitor != NULL &&
-	   strcmp (b_name, use_this_monitor) == 0)
-    res = 1;
-  else 
-    res = b_prio - a_prio;
-  
-  return res;
-}
-
 static GType
 get_default_native_class (gpointer data)
 {
   GNativeVolumeMonitorClass *klass, *native_class, **native_class_out;
-  GType *monitors;
-  guint n_monitors;
   const char *use_this;
-  int i;
+  GIOExtensionPoint *ep;
+  GIOExtension *extension;
+  GList *l;
 
   native_class_out = data;
   
@@ -446,28 +406,37 @@ get_default_native_class (gpointer data)
   /* Ensure vfs in modules loaded */
   _g_io_modules_ensure_loaded ();
 
-  monitors = g_type_children (G_TYPE_NATIVE_VOLUME_MONITOR, &n_monitors);
-
-  g_qsort_with_data (monitors,
-                     n_monitors,
-                     sizeof (GType),
-                     compare_monitor_type,
-                     (gpointer)use_this);
+  ep = g_io_extension_point_lookup (G_NATIVE_VOLUME_MONITOR_EXTENSION_POINT_NAME);
 
   native_class = NULL;
-  for (i = 0; i < n_monitors; i++)
-    {    
-      klass = g_type_class_ref (monitors[i]);
-      if (G_VOLUME_MONITOR_CLASS (klass)->is_supported())
+  if (use_this)
+    {
+      extension = g_io_extension_point_get_extension_by_name (ep, use_this);
+      if (extension)
 	{
-	  native_class = klass;
-	  break;
+	  klass = G_NATIVE_VOLUME_MONITOR_CLASS (g_io_extension_ref_class (extension));
+	  if (G_VOLUME_MONITOR_CLASS (klass)->is_supported())
+	    native_class = klass;
+	  else
+	    g_type_class_unref (klass);
 	}
-      else
-	g_type_class_unref (klass);
     }
 
-  g_free (monitors);
+  if (native_class == NULL)
+    {
+      for (l = g_io_extension_point_get_extensions (ep); l != NULL; l = l->next)
+	{
+	  extension = l->data;
+	  klass = G_NATIVE_VOLUME_MONITOR_CLASS (g_io_extension_ref_class (extension));
+	  if (G_VOLUME_MONITOR_CLASS (klass)->is_supported())
+	    {
+	      native_class = klass;
+	      break;
+	    }
+	  else
+	    g_type_class_unref (klass);
+	}
+    }
  
   if (native_class)
     {
@@ -502,11 +471,11 @@ static void
 g_union_volume_monitor_init (GUnionVolumeMonitor *union_monitor)
 {
   GVolumeMonitor *monitor;
-  GType *monitors;
-  guint n_monitors;
   GNativeVolumeMonitorClass *native_class;
   GVolumeMonitorClass *klass;
-  int i;
+  GIOExtensionPoint *ep;
+  GIOExtension *extension;
+  GList *l;
 
   native_class = get_native_class ();
 
@@ -517,26 +486,21 @@ g_union_volume_monitor_init (GUnionVolumeMonitor *union_monitor)
       g_object_unref (monitor);
       g_type_class_unref (native_class);
     }
-  
-  monitors = g_type_children (G_TYPE_VOLUME_MONITOR, &n_monitors);
-  
-  for (i = 0; i < n_monitors; i++)
-    {
-      if (monitors[i] == G_TYPE_UNION_VOLUME_MONITOR ||
-	  g_type_is_a (monitors[i], G_TYPE_NATIVE_VOLUME_MONITOR))
-	continue;
 
-      klass = g_type_class_ref (monitors[i]);
+  ep = g_io_extension_point_lookup (G_VOLUME_MONITOR_EXTENSION_POINT_NAME);
+  for (l = g_io_extension_point_get_extensions (ep); l != NULL; l = l->next)
+    {
+      extension = l->data;
+      
+      klass = G_VOLUME_MONITOR_CLASS (g_io_extension_ref_class (extension));
       if (klass->is_supported == NULL || klass->is_supported())
 	{
-	  monitor = g_object_new (monitors[i], NULL);
+	  monitor = g_object_new (g_io_extension_get_type (extension), NULL);
 	  g_union_volume_monitor_add_monitor (union_monitor, monitor);
 	  g_object_unref (monitor);
 	}
       g_type_class_unref (klass);
     }
-      
-  g_free (monitors);
 }
 
 static GUnionVolumeMonitor *

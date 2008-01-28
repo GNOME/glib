@@ -22,6 +22,8 @@
 
 #include <config.h>
 
+#include <string.h>
+
 #include "giomodule.h"
 #include "giomodule-priv.h"
 #include "glocalfilemonitor.h"
@@ -247,20 +249,30 @@ _g_io_modules_ensure_loaded (void)
 {
   GList *modules, *l;
   static gboolean loaded_dirs = FALSE;
-  int i;
-  GType *types;
-  guint n_types;
-  GQuark private_q, name_q;
+  GIOExtensionPoint *ep;
 
   G_LOCK (loaded_dirs);
 
   if (!loaded_dirs)
     {
       loaded_dirs = TRUE;
-      modules = g_io_modules_load_all_in_directory (GIO_MODULE_DIR);
 
-      private_q = g_quark_from_static_string ("gio-prio");
-      name_q = g_quark_from_static_string ("gio-name");
+      ep = g_io_extension_point_register (G_LOCAL_DIRECTORY_MONITOR_EXTENSION_POINT_NAME);
+      g_io_extension_point_set_required_type (ep, G_TYPE_LOCAL_DIRECTORY_MONITOR);
+      
+      ep = g_io_extension_point_register (G_LOCAL_FILE_MONITOR_EXTENSION_POINT_NAME);
+      g_io_extension_point_set_required_type (ep, G_TYPE_LOCAL_FILE_MONITOR);
+
+      ep = g_io_extension_point_register (G_VOLUME_MONITOR_EXTENSION_POINT_NAME);
+      g_io_extension_point_set_required_type (ep, G_TYPE_VOLUME_MONITOR);
+      
+      ep = g_io_extension_point_register (G_NATIVE_VOLUME_MONITOR_EXTENSION_POINT_NAME);
+      g_io_extension_point_set_required_type (ep, G_TYPE_NATIVE_VOLUME_MONITOR);
+      
+      ep = g_io_extension_point_register (G_VFS_EXTENSION_POINT_NAME);
+      g_io_extension_point_set_required_type (ep, G_TYPE_VFS);
+      
+      modules = g_io_modules_load_all_in_directory (GIO_MODULE_DIR);
 
       /* Initialize types from built-in "modules" */
 #if defined(HAVE_SYS_INOTIFY_H) || defined(HAVE_LINUX_INOTIFY_H)
@@ -271,49 +283,7 @@ _g_io_modules_ensure_loaded (void)
       _g_unix_volume_monitor_get_type ();
 #endif
       _g_local_vfs_get_type ();
-
-      /* Copy over all prios to static gtype data so
-       * we can avoid loading the module again
-       */
-
-      types = g_type_children (G_TYPE_LOCAL_FILE_MONITOR, &n_types);
-      for (i = 0; i < n_types; i++)
-	{
-	  GLocalFileMonitorClass *klass = g_type_class_ref (types[i]);
-	  g_type_set_qdata (types[i], private_q, GINT_TO_POINTER (klass->prio));
-	  g_type_class_unref (klass);
-	}
-      g_free (types);
-
-      types = g_type_children (G_TYPE_LOCAL_DIRECTORY_MONITOR, &n_types);
-      for (i = 0; i < n_types; i++)
-	{
-	  GLocalDirectoryMonitorClass *klass = g_type_class_ref (types[i]);
-	  g_type_set_qdata (types[i], private_q, GINT_TO_POINTER (klass->prio));
-	  g_type_class_unref (klass);
-	}
-      g_free (types);
-
-      types = g_type_children (G_TYPE_NATIVE_VOLUME_MONITOR, &n_types);
-      for (i = 0; i < n_types; i++)
-	{
-	  GNativeVolumeMonitorClass *klass = g_type_class_ref (types[i]);
-	  g_type_set_qdata (types[i], private_q, GINT_TO_POINTER (klass->priority));
-	  g_type_set_qdata (types[i], name_q, g_strdup (klass->name));
-	  g_type_class_unref (klass);
-	}
-      g_free (types);
-      
-      types = g_type_children (G_TYPE_VFS, &n_types);
-      for (i = 0; i < n_types; i++)
-	{
-	  GVfsClass *klass = g_type_class_ref (types[i]);
-	  g_type_set_qdata (types[i], private_q, GINT_TO_POINTER (klass->priority));
-	  g_type_set_qdata (types[i], name_q, g_strdup (klass->name));
-	  g_type_class_unref (klass);
-	}
-      g_free (types);
-      
+    
       for (l = modules; l != NULL; l = l->next)
 	g_type_module_unuse (G_TYPE_MODULE (l->data));
       
@@ -321,6 +291,194 @@ _g_io_modules_ensure_loaded (void)
     }
 
   G_UNLOCK (loaded_dirs);
+}
+
+struct _GIOExtension {
+  char *name;
+  GType type;
+  gint priority;
+};
+
+struct _GIOExtensionPoint {
+  GType required_type;
+  char *name;
+  GList *extensions;
+};
+
+static GHashTable *extension_points = NULL;
+G_LOCK_DEFINE_STATIC(extension_points);
+
+
+static void
+g_io_extension_point_free (GIOExtensionPoint *ep)
+{
+  g_free (ep->name);
+  g_free (ep);
+}
+
+GIOExtensionPoint *
+g_io_extension_point_register (const char *name)
+{
+  GIOExtensionPoint *ep;
+  
+  G_LOCK (extension_points);
+  if (extension_points == NULL)
+    extension_points = g_hash_table_new_full (g_str_hash,
+					      g_str_equal,
+					      NULL,
+					      (GDestroyNotify)g_io_extension_point_free);
+
+  if (g_hash_table_lookup (extension_points, name) != NULL)
+    {
+      g_warning ("Extension point %s registered multiple times", name);
+      G_UNLOCK (extension_points);
+      return NULL;
+    }
+
+  ep = g_new0 (GIOExtensionPoint, 1);
+  ep->name = g_strdup (name);
+  
+  g_hash_table_insert (extension_points, ep->name, ep);
+  
+  G_UNLOCK (extension_points);
+
+  return ep;
+}
+
+GIOExtensionPoint *
+g_io_extension_point_lookup (const char *name)
+{
+  GIOExtensionPoint *ep;
+
+  G_LOCK (extension_points);
+  ep = NULL;
+  if (extension_points != NULL)
+    ep = g_hash_table_lookup (extension_points, name);
+  
+  G_UNLOCK (extension_points);
+
+  return ep;
+  
+}
+
+void
+g_io_extension_point_set_required_type (GIOExtensionPoint *extension_point,
+					GType              type)
+{
+  extension_point->required_type = type;
+}
+
+GType
+g_io_extension_point_get_required_type (GIOExtensionPoint *extension_point)
+{
+  return extension_point->required_type;
+}
+
+GList *
+g_io_extension_point_get_extensions (GIOExtensionPoint *extension_point)
+{
+  return extension_point->extensions;
+}
+
+GIOExtension *
+g_io_extension_point_get_extension_by_name (GIOExtensionPoint *extension_point,
+					    const char        *name)
+{
+  GList *l;
+
+  for (l = extension_point->extensions; l != NULL; l = l->next)
+    {
+      GIOExtension *e = l->data;
+
+      if (e->name != NULL &&
+	  strcmp (e->name, name) == 0)
+	return e;
+    }
+  
+  return NULL;
+}
+
+static gint
+extension_prio_compare (gconstpointer  a,
+			gconstpointer  b)
+{
+  const GIOExtension *extension_a = a, *extension_b = b;
+
+  return extension_b->priority - extension_a->priority;
+}
+
+GIOExtension *
+g_io_extension_point_implement (const char *extension_point_name,
+				GType type,
+				const char *extension_name,
+				gint priority)
+{
+  GIOExtensionPoint *extension_point;
+  GIOExtension *extension;
+  GList *l;
+
+  g_return_val_if_fail (extension_point_name != NULL, NULL);
+
+  extension_point = g_io_extension_point_lookup (extension_point_name);
+  if (extension_point == NULL)
+    {
+      g_warning ("Tried to implement non-registered extension point %s", extension_point_name);
+      return NULL;
+    }
+  
+  if (extension_point->required_type != 0 &&
+      !g_type_is_a (type, extension_point->required_type))
+    {
+      g_warning ("Tried to register an extension of the type %s to extension point %s. "
+		 "Expected type is %s.",
+		 g_type_name (type),
+		 extension_point_name, 
+		 g_type_name (extension_point->required_type));
+      return NULL;
+    }      
+
+  /* Its safe to register the same type multiple times */
+  for (l = extension_point->extensions; l != NULL; l = l->next)
+    {
+      extension = l->data;
+      if (extension->type == type)
+	return extension;
+    }
+  
+  extension = g_slice_new0 (GIOExtension);
+  extension->type = type;
+  extension->name = g_strdup (extension_name);
+  extension->priority = priority;
+  
+  extension_point->extensions = g_list_insert_sorted (extension_point->extensions,
+						      extension, extension_prio_compare);
+  
+  return extension;
+}
+
+GTypeClass *
+g_io_extension_ref_class (GIOExtension *extension)
+{
+  return g_type_class_ref (extension->type);
+}
+
+
+GType
+g_io_extension_get_type (GIOExtension *extension)
+{
+  return extension->type;
+}
+
+const char *
+g_io_extension_get_name (GIOExtension *extension)
+{
+  return extension->name;
+}
+
+gint
+g_io_extension_get_priority (GIOExtension *extension)
+{
+  return extension->priority;
 }
 
 #define __G_IO_MODULE_C__

@@ -34,6 +34,8 @@ G_BEGIN_DECLS
 #define G_IS_LOCAL_FILE_MONITOR(o)		(G_TYPE_CHECK_INSTANCE_TYPE ((o), G_TYPE_LOCAL_FILE_MONITOR))
 #define G_IS_LOCAL_FILE_MONITOR_CLASS(k)	(G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_LOCAL_FILE_MONITOR))
 
+#define G_LOCAL_FILE_MONITOR_EXTENSION_POINT_NAME "gio-local-file-monitor"
+
 typedef struct _GLocalFileMonitor      GLocalFileMonitor;
 typedef struct _GLocalFileMonitorClass GLocalFileMonitorClass;
 
@@ -45,8 +47,6 @@ struct _GLocalFileMonitor
 
 struct _GLocalFileMonitorClass {
   GFileMonitorClass parent_class;
-  gint prio;
-  char *name; /* Not used atm */
   gboolean (*is_supported) (void);
 };
 

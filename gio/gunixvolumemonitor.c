@@ -57,7 +57,11 @@ static void update_volumes           (GUnixVolumeMonitor *monitor);
 static void update_mounts            (GUnixVolumeMonitor *monitor);
 
 #define g_unix_volume_monitor_get_type _g_unix_volume_monitor_get_type
-G_DEFINE_TYPE (GUnixVolumeMonitor, g_unix_volume_monitor, G_TYPE_NATIVE_VOLUME_MONITOR);
+G_DEFINE_TYPE_WITH_CODE (GUnixVolumeMonitor, g_unix_volume_monitor, G_TYPE_NATIVE_VOLUME_MONITOR,
+                         g_io_extension_point_implement (G_NATIVE_VOLUME_MONITOR_EXTENSION_POINT_NAME,
+							 g_define_type_id,
+							 "unix",
+							 0));
 
 static void
 g_unix_volume_monitor_finalize (GObject *object)
@@ -168,8 +172,6 @@ g_unix_volume_monitor_class_init (GUnixVolumeMonitorClass *klass)
   monitor_class->get_mount_for_uuid = get_mount_for_uuid;
   monitor_class->is_supported = is_supported;
 
-  native_class->priority = 0;
-  native_class->name = "unix";
   native_class->get_mount_for_mount_path = get_mount_for_mount_path;
 }
 

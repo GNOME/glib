@@ -1,3 +1,24 @@
+2008-01-28  Alexander Larsson  <alexl@redhat.com>
+
+        * giomodule.[ch]:
+        * gio.symbols:
+	Add registration hooks for extension points.
+	Register the gio extension points.
+	
+        * fam/gfamdirectorymonitor.c:
+        * fam/gfamfilemonitor.c:
+        * glocaldirectorymonitor.[ch]:
+        * glocalfilemonitor.[ch]:
+        * gnativevolumemonitor.h:
+        * gunionvolumemonitor.c:
+        * gunixvolumemonitor.c:
+        * gvfs.[ch]:
+        * gvolumemonitor.h:
+        * inotify/ginotifydirectorymonitor.c:
+        * inotify/ginotifyfilemonitor.c:
+	Use the extension points registration instead
+	of g_type_children().
+
 2008-01-28  Matthias Clasen  <mclasen@redhat.com>
 	
 	* gdrive.[hc]: 

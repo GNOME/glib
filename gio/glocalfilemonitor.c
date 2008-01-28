@@ -129,52 +129,27 @@ static void g_local_file_monitor_class_init (GLocalFileMonitorClass *klass)
                                                         G_PARAM_STATIC_NAME|G_PARAM_STATIC_NICK|G_PARAM_STATIC_BLURB));
 }
 
-static gint
-_compare_monitor_type_by_prio (gconstpointer _a,
-			       gconstpointer _b,
-			       gpointer      user_data)
-{
-  const GType *a = _a, *b = _b;
-  int prio_a, prio_b;
-  gint ret;
-  GQuark private_q;
-
-  private_q = g_quark_from_static_string ("gio-prio");
-
-  prio_a = GPOINTER_TO_INT (g_type_get_qdata (*a, private_q));
-  prio_b = GPOINTER_TO_INT (g_type_get_qdata (*b, private_q));
-
-  ret = prio_b - prio_a;
-
-  return ret;
-}
-
 static gpointer
 get_default_local_file_monitor (gpointer data)
 {
-  GType *monitor_impls;
-  guint n_monitor_impls;
-  gint i;
   GLocalFileMonitorClass *chosen_class;
   GLocalFileMonitorClass **ret = data;
+  GIOExtensionPoint *ep;
+  GList *extensions, *l;
 
   _g_io_modules_ensure_loaded ();
+
+  ep = g_io_extension_point_lookup (G_LOCAL_FILE_MONITOR_EXTENSION_POINT_NAME);
+
+  extensions = g_io_extension_point_get_extensions (ep);
   
-  monitor_impls = g_type_children (G_TYPE_LOCAL_FILE_MONITOR,
-                                   &n_monitor_impls);
-
-  g_qsort_with_data (monitor_impls,
-                     n_monitor_impls,
-                     sizeof (GType),
-                     _compare_monitor_type_by_prio,
-                     NULL);
-
   chosen_class = NULL;
-  for (i = 0; i < n_monitor_impls; i++)
-    {    
+  for (l = extensions; l != NULL; l = l->next)
+    {
+      GIOExtension *extension = l->data;
       GLocalFileMonitorClass *klass;
       
-      klass = G_LOCAL_FILE_MONITOR_CLASS (g_type_class_ref (monitor_impls[i]));
+      klass = G_LOCAL_FILE_MONITOR_CLASS (g_io_extension_ref_class (extension));
       
       if (klass->is_supported ())
 	{
@@ -184,8 +159,6 @@ get_default_local_file_monitor (gpointer data)
       else
 	g_type_class_unref (klass);
     }
-
-  g_free (monitor_impls);
   
   if (chosen_class)
     {

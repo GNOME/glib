@@ -210,36 +210,48 @@ compare_vfs_type (gconstpointer  a,
 static gpointer
 get_default_vfs (gpointer arg)
 {
-  GType *vfs_impls;
-  int i;
-  guint n_vfs_impls;
   const char *use_this;
   GVfs *vfs;
+  GList *l;
+  GIOExtensionPoint *ep;
+  GIOExtension *extension;
+  
 
   use_this = g_getenv ("GIO_USE_VFS");
   
   /* Ensure vfs in modules loaded */
   _g_io_modules_ensure_loaded ();
 
-  vfs_impls = g_type_children (G_TYPE_VFS, &n_vfs_impls);
+  ep = g_io_extension_point_lookup (G_VFS_EXTENSION_POINT_NAME);
 
-  g_qsort_with_data (vfs_impls, n_vfs_impls, sizeof (GType),
-		     compare_vfs_type, (gpointer)use_this);
-  
-  for (i = 0; i < n_vfs_impls; i++)
+  if (use_this)
     {
-      vfs = g_object_new (vfs_impls[i], NULL);
+      extension = g_io_extension_point_get_extension_by_name (ep, use_this);
+      if (extension)
+	{
+	  vfs = g_object_new (g_io_extension_get_type (extension), NULL);
+	  
+	  if (g_vfs_is_active (vfs))
+	    return vfs;
+	  
+	  g_object_unref (vfs);
+	}
+    }
+
+  for (l = g_io_extension_point_get_extensions (ep); l != NULL; l = l->next)
+    {
+      extension = l->data;
+
+      vfs = g_object_new (g_io_extension_get_type (extension), NULL);
 
       if (g_vfs_is_active (vfs))
-	break;
+	return vfs;
 
       g_object_unref (vfs);
-      vfs = NULL;
     }
   
-  g_free (vfs_impls);
 
-  return vfs;
+  return NULL;
 }
 
 /**

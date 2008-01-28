@@ -47,10 +47,31 @@ G_BEGIN_DECLS
 typedef struct _GIOModule GIOModule;
 typedef struct _GIOModuleClass GIOModuleClass;
 
+typedef struct _GIOExtensionPoint GIOExtensionPoint;
+typedef struct _GIOExtension GIOExtension;
+
 GType      g_io_module_get_type (void) G_GNUC_CONST;
 GIOModule *g_io_module_new      (const gchar *filename);
 
-GList *    g_io_modules_load_all_in_directory (const char *dirname);
+GList *g_io_modules_load_all_in_directory            (const char *dirname);
+
+GIOExtensionPoint *g_io_extension_point_register              (const char        *extension_point);
+GIOExtensionPoint *g_io_extension_point_lookup                (const char        *extension_point);
+void               g_io_extension_point_set_required_type     (GIOExtensionPoint *extension_point,
+							       GType              type);
+GType              g_io_extension_point_get_required_type     (GIOExtensionPoint *extension_point);
+GList             *g_io_extension_point_get_extensions        (GIOExtensionPoint *extension_point);
+GIOExtension *     g_io_extension_point_get_extension_by_name (GIOExtensionPoint *extension_point,
+							       const char        *name);
+GIOExtension *     g_io_extension_point_implement             (const char        *extension_point_name,
+							       GType              type,
+							       const char        *extension_name,
+							       gint               priority);
+
+GType                   g_io_extension_get_type     (GIOExtension *extension);
+const char *            g_io_extension_get_name     (GIOExtension *extension);
+gint                    g_io_extension_get_priority (GIOExtension *extension);
+GTypeClass*             g_io_extension_ref_class    (GIOExtension *extension);
 
 /* API for the modules to implement */
 /**
