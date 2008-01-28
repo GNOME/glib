@@ -420,9 +420,20 @@ g_volume_eject_finish (GVolume  *volume,
   return (* iface->eject_finish) (volume, result, error);
 }
 
+/**
+ * g_volume_get_identifier:
+ * @volume: a #GVolume
+ * @kind: the kind of identifier to return
+ *
+ * Gets the identifier of the given kind for @volume.
+ *
+ * Returns: a newly allocated string containing the
+ *   requested identfier, or %NULL if the #GVolume
+ *   doesn't have this kind of identifier
+ */
 char *
-g_volume_get_identifier (GVolume              *volume,
-			 const char          *kind)
+g_volume_get_identifier (GVolume    *volume,
+			 const char *kind)
 {
   GVolumeIface *iface;
 
@@ -437,6 +448,17 @@ g_volume_get_identifier (GVolume              *volume,
   return (* iface->get_identifier) (volume, kind);
 }
 
+/**
+ * g_volume_enumerate_identifiers:
+ * @volume: a #GVolume
+ *
+ * Gets the kinds of identifiers that @volume has. 
+ * Use g_volume_get_identifer() to obtain the identifiers
+ * themselves.
+ *
+ * Returns: a %NULL-terminated array of strings containing
+ *   kinds of identifiers. Use g_strfreev() to free.
+ */
 char **
 g_volume_enumerate_identifiers (GVolume *volume)
 {

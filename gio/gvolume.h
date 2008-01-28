@@ -62,6 +62,10 @@ G_BEGIN_DECLS
  * @mount_finish: Finishes a mount operation.
  * @eject: Ejects a given #GVolume.
  * @eject_finish: Finishes an eject operation.
+ * @get_identifier: Returns the identifier of the given kind, or %NULL if 
+ *    the #GVolume doesn't have one.
+ * @enumerate_identifiers: Returns an array strings listing the kinds
+ *    of identifiers which the #GVolume has.
  * 
  * Interface for implementing operations for mountable volumes.
  **/
