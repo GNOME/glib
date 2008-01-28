@@ -1,6 +1,11 @@
 2008-01-27  Matthias Clasen  <mclasen@redhat.com>
 
-	* glib/goption.c: (group_list_has_visible_entries):
+	* glib/gutf8.c (g_utf8_strreverse): Document limitations
+	of this function.  (#487909, Peter Moulder)
+
+2008-01-27  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/goption.c (group_list_has_visible_entries):
 	Removed unused variable is_main_group.  (#512381,
 	Wouter Bolsterlee)
 

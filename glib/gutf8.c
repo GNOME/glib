@@ -1773,6 +1773,12 @@ g_unichar_validate (gunichar ch)
  * (Use g_utf8_validate() on all text before trying to use UTF-8 
  * utility functions with it.)
  *
+ * This function is intended for programmatic uses of reversed strings.
+ * It pays no attention to decomposed characters, combining marks, byte 
+ * order marks, directional indicators (LRM, LRO, etc) and similar 
+ * characters which might need special handling when reversing a string 
+ * for display purposes.
+ *
  * Note that unlike g_strreverse(), this function returns
  * newly-allocated memory, which should be freed with g_free() when
  * no longer needed. 
