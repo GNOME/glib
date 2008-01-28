@@ -1,3 +1,11 @@
+2008-01-28  Alexander Larsson  <alexl@redhat.com>
+
+        * glocalvfs.c:
+	Register local vfs with prio 0.
+	
+        * gvfs.h:
+	Remove old name and prio class members
+
 2008-01-28  Matthias Clasen  <mclasen@redhat.com>
 
 	* tests/g-file.c: Disable some tests that are failing in

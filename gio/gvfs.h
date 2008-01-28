@@ -57,9 +57,6 @@ struct _GVfsClass
 {
   GObjectClass parent_class;
 
-  const char *name;
-  int priority;
-  
   /* Virtual Table */
 
   gboolean             (*is_active)                 (GVfs *vfs);

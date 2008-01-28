@@ -43,8 +43,11 @@ struct _GLocalVfsClass
 };
 
 #define g_local_vfs_get_type _g_local_vfs_get_type
-G_DEFINE_TYPE (GLocalVfs, g_local_vfs, G_TYPE_VFS)
- 
+G_DEFINE_TYPE_WITH_CODE (GLocalVfs, g_local_vfs, G_TYPE_VFS,
+			 g_io_extension_point_implement (G_VFS_EXTENSION_POINT_NAME,
+							 g_define_type_id,
+							 "local",
+							 0))
 static void
 g_local_vfs_finalize (GObject *object)
 {
@@ -189,9 +192,6 @@ g_local_vfs_class_init (GLocalVfsClass *class)
 
   vfs_class = G_VFS_CLASS (class);
 
-  vfs_class->name = "local";
-  vfs_class->priority = 0;
-  
   vfs_class->is_active = g_local_vfs_is_active;
   vfs_class->get_file_for_path = g_local_vfs_get_file_for_path;
   vfs_class->get_file_for_uri = g_local_vfs_get_file_for_uri;
