@@ -1,3 +1,7 @@
+2008-01-28  Matthias Clasen  <mclasen@redhat.com>
+
+	* gfile.c (g_file_copy_async): Fix docs
+
 2008-01-27  Matthias Clasen  <mclasen@redhat.com>
 
 	* gbufferedinputstream.c:

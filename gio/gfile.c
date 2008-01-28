@@ -2261,14 +2261,16 @@ g_file_copy (GFile                  *source,
  * @source: input #GFile.
  * @destination: destination #GFile
  * @flags: set of #GFileCopyFlags
+ * @io_priority: the <link linkend="io-priority">I/O priority</link> 
+ *     of the request. 
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @progress_callback: function to callback with progress information
  * @progress_callback_data: user data to pass to @progress_callback
  * @callback: a #GAsyncReadyCallback to call when the request is satisfied
  * @user_data: the data to pass to callback function
  *
- * Copies the file @source to the location specified by @destination asynchronously.
- * For details of the behaviour, see g_file_copy().
+ * Copies the file @source to the location specified by @destination 
+ * asynchronously. For details of the behaviour, see g_file_copy().
  *
  * If @progress_callback is not %NULL, then that function that will be called
  * just like in g_file_copy(), however the callback will run in the main loop,
