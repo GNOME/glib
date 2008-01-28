@@ -402,16 +402,24 @@ gchar *
 g_time_val_to_iso8601 (GTimeVal *time_)
 {
   gchar *retval;
-
+#ifdef HAVE_GMTIME_R
+  struct tm tm_;
+#endif
+  
   g_return_val_if_fail (time_->tv_usec >= 0 && time_->tv_usec < G_USEC_PER_SEC, NULL);
 
 #define ISO_8601_LEN 	21
 #define ISO_8601_FORMAT "%Y-%m-%dT%H:%M:%SZ"
   retval = g_new0 (gchar, ISO_8601_LEN + 1);
-  
+
   strftime (retval, ISO_8601_LEN,
 	    ISO_8601_FORMAT,
-	    gmtime (&(time_->tv_sec)));
+#ifdef HAVE_GMTIME_R
+	    gmtime_r (&(time_->tv_sec), &tm_)
+#else
+	    gmtime (&(time_->tv_sec))
+#endif
+            );
   
   return retval;
 }
