@@ -43,10 +43,19 @@ void g_node_pop_allocator  (void)           { /* present for binary compat only 
 #define g_node_free(node)       g_slice_free (GNode, node)
 
 /* --- functions --- */
+/**
+ * g_node_new:
+ * @data: the data of the new node
+ *
+ * Creates a new #GNode containing the given data.
+ * Used to create the first node in a tree.
+ *
+ * Returns: a new #GNode
+ */
 GNode*
 g_node_new (gpointer data)
 {
-  GNode *node = g_node_alloc0();
+  GNode *node = g_node_alloc0 ();
   node->data = data;
   return node;
 }
@@ -64,6 +73,13 @@ g_nodes_free (GNode *node)
     }
 }
 
+/**
+ * g_node_destroy:
+ * @root: the root of the tree/subtree to destroy
+ *
+ * Removes @root and its children from the tree, freeing any memory
+ * allocated.
+ */
 void
 g_node_destroy (GNode *root)
 {
@@ -75,6 +91,12 @@ g_node_destroy (GNode *root)
   g_nodes_free (root);
 }
 
+/**
+ * g_node_unlink:
+ * @node: the #GNode to unlink, which becomes the root of a new tree
+ *
+ * Unlinks a #GNode from a tree, resulting in two separate trees.
+ */
 void
 g_node_unlink (GNode *node)
 {
@@ -132,6 +154,15 @@ g_node_copy_deep (GNode     *node,
   return new_node;
 }
 
+/**
+ * g_node_copy:
+ * @node: a #GNode
+ *
+ * Recursively copies a #GNode (but does not deep-copy the data inside the 
+ * nodes, see g_node_copy_deep() if you need that).
+ *
+ * Returns: a new #GNode containing the same data pointers
+ */
 GNode*
 g_node_copy (GNode *node)
 {
@@ -150,6 +181,17 @@ g_node_copy (GNode *node)
   return new_node;
 }
 
+/**
+ * g_node_insert:
+ * @parent: the #GNode to place @node under
+ * @position: the position to place @node at, with respect to its siblings
+ *     If position is -1, @node is inserted as the last child of @parent
+ * @node: the #GNode to insert
+ *
+ * Inserts a #GNode beneath the parent at the given position.
+ *
+ * Returns: the inserted #GNode
+ */
 GNode*
 g_node_insert (GNode *parent,
 	       gint   position,
@@ -169,6 +211,17 @@ g_node_insert (GNode *parent,
     return g_node_append (parent, node);
 }
 
+/**
+ * g_node_insert_before:
+ * @parent: the #GNode to place @node under
+ * @sibling: the sibling #GNode to place @node before. 
+ *     If sibling is %NULL, the node is inserted as the last child of @parent.
+ * @node: the #GNode to insert
+ *
+ * Inserts a #GNode beneath the parent before the given sibling.
+ *
+ * Returns: the inserted #GNode
+ */
 GNode*
 g_node_insert_before (GNode *parent,
 		      GNode *sibling,
@@ -215,6 +268,17 @@ g_node_insert_before (GNode *parent,
   return node;
 }
 
+/**
+ * g_node_insert_after:
+ * @parent: the #GNode to place @node under
+ * @sibling: the sibling #GNode to place @node after. 
+ *     If sibling is %NULL, the node is inserted as the first child of @parent.
+ * @node: the #GNode to insert
+ *
+ * Inserts a #GNode beneath the parent after the given sibling.
+ *
+ * Returns: the inserted #GNode
+ */
 GNode*
 g_node_insert_after (GNode *parent,
 		     GNode *sibling,
@@ -251,6 +315,15 @@ g_node_insert_after (GNode *parent,
   return node;
 }
 
+/**
+ * g_node_prepend:
+ * @parent: the #GNode to place the new #GNode under
+ * @node: the #GNode to insert
+ *
+ * Inserts a #GNode as the first child of the given parent.
+ *
+ * Returns: the inserted #GNode
+ */
 GNode*
 g_node_prepend (GNode *parent,
 		GNode *node)
@@ -260,6 +333,14 @@ g_node_prepend (GNode *parent,
   return g_node_insert_before (parent, parent->children, node);
 }
 
+/**
+ * g_node_get_root:
+ * @node: a #GNode
+ *
+ * Gets the root of a tree.
+ *
+ * Returns: the root of the tree
+ */
 GNode*
 g_node_get_root (GNode *node)
 {
@@ -271,6 +352,17 @@ g_node_get_root (GNode *node)
   return node;
 }
 
+/**
+ * g_node_is_ancestor:
+ * @node: a #GNode
+ * @descendant: a #GNode
+ *
+ * Returns %TRUE if @node is an ancestor of @descendant.
+ * This is true if node is the parent of @descendant, 
+ * or if node is the grandparent of @descendant etc.
+ *
+ * Returns: %TRUE if @node is an ancestor of @descendant
+ */
 gboolean
 g_node_is_ancestor (GNode *node,
 		    GNode *descendant)
@@ -289,13 +381,21 @@ g_node_is_ancestor (GNode *node,
   return FALSE;
 }
 
-/* returns 1 for root, 2 for first level children,
- * 3 for children's children...
+/**
+ * g_node_depth:
+ * @node: a #GNode
+ *
+ * Gets the depth of a #GNode.
+ *
+ * If @node is %NULL the depth is 0. The root node has a depth of 1.
+ * For the children of the root node the depth is 2. And so on.
+ *
+ * Returns: the depth of the #GNode
  */
 guint
 g_node_depth (GNode *node)
 {
-  register guint depth = 0;
+  guint depth = 0;
   
   while (node)
     {
@@ -306,6 +406,13 @@ g_node_depth (GNode *node)
   return depth;
 }
 
+/**
+ * g_node_reverse_children:
+ * @node: a #GNode.
+ *
+ * Reverses the order of the children of a #GNode.
+ * (It doesn't change the order of the grandchildren.)
+ */
 void
 g_node_reverse_children (GNode *node)
 {
@@ -326,11 +433,23 @@ g_node_reverse_children (GNode *node)
   node->children = last;
 }
 
+/**
+ * g_node_max_height:
+ * @root: a #GNode
+ *
+ * Gets the maximum height of all branches beneath a #GNode.
+ * This is the maximum distance from the #GNode to all leaf nodes.
+ *
+ * If @root is %NULL, 0 is returned. If @root has no children, 
+ * 1 is returned. If @root has children, 2 is returned. And so on.
+ *
+ * Returns: the maximum height of the tree beneath @root
+ */
 guint
 g_node_max_height (GNode *root)
 {
-  register GNode *child;
-  register guint max_height = 0;
+  GNode *child;
+  guint max_height = 0;
   
   if (!root)
     return 0;
@@ -338,7 +457,7 @@ g_node_max_height (GNode *root)
   child = root->children;
   while (child)
     {
-      register guint tmp_height;
+      guint tmp_height;
       
       tmp_height = g_node_max_height (child);
       if (tmp_height > max_height)
@@ -366,7 +485,7 @@ g_node_traverse_pre_order (GNode	    *node,
       child = node->children;
       while (child)
 	{
-	  register GNode *current;
+	  GNode *current;
 	  
 	  current = child;
 	  child = current->next;
@@ -403,7 +522,7 @@ g_node_depth_traverse_pre_order (GNode		  *node,
       child = node->children;
       while (child)
 	{
-	  register GNode *current;
+	  GNode *current;
 	  
 	  current = child;
 	  child = current->next;
@@ -431,7 +550,7 @@ g_node_traverse_post_order (GNode	     *node,
       child = node->children;
       while (child)
 	{
-	  register GNode *current;
+	  GNode *current;
 	  
 	  current = child;
 	  child = current->next;
@@ -468,7 +587,7 @@ g_node_depth_traverse_post_order (GNode		   *node,
 	  child = node->children;
 	  while (child)
 	    {
-	      register GNode *current;
+	      GNode *current;
 	      
 	      current = child;
 	      child = current->next;
@@ -498,7 +617,7 @@ g_node_traverse_in_order (GNode		   *node,
   if (node->children)
     {
       GNode *child;
-      register GNode *current;
+      GNode *current;
       
       child = node->children;
       current = child;
@@ -539,7 +658,7 @@ g_node_depth_traverse_in_order (GNode		 *node,
       if (depth)
 	{
 	  GNode *child;
-	  register GNode *current;
+	  GNode *current;
 	  
 	  child = node->children;
 	  current = child;
@@ -575,9 +694,9 @@ static gboolean
 g_node_traverse_level (GNode		 *node,
 		       GTraverseFlags	  flags,
 		       guint		  level,
-		       GNodeTraverseFunc func,
-		       gpointer	  data,
-		       gboolean         *more_levels)
+		       GNodeTraverseFunc  func,
+		       gpointer	          data,
+		       gboolean          *more_levels)
 {
   if (level == 0) 
     {
@@ -608,11 +727,11 @@ g_node_traverse_level (GNode		 *node,
 }
 
 static gboolean
-g_node_depth_traverse_level (GNode		 *node,
-			     GTraverseFlags	  flags,
-			     guint		  depth,
-			     GNodeTraverseFunc func,
-			     gpointer	  data)
+g_node_depth_traverse_level (GNode             *node,
+			     GTraverseFlags	flags,
+			     guint		depth,
+			     GNodeTraverseFunc  func,
+			     gpointer	        data)
 {
   guint level;
   gboolean more_levels;
@@ -630,6 +749,24 @@ g_node_depth_traverse_level (GNode		 *node,
   return FALSE;
 }
 
+/**
+ * g_node_traverse:
+ * @root: the root #GNode of the tree to traverse
+ * @order: the order in which nodes are visited - %G_IN_ORDER, 
+ *     %G_PRE_ORDER, %G_POST_ORDER, or %G_LEVEL_ORDER.
+ * @flags: which types of children are to be visited, one of 
+ *     %G_TRAVERSE_ALL, %G_TRAVERSE_LEAVES and %G_TRAVERSE_NON_LEAVES
+ * @max_depth: the maximum depth of the traversal. Nodes below this
+ *     depth will not be visited. If max_depth is -1 all nodes in 
+ *     the tree are visited. If depth is 1, only the root is visited. 
+ *     If depth is 2, the root and its children are visited. And so on.
+ * @func: the function to call for each visited #GNode
+ * @data: user data to pass to the function
+ *
+ * Traverses a tree starting at the given root #GNode.
+ * It calls the given function for each node visited.
+ * The traversal can be halted at any point by returning %TRUE from @func.
+ */
 void
 g_node_traverse (GNode		  *root,
 		 GTraverseType	   order,
@@ -671,10 +808,10 @@ g_node_traverse (GNode		  *root,
 }
 
 static gboolean
-g_node_find_func (GNode	  *node,
-		  gpointer data)
+g_node_find_func (GNode	   *node,
+		  gpointer  data)
 {
-  register gpointer *d = data;
+  gpointer *d = data;
   
   if (*d != node->data)
     return FALSE;
@@ -684,11 +821,24 @@ g_node_find_func (GNode	  *node,
   return TRUE;
 }
 
+/**
+ * g_node_find:
+ * @root: the root #GNode of the tree to search
+ * @order: the order in which nodes are visited - %G_IN_ORDER, 
+ *     %G_PRE_ORDER, %G_POST_ORDER, or %G_LEVEL_ORDER
+ * @flags: which types of children are to be searched, one of 
+ *     %G_TRAVERSE_ALL, %G_TRAVERSE_LEAVES and %G_TRAVERSE_NON_LEAVES
+ * @data: the data to find
+ *
+ * Finds a #GNode in a tree.
+ *
+ * Returns: the found #GNode, or %NULL if the data is not found
+ */
 GNode*
-g_node_find (GNode	       *root,
-	     GTraverseType	order,
-	     GTraverseFlags	flags,
-	     gpointer		data)
+g_node_find (GNode	    *root,
+	     GTraverseType   order,
+	     GTraverseFlags  flags,
+	     gpointer        data)
 {
   gpointer d[2];
   
@@ -727,9 +877,19 @@ g_node_count_func (GNode	 *node,
     (*n)++;
 }
 
+/**
+ * g_node_n_nodes:
+ * @root: a #GNode
+ * @flags: which types of children are to be counted, one of 
+ *     %G_TRAVERSE_ALL, %G_TRAVERSE_LEAVES and %G_TRAVERSE_NON_LEAVES
+ *
+ * Gets the number of nodes in a tree.
+ *
+ * Returns: the number of nodes in the tree
+ */
 guint
-g_node_n_nodes (GNode	      *root,
-		GTraverseFlags flags)
+g_node_n_nodes (GNode	       *root,
+		GTraverseFlags  flags)
 {
   guint n = 0;
   
@@ -741,6 +901,14 @@ g_node_n_nodes (GNode	      *root,
   return n;
 }
 
+/**
+ * g_node_last_child:
+ * @node: a #GNode (must not be %NULL)
+ *
+ * Gets the last child of a #GNode.
+ *
+ * Returns: the last child of @node, or %NULL if @node has no children
+ */
 GNode*
 g_node_last_child (GNode *node)
 {
@@ -754,6 +922,17 @@ g_node_last_child (GNode *node)
   return node;
 }
 
+/**
+ * g_node_nth_child:
+ * @node: a #GNode
+ * @n: the index of the desired child
+ *
+ * Gets a child of a #GNode, using the given index.
+ * The first child is at index 0. If the index is 
+ * too big, %NULL is returned.
+ *
+ * Returns: the child of @node at index @n
+ */
 GNode*
 g_node_nth_child (GNode *node,
 		  guint	 n)
@@ -768,6 +947,14 @@ g_node_nth_child (GNode *node,
   return node;
 }
 
+/**
+ * g_node_n_children:
+ * @node: a #GNode
+ *
+ * Gets the number of children of a #GNode.
+ *
+ * Returns: the number of children of @node
+ */
 guint
 g_node_n_children (GNode *node)
 {
@@ -785,10 +972,21 @@ g_node_n_children (GNode *node)
   return n;
 }
 
+/**
+ * g_node_find_child:
+ * @node: a #GNode
+ * @flags: which types of children are to be searched, one of 
+ *     %G_TRAVERSE_ALL, %G_TRAVERSE_LEAVES and %G_TRAVERSE_NON_LEAVES
+ * @data: the data to find
+ *
+ * Finds the first child of a #GNode with the given data.
+ *
+ * Returns: the found child #GNode, or %NULL if the data is not found
+ */
 GNode*
-g_node_find_child (GNode	 *node,
-		   GTraverseFlags flags,
-		   gpointer	  data)
+g_node_find_child (GNode	  *node,
+		   GTraverseFlags  flags,
+		   gpointer	   data)
 {
   g_return_val_if_fail (node != NULL, NULL);
   g_return_val_if_fail (flags <= G_TRAVERSE_MASK, NULL);
@@ -815,11 +1013,22 @@ g_node_find_child (GNode	 *node,
   return NULL;
 }
 
+/**
+ * g_node_child_position:
+ * @node: a #GNode
+ * @child: a child of @node
+ *
+ * Gets the position of a #GNode with respect to its siblings.
+ * @child must be a child of @node. The first child is numbered 0, 
+ * the second 1, and so on.
+ *
+ * Returns: the position of @child with respect to its siblings
+ */
 gint
 g_node_child_position (GNode *node,
 		       GNode *child)
 {
-  register guint n = 0;
+  guint n = 0;
   
   g_return_val_if_fail (node != NULL, -1);
   g_return_val_if_fail (child != NULL, -1);
@@ -837,11 +1046,22 @@ g_node_child_position (GNode *node,
   return -1;
 }
 
+/**
+ * g_node_child_index:
+ * @node: a #GNode
+ * @data: the data to find
+ *
+ * Gets the position of the first child of a #GNode 
+ * which contains the given data.
+ *
+ * Returns: the index of the child of @node which contains 
+ *     @data, or -1 if the data is not found
+ */
 gint
-g_node_child_index (GNode   *node,
-		    gpointer data)
+g_node_child_index (GNode    *node,
+		    gpointer  data)
 {
-  register guint n = 0;
+  guint n = 0;
   
   g_return_val_if_fail (node != NULL, -1);
   
@@ -857,6 +1077,15 @@ g_node_child_index (GNode   *node,
   return -1;
 }
 
+/**
+ * g_node_first_sibling:
+ * @node: a #GNode
+ *
+ * Gets the first sibling of a #GNode.
+ * This could possibly be the node itself.
+ *
+ * Returns: the first sibling of @node
+ */
 GNode*
 g_node_first_sibling (GNode *node)
 {
@@ -871,6 +1100,15 @@ g_node_first_sibling (GNode *node)
   return node;
 }
 
+/**
+ * g_node_last_sibling:
+ * @node: a #GNode
+ *
+ * Gets the last sibling of a #GNode.
+ * This could possibly be the node itself.
+ *
+ * Returns: the last sibling of @node
+ */
 GNode*
 g_node_last_sibling (GNode *node)
 {
@@ -882,11 +1120,22 @@ g_node_last_sibling (GNode *node)
   return node;
 }
 
+/**
+ * g_node_children_foreach:
+ * @node: a #GNode
+ * @flags: which types of children are to be visited, one of 
+ *     %G_TRAVERSE_ALL, %G_TRAVERSE_LEAVES and %G_TRAVERSE_NON_LEAVES
+ * @func: the function to call for each visited node
+ * @data: user data to pass to the function
+ *
+ * Calls a function for each of the children of a #GNode.
+ * Note that it doesn't descend beneath the child nodes.
+ */
 void
-g_node_children_foreach (GNode		 *node,
-			 GTraverseFlags	  flags,
-			 GNodeForeachFunc func,
-			 gpointer	  data)
+g_node_children_foreach (GNode		  *node,
+			 GTraverseFlags	   flags,
+			 GNodeForeachFunc  func,
+			 gpointer	   data)
 {
   g_return_if_fail (node != NULL);
   g_return_if_fail (flags <= G_TRAVERSE_MASK);
@@ -895,7 +1144,7 @@ g_node_children_foreach (GNode		 *node,
   node = node->children;
   while (node)
     {
-      register GNode *current;
+      GNode *current;
       
       current = node;
       node = current->next;

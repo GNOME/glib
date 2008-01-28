@@ -1,5 +1,9 @@
 2008-01-27  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/tmpl/trees-nary.sgml: Move docs inline
+
+2008-01-27  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/tmpl/macros_misc.sgml: Document G_GNUC_(PRETTY)_FUNCTION
 	as deprecated.
 

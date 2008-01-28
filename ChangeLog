@@ -1,5 +1,9 @@
 2008-01-27  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gnode.[hc]: Move docs inline.  (#316260, Philippe Blain)
+
+2008-01-27  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/gutf8.c (g_utf8_strreverse): Document limitations
 	of this function.  (#487909, Peter Moulder)
 

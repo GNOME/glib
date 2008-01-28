@@ -57,6 +57,19 @@ typedef gboolean	(*GNodeTraverseFunc)	(GNode	       *node,
 						 gpointer	data);
 typedef void		(*GNodeForeachFunc)	(GNode	       *node,
 						 gpointer	data);
+
+/**
+ * GCopyFunc:
+ * @src: A pointer to the data which should be copied
+ * @data: Additional data
+ *
+ * A function of this signature is used to copy the node data 
+ * when doing a deep-copy of a tree.
+ *
+ * Returns: A pointer to the copy
+ *
+ * Since: 2.4
+ */
 typedef gpointer	(*GCopyFunc)            (gconstpointer  src,
                                                  gpointer       data);
 
@@ -71,9 +84,28 @@ struct _GNode
   GNode	  *children;
 };
 
+/**
+ * G_NODE_IS_ROOT:
+ * @node: a #GNode
+ *
+ * Returns %TRUE if a #GNode is the root of a tree.
+ *
+ * Returns: %TRUE if the #GNode is the root of a tree 
+ *     (i.e. it has no parent or siblings)
+ */
 #define	 G_NODE_IS_ROOT(node)	(((GNode*) (node))->parent == NULL && \
 				 ((GNode*) (node))->prev == NULL && \
 				 ((GNode*) (node))->next == NULL)
+
+/**
+ * G_NODE_IS_LEAF:
+ * @node: a #GNode
+ *
+ * Returns %TRUE if a #GNode is a leaf node.
+ *
+ * Returns: %TRUE if the #GNode is a leaf node 
+ *     (i.e. it has no children)
+ */
 #define	 G_NODE_IS_LEAF(node)	(((GNode*) (node))->children == NULL)
 
 GNode*	 g_node_new		(gpointer	   data);
@@ -106,14 +138,66 @@ GNode*	 g_node_find		(GNode		  *root,
 				 gpointer	   data);
 
 /* convenience macros */
+/**
+ * g_node_append:
+ * @parent: the #GNode to place the new #GNode under
+ * @node: the #GNode to insert
+ *
+ * Inserts a #GNode as the last child of the given parent.
+ *
+ * Returns: the inserted #GNode
+ */
 #define g_node_append(parent, node)				\
      g_node_insert_before ((parent), NULL, (node))
+
+/**
+ * g_node_insert_data:
+ * @parent: the #GNode to place the new #GNode under
+ * @position: the position to place the new #GNode at. If position is -1, 
+ *     the new #GNode is inserted as the last child of @parent
+ * @data: the data for the new #GNode
+ *
+ * Inserts a new #GNode at the given position.
+ *
+ * Returns: the new #GNode
+ */
 #define	g_node_insert_data(parent, position, data)		\
      g_node_insert ((parent), (position), g_node_new (data))
+
+/**
+ * g_node_insert_data_before:
+ * @parent: the #GNode to place the new #GNode under
+ * @sibling: the sibling #GNode to place the new #GNode before
+ * @data: the data for the new #GNode
+ *
+ * Inserts a new #GNode before the given sibling.
+ *
+ * Returns: the new #GNode
+ */
 #define	g_node_insert_data_before(parent, sibling, data)	\
      g_node_insert_before ((parent), (sibling), g_node_new (data))
+
+/**
+ * g_node_prepend_data:
+ * @parent: the #GNode to place the new #GNode under
+ * @data: the data for the new #GNode
+ *
+ * Inserts a new #GNode as the first child of the given parent.
+ *
+ * Returns: the new #GNode
+ */
 #define	g_node_prepend_data(parent, data)			\
      g_node_prepend ((parent), g_node_new (data))
+
+/**
+ * g_node_append_data:
+ * @parent: the #GNode to place the new #GNode under
+ * @data: the data for the new #GNode
+ *
+ * Inserts a new #GNode as the last child of the given parent.
+ *
+ * Returns: the new #GNode
+ */
 #define	g_node_append_data(parent, data)			\
      g_node_insert_before ((parent), NULL, g_node_new (data))
 
@@ -156,10 +240,37 @@ gint	 g_node_child_index	 (GNode		  *node,
 GNode*	 g_node_first_sibling	 (GNode		  *node);
 GNode*	 g_node_last_sibling	 (GNode		  *node);
 
+/**
+ * g_node_prev_sibling:
+ * @node: a #GNode
+ *
+ * Gets the previous sibling of a #GNode.
+ *
+ * Returns: the previous sibling of @node, or %NULL if @node is %NULL
+ */
 #define	 g_node_prev_sibling(node)	((node) ? \
 					 ((GNode*) (node))->prev : NULL)
+
+/**
+ * g_node_next_sibling:
+ * @node: a #GNode
+ *
+ * Gets the next sibling of a #GNode.
+ *
+ * Returns: the next sibling of @node, or %NULL if @node is %NULL
+ */
 #define	 g_node_next_sibling(node)	((node) ? \
 					 ((GNode*) (node))->next : NULL)
+
+/**
+ * g_node_first_child:
+ * @node: a #GNode
+ *
+ * Gets the first child of a #GNode.
+ *
+ * Returns: the first child of @node, or %NULL if @node is %NULL 
+ *     or has no children
+ */
 #define	 g_node_first_child(node)	((node) ? \
 					 ((GNode*) (node))->children : NULL)
 
