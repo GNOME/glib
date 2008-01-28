@@ -1,5 +1,6 @@
 2008-01-28  Matthias Clasen  <mclasen@redhat.com>
 	
+	* gdrive.[hc]: 
 	* gvolume.[hc]: Document new API. 
 
 	* gfile.c (g_file_copy_async): Fix docs

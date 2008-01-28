@@ -59,6 +59,11 @@ G_BEGIN_DECLS
  * @eject_finish: Finishes an eject operation.
  * @poll_for_media: Poll for media insertion/removal on a #GDrive.
  * @poll_for_media_finish: Finishes a media poll operation.
+ * @get_identifier: Returns the identifier of the given kind, or %NULL if 
+ *    the #GDrive doesn't have one.
+ * @enumerate_identifiers: Returns an array strings listing the kinds
+ *    of identifiers which the #GDrive has.
+ *
  * 
  * Interface for creating #GDrive implementations.
  */ 

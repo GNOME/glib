@@ -474,9 +474,20 @@ g_drive_poll_for_media_finish (GDrive        *drive,
   return (* iface->poll_for_media_finish) (drive, result, error);
 }
 
+/**
+ * g_drive_get_identifier:
+ * @drive: a #GDrive
+ * @kind: the kind of identifier to return
+ *
+ * Gets the identifier of the given kind for @drive.
+ *
+ * Returns: a newly allocated string containing the
+ *   requested identfier, or %NULL if the #GDrive
+ *   doesn't have this kind of identifier
+ */
 char *
-g_drive_get_identifier (GDrive              *drive,
-			const char          *kind)
+g_drive_get_identifier (GDrive     *drive,
+			const char *kind)
 {
   GDriveIface *iface;
 
@@ -491,6 +502,17 @@ g_drive_get_identifier (GDrive              *drive,
   return (* iface->get_identifier) (drive, kind);
 }
 
+/**
+ * g_drive_enumerate_identifiers:
+ * @drive: a #GDrive
+ *
+ * Gets the kinds of identifiers that @drive has. 
+ * Use g_drive_get_identifer() to obtain the identifiers
+ * themselves.
+ *
+ * Returns: a %NULL-terminated array of strings containing
+ *   kinds of identifiers. Use g_strfreev() to free.
+ */
 char **
 g_drive_enumerate_identifiers (GDrive *drive)
 {
