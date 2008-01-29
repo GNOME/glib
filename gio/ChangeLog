@@ -1,5 +1,14 @@
 2008-01-29  Alexander Larsson  <alexl@redhat.com>
 
+        * gdesktopappinfo.c:
+	Lazily create the desktop files for appinfos created
+	by g_app_info_create_from_commandline() when needed
+	for mime associations. This allows run-time use
+	of GAppInfo object without creating unnecessary
+	files on disk.
+
+2008-01-29  Alexander Larsson  <alexl@redhat.com>
+
         * gio.symbols:
 	Added new symbols to gio.symbols
 

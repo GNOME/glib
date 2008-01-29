@@ -56,10 +56,11 @@
 #define REMOVED_ASSOCIATIONS_GROUP  "Removed Associations" 
 #define MIME_CACHE_GROUP            "MIME Cache"
 
-static void g_desktop_app_info_iface_init (GAppInfoIface *iface);
-
-static GList *get_all_desktop_entries_for_mime_type (const char *base_mime_type);
-static void mime_info_cache_reload (const char *dir);
+static void     g_desktop_app_info_iface_init         (GAppInfoIface    *iface);
+static GList *  get_all_desktop_entries_for_mime_type (const char       *base_mime_type);
+static void     mime_info_cache_reload                (const char       *dir);
+static gboolean g_desktop_app_info_ensure_saved       (GDesktopAppInfo  *info,
+						       GError          **error);
 
 /**
  * GDesktopAppInfo:
@@ -164,6 +165,22 @@ g_desktop_app_info_init (GDesktopAppInfo *local)
 {
 }
 
+static char *
+binary_from_exec (const char *exec)
+{
+  char *p, *start;
+  
+  p = exec;
+  while (*p == ' ')
+    p++;
+  start = p;
+  while (*p != ' ' && *p != 0)
+    p++;
+  
+  return g_strndup (start, p - start);
+  
+}
+
 /**
  * g_desktop_app_info_new_from_filename:
  * @filename: a string containing a file name.
@@ -264,18 +281,7 @@ g_desktop_app_info_new_from_filename (const char *filename)
     }
   
   if (info->exec)
-    {
-      char *p, *start;
-
-      p = info->exec;
-      while (*p == ' ')
-	p++;
-      start = p;
-      while (*p != ' ' && *p != 0)
-	p++;
-      
-      info->binary = g_strndup (start, p - start);
-    }
+    info->binary = binary_from_exec (info->exec);
   
   return info;
 }
@@ -1239,6 +1245,9 @@ g_desktop_app_info_set_as_default_for_type (GAppInfo    *appinfo,
 {
   GDesktopAppInfo *info = G_DESKTOP_APP_INFO (appinfo);
 
+  if (!g_desktop_app_info_ensure_saved (info, error))
+    return FALSE;  
+  
   return update_default_list (info->desktop_id, content_type, TRUE, FALSE, FALSE, error);
 }
 
@@ -1303,6 +1312,9 @@ g_desktop_app_info_set_as_default_for_extension (GAppInfo    *appinfo,
   char *dirname;
   gboolean res;
 
+  if (!g_desktop_app_info_ensure_saved (G_DESKTOP_APP_INFO (appinfo), error))
+    return FALSE;  
+  
   dirname = ensure_dir (MIMETYPE_DIR, error);
   if (!dirname)
     return FALSE;
@@ -1350,6 +1362,9 @@ g_desktop_app_info_add_supports_type (GAppInfo    *appinfo,
 {
   GDesktopAppInfo *info = G_DESKTOP_APP_INFO (appinfo);
 
+  if (!g_desktop_app_info_ensure_saved (G_DESKTOP_APP_INFO (info), error))
+    return FALSE;  
+  
   return update_default_list (info->desktop_id, content_type, FALSE, TRUE, FALSE, error);
 }
 
@@ -1366,7 +1381,101 @@ g_desktop_app_info_remove_supports_type (GAppInfo    *appinfo,
 {
   GDesktopAppInfo *info = G_DESKTOP_APP_INFO (appinfo);
 
+  if (!g_desktop_app_info_ensure_saved (G_DESKTOP_APP_INFO (info), error))
+    return FALSE;
+  
   return update_default_list (info->desktop_id, content_type, FALSE, FALSE, TRUE, error);
+}
+
+static gboolean
+g_desktop_app_info_ensure_saved (GDesktopAppInfo *info,
+				 GError **error)
+{
+  GKeyFile *key_file;
+  char *dirname;
+  char *basename, *filename;
+  char *data, *desktop_id;
+  gsize data_size;
+  int fd;
+  gboolean res;
+  
+  if (info->filename != NULL)
+    return TRUE;
+
+  /* This is only used for object created with
+   * g_app_info_create_from_commandline. All other
+   * object should have a filename
+   */
+  
+  dirname = ensure_dir (APP_DIR, error);
+  if (!dirname)
+    return FALSE;
+  
+  key_file = g_key_file_new ();
+
+  g_key_file_set_string (key_file, G_KEY_FILE_DESKTOP_GROUP,
+			 "Encoding", "UTF-8");
+  g_key_file_set_string (key_file, G_KEY_FILE_DESKTOP_GROUP,
+			 G_KEY_FILE_DESKTOP_KEY_VERSION, "1.0");
+  g_key_file_set_string (key_file, G_KEY_FILE_DESKTOP_GROUP,
+			 G_KEY_FILE_DESKTOP_KEY_TYPE,
+                         G_KEY_FILE_DESKTOP_TYPE_APPLICATION);
+  if (info->terminal) 
+    g_key_file_set_boolean (key_file, G_KEY_FILE_DESKTOP_GROUP,
+			    G_KEY_FILE_DESKTOP_KEY_TERMINAL, TRUE);
+
+  g_key_file_set_string (key_file, G_KEY_FILE_DESKTOP_GROUP,
+			 G_KEY_FILE_DESKTOP_KEY_EXEC, info->exec);
+
+  g_key_file_set_string (key_file, G_KEY_FILE_DESKTOP_GROUP,
+			 G_KEY_FILE_DESKTOP_KEY_NAME, info->name);
+
+  g_key_file_set_string (key_file, G_KEY_FILE_DESKTOP_GROUP,
+			 G_KEY_FILE_DESKTOP_KEY_COMMENT, info->comment);
+  
+  g_key_file_set_boolean (key_file, G_KEY_FILE_DESKTOP_GROUP,
+			  G_KEY_FILE_DESKTOP_KEY_NO_DISPLAY, TRUE);
+
+  data = g_key_file_to_data (key_file, &data_size, NULL);
+  g_key_file_free (key_file);
+
+  desktop_id = g_strdup_printf ("userapp-%s-XXXXXX.desktop", info->name);
+  filename = g_build_filename (dirname, desktop_id, NULL);
+  g_free (desktop_id);
+  g_free (dirname);
+  
+  fd = g_mkstemp (filename);
+  if (fd == -1)
+    {
+      char *display_name;
+
+      display_name = g_filename_display_name (filename);
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+		   _("Can't create user desktop file %s"), display_name);
+      g_free (display_name);
+      g_free (filename);
+      g_free (data);
+      return FALSE;
+    }
+
+  desktop_id = g_path_get_basename (filename);
+
+  close (fd);
+  
+  res = g_file_set_contents (filename, data, data_size, error);
+  if (!res)
+    {
+      g_free (desktop_id);
+      g_free (filename);
+      return FALSE;
+    }
+
+  info->filename = filename;
+  info->desktop_id = desktop_id;
+  
+  run_update_command ("update-desktop-database", "applications");
+  
+  return TRUE;
 }
 
 /**
@@ -1386,103 +1495,38 @@ g_app_info_create_from_commandline (const char           *commandline,
 				    GAppInfoCreateFlags   flags,
 				    GError              **error)
 {
-  GKeyFile *key_file;
-  char *dirname;
   char **split;
-  char *basename, *exec, *filename, *comment;
-  char *data, *desktop_id;
-  gsize data_size;
-  int fd;
+  char *basename;
   GDesktopAppInfo *info;
-  gboolean res;
 
-  dirname = ensure_dir (APP_DIR, error);
-  if (!dirname)
-    return NULL;
+  info = g_object_new (G_TYPE_DESKTOP_APP_INFO, NULL);
+
+  info->filename = NULL;
+  info->desktop_id = NULL;
   
-  key_file = g_key_file_new ();
-
-  g_key_file_set_string (key_file, G_KEY_FILE_DESKTOP_GROUP,
-			 "Encoding", "UTF-8");
-  g_key_file_set_string (key_file, G_KEY_FILE_DESKTOP_GROUP,
-			 G_KEY_FILE_DESKTOP_KEY_VERSION, "1.0");
-  g_key_file_set_string (key_file, G_KEY_FILE_DESKTOP_GROUP,
-			 G_KEY_FILE_DESKTOP_KEY_TYPE,
-                         G_KEY_FILE_DESKTOP_TYPE_APPLICATION);
-  if (flags & G_APP_INFO_CREATE_NEEDS_TERMINAL) 
-    g_key_file_set_boolean (key_file, G_KEY_FILE_DESKTOP_GROUP,
-			    G_KEY_FILE_DESKTOP_KEY_TERMINAL, TRUE);
-
-  exec = g_strconcat (commandline, " %f", NULL);
-  g_key_file_set_string (key_file, G_KEY_FILE_DESKTOP_GROUP,
-			 G_KEY_FILE_DESKTOP_KEY_EXEC, exec);
-  g_free (exec);
-
-  /* FIXME: this should be more robust. Maybe g_shell_parse_argv and use argv[0] */
-  split = g_strsplit (commandline, " ", 2);
-  basename = g_path_get_basename (split[0]);
-  g_strfreev (split);
-  g_key_file_set_string (key_file, G_KEY_FILE_DESKTOP_GROUP,
-			 G_KEY_FILE_DESKTOP_KEY_NAME, application_name?application_name:basename);
-
-  comment = g_strdup_printf (_("Custom definition for %s"), basename);
-  g_key_file_set_string (key_file, G_KEY_FILE_DESKTOP_GROUP,
-			 G_KEY_FILE_DESKTOP_KEY_COMMENT, comment);
-  g_free (comment);
+  info->terminal = flags & G_APP_INFO_CREATE_NEEDS_TERMINAL;
+  info->startup_notify = FALSE;
+  info->hidden = FALSE;
+  info->exec = g_strconcat (commandline, " %f", NULL);
+  info->comment = g_strdup_printf (_("Custom definition for %s"), info->name);
+  info->nodisplay = TRUE;
+  info->binary = binary_from_exec (info->exec);
   
-  g_key_file_set_boolean (key_file, G_KEY_FILE_DESKTOP_GROUP,
-			  G_KEY_FILE_DESKTOP_KEY_NO_DISPLAY, TRUE);
-
-  data = g_key_file_to_data (key_file, &data_size, NULL);
-  g_key_file_free (key_file);
-
-  desktop_id = g_strdup_printf ("userapp-%s-XXXXXX.desktop", basename);
-  g_free (basename);
-  filename = g_build_filename (dirname, desktop_id, NULL);
-  g_free (desktop_id);
-  g_free (dirname);
-  
-  fd = g_mkstemp (filename);
-  if (fd == -1)
-    {
-      char *display_name;
-
-      display_name = g_filename_display_name (filename);
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-		   _("Can't create user desktop file %s"), display_name);
-      g_free (display_name);
-      g_free (filename);
-      g_free (data);
-      return NULL;
-    }
-
-  desktop_id = g_path_get_basename (filename);
-
-  close (fd);
-  
-  res = g_file_set_contents (filename, data, data_size, error);
-  if (!res)
-    {
-      g_free (desktop_id);
-      g_free (filename);
-      return NULL;
-    }
-
-  run_update_command ("update-desktop-database", "applications");
-  
-  info = g_desktop_app_info_new_from_filename (filename);
-  g_free (filename);
-  if (info == NULL) 
-    g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-		 _("Can't load just created desktop file"));
+  if (application_name)
+    info->name = g_strdup (application_name);
   else
-    info->desktop_id = g_strdup (desktop_id);
-    
-  g_free (desktop_id);
+    {
+      /* FIXME: this should be more robust. Maybe g_shell_parse_argv and use argv[0] */
+      split = g_strsplit (commandline, " ", 2);
+      basename = g_path_get_basename (split[0]);
+      g_strfreev (split);
+      info->name = basename;
+      if (info->name == NULL)
+	info->name = g_strdup ("custom");
+    }
   
   return G_APP_INFO (info);
 }
-
 
 static void
 g_desktop_app_info_iface_init (GAppInfoIface *iface)
