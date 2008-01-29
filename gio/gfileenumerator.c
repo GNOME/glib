@@ -336,7 +336,8 @@ g_file_enumerator_next_files_async (GFileEnumerator     *enumerator,
  * 
  * Finishes the asynchronous operation started with g_file_enumerator_next_files_async().
  * 
- * Returns: a #GList of #GFileInfo<!---->s.
+ * Returns: a #GList of #GFileInfo<!---->s. You must free the list with g_list_free
+ * and unref the infos with g_object_unref when your done with them.
  **/
 GList *
 g_file_enumerator_next_files_finish (GFileEnumerator  *enumerator,
@@ -530,6 +531,18 @@ typedef struct {
 } NextAsyncOp;
 
 static void
+next_async_op_free (NextAsyncOp *op)
+{
+  /* Free the list, if finish wasn't called */
+  g_list_foreach (op->files, (GFunc)g_object_unref, NULL);
+  g_list_free (op->files);
+  
+  g_free (op);
+}
+		    
+
+
+static void
 next_files_thread (GSimpleAsyncResult *res,
 		   GObject            *object,
 		   GCancellable       *cancellable)
@@ -573,7 +586,6 @@ next_files_thread (GSimpleAsyncResult *res,
     }
 }
 
-
 static void
 g_file_enumerator_real_next_files_async (GFileEnumerator     *enumerator,
 					 int                  num_files,
@@ -591,7 +603,7 @@ g_file_enumerator_real_next_files_async (GFileEnumerator     *enumerator,
   op->files = NULL;
 
   res = g_simple_async_result_new (G_OBJECT (enumerator), callback, user_data, g_file_enumerator_real_next_files_async);
-  g_simple_async_result_set_op_res_gpointer (res, op, g_free);
+  g_simple_async_result_set_op_res_gpointer (res, op, (GDestroyNotify) next_async_op_free);
   
   g_simple_async_result_run_in_thread (res, next_files_thread, io_priority, cancellable);
   g_object_unref (res);
@@ -604,13 +616,16 @@ g_file_enumerator_real_next_files_finish (GFileEnumerator                *enumer
 {
   GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
   NextAsyncOp *op;
+  GList *res;
 
   g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == 
 	    g_file_enumerator_real_next_files_async);
 
   op = g_simple_async_result_get_op_res_gpointer (simple);
 
-  return op->files;
+  res = op->files;
+  op->files = NULL;
+  return res;
 }
 
 static void

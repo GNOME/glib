@@ -1,5 +1,13 @@
 2008-01-29  Alexander Larsson  <alexl@redhat.com>
 
+        * gfileenumerator.c:
+        Mention need to free returned value in
+	g_file_enumerator_next_files_finish docs.
+	Fix leak if g_file_enumerator_next_files_finish()
+	not called.
+
+2008-01-29  Alexander Larsson  <alexl@redhat.com>
+
         * gcontenttype.c:
         (_g_unix_content_type_get_parents):
 	Use list_parents, not get_parents from xdgmime, because
