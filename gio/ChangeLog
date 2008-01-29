@@ -1,3 +1,14 @@
+2008-01-29  Alexander Larsson  <alexl@redhat.com>
+
+        * gcontenttype.c:
+        (_g_unix_content_type_get_parents):
+	Use list_parents, not get_parents from xdgmime, because
+	the later doesn't use the cache.
+	
+        * xdgmime/xdgmimecache.c:
+        (_xdg_mime_cache_list_mime_parents):
+	Don't list the same type as parent multiple times.
+
 2008-01-28  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.15.4 ===

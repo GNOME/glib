@@ -865,7 +865,7 @@ _xdg_mime_cache_unalias_mime_type (const char *mime)
 char **
 _xdg_mime_cache_list_mime_parents (const char *mime)
 {
-  int i, j, k, p;
+  int i, j, k, l, p;
   char *all_parents[128]; /* we'll stop at 128 */ 
   char **result;
 
@@ -892,7 +892,18 @@ _xdg_mime_cache_list_mime_parents (const char *mime)
 	      for (k = 0; k < n_parents && p < 127; k++)
 		{
 		  parent_mime_offset = GET_UINT32 (cache->buffer, parents_offset + 4 + 4 * k);
-		  all_parents[p++] = cache->buffer + parent_mime_offset;
+
+		  /* Don't add same parent multiple times.
+		   * This can happen for instance if the same type is listed in multiple directories
+		   */
+		  for (l = 0; l < p; l++)
+		    {
+		      if (strcmp (all_parents[l], cache->buffer + parent_mime_offset) == 0)
+			break;
+		    }
+
+		  if (l == p)
+		    all_parents[p++] = cache->buffer + parent_mime_offset;
 		}
 
 	      break;

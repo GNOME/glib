@@ -331,11 +331,14 @@ _g_unix_content_type_get_parents (const char *type)
   G_LOCK (gio_xdgmime);
   
   umime = xdg_mime_unalias_mime_type (type);
+  
   g_ptr_array_add (array, g_strdup (umime));
   
-  parents = xdg_mime_get_mime_parents (umime);
+  parents = xdg_mime_list_mime_parents (umime);
   for (i = 0; parents && parents[i] != NULL; i++)
     g_ptr_array_add (array, g_strdup (parents[i]));
+  
+  free (parents);
   
   G_UNLOCK (gio_xdgmime);
   
