@@ -24,9 +24,6 @@ struct _GNativeVolumeMonitor {
 struct _GNativeVolumeMonitorClass {
   GVolumeMonitorClass parent_class;
 
-  int priority;
-  char *name;
-
   GMount * (*get_mount_for_mount_path) (const char *mount_path,
 					GCancellable *cancellable);
 };

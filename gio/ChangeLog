@@ -1,5 +1,10 @@
 2008-01-29  Alexander Larsson  <alexl@redhat.com>
 
+	* gnativevolumemonitor.h (struct _GNativeVolumeMonitorClass):
+	Remove unused prio/name fields.
+
+2008-01-29  Alexander Larsson  <alexl@redhat.com>
+
 	* gcontenttype.c (looks_like_text):
 	Don't treat whitespace as control chars.
 
