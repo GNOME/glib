@@ -1,5 +1,10 @@
 2008-01-29  Alexander Larsson  <alexl@redhat.com>
 
+        * gio.symbols:
+	Added new symbols to gio.symbols
+
+2008-01-29  Alexander Larsson  <alexl@redhat.com>
+
         * gfile.[ch]:
         Add g_file_query_default_handler utility to easily look up
 	the GAppInfo that handles a file.
