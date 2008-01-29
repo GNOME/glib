@@ -4572,6 +4572,22 @@ g_file_mount_enclosing_volume_finish (GFile         *location,
  *   Utility functions                      *
  ********************************************/
 
+/**
+ * g_file_query_default_handler:
+ * @file: a #GFile to open.
+ * @cancellable: optional #GCancellable object, %NULL to ignore.
+ * @error: a #GError, or %NULL
+ *
+ * Returns the #GAppInfo that is registered as the default
+ * application to handle the file specified bu @file.
+ *
+ * If @cancellable is not %NULL, then the operation can be cancelled by
+ * triggering the cancellable object from another thread. If the operation
+ * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
+ *
+ * Returns: a #GAppInfo if the handle was found, %NULL if there were errors.
+ * When you are done with it, release it with g_object_unref()
+ **/
 GAppInfo *
 g_file_query_default_handler (GFile                  *file,
 			      GCancellable           *cancellable,
