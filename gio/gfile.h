@@ -33,6 +33,7 @@
 #include <gio/gfileinputstream.h>
 #include <gio/gfileoutputstream.h>
 #include <gio/gmountoperation.h>
+#include <gio/gappinfo.h>
 
 G_BEGIN_DECLS
 
@@ -838,6 +839,9 @@ GFileMonitor*           g_file_monitor_file               (GFile                
 
 /* Utilities */
 
+GAppInfo *g_file_query_default_handler       (GFile                  *file,
+					      GCancellable           *cancellable,
+					      GError                **error);
 gboolean g_file_load_contents                (GFile                  *file,
 					      GCancellable           *cancellable,
 					      char                  **contents,

@@ -1607,7 +1607,6 @@ g_app_info_get_default_for_type (const char *content_type,
   return info;
 }
 
-
 /**
  * g_app_info_get_default_for_uri_scheme:
  * @uri_scheme: a string containing a URI scheme.
@@ -1622,10 +1621,54 @@ g_app_info_get_default_for_type (const char *content_type,
 GAppInfo *
 g_app_info_get_default_for_uri_scheme (const char *uri_scheme)
 {
-  /* TODO: Implement this using giomodules, reading the gconf settings
-   * in /desktop/gnome/url-handlers
-   */
-  return NULL;
+  static gsize lookup = 0;
+  
+  if (g_once_init_enter (&lookup))
+    {
+      gsize setup_value = 1;
+      GDesktopAppInfoLookup *lookup_instance;
+      const char *use_this;
+      GIOExtensionPoint *ep;
+      GIOExtension *extension;
+      GList *l;
+
+      use_this = g_getenv ("GIO_USE_URI_ASSOCIATION");
+      
+      /* Ensure vfs in modules loaded */
+      _g_io_modules_ensure_loaded ();
+      
+      ep = g_io_extension_point_lookup (G_DESKTOP_APP_INFO_LOOKUP_EXTENSION_POINT_NAME);
+
+      lookup_instance = NULL;
+      if (use_this)
+	{
+	  extension = g_io_extension_point_get_extension_by_name (ep, use_this);
+	  if (extension)
+	    lookup_instance = g_object_new (g_io_extension_get_type (extension), NULL);
+	}
+      
+      if (lookup_instance == NULL)
+	{
+	  for (l = g_io_extension_point_get_extensions (ep); l != NULL; l = l->next)
+	    {
+	      extension = l->data;
+	      lookup_instance = g_object_new (g_io_extension_get_type (extension), NULL);
+	      if (lookup_instance != NULL)
+		break;
+	    }
+	}
+
+      if (lookup_instance != NULL)
+	setup_value = (gsize)lookup_instance;
+      
+      g_once_init_leave (&lookup, setup_value);
+    }
+
+  if (lookup == 1)
+    return NULL;
+
+  return g_desktop_app_info_lookup_get_default_for_uri_scheme (G_DESKTOP_APP_INFO_LOOKUP (lookup),
+							       uri_scheme);
 }
 
 
@@ -2282,6 +2325,66 @@ get_all_desktop_entries_for_mime_type (const char *base_mime_type)
   desktop_entries = g_list_reverse (desktop_entries);
   
   return desktop_entries;
+}
+
+/* GDesktopAppInfoLookup interface: */
+
+static void g_desktop_app_info_lookup_base_init (gpointer g_class);
+static void g_desktop_app_info_lookup_class_init (gpointer g_class,
+						  gpointer class_data);
+
+GType
+g_desktop_app_info_lookup_get_type (void)
+{
+  static GType desktop_app_info_lookup_type = 0;
+
+  if (! desktop_app_info_lookup_type)
+    {
+      static const GTypeInfo desktop_app_info_lookup_info =
+      {
+        sizeof (GDesktopAppInfoLookupIface), /* class_size */
+	g_desktop_app_info_lookup_base_init,   /* base_init */
+	NULL,		/* base_finalize */
+	g_desktop_app_info_lookup_class_init,
+	NULL,		/* class_finalize */
+	NULL,		/* class_data */
+	0,
+	0,              /* n_preallocs */
+	NULL
+      };
+
+      desktop_app_info_lookup_type =
+	g_type_register_static (G_TYPE_INTERFACE, I_("GDesktopAppInfoLookup"),
+				&desktop_app_info_lookup_info, 0);
+
+      g_type_interface_add_prerequisite (desktop_app_info_lookup_type, G_TYPE_OBJECT);
+    }
+
+  return desktop_app_info_lookup_type;
+}
+
+static void
+g_desktop_app_info_lookup_class_init (gpointer g_class,
+				      gpointer class_data)
+{
+}
+
+static void
+g_desktop_app_info_lookup_base_init (gpointer g_class)
+{
+}
+
+GAppInfo *
+g_desktop_app_info_lookup_get_default_for_uri_scheme (GDesktopAppInfoLookup *lookup,
+						      const char  *uri_scheme)
+{
+  GDesktopAppInfoLookupIface *iface;
+  
+  g_return_val_if_fail (G_IS_DESKTOP_APP_INFO_LOOKUP (lookup), FALSE);
+
+  iface = G_DESKTOP_APP_INFO_LOOKUP_GET_IFACE (lookup);
+
+  return (* iface->get_default_for_uri_scheme) (lookup, uri_scheme);
 }
 
 #define __G_DESKTOP_APP_INFO_C__

@@ -24,6 +24,7 @@
 #define __G_DESKTOP_APP_INFO_H__
 
 #include <gio/gio.h>
+#include "giomodule-priv.h"
 
 G_BEGIN_DECLS
 
@@ -42,6 +43,7 @@ struct _GDesktopAppInfoClass
   GObjectClass parent_class;
 };
 
+
 GType g_desktop_app_info_get_type (void) G_GNUC_CONST;
   
 GDesktopAppInfo *g_desktop_app_info_new_from_filename (const char      *filename);
@@ -49,6 +51,29 @@ GDesktopAppInfo *g_desktop_app_info_new               (const char      *desktop_
 gboolean         g_desktop_app_info_get_is_hidden     (GDesktopAppInfo *info);
 
 void             g_desktop_app_info_set_desktop_env   (const char *desktop_env);
+
+
+#define G_TYPE_DESKTOP_APP_INFO_LOOKUP           (g_desktop_app_info_lookup_get_type ())
+#define G_DESKTOP_APP_INFO_LOOKUP(obj)           (G_TYPE_CHECK_INSTANCE_CAST ((obj), G_TYPE_DESKTOP_APP_INFO_LOOKUP, GDesktopAppInfoLookup))
+#define G_IS_DESKTOP_APP_INFO_LOOKUP(obj)	 (G_TYPE_CHECK_INSTANCE_TYPE ((obj), G_TYPE_DESKTOP_APP_INFO_LOOKUP))
+#define G_DESKTOP_APP_INFO_LOOKUP_GET_IFACE(obj) (G_TYPE_INSTANCE_GET_INTERFACE ((obj), G_TYPE_DESKTOP_APP_INFO_LOOKUP, GDesktopAppInfoLookupIface))
+
+#define G_DESKTOP_APP_INFO_LOOKUP_EXTENSION_POINT_NAME "gio-desktop-app-info-lookup"
+
+typedef struct _GDesktopAppInfoLookup GDesktopAppInfoLookup;
+typedef struct _GDesktopAppInfoLookupIface GDesktopAppInfoLookupIface;
+
+struct _GDesktopAppInfoLookupIface
+{
+  GTypeInterface g_iface;
+
+  GAppInfo * (*get_default_for_uri_scheme) (GDesktopAppInfoLookup *lookup,
+					    const char  *uri_scheme);
+};
+
+GType g_desktop_app_info_lookup_get_type (void) G_GNUC_CONST;
+GAppInfo * g_desktop_app_info_lookup_get_default_for_uri_scheme (GDesktopAppInfoLookup *lookup,
+								 const char  *uri_scheme);
 
 G_END_DECLS
 

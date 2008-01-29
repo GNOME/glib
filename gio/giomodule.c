@@ -30,7 +30,9 @@
 #include "glocaldirectorymonitor.h"
 #include "gnativevolumemonitor.h"
 #include "gvfs.h"
-
+#ifdef G_OS_UNIX
+#include "gdesktopappinfo.h"
+#endif
 #include "gioalias.h"
 
 /**
@@ -257,6 +259,11 @@ _g_io_modules_ensure_loaded (void)
     {
       loaded_dirs = TRUE;
 
+#ifdef G_OS_UNIX
+      ep = g_io_extension_point_register (G_DESKTOP_APP_INFO_LOOKUP_EXTENSION_POINT_NAME);
+      g_io_extension_point_set_required_type (ep, G_TYPE_DESKTOP_APP_INFO_LOOKUP);
+#endif
+      
       ep = g_io_extension_point_register (G_LOCAL_DIRECTORY_MONITOR_EXTENSION_POINT_NAME);
       g_io_extension_point_set_required_type (ep, G_TYPE_LOCAL_DIRECTORY_MONITOR);
       

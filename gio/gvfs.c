@@ -167,46 +167,6 @@ g_vfs_parse_name (GVfs       *vfs,
   return (* class->parse_name) (vfs, parse_name);
 }
 
-/* Note: This compares in reverse order.
-   Higher prio -> sort first
- */
-static gint
-compare_vfs_type (gconstpointer  a,
-		  gconstpointer  b,
-		  gpointer       user_data)
-{
-  GType a_type, b_type;
-  char *a_name, *b_name;
-  int a_prio, b_prio;
-  gint res;
-  const char *use_this_monitor;
-  GQuark private_q, name_q;
-
-  private_q = g_quark_from_static_string ("gio-prio");
-  name_q = g_quark_from_static_string ("gio-name");
-  
-  use_this_monitor = user_data;
-  a_type = *(GType *)a;
-  b_type = *(GType *)b;
-  a_prio = GPOINTER_TO_INT (g_type_get_qdata (a_type, private_q));
-  a_name = g_type_get_qdata (a_type, name_q);
-  b_prio = GPOINTER_TO_INT (g_type_get_qdata (b_type, private_q));
-  b_name = g_type_get_qdata (b_type, name_q);
-
-  if (a_type == b_type)
-    res = 0;
-  else if (use_this_monitor != NULL &&
-	   strcmp (a_name, use_this_monitor) == 0)
-    res = -1;
-  else if (use_this_monitor != NULL &&
-	   strcmp (b_name, use_this_monitor) == 0)
-    res = 1;
-  else 
-    res = b_prio - a_prio;
-  
-  return res;
-}
-
 static gpointer
 get_default_vfs (gpointer arg)
 {
