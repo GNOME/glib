@@ -1,5 +1,10 @@
 2008-01-29  Alexander Larsson  <alexl@redhat.com>
 
+	* gcontenttype.c (looks_like_text):
+	Don't treat whitespace as control chars.
+
+2008-01-29  Alexander Larsson  <alexl@redhat.com>
+
         * gdesktopappinfo.c:
 	Lazily create the desktop files for appinfos created
 	by g_app_info_create_from_commandline() when needed

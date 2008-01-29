@@ -671,9 +671,14 @@ static gboolean
 looks_like_text (const guchar *data, gsize data_size)
 {
   gsize i;
+  char c;
+  
   for (i = 0; i < data_size; i++)
     {
-      if g_ascii_iscntrl (data[i])
+      c = data[i];
+      
+      if (g_ascii_iscntrl (c) &&
+	  !g_ascii_isspace (c))
 	return FALSE;
     }
   return TRUE;
