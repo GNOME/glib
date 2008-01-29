@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-01-21 11:37-0500\n"
+"POT-Creation-Date: 2008-01-28 18:34-0500\n"
 "PO-Revision-Date: 2008-01-05 23:12+0530\n"
 "Last-Translator: Amanpreet Singh Alam <apreet.alam@gmail.com>\n"
 "Language-Team: Punjabi/Panjabi <punjabi-users@llist.sf.net>\n"
@@ -967,61 +967,61 @@ msgstr "ਬਦਲਾਉ ਇੰਪੁੱਟ ਵਿੱਚ ਤਰਤੀਬ ਜਾ�
 msgid "Character out of range for UTF-16"
 msgstr "UTF-16 ਲਈ ਅੱਖਰ ਰੇਜ਼ ਤੋਂ ਬਾਹਰ"
 
-#: glib/goption.c:612
+#: glib/goption.c:615
 msgid "Usage:"
 msgstr "ਵਰਤੋਂ:"
 
-#: glib/goption.c:612
+#: glib/goption.c:615
 msgid "[OPTION...]"
 msgstr "[ਚੋਣ...]"
 
-#: glib/goption.c:716
+#: glib/goption.c:719
 msgid "Help Options:"
 msgstr "ਮੱਦਦ ਚੋਣ:"
 
-#: glib/goption.c:717
+#: glib/goption.c:720
 msgid "Show help options"
 msgstr "ਮੱਦਦ ਚੋਣ ਵੇਖੋ"
 
-#: glib/goption.c:723
+#: glib/goption.c:726
 msgid "Show all help options"
 msgstr "ਸਭ ਮੱਦਦ ਚੋਣਾਂ ਵੇਖੋ"
 
-#: glib/goption.c:785
+#: glib/goption.c:788
 msgid "Application Options:"
 msgstr "ਐਪਲੀਕੇਸ਼ਨ ਚੋਣ:"
 
-#: glib/goption.c:846 glib/goption.c:916
+#: glib/goption.c:849 glib/goption.c:919
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "ਪੂਰਨ ਅੰਕ ਮੁੱਲ %s' ਨੂੰ %s ਲਈ ਪਾਰਸ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ"
 
-#: glib/goption.c:856 glib/goption.c:924
+#: glib/goption.c:859 glib/goption.c:927
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "ਪੂਰਨ ਅੰਕ '%s' %s ਲਈ ਰੇਜ਼ ਤੋਂ ਬਾਹਰ ਜਾ ਰਿਹਾ ਹੈ"
 
-#: glib/goption.c:881
+#: glib/goption.c:884
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "%2$s ਲਈ ਡਬਲ ਮੁੱਲ '%1$s' ਪਾਰਸ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ"
 
-#: glib/goption.c:889
+#: glib/goption.c:892
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "%2$s ਲਈ '%1$s' ਡਬਲ ਮੁੱਲ ਰੇਜ਼ ਤੋਂ ਬਾਹਰ ਹੈ"
 
-#: glib/goption.c:1226
+#: glib/goption.c:1229
 #, c-format
 msgid "Error parsing option %s"
 msgstr "ਚੋਣ %s ਪਾਰਸ ਕਰਨ ਦੌਰਾਨ ਗਲਤੀ"
 
-#: glib/goption.c:1257 glib/goption.c:1368
+#: glib/goption.c:1260 glib/goption.c:1371
 #, c-format
 msgid "Missing argument for %s"
 msgstr "%s ਲਈ ਆਰਗੂਮੈਂਟ ਗੁੰਮ ਹੈ"
 
-#: glib/goption.c:1763
+#: glib/goption.c:1766
 #, c-format
 msgid "Unknown option %s"
 msgstr "ਅਣਜਾਣ ਚੋਣ %s"
@@ -1132,12 +1132,15 @@ msgstr "ਮੁੱਲ '%s' ਨੂੰ ਇੱਕ ਦਸ਼ਮਲਵ ਅੰਕ ਦ�
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "ਮੁੱਲ '%s' ਨੂੰ ਬੂਲੀਅਨ ਵਾਂਗ ਇੰਟਰਪਰੇਟ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ ਹੈ।"
 
-#: gio/gbufferedinputstream.c:483 gio/ginputstream.c:559
-msgid "Too large count value passed to g_input_stream_read_async"
+#: gio/gbufferedinputstream.c:483 gio/ginputstream.c:186
+#: gio/ginputstream.c:318 gio/ginputstream.c:559 gio/ginputstream.c:684
+#: gio/goutputstream.c:193 gio/goutputstream.c:647
+#, fuzzy, c-format
+msgid "Too large count value passed to %s"
 msgstr "g_input_stream_read_async ਨੂੰ ਬਹੁਤ ਵੱਧ ਗਿਣਤੀ ਪਾਸ ਕੀਤੀ ਗਈ"
 
-#: gio/gbufferedinputstream.c:869 gio/ginputstream.c:892
-#: gio/goutputstream.c:1075
+#: gio/gbufferedinputstream.c:870 gio/ginputstream.c:894
+#: gio/goutputstream.c:1076
 #, c-format
 msgid "Stream is already closed"
 msgstr "ਸਟਰੀਮ ਪਹਿਲਾਂ ਹੀ ਬੰਦ ਹੈ"
@@ -1166,41 +1169,41 @@ msgstr "%s ਟਾਈਪ"
 msgid "Unexpected early end-of-stream"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:395 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:403 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr "ਬਿਨ-ਨਾਂ"
 
-#: gio/gdesktopappinfo.c:571
+#: gio/gdesktopappinfo.c:579
 #, c-format
 msgid "Desktop file didn't specify Exec field"
 msgstr "ਡੈਸਕਟਾਪ ਫਾਇਲ ਨੇ Exec ਫੀਲਡ ਨਹੀਂ ਦਿੱਤਾ ਹੈ"
 
-#: gio/gdesktopappinfo.c:863
+#: gio/gdesktopappinfo.c:871
 #, c-format
 msgid "Unable to find terminal required for application"
 msgstr "ਐਪਲੀਕੇਸ਼ਨ ਲਈ ਟਰਮੀਨਲ ਲੋੜ ਲੱਭਣ ਲਈ ਅਸਮਰੱਥ ਹੈ"
 
-#: gio/gdesktopappinfo.c:1097
+#: gio/gdesktopappinfo.c:1105
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "ਯੂਜ਼ਰ ਐਪਲੀਕੇਸ਼ਨ ਸੰਰਚਨਾ ਫੋਲਡਰ %s ਬਣਾਇਆ ਨਹੀਂ ਜਾ ਸਕਦਾ: %s"
 
-#: gio/gdesktopappinfo.c:1101
+#: gio/gdesktopappinfo.c:1109
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "ਯੂਜ਼ਰ MIME ਸੰਰਚਨਾ ਫੋਲਡਰ %s ਬਣਾਇਆ ਨਹੀਂ ਜਾ ਸਕਦਾ: %s"
 
-#: gio/gdesktopappinfo.c:1474
+#: gio/gdesktopappinfo.c:1428
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%s ਲਈ ਕਸਟਮ ਪਰਿਭਾਸ਼ਾ"
 
-#: gio/gdesktopappinfo.c:1498
+#: gio/gdesktopappinfo.c:1452
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "ਯੂਜ਼ਰ ਡੈਸਕਟਾਪ ਫਾਇਲ %s ਬਣਾਈ ਨਹੀਂ ਜਾ ਸਕਦੀ"
 
-#: gio/gdesktopappinfo.c:1523
+#: gio/gdesktopappinfo.c:1477
 #, c-format
 msgid "Can't load just created desktop file"
 msgstr "ਹੁਣੇ ਬਣਾਈ ਡੈਸਕਟਾਪ ਫਾਇਲ ਲੋਡ ਨਹੀਂ ਕੀਤੀ ਜਾ ਸਕਦੀ"
@@ -1213,56 +1216,56 @@ msgstr "ਡਰਾਇਵ ਲਈ ਬਾਹਰ ਕੱਢਣਾ ਨਹੀਂ ਬਣ�
 msgid "drive doesn't implement polling for media"
 msgstr ""
 
-#: gio/gfile.c:742 gio/gfile.c:930 gio/gfile.c:1063 gio/gfile.c:1217
-#: gio/gfile.c:1270 gio/gfile.c:1327 gio/gfile.c:1408 gio/gfile.c:2363
-#: gio/gfile.c:2408 gio/gfile.c:2458 gio/gfile.c:2497 gio/gfile.c:2821
-#: gio/gfile.c:3220 gio/gfile.c:3299 gio/gfile.c:3379 gio/gfile.c:3457
+#: gio/gfile.c:755 gio/gfile.c:943 gio/gfile.c:1076 gio/gfile.c:1230
+#: gio/gfile.c:1283 gio/gfile.c:1340 gio/gfile.c:1421 gio/gfile.c:2459
+#: gio/gfile.c:2504 gio/gfile.c:2554 gio/gfile.c:2593 gio/gfile.c:2917
+#: gio/gfile.c:3316 gio/gfile.c:3395 gio/gfile.c:3475 gio/gfile.c:3553
 #, c-format
 msgid "Operation not supported"
 msgstr "ਓਪਰੇਸ਼ਨ ਸਹਾਇਕ ਨਹੀਂ"
 
-#: gio/gfile.c:1105 gio/glocalfile.c:895 gio/glocalfile.c:904
-#: gio/glocalfile.c:915
+#: gio/gfile.c:1118 gio/glocalfile.c:923 gio/glocalfile.c:932
+#: gio/glocalfile.c:943
 #, c-format
 msgid "Containing mount does not exist"
 msgstr "ਰੱਖਣ ਵਾਲਾ ਮਾਊਂਟ ਮੌਜੂਦ ਨਹੀਂ"
 
-#: gio/gfile.c:1747
+#: gio/gfile.c:1760
 #, c-format
 msgid "Can't copy over directory"
 msgstr "ਡਾਇਰੈਕਟਰੀ ਉੱਤੇ ਕਾਪੀ ਨਹੀਂ ਹੋ ਸਕਦਾ"
 
-#: gio/gfile.c:1807
+#: gio/gfile.c:1820
 #, c-format
 msgid "Can't copy directory over directory"
 msgstr "ਡਾਇਰੈਕਟਰੀ ਡਾਇਰੈਕਟਰੀ ਉੱਤੇ ਕਾਪੀ ਨਹੀਂ ਹੋ ਸਕਦੀ"
 
-#: gio/gfile.c:1815
+#: gio/gfile.c:1828 gio/glocalfile.c:1839
 #, c-format
 msgid "Target file exists"
 msgstr "ਟਾਰਗੇਟ ਫਾਇਲ ਮੌਜੂਦ ਹੈ"
 
-#: gio/gfile.c:1833
+#: gio/gfile.c:1846
 #, c-format
 msgid "Can't recursively copy directory"
 msgstr "ਡਾਇਰੈਕਟਰੀ ਲਗਾਤਾਰ ਕਾਪੀ ਨਹੀਂ ਹੋ ਸਕਦੀ"
 
-#: gio/gfile.c:2448
+#: gio/gfile.c:2544
 #, c-format
 msgid "Invalid symlink value given"
 msgstr "ਗਲਤ ਸਿੰਬੋਲਿੰਕ ਮੁੱਲ ਦਿੱਤਾ"
 
-#: gio/gfile.c:2540
+#: gio/gfile.c:2636
 #, c-format
 msgid "Trash not supported"
 msgstr "ਰੱਦ ਸਹਾਇਕ ਨਹੀਂ"
 
-#: gio/gfile.c:2587
+#: gio/gfile.c:2683
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "ਫਾਇਲ ਨਾਂ ਵਿੱਚ ' %c' ਮੌਜੂਦ ਨਹੀਂ ਹੋ ਸਕਦਾ"
 
-#: gio/gfile.c:4291 gio/gvolume.c:318
+#: gio/gfile.c:4528 gio/gvolume.c:318
 msgid "volume doesn't implement mount"
 msgstr "ਵਾਲੀਅਮ ਲਈ ਮਾਊਂਟ ਸਥਾਪਤ ਨਹੀਂ ਹੈ"
 
@@ -1302,145 +1305,126 @@ msgstr ""
 msgid "Truncate not supported on stream"
 msgstr ""
 
-#: gio/ginputstream.c:186
-#, c-format
-msgid "Too large count value passed to g_input_stream_read"
-msgstr ""
-
 #: gio/ginputstream.c:195
 #, c-format
 msgid "Input stream doesn't implement read"
 msgstr ""
 
-#: gio/ginputstream.c:318
-#, c-format
-msgid "Too large count value passed to g_input_stream_skip"
-msgstr ""
-
-#: gio/ginputstream.c:683
-msgid "Too large count value passed to g_input_stream_skip_async"
-msgstr ""
-
-#: gio/ginputstream.c:899 gio/goutputstream.c:1082
+#: gio/ginputstream.c:901 gio/goutputstream.c:1083
 #, c-format
 msgid "Stream has outstanding operation"
 msgstr ""
 
-#: gio/glocaldirectorymonitor.c:297
+#: gio/glocaldirectorymonitor.c:270
 #, fuzzy, c-format
 msgid "Unable to find default local directory monitor type"
 msgstr "ਰੱਦੀ ਡਾਇਰੈਕਟਰੀ ਲੱਭਣ ਜਾਂ ਬਣਾਉਣ ਲਈ ਅਸਮਰੱਥ"
 
-#: gio/glocalfile.c:561
+#: gio/glocalfile.c:589
 #, c-format
 msgid "Invalid filename %s"
 msgstr "ਗਲਤ ਫਾਇਲ ਨਾਂ %s"
 
-#: gio/glocalfile.c:817
+#: gio/glocalfile.c:845
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "ਫਾਇਲ ਸਿਸਟਮ ਜਾਣਕਾਰੀ ਲੈਣ ਦੌਰਾਨ ਗਲਤੀ: %s"
 
-#: gio/glocalfile.c:935
+#: gio/glocalfile.c:963
 #, c-format
 msgid "Can't rename root directory"
 msgstr "ਰੂਟ ਡਾਇਰੈਕਟਰੀ ਦਾ ਨਾਂ ਨਹੀਂ ਬਦਲਿਆ ਜਾ ਸਕਦਾ"
 
-#: gio/glocalfile.c:953
+#: gio/glocalfile.c:981
 #, c-format
 msgid "Can't rename file, filename already exist"
 msgstr "ਫਾਇਲ ਦਾ ਨਾਂ ਨਹੀਂ ਬਦਲਿਆ ਜਾ ਸਕਦਾ, ਫਾਇਲ ਨਾਂ ਪਹਿਲਾਂ ਹੀ ਮੌਜੂਦ"
 
-#: gio/glocalfile.c:966 gio/glocalfile.c:1688 gio/glocalfile.c:1717
-#: gio/glocalfile.c:1862 gio/glocalfileoutputstream.c:448
+#: gio/glocalfile.c:994 gio/glocalfile.c:1716 gio/glocalfile.c:1745
+#: gio/glocalfile.c:1890 gio/glocalfileoutputstream.c:448
 #: gio/glocalfileoutputstream.c:489 gio/glocalfileoutputstream.c:879
 #, c-format
 msgid "Invalid filename"
 msgstr "ਗਲਤ ਫਾਇਲ ਨਾਂ"
 
-#: gio/glocalfile.c:970
+#: gio/glocalfile.c:998
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "ਫਾਇਲ ਨਾਂ ਬਦਲਣ ਦੌਰਾਨ ਗਲਤੀ: %s"
 
-#: gio/glocalfile.c:1087
+#: gio/glocalfile.c:1115
 #, c-format
 msgid "Error opening file: %s"
 msgstr "ਫਾਇਲ ਖੋਲ੍ਹਣ ਦੌਰਾਨ ਗਲਤੀ: %s  "
 
-#: gio/glocalfile.c:1097
+#: gio/glocalfile.c:1125
 #, c-format
 msgid "Can't open directory"
 msgstr "ਡਾਇਰੈਕਟਰੀ ਖੋਲ੍ਹੀ ਨਹੀਂ ਜਾ ਸਕਦੀ"
 
-#: gio/glocalfile.c:1149 gio/glocalfile.c:1692
+#: gio/glocalfile.c:1177 gio/glocalfile.c:1720
 #, c-format
 msgid "Error removing file: %s"
 msgstr "ਫਾਇਲ ਹਟਾਉਣ ਦੌਰਾਨ ਗਲਤੀ: %s"
 
-#: gio/glocalfile.c:1441
+#: gio/glocalfile.c:1469
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "ਫਾਇਲ ਰੱਦੀ 'ਚ ਭੇਜਣ ਦੌਰਾਨ ਗਲਤੀ: %s"
 
-#: gio/glocalfile.c:1465
+#: gio/glocalfile.c:1493
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr ""
 
-#: gio/glocalfile.c:1489
+#: gio/glocalfile.c:1517
 #, c-format
 msgid "Unable to find toplevel directory for trash"
 msgstr ""
 
-#: gio/glocalfile.c:1549 gio/glocalfile.c:1569
+#: gio/glocalfile.c:1577 gio/glocalfile.c:1597
 #, c-format
 msgid "Unable to find or create trash directory"
 msgstr "ਰੱਦੀ ਡਾਇਰੈਕਟਰੀ ਲੱਭਣ ਜਾਂ ਬਣਾਉਣ ਲਈ ਅਸਮਰੱਥ"
 
-#: gio/glocalfile.c:1601
-#, c-format
-msgid "Unable to create trashed file: %s"
+#: gio/glocalfile.c:1629
+#, fuzzy, c-format
+msgid "Unable to create trashing info file: %s"
 msgstr "ਰੱਦੀ 'ਚ ਭੇਜੀ ਫਾਇਲ ਬਣਾਉਣ ਲਈ ਅਸਮਰੱਥ: %s"
 
-#: gio/glocalfile.c:1624
+#: gio/glocalfile.c:1652
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "ਫਾਇਲ ਰੱਦੀ 'ਚ ਭੇਜਣ ਲਈ ਅਸਮਰੱਥ: %s"
 
-#: gio/glocalfile.c:1721
+#: gio/glocalfile.c:1749
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr ""
 
-#: gio/glocalfile.c:1779 gio/glocalfile.c:1866
+#: gio/glocalfile.c:1807 gio/glocalfile.c:1894
 #, c-format
 msgid "Error moving file: %s"
 msgstr "ਫਾਇਲ ਭੇਜਣ ਦੌਰਾਨ ਗਲਤੀ: %s"
 
-#: gio/glocalfile.c:1802
+#: gio/glocalfile.c:1830
 #, c-format
 msgid "Can't move directory over directory"
 msgstr ""
 
-#: gio/glocalfile.c:1811
-#, c-format
-msgid "Target file already exists"
-msgstr "ਟਾਰਗੇਟ ਫਾਇਲ ਪਹਿਲਾਂ ਹੀ ਮੌਜੂਦ ਹੈ"
-
-#: gio/glocalfile.c:1824 gio/glocalfileoutputstream.c:735
+#: gio/glocalfile.c:1852 gio/glocalfileoutputstream.c:735
 #: gio/glocalfileoutputstream.c:749 gio/glocalfileoutputstream.c:764
 #: gio/glocalfileoutputstream.c:780 gio/glocalfileoutputstream.c:794
 #, c-format
 msgid "Backup file creation failed"
 msgstr "ਬੈਕਅੱਪ ਫਾਇਲ ਬਣਾਉਣ ਲਈ ਫੇਲ੍ਹ"
 
-#: gio/glocalfile.c:1841
+#: gio/glocalfile.c:1869
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "ਟਾਰਗੇਟ ਫਾਇਲ ਹਟਾਉਣ ਦੌਰਾਨ ਗਲਤੀ: %s"
 
-#: gio/glocalfile.c:1855
+#: gio/glocalfile.c:1883
 #, c-format
 msgid "Move between mounts not supported"
 msgstr ""
@@ -1465,62 +1449,62 @@ msgstr "ਇਕ ਗੁਣ ਦੇ ਨਾਂ ਕਰਕੇ ਦਸਤਾਵੇਜ਼ ਅ
 msgid "Error setting extended attribute '%s': %s"
 msgstr "ਡਾਇਰੈਕਟਰੀ '%s' ਖੋਲ੍ਹਣ ਲਈ ਗਲਤੀ: %s"
 
-#: gio/glocalfileinfo.c:1392 gio/glocalfileoutputstream.c:625
+#: gio/glocalfileinfo.c:1394 gio/glocalfileoutputstream.c:625
 #, fuzzy, c-format
 msgid "Error stating file '%s': %s"
 msgstr "'%s' ਫਾਇਲ ਪੜ੍ਹਨ 'ਚ ਗਲਤੀ: %s"
 
-#: gio/glocalfileinfo.c:1447
+#: gio/glocalfileinfo.c:1449
 msgid " (invalid encoding)"
 msgstr "(ਗਲਤ ਇੰਕੋਡਿੰਗ)"
 
-#: gio/glocalfileinfo.c:1622
+#: gio/glocalfileinfo.c:1624
 #, fuzzy, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "'%s' ਫਾਇਲ ਪੜ੍ਹਨ 'ਚ ਗਲਤੀ: %s"
 
-#: gio/glocalfileinfo.c:1667
+#: gio/glocalfileinfo.c:1669
 #, c-format
 msgid "Invalid attribute type (uint32 expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1684
+#: gio/glocalfileinfo.c:1686
 #, c-format
 msgid "Invalid attribute type (uint64 expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1702
+#: gio/glocalfileinfo.c:1704
 #, c-format
 msgid "Invalid attribute type (byte string expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1726
+#: gio/glocalfileinfo.c:1728
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "ਅਧਿਕਾਰ ਸੈੱਟ ਕਰਨ ਦੌਰਾਨ ਗਲਤੀ: %s"
 
-#: gio/glocalfileinfo.c:1775 gio/glocalfileinfo.c:1935
+#: gio/glocalfileinfo.c:1777 gio/glocalfileinfo.c:1937
 #, fuzzy, c-format
 msgid "Error setting owner: %s"
 msgstr "ਤਬਦੀਲੀ ਦੌਰਾਨ ਗਲਤੀ  %s"
 
-#: gio/glocalfileinfo.c:1798
+#: gio/glocalfileinfo.c:1800
 #, c-format
 msgid "symlink must be non-NULL"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1806 gio/glocalfileinfo.c:1823
-#: gio/glocalfileinfo.c:1832
+#: gio/glocalfileinfo.c:1808 gio/glocalfileinfo.c:1825
+#: gio/glocalfileinfo.c:1834
 #, fuzzy, c-format
 msgid "Error setting symlink: %s"
 msgstr "ਸਤਰ %d ਉੱਤੇ ਗਲਤੀ: %s"
 
-#: gio/glocalfileinfo.c:1815
+#: gio/glocalfileinfo.c:1817
 #, c-format
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1990
+#: gio/glocalfileinfo.c:1992
 #, fuzzy, c-format
 msgid "Setting attribute %s not supported"
 msgstr "ਸਿੰਬੋਲਿਕ ਲਿੰਕ ਮੱਦਦ ਪ੍ਰਾਪਤ ਨਹੀਂ ਹਨ"
@@ -1542,7 +1526,7 @@ msgstr "'%s' ਫਾਇਲ ਪੜ੍ਹਨ 'ਚ ਗਲਤੀ: %s"
 msgid "Error closing file: %s"
 msgstr "'%s' ਫਾਇਲ ਪੜ੍ਹਨ 'ਚ ਗਲਤੀ: %s"
 
-#: gio/glocalfilemonitor.c:224
+#: gio/glocalfilemonitor.c:197
 #, fuzzy, c-format
 msgid "Unable to find default local file monitor type"
 msgstr "ਰੱਦੀ ਡਾਇਰੈਕਟਰੀ ਲੱਭਣ ਜਾਂ ਬਣਾਉਣ ਲਈ ਅਸਮਰੱਥ"
@@ -1640,23 +1624,14 @@ msgstr ""
 msgid "mount doesn't implement remount"
 msgstr ""
 
-#: gio/goutputstream.c:193
-#, c-format
-msgid "Too large count value passed to g_output_stream_write"
-msgstr ""
-
 #: gio/goutputstream.c:202 gio/goutputstream.c:403
 #, c-format
 msgid "Output stream doesn't implement write"
 msgstr ""
 
-#: gio/goutputstream.c:363 gio/goutputstream.c:770
+#: gio/goutputstream.c:363 gio/goutputstream.c:771
 #, c-format
 msgid "Source stream is already closed"
-msgstr ""
-
-#: gio/goutputstream.c:647
-msgid "Too large count value passed to g_output_stream_write_async"
 msgstr ""
 
 #: gio/gunixinputstream.c:200 gio/gunixinputstream.c:218
@@ -1720,3 +1695,6 @@ msgstr ""
 #: tests/gio-ls.c:37
 msgid "[FILE...]"
 msgstr "[FILE...]"
+
+#~ msgid "Target file already exists"
+#~ msgstr "ਟਾਰਗੇਟ ਫਾਇਲ ਪਹਿਲਾਂ ਹੀ ਮੌਜੂਦ ਹੈ"

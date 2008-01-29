@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-01-21 11:37-0500\n"
+"POT-Creation-Date: 2008-01-28 18:34-0500\n"
 "PO-Revision-Date: 2008-01-06 02:22+0200\n"
 "Last-Translator: Ihar Hrachyshka <ihar.hrachyshka@gmail.com>\n"
 "Language-Team: Belarusian Latin <i18n@mova.org>\n"
@@ -1099,63 +1099,63 @@ msgstr "Niapravilny paradak na ŭvachodzie kanversii"
 msgid "Character out of range for UTF-16"
 msgstr "Znak pa-za dyjapazonam UTF-16"
 
-#: glib/goption.c:612
+#: glib/goption.c:615
 msgid "Usage:"
 msgstr "Vykarystańnie:"
 
-#: glib/goption.c:612
+#: glib/goption.c:615
 msgid "[OPTION...]"
 msgstr "[OPCYJA...]"
 
-#: glib/goption.c:716
+#: glib/goption.c:719
 msgid "Help Options:"
 msgstr "Opcyi dapamohi:"
 
-#: glib/goption.c:717
+#: glib/goption.c:720
 msgid "Show help options"
 msgstr "Pakažy opcyi dapamohi"
 
-#: glib/goption.c:723
+#: glib/goption.c:726
 msgid "Show all help options"
 msgstr "Pakažy ŭsie opcyi dapamohi"
 
-#: glib/goption.c:785
+#: glib/goption.c:788
 msgid "Application Options:"
 msgstr "Opcyi aplikacyi:"
 
-#: glib/goption.c:846 glib/goption.c:916
+#: glib/goption.c:849 glib/goption.c:919
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "Niemahčyma pierapracavać ličbavaj vartaści '%s' dla %s"
 
-#: glib/goption.c:856 glib/goption.c:924
+#: glib/goption.c:859 glib/goption.c:927
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "Ličbavaja vartaść '%s' dla %s pa-za dapuščalnymi miežami"
 
-#: glib/goption.c:881
+#: glib/goption.c:884
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "Nielha pierapracavać padvojnuju ličbavuju vartaść '%s' dla %s"
 
-#: glib/goption.c:889
+#: glib/goption.c:892
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "Padvojnaja ličbavaja vartaść '%s' dla %s pa-za dapuščalnymi miežami"
 
 # glib/gconvert.c:597 glib/gconvert.c:813 glib/giochannel.c:1289
 # glib/giochannel.c:2175
-#: glib/goption.c:1226
+#: glib/goption.c:1229
 #, c-format
 msgid "Error parsing option %s"
 msgstr "Pamyłka padčas pierapracoŭki %s"
 
-#: glib/goption.c:1257 glib/goption.c:1368
+#: glib/goption.c:1260 glib/goption.c:1371
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Adsutny parametar dla %s"
 
-#: glib/goption.c:1763
+#: glib/goption.c:1766
 #, c-format
 msgid "Unknown option %s"
 msgstr "Nieviadomaja opcyja %s"
@@ -1277,12 +1277,15 @@ msgstr ""
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Ličbavuju vartaść '%s' niemahčyma interpretavać jak lahičnuju vartaść."
 
-#: gio/gbufferedinputstream.c:483 gio/ginputstream.c:559
-msgid "Too large count value passed to g_input_stream_read_async"
-msgstr "Funkcyi g_input_stream_read_async pieradadzieny nadta vialiki ličylnik"
+#: gio/gbufferedinputstream.c:483 gio/ginputstream.c:186
+#: gio/ginputstream.c:318 gio/ginputstream.c:559 gio/ginputstream.c:684
+#: gio/goutputstream.c:193 gio/goutputstream.c:647
+#, fuzzy, c-format
+msgid "Too large count value passed to %s"
+msgstr "Funkcyi g_input_stream_read pieradadzieny nadta vialiki ličylnik"
 
-#: gio/gbufferedinputstream.c:869 gio/ginputstream.c:892
-#: gio/goutputstream.c:1075
+#: gio/gbufferedinputstream.c:870 gio/ginputstream.c:894
+#: gio/goutputstream.c:1076
 #, c-format
 msgid "Stream is already closed"
 msgstr "Płyń užo začynienaja"
@@ -1311,42 +1314,42 @@ msgstr "typ %s"
 msgid "Unexpected early end-of-stream"
 msgstr "Zaŭčasny kaniec płyni"
 
-#: gio/gdesktopappinfo.c:395 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:403 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr "Nienazvany"
 
-#: gio/gdesktopappinfo.c:571
+#: gio/gdesktopappinfo.c:579
 #, c-format
 msgid "Desktop file didn't specify Exec field"
 msgstr "Fajł stała nie akreślivaje pola Exec"
 
-#: gio/gdesktopappinfo.c:863
+#: gio/gdesktopappinfo.c:871
 #, c-format
 msgid "Unable to find terminal required for application"
 msgstr "Niemahčyma znajści terminału, vymahanaha dla aplikacyi"
 
-#: gio/gdesktopappinfo.c:1097
+#: gio/gdesktopappinfo.c:1105
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
 "Niemahčyma stvaryć kanfihuracyjny kataloh %s karystalnika dla aplikacyi: %s"
 
-#: gio/gdesktopappinfo.c:1101
+#: gio/gdesktopappinfo.c:1109
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Niemahčyma stvaryć kanfihuracyjny kataloh MIME %s dla karystalnika: %s"
 
-#: gio/gdesktopappinfo.c:1474
+#: gio/gdesktopappinfo.c:1428
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Asablivaje aznačeńnie dla %s"
 
-#: gio/gdesktopappinfo.c:1498
+#: gio/gdesktopappinfo.c:1452
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Niemahčyma stvaryć fajł stała %s dla karystalnika"
 
-#: gio/gdesktopappinfo.c:1523
+#: gio/gdesktopappinfo.c:1477
 #, c-format
 msgid "Can't load just created desktop file"
 msgstr "Niemahčyma zahruzić tolki što stvorany fajł stała"
@@ -1359,56 +1362,56 @@ msgstr "pryłada nie zaimplementavała vysoŭvańnia (eject)"
 msgid "drive doesn't implement polling for media"
 msgstr "pryłada nie zaimplementavała apytańnia nośbitaŭ (poll)"
 
-#: gio/gfile.c:742 gio/gfile.c:930 gio/gfile.c:1063 gio/gfile.c:1217
-#: gio/gfile.c:1270 gio/gfile.c:1327 gio/gfile.c:1408 gio/gfile.c:2363
-#: gio/gfile.c:2408 gio/gfile.c:2458 gio/gfile.c:2497 gio/gfile.c:2821
-#: gio/gfile.c:3220 gio/gfile.c:3299 gio/gfile.c:3379 gio/gfile.c:3457
+#: gio/gfile.c:755 gio/gfile.c:943 gio/gfile.c:1076 gio/gfile.c:1230
+#: gio/gfile.c:1283 gio/gfile.c:1340 gio/gfile.c:1421 gio/gfile.c:2459
+#: gio/gfile.c:2504 gio/gfile.c:2554 gio/gfile.c:2593 gio/gfile.c:2917
+#: gio/gfile.c:3316 gio/gfile.c:3395 gio/gfile.c:3475 gio/gfile.c:3553
 #, c-format
 msgid "Operation not supported"
 msgstr "Aperacyja nie padtrymlivajecca"
 
-#: gio/gfile.c:1105 gio/glocalfile.c:895 gio/glocalfile.c:904
-#: gio/glocalfile.c:915
+#: gio/gfile.c:1118 gio/glocalfile.c:923 gio/glocalfile.c:932
+#: gio/glocalfile.c:943
 #, c-format
 msgid "Containing mount does not exist"
 msgstr "Źmiaščalnaje mantavańnie nie isnuje"
 
-#: gio/gfile.c:1747
+#: gio/gfile.c:1760
 #, c-format
 msgid "Can't copy over directory"
 msgstr "Niemahčyma skapijavać zamiest katalohu"
 
-#: gio/gfile.c:1807
+#: gio/gfile.c:1820
 #, c-format
 msgid "Can't copy directory over directory"
 msgstr "Niemahčyma skapijavać kataloh zamiest inšaha katalohu"
 
-#: gio/gfile.c:1815
+#: gio/gfile.c:1828 gio/glocalfile.c:1839
 #, c-format
 msgid "Target file exists"
 msgstr "Metavy fajł isnuje"
 
-#: gio/gfile.c:1833
+#: gio/gfile.c:1846
 #, c-format
 msgid "Can't recursively copy directory"
 msgstr "Niemahčyma rekursiŭna skapijavać kataloh"
 
-#: gio/gfile.c:2448
+#: gio/gfile.c:2544
 #, c-format
 msgid "Invalid symlink value given"
 msgstr "Padadzienaja niapravilnaja vartaść symbalnaj spasyłki"
 
-#: gio/gfile.c:2540
+#: gio/gfile.c:2636
 #, c-format
 msgid "Trash not supported"
 msgstr "Śmietnica nie padtrymlivajacca"
 
-#: gio/gfile.c:2587
+#: gio/gfile.c:2683
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "Nazvy fajłaŭ nia mohuć utrymlivać \"%c\""
 
-#: gio/gfile.c:4291 gio/gvolume.c:318
+#: gio/gfile.c:4528 gio/gvolume.c:318
 msgid "volume doesn't implement mount"
 msgstr "masiŭ nie zaimplementavaŭ mantavańnia (mount)"
 
@@ -1448,146 +1451,127 @@ msgstr "Dla ŭvachodnaj płyni nie dazvolenaje abcinańnie"
 msgid "Truncate not supported on stream"
 msgstr "Dla płyni nie padtrymlivajecca abcinańnie"
 
-#: gio/ginputstream.c:186
-#, c-format
-msgid "Too large count value passed to g_input_stream_read"
-msgstr "Funkcyi g_input_stream_read pieradadzieny nadta vialiki ličylnik"
-
 #: gio/ginputstream.c:195
 #, c-format
 msgid "Input stream doesn't implement read"
 msgstr "Uvachodnaja płyń nie zaimplementavała čytańnia (read)"
 
-#: gio/ginputstream.c:318
-#, c-format
-msgid "Too large count value passed to g_input_stream_skip"
-msgstr "Funkcyi g_input_stream_skip pieradadzieny nadta vialiki ličylnik"
-
-#: gio/ginputstream.c:683
-msgid "Too large count value passed to g_input_stream_skip_async"
-msgstr "Funkcyi g_input_stream_skip_async pieradadzieny nadta vialiki ličylnik"
-
-#: gio/ginputstream.c:899 gio/goutputstream.c:1082
+#: gio/ginputstream.c:901 gio/goutputstream.c:1083
 #, c-format
 msgid "Stream has outstanding operation"
 msgstr "Dla płyni jość važkaja aperacyja"
 
-#: gio/glocaldirectorymonitor.c:297
+#: gio/glocaldirectorymonitor.c:270
 #, fuzzy, c-format
 msgid "Unable to find default local directory monitor type"
 msgstr "Niemahčyma znajści najvyšejšy kataloh dziela śmiećcia"
 
 # glib/gconvert.c:1729
-#: gio/glocalfile.c:561
+#: gio/glocalfile.c:589
 #, c-format
 msgid "Invalid filename %s"
 msgstr "Niapravilnaja nazva fajłu %s"
 
 # glib/gfileutils.c:348
-#: gio/glocalfile.c:817
+#: gio/glocalfile.c:845
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "Pamyłka atrymańnia źviestak ab fajłavaj systemie: %s"
 
-#: gio/glocalfile.c:935
+#: gio/glocalfile.c:963
 #, c-format
 msgid "Can't rename root directory"
 msgstr "Niemahčyma źmianić nazvu dla karaniovaha katalohu"
 
-#: gio/glocalfile.c:953
+#: gio/glocalfile.c:981
 #, c-format
 msgid "Can't rename file, filename already exist"
 msgstr "Niemahčyma źmianić nazvu dla fajłu, taki fajł užo isnuje"
 
 # glib/gconvert.c:1729
-#: gio/glocalfile.c:966 gio/glocalfile.c:1688 gio/glocalfile.c:1717
-#: gio/glocalfile.c:1862 gio/glocalfileoutputstream.c:448
+#: gio/glocalfile.c:994 gio/glocalfile.c:1716 gio/glocalfile.c:1745
+#: gio/glocalfile.c:1890 gio/glocalfileoutputstream.c:448
 #: gio/glocalfileoutputstream.c:489 gio/glocalfileoutputstream.c:879
 #, c-format
 msgid "Invalid filename"
 msgstr "Niapravilnaja nazva fajłu"
 
 # glib/gfileutils.c:348
-#: gio/glocalfile.c:970
+#: gio/glocalfile.c:998
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "Pamyłka adčytańnia fajłu: %s"
 
 # glib/gfileutils.c:348
-#: gio/glocalfile.c:1087
+#: gio/glocalfile.c:1115
 #, c-format
 msgid "Error opening file: %s"
 msgstr "Pamyłka adčynieńnia fajłu: %s"
 
-#: gio/glocalfile.c:1097
+#: gio/glocalfile.c:1125
 #, c-format
 msgid "Can't open directory"
 msgstr "Niemahčyma adčynić kataloh"
 
 # glib/gfileutils.c:348
-#: gio/glocalfile.c:1149 gio/glocalfile.c:1692
+#: gio/glocalfile.c:1177 gio/glocalfile.c:1720
 #, c-format
 msgid "Error removing file: %s"
 msgstr "Pamyłka vydaleńnia fajłu: %s"
 
 # glib/gfileutils.c:348
-#: gio/glocalfile.c:1441
+#: gio/glocalfile.c:1469
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "Pamyłka vykidańnia ŭ śmietnicu fajłu: %s"
 
 # glib/gfileutils.c:745
-#: gio/glocalfile.c:1465
+#: gio/glocalfile.c:1493
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "Niemahčyma stvaryć kataloh śmietnicy %s: %s"
 
-#: gio/glocalfile.c:1489
+#: gio/glocalfile.c:1517
 #, c-format
 msgid "Unable to find toplevel directory for trash"
 msgstr "Niemahčyma znajści najvyšejšy kataloh dziela śmiećcia"
 
-#: gio/glocalfile.c:1549 gio/glocalfile.c:1569
+#: gio/glocalfile.c:1577 gio/glocalfile.c:1597
 #, c-format
 msgid "Unable to find or create trash directory"
 msgstr "Niemahčyma znajści ci stvaryć kataloh dziela śmiećcia"
 
 # glib/gfileutils.c:745
-#: gio/glocalfile.c:1601
-#, c-format
-msgid "Unable to create trashed file: %s"
+#: gio/glocalfile.c:1629
+#, fuzzy, c-format
+msgid "Unable to create trashing info file: %s"
 msgstr "Niemahčyma stvaryć śmiaćciovy fajł: %s"
 
 # glib/gfileutils.c:745
-#: gio/glocalfile.c:1624
+#: gio/glocalfile.c:1652
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "Niemahčyma vykinuć u śmietnicu fajł: %s"
 
 # glib/gconvert.c:597 glib/gconvert.c:813 glib/giochannel.c:1289
 # glib/giochannel.c:2175
-#: gio/glocalfile.c:1721
+#: gio/glocalfile.c:1749
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "Pamyłka stvareńnia symbalnaj spasyłki: %s"
 
 # glib/gfileutils.c:348
-#: gio/glocalfile.c:1779 gio/glocalfile.c:1866
+#: gio/glocalfile.c:1807 gio/glocalfile.c:1894
 #, c-format
 msgid "Error moving file: %s"
 msgstr "Pamyłka pieranosu fajłu: %s"
 
-#: gio/glocalfile.c:1802
+#: gio/glocalfile.c:1830
 #, c-format
 msgid "Can't move directory over directory"
 msgstr "Niemahčyma pieranieści kataloh zamiest inšaha katalohu"
 
-#: gio/glocalfile.c:1811
-#, c-format
-msgid "Target file already exists"
-msgstr "Metavy fajł užo isnuje"
-
-#: gio/glocalfile.c:1824 gio/glocalfileoutputstream.c:735
+#: gio/glocalfile.c:1852 gio/glocalfileoutputstream.c:735
 #: gio/glocalfileoutputstream.c:749 gio/glocalfileoutputstream.c:764
 #: gio/glocalfileoutputstream.c:780 gio/glocalfileoutputstream.c:794
 #, c-format
@@ -1595,12 +1579,12 @@ msgid "Backup file creation failed"
 msgstr "Niaŭdałaje stvareńnie zapasnoha fajłu"
 
 # glib/gfileutils.c:348
-#: gio/glocalfile.c:1841
+#: gio/glocalfile.c:1869
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Pamyłka vydaleńnia metavaha fajłu: %s"
 
-#: gio/glocalfile.c:1855
+#: gio/glocalfile.c:1883
 #, c-format
 msgid "Move between mounts not supported"
 msgstr "Pieranos pamiž punktami mantavańnia nie padtrymlivajecca"
@@ -1628,70 +1612,70 @@ msgid "Error setting extended attribute '%s': %s"
 msgstr "Pamyłka akreśleńnia pašyranaha atrybutu '%s': %s"
 
 # glib/gfileutils.c:348
-#: gio/glocalfileinfo.c:1392 gio/glocalfileoutputstream.c:625
+#: gio/glocalfileinfo.c:1394 gio/glocalfileoutputstream.c:625
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr "Pamyłka atrymańnia stat() dla fajłu '%s': %s"
 
-#: gio/glocalfileinfo.c:1447
+#: gio/glocalfileinfo.c:1449
 msgid " (invalid encoding)"
 msgstr " (niapravilnaje kadavańnie)"
 
 # glib/gfileutils.c:348
-#: gio/glocalfileinfo.c:1622
+#: gio/glocalfileinfo.c:1624
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "Pamyłka atrymańnia stat() dla fajłavaha deskryptara: %s"
 
-#: gio/glocalfileinfo.c:1667
+#: gio/glocalfileinfo.c:1669
 #, c-format
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Niapravilny typ atrybutu (čakaŭsia uint32)"
 
-#: gio/glocalfileinfo.c:1684
+#: gio/glocalfileinfo.c:1686
 #, c-format
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Niapravilny typ atrybutu (čakaŭsia uint64)"
 
-#: gio/glocalfileinfo.c:1702
+#: gio/glocalfileinfo.c:1704
 #, c-format
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Niapravilny typ atrybutu (čakaŭsia bajtavy radok)"
 
 # glib/gconvert.c:597 glib/gconvert.c:813 glib/giochannel.c:1289
 # glib/giochannel.c:2175
-#: gio/glocalfileinfo.c:1726
+#: gio/glocalfileinfo.c:1728
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Pamyłka akreśleńnia pravoŭ: %s"
 
 # glib/gconvert.c:597 glib/gconvert.c:813 glib/giochannel.c:1289
 # glib/giochannel.c:2175
-#: gio/glocalfileinfo.c:1775 gio/glocalfileinfo.c:1935
+#: gio/glocalfileinfo.c:1777 gio/glocalfileinfo.c:1937
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Pamyłka akreśleńnia ŭładalnika: %s"
 
-#: gio/glocalfileinfo.c:1798
+#: gio/glocalfileinfo.c:1800
 #, c-format
 msgid "symlink must be non-NULL"
 msgstr "symbalnaja spasyłka musić być nia-NULL"
 
 # glib/gmarkup.c:303
-#: gio/glocalfileinfo.c:1806 gio/glocalfileinfo.c:1823
-#: gio/glocalfileinfo.c:1832
+#: gio/glocalfileinfo.c:1808 gio/glocalfileinfo.c:1825
+#: gio/glocalfileinfo.c:1834
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Pamyłka akreśleńnia symbalnaj spasyłki: %s"
 
-#: gio/glocalfileinfo.c:1815
+#: gio/glocalfileinfo.c:1817
 #, c-format
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 "Pamyłka akreśleńnia symbalnaj spasyłki: fajł nie źjaŭlajecca symbalnaj "
 "spasyłkaj"
 
-#: gio/glocalfileinfo.c:1990
+#: gio/glocalfileinfo.c:1992
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Akreśleńnie atrybutu %s nie padtrymlivajecca"
@@ -1716,7 +1700,7 @@ msgstr "Pamyłka zruchu ŭ fajle: %s"
 msgid "Error closing file: %s"
 msgstr "Pamyłka začynieńnia fajłu: %s"
 
-#: gio/glocalfilemonitor.c:224
+#: gio/glocalfilemonitor.c:197
 #, fuzzy, c-format
 msgid "Unable to find default local file monitor type"
 msgstr "Niemahčyma znajści ci stvaryć kataloh dziela śmiećcia"
@@ -1824,25 +1808,15 @@ msgstr "mantavańnie nie zaimplementavała vysoŭvańnia (eject)"
 msgid "mount doesn't implement remount"
 msgstr "mantavańnie nie zaimplementavała pieramantavańnia (remount)"
 
-#: gio/goutputstream.c:193
-#, c-format
-msgid "Too large count value passed to g_output_stream_write"
-msgstr "Funkcyi g_output_stream_write pieradadzieny nadta vialiki ličylnik"
-
 #: gio/goutputstream.c:202 gio/goutputstream.c:403
 #, c-format
 msgid "Output stream doesn't implement write"
 msgstr "Vyjściovaja płyń nie zaimplementavała zapisu (write)"
 
-#: gio/goutputstream.c:363 gio/goutputstream.c:770
+#: gio/goutputstream.c:363 gio/goutputstream.c:771
 #, c-format
 msgid "Source stream is already closed"
 msgstr "Kryničnaja płyń užo začynienaja"
-
-#: gio/goutputstream.c:647
-msgid "Too large count value passed to g_output_stream_write_async"
-msgstr ""
-"Funkcyi g_output_stream_write_async pieradadzieny nadta vialiki ličylnik"
 
 # glib/gfileutils.c:348
 #: gio/gunixinputstream.c:200 gio/gunixinputstream.c:218
@@ -1911,3 +1885,24 @@ msgstr "užyj daŭhi śpiskavy farmat"
 #: tests/gio-ls.c:37
 msgid "[FILE...]"
 msgstr "[FAJŁ...]"
+
+#~ msgid "Too large count value passed to g_input_stream_read_async"
+#~ msgstr ""
+#~ "Funkcyi g_input_stream_read_async pieradadzieny nadta vialiki ličylnik"
+
+#~ msgid "Too large count value passed to g_input_stream_skip"
+#~ msgstr "Funkcyi g_input_stream_skip pieradadzieny nadta vialiki ličylnik"
+
+#~ msgid "Too large count value passed to g_input_stream_skip_async"
+#~ msgstr ""
+#~ "Funkcyi g_input_stream_skip_async pieradadzieny nadta vialiki ličylnik"
+
+#~ msgid "Target file already exists"
+#~ msgstr "Metavy fajł užo isnuje"
+
+#~ msgid "Too large count value passed to g_output_stream_write"
+#~ msgstr "Funkcyi g_output_stream_write pieradadzieny nadta vialiki ličylnik"
+
+#~ msgid "Too large count value passed to g_output_stream_write_async"
+#~ msgstr ""
+#~ "Funkcyi g_output_stream_write_async pieradadzieny nadta vialiki ličylnik"

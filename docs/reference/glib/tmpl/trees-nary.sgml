@@ -93,7 +93,7 @@ fields
 </para>
 
 @src: 
-@data:
+@data: 
 @Returns: 
 
 
@@ -116,7 +116,7 @@ fields
 @parent: 
 @position: 
 @node: 
-@Returns:
+@Returns: 
 
 
 <!-- ##### FUNCTION g_node_insert_before ##### -->
@@ -125,9 +125,9 @@ fields
 </para>
 
 @parent: 
-@sibling:
+@sibling: 
 @node: 
-@Returns:
+@Returns: 
 
 
 <!-- ##### FUNCTION g_node_insert_after ##### -->
@@ -137,7 +137,7 @@ fields
 
 @parent: 
 @sibling: 
-@node:
+@node: 
 @Returns: 
 
 
@@ -148,7 +148,7 @@ fields
 
 @parent: 
 @node: 
-@Returns:
+@Returns: 
 
 
 <!-- ##### FUNCTION g_node_prepend ##### -->
@@ -158,7 +158,7 @@ fields
 
 @parent: 
 @node: 
-@Returns:
+@Returns: 
 
 
 <!-- ##### MACRO g_node_insert_data ##### -->
@@ -167,9 +167,9 @@ fields
 </para>
 
 @parent: 
-@position:
+@position: 
 @data: 
-@Returns:
+@Returns: 
 
 
 <!-- ##### MACRO g_node_insert_data_before ##### -->
@@ -177,10 +177,10 @@ fields
 
 </para>
 
-@parent:
-@sibling:
+@parent: 
+@sibling: 
 @data: 
-@Returns:
+@Returns: 
 
 
 <!-- ##### MACRO g_node_append_data ##### -->
@@ -188,9 +188,9 @@ fields
 
 </para>
 
-@parent:
-@data:
-@Returns:
+@parent: 
+@data: 
+@Returns: 
 
 
 <!-- ##### MACRO g_node_prepend_data ##### -->
@@ -198,9 +198,9 @@ fields
 
 </para>
 
-@parent:
-@data:
-@Returns:
+@parent: 
+@data: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_node_reverse_children ##### -->
@@ -208,7 +208,7 @@ fields
 
 </para>
 
-@node:
+@node: 
 
 
 <!-- ##### FUNCTION g_node_traverse ##### -->
@@ -258,9 +258,9 @@ If the function returns %TRUE, then the traversal is stopped.
 </para>
 
 @node: 
-@flags:
-@func:
-@data:
+@flags: 
+@func: 
+@data: 
 
 
 <!-- ##### USER_FUNCTION GNodeForeachFunc ##### -->
@@ -279,8 +279,8 @@ passed to g_node_children_foreach().
 
 </para>
 
-@node:
-@Returns:
+@node: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_node_find ##### -->
@@ -289,10 +289,10 @@ passed to g_node_children_foreach().
 </para>
 
 @root: 
-@order:
+@order: 
 @flags: 
 @data: 
-@Returns:
+@Returns: 
 
 
 <!-- ##### FUNCTION g_node_find_child ##### -->
@@ -300,9 +300,9 @@ passed to g_node_children_foreach().
 
 </para>
 
-@node:
+@node: 
 @flags: 
-@data:
+@data: 
 @Returns: 
 
 
@@ -311,9 +311,9 @@ passed to g_node_children_foreach().
 
 </para>
 
-@node:
-@data:
-@Returns:
+@node: 
+@data: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_node_child_position ##### -->
@@ -323,7 +323,7 @@ passed to g_node_children_foreach().
 
 @node: 
 @child: 
-@Returns:
+@Returns: 
 
 
 <!-- ##### MACRO g_node_first_child ##### -->
@@ -331,8 +331,8 @@ passed to g_node_children_foreach().
 
 </para>
 
-@node:
-@Returns:
+@node: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_node_last_child ##### -->
@@ -340,7 +340,7 @@ passed to g_node_children_foreach().
 
 </para>
 
-@node:
+@node: 
 @Returns: 
 
 
@@ -349,9 +349,9 @@ passed to g_node_children_foreach().
 
 </para>
 
-@node:
-@n:
-@Returns:
+@node: 
+@n: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_node_first_sibling ##### -->
@@ -369,7 +369,7 @@ passed to g_node_children_foreach().
 </para>
 
 @node: 
-@Returns:
+@Returns: 
 
 
 <!-- ##### MACRO g_node_prev_sibling ##### -->
@@ -378,7 +378,7 @@ passed to g_node_children_foreach().
 </para>
 
 @node: 
-@Returns:
+@Returns: 
 
 
 <!-- ##### FUNCTION g_node_last_sibling ##### -->
@@ -386,8 +386,8 @@ passed to g_node_children_foreach().
 
 </para>
 
-@node:
-@Returns:
+@node: 
+@Returns: 
 
 
 <!-- ##### MACRO G_NODE_IS_LEAF ##### -->
@@ -396,7 +396,7 @@ passed to g_node_children_foreach().
 </para>
 
 @node: 
-@Returns:
+@Returns: 
 
 
 <!-- ##### MACRO G_NODE_IS_ROOT ##### -->
@@ -404,8 +404,8 @@ passed to g_node_children_foreach().
 
 </para>
 
-@node:
-@Returns:
+@node: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_node_depth ##### -->
@@ -422,9 +422,9 @@ passed to g_node_children_foreach().
 
 </para>
 
-@root:
-@flags:
-@Returns:
+@root: 
+@flags: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_node_n_children ##### -->
@@ -442,7 +442,7 @@ passed to g_node_children_foreach().
 </para>
 
 @node: 
-@descendant:
+@descendant: 
 @Returns: 
 
 

@@ -31,4 +31,4 @@ void       _g_io_modules_ensure_loaded (void);
 
 G_END_DECLS
 
-#endif /* __G_IO_MODULE_H__ */
+#endif /* __G_IO_MODULE_PRIV_H__ */

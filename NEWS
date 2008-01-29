@@ -7,6 +7,8 @@ Overview of Changes from GLib 2.15.3 to GLib 2.15.4
  - g_file_copy has an async variant now
  - Drives and volumes now have API to get identifiers
    like Hal UDIs or UUIDs.
+ - There is now a registration API to let modules register
+   extensions they provide, such as volume monitor implementations
 
 * Bugs fixed:
   511807 g_time_val_to_iso8601() uses MT-unsafe gmtime() function

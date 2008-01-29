@@ -81,6 +81,8 @@ g_file_set_display_name_finish
 g_file_delete
 g_file_trash
 g_file_copy
+g_file_copy_async
+g_file_copy_finish
 g_file_move
 g_file_make_directory
 g_file_make_symbolic_link
@@ -820,6 +822,13 @@ g_volume_mount_finish
 g_volume_can_eject
 g_volume_eject
 g_volume_eject_finish
+G_VOLUME_IDENTIFIER_KIND_HAL_UDI
+G_VOLUME_IDENTIFIER_KIND_LABEL
+G_VOLUME_IDENTIFIER_KIND_NFS_MOUNT
+G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE
+G_VOLUME_IDENTIFIER_KIND_UUID
+g_volume_enumerate_identifiers
+g_volume_get_identifier
 <SUBSECTION Standard>
 G_VOLUME
 G_IS_VOLUME
@@ -847,6 +856,8 @@ g_drive_is_media_check_automatic
 g_drive_is_media_removable
 g_drive_eject
 g_drive_eject_finish
+g_drive_enumerate_identifiers
+g_drive_get_identifier
 <SUBSECTION Standard>
 G_DRIVE
 G_IS_DRIVE

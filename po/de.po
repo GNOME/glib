@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-01-21 11:37-0500\n"
+"POT-Creation-Date: 2008-01-28 18:34-0500\n"
 "PO-Revision-Date: 2007-11-28 00:55+0100\n"
 "Last-Translator: Andre Klapper <ak-47@gmx.net>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
@@ -452,9 +452,9 @@ msgid ""
 "element '%s', or optionally an attribute; perhaps you used an invalid "
 "character in an attribute name"
 msgstr ""
-"Seltsames Zeichen »%s«, es wurde entweder ein Attribut oder aber »>« oder "
-"»/« erwartet, um das Start-Tag des Elements »%s« abzuschließen; vielleicht "
-"haben Sie ein ungültiges Zeichen in einem Attributnamen benutzt"
+"Seltsames Zeichen »%s«, es wurde entweder ein Attribut oder aber »>« oder »/« "
+"erwartet, um das Start-Tag des Elements »%s« abzuschließen; vielleicht haben "
+"Sie ein ungültiges Zeichen in einem Attributnamen benutzt"
 
 #: glib/gmarkup.c:1395
 #, c-format
@@ -462,9 +462,8 @@ msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
 "giving value for attribute '%s' of element '%s'"
 msgstr ""
-"Seltsames Zeichen »%s«; bei der Wertangabe für das Attribut »%s« des "
-"Elemente »%s« wurde ein Anführungszeichen nach dem Gleichheitszeichen "
-"erwartet"
+"Seltsames Zeichen »%s«; bei der Wertangabe für das Attribut »%s« des Elemente "
+"»%s« wurde ein Anführungszeichen nach dem Gleichheitszeichen erwartet"
 
 #: glib/gmarkup.c:1537
 #, c-format
@@ -472,8 +471,8 @@ msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 msgstr ""
-"»%s« ist kein gültiges Zeichen, wenn es auf die Zeichen »</« folgt; »%s« "
-"darf keinen Elementnamen beginnen"
+"»%s« ist kein gültiges Zeichen, wenn es auf die Zeichen »</« folgt; »%s« darf "
+"keinen Elementnamen beginnen"
 
 #: glib/gmarkup.c:1577
 #, c-format
@@ -481,8 +480,8 @@ msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 msgstr ""
-"»%s« ist kein gültiges Zeichen, wenn es auf den schließenden Elementnamen »%"
-"s« folgt; das erlaubte Zeichen ist »>«"
+"»%s« ist kein gültiges Zeichen, wenn es auf den schließenden Elementnamen »%s« "
+"folgt; das erlaubte Zeichen ist »>«"
 
 #: glib/gmarkup.c:1588
 #, c-format
@@ -492,8 +491,7 @@ msgstr "Element »%s« wurde geschlossen, kein Element ist derzeit offen"
 #: glib/gmarkup.c:1597
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
-msgstr ""
-"Element »%s« wurde geschlossen, aber das derzeit offene Element ist »%s«"
+msgstr "Element »%s« wurde geschlossen, aber das derzeit offene Element ist »%s«"
 
 #: glib/gmarkup.c:1757
 msgid "Document was empty or contained only whitespace"
@@ -518,8 +516,8 @@ msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
 "the tag <%s/>"
 msgstr ""
-"Dokument endete unerwartet, es wurde eine spitze Klammer »>«, die das Tag <%"
-"s/> schließt, erwartet"
+"Dokument endete unerwartet, es wurde eine spitze Klammer »>«, die das Tag <%s/"
+"> schließt, erwartet"
 
 #: glib/gmarkup.c:1793
 msgid "Document ended unexpectedly inside an element name"
@@ -1021,61 +1019,61 @@ msgstr "Ungültige Folge in Umwandlungseingabe"
 msgid "Character out of range for UTF-16"
 msgstr "Zeichen außerhalb des Bereiches für UTF-16"
 
-#: glib/goption.c:612
+#: glib/goption.c:615
 msgid "Usage:"
 msgstr "Aufruf:"
 
-#: glib/goption.c:612
+#: glib/goption.c:615
 msgid "[OPTION...]"
 msgstr "[OPTION...]"
 
-#: glib/goption.c:716
+#: glib/goption.c:719
 msgid "Help Options:"
 msgstr "Hilfeoptionen"
 
-#: glib/goption.c:717
+#: glib/goption.c:720
 msgid "Show help options"
 msgstr "Hilfeoptionen anzeigen"
 
-#: glib/goption.c:723
+#: glib/goption.c:726
 msgid "Show all help options"
 msgstr "Alle Hilfeoptionen anzeigen"
 
-#: glib/goption.c:785
+#: glib/goption.c:788
 msgid "Application Options:"
 msgstr "Anwendungsoptionen"
 
-#: glib/goption.c:846 glib/goption.c:916
+#: glib/goption.c:849 glib/goption.c:919
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "»%s« konnte nicht als ganzzahliger Wert für %s interpretiert werden."
 
-#: glib/goption.c:856 glib/goption.c:924
+#: glib/goption.c:859 glib/goption.c:927
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "Ganzzahliger Wert »%s« für %s ist außerhalb des Bereiches."
 
-#: glib/goption.c:881
+#: glib/goption.c:884
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "»%s« konnte nicht als »double«-Wert für %s interpretiert werden."
 
-#: glib/goption.c:889
+#: glib/goption.c:892
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "»double«-Wert »%s« für %s ist außerhalb des Bereiches."
 
-#: glib/goption.c:1226
+#: glib/goption.c:1229
 #, c-format
 msgid "Error parsing option %s"
 msgstr "Fehler beim Analysieren der Option: %s"
 
-#: glib/goption.c:1257 glib/goption.c:1368
+#: glib/goption.c:1260 glib/goption.c:1371
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Für %s wird ein Argument benötigt"
 
-#: glib/goption.c:1763
+#: glib/goption.c:1766
 #, c-format
 msgid "Unknown option %s"
 msgstr "Unbekannte Option %s"
@@ -1196,12 +1194,15 @@ msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr ""
 "Der Wert »%s« konnte nicht als boolescher Ausdruck interpretiert werden."
 
-#: gio/gbufferedinputstream.c:483 gio/ginputstream.c:559
-msgid "Too large count value passed to g_input_stream_read_async"
-msgstr "Zu großer Zählwert an g_input_stream_read_async übermittelt"
+#: gio/gbufferedinputstream.c:483 gio/ginputstream.c:186
+#: gio/ginputstream.c:318 gio/ginputstream.c:559 gio/ginputstream.c:684
+#: gio/goutputstream.c:193 gio/goutputstream.c:647
+#, fuzzy, c-format
+msgid "Too large count value passed to %s"
+msgstr "Zu großer Zählwert an g_input_stream_read übermittelt"
 
-#: gio/gbufferedinputstream.c:869 gio/ginputstream.c:892
-#: gio/goutputstream.c:1075
+#: gio/gbufferedinputstream.c:870 gio/ginputstream.c:894
+#: gio/goutputstream.c:1076
 #, c-format
 msgid "Stream is already closed"
 msgstr "Datenstrom ist bereits geschlossen"
@@ -1230,44 +1231,44 @@ msgstr "%s-Typ"
 msgid "Unexpected early end-of-stream"
 msgstr "Unerwartet frühes Datenstromende"
 
-#: gio/gdesktopappinfo.c:395 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:403 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr "Unbenannt"
 
-#: gio/gdesktopappinfo.c:571
+#: gio/gdesktopappinfo.c:579
 #, c-format
 msgid "Desktop file didn't specify Exec field"
 msgstr "Desktop-Datei hat kein Exec-Feld angegeben"
 
-#: gio/gdesktopappinfo.c:863
+#: gio/gdesktopappinfo.c:871
 #, c-format
 msgid "Unable to find terminal required for application"
 msgstr "Für die Anwendung benötigtes Terminal konnte nicht gefunden werden"
 
-#: gio/gdesktopappinfo.c:1097
+#: gio/gdesktopappinfo.c:1105
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
 "Konfigurationsordner %s für Benutzeranwendungen konnte nicht erstellt "
 "werden: %s"
 
-#: gio/gdesktopappinfo.c:1101
+#: gio/gdesktopappinfo.c:1109
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr ""
 "MIME-Konfigurationsordner %s des Benutzers konnte nicht erstellt werden: %s"
 
-#: gio/gdesktopappinfo.c:1474
+#: gio/gdesktopappinfo.c:1428
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Benutzerdefinition für %s"
 
-#: gio/gdesktopappinfo.c:1498
+#: gio/gdesktopappinfo.c:1452
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Benutzer-Desktop-Datei %s kann nicht erstellt werden"
 
-#: gio/gdesktopappinfo.c:1523
+#: gio/gdesktopappinfo.c:1477
 #, c-format
 msgid "Can't load just created desktop file"
 msgstr "Erzeugte Desktop-Datei kann nicht geladen werden"
@@ -1281,56 +1282,56 @@ msgstr "Laufwerk unterstützt Auswerfen nicht"
 msgid "drive doesn't implement polling for media"
 msgstr "Laufwerk unterstützt Einhängen nicht"
 
-#: gio/gfile.c:742 gio/gfile.c:930 gio/gfile.c:1063 gio/gfile.c:1217
-#: gio/gfile.c:1270 gio/gfile.c:1327 gio/gfile.c:1408 gio/gfile.c:2363
-#: gio/gfile.c:2408 gio/gfile.c:2458 gio/gfile.c:2497 gio/gfile.c:2821
-#: gio/gfile.c:3220 gio/gfile.c:3299 gio/gfile.c:3379 gio/gfile.c:3457
+#: gio/gfile.c:755 gio/gfile.c:943 gio/gfile.c:1076 gio/gfile.c:1230
+#: gio/gfile.c:1283 gio/gfile.c:1340 gio/gfile.c:1421 gio/gfile.c:2459
+#: gio/gfile.c:2504 gio/gfile.c:2554 gio/gfile.c:2593 gio/gfile.c:2917
+#: gio/gfile.c:3316 gio/gfile.c:3395 gio/gfile.c:3475 gio/gfile.c:3553
 #, c-format
 msgid "Operation not supported"
 msgstr "Vorgang nicht unterstützt"
 
-#: gio/gfile.c:1105 gio/glocalfile.c:895 gio/glocalfile.c:904
-#: gio/glocalfile.c:915
+#: gio/gfile.c:1118 gio/glocalfile.c:923 gio/glocalfile.c:932
+#: gio/glocalfile.c:943
 #, fuzzy, c-format
 msgid "Containing mount does not exist"
 msgstr "Enthaltender Datenträger existiert nicht"
 
-#: gio/gfile.c:1747
+#: gio/gfile.c:1760
 #, c-format
 msgid "Can't copy over directory"
 msgstr "Es kann nicht über das Verzeichnis kopiert werden"
 
-#: gio/gfile.c:1807
+#: gio/gfile.c:1820
 #, c-format
 msgid "Can't copy directory over directory"
 msgstr "Verzeichnis kann nicht über Verzeichnis kopiert werden"
 
-#: gio/gfile.c:1815
+#: gio/gfile.c:1828 gio/glocalfile.c:1839
 #, c-format
 msgid "Target file exists"
 msgstr "Zieldatei existiert"
 
-#: gio/gfile.c:1833
+#: gio/gfile.c:1846
 #, c-format
 msgid "Can't recursively copy directory"
 msgstr "Verzeichnis kann nicht rekursiv kopiert werden"
 
-#: gio/gfile.c:2448
+#: gio/gfile.c:2544
 #, c-format
 msgid "Invalid symlink value given"
 msgstr "Ungültiger Wert für Symbolische Verknüpfung angegeben"
 
-#: gio/gfile.c:2540
+#: gio/gfile.c:2636
 #, c-format
 msgid "Trash not supported"
 msgstr "Müll nicht unterstützt"
 
-#: gio/gfile.c:2587
+#: gio/gfile.c:2683
 #, fuzzy, c-format
 msgid "File names cannot contain '%c'"
 msgstr "Dateinamen dürfen kein »/« enthalten"
 
-#: gio/gfile.c:4291 gio/gvolume.c:318
+#: gio/gfile.c:4528 gio/gvolume.c:318
 msgid "volume doesn't implement mount"
 msgstr "Datenträger unterstützt Einhängen nicht"
 
@@ -1370,145 +1371,126 @@ msgstr "Abschneiden des Eingabedatenstroms nicht erlaubt"
 msgid "Truncate not supported on stream"
 msgstr "Abschneiden wird vom Datenstrom nicht unterstützt"
 
-#: gio/ginputstream.c:186
-#, c-format
-msgid "Too large count value passed to g_input_stream_read"
-msgstr "Zu großer Zählwert an g_input_stream_read übermittelt"
-
 #: gio/ginputstream.c:195
 #, c-format
 msgid "Input stream doesn't implement read"
 msgstr "Eingabedatenstrom unterstützt kein Lesen"
 
-#: gio/ginputstream.c:318
-#, c-format
-msgid "Too large count value passed to g_input_stream_skip"
-msgstr "Zu großer Zählwert an g_input_stream_skip übermittelt"
-
-#: gio/ginputstream.c:683
-msgid "Too large count value passed to g_input_stream_skip_async"
-msgstr "Zu großer Zählwert an g_input_stream_skip_async übermittelt"
-
-#: gio/ginputstream.c:899 gio/goutputstream.c:1082
+#: gio/ginputstream.c:901 gio/goutputstream.c:1083
 #, c-format
 msgid "Stream has outstanding operation"
 msgstr "Datenstrom hat noch einen ausstehenden Vorgang"
 
-#: gio/glocaldirectorymonitor.c:297
+#: gio/glocaldirectorymonitor.c:270
 #, fuzzy, c-format
 msgid "Unable to find default local directory monitor type"
 msgstr "Elternverzeichnis für den Müll konnte nicht gefunden werden"
 
-#: gio/glocalfile.c:561
+#: gio/glocalfile.c:589
 #, c-format
 msgid "Invalid filename %s"
 msgstr "Ungültiger Dateiname %s"
 
-#: gio/glocalfile.c:817
+#: gio/glocalfile.c:845
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "Fehler beim Einlesen der Dateisystem-Information: %s"
 
-#: gio/glocalfile.c:935
+#: gio/glocalfile.c:963
 #, c-format
 msgid "Can't rename root directory"
 msgstr "Wurzelverzeichnis kann nicht umbenannt werden"
 
-#: gio/glocalfile.c:953
+#: gio/glocalfile.c:981
 #, c-format
 msgid "Can't rename file, filename already exist"
 msgstr "Datei kann nicht umbenannt werden, da der Dateiname bereits existiert"
 
-#: gio/glocalfile.c:966 gio/glocalfile.c:1688 gio/glocalfile.c:1717
-#: gio/glocalfile.c:1862 gio/glocalfileoutputstream.c:448
+#: gio/glocalfile.c:994 gio/glocalfile.c:1716 gio/glocalfile.c:1745
+#: gio/glocalfile.c:1890 gio/glocalfileoutputstream.c:448
 #: gio/glocalfileoutputstream.c:489 gio/glocalfileoutputstream.c:879
 #, c-format
 msgid "Invalid filename"
 msgstr "Ungültiger Dateiname"
 
-#: gio/glocalfile.c:970
+#: gio/glocalfile.c:998
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "Fehler beim Umbennen der Datei: %s"
 
-#: gio/glocalfile.c:1087
+#: gio/glocalfile.c:1115
 #, c-format
 msgid "Error opening file: %s"
 msgstr "Fehler beim Öffnen der Datei: %s"
 
-#: gio/glocalfile.c:1097
+#: gio/glocalfile.c:1125
 #, c-format
 msgid "Can't open directory"
 msgstr "Verzeichnis kann nicht geöffnet werden"
 
-#: gio/glocalfile.c:1149 gio/glocalfile.c:1692
+#: gio/glocalfile.c:1177 gio/glocalfile.c:1720
 #, c-format
 msgid "Error removing file: %s"
 msgstr "Fehler beim Entfernen der Datei: %s"
 
-#: gio/glocalfile.c:1441
+#: gio/glocalfile.c:1469
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "Fehler beim Verschieben der Datei in den Müll: %s"
 
-#: gio/glocalfile.c:1465
+#: gio/glocalfile.c:1493
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "Müll-Verzeichnis %s konnte nicht angelegt werden: %s"
 
-#: gio/glocalfile.c:1489
+#: gio/glocalfile.c:1517
 #, c-format
 msgid "Unable to find toplevel directory for trash"
 msgstr "Elternverzeichnis für den Müll konnte nicht gefunden werden"
 
-#: gio/glocalfile.c:1549 gio/glocalfile.c:1569
+#: gio/glocalfile.c:1577 gio/glocalfile.c:1597
 #, c-format
 msgid "Unable to find or create trash directory"
 msgstr "Müll-Verzeichnis konnte nicht gefunden oder angelegt werden"
 
-#: gio/glocalfile.c:1601
-#, c-format
-msgid "Unable to create trashed file: %s"
+#: gio/glocalfile.c:1629
+#, fuzzy, c-format
+msgid "Unable to create trashing info file: %s"
 msgstr "Im Müll befindliche Datei konnte nicht angelegt werden: %s"
 
-#: gio/glocalfile.c:1624
+#: gio/glocalfile.c:1652
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "Datei konnte nicht in den Müll verschoben werden: %s"
 
-#: gio/glocalfile.c:1721
+#: gio/glocalfile.c:1749
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "Fehler beim Erstellen des Symbolischen Verknüpfung: %s"
 
-#: gio/glocalfile.c:1779 gio/glocalfile.c:1866
+#: gio/glocalfile.c:1807 gio/glocalfile.c:1894
 #, c-format
 msgid "Error moving file: %s"
 msgstr "Fehler beim Verschieben der Datei: %s"
 
-#: gio/glocalfile.c:1802
+#: gio/glocalfile.c:1830
 #, c-format
 msgid "Can't move directory over directory"
 msgstr "Verzeichnis kann nicht über Verzeichnis verschoben werden"
 
-#: gio/glocalfile.c:1811
-#, c-format
-msgid "Target file already exists"
-msgstr "Zieldatei existiert bereits"
-
-#: gio/glocalfile.c:1824 gio/glocalfileoutputstream.c:735
+#: gio/glocalfile.c:1852 gio/glocalfileoutputstream.c:735
 #: gio/glocalfileoutputstream.c:749 gio/glocalfileoutputstream.c:764
 #: gio/glocalfileoutputstream.c:780 gio/glocalfileoutputstream.c:794
 #, c-format
 msgid "Backup file creation failed"
 msgstr "Erstellen der Backup-Datei fehlgeschlagen"
 
-#: gio/glocalfile.c:1841
+#: gio/glocalfile.c:1869
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Fehler beim Entfernen der Zieldatei: %s"
 
-#: gio/glocalfile.c:1855
+#: gio/glocalfile.c:1883
 #, fuzzy, c-format
 msgid "Move between mounts not supported"
 msgstr "Vorgang nicht unterstützt"
@@ -1533,64 +1515,64 @@ msgstr "Ungültiger erweiterter Attributname"
 msgid "Error setting extended attribute '%s': %s"
 msgstr "Fehler beim Setzen des erweiterten Attributs »%s«: %s"
 
-#: gio/glocalfileinfo.c:1392 gio/glocalfileoutputstream.c:625
+#: gio/glocalfileinfo.c:1394 gio/glocalfileoutputstream.c:625
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr "Fehler beim Untersuchen der Datei %s mit fstat(): %s"
 
-#: gio/glocalfileinfo.c:1447
+#: gio/glocalfileinfo.c:1449
 msgid " (invalid encoding)"
 msgstr " (ungültige Kodierung)"
 
-#: gio/glocalfileinfo.c:1622
+#: gio/glocalfileinfo.c:1624
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "Fehler beim Untersuchen des Datei-Deskriptors mit fstat(): %s"
 
-#: gio/glocalfileinfo.c:1667
+#: gio/glocalfileinfo.c:1669
 #, c-format
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Ungültiger Attributtyp (»uint32« erwartet)"
 
-#: gio/glocalfileinfo.c:1684
+#: gio/glocalfileinfo.c:1686
 #, c-format
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Ungültiger Attributtyp (»uint64« erwartet)"
 
-#: gio/glocalfileinfo.c:1702
+#: gio/glocalfileinfo.c:1704
 #, c-format
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Ungültiger Attributtyp (»byte string« erwartet)"
 
-#: gio/glocalfileinfo.c:1726
+#: gio/glocalfileinfo.c:1728
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Fehler beim Setzen der Zugriffsrechte: %s"
 
-#: gio/glocalfileinfo.c:1775 gio/glocalfileinfo.c:1935
+#: gio/glocalfileinfo.c:1777 gio/glocalfileinfo.c:1937
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Fehler beim Setzen des Besitzers: %s"
 
-#: gio/glocalfileinfo.c:1798
+#: gio/glocalfileinfo.c:1800
 #, c-format
 msgid "symlink must be non-NULL"
 msgstr "Symbolische Verknüpfung darf nicht NULL sein"
 
-#: gio/glocalfileinfo.c:1806 gio/glocalfileinfo.c:1823
-#: gio/glocalfileinfo.c:1832
+#: gio/glocalfileinfo.c:1808 gio/glocalfileinfo.c:1825
+#: gio/glocalfileinfo.c:1834
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Fehler beim Setzen der Symbolischen Verknüpfung: %s"
 
-#: gio/glocalfileinfo.c:1815
+#: gio/glocalfileinfo.c:1817
 #, c-format
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 "Fehler beim Setzen der Symbolischen Verknüpfung: Datei ist keine Symbolische "
 "Verknüpfung"
 
-#: gio/glocalfileinfo.c:1990
+#: gio/glocalfileinfo.c:1992
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Setzen des Attributs %s nicht unterstützt"
@@ -1612,7 +1594,7 @@ msgstr "Fehler beim Suchen in Datei: %s"
 msgid "Error closing file: %s"
 msgstr "Fehler beim Schließen der Datei: %s"
 
-#: gio/glocalfilemonitor.c:224
+#: gio/glocalfilemonitor.c:197
 #, fuzzy, c-format
 msgid "Unable to find default local file monitor type"
 msgstr "Müll-Verzeichnis konnte nicht gefunden oder angelegt werden"
@@ -1713,24 +1695,15 @@ msgstr "Datenträger unterstützt Auswerfen nicht"
 msgid "mount doesn't implement remount"
 msgstr "Datenträger unterstützt Einhängen nicht"
 
-#: gio/goutputstream.c:193
-#, c-format
-msgid "Too large count value passed to g_output_stream_write"
-msgstr "Zu großer Zählwert an g_input_stream_write übermittelt"
-
 #: gio/goutputstream.c:202 gio/goutputstream.c:403
 #, c-format
 msgid "Output stream doesn't implement write"
 msgstr "Ausgabedatenstrom unterstützt kein Schreiben"
 
-#: gio/goutputstream.c:363 gio/goutputstream.c:770
+#: gio/goutputstream.c:363 gio/goutputstream.c:771
 #, c-format
 msgid "Source stream is already closed"
 msgstr "Quelldatenstrom ist bereits geschlossen"
-
-#: gio/goutputstream.c:647
-msgid "Too large count value passed to g_output_stream_write_async"
-msgstr "Zu großer Zählwert an g_input_stream_write_async übermittelt"
 
 #: gio/gunixinputstream.c:200 gio/gunixinputstream.c:218
 #: gio/gunixinputstream.c:290 gio/gunixoutputstream.c:281
@@ -1794,6 +1767,24 @@ msgstr ""
 #, fuzzy
 msgid "[FILE...]"
 msgstr "[OPTION...]"
+
+#~ msgid "Too large count value passed to g_input_stream_read_async"
+#~ msgstr "Zu großer Zählwert an g_input_stream_read_async übermittelt"
+
+#~ msgid "Too large count value passed to g_input_stream_skip"
+#~ msgstr "Zu großer Zählwert an g_input_stream_skip übermittelt"
+
+#~ msgid "Too large count value passed to g_input_stream_skip_async"
+#~ msgstr "Zu großer Zählwert an g_input_stream_skip_async übermittelt"
+
+#~ msgid "Target file already exists"
+#~ msgstr "Zieldatei existiert bereits"
+
+#~ msgid "Too large count value passed to g_output_stream_write"
+#~ msgstr "Zu großer Zählwert an g_input_stream_write übermittelt"
+
+#~ msgid "Too large count value passed to g_output_stream_write_async"
+#~ msgstr "Zu großer Zählwert an g_input_stream_write_async übermittelt"
 
 #~ msgid "Target stream is already closed"
 #~ msgstr "Zieldatenstrom ist bereits geschlossen"

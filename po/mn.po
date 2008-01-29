@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-01-21 11:37-0500\n"
+"POT-Creation-Date: 2008-01-28 18:34-0500\n"
 "PO-Revision-Date: 2005-05-30 01:07-0800\n"
 "Last-Translator: Бадрал <badral@openmn.org>\n"
 "Language-Team: Mongolian <openmn-translation@lists.sf.net>\n"
@@ -28,8 +28,8 @@ msgstr ""
 #, fuzzy, c-format
 msgid "Unexpected attribute '%s' for element '%s'"
 msgstr ""
-"Сонин тэмдэгт »%s«, »%s« элементийн »%s« аттрибутын нэрийн дараа »=« "
-"хүлээгдэж байна"
+"Сонин тэмдэгт »%s«, »%s« элементийн »%s« аттрибутын нэрийн дараа »=« хүлээгдэж "
+"байна"
 
 #: glib/gbookmarkfile.c:716 glib/gbookmarkfile.c:793 glib/gbookmarkfile.c:803
 #: glib/gbookmarkfile.c:919
@@ -334,8 +334,8 @@ msgid ""
 "begins an entity; if this ampersand isn't supposed to be an entity, escape "
 "it as &amp;"
 msgstr ""
-"Абтын нэрийн эхлэлийн »%s« тэмдэгт хүчингүй; Абт & тэмдэгтээр эхэлдэг; "
-"Хэрвээ энэ амперсаныг абт бишээр авах хэрэгтэй бол &amp; гэж бичнэ үү"
+"Абтын нэрийн эхлэлийн »%s« тэмдэгт хүчингүй; Абт & тэмдэгтээр эхэлдэг; Хэрвээ "
+"энэ амперсаныг абт бишээр авах хэрэгтэй бол &amp; гэж бичнэ үү"
 
 #: glib/gmarkup.c:486
 #, c-format
@@ -433,8 +433,8 @@ msgstr ""
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
-"Сонин тэмдэгт »%s«, »%s« элементийн »%s« аттрибутын нэрийн дараа »=« "
-"хүлээгдэж байна"
+"Сонин тэмдэгт »%s«, »%s« элементийн »%s« аттрибутын нэрийн дараа »=« хүлээгдэж "
+"байна"
 
 #: glib/gmarkup.c:1309
 #, c-format
@@ -443,9 +443,9 @@ msgid ""
 "element '%s', or optionally an attribute; perhaps you used an invalid "
 "character in an attribute name"
 msgstr ""
-"Сонин тэмдэгт »%s«, »%s« элементийн эхлэлийн тагийг хаахын тулд аттрибутын "
-"нэр эсвэл харин »>« эсвэл »/« тэмдэгт хүлээгдэж байна; Магадгүй та "
-"аттрибутын нэрэндээ хүчингүй тэмдэгт хэрэглэжээ"
+"Сонин тэмдэгт »%s«, »%s« элементийн эхлэлийн тагийг хаахын тулд аттрибутын нэр "
+"эсвэл харин »>« эсвэл »/« тэмдэгт хүлээгдэж байна; Магадгүй та аттрибутын "
+"нэрэндээ хүчингүй тэмдэгт хэрэглэжээ"
 
 #: glib/gmarkup.c:1395
 #, c-format
@@ -453,8 +453,8 @@ msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
 "giving value for attribute '%s' of element '%s'"
 msgstr ""
-"Сонин тэмдэгт »%s«; »%s« элементийн »%s« аттрибутын хувьд өгсөн утга "
-"тэнцүүгийн тэмдэгийн дараах хашилтыг хүлээж байна"
+"Сонин тэмдэгт »%s«; »%s« элементийн »%s« аттрибутын хувьд өгсөн утга тэнцүүгийн "
+"тэмдэгийн дараах хашилтыг хүлээж байна"
 
 #: glib/gmarkup.c:1537
 #, c-format
@@ -540,8 +540,7 @@ msgstr "Баримт нэгэн аттрибутын утгын дотор гэ�
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr ""
-"Баримт гэнэтийн байдлаар нэгэн хаагдаж буй »%s« элементийн тагийн дотор "
-"төгсөв"
+"Баримт гэнэтийн байдлаар нэгэн хаагдаж буй »%s« элементийн тагийн дотор төгсөв"
 
 #: glib/gmarkup.c:1839
 msgid "Document ended unexpectedly inside a comment or processing instruction"
@@ -1002,61 +1001,61 @@ msgstr "Хөрвүүлэлтийн оролтод хүчингүй дараал�
 msgid "Character out of range for UTF-16"
 msgstr "UTF-16 хязгаараас гаднах тэмдэгт"
 
-#: glib/goption.c:612
+#: glib/goption.c:615
 msgid "Usage:"
 msgstr "Хэрэглээ:"
 
-#: glib/goption.c:612
+#: glib/goption.c:615
 msgid "[OPTION...]"
 msgstr "[OPTION...]"
 
-#: glib/goption.c:716
+#: glib/goption.c:719
 msgid "Help Options:"
 msgstr "Тусламж:"
 
-#: glib/goption.c:717
+#: glib/goption.c:720
 msgid "Show help options"
 msgstr "Тусламж харуулах"
 
-#: glib/goption.c:723
+#: glib/goption.c:726
 msgid "Show all help options"
 msgstr "Бүх тусламж харуулах"
 
-#: glib/goption.c:785
+#: glib/goption.c:788
 msgid "Application Options:"
 msgstr "Програм:"
 
-#: glib/goption.c:846 glib/goption.c:916
+#: glib/goption.c:849 glib/goption.c:919
 #, fuzzy, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "'%s' бүхэл тоог --%s -н хувьд шинжлэх боломжгүй"
 
-#: glib/goption.c:856 glib/goption.c:924
+#: glib/goption.c:859 glib/goption.c:927
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "'%s' бүхэл %s -н хувьд хязгаараас хальжээ"
 
-#: glib/goption.c:881
+#: glib/goption.c:884
 #, fuzzy, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "'%s' бүхэл тоог --%s -н хувьд шинжлэх боломжгүй"
 
-#: glib/goption.c:889
+#: glib/goption.c:892
 #, fuzzy, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "'%s' бүхэл %s -н хувьд хязгаараас хальжээ"
 
-#: glib/goption.c:1226
+#: glib/goption.c:1229
 #, fuzzy, c-format
 msgid "Error parsing option %s"
 msgstr "Хөрвүүлж байхад алдаа: %s"
 
-#: glib/goption.c:1257 glib/goption.c:1368
+#: glib/goption.c:1260 glib/goption.c:1371
 #, c-format
 msgid "Missing argument for %s"
 msgstr ""
 
-#: glib/goption.c:1763
+#: glib/goption.c:1766
 #, c-format
 msgid "Unknown option %s"
 msgstr "Тодорхойгүй утга %s"
@@ -1169,12 +1168,15 @@ msgstr "'%s' утга бүхэл тоогоор илэрхийлэгдэх бо�
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "'%s' утга бүүл утгаар дүрслэгдэх боломжгүй ."
 
-#: gio/gbufferedinputstream.c:483 gio/ginputstream.c:559
-msgid "Too large count value passed to g_input_stream_read_async"
+#: gio/gbufferedinputstream.c:483 gio/ginputstream.c:186
+#: gio/ginputstream.c:318 gio/ginputstream.c:559 gio/ginputstream.c:684
+#: gio/goutputstream.c:193 gio/goutputstream.c:647
+#, c-format
+msgid "Too large count value passed to %s"
 msgstr ""
 
-#: gio/gbufferedinputstream.c:869 gio/ginputstream.c:892
-#: gio/goutputstream.c:1075
+#: gio/gbufferedinputstream.c:870 gio/ginputstream.c:894
+#: gio/goutputstream.c:1076
 #, c-format
 msgid "Stream is already closed"
 msgstr ""
@@ -1204,41 +1206,41 @@ msgstr ""
 msgid "Unexpected early end-of-stream"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:395 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:403 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:571
+#: gio/gdesktopappinfo.c:579
 #, c-format
 msgid "Desktop file didn't specify Exec field"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:863
+#: gio/gdesktopappinfo.c:871
 #, c-format
 msgid "Unable to find terminal required for application"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1097
+#: gio/gdesktopappinfo.c:1105
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1101
+#: gio/gdesktopappinfo.c:1109
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1474
+#: gio/gdesktopappinfo.c:1428
 #, c-format
 msgid "Custom definition for %s"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1498
+#: gio/gdesktopappinfo.c:1452
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1523
+#: gio/gdesktopappinfo.c:1477
 #, c-format
 msgid "Can't load just created desktop file"
 msgstr ""
@@ -1251,56 +1253,56 @@ msgstr ""
 msgid "drive doesn't implement polling for media"
 msgstr ""
 
-#: gio/gfile.c:742 gio/gfile.c:930 gio/gfile.c:1063 gio/gfile.c:1217
-#: gio/gfile.c:1270 gio/gfile.c:1327 gio/gfile.c:1408 gio/gfile.c:2363
-#: gio/gfile.c:2408 gio/gfile.c:2458 gio/gfile.c:2497 gio/gfile.c:2821
-#: gio/gfile.c:3220 gio/gfile.c:3299 gio/gfile.c:3379 gio/gfile.c:3457
+#: gio/gfile.c:755 gio/gfile.c:943 gio/gfile.c:1076 gio/gfile.c:1230
+#: gio/gfile.c:1283 gio/gfile.c:1340 gio/gfile.c:1421 gio/gfile.c:2459
+#: gio/gfile.c:2504 gio/gfile.c:2554 gio/gfile.c:2593 gio/gfile.c:2917
+#: gio/gfile.c:3316 gio/gfile.c:3395 gio/gfile.c:3475 gio/gfile.c:3553
 #, fuzzy, c-format
 msgid "Operation not supported"
 msgstr "Символик холбоос дэмжигдээгүй"
 
-#: gio/gfile.c:1105 gio/glocalfile.c:895 gio/glocalfile.c:904
-#: gio/glocalfile.c:915
+#: gio/gfile.c:1118 gio/glocalfile.c:923 gio/glocalfile.c:932
+#: gio/glocalfile.c:943
 #, c-format
 msgid "Containing mount does not exist"
 msgstr ""
 
-#: gio/gfile.c:1747
+#: gio/gfile.c:1760
 #, c-format
 msgid "Can't copy over directory"
 msgstr ""
 
-#: gio/gfile.c:1807
+#: gio/gfile.c:1820
 #, c-format
 msgid "Can't copy directory over directory"
 msgstr ""
 
-#: gio/gfile.c:1815
+#: gio/gfile.c:1828 gio/glocalfile.c:1839
 #, c-format
 msgid "Target file exists"
 msgstr ""
 
-#: gio/gfile.c:1833
+#: gio/gfile.c:1846
 #, c-format
 msgid "Can't recursively copy directory"
 msgstr ""
 
-#: gio/gfile.c:2448
+#: gio/gfile.c:2544
 #, c-format
 msgid "Invalid symlink value given"
 msgstr ""
 
-#: gio/gfile.c:2540
+#: gio/gfile.c:2636
 #, fuzzy, c-format
 msgid "Trash not supported"
 msgstr "Символик холбоос дэмжигдээгүй"
 
-#: gio/gfile.c:2587
+#: gio/gfile.c:2683
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr ""
 
-#: gio/gfile.c:4291 gio/gvolume.c:318
+#: gio/gfile.c:4528 gio/gvolume.c:318
 msgid "volume doesn't implement mount"
 msgstr ""
 
@@ -1340,145 +1342,126 @@ msgstr ""
 msgid "Truncate not supported on stream"
 msgstr ""
 
-#: gio/ginputstream.c:186
-#, c-format
-msgid "Too large count value passed to g_input_stream_read"
-msgstr ""
-
 #: gio/ginputstream.c:195
 #, c-format
 msgid "Input stream doesn't implement read"
 msgstr ""
 
-#: gio/ginputstream.c:318
-#, c-format
-msgid "Too large count value passed to g_input_stream_skip"
-msgstr ""
-
-#: gio/ginputstream.c:683
-msgid "Too large count value passed to g_input_stream_skip_async"
-msgstr ""
-
-#: gio/ginputstream.c:899 gio/goutputstream.c:1082
+#: gio/ginputstream.c:901 gio/goutputstream.c:1083
 #, c-format
 msgid "Stream has outstanding operation"
 msgstr ""
 
-#: gio/glocaldirectorymonitor.c:297
+#: gio/glocaldirectorymonitor.c:270
 #, c-format
 msgid "Unable to find default local directory monitor type"
 msgstr ""
 
-#: gio/glocalfile.c:561
+#: gio/glocalfile.c:589
 #, fuzzy, c-format
 msgid "Invalid filename %s"
 msgstr "Хүчингүй хостын нэр"
 
-#: gio/glocalfile.c:817
+#: gio/glocalfile.c:845
 #, fuzzy, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "Файл »%s« -ыг уншиж байхад алдаа: %s"
 
-#: gio/glocalfile.c:935
+#: gio/glocalfile.c:963
 #, c-format
 msgid "Can't rename root directory"
 msgstr ""
 
-#: gio/glocalfile.c:953
+#: gio/glocalfile.c:981
 #, c-format
 msgid "Can't rename file, filename already exist"
 msgstr ""
 
-#: gio/glocalfile.c:966 gio/glocalfile.c:1688 gio/glocalfile.c:1717
-#: gio/glocalfile.c:1862 gio/glocalfileoutputstream.c:448
+#: gio/glocalfile.c:994 gio/glocalfile.c:1716 gio/glocalfile.c:1745
+#: gio/glocalfile.c:1890 gio/glocalfileoutputstream.c:448
 #: gio/glocalfileoutputstream.c:489 gio/glocalfileoutputstream.c:879
 #, fuzzy, c-format
 msgid "Invalid filename"
 msgstr "Хүчингүй хостын нэр"
 
-#: gio/glocalfile.c:970
+#: gio/glocalfile.c:998
 #, fuzzy, c-format
 msgid "Error renaming file: %s"
 msgstr "Файл »%s« -ыг уншиж байхад алдаа: %s"
 
-#: gio/glocalfile.c:1087
+#: gio/glocalfile.c:1115
 #, fuzzy, c-format
 msgid "Error opening file: %s"
 msgstr "Файл »%s« -ыг уншиж байхад алдаа: %s"
 
-#: gio/glocalfile.c:1097
+#: gio/glocalfile.c:1125
 #, c-format
 msgid "Can't open directory"
 msgstr ""
 
-#: gio/glocalfile.c:1149 gio/glocalfile.c:1692
+#: gio/glocalfile.c:1177 gio/glocalfile.c:1720
 #, fuzzy, c-format
 msgid "Error removing file: %s"
 msgstr "Файл »%s« -ыг уншиж байхад алдаа: %s"
 
-#: gio/glocalfile.c:1441
+#: gio/glocalfile.c:1469
 #, fuzzy, c-format
 msgid "Error trashing file: %s"
 msgstr "Файл »%s« -ыг уншиж байхад алдаа: %s"
 
-#: gio/glocalfile.c:1465
+#: gio/glocalfile.c:1493
 #, fuzzy, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "»%s« файл үүсгэгдсэнгүй: %s"
 
-#: gio/glocalfile.c:1489
+#: gio/glocalfile.c:1517
 #, c-format
 msgid "Unable to find toplevel directory for trash"
 msgstr ""
 
-#: gio/glocalfile.c:1549 gio/glocalfile.c:1569
+#: gio/glocalfile.c:1577 gio/glocalfile.c:1597
 #, c-format
 msgid "Unable to find or create trash directory"
 msgstr ""
 
-#: gio/glocalfile.c:1601
+#: gio/glocalfile.c:1629
 #, fuzzy, c-format
-msgid "Unable to create trashed file: %s"
+msgid "Unable to create trashing info file: %s"
 msgstr "»%s« файл үүсгэгдсэнгүй: %s"
 
-#: gio/glocalfile.c:1624
+#: gio/glocalfile.c:1652
 #, fuzzy, c-format
 msgid "Unable to trash file: %s"
 msgstr "»%s« файл үүсгэгдсэнгүй: %s"
 
-#: gio/glocalfile.c:1721
+#: gio/glocalfile.c:1749
 #, fuzzy, c-format
 msgid "Error making symbolic link: %s"
 msgstr "Хөрвүүлж байхад алдаа: %s"
 
-#: gio/glocalfile.c:1779 gio/glocalfile.c:1866
+#: gio/glocalfile.c:1807 gio/glocalfile.c:1894
 #, fuzzy, c-format
 msgid "Error moving file: %s"
 msgstr "Файл »%s« -ыг уншиж байхад алдаа: %s"
 
-#: gio/glocalfile.c:1802
+#: gio/glocalfile.c:1830
 #, c-format
 msgid "Can't move directory over directory"
 msgstr ""
 
-#: gio/glocalfile.c:1811
-#, c-format
-msgid "Target file already exists"
-msgstr ""
-
-#: gio/glocalfile.c:1824 gio/glocalfileoutputstream.c:735
+#: gio/glocalfile.c:1852 gio/glocalfileoutputstream.c:735
 #: gio/glocalfileoutputstream.c:749 gio/glocalfileoutputstream.c:764
 #: gio/glocalfileoutputstream.c:780 gio/glocalfileoutputstream.c:794
 #, c-format
 msgid "Backup file creation failed"
 msgstr ""
 
-#: gio/glocalfile.c:1841
+#: gio/glocalfile.c:1869
 #, fuzzy, c-format
 msgid "Error removing target file: %s"
 msgstr "Файл »%s« -ыг уншиж байхад алдаа: %s"
 
-#: gio/glocalfile.c:1855
+#: gio/glocalfile.c:1883
 #, c-format
 msgid "Move between mounts not supported"
 msgstr ""
@@ -1503,62 +1486,62 @@ msgstr "Баримт нэгэн аттрибут нэрийн дотор гэн�
 msgid "Error setting extended attribute '%s': %s"
 msgstr "»%s« лавлахыг нээхэд алдаа: %s"
 
-#: gio/glocalfileinfo.c:1392 gio/glocalfileoutputstream.c:625
+#: gio/glocalfileinfo.c:1394 gio/glocalfileoutputstream.c:625
 #, fuzzy, c-format
 msgid "Error stating file '%s': %s"
 msgstr "Файл »%s« -ыг уншиж байхад алдаа: %s"
 
-#: gio/glocalfileinfo.c:1447
+#: gio/glocalfileinfo.c:1449
 msgid " (invalid encoding)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1622
+#: gio/glocalfileinfo.c:1624
 #, fuzzy, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "Файл »%s« -ыг уншиж байхад алдаа: %s"
 
-#: gio/glocalfileinfo.c:1667
+#: gio/glocalfileinfo.c:1669
 #, c-format
 msgid "Invalid attribute type (uint32 expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1684
+#: gio/glocalfileinfo.c:1686
 #, c-format
 msgid "Invalid attribute type (uint64 expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1702
+#: gio/glocalfileinfo.c:1704
 #, c-format
 msgid "Invalid attribute type (byte string expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1726
+#: gio/glocalfileinfo.c:1728
 #, fuzzy, c-format
 msgid "Error setting permissions: %s"
 msgstr "Хөрвүүлж байхад алдаа: %s"
 
-#: gio/glocalfileinfo.c:1775 gio/glocalfileinfo.c:1935
+#: gio/glocalfileinfo.c:1777 gio/glocalfileinfo.c:1937
 #, fuzzy, c-format
 msgid "Error setting owner: %s"
 msgstr "Хөрвүүлж байхад алдаа: %s"
 
-#: gio/glocalfileinfo.c:1798
+#: gio/glocalfileinfo.c:1800
 #, c-format
 msgid "symlink must be non-NULL"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1806 gio/glocalfileinfo.c:1823
-#: gio/glocalfileinfo.c:1832
+#: gio/glocalfileinfo.c:1808 gio/glocalfileinfo.c:1825
+#: gio/glocalfileinfo.c:1834
 #, fuzzy, c-format
 msgid "Error setting symlink: %s"
 msgstr "%d мөрөнд алдаа: %s"
 
-#: gio/glocalfileinfo.c:1815
+#: gio/glocalfileinfo.c:1817
 #, c-format
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1990
+#: gio/glocalfileinfo.c:1992
 #, fuzzy, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Символик холбоос дэмжигдээгүй"
@@ -1580,7 +1563,7 @@ msgstr "Файл »%s« -ыг уншиж байхад алдаа: %s"
 msgid "Error closing file: %s"
 msgstr "Файл »%s« -ыг уншиж байхад алдаа: %s"
 
-#: gio/glocalfilemonitor.c:224
+#: gio/glocalfilemonitor.c:197
 #, c-format
 msgid "Unable to find default local file monitor type"
 msgstr ""
@@ -1678,23 +1661,14 @@ msgstr ""
 msgid "mount doesn't implement remount"
 msgstr ""
 
-#: gio/goutputstream.c:193
-#, c-format
-msgid "Too large count value passed to g_output_stream_write"
-msgstr ""
-
 #: gio/goutputstream.c:202 gio/goutputstream.c:403
 #, c-format
 msgid "Output stream doesn't implement write"
 msgstr ""
 
-#: gio/goutputstream.c:363 gio/goutputstream.c:770
+#: gio/goutputstream.c:363 gio/goutputstream.c:771
 #, c-format
 msgid "Source stream is already closed"
-msgstr ""
-
-#: gio/goutputstream.c:647
-msgid "Too large count value passed to g_output_stream_write_async"
 msgstr ""
 
 #: gio/gunixinputstream.c:200 gio/gunixinputstream.c:218

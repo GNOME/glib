@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-01-21 11:37-0500\n"
+"POT-Creation-Date: 2008-01-28 18:34-0500\n"
 "PO-Revision-Date: 2008-01-12 23:08+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: GNOME Korea <gnome-kr-hackers@lists.kldp.net>\n"
@@ -984,61 +984,61 @@ msgstr "변환 입력에서 잘못된 순서"
 msgid "Character out of range for UTF-16"
 msgstr "UTF-16 범위 밖의 문자"
 
-#: glib/goption.c:612
+#: glib/goption.c:615
 msgid "Usage:"
 msgstr "사용법:"
 
-#: glib/goption.c:612
+#: glib/goption.c:615
 msgid "[OPTION...]"
 msgstr "[옵션...]"
 
-#: glib/goption.c:716
+#: glib/goption.c:719
 msgid "Help Options:"
 msgstr "도움말 옵션:"
 
-#: glib/goption.c:717
+#: glib/goption.c:720
 msgid "Show help options"
 msgstr "도움말 옵션을 봅니다"
 
-#: glib/goption.c:723
+#: glib/goption.c:726
 msgid "Show all help options"
 msgstr "모든 도움말 옵션을 봅니다"
 
-#: glib/goption.c:785
+#: glib/goption.c:788
 msgid "Application Options:"
 msgstr "프로그램 옵션:"
 
-#: glib/goption.c:846 glib/goption.c:916
+#: glib/goption.c:849 glib/goption.c:919
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "%2$s에 대한 정수 값 '%1$s'을(를) 분석할 수 없습니다"
 
-#: glib/goption.c:856 glib/goption.c:924
+#: glib/goption.c:859 glib/goption.c:927
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "%2$s에 대한 정수 값 '%1$s'이(가) 범위를 벗어났습니다"
 
-#: glib/goption.c:881
+#: glib/goption.c:884
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "%2$s에 대한 배정도 실수 값 '%1$s'을(를) 분석할 수 없습니다"
 
-#: glib/goption.c:889
+#: glib/goption.c:892
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "%2$s에 대한 배정도 실수 값 '%1$s'이(가) 범위를 벗어났습니다"
 
-#: glib/goption.c:1226
+#: glib/goption.c:1229
 #, c-format
 msgid "Error parsing option %s"
 msgstr "옵션 읽는 중에 오류: %s"
 
-#: glib/goption.c:1257 glib/goption.c:1368
+#: glib/goption.c:1260 glib/goption.c:1371
 #, c-format
 msgid "Missing argument for %s"
 msgstr "%s에 대한 인자가 빠졌습니다"
 
-#: glib/goption.c:1763
+#: glib/goption.c:1766
 #, c-format
 msgid "Unknown option %s"
 msgstr "알 수 없는 옵션 %s"
@@ -1150,12 +1150,15 @@ msgstr "값 '%s'을(를) 단정도 실수로 해석할 수 없습니다."
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "값 '%s'을(를) 불리언 값으로 해석할 수 없습니다."
 
-#: gio/gbufferedinputstream.c:483 gio/ginputstream.c:559
-msgid "Too large count value passed to g_input_stream_read_async"
-msgstr "g_input_stream_read_async에 카운트 값이 너무 큽니다"
+#: gio/gbufferedinputstream.c:483 gio/ginputstream.c:186
+#: gio/ginputstream.c:318 gio/ginputstream.c:559 gio/ginputstream.c:684
+#: gio/goutputstream.c:193 gio/goutputstream.c:647
+#, fuzzy, c-format
+msgid "Too large count value passed to %s"
+msgstr "g_input_stream_read에 카운트 값이 너무 큽니다"
 
-#: gio/gbufferedinputstream.c:869 gio/ginputstream.c:892
-#: gio/goutputstream.c:1075
+#: gio/gbufferedinputstream.c:870 gio/ginputstream.c:894
+#: gio/goutputstream.c:1076
 #, c-format
 msgid "Stream is already closed"
 msgstr "스트림을 이미 닫았습니다"
@@ -1184,41 +1187,41 @@ msgstr "%s 종류"
 msgid "Unexpected early end-of-stream"
 msgstr "예기치 않게 일찍 스트림이 끝났습니다"
 
-#: gio/gdesktopappinfo.c:395 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:403 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr "이름없음"
 
-#: gio/gdesktopappinfo.c:571
+#: gio/gdesktopappinfo.c:579
 #, c-format
 msgid "Desktop file didn't specify Exec field"
 msgstr "desktop 파일에 Exec 필드를 지정하지 않았습니다"
 
-#: gio/gdesktopappinfo.c:863
+#: gio/gdesktopappinfo.c:871
 #, c-format
 msgid "Unable to find terminal required for application"
 msgstr "프로그램에 필요한 터미널을 찾을 수 없습니다"
 
-#: gio/gdesktopappinfo.c:1097
+#: gio/gdesktopappinfo.c:1105
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "사용자 프로그램 설정 폴더(%s)를 만들 수 없습니다: %s"
 
-#: gio/gdesktopappinfo.c:1101
+#: gio/gdesktopappinfo.c:1109
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "사용자 MIME 설정 폴더(%s)를 만들 수 없습니다: %s"
 
-#: gio/gdesktopappinfo.c:1474
+#: gio/gdesktopappinfo.c:1428
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%s에 대한 사용자 설정 정의"
 
-#: gio/gdesktopappinfo.c:1498
+#: gio/gdesktopappinfo.c:1452
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "%s 사용자 desktop 파일을 만들 수 없습니다"
 
-#: gio/gdesktopappinfo.c:1523
+#: gio/gdesktopappinfo.c:1477
 #, c-format
 msgid "Can't load just created desktop file"
 msgstr "막 만든 desktop 파일을 읽어들일 수 없습니다"
@@ -1231,56 +1234,56 @@ msgstr "드라이브가 eject를 구현하지 않았습니다"
 msgid "drive doesn't implement polling for media"
 msgstr "드라이브가 미디어의 폴링을 구현하지 않았습니다"
 
-#: gio/gfile.c:742 gio/gfile.c:930 gio/gfile.c:1063 gio/gfile.c:1217
-#: gio/gfile.c:1270 gio/gfile.c:1327 gio/gfile.c:1408 gio/gfile.c:2363
-#: gio/gfile.c:2408 gio/gfile.c:2458 gio/gfile.c:2497 gio/gfile.c:2821
-#: gio/gfile.c:3220 gio/gfile.c:3299 gio/gfile.c:3379 gio/gfile.c:3457
+#: gio/gfile.c:755 gio/gfile.c:943 gio/gfile.c:1076 gio/gfile.c:1230
+#: gio/gfile.c:1283 gio/gfile.c:1340 gio/gfile.c:1421 gio/gfile.c:2459
+#: gio/gfile.c:2504 gio/gfile.c:2554 gio/gfile.c:2593 gio/gfile.c:2917
+#: gio/gfile.c:3316 gio/gfile.c:3395 gio/gfile.c:3475 gio/gfile.c:3553
 #, c-format
 msgid "Operation not supported"
 msgstr "동작을 지원하지 않습니다"
 
-#: gio/gfile.c:1105 gio/glocalfile.c:895 gio/glocalfile.c:904
-#: gio/glocalfile.c:915
+#: gio/gfile.c:1118 gio/glocalfile.c:923 gio/glocalfile.c:932
+#: gio/glocalfile.c:943
 #, c-format
 msgid "Containing mount does not exist"
 msgstr "들어 있는 마운트가 없습니다"
 
-#: gio/gfile.c:1747
+#: gio/gfile.c:1760
 #, c-format
 msgid "Can't copy over directory"
 msgstr "디렉토리를 덮어 써서 복사할 수 없습니다"
 
-#: gio/gfile.c:1807
+#: gio/gfile.c:1820
 #, c-format
 msgid "Can't copy directory over directory"
 msgstr "디렉토리를 덮어 써서 디렉토리를 복사할 수 없습니다"
 
-#: gio/gfile.c:1815
+#: gio/gfile.c:1828 gio/glocalfile.c:1839
 #, c-format
 msgid "Target file exists"
 msgstr "대상 파일이 있습니다"
 
-#: gio/gfile.c:1833
+#: gio/gfile.c:1846
 #, c-format
 msgid "Can't recursively copy directory"
 msgstr "디렉토리를 재귀적으로 복사할 수 없습니다"
 
-#: gio/gfile.c:2448
+#: gio/gfile.c:2544
 #, c-format
 msgid "Invalid symlink value given"
 msgstr "잘못된 심볼릭 링크 값이 주어졌습니다"
 
-#: gio/gfile.c:2540
+#: gio/gfile.c:2636
 #, c-format
 msgid "Trash not supported"
 msgstr "휴지통을 지원하지 않습니다"
 
-#: gio/gfile.c:2587
+#: gio/gfile.c:2683
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "파일 이름에 '%c' 문자가 들어갈 수 없습니다"
 
-#: gio/gfile.c:4291 gio/gvolume.c:318
+#: gio/gfile.c:4528 gio/gvolume.c:318
 msgid "volume doesn't implement mount"
 msgstr "볼륨이 mount를 구현하지 않았습니다"
 
@@ -1320,145 +1323,126 @@ msgstr "입력 스트림이 truncate를 허용하지 않습니다"
 msgid "Truncate not supported on stream"
 msgstr "스트림에서 truncate를 지원하지 않습니다"
 
-#: gio/ginputstream.c:186
-#, c-format
-msgid "Too large count value passed to g_input_stream_read"
-msgstr "g_input_stream_read에 카운트 값이 너무 큽니다"
-
 #: gio/ginputstream.c:195
 #, c-format
 msgid "Input stream doesn't implement read"
 msgstr "입력 스트림이 read를 구현하지 않았습니다"
 
-#: gio/ginputstream.c:318
-#, c-format
-msgid "Too large count value passed to g_input_stream_skip"
-msgstr "g_input_stream_skip에 카운트 값이 너무 큽니다"
-
-#: gio/ginputstream.c:683
-msgid "Too large count value passed to g_input_stream_skip_async"
-msgstr "g_input_stream_skip_async에 카운트 값이 너무 큽니다"
-
-#: gio/ginputstream.c:899 gio/goutputstream.c:1082
+#: gio/ginputstream.c:901 gio/goutputstream.c:1083
 #, c-format
 msgid "Stream has outstanding operation"
 msgstr "스트림에 진행 중인 동작이 있습니다"
 
-#: gio/glocaldirectorymonitor.c:297
+#: gio/glocaldirectorymonitor.c:270
 #, fuzzy, c-format
 msgid "Unable to find default local directory monitor type"
 msgstr "휴지통의 상위 디렉토리를 찾을 수 없습니다"
 
-#: gio/glocalfile.c:561
+#: gio/glocalfile.c:589
 #, c-format
 msgid "Invalid filename %s"
 msgstr "잘못된 파일 이름 %s"
 
-#: gio/glocalfile.c:817
+#: gio/glocalfile.c:845
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "파일 시스템 정보를 가져오는 중 오류: %s"
 
-#: gio/glocalfile.c:935
+#: gio/glocalfile.c:963
 #, c-format
 msgid "Can't rename root directory"
 msgstr "루트 디렉토리의 이름을 바꿀 수 없습니다"
 
-#: gio/glocalfile.c:953
+#: gio/glocalfile.c:981
 #, c-format
 msgid "Can't rename file, filename already exist"
 msgstr "파일 이름을 바꿀 수 없습니다. 파일이 이미 있습니다"
 
-#: gio/glocalfile.c:966 gio/glocalfile.c:1688 gio/glocalfile.c:1717
-#: gio/glocalfile.c:1862 gio/glocalfileoutputstream.c:448
+#: gio/glocalfile.c:994 gio/glocalfile.c:1716 gio/glocalfile.c:1745
+#: gio/glocalfile.c:1890 gio/glocalfileoutputstream.c:448
 #: gio/glocalfileoutputstream.c:489 gio/glocalfileoutputstream.c:879
 #, c-format
 msgid "Invalid filename"
 msgstr "잘못된 파일 이름"
 
-#: gio/glocalfile.c:970
+#: gio/glocalfile.c:998
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "파일 이름 바꾸기 오류: %s"
 
-#: gio/glocalfile.c:1087
+#: gio/glocalfile.c:1115
 #, c-format
 msgid "Error opening file: %s"
 msgstr "파일 열기 오류: %s"
 
-#: gio/glocalfile.c:1097
+#: gio/glocalfile.c:1125
 #, c-format
 msgid "Can't open directory"
 msgstr "디렉토리를 열 수 없습니다"
 
-#: gio/glocalfile.c:1149 gio/glocalfile.c:1692
+#: gio/glocalfile.c:1177 gio/glocalfile.c:1720
 #, c-format
 msgid "Error removing file: %s"
 msgstr "파일 지우기 오류: %s"
 
-#: gio/glocalfile.c:1441
+#: gio/glocalfile.c:1469
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "파일 버리기 오류: %s"
 
-#: gio/glocalfile.c:1465
+#: gio/glocalfile.c:1493
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "휴지통 디렉토리(%s)를 만들 수 없습니다: %s"
 
-#: gio/glocalfile.c:1489
+#: gio/glocalfile.c:1517
 #, c-format
 msgid "Unable to find toplevel directory for trash"
 msgstr "휴지통의 상위 디렉토리를 찾을 수 없습니다"
 
-#: gio/glocalfile.c:1549 gio/glocalfile.c:1569
+#: gio/glocalfile.c:1577 gio/glocalfile.c:1597
 #, c-format
 msgid "Unable to find or create trash directory"
 msgstr "휴지통 디렉토리를 찾을 수 없거나 만들 수 없습니다"
 
-#: gio/glocalfile.c:1601
-#, c-format
-msgid "Unable to create trashed file: %s"
+#: gio/glocalfile.c:1629
+#, fuzzy, c-format
+msgid "Unable to create trashing info file: %s"
 msgstr "버린 파일을 만들 수 없습니다: %s"
 
-#: gio/glocalfile.c:1624
+#: gio/glocalfile.c:1652
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "파일을 버릴 수 없습니다: %s"
 
-#: gio/glocalfile.c:1721
+#: gio/glocalfile.c:1749
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "심볼릭 링크를 만드는 데 오류: %s"
 
-#: gio/glocalfile.c:1779 gio/glocalfile.c:1866
+#: gio/glocalfile.c:1807 gio/glocalfile.c:1894
 #, c-format
 msgid "Error moving file: %s"
 msgstr "파일 옮기는 데 오류: %s"
 
-#: gio/glocalfile.c:1802
+#: gio/glocalfile.c:1830
 #, c-format
 msgid "Can't move directory over directory"
 msgstr "디렉토리를 덮어 써서 디렉토리를 옮길 수 없습니다"
 
-#: gio/glocalfile.c:1811
-#, c-format
-msgid "Target file already exists"
-msgstr "대상 파일이 이미 있습니다"
-
-#: gio/glocalfile.c:1824 gio/glocalfileoutputstream.c:735
+#: gio/glocalfile.c:1852 gio/glocalfileoutputstream.c:735
 #: gio/glocalfileoutputstream.c:749 gio/glocalfileoutputstream.c:764
 #: gio/glocalfileoutputstream.c:780 gio/glocalfileoutputstream.c:794
 #, c-format
 msgid "Backup file creation failed"
 msgstr "백업 파일 만들기가 실패했습니다"
 
-#: gio/glocalfile.c:1841
+#: gio/glocalfile.c:1869
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "대상 파일을 지우는 데 오류: %s"
 
-#: gio/glocalfile.c:1855
+#: gio/glocalfile.c:1883
 #, c-format
 msgid "Move between mounts not supported"
 msgstr "다른 마운트 사이에 옮기기는 지원하지 않습니다"
@@ -1483,62 +1467,62 @@ msgstr "잘못된 확장 에트리뷰트 이름"
 msgid "Error setting extended attribute '%s': %s"
 msgstr "확장 애트리뷰트 '%s' 설정 중 오류: %s"
 
-#: gio/glocalfileinfo.c:1392 gio/glocalfileoutputstream.c:625
+#: gio/glocalfileinfo.c:1394 gio/glocalfileoutputstream.c:625
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr "'%s' 파일의 정보를 읽는 중 오류: %s"
 
-#: gio/glocalfileinfo.c:1447
+#: gio/glocalfileinfo.c:1449
 msgid " (invalid encoding)"
 msgstr " (잘못된 인코딩)"
 
-#: gio/glocalfileinfo.c:1622
+#: gio/glocalfileinfo.c:1624
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "파일 디스크립터 정보를 읽는 중 오류: %s"
 
-#: gio/glocalfileinfo.c:1667
+#: gio/glocalfileinfo.c:1669
 #, c-format
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "잘못된 애트리뷰트 종류 (uint32 필요)"
 
-#: gio/glocalfileinfo.c:1684
+#: gio/glocalfileinfo.c:1686
 #, c-format
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "잘못된 애트리뷰트 종류 (uint64 필요)"
 
-#: gio/glocalfileinfo.c:1702
+#: gio/glocalfileinfo.c:1704
 #, c-format
 msgid "Invalid attribute type (byte string expected)"
 msgstr "잘못된 애트리뷰트 종류 (바이트 문자열 필요)"
 
-#: gio/glocalfileinfo.c:1726
+#: gio/glocalfileinfo.c:1728
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "권한 설정 중 오류: %s"
 
-#: gio/glocalfileinfo.c:1775 gio/glocalfileinfo.c:1935
+#: gio/glocalfileinfo.c:1777 gio/glocalfileinfo.c:1937
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "소유자 설정 중 오류: %s"
 
-#: gio/glocalfileinfo.c:1798
+#: gio/glocalfileinfo.c:1800
 #, c-format
 msgid "symlink must be non-NULL"
 msgstr "심볼릭 링크는 NULL이 아니어야 합니다"
 
-#: gio/glocalfileinfo.c:1806 gio/glocalfileinfo.c:1823
-#: gio/glocalfileinfo.c:1832
+#: gio/glocalfileinfo.c:1808 gio/glocalfileinfo.c:1825
+#: gio/glocalfileinfo.c:1834
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "심볼릭 링크 설정 중 오류: %s"
 
-#: gio/glocalfileinfo.c:1815
+#: gio/glocalfileinfo.c:1817
 #, c-format
 msgid "Error setting symlink: file is not a symlink"
 msgstr "심볼릭 링크 설정 중 오류: 파일이 심볼릭 링크가 아닙니다"
 
-#: gio/glocalfileinfo.c:1990
+#: gio/glocalfileinfo.c:1992
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "%s 애트리뷰트 설정은 지원하지 않습니다"
@@ -1560,7 +1544,7 @@ msgstr "파일에서 seek하는 중 오류: %s"
 msgid "Error closing file: %s"
 msgstr "파일을 닫는 중 오류: %s"
 
-#: gio/glocalfilemonitor.c:224
+#: gio/glocalfilemonitor.c:197
 #, fuzzy, c-format
 msgid "Unable to find default local file monitor type"
 msgstr "휴지통 디렉토리를 찾을 수 없거나 만들 수 없습니다"
@@ -1658,24 +1642,15 @@ msgstr "마운트가 eject를 구현하지 않았습니다"
 msgid "mount doesn't implement remount"
 msgstr "마운트가 remount를 구현하지 않았습니다"
 
-#: gio/goutputstream.c:193
-#, c-format
-msgid "Too large count value passed to g_output_stream_write"
-msgstr "g_output_stream_write에 카운트 값이 너무 큽니다"
-
 #: gio/goutputstream.c:202 gio/goutputstream.c:403
 #, c-format
 msgid "Output stream doesn't implement write"
 msgstr "출력 스트림이 write를 구현하지 않았습니다"
 
-#: gio/goutputstream.c:363 gio/goutputstream.c:770
+#: gio/goutputstream.c:363 gio/goutputstream.c:771
 #, c-format
 msgid "Source stream is already closed"
 msgstr "원본 스트림을 이미 닫았습니다"
-
-#: gio/goutputstream.c:647
-msgid "Too large count value passed to g_output_stream_write_async"
-msgstr "g_output_stream_write_async에 카운트 값이 너무 큽니다"
 
 #: gio/gunixinputstream.c:200 gio/gunixinputstream.c:218
 #: gio/gunixinputstream.c:290 gio/gunixoutputstream.c:281
@@ -1738,6 +1713,24 @@ msgstr "긴 목록 형식을 사용합니다"
 #: tests/gio-ls.c:37
 msgid "[FILE...]"
 msgstr "[파일...]"
+
+#~ msgid "Too large count value passed to g_input_stream_read_async"
+#~ msgstr "g_input_stream_read_async에 카운트 값이 너무 큽니다"
+
+#~ msgid "Too large count value passed to g_input_stream_skip"
+#~ msgstr "g_input_stream_skip에 카운트 값이 너무 큽니다"
+
+#~ msgid "Too large count value passed to g_input_stream_skip_async"
+#~ msgstr "g_input_stream_skip_async에 카운트 값이 너무 큽니다"
+
+#~ msgid "Target file already exists"
+#~ msgstr "대상 파일이 이미 있습니다"
+
+#~ msgid "Too large count value passed to g_output_stream_write"
+#~ msgstr "g_output_stream_write에 카운트 값이 너무 큽니다"
+
+#~ msgid "Too large count value passed to g_output_stream_write_async"
+#~ msgstr "g_output_stream_write_async에 카운트 값이 너무 큽니다"
 
 #~ msgid "Target stream is already closed"
 #~ msgstr "대상 스트림을 이미 닫았습니다"
