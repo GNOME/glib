@@ -48,12 +48,14 @@ G_BEGIN_DECLS
  * GAppInfoCreateFlags:
  * @G_APP_INFO_CREATE_NONE: No flags.
  * @G_APP_INFO_CREATE_NEEDS_TERMINAL: Application opens in a terminal window.
+ * @G_APP_INFO_CREATE_SUPPORTS_URIS: Application supports URI arguments.
  * 
  * Flags used when creating a #GAppInfo.
  */
 typedef enum {
   G_APP_INFO_CREATE_NONE = 0,           /*< nick=none >*/
-  G_APP_INFO_CREATE_NEEDS_TERMINAL = (1<<0)   /*< nick=needs-terminal >*/
+  G_APP_INFO_CREATE_NEEDS_TERMINAL = (1<<0),  /*< nick=needs-terminal >*/
+  G_APP_INFO_CREATE_SUPPORTS_URIS = (1<<1)   /*< nick=supports-uris >*/
 } GAppInfoCreateFlags;
 
 typedef struct _GAppLaunchContext        GAppLaunchContext;

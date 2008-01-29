@@ -1508,7 +1508,10 @@ g_app_info_create_from_commandline (const char           *commandline,
   info->terminal = flags & G_APP_INFO_CREATE_NEEDS_TERMINAL;
   info->startup_notify = FALSE;
   info->hidden = FALSE;
-  info->exec = g_strconcat (commandline, " %f", NULL);
+  if (flags & G_APP_INFO_CREATE_SUPPORTS_URIS)
+    info->exec = g_strconcat (commandline, " %u", NULL);
+  else
+    info->exec = g_strconcat (commandline, " %f", NULL);
   info->comment = g_strdup_printf (_("Custom definition for %s"), info->name);
   info->nodisplay = TRUE;
   info->binary = binary_from_exec (info->exec);
