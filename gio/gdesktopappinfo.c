@@ -39,6 +39,7 @@
 #include "gfileicon.h"
 #include <glib/gstdio.h>
 #include "glibintl.h"
+#include "giomodule-priv.h"
 
 #include "gioalias.h"
 

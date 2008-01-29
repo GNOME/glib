@@ -24,7 +24,6 @@
 #define __G_DESKTOP_APP_INFO_H__
 
 #include <gio/gio.h>
-#include "giomodule-priv.h"
 
 G_BEGIN_DECLS
 

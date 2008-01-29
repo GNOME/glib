@@ -1,5 +1,11 @@
 2008-01-29  Alexander Larsson  <alexl@redhat.com>
 
+        * gdesktopappinfo.c:
+        * gdesktopappinfo.h:
+	giomodule-priv.h include moved to .c file.
+
+2008-01-29  Alexander Larsson  <alexl@redhat.com>
+
 	* gnativevolumemonitor.h (struct _GNativeVolumeMonitorClass):
 	Remove unused prio/name fields.
 
