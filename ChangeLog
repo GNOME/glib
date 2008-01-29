@@ -1,3 +1,8 @@
+2008-01-29  Christian Persch  <chpe@gnome.org>
+
+	* docs/reference/glib/tmpl/macros_misc.sgml: G_GNUC_[PRETTY_]FUNCTION
+	are deprecated since 2.16, not 2.14.
+
 2008-01-29 14:58:31  Tim Janik  <timj@imendio.com>
 
 	* glib/gmem.[hc]: changed size argument type from gulong to gsize as
@@ -45,7 +50,7 @@
 
 2008-01-27  Matthias Clasen  <mclasen@redhat.com>
 
-	* glib/gmacros.h: Deprecate G_GNUC_(PRETTY)_FUNCTION.
+	* glib/gmacros.h: Deprecate G_GNUC_(PRETTY)_FUNCTION. Bug #409360.
 
 2008-01-27  Matthias Clasen  <mclasen@redhat.com>
 
