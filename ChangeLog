@@ -1,3 +1,9 @@
+2008-01-29  Sebastian Wilhelmi  <wilhelmi@google.com>
+
+	* tests/threadpool-test.c (test_thread_pools): Grab
+	thread_counter_pools LOCK when increasing
+	leftover_task_counter. Fixes race in test. (#512624, Simon Murray)
+
 2008-01-28  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Bump version
