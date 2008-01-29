@@ -1,3 +1,11 @@
+2008-01-29 14:58:31  Tim Janik  <timj@imendio.com>
+
+	* glib/gmem.[hc]: changed size argument type from gulong to gsize as
+	discussed on gtk-devel-list:
+	  http://mail.gnome.org/archives/gtk-devel-list/2007-March/msg00062.html
+	this should be ABI compatible on all platforms except win64 for which
+	no ABI binding port exists yet.
+
 2008-01-29  Sebastian Wilhelmi  <wilhelmi@google.com>
 
 	* tests/threadpool-test.c (test_thread_pools): Grab

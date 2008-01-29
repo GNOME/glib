@@ -44,15 +44,15 @@ typedef struct _GMemVTable GMemVTable;
 
 /* Memory allocation functions
  */
-gpointer g_malloc         (gulong	 n_bytes) G_GNUC_MALLOC;
-gpointer g_malloc0        (gulong	 n_bytes) G_GNUC_MALLOC;
+gpointer g_malloc         (gsize	 n_bytes) G_GNUC_MALLOC;
+gpointer g_malloc0        (gsize	 n_bytes) G_GNUC_MALLOC;
 gpointer g_realloc        (gpointer	 mem,
-			   gulong	 n_bytes) G_GNUC_WARN_UNUSED_RESULT;
+			   gsize	 n_bytes) G_GNUC_WARN_UNUSED_RESULT;
 void	 g_free	          (gpointer	 mem);
-gpointer g_try_malloc     (gulong	 n_bytes) G_GNUC_MALLOC;
-gpointer g_try_malloc0    (gulong	 n_bytes) G_GNUC_MALLOC;
+gpointer g_try_malloc     (gsize	 n_bytes) G_GNUC_MALLOC;
+gpointer g_try_malloc0    (gsize	 n_bytes) G_GNUC_MALLOC;
 gpointer g_try_realloc    (gpointer	 mem,
-			   gulong	 n_bytes) G_GNUC_WARN_UNUSED_RESULT;
+			   gsize	 n_bytes) G_GNUC_WARN_UNUSED_RESULT;
 
 
 /* Convenience memory allocators
@@ -123,7 +123,7 @@ typedef struct _GMemChunk  GMemChunk;
 #define G_ALLOC_AND_FREE  2
 GMemChunk* g_mem_chunk_new     (const gchar *name,
 				gint         atom_size,
-				gulong       area_size,
+				gsize        area_size,
 				gint         type);
 void       g_mem_chunk_destroy (GMemChunk   *mem_chunk);
 gpointer   g_mem_chunk_alloc   (GMemChunk   *mem_chunk);

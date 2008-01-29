@@ -120,7 +120,7 @@ static GMemVTable glib_mem_vtable = {
 
 /* --- functions --- */
 gpointer
-g_malloc (gulong n_bytes)
+g_malloc (gsize n_bytes)
 {
   if (G_UNLIKELY (!g_mem_initialized))
     g_mem_init_nomessage();
@@ -139,7 +139,7 @@ g_malloc (gulong n_bytes)
 }
 
 gpointer
-g_malloc0 (gulong n_bytes)
+g_malloc0 (gsize n_bytes)
 {
   if (G_UNLIKELY (!g_mem_initialized))
     g_mem_init_nomessage();
@@ -159,7 +159,7 @@ g_malloc0 (gulong n_bytes)
 
 gpointer
 g_realloc (gpointer mem,
-	   gulong   n_bytes)
+	   gsize    n_bytes)
 {
   if (G_UNLIKELY (!g_mem_initialized))
     g_mem_init_nomessage();
@@ -188,7 +188,7 @@ g_free (gpointer mem)
 }
 
 gpointer
-g_try_malloc (gulong n_bytes)
+g_try_malloc (gsize n_bytes)
 {
   if (G_UNLIKELY (!g_mem_initialized))
     g_mem_init_nomessage();
@@ -199,7 +199,7 @@ g_try_malloc (gulong n_bytes)
 }
 
 gpointer
-g_try_malloc0 (gulong n_bytes)
+g_try_malloc0 (gsize n_bytes)
 { 
   gpointer mem;
 
@@ -213,7 +213,7 @@ g_try_malloc0 (gulong n_bytes)
 
 gpointer
 g_try_realloc (gpointer mem,
-	       gulong   n_bytes)
+	       gsize    n_bytes)
 {
   if (G_UNLIKELY (!g_mem_initialized))
     g_mem_init_nomessage();
@@ -298,21 +298,21 @@ typedef enum {
   PROFILER_ZINIT	= 4
 } ProfilerJob;
 static guint *profile_data = NULL;
-static gulong profile_allocs = 0;
-static gulong profile_zinit = 0;
-static gulong profile_frees = 0;
+static gsize profile_allocs = 0;
+static gsize profile_zinit = 0;
+static gsize profile_frees = 0;
 static GMutex *gmem_profile_mutex = NULL;
 #ifdef  G_ENABLE_DEBUG
-static volatile gulong g_trap_free_size = 0;
-static volatile gulong g_trap_realloc_size = 0;
-static volatile gulong g_trap_malloc_size = 0;
+static volatile gsize g_trap_free_size = 0;
+static volatile gsize g_trap_realloc_size = 0;
+static volatile gsize g_trap_malloc_size = 0;
 #endif  /* G_ENABLE_DEBUG */
 
 #define	PROFILE_TABLE(f1,f2,f3)   ( ( ((f3) << 2) | ((f2) << 1) | (f1) ) * (MEM_PROFILE_TABLE_SIZE + 1))
 
 static void
 profiler_log (ProfilerJob job,
-	      gulong      n_bytes,
+	      gsize       n_bytes,
 	      gboolean    success)
 {
   g_mutex_lock (gmem_profile_mutex);
@@ -389,9 +389,9 @@ void
 g_mem_profile (void)
 {
   guint local_data[(MEM_PROFILE_TABLE_SIZE + 1) * 8 * sizeof (profile_data[0])];
-  gulong local_allocs;
-  gulong local_zinit;
-  gulong local_frees;
+  gsize local_allocs;
+  gsize local_zinit;
+  gsize local_frees;
 
   if (G_UNLIKELY (!g_mem_initialized))
     g_mem_init_nomessage();
@@ -429,14 +429,14 @@ g_mem_profile (void)
 static gpointer
 profiler_try_malloc (gsize n_bytes)
 {
-  gulong *p;
+  gsize *p;
 
 #ifdef  G_ENABLE_DEBUG
   if (g_trap_malloc_size == n_bytes)
     G_BREAKPOINT ();
 #endif  /* G_ENABLE_DEBUG */
 
-  p = standard_malloc (sizeof (gulong) * 2 + n_bytes);
+  p = standard_malloc (sizeof (gsize) * 2 + n_bytes);
 
   if (p)
     {
@@ -467,14 +467,14 @@ profiler_calloc (gsize n_blocks,
 		 gsize n_block_bytes)
 {
   gsize l = n_blocks * n_block_bytes;
-  gulong *p;
+  gsize *p;
 
 #ifdef  G_ENABLE_DEBUG
   if (g_trap_malloc_size == l)
     G_BREAKPOINT ();
 #endif  /* G_ENABLE_DEBUG */
   
-  p = standard_calloc (1, sizeof (gulong) * 2 + l);
+  p = standard_calloc (1, sizeof (gsize) * 2 + l);
 
   if (p)
     {
@@ -495,7 +495,7 @@ profiler_calloc (gsize n_blocks,
 static void
 profiler_free (gpointer mem)
 {
-  gulong *p = mem;
+  gsize *p = mem;
 
   p -= 2;
   if (p[0])	/* free count */
@@ -529,7 +529,7 @@ static gpointer
 profiler_try_realloc (gpointer mem,
 		      gsize    n_bytes)
 {
-  gulong *p = mem;
+  gsize *p = mem;
 
   p -= 2;
 
@@ -540,14 +540,14 @@ profiler_try_realloc (gpointer mem,
   
   if (mem && p[0])	/* free count */
     {
-      g_warning ("realloc(%p, %lu): memory has been freed %lu times already", p + 2, (gulong)n_bytes, p[0]);
+      g_warning ("realloc(%p, %lu): memory has been freed %lu times already", p + 2, (gsize) n_bytes, p[0]);
       profiler_log (PROFILER_ALLOC | PROFILER_RELOC, n_bytes, FALSE);
 
       return NULL;
     }
   else
     {
-      p = standard_realloc (mem ? p : NULL, sizeof (gulong) * 2 + n_bytes);
+      p = standard_realloc (mem ? p : NULL, sizeof (gsize) * 2 + n_bytes);
 
       if (p)
 	{
@@ -604,7 +604,7 @@ struct _GMemChunk {
 GMemChunk*
 g_mem_chunk_new (const gchar  *name,
 		 gint          atom_size,
-		 gulong        area_size,
+		 gsize         area_size,
 		 gint          type)
 {
   GMemChunk *mem_chunk;
