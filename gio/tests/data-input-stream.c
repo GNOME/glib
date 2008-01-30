@@ -126,6 +126,7 @@ test_read_until (void)
   GError *error = NULL;
   char *data;
   int line;
+  int i;
   
 #define REPEATS			10   //  number of rounds
 #define DATA_STRING		" part1 # part2 $ part3 % part4 ^"
@@ -136,7 +137,6 @@ test_read_until (void)
   base_stream = g_memory_input_stream_new ();
   stream = G_INPUT_STREAM (g_data_input_stream_new (base_stream));
   
-  int i;
   for (i = 0; i < REPEATS; i++)
     g_memory_input_stream_add_data (G_MEMORY_INPUT_STREAM (base_stream), DATA_STRING, -1, NULL);
   

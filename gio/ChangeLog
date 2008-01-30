@@ -1,5 +1,11 @@
 2008-01-30  Alexander Larsson  <alexl@redhat.com>
 
+        * tests/data-input-stream.c:
+        * tests/data-output-stream.c:
+	C89 fixes from Jens Granseuer (#512849)
+
+2008-01-30  Alexander Larsson  <alexl@redhat.com>
+
 	* fam/fam-helper.c:
 	Fix gamin/fam difference build issue. (#509419)
 

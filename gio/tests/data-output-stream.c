@@ -38,7 +38,8 @@ test_read_lines (GDataStreamNewlineType newline_type)
   gpointer data;
   char *lines;
   int i;
-  
+  int size;
+
 #define TEST_STRING	"some_text"
   
   const char* endl[4] = {"\n", "\r", "\r\n", "\n"};
@@ -70,7 +71,7 @@ test_read_lines (GDataStreamNewlineType newline_type)
   g_assert_cmpint (g_data_output_stream_get_byte_order (G_DATA_OUTPUT_STREAM (stream)), ==, G_DATA_STREAM_BYTE_ORDER_LITTLE_ENDIAN);
   
   /*  compare data */
-  int size = strlen(data);
+  size = strlen(data);
   g_assert_cmpint (size, <, MAX_LINES_BUFF);
   g_assert_cmpstr ((char*)data, ==, lines);
   
@@ -252,12 +253,12 @@ test_read_int (void)
 {
   GRand *rand;
   gpointer buffer;
+  int i;
   
   rand = g_rand_new ();
   buffer = g_malloc0(MAX_BYTES_BINARY);
   
   /*  Fill in some random data */
-  int i;
   for (i = 0; i < MAX_BYTES_BINARY; i++)
     {
       guchar x = 0;
