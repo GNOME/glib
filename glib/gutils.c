@@ -3183,7 +3183,7 @@ _glib_get_locale_dir (void)
 
 /**
  * glib_gettext:
- * str: The string to be translated
+ * @str: The string to be translated
  *
  * Returns the translated string from the glib translations.
  * This is an internal function and should only be used by

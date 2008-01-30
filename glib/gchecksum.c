@@ -1283,12 +1283,12 @@ g_checksum_get_string (GChecksum *checksum)
 /**
  * g_checksum_get_digest:
  * @checksum: a #GChecksum
- * @digest: output buffer
+ * @buffer: output buffer
  * @digest_len: an inout parameter. The caller initializes it to the size of @buffer.
  *   After the call it contains the length of the digest.
  *
  * Gets the digest from @checksum as a raw binary vector and places it
- * into @digest. The size of the digest depends on the type of checksum.
+ * into @buffer. The size of the digest depends on the type of checksum.
  *
  * Once this function has been called, the #GChecksum is closed and can
  * no longer be updated with g_checksum_update().

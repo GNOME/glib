@@ -1,3 +1,12 @@
+2008-01-30  Wouter Bolsterlee  <wbolster@svn.gnome.org>
+
+	* glib/gchecksum.c:
+	* glib/gtestutils.c:
+	* glib/gutils.c:
+
+	Fixed gtk-doc warnings by updating the documentation of
+	various functions.
+
 2008-01-29  Christian Persch  <chpe@gnome.org>
 
 	* docs/reference/glib/tmpl/macros_misc.sgml: G_GNUC_[PRETTY_]FUNCTION
@@ -108,7 +117,7 @@
 
 2008-01-21  Alexander Larsson  <alexl@redhat.com>
 
-        * configure.in:
+	* configure.in:
 	Only check for sys/inotify.h (see gio/ChangeLog) 
 
 2008-01-18 16:51:23  Tim Janik  <timj@imendio.com>
@@ -131,7 +140,7 @@
 
 2008-01-15  Alexander Larsson  <alexl@redhat.com>
 
-        * glib/gurifuncs.c:
+	* glib/gurifuncs.c:
 	Clarify docs for g_uri_unescape_string() (#508773)
 
 2008-01-14  Dan Winship  <danw@gnome.org>
@@ -159,7 +168,7 @@
 
 2008-01-14  Alexander Larsson  <alexl@redhat.com>
 
-        * glib/gurifuncs.c:
+	* glib/gurifuncs.c:
 	Clarify docs for g_uri_escape_string (#508773)
 
 2008-01-12  Andre Klapper  <a9016009@gmx.de>
@@ -343,7 +352,7 @@
 
 2007-12-19 20:30:18  Tim Janik  <timj@imendio.com>
 
-        * glib/gtestutils.c: capture g_log() messages and send to gtester.
+	* glib/gtestutils.c: capture g_log() messages and send to gtester.
 	also, send assertion messages to gtester.
 
 	* glib/gtester.c: add error messages to output log file.
@@ -370,9 +379,9 @@
 
 2007-12-19  Alexander Larsson  <alexl@redhat.com>
 
-        * glib/gfileutils.[ch]:
-        * glib/glib.symbols:
-        Rename g_format_file_size_for_display to g_format_size_for_display.
+	* glib/gfileutils.[ch]:
+	* glib/glib.symbols:
+	Rename g_format_file_size_for_display to g_format_size_for_display.
 
 2007-12-18  Tim-Philipp Müller  <tim at centricular dot net>
 
@@ -444,29 +453,29 @@
 
 2007-12-10 15:08:59  Tim Janik  <timj@imendio.com>
 
-        * let g_warn_if_fail replace g_assert as discussed here:
-          http://mail.gnome.org/archives/gtk-devel-list/2007-October/msg00089.html
+	* let g_warn_if_fail replace g_assert as discussed here:
+	  http://mail.gnome.org/archives/gtk-devel-list/2007-October/msg00089.html
 
-        * fix bug #502498: Test framework assertion failures should follow
-        gcc error format.
+	* fix bug #502498: Test framework assertion failures should follow
+	gcc error format.
 
-        * gmessages.h, gmessages.c: deprecated g_assert_warning() which is
-        unused now. removed g_assert*() definitions whcih are provided by 
-        gtestutils.h now. added g_warn_if_reached() and g_warn_if_fail()  
-        which are recommended as g_assert/g_assert_not_reached replacements
-        for non-test programs.
-        added g_warn_message() to implement g_warn_*() macros.
-        use emacs-next-error friendly formatting for file:line: for warnings.
+	* gmessages.h, gmessages.c: deprecated g_assert_warning() which is
+	unused now. removed g_assert*() definitions whcih are provided by 
+	gtestutils.h now. added g_warn_if_reached() and g_warn_if_fail()  
+	which are recommended as g_assert/g_assert_not_reached replacements
+	for non-test programs.
+	added g_warn_message() to implement g_warn_*() macros.
+	use emacs-next-error friendly formatting for file:line: for warnings.
 
-        * gtestutils.h, gtestutils.c: use emacs-next-error friendly formatting.
-        implement g_assert_not_reached() with g_assertion_message() and
-        g_assert() in terms of g_assertion_message_expr() so we'll be able to
-        provide assertion messages in test logs.
+	* gtestutils.h, gtestutils.c: use emacs-next-error friendly formatting.
+	implement g_assert_not_reached() with g_assertion_message() and
+	g_assert() in terms of g_assertion_message_expr() so we'll be able to
+	provide assertion messages in test logs.
 
-        * gkeyfile.c, gbookmarkfile.c: changed g_assert*() to g_warn_if_fail()
-        or g_return_if_fail() where suitable.
+	* gkeyfile.c, gbookmarkfile.c: changed g_assert*() to g_warn_if_fail()
+	or g_return_if_fail() where suitable.
 
-        * gio/: changed g_assert to g_warn_if_fail.
+	* gio/: changed g_assert to g_warn_if_fail.
 
 2007-12-10 13:02:08  Tim Janik  <timj@imendio.com>
 
@@ -555,7 +564,7 @@
 
 2007-12-05 11:43:22  Tim Janik  <timj@imendio.com>
 
-        * glib/gtestutils.[hc]: added g_test_add_data_func() to pass data
+	* glib/gtestutils.[hc]: added g_test_add_data_func() to pass data
 	into tests. allow data arguments for fixture tests.
 
 	* glib/gtestutils.c: fixed fatal log flag setup, so tests really abort
@@ -671,7 +680,7 @@
 
 2007-12-03  Alexander Larsson  <alexl@redhat.com>
 
-        * configure.in:
+	* configure.in:
 	Add xattr checks for OSX style API (#500506)
 
 2007-12-03  Ryan Lortie  <desrt@desrt.ca>
@@ -719,14 +728,14 @@
 
 2007-11-28  Alexander Larsson  <alexl@redhat.com>
 
-        * glib/glib.symbols:
+	* glib/glib.symbols:
 	Add in the new symbols
 	
-        * glib/gurifuncs.c:
+	* glib/gurifuncs.c:
 	Use the aliases framework
 	
-        * glib/glibintl.h:
-        * glib/gutils.c:
+	* glib/glibintl.h:
+	* glib/gutils.c:
 	Make the alias stuff work now that glib_gettext
 	is exported to libgio. 
 
@@ -738,25 +747,25 @@
 
 2007-11-27  Alexander Larsson  <alexl@redhat.com>
 
-        * gio/Makefile.am:
-        * gio/gurifuncs.[ch]:
-        * glib/Makefile.am:
-        * glib/gstring.[ch]:
-        * glib/gurifuncs.[ch]:
+	* gio/Makefile.am:
+	* gio/gurifuncs.[ch]:
+	* glib/Makefile.am:
+	* glib/gstring.[ch]:
+	* glib/gurifuncs.[ch]:
 	Moved gurifuncs from gio to glib
 
 2007-11-27  Alexander Larsson  <alexl@redhat.com>
 
-        * gio/gfileinfo.[ch]:
-        * glib/gfileutils.[ch]:
-        Move g_format_file_size_for_display from gio to glib
+	* gio/gfileinfo.[ch]:
+	* glib/gfileutils.[ch]:
+	Move g_format_file_size_for_display from gio to glib
 
 2007-11-27  Alexander Larsson  <alexl@redhat.com>
 
-        * configure.in:
+	* configure.in:
 	Allow configuration of gio-module-dir
 	
-        * gio-2.0.pc.in:
+	* gio-2.0.pc.in:
 	Export giomodules location as giomodule variable
 
 2007-11-26  Matthias Clasen  <mclasen@redhat.com>
@@ -801,18 +810,18 @@
 
 2007-11-26  Alexander Larsson  <alexl@redhat.com>
 
-        * Makefile.am:
-        * configure.in:
-        * gio-2.0-uninstalled.pc.in:
-        * gio-2.0.pc.in: 
-        * gio-unix-2.0-uninstalled.pc.in:
-        * gio-unix-2.0.pc.in:
+	* Makefile.am:
+	* configure.in:
+	* gio-2.0-uninstalled.pc.in:
+	* gio-2.0.pc.in: 
+	* gio-unix-2.0-uninstalled.pc.in:
+	* gio-unix-2.0.pc.in:
 	* gio/
 	* docs/reference/gio
 	Merged gio-standalone into glib.
 	
-        * glib/glibintl.h:
-        * glib/gutils.c:
+	* glib/glibintl.h:
+	* glib/gutils.c:
 	Export glib_gettext so that gio can use it
 	Add P_ (using same domain for now)
 	Add I_ as g_intern_static_string
@@ -906,7 +915,7 @@
 	TEST_PROGS for unconditional appending via += in other makefiles.
 	define recursive test targets: test, test-report, perf-report,
 	full-report, as described here:
-      http://mail.gnome.org/archives/gtk-devel-list/2007-November/msg00000.html
+	http://mail.gnome.org/archives/gtk-devel-list/2007-November/msg00000.html
 
 	* Makefile.am:
 	* build/win32/vs8/Makefile.am, build/win32/dirent/Makefile.am:

@@ -614,7 +614,7 @@ g_test_minimized_result (double          minimized_quantity,
 }
 
 /**
- * g_test_minimized_result:
+ * g_test_maximized_result:
  * @maximized_quantity: the reported value
  * @format: the format string of the report message
  *
