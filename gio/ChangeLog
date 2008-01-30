@@ -1,5 +1,16 @@
 2008-01-30  Alexander Larsson  <alexl@redhat.com>
 
+        * gappinfo.c:
+	Add doc comment about uris vs GFiles to
+	g_app_info_launch()
+	
+        * gdesktopappinfo.c:
+	Ensure uris passed to g_app_info_launch_uris()
+	are not roundtriped through GFile (as that
+	may be slightly destructive for e.g. mailto: links)
+
+2008-01-30  Alexander Larsson  <alexl@redhat.com>
+
         * tests/data-input-stream.c:
         * tests/data-output-stream.c:
 	C89 fixes from Jens Granseuer (#512849)

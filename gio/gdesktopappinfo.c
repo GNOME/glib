@@ -169,7 +169,7 @@ g_desktop_app_info_init (GDesktopAppInfo *local)
 static char *
 binary_from_exec (const char *exec)
 {
-  char *p, *start;
+  const char *p, *start;
   
   p = exec;
   while (*p == ' ')
@@ -451,13 +451,15 @@ g_desktop_app_info_get_icon (GAppInfo *appinfo)
 }
 
 static char *
-expand_macro_single (char macro, GFile *file)
+expand_macro_single (char macro, char *uri)
 {
+  GFile *file;
   char *result = NULL;
-  char *uri, *path;
+  char *path;
 
+  file = g_file_new_for_uri (uri);
   path = g_file_get_path (file);
-  uri = g_file_get_uri (file);
+  g_object_unref (file);
   
   switch (macro)
     {
@@ -483,7 +485,6 @@ expand_macro_single (char macro, GFile *file)
     }
 
   g_free (path);
-  g_free (uri);
   
   return result;
 }
@@ -492,9 +493,9 @@ static void
 expand_macro (char              macro, 
               GString          *exec, 
               GDesktopAppInfo  *info, 
-              GList           **file_list)
+              GList           **uri_list)
 {
-  GList *files = *file_list;
+  GList *uris = *uri_list;
   char *expanded;
   
   g_return_if_fail (exec != NULL);
@@ -505,15 +506,15 @@ expand_macro (char              macro,
     case 'f':
     case 'd':
     case 'n':
-      if (files)
+      if (uris)
 	{
-	  expanded = expand_macro_single (macro, files->data);
+	  expanded = expand_macro_single (macro, uris->data);
 	  if (expanded)
 	    {
 	      g_string_append (exec, expanded);
 	      g_free (expanded);
 	    }
-	  files = files->next;
+	  uris = uris->next;
 	}
 
       break;
@@ -522,18 +523,18 @@ expand_macro (char              macro,
     case 'F':
     case 'D':
     case 'N':
-      while (files)
+      while (uris)
 	{
-	  expanded = expand_macro_single (macro, files->data);
+	  expanded = expand_macro_single (macro, uris->data);
 	  if (expanded)
 	    {
 	      g_string_append (exec, expanded);
 	      g_free (expanded);
 	    }
 	  
-	  files = files->next;
+	  uris = uris->next;
 	  
-	  if (files != NULL && expanded)
+	  if (uris != NULL && expanded)
 	    g_string_append_c (exec, ' ');
 	}
 
@@ -565,17 +566,17 @@ expand_macro (char              macro,
       break;
     }
   
-  *file_list = files;
+  *uri_list = uris;
 }
 
 static gboolean
 expand_application_parameters (GDesktopAppInfo   *info,
-			       GList            **files,
+			       GList            **uris,
 			       int               *argc,
 			       char            ***argv,
 			       GError           **error)
 {
-  GList *file_list = *files;
+  GList *uri_list = *uris;
   const char *p = info->exec;
   GString *expanded_exec = g_string_new (NULL);
   gboolean res;
@@ -591,7 +592,7 @@ expand_application_parameters (GDesktopAppInfo   *info,
     {
       if (p[0] == '%' && p[1] != '\0')
 	{
-	  expand_macro (p[1], expanded_exec, info, files);
+	  expand_macro (p[1], expanded_exec, info, uris);
 	  p++;
 	}
       else
@@ -601,11 +602,11 @@ expand_application_parameters (GDesktopAppInfo   *info,
     }
   
   /* No file substitutions */
-  if (file_list == *files && file_list != NULL)
+  if (uri_list == *uris && uri_list != NULL)
     {
       /* If there is no macro default to %f. This is also what KDE does */
       g_string_append_c (expanded_exec, ' ');
-      expand_macro ('f', expanded_exec, info, files);
+      expand_macro ('f', expanded_exec, info, uris);
     }
   
   res = g_shell_parse_argv (expanded_exec->str, argc, argv, error);
@@ -819,15 +820,17 @@ replace_env_var (char       **old_environ,
 }
 
 static GList *
-dup_list_segment (GList *start,
-		  GList *end)
+uri_list_segment_to_files (GList *start,
+			   GList *end)
 {
   GList *res;
+  GFile *file;
 
   res = NULL;
   while (start != NULL && start != end)
     {
-      res = g_list_prepend (res, start->data);
+      file = g_file_new_for_uri ((char *)start->data);
+      res = g_list_prepend (res, file);
       start = start->next;
     }
 
@@ -845,14 +848,14 @@ extern char **environ;
 #endif
 
 static gboolean
-g_desktop_app_info_launch (GAppInfo           *appinfo,
-			   GList              *files,
-			   GAppLaunchContext  *launch_context,
-			   GError            **error)
+g_desktop_app_info_launch_uris (GAppInfo           *appinfo,
+				GList              *uris,
+				GAppLaunchContext  *launch_context,
+				GError            **error)
 {
   GDesktopAppInfo *info = G_DESKTOP_APP_INFO (appinfo);
   gboolean completed = FALSE;
-  GList *old_files;
+  GList *old_uris;
   GList *launched_files;
   char **envp;
   char **argv;
@@ -867,8 +870,8 @@ g_desktop_app_info_launch (GAppInfo           *appinfo,
       
   do 
     {
-      old_files = files;
-      if (!expand_application_parameters (info, &files,
+      old_uris = uris;
+      if (!expand_application_parameters (info, &uris,
 					  &argc, &argv, error))
 	goto out;
       
@@ -882,7 +885,7 @@ g_desktop_app_info_launch (GAppInfo           *appinfo,
       sn_id = NULL;
       if (launch_context)
 	{
-	  launched_files = dup_list_segment (old_files, files);
+	  launched_files = uri_list_segment_to_files (old_uris, uris);
 	  
 	  display = g_app_launch_context_get_display (launch_context,
 						      appinfo,
@@ -916,6 +919,7 @@ g_desktop_app_info_launch (GAppInfo           *appinfo,
 
 	  g_free (display);
 	  
+	  g_list_foreach (launched_files, (GFunc)g_object_unref, NULL);
 	  g_list_free (launched_files);
 	}
       
@@ -944,7 +948,7 @@ g_desktop_app_info_launch (GAppInfo           *appinfo,
       envp = NULL;
       argv = NULL;
     }
-  while (files != NULL);
+  while (uris != NULL);
 
   completed = TRUE;
 
@@ -976,32 +980,29 @@ g_desktop_app_info_supports_files (GAppInfo *appinfo)
 }
 
 static gboolean
-g_desktop_app_info_launch_uris (GAppInfo           *appinfo,
-				GList              *uris,
-				GAppLaunchContext  *launch_context,
-				GError            **error)
+g_desktop_app_info_launch (GAppInfo           *appinfo,
+			   GList              *files,
+			   GAppLaunchContext  *launch_context,
+			   GError            **error)
 {
-  GList *files;
-  GFile *file;
+  GList *uris;
+  char *uri;
   gboolean res;
 
-  files = NULL;
-  while (uris)
+  uris = NULL;
+  while (files)
     {
-      file = g_file_new_for_uri (uris->data);
-      if (file == NULL)
-	g_warning ("Invalid uri passed to g_desktop_app_info_launch_uris");
-      
-      if (file)
-	files = g_list_prepend (files, file);
+      uri = g_file_get_uri (files->data);
+      uris = g_list_prepend (uris, uri);
+      files = files->next;
     }
   
-  files = g_list_reverse (files);
+  uris = g_list_reverse (uris);
   
-  res = g_desktop_app_info_launch (appinfo, files, launch_context, error);
+  res = g_desktop_app_info_launch_uris (appinfo, uris, launch_context, error);
   
-  g_list_foreach  (files, (GFunc)g_object_unref, NULL);
-  g_list_free (files);
+  g_list_foreach  (uris, (GFunc)g_free, NULL);
+  g_list_free (uris);
   
   return res;
 }
@@ -1394,7 +1395,7 @@ g_desktop_app_info_ensure_saved (GDesktopAppInfo *info,
 {
   GKeyFile *key_file;
   char *dirname;
-  char *basename, *filename;
+  char *filename;
   char *data, *desktop_id;
   gsize data_size;
   int fd;

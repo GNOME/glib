@@ -406,6 +406,11 @@ g_app_info_get_icon (GAppInfo *appinfo)
  * can fail to start if it runs into problems during startup. There is
  * no way to detect this.
  *
+ * Some URIs can be changed when passed through a GFile (for instance
+ * unsupported uris with strange formats like mailto:), so if you have
+ * a textual uri you want to pass in as argument, consider using
+ * g_app_info_launch_uris() instead.
+ * 
  * Returns: %TRUE on successful launch, %FALSE otherwise. 
  **/
 gboolean
