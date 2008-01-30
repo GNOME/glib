@@ -1,3 +1,7 @@
+2008-01-30  Johan Dahlin  <johan@gnome.org>
+
+	* configure.in: Remove oc since oc.po is gone.
+
 2008-01-30  Wouter Bolsterlee  <wbolster@svn.gnome.org>
 
 	* glib/gchecksum.c:
