@@ -1,3 +1,8 @@
+2008-01-30  Alexander Larsson  <alexl@redhat.com>
+
+	* fam/fam-helper.c:
+	Fix gamin/fam difference build issue. (#509419)
+
 2008-01-29  Alexander Larsson  <alexl@redhat.com>
 
         * gappinfo.h:

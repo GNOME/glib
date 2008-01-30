@@ -41,8 +41,13 @@ struct _fam_sub
   FAMRequest request;
 };
 
-static GFileMonitorEvent 
-fam_event_to_file_monitor_event (FAMCodes code)
+/* This uses int as the argument type because the
+   real type differs between implementations:
+   gamin has "typedef enum FAMCodes {....} FAMCodes;"
+   fam has "enum FAMCodes { ... }".
+*/
+static GFileMonitorEvent  
+fam_event_to_file_monitor_event (int code)
 {
   switch (code)
     {
