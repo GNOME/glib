@@ -132,7 +132,8 @@ g_malloc (gsize n_bytes)
       if (mem)
 	return mem;
 
-      g_error ("%s: failed to allocate %lu bytes", G_STRLOC, n_bytes);
+      g_error ("%s: failed to allocate %"G_GSIZE_FORMAT" bytes",
+               G_STRLOC, n_bytes);
     }
 
   return NULL;
@@ -151,7 +152,8 @@ g_malloc0 (gsize n_bytes)
       if (mem)
 	return mem;
 
-      g_error ("%s: failed to allocate %lu bytes", G_STRLOC, n_bytes);
+      g_error ("%s: failed to allocate %"G_GSIZE_FORMAT" bytes",
+               G_STRLOC, n_bytes);
     }
 
   return NULL;
@@ -169,7 +171,8 @@ g_realloc (gpointer mem,
       if (mem)
 	return mem;
 
-      g_error ("%s: failed to allocate %lu bytes", G_STRLOC, n_bytes);
+      g_error ("%s: failed to allocate %"G_GSIZE_FORMAT" bytes",
+               G_STRLOC, n_bytes);
     }
 
   if (mem)
@@ -417,7 +420,10 @@ g_mem_profile (void)
   profile_print_locked (local_data, TRUE);
   g_print ("GLib Memory statistics (failing operations):\n");
   profile_print_locked (local_data, FALSE);
-  g_print ("Total bytes: allocated=%lu, zero-initialized=%lu (%.2f%%), freed=%lu (%.2f%%), remaining=%lu\n",
+  g_print ("Total bytes: allocated=%"G_GSIZE_FORMAT", "
+           "zero-initialized=%"G_GSIZE_FORMAT" (%.2f%%), "
+           "freed=%"G_GSIZE_FORMAT" (%.2f%%), "
+           "remaining=%"G_GSIZE_FORMAT"\n",
 	   local_allocs,
 	   local_zinit,
 	   ((gdouble) local_zinit) / local_allocs * 100.0,
@@ -500,7 +506,8 @@ profiler_free (gpointer mem)
   p -= 2;
   if (p[0])	/* free count */
     {
-      g_warning ("free(%p): memory has been freed %lu times already", p + 2, p[0]);
+      g_warning ("free(%p): memory has been freed %"G_GSIZE_FORMAT" times already",
+                 p + 2, p[0]);
       profiler_log (PROFILER_FREE,
 		    p[1],	/* length */
 		    FALSE);
@@ -540,7 +547,9 @@ profiler_try_realloc (gpointer mem,
   
   if (mem && p[0])	/* free count */
     {
-      g_warning ("realloc(%p, %lu): memory has been freed %lu times already", p + 2, (gsize) n_bytes, p[0]);
+      g_warning ("realloc(%p, %"G_GSIZE_FORMAT"): "
+                 "memory has been freed %"G_GSIZE_FORMAT" times already",
+                 p + 2, (gsize) n_bytes, p[0]);
       profiler_log (PROFILER_ALLOC | PROFILER_RELOC, n_bytes, FALSE);
 
       return NULL;
