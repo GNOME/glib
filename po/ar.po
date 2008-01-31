@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.glib-2-12.ar\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-01-29 19:40+0000\n"
+"POT-Creation-Date: 2008-01-31 08:07+0000\n"
 "PO-Revision-Date: 2008-01-28 00:39-0000\n"
 "Last-Translator: Abou Manal <aboumanal@gmail.com>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
@@ -1173,32 +1173,32 @@ msgstr "نهاية دَفق غير متوقّعة وغير متوقعة "
 msgid "Unnamed"
 msgstr "غير مسمّى"
 
-#: ../gio/gdesktopappinfo.c:586
+#: ../gio/gdesktopappinfo.c:587
 #, c-format
 msgid "Desktop file didn't specify Exec field"
 msgstr "ملف سطح المكتب لم يحدد الحقل التنفيدي"
 
-#: ../gio/gdesktopappinfo.c:878
+#: ../gio/gdesktopappinfo.c:881
 #, c-format
 msgid "Unable to find terminal required for application"
 msgstr "غير قادر على ايجاد الطرفيىة المطلوبة للتطبيق"
 
-#: ../gio/gdesktopappinfo.c:1112
+#: ../gio/gdesktopappinfo.c:1113
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "غير قادر على إنشاء مجلد التهيئة الخاص بتطبيق المستخدم %s: %s"
 
-#: ../gio/gdesktopappinfo.c:1116
+#: ../gio/gdesktopappinfo.c:1117
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "لا يمكن إنشاء مجلد التهيئة MIME %s للمستخدم: %s"
 
-#: ../gio/gdesktopappinfo.c:1455
+#: ../gio/gdesktopappinfo.c:1456
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "لا يمكن إنشاء الملف %s"
 
-#: ../gio/gdesktopappinfo.c:1515
+#: ../gio/gdesktopappinfo.c:1516
 #, c-format
 msgid "Custom definition for %s"
 msgstr "تعريف مخصص لِ %s"
