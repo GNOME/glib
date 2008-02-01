@@ -388,7 +388,7 @@ g_desktop_app_info_equal (GAppInfo *appinfo1,
 
   if (info1->desktop_id == NULL ||
       info2->desktop_id == NULL)
-    return FALSE;
+    return info1 == info2;
 
   return strcmp (info1->desktop_id, info2->desktop_id) == 0;
 }

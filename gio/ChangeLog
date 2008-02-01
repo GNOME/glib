@@ -1,5 +1,17 @@
 2008-02-01  Alexander Larsson  <alexl@redhat.com>
 
+	* gappinfo.c (g_app_info_launch_uris):
+	Actually call the launch_uris method, not
+	launch.
+
+2008-02-01  Alexander Larsson  <alexl@redhat.com>
+
+	* gdesktopappinfo.c (g_desktop_app_info_equal):
+	Ensure appinfos with no id but same pointer value
+	compare equal
+
+2008-02-01  Alexander Larsson  <alexl@redhat.com>
+
 	* gappinfo.c (g_app_info_launch_default_for_uri): 
 	Don't leak appinfo.
 	

@@ -504,7 +504,7 @@ g_app_info_launch_uris (GAppInfo           *appinfo,
 
   iface = G_APP_INFO_GET_IFACE (appinfo);
 
-  return (* iface->launch) (appinfo, uris, launch_context, error);
+  return (* iface->launch_uris) (appinfo, uris, launch_context, error);
 }
 
 
