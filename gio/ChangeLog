@@ -1,5 +1,10 @@
 2008-02-01  Alexander Larsson  <alexl@redhat.com>
 
+	* gappinfo.c (g_app_info_launch_default_for_uri): 
+	Don't leak appinfo.
+	
+2008-02-01  Alexander Larsson  <alexl@redhat.com>
+
         * gappinfo.[ch]:
         * gio.symbols:
         Add g_app_info_launch_default_for_uri utility

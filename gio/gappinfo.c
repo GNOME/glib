@@ -566,6 +566,9 @@ g_app_info_launch_default_for_uri (const char *uri,
   l.next = l.prev = NULL;
   res = g_app_info_launch_uris (app_info, &l,
 				launch_context, error);
+
+  g_object_unref (app_info);
+  
   return res;
 }
 
