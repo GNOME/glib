@@ -24,6 +24,7 @@
 #include "gappinfo.h"
 #include "glibintl.h"
 #include <gioerror.h>
+#include <gfile.h>
 
 #include "gioalias.h"
 
@@ -544,7 +545,7 @@ g_app_info_should_show (GAppInfo *appinfo)
 gboolean
 g_app_info_launch_default_for_uri (const char *uri,
 				   GAppLaunchContext *launch_context,
-				   GError *error)
+				   GError **error)
 {
   GAppInfo *app_info;
   GFile *file;
@@ -561,7 +562,7 @@ g_app_info_launch_default_for_uri (const char *uri,
    * affect the uri which we don't want (for instance for a
    * mailto: uri).
    */
-  l.data = uri;
+  l.data = (char *)uri;
   l.next = l.prev = NULL;
   res = g_app_info_launch_uris (app_info, &l,
 				launch_context, error);

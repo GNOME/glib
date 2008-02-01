@@ -188,7 +188,7 @@ GAppInfo *g_app_info_get_default_for_uri_scheme  (const char  *uri_scheme);
 
 gboolean g_app_info_launch_default_for_uri (const char *uri,
 					    GAppLaunchContext *launch_context,
-					    GError *error);
+					    GError **error);
 
 /**
  * GAppLaunchContext:
