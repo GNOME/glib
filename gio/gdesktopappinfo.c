@@ -1662,10 +1662,8 @@ g_app_info_get_default_for_type (const char *content_type,
  *
  * Gets the default application for launching applications 
  * using this URI scheme.
- *
- * TODO: This is currently unimplemented.
  * 
- * Returns: %NULL.
+ * Returns: #GAppInfo for given @uri_scheme or %NULL on error.
  **/
 GAppInfo *
 g_app_info_get_default_for_uri_scheme (const char *uri_scheme)

@@ -1,3 +1,9 @@
+2008-02-01  Cosimo Cecchi  <cosimoc@svn.gnome.org>
+
+	* gdesktopappinfo.c:
+	Doc fix for g_app_info_get_default_for_uri_scheme ()
+	Bug #513483.
+
 2008-01-30  Alexander Larsson  <alexl@redhat.com>
 
         * gappinfo.c:
