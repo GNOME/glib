@@ -322,7 +322,7 @@ char **
 _g_unix_content_type_get_parents (const char *type)
 {
   const char *umime;
-  const char **parents;
+  char **parents;
   GPtrArray *array;
   int i;
 

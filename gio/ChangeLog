@@ -1,3 +1,9 @@
+2008-02-01  Michael Natterer  <mitch@imendio.com>
+
+	* gcontenttype.c (_g_unix_content_type_get_parents): assign the
+	return value of xdg_mime_list_mime_parents() to a variable of the
+	correct type.
+
 2008-02-01  Alexander Larsson  <alexl@redhat.com>
 
 	* gappinfo.c (g_app_info_launch_uris):
