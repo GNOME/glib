@@ -528,6 +528,47 @@ g_app_info_should_show (GAppInfo *appinfo)
   return (* iface->should_show) (appinfo);
 }
 
+/**
+ * g_app_info_launch_default_for_uri:
+ * @uri: the uri to show
+ * @context: an optional #GAppLaunchContext.
+ * @error: a #GError.
+ *
+ * Utility function that launches the default application 
+ * registered to handle the specified uri. Synchronous I/O
+ * is done on the uri to detext the type of the file if
+ * required.
+ * 
+ * Returns: %TRUE on success, %FALSE on error.
+ **/
+gboolean
+g_app_info_launch_default_for_uri (const char *uri,
+				   GAppLaunchContext *launch_context,
+				   GError *error)
+{
+  GAppInfo *app_info;
+  GFile *file;
+  GList l;
+  gboolean res;
+
+  file = g_file_new_for_uri (uri);
+  app_info = g_file_query_default_handler (file, NULL, error);
+  g_object_unref (file);
+  if (app_info == NULL)
+    return FALSE;
+
+  /* Use the uri, not the GFile, as the GFile roundtrip may
+   * affect the uri which we don't want (for instance for a
+   * mailto: uri).
+   */
+  l.data = uri;
+  l.next = l.prev = NULL;
+  res = g_app_info_launch_uris (app_info, &l,
+				launch_context, error);
+  return res;
+}
+
+
 G_DEFINE_TYPE (GAppLaunchContext, g_app_launch_context, G_TYPE_OBJECT);
 
 /**

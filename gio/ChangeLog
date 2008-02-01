@@ -1,3 +1,10 @@
+2008-02-01  Alexander Larsson  <alexl@redhat.com>
+
+        * gappinfo.[ch]:
+        * gio.symbols:
+        Add g_app_info_launch_default_for_uri utility
+	function. (#513256)
+
 2008-02-01  Cosimo Cecchi  <cosimoc@svn.gnome.org>
 
 	* gdesktopappinfo.c:
