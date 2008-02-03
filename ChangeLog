@@ -1,3 +1,7 @@
+2008-02-03  Hans Breuer  <hans@breuer.org>
+
+	* **/makefile.msc.in : update
+
 2008-02-03  Sebastian Dröge  <slomo@circular-chaos.org>
 
 	* configure.in: Check for gmtime_r. Missing part of bug #511807.

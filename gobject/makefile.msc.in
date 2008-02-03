@@ -77,11 +77,11 @@ gobject-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@s.lib : $(gobject_OBJECTS)
 # link glib's static version to avoid installing 
 glib-genmarshal.exe : glib-genmarshal.c gmarshal.strings
 	$(CC) -Fe$@ $(CFLAGS) -UGOBJECT_COMPILATION glib-genmarshal.c \
-	..\glib\glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@s.lib user32.lib advapi32.lib ole32.lib shell32.lib $(INTL_LIBS) $(LIBICONV_LIBS)
+	..\glib\glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@s.lib user32.lib advapi32.lib ole32.lib shell32.lib $(INTL_LIBS) 
 
 gobject-query.exe : gobject-query.c libgobject-2.0-@LT_CURRENT_MINUS_AGE@.dll
 	$(CC) -Fe$@ $(CFLAGS) -UGOBJECT_COMPILATION gobject-query.c \
-	..\glib\glib-2.0.lib gobject-2.0.lib user32.lib advapi32.lib $(INTL_LIBS) $(LIBICONV_LIBS)
+	..\glib\glib-2.0.lib gobject-2.0.lib user32.lib advapi32.lib $(INTL_LIBS)
 
 gmarshal.strings : gmarshal.list
 	perl marshal-genstrings.pl > gmarshal.strings

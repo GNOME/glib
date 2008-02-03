@@ -9,7 +9,7 @@ TOP = ..\..
 
 INCLUDES = -FImsvc_recommended_pragmas.h -I . -I ..
 DEFINES = -DHAVE_CONFIG_H -DGLIB_COMPILATION -DG_LOG_DOMAIN=\"GLib\" -DG_ENABLE_DEBUG -DPCRE_STATIC
-DEPCFLAGS = -Zm400 $(INTL_CFLAGS) $(LIBICONV_CFLAGS) $(DIRENT_CFLAGS)
+DEPCFLAGS = -Zm400 $(INTL_CFLAGS) $(DIRENT_CFLAGS)
 
 all :				\
 	..\config.h		\
@@ -126,7 +126,7 @@ glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@s.lib : $(glib_OBJECTS) gnulib\gnu
 	lib /out:glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@s.lib $(glib_OBJECTS) gnulib\gnulib.lib pcre\pcre.lib
 
 libglib-2.0-0.dll : $(glib_OBJECTS) gnulib\gnulib.lib pcre\pcre.lib glib.def glib.res
-	$(CC) $(CFLAGS) -LD -Fe$@ $(glib_OBJECTS) glib.res $(LIBICONV_LIBS) $(INTL_LIBS) \
+	$(CC) $(CFLAGS) -LD -Fe$@ $(glib_OBJECTS) glib.res $(INTL_LIBS) \
 	gnulib\gnulib.lib pcre\pcre.lib $(DIRENT_LIBS) user32.lib advapi32.lib shell32.lib wsock32.lib ole32.lib ws2_32.lib \
 	$(LDFLAGS) /implib:glib-2.0.lib /def:glib.def
 
