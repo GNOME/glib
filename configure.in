@@ -2009,7 +2009,7 @@ if test x"$have_threads" != xno; then
 	# we are not doing the following for now, as this might require glib 
 	# to always be linked with the thread libs on some platforms. 
 	# LIBS="$LIBS $G_THREAD_LIBS"
-	AC_CHECK_FUNCS(localtime_r)
+	AC_CHECK_FUNCS(localtime_r gmtime_r)
 	if test "$ac_cv_header_pwd_h" = "yes"; then
 	 	AC_CACHE_CHECK([for posix getpwuid_r],
 			ac_cv_func_posix_getpwuid_r,
