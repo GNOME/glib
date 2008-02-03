@@ -1,3 +1,7 @@
+2008-02-03  Hans Breuer  <hans@breuer.org>
+
+	* makefile.msc : update
+
 2008-02-01  Michael Natterer  <mitch@imendio.com>
 
 	* gcontenttype.c (_g_unix_content_type_get_parents): assign the
