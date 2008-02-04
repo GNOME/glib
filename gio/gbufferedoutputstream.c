@@ -381,7 +381,7 @@ g_buffered_output_stream_new (GOutputStream *base_stream)
  **/  
 GOutputStream *
 g_buffered_output_stream_new_sized (GOutputStream *base_stream,
-                                    guint          size)
+                                    gsize          size)
 {
   GOutputStream *stream;
 

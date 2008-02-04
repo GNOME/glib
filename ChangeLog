@@ -1,3 +1,9 @@
+2008-02-02  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* gio/gbufferedoutputstream.c:
+	* gio/gbufferedoutputstream.h: modify the new_sized() constructor to take a
+	gsize param instead of guint to match the GBufferedInputStream constructor.
+
 2008-02-03  Hans Breuer  <hans@breuer.org>
 
 	* **/makefile.msc.in : update

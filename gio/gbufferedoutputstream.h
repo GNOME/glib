@@ -74,7 +74,7 @@ struct _GBufferedOutputStreamClass
 GType           g_buffered_output_stream_get_type  (void) G_GNUC_CONST;
 GOutputStream* g_buffered_output_stream_new             (GOutputStream         *base_stream);
 GOutputStream* g_buffered_output_stream_new_sized       (GOutputStream         *base_stream,
-							 guint                  size);
+							 gsize                  size);
 gsize          g_buffered_output_stream_get_buffer_size (GBufferedOutputStream *stream);
 void           g_buffered_output_stream_set_buffer_size (GBufferedOutputStream *stream,
 							 gsize                  size);
