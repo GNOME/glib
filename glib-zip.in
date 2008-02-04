@@ -58,6 +58,7 @@ lib/gobject-2.0.def
 lib/libgthread-2.0.dll.a
 lib/gthread-2.0.lib
 lib/gthread-2.0.def
+lib/libgio-2.0.dll.a
 lib/glib-2.0
 lib/pkgconfig/glib-2.0.pc
 lib/pkgconfig/gmodule-2.0.pc
