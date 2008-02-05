@@ -1,3 +1,14 @@
+2008-02-05 18:41:22  Tim Janik  <timj@imendio.com>
+
+	* Makefile.am: integrate tests/.
+
+	* tests/: new directory for libgobject tests.
+
+	* tests/Makefile.am: build and run threadtests.
+
+	* tests/threadtests.c: test multi-threaded initializers for
+	object classes and interfaces.
+
 2008-01-28  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.15.4 ===
