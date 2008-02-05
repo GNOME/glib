@@ -1,3 +1,7 @@
+2008-02-05 18:42:42  Tim Janik  <timj@imendio.com>
+
+	* configure.in: generate gobject/tests/Makefile.
+
 2008-02-05  Tor Lillqvist  <tml@novell.com>
 
 	* glib-zip.in: Include the gio import library and gio-2.0.pc in
