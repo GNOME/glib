@@ -1781,8 +1781,7 @@ g_local_file_move (GFile                  *source,
 		   gpointer                progress_callback_data,
 		   GError                **error)
 {
-  GLocalFile *local_source;
-  GLocalFile *local_destination = G_LOCAL_FILE (destination);
+  GLocalFile *local_source, *local_destination;
   struct stat statbuf;
   gboolean destination_exist, source_is_dir;
   char *backup_name;
@@ -1798,6 +1797,7 @@ g_local_file_move (GFile                  *source,
     }
   
   local_source = G_LOCAL_FILE (source);
+  local_destination = G_LOCAL_FILE (destination);
   
   res = g_lstat (local_source->filename, &statbuf);
   if (res == -1)

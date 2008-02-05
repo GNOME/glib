@@ -1,3 +1,9 @@
+2008-02-05  Alexander Larsson  <alexl@redhat.com>
+
+	* glocalfile.c (g_local_file_move):
+	Don't spew warnings when destination is not
+	a GLocalFile.
+
 2008-02-03  Hans Breuer  <hans@breuer.org>
 
 	* makefile.msc : update
