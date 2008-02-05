@@ -1,3 +1,13 @@
+2008-02-05 18:52:07  Tim Janik  <timj@imendio.com>
+
+	* gtype.c: added recursive mutex to protect class initialization,
+	default interface initialization and per-class interface construction.
+	a lock to this recursive mutex is held during user callback invocations
+	such as initializers or finalizers, effectively allowing only one thread
+	to run class/interface initializers/finalizers at a time.
+	also made misc fixups. this fixes:
+	Bug 64764 - Class initialization isn't thread safe.
+
 2008-02-05 18:41:22  Tim Janik  <timj@imendio.com>
 
 	* Makefile.am: integrate tests/.

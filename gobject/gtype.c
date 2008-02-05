@@ -59,9 +59,10 @@
  * - _Wm:	[Write-locked invocation, mutatable]
  *   like _W, but the write lock might be released and reacquired
  *   during invocation, watch your pointers
+ * - _WmREC:    [Write-locked invocation, mutatable, recursive]
+ *   like _Wm, but also acquires recursive mutex class_init_rec_mutex
  */
 
-static GStaticRWLock            type_rw_lock = G_STATIC_RW_LOCK_INIT;
 #ifdef LOCK_DEBUG
 #define G_READ_LOCK(rw_lock)    do { g_printerr (G_STRLOC ": readL++\n"); g_static_rw_lock_reader_lock (rw_lock); } while (0)
 #define G_READ_UNLOCK(rw_lock)  do { g_printerr (G_STRLOC ": readL--\n"); g_static_rw_lock_reader_unlock (rw_lock); } while (0)
@@ -141,7 +142,7 @@ static	      void			type_data_make_W		(TypeNode		*node,
 									 const GTypeInfo	*info,
 									 const GTypeValueTable	*value_table);
 static inline void			type_data_ref_Wm		(TypeNode		*node);
-static inline void			type_data_unref_Wm		(TypeNode		*node,
+static inline void			type_data_unref_WmREC		(TypeNode		*node,
 									 gboolean		 uncached);
 static void				type_data_last_unref_Wm		(GType			 type,
 									 gboolean		 uncached);
@@ -297,6 +298,8 @@ typedef struct {
 
 
 /* --- variables --- */
+static GStaticRWLock   type_rw_lock = G_STATIC_RW_LOCK_INIT;
+static GStaticRecMutex class_init_rec_mutex = G_STATIC_REC_MUTEX_INIT;
 static guint           static_n_class_cache_funcs = 0;
 static ClassCacheFunc *static_class_cache_funcs = NULL;
 static guint           static_n_iface_check_funcs = 0;
@@ -1086,23 +1089,26 @@ type_data_ref_Wm (TypeNode *node)
 }
 
 static inline void
-type_data_unref_Wm (TypeNode *node,
-		    gboolean  uncached)
+type_data_unref_WmREC (TypeNode *node,
+                       gboolean  uncached)
 {
   g_assert (node->data && node->data->common.ref_count);
-  
   if (node->data->common.ref_count > 1)
     node->data->common.ref_count -= 1;
   else
     {
+      GType node_type = NODE_TYPE (node);
       if (!node->plugin)
 	{
 	  g_warning ("static type `%s' unreferenced too often",
 		     NODE_NAME (node));
 	  return;
 	}
-      
-      type_data_last_unref_Wm (NODE_TYPE (node), uncached);
+      G_WRITE_UNLOCK (&type_rw_lock);
+      g_static_rec_mutex_lock (&class_init_rec_mutex); /* required locking order: 1) class_init_rec_mutex, 2) type_rw_lock */
+      G_WRITE_LOCK (&type_rw_lock);
+      type_data_last_unref_Wm (node_type, uncached);
+      g_static_rec_mutex_unlock (&class_init_rec_mutex);
     }
 }
 
@@ -1437,7 +1443,7 @@ type_iface_blow_holder_info_Wm (TypeNode *iface,
       g_type_plugin_unuse (iholder->plugin);
       G_WRITE_LOCK (&type_rw_lock);
       
-      type_data_unref_Wm (iface, FALSE);
+      type_data_unref_WmREC (iface, FALSE);
     }
 }
 
@@ -2057,7 +2063,7 @@ type_data_last_unref_Wm (GType    type,
       g_type_plugin_unuse (node->plugin);
       G_WRITE_LOCK (&type_rw_lock);
       if (ptype)
-	type_data_unref_Wm (lookup_type_node_I (ptype), FALSE);
+	type_data_unref_WmREC (lookup_type_node_I (ptype), FALSE);
     }
 }
 
@@ -2173,7 +2179,7 @@ g_type_register_fundamental (GType                       type_id,
   if ((type_id & TYPE_ID_MASK) ||
       type_id > G_TYPE_FUNDAMENTAL_MAX)
     {
-      g_warning ("attempt to register fundamental type `%s' with invalid type id (%lu)",
+      g_warning ("attempt to register fundamental type `%s' with invalid type id (%zu)",
 		 type_name,
 		 type_id);
       return 0;
@@ -2307,17 +2313,22 @@ g_type_add_interface_static (GType                 instance_type,
   /* G_TYPE_IS_INSTANTIATABLE() is an external call: _U */
   g_return_if_fail (G_TYPE_IS_INSTANTIATABLE (instance_type));
   g_return_if_fail (g_type_parent (interface_type) == G_TYPE_INTERFACE);
-  
+
+  /* we only need to lock class_init_rec_mutex if instance_type already has its
+   * class initialized, however this function is rarely enough called to take
+   * the simple route and always acquire class_init_rec_mutex.
+   */
+  g_static_rec_mutex_lock (&class_init_rec_mutex); /* required locking order: 1) class_init_rec_mutex, 2) type_rw_lock */
   G_WRITE_LOCK (&type_rw_lock);
   if (check_add_interface_L (instance_type, interface_type))
     {
       TypeNode *node = lookup_type_node_I (instance_type);
       TypeNode *iface = lookup_type_node_I (interface_type);
-      
       if (check_interface_info_I (iface, NODE_TYPE (node), info))
         type_add_interface_Wm (node, iface, info, NULL);
     }
   G_WRITE_UNLOCK (&type_rw_lock);
+  g_static_rec_mutex_unlock (&class_init_rec_mutex);
 }
 
 void
@@ -2326,23 +2337,24 @@ g_type_add_interface_dynamic (GType        instance_type,
 			      GTypePlugin *plugin)
 {
   TypeNode *node;
-  
   /* G_TYPE_IS_INSTANTIATABLE() is an external call: _U */
   g_return_if_fail (G_TYPE_IS_INSTANTIATABLE (instance_type));
   g_return_if_fail (g_type_parent (interface_type) == G_TYPE_INTERFACE);
-  
+
   node = lookup_type_node_I (instance_type);
   if (!check_plugin_U (plugin, FALSE, TRUE, NODE_NAME (node)))
     return;
-  
+
+  /* see comment in g_type_add_interface_static() about class_init_rec_mutex */
+  g_static_rec_mutex_lock (&class_init_rec_mutex); /* required locking order: 1) class_init_rec_mutex, 2) type_rw_lock */
   G_WRITE_LOCK (&type_rw_lock);
   if (check_add_interface_L (instance_type, interface_type))
     {
       TypeNode *iface = lookup_type_node_I (interface_type);
-      
       type_add_interface_Wm (node, iface, NULL, plugin);
     }
   G_WRITE_UNLOCK (&type_rw_lock);
+  g_static_rec_mutex_unlock (&class_init_rec_mutex);
 }
 
 
@@ -2373,27 +2385,33 @@ g_type_class_ref (GType type)
 		 type_descriptive_name_I (type));
       return NULL;
     }
-  
+
   type_data_ref_Wm (node);
-  
-  if (!node->data->class.class)
+
+  if (!node->data->class.class) /* class uninitialized */
     {
       GType ptype = NODE_PARENT_TYPE (node);
       GTypeClass *pclass = NULL;
-      
+      G_WRITE_UNLOCK (&type_rw_lock);
+      g_static_rec_mutex_lock (&class_init_rec_mutex); /* required locking order: 1) class_init_rec_mutex, 2) type_rw_lock */
       if (ptype)
-	{
-	  G_WRITE_UNLOCK (&type_rw_lock);
-	  pclass = g_type_class_ref (ptype);
-	  if (node->data->class.class)
+        {
+          pclass = g_type_class_ref (ptype);
+          G_WRITE_LOCK (&type_rw_lock);
+          node = lookup_type_node_I (type);
+          if (node->data->class.class)
             INVALID_RECURSION ("g_type_plugin_*", node->plugin, NODE_NAME (node));
-	  G_WRITE_LOCK (&type_rw_lock);
-	}
-      
-      type_class_init_Wm (node, pclass);
+        }
+      else
+        {
+          G_WRITE_LOCK (&type_rw_lock);
+          node = lookup_type_node_I (type);
+        }
+      if (!node->data->class.class) /* class could have been initialized meanwhile */
+        type_class_init_Wm (node, pclass);
+      G_WRITE_UNLOCK (&type_rw_lock);
+      g_static_rec_mutex_unlock (&class_init_rec_mutex);
     }
-  G_WRITE_UNLOCK (&type_rw_lock);
-  
   return node->data->class.class;
 }
 
@@ -2409,7 +2427,7 @@ g_type_class_unref (gpointer g_class)
   G_WRITE_LOCK (&type_rw_lock);
   if (node && node->is_classed && node->data &&
       node->data->class.class == class && node->data->common.ref_count > 0)
-    type_data_unref_Wm (node, FALSE);
+    type_data_unref_WmREC (node, FALSE);
   else
     g_warning ("cannot unreference class of invalid (unclassed) type `%s'",
 	       type_descriptive_name_I (class->g_type));
@@ -2428,7 +2446,7 @@ g_type_class_unref_uncached (gpointer g_class)
   node = lookup_type_node_I (class->g_type);
   if (node && node->is_classed && node->data &&
       node->data->class.class == class && node->data->common.ref_count > 0)
-    type_data_unref_Wm (node, TRUE);
+    type_data_unref_WmREC (node, TRUE);
   else
     g_warning ("cannot unreference class of invalid (unclassed) type `%s'",
 	       type_descriptive_name_I (class->g_type));
@@ -2562,9 +2580,10 @@ gpointer
 g_type_default_interface_ref (GType g_type)
 {
   TypeNode *node;
-  
+  gpointer dflt_vtable;
+
   G_WRITE_LOCK (&type_rw_lock);
-  
+
   node = lookup_type_node_I (g_type);
   if (!node || !NODE_IS_IFACE (node) ||
       (node->data && node->data->common.ref_count < 1))
@@ -2574,14 +2593,24 @@ g_type_default_interface_ref (GType g_type)
 		 type_descriptive_name_I (g_type));
       return NULL;
     }
-  
-  type_data_ref_Wm (node);
 
-  type_iface_ensure_dflt_vtable_Wm (node);
+  if (!node->data || !node->data->iface.dflt_vtable)
+    {
+      G_WRITE_UNLOCK (&type_rw_lock);
+      g_static_rec_mutex_lock (&class_init_rec_mutex); /* required locking order: 1) class_init_rec_mutex, 2) type_rw_lock */
+      G_WRITE_LOCK (&type_rw_lock);
+      node = lookup_type_node_I (g_type);
+      type_data_ref_Wm (node);
+      type_iface_ensure_dflt_vtable_Wm (node);
+      g_static_rec_mutex_unlock (&class_init_rec_mutex);
+    }
+  else
+    type_data_ref_Wm (node); /* ref_count >= 1 already */
 
+  dflt_vtable = node->data->iface.dflt_vtable;
   G_WRITE_UNLOCK (&type_rw_lock);
-  
-  return node->data->iface.dflt_vtable;
+
+  return dflt_vtable;
 }
 
 gpointer
@@ -2614,7 +2643,7 @@ g_type_default_interface_unref (gpointer g_iface)
   if (node && NODE_IS_IFACE (node) &&
       node->data->iface.dflt_vtable == g_iface &&
       node->data->common.ref_count > 0)
-    type_data_unref_Wm (node, FALSE);
+    type_data_unref_WmREC (node, FALSE);
   else
     g_warning ("cannot unreference invalid interface default vtable for '%s'",
 	       type_descriptive_name_I (vtable->g_type));
@@ -3336,7 +3365,7 @@ g_type_value_table_peek (GType type)
     return vtable;
   
   if (!node)
-    g_warning (G_STRLOC ": type id `%lu' is invalid", type);
+    g_warning (G_STRLOC ": type id `%zu' is invalid", type);
   if (!has_refed_data)
     g_warning ("can't peek value table for type `%s' which is not currently referenced",
 	       type_descriptive_name_I (type));
@@ -3371,7 +3400,7 @@ g_type_init_with_debug_flags (GTypeDebugFlags debug_flags)
   const gchar *env_string;
   GTypeInfo info;
   TypeNode *node;
-  GType type;
+  volatile GType votype;
   
   G_LOCK (type_init_lock);
   
@@ -3415,16 +3444,16 @@ g_type_init_with_debug_flags (GTypeDebugFlags debug_flags)
   /* void type G_TYPE_NONE
    */
   node = type_node_fundamental_new_W (G_TYPE_NONE, g_intern_static_string ("void"), 0);
-  type = NODE_TYPE (node);
-  g_assert (type == G_TYPE_NONE);
+  votype = NODE_TYPE (node);
+  g_assert (votype == G_TYPE_NONE);
   
   /* interface fundamental type G_TYPE_INTERFACE (!classed)
    */
   memset (&info, 0, sizeof (info));
   node = type_node_fundamental_new_W (G_TYPE_INTERFACE, g_intern_static_string ("GInterface"), G_TYPE_FLAG_DERIVABLE);
-  type = NODE_TYPE (node);
+  votype = NODE_TYPE (node);
   type_data_make_W (node, &info, NULL);
-  g_assert (type == G_TYPE_INTERFACE);
+  g_assert (votype == G_TYPE_INTERFACE);
   
   G_WRITE_UNLOCK (&type_rw_lock);
   
@@ -3432,7 +3461,7 @@ g_type_init_with_debug_flags (GTypeDebugFlags debug_flags)
 
   /* G_TYPE_TYPE_PLUGIN
    */
-  g_type_plugin_get_type ();
+  votype = g_type_plugin_get_type ();
   
   /* G_TYPE_* value types
    */
