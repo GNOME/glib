@@ -1,3 +1,9 @@
+2008-02-06  Alexander Larsson  <alexl@redhat.com>
+
+	* glocalfile.c (g_local_file_trash):
+	Don't succeed with trash if newly created
+	trash dir has the wrong owner. (#514696)
+
 2008-02-05  Alexander Larsson  <alexl@redhat.com>
 
 	* glocalfile.c (g_local_file_move):

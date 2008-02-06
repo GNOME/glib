@@ -1546,25 +1546,45 @@ g_local_file_trash (GFile         *file,
 
       if (trashdir == NULL)
 	{
+	  gboolean tried_create;
+	  
 	  /* No global trash dir, or it failed the tests, fall back to $topdir/.Trash-$uid */
 	  dirname = g_strdup_printf (".Trash-%s", uid_str);
 	  trashdir = g_build_filename (topdir, dirname, NULL);
 	  g_free (dirname);
-	  
+
+	  tried_create = FALSE;
+
+	retry:
 	  if (g_lstat (trashdir, &trash_stat) == 0)
 	    {
 	      if (!S_ISDIR (trash_stat.st_mode) ||
 		  trash_stat.st_uid != uid)
 		{
+		  /* Remove the failed directory */
+		  if (tried_create)
+		    g_remove (trashdir);
+		  
 		  /* Not a directory or not owned by user, ignore */
 		  g_free (trashdir);
 		  trashdir = NULL;
 		}
 	    }
-	  else if (g_mkdir (trashdir, 0700) == -1)
+	  else
 	    {
-	      g_free (trashdir);
-	      trashdir = NULL;
+	      if (!tried_create &&
+		  g_mkdir (trashdir, 0700) != -1)
+		{
+		  /* Ensure that the created dir has the right uid etc.
+		     This might fail on e.g. a FAT dir */
+		  tried_create = TRUE;
+		  goto retry;
+		}
+	      else
+		{
+		  g_free (trashdir);
+		  trashdir = NULL;
+		}
 	    }
 	}
 #endif
