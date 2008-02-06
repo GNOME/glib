@@ -1,3 +1,10 @@
+2008-02-06  Benjamin Otte  <otte@gnome.org>
+
+	* gparamspecs.c: (param_gtype_set_default), (param_gtype_validate):
+	make GParamGType require the set type during construction instead of
+	using G_TYPE_NONE, which causes issues when setting.
+	Bug 513073 - g_param_spec_gtype breaks with G_PARAM_CONSTRUCT
+
 2008-02-05 18:52:07  Tim Janik  <timj@imendio.com>
 
 	* gtype.c: added recursive mutex to protect class initialization,

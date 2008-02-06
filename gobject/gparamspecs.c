@@ -1042,7 +1042,9 @@ static void
 param_gtype_set_default (GParamSpec *pspec,
 			 GValue     *value)
 {
-  value->data[0].v_long = G_TYPE_NONE;
+  GParamSpecGType *tspec = G_PARAM_SPEC_GTYPE (pspec);
+
+  value->data[0].v_long = tspec->is_a_type;
 }
 
 static gboolean
@@ -1055,7 +1057,7 @@ param_gtype_validate (GParamSpec *pspec,
   
   if (tspec->is_a_type != G_TYPE_NONE && !g_type_is_a (gtype, tspec->is_a_type))
     {
-      value->data[0].v_long = G_TYPE_NONE;
+      value->data[0].v_long = tspec->is_a_type;
       changed++;
     }
   
