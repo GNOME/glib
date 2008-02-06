@@ -195,10 +195,12 @@ g_unix_input_stream_read (GInputStream  *stream,
       
       if (poll_ret == -1)
 	{
+          int errsv = errno;
+
 	  g_set_error (error, G_IO_ERROR,
-		       g_io_error_from_errno (errno),
+		       g_io_error_from_errno (errsv),
 		       _("Error reading from unix: %s"),
-		       g_strerror (errno));
+		       g_strerror (errsv));
 	  return -1;
 	}
     }
@@ -210,13 +212,15 @@ g_unix_input_stream_read (GInputStream  *stream,
       res = read (unix_stream->priv->fd, buffer, count);
       if (res == -1)
 	{
-	  if (errno == EINTR)
+          int errsv = errno;
+
+	  if (errsv == EINTR)
 	    continue;
 	  
 	  g_set_error (error, G_IO_ERROR,
-		       g_io_error_from_errno (errno),
+		       g_io_error_from_errno (errsv),
 		       _("Error reading from unix: %s"),
-		       g_strerror (errno));
+		       g_strerror (errsv));
 	}
       
       break;
@@ -243,10 +247,14 @@ g_unix_input_stream_close (GInputStream  *stream,
       /* This might block during the close. Doesn't seem to be a way to avoid it though. */
       res = close (unix_stream->priv->fd);
       if (res == -1)
-	g_set_error (error, G_IO_ERROR,
-                     g_io_error_from_errno (errno),
-                     _("Error closing unix: %s"),
-                     g_strerror (errno));
+        {
+          int errsv = errno;
+
+          g_set_error (error, G_IO_ERROR,
+                       g_io_error_from_errno (errsv),
+                       _("Error closing unix: %s"),
+                       g_strerror (errsv));
+        }
       break;
     }
   
@@ -282,13 +290,15 @@ read_async_cb (ReadAsyncData *data,
       count_read = read (data->stream->priv->fd, data->buffer, data->count);
       if (count_read == -1)
 	{
-	  if (errno == EINTR)
+          int errsv = errno;
+
+	  if (errsv == EINTR)
 	    continue;
 	  
 	  g_set_error (&error, G_IO_ERROR,
-		       g_io_error_from_errno (errno),
+		       g_io_error_from_errno (errsv),
 		       _("Error reading from unix: %s"),
-		       g_strerror (errno));
+		       g_strerror (errsv));
 	}
       break;
     }
@@ -419,10 +429,14 @@ close_async_cb (CloseAsyncData *data)
     {
       res = close (unix_stream->priv->fd);
       if (res == -1)
-	g_set_error (&error, G_IO_ERROR,
-                     g_io_error_from_errno (errno),
-                     _("Error closing unix: %s"),
-                     g_strerror (errno));
+        {
+          int errsv = errno;
+
+          g_set_error (&error, G_IO_ERROR,
+                       g_io_error_from_errno (errsv),
+                       _("Error closing unix: %s"),
+                       g_strerror (errsv));
+        }
       break;
     }
   

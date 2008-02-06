@@ -1,3 +1,28 @@
+2008-02-06  Christian Persch  <chpe@gnome.org>
+
+	* gio/gdesktopappinfo.c: (ensure_dir):
+	* gio/glocalfile.c: (g_local_file_query_filesystem_info),
+	(g_local_file_read), (g_local_file_delete), (g_local_file_trash),
+	(g_local_file_move):
+	* gio/glocalfileinfo.c: (set_xattr), (_g_local_file_info_get),
+	(_g_local_file_info_get_from_fd), (set_unix_mode),
+	(set_unix_uid_gid), (set_symlink), (set_mtime_atime):
+	* gio/glocalfileinputstream.c: (g_local_file_input_stream_read),
+	(g_local_file_input_stream_skip),
+	(g_local_file_input_stream_close),
+	(g_local_file_input_stream_seek):
+	* gio/glocalfileoutputstream.c: (g_local_file_output_stream_write),
+	(g_local_file_output_stream_close),
+	(g_local_file_output_stream_seek),
+	(g_local_file_output_stream_truncate), (copy_file_data),
+	(handle_overwrite_open):
+	* gio/gunixinputstream.c: (g_unix_input_stream_read),
+	(g_unix_input_stream_close), (read_async_cb), (close_async_cb):
+	* gio/gunixoutputstream.c: (g_unix_output_stream_write),
+	(g_unix_output_stream_close), (write_async_cb), (close_async_cb): Save
+	errno before calling other funcs that potentially alter it. Bug
+	#514766.
+
 2008-02-05 18:42:42  Tim Janik  <timj@imendio.com>
 
 	* configure.in: generate gobject/tests/Makefile.

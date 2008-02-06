@@ -759,7 +759,7 @@ set_xattr (char                       *filename,
       g_set_error (error, G_IO_ERROR,
 		   g_io_error_from_errno (errsv),
 		   _("Error setting extended attribute '%s': %s"),
-		   escaped_attribute, g_strerror (errno));
+		   escaped_attribute, g_strerror (errsv));
       return FALSE;
     }
   
@@ -1388,11 +1388,13 @@ _g_local_file_info_get (const char             *basename,
   res = g_lstat (path, &statbuf);
   if (res == -1)
     {
+      int errsv = errno;
+
       g_object_unref (info);
       g_set_error (error, G_IO_ERROR,
-		   g_io_error_from_errno (errno),
+		   g_io_error_from_errno (errsv),
 		   _("Error stating file '%s': %s"),
-		   path, g_strerror (errno));
+		   path, g_strerror (errsv));
       return NULL;
     }
   
@@ -1619,10 +1621,12 @@ _g_local_file_info_get_from_fd (int      fd,
   
   if (fstat (fd, &stat_buf) == -1)
     {
+      int errsv = errno;
+
       g_set_error (error, G_IO_ERROR,
-		   g_io_error_from_errno (errno),
+		   g_io_error_from_errno (errsv),
 		   _("Error stating file descriptor: %s"),
-		   g_strerror (errno));
+		   g_strerror (errsv));
       return NULL;
     }
 
@@ -1723,10 +1727,12 @@ set_unix_mode (char                       *filename,
   
   if (g_chmod (filename, val) == -1)
     {
+      int errsv = errno;
+
       g_set_error (error, G_IO_ERROR,
-		   g_io_error_from_errno (errno),
+		   g_io_error_from_errno (errsv),
 		   _("Error setting permissions: %s"),
-		   g_strerror (errno));
+		   g_strerror (errsv));
       return FALSE;
     }
   return TRUE;
@@ -1772,10 +1778,12 @@ set_unix_uid_gid (char                       *filename,
   
   if (res == -1)
     {
+      int errsv = errno;
+
       g_set_error (error, G_IO_ERROR,
-		   g_io_error_from_errno (errno),
+		   g_io_error_from_errno (errsv),
 		   _("Error setting owner: %s"),
-		   g_strerror (errno));
+		   g_strerror (errsv));
 	  return FALSE;
     }
   return TRUE;
@@ -1803,10 +1811,12 @@ set_symlink (char                       *filename,
   
   if (g_lstat (filename, &statbuf))
     {
+      int errsv = errno;
+
       g_set_error (error, G_IO_ERROR,
-		   g_io_error_from_errno (errno),
+		   g_io_error_from_errno (errsv),
 		   _("Error setting symlink: %s"),
-		   g_strerror (errno));
+		   g_strerror (errsv));
       return FALSE;
     }
   
@@ -1820,19 +1830,23 @@ set_symlink (char                       *filename,
   
   if (g_unlink (filename))
     {
+      int errsv = errno;
+
       g_set_error (error, G_IO_ERROR,
-		   g_io_error_from_errno (errno),
+		   g_io_error_from_errno (errsv),
 		   _("Error setting symlink: %s"),
-		   g_strerror (errno));
+		   g_strerror (errsv));
       return FALSE;
     }
   
   if (symlink (filename, val) != 0)
     {
+      int errsv = errno;
+
       g_set_error (error, G_IO_ERROR,
-		   g_io_error_from_errno (errno),
+		   g_io_error_from_errno (errsv),
 		   _("Error setting symlink: %s"),
-		   g_strerror (errno));
+		   g_strerror (errsv));
       return FALSE;
     }
   
@@ -1932,10 +1946,12 @@ set_mtime_atime (char                       *filename,
   res = utimes (filename, times);
   if (res == -1)
     {
+      int errsv = errno;
+
       g_set_error (error, G_IO_ERROR,
-		   g_io_error_from_errno (errno),
+		   g_io_error_from_errno (errsv),
 		   _("Error setting owner: %s"),
-		   g_strerror (errno));
+		   g_strerror (errsv));
 	  return FALSE;
     }
   return TRUE;

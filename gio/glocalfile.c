@@ -840,10 +840,12 @@ g_local_file_query_filesystem_info (GFile         *file,
 
   if (statfs_result == -1)
     {
+      int errsv = errno;
+
       g_set_error (error, G_IO_ERROR,
-		   g_io_error_from_errno (errno),
+		   g_io_error_from_errno (errsv),
 		   _("Error getting filesystem info: %s"),
-		   g_strerror (errno));
+		   g_strerror (errsv));
       return NULL;
     }
 
@@ -1110,10 +1112,12 @@ g_local_file_read (GFile         *file,
   fd = g_open (local->filename, O_RDONLY, 0);
   if (fd == -1)
     {
+      int errsv = errno;
+
       g_set_error (error, G_IO_ERROR,
-		   g_io_error_from_errno (errno),
+		   g_io_error_from_errno (errsv),
 		   _("Error opening file: %s"),
-		   g_strerror (errno));
+		   g_strerror (errsv));
       return NULL;
     }
 
@@ -1172,10 +1176,12 @@ g_local_file_delete (GFile         *file,
   
   if (g_remove (local->filename) == -1)
     {
+      int errsv = errno;
+
       g_set_error (error, G_IO_ERROR,
-		   g_io_error_from_errno (errno),
+		   g_io_error_from_errno (errsv),
 		   _("Error removing file: %s"),
-		   g_strerror (errno));
+		   g_strerror (errsv));
       return FALSE;
     }
   
@@ -1464,10 +1470,12 @@ g_local_file_trash (GFile         *file,
   
   if (g_lstat (local->filename, &file_stat) != 0)
     {
+      int errsv = errno;
+
       g_set_error (error, G_IO_ERROR,
-		   g_io_error_from_errno (errno),
+		   g_io_error_from_errno (errsv),
 		   _("Error trashing file: %s"),
-		   g_strerror (errno));
+		   g_strerror (errsv));
       return FALSE;
     }
     
@@ -1484,14 +1492,13 @@ g_local_file_trash (GFile         *file,
       if (g_mkdir_with_parents (trashdir, 0700) < 0)
 	{
           char *display_name;
-          int err;
+          int errsv = errno;
 
-          err = errno;
           display_name = g_filename_display_name (trashdir);
           g_set_error (error, G_IO_ERROR,
-                       g_io_error_from_errno (err),
+                       g_io_error_from_errno (errsv),
                        _("Unable to create trash dir %s: %s"),
-                       display_name, g_strerror (err));
+                       display_name, g_strerror (errsv));
           g_free (display_name);
           g_free (trashdir);
           return FALSE;
@@ -1639,15 +1646,17 @@ g_local_file_trash (GFile         *file,
 
   if (fd == -1)
     {
+      int errsv = errno;
+
       g_free (filesdir);
       g_free (topdir);
       g_free (trashname);
       g_free (infofile);
       
       g_set_error (error, G_IO_ERROR,
-		   g_io_error_from_errno (errno),
+		   g_io_error_from_errno (errsv),
 		   _("Unable to create trashing info file: %s"),
-		   g_strerror (errno));
+		   g_strerror (errsv));
       return FALSE;
     }
 
@@ -1662,15 +1671,17 @@ g_local_file_trash (GFile         *file,
 
   if (g_rename (local->filename, trashfile) == -1)
     {
+      int errsv = errno;
+
       g_free (topdir);
       g_free (trashname);
       g_free (infofile);
       g_free (trashfile);
       
       g_set_error (error, G_IO_ERROR,
-		   g_io_error_from_errno (errno),
+		   g_io_error_from_errno (errsv),
 		   _("Unable to trash file: %s"),
-		   g_strerror (errno));
+		   g_strerror (errsv));
       return FALSE;
     }
 
@@ -1822,10 +1833,12 @@ g_local_file_move (GFile                  *source,
   res = g_lstat (local_source->filename, &statbuf);
   if (res == -1)
     {
+      int errsv = errno;
+
       g_set_error (error, G_IO_ERROR,
-		   g_io_error_from_errno (errno),
+		   g_io_error_from_errno (errsv),
 		   _("Error moving file: %s"),
-		   g_strerror (errno));
+		   g_strerror (errsv));
       return FALSE;
     }
   else
@@ -1884,10 +1897,12 @@ g_local_file_move (GFile                  *source,
       res = unlink (local_destination->filename);
       if (res == -1)
 	{
+          int errsv = errno;
+
 	  g_set_error (error, G_IO_ERROR,
-		       g_io_error_from_errno (errno),
+		       g_io_error_from_errno (errsv),
 		       _("Error removing target file: %s"),
-		       g_strerror (errno));
+		       g_strerror (errsv));
 	  return FALSE;
 	}
     }

@@ -158,13 +158,15 @@ g_local_file_output_stream_write (GOutputStream  *stream,
       res = write (file->priv->fd, buffer, count);
       if (res == -1)
 	{
-	  if (errno == EINTR)
+          int errsv = errno;
+
+	  if (errsv == EINTR)
 	    continue;
 	  
 	  g_set_error (error, G_IO_ERROR,
-		       g_io_error_from_errno (errno),
+		       g_io_error_from_errno (errsv),
 		       _("Error writing to file: %s"),
-		       g_strerror (errno));
+		       g_strerror (errsv));
 	}
       
       break;
@@ -200,10 +202,12 @@ g_local_file_output_stream_close (GOutputStream  *stream,
 	  if (unlink (file->priv->backup_filename) != 0 &&
 	      errno != ENOENT)
 	    {
+              int errsv = errno;
+
 	      g_set_error (error, G_IO_ERROR,
 			   G_IO_ERROR_CANT_CREATE_BACKUP,
 			   _("Error removing old backup link: %s"),
-			   g_strerror (errno));
+			   g_strerror (errsv));
 	      goto err_out;
 	    }
 
@@ -212,10 +216,12 @@ g_local_file_output_stream_close (GOutputStream  *stream,
 	      /*  link failed or is not supported, try rename  */
 	      if (rename (file->priv->original_filename, file->priv->backup_filename) != 0)
 		{
+                  int errsv = errno;
+
 	    	  g_set_error (error, G_IO_ERROR,
 		    	       G_IO_ERROR_CANT_CREATE_BACKUP,
 			       _("Error creating backup copy: %s"),
-			       g_strerror (errno));
+			       g_strerror (errsv));
 	          goto err_out;
 		}
 	    }
@@ -223,10 +229,12 @@ g_local_file_output_stream_close (GOutputStream  *stream,
 	    /* If link not supported, just rename... */
 	  if (rename (file->priv->original_filename, file->priv->backup_filename) != 0)
 	    {
+              int errsv = errno;
+
 	      g_set_error (error, G_IO_ERROR,
 			   G_IO_ERROR_CANT_CREATE_BACKUP,
 			   _("Error creating backup copy: %s"),
-			   g_strerror (errno));
+			   g_strerror (errsv));
 	      goto err_out;
 	    }
 #endif
@@ -239,10 +247,12 @@ g_local_file_output_stream_close (GOutputStream  *stream,
       /* tmp -> original */
       if (rename (file->priv->tmp_filename, file->priv->original_filename) != 0)
 	{
+          int errsv = errno;
+
 	  g_set_error (error, G_IO_ERROR,
 		       g_io_error_from_errno (errno),
 		       _("Error renaming temporary file: %s"),
-		       g_strerror (errno));
+		       g_strerror (errsv));
 	  goto err_out;
 	}
     }
@@ -258,10 +268,12 @@ g_local_file_output_stream_close (GOutputStream  *stream,
       res = close (file->priv->fd);
       if (res == -1)
 	{
+          int errsv = errno;
+
 	  g_set_error (error, G_IO_ERROR,
-		       g_io_error_from_errno (errno),
+		       g_io_error_from_errno (errsv),
 		       _("Error closing file: %s"),
-		       g_strerror (errno));
+		       g_strerror (errsv));
 	}
       break;
     }
@@ -349,10 +361,12 @@ g_local_file_output_stream_seek (GFileOutputStream  *stream,
 
   if (pos == (off_t)-1)
     {
+      int errsv = errno;
+
       g_set_error (error, G_IO_ERROR,
-		   g_io_error_from_errno (errno),
+		   g_io_error_from_errno (errsv),
 		   _("Error seeking in file: %s"),
-		   g_strerror (errno));
+		   g_strerror (errsv));
       return FALSE;
     }
   
@@ -386,7 +400,9 @@ g_local_file_output_stream_truncate (GFileOutputStream  *stream,
   
   if (res == -1)
     {
-      if (errno == EINTR)
+      int errsv = errno;
+
+      if (errsv == EINTR)
 	{
 	  if (g_cancellable_set_error_if_cancelled (cancellable, error))
 	    return FALSE;
@@ -394,9 +410,9 @@ g_local_file_output_stream_truncate (GFileOutputStream  *stream,
 	}
 
       g_set_error (error, G_IO_ERROR,
-		   g_io_error_from_errno (errno),
+		   g_io_error_from_errno (errsv),
 		   _("Error truncating file: %s"),
-		   g_strerror (errno));
+		   g_strerror (errsv));
       return FALSE;
     }
   
@@ -532,13 +548,15 @@ copy_file_data (gint     sfd,
       bytes_read = read (sfd, buffer, BUFSIZE);
       if (bytes_read == -1)
 	{
-	  if (errno == EINTR)
+          int errsv = errno;
+
+	  if (errsv == EINTR)
 	    continue;
 	  
 	  g_set_error (error, G_IO_ERROR,
-		       g_io_error_from_errno (errno),
+		       g_io_error_from_errno (errsv),
 		       _("Error reading from file: %s"),
-		       g_strerror (errno));
+		       g_strerror (errsv));
 	  ret = FALSE;
 	  break;
 	}
@@ -551,13 +569,15 @@ copy_file_data (gint     sfd,
 	  bytes_written = write (dfd, write_buffer, bytes_to_write);
 	  if (bytes_written == -1)
 	    {
-	      if (errno == EINTR)
+              int errsv = errno;
+
+	      if (errsv == EINTR)
 		continue;
 	      
 	      g_set_error (error, G_IO_ERROR,
-			   g_io_error_from_errno (errno),
+			   g_io_error_from_errno (errsv),
 			   _("Error writing to file: %s"),
-			   g_strerror (errno));
+			   g_strerror (errsv));
 	      ret = FALSE;
 	      break;
 	    }
@@ -615,19 +635,23 @@ handle_overwrite_open (const char    *filename,
     
   if (fd == -1)
     {
+      int errsv = errno;
+
       g_set_error (error, G_IO_ERROR,
-		   g_io_error_from_errno (errno),
+		   g_io_error_from_errno (errsv),
 		   _("Error opening file '%s': %s"),
-		   filename, g_strerror (errno));
+		   filename, g_strerror (errsv));
       return -1;
     }
   
   if (fstat (fd, &original_stat) != 0) 
     {
+      int errsv = errno;
+
       g_set_error (error, G_IO_ERROR,
-		   g_io_error_from_errno (errno),
+		   g_io_error_from_errno (errsv),
 		   _("Error stating file '%s': %s"),
-		   filename, g_strerror (errno));
+		   filename, g_strerror (errsv));
       goto err_out;
     }
   
@@ -809,10 +833,12 @@ handle_overwrite_open (const char    *filename,
       /* Seek back to the start of the file after the backup copy */
       if (lseek (fd, 0, SEEK_SET) == -1)
 	{
+          int errsv = errno;
+
 	  g_set_error (error, G_IO_ERROR,
-		       g_io_error_from_errno (errno),
+		       g_io_error_from_errno (errsv),
 		       _("Error seeking in file: %s"),
-		       g_strerror (errno));
+		       g_strerror (errsv));
 	  goto err_out;
 	}
     }
@@ -824,10 +850,12 @@ handle_overwrite_open (const char    *filename,
   if (ftruncate (fd, 0) == -1)
 #endif
     {
+      int errsv = errno;
+
       g_set_error (error, G_IO_ERROR,
-		   g_io_error_from_errno (errno),
+		   g_io_error_from_errno (errsv),
 		   _("Error truncating file: %s"),
-		   g_strerror (errno));
+		   g_strerror (errsv));
       goto err_out;
     }
     

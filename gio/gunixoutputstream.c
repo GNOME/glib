@@ -183,10 +183,12 @@ g_unix_output_stream_write (GOutputStream  *stream,
       
       if (poll_ret == -1)
 	{
+          int errsv = errno;
+
 	  g_set_error (error, G_IO_ERROR,
-		       g_io_error_from_errno (errno),
+		       g_io_error_from_errno (errsv),
 		       _("Error writing to unix: %s"),
-		       g_strerror (errno));
+		       g_strerror (errsv));
 	  return -1;
 	}
     }
@@ -199,13 +201,15 @@ g_unix_output_stream_write (GOutputStream  *stream,
       res = write (unix_stream->priv->fd, buffer, count);
       if (res == -1)
 	{
-	  if (errno == EINTR)
+          int errsv = errno;
+
+	  if (errsv == EINTR)
 	    continue;
 	  
 	  g_set_error (error, G_IO_ERROR,
-		       g_io_error_from_errno (errno),
+		       g_io_error_from_errno (errsv),
 		       _("Error writing to unix: %s"),
-		       g_strerror (errno));
+		       g_strerror (errsv));
 	}
       
       break;
@@ -233,10 +237,12 @@ g_unix_output_stream_close (GOutputStream  *stream,
       res = close (unix_stream->priv->fd);
       if (res == -1)
 	{
+          int errsv = errno;
+
 	  g_set_error (error, G_IO_ERROR,
-		       g_io_error_from_errno (errno),
+		       g_io_error_from_errno (errsv),
 		       _("Error closing unix: %s"),
-		       g_strerror (errno));
+		       g_strerror (errsv));
 	}
       break;
     }
@@ -273,13 +279,15 @@ write_async_cb (WriteAsyncData *data,
       count_written = write (data->stream->priv->fd, data->buffer, data->count);
       if (count_written == -1)
 	{
-	  if (errno == EINTR)
+          int errsv = errno;
+
+	  if (errsv == EINTR)
 	    continue;
 	  
 	  g_set_error (&error, G_IO_ERROR,
-		       g_io_error_from_errno (errno),
+		       g_io_error_from_errno (errsv),
 		       _("Error reading from unix: %s"),
-		       g_strerror (errno));
+		       g_strerror (errsv));
 	}
       break;
     }
@@ -380,10 +388,12 @@ close_async_cb (CloseAsyncData *data)
       res = close (unix_stream->priv->fd);
       if (res == -1)
 	{
+          int errsv = errno;
+
 	  g_set_error (&error, G_IO_ERROR,
-		       g_io_error_from_errno (errno),
+		       g_io_error_from_errno (errsv),
 		       _("Error closing unix: %s"),
-		       g_strerror (errno));
+		       g_strerror (errsv));
 	}
       break;
     }

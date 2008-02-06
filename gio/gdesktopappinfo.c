@@ -1096,7 +1096,7 @@ ensure_dir (DirType   type,
             GError  **error)
 {
   char *path, *display_name;
-  int err;
+  int errsv;
 
   if (type == APP_DIR)
     path = g_build_filename (g_get_user_data_dir (), "applications", NULL);
@@ -1107,16 +1107,16 @@ ensure_dir (DirType   type,
   if (g_mkdir_with_parents (path, 0700) == 0)
     return path;
 
-  err = errno;
+  errsv = errno;
   display_name = g_filename_display_name (path);
   if (type == APP_DIR)
-    g_set_error (error, G_IO_ERROR, g_io_error_from_errno (err),
+    g_set_error (error, G_IO_ERROR, g_io_error_from_errno (errsv),
                  _("Can't create user application configuration folder %s: %s"),
-                 display_name, g_strerror (err));
+                 display_name, g_strerror (errsv));
   else
-    g_set_error (error, G_IO_ERROR, g_io_error_from_errno (err),
+    g_set_error (error, G_IO_ERROR, g_io_error_from_errno (errsv),
                  _("Can't create user MIME configuration folder %s: %s"),
-                 display_name, g_strerror (err));
+                 display_name, g_strerror (errsv));
 
   g_free (display_name);
   g_free (path);

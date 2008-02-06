@@ -150,13 +150,15 @@ g_local_file_input_stream_read (GInputStream  *stream,
       res = read (file->priv->fd, buffer, count);
       if (res == -1)
 	{
-	  if (errno == EINTR)
+          int errsv = errno;
+
+	  if (errsv == EINTR)
 	    continue;
 	  
 	  g_set_error (error, G_IO_ERROR,
-		       g_io_error_from_errno (errno),
+		       g_io_error_from_errno (errsv),
 		       _("Error reading from file: %s"),
-		       g_strerror (errno));
+		       g_strerror (errsv));
 	}
       
       break;
@@ -182,20 +184,24 @@ g_local_file_input_stream_skip (GInputStream  *stream,
   start = lseek (file->priv->fd, 0, SEEK_CUR);
   if (start == -1)
     {
+      int errsv = errno;
+
       g_set_error (error, G_IO_ERROR,
-		   g_io_error_from_errno (errno),
+		   g_io_error_from_errno (errsv),
 		   _("Error seeking in file: %s"),
-		   g_strerror (errno));
+		   g_strerror (errsv));
       return -1;
     }
   
   res = lseek (file->priv->fd, count, SEEK_CUR);
   if (res == -1)
     {
+      int errsv = errno;
+
       g_set_error (error, G_IO_ERROR,
-		   g_io_error_from_errno (errno),
+		   g_io_error_from_errno (errsv),
 		   _("Error seeking in file: %s"),
-		   g_strerror (errno));
+		   g_strerror (errsv));
       return -1;
     }
 
@@ -219,10 +225,14 @@ g_local_file_input_stream_close (GInputStream  *stream,
     {
       res = close (file->priv->fd);
       if (res == -1)
-        g_set_error (error, G_IO_ERROR,
-                     g_io_error_from_errno (errno),
-                     _("Error closing file: %s"),
-                     g_strerror (errno));
+        {
+          int errsv = errno;
+
+          g_set_error (error, G_IO_ERROR,
+                       g_io_error_from_errno (errsv),
+                       _("Error closing file: %s"),
+                       g_strerror (errsv));
+        }
       break;
     }
 
@@ -295,10 +305,12 @@ g_local_file_input_stream_seek (GFileInputStream  *stream,
 
   if (pos == (off_t)-1)
     {
+      int errsv = errno;
+
       g_set_error (error, G_IO_ERROR,
-		   g_io_error_from_errno (errno),
+		   g_io_error_from_errno (errsv),
 		   _("Error seeking in file: %s"),
-		   g_strerror (errno));
+		   g_strerror (errsv));
       return FALSE;
     }
   
