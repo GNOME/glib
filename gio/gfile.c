@@ -4578,7 +4578,7 @@ g_file_mount_enclosing_volume_finish (GFile         *location,
  * @error: a #GError, or %NULL
  *
  * Returns the #GAppInfo that is registered as the default
- * application to handle the file specified bu @file.
+ * application to handle the file specified by @file.
  *
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation

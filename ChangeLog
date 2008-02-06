@@ -1,3 +1,8 @@
+2008-02-06  Murray Cumming  <murrayc@murrayc.com>
+
+	* glib/gconvert.c:
+	* glib/pcre/pcre_internal.h: Fixed some minor typos in documentation.
+
 2008-02-06  Christian Persch  <chpe@gnome.org>
 
 	* gio/gdesktopappinfo.c: (ensure_dir):

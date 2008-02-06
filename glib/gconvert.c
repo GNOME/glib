@@ -783,7 +783,7 @@ g_convert (const gchar *str,
  * including fallback sequences for characters not representable
  * in the output. Note that it is not guaranteed that the specification
  * for the fallback sequences in @fallback will be honored. Some
- * systems may do a approximate conversion from @from_codeset
+ * systems may do an approximate conversion from @from_codeset
  * to @to_codeset in their iconv() functions, 
  * in which case GLib will simply return that approximate conversion.
  *

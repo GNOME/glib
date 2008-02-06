@@ -49,7 +49,7 @@
  *
  * #GUnixInputStream implements #GInputStream for reading from a
  * unix file descriptor, including asynchronous operations. The file
- * descriptor much be selectable, so it doesn't work with opened files.
+ * descriptor must be selectable, so it doesn't work with opened files.
  **/
 
 G_DEFINE_TYPE (GUnixInputStream, g_unix_input_stream, G_TYPE_INPUT_STREAM);

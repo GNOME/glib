@@ -535,7 +535,7 @@ req_byte match. */
 #define REQ_BYTE_MAX 1000
 
 /* Flags added to firstbyte or reqbyte; a "non-literal" item is either a
-variable-length repeat, or a anything other than literal characters. */
+variable-length repeat, or anything other than literal characters. */
 
 #define REQ_CASELESS 0x0100    /* indicates caselessness */
 #define REQ_VARY     0x0200    /* reqbyte followed non-literal item */

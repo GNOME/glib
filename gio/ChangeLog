@@ -1,3 +1,11 @@
+2008-02-06  Murray Cumming,,,  <murrayc@murrayc.com>
+
+	reviewed by: <delete if not using a buddy>
+
+	* gfile.c:
+	* gunixinputstream.c:
+	* gunixoutputstream.c:
+
 2008-02-06  Tomas Bzatek  <tbzatek@redhat.com>
 
 	* tests/Makefile.am:

@@ -47,9 +47,9 @@
  * @include: gio/gunixoutputstream.h
  * @see_also: #GOutputStream
  *
- * #GUnixOutputStream implements #GOutputStream for writing to a a
+ * #GUnixOutputStream implements #GOutputStream for writing to a
  * unix file descriptor, including asynchronous operations. The file
- * descriptor much be selectable, so it doesn't work with opened files.
+ * descriptor must be selectable, so it doesn't work with opened files.
  **/
 
 G_DEFINE_TYPE (GUnixOutputStream, g_unix_output_stream, G_TYPE_OUTPUT_STREAM);
