@@ -1,3 +1,8 @@
+2008-02-06  Michael Natterer  <mitch@imendio.com>
+
+	* gfileinfo.c (g_file_info_get_icon): replace
+	"icon && G_IS_ICON (icon)" by simply "G_IS_ICON (icon)".
+
 2008-02-06  Tomas Bzatek  <tbzatek@redhat.com>
 
 	* gfile.c (g_file_create):

@@ -1315,7 +1315,7 @@ g_file_info_get_icon (GFileInfo *info)
   
   value = g_file_info_find_value (info, attr);
   obj = _g_file_attribute_value_get_object (value);
-  if (obj != NULL && G_IS_ICON (obj))
+  if (G_IS_ICON (obj))
     return G_ICON (obj);
   return NULL;
 }
