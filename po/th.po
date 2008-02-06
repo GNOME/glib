@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.14.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-01-28 18:34-0500\n"
-"PO-Revision-Date: 2008-01-25 14:22+0700\n"
+"POT-Creation-Date: 2008-02-06 15:58+0700\n"
+"PO-Revision-Date: 2008-02-06 16:00+0700\n"
 "Last-Translator: Theppitak Karoonboonyanan <thep@linux.thai.net>\n"
 "Language-Team: Thai <thai-l10n@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -17,14 +17,14 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: glib/gbookmarkfile.c:705 glib/gbookmarkfile.c:782 glib/gbookmarkfile.c:861
-#: glib/gbookmarkfile.c:908
+#: glib/gbookmarkfile.c:705 glib/gbookmarkfile.c:782
+#: glib/gbookmarkfile.c:861 glib/gbookmarkfile.c:908
 #, c-format
 msgid "Unexpected attribute '%s' for element '%s'"
 msgstr "พบแอตทริบิวต์ '%s' ที่ไม่ต้องการ สำหรับอิลิเมนต์ '%s'"
 
-#: glib/gbookmarkfile.c:716 glib/gbookmarkfile.c:793 glib/gbookmarkfile.c:803
-#: glib/gbookmarkfile.c:919
+#: glib/gbookmarkfile.c:716 glib/gbookmarkfile.c:793
+#: glib/gbookmarkfile.c:803 glib/gbookmarkfile.c:919
 #, c-format
 msgid "Attribute '%s' of element '%s' not found"
 msgstr "ไม่พบแอตทริบิวต์ '%s' สำหรับอิลิเมนต์ '%s'"
@@ -112,8 +112,8 @@ msgstr "มีลำดับไบต์ที่ไม่ถูกต้อง
 msgid "Error during conversion: %s"
 msgstr "เกิดข้อผิดพลาดระหว่างแปลงรหัส: %s"
 
-#: glib/gconvert.c:669 glib/gutf8.c:946 glib/gutf8.c:1150 glib/gutf8.c:1291
-#: glib/gutf8.c:1395
+#: glib/gconvert.c:669 glib/gutf8.c:946 glib/gutf8.c:1150
+#: glib/gutf8.c:1291 glib/gutf8.c:1395
 #, c-format
 msgid "Partial character sequence at end of input"
 msgstr "มีลำดับไบต์ไม่เต็มอักขระอยู่ที่ท้ายข้อมูลเข้า"
@@ -274,7 +274,8 @@ msgstr "ไม่สามารถเปิดตัวแปลงรหัส
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "ไม่สามารถอ่านข้อมูลแบบดิบใน g_io_channel_read_line_string"
 
-#: glib/giochannel.c:1554 glib/giochannel.c:1811 glib/giochannel.c:1898
+#: glib/giochannel.c:1554 glib/giochannel.c:1811
+#: glib/giochannel.c:1898
 #, c-format
 msgid "Leftover unconverted data in read buffer"
 msgstr "มีข้อมูลตกค้างไม่ได้แปลงอยู่ในบัฟเฟอร์สำหรับอ่าน"
@@ -862,12 +863,14 @@ msgstr "ดำเนินงานโพรเซสลูกไม่สำเ
 msgid "Invalid program name: %s"
 msgstr "ชื่อโปรแกรมผิดรูปแบบ: %s"
 
-#: glib/gspawn-win32.c:438 glib/gspawn-win32.c:678 glib/gspawn-win32.c:1218
+#: glib/gspawn-win32.c:438 glib/gspawn-win32.c:678
+#: glib/gspawn-win32.c:1218
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr "สตริงผิดรูปแบบในเวกเตอร์ของอาร์กิวเมนต์ที่ตำแหน่ง %d: %s"
 
-#: glib/gspawn-win32.c:449 glib/gspawn-win32.c:692 glib/gspawn-win32.c:1251
+#: glib/gspawn-win32.c:449 glib/gspawn-win32.c:692
+#: glib/gspawn-win32.c:1251
 #, c-format
 msgid "Invalid string in environment: %s"
 msgstr "สตริงผิดรูปแบบในตัวแปรสภาพแวดล้อม: %s"
@@ -940,8 +943,8 @@ msgstr "อ่านข้อมูลจากไปป์จากโพรเ
 msgid "Character out of range for UTF-8"
 msgstr "อักขระอยู่นอกช่วงของ UTF-8"
 
-#: glib/gutf8.c:1118 glib/gutf8.c:1127 glib/gutf8.c:1259 glib/gutf8.c:1268
-#: glib/gutf8.c:1409 glib/gutf8.c:1505
+#: glib/gutf8.c:1118 glib/gutf8.c:1127 glib/gutf8.c:1259
+#: glib/gutf8.c:1268 glib/gutf8.c:1409 glib/gutf8.c:1505
 #, c-format
 msgid "Invalid sequence in conversion input"
 msgstr "มีลำดับข้อมูลที่ไม่ถูกต้องในข้อมูลที่ป้อนให้ตัวแปลงรหัส"
@@ -1116,8 +1119,9 @@ msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "ค่า '%s' ไม่สามารถตีความเป็นบูลีนได้"
 
 #: gio/gbufferedinputstream.c:483 gio/ginputstream.c:186
-#: gio/ginputstream.c:318 gio/ginputstream.c:559 gio/ginputstream.c:684
-#: gio/goutputstream.c:193 gio/goutputstream.c:647
+#: gio/ginputstream.c:318 gio/ginputstream.c:559
+#: gio/ginputstream.c:684 gio/goutputstream.c:193
+#: gio/goutputstream.c:647
 #, c-format
 msgid "Too large count value passed to %s"
 msgstr "มีการส่งค่า count ที่สูงเกินไปมาให้ %s"
@@ -1142,7 +1146,7 @@ msgstr "ชนิดข้อมูลไม่รู้จัก"
 msgid "%s filetype"
 msgstr "ชนิดแฟ้ม %s"
 
-#: gio/gcontenttype.c:571
+#: gio/gcontenttype.c:574
 #, c-format
 msgid "%s type"
 msgstr "ชนิด %s"
@@ -1152,44 +1156,39 @@ msgstr "ชนิด %s"
 msgid "Unexpected early end-of-stream"
 msgstr "พบจุดจบสตรีมก่อนกำหนด"
 
-#: gio/gdesktopappinfo.c:403 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:410 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr "ไม่มีชื่อ"
 
-#: gio/gdesktopappinfo.c:579
+#: gio/gdesktopappinfo.c:587
 #, c-format
 msgid "Desktop file didn't specify Exec field"
 msgstr "แฟ้มเดสก์ท็อปไม่ได้ระบุเขตข้อมูล Exec"
 
-#: gio/gdesktopappinfo.c:871
+#: gio/gdesktopappinfo.c:881
 #, c-format
 msgid "Unable to find terminal required for application"
 msgstr "หาเทอร์มินัลซึ่งต้องใช้ในการเปิดโปรแกรมไม่พบ"
 
-#: gio/gdesktopappinfo.c:1105
+#: gio/gdesktopappinfo.c:1113
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "ไม่สามารถสร้างโฟลเดอร์ %s สำหรับเก็บค่าตั้งโปรแกรมของผู้ใช้: %s"
 
-#: gio/gdesktopappinfo.c:1109
+#: gio/gdesktopappinfo.c:1117
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "ไม่สามารถสร้างโฟลเดอร์ %s สำหรับเก็บค่าตั้ง MIME ของผู้ใช้: %s"
 
-#: gio/gdesktopappinfo.c:1428
-#, c-format
-msgid "Custom definition for %s"
-msgstr "ข้อกำหนดกำหนดเองสำหรับ %s"
-
-#: gio/gdesktopappinfo.c:1452
+#: gio/gdesktopappinfo.c:1456
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "ไม่สามารถสร้างแฟ้มเดสก์ท็อป %s สำหรับผู้ใช้"
 
-#: gio/gdesktopappinfo.c:1477
+#: gio/gdesktopappinfo.c:1516
 #, c-format
-msgid "Can't load just created desktop file"
-msgstr "ไม่สามารถเรียกแฟ้มเดสก์ท็อปที่เพิ่งสร้าง"
+msgid "Custom definition for %s"
+msgstr "ข้อกำหนดกำหนดเองสำหรับ %s"
 
 #: gio/gdrive.c:369
 msgid "drive doesn't implement eject"
@@ -1199,10 +1198,12 @@ msgstr "ไดรว์ไม่สามารถใช้คำสั่งด
 msgid "drive doesn't implement polling for media"
 msgstr "ไดรว์ไม่สามารถใช้คำสั่งตรวจสอบสื่อได้"
 
-#: gio/gfile.c:755 gio/gfile.c:943 gio/gfile.c:1076 gio/gfile.c:1230
-#: gio/gfile.c:1283 gio/gfile.c:1340 gio/gfile.c:1421 gio/gfile.c:2459
-#: gio/gfile.c:2504 gio/gfile.c:2554 gio/gfile.c:2593 gio/gfile.c:2917
-#: gio/gfile.c:3316 gio/gfile.c:3395 gio/gfile.c:3475 gio/gfile.c:3553
+#: gio/gfile.c:755 gio/gfile.c:943 gio/gfile.c:1076
+#: gio/gfile.c:1230 gio/gfile.c:1283 gio/gfile.c:1340
+#: gio/gfile.c:1421 gio/gfile.c:2459 gio/gfile.c:2504
+#: gio/gfile.c:2554 gio/gfile.c:2593 gio/gfile.c:2917
+#: gio/gfile.c:3316 gio/gfile.c:3395 gio/gfile.c:3475
+#: gio/gfile.c:3553
 #, c-format
 msgid "Operation not supported"
 msgstr "ไม่รองรับการกระทำนี้"
@@ -1252,20 +1253,25 @@ msgstr "ชื่อแฟ้มจะมีอักขระ '%c' ไม่ไ
 msgid "volume doesn't implement mount"
 msgstr "โวลุมไม่รองรับการเมานท์"
 
+#: gio/gfile.c:4636
+#, c-format
+msgid "No application is registered as handling this file"
+msgstr "ไม่มีโปรแกรมที่ลงทะเบียนสำหรับจัดการแฟ้มประเภทนี้ไว้"
+
 #: gio/gfileenumerator.c:151
 #, c-format
 msgid "Enumerator is closed"
-msgstr "ตัวไล่แจงถูกปิด"
+msgstr "ตัวแจงนับถูกปิด"
 
 #: gio/gfileenumerator.c:158 gio/gfileenumerator.c:217
-#: gio/gfileenumerator.c:317 gio/gfileenumerator.c:424
+#: gio/gfileenumerator.c:317 gio/gfileenumerator.c:425
 #, c-format
 msgid "File enumerator has outstanding operation"
-msgstr "ตัวไล่แจงแฟ้มมีการกระทำค้างอยู่"
+msgstr "ตัวแจงนับแฟ้มมีการกระทำค้างอยู่"
 
-#: gio/gfileenumerator.c:307 gio/gfileenumerator.c:414
+#: gio/gfileenumerator.c:307 gio/gfileenumerator.c:415
 msgid "File enumerator is already closed"
-msgstr "ตัวไล่แจงแฟ้มถูกปิดไปแล้ว"
+msgstr "ตัวแจงนับแฟ้มถูกปิดไปแล้ว"
 
 #: gio/gfileinputstream.c:154 gio/gfileinputstream.c:421
 #: gio/gfileoutputstream.c:168 gio/gfileoutputstream.c:523
@@ -1678,6 +1684,9 @@ msgstr "ใช้รูปแบบรายการแบบยาว"
 #: tests/gio-ls.c:37
 msgid "[FILE...]"
 msgstr "[FILE...]"
+
+#~ msgid "Can't load just created desktop file"
+#~ msgstr "ไม่สามารถเรียกแฟ้มเดสก์ท็อปที่เพิ่งสร้าง"
 
 #~ msgid "Target file already exists"
 #~ msgstr "มีแฟ้มปลายทางชื่อนี้อยู่ก่อนแล้ว"
