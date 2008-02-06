@@ -1,25 +1,24 @@
-# translation of glib.glib-2-12.ar.po to Arabic
+# translation of glib.HEAD.ar.po to Arabic
 # translation of glib.po to
-# Copyright (C) 2001,2002,2003, 2006, 2007 Free Software Foundation, Inc.
+# Copyright (C) 2001,2002,2003, 2006, 2007, 2008 Free Software Foundation, Inc.
 #
 # Isam Bayazidi <bayazidi@arabeyes.org>, 2001,2002.
 # Arafat Medini <lumina@silverpen.de>, 2003.
 # Djihed Afifi <djihed@gmail.com>, 2006, 2007.
-# Khaled Hosny <khaledhosny@eglug.org>, 2006, 2007.
+# Khaled Hosny <khaledhosny@eglug.org>, 2006, 2007, 2008.
 msgid ""
 msgstr ""
-"Project-Id-Version: glib.glib-2-12.ar\n"
+"Project-Id-Version: glib.HEAD.ar\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-01-31 08:07+0000\n"
-"PO-Revision-Date: 2008-01-28 00:39-0000\n"
-"Last-Translator: Abou Manal <aboumanal@gmail.com>\n"
+"PO-Revision-Date: 2008-02-06 02:05+0200\n"
+"Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
-"Plural-Forms: Plural-Forms: nplurals=4; plural=n==1 ? 0 : n==2 ? 1 : n>=3 && "
-"n<=10 ? 2 : 3\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
 #: ../glib/gbookmarkfile.c:705 ../glib/gbookmarkfile.c:782
 #: ../glib/gbookmarkfile.c:861 ../glib/gbookmarkfile.c:908
@@ -86,7 +85,7 @@ msgstr "لم تحدد أي مجموعات في علامة موقع '%s'"
 #: ../glib/gbookmarkfile.c:3224 ../glib/gbookmarkfile.c:3381
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
-msgstr "لم يسجل أي تطبيق بالإسم '%s' علامة موقع لـ '%s'"
+msgstr "لم يسجل أي تطبيق بالاسم '%s' علامة موقع لـ '%s'"
 
 #: ../glib/gbookmarkfile.c:3404
 #, c-format
@@ -101,7 +100,7 @@ msgstr "التحويل من مجموعة المحارف '%s' إلى '%s' غير 
 #: ../glib/gconvert.c:435 ../glib/gconvert.c:513
 #, c-format
 msgid "Could not open converter from '%s' to '%s'"
-msgstr "تعذّر فتح المُحوِّل من '%s' الى '%s'"
+msgstr "تعذّر فتح المُحوِّل من '%s' إلى '%s'"
 
 #: ../glib/gconvert.c:632 ../glib/gconvert.c:1017 ../glib/giochannel.c:1330
 #: ../glib/giochannel.c:1372 ../glib/giochannel.c:2215 ../glib/gutf8.c:950
@@ -125,7 +124,7 @@ msgstr "تتابع محارف جزئي عند نهاية الدخْل"
 #: ../glib/gconvert.c:919
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
-msgstr "تعذّر تحويل fallback '%s' الى مجموعة المحارف '%s'"
+msgstr "تعذّر تحويل fallback '%s' إلى مجموعة المحارف '%s'"
 
 #: ../glib/gconvert.c:1733
 #, c-format
@@ -242,24 +241,26 @@ msgstr "لا يحتوي القالب '%s' على XXXXXX"
 msgid "%u byte"
 msgid_plural "%u bytes"
 msgstr[0] "%u بايت"
-msgstr[1] "%u بايت"
-msgstr[2] "%u بايت"
+msgstr[1] "بايت واحد"
+msgstr[2] "بايتين"
 msgstr[3] "%u بايت"
+msgstr[4] "%u بايت"
+msgstr[5] "%u بايت"
 
 #: ../glib/gfileutils.c:1834
 #, c-format
 msgid "%.1f KB"
-msgstr "%.1f كيلوبايت"
+msgstr "%.1f ك.بايت"
 
 #: ../glib/gfileutils.c:1839
 #, c-format
 msgid "%.1f MB"
-msgstr "%.1f ميغابايت"
+msgstr "%.1f م.بايت"
 
 #: ../glib/gfileutils.c:1844
 #, c-format
 msgid "%.1f GB"
-msgstr "%.1f جيغابايت"
+msgstr "%.1f ج.بايت"
 
 #: ../glib/gfileutils.c:1887
 #, c-format
@@ -274,7 +275,7 @@ msgstr "الوصلات الرمزية غير مدعومة"
 #: ../glib/giochannel.c:1162
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
-msgstr "تعذّر فتح المُحوِّل من '%s' الى '%s': %s"
+msgstr "تعذّر فتح المُحوِّل من '%s' إلى '%s': %s"
 
 #: ../glib/giochannel.c:1507
 #, c-format
@@ -318,8 +319,7 @@ msgid "Error on line %d: %s"
 msgstr "خطأ في السطر %d: %s"
 
 #: ../glib/gmarkup.c:442
-msgid ""
-"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr "رُؤي كيان فارغ '&;'، الكيانات السليمة هي:&amp; &quot; &lt; &gt; &apos; "
 
 #: ../glib/gmarkup.c:452
@@ -418,8 +418,7 @@ msgstr "محرف غريب '%s'،  توقعت محرف '>' لإنهاء بداي�
 
 #: ../glib/gmarkup.c:1267
 #, c-format
-msgid ""
-"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr "محرف غريب '%s'، توقعت '=' بعد اسم الصفة  '%s' للعنصر '%s'"
 
 #: ../glib/gmarkup.c:1309
@@ -487,8 +486,7 @@ msgstr ""
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
 "the tag <%s/>"
-msgstr ""
-"انتهى المستند بشكل غير متوقع، توقعت رؤية قوس ذا زاوية لينهي العلامة<%s/>"
+msgstr "انتهى المستند بشكل غير متوقع، توقعت رؤية قوس ذا زاوية لينهي العلامة<%s/>"
 
 #: ../glib/gmarkup.c:1793
 msgid "Document ended unexpectedly inside an element name"
@@ -700,7 +698,7 @@ msgstr "منهي غير موجود في اسم القالب الداخلي"
 
 #: ../glib/gregex.c:306
 msgid "two named subpatterns have the same name"
-msgstr "هناك قالبان داخليان لهما نفس الإسم"
+msgstr "هناك قالبان داخليان لهما نفس الاسم"
 
 #: ../glib/gregex.c:309
 msgid "malformed \\P or \\p sequence"
@@ -735,8 +733,7 @@ msgid "inconsistent NEWLINE options"
 msgstr "خيارات NEWLINE غير صحيحة "
 
 #: ../glib/gregex.c:333
-msgid ""
-"\\g is not followed by a braced name or an optionally braced non-zero number"
+msgid "\\g is not followed by a braced name or an optionally braced non-zero number"
 msgstr "\\g  غير متبوعة باسم قوس أو عدد بقوس"
 
 #: ../glib/gregex.c:338
@@ -862,7 +859,7 @@ msgstr "فشلت القراءة من الأنبوب الإبن (%s)"
 #: ../glib/gspawn-win32.c:351 ../glib/gspawn.c:1324
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
-msgstr "فشل التغيير الى الدليل '%s' (%s)"
+msgstr "فشل التغيير إلى الدليل '%s' (%s)"
 
 #: ../glib/gspawn-win32.c:357 ../glib/gspawn-win32.c:481
 #, c-format
@@ -1040,10 +1037,8 @@ msgstr "الملف فارغ"
 
 #: ../glib/gkeyfile.c:761
 #, c-format
-msgid ""
-"Key file contains line '%s' which is not a key-value pair, group, or comment"
-msgstr ""
-"ملف المفتاح يحتوي على سطر '%s' والذي ليس زوج قيمة مفاتيح ، مجموعة ، أو تعليق"
+msgid "Key file contains line '%s' which is not a key-value pair, group, or comment"
+msgstr "ملف المفتاح يحتوي على سطر '%s' والذي ليس زوج قيمة مفاتيح ، مجموعة ، أو تعليق"
 
 #: ../glib/gkeyfile.c:821
 #, c-format
@@ -1135,9 +1130,9 @@ msgstr "لا يمكن تفسير القيمة '%s' كعدد بولياني."
 #: ../gio/ginputstream.c:318 ../gio/ginputstream.c:559
 #: ../gio/ginputstream.c:684 ../gio/goutputstream.c:193
 #: ../gio/goutputstream.c:647
-#, fuzzy, c-format
+#, c-format
 msgid "Too large count value passed to %s"
-msgstr "القيمة التعدادية الممرة لِ g_input_stream_read كبيرة جدا"
+msgstr "مُرِّرت قيمة كبيرة جدّا إلى %s"
 
 #: ../gio/gbufferedinputstream.c:870 ../gio/ginputstream.c:894
 #: ../gio/goutputstream.c:1076
@@ -1267,9 +1262,9 @@ msgid "volume doesn't implement mount"
 msgstr "الجهاز لا ينفذ الوَصل"
 
 #: ../gio/gfile.c:4636
-#, fuzzy, c-format
+#, c-format
 msgid "No application is registered as handling this file"
-msgstr "لم يسجل أي تطبيق بالإسم '%s' علامة موقع لـ '%s'"
+msgstr "لم يسجل أي تطبيق كمعالج لهذا الملف"
 
 #: ../gio/gfileenumerator.c:151
 #, c-format
@@ -1390,9 +1385,9 @@ msgid "Unable to find or create trash directory"
 msgstr "غير قادر على ايجاد أو إنشاء دليل المهملات"
 
 #: ../gio/glocalfile.c:1629
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to create trashing info file: %s"
-msgstr "لا يمكن إنشاء الملف المُهْمل: %s"
+msgstr "تعذّر إنشاء ملف المُهْملات: %s"
 
 #: ../gio/glocalfile.c:1652
 #, c-format
@@ -1698,23 +1693,3 @@ msgstr "استخدم تهيئة العرض المسترسل"
 msgid "[FILE...]"
 msgstr "[ملف...]"
 
-#~ msgid "Too large count value passed to g_input_stream_read_async"
-#~ msgstr "القيمة التعدادية الممرة لِ g_input_stream_read_async كبيرة جدا "
-
-#~ msgid "Can't load just created desktop file"
-#~ msgstr "لا يمكن تحميل ملف سطح المكتب الذي أُنشأ للتو"
-
-#~ msgid "Too large count value passed to g_input_stream_skip"
-#~ msgstr "القيمة التعدادية الممرة لِ g_input_stream_skip كبيرة جدا "
-
-#~ msgid "Too large count value passed to g_input_stream_skip_async"
-#~ msgstr "القيمة التعدادية الممرة لِ g_input_stream_skip_async كبيرة جدا "
-
-#~ msgid "Target file already exists"
-#~ msgstr "الملف الهدف يوجد بالفعل"
-
-#~ msgid "Too large count value passed to g_output_stream_write"
-#~ msgstr "القيمة التعدادية الممرة لِ g_output_stream_write كبيرة جدا "
-
-#~ msgid "Too large count value passed to g_output_stream_write_async"
-#~ msgstr "القيمة التعدادية الممرة لِ g_output_stream_write_async كبيرة جدا "
