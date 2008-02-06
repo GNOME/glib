@@ -1,3 +1,8 @@
+2008-02-06  Behdad Esfahbod  <behdad@gnome.org>
+
+	* pltcheck.sh: Skip g_bit_*().  Inline functions may end up with
+	a local plt if the compiler doesn't support what we want.  Bug #514702
+
 2008-02-06  Murray Cumming,,,  <murrayc@murrayc.com>
 
 	reviewed by: <delete if not using a buddy>
