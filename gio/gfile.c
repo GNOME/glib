@@ -1306,8 +1306,7 @@ g_file_append_to (GFile             *file,
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
  *
- * If a file with this name already exists the G_IO_ERROR_EXISTS error
- * will be returned. If the file is a directory the G_IO_ERROR_IS_DIRECTORY
+ * If a file or directory with this name already exists the G_IO_ERROR_EXISTS
  * error will be returned.
  * Some file systems don't allow all file names, and may
  * return an G_IO_ERROR_INVALID_FILENAME error, and if the name

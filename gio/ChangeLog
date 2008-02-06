@@ -1,3 +1,8 @@
+2008-02-06  Tomas Bzatek  <tbzatek@redhat.com>
+
+	* gfile.c (g_file_create):
+	Documentation update of error codes
+
 2008-02-06  Alexander Larsson  <alexl@redhat.com>
 
 	* gdesktopappinfo.c:
