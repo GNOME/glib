@@ -1,5 +1,12 @@
 2008-02-06  Tomas Bzatek  <tbzatek@redhat.com>
 
+	* tests/Makefile.am:
+	* tests/live-g-file.c:
+	* tests/live-g-file.txt:
+	New GIO testing module working over real data
+
+2008-02-06  Tomas Bzatek  <tbzatek@redhat.com>
+
 	* glocalfileoutputstream.c (g_local_file_output_stream_close):
 	Fallback to rename() if link() is not available
 	(when no support on target filesystem)
