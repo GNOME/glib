@@ -54,6 +54,7 @@
  **/
 
 #define DEFAULT_APPLICATIONS_GROUP  "Default Applications" 
+#define ADDED_ASSOCIATIONS_GROUP    "Added Associations" 
 #define REMOVED_ASSOCIATIONS_GROUP  "Removed Associations" 
 #define MIME_CACHE_GROUP            "MIME Cache"
 
@@ -1124,12 +1125,12 @@ ensure_dir (DirType   type,
 }
 
 static gboolean
-update_default_list (const char  *desktop_id, 
-                     const char  *content_type, 
-                     gboolean     add_at_start, 
-                     gboolean     add_at_end, 
-                     gboolean     remove, 
-                     GError     **error)
+update_mimeapps_list (const char  *desktop_id, 
+		      const char  *content_type, 
+		      gboolean     add_at_start, 
+		      gboolean     add_at_end, 
+		      gboolean     remove, 
+		      GError     **error)
 {
   char *dirname, *filename;
   GKeyFile *key_file;
@@ -1147,12 +1148,12 @@ update_default_list (const char  *desktop_id,
   if (!dirname)
     return FALSE;
 
-  filename = g_build_filename (dirname, "defaults.list", NULL);
+  filename = g_build_filename (dirname, "mimeapps.list", NULL);
   g_free (dirname);
 
   key_file = g_key_file_new ();
   load_succeeded = g_key_file_load_from_file (key_file, filename, G_KEY_FILE_NONE, NULL);
-  if (!load_succeeded || !g_key_file_has_group (key_file, DEFAULT_APPLICATIONS_GROUP))
+  if (!load_succeeded || !g_key_file_has_group (key_file, ADDED_ASSOCIATIONS_GROUP))
     {
       g_key_file_free (key_file);
       key_file = g_key_file_new ();
@@ -1161,7 +1162,7 @@ update_default_list (const char  *desktop_id,
   /* Add to the right place in the list */
   
   length = 0;
-  old_list = g_key_file_get_string_list (key_file, DEFAULT_APPLICATIONS_GROUP,
+  old_list = g_key_file_get_string_list (key_file, ADDED_ASSOCIATIONS_GROUP,
 					 content_type, &length, NULL);
 
   list = g_new (char *, 1 + length + 1);
@@ -1184,7 +1185,7 @@ update_default_list (const char  *desktop_id,
   g_strfreev (old_list);
 
   g_key_file_set_string_list (key_file,
-			      DEFAULT_APPLICATIONS_GROUP,
+			      ADDED_ASSOCIATIONS_GROUP,
 			      content_type,
 			      (const char * const *)list, i);
 
@@ -1250,7 +1251,7 @@ g_desktop_app_info_set_as_default_for_type (GAppInfo    *appinfo,
   if (!g_desktop_app_info_ensure_saved (info, error))
     return FALSE;  
   
-  return update_default_list (info->desktop_id, content_type, TRUE, FALSE, FALSE, error);
+  return update_mimeapps_list (info->desktop_id, content_type, TRUE, FALSE, FALSE, error);
 }
 
 static void
@@ -1367,7 +1368,7 @@ g_desktop_app_info_add_supports_type (GAppInfo    *appinfo,
   if (!g_desktop_app_info_ensure_saved (G_DESKTOP_APP_INFO (info), error))
     return FALSE;  
   
-  return update_default_list (info->desktop_id, content_type, FALSE, TRUE, FALSE, error);
+  return update_mimeapps_list (info->desktop_id, content_type, FALSE, TRUE, FALSE, error);
 }
 
 static gboolean
@@ -1386,7 +1387,7 @@ g_desktop_app_info_remove_supports_type (GAppInfo    *appinfo,
   if (!g_desktop_app_info_ensure_saved (G_DESKTOP_APP_INFO (info), error))
     return FALSE;
   
-  return update_default_list (info->desktop_id, content_type, FALSE, FALSE, TRUE, error);
+  return update_mimeapps_list (info->desktop_id, content_type, FALSE, FALSE, TRUE, error);
 }
 
 static gboolean
@@ -1836,9 +1837,11 @@ typedef struct {
   char *path;
   GHashTable *mime_info_cache_map;
   GHashTable *defaults_list_map;
-  GHashTable *defaults_list_removed_map;
+  GHashTable *mimeapps_list_added_map;
+  GHashTable *mimeapps_list_removed_map;
   time_t mime_info_cache_timestamp;
   time_t defaults_list_timestamp;
+  time_t mimeapps_list_timestamp;
 } MimeInfoCacheDir;
 
 typedef struct {
@@ -2024,10 +2027,6 @@ mime_info_cache_dir_init_defaults_list (MimeInfoCacheDir *dir)
   dir->defaults_list_map = g_hash_table_new_full (g_str_hash, g_str_equal,
 						  g_free, (GDestroyNotify)g_strfreev);
   
-  if (dir->defaults_list_removed_map != NULL)
-    g_hash_table_destroy (dir->defaults_list_removed_map);
-  dir->defaults_list_removed_map = g_hash_table_new_full (g_str_hash, g_str_equal,
-							  g_free, (GDestroyNotify)g_strfreev);
 
   key_file = g_key_file_new ();
   
@@ -2070,6 +2069,90 @@ mime_info_cache_dir_init_defaults_list (MimeInfoCacheDir *dir)
       g_strfreev (mime_types);
     }
 
+  g_key_file_free (key_file);
+  return;
+  
+ error:
+  g_free (filename);
+  g_key_file_free (key_file);
+  
+  if (mime_types != NULL)
+    g_strfreev (mime_types);
+  
+  if (load_error)
+    g_error_free (load_error);
+}
+
+static void
+mime_info_cache_dir_init_mimeapps_list (MimeInfoCacheDir *dir)
+{
+  GKeyFile *key_file;
+  GError *load_error;
+  gchar *filename, **mime_types;
+  char *unaliased_type;
+  char **desktop_file_ids;
+  int i;
+  struct stat buf;
+
+  load_error = NULL;
+  mime_types = NULL;
+
+  if (dir->mimeapps_list_added_map != NULL &&
+      !mime_info_cache_dir_out_of_date (dir, "mimeapps.list",
+					&dir->mimeapps_list_timestamp))
+    return;
+  
+  if (dir->mimeapps_list_added_map != NULL)
+    g_hash_table_destroy (dir->mimeapps_list_added_map);
+  dir->mimeapps_list_added_map = g_hash_table_new_full (g_str_hash, g_str_equal,
+							g_free, (GDestroyNotify)g_strfreev);
+  
+  if (dir->mimeapps_list_removed_map != NULL)
+    g_hash_table_destroy (dir->mimeapps_list_removed_map);
+  dir->mimeapps_list_removed_map = g_hash_table_new_full (g_str_hash, g_str_equal,
+							  g_free, (GDestroyNotify)g_strfreev);
+
+  key_file = g_key_file_new ();
+  
+  filename = g_build_filename (dir->path, "mimeapps.list", NULL);
+  if (g_stat (filename, &buf) < 0)
+    goto error;
+
+  if (dir->mimeapps_list_timestamp > 0) 
+    mime_info_cache->should_ping_mime_monitor = TRUE;
+
+  dir->mimeapps_list_timestamp = buf.st_mtime;
+
+  g_key_file_load_from_file (key_file, filename, G_KEY_FILE_NONE, &load_error);
+  g_free (filename);
+  filename = NULL;
+
+  if (load_error != NULL)
+    goto error;
+
+  mime_types = g_key_file_get_keys (key_file, ADDED_ASSOCIATIONS_GROUP,
+				    NULL, NULL);
+  if (mime_types != NULL)
+    {
+      for (i = 0; mime_types[i] != NULL; i++)
+	{
+	  desktop_file_ids = g_key_file_get_string_list (key_file,
+							 ADDED_ASSOCIATIONS_GROUP,
+							 mime_types[i],
+							 NULL,
+							 NULL);
+	  if (desktop_file_ids == NULL)
+	    continue;
+	  
+	  unaliased_type = _g_unix_content_type_unalias (mime_types[i]);
+	  g_hash_table_replace (dir->mimeapps_list_added_map,
+				unaliased_type,
+				desktop_file_ids);
+	}
+      
+      g_strfreev (mime_types);
+    }
+
   mime_types = g_key_file_get_keys (key_file, REMOVED_ASSOCIATIONS_GROUP,
 				    NULL, NULL);
   if (mime_types != NULL)
@@ -2085,7 +2168,7 @@ mime_info_cache_dir_init_defaults_list (MimeInfoCacheDir *dir)
 	    continue;
 	  
 	  unaliased_type = _g_unix_content_type_unalias (mime_types[i]);
-	  g_hash_table_replace (dir->defaults_list_removed_map,
+	  g_hash_table_replace (dir->mimeapps_list_removed_map,
 				unaliased_type,
 				desktop_file_ids);
 	}
@@ -2137,10 +2220,16 @@ mime_info_cache_dir_free (MimeInfoCacheDir *dir)
       dir->defaults_list_map = NULL;
     }
   
-  if (dir->defaults_list_removed_map != NULL)
+  if (dir->mimeapps_list_added_map != NULL)
     {
-      g_hash_table_destroy (dir->defaults_list_removed_map);
-      dir->defaults_list_removed_map = NULL;
+      g_hash_table_destroy (dir->mimeapps_list_added_map);
+      dir->mimeapps_list_added_map = NULL;
+    }
+  
+  if (dir->mimeapps_list_removed_map != NULL)
+    {
+      g_hash_table_destroy (dir->mimeapps_list_removed_map);
+      dir->mimeapps_list_removed_map = NULL;
     }
   
   g_free (dir);
@@ -2187,6 +2276,7 @@ mime_info_cache_init_dir_lists (void)
 	{
 	  mime_info_cache_dir_init (dir);
 	  mime_info_cache_dir_init_defaults_list (dir);
+	  mime_info_cache_dir_init_mimeapps_list (dir);
 	  
 	  mime_info_cache->dirs = g_list_append (mime_info_cache->dirs, dir);
 	}
@@ -2208,6 +2298,7 @@ mime_info_cache_update_dir_lists (void)
       mime_info_cache_blow_global_cache ();
       mime_info_cache_dir_init (dir);
       mime_info_cache_dir_init_defaults_list (dir);
+      mime_info_cache_dir_init_mimeapps_list (dir);
       
       tmp = tmp->next;
     }
@@ -2216,28 +2307,28 @@ mime_info_cache_update_dir_lists (void)
 static void
 mime_info_cache_init (void)
 {
-	G_LOCK (mime_info_cache);
-	if (mime_info_cache == NULL)
-	  mime_info_cache_init_dir_lists ();
-	else
-	  {
-	    time_t now;
-	    
-	    time (&now);
-	    if (now >= mime_info_cache->last_stat_time + 10)
-	      {
-		mime_info_cache_update_dir_lists ();
-		mime_info_cache->last_stat_time = now;
-	      }
-	  }
-
-	if (mime_info_cache->should_ping_mime_monitor)
-	  {
-	    /* g_idle_add (emit_mime_changed, NULL); */
-	    mime_info_cache->should_ping_mime_monitor = FALSE;
-	  }
-	
-	G_UNLOCK (mime_info_cache);
+  G_LOCK (mime_info_cache);
+  if (mime_info_cache == NULL)
+    mime_info_cache_init_dir_lists ();
+  else
+    {
+      time_t now;
+      
+      time (&now);
+      if (now >= mime_info_cache->last_stat_time + 10)
+	{
+	  mime_info_cache_update_dir_lists ();
+	  mime_info_cache->last_stat_time = now;
+	}
+    }
+  
+  if (mime_info_cache->should_ping_mime_monitor)
+    {
+      /* g_idle_add (emit_mime_changed, NULL); */
+      mime_info_cache->should_ping_mime_monitor = FALSE;
+    }
+  
+  G_UNLOCK (mime_info_cache);
 }
 
 static MimeInfoCache *
@@ -2341,13 +2432,21 @@ get_all_desktop_entries_for_mime_type (const char *base_mime_type)
 	   dir_list = dir_list->next)
 	{
 	  dir = dir_list->data;
-	  default_entries = g_hash_table_lookup (dir->defaults_list_map, mime_type);
+
+	  /* First added associations from mimeapps.list */
+	  default_entries = g_hash_table_lookup (dir->mimeapps_list_added_map, mime_type);
 	  for (j = 0; default_entries != NULL && default_entries[j] != NULL; j++)
 	    desktop_entries = append_desktop_entry (desktop_entries, default_entries[j], removed_entries);
 
-	  removed_associations = g_hash_table_lookup (dir->defaults_list_removed_map, mime_type);
+	  /* Then removed assiciations from mimeapps.list */
+	  removed_associations = g_hash_table_lookup (dir->mimeapps_list_removed_map, mime_type);
 	  for (j = 0; removed_associations != NULL && removed_associations[j] != NULL; j++)
 	    removed_entries = append_desktop_entry (removed_entries, removed_associations[j], NULL);
+
+	  /* Then system defaults (or old per-user config) (using removed associations from this dir or earlier) */
+	  default_entries = g_hash_table_lookup (dir->defaults_list_map, mime_type);
+	  for (j = 0; default_entries != NULL && default_entries[j] != NULL; j++)
+	    desktop_entries = append_desktop_entry (desktop_entries, default_entries[j], removed_entries);
 	}
 
       /* Go through all entries that support the mimetype */

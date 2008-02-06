@@ -1,3 +1,9 @@
+2008-02-06  Alexander Larsson  <alexl@redhat.com>
+
+	* gdesktopappinfo.c:
+	Update to use both mimeapps.list and
+	defaults.list as discussed on xdg list.
+
 2008-02-06  Benjamin Otte  <otte@gnome.org>
 
 	* gasyncresult.c:
