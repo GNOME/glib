@@ -77,9 +77,9 @@
  *   success = _theoretical_frobnitz_finish (source_object, res, NULL);
  *
  *   if (success)
- *     g_printf ("Hurray!/n");
+ *     g_printf ("Hurray!\n");
  *   else 
- *     g_printf ("Uh oh!/n");
+ *     g_printf ("Uh oh!\n");
  *
  *   /<!-- -->* ... *<!-- -->/
  *

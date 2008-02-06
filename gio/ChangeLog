@@ -1,3 +1,9 @@
+2008-02-06  Benjamin Otte  <otte@gnome.org>
+
+	* gasyncresult.c:
+	* gfilenamecompleter.c:
+	Fix some typos in the documentation.
+
 2008-02-06  Alexander Larsson  <alexl@redhat.com>
 
 	* glocalfile.c (g_local_file_trash):
