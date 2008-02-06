@@ -209,15 +209,19 @@ g_local_file_output_stream_close (GOutputStream  *stream,
 
 	  if (link (file->priv->original_filename, file->priv->backup_filename) != 0)
 	    {
-	      g_set_error (error, G_IO_ERROR,
-			   G_IO_ERROR_CANT_CREATE_BACKUP,
-			   _("Error creating backup link: %s"),
-			   g_strerror (errno));
-	      goto err_out;
+	      /*  link failed or is not supported, try rename  */
+	      if (rename (file->priv->original_filename, file->priv->backup_filename) != 0)
+		{
+	    	  g_set_error (error, G_IO_ERROR,
+		    	       G_IO_ERROR_CANT_CREATE_BACKUP,
+			       _("Error creating backup copy: %s"),
+			       g_strerror (errno));
+	          goto err_out;
+		}
 	    }
 #else
 	    /* If link not supported, just rename... */
-	  if (!rename (file->priv->original_filename, file->priv->backup_filename) != 0)
+	  if (rename (file->priv->original_filename, file->priv->backup_filename) != 0)
 	    {
 	      g_set_error (error, G_IO_ERROR,
 			   G_IO_ERROR_CANT_CREATE_BACKUP,

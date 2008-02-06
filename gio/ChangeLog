@@ -1,3 +1,9 @@
+2008-02-06  Tomas Bzatek  <tbzatek@redhat.com>
+
+	* glocalfileoutputstream.c (g_local_file_output_stream_close):
+	Fallback to rename() if link() is not available
+	(when no support on target filesystem)
+
 2008-02-06  Michael Natterer  <mitch@imendio.com>
 
 	* gfileinfo.c (g_file_info_get_icon): replace
