@@ -6,7 +6,7 @@
 and semantics are as close as possible to those of the Perl 5 language.
 
                        Written by Philip Hazel
-           Copyright (c) 1997-2007 University of Cambridge
+           Copyright (c) 1997-2008 University of Cambridge
 
 -----------------------------------------------------------------------------
 Redistribution and use in source and binary forms, with or without
@@ -241,7 +241,7 @@ static const char error_texts[] =
   /* 10 */
   "operand of unlimited repeat could match the empty string\0"  /** DEAD **/
   "internal error: unexpected repeat\0"
-  "unrecognized character after (?\0"
+  "unrecognized character after (? or (?-\0"
   "POSIX named classes are supported only within a class\0"
   "missing )\0"
   /* 15 */
@@ -300,7 +300,9 @@ static const char error_texts[] =
   "(*VERB) with an argument is not supported\0"
   /* 60 */
   "(*VERB) not recognized\0"
-  "number is too big";
+  "number is too big\0"
+  "subpattern name expected\0"
+  "digit expected after (?+";
 
 
 /* Definition to allow mutual recursion */
@@ -372,18 +374,12 @@ ptr--;                            /* Set pointer back to the last byte */
 
 if (c == 0) *errorcodeptr = ERR1;
 
-/* Non-alphamerics are literals. For digits or letters, do an initial lookup in
-a table. A non-zero result is something that can be returned immediately.
+/* Non-alphanumerics are literals. For digits or letters, do an initial lookup
+in a table. A non-zero result is something that can be returned immediately.
 Otherwise further processing may be required. */
 
-#ifndef EBCDIC  /* ASCII coding */
-else if (c < '0' || c > 'z') {}                           /* Not alphameric */
+else if (c < '0' || c > 'z') {}                           /* Not alphanumeric */
 else if ((i = escapes[c - '0']) != 0) c = i;
-
-#else           /* EBCDIC coding */
-else if (c < 'a' || (ebcdic_chartab[c] & 0x0E) == 0) {}   /* Not alphameric */
-else if ((i = escapes[c - 0x48]) != 0)  c = i;
-#endif
 
 /* Escapes that need further processing, or are illegal. */
 
@@ -598,10 +594,10 @@ else
     break;
 
     /* PCRE_EXTRA enables extensions to Perl in the matter of escapes. Any
-    other alphameric following \ is an error if PCRE_EXTRA was set; otherwise,
-    for Perl compatibility, it is a literal. This code looks a bit odd, but
-    there used to be some cases other than the default, and there may be again
-    in future, so I haven't "optimized" it. */
+    other alphanumeric following \ is an error if PCRE_EXTRA was set;
+    otherwise, for Perl compatibility, it is a literal. This code looks a bit
+    odd, but there used to be some cases other than the default, and there may
+    be again in future, so I haven't "optimized" it. */
 
     default:
     if ((options & PCRE_EXTRA) != 0) switch(c)
@@ -1382,8 +1378,9 @@ for (;;)
 can match the empty string or not. It is called from could_be_empty()
 below and from compile_branch() when checking for an unlimited repeat of a
 group that can match nothing. Note that first_significant_code() skips over
-assertions. If we hit an unclosed bracket, we return "empty" - this means we've
-struck an inner bracket whose current branch will already have been scanned.
+backward and negative forward assertions when its final argument is TRUE. If we
+hit an unclosed bracket, we return "empty" - this means we've struck an inner
+bracket whose current branch will already have been scanned.
 
 Arguments:
   code        points to start of search
@@ -1404,6 +1401,16 @@ for (code = first_significant_code(code + _pcre_OP_lengths[*code], NULL, 0, TRUE
   const uschar *ccode;
 
   c = *code;
+
+  /* Skip over forward assertions; the other assertions are skipped by
+  first_significant_code() with a TRUE final argument. */
+
+  if (c == OP_ASSERT)
+    {
+    do code += GET(code, 1); while (*code == OP_ALT);
+    c = *code;
+    continue;
+    }
 
   /* Groups with zero repeats can of course be empty; skip them. */
 
@@ -1600,29 +1607,48 @@ return TRUE;
 *************************************************/
 
 /* This function is called when the sequence "[:" or "[." or "[=" is
-encountered in a character class. It checks whether this is followed by an
-optional ^ and then a sequence of letters, terminated by a matching ":]" or
-".]" or "=]".
+encountered in a character class. It checks whether this is followed by a
+sequence of characters terminated by a matching ":]" or ".]" or "=]". If we
+reach an unescaped ']' without the special preceding character, return FALSE.
 
-Argument:
+Originally, this function only recognized a sequence of letters between the
+terminators, but it seems that Perl recognizes any sequence of characters,
+though of course unknown POSIX names are subsequently rejected. Perl gives an
+"Unknown POSIX class" error for [:f\oo:] for example, where previously PCRE
+didn't consider this to be a POSIX class. Likewise for [:1234:].
+
+The problem in trying to be exactly like Perl is in the handling of escapes. We
+have to be sure that [abc[:x\]pqr] is *not* treated as containing a POSIX
+class, but [abc[:x\]pqr:]] is (so that an error can be generated). The code
+below handles the special case of \], but does not try to do any other escape
+processing. This makes it different from Perl for cases such as [:l\ower:]
+where Perl recognizes it as the POSIX class "lower" but PCRE does not recognize
+"l\ower". This is a lesser evil that not diagnosing bad classes when Perl does,
+I think.
+
+Arguments:
   ptr      pointer to the initial [
   endptr   where to return the end pointer
-  cd       pointer to compile data
 
 Returns:   TRUE or FALSE
 */
 
 static BOOL
-check_posix_syntax(const uschar *ptr, const uschar **endptr, compile_data *cd)
+check_posix_syntax(const uschar *ptr, const uschar **endptr)
 {
 int terminator;          /* Don't combine these lines; the Solaris cc */
 terminator = *(++ptr);   /* compiler warns about "non-constant" initializer. */
-if (*(++ptr) == '^') ptr++;
-while ((cd->ctypes[*ptr] & ctype_letter) != 0) ptr++;
-if (*ptr == terminator && ptr[1] == ']')
+for (++ptr; *ptr != 0; ptr++)
   {
-  *endptr = ptr;
-  return TRUE;
+  if (*ptr == '\\' && ptr[1] == ']') ptr++; else
+    {
+    if (*ptr == ']') return FALSE;
+    if (*ptr == terminator && ptr[1] == ']')
+      {
+      *endptr = ptr;
+      return TRUE;
+      }
+    }
   }
 return FALSE;
 }
@@ -2220,6 +2246,7 @@ uschar classbits[32];
 BOOL class_utf8;
 BOOL utf8 = (options & PCRE_UTF8) != 0;
 uschar *class_utf8data;
+uschar *class_utf8data_base;
 uschar utf8_char[6];
 #else
 BOOL utf8 = FALSE;
@@ -2259,6 +2286,7 @@ req_caseopt = ((options & PCRE_CASELESS) != 0)? REQ_CASELESS : 0;
 for (;; ptr++)
   {
   BOOL negate_class;
+  BOOL should_flip_negation;
   BOOL possessive_quantifier;
   BOOL is_quantifier;
   BOOL is_recurse;
@@ -2482,7 +2510,7 @@ for (;; ptr++)
     they are encountered at the top level, so we'll do that too. */
 
     if ((ptr[1] == ':' || ptr[1] == '.' || ptr[1] == '=') &&
-        check_posix_syntax(ptr, &tempptr, cd))
+        check_posix_syntax(ptr, &tempptr))
       {
       *errorcodeptr = (ptr[1] == ':')? ERR13 : ERR31;
       goto FAILED;
@@ -2507,6 +2535,12 @@ for (;; ptr++)
       else break;
       }
 
+    /* If a class contains a negative special such as \S, we need to flip the
+    negation flag at the end, so that support for characters > 255 works
+    correctly (they are all included in the class). */
+
+    should_flip_negation = FALSE;
+
     /* Keep a count of chars with values < 256 so that we can optimize the case
     of just a single character (as long as it's < 256). However, For higher
     valued UTF-8 characters, we don't yet do any optimization. */
@@ -2524,6 +2558,7 @@ for (;; ptr++)
 #ifdef SUPPORT_UTF8
     class_utf8 = FALSE;                       /* No chars >= 256 */
     class_utf8data = code + LINK_SIZE + 2;    /* For UTF-8 items */
+    class_utf8data_base = class_utf8data;     /* For resetting in pass 1 */
 #endif
 
     /* Process characters until ] is reached. By writing this as a "do" it
@@ -2539,6 +2574,18 @@ for (;; ptr++)
         {                           /* Braces are required because the */
         GETCHARLEN(c, ptr, ptr);    /* macro generates multiple statements */
         }
+
+      /* In the pre-compile phase, accumulate the length of any UTF-8 extra
+      data and reset the pointer. This is so that very large classes that
+      contain a zillion UTF-8 characters no longer overwrite the work space
+      (which is on the stack). */
+
+      if (lengthptr != NULL)
+        {
+        *lengthptr += class_utf8data - class_utf8data_base;
+        class_utf8data = class_utf8data_base;
+        }
+
 #endif
 
       /* Inside \Q...\E everything is literal except \E */
@@ -2562,7 +2609,7 @@ for (;; ptr++)
 
       if (c == '[' &&
           (ptr[1] == ':' || ptr[1] == '.' || ptr[1] == '=') &&
-          check_posix_syntax(ptr, &tempptr, cd))
+          check_posix_syntax(ptr, &tempptr))
         {
         BOOL local_negate = FALSE;
         int posix_class, taboffset, tabopt;
@@ -2579,6 +2626,7 @@ for (;; ptr++)
         if (*ptr == '^')
           {
           local_negate = TRUE;
+          should_flip_negation = TRUE;  /* Note negative special */
           ptr++;
           }
 
@@ -2653,7 +2701,7 @@ for (;; ptr++)
         c = check_escape(&ptr, errorcodeptr, cd->bracount, options, TRUE);
         if (*errorcodeptr != 0) goto FAILED;
 
-        if (-c == ESC_b) c = '\b';       /* \b is backslash in a class */
+        if (-c == ESC_b) c = '\b';       /* \b is backspace in a class */
         else if (-c == ESC_X) c = 'X';   /* \X is literal X in a class */
         else if (-c == ESC_R) c = 'R';   /* \R is literal R in a class */
         else if (-c == ESC_Q)            /* Handle start of quoted string */
@@ -2681,6 +2729,7 @@ for (;; ptr++)
             continue;
 
             case ESC_D:
+            should_flip_negation = TRUE;
             for (c = 0; c < 32; c++) classbits[c] |= ~cbits[c+cbit_digit];
             continue;
 
@@ -2689,6 +2738,7 @@ for (;; ptr++)
             continue;
 
             case ESC_W:
+            should_flip_negation = TRUE;
             for (c = 0; c < 32; c++) classbits[c] |= ~cbits[c+cbit_word];
             continue;
 
@@ -2698,11 +2748,9 @@ for (;; ptr++)
             continue;
 
             case ESC_S:
+            should_flip_negation = TRUE;
             for (c = 0; c < 32; c++) classbits[c] |= ~cbits[c+cbit_space];
             classbits[1] |= 0x08;    /* Perl 5.004 onwards omits VT from \s */
-            continue;
-
-            case ESC_E: /* Perl ignores an orphan \E */
             continue;
 
             default:    /* Not recognized; fall through */
@@ -2939,7 +2987,7 @@ for (;; ptr++)
           d = check_escape(&ptr, errorcodeptr, cd->bracount, options, TRUE);
           if (*errorcodeptr != 0) goto FAILED;
 
-          /* \b is backslash; \X is literal X; \R is literal R; any other
+          /* \b is backspace; \X is literal X; \R is literal R; any other
           special means the '-' was literal */
 
           if (d < 0)
@@ -3203,11 +3251,14 @@ we set the flag only if there is a literal "\r" or "\n" in the class. */
     zeroreqbyte = reqbyte;
 
     /* If there are characters with values > 255, we have to compile an
-    extended class, with its own opcode. If there are no characters < 256,
-    we can omit the bitmap in the actual compiled code. */
+    extended class, with its own opcode, unless there was a negated special
+    such as \S in the class, because in that case all characters > 255 are in
+    the class, so any that were explicitly given as well can be ignored. If
+    (when there are explicit characters > 255 that must be listed) there are no
+    characters < 256, we can omit the bitmap in the actual compiled code. */
 
 #ifdef SUPPORT_UTF8
-    if (class_utf8)
+    if (class_utf8 && !should_flip_negation)
       {
       *class_utf8data++ = XCL_END;    /* Marks the end of extra data */
       *code++ = OP_XCLASS;
@@ -3233,20 +3284,19 @@ we set the flag only if there is a literal "\r" or "\n" in the class. */
       }
 #endif
 
-    /* If there are no characters > 255, negate the 32-byte map if necessary,
-    and copy it into the code vector. If this is the first thing in the branch,
-    there can be no first char setting, whatever the repeat count. Any reqbyte
-    setting must remain unchanged after any kind of repeat. */
+    /* If there are no characters > 255, set the opcode to OP_CLASS or
+    OP_NCLASS, depending on whether the whole class was negated and whether
+    there were negative specials such as \S in the class. Then copy the 32-byte
+    map into the code vector, negating it if necessary. */
 
+    *code++ = (negate_class == should_flip_negation) ? OP_CLASS : OP_NCLASS;
     if (negate_class)
       {
-      *code++ = OP_NCLASS;
       if (lengthptr == NULL)    /* Save time in the pre-compile phase */
         for (c = 0; c < 32; c++) code[c] = ~classbits[c];
       }
     else
       {
-      *code++ = OP_CLASS;
       memcpy(code, classbits, 32);
       }
     code += 32;
@@ -3882,7 +3932,9 @@ we set the flag only if there is a literal "\r" or "\n" in the class. */
       int len;
       if (*tempcode == OP_EXACT || *tempcode == OP_TYPEEXACT ||
           *tempcode == OP_NOTEXACT)
-        tempcode += _pcre_OP_lengths[*tempcode];
+        tempcode += _pcre_OP_lengths[*tempcode] +
+          ((*tempcode == OP_TYPEEXACT &&
+             (tempcode[3] == OP_PROP || tempcode[3] == OP_NOTPROP))? 2:0);
       len = code - tempcode;
       if (len > 0) switch (*tempcode)
         {
@@ -4109,16 +4161,13 @@ we set the flag only if there is a literal "\r" or "\n" in the class. */
             *errorcodeptr = ERR58;
             goto FAILED;
             }
-          if (refsign == '-')
+          recno = (refsign == '-')?
+            cd->bracount - recno + 1 : recno +cd->bracount;
+          if (recno <= 0 || recno > cd->final_bracount)
             {
-            recno = cd->bracount - recno + 1;
-            if (recno <= 0)
-              {
-              *errorcodeptr = ERR15;
-              goto FAILED;
-              }
+            *errorcodeptr = ERR15;
+            goto FAILED;
             }
-          else recno += cd->bracount;
           PUT2(code, 2+LINK_SIZE, recno);
           break;
           }
@@ -4190,9 +4239,10 @@ we set the flag only if there is a literal "\r" or "\n" in the class. */
           skipbytes = 1;
           }
 
-        /* Check for the "name" actually being a subpattern number. */
+        /* Check for the "name" actually being a subpattern number. We are
+        in the second pass here, so final_bracount is set. */
 
-        else if (recno > 0)
+        else if (recno > 0 && recno <= cd->final_bracount)
           {
           PUT2(code, 2+LINK_SIZE, recno);
           }
@@ -4386,7 +4436,9 @@ we set the flag only if there is a literal "\r" or "\n" in the class. */
 
         /* We come here from the Python syntax above that handles both
         references (?P=name) and recursion (?P>name), as well as falling
-        through from the Perl recursion syntax (?&name). */
+        through from the Perl recursion syntax (?&name). We also come here from
+        the Perl \k<name> or \k'name' back reference syntax and the \k{name}
+        .NET syntax. */
 
         NAMED_REF_OR_RECURSE:
         name = ++ptr;
@@ -4398,6 +4450,11 @@ we set the flag only if there is a literal "\r" or "\n" in the class. */
 
         if (lengthptr != NULL)
           {
+          if (namelen == 0)
+            {
+            *errorcodeptr = ERR62;
+            goto FAILED;
+            }
           if (*ptr != terminator)
             {
             *errorcodeptr = ERR42;
@@ -4411,14 +4468,19 @@ we set the flag only if there is a literal "\r" or "\n" in the class. */
           recno = 0;
           }
 
-        /* In the real compile, seek the name in the table */
+        /* In the real compile, seek the name in the table. We check the name
+        first, and then check that we have reached the end of the name in the
+        table. That way, if the name that is longer than any in the table,
+        the comparison will fail without reading beyond the table entry. */
 
         else
           {
           slot = cd->name_table;
           for (i = 0; i < cd->names_found; i++)
             {
-            if (strncmp((char *)name, (char *)slot+2, namelen) == 0) break;
+            if (strncmp((char *)name, (char *)slot+2, namelen) == 0 &&
+                slot[2+namelen] == 0)
+              break;
             slot += cd->name_entry_size;
             }
 
@@ -4455,7 +4517,15 @@ we set the flag only if there is a literal "\r" or "\n" in the class. */
           {
           const uschar *called;
 
-          if ((refsign = *ptr) == '+') ptr++;
+          if ((refsign = *ptr) == '+')
+            {
+            ptr++;
+            if (g_ascii_isdigit(*ptr) == 0)
+              {
+              *errorcodeptr = ERR63;
+              goto FAILED;
+              }
+            }
           else if (refsign == '-')
             {
             if (g_ascii_isdigit(ptr[1]) == 0)
@@ -5621,7 +5691,6 @@ to fill in forward references to subpatterns. */
 
 uschar cworkspace[COMPILE_WORK_SIZE];
 
-
 /* Set this early so that early errors get offset 0. */
 
 ptr = (const uschar *)pattern;
@@ -5782,7 +5851,7 @@ to compile parts of the pattern into; the compiled code is discarded when it is
 no longer needed, so hopefully this workspace will never overflow, though there
 is a test for its doing so. */
 
-cd->bracount = 0;
+cd->bracount = cd->final_bracount = 0;
 cd->names_found = 0;
 cd->name_entry_size = 0;
 cd->name_table = NULL;
@@ -5859,6 +5928,7 @@ field. Reset the bracket count and the names_found field. Also reset the hwm
 field; this time it's used for remembering forward references to subpatterns.
 */
 
+cd->final_bracount = cd->bracount;  /* Save for checking forward references */
 cd->bracount = 0;
 cd->names_found = 0;
 cd->name_table = (uschar *)re + re->name_table_offset;

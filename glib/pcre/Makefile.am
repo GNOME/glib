@@ -1,3 +1,5 @@
+include $(top_srcdir)/Makefile.decl
+
 INCLUDES = \
 	-DG_LOG_DOMAIN=\"GLib-GRegex\" \
 	-DSUPPORT_UCP \
@@ -58,7 +60,7 @@ libpcre_la_LIBADD = $(DEP_LIBS)
 
 libpcre_la_LDFLAGS = -no-undefined
 
-EXTRA_DIST =				\
+EXTRA_DIST +=				\
 		COPYING			\
 		makefile.msc
 
