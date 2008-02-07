@@ -1,3 +1,8 @@
+2008-02-07  Ryan Lortie  <desrt@desrt.ca>
+
+	* glib/gmessages.h (g_error): add for(;;); after the g_log call so
+	that GCC stops issuing false warnings about reachability  Bug #514920
+
 2008-02-06  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/pcre/*: Update the internal copy of PCRE to 7.6

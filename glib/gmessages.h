@@ -130,9 +130,14 @@ void g_assert_warning         (const char *log_domain,
 #define G_LOG_DOMAIN    ((gchar*) 0)
 #endif  /* G_LOG_DOMAIN */
 #ifdef G_HAVE_ISO_VARARGS
-#define g_error(...)    g_log (G_LOG_DOMAIN,         \
+/* for(;;); so that GCC knows that control doesn't go past g_error() */
+#define g_error(...)  G_STMT_START {                 \
+                        g_log (G_LOG_DOMAIN,         \
                                G_LOG_LEVEL_ERROR,    \
-                               __VA_ARGS__)
+                               __VA_ARGS__);         \
+                        for (;;);                    \
+                      } G_STMT_END
+                        
 #define g_message(...)  g_log (G_LOG_DOMAIN,         \
                                G_LOG_LEVEL_MESSAGE,  \
                                __VA_ARGS__)
@@ -146,9 +151,13 @@ void g_assert_warning         (const char *log_domain,
                                G_LOG_LEVEL_DEBUG,    \
                                __VA_ARGS__)
 #elif defined(G_HAVE_GNUC_VARARGS)
-#define g_error(format...)      g_log (G_LOG_DOMAIN,         \
+#define g_error(format...)    G_STMT_START {                 \
+                                g_log (G_LOG_DOMAIN,         \
                                        G_LOG_LEVEL_ERROR,    \
-                                       format)
+                                       format);              \
+                                for (;;);                    \
+                              } G_STMT_END
+                              
 #define g_message(format...)    g_log (G_LOG_DOMAIN,         \
                                        G_LOG_LEVEL_MESSAGE,  \
                                        format)
@@ -170,6 +179,8 @@ g_error (const gchar *format,
   va_start (args, format);
   g_logv (G_LOG_DOMAIN, G_LOG_LEVEL_ERROR, format, args);
   va_end (args);
+
+  for(;;);
 }
 static void
 g_message (const gchar *format,
