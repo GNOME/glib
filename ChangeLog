@@ -1,5 +1,7 @@
 2008-02-06  Matthias Clasen  <mclasen@redhat.com>
 
+	* NEWS: Updates
+
 	* glib/pcre/*: Update the internal copy of PCRE to 7.6
 
 2008-01-07  Matthias Clasen  <mclasen@redhat.com>
