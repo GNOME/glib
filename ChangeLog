@@ -1,3 +1,15 @@
+2008-02-07  Tor Lillqvist  <tml@novell.com>
+
+	* configure.in: Unfortunately the mingw implementations of
+	C99-style snprintf and vsnprintf don't seem to be quite good
+	enough, at least not in mingw-runtime-3.14. I don't know exactly
+	what the problem is, but it is related to floating point
+	formatting and decimal point vs. comma, and the symptoms show up
+	in some dialogs in GIMP, presumably also elsewhere. The simple
+	tests in AC_FUNC_VSNPRINTF_C99 and AC_FUNC_SNPRINTF_C99 aren't
+	rigorous enough to notice, though. So preset
+	ac_cv_func_vsnprintf_c99 and ac_cv_func_snprintf_c99 to "no".
+
 2008-02-07 12:58:54  Tim Janik  <timj@imendio.com>
 
 	* Makefile.am: fixed build order to build gobject after gmodule gthread
