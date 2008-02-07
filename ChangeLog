@@ -1,3 +1,8 @@
+2008-02-07 12:58:54  Tim Janik  <timj@imendio.com>
+
+	* Makefile.am: fixed build order to build gobject after gmodule gthread
+	so gobject tests can be threaded.
+
 2008-02-07  Ryan Lortie  <desrt@desrt.ca>
 
 	* glib/gmessages.h (g_error): add for(;;); after the g_log call so
