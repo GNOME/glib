@@ -1,10 +1,10 @@
 # GLib'i eesti tõlge.
 # Estonian translation of GLib.
-# 
+#
 # Copyright (C) 2002, 2005, 2006 Free Software Foundation, Inc.
 # Copyright (C) 2007 The GNOME Project.
 # This file is distributed under the same license as the GLib package.
-# 
+#
 # Allan Sims <allsi@eau.ee>, 2002.
 # Ivar Smolin <okul@linux.ee>, 2005-2007.
 # Priit Laes <amd@store20.com>, 2005, 2007.
@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLib 2.14\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-01-07 21:07-0500\n"
+"POT-Creation-Date: 2008-02-07 01:08-0500\n"
 "PO-Revision-Date: 2007-10-29 19:30+0300\n"
 "Last-Translator: Priit Laes <amd@store20.com>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"

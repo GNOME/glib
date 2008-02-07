@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.glib-2-14\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-01-07 21:07-0500\n"
+"POT-Creation-Date: 2008-02-07 01:08-0500\n"
 "PO-Revision-Date: 2007-12-13 15:43+0100\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Spanish <gnome-es-list@gnome.org>\n"
@@ -403,8 +403,8 @@ msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
 "'%s'"
 msgstr ""
-"Carácter «%s» impropio, se esperaba un carácter '>' para terminar la "
-"etiqueta de inicio del elemento «%s»"
+"Carácter «%s» impropio, se esperaba un carácter '>' para terminar la etiqueta "
+"de inicio del elemento «%s»"
 
 #: glib/gmarkup.c:1253
 #, c-format
@@ -431,8 +431,8 @@ msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
 "giving value for attribute '%s' of element '%s'"
 msgstr ""
-"Carácter «%s» impropio, se esperaba una marca de apertura de comillas "
-"después del signo igual al darle valor al atributo «%s» del elemento «%s»"
+"Carácter «%s» impropio, se esperaba una marca de apertura de comillas después "
+"del signo igual al darle valor al atributo «%s» del elemento «%s»"
 
 #: glib/gmarkup.c:1529
 #, c-format
@@ -440,8 +440,8 @@ msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 msgstr ""
-"«%s» no es un carácter válido a continuación de los caracteres '</'; «%s»  "
-"no debe iniciar un nombre de elemento"
+"«%s» no es un carácter válido a continuación de los caracteres '</'; «%s»  no "
+"debe iniciar un nombre de elemento"
 
 #: glib/gmarkup.c:1569
 #, c-format
@@ -835,8 +835,7 @@ msgstr ""
 #: glib/gshell.c:538
 #, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
-msgstr ""
-"El texto termina justo después de un carácter '\\'. (El texto era «%s»)"
+msgstr "El texto termina justo después de un carácter '\\'. (El texto era «%s»)"
 
 #: glib/gshell.c:545
 #, c-format

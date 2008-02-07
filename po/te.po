@@ -5,12 +5,12 @@
 # విక్రం ఫణీంద్ర <vikramphaneendra@yahoo.co.in>, 2005
 # దండు ప్రసాద్ <dandu_prasad2000@yahoo.com>, 2005
 # రమణ సాయి <rmn_sai@yahoo.co.in>, 2005
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: GLIB\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-01-07 21:07-0500\n"
+"POT-Creation-Date: 2008-02-07 01:08-0500\n"
 "PO-Revision-Date: 2004-12-13 20:16+0100\n"
 "Last-Translator: రమణ సాయి <rmn_sai@yahoo.com>\n"
 "Language-Team: Free Software Foundation, Andhra Pradesh <fsfap@gnu.org.in>\n"

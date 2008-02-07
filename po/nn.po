@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-01-07 21:07-0500\n"
+"POT-Creation-Date: 2008-02-07 01:08-0500\n"
 "PO-Revision-Date: 2006-09-02 14:30+0200\n"
 "Last-Translator: Åsmund Skjæveland <aasmunds@fys.uio.no>\n"
 "Language-Team: Norwegian Nynorsk <i18n-nn@lister.ping.uio.no>\n"
@@ -84,8 +84,7 @@ msgstr "Det er ikkje laga nokon grupper i bokmerket for adressa «%s»"
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
 msgstr ""
-"Det er ikkje nokon program som heiter «%s» som har registrert bokmerke for «%"
-"s»"
+"Det er ikkje nokon program som heiter «%s» som har registrert bokmerke for «%s»"
 
 #: glib/gbookmarkfile.c:3404
 #, fuzzy, c-format
@@ -199,8 +198,7 @@ msgstr "Kunne ikkje opna fila «%s»: fdopen() feila: %s"
 #: glib/gfileutils.c:890
 #, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
-msgstr ""
-"Klarte ikkje å endra namnet på fila «%s» til «%s»: g_rename() feila: %s"
+msgstr "Klarte ikkje å endra namnet på fila «%s» til «%s»: g_rename() feila: %s"
 
 #: glib/gfileutils.c:932 glib/gfileutils.c:1390
 #, c-format
@@ -304,9 +302,9 @@ msgid ""
 "begins an entity; if this ampersand isn't supposed to be an entity, escape "
 "it as &amp;"
 msgstr ""
-"Teiknet «%s» er ikkje gyldig på byrjinga av eit entitetsnamn; &-teiknet "
-"opnar ein entitet; om dette et-teiknet ikkje er meint å vere ein entitet, "
-"skriv den som &amp;"
+"Teiknet «%s» er ikkje gyldig på byrjinga av eit entitetsnamn; &-teiknet opnar "
+"ein entitet; om dette et-teiknet ikkje er meint å vere ein entitet, skriv "
+"den som &amp;"
 
 #: glib/gmarkup.c:472
 #, c-format
@@ -403,8 +401,7 @@ msgstr ""
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
-"Merkeleg teikn «%s», venta ein «=» etter attributtnamnet «%s» av elementet «%"
-"s»"
+"Merkeleg teikn «%s», venta ein «=» etter attributtnamnet «%s» av elementet «%s»"
 
 #: glib/gmarkup.c:1295
 #, c-format
@@ -413,9 +410,9 @@ msgid ""
 "element '%s', or optionally an attribute; perhaps you used an invalid "
 "character in an attribute name"
 msgstr ""
-"Merkeleg teikn «%s», venta anten eit «>»-teikn eller «/»-teikn for å "
-"avslutta startmerket av elementet «%s», eller ein valfri attributt. Kan "
-"henda du brukte eit ugyldig teikn i attributtnamnet"
+"Merkeleg teikn «%s», venta anten eit «>»-teikn eller «/»-teikn for å avslutta "
+"startmerket av elementet «%s», eller ein valfri attributt. Kan henda du "
+"brukte eit ugyldig teikn i attributtnamnet"
 
 #: glib/gmarkup.c:1384
 #, c-format
@@ -423,8 +420,8 @@ msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
 "giving value for attribute '%s' of element '%s'"
 msgstr ""
-"Merkeleg teikn «%s», venta eit ope siteringsmerke etter likskapsteiknet for "
-"å gje ein verdi for attributten «%s» av elementet «%s»"
+"Merkeleg teikn «%s», venta eit ope siteringsmerke etter likskapsteiknet for å "
+"gje ein verdi for attributten «%s» av elementet «%s»"
 
 #: glib/gmarkup.c:1529
 #, c-format
@@ -432,8 +429,8 @@ msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 msgstr ""
-"«%s» er ikkje eit gyldig teikn etter teikna «<» eller «/». «%s» kan ikkje "
-"starta eit elementnamn"
+"«%s» er ikkje eit gyldig teikn etter teikna «<» eller «/». «%s» kan ikkje starta "
+"eit elementnamn"
 
 #: glib/gmarkup.c:1569
 #, c-format

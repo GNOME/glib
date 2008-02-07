@@ -4,12 +4,12 @@
 # Christian Neumair <chris@gnome-de.org>, 2002-2004.
 # Hendrik Richter <hendrikr@gnome.org>, 2004, 2005, 2006, 2007.
 # Hendrik Brandt <heb@gnome-de.org>, 2004.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-01-07 21:07-0500\n"
+"POT-Creation-Date: 2008-02-07 01:08-0500\n"
 "PO-Revision-Date: 2007-08-14 14:28+0200\n"
 "Last-Translator: Hendrik Richter <hendrikr@gnome.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
@@ -428,9 +428,9 @@ msgid ""
 "element '%s', or optionally an attribute; perhaps you used an invalid "
 "character in an attribute name"
 msgstr ""
-"Seltsames Zeichen »%s«, es wurde entweder ein Attribut oder aber »>« oder "
-"»/« erwartet, um das Start-Tag des Elements »%s« abzuschließen; vielleicht "
-"haben Sie ein ungültiges Zeichen in einem Attributnamen benutzt"
+"Seltsames Zeichen »%s«, es wurde entweder ein Attribut oder aber »>« oder »/« "
+"erwartet, um das Start-Tag des Elements »%s« abzuschließen; vielleicht haben "
+"Sie ein ungültiges Zeichen in einem Attributnamen benutzt"
 
 #: glib/gmarkup.c:1384
 #, c-format
@@ -438,9 +438,8 @@ msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
 "giving value for attribute '%s' of element '%s'"
 msgstr ""
-"Seltsames Zeichen »%s«; bei der Wertangabe für das Attribut »%s« des "
-"Elemente »%s« wurde ein Anführungszeichen nach dem Gleichheitszeichen "
-"erwartet"
+"Seltsames Zeichen »%s«; bei der Wertangabe für das Attribut »%s« des Elemente "
+"»%s« wurde ein Anführungszeichen nach dem Gleichheitszeichen erwartet"
 
 #: glib/gmarkup.c:1529
 #, c-format
@@ -448,8 +447,8 @@ msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 msgstr ""
-"»%s« ist kein gültiges Zeichen, wenn es auf die Zeichen »</« folgt; »%s« "
-"darf keinen Elementnamen beginnen"
+"»%s« ist kein gültiges Zeichen, wenn es auf die Zeichen »</« folgt; »%s« darf "
+"keinen Elementnamen beginnen"
 
 #: glib/gmarkup.c:1569
 #, c-format
@@ -457,8 +456,8 @@ msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 msgstr ""
-"»%s« ist kein gültiges Zeichen, wenn es auf den schließenden Elementnamen »%"
-"s« folgt; das erlaubte Zeichen ist »>«"
+"»%s« ist kein gültiges Zeichen, wenn es auf den schließenden Elementnamen »%s« "
+"folgt; das erlaubte Zeichen ist »>«"
 
 #: glib/gmarkup.c:1580
 #, c-format
@@ -468,8 +467,7 @@ msgstr "Element »%s« wurde geschlossen, kein Element ist derzeit offen"
 #: glib/gmarkup.c:1589
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
-msgstr ""
-"Element »%s« wurde geschlossen, aber das derzeit offene Element ist »%s«"
+msgstr "Element »%s« wurde geschlossen, aber das derzeit offene Element ist »%s«"
 
 #: glib/gmarkup.c:1755
 msgid "Document was empty or contained only whitespace"
@@ -494,8 +492,8 @@ msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
 "the tag <%s/>"
 msgstr ""
-"Dokument endete unerwartet, es wurde eine spitze Klammer »>«, die das Tag <%"
-"s/> schließt, erwartet"
+"Dokument endete unerwartet, es wurde eine spitze Klammer »>«, die das Tag <%s/"
+"> schließt, erwartet"
 
 #: glib/gmarkup.c:1791
 msgid "Document ended unexpectedly inside an element name"

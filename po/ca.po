@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-01-07 21:07-0500\n"
+"POT-Creation-Date: 2008-02-07 01:08-0500\n"
 "PO-Revision-Date: 2007-08-26 23:50+0200\n"
 "Last-Translator: Jordi Mallach <jordi@sindominio.net>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
@@ -221,8 +221,7 @@ msgstr ""
 #: glib/gfileutils.c:971
 #, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
-msgstr ""
-"No s'ha pogut escriure el fitxer «%s»: ha fallat la funció fwrite(): %s"
+msgstr "No s'ha pogut escriure el fitxer «%s»: ha fallat la funció fwrite(): %s"
 
 #: glib/gfileutils.c:990
 #, c-format
@@ -335,8 +334,7 @@ msgid ""
 "character without intending to start an entity - escape ampersand as &amp;"
 msgstr ""
 "L'entitat no acaba amb un punt i coma; segurament heu utilitzat un caràcter "
-"«&» sense intenció d'iniciar una entitat. Substituïu el caràcter «&» per "
-"&amp;"
+"«&» sense intenció d'iniciar una entitat. Substituïu el caràcter «&» per &amp;"
 
 #: glib/gmarkup.c:573
 #, c-format
@@ -364,8 +362,8 @@ msgid ""
 "as &amp;"
 msgstr ""
 "La referència del caràcter no acaba amb un punt i coma; segurament heu "
-"utilitzat un caràcter «&» sense intenció d'iniciar una entitat. Substituïu "
-"el caràcter «&» per &amp;"
+"utilitzat un caràcter «&» sense intenció d'iniciar una entitat. Substituïu el "
+"caràcter «&» per &amp;"
 
 #: glib/gmarkup.c:709
 msgid "Unfinished entity reference"
@@ -402,8 +400,8 @@ msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
 msgstr ""
-"«%s» no és un caràcter vàlid després d'un caràcter «<»; no pot començar un "
-"nom d'element"
+"«%s» no és un caràcter vàlid després d'un caràcter «<»; no pot començar un nom "
+"d'element"
 
 #: glib/gmarkup.c:1164
 #, c-format
@@ -411,8 +409,8 @@ msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
 "'%s'"
 msgstr ""
-"S'ha trobat un caràcter estrany «%s», s'esperava un «>» per acabar "
-"l'etiqueta d'inici de l'element «%s»"
+"S'ha trobat un caràcter estrany «%s», s'esperava un «>» per acabar l'etiqueta "
+"d'inici de l'element «%s»"
 
 #: glib/gmarkup.c:1253
 #, c-format
@@ -440,8 +438,7 @@ msgid ""
 "giving value for attribute '%s' of element '%s'"
 msgstr ""
 "S'ha trobat un caràcter estrany («%s»), s'esperaven unes cometes d'obertura "
-"després del signe «igual que» en donar valor a l'atribut «%s» de l'element «%"
-"s»"
+"després del signe «igual que» en donar valor a l'atribut «%s» de l'element «%s»"
 
 #: glib/gmarkup.c:1529
 #, c-format
@@ -449,8 +446,8 @@ msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 msgstr ""
-"«%s» no és un caràcter vàlid després dels caracters «</»; un nom d'element "
-"no pot començar per «%s»"
+"«%s» no és un caràcter vàlid després dels caracters «</»; un nom d'element no "
+"pot començar per «%s»"
 
 #: glib/gmarkup.c:1569
 #, c-format
@@ -834,8 +831,8 @@ msgstr "no es reconeix la seqüència d'escapament"
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr ""
-"S'ha produït un error en analitzar el text de reemplaçament «%s» al caràcter "
-"%lu: %s"
+"S'ha produït un error en analitzar el text de reemplaçament «%s» al caràcter %"
+"lu: %s"
 
 #: glib/gshell.c:70
 #, c-format
@@ -1070,8 +1067,8 @@ msgstr "El fitxer és buit"
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr ""
-"El fitxer de claus conté la línia «%s» que no és una parella clau-valor, "
-"grup o comentari"
+"El fitxer de claus conté la línia «%s» que no és una parella clau-valor, grup "
+"o comentari"
 
 #: glib/gkeyfile.c:820
 #, c-format
@@ -1123,8 +1120,8 @@ msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
 "interpreted."
 msgstr ""
-"El fitxer de claus conté la clau «%s» en el grup «%s», que té un valor que "
-"no es pot interpretar."
+"El fitxer de claus conté la clau «%s» en el grup «%s», que té un valor que no "
+"es pot interpretar."
 
 #: glib/gkeyfile.c:2500 glib/gkeyfile.c:2685 glib/gkeyfile.c:3211
 #, c-format

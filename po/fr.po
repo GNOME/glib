@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.12.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-01-07 21:07-0500\n"
+"POT-Creation-Date: 2008-02-07 01:08-0500\n"
 "PO-Revision-Date: 2007-12-14 13:17+0100\n"
 "Last-Translator: Stéphane Raimbault <stephane.raimbault@gmail.com>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
@@ -100,8 +100,7 @@ msgstr "L'expansion de la ligne d'exécution « %s » avec l'URI « %s » a 
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr ""
-"La conversion du jeu de caractères « %s » vers « %s » n'est pas prise en "
-"charge"
+"La conversion du jeu de caractères « %s » vers « %s » n'est pas prise en charge"
 
 #: glib/gconvert.c:428 glib/gconvert.c:506
 #, c-format
@@ -210,8 +209,7 @@ msgstr "L'ouverture du fichier « %s » a échoué : fdopen() a échoué : %
 #, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr ""
-"Le renommage du fichier « %s » vers « %s » a échoué : g_rename() a échoué : %"
-"s"
+"Le renommage du fichier « %s » vers « %s » a échoué : g_rename() a échoué : %s"
 
 #: glib/gfileutils.c:932 glib/gfileutils.c:1390
 #, c-format
@@ -239,14 +237,13 @@ msgstr "La fermeture du fichier « %s » a échoué : fclose() a échoué : 
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr ""
-"Le fichier existant « %s » ne peut pas être supprimé : g_unlink() a échoué : "
-"%s"
+"Le fichier existant « %s » ne peut pas être supprimé : g_unlink() a échoué : %"
+"s"
 
 #: glib/gfileutils.c:1352
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
-msgstr ""
-"Le modèle « %s » n'est pas valide, il ne devrait pas contenir de « %s »"
+msgstr "Le modèle « %s » n'est pas valide, il ne devrait pas contenir de « %s »"
 
 #: glib/gfileutils.c:1365
 #, c-format
@@ -406,8 +403,8 @@ msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
 msgstr ""
-"« %s » n'est pas un caractère valide suivant le caractère « < » ; il ne "
-"semble pas commencer un nom d'élément"
+"« %s » n'est pas un caractère valide suivant le caractère « < » ; il ne semble "
+"pas commencer un nom d'élément"
 
 #: glib/gmarkup.c:1164
 #, c-format
@@ -433,10 +430,9 @@ msgid ""
 "element '%s', or optionally an attribute; perhaps you used an invalid "
 "character in an attribute name"
 msgstr ""
-"Caractère bizarre « %s », un caractère « > » ou  « / » est requis pour "
-"terminer la balise de début de l'élément « %s », ou optionnellement un "
-"attribut ; peut-être que vous utilisez un caractère non valide dans un nom "
-"d'attribut"
+"Caractère bizarre « %s », un caractère « > » ou  « / » est requis pour terminer "
+"la balise de début de l'élément « %s », ou optionnellement un attribut ; peut-"
+"être que vous utilisez un caractère non valide dans un nom d'attribut"
 
 #: glib/gmarkup.c:1384
 #, c-format
@@ -453,8 +449,8 @@ msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 msgstr ""
-"« %s » n'est pas un caractère valide suivant les caractères « </ » ; « %s » "
-"ne peut pas commencer un nom d'élément"
+"« %s » n'est pas un caractère valide suivant les caractères « </ » ; « %s » ne "
+"peut pas commencer un nom d'élément"
 
 #: glib/gmarkup.c:1569
 #, c-format
@@ -462,8 +458,8 @@ msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 msgstr ""
-"« %s » n'est pas un caractère valide suivant le nom l'élément de fermeture "
-"« %s » ; le caractère autorisé est « > »"
+"« %s » n'est pas un caractère valide suivant le nom l'élément de fermeture « %"
+"s » ; le caractère autorisé est « > »"
 
 #: glib/gmarkup.c:1580
 #, c-format
@@ -842,8 +838,7 @@ msgstr "séquence d'échappement inconnue"
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr ""
-"Erreur lors de l'analyse du texte de substitution « %s » au caractère %lu : %"
-"s"
+"Erreur lors de l'analyse du texte de substitution « %s » au caractère %lu : %s"
 
 #: glib/gshell.c:70
 #, c-format
@@ -861,8 +856,7 @@ msgstr ""
 #, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
 msgstr ""
-"Le texte s'est terminé juste après un caractère « \\ ». (Le texte était « %"
-"s »)"
+"Le texte s'est terminé juste après un caractère « \\ ». (Le texte était « %s »)"
 
 #: glib/gshell.c:545
 #, c-format
@@ -1083,8 +1077,8 @@ msgstr "Le fichier est vide"
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr ""
-"Le fichier de clés contient la ligne « %s » qui n'est ni une paire de "
-"valeurs de clé, ni un groupe, ni un commentaire"
+"Le fichier de clés contient la ligne « %s » qui n'est ni une paire de valeurs "
+"de clé, ni un groupe, ni un commentaire"
 
 #: glib/gkeyfile.c:820
 #, c-format
@@ -1123,8 +1117,8 @@ msgstr "Le fichier de clés n'a pas de clé « %s »"
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr ""
-"Le fichier de clés contient la clé « %s » avec la valeur « %s » qui n'est "
-"pas codé en UTF-8"
+"Le fichier de clés contient la clé « %s » avec la valeur « %s » qui n'est pas "
+"codé en UTF-8"
 
 #: glib/gkeyfile.c:1401 glib/gkeyfile.c:1514 glib/gkeyfile.c:1887
 #, c-format
