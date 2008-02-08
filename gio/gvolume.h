@@ -109,6 +109,9 @@ struct _GVolumeIface
   char *   (*get_identifier)           (GVolume             *volume,
 					const char          *kind);
   char **  (*enumerate_identifiers)    (GVolume             *volume);
+
+  gboolean (*should_automount)         (GVolume             *volume);
+  
 };
 
 GType     g_volume_get_type       (void) G_GNUC_CONST;
@@ -120,6 +123,7 @@ GDrive * g_volume_get_drive             (GVolume              *volume);
 GMount * g_volume_get_mount             (GVolume              *volume);
 gboolean g_volume_can_mount             (GVolume              *volume);
 gboolean g_volume_can_eject             (GVolume              *volume);
+gboolean g_volume_should_automount      (GVolume              *volume);
 void     g_volume_mount                 (GVolume              *volume,
 					 GMountOperation      *mount_operation,
 					 GCancellable         *cancellable,

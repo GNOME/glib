@@ -713,6 +713,7 @@ g_volume_get_icon
 g_volume_get_uuid 
 g_volume_get_drive 
 g_volume_get_mount
+g_volume_should_automount
 g_volume_can_mount
 g_volume_can_eject
 g_volume_mount 

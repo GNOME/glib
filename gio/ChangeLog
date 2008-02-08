@@ -1,3 +1,11 @@
+2008-02-08  Alexander Larsson  <alexl@redhat.com>
+
+	* gio.symbols: 
+        * gunixvolume.c:
+        * gvolume.[ch]:
+        Add g_volume_should_automount.
+	Docs needed.
+
 2008-02-07  Tor Lillqvist  <tml@novell.com>
 
 	* tests/Makefile.am (TEST_PROGS): live-g-file won't build on

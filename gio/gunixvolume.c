@@ -244,6 +244,14 @@ g_unix_volume_can_eject (GVolume *volume)
   return unix_volume->can_eject;
 }
 
+static gboolean
+g_unix_volume_should_automount (GVolume *volume)
+{
+  /* We automount all local volumes because we don't even
+     make the internal stuff visible */
+  return TRUE;
+}
+
 static GDrive *
 g_unix_volume_get_drive (GVolume *volume)
 {
@@ -462,7 +470,6 @@ g_unix_volume_enumerate_identifiers (GVolume *volume)
   return res;
 }
 
-
 static void
 g_unix_volume_volume_iface_init (GVolumeIface *iface)
 {
@@ -473,6 +480,7 @@ g_unix_volume_volume_iface_init (GVolumeIface *iface)
   iface->get_mount = g_unix_volume_get_mount;
   iface->can_mount = g_unix_volume_can_mount;
   iface->can_eject = g_unix_volume_can_eject;
+  iface->should_automount = g_unix_volume_should_automount;
   iface->mount_fn = g_unix_volume_mount;
   iface->mount_finish = g_unix_volume_mount_finish;
   iface->eject = g_unix_volume_eject;

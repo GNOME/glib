@@ -288,6 +288,22 @@ g_volume_can_eject (GVolume *volume)
   return (* iface->can_eject) (volume);
 }
 
+gboolean
+g_volume_should_automount (GVolume *volume)
+{
+  GVolumeIface *iface;
+
+  g_return_val_if_fail (G_IS_VOLUME (volume), FALSE);
+
+  iface = G_VOLUME_GET_IFACE (volume);
+
+  if (iface->should_automount == NULL)
+    return FALSE;
+
+  return (* iface->should_automount) (volume);
+}
+
+
 /**
  * g_volume_mount:
  * @volume: a #GVolume.
