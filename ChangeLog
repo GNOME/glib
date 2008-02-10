@@ -1,5 +1,9 @@
 2008-02-09  Matthias Clasen <mclasen@redhat.com>
 
+	* configure.in: Check for getmntent_r.
+
+2008-02-09  Matthias Clasen <mclasen@redhat.com>
+
 	* Makefile.decl: /bin/ksh can't handle a for-loop with no 
 	arguments, so add a "." for when $(SUBDIRS) is empty.
 
