@@ -1,5 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 
+include $(top_srcdir)/gcov.mak
+
 INCLUDES = -DGIREPO_DEFAULT_SEARCH_PATH="\"$(libdir)\""
 
 lib_LTLIBRARIES = libgirepository.la
@@ -16,4 +18,3 @@ girepodir = $(includedir)/glib-2.0/gobject-introspection
 girepo_HEADERS = girepository.h
 
 GCOV_SOURCES = $(libgirepository_la_SOURCES)
-include $(top_srcdir)/gcov.mak
