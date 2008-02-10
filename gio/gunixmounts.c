@@ -324,11 +324,17 @@ get_mtab_monitor_file (void)
 #endif
 }
 
+#ifndef HAVE_GETMNTENT_R
 G_LOCK_DEFINE_STATIC(getmntent);
+#endif
 
 static GList *
 _g_get_unix_mounts ()
 {
+#ifdef HAVE_GETMNTENT_R
+  struct mntent ent;
+  char buf[1024];
+#endif
   struct mntent *mntent;
   FILE *file;
   char *read_file;
@@ -346,8 +352,12 @@ _g_get_unix_mounts ()
   
   mounts_hash = g_hash_table_new (g_str_hash, g_str_equal);
   
+#ifdef HAVE_GETMNTENT_R
+  while ((mntent = getmntent_r (file, &ent, buf, sizeof (buf))) != NULL)
+#else
   G_LOCK (getmntent);
   while ((mntent = getmntent (file)) != NULL)
+#endif
     {
       /* ignore any mnt_fsname that is repeated and begins with a '/'
        *
@@ -392,7 +402,9 @@ _g_get_unix_mounts ()
   
   endmntent (file);
 
+#ifndef HAVE_GETMNTENT_R
   G_UNLOCK (getmntent);
+#endif
   
   return g_list_reverse (return_list);
 }
@@ -608,6 +620,10 @@ get_fstab_file (void)
 static GList *
 _g_get_unix_mount_points (void)
 {
+#ifdef HAVE_GETMNTENT_R
+  struct mntent ent;
+  char buf[1024];
+#endif
   struct mntent *mntent;
   FILE *file;
   char *read_file;
@@ -622,8 +638,12 @@ _g_get_unix_mount_points (void)
 
   return_list = NULL;
   
+#ifdef HAVE_GETMNTENT_R
+  while ((mntent = getmntent_r (file, &ent, buf, sizeof (buf))) != NULL)
+#else
   G_LOCK (getmntent);
   while ((mntent = getmntent (file)) != NULL)
+#endif
     {
       if ((strcmp (mntent->mnt_dir, "ignore") == 0) ||
 	  (strcmp (mntent->mnt_dir, "swap") == 0))
@@ -661,7 +681,10 @@ _g_get_unix_mount_points (void)
     }
   
   endmntent (file);
+
+#ifndef HAVE_GETMNTENT_R
   G_UNLOCK (getmntent);
+#endif
   
   return g_list_reverse (return_list);
 }
@@ -2017,19 +2040,28 @@ _resolve_dev_root (void)
        */
       f = fopen ("/etc/mtab", "r");
       if (f != NULL) {
+	struct mntent *entp;
+#ifdef HAVE_GETMNTENT_R        
         struct mntent ent;
-        
-        while (getmntent_r (f, &ent, buf, sizeof (buf)) != NULL) {
-          
-          if (stat (ent.mnt_fsname, &statbuf) == 0 &&
+        while ((entp = getmntent_r (f, &ent, buf, sizeof (buf))) != NULL) {
+#else
+	G_LOCK (getmntent);
+	while ((entp = getmntent (f)) != NULL) { 
+#endif          
+          if (stat (entp->mnt_fsname, &statbuf) == 0 &&
               statbuf.st_dev == root_dev) {
-            strncpy (real_dev_root, ent.mnt_fsname, sizeof (real_dev_root) - 1);
+            strncpy (real_dev_root, entp->mnt_fsname, sizeof (real_dev_root) - 1);
             real_dev_root[sizeof (real_dev_root) - 1] = '\0';
             fclose (f);
             goto found;
           }
         }
-        fclose (f);
+
+        endmntent (f);
+
+#ifndef HAVE_GETMNTENT_R
+	G_UNLOCK (getmntent);
+#endif
       }                                        
       
       /* no, that didn't work.. next we could scan /dev ... but I digress.. */

@@ -1,3 +1,17 @@
+2008-02-09  Matthias Clasen <mclasen@redhat.com>
+
+	* gunixmounts.c: Consistently use getmntent_r() and fall
+	back to getmntent().  (#515492)
+
+2008-02-09  Matthias Clasen <mclasen@redhat.com>
+
+	* gbufferedinputstream.c:
+	* ginputstream.c:
+	* goutputstream.c: Use G_STRFUNC instead of __FUNCTION__.
+
+	* tests/data-input-stream.c:
+	* tests/data-output-stream.c: Portability fixes.
+
 2008-02-08  Alexander Larsson  <alexl@redhat.com>
 
 	* gio.symbols: 
