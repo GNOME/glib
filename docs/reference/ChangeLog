@@ -1,3 +1,8 @@
+2008-02-10  Philip Withnall  <pwithnall@svn.gnome.org>
+
+	* glib/tmpl/modules.sgml: Improve the documentation for
+	the G_MODULE_EXPORT macro. (#514470)
+
 2008-02-09  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/tmpl/i18n.sgml: Improve the documentation for the
