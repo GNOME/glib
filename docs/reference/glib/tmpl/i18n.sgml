@@ -90,9 +90,10 @@ messages. Note that this only works with GNU gettext >= 0.15.
 
 <!-- ##### MACRO N_ ##### -->
 <para>
-Marks a string for translation, gets replaced with the untranslated string
-at runtime. This is useful in situations where the translated strings can't
+Only marks a string for translation.
+This is useful in situations where the translated strings can't
 be directly used, e.g. in string array initializers. 
+To get the translated string, call gettext() at runtime.
 </para>
 <informalexample><programlisting>
      {

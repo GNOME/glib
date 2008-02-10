@@ -1,3 +1,8 @@
+2008-02-09  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/tmpl/i18n.sgml: Improve the documentation for the
+	N_() macro.  (#514053, Tommi Vainikainen)
+
 2008-01-28  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.15.4 ===
