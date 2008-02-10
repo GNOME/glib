@@ -39,7 +39,6 @@ test_read_lines (GDataStreamNewlineType newline_type)
   char *lines;
   int size;
   int i;
-  int size;
 
 #define TEST_STRING	"some_text"
   
