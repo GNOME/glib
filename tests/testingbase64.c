@@ -163,7 +163,7 @@ test_base64_encode (void)
       length = i + 1;
       text = g_base64_encode (myraw.data, length);
       g_assert_cmpstr (text, ==, ok_100_encode_strs[i]);
-      //      printf ("\"%s\",\n",text);
+      /* printf ("\"%s\",\n",text); */
       g_free (text);
     }
 }
@@ -179,7 +179,7 @@ decode_and_compare (const gchar            *datap,
 
   data2 = g_base64_decode (datap, &len);
   g_assert_cmpint (len, ==, p->length);
-  //      g_print ("length: got %d, expected %d\n",len, length);
+  /* g_print ("length: got %d, expected %d\n",len, length); */
   memcmp_decode = memcmp (p->data, data2, p->length);
   g_assert_cmpint (memcmp_decode, ==, 0);
   g_free (data2);

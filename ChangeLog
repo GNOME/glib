@@ -1,3 +1,15 @@
+2008-02-09  Matthias Clasen <mclasen@redhat.com>
+
+	* Makefile.decl: /bin/ksh can't handle a for-loop with no 
+	arguments, so add a "." for when $(SUBDIRS) is empty.
+
+	* glib/tests/option-context.c:
+	* glib/tests/testing.c:
+	* gthread/gthread-posix.c:
+	* tets/testingbase64.c:
+	* glib/gtester.c: 
+	* glib/gsequence.c: Portability fixes.  (#515154)
+
 2008-02-07  Tor Lillqvist  <tml@novell.com>
 
 	* configure.in: Unfortunately the mingw implementations of

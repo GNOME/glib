@@ -273,7 +273,7 @@ launch_test_binary (const char *binary,
   GTestLogBuffer *tlb;
   GSList *slist, *free_list = NULL;
   GError *error = NULL;
-  const gchar *argv[99 + g_slist_length (subtest_args) + g_slist_length (subtest_paths)];
+  const gchar *argv[ARG_MAX];
   GPid pid = 0;
   gint report_pipe[2] = { -1, -1 };
   guint child_report_cb_id = 0;
@@ -293,7 +293,7 @@ launch_test_binary (const char *binary,
   argv[i++] = binary;
   for (slist = subtest_args; slist; slist = slist->next)
     argv[i++] = (gchar*) slist->data;
-  // argv[i++] = "--debug-log";
+  /* argv[i++] = "--debug-log"; */
   if (subtest_quiet)
     argv[i++] = "--quiet";
   if (subtest_verbose)

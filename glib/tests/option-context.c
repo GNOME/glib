@@ -71,7 +71,11 @@ group_captions (void)
 
       for (j = 0; j < G_N_ELEMENTS (help_variants); ++j)
         {
-          gchar *args[] = { __FILE__, help_variants[j], NULL };
+          gchar *args[3];
+
+          args[0] = __FILE__;
+          args[1] = help_variants[j];
+          args[2] = NULL;
 
           g_test_message ("test setup: args='%s', main-entries=%d, test-entries=%d",
                           args[1], have_main_entries, have_test_entries);

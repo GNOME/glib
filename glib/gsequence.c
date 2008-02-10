@@ -589,7 +589,11 @@ g_sequence_sort (GSequence        *seq,
                  GCompareDataFunc  cmp_func,
                  gpointer          cmp_data)
 {
-  SortInfo info = { cmp_func, cmp_data, seq->end_node };
+  SortInfo info;
+
+  info.cmp_func = cmp_func;
+  info.cmp_data = cmp_data;
+  info.end_node = seq->end_node;
   
   check_seq_access (seq);
   
@@ -621,11 +625,13 @@ g_sequence_insert_sorted (GSequence        *seq,
                           GCompareDataFunc  cmp_func,
                           gpointer          cmp_data)
 {
-  SortInfo info = { cmp_func, cmp_data, NULL };
-  
+  SortInfo info;
+
   g_return_val_if_fail (seq != NULL, NULL);
   g_return_val_if_fail (cmp_func != NULL, NULL);
   
+  info.cmp_func = cmp_func;
+  info.cmp_data = cmp_data;
   info.end_node = seq->end_node;
   check_seq_access (seq);
   
@@ -654,10 +660,12 @@ g_sequence_sort_changed (GSequenceIter    *iter,
                          GCompareDataFunc  cmp_func,
                          gpointer          cmp_data)
 {
-  SortInfo info = { cmp_func, cmp_data, NULL };
-  
+  SortInfo info;
+
   g_return_if_fail (!is_end (iter));
   
+  info.cmp_func = cmp_func;
+  info.cmp_data = cmp_data;
   info.end_node = get_sequence (iter)->end_node;
   check_iter_access (iter);
   
@@ -689,10 +697,12 @@ g_sequence_search (GSequence        *seq,
                    GCompareDataFunc  cmp_func,
                    gpointer          cmp_data)
 {
-  SortInfo info = { cmp_func, cmp_data, NULL };
-  
+  SortInfo info;
+
   g_return_val_if_fail (seq != NULL, NULL);
   
+  info.cmp_func = cmp_func;
+  info.cmp_data = cmp_data;
   info.end_node = seq->end_node;
   check_seq_access (seq);
   

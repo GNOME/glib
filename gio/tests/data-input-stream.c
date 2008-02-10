@@ -128,9 +128,9 @@ test_read_until (void)
   int line;
   int i;
   
-#define REPEATS			10   //  number of rounds
+#define REPEATS			10   /* number of rounds */
 #define DATA_STRING		" part1 # part2 $ part3 % part4 ^"
-#define DATA_PART_LEN	7    //  number of characters between separators
+#define DATA_PART_LEN		7    /* number of characters between separators */
 #define DATA_SEP		"#$%^"
   const int DATA_PARTS_NUM = strlen (DATA_SEP) * REPEATS;
   
@@ -262,7 +262,7 @@ test_data_array (GInputStream *stream, GInputStream *base_stream,
 	  break;
 	}
       if ((data) && (! error))  
-	g_assert_cmpint (data, ==, TEST_DATA_RETYPE_BUFF(data_type, (buffer + pos)));
+	g_assert_cmpint (data, ==, TEST_DATA_RETYPE_BUFF(data_type, ((guchar*)buffer + pos)));
       
       pos += data_size;
     }
@@ -289,7 +289,7 @@ test_read_int (void)
       guchar x = 0;
       while (! x)
 	x = (guchar)g_rand_int (rand);
-      *(guchar*)(buffer + sizeof(guchar) * i) = x; 
+      *(guchar*)((guchar*)buffer + sizeof(guchar) * i) = x; 
     }
 
   base_stream = g_memory_input_stream_new ();

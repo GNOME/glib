@@ -13,7 +13,7 @@ TEST_PROGS =
 # test: run all tests in cwd and subdirs
 test:	${TEST_PROGS}
 	@test -z "${TEST_PROGS}" || ${GTESTER} --verbose ${TEST_PROGS}
-	@ for subdir in $(SUBDIRS) ; do \
+	@ for subdir in $(SUBDIRS) . ; do \
 	    test "$$subdir" = "." -o "$$subdir" = "po" || \
 	    ( cd $$subdir && $(MAKE) $(AM_MAKEFLAGS) $@ ) || exit $? ; \
 	  done
@@ -38,7 +38,7 @@ test-report perf-report full-report:	${TEST_PROGS}
 	    GTESTER_LOGDIR=`mktemp -d "\`pwd\`/.testlogs-XXXXXX"`; export GTESTER_LOGDIR ; \
 	    ignore_logdir=false ; \
 	  fi ; \
-	  for subdir in $(SUBDIRS) ; do \
+	  for subdir in $(SUBDIRS) . ; do \
 	    test "$$subdir" = "." -o "$$subdir" = "po" || \
 	    ( cd $$subdir && $(MAKE) $(AM_MAKEFLAGS) $@ ) || exit $? ; \
 	  done ; \

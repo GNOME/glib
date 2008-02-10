@@ -37,6 +37,7 @@ test_read_lines (GDataStreamNewlineType newline_type)
   GError *error = NULL;
   gpointer data;
   char *lines;
+  int size;
   int i;
   int size;
 
@@ -71,7 +72,7 @@ test_read_lines (GDataStreamNewlineType newline_type)
   g_assert_cmpint (g_data_output_stream_get_byte_order (G_DATA_OUTPUT_STREAM (stream)), ==, G_DATA_STREAM_BYTE_ORDER_LITTLE_ENDIAN);
   
   /*  compare data */
-  size = strlen(data);
+  size = strlen (data);
   g_assert_cmpint (size, <, MAX_LINES_BUFF);
   g_assert_cmpstr ((char*)data, ==, lines);
   
@@ -184,25 +185,25 @@ test_data_array (gpointer buffer, int len,
       switch (data_type)
 	{
 	case TEST_DATA_BYTE:
-	  res = g_data_output_stream_put_byte (G_DATA_OUTPUT_STREAM (stream), TEST_DATA_RETYPE_BUFF (data_type, (buffer + pos)), NULL, &error);
+	  res = g_data_output_stream_put_byte (G_DATA_OUTPUT_STREAM (stream), TEST_DATA_RETYPE_BUFF (data_type, ((guchar*)buffer + pos)), NULL, &error);
 	  break;
 	case TEST_DATA_INT16:
-	  res = g_data_output_stream_put_int16 (G_DATA_OUTPUT_STREAM (stream), TEST_DATA_RETYPE_BUFF (data_type, (buffer + pos)), NULL, &error);
+	  res = g_data_output_stream_put_int16 (G_DATA_OUTPUT_STREAM (stream), TEST_DATA_RETYPE_BUFF (data_type, ((guchar*)buffer + pos)), NULL, &error);
 	  break;
 	case TEST_DATA_UINT16:
-	  res = g_data_output_stream_put_uint16 (G_DATA_OUTPUT_STREAM (stream), TEST_DATA_RETYPE_BUFF (data_type, (buffer + pos)), NULL, &error);
+	  res = g_data_output_stream_put_uint16 (G_DATA_OUTPUT_STREAM (stream), TEST_DATA_RETYPE_BUFF (data_type, ((guchar*)buffer + pos)), NULL, &error);
 	  break;
 	case TEST_DATA_INT32:
-	  res = g_data_output_stream_put_int32 (G_DATA_OUTPUT_STREAM (stream), TEST_DATA_RETYPE_BUFF (data_type, (buffer + pos)), NULL, &error);
+	  res = g_data_output_stream_put_int32 (G_DATA_OUTPUT_STREAM (stream), TEST_DATA_RETYPE_BUFF (data_type, ((guchar*)buffer + pos)), NULL, &error);
 	  break;
 	case TEST_DATA_UINT32:
-	  res = g_data_output_stream_put_uint32 (G_DATA_OUTPUT_STREAM (stream), TEST_DATA_RETYPE_BUFF (data_type, (buffer + pos)), NULL, &error);
+	  res = g_data_output_stream_put_uint32 (G_DATA_OUTPUT_STREAM (stream), TEST_DATA_RETYPE_BUFF (data_type, ((guchar*)buffer + pos)), NULL, &error);
 	  break;
 	case TEST_DATA_INT64:
-	  res = g_data_output_stream_put_int64 (G_DATA_OUTPUT_STREAM (stream), TEST_DATA_RETYPE_BUFF (data_type, (buffer + pos)), NULL, &error);
+	  res = g_data_output_stream_put_int64 (G_DATA_OUTPUT_STREAM (stream), TEST_DATA_RETYPE_BUFF (data_type, ((guchar*)buffer + pos)), NULL, &error);
 	  break;
 	case TEST_DATA_UINT64:
-	  res = g_data_output_stream_put_uint64 (G_DATA_OUTPUT_STREAM (stream), TEST_DATA_RETYPE_BUFF (data_type, (buffer + pos)), NULL, &error);
+	  res = g_data_output_stream_put_uint64 (G_DATA_OUTPUT_STREAM (stream), TEST_DATA_RETYPE_BUFF (data_type, ((guchar*)buffer + pos)), NULL, &error);
 	  break;
 	}
       g_assert (error == NULL);
@@ -216,7 +217,7 @@ test_data_array (gpointer buffer, int len,
   data = 0;
   while (pos < len)
     {
-      data = TEST_DATA_RETYPE_BUFF(data_type, (stream_data + pos));
+      data = TEST_DATA_RETYPE_BUFF(data_type, ((guchar*)stream_data + pos));
       if (swap)
 	{
 	  switch (data_type)
@@ -237,7 +238,7 @@ test_data_array (gpointer buffer, int len,
 	      break;
 	    }
 	}
-      g_assert_cmpint (data, ==, TEST_DATA_RETYPE_BUFF(data_type, (buffer + pos)));
+      g_assert_cmpint (data, ==, TEST_DATA_RETYPE_BUFF(data_type, ((guchar*)buffer + pos)));
       break;
       
       pos += data_size;
@@ -263,7 +264,7 @@ test_read_int (void)
     {
       guchar x = 0;
       while (! x)  x = (guchar)g_rand_int (rand);
-      *(guchar*)(buffer + sizeof(guchar) * i) = x; 
+      *(guchar*)((guchar*)buffer + sizeof (guchar) * i) = x; 
     }
 
   for (i = 0; i < 3; i++)
