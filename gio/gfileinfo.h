@@ -174,6 +174,20 @@ typedef enum {
 #define G_FILE_ATTRIBUTE_STANDARD_COPY_NAME "standard::copy-name"           /* string */
 
 /**
+ * G_FILE_ATTRIBUTE_STANDARD_DESCRIPTION:
+ * 
+ * A key in the "standard" namespace for getting the description of the file.
+ * The description is a utf8 string that describes the file, generally containing
+ * the filename, but can also contain furter information. Example descriptions
+ * could be "filename (on hostname)" for a remote file or "filename (in trash)"
+ * for a file in the trash. This is useful for instance as the window title
+ * when displaying a directory or for a bookmarks menu.
+ * 
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_STRING.
+ **/
+#define G_FILE_ATTRIBUTE_STANDARD_DESCRIPTION "standard::description"        /* string */
+
+/**
  * G_FILE_ATTRIBUTE_STANDARD_ICON:
  * 
  * A key in the "standard" namespace for getting the icon for the file.

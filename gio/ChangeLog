@@ -1,5 +1,12 @@
 2008-02-11  Alexander Larsson  <alexl@redhat.com>
 
+	* gfileinfo.h:
+	Added new standard::description attribute.
+	Requested by Vincent, and useful for both
+	panel and nautilus
+
+2008-02-11  Alexander Larsson  <alexl@redhat.com>
+
         * gdesktopappinfo.c:
 	Minor docs cleanup
 
