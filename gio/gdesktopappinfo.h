@@ -57,6 +57,12 @@ void             g_desktop_app_info_set_desktop_env   (const char *desktop_env);
 #define G_IS_DESKTOP_APP_INFO_LOOKUP(obj)	 (G_TYPE_CHECK_INSTANCE_TYPE ((obj), G_TYPE_DESKTOP_APP_INFO_LOOKUP))
 #define G_DESKTOP_APP_INFO_LOOKUP_GET_IFACE(obj) (G_TYPE_INSTANCE_GET_INTERFACE ((obj), G_TYPE_DESKTOP_APP_INFO_LOOKUP, GDesktopAppInfoLookupIface))
 
+/**
+ * G_DESKTOP_APP_INFO_LOOKUP_EXTENSION_POINT_NAME:
+ *
+ * Extension point for default handler to URI association. See
+ * <link linkend="gio-extension-points">Extending GIO</link>.
+ */
 #define G_DESKTOP_APP_INFO_LOOKUP_EXTENSION_POINT_NAME "gio-desktop-app-info-lookup"
 
 /**

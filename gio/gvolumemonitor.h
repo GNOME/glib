@@ -42,6 +42,12 @@ G_BEGIN_DECLS
 #define G_IS_VOLUME_MONITOR(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), G_TYPE_VOLUME_MONITOR))
 #define G_IS_VOLUME_MONITOR_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_VOLUME_MONITOR))
 
+/**
+ * G_VOLUME_MONITOR_EXTENSION_POINT_NAME:
+ *
+ * Extension point for volume monitor functionality.
+ * See <link linkend="gio-extension-points">Extending GIO</link>.
+ */
 #define G_VOLUME_MONITOR_EXTENSION_POINT_NAME "gio-volume-monitor"
 
 /**
