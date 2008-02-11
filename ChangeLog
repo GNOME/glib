@@ -1,3 +1,7 @@
+2008-02-10  Matthias Clasen <mclasen@redhat.com>
+
+	* glib/gtestutils.c: Fix a typo in the docs.
+
 2008-02-09  Matthias Clasen <mclasen@redhat.com>
 
 	* configure.in: Check for getmntent_r.

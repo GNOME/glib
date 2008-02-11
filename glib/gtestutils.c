@@ -858,7 +858,7 @@ g_test_add_func (const char     *testpath,
 
 /**
  * g_test_add_data_func:
- * @testpath:   Slash seperated test case path name for the test.
+ * @testpath:   Slash separated test case path name for the test.
  * @test_data:  Test data argument for the test function.
  * @test_func:  The test function to invoke for this test.
  *
