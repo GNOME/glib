@@ -90,14 +90,17 @@ void    g_test_add_data_func            (const char     *testpath,
                                          void          (*test_func) (gconstpointer));
 /* hook up a test with fixture under test path */
 #define g_test_add(testpath, Fixture, tdata, fsetup, ftest, fteardown) \
-                                        ((void (*) (const char*,       \
+					G_STMT_START {			\
+                                         void (*add_vtable) (const char*,       \
                                                     gsize,             \
                                                     gconstpointer,     \
                                                     void (*) (Fixture*, gconstpointer),   \
                                                     void (*) (Fixture*, gconstpointer),   \
-                                                    void (*) (Fixture*, gconstpointer)))  \
-                                         (void*) g_test_add_vtable) \
-                                          (testpath, sizeof (Fixture), tdata, fsetup, ftest, fteardown)
+                                                    void (*) (Fixture*, gconstpointer)) =  (void (*) (const gchar *, gsize, gconstpointer, void (*) (Fixture*, gconstpointer), void (*) (Fixture*, gconstpointer), void (*) (Fixture*, gconstpointer))) g_test_add_vtable; \
+                                         add_vtable \
+                                          (testpath, sizeof (Fixture), tdata, fsetup, ftest, fteardown); \
+					} G_STMT_END
+
 /* add test messages to the test report */
 void    g_test_message                  (const char *format,
                                          ...) G_GNUC_PRINTF (1, 2);

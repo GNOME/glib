@@ -193,13 +193,13 @@ test_param_spec_gtype (void)
 			      G_TYPE_PARAM, G_PARAM_READWRITE);
   
   g_value_init (&value, G_TYPE_GTYPE);
-  g_value_set_gtype (&value, G_TYPE_NONE);
+  g_value_set_gtype (&value, G_TYPE_PARAM);
 
   g_assert (g_param_value_defaults (pspec, &value));
   
   g_value_set_gtype (&value, G_TYPE_INT);
   modified = g_param_value_validate (pspec, &value);
-  g_assert (modified && g_value_get_gtype (&value) == G_TYPE_NONE);
+  g_assert (modified && g_value_get_gtype (&value) == G_TYPE_PARAM);
 
   g_value_set_gtype (&value, G_TYPE_PARAM_INT);
   modified = g_param_value_validate (pspec, &value);

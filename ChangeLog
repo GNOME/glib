@@ -1,5 +1,13 @@
 2008-02-10  Matthias Clasen <mclasen@redhat.com>
 
+	* glib/gtestutils.h: Make the g_test_add macro work with 
+	gcc 4.3
+
+	* tests/gobject/paramspec-test.c: Adapt to recent changes in 
+	GParamGType initialization.
+
+2008-02-10  Matthias Clasen <mclasen@redhat.com>
+
 	* glib/gtestutils.c: Fix a typo in the docs.
 
 2008-02-09  Matthias Clasen <mclasen@redhat.com>
