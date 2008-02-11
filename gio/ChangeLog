@@ -1,5 +1,18 @@
 2008-02-11  Alexander Larsson  <alexl@redhat.com>
 
+        * gfile.[ch]:
+        * gmount.[ch]:
+        * gvolume.[ch]:
+	Added GMountMountFlags enum and added a flags
+	argument to all mount calls.
+	
+	This is an API/ABI change for future extensibility,
+	as I think we will need at least an
+	inhibit-autorun flag (the panel needs this).
+	There are no flags defined yet though.
+
+2008-02-11  Alexander Larsson  <alexl@redhat.com>
+
 	* gfileinfo.h:
 	Added new standard::description attribute.
 	Requested by Vincent, and useful for both

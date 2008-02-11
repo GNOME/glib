@@ -454,6 +454,7 @@ g_mount_eject_finish (GMount       *mount,
 /**
  * g_mount_remount:
  * @mount: a #GMount.
+ * @flags: flags affecting the operation
  * @mount_operation: a #GMountOperation or %NULL to avoid user interaction.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @callback: a #GAsyncReadyCallback, or %NULL.
@@ -471,6 +472,7 @@ g_mount_eject_finish (GMount       *mount,
  **/
 void
 g_mount_remount (GMount *mount,
+                 GMountMountFlags flags,
                  GMountOperation *mount_operation,
                  GCancellable *cancellable,
                  GAsyncReadyCallback callback,
@@ -492,7 +494,7 @@ g_mount_remount (GMount *mount,
       return;
     }
   
-  (* iface->remount) (mount, mount_operation, cancellable, callback, user_data);
+  (* iface->remount) (mount, flags, mount_operation, cancellable, callback, user_data);
 }
 
 /**

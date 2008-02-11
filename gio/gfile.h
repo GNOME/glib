@@ -67,13 +67,25 @@ typedef enum  {
   G_FILE_CREATE_PRIVATE = (1<<0)
 } GFileCreateFlags;
 
+
+/**
+ * GMountMountFlags:
+ * @G_MOUNT_MOUNT_NONE: No flags set.
+ * 
+ * Flags used when mounting a mount.
+ */
+typedef enum  {
+  G_MOUNT_MOUNT_NONE = 0,
+} GMountMountFlags;
+
+
 /**
  * GMountUnmountFlags:
  * @G_MOUNT_UNMOUNT_NONE: No flags set.
  * @G_MOUNT_UNMOUNT_FORCE: Unmount even if there are outstanding
  *  file operations on the mount.
  * 
- * Flags used when an operation may create a file.
+ * Flags used when an unmounting a mount.
  */
 typedef enum  {
   G_MOUNT_UNMOUNT_NONE = 0,
@@ -493,6 +505,7 @@ struct _GFileIface
 
 
   void                (*mount_mountable)           (GFile               *file,
+						    GMountMountFlags     flags,
 						    GMountOperation     *mount_operation,
 						    GCancellable         *cancellable,
 						    GAsyncReadyCallback  callback,
@@ -519,6 +532,7 @@ struct _GFileIface
 
 
   void     (*mount_enclosing_volume)        (GFile *location,
+					     GMountMountFlags flags,
 					     GMountOperation *mount_operation,
 					     GCancellable *cancellable,
 					     GAsyncReadyCallback callback,
@@ -788,6 +802,7 @@ gboolean                g_file_set_attribute_int64        (GFile                
 							   GCancellable               *cancellable,
 							   GError                    **error);
 void                    g_file_mount_enclosing_volume     (GFile                      *location,
+							   GMountMountFlags            flags,
 							   GMountOperation            *mount_operation,
 							   GCancellable               *cancellable,
 							   GAsyncReadyCallback         callback,
@@ -796,6 +811,7 @@ gboolean                g_file_mount_enclosing_volume_finish (GFile             
 							   GAsyncResult               *result,
 							   GError                    **error);
 void                    g_file_mount_mountable            (GFile                      *file,
+							   GMountMountFlags            flags,
 							   GMountOperation            *mount_operation,
 							   GCancellable               *cancellable,
 							   GAsyncReadyCallback         callback,

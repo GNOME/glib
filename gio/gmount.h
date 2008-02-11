@@ -113,6 +113,7 @@ struct _GMountIface
                                               GAsyncResult    *result,
                                               GError         **error);
   void               (*remount)              (GMount         *mount,
+					      GMountMountFlags     flags,
 					      GMountOperation     *mount_operation,
                                               GCancellable    *cancellable,
                                               GAsyncReadyCallback callback,
@@ -149,6 +150,7 @@ gboolean           g_mount_eject_finish         (GMount              *mount,
                                                  GAsyncResult        *result,
                                                  GError             **error);
 void               g_mount_remount              (GMount              *mount,
+						 GMountMountFlags     flags,
 						 GMountOperation     *mount_operation,
                                                  GCancellable        *cancellable,
                                                  GAsyncReadyCallback  callback,

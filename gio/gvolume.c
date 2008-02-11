@@ -328,6 +328,7 @@ g_volume_should_automount (GVolume *volume)
 /**
  * g_volume_mount:
  * @volume: a #GVolume.
+ * @flags: flags affecting the operation
  * @mount_operation: a #GMountOperation or %NULL to avoid user interaction.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @callback: a #GAsyncReadyCallback, or %NULL.
@@ -337,6 +338,7 @@ g_volume_should_automount (GVolume *volume)
  **/
 void
 g_volume_mount (GVolume    *volume,
+		GMountMountFlags     flags,
                 GMountOperation     *mount_operation,
                 GCancellable        *cancellable,
                 GAsyncReadyCallback  callback,
@@ -357,7 +359,7 @@ g_volume_mount (GVolume    *volume,
       return;
     }
   
-  (* iface->mount_fn) (volume, mount_operation, cancellable, callback, user_data);
+  (* iface->mount_fn) (volume, flags, mount_operation, cancellable, callback, user_data);
 }
 
 /**

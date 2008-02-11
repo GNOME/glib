@@ -120,6 +120,7 @@ struct _GVolumeIface
   gboolean  (*can_mount)      (GVolume             *volume);
   gboolean  (*can_eject)      (GVolume             *volume);
   void      (*mount_fn)       (GVolume             *volume,
+			       GMountMountFlags     flags,
                                GMountOperation     *mount_operation,
                                GCancellable        *cancellable,
                                GAsyncReadyCallback  callback,
@@ -155,6 +156,7 @@ gboolean g_volume_can_mount             (GVolume              *volume);
 gboolean g_volume_can_eject             (GVolume              *volume);
 gboolean g_volume_should_automount      (GVolume              *volume);
 void     g_volume_mount                 (GVolume              *volume,
+					 GMountMountFlags      flags,
 					 GMountOperation      *mount_operation,
 					 GCancellable         *cancellable,
 					 GAsyncReadyCallback   callback,

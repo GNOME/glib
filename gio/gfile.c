@@ -3277,6 +3277,7 @@ g_file_set_attribute_int64 (GFile                *file,
 /**
  * g_file_mount_mountable:
  * @file: input #GFile.
+ * @flags: flags affecting the operation
  * @mount_operation: a #GMountOperation, or %NULL to avoid user interaction.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @callback: a #GAsyncReadyCallback to call when the request is satisfied, or %NULL.
@@ -3295,6 +3296,7 @@ g_file_set_attribute_int64 (GFile                *file,
  **/
 void
 g_file_mount_mountable (GFile               *file,
+			GMountMountFlags     flags,
 			GMountOperation     *mount_operation,
 			GCancellable        *cancellable,
 			GAsyncReadyCallback  callback,
@@ -3315,6 +3317,7 @@ g_file_mount_mountable (GFile               *file,
 					 _("Operation not supported"));
   
   (* iface->mount_mountable) (file,
+			      flags,
 			      mount_operation,
 			      cancellable,
 			      callback,
@@ -4491,6 +4494,7 @@ g_file_new_for_commandline_arg (const char *arg)
 /**
  * g_file_mount_enclosing_volume:
  * @location: input #GFile.
+ * @flags: flags affecting the operation
  * @mount_operation: a #GMountOperation or %NULL to avoid user interaction.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @callback: a #GAsyncReadyCallback to call when the request is satisfied, or %NULL.
@@ -4508,6 +4512,7 @@ g_file_new_for_commandline_arg (const char *arg)
  **/
 void
 g_file_mount_enclosing_volume (GFile               *location,
+			       GMountMountFlags     flags,
 			       GMountOperation     *mount_operation,
 			       GCancellable        *cancellable,
 			       GAsyncReadyCallback  callback,
@@ -4529,7 +4534,7 @@ g_file_mount_enclosing_volume (GFile               *location,
       return;
     }
   
-  (* iface->mount_enclosing_volume) (location, mount_operation, cancellable, callback, user_data);
+  (* iface->mount_enclosing_volume) (location, flags, mount_operation, cancellable, callback, user_data);
 
 }
 
