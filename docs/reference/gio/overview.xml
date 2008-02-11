@@ -172,6 +172,18 @@
     </formalpara>
 
     <formalpara>
+      <title><envar>GIO_USE_URI_ASSOCIATION</envar></title>
+
+      <para>
+        This variable can be set to the name of a #GDesktopAppInfoLookup
+        implementation to override the dfeault for debugging purposes.
+        GIO does not include a #GDesktopAppInfoLookup implementation,
+        the GConf-based implementation in the gvfs module has the name
+        "gconf".  
+      </para>
+    </formalpara>
+
+    <formalpara>
       <title><envar>GVFS_INOTIFY_DIAG</envar></title>
 
       <para>
@@ -184,4 +196,110 @@
 
   </chapter>
 
+  <chapter id="gio-extension-points">
+    <title>Extending GIO</title>
+
+    <para>
+      A lot of the functionality that is accessible through GIO
+      is implemented in loadable modules, and modules provide a convenient
+      way to extend GIO. In addition to the #GIOModule API which supports 
+      writing such modules, GIO has a mechanism to define extension points,
+      and register implementations thereof, see #GIOExtensionPoint.
+    </para>
+    <para>
+      The following extension points are currently defined by GIO:
+    </para>
+
+    <formalpara>
+       <title>G_VFS_EXTENSION_POINT_NAME</title>
+
+       <para>
+          Allows to override the functionality of the #GVfs class.
+          Implementations of this extension point must be derived from #GVfs.
+          GIO uses the implementation with the highest priority that is active,
+          see g_vfs_is_active().
+       </para>
+       <para>
+          GIO implements this extension point for local files, gvfs contains
+          an implementation that supports all the backends in gvfs.
+       </para>
+   </formalpara>
+
+   <formalpara>
+      <title>G_VOLUME_MONITOR_EXTENSION_POINT_NAME</title>
+
+      <para>
+         Allows to add more volume monitors.
+         Implementations of this extension point must be derived from
+         #GVolumeMonitor. GIO uses all registered extensions.
+      </para>
+      <para>
+        gvfs contains an implementation that works together with the #GVfs
+        implementation in gvfs.
+      </para>
+   </formalpara>
+
+   <formalpara>
+      <title>G_NATIVE_VOLUME_MONITOR_EXTENSION_POINT_NAME</title>
+
+      <para>
+         Allows to override the 'native' volume monitor.
+         Implementations of this extension point must be derived from
+         #GNativeVolumeMonitor. GIO uses the implementation with
+         the highest priority that is supported, as determined by the
+         is_supported() vfunc in #GVolumeMonitorClass.
+      </para>
+      <para>
+         GIO implements this extension point for local mounts, 
+         gvfs contains a hal-based implementation. 
+      </para>
+   </formalpara>
+
+   <formalpara>
+      <title>G_LOCAL_FILE_MONITOR_EXTENSION_POINT_NAME</title>
+
+      <para>
+        Allows to override the file monitor implementation for 
+        local files. Implementations of this extension point must 
+        be derived from #GLocalFileMonitor. GIO uses the implementation 
+        with the highest priority that is supported, as determined by the
+        is_supported() vfunc in #GLocalFileMonitorClass.
+      </para>
+      <para>
+        GIO uses this extension point internally, to switch between
+        its fam-based and inotify-based file monitoring implementations.
+      </para>
+   </formalpara>
+
+   <formalpara>
+      <title>G_LOCAL_DIRECTORY_MONITOR_EXTENSION_POINT_NAME</title>
+
+      <para>
+        Allows to override the directory monitor implementation for 
+        local files. Implementations of this extension point must be 
+        derived from #GLocalDirectoryMonitor. GIO uses the implementation
+        with the highest priority that is supported, as determined by the
+        is_supported() vfunc in #GLocalDirectoryMonitorClass.
+      </para>
+      <para>
+        GIO uses this extension point internally, to switch between
+        its fam-based and inotify-based directory monitoring implementations.
+      </para>
+   </formalpara>
+
+   <formalpara>
+      <title>G_DESKTOP_APP_INFO_LOOKUP_EXTENSION_POINT_NAME</title>
+
+      <para>
+        Unix-only. Allows to provide a way to associate default handlers
+        with URI schemes. Implementations of this extension point must 
+        implement the #GDesktopAppInfoLookup interface. GIO uses the 
+        implementation with the highest priority.
+      </para>
+      <para>
+        gvfs contains a GConf-based implementation that uses the 
+        same GConf keys as gnome-vfs.
+      </para>
+   </formalpara>
+  </chapter>
 </part>

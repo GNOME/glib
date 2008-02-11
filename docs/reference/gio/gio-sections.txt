@@ -2,6 +2,7 @@
 <FILE>gvfs</FILE>
 <TITLE>GVfs</TITLE>
 GVfs
+G_VFS_EXTENSION_POINT_NAME
 g_vfs_get_file_for_path
 g_vfs_get_file_for_uri
 g_vfs_parse_name
@@ -69,6 +70,7 @@ g_file_query_info_async
 g_file_query_info_finish
 g_file_query_exists
 g_file_query_filesystem_info
+g_file_query_default_handler
 g_file_find_enclosing_mount
 g_file_find_enclosing_mount_async
 g_file_find_enclosing_mount_finish
@@ -758,6 +760,7 @@ g_seekable_get_type
 <FILE>gvolumemonitor</FILE>
 <TITLE>GVolumeMonitor</TITLE>
 GVolumeMonitor
+G_VOLUME_MONITOR_EXTENSION_POINT_NAME
 g_volume_monitor_get
 g_volume_monitor_get_connected_drives
 g_volume_monitor_get_volumes
@@ -817,6 +820,7 @@ g_volume_get_icon
 g_volume_get_drive
 g_volume_get_mount
 g_volume_can_mount
+g_volume_should_automount
 g_volume_mount
 g_volume_mount_finish
 g_volume_can_eject
@@ -1010,6 +1014,7 @@ g_app_info_get_all
 g_app_info_get_all_for_type
 g_app_info_get_default_for_type
 g_app_info_get_default_for_uri_scheme
+g_app_info_launch_default_for_uri
 g_app_launch_context_get_display
 g_app_launch_context_get_startup_notify_id
 g_app_launch_context_launch_failed
@@ -1155,6 +1160,9 @@ g_desktop_app_info_new_from_filename
 g_desktop_app_info_new
 g_desktop_app_info_get_is_hidden
 g_desktop_app_info_set_desktop_env
+GDesktopAppInfoLookup
+G_DESKTOP_APP_INFO_LOOKUP_EXTENSION_POINT_NAME
+g_desktop_app_info_lookup_get_default_for_uri_scheme
 <SUBSECTION Standard>
 GDesktopAppInfoClass
 G_TYPE_DESKTOP_APP_INFO
@@ -1163,8 +1171,14 @@ G_DESKTOP_APP_INFO_CLASS
 G_IS_DESKTOP_APP_INFO
 G_IS_DESKTOP_APP_INFO_CLASS
 G_DESKTOP_APP_INFO_GET_CLASS
+GDesktopAppInfoLookupIface
+G_DESKTOP_APP_INFO_LOOKUP
+G_TYPE_DESKTOP_APP_INFO_LOOKUP
+G_DESKTOP_APP_INFO_LOOKUP_GET_IFACE
+G_IS_DESKTOP_APP_INFO_LOOKUP
 <SUBSECTION Private>
 g_desktop_app_info_get_type
+g_desktop_app_info_lookup_get_type
 </SECTION>
 
 <SECTION>
@@ -1186,3 +1200,23 @@ G_IO_MODULE_GET_CLASS
 <SUBSECTION Private>
 g_io_module_get_type
 </SECTION>
+
+<SECTION>
+<FILE>extensionpoints</FILE>
+<TITLE>Extension Points</TITLE>
+GIOExtension
+GIOExtensionPoint
+g_io_extension_get_name
+g_io_extension_get_priority
+g_io_extension_get_type
+g_io_extension_point_get_extension_by_name
+g_io_extension_point_get_extensions
+g_io_extension_point_get_required_type
+g_io_extension_point_implement
+g_io_extension_point_lookup
+g_io_extension_point_register
+g_io_extension_point_set_required_type
+g_io_extension_ref_class
+</SECTION>
+
+

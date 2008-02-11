@@ -92,6 +92,7 @@
     	<title>Extending GIO</title>
         <xi:include href="xml/gvfs.xml"/>
 	<xi:include href="xml/giomodule.xml"/>
+	<xi:include href="xml/extensionpoints.xml"/>
     </chapter>
   </part>
 

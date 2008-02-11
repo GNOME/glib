@@ -1,3 +1,9 @@
+2008-02-11  Matthias Clasen <mclasen@redhat.com>
+
+	* gio/gio-docs.xml:
+	* gio/gio-sections.txt:
+	* gio/overview.xml: Documentation additions
+
 2008-02-10  Philip Withnall  <pwithnall@svn.gnome.org>
 
 	* glib/tmpl/modules.sgml: Improve the documentation for
