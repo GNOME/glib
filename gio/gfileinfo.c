@@ -343,7 +343,6 @@ g_file_info_set_attribute_mask (GFileInfo             *info,
   int i;
   
   g_return_if_fail (G_IS_FILE_INFO (info));
-  g_return_if_fail (mask != NULL);
   
   if (mask != info->mask)
     {
@@ -2035,7 +2034,9 @@ static gboolean
 g_file_attribute_matcher_matches_id (GFileAttributeMatcher *matcher,
                                      guint32                id)
 {
-  g_return_val_if_fail (matcher != NULL, FALSE);
+  /* We return a NULL matcher for an empty match string, so handle this */
+  if (matcher == NULL)
+    return FALSE;
   
   if (matcher->all)
     return TRUE;

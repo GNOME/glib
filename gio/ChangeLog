@@ -1,5 +1,13 @@
 2008-02-11  Alexander Larsson  <alexl@redhat.com>
 
+        * gfileinfo.c:
+        (g_file_info_set_attribute_mask):
+        (g_file_attribute_matcher_matches_id):
+	Correctly handle NULL GAttributeMatcher meaning
+	matches nothing. (Fixes #513492)
+
+2008-02-11  Alexander Larsson  <alexl@redhat.com>
+
         * gfile.[ch]:
         * gmount.[ch]:
         * gvolume.[ch]:
