@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.12\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-01-28 18:34-0500\n"
+"POT-Creation-Date: 2008-02-11 16:54-0500\n"
 "PO-Revision-Date: 2005-03-28 19:34-0700\n"
 "Last-Translator: Steve Murphy <murf@e-tools.com>\n"
 "Language-Team: Kinyarwanda <translation-team-rw@lists.sourceforge.net>\n"
@@ -1173,7 +1173,7 @@ msgstr "Ihitamo ritazwi:"
 msgid "%s filetype"
 msgstr ""
 
-#: gio/gcontenttype.c:571
+#: gio/gcontenttype.c:574
 #, c-format
 msgid "%s type"
 msgstr ""
@@ -1183,104 +1183,104 @@ msgstr ""
 msgid "Unexpected early end-of-stream"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:403 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:411 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:579
+#: gio/gdesktopappinfo.c:588
 #, c-format
 msgid "Desktop file didn't specify Exec field"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:871
+#: gio/gdesktopappinfo.c:882
 #, c-format
 msgid "Unable to find terminal required for application"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1105
+#: gio/gdesktopappinfo.c:1114
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1109
+#: gio/gdesktopappinfo.c:1118
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1428
-#, c-format
-msgid "Custom definition for %s"
-msgstr ""
-
-#: gio/gdesktopappinfo.c:1452
+#: gio/gdesktopappinfo.c:1457
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr ""
 
-#: gio/gdesktopappinfo.c:1477
+#: gio/gdesktopappinfo.c:1517
 #, c-format
-msgid "Can't load just created desktop file"
+msgid "Custom definition for %s"
 msgstr ""
 
-#: gio/gdrive.c:369
+#: gio/gdrive.c:372
 msgid "drive doesn't implement eject"
 msgstr ""
 
-#: gio/gdrive.c:436
+#: gio/gdrive.c:439
 msgid "drive doesn't implement polling for media"
 msgstr ""
 
 #: gio/gfile.c:755 gio/gfile.c:943 gio/gfile.c:1076 gio/gfile.c:1230
-#: gio/gfile.c:1283 gio/gfile.c:1340 gio/gfile.c:1421 gio/gfile.c:2459
-#: gio/gfile.c:2504 gio/gfile.c:2554 gio/gfile.c:2593 gio/gfile.c:2917
-#: gio/gfile.c:3316 gio/gfile.c:3395 gio/gfile.c:3475 gio/gfile.c:3553
+#: gio/gfile.c:1283 gio/gfile.c:1339 gio/gfile.c:1420 gio/gfile.c:2458
+#: gio/gfile.c:2503 gio/gfile.c:2553 gio/gfile.c:2592 gio/gfile.c:2916
+#: gio/gfile.c:3317 gio/gfile.c:3397 gio/gfile.c:3477 gio/gfile.c:3555
 #, fuzzy, c-format
 msgid "Operation not supported"
 msgstr "amahuza OYA"
 
-#: gio/gfile.c:1118 gio/glocalfile.c:923 gio/glocalfile.c:932
-#: gio/glocalfile.c:943
+#: gio/gfile.c:1118 gio/glocalfile.c:925 gio/glocalfile.c:934
+#: gio/glocalfile.c:945
 #, c-format
 msgid "Containing mount does not exist"
 msgstr ""
 
-#: gio/gfile.c:1760
+#: gio/gfile.c:1759
 #, c-format
 msgid "Can't copy over directory"
 msgstr ""
 
-#: gio/gfile.c:1820
+#: gio/gfile.c:1819
 #, c-format
 msgid "Can't copy directory over directory"
 msgstr ""
 
-#: gio/gfile.c:1828 gio/glocalfile.c:1839
+#: gio/gfile.c:1827 gio/glocalfile.c:1872
 #, c-format
 msgid "Target file exists"
 msgstr ""
 
-#: gio/gfile.c:1846
+#: gio/gfile.c:1845
 #, c-format
 msgid "Can't recursively copy directory"
 msgstr ""
 
-#: gio/gfile.c:2544
+#: gio/gfile.c:2543
 #, c-format
 msgid "Invalid symlink value given"
 msgstr ""
 
-#: gio/gfile.c:2636
+#: gio/gfile.c:2635
 #, fuzzy, c-format
 msgid "Trash not supported"
 msgstr "amahuza OYA"
 
-#: gio/gfile.c:2683
+#: gio/gfile.c:2682
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr ""
 
-#: gio/gfile.c:4528 gio/gvolume.c:318
+#: gio/gfile.c:4532 gio/gvolume.c:357
 msgid "volume doesn't implement mount"
+msgstr ""
+
+#: gio/gfile.c:4640
+#, c-format
+msgid "No application is registered as handling this file"
 msgstr ""
 
 #: gio/gfileenumerator.c:151
@@ -1289,12 +1289,12 @@ msgid "Enumerator is closed"
 msgstr ""
 
 #: gio/gfileenumerator.c:158 gio/gfileenumerator.c:217
-#: gio/gfileenumerator.c:317 gio/gfileenumerator.c:424
+#: gio/gfileenumerator.c:317 gio/gfileenumerator.c:425
 #, c-format
 msgid "File enumerator has outstanding operation"
 msgstr ""
 
-#: gio/gfileenumerator.c:307 gio/gfileenumerator.c:414
+#: gio/gfileenumerator.c:307 gio/gfileenumerator.c:415
 msgid "File enumerator is already closed"
 msgstr ""
 
@@ -1340,112 +1340,112 @@ msgid "Invalid filename %s"
 msgstr "Izina ry'inturo:"
 
 # svtools/source\misc\errtxt.src:RID_ERRHDL.ERRCODE_SFX_DOLOADFAILED.text
-#: gio/glocalfile.c:845
+#: gio/glocalfile.c:847
 #, fuzzy, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "Ikosa mu gusoma idosiye"
 
-#: gio/glocalfile.c:963
+#: gio/glocalfile.c:965
 #, c-format
 msgid "Can't rename root directory"
 msgstr ""
 
-#: gio/glocalfile.c:981
+#: gio/glocalfile.c:983
 #, c-format
 msgid "Can't rename file, filename already exist"
 msgstr ""
 
-#: gio/glocalfile.c:994 gio/glocalfile.c:1716 gio/glocalfile.c:1745
-#: gio/glocalfile.c:1890 gio/glocalfileoutputstream.c:448
-#: gio/glocalfileoutputstream.c:489 gio/glocalfileoutputstream.c:879
+#: gio/glocalfile.c:996 gio/glocalfile.c:1747 gio/glocalfile.c:1776
+#: gio/glocalfile.c:1925 gio/glocalfileoutputstream.c:468
+#: gio/glocalfileoutputstream.c:509 gio/glocalfileoutputstream.c:911
 #, fuzzy, c-format
 msgid "Invalid filename"
 msgstr "Izina ry'inturo:"
 
 # svtools/source\misc\errtxt.src:RID_ERRHDL.ERRCODE_SFX_DOLOADFAILED.text
-#: gio/glocalfile.c:998
+#: gio/glocalfile.c:1000
 #, fuzzy, c-format
 msgid "Error renaming file: %s"
 msgstr "Ikosa mu gusoma idosiye"
 
 # svtools/source\misc\errtxt.src:RID_ERRHDL.ERRCODE_SFX_DOLOADFAILED.text
-#: gio/glocalfile.c:1115
+#: gio/glocalfile.c:1119
 #, fuzzy, c-format
 msgid "Error opening file: %s"
 msgstr "Ikosa mu gusoma idosiye"
 
-#: gio/glocalfile.c:1125
+#: gio/glocalfile.c:1129
 #, c-format
 msgid "Can't open directory"
 msgstr ""
 
 # svtools/source\misc\errtxt.src:RID_ERRHDL.ERRCODE_SFX_DOLOADFAILED.text
-#: gio/glocalfile.c:1177 gio/glocalfile.c:1720
+#: gio/glocalfile.c:1183 gio/glocalfile.c:1751
 #, fuzzy, c-format
 msgid "Error removing file: %s"
 msgstr "Ikosa mu gusoma idosiye"
 
 # svtools/source\misc\errtxt.src:RID_ERRHDL.ERRCODE_SFX_DOLOADFAILED.text
-#: gio/glocalfile.c:1469
+#: gio/glocalfile.c:1477
 #, fuzzy, c-format
 msgid "Error trashing file: %s"
 msgstr "Ikosa mu gusoma idosiye"
 
-#: gio/glocalfile.c:1493
+#: gio/glocalfile.c:1500
 #, fuzzy, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "Kuri Kurema IDOSIYE"
 
-#: gio/glocalfile.c:1517
+#: gio/glocalfile.c:1524
 #, c-format
 msgid "Unable to find toplevel directory for trash"
 msgstr ""
 
-#: gio/glocalfile.c:1577 gio/glocalfile.c:1597
+#: gio/glocalfile.c:1604 gio/glocalfile.c:1624
 #, c-format
 msgid "Unable to find or create trash directory"
 msgstr ""
 
-#: gio/glocalfile.c:1629
+#: gio/glocalfile.c:1658
 #, fuzzy, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "Kuri Kurema IDOSIYE"
 
-#: gio/glocalfile.c:1652
+#: gio/glocalfile.c:1683
 #, fuzzy, c-format
 msgid "Unable to trash file: %s"
 msgstr "Kuri Kurema IDOSIYE"
 
-#: gio/glocalfile.c:1749
+#: gio/glocalfile.c:1780
 #, fuzzy, c-format
 msgid "Error making symbolic link: %s"
 msgstr "Ihindurangero"
 
 # svtools/source\misc\errtxt.src:RID_ERRHDL.ERRCODE_SFX_DOLOADFAILED.text
-#: gio/glocalfile.c:1807 gio/glocalfile.c:1894
+#: gio/glocalfile.c:1840 gio/glocalfile.c:1929
 #, fuzzy, c-format
 msgid "Error moving file: %s"
 msgstr "Ikosa mu gusoma idosiye"
 
-#: gio/glocalfile.c:1830
+#: gio/glocalfile.c:1863
 #, c-format
 msgid "Can't move directory over directory"
 msgstr ""
 
-#: gio/glocalfile.c:1852 gio/glocalfileoutputstream.c:735
-#: gio/glocalfileoutputstream.c:749 gio/glocalfileoutputstream.c:764
-#: gio/glocalfileoutputstream.c:780 gio/glocalfileoutputstream.c:794
+#: gio/glocalfile.c:1885 gio/glocalfileoutputstream.c:763
+#: gio/glocalfileoutputstream.c:777 gio/glocalfileoutputstream.c:792
+#: gio/glocalfileoutputstream.c:808 gio/glocalfileoutputstream.c:822
 #, c-format
 msgid "Backup file creation failed"
 msgstr ""
 
 # svtools/source\misc\errtxt.src:RID_ERRHDL.ERRCODE_SFX_DOLOADFAILED.text
-#: gio/glocalfile.c:1869
+#: gio/glocalfile.c:1904
 #, fuzzy, c-format
 msgid "Error removing target file: %s"
 msgstr "Ikosa mu gusoma idosiye"
 
-#: gio/glocalfile.c:1883
+#: gio/glocalfile.c:1918
 #, c-format
 msgid "Move between mounts not supported"
 msgstr ""
@@ -1471,83 +1471,83 @@ msgid "Error setting extended attribute '%s': %s"
 msgstr "Gufungura %s%S bushyinguro"
 
 # svtools/source\misc\errtxt.src:RID_ERRHDL.ERRCODE_SFX_DOLOADFAILED.text
-#: gio/glocalfileinfo.c:1394 gio/glocalfileoutputstream.c:625
+#: gio/glocalfileinfo.c:1396 gio/glocalfileoutputstream.c:653
 #, fuzzy, c-format
 msgid "Error stating file '%s': %s"
 msgstr "Ikosa mu gusoma idosiye"
 
-#: gio/glocalfileinfo.c:1449
+#: gio/glocalfileinfo.c:1451
 msgid " (invalid encoding)"
 msgstr ""
 
 # svtools/source\misc\errtxt.src:RID_ERRHDL.ERRCODE_SFX_DOLOADFAILED.text
-#: gio/glocalfileinfo.c:1624
+#: gio/glocalfileinfo.c:1628
 #, fuzzy, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "Ikosa mu gusoma idosiye"
 
-#: gio/glocalfileinfo.c:1669
+#: gio/glocalfileinfo.c:1673
 #, c-format
 msgid "Invalid attribute type (uint32 expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1686
+#: gio/glocalfileinfo.c:1690
 #, c-format
 msgid "Invalid attribute type (uint64 expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1704
+#: gio/glocalfileinfo.c:1708
 #, c-format
 msgid "Invalid attribute type (byte string expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1728
+#: gio/glocalfileinfo.c:1734
 #, fuzzy, c-format
 msgid "Error setting permissions: %s"
 msgstr "Ihindurangero"
 
-#: gio/glocalfileinfo.c:1777 gio/glocalfileinfo.c:1937
+#: gio/glocalfileinfo.c:1785 gio/glocalfileinfo.c:1953
 #, fuzzy, c-format
 msgid "Error setting owner: %s"
 msgstr "Ihindurangero"
 
-#: gio/glocalfileinfo.c:1800
+#: gio/glocalfileinfo.c:1808
 #, c-format
 msgid "symlink must be non-NULL"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1808 gio/glocalfileinfo.c:1825
-#: gio/glocalfileinfo.c:1834
+#: gio/glocalfileinfo.c:1818 gio/glocalfileinfo.c:1837
+#: gio/glocalfileinfo.c:1848
 #, fuzzy, c-format
 msgid "Error setting symlink: %s"
 msgstr "ku Umurongo"
 
-#: gio/glocalfileinfo.c:1817
+#: gio/glocalfileinfo.c:1827
 #, c-format
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1992
+#: gio/glocalfileinfo.c:2008
 #, fuzzy, c-format
 msgid "Setting attribute %s not supported"
 msgstr "amahuza OYA"
 
 # svtools/source\misc\errtxt.src:RID_ERRHDL.ERRCODE_SFX_DOLOADFAILED.text
-#: gio/glocalfileinputstream.c:158 gio/glocalfileoutputstream.c:536
+#: gio/glocalfileinputstream.c:160 gio/glocalfileoutputstream.c:558
 #, fuzzy, c-format
 msgid "Error reading from file: %s"
 msgstr "Ikosa mu gusoma idosiye"
 
 # svtools/source\misc\errtxt.src:RID_ERRHDL.ERRCODE_SFX_DOLOADFAILED.text
-#: gio/glocalfileinputstream.c:187 gio/glocalfileinputstream.c:197
-#: gio/glocalfileinputstream.c:300 gio/glocalfileoutputstream.c:350
-#: gio/glocalfileoutputstream.c:810
+#: gio/glocalfileinputstream.c:191 gio/glocalfileinputstream.c:203
+#: gio/glocalfileinputstream.c:312 gio/glocalfileoutputstream.c:368
+#: gio/glocalfileoutputstream.c:840
 #, fuzzy, c-format
 msgid "Error seeking in file: %s"
 msgstr "Ikosa mu gusoma idosiye"
 
 # svtools/source\misc\errtxt.src:RID_ERRHDL.ERRCODE_SFX_DOLOADFAILED.text
-#: gio/glocalfileinputstream.c:224 gio/glocalfileoutputstream.c:259
+#: gio/glocalfileinputstream.c:233 gio/glocalfileoutputstream.c:275
 #, fuzzy, c-format
 msgid "Error closing file: %s"
 msgstr "Ikosa mu gusoma idosiye"
@@ -1558,57 +1558,52 @@ msgid "Unable to find default local file monitor type"
 msgstr ""
 
 # svtools/source\misc\errtxt.src:RID_ERRHDL.ERRCODE_SFX_DOLOADFAILED.text
-#: gio/glocalfileoutputstream.c:166 gio/glocalfileoutputstream.c:555
+#: gio/glocalfileoutputstream.c:168 gio/glocalfileoutputstream.c:579
 #, fuzzy, c-format
 msgid "Error writing to file: %s"
 msgstr "Ikosa mu gusoma idosiye"
 
-#: gio/glocalfileoutputstream.c:205
+#: gio/glocalfileoutputstream.c:209
 #, fuzzy, c-format
 msgid "Error removing old backup link: %s"
 msgstr "Ihindurangero"
 
-#: gio/glocalfileoutputstream.c:214
-#, fuzzy, c-format
-msgid "Error creating backup link: %s"
-msgstr "Ihindurangero"
-
 # svtools/source\misc\errtxt.src:RID_ERRHDL.ERRCODE_SFX_DOLOADFAILED.text
-#: gio/glocalfileoutputstream.c:224
+#: gio/glocalfileoutputstream.c:223 gio/glocalfileoutputstream.c:236
 #, fuzzy, c-format
 msgid "Error creating backup copy: %s"
 msgstr "Ikosa mu gusoma idosiye"
 
 # svtools/source\misc\errtxt.src:RID_ERRHDL.ERRCODE_SFX_DOLOADFAILED.text
-#: gio/glocalfileoutputstream.c:240
+#: gio/glocalfileoutputstream.c:254
 #, fuzzy, c-format
 msgid "Error renaming temporary file: %s"
 msgstr "Ikosa mu gusoma idosiye"
 
 # svtools/source\misc\errtxt.src:RID_ERRHDL.ERRCODE_SFX_DOLOADFAILED.text
-#: gio/glocalfileoutputstream.c:394 gio/glocalfileoutputstream.c:825
+#: gio/glocalfileoutputstream.c:414 gio/glocalfileoutputstream.c:857
 #, fuzzy, c-format
 msgid "Error truncating file: %s"
 msgstr "Ikosa mu gusoma idosiye"
 
 # svtools/source\misc\errtxt.src:RID_ERRHDL.ERRCODE_SFX_DOLOADFAILED.text
-#: gio/glocalfileoutputstream.c:452 gio/glocalfileoutputstream.c:493
-#: gio/glocalfileoutputstream.c:616 gio/glocalfileoutputstream.c:883
+#: gio/glocalfileoutputstream.c:472 gio/glocalfileoutputstream.c:513
+#: gio/glocalfileoutputstream.c:642 gio/glocalfileoutputstream.c:915
 #, fuzzy, c-format
 msgid "Error opening file '%s': %s"
 msgstr "Ikosa mu gusoma idosiye"
 
-#: gio/glocalfileoutputstream.c:637
+#: gio/glocalfileoutputstream.c:665
 #, c-format
 msgid "Target file is a directory"
 msgstr ""
 
-#: gio/glocalfileoutputstream.c:642
+#: gio/glocalfileoutputstream.c:670
 #, fuzzy, c-format
 msgid "Target file is not a regular file"
 msgstr "a Ibisanzwe IDOSIYE"
 
-#: gio/glocalfileoutputstream.c:654
+#: gio/glocalfileoutputstream.c:682
 #, c-format
 msgid "The file was externally modified"
 msgstr ""
@@ -1651,7 +1646,7 @@ msgstr ""
 msgid "mount doesn't implement eject"
 msgstr ""
 
-#: gio/gmount.c:490
+#: gio/gmount.c:492
 msgid "mount doesn't implement remount"
 msgstr ""
 
@@ -1666,28 +1661,28 @@ msgid "Source stream is already closed"
 msgstr ""
 
 # svtools/source\misc\errtxt.src:RID_ERRHDL.ERRCODE_SFX_DOLOADFAILED.text
-#: gio/gunixinputstream.c:200 gio/gunixinputstream.c:218
-#: gio/gunixinputstream.c:290 gio/gunixoutputstream.c:281
+#: gio/gunixinputstream.c:202 gio/gunixinputstream.c:222
+#: gio/gunixinputstream.c:300 gio/gunixoutputstream.c:289
 #, fuzzy, c-format
 msgid "Error reading from unix: %s"
 msgstr "Ikosa mu gusoma idosiye"
 
-#: gio/gunixinputstream.c:248 gio/gunixinputstream.c:424
-#: gio/gunixoutputstream.c:238 gio/gunixoutputstream.c:385
+#: gio/gunixinputstream.c:255 gio/gunixinputstream.c:437
+#: gio/gunixoutputstream.c:244 gio/gunixoutputstream.c:395
 #, fuzzy, c-format
 msgid "Error closing unix: %s"
 msgstr "ku Umurongo"
 
-#: gio/gunixmounts.c:1755 gio/gunixmounts.c:1792
+#: gio/gunixmounts.c:1778 gio/gunixmounts.c:1815
 msgid "Filesystem root"
 msgstr ""
 
-#: gio/gunixoutputstream.c:188 gio/gunixoutputstream.c:207
+#: gio/gunixoutputstream.c:190 gio/gunixoutputstream.c:211
 #, fuzzy, c-format
 msgid "Error writing to unix: %s"
 msgstr "Ihindurangero"
 
-#: gio/gvolume.c:384
+#: gio/gvolume.c:423
 msgid "volume doesn't implement eject"
 msgstr ""
 
@@ -1727,6 +1722,10 @@ msgstr ""
 #: tests/gio-ls.c:37
 msgid "[FILE...]"
 msgstr ""
+
+#, fuzzy
+#~ msgid "Error creating backup link: %s"
+#~ msgstr "Ihindurangero"
 
 #, fuzzy
 #~ msgid "Could not change file mode: fork() failed: %s"

@@ -1,6 +1,8 @@
 Overview of Changes from GLib 2.15.4 to GLib 2.15.5
 ===================================================
 
+* Update the included PCRE to 7.6
+
 * GIO:
  - g_volume_should_automount: new function to determine if a volume
    should be mounted automatically

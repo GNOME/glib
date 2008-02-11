@@ -1,3 +1,7 @@
+2008-02-11  Matthias Clasen <mclasen@redhat.com>
+
+	* === Released 2.15.5 ===
+
 2008-02-06  Benjamin Otte  <otte@gnome.org>
 
 	* gparamspecs.c: (param_gtype_set_default), (param_gtype_validate):

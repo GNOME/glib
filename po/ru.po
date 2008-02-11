@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib trunk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-01-28 18:34-0500\n"
+"POT-Creation-Date: 2008-02-11 16:54-0500\n"
 "PO-Revision-Date: 2008-01-21 13:44+0300\n"
 "Last-Translator: Vasiliy Faronov <qvvx@yandex.ru>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
@@ -1212,7 +1212,7 @@ msgstr "Неизвестный тип"
 msgid "%s filetype"
 msgstr "тип файлов %s"
 
-#: gio/gcontenttype.c:571
+#: gio/gcontenttype.c:574
 #, c-format
 msgid "%s type"
 msgstr "тип %s"
@@ -1222,105 +1222,105 @@ msgstr "тип %s"
 msgid "Unexpected early end-of-stream"
 msgstr "Неожиданный ранний конец потока"
 
-#: gio/gdesktopappinfo.c:403 gio/gwin32appinfo.c:222
+#: gio/gdesktopappinfo.c:411 gio/gwin32appinfo.c:222
 msgid "Unnamed"
 msgstr "Без имени"
 
-#: gio/gdesktopappinfo.c:579
+#: gio/gdesktopappinfo.c:588
 #, c-format
 msgid "Desktop file didn't specify Exec field"
 msgstr "В desktop-файле не указано поле Exec"
 
-#: gio/gdesktopappinfo.c:871
+#: gio/gdesktopappinfo.c:882
 #, c-format
 msgid "Unable to find terminal required for application"
 msgstr "Не удалось найти терминал, требуемый для приложения"
 
-#: gio/gdesktopappinfo.c:1105
+#: gio/gdesktopappinfo.c:1114
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "Не удалось создать пользовательскую папку настроек приложения %s: %s"
 
-#: gio/gdesktopappinfo.c:1109
+#: gio/gdesktopappinfo.c:1118
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Не удалось создать пользовательскую папку настроек MIME %s: %s"
 
-#: gio/gdesktopappinfo.c:1428
-#, c-format
-msgid "Custom definition for %s"
-msgstr "Особое определение для %s"
-
-#: gio/gdesktopappinfo.c:1452
+#: gio/gdesktopappinfo.c:1457
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Не удалось создать пользовательский desktop-файл %s"
 
-#: gio/gdesktopappinfo.c:1477
+#: gio/gdesktopappinfo.c:1517
 #, c-format
-msgid "Can't load just created desktop file"
-msgstr "Не удалось загрузить только что созданный desktop-файл"
+msgid "Custom definition for %s"
+msgstr "Особое определение для %s"
 
-#: gio/gdrive.c:369
+#: gio/gdrive.c:372
 msgid "drive doesn't implement eject"
 msgstr "привод не реализует извлечение"
 
-#: gio/gdrive.c:436
+#: gio/gdrive.c:439
 msgid "drive doesn't implement polling for media"
 msgstr "привод не реализует опрос носителя"
 
 #: gio/gfile.c:755 gio/gfile.c:943 gio/gfile.c:1076 gio/gfile.c:1230
-#: gio/gfile.c:1283 gio/gfile.c:1340 gio/gfile.c:1421 gio/gfile.c:2459
-#: gio/gfile.c:2504 gio/gfile.c:2554 gio/gfile.c:2593 gio/gfile.c:2917
-#: gio/gfile.c:3316 gio/gfile.c:3395 gio/gfile.c:3475 gio/gfile.c:3553
+#: gio/gfile.c:1283 gio/gfile.c:1339 gio/gfile.c:1420 gio/gfile.c:2458
+#: gio/gfile.c:2503 gio/gfile.c:2553 gio/gfile.c:2592 gio/gfile.c:2916
+#: gio/gfile.c:3317 gio/gfile.c:3397 gio/gfile.c:3477 gio/gfile.c:3555
 #, c-format
 msgid "Operation not supported"
 msgstr "Действие не поддерживается"
 
-#: gio/gfile.c:1118 gio/glocalfile.c:923 gio/glocalfile.c:932
-#: gio/glocalfile.c:943
+#: gio/gfile.c:1118 gio/glocalfile.c:925 gio/glocalfile.c:934
+#: gio/glocalfile.c:945
 #, c-format
 msgid "Containing mount does not exist"
 msgstr "Содержащая точка монтирования не существует"
 
-#: gio/gfile.c:1760
+#: gio/gfile.c:1759
 #, c-format
 msgid "Can't copy over directory"
 msgstr "Нельзя скопировать поверх каталога"
 
-#: gio/gfile.c:1820
+#: gio/gfile.c:1819
 #, c-format
 msgid "Can't copy directory over directory"
 msgstr "Нельзя скопировать каталог поверх каталога"
 
-#: gio/gfile.c:1828 gio/glocalfile.c:1839
+#: gio/gfile.c:1827 gio/glocalfile.c:1872
 #, c-format
 msgid "Target file exists"
 msgstr "Целевой файл существует"
 
-#: gio/gfile.c:1846
+#: gio/gfile.c:1845
 #, c-format
 msgid "Can't recursively copy directory"
 msgstr "Не удалось рекурсивно скопировать каталог"
 
-#: gio/gfile.c:2544
+#: gio/gfile.c:2543
 #, c-format
 msgid "Invalid symlink value given"
 msgstr "Дано неверное значение символьной ссылки"
 
-#: gio/gfile.c:2636
+#: gio/gfile.c:2635
 #, c-format
 msgid "Trash not supported"
 msgstr "Корзина не поддерживается"
 
-#: gio/gfile.c:2683
+#: gio/gfile.c:2682
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "Имена файлов не могут содержать «%c»"
 
-#: gio/gfile.c:4528 gio/gvolume.c:318
+#: gio/gfile.c:4532 gio/gvolume.c:357
 msgid "volume doesn't implement mount"
 msgstr "том не реализует присоединение"
+
+#: gio/gfile.c:4640
+#, fuzzy, c-format
+msgid "No application is registered as handling this file"
+msgstr "Нет приложения с именем «%s», создавшего закладку для «%s»"
 
 #: gio/gfileenumerator.c:151
 #, c-format
@@ -1328,12 +1328,12 @@ msgid "Enumerator is closed"
 msgstr "Перечислитель закрыт"
 
 #: gio/gfileenumerator.c:158 gio/gfileenumerator.c:217
-#: gio/gfileenumerator.c:317 gio/gfileenumerator.c:424
+#: gio/gfileenumerator.c:317 gio/gfileenumerator.c:425
 #, c-format
 msgid "File enumerator has outstanding operation"
 msgstr "Перечислитель файлов имеет незавершённое действие"
 
-#: gio/gfileenumerator.c:307 gio/gfileenumerator.c:414
+#: gio/gfileenumerator.c:307 gio/gfileenumerator.c:415
 msgid "File enumerator is already closed"
 msgstr "Перечислитель файлов уже закрыт"
 
@@ -1378,106 +1378,106 @@ msgstr "Не удалось найти тип монитора локальны�
 msgid "Invalid filename %s"
 msgstr "Недопустимое имя файла %s"
 
-#: gio/glocalfile.c:845
+#: gio/glocalfile.c:847
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "Произошла ошибка при получении сведений о файловой системе: %s"
 
-#: gio/glocalfile.c:963
+#: gio/glocalfile.c:965
 #, c-format
 msgid "Can't rename root directory"
 msgstr "Нельзя переименовать корневой каталог"
 
-#: gio/glocalfile.c:981
+#: gio/glocalfile.c:983
 #, c-format
 msgid "Can't rename file, filename already exist"
 msgstr "Не удалось переименовать файл, такое имя файла уже есть"
 
-#: gio/glocalfile.c:994 gio/glocalfile.c:1716 gio/glocalfile.c:1745
-#: gio/glocalfile.c:1890 gio/glocalfileoutputstream.c:448
-#: gio/glocalfileoutputstream.c:489 gio/glocalfileoutputstream.c:879
+#: gio/glocalfile.c:996 gio/glocalfile.c:1747 gio/glocalfile.c:1776
+#: gio/glocalfile.c:1925 gio/glocalfileoutputstream.c:468
+#: gio/glocalfileoutputstream.c:509 gio/glocalfileoutputstream.c:911
 #, c-format
 msgid "Invalid filename"
 msgstr "Недопустимое имя файла"
 
-#: gio/glocalfile.c:998
+#: gio/glocalfile.c:1000
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "Произошла ошибка при переименовании файла: %s"
 
-#: gio/glocalfile.c:1115
+#: gio/glocalfile.c:1119
 #, c-format
 msgid "Error opening file: %s"
 msgstr "Произошла ошибка при открытии файла: %s"
 
-#: gio/glocalfile.c:1125
+#: gio/glocalfile.c:1129
 #, c-format
 msgid "Can't open directory"
 msgstr "Не удалось открыть каталог"
 
-#: gio/glocalfile.c:1177 gio/glocalfile.c:1720
+#: gio/glocalfile.c:1183 gio/glocalfile.c:1751
 #, c-format
 msgid "Error removing file: %s"
 msgstr "Произошла ошибка при удалении файла: %s"
 
-#: gio/glocalfile.c:1469
+#: gio/glocalfile.c:1477
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "Произошла ошибка при удалении файла в корзину: %s"
 
-#: gio/glocalfile.c:1493
+#: gio/glocalfile.c:1500
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "Не удалось создать каталог корзины %s: %s"
 
-#: gio/glocalfile.c:1517
+#: gio/glocalfile.c:1524
 #, c-format
 msgid "Unable to find toplevel directory for trash"
 msgstr "Не удалось найти каталог верхнего уровня для корзины"
 
-#: gio/glocalfile.c:1577 gio/glocalfile.c:1597
+#: gio/glocalfile.c:1604 gio/glocalfile.c:1624
 #, c-format
 msgid "Unable to find or create trash directory"
 msgstr "Не удалось найти или создать каталог корзины"
 
-#: gio/glocalfile.c:1629
+#: gio/glocalfile.c:1658
 #, fuzzy, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "Не удалось создать файл в корзине: %s"
 
-#: gio/glocalfile.c:1652
+#: gio/glocalfile.c:1683
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "Не удалось удалить файл в корзину: %s"
 
-#: gio/glocalfile.c:1749
+#: gio/glocalfile.c:1780
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "Произошла ошибка при создании символьной ссылки: %s"
 
-#: gio/glocalfile.c:1807 gio/glocalfile.c:1894
+#: gio/glocalfile.c:1840 gio/glocalfile.c:1929
 #, c-format
 msgid "Error moving file: %s"
 msgstr "Произошла ошибка при перемещении файла: %s"
 
-#: gio/glocalfile.c:1830
+#: gio/glocalfile.c:1863
 #, c-format
 msgid "Can't move directory over directory"
 msgstr "Нельзя переместить каталог поверх каталога"
 
-#: gio/glocalfile.c:1852 gio/glocalfileoutputstream.c:735
-#: gio/glocalfileoutputstream.c:749 gio/glocalfileoutputstream.c:764
-#: gio/glocalfileoutputstream.c:780 gio/glocalfileoutputstream.c:794
+#: gio/glocalfile.c:1885 gio/glocalfileoutputstream.c:763
+#: gio/glocalfileoutputstream.c:777 gio/glocalfileoutputstream.c:792
+#: gio/glocalfileoutputstream.c:808 gio/glocalfileoutputstream.c:822
 #, c-format
 msgid "Backup file creation failed"
 msgstr "Не удалось создать резервный файл"
 
-#: gio/glocalfile.c:1869
+#: gio/glocalfile.c:1904
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Произошла ошибка при удалении целевого файла: %s"
 
-#: gio/glocalfile.c:1883
+#: gio/glocalfile.c:1918
 #, c-format
 msgid "Move between mounts not supported"
 msgstr "Перемещение между точками монтирования не поддерживается"
@@ -1502,81 +1502,81 @@ msgstr "Недопустимое имя расширенного атрибут�
 msgid "Error setting extended attribute '%s': %s"
 msgstr "Произошла ошибка при установке расширенного атрибута «%s»: %s"
 
-#: gio/glocalfileinfo.c:1394 gio/glocalfileoutputstream.c:625
+#: gio/glocalfileinfo.c:1396 gio/glocalfileoutputstream.c:653
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr "Произошла ошибка при получении сведений о файле «%s»: %s"
 
-#: gio/glocalfileinfo.c:1449
+#: gio/glocalfileinfo.c:1451
 msgid " (invalid encoding)"
 msgstr " (неверная кодировка)"
 
-#: gio/glocalfileinfo.c:1624
+#: gio/glocalfileinfo.c:1628
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "Произошла ошибка при получении сведений о файловом дескрипторе: %s"
 
-#: gio/glocalfileinfo.c:1669
+#: gio/glocalfileinfo.c:1673
 #, c-format
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Неверный тип атрибута (ожидался uint32)"
 
-#: gio/glocalfileinfo.c:1686
+#: gio/glocalfileinfo.c:1690
 #, c-format
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Неверный тип атрибута (ожидался uint64)"
 
-#: gio/glocalfileinfo.c:1704
+#: gio/glocalfileinfo.c:1708
 #, c-format
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Неверный тип атрибута (ожидалась строка byte)"
 
-#: gio/glocalfileinfo.c:1728
+#: gio/glocalfileinfo.c:1734
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Произошла ошибка при установке прав: %s"
 
-#: gio/glocalfileinfo.c:1777 gio/glocalfileinfo.c:1937
+#: gio/glocalfileinfo.c:1785 gio/glocalfileinfo.c:1953
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Произошла ошибка при установке владельца: %s"
 
-#: gio/glocalfileinfo.c:1800
+#: gio/glocalfileinfo.c:1808
 #, c-format
 msgid "symlink must be non-NULL"
 msgstr "символьная ссылка не должна быть NULL"
 
-#: gio/glocalfileinfo.c:1808 gio/glocalfileinfo.c:1825
-#: gio/glocalfileinfo.c:1834
+#: gio/glocalfileinfo.c:1818 gio/glocalfileinfo.c:1837
+#: gio/glocalfileinfo.c:1848
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Произошла ошибка при установке символьной ссылки: %s"
 
-#: gio/glocalfileinfo.c:1817
+#: gio/glocalfileinfo.c:1827
 #, c-format
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 "Произошла ошибка при установке символьной ссылки: файл не является "
 "символьной ссылкой"
 
-#: gio/glocalfileinfo.c:1992
+#: gio/glocalfileinfo.c:2008
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Установка атрибута %s не поддерживается"
 
-#: gio/glocalfileinputstream.c:158 gio/glocalfileoutputstream.c:536
+#: gio/glocalfileinputstream.c:160 gio/glocalfileoutputstream.c:558
 #, c-format
 msgid "Error reading from file: %s"
 msgstr "Произошла ошибка при чтении из файла: %s"
 
-#: gio/glocalfileinputstream.c:187 gio/glocalfileinputstream.c:197
-#: gio/glocalfileinputstream.c:300 gio/glocalfileoutputstream.c:350
-#: gio/glocalfileoutputstream.c:810
+#: gio/glocalfileinputstream.c:191 gio/glocalfileinputstream.c:203
+#: gio/glocalfileinputstream.c:312 gio/glocalfileoutputstream.c:368
+#: gio/glocalfileoutputstream.c:840
 #, c-format
 msgid "Error seeking in file: %s"
 msgstr "Произошла ошибка при переходе по файлу: %s"
 
-#: gio/glocalfileinputstream.c:224 gio/glocalfileoutputstream.c:259
+#: gio/glocalfileinputstream.c:233 gio/glocalfileoutputstream.c:275
 #, c-format
 msgid "Error closing file: %s"
 msgstr "Произошла ошибка при закрытии файла: %s"
@@ -1586,53 +1586,48 @@ msgstr "Произошла ошибка при закрытии файла: %s"
 msgid "Unable to find default local file monitor type"
 msgstr "Не удалось найти тип монитора локальных файлов по умолчанию"
 
-#: gio/glocalfileoutputstream.c:166 gio/glocalfileoutputstream.c:555
+#: gio/glocalfileoutputstream.c:168 gio/glocalfileoutputstream.c:579
 #, c-format
 msgid "Error writing to file: %s"
 msgstr "Произошла ошибка при записи в файл: %s"
 
-#: gio/glocalfileoutputstream.c:205
+#: gio/glocalfileoutputstream.c:209
 #, c-format
 msgid "Error removing old backup link: %s"
 msgstr "Произошла ошибка при удалении старой резервной ссылки: %s"
 
-#: gio/glocalfileoutputstream.c:214
-#, c-format
-msgid "Error creating backup link: %s"
-msgstr "Произошла ошибка при создании резервной ссылки: %s"
-
-#: gio/glocalfileoutputstream.c:224
+#: gio/glocalfileoutputstream.c:223 gio/glocalfileoutputstream.c:236
 #, c-format
 msgid "Error creating backup copy: %s"
 msgstr "Произошла ошибка при создании резервной копии: %s"
 
-#: gio/glocalfileoutputstream.c:240
+#: gio/glocalfileoutputstream.c:254
 #, c-format
 msgid "Error renaming temporary file: %s"
 msgstr "Произошла ошибка при переименовании временного файла: %s"
 
-#: gio/glocalfileoutputstream.c:394 gio/glocalfileoutputstream.c:825
+#: gio/glocalfileoutputstream.c:414 gio/glocalfileoutputstream.c:857
 #, c-format
 msgid "Error truncating file: %s"
 msgstr "Произошла ошибка при усечении файла: %s"
 
-#: gio/glocalfileoutputstream.c:452 gio/glocalfileoutputstream.c:493
-#: gio/glocalfileoutputstream.c:616 gio/glocalfileoutputstream.c:883
+#: gio/glocalfileoutputstream.c:472 gio/glocalfileoutputstream.c:513
+#: gio/glocalfileoutputstream.c:642 gio/glocalfileoutputstream.c:915
 #, c-format
 msgid "Error opening file '%s': %s"
 msgstr "Произошла ошибка при открытии файла «%s»: %s"
 
-#: gio/glocalfileoutputstream.c:637
+#: gio/glocalfileoutputstream.c:665
 #, c-format
 msgid "Target file is a directory"
 msgstr "Целевой файл является каталогом"
 
-#: gio/glocalfileoutputstream.c:642
+#: gio/glocalfileoutputstream.c:670
 #, c-format
 msgid "Target file is not a regular file"
 msgstr "Целевой файл не является обычным файлом"
 
-#: gio/glocalfileoutputstream.c:654
+#: gio/glocalfileoutputstream.c:682
 #, c-format
 msgid "The file was externally modified"
 msgstr "Файл был изменён извне"
@@ -1675,7 +1670,7 @@ msgstr "точка монтирования не реализует отсоед
 msgid "mount doesn't implement eject"
 msgstr "точка монтирования не реализует извлечение"
 
-#: gio/gmount.c:490
+#: gio/gmount.c:492
 msgid "mount doesn't implement remount"
 msgstr "точка монтирования не реализует пересоединение"
 
@@ -1689,28 +1684,28 @@ msgstr "Выходной поток не реализует запись"
 msgid "Source stream is already closed"
 msgstr "Исходный поток уже закрыт"
 
-#: gio/gunixinputstream.c:200 gio/gunixinputstream.c:218
-#: gio/gunixinputstream.c:290 gio/gunixoutputstream.c:281
+#: gio/gunixinputstream.c:202 gio/gunixinputstream.c:222
+#: gio/gunixinputstream.c:300 gio/gunixoutputstream.c:289
 #, c-format
 msgid "Error reading from unix: %s"
 msgstr "Произошла ошибка при чтении из unix: %s"
 
-#: gio/gunixinputstream.c:248 gio/gunixinputstream.c:424
-#: gio/gunixoutputstream.c:238 gio/gunixoutputstream.c:385
+#: gio/gunixinputstream.c:255 gio/gunixinputstream.c:437
+#: gio/gunixoutputstream.c:244 gio/gunixoutputstream.c:395
 #, c-format
 msgid "Error closing unix: %s"
 msgstr "Произошла ошибка при закрытии unix: %s"
 
-#: gio/gunixmounts.c:1755 gio/gunixmounts.c:1792
+#: gio/gunixmounts.c:1778 gio/gunixmounts.c:1815
 msgid "Filesystem root"
 msgstr "Корень файловой системы"
 
-#: gio/gunixoutputstream.c:188 gio/gunixoutputstream.c:207
+#: gio/gunixoutputstream.c:190 gio/gunixoutputstream.c:211
 #, c-format
 msgid "Error writing to unix: %s"
 msgstr "Произошла ошибка при записи в unix: %s"
 
-#: gio/gvolume.c:384
+#: gio/gvolume.c:423
 msgid "volume doesn't implement eject"
 msgstr "том не реализует извлечение"
 
@@ -1750,6 +1745,12 @@ msgstr "использовать длинный формат"
 #: tests/gio-ls.c:37
 msgid "[FILE...]"
 msgstr "[ФАЙЛ...]"
+
+#~ msgid "Can't load just created desktop file"
+#~ msgstr "Не удалось загрузить только что созданный desktop-файл"
+
+#~ msgid "Error creating backup link: %s"
+#~ msgstr "Произошла ошибка при создании резервной ссылки: %s"
 
 #~ msgid "Too large count value passed to g_input_stream_read_async"
 #~ msgstr ""
