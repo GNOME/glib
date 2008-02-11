@@ -1,4 +1,8 @@
-2008-02-10  Matthias Clasen <mclasen@redhat.com>
+2008-02-11  Matthias Clasen <mclasen@redhat.com>
+
+	* NEWS: Updates
+
+2008-02-11  Matthias Clasen <mclasen@redhat.com>
 
 	* glib/gtestutils.h: Make the g_test_add macro work with 
 	gcc 4.3

@@ -1,3 +1,41 @@
+Overview of Changes from GLib 2.15.4 to GLib 2.15.5
+===================================================
+
+* GIO:
+ - g_volume_should_automount: new function to determine if a volume
+   should be mounted automatically
+ - g_file_query_default_handler: new convenience function to get
+   the default handler for a file
+ - g_app_info_launch_default_for_uri new convenience function to
+   launch the default handler for a URI
+ - Use mimeapps.list and defaults.list as discussed on xdg list
+   recently
+ - g_app_info_get_default_for_uri_scheme has a real implementation
+   now (gvfs provides a GConf-based implementation)
+ - There is the beginning of a test suite
+ - standard::description:  new file attribute
+ - GMountMountFlags flags argument added to mount calls
+
+* GObject:
+ - class initialization is now threadsafe
+
+* Updated translations:
+  Arabic (ar)
+  Catalan (ca)
+  Spanish (es)
+  Basque (eu)
+  Italian (it)
+  Japanese (ja)
+  Kannada (kn)
+  Korean (ko)
+  Macedonian (mk)
+  Occitan (oc)
+  Portugese (pt)
+  Brazilian Portugese (pt_BR)
+  Swedish (sv)
+  Thai (th)
+
+
 Overview of Changes from GLib 2.15.3 to GLib 2.15.4
 ===================================================
 
