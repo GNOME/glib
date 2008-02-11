@@ -1,3 +1,7 @@
+2008-02-11  Matthias Clasen <mclasen@redhat.com>
+
+	* gio.symbols: Add g_mount_mount_flags_get_type.
+
 2008-02-11  Alexander Larsson  <alexl@redhat.com>
 
         * gfileinfo.c:
