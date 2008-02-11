@@ -532,7 +532,7 @@ g_app_info_should_show (GAppInfo *appinfo)
 /**
  * g_app_info_launch_default_for_uri:
  * @uri: the uri to show
- * @context: an optional #GAppLaunchContext.
+ * @launch_context: an optional #GAppLaunchContext.
  * @error: a #GError.
  *
  * Utility function that launches the default application 
@@ -543,9 +543,9 @@ g_app_info_should_show (GAppInfo *appinfo)
  * Returns: %TRUE on success, %FALSE on error.
  **/
 gboolean
-g_app_info_launch_default_for_uri (const char *uri,
-				   GAppLaunchContext *launch_context,
-				   GError **error)
+g_app_info_launch_default_for_uri (const char         *uri,
+				   GAppLaunchContext  *launch_context,
+				   GError            **error)
 {
   GAppInfo *app_info;
   GFile *file;

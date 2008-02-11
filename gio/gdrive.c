@@ -215,6 +215,9 @@ g_drive_has_volumes (GDrive *drive)
  * @drive: a #GDrive.
  * 
  * Get a list of mountable volumes for @drive.
+ *
+ * The returned list should be freed with g_list_free(), after
+ * its elements have been unreffed with g_object_unref().
  * 
  * Returns: #GList containing any #GVolume<!---->s on the given @drive.
  **/

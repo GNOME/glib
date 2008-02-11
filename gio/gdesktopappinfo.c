@@ -1662,7 +1662,9 @@ g_app_info_get_default_for_type (const char *content_type,
  * @uri_scheme: a string containing a URI scheme.
  *
  * Gets the default application for launching applications 
- * using this URI scheme.
+ * using this URI scheme. A URI scheme is the initial part 
+ * of the URI, up to but not including the ':', e.g. "http", 
+ * "ftp" or "sip".
  * 
  * Returns: #GAppInfo for given @uri_scheme or %NULL on error.
  **/
@@ -2520,9 +2522,22 @@ g_desktop_app_info_lookup_base_init (gpointer g_class)
 {
 }
 
+/**
+ * g_desktop_app_info_lookup_get_default_for_uri_scheme:
+ * @lookup: a #GDesktopAppInfoLookup
+ * @uri_scheme: a string containing a URI scheme.
+ *
+ * Gets the default application for launching applications 
+ * using this URI scheme.
+ *
+ * There should be little reason to use this function directly,
+ * it is preferred to use g_app_info_get_default_for_uri_scheme().
+ * 
+ * Returns: #GAppInfo for given @uri_scheme or %NULL on error.
+ */
 GAppInfo *
 g_desktop_app_info_lookup_get_default_for_uri_scheme (GDesktopAppInfoLookup *lookup,
-						      const char  *uri_scheme)
+						      const char            *uri_scheme)
 {
   GDesktopAppInfoLookupIface *iface;
   

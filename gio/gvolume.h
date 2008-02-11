@@ -34,10 +34,39 @@
 
 G_BEGIN_DECLS
 
+/**
+ * G_VOLUME_IDENTIFIER_KIND_HAL_UDI:
+ *
+ * The string used to obtain a Hal UDI with g_volume_get_identifier().
+ */
 #define G_VOLUME_IDENTIFIER_KIND_HAL_UDI "hal-udi"
+
+/**
+ * G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE:
+ *
+ * The string used to obtain a Unix device path with g_volume_get_identifier().
+ */
 #define G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE "unix-device"
+
+/**
+ * G_VOLUME_IDENTIFIER_KIND_LABEL:
+ *
+ * The string used to obtain a filesystem label with g_volume_get_identifier().
+ */
 #define G_VOLUME_IDENTIFIER_KIND_LABEL "label"
+
+/**
+ * G_VOLUME_IDENTIFIER_KIND_UUID:
+ *
+ * The string used to obtain a UUID with g_volume_get_identifier().
+ */
 #define G_VOLUME_IDENTIFIER_KIND_UUID "uuid"
+
+/**
+ * G_VOLUME_IDENTIFIER_KIND_NFS_MOUNT:
+ *
+ * The string used to obtain a NFS mount with g_volume_get_identifier().
+ */
 #define G_VOLUME_IDENTIFIER_KIND_NFS_MOUNT "nfs-mount"
 
 
@@ -62,10 +91,11 @@ G_BEGIN_DECLS
  * @mount_finish: Finishes a mount operation.
  * @eject: Ejects a given #GVolume.
  * @eject_finish: Finishes an eject operation.
- * @get_identifier: Returns the identifier of the given kind, or %NULL if 
+ * @get_identifier: Returns the <link linkend="volume-identifier">identifier</link> of the given kind, or %NULL if 
  *    the #GVolume doesn't have one.
  * @enumerate_identifiers: Returns an array strings listing the kinds
- *    of identifiers which the #GVolume has.
+ *    of <link linkend="volume-identifier">identifiers</link> which the #GVolume has.
+ * @should_automount: Returns %TRUE if the #GVolume should be automatically mounted.
  * 
  * Interface for implementing operations for mountable volumes.
  **/

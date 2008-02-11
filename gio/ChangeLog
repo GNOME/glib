@@ -1,3 +1,12 @@
+2008-02-11  Matthias Clasen <mclasen@redhat.com>
+
+	* *.c: Documentation additions
+
+2008-02-10  Matthias Clasen <mclasen@redhat.com>
+
+	* gappinfo.h: Formatting cleanup
+	* gappinfo.c: Fix up docs.
+
 2008-02-09  Matthias Clasen <mclasen@redhat.com>
 
 	* gunixmounts.c: Consistently use getmntent_r() and fall

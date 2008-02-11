@@ -56,6 +56,19 @@
  * #GAsyncReady data to see if the operation was completed
  * successfully.  If an @error is present when g_volume_mount_finish()
  * is called, then it will be filled with any error information.
+ *
+ * <para id="volume-identifier">
+ * It is sometimes necessary to directly access the underlying 
+ * operating system object behind a volume (e.g. for passing a volume
+ * to an application via the commandline). For this purpose, GIO
+ * allows to obtain an 'identifier' for the volume. There can be
+ * different kinds of identifiers, such as Hal UDIs, filesystem labels,
+ * traditional Unix devices (e.g. <filename>/dev/sda2</filename>),
+ * uuids. GIO uses predefind strings as names for the different kinds
+ * of identifiers: #G_VOLUME_IDENTIFIER_KIND_HAL_UDI, 
+ * #G_VOLUME_IDENTIFIER_KIND_LABEL, etc. Use g_volume_get_identifier() 
+ * to obtain an identifier for a volume.
+ * </para>
  **/
 
 static void g_volume_base_init (gpointer g_class);
@@ -288,6 +301,14 @@ g_volume_can_eject (GVolume *volume)
   return (* iface->can_eject) (volume);
 }
 
+/**
+ * g_volume_should_automount:
+ * @volume: a #GVolume
+ *
+ * Returns whether the volume should be automatically mounted.
+ * 
+ * Returns: %TRUE if the volume should be automatically mounted.
+ */
 gboolean
 g_volume_should_automount (GVolume *volume)
 {
@@ -441,7 +462,9 @@ g_volume_eject_finish (GVolume  *volume,
  * @volume: a #GVolume
  * @kind: the kind of identifier to return
  *
- * Gets the identifier of the given kind for @volume.
+ * Gets the identifier of the given kind for @volume. 
+ * See the <link linkend="volume-identifier">introduction</link>
+ * for more information about volume identifiers.
  *
  * Returns: a newly allocated string containing the
  *   requested identfier, or %NULL if the #GVolume
@@ -467,10 +490,10 @@ g_volume_get_identifier (GVolume    *volume,
 /**
  * g_volume_enumerate_identifiers:
  * @volume: a #GVolume
- *
- * Gets the kinds of identifiers that @volume has. 
- * Use g_volume_get_identifer() to obtain the identifiers
- * themselves.
+ * 
+ * Gets the kinds of <link linkend="volume-identifier">identifiers</link>
+ * that @volume has. Use g_volume_get_identifer() to obtain 
+ * the identifiers themselves.
  *
  * Returns: a %NULL-terminated array of strings containing
  *   kinds of identifiers. Use g_strfreev() to free.

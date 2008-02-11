@@ -41,11 +41,55 @@
  * @include: gio.h
  *
  * Provides an interface and default functions for loading and unloading 
- * modules. This is used internally to make gio extensible, but can also
- * be used by other to implement module loading.
+ * modules. This is used internally to make GIO extensible, but can also
+ * be used by others to implement module loading.
  * 
  **/
 
+/**
+ * SECTION:extensionpoints
+ * @short_description: Extension Points
+ * @include: gio.h
+ * @see_also: <link linkend="gio-extension-points">Extending GIO</link>
+ *
+ * #GIOExtensionPoint provides a mechanism for modules to extend the
+ * functionality of the library or application that loaded it in an 
+ * organized fashion.  
+ *
+ * An extension point is identified by a name, and it may optionally
+ * require that any implementation must by of a certain type (or derived
+ * thereof). Use g_io_extension_point_register() to register an
+ * extension point, and g_io_extension_point_set_required_type() to
+ * set a required type.
+ *
+ * A module can implement an extension point by specifying the #GType 
+ * that implements the functionality. Additionally, each implementation
+ * of an extension point has a name, and a priority. Use
+ * g_io_extension_point_implement() to implement an extension point.
+ * 
+ *  |[
+ *  GIOExtensionPoint *ep;
+ *
+ *  /&ast; Register an extension point &ast;/
+ *  ep = g_io_extension_point_register ("my-extension-point");
+ *  g_io_extension_point_set_required_type (ep, MY_TYPE_EXAMPLE);
+ *  ]|
+ *
+ *  |[
+ *  /&ast; Implement an extension point &ast;/
+ *  G_DEFINE_TYPE (MyExampleImpl, my_example_impl, MY_TYPE_EXAMPLE);
+ *  g_io_extension_point_implement ("my-extension-point",
+ *                                  my_example_impl_get_type (),
+ *                                  "my-example",
+ *                                  10);
+ *  ]|
+ *
+ *  It is up to the code that registered the extension point how
+ *  it uses the implementations that have been associated with it.
+ *  Depending on the use case, it may use all implementations, or
+ *  only the one with the highest priority, or pick a specific
+ *  one by name. 
+ */
 struct _GIOModule {
   GTypeModule parent_instance;
   
@@ -323,6 +367,15 @@ g_io_extension_point_free (GIOExtensionPoint *ep)
   g_free (ep);
 }
 
+/**
+ * g_io_extension_point_register:
+ * @name: The name of the extension point
+ *
+ * Registers an extension point.
+ *
+ * Returns: the new #GIOExtensionPoint. This object is owned by GIO
+ *    and should not be freed
+ */
 GIOExtensionPoint *
 g_io_extension_point_register (const char *name)
 {
@@ -352,6 +405,15 @@ g_io_extension_point_register (const char *name)
   return ep;
 }
 
+/**
+ * g_io_extension_point_lookup:
+ * @name: the name of the extension point
+ *
+ * Looks up an existing extension point.
+ *
+ * Returns: the #GIOExtensionPoint, or %NULL if there is no
+ *    registered extension point with the given name
+ */
 GIOExtensionPoint *
 g_io_extension_point_lookup (const char *name)
 {
@@ -368,6 +430,14 @@ g_io_extension_point_lookup (const char *name)
   
 }
 
+/**
+ * g_io_extension_point_set_required_type:
+ * @extension_point: a #GIOExtensionPoint
+ * @type: the #GType to require
+ *
+ * Sets the required type for @extension_point to @type. 
+ * All implementations must henceforth have this type.
+ */
 void
 g_io_extension_point_set_required_type (GIOExtensionPoint *extension_point,
 					GType              type)
@@ -375,18 +445,47 @@ g_io_extension_point_set_required_type (GIOExtensionPoint *extension_point,
   extension_point->required_type = type;
 }
 
+/**
+ * g_io_extension_point_get_required_type:
+ * @extension_point: a #GIOExtensionPoint
+ *
+ * Gets the required type for @extension_point.
+ *
+ * Returns: the #GType that all implementations must have, 
+ *     or #G_TYPE_INVALID if the extension point has no required type
+ */
 GType
 g_io_extension_point_get_required_type (GIOExtensionPoint *extension_point)
 {
   return extension_point->required_type;
 }
 
+/**
+ * g_io_extension_point_get_extensions:
+ * @extension_point: a #GIOExtensionPoint
+ *
+ * Gets a list of all extensions that implement this extension point.
+ * The list is sorted by priority, beginning with the highest priority.
+ * 
+ * Returns: a #GList of #GIOExtension<!-- -->s. The list is owned by
+ *   GIO and should not be modified
+ */
 GList *
 g_io_extension_point_get_extensions (GIOExtensionPoint *extension_point)
 {
   return extension_point->extensions;
 }
 
+/**
+ * g_io_extension_point_get_extension_by_name:
+ * @extension_point: a #GIOExtensionPoint
+ * @name: the name of the extension to get
+ *
+ * Finds a #GIOExtension for an extension point by name.
+ *
+ * Returns: the #GIOExtension for @extension_point that has the
+ *    given name, or %NULL if there is no extension with that name
+ */
 GIOExtension *
 g_io_extension_point_get_extension_by_name (GIOExtensionPoint *extension_point,
 					    const char        *name)
@@ -414,11 +513,26 @@ extension_prio_compare (gconstpointer  a,
   return extension_b->priority - extension_a->priority;
 }
 
+/**
+ * g_io_extension_point_implement:
+ * @extension_point_name: the name of the extension point
+ * @type: the #GType to register as extension 
+ * @extension_name: the name for the extension
+ * @priority: the priority for the extension
+ *
+ * Registers @type as extension for the extension point with name
+ * @extension_point_name. 
+ *
+ * If @type has already been registered as an extension for this 
+ * extension point, the existing #GIOExtension object is returned.
+ *
+ * Returns: a #GIOExtension object for #GType
+ */
 GIOExtension *
 g_io_extension_point_implement (const char *extension_point_name,
-				GType type,
+				GType       type,
 				const char *extension_name,
-				gint priority)
+				gint        priority)
 {
   GIOExtensionPoint *extension_point;
   GIOExtension *extension;
@@ -463,25 +577,60 @@ g_io_extension_point_implement (const char *extension_point_name,
   return extension;
 }
 
+/**
+ * g_io_extension_ref_class:
+ * @extension: a #GIOExtension
+ *
+ * Gets a reference to the class for the type that is 
+ * associated with @extension.
+ *
+ * Returns: the #GTypeClass for the type of @extension
+ */
 GTypeClass *
 g_io_extension_ref_class (GIOExtension *extension)
 {
   return g_type_class_ref (extension->type);
 }
 
-
+/**
+ * g_io_extension_get_type:
+ * @extension: a #GIOExtension
+ *
+ * Gets the type associated with @extension.
+ *
+ * Returns: the type of @extension
+ */
 GType
 g_io_extension_get_type (GIOExtension *extension)
 {
   return extension->type;
 }
 
+/**
+ * g_io_extension_get_name:
+ * @extension: a #GIOExtension
+ *
+ * Gets the name under which @extension was registered.
+ *
+ * Note that the same type may be registered as extension
+ * for multiple extension points, under different names.
+ *
+ * Returns: the name of @extension.
+ */
 const char *
 g_io_extension_get_name (GIOExtension *extension)
 {
   return extension->name;
 }
 
+/**
+ * g_io_extension_get_priority:
+ * @extension: a #GIOExtension
+ *
+ * Gets the priority with which @extension was registered.
+ *
+ * Returns: the priority of @extension
+ */
 gint
 g_io_extension_get_priority (GIOExtension *extension)
 {

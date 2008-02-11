@@ -55,8 +55,8 @@ GIOModule *g_io_module_new      (const gchar *filename);
 
 GList *g_io_modules_load_all_in_directory            (const char *dirname);
 
-GIOExtensionPoint *g_io_extension_point_register              (const char        *extension_point);
-GIOExtensionPoint *g_io_extension_point_lookup                (const char        *extension_point);
+GIOExtensionPoint *g_io_extension_point_register              (const char        *name);
+GIOExtensionPoint *g_io_extension_point_lookup                (const char        *name);
 void               g_io_extension_point_set_required_type     (GIOExtensionPoint *extension_point,
 							       GType              type);
 GType              g_io_extension_point_get_required_type     (GIOExtensionPoint *extension_point);
@@ -78,8 +78,9 @@ GTypeClass*             g_io_extension_ref_class    (GIOExtension *extension);
  * g_io_module_load:
  * @module: a #GIOModule.
  * 
- * Required API for GIO modules to implement. This function is ran after the module
- * has been loaded into GIO, to initialize the module.
+ * Required API for GIO modules to implement. 
+ * This function is ran after the module has been loaded into GIO, 
+ * to initialize the module.
  **/
 void        g_io_module_load     (GIOModule   *module);
 
@@ -87,8 +88,9 @@ void        g_io_module_load     (GIOModule   *module);
  * g_io_module_unload:
  * @module: a #GIOModule.
  * 
- * Required API for GIO modules to implement. This function is ran when the module
- * is being unloaded from GIO, to finalize the module.
+ * Required API for GIO modules to implement. 
+ * This function is ran when the module is being unloaded from GIO, 
+ * to finalize the module.
  **/
 void        g_io_module_unload   (GIOModule   *module);
 

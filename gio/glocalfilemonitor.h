@@ -52,9 +52,9 @@ struct _GLocalFileMonitorClass {
 
 GType g_local_file_monitor_get_type (void) G_GNUC_CONST;
 
-GFileMonitor* _g_local_file_monitor_new (const char* pathname,
-					 GFileMonitorFlags flags,
-					 GError **error);
+GFileMonitor* _g_local_file_monitor_new (const char         *pathname,
+					 GFileMonitorFlags   flags,
+					 GError            **error);
 
 G_END_DECLS
 

@@ -59,6 +59,12 @@ void             g_desktop_app_info_set_desktop_env   (const char *desktop_env);
 
 #define G_DESKTOP_APP_INFO_LOOKUP_EXTENSION_POINT_NAME "gio-desktop-app-info-lookup"
 
+/**
+ * GDesktopAppInfoLookup:
+ *
+ * Interface that is used by backends to associate default 
+ * handlers with URI schemes.
+ */
 typedef struct _GDesktopAppInfoLookup GDesktopAppInfoLookup;
 typedef struct _GDesktopAppInfoLookupIface GDesktopAppInfoLookupIface;
 
@@ -70,9 +76,9 @@ struct _GDesktopAppInfoLookupIface
 					    const char  *uri_scheme);
 };
 
-GType g_desktop_app_info_lookup_get_type (void) G_GNUC_CONST;
-GAppInfo * g_desktop_app_info_lookup_get_default_for_uri_scheme (GDesktopAppInfoLookup *lookup,
-								 const char  *uri_scheme);
+GType     g_desktop_app_info_lookup_get_type (void) G_GNUC_CONST;
+GAppInfo *g_desktop_app_info_lookup_get_default_for_uri_scheme (GDesktopAppInfoLookup *lookup,
+								const char  *uri_scheme);
 
 G_END_DECLS
 

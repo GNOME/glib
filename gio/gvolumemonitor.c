@@ -238,11 +238,11 @@ g_volume_monitor_init (GVolumeMonitor *monitor)
  * @volume_monitor: a #GVolumeMonitor.
  * 
  * Gets a list of drives connected to the system.
- *
- * The returned list should be freed with g_list_free(), but
- * its elements need not be freed.
  * 
- * Returns: a #GList of connected #GDrives - free with g_list_free(). 
+ * The returned list should be freed with g_list_free(), after
+ * its elements have been unreffed with g_object_unref().
+ *
+ * Returns: a #GList of connected #GDrive<!-- -->s
  **/
 GList *
 g_volume_monitor_get_connected_drives (GVolumeMonitor *volume_monitor)
@@ -261,11 +261,11 @@ g_volume_monitor_get_connected_drives (GVolumeMonitor *volume_monitor)
  * @volume_monitor: a #GVolumeMonitor.
  * 
  * Gets a list of the volumes on the system.
- *
- * The returned list should be freed with g_list_free(), but
- * its elements need not be freed.
  * 
- * Returns: a #GList of #GVolume - free with g_list_free().
+ * The returned list should be freed with g_list_free(), after
+ * its elements have been unreffed with g_object_unref().
+ *
+ * Returns: a #GList of #GVolume<!-- -->s.
  **/
 GList *
 g_volume_monitor_get_volumes (GVolumeMonitor *volume_monitor)
@@ -285,10 +285,10 @@ g_volume_monitor_get_volumes (GVolumeMonitor *volume_monitor)
  * 
  * Gets a list of the mounts on the system.
  *
- * The returned list should be freed with g_list_free(), but
- * its elements need not be freed.
+ * The returned list should be freed with g_list_free(), after
+ * its elements have been unreffed with g_object_unref().
  * 
- * Returns: a #GList of #GMount - free with g_list_free().
+ * Returns: a #GList of #GMount<!-- -->s
  **/
 GList *
 g_volume_monitor_get_mounts (GVolumeMonitor *volume_monitor)
