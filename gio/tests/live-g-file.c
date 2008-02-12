@@ -1076,12 +1076,6 @@ main (int argc, char *argv[])
   GError *error;
   GOptionContext *context;
 
-  verbose = FALSE;
-  write_test = FALSE;
-  create_struct = FALSE;
-  target_path = NULL;
-  posix_compat = FALSE;
-
   static GOptionEntry cmd_entries[] = {
     {"read-write", 'w', 0, G_OPTION_ARG_NONE, &write_test,
      "Perform write tests (incl. structure creation)", NULL},
@@ -1092,6 +1086,12 @@ main (int argc, char *argv[])
      "Test POSIX-specific features (unix permissions, symlinks)", NULL},
     {NULL}
   };
+
+  verbose = FALSE;
+  write_test = FALSE;
+  create_struct = FALSE;
+  target_path = NULL;
+  posix_compat = FALSE;
 
   /*  strip all gtester-specific args  */
   g_type_init ();
