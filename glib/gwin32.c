@@ -270,13 +270,15 @@ get_package_directory_from_module (const gchar *module_name)
 
 /**
  * g_win32_get_package_installation_directory:
- * @package: An identifier for a software package, or %NULL, in UTF-8
- * @dll_name: The name of a DLL that a package provides, or %NULL, in UTF-8
+ * @package: You should pass %NULL for this.
+ * @dll_name: The name of a DLL that a package provides in UTF-8, or %NULL.
  *
  * Try to determine the installation directory for a software package.
  *
- * @package should be a short identifier for the package. Typically it
- * is the same identifier as used for
+ * The use of @package is deprecated. You should always pass %NULL.
+ *
+ * Its original intended use was for a short identifier for
+ * the package, typically the same identifier as used for
  * <literal>GETTEXT_PACKAGE</literal> in software configured using GNU
  * autotools. The function first looks in the Windows Registry for the
  * value <literal>&num;InstallationDirectory</literal> in the key
@@ -286,13 +288,14 @@ get_package_directory_from_module (const gchar *module_name)
  * It is strongly recommended that packagers of GLib-using libraries
  * for Windows do not store installation paths in the Registry to be
  * used by this function as that interfers with having several
- * parallel installations of the library. Parallel installations of
- * different versions of some GLib-using library, or GLib itself,
- * might well be desirable for various reasons.
+ * parallel installations of the library. Enabling multiple
+ * installations of different versions of some GLib-using library, or
+ * GLib itself, is desirable for various reasons.
  *
- * For the same reason it is recommeded to always pass %NULL as
+ * For this reason it is recommeded to always pass %NULL as
  * @package to this function, to avoid the temptation to use the
- * Registry.
+ * Registry. In version 2.18 of GLib the @package parameter
+ * will be ignored and this function won't look in the Registry at all.
  *
  * If @package is %NULL, or the above value isn't found in the
  * Registry, but @dll_name is non-%NULL, it should name a DLL loaded
@@ -422,8 +425,8 @@ g_win32_get_package_installation_directory (const gchar *package,
 
 /**
  * g_win32_get_package_installation_subdirectory:
- * @package: An identifier for a software package, in UTF-8, or %NULL
- * @dll_name: The name of a DLL that a package provides, in UTF-8, or %NULL
+ * @package: You should pass %NULL for this.
+ * @dll_name: The name of a DLL that a package provides, in UTF-8, or %NULL.
  * @subdir: A subdirectory of the package installation directory, also in UTF-8
  *
  * Returns a newly-allocated string containing the path of the
@@ -431,8 +434,8 @@ g_win32_get_package_installation_directory (const gchar *package,
  * g_win32_get_package_installation_directory() with the @package and
  * @dll_name parameters. See the documentation for
  * g_win32_get_package_installation_directory() for more details. In
- * particular, note that it is recomended to always pass NULL as
- * @package.
+ * particular, note that it is deprecated to pass anything except NULL
+ * as @package.
  *
  * Returns: a string containing the complete path to @subdir inside
  * the installation directory of @package. The returned string is in
