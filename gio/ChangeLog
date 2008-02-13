@@ -1,3 +1,7 @@
+2008-02-13  Ryan Lortie  <desrt@desrt.ca>
+
+	* gfileinfo.h: add G_FILE_ATTRIBUTE_TRASH_ITEM_COUNT
+
 2008-02-13  Alexander Larsson  <alexl@redhat.com>
 
 	* inotify/inotify-path.c:

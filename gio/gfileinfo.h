@@ -698,6 +698,15 @@ typedef enum {
  **/
 #define G_FILE_ATTRIBUTE_SELINUX_CONTEXT "selinux::context"       /* string */
 
+/**
+ * G_FILE_ATTRIBUTE_TRASH_ITEM_COUNT:
+ *
+ * A key in the "trash" namespace.  When requested against 'trash:///'
+ * returns the number of (toplevel) items in the trash folder.
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_UINT32.
+ **/
+#define G_FILE_ATTRIBUTE_TRASH_ITEM_COUNT "trash::item-count"     /* uint32 */
+
 GType g_file_info_get_type (void) G_GNUC_CONST;
 
 GFileInfo *        g_file_info_new                       (void);

@@ -1,3 +1,8 @@
+2008-02-13  Ryan Lortie  <desrt@desrt.ca>
+
+	* docs/reference/gio/gio-sections.txt: add
+	G_FILE_ATTRIBUTE_TRASH_ITEM_COUNT
+
 2008-02-13  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gwin32.c: Doc change: Deprecate passing anything but NULL
