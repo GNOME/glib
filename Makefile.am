@@ -17,4 +17,4 @@ libgirepository_la_CFLAGS = $(GIREPO_CFLAGS)
 girepodir = $(includedir)/glib-2.0/gobject-introspection
 girepo_HEADERS = girepository.h
 
-GCOV_SOURCES = $(libgirepository_la_SOURCES)
+GCOVSOURCES = $(libgirepository_la_SOURCES)
