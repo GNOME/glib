@@ -1,3 +1,7 @@
+2008-02-12  Matthias Clasen <mclasen@redhat.com>
+
+	* gio/migration.xml: Add a note about mime monitoring
+
 2008-02-11  Matthias Clasen <mclasen@redhat.com>
 
 	* === Released 2.15.5 ===

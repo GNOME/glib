@@ -143,6 +143,20 @@ start_monitoring_trash (void)
       </para>
 
     </section>
+
+    <section>
+      <title>Mime monitoring</title>
+
+      <para>
+        gnome-vfs offered a way to monitor the association between mime types
+        and default handlers for changes, with the #GnomeVFSMIMEMonitor object.
+        GIO does not offer a replacement for this functionality at this time,
+        since we have not found a compelling use case where 
+        #GnomeVFSMIMEMonitor was used. If you think you have such a use
+        case, please report it at 
+        <ulink url="http://bugzilla.gnome.org">bugzilla.gnome.org</ulink>.
+      </para>
+    </section>
   </chapter>
 
 </part>
