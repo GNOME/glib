@@ -1,3 +1,8 @@
+2008-02-13  Alexander Larsson  <alexl@redhat.com>
+
+	* inotify/inotify-path.c:
+	Define IN_ONLYDIR if not in header (#515346)
+
 2008-02-12  Alexander Larsson  <alexl@redhat.com>
 
         * tests/live-g-file.c:

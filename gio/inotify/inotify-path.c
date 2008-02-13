@@ -37,6 +37,11 @@
 
 #define IP_INOTIFY_MASK (IN_MODIFY|IN_ATTRIB|IN_MOVED_FROM|IN_MOVED_TO|IN_DELETE|IN_CREATE|IN_DELETE_SELF|IN_UNMOUNT|IN_MOVE_SELF|IN_CLOSE_WRITE)
 
+/* Older libcs don't have this */
+#ifndef IN_ONLYDIR
+#define IN_ONLYDIR 0  
+#endif
+
 typedef struct ip_watched_dir_s {
   char *path;
   /* TODO: We need to maintain a tree of watched directories
