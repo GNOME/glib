@@ -1,5 +1,10 @@
 2008-02-14  Alexander Larsson  <alexl@redhat.com>
 
+        * glocalfileoutputstream.c:
+	Correctly check for HAVE_FCHMOD and HAVE_FCHOWN
+
+2008-02-14  Alexander Larsson  <alexl@redhat.com>
+
         * glocalfile.c:
 	Copy permissions with file on copy (#514084)
 	This is what cp does and makes sure e.g. the

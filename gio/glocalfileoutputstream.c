@@ -716,10 +716,10 @@ handle_overwrite_open (const char    *filename,
       /* try to keep permissions */
 
       if (
-#ifdef F_CHOWN
+#ifdef HAVE_FCHOWN
 	  fchown (tmpfd, original_stat.st_uid, original_stat.st_gid) == -1 ||
 #endif
-#ifdef F_CHMOD
+#ifdef HAVE_FCHMOD
 	  fchmod (tmpfd, original_stat.st_mode) == -1 ||
 #endif
 	  0
@@ -783,7 +783,7 @@ handle_overwrite_open (const char    *filename,
        * original file. If this fails, set the protection
        * bits for the group same as the protection bits for
        * others. */
-#ifdef HAVE_FCHOWN
+#if defined(HAVE_FCHOWN) && defined(HAVE_FCHMOD)
       if (fstat (bfd, &tmp_statbuf) != 0)
 	{
 	  g_set_error (error,
